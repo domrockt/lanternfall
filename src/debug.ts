@@ -76,14 +76,9 @@ export function installDebugApi(game: Phaser.Game): void {
       if (!(id in ENEMIES)) throw new Error(`window.__lf.spawnEnemy: unbekannter Gegner "${id}"`);
       return run.debugSpawnEnemy(id as EnemyId, Math.max(1, Math.floor(finiteNumber("spawnEnemy", n))));
     },
-    spawnBoss: (index: number) => {
-      requireRun();
-      throw new Error(`window.__lf.spawnBoss: Bosse sind erst ab M4 verfügbar (Index ${index})`);
-    },
-    openChest: () => {
-      requireRun();
-      throw new Error("window.__lf.openChest: Truhen sind erst ab M4 verfügbar");
-    },
+    spawnBoss: (index: number) =>
+      requireRun().debugSpawnBoss(finiteNumber("spawnBoss", index)),
+    openChest: () => requireRun().debugOpenChest(),
     pickLevelUp: (i: number) => {
       const run = requireRun();
       if (!run.levelUpOpen) throw new Error("window.__lf.pickLevelUp: kein Level-Up aktiv");

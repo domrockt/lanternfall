@@ -281,25 +281,36 @@
       "id": 20,
       "title": "M2-03 Evolutionslogik canEvolve/chestRewards + Tests",
       "description": "Reine Funktionen, Daten, Evolution ersetzt Basiswaffe im Slot.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-25T00:43:57Z",
           "by": "build",
           "text": "todo → doing: canEvolve/chestRewards + Evolutionswaffen"
+        },
+        {
+          "at": "2026-11-25T00:46:33Z",
+          "by": "build",
+          "text": "doing → review: canEvolve/chestRewards pur + 12 neue Tests (53 gesamt). Alle 6 Evolutionen mit eigenen Effekten, Schaden>0 (Wrath-Bug gefixt: Schaden lief unter flail statt wrath_pendulum). Commit 106a4f1."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:43:57Z"
+      "updated": "2026-11-25T00:46:33Z"
     },
     {
       "id": 21,
       "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, Öffnungs-Sequenz, Platzhalter-Boss",
       "description": "openChest/spawnBoss(0), 1/3/5 Belohnungen, Evolution Vorrang, GIF.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T00:46:33Z",
+          "by": "build",
+          "text": "todo → doing: Chest-System + Sequenz + Boss-Platzhalter"
+        }
+      ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:39:13Z"
+      "updated": "2026-11-25T00:46:33Z"
     },
     {
       "id": 22,

@@ -24,6 +24,8 @@ import { Spawner } from "../systems/Spawner";
 import { CombatSystem } from "../systems/CombatSystem";
 import { PickupSystem } from "../systems/PickupSystem";
 import { LevelUpSystem, type OwnedWeapon } from "../systems/LevelUpSystem";
+import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
+import { chestRewards, type ChestResult } from "../logic/evolution";
 import type { RunResult } from "./Results";
 
 export interface RunData {
@@ -44,6 +46,7 @@ export interface HudState {
   enemies: number;
   paused: boolean;
   levelUpOpen: boolean;
+  chestOpen: boolean;
   offers: Offer[];
   weapons: OwnedWeapon[];
   passives: { id: string; level: number }[];
@@ -63,6 +66,9 @@ export class Run extends Phaser.Scene {
   autoPlay = false;
   paused = false;
   levelUpOpen = false;
+  chestOpen = false;
+  chestResult: ChestResult | null = null;
+  bossesDefeated = 0;
   finished = false;
   invuln = 0;
   hitFlash = 0;
@@ -93,6 +99,7 @@ export class Run extends Phaser.Scene {
   private spawner!: Spawner;
   private combat!: CombatSystem;
   private pickups!: PickupSystem;
+  private chests!: ChestSystem;
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
   private scratch: EnemyRuntime[] = [];
 
@@ -112,6 +119,9 @@ export class Run extends Phaser.Scene {
     this.autoPlay = false;
     this.paused = false;
     this.levelUpOpen = false;
+    this.chestOpen = false;
+    this.chestResult = null;
+    this.bossesDefeated = 0;
     this.finished = false;
     this.invuln = 0;
     this.hitFlash = 0;
@@ -169,6 +179,7 @@ export class Run extends Phaser.Scene {
     this.spawner = new Spawner(this, this.enemies, this.rng);
     this.combat = new CombatSystem(this);
     this.pickups = new PickupSystem(this);
+    this.chests = new ChestSystem(this);
 
     this.keys = this.input.keyboard!.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -190,6 +201,7 @@ export class Run extends Phaser.Scene {
       this.combat.clear();
       this.enemies.releaseAll();
       this.pickups.releaseAll();
+      this.chests.clear();
     });
   }
 
@@ -198,7 +210,7 @@ export class Run extends Phaser.Scene {
     const realDt = Math.min(0.05, delta / 1000);
 
     // AutoPlay wählt Level-Up-Angebote nach kurzer Anzeige (unbeaufsichtigter Run).
-    if (this.levelUpOpen) {
+    if (this.levelUpOpen || this.chestOpen) {
       this.paused = true;
       return;
     }
@@ -269,6 +281,8 @@ export class Run extends Phaser.Scene {
     this.pickups.update(dt, this.player.x, this.player.y, pickupRadius, (value) => {
       this.giveXpInternal(value);
     });
+    const nearChest = this.chests.near(this.player.x, this.player.y, 15);
+    if (nearChest) this.openChest(nearChest);
   }
 
   // ── Spieler ──────────────────────────────────────────────────
@@ -398,6 +412,11 @@ export class Run extends Phaser.Scene {
       e.alive = false;
       this.kills += 1;
       this.pickups.drop(e.x, e.y, PickupSystem.rollSize(this.rng), this.rng);
+      if (e.boss) {
+        this.bossesDefeated += 1;
+        this.chests.spawn(e.x, e.y);
+        this.cameras.main.shake(180, 0.004);
+      }
     }
   }
 
@@ -454,6 +473,7 @@ export class Run extends Phaser.Scene {
         if (e.sprite.texture.key !== frame) e.sprite.setTexture(frame);
       }
     }
+    this.chests.update(realDt, this.cameras.main, this.player.x, this.player.y);
   }
 
   private updateHpBar(): void {
@@ -528,7 +548,7 @@ export class Run extends Phaser.Scene {
   }
 
   private togglePause(): void {
-    if (this.levelUpOpen || this.finished) return;
+    if (this.levelUpOpen || this.chestOpen || this.finished) return;
     this.paused = !this.paused;
     this.events.emit("pauseChanged", this.paused);
   }
@@ -568,6 +588,57 @@ export class Run extends Phaser.Scene {
     return out.length;
   }
 
+  /** M2-Platzhalterboss (noch keine eigenen Boss-Mechaniken, M4). */
+  debugSpawnBoss(index: number): number {
+    if (!Number.isFinite(index) || index < 0 || index > 5) {
+      throw new RangeError(`spawnBoss: Index ${index} ungueltig (0..5)`);
+    }
+    const out = this.spawner.spawnEnemy("bogzombie", 1, this.player.x, this.player.y);
+    const boss = out[0];
+    if (!boss) return 0;
+    boss.boss = true;
+    boss.maxHp = Math.round(boss.maxHp * 9);
+    boss.hp = boss.maxHp;
+    boss.radius = 22;
+    boss.sprite.setScale(2.2);
+    boss.sprite.setDepth(9);
+    boss.x = this.player.x + 110;
+    boss.y = this.player.y;
+    boss.sprite.setPosition(boss.x, boss.y);
+    this.cameras.main.shake(220, 0.003);
+    return 1;
+  }
+
+  /** Öffnet eine Truhe (Debug oder bei Berührung) und pausiert den Run. */
+  openChest(chest?: ChestRuntime): void {
+    if (this.chestOpen || this.levelUpOpen || this.finished) return;
+    const target = chest ?? this.chests.near(this.player.x, this.player.y, 200) ?? this.chests.spawn(this.player.x, this.player.y - 22);
+    const result = chestRewards(this.levelSys.weapons, this.levelSys.passives, this.elapsed, this.rng);
+    this.chestResult = result;
+    this.chestOpen = true;
+    this.paused = true;
+    this.chests.open(target);
+    this.events.emit("chestOpen", result);
+  }
+
+  /** Debug: Truhe direkt vor dem Spieler spawnen und öffnen. */
+  debugOpenChest(): void {
+    if (this.chestOpen || this.levelUpOpen) throw new Error("openChest: Es ist bereits eine Truhe/ein Level-Up offen");
+    const chest = this.chests.spawn(this.player.x + 26, this.player.y);
+    this.openChest(chest);
+  }
+
+  /** Wird von der UI am Ende der Öffnungs-Sequenz aufgerufen. */
+  finishChest(): void {
+    if (!this.chestOpen || !this.chestResult) return;
+    for (const reward of this.chestResult.rewards) this.levelSys.applyChestReward(reward);
+    this.recomputeStats();
+    this.chestOpen = false;
+    this.chestResult = null;
+    this.paused = false;
+    this.events.emit("chestClosed");
+  }
+
   getHudState(): HudState {
     return {
       time: this.elapsed,
@@ -581,6 +652,7 @@ export class Run extends Phaser.Scene {
       enemies: this.enemies?.count ?? 0,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
+      chestOpen: this.chestOpen,
       offers: this.currentOffers,
       weapons: this.levelSys?.weapons ?? [],
       passives: this.levelSys?.passives ?? [],
@@ -603,7 +675,7 @@ export class Run extends Phaser.Scene {
       enemies: this.enemies?.count ?? 0,
       weapons: this.levelSys?.weapons.map((w) => ({ id: w.id, level: w.level })) ?? [],
       passives: this.levelSys?.passives.map((p) => ({ id: p.id, level: p.level })) ?? [],
-      bossesDefeated: 0,
+      bossesDefeated: this.bossesDefeated,
       fps: Math.round(this.game.loop.actualFps * 10) / 10,
       character: this.character.id,
       damageByWeapon: { ...this.damageByWeapon },
@@ -611,6 +683,8 @@ export class Run extends Phaser.Scene {
       pickupRadius: this.agg ? effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) : 0,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
+      chestOpen: this.chestOpen,
+      chests: this.chests?.count ?? 0,
       autoPlay: this.autoPlay,
       god: this.godMode,
     };

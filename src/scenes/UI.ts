@@ -35,6 +35,13 @@ export class UI extends Phaser.Scene {
   private pauseLines: PixelText[] = [];
   private lastPauseShown = false;
 
+  private chestGroup!: Phaser.GameObjects.Container;
+  private chestSprite!: Phaser.GameObjects.Image;
+  private chestBeam!: Phaser.GameObjects.Image;
+  private chestTitle!: PixelText;
+  private chestSlots: { bg: Phaser.GameObjects.Rectangle; text: PixelText; level: PixelText }[] = [];
+  private chestOpenAt = 0;
+
   constructor() { super("ui"); }
 
   create(): void {
@@ -50,15 +57,20 @@ export class UI extends Phaser.Scene {
 
     this.createLevelUpUI();
     this.createPauseUI();
+    this.createChestUI();
 
     this.input.keyboard!.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
     this.run.events.on("levelup", this.onLevelUp, this);
     this.run.events.on("levelupClosed", this.onLevelUpClosed, this);
     this.run.events.on("pauseChanged", this.onPauseChanged, this);
+    this.run.events.on("chestOpen", this.onChestOpen, this);
+    this.run.events.on("chestClosed", this.onChestClosed, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.run.events.off("levelup", this.onLevelUp, this);
       this.run.events.off("levelupClosed", this.onLevelUpClosed, this);
       this.run.events.off("pauseChanged", this.onPauseChanged, this);
+      this.run.events.off("chestOpen", this.onChestOpen, this);
+      this.run.events.off("chestClosed", this.onChestClosed, this);
     });
   }
 
@@ -104,6 +116,113 @@ export class UI extends Phaser.Scene {
     this.pauseLines = [];
   }
 
+  private createChestUI(): void {
+    this.chestGroup = this.add.container(0, 0).setDepth(130).setVisible(false);
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.9).setOrigin(0, 0);
+    this.chestGroup.add(dim);
+    this.chestBeam = this.add.image(GAME_WIDTH / 2, 82, "light_radius")
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.lantern])
+      .setScale(0.25)
+      .setAlpha(0);
+    this.chestGroup.add(this.chestBeam);
+    this.chestSprite = this.add.image(GAME_WIDTH / 2, 96, "chest_closed").setScale(2.2);
+    this.chestGroup.add(this.chestSprite);
+    this.chestTitle = new PixelText(this, GAME_WIDTH / 2, 22, "TRUHE", C.lantern, "center").setScale(2);
+    this.chestGroup.add(this.chestTitle);
+    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 42, "BELOHNUNGEN ROLLEN ...", C.mist, "center"));
+    this.chestSlots = [];
+    for (let i = 0; i < 5; i++) {
+      const x = GAME_WIDTH / 2 + (i - 2) * 76;
+      const bg = this.add.rectangle(x, 188, 68, 62, PAL[C.nightMid]).setStrokeStyle(1, PAL[C.nightSlate]);
+      const text = new PixelText(this, x - 32, 166, "", C.candleWhite);
+      const level = new PixelText(this, x - 32, 188, "", C.amber);
+      this.chestGroup.add([bg, text, level]);
+      this.chestSlots.push({ bg, text, level });
+    }
+    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 246, "DIE TRUHE IST GEÖFFNET", C.fog, "center"));
+  }
+
+  private onChestOpen(result: import("../logic/evolution").ChestResult): void {
+    this.chestOpenAt = this.time.now;
+    this.chestGroup.setVisible(true);
+    this.chestTitle.setText("TRUHE");
+    this.chestSprite.setTexture("chest_closed").setScale(2.2).setAlpha(1);
+    this.chestBeam.setAlpha(0).setScale(0.25);
+    const n = result.rewards.length;
+    for (let i = 0; i < this.chestSlots.length; i++) {
+      const slot = this.chestSlots[i];
+      const reward = result.rewards[i];
+      const x = GAME_WIDTH / 2 + (i - (n - 1) / 2) * 76;
+      slot.bg.setPosition(x, 188).setVisible(Boolean(reward));
+      slot.text.setPosition(x - 32, 166).setVisible(Boolean(reward)).setAlpha(0).setText("?");
+      slot.level.setPosition(x - 32, 188).setVisible(Boolean(reward)).setAlpha(0).setText("");
+    }
+    // Deckel öffnen + Lichtstrahl.
+    this.time.delayedCall(280, () => this.chestSprite.setTexture("chest_open"));
+    this.time.delayedCall(360, () => {
+      this.tweens.add({ targets: this.chestBeam, alpha: 0.9, scale: 1.15, duration: 520, ease: "Sine.Out" });
+    });
+    // Münzen-Partikel.
+    this.time.delayedCall(420, () => this.spawnChestCoins());
+    // Slot-Rollen: zufällige Namen, dann feste Belohnung.
+    this.time.delayedCall(520, () => {
+      this.chestTitle.setText("TRUHE GEÖFFNET");
+      for (let i = 0; i < result.rewards.length; i++) {
+        const slot = this.chestSlots[i];
+        slot.text.setAlpha(1);
+        this.time.addEvent({
+          delay: 95,
+          repeat: 9,
+          callback: () => slot.text.setText(pickRollName(result.rewards).toUpperCase().slice(0, 11)),
+        });
+      }
+    });
+    // Settle nacheinander.
+    for (let i = 0; i < result.rewards.length; i++) {
+      const reward = result.rewards[i];
+      this.time.delayedCall(1450 + i * 220, () => {
+        const slot = this.chestSlots[i];
+        slot.text.setText(reward.name.toUpperCase().slice(0, 11));
+        slot.level.setText(reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`);
+        slot.bg.setStrokeStyle(2, PAL[reward.iconColor] ?? PAL[C.lantern]);
+        this.tweens.add({ targets: [slot.text, slot.level], alpha: { from: 0.2, to: 1 }, duration: 220 });
+      });
+    }
+    const finishAt = 1650 + result.rewards.length * 220;
+    this.time.delayedCall(finishAt, () => {
+      this.run.finishChest();
+    });
+    this.time.delayedCall(finishAt + 260, () => this.chestGroup.setVisible(false));
+  }
+
+  private onChestClosed(): void {
+    this.chestGroup.setVisible(false);
+  }
+
+  private spawnChestCoins(): void {
+    for (let i = 0; i < 12; i++) {
+      const coin = this.add.image(GAME_WIDTH / 2, 96, "fx_coin")
+        .setScale(1.4)
+        .setBlendMode(Phaser.BlendModes.NORMAL);
+      this.chestGroup.add(coin);
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.2;
+      const speed = 70 + Math.random() * 90;
+      const tx = GAME_WIDTH / 2 + Math.cos(angle) * speed;
+      const ty = 96 + Math.sin(angle) * speed;
+      this.tweens.add({
+        targets: coin,
+        x: tx,
+        y: ty,
+        alpha: 0,
+        scale: 0.4,
+        duration: 700 + Math.random() * 350,
+        ease: "Cubic.Out",
+        onComplete: () => coin.destroy(),
+      });
+    }
+  }
+
   update(_time: number, delta: number): void {
     if (!this.run || !this.run.scene.isActive()) return;
     const s = this.run.getHudState();
@@ -123,7 +242,7 @@ export class UI extends Phaser.Scene {
       this.levelGroup.setVisible(false);
     }
 
-    const pauseVisible = s.paused && !s.levelUpOpen;
+    const pauseVisible = s.paused && !s.levelUpOpen && !s.chestOpen;
     if (pauseVisible !== this.lastPauseShown) {
       this.lastPauseShown = pauseVisible;
       this.refreshPause();
@@ -228,7 +347,7 @@ export class UI extends Phaser.Scene {
 
   private refreshPause(): void {
     const s = this.run.getHudState();
-    const visible = s.paused && !s.levelUpOpen;
+    const visible = s.paused && !s.levelUpOpen && !s.chestOpen;
     this.pauseGroup.setVisible(visible);
     this.lastPauseShown = visible;
     if (!visible) return;
@@ -253,6 +372,10 @@ export class UI extends Phaser.Scene {
       addRow(def.name.toUpperCase(), p.level, C.mist);
     }
   }
+}
+
+function pickRollName(rewards: { name: string }[]): string {
+  return rewards[Math.floor(Math.random() * rewards.length)]?.name ?? "???";
 }
 
 function wrapText(text: string, maxChars: number): string[] {

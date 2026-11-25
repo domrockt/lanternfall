@@ -327,6 +327,30 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "...000...",
     ],
   },
+  arrow_chest: {
+    w: 9, h: 9,
+    rows: [
+      ".....0...",
+      "....0m0..",
+      "...0mm0..",
+      "..0mmm0..",
+      ".0mmmm0..",
+      "..0mmm0..",
+      "...0mm0..",
+      "....0m0..",
+      ".....0...",
+    ],
+  },
+  fx_coin: {
+    w: 5, h: 5,
+    rows: [
+      ".000.",
+      "0mmm0",
+      "0mcm0",
+      "0mmm0",
+      ".000.",
+    ],
+  },
   fx_spark: {
     w: 3, h: 3,
     rows: [".m.", "mmm", ".m."],
