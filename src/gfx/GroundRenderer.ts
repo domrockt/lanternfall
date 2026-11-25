@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
-import { tileHash, valueNoise, paintDecor, paintEdges, paintTile, type DecorKind, type TileKind } from "./tiles";
+import { paintDecor, paintTerrain, terrainKindAt, tileHash, type DecorKind, type TileKind } from "./tiles";
 
 interface ChunkEntry {
   image: Phaser.GameObjects.Image;
@@ -52,22 +52,11 @@ export class GroundRenderer {
 
   /** Terrain an einer Weltposition (für Wasser-Slow und Spritzer). */
   kindAt(worldX: number, worldY: number): TileKind {
-    return this.tileKind(Math.floor(worldX / TILE), Math.floor(worldY / TILE));
+    return terrainKindAt(worldX, worldY, this.seed, WORLD_SIZE);
   }
 
   private tileKind(tx: number, ty: number): TileKind {
-    const water = valueNoise(tx, ty, 11, this.seed + 3);
-    if (water < 0.18) return "water";
-    const mud = valueNoise(tx + 100, ty - 40, 7, this.seed + 5);
-    if (mud < 0.24) return "mud";
-
-    // gewundener Pfad durch die Weltmitte
-    const centerTile = (WORLD_SIZE / TILE) / 2;
-    const pathY = centerTile + Math.sin(tx * 0.055) * 18 + Math.sin(tx * 0.013) * 7;
-    if (Math.abs(ty - pathY) < 1.3) return "path";
-    const pathX = centerTile + Math.sin(ty * 0.05) * 14;
-    if (Math.abs(tx - pathX) < 0.9) return "path";
-    return "grass";
+    return terrainKindAt(tx * TILE + TILE / 2, ty * TILE + TILE / 2, this.seed, WORLD_SIZE);
   }
 
   private decorAt(tx: number, ty: number, kind: TileKind): DecorKind | null {
@@ -95,24 +84,16 @@ export class GroundRenderer {
     ctx.imageSmoothingEnabled = false;
     const startTx = cx * CHUNK_TILES;
     const startTy = cy * CHUNK_TILES;
+    // Pixelgenaues Terrain: keine 16-px-Kachelstufen an Wasser-/Wegraendern.
+    paintTerrain(ctx, cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE);
+    // Dekor bleibt an 16-px-Rasterzellen verankert (gruppiert in 2x2-Bloecken).
     for (let ly = 0; ly < CHUNK_TILES; ly++) {
       for (let lx = 0; lx < CHUNK_TILES; lx++) {
         const tx = startTx + lx;
         const ty = startTy + ly;
-        const px = lx * TILE;
-        const py = ly * TILE;
         const kind = this.tileKind(tx, ty);
-        paintTile(ctx, px, py, kind, tx, ty, this.seed);
-        if (kind !== "grass") {
-          paintEdges(ctx, px, py, kind, {
-            up: this.tileKind(tx, ty - 1),
-            down: this.tileKind(tx, ty + 1),
-            left: this.tileKind(tx - 1, ty),
-            right: this.tileKind(tx + 1, ty),
-          }, tx, ty, this.seed);
-        }
         const decor = this.decorAt(tx, ty, kind);
-        if (decor) paintDecor(ctx, px, py, decor, tx, ty, this.seed);
+        if (decor) paintDecor(ctx, lx * TILE, ly * TILE, decor, tx, ty, this.seed);
       }
     }
     texture.refresh();

@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { ENEMIES, PASSIVES, weaponDef } from "./data";
 import type { EnemyId, PassiveId, WeaponAnyId } from "./data/types";
 import { hasFlag } from "./logic/rng";
+import { TILE, WORLD_SIZE } from "./config";
+import { paintDecor, paintTerrain, terrainKindAt, type DecorKind, type TileKind } from "./gfx/tiles";
 import type { Run } from "./scenes/Run";
 
 /**
@@ -90,6 +92,51 @@ export function installDebugApi(game: Phaser.Game): void {
       run.pickLevelUp(i);
     },
     autoPlay: (value: boolean) => requireRun().setAutoPlay(value),
+
+    /** Tileset-Atlas: echte Terrain-Streifen (pixelgenau) + Dekor-Sampler als PNG. */
+    tileset: (): string => {
+      const cols = 5;
+      const cell = TILE;
+      const rows = 6;
+      const canvas = document.createElement("canvas");
+      canvas.width = cols * cell;
+      canvas.height = rows * cell;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("window.__lf.tileset: kein 2D-Kontext");
+      const seed = 21;
+      // Weltstellen je Art suchen (grosszuegiger Scan), dann 80x16-Streifen malen.
+      const findSpot = (kind: TileKind): { x: number; y: number } => {
+        for (let r = 0; r < 4000; r += 24) {
+          for (let a = 0; a < 16; a++) {
+            const x = Math.round(Math.cos(a * 0.3927) * r);
+            const y = Math.round(Math.sin(a * 0.3927) * r);
+            if (terrainKindAt(x, y, seed, WORLD_SIZE) === kind) return { x, y };
+          }
+        }
+        return { x: 0, y: 0 };
+      };
+      /** Streifen in ein Zwischencanvas malen und in die Atlas-Zeile kopieren. */
+      const strip = (x: number, y: number, w: number, h: number, row: number) => {
+        const tmp = document.createElement("canvas");
+        tmp.width = w;
+        tmp.height = h;
+        const tctx = tmp.getContext("2d");
+        if (!tctx) return;
+        paintTerrain(tctx, x, y, w, h, seed, WORLD_SIZE);
+        ctx.drawImage(tmp, 0, row * cell);
+      };
+      const kinds: TileKind[] = ["water", "path", "mud", "grass"];
+      kinds.forEach((k, i) => {
+        const spot = findSpot(k);
+        strip(spot.x - 32, spot.y - 8, cols * cell, cell, i);
+      });
+      // Dekor auf Gras: Baum, Grab, Stein, Ruine, Laterne (Reihe 4) + reines Gras (Reihe 5).
+      const grassSpot = findSpot("grass");
+      strip(grassSpot.x - 32, grassSpot.y - 8, cols * cell, 2 * cell, 4);
+      const decor: DecorKind[] = ["tree", "grave", "stone", "ruin", "post"];
+      decor.forEach((d, i) => paintDecor(ctx, i * cell, 4 * cell, d, i, 4, seed));
+      return canvas.toDataURL("image/png");
+    },
   };
 
   (window as unknown as { __lf: typeof api }).__lf = api;

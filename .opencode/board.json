@@ -706,10 +706,16 @@
       "id": 39,
       "title": "M4-05 Tileset 16x16 mit Autotiling, Dekor-Gruppen, Laternen als Lichtquellen",
       "description": "Moorgras-Varianten, Wege, Moorwasser mit Uferkanten, Steine, tote Baeume, Ruinen, Graeber, Laternenpfaehle; kein Pixelrauschen; Licht/Vignette bleibt.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T09:03:03Z",
+          "by": "build",
+          "text": "todo → doing: Pixel-Terrain neu: ruhige Grasflaechen, Weg heller, weiches Ufer, Dekor-Cluster."
+        }
+      ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T06:40:27Z"
+      "updated": "2026-11-25T09:03:03Z"
     },
     {
       "id": 40,
