@@ -193,7 +193,9 @@ def shade_edges(g: Grid, allow_highlight=True, band: int = 1, region_aware: bool
     for y in range(g.h):
         for x in range(g.w):
             c = g.px[y][x]
-            if c is None or c not in SHADE:
+            # 21 (Lantern) ist eine terminale 1-px-Lichtkante und darf nicht
+            # als Basis weiter zu 22 aufgehellt werden.
+            if c is None or c not in SHADE or c == 21:
                 continue
             sh, li = SHADE[c]
             own = (sh, c, li)
@@ -228,6 +230,63 @@ def shade_edges(g: Grid, allow_highlight=True, band: int = 1, region_aware: bool
                 out.px[y][x] = li
             elif shadow_side:
                 out.px[y][x] = sh
+
+    reduce_light_edges(g, out)
+    return out
+
+
+def reduce_light_edges(g: Grid, out: Grid | None = None) -> Grid:
+    """21 (Lantern) auf hoechstens 1 px Dicke reduzieren.
+
+    >=2 px dicke 21-Flaechen behalten nur ihr oberstes/linkes Pixel; echte
+    1-px-Linien bleiben vollstaendig. Die Entscheidung liest ausschliesslich
+    die unveraenderte Quellmaske `g`, damit keine Diagonalen oder gepunkteten
+    Kanten entstehen.
+    """
+    if out is None:
+        out = g.copy()
+    src = [[g.px[y][x] for x in range(g.w)] for y in range(g.h)]
+    seen = set()
+    for y in range(g.h):
+        for x in range(g.w):
+            if src[y][x] != 21 or (x, y) in seen:
+                continue
+            comp = []
+            stack = [(x, y)]
+            seen.add((x, y))
+            while stack:
+                a, b = stack.pop()
+                comp.append((a, b))
+                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    nx, ny = a + dx, b + dy
+                    if (0 <= nx < g.w and 0 <= ny < g.h
+                            and src[ny][nx] == 21 and (nx, ny) not in seen):
+                        seen.add((nx, ny))
+                        stack.append((nx, ny))
+            xs = [p[0] for p in comp]
+            ys = [p[1] for p in comp]
+            thick = (max(xs) - min(xs) + 1) > 1 and (max(ys) - min(ys) + 1) > 1
+            if not thick:
+                continue  # echte 1-px-Lichtlinie bleibt vollstaendig
+            keep = min(comp, key=lambda p: (p[1], p[0]))
+            for cx, cy in comp:
+                if (cx, cy) == keep:
+                    continue
+                # Ersatz aus der Originalrampe suchen (kein hartkodierter Hautton).
+                repl = None
+                for rad in (1, 2, 3):
+                    for oy in range(-rad, rad + 1):
+                        for ox in range(-rad, rad + 1):
+                            v = g.get(cx + ox, cy + oy)
+                            if v is not None and v != 21:
+                                repl = v
+                                break
+                        if repl is not None:
+                            break
+                    if repl is not None:
+                        break
+                if repl is not None:
+                    out.px[cy][cx] = repl
     return out
 
 

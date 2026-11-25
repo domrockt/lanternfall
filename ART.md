@@ -34,8 +34,10 @@ darf eine andere Farbe enthalten; Transparenz ist erlaubt.
 10. **Tier-Akzent:** bei Gegnern mindestens **2×1 px** pro Auge (besser 2×2), auf
     dunkler Augenhöhle (Index 2, nicht 0). Innen-Tinte (0) ist verboten; 0 nur
     außen als Kontur.
-11. **Haut/Stoff:** Haut-Rampe 9 · 11 · 12 (12 nur 1-px-Glanzkante). Hände und
-    Handschuhe 8 · 10 · 11. Kerzenweiß (12) ist kein Grundton für Stoff.
+11. **Haut/Stoff:** Menschliche Haut nutzt die warme Rampe **16 · 27 · 21**
+    (21 nur als isolierte 1-px-Lichtkante, nie als Fläche und nie zu 22
+    aufgehellt). Hände und Handschuhe 8 · 10 · 11. Kerzenweiß (12) ist kein
+    Grundton für Stoff; 9 · 11 · 12 bleibt blassen Nicht-Menschen vorbehalten.
 
 ## Rampen (Palettenindizes)
 
@@ -52,7 +54,8 @@ Jede Rampe ist `(Schatten, Basis, Licht[, Highlight])`.
 | Nacht-Tuch | 2 · 3 · 4 · 5 | Kael-Robe, Schattenstoffe |
 | Rot-Tuch | 23 · 24 · 25 · 27 | Mira-Tuch, Hexen, Blut |
 | Fleisch | 23 · 24 · 25 · 27 | Ghul, Koloss, Horror |
-| Haut (blass) | 9 · 11 · 12 | Gesichter, Hände |
+| Haut (warm) | 16 · 27 · 21 | Menschen: Mira, Kael, Kultist, Witchling, Coven |
+| Haut (blass) | 9 · 11 · 12 | Nicht-Menschen, Masken |
 | Geist | 6 · 8 · 9 · 13 | Irrlicht, Banshee, Wraith (13 nur Glow) |
 | Feuer | 15 · 17 · 18 · 20 | Glut, Flammen, Imp |
 | Gold/Messing | 16 · 17 · 20 · 22 | Laternen, Truhe, Münzen |
