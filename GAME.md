@@ -123,10 +123,11 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - Perf-Harness `scripts/perf.mjs`, Verifikation `scripts/verify.mjs` (Playwright, Screenshots `shots/m1-*.png`).
 
 **Messwerte (dieser Rechner, headless Chromium):**
-- `npm test`: **31 Tests grün** (RNG, Level-up-Regeln, XP, Wellen, Stats inkl. kumulativer Passive-Stufen, SpatialHash, Datentabellen, Sprite-Grids).
+- `npm test`: **35 Tests grün** (RNG, Level-up-Regeln, XP, Wellen, Stats inkl. kumulativer Passive-Stufen, SpatialHash, Datentabellen, Sprite-Grids).
 - `npm run perf` mit 500 Gegnern über 10 s: **60,1 FPS** (Ziel ≥ 55), 497 Gegner aktiv, 0 JS-Fehler.
 - `npm run verify`: 10x-Zeitskalierung, AutoPlay, **66,3 s Spielzeit** im Testfenster, Level 5, 36 Kills, Level-up/Pause/Results erreicht, 0 JS-Fehler. Simulation läuft in festen 1/20-s-Teilschritten (Tunnel-Kollisionen bei hoher Zeitskalierung deutlich reduziert; Streifschüsse bleiben möglich).
 - Sichtprüfung `shots/m1-*.png`: Palette, Schärfe und HUD lesbar; Platzhalter-Art bewusst einfach.
+- **Fix-Runde:** Separation deckungsgleicher Gegner nutzt eine deterministische UID-Richtung (goldener Winkel) statt (0,0) — `src/logic/separation.ts` + 4 Unit-Tests + `npm run sepcheck` (20 Gegner exakt übereinander, nach 2 s minDist 1,68 px, 0 Überlappungen). Pause-Build-Spalte „STUFE n“ ist rechtsbündig auf fester x-Position.
 
 **Bekannte Lücken / offene Punkte:**
 - Nur `ember` ist spielbar; die anderen 5 Waffen sind Daten + Schema für M2 (Angebote zeigen sie deshalb noch nicht an).

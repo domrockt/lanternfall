@@ -235,20 +235,22 @@ export class UI extends Phaser.Scene {
     for (const line of this.pauseLines) line.destroy();
     this.pauseLines = [];
     let y = 76;
+    const addRow = (name: string, level: number, color: number): void => {
+      const left = new PixelText(this, 104, y, name, color);
+      // Feste rechte Spalte, damit alle "STUFE n" bündig stehen.
+      const right = new PixelText(this, 376, y, `STUFE ${level}`, color, "right");
+      this.pauseGroup.add([left, right]);
+      this.pauseLines.push(left, right);
+      y += 13;
+    };
     for (const w of s.weapons) {
       const def = WEAPONS[w.id as keyof typeof WEAPONS];
-      const line = new PixelText(this, 116, y, `${def.name.toUpperCase()}  STUFE ${w.level}`, C.bone);
-      this.pauseGroup.add(line);
-      this.pauseLines.push(line);
-      y += 13;
+      addRow(def.name.toUpperCase(), w.level, C.bone);
     }
     y += 6;
     for (const p of s.passives) {
       const def = PASSIVES[p.id as keyof typeof PASSIVES];
-      const line = new PixelText(this, 116, y, `${def.name.toUpperCase()}  STUFE ${p.level}`, C.mist);
-      this.pauseGroup.add(line);
-      this.pauseLines.push(line);
-      y += 13;
+      addRow(def.name.toUpperCase(), p.level, C.mist);
     }
   }
 }

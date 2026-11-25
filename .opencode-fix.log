@@ -1,0 +1,381 @@
+[0m
+> build · deepseek-v4.1-flash
+[0m→ [0mRead src/scenes/Run.ts [90m[offset=330, limit=50][0m
+[0m$ [0msed -n '220,270p' src/scenes/UI.ts
+private pick(index: number): void {
+    try {
+      this.run.pickLevelUp(index);
+    } catch (err) {
+      console.warn("[Lanternfall] pickLevelUp:", err);
+    }
+  }
+
+  private refreshPause(): void {
+    const s = this.run.getHudState();
+    const visible = s.paused && !s.levelUpOpen;
+    this.pauseGroup.setVisible(visible);
+    this.lastPauseShown = visible;
+    if (!visible) return;
+    for (const line of this.pauseLines) line.destroy();
+    this.pauseLines = [];
+    let y = 76;
+    for (const w of s.weapons) {
+      const def = WEAPONS[w.id as keyof typeof WEAPONS];
+      const line = new PixelText(this, 116, y, `${def.name.toUpperCase()}  STUFE ${w.level}`, C.bone);
+      this.pauseGroup.add(line);
+      this.pauseLines.push(line);
+      y += 13;
+    }
+    y += 6;
+    for (const p of s.passives) {
+      const def = PASSIVES[p.id as keyof typeof PASSIVES];
+      const line = new PixelText(this, 116, y, `${def.name.toUpperCase()}  STUFE ${p.level}`, C.mist);
+      this.pauseGroup.add(line);
+      this.pauseLines.push(line);
+      y += 13;
+    }
+  }
+}
+
+function wrapText(text: string, maxChars: number): string[] {
+  const words = text.split(" ");
+  const lines: string[] = [];
+  let current = "";
+  for (const word of words) {
+    if ((current + " " + word).trim().length > maxChars && current.length > 0) {
+      lines.push(current.trim());
+      current = word;
+    } else {
+      current = (current + " " + word).trim();
+    }
+  }
+  if (current) lines.push(current);
+  return lines.slice(0, 3);
+}
+> build · deepseek-v4.1-flash
+[0m$ [0msed -n '1,60p' src/gfx/font.ts | head -70; grep -n "type TextAlign\|align" src/gfx/font.ts | head
+import Phaser from "phaser";
+import { PAL } from "../palette";
+
+/** 5x7-Pixel-Bitmap-Font. `1` = Pixel, `0` = transparent. */
+const GLYPHS: Record<string, string[]> = {
+  " ": ["00000", "00000", "00000", "00000", "00000", "00000", "00000"],
+  A: ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+  B: ["11110", "10001", "10001", "11110", "10001", "10001", "11110"],
+  C: ["01110", "10001", "10000", "10000", "10000", "10001", "01110"],
+  D: ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
+  E: ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
+  F: ["11111", "10000", "10000", "11110", "10000", "10000", "10000"],
+  G: ["01110", "10001", "10000", "10111", "10001", "10001", "01110"],
+  H: ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
+  I: ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
+  J: ["00111", "00010", "00010", "00010", "00010", "10010", "01100"],
+  K: ["10001", "10010", "10100", "11000", "10100", "10010", "10001"],
+  L: ["10000", "10000", "10000", "10000", "10000", "10000", "11111"],
+  M: ["10001", "11011", "10101", "10101", "10001", "10001", "10001"],
+  N: ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
+  O: ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
+  P: ["11110", "10001", "10001", "11110", "10000", "10000", "10000"],
+  Q: ["01110", "10001", "10001", "10001", "10101", "10010", "01101"],
+  R: ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+  S: ["01111", "10000", "10000", "01110", "00001", "00001", "11110"],
+  T: ["11111", "00100", "00100", "00100", "00100", "00100", "00100"],
+  U: ["10001", "10001", "10001", "10001", "10001", "10001", "01110"],
+  V: ["10001", "10001", "10001", "10001", "10001", "01010", "00100"],
+  W: ["10001", "10001", "10001", "10101", "10101", "11011", "10001"],
+  X: ["10001", "10001", "01010", "00100", "01010", "10001", "10001"],
+  Y: ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
+  Z: ["11111", "00001", "00010", "00100", "01000", "10000", "11111"],
+  "0": ["01110", "10001", "10011", "10101", "11001", "10001", "01110"],
+  "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+  "2": ["01110", "10001", "00001", "00010", "00100", "01000", "11111"],
+  "3": ["11111", "00010", "00100", "00010", "00001", "10001", "01110"],
+  "4": ["00010", "00110", "01010", "10010", "11111", "00010", "00010"],
+  "5": ["11111", "10000", "11110", "00001", "00001", "10001", "01110"],
+  "6": ["00110", "01000", "10000", "11110", "10001", "10001", "01110"],
+  "7": ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
+  "8": ["01110", "10001", "10001", "01110", "10001", "10001", "01110"],
+  "9": ["01110", "10001", "10001", "01111", "00001", "00010", "01100"],
+  ":": ["00000", "00100", "00100", "00000", "00100", "00100", "00000"],
+  ".": ["00000", "00000", "00000", "00000", "00000", "00110", "00110"],
+  ",": ["00000", "00000", "00000", "00000", "00110", "00100", "01000"],
+  "/": ["00001", "00010", "00010", "00100", "01000", "01000", "10000"],
+  "%": ["11001", "11010", "00100", "01000", "10110", "00110", "00000"],
+  "+": ["00000", "00100", "00100", "11111", "00100", "00100", "00000"],
+  "-": ["00000", "00000", "00000", "11111", "00000", "00000", "00000"],
+  "=": ["00000", "11111", "00000", "11111", "00000", "00000", "00000"],
+  "&": ["01100", "10010", "01100", "10101", "10010", "01101", "00000"],
+  "[": ["01110", "01000", "01000", "01000", "01000", "01000", "01110"],
+  "]": ["01110", "00010", "00010", "00010", "00010", "00010", "01110"],
+  "!": ["00100", "00100", "00100", "00100", "00100", "00000", "00100"],
+  "?": ["01110", "10001", "00001", "00010", "00100", "00000", "00100"],
+  "(": ["00010", "00100", "01000", "01000", "01000", "00100", "00010"],
+  ")": ["01000", "00100", "00010", "00010", "00010", "00100", "01000"],
+  "'": ["00100", "00100", "00000", "00000", "00000", "00000", "00000"],
+  "*": ["00000", "10101", "01110", "11111", "01110", "10101", "00000"],
+};
+91:export type TextAlign = "left" | "center" | "right";
+101:  private align: TextAlign = "left";
+109:    align: TextAlign = "left",
+113:    this.align = align;
+126:    this.align = a;
+157:    if (this.align === "center") offset = -Math.floor(width / 2);
+158:    else if (this.align === "right") offset = -width;
+> build · deepseek-v4.1-flash
+[0m← [0mWrite src/logic/separation.ts
+Created file successfully: src/logic/separation.ts
+> build · deepseek-v4.1-flash
+[0m← [0mEdit src/scenes/Run.ts
+Index: src/scenes/Run.ts
+===================================================================
+--- src/scenes/Run.ts
++++ src/scenes/Run.ts
+@@ -8,8 +8,9 @@
+   GAME_HEIGHT, GAME_WIDTH, PLAYER_BASE_PICKUP_RADIUS, PLAYER_INVULN,
+   RUN_LENGTH, SIM_MAX_STEP, WORLD_SIZE,
+ } from "../config";
+ import { SeededRng } from "../logic/rng";
++import { directionToPlayer, separationPush } from "../logic/separation";
+ import {
+   aggregateMods, effectiveMoveSpeed, effectivePickupRadius,
+   type AggregateStats,
+ } from "../logic/stats";
+
+[0m← [0mEdit src/scenes/Run.ts
+Index: src/scenes/Run.ts
+===================================================================
+--- src/scenes/Run.ts
++++ src/scenes/Run.ts
+@@ -338,11 +338,11 @@
+     for (const e of this.enemies.active) {
+       if (!e.alive) continue;
+       const dx = px - e.x;
+       const dy = py - e.y;
+-      const dist = Math.hypot(dx, dy) || 1;
+-      const dirx = dx / dist;
+-      const diry = dy / dist;
++      const dir = directionToPlayer(dx, dy, e.uid);
++      const dirx = dir.x;
++      const diry = dir.y;
+       const wobble = e.def.archetype === "swarm" ? 0.45 : 0.1;
+       const wob = Math.sin(this.elapsed * 2.4 + e.phase) * wobble;
+       let mx = dirx - diry * wob;
+       let my = diry + dirx * wob;
+
+[0m← [0mEdit src/scenes/Run.ts
+Index: src/scenes/Run.ts
+===================================================================
+--- src/scenes/Run.ts
++++ src/scenes/Run.ts
+@@ -352,17 +352,12 @@
+       let sy = 0;
+       this.hash.queryCircle(e.x, e.y, e.radius + 10, this.scratch);
+       for (const n of this.scratch) {
+         if (n === e || !n.alive) continue;
+-        const ndx = e.x - n.x;
+-        const ndy = e.y - n.y;
+-        const d2 = ndx * ndx + ndy * ndy;
+-        const minDist = e.radius + n.radius;
+-        if (d2 > 0.0001 && d2 < minDist * minDist) {
+-          const d = Math.sqrt(d2);
+-          const push = (minDist - d) / minDist;
+-          sx += (ndx / d) * push;
+-          sy += (ndy / d) * push;
++        const push = separationPush(e.x, e.y, e.radius, n.x, n.y, n.radius, e.uid);
++        if (push) {
++          sx += push.x;
++          sy += push.y;
+         }
+       }
+ 
+       const decay = Math.max(0, 1 - 7 * dt);
+
+> build · deepseek-v4.1-flash
+[0m← [0mEdit src/scenes/UI.ts
+Index: src/scenes/UI.ts
+===================================================================
+--- src/scenes/UI.ts
++++ src/scenes/UI.ts
+@@ -234,22 +234,24 @@
+     if (!visible) return;
+     for (const line of this.pauseLines) line.destroy();
+     this.pauseLines = [];
+     let y = 76;
++    const addRow = (name: string, level: number, color: number): void => {
++      const left = new PixelText(this, 104, y, name, color);
++      // Feste rechte Spalte, damit alle "STUFE n" bündig stehen.
++      const right = new PixelText(this, 376, y, `STUFE ${level}`, color, "right");
++      this.pauseGroup.add([left, right]);
++      this.pauseLines.push(left, right);
++      y += 13;
++    };
+     for (const w of s.weapons) {
+       const def = WEAPONS[w.id as keyof typeof WEAPONS];
+-      const line = new PixelText(this, 116, y, `${def.name.toUpperCase()}  STUFE ${w.level}`, C.bone);
+-      this.pauseGroup.add(line);
+-      this.pauseLines.push(line);
+-      y += 13;
++      addRow(def.name.toUpperCase(), w.level, C.bone);
+     }
+     y += 6;
+     for (const p of s.passives) {
+       const def = PASSIVES[p.id as keyof typeof PASSIVES];
+-      const line = new PixelText(this, 116, y, `${def.name.toUpperCase()}  STUFE ${p.level}`, C.mist);
+-      this.pauseGroup.add(line);
+-      this.pauseLines.push(line);
+-      y += 13;
++      addRow(def.name.toUpperCase(), p.level, C.mist);
+     }
+   }
+ }
+ 
+
+> build · deepseek-v4.1-flash
+[0m← [0mEdit tests/logic.test.ts
+Index: tests/logic.test.ts
+===================================================================
+--- tests/logic.test.ts
++++ tests/logic.test.ts
+@@ -8,8 +8,9 @@
+ import { SpatialHash } from "../src/systems/SpatialHash";
+ import { WEAPONS } from "../src/data/weapons";
+ import { PASSIVES } from "../src/data/passives";
+ import { CHARACTERS } from "../src/data/characters";
++import { directionToPlayer, fallbackDir, separationPush } from "../src/logic/separation";
+ 
+ const w = (id: string, level: number): OwnedItem => ({ id, level });
+ const p = (id: string, level: number): OwnedItem => ({ id, level });
+ 
+
+[0m← [0mEdit tests/logic.test.ts
+Index: tests/logic.test.ts
+===================================================================
+--- tests/logic.test.ts
++++ tests/logic.test.ts
+@@ -177,8 +177,33 @@
+     expect(timeScaleClamped(NaN)).toBe(1);
+   });
+ });
+ 
++describe("Separation", () => {
++  it("deckungsgleiche Gegner bekommen einen Push ungleich (0,0)", () => {
++    const push = separationPush(100, 100, 6, 100, 100, 6, 7);
++    expect(push).not.toBeNull();
++    expect(Math.hypot(push!.x, push!.y)).toBeGreaterThan(0.5);
++  });
++  it("verschiedene uids ergeben verschiedene Fallback-Richtungen", () => {
++    const a = fallbackDir(1);
++    const b = fallbackDir(2);
++    expect(a.x !== b.x || a.y !== b.y).toBe(true);
++    expect(Math.hypot(a.x, a.y)).toBeCloseTo(1, 6);
++    expect(Math.hypot(b.x, b.y)).toBeCloseTo(1, 6);
++  });
++  it("kein Push, wenn Gegner weit genug entfernt sind", () => {
++    expect(separationPush(0, 0, 6, 50, 50, 6, 1)).toBeNull();
++  });
++  it("exakt auf dem Spieler: Richtung kommt aus der uid", () => {
++    const dir = directionToPlayer(0, 0, 9);
++    expect(Math.hypot(dir.x, dir.y)).toBeCloseTo(1, 6);
++    const normal = directionToPlayer(3, 4, 9);
++    expect(normal.x).toBeCloseTo(0.6, 6);
++    expect(normal.y).toBeCloseTo(0.8, 6);
++  });
++});
++
+ describe("SpatialHash", () => {
+   it("findet Nachbarn über Zellgrenzen", () => {
+     const hash = new SpatialHash<{ x: number; y: number }>(32);
+     const items = [{ x: 10, y: 10 }, { x: 31, y: 31 }, { x: 200, y: 200 }];
+
+> build · deepseek-v4.1-flash
+[0m← [0mWrite scripts/separation-check.mjs
+Created file successfully: scripts/separation-check.mjs
+[0m← [0mEdit package.json
+Index: package.json
+===================================================================
+--- package.json
++++ package.json
+@@ -1,1 +1,1 @@
+-{"name":"lanternfall","private":true,"type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"tsc --noEmit && vite build --base ./","test":"vitest run","perf":"node scripts/perf.mjs","verify":"node scripts/verify.mjs"},"dependencies":{"phaser":"^3.90.0"},"devDependencies":{"typescript":"^7.0.2","vite":"^8.3.8","vitest":"^5.1.1"}}
+\ No newline at end of file
++{"name":"lanternfall","private":true,"type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"tsc --noEmit && vite build --base ./","test":"vitest run","perf":"node scripts/perf.mjs","verify":"node scripts/verify.mjs","sepcheck":"node scripts/separation-check.mjs"},"dependencies":{"phaser":"^3.90.0"},"devDependencies":{"typescript":"^7.0.2","vite":"^8.3.8","vitest":"^5.1.1"}}
+\ No newline at end of file
+
+> build · deepseek-v4.1-flash
+[0m$ [0mnpm run build > /tmp/build.log 2>&1; echo "build $?"; npm test 2>&1 | tail -6; node scripts/separation-check.mjs 2>&1 | tail -20
+build 0
+
+ Test Files  2 passed (2)
+      Tests  35 passed (35)
+   Start at  00:31:53
+   Duration  150ms (transform 46%, import 26%, tests 22%, worker 5%)
+
+{
+  "alive": 18,
+  "pairs": 153,
+  "overlapping": 0,
+  "minDist": 1.68,
+  "jsErrors": [],
+  "passed": true
+}
+> build · deepseek-v4.1-flash
+Also check pause screenshot for alignment. verify produces m1-pause.png. Run both.
+[0m$ [0mnode scripts/perf.mjs > /tmp/perf.json 2>&1; echo "perf $?"; grep -E 'fps|enemies|worst|passed' /tmp/perf.json; node scripts/verify.mjs > /tmp/verify.json 2>&1; echo "verify $?"; sed -n '1,13p' /tmp/verify.json
+perf 0
+  "fps": 60,
+  "worstFrameMs": 16.8,
+  "enemies": 497,
+  "passed": true
+verify 0
+{
+  "passed": true,
+  "checks": {
+    "noJsErrors": true,
+    "levelAboveOne": true,
+    "killsAboveZero": true,
+    "timerRuns": true,
+    "gameTimeAtLeast55": true,
+    "levelUpDialogOpened": true,
+    "pauseOpened": true,
+    "resultsReached": true,
+    "gameTimeAtLeast": 66.1
+  },
+> build · deepseek-v4.1-flash
+[0m→ [0mRead shots/m1-pause.png 
+> build · deepseek-v4.1-flash
+[0m← [0mEdit GAME.md
+Index: GAME.md
+===================================================================
+--- GAME.md
++++ GAME.md
+@@ -122,9 +122,9 @@
+ - Palette: 32 eigene Nacht-/Licht-Farben in `src/palette.ts`, dokumentiert. Alle sichtbaren Pixel/Textfarben daraus, Bitmap-Font (5x7) selbst erzeugt.
+ - Perf-Harness `scripts/perf.mjs`, Verifikation `scripts/verify.mjs` (Playwright, Screenshots `shots/m1-*.png`).
+ 
+ **Messwerte (dieser Rechner, headless Chromium):**
+-- `npm test`: **31 Tests grün** (RNG, Level-up-Regeln, XP, Wellen, Stats inkl. kumulativer Passive-Stufen, SpatialHash, Datentabellen, Sprite-Grids).
++- `npm test`: **35 Tests grün** (RNG, Level-up-Regeln, XP, Wellen, Stats inkl. kumulativer Passive-Stufen, SpatialHash, Datentabellen, Sprite-Grids).
+ - `npm run perf` mit 500 Gegnern über 10 s: **60,1 FPS** (Ziel ≥ 55), 497 Gegner aktiv, 0 JS-Fehler.
+ - `npm run verify`: 10x-Zeitskalierung, AutoPlay, **66,3 s Spielzeit** im Testfenster, Level 5, 36 Kills, Level-up/Pause/Results erreicht, 0 JS-Fehler. Simulation läuft in festen 1/20-s-Teilschritten (Tunnel-Kollisionen bei hoher Zeitskalierung deutlich reduziert; Streifschüsse bleiben möglich).
+ - Sichtprüfung `shots/m1-*.png`: Palette, Schärfe und HUD lesbar; Platzhalter-Art bewusst einfach.
+ 
+
+[0m← [0mEdit GAME.md
+Index: GAME.md
+===================================================================
+--- GAME.md
++++ GAME.md
+@@ -126,8 +126,9 @@
+ - `npm test`: **35 Tests grün** (RNG, Level-up-Regeln, XP, Wellen, Stats inkl. kumulativer Passive-Stufen, SpatialHash, Datentabellen, Sprite-Grids).
+ - `npm run perf` mit 500 Gegnern über 10 s: **60,1 FPS** (Ziel ≥ 55), 497 Gegner aktiv, 0 JS-Fehler.
+ - `npm run verify`: 10x-Zeitskalierung, AutoPlay, **66,3 s Spielzeit** im Testfenster, Level 5, 36 Kills, Level-up/Pause/Results erreicht, 0 JS-Fehler. Simulation läuft in festen 1/20-s-Teilschritten (Tunnel-Kollisionen bei hoher Zeitskalierung deutlich reduziert; Streifschüsse bleiben möglich).
+ - Sichtprüfung `shots/m1-*.png`: Palette, Schärfe und HUD lesbar; Platzhalter-Art bewusst einfach.
++- **Fix-Runde:** Separation deckungsgleicher Gegner nutzt eine deterministische UID-Richtung (goldener Winkel) statt (0,0) — `src/logic/separation.ts` + 4 Unit-Tests + `npm run sepcheck` (20 Gegner exakt übereinander, nach 2 s minDist 1,68 px, 0 Überlappungen). Pause-Build-Spalte „STUFE n“ ist rechtsbündig auf fester x-Position.
+ 
+ **Bekannte Lücken / offene Punkte:**
+ - Nur `ember` ist spielbar; die anderen 5 Waffen sind Daten + Schema für M2 (Angebote zeigen sie deshalb noch nicht an).
+ - Nur 3 der 30 Gegner sind gespielt; nicht-implementierte Wellen-Einträge fallen in M1 auf bog_rat/wisp/bogzombie zurück.
+
+> build · deepseek-v4.1-flash
+[0m⚙ [0mexecute {"code":"const r = await tools.board_add({\n  cards: [{\n    title: \"M1-Fix: Separation bei Deckung + Pause-Spalte bündig\",\n    description: \"Deterministischer UID-Fallback (goldener Winkel) in src/logic/separation.ts, 4 Unit-Tests, scripts/separation-check.mjs (minDist 1,68 px, 0 Overlaps). Pause zeigt STUFE rechtsbündig. build/test/perf/verify grün.\",\n    column: \"done\",\n    assignee: \"coder\",\n  }],\n});\nreturn r;\n"} 
+> build · deepseek-v4.1-flash

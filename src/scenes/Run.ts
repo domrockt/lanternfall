@@ -9,6 +9,7 @@ import {
   RUN_LENGTH, SIM_MAX_STEP, WORLD_SIZE,
 } from "../config";
 import { SeededRng } from "../logic/rng";
+import { directionToPlayer, separationPush } from "../logic/separation";
 import {
   aggregateMods, effectiveMoveSpeed, effectivePickupRadius,
   type AggregateStats,
@@ -338,9 +339,9 @@ export class Run extends Phaser.Scene {
       if (!e.alive) continue;
       const dx = px - e.x;
       const dy = py - e.y;
-      const dist = Math.hypot(dx, dy) || 1;
-      const dirx = dx / dist;
-      const diry = dy / dist;
+      const dir = directionToPlayer(dx, dy, e.uid);
+      const dirx = dir.x;
+      const diry = dir.y;
       const wobble = e.def.archetype === "swarm" ? 0.45 : 0.1;
       const wob = Math.sin(this.elapsed * 2.4 + e.phase) * wobble;
       let mx = dirx - diry * wob;
@@ -352,15 +353,10 @@ export class Run extends Phaser.Scene {
       this.hash.queryCircle(e.x, e.y, e.radius + 10, this.scratch);
       for (const n of this.scratch) {
         if (n === e || !n.alive) continue;
-        const ndx = e.x - n.x;
-        const ndy = e.y - n.y;
-        const d2 = ndx * ndx + ndy * ndy;
-        const minDist = e.radius + n.radius;
-        if (d2 > 0.0001 && d2 < minDist * minDist) {
-          const d = Math.sqrt(d2);
-          const push = (minDist - d) / minDist;
-          sx += (ndx / d) * push;
-          sy += (ndy / d) * push;
+        const push = separationPush(e.x, e.y, e.radius, n.x, n.y, n.radius, e.uid);
+        if (push) {
+          sx += push.x;
+          sy += push.y;
         }
       }
 

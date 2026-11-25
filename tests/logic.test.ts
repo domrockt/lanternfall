@@ -9,6 +9,7 @@ import { SpatialHash } from "../src/systems/SpatialHash";
 import { WEAPONS } from "../src/data/weapons";
 import { PASSIVES } from "../src/data/passives";
 import { CHARACTERS } from "../src/data/characters";
+import { directionToPlayer, fallbackDir, separationPush } from "../src/logic/separation";
 
 const w = (id: string, level: number): OwnedItem => ({ id, level });
 const p = (id: string, level: number): OwnedItem => ({ id, level });
@@ -174,6 +175,31 @@ describe("Kampf-Helfer", () => {
     expect(timeScaleClamped(0)).toBe(1);
     expect(timeScaleClamped(999)).toBe(60);
     expect(timeScaleClamped(NaN)).toBe(1);
+  });
+});
+
+describe("Separation", () => {
+  it("deckungsgleiche Gegner bekommen einen Push ungleich (0,0)", () => {
+    const push = separationPush(100, 100, 6, 100, 100, 6, 7);
+    expect(push).not.toBeNull();
+    expect(Math.hypot(push!.x, push!.y)).toBeGreaterThan(0.5);
+  });
+  it("verschiedene uids ergeben verschiedene Fallback-Richtungen", () => {
+    const a = fallbackDir(1);
+    const b = fallbackDir(2);
+    expect(a.x !== b.x || a.y !== b.y).toBe(true);
+    expect(Math.hypot(a.x, a.y)).toBeCloseTo(1, 6);
+    expect(Math.hypot(b.x, b.y)).toBeCloseTo(1, 6);
+  });
+  it("kein Push, wenn Gegner weit genug entfernt sind", () => {
+    expect(separationPush(0, 0, 6, 50, 50, 6, 1)).toBeNull();
+  });
+  it("exakt auf dem Spieler: Richtung kommt aus der uid", () => {
+    const dir = directionToPlayer(0, 0, 9);
+    expect(Math.hypot(dir.x, dir.y)).toBeCloseTo(1, 6);
+    const normal = directionToPlayer(3, 4, 9);
+    expect(normal.x).toBeCloseTo(0.6, 6);
+    expect(normal.y).toBeCloseTo(0.8, 6);
   });
 });
 

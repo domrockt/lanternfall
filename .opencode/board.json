@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 17,
+  "next": 18,
   "cards": [
     {
       "id": 1,
@@ -226,6 +226,16 @@
       "notes": [],
       "created": "2026-11-25T00:24:40Z",
       "updated": "2026-11-25T00:24:40Z"
+    },
+    {
+      "id": 17,
+      "title": "M1-Fix: Separation bei Deckung + Pause-Spalte bündig",
+      "description": "Deterministischer UID-Fallback (goldener Winkel) in src/logic/separation.ts, 4 Unit-Tests, scripts/separation-check.mjs (minDist 1,68 px, 0 Overlaps). Pause zeigt STUFE rechtsbündig. build/test/perf/verify grün.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T00:32:28Z",
+      "updated": "2026-11-25T00:32:28Z"
     }
   ]
 }
