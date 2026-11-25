@@ -154,3 +154,22 @@ describe("Optionen-Persistenz", () => {
     expect(setOption(DEFAULT_OPTIONS, "sfx", 7).sfx).toBe(1);
   });
 });
+
+import { deathClassFor, deathFxFor, type DeathClass } from "../src/logic/death";
+import { ENEMIES } from "../src/data/enemies";
+
+describe("Tod-Effekt-Klassen", () => {
+  it("alle 10 Archetypen sind zugeordnet", () => {
+    const archetypes = new Set(Object.values(ENEMIES).map((e) => e.archetype));
+    for (const a of archetypes) expect(["crumble", "burst", "dissolve", "sputter"]).toContain(deathClassFor(a));
+  });
+  it("mindestens 4 visuell unterscheidbare Klassen kommen vor", () => {
+    const classes = new Set<DeathClass>(Object.values(ENEMIES).map((e) => deathClassFor(e.archetype)));
+    expect(classes.size).toBe(4);
+  });
+  it("jede Klasse hat eigene Shard-Textur; Boss mehr Partikel", () => {
+    const keys = new Set(["crumble", "burst", "dissolve", "sputter"].map((c) => deathFxFor(c as DeathClass).shard));
+    expect(keys.size).toBe(4);
+    expect(deathFxFor("crumble", true).count).toBeGreaterThan(deathFxFor("crumble").count);
+  });
+});

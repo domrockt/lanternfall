@@ -942,10 +942,16 @@
       "id": 50,
       "title": "M5-03 Treffer-Feedback",
       "description": "Hit-Flash, Rückstoß nach Masse, Damage-Numbers (Pool, Krit, Summen), Tod-Effekte 4 Klassen, Screen-Shake-Dosierung, Hit-Stop Bosse. Tests. Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T19:55:35Z",
+          "by": "build",
+          "text": "todo → doing: DamageNumbers, Tod-Klassen, Masse-Knockback, Shake/Hit-Stop integriert"
+        }
+      ],
       "created": "2026-11-25T19:46:37Z",
-      "updated": "2026-11-25T19:46:37Z"
+      "updated": "2026-11-25T19:55:35Z"
     },
     {
       "id": 51,

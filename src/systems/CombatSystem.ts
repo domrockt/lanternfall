@@ -12,6 +12,11 @@ import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { fxFrames } from "../gfx/gen-fx";
 import { DEPTH } from "../gfx/depth";
+import { DamageNumberSystem } from "./DamageNumbers";
+import { deathClassFor, deathFxFor } from "../logic/death";
+import { knockbackFor } from "../logic/feedback";
+import { rollCrit, critDamage } from "../logic/damage-numbers";
+import { lodFor, type LodState } from "../logic/lod";
 import { ProjectilePool } from "./ProjectilePool";
 import type { SpatialHash } from "./SpatialHash";
 import type { OwnedWeapon } from "./LevelUpSystem";
@@ -85,6 +90,8 @@ export class CombatSystem {
   readonly fx: FxSystem;
   /** Eigener Partikel-Pool (Funken/Splitter/Staub), nicht der Effekt-Cap. */
   readonly particles: ParticleSystem;
+  readonly damageNumbers: DamageNumberSystem;
+  private lod: LodState = lodFor(0);
   /** Von Seelenleuchtfeuer aktivierter Magnet-Bonus in px (0 = aus). */
   pickupBonus = 0;
   private readonly scene: Phaser.Scene;
@@ -98,6 +105,15 @@ export class CombatSystem {
     this.projectiles = new ProjectilePool(scene);
     this.fx = new FxSystem(scene);
     this.particles = new ParticleSystem(scene);
+    this.damageNumbers = new DamageNumberSystem(scene);
+  }
+
+  setLod(lod: LodState): void {
+    this.lod = lod;
+    this.fx.setMaxActive(lod.fxCap);
+    this.particles.setMaxActive(lod.particleCap);
+    this.fx.trailsEnabled = lod.trails;
+    this.damageNumbers.setLod(lod);
   }
 
   update(ctx: CombatContext): void {
@@ -110,6 +126,7 @@ export class CombatSystem {
     this.updateBurns(ctx);
     this.fx.update(ctx.dt);
     this.particles.update(ctx.dt);
+    this.damageNumbers.update(ctx.dt, this.scene.cameras.main);
   }
 
   private stateFor(id: string): WeaponState {
@@ -341,7 +358,8 @@ export class CombatSystem {
           if (Math.hypot(dx, dy) > s.radius + e.radius) continue;
           if (angleDiff(Math.atan2(dy, dx), s.baseAngle) > s.halfArc) continue;
           s.hit.add(e.uid);
-          const kb = knockbackVector(ctx.playerX, ctx.playerY, e.x, e.y, s.knockback);
+          const mass = Math.max(0.6, Math.min(2.5, e.maxHp / 60));
+          const kb = knockbackVector(ctx.playerX, ctx.playerY, e.x, e.y, knockbackFor(s.knockback, mass));
           e.vx += kb.vx;
           e.vy += kb.vy;
           const killed = this.hitEnemy(e, s.damage, ctx, s.weaponId);
@@ -765,7 +783,8 @@ export class CombatSystem {
         if (!e.alive || e.hp <= 0 || p.hit.has(e.uid)) continue;
         if ((e.x - p.x) ** 2 + (e.y - p.y) ** 2 > (e.radius + p.radius) ** 2) continue;
         p.hit.add(e.uid);
-        const kb = knockbackVector(p.x, p.y, e.x, e.y, p.knockback);
+        const mass = Math.max(0.6, Math.min(2.5, e.maxHp / 60));
+        const kb = knockbackVector(p.x, p.y, e.x, e.y, knockbackFor(p.knockback, mass));
         e.vx += kb.vx;
         e.vy += kb.vy;
         const killed = this.hitEnemy(e, p.damage, ctx, p.weaponId);
@@ -806,18 +825,42 @@ export class CombatSystem {
 
   private hitEnemy(e: EnemyRuntime, damage: number, ctx: CombatContext, weaponId: string): boolean {
     const wasAlive = e.hp > 0;
-    e.hp -= damage;
+    const crit = rollCrit(ctx.rng.next());
+    const finalDamage = crit ? critDamage(damage) : damage;
+    e.hp -= finalDamage;
     e.flash = 0.12;
+    // Crit ab 15 Schaden als eigene Feedback-Klasse sichtbar (weißer Blitz über Weiß-Kern).
+    this.damageNumbers.report(e.uid, e.x, e.y, finalDamage, crit);
     const killed = wasAlive && e.hp <= 0;
-    ctx.onHit(e, damage, weaponId, killed);
-    this.fx.burst("fx_spark", e.x, e.y, 2, { life: 0.14, tint: PAL[C.emberOrange], scaleTo: 0.12, alphaFrom: 0.7 });
+    ctx.onHit(e, finalDamage, weaponId, killed);
+    this.particles.burst("fx_star", e.x, e.y, crit ? 5 : 2, {
+      life: 0.16, tint: crit ? PAL[C.lanternWhite] : PAL[C.emberOrange],
+      scaleTo: 0.12, alphaFrom: 0.9, additive: true,
+    });
     return killed;
   }
 
   private killsFx(e: EnemyRuntime): void {
     const tint = PAL[e.def.color] ?? PAL[C.flame];
-    const count = e.boss ? 26 : e.elite ? 14 : 5;
-    this.fx.burst("fx_spark", e.x, e.y, count, { life: e.boss ? 0.5 : 0.26, tint, scaleTo: 0.15, alphaFrom: 0.85 });
+    const cls = deathClassFor(e.def.archetype);
+    const spec = deathFxFor(cls, e.boss);
+    const count = e.boss ? spec.count : e.elite ? Math.round(spec.count * 1.4) : spec.count;
+    // Vier klar unterscheidbare Tod-Klassen: zerfallen / platzen / verpuffen / stieben.
+    this.particles.shards(spec.shard, e.x, e.y, count, {
+      life: e.boss ? 0.75 : 0.42,
+      scaleFrom: e.boss ? 2.2 : e.elite ? 1.4 : 1,
+      additive: spec.additive, tint,
+    });
+    this.particles.shards(spec.dust, e.x, e.y, Math.max(3, Math.round(count / 2)), {
+      life: 0.5, scaleFrom: e.boss ? 1.8 : 1, additive: false, tint,
+      scaleTo: 0.2,
+    });
+    if (cls === "dissolve" || e.boss) {
+      this.fx.spawnAnim("fx_halo", e.x, e.y, {
+        life: 0.4, scaleFrom: 0.5, scaleTo: e.boss ? 2.4 : 1.1,
+        alphaFrom: 0.8, alphaTo: 0, additive: true, tint,
+      });
+    }
   }
 
   // ── Brandflächen (Evolution) ─────────────────────────────────

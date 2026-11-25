@@ -6875,3 +6875,305 @@ Test Files  6 passed (6)
 > build · deepseek-v4.1-flash
 [0m⚙ [0mexecute {"code":"await tools.board_move({id:49, column:\"doing\", note:\"12 Waffen-VFX mit Frame-Animationen umgesetzt\"});\nawait tools.board_move({id:49, column:\"review\", note:\"Ember/Frost/Storm/Flail/Phoenix/… Peak-Shots angesehen; build+120 Tests grün. Commit folgt.\"});\nconsole.log(\"ok\");\n"} 
 > build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && git add -A && git commit -m "M5-02 Waffen-Effekte: 12 Waffen mit Frame-VFX (Glut/Frost/Smear/Blitz/Siegel), Partikel-Trails (#49)" -q && git log --oneline -1
+db91976 M5-02 Waffen-Effekte: 12 Waffen mit Frame-VFX (Glut/Frost/Smear/Blitz/Siegel), Partikel-Trails (#49)
+> build · deepseek-v4.1-flash
+[0m← [0mWrite src/logic/death.ts
+Created file successfully: src/logic/death.ts
+> build · deepseek-v4.1-flash
+[0m← [0mWrite src/systems/DamageNumbers.ts
+Created file successfully: src/systems/DamageNumbers.ts
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/systems/CombatSystem.ts'
+s=open(p).read()
+s=s.replace('import { DEPTH } from "../gfx/depth";','import { DEPTH } from "../gfx/depth";\nimport { DamageNumberSystem } from "./DamageNumbers";\nimport { deathClassFor, deathFxFor } from "../logic/death";\nimport { knockbackFor } from "../logic/feedback";\nimport { rollCrit, critDamage } from "../logic/damage-numbers";\nimport { lodFor, type LodState } from "../logic/lod";')
+s=s.replace('  readonly particles: ParticleSystem;','  readonly particles: ParticleSystem;\n  readonly damageNumbers: DamageNumberSystem;\n  private lod: LodState = lodFor(0);')
+s=s.replace('    this.particles = new ParticleSystem(scene);','    this.particles = new ParticleSystem(scene);\n    this.damageNumbers = new DamageNumberSystem(scene);')
+s=s.replace('    this.particles.update(ctx.dt);','    this.particles.update(ctx.dt);\n    this.damageNumbers.update(ctx.dt, this.scene.cameras.main);')
+s=s.replace('  update(ctx: CombatContext): void {','  setLod(lod: LodState): void {\n    this.lod = lod;\n    this.fx.setMaxActive(lod.fxCap);\n    this.particles.setMaxActive(lod.particleCap);\n    this.fx.trailsEnabled = lod.trails;\n    this.damageNumbers.setLod(lod);\n  }\n\n  update(ctx: CombatContext): void {')
+# knockback projectile
+s=s.replace('const kb = knockbackVector(p.x, p.y, e.x, e.y, p.knockback);','const mass = Math.max(0.6, Math.min(2.5, e.maxHp / 60));\n        const kb = knockbackVector(p.x, p.y, e.x, e.y, knockbackFor(p.knockback, mass));')
+# swing knockback
+s=s.replace('const kb = knockbackVector(ctx.playerX, ctx.playerY, e.x, e.y, s.knockback);','const mass = Math.max(0.6, Math.min(2.5, e.maxHp / 60));\n          const kb = knockbackVector(ctx.playerX, ctx.playerY, e.x, e.y, knockbackFor(s.knockback, mass));')
+# hitEnemy
+s=s.replace('''  private hitEnemy(e: EnemyRuntime, damage: number, ctx: CombatContext, weaponId: string): boolean {
+    const wasAlive = e.hp > 0;
+    e.hp -= damage;
+    e.flash = 0.12;
+    const killed = wasAlive && e.hp <= 0;
+    ctx.onHit(e, damage, weaponId, killed);
+    this.fx.burst("fx_spark", e.x, e.y, 2, { life: 0.14, tint: PAL[C.emberOrange], scaleTo: 0.12, alphaFrom: 0.7 });
+    return killed;
+  }
+
+  private killsFx(e: EnemyRuntime): void {
+    const tint = PAL[e.def.color] ?? PAL[C.flame];
+    const count = e.boss ? 26 : e.elite ? 14 : 5;
+    this.fx.burst("fx_spark", e.x, e.y, count, { life: e.boss ? 0.5 : 0.26, tint, scaleTo: 0.15, alphaFrom: 0.85 });
+  }''','''  private hitEnemy(e: EnemyRuntime, damage: number, ctx: CombatContext, weaponId: string): boolean {
+    const wasAlive = e.hp > 0;
+    const crit = rollCrit(ctx.rng.next());
+    const finalDamage = crit ? critDamage(damage) : damage;
+    e.hp -= finalDamage;
+    e.flash = 0.12;
+    // Crit ab 15 Schaden als eigene Feedback-Klasse sichtbar (weißer Blitz über Weiß-Kern).
+    this.damageNumbers.report(e.uid, e.x, e.y, finalDamage, crit);
+    const killed = wasAlive && e.hp <= 0;
+    ctx.onHit(e, finalDamage, weaponId, killed);
+    this.particles.burst("fx_star", e.x, e.y, crit ? 5 : 2, {
+      life: 0.16, tint: crit ? PAL[C.lanternWhite] : PAL[C.emberOrange],
+      scaleTo: 0.12, alphaFrom: 0.9, additive: true,
+    });
+    return killed;
+  }
+
+  private killsFx(e: EnemyRuntime): void {
+    const tint = PAL[e.def.color] ?? PAL[C.flame];
+    const cls = deathClassFor(e.def.archetype);
+    const spec = deathFxFor(cls, e.boss);
+    const count = e.boss ? spec.count : e.elite ? Math.round(spec.count * 1.4) : spec.count;
+    // Vier klar unterscheidbare Tod-Klassen: zerfallen / platzen / verpuffen / stieben.
+    this.particles.shards(spec.shard, e.x, e.y, count, {
+      life: e.boss ? 0.75 : 0.42,
+      scaleFrom: e.boss ? 2.2 : e.elite ? 1.4 : 1,
+      additive: spec.additive, tint,
+    });
+    this.particles.shards(spec.dust, e.x, e.y, Math.max(3, Math.round(count / 2)), {
+      life: 0.5, scaleFrom: e.boss ? 1.8 : 1, additive: false, tint,
+      scaleTo: 0.2,
+    });
+    if (cls === "dissolve" || e.boss) {
+      this.fx.spawnAnim("fx_halo", e.x, e.y, {
+        life: 0.4, scaleFrom: 0.5, scaleTo: e.boss ? 2.4 : 1.1,
+        alphaFrom: 0.8, alphaTo: 0, additive: true, tint,
+      });
+    }
+  }''')
+open(p,'w').write(s)
+print("patched")
+EOF
+grep -n "setLod\|damageNumbers\|killsFx" src/systems/CombatSystem.ts | head
+patched
+93:  readonly damageNumbers: DamageNumberSystem;
+108:    this.damageNumbers = new DamageNumberSystem(scene);
+111:  setLod(lod: LodState): void {
+116:    this.damageNumbers.setLod(lod);
+129:    this.damageNumbers.update(ctx.dt, this.scene.cameras.main);
+366:          if (killed) this.killsFx(e);
+391:      if (killed) this.killsFx(e);
+544:        if (killed) this.killsFx(next);
+565:        if (killed) this.killsFx(e);
+666:    if (killed) this.killsFx(e);
+> build · deepseek-v4.1-flash
+[0m← [0mWrite src/audio/settings.ts
+Created file successfully: src/audio/settings.ts
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/systems/EnemyPool.ts'
+s=open(p).read()
+s=s.replace('tint: "none" | "red" | "freeze" | "slow";','tint: "none" | "red" | "freeze" | "slow" | "flash";')
+open(p,'w').write(s)
+
+p='src/scenes/Run.ts'
+s=open(p).read()
+s=s.replace('import type { RunResult } from "./Results";','import type { RunResult } from "./Results";\nimport { lodFor, type LodState } from "../logic/lod";\nimport { shakeFor, hitStopFor } from "../logic/feedback";\nimport { getSettings } from "../audio/settings";')
+s=s.replace('  bossFlags: boolean[] = [false, false, false, false, false, false];','  bossFlags: boolean[] = [false, false, false, false, false, false];\n  /** M5: LOD-Zustand + kurzer Hit-Stop (nur Boss-Treffer/Tod). */\n  lod: LodState = lodFor(0);\n  hitStop = 0;\n  private bossFeedbackCooldown = 0;')
+s=s.replace('    this.bossFlags = [false, false, false, false, false, false];','    this.bossFlags = [false, false, false, false, false, false];\n    this.lod = lodFor(0);\n    this.hitStop = 0;\n    this.bossFeedbackCooldown = 0;')
+s=s.replace('    if (this.paused) return;\n\n    const scaledDt = realDt * this.timeScale;','    if (this.paused) return;\n\n    // Hit-Stop: Welt kurz anhalten, aber VFX/Damage-Numbers weiter animieren.\n    if (this.hitStop > 0) {\n      this.hitStop = Math.max(0, this.hitStop - realDt);\n      this.combat?.fx.update(realDt);\n      this.combat?.particles.update(realDt);\n      this.combat?.damageNumbers.update(realDt, this.cameras.main);\n      this.updateVisuals(realDt);\n      this.updateHpBar();\n      return;\n    }\n\n    const scaledDt = realDt * this.timeScale;')
+# apply lod at simulate start
+s=s.replace('  private simulate(dt: number): void {\n    this.elapsed += dt;','  private simulate(dt: number): void {\n    this.elapsed += dt;\n    this.applyLod();')
+s=s.replace('''      rng: this.rng,
+      onHit: (enemy, damage, weaponId) => {
+        this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
+      },''','''      rng: this.rng,
+      onHit: (enemy, damage, weaponId, killed) => {
+        this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
+        if (enemy.boss && !killed) this.bossHitFeedback();
+      },''')
+s=s.replace('''  /** Spawnt fällige Bosse (05:00–25:00) und den Endboss (30:00). */''','''  /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */
+  private applyLod(): void {
+    const lod = lodFor(this.enemies?.count ?? 0);
+    if (lod.level !== this.lod.level) {
+      this.lod = lod;
+      this.combat?.setLod(lod);
+      this.pickups?.setCap(lod.gemCap);
+    }
+  }
+
+  /** Kurzer Boss-Treffer-Hit-Stop + dosierter Shake (max. ~6 px). */
+  private bossHitFeedback(): void {
+    if (this.bossFeedbackCooldown > 0) return;
+    this.bossFeedbackCooldown = 0.18;
+    this.hitStop = Math.max(this.hitStop, hitStopFor("bossHit"));
+    const shake = shakeFor("bossHit", getSettings().shake);
+    if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs, shake.intensity);
+  }
+
+  /** Spawnt fällige Bosse (05:00–25:00) und den Endboss (30:00). */''')
+# decrement boss cooldown in simulate
+s=s.replace('    if (this.invuln > 0) this.invuln -= dt;','    if (this.invuln > 0) this.invuln -= dt;\n    if (this.bossFeedbackCooldown > 0) this.bossFeedbackCooldown = Math.max(0, this.bossFeedbackCooldown - dt);')
+# boss death feedback
+s=s.replace('        this.cameras.main.shake(220, 0.005);','        const bossShake = shakeFor("bossDeath", getSettings().shake);\n        if (bossShake.durationMs > 0) this.cameras.main.shake(bossShake.durationMs, bossShake.intensity);\n        this.hitStop = Math.max(this.hitStop, hitStopFor("bossDeath"));')
+# hurt shake
+s=s.replace('    this.cameras.main.shake(70, 0.0022);','    const hurtShake = shakeFor("hit", getSettings().shake);\n    if (hurtShake.durationMs > 0) this.cameras.main.shake(hurtShake.durationMs, hurtShake.intensity);')
+# flash tint
+s=s.replace('''      // Hit-Flash als Blinzeln: Silhouette/Farbe bleibt lesbar (kein Weiß-Wash).
+      const alpha = e.flash > 0 ? 0.45 : 1;
+      if (e.alpha !== alpha) {
+        e.alpha = alpha;
+        e.sprite.setAlpha(alpha);
+      }
+      const tint = e.telegraph > 0 ? "red" : e.freezeTimer > 0 ? "freeze" : e.slowTimer > 0 ? "slow" : "none";''','''      // Hit-Flash: heller weißer Frame (kurz), danach normale Silhouette.
+      const alpha = e.flash > 0 ? 0.85 : 1;
+      if (e.alpha !== alpha) {
+        e.alpha = alpha;
+        e.sprite.setAlpha(alpha);
+      }
+      const tint = e.flash > 0 ? "flash" : e.telegraph > 0 ? "red" : e.freezeTimer > 0 ? "freeze" : e.slowTimer > 0 ? "slow" : "none";''')
+s=s.replace('''        if (tint === "red") e.sprite.setTint(PAL[C.hotRed]);
+        else if (tint === "freeze") e.sprite.setTint(PAL[C.paleMist]);''','''        if (tint === "flash") e.sprite.setTint(PAL[C.candleWhite]);
+        else if (tint === "red") e.sprite.setTint(PAL[C.hotRed]);
+        else if (tint === "freeze") e.sprite.setTint(PAL[C.paleMist]);''')
+# debug state
+s=s.replace('      paused: this.paused,\n      levelUpOpen: this.levelUpOpen,','      lod: this.lod,\n      hitStop: Math.round(this.hitStop * 1000) / 1000,\n      damageNumbers: this.combat?.damageNumbers?.count ?? 0,\n      paused: this.paused,\n      levelUpOpen: this.levelUpOpen,')
+open(p,'w').write(s)
+print("run patched")
+EOF
+run patched
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/systems/PickupSystem.ts'
+s=open(p).read()
+s=s.replace('const MAX_GEMS = 240;','const MAX_GEMS_DEFAULT = 240;')
+s=s.replace('  gems: GemRuntime[] = [];\n  private readonly free: GemRuntime[] = [];','  gems: GemRuntime[] = [];\n  private readonly free: GemRuntime[] = [];\n  private maxGems = MAX_GEMS_DEFAULT;\n  /** LOD: Kristalle abdunkeln, damit Gegner-Silhouetten lesbar bleiben. */\n  private dim = false;')
+s=s.replace('    if (this.gems.length >= MAX_GEMS) return;','    if (this.gems.length >= this.maxGems) return;')
+s=s.replace('''    gem.sprite.setTexture(`gem_${size}`);
+    gem.sprite.setVisible(true).setActive(true).setDepth(DEPTH.gem);''','''    gem.sprite.setTexture(`gem_${size}`);
+    gem.sprite.setVisible(true).setActive(true).setDepth(DEPTH.gem);
+    gem.sprite.setAlpha(this.dim ? 0.55 : 1);''')
+s=s.replace('''  get count(): number {
+    return this.gems.length;
+  }''','''  /** LOD-Cap setzen; Überzählige werden sofort aus dem Render-List genommen. */
+  setCap(cap: number): void {
+    this.maxGems = Math.max(24, Math.floor(cap));
+    this.dim = this.maxGems <= 120;
+    while (this.gems.length > this.maxGems) {
+      const g = this.gems.shift();
+      if (!g) break;
+      g.sprite.setVisible(false).setActive(false);
+      this.free.push(g);
+    }
+    for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 1);
+  }
+
+  get count(): number {
+    return this.gems.length;
+  }''')
+open(p,'w').write(s)
+print("ok")
+EOF
+npm run build 2>&1 | tail -6
+ok
+
+> build
+> tsc --noEmit && vite build --base ./
+
+src/scenes/Run.ts(995,7): error TS2353: Object literal may only specify known properties, and 'lod' does not exist in type 'HudState'.
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && sed -n '980,1005p' src/scenes/Run.ts && grep -n "lod:" src/scenes/Run.ts
+this.paused = this.chestPausedBefore;
+    this.events.emit("chestClosed");
+  }
+
+  getHudState(): HudState {
+    return {
+      time: this.elapsed,
+      level: this.xpState.level,
+      xp: this.xpState.xp,
+      xpNeed: xpToNext(this.xpState.level),
+      xpRatio: xpProgress(this.xpState),
+      hp: this.hp,
+      maxHp: this.maxHp,
+      kills: this.kills,
+      enemies: this.enemies?.count ?? 0,
+      lod: this.lod,
+      hitStop: Math.round(this.hitStop * 1000) / 1000,
+      damageNumbers: this.combat?.damageNumbers?.count ?? 0,
+      paused: this.paused,
+      levelUpOpen: this.levelUpOpen,
+      chestOpen: this.chestOpen,
+      offers: this.currentOffers,
+      weapons: this.levelSys?.weapons ?? [],
+      passives: this.levelSys?.passives ?? [],
+      fps: this.game.loop.actualFps,
+      character: this.character.id,
+120:  lod: LodState = lodFor(0);
+995:      lod: this.lod,
+1065:      lod: this.lod,
+> build · deepseek-v4.1-flash
+[0m← [0mEdit src/scenes/Run.ts
+Index: src/scenes/Run.ts
+===================================================================
+--- src/scenes/Run.ts
++++ src/scenes/Run.ts
+@@ -67,8 +67,11 @@
+   fps: number;
+   character: string;
+   boss: BossInfo | null;
+   dawn: boolean;
++  lod: LodState;
++  hitStop: number;
++  damageNumbers: number;
+ }
+ 
+ /** Core-Loop: Bewegung, Gegner, Waffen, XP, Level-ups, Tod/Sieg. */
+ export class Run extends Phaser.Scene {
+
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && npm run build 2>&1 | tail -5 && npm test 2>&1 | tail -4
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.80s
+      Tests  120 passed (120)
+   Start at  19:55:19
+   Duration  765ms (tests 78%, import 11%, transform 10%, worker 2%)
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && cat >> tests/m5-jucie.test.ts <<'EOF'
+
+import { deathClassFor, deathFxFor, type DeathClass } from "../src/logic/death";
+import { ENEMIES } from "../src/data/enemies";
+
+describe("Tod-Effekt-Klassen", () => {
+  it("alle 10 Archetypen sind zugeordnet", () => {
+    const archetypes = new Set(Object.values(ENEMIES).map((e) => e.archetype));
+    for (const a of archetypes) expect(["crumble", "burst", "dissolve", "sputter"]).toContain(deathClassFor(a));
+  });
+  it("mindestens 4 visuell unterscheidbare Klassen kommen vor", () => {
+    const classes = new Set<DeathClass>(Object.values(ENEMIES).map((e) => deathClassFor(e.archetype)));
+    expect(classes.size).toBe(4);
+  });
+  it("jede Klasse hat eigene Shard-Textur; Boss mehr Partikel", () => {
+    const keys = new Set(["crumble", "burst", "dissolve", "sputter"].map((c) => deathFxFor(c as DeathClass).shard));
+    expect(keys.size).toBe(4);
+    expect(deathFxFor("crumble", true).count).toBeGreaterThan(deathFxFor("crumble").count);
+  });
+});
+EOF
+npm test 2>&1 | tail -4
+Tests  123 passed (123)
+   Start at  19:55:23
+   Duration  805ms (tests 67%, transform 18%, import 13%, worker 2%)
+> build · deepseek-v4.1-flash
+[0m← [0mWrite scripts/tmp-m5-damage.mjs
+Created file successfully: scripts/tmp-m5-damage.mjs
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && node scripts/tmp-m5-damage.mjs 2>&1 | tail -6 && ffmpeg -y -loglevel error -i shots/tmp-m5-damage.png -vf scale=1920:1080:flags=neighbor /tmp/m5shots/tmp-m5-damage-2x.png
+dmgViews 24 lod full errs []
+> build · deepseek-v4.1-flash
+[0m→ [0mRead /tmp/m5shots/tmp-m5-damage-2x.png 
+> build · deepseek-v4.1-flash
+[0m⚙ [0mexecute {"code":"await tools.board_move({id:50, column:\"doing\", note:\"DamageNumbers, Tod-Klassen, Masse-Knockback, Shake/Hit-Stop integriert\"});\nawait tools.board_move({id:50, column:\"review\", note:\"Screenshot zeigt 24 gepoolte Numbers, Krit 42! groß/amber; 123 Tests, build grün. Commit folgt.\"});\nconsole.log(\"ok\");\n"} 
+> build · deepseek-v4.1-flash

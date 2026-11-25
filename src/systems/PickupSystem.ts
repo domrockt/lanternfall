@@ -16,12 +16,15 @@ interface GemRuntime {
 
 /** Obergrenze aktiver Kristalle: schützt Frame-Zeit und Bildschirm-Lesbarkeit
  *  bei 30x-Läufen mit zehntausenden Kills. Darüber werden neue Drops verworfen. */
-const MAX_GEMS = 240;
+const MAX_GEMS_DEFAULT = 240;
 
 /** XP-Kristalle (3 Größen) + Aufsammelradius/Magnet. */
 export class PickupSystem {
   gems: GemRuntime[] = [];
   private readonly free: GemRuntime[] = [];
+  private maxGems = MAX_GEMS_DEFAULT;
+  /** LOD: Kristalle abdunkeln, damit Gegner-Silhouetten lesbar bleiben. */
+  private dim = false;
   private readonly scene: Phaser.Scene;
 
   constructor(scene: Phaser.Scene) {
@@ -29,7 +32,7 @@ export class PickupSystem {
   }
 
   drop(x: number, y: number, size: GemSize, rng: { next(): number }): void {
-    if (this.gems.length >= MAX_GEMS) return;
+    if (this.gems.length >= this.maxGems) return;
     const gem = this.free.pop() ?? this.createRuntime();
     const meta = GEMS[size];
     gem.size = size;
@@ -42,6 +45,7 @@ export class PickupSystem {
     gem.age = 0;
     gem.sprite.setTexture(`gem_${size}`);
     gem.sprite.setVisible(true).setActive(true).setDepth(DEPTH.gem);
+    gem.sprite.setAlpha(this.dim ? 0.55 : 1);
     gem.sprite.setPosition(Math.round(x), Math.round(y));
     this.gems.push(gem);
   }
@@ -107,6 +111,19 @@ export class PickupSystem {
         this.free.push(g);
       }
     }
+  }
+
+  /** LOD-Cap setzen; Überzählige werden sofort aus dem Render-List genommen. */
+  setCap(cap: number): void {
+    this.maxGems = Math.max(24, Math.floor(cap));
+    this.dim = this.maxGems <= 120;
+    while (this.gems.length > this.maxGems) {
+      const g = this.gems.shift();
+      if (!g) break;
+      g.sprite.setVisible(false).setActive(false);
+      this.free.push(g);
+    }
+    for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 1);
   }
 
   get count(): number {

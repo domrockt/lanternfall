@@ -65,7 +65,7 @@ export interface EnemyRuntime {
   /** Letzter Treffer durch Gegnerprojektil (nur Debug). */
   hitFlash: number;
   /** Zuletzt gesetzter Tint (vermeidet redundante Phaser-Aufrufe pro Frame). */
-  tint: "none" | "red" | "freeze" | "slow";
+  tint: "none" | "red" | "freeze" | "slow" | "flash";
   /** Zuletzt gesetzte Deckkraft (0.45 während Hit-Flash, sonst 1). */
   alpha: number;
   aiRng: AiRng;

@@ -38,6 +38,9 @@ import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
 import { chestRewards, type ChestResult } from "../logic/evolution";
 import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
+import { lodFor, type LodState } from "../logic/lod";
+import { shakeFor, hitStopFor } from "../logic/feedback";
+import { getSettings } from "../audio/settings";
 
 export interface RunData {
   character?: CharacterId;
@@ -65,6 +68,9 @@ export interface HudState {
   character: string;
   boss: BossInfo | null;
   dawn: boolean;
+  lod: LodState;
+  hitStop: number;
+  damageNumbers: number;
 }
 
 /** Core-Loop: Bewegung, Gegner, Waffen, XP, Level-ups, Tod/Sieg. */
@@ -113,6 +119,10 @@ export class Run extends Phaser.Scene {
   dawnTimer = 0;
   private dawnQueued = false;
   bossFlags: boolean[] = [false, false, false, false, false, false];
+  /** M5: LOD-Zustand + kurzer Hit-Stop (nur Boss-Treffer/Tod). */
+  lod: LodState = lodFor(0);
+  hitStop = 0;
+  private bossFeedbackCooldown = 0;
 
   private rng!: SeededRng;
   private levelSys!: LevelUpSystem;
@@ -175,6 +185,9 @@ export class Run extends Phaser.Scene {
     this.dawnQueued = false;
     this.registry.set("lf-final-state", null);
     this.bossFlags = [false, false, false, false, false, false];
+    this.lod = lodFor(0);
+    this.hitStop = 0;
+    this.bossFeedbackCooldown = 0;
     this.finished = false;
     this.invuln = 0;
     this.hitFlash = 0;
@@ -275,6 +288,17 @@ export class Run extends Phaser.Scene {
     }
     if (this.paused) return;
 
+    // Hit-Stop: Welt kurz anhalten, aber VFX/Damage-Numbers weiter animieren.
+    if (this.hitStop > 0) {
+      this.hitStop = Math.max(0, this.hitStop - realDt);
+      this.combat?.fx.update(realDt);
+      this.combat?.particles.update(realDt);
+      this.combat?.damageNumbers.update(realDt, this.cameras.main);
+      this.updateVisuals(realDt);
+      this.updateHpBar();
+      return;
+    }
+
     const scaledDt = realDt * this.timeScale;
     this.ground.update(this.cameras.main, time);
 
@@ -298,6 +322,7 @@ export class Run extends Phaser.Scene {
   /** Ein fester Simulationsschritt (Bewegung, Spawns, Kampf, Pickups). */
   private simulate(dt: number): void {
     this.elapsed += dt;
+    this.applyLod();
     this.registry.set("lf-elapsed", this.elapsed);
 
     // Morgendämmerung läuft nach dem Endboss-Sieg kurz aus, dann Results.
@@ -313,6 +338,7 @@ export class Run extends Phaser.Scene {
     if (!this.dawn) this.trySpawnScheduledBosses();
 
     if (this.invuln > 0) this.invuln -= dt;
+    if (this.bossFeedbackCooldown > 0) this.bossFeedbackCooldown = Math.max(0, this.bossFeedbackCooldown - dt);
     if (this.agg.regen > 0 && this.hp < this.maxHp) {
       this.hp = Math.min(this.maxHp, this.hp + this.agg.regen * dt);
     }
@@ -333,8 +359,9 @@ export class Run extends Phaser.Scene {
       hash: this.hash,
       agg: this.agg,
       rng: this.rng,
-      onHit: (enemy, damage, weaponId) => {
+      onHit: (enemy, damage, weaponId, killed) => {
         this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
+        if (enemy.boss && !killed) this.bossHitFeedback();
       },
       onHeal: (amount) => {
         this.hp = Math.min(this.maxHp, this.hp + amount);
@@ -365,6 +392,25 @@ export class Run extends Phaser.Scene {
     if (nearChest) this.openChest(nearChest);
   }
 
+  /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */
+  private applyLod(): void {
+    const lod = lodFor(this.enemies?.count ?? 0);
+    if (lod.level !== this.lod.level) {
+      this.lod = lod;
+      this.combat?.setLod(lod);
+      this.pickups?.setCap(lod.gemCap);
+    }
+  }
+
+  /** Kurzer Boss-Treffer-Hit-Stop + dosierter Shake (max. ~6 px). */
+  private bossHitFeedback(): void {
+    if (this.bossFeedbackCooldown > 0) return;
+    this.bossFeedbackCooldown = 0.18;
+    this.hitStop = Math.max(this.hitStop, hitStopFor("bossHit"));
+    const shake = shakeFor("bossHit", getSettings().shake);
+    if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs, shake.intensity);
+  }
+
   /** Spawnt fällige Bosse (05:00–25:00) und den Endboss (30:00). */
   private trySpawnScheduledBosses(): void {
     for (let i = 0; i < 5; i++) {
@@ -389,7 +435,8 @@ export class Run extends Phaser.Scene {
     this.hp = Math.max(0, this.hp - dmg);
     this.invuln = PLAYER_INVULN;
     this.hitFlash = 0.16;
-    this.cameras.main.shake(70, 0.0022);
+    const hurtShake = shakeFor("hit", getSettings().shake);
+    if (hurtShake.durationMs > 0) this.cameras.main.shake(hurtShake.durationMs, hurtShake.intensity);
     this.hurtMarker = { x, y, life: 0.25 };
     if (this.hp <= 0) {
       if (this.godMode) this.hp = 1;
@@ -609,7 +656,9 @@ export class Run extends Phaser.Scene {
         this.bossesDefeated += 1;
         this.chests.spawn(e.x, e.y);
         this.chestsDropped += 1;
-        this.cameras.main.shake(220, 0.005);
+        const bossShake = shakeFor("bossDeath", getSettings().shake);
+        if (bossShake.durationMs > 0) this.cameras.main.shake(bossShake.durationMs, bossShake.intensity);
+        this.hitStop = Math.max(this.hitStop, hitStopFor("bossDeath"));
         this.events.emit("bossDefeated", { index: e.bossIndex, name: BOSSES[e.bossIndex]?.name ?? "Boss" });
         // Dawn erst nach der Schleife starten: startDawn() kompaktiert das
         // Array, über das hier noch iteriert wird.
@@ -729,16 +778,17 @@ export class Run extends Phaser.Scene {
         e.sprite.setVisible(true);
         if (e.elite || e.boss) e.aura.setVisible(true);
       }
-      // Hit-Flash als Blinzeln: Silhouette/Farbe bleibt lesbar (kein Weiß-Wash).
-      const alpha = e.flash > 0 ? 0.45 : 1;
+      // Hit-Flash: heller weißer Frame (kurz), danach normale Silhouette.
+      const alpha = e.flash > 0 ? 0.85 : 1;
       if (e.alpha !== alpha) {
         e.alpha = alpha;
         e.sprite.setAlpha(alpha);
       }
-      const tint = e.telegraph > 0 ? "red" : e.freezeTimer > 0 ? "freeze" : e.slowTimer > 0 ? "slow" : "none";
+      const tint = e.flash > 0 ? "flash" : e.telegraph > 0 ? "red" : e.freezeTimer > 0 ? "freeze" : e.slowTimer > 0 ? "slow" : "none";
       if (e.tint !== tint) {
         e.tint = tint;
-        if (tint === "red") e.sprite.setTint(PAL[C.hotRed]);
+        if (tint === "flash") e.sprite.setTint(PAL[C.candleWhite]);
+        else if (tint === "red") e.sprite.setTint(PAL[C.hotRed]);
         else if (tint === "freeze") e.sprite.setTint(PAL[C.paleMist]);
         else if (tint === "slow") e.sprite.setTint(PAL[C.fogBlue]);
         else e.sprite.clearTint();
@@ -945,6 +995,9 @@ export class Run extends Phaser.Scene {
       maxHp: this.maxHp,
       kills: this.kills,
       enemies: this.enemies?.count ?? 0,
+      lod: this.lod,
+      hitStop: Math.round(this.hitStop * 1000) / 1000,
+      damageNumbers: this.combat?.damageNumbers?.count ?? 0,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
       chestOpen: this.chestOpen,
@@ -1012,6 +1065,9 @@ export class Run extends Phaser.Scene {
       damageByWeapon: { ...this.damageByWeapon },
       stats: this.agg ? { ...this.agg } : {},
       pickupRadius: this.agg ? effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) : 0,
+      lod: this.lod,
+      hitStop: Math.round(this.hitStop * 1000) / 1000,
+      damageNumbers: this.combat?.damageNumbers?.count ?? 0,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
       chestOpen: this.chestOpen,
