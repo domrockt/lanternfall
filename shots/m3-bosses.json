@@ -3,7 +3,7 @@
     {
       "id": "moor_queen",
       "ok": true,
-      "shares": 47,
+      "shares": 50,
       "phases": [
         1
       ],
@@ -19,7 +19,7 @@
         1
       ],
       "hazardsMax": 1,
-      "shotsMax": 4,
+      "shotsMax": 0,
       "chest": true
     },
     {
@@ -47,7 +47,7 @@
     {
       "id": "coven",
       "ok": true,
-      "shares": 0,
+      "shares": 1,
       "phases": [
         1
       ],
@@ -58,7 +58,7 @@
     {
       "id": "hollow_king",
       "ok": true,
-      "shares": 0,
+      "shares": 1,
       "phases": [
         1,
         2,

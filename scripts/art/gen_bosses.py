@@ -34,13 +34,28 @@ def finish(g: Grid, details=None, band=2) -> Grid:
     return outline(g)
 
 
+def eye_glow(ex: int, ey: int, f: int):
+    """Glut-Auge: F0 gedämpft (2x2 Bernstein 20), F1/F2 13-Kern + 22-Rand.
+
+    Wird als Detail nach dem Shading aufgetragen, damit 13/22/20 exakte
+    Palettenwerte bleiben.
+    """
+    if f >= 1:
+        return [
+            (ex, ey, 13), (ex + 1, ey, 13), (ex, ey + 1, 13), (ex + 1, ey + 1, 13),
+            (ex - 1, ey, 22), (ex - 1, ey + 1, 22), (ex + 2, ey, 22), (ex + 2, ey + 1, 22),
+            (ex, ey - 1, 22), (ex + 1, ey - 1, 22), (ex, ey + 2, 22), (ex + 1, ey + 2, 22),
+        ]
+    return [(ex, ey, 20), (ex + 1, ey, 20), (ex, ey + 1, 20), (ex + 1, ey + 1, 20), (ex, ey, 22)]
+
+
 # ── 1 Moorkönigin (Riesenkröte, 56) ─────────────────────────────────────────
 def moor_queen(f: int) -> Grid:
     g = Grid(56, 56)
     S = 56
     cx = 28
     squash = 3 if f == 2 else 0
-    bob = 1 if f == 1 else 0
+    bob = 2 if f == 1 else 0
     cy = 36 + squash - bob
     # Hinterbeine (Schenkel).
     g.ellipse(11, 44 + squash, 9, 7, 29)
@@ -60,14 +75,11 @@ def moor_queen(f: int) -> Grid:
     g.ellipse(40, 24 - bob, 6, 5, 30)
     g.ellipse(16, 23 - bob, 4, 3, 31)
     g.ellipse(40, 23 - bob, 4, 3, 31)
-    # Augen (groß, golden).
+    # Augen: dunkle Höhle 2; Glut-Auge als Detail nach dem Shading.
     for ex in (16, 40):
-        g.ellipse(ex, 22 - bob, 3, 3, INK)
-        g.ellipse(ex, 22 - bob, 2, 2, 20)
-        g.put(ex, 22 - bob, 0)
-        g.put(ex - 1, 21 - bob, 22)
+        g.ellipse(ex, 22 - bob, 3, 3, 2)
     # Mund, breit und zahnig.
-    g.rect(13, 29 - bob, 30, 2, INK)
+    g.rect(13, 29 - bob, 30, 2, 2)
     for x in range(15, 42, 5):
         g.rect(x, 29 - bob, 2, 2, 11)
     g.put(13, 28 - bob, 28)
@@ -89,15 +101,17 @@ def moor_queen(f: int) -> Grid:
     # Gift-Tropfen an der Wange.
     g.put(11, 30 - bob, 17)
     g.put(45, 31 - bob, 17)
-    return finish(g, [(ex, 22 - bob, 0) for ex in (16, 40)] +
-                  [(16, 21 - bob, 22), (40, 21 - bob, 22)])
+    details = []
+    for ex in (16, 40):
+        details += eye_glow(ex - 1, 21 - bob, f)
+    return finish(g, details)
 
 
 # ── 2 Knochenfürst (64) ─────────────────────────────────────────────────────
 def bone_lord(f: int) -> Grid:
     g = Grid(64, 64)
     cx = 32
-    bob = 1 if f == 1 else 0
+    bob = 2 if f == 1 else 0
     arm_up = 10 if f == 2 else 0
     # Cape als eine rote Fläche, Saum ausgefranst.
     for i, w in enumerate((30, 32, 34, 36, 38, 40, 40)):
@@ -143,12 +157,10 @@ def bone_lord(f: int) -> Grid:
     g.ellipse(cx, 17 - bob, 9, 8, 10)
     g.rect(cx - 7, 24 - bob, 14, 4, 10)
     g.rect(cx - 7, 27 - bob, 14, 1, 5)
-    g.rect(cx - 6, 19 - bob, 4, 4, INK)       # Augenhöhlen
-    g.rect(cx + 2, 19 - bob, 4, 4, INK)
-    g.put(cx - 5, 19 - bob, 25)
-    g.put(cx + 3, 19 - bob, 25)
-    g.put(cx - 2, 23 - bob, INK)              # Nase
-    g.rect(cx - 4, 25 - bob, 8, 1, INK)       # Zähne
+    g.rect(cx - 6, 19 - bob, 4, 4, 2)         # Augenhöhlen (kein Innen-Ink)
+    g.rect(cx + 2, 19 - bob, 4, 4, 2)
+    g.put(cx - 2, 23 - bob, 2)                # Nase
+    g.rect(cx - 4, 25 - bob, 8, 1, 2)         # Zähne
     for x in (cx - 4, cx - 1, cx + 2):
         g.put(x, 25 - bob, 11)
     # Krone.
@@ -163,130 +175,169 @@ def bone_lord(f: int) -> Grid:
     g.rect(cx - 7, 44 - bob, 14, 2, 4)
     g.put(cx - 3, 45 - bob, 20)
     g.put(cx, 45 - bob, 21)
-    return finish(g, [(cx - 5, 19 - bob, 25), (cx + 3, 19 - bob, 25),
-                      (cx - 4, 25 - bob, 11), (cx - 1, 25 - bob, 11), (cx + 2, 25 - bob, 11)])
+    details = [(cx - 4, 25 - bob, 11), (cx - 1, 25 - bob, 11), (cx + 2, 25 - bob, 11)]
+    details += eye_glow(cx - 5, 20 - bob, f)
+    details += eye_glow(cx + 3, 20 - bob, f)
+    return finish(g, details)
 
 
 # ── 3 Der Fahle Hirte (72) ─────────────────────────────────────────────────
+def _sickle(g: Grid, hx: int, hy: int, tipx: int, tipy: int):
+    """Sichel: 2-px-Stahlband (10), Lichtkante 12 oben, Schatten 6 innen."""
+    g.line(hx, hy, tipx, tipy, 10, 2)
+    g.line(tipx, tipy, tipx - 3, tipy + 6, 10, 2)
+    g.line(tipx - 3, tipy + 6, tipx - 1, tipy + 9, 9, 1)
+    g.line(hx, hy - 1, tipx, tipy - 1, 12, 1)
+    g.line(tipx, tipy - 1, tipx - 3, tipy + 5, 11, 1)
+    g.line(hx + 1, hy + 1, tipx + 1, tipy + 1, 6, 1)
+    g.put(tipx - 1, tipy + 8, 12)
+
+
 def pale_shepherd(f: int) -> Grid:
+    """Hagerer Hirte: langer zerschlissener Umhang, Kapuze mit Kragen,
+    Wangenknochen + langer Kinnbart, Wolfsfell ueber einer Schulter und ein
+    Stab, dessen Sichel frei neben dem Koerper steht (kein breiter Hut)."""
     g = Grid(72, 72)
     cx = 36
-    bob = 1 if f == 1 else 0
-    raise_scythe = 14 if f == 2 else 0
-    # Robe: langes Trapez vom Umhang bis zum Saum (30..63) mit drei echten
-    # Nacht-Bändern (10/9 Licht links, 8 Basis, 6/5 Schatten rechts).
-    for i in range(34):
-        y = 30 + i - bob
-        w = 26 + int(i * 0.45)
+    bob = 2 if f == 1 else 0
+    wind = f == 2
+
+    # ── Umhang: langes Trapez, drei Nachtbaender, gerissener Saum ──
+    top, bot = 24, 63
+    for i in range(bot - top + 1):
+        y = top + i - bob
+        w = 24 + int(i * 0.32)
         if w % 2:
             w += 1
         x0 = cx - w // 2
         g.rect(x0, y, w, 1, 8)
-        g.rect(x0, y, 3, 1, 10)          # Licht nur auf den linken 3 px
-        g.rect(cx + w // 2 - 3, y, 3, 1, 6)
+        g.rect(x0, y, 3, 1, 10)              # Licht links
+        g.rect(cx + w // 2 - 3, y, 3, 1, 6)  # Schatten rechts
         g.rect(cx + w // 2 - 1, y, 1, 1, 5)
-    # Nur drei ausgestellte Keilfalten im Unterteil (oben 1 px, unten 3 px):
-    # sie laufen mit der Trapezform nach aussen, keine Full-height-Streifen.
-    for fx, drift, top, length in ((-13, -2, 40, 23), (0, 0, 38, 25), (12, 2, 43, 20)):
-        for j in range(length):
-            y = top + j - bob
-            wid = 1 + (2 * j) // (length - 1)
-            xx = cx + fx + (drift * j) // (length - 1)
-            g.rect(xx, y, wid, 1, 6)
+    # Zwei lange Keilfalten, die mit dem Trapez nach aussen laufen.
+    for fx, drift, t0 in ((-10, -3, 42), (8, 2, 46)):
+        for j in range(bot - t0):
+            y = t0 + j - bob
+            xx = cx + fx + (drift * j) // max(1, bot - t0 - 1)
+            g.rect(xx, y, 2, 1, 6)
             g.put(xx - 1, y, 9)
-            g.put(xx + wid, y, 5)
-    # Kurze Nachtfalte rechts als Tiefe.
-    g.rect(cx + 6, 48 - bob, 2, 15, 3)
-    g.put(cx + 6, 48 - bob, 4)
-    # Ausgefranster Saum (2–3 px Zacken, keine gerade Kante).
-    for x in range(cx - 19, cx + 20, 3):
-        g.rect(x, 63 - bob, 2, 2, 8)
-        g.put(x, 64 - bob, 5)
-    # Schulterumhang mit Lichtkante.
-    g.rect(cx - 14, 30 - bob, 29, 3, 8)
-    g.rect(cx - 14, 30 - bob, 29, 1, 10)
-    g.rect(cx + 10, 31 - bob, 6, 1, 6)
-    # Kapuze: Randlicht links, Gesichtsleere 2, Glutaugen.
-    g.ellipse(cx, 24 - bob, 11, 10, 6)
-    g.ellipse(cx - 2, 23 - bob, 9, 8, 8)
-    g.rect(cx - 9, 20 - bob, 3, 7, 10)
-    g.rect(cx - 6, 17 - bob, 6, 1, 9)
-    g.ellipse(cx, 26 - bob, 7, 6, 3)
-    g.ellipse(cx, 27 - bob, 5, 4, 2)         # Tiefe 2, kein schwarzes Loch
-    g.rect(cx - 6, 23 - bob, 2, 2, 13)       # Glutaugen 2x2
-    g.rect(cx + 4, 23 - bob, 2, 2, 13)
-    g.rect(cx - 7, 23 - bob, 1, 2, 2)        # Sockel
-    g.rect(cx + 6, 23 - bob, 1, 2, 2)
-    # Breitkrempiger Hut (3 Bänder).
-    g.rect(cx - 20, 12 - bob, 40, 3, 5)
-    g.rect(cx - 20, 12 - bob, 40, 1, 7)
-    g.rect(cx - 20, 14 - bob, 40, 1, 3)
-    g.rect(cx - 8, 4 - bob, 17, 9, 5)
-    g.rect(cx - 8, 4 - bob, 5, 9, 6)
-    g.rect(cx - 8, 4 - bob, 2, 2, 8)
-    g.rect(cx + 5, 6 - bob, 4, 7, 3)
-    g.rect(cx - 11, 15 - bob, 22, 1, 1)      # Krempenschatten
-    # Linker Arm hängt.
-    g.rect(cx - 18, 34 - bob, 5, 16, 8)
-    g.rect(cx - 18, 34 - bob, 2, 16, 10)
-    g.rect(cx - 19, 50 - bob, 7, 4, 6)
-    g.rect(cx - 19, 50 - bob, 7, 1, 8)
-    if raise_scythe:
-        # Wind-up: Arm angewinkelt (Schulter -> Ellbogen -> Hand) und Sichel
-        # quer ueber dem Kopf. Klar andere Silhouette als Ruheframe.
-        g.line(cx + 13, 32 - bob, cx + 24, 24 - bob, 8, 3)
-        g.line(cx + 13, 32 - bob, cx + 23, 25 - bob, 10, 1)
-        g.line(cx + 24, 24 - bob, cx + 27, 19 - bob, 8, 3)
-        g.rect(cx + 25, 18 - bob, 5, 5, 8)
-        g.rect(cx + 25, 18 - bob, 2, 5, 10)
-        g.put(cx + 28, 20 - bob, 14)                 # Handschatten
-        # Schaft senkrecht, Klinge nach links ueber den Hut.
-        g.rect(cx + 26, 7 - bob, 2, 14, 16)
-        g.rect(cx + 26, 7 - bob, 1, 14, 17)
-        g.rect(cx + 25, 19 - bob, 4, 3, 17)
-        g.line(cx + 26, 8 - bob, cx + 14, 4 - bob, 11, 3)
-        g.line(cx + 14, 4 - bob, cx + 7, 9 - bob, 11, 3)
-        g.line(cx + 7, 9 - bob, cx + 6, 16 - bob, 10, 3)
-        g.line(cx + 25, 7 - bob, cx + 14, 3 - bob, 12, 1)
-        g.line(cx + 13, 3 - bob, cx + 7, 8 - bob, 12, 1)
-        g.rect(cx + 4, 11 - bob, 3, 2, 12)
-        # Windstriche hinter der Klinge (2 px, Palette 10/12).
-        g.rect(cx + 30, 10 - bob, 4, 2, 10)
-        g.rect(cx + 31, 13 - bob, 3, 2, 9)
+    # Zerschlissener Saum: Streifen ungleicher Laenge mit Luecken.
+    for i, x in enumerate(range(cx - 18, cx + 18, 4)):
+        length = (5, 8, 3, 6, 8, 4, 7, 3)[i % 8]
+        g.rect(x, bot - bob, 2, length, 8)
+        g.put(x, bot - bob, 6)
+        g.put(x + 1, bot - bob + length - 1, 5)
+
+    # ── Wolfsfell ueber der linken Schulter (braun, 3 Fellzacken) ──
+    px0 = cx - 15
+    for i in range(18):
+        y = 24 + i - bob
+        w = 17 - int(i * 0.55)
+        x0 = px0 + int(i * 0.22)
+        g.rect(x0, y, w, 1, 16)
+        g.rect(x0, y, 2, 1, 17)
+        g.rect(x0 + w - 2, y, 2, 1, 15)
+    # Drei Fellzacken unter dem Fell, klar gegen den Umhang.
+    for sx, sy, hh in ((px0 + 1, 42, 5), (px0 + 6, 43, 4), (px0 + 11, 42, 6)):
+        for j in range(hh):
+            wid = 2 if j < hh - 2 else 1
+            g.rect(sx + (j // 2), sy + j - bob, wid, 1, 16)
+            g.put(sx + (j // 2), sy + j - bob, 17 if j == 0 else 15)
+    # Fellklammer (Knochen) an der Schulter.
+    g.rect(px0 + 8, 26 - bob, 3, 3, 10)
+    g.put(px0 + 8, 26 - bob, 11)
+
+    # ── Kragen mit zwei Spitzen ──
+    g.rect(cx - 13, 22 - bob, 26, 4, 6)
+    g.rect(cx - 13, 22 - bob, 26, 1, 8)
+    g.rect(cx - 15, 19 - bob, 3, 5, 6)
+    g.rect(cx + 12, 20 - bob, 3, 4, 6)
+    g.put(cx - 15, 19 - bob, 8)
+    g.put(cx + 12, 20 - bob, 8)
+
+    # ── Kapuze mit Randlicht, darin das hage Gesicht ──
+    g.ellipse(cx, 16 - bob, 10, 10, 6)
+    g.ellipse(cx - 1, 15 - bob, 8, 8, 8)
+    g.rect(cx - 9, 12 - bob, 2, 8, 10)
+    g.ellipse(cx, 20 - bob, 6, 7, 2)         # Gesichtshoehle
+    # Wangenknochen: schmal, unten spitz zulaufend.
+    g.rect(cx - 4, 18 - bob, 9, 6, 9)
+    g.rect(cx - 3, 24 - bob, 7, 4, 9)
+    g.rect(cx - 2, 28 - bob, 5, 2, 9)
+    g.rect(cx - 4, 18 - bob, 2, 2, 11)       # Stirnlicht
+    g.put(cx - 4, 21 - bob, 11)
+    g.put(cx + 3, 21 - bob, 11)              # Wangenknochen-Kante
+    g.put(cx - 1, 23 - bob, 3)               # eingefallene Wange
+    g.put(cx + 2, 23 - bob, 3)
+    g.put(cx, 23 - bob, 8)                   # Nase
+    # Leere Augenhoehlen, Glut als Detail nach dem Shading.
+    g.rect(cx - 4, 20 - bob, 3, 3, 2)
+    g.rect(cx + 2, 20 - bob, 3, 3, 2)
+    # Langer, spitzer Kinnbart (oben breit, unten 1 px).
+    for j, bw in enumerate((7, 7, 6, 6, 5, 5, 4, 3, 2, 2, 1, 1)):
+        y = 26 + j - bob
+        x0 = cx - bw // 2
+        g.rect(x0, y, bw, 1, 10)
+        g.put(x0, y, 11)
+        g.put(x0 + bw - 1, y, 8)
+    g.put(cx, 38 - bob, 11)
+
+    # ── Linker Arm haengt am Umhang ──
+    g.rect(cx - 18, 32 - bob, 5, 15, 8)
+    g.rect(cx - 18, 32 - bob, 2, 15, 10)
+    g.rect(cx - 19, 46 - bob, 7, 4, 6)
+    g.rect(cx - 19, 46 - bob, 7, 1, 8)
+    g.rect(cx - 18, 49 - bob, 4, 3, 9)       # Hand
+    g.put(cx - 18, 49 - bob, 11)
+
+    # ── Stab: steht neben dem Koerper, Sichel frei oben ──
+    if wind:
+        # Wind-up: Arm hoch, Stab diagonal nach rechts oben, Sichel ueber
+        # dem Kopf. Voellig andere Silhouette als der senkrechte Ruhestab.
+        g.line(cx + 9, 30 - bob, cx + 14, 20 - bob, 8, 3)
+        g.line(cx + 9, 30 - bob, cx + 14, 20 - bob, 10, 1)
+        hand = (cx + 13, 21 - bob)
     else:
-        g.rect(cx + 16, 32 - bob, 5, 14, 8)
-        g.rect(cx + 16, 32 - bob, 2, 14, 10)
-        g.rect(cx + 17, 45 - bob, 7, 4, 6)
-        g.rect(cx + 17, 45 - bob, 7, 1, 8)
-        # Sichel: 2-px-Schaft MIT Handkontakt, dreistufige 2-px-Klinge.
-        sx = cx + 19
-        sy = 8 - bob
-        g.rect(sx, sy, 2, 54, 16)
-        g.rect(sx, sy, 1, 54, 17)
-        g.rect(sx - 1, sy + 48, 4, 3, 17)
-        ty = sy + 3
-        # Gefuellter Halbmond: 3-px-Band in 11, helle Aussenkante 12,
-        # dunkle Innenkante 5 -> 3 Schattierungsstufen, kein 1-px-Haken.
-        g.line(sx - 1, ty, sx - 10, ty + 3, 11, 2)
-        g.line(sx - 10, ty + 3, sx - 15, ty + 10, 11, 2)
-        g.line(sx - 15, ty + 10, sx - 14, ty + 17, 11, 2)
-        g.line(sx - 3, ty + 2, sx - 11, ty + 5, 5, 1)   # dunkle Innenseite
-        g.line(sx - 11, ty + 5, sx - 14, ty + 12, 5, 1)
-        g.line(sx - 2, ty - 1, sx - 10, ty + 2, 12, 1)  # Aussenkante Licht
-        g.line(sx - 10, ty + 2, sx - 15, ty + 9, 12, 1)
-        g.rect(sx - 16, ty + 12, 2, 3, 12)
-    # Füße (2 px Kontur, 3 Stufen).
-    g.rect(cx - 10, 66 - bob, 8, 4, 6)
-    g.rect(cx - 10, 66 - bob, 8, 1, 8)
-    g.rect(cx + 2, 66 - bob, 8, 4, 6)
-    g.rect(cx + 2, 66 - bob, 8, 1, 8)
-    return finish(g, [(cx - 6, 23 - bob, 13), (cx - 5, 23 - bob, 13), (cx - 6, 24 - bob, 13), (cx - 5, 24 - bob, 13), (cx + 4, 23 - bob, 13), (cx + 5, 23 - bob, 13), (cx + 4, 24 - bob, 13), (cx + 5, 24 - bob, 13)])
+        g.line(cx + 11, 30 - bob, cx + 19, 43 - bob, 8, 3)
+        g.line(cx + 11, 30 - bob, cx + 19, 43 - bob, 10, 1)
+        hand = (cx + 18, 44 - bob)
+    hx, hy = hand
+    g.rect(hx + 1, hy, 4, 3, 9)              # Hand
+    g.put(hx + 1, hy, 11)
+    g.put(hx + 2, hy + 2, 8)
+    if wind:
+        # Schaft: Hand -> rechts oben.
+        g.line(hx + 2, hy, cx + 31, 5, 16, 2)
+        g.line(hx + 2, hy - 1, cx + 31, 4, 17, 1)
+        g.rect(cx + 29, 3, 3, 3, 17)
+        _sickle(g, cx + 30, 5, cx + 19, 4)   # Klinge biegt nach links
+        g.rect(cx + 34, 9, 4, 2, 10)         # Windstrich
+        g.rect(cx + 35, 13, 3, 2, 9)
+    else:
+        sx = cx + 21
+        g.rect(sx, 8, 2, 55, 16)             # senkrechter Schaft
+        g.rect(sx, 8, 1, 55, 17)
+        g.rect(sx - 1, 60, 4, 3, 17)         # Fusskappe
+        _sickle(g, sx, 9, sx - 8, 9)         # Klinge nach links, frei
+        g.put(sx - 9, 16, 11)                # Sichelspitze
+
+    # ── Fuesse unter dem Saum ──
+    g.rect(cx - 11, 66, 8, 3, 6)
+    g.rect(cx - 11, 66, 8, 1, 8)
+    g.rect(cx + 3, 66, 8, 3, 6)
+    g.rect(cx + 3, 66, 8, 1, 8)
+
+    details = []
+    details += eye_glow(cx - 3, 21 - bob, f)
+    details += eye_glow(cx + 2, 21 - bob, f)
+    details += [(px0 + 8, 26 - bob, 11)]
+    return finish(g, details)
 
 
 def bell_golem(f: int) -> Grid:
     g = Grid(80, 80)
     cx = 40
-    bob = 1 if f == 1 else 0
+    bob = 2 if f == 1 else 0
     arms_up = 12 if f == 2 else 0
     # Beine + Füße (Stein, Basis 6 statt fast-schwarz).
     g.rect(cx - 17, 60, 10, 14, 6)
@@ -345,23 +396,24 @@ def bell_golem(f: int) -> Grid:
     # Hals: verbindet Kopf und Glockenkrone.
     g.rect(cx - 4, 20 - bob, 8, 8, 6)
     g.rect(cx - 4, 20 - bob, 2, 8, 8)
-    # Kopf (steinern) mit Glutaugen.
+    # Kopf (steinern) mit leeren Augenhoehlen und pulsierender Glut.
     g.ellipse(cx, 15 - bob, 8, 7, 6)
     g.rect(cx - 6, 18 - bob, 13, 3, 5)
-    g.put(cx - 4, 14 - bob, 13)
-    g.put(cx + 3, 14 - bob, 13)
-    g.put(cx - 4, 13 - bob, 12)
-    g.put(cx + 3, 13 - bob, 12)
+    g.rect(cx - 6, 12 - bob, 4, 4, 2)
+    g.rect(cx + 3, 12 - bob, 4, 4, 2)
     g.put(cx, 17 - bob, 4)
-    return finish(g, [(cx - 4, 14 - bob, 13), (cx + 3, 14 - bob, 13)])
+    details = []
+    details += eye_glow(cx - 5, 13 - bob, f)
+    details += eye_glow(cx + 3, 13 - bob, f)
+    return finish(g, details)
 
 
 
-def _witch(g: Grid, cx: int, base_y: int, h: float, raise_arms: bool):
-    """Eine Hexe: eine Robe-Fläche, Kapuze, Hut, Arme, Feuer in der Hand."""
+def _witch(g: Grid, cx: int, base_y: int, h: float, raise_arms: bool, f: int):
+    """Eine Hexe: eine Robe-Flaeche, Kapuze, Hut, warme Haut, Feuerhand."""
     bw = max(8, int(14 * h))
     top = base_y - int(36 * h)
-    # Robe als zusammenhängende Fläche.
+    # Robe als zusammenhaengende Flaeche.
     for y in range(top + 14, base_y):
         t = (y - top - 14) / max(1, base_y - top - 14)
         w = int(bw * (0.75 + 0.55 * t))
@@ -369,11 +421,22 @@ def _witch(g: Grid, cx: int, base_y: int, h: float, raise_arms: bool):
     # Kragen.
     g.rect(cx - bw // 2, top + 12, bw, 3, 26)
     g.put(cx - bw // 2, top + 12, 27)
-    # Kapuze + Gesicht.
+    # Kapuze + warmes Gesicht (27 Basis, 16 Schatten, 21 nur 1-px-Kante).
     g.ellipse(cx, top + 8, max(3, int(4.5 * h)), max(3, int(4.5 * h)), 9)
-    g.rect(cx - int(5 * h), top + 4, int(10 * h), 3, 23)
-    g.put(cx - 2, top + 8, 20)
-    g.put(cx + 2, top + 8, 20)
+    fw = max(4, int(8 * h))
+    g.rect(cx - fw // 2, top + 4, fw, 4, 27)
+    g.rect(cx - fw // 2, top + 7, fw, 1, 16)       # Kinnschatten
+    g.rect(cx - fw // 2, top + 4, 1, 4, 21)        # 1-px-Lichtkante links
+    # Augen: F0 1 px Bernstein, F1 2x2 Laternenweiss (pulsiert).
+    ey = top + 6
+    if f >= 1:
+        g.rect(cx - 3, ey, 2, 2, 13)
+        g.rect(cx + 1, ey, 2, 2, 13)
+        g.put(cx - 4, ey + 1, 22)
+        g.put(cx + 3, ey + 1, 22)
+    else:
+        g.put(cx - 2, ey, 20)
+        g.put(cx + 2, ey, 20)
     # Hut.
     g.rect(cx - int(8 * h), top + 2, int(17 * h), 2, 24)
     g.put(cx - int(8 * h), top + 2, 26)
@@ -394,124 +457,241 @@ def _witch(g: Grid, cx: int, base_y: int, h: float, raise_arms: bool):
         hand_l = (cx - bw - 4, top + 20)
         hand_r = (cx + bw + 2, top + 20)
     for hx, hy in (hand_l, hand_r):
-        g.rect(hx, hy, 3, 3, 9)
-    # Flamme in einer Hand.
+        g.rect(hx, hy, 3, 3, 27)                   # warme Haut
+        g.rect(hx, hy + 2, 3, 1, 16)
+        g.put(hx, hy, 21)                          # 1-px-Kante
+    # Flamme in einer Hand: F0 ruhig, F1/F2 groesser + heller Kern.
     fx, fy = hand_r
-    g.ellipse(fx, fy - 4, 3, 3, 18)
-    g.ellipse(fx, fy - 4, 2, 2, 20)
-    g.put(fx, fy - 4, 22)
-    g.put(fx, fy - 5, 13)
-    # Besenstiel am Rücken.
+    if f >= 1:
+        g.ellipse(fx + 1, fy - 5, 4, 4, 18)
+        g.rect(fx, fy - 6, 2, 2, 13)
+        g.put(fx - 2, fy - 4, 22)
+        g.put(fx + 3, fy - 4, 22)
+        g.put(fx, fy - 7, 22)
+    else:
+        g.ellipse(fx + 1, fy - 4, 3, 3, 18)
+        g.ellipse(fx + 1, fy - 4, 2, 2, 20)
+        g.put(fx, fy - 5, 22)
+    # Besenstiel am Ruecken.
     g.vline(cx + bw + 7, top + 10, base_y - 4, 5)
 
 
 def coven(f: int) -> Grid:
     g = Grid(96, 96)
-    bob = 1 if f == 1 else 0
+    bob = 2 if f == 1 else 0
     raise_arms = f == 2
-    _witch(g, 24, 88 - bob, 0.9, raise_arms)
-    _witch(g, 72, 88 - bob, 0.9, raise_arms)
-    _witch(g, 48, 80 - bob, 1.15, raise_arms)
-    # Feuerkreis: gruppierte 2x2-Kerne.
+    _witch(g, 24, 88 - bob, 0.9, raise_arms, f)
+    _witch(g, 72, 88 - bob, 0.9, raise_arms, f)
+    _witch(g, 48, 80 - bob, 1.15, raise_arms, f)
+    # Feuerkreis: gruppierte Kerne, F1/F2 pulsierend groesser.
     for x, y in ((48, 30), (18, 52), (78, 52)):
-        g.ellipse(x, y - bob, 4, 4, 18)
-        g.ellipse(x, y - bob, 2, 2, 21)
-        g.rect(x - 1, y - 1 - bob, 2, 2, 22)
-        g.put(x - 1, y - 1 - bob, 13)
+        if f >= 1:
+            g.ellipse(x, y - bob, 5, 5, 18)
+            g.rect(x - 1, y - 1 - bob, 2, 2, 13)
+            g.put(x - 3, y - bob, 22)
+            g.put(x + 3, y - bob, 22)
+        else:
+            g.ellipse(x, y - bob, 4, 4, 18)
+            g.ellipse(x, y - bob, 2, 2, 20)
+            g.put(x - 1, y - 1 - bob, 22)
     if raise_arms:
         # Kreuzende Feuerstrahlen (nur Wirkphase).
         g.line(18, 50 - bob, 78, 62 - bob, 26, 2)
         g.line(78, 50 - bob, 18, 62 - bob, 26, 2)
-    return finish(g, [(48, 30 - bob, 13), (18, 52 - bob, 13), (78, 52 - bob, 13)])
+    return finish(g, [])
 
 
 
 def hollow_king(f: int) -> Grid:
+    """Untoter Koenig: zerschlissener Umhang, schiefe Krone, leere Glut-
+    hoehlen, schmale verwitterte Ruestung, duennes Schwert und gebrochene
+    Thronfragmente mit Dornen am Boden."""
     g = Grid(96, 96)
     cx = 48
-    bob = 1 if f == 1 else 0
-    phase2 = f == 2
-    # Cape als eine Fläche.
-    for y in range(40, 82):
-        t = (y - 40) / 42
-        w = int(40 + t * 22)
-        g.rect(cx - w // 2, y - bob, w, 1, 24)
-    # Rüstungsbeine (Basis 6, nicht near-black).
-    g.rect(cx - 15, 66, 11, 18, 6)
-    g.rect(cx + 4, 66, 11, 18, 6)
-    g.rect(cx - 17, 80, 15, 5, 5)
-    g.rect(cx + 2, 80, 15, 5, 5)
-    g.put(cx - 17, 80, 7)
-    g.put(cx + 3, 80, 7)
-    # Rüstungstorso.
-    g.rect(cx - 20, 34 - bob, 41, 32, 6)
-    g.rect(cx - 20, 34 - bob, 6, 32, 7)
-    g.rect(cx + 15, 34 - bob, 6, 32, 4)
-    g.rect(cx - 20, 34 - bob, 41, 2, 7)
-    g.rect(cx - 14, 62 - bob, 29, 3, 5)      # Gürtel
-    g.put(cx - 14, 62 - bob, 20)
-    # Hohlraum mit Rippen + Glut (Herz).
-    g.rect(cx - 9, 42 - bob, 19, 17, 4)
-    g.rect(cx - 9, 42 - bob, 19, 2, 5)
-    g.rect(cx - 9, 57 - bob, 19, 2, 3)
-    for y in range(45, 58, 3):
-        g.hline(cx - 8, cx + 8, y - bob, 6)
-        g.hline(cx - 8, cx + 8, y + 1 - bob, 3)
-        g.put(cx - 8, y - bob, 7)
-        g.put(cx + 8, y - bob, 7)
-    g.put(cx, 51 - bob, 13)
-    g.put(cx - 1, 53 - bob, 13)
-    g.put(cx + 1, 53 - bob, 13)
-    g.put(cx - 4, 55 - bob, 9)
-    # Schulterplatten + Spikes.
-    g.ellipse(cx - 24, 34 - bob, 9, 6, 6)
-    g.ellipse(cx + 24, 34 - bob, 9, 6, 6)
-    g.put(cx - 30, 33 - bob, 7)
-    g.put(cx + 22, 33 - bob, 7)
-    for x in (cx - 31, cx - 27, cx + 23, cx + 27):
-        g.rect(x, 27 - bob, 3, 6, 5)
-        g.put(x, 27 - bob, 7)
-    # Arme.
-    g.rect(cx - 30, 38 - bob, 8, 24, 6)
-    g.rect(cx + 22, 38 - bob, 8, 24, 6)
-    g.rect(cx - 30, 38 - bob, 3, 24, 7)
-    g.rect(cx + 22, 38 - bob, 3, 24, 7)
-    g.rect(cx - 30, 61 - bob, 8, 5, 5)
-    g.rect(cx + 22, 61 - bob, 8, 5, 5)
-    # Helm.
-    g.ellipse(cx, 22 - bob, 13, 11, 6)
-    g.rect(cx - 13, 26 - bob, 27, 8, 6)
-    g.rect(cx - 9, 22 - bob, 19, 8, 2)
-    g.put(cx - 6, 25 - bob, 13)
-    g.put(cx + 5, 25 - bob, 13)
-    g.put(cx - 6, 26 - bob, 9)
-    g.put(cx + 5, 26 - bob, 9)
-    g.rect(cx - 13, 26 - bob, 27, 1, 7)
-    # Dornenkrone.
-    g.rect(cx - 12, 10 - bob, 25, 3, 20)
-    g.rect(cx - 12, 10 - bob, 25, 1, 21)
-    for x in (cx - 12, cx - 6, cx + 3, cx + 9):
-        g.rect(x, 5 - bob, 3, 5, 20)
-        g.put(x, 5 - bob, 21)
-    # Schwert: 3-px-Klinge mit Lichtkante, Griff sitzt in der Faust.
-    g.rect(cx + 25, 14 - bob, 3, 44, 8)      # Klinge
-    g.rect(cx + 25, 14 - bob, 1, 44, 9)      # Lichtkante links
-    g.rect(cx + 27, 14 - bob, 1, 44, 6)      # Schatten rechts
-    g.rect(cx + 21, 55 - bob, 11, 3, 20)     # Parierstange
-    g.rect(cx + 25, 58 - bob, 3, 9, 16)      # Griff (in der Faust)
-    g.rect(cx + 24, 66 - bob, 5, 2, 20)      # Knauf
-    g.rect(cx + 26, 13 - bob, 1, 2, 13)      # Spitzen-Glut
-    # Phase 2: Dornenring-Andeutung um den König.
-    if phase2:
-        g.ellipse_ring(cx, 56 - bob, 36, 16, 24)
-        for i in range(12):
-            import math
-            a = i / 12 * math.pi * 2
-            x = int(cx + math.cos(a) * 36)
-            y = int(56 - bob + math.sin(a) * 16)
-            g.put(x, y - 1, 26)
-    return finish(g, [(cx, 51 - bob, 13), (cx - 1, 53 - bob, 13), (cx + 1, 53 - bob, 13),
-                      (cx - 6, 25 - bob, 13), (cx + 5, 25 - bob, 13)])
+    bob = 2 if f == 1 else 0
+    wind = f == 2
+
+    # ── Gebrochene Thronfragmente hinter dem Koenig ──
+    for tx, tw_, th_ in ((12, 9, 22), (76, 8, 17)):
+        g.rect(tx, 90 - th_, tw_, th_, 5)
+        g.rect(tx, 90 - th_, 2, th_, 7)
+        g.rect(tx + tw_ - 1, 90 - th_, 1, th_, 4)
+        # Abgebrochene Oberkante (Stufen).
+        g.rect(tx, 90 - th_, tw_ - 2, 3, None)
+        g.rect(tx - 1, 84, tw_ + 1, 6, 5)
+        g.put(tx - 1, 84, 7)
+        g.put(tx + tw_, 86, 4)
+
+    # ── Umhang: dunkles Blutrot, unten breiter und ausgefranst ──
+    top, bot = 31, 84
+    for i in range(bot - top + 1):
+        y = top + i - bob
+        w = 30 + int(i * 0.34)
+        if w % 2:
+            w += 1
+        x0 = cx - w // 2
+        g.rect(x0, y, w, 1, 24)
+        g.rect(x0, y, 3, 1, 25)
+        g.rect(cx + w // 2 - 3, y, 3, 1, 23)
+        g.rect(cx + w // 2 - 1, y, 1, 1, 14)
+    # Links weht ein zerrissener Zipfel heraus, rechts ist der Saum kuerzer.
+    for i in range(26):
+        y = 58 + i
+        g.rect(cx - 24 - (i // 8), y, 3, 1, 24)
+        g.put(cx - 24 - (i // 8), y, 25)
+    # Ausgefranster Saum: ungleiche Streifen mit Luecken.
+    for i, x in enumerate(range(cx - 22, cx + 22, 3)):
+        length = (3, 6, 4, 7, 3, 6, 8, 3, 5, 6, 4, 7)[i % 12]
+        g.rect(x, bot - bob, 2, length, 24)
+        g.put(x, bot - bob, 23)
+        g.put(x + 1, bot - bob + length - 1, 14)
+    # Zwei Risse im Umhang (dunkle Schlitze).
+    g.rect(cx + 16, 52 - bob, 1, 9, 14)
+    g.rect(cx - 19, 64 - bob, 1, 7, 14)
+
+    # ── Beine: schmal, verwittert, Fuesse fest am Boden ──
+    g.rect(cx - 11, 68, 8, 17, 6)
+    g.rect(cx + 3, 68, 8, 17, 6)
+    g.rect(cx - 11, 68, 2, 17, 7)
+    g.rect(cx + 3, 68, 2, 17, 7)
+    g.rect(cx - 9, 74, 4, 1, 4)
+    g.rect(cx + 5, 77, 4, 1, 4)
+    g.rect(cx - 13, 83, 10, 5, 5)
+    g.rect(cx + 3, 83, 10, 5, 5)
+    g.rect(cx - 13, 83, 10, 1, 7)
+    g.rect(cx + 3, 83, 10, 1, 7)
+    g.put(cx - 13, 87, 4)
+    g.put(cx + 12, 87, 4)
+
+    # ── Schmale Ruestung (Rumpf), verwittert ──
+    g.rect(cx - 15, 35 - bob, 30, 30, 5)
+    g.rect(cx - 15, 35 - bob, 3, 30, 7)
+    g.rect(cx + 12, 35 - bob, 3, 30, 4)
+    g.rect(cx - 15, 35 - bob, 30, 2, 7)
+    g.rect(cx - 13, 46 - bob, 26, 2, 4)      # Segmentnaht
+    g.rect(cx - 13, 46 - bob, 26, 1, 7)
+    g.rect(cx - 13, 58 - bob, 26, 3, 5)      # Guertel
+    g.put(cx - 13, 58 - bob, 20)
+    g.put(cx - 11, 58 - bob, 21)
+    # Rost und Dellen, kein Roboter-Look.
+    g.rect(cx + 6, 39 - bob, 3, 2, 6)
+    g.rect(cx - 12, 52 - bob, 2, 3, 6)
+    g.line(cx + 9, 43 - bob, cx + 11, 52 - bob, 4)
+    g.line(cx - 13, 61 - bob, cx - 10, 64 - bob, 4)
+
+    # ── Hohler Brustkorb mit Rippen und Glutherz ──
+    g.rect(cx - 6, 41 - bob, 12, 14, 2)
+    g.rect(cx - 6, 41 - bob, 12, 1, 5)
+    for ry in (44, 48, 52):
+        g.rect(cx - 5, ry - bob, 10, 1, 6)
+        g.put(cx - 5, ry - bob, 7)
+        g.put(cx + 4, ry - bob, 7)
+    g.rect(cx - 4, 54 - bob, 8, 1, 3)        # Zwerchfell-Schatten
+
+    # ── Asymmetrische Schulterplatten ──
+    g.ellipse(cx - 20, 36 - bob, 9, 5, 5)    # links gross
+    g.ellipse(cx + 20, 37 - bob, 7, 4, 5)    # rechts klein
+    g.put(cx - 26, 33 - bob, 7)
+    g.put(cx + 16, 35 - bob, 7)
+    g.rect(cx - 27, 29 - bob, 2, 5, 5)       # abgebrochener Spike links
+    g.put(cx - 27, 29 - bob, 7)
+    g.rect(cx + 23, 33 - bob, 2, 3, 5)
+    g.put(cx + 23, 33 - bob, 7)
+    # Riss in der linken Platte.
+    g.put(cx - 22, 33 - bob, 4)
+
+    # ── Arme ──
+    g.rect(cx - 26, 39 - bob, 6, 21, 5)
+    g.rect(cx - 26, 39 - bob, 2, 21, 7)
+    g.rect(cx - 26, 57 - bob, 5, 4, 10)      # Knochenhand
+    g.put(cx - 26, 57 - bob, 11)
+    if wind:
+        # Wind-up: Schwertarm hoch, Klinge diagonal nach rechts oben.
+        g.line(cx + 19, 38 - bob, cx + 24, 27 - bob, 5, 3)
+        g.line(cx + 19, 38 - bob, cx + 24, 27 - bob, 7, 1)
+        g.rect(cx + 22, 25 - bob, 5, 4, 10)  # Hand
+        g.put(cx + 22, 25 - bob, 11)
+        g.line(cx + 24, 26 - bob, cx + 38, 3, 8, 2)
+        g.line(cx + 24, 25 - bob, cx + 38, 2, 9, 1)
+        g.put(cx + 39, 2, 13)                # Spitzenglut
+        g.rect(cx + 19, 27 - bob, 10, 2, 20) # Parierstange
+        g.put(cx + 19, 27 - bob, 21)
+    else:
+        g.rect(cx + 19, 39 - bob, 6, 19, 5)
+        g.rect(cx + 19, 39 - bob, 2, 19, 7)
+        g.rect(cx + 21, 55 - bob, 5, 4, 10)  # Hand am Griff
+        g.put(cx + 21, 55 - bob, 11)
+        # Duennes Schwert: 2-px-Klinge mit Lichtkante, senkrecht.
+        g.rect(cx + 23, 24 - bob, 2, 33, 8)
+        g.rect(cx + 23, 24 - bob, 1, 33, 9)
+        g.put(cx + 24, 24 - bob, 6)
+        g.rect(cx + 20, 56 - bob, 8, 2, 20)  # Parierstange
+        g.put(cx + 20, 56 - bob, 21)
+        g.rect(cx + 23, 58 - bob, 2, 8, 16)  # Griff
+        g.rect(cx + 21, 66 - bob, 6, 2, 20)  # Knauf
+        g.put(cx + 26, 66 - bob, 21)
+        g.put(cx + 24, 23 - bob, 13)         # Spitzenglut
+
+    # ── Hals + Schaedel ──
+    g.rect(cx - 4, 29 - bob, 8, 7, 10)
+    g.rect(cx - 4, 29 - bob, 2, 7, 11)
+    g.ellipse(cx, 22 - bob, 8, 9, 10)
+    g.rect(cx - 5, 27 - bob, 10, 5, 10)      # Kiefer
+    g.rect(cx - 5, 27 - bob, 10, 1, 11)
+    g.rect(cx - 4, 30 - bob, 8, 1, 2)        # Zahnreihe
+    g.put(cx - 3, 30 - bob, 11)
+    g.put(cx, 30 - bob, 11)
+    g.put(cx + 3, 30 - bob, 11)
+    g.put(cx - 7, 24 - bob, 11)              # Wangenknochen
+    g.put(cx + 6, 24 - bob, 11)
+    g.rect(cx - 1, 25 - bob, 2, 2, 2)        # Nasenhoehle
+    # Leere Augenhoehlen (2), Glut als Detail nach dem Shading.
+    g.rect(cx - 6, 19 - bob, 4, 4, 2)
+    g.rect(cx + 2, 19 - bob, 4, 4, 2)
+    g.put(cx - 5, 18 - bob, 9)
+    g.put(cx + 3, 18 - bob, 9)
+
+    # ── Schiefe, asymmetrische Krone ──
+    g.rect(cx - 10, 13 - bob, 7, 3, 20)      # links tiefer
+    g.rect(cx - 4, 11 - bob, 12, 3, 20)      # rechts hoeher
+    g.rect(cx + 7, 10 - bob, 3, 3, 20)
+    g.rect(cx - 10, 13 - bob, 7, 1, 21)
+    g.put(cx - 5, 11 - bob, 21)
+    g.put(cx + 7, 10 - bob, 21)
+    g.rect(cx - 11, 15 - bob, 9, 1, 16)      # Rostkante
+    # Zacken ungleich hoch, einer abgebrochen.
+    for sx, sy, hh in ((cx - 10, 8, 5), (cx - 6, 10, 3), (cx - 1, 5, 6),
+                       (cx + 7, 8, 3)):
+        g.rect(sx, sy - bob, 2, hh, 20)
+        g.put(sx, sy - bob, 21)
+    # Abgebrochener Zackenstumpf + fehlender Zacken.
+    g.rect(cx + 3, 9 - bob, 2, 2, 20)
+    g.put(cx + 3, 9 - bob, 16)
+    g.put(cx + 2, 13 - bob, 16)
+    g.put(cx - 4, 5 - bob, 22)               # Glanzpunkt
+
+    # ── Dornen / Thronfragmente im Vordergrund ──
+    for ox, oy, dx, dy in ((-34, 92, -27, 80), (-29, 93, -22, 84),
+                           (27, 92, 21, 82), (33, 93, 36, 85)):
+        g.line(cx + ox, oy, cx + dx, dy, 26, 2)
+        g.line(cx + ox, oy, cx + dx, dy + 1, 24, 1)
+        g.put(cx + dx, dy, 25)
+    g.rect(cx - 38, 88, 8, 4, 5)
+    g.rect(cx - 38, 88, 8, 1, 7)
+    g.rect(cx + 30, 89, 7, 3, 5)
+    g.rect(cx + 30, 89, 7, 1, 7)
+    if wind:
+        # Wind-up: Umhangbausch + gluehende Dornenspitzen.
+        for i in range(8):
+            g.put(cx - 35 + i * 2, 86 - (i % 3), 26)
+            g.put(cx + 30 - i, 86 - (i % 2), 26)
+
+    details = [(cx - 7, 24 - bob, 11), (cx + 6, 24 - bob, 11)]
+    details += eye_glow(cx - 5, 20 - bob, f)
+    details += eye_glow(cx + 3, 20 - bob, f)
+    details += eye_glow(cx - 1, 50 - bob, f)
+    details += [(cx + 20, 56 - bob, 21), (cx - 27, 29 - bob, 7)]
+    return finish(g, details)
 
 
 
