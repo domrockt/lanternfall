@@ -241,7 +241,7 @@
       "id": 18,
       "title": "M2-01 Waffen-Framework + 5 Basen (flail/frost/thorn/storm/lantern) mit VFX",
       "description": "Gemeinsames Framework, Treffer/FX, alle 8 Stufen, Schaden>0, Screenshots.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:39:44Z",
@@ -252,16 +252,21 @@
           "at": "2026-11-25T00:43:44Z",
           "by": "build",
           "text": "doing → review: Alle 5 Basen spielbar, 8 Stufen, Schaden>0 (flail 1840, frost 216, thorn 336, storm 4158, lantern), 0 JS-Fehler. Screenshots geprueft; Rand: Hit-Partikel reduziert, Storm/Orbs sichtbarer. Commit aa5a289."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK (2. Runde). 6 Basen mit 8 Stufen + VFX, verify 12/12, Schaden 1400-7100."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:43:44Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 19,
       "title": "M2-02 Powerups Stufe 1-5 wirken + Tests",
       "description": "Alle 6 Passives nachweislich auf Stats (Unit-Tests + Debug-Stats).",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:43:44Z",
@@ -272,16 +277,21 @@
           "at": "2026-11-25T00:43:57Z",
           "by": "build",
           "text": "doing → review: 42 Tests gruen; je Passive alle Stufen 1-5 gegen effective*-Funktionen geprueft. Commit 4ae078c."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. Powerups 1-5 statsgetestet, 56 Tests gruen."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:43:57Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 20,
       "title": "M2-03 Evolutionslogik canEvolve/chestRewards + Tests",
       "description": "Reine Funktionen, Daten, Evolution ersetzt Basiswaffe im Slot.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:43:57Z",
@@ -292,16 +302,21 @@
           "at": "2026-11-25T00:46:33Z",
           "by": "build",
           "text": "doing → review: canEvolve/chestRewards pur + 12 neue Tests (53 gesamt). Alle 6 Evolutionen mit eigenen Effekten, Schaden>0 (Wrath-Bug gefixt: Schaden lief unter flail statt wrath_pendulum). Commit 106a4f1."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. canEvolve/chestRewards getestet, Evolutions-State-Leak gefixt (ba4676d) und im verify-Skript abgesichert."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:46:33Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 21,
       "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, Öffnungs-Sequenz, Platzhalter-Boss",
       "description": "openChest/spawnBoss(0), 1/3/5 Belohnungen, Evolution Vorrang, GIF.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:46:33Z",
@@ -312,16 +327,21 @@
           "at": "2026-11-25T00:49:57Z",
           "by": "build",
           "text": "doing → review: Truhe droppt (Boss-Platzhalter), Glanz, Randpfeil sichtbar/getestet, Sequenz pausiert Run, 5 Slots rollen, Evolution Vorrang. openChest -> phoenix im Slot. GIF shots/m2-chest.gif. 0 JS-Fehler. Commit 58645ec."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. Truhe/Sequenz/GIF, Evolution via Truhe; Roll-/Hide-Timer gefixt."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:49:57Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 22,
       "title": "M2-05 UI: 16x16-Icons, HUD-Leiste, Pause, Umlaute im Bitmap-Font",
       "description": "6 Waffen + 6 Powerups + 6 Evolutionen, Level-up/Pause/HUD.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:49:57Z",
@@ -332,16 +352,21 @@
           "at": "2026-11-25T00:54:21Z",
           "by": "build",
           "text": "doing → review: 18 Icons 16x16 (Kontur, Palette, Distinktheit validiert), Kontaktbogen geprueft; in Level-up-Karten, HUD-Leiste, Pause (2 Spalten) und Truhen-Slots. Font rendert ÄÖÜäöüß, Texte auf Umlaute umgestellt. 54 Tests, Build gruen. Commit 5e24cb4."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. 18 Icons, HUD/Pause/Levelup/Truhe, echte Umlaute; Font jetzt konsistent versal."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:54:21Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 23,
       "title": "M2-06 Gras-Kacheln beruhigen + gezielte Dekor-Kacheln",
       "description": "Weniger Pixelrauschen, ruhige Flächen, gruppierte Deko.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:54:21Z",
@@ -352,31 +377,41 @@
           "at": "2026-11-25T00:56:28Z",
           "by": "build",
           "text": "doing → review: Gras ohne Pixelrauschen, Bueschel in 2x2-Bloecken, Deko gruppiert; Screenshots vor/nach Laufen geprueft, 0 JS-Fehler. 54 Tests. Commit 2afd7f5."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. Gras ruhig, gruppierte Bueschel, Screenshots geprueft."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:56:28Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 24,
       "title": "M2-07 Ergebnis-Screen: Schadenstabelle mit Icons",
       "description": "Alle Waffen inkl. Evolutionen, sortiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:56:28Z",
           "by": "build",
           "text": "todo → review: 3-spaltige Schadenstabelle mit Icons, filtert 0, sortiert, max 12; reine damageTable + 2 Tests (56 gesamt). Ergebnisse per skipTo(1800) geprueft. Commit 77f..."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. 3-spaltige Schadenstabelle mit Icons, reine damageTable + Tests."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:56:28Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 25,
       "title": "M2-08 Abnahme: verify-weapons.mjs, 12 Screenshots, GIF, perf 500+6 Waffen",
       "description": "Vision-Prüfung aller Shots, Mängel beheben, Messwerte.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:56:28Z",
@@ -387,16 +422,21 @@
           "at": "2026-11-25T01:06:21Z",
           "by": "build",
           "text": "doing → review: verify-weapons.mjs: 12/12 Waffen Stufe 8, Schaden 1400-9090, 0 JS-Fehler; alle 12 Shots gesichtet. Truhe->Phoenix Evolution bewiesen; GIF 48 Frames 480x270. perf: 56.9 FPS, min 505/avg 575 Gegner, 6 Waffen Stufe 8 (Fx-Cap 360). Bolt-Checkerboard gefixt. Commit e5..."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. verify-weapons 12/12 + evolution-state, GIF, perf 580 Gegner bei 56.6-58.6 FPS, 0 JS-Fehler, alle Shots gesichtet."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T01:06:21Z"
+      "updated": "2026-11-25T01:21:43Z"
     },
     {
       "id": 26,
       "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
       "description": "Build/Tests grün, offene Punkte ehrlich.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T01:06:21Z",
@@ -407,10 +447,15 @@
           "at": "2026-11-25T01:08:59Z",
           "by": "build",
           "text": "doing → review: GAME.md Status M2 mit Messwerten (56 Tests, 12/12 Waffen 1400-9090 Schaden, 56.9 FPS bei 505/575 Gegnern) und ehrlichen Luecken (Bso-Platzhalter, 3/30 Gegner, Sound/Meta offen). Commit 2415a5e."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. GAME.md Status M2 mit Messwerten und ehrlichen Luecken."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T01:08:59Z"
+      "updated": "2026-11-25T01:21:43Z"
     }
   ]
 }

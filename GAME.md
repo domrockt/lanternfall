@@ -150,8 +150,8 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 
 **Messwerte (dieser Rechner, headless Chromium):**
 - `npm test`: **56 Tests grün** (RNG, XP, Level-up, Wellen, Stats/Powerups, Evolution/Truhe, Schadenstabelle, SpatialHash, Daten, Sprite-Grids, Font-Umlaute).
-- `node scripts/verify-weapons.mjs`: **12/12 Waffen** (6 Basen + 6 Evolutionen) als Stufe 8 mit je 50 Gegnern, 5 s + Wirkphase; Schaden je Waffe **1.400–9.090**, 0 JS-Fehler. Screenshots `shots/m2-weapon-<id>.png` alle gesichtet. Truhe → **Phönixschwarm** im Slot bewiesen (`shots/m2-evolution-phoenix.png`), Sequenz als `shots/m2-chest.gif` (48 Frames, 480×270).
-- `npm run perf`: **56,9 FPS** (Ziel ≥ 55) mit allen **6 Waffen auf Stufe 8** und gehaltenen **≥ 500 Gegnern** (Ziel 580, min. 505, ø 575) über 10 s; 1.002 Kills, 0 JS-Fehler. Screenshot `shots/perf-500.png`.
+- `node scripts/verify-weapons.mjs`: **12/12 Waffen** (6 Basen + 6 Evolutionen) als Stufe 8 mit je 50 Gegnern, 5 s + Wirkphase; Schaden je Waffe **1.400–7.100**, 0 JS-Fehler. Screenshots `shots/m2-weapon-<id>.png` alle gesichtet. Truhe → **Phönixschwarm** im Slot bewiesen (`shots/m2-evolution-phoenix.png`), Sequenz als `shots/m2-chest.gif` (48 Frames, 480×270). Zusätzlicher Regressionstest im Skript: nach Laterne → Seelenleuchtfeuer bleibt der Laternen-Schaden konstant (keine ewigen Basis-Orbs).
+- `npm run perf`: **56,6 FPS** (Ziel ≥ 55) mit allen **6 Waffen auf Stufe 8** und gehaltenen **580 Gegnern** (Ziel 580, min. 580, ø 580) über 10 s; 1.095 Kills, 0 JS-Fehler. Screenshot `shots/perf-500.png`.
 
 **Bekannte Lücken / offene Punkte (ehrlich):**
 - **Bosse sind Platzhalter:** `spawnBoss(i)` erzeugt einen vergrößerten Moorzombie mit 9× HP; echte Boss-Mechaniken, HP-Leiste, Warn-Banner und 6 Bosse folgen in M4. Truhen droppen daher aktuell nur über den Platzhalterboss/Debug.
