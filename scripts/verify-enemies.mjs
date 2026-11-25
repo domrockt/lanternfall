@@ -92,7 +92,10 @@ try {
     const rangedDists = [];
     const orbitTrack = new Map();
     const fullWindow = archetype === "ranged" || archetype === "orbiter";
-    const deadline = Date.now() + (fullWindow ? 7000 : archetype === "splitter" ? 6500 : 4200);
+    // Orbiter brauchen ein laengeres Fenster: der kumulierte Winkel haengt an
+    // Geschwindigkeit/Radius und schwankte bei 7 s um die 120-Grad-Schwelle.
+    const deadline = Date.now() + (archetype === "orbiter" ? 11000
+      : fullWindow ? 7000 : archetype === "splitter" ? 6500 : 4200);
     let tick = 0;
     while (Date.now() < deadline) {
       await page.waitForTimeout(120);

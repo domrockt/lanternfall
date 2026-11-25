@@ -70,12 +70,14 @@ export class UI extends Phaser.Scene {
 
     // HUD-Leiste oben
     this.add.rectangle(0, 0, GAME_WIDTH, 12, PAL[C.nightDeep], 0.82).setOrigin(0, 0).setDepth(10);
-    this.levelText = new PixelText(this, 5, 2, "LV 1", C.lantern).setDepth(11);
-    this.timerText = new PixelText(this, GAME_WIDTH / 2, 2, "00:00", C.candleWhite, "center").setDepth(11);
-    this.killsText = new PixelText(this, GAME_WIDTH - 5, 2, "KILL 0", C.bone, "right").setDepth(11);
-    this.xpBg = this.add.rectangle(5, 8, GAME_WIDTH - 10, 5, PAL[C.ink]).setOrigin(0, 0)
+    // Texte auf y=1 (7 px hoch) und Depth 13: der XP-Balken darf keine
+    // Glyphenzeile mehr ueberdecken (sonst wird aus "02:02" optisch "07:07").
+    this.levelText = new PixelText(this, 5, 1, "LV 1", C.lantern).setDepth(13);
+    this.timerText = new PixelText(this, GAME_WIDTH / 2, 1, "00:00", C.candleWhite, "center").setDepth(13);
+    this.killsText = new PixelText(this, GAME_WIDTH - 5, 1, "KILL 0", C.bone, "right").setDepth(13);
+    this.xpBg = this.add.rectangle(5, 8, GAME_WIDTH - 10, 4, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11);
-    this.xpFill = this.add.rectangle(6, 9, GAME_WIDTH - 12, 3, PAL[C.amber]).setOrigin(0, 0).setDepth(12);
+    this.xpFill = this.add.rectangle(6, 9, GAME_WIDTH - 12, 2, PAL[C.amber]).setOrigin(0, 0).setDepth(12);
     // Spieler-HP oben links, fester Rahmen + 4-px-Füllung.
     this.hpBg = this.add.rectangle(5, 15, 106, 9, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11);

@@ -182,21 +182,22 @@ def pale_shepherd(f: int) -> Grid:
             w += 1
         x0 = cx - w // 2
         g.rect(x0, y, w, 1, 8)
-        g.rect(x0, y, 3, 1, 10)
-        g.rect(x0 + 3, y, 2, 1, 9)
+        g.rect(x0, y, 3, 1, 10)          # Licht nur auf den linken 3 px
         g.rect(cx + w // 2 - 3, y, 3, 1, 6)
         g.rect(cx + w // 2 - 1, y, 1, 1, 5)
-    # Falten: 2-px-Schattenbahnen mit heller Kante -> 3 Stufen statt Flaeche.
-    for fx in (-13, -6, 2, 9, 15):
-        g.rect(cx + fx, 36 - bob, 2, 26, 6)
-        g.rect(cx + fx - 1, 36 - bob, 1, 26, 9)
-        g.put(cx + fx, 36 - bob, 10)
-    # Drei 2-px-Nachtbänder von Brust bis Saum (2/3/4).
-    for bx, c in ((cx - 16, 4), (cx - 1, 3), (cx + 13, 2)):
-        g.rect(bx, 34 - bob, 2, 28, c)
-        g.put(bx, 34 - bob, min(11, c + 1))
-    g.rect(cx - 10, 40 - bob, 2, 22, 6)      # Falten
-    g.rect(cx + 8, 44 - bob, 2, 18, 6)
+    # Nur drei ausgestellte Keilfalten im Unterteil (oben 1 px, unten 3 px):
+    # sie laufen mit der Trapezform nach aussen, keine Full-height-Streifen.
+    for fx, drift, top, length in ((-13, -2, 40, 23), (0, 0, 38, 25), (12, 2, 43, 20)):
+        for j in range(length):
+            y = top + j - bob
+            wid = 1 + (2 * j) // (length - 1)
+            xx = cx + fx + (drift * j) // (length - 1)
+            g.rect(xx, y, wid, 1, 6)
+            g.put(xx - 1, y, 9)
+            g.put(xx + wid, y, 5)
+    # Kurze Nachtfalte rechts als Tiefe.
+    g.rect(cx + 6, 48 - bob, 2, 15, 3)
+    g.put(cx + 6, 48 - bob, 4)
     # Ausgefranster Saum (2–3 px Zacken, keine gerade Kante).
     for x in range(cx - 19, cx + 20, 3):
         g.rect(x, 63 - bob, 2, 2, 8)
@@ -264,12 +265,16 @@ def pale_shepherd(f: int) -> Grid:
         g.rect(sx, sy, 1, 54, 17)
         g.rect(sx - 1, sy + 48, 4, 3, 17)
         ty = sy + 3
-        g.line(sx - 1, ty, sx - 9, ty + 2, 11, 3)
-        g.line(sx - 9, ty + 2, sx - 16, ty + 8, 11, 3)
-        g.line(sx - 16, ty + 8, sx - 15, ty + 17, 10, 3)
-        g.line(sx - 2, ty - 1, sx - 9, ty + 1, 12, 1)
-        g.line(sx - 10, ty + 1, sx - 17, ty + 7, 12, 1)
-        g.rect(sx - 18, ty + 12, 3, 2, 12)
+        # Gefuellter Halbmond: 3-px-Band in 11, helle Aussenkante 12,
+        # dunkle Innenkante 5 -> 3 Schattierungsstufen, kein 1-px-Haken.
+        g.line(sx - 1, ty, sx - 10, ty + 3, 11, 2)
+        g.line(sx - 10, ty + 3, sx - 15, ty + 10, 11, 2)
+        g.line(sx - 15, ty + 10, sx - 14, ty + 17, 11, 2)
+        g.line(sx - 3, ty + 2, sx - 11, ty + 5, 5, 1)   # dunkle Innenseite
+        g.line(sx - 11, ty + 5, sx - 14, ty + 12, 5, 1)
+        g.line(sx - 2, ty - 1, sx - 10, ty + 2, 12, 1)  # Aussenkante Licht
+        g.line(sx - 10, ty + 2, sx - 15, ty + 9, 12, 1)
+        g.rect(sx - 16, ty + 12, 2, 3, 12)
     # Füße (2 px Kontur, 3 Stufen).
     g.rect(cx - 10, 66 - bob, 8, 4, 6)
     g.rect(cx - 10, 66 - bob, 8, 1, 8)

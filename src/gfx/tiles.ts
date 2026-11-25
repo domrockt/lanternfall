@@ -77,8 +77,8 @@ function pixelColor(kind: TileKind, wx: number, wy: number, seed: number): numbe
   }
   if (kind === "path") {
     const n = valueNoise(wx + 130, wy + 60, 30, seed + 41);
-    // Weg: warme Erdrampe, klar heller als Gras (15/16/17).
-    return n < 0.3 ? 15 : n > 0.82 ? 17 : 16;
+    // Weg: warme Erdrampe, klar heller als Gras (16/17/18, dominant 17).
+    return n < 0.3 ? 16 : n > 0.82 ? 18 : 17;
   }
   const n = valueNoise(wx, wy, 26, seed + 911);
   // Ruhige Flaeche: nur 28/29/30 in breiten Flecken, 31 nur fuer Bueschel.
@@ -140,10 +140,14 @@ export function paintTerrain(
           ctx.fillRect(x, y, 1, 1);
         }
       } else if (k === 0) {
-        const bank = !isLand(x - 2, y) || !isLand(x + 2, y) || !isLand(x, y - 2) || !isLand(x, y + 2);
-        if (bank) {
-          // Schlamm-/Schilf-Uebergang statt harter Grasnarbe.
+        // 2-px-Schlammbank: innen 14 direkt am Wasser, aussen 15.
+        const d1 = !isLand(x - 1, y) || !isLand(x + 1, y) || !isLand(x, y - 1) || !isLand(x, y + 1);
+        const d2 = !isLand(x - 2, y) || !isLand(x + 2, y) || !isLand(x, y - 2) || !isLand(x, y + 2);
+        if (d1) {
           ctx.fillStyle = hex(14);
+          ctx.fillRect(x, y, 1, 1);
+        } else if (d2) {
+          ctx.fillStyle = hex(15);
           ctx.fillRect(x, y, 1, 1);
         }
       }
@@ -193,31 +197,52 @@ export function paintTerrain(
           ctx.fillStyle = hex(5);
           ctx.fillRect(px + 3, py + 12, 5, 1);
           ctx.fillStyle = hex(30);
-          ctx.fillRect(px + 8, py + 11, 1, 2);
+          ctx.fillRect(px + 8, py + 11, 2, 2);
+        }
+        // Schilf am Ufer: 2-px-Bueschel (30/31) nur in Wassernaehe.
+        const nearWater = terrainKindAt(tx * TILE - 4, ty * TILE + 8, seed, worldSize) === "water" ||
+          terrainKindAt(tx * TILE + 20, ty * TILE + 8, seed, worldSize) === "water" ||
+          terrainKindAt(tx * TILE + 8, ty * TILE - 4, seed, worldSize) === "water" ||
+          terrainKindAt(tx * TILE + 8, ty * TILE + 20, seed, worldSize) === "water";
+        if (nearWater && r > 0.55) {
+          const rx = px + 2 + Math.floor(tileHash(tx, ty, seed + 411) * 8);
+          const ry = py + 8 + Math.floor(tileHash(ty, tx, seed + 417) * 4);
+          ctx.fillStyle = hex(30);
+          ctx.fillRect(rx, ry, 2, 6);
+          ctx.fillRect(rx + 4, ry + 2, 2, 4);
+          ctx.fillStyle = hex(31);
+          ctx.fillRect(rx, ry, 2, 2);
+          ctx.fillRect(rx + 4, ry + 2, 2, 1);
+          ctx.fillStyle = hex(29);
+          ctx.fillRect(rx - 1, ry + 6, 4, 1);
         }
       } else if (kind === "water") {
         if (r > 0.66) {
           for (let i = 0; i < 2; i++) {
             const wx = px + 1 + Math.floor(tileHash(tx + i, ty + 2, seed + 301) * 7);
             const wy = py + 3 + i * 6 + Math.floor(tileHash(tx + 1, ty + i, seed + 307) * 3);
+            const wlen = 5 + Math.floor(tileHash(tx + i, ty + 9, seed + 311) * 3);
             ctx.fillStyle = hex(6);
-            ctx.fillRect(wx, wy, 11, 2);
+            ctx.fillRect(wx, wy, wlen, 2);
             ctx.fillStyle = hex(7);
-            ctx.fillRect(wx + 1, wy, 9, 1);
+            ctx.fillRect(wx + 1, wy, wlen - 2, 1);
             ctx.fillStyle = hex(8);
-            ctx.fillRect(wx + 3, wy, 4, 1);
+            ctx.fillRect(wx + 2, wy, Math.max(2, wlen - 4), 1);
           }
         }
       } else if (kind === "path") {
-        if (r > 0.62) {
-          // Kies in 2x2-Clustern (3-4 Steinchen), nicht als Einzelpixel.
-          for (let i = 0; i < 3; i++) {
+        // Kies pro 2-3 Kacheln sichtbar: 3-4 Steine als 2x2-Cluster.
+        if (tileHash(Math.floor(tx / 2), Math.floor(ty / 2), seed + 61) > 0.5) {
+          const stones = 3 + (tileHash(tx, ty, seed + 63) > 0.5 ? 1 : 0);
+          for (let i = 0; i < stones; i++) {
             const sx = px + 2 + Math.floor(tileHash(tx + i, ty, seed + 67) * 11);
             const sy = py + 3 + Math.floor(tileHash(ty, tx + i, seed + 69) * 9);
             ctx.fillStyle = hex(15);
             ctx.fillRect(sx, sy, 2, 2);
-            ctx.fillStyle = hex(16);
+            ctx.fillStyle = hex(18);
             ctx.fillRect(sx, sy, 1, 1);
+            ctx.fillStyle = hex(17);
+            ctx.fillRect(sx + 1, sy + 1, 1, 1);
           }
         }
       } else if (kind === "mud") {

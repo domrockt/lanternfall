@@ -14,3 +14,10 @@ shots/chest-frames/
 .opencode-M3.log
 .fix-brief-m3.md
 .opencode-M3-fix.log
+.briefs/
+shots/tmp/
+!shots/m4-fx.gif
+.brief-fix1.md
+.opencode-fix1.log
+scripts/art/__pycache__/
+shots/raw/

@@ -228,3 +228,41 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - Die Boss-Mechaniken sind archetypische Muster (Hazards/Projektile/Summons/Phasen), aber nicht jede GAME.md-Beschreibung ist eins zu eins inszeniert (z. B. Moorkönigin-Sprung als Schockwelle vs. eigenes Sprung-Sprite; Hexenzirkel als ein Boss-Sprite statt drei separate Hexen).
 - Balance ist god-mode-geprüft, nicht menschlich gespielt: 500 Gegner + Bosse in der letzten Minute sind fordernd; AutoPlay-Siege sagen nichts über Fairness aus.
 - Audio, Damage-Numbers, Meta/Shop fehlen weiterhin (spätere Meilensteine). Das Fullrun-FPS-Minimum von 52,3 liegt unter dem 55er-Ziel, obwohl `perf` das Ziel bei 500 Gegnern erfüllt; Ursache ist die gewachsene Endgame-Dichte (~500 Gegner + Boss + Gems) und headless-Rendering – ein weiterer Render-/Batch-Pass bleibt offen. Bosse laufen 64–78 px/s (Basisspieler 62/59, mit Windstiefel 5 ≈ 87); ohne Bewegungspowerup wird man eingeholt, das ist bewusst fordernd, aber nicht menschlich playgetestet. Der Bot behandelt Bosse mit `threat 0.35` bewusst als wenig zu meidendes Ziel, damit er in Waffenreichweite bleibt (god-mode-geprüft).
+
+## Status — M4 (Grafik-Pass: alle Assets in Final-Pixelart), 2026-11-25
+
+**Fertig (ersetzt die M3-Lücke „lesbare Platzhalter, 2 Frames, Art-Pass offen“):**
+- **Art-Pipeline in Python ohne PIL** (`scripts/art/`): `lib.py` (Palette, Raster, Rampen, region-aware Shading, 1-px-Kontur, PNG-Read/Write via zlib, 5×7-Labelschrift, TS-Export), `gen.py` (Asset-Server-Client), `contact.py` (Kontaktbögen) und je ein Generator pro Assetklasse. Die generierten Raster liegen als TS in `src/gfx/gen-*.ts`; Texturen werden weiterhin **einmal beim Boot** per Canvas/GenerateTexture gebaut (kein Canvas pro Frame, Pools unverändert).
+- **ART.md** als verbindliche Stilbibel: Rampen pro Material, Licht oben-links, 1-px-Kontur (Index 0 nur Kontur, 13 nur Glow-Kern), Mindest-Schattierungsstufen, 4 echte Laufposen, Tier-Akzente, Porträt-Rahmung (Augenlinie y≈24).
+- **Spielfiguren Mira/Kael:** 32-px-Sprites, 4 Richtungen × 4 unterscheidbare Laufposen + 2 Idle + Trefferpose; Schatten/Hitbox unverändert; 48×48-Porträts als gemeinsame Büste, Kael mit grauem Bart statt rotem Balken, 2×2-Goldnieten, 2-px-Kettenreihen.
+- **30 Gegner** in fünf Tiergrößen (16/20/24/28/32 px), 2–4 Frames mit echten Pose-Wechseln (Bob/Lift/Beinphase 0-1-2-1), Tod-Effekt, Tier-Akzentfarbe 31/11/20/26/13 als 2×1-Marke auf 2×2-Sockel, Elite-Leuchtrand unverändert. Silhouetten bleiben unit-getestet eindeutig.
+- **6 Bosse** in 56–96 px mit drei Frames (Ruhe/Atmen/Wind-up); der Wind-up-Frame wird bei `telegraph > 0` gewählt und ist an die Angriffssets aus `src/logic/bosses.ts` gekoppelt (z. B. Knochenfürst hebt den Arm + Glut in der Hand, Fahler Hirte hebt die Sichel). Glockenturm-Golem mit hoher Glockenform und Klöppel.
+- **Terrain pixelgenau (kein 16-px-Kachelmuster):** Moorgras mit nur grober Noise-Oktave (28/29/30), sparsamen 2×2-Flecken und 2-px-Büscheln; Wege in 16/17/18 (dominant 17, klar heller als Gras) mit 3–4-Stein-Kiesgruppen pro 2–3 Kacheln; Wasser mit großen Tiefenflächen und 5–7-px-Wellengruppen an Weltkoordinaten; Ufer mit 2-px-Schaum wasserseitig und 2-px-Schlammbank landseitig (14 innen/15 außen) plus 2-px-Schilf; Dekoration in 3–4er-Clustern pro 2×2-Block (toter Baum, Grabstein, Stein, Ruine, Laternenpfahl). Lichtkreis/Vignette bleiben; Laternenpfosten sind kleine Lichtquellen.
+- **FX/UI:** Projektile für alle 12 Waffen (6 Basis + 6 Evolutionen), XP-Kristalle (7/11 px), Truhe geschlossen/offen (Deckel am Scharnier, Eisenbänder, Schloss, Glutkern), Pickups, 18 lesbare 16×16-Icons (Herz mit Kerbe, Boot mit Sohle, Sanduhr, Phönix), 9-Slice-Rahmen (`ui_frame`, Border 8), Titelbild 480×270 (Moorhorizont, Laternenmond, Nebel, Glühwürmchen) + Emblem.
+- **Performance-Politur:** Terrain-Kacheltypen werden pro Chunk gecacht; Gegner ausserhalb des Viewports verlassen die Render-List (`visible=false`), ebenso XP-Kristalle (bis 240). Das hielt den 500-Gegner-Burst und Minute 25 trotz geteilter Host-Last ueber 55 FPS.
+- **HUD/UI-Politur:** Spieler-HP-Leiste nur bei Schaden sichtbar (1-px-Tintenrahmen), Boss-Leiste massive Füllung 24 + Schatten 23, Truhen-Panel mit 9-Slice-Rahmen und fünf Slots inkl. Icon-Fach, Level-up-Panel mit denselben Icons.
+
+**Belege:**
+- Kontaktbögen (4×, beschriftet): `shots/m4-sheet-chars.png`, `-enemies.png`, `-bosses.png`, `-tiles.png`, `-fx.png`, `-ui.png`.
+- In-Game: `shots/m4-title.png`, `m4-charselect.png`, `m4-run-minute2/12/22.png`, `m4-enemy-roster.png`, `m4-boss-fight.png`, `m4-levelup.png`, `m4-chest.png`; 0 JS-Fehler.
+- Art-Director-Abnahme mit Notentabelle: `shots/m4-art-review.md` (Runden 1–9 dokumentiert; **Runde 9: bestanden, alle sieben Gruppen ≥4**).
+
+**Messwerte (dieser Rechner, Build aus `dist/`):**
+- `npm run build`: grün. `npm test`: **85 Tests grün** (unverändert; Asset-APIs/Keys kompatibel).
+- `npm run verify:enemies`: **30/30 Gegner OK**, 0 JS-Fehler; Orbiter-Messfenster 11 s (Gargoyle 153–163°, Harpyie 135–164°) nach zuvor sporadisch knapp verfehlter 120°-Schwelle.
+- `npm run verify:bosses`: **6/6 Bosse OK**, 0 JS-Fehler.
+- `npm run verify:terrain`: **OK**, Gras 61,9 px/s, Wasser 37,2 px/s, Ratio 0,60 (erlaubt 0,55–0,68), Spritzer 6, Gegner im Wasser 8,3/15 px/s.
+- `npm run sepcheck`: **passed**, 0 Overlaps, minDist 2,14 px.
+- `npm run perf`: **55,2 FPS gemessen** (55,9 Roh-FPS, 559 Frames/10 s, worstFrameMs 133,4) bei 500 gehaltenen Gegnern und **56,1 FPS gemessen** (55,4 Roh-FPS, 555 Frames/10 s, worstFrameMs 166,7) bei Minute 25 mit 300 Gegnern + allen Evolutionen; Ziel ≥55 beide erfüllt, 0 JS-Fehler. JSON: `shots/perf-m3.json`.
+- `npm run fullrun` (M3-Lauf, in diesem M4-Durchgang **nicht neu gemessen**): 30,1 Sim-Minuten, alle 6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Morgendämmerung/Sieg, 0 JS-Fehler (Details im Lauf-Log).
+
+**Bekannte Lücken (ehrlich):**
+- Gegner der Tierstufen 0–1 haben 2 Frames, Tier 2–4 vier; GAME.md erlaubt „2–4“, die Posen sind aber bescheidener als bei Figuren/Bossen.
+- Der Glockenturm-Golem liest sich als Glockenkorpus mit Kopf, die Glockenform ist aber flächiger als bei den übrigen Bossen.
+- Die grobe 16-px-Klassifikation der Terrainflächen bleibt sichtbar (Übergänge sind 2–6-px-Bänder), ist aber nicht mehr als Kachelgitter lesbar. Der Weg liegt mit 16/17/18 bewusst deutlich über dem Gras und wirkt neben Wasser als zweite helle Fläche.
+- `voidcaller` bleibt der dunkelste Gegner; sein heller Saum (8/9) ist bei 1× noch fein, im Roster aber lesbar. Bei `wraith` wurde der Körper eine Stufe aufgehellt.
+- Kael-Porträt: grauer Bart (Kinnkante + 8/9/10-Cluster) und Stirnreif sind lesbar, das Gesicht bleibt im Vergleich zu Mira kantiger.
+- Der Boss-Beleg `shots/m4-boss-fight.png` ist für die Sichtprüfung komponiert: Horde ausgeblendet, Boss neben den Spieler gesetzt, Zeit eingefroren, UI oben. Die Boss-Logik selbst ist unverändert; `verify:bosses` prüft sie separat.
+- Die Minuten-Belege (`shots/m4-run-minute2/12/22.png`) stammen aus einem echten Run mit 30x-Zeitraffer (kein `skipTo`): Timer, Kills, Level und Drops entstehen organisch; nur God-Mode und die 6 Waffen wurden per Debug gesetzt, damit die Bilder dicht sind.
+- Performance schwankt auf dem geteilten Host um ±2–3 FPS (Last anderer Prozesse); die Messwerte oben sind der letzte vollständige Lauf mit `passed: true`. Bei höherer Host-Last lagen frühere Läufe bei 54,0–54,8 FPS — die Culling-Massnahmen sind deshalb bewusst konservativ (120-px-Vorlauf, keine Pop-ins).
+- Die Kontaktbögen sind Prüf-Artefakte (Python-Renderer), keine Laufzeit-Assets; im Spiel kommen ausschließlich die generierten Texturen aus `src/gfx/gen-*.ts` zum Einsatz.

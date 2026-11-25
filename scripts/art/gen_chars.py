@@ -81,11 +81,14 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     lift_l = 2 if (not idle and step == 1) else 0
     lift_r = 2 if (not idle and step == 3) else 0
     if side:
-        # Vorderes Bein nach vorn (+2) und hinteres zurueck (-2), 2-px-Hub.
-        fwd = 2 if step == 1 else -2 if step == 3 else 0
-        back = -2 if step == 1 else 2 if step == 3 else 0
-        lift_f = 2 if step == 3 else 0
-        lift_b = 2 if step == 1 else 0
+        # Vier klar verschiedene Phasen: Kontakt A, Durchschwung vorn, Kontakt B,
+        # Durchschwung hinten. Fuesse 2 px vor/zurueck, angehobenes Bein 2 px hoch.
+        fwd_arr  = [2, 1, -2, -1]
+        back_arr = [-2, -1, 2, 1]
+        lift_f_arr = [0, 2, 0, 0]
+        lift_b_arr = [0, 0, 0, 2]
+        fwd, back = fwd_arr[step], back_arr[step]
+        lift_f, lift_b = lift_f_arr[step], lift_b_arr[step]
         fx = cx + 2 + fwd
         g.rect(fx - 2, 28 - lift_f, 4, 4 + lift_f, BOOT_D)
         g.rect(fx - 1, 28 - lift_f, 3, 3 + lift_f, BOOT)
@@ -127,7 +130,7 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     g.put(cx + ox + tw // 2 - 1, body_y, CLOTH_S)
 
     # ── Arme ──
-    swing = 0 if idle else [0, 1, 0, -1][frame]
+    swing = 0 if idle else [1, 0, -1, 0][frame]
     if side:
         g.rect(cx + 5 + swing, body_y + 1, 2, 6, CLOTH)      # vorderer Arm
         g.rect(cx + 6 + swing, body_y + 1, 1, 5, CLOTH_S)
@@ -139,14 +142,19 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     else:
         for side_i in (-1, 1):
             ax = cx + ox + (5 - bw // 2 if side_i > 0 else -(7 - bw // 2))
+            if hit:
+                ax += 1 if side_i > 0 else -1
             g.rect(ax, body_y + 2, 2, 6, CLOTH_S)
             g.rect(ax, body_y + 2, 2, 4, CLOTH)
             g.rect(ax, body_y + 8, 2, 2, HAND)
             g.put(ax, body_y + 9, HAND_S)
 
-    # ── Kopf ──
+    # ── Kopf (Treffer: Oberkoerper 2 px zur Seite geneigt) ──
     hy = 13 + bob - recoil
-    hcx = cx + ox
+    hcx = cx + ox + (2 if hit and not side else 0)
+    if hit and not side:
+        # Schultern/Arme ziehen 1 px nach aussen zurueck -> breitere Silhouette.
+        pass
     if side:
         g.ellipse(hcx, hy, 4, 4, SKIN)
         g.rect(hcx - 2, hy + 3, 5, 2, SKIN)
@@ -278,10 +286,12 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     lift_l = 2 if (not idle and step == 1) else 0
     lift_r = 2 if (not idle and step == 3) else 0
     if side:
-        fwd = 2 if step == 1 else -2 if step == 3 else 0
-        back = -2 if step == 1 else 2 if step == 3 else 0
-        lift_f = 2 if step == 3 else 0
-        lift_b = 2 if step == 1 else 0
+        fwd_arr  = [2, 1, -2, -1]
+        back_arr = [-2, -1, 2, 1]
+        lift_f_arr = [0, 2, 0, 0]
+        lift_b_arr = [0, 0, 0, 2]
+        fwd, back = fwd_arr[step], back_arr[step]
+        lift_f, lift_b = lift_f_arr[step], lift_b_arr[step]
         fx = cx + 3 + fwd
         g.rect(fx - 2, 28 - lift_f, 5, 4 + lift_f, BOOT_D)
         g.rect(fx - 1, 28 - lift_f, 4, 3 + lift_f, BOOT)
@@ -341,7 +351,7 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.put(sx + 2, body_y + 1, GOLD)  # Niete
 
     # ── Arme / Fäuste ──
-    swing = 0 if idle else [0, 1, 0, -1][frame]
+    swing = 0 if idle else [1, 0, -1, 0][frame]
     if side:
         # Vorderarm mit gewickelter Faust, hinten ein angedeuteter Arm.
         g.rect(cx + 4 + swing, body_y + 2, 3, 4, ROBE)
@@ -357,6 +367,8 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     else:
         for side_i in (-1, 1):
             ax = cx + ox + (7 - bw // 2 if side_i > 0 else -(10 - bw // 2))
+            if hit:
+                ax += 1 if side_i > 0 else -1
             g.rect(ax, body_y + 3, 2, 6, ROBE_D)
             fx = ax + (4 if side_i < 0 else -1)
             g.rect(fx, body_y + 8, 5, 4, HAND)
@@ -369,7 +381,7 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
 
     # ── Kopf: kahl, breite Kiefer, eiserner Stirnreif, Narbe ──
     hy = 13 + bob - recoil
-    hcx = cx + ox
+    hcx = cx + ox + (2 if hit and not side else 0)
     if side:
         g.ellipse(hcx, hy, 4, 4, SKIN)
         g.rect(hcx - 3, hy + 3, 6, 2, SKIN)
@@ -538,15 +550,20 @@ def portrait(kind: str) -> Grid:
         # Narbe; Brauen werden erst nach dem Shading grau gesetzt.
         g.rect(31, 20, 2, 2, 25)
         g.put(33, 22, 24)
-        # Grauer Bart (Eisen-/Asche-Rampe), kein roter Balken.
-        g.rect(17, 32, 15, 4, 8)
-        g.rect(17, 32, 15, 1, 10)
-        g.rect(19, 32, 11, 2, 10)
-        g.put(20, 35, 6)
-        g.put(23, 35, 8)
-        g.put(26, 35, 6)
-        g.put(18, 34, 9)
-        g.put(31, 34, 6)
+        # Grauer Bart: Kinnkante in Haut-Schatten, darunter 2-px-Cluster 8/9/10.
+        g.rect(19, 31, 13, 1, SKIN_D)                 # 2-px-Kinnkante zum Gesicht
+        g.put(22, 31, SKIN_D)
+        g.put(27, 31, SKIN_D)
+        g.rect(17, 32, 15, 4, 8)                      # Bartgrund dunkel
+        g.rect(19, 32, 3, 2, 10)                      # Licht-Cluster oben links
+        g.rect(24, 33, 3, 1, 10)
+        g.rect(18, 33, 2, 2, 9)                       # Mittel-Cluster seitlich
+        g.rect(27, 32, 3, 2, 9)
+        g.rect(21, 34, 2, 1, 10)
+        g.put(19, 35, 5)
+        g.put(22, 35, 6)
+        g.put(25, 35, 5)
+        g.put(28, 35, 6)
         # Gebetskette, 2-px-Perlen.
         for x in range(13, 35, 4):
             g.rect(x, 36, 2, 2, GOLD)

@@ -79,7 +79,7 @@ def sheet_chars() -> str:
     # Pro Figur eine Zeile: 3 Richtungen ×4 Frames + Extras-Zelle = 13 Zellen.
     cols = 13
     cell_w, cell_h = 184, 210
-    sw, sh = cols * cell_w + 44, 2 * cell_h + 118
+    sw, sh = cols * cell_w + 128, 2 * cell_h + 118
     sheet = Sheet(sw, sh)
     sheet.text(20, 16, "LANTERNFALL  M4  -  SPIELFIGUREN (32PX)", TITLE, 3)
     sheet.text(20, 52, "LAUF 4 FRAMES  /  IDLE 2  /  TREFFER  /  PORTRAIT 48", LABEL, 2)
@@ -93,12 +93,13 @@ def sheet_chars() -> str:
                 sheet.blit(data[f"player_{name}_{d}"][f], x + 24, y + 16, 4)
                 sheet.text(x + 4, y + 152, f"{dl} {f}", LABEL, 1)
                 x += cell_w
-        # Idle + Hit + Portrait in einer Extraspalte.
-        sheet.cell(x, y, 176, 168, True)
-        sheet.blit(data[f"player_{name}_down_idle"][0], x + 6, y + 22, 3)
-        sheet.blit(data[f"player_{name}_hit"][0], x + 56, y + 22, 3)
-        sheet.blit(data[f"portrait_{name}"][0], x + 96, y + 6, 3)
-        sheet.text(x + 4, y + 152, "IDLE / HIT / PORTRAIT", LABEL, 1)
+        # Idle + Hit + Portrait nebeneinander in einer breiteren Extraspalte.
+        sheet.cell(x, y, 260, 168, True)
+        sheet.blit(data[f"player_{name}_down_idle"][0], x + 4, y + 18, 2)
+        sheet.blit(data[f"player_{name}_hit"][0], x + 72, y + 18, 2)
+        # Portrait 48 px bei 2x -> 96 px breit, vollstaendig in der Zelle.
+        sheet.blit(data[f"portrait_{name}"][0], x + 142, y + 14, 2)
+        sheet.text(x + 4, y + 152, "IDLE / HIT / PORTRAIT 48", LABEL, 1)
         y += cell_h
     sheet.text(20, sh - 30, "KONTUR 1PX INK 0  -  HAUT-RAMPE 9/11/12  -  LICHT OBEN-LINKS", LABEL, 2)
     path = os.path.join(SHOTS, "m4-sheet-chars.png")
@@ -140,7 +141,7 @@ def sheet_enemies() -> str:
     import gen_enemies
     data = gen_enemies.build()
     order = list(gen_enemies.TIER.keys())
-    cells_w, cells_h = 270, 196
+    cells_w, cells_h = 270, 268
     cols = 6
     sw, sh = cols * cells_w + 40, 5 * cells_h + 126
     sheet = Sheet(sw, sh)
@@ -159,7 +160,8 @@ def sheet_enemies() -> str:
             sheet.text(x + 6, y + 6, eid.upper(), LABEL_HI, 1)
             # Frame-Leiste: jede Pose einzeln, 2x, mit F-Nummer.
             sx = x + 4
-            sy = y + cells_h - 72
+            # Feste Leistenposition: Labels enden oberhalb der naechsten Tier-Zeile.
+            sy = y + 168
             for fi, fg in enumerate(frames):
                 sheet.blit(fg, sx, sy, 2)
                 sheet.text(sx + 1, sy + fg.h * 2 + 2, f"F{fi}", LABEL, 1)
@@ -259,12 +261,12 @@ def grid_rgba_local(grid):
 
 
 def sheet_tiles() -> str:
-    sw, sh = 1340, 740
+    sw, sh = 1640, 740
     sheet = Sheet(sw, sh)
     sheet.text(20, 14, "LANTERNFALL  M4  -  TILESET / AUTOTILING", TITLE, 3)
     sheet.text(20, 50, "PIXEL-TERRAIN  -  UFER 2 PX SCHAUM + SCHLAMMBANK  -  DEKOR IN GRUPPEN  -  WEICHER LICHTPOOL", LABEL, 2)
     atlas_path = os.path.join(SHOTS, "tileset-atlas.png")
-    scale = 4
+    scale = 3
     if os.path.exists(atlas_path):
         w, h, pix = read_rgba_png(atlas_path)
         ax, ay = 24, 86
@@ -277,15 +279,16 @@ def sheet_tiles() -> str:
         for gy in range(0, h // 16 + 1):
             for gx in range(w):
                 sheet.px[(ay + gy * 16 * scale) * sheet.w + ax + gx * scale] = PAL[5] + (255,)
-        ly = ay + h * scale + 12
+        ly = ay + h * scale + 14
         sheet.text(ax, ly, "REIHE 1: WASSER  -  REIHE 2: WEG  -  REIHE 3: SCHLAMM", LABEL_HI, 1)
-        sheet.text(ax, ly + 14, "REIHE 4: GRAS  -  REIHE 5/6: DEKOR-GRUPPEN + REINES GRAS", LABEL, 1)
-        sheet.text(ax, ly + 28, "GITTER = 16-PX-KACHELN (HILFSLINIEN), TERRAIN SELBST PIXELGENAU", LABEL, 1)
-        sheet.text(ax, ly + 42, "DEKOR: TOTER BAUM / GRAB / STEIN / RUINE / LATERNE", LABEL, 1)
+        sheet.text(ax, ly + 14, "REIHE 4: GRAS  -  REIHE 5/6: DEKOR + REINES GRAS", LABEL, 1)
+        sheet.text(ax, ly + 28, "GITTER = 16-PX-KACHELN (HILFSLINIEN)", LABEL, 1)
+        sheet.text(ax, ly + 42, "TERRAIN SELBST PIXELGENAU, KEINE KACHELNAHT", LABEL, 1)
+        sheet.text(ax, ly + 56, "DEKOR: BAUM / GRAB / STEIN / RUINE / LATERNE", LABEL, 1)
     src = os.path.join(SHOTS, "m4-probe-terrain.png")
     if os.path.exists(src):
         w, h, pix = read_rgba_png(src)
-        px, py = 360, 86
+        px, py = 520, 86
         sheet.blit_pix(min(w, 960), min(h, 540), pix, px, py, 1, 1)
         sheet.text(px, py + min(h, 540) + 10, "IN-GAME-ERDE (PFAD + MOORGRAS + DEKOR, 2X SPIELPIXEL)", LABEL_HI, 1)
         sheet.text(px, py + min(h, 540) + 26, "AUTOTILING IM LAUFENDEN SPIEL, KEINE JS-FEHLER", LABEL, 1)

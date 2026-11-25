@@ -20,6 +20,7 @@ import { damageAfterArmor, timeScaleClamped } from "../logic/combat";
 import type { Offer } from "../logic/levelup";
 import { GroundRenderer } from "../gfx/GroundRenderer";
 import { SPRITE_FRAMES } from "../gfx/textures";
+import { PLAYER_FRAMES, type WalkDir } from "../gfx/chars";
 import { EnemyPool, type EnemyRuntime } from "../systems/EnemyPool";
 import { SpatialHash } from "../systems/SpatialHash";
 import { Spawner } from "../systems/Spawner";
@@ -121,6 +122,11 @@ export class Run extends Phaser.Scene {
   private player!: Phaser.GameObjects.Container;
   private playerBody!: Phaser.GameObjects.Image;
   private lantern?: Phaser.GameObjects.Image;
+  /** Lauf-/Idle-Animation (32-px-Spielerframes). */
+  private moving = false;
+  private walkPhase = 0;
+  private idlePhase = 0;
+  private walkDir: WalkDir = "down";
   private shadow!: Phaser.GameObjects.Image;
   private light!: Phaser.GameObjects.Image;
   private ground!: GroundRenderer;
@@ -198,13 +204,9 @@ export class Run extends Phaser.Scene {
     this.visualX = startX;
     this.visualY = startY;
     this.player = this.add.container(startX, startY).setDepth(12);
-    this.playerBody = this.add.image(0, 0, this.character.spriteKey).setOrigin(0.5, 0.5);
+    this.playerBody = this.add.image(0, 0, this.character.spriteKey === "player_kael" ? "player_kael_down_idle_0" : "player_mira_down_idle_0").setOrigin(0.5, 0.5);
     this.player.add(this.playerBody);
-    if (this.character.id === "mira") {
-      this.lantern = this.add.image(9, -3, "lantern_small").setScale(1.5);
-      this.player.add(this.lantern);
-    }
-    this.shadow = this.add.image(startX, startY + 7, "shadow").setDepth(11);
+    this.shadow = this.add.image(startX, startY + 14, "shadow").setScale(2, 1).setDepth(11);
 
     this.light = this.add.image(startX, startY, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD)
@@ -214,8 +216,8 @@ export class Run extends Phaser.Scene {
     this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
       .setScrollFactor(0).setDepth(80).setAlpha(0.9);
 
-    this.hpBg = this.add.rectangle(startX - 13, startY - 17, 26, 4, PAL[C.ink]).setOrigin(0, 0.5).setDepth(25);
-    this.hpFill = this.add.rectangle(startX - 12, startY - 17, 24, 2, PAL[C.crimson]).setOrigin(0, 0.5).setDepth(26);
+    this.hpBg = this.add.rectangle(startX - 13, startY - 23, 26, 5, PAL[C.ink]).setOrigin(0, 0.5).setDepth(25).setVisible(false);
+    this.hpFill = this.add.rectangle(startX - 12, startY - 22, 24, 2, PAL[C.crimson]).setOrigin(0, 0.5).setDepth(26).setVisible(false);
 
     this.cameras.main.startFollow(this.player, true, 0.18, 0.18);
     this.cameras.main.fadeIn(220, 6, 7, 12);
@@ -352,8 +354,12 @@ export class Run extends Phaser.Scene {
     this.maybeSplash(dt);
 
     const pickupRadius = effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus;
+    const cam = this.cameras.main;
     this.pickups.update(dt, this.posX, this.posY, pickupRadius, (value) => {
       this.giveXpInternal(value);
+    }, {
+      x0: cam.scrollX - 80, y0: cam.scrollY - 80,
+      x1: cam.scrollX + cam.width + 80, y1: cam.scrollY + cam.height + 80,
     });
     const nearChest = this.chests.near(this.posX, this.posY, 15);
     if (nearChest) this.openChest(nearChest);
@@ -430,7 +436,11 @@ export class Run extends Phaser.Scene {
       if (this.keys.up.isDown || this.keys.up2.isDown) dy -= 1;
       if (this.keys.down.isDown || this.keys.down2.isDown) dy += 1;
     }
-    if (dx === 0 && dy === 0) return;
+    if (dx === 0 && dy === 0) {
+      this.moving = false;
+      return;
+    }
+    this.moving = true;
     const len = Math.hypot(dx, dy);
     dx /= len;
     dy /= len;
@@ -438,10 +448,10 @@ export class Run extends Phaser.Scene {
     const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
     this.facingX = dx;
     this.facingY = dy;
+    this.walkDir = Math.abs(dx) > Math.abs(dy) ? "side" : dy < 0 ? "up" : "down";
     this.posX = Phaser.Math.Clamp(this.posX + dx * speed * dt, 10, WORLD_SIZE - 10);
     this.posY = Phaser.Math.Clamp(this.posY + dy * speed * dt, 10, WORLD_SIZE - 10);
-    this.playerBody.setFlipX(dx < 0);
-    if (this.lantern) this.lantern.x = dx < 0 ? -9 : 9;
+    this.playerBody.setFlipX(dx < 0 && this.walkDir === "side");
   }
 
   /** Bot: weicht Gegnern/Projektilen/Warnflächen aus und sammelt XP-Kristalle. */
@@ -675,22 +685,50 @@ export class Run extends Phaser.Scene {
     this.visualX = rx;
     this.visualY = ry;
     this.player.setPosition(rx, ry);
-    this.shadow.setPosition(rx, ry + 7);
+    this.shadow.setPosition(rx, ry + 14);
     this.light.setPosition(rx, ry);
     const pulse = 1.35 + Math.sin(this.elapsed * 2) * 0.04;
     this.light.setScale(pulse);
+    const frames = PLAYER_FRAMES[this.character.id];
+    let key: string;
     if (this.hitFlash > 0) {
       this.hitFlash = Math.max(0, this.hitFlash - realDt);
-      this.playerBody.setTintFill(PAL[C.hotRed]);
+      key = frames.hit;
+    } else if (this.moving) {
+      this.walkPhase += realDt * 9;
+      key = frames.walk[this.walkDir][Math.floor(this.walkPhase) % 4];
+    } else {
+      this.idlePhase += realDt * 2;
+      key = frames.idle[this.walkDir][Math.floor(this.idlePhase) % 2];
     }
+    if (this.playerBody.texture.key !== key) this.playerBody.setTexture(key);
+    if (this.hitFlash > 0) this.playerBody.setTint(PAL[C.hotRed]);
     else this.playerBody.clearTint();
     if (this.invuln > 0 && this.hitFlash <= 0) this.playerBody.setAlpha(0.55);
     else this.playerBody.setAlpha(1);
 
     const t = this.elapsed;
+    // Sichtbarkeits-Culling: Gegner weit ausserhalb des Viewports brauchen
+    // keine Positions-/Animations-/Tint-Updates (bei 500+ Einheiten spuerbar).
+    const cam = this.cameras.main;
+    const vx0 = cam.scrollX - 120, vy0 = cam.scrollY - 120;
+    const vx1 = cam.scrollX + cam.width + 120, vy1 = cam.scrollY + cam.height + 120;
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
       e.flash = Math.max(0, e.flash - realDt);
+      if (e.x < vx0 || e.x > vx1 || e.y < vy0 || e.y > vy1) {
+        // Ausserhalb des Viewports auch aus dem Render-List nehmen: sichtbar
+        // bleibende, aber nicht gezeichnete Sprites kosten weiter Draw-Aufrufe.
+        if (e.sprite.visible) {
+          e.sprite.setVisible(false);
+          if (e.elite || e.boss) e.aura.setVisible(false);
+        }
+        continue;
+      }
+      if (!e.sprite.visible) {
+        e.sprite.setVisible(true);
+        if (e.elite || e.boss) e.aura.setVisible(true);
+      }
       // Hit-Flash als Blinzeln: Silhouette/Farbe bleibt lesbar (kein Weiß-Wash).
       const alpha = e.flash > 0 ? 0.45 : 1;
       if (e.alpha !== alpha) {
@@ -711,7 +749,9 @@ export class Run extends Phaser.Scene {
       e.sprite.setPosition(Math.round(e.x), Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2));
       const frames = SPRITE_FRAMES[e.def.spriteKey];
       if (frames) {
-        const frame = frames[Math.floor(t * 6 + e.phase) % frames.length];
+        // Bosse: Wind-up-Frame während des Telegraphen, sonst Ruhe/Atmen.
+        const windup = e.boss && e.telegraph > 0 && frames.length >= 3 ? frames[2] : null;
+        const frame = windup ?? frames[Math.floor(t * 6 + e.phase) % Math.min(2, frames.length)];
         if (e.sprite.texture.key !== frame) e.sprite.setTexture(frame);
       }
     }
@@ -720,10 +760,12 @@ export class Run extends Phaser.Scene {
 
   private updateHpBar(): void {
     const px = this.posX;
-    const py = this.posY - 17;
+    const py = this.posY - 23;
     const ratio = Math.max(0, Math.min(1, this.hp / this.maxHp));
-    this.hpBg.setPosition(Math.round(px - 13), Math.round(py));
-    this.hpFill.setPosition(Math.round(px - 12), Math.round(py));
+    // Die schwebende Mini-Leiste entfällt; HP steht jetzt oben links im HUD.
+    const hurt = false;
+    this.hpBg.setVisible(hurt).setPosition(Math.round(px - 13), Math.round(py));
+    this.hpFill.setVisible(hurt).setPosition(Math.round(px - 12), Math.round(py + 1));
     this.hpFill.setScale(Math.max(0.001, ratio), 1);
   }
 

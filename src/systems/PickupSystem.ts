@@ -65,6 +65,7 @@ export class PickupSystem {
     playerY: number,
     pickupRadius: number,
     onCollect: (value: number, size: GemSize) => void,
+    view?: { x0: number; y0: number; x1: number; y1: number },
   ): void {
     const magnetRadius = pickupRadius * 2.2;
     for (let i = this.gems.length - 1; i >= 0; i--) {
@@ -91,6 +92,12 @@ export class PickupSystem {
       g.x += g.vx * dt;
       g.y += g.vy * dt;
       g.sprite.setPosition(Math.round(g.x), Math.round(g.y));
+      // Kristalle ausserhalb des Viewports nicht rendern (Entfernen aus dem
+      // Render-List spart bei Minute 25 mit bis zu 240 Gems Draw-Aufrufe).
+      if (view) {
+        const show = g.x >= view.x0 && g.x <= view.x1 && g.y >= view.y0 && g.y <= view.y1;
+        if (g.sprite.visible !== show) g.sprite.setVisible(show);
+      }
       if (dist < 10) {
         onCollect(g.value, g.size);
         g.active = false;

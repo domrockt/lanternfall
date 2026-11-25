@@ -61,17 +61,20 @@ export class GroundRenderer {
 
   private decorAt(tx: number, ty: number, kind: TileKind): DecorKind | null {
     if (kind === "water" || kind === "path") return null;
-    // Dekor in 2x2-Blöcken gruppiert, damit es nicht wie Rauschen wirkt.
-    // Nur an der Block-Ecke platzieren, sonst wiederholt sich das Dekor im 2x2-Block.
-    if (tx % 2 !== 0 || ty % 2 !== 0) return null;
     const bx = Math.floor(tx / 2);
     const by = Math.floor(ty / 2);
-    const r = tileHash(bx, by, this.seed + 431);
-    if (r > 0.965) return "tree";
-    if (r > 0.95) return "grave";
-    if (r > 0.935) return "stone";
-    if (r > 0.926) return "ruin";
-    if (r > 0.918) return "post";
+    // Dekor-Cluster: wenn ein 2x2-Block ausloest, tragen 3-4 seiner Zellen
+    // Objekte (Stein/Grab/Post/Ruine) -> Gruppe innerhalb 32 px statt Einzelstueck.
+    const cluster = tileHash(bx, by, this.seed + 431);
+    if (cluster > 0.9) {
+      const cell = tileHash(tx, ty, this.seed + 433);
+      if (cell < 0.12) return null;            // 3-4 statt 4 Objekte
+      const pick = tileHash(tx + 7, ty + 3, this.seed + 437);
+      if (pick > 0.72) return "stone";
+      if (pick > 0.5) return "post";
+      if (pick > 0.32) return "grave";
+      return "ruin";
+    }
     if (kind === "mud" && tileHash(tx, ty, this.seed + 8) > 0.85) return "stone";
     return null;
   }

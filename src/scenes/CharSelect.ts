@@ -45,7 +45,7 @@ export class CharSelect extends Phaser.Scene {
 
     this.refresh();
     new PixelText(this, 240, 244, "PFEILE = AUSWAHL   ENTER = START", C.mist, "center").setDepth(4);
-    new PixelText(this, 240, 257, this.debug ? "DEBUG-MODUS" : `SEED ${this.seed}`, C.nightSlate, "center").setDepth(4);
+    new PixelText(this, 240, 257, `SEED ${this.seed}`, C.nightSlate, "center").setDepth(4);
 
     const kb = this.input.keyboard!;
     kb.on("keydown-LEFT", () => this.move(-1));

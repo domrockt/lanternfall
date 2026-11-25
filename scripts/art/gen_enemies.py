@@ -136,7 +136,8 @@ def wisp(f: int) -> Grid:
     g.rect(7, cy + 5, 2, 2, 5)
     g.put(7, cy + 7, 3)
     g.rect(9, cy + 4, 2, 1, 7)
-    return finish(g, [(5, cy - 2, 31), (9, cy - 2, 31)], shade=False)
+    return finish(g, [(5, cy - 2, 31), (6, cy - 2, 31),
+                      (9, cy - 2, 31), (10, cy - 2, 31)], shade=False)
 
 
 def mudling(f: int) -> Grid:
@@ -165,7 +166,9 @@ def mudling(f: int) -> Grid:
     g.rect(6, cy + 2, 5, 2, 2)
     g.put(7, cy + 2, l)
     g.put(9, cy + 2, l)
-    return finish(g, [(5, cy - 2, 31), (9, cy - 2, 31)], shade=False)
+    # 2x1-Tier-Akzent in der 2x2-Augenhoehlung (ART.md: Akzent mind. 2 px breit).
+    return finish(g, [(5, cy - 2, 31), (6, cy - 2, 31),
+                      (9, cy - 2, 31), (10, cy - 2, 31)], shade=False)
 
 def crow(f: int) -> Grid:
     g = Grid(16, 16)
@@ -195,7 +198,7 @@ def crow(f: int) -> Grid:
     g.rect(9, cy + 3, 2, 2, 16)
     g.rect(6, cy + 5, 3, 1, 20)
     g.rect(9, cy + 5, 3, 1, 20)
-    return finish(g, [(10, cy - 2, 31), (13, cy - 2, 20)])
+    return finish(g, [(10, cy - 2, 31), (11, cy - 2, 31), (13, cy - 2, 20)])
 
 
 def bogzombie(f: int) -> Grid:
@@ -203,18 +206,24 @@ def bogzombie(f: int) -> Grid:
     d, b, l = R["marsh"]
     bob = 0 if f % 2 else 1
     sway = 1 if f % 2 else 0
-    # Kopf + Hals, ausgefranste Robe.
-    g.ellipse(8, 4 - bob, 3, 3, l)
+    # Kopf + Hals, ausgefranste Robe. Kopf-Grundton 30, Licht 31 nur als
+    # Oberkante: so heben sich die 2x1-Tier-Akzente (31) von der Flaeche ab.
+    g.ellipse(8, 4 - bob, 4, 3, b)
+    g.put(6, 1 - bob, l)
+    g.put(7, 1 - bob, l)
+    g.put(8, 1 - bob, l)
     g.rect(6, 7 - bob, 5, 1, b)
     for i, w in enumerate((6, 7, 8)):
         g.rect(8 - w // 2, 8 + i - bob, w, 1, b)
     g.rect(5, 8 - bob, 2, 4, l)
     g.rect(11, 9 - bob, 2, 3, d)
     # Augen 2x1-Akzent 31, Mundnaht.
-    g.rect(6, 3 - bob, 2, 2, 2)
-    g.rect(9, 3 - bob, 2, 2, 2)
-    g.rect(7, 5 - bob, 3, 1, d)
+    # Mundnaht zuerst, dann Augen: sonst ueberschreibt die Naht die untere
+    # Augenzeile und die Hoehle wirkt angeschnitten.
+    g.rect(7, 5 - bob, 4, 1, d)
     g.put(8, 6 - bob, d)
+    g.rect(6, 4 - bob, 2, 2, 2)
+    g.rect(10, 4 - bob, 2, 2, 2)
     # Arme 2 px: einer erhoben, einer hängt.
     g.rect(2 + sway, 7 - bob, 2, 4, l)
     g.rect(1 + sway, 6 - bob, 2, 1, l)
@@ -224,7 +233,12 @@ def bogzombie(f: int) -> Grid:
     g.rect(9, 12 - (1 if f % 2 else 0), 2, 3, d)
     g.rect(3, 11, 2, 1, d)
     g.rect(12, 11 - bob, 2, 1, 31)
-    return finish(g, [(6, 3 - bob, 31), (9, 3 - bob, 31), (1 + sway, 6 - bob, 31)])
+    # Akzent als untere Augenzeile (dunkle Hoehle oben, heller Blick unten),
+    # damit der 2x1-Streifen nicht als Braue ueber der Hoehle liest.
+    return finish(g, [(6, 4 - bob, 31), (7, 4 - bob, 31),
+                      (10, 4 - bob, 31), (11, 4 - bob, 31),
+                      (5, 4 - bob, 30),   # Kopfkante neben dem Auge neutral halten
+                      (1 + sway, 6 - bob, 31)])
 
 
 def toad(f: int) -> Grid:
@@ -394,10 +408,17 @@ def slime(f: int) -> Grid:
     g.rect(12, cy - 1, 2, 2, INK)
     g.rect(9, cy + 2, 3, 1, INK)
     g.put(11, cy + 3, INK)
+    # Markenzeichen: Schleimtropfen an der Seite, 2-px-Zahnreihe im Mund.
+    g.rect(17, cy, 2, 4, b)
+    g.put(17, cy + 4, l)
+    g.put(18, cy + 4, l)
+    g.rect(9, cy + 2, 2, 1, 11)
+    g.rect(11, cy + 2, 2, 1, 11)
     g.rect(5, cy + 1, 2, 2, d)
     g.put(5, cy + 1, l)
     g.rect(14, cy - 2, 2, 2, d)
-    return finish(g, [(7, cy - 1, 11), (12, cy - 1, 11), (8, cy - 6, 11)])
+    return finish(g, [(7, cy - 1, 11), (8, cy - 1, 11),
+                      (12, cy - 1, 11), (13, cy - 1, 11), (8, cy - 6, 11)])
 
 def scarecrow(f: int) -> Grid:
     g = Grid(20, 20)
@@ -785,17 +806,17 @@ def wraith(f: int) -> Grid:
     for i, w in enumerate((12, 13, 14, 14, 13, 12, 10, 7, 4, 2)):
         y = top + 5 + i
         x0 = 14 - w // 2 + (sway if i > 4 else 0)
-        g.rect(x0, y, w, 1, 5 if i % 2 else 4)
-        g.rect(x0, y, 2, 1, 6)
-        g.put(x0, y, 7)
-        g.put(x0 + w - 1, y, 3)
+        g.rect(x0, y, w, 1, 6 if i % 2 else 5)
+        g.rect(x0, y, 3, 1, 7)
+        g.put(x0, y, 8)
+        g.put(x0 + w - 1, y, 4)
     g.rect(9, top + 12, 10, 1, 6)
-    g.rect(8, top + 3, 12, 2, 6)
-    g.rect(8, top + 3, 3, 2, 7)
-    g.ellipse(14, top + 1, 6, 4, 5)
-    g.rect(9, top, 11, 5, 4)
-    g.rect(9, top, 3, 5, 6)
-    g.put(9, top, 7)
+    g.rect(8, top + 3, 12, 2, 7)
+    g.rect(8, top + 3, 3, 2, 8)
+    g.ellipse(14, top + 1, 6, 4, 6)
+    g.rect(9, top, 11, 5, 5)
+    g.rect(9, top, 3, 5, 7)
+    g.put(9, top, 8)
     g.rect(11, top + 2, 2, 2, 2)
     g.rect(16, top + 2, 2, 2, 2)
     g.rect(11, top + 2, 2, 1, 26)
@@ -827,15 +848,18 @@ def treant(f: int) -> Grid:
     g.rect(12, 14 - bob, 1, 4, 15)
     g.rect(4, 8 - bob, 6, 2, 16)
     g.rect(2, 6 - bob, 4, 2, 15)
-    g.rect(1, 9 - bob, 3, 2, 14)
+    g.rect(2, 9 - bob, 3, 2, 14)
     g.rect(18, 11 - bob, 7, 2, 16)
-    g.rect(24, 8 - bob, 3, 2, 15)
-    g.rect(1, 3 - bob, 5, 3, 30)
+    g.rect(23, 8 - bob, 3, 2, 15)
+    # Blattkronen: 2x2-Cluster, mindestens 2 px Innenabstand zur Canvas-Kante.
+    g.rect(4, 3 - bob, 4, 2, 30)
     g.rect(2, 2 - bob, 3, 2, 31)
-    g.rect(5, 4 - bob, 3, 2, 29)
-    g.rect(25, 4 - bob, 4, 3, 30)
-    g.rect(26, 4 - bob, 2, 2, 31)
-    g.rect(22, 6 - bob, 3, 2, 29)
+    g.rect(8, 5 - bob, 2, 2, 29)
+    g.rect(2, 5 - bob, 2, 2, 28)
+    g.rect(20, 4 - bob, 4, 2, 30)
+    g.rect(23, 3 - bob, 3, 2, 31)
+    g.rect(18, 6 - bob, 2, 2, 29)
+    g.rect(24, 6 - bob, 2, 2, 28)
     g.rect(11, 12 - bob, 7, 5, 14)
     g.rect(12, 12 - bob, 3, 1, 16)
     g.rect(16, 12 - bob, 2, 1, 16)
@@ -843,7 +867,8 @@ def treant(f: int) -> Grid:
     g.rect(16, 13 - bob, 2, 2, 2)
     g.rect(13, 16 - bob, 3, 2, INK)
     g.put(14, 17 - bob, 26)
-    return finish(g, [(11, 13 - bob, 26), (16, 13 - bob, 26), (14, 17 - bob, 26)])
+    return finish(g, [(11, 13 - bob, 26), (12, 13 - bob, 26),
+                      (16, 13 - bob, 26), (17, 13 - bob, 26), (14, 17 - bob, 26)])
 
 def imp(f: int) -> Grid:
     g = Grid(28, 28)
@@ -1062,7 +1087,8 @@ def voidcaller(f: int) -> Grid:
         sx = 16 - w // 2 + (sway if i > 4 else 0)
         g.rect(sx, y, w, 1, b)
         g.rect(sx, y, 3, 1, l)
-        g.put(sx + 3, y, 7)
+        g.put(sx + 3, y, 8)
+        g.put(sx, y, 9)
         g.rect(sx + w - 3, y, 3, 1, d)
     for x in (8, 13, 19, 24):
         g.rect(x, top + 15, 2, 3, 4)
