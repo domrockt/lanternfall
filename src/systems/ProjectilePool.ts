@@ -19,6 +19,14 @@ export interface ProjectileRuntime {
   /** Ember zielt schwach auf diesen Gegner (sanftes Homing). */
   target: EnemyRuntime | null;
   targetUid: number;
+  /** Trail-Textur + Intervall (s), null = kein Trail. */
+  trail: string | null;
+  trailTimer: number;
+  trailInterval: number;
+  /** Additive Überblendung für magische Projektile. */
+  blendAdd: boolean;
+  /** Optionaler Flächen-Explosionsradius beim Treffer (Evolution). */
+  explodeRadius: number;
 }
 
 /** Projektil-Pool. Textur frei wählbar (M2 nutzt dieselbe Infrastruktur). */
@@ -35,6 +43,7 @@ export class ProjectilePool {
     x: number; y: number; vx: number; vy: number; damage: number;
     pierce: number; knockback: number; life?: number; weaponId?: string;
     texture?: string; radius?: number; target?: EnemyRuntime | null;
+    trail?: string | null; trailInterval?: number; blendAdd?: boolean; explodeRadius?: number;
   }): ProjectileRuntime {
     const p = this.free.pop() ?? this.createRuntime();
     p.x = opts.x;
@@ -49,9 +58,15 @@ export class ProjectilePool {
     p.weaponId = opts.weaponId ?? "ember";
     p.target = opts.target ?? null;
     p.targetUid = opts.target?.uid ?? 0;
+    p.trail = opts.trail ?? null;
+    p.trailTimer = 0;
+    p.trailInterval = opts.trailInterval ?? 0.045;
+    p.blendAdd = opts.blendAdd ?? false;
+    p.explodeRadius = opts.explodeRadius ?? 0;
     p.active = true;
     p.hit.clear();
     p.sprite.setTexture(opts.texture ?? "projectile_ember");
+    p.sprite.setBlendMode(p.blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     p.sprite.setVisible(true).setActive(true).setDepth(10);
     p.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
     p.sprite.setRotation(Math.atan2(opts.vy, opts.vx));
@@ -64,6 +79,7 @@ export class ProjectilePool {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, damage: 0, pierce: 0, knockback: 0,
       radius: 4, life: 0, weaponId: "ember", active: false, hit: new Set(), target: null, targetUid: 0,
+      trail: null, trailTimer: 0, trailInterval: 0.045, blendAdd: false, explodeRadius: 0,
     };
   }
 

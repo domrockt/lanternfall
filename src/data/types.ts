@@ -3,6 +3,14 @@
 export const WEAPON_IDS = ["ember", "flail", "frost", "thorn", "storm", "lantern"] as const;
 export type WeaponId = (typeof WEAPON_IDS)[number];
 
+/** Evolvierte Waffen belegen denselben Slot wie ihre Basiswaffe. */
+export const EVOLUTION_WEAPON_IDS = [
+  "phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon",
+] as const;
+export type EvolutionWeaponId = (typeof EVOLUTION_WEAPON_IDS)[number];
+/** Jede Waffen-ID, die in einem Slot stehen kann (Basis oder Evolution). */
+export type WeaponAnyId = WeaponId | EvolutionWeaponId;
+
 export const PASSIVE_IDS = ["boots", "tome", "heart", "charm", "whetstone", "hourglass"] as const;
 export type PassiveId = (typeof PASSIVE_IDS)[number];
 
@@ -51,7 +59,13 @@ export type WeaponBehavior =
   | "frost"
   | "thorn"
   | "storm"
-  | "lantern";
+  | "lantern"
+  | "phoenix"
+  | "wrath_pendulum"
+  | "eternal_winter"
+  | "thorn_storm"
+  | "thunder_seal"
+  | "soul_beacon";
 
 export interface StatMods {
   /** +x % Bewegungstempo */
@@ -149,13 +163,15 @@ export interface PassiveDef {
 }
 
 export interface EvolutionDef {
-  id: string;
+  /** Zugleich die WeaponAnyId der evolvierten Waffe. */
+  id: EvolutionWeaponId;
   name: string;
   baseWeapon: WeaponId;
   passive: PassiveId;
   description: string;
   effect: string;
   implemented: boolean;
+  iconColor: number;
 }
 
 export interface EnemyDef {

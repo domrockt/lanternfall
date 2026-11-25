@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 18,
+  "next": 27,
   "cards": [
     {
       "id": 1,
@@ -236,6 +236,93 @@
       "notes": [],
       "created": "2026-11-25T00:32:28Z",
       "updated": "2026-11-25T00:32:28Z"
+    },
+    {
+      "id": 18,
+      "title": "M2-01 Waffen-Framework + 5 Basen (flail/frost/thorn/storm/lantern) mit VFX",
+      "description": "Gemeinsames Framework, Treffer/FX, alle 8 Stufen, Schaden>0, Screenshots.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T00:39:44Z",
+          "by": "build",
+          "text": "todo → doing: Start: Framework erweitern"
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:44Z"
+    },
+    {
+      "id": 19,
+      "title": "M2-02 Powerups Stufe 1-5 wirken + Tests",
+      "description": "Alle 6 Passives nachweislich auf Stats (Unit-Tests + Debug-Stats).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 20,
+      "title": "M2-03 Evolutionslogik canEvolve/chestRewards + Tests",
+      "description": "Reine Funktionen, Daten, Evolution ersetzt Basiswaffe im Slot.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 21,
+      "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, Öffnungs-Sequenz, Platzhalter-Boss",
+      "description": "openChest/spawnBoss(0), 1/3/5 Belohnungen, Evolution Vorrang, GIF.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 22,
+      "title": "M2-05 UI: 16x16-Icons, HUD-Leiste, Pause, Umlaute im Bitmap-Font",
+      "description": "6 Waffen + 6 Powerups + 6 Evolutionen, Level-up/Pause/HUD.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 23,
+      "title": "M2-06 Gras-Kacheln beruhigen + gezielte Dekor-Kacheln",
+      "description": "Weniger Pixelrauschen, ruhige Flächen, gruppierte Deko.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 24,
+      "title": "M2-07 Ergebnis-Screen: Schadenstabelle mit Icons",
+      "description": "Alle Waffen inkl. Evolutionen, sortiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 25,
+      "title": "M2-08 Abnahme: verify-weapons.mjs, 12 Screenshots, GIF, perf 500+6 Waffen",
+      "description": "Vision-Prüfung aller Shots, Mängel beheben, Messwerte.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
+    },
+    {
+      "id": 26,
+      "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
+      "description": "Build/Tests grün, offene Punkte ehrlich.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T00:39:13Z"
     }
   ]
 }

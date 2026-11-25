@@ -1,9 +1,8 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { CHARACTERS } from "../data/characters";
-import { WEAPONS } from "../data/weapons";
 import { PASSIVES } from "../data/passives";
-import type { CharacterDef, CharacterId, EnemyId, PassiveId, WeaponId } from "../data/types";
+import type { CharacterDef, CharacterId, EnemyId, PassiveId, WeaponAnyId, WeaponId } from "../data/types";
 import {
   GAME_HEIGHT, GAME_WIDTH, PLAYER_BASE_PICKUP_RADIUS, PLAYER_INVULN,
   RUN_LENGTH, SIM_MAX_STEP, WORLD_SIZE,
@@ -68,6 +67,9 @@ export class Run extends Phaser.Scene {
   invuln = 0;
   hitFlash = 0;
   kills = 0;
+  /** Letzte Bewegungsrichtung (für gerichtete Waffen wie Flegel/Dornen). */
+  facingX = 1;
+  facingY = 0;
   hp = 1;
   maxHp = 1;
   damageByWeapon: Record<string, number> = {};
@@ -114,6 +116,8 @@ export class Run extends Phaser.Scene {
     this.invuln = 0;
     this.hitFlash = 0;
     this.kills = 0;
+    this.facingX = 1;
+    this.facingY = 0;
     this.damageByWeapon = {};
     this.currentOffers = [];
     this.xpState = { level: 1, xp: 0, pendingLevelUps: 0 };
@@ -155,9 +159,7 @@ export class Run extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.18, 0.18);
     this.cameras.main.fadeIn(220, 6, 7, 12);
 
-    // Startwaffe: Kael hat laut Spec den Kettenflegel; der ist erst ab M2 spielbar.
-    let startWeapon: WeaponId = this.character.startWeapon;
-    if (!WEAPONS[startWeapon].implemented) startWeapon = "ember";
+    const startWeapon: WeaponId = this.character.startWeapon;
     this.levelSys = new LevelUpSystem(startWeapon, 1);
     this.recomputeStats();
     this.hp = this.maxHp;
@@ -240,18 +242,31 @@ export class Run extends Phaser.Scene {
     this.movePlayer(dt);
     this.spawner.update(this.elapsed, dt, this.player.x, this.player.y);
     this.updateEnemies(dt);
-    this.combat.update(
-      dt, this.player.x, this.player.y, this.levelSys.weapons, this.enemies.active,
-      this.hash, this.agg, (enemy, damage, weaponId) => {
+    this.combat.update({
+      dt,
+      playerX: this.player.x,
+      playerY: this.player.y,
+      facingX: this.facingX,
+      facingY: this.facingY,
+      weapons: this.levelSys.weapons,
+      enemies: this.enemies.active,
+      hash: this.hash,
+      agg: this.agg,
+      rng: this.rng,
+      onHit: (enemy, damage, weaponId) => {
         this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
       },
-    );
+      onHeal: (amount) => {
+        this.hp = Math.min(this.maxHp, this.hp + amount);
+      },
+    });
     this.collectKills();
     this.touchDamage();
     if (this.finished) return;
     this.enemies.compact();
 
-    this.pickups.update(dt, this.player.x, this.player.y, effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg), (value) => {
+    const pickupRadius = effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus;
+    this.pickups.update(dt, this.player.x, this.player.y, pickupRadius, (value) => {
       this.giveXpInternal(value);
     });
   }
@@ -275,6 +290,8 @@ export class Run extends Phaser.Scene {
     dx /= len;
     dy /= len;
     const speed = effectiveMoveSpeed(this.character.speed, this.agg);
+    this.facingX = dx;
+    this.facingY = dy;
     this.player.x = Phaser.Math.Clamp(this.player.x + dx * speed * dt, 10, WORLD_SIZE - 10);
     this.player.y = Phaser.Math.Clamp(this.player.y + dy * speed * dt, 10, WORLD_SIZE - 10);
     this.playerBody.setFlipX(dx < 0);
@@ -337,6 +354,10 @@ export class Run extends Phaser.Scene {
     const py = this.player.y;
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
+      if (e.freezeTimer > 0) e.freezeTimer -= dt;
+      if (e.slowTimer > 0) e.slowTimer -= dt;
+      else e.slowFactor = 0;
+      const statusMul = e.freezeTimer > 0 ? 0 : Math.max(0.15, 1 - e.slowFactor);
       const dx = px - e.x;
       const dy = py - e.y;
       const dir = directionToPlayer(dx, dy, e.uid);
@@ -363,8 +384,9 @@ export class Run extends Phaser.Scene {
       const decay = Math.max(0, 1 - 7 * dt);
       e.vx *= decay;
       e.vy *= decay;
-      e.x += (mx * e.speed + e.vx + sx * e.speed * 1.2) * dt;
-      e.y += (my * e.speed + e.vy + sy * e.speed * 1.2) * dt;
+      const speed = e.speed * statusMul;
+      e.x += (mx * speed + e.vx + sx * speed * 1.2) * dt;
+      e.y += (my * speed + e.vy + sy * speed * 1.2) * dt;
       e.x = Phaser.Math.Clamp(e.x, 10, WORLD_SIZE - 10);
       e.y = Phaser.Math.Clamp(e.y, 10, WORLD_SIZE - 10);
     }
@@ -422,6 +444,8 @@ export class Run extends Phaser.Scene {
       if (!e.alive) continue;
       e.flash = Math.max(0, e.flash - realDt);
       if (e.flash > 0) e.sprite.setTintFill(PAL[C.lanternWhite]);
+      else if (e.freezeTimer > 0) e.sprite.setTint(PAL[C.paleMist]);
+      else if (e.slowTimer > 0) e.sprite.setTint(PAL[C.fogBlue]);
       else e.sprite.clearTint();
       e.sprite.setPosition(Math.round(e.x), Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2));
       const frames = SPRITE_FRAMES[e.def.spriteKey];
@@ -528,7 +552,7 @@ export class Run extends Phaser.Scene {
     this.autoPlay = value;
   }
 
-  debugAddWeapon(id: WeaponId, level: number): void {
+  debugAddWeapon(id: WeaponAnyId, level: number): void {
     this.levelSys.addWeapon(id, level);
     this.recomputeStats();
   }
@@ -582,6 +606,9 @@ export class Run extends Phaser.Scene {
       bossesDefeated: 0,
       fps: Math.round(this.game.loop.actualFps * 10) / 10,
       character: this.character.id,
+      damageByWeapon: { ...this.damageByWeapon },
+      stats: this.agg ? { ...this.agg } : {},
+      pickupRadius: this.agg ? effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) : 0,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
       autoPlay: this.autoPlay,

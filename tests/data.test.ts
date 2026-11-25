@@ -43,7 +43,8 @@ describe("Datentabellen", () => {
         expect(l.cooldown).toBeGreaterThan(0);
       });
     }
-    expect(WEAPONS.ember.implemented).toBe(true);
+    // M2: alle sechs Basiswaffen sind spielbar.
+    for (const id of WEAPON_IDS) expect(WEAPONS[id].implemented, id).toBe(true);
   });
 
   it("6 Powerups je 5 Stufen, 6 Evolutionen, 6 Bosse", () => {

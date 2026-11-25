@@ -1,5 +1,7 @@
 import { PASSIVES } from "../data/passives";
 import { WEAPONS } from "../data/weapons";
+import { EVOLUTIONS } from "../data/evolutions";
+import { weaponDef } from "../data/weaponIds";
 import type { PassiveId, WeaponId } from "../data/types";
 import { MAX_PASSIVE_SLOTS, MAX_WEAPON_SLOTS } from "../config";
 import type { Rng } from "./rng";
@@ -40,12 +42,17 @@ export function generateOffers(
 ): Offer[] {
   const candidates: Candidate[] = [];
   const weaponIds = new Set(weapons.map((w) => w.id));
+  // Eine evolvierte Waffe blockiert auch ihre Basiswaffe im Angebot.
+  for (const w of weapons) {
+    const evo = EVOLUTIONS.find((e) => e.id === w.id);
+    if (evo) weaponIds.add(evo.baseWeapon);
+  }
   const passiveIds = new Set(passives.map((p) => p.id));
   const weaponSlotsFree = weapons.length < MAX_WEAPON_SLOTS;
   const passiveSlotsFree = passives.length < MAX_PASSIVE_SLOTS;
 
   for (const owned of weapons) {
-    const def = WEAPONS[owned.id as WeaponId];
+    const def = weaponDef(owned.id);
     if (!def || !def.implemented || owned.level >= def.maxLevel) continue;
     const next = owned.level + 1;
     candidates.push({

@@ -20,6 +20,13 @@ export interface EnemyRuntime {
   phase: number;
   alive: boolean;
   bob: number;
+  /** Frost: Verlangsamungsfaktor 0..1. */
+  slowFactor: number;
+  slowTimer: number;
+  /** Vollständiger Freeze in Sekunden. */
+  freezeTimer: number;
+  /** Platzhalter-Boss (M2): skaliert, droppt eine Truhe. */
+  boss: boolean;
 }
 
 /** Gegner-Pool: Sprites werden wiederverwendet, nie pro Spawn neu erzeugt. */
@@ -49,6 +56,11 @@ export class EnemyPool {
     enemy.flash = 0;
     enemy.phase = phase;
     enemy.alive = true;
+    enemy.slowFactor = 0;
+    enemy.slowTimer = 0;
+    enemy.freezeTimer = 0;
+    enemy.boss = false;
+    enemy.sprite.setScale(1);
     const frames = SPRITE_FRAMES[def.spriteKey];
     const texture = frames ? frames[0] : def.spriteKey;
     enemy.sprite.setTexture(texture);
@@ -67,6 +79,7 @@ export class EnemyPool {
     return {
       sprite, uid: 0, def: {} as EnemyDef, x: 0, y: 0, vx: 0, vy: 0, hp: 0, maxHp: 0,
       damage: 0, radius: 6, speed: 0, flash: 0, phase: 0, alive: false, bob: 0,
+      slowFactor: 0, slowTimer: 0, freezeTimer: 0, boss: false,
     };
   }
 

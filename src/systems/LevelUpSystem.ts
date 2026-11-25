@@ -1,13 +1,14 @@
 import { PASSIVES } from "../data/passives";
-import { WEAPONS } from "../data/weapons";
-import type { PassiveId, WeaponId } from "../data/types";
+import { EVOLUTIONS } from "../data/evolutions";
+import { weaponDef } from "../data/weaponIds";
+import type { PassiveId, WeaponAnyId, WeaponId } from "../data/types";
 import { MAX_PASSIVE_SLOTS, MAX_WEAPON_SLOTS } from "../config";
 import { aggregateMods, type AggregateStats } from "../logic/stats";
 import { generateOffers, type Offer, type OwnedItem } from "../logic/levelup";
 import type { Rng } from "../logic/rng";
 
 export interface OwnedWeapon extends OwnedItem {
-  id: WeaponId;
+  id: WeaponAnyId;
   timer: number;
 }
 
@@ -20,12 +21,18 @@ export class LevelUpSystem {
     this.addWeapon(startWeapon, startLevel);
   }
 
-  addWeapon(id: WeaponId, level = 1): void {
-    const def = WEAPONS[id];
+  addWeapon(id: WeaponAnyId, level = 1): void {
+    const def = weaponDef(id);
     if (!def) throw new Error(`addWeapon: unbekannte Waffe "${id}"`);
-    if (!def.implemented) throw new Error(`addWeapon: "${id}" ist erst ab M2 spielbar`);
-    const existing = this.weapons.find((w) => w.id === id);
+    if (!def.implemented) throw new Error(`addWeapon: "${id}" ist noch nicht spielbar`);
+    let existing = this.weapons.find((w) => w.id === id);
+    if (!existing) {
+      // Evolvierte Waffe ersetzt ihre Basiswaffe im selben Slot.
+      const evo = EVOLUTIONS.find((e) => e.id === id);
+      if (evo) existing = this.weapons.find((w) => w.id === evo.baseWeapon);
+    }
     if (existing) {
+      existing.id = id;
       existing.level = Math.max(1, Math.min(def.maxLevel, level));
       return;
     }

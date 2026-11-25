@@ -10,6 +10,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     description: "Glutfunke + Arkanes Buch",
     effect: "Feuervögel, die explodieren und Brandflächen hinterlassen",
     implemented: false,
+    iconColor: 18,
   },
   {
     id: "wrath_pendulum",
@@ -19,6 +20,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     description: "Kettenflegel + Eisenherz",
     effect: "360°-Schwung, heilt pro Treffer minimal",
     implemented: false,
+    iconColor: 25,
   },
   {
     id: "eternal_winter",
@@ -28,6 +30,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     description: "Frostnova + Sanduhr",
     effect: "dauerhafte Frost-Aura + periodische Eisspitzen",
     implemented: false,
+    iconColor: 12,
   },
   {
     id: "thorn_storm",
@@ -37,6 +40,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     description: "Dornensalve + Windstiefel",
     effect: "Dornen-Wirbel in alle Richtungen, Durchschlag ∞",
     implemented: false,
+    iconColor: 31,
   },
   {
     id: "thunder_seal",
@@ -46,6 +50,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     description: "Sturmrune + Wetzstein",
     effect: "Blitz-Siegel am Boden, Kettenblitz über 8 Ziele",
     implemented: false,
+    iconColor: 21,
   },
   {
     id: "soul_beacon",
@@ -55,5 +60,6 @@ export const EVOLUTIONS: EvolutionDef[] = [
     description: "Geisterlaterne + Magnetamulett",
     effect: "kreisende Seelen ziehen XP an und brennen",
     implemented: false,
+    iconColor: 22,
   },
 ];

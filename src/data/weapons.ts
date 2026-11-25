@@ -27,7 +27,7 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
     behavior: "flail",
     description: "Halbkreis-Schwung in Laufrichtung, starker Rückstoß.",
     maxLevel: 8,
-    implemented: false,
+    implemented: true,
     iconColor: 6,
     levels: [
       { level: 1, damage: 14, cooldown: 1.10, radius: 34, knockback: 55, note: "Halbkreis" },
@@ -46,7 +46,7 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
     behavior: "frost",
     description: "Puls um den Spieler, verlangsamt und friert kurz ein.",
     maxLevel: 8,
-    implemented: false,
+    implemented: true,
     iconColor: 8,
     levels: [
       { level: 1, damage: 6, cooldown: 2.40, radius: 38, slow: 0.25, freeze: 0.3 },
@@ -65,7 +65,7 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
     behavior: "thorn",
     description: "Fächer aus Dornen in Blickrichtung.",
     maxLevel: 8,
-    implemented: false,
+    implemented: true,
     iconColor: 30,
     levels: [
       { level: 1, damage: 8, cooldown: 1.05, count: 3, pierce: 0, speed: 240, knockback: 12 },
@@ -84,7 +84,7 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
     behavior: "storm",
     description: "Blitzschläge auf Gegner im Bild, ab Stufe 4 Kettenblitz.",
     maxLevel: 8,
-    implemented: false,
+    implemented: true,
     iconColor: 21,
     levels: [
       { level: 1, damage: 16, cooldown: 2.20, count: 1, chain: 0 },
@@ -103,7 +103,7 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
     behavior: "lantern",
     description: "Kreisende Lichter um den Spieler.",
     maxLevel: 8,
-    implemented: false,
+    implemented: true,
     iconColor: 22,
     levels: [
       { level: 1, damage: 7, cooldown: 2.60, count: 1, radius: 34, duration: 2.4 },

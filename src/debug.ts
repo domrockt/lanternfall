@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import { ENEMIES, PASSIVES, WEAPONS } from "./data";
-import type { EnemyId, PassiveId, WeaponId } from "./data/types";
+import { ENEMIES, PASSIVES, weaponDef } from "./data";
+import type { EnemyId, PassiveId, WeaponAnyId } from "./data/types";
 import { hasFlag } from "./logic/rng";
 import type { Run } from "./scenes/Run";
 
@@ -63,8 +63,8 @@ export function installDebugApi(game: Phaser.Game): void {
     giveXp: (n: number) => requireRun().giveXp(finiteNumber("giveXp", n)),
     addWeapon: (id: string, level: number) => {
       const run = requireRun();
-      if (!(id in WEAPONS)) throw new Error(`window.__lf.addWeapon: unbekannte Waffe "${id}"`);
-      run.debugAddWeapon(id as WeaponId, finiteLevel("addWeapon", level));
+      if (!weaponDef(id)) throw new Error(`window.__lf.addWeapon: unbekannte Waffe "${id}"`);
+      run.debugAddWeapon(id as WeaponAnyId, finiteLevel("addWeapon", level));
     },
     addPassive: (id: string, level: number) => {
       const run = requireRun();

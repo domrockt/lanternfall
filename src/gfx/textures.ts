@@ -255,6 +255,88 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     w: 7, h: 7,
     rows: ["..000..", ".0klm0.", "0klmmd0", "0lmmmd0", "0kmmmd0", ".0lmd0.", "..000.."],
   },
+  projectile_thorn: {
+    w: 7, h: 7,
+    rows: ["..000..", ".0sss0.", "0stsus0", ".0svs0.", "..0s0..", "...0...", "......."],
+  },
+  flail_ball: {
+    w: 9, h: 9,
+    rows: [
+      "...000...",
+      "..07770..",
+      ".0777770.",
+      "077567770",
+      "076567770",
+      "077657770",
+      ".0777770.",
+      "..07770..",
+      "...000...",
+    ],
+  },
+  orb_lantern: {
+    w: 9, h: 9,
+    rows: [
+      "...000...",
+      "..09990..",
+      ".09ccc90.",
+      "09cmmmc90",
+      "09cmmmc90",
+      "09cmmmc90",
+      ".09ccc90.",
+      "..09990..",
+      "...000...",
+    ],
+  },
+  fx_spark: {
+    w: 3, h: 3,
+    rows: [".m.", "mmm", ".m."],
+  },
+  bolt_seg: {
+    w: 2, h: 8,
+    rows: ["0m", "m0", "0m", "m0", "0m", "m0", "0m", "m0"],
+  },
+  chest_closed: {
+    w: 16, h: 16,
+    rows: [
+      "................",
+      "................",
+      "..000000000000..",
+      ".0cccccccccccc0.",
+      ".0cbbbbbbbbbbc0.",
+      ".0cb77777777bc0.",
+      ".0cb77777777bc0.",
+      ".0cb77777777bc0.",
+      ".0cb77777777bc0.",
+      ".0cbbbbbbbbbbc0.",
+      ".0cbbbb00bbbbc0.",
+      ".0cbbbb00bbbbc0.",
+      ".0cccccccccccc0.",
+      "..000000000000..",
+      "................",
+      "................",
+    ],
+  },
+  chest_open: {
+    w: 16, h: 16,
+    rows: [
+      "..000000000000..",
+      ".0cccccccccccc0.",
+      ".0cbbbbbbbbbbc0.",
+      ".0cb77777777bc0.",
+      "..000000000000..",
+      "................",
+      ".0cccccccccccc0.",
+      ".0cbbbbbbbbbbc0.",
+      ".0cb77777777bc0.",
+      ".0cb77777777bc0.",
+      ".0cbbbbbbbbbbc0.",
+      ".0cbbbb00bbbbc0.",
+      ".0cccccccccccc0.",
+      "..000000000000..",
+      "................",
+      "................",
+    ],
+  },
   lantern_small: {
     w: 7, h: 9,
     rows: ["..000..", ".0kkk0.", "0klllk0", "0klllk0", "0klllk0", ".0kkk0.", "..0l0..", "..0l0..", "..000.."],
@@ -277,6 +359,32 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createLightTexture(scene);
   createVignetteTexture(scene);
   createShadowTexture(scene);
+  createRingTexture(scene, "ring_frost", [8, 9, 12, 13]);
+  createRingTexture(scene, "ring_burst", [17, 19, 21, 13]);
+  createRingTexture(scene, "ring_seal", [20, 21, 13]);
+  createRingTexture(scene, "ring_soul", [8, 12, 13]);
+}
+
+/** Diskretes Ring-Sprite für Pulse/Auren (additive Nutzung, weiche Kante). */
+function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): void {
+  if (scene.textures.exists(key)) return;
+  const size = 96;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const c = size / 2;
+  // vier konzentrische 1-px-Ringe, außen dunkler
+  for (let i = 0; i < 4; i++) {
+    ctx.globalAlpha = 0.55 - i * 0.11;
+    ctx.strokeStyle = hexColor(colors[Math.min(i, colors.length - 1)]);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(c, c, 42 - i * 2, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+  scene.textures.addCanvas(key, canvas);
 }
 
 /** Warmes Licht als diskrete Palettenringe (additiv). */
