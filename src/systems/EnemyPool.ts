@@ -125,7 +125,7 @@ export class EnemyPool {
     enemy.alpha = 1;
     enemy.aiRng = rng ?? { next: () => Math.random() };
     enemy.ai = newAiState(enemy.aiRng);
-    enemy.sprite.setScale(enemy.boss ? 1.5 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
+    enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
     const frames = SPRITE_FRAMES[def.spriteKey];
     enemy.sprite.setTexture(frames ? frames[0] : def.spriteKey);
     enemy.sprite.setVisible(true);

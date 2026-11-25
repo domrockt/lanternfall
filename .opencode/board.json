@@ -691,10 +691,16 @@
       "id": 38,
       "title": "M4-04 6 Bosse 48-96px mit Wind-up-/Angriffs-Frames passend zu bosses.ts",
       "description": "Moorkoenigin/Knochenfuerst/Fahler Hirte/Glockenturm-Golem/Hexenzirkel/Hohler Koenig, groessere Silhouetten, Angriffs-Frames im BossSystem verdrahtet.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:53Z",
+          "by": "build",
+          "text": "todo → doing: Pale-Shepherd-Falten + Wind-up und Boss-Skalierung geprueft."
+        }
+      ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T06:40:27Z"
+      "updated": "2026-11-25T09:02:53Z"
     },
     {
       "id": 39,
