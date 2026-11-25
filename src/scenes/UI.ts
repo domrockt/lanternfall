@@ -2,13 +2,15 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
-import { WEAPONS } from "../data/weapons";
+import { weaponDef, isEvolutionWeapon } from "../data/weaponIds";
+import { iconKeyForOffer, iconTextureKey } from "../gfx/icons";
 import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
 import type { HudState, Run } from "./Run";
 
 interface CardView {
   bg: Phaser.GameObjects.Rectangle;
+  icon: Phaser.GameObjects.Image;
   number: PixelText;
   name: PixelText;
   level: PixelText;
@@ -32,14 +34,17 @@ export class UI extends Phaser.Scene {
   private autoPickTimer = 0;
 
   private pauseGroup!: Phaser.GameObjects.Container;
-  private pauseLines: PixelText[] = [];
+  private pauseLines: Phaser.GameObjects.GameObject[] = [];
   private lastPauseShown = false;
+
+  private hudIconBg!: Phaser.GameObjects.Rectangle;
+  private hudIcons: Phaser.GameObjects.Image[] = [];
 
   private chestGroup!: Phaser.GameObjects.Container;
   private chestSprite!: Phaser.GameObjects.Image;
   private chestBeam!: Phaser.GameObjects.Image;
   private chestTitle!: PixelText;
-  private chestSlots: { bg: Phaser.GameObjects.Rectangle; text: PixelText; level: PixelText }[] = [];
+  private chestSlots: { bg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; level: PixelText }[] = [];
   private chestOpenAt = 0;
 
   constructor() { super("ui"); }
@@ -54,6 +59,7 @@ export class UI extends Phaser.Scene {
     this.killsText = new PixelText(this, GAME_WIDTH - 5, 2, "KILL 0", C.bone, "right").setDepth(11);
     this.xpBg = this.add.rectangle(5, 9, GAME_WIDTH - 10, 3, PAL[C.nightSlate]).setOrigin(0, 0).setDepth(11);
     this.xpFill = this.add.rectangle(5, 9, GAME_WIDTH - 10, 3, PAL[C.amber]).setOrigin(0, 0).setDepth(12);
+    this.createHudIcons();
 
     this.createLevelUpUI();
     this.createPauseUI();
@@ -74,6 +80,17 @@ export class UI extends Phaser.Scene {
     });
   }
 
+  private createHudIcons(): void {
+    this.hudIconBg = this.add.rectangle(0, 13, 4, 19, PAL[C.nightDeep], 0.6)
+      .setOrigin(0, 0).setDepth(10).setVisible(false);
+    this.hudIcons = [];
+    for (let i = 0; i < 12; i++) {
+      const img = this.add.image(4 + i * 18, 15, "icon_weapon_ember")
+        .setOrigin(0, 0).setDepth(11).setVisible(false);
+      this.hudIcons.push(img);
+    }
+  }
+
   private createLevelUpUI(): void {
     this.levelGroup = this.add.container(0, 0).setDepth(100).setVisible(false);
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.86).setOrigin(0, 0);
@@ -88,17 +105,18 @@ export class UI extends Phaser.Scene {
     this.cards = [];
     for (let i = 0; i < 3; i++) {
       const cx = 84 + i * 156;
-      const bg = this.add.rectangle(cx, 158, 132, 146, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate]);
-      const number = new PixelText(this, cx - 62, 92, `${i + 1}`, C.lantern);
-      const name = new PixelText(this, cx - 50, 90, "", C.candleWhite);
-      const level = new PixelText(this, cx - 62, 108, "", C.amber);
+      const bg = this.add.rectangle(cx, 158, 132, 150, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate]);
+      const icon = this.add.image(cx, 102, "icon_weapon_ember").setScale(2).setVisible(false);
+      const number = new PixelText(this, cx - 62, 88, `${i + 1}`, C.lantern);
+      const name = new PixelText(this, cx - 62, 122, "", C.candleWhite);
+      const level = new PixelText(this, cx - 62, 134, "", C.amber);
       const desc: PixelText[] = [
-        new PixelText(this, cx - 62, 126, "", C.mist),
-        new PixelText(this, cx - 62, 138, "", C.mist),
         new PixelText(this, cx - 62, 150, "", C.mist),
+        new PixelText(this, cx - 62, 162, "", C.mist),
+        new PixelText(this, cx - 62, 174, "", C.mist),
       ];
-      this.levelGroup.add([bg, number, name, level, ...desc]);
-      this.cards.push({ bg, number, name, level, desc });
+      this.levelGroup.add([bg, icon, number, name, level, ...desc]);
+      this.cards.push({ bg, icon, number, name, level, desc });
     }
     const hint = new PixelText(this, GAME_WIDTH / 2, 251, "1-3 ODER PFEILE + ENTER", C.fog, "center");
     this.levelGroup.add(hint);
@@ -108,11 +126,13 @@ export class UI extends Phaser.Scene {
     this.pauseGroup = this.add.container(0, 0).setDepth(120).setVisible(false);
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.8).setOrigin(0, 0);
     this.pauseGroup.add(dim);
-    const frame = this.add.rectangle(GAME_WIDTH / 2, 135, 300, 220, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.fog]);
+    const frame = this.add.rectangle(GAME_WIDTH / 2, 135, 360, 220, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.fog]);
     this.pauseGroup.add(frame);
     this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 36, "PAUSE", C.lantern, "center").setScale(2));
     this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 54, "DEIN BUILD", C.bone, "center"));
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 238, "ESC = WEITER", C.mist, "center"));
+    this.pauseGroup.add(new PixelText(this, 116, 66, "WAFFEN", C.lantern));
+    this.pauseGroup.add(new PixelText(this, 266, 66, "POWERUPS", C.lantern));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 238, "PFEILE = AUSWAHL, ESC = WEITER", C.mist, "center"));
     this.pauseLines = [];
   }
 
@@ -135,10 +155,11 @@ export class UI extends Phaser.Scene {
     for (let i = 0; i < 5; i++) {
       const x = GAME_WIDTH / 2 + (i - 2) * 76;
       const bg = this.add.rectangle(x, 188, 68, 62, PAL[C.nightMid]).setStrokeStyle(1, PAL[C.nightSlate]);
-      const text = new PixelText(this, x - 32, 166, "", C.candleWhite);
-      const level = new PixelText(this, x - 32, 188, "", C.amber);
-      this.chestGroup.add([bg, text, level]);
-      this.chestSlots.push({ bg, text, level });
+      const icon = this.add.image(x - 8, 158, "icon_weapon_ember").setVisible(false);
+      const text = new PixelText(this, x - 32, 180, "", C.candleWhite);
+      const level = new PixelText(this, x - 32, 194, "", C.amber);
+      this.chestGroup.add([bg, icon, text, level]);
+      this.chestSlots.push({ bg, icon, text, level });
     }
     this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 246, "DIE TRUHE IST GEÖFFNET", C.fog, "center"));
   }
@@ -155,8 +176,13 @@ export class UI extends Phaser.Scene {
       const reward = result.rewards[i];
       const x = GAME_WIDTH / 2 + (i - (n - 1) / 2) * 76;
       slot.bg.setPosition(x, 188).setVisible(Boolean(reward));
-      slot.text.setPosition(x - 32, 166).setVisible(Boolean(reward)).setAlpha(0).setText("?");
-      slot.level.setPosition(x - 32, 188).setVisible(Boolean(reward)).setAlpha(0).setText("");
+      slot.icon.setPosition(x - 8, 158).setVisible(Boolean(reward)).setAlpha(0)
+        .setTexture(reward ? iconTextureKey(
+          reward.kind === "evolution" ? "evolution" : reward.kind,
+          reward.id,
+        ) : "icon_weapon_ember");
+      slot.text.setPosition(x - 32, 180).setVisible(Boolean(reward)).setAlpha(0).setText("?");
+      slot.level.setPosition(x - 32, 194).setVisible(Boolean(reward)).setAlpha(0).setText("");
     }
     // Deckel öffnen + Lichtstrahl.
     this.time.delayedCall(280, () => this.chestSprite.setTexture("chest_open"));
@@ -186,7 +212,7 @@ export class UI extends Phaser.Scene {
         slot.text.setText(reward.name.toUpperCase().slice(0, 11));
         slot.level.setText(reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`);
         slot.bg.setStrokeStyle(2, PAL[reward.iconColor] ?? PAL[C.lantern]);
-        this.tweens.add({ targets: [slot.text, slot.level], alpha: { from: 0.2, to: 1 }, duration: 220 });
+        this.tweens.add({ targets: [slot.icon, slot.text, slot.level], alpha: { from: 0.2, to: 1 }, duration: 220 });
       });
     }
     const finishAt = 1650 + result.rewards.length * 220;
@@ -255,6 +281,19 @@ export class UI extends Phaser.Scene {
     this.timerText.setText(`${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`);
     this.killsText.setText(`KILL ${s.kills}`);
     this.xpFill.setScale(Math.max(0.001, s.xpRatio), 1);
+
+    const keys = [
+      ...s.weapons.map((w) => iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id)),
+      ...s.passives.map((p) => iconTextureKey("passive", p.id)),
+    ].slice(0, this.hudIcons.length);
+    this.hudIcons.forEach((img, i) => {
+      const key = keys[i];
+      if (!key) { img.setVisible(false); return; }
+      if (img.texture.key !== key) img.setTexture(key);
+      img.setVisible(true);
+    });
+    const width = keys.length === 0 ? 0 : 8 + keys.length * 18;
+    this.hudIconBg.setSize(width, 19).setVisible(keys.length > 0);
   }
 
   private onPauseChanged(): void {
@@ -277,17 +316,18 @@ export class UI extends Phaser.Scene {
       this.levelGroup.setVisible(false);
       return;
     }
-    this.levelSub.setText(`STUFE ${level} - WAEHLE EINE BELOHNUNG`);
+    this.levelSub.setText(`STUFE ${level} - WÄHLE EINE BELOHNUNG`);
     this.selected = Math.min(this.selected, offers.length - 1);
     offers.forEach((offer, i) => {
       const card = this.cards[i];
       if (!card) return;
       card.bg.setVisible(true);
+      card.icon.setVisible(true).setTexture(iconKeyForOffer(offer.kind, offer.id));
       card.number.setVisible(true);
       card.number.setText(`${i + 1}`);
       card.name.setVisible(true).setText(offer.name.toUpperCase());
       card.level.setVisible(true).setText(`${offer.isNew ? "NEU" : "STUFE"} ${offer.level}`);
-      const lines = wrapText(offer.description, 22);
+      const lines = wrapText(offer.description, 21);
       card.desc.forEach((t, li) => {
         t.setText(lines[li] ?? "");
         t.setVisible(Boolean(lines[li]));
@@ -296,6 +336,7 @@ export class UI extends Phaser.Scene {
     for (let i = offers.length; i < 3; i++) {
       const card = this.cards[i];
       card.bg.setVisible(false);
+      card.icon.setVisible(false);
       card.number.setVisible(false);
       card.name.setVisible(false);
       card.level.setVisible(false);
@@ -353,23 +394,30 @@ export class UI extends Phaser.Scene {
     if (!visible) return;
     for (const line of this.pauseLines) line.destroy();
     this.pauseLines = [];
-    let y = 76;
-    const addRow = (name: string, level: number, color: number): void => {
-      const left = new PixelText(this, 104, y, name, color);
-      // Feste rechte Spalte, damit alle "STUFE n" bündig stehen.
-      const right = new PixelText(this, 376, y, `STUFE ${level}`, color, "right");
-      this.pauseGroup.add([left, right]);
-      this.pauseLines.push(left, right);
-      y += 13;
+    const addRow = (
+      name: string, level: number, color: number,
+      x: number, levelRight: number, iconKey: string,
+    ): void => {
+      const icon = this.add.image(x - 20, y - 4, iconKey).setOrigin(0, 0).setScale(1);
+      const left = new PixelText(this, x, y, name.slice(0, 14), color);
+      // Feste rechte Spalte, damit alle "LV n" bündig stehen.
+      const right = new PixelText(this, levelRight, y, `LV ${level}`, color, "right");
+      this.pauseGroup.add([icon, left, right]);
+      this.pauseLines.push(icon, left, right);
     };
+    let y = 82;
     for (const w of s.weapons) {
-      const def = WEAPONS[w.id as keyof typeof WEAPONS];
-      addRow(def.name.toUpperCase(), w.level, C.bone);
+      const def = weaponDef(w.id);
+      addRow(def?.name.toUpperCase() ?? w.id.toUpperCase(), w.level, C.bone, 116, 238,
+        iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id));
+      y += 15;
     }
-    y += 6;
+    y = 82;
     for (const p of s.passives) {
       const def = PASSIVES[p.id as keyof typeof PASSIVES];
-      addRow(def.name.toUpperCase(), p.level, C.mist);
+      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.mist, 266, 388,
+        iconTextureKey("passive", p.id));
+      y += 15;
     }
   }
 }

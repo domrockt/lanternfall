@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
+import { createIconTextures } from "./icons";
 
 /** Zeichen → Palettenindex: 0-9 = 0-9, a-z = 10-31, '.' = transparent. */
 export function charIndex(ch: string): number {
@@ -427,6 +428,7 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createRingTexture(scene, "ring_burst", [17, 19, 21, 13]);
   createRingTexture(scene, "ring_seal", [20, 21, 13]);
   createRingTexture(scene, "ring_soul", [8, 12, 13]);
+  createIconTextures(scene);
 }
 
 /** Diskretes Ring-Sprite für Pulse/Auren (additive Nutzung, weiche Kante). */

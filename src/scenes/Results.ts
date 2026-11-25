@@ -52,7 +52,7 @@ export class Results extends Phaser.Scene {
       new PixelText(this, 52, 186 + i * 12, `${(def?.name ?? id).toUpperCase()}: ${Math.round(dmg)}`, C.bone).setDepth(2);
     });
 
-    const prompt = new PixelText(this, 240, 232, "ENTER = ZURUECK ZUM TITEL", C.candleWhite, "center").setDepth(2);
+    const prompt = new PixelText(this, 240, 232, "ENTER = ZURÜCK ZUM TITEL", C.candleWhite, "center").setDepth(2);
     this.tweens.add({ targets: prompt, alpha: 0.35, duration: 800, yoyo: true, repeat: -1 });
     this.input.keyboard!.once("keydown-ENTER", () =>
       this.scene.start("title", { seed: this.result.seed ?? 1, debug: this.result.debug ?? false }));

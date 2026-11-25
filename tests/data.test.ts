@@ -5,6 +5,7 @@ import {
 } from "../src/data";
 import { PAL } from "../src/palette";
 import { SPRITE_GRIDS } from "../src/gfx/textures";
+import { GLYPHS } from "../src/gfx/glyphs";
 
 describe("Datentabellen", () => {
   it("Palette hat genau 32 Farben", () => {
@@ -80,5 +81,18 @@ describe("Datentabellen", () => {
     expect(CHARACTER_LIST[0].startWeapon).toBe("ember");
     expect(CHARACTER_LIST[1].startWeapon).toBe("flail");
     expect(CHARACTER_LIST[1].hp).toBeGreaterThan(CHARACTER_LIST[0].hp);
+  });
+
+  it("Bitmap-Font hat echte Umlaute und ß (keine AE/OE/UE-Ersetzung)", () => {
+    for (const ch of ["Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"]) {
+      expect(GLYPHS[ch], ch).toBeTruthy();
+      expect(GLYPHS[ch], ch).toHaveLength(7);
+      for (const row of GLYPHS[ch]) expect(row.length).toBe(5);
+    }
+    // Umlaute unterscheiden sich sichtbar von ihren Grundbuchstaben.
+    expect(GLYPHS["Ä"].join("")).not.toBe(GLYPHS["A"].join(""));
+    expect(GLYPHS["Ö"].join("")).not.toBe(GLYPHS["O"].join(""));
+    expect(GLYPHS["Ü"].join("")).not.toBe(GLYPHS["U"].join(""));
+    expect(GLYPHS["ß"].join("")).not.toBe(GLYPHS["S"].join(""));
   });
 });

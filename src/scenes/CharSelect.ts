@@ -20,7 +20,7 @@ export class CharSelect extends Phaser.Scene {
   create(): void {
     this.cameras.main.setBackgroundColor(PAL[C.night]);
     this.add.image(240, 135, "vignette").setDepth(-1);
-    new PixelText(this, 240, 22, "WAEHLE DEINEN CHARAKTER", C.lantern, "center").setScale(2).setDepth(4);
+    new PixelText(this, 240, 22, "WÄHLE DEINEN CHARAKTER", C.lantern, "center").setScale(2).setDepth(4);
 
     this.panels = [];
     CHARACTER_LIST.forEach((char, i) => {
@@ -32,12 +32,12 @@ export class CharSelect extends Phaser.Scene {
       new PixelText(this, x, 128, char.name, C.candleWhite, "center").setDepth(4);
       new PixelText(this, x, 140, char.title.toUpperCase(), C.amber, "center").setDepth(4);
       const bonusLines = char.id === "mira"
-        ? ["+10% FLAECHE", `HP ${char.hp}`]
-        : ["+20% MAX-HP, 1 RUESTUNG", "-5% TEMPO"];
+        ? ["+10% FLÄCHE", `HP ${char.hp}`]
+        : ["+20% MAX-HP, 1 RÜSTUNG", "-5% TEMPO"];
       bonusLines.forEach((line, li) => {
         new PixelText(this, x, 156 + li * 10, line, C.fog, "center").setDepth(4);
       });
-      new PixelText(this, x, 180, char.id === "mira" ? "SCHNELL UND FLAECHENSTAERK" : "ROBUST UND LANGSAM", C.mist, "center").setDepth(4);
+      new PixelText(this, x, 180, char.id === "mira" ? "SCHNELL UND FLÄCHENSTARK" : "ROBUST UND LANGSAM", C.mist, "center").setDepth(4);
       new PixelText(this, x, 194, `START: ${weaponName(char)}`, C.fog, "center").setDepth(4);
       new PixelText(this, x, 208, `TASTE ${i + 1}`, C.lantern, "center").setDepth(4);
     });
