@@ -10,6 +10,8 @@ interface FxRuntime {
   maxLife: number;
   scaleFrom: number;
   scaleTo: number;
+  /** Seitenverhältnis-Multiplikator: scaleX = scale * aspect (Beams bleiben dünn). */
+  aspect: number;
   alphaFrom: number;
   alphaTo: number;
   rotation: number;
@@ -26,6 +28,8 @@ export interface FxOptions {
   life?: number;
   scaleFrom?: number;
   scaleTo?: number;
+  /** Optionaler Seitenverhältnis-Multiplikator (nur X); Beams nutzen das für dünne Linien. */
+  aspect?: number;
   alphaFrom?: number;
   alphaTo?: number;
   rotation?: number;
@@ -61,6 +65,7 @@ export class FxSystem {
     fx.maxLife = fx.life;
     fx.scaleFrom = opts.scaleFrom ?? 1;
     fx.scaleTo = opts.scaleTo ?? fx.scaleFrom;
+    fx.aspect = opts.aspect ?? 1;
     fx.alphaFrom = opts.alphaFrom ?? 0.9;
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
@@ -69,7 +74,7 @@ export class FxSystem {
     const sprite = fx.sprite;
     sprite.setTexture(opts.texture);
     sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
-    sprite.setScale(fx.scaleFrom);
+    sprite.setScale(fx.scaleFrom * fx.aspect, fx.scaleFrom);
     sprite.setAlpha(fx.alphaFrom);
     sprite.setRotation(fx.rotation);
     sprite.setDepth(opts.depth ?? 9);
@@ -116,14 +121,17 @@ export class FxSystem {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const len = Math.hypot(dx, dy) || 1;
+    // Nur in Y strecken: die Linie bleibt texW Pixel breit statt len/8-fach aufzublähen.
+    const stretch = len / 8;
     this.spawn({
       ...(opts as FxOptions),
       texture,
       x: (x1 + x2) / 2,
       y: (y1 + y2) / 2,
       rotation: Math.atan2(dy, dx) + Math.PI / 2,
-      scaleFrom: len / 8,
-      scaleTo: len / 8,
+      scaleFrom: stretch,
+      scaleTo: stretch,
+      aspect: opts.aspect ?? 1 / stretch,
       life: opts.life ?? 0.18,
       alphaFrom: opts.alphaFrom ?? 1,
       alphaTo: 0,
@@ -150,7 +158,7 @@ export class FxSystem {
       fx.rotation += fx.spin * dt;
       const scale = fx.scaleFrom + (fx.scaleTo - fx.scaleFrom) * t;
       fx.sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
-      fx.sprite.setScale(scale);
+      fx.sprite.setScale(scale * fx.aspect, scale);
       fx.sprite.setAlpha(Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t));
       fx.sprite.setRotation(fx.rotation);
     }
@@ -160,7 +168,7 @@ export class FxSystem {
     const sprite = this.scene.add.image(0, 0, "fx_spark").setDepth(9);
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
-      scaleFrom: 1, scaleTo: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0, active: false,
+      scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0, active: false,
     };
   }
 

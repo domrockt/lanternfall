@@ -206,14 +206,19 @@ export class CombatSystem {
       .sort((a, b) => a.d - b.d);
     for (let i = 0; i < count; i++) {
       const target = sorted[i % Math.max(1, sorted.length)]?.e ?? null;
+      // Fächer: mehrere Vögel dürfen nicht exakt auf derselben Linie starten,
+      // sonst überlappen sie zu einem einzigen Sprite und der "Schwarm" ist unsichtbar.
+      const fan = (i - (count - 1) / 2) * 0.14;
       const angle = target
-        ? Math.atan2(target.y - ctx.playerY, target.x - ctx.playerX)
-        : Math.atan2(ctx.facingY, ctx.facingX) + (i - (count - 1) / 2) * 0.25;
+        ? Math.atan2(target.y - ctx.playerY, target.x - ctx.playerX) + fan
+        : Math.atan2(ctx.facingY, ctx.facingX) + fan;
+      const launch = 12 + i * 6;
+      const birdSpeed = speed * (0.95 + i * 0.03);
       this.projectiles.spawn({
-        x: ctx.playerX + Math.cos(angle) * 12,
-        y: ctx.playerY + Math.sin(angle) * 12,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
+        x: ctx.playerX + Math.cos(angle) * launch,
+        y: ctx.playerY + Math.sin(angle) * launch,
+        vx: Math.cos(angle) * birdSpeed,
+        vy: Math.sin(angle) * birdSpeed,
         damage,
         pierce: 0,
         knockback: stats.knockback ?? 32,
@@ -278,9 +283,13 @@ export class CombatSystem {
         const by = ctx.playerY + Math.sin(angle) * s.radius;
         s.sprite.setPosition(Math.round(bx), Math.round(by));
         s.sprite.setRotation(angle + this.clock * 7);
+        // Kette sichtbar machen: ein gestrecktes Kettenglied-Sprite pro Frame.
+        this.fx.beam("chain_link", ctx.playerX, ctx.playerY, bx, by, {
+          life: 0.06, alphaFrom: 0.9, alphaTo: 0.7, additive: false,
+        });
         this.fx.spawn({
-          texture: "flail_ball", x: bx, y: by, life: 0.14,
-          scaleFrom: 0.75, scaleTo: 0.2, alphaFrom: 0.55, alphaTo: 0,
+          texture: "flail_ball", x: bx, y: by, life: 0.22,
+          scaleFrom: 0.6, scaleTo: 0.25, alphaFrom: 0.8, alphaTo: 0,
           additive: false, tint: PAL[C.blueGrey],
         });
         // Treffer: ganzer Sektor, jeder Gegner nur einmal pro Schwung.
@@ -326,8 +335,9 @@ export class CombatSystem {
     }
     this.fx.spawn({
       texture: "ring_frost", x: ctx.playerX, y: ctx.playerY, life: 0.5,
-      scaleFrom: 0.35, scaleTo: radius / 42, alphaFrom: 0.9, alphaTo: 0,
-      additive: true,
+      scaleFrom: 0.5, scaleTo: radius / 47, alphaFrom: 1, alphaTo: 0,
+      // Normal-Blend: das Eis-Siegel soll blau-grau lesbar bleiben, nicht additiv ausbleichen.
+      additive: false,
     });
     this.fx.burst("fx_spark", ctx.playerX, ctx.playerY, 10, {
       tint: PAL[C.paleMist], life: 0.4, additive: true, scaleTo: 0.3,
@@ -463,8 +473,8 @@ export class CombatSystem {
       }
       this.fx.spawn({
         texture: "ring_frost", x: ctx.playerX, y: ctx.playerY, life: 0.45,
-        scaleFrom: radius / 46, scaleTo: radius / 42, alphaFrom: 0.35, alphaTo: 0,
-        additive: true,
+        scaleFrom: radius / 47, scaleTo: radius / 47, alphaFrom: 0.55, alphaTo: 0.2,
+        additive: false,
       });
     }
     state.spikeTimer -= ctx.dt;
@@ -611,7 +621,9 @@ export class CombatSystem {
         let diff = desired - current;
         while (diff > Math.PI) diff -= Math.PI * 2;
         while (diff < -Math.PI) diff += Math.PI * 2;
-        const turn = Math.max(-6 * ctx.dt, Math.min(6 * ctx.dt, diff));
+        // Feuervögel kurven sanfter, damit der Fächer als Schwarm sichtbar bleibt.
+        const turnRate = p.weaponId === "phoenix" ? 3 : 6;
+        const turn = Math.max(-turnRate * ctx.dt, Math.min(turnRate * ctx.dt, diff));
         const speed = Math.hypot(p.vx, p.vy);
         const angle = current + turn;
         p.vx = Math.cos(angle) * speed;

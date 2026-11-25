@@ -264,15 +264,20 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     w: 9, h: 9,
     rows: [
       "...000...",
-      "..07770..",
-      ".0777770.",
-      "077567770",
-      "076567770",
-      "077657770",
-      ".0777770.",
-      "..07770..",
+      "..0bbb0..",
+      ".0bcccb0.",
+      "0bcc9ccb0",
+      "0bc9c9cb0",
+      "0bcc9ccb0",
+      ".0bcccb0.",
+      "..0bbb0..",
       "...000...",
     ],
+  },
+  /** Kettenglied (2×8): wird als Beam zwischen Spieler und Kugel gestreckt. */
+  chain_link: {
+    w: 2, h: 8,
+    rows: ["07", "07", "07", "70", "07", "07", "07", "70"],
   },
   orb_lantern: {
     w: 9, h: 9,
@@ -424,7 +429,7 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createLightTexture(scene);
   createVignetteTexture(scene);
   createShadowTexture(scene);
-  createRingTexture(scene, "ring_frost", [8, 9, 12, 13]);
+  createFrostRingTexture(scene);
   createRingTexture(scene, "ring_burst", [17, 19, 21, 13]);
   createRingTexture(scene, "ring_seal", [20, 21, 13]);
   createRingTexture(scene, "ring_soul", [8, 12, 13]);
@@ -450,6 +455,46 @@ function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): 
     ctx.stroke();
   }
   ctx.globalAlpha = 1;
+  scene.textures.addCanvas(key, canvas);
+}
+
+/**
+ * Frost-Ring: kein dünner additiver Puls, sondern ein klar lesbares Eis-Siegel —
+ * 2-px-Band in Mist/PaleMist, weißer Kern und 12 nach außen ragende Eiszacken.
+ * Wird mit Normal-Blend gezeichnet, damit die blau-grauen Werte auf Gras stehen.
+ */
+function createFrostRingTexture(scene: Phaser.Scene): void {
+  const key = "ring_frost";
+  if (scene.textures.exists(key)) return;
+  const size = 96;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const c = size / 2;
+  ctx.globalAlpha = 0.9;
+  ctx.strokeStyle = hexColor(8);   // mist
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(c, c, 44, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = 0.95;
+  ctx.strokeStyle = hexColor(9);   // paleMist
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(c, c, 41, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = 0.85;
+  ctx.strokeStyle = hexColor(12);  // candleWhite
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(c, c, 38, 0, Math.PI * 2); ctx.stroke();
+  // Eiszacken: kurze Strahlen von r 40 nach r 47
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = hexColor(13);
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2 + 0.26;
+    ctx.beginPath();
+    ctx.moveTo(c + Math.cos(a) * 40, c + Math.sin(a) * 40);
+    ctx.lineTo(c + Math.cos(a) * 47, c + Math.sin(a) * 47);
+    ctx.stroke();
+  }
   scene.textures.addCanvas(key, canvas);
 }
 

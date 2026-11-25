@@ -114,14 +114,29 @@ async function shotAtPhoenix(page, path, timeoutMs = 8000) {
     await clearLevelUps(page);
     const birds = await page.evaluate(() => {
       const run = window.__game.scene.getScene("run");
+      const cam = run.cameras.main;
       const px = run.player?.x ?? 0;
       const py = run.player?.y ?? 0;
       return (run.combat?.projectiles?.active ?? [])
         .filter((p) => p.sprite?.texture?.key === "projectile_phoenix")
-        .map((p) => ({ d: Math.round(Math.hypot(p.x - px, p.y - py)), vis: Boolean(p.sprite.visible) }));
+        .map((p) => ({
+          d: Math.round(Math.hypot(p.x - px, p.y - py)),
+          vis: Boolean(p.sprite.visible),
+          a: p.sprite.alpha,
+          x: Math.round(p.x),
+          y: Math.round(p.y),
+          onScreen:
+            (p.x - cam.scrollX) > 6 && (p.y - cam.scrollY) > 6 &&
+            (p.x - cam.scrollX) < cam.width - 6 && (p.y - cam.scrollY) < cam.height - 6,
+        }));
     });
-    const near = birds.filter((b) => b.vis && b.d >= 18 && b.d <= 90);
-    if (near.length >= 2) {
+    let near = birds.filter((b) => b.vis && b.a >= 0.6 && b.onScreen && b.d >= 18 && b.d <= 90);
+    // Zwei Vögel auf demselben Pixel sind kein Schwarm → nur klar getrennte zählen.
+    for (let i = 0; i < near.length; i++) {
+      if (near.findIndex((o) => Math.hypot(o.x - near[i].x, o.y - near[i].y) < 10) !== i) near[i].dup = true;
+    }
+    const distinct = near.filter((b) => !b.dup);
+    if (distinct.length >= 2) {
       if (await page.evaluate(() => window.__lf?.state().levelUpOpen)) {
         await clearLevelUps(page);
         continue;
@@ -133,7 +148,7 @@ async function shotAtPhoenix(page, path, timeoutMs = 8000) {
       } finally {
         await page.evaluate(() => window.__game.scene.getScene("run").scene.resume());
       }
-      return { count: near.length, distances: near.map((b) => b.d) };
+      return { count: distinct.length, distances: distinct.map((b) => b.d) };
     }
     await page.waitForTimeout(16);
   }
@@ -171,8 +186,8 @@ async function shotAtFrost(page, path, timeoutMs = 8000) {
       } finally {
         await page.evaluate(() => window.__game.scene.getScene("run").scene.resume());
       }
-      // Ring-Textur: äußerer Ring bei 42 px, Canvas 3x → Bildradius.
-      return { scale: found.scale, radius: Math.round(42 * found.scale * 3) };
+      // Eis-Siegel: äußerer Zackerand bei 47 px, Canvas 3x → Bildradius.
+      return { scale: found.scale, radius: Math.round(47 * found.scale * 3) };
     }
     await page.waitForTimeout(16);
   }
@@ -207,37 +222,44 @@ function frostRingPixels(path, radius) {
       const d2 = dx * dx + dy * dy;
       if (d2 < inner * inner || d2 > outer * outer) continue;
       const i = (y * W + x) * 3;
-      if (raw[i] + raw[i + 1] + raw[i + 2] > 560) bright++;
+      // Eis-Band: mist/paleMist (blau-grau, Summe ~410–470) muss mitzählen, nicht nur Weiß.
+      if (raw[i] + raw[i + 1] + raw[i + 2] > 400) bright++;
     }
   }
   return bright;
 }
 
-/** Aktive FX-/Projektil-Texturen aus der Run-Szene (gepoolt, nur aktive Einträge). */
+/**
+ * Aktive FX-/Projektil-Texturen aus der Run-Szene (gepoolt, nur aktive Einträge).
+ * Ehrlicher Match: nur Sprites mit Alpha ≥ 0,6 (keine ausgeblichenen Trails) und
+ * nur, wenn der Effekt tatsächlich im 480×270-Viewport liegt.
+ */
 async function activeFxKeys(page, nearPlayer = false) {
   return page.evaluate((near) => {
     const run = window.__game.scene.getScene("run");
+    const cam = run.cameras.main;
     const keys = [];
-    const push = (sprite) => {
-      const key = sprite?.texture?.key;
-      if (key) keys.push(key);
-    };
     const px = run.player?.x ?? 0;
     const py = run.player?.y ?? 0;
-    for (const fx of run.combat?.fx?.active ?? []) {
-      if (near && Math.hypot((fx.x ?? 0) - px, (fx.y ?? 0) - py) >= 45) continue;
-      push(fx.sprite);
-    }
-    for (const p of run.combat?.projectiles?.active ?? []) {
-      if (near && Math.hypot(p.x - px, p.y - py) >= 45) continue;
-      push(p.sprite);
-    }
-    for (const s of run.combat?.seals ?? []) push(s.sprite);
+    const onScreen = (wx, wy) => {
+      const sx = (wx - cam.scrollX) * cam.zoom;
+      const sy = (wy - cam.scrollY) * cam.zoom;
+      return sx > 6 && sy > 6 && sx < cam.width - 6 && sy < cam.height - 6;
+    };
+    const push = (sprite, wx, wy) => {
+      const key = sprite?.texture?.key;
+      if (!key || !sprite.visible) return;
+      if ((sprite.alpha ?? 1) < 0.6) return;
+      if (!onScreen(wx, wy)) return;
+      if (near && Math.hypot(wx - px, wy - py) >= 45) return;
+      keys.push(key);
+    };
+    for (const fx of run.combat?.fx?.active ?? []) push(fx.sprite, fx.x ?? fx.sprite.x, fx.y ?? fx.sprite.y);
+    for (const p of run.combat?.projectiles?.active ?? []) push(p.sprite, p.x, p.y);
+    for (const s of run.combat?.seals ?? []) push(s.sprite, s.sprite.x, s.sprite.y);
     for (const state of run.combat?.states?.values?.() ?? []) {
-      for (const swing of state.swings ?? []) push(swing.sprite);
-      for (const orb of state.orbs ?? []) {
-        if (orb.sprite?.visible) push(orb.sprite);
-      }
+      for (const swing of state.swings ?? []) push(swing.sprite, swing.sprite.x, swing.sprite.y);
+      for (const orb of state.orbs ?? []) push(orb.sprite, orb.sprite.x, orb.sprite.y);
     }
     return [...new Set(keys)];
   }, nearPlayer);
