@@ -17,7 +17,7 @@ import { directorPlan, elitePackCount, streamSpawnOffsets } from "../src/logic/w
 import { SeededRng } from "../src/logic/rng";
 import type { Offer } from "../src/logic/levelup";
 import { BOSSES, ENEMIES, ENEMY_IDS, ENEMY_LIST } from "../src/data";
-import { buildEnemySprite, silhouette } from "../src/gfx/enemySprites";
+import { enemySpriteFrames, silhouette, type Grid } from "../src/gfx/enemySprites";
 
 const rng = () => new SeededRng(99);
 const params = (archetype: Parameters<typeof stepEnemyAi>[1]["archetype"], dist = 120) => ({
@@ -261,16 +261,26 @@ describe("Datentabellen M3", () => {
   });
 
   it("alle 30 Platzhalter haben eine eindeutige Silhouette", () => {
+    // Tier-Größen laut GAME.md/M4: 16/20/24/28/32 px.
+    const sizes = [16, 20, 24, 28, 32];
     const masks = new Map<string, string>();
     ENEMY_LIST.forEach((def, index) => {
-      const grid = buildEnemySprite(index, def.archetype, def.color, Boolean(def.flying), 0);
+      const frames = enemySpriteFrames(index);
+      const grid: Grid = frames[0];
       const mask = silhouette(grid);
       expect(masks.has(mask), `${def.id} gleicht ${masks.get(mask)}`).toBe(false);
       masks.set(mask, def.id);
-      // Nur Palette/Transparenz, 24x24, Kontur vorhanden.
-      expect(grid).toHaveLength(24);
-      expect(grid[0]).toHaveLength(24);
+      // Nur Palette/Transparenz, Tier-Größe, Kontur vorhanden.
+      expect(grid).toHaveLength(sizes[def.tier]);
+      expect(grid[0]).toHaveLength(sizes[def.tier]);
       expect(mask.includes("#")).toBe(true);
+      // 2–4 Frames, alle in Tier-Größe.
+      expect(frames.length).toBeGreaterThanOrEqual(2);
+      expect(frames.length).toBeLessThanOrEqual(4);
+      for (const f of frames) {
+        expect(f).toHaveLength(sizes[def.tier]);
+        expect(f[0]).toHaveLength(sizes[def.tier]);
+      }
     });
   });
 

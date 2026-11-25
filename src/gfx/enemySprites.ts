@@ -3,13 +3,43 @@ import { PAL } from "../palette";
 import { ENEMIES, ENEMY_LIST } from "../data/enemies";
 import type { Archetype, EnemyId } from "../data/types";
 import { BOSSES } from "../data/bosses";
+import { GEN_BOSSES } from "./gen-bosses";
+import { GEN_ENEMIES } from "./gen-enemies";
 
 /** 18x18-Raster; Frame 0 ist die Ruhepose, Frame 1 die Lauf-/Bob-Pose. */
 export const ENEMY_SPRITE_SIZE = 24;
 export const BOSS_SPRITE_SIZE = 40;
 
-type Pixel = number | null;
-type Grid = Pixel[][];
+export type Pixel = number | null;
+export type Grid = Pixel[][];
+
+/** Wandelt eine generierte Zeilen-Maske in ein Pixel-Grid (Palette/Transparenz). */
+export function gridFromRows(rows: readonly string[]): Grid {
+  const g = emptyGrid(rows.length);
+  for (let y = 0; y < rows.length; y++) {
+    const row = rows[y];
+    for (let x = 0; x < row.length; x++) {
+      const ch = row[x];
+      if (ch === ".") continue;
+      g[y][x] = ch >= "0" && ch <= "9" ? ch.charCodeAt(0) - 48 : ch.charCodeAt(0) - 97 + 10;
+    }
+  }
+  return g;
+}
+
+/** Generierte Frames eines Gegners (Index = Position in ENEMY_LIST). */
+export function enemySpriteFrames(index: number): Grid[] {
+  const def = ENEMY_LIST[index];
+  const gen = GEN_ENEMIES[def.spriteKey];
+  return gen.frames.map(gridFromRows);
+}
+
+/** Textur-Keys aller generierten Frames (Basis + _2.._4). */
+export function enemyFrameKeys(index: number): string[] {
+  const def = ENEMY_LIST[index];
+  const count = GEN_ENEMIES[def.spriteKey].frames.length;
+  return Array.from({ length: count }, (_, i) => (i === 0 ? def.spriteKey : `${def.spriteKey}_${i + 1}`));
+}
 
 function emptyGrid(size: number): Grid {
   return Array.from({ length: size }, () => Array.from({ length: size }, () => null));
@@ -473,30 +503,41 @@ function gridToCanvas(g: Grid): HTMLCanvasElement {
 /** Erzeugt für alle 30 Gegner zwei Textur-Frames (vorhandene bleiben erhalten). */
 export function createEnemyTextures(scene: Phaser.Scene): void {
   ENEMY_LIST.forEach((def, index) => {
-    for (let frame = 0; frame < 2; frame++) {
-      const key = frame === 0 ? def.spriteKey : `${def.spriteKey}_2`;
-      if (scene.textures.exists(key)) continue;
-      const grid = buildEnemySprite(index, def.archetype, def.color, Boolean(def.flying), frame);
-      scene.textures.addCanvas(key, gridToCanvas(grid));
-    }
+    const frames = enemySpriteFrames(index);
+    const keys = enemyFrameKeys(index);
+    frames.forEach((grid, i) => {
+      if (scene.textures.exists(keys[i])) return;
+      scene.textures.addCanvas(keys[i], gridToCanvas(grid));
+    });
   });
 }
 
+export function bossSpriteFrames(index: number): Grid[] {
+  const boss = BOSSES[index];
+  return GEN_BOSSES[`boss_${boss.id}`].frames.map(gridFromRows);
+}
+
+export function bossFrameKeys(index: number): string[] {
+  const count = GEN_BOSSES[`boss_${BOSSES[index].id}`].frames.length;
+  return Array.from({ length: count }, (_, i) => (i === 0 ? `boss_${BOSSES[index].id}` : `boss_${BOSSES[index].id}_${i + 1}`));
+}
+
 export function createBossTextures(scene: Phaser.Scene): void {
-  BOSSES.forEach((boss) => {
-    for (let frame = 0; frame < 2; frame++) {
-      const key = frame === 0 ? `boss_${boss.id}` : `boss_${boss.id}_2`;
-      if (scene.textures.exists(key)) continue;
-      scene.textures.addCanvas(key, gridToCanvas(buildBossSprite(boss.index, frame)));
-    }
+  BOSSES.forEach((boss, index) => {
+    const frames = bossSpriteFrames(index);
+    const keys = bossFrameKeys(index);
+    frames.forEach((grid, i) => {
+      if (scene.textures.exists(keys[i])) return;
+      scene.textures.addCanvas(keys[i], gridToCanvas(grid));
+    });
   });
 }
 
 /** Alle Frame-Keys für den Pool (statisch, ohne Browser-Canvas). */
 export const ALL_ENEMY_FRAMES: Record<EnemyId, string[]> = Object.fromEntries(
-  ENEMY_LIST.map((def) => [def.id, [def.spriteKey, `${def.spriteKey}_2`]]),
+  ENEMY_LIST.map((def, index) => [def.id, enemyFrameKeys(index)]),
 ) as Record<EnemyId, string[]>;
 
 export const ALL_BOSS_FRAMES: Record<string, string[]> = Object.fromEntries(
-  BOSSES.map((boss) => [boss.id, [`boss_${boss.id}`, `boss_${boss.id}_2`]]),
+  BOSSES.map((boss, index) => [boss.id, bossFrameKeys(index)]),
 );

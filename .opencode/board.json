@@ -676,10 +676,16 @@
       "id": 37,
       "title": "M4-03 30 Gegner: 2-4 Lauf-Frames, Tod-Effekt, Tier-Farbcodes, Elite-Leuchtrand",
       "description": "16-32px nach Tier, eindeutige Silhouetten, 3+ Schattierungsstufen, Kontur, Tod-Puff je Gegnerfarbe; Elite via Rim.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:47Z",
+          "by": "build",
+          "text": "todo → doing: 30 Gegner-Silhouetten ueberarbeitet (mudling/slime/abom/treant/wraith/voidcaller)."
+        }
+      ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T06:40:27Z"
+      "updated": "2026-11-25T09:02:47Z"
     },
     {
       "id": 38,
