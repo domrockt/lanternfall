@@ -266,3 +266,34 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - Die Minuten-Belege (`shots/m4-run-minute2/12/22.png`) stammen aus einem echten Run mit 30x-Zeitraffer (kein `skipTo`): Timer, Kills, Level und Drops entstehen organisch; nur God-Mode und die 6 Waffen wurden per Debug gesetzt, damit die Bilder dicht sind.
 - Performance schwankt auf dem geteilten Host um ±2–3 FPS (Last anderer Prozesse); die Messwerte oben sind der letzte vollständige Lauf mit `passed: true`. Bei höherer Host-Last lagen frühere Läufe bei 54,0–54,8 FPS — die Culling-Massnahmen sind deshalb bewusst konservativ (120-px-Vorlauf, keine Pop-ins).
 - Die Kontaktbögen sind Prüf-Artefakte (Python-Renderer), keine Laufzeit-Assets; im Spiel kommen ausschließlich die generierten Texturen aus `src/gfx/gen-*.ts` zum Einsatz.
+
+## Status — M4b (Grafik-Nachrunde nach Lead-Review), 2026-11-25
+
+**Fertig (ersetzt die M4-Lücken „Kachel-Patchwork“, „Kael unleserlich“, „Bosse statisch“, „dunkle Gegner unsichtbar“):**
+- **Terrain/Autotiling:** per-Pixel-Klassifikation aus domain-warped fBm (`src/gfx/tiles.ts`) statt 16-px-Kacheln; normalisierte Blob-47-/Wang-Masken (`src/logic/autotile.ts`) für Weg-, Schlamm-, Grasinsel- und Wasserufer-Kanten. Übergänge sind 1–3 px breite, ausgefranzte Bänder: Wegkanten brechen alle 6–10 px mit Moos 28/29 und Erdnarben 14 auf, die Wegbreite variiert um ±2 px, Kies sitzt als 2×2-Gruppen 6/8/5 (3–4 pro 2–3 Kacheln) mit hellen 16/17-Inselflecken; Wasserufer tragen 1 px Torf 14 + Moos 28/29 statt eines geschlossenen Braunrings und Schaum mit Lücken. Regionen sind unregelmäßige Noise-Flächen, keine Rechtecke.
+- **Wasser:** Tiefen 2/3, Untiefen 5, Ufer-Schaum wasserseitig + 2-px-Schlammbank landseitig, Schilf und Seerosen an Uferzellen, statische Wellengruppen plus animierte Ripple-Sprites (`water_ripple_0/1`, 2 Frames, 5–7 px, wellenweise). Beleg-GIF mit 36 Frames und messbaren Frame-Diffs.
+- **Requisiten:** `scripts/art/gen_props.py` erzeugt 15 Sprites (tote Bäume 34/40 px, Stümpfe, Findlinge, Grabsteine/Kreuze, Ruinenmauer, Säule, Laternenpfahl mit additivem Glow, Pilzring, Knochen, Schilf, Seerosen, Ripples) mit gebackenem Bodenschatten (Moostöne 28/29, 2–3 px nach SO versetzt). `GroundRenderer` setzt sie in 3–4er-Clustern, spiegelt sie per `flipX`, meidet Wasser und große Props auf Wegen (Knochen erlaubt); Chunk-Cleanup entfernt alle zugehörigen Objekte.
+- **Kael:** klare Silhouette mit breiten Schultern, Kapuze/Tonsur-Rand, Kettengewand als 3 Bänder statt Pixelrauschen, nur 2 Akzente (Laternen-Glut, Kettenmetall); Kael-Porträt mit 8-px-Lichtkante statt breitem Knochenband.
+- **Warme Haut:** Rampe 16 EmberBrown / 27 FleshWarm / 21 Lantern (nur 1-px-Lichtkante) für Mira, Kael, Kultist, Witchling und Coven; keine graue Haut 9/11/12.
+- **Bosse:** alle 6 mit F0 Ruhe/F1 Atmen/F2 Wind-up, Rumpf-Bob 2 px und pulsierender Glut; Fahler Hirte (Umhang, Stab+Sichel, hagerer Bart, Wolfsfell) und Hohler König (zerrissener Umhang, schiefe Krone, leere Glutaugen, Dornen) neu aufgebaut.
+- **Chunk-Naht-Fix (Reviewer-Blocker):** 3-Tile-Requisitenblöcke werden nur von dem Chunk angelegt, der ihr Start-Tile besitzt; dadurch keine doppelten Props und kein mehrfach addierter Laternen-Glow an Chunk-Nähten.
+- **Dunkle Gegner:** 1-px-Lichtkante oben-links für Spinne, Krähe, Wolf und Leerenrufer, damit die Silhouetten auf Nightdeep (`#101018`) bei 1× lesbar bleiben; alle 30 Gegner mit 0 Off-Palette-Pixeln und 0 Einzelpixeln validiert.
+
+**Belege:**
+- `shots/m4b-sheet-tiles.png` — 6 echte Kartenausschnitte 3× nearest (Ufer West/Ost, Weg gerade/Kurve, See Mitte/Enge), ohne Spielerlicht.
+- `shots/m4b-water.gif` — 36 Frames, animierte Wellen/Ripples (Frame-Diffs 348–1168 px bei 1×), 0 JS-Fehler bei der Aufnahme.
+- `shots/m4b-sheet-props.png`, `m4b-sheet-chars.png`, `m4b-kael-dark-6x.png`, `m4b-sheet-skin.png`, `m4b-sheet-bosses.png`, `m4b-pale-shepherd-f0f1-6x.png`, `m4b-hollow-king-f0f1-6x.png`, `m4b-sheet-enemies-dark.png`, `m4b-dark-{spider,crow,wolf,voidcaller}-f0-dark.png`.
+- In-Game aktuell: `shots/m4b-run-minute2/12/22.png`, `m4b-boss-fight.png`, `m4b-probe-terrain.png`, `m4b-enemy-roster.png`, `m4b-levelup.png`, `m4b-chest.png`; 0 JS-Fehler.
+- Art-Director-Abnahme: `shots/m4b-art-review.md` — **Runde 6 bestanden, alle 5 Punkte ≥4** (Terrain 4, Kael 4, warme Haut 4, Bosse 4, Gegner 4); Runde 4 hatte Terrain/Haut 3, die Korrekturen sind belegt. Rest: Coven-Flamme hat einzelne 22-Nachbarn zur Hand-27, Wegrand enthält selten Index 0.
+
+**Messwerte (dieser Rechner, Build aus `dist/`):**
+- `npm run build`: grün. `npm test`: **99 Tests grün** (davon 14 neue Terrain-/Autotile-/Props-/Asset-Validator-Tests).
+- `npm run verify:terrain`: **OK** — Gras 61,9 px/s, Wasser 37,2 px/s, Ratio 0,60 (erlaubt 0,55–0,68), 6 Spritzer, Gegner im Wasser 8,3/15 px/s, 0 JS-Fehler; JSON `shots/m3-terrain.json`.
+- `npm run verify:enemies`: **30/30 OK**, 0 JS-Fehler. `npm run verify:bosses`: **6/6 OK**, 0 JS-Fehler.
+- `npm run perf`: **57,8 FPS** bei 500 gehaltenen Gegnern (Ziel ≥55; interne Rollmessung 57,3) und **58,6 FPS** bei Minute 25 mit 300 Gegnern + allen Evolutionen; 0 JS-Fehler; JSON `shots/perf-m3.json`.
+
+**Bekannte Lücken (ehrlich):**
+- Wellengruppen stehen auf rund der Hälfte der Wasserzellen; die Animation kommt zusätzlich über Ripple-Sprites (52 % der Wasserzellen, 620 ms). Bei 1× bleibt die Bewegung in oberen/rechten Seebereichen dezent, im GIF (36 Frames) aber in allen Messregionen messbar (Frame-Diff 348–1168 px).
+- Die Schaumkante ist an steilen Ufern 1–2 px breit und kann bei 1× als dünne helle Linie gelesen werden; die Torfkante nutzt 14 + Moos 28/29, ist aber nur 1 px breit.
+- Requisiten sind weiterhin prozedural-generierte Sprites, keine handgezeichneten Einzelassets; Gruppierung/Spiegelung erzeugt Variation, aber Wiederholungen sind bei langen Läufen sichtbar.
+- Die Kontaktbögen sind Prüf-Artefakte (Python-Renderer); im Spiel laufen ausschließlich die TS-generierten Texturen aus `src/gfx/gen-*.ts`.

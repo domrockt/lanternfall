@@ -80,9 +80,12 @@ try {
   });
   await page.waitForTimeout(500);
   const burst = await measure(500);
+  await clearLevelUps();
+  // Screenshot erst nach geschlossenen Level-ups: er soll die 500er-Last zeigen,
+  // nicht das Level-up-Panel. Kurz warten, damit die Roll-FPS aktuell ist.
+  await page.waitForTimeout(1000);
   const burstState = await page.evaluate(() => window.__lf.state());
   await page.screenshot({ path: "shots/perf-500.png" });
-  await clearLevelUps();
 
   // Phase 2: natürliche Director-Dichte bei Minute 25.
   await page.evaluate(({ evolutions, passives }) => {

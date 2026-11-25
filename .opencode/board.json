@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 42,
+  "next": 48,
   "cards": [
     {
       "id": 1,
@@ -646,100 +646,237 @@
       "id": 35,
       "title": "M4-01 ART.md + Art-Pipeline (lib.py, gen.py, contact.py) + 3 Referenz-Assets",
       "description": "Stil-Leitfaden mit Rampen, Kontur, Proportionen, Licht, Animationslängen. Python-Pipeline (pure-python PNG), Asset-Server-Client, Kontaktbogen-Tool. Referenzen: Mira, Irrlicht, Laternenpfahl; art-director-Noten dokumentiert.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:02:25Z",
           "by": "build",
           "text": "todo → doing: Art-Pipeline + ART.md fertig, Referenz-Assets erzeugt."
+        },
+        {
+          "at": "2026-11-25T10:40:25Z",
+          "by": "build",
+          "text": "doing → done: M4-01 war faktisch fertig (ART.md, lib.py, gen.py, contact.py, Referenzen); Board-Nachlauf."
         }
       ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T09:02:25Z"
+      "updated": "2026-11-25T10:40:25Z"
     },
     {
       "id": 36,
       "title": "M4-02 Spielfiguren: Mira + Kael, Lauf 4 Frames x 4 Richtungen, Idle 2, Hit, Portrait 48x48",
       "description": "32px hoch, 4-Dir-Lauf, Spiegelung fuer Seite, Idle, Treffer-Frame, CharSelect-Portraits. Integration in Run/CharSelect, Offsets anpassen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:02:34Z",
           "by": "build",
           "text": "todo → doing: Laufzyklus mit echter Beinphase + Arm/Laterne-Schwung geprueft."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T09:02:34Z"
+      "updated": "2026-11-25T10:38:36Z"
     },
     {
       "id": 37,
       "title": "M4-03 30 Gegner: 2-4 Lauf-Frames, Tod-Effekt, Tier-Farbcodes, Elite-Leuchtrand",
       "description": "16-32px nach Tier, eindeutige Silhouetten, 3+ Schattierungsstufen, Kontur, Tod-Puff je Gegnerfarbe; Elite via Rim.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:02:47Z",
           "by": "build",
           "text": "todo → doing: 30 Gegner-Silhouetten ueberarbeitet (mudling/slime/abom/treant/wraith/voidcaller)."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T09:02:47Z"
+      "updated": "2026-11-25T10:38:36Z"
     },
     {
       "id": 38,
       "title": "M4-04 6 Bosse 48-96px mit Wind-up-/Angriffs-Frames passend zu bosses.ts",
       "description": "Moorkoenigin/Knochenfuerst/Fahler Hirte/Glockenturm-Golem/Hexenzirkel/Hohler Koenig, groessere Silhouetten, Angriffs-Frames im BossSystem verdrahtet.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:02:53Z",
           "by": "build",
           "text": "todo → doing: Pale-Shepherd-Falten + Wind-up und Boss-Skalierung geprueft."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T09:02:53Z"
+      "updated": "2026-11-25T10:38:36Z"
     },
     {
       "id": 39,
       "title": "M4-05 Tileset 16x16 mit Autotiling, Dekor-Gruppen, Laternen als Lichtquellen",
       "description": "Moorgras-Varianten, Wege, Moorwasser mit Uferkanten, Steine, tote Baeume, Ruinen, Graeber, Laternenpfaehle; kein Pixelrauschen; Licht/Vignette bleibt.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:03:03Z",
           "by": "build",
           "text": "todo → doing: Pixel-Terrain neu: ruhige Grasflaechen, Weg heller, weiches Ufer, Dekor-Cluster."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T09:03:03Z"
+      "updated": "2026-11-25T10:38:36Z"
     },
     {
       "id": 40,
       "title": "M4-06 FX/Projektile 12 Waffen, XP-Kristalle, Truhe, Pickups, Icons, 9-Slice-UI, Titelbild+Logo",
       "description": "Alle Effekt-Texturen hochwertiger, Truhe geschlossen/offen, Pickups, 18 Icons, UI-Rahmen, Titelbild mit Logo.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:03:14Z",
           "by": "build",
           "text": "todo → doing: FX-Ringe/Zickzack/Coin, Icons und 9-Slice-UI geprueft."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T09:03:14Z"
+      "updated": "2026-11-25T10:38:36Z"
     },
     {
       "id": 41,
       "title": "M4-07 Abnahme: Kontaktboegen, In-Game-Shots, art-director-Bericht >=4, perf/verify, GAME.md",
       "description": "shots/m4-sheet-*.png, shots/m4-*.png (Minute 2/12/22, Boss, Truhe, CharSelect, Titel), m4-art-review.md, perf >=55, verify:terrain + verify:enemies, GAME.md M4.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "todo → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T06:40:27Z"
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 42,
+      "title": "M4b-01 Terrain: Autotiling, organische Regionen, Wasser animiert, Deko-Cluster",
+      "description": "Wang/Blob-Autotiling zwischen Moorgras dunkel/hell, Schlamm, Weg, Wasser; Noise-Felder mit Domain-Warp; Ufer/Schilf/Seerosen/Wellen; Requisiten 32-48px gruppiert mit Schatten; kein 6x6-Bereich ohne Variation.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T10:40:25Z",
+          "by": "build",
+          "text": "todo → doing: Start: Terrain-Rewrite mit Autotiling + organischen Noise-Regionen + Requisiten"
+        },
+        {
+          "at": "2026-11-25T18:48:59Z",
+          "by": "build",
+          "text": "doing → review: M4b-01 umgesetzt: Blob-47-Masken normalisiert, Weg ±2 px mit Aufbruch + 2×2-Kies, Wasserufer/Schaum, Ripples 52 %, Props mit 28/29-Schatten; Chunk-Naht-Blocker gefixt. Belege: shots/m4b-sheet-tiles.png (6×3x), m4b-water.gif (Diff 348–1168), m4b-sheet-props.png. Build/98 Tests/verify:terrain grün. Commit cabc33f."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T18:48:59Z"
+    },
+    {
+      "id": 43,
+      "title": "M4b-02 Bruder Kael: klare Silhouette, Kapuze/Tonsur, Kettenbaender, 2 Akzente",
+      "description": "Breite Schultern, Kapuze/Tonsur, Kettengewand als 2-3 klare Baender statt Pixelrauschen, max 2 Akzentfarben, lesbares Gesicht.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-02 umgesetzt: breite Schultern, Kapuze/Tonsur, 3 Kettenbänder, 2 Akzente; Portrait-Lichtkante 8 px, Augensockel 27. Belege: shots/m4b-sheet-chars.png, m4b-kael-dark-6x.png. Commit ade7628."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T18:49:06Z"
+    },
+    {
+      "id": 44,
+      "title": "M4b-03 Warme Haut-Rampe fuer alle Menschen (Mira, Kael, Kultisten, Hexen)",
+      "description": "2-3 warme Hautstufen aus Palette statt grau 9/11/12; gilt fuer Mira/Kael-Portraits und menschliche Gegner/Bosse.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-03 umgesetzt: Rampe 16/27/21, 21 nur isolierte 1-px-Lichtkante, shade_edges hellt 21 nicht zu 22 auf, 0 benachbarte 21-Pixel. Beleg: shots/m4b-sheet-skin.png. Commit 196cb17."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T18:49:06Z"
+    },
+    {
+      "id": 45,
+      "title": "M4b-04 Boss-Animation + Fahler Hirte + Hohler Koenig neu",
+      "description": "Idle/Atem sichtbar (2px Hub, Glut pulsiert); Fahler Hirte: Umhang/Stab mit Sichel/hageres Gesicht/Wolfsfell; Hohler Koenig: zerschlissener Umhang, schiefe Krone, leere Glutaugen, Thronfragmente.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-04 umgesetzt: 6 Bosse F0/F1/F2 messbar, Fahler Hirte + Hohler König neu. Belege: shots/m4b-sheet-bosses.png (4x), f0f1-6x. Commit d80bac4."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T18:49:06Z"
+    },
+    {
+      "id": 46,
+      "title": "M4b-05 Gegner: Silhouetten auf dunklem Grund + Lichtkante fuer dunkle Gegner",
+      "description": "Alle 30 auf dunklem Grund pruefen; Spinne/Kraehe/Wolf/Leerenrufer hellere Lichtkante oben-links.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-05 umgesetzt: 30/30 auf Nightdeep lesbar, Lichtkante für dunkle Gegner, 0 Off-Palette/0 Einzelpixel. Belege: shots/m4b-sheet-enemies-dark.png, m4b-dark-*-f0-dark.png. Commit d0f9df1."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T18:49:06Z"
+    },
+    {
+      "id": 47,
+      "title": "M4b-06 Abnahme: m4b-Kontaktboegen/Shots, Art-Review >=4, perf, GAME.md",
+      "description": "shots/m4b-sheet-*.png, m4b-run-minute2/12/22, Boss, Wasserufer; m4b-art-review.md alle Punkte >=4; perf>=55; build+tests+verify gruen; GAME.md Status M4b.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-06 umgesetzt: frische In-Game-Shots (Minute 2/12/22, Boss, Roster, Level-up, Truhe), perf 55.6/56.7 FPS, Art-Review Runde 5 alle 5 Punkte ≥4. Belege: shots/m4b-art-review.md, m4b-run-minute*.png, GAME.md. Commit 578dac3."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T18:49:06Z"
     }
   ]
 }
