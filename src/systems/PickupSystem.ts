@@ -16,7 +16,7 @@ interface GemRuntime {
 
 /** Obergrenze aktiver Kristalle: schützt Frame-Zeit und Bildschirm-Lesbarkeit
  *  bei 30x-Läufen mit zehntausenden Kills. Darüber werden neue Drops verworfen. */
-const MAX_GEMS_DEFAULT = 240;
+const MAX_GEMS_DEFAULT = 180;
 
 /** XP-Kristalle (3 Größen) + Aufsammelradius/Magnet. */
 export class PickupSystem {
@@ -45,7 +45,7 @@ export class PickupSystem {
     gem.age = 0;
     gem.sprite.setTexture(`gem_${size}`);
     gem.sprite.setVisible(true).setActive(true).setDepth(DEPTH.gem);
-    gem.sprite.setAlpha(this.dim ? 0.55 : 1);
+    gem.sprite.setAlpha(this.dim ? 0.55 : 0.9);
     gem.sprite.setPosition(Math.round(x), Math.round(y));
     this.gems.push(gem);
   }
@@ -123,7 +123,7 @@ export class PickupSystem {
       g.sprite.setVisible(false).setActive(false);
       this.free.push(g);
     }
-    for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 1);
+    for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 0.9);
   }
 
   get count(): number {

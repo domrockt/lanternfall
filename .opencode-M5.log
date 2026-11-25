@@ -7614,3 +7614,292 @@ bossIntro []
 > build · deepseek-v4.1-flash
 [0m⚙ [0mexecute {"code":"await tools.board_move({id:51, column:\"doing\", note:\"Event-Sequenzen: Level-up, Evolution-Zeitlupe, Truhe, Boss-Intro Zoom, Boss-Tod Stufen, Dawn\"});\nawait tools.board_move({id:51, column:\"review\", note:\"Shots evolution/bossDeath/dawn angesehen, 0 JS-Fehler (ZoomTo-Bug gefixt), build+123 Tests grün. Commit folgt.\"});\nconsole.log(\"ok\");\n"} 
 > build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && git add -A && git commit -m "M5-04 Ereignis-Inszenierung: Level-up-Säule, Evolutions-Zeitlupe, Truhen-Glanz, Boss-Intro/-Tod in Stufen, Dawn-Farbverlauf (#51)" -q && git log --oneline -1
+d240ee2 M5-04 Ereignis-Inszenierung: Level-up-Säule, Evolutions-Zeitlupe, Truhen-Glanz, Boss-Intro/-Tod in Stufen, Dawn-Farbverlauf (#51)
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && sed -n '120,214p' src/systems/Hazards.ts
+if (h.warn > 0) continue;
+        // Warnphase beendet → Treffer prüfen und Wirkphase starten.
+        h.triggered = true;
+        h.onTrigger?.();
+        if (this.containsPlayer(h, playerX, playerY)) onPlayerHit(h.damage, h);
+        h.warnSprite?.setVisible(false);
+        if (h.activeSprite) h.activeSprite.setAlpha(0.9);
+        this.impactFx(h);
+        if (h.linger <= 0) {
+          this.remove(i);
+          continue;
+        }
+        h.tickTimer = h.tick;
+      } else {
+        h.linger -= dt;
+        h.tickTimer -= dt;
+        if (h.tickTimer <= 0) {
+          h.tickTimer = h.tick;
+          if (this.containsPlayer(h, playerX, playerY)) onPlayerHit(h.damage, h);
+        }
+        if (h.activeSprite) h.activeSprite.setAlpha(Math.max(0, Math.min(0.9, h.linger / h.lingerMax + 0.2)));
+        if (h.linger <= 0) {
+          this.remove(i);
+        }
+      }
+    }
+  }
+
+  private containsPlayer(h: HazardRuntime, px: number, py: number): boolean {
+    if (h.kind === "circle") {
+      return (px - h.x) ** 2 + (py - h.y) ** 2 <= (h.radius + 5) ** 2;
+    }
+    const dx = h.x2 - h.x;
+    const dy = h.y2 - h.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const t = Math.max(0, Math.min(1, ((px - h.x) * dx + (py - h.y) * dy) / (len * len)));
+    const cx = h.x + dx * t;
+    const cy = h.y + dy * t;
+    return Math.hypot(px - cx, py - cy) <= h.width / 2 + 5;
+  }
+
+  private impactFx(h: HazardRuntime): void {
+    if (h.kind === "circle") {
+      const ring = this.scene.add.image(h.x, h.y, "ring_burst")
+        .setDepth(9)
+        .setBlendMode(Phaser.BlendModes.NORMAL)
+        .setTint(PAL[C.hotRed])
+        .setScale(Math.max(0.2, h.radius / 42))
+        .setAlpha(0.9);
+      this.scene.tweens.add({
+        targets: ring, alpha: 0, scale: h.radius / 30, duration: 320, onComplete: () => ring.destroy(),
+      });
+    }
+    for (let i = 0; i < 5; i++) {
+      const spark = this.scene.add.image(h.x, h.y, "fx_spark")
+        .setDepth(11)
+        .setTint(PAL[C.crimson])
+        .setScale(0.8);
+      const a = (i / 5) * Math.PI * 2;
+      this.scene.tweens.add({
+        targets: spark,
+        x: h.x + Math.cos(a) * (h.radius * 0.6),
+        y: h.y + Math.sin(a) * (h.radius * 0.6),
+        alpha: 0, duration: 220, onComplete: () => spark.destroy(),
+      });
+    }
+  }
+
+  private remove(index: number): void {
+    const h = this.active[index];
+    h.active = false;
+    h.warnSprite?.destroy();
+    h.activeSprite?.destroy();
+    this.active.splice(index, 1);
+  }
+
+  clear(): void {
+    for (const h of this.active) {
+      h.warnSprite?.destroy();
+      h.activeSprite?.destroy();
+    }
+    this.active.length = 0;
+  }
+
+  /** Für den Bot: Positionen/Radien aktiver Warnflächen. */
+  threats(): { x: number; y: number; radius: number }[] {
+    return this.active.filter((h) => h.warn > 0).map((h) => ({
+      x: (h.x + h.x2) / 2, y: (h.y + h.y2) / 2, radius: h.kind === "beam" ? h.width : h.radius,
+    }));
+  }
+
+  get count(): number {
+    return this.active.length;
+  }
+}
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/systems/Hazards.ts'
+s=open(p).read()
+s=s.replace('import { C, PAL } from "../palette";','import { C, PAL } from "../palette";\nimport { DEPTH } from "../gfx/depth";')
+s=s.replace('  warnSprite?: Phaser.GameObjects.Image;','  warnSprite?: Phaser.GameObjects.Image;\n  /** Rand-Puls: heikle Warnfläche bleibt auch im Schwarm sichtbar. */\n  rimSprite?: Phaser.GameObjects.Image;')
+s=s.replace('.setDepth(5)\n      .setBlendMode(Phaser.BlendModes.NORMAL)','.setDepth(DEPTH.hazard)\n      .setBlendMode(Phaser.BlendModes.NORMAL)')
+s=s.replace('''    if (opts.color !== undefined) warnSprite.setTint(PAL[opts.color] ?? opts.color);
+    const hazard: HazardRuntime = {''','''    if (opts.color !== undefined) warnSprite.setTint(PAL[opts.color] ?? opts.color);
+    const rimSprite = this.scene.add.image(Math.round(x), Math.round(y), "ring_burst")
+      .setDepth(DEPTH.hazard + 1)
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.hotRed])
+      .setScale(Math.max(0.2, opts.radius / 30))
+      .setAlpha(0.25);
+    const hazard: HazardRuntime = {''')
+s=s.replace('active: true, warnSprite, source: opts.source ?? "area", onTrigger: opts.onTrigger,','active: true, warnSprite, rimSprite, source: opts.source ?? "area", onTrigger: opts.onTrigger,')
+s=s.replace('''      hazard.activeSprite = this.scene.add.image(Math.round(x), Math.round(y), opts.activeTexture)
+        .setDepth(5)
+        .setAlpha(0)
+        .setScale(Math.max(0.3, opts.radius / 18));''','''      hazard.activeSprite = this.scene.add.image(Math.round(x), Math.round(y), opts.activeTexture)
+        .setDepth(DEPTH.hazard)
+        .setAlpha(0)
+        .setScale(Math.max(0.3, opts.radius / 18));''')
+s=s.replace('.setDepth(5)\n      .setBlendMode(Phaser.BlendModes.NORMAL)\n      .setRotation(angle + Math.PI / 2)','.setDepth(DEPTH.hazard)\n      .setBlendMode(Phaser.BlendModes.NORMAL)\n      .setRotation(angle + Math.PI / 2)')
+# beam rim
+s=s.replace('''    const hazard: HazardRuntime = {
+      kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,''','''    const rimSprite = this.scene.add.image((x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+      .setDepth(DEPTH.hazard + 1)
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.hotRed])
+      .setRotation(angle + Math.PI / 2)
+      .setScale(1.25, len / 16)
+      .setAlpha(0.18);
+    const hazard: HazardRuntime = {
+      kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,''')
+s=s.replace('active: true, warnSprite, source: opts.source ?? "beam", onTrigger: opts.onTrigger,','active: true, warnSprite, rimSprite, source: opts.source ?? "beam", onTrigger: opts.onTrigger,')
+# update warn rim pulse
+s=s.replace('''        const pulse = 0.55 + Math.sin((h.warnMax - h.warn) * 22) * 0.35;
+        h.warnSprite?.setAlpha(pulse);
+        if (h.warn > 0) continue;''','''        const pulse = 0.55 + Math.sin((h.warnMax - h.warn) * 22) * 0.35;
+        h.warnSprite?.setAlpha(pulse);
+        // Rand-Puls-Skalierung: Warnung atmet sichtbar, bleibt aber unter Projektilen.
+        h.rimSprite?.setAlpha(0.12 + Math.abs(Math.sin((h.warnMax - h.warn) * 10)) * 0.35);
+        if (h.warn > 0) continue;''')
+s=s.replace('        h.warnSprite?.setVisible(false);','        h.warnSprite?.setVisible(false);\n        h.rimSprite?.setVisible(false);')
+s=s.replace('.setDepth(9)\n        .setBlendMode(Phaser.BlendModes.NORMAL)','.setDepth(DEPTH.hazard + 1)\n        .setBlendMode(Phaser.BlendModes.NORMAL)')
+s=s.replace('.setDepth(11)\n        .setTint(PAL[C.crimson])','.setDepth(DEPTH.hazard + 1)\n        .setTint(PAL[C.crimson])')
+s=s.replace('''    h.warnSprite?.destroy();
+    h.activeSprite?.destroy();''','''    h.warnSprite?.destroy();
+    h.rimSprite?.destroy();
+    h.activeSprite?.destroy();''')
+s=s.replace('''      h.warnSprite?.destroy();
+      h.activeSprite?.destroy();''','''      h.warnSprite?.destroy();
+      h.rimSprite?.destroy();
+      h.activeSprite?.destroy();''')
+open(p,'w').write(s)
+print("haz patched")
+EOF
+grep -n "setDepth(5)" src/systems/Hazards.ts
+haz patched
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/systems/EnemyProjectiles.ts'
+s=open(p).read()
+s=s.replace('import type { Archetype } from "../data/types";','import type { Archetype } from "../data/types";\nimport { DEPTH } from "../gfx/depth";')
+s=s.replace('shot.sprite.setVisible(true).setActive(true).setDepth(10);','shot.sprite.setVisible(true).setActive(true).setDepth(DEPTH.enemyShot).setScale(1);')
+s=s.replace('const sprite = this.scene.add.image(0, 0, "enemy_shot_spit").setDepth(10);','const sprite = this.scene.add.image(0, 0, "enemy_shot_spit").setDepth(DEPTH.enemyShot);')
+s=s.replace('      shot.sprite.setPosition(Math.round(shot.x), Math.round(shot.y));\n      shot.sprite.setRotation(Math.atan2(shot.vy, shot.vx));','      shot.sprite.setPosition(Math.round(shot.x), Math.round(shot.y));\n      shot.sprite.setRotation(Math.atan2(shot.vy, shot.vx));\n      // Rand-Puls: Gegnerschüsse bleiben im VFX-Chaos erkennbar.\n      const pulse = 1 + Math.sin(shot.life * 18 + shot.radius) * 0.09;\n      shot.sprite.setScale(pulse);')
+s=s.replace('.setDepth(6)\n          .setAlpha(0.25)','.setDepth(DEPTH.hazard)\n          .setAlpha(0.25)')
+s=s.replace('.setDepth(12)\n      .setScale(0.9);','.setDepth(DEPTH.enemyShot)\n      .setScale(0.9);')
+open(p,'w').write(s)
+print("shots patched")
+EOF
+npm run build 2>&1 | tail -4
+shots patched
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 10.61s
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && sed -e 's/-before.png/-after.png/g' scripts/tmp-m5-before.mjs > scripts/tmp-m5-after.mjs && node scripts/tmp-m5-after.mjs 2>&1 | tail -5 && ffmpeg -y -loglevel error -i shots/m5-readability-m12-after.png -vf scale=1920:1080:flags=neighbor /tmp/m5shots/m12-after-2x.png && ffmpeg -y -loglevel error -i shots/m5-readability-m25-after.png -vf scale=1920:1080:flags=neighbor /tmp/m5shots/m25-after-2x.png
+m12 709.9 22 54.1
+m25 1500.7 86 53.1 errors []
+> build · deepseek-v4.1-flash
+[0m→ [0mRead /tmp/m5shots/m12-after-2x.png 
+> build · deepseek-v4.1-flash
+[0m→ [0mRead /tmp/m5shots/m25-after-2x.png 
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/systems/CombatSystem.ts'
+s=open(p).read()
+s=s.replace('''    this.fx.spawnAnim("fx_shock", x, y, {
+      life: 0.38, scaleFrom: radius / 28, scaleTo: radius / 18,
+      alphaFrom: 1, alphaTo: 0, additive: true, tint: PAL[C.amber],
+    });
+    this.fx.spawnAnim("fx_halo", x, y, {
+      life: 0.3, scaleFrom: radius / 12, scaleTo: radius / 8,
+      alphaFrom: 0.9, alphaTo: 0, additive: true,
+    });
+    this.fx.burst("fx_fire", x, y, 8, { life: 0.3, additive: true, scaleTo: 0.2 });''','''    this.fx.spawnAnim("fx_shock", x, y, {
+      life: 0.34, scaleFrom: radius / 30, scaleTo: radius / 22,
+      alphaFrom: 0.75, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
+    });
+    this.fx.spawnAnim("fx_halo", x, y, {
+      life: 0.26, scaleFrom: radius / 16, scaleTo: radius / 11,
+      alphaFrom: 0.6, alphaTo: 0, additive: true, tint: PAL[C.amber],
+    });
+    this.fx.burst("fx_fire", x, y, 6, { life: 0.28, additive: true, scaleTo: 0.2 });''')
+s=s.replace('''  private burns: { x: number; y: number; r: number; life: number; tick: number; dps: number; weaponId: string; sprite: Phaser.GameObjects.Image }[] = [];
+
+  addBurn(x: number, y: number, r: number, life: number, dps: number, weaponId: string): void {
+    const sprite = this.scene.add.image(x, y, "ring_burst")
+      .setDepth(6).setBlendMode(Phaser.BlendModes.ADD).setAlpha(0.55)
+      .setScale(r / 42);
+    this.burns.push({ x, y, r, life, tick: 0, dps, weaponId, sprite });
+  }
+
+  private updateBurns(ctx: CombatContext): void {
+    for (let i = this.burns.length - 1; i >= 0; i--) {
+      const b = this.burns[i];
+      b.life -= ctx.dt;
+      b.tick -= ctx.dt;
+      b.sprite.setAlpha(Math.max(0, Math.min(0.55, b.life)) * (0.7 + Math.sin(this.clock * 9) * 0.3));''','''  private burns: { x: number; y: number; r: number; life: number; tick: number; dps: number; weaponId: string; sprite: Phaser.GameObjects.Image }[] = [];
+
+  addBurn(x: number, y: number, r: number, life: number, dps: number, weaponId: string): void {
+    // Max. 10 Brandflächen: sonst überdecken Dutzende Glut-Ringe die Gegner.
+    if (this.burns.length >= 10) {
+      const old = this.burns.shift();
+      old?.sprite.destroy();
+    }
+    const sprite = this.scene.add.image(x, y, "fx_fire")
+      .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.42)
+      .setScale((r / 28) * 1.4, (r / 28) * 0.9)
+      .setTint(PAL[C.emberDark]);
+    this.burns.push({ x, y, r, life, tick: 0, dps, weaponId, sprite });
+  }
+
+  private updateBurns(ctx: CombatContext): void {
+    for (let i = this.burns.length - 1; i >= 0; i--) {
+      const b = this.burns[i];
+      b.life -= ctx.dt;
+      b.tick -= ctx.dt;
+      const burnAlpha = this.lod.level === "minimal" ? 0.22 : 0.36;
+      b.sprite.setAlpha(Math.max(0, Math.min(burnAlpha, b.life * 0.6)) * (0.8 + Math.sin(this.clock * 9) * 0.2));''')
+open(p,'w').write(s)
+print("burn patched")
+EOF
+npm run build >/dev/null 2>&1 && echo built
+burn patched
+built
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/logic/lod.ts'
+s=open(p).read()
+s=s.replace('damageAggregate: true, gemCap: 110','damageAggregate: true, gemCap: 90')
+s=s.replace('damageAggregate: false, gemCap: 170','damageAggregate: false, gemCap: 140')
+s=s.replace('damageAggregate: false, gemCap: 240','damageAggregate: false, gemCap: 180')
+open(p,'w').write(s)
+p='src/systems/PickupSystem.ts'
+s=open(p).read()
+s=s.replace('const MAX_GEMS_DEFAULT = 240;','const MAX_GEMS_DEFAULT = 180;')
+s=s.replace('gem.sprite.setAlpha(this.dim ? 0.55 : 1);','gem.sprite.setAlpha(this.dim ? 0.55 : 0.9);')
+s=s.replace('for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 1);','for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 0.9);')
+open(p,'w').write(s)
+EOF
+npm run build >/dev/null 2>&1 && node scripts/tmp-m5-after.mjs 2>&1 | tail -4 && ffmpeg -y -loglevel error -i shots/m5-readability-m25-after.png -vf scale=1920:1080:flags=neighbor /tmp/m5shots/m25-after-2x.png
+m12 710 17 55.3
+m25 1500.9 109 51.3 errors []
+> build · deepseek-v4.1-flash
+[0m→ [0mRead /tmp/m5shots/m25-after-2x.png 
+> build · deepseek-v4.1-flash
+[0m← [0mEdit src/systems/CombatSystem.ts
+Index: src/systems/CombatSystem.ts
+===================================================================
+--- src/systems/CombatSystem.ts
++++ src/systems/CombatSystem.ts
+@@ -755,9 +755,9 @@
+       p.x += p.vx * ctx.dt;
+       p.y += p.vy * ctx.dt;
+       p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
+       p.sprite.setRotation(Math.atan2(p.vy, p.vx));
+-      if (p.trail) {
++      if (p.trail && this.fx.trailsEnabled) {
+         p.trailTimer -= ctx.dt;
+         if (p.trailTimer <= 0) {
+           p.trailTimer = p.trailInterval;
+           // Feuervogel-Trail bleibt warm und additiv, auch wenn das Projektil selbst
+
+> build · deepseek-v4.1-flash

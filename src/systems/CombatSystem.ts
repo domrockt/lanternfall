@@ -756,7 +756,7 @@ export class CombatSystem {
       p.y += p.vy * ctx.dt;
       p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
       p.sprite.setRotation(Math.atan2(p.vy, p.vx));
-      if (p.trail) {
+      if (p.trail && this.fx.trailsEnabled) {
         p.trailTimer -= ctx.dt;
         if (p.trailTimer <= 0) {
           p.trailTimer = p.trailInterval;
@@ -806,14 +806,14 @@ export class CombatSystem {
 
   private explode(ctx: CombatContext, x: number, y: number, radius: number, damage: number, weaponId: string): void {
     this.fx.spawnAnim("fx_shock", x, y, {
-      life: 0.38, scaleFrom: radius / 28, scaleTo: radius / 18,
-      alphaFrom: 1, alphaTo: 0, additive: true, tint: PAL[C.amber],
+      life: 0.34, scaleFrom: radius / 30, scaleTo: radius / 22,
+      alphaFrom: 0.75, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
     });
     this.fx.spawnAnim("fx_halo", x, y, {
-      life: 0.3, scaleFrom: radius / 12, scaleTo: radius / 8,
-      alphaFrom: 0.9, alphaTo: 0, additive: true,
+      life: 0.26, scaleFrom: radius / 16, scaleTo: radius / 11,
+      alphaFrom: 0.6, alphaTo: 0, additive: true, tint: PAL[C.amber],
     });
-    this.fx.burst("fx_fire", x, y, 8, { life: 0.3, additive: true, scaleTo: 0.2 });
+    this.fx.burst("fx_fire", x, y, 6, { life: 0.28, additive: true, scaleTo: 0.2 });
     if (weaponId === "phoenix") this.addBurn(x, y, radius, 3.2, 18, weaponId);
     for (const e of ctx.enemies) {
       if (!e.alive || e.hp <= 0) continue;
@@ -867,9 +867,15 @@ export class CombatSystem {
   private burns: { x: number; y: number; r: number; life: number; tick: number; dps: number; weaponId: string; sprite: Phaser.GameObjects.Image }[] = [];
 
   addBurn(x: number, y: number, r: number, life: number, dps: number, weaponId: string): void {
-    const sprite = this.scene.add.image(x, y, "ring_burst")
-      .setDepth(6).setBlendMode(Phaser.BlendModes.ADD).setAlpha(0.55)
-      .setScale(r / 42);
+    // Max. 10 Brandflächen: sonst überdecken Dutzende Glut-Ringe die Gegner.
+    if (this.burns.length >= 10) {
+      const old = this.burns.shift();
+      old?.sprite.destroy();
+    }
+    const sprite = this.scene.add.image(x, y, "fx_fire")
+      .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.42)
+      .setScale((r / 28) * 1.4, (r / 28) * 0.9)
+      .setTint(PAL[C.emberDark]);
     this.burns.push({ x, y, r, life, tick: 0, dps, weaponId, sprite });
   }
 
@@ -878,7 +884,8 @@ export class CombatSystem {
       const b = this.burns[i];
       b.life -= ctx.dt;
       b.tick -= ctx.dt;
-      b.sprite.setAlpha(Math.max(0, Math.min(0.55, b.life)) * (0.7 + Math.sin(this.clock * 9) * 0.3));
+      const burnAlpha = this.lod.level === "minimal" ? 0.22 : 0.36;
+      b.sprite.setAlpha(Math.max(0, Math.min(burnAlpha, b.life * 0.6)) * (0.8 + Math.sin(this.clock * 9) * 0.2));
       if (b.life <= 0) {
         b.sprite.destroy();
         this.burns.splice(i, 1);

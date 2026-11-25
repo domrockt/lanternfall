@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import type { Archetype } from "../data/types";
+import { DEPTH } from "../gfx/depth";
 
 export interface EnemyShotRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -46,7 +47,7 @@ export class EnemyProjectilePool {
     shot.texture = opts.texture;
     shot.active = true;
     shot.sprite.setTexture(opts.texture);
-    shot.sprite.setVisible(true).setActive(true).setDepth(10);
+    shot.sprite.setVisible(true).setActive(true).setDepth(DEPTH.enemyShot).setScale(1);
     shot.sprite.setBlendMode(Phaser.BlendModes.NORMAL);
     shot.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
     shot.sprite.setRotation(Math.atan2(opts.vy, opts.vx));
@@ -55,7 +56,7 @@ export class EnemyProjectilePool {
   }
 
   private createRuntime(): EnemyShotRuntime {
-    const sprite = this.scene.add.image(0, 0, "enemy_shot_spit").setDepth(10);
+    const sprite = this.scene.add.image(0, 0, "enemy_shot_spit").setDepth(DEPTH.enemyShot);
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, damage: 0, radius: 4, life: 0,
       active: false, trailTimer: 0, texture: "enemy_shot_spit",
@@ -84,12 +85,15 @@ export class EnemyProjectilePool {
       shot.y += shot.vy * dt;
       shot.sprite.setPosition(Math.round(shot.x), Math.round(shot.y));
       shot.sprite.setRotation(Math.atan2(shot.vy, shot.vx));
+      // Rand-Puls: Gegnerschüsse bleiben im VFX-Chaos erkennbar.
+      const pulse = 1 + Math.sin(shot.life * 18 + shot.radius) * 0.09;
+      shot.sprite.setScale(pulse);
       // Sichtbarer Trail (nicht additiv, damit Gegnerschüsse eigen bleiben).
       shot.trailTimer -= dt;
       if (shot.trailTimer <= 0) {
         shot.trailTimer = 0.07;
         const fx = this.scene.add.image(shot.x, shot.y, shot.texture)
-          .setDepth(6)
+          .setDepth(DEPTH.hazard)
           .setAlpha(0.25)
           .setScale(0.7);
         this.scene.tweens.add({
@@ -137,7 +141,7 @@ export function enemyShotHitFx(scene: Phaser.Scene, x: number, y: number): void 
   for (let i = 0; i < 6; i++) {
     const spark = scene.add.image(x, y, "fx_spark")
       .setTint(PAL[C.hotRed])
-      .setDepth(12)
+      .setDepth(DEPTH.enemyShot)
       .setScale(0.9);
     const angle = (i / 6) * Math.PI * 2;
     scene.tweens.add({

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
+import { DEPTH } from "../gfx/depth";
 
 export interface HazardOptions {
   /** Vorwarnzeit (s), > 0 = Pflicht-Telegraph. */
@@ -38,6 +39,8 @@ interface HazardRuntime {
   triggered: boolean;
   active: boolean;
   warnSprite?: Phaser.GameObjects.Image;
+  /** Rand-Puls: heikle Warnfläche bleibt auch im Schwarm sichtbar. */
+  rimSprite?: Phaser.GameObjects.Image;
   activeSprite?: Phaser.GameObjects.Image;
   source: string;
   onTrigger?: () => void;
@@ -59,20 +62,26 @@ export class HazardSystem {
     const warn = opts.warn ?? 0.7;
     const linger = opts.linger ?? 0;
     const warnSprite = this.scene.add.image(Math.round(x), Math.round(y), "telegraph_disc")
-      .setDepth(5)
+      .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
       .setScale(Math.max(0.25, opts.radius / 30))
       .setAlpha(0.9);
     if (opts.color !== undefined) warnSprite.setTint(PAL[opts.color] ?? opts.color);
+    const rimSprite = this.scene.add.image(Math.round(x), Math.round(y), "ring_burst")
+      .setDepth(DEPTH.hazard + 1)
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.hotRed])
+      .setScale(Math.max(0.2, opts.radius / 30))
+      .setAlpha(0.25);
     const hazard: HazardRuntime = {
       kind: "circle", x, y, x2: x, y2: y, width: 0, radius: opts.radius,
       warn, warnMax: Math.max(0.01, warn), linger, lingerMax: Math.max(0.01, linger),
       tick: opts.tick ?? 0.5, tickTimer: 0, damage: opts.damage, triggered: false,
-      active: true, warnSprite, source: opts.source ?? "area", onTrigger: opts.onTrigger,
+      active: true, warnSprite, rimSprite, source: opts.source ?? "area", onTrigger: opts.onTrigger,
     };
     if (opts.activeTexture) {
       hazard.activeSprite = this.scene.add.image(Math.round(x), Math.round(y), opts.activeTexture)
-        .setDepth(5)
+        .setDepth(DEPTH.hazard)
         .setAlpha(0)
         .setScale(Math.max(0.3, opts.radius / 18));
     }
@@ -88,17 +97,24 @@ export class HazardSystem {
     const len = Math.hypot(x2 - x1, y2 - y1) || 1;
     const angle = Math.atan2(y2 - y1, x2 - x1);
     const warnSprite = this.scene.add.image((x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
-      .setDepth(5)
+      .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
       .setRotation(angle + Math.PI / 2)
       .setScale(1, len / 16)
       .setAlpha(0.9);
+    const rimSprite = this.scene.add.image((x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+      .setDepth(DEPTH.hazard + 1)
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.hotRed])
+      .setRotation(angle + Math.PI / 2)
+      .setScale(1.25, len / 16)
+      .setAlpha(0.18);
     const hazard: HazardRuntime = {
       kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,
       radius: opts.radius, warn: opts.warn ?? 0.9, warnMax: Math.max(0.01, opts.warn ?? 0.9),
       linger: opts.linger ?? 0, lingerMax: Math.max(0.01, opts.linger ?? 0),
       tick: opts.tick ?? 0.5, tickTimer: 0, damage: opts.damage, triggered: false,
-      active: true, warnSprite, source: opts.source ?? "beam", onTrigger: opts.onTrigger,
+      active: true, warnSprite, rimSprite, source: opts.source ?? "beam", onTrigger: opts.onTrigger,
     };
     this.active.push(hazard);
     return hazard;
@@ -117,12 +133,15 @@ export class HazardSystem {
         h.warn -= dt;
         const pulse = 0.55 + Math.sin((h.warnMax - h.warn) * 22) * 0.35;
         h.warnSprite?.setAlpha(pulse);
+        // Rand-Puls-Skalierung: Warnung atmet sichtbar, bleibt aber unter Projektilen.
+        h.rimSprite?.setAlpha(0.12 + Math.abs(Math.sin((h.warnMax - h.warn) * 10)) * 0.35);
         if (h.warn > 0) continue;
         // Warnphase beendet → Treffer prüfen und Wirkphase starten.
         h.triggered = true;
         h.onTrigger?.();
         if (this.containsPlayer(h, playerX, playerY)) onPlayerHit(h.damage, h);
         h.warnSprite?.setVisible(false);
+        h.rimSprite?.setVisible(false);
         if (h.activeSprite) h.activeSprite.setAlpha(0.9);
         this.impactFx(h);
         if (h.linger <= 0) {
@@ -161,7 +180,7 @@ export class HazardSystem {
   private impactFx(h: HazardRuntime): void {
     if (h.kind === "circle") {
       const ring = this.scene.add.image(h.x, h.y, "ring_burst")
-        .setDepth(9)
+        .setDepth(DEPTH.hazard + 1)
         .setBlendMode(Phaser.BlendModes.NORMAL)
         .setTint(PAL[C.hotRed])
         .setScale(Math.max(0.2, h.radius / 42))
@@ -172,7 +191,7 @@ export class HazardSystem {
     }
     for (let i = 0; i < 5; i++) {
       const spark = this.scene.add.image(h.x, h.y, "fx_spark")
-        .setDepth(11)
+        .setDepth(DEPTH.hazard + 1)
         .setTint(PAL[C.crimson])
         .setScale(0.8);
       const a = (i / 5) * Math.PI * 2;
@@ -189,6 +208,7 @@ export class HazardSystem {
     const h = this.active[index];
     h.active = false;
     h.warnSprite?.destroy();
+    h.rimSprite?.destroy();
     h.activeSprite?.destroy();
     this.active.splice(index, 1);
   }
@@ -196,6 +216,7 @@ export class HazardSystem {
   clear(): void {
     for (const h of this.active) {
       h.warnSprite?.destroy();
+      h.rimSprite?.destroy();
       h.activeSprite?.destroy();
     }
     this.active.length = 0;
