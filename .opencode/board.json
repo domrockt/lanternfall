@@ -171,11 +171,17 @@
       "id": 11,
       "title": "Epic M2: Alle 6 Waffen + Verhalten/VFX",
       "description": "flail, frost, thorn, storm, lantern mit Stufen 1-8, generisches Framework erweitern, Waffen-Icons.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T03:55:30Z",
+          "by": "coder",
+          "text": "Abnahme durch coder: alle M2-Karten #18-#28 done, verify-weapons 12/12, Tests 61, perf 57,5 FPS; VFX-Lesbarkeit in 2 Fix-Runden + eigener Politur nachgezogen"
+        }
+      ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-24T23:44:35Z"
+      "updated": "2026-11-25T03:55:30Z"
     },
     {
       "id": 12,
