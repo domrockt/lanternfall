@@ -168,23 +168,28 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - **30 eigene Platzhalter-Sprites** (24×24, 2 Frames, prozedural in `src/gfx/enemySprites.ts`): 1-px-Kontur, Lichtkante oben-links, 3 Palettentöne, eindeutige Silhouette (Unit-Test vergleicht alle 30 Masken), Flügel-Frame für Flieger. Elite-Gegner mit Leuchtrand, größerem Sprite und garantiertem großen XP-Kristall.
 - **Gegner-Projektile** (`EnemyProjectiles`, eigener Pool, nicht additiv, damit sie von Spieler-VFX unterscheidbar sind) und **Warnflächen** (`Hazards`: Telegraphen-Kreis, Area-Damage, Explosionen). Treffer laufen über eigene Schadenspfade; Exploder zünden nahe am Spieler, Splitter teilen sich beim Tod in 2 Kinder (max. 2 Generationen, kleinere HP/Radius).
 - **Wellen-Director:** Spawnrate, Mischung und Gegner-Cap zeitabhängig (`maxActiveEnemies`: 160 + 16/Minute, max. 500); Ring-Einkesselung und Schwarm-Ströme als Spezialwellen ab Minute 3, Elite-Packs ab Minute 8; ferne alte Gegner werden recycelt, Bosse/Elites nie. Cap-Recycling, Spawn-Ring und Mischung sind getestet.
-- **6 Bosse** mit eigenen Daten, Sprites (40×40, Krone/Hörner/Sichel/Stab als Silhouette), eigener HP-Leiste unten, Warn-Banner/Namen, Phasenwechsel (ab 66 % / 33 %; Endboss 3 Phasen) und Mechanik-Sets aus `src/logic/bosses.ts`: Sprung-Schockwelle/Giftpfützen, Skelett-Ringe + Knochen-Bumerang, Wolfrudel + Sichel, Stampfer + Steinregen-Markierungen, Teleport + kreuzende Feuerstrahlen, Endboss Dornenring + Phasenangriffe. Boss-Kontakt, Hazards, Projektile und Beschwörungen sind god-mode-sicher getestet.
+- **6 Bosse** mit eigenen Daten, Sprites (40×40, Krone/Hörner/Sichel/Stab als Silhouette), eigener HP-Leiste unten, Warn-Banner/Namen und Mechanik-Sets. Phasenwechsel gibt es nur beim Endboss (Boss 5: 66 %/33 %, drei Phasen); die Bosse 0–4 bleiben in Phase 1 und wechseln nur ihre Angriffssets aus `src/logic/bosses.ts`: Sprung-Schockwelle/Giftpfützen, Skelett-Ringe + Knochen-Bumerang, Wolfrudel + Sichel, Stampfer + Steinregen-Markierungen, Teleport + kreuzende Feuerstrahlen, Endboss Dornenring + Phasenangriffe. Boss-Kontakt, Hazards, Projektile und Beschwörungen sind god-mode-sicher getestet.
 - **Endboss + Sieg:** Boss 6 erscheint exakt bei **30:00** (nicht mehr durch `RUN_LENGTH` abgeschnitten); nach seinem Tod läuft die **Morgendämmerung** (Gegner zerfallen, Gefahren/Projektile verschwinden, Spawns stoppen), nach 3,2 s Results mit Grund `dawn` und „DU HAST ÜBERLEBT“. Jeder Boss droppt eine Truhe.
-- **Wasser/Moor:** `terrain.ts` klassifiziert Tiles; Gegner im Wasser laufen langsamer (Slow-Faktor), Spieler-Spritzer und Wasser-Slow sind über Debug-State messbar. Die Slow-Logik ist unit-getestet.
+- **Wasser/Moor:** `terrain.ts` klassifiziert Tiles. Der Spieler läuft auf Wasser gemessen **37,2 px/s statt 62,0 px/s (Ratio 0,60, Ziel 0,60)**; Gegner im Wasser **8,3 px/s bei defSpeed 15**. Die logische Position liegt als Float in `posX/posY`, nur die Darstellung (`player`, Schatten, Licht) wird gerundet. Vorher rundete `updateVisuals()` die logische Position selbst, wodurch der Wasser-Slow effektiv auf 0 % fiel – behoben. Wasser-Slow-Logik ist unit-getestet, frame-genau mit `npm run verify:terrain` abgenommen (Spritzer ≥ 3).
 - **AutoPlay-Bot** verbessert: hält Abstand zu Gegnern/Bossen, meidet Warnflächen, sammelt XP, wählt im Level-up die beste Offerte (Evolution > neue Waffe > Level > Passive) und öffnet Truhen.
 - **HUD/Results:** Boss-HP-Leiste, Phasenanzeige, Banner-Events, Elite-/Boss-Sichtbarkeit; Ergebnis-Tabelle auf **3 Spalten × 4 Zeilen** (bis 12 Einträge) umgebaut, Schadenswert in zweiter Zeile, vollständige Waffennamen (kein NaN/Überlapp bei 6 Basis + 6 Evolutionen). Ganzzahlige Skalierung bleibt: ≥960 px 2x/3x, darunter 1x mit Rand (800×450 geprüft).
 - **Debug-API erweitert:** `enemyList` (inkl. Modus, Blinks, Beschwörungen, Splits, Slow, Telegraphen), `boss`, `bossesSpawned`, `bossFlags`, `chestsDropped`, `explosions`, `elitesSpawned`, `splitsSpawned`, `enemyShots`, `hazards`, `dawn`, `finalState()` (Zustand nach Run-Ende für Results).
 
 **Messwerte (dieser Rechner, headless Chromium, Build aus `dist/`):**
 - `npm test`: **85 Tests grün** (inkl. 24 M3-Tests: Archetypen-Zustände, Boss-Phasen, Wasser-Slow, Elite-/Cap-/Recycling-Regeln, Splitter-Tiefenlimit, Dämmerungsdauer, AutoPlay-Auswahl, eindeutige 30 Silhouetten).
-- `npm run verify:enemies`: **30/30 Gegner OK**, je 10 gleichzeitig, Nachspawn während der Messung, Screenshot `shots/m3-enemy-<id>.png` im Wirk-Peak; `movementOk` (≥12 px/s bzw. ≥2 px/s bei Distanzhaltern) ist für alle 30 ein hartes Assert, nicht nur die Effekt-Archetypen. Messwerte u. a.: `ranged` Projektile auf dem Screen (toad/witchling/horror), `charger` Modi `approach/windup/charge` (wolf 95, centipede 98 px/s Spitze), `phaser` Blinks (banshee/wraith), `exploder` Explosionen (bomber/imp), `summoner` Beschwörungen (cultist/lich/voidcaller), `splitter` Teilungen (mudling 18, slime 8, abom 2; Kinder werden im Test sofort wieder erschlagen). 0 JS-Fehler.
+- `npm run verify:enemies`: **30/30 Gegner OK**, je 10 gleichzeitig, Nachspawn während der Messung, Screenshot `shots/m3-enemy-<id>.png` im Wirk-Peak; `movementOk` (≥12 px/s bzw. ≥2 px/s bei Distanzhaltern) ist für alle 30 ein hartes Assert, nicht nur die Effekt-Archetypen. Harte Verhaltens-Asserts:
+  - `ranged` (toad/witchling/horror): **min. Distanz 90–93 px, Median 101–114 px** über 48–50 Samples (Assert: ≥25 Samples, min ≥20 px, Median 40–170 px).
+  - `orbiter` (harpy/gargoyle): **kumulierter Polarwinkel 169°/132°** über 44/42 Samples, **Radius min. 79/82 px** (Assert: ≥15 Samples, ≥120°, Radius >25 px).
+  - `charger` Modi `approach/windup/charge` (wolf 95, centipede 98 px/s Spitze), `phaser` Blinks (banshee/wraith), `exploder` Explosionen (bomber/imp), `summoner` Beschwörungen (cultist/lich/voidcaller), `splitter` Teilungen (mudling 18, slime 8, abom 2; Kinder werden im Test sofort wieder erschlagen).
+  - **Gegner-Cap (bekannt):** natürlicher 26x-Run, Minute 20–26: max. **504 aktive Gegner** bei Cap 500 (2 von 234 Samples > 500 durch Spezialwellen/Beschwörungen). Bewusst dokumentiert, nicht wegoptimiert.
+  - 0 JS-Fehler.
 - `npm run verify:bosses`: **6/6 Bosse OK**, je 20 s mit God-Mode + allen 6 Evolutionen, Screenshot + 36-Frame-GIF (`shots/m3-boss-<id>.png` / `.gif`), Truhe gedroppt. HP-Rest minimal: Moorkönigin 14 %, Knochenfürst 6 %, Fahler Hirte 1 %, Glockenturm-Golem 4 %, Hexenzirkel 1 %, Hohler König 1 %. Endboss-Phasen **1/2/3** gesehen; Warnflächen 1–8, Gegnerprojektile bis 5 gleichzeitig. 0 JS-Fehler; Rohdaten `shots/m3-bosses.json`.
-- `npm run fullrun`: **30,1 Sim-Minuten**, AutoPlay + God + 30x, alle 6 Bosse zu **300/600/900/1200/1500/1800 s** (Assert ±2 s, tatsächlich exakt), 6 Truhen, 694 Elites, 24.655 Kills, Level 147, **Morgendämmerung/Sieg**, 0 JS-Fehler. Letzte Sim-Minute in Echtzeit gemessen: **FPS-Minimum 51,2** bei ~500 Gegnern + Endboss (perf-Ziel separat unten). Ergebnis-JSON:
+- `npm run fullrun`: **30,1 Sim-Minuten**, AutoPlay + God + 30x, alle 6 Bosse zu **300/600/900/1200/1500/1800 s** (Assert ±2 s, tatsächlich exakt), 6 Truhen, 712 Elites, 25.335 Kills, Level 146, **Morgendämmerung/Sieg**, 0 JS-Fehler. Letzte Sim-Minute in Echtzeit gemessen: **FPS-Minimum 52,3** bei ~500 Gegnern + Endboss (perf-Ziel separat unten). Ergebnis-JSON:
 ```json
 {
   "milestone": "M3",
   "simMinutes": 30.1,
-  "pollSamples": 192,
+  "pollSamples": 180,
   "bosses": {
     "expectedSeconds": [300, 600, 900, 1200, 1500, 1800],
     "spawned": [
@@ -201,24 +206,25 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
     "phasesSeen": ["5:1", "5:2", "5:3"]
   },
   "chestsDropped": 6,
-  "elitesSpawned": 694,
+  "elitesSpawned": 712,
   "enemiesAtEnd": 0,
-  "kills": 24655,
-  "level": 147,
+  "kills": 25335,
+  "level": 146,
   "dawn": true,
   "victory": true,
   "resultReason": "dawn",
-  "fpsMin": 51.2,
+  "fpsMin": 52.3,
   "fpsWindow": "ab Sim-Zeit 29:20 bei 1x (volle Dichte + Endboss)",
   "jsErrors": [],
   "passed": true
 }
 ```
-- `npm run perf`: **57,4 FPS** mit 500 gehaltenen Gegnern (Ziel ≥ 55, 10 s, worstFrameMs 33,4) und **56,8 FPS** bei Minute 25 mit 300 Gegnern + allen Evolutionen; 0 JS-Fehler. Screenshots `shots/perf-500.png`, `shots/perf-minute25.png`, JSON `shots/perf-m3.json`. Der FX-Pool-Cap wurde für die 500er-Last auf **160** gesenkt (Treffer-/Tod-Partikel bleiben sichtbar, bei Extremschwärmen werden Überzählige verworfen), der XP-Kristall-Bestand auf 240 begrenzt (Frame-Zeit + Lesbarkeit bei 30x).
+- `npm run verify:terrain`: **OK**. Frame-genau (postupdate-Hook, logische Float-Position) Gras **62,0 px/s**, Wasser **37,2 px/s**, **Ratio 0,60** (erlaubt 0,55–0,68, Ziel 0,60), Anzeige-Ratio 0,60; 55 Gras-/62 Wasser-Frames, Spritzer **6** Partikel, Gegner im Wasser **8,3/15 px/s ≤ 0,75 × defSpeed**; 0 JS-Fehler. Screenshots `shots/m3-water.png` (Wasser + Spritzer) und `shots/m3-water-grass.png` (Gras), Rohdaten `shots/m3-terrain.json`.
+- `npm run perf`: **56,6 FPS** mit 500 gehaltenen Gegnern (Ziel ≥ 55, 10 s, worstFrameMs 33,4) und **56,8 FPS** bei Minute 25 mit 300 Gegnern + allen Evolutionen; 0 JS-Fehler. Screenshots `shots/perf-500.png`, `shots/perf-minute25.png`, JSON `shots/perf-m3.json`. Der FX-Pool-Cap wurde für die 500er-Last auf **160** gesenkt (Treffer-/Tod-Partikel bleiben sichtbar, bei Extremschwärmen werden Überzählige verworfen), der XP-Kristall-Bestand auf 240 begrenzt (Frame-Zeit + Lesbarkeit bei 30x).
 - Sichtprüfung: alle 30 Gegner-Sheets und 6 Boss-Screenshots/GIFs angesehen (2x nearest vergrößert), inkl. lebender Gegner während Blitz/Schuss/Split/Explosion; Results-Screenshot mit vollständiger, überlappungsfreier Schadenstabelle.
 
 **Bekannte Lücken / offene Punkte (ehrlich):**
 - Gegner-/Boss-Art sind **lesbare Platzhalter** im geforderten 24/40-px-Raster, aber keine handgezeichneten Final-Assets: 2 Frames statt 4-Frame-Lauf, Bodentiere ohne echte Laufbein-Animation, Boss-Silhouetten (Kröte/Knochenfürst) teilen sich den generischen Körper. Ein Art-Pass mit Einzelsprites und 4 Frames bleibt offen.
 - Die Boss-Mechaniken sind archetypische Muster (Hazards/Projektile/Summons/Phasen), aber nicht jede GAME.md-Beschreibung ist eins zu eins inszeniert (z. B. Moorkönigin-Sprung als Schockwelle vs. eigenes Sprung-Sprite; Hexenzirkel als ein Boss-Sprite statt drei separate Hexen).
 - Balance ist god-mode-geprüft, nicht menschlich gespielt: 500 Gegner + Bosse in der letzten Minute sind fordernd; AutoPlay-Siege sagen nichts über Fairness aus.
-- Audio, Damage-Numbers, Meta/Shop fehlen weiterhin (spätere Meilensteine). Das Fullrun-FPS-Minimum von 51,2 liegt unter dem 55er-Ziel, obwohl `perf` das Ziel bei 500 Gegnern erfüllt; Ursache ist die gewachsene Endgame-Dichte (~500 Gegner + Boss + Gems) und headless-Rendering – ein weiterer Render-/Batch-Pass bleibt offen. Bosse laufen 64–78 px/s (Basisspieler 62/59, mit Windstiefel 5 ≈ 87); ohne Bewegungspowerup wird man eingeholt, das ist bewusst fordernd, aber nicht menschlich playgetestet. Der Bot behandelt Bosse mit `threat 0.35` bewusst als wenig zu meidendes Ziel, damit er in Waffenreichweite bleibt (god-mode-geprüft).
+- Audio, Damage-Numbers, Meta/Shop fehlen weiterhin (spätere Meilensteine). Das Fullrun-FPS-Minimum von 52,3 liegt unter dem 55er-Ziel, obwohl `perf` das Ziel bei 500 Gegnern erfüllt; Ursache ist die gewachsene Endgame-Dichte (~500 Gegner + Boss + Gems) und headless-Rendering – ein weiterer Render-/Batch-Pass bleibt offen. Bosse laufen 64–78 px/s (Basisspieler 62/59, mit Windstiefel 5 ≈ 87); ohne Bewegungspowerup wird man eingeholt, das ist bewusst fordernd, aber nicht menschlich playgetestet. Der Bot behandelt Bosse mit `threat 0.35` bewusst als wenig zu meidendes Ziel, damit er in Waffenreichweite bleibt (god-mode-geprüft).

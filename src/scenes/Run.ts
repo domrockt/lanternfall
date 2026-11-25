@@ -92,6 +92,12 @@ export class Run extends Phaser.Scene {
   facingY = 0;
   hp = 1;
   maxHp = 1;
+  /** Logische Position als Float. Der Container/`player.x` ist nur die
+   *  gerundete Darstellung; Sub-Pixel-Bewegung (Wasser-Slow) bleibt erhalten. */
+  posX = 0;
+  posY = 0;
+  private visualX = 0;
+  private visualY = 0;
   damageByWeapon: Record<string, number> = {};
   currentOffers: Offer[] = [];
   xpState: XpState = { level: 1, xp: 0, pendingLevelUps: 0 };
@@ -187,6 +193,10 @@ export class Run extends Phaser.Scene {
 
     const startX = WORLD_SIZE / 2;
     const startY = WORLD_SIZE / 2;
+    this.posX = startX;
+    this.posY = startY;
+    this.visualX = startX;
+    this.visualY = startY;
     this.player = this.add.container(startX, startY).setDepth(12);
     this.playerBody = this.add.image(0, 0, this.character.spriteKey).setOrigin(0.5, 0.5);
     this.player.add(this.playerBody);
@@ -306,14 +316,14 @@ export class Run extends Phaser.Scene {
     }
 
     this.movePlayer(dt);
-    const spawned = this.dawn ? [] : this.spawner.update(this.elapsed, dt, this.player.x, this.player.y);
+    const spawned = this.dawn ? [] : this.spawner.update(this.elapsed, dt, this.posX, this.posY);
     for (const e of spawned) if (e.elite) this.elitesSpawned += 1;
     this.updateEnemies(dt);
-    this.bosses.update(dt, this.player.x, this.player.y);
+    this.bosses.update(dt, this.posX, this.posY);
     this.combat.update({
       dt,
-      playerX: this.player.x,
-      playerY: this.player.y,
+      playerX: this.posX,
+      playerY: this.posY,
       facingX: this.facingX,
       facingY: this.facingY,
       weapons: this.levelSys.weapons,
@@ -330,22 +340,22 @@ export class Run extends Phaser.Scene {
     });
     this.collectKills();
     this.touchDamage();
-    this.enemyShots.update(dt, this.player.x, this.player.y, (damage, shot) => {
+    this.enemyShots.update(dt, this.posX, this.posY, (damage, shot) => {
       this.hurtPlayer(damage, shot.x, shot.y);
       enemyShotHitFx(this, shot.x, shot.y);
     });
-    this.hazards.update(dt, this.player.x, this.player.y, (damage) => {
-      this.hurtPlayer(damage, this.player.x, this.player.y);
+    this.hazards.update(dt, this.posX, this.posY, (damage) => {
+      this.hurtPlayer(damage, this.posX, this.posY);
     });
     if (this.finished) return;
     this.enemies.compact();
     this.maybeSplash(dt);
 
     const pickupRadius = effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus;
-    this.pickups.update(dt, this.player.x, this.player.y, pickupRadius, (value) => {
+    this.pickups.update(dt, this.posX, this.posY, pickupRadius, (value) => {
       this.giveXpInternal(value);
     });
-    const nearChest = this.chests.near(this.player.x, this.player.y, 15);
+    const nearChest = this.chests.near(this.posX, this.posY, 15);
     if (nearChest) this.openChest(nearChest);
   }
 
@@ -359,7 +369,7 @@ export class Run extends Phaser.Scene {
   }
 
   private spawnBossAt(index: number): void {
-    const b = this.bosses.spawn(index, this.player.x, this.player.y);
+    const b = this.bosses.spawn(index, this.posX, this.posY);
     this.bossFlags[index] = true;
     this.bossesSpawned.push({ index, at: Math.round(this.elapsed * 10) / 10 });
     this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: b.maxHp });
@@ -386,8 +396,8 @@ export class Run extends Phaser.Scene {
     this.splashTimer -= dt;
     if (this.splashTimer > 0) return;
     this.splashTimer = 0.14;
-    const px = this.player.x;
-    const py = this.player.y;
+    const px = this.posX;
+    const py = this.posY;
     if (this.ground.kindAt(px, py) === "water") this.spawnSplash(px, py + 5);
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
@@ -424,12 +434,12 @@ export class Run extends Phaser.Scene {
     const len = Math.hypot(dx, dy);
     dx /= len;
     dy /= len;
-    const terrain = terrainSpeedFactor(this.ground.kindAt(this.player.x, this.player.y) as TerrainKind);
+    const terrain = terrainSpeedFactor(this.ground.kindAt(this.posX, this.posY) as TerrainKind);
     const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
     this.facingX = dx;
     this.facingY = dy;
-    this.player.x = Phaser.Math.Clamp(this.player.x + dx * speed * dt, 10, WORLD_SIZE - 10);
-    this.player.y = Phaser.Math.Clamp(this.player.y + dy * speed * dt, 10, WORLD_SIZE - 10);
+    this.posX = Phaser.Math.Clamp(this.posX + dx * speed * dt, 10, WORLD_SIZE - 10);
+    this.posY = Phaser.Math.Clamp(this.posY + dy * speed * dt, 10, WORLD_SIZE - 10);
     this.playerBody.setFlipX(dx < 0);
     if (this.lantern) this.lantern.x = dx < 0 ? -9 : 9;
   }
@@ -445,8 +455,8 @@ export class Run extends Phaser.Scene {
     const hazards = this.hazards.threats().map((h) => ({ ...h, threat: 3.2 }));
     const gems = this.pickups.gems.map((g) => ({ x: g.x, y: g.y }));
     return botDirection({
-      playerX: this.player.x,
-      playerY: this.player.y,
+      playerX: this.posX,
+      playerY: this.posY,
       worldSize: WORLD_SIZE,
       enemies,
       projectiles,
@@ -458,8 +468,8 @@ export class Run extends Phaser.Scene {
   // ── Gegner ───────────────────────────────────────────────────
   private updateEnemies(dt: number): void {
     this.hash.rebuild(this.enemies.active.filter((e) => e.alive));
-    const px = this.player.x;
-    const py = this.player.y;
+    const px = this.posX;
+    const py = this.posY;
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
       if (e.freezeTimer > 0) e.freezeTimer -= dt;
@@ -641,8 +651,8 @@ export class Run extends Phaser.Scene {
 
   private touchDamage(): void {
     if (this.invuln > 0) return;
-    const px = this.player.x;
-    const py = this.player.y;
+    const px = this.posX;
+    const py = this.posY;
     let hit: EnemyRuntime | null = null;
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
@@ -653,11 +663,20 @@ export class Run extends Phaser.Scene {
   }
 
   private updateVisuals(realDt: number): void {
-    this.player.x = Math.round(this.player.x);
-    this.player.y = Math.round(this.player.y);
-    this.player.setPosition(this.player.x, this.player.y);
-    this.shadow.setPosition(this.player.x, this.player.y + 7);
-    this.light.setPosition(this.player.x, this.player.y);
+    // Externe Teleports (Debug-Skripte setzen `player.x/y`) übernehmen, ohne
+    // die Float-Position bei normaler Darstellung zu verändern.
+    if (this.player.x !== this.visualX || this.player.y !== this.visualY) {
+      this.posX = this.player.x;
+      this.posY = this.player.y;
+    }
+    // Nur die Darstellung runden; posX/posY bleibt float (Sub-Pixel-Speed).
+    const rx = Math.round(this.posX);
+    const ry = Math.round(this.posY);
+    this.visualX = rx;
+    this.visualY = ry;
+    this.player.setPosition(rx, ry);
+    this.shadow.setPosition(rx, ry + 7);
+    this.light.setPosition(rx, ry);
     const pulse = 1.35 + Math.sin(this.elapsed * 2) * 0.04;
     this.light.setScale(pulse);
     if (this.hitFlash > 0) {
@@ -696,12 +715,12 @@ export class Run extends Phaser.Scene {
         if (e.sprite.texture.key !== frame) e.sprite.setTexture(frame);
       }
     }
-    this.chests.update(realDt, this.cameras.main, this.player.x, this.player.y);
+    this.chests.update(realDt, this.cameras.main, this.posX, this.posY);
   }
 
   private updateHpBar(): void {
-    const px = this.player.x;
-    const py = this.player.y - 17;
+    const px = this.posX;
+    const py = this.posY - 17;
     const ratio = Math.max(0, Math.min(1, this.hp / this.maxHp));
     this.hpBg.setPosition(Math.round(px - 13), Math.round(py));
     this.hpFill.setPosition(Math.round(px - 12), Math.round(py));
@@ -787,6 +806,16 @@ export class Run extends Phaser.Scene {
     this.spawner.budget = 0;
   }
 
+  /** Debug/Abnahme: logische Float-Position setzen (Darstellung folgt). */
+  teleport(x: number, y: number): void {
+    this.posX = Phaser.Math.Clamp(x, 10, WORLD_SIZE - 10);
+    this.posY = Phaser.Math.Clamp(y, 10, WORLD_SIZE - 10);
+    this.visualX = Math.round(this.posX);
+    this.visualY = Math.round(this.posY);
+    this.player.setPosition(this.visualX, this.visualY);
+    this.cameras.main.centerOn(this.visualX, this.visualY);
+  }
+
   setGod(value: boolean): void {
     this.godMode = value;
   }
@@ -810,7 +839,7 @@ export class Run extends Phaser.Scene {
   }
 
   debugSpawnEnemy(id: EnemyId, n: number): number {
-    const out = this.spawner.spawnEnemy(id, n, this.player.x, this.player.y);
+    const out = this.spawner.spawnEnemy(id, n, this.posX, this.posY);
     return out.length;
   }
 
@@ -827,7 +856,7 @@ export class Run extends Phaser.Scene {
   /** Öffnet eine Truhe (Debug oder bei Berührung) und pausiert den Run. */
   openChest(chest?: ChestRuntime): void {
     if (this.chestOpen || this.levelUpOpen || this.finished) return;
-    const target = chest ?? this.chests.near(this.player.x, this.player.y, 200) ?? this.chests.spawn(this.player.x, this.player.y - 22);
+    const target = chest ?? this.chests.near(this.posX, this.posY, 200) ?? this.chests.spawn(this.posX, this.posY - 22);
     const result = chestRewards(this.levelSys.weapons, this.levelSys.passives, this.elapsed, this.rng);
     this.chestResult = result;
     this.chestOpen = true;
@@ -840,7 +869,7 @@ export class Run extends Phaser.Scene {
   /** Debug: Truhe direkt vor dem Spieler spawnen und öffnen. */
   debugOpenChest(): void {
     if (this.chestOpen || this.levelUpOpen) throw new Error("openChest: Es ist bereits eine Truhe/ein Level-Up offen");
-    const chest = this.chests.spawn(this.player.x + 26, this.player.y);
+    const chest = this.chests.spawn(this.posX + 26, this.posY);
     this.openChest(chest);
   }
 
@@ -947,6 +976,11 @@ export class Run extends Phaser.Scene {
       chests: this.chests?.count ?? 0,
       autoPlay: this.autoPlay,
       god: this.godMode,
+      player: {
+        x: Math.round(this.posX * 100) / 100,
+        y: Math.round(this.posY * 100) / 100,
+        terrain: this.ground?.kindAt(this.posX, this.posY) ?? "grass",
+      },
     };
   }
 

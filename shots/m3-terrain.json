@@ -1,0 +1,39 @@
+{
+  "clamp": {
+    "targetRatio": 0.6,
+    "acceptedRatio": [
+      0.55,
+      0.68
+    ],
+    "grassSpeed": 62,
+    "grassDisplaySpeed": 62.2,
+    "waterSpeed": 37.2,
+    "waterDisplaySpeed": 37.4,
+    "ratio": 0.6,
+    "ratioDisplay": 0.6,
+    "grassFrames": 55,
+    "waterFrames": 62,
+    "grassKindAfter": "grass",
+    "waterKindAfter": "water",
+    "splashParticles": 6,
+    "waterTile": {
+      "x": 2260,
+      "y": 1780
+    },
+    "grassTile": {
+      "x": 1524,
+      "y": 1348
+    }
+  },
+  "enemy": {
+    "pxPerSec": 8.3,
+    "defSpeed": 15,
+    "kindStart": "water",
+    "kindEnd": "water"
+  },
+  "enemyOk": true,
+  "speedOk": true,
+  "splashOk": true,
+  "jsErrors": [],
+  "passed": true
+}

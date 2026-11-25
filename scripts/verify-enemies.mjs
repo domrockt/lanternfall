@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 // M3-Abnahme Gegner: alle 30 einzeln (10 gleichzeitig) mit Screenshot + Verhaltens-Check.
+// Bekannt: im natürlichen Endgame (26x, Minute 20–26) erreicht der Cap kurz
+// 504 aktive Gegner (500 + Spezialwellen/Beschwörungen); 2/234 Samples > 500.
+// Das ist dokumentiert und wird nicht wegoptimiert.
 import { mkdirSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 
@@ -85,7 +88,11 @@ try {
     let maxStep = 0;
     let lastPositions = new Map();
     let screenshotDone = false;
-    const deadline = Date.now() + (archetype === "splitter" ? 6500 : 4200);
+    // ranged/orbiter brauchen ein volles Messfenster für harte Verhaltens-Asserts.
+    const rangedDists = [];
+    const orbitTrack = new Map();
+    const fullWindow = archetype === "ranged" || archetype === "orbiter";
+    const deadline = Date.now() + (fullWindow ? 7000 : archetype === "splitter" ? 6500 : 4200);
     let tick = 0;
     while (Date.now() < deadline) {
       await page.waitForTimeout(120);
@@ -112,6 +119,35 @@ try {
         }
         lastPositions.set(e.uid, { x: e.x, y: e.y });
       }
+      const px = s.player?.x ?? 0;
+      const py = s.player?.y ?? 0;
+      if (archetype === "ranged") {
+        const mine = s.enemyList.filter((e) => e.id === id);
+        if (mine.length && s.player) {
+          rangedDists.push(Math.min(...mine.map((e) => Math.hypot(e.x - px, e.y - py))));
+        }
+      }
+      if (archetype === "orbiter") {
+        for (const e of s.enemyList) {
+          if (e.id !== id) continue;
+          const dx = e.x - px;
+          const dy = e.y - py;
+          const angle = Math.atan2(dy, dx);
+          const r = Math.hypot(dx, dy);
+          const prev = orbitTrack.get(e.uid);
+          if (prev) {
+            let delta = angle - prev.angle;
+            while (delta > Math.PI) delta -= Math.PI * 2;
+            while (delta < -Math.PI) delta += Math.PI * 2;
+            prev.sweep += Math.abs(delta);
+            prev.samples += 1;
+            prev.rMin = Math.min(prev.rMin, r);
+            prev.angle = angle;
+          } else {
+            orbitTrack.set(e.uid, { angle, sweep: 0, samples: 1, rMin: r });
+          }
+        }
+      }
       // Screenshot im Wirk-Peak: Effekt sichtbar und ≥4 Gegner leben noch.
       const wantEffect =
         archetype === "ranged" ? shots > 0 :
@@ -126,7 +162,7 @@ try {
         await page.screenshot({ path: `shots/m3-enemy-${id}.png` });
         screenshotDone = true;
       }
-      if (screenshotDone && (archetype === "ranged" || archetype === "charger" || archetype === "phaser"
+      if (screenshotDone && !fullWindow && (archetype === "charger" || archetype === "phaser"
         || archetype === "exploder" || archetype === "summoner" || archetype === "splitter")) break;
     }
     if (!screenshotDone) await page.screenshot({ path: `shots/m3-enemy-${id}.png` });
@@ -139,8 +175,21 @@ try {
     let effectOk = true;
     let measurement = `Tempo ${Math.round(maxStep)} px/s`;
     if (archetype === "ranged") {
-      effectOk = maxShots > 0;
-      measurement = `Projektile ${maxShots} auf Screen`;
+      const sorted = rangedDists.slice().sort((a, b) => a - b);
+      const minD = rangedDists.length ? Math.round(Math.min(...rangedDists)) : 0;
+      const medD = sorted.length ? Math.round(sorted[Math.floor(sorted.length / 2)]) : 0;
+      // Hält Abstand: min. 20 px, Median 40–170 px, mind. 25 Samples.
+      effectOk = maxShots > 0 && rangedDists.length >= 25 && minD >= 20 && medD >= 40 && medD <= 170;
+      measurement = `Projektile ${maxShots}, Distanz min/median ${minD}/${medD} px (${rangedDists.length} Samples)`;
+    } else if (archetype === "orbiter") {
+      let best = null;
+      for (const t of orbitTrack.values()) {
+        if (t.samples >= 15 && (!best || t.sweep > best.sweep)) best = t;
+      }
+      const deg = best ? Math.round((best.sweep * 180) / Math.PI) : 0;
+      // Umkreist wirklich: ≥120° kumuliert über ≥15 Samples, Radius > 25 px.
+      effectOk = Boolean(best && deg >= 120 && best.rMin > 25);
+      measurement = `Winkel ${deg}° (${best?.samples ?? 0} Samples), Radius min ${Math.round(best?.rMin ?? 0)} px`;
     } else if (archetype === "charger") {
       effectOk = modes.has("charge") || maxStep > 80;
       measurement = `Modi ${[...modes].join("/")} Spitze ${Math.round(maxStep)} px/s`;

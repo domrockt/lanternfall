@@ -62,6 +62,8 @@ export function installDebugApi(game: Phaser.Game): void {
 
     setTimeScale: (n: number) => requireRun().setTimeScale(finiteNumber("setTimeScale", n)),
     skipTo: (seconds: number) => requireRun().skipTo(finiteNumber("skipTo", seconds)),
+    teleport: (x: number, y: number) =>
+      requireRun().teleport(finiteNumber("teleport.x", x), finiteNumber("teleport.y", y)),
     god: (value: boolean) => requireRun().setGod(value),
     giveXp: (n: number) => requireRun().giveXp(finiteNumber("giveXp", n)),
     addWeapon: (id: string, level: number) => {
