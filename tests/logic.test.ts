@@ -3,7 +3,10 @@ import { SeededRng } from "../src/logic/rng";
 import { generateOffers, type OwnedItem } from "../src/logic/levelup";
 import { applyXp, GEMS, xpProgress, xpToNext } from "../src/logic/xp";
 import { advanceSpawnBudget, pickEnemy, ringSpawnOffsets, spawnRateForMinute } from "../src/logic/waves";
-import { aggregateMods, effectiveCooldown, effectiveDamage, effectivePickupRadius, weaponLevel } from "../src/logic/stats";
+import {
+  aggregateMods, effectiveCooldown, effectiveDamage, effectiveDuration,
+  effectiveMoveSpeed, effectivePickupRadius, effectiveRadius, weaponLevel,
+} from "../src/logic/stats";
 import { damageAfterArmor, knockbackVector, timeScaleClamped } from "../src/logic/combat";
 import { SpatialHash } from "../src/systems/SpatialHash";
 import { WEAPONS } from "../src/data/weapons";
@@ -158,6 +161,55 @@ describe("Stats", () => {
     expect(weaponLevel(WEAPONS.ember, 0).level).toBe(1);
     expect(weaponLevel(WEAPONS.ember, 99).level).toBe(8);
     expect(weaponLevel(WEAPONS.ember, 4).damage).toBe(16);
+  });
+});
+
+describe("Powerups wirken auf die Stats (alle 6, Stufe 1-5)", () => {
+  const statFor = (id: keyof typeof PASSIVES, level: number) =>
+    aggregateMods([PASSIVES[id].levels[level - 1].mods]);
+
+  it("Windstiefel: +8 % Tempo pro Stufe", () => {
+    for (let l = 1; l <= 5; l++) {
+      expect(effectiveMoveSpeed(100, statFor("boots", l))).toBeCloseTo(100 + l * 8);
+    }
+  });
+  it("Arkanes Buch: -8 % Abklingzeit pro Stufe", () => {
+    for (let l = 1; l <= 5; l++) {
+      expect(effectiveCooldown(1, statFor("tome", l))).toBeCloseTo(1 - l * 0.08);
+    }
+  });
+  it("Eisenherz: +20 Max-HP und +0.2 HP/s pro Stufe", () => {
+    for (let l = 1; l <= 5; l++) {
+      const agg = statFor("heart", l);
+      expect(agg.maxHpFlat).toBe(l * 20);
+      expect(agg.regen).toBeCloseTo(l * 0.2);
+    }
+  });
+  it("Magnetamulett: +25 % Aufsammelradius pro Stufe", () => {
+    for (let l = 1; l <= 5; l++) {
+      const expected = 20 * (1 + (l * 25) / 100);
+      expect(effectivePickupRadius(20, statFor("charm", l))).toBeCloseTo(expected);
+    }
+  });
+  it("Wetzstein: +10 % Schaden pro Stufe", () => {
+    for (let l = 1; l <= 5; l++) {
+      expect(effectiveDamage(100, statFor("whetstone", l))).toBe(100 + l * 10);
+    }
+  });
+  it("Sanduhr: +10 % Dauer und Fläche pro Stufe", () => {
+    for (let l = 1; l <= 5; l++) {
+      const agg = statFor("hourglass", l);
+      expect(effectiveRadius(100, agg)).toBeCloseTo(100 + l * 10);
+      expect(effectiveDuration(10, agg)).toBeCloseTo(10 + l);
+    }
+  });
+  it("Stufe 5 ist jeweils deutlich staerker als Stufe 1", () => {
+    expect(effectiveDamage(100, statFor("whetstone", 5))).toBeGreaterThan(effectiveDamage(100, statFor("whetstone", 1)));
+    expect(effectiveMoveSpeed(100, statFor("boots", 5))).toBeGreaterThan(effectiveMoveSpeed(100, statFor("boots", 1)));
+    expect(effectiveCooldown(1, statFor("tome", 5))).toBeLessThan(effectiveCooldown(1, statFor("tome", 1)));
+    expect(effectivePickupRadius(20, statFor("charm", 5))).toBeGreaterThan(effectivePickupRadius(20, statFor("charm", 1)));
+    expect(effectiveRadius(50, statFor("hourglass", 5))).toBeGreaterThan(effectiveRadius(50, statFor("hourglass", 1)));
+    expect(statFor("heart", 5).maxHpFlat).toBeGreaterThan(statFor("heart", 1).maxHpFlat);
   });
 });
 

@@ -241,25 +241,36 @@
       "id": 18,
       "title": "M2-01 Waffen-Framework + 5 Basen (flail/frost/thorn/storm/lantern) mit VFX",
       "description": "Gemeinsames Framework, Treffer/FX, alle 8 Stufen, Schaden>0, Screenshots.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-25T00:39:44Z",
           "by": "build",
           "text": "todo → doing: Start: Framework erweitern"
+        },
+        {
+          "at": "2026-11-25T00:43:44Z",
+          "by": "build",
+          "text": "doing → review: Alle 5 Basen spielbar, 8 Stufen, Schaden>0 (flail 1840, frost 216, thorn 336, storm 4158, lantern), 0 JS-Fehler. Screenshots geprueft; Rand: Hit-Partikel reduziert, Storm/Orbs sichtbarer. Commit aa5a289."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:39:44Z"
+      "updated": "2026-11-25T00:43:44Z"
     },
     {
       "id": 19,
       "title": "M2-02 Powerups Stufe 1-5 wirken + Tests",
       "description": "Alle 6 Passives nachweislich auf Stats (Unit-Tests + Debug-Stats).",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T00:43:44Z",
+          "by": "build",
+          "text": "todo → doing: Tests fuer alle 6 Passives"
+        }
+      ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:39:13Z"
+      "updated": "2026-11-25T00:43:44Z"
     },
     {
       "id": 20,
