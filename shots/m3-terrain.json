@@ -5,23 +5,23 @@
       0.55,
       0.68
     ],
-    "grassSpeed": 60.8,
-    "grassDisplaySpeed": 61.1,
-    "waterSpeed": 34.6,
-    "waterDisplaySpeed": 34.8,
-    "ratio": 0.57,
-    "ratioDisplay": 0.57,
+    "grassSpeed": 62,
+    "grassDisplaySpeed": 62.2,
+    "waterSpeed": 37.2,
+    "waterDisplaySpeed": 36.7,
+    "ratio": 0.6,
+    "ratioDisplay": 0.59,
     "grassFrames": 55,
-    "waterFrames": 63,
+    "waterFrames": 55,
     "grassKindAfter": "grass",
     "waterKindAfter": "water",
     "splashParticles": 3,
     "waterTile": {
-      "x": 1516,
-      "y": 1516
+      "x": 2028,
+      "y": 1684
     },
     "grassTile": {
-      "x": 1348,
+      "x": 1436,
       "y": 1348
     }
   },

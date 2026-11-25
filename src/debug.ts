@@ -3,7 +3,7 @@ import { ENEMIES, PASSIVES, weaponDef } from "./data";
 import type { EnemyId, PassiveId, WeaponAnyId } from "./data/types";
 import { hasFlag } from "./logic/rng";
 import { TILE, WORLD_SIZE } from "./config";
-import { paintDecor, paintTerrain, terrainKindAt, type DecorKind, type TileKind } from "./gfx/tiles";
+import { paintTerrain, terrainKindAt, type TileKind } from "./gfx/tiles";
 import type { Run } from "./scenes/Run";
 
 /**
@@ -130,11 +130,10 @@ export function installDebugApi(game: Phaser.Game): void {
         const spot = findSpot(k);
         strip(spot.x - 32, spot.y - 8, cols * cell, cell, i);
       });
-      // Dekor auf Gras: Baum, Grab, Stein, Ruine, Laterne (Reihe 4) + reines Gras (Reihe 5).
+      // Weitere Grasvariationen (Reihe 5) statt alter Kachel-Dekors:
+      // Requisiten sind eigene jetzt Bild-Sprites (shots/m4b-sheet-props.png).
       const grassSpot = findSpot("grass");
       strip(grassSpot.x - 32, grassSpot.y - 8, cols * cell, 2 * cell, 4);
-      const decor: DecorKind[] = ["tree", "grave", "stone", "ruin", "post"];
-      decor.forEach((d, i) => paintDecor(ctx, i * cell, 4 * cell, d, i, 4, seed));
       return canvas.toDataURL("image/png");
     },
   };

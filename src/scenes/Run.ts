@@ -264,7 +264,7 @@ export class Run extends Phaser.Scene {
     });
   }
 
-  update(_time: number, delta: number): void {
+  update(time: number, delta: number): void {
     if (this.finished) return;
     const realDt = Math.min(0.05, delta / 1000);
 
@@ -276,7 +276,7 @@ export class Run extends Phaser.Scene {
     if (this.paused) return;
 
     const scaledDt = realDt * this.timeScale;
-    this.ground.update(this.cameras.main);
+    this.ground.update(this.cameras.main, time);
 
     // Feste Teilschritte: bei hoher Zeitskalierung würden Projekte/Gegner sonst
     // ganze Bildschirmbreiten pro Frame springen und Kollisionen verpassen.

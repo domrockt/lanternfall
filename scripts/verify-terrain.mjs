@@ -50,7 +50,10 @@ try {
             if (k === "water") grassOk = false;
           }
         }
-        if (!water && waterScore === 169) water = { x, y };
+        // 169 waere ein vollkommen geschlossener See (13x13 Samples). Nach dem
+        // organischen Ufer-/Bucht-Umbau sind 140 (=83 %) ein verlaessliches
+        // "grosse Wasserflaeche"-Kriterium, ohne einen kuenstlichen See zu suchen.
+        if (!water && waterScore >= 140) water = { x, y };
         if (!grass && kind === "grass" && grassOk) grass = { x, y };
       }
     }
@@ -95,16 +98,28 @@ try {
   };
 
   const speedFrom = (samples, kind) => {
-    const inKind = samples.filter((s) => s.kind === kind);
-    if (inKind.length < 5) return { speed: 0, displaySpeed: 0, frames: inKind.length, kindAfter: null };
-    const a = inKind[0];
-    const b = inKind[inKind.length - 1];
+    // Nur zusammenhaengende Laeufe derselben Art messen: sonst koennte eine
+    // Landzunge zwischen zwei Wasserflaechen die Wasserzeit verfaelschen.
+    let run = [];
+    let best = [];
+    for (const s of samples) {
+      if (s.kind === kind) {
+        run.push(s);
+        if (run.length > best.length) best = run.slice();
+      } else {
+        run = [];
+      }
+    }
+    if (best.length < 5) return { speed: 0, displaySpeed: 0, frames: best.length, kindAfter: null, contiguous: false };
+    const a = best[0];
+    const b = best[best.length - 1];
     const dt = (b.t - a.t) / 1000;
     return {
       speed: dt > 0 ? Math.abs(b.x - a.x) / dt : 0,
       displaySpeed: dt > 0 ? Math.abs(b.displayX - a.displayX) / dt : 0,
-      frames: inKind.length,
-      kindAfter: inKind[inKind.length - 1].kind,
+      frames: best.length,
+      kindAfter: best[best.length - 1].kind,
+      contiguous: best.length === samples.filter((s) => s.kind === kind).length,
       start: { x: Math.round(a.x), y: Math.round(a.y) },
       end: { x: Math.round(b.x), y: Math.round(b.y) },
     };
@@ -117,13 +132,18 @@ try {
   const grassSamples = await measureRun(tiles.grass);
   const grassRun = speedFrom(grassSamples, "grass");
 
-  // Wasser: Spritzer zählen und während der Bewegung screenshotten.
+  // Wasser: erst die Bewegung messen (kein Screenshot-Stall in der Messzeit),
+  // danach Spritzer zählen und während der Bewegung screenshotten.
   await page.evaluate((p) => window.__lf.teleport(p.x, p.y), tiles.water);
   await page.waitForTimeout(350);
   await page.keyboard.down("KeyD");
   await page.waitForTimeout(80);
   await startRecording();
-  await page.waitForTimeout(450);
+  await page.waitForTimeout(900);
+  const waterSamples = await page.evaluate(() => {
+    window.__ftRec.active = false;
+    return window.__ftRec.samples;
+  });
   const splashParticles = await page.evaluate(() => {
     const sc = window.__game.scene.getScene("run");
     return sc.children.list.filter((o) =>
@@ -131,12 +151,7 @@ try {
     ).length;
   });
   await page.screenshot({ path: "shots/m3-water.png" });
-  await page.waitForTimeout(450);
   await page.keyboard.up("KeyD");
-  const waterSamples = await page.evaluate(() => {
-    window.__ftRec.active = false;
-    return window.__ftRec.samples;
-  });
   const waterRun = speedFrom(waterSamples, "water");
 
   const ratio = waterRun.speed / Math.max(1, grassRun.speed);

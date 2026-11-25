@@ -5,6 +5,7 @@ import { createIconTextures } from "./icons";
 import { createCharTextures } from "./chars";
 import { GEN_UI } from "./gen-ui";
 import { GEN_TITLE } from "./gen-title";
+import { GEN_PROPS } from "./gen-props";
 import { ALL_BOSS_FRAMES, ALL_ENEMY_FRAMES, createBossTextures, createEnemyTextures } from "./enemySprites";
 
 /** Zeichen → Palettenindex: 0-9 = 0-9, a-z = 10-31, '.' = transparent. */
@@ -476,6 +477,9 @@ export function createAllTextures(scene: Phaser.Scene): void {
     def.frames.forEach((rows, i) => {
       addGridTexture(scene, i === 0 ? key : `${key}_${i + 1}`, rows, def.w, def.h);
     });
+  }
+  for (const [key, def] of Object.entries(GEN_PROPS)) {
+    addGridTexture(scene, key, def.frames[0], def.w, def.h);
   }
   createLightTexture(scene);
   createVignetteTexture(scene);
