@@ -1005,10 +1005,16 @@
       "id": 55,
       "title": "M5-08 Abnahme",
       "description": "verify-vfx 18 GIFs, art-director review >=4, perf, Regressionen, GAME.md Status M5, Board done. Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T21:22:40Z",
+          "by": "build",
+          "text": "todo → doing: verify-vfx 18/18 grün, Regressionsmessungen laufen, Art-Review R3 läuft"
+        }
+      ],
       "created": "2026-11-25T19:46:37Z",
-      "updated": "2026-11-25T19:46:37Z"
+      "updated": "2026-11-25T21:22:40Z"
     }
   ]
 }

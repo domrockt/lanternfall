@@ -97,6 +97,10 @@ export function installDebugApi(game: Phaser.Game): void {
     /** M5: Ereignis-Sequenz für die VFX-Abnahme auslösen. */
     event: (name: string) => requireRun().debugTriggerEvent(String(name)),
 
+    /** M5-Abnahme: Ereignis-Overlays für Waffen-GIFs abschalten. */
+    setSuppressFx: (value: boolean) => requireRun().debugSetSuppressFx(Boolean(value)),
+    setSuppressLevelUps: (value: boolean) => requireRun().debugSetSuppressLevelUps(Boolean(value)),
+
     /** M5-Audio/Options (immer verfügbar, keine Cheats). */
     audio: () => getAudio().debugState(),
     options: () => getSettings(),

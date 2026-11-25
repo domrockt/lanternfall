@@ -45,6 +45,13 @@ export class DamageNumberSystem {
   /** Treffer melden; aggregiert Spam pro Gegner. */
   report(uid: number, x: number, y: number, damage: number, crit: boolean): void {
     if (damage <= 0) return;
+    // Nur Gegner im/nahe am Viewport zeigen Zahlen (spart Aufwand im 300er-Lauf).
+    const cam = this.scene.cameras?.main;
+    if (cam) {
+      const sx = x - cam.scrollX;
+      const sy = y - cam.scrollY;
+      if (sx < -24 || sy < -24 || sx > cam.width + 24 || sy > cam.height + 24) return;
+    }
     const aggregate = this.lod?.damageAggregate ?? false;
     if (!aggregate) {
       addDamage(this.entries, { enemyUid: uid, damage, crit, time: this.clock });

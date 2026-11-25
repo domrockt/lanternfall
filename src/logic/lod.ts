@@ -19,10 +19,10 @@ export const LOD_REDUCED_THRESHOLD = 250;
 export function lodFor(enemies: number): LodState {
   const n = Math.max(0, Math.floor(enemies));
   if (n > LOD_THRESHOLD) {
-    return { enemies: n, fxCap: 90, particleCap: 160, trails: false, damageAggregate: true, gemCap: 90, level: "minimal" };
+    return { enemies: n, fxCap: 80, particleCap: 140, trails: false, damageAggregate: true, gemCap: 90, level: "minimal" };
   }
   if (n > LOD_REDUCED_THRESHOLD) {
-    return { enemies: n, fxCap: 150, particleCap: 240, trails: true, damageAggregate: false, gemCap: 140, level: "reduced" };
+    return { enemies: n, fxCap: 120, particleCap: 180, trails: true, damageAggregate: true, gemCap: 140, level: "reduced" };
   }
-  return { enemies: n, fxCap: 220, particleCap: 360, trails: true, damageAggregate: false, gemCap: 180, level: "full" };
+  return { enemies: n, fxCap: 200, particleCap: 320, trails: true, damageAggregate: false, gemCap: 180, level: "full" };
 }

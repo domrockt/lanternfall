@@ -130,6 +130,10 @@ export class Run extends Phaser.Scene {
   private slowmoRemaining = 0;
   private slowmoRestore = 1;
   private lastEvolutionFxId = "";
+  /** Abnahme-Harness: Ereignis-Overlays unterdrücken, Waffen-VFX bleiben. */
+  suppressEventFx = false;
+  /** Abnahme-Harness: Level-up-Dialog unterdrücken (Waffen-GIFs). */
+  suppressLevelUps = false;
 
   private rng!: SeededRng;
   private levelSys!: LevelUpSystem;
@@ -420,7 +424,7 @@ export class Run extends Phaser.Scene {
   /** Kurzer Boss-Treffer-Hit-Stop + dosierter Shake (max. ~6 px). */
   private bossHitFeedback(): void {
     if (this.bossFeedbackCooldown > 0) return;
-    this.bossFeedbackCooldown = 0.18;
+    this.bossFeedbackCooldown = 0.8;
     this.hitStop = Math.max(this.hitStop, hitStopFor("bossHit"));
     const shake = shakeFor("bossHit", getSettings().shake);
     if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs, shake.intensity);
@@ -704,40 +708,54 @@ export class Run extends Phaser.Scene {
     if (this.dawnQueued && !this.dawn) this.startDawn();
   }
 
-  /** Sieg: Morgendämmerung über der Arena, dann Results. */
-  private startDawn(): void {
+  /** Sieg: Morgendämmerung über der Arena, dann Results.
+   *  `instant=false` (nur Debug-Abnahme) lässt die Gegner erst sichtbar
+   *  nacheinander zerfallen, damit der GIF-Beleg lebende Gegner + Zerfall zeigt. */
+  private startDawn(instant = true): void {
     if (this.dawn) return;
     this.dawn = true;
     this.dawnTimer = 0;
-    // Alle verbliebenen Gegner zerfallen sichtbar (Splitterstaub), Gefahren/Projektile verschwinden.
-    let crumbled = 0;
-    for (const e of this.enemies.active) {
-      if (e.bossIndex === 5) continue;
-      if (crumbled < 60) {
-        this.combat.particles.shards(deathClassFor(e.def.archetype) === "burst" ? "fx_death_blob" : "fx_ash",
-          e.x, e.y, 4, { life: 0.8, scaleFrom: 0.8, tint: PAL[e.def.color] ?? PAL[C.amber], additive: false });
-        crumbled++;
-      }
+    const crumble = (e: EnemyRuntime, i: number): void => {
+      this.combat.particles.shards(deathClassFor(e.def.archetype) === "burst" ? "fx_death_blob" : "fx_ash",
+        e.x, e.y, 5, { life: 0.9, scaleFrom: 0.9, tint: PAL[e.def.color] ?? PAL[C.amber], additive: false });
+      if (i % 3 === 0) this.combat.fx.spawnAnim("fx_dusk", e.x, e.y, {
+        life: 0.7, scaleFrom: 0.4, scaleTo: 1.1, alphaFrom: 0.5, alphaTo: 0, additive: false,
+      });
       e.alive = false;
       e.sprite.setVisible(false).setActive(false);
       e.aura.setVisible(false);
+    };
+    let crumbled = 0;
+    const list = this.enemies.active.slice();
+    if (instant) {
+      for (const e of list) {
+        if (e.bossIndex === 5) continue;
+        if (crumbled < 60) { crumble(e, crumbled); crumbled++; }
+        else { e.alive = false; e.sprite.setVisible(false).setActive(false); e.aura.setVisible(false); }
+      }
+    } else {
+      // Gestaffelter Zerfall über ~0,9 s (Debug-VFX-Beleg).
+      list.forEach((e, i) => {
+        if (e.bossIndex === 5) return;
+        this.time.delayedCall(i * 180, () => crumble(e, i));
+      });
     }
     this.enemies.compact();
     this.hazards.clear();
     this.enemyShots.clear();
     const amber = PAL[C.amber];
-    this.cameras.main.flash(900, (amber >> 16) & 255, (amber >> 8) & 255, amber & 255);
+    this.cameras.main.flash(150, (amber >> 16) & 255, (amber >> 8) & 255, amber & 255);
     // Farbverlauf über den Himmel: drei Palettenbänder, von Nacht zu Amber.
     this.dawnRect = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, PAL[C.amber], 0)
       .setScrollFactor(0).setDepth(75);
     this.tweens.add({
-      targets: this.dawnRect, fillAlpha: 0.42, duration: 2600, ease: "Sine.InOut",
+      targets: this.dawnRect, fillAlpha: 0.18, duration: 2600, ease: "Sine.InOut",
     });
     const bands = [C.nightMid, C.emberDark, C.flame];
     bands.forEach((color, i) => {
       const band = this.add.rectangle(GAME_WIDTH / 2, 25 + i * 42, GAME_WIDTH, 46, PAL[color], 0)
         .setScrollFactor(0).setDepth(74);
-      this.tweens.add({ targets: band, fillAlpha: 0.16 - i * 0.035, duration: 2400 + i * 300, ease: "Sine.InOut" });
+      this.tweens.add({ targets: band, fillAlpha: 0.09 - i * 0.02, duration: 2400 + i * 300, ease: "Sine.InOut" });
     });
     // Lichtstrahlen vom Horizont.
     for (let i = 0; i < 7; i++) {
@@ -745,15 +763,15 @@ export class Run extends Phaser.Scene {
         .setOrigin(0.5, 1).setScrollFactor(0).setDepth(76)
         .setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
         .setAlpha(0).setScale(2.4 + (i % 2) * 0.5, 3.2);
-      this.tweens.add({ targets: ray, alpha: 0.22 + (i % 3) * 0.06, duration: 900 + i * 120, yoyo: true, repeat: 2 });
+      this.tweens.add({ targets: ray, alpha: 0.09 + (i % 3) * 0.03, duration: 900 + i * 120, yoyo: true, repeat: 2 });
     }
     const sun = this.add.image(GAME_WIDTH / 2, 18, "light_radius")
       .setScrollFactor(0).setDepth(77).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setScale(2.2).setAlpha(0);
-    this.tweens.add({ targets: sun, alpha: 0.85, scale: 3.2, duration: 2400, ease: "Sine.Out" });
+    this.tweens.add({ targets: sun, alpha: 0.6, scale: 2.8, duration: 2400, ease: "Sine.Out" });
     getAudio().play("victory");
     getAudio().stopMusic();
-    this.events.emit("dawn");
+    this.time.delayedCall(160, () => this.events.emit("dawn"));
   }
 
   private touchDamage(): void {
@@ -884,6 +902,7 @@ export class Run extends Phaser.Scene {
   }
 
   private maybeOpenLevelUp(): void {
+    if (this.suppressLevelUps && this.xpState.pendingLevelUps > 0) this.xpState.pendingLevelUps = 0;
     if (this.levelUpOpen || this.xpState.pendingLevelUps <= 0 || this.finished) return;
     const offers = this.levelSys.offers(this.rng);
     if (offers.length === 0) {
@@ -1140,6 +1159,7 @@ export class Run extends Phaser.Scene {
   // ── Ereignis-Inszenierung (M5) ──────────────────────────────
   /** Level-up: Lichtsäule + aufsteigende Glut am Spieler. */
   playLevelUpFx(): void {
+    if (this.suppressEventFx) return;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
     const pillar = this.add.image(x, y + 12, "fx_pillar")
@@ -1167,6 +1187,7 @@ export class Run extends Phaser.Scene {
 
   /** Evolution: eigene Sequenz mit Zeitlupe (~0,45 s), Säule, Ringen, Funken. */
   playEvolutionFx(id: string, name?: string): void {
+    if (this.suppressEventFx) return;
     this.lastEvolutionFxId = id;
     this.slowmoRestore = this.timeScale;
     this.timeScale = 0.45;
@@ -1201,6 +1222,7 @@ export class Run extends Phaser.Scene {
 
   /** Truhe: Lichtstrahl + Glanz + Funken (Weltposition). */
   playChestFx(x: number, y: number): void {
+    if (this.suppressEventFx) return;
     const beam = this.add.image(x, y - 4, "fx_pillar")
       .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9, 1.1);
@@ -1217,14 +1239,17 @@ export class Run extends Phaser.Scene {
 
   /** Boss-Auftritt: Kern-Glut, Zoom-Puls, Bodenbeben. */
   playBossIntroFx(x: number, y: number, index: number): void {
+    if (this.suppressEventFx) return;
     this.combat?.fx.spawnAnim("fx_boss_core", x, y, {
       life: 0.9, scaleFrom: 0.6, scaleTo: 2.4, alphaFrom: 1, alphaTo: 0,
       tint: PAL[index === 5 ? C.amber : index % 2 ? C.crimson : C.emberOrange], additive: true,
     });
-    this.combat?.fx.spawnAnim("fx_shock", x, y + 8, {
-      life: 0.7, scaleFrom: 0.5, scaleTo: 2.2, alphaFrom: 0.8, alphaTo: 0, additive: true,
-      tint: PAL[C.emberDark],
-    });
+    for (let i = 0; i < 3; i++) {
+      this.time.delayedCall(i * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y + 8, {
+        life: 0.65, scaleFrom: 0.5 + i * 0.35, scaleTo: 1.8 + i * 0.5,
+        alphaFrom: 0.85, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
+      }));
+    }
     const shake = shakeFor("bossHit", getSettings().shake);
     if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs + 120, shake.intensity);
     // Kamera-Zoom-Puls (kurz, kein Dauerzoom) über einen Tween statt zoomTo.
@@ -1240,11 +1265,12 @@ export class Run extends Phaser.Scene {
 
   /** Boss-Tod in Stufen: Kern → Ringe → Splitter → Nachglühen. */
   playBossDeathFx(x: number, y: number, index: number): void {
+    if (this.suppressEventFx) return;
     const tint = PAL[index === 5 ? C.amber : index % 2 ? C.crimson : C.emberOrange];
     this.combat?.fx.spawnAnim("fx_boss_core", x, y, {
       life: 0.45, scaleFrom: 1.6, scaleTo: 3.6, alphaFrom: 1, alphaTo: 0, tint, additive: true,
     });
-    this.cameras.main.flash(120, (PAL[C.amber] >> 16) & 255, (PAL[C.amber] >> 8) & 255, PAL[C.amber] & 255);
+    this.cameras.main.flash(90, (PAL[C.amber] >> 16) & 255, (PAL[C.amber] >> 8) & 255, PAL[C.amber] & 255);
     for (let i = 0; i < 3; i++) {
       this.time.delayedCall(90 + i * 95, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
         life: 0.6, scaleFrom: 0.8 + i * 0.5, scaleTo: 2.6 + i * 0.7,
@@ -1252,11 +1278,11 @@ export class Run extends Phaser.Scene {
       }));
     }
     this.time.delayedCall(260, () => {
-      this.combat?.particles.shards("fx_death_bone", x, y, 30, {
-        life: 0.9, scaleFrom: 2.2, additive: false, tint: PAL[C.boneLight],
+      this.combat?.particles.shards("fx_death_bone", x, y, 26, {
+        life: 0.9, scaleFrom: 1.35, additive: false, tint: PAL[C.bone],
       });
-      this.combat?.particles.shards("fx_fire", x, y, 26, {
-        life: 0.75, scaleFrom: 1.6, additive: true, tint,
+      this.combat?.particles.shards("fx_fire", x, y, 30, {
+        life: 0.8, scaleFrom: 1.2, additive: true,
       });
     });
     this.time.delayedCall(620, () => {
@@ -1268,26 +1294,61 @@ export class Run extends Phaser.Scene {
     this.events.emit("eventFx", { kind: "bossDeath", index });
   }
 
+  /** Debug/Abnahme: Ereignis-Overlays (Level-up-Säule etc.) unterdrücken. */
+  debugSetSuppressFx(value: boolean): void {
+    this.suppressEventFx = Boolean(value);
+  }
+
+  /** Debug/Abnahme: Level-up-Dialoge unterdrücken. */
+  debugSetSuppressLevelUps(value: boolean): void {
+    this.suppressLevelUps = Boolean(value);
+  }
+
   /** Debug/Abnahme: Ereignis-Sequenz ohne echten Spielverlauf auslösen. */
   debugTriggerEvent(name: string): void {
     const x = this.posX;
     const y = this.posY;
     switch (name) {
       case "levelup": this.playLevelUpFx(); break;
-      case "evolution": this.playEvolutionFx(this.levelSys.weapons.at(-1)?.id ?? "phoenix", "EVOLUTION"); break;
-      case "chest": this.debugOpenChest(); break;
+      case "evolution": this.playEvolutionFx("phoenix", "PHÖNIXSCHWARM"); break;
+      case "chest": {
+        // Welt-Effekt mit lebenden Gegnern; Panel startet nach 900 ms für den GIF-Beleg.
+        const chest = this.chests.spawn(x + 32, y - 8);
+        this.playChestFx(chest.x, chest.y);
+        this.time.delayedCall(900, () => { if (!this.chestOpen && !this.finished) this.openChest(chest); });
+        break;
+      }
       case "bossIntro": {
-        const b = this.bosses.spawn(this.bossesSpawned.length % 5, x + 60, y - 30);
-        this.playBossIntroFx(b.x, b.y, this.bossesSpawned.length % 5);
+        const idx = this.bossesSpawned.length % 5;
+        this.spawnBossAt(idx);
         break;
       }
       case "bossDeath": {
-        const b = this.bosses.spawn(0, x + 40, y - 20);
+        const b = this.bosses.spawn(0, x, y);
+        // Für den GIF-Beleg unter dem Banner positionieren (nicht am oberen Rand).
+        b.x = x + 18;
+        b.y = y + 62;
+        b.sprite.setPosition(Math.round(b.x), Math.round(b.y));
         this.playBossDeathFx(b.x, b.y, 0);
         this.time.delayedCall(120, () => { b.hp = 0; });
         break;
       }
-      case "dawn": this.startDawn(); break;
+      case "dawn": {
+        this.startDawn(false);
+        // Beleg: frische Gegner stehen kurz sichtbar und zerfallen gestaffelt.
+        const fresh = this.spawner.spawnEnemy("bog_rat", 8, x, y);
+        const fresh2 = this.spawner.spawnEnemy("skeleton", 4, x, y);
+        [...fresh, ...fresh2].forEach((e, i) => {
+          this.time.delayedCall(700 + i * 160, () => {
+            this.combat.particles.shards("fx_death_blob", e.x, e.y, 6, {
+              life: 0.8, scaleFrom: 1, tint: PAL[e.def.color] ?? PAL[C.amber], additive: false,
+            });
+            e.alive = false;
+            e.sprite.setVisible(false).setActive(false);
+          });
+        });
+        break;
+      }
       default: throw new Error(`triggerEvent: unbekanntes Ereignis "${name}"`);
     }
   }

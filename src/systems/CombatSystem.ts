@@ -47,6 +47,8 @@ interface Orb {
 
 interface Swing {
   sprite: Phaser.GameObjects.Image;
+  halo: Phaser.GameObjects.Image;
+  links: Phaser.GameObjects.Image[];
   weaponId: string;
   baseAngle: number;
   side: number;
@@ -286,8 +288,21 @@ export class CombatSystem {
         .setDepth(DEPTH.fxLow)
         .setScale(1 + radius / 140)
         .setBlendMode(Phaser.BlendModes.NORMAL);
+      const links: Phaser.GameObjects.Image[] = [];
+      for (let li = 0; li < 8; li++) {
+        links.push(this.scene.add.image(ctx.playerX, ctx.playerY, "chain_link")
+          .setDepth(DEPTH.trail).setScale(1).setAlpha(0.85));
+      }
+      const halo = this.scene.add.image(ctx.playerX, ctx.playerY, "fx_halo")
+        .setDepth(DEPTH.trail)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setTint(evolved ? PAL[C.fogBlue] : PAL[C.boneLight])
+        .setScale(radius / 18)
+        .setAlpha(0.55);
       state.swings.push({
         sprite,
+        halo,
+        links,
         weaponId: owned.id,
         baseAngle: i === 0 ? base : base + Math.PI,
         side,
@@ -332,9 +347,31 @@ export class CombatSystem {
         const by = ctx.playerY + Math.sin(angle) * s.radius;
         s.sprite.setPosition(Math.round(bx), Math.round(by));
         s.sprite.setRotation(angle + this.clock * 7);
-        // Kette sichtbar machen: ein gestrecktes Kettenglied-Sprite pro Frame.
-        this.fx.beam("chain_link", ctx.playerX, ctx.playerY, bx, by, {
-          life: 0.06, alphaFrom: 0.9, alphaTo: 0.7, additive: false,
+        s.halo.setPosition(Math.round(bx), Math.round(by));
+        s.halo.setAlpha(0.35 + Math.sin(this.clock * 14) * 0.18);
+        // Bewegungsunschärfe-Bogen direkt am Kugelkopf (deutlich sichtbar).
+        if (this.fx.trailsEnabled && (Math.floor(s.t * 60) & 1) === 0) {
+          this.fx.spawnAnim("fx_smear", bx, by, {
+            life: 0.16, scaleFrom: 0.7, scaleTo: 1.0, alphaFrom: 0.95, alphaTo: 0,
+            rotation: angle + Math.PI / 2,
+            tint: s.weaponId === "wrath_pendulum" ? PAL[C.amber] : PAL[C.candleWhite],
+            additive: false,
+          });
+        }
+        // Echte Kettenglieder entlang einer leicht durchhängenden Linie (nicht gestreckt).
+        const cdx = bx - ctx.playerX;
+        const cdy = by - ctx.playerY;
+        const clen = Math.hypot(cdx, cdy) || 1;
+        const cang = Math.atan2(cdy, cdx) + Math.PI / 2;
+        s.links.forEach((link, li) => {
+          const t = (li + 1) / (s.links.length + 1);
+          const sag = Math.sin(t * Math.PI) * 4;
+          link.setPosition(
+            Math.round(ctx.playerX + cdx * t - (cdy / clen) * sag),
+            Math.round(ctx.playerY + cdy * t + (cdx / clen) * sag),
+          );
+          link.setRotation(cang);
+          link.setAlpha(0.9);
         });
         this.fx.spawn({
           texture: "flail_ball", x: bx, y: by, life: 0.22,
@@ -370,6 +407,8 @@ export class CombatSystem {
         }
         if (p >= 1) {
           s.sprite.destroy();
+          s.halo.destroy();
+          for (const link of s.links) link.destroy();
           state.swings.splice(i, 1);
         }
       }
@@ -396,20 +435,20 @@ export class CombatSystem {
       texture: "ring_frost", x: ctx.playerX, y: ctx.playerY, life: 0.5,
       scaleFrom: 0.5, scaleTo: radius / 47, alphaFrom: 1, alphaTo: 0,
       // Normal-Blend: das Eis-Siegel soll blau-grau lesbar bleiben, nicht additiv ausbleichen.
-      additive: false,
+      additive: false, tint: PAL[C.fogBlue],
     });
-    // Eiskristalle/Splitter am Ring (keine Linienringe): 12 Shards nach außen.
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
+    // Eiskristalle/Splitter am Ring (keine Linienringe): 16 große Shards nach außen.
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2;
       this.particles.spawn({
         texture: "fx_ice",
         frames: fxFrames("fx_ice", 4),
-        x: ctx.playerX + Math.cos(a) * radius * 0.72,
-        y: ctx.playerY + Math.sin(a) * radius * 0.72,
-        vx: Math.cos(a) * 30, vy: Math.sin(a) * 30,
-        life: 0.55, scaleFrom: 0.9, scaleTo: 0.3,
+        x: ctx.playerX + Math.cos(a) * radius * 0.70,
+        y: ctx.playerY + Math.sin(a) * radius * 0.70,
+        vx: Math.cos(a) * 24, vy: Math.sin(a) * 24,
+        life: 0.7, scaleFrom: 1.5, scaleTo: 0.5,
         alphaFrom: 1, alphaTo: 0, rotation: a + Math.PI / 2,
-        additive: false, depth: DEPTH.fxLow,
+        additive: false, tint: PAL[C.fogBlue], depth: DEPTH.fxLow,
       });
     }
     this.fx.spawnAnim("fx_halo", ctx.playerX, ctx.playerY, {
@@ -442,6 +481,7 @@ export class CombatSystem {
         weaponId: owned.id,
         texture: "projectile_thorn",
         radius: effectiveRadius(4, ctx.agg),
+        scale: 1.6,
         trail: "fx_thorn",
         trailFrames: fxFrames("fx_thorn", 3),
         trailInterval: 0.06,
@@ -474,6 +514,7 @@ export class CombatSystem {
         weaponId: owned.id,
         texture: "projectile_thorn",
         radius: effectiveRadius(5, ctx.agg),
+        scale: 1.7,
         trail: "fx_thorn",
         trailFrames: fxFrames("fx_thorn", 3),
         trailInterval: 0.05,
@@ -487,6 +528,17 @@ export class CombatSystem {
       life: 0.36, scaleFrom: 0.5, scaleTo: 1.2, alphaFrom: 0.8, alphaTo: 0,
       tint: PAL[C.marshLight], additive: true,
     });
+    // 16 große Dornen-Streaks nach außen: der Wirbel ist als Igelring lesbar.
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2 + this.clock * 0.4;
+      this.particles.spawn({
+        texture: "fx_thorn", frames: fxFrames("fx_thorn", 3),
+        x: ctx.playerX + Math.cos(a) * 16, y: ctx.playerY + Math.sin(a) * 16,
+        vx: Math.cos(a) * 78, vy: Math.sin(a) * 78,
+        life: 0.8, scaleFrom: 3.0, scaleTo: 0.8, alphaFrom: 1, alphaTo: 0,
+        rotation: a + Math.PI / 2, additive: false, tint: PAL[C.amber],
+      });
+    }
   }
 
   // ── Gewittersiegel ───────────────────────────────────────────
@@ -500,7 +552,7 @@ export class CombatSystem {
         .setDepth(DEPTH.decal)
         .setBlendMode(Phaser.BlendModes.NORMAL)
         .setAlpha(0.0)
-        .setScale(1.4);
+        .setScale(1.8);
       this.seals.push({
         x, y, timer: 0.55, damage: effectiveDamage(stats.damage, ctx.agg),
         chain: stats.chain ?? 8, weaponId: owned.id, sprite,
@@ -516,11 +568,19 @@ export class CombatSystem {
       const sealFrames = fxFrames("fx_seal", 5);
       const frame = sealFrames[Math.min(4, Math.floor(p * 5))];
       if (seal.sprite.texture.key !== frame) seal.sprite.setTexture(frame);
-      seal.sprite.setAlpha(0.35 + p * 0.6);
-      seal.sprite.setScale(1.4 + Math.sin(this.clock * 12) * 0.15);
+      seal.sprite.setAlpha(0.5 + p * 0.5);
+      seal.sprite.setScale(1.9 + Math.sin(this.clock * 12) * 0.15);
       if (seal.timer > 0) continue;
       seal.sprite.destroy();
       this.seals.splice(i, 1);
+      // Nachglühendes Siegel bleibt kurz stehen, damit der Einschlag lesbar ist.
+      this.fx.spawnAnim("fx_seal", seal.x, seal.y, {
+        life: 0.8, scaleFrom: 2.0, scaleTo: 2.6, alphaFrom: 0.9, alphaTo: 0,
+        additive: false, tint: PAL[C.lanternWhite],
+      });
+      this.fx.spawnAnim("fx_halo", seal.x, seal.y, {
+        life: 0.35, scaleFrom: 0.6, scaleTo: 1.4, alphaFrom: 0.9, alphaTo: 0, additive: true,
+      });
       // Kettenblitz ausgehend vom Siegel.
       const hit = new Set<number>();
       let last = { x: seal.x, y: seal.y };
@@ -534,9 +594,9 @@ export class CombatSystem {
           if (d < best) { best = d; next = e; }
         }
         if (!next) break;
-        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.32, tint: PAL[C.lanternWhite] });
+        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.5, tint: PAL[C.lanternWhite] });
         this.fx.spawnAnim("fx_seal", next.x, next.y, {
-          life: 0.32, scaleFrom: 0.1, scaleTo: 0.46, alphaFrom: 1, alphaTo: 0,
+          life: 0.45, scaleFrom: 0.4, scaleTo: 1.0, alphaFrom: 1, alphaTo: 0,
           additive: false, tint: PAL[C.lantern],
         });
         this.particles.burst("fx_star", next.x, next.y, 4, {
@@ -578,8 +638,8 @@ export class CombatSystem {
           x: ctx.playerX + Math.cos(a) * radius * 0.82,
           y: ctx.playerY + Math.sin(a) * radius * 0.82,
           vx: Math.cos(a) * 18, vy: Math.sin(a) * 18,
-          life: 0.6, scaleFrom: 0.8, scaleTo: 0.25, alphaFrom: 0.9, alphaTo: 0,
-          rotation: a, additive: false, depth: DEPTH.fxLow,
+          life: 0.6, scaleFrom: 1.3, scaleTo: 0.4, alphaFrom: 0.95, alphaTo: 0,
+          rotation: a, additive: false, tint: PAL[C.fogBlue], depth: DEPTH.fxLow,
         });
       }
     }
@@ -639,7 +699,7 @@ export class CombatSystem {
           if (d < best) { best = d; next = e; }
         }
         if (!next) break;
-        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.3, tint: PAL[C.lanternWhite] });
+        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.5, tint: PAL[C.lanternWhite] });
         this.strike(ctx, next, Math.round(damage * 0.75), owned.id);
         hit.add(next.uid);
         last = next;
@@ -650,9 +710,9 @@ export class CombatSystem {
 
   private strike(ctx: CombatContext, e: EnemyRuntime, damage: number, weaponId: string): void {
     // Gezackter, verzweigter Blitz vom Himmel + Einschlag-Funken.
-    this.fx.bolt(e.x + (e.uid % 3 - 1) * 3, e.y - 78, e.x, e.y, { life: 0.4, tint: PAL[C.lanternWhite] });
+    this.fx.bolt(e.x + (e.uid % 3 - 1) * 3, e.y - 78, e.x, e.y, { life: 0.6, tint: PAL[C.lanternWhite] });
     this.fx.bolt(e.x, e.y - 40, e.x + (e.uid % 2 === 0 ? 16 : -16), e.y - 20, {
-      life: 0.26, scaleFrom: 0.6, scaleTo: 0.6, tint: PAL[C.glow],
+      life: 0.4, scaleFrom: 0.6, scaleTo: 0.6, tint: PAL[C.glow],
     });
     this.fx.spawnAnim("fx_seal", e.x, e.y, {
       life: 0.45, scaleFrom: 0.1, scaleTo: 0.5, alphaFrom: 1, alphaTo: 0,
@@ -661,8 +721,12 @@ export class CombatSystem {
     this.fx.spawnAnim("fx_halo", e.x, e.y, {
       life: 0.3, scaleFrom: 0.6, scaleTo: 1.4, alphaFrom: 0.9, alphaTo: 0, additive: true,
     });
-    this.particles.burst("fx_star", e.x, e.y, 7, {
-      life: 0.3, scaleFrom: 0.9, scaleTo: 0.15, alphaFrom: 1, alphaTo: 0, tint: PAL[C.glow],
+    this.particles.burst("fx_star", e.x, e.y, 9, {
+      life: 0.34, scaleFrom: 2.0, scaleTo: 0.25, alphaFrom: 1, alphaTo: 0, tint: PAL[C.glow],
+    });
+    this.fx.spawnAnim("fx_shock", e.x, e.y + 2, {
+      life: 0.3, scaleFrom: 0.25, scaleTo: 0.7, alphaFrom: 0.9, alphaTo: 0,
+      additive: true, tint: PAL[C.amber],
     });
     const killed = this.hitEnemy(e, damage, ctx, weaponId);
     if (killed) this.killsFx(e);
@@ -671,7 +735,7 @@ export class CombatSystem {
   // ── Lantern ───────────────────────────────────────────────────
   private fireLantern(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, state: WeaponState): void {
     const count = Math.max(1, stats.count ?? 1);
-    const radius = effectiveRadius(stats.radius ?? 34, ctx.agg);
+    const radius = effectiveRadius(stats.radius ?? 34, ctx.agg) + (owned.id === "soul_beacon" ? 14 : 0);
     state.orbTimeLeft = effectiveDuration(stats.duration ?? 2.4, ctx.agg);
     state.orbDamage = effectiveDamage(stats.damage, ctx.agg);
     state.orbRadius = radius;
@@ -679,12 +743,13 @@ export class CombatSystem {
     while (state.orbs.length < count) {
       const sprite = this.scene.add.image(ctx.playerX, ctx.playerY, evolved ? "orb_soul" : "orb_lantern")
         .setDepth(DEPTH.fxLow)
-        .setScale(evolved ? 1.25 : 1)
-        .setBlendMode(Phaser.BlendModes.ADD);
-      const halo = this.scene.add.image(ctx.playerX, ctx.playerY, "fx_halo")
+        .setScale(evolved ? 2 : 1)
+        // Seele in Normal-Blend: das Blau bleibt eigenstaendig, kein Gold-Wash.
+        .setBlendMode(evolved ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
+      const halo = this.scene.add.image(ctx.playerX, ctx.playerY, evolved ? "fx_halo_cold" : "fx_halo")
         .setDepth(DEPTH.trail)
-        .setScale(evolved ? 1.1 : 0.8)
-        .setAlpha(0.55)
+        .setScale(evolved ? 1.8 : 0.8)
+        .setAlpha(evolved ? 0.09 : 0.55)
         .setBlendMode(Phaser.BlendModes.ADD);
       state.orbs.push({ sprite, halo, phase: (state.orbs.length / count) * Math.PI * 2 });
     }
@@ -713,15 +778,24 @@ export class CombatSystem {
         const ox = ctx.playerX + Math.cos(angle) * state.orbRadius;
         const oy = ctx.playerY + Math.sin(angle) * state.orbRadius;
         orb.sprite.setPosition(Math.round(ox), Math.round(oy));
+        if (id === "soul_beacon") {
+          const soulIdx = Math.floor(this.clock * 5 + orb.phase) % 3;
+          const soulFrame = soulIdx === 0 ? "orb_soul" : soulIdx === 1 ? "orb_soul_2" : "orb_soul_3";
+          if (orb.sprite.texture.key !== soulFrame) orb.sprite.setTexture(soulFrame);
+        }
         orb.halo?.setPosition(Math.round(ox), Math.round(oy));
-        orb.halo?.setAlpha(0.4 + Math.sin(this.clock * 5 + orb.phase) * 0.2);
-        orb.sprite.setAlpha(0.65 + Math.sin(this.clock * 6 + orb.phase) * 0.25);
-        // Frame-animierter Orb-Trail statt statischem Kreis.
-        this.fx.spawnAnim("fx_orb", ox, oy, {
-          life: 0.2, scaleFrom: 0.7, scaleTo: 0.2,
-          alphaFrom: 0.4, alphaTo: 0, additive: true,
-          tint: id === "soul_beacon" ? PAL[C.lanternWhite] : PAL[C.amber],
-        });
+        orb.halo?.setAlpha(id === "soul_beacon" ? 0.09 : 0.4 + Math.sin(this.clock * 5 + orb.phase) * 0.2);
+        orb.sprite.setAlpha(id === "soul_beacon" ? 1 : 0.65 + Math.sin(this.clock * 6 + orb.phase) * 0.25);
+        // Laterne behält den additiven Orb-Trail; die Seele nutzt ihren Sprite-Schweif.
+        if (id !== "soul_beacon" || (Math.floor(this.clock * 10) & 1) === 0) {
+          if (id !== "soul_beacon") {
+            this.fx.spawnAnim("fx_orb", ox, oy, {
+              life: 0.2, scaleFrom: 0.7, scaleTo: 0.2,
+              alphaFrom: 0.4, alphaTo: 0, additive: true,
+              tint: PAL[C.amber],
+            });
+          }
+        }
         for (const e of ctx.enemies) {
           if (!e.alive || e.hp <= 0) continue;
           if ((e.x - ox) ** 2 + (e.y - oy) ** 2 > (e.radius + 9) ** 2) continue;
@@ -771,7 +845,7 @@ export class CombatSystem {
             x: p.x, y: p.y, life: 0.22,
             scaleFrom: p.sprite.scaleX * 0.8, scaleTo: 0.15,
             alphaFrom: 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
-            tint: p.blendAdd || phoenixTrail ? undefined : PAL[C.fog],
+            tint: p.blendAdd || phoenixTrail ? undefined : PAL[C.emberOrange],
           });
         }
       }
@@ -848,14 +922,16 @@ export class CombatSystem {
     const spec = deathFxFor(cls, e.boss);
     const count = e.boss ? spec.count : e.elite ? Math.round(spec.count * 1.4) : spec.count;
     // Vier klar unterscheidbare Tod-Klassen: zerfallen / platzen / verpuffen / stieben.
+    // Shards behalten ihre Materialrampe (Knochen bleibt Knochen, Geist blau);
+    // nur die leichte Staubschicht nimmt die Gegnerfarbe an.
     this.particles.shards(spec.shard, e.x, e.y, count, {
-      life: e.boss ? 0.75 : 0.42,
-      scaleFrom: e.boss ? 2.2 : e.elite ? 1.4 : 1,
-      additive: spec.additive, tint,
+      life: e.boss ? 0.75 : 0.5,
+      scaleFrom: e.boss ? 1.8 : e.elite ? 1.3 : 1.1,
+      additive: spec.additive,
     });
     this.particles.shards(spec.dust, e.x, e.y, Math.max(3, Math.round(count / 2)), {
-      life: 0.5, scaleFrom: e.boss ? 1.8 : 1, additive: false, tint,
-      scaleTo: 0.2,
+      life: 0.5, scaleFrom: e.boss ? 1.5 : 0.9, additive: false, tint,
+      alphaFrom: 0.32, scaleTo: 0.2,
     });
     if (cls === "dissolve" || e.boss) {
       this.fx.spawnAnim("fx_halo", e.x, e.y, {
@@ -875,9 +951,8 @@ export class CombatSystem {
       old?.sprite.destroy();
     }
     const sprite = this.scene.add.image(x, y, "fx_fire")
-      .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.42)
-      .setScale((r / 28) * 1.4, (r / 28) * 0.9)
-      .setTint(PAL[C.emberDark]);
+      .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.5)
+      .setScale((r / 22) * 1.4, (r / 22) * 1.0);
     this.burns.push({ x, y, r, life, tick: 0, dps, weaponId, sprite });
   }
 
@@ -886,8 +961,11 @@ export class CombatSystem {
       const b = this.burns[i];
       b.life -= ctx.dt;
       b.tick -= ctx.dt;
-      const burnAlpha = this.lod.level === "minimal" ? 0.22 : 0.36;
+      const burnAlpha = this.lod.level === "minimal" ? 0.26 : 0.46;
       b.sprite.setAlpha(Math.max(0, Math.min(burnAlpha, b.life * 0.6)) * (0.8 + Math.sin(this.clock * 9) * 0.2));
+      const burnFrames = fxFrames("fx_fire", 6);
+      const bf = burnFrames[Math.floor(this.clock * 8 + b.x) % 6];
+      if (b.sprite.texture.key !== bf) b.sprite.setTexture(bf);
       if (b.life <= 0) {
         b.sprite.destroy();
         this.burns.splice(i, 1);
@@ -911,14 +989,14 @@ export class CombatSystem {
   clearWeaponState(id: string): void {
     const state = this.states.get(id);
     if (!state) return;
-    for (const s of state.swings) s.sprite.destroy();
+    for (const s of state.swings) { s.sprite.destroy(); s.halo.destroy(); for (const link of s.links) link.destroy(); }
     for (const orb of state.orbs) { orb.sprite.destroy(); orb.halo?.destroy(); }
     this.states.delete(id);
   }
 
   clear(): void {
     for (const state of this.states.values()) {
-      for (const s of state.swings) s.sprite.destroy();
+      for (const s of state.swings) { s.sprite.destroy(); s.halo.destroy(); for (const link of s.links) link.destroy(); }
       for (const orb of state.orbs) { orb.sprite.destroy(); orb.halo?.destroy(); }
     }
     this.states.clear();

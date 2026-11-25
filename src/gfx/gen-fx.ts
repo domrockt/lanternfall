@@ -29,7 +29,7 @@ function addFrame(scene: Phaser.Scene, key: string, rows: string[], w: number, h
     for (let x = 0; x < w; x++) {
       const ch = row[x];
       if (!ch || ch === ".") continue;
-      if (ch === "0") continue; // 0 = Kontur bleibt transparent (Glow-Rand)
+      // 0 ist in FX-Frames echte Tinte (Palette 0); Transparenz ist "."
       const idx = charCode(ch);
       if (!Number.isFinite(idx)) continue;
       ctx.fillStyle = hex(idx);
@@ -136,28 +136,32 @@ function boltFrame(seed: number, height = 16, width = 12): string[] {
   return rows;
 }
 
-/** Eiskristall (Diamant) mit Glanzkante; 4 Dreh-/Zerfallsstufen. */
+/** Eiskristall (großer Diamant) mit Facetten und Glanzkante; 4 Zerfallsstufen. */
 function iceFrame(stage: number): string[] {
-  const ramp = [9, 8, 6, 5]; // paleMist → fogBlue
-  const w = 11;
-  const h = 15;
-  const cx = 5;
-  const half = Math.max(1, 4 - stage);
+  const w = 15;
+  const h = 21;
+  const cx = 7;
+  const cy = 10;
+  const half = Math.max(2, 5 - stage);
   const out: string[] = [];
   for (let y = 0; y < h; y++) {
     let row = "";
     for (let x = 0; x < w; x++) {
       const dx = Math.abs(x - cx);
-      const dy = Math.abs(y - (h - 1) / 2);
-      const inside = dx + dy * 0.55 < half + (stage === 0 ? 4 : 2);
+      const dy = Math.abs(y - cy);
+      // Diamant: horizontale Breite nimmt zur Spitze ab, Kanten bleiben gerade.
+      const inside = dx + Math.floor(dy * 0.55) < half + 2;
       if (!inside) row += ".";
-      else if (dx <= 1 && y < h / 2) row += "d";
-      else if (dx <= 2) row += "b"; // boneLight
-      else row += String.fromCharCode(97 + ramp[Math.min(3, Math.floor(dx / 2))]);
+      else if (dx <= 1 && dy <= 2) row += "d";        // lanternWhite Kern
+      else if (dx <= 2 && y < cy) row += "b";          // boneLight Glanzkante
+      else if (x < cx) row += "j";                     // paleMist helle Facette
+      else if (dx <= 3) row += "i";                    // mist
+      else row += "g";                                 // fogBlue Rand
     }
     out.push(row);
   }
-  return out;
+  // 2-px-Kontur nur an den Außenkanten, damit der Kristall auf Gras steht.
+  return out.map((r) => r.replace(/\.$/, "."));
 }
 
 /** Bewegungsunschärfe-Bogen für Kettenflegel/Zornpendel. */
@@ -188,29 +192,46 @@ function smearFrame(stage: number, width = 44, height = 16): string[] {
   return out;
 }
 
-/** Boden-Siegel (Sturm/Donner): Rune mit Zacken, 4 Pulsframes. */
-function sealFrame(stage: number, size = 30): string[] {
-  const out: string[] = [];
-  const cx = (size - 1) / 2;
-  const cy = (size - 1) / 2;
-  const r = size / 2 - 1;
-  for (let y = 0; y < size; y++) {
-    let row = "";
-    for (let x = 0; x < size; x++) {
-      const dx = x - cx;
-      const dy = y - cy;
-      const d = Math.hypot(dx, dy);
-      const a = Math.atan2(dy, dx);
-      const band = Math.abs(d - (r - stage * 1.2)) < 1.6;
-      const spike = Math.abs(Math.sin(a * 6)) > 0.83 && Math.abs(d - r * 0.72) < 2.2;
-      const innerRing = Math.abs(d - r * 0.46) < 1.2;
-      if (band) row += stage === 0 ? "d" : "c";
-      else if (spike || innerRing) row += "g";
-      else row += ".";
+/** Boden-Siegel (Sturm/Donner): kantige Rune mit 8 geraden Zacken, 5 Pulsframes. */
+function sealFrame(stage: number, size = 32): string[] {
+  const out: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const put = (x: number, y: number, ch: string): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix >= 0 && iy >= 0 && ix < size && iy < size) out[iy][ix] = ch;
+  };
+  const line = (x0: number, y0: number, x1: number, y1: number, ch: string): void => {
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+    for (let t = 0; t <= steps; t++) {
+      put(Math.round(x0 + (x1 - x0) * t / steps), Math.round(y0 + (y1 - y0) * t / steps), ch);
     }
-    out.push(row);
+  };
+  const r = 11 + stage * 0.6;
+  // Acht gerade Zacken von r*0.7 nach r (kein ovaler Ring).
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+    line(Math.round(c + Math.cos(a) * r * 0.68), Math.round(c + Math.sin(a) * r * 0.68),
+      Math.round(c + Math.cos(a) * r), Math.round(c + Math.sin(a) * r), i % 2 ? "c" : "d");
   }
-  return out;
+  // Achtkantiger Außenring (gerade Segmente, 2 px).
+  const points: [number, number][] = [];
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+    points.push([Math.round(c + Math.cos(a) * r * 0.9), Math.round(c + Math.sin(a) * r * 0.9)]);
+  }
+  for (let i = 0; i < 8; i++) {
+    const a = points[i];
+    const b = points[(i + 1) % 8];
+    line(a[0], a[1], b[0], b[1], stage === 0 ? "d" : "c");
+    line(a[0], a[1] + 1, b[0], b[1] + 1, "g");
+  }
+  // Innenrune: drei gerade Linien + Kern.
+  line(c - 4, c - 4, c + 4, c + 4, "g");
+  line(c + 4, c - 4, c - 4, c + 4, "g");
+  line(c, c - 5, c, c + 5, stage > 1 ? "d" : "c");
+  put(c, c, "d");
+  return out.map((row) => row.join(""));
 }
 
 /** Lichtsäule für Level-up/Evolution; heller Kern + Farbsaum. */
@@ -326,6 +347,66 @@ function orbFrame(stage: number): string[] {
   return out;
 }
 
+/** Kalter, hohler Halo (kein warmes Weiß im Zentrum): nur ein 2-px-Ring. */
+function coldHaloFrame(stage: number): string[] {
+  const size = 24;
+  const out: string[] = [];
+  const c = (size - 1) / 2;
+  const r = 10.5 + stage * 0.4;
+  for (let y = 0; y < size; y++) {
+    let row = "";
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x - c, y - c);
+      if (d < r - 2 || d > r + 0.7) row += ".";
+      else if (d > r - 0.8) row += "9";   // paleMist heller Rand
+      else row += "6";                    // fogBlue
+    }
+    out.push(row);
+  }
+  return out;
+}
+
+/**
+ * Geisterflamme (Seele): asymmetrischer, leanender Flammenkorper mit echter
+ * 0-Tinte-Kontur, 3-Ton-Korper (8/6/5), exakt 2x2-Kern und zusammenhaengendem
+ * Schweif. 3 Frames @ ~5 Hz (Flackern + Lean-Wechsel).
+ */
+function orbSoulFrame(stage: number): string[] {
+  const w = 15;
+  const h = 22;
+  const cx = 7;
+  const out: string[] = [];
+  const lean = stage === 0 ? 0 : stage === 1 ? 1 : -1;
+  const widths = [0, 1, 1, 2, 2, 3, 3, 3, 4, 4, 3, 3, 2, 2];
+  for (let y = 0; y < h; y++) {
+    let row = "";
+    const body = y < 14;
+    const center = body
+      ? cx + Math.round(lean * (y / 13) * 1.6 + Math.sin(y * 0.8 + stage * 2) * 0.5)
+      : cx + Math.round(Math.sin(y * 1.25 + stage * 2) * 0.9);
+    const half = body ? widths[y] : 0;
+    for (let x = 0; x < w; x++) {
+      const dx = x - center;
+      if (body) {
+        const left = half + (stage === 2 ? 1 : 0);
+        const right = half + (stage === 1 ? 1 : 0);
+        if (dx < -left || dx > right) { row += "."; continue; }
+        if (y > 0 && (dx === -left || dx === right)) { row += "0"; continue; }
+      } else {
+        if (dx !== 0) { row += "."; continue; }
+      }
+      const wideCore = body && y >= 10 && y <= 11 && (x === center || x === center + 1);
+      if (wideCore) { row += "d"; continue; }
+      // Licht oben-links, Schatten unten-rechts (3 Tone).
+      if (body && y < 8 && dx < 0) { row += "8"; continue; }
+      if (body && y > 7 && dx > 0) { row += "5"; continue; }
+      row += "6";
+    }
+    out.push(row);
+  }
+  return out;
+}
+
 export function createFxTextures(scene: Phaser.Scene): void {
   // Glut: weiß → gelb → orange → rot → dunkelrot
   addFrames(scene, "fx_fire", {
@@ -342,10 +423,10 @@ export function createFxTextures(scene: Phaser.Scene): void {
     ].map((rows) => rows.map((r) => r.replace(/ /g, "."))),
   });
   addFrames(scene, "fx_halo", { w: 24, h: 24, frames: [0, 1].map((i) => ring(24, 24, [20, 18, 17], 0.3 + i * 0.16, i)) });
-  addFrames(scene, "fx_ice", { w: 11, h: 15, frames: [0, 1, 2, 3].map(iceFrame) });
+  addFrames(scene, "fx_ice", { w: 15, h: 21, frames: [0, 1, 2, 3].map(iceFrame) });
   addFrames(scene, "fx_smear", { w: 44, h: 16, frames: [0, 1, 2, 3, 4].map((i) => smearFrame(i)) });
   addFrames(scene, "fx_bolt", { w: 12, h: 16, frames: [0, 1, 2, 3, 4, 5].map((i) => boltFrame(i)) });
-  addFrames(scene, "fx_seal", { w: 30, h: 30, frames: [0, 1, 2, 3, 4].map((i) => sealFrame(i)) });
+  addFrames(scene, "fx_seal", { w: 32, h: 32, frames: [0, 1, 2, 3, 4].map((i) => sealFrame(i)) });
   addFrames(scene, "fx_thorn", { w: 9, h: 9, frames: [0, 1, 2].map(thornFrame) });
   addFrames(scene, "fx_orb", { w: 11, h: 11, frames: [0, 1, 2, 3].map(orbFrame) });
   addFrames(scene, "fx_pillar", { w: 26, h: 72, frames: [0, 1, 2, 3, 4].map((i) => pillarFrame(i)) });
@@ -363,6 +444,10 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_dusk", { w: 20, h: 20, frames: [0, 1, 2].map((i) => ring(20, 20, [5, 4, 3], 0.55 - i * 0.1, i)) });
   // Staub/Asche für Tod-Klassen (klein, normal blend)
   addFrames(scene, "fx_ash", { w: 5, h: 5, frames: [0, 1].map(() => [".ccc.", "c555c", "c505c", "c555c", ".ccc."]) });
+  // Seelenflamme fuer das Seelenleuchtfeuer (2 Frames, 15x22).
+  addFrames(scene, "orb_soul", { w: 15, h: 22, frames: [0, 1, 2].map(orbSoulFrame) });
+  // Kalter Halo fuer Seelen (blau-grau statt warmem Amber-Ring).
+  addFrames(scene, "fx_halo_cold", { w: 24, h: 24, frames: [0, 1].map(coldHaloFrame) });
 }
 
 /** Alle Frame-Keys eines Effekts (für FxSystem-Animationen). */
@@ -374,5 +459,5 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_fire: 6, fx_star: 3, fx_halo: 2, fx_ice: 4, fx_smear: 5, fx_bolt: 6,
   fx_seal: 5, fx_thorn: 3, fx_orb: 4, fx_pillar: 5, fx_shock: 6,
   fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4,
-  fx_boss_core: 6, fx_dusk: 3, fx_ash: 2,
+  fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2,
 };

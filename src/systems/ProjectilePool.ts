@@ -47,6 +47,7 @@ export class ProjectilePool {
     pierce: number; knockback: number; life?: number; weaponId?: string;
     texture?: string; radius?: number; target?: EnemyRuntime | null;
     trail?: string | null; trailFrames?: string[]; trailInterval?: number; blendAdd?: boolean; explodeRadius?: number;
+    /** Darstellungsgröße (Hitbox bleibt radius). */ scale?: number;
   }): ProjectileRuntime {
     const p = this.free.pop() ?? this.createRuntime();
     p.x = opts.x;
@@ -74,6 +75,7 @@ export class ProjectilePool {
     p.sprite.setVisible(true).setActive(true).setDepth(DEPTH.death);
     p.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
     p.sprite.setRotation(Math.atan2(opts.vy, opts.vx));
+    p.sprite.setScale(opts.scale ?? 1);
     this.active.push(p);
     return p;
   }

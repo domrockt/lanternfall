@@ -1,0 +1,25 @@
+{
+  "summary": {
+    "weapons": 1,
+    "events": 0,
+    "gifs": 1,
+    "failed": [],
+    "jsErrors": [],
+    "passed": true
+  },
+  "results": [
+    {
+      "id": "soul_beacon",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "orb_soul"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 13,
+      "size": 497231,
+      "gifOk": true,
+      "ok": true
+    }
+  ]
+}

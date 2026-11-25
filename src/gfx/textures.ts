@@ -272,25 +272,24 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     // Komet: Schweif oben-links, runder Glutkern unten-rechts (keine Kerbe).
     rows: [
       "...00..",
-      "..0j00.",
-      "..0jl0.",
-      ".0jlmm0",
-      "0jlmmm0",
-      ".0jlmm0",
-      "..0jm0.",
+      "..0h00.",
+      "..0hi0.",
+      ".0hild0",
+      "0hildi0",
+      ".0hild0",
+      "..0hi0.",
     ],
   },
   projectile_thorn: {
     w: 7, h: 7,
-    // Helle Knochen-Dornen statt dunkelgrün: auf Moorgras sonst unsichtbar.
-    // Gruener Dornenstern: Spitzen 31 (v), Kern 30 (u), Schatten 29 (t).
+    // Dornenstern mit warmer Glutrampe + Laternen-Spitze; Kontur haelt ihn auf Gras.
     rows: [
       "...0...",
-      "..0v0..",
-      ".0uvu0.",
-      "0tuvut0",
-      ".0uvu0.",
-      "..0v0..",
+      "..0l0..",
+      ".0hih0.",
+      "0hildi0",
+      ".0hih0.",
+      "..0l0..",
       "...0...",
     ],
   },
@@ -353,57 +352,6 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "..0a0..",
       "...0...",
     ],
-  },
-  orb_soul: {
-    w: 9, h: 9,
-    rows: [
-      "...000...",
-      "..0bbb0..",
-      ".0bcccb0.",
-      "0bcclccb0",
-      "0bclddcb0",
-      "0bcclccb0",
-      ".0bcccb0.",
-      "..0bbb0..",
-      "...000...",
-    ],
-  },
-  arrow_chest: {
-    w: 9, h: 9,
-    // 1-px-Kontur um Schaft und Spitze, Feder am Fuß.
-    rows: [
-      "....00...",
-      "...0mm0..",
-      "..0mmm0..",
-      ".0mmmmm0.",
-      "0mmmmmm0.",
-      ".0mmmmm0.",
-      "..0mmm00.",
-      "...0m0m0.",
-      "....00.0.",
-    ],
-  },
-  fx_coin: {
-    w: 7, h: 7,
-    // Muenze: Rand 18/19 (j), Gesicht 20/21 (k/l), Glanz 22 (m) oben-links.
-    rows: [
-      "..000..",
-      ".0jjm0.",
-      "0jkklj0",
-      "0jkllj0",
-      "0jkkkj0",
-      ".0jjj0.",
-      "..000..",
-    ],
-  },
-  fx_spark: {
-    w: 3, h: 3,
-    rows: [".m.", "mmm", ".m."],
-  },
-  bolt_seg: {
-    w: 3, h: 8,
-    // 3-px-Zickzack (versetzt alle 2 Zeilen), damit der Blitz nicht gerade wirkt.
-    rows: ["0m.", "0m.", ".0m", ".0m", "..0", "..0", ".0m", ".0m"],
   },
   chest_closed: {
     w: 16, h: 16,

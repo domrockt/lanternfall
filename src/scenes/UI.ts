@@ -380,7 +380,7 @@ export class UI extends Phaser.Scene {
           repeat: 7,
           callback: () => {
             // Rollnamen wie die ausgerollten Namen vollständig auf 2 Zeilen verteilen.
-            const lines = slotNameLines(pickRollName(result.rewards, tick++).toUpperCase());
+            const lines = slotNameLines(pickRollName(result.rewards, tick++).toUpperCase(), 13);
             slot.text.setText(lines[0] ?? "").setAlpha(1);
             slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
           },
@@ -392,7 +392,7 @@ export class UI extends Phaser.Scene {
       const reward = result.rewards[i];
       this.time.delayedCall(1450 + i * 220, () => {
         const slot = this.chestSlots[i];
-        const lines = slotNameLines(reward.name.toUpperCase());
+        const lines = slotNameLines(reward.name.toUpperCase(), 13);
         slot.text.setText(lines[0] ?? "");
         slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
         slot.level.setText(reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`);

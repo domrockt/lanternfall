@@ -21,3 +21,5 @@ shots/tmp/
 .opencode-fix1.log
 scripts/art/__pycache__/
 shots/raw/
+.opencode-M5.log
+!shots/m5-*.gif

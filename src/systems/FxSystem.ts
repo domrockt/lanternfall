@@ -171,23 +171,56 @@ export class FxSystem {
     });
   }
 
-  /** Animierter, gezackter Blitz zwischen zwei Punkten (Frame-Textur). */
+  /**
+   * Gezackter, verzweigter Blitz aus 3–6 Segmenten. Jedes Segment behält die
+   * volle Texturbreite (kein aspect-Stauch) und wird nur in Y gestreckt.
+   */
   bolt(x1: number, y1: number, x2: number, y2: number, opts: Partial<FxOptions> = {}): void {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const len = Math.hypot(dx, dy) || 1;
-    const stretch = len / 16;
-    this.spawnAnim("fx_bolt", (x1 + x2) / 2, (y1 + y2) / 2, {
-      ...(opts as FxOptions),
-      rotation: Math.atan2(dy, dx) + Math.PI / 2,
-      scaleFrom: stretch,
-      scaleTo: stretch,
-      aspect: opts.aspect ?? 1 / stretch,
-      life: opts.life ?? 0.28,
-      alphaFrom: opts.alphaFrom ?? 1,
-      alphaTo: opts.alphaTo ?? 0,
-      tint: opts.tint,
-    });
+    const ang = Math.atan2(dy, dx);
+    const nx = -dy / len;
+    const ny = dx / len;
+    const segments = Math.max(3, Math.min(6, Math.ceil(len / 26)));
+    const seed = Math.abs(Math.floor(x1 * 13 + y1 * 7 + x2 * 3 + y2 * 11));
+    const life = opts.life ?? 0.3;
+    const tint = opts.tint;
+    const jitter = (i: number): number => (Math.sin(seed * 0.7 + i * 2.3) * 4.2 + Math.sin(seed + i * 5.1) * 1.8);
+    for (let i = 0; i < segments; i++) {
+      const t0 = i / segments;
+      const t1 = (i + 1) / segments;
+      const o0 = i === 0 ? 0 : jitter(i);
+      const o1 = i === segments - 1 ? 0 : jitter(i + 1);
+      const ax = x1 + dx * t0 + nx * o0;
+      const ay = y1 + dy * t0 + ny * o0;
+      const bx = x1 + dx * t1 + nx * o1;
+      const by = y1 + dy * t1 + ny * o1;
+      const segLen = Math.hypot(bx - ax, by - ay) || 1;
+      this.spawnAnim("fx_bolt", (ax + bx) / 2, (ay + by) / 2, {
+        ...(opts as FxOptions),
+        rotation: Math.atan2(by - ay, bx - ax) + Math.PI / 2,
+        scaleFrom: segLen / 16,
+        scaleTo: segLen / 16,
+        life, alphaFrom: opts.alphaFrom ?? 1, alphaTo: opts.alphaTo ?? 0,
+        tint,
+      });
+    }
+    // Zwei Seitenäste (verzweigt), nicht nur eine gerade Säule.
+    for (let b = 0; b < 2; b++) {
+      const t = 0.35 + b * 0.22;
+      const ox = x1 + dx * t + nx * jitter(b + 2);
+      const oy = y1 + dy * t + ny * jitter(b + 2);
+      const side = (b === 0 ? 1 : -1) * (0.55 + (seed % 3) * 0.12);
+      const bx = ox + Math.cos(ang + side) * 20;
+      const by = oy + Math.sin(ang + side) * 20;
+      this.spawnAnim("fx_bolt", (ox + bx) / 2, (oy + by) / 2, {
+        ...(opts as FxOptions),
+        rotation: Math.atan2(by - oy, bx - ox) + Math.PI / 2,
+        scaleFrom: 0.9, scaleTo: 0.9,
+        life: life * 0.75, alphaFrom: 0.85, alphaTo: 0, tint,
+      });
+    }
   }
 
   /** Boden-Decal (unter Gegnern, Normal-Blend). */

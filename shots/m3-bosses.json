@@ -3,7 +3,7 @@
     {
       "id": "moor_queen",
       "ok": true,
-      "shares": 22,
+      "shares": 31,
       "phases": [
         1
       ],
@@ -14,7 +14,7 @@
     {
       "id": "bone_lord",
       "ok": true,
-      "shares": 1,
+      "shares": 2,
       "phases": [
         1
       ],
@@ -25,7 +25,7 @@
     {
       "id": "pale_shepherd",
       "ok": true,
-      "shares": 1,
+      "shares": 2,
       "phases": [
         1
       ],
@@ -36,7 +36,7 @@
     {
       "id": "bell_golem",
       "ok": true,
-      "shares": 1,
+      "shares": 5,
       "phases": [
         1
       ],
@@ -47,7 +47,7 @@
     {
       "id": "coven",
       "ok": true,
-      "shares": 0,
+      "shares": 5,
       "phases": [
         1
       ],
