@@ -14,12 +14,12 @@
       "frames": 28,
       "found": [
         "projectile_ember",
-        "fx_halo",
-        "fx_fire"
+        "fx_fire",
+        "fx_halo"
       ],
       "maxEnemies": 26,
-      "minEnemies": 13,
-      "size": 486089,
+      "minEnemies": 14,
+      "size": 452495,
       "gifOk": true,
       "ok": true
     },
@@ -33,8 +33,8 @@
         "fx_smear"
       ],
       "maxEnemies": 28,
-      "minEnemies": 13,
-      "size": 501337,
+      "minEnemies": 15,
+      "size": 426633,
       "gifOk": true,
       "ok": true
     },
@@ -48,8 +48,8 @@
         "fx_halo"
       ],
       "maxEnemies": 20,
-      "minEnemies": 15,
-      "size": 464988,
+      "minEnemies": 14,
+      "size": 547924,
       "gifOk": true,
       "ok": true
     },
@@ -63,7 +63,7 @@
       ],
       "maxEnemies": 26,
       "minEnemies": 15,
-      "size": 424166,
+      "size": 414908,
       "gifOk": true,
       "ok": true
     },
@@ -76,9 +76,9 @@
         "fx_bolt",
         "fx_seal"
       ],
-      "maxEnemies": 20,
-      "minEnemies": 2,
-      "size": 430566,
+      "maxEnemies": 19,
+      "minEnemies": 9,
+      "size": 455248,
       "gifOk": true,
       "ok": true
     },
@@ -87,11 +87,12 @@
       "kind": "weapon",
       "frames": 28,
       "found": [
-        "orb_lantern"
+        "orb_lantern",
+        "fx_halo"
       ],
       "maxEnemies": 29,
-      "minEnemies": 14,
-      "size": 505167,
+      "minEnemies": 13,
+      "size": 500022,
       "gifOk": true,
       "ok": true
     },
@@ -106,7 +107,7 @@
       ],
       "maxEnemies": 24,
       "minEnemies": 10,
-      "size": 576770,
+      "size": 526585,
       "gifOk": true,
       "ok": true
     },
@@ -118,9 +119,9 @@
         "flail_ball",
         "fx_smear"
       ],
-      "maxEnemies": 21,
+      "maxEnemies": 23,
       "minEnemies": 13,
-      "size": 468400,
+      "size": 514204,
       "gifOk": true,
       "ok": true
     },
@@ -130,11 +131,12 @@
       "frames": 28,
       "found": [
         "projectile_ice",
-        "fx_ice"
+        "fx_ice",
+        "fx_shock"
       ],
       "maxEnemies": 20,
-      "minEnemies": 13,
-      "size": 514238,
+      "minEnemies": 12,
+      "size": 521214,
       "gifOk": true,
       "ok": true
     },
@@ -147,9 +149,9 @@
         "fx_thorn",
         "projectile_thorn"
       ],
-      "maxEnemies": 19,
+      "maxEnemies": 20,
       "minEnemies": 11,
-      "size": 526720,
+      "size": 539670,
       "gifOk": true,
       "ok": true
     },
@@ -162,8 +164,8 @@
         "fx_bolt"
       ],
       "maxEnemies": 20,
-      "minEnemies": 3,
-      "size": 486439,
+      "minEnemies": 8,
+      "size": 479542,
       "gifOk": true,
       "ok": true
     },
@@ -175,8 +177,8 @@
         "orb_soul"
       ],
       "maxEnemies": 19,
-      "minEnemies": 14,
-      "size": 502052,
+      "minEnemies": 12,
+      "size": 514529,
       "gifOk": true,
       "ok": true
     },
@@ -190,8 +192,8 @@
         "fx_pillar"
       ],
       "maxEnemies": 20,
-      "minEnemies": 8,
-      "size": 541436,
+      "minEnemies": 10,
+      "size": 529282,
       "gifOk": true,
       "ok": true
     },
@@ -201,13 +203,13 @@
       "frames": 28,
       "found": [
         "fx_shock",
-        "fx_star",
         "fx_fire",
+        "fx_star",
         "fx_pillar"
       ],
       "maxEnemies": 20,
       "minEnemies": 8,
-      "size": 497055,
+      "size": 500543,
       "gifOk": true,
       "ok": true
     },
@@ -220,8 +222,8 @@
         "fx_pillar"
       ],
       "maxEnemies": 20,
-      "minEnemies": 7,
-      "size": 357080,
+      "minEnemies": 8,
+      "size": 362027,
       "gifOk": true,
       "ok": true
     },
@@ -230,12 +232,12 @@
       "kind": "event",
       "frames": 28,
       "found": [
-        "fx_shock",
-        "fx_boss_core"
+        "fx_boss_core",
+        "fx_shock"
       ],
       "maxEnemies": 20,
-      "minEnemies": 9,
-      "size": 743719,
+      "minEnemies": 12,
+      "size": 727049,
       "gifOk": true,
       "ok": true
     },
@@ -245,12 +247,12 @@
       "frames": 28,
       "found": [
         "fx_boss_core",
-        "fx_death_bone",
-        "fx_shock"
+        "fx_shock",
+        "fx_death_bone"
       ],
       "maxEnemies": 21,
-      "minEnemies": 3,
-      "size": 524961,
+      "minEnemies": 10,
+      "size": 574634,
       "gifOk": true,
       "ok": true
     },
@@ -259,12 +261,11 @@
       "kind": "event",
       "frames": 28,
       "found": [
-        "fx_ash",
-        "fx_pillar"
+        "fx_ash"
       ],
-      "maxEnemies": 23,
+      "maxEnemies": 25,
       "minEnemies": 0,
-      "size": 725762,
+      "size": 674165,
       "gifOk": true,
       "ok": true
     }

@@ -1,7 +1,7 @@
 {
   "milestone": "M3",
   "simMinutes": 30.1,
-  "pollSamples": 183,
+  "pollSamples": 178,
   "bosses": {
     "expectedSeconds": [
       300,
@@ -60,22 +60,21 @@
     "defeated": 6,
     "finalBossDefeated": true,
     "phasesSeen": [
-      "1:1",
-      "2:1",
+      "4:1",
       "5:1",
       "5:2",
       "5:3"
     ]
   },
   "chestsDropped": 6,
-  "elitesSpawned": 684,
+  "elitesSpawned": 693,
   "enemiesAtEnd": 0,
-  "kills": 22795,
-  "level": 124,
+  "kills": 22994,
+  "level": 131,
   "dawn": true,
   "victory": true,
   "resultReason": "dawn",
-  "fpsMin": 48.4,
+  "fpsMin": 55.4,
   "fpsWindow": "ab Sim-Zeit 29:20 bei 1x (volle Dichte + Endboss)",
   "jsErrors": [],
   "passed": true

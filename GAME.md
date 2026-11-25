@@ -256,6 +256,7 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - `npm run perf`: **55,2 FPS gemessen** (55,9 Roh-FPS, 559 Frames/10 s, worstFrameMs 133,4) bei 500 gehaltenen Gegnern und **56,1 FPS gemessen** (55,4 Roh-FPS, 555 Frames/10 s, worstFrameMs 166,7) bei Minute 25 mit 300 Gegnern + allen Evolutionen; Ziel ≥55 beide erfüllt, 0 JS-Fehler. JSON: `shots/perf-m3.json`.
 - `npm run fullrun` (M3-Lauf, in diesem M4-Durchgang **nicht neu gemessen**): 30,1 Sim-Minuten, alle 6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Morgendämmerung/Sieg, 0 JS-Fehler (Details im Lauf-Log).
 
+
 **Bekannte Lücken (ehrlich):**
 - Gegner der Tierstufen 0–1 haben 2 Frames, Tier 2–4 vier; GAME.md erlaubt „2–4“, die Posen sind aber bescheidener als bei Figuren/Bossen.
 - Der Glockenturm-Golem liest sich als Glockenkorpus mit Kopf, die Glockenform ist aber flächiger als bei den übrigen Bossen.
@@ -302,17 +303,17 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 
 **Fertig:**
 - **VFX-Fundament:** eigener Frame-Generator `src/gfx/gen-fx.ts` (18 Effekt-Motive, je 2–6 handgesetzte Frames: Glut, Eis, Smear, gezackter Blitz, Siegel, Lichtsäule, Schockring, 4 Tod-Klassen, Boss-Kern, Dusk). Große Effekt-Sprites laufen in einem eigenen Pool (LOD-Cap 180/90/60), Funken/Splitter in einem separaten Partikel-Pool (280/140/100) — der alte 160er-Cap gilt nicht mehr für Partikel. Additive Glow-Halos, Frame-Trails, Boden-Decals, Lichtquellen; Depth-Ordnung in `src/gfx/depth.ts` (Decals < Gems < Spieler-VFX < Gegner < Warnflächen < Gegner-Projektile).
-- **12 Waffen-Effekte:** jede jede Waffe hat Auslösung, Flug/Wirkung, Treffer und Ausklang. Sturmrune/Gewittersiegel nutzen gezackte, verzweigte `fx_bolt`-Frames + Einschlagfunken; Frostnova/Ewiger Winter zeigen Eiskristall-Splitter statt Linienringen; Kettenflegel/Zornpendel tragen einen Smear-Bogen + Kugel-Halo + Kette. Evolutionen haben zusätzliche Farbschicht/Partikel (Phönix-Feuer, Zorn-Aura, Frost-Aura, Dornen-Wirbel, Blitzsiegel, Seelen-Glühen).
+- **12 Waffen-Effekte:** jede Waffe hat Auslösung, Flug/Wirkung, Treffer und Ausklang. Sturmrune/Gewittersiegel nutzen gezackte, verzweigte `fx_bolt`-Frames + Einschlagfunken; Frostnova/Ewiger Winter zeigen Eiskristall-Splitter statt Linienringen; Kettenflegel/Zornpendel tragen einen Smear-Bogen + Kugel-Halo + Kette. Evolutionen haben zusätzliche Farbschicht/Partikel (Phönix-Feuer, Zorn-Aura, Frost-Aura, Dornen-Wirbel, Blitzsiegel, Seelen-Glühen).
 - **Treffer-Feedback:** weißer Hit-Flash (kurz), Rückstoß skaliert mit Gegnermasse, **Damage-Numbers** als Bitmap-Font-Pool (max. 24, LOD 10) mit Krit (8 %, 1,5×, größer/amber) und Summierung pro Gegner im 0,45-s-Fenster (LOD 1,2 s). **Vier unterscheidbare Tod-Klassen** (`crumble`/`burst`/`dissolve`/`sputter`) je Archetyp. Screen-Shake dosiert (`clampShake`, nie > 6 px), Hit-Stop nur bei Boss-Treffern (60 ms, 1,2-s-Cooldown) und Boss-Tod (120 ms).
 - **Ereignis-Inszenierung:** Level-up mit Lichtsäule + aufsteigenden Funken; Evolution mit eigener Sequenz und **Zeitlupe 0,45 s** (0,9 s real), Ringen, Feuer; Truhe mit Lichtstrahl/Münzen (Welt) und Panel; Boss-Auftritt mit Banner, Kamera-Zoom-Puls und Beben; Boss-Tod in Stufen (Kern → 3 Ringe → Knochen-/Feuersplitter → Nachglühen); Morgendämmerung mit Farbbändern, Lichtstrahlen, Sonnenglow und sichtbar zerfallenden Gegnern.
-- **Lesbarkeit + LOD:** Gegflächen haben Rand-Puls und liegen über Gegnern, Gegner-Projektile pulsieren und liegen darüber; XP-Kristalle wurden unter Gegner gelegt, auf 180/140/90 begrenzt und im LOD abgedunkelt (α 0,55). Über 250 Gegnern: Caps runter, Trails aus, Damage-Summen; über 400: Partikel-Cap 100, Gems 90. Brandflächen max. 10 und als dunkle Decals (keine riesigen Glow-Ringe mehr). Vorher/Nachher-Belege bei Minute 12 und 25 (siehe unten).
+- **Lesbarkeit + LOD:** Warnflächen haben Rand-Puls und liegen über Gegnern, Gegner-Projektile pulsieren und liegen darüber; XP-Kristalle wurden unter Gegner gelegt, auf 180/140/90 begrenzt und im LOD abgedunkelt (α 0,55). Über 250 Gegnern: Caps runter, Trails aus, Damage-Summen; über 400: Partikel-Cap 100, Gems 90. Brandflächen max. 10 und als dunkle Decals (keine riesigen Glow-Ringe mehr). Vorher/Nachher-Belege bei Minute 12 und 25 (siehe unten).
 - **Sound:** `scripts/gen_sfx.py` erzeugt **24 WAVs** (22 Waffen-/Treffer-/Ereignis-SFX + Run-/Boss-Musikloop) rein prozedural (Wellenformen/Noise-Envelopes, keine Downloads) nach `public/sfx/`. `src/audio/AudioSystem.ts` mit Stimstärke-Mixing, Cooldown, max. Stimmen je Sound und Priorität Boss/Warnung > Treffer > Waffe; Musik wechselt Run ↔ Boss. Debug `window.__lf.audio()` → `{sfxPlayed, voices, musicTrack, muted, …}`; headless mit `--autoplay-policy=no-user-gesture-required` ohne Crash (24 Sounds geladen, 21 SFX gespielt).
 - **Optionen:** Musik-/SFX-Lautstärke und Screen-Shake in Titel **und** Pause, rein per Tastatur (O öffnet, Pfeile/Enter), Werte in `localStorage` (`lanternfall-options-v1`), Defaults ohne Daten. Debug `window.__lf.options()` / `setOption()`.
 
 **Belege:**
 - `scripts/verify-vfx.mjs`: **18/18 GIFs** (12 Waffen + Level-up, Evolution, Truhe, Boss-Auftritt, Boss-Tod, Morgendämmerung), je 28 Frames à 480×270, ~0,4–1,3 MB. Harte Asserts: Effekt-Sprite α ≥ 0,6 im Viewport, ≥ 8 lebende Gegner, GIF > 20 KB. Alle grün, 0 JS-Fehler; Rohdaten `shots/m5-vfx.json`.
 - Art-Director-Abnahme: `shots/m5-vfx-review.md` (Runden 1–7; **alle 18 Assets ≥4**, soul_beacon in R7 mit 4 abgenommen, boss-death 4).
-- Lesbarkeit: `shots/m5-readability-m12-before.png` / `-after.png`, `-m25-before.png` / `-after.png` („before“ aus Commit `4e8fee0`).
+- Lesbarkeit: `shots/m5-readability-m12-before.png` / `-after.png`, `-m25-before.png` / `-after.png` („before“ aus Commit `4e8fee0`, beide Builds **mit identischer Gegnerdichte** aufgenommen; m25 mit 406/408 Gegnern, damit der LOD-Pfad >400 greift).
 - Sichtprüfung (eigene PNG-Frames): Storm zeigt gezackte weiße/amber Blitze mit seitlichen Ästen und Einschlag-Siegeln; Frost zeigt helle Eisring-Zacken + Splitter; Flail zeigt Kette, Kugel-Halo und Smear; Boss-Tod zeigt Kernglut → Ringe → Knochensplitter; Dawn zeigt warme Farbbänder/Strahlen mit zerfallenden Gegnern.
 
 **Messwerte (dieser Rechner, headless Chromium):**
@@ -322,6 +323,16 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - `npm run verify:weapons`: **12/12** Waffen, Evolution-State/Longname/Phoenix/Frost/Roll-Namen grün.
 - `npm run verify:enemies` 30/30, `verify:bosses` 6/6 (Endboss Phasen 1/2/3, Truhe), `verify:terrain` Ratio 0,61 (Gras 60,8 / Wasser 37,2 px/s, 3 Spritzer).
 - `npm run fullrun`: **30,1 Sim-Minuten**, 22.795 Kills, Level 124, 6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, 684 Elites, Morgendämmerung/Sieg, **FPS-Minimum 48,4** in der letzten Sim-Minute (Host-Last; das 1x-perf-Ziel ist separat grün), 0 JS-Fehler.
+
+**Lead-Abnahme (unabhängig, 2026-11-25 22:20–22:55 UTC):**
+- `npm run build` grün; `npm test` **123/123** grün.
+- `node scripts/verify-vfx.mjs`: **18/18 GIFs, 0 failed, 0 JS-Fehler**, im Bild jeweils 19–29 lebende Gegner. Lead-Sichtprüfung (Vision) an storm/frost/flail/eternal_winter/soul_beacon/boss-death/dawn: gezackte, verzweigte Blitze mit Einschlagfunken; Eiskristalle mit Kontur und hellem Kern; Gliederkette + Smear-Bogen + Kugel; blaue 15×22-Seelenflammen im Orbit (5 Stück), Boss-Explosion in Stufen mit Truhe unter dem Banner, warmer Dawn mit sichtbar zerfallenden Gegnern.
+- `npm run perf`: **Burst 56,6 FPS** (500 gehaltene Gegner) und **Minute 25: 56,2 FPS** (300 Gegner + alle Evolutionen, LOD aktiv), 0 JS-Fehler.
+- `verify:weapons` **12/12**, `verify:enemies` **30/30**, `verify:bosses` **6/6** (Hohler König mit Truhe), `verify:terrain` **Ratio 0,60** (Gras 61,9 / Wasser 37,2 px/s, 4 Spritzer).
+- `npm run fullrun`: **Sieg/Morgendämmerung**, 30,1 Sim-Minuten, 22.994 Kills, 6 Truhen, **FPS-Minimum 55,4** in der letzten Sim-Minute, 0 JS-Fehler.
+- Optionen (eigener Browser-Test): Musik/SFX/Shake per Tastatur geändert, nach Reload identisch (localStorage-Persistenz); `__lf.audio()` meldet `sfxPlayed 14`, Musik wechselt `run` → `boss` beim Boss-Spawn; Screenshots `shots/m5-options-title.png`, `m5-options-pause.png`.
+- Lesbarkeit Vorher/Nachher **bei gleicher Dichte** neu erzeugt (m12: 78 vs 76 Gegner; m25: 406 vs 408, also LOD-Pfad >400): vorher überstrahlen Gems/Effekte Boss und Spieler, nachher sind Gems gecappt/abgedunkelt, Trails aus, Boss-Banner und Truhe klar lesbar. Rest: bei 400+ Gegnern bleibt die Horde ein dichter brauner Teppich, einzelne Silhouetten sind aber unterscheidbar.
+- Board: Karten **#48–#55 auf done** (Lead nachgezogen, weil die Board-Moves des Jobs nicht persistiert waren).
 
 **Bekannte Lücken (ehrlich):**
 - Die Effekt-Frames sind prozedural aus TS erzeugt (wie gefordert), aber bewusst klein (z. B. Blitz 12×16, Smear 44×16). Ein handgezeichneter Einzelasset-Pass für einzelne Prestige-Effekte bleibt offen; Formen sind teils geometrisch statt organisch.
