@@ -461,17 +461,22 @@
       "id": 27,
       "title": "M2-Fix: Abnahme-Artefakte (VFX-Peak-Shots, Evolutions-Panel, volle Slot-Namen)",
       "description": "verify-weapons Screenshots im FX-Peak via Poll+Pause; Evolutions-Screenshot waehrend Truhen-Panel; Slot-Namen 2-zeilig; GIF neu; build/test/perf.",
-      "column": "review",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T02:23:28Z",
           "by": "build",
           "text": "doing → review: Umgesetzt: verify-weapons pollt aktive FX-/Projektil-/Orb-/Swing-Keys, pausiert Run fuer Peak-Shots, Timeout=FAIL; Evolutions-Shot per UI-State (EVOLUTION-Slot fertig, Tween abgewartet); Slot-Namen 2-zeilig via slotNameLines (verlustfrei, Tests fuer >22 Zeichen/Mehrwort); m2-chest-longname.png zeigt SEELENLEUCHTFEUER vollstaendig; GIF-Frame mit allen 5 Settle-Namen gesichtet. build grün, 60 Tests, verify passed (failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit 673365b."
+        },
+        {
+          "at": "2026-11-25T02:32:12Z",
+          "by": "build",
+          "text": "review → done: Reviewer 2. Runde: keine Blocker. Findings gefixt: summary zaehlt nur die 12 Waffen-IDs (longName jetzt eigenes Feld), Orb-Poll nur sichtbare Orbs, shotAtSwing mit Level-up-Check + try/finally, evolutionSlotReady prueft chestGroup.visible. Abschluss: build gruen, 60 Tests, verify passed (weapons:12, evolved:true, longName:true, failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit f69ff81."
         }
       ],
       "created": "2026-11-25T01:38:42Z",
-      "updated": "2026-11-25T02:23:28Z"
+      "updated": "2026-11-25T02:32:12Z"
     }
   ]
 }
