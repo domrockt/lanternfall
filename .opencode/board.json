@@ -721,10 +721,16 @@
       "id": 40,
       "title": "M4-06 FX/Projektile 12 Waffen, XP-Kristalle, Truhe, Pickups, Icons, 9-Slice-UI, Titelbild+Logo",
       "description": "Alle Effekt-Texturen hochwertiger, Truhe geschlossen/offen, Pickups, 18 Icons, UI-Rahmen, Titelbild mit Logo.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T09:03:14Z",
+          "by": "build",
+          "text": "todo → doing: FX-Ringe/Zickzack/Coin, Icons und 9-Slice-UI geprueft."
+        }
+      ],
       "created": "2026-11-25T06:40:27Z",
-      "updated": "2026-11-25T06:40:27Z"
+      "updated": "2026-11-25T09:03:14Z"
     },
     {
       "id": 41,

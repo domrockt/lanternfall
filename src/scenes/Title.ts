@@ -16,25 +16,28 @@ export class Title extends Phaser.Scene {
 
   create(): void {
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
+    this.add.image(0, 0, "title_background").setOrigin(0, 0).setDepth(0);
+    // Atmender Mond-Glow (additiv, nur Licht – keine Off-Palette-Flächen).
+    const glow = this.add.image(404, 56, "light_radius")
+      .setBlendMode(Phaser.BlendModes.ADD).setScale(0.9).setAlpha(0.45).setDepth(1);
+    this.tweens.add({ targets: glow, alpha: 0.3, scale: 1.0, duration: 2400, yoyo: true, repeat: -1 });
+    // Dunkle Bodenlasur unter dem Textblock (nur Palettenfarbe, Alpha-Overlay).
+    this.add.rectangle(0, 158, GAME_WIDTH, 112, PAL[C.nightDeep], 0.55)
+      .setOrigin(0, 0).setDepth(3);
     this.add.image(240, 135, "vignette").setScrollFactor(0).setDepth(50);
 
-    // Mond/Laterne als Lichtanker
-    const glow = this.add.image(240, 78, "light_radius")
-      .setBlendMode(Phaser.BlendModes.ADD).setScale(1.1).setAlpha(0.8).setDepth(1);
-    this.tweens.add({ targets: glow, alpha: 0.55, scale: 1.18, duration: 2200, yoyo: true, repeat: -1 });
+    this.add.image(240, 60, "title_logo").setScale(2).setDepth(2);
 
-    this.add.image(240, 78, "lantern_small").setScale(4).setDepth(2);
+    new PixelText(this, 240, 126, "LANTERNFALL", C.lantern, "center").setScale(3).setDepth(4);
+    new PixelText(this, 240, 152, "DIE LETZTE LATERNE", C.bone, "center").setDepth(4);
+    new PixelText(this, 240, 172, "30 MINUTEN BIS ZUR MORGENDAMMERUNG", C.mist, "center").setDepth(4);
 
-    new PixelText(this, 240, 108, "LANTERNFALL", C.lantern, "center").setScale(3);
-    new PixelText(this, 240, 132, "DIE LETZTE LATERNE", C.bone, "center");
-    new PixelText(this, 240, 148, "30 MINUTEN BIS ZUR MORGENDAMMERUNG", C.mist, "center");
-
-    const prompt = new PixelText(this, 240, 196, "ENTER = BEGINNEN", C.candleWhite, "center");
+    const prompt = new PixelText(this, 240, 200, "ENTER = BEGINNEN", C.candleWhite, "center").setDepth(4);
     this.tweens.add({ targets: prompt, alpha: 0.25, duration: 700, yoyo: true, repeat: -1 });
 
-    new PixelText(this, 240, 226, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center");
-    new PixelText(this, 240, 238, "ESC = PAUSE", C.fog, "center");
-    new PixelText(this, 240, 258, `SEED ${this.seed}${this.debug ? " - DEBUG" : ""}`, C.nightSlate, "center");
+    new PixelText(this, 240, 228, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
+    new PixelText(this, 240, 240, "ESC = PAUSE", C.fog, "center").setDepth(4);
+    // Kein Debug-/Seed-Text im Titelbild; der Seed steht im Pause-Screen.
 
     this.input.keyboard!.once("keydown-ENTER", () => this.startSelect());
     this.input.keyboard!.once("keydown-SPACE", () => this.startSelect());

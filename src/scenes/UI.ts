@@ -27,6 +27,9 @@ export class UI extends Phaser.Scene {
   private killsText!: PixelText;
   private xpFill!: Phaser.GameObjects.Rectangle;
   private xpBg!: Phaser.GameObjects.Rectangle;
+  private hpFill!: Phaser.GameObjects.Rectangle;
+  private hpBg!: Phaser.GameObjects.Rectangle;
+  private hpLabel!: PixelText;
 
   private levelGroup!: Phaser.GameObjects.Container;
   private levelTitle!: PixelText;
@@ -46,7 +49,7 @@ export class UI extends Phaser.Scene {
   private chestSprite!: Phaser.GameObjects.Image;
   private chestBeam!: Phaser.GameObjects.Image;
   private chestTitle!: PixelText;
-  private chestSlots: { bg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; text2: PixelText; level: PixelText }[] = [];
+  private chestSlots: { bg: Phaser.GameObjects.Rectangle; slotBg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; text2: PixelText; level: PixelText }[] = [];
   private chestHideTimer?: Phaser.Time.TimerEvent;
 
   private bossGroup!: Phaser.GameObjects.Container;
@@ -54,6 +57,7 @@ export class UI extends Phaser.Scene {
   private bossPhaseText!: PixelText;
   private bossBarBg!: Phaser.GameObjects.Rectangle;
   private bossBarFill!: Phaser.GameObjects.Rectangle;
+  private bossBarShadow!: Phaser.GameObjects.Rectangle;
   private bannerGroup!: Phaser.GameObjects.Container;
   private bannerText!: PixelText;
   private bannerSub!: PixelText;
@@ -69,8 +73,14 @@ export class UI extends Phaser.Scene {
     this.levelText = new PixelText(this, 5, 2, "LV 1", C.lantern).setDepth(11);
     this.timerText = new PixelText(this, GAME_WIDTH / 2, 2, "00:00", C.candleWhite, "center").setDepth(11);
     this.killsText = new PixelText(this, GAME_WIDTH - 5, 2, "KILL 0", C.bone, "right").setDepth(11);
-    this.xpBg = this.add.rectangle(5, 9, GAME_WIDTH - 10, 3, PAL[C.nightSlate]).setOrigin(0, 0).setDepth(11);
-    this.xpFill = this.add.rectangle(5, 9, GAME_WIDTH - 10, 3, PAL[C.amber]).setOrigin(0, 0).setDepth(12);
+    this.xpBg = this.add.rectangle(5, 8, GAME_WIDTH - 10, 5, PAL[C.ink]).setOrigin(0, 0)
+      .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11);
+    this.xpFill = this.add.rectangle(6, 9, GAME_WIDTH - 12, 3, PAL[C.amber]).setOrigin(0, 0).setDepth(12);
+    // Spieler-HP oben links, fester Rahmen + 4-px-Füllung.
+    this.hpBg = this.add.rectangle(5, 15, 106, 9, PAL[C.ink]).setOrigin(0, 0)
+      .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11);
+    this.hpLabel = new PixelText(this, 9, 16, "HP", C.bone).setDepth(12);
+    this.hpFill = this.add.rectangle(25, 17, 82, 4, PAL[C.crimson]).setOrigin(0, 0).setDepth(12);
     this.createHudIcons();
 
     this.createLevelUpUI();
@@ -106,7 +116,7 @@ export class UI extends Phaser.Scene {
       .setOrigin(0, 0).setDepth(10).setVisible(false);
     this.hudIcons = [];
     for (let i = 0; i < 12; i++) {
-      const img = this.add.image(4 + i * 18, 15, "icon_weapon_ember")
+      const img = this.add.image(122 + i * 17, 15, "icon_weapon_ember")
         .setOrigin(0, 0).setDepth(11).setVisible(false);
       this.hudIcons.push(img);
     }
@@ -114,19 +124,32 @@ export class UI extends Phaser.Scene {
 
   private createBossUI(): void {
     this.bossGroup = this.add.container(0, 0).setDepth(90).setVisible(false);
-    this.bossBarBg = this.add.rectangle(GAME_WIDTH / 2 - 110, 254, 220, 7, PAL[C.ink], 0.9)
-      .setOrigin(0, 0.5).setStrokeStyle(1, PAL[C.nightSlate]);
-    this.bossBarFill = this.add.rectangle(GAME_WIDTH / 2 - 108, 254, 216, 4, PAL[C.crimson])
+    this.bossBarBg = this.add.rectangle(GAME_WIDTH / 2 - 118, 46, 236, 12, PAL[C.ink], 0.95)
+      .setOrigin(0, 0.5).setStrokeStyle(1, PAL[C.amber]);
+    this.bossBarFill = this.add.rectangle(GAME_WIDTH / 2 - 114, 46, 228, 6, PAL[24])
       .setOrigin(0, 0.5);
-    this.bossName = new PixelText(this, GAME_WIDTH / 2, 242, "", C.candleWhite, "center");
-    this.bossPhaseText = new PixelText(this, GAME_WIDTH / 2 + 110, 242, "", C.amber, "right");
-    this.bossGroup.add([this.bossBarBg, this.bossBarFill, this.bossName, this.bossPhaseText]);
+    this.bossBarShadow = this.add.rectangle(GAME_WIDTH / 2 - 114, 48, 228, 2, PAL[23])
+      .setOrigin(0, 0.5);
+    // Segmente + Endkappen mit 2x2-Amberpunkten.
+    const segs: Phaser.GameObjects.Rectangle[] = [];
+    for (let i = 1; i < 9; i++) {
+      segs.push(this.add.rectangle(GAME_WIDTH / 2 - 114 + i * 228 / 9, 46, 2, 6, PAL[C.ink])
+        .setOrigin(0, 0.5));
+    }
+    for (const sx of [GAME_WIDTH / 2 - 123, GAME_WIDTH / 2 + 115]) {
+      segs.push(this.add.rectangle(sx, 46, 5, 14, PAL[C.nightSlate]).setStrokeStyle(1, PAL[C.ink]));
+      segs.push(this.add.rectangle(sx + 1, 41, 2, 2, PAL[C.amber]));
+      segs.push(this.add.rectangle(sx + 1, 49, 2, 2, PAL[C.amber]));
+    }
+    this.bossName = new PixelText(this, GAME_WIDTH / 2, 33, "", C.amber, "center");
+    this.bossPhaseText = new PixelText(this, GAME_WIDTH / 2 + 112, 33, "", C.candleWhite, "right");
+    this.bossGroup.add([this.bossBarBg, this.bossBarShadow, this.bossBarFill, ...segs,
+      this.bossName, this.bossPhaseText]);
 
     this.bannerGroup = this.add.container(0, 0).setDepth(95).setVisible(false).setAlpha(0);
-    const bg = this.add.rectangle(GAME_WIDTH / 2, 90, 260, 42, PAL[C.ink], 0.78)
-      .setStrokeStyle(2, PAL[C.crimson]);
-    this.bannerText = new PixelText(this, GAME_WIDTH / 2, 82, "", C.hotRed, "center").setScale(1);
-    this.bannerSub = new PixelText(this, GAME_WIDTH / 2, 100, "", C.bone, "center");
+    const bg = this.add.nineslice(GAME_WIDTH / 2, 92, "ui_frame", undefined, 300, 48, 8, 8, 8, 8);
+    this.bannerText = new PixelText(this, GAME_WIDTH / 2, 84, "", C.lantern, "center").setScale(1);
+    this.bannerSub = new PixelText(this, GAME_WIDTH / 2, 98, "", C.bone, "center");
     this.bannerGroup.add([bg, this.bannerText, this.bannerSub]);
   }
 
@@ -134,7 +157,7 @@ export class UI extends Phaser.Scene {
     this.showBanner(
       data.index === 5 ? "DER HOHE KÖNIG" : (data.name ?? "BOSS").toUpperCase(),
       data.index === 5 ? "3 PHASEN - SIEG BEI SEINEM TOD" : "EIN BOSS ERWACHT",
-      C.hotRed,
+      C.amber,
     );
   }
 
@@ -165,7 +188,7 @@ export class UI extends Phaser.Scene {
     this.levelGroup = this.add.container(0, 0).setDepth(100).setVisible(false);
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.86).setOrigin(0, 0);
     this.levelGroup.add(dim);
-    const frame = this.add.rectangle(GAME_WIDTH / 2, 134, 448, 220, PAL[C.night], 0.97).setStrokeStyle(2, PAL[C.fog]);
+    const frame = this.add.nineslice(GAME_WIDTH / 2, 134, "ui_frame", undefined, 448, 220, 8, 8, 8, 8);
     this.levelGroup.add(frame);
     this.levelTitle = new PixelText(this, GAME_WIDTH / 2, 36, "LEVEL UP", C.lantern, "center").setScale(2);
     this.levelSub = new PixelText(this, GAME_WIDTH / 2, 56, "", C.mist, "center");
@@ -176,16 +199,18 @@ export class UI extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       const cx = 84 + i * 156;
       const bg = this.add.rectangle(cx, 158, 132, 150, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate]);
-      const icon = this.add.image(cx, 102, "icon_weapon_ember").setScale(2).setVisible(false);
-      const number = new PixelText(this, cx - 62, 88, `${i + 1}`, C.lantern);
-      const name = new PixelText(this, cx - 62, 122, "", C.candleWhite);
-      const level = new PixelText(this, cx - 62, 134, "", C.amber);
+      const slotBg = this.add.rectangle(cx, 112, 60, 60, PAL[C.nightDeep]).setStrokeStyle(2, PAL[C.ink]);
+      const icon = this.add.image(cx, 112, "icon_weapon_ember").setScale(3).setVisible(false);
+      const divider = this.add.rectangle(cx - 62, 148, 124, 1, PAL[C.nightSlate]);
+      const number = new PixelText(this, cx - 60, 88, `${i + 1}`, C.lantern);
+      const name = new PixelText(this, cx - 62, 154, "", C.candleWhite);
+      const level = new PixelText(this, cx - 62, 166, "", C.amber);
       const desc: PixelText[] = [
-        new PixelText(this, cx - 62, 150, "", C.mist),
-        new PixelText(this, cx - 62, 162, "", C.mist),
-        new PixelText(this, cx - 62, 174, "", C.mist),
+        new PixelText(this, cx - 62, 180, "", C.mist),
+        new PixelText(this, cx - 62, 192, "", C.mist),
+        new PixelText(this, cx - 62, 204, "", C.mist),
       ];
-      this.levelGroup.add([bg, icon, number, name, level, ...desc]);
+      this.levelGroup.add([bg, slotBg, icon, divider, number, name, level, ...desc]);
       this.cards.push({ bg, icon, number, name, level, desc });
     }
     const hint = new PixelText(this, GAME_WIDTH / 2, 251, "1-3 ODER PFEILE + ENTER", C.fog, "center");
@@ -196,7 +221,7 @@ export class UI extends Phaser.Scene {
     this.pauseGroup = this.add.container(0, 0).setDepth(120).setVisible(false);
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.8).setOrigin(0, 0);
     this.pauseGroup.add(dim);
-    const frame = this.add.rectangle(GAME_WIDTH / 2, 135, 360, 220, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.fog]);
+    const frame = this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 360, 220, 8, 8, 8, 8);
     this.pauseGroup.add(frame);
     this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 36, "PAUSE", C.lantern, "center").setScale(2));
     this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 54, "DEIN BUILD", C.bone, "center"));
@@ -210,29 +235,34 @@ export class UI extends Phaser.Scene {
     this.chestGroup = this.add.container(0, 0).setDepth(130).setVisible(false);
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.9).setOrigin(0, 0);
     this.chestGroup.add(dim);
-    this.chestBeam = this.add.image(GAME_WIDTH / 2, 82, "light_radius")
+    const frame = this.add.nineslice(GAME_WIDTH / 2, 140, "ui_frame", undefined, 452, 244, 8, 8, 8, 8);
+    this.chestGroup.add(frame);
+    this.chestBeam = this.add.image(GAME_WIDTH / 2, 70, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern])
       .setScale(0.25)
       .setAlpha(0);
     this.chestGroup.add(this.chestBeam);
-    this.chestSprite = this.add.image(GAME_WIDTH / 2, 96, "chest_closed").setScale(2.2);
+    this.chestSprite = this.add.image(GAME_WIDTH / 2, 84, "chest_closed").setScale(2.4);
     this.chestGroup.add(this.chestSprite);
-    this.chestTitle = new PixelText(this, GAME_WIDTH / 2, 22, "TRUHE", C.lantern, "center").setScale(2);
+    this.chestTitle = new PixelText(this, GAME_WIDTH / 2, 38, "TRUHE GEÖFFNET", C.lantern, "center").setScale(2);
     this.chestGroup.add(this.chestTitle);
-    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 42, "BELOHNUNGEN ROLLEN ...", C.mist, "center"));
+    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 54, "BELOHNUNGEN ROLLEN ...", C.mist, "center"));
     this.chestSlots = [];
     for (let i = 0; i < 5; i++) {
-      const x = GAME_WIDTH / 2 + (i - 2) * 76;
-      const bg = this.add.rectangle(x, 188, 68, 62, PAL[C.nightMid]).setStrokeStyle(1, PAL[C.nightSlate]);
-      const icon = this.add.image(x - 8, 158, "icon_weapon_ember").setVisible(false);
-      const text = new PixelText(this, x - 32, 176, "", C.candleWhite);
-      const text2 = new PixelText(this, x - 32, 185, "", C.candleWhite);
-      const level = new PixelText(this, x - 32, 198, "", C.amber);
-      this.chestGroup.add([bg, icon, text, text2, level]);
-      this.chestSlots.push({ bg, icon, text, text2, level });
+      const x = GAME_WIDTH / 2 + (i - 2) * 86;
+      const bg = this.add.rectangle(x, 196, 96, 92, PAL[C.nightMid])
+        .setStrokeStyle(2, PAL[C.nightSlate]);
+      const slotBg = this.add.rectangle(x, 176, 44, 44, PAL[C.nightDeep])
+        .setStrokeStyle(2, PAL[C.ink]);
+      const icon = this.add.image(x, 176, "icon_weapon_ember").setScale(2.4).setVisible(false);
+      const text = new PixelText(this, x, 202, "", C.candleWhite, "center");
+      const text2 = new PixelText(this, x, 213, "", C.candleWhite, "center");
+      const level = new PixelText(this, x, 224, "", C.amber, "center");
+      this.chestGroup.add([bg, slotBg, icon, text, text2, level]);
+      this.chestSlots.push({ bg, slotBg, icon, text, text2, level });
     }
-    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 246, "DIE TRUHE IST GEÖFFNET", C.fog, "center"));
+    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 250, "DIE TRUHE IST GEÖFFNET", C.fog, "center"));
   }
 
   private onChestOpen(result: import("../logic/evolution").ChestResult): void {
@@ -247,16 +277,17 @@ export class UI extends Phaser.Scene {
     for (let i = 0; i < this.chestSlots.length; i++) {
       const slot = this.chestSlots[i];
       const reward = result.rewards[i];
-      const x = GAME_WIDTH / 2 + (i - (n - 1) / 2) * 76;
-      slot.bg.setPosition(x, 188).setVisible(Boolean(reward));
-      slot.icon.setPosition(x - 8, 158).setVisible(Boolean(reward)).setAlpha(0)
+      const x = GAME_WIDTH / 2 + (i - (n - 1) / 2) * 104;
+      slot.bg.setPosition(x, 196).setVisible(Boolean(reward));
+      slot.slotBg.setPosition(x, 176).setVisible(Boolean(reward));
+      slot.icon.setPosition(x, 176).setVisible(Boolean(reward)).setAlpha(1)
         .setTexture(reward ? iconTextureKey(
           reward.kind === "evolution" ? "evolution" : reward.kind,
           reward.id,
         ) : "icon_weapon_ember");
-      slot.text.setPosition(x - 32, 176).setVisible(Boolean(reward)).setAlpha(0).setText("?");
-      slot.text2.setPosition(x - 32, 185).setVisible(false).setAlpha(0).setText("");
-      slot.level.setPosition(x - 32, 198).setVisible(Boolean(reward)).setAlpha(0).setText("");
+      slot.text.setPosition(x, 202).setVisible(Boolean(reward)).setAlpha(0).setText("?");
+      slot.text2.setPosition(x, 213).setVisible(false).setAlpha(0).setText("");
+      slot.level.setPosition(x, 224).setVisible(Boolean(reward)).setAlpha(0).setText("");
     }
     // Deckel öffnen + Lichtstrahl.
     this.time.delayedCall(280, () => this.chestSprite.setTexture("chest_open"));
@@ -295,7 +326,10 @@ export class UI extends Phaser.Scene {
         slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
         slot.level.setText(reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`);
         slot.bg.setStrokeStyle(2, PAL[reward.iconColor] ?? PAL[C.lantern]);
-        this.tweens.add({ targets: [slot.icon, slot.text, slot.text2, slot.level], alpha: { from: 0.2, to: 1 }, duration: 220 });
+        slot.icon.setAlpha(1);
+        slot.text.setAlpha(1);
+        slot.text2.setAlpha(1);
+        slot.level.setAlpha(1);
       });
     }
     const finishAt = 1650 + result.rewards.length * 220;
@@ -381,6 +415,9 @@ export class UI extends Phaser.Scene {
     this.timerText.setText(`${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`);
     this.killsText.setText(`KILL ${s.kills}`);
     this.xpFill.setScale(Math.max(0.001, s.xpRatio), 1);
+    const hpRatio = Math.max(0, Math.min(1, s.hp / Math.max(1, s.maxHp)));
+    this.hpFill.setScale(Math.max(0.001, hpRatio), 1);
+    this.hpFill.setFillStyle(hpRatio < 0.3 ? PAL[C.hotRed] : hpRatio < 0.6 ? PAL[C.amber] : PAL[C.crimson]);
 
     const keys = [
       ...s.weapons.map((w) => iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id)),

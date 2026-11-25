@@ -2,6 +2,9 @@ import Phaser from "phaser";
 import { PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { createIconTextures } from "./icons";
+import { createCharTextures } from "./chars";
+import { GEN_UI } from "./gen-ui";
+import { GEN_TITLE } from "./gen-title";
 import { ALL_BOSS_FRAMES, ALL_ENEMY_FRAMES, createBossTextures, createEnemyTextures } from "./enemySprites";
 
 /** Zeichen → Palettenindex: 0-9 = 0-9, a-z = 10-31, '.' = transparent. */
@@ -221,7 +224,15 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   gem_small: {
     w: 7, h: 7,
-    rows: ["..000..", ".0vvv0.", "0vccvv0", "0vccvv0", "0vvccv0", ".0vvv0.", "..000.."],
+    rows: [
+      "..000..",
+      ".0lml0.",
+      "0lmddm0",
+      "0lmddm0",
+      ".0lml0.",
+      "..0l0..",
+      "...0...",
+    ],
   },
   gem_medium: {
     w: 9, h: 9,
@@ -239,59 +250,79 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   gem_large: {
     w: 11, h: 11,
+    // Kristall mit drei Glanzstufen (21/22/20); kein dunkler Innen-Schlitz.
     rows: [
       "....000....",
-      "...0ppp0...",
-      "..0ppcppo..",
-      ".0ppcccpp0.",
-      "0ppcccccpp0",
-      "0ppcccccpp0",
-      "0ppcccccpp0",
-      ".0ppcccpp0.",
-      "..0ppcpp0..",
-      "...0ppp0...",
+      "...0lll0...",
+      "..0llmmm0..",
+      ".0lllmmmm0.",
+      "0lllmmmmmk0",
+      "0lllmmmmkk0",
+      "0lllmmmmkk0",
+      ".0llmmmmk0.",
+      "..0lmmmkk0.",
+      "...0llk0...",
       "....000....",
     ],
   },
   projectile_ember: {
     w: 7, h: 7,
-    rows: ["..000..", ".0klm0.", "0klmmd0", "0lmmmd0", "0kmmmd0", ".0lmd0.", "..000.."],
+    // Komet: Schweif oben-links, runder Glutkern unten-rechts (keine Kerbe).
+    rows: [
+      "...00..",
+      "..0j00.",
+      "..0jl0.",
+      ".0jlmm0",
+      "0jlmmm0",
+      ".0jlmm0",
+      "..0jm0.",
+    ],
   },
   projectile_thorn: {
     w: 7, h: 7,
     // Helle Knochen-Dornen statt dunkelgrün: auf Moorgras sonst unsichtbar.
-    rows: ["..000..", ".0bab0.", "0ba9ab0", ".0bab0.", "..0b0..", "...0...", "......."],
+    // Gruener Dornenstern: Spitzen 31 (v), Kern 30 (u), Schatten 29 (t).
+    rows: [
+      "...0...",
+      "..0v0..",
+      ".0uvu0.",
+      "0tuvut0",
+      ".0uvu0.",
+      "..0v0..",
+      "...0...",
+    ],
   },
   flail_ball: {
     w: 9, h: 9,
+    // Eisenkugel mit vier 2-px-Spikes; Rampe 5/8/9 statt Weiß-Blob.
     rows: [
-      "...000...",
+      "..0...0..",
+      ".0b0.0b0.",
       "..0bbb0..",
       ".0bcccb0.",
-      "0bcc9ccb0",
       "0bc9c9cb0",
-      "0bcc9ccb0",
       ".0bcccb0.",
       "..0bbb0..",
-      "...000...",
+      ".0b0.0b0.",
+      "..0...0..",
     ],
   },
   /** Kettenglied (2×8): wird als Beam zwischen Spieler und Kugel gestreckt. */
   chain_link: {
     w: 2, h: 8,
-    rows: ["07", "07", "07", "70", "07", "07", "07", "70"],
+    rows: ["08", "88", "80", "08", "88", "80", "08", "88"],
   },
   orb_lantern: {
     w: 9, h: 9,
     rows: [
       "...000...",
-      "..09990..",
-      ".09ccc90.",
-      "09cmmmc90",
-      "09cmmmc90",
-      "09cmmmc90",
-      ".09ccc90.",
-      "..09990..",
+      "..0kkk0..",
+      ".0klllk0.",
+      "0kllmllk0",
+      "0klddllk0",
+      "0kllmllk0",
+      ".0klllk0.",
+      "..0kkk0..",
       "...000...",
     ],
   },
@@ -313,11 +344,11 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     w: 7, h: 7,
     rows: [
       "...0...",
-      "..090..",
-      ".09c90.",
-      "09cmc90",
-      ".09c90.",
-      "..090..",
+      "..0a0..",
+      ".0ab80.",
+      "0abc9b0",
+      ".0ab80.",
+      "..0a0..",
       "...0...",
     ],
   },
@@ -325,38 +356,42 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     w: 9, h: 9,
     rows: [
       "...000...",
-      "..08880..",
-      ".08ccc80.",
-      "08cmmmc80",
-      "08cmmmc80",
-      "08cmmmc80",
-      ".08ccc80.",
-      "..08880..",
+      "..0bbb0..",
+      ".0bcccb0.",
+      "0bcclccb0",
+      "0bclddcb0",
+      "0bcclccb0",
+      ".0bcccb0.",
+      "..0bbb0..",
       "...000...",
     ],
   },
   arrow_chest: {
     w: 9, h: 9,
+    // 1-px-Kontur um Schaft und Spitze, Feder am Fuß.
     rows: [
-      ".....0...",
-      "....0m0..",
+      "....00...",
       "...0mm0..",
       "..0mmm0..",
-      ".0mmmm0..",
-      "..0mmm0..",
-      "...0mm0..",
-      "....0m0..",
-      ".....0...",
+      ".0mmmmm0.",
+      "0mmmmmm0.",
+      ".0mmmmm0.",
+      "..0mmm00.",
+      "...0m0m0.",
+      "....00.0.",
     ],
   },
   fx_coin: {
-    w: 5, h: 5,
+    w: 7, h: 7,
+    // Muenze: Rand 18/19 (j), Gesicht 20/21 (k/l), Glanz 22 (m) oben-links.
     rows: [
-      ".000.",
-      "0mmm0",
-      "0mcm0",
-      "0mmm0",
-      ".000.",
+      "..000..",
+      ".0jjm0.",
+      "0jkklj0",
+      "0jkllj0",
+      "0jkkkj0",
+      ".0jjj0.",
+      "..000..",
     ],
   },
   fx_spark: {
@@ -364,26 +399,27 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     rows: [".m.", "mmm", ".m."],
   },
   bolt_seg: {
-    w: 2, h: 8,
-    rows: ["0m", "0m", "0m", "0m", "0m", "0m", "0m", "0m"],
+    w: 3, h: 8,
+    // 3-px-Zickzack (versetzt alle 2 Zeilen), damit der Blitz nicht gerade wirkt.
+    rows: ["0m.", "0m.", ".0m", ".0m", "..0", "..0", ".0m", ".0m"],
   },
   chest_closed: {
     w: 16, h: 16,
     rows: [
       "................",
-      "................",
-      "..000000000000..",
-      ".0cccccccccccc0.",
-      ".0cbbbbbbbbbbc0.",
-      ".0cb77777777bc0.",
-      ".0cb77777777bc0.",
-      ".0cb77777777bc0.",
-      ".0cb77777777bc0.",
-      ".0cbbbbbbbbbbc0.",
-      ".0cbbbb00bbbbc0.",
-      ".0cbbbb00bbbbc0.",
-      ".0cccccccccccc0.",
-      "..000000000000..",
+      "...0000000000...",
+      "..0kllllllllk0..",
+      "..0khhhhhhhhk0..",
+      "..0khhhhhhhhk0..",
+      "..0kkkkkkkkkk0..",
+      "..0gl5llll5lg0..",
+      "..0gh5hhhh5hg0..",
+      "..0gh5hhhh5hg0..",
+      "..0gh55ll55hg0..",
+      "..0gh5kmmk5hg0..",
+      "..0gh5hhhh5hg0..",
+      "..0gggggggggg0..",
+      "...0000000000...",
       "................",
       "................",
     ],
@@ -391,20 +427,20 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   chest_open: {
     w: 16, h: 16,
     rows: [
-      "..000000000000..",
-      ".0cccccccccccc0.",
-      ".0cbbbbbbbbbbc0.",
-      ".0cb77777777bc0.",
-      "..000000000000..",
       "................",
-      ".0cccccccccccc0.",
-      ".0cbbbbbbbbbbc0.",
-      ".0cb77777777bc0.",
-      ".0cb77777777bc0.",
-      ".0cbbbbbbbbbbc0.",
-      ".0cbbbb00bbbbc0.",
-      ".0cccccccccccc0.",
-      "..000000000000..",
+      "..00000000......",
+      ".0kllllllk0.....",
+      ".0khhhhhhk0.....",
+      ".0khhhhhhk0.....",
+      ".0gggggggg0.....",
+      "..0gllllllllg0..",
+      "..0ghhmmmmhhg0..",
+      "..0gh5dddd5hg0..",
+      "..0gh5dmmd5hg0..",
+      "..0gh55mm55hg0..",
+      "..0ghhhhhhhhg0..",
+      "..0gggggggggg0..",
+      "...0000000000...",
       "................",
       "................",
     ],
@@ -427,11 +463,20 @@ export type SpriteKey = keyof typeof SPRITE_GRIDS;
 
 /** Erzeugt alle Sprite-Texturen + Licht/Vignette. */
 export function createAllTextures(scene: Phaser.Scene): void {
+  createCharTextures(scene);
   for (const [key, def] of Object.entries(SPRITE_GRIDS)) {
     addGridTexture(scene, key, def.rows, def.w, def.h);
   }
   createEnemyTextures(scene);
   createBossTextures(scene);
+  for (const [key, def] of Object.entries(GEN_TITLE)) {
+    addGridTexture(scene, key, def.frames[0], def.w, def.h);
+  }
+  for (const [key, def] of Object.entries(GEN_UI)) {
+    def.frames.forEach((rows, i) => {
+      addGridTexture(scene, i === 0 ? key : `${key}_${i + 1}`, rows, def.w, def.h);
+    });
+  }
   createLightTexture(scene);
   createVignetteTexture(scene);
   createShadowTexture(scene);
@@ -549,16 +594,40 @@ function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): 
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   const c = size / 2;
-  // vier konzentrische 1-px-Ringe, außen dunkler
-  for (let i = 0; i < 4; i++) {
-    ctx.globalAlpha = 0.55 - i * 0.11;
-    ctx.strokeStyle = hexColor(colors[Math.min(i, colors.length - 1)]);
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(c, c, 42 - i * 2, 0, Math.PI * 2);
-    ctx.stroke();
+  // Durchgehendes 2-px-Band (keine gepunkteten Boegen): Distanzbereiche statt
+  // Toleranz um einen Radius. Aussen die dunkelste Farbe, innen die hellste.
+  const bands: Array<[number, number, number]> = [
+    [43, 45, colors[0]],
+    [41, 43, colors[1] ?? colors[0]],
+    [39, 41, colors[2] ?? colors[0]],
+    [37, 39, colors[3] ?? colors[colors.length - 1]],
+  ];
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x + 0.5 - c;
+      const dy = y + 0.5 - c;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      for (const [r0, r1, col] of bands) {
+        if (d >= r0 && d < r1) {
+          ctx.fillStyle = hexColor(col);
+          ctx.fillRect(x, y, 1, 1);
+          break;
+        }
+      }
+    }
   }
-  ctx.globalAlpha = 1;
+  // Innenkante: 1 px dunkler Schatten unten-rechts, heller Glanz oben-links.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x + 0.5 - c;
+      const dy = y + 0.5 - c;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d >= 36.5 && d < 37.5) {
+        ctx.fillStyle = hexColor(dx < -4 && dy < -4 ? (colors[colors.length - 1] ?? colors[0]) : colors[0]);
+        ctx.fillRect(x, y, 1, 1);
+      }
+    }
+  }
   scene.textures.addCanvas(key, canvas);
 }
 
@@ -576,28 +645,39 @@ function createFrostRingTexture(scene: Phaser.Scene): void {
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   const c = size / 2;
-  ctx.globalAlpha = 0.9;
-  ctx.strokeStyle = hexColor(8);   // mist
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.arc(c, c, 44, 0, Math.PI * 2); ctx.stroke();
-  ctx.globalAlpha = 0.95;
-  ctx.strokeStyle = hexColor(9);   // paleMist
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.arc(c, c, 41, 0, Math.PI * 2); ctx.stroke();
-  ctx.globalAlpha = 0.85;
-  ctx.strokeStyle = hexColor(12);  // candleWhite
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.arc(c, c, 38, 0, Math.PI * 2); ctx.stroke();
-  // Eiszacken: kurze Strahlen von r 40 nach r 47
-  ctx.globalAlpha = 1;
-  ctx.strokeStyle = hexColor(13);
-  ctx.lineWidth = 1;
+  // Gerastertes 2-px-Eisband + 12 Zacken, keine geglätteten Vektorbögen.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x + 0.5 - c;
+      const dy = y + 0.5 - c;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d >= 43.5 && d <= 45.5) {
+        ctx.fillStyle = hexColor(8);
+      } else if (d >= 41.5 && d <= 43.5) {
+        ctx.fillStyle = hexColor(9);
+      } else if (d >= 39.5 && d <= 40.5) {
+        ctx.fillStyle = hexColor(12);
+      } else {
+        continue;
+      }
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
+  // 12 Zacken (2-px-Strahlen) von r 43 nach r 47.
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * Math.PI * 2 + 0.26;
-    ctx.beginPath();
-    ctx.moveTo(c + Math.cos(a) * 40, c + Math.sin(a) * 40);
-    ctx.lineTo(c + Math.cos(a) * 47, c + Math.sin(a) * 47);
-    ctx.stroke();
+    const x0 = Math.round(c + Math.cos(a) * 43);
+    const y0 = Math.round(c + Math.sin(a) * 43);
+    const x1 = Math.round(c + Math.cos(a) * 47);
+    const y1 = Math.round(c + Math.sin(a) * 47);
+    ctx.fillStyle = hexColor(13);
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+    for (let t = 0; t <= steps; t++) {
+      const px = x0 + Math.round((x1 - x0) * (t / Math.max(1, steps)));
+      const py = y0 + Math.round((y1 - y0) * (t / Math.max(1, steps)));
+      ctx.fillRect(px, py, 1, 1);
+      ctx.fillRect(px + 1, py, 1, 1);
+    }
   }
   scene.textures.addCanvas(key, canvas);
 }
