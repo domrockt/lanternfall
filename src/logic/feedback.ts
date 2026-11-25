@@ -37,7 +37,7 @@ export function shakeFor(kind: "hit" | "bossHit" | "bossDeath" | "explosion", en
  * Boss-Tod bekommt den längeren Wert, normale Boss-Treffer den kürzeren.
  */
 export function hitStopFor(kind: "bossHit" | "bossDeath"): number {
-  return kind === "bossDeath" ? 0.12 : 0.07;
+  return kind === "bossDeath" ? 0.12 : 0.06;
 }
 
 /** Rückstoß skaliert mit Masse: schwere Gegner bewegen sich weniger. */

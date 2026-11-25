@@ -424,7 +424,7 @@ export class Run extends Phaser.Scene {
   /** Kurzer Boss-Treffer-Hit-Stop + dosierter Shake (max. ~6 px). */
   private bossHitFeedback(): void {
     if (this.bossFeedbackCooldown > 0) return;
-    this.bossFeedbackCooldown = 0.8;
+    this.bossFeedbackCooldown = 1.2;
     this.hitStop = Math.max(this.hitStop, hitStopFor("bossHit"));
     const shake = shakeFor("bossHit", getSettings().shake);
     if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs, shake.intensity);

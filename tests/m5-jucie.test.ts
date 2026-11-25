@@ -16,7 +16,7 @@ describe("M5 LOD-Schwellen", () => {
   it("volle Dichte bis 250 Gegner", () => {
     expect(lodFor(10).level).toBe("full");
     expect(lodFor(250).trails).toBe(true);
-    expect(lodFor(250).fxCap).toBe(200);
+    expect(lodFor(250).fxCap).toBe(180);
   });
   it("reduziert zwischen 251 und 400", () => {
     const lod = lodFor(300);

@@ -23,3 +23,4 @@ scripts/art/__pycache__/
 shots/raw/
 .opencode-M5.log
 !shots/m5-*.gif
+.opencode-M5-finish.log

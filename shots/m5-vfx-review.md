@@ -175,3 +175,105 @@ Ergebnis der R4-Fixliste, am GIF bzw. Code nachgeprüft: **umgesetzt** sind Spri
 - **muss neu:** `soul_beacon` (Sprite-Silhouette + echte 1-px-Kontur + 3-Ton-Körper + 2×2-Kern; Halo-Runtime-Alpha/Ringfarbe).
 - **nachbessern:** —
 - **ok:** — (nur dieses Asset geprüft)
+
+## Runde 6 (Soul-Beacon)
+
+Geprüft wurde ausschließlich `shots/m5-vfx-soul_beacon.gif` (Frames 0/8/20 als PNG extrahiert, 4× nearest; zusätzlich 9×/14×-Crops einzelner Orbit-Seelen in f0/f20). Keine anderen Bilder geladen. Die übrigen 17 Assets bleiben aus R2/R3 geerbt (≥4), nicht erneut gesichtet. Bewertet wird das **gerenderte** Ergebnis; die R5-Fixliste wurde zusätzlich am Pixelbild gegengeprüft (nicht am Code allein).
+
+Am GIF messbar umgesetzt: Sprite 30×44 (Scale exakt 2), Alpha 1, Orbit-Radius ≈ 80 px (78 + Rundung), kein Overlap mit Mira; Kern ist wirklich **2×2** (4×4 Render-px, Zeilen y10–11, umgeben von hell/dunkel); der Körper hat jetzt **drei Werte** (hell oben-links, Mittelton, dunkler unten-rechts); der Halo ist ein **kalter, hohler Ring** (kein candleWhite-Zentrum) mit konstant schwacher Alpha und wäscht den Körper nicht mehr aus; eine **0-Tinte-Kontur** liegt an beiden Körperseiten an. Die alte „graue Metallkugel" ist damit weg.
+
+Nicht so gerendert wie behauptet: (1) **keine Kontur am Schweif** – der Schweif ist eine 1-px-Zickzack-Kette, die nur **diagonal (Ecke-zu-Ecke)** zusammenhängt und an den Seiten **kein `0`** trägt; im GIF zerfällt er sichtbar in abgesetzte 2×2-Punkte (f0/f20). (2) **Kontur am Scheitel offen** – die oberste Texturzeile (`y0`, 2 px breit) hat keinen Tinten-Rand; oben sitzt ein heller, offener Stumpf statt einer geschlossenen Spitze. (3) Die 8-Zone ist kein „Licht oben-links", sondern eine **breite helle Links-Hälfte** (links komplett hell, rechts komplett Mittel/dunkel) – horizontal geteilt, nicht diagonal modelliert. (4) Die „Asymmetrie pro Frame" ist vorhanden, aber im GIF bei 1× nur als **Kanten-Zittern** von 1–2 px lesbar, nicht als Flammenbewegung.
+
+| Teilkriterium | Note | Befund (f0/f8/f20) |
+|---|---|---|
+| Form / Silhouette | **2** | Trotz Spitze und Lean bleibt die Silhouette ein **steil aufragender Stein/Obelisk**: gerade, leicht konische Flanken, ein breiter „Rock" in y8–9, danach harter Treppenabsatz. Kein Flammenbauch, keine Wisp-Ausbuchtung. Der 2×2-Kern in der Mitte eines flächigen Blocks liest weiterhin als **erleuchtetes Fenster** (Grabsteinschrift), nicht als Glutkern. In f20 steht die Seele zwischen zwei echten Grabsteinen und ist von deren Silhouette kaum zu trennen. |
+| Masse / Proportion | **3** | 30×44 px @ Orbit ≈ 80: Mira wird nicht überdeckt, die Größe ist vertretbar. Aber der Körper (18–20 px sichtbare Breite) ist für ein „Seelenlicht" sehr massiv; der Schweif (≈16 px) wirkt wie ein abgebrochener Rest, nicht wie eine Flamme. Verhältnis Körper:Schweif ≈ 2:1 – zu kopflastig. |
+| Farbe / Schattierung | **3** | Drei Werte sind jetzt sichtbar und die Richtung stimmt grob (hell oben-links, dunkel unten-rechts). Aber die Zonen sind **flächig-horizontal** geteilt (linke Hälfte hell, rechte Hälfte Mittel/dunkel ab y8) statt diagonal; die 8-Zone ist zu breit für „Licht von oben-links". Das Seelenblau ist im Render fast neutralgrau – auf Moor/`marshLight` liegt der Mittelton nur ~10 Helligkeitsstufen über dem Grund, die Figur „schwebt" farblich. |
+| Kontur / Pixel | **2** | Körperseiten: saubere, durchgehende 1-px-Tinte (kein Doppelpixel) – **gut**. Scheitel (y0): **offen**, kein Tinten-Rand. Schweif: **keine Tinte**, nur 1-px-Punkte in Eckverbindung → im GIF sichtbares **Einzelpixel-Rauschen** (f0/f20, unter dem Körper). Damit ist die Latte „geschlossene 1-px-Kontur um die ganze Silhouette" nicht erfüllt. |
+| Licht oben-links | **3** | Richtung stimmt nominell, aber die helle Fläche ist ein symmetrisch-breiter Linksblock über viele Zeilen; die dunkle Zone beginnt erst unter der Körpermitte. Kein gerichtetes Modellieren der Flanken (kein 2-px-Highlight an der Oberkante, keine Abdunklung der rechten Flanke oben). Liest als flaches Relief. |
+| Animation | **2** | 3 Frames und Lean ±1 sind da; im GIF (TimeScale 0,25 → effektiv ≈1,25 Hz) wirkt der Wechsel aber als **1-px-Kantenflattern** an der rechten Flanke. Scheitel und Kern sind über alle Frames starr; der Schweif springt als Punktkette. Kein Flackern der Silhouette, kein Kern-Versatz, kein Auslaufen. |
+| Distinktheit zur Laterne | **3** | Kalt vs. amber, groß vs. klein, Orbit statt Halo: von der Laterne klar unterscheidbar. Aber **nicht von den Grabstein-/Säulen-Props** und nicht von `prop_grave` – gleiche Grauwerte, gleiche aufrechte Rechteck-Sprache, gleicher heller Kern. Als „Seele" nur durch die Bewegung erkennbar. |
+| **Gesamt** | **3** | Gegenüber R5 (2) deutlich verbessert: echte Körperkontur, exakter 2×2-Kern, drei Werte, kalter Halo ohne Wash. Für ≥4 fehlen aber die **geschlossene Kontur** (Scheitel offen, Schweif konturlos und punktig), eine **flammenartige** statt obeliskartige Silhouette und eine im Standbild lesbare Licht-/Farbidentität. **FAIL.** |
+
+### Präzise Pixel-Fixes (falls nachgebessert wird)
+
+1. **Scheitel schließen** (`orbSoulFrame`, y0): statt `8 6` ohne Rand → `y0 = "0 8 0"` (Tinte, Licht, Tinte) an `cx-1..cx+1`; y1 bleibt `0 8 6 0`. Damit ist die Spitze als 1-px-Kontur geschlossen und trägt trotzdem Licht.
+2. **Schweif mit Kontur, 4-connected**: Tail-Zeilen y14–20 als **3 px breit** (`0 6 0` bzw. `0 9 0` an der Spitze), Zentrum pro Zeile nur ±1 versetzen und **niemals** zwei Zeilen diagonal springen (Δx ∈ {0,±1} mit vertikaler Nachbarschaft). Länge auf 5–6 Zeilen kürzen und zur Spitze auf `0 9 0` verjüngen. Die jetzige 1-px-Kette ist im 2×-Render unvermeidlich Punktrauschen.
+3. **Silhouette entschärfen**: `widths` y8–9 von 4 auf 3, y12–13 von 2 auf 1; dazu eine **asymmetrische Ausbuchtung** rechts in y5–7 (right +1, left unverändert) und eine 1-px-Einkerbung links in y9. Ziel: Tropfen mit Bauch statt Obelisk mit Rock.
+4. **Kern als Glut statt Fenster**: Kern 1 px nach links (nicht mittig), 1-px-Rand in **9** rundherum, und die Kernzeile oben mit `d` → darunter `c` (12) als Glutverlauf. Ein exakt quadratischer, mittig sitzender 2×2-Block in einem flächigen Körper bleibt ein Fenster.
+5. **Schattierung diagonal**: 8 nur als **2-px-Kante** an `dx ≤ -1` für y2–6 (nicht die ganze linke Hälfte); ab y7 links 6; rechts durchgehend 5 ab y6 (nicht erst y8). Damit entsteht eine diagonale Lichtkante oben-links statt horizontaler Hälften.
+6. **Kontrast auf Moor**: Körper-Mittelton auf **6**, rechte Flanke **5**, Körperaußenkante **0**; kein 8 als Fläche. Auf `marshLight` bleibt dann der dunkle Umriss führend.
+7. **Animation**: pro Frame zusätzlich (a) Scheitel-Zentrum ±1 px, (b) Kern 1 px vertikal versetzen, (c) `widths` in 2 Zeilen um ±1 ändern; Lean beibehalten. Frequenz 5 Hz beibehalten. So ist Flackern an der Silhouette sichtbar, nicht nur an der Kante.
+8. **Damage-Text-Overlay**: in f0 liegt die „58" direkt auf der Seele und verdeckt den Kern. Für `soul_beacon`-Treffer die Zahl 6–8 px versetzen oder die Orbs über dem Damage-Layer zeichnen (Depth), sonst ist der Kern in jedem zweiten Frame unsichtbar.
+9. **Halo**: bleibt wie jetzt (kalt 9/6, α 0,09, Scale 1,8) – korrekt und unaufdringlich; keine Änderung nötig.
+
+### Gesamturteil R6
+
+**FAIL.** `soul_beacon` erreicht **3/5** (nicht 4). Die R5-Punkte „Kontur am Körper", „2×2-Kern", „3-Ton-Körper" und „kalter Halo ohne Alpha-Puls" sind real umgesetzt und sichtbar; der Schweif ist jedoch **weiterhin konturlos und punktig**, der Scheitel ist **offen**, und die Silhouette bleibt ein **Grabstein/Obelisk mit Fensterkern**, der neben den Grabstein-Props nicht als Seele liest. Für ein PASS müssen Form (Flamme statt Stein), geschlossene Kontur inkl. Schweif und eine im Standbild erkennbare Lichtkante geändert werden.
+
+- **muss neu:** `soul_beacon` (Silhouette + Scheitel-/Schweif-Kontur + Schweif-Geometrie; Kern als Glut).
+- **nachbessern:** Schattierungsrichtung diagonal (8 als 2-px-Kante), Damage-Text-Overlay auf dem Orb.
+- **ok:** Halo-Verdrahtung (kalt 9/6, α konstant 0,09, Scale 1,8), Sprite-Scale 2, Alpha 1, Orbit-Radius.
+
+## Runde 7 (Soul-Beacon)
+
+Geprüft wurde ausschließlich `shots/m5-vfx-soul_beacon.gif`. Frames 0/8/20 per ffmpeg als PNG extrahiert, 4× nearest (480×270 → 1920×1080); zusätzlich 8×-Spielercrop (180×180) und 16×-Crops einzelner Orbit-Seelen (je ~40×50) aus f0/f8/f20, um Kontur, Kern und Schweif pixelgenau zu sehen. Zusätzlich Pixelwerte einzelner Orbit-Seelen aus den extrahierten PNGs gelesen, um Schattierungsstufen/Konturfarbe zu prüfen. Keine anderen Bilder geladen. Die übrigen 17 Assets bleiben aus R2/R3 geerbt (≥4), nicht erneut gesichtet. Bewertet wird das **gerenderte** Ergebnis.
+
+Am GIF messbar umgesetzt (R6-Kritik): Die **Silhouette ist keine Säule mehr** – jede der 5 Seelen zeigt eine spitze, asymmetrische Flanke mit Einkerbung (f20 oben: breite Links-Schulter, schmale rechts) und sichtbaren Lean. Der **Scheitel ist geschlossen**: oberste Zeile `0 8 0`-artig, Tinte an beiden Seiten, kein offener heller Stumpf. Der **Schweif ist jetzt ein zusammenhängendes 3-px-Band** (`Tinte | Mittelton | Tinte`) mit welligem, 4-connected Zentrum – im 16×-Crop klar als eine Kette mit durchgehender Kontur zu sehen, **keine isolierten Einzelpixel** mehr (f0/f8/f20). Der **Kern ist 2×2** (4×4 Render-px) und sitzt **links der Körpermitte**, nicht mehr als mittiges „Fenster". Der Körper hat **drei Werte** (Lichtflanke oben-links, Mittelton, dunklere rechte Flanke) und eine **durchgehende 1-px-Tinte** an beiden Seiten (Pixelprobe: 1 logisches px = 2 Render-px, keine Doppelpixel). Halo ist unaufdringlich und wäscht nicht mehr aus.
+
+Nicht vollständig wie behauptet: (1) Die 8-Zone ist nur **2 Zeilen** hoch (oben-links), darunter läuft die Lichtflanke als heller Mittelton über die **ganze linke Seite** – horizontal geteilt, nicht diagonal modelliert. (2) Der behauptete `5`-Ton ist im Render **nicht auffindbar**; rechts steht durchgehend der Mittelton. Die drei Stufen sind real 8/7/6 statt 8/6/5. (3) Der Kern-Rand ist **`10` (bone)** statt `9` – dadurch wirkt der 2×2-Kern wie ein helles Rechteck/Pflaster, nicht wie Glut. (4) Die Kontur komponiert im GIF bräunlich (`≈33,20,16`) statt `ink 0`; bleibt „nicht reines Schwarz", ist aber wärmer als die übrigen Tinten im Bild (GIF-Quantisierung, kein Off-Palette-Source). (5) `58`-Damage-Numbers liegen in f8/f20 teilweise **auf dem Kern** (Beleg, nicht Asset).
+
+| Teilkriterium | Note | Befund (f0/f8/f20) |
+|---|---|---|
+| Form / Silhouette | **4** | Flammen-/Geistform ist jetzt lesbar: spitzer, leicht geneigter Scheitel, asymmetrische Flanken, Einkerbung, kein Obelisk/Rock mehr. Auf dunklem Moor und auf hellem Moos zeichnet die Tinte die Form. Abzug: die breite Links-Schulter (f20, y44–47) ist ein harter 4-px-Treppenabsatz und liest in Einzelframes kurz als „Flügel/Klumpen"; die Form ist gut, aber nicht elegant. |
+| Masse / Proportion | **4** | Sichtbare Masse ≈14×28 px bei Orbit ≈80 px um Mira; keine Überdeckung des Spielers, guter Abstand zu den Gems. Der Schweif ist mit ~6 Zeilen noch etwas lang (Körper:Schweif ≈ 2:1), wirkt aber als Flammenausläufer, nicht als abgebrochener Rest. |
+| Farbe / Schattierung | **3** | Drei Werte sind da (Lichtflanke / Mittel / dunkler rechts), aber das Seelenblau ist im Render **entsättigt** (Messwerte ≈(88,94,98) hell, (81,86,95) Mittel, (73,74,78) dunkel) – es liest eher „Nebelgrau" als „kaltes Seelenblau"; das `5` fehlt, der Kern-Rand ist bone statt Glut. Kein Pillow-Shading, keine Off-Palette (nur GIF-Quantisierung). |
+| Kontur / Pixel | **4** | Durchgehende 1-px-Tinte an Körper und Schweif, geschlossener Scheitel, keine Doppelpixel, keine Einzelpixel-Rauschen. Abzug: Konturfarbe komponiert bräunlich und ist damit wärmer als die Tinten der Gegner-Props; am Schweif wirkt die Kette durch den hellen Mittelton wie eine „Wirbelsäule". |
+| Licht oben-links | **3** | Richtung stimmt (hell links, dunkel rechts), aber die Lichtfläche ist ein **vertikaler Linksblock** über fast die ganze Körperhöhe; der echte `8`-Akzent ist nur 2 Zeilen hoch. Kein 2-px-Highlight an der Oberkante, rechte Flanke oben nicht abgedunkelt → flaches Relief, kein gerichtetes Kerzenlicht. |
+| Animation | **3** | Zwischen den geprüften Frames ändern sich Lean, Kerbenposition und Flankenbreite sichtbar (f8 schmal/geneigt, f20 breiter/aufrechter); der Schweif wandert wellig mit. Aber die Änderung ist im 1×-GIF vor allem an der Flanke als 1–2-px-Zittern lesbar; Scheitel-Kern und Kernposition bleiben über die Frames starr. Ruhig, aber kein „Flackern". |
+| Distinktheit zur Laterne | **4** | Kalt vs. amber, 5 große orbitierende Seelen vs. kleine warme Lichter: klar unterscheidbar, und die Größe (30×44) trennt sie von den Wisp-Gegnern. Restrisiko: die Silhouette ist der Wisp-/Irrlicht-Gegnerform ähnlich (graue Flamme + heller Kern); im Getümmel ist die Zuordnung „Seele vs. Gegner" nur über Größe/Orbit eindeutig. |
+| **Gesamt** | **4** | Die R6-Blocker sind sichtbar behoben: Flammen-Silhouette statt Obelisk, geschlossene Kontur inkl. Scheitel und Schweif, 2×2-Kern links der Mitte, drei Körperwerte, kein Punktrauschen, ruhiger kalter Halo. Für eine glatte 5 fehlen die diagonale Lichtkante, die blaue Farbidentität (5-Ton + Glutrand) und ein deutlicheres Flackern. **PASS** (≥4). |
+
+### Nachbesserungen (nicht abnahmeblockierend)
+
+1. **Farbidentität** – Körper-Mittelton auf Index **6**, rechte Flanke **5** (ab y6), Lichtflanke auf **8** nur als 2–3 Zeilen oben-links; `7` nicht als flächige Flanke. So bleibt die Seele kalt-blau statt nebelgrau, auch nach GIF-Quantisierung.
+2. **Lichtkante** – `8`-Akzent 2 px breit an der Oberkante (y2–4 links), rechte Flanke ab Körpermitte auf 5; damit diagonale Modellierung statt vertikaler Hälften.
+3. **Kern** – Rand von `10` auf **9**, Kern `12`/`13` als 2-Pixel-Glutverlauf; Kern 1 px weiter in die Körpermitte rücken (in f8/f20 sitzt er am linken Innenrand), damit er als Glut und nicht als Pflaster liest.
+4. **Schweif** – Länge um 1 Zeile kürzen und zur Spitze von 3 px auf `0 9 0` verjüngen; Zentrum seltener zwischen 6/9 wechseln, damit die Kette weniger „Wirbelsäule" ist.
+5. **Animation** – zusätzlich zum Lean 1 px Tip-Versatz und Kern 1 px vertikal; so ist Flackern an der Silhouette sichtbar, nicht nur an der Flanke.
+6. **Beleg** – Damage-Numbers für den Soul-Beacon-Shot 6–8 px versetzen oder Orbs über dem Damage-Layer zeichnen; in f8/f20 liegt die „58" sonst auf dem Kern.
+
+### Gesamturteil R7
+
+**PASS.** `soul_beacon` erreicht **4/5**: Die Form ist jetzt eine asymmetrische Geisterflamme, die Kontur ist geschlossen (Körper, Scheitel, Schweif), der Kern ist 2×2 und dezentriert, es gibt sichtbare 3 Stufen und keinen Pixelmüll. Die verbleibenden Abzüge (blaue Identität entsättigt, Licht lateral statt diagonal, Kern-Rand bone, Schweifkette) sind Feinschliff, kein Abnahmeblocker. Damit stehen alle 18 M5-Assets bei ≥4.
+
+- **muss neu:** —
+- **nachbessern:** `soul_beacon` (Farbrampe 6/5, diagonale Lichtkante, Kern-Rand 9/12, Schweif-Taper, Tip-Flackern), Damage-Number-Overlay im Beleg.
+- **ok:** `soul_beacon` Form/Silhouette, Scheitel- und Schweifkontur (3-px-Band, 4-connected), 2×2-Kern-Position, Halo-Verdrahtung (kalt, α 0,09, Scale 2), Sprite-Scale 2, Alpha 1, Orbit-Radius.
+
+## Runde 3 (Abschluss-Konsolidierung, 2026-11-25 22:05 UTC)
+
+Nach den Nachprüfungen R3–R7 steht der finale Notenstand. Die ursprüngliche R2-Tabelle bleibt als Verlauf erhalten; für `soul_beacon` gilt die spätere R7-Note 4, für `boss-death` die R3-Note 4. Alle 18 Assets sind ≥4.
+
+| Asset | Note | Finaler Stand |
+|---|---|---|
+| ember | **4** | Orange Glutrampe + Feuer-Trail, vom XP-Kristall unterscheidbar. |
+| flail | **4** | Smear-Bogen, echte 8-gliedrige Kette, Kugel-Halo. |
+| frost | **4** | 16 facettierte Eiskristalle + blaues Eisband, Freeze-Tint. |
+| thorn | **4** | Warmer Dornenfächer mit Tinte, 1,6× Skalierung. |
+| storm | **4** | Segmentierte, verzweigte Zickzack-Blitze + Einschlagfunken/Siegel. |
+| lantern | **4** | Warmer Orbit mit Kern + Amber-Halo, klar lesbar. |
+| phoenix | **4** | Vögel, Feuerringe, Brandflächen; prächtiger als ember. |
+| wrath_pendulum | **4** | 360°-Amber-Bogen + Kette, größer als flail. |
+| eternal_winter | **4** | Permanente Aura + Kristalle + Freeze-Rückmeldung. |
+| thorn_storm | **4** | 16 große Amber-Dornenstreaks als Wirbel/Igelring. |
+| thunder_seal | **4** | Kantiges Achteck-Sigil + segmentierter Kettenblitz. |
+| soul_beacon | **4** | R7: asymmetrische Geisterflamme, geschlossene Kontur, 2×2-Kern, 3 Töne, kalter Halo. |
+| levelup | **4** | Goldene Lichtsäule, Halo, aufsteigende Funken; weicher Ausklang. |
+| evolution | **4** | Banner mit echtem Namen (PHÖNIXSCHWARM), Zeitlupe, Säule/Ringe/Funken. |
+| chest | **4** | Strahl, Münzen, Panel; Itemname ohne Wortbruch (max. 13 Zeichen). |
+| boss-intro | **4** | Name + HP-Leiste + Banner, Kern-Glut, 3 gestaffelte Ringe. |
+| boss-death | **4** | Boss/Explosion/Truhe unter dem Banner sichtbar; Kern → Ringe → Splitter → Nachglühen. |
+| dawn | **4** | Flash 150 ms, lesbare Bänder/Strahlen, gestaffelter Gegner-Zerfall. |
+
+**Gesamturteil: PASS — 18/18 ≥4.** Restrisiken (nicht abnahmeblockierend): Soul-Blau wirkt im GIF entsättigt, Frost-Peak liegt im letzten Frame, Storm überlagert sich dicht, Dawn-FPS-Minimum im fullrun ist host-lastbedingt niedriger.

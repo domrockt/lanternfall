@@ -1,13 +1,172 @@
 {
   "summary": {
-    "weapons": 1,
-    "events": 0,
-    "gifs": 1,
+    "weapons": 12,
+    "events": 6,
+    "gifs": 18,
     "failed": [],
     "jsErrors": [],
     "passed": true
   },
   "results": [
+    {
+      "id": "ember",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "projectile_ember",
+        "fx_halo",
+        "fx_fire"
+      ],
+      "maxEnemies": 26,
+      "minEnemies": 13,
+      "size": 486089,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "flail",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "chain_link",
+        "flail_ball",
+        "fx_smear"
+      ],
+      "maxEnemies": 28,
+      "minEnemies": 13,
+      "size": 501337,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "frost",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "ring_frost",
+        "fx_ice",
+        "fx_halo"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 15,
+      "size": 464988,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "thorn",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "fx_thorn",
+        "projectile_thorn"
+      ],
+      "maxEnemies": 26,
+      "minEnemies": 15,
+      "size": 424166,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "storm",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "fx_star",
+        "fx_bolt",
+        "fx_seal"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 2,
+      "size": 430566,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "lantern",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "orb_lantern"
+      ],
+      "maxEnemies": 29,
+      "minEnemies": 14,
+      "size": 505167,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "phoenix",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "projectile_phoenix",
+        "fx_fire",
+        "fx_shock"
+      ],
+      "maxEnemies": 24,
+      "minEnemies": 10,
+      "size": 576770,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "wrath_pendulum",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "flail_ball",
+        "fx_smear"
+      ],
+      "maxEnemies": 21,
+      "minEnemies": 13,
+      "size": 468400,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "eternal_winter",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "projectile_ice",
+        "fx_ice"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 13,
+      "size": 514238,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "thorn_storm",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "fx_shock",
+        "fx_thorn",
+        "projectile_thorn"
+      ],
+      "maxEnemies": 19,
+      "minEnemies": 11,
+      "size": 526720,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "thunder_seal",
+      "kind": "weapon",
+      "frames": 28,
+      "found": [
+        "fx_seal",
+        "fx_bolt"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 3,
+      "size": 486439,
+      "gifOk": true,
+      "ok": true
+    },
     {
       "id": "soul_beacon",
       "kind": "weapon",
@@ -15,9 +174,97 @@
       "found": [
         "orb_soul"
       ],
+      "maxEnemies": 19,
+      "minEnemies": 14,
+      "size": 502052,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "levelup",
+      "kind": "event",
+      "frames": 28,
+      "found": [
+        "fx_halo",
+        "fx_star",
+        "fx_pillar"
+      ],
       "maxEnemies": 20,
-      "minEnemies": 13,
-      "size": 497231,
+      "minEnemies": 8,
+      "size": 541436,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "evolution",
+      "kind": "event",
+      "frames": 28,
+      "found": [
+        "fx_shock",
+        "fx_star",
+        "fx_fire",
+        "fx_pillar"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 8,
+      "size": 497055,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "chest",
+      "kind": "event",
+      "frames": 28,
+      "found": [
+        "fx_coin",
+        "fx_pillar"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 7,
+      "size": 357080,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "bossIntro",
+      "kind": "event",
+      "frames": 28,
+      "found": [
+        "fx_shock",
+        "fx_boss_core"
+      ],
+      "maxEnemies": 20,
+      "minEnemies": 9,
+      "size": 743719,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "bossDeath",
+      "kind": "event",
+      "frames": 28,
+      "found": [
+        "fx_boss_core",
+        "fx_death_bone",
+        "fx_shock"
+      ],
+      "maxEnemies": 21,
+      "minEnemies": 3,
+      "size": 524961,
+      "gifOk": true,
+      "ok": true
+    },
+    {
+      "id": "dawn",
+      "kind": "event",
+      "frames": 28,
+      "found": [
+        "fx_ash",
+        "fx_pillar"
+      ],
+      "maxEnemies": 23,
+      "minEnemies": 0,
+      "size": 725762,
       "gifOk": true,
       "ok": true
     }

@@ -313,6 +313,23 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     w: 2, h: 8,
     rows: ["08", "88", "80", "08", "88", "80", "08", "88"],
   },
+  fx_coin: {
+    w: 7, h: 7,
+    // Muenze: Rand 18/19, Gesicht 20/21, Glanz 22 oben-links.
+    rows: [
+      "..000..",
+      ".0jjm0.",
+      "0jkklj0",
+      "0jkllj0",
+      "0jkkkj0",
+      ".0jjj0.",
+      "..000..",
+    ],
+  },
+  fx_spark: {
+    w: 3, h: 3,
+    rows: [".m.", "mmm", ".m."],
+  },
   orb_lantern: {
     w: 9, h: 9,
     rows: [

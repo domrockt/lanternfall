@@ -3,7 +3,7 @@
     {
       "id": "moor_queen",
       "ok": true,
-      "shares": 31,
+      "shares": 59,
       "phases": [
         1
       ],
@@ -14,18 +14,18 @@
     {
       "id": "bone_lord",
       "ok": true,
-      "shares": 2,
+      "shares": 0,
       "phases": [
         1
       ],
       "hazardsMax": 1,
-      "shotsMax": 0,
+      "shotsMax": 4,
       "chest": true
     },
     {
       "id": "pale_shepherd",
       "ok": true,
-      "shares": 2,
+      "shares": 9,
       "phases": [
         1
       ],
@@ -36,7 +36,7 @@
     {
       "id": "bell_golem",
       "ok": true,
-      "shares": 5,
+      "shares": 2,
       "phases": [
         1
       ],
@@ -47,7 +47,7 @@
     {
       "id": "coven",
       "ok": true,
-      "shares": 5,
+      "shares": 6,
       "phases": [
         1
       ],

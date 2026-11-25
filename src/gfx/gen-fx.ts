@@ -367,39 +367,40 @@ function coldHaloFrame(stage: number): string[] {
 }
 
 /**
- * Geisterflamme (Seele): asymmetrischer, leanender Flammenkorper mit echter
- * 0-Tinte-Kontur, 3-Ton-Korper (8/6/5), exakt 2x2-Kern und zusammenhaengendem
- * Schweif. 3 Frames @ ~5 Hz (Flackern + Lean-Wechsel).
+ * Geisterflamme (Seele): geschlossene Tinte an Scheitel und welligem Schweif,
+ * asymmetrischer Flammenkorper (kein Obelisk), 2x2-Kern mit 9-Glutrand und
+ * diagonale 8/5-Schattierung. 3 Frames @ ~5 Hz.
  */
 function orbSoulFrame(stage: number): string[] {
   const w = 15;
-  const h = 22;
+  const h = 24;
   const cx = 7;
-  const out: string[] = [];
+  const widths = [0, 1, 1, 2, 2, 3, 2, 3, 4, 3, 4, 4, 3, 2];
   const lean = stage === 0 ? 0 : stage === 1 ? 1 : -1;
-  const widths = [0, 1, 1, 2, 2, 3, 3, 3, 4, 4, 3, 3, 2, 2];
+  const out: string[] = [];
   for (let y = 0; y < h; y++) {
     let row = "";
     const body = y < 14;
     const center = body
-      ? cx + Math.round(lean * (y / 13) * 1.6 + Math.sin(y * 0.8 + stage * 2) * 0.5)
-      : cx + Math.round(Math.sin(y * 1.25 + stage * 2) * 0.9);
-    const half = body ? widths[y] : 0;
+      ? cx + Math.round(lean * (y / 13) * 1.4 + Math.sin(y * 0.85 + stage * 2.1) * 0.8)
+      : cx + Math.round(Math.sin(y * 1.15 + stage * 2.4) * 0.9);
+    const half = body ? widths[y] : 1;
     for (let x = 0; x < w; x++) {
       const dx = x - center;
-      if (body) {
-        const left = half + (stage === 2 ? 1 : 0);
-        const right = half + (stage === 1 ? 1 : 0);
-        if (dx < -left || dx > right) { row += "."; continue; }
-        if (y > 0 && (dx === -left || dx === right)) { row += "0"; continue; }
-      } else {
-        if (dx !== 0) { row += "."; continue; }
+      if (body && y === 0) {
+        // Geschlossener Scheitel: nur Tinte, von y1 gefüllt umschlossen.
+        row += dx === 0 ? "0" : ".";
+        continue;
       }
-      const wideCore = body && y >= 10 && y <= 11 && (x === center || x === center + 1);
-      if (wideCore) { row += "d"; continue; }
-      // Licht oben-links, Schatten unten-rechts (3 Tone).
-      if (body && y < 8 && dx < 0) { row += "8"; continue; }
-      if (body && y > 7 && dx > 0) { row += "5"; continue; }
+      if (dx < -half || dx > half) { row += "."; continue; }
+      if (dx === -half || dx === half) { row += "0"; continue; }
+      const coreRow = body && y >= 10 && y <= 11;
+      const core = coreRow && (x === center || x === center + 1);
+      if (core) { row += "d"; continue; }
+      const glow = coreRow && Math.abs(y - 10.5) < 2.1 && dx >= -1 && dx <= 2;
+      if (glow) { row += "9"; continue; }
+      if (body && y >= 2 && y <= 6 && dx < 0) { row += "8"; continue; }
+      if (body && y > 6 && dx >= 0) { row += "5"; continue; }
       row += "6";
     }
     out.push(row);

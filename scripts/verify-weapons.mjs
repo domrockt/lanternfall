@@ -60,7 +60,9 @@ async function rollNamesComplete(page) {
     const rolling = slots.every((s) => !s.level?.value);
     const allFull = slots.every((s) => rewards.includes(`${s.text?.value ?? ""}${s.text2?.value ?? ""}`));
     const twoLine = slots.some((s) => s.text2?.visible && s.text2?.value);
-    return rolling && allFull && twoLine;
+    // Zwei Zeilen sind nur noetig, wenn ein Name die Slotbreite (13 Zeichen) ueberschreitet.
+    const needsTwoLine = rewards.some((r) => r.length > 13);
+    return rolling && allFull && (!needsTwoLine || twoLine);
   });
 }
 
