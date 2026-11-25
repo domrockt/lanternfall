@@ -7,6 +7,7 @@ import { iconKeyForOffer, iconTextureKey } from "../gfx/icons";
 import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
 import { slotNameLines } from "../logic/text";
+import { chooseBestOffer } from "../logic/autoplay";
 import type { HudState, Run } from "./Run";
 
 interface CardView {
@@ -48,6 +49,16 @@ export class UI extends Phaser.Scene {
   private chestSlots: { bg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; text2: PixelText; level: PixelText }[] = [];
   private chestHideTimer?: Phaser.Time.TimerEvent;
 
+  private bossGroup!: Phaser.GameObjects.Container;
+  private bossName!: PixelText;
+  private bossPhaseText!: PixelText;
+  private bossBarBg!: Phaser.GameObjects.Rectangle;
+  private bossBarFill!: Phaser.GameObjects.Rectangle;
+  private bannerGroup!: Phaser.GameObjects.Container;
+  private bannerText!: PixelText;
+  private bannerSub!: PixelText;
+  private bannerTimer?: Phaser.Time.TimerEvent;
+
   constructor() { super("ui"); }
 
   create(): void {
@@ -65,6 +76,7 @@ export class UI extends Phaser.Scene {
     this.createLevelUpUI();
     this.createPauseUI();
     this.createChestUI();
+    this.createBossUI();
 
     this.input.keyboard!.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
     this.run.events.on("levelup", this.onLevelUp, this);
@@ -72,12 +84,20 @@ export class UI extends Phaser.Scene {
     this.run.events.on("pauseChanged", this.onPauseChanged, this);
     this.run.events.on("chestOpen", this.onChestOpen, this);
     this.run.events.on("chestClosed", this.onChestClosed, this);
+    this.run.events.on("bossSpawn", this.onBossBanner, this);
+    this.run.events.on("bossDefeated", this.onBossBanner, this);
+    this.run.events.on("bossPhase", this.onBossPhase, this);
+    this.run.events.on("dawn", this.onDawn, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.run.events.off("levelup", this.onLevelUp, this);
       this.run.events.off("levelupClosed", this.onLevelUpClosed, this);
       this.run.events.off("pauseChanged", this.onPauseChanged, this);
       this.run.events.off("chestOpen", this.onChestOpen, this);
       this.run.events.off("chestClosed", this.onChestClosed, this);
+      this.run.events.off("bossSpawn", this.onBossBanner, this);
+      this.run.events.off("bossDefeated", this.onBossBanner, this);
+      this.run.events.off("bossPhase", this.onBossPhase, this);
+      this.run.events.off("dawn", this.onDawn, this);
     });
   }
 
@@ -90,6 +110,55 @@ export class UI extends Phaser.Scene {
         .setOrigin(0, 0).setDepth(11).setVisible(false);
       this.hudIcons.push(img);
     }
+  }
+
+  private createBossUI(): void {
+    this.bossGroup = this.add.container(0, 0).setDepth(90).setVisible(false);
+    this.bossBarBg = this.add.rectangle(GAME_WIDTH / 2 - 110, 254, 220, 7, PAL[C.ink], 0.9)
+      .setOrigin(0, 0.5).setStrokeStyle(1, PAL[C.nightSlate]);
+    this.bossBarFill = this.add.rectangle(GAME_WIDTH / 2 - 108, 254, 216, 4, PAL[C.crimson])
+      .setOrigin(0, 0.5);
+    this.bossName = new PixelText(this, GAME_WIDTH / 2, 242, "", C.candleWhite, "center");
+    this.bossPhaseText = new PixelText(this, GAME_WIDTH / 2 + 110, 242, "", C.amber, "right");
+    this.bossGroup.add([this.bossBarBg, this.bossBarFill, this.bossName, this.bossPhaseText]);
+
+    this.bannerGroup = this.add.container(0, 0).setDepth(95).setVisible(false).setAlpha(0);
+    const bg = this.add.rectangle(GAME_WIDTH / 2, 90, 260, 42, PAL[C.ink], 0.78)
+      .setStrokeStyle(2, PAL[C.crimson]);
+    this.bannerText = new PixelText(this, GAME_WIDTH / 2, 82, "", C.hotRed, "center").setScale(1);
+    this.bannerSub = new PixelText(this, GAME_WIDTH / 2, 100, "", C.bone, "center");
+    this.bannerGroup.add([bg, this.bannerText, this.bannerSub]);
+  }
+
+  private onBossBanner(data: { name?: string; index?: number }): void {
+    this.showBanner(
+      data.index === 5 ? "DER HOHE KÖNIG" : (data.name ?? "BOSS").toUpperCase(),
+      data.index === 5 ? "3 PHASEN - SIEG BEI SEINEM TOD" : "EIN BOSS ERWACHT",
+      C.hotRed,
+    );
+  }
+
+  private onBossPhase(data: { index: number; phase: number }): void {
+    if (data.index !== 5) return;
+    this.showBanner(`PHASE ${data.phase}`, data.phase === 3 ? "DER KÖNIG BRENNT" : "NEUE ANGRIFFE", C.amber);
+  }
+
+  private onDawn(): void {
+    this.showBanner("MORGENDÄMMERUNG", "DU HAST ÜBERLEBT", C.lantern);
+  }
+
+  private showBanner(title: string, sub: string, color: number): void {
+    this.bannerTimer?.remove(false);
+    this.bannerText.setColorIndex(color).setText(title);
+    this.bannerSub.setText(sub);
+    this.bannerGroup.setVisible(true).setAlpha(0).setY(-6);
+    this.tweens.add({ targets: this.bannerGroup, alpha: 1, y: 0, duration: 240, ease: "Quad.Out" });
+    this.bannerTimer = this.time.delayedCall(2400, () => {
+      this.tweens.add({
+        targets: this.bannerGroup, alpha: 0, y: -6, duration: 380,
+        onComplete: () => this.bannerGroup.setVisible(false),
+      });
+    });
   }
 
   private createLevelUpUI(): void {
@@ -271,6 +340,7 @@ export class UI extends Phaser.Scene {
     if (!this.run || !this.run.scene.isActive()) return;
     const s = this.run.getHudState();
     this.refreshHud(s);
+    this.refreshBoss(s.boss);
 
     if (s.levelUpOpen) {
       if (!this.levelGroup.visible) this.showOffers(s.offers, s.level);
@@ -278,7 +348,7 @@ export class UI extends Phaser.Scene {
         this.autoPickTimer += delta / 1000;
         if (this.autoPickTimer > 0.35) {
           this.autoPickTimer = 0;
-          try { this.run.pickLevelUp(0); } catch { /* Angebot evtl. schon weg */ }
+          try { this.run.pickLevelUp(chooseBestOffer(s.offers)); } catch { /* Angebot evtl. schon weg */ }
         }
       }
     } else {
@@ -291,6 +361,18 @@ export class UI extends Phaser.Scene {
       this.lastPauseShown = pauseVisible;
       this.refreshPause();
     }
+  }
+
+  private refreshBoss(boss: import("./Run").HudState["boss"]): void {
+    if (!boss) {
+      this.bossGroup.setVisible(false);
+      return;
+    }
+    this.bossGroup.setVisible(true);
+    this.bossName.setText(boss.name.toUpperCase());
+    this.bossPhaseText.setText(boss.phase > 1 ? `PHASE ${boss.phase}` : "");
+    this.bossBarFill.setScale(Math.max(0.001, boss.ratio), 1);
+    this.bossBarFill.setFillStyle(PAL[boss.color] ?? PAL[C.crimson]);
   }
 
   private refreshHud(s: HudState): void {

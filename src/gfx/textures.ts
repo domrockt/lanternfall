@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { createIconTextures } from "./icons";
+import { ALL_BOSS_FRAMES, ALL_ENEMY_FRAMES, createBossTextures, createEnemyTextures } from "./enemySprites";
 
 /** Zeichen → Palettenindex: 0-9 = 0-9, a-z = 10-31, '.' = transparent. */
 export function charIndex(ch: string): number {
@@ -418,6 +419,8 @@ export const SPRITE_FRAMES: Record<string, string[]> = {
   enemy_bog_rat: ["enemy_bog_rat", "enemy_bog_rat2"],
   enemy_wisp: ["enemy_wisp", "enemy_wisp2"],
   enemy_bogzombie: ["enemy_bogzombie", "enemy_bogzombie2"],
+  ...ALL_ENEMY_FRAMES,
+  ...ALL_BOSS_FRAMES,
 };
 
 export type SpriteKey = keyof typeof SPRITE_GRIDS;
@@ -427,6 +430,8 @@ export function createAllTextures(scene: Phaser.Scene): void {
   for (const [key, def] of Object.entries(SPRITE_GRIDS)) {
     addGridTexture(scene, key, def.rows, def.w, def.h);
   }
+  createEnemyTextures(scene);
+  createBossTextures(scene);
   createLightTexture(scene);
   createVignetteTexture(scene);
   createShadowTexture(scene);
@@ -434,7 +439,105 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createRingTexture(scene, "ring_burst", [17, 19, 21, 13]);
   createRingTexture(scene, "ring_seal", [20, 21, 13]);
   createRingTexture(scene, "ring_soul", [8, 12, 13]);
+  createEnemyProjectileTextures(scene);
+  createTelegraphTextures(scene);
   createIconTextures(scene);
+}
+
+/**
+ * Gegner-Projektile: eigene, deutlich andere Optik als Spieler-Feuer —
+ * dunkle Kontur, kompakte Formen in Giftgrün/Blutrot/Fahlblau, kein ADD-Blend.
+ */
+export const ENEMY_PROJECTILES: Record<string, { rows: string[]; w: number; h: number }> = {
+  enemy_shot_spit: {
+    w: 7, h: 7,
+    rows: ["..000..", ".0h3h0.", "0h333h0", "0333330", "0h333h0", ".0h3h0.", "..000.."],
+  },
+  enemy_shot_bone: {
+    w: 9, h: 5,
+    rows: ["..00000..", ".0bb0bb0.", "0bab0bab0", ".0bb0bb0.", "..00000.."],
+  },
+  enemy_shot_fire: {
+    w: 7, h: 7,
+    rows: ["...0...", "..0j0..", ".0j9j0.", "0j9c9j0", ".0j9j0.", "..0j0..", "...0..."],
+  },
+  enemy_shot_shadow: {
+    w: 7, h: 7,
+    rows: ["..000..", ".06660.", "06ccc60", "06cpc60", "06ccc60", ".06660.", "..000.."],
+  },
+  enemy_shot_thorn: {
+    w: 7, h: 7,
+    rows: ["..0....", ".0u0...", "0u8u0..", ".0u8u0.", "..0u8u0", "...0u0.", "....0.."],
+  },
+};
+
+function createEnemyProjectileTextures(scene: Phaser.Scene): void {
+  for (const [key, def] of Object.entries(ENEMY_PROJECTILES)) {
+    addGridTexture(scene, key, def.rows, def.w, def.h);
+  }
+  // Elite-Leuchtrand (additiv als Halo um Elites).
+  createRingTexture(scene, "elite_aura", [20, 21, 22, 12]);
+}
+
+/** Bodenmarkierungen: gestrichelter Warnkreis + Pfütze, voll deckend. */
+function createTelegraphTextures(scene: Phaser.Scene): void {
+  const ring = "telegraph_disc";
+  if (!scene.textures.exists(ring)) {
+    const size = 64;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d")!;
+    const c = size / 2;
+    ctx.globalAlpha = 0.22;
+    ctx.fillStyle = "#" + PAL[25].toString(16).padStart(6, "0");
+    ctx.beginPath(); ctx.arc(c, c, 30, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 0.85;
+    ctx.strokeStyle = "#" + PAL[26].toString(16).padStart(6, "0");
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath(); ctx.arc(c, c, 30, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle = "#" + PAL[13].toString(16).padStart(6, "0");
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(c, c, 24, 0, Math.PI * 2); ctx.stroke();
+    scene.textures.addCanvas(ring, canvas);
+  }
+
+  const puddle = "puddle_poison";
+  if (!scene.textures.exists(puddle)) {
+    const size = 40;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d")!;
+    const c = size / 2;
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = "#" + PAL[30].toString(16).padStart(6, "0");
+    ctx.beginPath(); ctx.ellipse(c, c, 18, 12, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 0.85;
+    ctx.strokeStyle = "#" + PAL[31].toString(16).padStart(6, "0");
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(c, c, 17, 11, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = "#" + PAL[22].toString(16).padStart(6, "0");
+    for (let i = 0; i < 5; i++) {
+      ctx.fillRect(12 + i * 4, 18 + (i % 2) * 3, 2, 2);
+    }
+    scene.textures.addCanvas(puddle, canvas);
+  }
+
+  const beam = "telegraph_beam";
+  if (!scene.textures.exists(beam)) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 8;
+    canvas.height = 16;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#" + PAL[25].toString(16).padStart(6, "0");
+    ctx.fillRect(2, 0, 4, 16);
+    ctx.fillStyle = "#" + PAL[13].toString(16).padStart(6, "0");
+    ctx.fillRect(3, 0, 2, 16);
+    scene.textures.addCanvas(beam, canvas);
+  }
 }
 
 /** Diskretes Ring-Sprite für Pulse/Auren (additive Nutzung, weiche Kante). */

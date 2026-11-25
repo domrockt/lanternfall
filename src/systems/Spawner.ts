@@ -1,22 +1,25 @@
 import Phaser from "phaser";
-import { ENEMIES, implementedEnemies, waveForMinute } from "../data";
+import { ENEMIES, waveForMinute } from "../data";
 import type { EnemyDef, EnemyId, WaveDef } from "../data/types";
 import { WORLD_SIZE } from "../config";
-import { advanceSpawnBudget, pickEnemy, ringSpawnOffsets } from "../logic/waves";
+import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, streamSpawnOffsets } from "../logic/waves";
+import {
+  eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale, maxActiveEnemies,
+  pickRecycleIndex,
+} from "../logic/scaling";
 import type { Rng } from "../logic/rng";
-import { EnemyPool, type EnemyRuntime } from "./EnemyPool";
+import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPool";
 
 /**
- * Wellen-Director-Grundgerüst: Spawnrate/Mischung pro Minute aus `waves.ts`,
- * Spawns im Ring außerhalb des sichtbaren Bereichs. Nicht-implementierte Gegner
- * werden in M1 auf die spielbaren Archetypen gemappt.
+ * Wellen-Director: Spawnrate/Mischung pro Minute aus `waves.ts`, Spezialwellen
+ * (Ring-Einkesselung, Schwarm-Strom), Elite-Pakete, Gegner-Cap mit Recycling.
+ * Alle 30 Gegner sind spielbar.
  */
 export class Spawner {
   budget = 0;
   private lastMinute = -1;
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
-  private readonly fallback: EnemyDef[] = implementedEnemies();
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
   private readonly scene: Phaser.Scene;
 
@@ -36,17 +39,30 @@ export class Spawner {
     const wave = this.currentWave(elapsedSeconds);
     if (wave.minute !== this.lastMinute) {
       this.lastMinute = wave.minute;
-      if (wave.special === "ring") this.spawnRing(wave, playerX, playerY, spawned, 10);
-      // Bosse sind erst ab M4 implementiert; Wave-Flag bleibt als Hook erhalten.
+      if (wave.special === "ring") this.spawnRing(wave, playerX, playerY, spawned, 10 + Math.floor(wave.minute / 4));
+      else if (wave.special === "stream") this.spawnStream(wave, playerX, playerY, spawned, 10 + Math.floor(wave.minute / 3));
+      if (wave.elitePack) this.spawnElitePack(wave, playerX, playerY, spawned);
+    }
+
+    // Performance-Deckel: älteste/ferne Gegner recyceln statt beliebig zu wachsen.
+    const cap = maxActiveEnemies(elapsedSeconds);
+    let over = this.pool.count - cap;
+    while (over > 0) {
+      const idx = pickRecycleIndex(this.pool.active, playerX, playerY);
+      if (idx < 0) break;
+      this.pool.despawn(this.pool.active[idx]);
+      over--;
     }
 
     const scaled = advanceSpawnBudget(this.budget, wave.spawnRate, dt);
     this.budget = scaled.budget;
-    for (let i = 0; i < scaled.count; i++) {
+    const room = Math.max(0, cap - this.pool.count);
+    const toSpawn = Math.min(scaled.count, room);
+    for (let i = 0; i < toSpawn; i++) {
       const id = pickEnemy(wave.mix, this.rng);
-      const def = id ? ENEMIES[id] : null;
-      const chosen = def?.implemented ? def : this.rng.pick(this.fallback);
-      spawned.push(this.spawnOne(chosen.id, playerX, playerY));
+      const def = id ? ENEMIES[id] : this.rng.pick(Object.values(ENEMIES));
+      const elite = this.rng.next() < eliteChance(wave.minute);
+      spawned.push(this.spawnOne(def, playerX, playerY, elite));
     }
     return spawned;
   }
@@ -55,11 +71,9 @@ export class Spawner {
     // Radius > Bildschirmdiagonale (sqrt(240² + 135²) ≈ 275), damit nichts sichtbar aufploppt.
     const ringRadius = Math.ceil(Math.hypot(this.camera.width, this.camera.height) / 2) + 20;
     const offsets = ringSpawnOffsets(count, ringRadius);
-    const available = Object.keys(wave.mix) as EnemyId[];
     for (const off of offsets) {
-      const id = pickEnemy(wave.mix, this.rng) ?? available[0] ?? "bog_rat";
+      const id = pickEnemy(wave.mix, this.rng) ?? "bog_rat";
       const def = ENEMIES[id];
-      const chosen = def.implemented ? def : this.rng.pick(this.fallback);
       const baseAngle = Math.atan2(off.y, off.x);
       let x = playerX;
       let y = playerY;
@@ -75,8 +89,37 @@ export class Spawner {
           placed = true;
         }
       }
-      if (placed) out.push(this.spawnAt(chosen, x, y));
-      else out.push(this.spawnOne(chosen.id, playerX, playerY));
+      if (placed) out.push(this.spawnAt(def, x, y));
+      else out.push(this.spawnOne(def, playerX, playerY, false));
+    }
+  }
+
+  /** Schwarm-Strom: geschlossene Reihe läuft aus einer Richtung auf den Spieler. */
+  spawnStream(wave: WaveDef, playerX: number, playerY: number, out: EnemyRuntime[], count: number): void {
+    const radius = Math.ceil(Math.hypot(this.camera.width, this.camera.height) / 2) + 30;
+    const angle = this.rng.next() * Math.PI * 2;
+    const offsets = streamSpawnOffsets(count, radius, angle);
+    for (const off of offsets) {
+      const id = pickEnemy(wave.mix, this.rng) ?? "bog_rat";
+      const def = ENEMIES[id];
+      out.push(this.spawnAt(
+        def,
+        Phaser.Math.Clamp(playerX + off.x, 20, WORLD_SIZE - 20),
+        Phaser.Math.Clamp(playerY + off.y, 20, WORLD_SIZE - 20),
+      ));
+    }
+  }
+
+  /** Elite-Paket: Leuchtrand, 3-fache HP, garantiert großer Kristall (Drop in Run). */
+  spawnElitePack(wave: WaveDef, playerX: number, playerY: number, out: EnemyRuntime[]): void {
+    const count = elitePackCount(wave.minute);
+    for (let i = 0; i < count; i++) {
+      const id = pickEnemy(wave.mix, this.rng) ?? "bogzombie";
+      const angle = (i / count) * Math.PI * 2 + this.rng.next() * 0.4;
+      const r = 120 + this.rng.next() * 60;
+      const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * r, 20, WORLD_SIZE - 20);
+      const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * r, 20, WORLD_SIZE - 20);
+      out.push(this.spawnAt(ENEMIES[id], x, y, { elite: true, hpScale: this.hpScaleFor(this.elapsed()) * 3 }));
     }
   }
 
@@ -86,22 +129,51 @@ export class Spawner {
     return x < v.x - margin || x > v.right + margin || y < v.y - margin || y > v.bottom + margin;
   }
 
-  /** Debug/Perf: `n` Gegner im Ring um den Spieler (leicht gestreut). */
-  spawnEnemy(id: EnemyId, n: number, playerX: number, playerY: number): EnemyRuntime[] {
+  /** Debug/Perf: `n` Gegner im Ring um den Spieler (leicht gestreut, sichtbar). */
+  spawnEnemy(id: EnemyId, n: number, playerX: number, playerY: number, elite = false): EnemyRuntime[] {
     const def = ENEMIES[id];
     if (!def) throw new Error(`spawnEnemy: unbekannter Gegner "${id}"`);
-    if (!def.implemented) throw new Error(`spawnEnemy: "${id}" ist erst ab M3 spielbar`);
     const out: EnemyRuntime[] = [];
     for (let i = 0; i < n; i++) {
       const angle = this.rng.next() * Math.PI * 2;
-      const radius = 160 + this.rng.next() * 120;
-      out.push(this.spawnAt(def, playerX + Math.cos(angle) * radius, playerY + Math.sin(angle) * radius));
+      const radius = 90 + this.rng.next() * 90;
+      const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * radius, 20, WORLD_SIZE - 20);
+      const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * radius, 20, WORLD_SIZE - 20);
+      out.push(this.spawnAt(def, x, y, {
+        elite,
+        hpScale: this.hpScaleFor(this.elapsed()) * (elite ? 3 : 1),
+      }));
     }
     return out;
   }
 
-  private spawnOne(id: EnemyId, playerX: number, playerY: number): EnemyRuntime {
-    const def = ENEMIES[id];
+  /** Direkter Spawn (Bosse, Splitter-Kinder, Summoner-Minions). */
+  spawnAt(def: EnemyDef, x: number, y: number, options: EnemySpawnOptions = {}): EnemyRuntime {
+    const elapsedSec = this.elapsed();
+    const hpScale = options.hpScale ?? this.hpScaleFor(elapsedSec);
+    const damageScale = enemyDamageScale(elapsedSec);
+    return this.pool.spawn(
+      def,
+      Phaser.Math.Clamp(x, 20, WORLD_SIZE - 20),
+      Phaser.Math.Clamp(y, 20, WORLD_SIZE - 20),
+      hpScale,
+      damageScale,
+      this.rng.next() * Math.PI * 2,
+      { speed: def.speed * enemySpeedScale(elapsedSec), ...options },
+      this.rng,
+    );
+  }
+
+  private elapsed(): number {
+    return (this.scene.registry.get("lf-elapsed") as number) ?? 0;
+  }
+
+  private hpScaleFor(elapsedSec: number): number {
+    const def = this.currentWave(elapsedSec);
+    return enemyHpScale(elapsedSec, tierOfWave(def));
+  }
+
+  private spawnOne(def: EnemyDef, playerX: number, playerY: number, elite: boolean): EnemyRuntime {
     const cam = this.camera;
     const angle = this.rng.next() * Math.PI * 2;
     const radius = Math.max(cam.width, cam.height) * 0.62 + 24 + this.rng.next() * 40;
@@ -113,23 +185,11 @@ export class Spawner {
     if (!this.outsideView(x, y)) {
       x = Phaser.Math.Clamp(cx - Math.cos(angle) * radius, 20, WORLD_SIZE - 20);
       y = Phaser.Math.Clamp(cy - Math.sin(angle) * radius, 20, WORLD_SIZE - 20);
-      // An einer sehr engen Weltkante bleibt notfalls der nächstbeste Randpunkt.
     }
-    return this.spawnAt(def, x, y);
+    return this.spawnAt(def, x, y, elite ? { elite, hpScale: this.hpScaleFor(this.elapsed()) * 3 } : {});
   }
+}
 
-  private spawnAt(def: EnemyDef, x: number, y: number): EnemyRuntime {
-    const elapsed = this.scene.registry.get("lf-elapsed") as number ?? 0;
-    const hpScale = 1 + elapsed / 240 + def.tier * 0.12;
-    const damageScale = 1 + elapsed / 600;
-    const enemy = this.pool.spawn(
-      def,
-      Phaser.Math.Clamp(x, 20, WORLD_SIZE - 20),
-      Phaser.Math.Clamp(y, 20, WORLD_SIZE - 20),
-      hpScale,
-      damageScale,
-      this.rng.next() * Math.PI * 2,
-    );
-    return enemy;
-  }
+function tierOfWave(wave: WaveDef): number {
+  return Math.min(4, Math.floor(wave.minute / 5));
 }

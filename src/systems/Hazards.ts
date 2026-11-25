@@ -1,0 +1,214 @@
+import Phaser from "phaser";
+import { C, PAL } from "../palette";
+
+export interface HazardOptions {
+  /** Vorwarnzeit (s), > 0 = Pflicht-Telegraph. */
+  warn?: number;
+  /** Nachwirkzeit (s); 0 = einmaliger Treffer. */
+  linger?: number;
+  damage: number;
+  radius: number;
+  /** Schadenstakt bei Nachwirkzeit (s). */
+  tick?: number;
+  /** Aktive Bodenoptik (z. B. puddle_poison). */
+  activeTexture?: string;
+  /** Farbe des Warnrings. */
+  color?: number;
+  source?: string;
+  /** Wird beim Ende der Warnphase ausgelöst (z. B. Beschwörung/Teleport). */
+  onTrigger?: () => void;
+}
+
+interface HazardRuntime {
+  kind: "circle" | "beam";
+  x: number;
+  y: number;
+  /** Beam-Endpunkt. */
+  x2: number;
+  y2: number;
+  width: number;
+  radius: number;
+  warn: number;
+  warnMax: number;
+  linger: number;
+  lingerMax: number;
+  tick: number;
+  tickTimer: number;
+  damage: number;
+  triggered: boolean;
+  active: boolean;
+  warnSprite?: Phaser.GameObjects.Image;
+  activeSprite?: Phaser.GameObjects.Image;
+  source: string;
+  onTrigger?: () => void;
+}
+
+/**
+ * Bodenmarkierungen/Warnflächen und einfache Flächenangriffe (Bosse, Exploder,
+ * Giftpfützen). Jeder gefährliche Angriff hat eine sichtbare Warnphase.
+ */
+export class HazardSystem {
+  readonly active: HazardRuntime[] = [];
+  private readonly scene: Phaser.Scene;
+
+  constructor(scene: Phaser.Scene) {
+    this.scene = scene;
+  }
+
+  spawnCircle(x: number, y: number, opts: HazardOptions): HazardRuntime {
+    const warn = opts.warn ?? 0.7;
+    const linger = opts.linger ?? 0;
+    const warnSprite = this.scene.add.image(Math.round(x), Math.round(y), "telegraph_disc")
+      .setDepth(5)
+      .setBlendMode(Phaser.BlendModes.NORMAL)
+      .setScale(Math.max(0.25, opts.radius / 30))
+      .setAlpha(0.9);
+    if (opts.color !== undefined) warnSprite.setTint(PAL[opts.color] ?? opts.color);
+    const hazard: HazardRuntime = {
+      kind: "circle", x, y, x2: x, y2: y, width: 0, radius: opts.radius,
+      warn, warnMax: Math.max(0.01, warn), linger, lingerMax: Math.max(0.01, linger),
+      tick: opts.tick ?? 0.5, tickTimer: 0, damage: opts.damage, triggered: false,
+      active: true, warnSprite, source: opts.source ?? "area", onTrigger: opts.onTrigger,
+    };
+    if (opts.activeTexture) {
+      hazard.activeSprite = this.scene.add.image(Math.round(x), Math.round(y), opts.activeTexture)
+        .setDepth(5)
+        .setAlpha(0)
+        .setScale(Math.max(0.3, opts.radius / 18));
+    }
+    this.active.push(hazard);
+    return hazard;
+  }
+
+  /** Linien-/Strahlangriff mit gestrichelter Warnlinie. */
+  spawnBeam(
+    x1: number, y1: number, x2: number, y2: number,
+    opts: HazardOptions,
+  ): HazardRuntime {
+    const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    const warnSprite = this.scene.add.image((x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+      .setDepth(5)
+      .setBlendMode(Phaser.BlendModes.NORMAL)
+      .setRotation(angle + Math.PI / 2)
+      .setScale(1, len / 16)
+      .setAlpha(0.9);
+    const hazard: HazardRuntime = {
+      kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,
+      radius: opts.radius, warn: opts.warn ?? 0.9, warnMax: Math.max(0.01, opts.warn ?? 0.9),
+      linger: opts.linger ?? 0, lingerMax: Math.max(0.01, opts.linger ?? 0),
+      tick: opts.tick ?? 0.5, tickTimer: 0, damage: opts.damage, triggered: false,
+      active: true, warnSprite, source: opts.source ?? "beam", onTrigger: opts.onTrigger,
+    };
+    this.active.push(hazard);
+    return hazard;
+  }
+
+  update(
+    dt: number,
+    playerX: number,
+    playerY: number,
+    onPlayerHit: (damage: number, hazard: HazardRuntime) => void,
+  ): void {
+    for (let i = this.active.length - 1; i >= 0; i--) {
+      const h = this.active[i];
+      if (!h.active) continue;
+      if (h.warn > 0) {
+        h.warn -= dt;
+        const pulse = 0.55 + Math.sin((h.warnMax - h.warn) * 22) * 0.35;
+        h.warnSprite?.setAlpha(pulse);
+        if (h.warn > 0) continue;
+        // Warnphase beendet → Treffer prüfen und Wirkphase starten.
+        h.triggered = true;
+        h.onTrigger?.();
+        if (this.containsPlayer(h, playerX, playerY)) onPlayerHit(h.damage, h);
+        h.warnSprite?.setVisible(false);
+        if (h.activeSprite) h.activeSprite.setAlpha(0.9);
+        this.impactFx(h);
+        if (h.linger <= 0) {
+          this.remove(i);
+          continue;
+        }
+        h.tickTimer = h.tick;
+      } else {
+        h.linger -= dt;
+        h.tickTimer -= dt;
+        if (h.tickTimer <= 0) {
+          h.tickTimer = h.tick;
+          if (this.containsPlayer(h, playerX, playerY)) onPlayerHit(h.damage, h);
+        }
+        if (h.activeSprite) h.activeSprite.setAlpha(Math.max(0, Math.min(0.9, h.linger / h.lingerMax + 0.2)));
+        if (h.linger <= 0) {
+          this.remove(i);
+        }
+      }
+    }
+  }
+
+  private containsPlayer(h: HazardRuntime, px: number, py: number): boolean {
+    if (h.kind === "circle") {
+      return (px - h.x) ** 2 + (py - h.y) ** 2 <= (h.radius + 5) ** 2;
+    }
+    const dx = h.x2 - h.x;
+    const dy = h.y2 - h.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const t = Math.max(0, Math.min(1, ((px - h.x) * dx + (py - h.y) * dy) / (len * len)));
+    const cx = h.x + dx * t;
+    const cy = h.y + dy * t;
+    return Math.hypot(px - cx, py - cy) <= h.width / 2 + 5;
+  }
+
+  private impactFx(h: HazardRuntime): void {
+    if (h.kind === "circle") {
+      const ring = this.scene.add.image(h.x, h.y, "ring_burst")
+        .setDepth(9)
+        .setBlendMode(Phaser.BlendModes.NORMAL)
+        .setTint(PAL[C.hotRed])
+        .setScale(Math.max(0.2, h.radius / 42))
+        .setAlpha(0.9);
+      this.scene.tweens.add({
+        targets: ring, alpha: 0, scale: h.radius / 30, duration: 320, onComplete: () => ring.destroy(),
+      });
+    }
+    for (let i = 0; i < 5; i++) {
+      const spark = this.scene.add.image(h.x, h.y, "fx_spark")
+        .setDepth(11)
+        .setTint(PAL[C.crimson])
+        .setScale(0.8);
+      const a = (i / 5) * Math.PI * 2;
+      this.scene.tweens.add({
+        targets: spark,
+        x: h.x + Math.cos(a) * (h.radius * 0.6),
+        y: h.y + Math.sin(a) * (h.radius * 0.6),
+        alpha: 0, duration: 220, onComplete: () => spark.destroy(),
+      });
+    }
+  }
+
+  private remove(index: number): void {
+    const h = this.active[index];
+    h.active = false;
+    h.warnSprite?.destroy();
+    h.activeSprite?.destroy();
+    this.active.splice(index, 1);
+  }
+
+  clear(): void {
+    for (const h of this.active) {
+      h.warnSprite?.destroy();
+      h.activeSprite?.destroy();
+    }
+    this.active.length = 0;
+  }
+
+  /** Für den Bot: Positionen/Radien aktiver Warnflächen. */
+  threats(): { x: number; y: number; radius: number }[] {
+    return this.active.filter((h) => h.warn > 0).map((h) => ({
+      x: (h.x + h.x2) / 2, y: (h.y + h.y2) / 2, radius: h.kind === "beam" ? h.width : h.radius,
+    }));
+  }
+
+  get count(): number {
+    return this.active.length;
+  }
+}

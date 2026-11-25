@@ -7,6 +7,8 @@ import {
   GAME_HEIGHT, GAME_WIDTH, PLAYER_BASE_PICKUP_RADIUS, PLAYER_INVULN,
   RUN_LENGTH, SIM_MAX_STEP, WORLD_SIZE,
 } from "../config";
+import { ENEMIES } from "../data/enemies";
+import { BOSSES } from "../data/bosses";
 import { SeededRng } from "../logic/rng";
 import { directionToPlayer, separationPush } from "../logic/separation";
 import {
@@ -25,6 +27,13 @@ import { CombatSystem } from "../systems/CombatSystem";
 import { PickupSystem } from "../systems/PickupSystem";
 import { LevelUpSystem, type OwnedWeapon } from "../systems/LevelUpSystem";
 import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
+import { EnemyProjectilePool, enemyShotHitFx, shotTextureFor } from "../systems/EnemyProjectiles";
+import { HazardSystem } from "../systems/Hazards";
+import { BossSystem, type BossInfo } from "../systems/BossSystem";
+import { stepEnemyAi, type AiAction } from "../logic/enemy-ai";
+import { FINAL_BOSS_AT, bossSpawnSecond } from "../logic/scaling";
+import { botDirection, chooseBestOffer } from "../logic/autoplay";
+import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
 import { chestRewards, type ChestResult } from "../logic/evolution";
 import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
@@ -53,6 +62,8 @@ export interface HudState {
   passives: { id: string; level: number }[];
   fps: number;
   character: string;
+  boss: BossInfo | null;
+  dawn: boolean;
 }
 
 /** Core-Loop: Bewegung, Gegner, Waffen, XP, Level-ups, Tod/Sieg. */
@@ -85,6 +96,14 @@ export class Run extends Phaser.Scene {
   currentOffers: Offer[] = [];
   xpState: XpState = { level: 1, xp: 0, pendingLevelUps: 0 };
 
+  /** M3: Bosse, Gegner-Projektile, Warnflächen, Morgendämmerung. */
+  bossesSpawned: { index: number; at: number }[] = [];
+  chestsDropped = 0;
+  explosions = 0;
+  elitesSpawned = 0;
+  dawn = false;
+  dawnTimer = 0;
+  bossFlags: boolean[] = [false, false, false, false, false, false];
 
   private rng!: SeededRng;
   private levelSys!: LevelUpSystem;
@@ -103,8 +122,14 @@ export class Run extends Phaser.Scene {
   private combat!: CombatSystem;
   private pickups!: PickupSystem;
   private chests!: ChestSystem;
+  private enemyShots!: EnemyProjectilePool;
+  private hazards!: HazardSystem;
+  private bosses!: BossSystem;
+  private dawnRect?: Phaser.GameObjects.Rectangle;
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
   private scratch: EnemyRuntime[] = [];
+  private splashTimer = 0;
+  private hurtMarker: { x: number; y: number; life: number } | null = null;
 
   constructor() { super("run"); }
 
@@ -126,6 +151,13 @@ export class Run extends Phaser.Scene {
     this.chestPausedBefore = false;
     this.chestResult = null;
     this.bossesDefeated = 0;
+    this.bossesSpawned = [];
+    this.chestsDropped = 0;
+    this.explosions = 0;
+    this.elitesSpawned = 0;
+    this.dawn = false;
+    this.dawnTimer = 0;
+    this.bossFlags = [false, false, false, false, false, false];
     this.finished = false;
     this.invuln = 0;
     this.hitFlash = 0;
@@ -184,6 +216,9 @@ export class Run extends Phaser.Scene {
     this.combat = new CombatSystem(this);
     this.pickups = new PickupSystem(this);
     this.chests = new ChestSystem(this);
+    this.enemyShots = new EnemyProjectilePool(this);
+    this.hazards = new HazardSystem(this);
+    this.bosses = new BossSystem(this, this.enemies, this.spawner, this.hazards, this.enemyShots, this.rng);
 
     this.keys = this.input.keyboard!.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -206,6 +241,9 @@ export class Run extends Phaser.Scene {
       this.enemies.releaseAll();
       this.pickups.releaseAll();
       this.chests.clear();
+      this.enemyShots?.clear();
+      this.hazards?.clear();
+      this.bosses?.clear();
     });
   }
 
@@ -245,10 +283,17 @@ export class Run extends Phaser.Scene {
     this.elapsed += dt;
     this.registry.set("lf-elapsed", this.elapsed);
 
-    if (this.elapsed >= RUN_LENGTH) {
-      this.endRun("dawn");
-      return;
+    // Morgendämmerung läuft nach dem Endboss-Sieg kurz aus, dann Results.
+    if (this.dawn) {
+      this.dawnTimer += dt;
+      if (this.dawnTimer > 3.2) {
+        this.endRun("dawn");
+        return;
+      }
     }
+
+    // Endboss bei 30:00; danach läuft der Run bis zu seinem Tod weiter.
+    if (!this.dawn) this.trySpawnScheduledBosses();
 
     if (this.invuln > 0) this.invuln -= dt;
     if (this.agg.regen > 0 && this.hp < this.maxHp) {
@@ -256,8 +301,10 @@ export class Run extends Phaser.Scene {
     }
 
     this.movePlayer(dt);
-    this.spawner.update(this.elapsed, dt, this.player.x, this.player.y);
+    const spawned = this.dawn ? [] : this.spawner.update(this.elapsed, dt, this.player.x, this.player.y);
+    for (const e of spawned) if (e.elite) this.elitesSpawned += 1;
     this.updateEnemies(dt);
+    this.bosses.update(dt, this.player.x, this.player.y);
     this.combat.update({
       dt,
       playerX: this.player.x,
@@ -278,8 +325,16 @@ export class Run extends Phaser.Scene {
     });
     this.collectKills();
     this.touchDamage();
+    this.enemyShots.update(dt, this.player.x, this.player.y, (damage, shot) => {
+      this.hurtPlayer(damage, shot.x, shot.y);
+      enemyShotHitFx(this, shot.x, shot.y);
+    });
+    this.hazards.update(dt, this.player.x, this.player.y, (damage) => {
+      this.hurtPlayer(damage, this.player.x, this.player.y);
+    });
     if (this.finished) return;
     this.enemies.compact();
+    this.maybeSplash(dt);
 
     const pickupRadius = effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus;
     this.pickups.update(dt, this.player.x, this.player.y, pickupRadius, (value) => {
@@ -287,6 +342,63 @@ export class Run extends Phaser.Scene {
     });
     const nearChest = this.chests.near(this.player.x, this.player.y, 15);
     if (nearChest) this.openChest(nearChest);
+  }
+
+  /** Spawnt fällige Bosse (05:00–25:00) und den Endboss (30:00). */
+  private trySpawnScheduledBosses(): void {
+    for (let i = 0; i < 5; i++) {
+      if (this.bossFlags[i]) continue;
+      if (this.elapsed >= bossSpawnSecond(i)) this.spawnBossAt(i);
+    }
+    if (!this.bossFlags[5] && !this.dawn && this.elapsed >= FINAL_BOSS_AT) this.spawnBossAt(5);
+  }
+
+  private spawnBossAt(index: number): void {
+    const b = this.bosses.spawn(index, this.player.x, this.player.y);
+    this.bossFlags[index] = true;
+    this.bossesSpawned.push({ index, at: Math.round(this.elapsed * 10) / 10 });
+    this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: b.maxHp });
+  }
+
+  /** Treffer am Spieler zentral (Kontakt, Projektile, Flächen); respektiert God/Invuln. */
+  private hurtPlayer(damage: number, x: number, y: number): void {
+    if (this.invuln > 0 || this.finished) return;
+    const armor = this.character.armor + this.agg.armorFlat;
+    const dmg = damageAfterArmor(damage, armor);
+    this.hp = Math.max(0, this.hp - dmg);
+    this.invuln = PLAYER_INVULN;
+    this.hitFlash = 0.16;
+    this.cameras.main.shake(70, 0.0022);
+    this.hurtMarker = { x, y, life: 0.25 };
+    if (this.hp <= 0) {
+      if (this.godMode) this.hp = 1;
+      else this.endRun("death");
+    }
+  }
+
+  /** Wasser-Spritzer unter Spieler/Gegnern auf Wasserflächen. */
+  private maybeSplash(dt: number): void {
+    this.splashTimer -= dt;
+    if (this.splashTimer > 0) return;
+    this.splashTimer = 0.14;
+    const px = this.player.x;
+    const py = this.player.y;
+    if (this.ground.kindAt(px, py) === "water") this.spawnSplash(px, py + 5);
+    for (const e of this.enemies.active) {
+      if (!e.alive) continue;
+      if (this.ground.kindAt(e.x, e.y) === "water" && Math.random() < 0.12) this.spawnSplash(e.x, e.y + 4);
+    }
+  }
+
+  private spawnSplash(x: number, y: number): void {
+    for (let i = 0; i < 3; i++) {
+      const drop = this.add.image(Math.round(x + (i - 1) * 3), Math.round(y), "fx_spark")
+        .setDepth(6).setTint(PAL[C.fogBlue]).setScale(0.6).setAlpha(0.8);
+      this.tweens.add({
+        targets: drop, y: y - 8 - i * 2, alpha: 0, scale: 0.2,
+        duration: 240 + i * 30, onComplete: () => drop.destroy(),
+      });
+    }
   }
 
   // ── Spieler ──────────────────────────────────────────────────
@@ -307,7 +419,8 @@ export class Run extends Phaser.Scene {
     const len = Math.hypot(dx, dy);
     dx /= len;
     dy /= len;
-    const speed = effectiveMoveSpeed(this.character.speed, this.agg);
+    const terrain = terrainSpeedFactor(this.ground.kindAt(this.player.x, this.player.y) as TerrainKind);
+    const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
     this.facingX = dx;
     this.facingY = dy;
     this.player.x = Phaser.Math.Clamp(this.player.x + dx * speed * dt, 10, WORLD_SIZE - 10);
@@ -316,53 +429,25 @@ export class Run extends Phaser.Scene {
     if (this.lantern) this.lantern.x = dx < 0 ? -9 : 9;
   }
 
-  /** Einfacher Ausweich-Bot: weg vom nächsten Gegner + seitliche Komponente. */
+  /** Bot: weicht Gegnern/Projektilen/Warnflächen aus und sammelt XP-Kristalle. */
   private autoDirection(): { x: number; y: number } {
-    let nearest: EnemyRuntime | null = null;
-    let best = Number.POSITIVE_INFINITY;
-    for (const e of this.enemies.active) {
-      if (!e.alive) continue;
-      const d = (e.x - this.player.x) ** 2 + (e.y - this.player.y) ** 2;
-      if (d < best) { best = d; nearest = e; }
-    }
-
-    let x = 0;
-    let y = 0;
-    // Kristalle einsammeln, solange kein Gegner direkt bedrohlich ist.
-    let nearestGem: { x: number; y: number } | null = null;
-    let bestGem = 260 * 260;
-    for (const g of this.pickups.gems) {
-      const d = (g.x - this.player.x) ** 2 + (g.y - this.player.y) ** 2;
-      if (d < bestGem) { bestGem = d; nearestGem = g; }
-    }
-    if (nearestGem && (!nearest || best > 90 * 90)) {
-      const gx = nearestGem.x - this.player.x;
-      const gy = nearestGem.y - this.player.y;
-      const gd = Math.hypot(gx, gy) || 1;
-      x += (gx / gd) * 0.9;
-      y += (gy / gd) * 0.9;
-    }
-    if (nearest && best < 240 * 240) {
-      let ax = this.player.x - nearest.x;
-      let ay = this.player.y - nearest.y;
-      const d = Math.hypot(ax, ay) || 1;
-      ax /= d; ay /= d;
-      const tx = -ay;
-      const ty = ax;
-      const weight = best < 70 * 70 ? 1 : 0.5;
-      x += (ax + tx * 0.75) * weight;
-      y += (ay + ty * 0.75) * weight;
-    }
-    // Wandmeidung
-    if (this.player.x < 80) x += 0.8;
-    if (this.player.x > WORLD_SIZE - 80) x -= 0.8;
-    if (this.player.y < 80) y += 0.8;
-    if (this.player.y > WORLD_SIZE - 80) y -= 0.8;
-    if (x !== 0 || y !== 0) {
-      const len = Math.hypot(x, y) || 1;
-      return { x: x / len, y: y / len };
-    }
-    return { x: Math.cos(this.elapsed * 0.5) * 0.5, y: Math.sin(this.elapsed * 0.4) * 0.5 };
+    const enemies = this.enemies.active
+      .filter((e) => e.alive)
+      .map((e) => ({ x: e.x, y: e.y, radius: e.radius, threat: e.boss ? 2.6 : e.def.archetype === "exploder" ? 1.8 : 1 }));
+    const projectiles = this.enemyShots.active.map((p) => ({
+      x: p.x, y: p.y, vx: p.vx, vy: p.vy, radius: p.radius, threat: 2.4,
+    }));
+    const hazards = this.hazards.threats().map((h) => ({ ...h, threat: 3.2 }));
+    const gems = this.pickups.gems.map((g) => ({ x: g.x, y: g.y }));
+    return botDirection({
+      playerX: this.player.x,
+      playerY: this.player.y,
+      worldSize: WORLD_SIZE,
+      enemies,
+      projectiles,
+      hazards,
+      gems,
+    });
   }
 
   // ── Gegner ───────────────────────────────────────────────────
@@ -375,16 +460,41 @@ export class Run extends Phaser.Scene {
       if (e.freezeTimer > 0) e.freezeTimer -= dt;
       if (e.slowTimer > 0) e.slowTimer -= dt;
       else e.slowFactor = 0;
+      if (e.telegraph > 0) e.telegraph = Math.max(0, e.telegraph - dt);
+      if (e.def.archetype === "exploder") e.age += dt;
+
+      // Bosse werden vom BossSystem bewegt/gesteuert (nur Status hier).
+      if (e.boss) continue;
+      e.age += dt;
+
       const statusMul = e.freezeTimer > 0 ? 0 : Math.max(0.15, 1 - e.slowFactor);
-      const dx = px - e.x;
-      const dy = py - e.y;
-      const dir = directionToPlayer(dx, dy, e.uid);
-      const dirx = dir.x;
-      const diry = dir.y;
-      const wobble = e.def.archetype === "swarm" ? 0.45 : 0.1;
-      const wob = Math.sin(this.elapsed * 2.4 + e.phase) * wobble;
-      let mx = dirx - diry * wob;
-      let my = diry + dirx * wob;
+      const ai = stepEnemyAi(
+        e.ai,
+        {
+          archetype: e.def.archetype,
+          tier: e.def.tier,
+          x: e.x,
+          y: e.y,
+          playerX: px,
+          playerY: py,
+          speed: e.speed,
+        },
+        dt,
+        e.aiRng,
+        e.uid,
+      );
+      e.ai = ai.state;
+      for (const action of ai.actions) this.applyAiAction(e, action, px, py);
+
+      let mx = ai.moveX;
+      let my = ai.moveY;
+      if (e.def.archetype === "swarm") {
+        const wob = Math.sin(this.elapsed * 2.4 + e.phase) * 0.45;
+        const nx = mx - my * wob;
+        const ny = my + mx * wob;
+        mx = nx;
+        my = ny;
+      }
 
       // Separation: Gegner stapeln sich nicht auf einem Pixel.
       let sx = 0;
@@ -402,7 +512,8 @@ export class Run extends Phaser.Scene {
       const decay = Math.max(0, 1 - 7 * dt);
       e.vx *= decay;
       e.vy *= decay;
-      const speed = e.speed * statusMul;
+      const terrain = terrainSpeedFactor(this.ground.kindAt(e.x, e.y) as TerrainKind);
+      const speed = e.speed * statusMul * ai.speedMul * terrain;
       e.x += (mx * speed + e.vx + sx * speed * 1.2) * dt;
       e.y += (my * speed + e.vy + sy * speed * 1.2) * dt;
       e.x = Phaser.Math.Clamp(e.x, 10, WORLD_SIZE - 10);
@@ -410,18 +521,111 @@ export class Run extends Phaser.Scene {
     }
   }
 
+  /** Führt eine KI-Aktion aus (Schuss, Beschwörung, Blinzeln, Explosion). */
+  private applyAiAction(e: EnemyRuntime, action: AiAction, px: number, py: number): void {
+    switch (action.type) {
+      case "windup":
+      case "charge":
+        e.telegraph = Math.max(e.telegraph, action.duration);
+        break;
+      case "shoot": {
+        const damage = Math.max(2, Math.round(e.damage * 0.55));
+        this.enemyShots.spawn({
+          x: e.x, y: e.y, vx: action.vx, vy: action.vy,
+          damage, radius: 4, texture: shotTextureFor(e.def.archetype, e.def.tier), life: 3.4,
+        });
+        break;
+      }
+      case "summon": {
+        for (let i = 0; i < action.count; i++) {
+          const a = (i / action.count) * Math.PI * 2 + this.rng.next() * 0.4;
+          this.spawner.spawnAt(
+            ENEMIES[action.minion],
+            e.x + Math.cos(a) * 26,
+            e.y + Math.sin(a) * 26,
+            { hpScale: Math.max(0.6, e.hpScale * 0.55) },
+          );
+        }
+        break;
+      }
+      case "blink": {
+        e.x = Phaser.Math.Clamp(action.x, 10, WORLD_SIZE - 10);
+        e.y = Phaser.Math.Clamp(action.y, 10, WORLD_SIZE - 10);
+        e.sprite.setAlpha(0.3);
+        this.tweens.add({ targets: e.sprite, alpha: 1, duration: 180 });
+        break;
+      }
+      case "explode": {
+        this.explosions += 1;
+        this.hazards.spawnCircle(e.x, e.y, {
+          warn: 0.16, linger: 0.1, damage: Math.max(4, Math.round(e.damage * 1.6)),
+          radius: action.radius, source: "exploder", color: 18,
+        });
+        e.hp = 0;
+        break;
+      }
+    }
+  }
+
   private collectKills(): void {
+    const splits: EnemyRuntime[] = [];
     for (const e of this.enemies.active) {
       if (!e.alive || e.hp > 0) continue;
       e.alive = false;
+      if (e.recycled) continue;
+      if (e.def.archetype === "splitter" && e.splitDepth < 2 && !e.boss) splits.push(e);
       this.kills += 1;
       this.pickups.drop(e.x, e.y, PickupSystem.rollSize(this.rng), this.rng);
+      // Elite garantieren zusätzlich große Kristalle (Leuchtrand-Belohnung).
+      if (e.elite) {
+        for (let i = 0; i < 2; i++) this.pickups.drop(e.x, e.y, "large", this.rng);
+      }
       if (e.boss) {
         this.bossesDefeated += 1;
         this.chests.spawn(e.x, e.y);
-        this.cameras.main.shake(180, 0.004);
+        this.chestsDropped += 1;
+        this.cameras.main.shake(220, 0.005);
+        this.events.emit("bossDefeated", { index: e.bossIndex, name: BOSSES[e.bossIndex]?.name ?? "Boss" });
+        if (e.bossIndex === 5) this.startDawn();
       }
     }
+    // Splitter teilen sich in zwei kleinere Exemplare (max. 2 Generationen).
+    for (const parent of splits) {
+      for (let i = 0; i < 2; i++) {
+        const a = (i / 2) * Math.PI * 2 + this.rng.next() * 0.7;
+        const child = this.spawner.spawnAt(
+          parent.def,
+          parent.x + Math.cos(a) * 16,
+          parent.y + Math.sin(a) * 16,
+          { splitDepth: parent.splitDepth + 1, hpScale: Math.max(0.3, parent.hpScale * 0.5) },
+        );
+        child.radius = Math.max(4, Math.round(parent.radius * 0.7));
+      }
+    }
+  }
+
+  /** Sieg: Morgendämmerung über der Arena, dann Results. */
+  private startDawn(): void {
+    if (this.dawn) return;
+    this.dawn = true;
+    this.dawnTimer = 0;
+    // Alle verbliebenen Gegner zerfallen, Gefahren/Projektile verschwinden.
+    for (const e of this.enemies.active) {
+      if (e.bossIndex === 5) continue;
+      e.alive = false;
+      e.sprite.setVisible(false).setActive(false);
+      e.aura.setVisible(false);
+    }
+    this.enemies.compact();
+    this.hazards.clear();
+    this.enemyShots.clear();
+    this.cameras.main.flash(900, 255, 210, 140);
+    this.dawnRect = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, PAL[C.amber], 0)
+      .setScrollFactor(0).setDepth(75);
+    this.tweens.add({
+      targets: this.dawnRect, fillAlpha: 0.55, duration: 2600, ease: "Sine.InOut",
+    });
+    this.events.emit("dawn");
   }
 
   private touchDamage(): void {
@@ -434,16 +638,7 @@ export class Run extends Phaser.Scene {
       if ((e.x - px) ** 2 + (e.y - py) ** 2 < (e.radius + 6) ** 2) { hit = e; break; }
     }
     if (!hit) return;
-    const armor = this.character.armor + this.agg.armorFlat;
-    const dmg = damageAfterArmor(hit.damage, armor);
-    this.hp = Math.max(0, this.hp - dmg);
-    this.invuln = PLAYER_INVULN;
-    this.hitFlash = 0.16;
-    this.cameras.main.shake(70, 0.0022);
-    if (this.hp <= 0) {
-      if (this.godMode) this.hp = 1;
-      else this.endRun("death");
-    }
+    this.hurtPlayer(hit.damage, hit.x, hit.y);
   }
 
   private updateVisuals(realDt: number): void {
@@ -467,9 +662,11 @@ export class Run extends Phaser.Scene {
       if (!e.alive) continue;
       e.flash = Math.max(0, e.flash - realDt);
       if (e.flash > 0) e.sprite.setTintFill(PAL[C.lanternWhite]);
+      else if (e.telegraph > 0) e.sprite.setTint(PAL[C.hotRed]);
       else if (e.freezeTimer > 0) e.sprite.setTint(PAL[C.paleMist]);
       else if (e.slowTimer > 0) e.sprite.setTint(PAL[C.fogBlue]);
       else e.sprite.clearTint();
+      e.aura.setPosition(Math.round(e.x), Math.round(e.y));
       e.sprite.setPosition(Math.round(e.x), Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2));
       const frames = SPRITE_FRAMES[e.def.spriteKey];
       if (frames) {
@@ -595,25 +792,13 @@ export class Run extends Phaser.Scene {
     return out.length;
   }
 
-  /** M2-Platzhalterboss (noch keine eigenen Boss-Mechaniken, M4). */
+  /** M3: spawnt einen echten Boss mit Mechaniken (Debug/Abnahme). */
   debugSpawnBoss(index: number): number {
     if (!Number.isFinite(index) || index < 0 || index > 5) {
       throw new RangeError(`spawnBoss: Index ${index} ungueltig (0..5)`);
     }
     const slot = Math.floor(index);
-    const out = this.spawner.spawnEnemy("bogzombie", 1, this.player.x, this.player.y);
-    const boss = out[0];
-    if (!boss) return 0;
-    boss.boss = true;
-    boss.maxHp = Math.round(boss.maxHp * (9 + slot));
-    boss.hp = boss.maxHp;
-    boss.radius = 22;
-    boss.sprite.setScale(2.2);
-    boss.sprite.setDepth(9);
-    boss.x = this.player.x + 110;
-    boss.y = this.player.y;
-    boss.sprite.setPosition(boss.x, boss.y);
-    this.cameras.main.shake(220, 0.003);
+    this.spawnBossAt(slot);
     return 1;
   }
 
@@ -675,6 +860,8 @@ export class Run extends Phaser.Scene {
       passives: this.levelSys?.passives ?? [],
       fps: this.game.loop.actualFps,
       character: this.character.id,
+      boss: this.bosses?.info() ?? null,
+      dawn: this.dawn,
     };
   }
 
@@ -693,6 +880,34 @@ export class Run extends Phaser.Scene {
       weapons: this.levelSys?.weapons.map((w) => ({ id: w.id, level: w.level })) ?? [],
       passives: this.levelSys?.passives.map((p) => ({ id: p.id, level: p.level })) ?? [],
       bossesDefeated: this.bossesDefeated,
+      boss: this.bosses?.info() ?? null,
+      bossesSpawned: this.bossesSpawned.slice(),
+      bossFlags: this.bossFlags.slice(),
+      chestsDropped: this.chestsDropped,
+      explosions: this.explosions,
+      elitesSpawned: this.elitesSpawned,
+      dawn: this.dawn,
+      enemyShots: this.enemyShots?.count ?? 0,
+      hazards: this.hazards?.count ?? 0,
+      enemyList: this.enemies?.active.filter((e) => e.alive).map((e) => ({
+        uid: e.uid,
+        id: e.def.id,
+        name: e.def.name,
+        archetype: e.def.archetype,
+        tier: e.def.tier,
+        x: Math.round(e.x),
+        y: Math.round(e.y),
+        hp: Math.round(Math.max(0, e.hp)),
+        maxHp: e.maxHp,
+        boss: e.boss,
+        bossIndex: e.bossIndex,
+        elite: e.elite,
+        mode: e.ai.mode,
+        blinks: e.ai.blinks,
+        attacks: e.ai.attacks,
+        fuse: Math.round(e.ai.fuse * 100) / 100,
+        age: Math.round(e.age * 10) / 10,
+      })) ?? [],
       fps: Math.round(this.game.loop.actualFps * 10) / 10,
       character: this.character.id,
       damageByWeapon: { ...this.damageByWeapon },

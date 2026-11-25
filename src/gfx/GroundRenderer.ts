@@ -50,6 +50,11 @@ export class GroundRenderer {
     this.lastCy = minCy;
   }
 
+  /** Terrain an einer Weltposition (für Wasser-Slow und Spritzer). */
+  kindAt(worldX: number, worldY: number): TileKind {
+    return this.tileKind(Math.floor(worldX / TILE), Math.floor(worldY / TILE));
+  }
+
   private tileKind(tx: number, ty: number): TileKind {
     const water = valueNoise(tx, ty, 11, this.seed + 3);
     if (water < 0.18) return "water";

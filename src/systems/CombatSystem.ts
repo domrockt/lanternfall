@@ -704,7 +704,9 @@ export class CombatSystem {
   }
 
   private killsFx(e: EnemyRuntime): void {
-    this.fx.burst("fx_spark", e.x, e.y, 5, { life: 0.26, tint: PAL[C.flame], scaleTo: 0.15, alphaFrom: 0.8 });
+    const tint = PAL[e.def.color] ?? PAL[C.flame];
+    const count = e.boss ? 26 : e.elite ? 14 : 5;
+    this.fx.burst("fx_spark", e.x, e.y, count, { life: e.boss ? 0.5 : 0.26, tint, scaleTo: 0.15, alphaFrom: 0.85 });
   }
 
   // ── Brandflächen (Evolution) ─────────────────────────────────
