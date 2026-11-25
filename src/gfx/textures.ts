@@ -258,7 +258,8 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   projectile_thorn: {
     w: 7, h: 7,
-    rows: ["..000..", ".0sss0.", "0stsus0", ".0svs0.", "..0s0..", "...0...", "......."],
+    // Helle Knochen-Dornen statt dunkelgrün: auf Moorgras sonst unsichtbar.
+    rows: ["..000..", ".0bab0.", "0ba9ab0", ".0bab0.", "..0b0..", "...0...", "......."],
   },
   flail_ball: {
     w: 9, h: 9,
