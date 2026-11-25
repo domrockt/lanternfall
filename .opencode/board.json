@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 27,
+  "next": 28,
   "cards": [
     {
       "id": 1,
@@ -456,6 +456,22 @@
       ],
       "created": "2026-11-25T00:39:13Z",
       "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 27,
+      "title": "M2-Fix: Abnahme-Artefakte (VFX-Peak-Shots, Evolutions-Panel, volle Slot-Namen)",
+      "description": "verify-weapons Screenshots im FX-Peak via Poll+Pause; Evolutions-Screenshot waehrend Truhen-Panel; Slot-Namen 2-zeilig; GIF neu; build/test/perf.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T02:23:28Z",
+          "by": "build",
+          "text": "doing → review: Umgesetzt: verify-weapons pollt aktive FX-/Projektil-/Orb-/Swing-Keys, pausiert Run fuer Peak-Shots, Timeout=FAIL; Evolutions-Shot per UI-State (EVOLUTION-Slot fertig, Tween abgewartet); Slot-Namen 2-zeilig via slotNameLines (verlustfrei, Tests fuer >22 Zeichen/Mehrwort); m2-chest-longname.png zeigt SEELENLEUCHTFEUER vollstaendig; GIF-Frame mit allen 5 Settle-Namen gesichtet. build grün, 60 Tests, verify passed (failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit 673365b."
+        }
+      ],
+      "created": "2026-11-25T01:38:42Z",
+      "updated": "2026-11-25T02:23:28Z"
     }
   ]
 }

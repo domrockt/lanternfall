@@ -6,6 +6,7 @@ import { weaponDef, isEvolutionWeapon } from "../data/weaponIds";
 import { iconKeyForOffer, iconTextureKey } from "../gfx/icons";
 import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
+import { slotNameLines } from "../logic/text";
 import type { HudState, Run } from "./Run";
 
 interface CardView {
@@ -44,7 +45,7 @@ export class UI extends Phaser.Scene {
   private chestSprite!: Phaser.GameObjects.Image;
   private chestBeam!: Phaser.GameObjects.Image;
   private chestTitle!: PixelText;
-  private chestSlots: { bg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; level: PixelText }[] = [];
+  private chestSlots: { bg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; text2: PixelText; level: PixelText }[] = [];
   private chestHideTimer?: Phaser.Time.TimerEvent;
 
   constructor() { super("ui"); }
@@ -156,10 +157,11 @@ export class UI extends Phaser.Scene {
       const x = GAME_WIDTH / 2 + (i - 2) * 76;
       const bg = this.add.rectangle(x, 188, 68, 62, PAL[C.nightMid]).setStrokeStyle(1, PAL[C.nightSlate]);
       const icon = this.add.image(x - 8, 158, "icon_weapon_ember").setVisible(false);
-      const text = new PixelText(this, x - 32, 180, "", C.candleWhite);
-      const level = new PixelText(this, x - 32, 194, "", C.amber);
-      this.chestGroup.add([bg, icon, text, level]);
-      this.chestSlots.push({ bg, icon, text, level });
+      const text = new PixelText(this, x - 32, 176, "", C.candleWhite);
+      const text2 = new PixelText(this, x - 32, 185, "", C.candleWhite);
+      const level = new PixelText(this, x - 32, 198, "", C.amber);
+      this.chestGroup.add([bg, icon, text, text2, level]);
+      this.chestSlots.push({ bg, icon, text, text2, level });
     }
     this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 246, "DIE TRUHE IST GEÖFFNET", C.fog, "center"));
   }
@@ -183,8 +185,9 @@ export class UI extends Phaser.Scene {
           reward.kind === "evolution" ? "evolution" : reward.kind,
           reward.id,
         ) : "icon_weapon_ember");
-      slot.text.setPosition(x - 32, 180).setVisible(Boolean(reward)).setAlpha(0).setText("?");
-      slot.level.setPosition(x - 32, 194).setVisible(Boolean(reward)).setAlpha(0).setText("");
+      slot.text.setPosition(x - 32, 176).setVisible(Boolean(reward)).setAlpha(0).setText("?");
+      slot.text2.setPosition(x - 32, 185).setVisible(false).setAlpha(0).setText("");
+      slot.level.setPosition(x - 32, 198).setVisible(Boolean(reward)).setAlpha(0).setText("");
     }
     // Deckel öffnen + Lichtstrahl.
     this.time.delayedCall(280, () => this.chestSprite.setTexture("chest_open"));
@@ -199,6 +202,7 @@ export class UI extends Phaser.Scene {
       for (let i = 0; i < result.rewards.length; i++) {
         const slot = this.chestSlots[i];
         slot.text.setAlpha(1);
+        slot.text2.setVisible(false);
         let tick = 0;
         this.time.addEvent({
           delay: 95,
@@ -212,10 +216,12 @@ export class UI extends Phaser.Scene {
       const reward = result.rewards[i];
       this.time.delayedCall(1450 + i * 220, () => {
         const slot = this.chestSlots[i];
-        slot.text.setText(reward.name.toUpperCase().slice(0, 11));
+        const lines = slotNameLines(reward.name.toUpperCase());
+        slot.text.setText(lines[0] ?? "");
+        slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
         slot.level.setText(reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`);
         slot.bg.setStrokeStyle(2, PAL[reward.iconColor] ?? PAL[C.lantern]);
-        this.tweens.add({ targets: [slot.icon, slot.text, slot.level], alpha: { from: 0.2, to: 1 }, duration: 220 });
+        this.tweens.add({ targets: [slot.icon, slot.text, slot.text2, slot.level], alpha: { from: 0.2, to: 1 }, duration: 220 });
       });
     }
     const finishAt = 1650 + result.rewards.length * 220;

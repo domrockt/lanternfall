@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { damageTable } from "../src/logic/results";
+import { slotNameLines } from "../src/logic/text";
 import { SeededRng } from "../src/logic/rng";
 import { generateOffers, type OwnedItem } from "../src/logic/levelup";
 import { applyXp, GEMS, xpProgress, xpToNext } from "../src/logic/xp";
@@ -291,5 +292,34 @@ describe("Ergebnis-Schadenstabelle", () => {
   it("liefert hoechstens 12 Eintraege", () => {
     const input = Object.fromEntries(Array.from({ length: 20 }, (_, i) => [`w${i}`, i + 1]));
     expect(damageTable(input)).toHaveLength(12);
+  });
+});
+
+describe("Truhen-Slot-Namen", () => {
+  it("verteilt lange Woerter vollstaendig auf zwei Zeilen", () => {
+    for (const name of ["SEELENLEUCHTFEUER", "PHÖNIXSCHWARM", "GEWITTERSIEGEL", "SEELENLEUCHT"]) {
+      const lines = slotNameLines(name);
+      expect(lines.length).toBeLessThanOrEqual(2);
+      expect(lines.join("")).toBe(name);
+      for (const line of lines) expect(line.length).toBeLessThanOrEqual(11);
+    }
+  });
+
+  it("bricht an Wortgrenzen statt mitten im Wort", () => {
+    expect(slotNameLines("ARKANES BUCH")).toEqual(["ARKANES", "BUCH"]);
+    expect(slotNameLines("GEISTERLATERNE")).toEqual(["GEISTER", "LATERNE"]);
+  });
+
+  it("verliert auch bei sehr langen Namen keine Zeichen", () => {
+    for (const name of ["X".repeat(23), "SEELENLEUCHTFEUERWOLKEN", "AB CDEFGHIJKLMNOP"]) {
+      const lines = slotNameLines(name);
+      expect(lines.length).toBeLessThanOrEqual(2);
+      expect(lines.join("")).toBe(name);
+    }
+  });
+
+  it("laesst kurze Namen in einer Zeile", () => {
+    expect(slotNameLines("STURMRUNE")).toEqual(["STURMRUNE"]);
+    expect(slotNameLines("")).toEqual([""]);
   });
 });
