@@ -5,6 +5,7 @@ import type { PassiveId, WeaponAnyId, WeaponId } from "../data/types";
 import { MAX_PASSIVE_SLOTS, MAX_WEAPON_SLOTS } from "../config";
 import { aggregateMods, type AggregateStats } from "../logic/stats";
 import { generateOffers, type Offer, type OwnedItem } from "../logic/levelup";
+import type { ChestReward } from "../logic/evolution";
 import type { Rng } from "../logic/rng";
 
 export interface OwnedWeapon extends OwnedItem {
@@ -58,10 +59,40 @@ export class LevelUpSystem {
 
   applyOffer(offer: Offer): void {
     if (offer.kind === "weapon") {
-      this.addWeapon(offer.id as WeaponId, offer.level);
+      this.addWeapon(offer.id as WeaponAnyId, offer.level);
     } else {
       this.addPassive(offer.id as PassiveId, offer.level);
     }
+  }
+
+  /** Evolution ersetzt die Basiswaffe im Slot (Stufe 8). */
+  evolve(id: string): boolean {
+    const evo = EVOLUTIONS.find((e) => e.id === id);
+    if (!evo) return false;
+    const base = this.weapons.find((w) => w.id === evo.baseWeapon);
+    if (!base || base.level < 8) return false;
+    const def = weaponDef(evo.id);
+    if (!def?.implemented) return false;
+    base.id = evo.id;
+    base.level = def.maxLevel;
+    base.timer = 0;
+    return true;
+  }
+
+  applyChestReward(reward: ChestReward): void {
+    if (reward.kind === "evolution") {
+      this.evolve(reward.id);
+      return;
+    }
+    this.applyOffer({
+      kind: reward.kind,
+      id: reward.id,
+      name: reward.name,
+      description: reward.description,
+      level: reward.level,
+      isNew: reward.isNew,
+      iconColor: reward.iconColor,
+    });
   }
 
   get mods(): AggregateStats {

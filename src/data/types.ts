@@ -135,7 +135,7 @@ export interface WeaponLevel {
 }
 
 export interface WeaponDef {
-  id: WeaponId;
+  id: WeaponAnyId;
   name: string;
   behavior: WeaponBehavior;
   description: string;

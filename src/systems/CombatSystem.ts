@@ -38,6 +38,7 @@ interface Orb {
 
 interface Swing {
   sprite: Phaser.GameObjects.Image;
+  weaponId: string;
   baseAngle: number;
   side: number;
   halfArc: number;
@@ -62,6 +63,16 @@ interface WeaponState {
   spikeTimer: number;
 }
 
+interface PendingSeal {
+  x: number;
+  y: number;
+  timer: number;
+  damage: number;
+  chain: number;
+  weaponId: string;
+  sprite: Phaser.GameObjects.Image;
+}
+
 /**
  * Ein gemeinsames Waffen-Framework für alle Behaviors: Cooldowns, Treffer,
  * Rückstoß, Statuseffekte und VFX laufen über dieselben Helfer. Die einzelnen
@@ -76,6 +87,7 @@ export class CombatSystem {
   private readonly states = new Map<string, WeaponState>();
   private clock = 0;
   private readonly scratch: EnemyRuntime[] = [];
+  private readonly seals: PendingSeal[] = [];
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -88,6 +100,7 @@ export class CombatSystem {
     this.updateWeapons(ctx);
     this.updateSwings(ctx);
     this.updateOrbs(ctx);
+    this.updateSeals(ctx);
     this.updateProjectiles(ctx);
     this.updateBurns(ctx);
     this.fx.update(ctx.dt);
@@ -122,6 +135,12 @@ export class CombatSystem {
         state.orbTimeLeft -= ctx.dt;
         if (owned.id === "soul_beacon") this.pickupBonus = 42;
       }
+      // Ewiger Winter: dauerhafte Aura statt Cooldown-Schuss.
+      if (def.behavior === "eternal_winter") {
+        this.updateWinter(ctx, stats, state);
+        owned.timer = 0;
+        continue;
+      }
       if (owned.timer > 0) continue;
       if (alive.length === 0) {
         owned.timer = 0;
@@ -134,6 +153,11 @@ export class CombatSystem {
         case "thorn": this.fireThorn(owned, ctx, stats); break;
         case "storm": this.fireStorm(owned, ctx, stats, alive); break;
         case "lantern": this.fireLantern(owned, ctx, stats, state); break;
+        case "phoenix": this.firePhoenix(owned, ctx, stats, alive); break;
+        case "wrath_pendulum": this.fireFlail(owned, ctx, stats, state); break;
+        case "thorn_storm": this.fireThornStorm(owned, ctx, stats); break;
+        case "thunder_seal": this.fireThunderSeal(owned, ctx, stats); break;
+        case "soul_beacon": this.fireLantern(owned, ctx, stats, state); break;
         default: break;
       }
       owned.timer = effectiveCooldown(stats.cooldown, ctx.agg);
@@ -173,13 +197,48 @@ export class CombatSystem {
     }
   }
 
+  // ── Phönixschwarm ────────────────────────────────────────────
+  private firePhoenix(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, enemies: EnemyRuntime[]): void {
+    const count = Math.max(1, stats.count ?? 2);
+    const damage = effectiveDamage(stats.damage, ctx.agg);
+    const speed = stats.speed ?? 210;
+    const sorted = enemies
+      .map((e) => ({ e, d: (e.x - ctx.playerX) ** 2 + (e.y - ctx.playerY) ** 2 }))
+      .sort((a, b) => a.d - b.d);
+    for (let i = 0; i < count; i++) {
+      const target = sorted[i % Math.max(1, sorted.length)]?.e ?? null;
+      const angle = target
+        ? Math.atan2(target.y - ctx.playerY, target.x - ctx.playerX)
+        : Math.atan2(ctx.facingY, ctx.facingX) + (i - (count - 1) / 2) * 0.25;
+      this.projectiles.spawn({
+        x: ctx.playerX + Math.cos(angle) * 12,
+        y: ctx.playerY + Math.sin(angle) * 12,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        damage,
+        pierce: 0,
+        knockback: stats.knockback ?? 32,
+        life: 2.8,
+        weaponId: owned.id,
+        texture: "projectile_phoenix",
+        radius: effectiveRadius(6, ctx.agg),
+        target,
+        trail: "projectile_phoenix",
+        trailInterval: 0.04,
+        blendAdd: true,
+        explodeRadius: effectiveRadius(34, ctx.agg),
+      });
+    }
+  }
+
   // ── Flail ─────────────────────────────────────────────────────
   private fireFlail(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, state: WeaponState): void {
     const damage = effectiveDamage(stats.damage, ctx.agg);
     const radius = effectiveRadius(stats.radius ?? 34, ctx.agg);
-    const count = Math.max(1, stats.count ?? 1);
+    const evolved = owned.id === "wrath_pendulum";
+    const count = evolved ? 1 : Math.max(1, stats.count ?? 1);
     const base = Math.atan2(ctx.facingY, ctx.facingX);
-    const dur = 0.24;
+    const dur = evolved ? 0.32 : 0.24;
     for (let i = 0; i < count; i++) {
       const side = i === 0 ? 1 : -1;
       const sprite = this.scene.add.image(ctx.playerX, ctx.playerY, "flail_ball")
@@ -188,16 +247,17 @@ export class CombatSystem {
         .setBlendMode(Phaser.BlendModes.NORMAL);
       state.swings.push({
         sprite,
+        weaponId: owned.id,
         baseAngle: i === 0 ? base : base + Math.PI,
         side,
-        halfArc: Math.PI / 2.2,
+        halfArc: evolved ? Math.PI : Math.PI / 2.2,
         radius,
         damage,
         knockback: stats.knockback ?? 50,
         hit: new Set(),
         t: 0,
         dur,
-        heal: owned.id === "wrath_pendulum" ? 1 : 0,
+        heal: evolved ? 2 : 0,
       });
     }
     this.fx.burst("fx_spark", ctx.playerX + Math.cos(base) * 12, ctx.playerY + Math.sin(base) * 12, 4, {
@@ -235,7 +295,7 @@ export class CombatSystem {
           const kb = knockbackVector(ctx.playerX, ctx.playerY, e.x, e.y, s.knockback);
           e.vx += kb.vx;
           e.vy += kb.vy;
-          const killed = this.hitEnemy(e, s.damage, ctx, "flail");
+          const killed = this.hitEnemy(e, s.damage, ctx, s.weaponId);
           if (killed) this.killsFx(e);
           if (s.heal > 0) ctx.onHeal?.(s.heal);
         }
@@ -297,6 +357,138 @@ export class CombatSystem {
         trail: "projectile_thorn",
         trailInterval: 0.06,
       });
+    }
+  }
+
+  // ── Dornensturm ──────────────────────────────────────────────
+  private fireThornStorm(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>): void {
+    const count = Math.max(1, stats.count ?? 12);
+    const damage = effectiveDamage(stats.damage, ctx.agg);
+    const speed = stats.speed ?? 260;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 + this.clock * 0.4;
+      this.projectiles.spawn({
+        x: ctx.playerX + Math.cos(angle) * 9,
+        y: ctx.playerY + Math.sin(angle) * 9,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        damage,
+        pierce: 999,
+        knockback: stats.knockback ?? 20,
+        life: 1.5,
+        weaponId: owned.id,
+        texture: "projectile_thorn",
+        radius: effectiveRadius(5, ctx.agg),
+        trail: "projectile_thorn",
+        trailInterval: 0.05,
+      });
+    }
+    this.fx.spawn({
+      texture: "ring_burst", x: ctx.playerX, y: ctx.playerY, life: 0.25,
+      scaleFrom: 0.3, scaleTo: 1.4, alphaFrom: 0.7, alphaTo: 0, additive: true,
+    });
+  }
+
+  // ── Gewittersiegel ───────────────────────────────────────────
+  private fireThunderSeal(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>): void {
+    const count = Math.max(1, stats.count ?? 1);
+    for (let i = 0; i < count; i++) {
+      const angle = this.clock + (i / count) * Math.PI * 2;
+      const x = ctx.playerX + Math.cos(angle) * 26;
+      const y = ctx.playerY + Math.sin(angle) * 26;
+      const sprite = this.scene.add.image(x, y, "ring_seal")
+        .setDepth(6)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setAlpha(0.0)
+        .setScale(1.4);
+      this.seals.push({
+        x, y, timer: 0.55, damage: effectiveDamage(stats.damage, ctx.agg),
+        chain: stats.chain ?? 8, weaponId: owned.id, sprite,
+      });
+    }
+  }
+
+  private updateSeals(ctx: CombatContext): void {
+    for (let i = this.seals.length - 1; i >= 0; i--) {
+      const seal = this.seals[i];
+      seal.timer -= ctx.dt;
+      const p = 1 - Math.max(0, seal.timer) / 0.55;
+      seal.sprite.setAlpha(0.25 + p * 0.65);
+      seal.sprite.setScale(1.4 + Math.sin(this.clock * 12) * 0.15);
+      if (seal.timer > 0) continue;
+      seal.sprite.destroy();
+      this.seals.splice(i, 1);
+      // Kettenblitz ausgehend vom Siegel.
+      const hit = new Set<number>();
+      let last = { x: seal.x, y: seal.y };
+      for (let jump = 0; jump <= seal.chain; jump++) {
+        let next: EnemyRuntime | null = null;
+        let best = 150 * 150;
+        for (const e of ctx.enemies) {
+          if (!e.alive || hit.has(e.uid)) continue;
+          const d = (e.x - last.x) ** 2 + (e.y - last.y) ** 2;
+          if (d < best) { best = d; next = e; }
+        }
+        if (!next) break;
+        this.fx.beam("bolt_seg", last.x, last.y, next.x, next.y, { life: 0.32, tint: PAL[C.lanternWhite] });
+        this.fx.spawn({
+          texture: "ring_seal", x: next.x, y: next.y, life: 0.3,
+          scaleFrom: 0.1, scaleTo: 0.46, alphaFrom: 1, alphaTo: 0, additive: true,
+        });
+        const killed = this.hitEnemy(next, Math.round(seal.damage * (jump === 0 ? 1 : 0.7)), ctx, seal.weaponId);
+        if (killed) this.killsFx(next);
+        hit.add(next.uid);
+        last = next;
+      }
+    }
+  }
+
+  // ── Ewiger Winter ────────────────────────────────────────────
+  private updateWinter(ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, state: WeaponState): void {
+    const radius = effectiveRadius(stats.radius ?? 64, ctx.agg);
+    state.auraTick -= ctx.dt;
+    if (state.auraTick <= 0) {
+      state.auraTick = 0.4;
+      const tickDamage = effectiveDamage(Math.max(1, Math.round(stats.damage * 0.28)), ctx.agg);
+      for (const e of ctx.enemies) {
+        if (!e.alive || e.hp <= 0) continue;
+        if ((e.x - ctx.playerX) ** 2 + (e.y - ctx.playerY) ** 2 > (radius + e.radius) ** 2) continue;
+        e.slowFactor = Math.max(e.slowFactor, stats.slow ?? 0.5);
+        e.slowTimer = Math.max(e.slowTimer, 1.0);
+        e.freezeTimer = Math.max(e.freezeTimer, 0.18);
+        const killed = this.hitEnemy(e, tickDamage, ctx, "eternal_winter");
+        if (killed) this.killsFx(e);
+      }
+      this.fx.spawn({
+        texture: "ring_frost", x: ctx.playerX, y: ctx.playerY, life: 0.45,
+        scaleFrom: radius / 46, scaleTo: radius / 42, alphaFrom: 0.35, alphaTo: 0,
+        additive: true,
+      });
+    }
+    state.spikeTimer -= ctx.dt;
+    if (state.spikeTimer <= 0) {
+      state.spikeTimer = 1.35;
+      const count = Math.max(6, stats.count ?? 10);
+      const spikeDamage = effectiveDamage(stats.damage, ctx.agg);
+      for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2 + this.clock;
+        this.projectiles.spawn({
+          x: ctx.playerX + Math.cos(angle) * 14,
+          y: ctx.playerY + Math.sin(angle) * 14,
+          vx: Math.cos(angle) * 250,
+          vy: Math.sin(angle) * 250,
+          damage: spikeDamage,
+          pierce: 2,
+          knockback: 20,
+          life: 1.1,
+          weaponId: "eternal_winter",
+          texture: "projectile_ice",
+          radius: effectiveRadius(5, ctx.agg),
+          trail: "projectile_ice",
+          trailInterval: 0.06,
+          blendAdd: true,
+        });
+      }
     }
   }
 
@@ -469,6 +661,7 @@ export class CombatSystem {
       alphaFrom: 1, alphaTo: 0, additive: true,
     });
     this.fx.burst("projectile_ember", x, y, 8, { life: 0.3, additive: true });
+    if (weaponId === "phoenix") this.addBurn(x, y, radius, 3.2, 18, weaponId);
     for (const e of ctx.enemies) {
       if (!e.alive || e.hp <= 0) continue;
       if ((e.x - x) ** 2 + (e.y - y) ** 2 > (radius + e.radius) ** 2) continue;
@@ -531,6 +724,8 @@ export class CombatSystem {
     this.states.clear();
     for (const b of this.burns) b.sprite.destroy();
     this.burns.length = 0;
+    for (const s of this.seals) s.sprite.destroy();
+    this.seals.length = 0;
     this.projectiles.releaseAll();
     this.fx.clear();
   }

@@ -9,7 +9,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     passive: "tome",
     description: "Glutfunke + Arkanes Buch",
     effect: "Feuervögel, die explodieren und Brandflächen hinterlassen",
-    implemented: false,
+    implemented: true,
     iconColor: 18,
   },
   {
@@ -19,7 +19,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     passive: "heart",
     description: "Kettenflegel + Eisenherz",
     effect: "360°-Schwung, heilt pro Treffer minimal",
-    implemented: false,
+    implemented: true,
     iconColor: 25,
   },
   {
@@ -29,7 +29,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     passive: "hourglass",
     description: "Frostnova + Sanduhr",
     effect: "dauerhafte Frost-Aura + periodische Eisspitzen",
-    implemented: false,
+    implemented: true,
     iconColor: 12,
   },
   {
@@ -39,7 +39,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     passive: "boots",
     description: "Dornensalve + Windstiefel",
     effect: "Dornen-Wirbel in alle Richtungen, Durchschlag ∞",
-    implemented: false,
+    implemented: true,
     iconColor: 31,
   },
   {
@@ -49,7 +49,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     passive: "whetstone",
     description: "Sturmrune + Wetzstein",
     effect: "Blitz-Siegel am Boden, Kettenblitz über 8 Ziele",
-    implemented: false,
+    implemented: true,
     iconColor: 21,
   },
   {
@@ -59,7 +59,7 @@ export const EVOLUTIONS: EvolutionDef[] = [
     passive: "charm",
     description: "Geisterlaterne + Magnetamulett",
     effect: "kreisende Seelen ziehen XP an und brennen",
-    implemented: false,
+    implemented: true,
     iconColor: 22,
   },
 ];

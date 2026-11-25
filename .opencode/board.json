@@ -261,25 +261,36 @@
       "id": 19,
       "title": "M2-02 Powerups Stufe 1-5 wirken + Tests",
       "description": "Alle 6 Passives nachweislich auf Stats (Unit-Tests + Debug-Stats).",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-25T00:43:44Z",
           "by": "build",
           "text": "todo → doing: Tests fuer alle 6 Passives"
+        },
+        {
+          "at": "2026-11-25T00:43:57Z",
+          "by": "build",
+          "text": "doing → review: 42 Tests gruen; je Passive alle Stufen 1-5 gegen effective*-Funktionen geprueft. Commit 4ae078c."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:43:44Z"
+      "updated": "2026-11-25T00:43:57Z"
     },
     {
       "id": 20,
       "title": "M2-03 Evolutionslogik canEvolve/chestRewards + Tests",
       "description": "Reine Funktionen, Daten, Evolution ersetzt Basiswaffe im Slot.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T00:43:57Z",
+          "by": "build",
+          "text": "todo → doing: canEvolve/chestRewards + Evolutionswaffen"
+        }
+      ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:39:13Z"
+      "updated": "2026-11-25T00:43:57Z"
     },
     {
       "id": 21,
