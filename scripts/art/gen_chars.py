@@ -16,9 +16,11 @@ from lib import Grid, outline, shade_edges, emit_ts, pad_grid, save_grid_png, sa
 SIZE = 32
 
 INK = 0
-SKIN, SKIN_D, SKIN_L = 11, 9, 12
-HAND, HAND_S = 10, 8
-BLUSH = 27
+# Warme Haut-Rampe (M4b): Schatten emberBrown 16, Basis fleshWarm 27,
+# Licht lantern 21 nur als 1-px-Kante. Hands warm, keine graue Haut.
+SKIN, SKIN_D, SKIN_L = 27, 16, 21
+HAND, HAND_S, HAND_L = 27, 16, 21
+BLUSH = 26
 HAIR, HAIR_D = 24, 23
 CLOTH, CLOTH_S, CLOTH_L, CLOTH_H = 25, 23, 26, 27
 BOOT, BOOT_D = 16, 14
@@ -27,7 +29,7 @@ GOLD, GOLD_L = 20, 21
 GLOW, GLOW_H = 22, 13
 IRON, IRON_D, IRON_L = 5, 4, 7
 CHAIN, CHAIN_L = 4, 6
-ROBE, ROBE_D, ROBE_L = 3, 2, 5
+ROBE, ROBE_D, ROBE_L = 3, 2, 4
 SCARF = 26
 EYE = 1
 BONE = 11
@@ -255,6 +257,8 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
 
 
 def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = False) -> Grid:
+    """Bruder Kael: breite Schultern, Tonsur mit Eisenreif, Kettengewand als
+    drei klare Eisenbaender, warme Haut, dunkelroter Bart."""
     g = Grid(SIZE, SIZE)
     side = direction == "side"
     up = direction == "up"
@@ -267,20 +271,16 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     ox = 1 if side else 0
     bw = 2 if side else 0
 
-    body_y = 15 + bob - recoil
-    # ── Kettenrock ──
-    rock_w = [14 - bw, 15 - bw, 15 - bw, 16 - bw, 16 - bw, 17 - bw, 17 - bw, 18 - bw]
-    for i, w in enumerate(rock_w):
-        g.rect(cx + ox - w // 2, 21 + bob - recoil + i, w, 1, ROBE if i < 5 else ROBE_D)
-    for i in range(0, 7, 2):
-        y = 22 + bob - recoil + i
-        for x in range(cx + ox - 6, cx + ox + 7, 4):
-            g.rect(x, y, 2, 2, CHAIN)
-            g.put(x, y, CHAIN_L)
-    g.rect(cx + ox - 8, 21 + bob - recoil, 15, 2, IRON_D)
-    g.rect(cx + ox - 8, 21 + bob - recoil, 15, 1, IRON)
-    for x in range(cx + ox - 5, cx + ox + 6, 3):
-        g.put(x, 22 + bob - recoil, GOLD)
+    body_y = 16 + bob - recoil
+    # ── Gewand-Silhouette: breite Schulter, Taille, ausgestellter Saum ──
+    widths = [19, 19, 15, 15, 15, 15, 16, 16, 17, 17, 19, 19]
+    for i, w in enumerate(widths):
+        w -= bw
+        y = body_y + i
+        x = cx + ox - w // 2
+        g.rect(x, y, w, 1, ROBE)
+        g.put(x, y, ROBE_L)
+        g.put(x + w - 1, y, ROBE_D)
 
     # ── Schwere Stiefel ──
     lift_l = 2 if (not idle and step == 1) else 0
@@ -295,146 +295,147 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         fx = cx + 3 + fwd
         g.rect(fx - 2, 28 - lift_f, 5, 4 + lift_f, BOOT_D)
         g.rect(fx - 1, 28 - lift_f, 4, 3 + lift_f, BOOT)
-        g.put(fx + 1, 28 - lift_f, BOOT_D)
+        g.rect(fx - 1, 28 - lift_f, 2, 1, BELT)
         bx = cx - 5 + back
         g.rect(bx, 28 - lift_b, 4, 4 + lift_b, BOOT_D)
+        g.rect(bx + 1, 28 - lift_b, 3, 3 + lift_b, BOOT)
     else:
         for side_i, lift in ((-1, lift_l), (1, lift_r)):
             lx = cx + (-6 if side_i < 0 else 2) + (step - 1) * side_i
             ly = 28 - lift
             g.rect(lx, ly, 5, 4 + lift, BOOT_D)
             g.rect(lx + 1, ly, 4, 3, BOOT)
-            g.put(lx + 2, ly, BELT)
+            g.rect(lx + 2, ly, 2, 1, BELT)
 
+    # ── Kettengewand: drei klare Eisenbaender (je 2 px, 1 px Robe dazwischen) ──
+    def band(y: int, w: int, gold: bool = False):
+        x = cx + ox - w // 2
+        g.rect(x, y, w, 2, IRON_D)
+        g.rect(x, y, w, 1, IRON)
+        g.rect(x, y, 3, 1, IRON_L)
+        if gold:
+            g.rect(cx + ox - 1, y, 2, 2, GOLD)
+            g.put(cx + ox - 1, y, GOLD_L)
 
-    # ── Brust ──
-    tw = 13 - bw
-    g.rect(cx + ox - tw // 2, body_y + 2, tw, 4, ROBE)
-    for y in range(body_y + 2, body_y + 6, 2):
-        for x in range(cx + ox - 5, cx + ox + 6, 3):
-            g.rect(x, y, 2, 1, CHAIN)
-            g.put(x, y, CHAIN_L)
-    if up:
-        g.vline(cx + ox, body_y + 2, body_y + 5, CHAIN_L)  # Rückennaht
+    band(body_y + 1, 19 - bw)           # Schulterband
+    band(body_y + 4, 15 - bw, True)     # Brustband mit Schloss
+    band(body_y + 8, 17 - bw)           # Saumband
+
+    # ── Schulterplatten (abgerundet, breite Silhouette, 2x2-Niete) ──
+    def pauldron(x0: int, y0: int, w: int):
+        g.rect(x0 + 1, y0, w - 2, 1, IRON)
+        g.rect(x0, y0 + 1, w, 2, IRON)
+        g.rect(x0 + 1, y0 + 2, w - 2, 1, IRON_D)   # Unterkante gerundet
+        g.rect(x0, y0 + 1, w, 1, IRON_D)
+        g.rect(x0, y0 + 1, 1, 2, IRON_D)
+        g.rect(x0 + w - 1, y0 + 1, 1, 2, IRON_D)
+        g.rect(x0 + 1, y0, w - 3, 1, IRON_L)
+        g.rect(x0 + w // 2 - 1, y0 + 1, 2, 2, GOLD)
+        g.put(x0 + w // 2 - 1, y0 + 1, GOLD_L)
+
+    if side:
+        pauldron(cx + ox + 7, body_y, 5)
     else:
-        for x in range(cx + ox - 5, cx + ox + 4, 3):
-            g.rect(x, body_y + 1, 2, 1, IRON)
-            g.put(x, body_y + 1, IRON_L)
-        g.rect(cx + ox - 1, body_y + 2, 3, 2, GOLD)
-        g.put(cx + ox, body_y + 2, GOLD_L)
+        pauldron(4, body_y, 6)
+        pauldron(22, body_y, 6)
 
-    # ── Schulterplatten (abgerundet, mit Nieten) ──
-    for side_i in (-1, 1):
-        if side and side_i < 0:
-            continue
-        if side:
-            sx = cx + ox + 3
-            g.rect(sx, body_y, 4, 4, IRON_D)
-            g.rect(sx, body_y, 4, 3, IRON)
-            g.put(sx + 1, body_y, IRON_L)
-            g.put(sx + 2, body_y, IRON_L)
-            g.put(sx + 1, body_y + 2, GOLD)
-            g.put(sx, body_y + 3, None)
-            g.put(sx + 3, body_y + 3, None)
-            continue
-        sx = cx + ox + (6 if side_i > 0 else -11)
-        g.rect(sx, body_y - 1, 5, 4, IRON_D)
-        g.rect(sx, body_y - 1, 5, 3, IRON)
-        g.rect(sx - 1, body_y + 2, 6, 1, IRON_D)
-        g.put(sx + 1, body_y - 1, IRON_L)
-        g.put(sx + 2, body_y - 1, IRON_L)
-        g.put(sx + 3, body_y, IRON_L)
-        g.put(sx, body_y - 1, None)
-        g.put(sx + 4, body_y - 1, None)
-        g.put(sx - 1, body_y + 2, None)
-        g.put(sx + 4, body_y + 2, None)
-        g.put(sx + 2, body_y + 1, GOLD)  # Niete
-
-    # ── Arme / Fäuste ──
+    # ── Arme (gewickelte Faeuste, Handschuh-Rampe 8/10/11) ──
     swing = 0 if idle else [1, 0, -1, 0][frame]
     if side:
-        # Vorderarm mit gewickelter Faust, hinten ein angedeuteter Arm.
-        g.rect(cx + 4 + swing, body_y + 2, 3, 4, ROBE)
-        g.rect(cx + 4 + swing, body_y + 6, 3, 2, 12)      # Bandage
-        g.rect(cx + 3 + swing, body_y + 8, 5, 4, HAND)
-        g.rect(cx + 3 + swing, body_y + 8, 5, 1, SKIN_L)
-        g.rect(cx + 3 + swing, body_y + 10, 5, 1, HAND_S)
-        g.put(cx + 4 + swing, body_y + 9, HAND)
-        g.put(cx + 6 + swing, body_y + 9, HAND_S)
-        g.put(cx + 3 + swing, body_y + 11, HAND_S)
-        g.rect(cx - 6 - swing, body_y + 3, 2, 5, ROBE_D)
-        g.put(cx - 6 - swing, body_y + 7, SKIN_D)
+        g.rect(cx + 4 + swing, body_y + 3, 3, 4, ROBE_D)   # vorderer Aermel
+        g.rect(cx + 4 + swing, body_y + 7, 3, 1, 11)       # Wickel
+        fx = cx + 3 + swing
+        g.rect(fx, body_y + 8, 5, 3, 10)
+        g.rect(fx, body_y + 8, 5, 1, 11)
+        g.rect(fx, body_y + 10, 5, 1, 8)
+        g.rect(fx + 1, body_y + 9, 2, 1, 10)
+        g.rect(cx - 6 - swing, body_y + 4, 2, 4, ROBE_D)   # hinterer Arm
+        g.rect(cx - 6 - swing, body_y + 8, 2, 3, 10)
     else:
         for side_i in (-1, 1):
-            ax = cx + ox + (7 - bw // 2 if side_i > 0 else -(10 - bw // 2))
+            ax = cx + ox + (8 if side_i > 0 else -10)
             if hit:
                 ax += 1 if side_i > 0 else -1
-            g.rect(ax, body_y + 3, 2, 6, ROBE_D)
-            fx = ax + (4 if side_i < 0 else -1)
-            g.rect(fx, body_y + 8, 5, 4, HAND)
-            g.rect(fx, body_y + 8, 5, 1, SKIN_L)
-            g.rect(fx, body_y + 10, 5, 1, HAND_S)
-            g.put(fx, body_y + 9, HAND)
-            g.put(fx + 2, body_y + 9, HAND_S)
-            g.put(fx + 4, body_y + 9, HAND_S)
-            g.put(fx, body_y + 11, HAND_S)
+            g.rect(ax, body_y + 3, 2, 4, ROBE_D)
+            g.rect(ax, body_y + 7, 2, 1, 11)
+            fx = ax - 1 if side_i > 0 else ax - 2
+            g.rect(fx, body_y + 9, 5, 3, 10)
+            g.rect(fx, body_y + 9, 5, 1, 11)
+            g.rect(fx, body_y + 11, 5, 1, 8)
+            g.rect(fx + 1, body_y + 10, 2, 1, 10)
+            g.rect(fx + 3, body_y + 10, 1, 1, 8)
 
-    # ── Kopf: kahl, breite Kiefer, eiserner Stirnreif, Narbe ──
+    # ── Kopf: Tonsur (dunkelrotes Haar) + Eisenreif, breite Kiefer ──
     hy = 13 + bob - recoil
     hcx = cx + ox + (2 if hit and not side else 0)
-    if side:
-        g.ellipse(hcx, hy, 4, 4, SKIN)
-        g.rect(hcx - 3, hy + 3, 6, 2, SKIN)
-        g.put(hcx + 4, hy - 1, SKIN_D)   # Brauenwulst
-        g.put(hcx + 5, hy + 1, SKIN)     # Nase
-        g.put(hcx + 5, hy + 2, SKIN_D)
-        g.put(hcx + 4, hy + 3, HAIR_D)   # Bart
-        g.put(hcx - 3, hy - 1, IRON_D)
-        g.put(hcx - 4, hy + 1, SKIN_D)
-    else:
-        g.rect(hcx - 4, hy - 4, 9, 3, 10)
-        g.ellipse(hcx, hy, 5, 4, SKIN)
-        g.rect(hcx - 4, hy + 3, 9, 2, SKIN)
-        g.rect(hcx - 3, hy - 4, 7, 1, 11)
-        g.put(hcx - 5, hy, SKIN)
-        g.put(hcx + 5, hy, SKIN)
-        g.put(hcx - 5, hy + 1, SKIN_D)
-        g.put(hcx + 5, hy + 1, SKIN_D)
-    # Stirnreif.
-    g.rect(hcx - 5, hy - 2, 11, 2, IRON_D)
-    g.rect(hcx - 5, hy - 2, 11, 1, IRON)
-    g.put(hcx - 4, hy - 2, IRON_L)
-    g.put(hcx + 4, hy - 2, GOLD)
-    g.put(hcx - 4, hy, GOLD)
-    # Narbe auf der Wange (rechts).
-    g.put(hcx + 3, hy - 4, 25)
-    g.put(hcx + 4, hy - 3, 24)
-    # Wangen-Schatten + Bartansatz.
-    g.put(hcx - 4, hy + 2, SKIN_D)
-    g.put(hcx + 4, hy + 2, SKIN_D)
-    g.rect(hcx - 3, hy + 4, 7, 1, HAIR_D)
-    g.put(hcx - 2, hy + 4, HAIR)
-
     face = []
-    if direction == "down":
-        if hit:
-            g.rect(hcx - 3, hy, 2, 2, INK)
-            g.rect(hcx + 2, hy, 2, 2, INK)
-            face += [(hcx - 1, hy + 3, INK), (hcx, hy + 3, INK), (hcx + 1, hy + 3, INK)]
-        else:
-            g.rect(hcx - 3, hy + 1, 2, 2, EYE)
-            g.rect(hcx + 2, hy + 1, 2, 2, EYE)
-            face += [(hcx - 3, hy + 1, SKIN_L), (hcx + 2, hy + 1, SKIN_L)]
-            face += [(hcx - 3, hy - 1, HAIR_D), (hcx - 2, hy - 1, HAIR_D),
-                     (hcx + 2, hy - 1, HAIR_D), (hcx + 3, hy - 1, HAIR_D)]
-            face += [(hcx, hy + 2, SKIN_D)]
-            face += [(hcx - 1, hy + 3, 24), (hcx, hy + 3, 24), (hcx + 1, hy + 3, 24)]
-    elif direction == "side":
+    if side:
+        # Tonsur-Haarreif am Hinterkopf, Stirn kahl.
+        g.rect(hcx - 4, hy - 5, 2, 2, HAIR_D)
+        g.ellipse(hcx, hy, 4, 4, SKIN)
+        g.rect(hcx - 3, hy + 2, 6, 3, SKIN)
+        g.rect(hcx - 4, hy, 2, 4, HAIR_D)             # Hinterkopf-Haar
+        g.put(hcx - 4, hy, HAIR)
+        g.put(hcx - 5, hy + 1, SKIN_D)
+        g.put(hcx - 4, hy + 3, SKIN_D)
+        g.put(hcx + 4, hy, SKIN_D)
+        # Eisenreif
+        g.rect(hcx - 4, hy - 3, 9, 2, IRON_D)
+        g.rect(hcx - 4, hy - 3, 9, 1, IRON)
+        g.rect(hcx - 4, hy - 3, 3, 1, IRON_L)
+        g.rect(hcx + 2, hy - 3, 2, 2, GOLD)
+        g.put(hcx + 2, hy - 3, GOLD_L)
+        # Nase als Silhouette
+        g.rect(hcx + 4, hy, 2, 1, SKIN)
+        g.rect(hcx + 4, hy + 1, 2, 1, SKIN_D)
+        # Bart dunkelrot, Mund
+        g.rect(hcx + 2, hy + 2, 3, 2, HAIR_D)
+        g.rect(hcx + 2, hy + 2, 3, 1, HAIR)
+        g.put(hcx + 3, hy + 3, SKIN_D)
+        face += [(hcx + 3, hy + 3, INK), (hcx + 4, hy + 3, INK)]
         g.rect(hcx + 2, hy, 2, 2, EYE)
-        face += [(hcx + 2, hy, SKIN_L)]
-        face += [(hcx + 2, hy + 2, 24), (hcx + 3, hy + 2, 24), (hcx + 4, hy + 2, 24)]
+    else:
+        # Tonsur-Haar als Kranz ueber dem Eisenreif.
+        g.rect(hcx - 4, hy - 5, 9, 2, HAIR_D)
+        g.rect(hcx - 3, hy - 5, 4, 1, HAIR)
+        g.ellipse(hcx, hy, 5, 4, SKIN)
+        g.rect(hcx - 4, hy + 2, 9, 3, SKIN)           # breite Kiefer
+        # Eisenreif (2 px), 2x2-Goldniete mittig.
+        g.rect(hcx - 5, hy - 3, 11, 2, IRON_D)
+        g.rect(hcx - 5, hy - 3, 11, 1, IRON)
+        g.rect(hcx - 5, hy - 3, 4, 1, IRON_L)
+        g.rect(hcx - 1, hy - 3, 2, 2, GOLD)
+        g.put(hcx - 1, hy - 3, GOLD_L)
+        # Wangen-Schatten (2 px Gruppen).
+        g.rect(hcx - 5, hy + 1, 2, 1, SKIN_D)
+        g.rect(hcx + 4, hy + 1, 2, 1, SKIN_D)
+        if up:
+            # Hinterkopf: Tonsur-Haar bedeckt den Nacken.
+            g.rect(hcx - 4, hy + 1, 9, 4, HAIR_D)
+            g.rect(hcx - 3, hy + 1, 4, 1, HAIR)
+            g.rect(hcx - 1, hy + 2, 3, 1, 24)
+        else:
+            # Bart: dunkelrote 2-px-Cluster an den Kiefern.
+            g.rect(hcx - 4, hy + 2, 2, 3, HAIR_D)
+            g.rect(hcx + 2, hy + 2, 2, 3, HAIR_D)
+            g.rect(hcx - 4, hy + 2, 2, 1, HAIR)
+            g.rect(hcx + 3, hy + 2, 1, 1, HAIR)
+            # Nase 2 px, Mund 2 px, Kinn bleibt Haut.
+            g.rect(hcx - 1, hy + 1, 2, 1, SKIN_D)
+            g.rect(hcx - 1, hy + 2, 2, 1, SKIN_L)
+            face += [(hcx - 1, hy + 3, INK), (hcx, hy + 3, INK)]
+            face += [(hcx - 2, hy + 2, 24), (hcx + 1, hy + 2, 24)]
 
     g = shade_edges(g, band=1)
+    if not up:
+        if side:
+            g.rect(hcx + 2, hy, 2, 2, EYE)
+            face += [(hcx + 2, hy, SKIN_L)]
+            g.rect(hcx + 2, hy + 2, 3, 2, HAIR_D)
+        else:
+            g.rect(hcx - 4, hy, 2, 2, EYE)
+            g.rect(hcx + 2, hy, 2, 2, EYE)
+            face += [(hcx - 4, hy, SKIN_L), (hcx + 2, hy, SKIN_L)]
     for x, y, c in face:
         g.put(x, y, c)
     g = outline(g)
@@ -536,10 +537,10 @@ def portrait(kind: str) -> Grid:
             g.rect(sx + 9, 34, 2, 2, GOLD)
         # Kahl rasierter Schädel: Haut-Rampe mit Schattenkante, kein Weißblock.
         g.rect(14, 14, 21, 3, SKIN)
-        g.rect(15, 14, 19, 1, SKIN_L)
+        g.rect(15, 14, 8, 1, SKIN_L)   # Licht nur links, keine helle Stirnbinde
         g.rect(14, 16, 21, 1, SKIN_D)
-        g.put(13, 20, SKIN_D)
-        g.put(34, 20, SKIN_D)
+        g.rect(13, 20, 1, 2, SKIN_D)
+        g.rect(34, 20, 1, 2, SKIN_D)
         # Stirnreif mit 2x2-Goldnieten.
         g.rect(13, 18, 23, 3, IRON_D)
         g.rect(13, 18, 23, 2, IRON)
@@ -547,23 +548,19 @@ def portrait(kind: str) -> Grid:
         for nx in (15, 25, 31):
             g.rect(nx, 18, 2, 2, GOLD)
             g.put(nx, 18, GOLD_L)
-        # Narbe; Brauen werden erst nach dem Shading grau gesetzt.
+        # Narbe (2-px-Gruppen).
         g.rect(31, 20, 2, 2, 25)
-        g.put(33, 22, 24)
-        # Grauer Bart: Kinnkante in Haut-Schatten, darunter 2-px-Cluster 8/9/10.
-        g.rect(19, 31, 13, 1, SKIN_D)                 # 2-px-Kinnkante zum Gesicht
-        g.put(22, 31, SKIN_D)
-        g.put(27, 31, SKIN_D)
-        g.rect(17, 32, 15, 4, 8)                      # Bartgrund dunkel
-        g.rect(19, 32, 3, 2, 10)                      # Licht-Cluster oben links
-        g.rect(24, 33, 3, 1, 10)
-        g.rect(18, 33, 2, 2, 9)                       # Mittel-Cluster seitlich
-        g.rect(27, 32, 3, 2, 9)
-        g.rect(21, 34, 2, 1, 10)
-        g.put(19, 35, 5)
-        g.put(22, 35, 6)
-        g.put(25, 35, 5)
-        g.put(28, 35, 6)
+        g.rect(32, 22, 2, 1, 24)
+        # Dunkelroter Bart (Haar-Rampe 23/24/25), kein Grau.
+        g.rect(19, 31, 13, 1, SKIN_D)                 # Kinnkante zum Gesicht
+        g.rect(17, 32, 15, 4, 23)                     # Bartgrund dunkelrot
+        g.rect(19, 32, 4, 2, 24)                      # Lichtcluster oben links
+        g.rect(24, 32, 3, 1, 24)
+        g.rect(27, 32, 3, 2, 24)
+        g.rect(18, 34, 3, 1, 25)
+        g.rect(22, 34, 2, 1, 25)
+        g.rect(25, 34, 3, 1, 25)
+        g.rect(20, 35, 3, 1, 23)
         # Gebetskette, 2-px-Perlen.
         for x in range(13, 35, 4):
             g.rect(x, 36, 2, 2, GOLD)
@@ -573,10 +570,11 @@ def portrait(kind: str) -> Grid:
     # Gesichtsdetails nach dem Shading scharf setzen (keine Glow-Flächen).
     # Beide Augen identisch: 3x2-Sockel, 2x2-Pupille, 1 px Glanz oben-links.
     for socket in (17, 29):
-        g.rect(socket, 23, 3, 2, SKIN_L)
+        # Augensockel in Basis 27 (keine 2x1-21-Fläche), nur 1 px Glanz als 21.
+        g.rect(socket, 23, 3, 2, SKIN)
         g.rect(socket + 1, 23, 2, 2, EYE)
         g.put(socket + 1, 23, SKIN_L)
-        g.rect(socket - 1, 22, 4, 1, HAIR_D if kind == "mira" else 8)  # Braue
+        g.rect(socket - 1, 22, 4, 1, HAIR_D)  # Braue dunkelrot
     g.put(23, 27, SKIN_D)
     g.put(24, 27, SKIN_D)
     if kind == "mira":
@@ -584,9 +582,8 @@ def portrait(kind: str) -> Grid:
         g.put(22, 31, 25)
         g.put(26, 31, 23)
     else:
-        g.rect(23, 31, 3, 1, 23)                  # Mund im grauen Bart
-        g.put(22, 31, 25)
-        g.put(26, 31, 23)
+        g.rect(23, 31, 3, 1, INK)                 # Mund im dunkelroten Bart
+        g.rect(21, 31, 2, 1, 25)
     g = outline(g)
     return g
 
