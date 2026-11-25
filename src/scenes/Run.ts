@@ -26,6 +26,7 @@ import { PickupSystem } from "../systems/PickupSystem";
 import { LevelUpSystem, type OwnedWeapon } from "../systems/LevelUpSystem";
 import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
 import { chestRewards, type ChestResult } from "../logic/evolution";
+import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
 
 export interface RunData {
@@ -65,6 +66,8 @@ export class Run extends Phaser.Scene {
   godMode = false;
   autoPlay = false;
   paused = false;
+  /** Pause-Zustand vor dem Öffnen einer Truhe (Debug kann pausiert öffnen). */
+  chestPausedBefore = false;
   levelUpOpen = false;
   chestOpen = false;
   chestResult: ChestResult | null = null;
@@ -120,6 +123,7 @@ export class Run extends Phaser.Scene {
     this.paused = false;
     this.levelUpOpen = false;
     this.chestOpen = false;
+    this.chestPausedBefore = false;
     this.chestResult = null;
     this.bossesDefeated = 0;
     this.finished = false;
@@ -573,6 +577,9 @@ export class Run extends Phaser.Scene {
   }
 
   debugAddWeapon(id: WeaponAnyId, level: number): void {
+    // Debug kann eine Evolution direkt setzen: Basis-State trotzdem aufräumen.
+    const evo = EVOLUTIONS.find((e) => e.id === id);
+    if (evo) this.combat.clearWeaponState(evo.baseWeapon);
     this.levelSys.addWeapon(id, level);
     this.recomputeStats();
   }
@@ -593,11 +600,12 @@ export class Run extends Phaser.Scene {
     if (!Number.isFinite(index) || index < 0 || index > 5) {
       throw new RangeError(`spawnBoss: Index ${index} ungueltig (0..5)`);
     }
+    const slot = Math.floor(index);
     const out = this.spawner.spawnEnemy("bogzombie", 1, this.player.x, this.player.y);
     const boss = out[0];
     if (!boss) return 0;
     boss.boss = true;
-    boss.maxHp = Math.round(boss.maxHp * 9);
+    boss.maxHp = Math.round(boss.maxHp * (9 + slot));
     boss.hp = boss.maxHp;
     boss.radius = 22;
     boss.sprite.setScale(2.2);
@@ -616,6 +624,7 @@ export class Run extends Phaser.Scene {
     const result = chestRewards(this.levelSys.weapons, this.levelSys.passives, this.elapsed, this.rng);
     this.chestResult = result;
     this.chestOpen = true;
+    this.chestPausedBefore = this.paused;
     this.paused = true;
     this.chests.open(target);
     this.events.emit("chestOpen", result);
@@ -631,11 +640,19 @@ export class Run extends Phaser.Scene {
   /** Wird von der UI am Ende der Öffnungs-Sequenz aufgerufen. */
   finishChest(): void {
     if (!this.chestOpen || !this.chestResult) return;
-    for (const reward of this.chestResult.rewards) this.levelSys.applyChestReward(reward);
+    for (const reward of this.chestResult.rewards) {
+      // Evolution ersetzt die Basiswaffe: deren Runtime-State (z. B. Laternen-Orbs)
+      // muss verschwinden, sonst wirkt die Basiswaffe unsichtbar weiter.
+      if (reward.kind === "evolution") {
+        const base = EVOLUTIONS.find((e) => e.id === reward.id)?.baseWeapon;
+        if (base) this.combat.clearWeaponState(base);
+      }
+      this.levelSys.applyChestReward(reward);
+    }
     this.recomputeStats();
     this.chestOpen = false;
     this.chestResult = null;
-    this.paused = false;
+    this.paused = this.chestPausedBefore;
     this.events.emit("chestClosed");
   }
 

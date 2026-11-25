@@ -396,16 +396,21 @@
       "id": 26,
       "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
       "description": "Build/Tests grün, offene Punkte ehrlich.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-25T01:06:21Z",
           "by": "build",
           "text": "todo → doing: GAME.md M2-Status"
+        },
+        {
+          "at": "2026-11-25T01:08:59Z",
+          "by": "build",
+          "text": "doing → review: GAME.md Status M2 mit Messwerten (56 Tests, 12/12 Waffen 1400-9090 Schaden, 56.9 FPS bei 505/575 Gegnern) und ehrlichen Luecken (Bso-Platzhalter, 3/30 Gegner, Sound/Meta offen). Commit 2415a5e."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T01:06:21Z"
+      "updated": "2026-11-25T01:08:59Z"
     }
   ]
 }

@@ -45,7 +45,7 @@ export class UI extends Phaser.Scene {
   private chestBeam!: Phaser.GameObjects.Image;
   private chestTitle!: PixelText;
   private chestSlots: { bg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; level: PixelText }[] = [];
-  private chestOpenAt = 0;
+  private chestHideTimer?: Phaser.Time.TimerEvent;
 
   constructor() { super("ui"); }
 
@@ -132,7 +132,7 @@ export class UI extends Phaser.Scene {
     this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 54, "DEIN BUILD", C.bone, "center"));
     this.pauseGroup.add(new PixelText(this, 116, 66, "WAFFEN", C.lantern));
     this.pauseGroup.add(new PixelText(this, 266, 66, "POWERUPS", C.lantern));
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 238, "PFEILE = AUSWAHL, ESC = WEITER", C.mist, "center"));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 238, "ESC = WEITER", C.mist, "center"));
     this.pauseLines = [];
   }
 
@@ -165,7 +165,9 @@ export class UI extends Phaser.Scene {
   }
 
   private onChestOpen(result: import("../logic/evolution").ChestResult): void {
-    this.chestOpenAt = this.time.now;
+    // Ein noch laufender Hide-Timer der vorigen Truhe darf die neue Sequenz nicht ausblenden.
+    this.chestHideTimer?.remove(false);
+    this.chestHideTimer = undefined;
     this.chestGroup.setVisible(true);
     this.chestTitle.setText("TRUHE");
     this.chestSprite.setTexture("chest_closed").setScale(2.2).setAlpha(1);
@@ -197,10 +199,11 @@ export class UI extends Phaser.Scene {
       for (let i = 0; i < result.rewards.length; i++) {
         const slot = this.chestSlots[i];
         slot.text.setAlpha(1);
+        let tick = 0;
         this.time.addEvent({
           delay: 95,
-          repeat: 9,
-          callback: () => slot.text.setText(pickRollName(result.rewards).toUpperCase().slice(0, 11)),
+          repeat: 7,
+          callback: () => slot.text.setText(pickRollName(result.rewards, tick++).toUpperCase().slice(0, 11)),
         });
       }
     });
@@ -219,10 +222,12 @@ export class UI extends Phaser.Scene {
     this.time.delayedCall(finishAt, () => {
       this.run.finishChest();
     });
-    this.time.delayedCall(finishAt + 260, () => this.chestGroup.setVisible(false));
+    this.chestHideTimer = this.time.delayedCall(finishAt + 260, () => this.chestGroup.setVisible(false));
   }
 
   private onChestClosed(): void {
+    this.chestHideTimer?.remove(false);
+    this.chestHideTimer = undefined;
     this.chestGroup.setVisible(false);
   }
 
@@ -232,8 +237,10 @@ export class UI extends Phaser.Scene {
         .setScale(1.4)
         .setBlendMode(Phaser.BlendModes.NORMAL);
       this.chestGroup.add(coin);
-      const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.2;
-      const speed = 70 + Math.random() * 90;
+      // Deterministisch gestreut (kein Math.random): reproduzierbare GIF-Frames.
+      const t = (i * 7) % 12 / 11;
+      const angle = -Math.PI / 2 + (t - 0.5) * 2.2;
+      const speed = 70 + t * 90;
       const tx = GAME_WIDTH / 2 + Math.cos(angle) * speed;
       const ty = 96 + Math.sin(angle) * speed;
       this.tweens.add({
@@ -242,7 +249,7 @@ export class UI extends Phaser.Scene {
         y: ty,
         alpha: 0,
         scale: 0.4,
-        duration: 700 + Math.random() * 350,
+        duration: 700 + t * 350,
         ease: "Cubic.Out",
         onComplete: () => coin.destroy(),
       });
@@ -422,8 +429,8 @@ export class UI extends Phaser.Scene {
   }
 }
 
-function pickRollName(rewards: { name: string }[]): string {
-  return rewards[Math.floor(Math.random() * rewards.length)]?.name ?? "???";
+function pickRollName(rewards: { name: string }[], tick = 0): string {
+  return rewards[tick % Math.max(1, rewards.length)]?.name ?? "???";
 }
 
 function wrapText(text: string, maxChars: number): string[] {

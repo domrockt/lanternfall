@@ -11,8 +11,10 @@ function glyphKey(color: number, ch: string): string {
 }
 
 function ensureGlyph(scene: Phaser.Scene, color: number, ch: string): void {
-  // Exakter Treffer zuerst (Umlaute/ß), sonst Großbuchstabe, sonst "?".
-  const rows = GLYPHS[ch] ?? GLYPHS[ch.toUpperCase()] ?? GLYPHS["?"];
+  // Großbuchstaben bevorzugen, damit Kleinbuchstaben in Beschreibungen nicht als
+  // gemischte Glyphenhöhen zwischen Versalien erscheinen. Umlaute/ß bleiben exakt.
+  const upper = ch.toUpperCase();
+  const rows = GLYPHS[upper] ?? GLYPHS[ch] ?? GLYPHS["?"];
   const key = glyphKey(color, ch);
   if (scene.textures.exists(key)) return;
   const canvas = document.createElement("canvas");

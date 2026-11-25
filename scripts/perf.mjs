@@ -48,9 +48,10 @@ try {
         if (now - lastSpawn >= 50) {
           lastSpawn = now;
           const active = window.__lf.state().enemies;
-          samples.push(active);
           const deficit = TARGET_ENEMIES - active;
           if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
+          // Nach dem Nachspawn messen, sonst zählt das Gate kurzzeitig < 500.
+          samples.push(window.__lf.state().enemies);
         }
         if (now - start >= 10000) resolve();
         else requestAnimationFrame(tick);

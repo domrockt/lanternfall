@@ -86,8 +86,8 @@ export class FxSystem {
     const base = opts as FxOptions;
     const life = opts.life ?? 0.22;
     for (let i = 0; i < count; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const speed = 24 + Math.random() * 46;
+      const a = this.rand() * Math.PI * 2;
+      const speed = 24 + this.rand() * 46;
       this.spawn({
         ...base,
         texture,
@@ -95,13 +95,20 @@ export class FxSystem {
         y,
         vx: Math.cos(a) * speed,
         vy: Math.sin(a) * speed,
-        life: life * (0.7 + Math.random() * 0.6),
+        life: life * (0.7 + this.rand() * 0.6),
         scaleFrom: opts.scaleFrom ?? 1,
         scaleTo: opts.scaleTo ?? 0.2,
         alphaFrom: opts.alphaFrom ?? 0.9,
         alphaTo: 0,
       });
     }
+  }
+
+  /** Deterministischer LCG statt Math.random (reproduzierbare VFX-Screenshots). */
+  private seq = 0x9e3779b9;
+  private rand(): number {
+    this.seq = (this.seq * 1664525 + 1013904223) >>> 0;
+    return this.seq / 0x100000000;
   }
 
   /** Linie (Blitz/Speer) als rotiertes Segment. */
@@ -164,6 +171,7 @@ export class FxSystem {
       this.free.push(fx);
     }
     this.active.length = 0;
+    this.seq = 0x9e3779b9;
   }
 
   get count(): number {

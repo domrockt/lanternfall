@@ -58,7 +58,6 @@ interface WeaponState {
   orbDamage: number;
   orbRadius: number;
   orbHitAt: Map<number, number>;
-  sealTimer: number;
   auraTick: number;
   spikeTimer: number;
 }
@@ -111,7 +110,7 @@ export class CombatSystem {
     if (!s) {
       s = {
         swings: [], orbs: [], orbTimeLeft: 0, orbDamage: 0, orbRadius: 0,
-        orbHitAt: new Map(), sealTimer: 0, auraTick: 0, spikeTimer: 0,
+        orbHitAt: new Map(), auraTick: 0, spikeTimer: 0,
       };
       this.states.set(id, s);
     }
@@ -124,7 +123,7 @@ export class CombatSystem {
 
   private updateWeapons(ctx: CombatContext): void {
     this.pickupBonus = 0;
-    const alive = ctx.enemies.filter((e) => e.alive);
+    const alive = ctx.enemies.filter((e) => e.alive && e.hp > 0);
     for (const owned of ctx.weapons) {
       const def = this.weaponDef(owned.id);
       if (!def || !def.implemented) continue;
@@ -314,7 +313,7 @@ export class CombatSystem {
     const slow = stats.slow ?? 0.3;
     const freeze = effectiveDuration(stats.freeze ?? 0.3, ctx.agg);
     for (const e of ctx.enemies) {
-      if (!e.alive) continue;
+      if (!e.alive || e.hp <= 0) continue;
       const d = Math.hypot(e.x - ctx.playerX, e.y - ctx.playerY);
       if (d > radius + e.radius) continue;
       e.slowFactor = Math.max(e.slowFactor, slow);
@@ -421,11 +420,12 @@ export class CombatSystem {
       // Kettenblitz ausgehend vom Siegel.
       const hit = new Set<number>();
       let last = { x: seal.x, y: seal.y };
-      for (let jump = 0; jump <= seal.chain; jump++) {
+      // Genau `chain` Ziele insgesamt (Initialziel + Sprünge), nicht chain+1.
+      for (let jump = 0; jump < seal.chain; jump++) {
         let next: EnemyRuntime | null = null;
         let best = 150 * 150;
         for (const e of ctx.enemies) {
-          if (!e.alive || hit.has(e.uid)) continue;
+          if (!e.alive || e.hp <= 0 || hit.has(e.uid)) continue;
           const d = (e.x - last.x) ** 2 + (e.y - last.y) ** 2;
           if (d < best) { best = d; next = e; }
         }
@@ -502,8 +502,8 @@ export class CombatSystem {
     const damage = effectiveDamage(stats.damage, ctx.agg);
     for (let i = 0; i < count; i++) {
       const target = ctx.rng.pick(pool);
-      if (!target || !target.alive) continue;
-      this.strike(ctx, target, damage, owned.id, 0);
+      if (!target || !target.alive || target.hp <= 0) continue;
+      this.strike(ctx, target, damage, owned.id);
       let last = target;
       let jumps = 0;
       const hit = new Set<number>([target.uid]);
@@ -511,13 +511,13 @@ export class CombatSystem {
         let next: EnemyRuntime | null = null;
         let best = 110 * 110;
         for (const e of enemies) {
-          if (!e.alive || hit.has(e.uid)) continue;
+          if (!e.alive || e.hp <= 0 || hit.has(e.uid)) continue;
           const d = (e.x - last.x) ** 2 + (e.y - last.y) ** 2;
           if (d < best) { best = d; next = e; }
         }
         if (!next) break;
         this.fx.beam("bolt_seg", last.x, last.y, next.x, next.y, { life: 0.3, tint: PAL[C.lanternWhite] });
-        this.strike(ctx, next, Math.round(damage * 0.75), owned.id, 0);
+        this.strike(ctx, next, Math.round(damage * 0.75), owned.id);
         hit.add(next.uid);
         last = next;
         jumps++;
@@ -525,8 +525,7 @@ export class CombatSystem {
     }
   }
 
-  private strike(ctx: CombatContext, e: EnemyRuntime, damage: number, weaponId: string, delay: number): void {
-    if (delay > 0) return;
+  private strike(ctx: CombatContext, e: EnemyRuntime, damage: number, weaponId: string): void {
     this.fx.beam("bolt_seg", e.x, e.y - 70, e.x, e.y, { life: 0.4, additive: true, tint: PAL[C.lanternWhite] });
     this.fx.spawn({
       texture: "ring_seal", x: e.x, y: e.y, life: 0.45,
@@ -562,6 +561,13 @@ export class CombatSystem {
   private updateOrbs(ctx: CombatContext): void {
     for (const [id, state] of this.states) {
       const active = state.orbTimeLeft > 0;
+      // Abgelaufene Treffer-Cooldowns entfernen: UIDs werden nie wiederverwendet,
+      // sonst wächst die Map in langen Runs unbegrenzt.
+      if (state.orbHitAt.size > 256) {
+        for (const [uid, until] of state.orbHitAt) {
+          if (until < this.clock) state.orbHitAt.delete(uid);
+        }
+      }
       const count = state.orbs.length;
       for (let i = 0; i < count; i++) {
         const orb = state.orbs[i];
@@ -714,6 +720,18 @@ export class CombatSystem {
         if (killed) this.killsFx(e);
       }
     }
+  }
+
+  /**
+   * Entfernt den Runtime-State einer Waffe, z. B. wenn eine Evolution die
+   * Basiswaffe im Slot ersetzt. Ohne das würden alte Orbs/Swings weiterleben.
+   */
+  clearWeaponState(id: string): void {
+    const state = this.states.get(id);
+    if (!state) return;
+    for (const s of state.swings) s.sprite.destroy();
+    for (const orb of state.orbs) orb.sprite.destroy();
+    this.states.delete(id);
   }
 
   clear(): void {

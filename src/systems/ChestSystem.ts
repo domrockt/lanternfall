@@ -40,7 +40,7 @@ export class ChestSystem {
       .setTint(PAL[C.amber])
       .setScale(0.34)
       .setAlpha(0.55);
-    const chest: ChestRuntime = { x, y, sprite, glow, phase: Math.random() * Math.PI * 2, age: 0 };
+    const chest: ChestRuntime = { x, y, sprite, glow, phase: (this.chests.length % 7) * 0.9, age: 0 };
     this.chests.push(chest);
     return chest;
   }
@@ -55,8 +55,7 @@ export class ChestSystem {
       chest.age += dt;
       const pulse = 0.75 + Math.sin(chest.age * 3.4 + chest.phase) * 0.23;
       chest.glow.setAlpha(0.38 + pulse * 0.2);
-      chest.glow.setScale(0.3 + pulse * 0.08);
-      chest.sprite.setY(Math.round(chest.y + Math.sin(chest.age * 2.2 + chest.phase) * 1.5));
+      chest.glow.setScale(0.3 + pulse * 0.08);      chest.sprite.setY(Math.round(chest.y + Math.sin(chest.age * 2.2 + chest.phase) * 1.5));
     }
     // Pfeil nur, wenn die nächste Truhe außerhalb des Views liegt.
     let nearest = this.chests[0];

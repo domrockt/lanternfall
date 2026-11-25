@@ -80,6 +80,43 @@ try {
     }
   }
 
+  // Regression: Evolution ersetzt die Basiswaffe, deren Runtime-State (Orbs) muss enden.
+  const evoPage = await newPage();
+  try {
+    await evoPage.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=31`);
+    await startRun(evoPage);
+    await evoPage.evaluate(() => {
+      window.__lf.god(true);
+      window.__lf.addWeapon("lantern", 8);
+      window.__lf.spawnEnemy("bog_rat", 20);
+      window.__lf.setTimeScale(2);
+    });
+    await evoPage.waitForTimeout(1600);
+    await evoPage.evaluate(() => window.__lf.setTimeScale(1));
+    await clearLevelUps(evoPage);
+    const before = await evoPage.evaluate(() => window.__lf.state().damageByWeapon);
+    await evoPage.evaluate(() => {
+      window.__lf.addWeapon("soul_beacon", 8);
+      window.__lf.spawnEnemy("bog_rat", 40);
+      window.__lf.setTimeScale(2);
+    });
+    await evoPage.waitForTimeout(2600);
+    await evoPage.evaluate(() => window.__lf.setTimeScale(1));
+    await clearLevelUps(evoPage);
+    const afterState = await evoPage.evaluate(() => window.__lf.state());
+    const lanternBefore = before.lantern ?? 0;
+    const lanternAfter = afterState.damageByWeapon.lantern ?? 0;
+    const soulDamage = afterState.damageByWeapon.soul_beacon ?? 0;
+    const hasBase = afterState.weapons.some((w) => w.id === "lantern");
+    const hasEvolved = afterState.weapons.some((w) => w.id === "soul_beacon");
+    const oldOrbsGone = lanternAfter === lanternBefore;
+    const evoOk = !hasBase && hasEvolved && oldOrbsGone && soulDamage > 0;
+    results.push({ id: "evolution-state", damage: soulDamage, owned: evoOk, enemies: afterState.enemies, kills: afterState.kills, fps: afterState.fps, ok: evoOk });
+    console.log(`Evolution-State: Laterne ${lanternBefore} -> ${lanternAfter}, Seele ${soulDamage}, Slot ${!hasBase && hasEvolved ? "nur Evolution" : "FEHLER"}: ${evoOk ? "OK" : "FEHLER"}`);
+  } finally {
+    await evoPage.close();
+  }
+
   // Truhen-Sequenz als GIF + Evolution via Truhe beweisen.
   const chestPage = await newPage();
   try {
@@ -125,8 +162,9 @@ try {
 
 const failed = results.filter((r) => !r.ok);
 const summary = {
-  weapons: results.filter((r) => r.id !== "chest-evolution").length,
+  weapons: results.filter((r) => r.id !== "chest-evolution" && r.id !== "evolution-state").length,
   evolved: results.find((r) => r.id === "chest-evolution")?.owned ?? false,
+  evolutionState: results.find((r) => r.id === "evolution-state")?.owned ?? false,
   failed: failed.map((r) => r.id),
   jsErrors: errors,
   passed: failed.length === 0 && errors.length === 0,
