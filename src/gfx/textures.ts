@@ -358,7 +358,7 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   bolt_seg: {
     w: 2, h: 8,
-    rows: ["0m", "m0", "0m", "m0", "0m", "m0", "0m", "m0"],
+    rows: ["0m", "0m", "0m", "0m", "0m", "0m", "0m", "0m"],
   },
   chest_closed: {
     w: 16, h: 16,

@@ -376,25 +376,36 @@
       "id": 25,
       "title": "M2-08 Abnahme: verify-weapons.mjs, 12 Screenshots, GIF, perf 500+6 Waffen",
       "description": "Vision-Prüfung aller Shots, Mängel beheben, Messwerte.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-25T00:56:28Z",
           "by": "build",
           "text": "todo → doing: verify-weapons 12 Shots, GIF, perf 500+6"
+        },
+        {
+          "at": "2026-11-25T01:06:21Z",
+          "by": "build",
+          "text": "doing → review: verify-weapons.mjs: 12/12 Waffen Stufe 8, Schaden 1400-9090, 0 JS-Fehler; alle 12 Shots gesichtet. Truhe->Phoenix Evolution bewiesen; GIF 48 Frames 480x270. perf: 56.9 FPS, min 505/avg 575 Gegner, 6 Waffen Stufe 8 (Fx-Cap 360). Bolt-Checkerboard gefixt. Commit e5..."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:56:28Z"
+      "updated": "2026-11-25T01:06:21Z"
     },
     {
       "id": 26,
       "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
       "description": "Build/Tests grün, offene Punkte ehrlich.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T01:06:21Z",
+          "by": "build",
+          "text": "todo → doing: GAME.md M2-Status"
+        }
+      ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:39:13Z"
+      "updated": "2026-11-25T01:06:21Z"
     }
   ]
 }

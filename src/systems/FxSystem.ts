@@ -44,7 +44,7 @@ export class FxSystem {
   private readonly free: FxRuntime[] = [];
   private readonly scene: Phaser.Scene;
   /** Obergrenze, damit VFX bei Extremlast nicht die Frame-Zeit dominieren. */
-  private maxActive = 520;
+  private maxActive = 360;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
