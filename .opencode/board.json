@@ -321,25 +321,36 @@
       "id": 22,
       "title": "M2-05 UI: 16x16-Icons, HUD-Leiste, Pause, Umlaute im Bitmap-Font",
       "description": "6 Waffen + 6 Powerups + 6 Evolutionen, Level-up/Pause/HUD.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-25T00:49:57Z",
           "by": "build",
           "text": "todo → doing: Icons + HUD/Pause + Umlaute"
+        },
+        {
+          "at": "2026-11-25T00:54:21Z",
+          "by": "build",
+          "text": "doing → review: 18 Icons 16x16 (Kontur, Palette, Distinktheit validiert), Kontaktbogen geprueft; in Level-up-Karten, HUD-Leiste, Pause (2 Spalten) und Truhen-Slots. Font rendert ÄÖÜäöüß, Texte auf Umlaute umgestellt. 54 Tests, Build gruen. Commit 5e24cb4."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:49:57Z"
+      "updated": "2026-11-25T00:54:21Z"
     },
     {
       "id": 23,
       "title": "M2-06 Gras-Kacheln beruhigen + gezielte Dekor-Kacheln",
       "description": "Weniger Pixelrauschen, ruhige Flächen, gruppierte Deko.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T00:54:21Z",
+          "by": "build",
+          "text": "todo → doing: Gras beruhigen + Deko gruppiert"
+        }
+      ],
       "created": "2026-11-25T00:39:13Z",
-      "updated": "2026-11-25T00:39:13Z"
+      "updated": "2026-11-25T00:54:21Z"
     },
     {
       "id": 24,

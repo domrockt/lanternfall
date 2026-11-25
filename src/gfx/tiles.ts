@@ -92,26 +92,27 @@ export function paintTile(
     return;
   }
 
-  // Moorgras: keine harte Kachel-Kante, Details laufen über die Fläche.
+  // Moorgras: ruhige, gleichmäßige Fläche (keine Kachel-Rauschflecken).
   ctx.fillStyle = hex(29);
   ctx.fillRect(px, py, TILE, TILE);
-  ctx.fillStyle = hex(28);
-  const patches = 2 + Math.floor(rnd * 3);
-  for (let i = 0; i < patches; i++) {
-    const bx = px + Math.floor(tileHash(tx + i * 7, ty, seed) * 12);
-    const by = py + Math.floor(tileHash(tx, ty + i * 11, seed) * 12);
-    ctx.fillRect(bx, by, 2 + Math.floor(rnd2 * 3), 1 + Math.floor(rnd * 2));
+  // Grasbüschel in 2x2-Blöcken gruppiert: eine Stelle pro Block, nicht pro Kachel.
+  const blockX = Math.floor(tx / 2);
+  const blockY = Math.floor(ty / 2);
+  const tuft = tileHash(blockX, blockY, seed + 911);
+  if (tx % 2 === 0 && ty % 2 === 0 && tuft > 0.62) {
+    const bx = px + 4 + Math.floor(tileHash(blockX, blockY, seed + 17) * 6);
+    const by = py + 6 + Math.floor(tileHash(blockY, blockX, seed + 29) * 5);
+    ctx.fillStyle = hex(30);
+    ctx.fillRect(bx, by, 1, 3);
+    ctx.fillRect(bx + 2, by + 1, 1, 2);
+    ctx.fillRect(bx + 4, by, 1, 3);
+    ctx.fillStyle = hex(28);
+    ctx.fillRect(bx - 1, by + 2, 6, 1);
   }
-  ctx.fillStyle = hex(30);
-  const blades = 6 + Math.floor(rnd * 5);
-  for (let i = 0; i < blades; i++) {
-    const bx = px + Math.floor(tileHash(tx + i, ty * 3, seed) * 14) + 1;
-    const by = py + Math.floor(tileHash(tx * 5, ty + i, seed) * 14) + 1;
-    ctx.fillRect(bx, by, 1, rnd > 0.65 ? 2 : 1);
-  }
-  if (rnd > 0.72) {
+  // Seltene Lichtblüte, ebenfalls blockgebunden.
+  if (tx % 2 === 1 && ty % 2 === 1 && tuft > 0.95) {
     ctx.fillStyle = hex(31);
-    ctx.fillRect(px + 3 + Math.floor(rnd2 * 10), py + 4 + Math.floor(rnd * 8), 1, 1);
+    ctx.fillRect(px + 5 + Math.floor(rnd2 * 6), py + 4 + Math.floor(rnd * 7), 1, 1);
   }
 }
 
