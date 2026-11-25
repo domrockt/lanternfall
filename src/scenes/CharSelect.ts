@@ -25,21 +25,22 @@ export class CharSelect extends Phaser.Scene {
     this.panels = [];
     CHARACTER_LIST.forEach((char, i) => {
       const x = 128 + i * 224;
-      const panel = this.add.rectangle(x, 137, 204, 176, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate]).setDepth(2);
+      // Panel beginnt unter dem Titel; Portrait (48x48 @2x) sitzt komplett im Rahmen.
+      const panel = this.add.rectangle(x, 139, 204, 186, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate]).setDepth(2);
       this.panels.push(panel);
-      this.add.image(x, 88, char.spriteKey).setScale(4).setDepth(3);
-      this.add.image(x, 88, "light_radius").setBlendMode(Phaser.BlendModes.ADD).setScale(0.55).setAlpha(0.3).setDepth(1);
-      new PixelText(this, x, 128, char.name, C.candleWhite, "center").setDepth(4);
-      new PixelText(this, x, 140, char.title.toUpperCase(), C.amber, "center").setDepth(4);
+      this.add.image(x, 94, `portrait_${char.id}`).setScale(2).setDepth(3);
+      this.add.image(x, 94, "light_radius").setBlendMode(Phaser.BlendModes.ADD).setScale(0.55).setAlpha(0.3).setDepth(1);
+      new PixelText(this, x, 150, char.name, C.candleWhite, "center").setDepth(4);
+      new PixelText(this, x, 162, char.title.toUpperCase(), C.amber, "center").setDepth(4);
       const bonusLines = char.id === "mira"
         ? ["+10% FLÄCHE", `HP ${char.hp}`]
         : ["+20% MAX-HP, 1 RÜSTUNG", "-5% TEMPO"];
       bonusLines.forEach((line, li) => {
-        new PixelText(this, x, 156 + li * 10, line, C.fog, "center").setDepth(4);
+        new PixelText(this, x, 176 + li * 10, line, C.fog, "center").setDepth(4);
       });
-      new PixelText(this, x, 180, char.id === "mira" ? "SCHNELL UND FLÄCHENSTARK" : "ROBUST UND LANGSAM", C.mist, "center").setDepth(4);
-      new PixelText(this, x, 194, `START: ${weaponName(char)}`, C.fog, "center").setDepth(4);
-      new PixelText(this, x, 208, `TASTE ${i + 1}`, C.lantern, "center").setDepth(4);
+      new PixelText(this, x, 200, char.id === "mira" ? "SCHNELL UND FLÄCHENSTARK" : "ROBUST UND LANGSAM", C.mist, "center").setDepth(4);
+      new PixelText(this, x, 211, `START: ${weaponName(char)}`, C.fog, "center").setDepth(4);
+      new PixelText(this, x, 223, `TASTE ${i + 1}`, C.lantern, "center").setDepth(4);
     });
 
     this.refresh();
