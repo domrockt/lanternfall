@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "next": 17,
+  "cards": [
+    {
+      "id": 1,
+      "title": "M1-01 Fundament: Palette 32, Config 480x270, Szenen-Skelett",
+      "description": "src/palette.ts neu (32 Farben dokumentiert), main.ts 480x270, Boot/Title/CharSelect/Run/UI/Results Grundgerüst.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: Palette 32 Farben, 480x270, Szenen Boot/Title/CharSelect/Run+UI/Results; Sichtprüfung ok"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 2,
+      "title": "M1-02 Datentabellen src/data/*",
+      "description": "characters, weapons (6x Stufe 1-8), passives (6x5), evolutions, enemies (30), bosses (6), waves (30 min) als typisierte Tabellen.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: Alle Datentabellen typisiert: 6 Waffen x8, 6 Passives x5, 6 Evo, 30 Gegner, 6 Bosse, 30 Wellen; data.test.ts grün"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 3,
+      "title": "M1-03 Reine Logik src/logic/* + Tests",
+      "description": "rng, stats, xp, levelup-Angebote (Slots 6+6, keine maxed), waves, combat-Helfer; Vitest.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: rng/stats/xp/levelup/waves/combat + 29 Tests grün (Slots 6+6, keine maxed)"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 4,
+      "title": "M1-04 Systeme: Pools, SpatialHash, Spawner, Spieler/Gegner",
+      "description": "8-Wege-Bewegung, Kamera, Chunk-Karte, I-Frames, Gegner-Pools, Separation, chaser/swarm, bog_rat/wisp/bogzombie.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: Pools, SpatialHash, Separation, chaser/swarm, bog_rat/wisp/bogzombie; Chunk-Karte 4096px, I-Frames"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 5,
+      "title": "M1-05 Ember-Waffe + Projektil-Framework",
+      "description": "Glutfunke Stufe 1-8, Cooldown, Zielsuche, Projektil-Pool, Durchschlag, Schaden, Rückstoß.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: ember St.1-8, Projektil-Pool, Homing, Durchschlag, Rückstoß; DPS-Tracking"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 6,
+      "title": "M1-06 XP-Kristalle, Pickup, Level-up-Dialog",
+      "description": "3 Gem-Größen, Magnetradius, 3 Angebote, Tastatur 1-3 / Pfeile+Enter, Pause.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: 3 Gems, Magnet, Level-up-Pause mit 3 Angeboten, Tasten 1-3/Pfeile+Enter; verify: Level 4 erreicht"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 7,
+      "title": "M1-07 Wellen-Director + Spawn-Ring",
+      "description": "Spawnrate/Mix aus waves.ts pro Minute, Spawns außerhalb des Bildschirms, Spezialwellen-Hook.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: waves-Director pro Minute, Spawn-Ring außerhalb des Screens; verify 66 s Spielzeit"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 8,
+      "title": "M1-08 Debug-API window.__lf komplett",
+      "description": "state, setTimeScale, skipTo, god, giveXp, addWeapon, addPassive, spawnEnemy, spawnBoss, openChest, pickLevelUp, autoPlay; klare Fehler für M4+.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: window.__lf komplett, Cheats nur ?debug=1, M4/M5-Funktionen werfen klare Fehler"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 9,
+      "title": "M1-09 perf.mjs + verify.mjs",
+      "description": "Playwright-Harness FPS mit 500 Gegnern (>=55) und 60s AutoPlay-Verifikation, Screenshots shots/m1-*.png.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: perf: 60,1 FPS bei 497 Gegnern; verify: alle Checks grün, 0 JS-Fehler, shots/m1-*.png"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 10,
+      "title": "M1-10 HUD-Politur, Sichtprüfung, GAME.md Status, Commit",
+      "description": "HUD lesbar, Palette/Schärfe per Vision prüfen, GAME.md Status + Messwerte, build+test grün, Commit.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → review: build+test grün, perf/verify grün, Sichtprüfung ok, GAME.md Status ergänzt; Reviewer läuft noch"
+        },
+        {
+          "at": "2026-11-25T00:24:40Z",
+          "by": "build",
+          "text": "review → done: build+test (31) grün, verify passed, perf 60 FPS/497 Gegner, 0 JS-Fehler; Reviewer-OK nach Fixrunde (Passive-Kumulierung, Substepping, UID-Pooling, Spawn-Rand, Integer-Scale); committed"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:24:40Z"
+    },
+    {
+      "id": 11,
+      "title": "Epic M2: Alle 6 Waffen + Verhalten/VFX",
+      "description": "flail, frost, thorn, storm, lantern mit Stufen 1-8, generisches Framework erweitern, Waffen-Icons.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 12,
+      "title": "Epic M3: Alle 30 Gegner + Spezialwellen",
+      "description": "Restliche Archetypen (tank/ranged/charger/splitter/exploder/phaser/orbiter/summoner), 30 Sprites+Animationen, Ring-/Schwarmwellen.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 13,
+      "title": "Epic M4: Bosse 5/10/15/20/25 + Truhen + Evolutionen",
+      "description": "5 Bosse, HP-Leiste, Warn-Banner, Truhen-Sequenz, 6 Evolutionen, Boss-Drops.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 14,
+      "title": "Epic M5: Endboss 30:00, Sieg/Niederlage, Meta (Gold/Shop)",
+      "description": "Hohler König 3 Phasen, Morgendämmerung-Sieg, Results-Ausbau, evtl. Meta-Progression.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 15,
+      "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
+      "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 16,
+      "title": "M1-Nachzug: Runtime-Tests (Substep/Pause, UID-Pooling, Spawn außerhalb View)",
+      "description": "Unit-/Integrationstests für: Teilschritt-Abbruch bei Level-up, Projektile mit Spawn-UID über Pool-Recycling, Ring-/spawnOne-Spawns außerhalb camera.worldView, Integer-Scaling. Danach verify-Wall-Clock-Abhängigkeit entschärfen.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T00:24:40Z",
+      "updated": "2026-11-25T00:24:40Z"
+    }
+  ]
+}

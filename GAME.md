@@ -90,7 +90,8 @@ Wellen-Director: Spawnrate & Mischung pro Minute aus `waves.ts`; Spezialwellen (
 Boss-HP-Leiste oben, Warn-Banner + Musik/SFX-Stinger beim Erscheinen, Truhe beim Tod (Endboss: Siegsequenz).
 
 ## Grafik-Qualitätslatte (hart)
-- Einheitliche Palette: **32 Farben** (`src/palette.ts`, dunkle Nachtpalette mit warmen Lichtakzenten). Keine Off-Palette-Farben.
+- Einheitliche Palette: **32 Farben** (`src/palette.ts`, dunkle Nachtpalette mit warmen Lichtakzenten). Keine Off-Palette-Farben
+  (Ausnahme: additive Licht-/Vignette-Überblendungen und dunkle UI-Dim-Overlays aus Palettenfarben).
 - Figuren/Gegner: 1-px dunkle Kontur (nicht reines Schwarz), mind. 3 Schattierungsstufen, klare Silhouette, Lichtkante von oben-links,
   keine "Pillow-Shading"-Blobs, keine Einzelpixel-Rauschen. Animationen: Lauf 4 Frames, Idle/Hit/Tod.
 - Karte: Tileset 16x16 (Moorgras-Varianten, Wege, Wasser/Moorlöcher mit Rand-Tiles, Steine, tote Bäume, Ruinen, Gräber, Laternenpfähle),
@@ -106,3 +107,31 @@ Boss-HP-Leiste oben, Warn-Banner + Musik/SFX-Stinger beim Erscheinen, Truhe beim
 ## Definition of Done (gesamt)
 Alle Listen oben vollständig umgesetzt; 30-min-Run per `autoPlay` + `setTimeScale(30)` ohne Crash/JS-Fehler durchlaufbar (alle 6 Bosse
 erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erfüllt; Tests grün; Screenshots aller Gegner/Bosse/Waffen geprüft.
+
+## Status — M1 (Architektur + Core-Loop), 2026-11-25
+
+**Fertig:**
+- Interne Auflösung **480x270**, `pixelArt`/`roundPixels`/`antialias:false`, ganzzahlige CSS-Skalierung (2x/3x/…), Szenen **Boot → Title → CharSelect (2 Charaktere) → Run + UI → Results**.
+- Ordner: `src/data/` (characters, weapons 6x8 Stufen, passives 6x5, evolutions, enemies 30, bosses 6, waves 30), `src/logic/` (rng, stats, xp, levelup, waves, combat), `src/systems/` (Pools, SpatialHash, Spawner, Combat, Pickup, LevelUp), `src/scenes/`, `src/gfx/`.
+- Spieler: 8-Wege (WASD/Pfeile), Kamera-Follow, 4096x4096 prozedurale Chunk-Karte (16px-Tiles, Moor/Wasser/Pfad/Dekor), I-Frames 0.8 s, Regeneration/Rüstung.
+- Gegner: Object-Pools, Spatial Hash, Separation; Archetypen `chaser`/`swarm`; **bog_rat, wisp, bogzombie** mit Platzhalter-Sprites (Palette, Hit-Flash, 2-Frame-Animation).
+- Waffe **ember** Stufe 1–8, generisches Framework (Cooldown, Projektil-Pool, sanftes Ziel-Homing, Durchschlag, Schaden, Rückstoß, Waffen-DPS-Tracking).
+- XP-Kristalle 3 Größen, Magnet/Aufsammelradius; Level-up pausiert, 3 Angebote, Tastatur 1–3 / Pfeile+Enter; Slot-Limits 6+6 und maxed-Filter als reine Funktion getestet.
+- Wellen-Director aus `waves.ts` (Spawnrate/Mix pro Minute, Ring-Welle ab Minute 3, Spawns im Ring außerhalb des Bildschirms); Boss-Hooks für M4 vorbereitet.
+- **Debug-API `window.__lf`** vollständig: `state, setTimeScale, skipTo, god, giveXp, addWeapon, addPassive, spawnEnemy, spawnBoss, openChest, pickLevelUp, autoPlay`. Cheats nur mit `?debug=1`. `spawnBoss`/`openChest` werfen bis M4/M5 einen klaren Fehler; nicht-implementierte Waffen/Gegner ebenfalls.
+- Palette: 32 eigene Nacht-/Licht-Farben in `src/palette.ts`, dokumentiert. Alle sichtbaren Pixel/Textfarben daraus, Bitmap-Font (5x7) selbst erzeugt.
+- Perf-Harness `scripts/perf.mjs`, Verifikation `scripts/verify.mjs` (Playwright, Screenshots `shots/m1-*.png`).
+
+**Messwerte (dieser Rechner, headless Chromium):**
+- `npm test`: **31 Tests grün** (RNG, Level-up-Regeln, XP, Wellen, Stats inkl. kumulativer Passive-Stufen, SpatialHash, Datentabellen, Sprite-Grids).
+- `npm run perf` mit 500 Gegnern über 10 s: **60,1 FPS** (Ziel ≥ 55), 497 Gegner aktiv, 0 JS-Fehler.
+- `npm run verify`: 10x-Zeitskalierung, AutoPlay, **66,3 s Spielzeit** im Testfenster, Level 5, 36 Kills, Level-up/Pause/Results erreicht, 0 JS-Fehler. Simulation läuft in festen 1/20-s-Teilschritten (Tunnel-Kollisionen bei hoher Zeitskalierung deutlich reduziert; Streifschüsse bleiben möglich).
+- Sichtprüfung `shots/m1-*.png`: Palette, Schärfe und HUD lesbar; Platzhalter-Art bewusst einfach.
+
+**Bekannte Lücken / offene Punkte:**
+- Nur `ember` ist spielbar; die anderen 5 Waffen sind Daten + Schema für M2 (Angebote zeigen sie deshalb noch nicht an).
+- Nur 3 der 30 Gegner sind gespielt; nicht-implementierte Wellen-Einträge fallen in M1 auf bog_rat/wisp/bogzombie zurück.
+- **Bruder Kael** startet laut Spec mit Kettenflegel; da dieser erst in M2 spielbar ist, erhält er in M1 ersatzweise Glutfunke (CharSelect zeigt weiterhin die Spec-Startwaffe).
+- Bosse, Truhen, Evolutionen, Endboss/Sieg, Sound, Damage-Numbers, Partikel-VFX und Meta fehlen (M2–M6).
+- Karte/Deko sind Platzhalter: weiche Kanten per Pixel-Knabbern statt vollem Rand-Tileset-Autotiling; Charakter-/Gegner-Animationen sind 1–2 Frames, keine 4-Frame-Läufe.
+- Balance ist M1-Rohbau (XP-Kurve 8 + 7/Level, Gegner-HP skaliert mit Zeit).
