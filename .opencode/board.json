@@ -981,10 +981,16 @@
       "id": 53,
       "title": "M5-06 Sound",
       "description": "scripts/gen_sfx.py, public/sfx WAVs, AudioSystem mit Mixing/Cooldowns/Prioritaet, Musik Run+Boss, window.__lf.audio(). Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T20:01:55Z",
+          "by": "build",
+          "text": "todo → doing: gen_sfx.py, WAVs, AudioSystem, Mixing, Musik-Loops integriert"
+        }
+      ],
       "created": "2026-11-25T19:46:37Z",
-      "updated": "2026-11-25T19:46:37Z"
+      "updated": "2026-11-25T20:01:55Z"
     },
     {
       "id": 54,

@@ -5,6 +5,8 @@ import { hasFlag } from "./logic/rng";
 import { TILE, WORLD_SIZE } from "./config";
 import { paintTerrain, terrainKindAt, type TileKind } from "./gfx/tiles";
 import type { Run } from "./scenes/Run";
+import { getAudio, applyOptions } from "./audio/AudioSystem";
+import { getSettings, changeSetting } from "./audio/settings";
 
 /**
  * `window.__lf` laut GAME.md. Immer vorhanden; Cheats nur mit `?debug=1`.
@@ -94,6 +96,21 @@ export function installDebugApi(game: Phaser.Game): void {
     autoPlay: (value: boolean) => requireRun().setAutoPlay(value),
     /** M5: Ereignis-Sequenz für die VFX-Abnahme auslösen. */
     event: (name: string) => requireRun().debugTriggerEvent(String(name)),
+
+    /** M5-Audio/Options (immer verfügbar, keine Cheats). */
+    audio: () => getAudio().debugState(),
+    options: () => getSettings(),
+    setOption: (key: string, value: number | boolean) => {
+      if (key !== "music" && key !== "sfx" && key !== "shake") {
+        throw new Error(`window.__lf.setOption: unbekannter Schlüssel "${key}"`);
+      }
+      applyOptions(changeSetting(key, value));
+      return getSettings();
+    },
+    setMuted: (value: boolean) => {
+      getAudio().setMuted(Boolean(value));
+      return getAudio().debugState();
+    },
 
     /** Tileset-Atlas: echte Terrain-Streifen (pixelgenau) + Dekor-Sampler als PNG. */
     tileset: (): string => {

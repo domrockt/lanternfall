@@ -43,6 +43,7 @@ import { lodFor, type LodState } from "../logic/lod";
 import { shakeFor, hitStopFor } from "../logic/feedback";
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
+import { getAudio } from "../audio/AudioSystem";
 
 export interface RunData {
   character?: CharacterId;
@@ -271,6 +272,7 @@ export class Run extends Phaser.Scene {
 
     this.scene.launch("ui");
     this.registry.set("lf-elapsed", 0);
+    getAudio().setMusic("run");
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.ground.destroy();
       this.combat.clear();
@@ -373,6 +375,7 @@ export class Run extends Phaser.Scene {
       rng: this.rng,
       onHit: (enemy, damage, weaponId, killed) => {
         this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
+        getAudio().play(killed ? "kill" : "hit");
         if (enemy.boss && !killed) this.bossHitFeedback();
       },
       onHeal: (amount) => {
@@ -437,6 +440,8 @@ export class Run extends Phaser.Scene {
     this.bossFlags[index] = true;
     this.bossesSpawned.push({ index, at: Math.round(this.elapsed * 10) / 10 });
     this.playBossIntroFx(b.x, b.y, index);
+    getAudio().play("bossWarn");
+    getAudio().setMusic("boss");
     this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: b.maxHp });
   }
 
@@ -673,6 +678,8 @@ export class Run extends Phaser.Scene {
         if (bossShake.durationMs > 0) this.cameras.main.shake(bossShake.durationMs, bossShake.intensity);
         this.hitStop = Math.max(this.hitStop, hitStopFor("bossDeath"));
         this.playBossDeathFx(e.x, e.y, e.bossIndex);
+        getAudio().play("bossDeath");
+        if (e.bossIndex !== 5) getAudio().setMusic("run");
         this.events.emit("bossDefeated", { index: e.bossIndex, name: BOSSES[e.bossIndex]?.name ?? "Boss" });
         // Dawn erst nach der Schleife starten: startDawn() kompaktiert das
         // Array, über das hier noch iteriert wird.
@@ -744,6 +751,8 @@ export class Run extends Phaser.Scene {
       .setScrollFactor(0).setDepth(77).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setScale(2.2).setAlpha(0);
     this.tweens.add({ targets: sun, alpha: 0.85, scale: 3.2, duration: 2400, ease: "Sine.Out" });
+    getAudio().play("victory");
+    getAudio().stopMusic();
     this.events.emit("dawn");
   }
 
@@ -860,6 +869,7 @@ export class Run extends Phaser.Scene {
 
   // ── XP / Level-up ────────────────────────────────────────────
   private giveXpInternal(amount: number): void {
+    getAudio().play("xp");
     const result = applyXp(this.xpState, amount);
     this.xpState = {
       level: result.level,
@@ -883,6 +893,7 @@ export class Run extends Phaser.Scene {
     this.currentOffers = offers;
     this.levelUpOpen = true;
     this.paused = true;
+    getAudio().play("levelup");
     this.events.emit("levelup", { offers, level: this.xpState.level });
   }
 
@@ -897,7 +908,8 @@ export class Run extends Phaser.Scene {
       const offers = this.levelSys.offers(this.rng);
       if (offers.length > 0) {
         this.currentOffers = offers;
-        this.events.emit("levelup", { offers, level: this.xpState.level });
+        getAudio().play("levelup");
+    this.events.emit("levelup", { offers, level: this.xpState.level });
         return;
       }
       this.xpState.pendingLevelUps = 0;
@@ -996,6 +1008,7 @@ export class Run extends Phaser.Scene {
     this.paused = true;
     this.chests.open(target);
     this.playChestFx(target.x, target.y);
+    getAudio().play("chest");
     this.events.emit("chestOpen", result);
   }
 
@@ -1182,6 +1195,7 @@ export class Run extends Phaser.Scene {
         tint: PAL[C.lanternWhite],
       });
     }
+    getAudio().play("evolution");
     this.events.emit("evolution", { id, name: name ?? id.toUpperCase() });
   }
 
@@ -1280,6 +1294,7 @@ export class Run extends Phaser.Scene {
 
   private endRun(reason: "death" | "dawn"): void {
     if (this.finished) return;
+    if (reason === "death") getAudio().play("defeat");
     this.finished = true;
     this.paused = true;
     const result: RunResult = {

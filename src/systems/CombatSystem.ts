@@ -17,6 +17,7 @@ import { deathClassFor, deathFxFor } from "../logic/death";
 import { knockbackFor } from "../logic/feedback";
 import { rollCrit, critDamage } from "../logic/damage-numbers";
 import { lodFor, type LodState } from "../logic/lod";
+import { getAudio } from "../audio/AudioSystem";
 import { ProjectilePool } from "./ProjectilePool";
 import type { SpatialHash } from "./SpatialHash";
 import type { OwnedWeapon } from "./LevelUpSystem";
@@ -184,6 +185,7 @@ export class CombatSystem {
         default: break;
       }
       owned.timer = effectiveCooldown(stats.cooldown, ctx.agg);
+      getAudio().playWeapon(owned.id);
     }
   }
 
