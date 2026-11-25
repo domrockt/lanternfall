@@ -27,8 +27,8 @@ const VFX_KEYS = {
 };
 
 const VFX_DELAY_MS = {
-  ember: 40, flail: 100, frost: 200, thorn: 40, storm: 80, lantern: 0,
-  phoenix: 120, wrath_pendulum: 0, eternal_winter: 200, thorn_storm: 40,
+  ember: 40, flail: 100, frost: 0, thorn: 40, storm: 80, lantern: 0,
+  phoenix: 0, wrath_pendulum: 0, eternal_winter: 0, thorn_storm: 40,
   thunder_seal: 80, soul_beacon: 0,
 };
 
@@ -42,6 +42,25 @@ async function evolutionSlotReady(page) {
     const slot = ui?.chestSlots?.[0];
     if (!slot || !slot.level) return false;
     return ui.chestGroup?.visible === true && slot.level.value === "EVOLUTION";
+  });
+}
+
+/**
+ * Roll-Frame-Assert: In der Rollphase (noch kein STUFE/EVOLUTION gesetzt) zeigt
+ * jeder Slot einen vollständigen Belohnungsnamen, mindestens einer zweizeilig.
+ */
+async function rollNamesComplete(page) {
+  return page.evaluate(() => {
+    const run = window.__game.scene.getScene("run");
+    const ui = window.__game.scene.getScene("ui");
+    const rewards = (run?.chestResult?.rewards ?? []).map((r) => r.name.toUpperCase());
+    if (rewards.length === 0) return false;
+    const slots = (ui?.chestSlots ?? []).slice(0, rewards.length);
+    if (slots.length !== rewards.length) return false;
+    const rolling = slots.every((s) => !s.level?.value);
+    const allFull = slots.every((s) => rewards.includes(`${s.text?.value ?? ""}${s.text2?.value ?? ""}`));
+    const twoLine = slots.some((s) => s.text2?.visible && s.text2?.value);
+    return rolling && allFull && twoLine;
   });
 }
 
@@ -82,6 +101,116 @@ async function shotAtSwing(page, weaponId, path, timeoutMs = 8000) {
   }
   await page.screenshot({ path });
   return false;
+}
+
+/**
+ * Phönixschwarm: warten, bis ≥2 Feuervögel knapp neben dem Spieler fliegen
+ * (Abstand 18–90 Welt-px), dann pausieren und im Schwarm-Peak schießen.
+ * Liefert Anzahl + Abstände für den eigenen Phönix-Assert.
+ */
+async function shotAtPhoenix(page, path, timeoutMs = 8000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    await clearLevelUps(page);
+    const birds = await page.evaluate(() => {
+      const run = window.__game.scene.getScene("run");
+      const px = run.player?.x ?? 0;
+      const py = run.player?.y ?? 0;
+      return (run.combat?.projectiles?.active ?? [])
+        .filter((p) => p.sprite?.texture?.key === "projectile_phoenix")
+        .map((p) => ({ d: Math.round(Math.hypot(p.x - px, p.y - py)), vis: Boolean(p.sprite.visible) }));
+    });
+    const near = birds.filter((b) => b.vis && b.d >= 18 && b.d <= 90);
+    if (near.length >= 2) {
+      if (await page.evaluate(() => window.__lf?.state().levelUpOpen)) {
+        await clearLevelUps(page);
+        continue;
+      }
+      await page.evaluate(() => window.__game.scene.getScene("run").scene.pause());
+      try {
+        await page.waitForTimeout(80);
+        await page.screenshot({ path });
+      } finally {
+        await page.evaluate(() => window.__game.scene.getScene("run").scene.resume());
+      }
+      return { count: near.length, distances: near.map((b) => b.d) };
+    }
+    await page.waitForTimeout(16);
+  }
+  await page.screenshot({ path });
+  return { count: 0, distances: [] };
+}
+
+/**
+ * Frost-Ring: sofort beim Spawn pausieren (Delay 0) und den tatsächlichen
+ * Ring-Radius aus der FX-Scale ableiten, damit der Pixel-Check nicht an
+ * Timing-Roundtrips hängt.
+ */
+async function shotAtFrost(page, path, timeoutMs = 8000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    await clearLevelUps(page);
+    const found = await page.evaluate(() => {
+      const run = window.__game.scene.getScene("run");
+      const px = run.player?.x ?? 0;
+      const py = run.player?.y ?? 0;
+      const fx = (run.combat?.fx?.active ?? []).find(
+        (f) => f.sprite?.texture?.key === "ring_frost" && Math.hypot((f.x ?? 0) - px, (f.y ?? 0) - py) < 60,
+      );
+      return fx ? { scale: fx.sprite.scaleX } : null;
+    });
+    if (found) {
+      if (await page.evaluate(() => window.__lf?.state().levelUpOpen)) {
+        await clearLevelUps(page);
+        continue;
+      }
+      await page.evaluate(() => window.__game.scene.getScene("run").scene.pause());
+      try {
+        await page.waitForTimeout(80);
+        await page.screenshot({ path });
+      } finally {
+        await page.evaluate(() => window.__game.scene.getScene("run").scene.resume());
+      }
+      // Ring-Textur: äußerer Ring bei 42 px, Canvas 3x → Bildradius.
+      return { scale: found.scale, radius: Math.round(42 * found.scale * 3) };
+    }
+    await page.waitForTimeout(16);
+  }
+  await page.screenshot({ path });
+  return null;
+}
+
+/**
+ * Frost-Pixel-Check im 1440×810-Shot: helles Ring-Band um die Bildmitte
+ * (720,405) im Radius ±10 px um den gemessenen Ring-Radius, Summe RGB > 560
+ * in mindestens 60 Pixeln.
+ */
+function frostRingPixels(path, radius) {
+  const W = 1440;
+  const H = 810;
+  const raw = execFileSync("ffmpeg", [
+    "-y", "-loglevel", "error", "-i", path,
+    "-f", "rawvideo", "-pix_fmt", "rgb24", "-vcodec", "rawvideo", "-",
+  ], { maxBuffer: 16 * 1024 * 1024 });
+  if (raw.length !== W * H * 3) {
+    throw new Error(`frostRingPixels: erwartet ${W * H * 3} Bytes, bekam ${raw.length}`);
+  }
+  const cx = W / 2;
+  const cy = H / 2;
+  const inner = Math.max(40, radius - 10);
+  const outer = radius + 10;
+  let bright = 0;
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const dx = x - cx;
+      const dy = y - cy;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < inner * inner || d2 > outer * outer) continue;
+      const i = (y * W + x) * 3;
+      if (raw[i] + raw[i + 1] + raw[i + 2] > 560) bright++;
+    }
+  }
+  return bright;
 }
 
 /** Aktive FX-/Projektil-Texturen aus der Run-Szene (gepoolt, nur aktive Einträge). */
@@ -202,15 +331,34 @@ try {
         window.__lf.setTimeScale(1);
       });
       let vfx;
+      let frostRadius = 55;
       const swingShot = id === "flail" || id === "wrath_pendulum";
       if (swingShot) {
         const ok = await shotAtSwing(page, id, `shots/m2-weapon-${id}.png`);
         vfx = ok ? ["flail_ball (swing)"] : [];
+      } else if (id === "phoenix") {
+        const birds = await shotAtPhoenix(page, "shots/m2-weapon-phoenix.png");
+        vfx = birds.count > 0 ? ["projectile_phoenix"] : [];
+        results.push({
+          id: "phoenix-birds", damage: null, owned: birds.count >= 2, enemies: 0, kills: 0, fps: 0, ok: birds.count >= 2,
+        });
+        console.log(`Phönix-Check: ${birds.count} Vögel neben Spieler (Abstand ${birds.distances.join(", ")} px): ${birds.count >= 2 ? "OK" : "FEHLER"}`);
+      } else if (id === "frost") {
+        const ring = await shotAtFrost(page, "shots/m2-weapon-frost.png");
+        vfx = ring ? ["ring_frost"] : [];
+        if (ring) frostRadius = ring.radius;
       } else {
         vfx = await shotAtVfx(page, VFX_KEYS[id], `shots/m2-weapon-${id}.png`, {
           delayMs: VFX_DELAY_MS[id] ?? 0,
           nearPlayer: id === "phoenix",
         });
+      }
+      if (id === "frost") {
+        const bright = frostRingPixels("shots/m2-weapon-frost.png", frostRadius);
+        results.push({
+          id: "frost-ring-pixels", damage: null, owned: bright >= 60, enemies: 0, kills: 0, fps: 0, ok: bright >= 60,
+        });
+        console.log(`Frost-Pixel-Check: ${bright} helle Ring-Pixel (Radius ${frostRadius}±10 px, Ziel ≥60): ${bright >= 60 ? "OK" : "FEHLER"}`);
       }
       await page.evaluate(() => window.__lf.setTimeScale(1));
       await clearLevelUps(page);
@@ -283,8 +431,11 @@ try {
     rmSync("shots/chest-frames", { recursive: true, force: true });
     mkdirSync("shots/chest-frames", { recursive: true });
     let evoCaptured = false;
+    let rollCaptured = false;
     for (let i = 0; i < 48; i++) {
       await chestPage.screenshot({ path: `shots/chest-frames/f${String(i).padStart(3, "0")}.png` });
+      // Während des Rollens: jeder Slot zeigt einen vollständigen Rollnamen (ggf. 2 Zeilen).
+      if (!rollCaptured && (await rollNamesComplete(chestPage))) rollCaptured = true;
       // Evolutions-Slot fertig ausgerollt: Panel mit Icon/Name/EVOLUTION schießen.
       if (!evoCaptured && (await evolutionSlotReady(chestPage))) {
         await chestPage.waitForTimeout(280); // Settle-Tween (220 ms) abwarten.
@@ -297,6 +448,8 @@ try {
       results.push({ id: "chest-evolution-shot", damage: null, owned: false, enemies: 0, kills: 0, fps: 0, ok: false });
       console.log("Evolution-Screenshot: Evolutions-Slot nie fertig ausgerollt -> FEHLER");
     }
+    results.push({ id: "chest-roll-names", damage: null, owned: rollCaptured, enemies: 0, kills: 0, fps: 0, ok: rollCaptured });
+    console.log(`Roll-Namen: ${rollCaptured ? "alle Slots vollständig (auch 2-zeilig), OK" : "kein vollständiger Roll-Frame -> FEHLER"}`);
     await chestPage.waitForTimeout(1200);
     const chestState = await chestPage.evaluate(() => window.__lf.state());
     const evolved = chestState.weapons.some((w) => w.id === "phoenix" && w.level === 8);
@@ -355,6 +508,9 @@ const summary = {
   evolved: results.find((r) => r.id === "chest-evolution")?.owned ?? false,
   evolutionState: results.find((r) => r.id === "evolution-state")?.owned ?? false,
   longName: results.find((r) => r.id === "chest-longname")?.owned ?? false,
+  phoenixBirds: results.find((r) => r.id === "phoenix-birds")?.owned ?? false,
+  frostRingPixels: results.find((r) => r.id === "frost-ring-pixels")?.owned ?? false,
+  rollNames: results.find((r) => r.id === "chest-roll-names")?.owned ?? false,
   failed: failed.map((r) => r.id),
   jsErrors: errors,
   passed: failed.length === 0 && errors.length === 0,

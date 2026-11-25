@@ -4,7 +4,7 @@ import {
   WAVES, WEAPONS, WEAPON_IDS,
 } from "../src/data";
 import { PAL } from "../src/palette";
-import { SPRITE_GRIDS } from "../src/gfx/textures";
+import { charIndex, SPRITE_GRIDS } from "../src/gfx/textures";
 import { GLYPHS } from "../src/gfx/glyphs";
 
 describe("Datentabellen", () => {
@@ -73,6 +73,19 @@ describe("Datentabellen", () => {
     for (const [key, def] of Object.entries(SPRITE_GRIDS)) {
       expect(def.rows.length, key).toBe(def.h);
       for (const row of def.rows) expect(row.length, `${key}: ${row}`).toBe(def.w);
+    }
+  });
+
+  it("Sprite-Grids nutzen nur transparente Pixel oder Palettenindizes 0–31", () => {
+    for (const [key, def] of Object.entries(SPRITE_GRIDS)) {
+      for (const row of def.rows) {
+        for (const ch of row) {
+          if (ch === ".") continue;
+          const i = charIndex(ch);
+          expect(i, `${key}: unbekanntes Zeichen "${ch}"`).toBeGreaterThanOrEqual(0);
+          expect(i, `${key}: Index ${i} ausserhalb der Palette`).toBeLessThan(32);
+        }
+      }
     }
   });
 

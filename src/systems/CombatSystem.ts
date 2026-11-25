@@ -224,7 +224,9 @@ export class CombatSystem {
         target,
         trail: "projectile_phoenix",
         trailInterval: 0.04,
-        blendAdd: true,
+        // Normal-Blend, damit Flügel/Kontur des Feuervogels klar lesbar bleiben;
+        // der Trail bleibt additiv (siehe updateProjectiles).
+        blendAdd: false,
         explodeRadius: effectiveRadius(34, ctx.agg),
       });
     }
@@ -623,11 +625,14 @@ export class CombatSystem {
         p.trailTimer -= ctx.dt;
         if (p.trailTimer <= 0) {
           p.trailTimer = p.trailInterval;
+          // Feuervogel-Trail bleibt warm und additiv, auch wenn das Projektil selbst
+          // mit Normal-Blend (klare Flügel/Kontur) gerendert wird.
+          const phoenixTrail = p.weaponId === "phoenix";
           this.fx.spawn({
             texture: p.trail, x: p.x, y: p.y, life: 0.22,
             scaleFrom: p.sprite.scaleX * 0.8, scaleTo: 0.15,
-            alphaFrom: 0.45, alphaTo: 0, additive: p.blendAdd,
-            tint: p.blendAdd ? undefined : PAL[C.fog],
+            alphaFrom: 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
+            tint: p.blendAdd || phoenixTrail ? undefined : PAL[C.fog],
           });
         }
       }

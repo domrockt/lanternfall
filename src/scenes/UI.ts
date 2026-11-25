@@ -207,7 +207,12 @@ export class UI extends Phaser.Scene {
         this.time.addEvent({
           delay: 95,
           repeat: 7,
-          callback: () => slot.text.setText(pickRollName(result.rewards, tick++).toUpperCase().slice(0, 11)),
+          callback: () => {
+            // Rollnamen wie die ausgerollten Namen vollständig auf 2 Zeilen verteilen.
+            const lines = slotNameLines(pickRollName(result.rewards, tick++).toUpperCase());
+            slot.text.setText(lines[0] ?? "").setAlpha(1);
+            slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
+          },
         });
       }
     });

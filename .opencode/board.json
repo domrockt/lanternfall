@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 28,
+  "next": 29,
   "cards": [
     {
       "id": 1,
@@ -477,6 +477,22 @@
       ],
       "created": "2026-11-25T01:38:42Z",
       "updated": "2026-11-25T02:32:12Z"
+    },
+    {
+      "id": 28,
+      "title": "M2-Fix2: Feuervogel-Sprite, Frost-Ring-Shot, Rolltexte",
+      "description": "Phoenix-Projektil als gefluegeltes 13x9-Sprite; frost/eternal_winter Delay 0 + Pixel-Assert; Truhen-Rolltexte via slotNameLines (2 Zeilen, keine Kuerzung); GIF neu; build/test/verify/perf.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T03:09:37Z",
+          "by": "build",
+          "text": "doing → review: Umgesetzt: projectile_phoenix 13x9 mit Fluegeln/Koerper/Schwanz/Auge, 1px Kontur, warme 5-Stufen-Palette; Projektil auf Normal-Blend, Trail bleibt additiv/warm (Hitbox/Schaden unveraendert). frost/eternal_winter/phoenix Delay 0; shotAtFrost misst Ring-Radius aus FX-Scale und Pixel-Assert zaehlt helle Ring-Pixel im Band (274-282). shotAtPhoenix pollt >=2 Voegel 18-90px, Assert. Roll-Callback nutzt slotNameLines, Roll-Frame-Assert. GIF neu. build gruen, 61 Tests, verify passed (failed:[], jsErrors:[], phoenixBirds/frostRingPixels/rollNames true), perf 57,0 FPS bei 580."
+        }
+      ],
+      "created": "2026-11-25T02:51:35Z",
+      "updated": "2026-11-25T03:09:37Z"
     }
   ]
 }
