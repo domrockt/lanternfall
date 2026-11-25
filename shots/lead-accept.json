@@ -1,0 +1,103 @@
+{
+  "sheet": {
+    "count": 33,
+    "identicalPairs": 0,
+    "pairs": []
+  },
+  "ranged": {
+    "samples": 32,
+    "minDistance": 95,
+    "medianDistance": 124,
+    "enemyShots": 5,
+    "ok": true
+  },
+  "orbiter": {
+    "samples": 40,
+    "sweepDeg": 197,
+    "rMin": 78,
+    "rMax": 95,
+    "ok": true
+  },
+  "water": {
+    "waterTile": {
+      "x": 2240,
+      "y": 1760,
+      "score": 81
+    },
+    "drySpeed": 65,
+    "dryKindAfter": "grass",
+    "wetSpeed": 38,
+    "wetKindAfter": "water",
+    "ratio": 0.58,
+    "splashParticles": 3,
+    "enemySlow": {
+      "pxPerSec": 15,
+      "defSpeed": 38,
+      "kind": "water"
+    },
+    "ok": true,
+    "frameTest": {
+      "frames": 72,
+      "internalPxPerSec": 0,
+      "displayPxPerSec": 27.5
+    }
+  },
+  "scaling": {
+    "canvasW": 480,
+    "cssW": 480,
+    "cssH": 270,
+    "left": 160,
+    "top": 90,
+    "zoom": 1,
+    "textSample": [
+      "LV 3",
+      "00:00",
+      "KILL 0"
+    ],
+    "textCount": 3,
+    "ok": true
+  },
+  "victory": {
+    "reason": null,
+    "dawn": true,
+    "bossesDefeated": 6,
+    "chests": 6,
+    "texts": [
+      "MORGENDAMMERUNG",
+      "DU HAST ÜBERLEBT",
+      "CHARAKTER: MIRA ASHWICK",
+      "ZEIT: 30:10",
+      "KILLS: 204",
+      "LEVEL: 18",
+      "GOTT-MODUS AKTIV",
+      "SCHADEN PRO WAFFE"
+    ],
+    "ok": true
+  },
+  "elite": {
+    "info": {
+      "id": "skeleton",
+      "spriteScale": 1.25,
+      "auraVisible": true,
+      "auraAlpha": 0.42,
+      "auraScale": 1.11875,
+      "eliteCount": 1
+    },
+    "gems": {
+      "total": 3,
+      "delta": 3,
+      "big": 2
+    },
+    "ok": true
+  },
+  "cap": {
+    "samples": 234,
+    "maxAlive": 503,
+    "atTime": 1557,
+    "samplesOver500": 2,
+    "window": "Minute 20-26, natürlicher Director",
+    "ok": true
+  },
+  "jsErrors": [],
+  "passed": true
+}

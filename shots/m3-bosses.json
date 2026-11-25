@@ -3,7 +3,7 @@
     {
       "id": "moor_queen",
       "ok": true,
-      "shares": 30,
+      "shares": 11,
       "phases": [
         1
       ],
@@ -36,7 +36,7 @@
     {
       "id": "bell_golem",
       "ok": true,
-      "shares": 3,
+      "shares": 8,
       "phases": [
         1
       ],
@@ -47,7 +47,7 @@
     {
       "id": "coven",
       "ok": true,
-      "shares": 3,
+      "shares": 2,
       "phases": [
         1
       ],
@@ -58,7 +58,7 @@
     {
       "id": "hollow_king",
       "ok": true,
-      "shares": 0,
+      "shares": 2,
       "phases": [
         1,
         2,
