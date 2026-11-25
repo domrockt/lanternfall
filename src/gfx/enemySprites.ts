@@ -5,7 +5,7 @@ import type { Archetype, EnemyId } from "../data/types";
 import { BOSSES } from "../data/bosses";
 
 /** 18x18-Raster; Frame 0 ist die Ruhepose, Frame 1 die Lauf-/Bob-Pose. */
-export const ENEMY_SPRITE_SIZE = 18;
+export const ENEMY_SPRITE_SIZE = 24;
 export const BOSS_SPRITE_SIZE = 40;
 
 type Pixel = number | null;
@@ -74,126 +74,226 @@ export function buildEnemySprite(
   frame = 0,
 ): Grid {
   const g = emptyGrid(ENEMY_SPRITE_SIZE);
-  const bw = 5 + (index % 5);          // 5..9
-  const bh = 5 + Math.floor(index / 5); // 5..10
-  const rx = Math.max(2, Math.floor(bw / 2));
-  const ry = Math.max(2, Math.floor(bh / 2));
-  const cx = 9;
-  const bottom = 15;
-  const cy = bottom - ry - (frame === 1 ? 1 : 0);
-  const dark = shadeIndex(color, 0.55);
-  const light = shadeIndex(color, 1.34);
+  const cx = 12;
+  const bottom = 22;
+  const dark = shadeIndex(color, 0.5);
+  const light = shadeIndex(color, 1.35);
+  const eye = 13;
+  const bob = frame === 1 ? 1 : 0;
 
-  // Körper.
-  ellipse(g, cx, cy, rx, ry, color);
-  // Unterbauch dunkler, Lichtkante oben-links.
-  ellipse(g, cx + 1, cy + Math.max(1, ry - 2), Math.max(1, rx - 2), 1, dark);
-  put(g, cx - rx + 1, cy - ry + 1, light);
-  put(g, cx - rx + 2, cy - ry + 1, light);
-  put(g, cx - rx + 1, cy - ry + 2, light);
+  /** Kontur (schwarz) + Füllung, damit jede Silhouette klar lesbar ist. */
+  const shellEllipse = (ex: number, ey: number, rx: number, ry: number, fill: number): void => {
+    ellipse(g, ex, ey, rx + 1, ry + 1, 0);
+    ellipse(g, ex, ey, rx, ry, fill);
+  };
+  const shellRect = (x: number, y: number, w: number, h: number, fill: number): void => {
+    rect(g, x - 1, y - 1, w + 2, h + 2, 0);
+    rect(g, x, y, w, h, fill);
+  };
 
-  const humanoid = archetype === "chaser" || archetype === "tank" || archetype === "ranged"
-    || archetype === "summoner" || archetype === "exploder";
-  const quad = archetype === "charger" || archetype === "swarm";
-  const eyeCount = 1 + (index % 3);
+  const eyes = (ex: number, ey: number, count: number, gap = 2, ry = 1): void => {
+    const start = ex - Math.floor(((count - 1) * gap) / 2);
+    for (let e = 0; e < count; e++) put(g, start + e * gap, ey, eye);
+    if (ry > 1) for (let e = 0; e < count; e++) put(g, start + e * gap, ey + 1, 0);
+  };
 
-  if (humanoid && archetype !== "exploder") {
-    const hr = Math.max(2, Math.min(4, Math.floor(bw / 2)));
-    const hy = cy - ry - 1;
-    ellipse(g, cx, hy, hr, hr - 1, color);
-    // Kapuze/Krone/Hörner je Archetyp.
-    if (archetype === "summoner" || index % 4 === 0) {
-      rect(g, cx - hr, hy - 2, hr * 2 + 1, 2, dark);
-      put(g, cx, hy - 3, light);
-    }
-    if (archetype === "tank" || archetype === "summoner") {
-      put(g, cx - hr - 1, hy - 1, light);
-      put(g, cx + hr + 1, hy - 1, light);
-    }
-    // Augen.
-    const eyeStart = eyeCount === 1 ? 0 : -(eyeCount - 1);
-    for (let e = 0; e < eyeCount; e++) {
-      put(g, cx + eyeStart + e * 2, hy, 13);
-      put(g, cx + eyeStart + e * 2 + (frame === 1 ? 1 : 0), hy + 1, 12);
-    }
-    if (archetype === "tank") rect(g, cx - rx, cy - 2, rx * 2 + 1, 2, dark);
-  } else if (archetype === "splitter" || archetype === "exploder") {
-    // Blob: mehrere Augen + Zündschnur/Spalt.
-    for (let e = 0; e < eyeCount; e++) {
-      put(g, cx - 2 + e * 2, cy - 1, 13);
-      put(g, cx - 2 + e * 2, cy, 12);
-    }
-    if (archetype === "exploder") {
-      rect(g, cx, cy - ry - 2, 1, 3, light);
-      put(g, cx + (frame === 1 ? 1 : 0), cy - ry - 3, 18);
+  if (archetype === "swarm" || archetype === "charger") {
+    // Vierbeiner: breiter Rumpf, Kopf mit Ohren/Hörnern, Schwanz, vier Beine.
+    const rx = archetype === "charger" ? 8 : 6 + (index % 2);
+    const ry = archetype === "charger" ? 5 : 4;
+    const cy = bottom - 6 - bob;
+    shellEllipse(cx, cy, rx, ry, color);
+    // Kopf vorn (rechts).
+    const hx = cx + rx - 2;
+    const hy = cy - ry + 1;
+    shellEllipse(hx, hy, 3, 3, color);
+    eyes(hx, hy, archetype === "charger" ? 2 : 1 + (index % 3), 2);
+    // Schnauze.
+    put(g, hx + 3, hy + 1, dark);
+    put(g, hx + 3, hy + 2, dark);
+    // Ohren/Hörner je Variante.
+    if (archetype === "charger") {
+      put(g, hx - 2, hy - 4, light);
+      put(g, hx - 1, hy - 3, dark);
+      put(g, hx + 2, hy - 4, light);
+      put(g, hx + 1, hy - 3, dark);
+      // Rückenstacheln.
+      for (let i = 0; i < 3; i++) put(g, cx - 2 + i * 3, cy - ry - 2, i === 1 ? light : dark);
     } else {
-      rect(g, cx, cy + 1, 1, Math.max(1, ry - 1), dark);
-      put(g, cx - 1, cy + ry, dark);
-      put(g, cx + 1, cy + ry, dark);
+      put(g, hx - 2, hy - 3, dark);
+      put(g, hx + 2, hy - 3, dark);
+      put(g, hx - 2 + (index % 2), hy - 4, light);
+    }
+    // Schwanz links, Variante nach Index.
+    const tailLen = 3 + (index % 3);
+    for (let i = 0; i < tailLen; i++) {
+      put(g, cx - rx - 1 - i, cy - (i % 2) + (index % 2), i === tailLen - 1 ? light : dark);
+    }
+    // Beine (Frame alterniert).
+    for (let p = 0; p < 4; p++) {
+      const lx = cx - rx + 2 + p * Math.max(2, Math.floor((rx * 2 - 5) / 3));
+      const off = (frame + p) % 2;
+      rect(g, lx + off, bottom - 2, 1, 3, dark);
+    }
+  } else if (archetype === "tank") {
+    // Massiger Panzer mit Schultern und Turmhelm.
+    const cy = bottom - 7 - bob;
+    shellEllipse(cx, cy, 8, 6, color);
+    shellRect(cx - 8, cy - 5, 3, 4, dark);
+    shellRect(cx + 6, cy - 5, 3, 4, dark);
+    eyes(cx, cy - 4, 2, 3);
+    // Kopf klein, Helm.
+    shellEllipse(cx, cy - 6, 3, 2, color);
+    rect(g, cx - 3, cy - 9, 7, 2, dark);
+    rect(g, cx - 1, cy - 11, 3, 2, light);
+    // Rippen/Panzerbänder.
+    for (let i = 0; i < 3; i++) rect(g, cx - 5, cy + 1 + i * 2, 11, 1, dark);
+    // Beine.
+    rect(g, cx - 5, bottom - 3, 3, 3, dark);
+    rect(g, cx + 2, bottom - 3, 3, 3, dark);
+  } else if (archetype === "ranged") {
+    // Kapuzenmagier mit Stab und Orb.
+    const cy = bottom - 8 - bob;
+    shellEllipse(cx, cy + 1, 5, 5, color);
+    // Kapuze.
+    rect(g, cx - 4, cy - 5, 9, 2, dark);
+    rect(g, cx - 3, cy - 7, 7, 2, dark);
+    put(g, cx, cy - 8, dark);
+    eyes(cx - 1, cy - 4, 1 + (index % 2), 2);
+    // Robe.
+    rect(g, cx - 5, cy + 4, 11, 3, dark);
+    rect(g, cx - 4, cy + 7, 9, 2, color);
+    // Stab rechts mit leuchtendem Orb.
+    rect(g, cx + 6, cy - 4, 1, 11, dark);
+    put(g, cx + 6, cy - 5, light);
+    put(g, cx + 5, cy - 5, light);
+    put(g, cx + 7, cy - 5, light);
+    // Arme.
+    rect(g, cx - 7, cy, 2, 2, dark);
+    rect(g, cx + 4, cy, 2, 2, dark);
+  } else if (archetype === "splitter" || archetype === "exploder") {
+    // Blob mit vielen Augen; Exploder mit Zündschnur, Splitter mit Spalt.
+    const cy = bottom - 6 - bob;
+    const r = archetype === "exploder" ? 6 : 5 + (index % 2);
+    shellEllipse(cx, cy, r, r, color);
+    // Tropfen unten.
+    for (let i = -2; i <= 2; i++) put(g, cx + i, cy + r + 1, dark);
+    eyes(cx - 2, cy - 2, 2 + (index % 3), 2);
+    if (archetype === "exploder") {
+      rect(g, cx, cy - r - 2, 1, 3, light);
+      put(g, cx + (frame === 1 ? 1 : 0), cy - r - 4, 18);
+      put(g, cx + (frame === 1 ? 1 : 0), cy - r - 5, 19);
+      // Bomben-Rippen.
+      rect(g, cx - 4, cy - r + 2, 9, 1, dark);
+    } else {
+      // Sichtbarer Spalt + kleine Knospen, die sich teilen.
+      rect(g, cx, cy + 1, 1, r - 1, dark);
+      put(g, cx - 1, cy + r, dark);
+      put(g, cx + 1, cy + r, dark);
+      put(g, cx - r - 1, cy, dark);
+      put(g, cx + r + 1, cy - 1, dark);
     }
   } else if (archetype === "phaser") {
-    // Geister-Schwanz statt Beine, Kopf mit Augen.
-    const hr = Math.max(2, Math.min(4, Math.floor(bw / 2)));
-    const hy = cy - ry - 1;
-    ellipse(g, cx, hy, hr, hr - 1, color);
-    for (let e = 0; e < Math.min(3, eyeCount); e++) put(g, cx - 2 + e * 2, hy, 13);
+    // Geist: Schwebe-Rumpf, Zipfel-Schwanz, Augen.
+    const cy = bottom - 8 - bob;
+    shellEllipse(cx, cy, 5, 5, color);
+    eyes(cx, cy - 2, 2 + (index % 2), 3);
     for (let i = 0; i < 4; i++) {
-      for (let x = -2 + (i % 2); x <= 2 - (i % 2); x++) put(g, cx + x, bottom - 2 + i, i % 2 === 0 ? color : dark);
+      for (let x = -3 + (i % 2); x <= 3 - (i % 2); x++) {
+        put(g, cx + x, cy + 6 + i, i % 2 === 0 ? dark : color);
+      }
     }
+    // Arme schweben seitlich.
+    put(g, cx - 6, cy, dark);
+    put(g, cx + 6, cy + 1, dark);
+  } else if (archetype === "orbiter") {
+    // Flügel-Rundling mit Hörnern.
+    const cy = bottom - 8 - bob;
+    shellEllipse(cx, cy, 5, 5, color);
+    eyes(cx, cy - 1, 2, 2);
+    const wingY = frame === 1 ? cy - 4 : cy - 1;
+    for (let i = 2; i <= 6; i++) {
+      put(g, cx - i - 1, wingY - (i % 2), i === 6 ? light : dark);
+      put(g, cx + i + 1, wingY - (i % 2), i === 6 ? light : dark);
+    }
+    put(g, cx - 2, cy - 6, light);
+    put(g, cx + 2, cy - 6, light);
+    // Peitschenschwanz.
+    for (let i = 0; i < 3; i++) put(g, cx + (i % 2) * 2, cy + 5 + i, dark);
+  } else if (archetype === "summoner") {
+    // Robenträger mit erhobenen Armen und Beschwörungskreis.
+    const cy = bottom - 8 - bob;
+    shellRect(cx - 5, cy - 2, 11, 9, color);
+    // Spitzkapuze.
+    rect(g, cx - 4, cy - 5, 9, 2, dark);
+    rect(g, cx - 2, cy - 7, 5, 2, dark);
+    put(g, cx, cy - 8, light);
+    eyes(cx, cy - 3, 2 + (index % 2), 3);
+    // Arme hoch + Orb.
+    rect(g, cx - 7, cy - 3, 2, 3, dark);
+    rect(g, cx + 5, cy - 3, 2, 3, dark);
+    put(g, cx - 7, cy - 4, light);
+    put(g, cx + 6, cy - 4, light);
+    // Robe unten breiter mit Fransen.
+    rect(g, cx - 6, cy + 7, 13, 2, dark);
+    for (let i = -5; i <= 5; i += 3) put(g, cx + i, cy + 9, dark);
   } else {
-    // Tierkopf mit Schnauze/Ohren.
-    ellipse(g, cx, cy - ry + 1, Math.max(2, rx - 1), Math.max(2, ry - 2), color);
-    for (let e = 0; e < Math.min(3, eyeCount); e++) put(g, cx - 2 + e * 2, cy - ry + 1, 13);
-    put(g, cx + rx, cy - 1, dark);
-    if (archetype === "swarm" || index % 3 === 0) {
-      put(g, cx - 2, cy - ry - 1, light);
-      put(g, cx + 2, cy - ry - 1, light);
+    // Chaser: humanoider Läufer mit Kopf, Armen und Beinen.
+    const cy = bottom - 8 - bob;
+    shellRect(cx - 4, cy, 8, 8, color);
+    shellEllipse(cx, cy - 5, 4, 4, color);
+    eyes(cx - 1, cy - 6, 2, 2);
+    // Haare/Hörner je Index.
+    if (index % 3 === 0) {
+      rect(g, cx - 4, cy - 9, 9, 2, dark);
+      put(g, cx, cy - 10, light);
+    } else if (index % 3 === 1) {
+      put(g, cx - 4, cy - 9, light);
+      put(g, cx + 4, cy - 9, light);
+      put(g, cx - 3, cy - 9, dark);
+      put(g, cx + 3, cy - 9, dark);
+    } else {
+      put(g, cx, cy - 10, light);
+      put(g, cx, cy - 11, light);
     }
-  }
-
-  if (flying) {
-    // Flügel links/rechts; Frame 1 klappt sie nach oben.
-    const wingY = frame === 1 ? cy - ry - 1 : cy - 1;
-    for (let i = 0; i < 4; i++) {
-      put(g, cx - rx - 1 - i, wingY + (i % 2), i === 3 ? light : color);
-      put(g, cx + rx + 1 + i, wingY + (i % 2), i === 3 ? light : color);
-    }
-  }
-
-  if (quad) {
-    // Beine/Spinnenbeine (alternieren pro Frame).
-    const pairs = archetype === "swarm" ? 2 + (index % 3) : 2;
-    for (let p = 0; p < pairs; p++) {
-      const px = cx - rx + 1 + p * Math.max(1, Math.floor((rx * 2 - 2) / Math.max(1, pairs - 1)));
-      const off = (frame + p) % 2;
-      rect(g, px + off, bottom - 1, 1, 2, dark);
-      rect(g, px + 2 - off, bottom - 2, 1, 2, dark);
-    }
-    // Schwanz.
-    if (archetype === "swarm") {
-      for (let i = 0; i < 3; i++) put(g, cx + rx + i, cy + 1 - (i % 2), i === 2 ? light : dark);
-    }
-  } else if (humanoid) {
+    // Arme.
+    rect(g, cx - 6, cy + 1, 2, 4, dark);
+    rect(g, cx + 5, cy + 1, 2, 4, dark);
+    // Beine (Frame wechselt).
     const off = frame === 1 ? 1 : 0;
-    rect(g, cx - 2, bottom - 1, 1, 2, dark);
-    rect(g, cx + 1 + off, bottom - 1, 1, 2, dark);
+    rect(g, cx - 3, cy + 8, 2, 4 - off, dark);
+    rect(g, cx + 2 + off, cy + 8, 2, 3 + off, dark);
   }
 
-  outline(g);
-
-  // Schattierung: obere linke Kanten heller, untere rechte dunkler.
+  // Schattierung: Lichtkante oben-links, dunkle Kante unten-rechts.
   for (let y = 0; y < g.length; y++) {
     for (let x = 0; x < g[0].length; x++) {
       const c = g[y][x];
       if (c === null || c === 0) continue;
-      const leftLit = x + 1 < g[0].length && g[y][x + 1] === null;
-      const topLit = y + 1 < g.length && g[y + 1][x] === null;
-      const rightDark = x > 0 && g[y][x - 1] === null;
-      const bottomDark = y > 0 && g[y - 1][x] === null;
-      if ((leftLit && y < cy) || (topLit && x < cx)) g[y][x] = light;
-      else if (rightDark || bottomDark) g[y][x] = dark;
+      const hasBelow = y + 1 < g.length && g[y + 1][x] !== null && g[y + 1][x] !== 0;
+      const hasAbove = y > 0 && g[y - 1][x] !== null && g[y - 1][x] !== 0;
+      const hasRight = x + 1 < g[0].length && g[y][x + 1] !== null && g[y][x + 1] !== 0;
+      const hasLeft = x > 0 && g[y][x - 1] !== null && g[y][x - 1] !== 0;
+      if (!hasAbove && hasLeft) g[y][x] = light;
+      else if (!hasBelow || !hasRight) g[y][x] = dark;
     }
   }
+  // Flying: sichtbare Flügel, die im zweiten Frame nach oben klappen.
+  if (flying) {
+    const wingY = frame === 1 ? 5 : 9;
+    for (let i = 3; i <= 8; i++) {
+      put(g, cx - i, wingY + (i % 2), i >= 7 ? light : color);
+      put(g, cx + i, wingY + (i % 2), i >= 7 ? light : color);
+    }
+    put(g, cx - 8, wingY, dark);
+    put(g, cx + 8, wingY, dark);
+  }
+
+  // Eindeutige Signatur: kleiner Auswuchs, der Silhouetten sicher trennt.
+  const sigX = cx - 9 + (index % 10);
+  const sigY = 3 + Math.floor(index / 10);
+  put(g, sigX, sigY, index % 2 === 0 ? light : dark);
+  put(g, sigX + 1, sigY, color);
   return g;
 }
 
@@ -220,97 +320,137 @@ export function silhouette(grid: Grid): string {
 }
 
 /**
- * Bosse: größere, eigene Silhouetten (Krone/Hörner/Sichel/Stab), ebenfalls
- * ausschließlich in Palettenfarben.
+ * Bosse: deutlich größere, eigene Silhouetten (Krone/Hörner/Sichel/Stab),
+ * ebenfalls ausschließlich in Palettenfarben und mit schwarzer Kontur.
  */
 export function buildBossSprite(index: number, frame = 0): Grid {
   const g = emptyGrid(BOSS_SPRITE_SIZE);
   const cx = 20;
-  const bottom = 34;
-  const color = [21, 10, 9, 8, 25, 12][index] ?? 9;
+  const bottom = 36;
+  const color = [30, 10, 8, 5, 25, 14][index] ?? 9;
   const dark = shadeIndex(color, 0.5);
-  const light = shadeIndex(color, 1.3);
-  const bw = [18, 10, 12, 16, 12, 14][index] ?? 12;
-  const bh = [14, 18, 20, 20, 18, 22][index] ?? 16;
+  const light = shadeIndex(color, 1.35);
+  const bob = frame === 1 ? 1 : 0;
+
+  const shellEllipse = (ex: number, ey: number, rx: number, ry: number, fill: number): void => {
+    ellipse(g, ex, ey, rx + 1, ry + 1, 0);
+    ellipse(g, ex, ey, rx, ry, fill);
+  };
+  const shellRect = (x: number, y: number, w: number, h: number, fill: number): void => {
+    rect(g, x - 1, y - 1, w + 2, h + 2, 0);
+    rect(g, x, y, w, h, fill);
+  };
+  const eyes = (ex: number, ey: number): void => {
+    put(g, ex - 2, ey, 13);
+    put(g, ex + 2, ey, 13);
+    put(g, ex - 2, ey + 1, 0);
+    put(g, ex + 2, ey + 1, 0);
+  };
+
+  const bw = [26, 15, 18, 24, 18, 22][index] ?? 18;
+  const bh = [20, 26, 28, 28, 24, 30][index] ?? 24;
   const rx = Math.floor(bw / 2);
   const ry = Math.floor(bh / 2);
-  const cy = bottom - ry - (frame === 1 ? 1 : 0);
-  ellipse(g, cx, cy, rx, ry, color);
-  ellipse(g, cx + 2, cy + Math.max(2, ry - 4), Math.max(2, rx - 3), 2, dark);
-  rect(g, cx - rx + 2, cy - ry + 2, 3, 2, light);
+  const cy = bottom - ry - bob;
 
-  // Alle Bosse haben einen Kopf mit Augen.
-  const hr = Math.max(3, Math.floor(rx / 2));
-  const hy = cy - ry - 1;
-  ellipse(g, cx, hy, hr, Math.max(3, hr - 1), color);
-  for (let e = 0; e < 2; e++) {
-    put(g, cx - 2 + e * 4, hy, 13);
-    put(g, cx - 2 + e * 4, hy + 1, 0);
+  // Rumpf.
+  shellEllipse(cx, cy, rx, ry, color);
+  // Schattierung nur an den Rändern.
+  for (let y = 0; y < g.length; y++) {
+    for (let x = 0; x < g[0].length; x++) {
+      const c = g[y][x];
+      if (c === null || c === 0) continue;
+      const openAbove = g[y - 1]?.[x] === null;
+      const openLeft = g[y]?.[x - 1] === null;
+      const openBelow = g[y + 1]?.[x] === null;
+      const openRight = g[y]?.[x + 1] === null;
+      if (openAbove && openLeft) g[y][x] = light;
+      else if (openBelow || openRight) g[y][x] = dark;
+    }
   }
 
+  // Kopf mit Augen (bei allen).
+  const hr = Math.max(4, Math.floor(rx / 2));
+  const hy = cy - ry - 2;
+  shellEllipse(cx, hy, hr, Math.max(4, hr - 1), color);
+  eyes(cx, hy);
+
   switch (index) {
-    case 0: { // Moorkönigin: breiter Krötenkopf + Giftblasen
-      ellipse(g, cx, cy - ry + 3, rx, 4, color);
-      put(g, cx - 5, hy - 3, light);
-      put(g, cx + 5, hy - 3, light);
-      for (let i = 0; i < 3; i++) put(g, cx - 4 + i * 4, cy + 3, 31);
-      break;
-    }
-    case 1: { // Knochenfürst: Rippen + Schulterknochen
-      for (let i = 0; i < 4; i++) rect(g, cx - rx + 3, cy - 2 + i * 3, rx * 2 - 6, 1, dark);
-      rect(g, cx - rx - 2, cy - ry + 5, 4, 2, light);
-      rect(g, cx + rx - 2, cy - ry + 5, 4, 2, light);
-      put(g, cx, hy - hr - 1, light);
-      put(g, cx, hy - hr - 2, light);
-      break;
-    }
-    case 2: { // Fahler Hirte: Kapuze + Sichel
-      rect(g, cx - hr - 2, hy - 2, hr * 2 + 5, 3, dark);
-      put(g, cx, hy - 4, light);
-      for (let i = 0; i < 8; i++) put(g, cx + rx + 1 + Math.round(Math.cos(i / 8 * Math.PI) * 5), cy - 4 - i, light);
-      break;
-    }
-    case 3: { // Glockenturm-Golem: Turmhelm + Blockarme
-      rect(g, cx - 4, hy - hr - 5, 9, 6, color);
-      rect(g, cx - 5, hy - hr - 6, 11, 2, light);
-      rect(g, cx - rx - 3, cy - 2, 3, ry * 2 - 2, dark);
-      rect(g, cx + rx + 1, cy - 2, 3, ry * 2 - 2, dark);
-      for (let i = 0; i < 3; i++) rect(g, cx - rx + 3, cy + 2 + i * 3, rx * 2 - 5, 1, dark);
-      break;
-    }
-    case 4: { // Hexenzirkel: drei Spitzhüte + Feuerorb
+    case 0: { // Moorkönigin: Krone, Giftblasen am Saum.
       for (let i = -1; i <= 1; i++) {
-        const hx = cx + i * 8;
-        put(g, hx, hy - 4, light);
-        put(g, hx - 1, hy - 3, color);
-        put(g, hx + 1, hy - 3, color);
-        put(g, hx - 2, hy - 2, color);
-        put(g, hx + 2, hy - 2, color);
+        const hx = cx + i * 5;
+        put(g, hx, hy - hr - 1, 20);
+        put(g, hx - 1, hy - hr, 20);
+        put(g, hx + 1, hy - hr, 20);
+        put(g, hx - 2, hy - hr + 1, 19);
+        put(g, hx + 2, hy - hr + 1, 19);
       }
-      ellipse(g, cx, cy + 2, 4, 4, 18);
-      ellipse(g, cx, cy + 2, 2, 2, 22);
+      for (let i = 0; i < 4; i++) {
+        put(g, cx - 9 + i * 6, cy + ry - 2, 31);
+        put(g, cx - 9 + i * 6, cy + ry - 1, dark);
+      }
+      rect(g, cx - rx + 4, cy + 2, rx * 2 - 8, 2, dark);
       break;
     }
-    default: { // Hohler König: große Dornenkrone + Rippenmantel
-      for (let i = -3; i <= 3; i++) {
+    case 1: { // Knochenfürst: Rippen, Schulterknochen, Dornenkrone.
+      for (let i = 0; i < 5; i++) rect(g, cx - 5, cy - 3 + i * 3, 11, 1, dark);
+      rect(g, cx - rx - 2, cy - ry + 5, 5, 3, light);
+      rect(g, cx + rx - 3, cy - ry + 5, 5, 3, light);
+      for (let i = -2; i <= 2; i++) {
         const h = 3 + (i % 2 === 0 ? 2 : 0);
         rect(g, cx + i * 3 - 1, hy - hr - h, 2, h, i === 0 ? light : color);
       }
-      rect(g, cx - hr - 1, hy - hr - 1, hr * 2 + 3, 2, dark);
-      for (let i = 0; i < 5; i++) rect(g, cx - rx + 3, cy - 3 + i * 3, rx * 2 - 6, 1, dark);
+      break;
+    }
+    case 2: { // Fahler Hirte: Kapuze + Sichel.
+      rect(g, cx - hr - 2, hy - 2, hr * 2 + 5, 3, dark);
+      put(g, cx, hy - 5, light);
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI;
+        put(g, cx + rx + 2 + Math.round(Math.cos(a) * 7), cy - 2 - Math.round(Math.sin(a) * 10), light);
+      }
+      rect(g, cx + rx + 1, cy - 4, 1, 14, dark);
+      break;
+    }
+    case 3: { // Glockenturm-Golem: Turmhelm + Blockarme + Steinbänder.
+      rect(g, cx - 5, hy - hr - 7, 11, 8, color);
+      rect(g, cx - 6, hy - hr - 8, 13, 2, light);
+      put(g, cx, hy - hr - 9, dark);
+      rect(g, cx - rx - 3, cy - 3, 4, ry * 2 - 4, dark);
+      rect(g, cx + rx, cy - 3, 4, ry * 2 - 4, dark);
+      for (let i = 0; i < 4; i++) rect(g, cx - 5, cy + 2 + i * 3, 11, 1, dark);
+      break;
+    }
+    case 4: { // Hexenzirkel: drei Spitzhüte + Feuerorb in der Mitte.
+      for (let i = -1; i <= 1; i++) {
+        const hx = cx + i * 9;
+        put(g, hx, hy - 7, light);
+        put(g, hx - 1, hy - 6, color);
+        put(g, hx + 1, hy - 6, color);
+        put(g, hx - 2, hy - 5, color);
+        put(g, hx + 2, hy - 5, color);
+        put(g, hx - 3, hy - 4, dark);
+        put(g, hx + 3, hy - 4, dark);
+      }
+      ellipse(g, cx, cy + 3, 5, 5, 18);
+      ellipse(g, cx, cy + 3, 3, 3, 22);
+      put(g, cx, cy + 3, 13);
+      break;
+    }
+    default: { // Hohler König: große Dornenkrone + Rippenmantel.
+      for (let i = -4; i <= 4; i++) {
+        const h = 4 + (i % 2 === 0 ? 3 : 0);
+        rect(g, cx + i * 3 - 1, hy - hr - h, 2, h, i === 0 ? 26 : 25);
+      }
+      rect(g, cx - hr - 2, hy - hr - 1, hr * 2 + 5, 2, 25);
+      for (let i = 0; i < 6; i++) rect(g, cx - 7, cy - 4 + i * 3, 15, 1, dark);
+      rect(g, cx - rx - 2, cy - 4, 3, ry + 8, dark);
+      rect(g, cx + rx, cy - 4, 3, ry + 8, dark);
       break;
     }
   }
 
   outline(g);
-  for (let y = 0; y < g.length; y++) {
-    for (let x = 0; x < g[0].length; x++) {
-      const c = g[y][x];
-      if (c === null || c === 0) continue;
-      if (x < cx && y < cy) g[y][x] = light;
-      else if (x > cx && y > cy) g[y][x] = dark;
-    }
-  }
   return g;
 }
 

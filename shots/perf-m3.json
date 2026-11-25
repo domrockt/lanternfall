@@ -1,0 +1,32 @@
+{
+  "targetFps": 55,
+  "burst": {
+    "fps": 57.4,
+    "frames": 575,
+    "elapsedMs": 10015,
+    "worstFrameMs": 33.4,
+    "minEnemies": 500,
+    "avgEnemies": 500,
+    "targetEnemies": 500,
+    "measuredFps": 58.1,
+    "level": 14,
+    "kills": 942,
+    "passed": true
+  },
+  "minute25": {
+    "fps": 56.8,
+    "frames": 569,
+    "elapsedMs": 10021,
+    "worstFrameMs": 33.4,
+    "minEnemies": 300,
+    "avgEnemies": 300,
+    "targetEnemies": 300,
+    "measuredFps": 56.5,
+    "time": 1506.1,
+    "level": 49,
+    "kills": 10698,
+    "passed": true
+  },
+  "jsErrors": [],
+  "passed": true
+}

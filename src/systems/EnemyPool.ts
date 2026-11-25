@@ -63,6 +63,10 @@ export interface EnemyRuntime {
   contactCooldown: number;
   /** Letzter Treffer durch Gegnerprojektil (nur Debug). */
   hitFlash: number;
+  /** Zuletzt gesetzter Tint (vermeidet redundante Phaser-Aufrufe pro Frame). */
+  tint: "none" | "red" | "freeze" | "slow";
+  /** Zuletzt gesetzte Deckkraft (0.45 während Hit-Flash, sonst 1). */
+  alpha: number;
   aiRng: AiRng;
 }
 
@@ -117,12 +121,13 @@ export class EnemyPool {
     enemy.bossPhase = 1;
     enemy.contactCooldown = 0;
     enemy.hitFlash = 0;
+    enemy.tint = "none";
+    enemy.alpha = 1;
     enemy.aiRng = rng ?? { next: () => Math.random() };
     enemy.ai = newAiState(enemy.aiRng);
-    enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
+    enemy.sprite.setScale(enemy.boss ? 1.5 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
     const frames = SPRITE_FRAMES[def.spriteKey];
-    const texture = frames ? frames[0] : def.spriteKey;
-    enemy.sprite.setTexture(texture);
+    enemy.sprite.setTexture(frames ? frames[0] : def.spriteKey);
     enemy.sprite.setVisible(true);
     enemy.sprite.setActive(true);
     enemy.sprite.setAlpha(1);
@@ -148,7 +153,8 @@ export class EnemyPool {
       damage: 0, radius: 6, speed: 0, hpScale: 1, flash: 0, phase: 0, alive: false, bob: 0,
       slowFactor: 0, slowTimer: 0, freezeTimer: 0, boss: false, bossIndex: -1, elite: false,
       splitDepth: 0, age: 0, recycled: false, ai: newAiState({ next: () => 0.5 }), telegraph: 0,
-      attackCounter: 0, bossPhase: 1, contactCooldown: 0, hitFlash: 0, aiRng: { next: () => 0.5 },
+      attackCounter: 0, bossPhase: 1, contactCooldown: 0, hitFlash: 0, tint: "none", alpha: 1,
+      aiRng: { next: () => 0.5 },
     };
   }
 

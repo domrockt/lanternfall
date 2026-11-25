@@ -1,0 +1,73 @@
+{
+  "results": [
+    {
+      "id": "moor_queen",
+      "ok": true,
+      "shares": 14,
+      "phases": [
+        1
+      ],
+      "hazardsMax": 3,
+      "shotsMax": 0,
+      "chest": true
+    },
+    {
+      "id": "bone_lord",
+      "ok": true,
+      "shares": 6,
+      "phases": [
+        1
+      ],
+      "hazardsMax": 1,
+      "shotsMax": 4,
+      "chest": true
+    },
+    {
+      "id": "pale_shepherd",
+      "ok": true,
+      "shares": 1,
+      "phases": [
+        1
+      ],
+      "hazardsMax": 1,
+      "shotsMax": 0,
+      "chest": true
+    },
+    {
+      "id": "bell_golem",
+      "ok": true,
+      "shares": 4,
+      "phases": [
+        1
+      ],
+      "hazardsMax": 5,
+      "shotsMax": 0,
+      "chest": true
+    },
+    {
+      "id": "coven",
+      "ok": true,
+      "shares": 1,
+      "phases": [
+        1
+      ],
+      "hazardsMax": 2,
+      "shotsMax": 0,
+      "chest": true
+    },
+    {
+      "id": "hollow_king",
+      "ok": true,
+      "shares": 1,
+      "phases": [
+        1,
+        2,
+        3
+      ],
+      "hazardsMax": 8,
+      "shotsMax": 5,
+      "chest": true
+    }
+  ],
+  "jsErrors": []
+}

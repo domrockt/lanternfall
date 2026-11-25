@@ -57,6 +57,9 @@ export function installDebugApi(game: Phaser.Game): void {
       };
     },
 
+    /** Endzustand des letzten Runs (Bosse, Truhen, Dämmerung) – auch in Results. */
+    finalState: () => game.registry.get("lf-final-state") ?? null,
+
     setTimeScale: (n: number) => requireRun().setTimeScale(finiteNumber("setTimeScale", n)),
     skipTo: (seconds: number) => requireRun().skipTo(finiteNumber("skipTo", seconds)),
     god: (value: boolean) => requireRun().setGod(value),

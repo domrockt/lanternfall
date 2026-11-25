@@ -13,6 +13,10 @@ interface GemRuntime {
   age: number;
 }
 
+/** Obergrenze aktiver Kristalle: schützt Frame-Zeit und Bildschirm-Lesbarkeit
+ *  bei 30x-Läufen mit zehntausenden Kills. Darüber werden neue Drops verworfen. */
+const MAX_GEMS = 240;
+
 /** XP-Kristalle (3 Größen) + Aufsammelradius/Magnet. */
 export class PickupSystem {
   gems: GemRuntime[] = [];
@@ -24,6 +28,7 @@ export class PickupSystem {
   }
 
   drop(x: number, y: number, size: GemSize, rng: { next(): number }): void {
+    if (this.gems.length >= MAX_GEMS) return;
     const gem = this.free.pop() ?? this.createRuntime();
     const meta = GEMS[size];
     gem.size = size;

@@ -187,11 +187,17 @@
       "id": 12,
       "title": "Epic M3: Alle 30 Gegner + Spezialwellen",
       "description": "Restliche Archetypen (tank/ranged/charger/splitter/exploder/phaser/orbiter/summoner), 30 Sprites+Animationen, Ring-/Schwarmwellen.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "backlog → done: Epic M3 durch #29-#34 abgeschlossen: 30 Gegner, Director, 6 Bosse, Dawn, Abnahme."
+        }
+      ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-24T23:44:35Z"
+      "updated": "2026-11-25T05:38:53Z"
     },
     {
       "id": 13,
@@ -509,67 +515,132 @@
       "id": 29,
       "title": "M3-01 Archetypen-Logik + Skalierungs-/Wellen-/Boss-/Terrain-Helfer + Tests",
       "description": "Reine Module: enemy-ai (10 Archetypen-State-Machines), scaling (HP/Schaden/Tempo-Kurven), waves special/elite/cap, terrain (Wasser 40%), bosses (Phasen/Schedules), autoplay (Ziel-/Dodge-Priorität). Vitest.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T04:00:25Z",
           "by": "build",
           "text": "todo → doing: Implementiere reine Logikmodule + Tests"
+        },
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "doing → review: M3-01 Logikmodule + 22 Tests implementiert (bereits in d9bf8cb); Build/Test gruen."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: M3-01 Logikmodule + Tests: 24 M3-Tests (85 gesamt) gruen, Reviewer-OK."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
-      "updated": "2026-11-25T04:00:25Z"
+      "updated": "2026-11-25T05:38:53Z"
     },
     {
       "id": 30,
       "title": "M3-02 Alle 30 Gegner spielbar + Platzhalter-Sprites + Gegner-Projektile + Warnflächen",
       "description": "30 eindeutige Silhouetten/Farben, 2 Frames, Hit-Flash, Tod-Partikel. EnemyProjectilePool (klar getrennt vom Spielerfeuer), Telegraph/Warnmarker.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: 30 Gegner live, KI-Zustaende, Projektile/Warnflaechen; verify-enemies 30/30 OK, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: 30/30 Gegner verifiziert (verify-enemies, Bewegung+Effekte, 0 JS-Fehler); Splitter max. 2 Generationen getestet."
+        }
+      ],
       "created": "2026-11-25T03:58:41Z",
-      "updated": "2026-11-25T03:58:41Z"
+      "updated": "2026-11-25T05:38:53Z"
     },
     {
       "id": 31,
       "title": "M3-03 Wellen-Director 00-30, Spezialwellen, Elite, Gegner-Cap/Recycling",
       "description": "Ring-Einkesselung, Schwarm-Ströme, Elite mit Leuchtrand + großer XP-Kristall, max. aktive Gegner, älteste/ferne recyceln.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: Director 0-30 mit Ring/Stream/Elite/Cap/Recycling; fullrun 700 Elites, Dichte bis 500."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: Director 0-30, Spezial-/Elite-Wellen, Cap 500 inkl. Boss/Elite-Recycling-Ausschluss; fullrun 694 Elites."
+        }
+      ],
       "created": "2026-11-25T03:58:41Z",
-      "updated": "2026-11-25T03:58:41Z"
+      "updated": "2026-11-25T05:38:53Z"
     },
     {
       "id": 32,
       "title": "M3-04 6 Bosse mit Mechaniken, HP-Leiste, Warn-Banner, Truhe; Endboss 3 Phasen + Morgendämmerung",
       "description": "Moorkönigin, Knochenfürst, Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler König. Telegraphing, Boss-HP-Bar, Banner, Chest-Drop, Sieg-Sequenz + Ergebnis Überlebt.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: 6 Bosse + HP-Leiste/Banner/Truhen; verify-bosses 6/6 OK, Endboss 3 Phasen, Dawn-Sieg im fullrun."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: 6/6 Bosse verifiziert (verify-bosses, Truhen, Endboss-Phasen 1/2/3, Boss-JSON); Dawn-Sieg im fullrun."
+        }
+      ],
       "created": "2026-11-25T03:58:41Z",
-      "updated": "2026-11-25T03:58:41Z"
+      "updated": "2026-11-25T05:38:53Z"
     },
     {
       "id": 33,
       "title": "M3-05 Moorwasser-Slow + ganzzahlige Skalierung <960px + autoPlay-Bot",
       "description": "Wasser verlangsamt Spieler+Gegner 40% mit Spritzern; 1x-Rand bei kleinen Fenstern, Glyphen sichtbar; Bot kitet, meidet Projektile/Warnflächen, sammelt XP, wählt Level-ups nach Priorität.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: Wasser-Slow + 1x-Rand <960 (800er Screenshot) + Bot-Prioritaeten; Regressionen gruen."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: Wasser-Slow getestet, 1x-Rand bei 800px gesichtet, Bot-Prioritaeten; Reviewer-OK."
+        }
+      ],
       "created": "2026-11-25T03:58:41Z",
-      "updated": "2026-11-25T03:58:41Z"
+      "updated": "2026-11-25T05:38:53Z"
     },
     {
       "id": 34,
       "title": "M3-06 Abnahme: verify-enemies, verify-bosses, fullrun, perf, GAME.md Status M3",
       "description": "Headless-Skripte mit OK/FAIL-Zeilen, Screenshots/GIFs, fullrun-JSON; perf Minute 25 >=55 FPS; GAME.md Status + Bericht.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: verify-enemies/bosses/fullrun/perf + GAME.md Status M3 mit JSON; Messwerte dokumentiert."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: verify-enemies/bosses/fullrun/perf + GAME.md M3-Status mit JSON; Build/85 Tests gruen, Reviewer-OK nach 2 Fixrunden."
+        }
+      ],
       "created": "2026-11-25T03:58:41Z",
-      "updated": "2026-11-25T03:58:41Z"
+      "updated": "2026-11-25T05:38:53Z"
     }
   ]
 }

@@ -62,6 +62,12 @@ export interface AiStep {
   actions: AiAction[];
 }
 
+/** Max. 2 Splitter-Generationen; verhindert eine unendliche Teilungs-Kaskade. */
+export const MAX_SPLIT_DEPTH = 2;
+export function shouldSplit(splitDepth: number): boolean {
+  return splitDepth < MAX_SPLIT_DEPTH;
+}
+
 export function newAiState(rng: AiRng): AiState {
   return {
     mode: "approach",

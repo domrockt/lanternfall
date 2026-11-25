@@ -48,7 +48,9 @@ export class FxSystem {
   private readonly free: FxRuntime[] = [];
   private readonly scene: Phaser.Scene;
   /** Obergrenze, damit VFX bei Extremlast nicht die Frame-Zeit dominieren. */
-  private maxActive = 360;
+  // 160 statt 360: hält 500 Gegner + alle Evolutionen über 55 FPS; bei
+  // Extremschwärmen werden weitere Partikel verworfen (Cap ist bewusst hart).
+  private maxActive = 160;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;

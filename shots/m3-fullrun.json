@@ -1,0 +1,81 @@
+{
+  "milestone": "M3",
+  "simMinutes": 30.1,
+  "pollSamples": 192,
+  "bosses": {
+    "expectedSeconds": [
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800
+    ],
+    "spawned": [
+      {
+        "name": "Moorkönigin",
+        "index": 0,
+        "expectedSecond": 300,
+        "actualSecond": 300
+      },
+      {
+        "name": "Knochenfürst",
+        "index": 1,
+        "expectedSecond": 600,
+        "actualSecond": 600
+      },
+      {
+        "name": "Der Fahle Hirte",
+        "index": 2,
+        "expectedSecond": 900,
+        "actualSecond": 900
+      },
+      {
+        "name": "Glockenturm-Golem",
+        "index": 3,
+        "expectedSecond": 1200,
+        "actualSecond": 1200
+      },
+      {
+        "name": "Hexenzirkel",
+        "index": 4,
+        "expectedSecond": 1500,
+        "actualSecond": 1500
+      },
+      {
+        "name": "Der Hohle König",
+        "index": 5,
+        "expectedSecond": 1800,
+        "actualSecond": 1800
+      }
+    ],
+    "flags": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "defeated": 6,
+    "finalBossDefeated": true,
+    "phasesSeen": [
+      "4:1",
+      "5:1",
+      "5:2",
+      "5:3"
+    ]
+  },
+  "chestsDropped": 6,
+  "elitesSpawned": 694,
+  "enemiesAtEnd": 0,
+  "kills": 24655,
+  "level": 147,
+  "dawn": true,
+  "victory": true,
+  "resultReason": "dawn",
+  "fpsMin": 51.2,
+  "fpsWindow": "ab Sim-Zeit 29:20 bei 1x (volle Dichte + Endboss)",
+  "jsErrors": [],
+  "passed": true
+}

@@ -30,8 +30,8 @@ import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
 import { EnemyProjectilePool, enemyShotHitFx, shotTextureFor } from "../systems/EnemyProjectiles";
 import { HazardSystem } from "../systems/Hazards";
 import { BossSystem, type BossInfo } from "../systems/BossSystem";
-import { stepEnemyAi, type AiAction } from "../logic/enemy-ai";
-import { FINAL_BOSS_AT, bossSpawnSecond } from "../logic/scaling";
+import { shouldSplit, stepEnemyAi, type AiAction } from "../logic/enemy-ai";
+import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished } from "../logic/scaling";
 import { botDirection, chooseBestOffer } from "../logic/autoplay";
 import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
 import { chestRewards, type ChestResult } from "../logic/evolution";
@@ -101,8 +101,10 @@ export class Run extends Phaser.Scene {
   chestsDropped = 0;
   explosions = 0;
   elitesSpawned = 0;
+  splitsSpawned = 0;
   dawn = false;
   dawnTimer = 0;
+  private dawnQueued = false;
   bossFlags: boolean[] = [false, false, false, false, false, false];
 
   private rng!: SeededRng;
@@ -155,8 +157,11 @@ export class Run extends Phaser.Scene {
     this.chestsDropped = 0;
     this.explosions = 0;
     this.elitesSpawned = 0;
+    this.splitsSpawned = 0;
     this.dawn = false;
     this.dawnTimer = 0;
+    this.dawnQueued = false;
+    this.registry.set("lf-final-state", null);
     this.bossFlags = [false, false, false, false, false, false];
     this.finished = false;
     this.invuln = 0;
@@ -286,7 +291,7 @@ export class Run extends Phaser.Scene {
     // Morgendämmerung läuft nach dem Endboss-Sieg kurz aus, dann Results.
     if (this.dawn) {
       this.dawnTimer += dt;
-      if (this.dawnTimer > 3.2) {
+      if (dawnFinished(this.dawnTimer)) {
         this.endRun("dawn");
         return;
       }
@@ -433,7 +438,7 @@ export class Run extends Phaser.Scene {
   private autoDirection(): { x: number; y: number } {
     const enemies = this.enemies.active
       .filter((e) => e.alive)
-      .map((e) => ({ x: e.x, y: e.y, radius: e.radius, threat: e.boss ? 2.6 : e.def.archetype === "exploder" ? 1.8 : 1 }));
+      .map((e) => ({ x: e.x, y: e.y, radius: e.radius, threat: e.boss ? 0.35 : e.def.archetype === "exploder" ? 1.8 : 1 }));
     const projectiles = this.enemyShots.active.map((p) => ({
       x: p.x, y: p.y, vx: p.vx, vy: p.vy, radius: p.radius, threat: 2.4,
     }));
@@ -573,7 +578,7 @@ export class Run extends Phaser.Scene {
       if (!e.alive || e.hp > 0) continue;
       e.alive = false;
       if (e.recycled) continue;
-      if (e.def.archetype === "splitter" && e.splitDepth < 2 && !e.boss) splits.push(e);
+      if (e.def.archetype === "splitter" && shouldSplit(e.splitDepth) && !e.boss) splits.push(e);
       this.kills += 1;
       this.pickups.drop(e.x, e.y, PickupSystem.rollSize(this.rng), this.rng);
       // Elite garantieren zusätzlich große Kristalle (Leuchtrand-Belohnung).
@@ -586,11 +591,14 @@ export class Run extends Phaser.Scene {
         this.chestsDropped += 1;
         this.cameras.main.shake(220, 0.005);
         this.events.emit("bossDefeated", { index: e.bossIndex, name: BOSSES[e.bossIndex]?.name ?? "Boss" });
-        if (e.bossIndex === 5) this.startDawn();
+        // Dawn erst nach der Schleife starten: startDawn() kompaktiert das
+        // Array, über das hier noch iteriert wird.
+        if (e.bossIndex === 5) this.dawnQueued = true;
       }
     }
-    // Splitter teilen sich in zwei kleinere Exemplare (max. 2 Generationen).
-    for (const parent of splits) {
+    // Splitter teilen sich in zwei kleinere Exemplare (max. 2 Generationen);
+    // während der Morgendämmerung zerfällt alles, keine neuen Kinder.
+    if (!this.dawn && !this.dawnQueued) for (const parent of splits) {
       for (let i = 0; i < 2; i++) {
         const a = (i / 2) * Math.PI * 2 + this.rng.next() * 0.7;
         const child = this.spawner.spawnAt(
@@ -600,8 +608,10 @@ export class Run extends Phaser.Scene {
           { splitDepth: parent.splitDepth + 1, hpScale: Math.max(0.3, parent.hpScale * 0.5) },
         );
         child.radius = Math.max(4, Math.round(parent.radius * 0.7));
+        this.splitsSpawned += 1;
       }
     }
+    if (this.dawnQueued && !this.dawn) this.startDawn();
   }
 
   /** Sieg: Morgendämmerung über der Arena, dann Results. */
@@ -619,7 +629,8 @@ export class Run extends Phaser.Scene {
     this.enemies.compact();
     this.hazards.clear();
     this.enemyShots.clear();
-    this.cameras.main.flash(900, 255, 210, 140);
+    const amber = PAL[C.amber];
+    this.cameras.main.flash(900, (amber >> 16) & 255, (amber >> 8) & 255, amber & 255);
     this.dawnRect = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, PAL[C.amber], 0)
       .setScrollFactor(0).setDepth(75);
     this.tweens.add({
@@ -661,12 +672,23 @@ export class Run extends Phaser.Scene {
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
       e.flash = Math.max(0, e.flash - realDt);
-      if (e.flash > 0) e.sprite.setTintFill(PAL[C.lanternWhite]);
-      else if (e.telegraph > 0) e.sprite.setTint(PAL[C.hotRed]);
-      else if (e.freezeTimer > 0) e.sprite.setTint(PAL[C.paleMist]);
-      else if (e.slowTimer > 0) e.sprite.setTint(PAL[C.fogBlue]);
-      else e.sprite.clearTint();
-      e.aura.setPosition(Math.round(e.x), Math.round(e.y));
+      // Hit-Flash als Blinzeln: Silhouette/Farbe bleibt lesbar (kein Weiß-Wash).
+      const alpha = e.flash > 0 ? 0.45 : 1;
+      if (e.alpha !== alpha) {
+        e.alpha = alpha;
+        e.sprite.setAlpha(alpha);
+      }
+      const tint = e.telegraph > 0 ? "red" : e.freezeTimer > 0 ? "freeze" : e.slowTimer > 0 ? "slow" : "none";
+      if (e.tint !== tint) {
+        e.tint = tint;
+        if (tint === "red") e.sprite.setTint(PAL[C.hotRed]);
+        else if (tint === "freeze") e.sprite.setTint(PAL[C.paleMist]);
+        else if (tint === "slow") e.sprite.setTint(PAL[C.fogBlue]);
+        else e.sprite.clearTint();
+      }
+      // Nur Elite/Bosse tragen eine Aura; der Aufruf für alle Gegner kostet
+      // bei 500+ Einheiten spürbar Frame-Zeit.
+      if (e.elite || e.boss) e.aura.setPosition(Math.round(e.x), Math.round(e.y));
       e.sprite.setPosition(Math.round(e.x), Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2));
       const frames = SPRITE_FRAMES[e.def.spriteKey];
       if (frames) {
@@ -886,6 +908,7 @@ export class Run extends Phaser.Scene {
       chestsDropped: this.chestsDropped,
       explosions: this.explosions,
       elitesSpawned: this.elitesSpawned,
+      splitsSpawned: this.splitsSpawned,
       dawn: this.dawn,
       enemyShots: this.enemyShots?.count ?? 0,
       hazards: this.hazards?.count ?? 0,
@@ -902,6 +925,11 @@ export class Run extends Phaser.Scene {
         boss: e.boss,
         bossIndex: e.bossIndex,
         elite: e.elite,
+        splitDepth: e.splitDepth,
+        radius: e.radius,
+        speed: Math.round(e.speed * 10) / 10,
+        slowFactor: Math.round(e.slowFactor * 100) / 100,
+        telegraph: Math.round(e.telegraph * 100) / 100,
         mode: e.ai.mode,
         blinks: e.ai.blinks,
         attacks: e.ai.attacks,
@@ -937,6 +965,8 @@ export class Run extends Phaser.Scene {
       seed: this.seed,
       debug: this.debug,
     };
+    // Endzustand konservieren (nach dem Szenenwechsel ist er nicht mehr abfragbar).
+    this.registry.set("lf-final-state", this.getDebugState());
     this.scene.stop("ui");
     this.scene.start("results", result);
   }

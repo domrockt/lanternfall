@@ -33,7 +33,7 @@ export class Results extends Phaser.Scene {
 
     const dawn = this.result.reason === "dawn";
     new PixelText(this, 240, 34, dawn ? "MORGENDAMMERUNG" : "DIE LATERNE ERLISCHT", dawn ? C.lantern : C.crimson, "center").setScale(2).setDepth(2);
-    new PixelText(this, 240, 54, dawn ? "DER ENDBOSS FOLGT IN M5" : "ERGEBNIS", C.mist, "center").setDepth(2);
+    new PixelText(this, 240, 54, dawn ? "DU HAST ÜBERLEBT" : "ERGEBNIS", C.mist, "center").setDepth(2);
 
     const char = CHARACTERS[this.result.character as keyof typeof CHARACTERS];
     new PixelText(this, 44, 76, `CHARAKTER: ${char ? char.name.toUpperCase() : "?"}`, C.bone).setDepth(2);
@@ -42,25 +42,28 @@ export class Results extends Phaser.Scene {
     new PixelText(this, 44, 124, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
     if (this.result.god) new PixelText(this, 44, 140, "GOTT-MODUS AKTIV", C.amber).setDepth(2);
 
-    new PixelText(this, 52, 162, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
+    new PixelText(this, 52, 156, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
     const entries = damageTable(this.result.damageByWeapon);
     if (entries.length === 0) {
       new PixelText(this, 52, 178, "KEINE TREFFER", C.fog).setDepth(2);
     }
-    const columns = [52, 176, 300];
+    const columns = [44, 176, 308];
     entries.forEach((entry, i) => {
+      // Bis zu 12 Einträge (6 Basis + 6 Evolutionen) in 3 Spalten × 4 Zeilen.
       const x = columns[Math.floor(i / 4)];
-      const y = 178 + (i % 4) * 16;
+      const y = 168 + (i % 4) * 18;
       const key = iconTextureKey(entry.isEvolution ? "evolution" : "weapon", entry.id);
       if (this.textures.exists(key)) {
         this.add.image(x + 8, y + 3, key).setDepth(2);
       }
-      const name = entry.name.toUpperCase().slice(0, 14);
+      const name = entry.name.toUpperCase().slice(0, 18);
       new PixelText(this, x + 22, y, name, C.bone).setDepth(2);
-      new PixelText(this, x + 112, y + 9, `${entry.damage}`, C.candleWhite, "right").setDepth(2);
+      // Schadenswert in eigener Zeile: 7-stellige Zahlen passen sonst nicht
+      // neben den Namen und überlappen die Folgezeile.
+      new PixelText(this, x + 118, y + 8, `${entry.damage}`, C.candleWhite, "right").setDepth(2);
     });
 
-    const prompt = new PixelText(this, 240, 248, "ENTER = ZURÜCK ZUM TITEL", C.candleWhite, "center").setDepth(2);
+    const prompt = new PixelText(this, 240, 242, "ENTER = ZURÜCK ZUM TITEL", C.candleWhite, "center").setDepth(2);
     this.tweens.add({ targets: prompt, alpha: 0.35, duration: 800, yoyo: true, repeat: -1 });
     this.input.keyboard!.once("keydown-ENTER", () =>
       this.scene.start("title", { seed: this.result.seed ?? 1, debug: this.result.debug ?? false }));

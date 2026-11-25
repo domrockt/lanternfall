@@ -16,6 +16,8 @@ interface PendingAction {
 
 interface BossAgent {
   enemy: EnemyRuntime;
+  /** Pool-Identität: verhindert Verwechslung, wenn der Runtime-Slot wiederverwendet wird. */
+  uid: number;
   timer: number;
   pending: PendingAction[];
   phase: number;
@@ -33,9 +35,12 @@ export interface BossInfo {
 }
 
 const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
-const BOSS_SPEED = [24, 20, 22, 14, 26, 20];
+// Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
+// Bewusst flott: Kontakt ist god-mode-sicher, normale Runs bleiben fordernd.
+const BOSS_SPAWN_DISTANCE = 130;
+const BOSS_SPEED = [72, 68, 74, 64, 78, 74];
 const BOSS_TOUCH_DAMAGE = [16, 18, 20, 24, 22, 28];
-const BOSS_COLOR = [31, 10, 9, 8, 25, 12];
+const BOSS_COLOR = [30, 10, 8, 5, 25, 14];
 
 /** Synthetisches EnemyDef für den Boss-Pool (Kampf kommt aus dem BossSystem). */
 export function bossEnemyDef(index: number): EnemyDef {
@@ -88,7 +93,8 @@ export class BossSystem {
     if (!boss) throw new RangeError(`Boss ${index} unbekannt`);
     const def = bossEnemyDef(index);
     const angle = this.rng.next() * Math.PI * 2;
-    const distance = Math.max(this.camera.width, this.camera.height) * 0.4;
+    // Sichtbar im View, aber nicht auf dem Spieler: 130 px bei 480x270.
+    const distance = BOSS_SPAWN_DISTANCE;
     const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * distance, 30, 4096 - 30);
     const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * distance, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
@@ -99,10 +105,9 @@ export class BossSystem {
     enemy.boss = true;
     enemy.bossIndex = index;
     enemy.bossPhase = 1;
-    enemy.sprite.setScale(1);
     enemy.sprite.setDepth(9);
     enemy.aura.setVisible(false);
-    this.bosses.push({ enemy, timer: 2.2, pending: [], phase: 1 });
+    this.bosses.push({ enemy, uid: enemy.uid, timer: 1.2, pending: [], phase: 1 });
     this.scene.events.emit("bossWarn", { index, name: boss.name });
     this.camera.shake(260, 0.004);
     return enemy;
@@ -112,7 +117,7 @@ export class BossSystem {
     for (let i = this.bosses.length - 1; i >= 0; i--) {
       const agent = this.bosses[i];
       const boss = agent.enemy;
-      if (!boss.alive || boss.hp <= 0) {
+      if (boss.uid !== agent.uid || !boss.alive || boss.hp <= 0 || boss.bossIndex < 0) {
         this.bosses.splice(i, 1);
         continue;
       }
@@ -348,6 +353,7 @@ export class BossSystem {
     if (alive.length === 0) return null;
     const boss = alive[alive.length - 1];
     const data = BOSSES[boss.bossIndex];
+    if (!data) return null;
     const ratio = Math.max(0, boss.hp / Math.max(1, boss.maxHp));
     return {
       index: boss.bossIndex,

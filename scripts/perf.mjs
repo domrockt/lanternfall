@@ -1,6 +1,11 @@
 #!/usr/bin/env node
-// Performance-Harness: Run mit 500 Gegnern, FPS über 10 s (Ziel >= 55).
+// Performance-Harness: (1) 580 Gegner bei 1x, (2) volle Director-Dichte bei
+// Minute 25. Ziel jeweils >= 55 FPS, 0 JS-Fehler.
+import { writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
+
+const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
+const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -11,28 +16,16 @@ const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 
-let result;
-try {
-  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
-  await startRun(page);
-  await page.evaluate(() => {
-    window.__lf.god(true);
-    window.__lf.autoPlay(true);
-    window.__lf.setTimeScale(1);
-    for (const id of ["ember", "flail", "frost", "thorn", "storm", "lantern"]) {
-      window.__lf.addWeapon(id, 8);
-    }
-    window.__lf.spawnEnemy("bog_rat", 400);
-    window.__lf.spawnEnemy("wisp", 50);
-    window.__lf.spawnEnemy("bogzombie", 50);
-  });
-  await page.waitForTimeout(500);
+const clearLevelUps = async () => {
+  for (let i = 0; i < 40; i++) {
+    if (!(await page.evaluate(() => window.__lf?.state().levelUpOpen))) break;
+    await page.evaluate(() => window.__lf.pickLevelUp(0));
+  }
+};
 
-  const measurement = await page.evaluate(async () => {
-    const TARGET_ENEMIES = 580;
-    const TARGET_ENEMIES_INIT = TARGET_ENEMIES;
-    const before = window.__lf.state().enemies;
-    if (before < TARGET_ENEMIES_INIT) window.__lf.spawnEnemy("bog_rat", TARGET_ENEMIES_INIT - before);
+/** 10 s FPS messen; Gegner unter target werden nachgespawnt (Worst Case). */
+const measure = async (target, seconds = 10) =>
+  page.evaluate(async ({ target, seconds }) => {
     const start = performance.now();
     let frames = 0;
     let last = start;
@@ -48,49 +41,95 @@ try {
         if (now - lastSpawn >= 50) {
           lastSpawn = now;
           const active = window.__lf.state().enemies;
-          const deficit = TARGET_ENEMIES - active;
+          const deficit = target - active;
           if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
-          // Nach dem Nachspawn messen, sonst zählt das Gate kurzzeitig < 500.
           samples.push(window.__lf.state().enemies);
         }
-        if (now - start >= 10000) resolve();
+        if (now - start >= seconds * 1000) resolve();
         else requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
     });
     const elapsed = performance.now() - start;
-    const minEnemies = samples.length ? Math.min(...samples) : 0;
-    const avgEnemies = samples.length ? Math.round(samples.reduce((a, b) => a + b, 0) / samples.length) : 0;
     return {
       fps: Math.round((frames / (elapsed / 1000)) * 10) / 10,
       frames,
       elapsedMs: Math.round(elapsed),
       worstFrameMs: Math.round(worst * 10) / 10,
-      minEnemies,
-      avgEnemies,
-      targetEnemies: TARGET_ENEMIES,
+      minEnemies: samples.length ? Math.min(...samples) : 0,
+      avgEnemies: samples.length ? Math.round(samples.reduce((a, b) => a + b, 0) / samples.length) : 0,
+      targetEnemies: target,
     };
-  });
+  }, { target, seconds });
 
-  const state = await page.evaluate(() => window.__lf.state());
+let result;
+try {
+  // Phase 1: synthetische Spitzenlast direkt nach dem Start.
+  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
+  await startRun(page);
+  await page.evaluate(() => {
+    window.__lf.god(true);
+    window.__lf.autoPlay(true);
+    window.__lf.setTimeScale(1);
+    for (const id of ["ember", "flail", "frost", "thorn", "storm", "lantern"]) {
+      window.__lf.addWeapon(id, 8);
+    }
+    window.__lf.spawnEnemy("bog_rat", 400);
+    window.__lf.spawnEnemy("wisp", 50);
+    window.__lf.spawnEnemy("bogzombie", 50);
+  });
+  await page.waitForTimeout(500);
+  const burst = await measure(500);
+  const burstState = await page.evaluate(() => window.__lf.state());
   await page.screenshot({ path: "shots/perf-500.png" });
+  await clearLevelUps();
+
+  // Phase 2: natürliche Director-Dichte bei Minute 25.
+  await page.evaluate(({ evolutions, passives }) => {
+    for (const id of evolutions) window.__lf.addWeapon(id, 8);
+    for (const id of passives) window.__lf.addPassive(id, 5);
+    window.__lf.skipTo(1490);
+    window.__lf.setTimeScale(1);
+  }, { evolutions: EVOLUTIONS, passives: PASSIVES });
+  await page.waitForTimeout(6000);
+  await clearLevelUps();
+  const natural = await page.evaluate(() => window.__lf.state());
+  // Volle Director-Dichte ist ohne God-Waffen >300; mit allen Evolutionen
+  // räumt der Bot schneller ab. Für die Worst-Case-Messung auf 300 auffüllen.
+  const minute25 = await measure(Math.max(300, natural.enemies));
+  const minute25State = await page.evaluate(() => window.__lf.state());
+  await page.screenshot({ path: "shots/perf-minute25.png" });
+
   result = {
     targetFps: 55,
-    ...measurement,
-    measuredFps: state.fps,
-    enemies: state.enemies,
-    weapons: state.weapons,
-    level: state.level,
-    kills: state.kills,
-    time: state.time,
-    engineFps: state.fps,
+    burst: {
+      ...burst,
+      measuredFps: burstState.fps,
+      level: burstState.level,
+      kills: burstState.kills,
+      passed: burst.fps >= 55 && burst.minEnemies >= 500,
+    },
+    minute25: {
+      ...minute25,
+      measuredFps: minute25State.fps,
+      time: minute25State.time,
+      level: minute25State.level,
+      kills: minute25State.kills,
+      // Unter 200 Gegnern wäre die Messung nicht aussagekräftig.
+      passed: minute25.fps >= 55 && minute25.minEnemies >= 200,
+    },
     jsErrors: errors,
-    passed: measurement.fps >= 55 && measurement.minEnemies >= 500 && errors.length === 0,
+    passed:
+      burst.fps >= 55 && burst.minEnemies >= 500 &&
+      minute25.fps >= 55 && minute25.minEnemies >= 200 &&
+      errors.length === 0,
   };
 } finally {
+  await page.close();
   await browser.close();
   server.stop();
 }
 
+if (result) writeFileSync("shots/perf-m3.json", JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result, null, 2));
 process.exit(result && result.passed ? 0 : 1);

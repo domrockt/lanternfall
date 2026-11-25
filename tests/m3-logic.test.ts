@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
-  ARCHETYPES, newAiState, stepEnemyAi, summonMinionId, type AiState,
+  ARCHETYPES, MAX_SPLIT_DEPTH, newAiState, shouldSplit, stepEnemyAi, summonMinionId, type AiState,
 } from "../src/logic/enemy-ai";
 import {
   bossSpawnSecond, eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale,
-  maxActiveEnemies, pickRecycleIndex, shouldRecycle, isEliteMinute,
+  DAWN_DURATION, dawnFinished, maxActiveEnemies, pickRecycleIndex, shouldRecycle, isEliteMinute,
 } from "../src/logic/scaling";
 import { terrainSpeedFactor, isSplashTerrain, WATER_SLOW_FACTOR } from "../src/logic/terrain";
 import {
@@ -16,7 +16,8 @@ import {
 import { directorPlan, elitePackCount, streamSpawnOffsets } from "../src/logic/waves";
 import { SeededRng } from "../src/logic/rng";
 import type { Offer } from "../src/logic/levelup";
-import { BOSSES, ENEMIES, ENEMY_IDS } from "../src/data";
+import { BOSSES, ENEMIES, ENEMY_IDS, ENEMY_LIST } from "../src/data";
+import { buildEnemySprite, silhouette } from "../src/gfx/enemySprites";
 
 const rng = () => new SeededRng(99);
 const params = (archetype: Parameters<typeof stepEnemyAi>[1]["archetype"], dist = 120) => ({
@@ -130,12 +131,27 @@ describe("Zeit-Skalierung und Director", () => {
     expect(shouldRecycle(10, 400, false)).toBe(false);
     expect(shouldRecycle(60, 100, false)).toBe(false);
     expect(shouldRecycle(60, 400, true)).toBe(false);
+    expect(shouldRecycle(60, 400, false, true)).toBe(false);
     const list = [
       { age: 20, x: 0, y: 0, elite: false },
       { age: 70, x: 0, y: 0, elite: false },
       { age: 90, x: 0, y: 0, elite: true },
+      { age: 200, x: 0, y: 0, elite: false, boss: true },
     ];
     expect(pickRecycleIndex(list, 1000, 1000)).toBe(1);
+  });
+
+  it("Splitter teilen sich höchstens zwei Generationen", () => {
+    expect(shouldSplit(0)).toBe(true);
+    expect(shouldSplit(1)).toBe(true);
+    expect(shouldSplit(MAX_SPLIT_DEPTH)).toBe(false);
+    expect(shouldSplit(MAX_SPLIT_DEPTH + 1)).toBe(false);
+  });
+
+  it("Morgendämmerung endet nach der festen Dauer", () => {
+    expect(dawnFinished(0)).toBe(false);
+    expect(dawnFinished(DAWN_DURATION - 0.01)).toBe(false);
+    expect(dawnFinished(DAWN_DURATION + 0.01)).toBe(true);
   });
 
   it("Director plant Ring/Strom/Elite korrekt", () => {
@@ -242,6 +258,20 @@ describe("Datentabellen M3", () => {
       colors.add(ENEMIES[id].color);
     }
     expect(colors.size).toBe(30);
+  });
+
+  it("alle 30 Platzhalter haben eine eindeutige Silhouette", () => {
+    const masks = new Map<string, string>();
+    ENEMY_LIST.forEach((def, index) => {
+      const grid = buildEnemySprite(index, def.archetype, def.color, Boolean(def.flying), 0);
+      const mask = silhouette(grid);
+      expect(masks.has(mask), `${def.id} gleicht ${masks.get(mask)}`).toBe(false);
+      masks.set(mask, def.id);
+      // Nur Palette/Transparenz, 24x24, Kontur vorhanden.
+      expect(grid).toHaveLength(24);
+      expect(grid[0]).toHaveLength(24);
+      expect(mask.includes("#")).toBe(true);
+    });
   });
 
   it("Boss-Daten passen zu den Spawnzeiten", () => {

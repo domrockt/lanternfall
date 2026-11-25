@@ -41,23 +41,21 @@ export function shouldRecycle(
   ageSeconds: number,
   distanceToPlayer: number,
   elite: boolean,
+  boss = false,
 ): boolean {
-  return !elite && ageSeconds > 45 && distanceToPlayer > 340;
+  return !elite && !boss && ageSeconds > 45 && distanceToPlayer > 340;
 }
 
 /** Ältesten fernen Gegner finden (für Cap-Recycling). */
-export function pickRecycleIndex<T extends { age: number; x: number; y: number; elite: boolean }>(
-  list: readonly T[],
-  playerX: number,
-  playerY: number,
-): number {
+export function pickRecycleIndex<
+  T extends { age: number; x: number; y: number; elite: boolean; boss?: boolean },
+>(list: readonly T[], playerX: number, playerY: number): number {
   let best = -1;
   let bestScore = -Infinity;
   for (let i = 0; i < list.length; i++) {
     const e = list[i];
-    if (e.elite) continue;
     const d = Math.hypot(e.x - playerX, e.y - playerY);
-    if (d < 300) continue;
+    if (!shouldRecycle(e.age, d, e.elite, e.boss)) continue;
     const score = e.age + d / 40;
     if (score > bestScore) {
       bestScore = score;
@@ -70,6 +68,12 @@ export function pickRecycleIndex<T extends { age: number; x: number; y: number; 
 /** Boss erscheint bei 05:00/10:00/15:00/20:00/25:00 und 30:00 (Endboss). */
 export function bossSpawnSecond(index: number): number {
   return (index + 1) * 5 * 60;
+}
+
+/** Dämmerungs-Overlay läuft 3,2 s, danach Results. */
+export const DAWN_DURATION = 3.2;
+export function dawnFinished(timerSeconds: number): boolean {
+  return timerSeconds > DAWN_DURATION;
 }
 
 /** Endboss startet bei 30:00, der Run endet erst mit seinem Tod (Sieg). */
