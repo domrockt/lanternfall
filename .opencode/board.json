@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 35,
+  "next": 42,
   "cards": [
     {
       "id": 1,
@@ -641,6 +641,75 @@
       ],
       "created": "2026-11-25T03:58:41Z",
       "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 35,
+      "title": "M4-01 ART.md + Art-Pipeline (lib.py, gen.py, contact.py) + 3 Referenz-Assets",
+      "description": "Stil-Leitfaden mit Rampen, Kontur, Proportionen, Licht, Animationslängen. Python-Pipeline (pure-python PNG), Asset-Server-Client, Kontaktbogen-Tool. Referenzen: Mira, Irrlicht, Laternenpfahl; art-director-Noten dokumentiert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:25Z",
+          "by": "build",
+          "text": "todo → doing: Art-Pipeline + ART.md fertig, Referenz-Assets erzeugt."
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T09:02:25Z"
+    },
+    {
+      "id": 36,
+      "title": "M4-02 Spielfiguren: Mira + Kael, Lauf 4 Frames x 4 Richtungen, Idle 2, Hit, Portrait 48x48",
+      "description": "32px hoch, 4-Dir-Lauf, Spiegelung fuer Seite, Idle, Treffer-Frame, CharSelect-Portraits. Integration in Run/CharSelect, Offsets anpassen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T06:40:27Z"
+    },
+    {
+      "id": 37,
+      "title": "M4-03 30 Gegner: 2-4 Lauf-Frames, Tod-Effekt, Tier-Farbcodes, Elite-Leuchtrand",
+      "description": "16-32px nach Tier, eindeutige Silhouetten, 3+ Schattierungsstufen, Kontur, Tod-Puff je Gegnerfarbe; Elite via Rim.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T06:40:27Z"
+    },
+    {
+      "id": 38,
+      "title": "M4-04 6 Bosse 48-96px mit Wind-up-/Angriffs-Frames passend zu bosses.ts",
+      "description": "Moorkoenigin/Knochenfuerst/Fahler Hirte/Glockenturm-Golem/Hexenzirkel/Hohler Koenig, groessere Silhouetten, Angriffs-Frames im BossSystem verdrahtet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T06:40:27Z"
+    },
+    {
+      "id": 39,
+      "title": "M4-05 Tileset 16x16 mit Autotiling, Dekor-Gruppen, Laternen als Lichtquellen",
+      "description": "Moorgras-Varianten, Wege, Moorwasser mit Uferkanten, Steine, tote Baeume, Ruinen, Graeber, Laternenpfaehle; kein Pixelrauschen; Licht/Vignette bleibt.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T06:40:27Z"
+    },
+    {
+      "id": 40,
+      "title": "M4-06 FX/Projektile 12 Waffen, XP-Kristalle, Truhe, Pickups, Icons, 9-Slice-UI, Titelbild+Logo",
+      "description": "Alle Effekt-Texturen hochwertiger, Truhe geschlossen/offen, Pickups, 18 Icons, UI-Rahmen, Titelbild mit Logo.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T06:40:27Z"
+    },
+    {
+      "id": 41,
+      "title": "M4-07 Abnahme: Kontaktboegen, In-Game-Shots, art-director-Bericht >=4, perf/verify, GAME.md",
+      "description": "shots/m4-sheet-*.png, shots/m4-*.png (Minute 2/12/22, Boss, Truhe, CharSelect, Titel), m4-art-review.md, perf >=55, verify:terrain + verify:enemies, GAME.md M4.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T06:40:27Z"
     }
   ]
 }
