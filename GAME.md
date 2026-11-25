@@ -136,3 +136,26 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - Bosse, Truhen, Evolutionen, Endboss/Sieg, Sound, Damage-Numbers, Partikel-VFX und Meta fehlen (M2–M6).
 - Karte/Deko sind Platzhalter: weiche Kanten per Pixel-Knabbern statt vollem Rand-Tileset-Autotiling; Charakter-/Gegner-Animationen sind 1–2 Frames, keine 4-Frame-Läufe.
 - Balance ist M1-Rohbau (XP-Kurve 8 + 7/Level, Gegner-HP skaliert mit Zeit).
+
+## Status — M2 (Waffen, Powerups, Evolutionen, Truhen, UI), 2026-11-25
+
+**Fertig (dieser Abschnitt ersetzt die M1-Lückenliste):**
+- **6 Basiswaffen** komplett spielbar, je **8 Stufen**, datengetrieben + im gemeinsamen `CombatSystem`: Glutfunke (Homing/Projektil), Kettenflegel (Halbkreis, Richtung, Rückstoß), Frostnova (Puls, Slow/Freeze), Dornensalve (Fächer, Pierce), Sturmrune (Blitzschläge, Kettenblitz ab Stufe 4), Geisterlaterne (kreisende Lichter). Gepoolte Trails/Bursts/Ringe/Beams im `FxSystem` (Cap 360), additive Magie-VFX, Statusfelder (Slow/Freeze) im EnemyPool.
+- **6 Powerups** Stufe 1–5 wirken kumulativ auf echte Stats (Tempo, Abklingzeit, Max-HP/Regen, Aufsammelradius, Schaden, Dauer/Fläche); für jede Stufe per Unit-Test gegen die `effective*`-Funktionen belegt.
+- **6 Evolutionen** (`phoenix`, `wrath_pendulum`, `eternal_winter`, `thorn_storm`, `thunder_seal`, `soul_beacon`) mit eigenen Behaviors/VFX und deutlich stärkeren Werten. Sie **ersetzen die Basiswaffe im Slot** (Stufe 8). Reine Regeln `canEvolve` / `evolvableList` / `chestUpgradeCount` / `chestRewards` mit Tests; Evolution hat in der Truhe Vorrang, Basiswaffe wird dann nicht erneut angeboten.
+- **Truhen:** eigener Drop beim Boss-Tod (M2-Platzhalterboss), Glanz-Puls, Bildschirmrand-Pfeil außerhalb des Views, Öffnungs-Sequenz mit Deckel, Lichtstrahl, Münzen, Slot-Rollen und 1/3/5 Belohnungen (Chance steigt mit der Run-Zeit). Run pausiert während der Sequenz. `window.__lf.openChest()` und `spawnBoss(0..5)` funktionieren jetzt (Platzhalter).
+- **UI:** 18 eigene 16×16-Icons (6 Waffen, 6 Powerups, 6 Evolutionen; dunkle Kontur, Palettenfarben, Distinktheit zur Laufzeit validiert) in Level-up-Karten, HUD-Leiste, Pause-Build (2 Spalten) und Truhen-Slots. Bitmap-Font hat echte **Ä Ö Ü ä ö ü ß**; alle UI-Texte auf Umlaute umgestellt (kein AE/OE/UE mehr).
+- **Karte:** Grasfläche beruhigt (keine Pixelrauschflecken mehr, Grasbüschel in 2×2-Blöcken gruppiert), Deko weiter blockweise gruppiert.
+- **Ergebnis-Screen:** 3-spaltige Schadenstabelle mit Waffen-/Evolutions-Icons, absteigend sortiert, 0-Schaden gefiltert, max. 12 Einträge; reine Funktion `damageTable` + Tests.
+
+**Messwerte (dieser Rechner, headless Chromium):**
+- `npm test`: **56 Tests grün** (RNG, XP, Level-up, Wellen, Stats/Powerups, Evolution/Truhe, Schadenstabelle, SpatialHash, Daten, Sprite-Grids, Font-Umlaute).
+- `node scripts/verify-weapons.mjs`: **12/12 Waffen** (6 Basen + 6 Evolutionen) als Stufe 8 mit je 50 Gegnern, 5 s + Wirkphase; Schaden je Waffe **1.400–9.090**, 0 JS-Fehler. Screenshots `shots/m2-weapon-<id>.png` alle gesichtet. Truhe → **Phönixschwarm** im Slot bewiesen (`shots/m2-evolution-phoenix.png`), Sequenz als `shots/m2-chest.gif` (48 Frames, 480×270).
+- `npm run perf`: **56,9 FPS** (Ziel ≥ 55) mit allen **6 Waffen auf Stufe 8** und gehaltenen **≥ 500 Gegnern** (Ziel 580, min. 505, ø 575) über 10 s; 1.002 Kills, 0 JS-Fehler. Screenshot `shots/perf-500.png`.
+
+**Bekannte Lücken / offene Punkte (ehrlich):**
+- **Bosse sind Platzhalter:** `spawnBoss(i)` erzeugt einen vergrößerten Moorzombie mit 9× HP; echte Boss-Mechaniken, HP-Leiste, Warn-Banner und 6 Bosse folgen in M4. Truhen droppen daher aktuell nur über den Platzhalterboss/Debug.
+- Nur **3 der 30 Gegner** sind implementiert; M3 bringt Archetypen/Spezialwellen. Wasser-/Moorflächen der Karte sind noch flache Platzhalter, ebenso Gegner-/Spieleranimationen (1–2 Frames).
+- **Sound, Damage-Numbers, Meta/Shop** und der Endboss (30:00) fehlen (M5/M6). Die 30-Minuten-Sieg/Niederlage-Schleife ist noch nicht end-to-end abgenommen.
+- Balance ist Rohbau: Evolutionen sind bewusst deutlich stärker; Truhen-Chancen und Waffenwerte brauchen Playtesting.
+- Debug-Cheats nur mit `?debug=1`; `openChest` verweigert sich, wenn bereits eine Truhe oder ein Level-up offen ist.
