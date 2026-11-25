@@ -205,7 +205,7 @@ export interface BossDef {
   implemented: boolean;
 }
 
-export type WaveSpecial = "ring" | "stream" | null;
+export type WaveSpecial = "ring" | "stream" | "elite" | null;
 
 export interface WaveDef {
   /** Spielminute, 0-basiert (0 = 00:00–00:59) */
@@ -215,6 +215,8 @@ export interface WaveDef {
   /** Gewichtete Mischung */
   mix: Partial<Record<EnemyId, number>>;
   special: WaveSpecial;
+  /** Garantierte Elite-Gruppe in dieser Minute (Leuchtrand + großer Kristall). */
+  elitePack: boolean;
   /** Boss, der in dieser Minute erscheint (Index in BOSSES). */
   bossIndex?: number;
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 29,
+  "next": 35,
   "cards": [
     {
       "id": 1,
@@ -504,6 +504,72 @@
       ],
       "created": "2026-11-25T02:51:35Z",
       "updated": "2026-11-25T03:09:43Z"
+    },
+    {
+      "id": 29,
+      "title": "M3-01 Archetypen-Logik + Skalierungs-/Wellen-/Boss-/Terrain-Helfer + Tests",
+      "description": "Reine Module: enemy-ai (10 Archetypen-State-Machines), scaling (HP/Schaden/Tempo-Kurven), waves special/elite/cap, terrain (Wasser 40%), bosses (Phasen/Schedules), autoplay (Ziel-/Dodge-Priorität). Vitest.",
+      "column": "doing",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T04:00:25Z",
+          "by": "build",
+          "text": "todo → doing: Implementiere reine Logikmodule + Tests"
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T04:00:25Z"
+    },
+    {
+      "id": 30,
+      "title": "M3-02 Alle 30 Gegner spielbar + Platzhalter-Sprites + Gegner-Projektile + Warnflächen",
+      "description": "30 eindeutige Silhouetten/Farben, 2 Frames, Hit-Flash, Tod-Partikel. EnemyProjectilePool (klar getrennt vom Spielerfeuer), Telegraph/Warnmarker.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T03:58:41Z"
+    },
+    {
+      "id": 31,
+      "title": "M3-03 Wellen-Director 00-30, Spezialwellen, Elite, Gegner-Cap/Recycling",
+      "description": "Ring-Einkesselung, Schwarm-Ströme, Elite mit Leuchtrand + großer XP-Kristall, max. aktive Gegner, älteste/ferne recyceln.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T03:58:41Z"
+    },
+    {
+      "id": 32,
+      "title": "M3-04 6 Bosse mit Mechaniken, HP-Leiste, Warn-Banner, Truhe; Endboss 3 Phasen + Morgendämmerung",
+      "description": "Moorkönigin, Knochenfürst, Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler König. Telegraphing, Boss-HP-Bar, Banner, Chest-Drop, Sieg-Sequenz + Ergebnis Überlebt.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T03:58:41Z"
+    },
+    {
+      "id": 33,
+      "title": "M3-05 Moorwasser-Slow + ganzzahlige Skalierung <960px + autoPlay-Bot",
+      "description": "Wasser verlangsamt Spieler+Gegner 40% mit Spritzern; 1x-Rand bei kleinen Fenstern, Glyphen sichtbar; Bot kitet, meidet Projektile/Warnflächen, sammelt XP, wählt Level-ups nach Priorität.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T03:58:41Z"
+    },
+    {
+      "id": 34,
+      "title": "M3-06 Abnahme: verify-enemies, verify-bosses, fullrun, perf, GAME.md Status M3",
+      "description": "Headless-Skripte mit OK/FAIL-Zeilen, Screenshots/GIFs, fullrun-JSON; perf Minute 25 >=55 FPS; GAME.md Status + Bericht.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T03:58:41Z"
     }
   ]
 }

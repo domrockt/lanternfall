@@ -42,3 +42,40 @@ export function ringSpawnOffsets(count: number, radius: number): { x: number; y:
   }
   return out;
 }
+
+/**
+ * Schwarm-Strom: eine geschlossene Reihe in einer Richtung (±70°), die als
+ * Strom auf den Spieler zuläuft und den Rand des Views kreuzt.
+ */
+export function streamSpawnOffsets(count: number, radius: number, angle: number): { x: number; y: number }[] {
+  const out: { x: number; y: number }[] = [];
+  const base = angle + Math.PI;
+  const perp = base + Math.PI / 2;
+  for (let i = 0; i < count; i++) {
+    const lateral = (i - (count - 1) / 2) * 16;
+    out.push({
+      x: Math.cos(base) * radius + Math.cos(perp) * lateral,
+      y: Math.sin(base) * radius + Math.sin(perp) * lateral,
+    });
+  }
+  return out;
+}
+
+/** Elite-Paketgröße (steigt leicht mit der Minute). */
+export function elitePackCount(minute: number): number {
+  return Math.min(5, 2 + Math.floor(minute / 8));
+}
+
+/**
+ * Director-Plan für eine Spielzeit: Mischung, Spezialwelle und Elite-Markierung.
+ * Reine Funktion, damit die Abnahme die Wellenstruktur prüfen kann.
+ */
+export function directorPlan(elapsedSeconds: number): {
+  minute: number;
+  wave: ReturnType<typeof waveForMinute>;
+  elite: boolean;
+} {
+  const minute = Math.max(0, Math.min(29, Math.floor(elapsedSeconds / 60)));
+  const wave = waveForMinute(minute);
+  return { minute, wave, elite: wave.elitePack };
+}

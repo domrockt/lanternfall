@@ -1,4 +1,5 @@
 import type { EnemyId, WaveDef } from "./types";
+import { isEliteMinute } from "../logic/scaling";
 
 /** Gewichte pro Zeitstufe (0–5, 5–10, 10–15, 15–20, 20–30 min). */
 export const TIER_MIXES: Record<number, Partial<Record<EnemyId, number>>> = {
@@ -13,9 +14,18 @@ const tierForMinute = (minute: number): number =>
   Math.min(4, Math.floor(minute / 5));
 
 /**
+ * Spezialwellen: ab Minute 3 abwechselnd Einkesselungs-Ring und Schwarm-Strom.
+ * Elite-Minuten (4/10/16/22/28) sind zusätzlich markiert.
+ */
+export function specialForMinute(minute: number): WaveDef["special"] {
+  if (minute < 3) return null;
+  return minute % 2 === 1 ? "ring" : "stream";
+}
+
+/**
  * 30 Wellen (eine pro Spielminute). Spawnrate wächst, Mischung wechselt alle 5 min,
- * Spezialwellen ab Minute 3 (Ring-Einkesselung) und 6 (Schwarm-Ströme).
- * Bosse erscheinen in Minute 5/10/15/20/25; der Endboss bei 30:00 (Siegbedingung).
+ * Spezialwellen ab Minute 3, Elite-Pakete ab Minute 4.
+ * Bosse erscheinen in Minute 5/10/15/20/25; der Endboss bei 30:00.
  */
 export const WAVES: WaveDef[] = Array.from({ length: 30 }, (_, minute) => {
   const tier = tierForMinute(minute);
@@ -24,7 +34,8 @@ export const WAVES: WaveDef[] = Array.from({ length: 30 }, (_, minute) => {
     minute,
     spawnRate: 0.9 + minute * 0.34 + tierProgress * 0.12,
     mix: TIER_MIXES[tier],
-    special: minute >= 3 && minute % 3 === 0 ? "ring" : minute >= 6 && minute % 4 === 0 ? "stream" : null,
+    special: specialForMinute(minute),
+    elitePack: isEliteMinute(minute),
     bossIndex: minute === 5 ? 0 : minute === 10 ? 1 : minute === 15 ? 2 : minute === 20 ? 3 : minute === 25 ? 4 : undefined,
   };
 });
