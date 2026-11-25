@@ -46,7 +46,14 @@ R = {
 
 
 def finish(g: Grid, details: list[tuple[int, int, int]] | None = None,
-           allow_highlight: bool = True, shade: bool = True) -> Grid:
+           allow_highlight: bool = True, shade: bool = True,
+           dark_edge: int | None = None) -> Grid:
+    # Augen-Akzente (Tier-Akzent auf Höhle 2) werden vor dem Shading
+    # gezeichnet. shade_edges darf sie nicht zu 1-px-Resten umfärben, sonst
+    # verliert das Auge seine 2-px-Breite. Daher werden Akzentpixel, die an
+    # eine 2er-Höhle grenzen, nach dem Shading wiederhergestellt.
+    pre = g.copy()
+    ACCENTS = (31, 11, 20, 26, 13)
     # Kleine Sprites (16/20 px) werden silhouette-basiert schattiert, damit
     # Innen-Details (Augen, Mund, Akzente) nicht von Kantenbändern überschrieben
     # werden. Ab 24 px bleibt das flächenbewusste Shading.
@@ -55,6 +62,29 @@ def finish(g: Grid, details: list[tuple[int, int, int]] | None = None,
     if details:
         for x, y, c in details:
             g.put(x, y, c)
+    for y in range(g.h):
+        for x in range(g.w):
+            c = pre.px[y][x]
+            if c is None or c not in ACCENTS or g.px[y][x] is None:
+                continue
+            if any(pre.get(x + dx, y + dy) == 2
+                   for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                g.px[y][x] = c
+    # Nur für sehr dunkle Gegner (Spinne, Krähe, Wolf, Leerenrufer): die
+    # oberste bzw. linke Silhouettenkante bekommt zusätzlich eine 1-px-helle
+    # Lichtkante, damit die Form auf Index-1-Hintergrund lesbar bleibt.
+    # Es werden ausschließlich bereits gefüllte Pixel umgefärbt; die Silhouette
+    # (und damit der Eindeutigkeits-Maskentest) bleibt unverändert.
+    if dark_edge is not None:
+        occ = g.occupied()
+        for y in range(g.h):
+            xs = [x for x in range(g.w) if occ[y][x]]
+            if xs and g.px[y][xs[0]] not in (INK, 2):
+                g.px[y][xs[0]] = dark_edge
+        for x in range(g.w):
+            ys = [y for y in range(g.h) if occ[y][x]]
+            if ys and g.px[ys[0]][x] not in (INK, 2):
+                g.px[ys[0]][x] = dark_edge
     # Innen-Tinte: 0 gehört nur an die Außenkontur, innen wird sie zu 2.
     occ = g.occupied()
     for y in range(g.h):
@@ -198,7 +228,8 @@ def crow(f: int) -> Grid:
     g.rect(9, cy + 3, 2, 2, 16)
     g.rect(6, cy + 5, 3, 1, 20)
     g.rect(9, cy + 5, 3, 1, 20)
-    return finish(g, [(10, cy - 2, 31), (11, cy - 2, 31), (13, cy - 2, 20)])
+    return finish(g, [(10, cy - 2, 31), (11, cy - 2, 31), (13, cy - 2, 20)],
+                  dark_edge=9)
 
 
 def bogzombie(f: int) -> Grid:
@@ -335,6 +366,7 @@ def ghoul(f: int) -> Grid:
     g.ellipse(9, cy - 1, 4, 4, l)
     g.ellipse(12, 6 - bob, 3, 3, b)    # Kopf vorgestreckt
     g.put(15, 6 - bob, l)              # Schnauze
+    g.rect(13, 5 - bob, 2, 2, 2)       # Augenhöhle
     g.put(13, 5 - bob, 11)
     g.put(14, 5 - bob, 11)
     g.put(15, 7 - bob, INK)
@@ -367,11 +399,11 @@ def witchling(f: int) -> Grid:
     g.rect(8 + sway, 15 - bob, 2, 1, d)
     g.rect(14 + sway, 15 - bob, 2, 2, d)
     g.rect(5, 10 - bob, 10, 1, d)        # Kragen-Schatten
-    # Gesicht hell, Kapuze.
-    g.rect(7, 7 - bob, 6, 5, 10)
-    g.rect(7, 7 - bob, 2, 5, 9)
-    g.rect(13, 7 - bob, 2, 5, 8)
-    g.rect(8, 11 - bob, 4, 1, 9)         # Kinn
+    # Warmes Gesicht (Haut-Rampe 16 / 27 / 21), Kapuze bleibt.
+    g.rect(7, 7 - bob, 6, 5, 27)
+    g.rect(11, 7 - bob, 2, 5, 16)        # rechte Schattenseite
+    g.rect(8, 11 - bob, 4, 1, 16)        # Kinnschatten
+    g.vline(7, 7 - bob, 11 - bob, 21)    # 1-px-Lichtkante links
     # Augen 2x2-Höhle + 2x1 Tier-Akzent 11.
     g.rect(8, 8 - bob, 2, 2, 2)
     g.rect(11, 8 - bob, 2, 2, 2)
@@ -386,6 +418,10 @@ def witchling(f: int) -> Grid:
     g.line(9, 15 - bob, 13, 17 - bob, 21, 2)
     g.rect(8, 16 - bob, 3, 2, 20)
     g.rect(9, 5 - bob, 2, 2, 11)         # Hutspitzen-Akzent
+    # Warme Hand am Besenstiel.
+    g.rect(12, 11 - bob, 2, 2, 27)
+    g.put(12, 11 - bob, 21)
+    g.put(13, 12 - bob, 16)
     return finish(g, [(8, 8 - bob, 11), (9, 8 - bob, 11), (11, 8 - bob, 11), (12, 8 - bob, 11)])
 
 def slime(f: int) -> Grid:
@@ -487,7 +523,7 @@ def wolf(f: int) -> Grid:
     for x, o in ((5, a), (8, c), (13, c), (16, a)):
         g.rect(x, 18 - bob, 2, 2 + o, d)
         g.rect(x, 20 - bob + o, 3, 1, d)
-    return finish(g, [(16, cy - 4, 20)], shade=False)
+    return finish(g, [(16, cy - 4, 20)], shade=False, dark_edge=11)
 
 
 def banshee(f: int) -> Grid:
@@ -601,7 +637,8 @@ def spider(f: int) -> Grid:
     g.rect(10, cy - 1, 2, 2, 2)
     g.rect(5, cy + 1, 2, 1, 5)
     g.rect(10, cy + 1, 2, 1, 5)
-    return finish(g, [(6, cy - 1, 20), (7, cy - 1, 20), (10, cy - 1, 20), (11, cy - 1, 20)])
+    return finish(g, [(6, cy - 1, 20), (7, cy - 1, 20), (10, cy - 1, 20), (11, cy - 1, 20)],
+                  dark_edge=8)
 
 def cultist(f: int) -> Grid:
     g = Grid(24, 24)
@@ -616,13 +653,19 @@ def cultist(f: int) -> Grid:
     g.rect(16 + sway, 18, 3, 1, d)
     g.rect(6, 14 - bob, 12, 1, 25)      # Gürtel
     g.rect(9, 14 - bob, 3, 1, 20)       # Schnalle
-    # Kapuze + Schatten-Gesicht.
+    # Kapuze + warmes Gesicht (Haut-Rampe 16 / 27 / 21).
     g.ellipse(12, 9 - bob, 4, 5, b)
-    g.rect(8, 6 - bob, 8, 4, 23)
-    g.rect(9, 10 - bob, 6, 3, 23)
-    g.put(10, 9 - bob, 20)              # Glutaugen
-    g.put(14, 9 - bob, 20)
-    g.put(12, 11 - bob, 0)
+    g.rect(8, 6 - bob, 8, 4, 27)
+    g.rect(9, 10 - bob, 6, 3, 27)
+    # Schatten unten-rechts, 1-px-Lichtkante oben-links.
+    g.rect(13, 8 - bob, 3, 2, 16)
+    g.rect(10, 12 - bob, 5, 1, 16)
+    g.vline(8, 6 - bob, 12 - bob, 21)
+    g.hline(8, 12, 6 - bob, 21)
+    # Augen: 2x2-Höhle (2) mit 2x1-Akzent 20.
+    g.rect(9, 8 - bob, 2, 2, 2)
+    g.rect(13, 8 - bob, 2, 2, 2)
+    g.put(12, 11 - bob, 0)              # Mundnaht
     g.put(8, 6 - bob, 26)               # Kapuzensaum
     g.put(15, 6 - bob, 26)
     # Dolch.
@@ -630,7 +673,13 @@ def cultist(f: int) -> Grid:
     g.rect(18, 15 - bob, 3, 1, 20)
     g.put(19, 9 - bob, 13)
     g.rect(8, 16 - bob, 2, 2, 20)       # Amulett
-    return finish(g, [(10, 9 - bob, 20), (14, 9 - bob, 20), (19, 9 - bob, 13)])
+    # Warme Hand am Dolchgriff.
+    g.rect(17, 14 - bob, 2, 2, 27)
+    g.put(17, 14 - bob, 21)
+    g.put(18, 15 - bob, 16)
+    return finish(g, [(9, 8 - bob, 20), (10, 8 - bob, 20),
+                      (13, 8 - bob, 20), (14, 8 - bob, 20),
+                      (19, 9 - bob, 13)])
 
 
 def bomber(f: int) -> Grid:
@@ -661,7 +710,8 @@ def bomber(f: int) -> Grid:
     g.rect(13, cy + 6 + off, 3, 2, 5)
     g.rect(8, cy + 8, 4, 1, 10)
     g.rect(12, cy + 8 + off, 4, 1, 10)
-    return finish(g, [(9, cy - 2, 20), (14, cy - 2, 20)])
+    return finish(g, [(9, cy - 2, 20), (10, cy - 2, 20),
+                      (14, cy - 2, 20), (15, cy - 2, 20)])
 
 def knight(f: int) -> Grid:
     g = Grid(28, 28)
@@ -689,7 +739,7 @@ def knight(f: int) -> Grid:
     g.rect(9, 3 - bob, 10, 7, 7)
     g.rect(9, 3 - bob, 10, 1, 9)
     g.rect(9, 4 - bob, 2, 6, 5)
-    g.rect(12, 6 - bob, 5, 2, 4)
+    g.rect(12, 6 - bob, 5, 2, 2)        # Visierhöhle
     g.rect(13, 8 - bob, 2, 1, 4)
     g.rect(12, 0 - bob, 4, 3, 26)
     g.rect(12, 0 - bob, 2, 1, 25)
@@ -704,7 +754,7 @@ def knight(f: int) -> Grid:
     g.rect(24, 10 - bob, 1, 13, 9)
     g.rect(23, 19 - bob, 4, 2, 20)
     g.rect(23, 21 - bob, 4, 2, 16)
-    return finish(g, [(13, 6 - bob, 26)])
+    return finish(g, [(13, 6 - bob, 26), (14, 6 - bob, 26)])
 
 
 def harpy(f: int) -> Grid:
@@ -730,10 +780,10 @@ def harpy(f: int) -> Grid:
     g.ellipse(14, cy + 1, 4, 5, b)
     g.rect(12, cy - 3, 4, 4, l)
     g.ellipse(14, cy - 5, 3, 3, b)
-    g.put(13, cy - 6, 0)                # Augen
-    g.put(16, cy - 6, 0)
-    g.put(13, cy - 5, 26)
-    g.put(16, cy - 5, 26)
+    g.rect(13, cy - 6, 2, 2, 2)         # Augenhöhlen
+    g.rect(16, cy - 6, 2, 2, 2)
+    g.rect(13, cy - 6, 2, 1, 26)
+    g.rect(16, cy - 6, 2, 1, 26)
     g.put(14, cy - 3, 20)               # Schnabel
     g.put(15, cy - 3, 17)
     g.put(14, cy - 2, INK)
@@ -749,7 +799,8 @@ def harpy(f: int) -> Grid:
     g.put(16, cy + 10 + (1 - off), 20)
     g.put(18, cy + 10 + (1 - off), 20)
     g.put(14, cy + 2, 11)               # Brustgefieder
-    return finish(g, [(13, cy - 5, 26), (16, cy - 5, 26), (13, cy - 6, 0), (16, cy - 6, 0)])
+    return finish(g, [(13, cy - 6, 26), (14, cy - 6, 26),
+                      (16, cy - 6, 26), (17, cy - 6, 26)])
 
 
 def lich(f: int) -> Grid:
@@ -893,8 +944,10 @@ def imp(f: int) -> Grid:
     g.put(10, cy - 7, 0)
     g.put(17, cy - 6, 0)
     g.put(18, cy - 7, 0)
-    g.put(12, cy - 4, 26)               # Augen
-    g.put(16, cy - 4, 26)
+    g.rect(12, cy - 5, 2, 2, 2)         # Augenhöhlen
+    g.rect(15, cy - 5, 2, 2, 2)
+    g.rect(12, cy - 5, 2, 1, 26)
+    g.rect(15, cy - 5, 2, 1, 26)
     g.rect(13, cy - 2, 3, 1, INK)       # Grinsen
     g.put(13, cy - 1, 13)
     g.put(15, cy - 1, 13)
@@ -905,7 +958,8 @@ def imp(f: int) -> Grid:
     g.rect(16, cy + 5, 2, 3, d)
     g.put(10, cy + 8, 0)
     g.put(18, cy + 8, 0)
-    return finish(g, [(12, cy - 4, 26), (16, cy - 4, 26)])
+    return finish(g, [(12, cy - 5, 26), (13, cy - 5, 26),
+                      (15, cy - 5, 26), (16, cy - 5, 26)])
 
 
 # ── Stufe 4 (32 px, 4 Frames) ───────────────────────────────────────────────
@@ -955,10 +1009,10 @@ def centipede(f: int) -> Grid:
         g.put(x + 1, y + 2, 10)
     # Kopf mit Mandibeln.
     g.ellipse(27, cy - 2, 4, 4, b)
-    g.put(25, cy - 4, INK)              # Augen
-    g.put(28, cy - 4, INK)
-    g.put(25, cy - 3, 13)
-    g.put(28, cy - 3, 13)
+    g.rect(25, cy - 4, 2, 2, 2)         # Augenhöhlen
+    g.rect(28, cy - 4, 2, 2, 2)
+    g.rect(25, cy - 4, 2, 1, 13)
+    g.rect(28, cy - 4, 2, 1, 13)
     g.put(30, cy - 2, 10)
     g.put(31, cy - 1, 10)
     g.put(31, cy, 10)
@@ -972,7 +1026,8 @@ def centipede(f: int) -> Grid:
         g.line(x + 1, cy + 2, x + 3 - swing, cy + 6, 10, 1)
     # Hinterleibsschwanz.
     g.line(3, cy - 1, 1, cy - 3, 10, 1)
-    return finish(g, [(25, cy - 3, 13), (28, cy - 3, 13)])
+    return finish(g, [(25, cy - 4, 13), (26, cy - 4, 13),
+                      (28, cy - 4, 13), (29, cy - 4, 13)])
 
 
 def gargoyle(f: int) -> Grid:
@@ -1008,7 +1063,8 @@ def gargoyle(f: int) -> Grid:
     g.rect(17, cy + 9, 5, 1, 10)
     g.line(20, cy + 3, 26, cy + 6, 5, 2)
     g.rect(26, cy + 5, 2, 2, 6)
-    return finish(g, [(13, cy - 6, 13), (17, cy - 6, 13)])
+    return finish(g, [(13, cy - 6, 13), (14, cy - 6, 13),
+                      (17, cy - 6, 13), (18, cy - 6, 13)])
 
 def reaper_bat(f: int) -> Grid:
     g = Grid(32, 32)
@@ -1037,7 +1093,8 @@ def reaper_bat(f: int) -> Grid:
     g.rect(15, cy + 7, 2, 3, d)
     g.rect(14, cy + 10, 2, 2, 5)
     g.rect(17, cy + 10, 2, 2, 5)
-    return finish(g, [(14, cy - 6, 13), (18, cy - 6, 13)], shade=False)
+    return finish(g, [(14, cy - 6, 13), (15, cy - 6, 13),
+                      (18, cy - 6, 13), (19, cy - 6, 13)], shade=False)
 
 def abom(f: int) -> Grid:
     g = Grid(32, 32)
@@ -1065,7 +1122,7 @@ def abom(f: int) -> Grid:
         g.rect(19, yy, 2, 1, 23)
     g.line(8, cy + 1, 11, cy + 3, 23, 1)
     for ex in (13, 16, 19):
-        g.rect(ex, cy - 8, 2, 2, INK)
+        g.rect(ex, cy - 8, 2, 2, 2)
     g.rect(12, cy - 3, 9, 3, INK)
     for x in (13, 16, 19):
         g.rect(x, cy - 3, 2, 2, 11)
@@ -1074,7 +1131,9 @@ def abom(f: int) -> Grid:
     g.rect(8, cy + 5 + off, 1, 4, 26)
     g.rect(20, cy + 5 + (2 - off), 4, 4, 24)
     g.rect(20, cy + 5 + (2 - off), 1, 4, 26)
-    return finish(g, [(13, cy - 8, 13), (16, cy - 8, 13), (19, cy - 8, 13)])
+    return finish(g, [(13, cy - 8, 13), (14, cy - 8, 13),
+                      (16, cy - 8, 13), (17, cy - 8, 13),
+                      (19, cy - 8, 13), (20, cy - 8, 13)])
 
 def voidcaller(f: int) -> Grid:
     g = Grid(32, 32)
@@ -1117,7 +1176,8 @@ def voidcaller(f: int) -> Grid:
     g.put(28, top + 14, 13)
     g.rect(10, top + 12, 13, 1, 4)
     g.rect(15, top + 11, 2, 2, 20)
-    return finish(g, [(14, top + 4, 13), (18, top + 4, 13), (3, top + 14, 13), (28, top + 14, 13)], shade=False)
+    return finish(g, [(14, top + 4, 13), (18, top + 4, 13), (3, top + 14, 13), (28, top + 14, 13)],
+                  shade=False, dark_edge=9)
 
 # ── Registry ────────────────────────────────────────────────────────────────
 TIER = {
