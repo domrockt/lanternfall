@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import type { EnemyDef } from "../data/types";
 import { SPRITE_FRAMES } from "../gfx/textures";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
+import { DEPTH } from "../gfx/depth";
 
 export interface EnemySpawnOptions {
   elite?: boolean;
@@ -132,7 +133,7 @@ export class EnemyPool {
     enemy.sprite.setActive(true);
     enemy.sprite.setAlpha(1);
     enemy.sprite.clearTint();
-    enemy.sprite.setDepth(enemy.boss ? 9 : 8);
+    enemy.sprite.setDepth(enemy.boss ? DEPTH.boss : DEPTH.enemy);
     enemy.sprite.setPosition(Math.round(x), Math.round(y));
     enemy.aura.setVisible(enemy.elite || enemy.boss);
     enemy.aura.setPosition(Math.round(x), Math.round(y));
@@ -143,9 +144,9 @@ export class EnemyPool {
   }
 
   private createRuntime(): EnemyRuntime {
-    const sprite = this.scene.add.sprite(0, 0, "enemy_bog_rat").setOrigin(0.5, 0.5).setDepth(8);
+    const sprite = this.scene.add.sprite(0, 0, "enemy_bog_rat").setOrigin(0.5, 0.5).setDepth(DEPTH.enemy);
     const aura = this.scene.add.image(0, 0, "elite_aura")
-      .setDepth(7)
+      .setDepth(DEPTH.death)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setVisible(false);
     return {

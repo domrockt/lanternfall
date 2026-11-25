@@ -7,6 +7,7 @@ import { GEN_UI } from "./gen-ui";
 import { GEN_TITLE } from "./gen-title";
 import { GEN_PROPS } from "./gen-props";
 import { ALL_BOSS_FRAMES, ALL_ENEMY_FRAMES, createBossTextures, createEnemyTextures } from "./enemySprites";
+import { createFxTextures } from "./gen-fx";
 
 /** Zeichen → Palettenindex: 0-9 = 0-9, a-z = 10-31, '.' = transparent. */
 export function charIndex(ch: string): number {
@@ -484,6 +485,7 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createLightTexture(scene);
   createVignetteTexture(scene);
   createShadowTexture(scene);
+  createFxTextures(scene);
   createFrostRingTexture(scene);
   createRingTexture(scene, "ring_burst", [17, 19, 21, 13]);
   createRingTexture(scene, "ring_seal", [20, 21, 13]);

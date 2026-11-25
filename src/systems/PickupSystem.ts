@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { GEMS, type GemSize } from "../logic/xp";
+import { DEPTH } from "../gfx/depth";
 
 interface GemRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -40,7 +41,7 @@ export class PickupSystem {
     gem.active = true;
     gem.age = 0;
     gem.sprite.setTexture(`gem_${size}`);
-    gem.sprite.setVisible(true).setActive(true).setDepth(7);
+    gem.sprite.setVisible(true).setActive(true).setDepth(DEPTH.gem);
     gem.sprite.setPosition(Math.round(x), Math.round(y));
     this.gems.push(gem);
   }
@@ -55,7 +56,7 @@ export class PickupSystem {
   }
 
   private createRuntime(): GemRuntime {
-    const sprite = this.scene.add.image(0, 0, "gem_small").setDepth(7);
+    const sprite = this.scene.add.image(0, 0, "gem_small").setDepth(DEPTH.gem);
     return { sprite, size: "small", value: 1, x: 0, y: 0, vx: 0, vy: 0, active: false, age: 0 };
   }
 
