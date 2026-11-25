@@ -5,3 +5,5 @@ shots/*.gif
 .opencode.log
 briefs/
 shots/frames/
+.opencode-fix.log
+.fix-brief.md
