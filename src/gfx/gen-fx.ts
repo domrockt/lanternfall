@@ -14,6 +14,7 @@ interface FxDef {
   frames: string[][];
 }
 
+/** Paletten-INDEX → CSS-Farbe. */
 const hex = (i: number): string => "#" + PAL[i].toString(16).padStart(6, "0");
 
 function addFrame(scene: Phaser.Scene, key: string, rows: string[], w: number, h: number): void {
@@ -29,7 +30,9 @@ function addFrame(scene: Phaser.Scene, key: string, rows: string[], w: number, h
       const ch = row[x];
       if (!ch || ch === ".") continue;
       if (ch === "0") continue; // 0 = Kontur bleibt transparent (Glow-Rand)
-      ctx.fillStyle = hex(PAL[charCode(ch)]);
+      const idx = charCode(ch);
+      if (!Number.isFinite(idx)) continue;
+      ctx.fillStyle = hex(idx);
       ctx.fillRect(x, y, 1, 1);
     }
   }
@@ -46,8 +49,6 @@ function charCode(ch: string): number {
 function addFrames(scene: Phaser.Scene, base: string, def: FxDef): void {
   def.frames.forEach((rows, i) => addFrame(scene, i === 0 ? base : `${base}_${i + 1}`, rows, def.w, def.h));
 }
-
-const dot = (x: number, y: number): string => (x >= 0 && y >= 0 ? "" : "");
 
 /** Kreis-/Blob-Maske mit Palette-Farbrampe; deterministisch (kein Math.random). */
 function blob(w: number, h: number, ramp: number[], opts: { squash?: number; core?: number; seed?: number } = {}): string[] {

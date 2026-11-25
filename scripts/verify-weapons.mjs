@@ -13,16 +13,16 @@ const WAIT_MS = 5000;
 /** Erwartete VFX-Texturen je Waffe, abgeleitet aus CombatSystem. */
 const VFX_KEYS = {
   ember: ["projectile_ember"],
-  flail: ["flail_ball"],
-  frost: ["ring_frost"],
+  flail: ["flail_ball", "fx_smear"],
+  frost: ["ring_frost", "fx_ice"],
   thorn: ["projectile_thorn"],
-  storm: ["bolt_seg", "ring_seal"],
+  storm: ["fx_bolt", "fx_seal"],
   lantern: ["orb_lantern"],
   phoenix: ["projectile_phoenix"],
-  wrath_pendulum: ["flail_ball"],
+  wrath_pendulum: ["flail_ball", "fx_smear"],
   eternal_winter: ["ring_frost", "projectile_ice"],
   thorn_storm: ["projectile_thorn"],
-  thunder_seal: ["bolt_seg", "ring_seal"],
+  thunder_seal: ["fx_bolt", "fx_seal"],
   soul_beacon: ["orb_soul"],
 };
 

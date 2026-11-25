@@ -9,7 +9,9 @@ import {
 import { knockbackVector } from "../logic/combat";
 import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
-import { FxSystem } from "./FxSystem";
+import { FxSystem, ParticleSystem } from "./FxSystem";
+import { fxFrames } from "../gfx/gen-fx";
+import { DEPTH } from "../gfx/depth";
 import { ProjectilePool } from "./ProjectilePool";
 import type { SpatialHash } from "./SpatialHash";
 import type { OwnedWeapon } from "./LevelUpSystem";
@@ -33,6 +35,7 @@ export interface CombatContext {
 
 interface Orb {
   sprite: Phaser.GameObjects.Image;
+  halo?: Phaser.GameObjects.Image;
   phase: number;
 }
 
@@ -80,6 +83,8 @@ interface PendingSeal {
 export class CombatSystem {
   readonly projectiles: ProjectilePool;
   readonly fx: FxSystem;
+  /** Eigener Partikel-Pool (Funken/Splitter/Staub), nicht der Effekt-Cap. */
+  readonly particles: ParticleSystem;
   /** Von Seelenleuchtfeuer aktivierter Magnet-Bonus in px (0 = aus). */
   pickupBonus = 0;
   private readonly scene: Phaser.Scene;
@@ -92,6 +97,7 @@ export class CombatSystem {
     this.scene = scene;
     this.projectiles = new ProjectilePool(scene);
     this.fx = new FxSystem(scene);
+    this.particles = new ParticleSystem(scene);
   }
 
   update(ctx: CombatContext): void {
@@ -103,6 +109,7 @@ export class CombatSystem {
     this.updateProjectiles(ctx);
     this.updateBurns(ctx);
     this.fx.update(ctx.dt);
+    this.particles.update(ctx.dt);
   }
 
   private stateFor(id: string): WeaponState {
@@ -190,8 +197,13 @@ export class CombatSystem {
         texture: "projectile_ember",
         radius: effectiveRadius(4, ctx.agg),
         target: target ?? null,
-        trail: "projectile_ember",
+        trail: "fx_fire",
+        trailFrames: fxFrames("fx_fire", 6),
         trailInterval: 0.05,
+      });
+      // Mündungsglut: kurzer weißer Kern + Halo.
+      this.fx.spawnAnim("fx_fire", ctx.playerX + Math.cos(angle) * 10, ctx.playerY + Math.sin(angle) * 10, {
+        life: 0.22, scaleFrom: 0.9, scaleTo: 0.2, alphaFrom: 0.95, alphaTo: 0, additive: true,
       });
     }
   }
@@ -227,7 +239,8 @@ export class CombatSystem {
         texture: "projectile_phoenix",
         radius: effectiveRadius(6, ctx.agg),
         target,
-        trail: "projectile_phoenix",
+        trail: "fx_fire",
+        trailFrames: fxFrames("fx_fire", 6),
         trailInterval: 0.04,
         // Normal-Blend, damit Flügel/Kontur des Feuervogels klar lesbar bleiben;
         // der Trail bleibt additiv (siehe updateProjectiles).
@@ -235,6 +248,9 @@ export class CombatSystem {
         explodeRadius: effectiveRadius(34, ctx.agg),
       });
     }
+    this.fx.spawnAnim("fx_fire", ctx.playerX, ctx.playerY, {
+      life: 0.30, scaleFrom: 1.4, scaleTo: 0.3, alphaFrom: 1, alphaTo: 0, additive: true,
+    });
   }
 
   // ── Flail ─────────────────────────────────────────────────────
@@ -248,7 +264,7 @@ export class CombatSystem {
     for (let i = 0; i < count; i++) {
       const side = i === 0 ? 1 : -1;
       const sprite = this.scene.add.image(ctx.playerX, ctx.playerY, "flail_ball")
-        .setDepth(11)
+        .setDepth(DEPTH.fxLow)
         .setScale(1 + radius / 140)
         .setBlendMode(Phaser.BlendModes.NORMAL);
       state.swings.push({
@@ -269,6 +285,20 @@ export class CombatSystem {
     this.fx.burst("fx_spark", ctx.playerX + Math.cos(base) * 12, ctx.playerY + Math.sin(base) * 12, 4, {
       tint: PAL[C.fog], life: 0.18, additive: false,
     });
+    // Bewegungsunschärfe-Bogen (Smear-Frames): Metallbogen mit hellem Kern.
+    this.fx.spawnAnim("fx_smear", ctx.playerX, ctx.playerY, {
+      life: dur * 1.25, scaleFrom: radius / 20, scaleTo: radius / 19,
+      alphaFrom: evolved ? 0.95 : 0.75, alphaTo: 0,
+      rotation: base + Math.PI / 2,
+      tint: evolved ? PAL[C.amber] : PAL[C.boneLight],
+      additive: false,
+    });
+    if (evolved) {
+      this.fx.spawnAnim("fx_halo", ctx.playerX, ctx.playerY, {
+        life: 0.3, scaleFrom: radius / 12, scaleTo: radius / 9,
+        alphaFrom: 0.8, alphaTo: 0, additive: true,
+      });
+    }
   }
 
   private updateSwings(ctx: CombatContext): void {
@@ -290,8 +320,17 @@ export class CombatSystem {
         this.fx.spawn({
           texture: "flail_ball", x: bx, y: by, life: 0.22,
           scaleFrom: 0.6, scaleTo: 0.25, alphaFrom: 0.8, alphaTo: 0,
-          additive: false, tint: PAL[C.blueGrey],
+          additive: false, tint: s.weaponId === "wrath_pendulum" ? PAL[C.amber] : PAL[C.blueGrey],
         });
+        // Funken am Kugelkopf (nur jeder zweite Frame, spart Draw-Aufrufe).
+        if ((Math.floor(s.t * 60) & 1) === 0) {
+          this.particles.spawn({
+            texture: "fx_star", x: bx, y: by, life: 0.14,
+            scaleFrom: 0.7, scaleTo: 0.2, alphaFrom: 0.9, alphaTo: 0,
+            additive: true, tint: s.weaponId === "wrath_pendulum" ? PAL[C.lantern] : PAL[C.boneLight],
+            depth: DEPTH.fxLow,
+          });
+        }
         // Treffer: ganzer Sektor, jeder Gegner nur einmal pro Schwung.
         this.scratch.length = 0;
         ctx.hash.queryCircle(ctx.playerX, ctx.playerY, s.radius + 12, this.scratch);
@@ -339,6 +378,24 @@ export class CombatSystem {
       // Normal-Blend: das Eis-Siegel soll blau-grau lesbar bleiben, nicht additiv ausbleichen.
       additive: false,
     });
+    // Eiskristalle/Splitter am Ring (keine Linienringe): 12 Shards nach außen.
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      this.particles.spawn({
+        texture: "fx_ice",
+        frames: fxFrames("fx_ice", 4),
+        x: ctx.playerX + Math.cos(a) * radius * 0.72,
+        y: ctx.playerY + Math.sin(a) * radius * 0.72,
+        vx: Math.cos(a) * 30, vy: Math.sin(a) * 30,
+        life: 0.55, scaleFrom: 0.9, scaleTo: 0.3,
+        alphaFrom: 1, alphaTo: 0, rotation: a + Math.PI / 2,
+        additive: false, depth: DEPTH.fxLow,
+      });
+    }
+    this.fx.spawnAnim("fx_halo", ctx.playerX, ctx.playerY, {
+      life: 0.35, scaleFrom: radius / 14, scaleTo: radius / 11,
+      alphaFrom: 0.8, alphaTo: 0, additive: true, tint: PAL[C.paleMist],
+    });
     this.fx.burst("fx_spark", ctx.playerX, ctx.playerY, 10, {
       tint: PAL[C.paleMist], life: 0.4, additive: true, scaleTo: 0.3,
     });
@@ -365,8 +422,15 @@ export class CombatSystem {
         weaponId: owned.id,
         texture: "projectile_thorn",
         radius: effectiveRadius(4, ctx.agg),
-        trail: "projectile_thorn",
+        trail: "fx_thorn",
+        trailFrames: fxFrames("fx_thorn", 3),
         trailInterval: 0.06,
+      });
+      this.particles.spawn({
+        texture: "fx_thorn", x: ctx.playerX + Math.cos(angle) * 9, y: ctx.playerY + Math.sin(angle) * 9,
+        vx: Math.cos(angle) * 40, vy: Math.sin(angle) * 40, life: 0.2,
+        scaleFrom: 0.7, scaleTo: 0.2, alphaFrom: 0.8, alphaTo: 0,
+        additive: false, rotation: angle,
       });
     }
   }
@@ -390,13 +454,18 @@ export class CombatSystem {
         weaponId: owned.id,
         texture: "projectile_thorn",
         radius: effectiveRadius(5, ctx.agg),
-        trail: "projectile_thorn",
+        trail: "fx_thorn",
+        trailFrames: fxFrames("fx_thorn", 3),
         trailInterval: 0.05,
       });
     }
     this.fx.spawn({
       texture: "ring_burst", x: ctx.playerX, y: ctx.playerY, life: 0.25,
       scaleFrom: 0.3, scaleTo: 1.4, alphaFrom: 0.7, alphaTo: 0, additive: true,
+    });
+    this.fx.spawnAnim("fx_shock", ctx.playerX, ctx.playerY, {
+      life: 0.36, scaleFrom: 0.5, scaleTo: 1.2, alphaFrom: 0.8, alphaTo: 0,
+      tint: PAL[C.marshLight], additive: true,
     });
   }
 
@@ -407,9 +476,9 @@ export class CombatSystem {
       const angle = this.clock + (i / count) * Math.PI * 2;
       const x = ctx.playerX + Math.cos(angle) * 26;
       const y = ctx.playerY + Math.sin(angle) * 26;
-      const sprite = this.scene.add.image(x, y, "ring_seal")
-        .setDepth(6)
-        .setBlendMode(Phaser.BlendModes.ADD)
+      const sprite = this.scene.add.image(x, y, "fx_seal")
+        .setDepth(DEPTH.decal)
+        .setBlendMode(Phaser.BlendModes.NORMAL)
         .setAlpha(0.0)
         .setScale(1.4);
       this.seals.push({
@@ -424,7 +493,10 @@ export class CombatSystem {
       const seal = this.seals[i];
       seal.timer -= ctx.dt;
       const p = 1 - Math.max(0, seal.timer) / 0.55;
-      seal.sprite.setAlpha(0.25 + p * 0.65);
+      const sealFrames = fxFrames("fx_seal", 5);
+      const frame = sealFrames[Math.min(4, Math.floor(p * 5))];
+      if (seal.sprite.texture.key !== frame) seal.sprite.setTexture(frame);
+      seal.sprite.setAlpha(0.35 + p * 0.6);
       seal.sprite.setScale(1.4 + Math.sin(this.clock * 12) * 0.15);
       if (seal.timer > 0) continue;
       seal.sprite.destroy();
@@ -442,10 +514,13 @@ export class CombatSystem {
           if (d < best) { best = d; next = e; }
         }
         if (!next) break;
-        this.fx.beam("bolt_seg", last.x, last.y, next.x, next.y, { life: 0.32, tint: PAL[C.lanternWhite] });
-        this.fx.spawn({
-          texture: "ring_seal", x: next.x, y: next.y, life: 0.3,
-          scaleFrom: 0.1, scaleTo: 0.46, alphaFrom: 1, alphaTo: 0, additive: true,
+        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.32, tint: PAL[C.lanternWhite] });
+        this.fx.spawnAnim("fx_seal", next.x, next.y, {
+          life: 0.32, scaleFrom: 0.1, scaleTo: 0.46, alphaFrom: 1, alphaTo: 0,
+          additive: false, tint: PAL[C.lantern],
+        });
+        this.particles.burst("fx_star", next.x, next.y, 4, {
+          life: 0.22, scaleFrom: 0.8, scaleTo: 0.15, alphaFrom: 1, alphaTo: 0, tint: PAL[C.lanternWhite],
         });
         const killed = this.hitEnemy(next, Math.round(seal.damage * (jump === 0 ? 1 : 0.7)), ctx, seal.weaponId);
         if (killed) this.killsFx(next);
@@ -476,6 +551,17 @@ export class CombatSystem {
         scaleFrom: radius / 47, scaleTo: radius / 47, alphaFrom: 0.55, alphaTo: 0.2,
         additive: false,
       });
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2 + this.clock * 0.3;
+        this.particles.spawn({
+          texture: "fx_ice", frames: fxFrames("fx_ice", 4),
+          x: ctx.playerX + Math.cos(a) * radius * 0.82,
+          y: ctx.playerY + Math.sin(a) * radius * 0.82,
+          vx: Math.cos(a) * 18, vy: Math.sin(a) * 18,
+          life: 0.6, scaleFrom: 0.8, scaleTo: 0.25, alphaFrom: 0.9, alphaTo: 0,
+          rotation: a, additive: false, depth: DEPTH.fxLow,
+        });
+      }
     }
     state.spikeTimer -= ctx.dt;
     if (state.spikeTimer <= 0) {
@@ -496,11 +582,16 @@ export class CombatSystem {
           weaponId: "eternal_winter",
           texture: "projectile_ice",
           radius: effectiveRadius(5, ctx.agg),
-          trail: "projectile_ice",
+          trail: "fx_ice",
+          trailFrames: fxFrames("fx_ice", 4),
           trailInterval: 0.06,
           blendAdd: true,
         });
       }
+      this.fx.spawnAnim("fx_shock", ctx.playerX, ctx.playerY, {
+        life: 0.4, scaleFrom: 0.4, scaleTo: 1.0, alphaFrom: 0.7, alphaTo: 0,
+        tint: PAL[C.paleMist], additive: true,
+      });
     }
   }
 
@@ -528,7 +619,7 @@ export class CombatSystem {
           if (d < best) { best = d; next = e; }
         }
         if (!next) break;
-        this.fx.beam("bolt_seg", last.x, last.y, next.x, next.y, { life: 0.3, tint: PAL[C.lanternWhite] });
+        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.3, tint: PAL[C.lanternWhite] });
         this.strike(ctx, next, Math.round(damage * 0.75), owned.id);
         hit.add(next.uid);
         last = next;
@@ -538,16 +629,21 @@ export class CombatSystem {
   }
 
   private strike(ctx: CombatContext, e: EnemyRuntime, damage: number, weaponId: string): void {
-    this.fx.beam("bolt_seg", e.x, e.y - 70, e.x, e.y, { life: 0.4, additive: true, tint: PAL[C.lanternWhite] });
-    this.fx.spawn({
-      texture: "ring_seal", x: e.x, y: e.y, life: 0.45,
-      scaleFrom: 0.1, scaleTo: 0.5, alphaFrom: 1, alphaTo: 0, additive: true,
+    // Gezackter, verzweigter Blitz vom Himmel + Einschlag-Funken.
+    this.fx.bolt(e.x + (e.uid % 3 - 1) * 3, e.y - 78, e.x, e.y, { life: 0.4, tint: PAL[C.lanternWhite] });
+    this.fx.bolt(e.x, e.y - 40, e.x + (e.uid % 2 === 0 ? 16 : -16), e.y - 20, {
+      life: 0.26, scaleFrom: 0.6, scaleTo: 0.6, tint: PAL[C.glow],
     });
-    this.fx.spawn({
-      texture: "orb_lantern", x: e.x, y: e.y, life: 0.45,
-      scaleFrom: 0.4, scaleTo: 1.4, alphaFrom: 0.9, alphaTo: 0, additive: true,
+    this.fx.spawnAnim("fx_seal", e.x, e.y, {
+      life: 0.45, scaleFrom: 0.1, scaleTo: 0.5, alphaFrom: 1, alphaTo: 0,
+      additive: false, tint: PAL[C.amber],
     });
-    this.fx.burst("fx_spark", e.x, e.y, 6, { tint: PAL[C.glow], life: 0.3, additive: true });
+    this.fx.spawnAnim("fx_halo", e.x, e.y, {
+      life: 0.3, scaleFrom: 0.6, scaleTo: 1.4, alphaFrom: 0.9, alphaTo: 0, additive: true,
+    });
+    this.particles.burst("fx_star", e.x, e.y, 7, {
+      life: 0.3, scaleFrom: 0.9, scaleTo: 0.15, alphaFrom: 1, alphaTo: 0, tint: PAL[C.glow],
+    });
     const killed = this.hitEnemy(e, damage, ctx, weaponId);
     if (killed) this.killsFx(e);
   }
@@ -562,12 +658,17 @@ export class CombatSystem {
     const evolved = owned.id === "soul_beacon";
     while (state.orbs.length < count) {
       const sprite = this.scene.add.image(ctx.playerX, ctx.playerY, evolved ? "orb_soul" : "orb_lantern")
-        .setDepth(11)
+        .setDepth(DEPTH.fxLow)
         .setScale(evolved ? 1.25 : 1)
         .setBlendMode(Phaser.BlendModes.ADD);
-      state.orbs.push({ sprite, phase: (state.orbs.length / count) * Math.PI * 2 });
+      const halo = this.scene.add.image(ctx.playerX, ctx.playerY, "fx_halo")
+        .setDepth(DEPTH.trail)
+        .setScale(evolved ? 1.1 : 0.8)
+        .setAlpha(0.55)
+        .setBlendMode(Phaser.BlendModes.ADD);
+      state.orbs.push({ sprite, halo, phase: (state.orbs.length / count) * Math.PI * 2 });
     }
-    for (const orb of state.orbs) orb.sprite.setVisible(true);
+    for (const orb of state.orbs) { orb.sprite.setVisible(true); orb.halo?.setVisible(true); }
   }
 
   private updateOrbs(ctx: CombatContext): void {
@@ -585,17 +686,21 @@ export class CombatSystem {
         const orb = state.orbs[i];
         if (!active) {
           orb.sprite.setVisible(false);
+          orb.halo?.setVisible(false);
           continue;
         }
         const angle = this.clock * (id === "soul_beacon" ? 2.6 : 2.1) + orb.phase;
         const ox = ctx.playerX + Math.cos(angle) * state.orbRadius;
         const oy = ctx.playerY + Math.sin(angle) * state.orbRadius;
         orb.sprite.setPosition(Math.round(ox), Math.round(oy));
+        orb.halo?.setPosition(Math.round(ox), Math.round(oy));
+        orb.halo?.setAlpha(0.4 + Math.sin(this.clock * 5 + orb.phase) * 0.2);
         orb.sprite.setAlpha(0.65 + Math.sin(this.clock * 6 + orb.phase) * 0.25);
-        this.fx.spawn({
-          texture: id === "soul_beacon" ? "orb_soul" : "orb_lantern",
-          x: ox, y: oy, life: 0.2, scaleFrom: 0.6, scaleTo: 0.2,
-          alphaFrom: 0.35, alphaTo: 0, additive: true,
+        // Frame-animierter Orb-Trail statt statischem Kreis.
+        this.fx.spawnAnim("fx_orb", ox, oy, {
+          life: 0.2, scaleFrom: 0.7, scaleTo: 0.2,
+          alphaFrom: 0.4, alphaTo: 0, additive: true,
+          tint: id === "soul_beacon" ? PAL[C.lanternWhite] : PAL[C.amber],
         });
         for (const e of ctx.enemies) {
           if (!e.alive || e.hp <= 0) continue;
@@ -641,7 +746,9 @@ export class CombatSystem {
           // mit Normal-Blend (klare Flügel/Kontur) gerendert wird.
           const phoenixTrail = p.weaponId === "phoenix";
           this.fx.spawn({
-            texture: p.trail, x: p.x, y: p.y, life: 0.22,
+            texture: p.trail,
+            frames: p.trailFrames.length > 0 ? p.trailFrames : undefined,
+            x: p.x, y: p.y, life: 0.22,
             scaleFrom: p.sprite.scaleX * 0.8, scaleTo: 0.15,
             alphaFrom: 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
             tint: p.blendAdd || phoenixTrail ? undefined : PAL[C.fog],
@@ -679,11 +786,15 @@ export class CombatSystem {
   }
 
   private explode(ctx: CombatContext, x: number, y: number, radius: number, damage: number, weaponId: string): void {
-    this.fx.spawn({
-      texture: "ring_burst", x, y, life: 0.3, scaleFrom: 0.2, scaleTo: radius / 42,
-      alphaFrom: 1, alphaTo: 0, additive: true,
+    this.fx.spawnAnim("fx_shock", x, y, {
+      life: 0.38, scaleFrom: radius / 28, scaleTo: radius / 18,
+      alphaFrom: 1, alphaTo: 0, additive: true, tint: PAL[C.amber],
     });
-    this.fx.burst("projectile_ember", x, y, 8, { life: 0.3, additive: true });
+    this.fx.spawnAnim("fx_halo", x, y, {
+      life: 0.3, scaleFrom: radius / 12, scaleTo: radius / 8,
+      alphaFrom: 0.9, alphaTo: 0, additive: true,
+    });
+    this.fx.burst("fx_fire", x, y, 8, { life: 0.3, additive: true, scaleTo: 0.2 });
     if (weaponId === "phoenix") this.addBurn(x, y, radius, 3.2, 18, weaponId);
     for (const e of ctx.enemies) {
       if (!e.alive || e.hp <= 0) continue;
@@ -749,14 +860,14 @@ export class CombatSystem {
     const state = this.states.get(id);
     if (!state) return;
     for (const s of state.swings) s.sprite.destroy();
-    for (const orb of state.orbs) orb.sprite.destroy();
+    for (const orb of state.orbs) { orb.sprite.destroy(); orb.halo?.destroy(); }
     this.states.delete(id);
   }
 
   clear(): void {
     for (const state of this.states.values()) {
       for (const s of state.swings) s.sprite.destroy();
-      for (const orb of state.orbs) orb.sprite.destroy();
+      for (const orb of state.orbs) { orb.sprite.destroy(); orb.halo?.destroy(); }
     }
     this.states.clear();
     for (const b of this.burns) b.sprite.destroy();
@@ -765,6 +876,7 @@ export class CombatSystem {
     this.seals.length = 0;
     this.projectiles.releaseAll();
     this.fx.clear();
+    this.particles.clear();
   }
 }
 

@@ -927,10 +927,16 @@
       "id": 49,
       "title": "M5-02 Waffen-Effekte (12)",
       "description": "Alle 6 Basis + 6 Evolutionen mit eigenstaendiger Frame-Animation; Storm gezackt/verzweigt, Frost Kristalle, Flail Smear. Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T19:54:00Z",
+          "by": "build",
+          "text": "todo → doing: 12 Waffen-VFX mit Frame-Animationen umgesetzt"
+        }
+      ],
       "created": "2026-11-25T19:46:37Z",
-      "updated": "2026-11-25T19:46:37Z"
+      "updated": "2026-11-25T19:54:00Z"
     },
     {
       "id": 50,
