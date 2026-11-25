@@ -8173,3 +8173,304 @@ await b.close(); s.stop();
 > build · deepseek-v4.1-flash
 [0m⚙ [0mexecute {"code":"await tools.board_move({id:53, column:\"doing\", note:\"gen_sfx.py, WAVs, AudioSystem, Mixing, Musik-Loops integriert\"});\nawait tools.board_move({id:53, column:\"review\", note:\"headless: 24 Sounds geladen, 21 sfx gespielt, musicTrack=run, 0 JS-Fehler; build+Tests grün. Commit folgt.\"});\nconsole.log(\"ok\");\n"} 
 > build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && npm test 2>&1 | tail -3 && git add -A && git commit -m "M5-06 Sound: prozedurale 8-Bit-SFX und Chiptune-Loops (gen_sfx.py), AudioSystem mit Mixing/Cooldown/Prioritaet, window.__lf.audio (#53)" -q && git log --oneline -1 && git status --short | head
+Start at  20:01:57
+   Duration  816ms (tests 78%, import 11%, transform 8%, worker 2%)
+
+48e1edc M5-06 Sound: prozedurale 8-Bit-SFX und Chiptune-Loops (gen_sfx.py), AudioSystem mit Mixing/Cooldown/Prioritaet, window.__lf.audio (#53)
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/scenes/UI.ts'
+s=open(p).read()
+s=s.replace('import { chooseBestOffer } from "../logic/autoplay";','import { chooseBestOffer } from "../logic/autoplay";\nimport { getSettings, changeSetting } from "../audio/settings";\nimport { applyOptions } from "../audio/AudioSystem";')
+s=s.replace('  private bannerTimer?: Phaser.Time.TimerEvent;','  private bannerTimer?: Phaser.Time.TimerEvent;\n\n  private optionsGroup!: Phaser.GameObjects.Container;\n  private optionsRows: PixelText[] = [];\n  private optionsSelected = 0;\n  private lastOptionsShown = false;')
+s=s.replace('    this.createBossUI();','    this.createBossUI();\n    this.createOptionsUI();')
+s=s.replace('    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 238, "ESC = WEITER", C.mist, "center"));','    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 232, "O = OPTIONEN", C.lantern, "center"));\n    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 244, "ESC = WEITER", C.mist, "center"));')
+# create options ui before createChestUI
+s=s.replace('''  private createChestUI(): void {''','''  private createOptionsUI(): void {
+    this.optionsGroup = this.add.container(0, 0).setDepth(125).setVisible(false);
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.9).setOrigin(0, 0);
+    this.optionsGroup.add(dim);
+    const frame = this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 340, 196, 8, 8, 8, 8);
+    this.optionsGroup.add(frame);
+    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 58, "OPTIONEN", C.lantern, "center").setScale(2));
+    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 78, "PFEILE + ENTER", C.fog, "center"));
+    this.optionsRows = [];
+    const labels = ["MUSIK", "SFX", "SCREEN-SHAKE", "ZURÜCK"];
+    for (let i = 0; i < labels.length; i++) {
+      const t = new PixelText(this, GAME_WIDTH / 2 - 92, 104 + i * 22, "", C.bone);
+      this.optionsGroup.add(t);
+      this.optionsRows.push(t);
+    }
+    this.refreshOptions();
+  }
+
+  private refreshOptions(): void {
+    const opts = getSettings();
+    const labels = [
+      `MUSIK        < ${Math.round(opts.music * 100)}% >`,
+      `SFX          < ${Math.round(opts.sfx * 100)}% >`,
+      `SCREEN-SHAKE     ${opts.shake ? "AN" : "AUS"}`,
+      "ZURÜCK",
+    ];
+    this.optionsRows.forEach((row, i) => {
+      row.setText(`${i === this.optionsSelected ? "> " : "  "}${labels[i]}`);
+      row.setColorIndex(i === this.optionsSelected ? C.lantern : C.bone);
+    });
+  }
+
+  private openOptions(): void {
+    this.optionsSelected = 0;
+    this.refreshOptions();
+    this.optionsGroup.setVisible(true);
+  }
+
+  private closeOptions(): void {
+    this.optionsGroup.setVisible(false);
+  }
+
+  private changeOptionRow(delta: number): void {
+    const opts = getSettings();
+    if (this.optionsSelected === 0) applyOptions(changeSetting("music", Math.round((opts.music + delta) * 10) / 10));
+    else if (this.optionsSelected === 1) applyOptions(changeSetting("sfx", Math.round((opts.sfx + delta) * 10) / 10));
+    else if (this.optionsSelected === 2) applyOptions(changeSetting("shake", !opts.shake));
+    this.refreshOptions();
+  }
+
+  private createChestUI(): void {''')
+# update: hide options if pause ends
+s=s.replace('''    const pauseVisible = s.paused && !s.levelUpOpen && !s.chestOpen;
+    if (pauseVisible !== this.lastPauseShown) {
+      this.lastPauseShown = pauseVisible;
+      this.refreshPause();
+    }''','''    const pauseVisible = s.paused && !s.levelUpOpen && !s.chestOpen;
+    if (pauseVisible !== this.lastPauseShown) {
+      this.lastPauseShown = pauseVisible;
+      this.refreshPause();
+      if (!pauseVisible && this.optionsGroup.visible) this.closeOptions();
+    }''')
+# onKey: options first
+s=s.replace('''  private onKey(ev: KeyboardEvent): void {
+    if (!this.run) return;
+    if (this.run.levelUpOpen) {''','''  private onKey(ev: KeyboardEvent): void {
+    if (!this.run) return;
+    const key = ev.key.toLowerCase();
+    if (this.optionsGroup?.visible) {
+      if (key === "o") { this.closeOptions(); return; }
+      if (ev.key === "ArrowUp" || key === "w") {
+        this.optionsSelected = (this.optionsSelected + 3) % 4; this.refreshOptions(); return;
+      }
+      if (ev.key === "ArrowDown" || key === "s") {
+        this.optionsSelected = (this.optionsSelected + 1) % 4; this.refreshOptions(); return;
+      }
+      if (ev.key === "ArrowLeft" || key === "a") { this.changeOptionRow(-0.1); return; }
+      if (ev.key === "ArrowRight" || key === "d") { this.changeOptionRow(0.1); return; }
+      if (ev.key === "Enter" || ev.key === " ") {
+        if (this.optionsSelected === 3) this.closeOptions();
+        else this.changeOptionRow(this.optionsSelected === 2 ? 1 : 0);
+        return;
+      }
+      return;
+    }
+    if (key === "o" && this.run.getHudState().paused && !this.run.levelUpOpen && !this.run.chestOpen) {
+      this.openOptions();
+      return;
+    }
+    if (this.run.levelUpOpen) {''')
+open(p,'w').write(s)
+print("ui options")
+EOF
+npm run build 2>&1 | tail -4
+ui options
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 15.64s
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/scenes/Title.ts'
+s=open(p).read()
+s=s.replace('import { GAME_HEIGHT, GAME_WIDTH } from "../config";','import { GAME_HEIGHT, GAME_WIDTH } from "../config";\nimport { getSettings, changeSetting } from "../audio/settings";\nimport { applyOptions } from "../audio/AudioSystem";')
+s=s.replace('  private debug = false;','  private debug = false;\n  private optionsGroup!: Phaser.GameObjects.Container;\n  private optionRows: PixelText[] = [];\n  private optionSelected = 0;\n  private started = false;')
+s=s.replace('''    new PixelText(this, 240, 228, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
+    new PixelText(this, 240, 240, "ESC = PAUSE", C.fog, "center").setDepth(4);
+    // Kein Debug-/Seed-Text im Titelbild; der Seed steht im Pause-Screen.
+
+    this.input.keyboard!.once("keydown-ENTER", () => this.startSelect());
+    this.input.keyboard!.once("keydown-SPACE", () => this.startSelect());
+  }''','''    new PixelText(this, 240, 228, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
+    new PixelText(this, 240, 240, "ESC = PAUSE - O = OPTIONEN", C.fog, "center").setDepth(4);
+    // Kein Debug-/Seed-Text im Titelbild; der Seed steht im Pause-Screen.
+    this.createOptionsUI();
+    this.input.keyboard!.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
+  }
+
+  private createOptionsUI(): void {
+    this.optionsGroup = this.add.container(0, 0).setDepth(110).setVisible(false);
+    this.optionsGroup.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.92).setOrigin(0, 0));
+    this.optionsGroup.add(this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 336, 190, 8, 8, 8, 8));
+    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 56, "OPTIONEN", C.lantern, "center").setScale(2));
+    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 76, "PFEILE + ENTER", C.fog, "center"));
+    this.optionRows = [];
+    for (let i = 0; i < 4; i++) {
+      const t = new PixelText(this, GAME_WIDTH / 2 - 92, 104 + i * 22, "", C.bone);
+      this.optionsGroup.add(t);
+      this.optionRows.push(t);
+    }
+    this.refreshOptions();
+  }
+
+  private refreshOptions(): void {
+    const opts = getSettings();
+    const labels = [
+      `MUSIK        < ${Math.round(opts.music * 100)}% >`,
+      `SFX          < ${Math.round(opts.sfx * 100)}% >`,
+      `SCREEN-SHAKE     ${opts.shake ? "AN" : "AUS"}`,
+      "ZURÜCK",
+    ];
+    this.optionRows.forEach((row, i) => {
+      row.setText(`${i === this.optionSelected ? "> " : "  "}${labels[i]}`);
+      row.setColorIndex(i === this.optionSelected ? C.lantern : C.bone);
+    });
+  }
+
+  private onKey(ev: KeyboardEvent): void {
+    const key = ev.key.toLowerCase();
+    if (this.optionsGroup.visible) {
+      if (key === "o" || ev.key === "Escape") { this.optionsGroup.setVisible(false); return; }
+      if (ev.key === "ArrowUp" || key === "w") { this.optionSelected = (this.optionSelected + 3) % 4; this.refreshOptions(); return; }
+      if (ev.key === "ArrowDown" || key === "s") { this.optionSelected = (this.optionSelected + 1) % 4; this.refreshOptions(); return; }
+      if (ev.key === "ArrowLeft" || key === "a") { this.adjust(-0.1); return; }
+      if (ev.key === "ArrowRight" || key === "d") { this.adjust(0.1); return; }
+      if (ev.key === "Enter" || ev.key === " ") {
+        if (this.optionSelected === 3) this.optionsGroup.setVisible(false);
+        else this.adjust(this.optionSelected === 2 ? 1 : 0);
+        return;
+      }
+      return;
+    }
+    if (key === "o") { this.optionSelected = 0; this.refreshOptions(); this.optionsGroup.setVisible(true); return; }
+    if ((ev.key === "Enter" || ev.key === " ") && !this.started) this.startSelect();
+  }
+
+  private adjust(delta: number): void {
+    const opts = getSettings();
+    if (this.optionSelected === 0) applyOptions(changeSetting("music", Math.round((opts.music + delta) * 10) / 10));
+    else if (this.optionSelected === 1) applyOptions(changeSetting("sfx", Math.round((opts.sfx + delta) * 10) / 10));
+    else if (this.optionSelected === 2) applyOptions(changeSetting("shake", !opts.shake));
+    this.refreshOptions();
+  }''')
+s=s.replace('''  private startSelect(): void {
+    this.cameras.main.fadeOut(180, 6, 7, 12);''','''  private startSelect(): void {
+    this.started = true;
+    this.cameras.main.fadeOut(180, 6, 7, 12);''')
+open(p,'w').write(s)
+print("title options")
+EOF
+npm run build 2>&1 | tail -4
+title options
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.83s
+> build · deepseek-v4.1-flash
+[0m← [0mWrite scripts/tmp-m5-options.mjs
+Created file successfully: scripts/tmp-m5-options.mjs
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && node scripts/tmp-m5-options.mjs 2>&1 | tail -20 && ffmpeg -y -loglevel error -i shots/tmp-m5-options-pause.png -vf scale=1920:1080:flags=neighbor /tmp/m5shots/options-pause-2x.png
+{
+  "opts1": {
+    "o": {
+      "music": 1,
+      "sfx": 1,
+      "shake": true
+    },
+    "raw": "{\"music\":1,\"sfx\":1,\"shake\":true}"
+  },
+  "opts2": {
+    "music": 1,
+    "sfx": 1,
+    "shake": true
+  },
+  "errs": []
+}
+> build · deepseek-v4.1-flash
+[0m→ [0mRead /tmp/m5shots/options-pause-2x.png 
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && node -e '
+import("./scripts/harness.mjs").then(async h=>{
+const {chromium}=await h.loadPlaywright(); const s=await h.startServer();
+const b=await chromium.launch(); const p=await b.newPage();
+await p.goto(`http://127.0.0.1:${s.port}/?debug=1`); await p.waitForFunction(()=>window.__lf?.state().scene==="title");
+const st=()=>p.evaluate(()=>{const t=window.__game.scene.getScene("title"); return {vis:t.optionsGroup.visible, sel:t.optionSelected, opts:window.__lf.options()};});
+console.log("start",await st()); await p.keyboard.press("o"); console.log("o",await st());
+await p.keyboard.press("ArrowDown"); console.log("down",await st());
+await p.keyboard.press("ArrowRight"); console.log("right",await st());
+await p.keyboard.press("ArrowDown"); console.log("down2",await st());
+await p.keyboard.press("Enter"); console.log("enter",await st());
+await b.close(); s.stop();
+});' 2>&1 | tail -8
+start { vis: false, sel: 0, opts: { music: 0.55, sfx: 0.8, shake: true } }
+o { vis: true, sel: 0, opts: { music: 0.55, sfx: 0.8, shake: true } }
+down { vis: true, sel: 2, opts: { music: 0.55, sfx: 0.8, shake: true } }
+right { vis: true, sel: 0, opts: { music: 0.7, sfx: 0.8, shake: true } }
+down2 { vis: true, sel: 1, opts: { music: 0.7, sfx: 0.8, shake: true } }
+enter { vis: false, sel: 3, opts: { music: 0.7, sfx: 0.8, shake: false } }
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && node -e '
+import("./scripts/harness.mjs").then(async h=>{
+const {chromium}=await h.loadPlaywright(); const s=await h.startServer();
+const b=await chromium.launch(); const p=await b.newPage();
+await p.goto(`http://127.0.0.1:${s.port}/?debug=1`); await p.waitForFunction(()=>window.__lf?.state().scene==="title");
+await p.evaluate(()=>{window.__keys=[];window.addEventListener("keydown",e=>window.__keys.push(e.key));});
+await p.keyboard.press("o"); await p.keyboard.press("ArrowDown"); await p.keyboard.press("ArrowRight"); await p.keyboard.press("ArrowDown");
+console.log(await p.evaluate(()=>({keys:window.__keys,sel:window.__game.scene.getScene("title").optionSelected, listeners:window.__game.scene.getScene("title").input.keyboard.listenerCount("keydown")})));
+await b.close(); s.stop();
+});' 2>&1 | tail -4
+keys: [ 'o', 'ArrowDown', 'ArrowRight', 'ArrowDown' ],
+  sel: 2,
+  listeners: 1
+}
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='src/gfx/glyphs.ts'
+s=open(p).read()
+s=s.replace('  "?": ["01110", "10001", "00001", "00010", "00100", "00000", "00100"],','  "<": ["00010", "00100", "01000", "10000", "01000", "00100", "00010"],\n  ">": ["01000", "00100", "00010", "00001", "00010", "00100", "01000"],\n  "?": ["01110", "10001", "00001", "00010", "00100", "00000", "00100"],')
+open(p,'w').write(s)
+# ignore repeat in handlers
+for p in ['src/scenes/Title.ts','src/scenes/UI.ts']:
+    s=open(p).read()
+    s=s.replace('  private onKey(ev: KeyboardEvent): void {\n    const key = ev.key.toLowerCase();','  private onKey(ev: KeyboardEvent): void {\n    if (ev.repeat) return;\n    const key = ev.key.toLowerCase();')
+    s=s.replace('  private onKey(ev: KeyboardEvent): void {\n    if (!this.run) return;\n    const key = ev.key.toLowerCase();','  private onKey(ev: KeyboardEvent): void {\n    if (!this.run || ev.repeat) return;\n    const key = ev.key.toLowerCase();')
+    open(p,'w').write(s)
+EOF
+grep -n '"<"\|"">"' src/gfx/glyphs.ts && npm run build >/dev/null 2>&1 && echo built
+52:  "<": ["00010", "00100", "01000", "10000", "01000", "00100", "00010"],
+built
+> build · deepseek-v4.1-flash
+[0m$ [0mcd /home/ai/games/lanternfall && python3 - <<'EOF'
+p='scripts/tmp-m5-options.mjs'
+s=open(p).read()
+s=s.replace('await page.keyboard.press("ArrowDown");\nfor (let i = 0; i < 4; i++) await page.keyboard.press("ArrowRight");\nawait page.keyboard.press("ArrowDown");\nawait page.keyboard.press("Enter"); // Shake aus','await page.keyboard.press("ArrowDown"); await page.waitForTimeout(60);\nfor (let i = 0; i < 4; i++) { await page.keyboard.press("ArrowRight"); await page.waitForTimeout(60); }\nawait page.keyboard.press("ArrowDown"); await page.waitForTimeout(60);\nawait page.keyboard.press("Enter"); await page.waitForTimeout(60); // Shake aus')
+open(p,'w').write(s)
+EOF
+node scripts/tmp-m5-options.mjs 2>&1 | tail -16 && ffmpeg -y -loglevel error -i shots/tmp-m5-options-title.png -vf scale=1920:1080:flags=neighbor /tmp/m5shots/options-title-2x.png
+{
+  "opts1": {
+    "o": {
+      "music": 0.55,
+      "sfx": 1,
+      "shake": false
+    },
+    "raw": "{\"music\":0.55,\"sfx\":1,\"shake\":false}"
+  },
+  "opts2": {
+    "music": 0.6,
+    "sfx": 1,
+    "shake": false
+  },
+  "errs": []
+}
+> build · deepseek-v4.1-flash
+[0m→ [0mRead /tmp/m5shots/options-title-2x.png 
+> build · deepseek-v4.1-flash

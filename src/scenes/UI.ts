@@ -8,6 +8,8 @@ import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
 import { slotNameLines } from "../logic/text";
 import { chooseBestOffer } from "../logic/autoplay";
+import { getSettings, changeSetting } from "../audio/settings";
+import { applyOptions } from "../audio/AudioSystem";
 import type { HudState, Run } from "./Run";
 
 interface CardView {
@@ -63,6 +65,11 @@ export class UI extends Phaser.Scene {
   private bannerSub!: PixelText;
   private bannerTimer?: Phaser.Time.TimerEvent;
 
+  private optionsGroup!: Phaser.GameObjects.Container;
+  private optionsRows: PixelText[] = [];
+  private optionsSelected = 0;
+  private lastOptionsShown = false;
+
   constructor() { super("ui"); }
 
   create(): void {
@@ -89,6 +96,7 @@ export class UI extends Phaser.Scene {
     this.createPauseUI();
     this.createChestUI();
     this.createBossUI();
+    this.createOptionsUI();
 
     this.input.keyboard!.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
     this.run.events.on("levelup", this.onLevelUp, this);
@@ -239,8 +247,59 @@ export class UI extends Phaser.Scene {
     this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 54, "DEIN BUILD", C.bone, "center"));
     this.pauseGroup.add(new PixelText(this, 116, 66, "WAFFEN", C.lantern));
     this.pauseGroup.add(new PixelText(this, 266, 66, "POWERUPS", C.lantern));
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 238, "ESC = WEITER", C.mist, "center"));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 232, "O = OPTIONEN", C.lantern, "center"));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 244, "ESC = WEITER", C.mist, "center"));
     this.pauseLines = [];
+  }
+
+  private createOptionsUI(): void {
+    this.optionsGroup = this.add.container(0, 0).setDepth(125).setVisible(false);
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.9).setOrigin(0, 0);
+    this.optionsGroup.add(dim);
+    const frame = this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 340, 196, 8, 8, 8, 8);
+    this.optionsGroup.add(frame);
+    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 58, "OPTIONEN", C.lantern, "center").setScale(2));
+    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 78, "PFEILE + ENTER", C.fog, "center"));
+    this.optionsRows = [];
+    const labels = ["MUSIK", "SFX", "SCREEN-SHAKE", "ZURÜCK"];
+    for (let i = 0; i < labels.length; i++) {
+      const t = new PixelText(this, GAME_WIDTH / 2 - 92, 104 + i * 22, "", C.bone);
+      this.optionsGroup.add(t);
+      this.optionsRows.push(t);
+    }
+    this.refreshOptions();
+  }
+
+  private refreshOptions(): void {
+    const opts = getSettings();
+    const labels = [
+      `MUSIK        < ${Math.round(opts.music * 100)}% >`,
+      `SFX          < ${Math.round(opts.sfx * 100)}% >`,
+      `SCREEN-SHAKE     ${opts.shake ? "AN" : "AUS"}`,
+      "ZURÜCK",
+    ];
+    this.optionsRows.forEach((row, i) => {
+      row.setText(`${i === this.optionsSelected ? "> " : "  "}${labels[i]}`);
+      row.setColorIndex(i === this.optionsSelected ? C.lantern : C.bone);
+    });
+  }
+
+  private openOptions(): void {
+    this.optionsSelected = 0;
+    this.refreshOptions();
+    this.optionsGroup.setVisible(true);
+  }
+
+  private closeOptions(): void {
+    this.optionsGroup.setVisible(false);
+  }
+
+  private changeOptionRow(delta: number): void {
+    const opts = getSettings();
+    if (this.optionsSelected === 0) applyOptions(changeSetting("music", Math.round((opts.music + delta) * 10) / 10));
+    else if (this.optionsSelected === 1) applyOptions(changeSetting("sfx", Math.round((opts.sfx + delta) * 10) / 10));
+    else if (this.optionsSelected === 2) applyOptions(changeSetting("shake", !opts.shake));
+    this.refreshOptions();
   }
 
   private createChestUI(): void {
@@ -406,6 +465,7 @@ export class UI extends Phaser.Scene {
     if (pauseVisible !== this.lastPauseShown) {
       this.lastPauseShown = pauseVisible;
       this.refreshPause();
+      if (!pauseVisible && this.optionsGroup.visible) this.closeOptions();
     }
   }
 
@@ -502,7 +562,29 @@ export class UI extends Phaser.Scene {
   }
 
   private onKey(ev: KeyboardEvent): void {
-    if (!this.run) return;
+    if (!this.run || ev.repeat) return;
+    const key = ev.key.toLowerCase();
+    if (this.optionsGroup?.visible) {
+      if (key === "o") { this.closeOptions(); return; }
+      if (ev.key === "ArrowUp" || key === "w") {
+        this.optionsSelected = (this.optionsSelected + 3) % 4; this.refreshOptions(); return;
+      }
+      if (ev.key === "ArrowDown" || key === "s") {
+        this.optionsSelected = (this.optionsSelected + 1) % 4; this.refreshOptions(); return;
+      }
+      if (ev.key === "ArrowLeft" || key === "a") { this.changeOptionRow(-0.1); return; }
+      if (ev.key === "ArrowRight" || key === "d") { this.changeOptionRow(0.1); return; }
+      if (ev.key === "Enter" || ev.key === " ") {
+        if (this.optionsSelected === 3) this.closeOptions();
+        else this.changeOptionRow(this.optionsSelected === 2 ? 1 : 0);
+        return;
+      }
+      return;
+    }
+    if (key === "o" && this.run.getHudState().paused && !this.run.levelUpOpen && !this.run.chestOpen) {
+      this.openOptions();
+      return;
+    }
     if (this.run.levelUpOpen) {
       const offers = this.run.currentOffers;
       if (ev.key === "1" || ev.key === "2" || ev.key === "3") {
