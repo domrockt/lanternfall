@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { damageTable } from "../src/logic/results";
 import { SeededRng } from "../src/logic/rng";
 import { generateOffers, type OwnedItem } from "../src/logic/levelup";
 import { applyXp, GEMS, xpProgress, xpToNext } from "../src/logic/xp";
@@ -271,5 +272,24 @@ describe("SpatialHash", () => {
     hash.clear();
     expect(hash.queryCircle(5, 5, 5)).toHaveLength(0);
     expect(hash.cellCount).toBe(0);
+  });
+});
+
+describe("Ergebnis-Schadenstabelle", () => {
+  it("filtert 0/ungueltig, sortiert absteigend und begrenzt", () => {
+    const table = damageTable({ ember: 120, flail: 900, frost: 0, thorn: 45, phoenix: 3000 }, 3);
+    expect(table).toHaveLength(3);
+    expect(table.map((e) => e.id)).toEqual(["phoenix", "flail", "ember"]);
+    expect(table[0].name).toBe("Phönixschwarm");
+    expect(table[0].isEvolution).toBe(true);
+    expect(table[1].isEvolution).toBe(false);
+    expect(table[1].damage).toBe(900);
+    expect(damageTable({})).toHaveLength(0);
+    expect(damageTable({ bogus: Number.NaN, ember: -5 })).toHaveLength(0);
+  });
+
+  it("liefert hoechstens 12 Eintraege", () => {
+    const input = Object.fromEntries(Array.from({ length: 20 }, (_, i) => [`w${i}`, i + 1]));
+    expect(damageTable(input)).toHaveLength(12);
   });
 });
