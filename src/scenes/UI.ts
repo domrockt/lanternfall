@@ -97,9 +97,10 @@ export class UI extends Phaser.Scene {
     this.run.events.on("chestOpen", this.onChestOpen, this);
     this.run.events.on("chestClosed", this.onChestClosed, this);
     this.run.events.on("bossSpawn", this.onBossBanner, this);
-    this.run.events.on("bossDefeated", this.onBossBanner, this);
+    this.run.events.on("bossDefeated", this.onBossDefeated, this);
     this.run.events.on("bossPhase", this.onBossPhase, this);
     this.run.events.on("dawn", this.onDawn, this);
+    this.run.events.on("evolution", this.onEvolution, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.run.events.off("levelup", this.onLevelUp, this);
       this.run.events.off("levelupClosed", this.onLevelUpClosed, this);
@@ -107,9 +108,10 @@ export class UI extends Phaser.Scene {
       this.run.events.off("chestOpen", this.onChestOpen, this);
       this.run.events.off("chestClosed", this.onChestClosed, this);
       this.run.events.off("bossSpawn", this.onBossBanner, this);
-      this.run.events.off("bossDefeated", this.onBossBanner, this);
+      this.run.events.off("bossDefeated", this.onBossDefeated, this);
       this.run.events.off("bossPhase", this.onBossPhase, this);
       this.run.events.off("dawn", this.onDawn, this);
+      this.run.events.off("evolution", this.onEvolution, this);
     });
   }
 
@@ -161,6 +163,14 @@ export class UI extends Phaser.Scene {
       data.index === 5 ? "3 PHASEN - SIEG BEI SEINEM TOD" : "EIN BOSS ERWACHT",
       C.amber,
     );
+  }
+
+  private onBossDefeated(data: { name?: string; index?: number }): void {
+    this.showBanner(`${(data.name ?? "BOSS").toUpperCase()} BESIEGT`, "EINE TRUHE ERSCHEINT", C.amber);
+  }
+
+  private onEvolution(data: { name?: string }): void {
+    this.showBanner("EVOLUTION", (data.name ?? "").toUpperCase(), C.lantern);
   }
 
   private onBossPhase(data: { index: number; phase: number }): void {

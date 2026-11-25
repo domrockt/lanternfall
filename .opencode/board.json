@@ -957,10 +957,16 @@
       "id": 51,
       "title": "M5-04 Ereignis-Inszenierung",
       "description": "Level-up Lichtsäule, Evolution mit Zeitlupe, Truhe, Boss-Auftritt, Boss-Tod in Stufen, Morgendämmerung. Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-25T19:57:40Z",
+          "by": "build",
+          "text": "todo → doing: Event-Sequenzen: Level-up, Evolution-Zeitlupe, Truhe, Boss-Intro Zoom, Boss-Tod Stufen, Dawn"
+        }
+      ],
       "created": "2026-11-25T19:46:37Z",
-      "updated": "2026-11-25T19:46:37Z"
+      "updated": "2026-11-25T19:57:40Z"
     },
     {
       "id": 52,

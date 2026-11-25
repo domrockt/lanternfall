@@ -20,6 +20,7 @@ import { damageAfterArmor, timeScaleClamped } from "../logic/combat";
 import type { Offer } from "../logic/levelup";
 import { GroundRenderer } from "../gfx/GroundRenderer";
 import { SPRITE_FRAMES } from "../gfx/textures";
+import { DEPTH } from "../gfx/depth";
 import { PLAYER_FRAMES, type WalkDir } from "../gfx/chars";
 import { EnemyPool, type EnemyRuntime } from "../systems/EnemyPool";
 import { SpatialHash } from "../systems/SpatialHash";
@@ -40,6 +41,7 @@ import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
 import { lodFor, type LodState } from "../logic/lod";
 import { shakeFor, hitStopFor } from "../logic/feedback";
+import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
 
 export interface RunData {
@@ -123,6 +125,10 @@ export class Run extends Phaser.Scene {
   lod: LodState = lodFor(0);
   hitStop = 0;
   private bossFeedbackCooldown = 0;
+  /** M5: Zeitlupen-Sequenz bei Evolution. */
+  private slowmoRemaining = 0;
+  private slowmoRestore = 1;
+  private lastEvolutionFxId = "";
 
   private rng!: SeededRng;
   private levelSys!: LevelUpSystem;
@@ -288,6 +294,12 @@ export class Run extends Phaser.Scene {
     }
     if (this.paused) return;
 
+    // Evolution-Zeitlupe (0,35–0,5 s) läuft in Echtzeit aus.
+    if (this.slowmoRemaining > 0) {
+      this.slowmoRemaining = Math.max(0, this.slowmoRemaining - realDt);
+      if (this.slowmoRemaining === 0) this.timeScale = this.slowmoRestore;
+    }
+
     // Hit-Stop: Welt kurz anhalten, aber VFX/Damage-Numbers weiter animieren.
     if (this.hitStop > 0) {
       this.hitStop = Math.max(0, this.hitStop - realDt);
@@ -424,6 +436,7 @@ export class Run extends Phaser.Scene {
     const b = this.bosses.spawn(index, this.posX, this.posY);
     this.bossFlags[index] = true;
     this.bossesSpawned.push({ index, at: Math.round(this.elapsed * 10) / 10 });
+    this.playBossIntroFx(b.x, b.y, index);
     this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: b.maxHp });
   }
 
@@ -659,6 +672,7 @@ export class Run extends Phaser.Scene {
         const bossShake = shakeFor("bossDeath", getSettings().shake);
         if (bossShake.durationMs > 0) this.cameras.main.shake(bossShake.durationMs, bossShake.intensity);
         this.hitStop = Math.max(this.hitStop, hitStopFor("bossDeath"));
+        this.playBossDeathFx(e.x, e.y, e.bossIndex);
         this.events.emit("bossDefeated", { index: e.bossIndex, name: BOSSES[e.bossIndex]?.name ?? "Boss" });
         // Dawn erst nach der Schleife starten: startDawn() kompaktiert das
         // Array, über das hier noch iteriert wird.
@@ -688,9 +702,15 @@ export class Run extends Phaser.Scene {
     if (this.dawn) return;
     this.dawn = true;
     this.dawnTimer = 0;
-    // Alle verbliebenen Gegner zerfallen, Gefahren/Projektile verschwinden.
+    // Alle verbliebenen Gegner zerfallen sichtbar (Splitterstaub), Gefahren/Projektile verschwinden.
+    let crumbled = 0;
     for (const e of this.enemies.active) {
       if (e.bossIndex === 5) continue;
+      if (crumbled < 60) {
+        this.combat.particles.shards(deathClassFor(e.def.archetype) === "burst" ? "fx_death_blob" : "fx_ash",
+          e.x, e.y, 4, { life: 0.8, scaleFrom: 0.8, tint: PAL[e.def.color] ?? PAL[C.amber], additive: false });
+        crumbled++;
+      }
       e.alive = false;
       e.sprite.setVisible(false).setActive(false);
       e.aura.setVisible(false);
@@ -700,11 +720,30 @@ export class Run extends Phaser.Scene {
     this.enemyShots.clear();
     const amber = PAL[C.amber];
     this.cameras.main.flash(900, (amber >> 16) & 255, (amber >> 8) & 255, amber & 255);
+    // Farbverlauf über den Himmel: drei Palettenbänder, von Nacht zu Amber.
     this.dawnRect = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, PAL[C.amber], 0)
       .setScrollFactor(0).setDepth(75);
     this.tweens.add({
-      targets: this.dawnRect, fillAlpha: 0.55, duration: 2600, ease: "Sine.InOut",
+      targets: this.dawnRect, fillAlpha: 0.42, duration: 2600, ease: "Sine.InOut",
     });
+    const bands = [C.nightMid, C.emberDark, C.flame];
+    bands.forEach((color, i) => {
+      const band = this.add.rectangle(GAME_WIDTH / 2, 25 + i * 42, GAME_WIDTH, 46, PAL[color], 0)
+        .setScrollFactor(0).setDepth(74);
+      this.tweens.add({ targets: band, fillAlpha: 0.16 - i * 0.035, duration: 2400 + i * 300, ease: "Sine.InOut" });
+    });
+    // Lichtstrahlen vom Horizont.
+    for (let i = 0; i < 7; i++) {
+      const ray = this.add.image(60 + i * 60, GAME_HEIGHT, "fx_pillar")
+        .setOrigin(0.5, 1).setScrollFactor(0).setDepth(76)
+        .setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
+        .setAlpha(0).setScale(2.4 + (i % 2) * 0.5, 3.2);
+      this.tweens.add({ targets: ray, alpha: 0.22 + (i % 3) * 0.06, duration: 900 + i * 120, yoyo: true, repeat: 2 });
+    }
+    const sun = this.add.image(GAME_WIDTH / 2, 18, "light_radius")
+      .setScrollFactor(0).setDepth(77).setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.lantern]).setScale(2.2).setAlpha(0);
+    this.tweens.add({ targets: sun, alpha: 0.85, scale: 3.2, duration: 2400, ease: "Sine.Out" });
     this.events.emit("dawn");
   }
 
@@ -866,6 +905,7 @@ export class Run extends Phaser.Scene {
     this.levelUpOpen = false;
     this.paused = false;
     this.currentOffers = [];
+    this.playLevelUpFx();
     this.events.emit("levelupClosed");
   }
 
@@ -955,6 +995,7 @@ export class Run extends Phaser.Scene {
     this.chestPausedBefore = this.paused;
     this.paused = true;
     this.chests.open(target);
+    this.playChestFx(target.x, target.y);
     this.events.emit("chestOpen", result);
   }
 
@@ -976,6 +1017,7 @@ export class Run extends Phaser.Scene {
         if (base) this.combat.clearWeaponState(base);
       }
       this.levelSys.applyChestReward(reward);
+      if (reward.kind === "evolution") this.playEvolutionFx(reward.id, reward.name);
     }
     this.recomputeStats();
     this.chestOpen = false;
@@ -1080,6 +1122,160 @@ export class Run extends Phaser.Scene {
         terrain: this.ground?.kindAt(this.posX, this.posY) ?? "grass",
       },
     };
+  }
+
+  // ── Ereignis-Inszenierung (M5) ──────────────────────────────
+  /** Level-up: Lichtsäule + aufsteigende Glut am Spieler. */
+  playLevelUpFx(): void {
+    const x = this.visualX || Math.round(this.posX);
+    const y = this.visualY || Math.round(this.posY);
+    const pillar = this.add.image(x, y + 12, "fx_pillar")
+      .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.lantern]).setAlpha(0.95).setScale(1.4, 1.6);
+    this.tweens.add({
+      targets: pillar, alpha: 0, scaleX: 2.4, scaleY: 2.2, y: y - 70,
+      duration: 950, ease: "Cubic.Out", onComplete: () => pillar.destroy(),
+    });
+    this.combat?.fx.spawnAnim("fx_halo", x, y, {
+      life: 0.6, scaleFrom: 0.6, scaleTo: 2.2, alphaFrom: 0.9, alphaTo: 0, additive: true,
+    });
+    for (let i = 0; i < 14; i++) {
+      const a = (i / 14) * Math.PI * 2;
+      this.combat?.particles.spawn({
+        texture: "fx_star", x: x + Math.cos(a) * 10, y: y + Math.sin(a) * 10,
+        vx: Math.cos(a) * 26, vy: -30 - (i % 4) * 12,
+        life: 0.7 + (i % 3) * 0.15, scaleFrom: 0.8, scaleTo: 0.15,
+        alphaFrom: 1, alphaTo: 0, additive: true,
+        tint: i % 3 === 0 ? PAL[C.lanternWhite] : PAL[C.amber],
+      });
+    }
+    this.events.emit("eventFx", { kind: "levelup" });
+  }
+
+  /** Evolution: eigene Sequenz mit Zeitlupe (~0,45 s), Säule, Ringen, Funken. */
+  playEvolutionFx(id: string, name?: string): void {
+    this.lastEvolutionFxId = id;
+    this.slowmoRestore = this.timeScale;
+    this.timeScale = 0.45;
+    this.slowmoRemaining = 0.9;
+    const x = this.visualX || Math.round(this.posX);
+    const y = this.visualY || Math.round(this.posY);
+    const ring = this.add.image(x, y, "fx_shock")
+      .setDepth(11).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
+      .setScale(0.4).setAlpha(1);
+    this.tweens.add({ targets: ring, scale: 3.4, alpha: 0, duration: 900, ease: "Cubic.Out", onComplete: () => ring.destroy() });
+    for (let k = 0; k < 3; k++) {
+      this.time.delayedCall(k * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
+        life: 0.55, scaleFrom: 0.5 + k * 0.5, scaleTo: 2.2 + k * 0.5,
+        alphaFrom: 0.9, alphaTo: 0, additive: true, tint: PAL[C.lantern],
+      }));
+    }
+    this.playLevelUpFx();
+    for (let i = 0; i < 20; i++) {
+      const a = (i / 20) * Math.PI * 2;
+      this.combat?.particles.shards("fx_fire", x, y, 1, {
+        life: 0.8, scaleFrom: 1.1, tint: i % 2 ? PAL[C.amber] : PAL[C.lanternWhite], additive: true,
+      });
+      this.combat?.particles.spawn({
+        texture: "fx_star", x, y, vx: Math.cos(a) * 45, vy: Math.sin(a) * 45,
+        life: 0.85, scaleFrom: 1, scaleTo: 0.1, alphaFrom: 1, alphaTo: 0, additive: true,
+        tint: PAL[C.lanternWhite],
+      });
+    }
+    this.events.emit("evolution", { id, name: name ?? id.toUpperCase() });
+  }
+
+  /** Truhe: Lichtstrahl + Glanz + Funken (Weltposition). */
+  playChestFx(x: number, y: number): void {
+    const beam = this.add.image(x, y - 4, "fx_pillar")
+      .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
+      .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9, 1.1);
+    this.tweens.add({ targets: beam, alpha: 0.85, scaleX: 1.5, duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
+    for (let i = 0; i < 14; i++) {
+      const a = -Math.PI / 2 + (i / 14 - 0.5) * 2.4;
+      this.combat?.particles.spawn({
+        texture: "fx_coin", x, y, vx: Math.cos(a) * (50 + i * 3), vy: Math.sin(a) * (60 + i * 2),
+        life: 0.8, scaleFrom: 1.2, scaleTo: 0.2, alphaFrom: 1, alphaTo: 0, additive: false,
+        depth: DEPTH.death,
+      });
+    }
+  }
+
+  /** Boss-Auftritt: Kern-Glut, Zoom-Puls, Bodenbeben. */
+  playBossIntroFx(x: number, y: number, index: number): void {
+    this.combat?.fx.spawnAnim("fx_boss_core", x, y, {
+      life: 0.9, scaleFrom: 0.6, scaleTo: 2.4, alphaFrom: 1, alphaTo: 0,
+      tint: PAL[index === 5 ? C.amber : index % 2 ? C.crimson : C.emberOrange], additive: true,
+    });
+    this.combat?.fx.spawnAnim("fx_shock", x, y + 8, {
+      life: 0.7, scaleFrom: 0.5, scaleTo: 2.2, alphaFrom: 0.8, alphaTo: 0, additive: true,
+      tint: PAL[C.emberDark],
+    });
+    const shake = shakeFor("bossHit", getSettings().shake);
+    if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs + 120, shake.intensity);
+    // Kamera-Zoom-Puls (kurz, kein Dauerzoom) über einen Tween statt zoomTo.
+    const cam = this.cameras.main;
+    this.tweens.add({ targets: cam, zoom: 1.14, duration: 170, ease: "Quad.Out" });
+    this.time.delayedCall(320, () => {
+      if (!this.finished && !this.dawn) {
+        this.tweens.add({ targets: cam, zoom: 1, duration: 380, ease: "Quad.InOut" });
+      }
+    });
+    this.events.emit("eventFx", { kind: "bossIntro", index });
+  }
+
+  /** Boss-Tod in Stufen: Kern → Ringe → Splitter → Nachglühen. */
+  playBossDeathFx(x: number, y: number, index: number): void {
+    const tint = PAL[index === 5 ? C.amber : index % 2 ? C.crimson : C.emberOrange];
+    this.combat?.fx.spawnAnim("fx_boss_core", x, y, {
+      life: 0.45, scaleFrom: 1.6, scaleTo: 3.6, alphaFrom: 1, alphaTo: 0, tint, additive: true,
+    });
+    this.cameras.main.flash(120, (PAL[C.amber] >> 16) & 255, (PAL[C.amber] >> 8) & 255, PAL[C.amber] & 255);
+    for (let i = 0; i < 3; i++) {
+      this.time.delayedCall(90 + i * 95, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
+        life: 0.6, scaleFrom: 0.8 + i * 0.5, scaleTo: 2.6 + i * 0.7,
+        alphaFrom: 1, alphaTo: 0, additive: true, tint: i === 0 ? PAL[C.lanternWhite] : tint,
+      }));
+    }
+    this.time.delayedCall(260, () => {
+      this.combat?.particles.shards("fx_death_bone", x, y, 30, {
+        life: 0.9, scaleFrom: 2.2, additive: false, tint: PAL[C.boneLight],
+      });
+      this.combat?.particles.shards("fx_fire", x, y, 26, {
+        life: 0.75, scaleFrom: 1.6, additive: true, tint,
+      });
+    });
+    this.time.delayedCall(620, () => {
+      this.combat?.fx.spawnAnim("fx_halo", x, y, {
+        life: 1.4, scaleFrom: 2.2, scaleTo: 4.6, alphaFrom: 0.7, alphaTo: 0, additive: true, tint,
+      });
+      this.combat?.fx.decal("fx_dusk", x, y, { life: 2.2, scaleFrom: 1.2, scaleTo: 2.6, alphaFrom: 0.5, alphaTo: 0 });
+    });
+    this.events.emit("eventFx", { kind: "bossDeath", index });
+  }
+
+  /** Debug/Abnahme: Ereignis-Sequenz ohne echten Spielverlauf auslösen. */
+  debugTriggerEvent(name: string): void {
+    const x = this.posX;
+    const y = this.posY;
+    switch (name) {
+      case "levelup": this.playLevelUpFx(); break;
+      case "evolution": this.playEvolutionFx(this.levelSys.weapons.at(-1)?.id ?? "phoenix", "EVOLUTION"); break;
+      case "chest": this.debugOpenChest(); break;
+      case "bossIntro": {
+        const b = this.bosses.spawn(this.bossesSpawned.length % 5, x + 60, y - 30);
+        this.playBossIntroFx(b.x, b.y, this.bossesSpawned.length % 5);
+        break;
+      }
+      case "bossDeath": {
+        const b = this.bosses.spawn(0, x + 40, y - 20);
+        this.playBossDeathFx(b.x, b.y, 0);
+        this.time.delayedCall(120, () => { b.hp = 0; });
+        break;
+      }
+      case "dawn": this.startDawn(); break;
+      default: throw new Error(`triggerEvent: unbekanntes Ereignis "${name}"`);
+    }
   }
 
   private endRun(reason: "death" | "dawn"): void {

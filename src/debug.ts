@@ -92,6 +92,8 @@ export function installDebugApi(game: Phaser.Game): void {
       run.pickLevelUp(i);
     },
     autoPlay: (value: boolean) => requireRun().setAutoPlay(value),
+    /** M5: Ereignis-Sequenz für die VFX-Abnahme auslösen. */
+    event: (name: string) => requireRun().debugTriggerEvent(String(name)),
 
     /** Tileset-Atlas: echte Terrain-Streifen (pixelgenau) + Dekor-Sampler als PNG. */
     tileset: (): string => {
