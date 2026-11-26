@@ -110,11 +110,12 @@ def eye_pair(g: Grid, cx: int, y: int, gap: int, accent: int, socket: bool = Tru
 def bog_rat(f: int) -> Grid:
     g = Grid(16, 16)
     d, b, l = R["ember"]
-    bob = [0, 1, 0, 1][f % 4]
+    bob = [0, 1, 2, 1][f % 4]
     cy = 10 - bob
-    # Schwanz: 3-px-Kurve nach hinten oben.
-    g.line(11, cy + 1, 14, cy - 3, 15, 3)
-    g.put(14, cy - 4, 14)
+    # Schwanz: 3-px-Kurve nach hinten oben, leichte Sway-Phase.
+    sway = [0, 1, 0, -1][f % 4]
+    g.line(11, cy + 1, 14, cy - 3 + sway, 15, 3)
+    g.put(14, cy - 4 + sway, 14)
     # Rumpf mit Buckel.
     g.ellipse(8, cy, 4, 3, b)
     g.ellipse(7, cy - 1, 3, 2, l)
@@ -129,22 +130,26 @@ def bog_rat(f: int) -> Grid:
     # Auge: 3x3-Sockel mit 2x2-Tier-Akzent.
     g.rect(2, cy - 4, 3, 3, 2)
     g.rect(6, cy + 1, 4, 2, 15)         # Bauch
-    # Läufe 2 px, wechselnd.
-    g.rect(6, cy + 3, 2, 3, d)
-    g.rect(10, cy + 2 + bob, 2, 3, d)
-    g.rect(6, cy + 5, 2, 1, 15)
-    g.rect(10, cy + 4 + bob, 2, 1, 15)
+    # Vier echte Laufphasen: erst setzt je Frame einz und Boden um 1 px.
+    lift_l, lift_r = [(0, 0), (1, 0), (0, 1), (1, 1)][f % 4]
+    g.rect(6, cy + 3 - lift_l, 2, 3, d)
+    g.rect(10, cy + 3 - lift_r, 2, 3, d)
+    g.rect(6, cy + 5 - lift_l, 2, 1, 15)
+    g.rect(10, cy + 5 - lift_r, 2, 1, 15)
     return finish(g, [(3, cy - 4, 31), (4, cy - 4, 31), (3, cy - 3, 31), (4, cy - 3, 31), (1, cy - 1, 15)])
 
 
 def wisp(f: int) -> Grid:
     g = Grid(16, 16)
-    bob = 1 if f == 1 else 0
+    bob = [0, 1, 2, 1][f % 4]
+    flick = [0, 1, 0, -1][f % 4]
     cy = 10 - bob
     # Irrlicht: Tropfenform (breite Basis, schmaler Hals, Flammenspitze).
     g.ellipse(8, cy, 4, 4, 5)
     g.rect(6, cy - 6, 4, 3, 5)
-    g.rect(7, cy - 8, 2, 4, 5)
+    g.rect(7 + flick, cy - 8, 2, 4, 5)
+    if flick:
+        g.put(7 + flick, cy - 9, 9)
     # Lichtkante oben-links in 2-px-Blöcken.
     g.rect(4, cy - 3, 2, 3, 9)
     g.rect(5, cy - 6, 2, 2, 9)
@@ -173,7 +178,8 @@ def wisp(f: int) -> Grid:
 def mudling(f: int) -> Grid:
     g = Grid(16, 16)
     d, b, l = 29, 30, 31
-    bob = 1 if f % 2 else 0
+    bob = [0, 1, 2, 1][f % 4]
+    wob = [0, 1, 0, -1][f % 4]
     cy = 10 - bob
     g.rect(3, cy + 4, 10, 1, d)
     g.rect(2, cy + 3, 12, 1, 29)
@@ -187,10 +193,11 @@ def mudling(f: int) -> Grid:
     g.rect(4, cy - 4, 3, 1, l)
     g.rect(3, cy - 3, 2, 1, l)
     g.rect(11, cy + 3, 2, 1, d)
-    g.rect(1, cy + 2, 2, 2, b)
-    g.put(1, cy + 3, d)
-    g.rect(13, cy + 1, 2, 3, b)
-    g.put(13, cy + 3, d)
+    armx = 1 if wob < 0 else 0
+    g.rect(1 + armx, cy + 2, 2, 2, b)
+    g.put(1 + armx, cy + 3, d)
+    g.rect(13 - armx, cy + 1, 2, 3, b)
+    g.put(13 - armx, cy + 3, d)
     for sx in (5, 9):
         g.rect(sx, cy - 2, 2, 2, 2)
     g.rect(6, cy + 2, 5, 2, 2)
@@ -203,7 +210,7 @@ def mudling(f: int) -> Grid:
 def crow(f: int) -> Grid:
     g = Grid(16, 16)
     d, b, l = R["mist"]
-    bob = 1 if f % 2 else 0
+    bob = [0, 1, 2, 1][f % 4]
     cy = 9 - bob
     # Rumpf + Kopf im Profil nach rechts.
     g.ellipse(7, cy, 4, 3, b)
@@ -212,17 +219,22 @@ def crow(f: int) -> Grid:
     g.rect(13, cy - 2, 2, 1, 20)        # Schnabel
     g.put(13, cy - 1, 17)
     g.rect(10, cy - 2, 2, 2, 2)         # Augenhöhle
-    # Flügel: drei 2-px-Federlappen, hoch bei Frame 1.
-    if f % 2:
+    # Flügel: vier Positionen eng / Hoch hoch mitt.
+    phase = f % 4
+    if phase == 0:
+        g.ellipse(5, cy, 3, 2, d)
+        g.rect(3, cy + 1, 4, 2, d)
+        g.put(2, cy + 2, 5)
+    elif phase == 2:
+        g.rect(3, cy + 1, 5, 2, 8)
+        g.rect(1, cy + 3, 4, 2, 8)
+        g.put(1, cy + 5, 9)
+    else:
         g.rect(3, cy - 5, 5, 2, 8)
         g.rect(1, cy - 3, 4, 2, 8)
         g.rect(2, cy - 1, 3, 2, d)
         g.put(1, cy - 4, 9)
-    else:
-        g.ellipse(5, cy, 3, 2, d)
-        g.rect(3, cy + 1, 4, 2, d)
-        g.put(2, cy + 2, 5)
-    g.rect(1, cy + 1, 3, 2, 8)          # Schwanz
+    g.rect(1, cy + 1 + (1 if f % 4 == 3 else 0), 3, 2, 8)          # Schwanz
     # Beine 2 px + Füße.
     g.rect(7, cy + 3, 2, 2, 16)
     g.rect(9, cy + 3, 2, 2, 16)
@@ -235,8 +247,8 @@ def crow(f: int) -> Grid:
 def bogzombie(f: int) -> Grid:
     g = Grid(16, 16)
     d, b, l = R["marsh"]
-    bob = 0 if f % 2 else 1
-    sway = 1 if f % 2 else 0
+    bob = [0, 1, 2, 1][f % 4]
+    sway = [0, 1, 0, -1][f % 4]
     # Kopf + Hals, ausgefranste Robe. Kopf-Grundton 30, Licht 31 nur als
     # Oberkante: so heben sich die 2x1-Tier-Akzente (31) von der Flaeche ab.
     g.ellipse(8, 4 - bob, 4, 3, b)
@@ -259,9 +271,10 @@ def bogzombie(f: int) -> Grid:
     g.rect(2 + sway, 7 - bob, 2, 4, l)
     g.rect(1 + sway, 6 - bob, 2, 1, l)
     g.rect(12, 9 - bob, 2, 4, l)
-    # Beine + Fetzen.
-    g.rect(5, 12, 2, 3, d)
-    g.rect(9, 12 - (1 if f % 2 else 0), 2, 3, d)
+    # Beine + Fetzen mit vier Schrittphasen.
+    lstep, rstep = [(0, 1), (1, 0), (1, 1), (0, 2)][f % 4]
+    g.rect(5, 12 - lstep, 2, 3, d)
+    g.rect(9, 12 - rstep, 2, 3, d)
     g.rect(3, 11, 2, 1, d)
     g.rect(12, 11 - bob, 2, 1, 31)
     # Akzent als untere Augenzeile (dunkle Hoehle oben, heller Blick unten),
@@ -275,8 +288,8 @@ def bogzombie(f: int) -> Grid:
 def toad(f: int) -> Grid:
     g = Grid(16, 16)
     d, b, l = R["mossD"]
-    bob = 1 if f == 1 else 0
-    cy = 11 - bob
+    hop = [0, 1, 3, 1][f % 4]
+    cy = 11 - hop
     g.ellipse(8, cy, 6, 3, b)          # Körper
     g.ellipse(8, cy - 1, 5, 3, l)
     g.put(2, cy + 1, 28)
@@ -291,8 +304,9 @@ def toad(f: int) -> Grid:
         g.rect(cx0 - 1, cy - 4, 2, 1, 31)
     g.rect(5, cy + 1, 7, 1, INK)       # Mund
     g.put(6, cy + 2, INK)
-    g.rect(2, cy + 2, 2, 2, d)         # Vorderbeine
-    g.rect(13, cy + 2, 2, 2, d)
+    leg_land = 1 if f % 4 == 3 else 0
+    g.rect(2, cy + 2 + leg_land, 2, 2, d)         # Vorderbeine
+    g.rect(13, cy + 2 + leg_land, 2, 2, d)
     return finish(g)
 
 
@@ -300,7 +314,7 @@ def toad(f: int) -> Grid:
 def skeleton(f: int) -> Grid:
     g = Grid(20, 20)
     d, b, l = R["bone"]
-    bob = 1 if f == 1 else 0
+    bob = [0, 1, 2, 1][f % 4]
     cx = 10
     g.ellipse(cx, 5 - bob, 4, 4, b)    # Schädel
     g.rect(cx - 3, 8 - bob, 7, 1, b)   # Kiefer
@@ -318,8 +332,9 @@ def skeleton(f: int) -> Grid:
     g.rect(cx - 5, 11 - bob, 2, 4, b)  # Arme
     g.rect(cx + 4, 10 - bob, 2, 5, b)
     g.put(cx + 5, 14 - bob, 11)
-    g.rect(cx - 3, 16, 2, 3, b)        # Beine
-    g.rect(cx + 2, 16 - (1 if f else 0), 2, 3, b)
+    lstep, rstep = [(0, 1), (1, 0), (0, 2), (1, 2)][f % 4]
+    g.rect(cx - 3, 16 - lstep, 2, 3, b)        # Beine
+    g.rect(cx + 2, 16 - rstep, 2, 3, b)
     g.rect(cx - 4, 15, 2, 3, 10)       # Lendenknochen statt Rot
     g.rect(cx + 3, 15, 2, 3, 10)
     g.put(cx - 2, 12 - bob, 11)
@@ -329,9 +344,9 @@ def skeleton(f: int) -> Grid:
 def bat(f: int) -> Grid:
     g = Grid(20, 20)
     d, b, l = R["crim"]
-    bob = 1 if f == 1 else 0
+    bob = [0, 1, 2, 1][f % 4]
     cy = 11 - bob
-    ws = -2 if f == 1 else 1              # Flügelschlag
+    ws = [1, 0, -2, -1][f % 4]            # vier Flügelschlag-Stufen
     # Membranflügel als geschlossene 4x3-Loben in zwei Rottönen.
     g.ellipse(5, cy - 2 + ws, 4, 3, 23)
     g.ellipse(15, cy - 2 + ws, 4, 3, 23)
@@ -360,7 +375,8 @@ def bat(f: int) -> Grid:
 def ghoul(f: int) -> Grid:
     g = Grid(20, 20)
     d, b, l = R["mossD"]
-    bob = 1 if f == 1 else 0
+    bob = [0, 1, 2, 1][f % 4]
+    lunge = [0, 1, 2, 1][f % 4]
     cy = 12 - bob
     g.ellipse(9, cy, 5, 5, b)          # gebe gebe
     g.ellipse(9, cy - 1, 4, 4, l)
@@ -380,8 +396,9 @@ def ghoul(f: int) -> Grid:
     g.put(6, cy + 7, 11)
     g.rect(13, cy + 1, 2, 4, b)
     g.put(14, cy + 5, 11)
-    g.rect(6, 16, 2, 3, b)             # Beine
-    g.rect(10, 16 - (1 if f else 0), 2, 3, b)
+    lstep, rstep = [(0, 1), (1, 0), (0, 2), (1, 2)][f % 4]
+    g.rect(6, 16 - lstep, 2, 3, b)             # Beine
+    g.rect(10, 16 - rstep, 2, 3, b)
     g.put(7, cy + 2, 28)
     return finish(g, [(13, 5 - bob, 11), (14, 5 - bob, 11)])
 
@@ -427,7 +444,7 @@ def witchling(f: int) -> Grid:
 def slime(f: int) -> Grid:
     g = Grid(20, 20)
     d, b, l = 8, 9, 10
-    bob = 1 if f == 1 else 0
+    bob = [0, 1, 2, 1][f % 4]
     cy = 12 - bob
     g.rect(8, cy - 6, 2, 3, l)
     g.put(8, cy - 6, 11)
@@ -445,9 +462,10 @@ def slime(f: int) -> Grid:
     g.rect(9, cy + 2, 3, 1, INK)
     g.put(11, cy + 3, INK)
     # Markenzeichen: Schleimtropfen an der Seite, 2-px-Zahnreihe im Mund.
-    g.rect(17, cy, 2, 4, b)
-    g.put(17, cy + 4, l)
-    g.put(18, cy + 4, l)
+    drip = 1 if f % 4 == 3 else 0
+    g.rect(17 - drip, cy, 2, 4, b)
+    g.put(17 - drip, cy + 4, l)
+    g.put(18 - drip, cy + 4, l)
     g.rect(9, cy + 2, 2, 1, 11)
     g.rect(11, cy + 2, 2, 1, 11)
     g.rect(5, cy + 1, 2, 2, d)
@@ -1201,7 +1219,7 @@ DRAW = {
 
 
 def frames_for(eid: str) -> int:
-    return 2 if TIER[eid] <= 1 else 4
+    return 4
 
 
 def build() -> dict[str, list[Grid]]:
