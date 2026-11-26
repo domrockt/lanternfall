@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1030,
+  "next": 1033,
   "cards": [
     {
       "id": 1,
@@ -2412,6 +2412,54 @@
       ],
       "created": "2026-11-26T22:22:21Z",
       "updated": "2026-11-26T22:22:36Z"
+    },
+    {
+      "id": 1030,
+      "title": "M10 Palette-Audit Harness (Grid-Messung vs. 32 PAL-Farben)",
+      "description": "Node-Harness liest Grids aus gen-enemies/bosses/chars/fx/icons/ui + 32 PAL-Indizes; zaehlt Pixel, Off-Palette, Loecher, fehlende Kontur je Frame; kein Schreibzugriff in src/**. Abnahme: shots/m10-lane palette harness mjs laeuft auf HEAD mit rc=0, Beleg-Kopie byte-identisch zum ausgefuehrten Skript.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-26T22:40:12Z",
+          "by": "build",
+          "text": "Merge Lane m10-palette-audit, lane #1 (Commit 913d2d4): Harness shots/m10-palette-audit-harness.mjs/.log, Grid-Audit HEAD f26dc4b, rc=0."
+        }
+      ],
+      "created": "2026-11-26T22:39:37Z",
+      "updated": "2026-11-26T22:40:12Z"
+    },
+    {
+      "id": 1031,
+      "title": "M10 Palette-Audit Lauf: 155 Assets / 257 Frames",
+      "description": "Audit-Lauf ueber alle Textur-Assets. Abnahme: shots/m10-palette-audit.json enthaelt 155 Assets, 257 Frames, 112.102 opake Pixel, 0 Off-Palette; Summary reproduzierbar (erneuter Lauf bit-identisch).",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-26T22:40:12Z",
+          "by": "build",
+          "text": "Merge Lane m10-palette-audit, lane #2 (Commit f7ef203): Lauf shots/m10-palette-audit.json, 155 Assets, 257 Frames, 0 Off-Palette."
+        }
+      ],
+      "created": "2026-11-26T22:39:37Z",
+      "updated": "2026-11-26T22:40:12Z"
+    },
+    {
+      "id": 1032,
+      "title": "M10 Palette-Audit Report: Tabelle je Klasse, Top-20 Kontur, Folge-Lanes",
+      "description": "docs/lanes/m10-palette-audit.md mit Tabelle je Asset-Klasse, Summenzeile, Top-20 fehlende Kontur mit Koordinaten + Empfehlung je Datei, Loch-Kandidatenliste, FX-Ausnahmen und Empfehlung der naechsten Art-Lanes. Abnahme: alle Zahlen durch shots/m10-palette-audit.json nachrechenbar, vitest gruen.",
+      "column": "done",
+      "assignee": "art-director",
+      "notes": [
+        {
+          "at": "2026-11-26T22:40:12Z",
+          "by": "build",
+          "text": "Merge Lane m10-palette-audit, lane #3 (Commits a02b492, 7ac8a20): Report docs/lanes/m10-palette-audit.md, Kontur 30,6 % fehlt, Top-20 + Folge-Lane-Empfehlungen."
+        }
+      ],
+      "created": "2026-11-26T22:39:37Z",
+      "updated": "2026-11-26T22:40:12Z"
     }
   ]
 }
