@@ -1,0 +1,136 @@
+{
+  "lane": "m10-qa-numbers",
+  "baseSha": "257416c",
+  "date": "2026-11-26",
+  "commands": {
+    "acceptanceCount": "node scripts/acceptance-count.mjs -> EXIT 0, ok:true, counts 30/6/6/6/6/2 (Log: ~/tmp/m10-qa-numbers-count.log)",
+    "vitest": "npx vitest run -> EXIT 0, Test Files 12 passed, Tests 192 passed (Log: ~/tmp/m10-qa-numbers-vitest.log)",
+    "newTests": "npx vitest run tests/view.test.ts tests/spawn-view.test.ts -> 17 Tests (Log: ~/tmp/m10-qa-numbers-newtests.log)"
+  },
+  "claims": [
+    {
+      "claim": "Tests",
+      "claimedIn": "docs/qa/2026-11-26.md (qa-03), ACCEPTANCE Nachtrag",
+      "claimed": "175",
+      "actual": "192",
+      "source": "npx vitest run @257416c; Log ~/tmp/m10-qa-numbers-vitest.log",
+      "deviationPct": 9.7,
+      "status": "erklaert",
+      "note": "17 neue Tests aus tests/view.test.ts + tests/spawn-view.ts der m8-display-Lane (#92/#95), nach dem QA-Lauf 0b42ffe hinzugekommen. Keine roten Tests."
+    },
+    {
+      "claim": "FPS Minute 25",
+      "claimedIn": "docs/qa/2026-11-26.md (qa-03), ACCEPTANCE Nachtrag",
+      "claimed": "59,3",
+      "actual": "54,7 (JSON fps) / 53,1 (JSON measuredFps)",
+      "source": "shots/perf-m3.json @257416c (Commit 946f7f6, m9-art-world WIP-Snapshot)",
+      "deviationPct": -7.8,
+      "status": "offen",
+      "note": "Die 59,3 stammen aus der Dateifassung in Commit 0b42ffe (fps 58,9 / measuredFps 59,3). 946f7f6 hat shots/perf-m3.json ohne Doku-Update ueberschrieben. Auf finaler Basis neu messen (flock, npm run perf)."
+    },
+    {
+      "claim": "Heap fullrun +18,7 %",
+      "claimedIn": "ACCEPTANCE.md A4/A5, Offene Punkte",
+      "claimed": "+18,7 % (25,7 -> 30,5 MB)",
+      "actual": "+18,7 % (25,7 -> 30,5 MB)",
+      "source": "shots/m3-fullrun.json heap.minute1MB/minute29MB/deltaVsMinute1Pct",
+      "deviationPct": 0.0,
+      "status": "gleich",
+      "note": "Nachgerechnet (30,5-25,7)/25,7 = 18,68 %. Neuerer m10-heap-basis-Lauf (19:13 UTC) zeigt +0,7 % JS-Heap; kein Widerspruch zur alten 30-min-Einzelmessung, aber Host-/GC-Streuung bleibt offener Punkt."
+    },
+    {
+      "claim": "Heap realtime +15,8 %",
+      "claimedIn": "ACCEPTANCE.md A4",
+      "claimed": "+15,8 % (27,9 -> 32,3 MB)",
+      "actual": "+15,8 % (27,9 -> 32,3 MB)",
+      "source": "shots/realtime-30min.json heap.deltaVsMinute1Pct",
+      "deviationPct": 0.0,
+      "status": "gleich",
+      "note": "Nachgerechnet (32,3-27,9)/27,9 = 15,77 %. CDP 11,3 -> 16,2 MB ebenfalls belegt."
+    },
+    {
+      "claim": "Inhaltszaehlung",
+      "claimedIn": "ACCEPTANCE.md A3, GAME.md DoD",
+      "claimed": "30/6/6/6/6/2 (enemies/weapons/powerups/evolutions/bosses/characters)",
+      "actual": "30/6/6/6/6/2",
+      "source": "node scripts/acceptance-count.mjs @257416c; Log ~/tmp/m10-qa-numbers-count.log",
+      "deviationPct": 0.0,
+      "status": "gleich",
+      "note": "ok:true, Sollwerte identisch."
+    }
+  ],
+  "additionalContradictions": [
+    {
+      "claim": "Tests (A2/A5/A12)",
+      "claimed": "147",
+      "actual": "192",
+      "source": "npx vitest run @257416c",
+      "deviationPct": 30.6,
+      "status": "offen",
+      "note": "ACCEPTANCE A2/A5/A12 und Offene Punkte nennen noch 147; bereits der QA-Nachtrag nannte 175. Endabnahme muss 192 als Ist-Stand uebernehmen."
+    },
+    {
+      "claim": "FPS Minute 25 (A5 Team/Lead)",
+      "claimed": "57,9 / 56,4",
+      "actual": "54,7 / 53,1",
+      "source": "shots/perf-m3.json @257416c",
+      "deviationPct": -5.5,
+      "status": "offen",
+      "note": "Abweichung >= 5 % gegenueber A5-Teamwert 57,9. Ursache wie oben: Datei wurde in 946f7f6 ueberschrieben. Re-Messung vor Endabnahme."
+    },
+    {
+      "claim": "Burst FPS",
+      "claimed": "60,7 (Team) / 59,3 (Lead)",
+      "actual": "60,1 (fps) / 59,8 (measuredFps)",
+      "source": "shots/perf-m3.json @257416c",
+      "deviationPct": -1.0,
+      "status": "gleich",
+      "note": "Innerhalb 2 % Host-Streuung."
+    },
+    {
+      "claim": "Realtime-FPS min/median/Samples",
+      "claimed": "57,2 / 60,3 / 7181",
+      "actual": "57,2 / 60,3 / 7181",
+      "source": "shots/realtime-30min.json fps",
+      "deviationPct": 0.0,
+      "status": "gleich",
+      "note": "Alle drei Werte identisch."
+    },
+    {
+      "claim": "fullrun Sim-Minuten",
+      "claimed": "30,1 min",
+      "actual": "30,2 min",
+      "source": "shots/m3-fullrun.json simMinutes",
+      "deviationPct": 0.3,
+      "status": "gleich",
+      "note": ""
+    },
+    {
+      "claim": "Trailer-Laenge/Frames",
+      "claimed": "35,6 s / 285 Frames / 480x270 / 8 fps",
+      "actual": "36 s (JSON seconds) / 285 Frames (identify) / 480x270 / 8 fps",
+      "source": "shots/final-trailer.json; identify shots/final-trailer.gif | wc -l = 285",
+      "deviationPct": 1.1,
+      "status": "gleich",
+      "note": "Sekunden auf ganze Zahl gerundet; Framezahl exakt."
+    },
+    {
+      "claim": "VFX-Readability Frame (A7)",
+      "claimed": "time 1405,6 s, kills 3200, 429 Gegner, 63 fx/202 Partikel, AE 206.684",
+      "actual": "time 1405,4 s, kills 2919, 468 Gegner, 60 fx/158 Partikel (AE nicht im JSON)",
+      "source": "shots/final-vfx-readability.json (Commit a9148d1, VFX-Re-Verifikation final)",
+      "deviationPct": -8.8,
+      "status": "offen",
+      "note": "Kills -8,8 %, Gegner +9,1 %, Partikel -21,8 % gegenueber ACCEPTANCE A7. a9148d1 aktualisierte die JSON, aber nicht den A7-Text; AE 209052 statt 206684 laut Commit-Nachricht. Endabnahme muss A7-Zahlen auf a9148d1 korrigieren."
+    },
+    {
+      "claim": "Balance Hauptlaeufe / Level",
+      "claimed": "6 Laeufe, 5/6 im Korridor; Kael/101 Level 47; Lead Kael/202 Tod 15,6 min, 0 Evos",
+      "actual": "balance-main.json @HEAD: 1 Lauf (Kael/101, dawn 30,7 min, Level 28, 2 Evos); balance-all.json: 6 Laeufe, 3/6 passedAll; balance-main-m8-640.json: 6/6 passedAll",
+      "source": "shots/balance-main.json, shots/balance-all.json, shots/balance-main-m8-640.json",
+      "deviationPct": 17.0,
+      "status": "offen",
+      "note": "Kein Beleg am HEAD zeigt 5/6 oder Level 47 bzw. Kael/202 Tod 15,6. balance-main.json wurde nach dem M6-Lauf ersetzt. Endabnahme braucht eine neue, dokumentierte Balance-Serie."
+    }
+  ]
+}

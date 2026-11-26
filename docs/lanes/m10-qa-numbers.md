@@ -106,3 +106,37 @@ Die maschinenlesbare Fassung liegt in `shots/m10-qa-numbers-inventory.json`.
 |---|---|---|
 | `docs/qa/2026-11-26.md` | 2026-11-26, Basis `main` @ `7a522a4`, Läufe in Commit `0b42ffe` | Tests **175** (10 Dateien), perf Burst **59,3 FPS** (roh 59,9), Minute 25 **59,3 FPS** (roh 58,9), `verify:final` **7/7**, `acceptance-count` **30/6/6/6/6/2**, 0 JS-Fehler, Build grün, APK-Basis `53a9261` |
 | `ACCEPTANCE.md` | 2026-11-26, M6-Stand + Nachtrag QA | Tests **147** (A2/A5/A12) bzw. **175** (Nachtrag), perf Burst **60,7** (Team) / **59,3** (Lead), Minute 25 **57,9** (Team) / **56,4** (Lead) bzw. **59,3** (Nachtrag), fullrun fpsMin **55,8**, realtime fps min **57,2** / median **60,3** / 7181 Samples, Heap realtime **+15,8 %** (27,9→32,3 MB), Heap fullrun **+18,7 %** (25,7→30,5 MB), Inhaltszählung **30/6/6/6/6/2**, Trailer **35,6 s / 285 Frames / 480×270 / 8 fps** |
+
+## Karte 2 — Abgleich ACCEPTANCE vs. Beleg (Basis `257416c`)
+
+Eigene Ist-Läufe am 2026-11-26 (Logs in `~/tmp/m10-qa-numbers/`):
+
+- `node scripts/acceptance-count.mjs` → **EXIT 0**, `ok:true`, **30/6/6/6/6/2**.
+- `npx vitest run` → **EXIT 0**, **12 Testdateien, 192 Tests grün**.
+- `npx vitest run tests/view.test.ts tests/spawn-view.test.ts` → **17 Tests** (genau die Differenz 175 → 192).
+
+Abweichung = (Ist − Soll) / Soll. Status: **gleich** (≤ 5 %), **erklärt** (Abweichung
+mit Commit/Ursache belegt), **offen** (Widerspruch, den `m9-final-acceptance` klären muss).
+Maschinenlesbar: `shots/m10-qa-numbers-comparison.json`.
+
+| Kennzahl | Soll (ACCEPTANCE/QA) | Ist (Beleg @257416c) | Quelle | Abweichung | Status |
+|---|---|---|---|---|---|
+| Tests | **175** (QA-Nachtrag) | **192** | `npx vitest run`; `tests/view.test.ts` + `tests/spawn-view.test.ts` = 17 Tests (m8-display #92/#95) | **+9,7 %** | **erklärt** |
+| Tests | **147** (A2/A5/A12) | **192** | wie oben | **+30,6 %** | **offen** (Doku veraltet) |
+| FPS Minute 25 | **59,3** (QA-Nachtrag) | **54,7** fps / **53,1** measuredFps | `shots/perf-m3.json` @257416c (Commit `946f7f6`, m9-art-world-WIP hat die Datei überschrieben) | **−7,8 %** / −10,5 % | **offen** |
+| FPS Minute 25 | **57,9 / 56,4** (A5 Team/Lead) | **54,7 / 53,1** | wie oben | **−5,5 %** (vs. Team) | **offen** |
+| Heap fullrun | **+18,7 %** (25,7 → 30,5 MB) | **+18,7 %** (nachgerechnet 18,68 %) | `shots/m3-fullrun.json` → `heap.deltaVsMinute1Pct` | **0,0 %** | **gleich** |
+| Heap realtime 30 min | **+15,8 %** (27,9 → 32,3 MB) | **+15,8 %** (nachgerechnet 15,77 %) | `shots/realtime-30min.json` → `heap.deltaVsMinute1Pct` | **0,0 %** | **gleich** |
+| Inhaltszählung | **30/6/6/6/6/2** | **30/6/6/6/6/2** | `node scripts/acceptance-count.mjs` | **0,0 %** | **gleich** |
+| Burst FPS | **60,7** (Team) / **59,3** (Lead) | **60,1** fps / **59,8** measuredFps | `shots/perf-m3.json` @257416c | −1,0 % / +0,8 % | **gleich** |
+| Realtime FPS min/median/Samples | **57,2 / 60,3 / 7181** | **57,2 / 60,3 / 7181** | `shots/realtime-30min.json` → `fps` | 0,0 % | **gleich** |
+| fullrun Sim-Minuten | **30,1 min** | **30,2 min** | `shots/m3-fullrun.json` → `simMinutes` | +0,3 % | **gleich** |
+
+### Weitere gefundene Widersprüche (≥ 5 % oder inhaltlich offen)
+
+| Kennzahl | Soll | Ist | Quelle | Abweichung | Status |
+|---|---|---|---|---|---|
+| VFX-Readability Frame (A7) | time 1405,6 s, kills 3200, 429 Gegner, 63 fx/202 Partikel, AE 206.684 | time 1405,4 s, kills 2919, 468 Gegner, 60 fx/158 Partikel; AE nicht im JSON (Commit-Nachricht: 209052) | `shots/final-vfx-readability.json` (Commit `a9148d1`, „VFX-Re-Verifikation final“) | kills **−8,8 %**, Gegner **+9,1 %**, Partikel **−21,8 %** | **offen** |
+| Balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Kael/101 Level 47; Lead Kael/202 Tod 15,6 min, 0 Evos | `balance-main.json` @HEAD: 1 Lauf (Kael/101, dawn 30,7 min, Level 28, 2 Evos); `balance-all.json`: 6 Läufe, 3/6 `passedAll`; `balance-main-m8-640.json`: 6/6 `passedAll` | `shots/balance-main.json`, `shots/balance-all.json`, `shots/balance-main-m8-640.json` | Korridor 5/6 vs. 3/6 bzw. 6/6; Level 47 nicht belegt | **offen** |
+| Trailer-Länge | 35,6 s | 36 s (JSON) | `shots/final-trailer.json` → `seconds` | +1,1 % | gleich (Rundung) |
+| Trailer-Frames | 285 | 285 | `identify shots/final-trailer.gif \| wc -l` | 0 | gleich |
