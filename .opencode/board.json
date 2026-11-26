@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1021,
+  "next": 1024,
   "cards": [
     {
       "id": 1,
@@ -2271,6 +2271,54 @@
       ],
       "created": "2026-11-26T20:23:21Z",
       "updated": "2026-11-26T20:23:21Z"
+    },
+    {
+      "id": 1021,
+      "title": "m10-qa-numbers-01 Quellen-Inventar (71 JSON + QA-Doc)",
+      "description": "Alle 71 shots/*.json und docs/qa/*.json mit Datum, Typ und Kernzahlen erfassen; maschinenlesbar in shots/m10-qa-numbers-inventory.json. Abnahme: 71 Dateien inventarisiert, jede mit generatedAt oder Commit-Datum.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [
+        {
+          "at": "2026-11-26T21:22:00Z",
+          "by": "build",
+          "text": "lane #1 (Commit 29c1e02): 71 JSON + QA-Doc inventarisiert, shots/m10-qa-numbers-inventory.json."
+        }
+      ],
+      "created": "2026-11-26T21:21:02Z",
+      "updated": "2026-11-26T21:22:00Z"
+    },
+    {
+      "id": 1022,
+      "title": "m10-qa-numbers-02 Abgleich ACCEPTANCE-Zahlen vs. JSON-Belege",
+      "description": "Tests 175, FPS Minute 25 59,3, Heap +18,7/+15,8, Inhalt 30/6/6/6/6/2 gegen Belege prüfen; Abweichung >=5% mit Quelle belegen. Abnahme: acceptance-count ok:true 30/6/6/6/6/2, vitest 192 Tests grün (12 Dateien), Abgleich in shots/m10-qa-numbers-comparison.json.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [
+        {
+          "at": "2026-11-26T21:22:00Z",
+          "by": "build",
+          "text": "lane #2 (Commit 03e6637): Abgleich 192 Tests grün (12 Dateien, +17), acceptance-count 30/6/6/6/6/2 ok:true, Vergleich in shots/m10-qa-numbers-comparison.json."
+        }
+      ],
+      "created": "2026-11-26T21:21:02Z",
+      "updated": "2026-11-26T21:22:00Z"
+    },
+    {
+      "id": 1023,
+      "title": "m10-qa-numbers-03 Report: konsolidierte Zahlenliste + offene Punkte",
+      "description": "docs/lanes/m10-qa-numbers.md mit konsolidierter Tabelle und offenen Widersprüchen für m9-final-acceptance (Minute-25-FPS 54,7, Testzahl 192, A7-VFX a9148d1, Balance 5/6/Level 47). Abnahme: Report enthält alle Behauptungen des Briefings mit Status gleich/erklärt/offen.",
+      "column": "done",
+      "assignee": "tech-lead",
+      "notes": [
+        {
+          "at": "2026-11-26T21:22:00Z",
+          "by": "build",
+          "text": "lane #3 (Commit 6f69488): Report docs/lanes/m10-qa-numbers.md; offen für m9-final-acceptance: Minute-25-FPS 54,7, Testzahl 192, A7-VFX a9148d1, Balance 5/6/Level 47."
+        }
+      ],
+      "created": "2026-11-26T21:21:02Z",
+      "updated": "2026-11-26T21:22:00Z"
     }
   ]
 }
