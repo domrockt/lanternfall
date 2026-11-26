@@ -1,0 +1,27 @@
+rows: 38 enemies: 30 bosses: 6 chars: 2
+DIFF enemy/wisp: Datenfarbe: soll=lantern ist=verwendet: nein
+DIFF enemy/crow: Datenfarbe: soll=fog ist=verwendet: nein
+DIFF enemy/skeleton: Sichtbare Höhe: soll=14–18 ist=20
+DIFF enemy/ghoul: Sichtbare Höhe: soll=14–18 ist=19
+DIFF enemy/witchling: Sichtbare Höhe: soll=14–18 ist=19
+DIFF enemy/slime: Sichtbare Höhe: soll=14–18 ist=13
+DIFF enemy/scarecrow: Sichtbare Höhe: soll=14–18 ist=20
+DIFF enemy/wolf: Sichtbare Höhe: soll=18–22 ist=17
+DIFF enemy/golem: Sichtbare Höhe: soll=18–22 ist=24
+DIFF enemy/spider: Sichtbare Höhe: soll=18–22 ist=13
+DIFF enemy/bomber: Sichtbare Höhe: soll=18–22 ist=24 | Datenfarbe: soll=flame ist=verwendet: nein
+DIFF enemy/knight: Sichtbare Höhe: soll=22–26 ist=28
+DIFF enemy/wraith: Sichtbare Höhe: soll=22–26 ist=21 | Datenfarbe: soll=lanternWhite ist=verwendet: nein
+DIFF enemy/treant: Sichtbare Höhe: soll=22–26 ist=28
+DIFF enemy/imp: Sichtbare Höhe: soll=22–26 ist=18
+DIFF enemy/horror: Sichtbare Höhe: soll=26–30 ist=23
+DIFF enemy/centipede: Sichtbare Höhe: soll=26–30 ist=15
+DIFF enemy/gargoyle: Sichtbare Höhe: soll=26–30 ist=25 | Datenfarbe: soll=flameBright ist=verwendet: nein
+DIFF enemy/abom: Sichtbare Höhe: soll=26–30 ist=24 | Datenfarbe: soll=glow ist=verwendet: nein
+DIFF enemy/voidcaller: Datenfarbe: soll=nightMid ist=verwendet: nein
+DIFF boss/moor_queen: Größe (ART Boss0): soll=48x48 ist=56x56 | Frames (ART Idle2/Windup1/Attack1): soll=4 ist=3
+DIFF boss/bone_lord: Größe (ART Boss1): soll=56x56 ist=64x64 | Frames (ART Idle2/Windup1/Attack1): soll=4 ist=3
+DIFF boss/pale_shepherd: Größe (ART Boss2): soll=64x64 ist=72x72 | Frames (ART Idle2/Windup1/Attack1): soll=4 ist=3
+DIFF boss/bell_golem: Größe (ART Boss3): soll=72x72 ist=80x80 | Frames (ART Idle2/Windup1/Attack1): soll=4 ist=3
+DIFF boss/coven: Größe (ART Boss4): soll=80x80 ist=96x96 | Frames (ART Idle2/Windup1/Attack1): soll=4 ist=3
+DIFF boss/hollow_king: Frames (ART Idle2/Windup1/Attack1): soll=4 ist=3
