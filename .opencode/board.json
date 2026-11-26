@@ -2417,10 +2417,16 @@
       "id": 1538,
       "title": "m10-input-fix #1: F1 Truhen-Skip-Zone auf pointerup + F2 verify-input-Selektor",
       "description": "F1: Skip-Zone der Truhe von pointerdown auf pointerup; Touchstart bei offener Truhe darf keinen Joystick erzeugen, playerX konstant, Truhe schliesst erst beim Loslassen. Belege shots/m10-input-fix-chest.json + PNGs. F2: scripts/verify-input.mjs findet CharSelect-Namen 'Bruder Kael' (PixelText-Wert) und erreicht wieder alle Touch-/Gamepad-Checks. Abnahme: Repro PASS, verify-input PASS>=(Touch/Gamepad), vitest >=192 gruen, build rc=0, docs/lanes/m10-input-fix.md.",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-26T23:20:08Z",
+          "by": "build",
+          "text": "doing → review: F1 pointerup (1 Zeile), F2 tapText-Elternflaeche; Repro PASS shots/m10-input-fix-chest.json, verify-input 28/28 shots/m10-input-fix-verify.json, 193 Tests, build rc=0. Reviewer laeuft."
+        }
+      ],
       "created": "2026-11-26T22:56:24Z",
-      "updated": "2026-11-26T22:56:24Z"
+      "updated": "2026-11-26T23:20:08Z"
     }
   ]
 }
