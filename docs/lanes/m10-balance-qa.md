@@ -198,3 +198,19 @@ Spawn-Budget bei 480×360, erklärt aber nur +1 Level Unterschied (A/B).
   falls erneut > Level 40, `xpToNext` stückweise 1,1 (<30) / 2,5 (≥30) — nachgerechnet: historischer
   34 905-XP-Lauf L47 → **L39**, aktueller Maximal-Lauf L36 → **L32**, L29 bleibt **L29**.
 
+## Abnahme Versuch 3 (2026-11-26, HEAD 26bd762)
+
+Dieser Durchgang hat keine offene Sachkarte mehr gefunden — die vier Karten sind committet und in Versuch 2
+gegen die Rohdaten geprüft. Er hat die Abnahme **unabhängig neu nachgerechnet** und die Lane geschlossen:
+
+- **Nachrechnung aus `shots/m10-balance-main-runs.json`** (`~/tmp/m10-balance-qa/reaccept.mjs`, Log
+  `~/tmp/m10-qa-reaccept.log`): Level-Quote **6/6**, Überlebens-/Sieg-Quote **6/6**, Boss-Quote **6/6**
+  (30 Bosse, min 23 s / max 52 s), `passedAll` **6/6**, `pageErrors` in allen Läufen **0**.
+  Level min/median/max **26/27/36**, Endzeit **20,7/26,0/30,8 min**, Kills max **11 051** (kael/202).
+  Deckt sich mit der Versuch-2-Tabelle; keine Doku-Zahl musste erneut korrigiert werden.
+- **Build/Tests:** `npm run build` rc=0 (`✓ built in 567ms`), `npm test` **12 Files / 192 Tests grün**.
+- **Geschützte Pfade:** `git diff --name-only f26dc4b..HEAD` enthält nur `docs/lanes/m10-balance-qa.md`
+  und `shots/m10-balance-*`; `git status --short` vor dem Abschluss sauber.
+- **Befund unverändert:** Kael/Seed 101 = **Level 29** auf Basis f26dc4b, der Level-47-Lauf ist der historische
+  XP-Aufsammel-Ausreißer aus 62a586f. Empfehlung (Viewport pinnen, stückweise XP-Kurve) bleibt wie in Karte 4.
+
