@@ -1,0 +1,15 @@
+Lane m10-art-bible — fertig (Basis-SHA 48d590c).
+
+- #1 Matrix: 38/38 Einträge (30 Gegner, 6 Bosse, 2 Charaktere) mit Soll/Ist je Feld.
+  Belege: shots/m10-art-bible-matrix.json + .out (Commit 60977d4; Rohdaten schon im Supervisor-Snapshot 519329b).
+- #2 Diff + 4x-Belege: shots/m10-art-bible-{enemy-height,enemy-color,boss-size,boss-frames,chars}.png (af1c980).
+- #3 Report: docs/lanes/m10-art-bible.md mit Lückenliste, Empfehlung je Abweichung, Anhang aller 38 Einträge (5f0d426).
+
+Befund: 26 von 38 Einträgen haben mind. 1 Abweichung, 35 fehlgeschlagene Felder.
+- 17 Gegner: sichtbare Höhe außerhalb ART-Tier-Rampe (spider 13 vs 18–22, centipede 15 vs 26–30, imp 18 vs 22–26 am deutlichsten).
+- 7 Gegner: Datenfarbe `color` kommt im Sprite nicht vor (wisp, crow, bomber, wraith, gargoyle, abom, voidcaller).
+- 5 Bosse: Canvas-Größe weicht von ART-Liste ab (Ist 56/64/72/80/96; ART 48/56/64/72/80).
+- 6 Bosse: 3 GEN-Frames statt ART Idle2+Windup1+Attack1 = 4 (Angriffspose fehlt).
+- Doku-Stale: GAME.md M3 „24×24 / 40×40“; characters.ts artNote „16x16“ (real 32×32).
+
+Keine Änderungen an ART.md/GAME.md/src/scripts/tests in dieser Lane. Keine FPS-Messung nötig.
