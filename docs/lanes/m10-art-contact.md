@@ -1,6 +1,6 @@
 # Lane m10-art-contact — belastbare Art-Belege (38 Charakter-Sprites)
 
-Worktree: `/home/ai/lf-lanes/m10-art-contact` · Branch `m10-art-contact`
+Worktree: `/home/ai/games/lf-lanes/m10-art-contact` · Branch `m10-art-contact`
 **Basis-SHA beim Start: `f26dc4b`** (der Merge der Lane `m8-display` lief noch; alle Zahlen unten mit dieser Basis ausweisen).
 
 Ziel: für alle 38 Charakter-Sprites (30 Gegner, 6 Bosse, Mira, Kael) Belege in 1× und 4× auf dunklem Grund,
@@ -10,9 +10,9 @@ m9-art-Lanes ihre nächsten Karten schneiden.
 ## Karten-Checkliste
 
 - [x] **1 Inventar** — Soll-Keys + Soll-Frames aus `src/data` und `src/gfx`-Generatoren als JSON (38 Einträge).
-- [x] **2 Kontaktbögen 1×** — 4 Bögen (Gegner Tier 1–4, Bosse F0–F2, Helden), jedes Sprite beschriftet und sichtbar.
-- [x] **3 Kontaktbögen 4× + Frame-Matrix** — 4×-Nahaufnahmen, Ist-Frames zählen, Ist/Soll diffen, Off-Palette je Frame.
-- [ ] **4 Report + Urteil** — Mängelliste mit Sprite/Frame/Pixel-Koordinate, Schweregrad, m9-art-Bereich, art-director PASS/FAIL.
+- [x] **2 Kontaktbögen 1×** — 7 Bögen (Gegner Tier 0–4, Bosse F0–F2, Helden), jedes Sprite beschriftet und sichtbar.
+- [x] **3 Kontaktbögen 4× + Frame-Matrix** — 4×-Nahaufnahmen, Ist-Frames gezählt, Ist/Soll gediffed, Off-Palette je Frame.
+- [x] **4 Report + Urteil** — Mängelliste mit Sprite/Frame/Pixel-Koordinate, Schweregrad, m9-art-Bereich, art-director-Urteil.
 
 ## Arbeitsregeln dieser Lane
 
@@ -24,9 +24,9 @@ m9-art-Lanes ihre nächsten Karten schneiden.
 - FPS-/Echtzeitläufe nur mit `flock /home/ai/games/.lf-perf.lock`; Pixel-/Screenshot-/Testläufe ohne flock.
 - Kein `sleep`-Polling; lange Läufe synchron mit `timeout`, Logs nach `~/tmp/m10-art-contact/`.
 
-## Karte 1 — Inventar (Stand: erledigt)
+## Karte 1 — Inventar (Commit e31f06d)
 
-Skript: `~/tmp/m10-art-contact/inventory.py` (read-only, nur Regex auf `src/data` + Import der Generator-Module).
+Skript: `~/tmp/m10-art-contact/inventory.py` (read-only, Regex auf `src/data` + Import der Generator-Module).
 Beleg: `shots/m10-art-contact-inventory.json`.
 
 Ergebnis (Basis `f26dc4b`):
@@ -37,7 +37,7 @@ Ergebnis (Basis `f26dc4b`):
 - Helden-Soll: Lauf 4 Frames je Richtung (down/up/side), Idle 2 je Richtung, Hit 1, Portrait 48×48.
 - Generator-Keys vollständig vorhanden, 0 Probleme (`problems: []`).
 
-## Karte 2 — Kontaktbögen 1× (Stand: erledigt)
+## Karte 2 — Kontaktbögen 1× (Commit 82690c9)
 
 Skript: `~/tmp/m10-art-contact/sheets.py` (read-only; liest die **exportierten** Grids aus
 `src/gfx/gen-enemies.ts`, `gen-bosses.ts`, `gen-chars.ts`, also das, was das Spiel benutzt).
@@ -50,14 +50,14 @@ Ausgaben (dunkler Grund `nightDeep` = Palettenindex 1, natives 1×-Raster, alle 
 Damit sind es 7 Bögen statt der geforderten 4 (Tier-Aufteilung feiner). Jedes Sprite ist beschriftet
 (`SPRITE-KEY` + `F<n>`) und vollständig sichtbar.
 
-## Karte 3 — Kontaktbögen 4× + Frame-Matrix/Audit (Stand: erledigt)
+## Karte 3 — Kontaktbögen 4× + Frame-Matrix/Audit (Commit 82690c9)
 
 Ausgaben:
 
 - `shots/m10-art-contact-4x-enemies-tier0.png` … `-tier4.png`
 - `shots/m10-art-contact-4x-bosses.png`
 - `shots/m10-art-contact-4x-heroes.png`
-- `shots/m10-art-contact-audit.json` — 38 Zeilen, je Sprite Ist/Soll-Frames, Off-Palette-Pixel je Frame
+- `shots/m10-art-contact-audit.json` — **38 Zeilen**, je Sprite Ist/Soll-Frames, Off-Palette-Pixel je Frame
   (mit ersten Koordinaten), Frame-Hashes und Duplikat-Paare; zusätzlich Off-Palette-Prüfung der fertigen
   Bögen selbst (jedes opake Pixel muss in `src/palette.ts` liegen).
 
@@ -65,8 +65,38 @@ Ergebnis (Basis `f26dc4b`, nur exportierte TS-Grids):
 
 - **38/38 Sprites vorhanden**, Ist-Frames == Soll-Frames: 0 fehlende, 0 überzählige Frames.
   Gegner 2 (T0/T1) bzw. 4 (T2–T4), Bosse 3, Helden 20 Animationsframes (Walk 12 + Idle 6 + Hit 1 + Portrait 1).
-- **0 Off-Palette-Pixel** in allen 38 Sprites und in allen 14 Belegbögen.
+- **0 Off-Palette-Pixel** in allen 38 Sprites und in allen 14 Belegbögen (`sheetOffPalette` alle 0).
 - **1 Duplikat-Paar:** `enemy_spider` F0 ≡ F2 (identischer Pixel-Hash) — verstößt gegen „vier echte Posen“
   in ART.md; Frame 2 sollte eine andere Beinphase zeigen.
 - 0 zu schmale Zeilen (`badRowWidths`) in den Exporten.
 
+## Karte 4 — Mängelliste + Urteil
+
+Grundlage: Audit-JSON (38 Zeilen), Sichtprüfung der 14 Bögen (nur auffällige Bilder einzeln geöffnet),
+unabhängiges art-director-Review gegen `ART.md`.
+
+### Mängelliste
+
+| # | Sprite | Frame | Befund / Pixelkoordinate | Schweregrad | Bereich |
+|---|---|---|---|---|---|
+| 1 | `enemy_spider` | F0 = F2 | F0 und F2 sind pixelidentisch (Hash-Gleichheit im Audit). Frame 2 müsste die Gegenphase der Beine zeigen. | **major** | `m9-art-world` (Gegneranimation) |
+| 2 | `enemy_spider` | F0→F1 | Nur 16 px ändern sich (ca. 2,8 % der 24×24-Fläche), Änderungen an x/y = (2,8)/(3,8)/(13,9)/(14,9)/(14,7)/(15,7)/(3,16)/(4,16)/(15,17)/(16,17)/(3,19)/(4,19)/(13,19)/(14,19). Lauf wirkt fast statisch. | **major** | `m9-art-world` (Gegneranimation) |
+| 3 | `boss_pale_shepherd` | F2 | Sichelspitze berührt den Rasterrand bei x=71, y=8–11; bei 4× wirkt die Klinge am Rand angeschnitten. Prüfen, ob 1 px Luft nötig ist. | minor | `m9-art-world` (Boss-Silhouette) |
+
+Nicht als Mangel gewertet (geprüft, sauber):
+
+- Off-Palette: **0** Pixel in allen Frames und Bögen.
+- Fehlende Lauf-/Wind-up-Frames: **0** — alle Gegner haben 2 bzw. 4, alle Bosse F0/F1/F2, Helden Walk/Idle/Hit/Portrait.
+- Frame-Duplikate außer Spider: keine. Helden-Walkzyklen zeigen echte Phasenwechsel (Diff 26–41 %).
+- Rastergrößen stimmen mit `ART.md` überein (16/20/24/28/32, Bosse 56–96, Helden/Portraits 32/48).
+
+### Belege zur Abnahme
+
+- Tests: `npx vitest run` → **192 Tests in 12 Dateien, alle grün** (Basis `f26dc4b`).
+- Build: `npm run build` → rc=0.
+- In-Game-Shot: `shots/m10-art-contact-game.png` + `.png.json`, `jsErrors: []` (0 JS-Fehler).
+- Belege vollständig im Lane-Commit; keine geschützten Pfade angefasst.
+
+### art-director-Urteil
+
+_(wird aus dem unabhängigen Review eingetragen)_
