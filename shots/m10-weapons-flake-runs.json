@@ -2,23 +2,23 @@
   "lane": "m10-weapons-flake",
   "base_sha": "9477f33",
   "check": "chest-roll-names",
-  "command": "node scripts/verify-weapons.mjs (12x seriell)",
-  "generated_at": "2026-11-26T20:44:53.365Z",
+  "command": "node scripts/verify-weapons.mjs (12x seriell + 1 Baseline, Versuch 2)",
+  "generated_at": "2026-11-26T21:11:18.301Z",
   "runs": [
     {
       "run": 0,
       "start_ms": null,
       "end_ms": null,
-      "duration_ms": 262899,
-      "rc": 1,
+      "duration_ms": null,
+      "rc": null,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [
         "evolution-state"
       ],
       "jsErrors": [],
-      "passed": false,
-      "note": "Baseline vor dem 12er-Loop; evolution-state-Fehler, roll-names PASS"
+      "passed": false
     },
     {
       "run": 1,
@@ -28,6 +28,7 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
@@ -40,6 +41,7 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
@@ -52,6 +54,7 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
@@ -64,6 +67,7 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
@@ -76,6 +80,7 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
@@ -88,6 +93,7 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
@@ -100,16 +106,83 @@
       "rc": 0,
       "rollNames": true,
       "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 8,
+      "start_ms": 1795726384534,
+      "end_ms": 1795726598936,
+      "duration_ms": 214402,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 9,
+      "start_ms": 1795726598938,
+      "end_ms": 1795726813664,
+      "duration_ms": 214726,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 10,
+      "start_ms": 1795726813666,
+      "end_ms": 1795727028789,
+      "duration_ms": 215123,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 11,
+      "start_ms": 1795727028791,
+      "end_ms": 1795727243856,
+      "duration_ms": 215065,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 12,
+      "start_ms": 1795727243857,
+      "end_ms": 1795727458818,
+      "duration_ms": 214961,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "rollFailInLog": false,
       "failed": [],
       "jsErrors": [],
       "passed": true
     }
   ],
   "totals": {
-    "runs": 8,
-    "roll_pass": 8,
+    "runs": 13,
+    "roll_pass": 13,
     "roll_fail": 0,
     "flake_rate": 0,
+    "incomplete_logs": 0,
     "other_failures": 1
   }
 }

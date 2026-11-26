@@ -9,14 +9,13 @@
 
 ## Karten-Checkliste
 
-- [x] **Karte 1 — Läufe (WIP, Zwischenstand):** `node scripts/verify-weapons.mjs`
-      seriell, je Lauf eigenes Log + Laufzeit + Ergebnis. Beleg: `shots/m10-weapons-flake-runs.json`.
-      *Status 2026-11-26 20:15 UTC:* Läufe 00–07 ausgewertet (8/12), alle `Roll-Namen` PASS.
-      Auf Supervisor-Weisung nach Lauf 07 gestoppt (keine weiteren Läufe); Rest 08–12 offen.
+- [x] **Karte 1 — Läufe:** `node scripts/verify-weapons.mjs` seriell, je Lauf eigenes Log + Laufzeit + Ergebnis.
+      Beleg: `shots/m10-weapons-flake-runs.json`. Versuch 1: Läufe 00–07 (8 Läufe). Versuch 2: Läufe 08–12
+      nachgeholt → **12/12 Loop-Läufe + Baseline 00**, alle `Roll-Namen` PASS.
 - [ ] **Karte 2 — Analyse:** Fehlschlag-Läufe vs. PASS-Läufe, Code-Lesung (Zeile/Bedingung). Abnahme: Flake-Rate n/12, Hypothese mit Zeile.
 - [ ] **Karte 3 — Report:** diese Datei mit Tabelle, Hypothese, Umbau-Empfehlung (Zeilenbezug).
 
-## Zwischenstand Karte 1 (Läufe)
+## Karte 1 (Läufe) — alle 13 dokumentiert
 
 | Lauf | Dauer (ms) | rc | `chest-roll-names` | sonstige Fehler |
 |---|---|---|---|---|
@@ -28,14 +27,20 @@
 | 05 | 214856 | 0 | PASS | – |
 | 06 | 215216 | 0 | PASS | – |
 | 07 | 217260 | 0 | PASS | – |
+| 08 (Versuch 2) | 214402 | 0 | PASS | – |
+| 09 (Versuch 2) | 214726 | 0 | PASS | – |
+| 10 (Versuch 2) | 215123 | 0 | PASS | – |
+| 11 (Versuch 2) | 215065 | 0 | PASS | – |
+| 12 (Versuch 2) | 214961 | 0 | PASS | – |
 
-**Flake-Rate `chest-roll-names` (Zwischenstand): 0 / 8 beobachtete Läufe** (Lauf 00 Baseline mitgezählt;
-der 12er-Loop selbst: 0/7 bis Lauf 07). Auffällig: `evolution-state` flakte in der Baseline (Seele 0),
-in den Loop-Läufen 01–07 aber nicht — separater Flake, nicht Gegenstand dieser Lane.
+**Flake-Rate `chest-roll-names`:** **0 / 12** im 12er-Loop (0/13 inklusive Baseline 00).
+Laufzeiten liegen eng bei 213,3–217,3 s (Spanne 4,0 s), d. h. kein Lauf lief erkennbar „unter Last“
+aus dem Rahmen. Auffällig: `evolution-state` flakte nur in der Baseline (Seele 0), in allen 12 Loop-Läufen
+nicht — separater Flake, nicht Gegenstand dieser Lane.
 
-**Einschränkung:** Auf Supervisor-Weisung wurde der 12er-Loop nach Lauf 07 abgebrochen
-(`run12.out` zeigte Fortschritt, aber kein Polling-Warten erlaubt). Es liegen 8 Läufe (00–07) vor,
-Läufe 08–12 fehlen. Die Flake-Rate ist damit **0/8**, nicht 0/12.
+**Versuch-2-Hinweis:** Versuch 1 wurde nach Lauf 07 auf Supervisor-Weisung gestoppt (keine weiteren Läufe,
+kein Polling). Versuch 2 hat die fehlenden Läufe 08–12 mit demselben Skript und demselben Basis-Build
+(`9477f33`) nachgeholt; Logs unter `~/tmp/m10-weapons-flake/run-0*.log`, Zeiten in `runs.tsv` + `runs2.tsv`.
 
 ## Analyse (Karte 2)
 
