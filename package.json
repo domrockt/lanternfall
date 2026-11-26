@@ -6,6 +6,7 @@
 "dev": "vite --host 0.0.0.0",
 "build": "tsc --noEmit && vite build --base ./",
 "test": "vitest run",
+"check": "node scripts/check.mjs",
 "perf": "node scripts/perf.mjs",
 "verify": "node scripts/verify.mjs",
 "sepcheck": "node scripts/separation-check.mjs",
