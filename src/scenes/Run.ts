@@ -1087,6 +1087,23 @@ export class Run extends Phaser.Scene {
         const frame = windup ?? frames[Math.floor(t * 6 + e.phase) % Math.min(2, frames.length)];
         if (currentFrame(e.sprite) !== frame) applyTexture(e.sprite, frame);
       }
+      // M9 art-polish: Elites bekommen ein enges 1-px-Konturlicht in Amber
+      // (Palette 20) statt der diffusen weissen ADD-Aura. Die Aura ist eine
+      // um 2 Quellpixel groessere, amber getoente Kopie der Silhouette, die
+      // hinter dem Sprite liegt — dadurch folgt der Rand der Kontur und ist
+      // exakt 1 Spielpixel breit. Kein Near-White, Lesbarkeit bleibt.
+      if (e.elite) {
+        e.aura.setBlendMode(Phaser.BlendModes.NORMAL);
+        e.aura.setTint(PAL[C.amber]);
+        e.aura.setAlpha(0.92);
+        if (e.aura.texture.key !== e.sprite.texture.key) e.aura.setTexture(e.sprite.texture.key);
+        const srcW = Math.max(8, e.aura.width);
+        const rim = 1 + 2 / srcW;
+        e.aura.setScale(e.sprite.scaleX * rim, e.sprite.scaleY * rim);
+        e.aura.setPosition(e.sprite.x, e.sprite.y);
+        e.aura.setDepth(e.sprite.depth - 0.01);
+        e.aura.setVisible(true);
+      }
     }
     this.chests.update(realDt, this.cameras.main, this.posX, this.posY);
   }

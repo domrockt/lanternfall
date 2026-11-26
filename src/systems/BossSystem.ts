@@ -36,6 +36,16 @@ export interface BossInfo {
 }
 
 const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
+
+/**
+ * M9 art-polish: Boss-Auftritt darf nicht hinter HUD/Banner liegen.
+ * Die Boss-HP-Leiste endet auf y=52, das Warn-Banner belegt y=68..116
+ * (640x360-Referenz). Ein Boss-Sprite ist 40 px hoch, also muss sein
+ * Mittelpunkt mindestens 136 px unter dem View-Top liegen; damit steht
+ * er eine volle Figurenhoehe unter der Leiste und unterhalb des Banners.
+ * Reine Kompositionsregel, keine Gameplay-/Balance-Aenderung.
+ */
+export const BOSS_SAFE_TOP = 136;
 // Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
 // Grundtempo und Kontaktschaden stehen in src/data/bosses.ts; das Tempo bleibt
 // unter 90 % des Spielertempos, Gefahr kommt über Mechaniken statt Verfolgung.
@@ -96,7 +106,17 @@ export class BossSystem {
     // M8: Sichtbar im View, aber nicht auf dem Spieler; Abstand skaliert mit der View-Hoehe.
     const distance = bossSpawnDistance(this.camera.width, this.camera.height);
     const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * distance, 30, 4096 - 30);
-    const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * distance, 30, 4096 - 30);
+    let y = playerY + Math.sin(angle) * distance;
+    // M9: Spawn-Komposition. Liegt der Boss im View zu weit oben (hinter
+    // HP-Leiste/Banner), wird die Vertikale nach unten gespiegelt; der
+    // Abstand zum Spieler bleibt dabei erhalten. Reicht das nicht (Kamera
+    // am Welt-Rand), wird hart auf die sichere Oberkante gesetzt.
+    const camTop = this.camera.scrollY;
+    if (y - camTop < BOSS_SAFE_TOP) {
+      y = playerY + Math.abs(Math.sin(angle)) * distance;
+    }
+    if (y - camTop < BOSS_SAFE_TOP) y = camTop + BOSS_SAFE_TOP;
+    y = Phaser.Math.Clamp(y, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
       bossIndex: index,
       radius: def.radius,
