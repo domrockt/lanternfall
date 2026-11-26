@@ -43,30 +43,57 @@ def sky(g: Grid) -> None:
         sx = int(_hash(i, 1, 9) * (W - 8)) + 2
         sy = int(_hash(i, 2, 9) * 118) + 4
         g.rect(sx, sy, 2, 1, 6 if i % 3 else 7)
+    # Stern-Gruppen: L-Cluster (4 px) und Einzelpixel-Rauschen.
+    for sx, sy in ((78, 22), (262, 38), (452, 90), (150, 104)):
+        g.rect(sx, sy, 2, 1, 7)
+        g.rect(sx, sy + 1, 1, 2, 6)
+        g.put(sx + 3, sy + 2, 7)
+    # Kreuzfunken: 3x3-Kern.
+    for sx, sy in ((318, 16), (360, 84), (58, 88), (206, 68)):
+        g.rect(sx - 1, sy, 3, 1, 13)
+        g.rect(sx, sy - 1, 1, 3, 13)
+        g.put(sx, sy, 12)
     # Mondlaterne: runder Glaskörper in Eisenring, Licht von oben-links.
     cx, cy, r = 404, 56, 24
-    for y in range(cy - r - 4, cy + r + 5):
-        for x in range(cx - r - 4, cx + r + 5):
+    for y in range(cy - r, cy + r + 1):
+        for x in range(cx - r, cx + r + 1):
             d = math.hypot(x - cx, y - cy)
             if d > r:
                 continue
-            if d > r - 3:
+            if d > r - 2:
                 g.put(x, y, 4)                       # Eisenring
-            elif d > r - 8:
+            elif d > r - 7:
                 g.put(x, y, 20)                      # äußerer Glutring
-            elif d > r - 14:
+            elif d > r - 12:
                 g.put(x, y, 21)
-            elif d > r - 19:
+            elif d > r - 17:
                 g.put(x, y, 22)
             else:
                 g.put(x, y, 13)
-    # Glanzkern 4x4 oben-links bleibt.
+    # Harte, unterbrochene Pixelringe als Halo (statt ADD-Glow).
+    for rr, col, seg in ((28, 19, 9), (32, 20, 7), (36, 19, 5)):
+        for deg in range(0, 360, 2):
+            if (deg // 2) % (seg + 3) >= seg:
+                continue
+            a = math.radians(deg)
+            x = int(round(cx + math.cos(a) * rr))
+            y = int(round(cy + math.sin(a) * rr))
+            g.put(x, y, col)
+    # Glanzkern oben-links und drei Krater-Cluster.
     g.rect(cx - 7, cy - 7, 4, 4, 13)
     g.rect(cx - 6, cy - 6, 2, 2, 12)
+    for dx, dy, pw, ph in ((-8, 4, 3, 2), (7, -4, 2, 2), (3, 11, 2, 1)):
+        g.rect(cx + dx, cy + dy, pw, ph, 21)
+        g.put(cx + dx, cy + dy, 20)
     # Ringnieten als 2x2-Bl an vier Stellen (gruppiert, kein Rauschen).
     for dx, dy in ((-20, -10), (18, -12), (-16, 16), (14, 18)):
         g.rect(cx + dx, cy + dy, 2, 2, 6)
         g.put(cx + dx, cy + dy, 7)
+    # Klare Horizontkante: dunkle Ridge unter dem Himmel.
+    for x in range(W):
+        y = 158 + int(2 * math.sin(x * 0.02))
+        g.put(x, y, 4)
+        g.put(x, y + 1, 3)
 
 
 def hills(g: Grid) -> None:
