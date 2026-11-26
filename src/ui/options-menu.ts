@@ -8,6 +8,7 @@ import {
   OPTION_ROWS, optionValueLabel, stepOption,
 } from "../audio/options";
 import { createHitZone } from "./menu";
+import type { ActionState } from "../input/InputState";
 
 interface RowView {
   label: PixelText;
@@ -133,6 +134,30 @@ export class OptionsMenu {
     if (ev.key === "ArrowLeft" || key === "a") { this.apply(this.selected, -1); return true; }
     if (ev.key === "ArrowRight" || key === "d") { this.apply(this.selected, 1); return true; }
     if (ev.key === "Enter" || ev.key === " ") {
+      if (this.selected === OPTION_ROWS.length - 1) this.close();
+      else this.apply(this.selected, 1);
+      return true;
+    }
+    return true;
+  }
+
+  /** M8-input: Gamepad-Navigation (A/B/D-Pad/Stick); true wenn verarbeitet. */
+  handlePad(actions: ActionState): boolean {
+    if (!this.visible) return false;
+    if (actions.back) { this.close(); return true; }
+    if (actions.up) {
+      this.selected = (this.selected + OPTION_ROWS.length - 1) % OPTION_ROWS.length;
+      this.refresh();
+      return true;
+    }
+    if (actions.down) {
+      this.selected = (this.selected + 1) % OPTION_ROWS.length;
+      this.refresh();
+      return true;
+    }
+    if (actions.left) { this.apply(this.selected, -1); return true; }
+    if (actions.right) { this.apply(this.selected, 1); return true; }
+    if (actions.confirm) {
       if (this.selected === OPTION_ROWS.length - 1) this.close();
       else this.apply(this.selected, 1);
       return true;

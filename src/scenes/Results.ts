@@ -7,6 +7,8 @@ import { CHARACTERS } from "../data/characters";
 import type { CharacterId } from "../data/types";
 import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
 import { createMenuButton, type MenuButton } from "../ui/menu";
+import { InputState } from "../input/InputState";
+import { readSceneGamepad } from "../input/Gamepad";
 
 export interface RunResult {
   reason: "death" | "dawn" | "giveup";
@@ -25,6 +27,7 @@ export class Results extends Phaser.Scene {
   private buttons: MenuButton[] = [];
   private selected = 0;
   private leaving = false;
+  private pad = new InputState();
 
   constructor() { super("results"); }
 
@@ -35,6 +38,7 @@ export class Results extends Phaser.Scene {
   create(): void {
     this.selected = 0;
     this.leaving = false;
+    this.pad.reset();
     this.buttons = [];
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
     this.add.image(240, 135, "vignette").setDepth(-1);
@@ -127,6 +131,19 @@ export class Results extends Phaser.Scene {
     const kb = this.input.keyboard!;
     kb.removeAllListeners("keydown");
     kb.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
+  }
+
+  update(): void {
+    if (this.leaving) return;
+    const a = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
+    if (a.left || a.up) { this.selected = 0; this.refreshButtons(); }
+    else if (a.right || a.down) { this.selected = 1; this.refreshButtons(); }
+    else if (a.confirm) {
+      if (this.selected === 0) this.newRun();
+      else this.toTitle();
+    } else if (a.back) {
+      this.toTitle();
+    }
   }
 
   private refreshButtons(): void {

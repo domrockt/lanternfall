@@ -18,6 +18,12 @@ const game = new Phaser.Game({
   pixelArt: true,
   roundPixels: true,
   antialias: false,
+  // M8-input: Gamepad-Plugin (Hotplug) + bis zu vier gleichzeitige Touch-Pointer
+  // (Joystick + Tippen). Keine Änderung an Auflösung/Skalierung.
+  input: {
+    gamepad: true,
+    activePointers: 4,
+  },
   scale: {
     // Ganzzahlige Skalierung: Canvas bleibt 480x270, CSS-Größe wird per resize gesetzt.
     // Zentrierung erfolgt per CSS-Flexbox (keine doppelten Phaser-Margins).
