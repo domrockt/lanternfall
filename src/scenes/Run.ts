@@ -40,7 +40,7 @@ import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
 import { chestRewards, type ChestResult } from "../logic/evolution";
 import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
-import { lodFor, type LodState } from "../logic/lod";
+import { lodFor, fxAlphaFor, type LodState } from "../logic/lod";
 import { shakeFor, hitStopFor } from "../logic/feedback";
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
@@ -439,6 +439,17 @@ export class Run extends Phaser.Scene {
     });
     const nearChest = this.chests.near(this.posX, this.posY, 15);
     if (nearChest) this.openChest(nearChest);
+  }
+
+  /** M6: Endgame-Effekt-Dämpfung; Debug-Abnahme kann sie für Vorher-Shots aus. */
+  private fxDampingEnabled = true;
+
+  setFxDamping(enabled: boolean): void {
+    this.fxDampingEnabled = enabled;
+    if (this.combat) this.combat.fxDamping = enabled;
+    const alpha = enabled ? fxAlphaFor(this.lod.level) : 1;
+    this.combat?.fx.setAlphaScale(alpha);
+    this.combat?.particles.setAlphaScale(alpha);
   }
 
   /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */

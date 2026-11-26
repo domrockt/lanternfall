@@ -17,7 +17,7 @@ import { DamageNumberSystem } from "./DamageNumbers";
 import { deathClassFor, deathFxFor } from "../logic/death";
 import { knockbackFor } from "../logic/feedback";
 import { rollCrit, critDamage } from "../logic/damage-numbers";
-import { lodFor, type LodState } from "../logic/lod";
+import { lodFor, fxAlphaFor, type LodState } from "../logic/lod";
 import { getAudio } from "../audio/AudioSystem";
 import { ProjectilePool } from "./ProjectilePool";
 import type { SpatialHash } from "./SpatialHash";
@@ -110,6 +110,8 @@ export class CombatSystem {
   readonly particles: ParticleSystem;
   readonly damageNumbers: DamageNumberSystem;
   private lod: LodState = lodFor(0);
+  /** Endgame-Effekt-Dämpfung an/aus (Debug kann sie für Vorher-Shots abschalten). */
+  fxDamping = true;
   /** Von Seelenleuchtfeuer aktivierter Magnet-Bonus in px (0 = aus). */
   pickupBonus = 0;
   private readonly scene: Phaser.Scene;
@@ -138,6 +140,11 @@ export class CombatSystem {
     this.fx.setMaxActive(lod.fxCap);
     this.particles.setMaxActive(lod.particleCap);
     this.fx.trailsEnabled = lod.trails;
+    // M6-Nachtrag: Effekt-Alpha im Endgame dämpfen, damit Gegner im AoE lesbar
+    // bleiben (6 Waffen auf Maximalstufe). Vorher/Nachher per Debug umschaltbar.
+    const alpha = this.fxDamping ? fxAlphaFor(lod.level) : 1;
+    this.fx.setAlphaScale(alpha);
+    this.particles.setAlphaScale(alpha);
     this.damageNumbers.setLod(lod);
   }
 

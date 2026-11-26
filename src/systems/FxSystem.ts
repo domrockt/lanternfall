@@ -63,9 +63,16 @@ export class FxSystem {
   private maxActive = 220;
   /** Trails abschaltbar (LOD): spart Draw-Aufrufe bei > 400 Gegnern. */
   trailsEnabled = true;
+  /** M6-Endgame-Dämpfung: Alpha-Faktor für alle neuen Effekte (1 = unverändert). */
+  alphaScale = 1;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
+  }
+
+  /** Effekt-Alpha dämpfen (Endgame): 1 = voll, < 1 = transparenter. */
+  setAlphaScale(scale: number): void {
+    this.alphaScale = Math.max(0.2, Math.min(1, scale));
   }
 
   setMaxActive(max: number): void {
@@ -84,7 +91,7 @@ export class FxSystem {
     fx.scaleFrom = opts.scaleFrom ?? 1;
     fx.scaleTo = opts.scaleTo ?? fx.scaleFrom;
     fx.aspect = opts.aspect ?? 1;
-    fx.alphaFrom = opts.alphaFrom ?? 0.9;
+    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * this.alphaScale;
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
     fx.spin = opts.spin ?? 0;
@@ -309,9 +316,15 @@ export class ParticleSystem {
   private readonly free: FxRuntime[] = [];
   private readonly scene: Phaser.Scene;
   private maxActive = 360;
+  /** M6-Endgame-Dämpfung: Alpha-Faktor für neue Partikel (1 = unverändert). */
+  alphaScale = 1;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
+  }
+
+  setAlphaScale(scale: number): void {
+    this.alphaScale = Math.max(0.2, Math.min(1, scale));
   }
 
   setMaxActive(max: number): void {
@@ -330,7 +343,7 @@ export class ParticleSystem {
     p.scaleFrom = opts.scaleFrom ?? 1;
     p.scaleTo = opts.scaleTo ?? 0.2;
     p.aspect = opts.aspect ?? 1;
-    p.alphaFrom = opts.alphaFrom ?? 0.95;
+    p.alphaFrom = (opts.alphaFrom ?? 0.95) * this.alphaScale;
     p.alphaTo = opts.alphaTo ?? 0;
     p.rotation = opts.rotation ?? 0;
     p.spin = opts.spin ?? 0;
