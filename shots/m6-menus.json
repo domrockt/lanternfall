@@ -74,7 +74,7 @@
     {
       "name": "Optionen überleben Reload",
       "ok": true,
-      "detail": "{\"music\":0.7,\"sfx\":0.8,\"shake\":false,\"damageNumbers\":false,\"scale\":1}"
+      "detail": "{\"music\":0.7,\"sfx\":0.8,\"shake\":false,\"damageNumbers\":false,\"muted\":false,\"scale\":1}"
     },
     {
       "name": "alle Screenshots vorhanden",
@@ -92,6 +92,7 @@
     "sfx": 0.8,
     "shake": false,
     "damageNumbers": false,
+    "muted": false,
     "scale": 1
   },
   "optionsAfterReload": {
@@ -99,6 +100,7 @@
     "sfx": 0.8,
     "shake": false,
     "damageNumbers": false,
+    "muted": false,
     "scale": 1
   },
   "meta": {

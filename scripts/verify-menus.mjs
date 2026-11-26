@@ -165,7 +165,7 @@ try {
   await clickGame(414, 87);   // Musik +10%
   await clickGame(345, 127);  // Screen-Shake umschalten
   await clickGame(345, 147);  // Damage-Numbers umschalten
-  await clickGame(414, 167);  // Skalierung AUTO -> 1X
+  await clickGame(414, 187);  // Skalierung AUTO -> 1X (Zeile 6 nach MASTER MUTE)
   await page.waitForTimeout(250);
   const canvasBox = await page.locator("canvas").boundingBox();
   const cx = canvasBox.x + canvasBox.width / 2;
