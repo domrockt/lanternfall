@@ -2,9 +2,9 @@
 
 Performance/Robustheit/Realtime, Branch `m6-robust`, Worktree `/home/ai/games/lf-lanes/robust`.
 - Terrain-Chunks malen jetzt im Worker (vorher 25-45 ms/Chunk, 150-200 ms Hitches alle ~4 s); Laufzeit-Atlas fuer Gegner/Gems/VFX (Texture-Binds 269 -> 125).
-- CPU/GC: Terrain-Cache als festes Uint8Array, SpatialHash-FreeList, Bot-Scratch-Arrays, Separation-LOD, Boss-LOD, Pool-Prewarm, Audio-Voice-Pools.
-- `npm run perf`: 60,1 FPS Burst (500 Gegner), 57,8 FPS Minute 25 (300 + 6 Evolutionen).
-- `npm run fullrun` PASS: 6 Bosse 300-1800 s, 6 Truhen, Sieg, 0 JS-Fehler, FPS-Min 57,7, JS-Heap Minute 1 -> 29 +11,9 % (26,1 -> 29,2 MB nach GC; CDP-usedSize nur Diagnose).
-- Robustheit PASS: visibilitychange pausiert (Delta 0 s), Resize 1x/2x/3x/4x ganzzahlig, Worker 16 Chunks, Atlas 224 Frames.
-- `realtime-run.mjs --minutes 3` PASS (3 Sim-Minuten in 183 s, 0 JS-Fehler, Heap -8 %); voller 30-min-Lauf nach Merge.
-- Regressionen: 132 Tests gruen, verify:weapons 12/12, verify:vfx 18/18, verify:terrain Ratio 0,61.
+- CPU/GC: Terrain-Cache als festes Uint8Array (Tile-Mitte), SpatialHash-FreeList, Bot-Scratch-Arrays, Separation-LOD, Boss-LOD, Pool-Prewarm, Audio-Voice-Pools (complete+stop, Token).
+- `flock npm run perf` FINAL: 58,3 FPS Burst (500 Gegner), 57,8 FPS Minute 25 (300 + 6 Evolutionen), 0 JS-Fehler.
+- `flock npm run fullrun` PASS: 6 Bosse 300-1800 s, 6 Truhen, Sieg, 0 JS-Fehler, FPS-Min 58,4, JS-Heap Minute 1 -> 29 +5,4 % (25,8 -> 27,2 MB, 3x GC Minimum; CDP-usedSize nur Diagnose).
+- Robustheit PASS: visibilitychange pausiert (Delta 0 s, Resume ohne Sprung), Resize 1x/2x/3x/4x ganzzahlig, Worker-Timeout/Sync-Fallback, Atlas 224 Frames.
+- `flock npm run realtime -- --minutes 3` PASS (3 Sim-Minuten in 183 s, 0 JS-Fehler, Heap Minute1 -> Ende -7,7 %); voller 30-min-Lauf nach Merge.
+- Regressionen: build grün, 132 Tests grün, verify:robust PASS, verify:weapons 12/12, verify:vfx 18/18, verify:terrain Ratio 0,64 PASS.
