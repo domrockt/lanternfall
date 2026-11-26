@@ -49,6 +49,8 @@ export interface TerrainSample {
   light: boolean;
   /** Seetiefe (nur bei Wasser sinnvoll, 0 = Ufer, kleiner = tiefer). */
   depth: number;
+  /** Alternativer Nachbarton an einer Bandkante (Painter dithert per Hash). */
+  alt?: 0 | 1 | 2;
 }
 
 /**
@@ -102,12 +104,13 @@ export function terrainSampleAt(wx: number, wy: number, seed: number, worldSize:
   // Gras: weiche Schattierung + helle Inseln. Die Bandgrenzen werden
   // pro Pixel gedithert statt hart geschnitten (keine Tarnflecken).
   const g = fbm(wx, wy, 43, seed + 911);
-  const gd = tileHash(wx, wy, seed + 917) * 0.022 - 0.011;
-  const gs = g + gd;
-  const shade: 0 | 1 | 2 = gs < 0.33 ? 0 : gs > 0.67 ? 2 : 1;
-  const lightBoundary = 0.60 + (tileHash(wx, wy, seed + 919) - 0.5) * 0.04;
-  const light = fbm(fx + 33, fy - 63, 76, seed + 33) > lightBoundary;
-  return { kind: "grass", shade, light, depth: lake };
+  const shade: 0 | 1 | 2 = g < 0.33 ? 0 : g > 0.67 ? 2 : 1;
+  const light = fbm(fx + 33, fy - 63, 76, seed + 33) > 0.60;
+  // Band-Kanten: der Painter waehlt per Hash zwischen shade und alt.
+  let alt: 0 | 1 | 2 | undefined;
+  if (Math.abs(g - 0.33) < 0.035) alt = g < 0.33 ? 1 : 0;
+  else if (Math.abs(g - 0.67) < 0.035) alt = g < 0.67 ? 2 : 1;
+  return { kind: "grass", shade, light, depth: lake, alt };
 }
 
 /** Nur die Art (für Wasser-Slow/Spritzer). */
@@ -137,6 +140,7 @@ export function paintTerrain(
   const shade = new Uint8Array(bw * bh);
   const light = new Uint8Array(bw * bh);
   const depth = new Float32Array(bw * bh);
+  const altShade = new Int8Array(bw * bh).fill(-1);
 
   const code = (k: TileKind): number =>
     k === "water" ? 3 : k === "mud" ? 2 : k === "path" ? 1 : 0;
@@ -153,12 +157,16 @@ export function paintTerrain(
       shade[i] = s.shade;
       light[i] = s.light ? 1 : 0;
       depth[i] = s.depth;
+      altShade[i] = s.alt ?? -1;
     }
   }
 
-  const grassColor = (i: number): number => {
-    if (light[i]) return shade[i] === 0 ? 29 : 30;
-    return shade[i] === 0 ? 28 : shade[i] === 2 ? 30 : 29;
+  const grassColor = (i: number, wx: number, wy: number): number => {
+    let sh = shade[i];
+    const alt = altShade[i];
+    if (alt >= 0 && tileHash(wx, wy, seed + 925) > 0.45) sh = alt;
+    if (light[i]) return sh === 0 ? 29 : 30;
+    return sh === 0 ? 28 : sh === 2 ? 30 : 29;
   };
 
   // 2) Grundfarben in einen Pixelpuffer (ein putImageData statt 65k fillRect).
@@ -198,7 +206,7 @@ export function paintTerrain(
         // Erdweg: dunkler, matter Pfad (15), 16 nur als Flecken.
         col = n < 0.3 ? 14 : n > 0.82 ? 16 : 15;
       } else {
-        col = grassColor(i);
+        col = grassColor(i, wx, wy);
       }
       const [r, g, b] = colOf(col);
       const o = (y * w + x) * 4;
