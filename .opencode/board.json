@@ -1871,10 +1871,16 @@
       "id": 322,
       "title": "m9-art-fx-ui-05 FX-Belege und Abschluss",
       "description": "FX-GIF (Wffer, XP, Truhe), docs Note, build+ests+perf einmal, .lane-done. Abnahme: build/test/t gruen, 0 JS-Fehler, art-director >=4.5.",
-      "column": "backlog",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-26T21:00:37Z",
+          "by": "build",
+          "text": "backlog → review: Commit 5e240bc (#322): fx_spark 5x5; XP-Kristall-Bild (3 Groessen, lebende Gegner) + Truhen-GIF 16 Frames. build + 175 Tests gruen, 0 JS-Fehler. art-director-Gesamturteil ausstehend; .lane-done absichtlich noch nicht gesetzt (Latte 4.5 noch nicht belegt)."
+        }
+      ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T12:22:29Z"
+      "updated": "2026-11-26T21:00:37Z"
     },
     {
       "id": 698,
