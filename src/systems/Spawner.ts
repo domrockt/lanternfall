@@ -57,9 +57,12 @@ export class Spawner {
     }
 
     // M8: Spawnrate mit der sichtbaren Fläche skalieren (breite Formate dichter).
+    // Optionaler Debug-/Tuning-Faktor aus ?density=0.7 (nur Messläufe).
+    const density = Number(this.scene.registry.get("lf-density") ?? 1);
+    const rateScale = Number.isFinite(density) && density > 0 ? density : 1;
     const scaled = advanceSpawnBudget(
       this.budget,
-      wave.spawnRate * spawnRateFactor(cam.width, cam.height),
+      wave.spawnRate * spawnRateFactor(cam.width, cam.height) * rateScale,
       dt,
     );
     this.budget = scaled.budget;

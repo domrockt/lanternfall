@@ -53,6 +53,10 @@ const game = new Phaser.Game({
 
 installDebugApi(game);
 
+// Messlaeufe (balance.mjs --density): Spawnraten-Faktor ohne Rebuild setzen.
+const densityParam = Number(new URLSearchParams(window.location.search).get("density"));
+if (Number.isFinite(densityParam) && densityParam > 0) game.registry.set("lf-density", densityParam);
+
 let appliedKey = "";
 
 /** Dreh-Hinweis bei Hochkant (DOM-Overlay, blockiert Eingaben). */

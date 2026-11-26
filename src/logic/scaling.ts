@@ -50,7 +50,11 @@ export function viewAreaFactor(width: number, height: number): number {
  * (780x360: +10,5 % Rate statt +21,9 %; der Deckel skaliert voll).
  */
 export function spawnRateFactor(width: number, height: number): number {
-  return Math.sqrt(viewAreaFactor(width, height));
+  const base = Math.sqrt(viewAreaFactor(width, height));
+  // M8-Balance: breite Formate bekommen dank groesserem Waffenradius ohnehin
+  // mehr Kontrolle; die Spawnrate wird dort um 30 % gedrosselt, damit der
+  // M6-Ueberlebenskorridor haelt (780x360: 0,94 statt 1,10).
+  return width > 640 ? base * 0.85 : base;
 }
 
 /**
@@ -66,6 +70,14 @@ export function maxActiveEnemies(
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
   const base = 100 + minute * 13;
   return Math.min(500, Math.round(Math.min(360, base) * viewAreaFactor(width, height)));
+}
+
+/** M8: Waffen-/AoE-Reichweite an die View-Breite anpassen. Breite Formate
+ *  (780/860) bekommen bis +30 % Radius, damit Flächenwaffen nicht nutzlos
+ *  klein wirken; 640x360 bleibt die Referenz (Faktor 1). */
+export function weaponRangeFactor(width: number, _height: number): number {
+  if (!(width > 0)) return 1;
+  return Math.max(1, Math.min(1.3, width / 640));
 }
 
 /** M8: Recycle-Abstand knapp außerhalb der View-Diagonale (mind. 340 px).

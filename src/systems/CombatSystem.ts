@@ -137,6 +137,18 @@ export class CombatSystem {
     this.particles.prewarm(280);
   }
 
+  /** M8: M8-View-Faktor fuer Flaechen-/Waffenradien (1 bei 640x360). */
+  rangeScale = 1;
+
+  setRangeScale(scale: number): void {
+    this.rangeScale = Number.isFinite(scale) && scale > 0 ? scale : 1;
+  }
+
+  /** effectiveRadius mit View-Faktor (nur Laufzeit, Tests bleiben rein). */
+  private effRadius(base: number, agg: AggregateStats): number {
+    return this.effRadius(base, agg) * this.rangeScale;
+  }
+
   setLod(lod: LodState): void {
     this.lod = lod;
     this.fx.setMaxActive(lod.fxCap);
@@ -268,7 +280,7 @@ export class CombatSystem {
         life: effectiveDuration(2.6, ctx.agg),
         weaponId: owned.id,
         texture: "projectile_ember",
-        radius: effectiveRadius(4, ctx.agg),
+        radius: this.effRadius(4, ctx.agg),
         target: target ?? null,
         trail: "fx_fire",
         trailFrames: fxFrames("fx_fire", 6),
@@ -311,7 +323,7 @@ export class CombatSystem {
         life: 2.8,
         weaponId: owned.id,
         texture: "projectile_phoenix",
-        radius: effectiveRadius(6, ctx.agg),
+        radius: this.effRadius(6, ctx.agg),
         target,
         trail: "fx_fire",
         trailFrames: fxFrames("fx_fire", 6),
@@ -319,7 +331,7 @@ export class CombatSystem {
         // Normal-Blend, damit Flügel/Kontur des Feuervogels klar lesbar bleiben;
         // der Trail bleibt additiv (siehe updateProjectiles).
         blendAdd: false,
-        explodeRadius: effectiveRadius(34, ctx.agg),
+        explodeRadius: this.effRadius(34, ctx.agg),
       });
     }
     this.fx.spawnAnim("fx_fire", ctx.playerX, ctx.playerY, {
@@ -330,7 +342,7 @@ export class CombatSystem {
   // ── Flail ─────────────────────────────────────────────────────
   private fireFlail(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, state: WeaponState): void {
     const damage = effectiveDamage(stats.damage, ctx.agg);
-    const radius = effectiveRadius(stats.radius ?? 34, ctx.agg);
+    const radius = this.effRadius(stats.radius ?? 34, ctx.agg);
     const evolved = owned.id === "wrath_pendulum";
     const count = evolved ? 1 : Math.max(1, stats.count ?? 1);
     const base = Math.atan2(ctx.facingY, ctx.facingX);
@@ -470,7 +482,7 @@ export class CombatSystem {
 
   // ── Frost ─────────────────────────────────────────────────────
   private fireFrost(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>): void {
-    const radius = effectiveRadius(stats.radius ?? 38, ctx.agg);
+    const radius = this.effRadius(stats.radius ?? 38, ctx.agg);
     const damage = effectiveDamage(stats.damage, ctx.agg);
     const slow = stats.slow ?? 0.3;
     const freeze = effectiveDuration(stats.freeze ?? 0.3, ctx.agg);
@@ -533,7 +545,7 @@ export class CombatSystem {
         life: effectiveDuration(1.2, ctx.agg),
         weaponId: owned.id,
         texture: "projectile_thorn",
-        radius: effectiveRadius(4, ctx.agg),
+        radius: this.effRadius(4, ctx.agg),
         scale: 1.6,
         trail: "fx_thorn",
         trailFrames: fxFrames("fx_thorn", 3),
@@ -566,7 +578,7 @@ export class CombatSystem {
         life: 1.5,
         weaponId: owned.id,
         texture: "projectile_thorn",
-        radius: effectiveRadius(5, ctx.agg),
+        radius: this.effRadius(5, ctx.agg),
         scale: 1.7,
         trail: "fx_thorn",
         trailFrames: fxFrames("fx_thorn", 3),
@@ -665,7 +677,7 @@ export class CombatSystem {
 
   // ── Ewiger Winter ────────────────────────────────────────────
   private updateWinter(ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, state: WeaponState): void {
-    const radius = effectiveRadius(stats.radius ?? 64, ctx.agg);
+    const radius = this.effRadius(stats.radius ?? 64, ctx.agg);
     state.auraTick -= ctx.dt;
     if (state.auraTick <= 0) {
       state.auraTick = 0.4;
@@ -714,7 +726,7 @@ export class CombatSystem {
           life: 1.1,
           weaponId: "eternal_winter",
           texture: "projectile_ice",
-          radius: effectiveRadius(5, ctx.agg),
+          radius: this.effRadius(5, ctx.agg),
           trail: "fx_ice",
           trailFrames: fxFrames("fx_ice", 4),
           trailInterval: 0.06,
@@ -788,7 +800,7 @@ export class CombatSystem {
   // ── Lantern ───────────────────────────────────────────────────
   private fireLantern(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>, state: WeaponState): void {
     const count = Math.max(1, stats.count ?? 1);
-    const radius = effectiveRadius(stats.radius ?? 34, ctx.agg) + (owned.id === "soul_beacon" ? 14 : 0);
+    const radius = this.effRadius(stats.radius ?? 34, ctx.agg) + (owned.id === "soul_beacon" ? 14 : 0);
     state.orbTimeLeft = effectiveDuration(stats.duration ?? 2.4, ctx.agg);
     state.orbDamage = effectiveDamage(stats.damage, ctx.agg);
     state.orbRadius = radius;

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   BASE_VIEW_AREA, bossSpawnDistance, maxActiveEnemies, pickRecycleIndex,
-  recycleDistance, shouldRecycle, spawnRateFactor, spawnRingRadius, viewAreaFactor,
+  recycleDistance, shouldRecycle, spawnRateFactor, spawnRingRadius, viewAreaFactor, weaponRangeFactor,
 } from "../src/logic/scaling";
 import { ringSpawnOffsets } from "../src/logic/waves";
 
@@ -17,8 +17,16 @@ describe("M8 Spawn/Recycling relativ zur sichtbaren Fläche", () => {
 
   it("Spawnrate skaliert nur mit der Wurzel der Fläche", () => {
     expect(spawnRateFactor(640, 360)).toBe(1);
-    expect(spawnRateFactor(780, 360)).toBeCloseTo(1.104, 3);
+    expect(spawnRateFactor(780, 360)).toBeCloseTo(0.938, 3);
     expect(spawnRateFactor(480, 360)).toBeCloseTo(0.866, 3);
+  });
+
+  it("Waffen-/AoE-Reichweite wächst mit breiten Formaten, nie unter 1", () => {
+    expect(weaponRangeFactor(480, 360)).toBe(1);
+    expect(weaponRangeFactor(640, 360)).toBe(1);
+    expect(weaponRangeFactor(780, 360)).toBeCloseTo(1.219, 3);
+    expect(weaponRangeFactor(860, 360)).toBe(1.3);
+    expect(weaponRangeFactor(0, 360)).toBe(1);
   });
 
   it("Gegner-Deckel skaliert mit der Fläche und bleibt <= 500", () => {
