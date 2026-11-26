@@ -61,7 +61,13 @@ und Abschluss.
 - Pruefung: 16x16-Raster, 18 Keys, nur Palettenindizes, kein Duplikat
   (`validateIcons` in `src/gfx/icons.ts`, laeuft in `createIconTextures`).
   Evolutionen (letzte 6) sind groesser/heller als die Basis-Waffen (erste 6).
-- art-director-Urteil (#320): ausstehend (Bild liegt fuer die naechste Kontrolle bereit).
+- art-director-Urteil (#320): **2,5/5 FAIL**. Befunde: (1) 5/18 Icons haben 2-3 px
+  dicke Ink-Rahmen statt 1 px (ember, frost, lantern, tome, hourglass); (2) 4 Icons
+  beleuchten von rechts/unten (flail, hourglass, eternal_winter, whetstone);
+  (3) wrath_pendulum und thorn_storm sind dunkler/flacher als ihre Basen;
+  (4) ember/lantern teilen ~95 % der Maske, hourglass/thunder_seal ~87 % — teils nur
+  Farbunterschied, keine eigene Silhouette. Naechste Runde: Ink exakt 1 px, Licht
+  oben-links, Evos auf 4-5 Tiers aufhellen.
 - 0 JS-Fehler im Kontaktbogen-Lauf.
 
 ## #321 Font und UI-Rahmen
