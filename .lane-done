@@ -1,0 +1,8 @@
+Lane m10-display-qa abgeschlossen (Versuch 2, Basis f26dc4b)
+- Basis verify-display: 38/38 PASS, 0 JS-Fehler, 7/7 Profile (shots/m10-display.json)
+- Pixel-genau: 7/7 PASS (View == Formel aus src/logic/view.ts, device % n == 0)
+- Safe-Area: pixel7 PASS; iphone14 FAIL — Canvas full-bleed x=0, HUD unter 47-px-Notch-Zone
+- FPS Minute 25 (780x360 @ dpr3): 39,5 FPS FAIL (Ziel 55 / Referenz 57); dpr1-Kontrolle 54,5 FPS
+- Build + Tests: grün, 12 Dateien / 192 Tests
+- Belege: shots/m10-display-*.png|json, docs/lanes/m10-display-qa.md
+- Offen für Folgekarten: iphone14 Safe-Area, #638 Minute-25-FPS

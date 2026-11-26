@@ -1,0 +1,222 @@
+{
+  "profiles": [
+    {
+      "profile": "iphone14",
+      "viewport": [
+        844,
+        390
+      ],
+      "dpr": 3,
+      "view": [
+        844,
+        360
+      ],
+      "safeRect": {
+        "left": 47,
+        "top": 0,
+        "right": 797,
+        "bottom": 369
+      },
+      "canvas": [
+        0,
+        5,
+        844,
+        360
+      ],
+      "envPadding": "0px 47px 21px",
+      "simulated": false,
+      "cdpInsets": true,
+      "margins": {
+        "level": {
+          "left": -42,
+          "top": 6,
+          "right": 748,
+          "bottom": 332,
+          "box": [
+            5,
+            6,
+            49,
+            38
+          ]
+        },
+        "timer": {
+          "left": 361,
+          "top": 6,
+          "right": 360,
+          "bottom": 357,
+          "box": [
+            408,
+            6,
+            437,
+            13
+          ]
+        },
+        "kills": {
+          "left": 757,
+          "top": 6,
+          "right": -63,
+          "bottom": 332,
+          "box": [
+            804,
+            6,
+            860,
+            38
+          ]
+        },
+        "hp": {
+          "left": -42,
+          "top": 20,
+          "right": 686,
+          "bottom": 341,
+          "box": [
+            5,
+            20,
+            111,
+            29
+          ]
+        },
+        "pause": {
+          "left": 757,
+          "top": 15,
+          "right": -37,
+          "bottom": 337,
+          "box": [
+            804,
+            15,
+            834,
+            33
+          ]
+        },
+        "joystick": {
+          "left": -47,
+          "top": 5,
+          "right": 797,
+          "bottom": 365,
+          "box": [
+            0,
+            5,
+            0,
+            5
+          ]
+        }
+      },
+      "fails": [
+        "level: ragt in Notch/Rundung {\"left\":-42,\"top\":6,\"right\":748,\"bottom\":332,\"box\":[5,6,49,38]}",
+        "kills: ragt in Notch/Rundung {\"left\":757,\"top\":6,\"right\":-63,\"bottom\":332,\"box\":[804,6,860,38]}",
+        "hp: ragt in Notch/Rundung {\"left\":-42,\"top\":20,\"right\":686,\"bottom\":341,\"box\":[5,20,111,29]}",
+        "pause: ragt in Notch/Rundung {\"left\":757,\"top\":15,\"right\":-37,\"bottom\":337,\"box\":[804,15,834,33]}",
+        "joystick: ragt in Notch/Rundung {\"left\":-47,\"top\":5,\"right\":797,\"bottom\":365,\"box\":[0,5,0,5]}"
+      ],
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "profile": "pixel7",
+      "viewport": [
+        915,
+        412
+      ],
+      "dpr": 2,
+      "view": [
+        860,
+        360
+      ],
+      "safeRect": {
+        "left": 12,
+        "top": 12,
+        "right": 903,
+        "bottom": 400
+      },
+      "canvas": [
+        28,
+        26,
+        860,
+        360
+      ],
+      "envPadding": "12px",
+      "simulated": false,
+      "cdpInsets": true,
+      "margins": {
+        "level": {
+          "left": 21,
+          "top": 15,
+          "right": 827,
+          "bottom": 341,
+          "box": [
+            33,
+            27,
+            77,
+            59
+          ]
+        },
+        "timer": {
+          "left": 432,
+          "top": 15,
+          "right": 431,
+          "bottom": 366,
+          "box": [
+            444,
+            27,
+            473,
+            34
+          ]
+        },
+        "kills": {
+          "left": 836,
+          "top": 15,
+          "right": 0,
+          "bottom": 341,
+          "box": [
+            848,
+            27,
+            904,
+            59
+          ]
+        },
+        "hp": {
+          "left": 21,
+          "top": 29,
+          "right": 765,
+          "bottom": 350,
+          "box": [
+            33,
+            41,
+            139,
+            50
+          ]
+        },
+        "pause": {
+          "left": 836,
+          "top": 24,
+          "right": 26,
+          "bottom": 346,
+          "box": [
+            848,
+            36,
+            878,
+            54
+          ]
+        },
+        "joystick": {
+          "left": 16,
+          "top": 14,
+          "right": 876,
+          "bottom": 374,
+          "box": [
+            28,
+            26,
+            28,
+            26
+          ]
+        }
+      },
+      "fails": [
+        "kills: ragt in Notch/Rundung {\"left\":836,\"top\":15,\"right\":0,\"bottom\":341,\"box\":[848,27,904,59]}"
+      ],
+      "jsErrors": [],
+      "passed": false
+    }
+  ],
+  "errors": [],
+  "passed": false
+}
