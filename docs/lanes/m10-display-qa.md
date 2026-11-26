@@ -10,7 +10,7 @@ Safe-Area auf Touch-Profilen, plus Beleg für die offene 42-FPS-Minute-25-Karte 
 
 ## Checkliste (Board-Pflege macht der Merge-Job)
 
-- [ ] **C1 / #1101 — Basis:** `npm run build`, `node scripts/verify-display.mjs` einmal komplett (ohne flock),
+- [x] **C1 / #1101 — Basis:** `npm run build`, `node scripts/verify-display.mjs` einmal komplett (ohne flock),
       Belege nach `shots/m10-display-*` umbenannt.
 - [x] **C2 / #1102 — Pixel-genau:** View je Profil gegen Formel aus `src/logic/view.ts` nachrechnen
       (`devicePixelWidth % n == 0`), Screenshots sichten, abgeschnittene Texte listen.
@@ -109,3 +109,62 @@ Beleg: `shots/m10-display-perf-minute-25.json` (umbenannt aus `shots/perf-m3m10-
 Ergebnis bestätigt die M8-Messung (40,2 FPS): Minute 25 bleibt mit **39,5 FPS** klar unter dem
 55-FPS-Ziel und unter der 57-FPS-Referenz; `jsErrors: 0`. Ursache ist weiterhin die hohe
 Gerätepixel-Fläche (780×360 @ dpr 3 → 2340×1080) — Empfehlung siehe Report (C4).
+
+Kontrolllauf derselben View mit `--dpr 1` (`shots/m10-display-perf-minute-25-dpr1.json`): Burst 60,1 FPS,
+Minute 25 **54,5 FPS** (546 Frames / 10,026 s) — also +15 FPS gegenüber dpr 3. Das stützt die Annahme,
+dass die Gerätepixel-/CSS-Fläche (2340×1080 statt 780×360) der Haupttreiber ist; selbst bei 480×360 bleibt
+Minute 25 knapp unter dem 55-Ziel.
+
+## C4 — Report: PASS/FAIL je Profil (Basis `f26dc4b`)
+
+Bewertet wurden alle 7 Profile (View/Pixel-genau, Text-Cutoff, HUD-Anker) plus die Touch-Safe-Area
+für iphone14 und pixel7. Kriterium „PASS“ = keine Abweichung in den gemessenen Punkten.
+
+| Profil | View/Pixel-genau | Text-Cutoff | HUD-Anker | Safe-Area | Urteil |
+|---|---|---|---|---|---|
+| hd | PASS 640×360, n=3 | PASS | PASS | n/a (Desktop) | **PASS** |
+| uhd | PASS 640×360, n=6 | PASS | PASS | n/a (Desktop) | **PASS** |
+| wqhd15 | PASS 640×360, n=6 | PASS | PASS | n/a (Desktop) | **PASS** |
+| laptop | PASS 683×360, n=2 | PASS | PASS | n/a (Desktop) | **PASS** |
+| iphone14 | PASS 844×360, n=3 | PASS | PASS (in View) | **FAIL (Notch-Zone)** | **FAIL** |
+| pixel7 | PASS 860×360, n=2 | PASS | PASS | PASS | **PASS** |
+| ipadpro | PASS 546×360, n=5 | PASS | PASS | n/a (Desktop) | **PASS** |
+
+**Lane-Urteil: 6/7 Profile PASS, iphone14 FAIL (Safe-Area); #638 (Minute-25-FPS) bleibt FAIL.**
+Die 38/38-Checks von `verify-display.mjs` sind reproduziert (0 JS-Fehler), decken aber die
+Notch-Überdeckung nicht ab — dort wird nur `textsInView` gegen die Canvas-View geprüft, nicht gegen
+die Safe-Area des Geräts.
+
+### FAIL 1 — iphone14: HUD unter der Notch-Zone
+
+- **Symptom:** HP-Leiste/Level-Text beginnen bei x=5 CSS-px, Kills/Pause enden bei x≈834–839 in
+  einem 844-px-Viewport. Das iPhone-14-Querformat hat links/rechts je 47 px Safe-Area.
+- **Repro:** `node ~/tmp/m10-display-qa/card3-safearea.mjs` → `shots/m10-display-safearea.json`,
+  Profil `iphone14`, `fails[0]`; Screenshot `shots/m10-display-iphone14-safearea.png`.
+- **Ursache (sichtbar):** `index.html:32-33` setzt `body { padding: env(safe-area-inset-*) }`, aber
+  `src/main.ts:101-104` (`applyView`) setzt `canvas.style.width = cssWidth px` (= 844) – der Canvas
+  ist breiter als die Content-Box und wird full-bleed bei x=0 gerendert; das Padding greift nicht.
+- **Empfehlung (eigene UI-/Engine-Karte):** CSS-Breite auf `min(cssWidth, 100vw - insetL - insetR)`
+  begrenzen oder HUD-Offsets (`src/scenes/UI.ts:91-102`) und `PAUSE_MARGIN`
+  (`src/input/TouchControls.ts:15`) um die Insets verschieben; `#lf-rotate`/Body-Wrapper mit
+  `padding` + `width:100%` wäre die kleinste Änderung. Nicht in dieser Lane behoben (src/ ist
+  gesperrt).
+
+### FAIL 2 — #638: Minute 25 bei 780×360 @ dpr 3 = 39,5 FPS
+
+- **Messung:** `flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 780x360 --dpr 3
+  --tag m10-638` → 39,5 FPS roh (396 Frames / 10,021 s), Roll-FPS 41,0, 300 Gegner, `jsErrors: 0`.
+  Beleg `shots/m10-display-perf-minute-25.json`.
+- **Vergleich:** Burst 500 Gegner 59,5 FPS PASS; Kontrolllauf `--dpr 1` (480×360) 54,5 FPS – also
+  ~+15 FPS ohne dpr-3-CSS-Fläche. Die Gerätepixel-/CSS-Fläche 2340×1080 ist der dominierende Faktor,
+  reicht aber als alleinige Erklärung nicht (54,5 < 55).
+- **Empfehlung für #638:** Render-/CSS-Fläche deckeln statt jeden Spielpixel n×n zu erzwingen
+  (`src/main.ts:101-106`, `applyView`), z. B. `cssWidth* cssHeight` auf ~1,5 Mio. CSS-px begrenzen
+  oder dpr für View-Breiten > 700 auf max. 2 kappen; zusätzlich Draw-Call-/Partikel-Last bei
+  ≥300 Gegnern prüfen (`src/scenes/Run.ts` Update/Render-Pfad). Akzeptanz: Minute 25 ≥55 FPS bei
+  unverändertem Burst-PASS und 0 JS-Fehlern.
+
+### Build/Tests (Abschluss, Basis `f26dc4b`)
+
+- `npm run build`: grün (`✓ built in …`, Log `~/tmp/m10-display-qa/card4-build.log`).
+- `npx vitest run`: 12 Dateien / 192 Tests grün (Log `~/tmp/m10-display-qa/card4-tests.log`).
