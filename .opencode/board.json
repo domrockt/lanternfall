@@ -1552,17 +1552,22 @@
       "id": 86,
       "title": "input-04 Abnahme Touch+Gamepad+Tastatur-Regression",
       "description": "scripts/verify-input.mjs mit Playwright Pixel-7-Profil (hasTouch/isMobile, landscape): eine Minute Spiel nur per Touch (Joystick-Drag+Level-up-Tap), Menues per Tippen; Gamepad via gemocktem navigator.getGamepads (Stick+A/B/Start); Tastatur-Regression. Shots shots/m8-input-*.png, docs/lanes/input.md, Vault-Notiz coding-brain/Wissen/Phaser 3.md. Abnahme: build+test gruen, verify-input PASS, 0 JS-Fehler, alle Shots >10KB, .lane-done.",
-      "column": "review",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-26T10:01:45Z",
           "by": "build",
           "text": "Lane m8-input: verify-input.mjs PASS 25/25, 0 JS-Fehler; build gruen, Tests 168/168; Belege 095b694, shots/m8-input-*.png. Wartet auf Merge-Verifikation."
+        },
+        {
+          "at": "2026-11-26T10:11:15Z",
+          "by": "build",
+          "text": "review → done: Merge-Abnahme: verify-input PASS 28/28 (nach #87-Fix), 0 JS-Fehler; build gruen, Tests 175/175; Belege shots/m8-input.*, docs/lanes/input.md."
         }
       ],
       "created": "2026-11-26T10:01:34Z",
-      "updated": "2026-11-26T10:01:45Z"
+      "updated": "2026-11-26T10:11:15Z"
     },
     {
       "id": 87,
