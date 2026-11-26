@@ -223,7 +223,7 @@
       "id": 15,
       "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
       "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
@@ -235,10 +235,15 @@
           "at": "2026-11-26T08:04:16Z",
           "by": "build",
           "text": "done → doing: Gesamtabnahme-Nachlauf: DoD-Zeilen alseln mit acceptance-auditor abhaken; aktuelle perf/fullrun-Belege 59,7/57,2 bzw. FPS-min 55,8 (Heap 18,7%)."
+        },
+        {
+          "at": "2026-11-26T08:25:50Z",
+          "by": "build",
+          "text": "doing → done: Abnahme-Nachlauf abgeschlossen. acceptance-auditor A1-A12: A5 nach Zahlenkorrektur PASS, Gesamt PASS. DoD abgehakt: Merges A1, DoD A2, Zaehlung A3, realtime-Sieg A4, Messungen A5 (perf 59,7/57,2, fullrun 55,8, Heap 18,7% als Restmangel), Trailer A6, VFX/Mute A7, Art A8, Results A9, Endnote 4/5 A10, Worktrees A11 (input/m8-input NICHT angetastet), build+147 Tests A12. #79 blocked, Deliverables via #82."
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-26T08:04:16Z"
+      "updated": "2026-11-26T08:25:50Z"
     },
     {
       "id": 16,
