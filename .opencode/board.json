@@ -1529,10 +1529,26 @@
       "id": 84,
       "title": "m7-tooling-2 npm run check fuer die taegliche Schleife",
       "description": "scripts/check.mjs: inkrementeller tsc + nur Vitest-Dateien zu geaenderten Dateien (vitest related), kompakte Ausgabe (Fehler+Summary). package.json Script check. Abnahme: npm run check <15s bei kleiner Aenderung, zeigt gezielt betroffene Tests, Build+Tests gruen, Commit nennt Karte.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T08:51:03Z",
+          "by": "build",
+          "text": "todo → doing: Owner: Lead/Lane. Ziel: npm run check = inkrementeller tsc + vitest related zu geaenderten Dateien, kompakt, <15 s."
+        },
+        {
+          "at": "2026-11-26T08:51:25Z",
+          "by": "build",
+          "text": "doing → review: M6-m7-tooling: #84 (edaa46c). node scripts/check.mjs src/logic/stats.ts: rc0 625ms, tsc 108ms, 2 Testdateien/54 Tests; npm run check ohne Aenderung rc 206ms (nur tsc). build rc 147 Tests gruen."
+        },
+        {
+          "at": "2026-11-26T08:51:25Z",
+          "by": "build",
+          "text": "review → done: SelfDaumen: 605ms gesamt <15s, kompakt (nur Fehler/Summary), build+147 Tests gruen."
+        }
+      ],
       "created": "2026-11-26T08:49:35Z",
-      "updated": "2026-11-26T08:49:35Z"
+      "updated": "2026-11-26T08:51:25Z"
     },
     {
       "id": 85,
