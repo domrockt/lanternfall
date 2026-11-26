@@ -40,7 +40,7 @@ export const BOSS_ATTACKS: Record<number, BossAttackDef[][]> = {
   1: [
     [
       { kind: "summon_ring", telegraph: 0.9, interval: 5.5, radius: 0, damageMul: 0, note: "Skelett-Ring" },
-      { kind: "bone_boomerang", telegraph: 0.55, interval: 3.4, radius: 0, damageMul: 0.8, note: "Knochen-Bumerang" },
+      { kind: "bone_boomerang", telegraph: 0.6, interval: 3.4, radius: 0, damageMul: 0.8, note: "Knochen-Bumerang" },
     ],
   ],
   2: [
@@ -57,14 +57,14 @@ export const BOSS_ATTACKS: Record<number, BossAttackDef[][]> = {
   ],
   4: [
     [
-      { kind: "teleport", telegraph: 0.35, interval: 3.2, radius: 0, damageMul: 0, note: "Teleport-Wechsel" },
+      { kind: "teleport", telegraph: 0.6, interval: 3.2, radius: 0, damageMul: 0, note: "Teleport-Wechsel" },
       { kind: "fire_cross", telegraph: 0.95, interval: 3.8, radius: 30, damageMul: 0.9, note: "Kreuzende Feuerstrahlen" },
     ],
   ],
   5: [
     [
       { kind: "thorn_ring", telegraph: 1.0, interval: 4.6, radius: 22, damageMul: 0.8, note: "Dornen-Arena-Ring" },
-      { kind: "bone_boomerang", telegraph: 0.5, interval: 3.4, radius: 0, damageMul: 0.7, note: "Knochenwurf" },
+      { kind: "bone_boomerang", telegraph: 0.6, interval: 3.4, radius: 0, damageMul: 0.7, note: "Knochenwurf" },
     ],
     [
       { kind: "thorn_burst", telegraph: 0.9, interval: 3.2, radius: 28, damageMul: 0.9, note: "Dornen-Ausbruch" },
