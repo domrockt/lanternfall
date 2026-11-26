@@ -1727,21 +1727,38 @@
       "id": 93,
       "title": "qa-01 Board-Hygiene: #13/#14/#16/#79 auf done",
       "description": "Abnahme: board_list zeigt #13,#14,#16,#79 in done mit Notiz (Verweis auf M1/M4/M5-Abnahme bzw. #82/final-trailer.gif 35,6s/285 Frames); board_list vorher/nachher im Commit dokumentiert; ein Commit mit #qa-01.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:36:39Z",
+          "by": "build",
+          "text": "todo → done: Commit efedb65 (#93). board_list: done 91, backlog 0, blocked 0 (vorher 87/3/1)."
+        }
+      ],
       "created": "2026-11-26T10:36:13Z",
-      "updated": "2026-11-26T10:36:13Z"
+      "updated": "2026-11-26T10:36:39Z"
     },
     {
       "id": 94,
       "title": "qa-02 M8-input unabhaengig: verify-input 25/25 PASS",
       "description": "Abnahme: node scripts/verify-input.mjs auf main liefert Exit 0 mit 25/25 PASS und 0 JS-Fehler; Ergebnis mit Zeitstempel in docs/qa/<datum>.md; bei Spielbug Karte blocked, bei Testfehler Fix-Commit; ein Commit mit #qa-02.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:36:44Z",
+          "by": "build",
+          "text": "todo → doing: Start: unabhaengiger verify-input-Lauf auf main"
+        },
+        {
+          "at": "2026-11-26T10:43:41Z",
+          "by": "build",
+          "text": "doing → done: Commit e4332a7 (#94). verify-input EXIT 0, 28/28 PASS, 0 JS-Fehler, ESC-Checks gruen."
+        }
+      ],
       "created": "2026-11-26T10:36:13Z",
-      "updated": "2026-11-26T10:36:13Z"
+      "updated": "2026-11-26T10:43:41Z"
     },
     {
       "id": 95,
