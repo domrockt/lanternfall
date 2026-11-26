@@ -3,7 +3,7 @@ import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { GAME_WIDTH } from "../config";
 import { createMenuButton, type MenuButton } from "../ui/menu";
-import { InputState } from "../input/InputState";
+import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 
 interface CreditsData { seed?: number; debug?: boolean }
@@ -26,6 +26,8 @@ export class Credits extends Phaser.Scene {
   private debug = false;
   private backButton!: MenuButton;
   private pad = new InputState();
+  /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
+  private padArmed = false;
 
   constructor() { super("credits"); }
 
@@ -36,6 +38,7 @@ export class Credits extends Phaser.Scene {
 
   create(): void {
     this.pad.reset();
+    this.padArmed = false;
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
     this.add.image(GAME_WIDTH / 2, 135, "vignette").setDepth(-1);
     this.add.rectangle(GAME_WIDTH / 2, 135, 412, 244, PAL[C.night], 0.96)
@@ -67,6 +70,10 @@ export class Credits extends Phaser.Scene {
 
   update(): void {
     const a = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
+    if (!this.padArmed) {
+      if (allActionsReleased(a)) this.padArmed = true;
+      return;
+    }
     if (a.confirm || a.back) this.back();
   }
 

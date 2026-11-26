@@ -6,7 +6,7 @@ import type { CharacterDef } from "../data/types";
 import { iconTextureKey } from "../gfx/icons";
 import { readMeta, metaLine } from "../logic/meta";
 import { createMenuButton } from "../ui/menu";
-import { InputState } from "../input/InputState";
+import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 
 interface CharSelectData { seed?: number; debug?: boolean }
@@ -18,6 +18,8 @@ export class CharSelect extends Phaser.Scene {
   private panels: Phaser.GameObjects.Rectangle[] = [];
   private started = false;
   private pad = new InputState();
+  /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
+  private padArmed = false;
 
   constructor() { super("charselect"); }
 
@@ -30,6 +32,7 @@ export class CharSelect extends Phaser.Scene {
     this.index = 0;
     this.started = false;
     this.pad.reset();
+    this.padArmed = false;
     this.panels = [];
     this.cameras.main.setBackgroundColor(PAL[C.night]);
     this.add.image(240, 135, "vignette").setDepth(-1);
@@ -94,6 +97,10 @@ export class CharSelect extends Phaser.Scene {
   update(): void {
     if (this.started) return;
     const a = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
+    if (!this.padArmed) {
+      if (allActionsReleased(a)) this.padArmed = true;
+      return;
+    }
     if (a.left || a.up) this.move(-1);
     else if (a.right || a.down) this.move(1);
     else if (a.confirm) this.start();

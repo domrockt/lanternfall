@@ -174,15 +174,14 @@ function touchVector(t: TouchSnapshot | null | undefined): Vec2 {
  */
 export function mergeSources(sources: InputSources): Vec2 {
   const src = sources ?? {};
-  const touch = touchVector(src.touch);
-  if (Math.hypot(touch.x, touch.y) > EPS) return touch;
-
-  const pad = gamepadVector(src.gamepad);
-  if (Math.hypot(pad.x, pad.y) > EPS) return pad;
-
-  const kb = keyboardVector(src.keyboard);
-  if (Math.hypot(kb.x, kb.y) > EPS) return kb;
-
+  for (const source of MOVE_SOURCE_PRIORITY) {
+    const vector = source === "touch"
+      ? touchVector(src.touch)
+      : source === "gamepad"
+        ? gamepadVector(src.gamepad)
+        : keyboardVector(src.keyboard);
+    if (Math.hypot(vector.x, vector.y) > EPS) return vector;
+  }
   return { x: 0, y: 0 };
 }
 
@@ -232,6 +231,15 @@ export function readGamepadMoveActions(
   a.left = btn(pad.buttons, 14) || ax < -PAD_DEADZONE;
   a.right = btn(pad.buttons, 15) || ax > PAD_DEADZONE;
   return a;
+}
+
+/**
+ * True wenn keine Aktion gehalten wird. Menue-Szenen nutzen das als
+ * "Pad wieder scharf"-Gate nach einem Szenenwechsel (ein gehaltenes A darf den
+ * naechsten Screen nicht sofort bestaetigen).
+ */
+export function allActionsReleased(a: ActionState): boolean {
+  return !a.pause && !a.confirm && !a.back && !a.up && !a.down && !a.left && !a.right;
 }
 
 /** OR-combine any number of action states. */

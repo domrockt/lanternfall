@@ -51,6 +51,11 @@ export function readNavigatorGamepad(): GamepadSnapshot | null {
  * Browser-API zurück. Beide Pfade liefern denselben Snapshot-Typ.
  */
 export function readSceneGamepad(scene: Phaser.Scene): GamepadSnapshot | null {
+  // Die Browser-API liefert den frischesten Stand (auch bei Hotplug und in
+  // Tests mit gemocktem navigator.getGamepads()). Das Phaser-Plugin bleibt als
+  // Fallback aktiv, falls die API (z. B. in eingebetteten WebViews) fehlt.
+  const native = readNavigatorGamepad();
+  if (native) return native;
   try {
     const plugin = scene.input.gamepad as unknown as {
       pad1?: PadLike | null;
@@ -60,11 +65,10 @@ export function readSceneGamepad(scene: Phaser.Scene): GamepadSnapshot | null {
     } | null;
     if (plugin) {
       const pad = plugin.pad1 ?? plugin.pad2 ?? plugin.pad3 ?? plugin.pad4;
-      const snapshot = snapshotFromPad(pad);
-      if (snapshot) return snapshot;
+      return snapshotFromPad(pad);
     }
   } catch {
     // Plugin evtl. noch nicht bereit (Boot/Scene-Wechsel).
   }
-  return readNavigatorGamepad();
+  return null;
 }

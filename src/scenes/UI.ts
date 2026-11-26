@@ -60,6 +60,7 @@ export class UI extends Phaser.Scene {
   private chestTitle!: PixelText;
   private chestSlots: { bg: Phaser.GameObjects.Rectangle; slotBg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; text2: PixelText; level: PixelText }[] = [];
   private chestHideTimer?: Phaser.Time.TimerEvent;
+  private chestSkip?: Phaser.GameObjects.Zone;
 
   private bossGroup!: Phaser.GameObjects.Container;
   private bossName!: PixelText;
@@ -345,12 +346,14 @@ export class UI extends Phaser.Scene {
     this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 250, "TIPPE ODER A = ÜBERNEHMEN", C.fog, "center"));
     // M8-input: Truhe per Tippen/Bestaetigen uebernehmen (Belohnungen werden
     // sofort angewendet). Die automatische Sequenz bleibt unveraendert.
-    const skip = this.add.zone(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT)
-      .setInteractive();
+    const skip = this.add.zone(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT);
+    skip.setInteractive();
+    skip.disableInteractive();
     skip.on("pointerdown", () => {
       if (this.run?.chestOpen) this.run.finishChest();
     });
     this.chestGroup.add(skip);
+    this.chestSkip = skip;
   }
 
   private onChestOpen(result: import("../logic/evolution").ChestResult): void {
@@ -358,6 +361,7 @@ export class UI extends Phaser.Scene {
     this.chestHideTimer?.remove(false);
     this.chestHideTimer = undefined;
     this.chestGroup.setVisible(true);
+    this.chestSkip?.setInteractive();
     this.chestTitle.setText("TRUHE");
     this.chestSprite.setTexture("chest_closed").setScale(2.2).setAlpha(1);
     this.chestBeam.setAlpha(0).setScale(0.25);
@@ -431,6 +435,7 @@ export class UI extends Phaser.Scene {
     this.chestHideTimer?.remove(false);
     this.chestHideTimer = undefined;
     this.chestGroup.setVisible(false);
+    this.chestSkip?.disableInteractive();
   }
 
   private spawnChestCoins(): void {
@@ -461,6 +466,7 @@ export class UI extends Phaser.Scene {
   update(_time: number, delta: number): void {
     if (!this.run || !this.run.scene.isActive()) return;
     const s = this.run.getHudState();
+    this.registry.set("lf-options-open", this.options.visible);
     this.touch?.update();
     this.handlePad(s);
     this.refreshHud(s);

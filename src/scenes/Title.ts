@@ -5,7 +5,7 @@ import { GAME_WIDTH } from "../config";
 import { readMeta, metaLine } from "../logic/meta";
 import { createMenuButton, type MenuButton } from "../ui/menu";
 import { OptionsMenu } from "../ui/options-menu";
-import { InputState } from "../input/InputState";
+import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 
 interface TitleData { seed?: number; debug?: boolean }
@@ -18,6 +18,8 @@ export class Title extends Phaser.Scene {
   private selected = 0;
   private started = false;
   private pad = new InputState();
+  /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
+  private padArmed = false;
 
   constructor() { super("title"); }
 
@@ -30,6 +32,7 @@ export class Title extends Phaser.Scene {
     this.started = false;
     this.selected = 0;
     this.pad.reset();
+    this.padArmed = false;
     this.buttons = [];
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
     this.add.image(0, 0, "title_background").setOrigin(0, 0).setDepth(0);
@@ -78,6 +81,10 @@ export class Title extends Phaser.Scene {
   update(): void {
     if (this.started) return;
     const a = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
+    if (!this.padArmed) {
+      if (allActionsReleased(a)) this.padArmed = true;
+      return;
+    }
     if (this.options.visible) { this.options.handlePad(a); return; }
     if (a.left || a.up) { this.selected = (this.selected + 2) % 3; this.refreshButtons(); }
     else if (a.right || a.down) { this.selected = (this.selected + 1) % 3; this.refreshButtons(); }

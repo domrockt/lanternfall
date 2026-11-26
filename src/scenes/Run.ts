@@ -349,7 +349,12 @@ export class Run extends Phaser.Scene {
       touch: getTouchSnapshot(),
     });
     this.moveInput = frame.move;
-    if (frame.actions.pause && !this.levelUpOpen && !this.chestOpen) this.togglePause();
+    // Start/Pause nicht durchschlagen lassen, wenn das Optionsmenue offen ist
+    // (dort schliesst B/ESC das Menue, statt den Run fortzusetzen).
+    if (frame.actions.pause && !this.levelUpOpen && !this.chestOpen
+      && !this.registry.get("lf-options-open")) {
+      this.togglePause();
+    }
 
     // AutoPlay wählt Level-Up-Angebote nach kurzer Anzeige (unbeaufsichtigter Run).
     if (this.levelUpOpen || this.chestOpen) {
@@ -607,9 +612,10 @@ export class Run extends Phaser.Scene {
       this.moving = false;
       return;
     }
-    // Sicherheitsklemme; die Quellen liefern bereits Länge <= 1. Die Magnitude
-    // bleibt erhalten (anal/Stick:gen langsamer), nur die Blickrichtung
-    // wird auf Einheitslänge gebracht.
+    // Blickrichtung aus der ungeklemmten Laenge, danach Sicherheitsklemme.
+    // So bleibt facing auch bei (theoretisch) >1 langen Vektoren ein Einheitsvektor.
+    const lookX = dx / len;
+    const lookY = dy / len;
     if (len > 1) {
       dx /= len;
       dy /= len;
@@ -617,8 +623,6 @@ export class Run extends Phaser.Scene {
     this.moving = true;
     const terrain = this.terrainFactorAt(this.posX, this.posY);
     const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
-    const lookX = dx / len;
-    const lookY = dy / len;
     this.facingX = lookX;
     this.facingY = lookY;
     // AutoPlay zielt auf den nächsten Gegner (Nahkampf-Flegel trifft sonst nur
@@ -1231,6 +1235,9 @@ export class Run extends Phaser.Scene {
     return 1;
   }
 
+  /** Maximale Entfernung, in der ein Tipp die Truhe oeffnet (Gameplay-Entscheidung). */
+  static readonly CHEST_TAP_RANGE = 220;
+
   /** Öffnet eine Truhe (Debug oder bei Berührung) und pausiert den Run. */
   openChest(chest?: ChestRuntime): void {
     if (this.chestOpen || this.levelUpOpen || this.finished) return;
@@ -1256,7 +1263,7 @@ export class Run extends Phaser.Scene {
     chest.sprite.on("pointerdown", () => {
       if (this.chestOpen || this.levelUpOpen || this.paused || this.finished) return;
       const distance = Phaser.Math.Distance.Between(chest.x, chest.y, this.posX, this.posY);
-      if (distance <= 220) this.openChest(chest);
+      if (distance <= Run.CHEST_TAP_RANGE) this.openChest(chest);
     });
   }
 

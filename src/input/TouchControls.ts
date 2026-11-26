@@ -31,7 +31,7 @@ export class TouchControls {
   private readonly scene: Phaser.Scene;
   private readonly opts: TouchControlsOptions;
   private readonly canvas: HTMLCanvasElement;
-  private readonly enabled: boolean;
+  private enabled: boolean;
 
   private stickContainer?: Phaser.GameObjects.Container;
   private knob?: Phaser.GameObjects.Graphics;
@@ -113,14 +113,35 @@ export class TouchControls {
     ev.preventDefault();
   };
 
+  private readonly onPointerProbe = (pointer: Phaser.Input.Pointer): void => {
+    if (!pointer.wasTouch || this.destroyed) return;
+    this.enableTouchControls();
+  };
+
   constructor(scene: Phaser.Scene, opts: TouchControlsOptions) {
     this.scene = scene;
     this.opts = opts;
     this.canvas = scene.game.canvas;
     this.enabled = hasTouchSupport();
 
-    if (!this.enabled) return;
+    if (this.enabled) {
+      this.installTouchControls();
+    } else {
+      // Erster echter Touch schaltet nach: Geräte, die coarse/maxTouchPoints nicht melden.
+      // Auf reinen Desktop-Rechnern entstehen so weder Overlay-Objekte noch DOM-Listener.
+      this.scene.input.on("pointerdown", this.onPointerProbe);
+    }
+  }
 
+  private enableTouchControls(): void {
+    if (this.enabled || this.destroyed) return;
+    this.enabled = true;
+    this.scene.input.off("pointerdown", this.onPointerProbe);
+    this.installTouchControls();
+  }
+
+  private installTouchControls(): void {
+    if (this.destroyed || this.stickContainer) return;
     this.createStick();
     this.createPauseButton();
     this.canvas.addEventListener("touchstart", this.onTouchStart, { passive: false });
@@ -152,7 +173,10 @@ export class TouchControls {
         this.identifier = null;
         this.hideStick();
       }
-      resetTouchSnapshot();
+      // Bewegung nullen, aber einen noch laufenden Pause-Puls erhalten:
+      // Run und UI koennen in unterschiedlicher Reihenfolge updaten.
+      const current = getTouchSnapshot();
+      setTouchSnapshot({ active: false, x: 0, y: 0, pause: current.pause });
     }
   }
 
@@ -173,6 +197,7 @@ export class TouchControls {
     this.destroyed = true;
     this.pulseTimer?.remove();
     this.pulseTimer = undefined;
+    this.scene.input.off("pointerdown", this.onPointerProbe);
     if (this.enabled) {
       this.canvas.removeEventListener("touchstart", this.onTouchStart);
       this.canvas.removeEventListener("touchmove", this.onTouchMove);
@@ -313,12 +338,11 @@ function pixelDisk(g: Phaser.GameObjects.Graphics, radius: number): void {
   }
 }
 
-/** Touch-Gerät: grober Zeiger, Touchpunkte oder Touch-Events vorhanden. */
+/** Touch-Gerät: grober Zeiger oder vorhandene Touchpunkte. */
 function hasTouchSupport(): boolean {
   if (typeof window === "undefined") return false;
   if (typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches) {
     return true;
   }
-  if (typeof navigator !== "undefined" && (navigator.maxTouchPoints ?? 0) > 0) return true;
-  return "ontouchstart" in window;
+  return typeof navigator !== "undefined" && (navigator.maxTouchPoints ?? 0) > 0;
 }

@@ -4,6 +4,7 @@ import {
   TOUCH_DEADZONE,
   MOVE_SOURCE_PRIORITY,
   PAD_DEADZONE,
+  allActionsReleased,
   applyDeadzone,
   mergeActions,
   mergeSources,
@@ -36,6 +37,26 @@ const idleKeyboard: KeyboardSnapshot = {
   left: false,
   right: false,
 };
+
+describe("menu pad arm gate", () => {
+  it("only re-arms when every action is released", () => {
+    expect(allActionsReleased(actions())).toBe(true);
+    expect(allActionsReleased(actions({ confirm: true }))).toBe(false);
+    expect(allActionsReleased(actions({ right: true }))).toBe(false);
+    expect(allActionsReleased(actions({ pause: true, back: true }))).toBe(false);
+  });
+});
+
+describe("fixed deadzone contract", () => {
+  it("pins touch 12% and gamepad 18% (not just the generic rescale)", () => {
+    expect(TOUCH_DEADZONE).toBe(0.12);
+    expect(PAD_DEADZONE).toBe(0.18);
+    expect(applyDeadzone(0.12, 0, TOUCH_DEADZONE)).toEqual({ x: 0, y: 0 });
+    expect(applyDeadzone(0.18, 0, PAD_DEADZONE)).toEqual({ x: 0, y: 0 });
+    expect(applyDeadzone(0.13, 0, TOUCH_DEADZONE).x).toBeCloseTo(0.01 / 0.88, 6);
+    expect(applyDeadzone(0.19, 0, PAD_DEADZONE).x).toBeCloseTo(0.01 / 0.82, 6);
+  });
+});
 
 describe("applyDeadzone", () => {
   it("returns zero exactly at and inside the deadzone", () => {

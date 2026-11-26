@@ -18,6 +18,7 @@
 "verify:vfx": "node scripts/verify-vfx.mjs",
 "verify:robust": "node scripts/verify-robust.mjs",
 "verify:menus": "node scripts/verify-menus.mjs",
+"verify:input": "node scripts/verify-input.mjs",
 "verify:final": "node scripts/verify-final.mjs",
 "acceptance": "node scripts/acceptance-count.mjs",
 "vfx:read": "node scripts/final-vfx-readability.mjs",
