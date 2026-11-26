@@ -137,9 +137,10 @@ Hauptrepo (plus fremdes `.apkbuild`). Branches `m6-balance`, `m6-robust`,
 ## A12 — Build/Tests/Board/GAME.md
 
 `npm run build` grün, `npm test` **147 Tests grün** auf dem finalen Stand.
-Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#77/#81/#82 review,
-#79 blocked (Trailer-Segment-Timeout, durch #82 ersetzt), #80 folgt mit dem
-Abschluss-Commit. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
+Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#78/#80–#82 done.
+Ausnahme: #79 bleibt `blocked` (Trailer-Segment 7 zweimal 120-s-Timeout);
+die Deliverables wurden über #82 erledigt, deshalb ist A6/A12 inhaltlich grün.
+Abschluss-Commit: `f76880d` (A10/Result-Fix), Board-Update im Folge-Commit. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
 Nachträge, Restmängel).
 
 ## Offene Punkte / Restmängel
