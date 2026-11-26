@@ -61,7 +61,17 @@ und Abschluss.
 - Pruefung: 16x16-Raster, 18 Keys, nur Palettenindizes, kein Duplikat
   (`validateIcons` in `src/gfx/icons.ts`, laeuft in `createIconTextures`).
   Evolutionen (letzte 6) sind groesser/heller als die Basis-Waffen (erste 6).
-- art-director-Urteil (#320): **2,5/5 FAIL**. Befunde: (1) 5/18 Icons haben 2-3 px
+- Runde 2 (#320, Commit nennt #320): Vorher/Nachher `shots/m9-art-fx-ui-icons-before-4x.png`
+  gegen `shots/m9-art-fx-ui-icons-after-4x.png`. Pipeline neu: alte Ink-Rahmen werden
+  entfernt, Materialfarben auf Rampe-Basis normalisiert, dann `shade_edges` (Licht
+  oben-links, Schatten unten-rechts) und eine exakt 1-px-Aussenkontur. Evolutionen
+  laufen eine Rampe heller (`EVO_BOOST`), Basiswaffen bleiben dunkler.
+  Beleg: 18/18 Icons 16x16, nur Palettenindizes, Kontur durchgehend 1 px (Diagonale
+  geschlossen). Restpunkte: ember/lantern teilen noch eine aehnliche Grundmaske
+  (Silhouetten unterschiedlich genug fuer 16 px, aber nicht maximal distinkt);
+  hourglass/thunder_seal bleiben als Form-/Farbkontrast getrennt, IoU nicht erneut
+  gemessen.
+- art-director-Urteil (#320, Runde 1): **2,5/5 FAIL**. Befunde: (1) 5/18 Icons haben 2-3 px
   dicke Ink-Rahmen statt 1 px (ember, frost, lantern, tome, hourglass); (2) 4 Icons
   beleuchten von rechts/unten (flail, hourglass, eternal_winter, whetstone);
   (3) wrath_pendulum und thorn_storm sind dunkler/flacher als ihre Basen;

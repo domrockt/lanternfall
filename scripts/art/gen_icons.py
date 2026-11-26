@@ -300,8 +300,9 @@ def build() -> dict[str, list[Grid]]:
         if key not in read_rects():
             raise SystemExit(f"handdrawn icon {key} hat keine Rechteck-Vorlage")
     ordered = {k: data[k] for k in read_rects()}
+    for key in ordered:
+        ordered[key] = [normalize(ordered[key][0], EVO_BOOST.get(key))]
     return ordered
-    return data
 
 
 if __name__ == "__main__":
