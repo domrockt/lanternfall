@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * M10 Palette-Audit-Harness (NICHT committen, liegt in ~/tmp/m10-palette-audit/).
+ * M10 Palette-Audit-Harness. Ausgefuehrt aus ~/tmp/m10-palette-audit/audit.mjs; diese
+ * Datei ist die byte-identische Belegkopie im Lane-Commit (shots/m10-palette-*).
  *
  * Liest die Textur-Grids aus src/gfx/gen-{enemies,bosses,chars,fx,icons,ui}.ts
  * und die Palettenindizes aus src/palette.ts. Fuer jedes Frame:
@@ -193,6 +194,10 @@ function analyse(w, h, decode) {
 function fromGrid(def, fi) {
   const rows = def.frames[fi];
   const w = def.w, h = def.h;
+  if (rows.length !== h) throw new Error(`${def.name ?? "sprite"} frame ${fi}: ${rows.length} Zeilen, erwartet ${h}`);
+  for (let y = 0; y < h; y++) {
+    if (rows[y].length !== w) throw new Error(`${def.name ?? "sprite"} frame ${fi} Zeile ${y}: Breite ${rows[y].length}, erwartet ${w}`);
+  }
   const dec = (x, y) => {
     const ch = (rows[y] ?? "")[x];
     if (!ch || ch === ".") return null;
@@ -319,10 +324,13 @@ const result = {
       offPaletteCoords: f.invalidCoords,
       holes: f.holes,
       holeCoords: f.holeCoords,
+      holeComponents: f.holeComponents,
+      holeComponentCount: f.holeComponentCount,
       perimeter: f.perimeter,
       contourMissing: f.perimeterNonInk,
       contourGlow: f.perimeterGlow,
       contourMissingPct: f.contourMissingPct,
+      boundaryHist: f.boundaryHist,
       nonInkCoords: f.nonInkCoords,
     })),
   })),
