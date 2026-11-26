@@ -243,7 +243,7 @@
     },
     "damageBeforeFinish": {
       "scene": "run",
-      "time": 50.9,
+      "time": 50.3,
       "level": 1,
       "xp": 0,
       "xpNeed": 8,
@@ -298,15 +298,15 @@
       "enemyShots": 0,
       "hazards": 0,
       "enemyList": [],
-      "fps": 59.4,
+      "fps": 59.6,
       "character": "mira",
       "damageByWeapon": {
-        "ember": 892,
+        "ember": 934,
         "frost": 772,
-        "storm": 2807,
-        "flail": 7857,
-        "thorn": 448,
-        "lantern": 132
+        "storm": 3085,
+        "flail": 7506,
+        "thorn": 434,
+        "lantern": 121
       },
       "stats": {
         "moveSpeedPct": 0,

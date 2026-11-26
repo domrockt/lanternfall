@@ -1284,7 +1284,7 @@
       "id": 74,
       "title": "final-02 Damage-Number-Aggregation ab ~120 Gegnern + Master-Mute in Optionen testen",
       "description": "Abnahme: Aggregation ab 120 Gegnern wirksam (Messung/Test), Master-Mute in Optionen vorhanden und verify belegt.",
-      "column": "done",
+      "column": "doing",
       "assignee": "ui-dev",
       "notes": [
         {
@@ -1296,10 +1296,15 @@
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
           "text": "review → done: Runtime-Checks PASS: Aggregation 110 aus/129 an, Mute blockt SFX, Reload persistiert."
+        },
+        {
+          "at": "2026-11-26T08:35:37Z",
+          "by": "build",
+          "text": "done → doing: Re-Verifikation Damage-Aggregation ab 120 + Master-Mute auf finalem Build."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
-      "updated": "2026-11-26T07:50:21Z"
+      "updated": "2026-11-26T08:35:37Z"
     },
     {
       "id": 75,
