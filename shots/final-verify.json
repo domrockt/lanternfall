@@ -1,0 +1,355 @@
+{
+  "checks": [
+    {
+      "name": "Master-Mute Option gesetzt",
+      "ok": true,
+      "detail": "options.muted=true audio.muted=true"
+    },
+    {
+      "name": "Master-Mute blockt SFX",
+      "ok": true,
+      "detail": "sfxPlayed 7 -> 7"
+    },
+    {
+      "name": "Optionsmenue sichtbar (Master-Mute-Zeile)",
+      "ok": true,
+      "detail": "visible=true"
+    },
+    {
+      "name": "Master-Mute nach Reload persistiert",
+      "ok": true,
+      "detail": "muted=true/true"
+    },
+    {
+      "name": "Aggregation unter 120 aus",
+      "ok": true,
+      "detail": "enemies=110 aggregate=false"
+    },
+    {
+      "name": "Aggregation ab 120 an",
+      "ok": true,
+      "detail": "enemies=129 aggregate=true"
+    },
+    {
+      "name": "Ergebnis-Screen Sieg mit Schadenstabelle",
+      "ok": true,
+      "detail": "reason=dawn weapons=6"
+    }
+  ],
+  "report": {
+    "mute": {
+      "before": {
+        "sfxPlayed": 7,
+        "voices": 1,
+        "musicTrack": "run",
+        "muted": false,
+        "sfxVolume": 0.8,
+        "musicVolume": 0.55,
+        "loaded": true
+      },
+      "mutedState": {
+        "audio": {
+          "sfxPlayed": 7,
+          "voices": 1,
+          "musicTrack": "none",
+          "muted": true,
+          "sfxVolume": 0.8,
+          "musicVolume": 0.55,
+          "loaded": true
+        },
+        "opts": {
+          "music": 0.55,
+          "sfx": 0.8,
+          "shake": true,
+          "damageNumbers": true,
+          "muted": true,
+          "scale": 0
+        }
+      },
+      "after": {
+        "sfxPlayed": 7,
+        "voices": 0,
+        "musicTrack": "none",
+        "muted": true,
+        "sfxVolume": 0.8,
+        "musicVolume": 0.55,
+        "loaded": true
+      }
+    },
+    "reload": {
+      "opts": {
+        "music": 0.55,
+        "sfx": 0.8,
+        "shake": true,
+        "damageNumbers": true,
+        "muted": true,
+        "scale": 0
+      },
+      "audio": {
+        "sfxPlayed": 0,
+        "voices": 0,
+        "musicTrack": "none",
+        "muted": true,
+        "sfxVolume": 0.8,
+        "musicVolume": 0.55,
+        "loaded": true
+      }
+    },
+    "aggregation": {
+      "agg119": {
+        "enemies": 110,
+        "stats": {
+          "scene": "run",
+          "time": 0.2,
+          "level": 1,
+          "kills": 0,
+          "enemies": 110,
+          "hp": 250,
+          "maxHp": 250,
+          "fps": 57.8,
+          "weapons": [
+            {
+              "id": "ember",
+              "level": 1
+            }
+          ],
+          "passives": [],
+          "bossesDefeated": 0,
+          "bossesSpawned": [],
+          "bossFlags": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "boss": null,
+          "chestsDropped": 0,
+          "dawn": false,
+          "lod": {
+            "enemies": 0,
+            "fxCap": 180,
+            "particleCap": 280,
+            "trails": true,
+            "damageAggregate": false,
+            "gemCap": 180,
+            "level": "full"
+          },
+          "damageAggregate": false,
+          "fxAlpha": 1,
+          "paused": false,
+          "levelUpOpen": false,
+          "chestOpen": false,
+          "autoPlay": false,
+          "god": true,
+          "character": "mira"
+        }
+      },
+      "aggAt110": {
+        "scene": "run",
+        "time": 0.4,
+        "level": 1,
+        "kills": 0,
+        "enemies": 110,
+        "hp": 250,
+        "maxHp": 250,
+        "fps": 57.8,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "bossesDefeated": 0,
+        "bossesSpawned": [],
+        "bossFlags": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "boss": null,
+        "chestsDropped": 0,
+        "dawn": false,
+        "lod": {
+          "enemies": 0,
+          "fxCap": 180,
+          "particleCap": 280,
+          "trails": true,
+          "damageAggregate": false,
+          "gemCap": 180,
+          "level": "full"
+        },
+        "damageAggregate": false,
+        "fxAlpha": 1,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "autoPlay": false,
+        "god": true,
+        "character": "mira"
+      },
+      "aggAt130": {
+        "scene": "run",
+        "time": 0.5,
+        "level": 1,
+        "kills": 1,
+        "enemies": 129,
+        "hp": 250,
+        "maxHp": 250,
+        "fps": 57.8,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "bossesDefeated": 0,
+        "bossesSpawned": [],
+        "bossFlags": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "boss": null,
+        "chestsDropped": 0,
+        "dawn": false,
+        "lod": {
+          "enemies": 0,
+          "fxCap": 180,
+          "particleCap": 280,
+          "trails": true,
+          "damageAggregate": false,
+          "gemCap": 180,
+          "level": "full"
+        },
+        "damageAggregate": true,
+        "fxAlpha": 1,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "autoPlay": false,
+        "god": true,
+        "character": "mira"
+      }
+    },
+    "damageBeforeFinish": {
+      "scene": "run",
+      "time": 50.5,
+      "level": 1,
+      "xp": 0,
+      "xpNeed": 8,
+      "xpRatio": 0,
+      "hp": 250,
+      "maxHp": 250,
+      "kills": 281,
+      "enemies": 0,
+      "weapons": [
+        {
+          "id": "ember",
+          "level": 8
+        },
+        {
+          "id": "flail",
+          "level": 8
+        },
+        {
+          "id": "frost",
+          "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "passives": [],
+      "bossesDefeated": 0,
+      "boss": null,
+      "bossesSpawned": [],
+      "bossFlags": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "chestsDropped": 0,
+      "explosions": 0,
+      "elitesSpawned": 0,
+      "splitsSpawned": 12,
+      "dawn": false,
+      "enemyShots": 0,
+      "hazards": 0,
+      "enemyList": [],
+      "fps": 59.4,
+      "character": "mira",
+      "damageByWeapon": {
+        "ember": 892,
+        "frost": 772,
+        "storm": 2807,
+        "flail": 7857,
+        "thorn": 448,
+        "lantern": 132
+      },
+      "stats": {
+        "moveSpeedPct": 0,
+        "cooldownPct": 0,
+        "maxHpFlat": 0,
+        "maxHpPct": 0,
+        "regen": 1,
+        "xpPct": 0,
+        "pickupRadiusPct": 0,
+        "damagePct": 0,
+        "areaPct": 10,
+        "durationPct": 0,
+        "armorFlat": 0
+      },
+      "pickupRadius": 22,
+      "lod": {
+        "enemies": 0,
+        "fxCap": 180,
+        "particleCap": 280,
+        "trails": true,
+        "damageAggregate": false,
+        "gemCap": 180,
+        "level": "full"
+      },
+      "hitStop": 0,
+      "damageNumbers": 0,
+      "paused": false,
+      "levelUpOpen": false,
+      "chestOpen": false,
+      "chests": 0,
+      "autoPlay": false,
+      "god": true,
+      "player": {
+        "x": 2048,
+        "y": 2048,
+        "terrain": "grass"
+      }
+    },
+    "results": {
+      "scene": "results",
+      "reason": "dawn",
+      "entries": 6
+    }
+  },
+  "errors": []
+}
