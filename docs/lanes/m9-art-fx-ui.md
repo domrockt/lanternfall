@@ -13,6 +13,12 @@ Alle Belege mit `node scripts/shot.mjs` (960x540, debug=1, 0 JS-Fehler):
 - FX Evolutionen: `shots/m9-art-fx-ui-evo-{phoenix,wrath-pendulum,eternal-winter,thorn-storm,thunder-seal,soul-beacon}.png` (+.gif)
 Aufnahme 1-3 s nach Ausloesen, mit lebenden Gegnern, nicht nach dem Kampf.
 
+2x-Vergroesserungen (nearest, fuer die Abnahme):
+- `shots/m9-art-fx-ui-title-before-2x.png`
+- `shots/m9-art-fx-ui-icons-before-2x.png`
+- `shots/m9-art-fx-ui-weapon-*-2x.png` (6 Dateien)
+- `shots/m9-art-fx-ui-evo-*-2x.png` (6 Dateien)
+
 ## Maengelliste (art-director, vorher)
 - P1 Titel: Mond-Halo wirkt weich/quadratisch (ADD-Glow); harte Pixelringe, Stern-Gruppen
   und eine klarere Horizontkante fehlen.
@@ -21,6 +27,10 @@ Aufnahme 1-3 s nach Ausloesen, mit lebenden Gegnern, nicht nach dem Kampf.
 - P2 Font: Umlaute ok; einige Satzabstaende und fehlende Sonderzeichen pruefen.
 - P2 FX: Treffer-Funken zu klein; XP-Kristall und Truhen-Oeffnung als Beleg fehlen.
 - P3 9-Slice: Eckenkontrast zu gering (Rahmen wirkt oben flach).
+
+Offene Punkte (nicht in #318 untersucht, gehen in Karten #319-#322):
+- Nachher-Stand aus Versuch 1 zeigt einen dunklen Rechteck-Rand um den Mond; Urs Urs
+  Ursache wird in #319 geprueft und behoben.
 
 ## Abnahme-Kriterien
 - Build und alle Tests gruen, 0 JS-Fehler, art-director-Gesamturteil >= 4.5/5.
