@@ -24,7 +24,7 @@ export const GEMS: Record<GemSize, GemMeta> = {
  */
 export function xpToNext(level: number): number {
   const n = Math.max(1, level) - 1;
-  return 8 + Math.round(0.9 * n * n);
+  return 8 + Math.round(1.1 * n * n);
 }
 
 export interface XpState {

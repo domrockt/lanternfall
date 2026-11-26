@@ -920,7 +920,9 @@ export class Run extends Phaser.Scene {
   // ── XP / Level-up ────────────────────────────────────────────
   private giveXpInternal(amount: number): void {
     getAudio().play("xp");
-    const result = applyXp(this.xpState, amount);
+    // M6-Balance: Charakter-XP-Mod (Kael levelt langsamer, dafür tanky).
+    const gain = Math.max(0, amount * (1 + this.agg.xpPct / 100));
+    const result = applyXp(this.xpState, gain);
     this.xpState = {
       level: result.level,
       xp: result.xp,

@@ -78,6 +78,8 @@ export interface StatMods {
   maxHpPct?: number;
   /** +x HP pro Sekunde */
   regen?: number;
+  /** +x % XP-Gewinn (negativ = langsamer leveln) */
+  xpPct?: number;
   /** +x % Aufsammelradius */
   pickupRadiusPct?: number;
   /** +x % Waffenschaden */

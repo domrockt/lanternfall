@@ -917,8 +917,12 @@ export class CombatSystem {
 
   private hitEnemy(e: EnemyRuntime, damage: number, ctx: CombatContext, weaponId: string): boolean {
     const wasAlive = e.hp > 0;
+    // M6-Balance: Boss-Enrage. Ab 20 s Kampfdauer steigt der erlittene Schaden
+    // um 10 %/s, damit ein Boss nicht durch Positionierungs-/Trash-Pech 60 s
+    // überschreitet (beobachtete Ausreißer 88–99 s).
+    const scaled = e.boss && e.age > 20 ? damage * (1 + (e.age - 20) * 0.1) : damage;
     const crit = rollCrit(ctx.rng.next());
-    const finalDamage = crit ? critDamage(damage) : damage;
+    const finalDamage = crit ? critDamage(scaled) : scaled;
     e.hp -= finalDamage;
     e.flash = 0.12;
     // Crit ab 15 Schaden als eigene Feedback-Klasse sichtbar (weißer Blitz über Weiß-Kern).
