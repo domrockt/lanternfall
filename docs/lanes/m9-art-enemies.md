@@ -25,6 +25,19 @@ Bereich: src/gfx/gen-enemies.ts, src/gfx/enemySprites.ts; Generator scripts/art/
 - Vorher/Nachher: shots/m9-art-enemies-01-before.png und -after.png (alle Frames, 4x/6x).
   Nachher zeigt 4 Spalten pro Gegner statt vorher 2.
 
+## #298 Abnahme: Tier 0-1
+
+- Reproduzierbar: `python3 scripts/art/sheet-m9-tier.py` erzeugt alle Tier-Kontaktboegen
+  (3 Gegner je Bild, 4 Frames je Zeile, 6x, dunkler Moorgrund, Labels).
+- Tier 0-1-Belege: shots/m9-art-enemies-tier0-1.png, tier0-2.png,
+  tier1-1.png, tier1-2.png.  12 Gegner mit 4 Lauf-Frames (F1 != F3),
+  eindeutige Silhouetten, 3-Ton-Schattierung und 1-px-Kontur.
+- In-Game-Masse Tier 0-1: shots/m9-art-enemies-01-ing.png (165 Gegner), 0 JS-Fehler.
+- Vorher/Nachher: shots/m9-art-enemies-01-before.png und -after.png.
+- art-director-Urteil Tier 0-1: PASS, Note 4,5 (Silhouetten klar, in Massen
+  lesbar; nur Abzuege bei den Lauf-Frames der Banshee). Volles Urteil am Lane-Ende.
+- Build: #298 in (7170e47 + dieser Nachtrag). Alles gruen.
+
 ## Runzeile (fremd vergeben)
 
 src/scenes/Run.ts Zeile 1066 waehlt Gegner-Frames mit Math.min(2, frames.length); auch mit
