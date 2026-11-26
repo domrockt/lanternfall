@@ -24,13 +24,18 @@ Harness: `node scripts/balance.mjs --seeds 101,202,404 --characters mira,kael --
 |---|---|---|---|---|---|---|---|---|
 | 1 | mira | 101 | Tod | 21.4 | 27 | 1796 | phoenix + thorn_storm | `shots/m10-balance-main-mira-101.png` |
 | 2 | kael | 101 | Morgendämmerung | 30.6 | 29 | 7508 | wrath_pendulum + thorn_storm | `shots/m10-balance-main-kael-101.png` |
-| 3 | mira | 202 | Tod | 21.2 | 26 | 1715 | phoenix + thorn_storm | `shots/m10-balance-main-mira-202.png` |
+| 3 | mira | 202 | Tod | 21.2 | 26 | 1721 | phoenix + thorn_storm | `shots/m10-balance-main-mira-202.png` |
 | 4 | kael | 202 | Morgendämmerung | 30.8 | 27 | 11051 | wrath_pendulum + phoenix | `shots/m10-balance-main-kael-202.png` |
-| 5 | mira | 404 | Tod | 20.7 | 26 | 1600 | phoenix | `shots/m10-balance-main-mira-404.png` |
+| 5 | mira | 404 | Tod | 20.7 | 26 | 1612 | phoenix | `shots/m10-balance-main-mira-404.png` |
 | 6 | kael | 404 | Morgendämmerung | 30.7 | 36 | 9562 | wrath_pendulum + thunder_seal | `shots/m10-balance-main-kael-404.png` |
 
 Rohdaten: `shots/m10-balance-main-runs.json` (alle Minuten-Samples, Boss-Trace, DPS) und
 `shots/m10-balance-main-summary.json` (Harness-Summary). JS-Fehler: **0** (`jsErrors: []`).
+Hinweis (Abnahme-Nachzügler Versuch 2): Die Tabelle nutzt die **Rohdaten** aus `runs.json`/`result`.
+`summary.json` weicht bei zwei Mira-Läufen minimal ab (Kills 1715 statt 1721, 1600 statt 1612) und
+listet bei kael/404 Boss 2 mit 38 s statt 42 s; die Rohdaten sind maßgeblich, das Harness-Summary
+wird in einer Folgekarte auf dieselbe Quelle umgestellt. Die A/B-Gegnerdichte (136 @ 20 min) stammt aus
+dem Lauf-Log des A/B und ist im `m10-balance-ab640-summary.json` nicht persistiert.
 
 **Wichtigster Karte-1-Befund:** Kael/Seed 101 erreicht auf Basis `f26dc4b` **Level 29**, nicht 47.
 Der gemeldete Level-47-Lauf reproduziert auf diesem Stand nicht (Karte 3 prüft, warum).
@@ -48,7 +53,7 @@ Tod des Endbosses bei 30:00 (Sieg/Morgendämmerung).
 | mira/202 | 26 | JA | 21.2 (Tod) | JA | 23, 29, 32, 36 | JA | JA |
 | kael/202 | 27 | JA | 30.8 (Sieg) | JA | 33, 52, 49, 52, 47, 47 | JA | JA |
 | mira/404 | 26 | JA | 20.7 (Tod) | JA | 26, 44, 26, 26 | JA | JA |
-| kael/404 | 36 | JA | 30.7 (Sieg) | JA | 34, 38, 44, 38, 44, 38 | JA | JA |
+| kael/404 | 36 | JA | 30.7 (Sieg) | JA | 34, 42, 44, 38, 44, 38 | JA | JA |
 
 **Korridor-Quote**
 
@@ -64,7 +69,7 @@ Tod des Endbosses bei 30:00 (Sieg/Morgendämmerung).
 | Level am Ende | 26 | 27 | 36 |
 | Endzeit (min) | 20.7 | 26.0 | 30.8 |
 | Boss-Dauer (s, n=30) | 23 | 35.5 | 52 |
-| Kills | 1600 (mira/404) | — | 11051 (kael/202) |
+| Kills | 1612 (mira/404) | — | 11051 (kael/202) |
 
 Beobachtung: Kael siegt auf allen drei Seeds und tötet 7 508–11 051 Gegner, liegt aber nur bei
 Level 27–36. Mira stirbt auf allen drei Seeds in einem engen Band (20.7–21.4 min, Level 26–27).
@@ -103,9 +108,9 @@ A/B mit `--viewport 960x540 --dpr 2` (logisch 640×360, sonst identisch, gleiche
 
 | Lauf | logisch | Level | Kills | Evos | Gegner @20 min | Damage @30 min |
 |---|---|---|---|---|---|---|
-| Kael/101 (6-Run-Matrix) | 480×360 | 29 | 7 508 | 2 | 131 | 2,93 Mio |
-| Kael/101 A/B | 640×360 | **30** | **10 500** | 1 | 136 | 3,43 Mio |
-| Historisch 62a586f | 640×360 | **47** | 11 689 | 4 | 245 | 4,10 Mio |
+| Kael/101 (6-Run-Matrix) | 480×360 | 29 | 7 508 | 2 | 131 | 3,29 Mio |
+| Kael/101 A/B | 640×360 | **30** | **10 500** | 1 | 136 | n. e. (Summary ohne Damage-Feld) |
+| Historisch 62a586f | 640×360 | **47** | 11 689 | 4 | 245 | 4,51 Mio |
 
 Ergebnis: Die Geometrie erklärt die Killrate (+40 % Kills bei 640), aber **nur +1 Level** (29→30).
 Sie ist damit nicht die Hauptursache des Level-47-Sprungs.
@@ -171,4 +176,25 @@ Spawn-Budget bei 480×360, erklärt aber nur +1 Level Unterschied (A/B).
   committet; Karte 3 hat diese geschützten Pfade auf Basis f26dc4b zurückgesetzt. `git status` nach Karte 4
   ist sauber, in keinem Karten-Commit liegt eine Datei unter `shots/balance-*`, `src/**` oder `scripts/**`.
 - Board-Pflege macht der Merge-Job; die Karten-Checkliste steht oben in dieser Doku.
+
+## Abnahme Versuch 2 (2026-11-26)
+
+- **Umfang:** Alle vier Karten waren bereits committet (`7f8faec`, `df0a300`, `91dbadd`, `a25a642`); dieser
+  Durchgang prüfte sie gegen die Rohdaten, korrigierte drei Doku-Zahlen und schloss die Lane ab.
+- **Korrekturen (Doku an Rohdaten, nicht umgekehrt):** Kills mira/202 **1715 → 1721**, mira/404 **1600 → 1612**,
+  Kael/404 Boss 2 **38 → 42 s**, Damage-Spalte Kael/101 **2,93 → 3,29 Mio**, A/B-Damage **3,43 → n. e.**
+  (im `m10-balance-ab640-summary.json` nicht enthalten), historischer Lauf **4,10 → 4,51 Mio**
+  (`git show 62a586f:shots/balance-main-runs.json`).
+- **Selbst nachgerechnet aus `shots/m10-balance-main-runs.json`:** Korridor `passedAll` **6/6**, Bosse
+  **30/30** in 20–60 s; Level min/median/max **26/27/36**, Endzeit **20,7/26,0/30,8 min**, Boss-Dauer
+  **23/35,5/52 s**; `pageErrors` in allen 6 Läufen leer. Rechenlog in `~/tmp/m10-balance-qa/accept.log`.
+- **Build/Tests:** `npm run build` rc=0 (`✓ built in 581ms`), `npm test` **12 Files / 192 Tests grün**.
+- **Geschützte Pfade:** `git diff --name-only f26dc4b..HEAD` enthält nur `docs/lanes/m10-balance-qa.md`
+  und `shots/m10-balance-*`; keine Datei aus `index.html`, `public/`, `src/`, `scripts/`, `tests/`,  `shots/m8-*`, `shots/balance-*`, `shots/perf-*`, `.opencode/board.json`, `GAME.md`, `ART.md`.
+- **Einschränkung (ehrlich):** Die unabhängige Gegenprüfung durch den `acceptance-auditor`-Subagenten
+  scheiterte am Modellausfall („No model is loaded"). Es wird **kein** externer PASS behauptet; die obigen
+  Zahlen sind aus den committeten Rohdaten selbst nachgerechnet.
+- **Empfehlung bestätigt:** Viewport pinnen auf logisch 640×360 (`--viewport 1280x720 --dpr 1`), 10 Läufe;
+  falls erneut > Level 40, `xpToNext` stückweise 1,1 (<30) / 2,5 (≥30) — nachgerechnet: historischer
+  34 905-XP-Lauf L47 → **L39**, aktueller Maximal-Lauf L36 → **L32**, L29 bleibt **L29**.
 
