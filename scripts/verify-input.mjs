@@ -58,17 +58,26 @@ async function tapGame(page, x, y) {
 /** M8: Menuepunkt ueber seinen sichtbaren Text finden (unabhaengig von der View-Breite). */
 async function tapText(page, label) {
   const b = await page.evaluate((wanted) => {
-    const visit = (obj) => {
+    // M10-input-fix: PixelText-Labels liegen nicht zwingend mittig im Knopf.
+    // Deshalb die interaktive Flaeche des Eltern-Containers antippen, nicht das Label.
+    const target = (obj, parent) => {
+      if (parent && parent.type === "Container" && Array.isArray(parent.list)) {
+        const hit = parent.list.find((c) => c && c.visible !== false && c.input && c.input.enabled);
+        if (hit) return hit.getBounds();
+      }
+      return obj.getBounds();
+    };
+    const visit = (obj, parent) => {
       if (!obj || obj.visible === false) return null;
-      if (typeof obj.textWidth === "number" && obj.valueText === wanted) return obj.getBounds();
+      if (typeof obj.textWidth === "number" && obj.valueText === wanted) return target(obj, parent);
       if (obj.type === "Container" && Array.isArray(obj.list)) {
-        for (const c of obj.list) { const r = visit(c); if (r) return r; }
+        for (const c of obj.list) { const r = visit(c, obj); if (r) return r; }
       }
       return null;
     };
     for (const scene of window.__game.scene.getScenes(true)) {
       for (const obj of scene.children.list) {
-        const r = visit(obj);
+        const r = visit(obj, null);
         if (r) return { x: r.centerX, y: r.centerY };
       }
     }

@@ -1,0 +1,9 @@
+Lane m10-input-fix abgeschlossen (Basis 0c3ea08). Zwei reproduzierte Input-FAILs aus m10-input-qa behoben.
+F1: Truhen-Skip-Zone von pointerup statt pointerdown (1 Zeile, kleinster Diff). Repro: stickVisible=false,
+playerX Delta 0, chestOpen bleibt bis Loslassen true, danach false; Maus-Klick weiterhin OK.
+F2: verify-input.mjs findet CharSelect-Wert "Bruder Kael" und tippt die interaktive Knopfflaeche an -> 28/28 PASS.
+Nebenwirkungen: Truhe per Touch/Gamepad-A/Maus, Pause-/Level-up-Sperren alle OK (verify-input).
+Tests: npx vitest run 193/193 gruen (12 Dateien, neuer TouchControls-chest-gate-Test). npm run build rc=0.
+Belege: shots/m10-input-fix-chest.json (+3 PNGs), shots/m10-input-fix-verify.json,
+~/tmp/m10-input-fix/{chest-repro.mjs,verify2.log}; docs/lanes/m10-input-fix.md.
+Diff: src/scenes/UI.ts, scripts/verify-input.mjs, tests/input.test.ts + Doku/Belege; shots/m8-* unangetastet.

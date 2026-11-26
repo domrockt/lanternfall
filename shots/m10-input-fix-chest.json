@@ -1,6 +1,6 @@
 {
   "milestone": "M10-input-fix",
-  "baseSha": "0c3ea08b59aa8a899910d3559e26fc4e3732c075",
+  "baseSha": "3b49d41a4a16d8dd34730295109ffcb0536e1182",
   "checks": [
     {
       "name": "Truhe sperrt Gesten vor dem Touch (canMove=false, kein Stick, Truhe offen)",
@@ -49,6 +49,14 @@
       "movedPx": 0,
       "stickVisible": false,
       "identifier": null,
+      "ok": true
+    },
+    {
+      "name": "Maus-Klick uebernimmt die Truhe weiterhin und bewegt den Spieler nicht",
+      "openBeforeClick": true,
+      "chestOpen": false,
+      "movedPx": 0,
+      "stickVisible": false,
       "ok": true
     }
   ],
