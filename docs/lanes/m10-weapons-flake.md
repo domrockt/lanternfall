@@ -54,7 +54,7 @@ Roll-/Settle-Timing in der UI:
 - `src/scenes/UI.ts:450–459` — Rollnamen-Ticks alle `delay: 95`, `repeat: 7` (8 Ticks)
 - `src/scenes/UI.ts:455` — `pickRollName(rewards, tick++)`; `:807` zyklisch `rewards[tick % len]`
 - `src/scenes/UI.ts:465` — erster Slot settelt bei `1450 + i*220` ms und setzt `slot.level` → `rolling` wird false
-- `src/logic/text.ts:7` — `slotNameNames`/`slotNameLines(name, 13)`: erst ab >13 Zeichen zweizeilig
+- `src/logic/text.ts:7` — `slotNameLines(name, 13)`: erst ab >13 Zeichen zweizeilig
 
 ## Ursachen-Hypothese (Timing, nicht RNG)
 

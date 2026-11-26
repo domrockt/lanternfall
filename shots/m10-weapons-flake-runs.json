@@ -3,8 +3,23 @@
   "base_sha": "9477f33",
   "check": "chest-roll-names",
   "command": "node scripts/verify-weapons.mjs (12x seriell)",
-  "generated_at": "2026-11-26T20:04:17.177Z",
+  "generated_at": "2026-11-26T20:14:24.438Z",
   "runs": [
+    {
+      "run": 0,
+      "start_ms": null,
+      "end_ms": null,
+      "duration_ms": 262899,
+      "rc": 1,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [
+        "evolution-state"
+      ],
+      "jsErrors": [],
+      "passed": false,
+      "note": "Baseline vor dem 12er-Loop; evolution-state-Fehler, roll-names PASS"
+    },
     {
       "run": 1,
       "start_ms": 1795722186987,
@@ -64,13 +79,25 @@
       "failed": [],
       "jsErrors": [],
       "passed": true
+    },
+    {
+      "run": 6,
+      "start_ms": 1795723258891,
+      "end_ms": 1795723474107,
+      "duration_ms": 215216,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
     }
   ],
   "totals": {
-    "runs": 5,
-    "roll_pass": 5,
+    "runs": 7,
+    "roll_pass": 7,
     "roll_fail": 0,
     "flake_rate": 0,
-    "other_failures": 0
+    "other_failures": 1
   }
 }
