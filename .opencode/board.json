@@ -1124,16 +1124,21 @@
       "id": 61,
       "title": "robust-06 Abnahme: perf/flock + fullrun + realtime 3min + build/tests + docs + .lane-done",
       "description": "Alle Kriterien mit Belegen, docs/lanes/robust.md, .lane-done committen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T01:26:29Z",
           "by": "build",
           "text": "todo → doing: Abnahme: perf/fullrun/realtime/verify + Audits; docs/lanes/robust.md + .lane-done folgen."
+        },
+        {
+          "at": "2026-11-26T01:36:13Z",
+          "by": "build",
+          "text": "doing → done: Abnahme PASS: perf 60,1/57,8 FPS; fullrun FPS-Min 57,7 + Heap +11,9% (JS-Heap), Sieg/6 Truhen/0 Fehler; realtime --minutes 3 PASS; verify:robust PASS; 132 Tests, verify:weapons 12/12, verify:vfx 18/18, verify:terrain PASS. docs/lanes/robust.md + .lane-done committed."
         }
       ],
       "created": "2026-11-25T22:55:53Z",
-      "updated": "2026-11-26T01:26:29Z"
+      "updated": "2026-11-26T01:36:13Z"
     }
   ]
 }
