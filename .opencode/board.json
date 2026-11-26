@@ -2286,21 +2286,33 @@
       "id": 1379,
       "title": "m9-art-polish-02 Elite-Rim-Light im Chaos (art-02)",
       "description": "Elites bei Minute 25/300+ Gegnern mit engem 1-px-Rim in Palettenfarbe statt diffuse ADD-Aura. Abnahme: shots/art-polish-elites-chaos.png, vfx:read Near-White <= 4,16 %, vfx-check PASS.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T23:02:12Z",
+          "by": "build",
+          "text": "todo → doing: Start art-02: Elite-Aura von weisser ADD-Ring-Aura auf 1-px-Amber-Silhouetten-Rim umgestellt; Near-White nachher 4,14 % (Ziel <=4,16)."
+        }
+      ],
       "created": "2026-11-26T21:33:06Z",
-      "updated": "2026-11-26T21:33:06Z"
+      "updated": "2026-11-26T23:02:12Z"
     },
     {
       "id": 1380,
       "title": "m9-polish-03 HUD-/Level-up-Anker pruefen (art-03)",
       "description": "Bei 640x360 (16:9) und 780x360 (19.5:9) sicherstellen, dass Boss-Leiste, Banner und Level-up-Karte nicht ueberlappen; ein Shot je Auflaesung. Wenn sauber: Karte mit Beleg auf done, keine Aenderung.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "ui-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T23:02:12Z",
+          "by": "build",
+          "text": "todo → doing: Start art-03: HUD-Worst-Case-Shots 16:9 (640x360) und 19.5:9 (780x360) erzeugt, Pruefung laeuft."
+        }
+      ],
       "created": "2026-11-26T21:33:06Z",
-      "updated": "2026-11-26T21:33:06Z"
+      "updated": "2026-11-26T23:02:12Z"
     }
   ]
 }

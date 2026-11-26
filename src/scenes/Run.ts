@@ -1096,7 +1096,8 @@ export class Run extends Phaser.Scene {
         e.aura.setBlendMode(Phaser.BlendModes.NORMAL);
         e.aura.setTint(PAL[C.amber]);
         e.aura.setAlpha(0.92);
-        if (e.aura.texture.key !== e.sprite.texture.key) e.aura.setTexture(e.sprite.texture.key);
+        const frame = currentFrame(e.sprite);
+        if (currentFrame(e.aura) !== frame) applyTexture(e.aura, frame);
         const srcW = Math.max(8, e.aura.width);
         const rim = 1 + 2 / srcW;
         e.aura.setScale(e.sprite.scaleX * rim, e.sprite.scaleY * rim);

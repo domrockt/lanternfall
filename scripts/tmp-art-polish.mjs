@@ -34,7 +34,6 @@ try {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=13`);
   await startRun(page);
   await page.evaluate(() => {
-    window.__lf.setOption("scale", 1);
     window.__lf.god(true);
     window.__lf.setSuppressLevelUps(true);
     window.__lf.setTimeScale(0.02);
@@ -48,10 +47,10 @@ try {
     await page.evaluate(() => {
       window.__lf.setTimeScale(1);
       for (let i = 0; i < 6; i++) window.__lf.spawnBoss(i);
-      // Sofort einfrieren: Beleg zeigt den Spawn-Moment, nicht die Annäherung.
-      window.__game.scene.pause("run");
+      // Fast einfrieren: Beleg zeigt den Spawn-Moment, nicht die Annäherung.
+      window.__lf.setTimeScale(0.02);
     });
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(250);
     const data = await page.evaluate(() => {
       const sc = window.__game.scene.getScene("run");
       const cam = sc.cameras.main;
@@ -91,10 +90,19 @@ try {
       const sc = window.__game.scene.getScene("run");
       const cam = sc.cameras.main;
       const alive = sc.enemies.active.filter((e) => e.alive);
+      const firstElite = alive.find((e) => e.elite);
       return {
         time: Math.round(sc.elapsed),
         enemies: alive.length,
         elites: alive.filter((e) => e.elite).length,
+        eliteAura: firstElite ? {
+          texture: firstElite.aura.texture.key,
+          spriteTexture: firstElite.sprite.texture.key,
+          scale: firstElite.aura.scaleX,
+          alpha: firstElite.aura.alpha,
+          tint: firstElite.aura.tintTopLeft,
+          blend: firstElite.aura.blendMode,
+        } : null,
         lod: window.__lf.stats().lod,
         camera: { scrollX: Math.round(cam.scrollX), scrollY: Math.round(cam.scrollY), w: cam.width, h: cam.height },
       };
@@ -107,11 +115,12 @@ try {
     await page.evaluate(() => {
       window.__lf.teleport(2048, 2048);
       window.__lf.setTimeScale(1);
+      // Level-ups muessen fuer diesen Worst-Case wieder erlaubt sein.
+      window.__lf.setSuppressLevelUps(false);
       window.__lf.spawnBoss(0);
       window.__lf.giveXp(5000);
     });
     await page.waitForTimeout(900);
-    await clearLevelUps();
     await page.evaluate(() => {
       // Banner erneut zeigen, dann Level-up oeffnen: beide Overlays gleichzeitig.
       const ui = window.__game.scene.getScene("ui");
