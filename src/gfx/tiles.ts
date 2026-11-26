@@ -180,10 +180,9 @@ export function paintTerrain(
       const wy = oy + y;
       let col: number;
       if (k === 3) {
-        // Wasser: Tiefe 2/3, Basis 4, seichte Stellen 5.
-        const n = fbm(wx, wy, 27, seed + 17);
-        const d = depth[i];
-        col = d < 0.105 ? 2 : d < 0.155 ? 3 : n > 0.76 ? 5 : 4;
+        // Wasser: ruhige Mittellage blueGrey(5), nur tiefe Becken night(2).
+        // Kein per-Pixel-Noise mehr (das erzeugte 1-px-Sprenkel).
+        col = depth[i] < 0.095 ? 2 : 5;
       } else if (k === 2) {
         // Schlamm: dunkles, nasses Moor (3/14/15), kein großer Glutbraun-Block.
         const n = fbm(wx + 300, wy - 90, 26, seed + 5);
@@ -281,25 +280,25 @@ export function paintTerrain(
     }
   }
 
-  // Wasserbank (Land): 1 px feuchter Torf 14, dahinter Moos 28/29 statt eines
-  // geschlossenen Weg-Braunrings. Weltverankert, dadurch ausgefranste Ufer.
+  // Wasserbank (Land): Moos 29/30 statt eines rotbraunen Glutrings.
+  // Weltverankert, dadurch ausgefranste Ufer.
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const k = codeAt(x, y);
       if (k === 3) continue;
       const hsh = tileHash(Math.floor((ox + x) / 4), Math.floor((oy + y) / 4), seed + 211);
-      if (atDist(x, y, 1, 3)) setPx(x, y, hsh > 0.5 ? 14 : 3);
+      if (atDist(x, y, 1, 3)) setPx(x, y, hsh > 0.5 ? 29 : 30);
       else if (atDist(x, y, 2, 3)) setPx(x, y, hsh > 0.55 ? 28 : 29);
       else if (atDist(x, y, 3, 3)) setPx(x, y, hsh > 0.4 ? 28 : 29);
     }
   }
 
-  // Wasserufer (Wasser): 1–2-px-Schaum mit Lücken, Lichtseite 8, Schattenseite 7,
-  // Innenring 6/5; Süd/Ost bis 3 px nach innen zusätz dunkler (3→2) für Tiefe.
+  // Wasserufer (Wasser): saubere Tiefen-Staffel ohne Rauschpixel.
+  // Oben-links 1-px-Highlight paleMist(9), darunter mist(8);
+  // unten-rechts 2-px-Schatten nightDeep(1)/night(2), Mittellage 5.
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       if (codeAt(x, y) !== 3) continue;
-      const hsh = tileHash(Math.floor((ox + x) / 5), Math.floor((oy + y) / 5), seed + 223);
       const n1 = codeAt(x, y - 1) !== 3;
       const e1 = codeAt(x + 1, y) !== 3;
       const s1 = codeAt(x, y + 1) !== 3;
@@ -308,15 +307,10 @@ export function paintTerrain(
       const e2 = codeAt(x + 2, y) !== 3;
       const s2 = codeAt(x, y + 2) !== 3;
       const w2 = codeAt(x - 2, y) !== 3;
-      const s3 = codeAt(x, y + 3) !== 3;
-      const e3 = codeAt(x + 3, y) !== 3;
-      // Schaumkante mit Lücken (etwa jedes fünfte Pixel bleibt Wasser).
-      // Schaumkante mit sichtbaren 2–3-px-Lücken (ca. 30 % der Randpixel).
-      if ((n1 || w1) && hsh > 0.30) setPx(x, y, 8);
-      else if ((e1 || s1) && hsh > 0.30) setPx(x, y, 7);
-      else if (n2 || w2) setPx(x, y, 6);
-      else if (e2 || s2) setPx(x, y, 5);
-      else if (e3 || s3) setPx(x, y, 3);
+      if (n1 || w1) setPx(x, y, 9);
+      else if (n2 || w2) setPx(x, y, 8);
+      else if (s1 || e1) setPx(x, y, 1);
+      else if (s2 || e2) setPx(x, y, 2);
     }
   }
 
@@ -392,20 +386,29 @@ export function paintTerrain(
           ctx.fillRect(px + 9, py + 12, 2, 1);
         }
       } else if (k === 3) {
-        // Statische Wellengruppen (die Animation läuft als Sprite-Overlay):
-        // dichter und mit hellem Kamm 5/-links, damit Wasser bei 1× nicht flach wirkt.
-        if (r > 0.48) {
-          const groups = r > 0.78 ? 3 : 2;
+        // Statische Wellen (Animation läuft als Sprite-Overlay):
+        // 3–5-px-Segmente in 2 Tönen, pro Gruppe 4 px versetzt.
+        // Kamm mist(8)/paleMist(9), Schattenseite fogBlue(6)/fog(7).
+        // Nur ruhige Wasserflächen (≥4 px vom Ufer) bekommen Wellen.
+        const cx0 = gx - pad;
+        const cy0 = gy - pad;
+        if (r > 0.42 && !atDist(cx0, cy0, 4, 3)) {
+          const groups = r > 0.75 ? 3 : 2;
           for (let wv = 0; wv < groups; wv++) {
-            const wx = px + 1 + Math.floor(tileHash(tx + wv, ty + 2, seed + 301) * 7);
-            const wy = py + 2 + wv * 5 + Math.floor(tileHash(tx + 1, ty + wv, seed + 307) * 3);
-            const wlen = 5 + Math.floor(tileHash(tx + wv, ty + 9, seed + 311) * 4);
-            ctx.fillStyle = hex(6);
-            ctx.fillRect(wx, wy, wlen, 2);
-            ctx.fillStyle = hex(7);
-            ctx.fillRect(wx + 1, wy, Math.max(2, wlen - 2), 1);
-            ctx.fillStyle = hex(5);
-            ctx.fillRect(wx + 2, wy, Math.max(2, wlen - 4), 1);
+            const wx = px + 1 + wv * 4 + Math.floor(tileHash(tx + wv, ty + 2, seed + 301) * 2);
+            const wy = py + 2 + wv * 4 + Math.floor(tileHash(tx + 1, ty + wv, seed + 307) * 2);
+            const wlen = 3 + Math.floor(tileHash(tx + wv, ty + 9, seed + 311) * 3);
+            if (wv % 2 === 0) {
+              ctx.fillStyle = hex(9);
+              ctx.fillRect(wx, wy, wlen, 1);
+              ctx.fillStyle = hex(8);
+              ctx.fillRect(wx + 1, wy + 1, Math.max(2, wlen - 1), 1);
+            } else {
+              ctx.fillStyle = hex(7);
+              ctx.fillRect(wx, wy, wlen, 1);
+              ctx.fillStyle = hex(6);
+              ctx.fillRect(wx + 1, wy + 1, Math.max(2, wlen - 1), 1);
+            }
           }
         }
       } else if (k === 1) {
