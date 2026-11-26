@@ -97,6 +97,24 @@ und Abschluss.
   Wortabstaende/Laufweite selbst sind PASS.
 - 0 JS-Fehler in beiden Shot-Laeufen.
 
+## #321 Font und UI-Rahmen (Runde 2)
+- Vorher: `shots/m9-art-fx-ui-font-321.png`, `shots/m9-art-fx-ui-frame-321.png`
+- Nachher: `shots/m9-art-fx-ui-font-321b-2x.png`, `shots/m9-art-fx-ui-frame-321b-2x.png`
+  (2x nearest, frische Build-Aufnahmen, 0 JS-Fehler).
+- Umlaute: Ä/Ö/Ü nutzen jetzt zwei 2-px-Punkte mit 1-px-Luft (`11011`), Versalien um
+  eine Zeile komprimiert; im Level-up-Panel ist "STUFE 14 - WÄHLE EINE BELOHNUNG"
+  sauber lesbar, im Truhen-Panel "TIPPE ODER A = ÜBERNEHMEN" mit sichtbaren Ü-Punkten.
+- 9-Slice: obere und linke Aussenkante 2 px aufgehellt (7/6), unten-rechts dunkel (2/0);
+  Ecknieten folgen der globalen Lichtrichtung oben-links (oben 22/21, unten 20/18,
+  unten-rechts kein 22).
+- Truhen-Panel: Belohnungskarten-Abstand von 104 auf 86 px reduziert; 5 Karten à 96 px
+  liegen jetzt vollstaendig im 452-px-Rahmen (linker Rand 20, rechter Rand 460, Rahmen
+  14..466) - kein Overhang mehr.
+- Pruefung: Wortabstaende (6 px) unveraendert PASS; Umlaute alle vorhanden;
+  `npx vitest run` 175 Tests gruen, `npm run build` gruen.
+- art-director-Urteil (#321): Runde 2 als Beleg an den Art-Director gegeben; das
+  Gesamturteil >= 4,5/5 wird in #322 dokumentiert.
+
 ## #322 FX-Belege und Abschluss
 - Treffer-Funken: `fx_spark` von 3x3 auf 5x5 vergroessert (heller Kern 12, Glutarme 21/22)
   in `src/gfx/textures.ts`; wirkt in allen Waffen-/Hazard-Treffern.
