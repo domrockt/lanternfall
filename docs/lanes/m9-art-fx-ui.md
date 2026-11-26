@@ -74,3 +74,16 @@ und Abschluss.
 - Pruefung: Umlaute lesbar, keine zusammengeklebten Woerter, Eckenkontrast hoeher.
 - art-director-Urteil (#321): ausstehend (Belege liegen bereit).
 - 0 JS-Fehler in beiden Shot-Laeufen.
+
+## #322 FX-Belege und Abschluss
+- Treffer-Funken: `fx_spark` von 3x3 auf 5x5 vergroessert (heller Kern 12, Glutarme 21/22)
+  in `src/gfx/textures.ts`; wirkt in allen Waffen-/Hazard-Treffern.
+- XP-Kristalle: `shots/m9-art-fx-ui-xp-322.png` (+ `.gif`), Zeit
+  eingefroren direkt nach dem Drop, alle drei Kristallgroessen + lebende Gegner im Bild.
+- Truhen-Oeffnung: `shots/m9-art-fx-ui-chest-322.png` (+ `.gif`, 16 Frames), Panel mit
+  offener, gluehender Truhe und Belohnung; Gegner wurden nachgespawnt.
+- 0 JS-Fehler in beiden Laeufen.
+- `npm run build` gruen, `npx vitest run` **175 Tests gruen** (10 Dateien).
+- Aufraeumen: getrackte Temp-Belege `.arts/` (12 png, .arts/iconan-Skripte) entfernt —
+  keine Deliverables; `shots/zz-icons-*.png` und `zz/` geloescht.
+- art-director-Gesamturteil (#322): ausstehend (Belege liegen bereit).

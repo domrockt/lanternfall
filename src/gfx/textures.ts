@@ -327,8 +327,15 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
     ],
   },
   fx_spark: {
-    w: 3, h: 3,
-    rows: [".m.", "mmm", ".m."],
+    w: 5, h: 5,
+    // Groesserer Treffer-Funken: heller Kern (12) mit Glutarmen (21/22).
+    rows: [
+      "..m..",
+      ".mlm.",
+      "mlclm",
+      ".mlm.",
+      "..m..",
+    ],
   },
   orb_lantern: {
     w: 9, h: 9,
