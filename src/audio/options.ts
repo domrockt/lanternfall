@@ -8,6 +8,8 @@ export interface Options {
   sfx: number;          // 0..1
   shake: boolean;
   damageNumbers: boolean;
+  /** Alle Audio-Ausgaben stumm (Master-Mute, Vorrang vor Musik/SFX). */
+  muted: boolean;
   /** 0 = automatisch (größtes ganzzahliges Vielfaches), 1..3 = fest. */
   scale: number;
 }
@@ -17,6 +19,7 @@ export const DEFAULT_OPTIONS: Options = {
   sfx: 0.8,
   shake: true,
   damageNumbers: true,
+  muted: false,
   scale: 0,
 };
 export const OPTIONS_KEY = "lanternfall-options-v1";
@@ -75,6 +78,7 @@ export function loadOptions(storage: StorageLike | null | undefined): Options {
       damageNumbers: typeof parsed.damageNumbers === "boolean"
         ? parsed.damageNumbers
         : DEFAULT_OPTIONS.damageNumbers,
+      muted: typeof parsed.muted === "boolean" ? parsed.muted : DEFAULT_OPTIONS.muted,
       scale: clampScale(Number(parsed.scale ?? DEFAULT_OPTIONS.scale)),
     };
   } catch {
@@ -90,6 +94,7 @@ export function saveOptions(storage: StorageLike | null | undefined, options: Op
       sfx: clampVolume(options.sfx),
       shake: Boolean(options.shake),
       damageNumbers: Boolean(options.damageNumbers),
+      muted: Boolean(options.muted),
       scale: clampScale(options.scale),
     }));
   } catch { /* Quota/Privacy-Mode: still ignorieren */ }
@@ -100,6 +105,7 @@ export function setOption(options: Options, key: keyof Options, value: number | 
   const next = { ...options };
   if (key === "shake") next.shake = Boolean(value);
   else if (key === "damageNumbers") next.damageNumbers = Boolean(value);
+  else if (key === "muted") next.muted = Boolean(value);
   else if (key === "scale") next.scale = clampScale(Number(value));
   else next[key] = clampVolume(Number(value));
   return next;
@@ -110,7 +116,7 @@ export const OPTION_STEP = 0.1;
 
 /** Zeilen des Optionsmenüs (eine Quelle für Titel + Pause + Tests). */
 export const OPTION_ROWS = [
-  "MUSIK", "SFX", "SCREEN-SHAKE", "DAMAGE-NUMBERS", "SKALIERUNG", "ZURÜCK",
+  "MUSIK", "SFX", "SCREEN-SHAKE", "DAMAGE-NUMBERS", "MASTER MUTE", "SKALIERUNG", "ZURÜCK",
 ] as const;
 
 /** Anzeigetext des Werts einer Optionszeile. */
@@ -120,7 +126,8 @@ export function optionValueLabel(options: Options, row: number): string {
     case 1: return `${Math.round(options.sfx * 100)}%`;
     case 2: return options.shake ? "AN" : "AUS";
     case 3: return options.damageNumbers ? "AN" : "AUS";
-    case 4: return scaleLabel(options.scale);
+    case 4: return options.muted ? "STUMM" : "AN";
+    case 5: return scaleLabel(options.scale);
     default: return "";
   }
 }
@@ -133,7 +140,8 @@ export function stepOption(options: Options, row: number, delta: number): Option
   }
   if (row === 2) return setOption(options, "shake", !options.shake);
   if (row === 3) return setOption(options, "damageNumbers", !options.damageNumbers);
-  if (row === 4) {
+  if (row === 4) return setOption(options, "muted", !options.muted);
+  if (row === 5) {
     return setOption(options, "scale", options.scale + (delta > 0 ? 1 : -1));
   }
   return options;

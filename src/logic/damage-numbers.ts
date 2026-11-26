@@ -22,6 +22,17 @@ export interface AggregateEntry {
 export const AGGREGATE_WINDOW = 0.45;
 
 /**
+ * Ab dieser Gegnerzahl werden Damage-Numbers grundsätzlich zusammengefasst
+ * (M6-Nachtrag: schon ab ~120 Gegnern statt erst im LOD-Pfad > 250).
+ */
+export const DAMAGE_AGGREGATE_MIN_ENEMIES = 120;
+
+/** Zusammenfassen, wenn LOD es verlangt oder die Horde groß genug ist. */
+export function shouldAggregateDamage(enemies: number, lodAggregate: boolean): boolean {
+  return lodAggregate || Math.max(0, Math.floor(enemies)) >= DAMAGE_AGGREGATE_MIN_ENEMIES;
+}
+
+/**
  * Fügt ein Ereignis in die Liste ein. Liegt für denselben Gegner bereits ein
  * Eintrag innerhalb des Fensters, wird summiert (Krit bleibt erhalten).
  */

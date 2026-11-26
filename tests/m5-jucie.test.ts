@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { lodFor, LOD_THRESHOLD } from "../src/logic/lod";
+import { lodFor, LOD_THRESHOLD, fxAlphaFor } from "../src/logic/lod";
 import {
   addDamage, expireDamage, damageLabel, rollCrit, critDamage, AGGREGATE_WINDOW,
+  shouldAggregateDamage, DAMAGE_AGGREGATE_MIN_ENEMIES,
   type AggregateEntry,
 } from "../src/logic/damage-numbers";
 import { clampShake, hitStopFor, knockbackFor, shakeFor, MAX_SHAKE_PX } from "../src/logic/feedback";
@@ -31,6 +32,11 @@ describe("M5 LOD-Schwellen", () => {
     expect(lod.particleCap).toBeLessThanOrEqual(160);
     expect(lod.gemCap).toBeLessThanOrEqual(120);
   });
+  it("Effekt-Alpha sinkt im Endgame (M6-Lesbarkeit)", () => {
+    expect(fxAlphaFor("full")).toBe(1);
+    expect(fxAlphaFor("reduced")).toBeLessThan(1);
+    expect(fxAlphaFor("minimal")).toBeLessThan(fxAlphaFor("reduced"));
+  });
   it("Boss-Druck hebt die LOD-Stufe (55 FPS im Endkampf)", () => {
     expect(lodFor(10, true).level).toBe("reduced");
     expect(lodFor(10, true).fxCap).toBeLessThan(lodFor(10).fxCap);
@@ -40,6 +46,13 @@ describe("M5 LOD-Schwellen", () => {
 });
 
 describe("Damage-Number-Zusammenfassung", () => {
+  it("ab 120 Gegnern wird unabhaengig vom LOD zusammengefasst", () => {
+    expect(shouldAggregateDamage(DAMAGE_AGGREGATE_MIN_ENEMIES - 1, false)).toBe(false);
+    expect(shouldAggregateDamage(DAMAGE_AGGREGATE_MIN_ENEMIES, false)).toBe(true);
+    expect(shouldAggregateDamage(500, false)).toBe(true);
+    expect(shouldAggregateDamage(300, true)).toBe(true);
+    expect(shouldAggregateDamage(10, true)).toBe(true);
+  });
   it("summiert Treffer desselben Gegners im Fenster", () => {
     const list: AggregateEntry[] = [];
     addDamage(list, { enemyUid: 7, damage: 10, crit: false, time: 1 });
@@ -145,10 +158,10 @@ describe("Optionen-Persistenz", () => {
   it("speichert und lädt gerundet/validiert", () => {
     const s = memStorage();
     saveOptions(s, {
-      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, scale: 2,
+      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, muted: false, scale: 2,
     });
     expect(loadOptions(s)).toEqual({
-      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, scale: 2,
+      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, muted: false, scale: 2,
     });
   });
   it("kaputtes JSON und ungueltige Werte → Defaults/Clamp", () => {

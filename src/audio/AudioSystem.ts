@@ -248,5 +248,7 @@ export function getAudio(): AudioSystem {
 /** Optionen setzen und Audio sofort anwenden (UI/Debug). */
 export function applyOptions(next: ReturnType<typeof getSettings>): void {
   setSettings(next);
+  // Master-Mute hat Vorrang: setMuted stoppt Musik und blockt alle SFX.
+  getAudio().setMuted(next.muted);
   getAudio().updateSettings();
 }

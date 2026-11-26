@@ -3,7 +3,7 @@ import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { DEPTH } from "../gfx/depth";
 import {
-  addDamage, expireDamage, damageLabel, type AggregateEntry,
+  addDamage, expireDamage, damageLabel, shouldAggregateDamage, type AggregateEntry,
 } from "../logic/damage-numbers";
 import type { LodState } from "../logic/lod";
 
@@ -65,7 +65,7 @@ export class DamageNumberSystem {
       const sy = y - cam.scrollY;
       if (sx < -24 || sy < -24 || sx > cam.width + 24 || sy > cam.height + 24) return;
     }
-    const aggregate = this.lod?.damageAggregate ?? false;
+    const aggregate = shouldAggregateDamage(this.lod?.enemies ?? 0, this.lod?.damageAggregate ?? false);
     if (!aggregate) {
       addDamage(this.entries, { enemyUid: uid, damage, crit, time: this.clock });
     } else {
@@ -99,7 +99,8 @@ export class DamageNumberSystem {
 
   update(dt: number, camera?: Phaser.Cameras.Scene2D.Camera): void {
     this.clock += dt;
-    expireDamage(this.entries, this.clock, this.lod?.damageAggregate ? 1.3 : 1.1);
+    const aggregate = shouldAggregateDamage(this.lod?.enemies ?? 0, this.lod?.damageAggregate ?? false);
+    expireDamage(this.entries, this.clock, aggregate ? 1.3 : 1.1);
     for (const v of this.views) {
       if (!v.active) continue;
       v.life -= dt;

@@ -128,13 +128,15 @@ export function installDebugApi(game: Phaser.Game): void {
     /** M5-Abnahme: Ereignis-Overlays für Waffen-GIFs abschalten. */
     setSuppressFx: (value: boolean) => requireRun().debugSetSuppressFx(Boolean(value)),
     setSuppressLevelUps: (value: boolean) => requireRun().debugSetSuppressLevelUps(Boolean(value)),
+    /** M6-Abnahme: Endgame-Effekt-Dämpfung für Vorher/Nachher-Shots schalten. */
+    setFxDamping: (value: boolean) => requireRun().setFxDamping(Boolean(value)),
 
     /** M5-Audio/Options (immer verfügbar, keine Cheats). */
     audio: () => getAudio().debugState(),
     options: () => getSettings(),
     setOption: (key: string, value: number | boolean) => {
       if (key !== "music" && key !== "sfx" && key !== "shake"
-        && key !== "damageNumbers" && key !== "scale") {
+        && key !== "damageNumbers" && key !== "muted" && key !== "scale") {
         throw new Error(`window.__lf.setOption: unbekannter Schlüssel "${key}"`);
       }
       applyOptions(changeSetting(key, value));
