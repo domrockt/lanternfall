@@ -102,6 +102,8 @@ async function snapshot(page) {
         bossesSpawned: (run.bossesSpawned ?? []).slice(),
         chestsDropped: run.chestsDropped ?? 0,
         bossDeaths: [...(window.__balanceTrace?.bossDeaths ?? [])],
+        levelUpOpen: Boolean(run.levelUpOpen),
+        chestOpen: Boolean(run.chestOpen),
       };
     }
     const results = game?.scene?.getScene("results");
@@ -212,6 +214,11 @@ async function runOnce(seed, character, setup, maxSimSeconds = 33 * 60) {
         });
       }
       const s = await snapshot(page);
+      // Stehender Spieler (Todesbeleg ohne Bot): Level-up-Dialog automatisch
+      // wegklicken, sonst pausiert der Run und es gibt keinen Tod.
+      if (setup?.stationary && s.scene === "run" && s.levelUpOpen) {
+        await page.evaluate(() => window.__lf.pickLevelUp(0));
+      }
       if (s.scene === "results") {
         trace.outcome = s.reason === "dawn" ? "dawn" : "death";
         trace.deathSecond = Math.round(s.time * 10) / 10;
@@ -348,13 +355,16 @@ if (mode === "death" || mode === "all") {
   // AutoPlay-Bot mit diesem Charakter sonst jeden Seed gewinnt.
   const deathSeeds = String(args.deathSeeds ?? "").split(",").map((s) => Number(s.trim())).filter(Number.isFinite);
   const idleDeath = String(args.deathIdleChars ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const stationaryDeath = String(args.deathStationaryChars ?? "").split(",").map((s) => s.trim()).filter(Boolean);
   for (let i = 0; i < chars.length; i++) {
     const character = chars[i];
     console.log(`[balance] Todeslauf ${character} ...`);
     // Seeds bewusst so gewählt, dass beide Charaktere ohne god sterben und der
     // Results-/Game-Over-Screen ausgelöst wird.
+    const stationary = stationaryDeath.includes(character);
     deathRuns.push(await runOnce(deathSeeds[i] ?? (character === "mira" ? 101 : 505), character, {
-      autoPlay: !idleDeath.includes(character),
+      autoPlay: !stationary && !idleDeath.includes(character),
+      stationary,
     }));
     const t = deathRuns[deathRuns.length - 1];
     console.log(`[balance]   -> ${t.outcome} @ ${t.passed.survivalMinutes} min, Level ${t.passed.levelAtEnd}, ${t.wallSeconds}s wall`);
