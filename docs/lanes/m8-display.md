@@ -74,11 +74,25 @@ konkurrierende Messlast: Balance-Läufe sind CPU-empfindlich, parallele Läufe v
 
 ### Performance/FPS 780×360
 
-folgt nach dem Lauf.
+`node scripts/perf.mjs --viewport 780x360 --dpr 3 --tag m8-780` (2026-11-26):
+
+| Messung | FPS | Worst-Frame | Gegner | Ziel | Ergebnis |
+|---|---|---|---|---|---|
+| Burst (10 s) | 59,1 (gemessen 57,3) | 33,4 ms | 500 | ≥55 | PASS |
+| Minute 25 | 40,2 (gemessen 40,9) | 33,5 ms | 300 | ≥55 | FAIL |
+
+Der Burst hält das Ziel; im dichten Endgame bei 780×360 @ dpr 3 bricht die
+Frame-Rate auf ~40 FPS ein. Das ist der offene Punkt zu Karte #638
+(perf-780-01); `jsErrors` bleibt 0. Voll-Lauf-Beleg:
+`shots/m3-fullrun-m8-780.json` (Sieg/Dawn, Sim-Minuten 30,2, fpsMin 29,5 unter
+Messlast, Heap +16,7 % vs. Minute 1 – dokumentiert, nicht schöngerechnet).
 
 ### verify-display
 
-folgt nach dem Lauf.
+`node scripts/verify-display.mjs`: 38/38 Checks PASS, 0 JS-Fehler
+(`shots/m8-display.json`, `passed: true`). Abgedeckt: View/Skalierung für
+hd/uhd/wqhd15/laptop/iphone14/pixel7/ipadpro, Touch-Minute ≥50 Sim-Sekunden,
+Hochkant-Dreh-Overlay + Pause.
 
 ## Offene Punkte
 
@@ -87,3 +101,8 @@ folgt nach dem Lauf.
   des alten M6-Skripts ist nicht Teil dieser Lane.
 - `scripts/verify-input.mjs` wurde auf dynamische Text-/Karten-Taps umgestellt
   (Joystick/Pause/Level-up/Truhe), damit die Touch-Abnahme bei 860×360 läuft.
+- **Offen (#638):** Minute 25 bei 780×360 @ dpr 3 liefert 40,2 FPS statt ≥55.
+  Burst (500 Gegner) ist mit 59,1 FPS grün. Ursache ist die hohe Gerätepixel-
+  fläche (2340×1080 bei dpr 3); Optimierung ist eigene Karte #638 (engine-dev).
+- Temp-Dateien `scripts/tmp-perf-split.mjs` und Profil-Skripte (`profile*.mjs`)
+  sind keine Deliverables und werden nicht mitgemergt.
