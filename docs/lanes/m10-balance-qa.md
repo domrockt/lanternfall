@@ -132,5 +132,43 @@ verursacht durch AutoPlay-/Build-Divergenz; XP-Kurve (`src/logic/xp.ts:21`), Gem
 Die M8-Geometrie (`src/logic/scaling.ts:52`) ist Mitursache der Killrate (−13,4 % Spawn-Budget bei 480×360),
 aber nicht des Level-Sprungs.
 
-## Karte 4 — Report/Empfehlung folgt
+## Karte 4 — Report, Empfehlung und Test-Beleg
+
+### Empfehlung für die nächste Balance-Lane
+
+**1. Harness-Geometrie pinnen (Messparameter, kein Spiel-Balance-Eingriff):**
+`--viewport 1280x720 --dpr 1` statt Default 960×540. Damit liefert `computeView` logisch **640×360**
+(M6-Referenz). Gemessener Effekt des A/B: Kills **7 508 → 10 500 (+39,9 %)**, Level **29 → 30 (+1)**,
+Gegnerdichte Minute 20 **131 → 136**. Erwartung: vergleichbare Killraten zu M6/62a586f, ohne den Level-Korridor
+zu verschieben. Zusätzlich 10 statt 6 Läufe (Seeds 101/202/303/404/505 × Mira/Kael), weil die effektive
+XP/Kill zwischen 0,82 und 2,99 streut (Faktor 3,6).
+
+**2. Nur falls eine 10-Run-Matrix erneut > Level 40 liefert — gezielter Kurven-Hebel:**
+`src/logic/xpToNext` (xp.ts:21) stückweise: Koeffizient **1,1 für Level < 30, 2,5 für Level ≥ 30**
+(Richtung: späte XP-Kosten erhöhen). Aus derselben Kumulativ-Kurve gerechnet:
+- historischer 34 905-XP-Lauf (**L47**) → **L39** (im Korridor)
+- aktueller Maximal-Lauf **L36** (15 335 XP) → **L32**
+- aktuelle Läufe **L26–L29** bleiben unverändert (unter der Schwelle 30)
+Ein globaler Koeffizient 1,7 würde den 47er-Lauf zwar auf 40 drücken, aber die aktuellen Mira-Läufe von
+26 auf 24 schieben (unter die Korridorgrenze 25) — deshalb stückweise statt global.
+Der Hebel ist eine Empfehlung, keine Änderung in dieser Lane.
+
+**3. Ursachen-Fazit:** Der offene Punkt „Kael/101 Level 47“ ist auf Basis f26dc4b **nicht reproduzierbar**.
+6/6 Läufe liegen im Korridor (Level 26–36). Der historische 47er-Lauf ist ein XP-Aufsammel-Ausreißer
+(2,99 vs. 0,82–1,05 effektive XP/Kill), begünstigt durch Aura-/Nahkampf-Evolutionen und Charm; XP-Kurve,
+Gem-Werte, spawnRate, TIER_MIXES und enemyHpScale sind unverändert. Die M8-View-Geometrie kostet 13,4 %
+Spawn-Budget bei 480×360, erklärt aber nur +1 Level Unterschied (A/B).
+
+### Test-Beleg (Karte 4, Basis f26dc4b)
+
+- `npm run build` → rc=0, `✓ built in 869ms`
+- `npm test` → rc=0, **12 Test Files / 192 Tests passed**
+- Keine JS-Fehler in allen 6 Balance-Läufen (`jsErrors: []`)
+
+### Lane-Hinweise
+
+- Ein Supervisor-Snapshot (`1b47f3f`) hatte versehentlich `shots/balance-main-*` und `.opencode/board.json`
+  committet; Karte 3 hat diese geschützten Pfade auf Basis f26dc4b zurückgesetzt. `git status` nach Karte 4
+  ist sauber, in keinem Karten-Commit liegt eine Datei unter `shots/balance-*`, `src/**` oder `scripts/**`.
+- Board-Pflege macht der Merge-Job; die Karten-Checkliste steht oben in dieser Doku.
 
