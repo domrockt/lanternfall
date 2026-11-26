@@ -71,3 +71,66 @@ Level 27–36. Mira stirbt auf allen drei Seeds in einem engen Band (20.7–21.4
 Der Level-47-Befund tritt in keinem der sechs Läufe auf; Maximum ist **36** (kael/404).
 Boss-Dauern sind unauffällig bis auf kael/202 (47–52 s, nahe Obergrenze 60 s).
 
+## Karte 3 — Ursache des Level-47-Laufs (Basis f26dc4b)
+
+Verglichen wird der historische Lauf aus `docs/lanes/balance.md` (Commit **62a586f**, reproduzierbar per
+`git show 62a586f:shots/balance-main-runs.json`, Lauf 2) mit den sechs Läufen auf Basis f26dc4b und einem
+gezielten A/B-Lauf mit M6-Referenzgeometrie. Kennzahlen des alten Laufs als Beleg:
+`shots/m10-balance-ref-kael101-L47.json`; A/B-Beleg: `shots/m10-balance-ab640-summary.json`.
+
+### Kandidaten-Check per git diff 62a586f..HEAD
+
+| Kandidat | Datei | Befund | Bewertung |
+|---|---|---|---|
+| XP-Kurve | `src/logic/xp.ts` Zeile 21–23: `8 + Math.round(1.1 * n * n)` | **unverändert** seit 543f885 | ausgeschlossen |
+| Gem-Werte | `src/logic/xp.ts` Zeile 11–15: small 2 / medium 6 / large 18 | unverändert | ausgeschlossen |
+| spawnRate | `src/data/waves.ts` Zeile 36: `0.38 + minute*0.06 + tierProgress*0.04` | unverändert | ausgeschlossen |
+| TIER_MIXES | `src/data/waves.ts` Zeile 4–10 | unverändert | ausgeschlossen |
+| enemyHpScale | `src/logic/scaling.ts` Zeile 4–8 | unverändert | ausgeschlossen |
+| View-/Spawn-Geometrie | `src/logic/scaling.ts` Zeile 42–59 (`viewAreaFactor`, `spawnRateFactor`), 65–72 (`maxActiveEnemies`) | **neu in M8** | Mitursache für Killrate |
+
+### Messung 1 — Geometrie: 480×360 vs. 640×360
+
+Der Harness startet mit Viewport 960×540 (dpr 1). `computeView` fällt auf `fitView` zurück (n < 2) und liefert
+logisch **480×360**, nicht die M6-Referenz 640×360. Damit gilt:
+
+- `viewAreaFactor(480,360) = max(0.75, 57600/230400) = 0,75`
+- `spawnRateFactor(480,360) = sqrt(0,75) = 0,866` → Spawn-Budget über 30 min **1 974 statt 2 279 Gegner (−13,4 %)**
+- `maxActiveEnemies` Deckel Minute 20: **270 statt 360 (−25 %)**
+- beobachtet: Gegnerdichte Minute 20 **131 statt 245** (−46,5 %)
+
+A/B mit `--viewport 960x540 --dpr 2` (logisch 640×360, sonst identisch, gleicher Seed 101/Kael):
+
+| Lauf | logisch | Level | Kills | Evos | Gegner @20 min | Damage @30 min |
+|---|---|---|---|---|---|---|
+| Kael/101 (6-Run-Matrix) | 480×360 | 29 | 7 508 | 2 | 131 | 2,93 Mio |
+| Kael/101 A/B | 640×360 | **30** | **10 500** | 1 | 136 | 3,43 Mio |
+| Historisch 62a586f | 640×360 | **47** | 11 689 | 4 | 245 | 4,10 Mio |
+
+Ergebnis: Die Geometrie erklärt die Killrate (+40 % Kills bei 640), aber **nur +1 Level** (29→30).
+Sie ist damit nicht die Hauptursache des Level-47-Sprungs.
+
+### Messung 2 — XP-Ausbeute pro Kill ist der dominante Term
+
+`xpToNext` ist identisch; die kumulierte XP bis Level 29 beträgt **7 849**, bis Level 47 **34 905** (4,45×).
+
+| Lauf | Level | Kills | benötigte XP | effektive XP/Kill |
+|---|---|---|---|---|
+| Historisch 62a586f | 47 | 11 689 | 34 905 | **2,99** |
+| A/B 640×360 | 30 | 10 500 | 8 571 | **0,82** |
+| 6-Run-Matrix Kael/101 | 29 | 7 508 | 7 849 | **1,05** |
+
+Durchschnittlicher Gem-Wert = 0,70·2 + 0,24·6 + 0,06·18 = **3,92 XP**. Der historische Lauf sammelte also
+rund **76 %** der theoretisch verfügbaren Gem-XP, die aktuellen Läufe nur **21–27 %**. Da `applyXp` und
+`GEMS` unverändert sind, entsteht der Level-47-Lauf aus einer extrem hohen Aufsammel-Ausbeute (Bot kämpfte
+nahe am Spieler, Aura-/Nahkampf-Build, Charm; 4 Evolutionen inkl. `soul_beacon`/`eternal_winter`), nicht aus
+einer geänderten XP- oder Spawn-Kurve. Die aktuellen Läufe kiten weiter und lassen Gems liegen.
+
+**Belegte Hauptursache:** dominanter Term ist die Gem-Aufsammelquote (effektive XP/Kill **2,99 vs. 0,82–1,05**),
+verursacht durch AutoPlay-/Build-Divergenz; XP-Kurve (`src/logic/xp.ts:21`), Gem-Werte (`:11`), spawnRate
+(`src/data/waves.ts:36`) und TIER_MIXES (`:4`) sind per git diff als Ursache **ausgeschlossen**.
+Die M8-Geometrie (`src/logic/scaling.ts:52`) ist Mitursache der Killrate (−13,4 % Spawn-Budget bei 480×360),
+aber nicht des Level-Sprungs.
+
+## Karte 4 — Report/Empfehlung folgt
+
