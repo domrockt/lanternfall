@@ -29,3 +29,13 @@ Bereich: src/gfx/gen-enemies.ts, src/gfx/enemySprites.ts; Generator scripts/art/
 
 src/scenes/Run.ts Zeile 1066 waehlt Gegner-Frames mit Math.min(2, frames.length); auch mit
 4 Frame-Daten wird nur F0/F1 sichtbar. Einzeiler-Anfrage in /home/ai/games/.dispatch/requests.md.
+
+## #299 Tier 2-3 (12 Gegner)
+
+- Alle 12 Gegner (wolf, banshee, golem, spider, cultist, bomber, knight, harpy,
+  lich, wraith, treant, imp) haben 4 Frames mit eigenen Phasen.
+- Pilzbomber neu modelliert: breite Flammen-Kappe mit Spots, heller
+  Stiel mit Augen, Zuendschnur mit Funkenstufen; vorher war es eine graue Kugel.
+- Banshee: Traenenstreifen; Wraith: zerbrochene Kette als Markenzeichen.
+- npx tsc --noEmit gruen, npm run build gruen, npm test 175 gruen,
+  0 JS-Fehler im In-Game-Shot. Belege: shots/m9-art-enemies-02-before/-after/-ing.png.

@@ -567,6 +567,8 @@ def banshee(f: int) -> Grid:
     g.rect(9, top + 3, 2, 1, 20)        # Tier-Akzent (Stufe 2)
     g.rect(13, top + 3, 2, 1, 20)
     g.rect(11, top + 6, 3, 1, 2)        # offener Mund
+    g.rect(8, top + 7, 1, 2, 20)        # Traene
+    g.rect(15, top + 6, 1, 3, 20)
     # Arme mit Krallen.
     g.line(7, top + 7, 3 - sway, top + 10, 9, 2)
     g.line(17, top + 7, 21 + sway, top + 9, 9, 2)
@@ -705,31 +707,34 @@ def bomber(f: int) -> Grid:
     d, b, l = R["steel"]
     bob = [0, 1, 2, 1][f % 4]
     cy = 14 - bob
-    # Kugeliger Eisenkörper mit 3 Tonlagen.
-    g.ellipse(12, cy, 7, 6, b)
-    g.ellipse(11, cy - 1, 5, 4, l)
-    g.ellipse(14, cy + 2, 5, 3, 4)
-    g.rect(6, cy - 2, 2, 3, 8)
-    g.rect(8, cy - 4, 4, 2, 8)
-    # Zündschnur 2 px + flackernder Funke.
-    g.line(12, cy - 6, 15, cy - 9, 10, 2)
-    spark = [0, 1, 0, 1][f % 4]
-    g.rect(14, cy - 12 - spark, 2, 2, 22)
-    g.put(15, cy - 13 - spark, 13)
-    g.put(13, cy - 10, 19)
-    # Gesicht: 2x2-Augen (Tier-Akzent 20), Zündermund.
-    g.rect(9, cy - 2, 2, 2, 2)
-    g.rect(14, cy - 2, 2, 2, 2)
-    g.rect(10, cy + 2, 4, 1, 2)
-    g.put(11, cy + 3, 2)
-    # Kurze Beine 2 px, Stampfen.
+    # Pilzkappe in Flammenrampe: breite Kuppe, helle Oberkante, Spelzt.
+    g.ellipse(12, cy - 2, 7, 4, 18)
+    g.rect(5, cy + 1, 15, 2, 18)
+    g.rect(6, cy + 3, 13, 1, 15)
+    g.rect(7, cy - 5, 10, 1, 19)
+    for sx in (5, 10, 15):
+        g.rect(sx, cy - 3, 2, 2, 22)
+    # Stiel mit Licht Licht und Augen.
+    g.rect(9, cy + 2, 6, 7, 10)
+    g.rect(9, cy + 2, 2, 7, 11)
+    g.rect(13, cy + 2, 2, 7, 8)
+    # Zuendschnur aus der Kappe, Funken in vier Stufen.
+    g.line(12, cy - 6, 16, cy - 9, 10, 2)
+    spark = [0, 1, 2, 1][f % 4]
+    g.rect(15, cy - 10 - spark, 2, 2, 22)
+    g.put(16, cy - 11 - spark, 13)
+    # Augen im Stiel (Hoehle 2 + Tier), Mundnaht.
+    g.rect(10, cy + 5, 2, 2, 2)
+    g.rect(13, cy + 5, 2, 2, 2)
+    g.rect(10, cy + 5, 2, 1, 20)
+    g.rect(13, cy + 5, 2, 1, 20)
+    g.rect(11, cy + 8, 3, 1, 2)
+    # Fusssoh am Stiel.
     off = [0, 1, 2, 2][f % 4]
-    g.rect(9, cy + 6, 3, 2, 5)
-    g.rect(13, cy + 6 + off, 3, 2, 5)
-    g.rect(8, cy + 8, 4, 1, 10)
-    g.rect(12, cy + 8 + off, 4, 1, 10)
-    return finish(g, [(9, cy - 2, 20), (10, cy - 2, 20),
-                      (14, cy - 2, 20), (15, cy - 2, 20)])
+    g.rect(9, cy + 8 - off, 2, 2, 8)
+    g.rect(13, cy + 8 - (2 - off), 2, 2, 8)
+    return finish(g, [(10, cy + 5, 20), (11, cy + 5, 20),
+                      (13, cy + 5, 20), (14, cy + 5, 20), (16, cy - 11 - spark, 13)])
 
 def knight(f: int) -> Grid:
     g = Grid(28, 28)
@@ -1193,6 +1198,10 @@ def voidcaller(f: int) -> Grid:
     g.put(3, top + 14, 13)
     g.put(28, top + 14, 13)
     g.rect(10, top + 12, 13, 1, 4)
+    # Zerbrochene Kette am Guertel als Markenzeichen.
+    for c in (9, 12, 15, 18):
+        g.rect(c, top + 13, 2, 1, 11)
+        g.put(c + 1, top + 14, 8)
     g.rect(15, top + 11, 2, 2, 20)
     return finish(g, [(14, top + 4, 13), (18, top + 4, 13), (3, top + 14, 13), (28, top + 14, 13)],
                   shade=False, dark_edge=9)
