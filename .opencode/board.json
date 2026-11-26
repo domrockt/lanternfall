@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1009,
+  "next": 1012,
   "cards": [
     {
       "id": 1,
@@ -2121,6 +2121,36 @@
       ],
       "created": "2026-11-26T19:18:14Z",
       "updated": "2026-11-26T19:18:45Z"
+    },
+    {
+      "id": 1009,
+      "title": "m10-heap-qa-01 Messaufbau perf-heap Smoke-Lauf",
+      "description": "perf-heap.mjs read-only aus m9-Worktree, Smoke 1 Sim-Minute: 7,5 s, 2 FPS-Samples, +7,1 %. Beleg shots/m10-heap-smoke.json. (lane #1)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-26T19:37:51Z",
+      "updated": "2026-11-26T19:37:51Z"
+    },
+    {
+      "id": 1010,
+      "title": "m10-heap-qa-02 Drei Heap-Varianten Basis/Chaos/Burst",
+      "description": "Basis 1→29 (−0,2 %), Chaos-Minute 25 (−8,2 %), 500-Burst (+1,1 %), alle ≤15 %, 0 JS-Fehler. Belege shots/m10-heap-{basis,chaos,burst}.json. (lane #2)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-26T19:37:51Z",
+      "updated": "2026-11-26T19:37:51Z"
+    },
+    {
+      "id": 1011,
+      "title": "m10-heap-qa-03 Gate-Report Heap-Nachmessung",
+      "description": "Verdikt Gate GRUEN bei Basis-SHA f26dc4b: Snapshot nach Voll-GC flach, roher usedJSHeapSize Peak 79–82 MB ist GC-/Host-Streuung, kein JS-Leak. tsc OK, Vitest 192/192. docs/lanes/m10-heap-qa.md. (lane #3)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-26T19:37:51Z",
+      "updated": "2026-11-26T19:37:51Z"
     }
   ]
 }
