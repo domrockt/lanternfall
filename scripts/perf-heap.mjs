@@ -37,6 +37,9 @@ const SEED = Math.floor(numArg("seed", 99));
 const RUNS = Math.max(1, Math.min(5, Math.floor(numArg("runs", 1))));
 const TIME_SCALE = Math.max(1, Math.min(60, numArg("timeScale", 30)));
 const OUT = strArg("out", "shots/perf-heap.json");
+// Optional: Roh-Snapshot je Messpunkt ablegen (Diagnose):
+//   --save-raw=/home/ai/tmp/heap-raw  →  <pfad>-Lauf1-Start.heapsnapshot.json …
+const SAVE_RAW = strArg("save-raw", "");
 const RUN_SECONDS = MINUTES * 60;
 const BASELINE_AT_S = Math.max(1, Math.min(RUN_SECONDS - 10, Math.floor(numArg("baseline", Math.min(60, RUN_SECONDS / 2)))));
 const POLL_MS = 500;
@@ -111,6 +114,11 @@ async function takeSnapshot(cdp, page, label) {
     cdp.off("HeapProfiler.addHeapSnapshotChunk", onChunk);
   }
   const raw = chunks.join("");
+  if (SAVE_RAW) {
+    mkdirSync(SAVE_RAW, { recursive: true });
+    const file = `${SAVE_RAW}-${label.replace(/[^A-Za-z0-9]+/g, "-")}.heapsnapshot.json`;
+    writeFileSync(file, raw);
+  }
   const parsed = parseSnapshot(raw);
   parsed.jsHeapMB = jsHeapMB;
   console.log(`[heap] ${label}: ${parsed.nodeCount} Knoten, ${(parsed.totalBytes / 1048576).toFixed(1)} MB, Snapshot ${(parsed.rawBytes / 1048576).toFixed(1)} MB`);
