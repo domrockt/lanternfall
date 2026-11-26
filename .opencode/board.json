@@ -2000,9 +2000,15 @@
       "description": "38 Charakter-Sprites: Inventar-JSON mit Soll-Frames; Kontaktboegen 1x und 4x auf dunklem Grund, jedes Sprite beschriftet; audit.json mit Ist/Soll-Frames und Off-Palette je Sprite. Abnahme: 38 Zeilen, 0 Off-Palette, 0 fehlende Frames oder dokumentierte Maengel; Belege in shots/m10-art-contact-*.pn​g/json committet, Basis f26dc4b.",
       "column": "doing",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T22:04:00Z",
+          "by": "build",
+          "text": "Supervisor-Hinweis erhalten: keine weiteren Inline-Parser; vorhandene Belege (1x/4x + audit.json, Commit 82690c9) werden als WIP bestaetigt und committet. Art-director-Abnahme laeuft erneut."
+        }
+      ],
       "created": "2026-11-26T19:17:05Z",
-      "updated": "2026-11-26T19:17:05Z"
+      "updated": "2026-11-26T22:04:00Z"
     }
   ]
 }

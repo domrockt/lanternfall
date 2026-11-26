@@ -82,6 +82,9 @@ unabhängiges art-director-Review gegen `ART.md`.
 | 1 | `enemy_spider` | F0 = F2 | F0 und F2 sind pixelidentisch (Hash-Gleichheit im Audit). Frame 2 müsste die Gegenphase der Beine zeigen. | **major** | `m9-art-world` (Gegneranimation) |
 | 2 | `enemy_spider` | F0→F1 | Nur 16 px ändern sich (ca. 2,8 % der 24×24-Fläche), Änderungen an x/y = (2,8)/(3,8)/(13,9)/(14,9)/(14,7)/(15,7)/(3,16)/(4,16)/(15,17)/(16,17)/(3,19)/(4,19)/(13,19)/(14,19). Lauf wirkt fast statisch. | **major** | `m9-art-world` (Gegneranimation) |
 | 3 | `boss_pale_shepherd` | F2 | Sichelspitze berührt den Rasterrand bei x=71, y=8–11; bei 4× wirkt die Klinge am Rand angeschnitten. Prüfen, ob 1 px Luft nötig ist. | minor | `m9-art-world` (Boss-Silhouette) |
+| 4 | `enemy_wolf` | F1 = F3 (fast) | F1 und F3 differieren nur 17 px (3,0 %); die „Gegenphase“ wirkt wie eine Kopie. F2/F3 sollten eine dritte Beinphase zeigen. | minor | `m9-art-world` (Gegneranimation) |
+| 5 | `enemy_bomber` | F1 = F3 (fast) | F1 und F3 differieren nur 16 px (2,8 %); Zünd-Docth-Flamme und Körper sind in beiden Frames nahezu gleich. | minor | `m9-art-world` (Gegneranimation) |
+| 6 | `boss_bone_lord` | F0 ≈ F2 | F2 (Wind-up) differiert nur 110 px (2,7 %) von F0 (Ruhe). Der Wind-up ist erst im Übergang F1→F2 (27 %) erkennbar; Arme/Waffe sollten in F2 deutlicher ausholen. | minor | `m9-art-world` (Boss-Animation) |
 
 Nicht als Mangel gewertet (geprüft, sauber):
 
@@ -107,6 +110,25 @@ getrackten m4/m4b-Belege unverändert bleiben:
 - `scripts/art/sheet-enemies-dark.py` → `shots/m10-art-contact-tooling-enemies-dark.png`
   (Selbstcheck: **30 Gegner, 96 Frames, 0 Off-Palette, 0 Einzelpixel**, Lichtkanten/Haut/Akzente geprüft)
 - Beide Skripte rc=0 beim ersten Lauf (kein Abbruchkriterium erreicht), Logs in `~/tmp/m10-art-contact/tooling.log`.
+
+### Unabhängige Gegenprüfung (Versuch 3, 26.11.)
+
+Zwei eigene read-only Skripte in `~/tmp/m10-art-contact/` prüfen die Belege nach, ohne die Generator-Pipeline zu wiederholen:
+
+- `framediff.py` parst die exportierten String-Grids aus `src/gfx/gen-*.ts` (54 Keys inkl. Portraits/Hit,
+  darunter die 38 Charakter-Sprites) und zählt abweichende Pixel je Frame-Paar:
+  - `enemy_spider` F0↔F2: **0 diffPx** (pixelidentisch) — bestätigt den Audit-Befund.
+  - `enemy_spider` F0↔F1/F3 und F1↔F2: je **16 diffPx = 2,8 %** von 24×24 — Lauf fast statisch.
+  - Helden-Walk (down/up/side): benachbarte Frames **32–43 %** Differenz; F0↔F2 nur **5–20 %**
+    (ruhige Gegenphase, kein Duplikat).
+  - Weitere Near-Duplikate (nicht identisch, aber <5 %): `enemy_wolf` F1↔F3 (3,0 %),
+    `enemy_bomber` F1↔F3 (2,8 %), `boss_bone_lord` F0↔F2 (110 px = 2,7 %).
+    `boss_bone_lord` F2 wirkt dadurch fast wie F0; der Wind-up ist nur im Übergang F1→F2 (27 %) klar.
+  - Alle anderen Frame-Paare differieren deutlich; kein weiteres 0-Diff-Paar.
+- `palcheck.py` liest die fertigen 14 Belegbögen mit `scripts/art/lib.read_rgba_png` (pure Python, kein PIL)
+  und prüft jedes opake Pixel gegen `src/palette.ts`: **14/14 Bögen, 0 Off-Palette-Pixel**.
+  (Der In-Game-Screenshot `m10-art-contact-game.png` ist bewusst ausgenommen: Licht-/Vignette-Overlays
+  sind laut ART.md erlaubte Ausnahme.)
 
 ### art-director-Urteil
 
