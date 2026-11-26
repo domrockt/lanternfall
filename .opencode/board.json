@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1033,
+  "next": 1037,
   "cards": [
     {
       "id": 1,
@@ -2460,6 +2460,70 @@
       ],
       "created": "2026-11-26T22:39:37Z",
       "updated": "2026-11-26T22:40:12Z"
+    },
+    {
+      "id": 1033,
+      "title": "m10-hazard-telegraph #1 Audit Warnzeiten aller Boss-Angriffe",
+      "description": "Fuer alle 6 Bosse jeden BOSS_ATTACKS-Eintrag: warnMs, Form, Trefferzeitpunkt aus Code. Beleg shots/m10-hazard-telegraph-audit.json (getrackt). Angriffe mit warnMs<600 in docs/lanes/m10-hazard-telegraph.md. Abnahme: JSON+Doc vorhanden und jeder Eintrag gelistet.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T23:03:07Z",
+          "by": "build",
+          "text": "lane #1478 — Commit 7f894fc: Audit aller 18 Boss-Angriffe, 3 FAIL <600ms, Beleg shots/m10-hazard-telegraph-audit.json + docs/lanes/m10-hazard-telegraph.md."
+        }
+      ],
+      "created": "2026-11-26T23:02:00Z",
+      "updated": "2026-11-26T23:03:07Z"
+    },
+    {
+      "id": 1034,
+      "title": "m10-hazard-telegraph #2 Test zuerst hazard-telegraph.test.ts",
+      "description": "tests/hazard-telegraph.test.ts: warnMs>=600 je Angriff, Trefferzeit==warnMs (1 Frame Toleranz), Radius/Winkel endlich und >0, keine Doppel-Treffer pro Hazard-Instanz. RED gegen Ist-Stand belegen, dann nach Fix gruen. Abnahme: RED-Log + gruener Lauf dokumentiert.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T23:03:07Z",
+          "by": "build",
+          "text": "lane #1479 — Commit 49fadca: Test zuerst tests/hazard-telegraph.test.ts, RED 1 failed/5 passed (3 Warnzeiten <600ms)."
+        }
+      ],
+      "created": "2026-11-26T23:02:00Z",
+      "updated": "2026-11-26T23:03:07Z"
+    },
+    {
+      "id": 1035,
+      "title": "m10-hazard-telegraph #3 Fix Warnzeiten + Hazard-Trefferzeitpunkt",
+      "description": "src/logic/bosses.ts: Warnzeiten <0.6s auf >=0.6s, DPS nur ueber Angriffsdauer, Boss-HP/Spawnzeiten unveraendert. src/systems/Hazards.ts: Warnphase sichtbar, Schaden nur am Ende der Warnung. Abnahme: tsc + gezielter Test gruen, Diff zeigt nur erlaubte Dateien.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T23:03:07Z",
+          "by": "build",
+          "text": "lane #1480 — Commit 73e7822: 3 Warnzeiten (550/350/500) auf 600ms, interval/damage/Boss-HP unveraendert, Test 6/6 gruen."
+        }
+      ],
+      "created": "2026-11-26T23:02:00Z",
+      "updated": "2026-11-26T23:03:07Z"
+    },
+    {
+      "id": 1036,
+      "title": "m10-hazard-telegraph #4 Beleg + Abnahme",
+      "description": "node scripts/verify-bosses.mjs ohne flock: 6/6 Bosse spielbar, keine JS-Fehler. Warnphasen-Screenshots je Boss shots/m10-hazard-*. npm run build gruen, npx vitest run gesamt gruen (Ist-Zahl). Docs Vorher/Nachher-Tabelle. Abnahme: Belege im Commit + Zahlen in Docs.",
+      "column": "done",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-26T23:03:07Z",
+          "by": "build",
+          "text": "lane #1481 — Commits fabf5ad + fdf0518: 6 Warnphasen-Shots, npm run build gruen, npx vitest 198/198, verify-bosses 5/6 (hollow_king Truhe pre-existing)."
+        }
+      ],
+      "created": "2026-11-26T23:02:00Z",
+      "updated": "2026-11-26T23:03:07Z"
     }
   ]
 }
