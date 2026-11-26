@@ -1801,10 +1801,21 @@
       "id": 318,
       "title": "m9-art-fx-ui-01 Vorher-Belege und Maengelliste",
       "description": "Titel-, Icon- und FX-Belege als PNG shots/m9-art-fx-ui-*.png rendern und docs/lanes/m9-art-fx-ui.md mit Art-Director-Maengelliste anlegen. Abnahme: mindestens 3 Belege im Commit, Doku vorhand daen, 0 JS-Fehler.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T15:26:57Z",
+          "by": "build",
+          "text": "doing → done: Abgeschlossen: Belege + Maengelliste liegen bereits bereits"
+        },
+        {
+          "at": "2026-11-26T15:27:07Z",
+          "by": "build",
+          "text": "Abnahme-Beleg: Commit d3e627f (#318) enthaelt Titel-/Icon-/FX-Vorher-Shots (shots/m9-art-fx-ui-title-before.png + 2x, icons-before.png, 6 Waffen, 6 Evos, 0 JS-Fehler) und die art-director-Maengelliste P1-P3 in docs/lanes/m9-art-fx-ui.md. Supervisor-Abschluss nach 184 min offener Karte."
+        }
+      ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T12:22:29Z"
+      "updated": "2026-11-26T15:27:07Z"
     },
     {
       "id": 319,
@@ -1868,33 +1879,53 @@
       "id": 699,
       "title": "m9-art-world-02 Props Tiefe und Schatten",
       "description": "Abnahme: Props mit weichem Bodenschatten und Tiefe, Laternen-Glow, Lesbarkeit erhalten, Shots 2x, art-director PASS.",
-      "column": "doing",
+      "column": "todo",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T15:24:36Z",
           "by": "build",
           "text": "Aus Lane m9-art-world uebernommen: lane #279. Inhalt/Status aus dem Lane-Board (IDs kollidierten mit main, deshalb neu angelegt)."
+        },
+        {
+          "at": "2026-11-26T15:27:28Z",
+          "by": "build",
+          "text": "doing → todo: WIP-Limit (Supervisor): bisarkt bis #319 abgeschlossen ist; Arbeit/Belege aus Lane m9-art-world bereits gemergt."
+        },
+        {
+          "at": "2026-11-26T15:27:31Z",
+          "by": "build",
+          "text": "WIP-Limit (Supervisor): geparkt bis #319 abgeschlossen ist. Arbeit und Belege aus Lane m9-art-world sind bereits gemergt."
         }
       ],
       "created": "2026-11-26T15:24:30Z",
-      "updated": "2026-11-26T15:24:36Z"
+      "updated": "2026-11-26T15:27:31Z"
     },
     {
       "id": 700,
       "title": "m9-art-world-03 Gluehwurrmchen und Nebel",
       "description": "Abnahme: Gluehwurm animiert, Nebel dezent im Hintergrund, Lesbarkeit bleibt, GIF mit lebenden Gegnern, art-director PASS.",
-      "column": "doing",
+      "column": "todo",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-26T15:24:36Z",
           "by": "build",
           "text": "Aus Lane m9-art-world uebernommen: lane #280. Inhalt/Status aus dem Lane-Board (IDs kollidierten mit main, deshalb neu angelegt)."
+        },
+        {
+          "at": "2026-11-26T15:27:28Z",
+          "by": "build",
+          "text": "doing → todo: WIP-Limit (Supervisor): geparkt bis #319 abgeschlossen ist; Arbeit/Belege aus Lane m9-art-world bereits gemergt."
+        },
+        {
+          "at": "2026-11-26T15:27:31Z",
+          "by": "build",
+          "text": "WIP-Limit (Supervisor): geparkt bis #319 abgeschlossen ist. Arbeit und Belege aus Lane m9-art-world sind bereits gemergt."
         }
       ],
       "created": "2026-11-26T15:24:30Z",
-      "updated": "2026-11-26T15:24:36Z"
+      "updated": "2026-11-26T15:27:31Z"
     },
     {
       "id": 701,
