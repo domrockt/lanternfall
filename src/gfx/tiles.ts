@@ -102,10 +102,10 @@ export function terrainSampleAt(wx: number, wy: number, seed: number, worldSize:
   // Gras: weiche Schattierung + helle Inseln. Die Bandgrenzen werden
   // pro Pixel gedithert statt hart geschnitten (keine Tarnflecken).
   const g = fbm(wx, wy, 43, seed + 911);
-  const gd = tileHash(wx, wy, seed + 917) * 0.075 - 0.0375;</
+  const gd = tileHash(wx, wy, seed + 917) * 0.022 - 0.011;
   const gs = g + gd;
   const shade: 0 | 1 | 2 = gs < 0.33 ? 0 : gs > 0.67 ? 2 : 1;
-  const lightBoundary = 0.60 + (tileHash(wx, wy, seed + 919) - 0.5) * 0.10;
+  const lightBoundary = 0.60 + (tileHash(wx, wy, seed + 919) - 0.5) * 0.04;
   const light = fbm(fx + 33, fy - 63, 76, seed + 33) > lightBoundary;
   return { kind: "grass", shade, light, depth: lake };
 }
