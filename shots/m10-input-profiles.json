@@ -1,9 +1,610 @@
 {
   "milestone": "M10-input-qa",
-  "baseSha": "",
+  "baseSha": "f26dc4b",
   "passed": false,
-  "results": [],
-  "jsErrors": [
-    "TimeoutError: page.waitForFunction: Timeout 8000ms exceeded."
-  ]
+  "results": [
+    {
+      "profile": "Pixel 7",
+      "viewport": {
+        "width": 915,
+        "height": 412
+      },
+      "dpr": 2,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2101"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2104 -> 2104"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2104 -> 2104"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2104 -> 2140; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "profile": "iPhone 13",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "dpr": 3,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2100"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2105 -> 2105"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2105 -> 2105"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2105 -> 2141; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "profile": "iPhone SE",
+      "viewport": {
+        "width": 667,
+        "height": 375
+      },
+      "dpr": 2,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2106"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2116 -> 2116"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2116 -> 2116"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2116 -> 2152; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "profile": "Galaxy S9+",
+      "viewport": {
+        "width": 740,
+        "height": 360
+      },
+      "dpr": 4.5,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2113"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2125 -> 2125"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2125 -> 2125"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2125 -> 2161; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "profile": "Nexus 5X",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "dpr": 2,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2107"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2116 -> 2116"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2116 -> 2116"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2116 -> 2153; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "profile": "iPad Mini",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "dpr": 2,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2110"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2121 -> 2121"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2121 -> 2121"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2121 -> 2151; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "profile": "Galaxy Tab S4",
+      "viewport": {
+        "width": 1138,
+        "height": 712
+      },
+      "dpr": 1.5,
+      "ok": false,
+      "checks": [
+        {
+          "name": "CSS touch-action/none + user-select + user-scalable=no",
+          "ok": true,
+          "detail": "{\"touchAction\":true,\"noSelect\":true,\"noZoom\":true,\"uiActive\":false}"
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay im Titel (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Tipp im Titel (Joystick-Position) bleibt wirkungslos",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: Titel->CharSelect->Kael->Run per Tippen",
+          "ok": true,
+          "detail": "kael"
+        },
+        {
+          "name": "Touch-Joystick bewegt Spieler im Run",
+          "ok": true,
+          "detail": "x 2048 -> 2111"
+        },
+        {
+          "name": "Touch: Pause per 2. Finger bei aktivem Joystick",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Pause bewegt nicht",
+          "ok": true,
+          "detail": "x 2124 -> 2124"
+        },
+        {
+          "name": "Pause-Knopf in Pause ausgeblendet",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Pause-Tipp in Pause setzt nicht fort",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Touch: FORTSETZEN per Tippen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Level-up bewegt nicht",
+          "ok": true,
+          "detail": "x 2124 -> 2124"
+        },
+        {
+          "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "Gesten-Sperre: Joystick bei Truhe bewegt nicht",
+          "ok": false,
+          "detail": "x 2124 -> 2163; before={\"paused\":true,\"chestOpen\":true,\"canMove\":false,\"stickVisible\":false,\"identifier\":null,\"lastCanMove\":false} after={\"stickVisible\":true,\"identifier\":4}"
+        },
+        {
+          "name": "Touch: Truhe per Tippen uebernommen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "kein Joystick/Pause-Overlay in Results (UI inaktiv)",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    }
+  ],
+  "jsErrors": []
 }
