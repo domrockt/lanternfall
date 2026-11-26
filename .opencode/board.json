@@ -1573,17 +1573,27 @@
       "id": 87,
       "title": "input-04b Fix: ESC-Check in verify-input stabilisieren",
       "description": "Merge-Befund: scripts/verify-input.mjs Tastatur-Check 'ESC pausiert' schlaegt reproduzierbar fehl, wenn Escape direkt nach ArrowRight-Keyup kommt (Phaser-Keyboard-Queue verliert die erste Flanke); zweites ESC pausiert. Abnahme: 120-ms-Frame-Luecke nach Keyup + Kommentar; node scripts/verify-input.mjs PASS 28/28, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-26T10:10:53Z",
           "by": "build",
           "text": "todo → doing: Reproduziert: ESC direkt nach ArrowRight-Keyup wird verschluckt; 120 ms Frame-Luecke behebt es (PASS 28/28)."
+        },
+        {
+          "at": "2026-11-26T10:11:12Z",
+          "by": "build",
+          "text": "doing → review: Fix in scripts/verify-input.mjs (Commit 68a3e74): Frame-Luecke nach ArrowRight-Keyup. verify-input PASS 28/28, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-26T10:11:12Z",
+          "by": "build",
+          "text": "review → done: Abnahme: Commit 68a3e74 (#87), verify-input PASS 28/28, build+Tests gruen."
         }
       ],
       "created": "2026-11-26T10:10:53Z",
-      "updated": "2026-11-26T10:10:53Z"
+      "updated": "2026-11-26T10:11:12Z"
     }
   ]
 }
