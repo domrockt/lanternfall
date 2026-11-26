@@ -447,10 +447,7 @@ export class Run extends Phaser.Scene {
 
   setFxDamping(enabled: boolean): void {
     this.fxDampingEnabled = enabled;
-    if (this.combat) this.combat.fxDamping = enabled;
-    const alpha = enabled ? fxAlphaFor(this.lod.level) : 1;
-    this.combat?.fx.setAlphaScale(alpha);
-    this.combat?.particles.setAlphaScale(alpha);
+    this.combat?.setFxDamping(enabled);
   }
 
   /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */

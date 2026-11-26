@@ -112,6 +112,8 @@ export class CombatSystem {
   private lod: LodState = lodFor(0);
   /** Endgame-Effekt-Dämpfung an/aus (Debug kann sie für Vorher-Shots abschalten). */
   fxDamping = true;
+  /** Aktueller Alpha-Faktor der Endgame-Dämpfung (1 = ungedämpft). */
+  private fxAlpha = 1;
   /** Von Seelenleuchtfeuer aktivierter Magnet-Bonus in px (0 = aus). */
   pickupBonus = 0;
   private readonly scene: Phaser.Scene;
@@ -142,10 +144,27 @@ export class CombatSystem {
     this.fx.trailsEnabled = lod.trails;
     // M6-Nachtrag: Effekt-Alpha im Endgame dämpfen, damit Gegner im AoE lesbar
     // bleiben (6 Waffen auf Maximalstufe). Vorher/Nachher per Debug umschaltbar.
-    const alpha = this.fxDamping ? fxAlphaFor(lod.level) : 1;
-    this.fx.setAlphaScale(alpha);
-    this.particles.setAlphaScale(alpha);
+    this.applyFxDamping();
     this.damageNumbers.setLod(lod);
+  }
+
+  /** Alpha-Faktor anwenden: Pool-Effekte UND aktive Brandflächen. */
+  private applyFxDamping(): void {
+    const target = this.fxDamping ? fxAlphaFor(this.lod.level) : 1;
+    if (target === this.fxAlpha) return;
+    const ratio = target / this.fxAlpha;
+    this.fxAlpha = target;
+    this.fx.setAlphaScale(target);
+    this.particles.setAlphaScale(target);
+    for (const b of this.burns) {
+      if (b.sprite) b.sprite.setAlpha(Math.max(0, Math.min(1, b.sprite.alpha * ratio)));
+    }
+  }
+
+  /** Debug/Abnahme: Endgame-Dämpfung sofort an/aus (auch für aktive Effekte). */
+  setFxDamping(enabled: boolean): void {
+    this.fxDamping = enabled;
+    this.applyFxDamping();
   }
 
   update(ctx: CombatContext): void {
@@ -996,7 +1015,7 @@ export class CombatSystem {
       const b = this.burns[i];
       b.life -= ctx.dt;
       b.tick -= ctx.dt;
-      const burnAlpha = this.lod.level === "minimal" ? 0.26 : 0.46;
+      const burnAlpha = (this.lod.level === "minimal" ? 0.26 : 0.46) * this.fxAlpha;
       b.sprite.setAlpha(Math.max(0, Math.min(burnAlpha, b.life * 0.6)) * (0.8 + Math.sin(this.clock * 9) * 0.2));
       const burnFrames = fxFrames("fx_fire", 6);
       const bf = burnFrames[Math.floor(this.clock * 8 + b.x) % 6];

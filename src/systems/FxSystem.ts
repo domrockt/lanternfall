@@ -70,9 +70,18 @@ export class FxSystem {
     this.scene = scene;
   }
 
-  /** Effekt-Alpha dämpfen (Endgame): 1 = voll, < 1 = transparenter. */
+  /** Effekt-Alpha dämpfen (Endgame): 1 = voll, < 1 = transparenter.
+   *  Wirkt auch auf bereits aktive Effekte, damit ein LOD-Wechsel mitten im
+   *  Kampf sofort lesbar wird (und Debug-Vorher/Nachher im selben Frame geht). */
   setAlphaScale(scale: number): void {
-    this.alphaScale = Math.max(0.2, Math.min(1, scale));
+    const next = Math.max(0.2, Math.min(1, scale));
+    if (next === this.alphaScale) return;
+    const ratio = next / this.alphaScale;
+    this.alphaScale = next;
+    for (const fx of this.active) {
+      fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
+      fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
+    }
   }
 
   setMaxActive(max: number): void {
@@ -324,7 +333,14 @@ export class ParticleSystem {
   }
 
   setAlphaScale(scale: number): void {
-    this.alphaScale = Math.max(0.2, Math.min(1, scale));
+    const next = Math.max(0.2, Math.min(1, scale));
+    if (next === this.alphaScale) return;
+    const ratio = next / this.alphaScale;
+    this.alphaScale = next;
+    for (const p of this.active) {
+      p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
+      p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
+    }
   }
 
   setMaxActive(max: number): void {
