@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 92,
+  "next": 98,
   "cards": [
     {
       "id": 1,
@@ -1658,6 +1658,77 @@
       ],
       "created": "2026-11-26T10:15:56Z",
       "updated": "2026-11-26T10:15:59Z"
+    },
+    {
+      "id": 92,
+      "title": "m8-display view-01 Dynamische View + dpr-Skalierung (Fundament)",
+      "description": "src/logic/view.ts reine Funktion viewForDevice(w,h,dpr,setting) + tests; config GAME_WIDTH/HEIGHT dynamisch; main.ts setzt n=floor(gerH/360), Breite clamp(round(gerB/n),480,860), CSS=n/dpr, resize/orientation/visualViewport/matchMedia; Option Skalierung AUTO/2X-6X; index.html 100dvh/Safe-Area/Portrait-Overlay+Pause. Abnahme: Tests fuer 1080p/1440p@1.5/4K/1366/iPhone/Pixel/iPad, tsc+Build+Tests gruen, Commit nennt #<Karte>.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-26T10:23:07Z",
+          "by": "build",
+          "text": "todo → doing: Start view-01: view.ts + config/main/index/options; tsc+gezielte Tests"
+        },
+        {
+          "at": "2026-11-26T10:24:52Z",
+          "by": "build",
+          "text": "doing → review: Commit 446d2e4; tsc/build grün, Tests 184/184; 1920x1080 zeigt 640x360@vas (Titel noch 480-Assets, Karte #94)"
+        }
+      ],
+      "created": "2026-11-26T10:22:23Z",
+      "updated": "2026-11-26T10:24:52Z"
+    },
+    {
+      "id": 93,
+      "title": "m8-display view-02 HUD + Run-Overlays an View verankert",
+      "description": "UI.ts HUD/Level-up/Pause/Truhe/Boss/Banner an aktuelle view-Groesse (linke/rechte/obere/untere Raender, Mitte); Run Vignette/Dawn-Baender an View; Resize relayout ohne abgeschnittene Elemente. Abnahme: Screenshots 640x360 und 780x360 Level-up/Pause/HUD ohne Cutoff, tsc+Tests gruen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T10:24:58Z",
+          "by": "build",
+          "text": "todo → doing: Start view-02: HUD/Overlays verankern, Resize-Relayout"
+        }
+      ],
+      "created": "2026-11-26T10:22:23Z",
+      "updated": "2026-11-26T10:24:58Z"
+    },
+    {
+      "id": 94,
+      "title": "m8-display view-03 Menue-Szenen + Touch an View",
+      "description": "Title/CharSelect/Results/Credits/OptionsMenu und TouchControls an dynamische View (Titelbild fuellt Breite, Panels zentriert, kein Cutoff, Portrait-Hinweis); Resize baut Menues sauber neu. Abnahme: shots je Szene in 640x360 und 780x360, Touch-Joystick/Pause oben rechts korrekt, 0 JS-Fehler.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T10:22:23Z",
+      "updated": "2026-11-26T10:22:23Z"
+    },
+    {
+      "id": 95,
+      "title": "m8-display spawn-01 Spawn/Recycling relativ zur sichtbaren Flaeche",
+      "description": "Spawner/BossSystem/Recycle-Abstand aus camera.width/height statt 480x270-Annahmen; Ring knapp ausserhalb der Flaeche; maxActiveEnemies dichte-neutral zur Flaeche; reine Helfer + Tests. Abnahme: Unit-Tests, spawn ausserhalb View bei 640 und 780, tsc+Tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T10:22:23Z",
+      "updated": "2026-11-26T10:22:23Z"
+    },
+    {
+      "id": 96,
+      "title": "m8-display balance-01 Rebalancing 640x360 und 780x360",
+      "description": "balance.mjs viewport-Parameter; Spawnrate/Sichtdichte so, dass breite Formate nicht leerer wirken; Zielkorridore M6 (Ueberleben 20-28, Level 25-40@30, Bosse 20-60s, keine tote Waffe) fuer 640 und 780 messen und justieren. Abnahme: shots/balance-*.json + docs/lanes/m8-display.md Tabelle; balance-check PASS.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T10:22:23Z",
+      "updated": "2026-11-26T10:22:23Z"
+    },
+    {
+      "id": 97,
+      "title": "m8-display verify-01 Display-Abnahme, perf/fullrun, Doku",
+      "description": "scripts/verify-display.mjs mit Profilen 1920x1080@1, 3840x2160@1, 2560x1440@1.5, 1366x768@1, iPhone14 quer dpr3, Pixel7 quer, iPad Pro quer hasTouch: shots/m8-*.png je Szene, Spielpixel=n*n Nachweis, kein Cutoff/Rand>8% ausser 4:3; Touch-Minute iPhone 0 JS; flock perf/fullrun 780x360 >=55 FPS; docs/lanes/m8-display.md + Vault Architektur/Phaser 3; .lane-done. Abnahme: verify-display PASS, build+Tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T10:22:23Z",
+      "updated": "2026-11-26T10:22:23Z"
     }
   ]
 }
