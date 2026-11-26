@@ -141,7 +141,7 @@ Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#78/#80–#82 done.
 Ausnahme: #79 bleibt `blocked` (Trailer-Segment 7 zweimal 120-s-Timeout);
 die Deliverables wurden über #82 erledigt, deshalb ist A6/A12 inhaltlich grün.
 Abschluss-Commits: `f76880d` (A10/Result-Fix), `6896f1b` (Board/ACCEPTANCE),
-Epic #15 wird mit diesem Commit abgeschlossen. Kein Push. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
+Epic #15 mit `26c7074`/`cc62619` abgeschlossen. Kein Push. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
 Nachträge, Restmängel).
 
 ## Offene Punkte / Restmängel
