@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1001,
+  "next": 1059,
   "cards": [
     {
       "id": 1,
@@ -1993,6 +1993,16 @@
       ],
       "created": "2026-11-26T18:20:54Z",
       "updated": "2026-11-26T18:24:14Z"
+    },
+    {
+      "id": 1058,
+      "title": "m10-art-contact-01 Art-Belege 38 Sprites (1x/4x, Frame-Matrix, Audit)",
+      "description": "38 Charakter-Sprites: Inventar-JSON mit Soll-Frames; Kontaktboegen 1x und 4x auf dunklem Grund, jedes Sprite beschriftet; audit.json mit Ist/Soll-Frames und Off-Palette je Sprite. Abnahme: 38 Zeilen, 0 Off-Palette, 0 fehlende Frames oder dokumentierte Maengel; Belege in shots/m10-art-contact-*.pn​g/json committet, Basis f26dc4b.",
+      "column": "doing",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-26T19:17:05Z",
+      "updated": "2026-11-26T19:17:05Z"
     }
   ]
 }
