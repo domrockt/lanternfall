@@ -5,7 +5,7 @@ import { WORLD_SIZE } from "../config";
 import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, streamSpawnOffsets } from "../logic/waves";
 import {
   eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale, maxActiveEnemies,
-  pickRecycleIndex, recycleDistance, spawnRingRadius, viewAreaFactor,
+  pickRecycleIndex, recycleDistance, spawnRateFactor, spawnRingRadius,
 } from "../logic/scaling";
 import type { Rng } from "../logic/rng";
 import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPool";
@@ -59,7 +59,7 @@ export class Spawner {
     // M8: Spawnrate mit der sichtbaren Fläche skalieren (breite Formate dichter).
     const scaled = advanceSpawnBudget(
       this.budget,
-      wave.spawnRate * viewAreaFactor(cam.width, cam.height),
+      wave.spawnRate * spawnRateFactor(cam.width, cam.height),
       dt,
     );
     this.budget = scaled.budget;

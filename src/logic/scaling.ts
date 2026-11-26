@@ -45,6 +45,15 @@ export function viewAreaFactor(width: number, height: number): number {
 }
 
 /**
+ * M8: Spawnrate-Faktor. Breite Formate bekommen etwas mehr Nachschub, aber
+ * nur mit halber Flächen-Wurzel, damit der M6-Überlebenskorridor hält
+ * (780x360: +10,5 % Rate statt +21,9 %; der Deckel skaliert voll).
+ */
+export function spawnRateFactor(width: number, height: number): number {
+  return Math.sqrt(viewAreaFactor(width, height));
+}
+
+/**
  * Maximal gleichzeitig aktive Gegner für den normalen Run. M6-Balance:
  * gleichmäßiger Anstieg bis Deckel 360 (Minute ~20) auf 640x360; M8 skaliert
  * den Deckel mit der sichtbaren Fläche (780x360 ~ 439, harte Obergrenze 500).
@@ -59,24 +68,26 @@ export function maxActiveEnemies(
   return Math.min(500, Math.round(Math.min(360, base) * viewAreaFactor(width, height)));
 }
 
-/** M8: Recycle-Abstand knapp außerhalb der View-Diagonale (mind. 340 px). */
+/** M8: Recycle-Abstand knapp außerhalb der View-Diagonale (mind. 340 px).
+ *  Umkreisradius = halbe Diagonale; damit liegt der Punkt in JEDEM Winkel
+ *  sicher außerhalb des Rechtecks (alte Gegner verschwinden nie sichtbar). */
 export function recycleDistance(width: number, height: number): number {
   if (!(width > 0) || !(height > 0)) return 340;
-  return Math.max(340, Math.hypot(width, height) * 0.8 / 2);
+  return Math.max(340, Math.ceil(Math.hypot(width, height) / 2) + 40);
 }
 
 /** M8: Ring-/Stream-Spawnradius juste außerhalb der sichtbaren Fläche.
- *  Die laengere Kante bestimmt den Radius, damit auch bei 780x360 kein Gegner
- *  am linken/rechten Bildrand sichtbar aufploppt. */
+ *  Umkreisradius (halbe Diagonale) + Rand: in jedem Winkel außerhalb. */
 export function spawnRingRadius(width: number, height: number, extra = 20): number {
   if (!(width > 0) || !(height > 0)) return 300;
-  return Math.ceil(Math.max(width, height) / 2) + Math.max(0, extra);
+  return Math.ceil(Math.hypot(width, height) / 2) + Math.max(0, extra);
 }
 
-/** M8: Boss erscheint sichtbar, aber nicht auf dem Spieler; mit der Höhe skaliert. */
+/** M8: Boss erscheint sichtbar, aber nicht auf dem Spieler; mit der Hoehe skaliert.
+ *  0,4 * kuerzere Kante = 144 px bei 360er-Hoehe, also innerhalb des Views. */
 export function bossSpawnDistance(width: number, height: number): number {
   const shorter = Math.min(width, height);
-  return Math.max(130, Math.round(shorter * 0.55));
+  return Math.max(130, Math.round(shorter * 0.4));
 }
 
 /** Ferne, alte Gegner dürfen recycelt werden (kein Kill, kein Drop). */
