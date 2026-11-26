@@ -250,10 +250,11 @@
           "at": "2026-11-26T08:39:09Z",
           "by": "build",
           "text": "doing → done: Dirty-Stand 37 thematisch committed (shots/ + board), offene Nachträge #73/#74/#76 re-verifiziert und done; dirty=0. Externe m8-input-Lane schreibt zeitweise in main-shots, nicht angetastet."
-        }
+        },
+        "Lead-Abnahme 2026-11-26: A1-A12 belegt, Restmaengel dokumentiert (Heap-Gate, Boss-Spawn, AutoPlay-Streuung, #79 blocked/#82 Ersatz)."
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-26T08:39:09Z"
+      "updated": "2026-11-26T09:00:00Z"
     },
     {
       "id": 16,
