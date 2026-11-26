@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 558,
+  "next": 698,
   "cards": [
     {
       "id": 1,
@@ -1810,10 +1810,16 @@
       "id": 319,
       "title": "m9-art-fx-ui-02 Titelbild polieren",
       "description": "Mond-Halo als harte Pixelringe statt weichem Quadrat, Stergruppen, Silhouettenkante. Abnahme: Vorher/Nachher-Shot 2x, art-director PASS >=4.5, Layout keine build gruen.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T14:13:38Z",
+          "by": "build",
+          "text": "backlog \u2192 doing: Mond-Halo harte Pixelringe + Sterngruppen + Horizontkante; Generator regenerationiert. Build 175 Tests gruen. art-director-Urteil laeuft."
+        }
+      ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T12:22:29Z"
+      "updated": "2026-11-26T14:13:38Z"
     },
     {
       "id": 320,
