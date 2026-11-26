@@ -15,8 +15,8 @@ Lange Läufe serialisiert über `flock /home/ai/games/.lf-perf.lock`
 Reihenfolge linear im Log. Konflikte in `package.json`, `src/scenes/Run.ts`
 und `src/main.ts` wurden mit beiden Absichten aufgelöst (beide Scripts, robuste
 Bot-Scratch-Arrays + Balance-Threat, Worker-Skalierung + Skalierungsoption).
-Nach jedem Merge: `npm run build` grün und Tests grün (135 nach balance+robust,
-144 nach menus; aktuell 147). Kein Konflikt-Rest (`git status` sauber, `tsc` grün).
+Nach jedem Merge: `npm run build` (`tsc`) grün und Tests grün — Lead-Nachmessung:
+**126** nach m6-balance, **135** nach m6-robust, **144** nach m6-menus; aktuell **147**. Kein Konflikt-Rest (`git status` sauber, `tsc` grün).
 `.opencode/board.json` blieb die main-Version; Lane-Karten #56–#72 nachgetragen.
 
 ## A2 — GAME.md "Definition of Done"
@@ -25,7 +25,7 @@ Nach jedem Merge: `npm run build` grün und Tests grün (135 nach balance+robust
 |---|---|---|
 | Alle Listen vollständig umgesetzt | `node scripts/acceptance-count.mjs` → 30/6/6/6/6/2 (siehe A3) | OK |
 | 30-min-Run per autoPlay + setTimeScale(30) ohne Crash/JS-Fehler; alle 6 Bosse, Truhen, ≥1 Evolution | `shots/m3-fullrun.json` (30,1 min, 6 Bosse 300–1800 s, 6 Truhen, Sieg, 0 JS-Fehler); voller Echtzeit-Lauf siehe A4 | OK |
-| Performance-Ziel ≥ 55 FPS mit 500 Gegnern + Projektilen | `shots/perf-m3.json` → Burst **59,7 FPS** (worst 33,4 ms) | OK |
+| Performance-Ziel ≥ 55 FPS mit 500 Gegnern + Projektilen | `shots/perf-m3.json` → Burst **59,3 FPS** (Lead-Nachmessung; Team-Finallauf 60,7) | OK |
 | Tests grün | `npm test` → 147 Tests grün | OK |
 | Screenshots aller Gegner/Bosse/Waffen geprüft | `shots/m4-enemy-*.png` (30), `shots/m4-boss-*.png` (6), `shots/m5-vfx-*.gif` (12 Waffen-/Evolutions-GIFs, alle 12 Waffen), per Vision geprüft; Kontaktbögen in `shots/` | OK |
 
@@ -59,13 +59,17 @@ in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
 
 | Messung | Wert | Beleg |
 |---|---|---|
-| perf Burst (500 Gegner) | **59,7 FPS**, worst 33,4 ms | `shots/perf-m3.json` |
-| perf Minute 25 (300 + 6 Evolutionen) | **57,2 FPS**, worst 33,4 ms | `shots/perf-m3.json` |
-| fullrun FPS-Minimum (29:20–Sieg, 1×) | **55,8** (Ziel ≥ 55) | `shots/m3-fullrun.json` |
-| fullrun Gesamt | 30,2 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler; Heap +18,7 % (25,7 → 30,5 MB, Ziel 15 % verfehlt) | `shots/m3-fullrun.json` |
-| balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Kael/101 Level 47 (Restmangel) | `shots/balance-main.json` |
+| perf Burst (500 Gegner) | **60,7 FPS** (Team-Finallauf), Lead-Nachmessung **59,3 FPS** | `shots/perf-m3.json` |
+| perf Minute 25 (300 + 6 Evolutionen) | **57,9 FPS** (Team), Lead-Nachmessung **56,4 FPS** | `shots/perf-m3.json` |
+| fullrun FPS-Minimum (29:20–Sieg, 1×) | **55,8** (Ziel ≥ 55) in beiden Läufen | `shots/m3-fullrun.json` |
+| fullrun Gesamt | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler | `shots/m3-fullrun.json` |
+| balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Team: Kael/101 Level 47; Lead-Nachlauf: Kael/202 Tod 15,6 min, 0 Evos | `shots/balance-main.json` |
 | balance Boss-Dauern | 23–54 s (Ziel 20–60 s) | `shots/balance-main.json` |
 | Tests | 147 grün | `npm test` |
+
+**Heap (kein A5-Kriterium, offener Punkt):** Team-Finallauf +22,2 % (25,7 → 31,4 MB),
+Lead-Nachlauf +18,7 % (25,7 → 30,5 MB), beide über dem 15-%-Ziel; CDP-Diagnose flach,
+kein JS-Objekt-Leak (Host-Last/GC-Streuung).
 
 ## A6 — Abschluss-Material
 
@@ -161,3 +165,7 @@ Nachträge, Restmängel).
 - Trailer-Segment 7 (Endboss) lief erst im 2. Versuch (141,6 s, Timeout 180 s);
   #79 ist deshalb blocked, die Belege kamen über #82.
 - Menüs ohne Gamepad, Meta ohne Gold/Shop.
+- `verify:menus`-Skript hatte nach der MASTER-MUTE-Zeile (7 statt 6 Optionszeilen) noch die alte
+  SKALIERUNG-Klickposition — Test korrigiert (`de22ecb`), danach 15/15 PASS. Kein Spielbug.
+- `verify-weapons`-Check `chest-roll-names` ist timing-flaky (1× FAIL bei hoher Last, Wiederholung
+  12/12 PASS); Beleg `shots/m2-chest.gif`.

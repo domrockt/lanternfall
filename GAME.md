@@ -410,8 +410,8 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 | Messung | Wert |
 |---|---|
 | `npm run build` / `npm test` | grün / **147 Tests** |
-| perf Burst (500 Gegner) | **59,7 FPS**, worst 33,4 ms |
-| perf Minute 25 (300 + 6 Evolutionen) | **57,2 FPS**, worst 33,4 ms |
+| perf Burst (500 Gegner) | **59,3 FPS**, worst 33,4 ms (Team-Finallauf 60,7) |
+| perf Minute 25 (300 + 6 Evolutionen) | **56,4 FPS**, worst 33,4 ms (Team 57,9) |
 | fullrun FPS-Minimum (29:20–Sieg) | **55,8** (Ziel ≥55) |
 | fullrun | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler |
 | balance | 6 Läufe, 5/6 im Korridor, Kael/101 Level 47 (Restmangel) |
