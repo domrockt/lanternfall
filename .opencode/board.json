@@ -1801,11 +1801,17 @@
       "id": 298,
       "title": "m9-art-enemies-01 Tier 0-1: 4 Lauf-Frames + Silhouetten",
       "description": "Owner pixel-artist, Kontrolle art-director + reviewer. 12 Gegner Stufe 0-1: bog_rat, wisp, mudling, crow, bogzombie, toad, skeleton, bat, ghoul, witchling, slime, scarecrow. Abnahme: 4 echte Frames (F1 != F3), eindeutige Silhouetten, 3-Ton-Shading + 1px Kontur, 0 Off-Palette. Vorher/Nachher-Sheet shots/m9-art-enemies-01-*.png 4x. art-director PASS Note >=4.5 in docs/lanes/m9-art-enemies.md. build + Tests gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T12:29:38Z",
+          "by": "build",
+          "text": "todo → doing: 4 Lauf-Frames + Schattierung fuer 12 Gegner Stufe 0-1; tsc/build/175 Tests gruen, 0 JS-Fehler In-Game-Shot; art-director-Urteil offen."
+        }
+      ],
       "created": "2026-11-26T12:07:53Z",
-      "updated": "2026-11-26T12:07:53Z"
+      "updated": "2026-11-26T12:29:38Z"
     },
     {
       "id": 299,
