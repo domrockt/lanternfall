@@ -39,3 +39,11 @@ Offene Punkte (nicht in #318 untersucht, gehen in Karten #319-#322):
 ## Karten
 #318 Belege/Maengelliste, #319 Titel, #320 Icons, #321 Font/UI-Rahmen, #322 FX-Belege
 und Abschluss.
+
+## #319 Titelbild
+- Vorher: `shots/m9-art-fx-ui-title-before-2x.png`
+- Nachher: `shots/m9-art-fx-ui-title-after-2x.png` (frisch aus dem Build, 2x nearest).
+- Korrektur: ferne Huegel als dunkle Silhouette (Palette 2) mit 1-px-Nebelkante (5)
+  auf dem Nachthimmel (4); Mond-Halo bleibt als harte, unterbrochene Pixelringe.
+- Kriterien: 1 harte Pixelringe PASS, 2 klare Horizontkante PASS, 3 kein dunkler
+  Mond-Rand PASS. art-director-Urteil: (siehe naechster Abschnitt).

@@ -97,9 +97,12 @@ def sky(g: Grid) -> None:
 
 
 def hills(g: Grid) -> None:
+    # Klare Horizontkante: ferne Huegel als dunkle Silhouette (2) mit 1-px-Nebelkante (5)
+    # auf dem helleren Nachthimmel (4), darunter die naechste Silhouette (3).
     for x in range(W):
         far = 150 + int(6 * math.sin(x * 0.011) + 4 * _noise(x * 0.05, 0.5, 31))
-        g.rect(x, far, 1, H - far, 4)
+        g.rect(x, far, 1, H - far, 2)
+        g.put(x, far, 5)
         near = 168 + int(7 * math.sin(x * 0.007 + 2) + 5 * _noise(x * 0.04, 1.5, 47))
         g.rect(x, near, 1, H - near, 3)
     # Moorboden: ruhige 28/29-Flächen, 30 nur als gruppierte Flecken.
