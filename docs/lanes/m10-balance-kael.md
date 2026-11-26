@@ -6,7 +6,7 @@ Basis-SHA beim Start: **252fd98** (main, Worktree `/home/ai/games/lf-lanes/m10-b
 
 Harness: `npm run build` (grün, warm) danach `node scripts/balance.mjs` **ohne flock**,
 timeScale 30, viewport 960x540, dpr 1, autoPlay, kein god.
-Rohdaten aus `shots/balance-main-runs.json`, konsolidiert in `shots/m10-kael-repro.json`.
+Rohdaten aus `shots/balance-main-runs.json`, konsolidiert in `shots/m10-balance-kael-repro.json`.
 
 | Char | Seed | Ergebnis | Minuten | Endlevel | Kills | Evos | Boss-Dauern (s) |
 |---|---|---|---|---|---|---|---|
@@ -30,7 +30,7 @@ den Level-Korridor (25–40); Ausreißer nach unten/außen: nur Kael/505 (frühe
 
 ## Karte m10-balance-kael-02 — Diagnose XP-Budget (Basis 252fd98)
 
-Beleg: `shots/m10-kael-xp-budget.json` (je Lauf effektives Budget = Summe `xpToNext(1..Level-1)`,
+Beleg: `shots/m10-balance-kael-xp-budget.json` (je Lauf effektives Budget = Summe `xpToNext(1..Level-1)`,
 Roh-Budget = effektiv / XP-Mod, Potenzial = Kills × 3,92 Ø-Gem-Wert, Sammelquote = Roh/Potenzial).
 
 | Lauf | Endlevel | Effektives XP-Budget | Roh-Budget | Potenzial aus Kills | Sammelquote |
