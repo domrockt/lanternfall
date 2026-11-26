@@ -129,6 +129,10 @@ Zwei eigene read-only Skripte in `~/tmp/m10-art-contact/` prüfen die Belege nac
   und prüft jedes opake Pixel gegen `src/palette.ts`: **14/14 Bögen, 0 Off-Palette-Pixel**.
   (Der In-Game-Screenshot `m10-art-contact-game.png` ist bewusst ausgenommen: Licht-/Vignette-Overlays
   sind laut ART.md erlaubte Ausnahme.)
+- `audit.py` ist das **feste, deterministische Erzeuger-Skript** für `shots/m10-art-contact-audit.json`
+  (nur `~/tmp/m10-art-contact/`, kein Ad-hoc-Parser je Sprite): liest das Inventar-JSON plus die
+  exportierten `src/gfx/gen-*.ts`-Grids, schreibt die 38 Zeilen und prüft zusätzlich die 14 Bögen.
+  Lauf am 26.11. reproduzierte das committete Audit-JSON **byte-identisch** (`diff` leer).
 - `validate_audit.py` prüft das Audit-JSON gegen das Abnahmekriterium: **PASS** —
   38 Zeilen (30 Gegner + 6 Bosse + 2 Helden), 154 Ist-Frames gesamt, 0 fehlende Frames,
   0 Off-Palette-Pixel gesamt, 14/14 Bögen off-palette-frei, Hero-Animationen summieren sich
