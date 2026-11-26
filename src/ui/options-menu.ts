@@ -40,7 +40,7 @@ export class OptionsMenu {
     const labelX = rowLeft + 12;
     const valueX = rowLeft + rowW - 12;
     const arrowL = valueX - 100;
-    const arrowR = valueX + 22;
+    const arrowR = rowLeft + rowW - 4;
     const valueZoneX = valueX - 47;
     this.container = scene.add.container(0, 0).setDepth(depth).setVisible(false);
     // Klick-Blocker: verhindert, dass Mausklicks durch das Menü darunterliegende
