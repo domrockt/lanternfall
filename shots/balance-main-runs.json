@@ -1,108 +1,12 @@
 [
   {
     "seed": 101,
-    "character": "mira",
-    "outcome": "timeout",
-    "deathSecond": 3.4,
-    "samples": [
-      {
-        "time": 0.5156333333333334,
-        "level": 1,
-        "hp": 250,
-        "maxHp": 250,
-        "enemies": 0,
-        "kills": 0,
-        "weapons": [
-          {
-            "id": "ember",
-            "level": 1
-          }
-        ],
-        "passives": [],
-        "boss": null,
-        "damageByWeapon": {},
-        "dawn": false
-      }
-    ],
-    "autoPlay": true,
-    "lastSeenByBoss": {},
-    "bossObserved": {},
-    "defeatedEndByBoss": {},
-    "view": {
-      "viewport": [
-        780,
-        360
-      ],
-      "dpr": 3,
-      "logical": [
-        780,
-        360
-      ],
-      "css": [
-        780,
-        360
-      ]
-    },
-    "run": {
-      "time": 3.41223333333333,
-      "level": 1,
-      "kills": 0,
-      "hp": 250,
-      "maxHp": 250,
-      "enemies": 1,
-      "weapons": [
-        {
-          "id": "ember",
-          "level": 1
-        }
-      ],
-      "passives": [],
-      "bossesDefeated": 0,
-      "bossFlags": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "bossesSpawned": [],
-      "chestsDropped": 0,
-      "dawn": false,
-      "damageByWeapon": {}
-    },
-    "pageErrors": [
-      "RangeError: Maximum call stack size exceeded"
-    ],
-    "wallSeconds": 150,
-    "dpsRows": [],
-    "bossDurations": [],
-    "evolutions": [],
-    "damageShare": {
-      "totalDamage": 0,
-      "sharePct": {},
-      "avgDpsOverRun": {}
-    },
-    "passed": {
-      "survivalMinutes": 0.1,
-      "levelAtEnd": 1,
-      "evolutionCount": 0,
-      "bossDurationsInCorridor": true,
-      "died": false,
-      "survivalInCorridor": false,
-      "levelInCorridor": false,
-      "evolutionOk": false,
-      "passedAll": false
-    }
-  },
-  {
-    "seed": 101,
     "character": "kael",
-    "outcome": "timeout",
-    "deathSecond": 3.4,
+    "outcome": "dawn",
+    "deathSecond": 1839.1,
     "samples": [
       {
-        "time": 1.0156466666666668,
+        "time": 1.015646666666667,
         "level": 1,
         "hp": 253,
         "maxHp": 253,
@@ -118,396 +22,1503 @@
         "boss": null,
         "damageByWeapon": {},
         "dawn": false
-      }
-    ],
-    "autoPlay": true,
-    "lastSeenByBoss": {},
-    "bossObserved": {},
-    "defeatedEndByBoss": {},
-    "view": {
-      "viewport": [
-        780,
-        360
-      ],
-      "dpr": 3,
-      "logical": [
-        780,
-        360
-      ],
-      "css": [
-        780,
-        360
-      ]
-    },
-    "run": {
-      "time": 3.413046666666662,
-      "level": 1,
-      "kills": 0,
-      "hp": 253,
-      "maxHp": 253,
-      "enemies": 1,
-      "weapons": [
-        {
-          "id": "flail",
-          "level": 1
-        }
-      ],
-      "passives": [],
-      "bossesDefeated": 0,
-      "bossFlags": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "bossesSpawned": [],
-      "chestsDropped": 0,
-      "dawn": false,
-      "damageByWeapon": {}
-    },
-    "pageErrors": [
-      "RangeError: Maximum call stack size exceeded"
-    ],
-    "wallSeconds": 150,
-    "dpsRows": [],
-    "bossDurations": [],
-    "evolutions": [],
-    "damageShare": {
-      "totalDamage": 0,
-      "sharePct": {},
-      "avgDpsOverRun": {}
-    },
-    "passed": {
-      "survivalMinutes": 0.1,
-      "levelAtEnd": 1,
-      "evolutionCount": 0,
-      "bossDurationsInCorridor": true,
-      "died": false,
-      "survivalInCorridor": false,
-      "levelInCorridor": false,
-      "evolutionOk": false,
-      "passedAll": false
-    }
-  },
-  {
-    "seed": 202,
-    "character": "mira",
-    "outcome": "timeout",
-    "deathSecond": 3.4,
-    "samples": [
+      },
       {
-        "time": 1.015040000000001,
-        "level": 1,
-        "hp": 250,
-        "maxHp": 250,
-        "enemies": 0,
-        "kills": 0,
+        "time": 60.5688466666654,
+        "level": 5,
+        "hp": 253,
+        "maxHp": 253,
+        "enemies": 3,
+        "kills": 19,
         "weapons": [
+          {
+            "id": "flail",
+            "level": 5
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 543
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 122.96564666666195,
+        "level": 7,
+        "hp": 253,
+        "maxHp": 253,
+        "enemies": 3,
+        "kills": 45,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 7
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 1780
+        },
+        "dawn": false,
+        "minute": 2
+      },
+      {
+        "time": 184.46414666667442,
+        "level": 9,
+        "hp": 273,
+        "maxHp": 273,
+        "enemies": 10,
+        "kills": 84,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 3884
+        },
+        "dawn": false,
+        "minute": 3
+      },
+      {
+        "time": 240.0607466666869,
+        "level": 11,
+        "hp": 293,
+        "maxHp": 293,
+        "enemies": 13,
+        "kills": 130,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 6449
+        },
+        "dawn": false,
+        "minute": 4
+      },
+      {
+        "time": 300.5058466666993,
+        "level": 12,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 11,
+        "kills": 185,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 0,
+          "name": "Moorkönigin",
+          "hp": 3146,
+          "maxHp": 3200,
+          "ratio": 0.983125,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 9770
+        },
+        "dawn": false,
+        "minute": 5
+      },
+      {
+        "time": 362.70977266671196,
+        "level": 14,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 11,
+        "kills": 264,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 695.2725600000024,
+          "wrath_pendulum": 3201
+        },
+        "dawn": false,
+        "minute": 6
+      },
+      {
+        "time": 421.1566726667244,
+        "level": 15,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 15,
+        "kills": 315,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 1166.2725600000024,
+          "wrath_pendulum": 8580
+        },
+        "dawn": false,
+        "minute": 7
+      },
+      {
+        "time": 482.4047726667368,
+        "level": 16,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 14,
+        "kills": 401,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 2136.272560000002,
+          "wrath_pendulum": 17490
+        },
+        "dawn": false,
+        "minute": 8
+      },
+      {
+        "time": 543.8516726667145,
+        "level": 17,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 13,
+        "kills": 513,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 3922.272560000002,
+          "wrath_pendulum": 28809
+        },
+        "dawn": false,
+        "minute": 9
+      },
+      {
+        "time": 600.5990726666636,
+        "level": 18,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 20,
+        "kills": 622,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 10414,
+          "maxHp": 10500,
+          "ratio": 0.9918095238095238,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 6163.272560000002,
+          "wrath_pendulum": 38973
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 661.8976726666085,
+        "level": 20,
+        "hp": 333,
+        "maxHp": 333,
+        "enemies": 15,
+        "kills": 747,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 15392.29320000004,
+          "wrath_pendulum": 58119.843440000026,
+          "frost": 12
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 722.3948726665542,
+        "level": 20,
+        "hp": 333,
+        "maxHp": 333,
+        "enemies": 11,
+        "kills": 823,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 21384.29320000004,
+          "wrath_pendulum": 64455.843440000026,
+          "frost": 30,
+          "lantern": 14
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 780.8394726665022,
+        "level": 21,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 15,
+        "kills": 883,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 27278.29320000004,
+          "wrath_pendulum": 69900.84344000003,
+          "frost": 42,
+          "lantern": 35
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 843.8352726664459,
+        "level": 21,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 22,
+        "kills": 955,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 34838.293200000044,
+          "wrath_pendulum": 78414.84344000003,
+          "frost": 60,
+          "lantern": 77
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 900.3304726663962,
+        "level": 22,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 16,
+        "kills": 1046,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 12434,
+          "maxHp": 12500,
+          "ratio": 0.99472,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 42482.293200000044,
+          "wrath_pendulum": 88644.84344000003,
+          "frost": 90,
+          "lantern": 119
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 962.2245986663407,
+        "level": 23,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 31,
+        "kills": 1116,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 2
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 113996.42420000007,
+          "frost": 221.49988000000045,
+          "lantern": 307.4102800000011,
+          "thorn_storm": 15626
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1022.7204986662871,
+        "level": 23,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 29,
+        "kills": 1183,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 2
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 126833.42420000007,
+          "frost": 325.4998800000004,
+          "lantern": 415.4102800000011,
+          "thorn_storm": 49920
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1085.4660986662311,
+        "level": 24,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 31,
+        "kills": 1253,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 3
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 144917.42420000007,
+          "frost": 453.4998800000004,
+          "lantern": 543.4102800000011,
+          "thorn_storm": 98956
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1142.41329866618,
+        "level": 24,
+        "hp": 337.7502999999999,
+        "maxHp": 353,
+        "enemies": 29,
+        "kills": 1323,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 3
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 156665.42420000007,
+          "frost": 613.4998800000004,
+          "lantern": 575.4102800000011,
+          "thorn_storm": 132262
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1200.560298666128,
+        "level": 25,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 33,
+        "kills": 1394,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 4
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 13830,
+          "maxHp": 14000,
+          "ratio": 0.9878571428571429,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 169106.42420000007,
+          "frost": 799.4998800000004,
+          "lantern": 655.4102800000011,
+          "thorn_storm": 170846
+        },
+        "dawn": false,
+        "minute": 20
+      },
+      {
+        "time": 1261.2069986660736,
+        "level": 25,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 39,
+        "kills": 1568,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 5
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 213126.7738600001,
+          "frost": 1687.7471600000015,
+          "lantern": 940.2494800000012,
+          "thorn_storm": 264482.78868
+        },
+        "dawn": false,
+        "minute": 21
+      },
+      {
+        "time": 1320.6530986660205,
+        "level": 26,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 67,
+        "kills": 1799,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 6
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 261042.7738600001,
+          "frost": 3001.7471600000017,
+          "lantern": 1024.2494800000013,
+          "thorn_storm": 366246.78868
+        },
+        "dawn": false,
+        "minute": 22
+      },
+      {
+        "time": 1381.150698665966,
+        "level": 27,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 86,
+        "kills": 2047,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 294834.7738600001,
+          "frost": 4092.7471600000017,
+          "lantern": 1172.2494800000013,
+          "thorn_storm": 474094.78868
+        },
+        "dawn": false,
+        "minute": 23
+      },
+      {
+        "time": 1440.0460986659136,
+        "level": 27,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 109,
+        "kills": 2376,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 337503.7738600001,
+          "frost": 5665.747160000002,
+          "lantern": 1284.2494800000013,
+          "thorn_storm": 610828.78868
+        },
+        "dawn": false,
+        "minute": 24
+      },
+      {
+        "time": 1500.3932986658594,
+        "level": 27,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 149,
+        "kills": 2745,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "hp": 13382,
+          "maxHp": 13500,
+          "ratio": 0.9912592592592593,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 401919.7738600001,
+          "frost": 8239.747160000003,
+          "lantern": 1428.2494800000013,
+          "thorn_storm": 770910.78868
+        },
+        "dawn": false,
+        "minute": 25
+      },
+      {
+        "time": 1562.240398665804,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 164,
+        "kills": 3225,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 486813.5406200003,
+          "frost": 12792.019760000006,
+          "lantern": 1866.086600000002,
+          "thorn_storm": 975310.8207599998
+        },
+        "dawn": false,
+        "minute": 26
+      },
+      {
+        "time": 1621.387298665751,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 212,
+        "kills": 3698,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
           {
             "id": "ember",
             "level": 1
           }
         ],
-        "passives": [],
-        "boss": null,
-        "damageByWeapon": {},
-        "dawn": false
-      }
-    ],
-    "autoPlay": true,
-    "lastSeenByBoss": {},
-    "bossObserved": {},
-    "defeatedEndByBoss": {},
-    "view": {
-      "viewport": [
-        780,
-        360
-      ],
-      "dpr": 3,
-      "logical": [
-        780,
-        360
-      ],
-      "css": [
-        780,
-        360
-      ]
-    },
-    "run": {
-      "time": 3.4124399999999984,
-      "level": 1,
-      "kills": 0,
-      "hp": 250,
-      "maxHp": 250,
-      "enemies": 1,
-      "weapons": [
-        {
-          "id": "ember",
-          "level": 1
-        }
-      ],
-      "passives": [],
-      "bossesDefeated": 0,
-      "bossFlags": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "bossesSpawned": [],
-      "chestsDropped": 0,
-      "dawn": false,
-      "damageByWeapon": {}
-    },
-    "pageErrors": [
-      "RangeError: Maximum call stack size exceeded"
-    ],
-    "wallSeconds": 150,
-    "dpsRows": [],
-    "bossDurations": [],
-    "evolutions": [],
-    "damageShare": {
-      "totalDamage": 0,
-      "sharePct": {},
-      "avgDpsOverRun": {}
-    },
-    "passed": {
-      "survivalMinutes": 0.1,
-      "levelAtEnd": 1,
-      "evolutionCount": 0,
-      "bossDurationsInCorridor": true,
-      "died": false,
-      "survivalInCorridor": false,
-      "levelInCorridor": false,
-      "evolutionOk": false,
-      "passedAll": false
-    }
-  },
-  {
-    "seed": 202,
-    "character": "kael",
-    "outcome": "timeout",
-    "deathSecond": 3.4,
-    "samples": [
-      {
-        "time": 0.5156333333333334,
-        "level": 1,
-        "hp": 253,
-        "maxHp": 253,
-        "enemies": 0,
-        "kills": 0,
-        "weapons": [
+        "passives": [
           {
-            "id": "flail",
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
             "level": 1
           }
         ],
-        "passives": [],
         "boss": null,
-        "damageByWeapon": {},
-        "dawn": false
-      }
-    ],
-    "autoPlay": true,
-    "lastSeenByBoss": {},
-    "bossObserved": {},
-    "defeatedEndByBoss": {},
-    "view": {
-      "viewport": [
-        780,
-        360
-      ],
-      "dpr": 3,
-      "logical": [
-        780,
-        360
-      ],
-      "css": [
-        780,
-        360
-      ]
-    },
-    "run": {
-      "time": 3.411233333333332,
-      "level": 1,
-      "kills": 0,
-      "hp": 253,
-      "maxHp": 253,
-      "enemies": 1,
-      "weapons": [
-        {
-          "id": "flail",
-          "level": 1
-        }
-      ],
-      "passives": [],
-      "bossesDefeated": 0,
-      "bossFlags": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "bossesSpawned": [],
-      "chestsDropped": 0,
-      "dawn": false,
-      "damageByWeapon": {}
-    },
-    "pageErrors": [
-      "RangeError: Maximum call stack size exceeded"
-    ],
-    "wallSeconds": 150.1,
-    "dpsRows": [],
-    "bossDurations": [],
-    "evolutions": [],
-    "damageShare": {
-      "totalDamage": 0,
-      "sharePct": {},
-      "avgDpsOverRun": {}
-    },
-    "passed": {
-      "survivalMinutes": 0.1,
-      "levelAtEnd": 1,
-      "evolutionCount": 0,
-      "bossDurationsInCorridor": true,
-      "died": false,
-      "survivalInCorridor": false,
-      "levelInCorridor": false,
-      "evolutionOk": false,
-      "passedAll": false
-    }
-  },
-  {
-    "seed": 404,
-    "character": "mira",
-    "outcome": "timeout",
-    "deathSecond": 3.4,
-    "samples": [
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 571227.5406200003,
+          "frost": 17512.019760000006,
+          "lantern": 2014.086600000002,
+          "thorn_storm": 1198442.8207599998,
+          "ember": 495
+        },
+        "dawn": false,
+        "minute": 27
+      },
       {
-        "time": 1.015040000000001,
-        "level": 1,
-        "hp": 250,
-        "maxHp": 250,
-        "enemies": 0,
-        "kills": 0,
+        "time": 1682.3338986656963,
+        "level": 28,
+        "hp": 338,
+        "maxHp": 353,
+        "enemies": 408,
+        "kills": 4257,
         "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
           {
             "id": "ember",
             "level": 1
           }
         ],
-        "passives": [],
-        "boss": null,
-        "damageByWeapon": {},
-        "dawn": false
-      }
-    ],
-    "autoPlay": true,
-    "lastSeenByBoss": {},
-    "bossObserved": {},
-    "defeatedEndByBoss": {},
-    "view": {
-      "viewport": [
-        780,
-        360
-      ],
-      "dpr": 3,
-      "logical": [
-        780,
-        360
-      ],
-      "css": [
-        780,
-        360
-      ]
-    },
-    "run": {
-      "time": 3.4118399999999984,
-      "level": 1,
-      "kills": 0,
-      "hp": 250,
-      "maxHp": 250,
-      "enemies": 1,
-      "weapons": [
-        {
-          "id": "ember",
-          "level": 1
-        }
-      ],
-      "passives": [],
-      "bossesDefeated": 0,
-      "bossFlags": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "bossesSpawned": [],
-      "chestsDropped": 0,
-      "dawn": false,
-      "damageByWeapon": {}
-    },
-    "pageErrors": [
-      "RangeError: Maximum call stack size exceeded"
-    ],
-    "wallSeconds": 150.1,
-    "dpsRows": [],
-    "bossDurations": [],
-    "evolutions": [],
-    "damageShare": {
-      "totalDamage": 0,
-      "sharePct": {},
-      "avgDpsOverRun": {}
-    },
-    "passed": {
-      "survivalMinutes": 0.1,
-      "levelAtEnd": 1,
-      "evolutionCount": 0,
-      "bossDurationsInCorridor": true,
-      "died": false,
-      "survivalInCorridor": false,
-      "levelInCorridor": false,
-      "evolutionOk": false,
-      "passedAll": false
-    }
-  },
-  {
-    "seed": 404,
-    "character": "kael",
-    "outcome": "timeout",
-    "deathSecond": 3.4,
-    "samples": [
-      {
-        "time": 0.5160400000000003,
-        "level": 1,
-        "hp": 253,
-        "maxHp": 253,
-        "enemies": 0,
-        "kills": 0,
-        "weapons": [
+        "passives": [
           {
-            "id": "flail",
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
             "level": 1
           }
         ],
-        "passives": [],
         "boss": null,
-        "damageByWeapon": {},
-        "dawn": false
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 651384.5406200003,
+          "frost": 22434.019760000006,
+          "lantern": 2142.086600000002,
+          "thorn_storm": 1390790.8207599998,
+          "ember": 1230
+        },
+        "dawn": false,
+        "minute": 28
+      },
+      {
+        "time": 1741.0814986656435,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 428,
+        "kills": 4990,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 741738.5406200003,
+          "frost": 26989.019760000006,
+          "lantern": 2286.086600000002,
+          "thorn_storm": 1616184.8207599998,
+          "ember": 1955
+        },
+        "dawn": false,
+        "minute": 29
+      },
+      {
+        "time": 1800.9765986655902,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 348,
+        "kills": 5870,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "thorn_storm",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 5,
+          "name": "Der Hohle König",
+          "hp": 14702,
+          "maxHp": 15000,
+          "ratio": 0.9801333333333333,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 15994.897620000014,
+          "thorn": 56317.93696000008,
+          "wrath_pendulum": 870108.5406200003,
+          "frost": 33119.01976000001,
+          "lantern": 2446.086600000002,
+          "thorn_storm": 1881436.8207599998,
+          "ember": 2680
+        },
+        "dawn": false,
+        "minute": 30
       }
     ],
     "autoPlay": true,
-    "lastSeenByBoss": {},
-    "bossObserved": {},
-    "defeatedEndByBoss": {},
+    "lastSeenByBoss": {
+      "0": 330.85484666670555,
+      "1": 635.648372666632,
+      "2": 931.9300726663679,
+      "3": 1234.1586986660977,
+      "4": 1533.8908986658296,
+      "5": 1833.0244986655616
+    },
+    "bossObserved": {
+      "0": {
+        "firstSecond": 300.5058466666993,
+        "minHp": 0.05338431874999438
+      },
+      "1": {
+        "firstSecond": 600.5990726666636,
+        "minHp": 0.02375683809523094
+      },
+      "2": {
+        "firstSecond": 900.3304726663962,
+        "minHp": 0.09971647679999186
+      },
+      "3": {
+        "firstSecond": 1200.560298666128,
+        "minHp": 0.021646041428566354
+      },
+      "4": {
+        "firstSecond": 1500.3932986658594,
+        "minHp": 0.08375914074073208
+      },
+      "5": {
+        "firstSecond": 1800.9765986655902,
+        "minHp": 0.13652140533332738
+      }
+    },
+    "defeatedEndByBoss": {
+      "0": 331.20484666670563,
+      "1": 636.0483726666316,
+      "2": 933.9292726663662,
+      "3": 1234.6586986660973,
+      "4": 1535.591098665828,
+      "5": 1835.874298665559
+    },
     "view": {
       "viewport": [
         780,
@@ -523,56 +1534,879 @@
         360
       ]
     },
+    "result": {
+      "reason": "dawn",
+      "time": 1839.1239986655562,
+      "level": 28,
+      "kills": 6571,
+      "damageByWeapon": {
+        "flail": 15994.897620000014,
+        "thorn": 56317.93696000008,
+        "wrath_pendulum": 989803.5022000007,
+        "frost": 42806.09724000001,
+        "lantern": 2794.086600000002,
+        "thorn_storm": 2103437.8283999995,
+        "ember": 3223.927500000003
+      },
+      "character": "kael",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "flail": 15994.897620000014,
+      "thorn": 56317.93696000008,
+      "wrath_pendulum": 989803.5022000007,
+      "frost": 42806.09724000001,
+      "lantern": 2794.086600000002,
+      "thorn_storm": 2103437.8283999995,
+      "ember": 3223.927500000003
+    },
     "run": {
-      "time": 3.4126399999999983,
-      "level": 1,
-      "kills": 0,
-      "hp": 253,
-      "maxHp": 253,
-      "enemies": 1,
+      "time": 1837.7741986655574,
+      "level": 28,
+      "kills": 6571,
+      "hp": 353,
+      "maxHp": 353,
+      "enemies": 0,
       "weapons": [
         {
-          "id": "flail",
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "frost",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 2
+        },
+        {
+          "id": "ember",
+          "level": 2
+        },
+        {
+          "id": "storm",
           "level": 1
         }
       ],
-      "passives": [],
-      "bossesDefeated": 0,
-      "bossFlags": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
+      "passives": [
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "boots",
+          "level": 4
+        },
+        {
+          "id": "charm",
+          "level": 2
+        },
+        {
+          "id": "tome",
+          "level": 1
+        },
+        {
+          "id": "whetstone",
+          "level": 1
+        }
       ],
-      "bossesSpawned": [],
-      "chestsDropped": 0,
-      "dawn": false,
-      "damageByWeapon": {}
+      "bossesDefeated": 6,
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        },
+        {
+          "index": 3,
+          "at": 1200
+        },
+        {
+          "index": 4,
+          "at": 1500
+        },
+        {
+          "index": 5,
+          "at": 1800
+        }
+      ],
+      "chestsDropped": 6,
+      "dawn": true,
+      "damageByWeapon": {
+        "flail": 15994.897620000014,
+        "thorn": 56317.93696000008,
+        "wrath_pendulum": 989803.5022000007,
+        "frost": 42806.09724000001,
+        "lantern": 2794.086600000002,
+        "thorn_storm": 2103437.8283999995,
+        "ember": 3223.927500000003
+      }
     },
-    "pageErrors": [
-      "RangeError: Maximum call stack size exceeded"
+    "pageErrors": [],
+    "wallSeconds": 98.7,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 61,
+        "level": 5,
+        "hp": 253,
+        "maxHp": 253,
+        "enemies": 3,
+        "kills": 19,
+        "dps": {
+          "flail": 9.1
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 61,
+        "tTo": 123,
+        "level": 7,
+        "hp": 253,
+        "maxHp": 253,
+        "enemies": 3,
+        "kills": 45,
+        "dps": {
+          "flail": 19.8
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 2,
+        "minuteTo": 3,
+        "tFrom": 123,
+        "tTo": 184,
+        "level": 9,
+        "hp": 273,
+        "maxHp": 273,
+        "enemies": 10,
+        "kills": 84,
+        "dps": {
+          "flail": 34.2
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 3,
+        "minuteTo": 4,
+        "tFrom": 184,
+        "tTo": 240,
+        "level": 11,
+        "hp": 293,
+        "maxHp": 293,
+        "enemies": 13,
+        "kills": 130,
+        "dps": {
+          "flail": 46.1
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 4,
+        "minuteTo": 5,
+        "tFrom": 240,
+        "tTo": 301,
+        "level": 12,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 11,
+        "kills": 185,
+        "dps": {
+          "flail": 54.9
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 5,
+        "minuteTo": 6,
+        "tFrom": 301,
+        "tTo": 363,
+        "level": 14,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 11,
+        "kills": 264,
+        "dps": {
+          "flail": 100.1,
+          "thorn": 11.2,
+          "wrath_pendulum": 51.5
+        },
+        "sharePct": {
+          "flail": 61.5,
+          "thorn": 6.9,
+          "wrath_pendulum": 31.6
+        }
+      },
+      {
+        "minuteFrom": 6,
+        "minuteTo": 7,
+        "tFrom": 363,
+        "tTo": 421,
+        "level": 15,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 15,
+        "kills": 315,
+        "dps": {
+          "thorn": 8.1,
+          "wrath_pendulum": 92
+        },
+        "sharePct": {
+          "thorn": 8.1,
+          "wrath_pendulum": 91.9
+        }
+      },
+      {
+        "minuteFrom": 7,
+        "minuteTo": 8,
+        "tFrom": 421,
+        "tTo": 482,
+        "level": 16,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 14,
+        "kills": 401,
+        "dps": {
+          "thorn": 15.8,
+          "wrath_pendulum": 145.5
+        },
+        "sharePct": {
+          "thorn": 9.8,
+          "wrath_pendulum": 90.2
+        }
+      },
+      {
+        "minuteFrom": 8,
+        "minuteTo": 9,
+        "tFrom": 482,
+        "tTo": 544,
+        "level": 17,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 13,
+        "kills": 513,
+        "dps": {
+          "thorn": 29.1,
+          "wrath_pendulum": 184.2
+        },
+        "sharePct": {
+          "thorn": 13.6,
+          "wrath_pendulum": 86.4
+        }
+      },
+      {
+        "minuteFrom": 9,
+        "minuteTo": 10,
+        "tFrom": 544,
+        "tTo": 601,
+        "level": 18,
+        "hp": 313,
+        "maxHp": 313,
+        "enemies": 20,
+        "kills": 622,
+        "dps": {
+          "thorn": 39.5,
+          "wrath_pendulum": 179.1
+        },
+        "sharePct": {
+          "thorn": 18.1,
+          "wrath_pendulum": 81.9
+        }
+      },
+      {
+        "minuteFrom": 10,
+        "minuteTo": 11,
+        "tFrom": 601,
+        "tTo": 662,
+        "level": 20,
+        "hp": 333,
+        "maxHp": 333,
+        "enemies": 15,
+        "kills": 747,
+        "dps": {
+          "thorn": 150.6,
+          "wrath_pendulum": 312.4,
+          "frost": 0.2
+        },
+        "sharePct": {
+          "thorn": 32.5,
+          "wrath_pendulum": 67.4,
+          "frost": 0
+        }
+      },
+      {
+        "minuteFrom": 11,
+        "minuteTo": 12,
+        "tFrom": 662,
+        "tTo": 722,
+        "level": 20,
+        "hp": 333,
+        "maxHp": 333,
+        "enemies": 11,
+        "kills": 823,
+        "dps": {
+          "thorn": 99,
+          "wrath_pendulum": 104.7,
+          "frost": 0.3,
+          "lantern": 0.2
+        },
+        "sharePct": {
+          "thorn": 48.5,
+          "wrath_pendulum": 51.3,
+          "frost": 0.1,
+          "lantern": 0.1
+        }
+      },
+      {
+        "minuteFrom": 12,
+        "minuteTo": 13,
+        "tFrom": 722,
+        "tTo": 781,
+        "level": 21,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 15,
+        "kills": 883,
+        "dps": {
+          "thorn": 100.8,
+          "wrath_pendulum": 93.2,
+          "frost": 0.2,
+          "lantern": 0.4
+        },
+        "sharePct": {
+          "thorn": 51.8,
+          "wrath_pendulum": 47.9,
+          "frost": 0.1,
+          "lantern": 0.2
+        }
+      },
+      {
+        "minuteFrom": 13,
+        "minuteTo": 14,
+        "tFrom": 781,
+        "tTo": 844,
+        "level": 21,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 22,
+        "kills": 955,
+        "dps": {
+          "thorn": 120,
+          "wrath_pendulum": 135.2,
+          "frost": 0.3,
+          "lantern": 0.7
+        },
+        "sharePct": {
+          "thorn": 46.8,
+          "wrath_pendulum": 52.8,
+          "frost": 0.1,
+          "lantern": 0.3
+        }
+      },
+      {
+        "minuteFrom": 14,
+        "minuteTo": 15,
+        "tFrom": 844,
+        "tTo": 900,
+        "level": 22,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 16,
+        "kills": 1046,
+        "dps": {
+          "thorn": 135.3,
+          "wrath_pendulum": 181.1,
+          "frost": 0.5,
+          "lantern": 0.7
+        },
+        "sharePct": {
+          "thorn": 42.6,
+          "wrath_pendulum": 57,
+          "frost": 0.2,
+          "lantern": 0.2
+        }
+      },
+      {
+        "minuteFrom": 15,
+        "minuteTo": 16,
+        "tFrom": 900,
+        "tTo": 962,
+        "level": 23,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 31,
+        "kills": 1116,
+        "dps": {
+          "thorn": 223.5,
+          "wrath_pendulum": 409.6,
+          "frost": 2.1,
+          "lantern": 3,
+          "thorn_storm": 252.5
+        },
+        "sharePct": {
+          "thorn": 25.1,
+          "wrath_pendulum": 46,
+          "frost": 0.2,
+          "lantern": 0.3,
+          "thorn_storm": 28.3
+        }
+      },
+      {
+        "minuteFrom": 16,
+        "minuteTo": 17,
+        "tFrom": 962,
+        "tTo": 1023,
+        "level": 23,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 29,
+        "kills": 1183,
+        "dps": {
+          "wrath_pendulum": 212.2,
+          "frost": 1.7,
+          "lantern": 1.8,
+          "thorn_storm": 566.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 27.1,
+          "frost": 0.2,
+          "lantern": 0.2,
+          "thorn_storm": 72.4
+        }
+      },
+      {
+        "minuteFrom": 17,
+        "minuteTo": 18,
+        "tFrom": 1023,
+        "tTo": 1085,
+        "level": 24,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 31,
+        "kills": 1253,
+        "dps": {
+          "wrath_pendulum": 288.2,
+          "frost": 2,
+          "lantern": 2,
+          "thorn_storm": 781.5
+        },
+        "sharePct": {
+          "wrath_pendulum": 26.8,
+          "frost": 0.2,
+          "lantern": 0.2,
+          "thorn_storm": 72.8
+        }
+      },
+      {
+        "minuteFrom": 18,
+        "minuteTo": 19,
+        "tFrom": 1085,
+        "tTo": 1142,
+        "level": 24,
+        "hp": 338,
+        "maxHp": 353,
+        "enemies": 29,
+        "kills": 1323,
+        "dps": {
+          "wrath_pendulum": 206.3,
+          "frost": 2.8,
+          "lantern": 0.6,
+          "thorn_storm": 584.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 26,
+          "frost": 0.4,
+          "lantern": 0.1,
+          "thorn_storm": 73.6
+        }
+      },
+      {
+        "minuteFrom": 19,
+        "minuteTo": 20,
+        "tFrom": 1142,
+        "tTo": 1201,
+        "level": 25,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 33,
+        "kills": 1394,
+        "dps": {
+          "wrath_pendulum": 214,
+          "frost": 3.2,
+          "lantern": 1.4,
+          "thorn_storm": 663.6
+        },
+        "sharePct": {
+          "wrath_pendulum": 24.3,
+          "frost": 0.4,
+          "lantern": 0.2,
+          "thorn_storm": 75.2
+        }
+      },
+      {
+        "minuteFrom": 20,
+        "minuteTo": 21,
+        "tFrom": 1201,
+        "tTo": 1261,
+        "level": 25,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 39,
+        "kills": 1568,
+        "dps": {
+          "wrath_pendulum": 725.8,
+          "frost": 14.6,
+          "lantern": 4.7,
+          "thorn_storm": 1544
+        },
+        "sharePct": {
+          "wrath_pendulum": 31.7,
+          "frost": 0.6,
+          "lantern": 0.2,
+          "thorn_storm": 67.5
+        }
+      },
+      {
+        "minuteFrom": 21,
+        "minuteTo": 22,
+        "tFrom": 1261,
+        "tTo": 1321,
+        "level": 26,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 67,
+        "kills": 1799,
+        "dps": {
+          "wrath_pendulum": 806,
+          "frost": 22.1,
+          "lantern": 1.4,
+          "thorn_storm": 1711.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 31.7,
+          "frost": 0.9,
+          "lantern": 0.1,
+          "thorn_storm": 67.4
+        }
+      },
+      {
+        "minuteFrom": 22,
+        "minuteTo": 23,
+        "tFrom": 1321,
+        "tTo": 1381,
+        "level": 27,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 86,
+        "kills": 2047,
+        "dps": {
+          "wrath_pendulum": 558.6,
+          "frost": 18,
+          "lantern": 2.4,
+          "thorn_storm": 1782.7
+        },
+        "sharePct": {
+          "wrath_pendulum": 23.7,
+          "frost": 0.8,
+          "lantern": 0.1,
+          "thorn_storm": 75.5
+        }
+      },
+      {
+        "minuteFrom": 23,
+        "minuteTo": 24,
+        "tFrom": 1381,
+        "tTo": 1440,
+        "level": 27,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 109,
+        "kills": 2376,
+        "dps": {
+          "wrath_pendulum": 724.5,
+          "frost": 26.7,
+          "lantern": 1.9,
+          "thorn_storm": 2321.6
+        },
+        "sharePct": {
+          "wrath_pendulum": 23.6,
+          "frost": 0.9,
+          "lantern": 0.1,
+          "thorn_storm": 75.5
+        }
+      },
+      {
+        "minuteFrom": 24,
+        "minuteTo": 25,
+        "tFrom": 1440,
+        "tTo": 1500,
+        "level": 27,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 149,
+        "kills": 2745,
+        "dps": {
+          "wrath_pendulum": 1067.4,
+          "frost": 42.7,
+          "lantern": 2.4,
+          "thorn_storm": 2652.7
+        },
+        "sharePct": {
+          "wrath_pendulum": 28.3,
+          "frost": 1.1,
+          "lantern": 0.1,
+          "thorn_storm": 70.5
+        }
+      },
+      {
+        "minuteFrom": 25,
+        "minuteTo": 26,
+        "tFrom": 1500,
+        "tTo": 1562,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 164,
+        "kills": 3225,
+        "dps": {
+          "wrath_pendulum": 1372.6,
+          "frost": 73.6,
+          "lantern": 7.1,
+          "thorn_storm": 3304.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 28.8,
+          "frost": 1.5,
+          "lantern": 0.1,
+          "thorn_storm": 69.5
+        }
+      },
+      {
+        "minuteFrom": 26,
+        "minuteTo": 27,
+        "tFrom": 1562,
+        "tTo": 1621,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 212,
+        "kills": 3698,
+        "dps": {
+          "wrath_pendulum": 1427.2,
+          "frost": 79.8,
+          "lantern": 2.5,
+          "thorn_storm": 3772.5,
+          "ember": 8.4
+        },
+        "sharePct": {
+          "wrath_pendulum": 27,
+          "frost": 1.5,
+          "lantern": 0,
+          "thorn_storm": 71.3,
+          "ember": 0.2
+        }
+      },
+      {
+        "minuteFrom": 27,
+        "minuteTo": 28,
+        "tFrom": 1621,
+        "tTo": 1682,
+        "level": 28,
+        "hp": 338,
+        "maxHp": 353,
+        "enemies": 408,
+        "kills": 4257,
+        "dps": {
+          "wrath_pendulum": 1315.2,
+          "frost": 80.8,
+          "lantern": 2.1,
+          "thorn_storm": 3156,
+          "ember": 12.1
+        },
+        "sharePct": {
+          "wrath_pendulum": 28.8,
+          "frost": 1.8,
+          "lantern": 0,
+          "thorn_storm": 69.1,
+          "ember": 0.3
+        }
+      },
+      {
+        "minuteFrom": 28,
+        "minuteTo": 29,
+        "tFrom": 1682,
+        "tTo": 1741,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 428,
+        "kills": 4990,
+        "dps": {
+          "wrath_pendulum": 1538,
+          "frost": 77.5,
+          "lantern": 2.5,
+          "thorn_storm": 3836.7,
+          "ember": 12.3
+        },
+        "sharePct": {
+          "wrath_pendulum": 28.1,
+          "frost": 1.4,
+          "lantern": 0,
+          "thorn_storm": 70.2,
+          "ember": 0.2
+        }
+      },
+      {
+        "minuteFrom": 29,
+        "minuteTo": 30,
+        "tFrom": 1741,
+        "tTo": 1801,
+        "level": 28,
+        "hp": 353,
+        "maxHp": 353,
+        "enemies": 348,
+        "kills": 5870,
+        "dps": {
+          "wrath_pendulum": 2143.2,
+          "frost": 102.3,
+          "lantern": 2.7,
+          "thorn_storm": 4428.6,
+          "ember": 12.1
+        },
+        "sharePct": {
+          "wrath_pendulum": 32,
+          "frost": 1.5,
+          "lantern": 0,
+          "thorn_storm": 66.2,
+          "ember": 0.2
+        }
+      }
     ],
-    "wallSeconds": 150.1,
-    "dpsRows": [],
-    "bossDurations": [],
-    "evolutions": [],
+    "bossDurations": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "spawnSecond": 300,
+        "endSecond": 331,
+        "durationSec": 31,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "spawnSecond": 600,
+        "endSecond": 636,
+        "durationSec": 36,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "spawnSecond": 900,
+        "endSecond": 934,
+        "durationSec": 34,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "spawnSecond": 1200,
+        "endSecond": 1235,
+        "durationSec": 35,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 4,
+        "name": "Hexenzirkel",
+        "spawnSecond": 1500,
+        "endSecond": 1536,
+        "durationSec": 36,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 5,
+        "name": "Der Hohle König",
+        "spawnSecond": 1800,
+        "endSecond": 1836,
+        "durationSec": 36,
+        "defeated": true,
+        "aliveAtDeath": false
+      }
+    ],
+    "evolutions": [
+      "wrath_pendulum",
+      "thorn_storm"
+    ],
     "damageShare": {
-      "totalDamage": 0,
-      "sharePct": {},
-      "avgDpsOverRun": {}
+      "totalDamage": 3214378,
+      "sharePct": {
+        "flail": 0.5,
+        "thorn": 1.8,
+        "wrath_pendulum": 30.8,
+        "frost": 1.3,
+        "lantern": 0.1,
+        "thorn_storm": 65.4,
+        "ember": 0.1
+      },
+      "avgDpsOverRun": {
+        "flail": 8.7,
+        "thorn": 30.6,
+        "wrath_pendulum": 538.6,
+        "frost": 23.3,
+        "lantern": 1.5,
+        "thorn_storm": 1144.6,
+        "ember": 1.8
+      }
     },
     "passed": {
-      "survivalMinutes": 0.1,
-      "levelAtEnd": 1,
-      "evolutionCount": 0,
+      "survivalMinutes": 30.7,
+      "levelAtEnd": 28,
+      "evolutionCount": 2,
       "bossDurationsInCorridor": true,
       "died": false,
-      "survivalInCorridor": false,
-      "levelInCorridor": false,
-      "evolutionOk": false,
-      "passedAll": false
+      "survivalInCorridor": true,
+      "levelInCorridor": true,
+      "evolutionOk": true,
+      "passedAll": true
     }
   }
 ]
