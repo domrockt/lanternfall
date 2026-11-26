@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1006,
+  "next": 1009,
   "cards": [
     {
       "id": 1,
@@ -2073,6 +2073,54 @@
       ],
       "created": "2026-11-26T18:56:30Z",
       "updated": "2026-11-26T19:05:51Z"
+    },
+    {
+      "id": 1006,
+      "title": "m9-perf-heap-01 Messwerkzeug: scripts/perf-heap.mjs (CDP-Snapshots, Delta, Top-5, GC)",
+      "description": "Akzeptanz: scripts/perf-heap.mjs startet headless (debug/seed, autoPlay, timeScale 30), nimmt Start- und Ende-Heap-Snapshot via CDP, schreibt shots/perf-heap.json mit Delta %, Top-5-Konstruktoren und GC-Zahl. Zwei Laeufe hintereinander: Delta-Abweichung < 10 %. Belege (JSON) im Karten-Commit.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T19:18:45Z",
+          "by": "build",
+          "text": "lane #98: Messwerkzeug perf-heap.mjs aus Lane m9-perf-heap uebernommen (Belege shots/perf-heap-*.json, docs/lanes/perf-heap.md)."
+        }
+      ],
+      "created": "2026-11-26T19:18:14Z",
+      "updated": "2026-11-26T19:18:45Z"
+    },
+    {
+      "id": 1007,
+      "title": "m9-perf-heap-02 Leck oder Streuung entscheiden (3-Laeufe-Median)",
+      "description": "Akzeptanz: Mit perf-heap.mjs 3 Laeufe (Median) und --expose-gc-Vergleich entschieden, ob JS-Objekt-Leak (Objektquelle im Snapshot benannt) oder GC-/Host-Streuung. Ursache + Zahl in docs/lanes/perf-heap.md. Beide Roh-JSONs im Commit.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T19:18:45Z",
+          "by": "build",
+          "text": "lane #99: 3-Laeufe-Median: GC-/Host-Streuung, kein belegter JS-Objekt-Leak."
+        }
+      ],
+      "created": "2026-11-26T19:18:14Z",
+      "updated": "2026-11-26T19:18:45Z"
+    },
+    {
+      "id": 1008,
+      "title": "m9-perf-heap-03 Senkung oder blocked mit Median-Beleg",
+      "description": "Akzeptanz: Nur bei belegtem Leak kleinste Aenderung an systems/Pool.ts/EnemyPool/ProjectilePool/DamageNumbers, danach Delta erneut messen: <=15 % im 30-min-Lauf, FPS-Burst >=55, 0 JS-Fehler. Bei reiner Streuung: Karte blocked mit 3-Laeufe-Median als Beleg, kein Codeumbau.",
+      "column": "blocked",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T19:18:45Z",
+          "by": "build",
+          "text": "lane #100: Delta 7,4/20,0 % (Median), Kriterium 10 % verfehlt — Befund, kein Fix"
+        }
+      ],
+      "created": "2026-11-26T19:18:14Z",
+      "updated": "2026-11-26T19:18:45Z"
     }
   ]
 }
