@@ -10,8 +10,9 @@ Keine Fixes in dieser Lane — nur belegte PASS/FAIL-Liste und Empfehlung.
 - [x] **#1 Matrix** — `node scripts/verify-input.mjs` auf dem Worktree-Build + 7 Touch-Profile mit
       Temp-Skript (`~/tmp/m10-input-qa/profiles.mjs`, nicht committet). Belege: `shots/m10-input-profiles.json`,
       `shots/m10-input-verify.json`, `shots/m10-input-profile-*.png`.
-- [ ] **#2 Menü-Gamepad** — Titel, CharSelect, Pause, Results je einmal per Pad-Snapshot (`readSceneGamepad`)
-      und einmal per Tastatur; welche Aktionen sind ohne Pad erreichbar?
+- [x] **#2 Menü-Gamepad** — Titel, CharSelect, Pause, Results je einmal per Pad-Snapshot (`readSceneGamepad`)
+      und einmal per Tastatur; welche Aktionen sind ohne Pad erreichbar? Beleg: Commit `ba178cc`,
+      `shots/m10-input-menu-*.png|json` (13/13 PASS).
 - [x] **#3 Report** — diese Datei mit vollständiger Tabelle, FAIL-Liste (Repro, erwartet/ist) und Empfehlung.
       Abnahme: 7/7 Profile, 0 unbelegte Aussage.
 
@@ -64,13 +65,19 @@ Belege-Bilder: `shots/m10-input-profile-pause-lock.png`, `…-level-up-lock.png`
    Touchstart links (92,200) + Drag nach rechts; Messung nach ~500 ms. Erwartet: Joystick bleibt unsichtbar
    (`stickVisible=false`), `playerX` unverändert, `chestOpen=true`. Ist (alle 7 Profile): `stickVisible=true`,
    `identifier=4`, `playerX` +36…+46 px, `chestOpen` bis zur Messung bereits `false`.
-   **Einordnung ehrlich:** Vor dem Touchstart war `canTouchMove() === false`, `chestOpen === true`,
-   Joystick unsichtbar. Die Truhe beendet sich in diesem Debug-Pfad aber schon nach ~300–500 ms selbst
-   (`finishAt`-Timer), sodass der Drag in einen bereits fortgesetzten Run fällt. Damit ist die
-   **Sperre nicht schlüssig widerlegt**, aber auch **nicht belegt** — der Check raced den Auto-Finish.
-   Die Fix-Lane muss die Truhe offen halten (z. B. `finishChest` erst nach Drag) und den Drag **sofort**
-   (<100 ms) nach `openChest` starten; erst dann ist PASS/FAIL belastbar. Bis dahin bleibt es ein FAIL
-   des Checks „Sperre Truhe“ wie spezifiziert.
+   **Einordnung (Versuch 2, deterministisch nachgestellt):** Der erste Verdacht „race den Auto-Finish“
+   war falsch. Ursache ist die **Skip-Zone der Truhe**: sie füllt den ganzen View und reagiert auf
+   `pointerdown` („TIPPE ODER A = ÜBERNEHMEN“). Damit beendet **derselbe Touchstart**, der den Joystick
+   sperren soll, zuerst die Truhe; `TouchControls.onTouchStart` sieht danach `canTouchMove() === true`
+   und übernimmt den noch gehaltenen Finger als Joystick. Messung (`shots/m10-input-chest-repro.json`,
+   Pixel 7): vor dem Touch `canMove=false`, `chestOpen=true`, `stickVisible=false` (die Sperre greift also
+   korrekt) → 1 ms nach `pointerdown` ist `chestOpen=false` → derselbe Finger taucht mit `identifier=4`
+   als Joystick auf und bewegt den Spieler **+22 px**. Belege-Bildpaar
+   `shots/m10-input-chest-open-lock.png` (Truhe offen, kein Joystick) /
+   `shots/m10-input-chest-dismiss-drag.png` (Joystick sichtbar, Truhe weg). Das ist ein echter, wenn auch
+   kleiner Eingabe-Bug: eine Übernehmen-Geste darf nicht in eine Bewegung übergehen.
+   Fix-Richtung (für die Fix-Lane, nicht hier): Skip-Zone auf `pointerup` umstellen (oder `TouchControls`
+   einen Touch verwerfen lassen, dessen Start bei `canMove=false` lag). Danach ist der Check belastbar.
 3. **Pause/Level-up-Sperre, Joystick/Pause nur im Run** — PASS in allen 7 Profilen (Gegenbeleg zu #2 oben:
    dort griff die Sperre). Menüs/Results haben kein Touch-Overlay (UI-Szene inaktiv).
 
@@ -115,21 +122,22 @@ offen bleibt echte Hardware (kein physisches Pad am Host).
 
 | # | FAIL | Repro | Erwartet | Ist | Beleg |
 |---|---|---|---|---|---|
-| F1 | Truhen-Gesten-Sperre, 7/7 Profile | Run, `window.__lf.openChest()`, 200 ms, Touch links (92,200) + Drag, 500 ms messen | Joystick unsichtbar, `playerX` konstant, `chestOpen=true` | `stickVisible=true`, `identifier=4`, `playerX` +36…+46 px, `chestOpen` schon `false` | `shots/m10-input-profiles.json` (7×`Gesten-Sperre: Joystick bei Truhe bewegt nicht`), `shots/m10-input-profile-chest-lock.png` |
+| F1 | Truhen-Übernehmen-Geste wird zur Bewegung, 7/7 Profile | Run, `window.__lf.openChest()`, Touch links (92,200) + Drag | Joystick unsichtbar, `playerX` konstant, `chestOpen=true` | `chestOpen` nach dem Touchstart `false`; derselbe Finger wird Joystick (`identifier=4`), `playerX` +22…+46 px | `shots/m10-input-profiles.json`, `shots/m10-input-chest-repro.json`, Bildpaar `m10-input-chest-open-lock.png` / `-dismiss-drag.png` |
 | F2 | `scripts/verify-m8-input` bricht ab | `node scripts/verify-input.mjs` | 25/25 wie `docs/lanes/input.md` | 2/3 Checks, `tapText("BRUDER KAEL")` nicht sichtbar, keine Touch-/Pad-Messung | `shots/m10-input-verify.json` |
 
-**Einordnung F1 (ehrlich):** Vor dem Touchstart war `canTouchMove() === false`, `chestOpen === true`,
-Joystick unsichtbar. Die Debug-Truhe beendet sich aber nach ~300–500 ms selbst (`finishAt`-Timer), der Drag
-fällt also in einen schon fortgesetzten Run. Der Check ist damit **nicht sauber widerlegt und nicht belegt** —
-er raced den Auto-Finish. Kein Produktions-Bug bewiesen; die Sperre bei Pause/Level-up funktioniert
-(Gegenprobe PASS). Trotzdem bleibt F1 als FAIL des spezifizierten Checks stehen.
+**Einordnung F1 (deterministisch, Versuch 2):** Die Sperre *während* die Truhe offen ist funktioniert
+(`canMove=false`, kein Stick). Der Fehler entsteht durch die Reihenfolge im selben Touchstart: die
+bildschirmfüllende Skip-Zone der Truhe hört auf `pointerdown` und schließt die Truhe, danach akzeptiert
+`TouchControls.onTouchStart` denselben, noch gehaltenen Finger (`identifier=4`) und bewegt den Spieler.
+Kein Auto-Finish-Race, sondern ein echter Eingabe-Bug. Pause-/Level-up-Sperre ist davon nicht betroffen
+(Gegenprobe PASS).
 
 ### Empfehlung: erste Fix-Lane
 
-1. **F1 zuerst deterministisch nachstellen** (nicht blind fixen): Truhe offen halten (`finishChest` erst nach
-   Drag, z. B. via Debug-Flag) und Drag **sofort** (<100 ms) nach `openChest` starten. Wenn dann noch Bewegung
-   auftritt, ist es ein echter Bug in `TouchControls.onTouchStart` (canMove-Bail) bzw. `TouchState`-Reset;
-   sonst war es ein Mess-Artefakt und der Check muss im Skript entschärft werden (Test-Schuld).
+1. **F1 fixen (klein, deterministisch belegt):** Skip-Zone von `pointerdown` auf `pointerup` umstellen,
+   damit der Übernehmen-Tipp den Joystick nicht startet; alternativ in `TouchControls.onTouchStart` einen
+   Touch verwerfen, dessen Start bei `canMove=false` lag. Danach `verify-input`-Check auf „Joystick bleibt
+   unsichtbar und `playerX` konstant“ verschärfen.
 2. **F2 Skript-Selektor reparieren** (klein, hoher Wert): `BRUDER KAEL` an den aktuellen CharSelect-Text/Knopf
    anpassen; danach `verify-input.mjs` als Regressionsschutz wieder grün fahren. Solange F2 offen ist, ist die
    Touch-/Pad-Abnahme im bestehenden Skript blind.
@@ -144,7 +152,22 @@ er raced den Auto-Finish. Kein Produktions-Bug bewiesen; die Sperre bei Pause/Le
   `~/tmp/m10-input-qa/profiles-final2.log`, JSON `shots/m10-input-profiles.json`, 12 Profil-Shots.
 - `BASE_SHA=f26dc4b node ~/tmp/m10-input-qa/menu.mjs` (Temp) → `~/tmp/m10-input-qa/menu.log`,
   JSON `shots/m10-input-menu-gamepad.json`, 8 Shots.
+- `BASE_SHA=f26dc4b node ~/tmp/m10-input-qa/chest-repro.mjs` (Temp, Versuch 2) → deterministischer
+  F1-Nachweis `shots/m10-input-chest-repro.json` + Bildpaar `shots/m10-input-chest-open-lock.png` /
+  `-dismiss-drag.png`; Ereignis-Reihenfolge in `~/tmp/m10-input-qa/chest-order.json`.
 - `npx tsc --noEmit` rc=0; `npx vitest run tests/input.test.ts` **23/23 Tests grün**.
+
+### Versuch 2 — Abschlussprüfung (2026-11-26)
+
+- Karten #1–#3 waren bereits committet (`234f437`, `ba178cc`, `eceee34`, Basis `f26dc4b`); offen waren nur
+  die Checkliste für #2 und ein belastbarer F1-Nachweis. Beides hier nachgezogen.
+- `npm run build` **grün**; `npx vitest run` **192/192 Tests grün** (12 Dateien).
+- F1 deterministisch: Sperre bei offener Truhe greift (`canMove=false`, `stickVisible=false`); der
+  Übernehmen-Touchstart selbst startet danach den Joystick (`identifier=4`, +22 px). Ursache Skip-Zone
+  auf `pointerdown`. Bleibt **FAIL**, jetzt mit Repro + Fix-Richtung statt Vermutung.
+- Ergebnis: **Touch 7/7 Profile** (98/105 Checks, 7× F1), **Gamepad-Menüs 13/13 PASS**, **F2 offen**
+  (veralteter Selektor im M8-Regressionsskript). Keine Fixes in dieser Lane, keine geschützten Pfade
+  angefasst.
 
 **Abnahme dieser Lane:** 7/7 Profile gemessen (105 Checks), jede Aussage oben hat JSON-/Shot-Pfad oder
 Befehl; keine unbelegte Behauptung. Keine Datei unter `src/**`, `scripts/**`, `tests/**`, `index.html`,
