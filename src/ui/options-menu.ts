@@ -31,30 +31,40 @@ export class OptionsMenu {
   constructor(scene: Phaser.Scene, depth: number, onClose: () => void) {
     this.scene = scene;
     this.onClose = onClose;
+    const W = GAME_WIDTH;
+    const H = GAME_HEIGHT;
+    const cx = W / 2;
+    const oy = Math.round((H - 270) / 2);
+    const rowW = Math.min(520, W - 40);
+    const rowLeft = cx - rowW / 2;
+    const labelX = rowLeft + 12;
+    const valueX = rowLeft + rowW - 12;
+    const arrowL = valueX - 100;
+    const arrowR = rowLeft + rowW - 4;
+    const valueZoneX = valueX - 47;
     this.container = scene.add.container(0, 0).setDepth(depth).setVisible(false);
     // Klick-Blocker: verhindert, dass Mausklicks durch das Menü darunterliegende
     // Knöpfe (Titel/Pause) auslösen.
-    const blocker = scene.add.zone(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT)
-      .setInteractive();
+    const blocker = scene.add.zone(cx, H / 2, W, H).setInteractive();
     blocker.on("pointerdown", () => { /* schluckt Klicks */ });
     this.container.add(blocker);
     this.interactives.push(blocker);
-    this.container.add(scene.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.92).setOrigin(0, 0));
+    this.container.add(scene.add.rectangle(0, 0, W, H, PAL[C.ink], 0.92).setOrigin(0, 0));
     this.container.add(scene.add.nineslice(
-      GAME_WIDTH / 2, 135, "ui_frame", undefined, 408, 234, 8, 8, 8, 8,
+      cx, 135 + oy, "ui_frame", undefined, Math.min(rowW + 24, W - 24), 234, 8, 8, 8, 8,
     ));
-    this.container.add(new PixelText(scene, GAME_WIDTH / 2, 42, "OPTIONEN", C.lantern, "center").setScale(2));
-    this.container.add(new PixelText(scene, GAME_WIDTH / 2, 62, "PFEILE ODER MAUS - ENTER/ESC", C.fog, "center"));
+    this.container.add(new PixelText(scene, cx, 42 + oy, "OPTIONEN", C.lantern, "center").setScale(2));
+    this.container.add(new PixelText(scene, cx, 62 + oy, "PFEILE ODER MAUS - ENTER/ESC", C.fog, "center"));
 
     for (let i = 0; i < OPTION_ROWS.length; i++) {
-      const y = 84 + i * 20;
-      const rowZone = scene.add.rectangle(238, y + 3, 368, 16, PAL[C.nightMid], 0)
+      const y = 84 + oy + i * 20;
+      const rowZone = scene.add.rectangle(cx, y + 3, rowW, 16, PAL[C.nightMid], 0)
         .setOrigin(0.5);
       // Hintergrundfläche als sichtbarer Fokus-Streifen.
-      const outline = scene.add.rectangle(238, y + 3, 368, 16, PAL[C.ink], 0)
+      const outline = scene.add.rectangle(cx, y + 3, rowW, 16, PAL[C.ink], 0)
         .setStrokeStyle(1, PAL[C.lantern]).setVisible(false);
-      const label = new PixelText(scene, 60, y, "", C.bone);
-      const value = new PixelText(scene, 392, y, "", C.candleWhite, "right");
+      const label = new PixelText(scene, labelX, y, "", C.bone);
+      const value = new PixelText(scene, valueX, y, "", C.candleWhite, "right");
       this.container.add([rowZone, outline, label, value]);
       rowZone.setInteractive({ useHandCursor: true });
       rowZone.on("pointerover", () => { this.selected = i; this.refresh(); });
@@ -68,24 +78,24 @@ export class OptionsMenu {
         this.interactives.push(zone);
       };
       if (i < OPTION_ROWS.length - 1) {
-        hit(292, -1);
-        hit(414, 1);
-        this.container.add(new PixelText(scene, 292, y, "<", C.lantern, "center"));
-        this.container.add(new PixelText(scene, 414, y, ">", C.lantern, "center"));
+        hit(arrowL, -1);
+        hit(arrowR, 1);
+        this.container.add(new PixelText(scene, arrowL, y, "<", C.lantern, "center"));
+        this.container.add(new PixelText(scene, arrowR, y, ">", C.lantern, "center"));
         // Klick auf den Wert: bei Schaltern umschalten, sonst erhöhen.
-        const valueZone = createHitZone(scene, this.container, 345, y + 3, 72, 18, () => {
+        const valueZone = createHitZone(scene, this.container, valueZoneX, y + 3, 72, 18, () => {
           this.selected = i;
           this.apply(i, 1);
         });
         this.interactives.push(valueZone);
       } else {
-        const backZone = createHitZone(scene, this.container, 238, y + 3, 368, 18, () => this.close());
+        const backZone = createHitZone(scene, this.container, cx, y + 3, rowW, 18, () => this.close());
         this.interactives.push(backZone);
       }
       this.rows.push({ label, value, outline });
     }
     this.container.add(new PixelText(
-      scene, GAME_WIDTH / 2, 218, "OPTIONEN GELTEN SOFORT UND BLEIBEN GESPEICHERT",
+      scene, cx, H - 14, "OPTIONEN GELTEN SOFORT UND BLEIBEN GESPEICHERT",
       C.mist, "center",
     ));
     this.refresh();

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { PixelText } from "../gfx/font";
 import { iconTextureKey } from "../gfx/icons";
 import { damageTable, formatDamageCompact } from "../logic/results";
@@ -37,38 +38,50 @@ export class Results extends Phaser.Scene {
     this.result = data;
   }
 
+  private viewW = 0;
+  private viewH = 0;
+
   create(): void {
     this.selected = 0;
     this.leaving = false;
     this.pad.reset();
     this.padArmed = false;
     this.buttons = [];
+    const W = GAME_WIDTH;
+    const H = GAME_HEIGHT;
+    const cx = W / 2;
+    const oy = Math.round((H - 270) / 2);
+    this.viewW = W;
+    this.viewH = H;
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN,
+      () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-    this.add.image(240, 135, "vignette").setDepth(-1);
-    this.add.rectangle(240, 134, 440, 240, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
+    this.add.image(cx, H / 2, "vignette").setDepth(-1).setDisplaySize(W, H);
+    this.add.rectangle(cx, 134 + oy, 440, 240, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
 
     const victory = this.result.reason === "dawn";
     const giveUp = this.result.reason === "giveup";
     const title = victory ? "MORGENDÄMMERUNG" : giveUp ? "AUFGEGEBEN" : "DIE LATERNE ERLISCHT";
-    new PixelText(this, 240, 24, title, victory ? C.lantern : C.crimson, "center").setScale(2).setDepth(2);
-    new PixelText(this, 240, 42, victory ? "SIEG - DU HAST ÜBERLEBT" : "NIEDERLAGE", C.mist, "center").setDepth(2);
+    new PixelText(this, cx, 24 + oy, title, victory ? C.lantern : C.crimson, "center").setScale(2).setDepth(2);
+    new PixelText(this, cx, 42 + oy, victory ? "SIEG - DU HAST ÜBERLEBT" : "NIEDERLAGE", C.mist, "center").setDepth(2);
 
     // Zwei Spalten: links Charakter/Zeit/Kills/Level, rechts Schadensbalken.
-    this.add.rectangle(206, 132, 1, 140, PAL[C.nightMid], 1).setOrigin(0.5).setDepth(1);
+    this.add.rectangle(cx - 34, 132 + oy, 1, 140, PAL[C.nightMid], 1).setOrigin(0.5).setDepth(1);
 
     const char = CHARACTERS[this.result.character as CharacterId];
     const charName = char ? char.name.toUpperCase() : "?";
     const portraitKey = char ? `portrait_${char.id}` : "portrait_mira";
     if (this.textures.exists(portraitKey)) {
-      this.add.image(54, 72, portraitKey).setScale(2).setDepth(2);
+      this.add.image(cx - 186, 72 + oy, portraitKey).setScale(2).setDepth(2);
     }
-    new PixelText(this, 104, 58, "CHARAKTER", C.mist).setDepth(2);
-    new PixelText(this, 104, 70, charName.slice(0, 14), C.bone).setDepth(2);
+    new PixelText(this, cx - 136, 58 + oy, "CHARAKTER", C.mist).setDepth(2);
+    new PixelText(this, cx - 136, 70 + oy, charName.slice(0, 14), C.bone).setDepth(2);
 
-    new PixelText(this, 40, 134, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
-    new PixelText(this, 40, 148, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
-    new PixelText(this, 40, 162, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
-    if (this.result.god) new PixelText(this, 40, 176, "GOTT-MODUS - NICHT GEWERTET", C.amber).setDepth(2);
+    new PixelText(this, cx - 200, 134 + oy, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
+    new PixelText(this, cx - 200, 148 + oy, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
+    new PixelText(this, cx - 200, 162 + oy, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
+    if (this.result.god) new PixelText(this, cx - 200, 176 + oy, "GOTT-MODUS - NICHT GEWERTET", C.amber).setDepth(2);
 
     // Bestwert als zentriertes Banner in der linken Spalte.
     let bannerText = "BESTWERTE BLEIBEN STEHEN";
@@ -92,48 +105,55 @@ export class Results extends Phaser.Scene {
         bannerColor = C.lantern;
       }
     }
-    this.add.rectangle(122, 196, 164, 17, PAL[C.nightMid], 0.9)
+    this.add.rectangle(cx - 118, 196 + oy, 164, 17, PAL[C.nightMid], 0.9)
       .setStrokeStyle(1, bannerColor).setDepth(1);
-    new PixelText(this, 122, 196, bannerText.slice(0, 26), bannerColor, "center").setDepth(2);
+    new PixelText(this, cx - 118, 196 + oy, bannerText.slice(0, 26), bannerColor, "center").setDepth(2);
 
     // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons.
-    new PixelText(this, 220, 58, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
+    new PixelText(this, cx - 20, 58 + oy, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
     const entries = damageTable(this.result.damageByWeapon);
     if (entries.length === 0) {
-      new PixelText(this, 220, 80, "KEINE TREFFER", C.fog).setDepth(2);
+      new PixelText(this, cx - 20, 80 + oy, "KEINE TREFFER", C.fog).setDepth(2);
     }
     const maxDamage = entries.reduce((m, e) => Math.max(m, e.damage), 1);
-    const rowsTop = 74;
+    const rowsTop = 74 + oy;
     const rowStep = 10;
     entries.forEach((entry, i) => {
       const y = rowsTop + i * rowStep;
       const key = iconTextureKey(entry.isEvolution ? "evolution" : "weapon", entry.id);
       if (this.textures.exists(key)) {
-        this.add.image(228, y + 3, key).setDepth(2);
+        this.add.image(cx - 12, y + 3, key).setDepth(2);
       }
       const name = entry.name.toUpperCase();
-      new PixelText(this, 238, y, name, C.bone).setDepth(2);
-      const barX = 340;
+      new PixelText(this, cx - 2, y, name, C.bone).setDepth(2);
+      const barX = cx + 100;
       const barMax = 70;
       const width = Math.max(2, Math.round((entry.damage / maxDamage) * barMax));
       this.add.rectangle(barX, y + 3, barMax, 5, PAL[C.nightMid], 0.9).setOrigin(0, 0.5).setDepth(1);
       this.add.rectangle(barX, y + 3, width, 5, PAL[entry.isEvolution ? C.paleMist : C.lantern], 0.95)
         .setOrigin(0, 0.5).setDepth(1);
-      new PixelText(this, 446, y, formatDamageCompact(entry.damage), C.candleWhite, "right").setDepth(2);
+      new PixelText(this, cx + 206, y, formatDamageCompact(entry.damage), C.candleWhite, "right").setDepth(2);
     });
 
     this.buttons.push(createMenuButton(
-      this, 146, 238, 136, "NEUE RUNDE", () => this.newRun(), { height: 20, depth: 4 },
+      this, cx - 94, H - 26, 136, "NEUE RUNDE", () => this.newRun(), { height: 20, depth: 4 },
     ));
     this.buttons.push(createMenuButton(
-      this, 316, 238, 112, "TITEL", () => this.toTitle(), { height: 20, depth: 4 },
+      this, cx + 76, H - 26, 112, "TITEL", () => this.toTitle(), { height: 20, depth: 4 },
     ));
     this.refreshButtons();
-    new PixelText(this, 240, 256, "ENTER/PFEILE ODER MAUS", C.fog, "center").setDepth(2);
+    new PixelText(this, cx, H - 9, "ENTER/PFEILE ODER MAUS", C.fog, "center").setDepth(2);
 
     const kb = this.input.keyboard!;
     kb.removeAllListeners("keydown");
     kb.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
+  }
+
+  private onScaleResize(): void {
+    if (this.viewW === GAME_WIDTH && this.viewH === GAME_HEIGHT) return;
+    this.time.delayedCall(0, () => {
+      if (this.scene.isActive()) this.scene.restart();
+    });
   }
 
   update(): void {

@@ -5,7 +5,7 @@ import { WORLD_SIZE } from "../config";
 import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, streamSpawnOffsets } from "../logic/waves";
 import {
   eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale, maxActiveEnemies,
-  pickRecycleIndex,
+  pickRecycleIndex, recycleDistance, spawnRateFactor, spawnRingRadius,
 } from "../logic/scaling";
 import type { Rng } from "../logic/rng";
 import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPool";
@@ -45,16 +45,26 @@ export class Spawner {
     }
 
     // Performance-Deckel: älteste/ferne Gegner recyceln statt beliebig zu wachsen.
-    const cap = maxActiveEnemies(elapsedSeconds);
+    const cam = this.camera;
+    const cap = maxActiveEnemies(elapsedSeconds, cam.width, cam.height);
     let over = this.pool.count - cap;
+    const recycle = recycleDistance(cam.width, cam.height);
     while (over > 0) {
-      const idx = pickRecycleIndex(this.pool.active, playerX, playerY);
+      const idx = pickRecycleIndex(this.pool.active, playerX, playerY, recycle);
       if (idx < 0) break;
       this.pool.despawn(this.pool.active[idx]);
       over--;
     }
 
-    const scaled = advanceSpawnBudget(this.budget, wave.spawnRate, dt);
+    // M8: Spawnrate mit der sichtbaren Fläche skalieren (breite Formate dichter).
+    // Optionaler Debug-/Tuning-Faktor aus ?density=0.7 (nur Messläufe).
+    const density = Number(this.scene.registry.get("lf-density") ?? 1);
+    const rateScale = Number.isFinite(density) && density > 0 ? density : 1;
+    const scaled = advanceSpawnBudget(
+      this.budget,
+      wave.spawnRate * spawnRateFactor(cam.width, cam.height) * rateScale,
+      dt,
+    );
     this.budget = scaled.budget;
     const room = Math.max(0, cap - this.pool.count);
     const toSpawn = Math.min(scaled.count, room);
@@ -68,8 +78,8 @@ export class Spawner {
   }
 
   spawnRing(wave: WaveDef, playerX: number, playerY: number, out: EnemyRuntime[], count: number): void {
-    // Radius > Bildschirmdiagonale (sqrt(240² + 135²) ≈ 275), damit nichts sichtbar aufploppt.
-    const ringRadius = Math.ceil(Math.hypot(this.camera.width, this.camera.height) / 2) + 20;
+    // M8: Radius knapp ausserhalb der aktuellen Sichtfläche (nie 480x270-Annahme).
+    const ringRadius = spawnRingRadius(this.camera.width, this.camera.height);
     const offsets = ringSpawnOffsets(count, ringRadius);
     for (const off of offsets) {
       const id = pickEnemy(wave.mix, this.rng) ?? "bog_rat";
@@ -96,7 +106,7 @@ export class Spawner {
 
   /** Schwarm-Strom: geschlossene Reihe läuft aus einer Richtung auf den Spieler. */
   spawnStream(wave: WaveDef, playerX: number, playerY: number, out: EnemyRuntime[], count: number): void {
-    const radius = Math.ceil(Math.hypot(this.camera.width, this.camera.height) / 2) + 30;
+    const radius = spawnRingRadius(this.camera.width, this.camera.height, 30);
     const angle = this.rng.next() * Math.PI * 2;
     const offsets = streamSpawnOffsets(count, radius, angle);
     for (const off of offsets) {
@@ -176,7 +186,9 @@ export class Spawner {
   private spawnOne(def: EnemyDef, playerX: number, playerY: number, elite: boolean): EnemyRuntime {
     const cam = this.camera;
     const angle = this.rng.next() * Math.PI * 2;
-    const radius = Math.max(cam.width, cam.height) * 0.62 + 24 + this.rng.next() * 40;
+    // M8: halbe View-Diagonale + Rand -> Spawns sicher ausserhalb, unabhaengig
+    // von der Breite (keine Max(width,height)-Verzerrung bei 780x360).
+    const radius = spawnRingRadius(cam.width, cam.height) + 4 + this.rng.next() * 40;
     const cx = cam.scrollX + cam.width / 2;
     const cy = cam.scrollY + cam.height / 2;
     // Erst clampen, dann prüfen: sonst kann ein geclampte Randspawn mitten im Bild landen.

@@ -1,0 +1,65 @@
+{
+  "mode": "main",
+  "scale": 30,
+  "viewport": {
+    "width": 780,
+    "height": 360
+  },
+  "dpr": 3,
+  "generatedAt": "2026-11-26T12:07:11.688Z",
+  "runs": [
+    {
+      "seed": 101,
+      "character": "kael",
+      "outcome": "death",
+      "deathMinute": 16.1,
+      "level": 23,
+      "kills": 1307,
+      "evolutions": [],
+      "bossDurations": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "endSecond": 328,
+          "durationSec": 28,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "endSecond": 640,
+          "durationSec": 40,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "endSecond": 937,
+          "durationSec": 37,
+          "defeated": true,
+          "aliveAtDeath": false
+        }
+      ],
+      "passed": {
+        "survivalMinutes": 16.1,
+        "levelAtEnd": 23,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": true,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    }
+  ],
+  "deathRuns": [],
+  "weapons": [],
+  "jsErrors": [],
+  "allRunsPass": false
+}

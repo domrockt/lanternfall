@@ -55,6 +55,42 @@ async function tapGame(page, x, y) {
   await page.waitForTimeout(180);
 }
 
+/** M8: Menuepunkt ueber seinen sichtbaren Text finden (unabhaengig von der View-Breite). */
+async function tapText(page, label) {
+  const b = await page.evaluate((wanted) => {
+    const visit = (obj) => {
+      if (!obj || obj.visible === false) return null;
+      if (typeof obj.textWidth === "number" && obj.valueText === wanted) return obj.getBounds();
+      if (obj.type === "Container" && Array.isArray(obj.list)) {
+        for (const c of obj.list) { const r = visit(c); if (r) return r; }
+      }
+      return null;
+    };
+    for (const scene of window.__game.scene.getScenes(true)) {
+      for (const obj of scene.children.list) {
+        const r = visit(obj);
+        if (r) return { x: r.centerX, y: r.centerY };
+      }
+    }
+    return null;
+  }, label);
+  if (!b) throw new Error(`tapText: "${label}" nicht sichtbar`);
+  await tapGame(page, b.x, b.y);
+}
+
+/** M8: erste Level-up-Karte ueber die echte Kartenflaeche antippen. */
+async function tapLevelCard(page, index = 0) {
+  const b = await page.evaluate((i) => {
+    const ui = window.__game.scene.getScene("ui");
+    const card = ui?.cards?.[i];
+    if (!card?.bg) return null;
+    const r = card.bg.getBounds();
+    return { x: r.centerX, y: r.centerY };
+  }, index);
+  if (!b) throw new Error("tapLevelCard: Karte nicht sichtbar");
+  await tapGame(page, b.x, b.y);
+}
+
 // ── Touch: eine Minute nur per Touch, Menues per Tippen ───────────────────
 async function runTouchSuite() {
   const pixel7 = devices["Pixel 7"] ?? {};
@@ -106,11 +142,11 @@ async function runTouchSuite() {
 
   await snap(page, "touch-menus");
   // Titel: START per Tippen, Charakterwahl: Kael per Tippen, START per Tippen.
-  await tapGame(page, 136, 214);
+  await tapText(page, "START");
   await waitForScene(page, "charselect");
   await page.waitForTimeout(250);
-  await tapGame(page, 352, 140);
-  await tapGame(page, 280, 252);
+  await tapText(page, "BRUDER KAEL");
+  await tapText(page, "START (ENTER)");
   await waitRun(page);
   check("Touch: Menues per Tippen bis in den Run", (await state(page)).scene === "run");
   await page.evaluate(() => {
@@ -146,7 +182,7 @@ async function runTouchSuite() {
   await touchEnd(1);
   await page.waitForTimeout(150);
   await snap(page, "pause-touch");
-  await tapGame(page, 108, 201);
+  await tapText(page, "FORTSETZEN");
   await page.waitForTimeout(220);
   check("Touch: FORTSETZEN per Tippen", (await state(page)).paused === false);
 
@@ -157,13 +193,13 @@ async function runTouchSuite() {
   await snap(page, "levelup-touch");
   const loadoutBefore = await page.evaluate(() =>
     JSON.stringify([window.__lf.state().weapons, window.__lf.state().passives]));
-  await tapGame(page, 84, 158);
+  await tapLevelCard(page, 0);
   // giveXp(800) kann mehrere Level-ups stauen: jede weitere Karte per Tippen.
   for (let i = 0; i < 20; i++) {
     await page.waitForTimeout(160);
     const st = await state(page);
     if (!st.levelUpOpen) break;
-    await tapGame(page, 84, 158);
+    await tapLevelCard(page, 0);
   }
   const afterLevel = await state(page);
   const loadoutAfter = await page.evaluate(() =>
@@ -179,7 +215,8 @@ async function runTouchSuite() {
   await page.waitForTimeout(600);
   await snap(page, "chest-touch");
   await page.waitForTimeout(120);
-  await tapGame(page, 240, 135);
+  const chestView = await viewSize(page);
+  await tapGame(page, chestView.w / 2, chestView.h / 2);
   await page.waitForTimeout(350);
   check("Touch: Truhe per Tippen uebernommen", (await state(page)).chestOpen === false);
 
@@ -194,13 +231,13 @@ async function runTouchSuite() {
     if (st.levelUpOpen) {
       await touchEnd(2);
       await page.waitForTimeout(130);
-      await tapGame(page, 84, 158);
+      await tapLevelCard(page, 0);
       levelTaps += 1;
       await touchStart(2, touchX, touchY);
     } else if (st.paused) {
       // Sicherheitsnetz: niemals in der Touch-Minute stecken bleiben.
       await touchEnd(2);
-      await tapGame(page, 108, 201);
+      await tapText(page, "FORTSETZEN");
       await touchStart(2, touchX, touchY);
     }
     const angle = ((Date.now() - loopStart) / 1000) * 1.4;
@@ -223,11 +260,11 @@ async function runTouchSuite() {
   // Pause -> AUFGABE per Tippen -> Results; TITEL per Tippen.
   await tapGame(page, pauseCenter.x, pauseCenter.y);
   await page.waitForTimeout(220);
-  await tapGame(page, 368, 201);
+  await tapText(page, "AUFGABE");
   await waitForScene(page, "results");
   await page.waitForTimeout(350);
   await snap(page, "touch-results");
-  await tapGame(page, 316, 238);
+  await tapText(page, "TITEL");
   await waitForScene(page, "title");
   check("Touch: Results/Titel per Tippen", (await state(page)).scene === "title");
 

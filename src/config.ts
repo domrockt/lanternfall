@@ -1,5 +1,19 @@
-export const GAME_WIDTH = 480;
-export const GAME_HEIGHT = 270;
+/**
+ * M8: View-Groesse ist dynamisch (logische Hoehe 360, Breite je Seitenverhaeltnis).
+ * Die Exporte sind `let`-Bindings: importierende Module sehen Aenderungen live.
+ * Gesetzt wird ausschliesslich ueber setGameView() aus main.ts.
+ */
+export let GAME_WIDTH = 640;
+export let GAME_HEIGHT = 360;
+/** Geraetepixel pro Spielpixel (n aus floor(geraeteHoehe/360), Fit-Rueckfall gebrochen). */
+export let GAME_SCALE = 3;
+
+export function setGameView(width: number, height: number, scale: number): void {
+  GAME_WIDTH = Math.max(1, Math.round(width));
+  GAME_HEIGHT = Math.max(1, Math.round(height));
+  GAME_SCALE = Math.max(0.1, scale);
+}
+
 export const TILE = 16;
 export const CHUNK_TILES = 16;
 export const CHUNK_SIZE = TILE * CHUNK_TILES;

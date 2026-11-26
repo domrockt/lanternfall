@@ -10,7 +10,7 @@ export interface Options {
   damageNumbers: boolean;
   /** Alle Audio-Ausgaben stumm (Master-Mute, Vorrang vor Musik/SFX). */
   muted: boolean;
-  /** 0 = automatisch (größtes ganzzahliges Vielfaches), 1..3 = fest. */
+  /** M8: 0 = automatisch (n aus Gerätehöhe/360), 2..6 = feste Gerätepixel-Stufe. */
   scale: number;
 }
 
@@ -23,7 +23,8 @@ export const DEFAULT_OPTIONS: Options = {
   scale: 0,
 };
 export const OPTIONS_KEY = "lanternfall-options-v1";
-export const SCALE_MAX = 3;
+/** M8: 2X-6X (1X ist der Fit-Rückfall bei kleinen Fenstern). */
+export const SCALE_MAX = 6;
 
 /** Minimaler Storage-Vertrag (window.localStorage erfüllt ihn). */
 export interface StorageLike {
@@ -36,7 +37,7 @@ export function clampVolume(v: number): number {
   return Math.max(0, Math.min(1, v));
 }
 
-/** Skalierung: 0 = Auto, sonst ganzzahlig 1..SCALE_MAX. */
+/** Skalierung: 0 = Auto, sonst ganzzahlig 2..SCALE_MAX. */
 export function clampScale(v: number): number {
   if (!Number.isFinite(v)) return 0;
   return Math.max(0, Math.min(SCALE_MAX, Math.round(v)));
@@ -142,7 +143,11 @@ export function stepOption(options: Options, row: number, delta: number): Option
   if (row === 3) return setOption(options, "damageNumbers", !options.damageNumbers);
   if (row === 4) return setOption(options, "muted", !options.muted);
   if (row === 5) {
-    return setOption(options, "scale", options.scale + (delta > 0 ? 1 : -1));
+    // M8: Zyklus AUTO → 2X → 3X → … → 6X → AUTO (1X ist nur Fit-Rückfall).
+    const steps = [0, 2, 3, 4, 5, 6];
+    const idx = Math.max(0, steps.indexOf(clampScale(options.scale)));
+    const next = (idx + (delta > 0 ? 1 : steps.length - 1)) % steps.length;
+    return setOption(options, "scale", steps[next]);
   }
   return options;
 }

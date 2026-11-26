@@ -33,15 +33,22 @@ const EVOLVED = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "
 const ALL_WEAPONS = ["ember", "flail", "frost", "thorn", "storm", "lantern",
   "phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const BOSS_NAMES = ["Moorkönigin", "Knochenfürst", "Der Fahle Hirte", "Glockenturm-Golem", "Hexenzirkel", "Der Hohle König"];
-const DOC = "docs/lanes/balance.md";
 const MARK_START = "<!-- BALANCE-TABLE:START -->";
 const MARK_END = "<!-- BALANCE-TABLE:END -->";
 
 const args = parseArgs(process.argv.slice(2));
 const mode = args.death ? "death" : args.weapons ? "weapons" : args.all ? "all" : "main";
 const seeds = String(args.seeds ?? "101,202,404").split(",").map((s) => Number(s.trim())).filter(Number.isFinite);
+// M8: Viewport/devicePixelRatio waehlbar (640x360 -> 1920x1080@1, 780x360 -> 780x360@3).
+const viewportArg = String(args.viewport ?? "960x540").split("x").map(Number);
+const VIEWPORT = { width: viewportArg[0] || 960, height: viewportArg[1] || 540 };
+const DPR = Number(args.dpr ?? 1) || 1;
+const TAG = String(args.tag ?? "");
+// M8-Tuning: optionaler Spawnraten-Faktor fuer alle L (nur Messung).
+const DENSITY = Number(args.density ?? NaN);
 const chars = String(args.characters ?? "mira,kael").split(",").map((s) => s.trim()).filter(Boolean);
 const charsPerRun = mode === "main" || mode === "all";
+const DOC = String(args.doc ?? "docs/lanes/balance.md");
 
 ensureBuild();
 mkdirSync("shots", { recursive: true });
@@ -52,7 +59,9 @@ const browser = await chromium.launch();
 const errors = [];
 
 async function openRun(page, seed, character, setup) {
-  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=${seed}`);
+  const density = setup?.density;
+  const densityQ = Number.isFinite(density) ? `&density=${density}` : "";
+  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=${seed}${densityQ}`);
   await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
   await waitForScene(page, "title");
   await page.keyboard.press("Enter");
@@ -183,7 +192,7 @@ function bossDurations(runTrace) {
 
 /** Ein Lauf bis Tod/Sieg; liefert Minuten-Samples, Boss-Dauern, Tod, DPS. */
 async function runOnce(seed, character, setup, maxSimSeconds = 33 * 60) {
-  const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+  const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: DPR });
   const pageErrors = [];
   page.on("pageerror", (e) => pageErrors.push(String(e)));
   page.on("console", (m) => { if (m.type() === "error") pageErrors.push(m.text()); });
@@ -195,6 +204,17 @@ async function runOnce(seed, character, setup, maxSimSeconds = 33 * 60) {
   };
   try {
     await openRun(page, seed, character, { ...setup, scale: SCALE });
+    trace.view = await page.evaluate(() => {
+      const run = window.__game.scene.getScene("run");
+      const canvas = document.querySelector("canvas");
+      const rect = canvas.getBoundingClientRect();
+      return {
+        viewport: [window.innerWidth, window.innerHeight],
+        dpr: window.devicePixelRatio,
+        logical: [run.scale.width, run.scale.height],
+        css: [Math.round(rect.width), Math.round(rect.height)],
+      };
+    });
     let nextMinute = 1;
     let prevDefeated = 0;
     let activeBoss = null;
@@ -339,7 +359,7 @@ if (mode === "main" || mode === "all") {
   for (const seed of seeds) {
     for (const character of chars) {
       console.log(`[balance] Run ${character} seed ${seed} ...`);
-      runs.push(await runOnce(seed, character, {}));
+      runs.push(await runOnce(seed, character, Number.isFinite(DENSITY) ? { density: DENSITY } : {}));
       const t = runs[runs.length - 1];
       console.log(`[balance]   -> ${t.outcome} @ ${t.passed.survivalMinutes} min, Level ${t.passed.levelAtEnd}, ${t.evolutions.length} Evo, ${t.wallSeconds}s wall`);
     }
@@ -403,6 +423,8 @@ writeFileSync(DOC, upsertMarked(doc, block));
 const summary = {
   mode,
   scale: SCALE,
+  viewport: VIEWPORT,
+  dpr: DPR,
   generatedAt: new Date().toISOString(),
   runs: runs.map((r) => ({
     seed: r.seed, character: r.character, outcome: r.outcome,
@@ -423,7 +445,7 @@ const summary = {
     deathRuns.every((r) => r.outcome === "death" && r.result?.reason && r.result.god === false) &&
     weaponRuns.every((r) => !r.dead),
 };
-writeFileSync(`shots/balance-${mode}.json`, JSON.stringify(summary, null, 2));
+writeFileSync(`shots/balance-${mode}${TAG}.json`, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
 
 await browser.close();

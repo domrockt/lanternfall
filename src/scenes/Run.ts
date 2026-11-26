@@ -34,7 +34,7 @@ import { EnemyProjectilePool, enemyShotHitFx, shotTextureFor } from "../systems/
 import { HazardSystem } from "../systems/Hazards";
 import { BossSystem, type BossInfo } from "../systems/BossSystem";
 import { shouldSplit, stepEnemyAi, type AiAction } from "../logic/enemy-ai";
-import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished } from "../logic/scaling";
+import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished, weaponRangeFactor } from "../logic/scaling";
 import { botDirection, chooseBestOffer, type BotPoint, type BotThreat } from "../logic/autoplay";
 import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
 import { chestRewards, type ChestResult } from "../logic/evolution";
@@ -147,6 +147,8 @@ export class Run extends Phaser.Scene {
   private hpBg!: Phaser.GameObjects.Rectangle;
   private player!: Phaser.GameObjects.Container;
   private playerBody!: Phaser.GameObjects.Image;
+  /** M8: Vignette folgt der aktuellen View-Groesse (Resize/Rotation). */
+  private vignette?: Phaser.GameObjects.Image;
   private lantern?: Phaser.GameObjects.Image;
   /** Lauf-/Idle-Animation (32-px-Spielerframes). */
   private moving = false;
@@ -267,8 +269,10 @@ export class Run extends Phaser.Scene {
       .setDepth(20)
       .setScale(1.35)
       .setAlpha(0.85);
-    this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
+    this.vignette = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
       .setScrollFactor(0).setDepth(80).setAlpha(0.9);
+    this.vignette.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.onViewResize, this);
 
     this.hpBg = this.add.rectangle(startX - 13, startY - 23, 26, 5, PAL[C.ink]).setOrigin(0, 0.5).setDepth(25).setVisible(false);
     this.hpFill = this.add.rectangle(startX - 12, startY - 22, 24, 2, PAL[C.crimson]).setOrigin(0, 0.5).setDepth(26).setVisible(false);
@@ -285,6 +289,7 @@ export class Run extends Phaser.Scene {
     this.hash = new SpatialHash<EnemyRuntime>(32);
     this.spawner = new Spawner(this, this.enemies, this.rng);
     this.combat = new CombatSystem(this);
+    this.combat.setRangeScale(weaponRangeFactor(GAME_WIDTH, GAME_HEIGHT));
     this.pickups = new PickupSystem(this);
     this.chests = new ChestSystem(this);
     this.enemyShots = new EnemyProjectilePool(this);
@@ -318,6 +323,7 @@ export class Run extends Phaser.Scene {
     this.registry.set("lf-elapsed", 0);
     getAudio().setMusic("run");
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.onViewResize, this);
       this.inputState.reset();
       resetTouchSnapshot();
       this.ground.destroy();
@@ -462,7 +468,8 @@ export class Run extends Phaser.Scene {
     this.enemies.compact();
     this.maybeSplash(dt);
 
-    const pickupRadius = effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus;
+    const pickupRadius = (effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus)
+      * weaponRangeFactor(GAME_WIDTH, GAME_HEIGHT);
     const cam = this.cameras.main;
     this.pickups.update(dt, this.posX, this.posY, pickupRadius, (value) => {
       this.giveXpInternal(value);
@@ -983,6 +990,20 @@ export class Run extends Phaser.Scene {
     this.hurtPlayer(hit.damage, hit.x, hit.y);
   }
 
+  /** M8: View-Wechsel im laufenden Spiel (Resize/Rotation). Kamera und
+   *  bildschirmfeste Overlays folgen der neuen logischen Groesse. */
+  private onViewResize(): void {
+    this.combat?.setRangeScale(weaponRangeFactor(GAME_WIDTH, GAME_HEIGHT));
+    if (this.vignette) {
+      this.vignette.setPosition(GAME_WIDTH / 2, GAME_HEIGHT / 2)
+        .setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+    }
+    if (this.dawnRect) {
+      this.dawnRect.setPosition(GAME_WIDTH / 2, GAME_HEIGHT / 2)
+        .setSize(GAME_WIDTH, GAME_HEIGHT);
+    }
+  }
+
   private updateVisuals(realDt: number): void {
     // Externe Teleports (Debug-Skripte setzen `player.x/y`) übernehmen, ohne
     // die Float-Position bei normaler Darstellung zu verändern.
@@ -1407,7 +1428,8 @@ export class Run extends Phaser.Scene {
       character: this.character.id,
       damageByWeapon: { ...this.damageByWeapon },
       stats: this.agg ? { ...this.agg } : {},
-      pickupRadius: this.agg ? effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) : 0,
+      pickupRadius: this.agg ? effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg)
+        * weaponRangeFactor(GAME_WIDTH, GAME_HEIGHT) : 0,
       lod: this.lod,
       hitStop: Math.round(this.hitStop * 1000) / 1000,
       damageNumbers: this.combat?.damageNumbers?.count ?? 0,

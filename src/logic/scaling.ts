@@ -31,14 +31,75 @@ export function isEliteMinute(minute: number): boolean {
   return minute >= 4 && minute % 6 === 4;
 }
 
+/** M8: Referenzfläche der M6-Balance (16:9 bei 360p). */
+export const BASE_VIEW_AREA = 640 * 360;
+
+/**
+ * M8: Sichtflächen-Faktor gegenüber 640x360. Breite Formate (780x360 = 1,22x)
+ * bekommen proportional mehr Gegner, damit sie nicht leerer wirken; schmale
+ * 4:3-Formate bekommen etwas weniger. Gedeckelt auf 0,75..1,5.
+ */
+export function viewAreaFactor(width: number, height: number): number {
+  if (!(width > 0) || !(height > 0)) return 1;
+  return Math.max(0.75, Math.min(1.5, (width * height) / BASE_VIEW_AREA));
+}
+
+/**
+ * M8: Spawnrate-Faktor. Breite Formate bekommen etwas mehr Nachschub, aber
+ * nur mit halber Flächen-Wurzel, damit der M6-Überlebenskorridor hält
+ * (780x360: +10,5 % Rate statt +21,9 %; der Deckel skaliert voll).
+ */
+export function spawnRateFactor(width: number, height: number): number {
+  const base = Math.sqrt(viewAreaFactor(width, height));
+  // M8-Balance: breite Formate bekommen dank groesserem Waffenradius ohnehin
+  // mehr Kontrolle; die Spawnrate wird dort um 30 % gedrosselt, damit der
+  // M6-Ueberlebenskorridor haelt (780x360: 0,94 statt 1,10).
+  return width > 640 ? base * 0.85 : base;
+}
+
 /**
  * Maximal gleichzeitig aktive Gegner für den normalen Run. M6-Balance:
- * gleichmäßigerer Anstieg bis Deckel 360 (Minute ~20). Die 500-Gegner-Last
- * wird weiterhin separat in perf.mjs mit erzwungenen Spawns gemessen.
+ * gleichmäßiger Anstieg bis Deckel 360 (Minute ~20) auf 640x360; M8 skaliert
+ * den Deckel mit der sichtbaren Fläche (780x360 ~ 439, harte Obergrenze 500).
  */
-export function maxActiveEnemies(elapsedSeconds: number): number {
+export function maxActiveEnemies(
+  elapsedSeconds: number,
+  width = 640,
+  height = 360,
+): number {
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
-  return Math.min(360, 100 + minute * 13);
+  const base = 100 + minute * 13;
+  return Math.min(500, Math.round(Math.min(360, base) * viewAreaFactor(width, height)));
+}
+
+/** M8: Waffen-/AoE-Reichweite an die View-Breite anpassen. Breite Formate
+ *  (780/860) bekommen bis +30 % Radius, damit Flächenwaffen nicht nutzlos
+ *  klein wirken; 640x360 bleibt die Referenz (Faktor 1). */
+export function weaponRangeFactor(width: number, _height: number): number {
+  if (!(width > 0)) return 1;
+  return Math.max(1, Math.min(1.3, width / 640));
+}
+
+/** M8: Recycle-Abstand knapp außerhalb der View-Diagonale (mind. 340 px).
+ *  Umkreisradius = halbe Diagonale; damit liegt der Punkt in JEDEM Winkel
+ *  sicher außerhalb des Rechtecks (alte Gegner verschwinden nie sichtbar). */
+export function recycleDistance(width: number, height: number): number {
+  if (!(width > 0) || !(height > 0)) return 340;
+  return Math.max(340, Math.ceil(Math.hypot(width, height) / 2) + 40);
+}
+
+/** M8: Ring-/Stream-Spawnradius juste außerhalb der sichtbaren Fläche.
+ *  Umkreisradius (halbe Diagonale) + Rand: in jedem Winkel außerhalb. */
+export function spawnRingRadius(width: number, height: number, extra = 20): number {
+  if (!(width > 0) || !(height > 0)) return 300;
+  return Math.ceil(Math.hypot(width, height) / 2) + Math.max(0, extra);
+}
+
+/** M8: Boss erscheint sichtbar, aber nicht auf dem Spieler; mit der Hoehe skaliert.
+ *  0,4 * kuerzere Kante = 144 px bei 360er-Hoehe, also innerhalb des Views. */
+export function bossSpawnDistance(width: number, height: number): number {
+  const shorter = Math.min(width, height);
+  return Math.max(130, Math.round(shorter * 0.4));
 }
 
 /** Ferne, alte Gegner dürfen recycelt werden (kein Kill, kein Drop). */
@@ -47,20 +108,21 @@ export function shouldRecycle(
   distanceToPlayer: number,
   elite: boolean,
   boss = false,
+  minDistance = 340,
 ): boolean {
-  return !elite && !boss && ageSeconds > 45 && distanceToPlayer > 340;
+  return !elite && !boss && ageSeconds > 45 && distanceToPlayer > minDistance;
 }
 
 /** Ältesten fernen Gegner finden (für Cap-Recycling). */
 export function pickRecycleIndex<
   T extends { age: number; x: number; y: number; elite: boolean; boss?: boolean },
->(list: readonly T[], playerX: number, playerY: number): number {
+>(list: readonly T[], playerX: number, playerY: number, minDistance = 340): number {
   let best = -1;
   let bestScore = -Infinity;
   for (let i = 0; i < list.length; i++) {
     const e = list[i];
     const d = Math.hypot(e.x - playerX, e.y - playerY);
-    if (!shouldRecycle(e.age, d, e.elite, e.boss)) continue;
+    if (!shouldRecycle(e.age, d, e.elite, e.boss, minDistance)) continue;
     const score = e.age + d / 40;
     if (score > bestScore) {
       bestScore = score;

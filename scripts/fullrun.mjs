@@ -10,12 +10,23 @@ const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm"
 const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
 const POLL_MS = 500;
 
+// M8: Viewport/devicePixelRatio waehlbar (780x360 -> 780x360@3).
+const argv = process.argv.slice(2);
+const argOf = (name, fallback) => {
+  const i = argv.indexOf(`--${name}`);
+  return i >= 0 ? argv[i + 1] : fallback;
+};
+const viewportArg = String(argOf("viewport", "960x540")).split("x").map(Number);
+const VIEWPORT = { width: viewportArg[0] || 960, height: viewportArg[1] || 540 };
+const DPR = Number(argOf("dpr", "1")) || 1;
+const TAG = String(argOf("tag", ""));
+
 ensureBuild();
 mkdirSync("shots", { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch({ args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"] });
-const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: DPR });
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
@@ -134,6 +145,8 @@ try {
 
   const summary = {
     milestone: "M3",
+    viewport: VIEWPORT,
+    dpr: DPR,
     simMinutes: Math.round((finalRun?.time ?? lastTime) / 60 * 10) / 10,
     pollSamples: samples,
     bosses: {
@@ -177,7 +190,7 @@ try {
     passed: ok && heapOk && fpsOk,
   };
   summaryPassed = summary.passed;
-  writeFileSync("shots/m3-fullrun.json", JSON.stringify(summary, null, 2));
+  writeFileSync(`shots/m3-fullrun${TAG}.json`, JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
 } finally {
   await page.close();

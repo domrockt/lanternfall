@@ -1,0 +1,14 @@
+{
+  "name": "Lanternfall - Die letzte Laterne",
+  "short_name": "Lanternfall",
+  "description": "Survivor-Action-Roguelite im verfluchten Moor: halte die letzte Laterne bis zur Morgendaemmerung.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#06070c",
+  "theme_color": "#06070c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
