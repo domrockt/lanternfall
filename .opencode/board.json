@@ -1579,10 +1579,16 @@
       "id": 86,
       "title": "m7-tooling-4 Doku: Messwerte + Kurzanleitung",
       "description": "/home/ai/games/.team/kb/COMMANDS.md bzw. vorhandene KB-Datei mit neuen Messwerten aktualisieren; AGENTS-taugliche Kurzanleitung in INDEX.md; docs/lanes/m7-tooling.md mit Vorher/Nachher. Abnahme: Messwerte vorher/nachher belegt, build+Tests gruen, Karte=ein Commit, .lane-done mit Zusammenfassung.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T08:56:23Z",
+          "by": "build",
+          "text": "todo → doing: Owner: Lead/Lane. KB-Messwerte (COMMANDS/Befehle und Kosten), INDEX-Kurzanleitung, docs/lanes/m7-tooling.md, .lane-done."
+        }
+      ],
       "created": "2026-11-26T08:49:35Z",
-      "updated": "2026-11-26T08:49:35Z"
+      "updated": "2026-11-26T08:56:23Z"
     }
   ]
 }
