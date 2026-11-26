@@ -110,6 +110,9 @@ describe("XP", () => {
     expect(total40).toBeGreaterThan(15000);
     // Quadratische Kurve: hohe Level werden sehr teuer (kein Level 147 mehr).
     expect(xpToNext(100)).toBeGreaterThan(8000);
+    // Regression gegen die alte Rohbau-Kurve 8 + 7/Level (Stufe 30 = 239):
+    // Stufe 30 allein muss schon deutlich teurer sein.
+    expect(xpToNext(30)).toBeGreaterThan(500);
   });
   it("mehrere Level-Ups in einem Schritt", () => {
     const r = applyXp({ level: 1, xp: 0, pendingLevelUps: 0 }, 1000);
