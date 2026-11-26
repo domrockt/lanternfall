@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 479,
+  "next": 638,
   "cards": [
     {
       "id": 1,
@@ -1738,7 +1738,7 @@
       "id": 96,
       "title": "m8-display balance-01 Rebalancing 640x360 und 780x360",
       "description": "balance.mjs viewport-Parameter; Spawnrate/Sichtdichte so, dass breite Formate nicht leerer wirken; Zielkorridore M6 (Ueberleben 20-28, Level 25-40@30, Bosse 20-60s, keine tote Waffe) fuer 640 und 780 messen und justieren. Abnahme: shots/balance-*.json + docs/lanes/m8-display.md Tabelle; balance-check PASS.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-26T10:30:45Z",
@@ -1749,19 +1749,30 @@
           "at": "2026-11-26T13:39:22Z",
           "by": "build",
           "text": "Gru"
+        },
+        {
+          "at": "2026-11-26T13:51:05Z",
+          "by": "build",
+          "text": "doing → review: Super 114c1c4: Balance 640/780 allRunsPass true; Be 192/ tests pass. Wartet auf balance-check PASS."
         }
       ],
       "created": "2026-11-26T10:22:23Z",
-      "updated": "2026-11-26T13:39:22Z"
+      "updated": "2026-11-26T13:51:05Z"
     },
     {
       "id": 97,
       "title": "m8-display verify-02 perf/fullrun 780 + Doku + .lane-done",
       "description": "Nach verify von verify-display: flock perf.mjs + fullrun.mjs bei 780x360 >=55 FPS; docs/lanes/m8-display.md Messwerte; Vault-Zeilen; .lane-done. Abnahme: JSON >=55 FPS, Docs, .lane-done committed.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T14:05:40Z",
+          "by": "build",
+          "text": "todo → doing: Start verify-02: perf/fullrun 780, Doku, .lane-done."
+        }
+      ],
       "created": "2026-11-26T10:22:23Z",
-      "updated": "2026-11-26T13:40:06Z"
+      "updated": "2026-11-26T14:05:40Z"
     },
     {
       "id": 478,
