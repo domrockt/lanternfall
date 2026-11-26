@@ -10,6 +10,8 @@ export interface PointLike {
 export class SpatialHash<T extends PointLike> {
   readonly cellSize: number;
   private readonly cells = new Map<number, T[]>();
+  /** Leere Bucket-Arrays fuer den naechsten Frame (Recycling ohne Map-Wachstum). */
+  private readonly freeBuckets: T[][] = [];
   private readonly offset = 4096;
   private readonly stride = 8192;
 
@@ -22,6 +24,12 @@ export class SpatialHash<T extends PointLike> {
   }
 
   clear(): void {
+    // Buckets wiederverwenden statt bei jedem Frame neue Arrays zu allozieren;
+    // die Map selbst bleibt klein (nur Zellen des aktuellen Frames).
+    for (const bucket of this.cells.values()) {
+      bucket.length = 0;
+      this.freeBuckets.push(bucket);
+    }
     this.cells.clear();
   }
 
@@ -29,9 +37,12 @@ export class SpatialHash<T extends PointLike> {
     const cx = Math.floor(item.x / this.cellSize);
     const cy = Math.floor(item.y / this.cellSize);
     const k = this.key(cx, cy);
-    const bucket = this.cells.get(k);
-    if (bucket) bucket.push(item);
-    else this.cells.set(k, [item]);
+    let bucket = this.cells.get(k);
+    if (!bucket) {
+      bucket = this.freeBuckets.pop() ?? [];
+      this.cells.set(k, bucket);
+    }
+    bucket.push(item);
   }
 
   rebuild(items: readonly T[]): void {
@@ -56,6 +67,13 @@ export class SpatialHash<T extends PointLike> {
   }
 
   get cellCount(): number {
-    return this.cells.size;
+    let n = 0;
+    for (const bucket of this.cells.values()) if (bucket.length > 0) n += 1;
+    return n;
+  }
+
+  /** Nur je einmal allozierter Buckets (bleibt nach clear erhalten = Recycling). */
+  get allocatedCellCount(): number {
+    return this.cells.size + this.freeBuckets.length;
   }
 }

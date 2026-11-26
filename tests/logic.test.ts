@@ -274,6 +274,26 @@ describe("SpatialHash", () => {
     expect(hash.queryCircle(5, 5, 5)).toHaveLength(0);
     expect(hash.cellCount).toBe(0);
   });
+  it("recycelt Buckets nach clear statt sie zu verwerfen", () => {
+    const hash = new SpatialHash<{ x: number; y: number }>(16);
+    hash.insert({ x: 5, y: 5 });
+    hash.insert({ x: 200, y: 200 });
+    expect(hash.allocatedCellCount).toBe(2);
+    hash.clear();
+    // Neue Implementierung behaelt die Arrays fuer den naechsten Frame;
+    // die alte (cells.clear) haette hier 0.
+    expect(hash.allocatedCellCount).toBe(2);
+    hash.insert({ x: 6, y: 6 });
+    expect(hash.queryCircle(5, 5, 5)).toHaveLength(1);
+  });
+  it("waechst durch recycling nicht unbegrenzt pro Zelle", () => {
+    const hash = new SpatialHash<{ x: number; y: number }>(16);
+    for (let i = 0; i < 100; i++) {
+      hash.insert({ x: 5, y: 5 });
+      hash.clear();
+    }
+    expect(hash.allocatedCellCount).toBeLessThanOrEqual(1);
+  });
 });
 
 describe("Ergebnis-Schadenstabelle", () => {

@@ -61,6 +61,26 @@ export function installDebugApi(game: Phaser.Game): void {
       };
     },
 
+    /** Leichtgewichtiges Polling (ohne enemyList): FPS/Zeit/G GC-Druck. */
+    stats: () => {
+      if (game.scene.isActive("run") || game.scene.isPaused("run")) {
+        return (game.scene.getScene("run") as Run).getQuickStats();
+      }
+      return {
+        scene: activeScene(),
+        time: 0,
+        level: 1,
+        kills: 0,
+        enemies: 0,
+        fps: Math.round((game.loop.actualFps ?? 0) * 10) / 10,
+        weapons: [],
+        passives: [],
+        bossesDefeated: 0,
+        bosses: false,
+        character: null,
+      };
+    },
+
     /** Endzustand des letzten Runs (Bosse, Truhen, Dämmerung) – auch in Results. */
     finalState: () => game.registry.get("lf-final-state") ?? null,
 

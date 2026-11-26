@@ -10,7 +10,7 @@ const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
 ensureBuild();
 const { chromium } = await loadPlaywright();
 const server = await startServer();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"] });
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
@@ -18,7 +18,7 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 
 const clearLevelUps = async () => {
   for (let i = 0; i < 40; i++) {
-    if (!(await page.evaluate(() => window.__lf?.state().levelUpOpen))) break;
+    if (!(await page.evaluate(() => window.__lf?.stats().levelUpOpen))) break;
     await page.evaluate(() => window.__lf.pickLevelUp(0));
   }
 };
@@ -40,10 +40,10 @@ const measure = async (target, seconds = 10) =>
         frames++;
         if (now - lastSpawn >= 50) {
           lastSpawn = now;
-          const active = window.__lf.state().enemies;
+          const active = window.__lf.stats().enemies;
           const deficit = target - active;
           if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
-          samples.push(window.__lf.state().enemies);
+          samples.push(window.__lf.stats().enemies);
         }
         if (now - start >= seconds * 1000) resolve();
         else requestAnimationFrame(tick);
@@ -84,7 +84,7 @@ try {
   // Screenshot erst nach geschlossenen Level-ups: er soll die 500er-Last zeigen,
   // nicht das Level-up-Panel. Kurz warten, damit die Roll-FPS aktuell ist.
   await page.waitForTimeout(1000);
-  const burstState = await page.evaluate(() => window.__lf.state());
+  const burstState = await page.evaluate(() => window.__lf.stats());
   await page.screenshot({ path: "shots/perf-500.png" });
 
   // Phase 2: natürliche Director-Dichte bei Minute 25.
@@ -96,11 +96,11 @@ try {
   }, { evolutions: EVOLUTIONS, passives: PASSIVES });
   await page.waitForTimeout(6000);
   await clearLevelUps();
-  const natural = await page.evaluate(() => window.__lf.state());
+  const natural = await page.evaluate(() => window.__lf.stats());
   // Volle Director-Dichte ist ohne God-Waffen >300; mit allen Evolutionen
   // räumt der Bot schneller ab. Für die Worst-Case-Messung auf 300 auffüllen.
   const minute25 = await measure(Math.max(300, natural.enemies));
-  const minute25State = await page.evaluate(() => window.__lf.state());
+  const minute25State = await page.evaluate(() => window.__lf.stats());
   await page.screenshot({ path: "shots/perf-minute25.png" });
 
   result = {

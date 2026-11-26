@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { DEPTH } from "../gfx/depth";
+import { makeImage } from "../gfx/atlas";
 
 export interface HazardOptions {
   /** Vorwarnzeit (s), > 0 = Pflicht-Telegraph. */
@@ -61,13 +62,13 @@ export class HazardSystem {
   spawnCircle(x: number, y: number, opts: HazardOptions): HazardRuntime {
     const warn = opts.warn ?? 0.7;
     const linger = opts.linger ?? 0;
-    const warnSprite = this.scene.add.image(Math.round(x), Math.round(y), "telegraph_disc")
+    const warnSprite = makeImage(this.scene, Math.round(x), Math.round(y), "telegraph_disc")
       .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
       .setScale(Math.max(0.25, opts.radius / 30))
       .setAlpha(0.9);
     if (opts.color !== undefined) warnSprite.setTint(PAL[opts.color] ?? opts.color);
-    const rimSprite = this.scene.add.image(Math.round(x), Math.round(y), "ring_burst")
+    const rimSprite = makeImage(this.scene, Math.round(x), Math.round(y), "ring_burst")
       .setDepth(DEPTH.hazard + 1)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.hotRed])
@@ -80,7 +81,7 @@ export class HazardSystem {
       active: true, warnSprite, rimSprite, source: opts.source ?? "area", onTrigger: opts.onTrigger,
     };
     if (opts.activeTexture) {
-      hazard.activeSprite = this.scene.add.image(Math.round(x), Math.round(y), opts.activeTexture)
+      hazard.activeSprite = makeImage(this.scene, Math.round(x), Math.round(y), opts.activeTexture)
         .setDepth(DEPTH.hazard)
         .setAlpha(0)
         .setScale(Math.max(0.3, opts.radius / 18));
@@ -96,13 +97,13 @@ export class HazardSystem {
   ): HazardRuntime {
     const len = Math.hypot(x2 - x1, y2 - y1) || 1;
     const angle = Math.atan2(y2 - y1, x2 - x1);
-    const warnSprite = this.scene.add.image((x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+    const warnSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
       .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
       .setRotation(angle + Math.PI / 2)
       .setScale(1, len / 16)
       .setAlpha(0.9);
-    const rimSprite = this.scene.add.image((x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+    const rimSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
       .setDepth(DEPTH.hazard + 1)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.hotRed])
@@ -179,7 +180,7 @@ export class HazardSystem {
 
   private impactFx(h: HazardRuntime): void {
     if (h.kind === "circle") {
-      const ring = this.scene.add.image(h.x, h.y, "ring_burst")
+      const ring = makeImage(this.scene, h.x, h.y, "ring_burst")
         .setDepth(DEPTH.hazard + 1)
         .setBlendMode(Phaser.BlendModes.NORMAL)
         .setTint(PAL[C.hotRed])
@@ -190,7 +191,7 @@ export class HazardSystem {
       });
     }
     for (let i = 0; i < 5; i++) {
-      const spark = this.scene.add.image(h.x, h.y, "fx_spark")
+      const spark = makeImage(this.scene, h.x, h.y, "fx_spark")
         .setDepth(DEPTH.hazard + 1)
         .setTint(PAL[C.crimson])
         .setScale(0.8);

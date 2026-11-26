@@ -49,7 +49,11 @@ for (let t = 0; t < 90; t++) {
   await page.waitForTimeout(60);
   const hit = await page.evaluate(() => {
     const run = window.__game.scene.getScene("run");
-    return run.children.list.some((o) => o.texture && o.texture.key === "ring_frost" &&
+    const keyOf = (o) => {
+      const f = o.frame?.name;
+      return f && f !== "__BASE" ? f : o.texture?.key;
+    };
+    return run.children.list.some((o) => keyOf(o) === "ring_frost" &&
       o.visible && o.alpha > 0.4 && Math.abs(o.x - run.posX) < 90);
   });
   if (!hit) continue;

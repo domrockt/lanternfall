@@ -31,6 +31,12 @@ describe("M5 LOD-Schwellen", () => {
     expect(lod.particleCap).toBeLessThanOrEqual(160);
     expect(lod.gemCap).toBeLessThanOrEqual(120);
   });
+  it("Boss-Druck hebt die LOD-Stufe (55 FPS im Endkampf)", () => {
+    expect(lodFor(10, true).level).toBe("reduced");
+    expect(lodFor(10, true).fxCap).toBeLessThan(lodFor(10).fxCap);
+    expect(lodFor(300, true).level).toBe("minimal");
+    expect(lodFor(450, true).level).toBe("minimal");
+  });
 });
 
 describe("Damage-Number-Zusammenfassung", () => {

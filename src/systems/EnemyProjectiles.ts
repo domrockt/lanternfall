@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import type { Archetype } from "../data/types";
 import { DEPTH } from "../gfx/depth";
+import { applyTexture, makeImage } from "../gfx/atlas";
 
 export interface EnemyShotRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -46,7 +47,7 @@ export class EnemyProjectilePool {
     shot.trailTimer = 0;
     shot.texture = opts.texture;
     shot.active = true;
-    shot.sprite.setTexture(opts.texture);
+    applyTexture(shot.sprite, opts.texture);
     shot.sprite.setVisible(true).setActive(true).setDepth(DEPTH.enemyShot).setScale(1);
     shot.sprite.setBlendMode(Phaser.BlendModes.NORMAL);
     shot.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
@@ -55,8 +56,16 @@ export class EnemyProjectilePool {
     return shot;
   }
 
+  prewarm(n: number): void {
+    while (this.free.length < n) {
+      const shot = this.createRuntime();
+      shot.sprite.setVisible(false).setActive(false);
+      this.free.push(shot);
+    }
+  }
+
   private createRuntime(): EnemyShotRuntime {
-    const sprite = this.scene.add.image(0, 0, "enemy_shot_spit").setDepth(DEPTH.enemyShot);
+    const sprite = makeImage(this.scene, 0, 0, "enemy_shot_spit").setDepth(DEPTH.enemyShot);
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, damage: 0, radius: 4, life: 0,
       active: false, trailTimer: 0, texture: "enemy_shot_spit",
@@ -92,7 +101,7 @@ export class EnemyProjectilePool {
       shot.trailTimer -= dt;
       if (shot.trailTimer <= 0) {
         shot.trailTimer = 0.07;
-        const fx = this.scene.add.image(shot.x, shot.y, shot.texture)
+        const fx = makeImage(this.scene, shot.x, shot.y, shot.texture)
           .setDepth(DEPTH.hazard)
           .setAlpha(0.25)
           .setScale(0.7);
@@ -139,7 +148,7 @@ export function shotTextureFor(archetype: Archetype, tier: number): string {
 /** Kurzer Treffer-Blitz am Spieler (Palettenfarben, kein Additiv-Wash). */
 export function enemyShotHitFx(scene: Phaser.Scene, x: number, y: number): void {
   for (let i = 0; i < 6; i++) {
-    const spark = scene.add.image(x, y, "fx_spark")
+    const spark = makeImage(scene, x, y, "fx_spark")
       .setTint(PAL[C.hotRed])
       .setDepth(DEPTH.enemyShot)
       .setScale(0.9);

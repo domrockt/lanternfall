@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import type { EnemyRuntime } from "./EnemyPool";
 import { DEPTH } from "../gfx/depth";
+import { applyTexture, makeImage } from "../gfx/atlas";
 
 export interface ProjectileRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -70,7 +71,7 @@ export class ProjectilePool {
     p.explodeRadius = opts.explodeRadius ?? 0;
     p.active = true;
     p.hit.clear();
-    p.sprite.setTexture(opts.texture ?? "projectile_ember");
+    applyTexture(p.sprite, opts.texture ?? "projectile_ember");
     p.sprite.setBlendMode(p.blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     p.sprite.setVisible(true).setActive(true).setDepth(DEPTH.death);
     p.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
@@ -80,8 +81,16 @@ export class ProjectilePool {
     return p;
   }
 
+  prewarm(n: number): void {
+    while (this.free.length < n) {
+      const p = this.createRuntime();
+      p.sprite.setVisible(false).setActive(false);
+      this.free.push(p);
+    }
+  }
+
   private createRuntime(): ProjectileRuntime {
-    const sprite = this.scene.add.image(0, 0, "projectile_ember").setDepth(DEPTH.death);
+    const sprite = makeImage(this.scene, 0, 0, "projectile_ember").setDepth(DEPTH.death);
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, damage: 0, pierce: 0, knockback: 0,
       radius: 4, life: 0, weaponId: "ember", active: false, hit: new Set(), target: null, targetUid: 0,
