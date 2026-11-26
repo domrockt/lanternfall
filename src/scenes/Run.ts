@@ -41,6 +41,7 @@ import { chestRewards, type ChestResult } from "../logic/evolution";
 import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
 import { lodFor, fxAlphaFor, type LodState } from "../logic/lod";
+import { shouldAggregateDamage } from "../logic/damage-numbers";
 import { shakeFor, hitStopFor } from "../logic/feedback";
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
@@ -1258,6 +1259,8 @@ export class Run extends Phaser.Scene {
       chestsDropped: this.chestsDropped,
       dawn: this.dawn,
       lod: this.lod,
+      damageAggregate: shouldAggregateDamage(this.enemies?.count ?? 0, this.lod.damageAggregate),
+      fxAlpha: this.fxDampingEnabled ? fxAlphaFor(this.lod.level) : 1,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
       chestOpen: this.chestOpen,

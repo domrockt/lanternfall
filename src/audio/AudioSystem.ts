@@ -226,6 +226,8 @@ let instance: AudioSystem | null = null;
 
 export function initAudio(game: Phaser.Game): AudioSystem {
   instance = new AudioSystem(game);
+  // Persistierter Master-Mute gilt sofort nach dem Laden.
+  instance.setMuted(getSettings().muted);
   return instance;
 }
 
