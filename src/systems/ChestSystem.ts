@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
+import { applyTexture, makeImage } from "../gfx/atlas";
 
 export interface ChestRuntime {
   x: number;
@@ -21,7 +22,7 @@ export class ChestSystem {
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
-    this.arrow = scene.add.image(0, 0, "arrow_chest")
+    this.arrow = makeImage(scene, 0, 0, "arrow_chest")
       .setScrollFactor(0)
       .setDepth(92)
       .setBlendMode(Phaser.BlendModes.ADD)
@@ -31,7 +32,7 @@ export class ChestSystem {
   }
 
   spawn(x: number, y: number): ChestRuntime {
-    const sprite = this.scene.add.image(Math.round(x), Math.round(y), "chest_closed")
+    const sprite = makeImage(this.scene, Math.round(x), Math.round(y), "chest_closed")
       .setDepth(7)
       .setScale(1);
     const glow = this.scene.add.image(Math.round(x), Math.round(y), "light_radius")
@@ -94,7 +95,7 @@ export class ChestSystem {
   }
 
   open(chest: ChestRuntime): void {
-    chest.sprite.setTexture("chest_open");
+    applyTexture(chest.sprite, "chest_open");
     this.remove(chest);
   }
 

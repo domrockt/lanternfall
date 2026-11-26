@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { createAllTextures } from "../gfx/textures";
+import { buildRuntimeAtlas } from "../gfx/atlas";
 import { seedFromUrl, hasFlag } from "../logic/rng";
 import { AudioSystem, initAudio } from "../audio/AudioSystem";
 
@@ -18,6 +19,7 @@ export class Boot extends Phaser.Scene {
 
   create(): void {
     createAllTextures(this);
+    buildRuntimeAtlas(this);
     initAudio(this.game);
     const seed = seedFromUrl();
     const debug = hasFlag("debug");

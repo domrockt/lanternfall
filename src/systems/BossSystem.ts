@@ -349,6 +349,12 @@ export class BossSystem {
     return ENEMIES[id];
   }
 
+  /** Guenstige Abfrage ohne Array-Allokation (LOD/Tick). */
+  hasAliveBoss(): boolean {
+    for (const b of this.bosses) if (b.enemy.alive && b.enemy.hp > 0) return true;
+    return false;
+  }
+
   /** Alle lebenden Bosse (für Debug/Abnahme). */
   living(): EnemyRuntime[] {
     return this.bosses.map((b) => b.enemy).filter((e) => e.alive && e.hp > 0);

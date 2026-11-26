@@ -185,7 +185,11 @@ try {
     await page.keyboard.down("KeyD"); await page.waitForTimeout(900);
     const splashSeen = await page.evaluate(() => {
       const sc = window.__game.scene.getScene("run");
-      const arr = sc.children.list.filter((o) => o.texture && o.texture.key === "fx_spark" && o.depth === 6 && o.alpha > 0.3);
+      const keyOf = (o) => {
+        const f = o.frame?.name;
+        return f && f !== "__BASE" ? f : o.texture?.key;
+      };
+      const arr = sc.children.list.filter((o) => keyOf(o) === "fx_spark" && o.depth === 6 && o.alpha > 0.3);
       return arr.length;
     });
     await page.keyboard.up("KeyD");

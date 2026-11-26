@@ -5,7 +5,7 @@ import { PASSIVES } from "../data/passives";
 import type { CharacterDef, CharacterId, EnemyId, PassiveId, WeaponAnyId, WeaponId } from "../data/types";
 import {
   GAME_HEIGHT, GAME_WIDTH, PLAYER_BASE_PICKUP_RADIUS, PLAYER_INVULN,
-  RUN_LENGTH, SIM_MAX_STEP, WORLD_SIZE,
+  RUN_LENGTH, SIM_MAX_STEP, WORLD_SIZE, WORLD_TILES,
 } from "../config";
 import { ENEMIES } from "../data/enemies";
 import { BOSSES } from "../data/bosses";
@@ -20,6 +20,7 @@ import { damageAfterArmor, timeScaleClamped } from "../logic/combat";
 import type { Offer } from "../logic/levelup";
 import { GroundRenderer } from "../gfx/GroundRenderer";
 import { SPRITE_FRAMES } from "../gfx/textures";
+import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DEPTH } from "../gfx/depth";
 import { PLAYER_FRAMES, type WalkDir } from "../gfx/chars";
 import { EnemyPool, type EnemyRuntime } from "../systems/EnemyPool";
@@ -34,7 +35,7 @@ import { HazardSystem } from "../systems/Hazards";
 import { BossSystem, type BossInfo } from "../systems/BossSystem";
 import { shouldSplit, stepEnemyAi, type AiAction } from "../logic/enemy-ai";
 import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished } from "../logic/scaling";
-import { botDirection, chooseBestOffer } from "../logic/autoplay";
+import { botDirection, chooseBestOffer, type BotPoint, type BotThreat } from "../logic/autoplay";
 import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
 import { chestRewards, type ChestResult } from "../logic/evolution";
 import { EVOLUTIONS } from "../data/evolutions";
@@ -163,6 +164,19 @@ export class Run extends Phaser.Scene {
   private dawnRect?: Phaser.GameObjects.Rectangle;
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
   private scratch: EnemyRuntime[] = [];
+  /** Terrain-Faktor-Cache pro 16-px-Tile: kindAt() ist Noise-teuer und wurde
+   *  vorher fuer jeden Gegner in jedem Frame aufgerufen. 0 = unbekannt,
+   *  1 = Gras, 2 = Wasser. Feste Groesse (256×256 Tiles) statt wachsender Map. */
+  private terrainCache = new Uint8Array(WORLD_TILES * WORLD_TILES);
+  private terrainCacheFilled = 0;
+  /** Wiederverwendete Bot-Arrays: vermeidet ~700 Objekte/Frames Allokation. */
+  private botEnemies: BotThreat[] = [];
+  private botProjectiles: BotThreat[] = [];
+  private botHazards: BotThreat[] = [];
+  private botGems: BotPoint[] = [];
+  private botHazardPool: BotThreat[] = [];
+  private botProjectilePool: BotThreat[] = [];
+  private botEnemyPool: BotThreat[] = [];
   private splashTimer = 0;
   private hurtMarker: { x: number; y: number; life: number } | null = null;
 
@@ -208,6 +222,15 @@ export class Run extends Phaser.Scene {
     this.damageByWeapon = {};
     this.currentOffers = [];
     this.xpState = { level: 1, xp: 0, pendingLevelUps: 0 };
+    this.terrainCache.fill(0);
+    this.terrainCacheFilled = 0;
+    this.botEnemies.length = 0;
+    this.botProjectiles.length = 0;
+    this.botHazards.length = 0;
+    this.botGems.length = 0;
+    this.botHazardPool.length = 0;
+    this.botProjectilePool.length = 0;
+    this.botEnemyPool.length = 0;
     // Szenen-Objekte werden bei scene.start wiederverwendet → alte Referenzen löschen.
     this.lantern = undefined;
     this.maxHp = 0;
@@ -260,6 +283,12 @@ export class Run extends Phaser.Scene {
     this.enemyShots = new EnemyProjectilePool(this);
     this.hazards = new HazardSystem(this);
     this.bosses = new BossSystem(this, this.enemies, this.spawner, this.hazards, this.enemyShots, this.rng);
+    // Pools vor dem ersten Frame vorwaermen: verhindert Peak-Allokationen und
+    // haelt den Retained-Heap ueber den Run stabil.
+    this.enemies.prewarm(520);
+    this.pickups.prewarm(180);
+    this.enemyShots.prewarm(64);
+    this.combat.prewarm();
 
     this.keys = this.input.keyboard!.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -413,7 +442,8 @@ export class Run extends Phaser.Scene {
 
   /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */
   private applyLod(): void {
-    const lod = lodFor(this.enemies?.count ?? 0);
+    const bossFight = this.bosses?.hasAliveBoss() ?? false;
+    const lod = lodFor(this.enemies?.count ?? 0, bossFight);
     if (lod.level !== this.lod.level) {
       this.lod = lod;
       this.combat?.setLod(lod);
@@ -473,22 +503,49 @@ export class Run extends Phaser.Scene {
     this.splashTimer = 0.14;
     const px = this.posX;
     const py = this.posY;
-    if (this.ground.kindAt(px, py) === "water") this.spawnSplash(px, py + 5);
+    if (this.isWaterAt(px, py)) this.spawnSplash(px, py + 5);
     for (const e of this.enemies.active) {
       if (!e.alive) continue;
-      if (this.ground.kindAt(e.x, e.y) === "water" && Math.random() < 0.12) this.spawnSplash(e.x, e.y + 4);
+      const dx = e.x - px;
+      const dy = e.y - py;
+      if (dx * dx + dy * dy > 340 * 340) continue;
+      if (this.isWaterAt(e.x, e.y) && Math.random() < 0.12) this.spawnSplash(e.x, e.y + 4);
     }
   }
 
   private spawnSplash(x: number, y: number): void {
     for (let i = 0; i < 3; i++) {
-      const drop = this.add.image(Math.round(x + (i - 1) * 3), Math.round(y), "fx_spark")
+      const drop = makeImage(this, Math.round(x + (i - 1) * 3), Math.round(y), "fx_spark")
         .setDepth(6).setTint(PAL[C.fogBlue]).setScale(0.6).setAlpha(0.8);
       this.tweens.add({
         targets: drop, y: y - 8 - i * 2, alpha: 0, scale: 0.2,
         duration: 240 + i * 30, onComplete: () => drop.destroy(),
       });
     }
+  }
+
+  /**
+   * Terrain-Faktor einer Weltposition, pro 16-px-Tile gecacht. Referenzpunkt
+   * ist die Tile-Mitte: dadurch ist das Ergebnis unabhaengig davon, wer zuerst
+   * fragt (vorher wurde der erste Pixel eines Tiles gespeichert). Fuer die
+   * Splash-Entscheidung wird weiterhin exakt klassifiziert.
+   */
+  private terrainFactorAt(x: number, y: number): number {
+    const tx = Math.floor(x / 16);
+    const ty = Math.floor(y / 16);
+    if (tx < 0 || ty < 0 || tx >= WORLD_TILES || ty >= WORLD_TILES) return 1;
+    const key = tx * WORLD_TILES + ty;
+    const cached = this.terrainCache[key];
+    if (cached !== 0) return cached / 100;
+    const factor = terrainSpeedFactor(this.ground.kindAt(tx * 16 + 8, ty * 16 + 8) as TerrainKind);
+    this.terrainCache[key] = Math.round(factor * 100);
+    this.terrainCacheFilled += 1;
+    return factor;
+  }
+
+  /** Exakte Wasserabfrage fuer Spritzer (nicht gecacht, ~10 Hz statt 60 Hz). */
+  private isWaterAt(x: number, y: number): boolean {
+    return this.ground.kindAt(x, y) === "water";
   }
 
   // ── Spieler ──────────────────────────────────────────────────
@@ -513,7 +570,7 @@ export class Run extends Phaser.Scene {
     const len = Math.hypot(dx, dy);
     dx /= len;
     dy /= len;
-    const terrain = terrainSpeedFactor(this.ground.kindAt(this.posX, this.posY) as TerrainKind);
+    const terrain = this.terrainFactorAt(this.posX, this.posY);
     const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
     this.facingX = dx;
     this.facingY = dy;
@@ -553,15 +610,64 @@ export class Run extends Phaser.Scene {
 
   /** Bot: weicht Gegnern/Projektilen/Warnflächen aus und sammelt XP-Kristalle. */
   private autoDirection(): { x: number; y: number } {
-    const enemies = this.enemies.active
-      .filter((e) => e.alive)
-      .map((e) => ({ x: e.x, y: e.y, radius: e.radius, threat: e.boss ? 0.35 : e.def.archetype === "exploder" ? 1.8 : 1 }));
-    const projectiles = this.enemyShots.active.map((p) => ({
-      x: p.x, y: p.y, vx: p.vx, vy: p.vy, radius: p.radius, threat: 2.4,
-    }));
-    const hazards = this.hazards.threats().map((h) => ({ ...h, threat: 3.2 }));
-    const gems = this.pickups.gems.map((g) => ({ x: g.x, y: g.y }));
+    const enemies = this.botEnemies;
+    enemies.length = 0;
+    let ei = 0;
+    for (const e of this.enemies.active) {
+      if (!e.alive) continue;
+      let entry = this.botEnemyPool[ei];
+      if (!entry) {
+        entry = { x: 0, y: 0, radius: 0, threat: 1 };
+        this.botEnemyPool[ei] = entry;
+      }
+      entry.x = e.x;
+      entry.y = e.y;
+      entry.radius = e.radius;
+      entry.threat = e.boss ? 0.35 : e.def.archetype === "exploder" ? 1.8 : 1;
+      enemies.push(entry);
+      ei += 1;
+    }
     const bossAgent = this.enemies.active.find((e) => e.alive && e.boss);
+
+    const projectiles = this.botProjectiles;
+    projectiles.length = 0;
+    let pi = 0;
+    for (const p of this.enemyShots.active) {
+      let entry = this.botProjectilePool[pi];
+      if (!entry) {
+        entry = { x: 0, y: 0, radius: 0, vx: 0, vy: 0, threat: 2.4 };
+        this.botProjectilePool[pi] = entry;
+      }
+      entry.x = p.x;
+      entry.y = p.y;
+      entry.vx = p.vx;
+      entry.vy = p.vy;
+      entry.radius = p.radius;
+      projectiles.push(entry);
+      pi += 1;
+    }
+
+    const hazards = this.botHazards;
+    hazards.length = 0;
+    let hi = 0;
+    for (const h of this.hazards.active) {
+      if (h.warn <= 0) continue;
+      let entry = this.botHazardPool[hi];
+      if (!entry) {
+        entry = { x: 0, y: 0, radius: 0, threat: 3.2 };
+        this.botHazardPool[hi] = entry;
+      }
+      entry.x = (h.x + h.x2) / 2;
+      entry.y = (h.y + h.y2) / 2;
+      entry.radius = h.kind === "beam" ? h.width : h.radius;
+      hazards.push(entry);
+      hi += 1;
+    }
+
+    const gems = this.botGems;
+    gems.length = 0;
+    for (const g of this.pickups.gems) gems.push(g);
+
     return botDirection({
       playerX: this.posX,
       playerY: this.posY,
@@ -578,7 +684,8 @@ export class Run extends Phaser.Scene {
 
   // ── Gegner ───────────────────────────────────────────────────
   private updateEnemies(dt: number): void {
-    this.hash.rebuild(this.enemies.active.filter((e) => e.alive));
+    this.hash.clear();
+    for (const e of this.enemies.active) if (e.alive) this.hash.insert(e);
     const px = this.posX;
     const py = this.posY;
     for (const e of this.enemies.active) {
@@ -622,23 +729,29 @@ export class Run extends Phaser.Scene {
         my = ny;
       }
 
-      // Separation: Gegner stapeln sich nicht auf einem Pixel.
+      // Separation: Gegner stapeln sich nicht auf einem Pixel. Weit ausserhalb
+      // des Views (LOD) entfaellt die Nachbarsuche: sie ist teuer und fuer die
+      // Darstellung/Kollision am Spieler irrelevant.
       let sx = 0;
       let sy = 0;
-      this.hash.queryCircle(e.x, e.y, e.radius + 10, this.scratch);
-      for (const n of this.scratch) {
-        if (n === e || !n.alive) continue;
-        const push = separationPush(e.x, e.y, e.radius, n.x, n.y, n.radius, e.uid);
-        if (push) {
-          sx += push.x;
-          sy += push.y;
+      const ddx = e.x - px;
+      const ddy = e.y - py;
+      if (ddx * ddx + ddy * ddy < 460 * 460) {
+        this.hash.queryCircle(e.x, e.y, e.radius + 10, this.scratch);
+        for (const n of this.scratch) {
+          if (n === e || !n.alive) continue;
+          const push = separationPush(e.x, e.y, e.radius, n.x, n.y, n.radius, e.uid);
+          if (push) {
+            sx += push.x;
+            sy += push.y;
+          }
         }
       }
 
       const decay = Math.max(0, 1 - 7 * dt);
       e.vx *= decay;
       e.vy *= decay;
-      const terrain = terrainSpeedFactor(this.ground.kindAt(e.x, e.y) as TerrainKind);
+      const terrain = this.terrainFactorAt(e.x, e.y);
       const speed = e.speed * statusMul * ai.speedMul * terrain;
       e.x += (mx * speed + e.vx + sx * speed * 1.2) * dt;
       e.y += (my * speed + e.vy + sy * speed * 1.2) * dt;
@@ -791,7 +904,7 @@ export class Run extends Phaser.Scene {
     });
     // Lichtstrahlen vom Horizont.
     for (let i = 0; i < 7; i++) {
-      const ray = this.add.image(60 + i * 60, GAME_HEIGHT, "fx_pillar")
+      const ray = makeImage(this, 60 + i * 60, GAME_HEIGHT, "fx_pillar")
         .setOrigin(0.5, 1).setScrollFactor(0).setDepth(76)
         .setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
         .setAlpha(0).setScale(2.4 + (i % 2) * 0.5, 3.2);
@@ -900,7 +1013,7 @@ export class Run extends Phaser.Scene {
         // Bosse: Wind-up-Frame während des Telegraphen, sonst Ruhe/Atmen.
         const windup = e.boss && e.telegraph > 0 && frames.length >= 3 ? frames[2] : null;
         const frame = windup ?? frames[Math.floor(t * 6 + e.phase) % Math.min(2, frames.length)];
-        if (e.sprite.texture.key !== frame) e.sprite.setTexture(frame);
+        if (currentFrame(e.sprite) !== frame) applyTexture(e.sprite, frame);
       }
     }
     this.chests.update(realDt, this.cameras.main, this.posX, this.posY);
@@ -1092,6 +1205,35 @@ export class Run extends Phaser.Scene {
     this.events.emit("chestClosed");
   }
 
+  /** Leichtgewichtiger Zustand ohne die teure enemyList (Polling-Skripte). */
+  getQuickStats(): Record<string, unknown> {
+    return {
+      scene: "run",
+      time: Math.round(this.elapsed * 10) / 10,
+      level: this.xpState.level,
+      kills: this.kills,
+      enemies: this.enemies?.count ?? 0,
+      hp: Math.round(this.hp),
+      maxHp: this.maxHp,
+      fps: Math.round(this.game.loop.actualFps * 10) / 10,
+      weapons: this.levelSys?.weapons.map((w) => ({ id: w.id, level: w.level })) ?? [],
+      passives: this.levelSys?.passives.map((p) => ({ id: p.id, level: p.level })) ?? [],
+      bossesDefeated: this.bossesDefeated,
+      bossesSpawned: this.bossesSpawned.slice(),
+      bossFlags: this.bossFlags.slice(),
+      boss: this.bosses?.info() ?? null,
+      chestsDropped: this.chestsDropped,
+      dawn: this.dawn,
+      lod: this.lod,
+      paused: this.paused,
+      levelUpOpen: this.levelUpOpen,
+      chestOpen: this.chestOpen,
+      autoPlay: this.autoPlay,
+      god: this.godMode,
+      character: this.character.id,
+    };
+  }
+
   getHudState(): HudState {
     return {
       time: this.elapsed,
@@ -1196,7 +1338,7 @@ export class Run extends Phaser.Scene {
     if (this.suppressEventFx) return;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
-    const pillar = this.add.image(x, y + 12, "fx_pillar")
+    const pillar = makeImage(this, x, y + 12, "fx_pillar")
       .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setAlpha(0.95).setScale(1.4, 1.6);
     this.tweens.add({
@@ -1228,7 +1370,7 @@ export class Run extends Phaser.Scene {
     this.slowmoRemaining = 0.9;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
-    const ring = this.add.image(x, y, "fx_shock")
+    const ring = makeImage(this, x, y, "fx_shock")
       .setDepth(11).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
       .setScale(0.4).setAlpha(1);
     this.tweens.add({ targets: ring, scale: 3.4, alpha: 0, duration: 900, ease: "Cubic.Out", onComplete: () => ring.destroy() });
@@ -1257,7 +1399,7 @@ export class Run extends Phaser.Scene {
   /** Truhe: Lichtstrahl + Glanz + Funken (Weltposition). */
   playChestFx(x: number, y: number): void {
     if (this.suppressEventFx) return;
-    const beam = this.add.image(x, y - 4, "fx_pillar")
+    const beam = makeImage(this, x, y - 4, "fx_pillar")
       .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9, 1.1);
     this.tweens.add({ targets: beam, alpha: 0.85, scaleX: 1.5, duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });

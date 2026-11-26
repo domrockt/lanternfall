@@ -12,6 +12,7 @@ import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { fxFrames } from "../gfx/gen-fx";
 import { DEPTH } from "../gfx/depth";
+import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
 import { deathClassFor, deathFxFor } from "../logic/death";
 import { knockbackFor } from "../logic/feedback";
@@ -123,6 +124,13 @@ export class CombatSystem {
     this.fx = new FxSystem(scene);
     this.particles = new ParticleSystem(scene);
     this.damageNumbers = new DamageNumberSystem(scene);
+  }
+
+  /** Pools vorwaermen (Run-Start): keine Peak-Allokationen/Minute-29-Wachstum. */
+  prewarm(): void {
+    this.projectiles.prewarm(220);
+    this.fx.prewarm(180);
+    this.particles.prewarm(280);
   }
 
   setLod(lod: LodState): void {
@@ -300,16 +308,16 @@ export class CombatSystem {
     const dur = evolved ? 0.32 : 0.24;
     for (let i = 0; i < count; i++) {
       const side = i === 0 ? 1 : -1;
-      const sprite = this.scene.add.image(ctx.playerX, ctx.playerY, "flail_ball")
+      const sprite = makeImage(this.scene, ctx.playerX, ctx.playerY, "flail_ball")
         .setDepth(DEPTH.fxLow)
         .setScale(1 + radius / 140)
         .setBlendMode(Phaser.BlendModes.NORMAL);
       const links: Phaser.GameObjects.Image[] = [];
       for (let li = 0; li < 8; li++) {
-        links.push(this.scene.add.image(ctx.playerX, ctx.playerY, "chain_link")
+        links.push(makeImage(this.scene, ctx.playerX, ctx.playerY, "chain_link")
           .setDepth(DEPTH.trail).setScale(1).setAlpha(0.85));
       }
-      const halo = this.scene.add.image(ctx.playerX, ctx.playerY, "fx_halo")
+      const halo = makeImage(this.scene, ctx.playerX, ctx.playerY, "fx_halo")
         .setDepth(DEPTH.trail)
         .setBlendMode(Phaser.BlendModes.ADD)
         .setTint(evolved ? PAL[C.fogBlue] : PAL[C.boneLight])
@@ -564,7 +572,7 @@ export class CombatSystem {
       const angle = this.clock + (i / count) * Math.PI * 2;
       const x = ctx.playerX + Math.cos(angle) * 26;
       const y = ctx.playerY + Math.sin(angle) * 26;
-      const sprite = this.scene.add.image(x, y, "fx_seal")
+      const sprite = makeImage(this.scene, x, y, "fx_seal")
         .setDepth(DEPTH.decal)
         .setBlendMode(Phaser.BlendModes.NORMAL)
         .setAlpha(0.0)
@@ -583,7 +591,7 @@ export class CombatSystem {
       const p = 1 - Math.max(0, seal.timer) / 0.55;
       const sealFrames = fxFrames("fx_seal", 5);
       const frame = sealFrames[Math.min(4, Math.floor(p * 5))];
-      if (seal.sprite.texture.key !== frame) seal.sprite.setTexture(frame);
+      if (currentFrame(seal.sprite) !== frame) applyTexture(seal.sprite, frame);
       seal.sprite.setAlpha(0.5 + p * 0.5);
       seal.sprite.setScale(1.9 + Math.sin(this.clock * 12) * 0.15);
       if (seal.timer > 0) continue;
@@ -757,12 +765,12 @@ export class CombatSystem {
     state.orbRadius = radius;
     const evolved = owned.id === "soul_beacon";
     while (state.orbs.length < count) {
-      const sprite = this.scene.add.image(ctx.playerX, ctx.playerY, evolved ? "orb_soul" : "orb_lantern")
+      const sprite = makeImage(this.scene, ctx.playerX, ctx.playerY, evolved ? "orb_soul" : "orb_lantern")
         .setDepth(DEPTH.fxLow)
         .setScale(evolved ? 2 : 1)
         // Seele in Normal-Blend: das Blau bleibt eigenstaendig, kein Gold-Wash.
         .setBlendMode(evolved ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
-      const halo = this.scene.add.image(ctx.playerX, ctx.playerY, evolved ? "fx_halo_cold" : "fx_halo")
+      const halo = makeImage(this.scene, ctx.playerX, ctx.playerY, evolved ? "fx_halo_cold" : "fx_halo")
         .setDepth(DEPTH.trail)
         .setScale(evolved ? 1.8 : 0.8)
         .setAlpha(evolved ? 0.09 : 0.55)
@@ -797,7 +805,7 @@ export class CombatSystem {
         if (id === "soul_beacon") {
           const soulIdx = Math.floor(this.clock * 5 + orb.phase) % 3;
           const soulFrame = soulIdx === 0 ? "orb_soul" : soulIdx === 1 ? "orb_soul_2" : "orb_soul_3";
-          if (orb.sprite.texture.key !== soulFrame) orb.sprite.setTexture(soulFrame);
+          if (currentFrame(orb.sprite) !== soulFrame) applyTexture(orb.sprite, soulFrame);
         }
         orb.halo?.setPosition(Math.round(ox), Math.round(oy));
         orb.halo?.setAlpha(id === "soul_beacon" ? 0.09 : 0.4 + Math.sin(this.clock * 5 + orb.phase) * 0.2);
@@ -970,7 +978,7 @@ export class CombatSystem {
       const old = this.burns.shift();
       old?.sprite.destroy();
     }
-    const sprite = this.scene.add.image(x, y, "fx_fire")
+    const sprite = makeImage(this.scene, x, y, "fx_fire")
       .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.5)
       .setScale((r / 22) * 1.4, (r / 22) * 1.0);
     this.burns.push({ x, y, r, life, tick: 0, dps, weaponId, sprite });
@@ -985,7 +993,7 @@ export class CombatSystem {
       b.sprite.setAlpha(Math.max(0, Math.min(burnAlpha, b.life * 0.6)) * (0.8 + Math.sin(this.clock * 9) * 0.2));
       const burnFrames = fxFrames("fx_fire", 6);
       const bf = burnFrames[Math.floor(this.clock * 8 + b.x) % 6];
-      if (b.sprite.texture.key !== bf) b.sprite.setTexture(bf);
+      if (currentFrame(b.sprite) !== bf) applyTexture(b.sprite, bf);
       if (b.life <= 0) {
         b.sprite.destroy();
         this.burns.splice(i, 1);

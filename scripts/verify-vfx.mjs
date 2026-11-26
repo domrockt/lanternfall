@@ -61,7 +61,8 @@ async function visualKeys(page) {
     const cam = run.cameras.main;
     const keys = [];
     const check = (obj) => {
-      const key = obj?.texture?.key;
+      const logical = obj?.frame?.name;
+      const key = logical && logical !== "__BASE" ? logical : obj?.texture?.key;
       if (!key || !obj.visible) return;
       if ((obj.alpha ?? 1) < 0.6) return;
       if (typeof obj.x !== "number" || typeof obj.y !== "number") return;

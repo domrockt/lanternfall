@@ -5,6 +5,14 @@ import {
   type MixerState, type SoundRequest,
 } from "./mixing";
 import type { WeaponAnyId } from "../data/types";
+import { acquireVoiceSlot } from "../logic/voice-pool";
+
+/** Eine wiederverwendete SFX-Stimme. `token` schuetzt vor Doppel-Freigabe. */
+interface Voice {
+  sound: Phaser.Sound.BaseSound;
+  busy: boolean;
+  token: number;
+}
 
 /** Alle prozedural erzeugten WAVs (scripts/gen_sfx.py). */
 export const SFX_KEYS = {
@@ -64,6 +72,8 @@ export class AudioSystem {
   private failed = false;
   /** Einmal pro Frame gesetzt (performance.now/1000). */
   private now = 0;
+  /** Feste Stimmen-Pools je SFX: kein Sound-Objekt pro Treffer (Leak/GC). */
+  private readonly voicePool = new Map<string, Voice[]>();
 
   constructor(game: Phaser.Game) {
     this.game = game;
@@ -85,23 +95,53 @@ export class AudioSystem {
       maxVoices: cfg.maxVoices, volume: cfg.volume,
     };
     if (!canPlay(this.mixer, req)) return false;
-    notePlayed(this.mixer, req);
+    const voice = this.acquireVoice(id, cfg.maxVoices);
+    if (!voice) return false;
     try {
-      const key = SFX_KEYS[id];
-      const sound = this.game.sound.add(key, { volume: effectiveVolume(settings.sfx, req) });
-      const started = sound.play();
+      voice.busy = true;
+      voice.token += 1;
+      const token = voice.token;
+      (voice.sound as unknown as { setVolume(v: number): void }).setVolume(effectiveVolume(settings.sfx, req));
+      notePlayed(this.mixer, req);
+      const started = voice.sound.play();
       if (!started) {
-        sound.destroy();
+        voice.busy = false;
         releaseVoice(this.mixer, id);
         return false;
       }
       this.sfxPlayed += 1;
-      sound.once("complete", () => releaseVoice(this.mixer, id));
+      // Auch externe stop()-Aufrufe geben die Stimme frei; der Token verhindert
+      // Doppel-Freigabe, wenn complete und stop beide feuern.
+      const release = () => {
+        if (!voice.busy || voice.token !== token) return;
+        voice.busy = false;
+        releaseVoice(this.mixer, id);
+      };
+      voice.sound.once("complete", release);
+      voice.sound.once("stop", release);
       return true;
     } catch {
+      voice.busy = false;
       releaseVoice(this.mixer, id);
       return false;
     }
+  }
+
+  /** Freie Stimme aus dem Pool, bis maxVoices Instanzen je SFX angelegt sind. */
+  private acquireVoice(id: SfxId, maxVoices: number): Voice | null {
+    let list = this.voicePool.get(id);
+    if (!list) {
+      list = [];
+      this.voicePool.set(id, list);
+    }
+    return acquireVoiceSlot(list, maxVoices, () => {
+      try {
+        const sound = this.game.sound.add(SFX_KEYS[id], { volume: 0 });
+        return { sound, busy: false, token: 0 };
+      } catch {
+        return null;
+      }
+    });
   }
 
   playWeapon(id: WeaponAnyId | string): void {

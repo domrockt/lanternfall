@@ -7,6 +7,7 @@ import { Run } from "./scenes/Run";
 import { UI } from "./scenes/UI";
 import { Results } from "./scenes/Results";
 import { installDebugApi } from "./debug";
+import { integerScale } from "./logic/scale";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -29,11 +30,26 @@ installDebugApi(game);
 function applyIntegerScale(): void {
   const canvas = game.canvas;
   if (!canvas) return;
-  const scale = Math.max(1, Math.floor(Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT)));
+  const scale = integerScale(window.innerWidth, window.innerHeight, GAME_WIDTH, GAME_HEIGHT);
   canvas.style.width = `${GAME_WIDTH * scale}px`;
   canvas.style.height = `${GAME_HEIGHT * scale}px`;
 }
 
-game.events.once(Phaser.Core.Events.READY, applyIntegerScale);
-window.addEventListener("resize", applyIntegerScale);
-applyIntegerScale();
+/**
+ * Tab-Wechsel pausiert das Spiel komplett (kein Zeit-Sprung beim
+ * Zurückkehren): der Phaser-Loop schläft und wird erst beim Sichtbarwerden
+ * wieder geweckt. Der Resize-Handler hält die CSS-Skalierung ganzzahlig.
+ */
+function installLifecycle(): void {
+  document.addEventListener("visibilitychange", () => {
+    try {
+      if (document.hidden) game.loop.sleep();
+      else game.loop.wake();
+    } catch { /* Loop evtl. noch nicht bereit */ }
+  });
+  game.events.once(Phaser.Core.Events.READY, applyIntegerScale);
+  window.addEventListener("resize", applyIntegerScale);
+  applyIntegerScale();
+}
+
+installLifecycle();

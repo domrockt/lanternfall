@@ -104,7 +104,7 @@ await page.evaluate((list) => {
 await page.evaluate(() => {
   const run = window.__game.scene.getScene("run");
   for (const o of run.children.list) {
-    const k = o.texture && o.texture.key;
+    const k = o.frame?.name && o.frame.name !== "__BASE" ? o.frame.name : o.texture?.key;
     if (k && (/^(fx_|projectile_|orb_|gem_|ring_|telegraph|hazard|bolt_|chain_|flail_|arrow_)/.test(k))) {
       o.setVisible(false);
     }
@@ -161,7 +161,7 @@ await page.evaluate(() => {
   // Volle HP-Leiste fuer ein lesbares HUD (God-Mode laesst sonst 1 HP stehen).
   run.hp = run.maxHp;
   for (const o of run.children.list) {
-    const k = o.texture && o.texture.key;
+    const k = o.frame?.name && o.frame.name !== "__BASE" ? o.frame.name : o.texture?.key;
     if (k && (k.startsWith("hazard") || k.startsWith("telegraph") || k.startsWith("enemy_shot"))) {
       o.setVisible(false);
     }
@@ -261,7 +261,7 @@ await page.evaluate(() => {
   const run = window.__game.scene.getScene("run");
   for (const e of run.enemies.active) { e.alive = false; e.sprite.setVisible(false); }
   for (const o of run.children.list) {
-    const k = o.texture && o.texture.key;
+    const k = o.frame?.name && o.frame.name !== "__BASE" ? o.frame.name : o.texture?.key;
     if (k && (k.startsWith("ring_") || k.startsWith("telegraph") ||
         k === "light_radius" || k === "vignette" || k.startsWith("enemy_shot"))) {
       o.setVisible(false);

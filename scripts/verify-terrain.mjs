@@ -146,8 +146,12 @@ try {
   });
   const splashParticles = await page.evaluate(() => {
     const sc = window.__game.scene.getScene("run");
+    const keyOf = (o) => {
+      const f = o.frame?.name;
+      return f && f !== "__BASE" ? f : o.texture?.key;
+    };
     return sc.children.list.filter((o) =>
-      o.texture && o.texture.key === "fx_spark" && o.depth === 6 && o.alpha > 0.3
+      keyOf(o) === "fx_spark" && o.depth === 6 && o.alpha > 0.3
     ).length;
   });
   await page.screenshot({ path: "shots/m3-water.png" });

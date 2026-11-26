@@ -3,6 +3,7 @@ import type { EnemyDef } from "../data/types";
 import { SPRITE_FRAMES } from "../gfx/textures";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
 import { DEPTH } from "../gfx/depth";
+import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 
 export interface EnemySpawnOptions {
   elite?: boolean;
@@ -54,6 +55,8 @@ export interface EnemyRuntime {
   recycled: boolean;
   /** KI-Zustand (reine Logik in logic/enemy-ai). */
   ai: AiState;
+  /** AutoPlay-Gefahrengewicht (1 normal, 0.35 Boss, 1.8 Exploder) – vorab berechnet. */
+  threat: number;
   /** Restliche Telegraph-/Wind-up-Zeit für die Darstellung. */
   telegraph: number;
   /** Boss-Angriffszähler. */
@@ -126,9 +129,10 @@ export class EnemyPool {
     enemy.alpha = 1;
     enemy.aiRng = rng ?? { next: () => Math.random() };
     enemy.ai = newAiState(enemy.aiRng);
+    enemy.threat = enemy.boss ? 0.35 : def.archetype === "exploder" ? 1.8 : 1;
     enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
     const frames = SPRITE_FRAMES[def.spriteKey];
-    enemy.sprite.setTexture(frames ? frames[0] : def.spriteKey);
+    applyTexture(enemy.sprite, frames ? frames[0] : def.spriteKey);
     enemy.sprite.setVisible(true);
     enemy.sprite.setActive(true);
     enemy.sprite.setAlpha(1);
@@ -143,9 +147,20 @@ export class EnemyPool {
     return enemy;
   }
 
+  /** Pools vorwaermen: Runtime-Objekte/Sprites beim Run-Start statt im Peak anlegen. */
+  prewarm(n: number): void {
+    while (this.free.length < n) {
+      const e = this.createRuntime();
+      e.sprite.setVisible(false).setActive(false);
+      e.aura.setVisible(false);
+      this.free.push(e);
+    }
+  }
+
   private createRuntime(): EnemyRuntime {
     const sprite = this.scene.add.sprite(0, 0, "enemy_bog_rat").setOrigin(0.5, 0.5).setDepth(DEPTH.enemy);
-    const aura = this.scene.add.image(0, 0, "elite_aura")
+    // Starttextur spaeter per applyTexture (Atlas-Frame) setzen.
+    const aura = makeImage(this.scene, 0, 0, "elite_aura")
       .setDepth(DEPTH.death)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setVisible(false);
@@ -153,7 +168,7 @@ export class EnemyPool {
       sprite, aura, uid: 0, def: {} as EnemyDef, x: 0, y: 0, vx: 0, vy: 0, hp: 0, maxHp: 0,
       damage: 0, radius: 6, speed: 0, hpScale: 1, flash: 0, phase: 0, alive: false, bob: 0,
       slowFactor: 0, slowTimer: 0, freezeTimer: 0, boss: false, bossIndex: -1, elite: false,
-      splitDepth: 0, age: 0, recycled: false, ai: newAiState({ next: () => 0.5 }), telegraph: 0,
+      splitDepth: 0, age: 0, recycled: false, ai: newAiState({ next: () => 0.5 }), threat: 1, telegraph: 0,
       attackCounter: 0, bossPhase: 1, contactCooldown: 0, hitFlash: 0, tint: "none", alpha: 1,
       aiRng: { next: () => 0.5 },
     };

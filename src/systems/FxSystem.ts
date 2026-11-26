@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { DEPTH } from "../gfx/depth";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
+import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 
 interface FxRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -91,7 +92,7 @@ export class FxSystem {
     fx.frameRate = opts.frameRate ?? 18;
     fx.active = true;
     const sprite = fx.sprite;
-    sprite.setTexture(fx.frames[0]);
+    applyTexture(sprite, fx.frames[0]);
     sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
     sprite.setScale(fx.scaleFrom * fx.aspect, fx.scaleFrom);
     sprite.setAlpha(fx.alphaFrom);
@@ -255,7 +256,7 @@ export class FxSystem {
       fx.rotation += fx.spin * dt;
       const scale = fx.scaleFrom + (fx.scaleTo - fx.scaleFrom) * t;
       const frame = fx.frames[Math.min(fx.frames.length - 1, Math.floor(t * fx.frames.length))];
-      if (frame && fx.sprite.texture.key !== frame) fx.sprite.setTexture(frame);
+      if (frame && currentFrame(fx.sprite) !== frame) applyTexture(fx.sprite, frame);
       fx.sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
       fx.sprite.setScale(scale * fx.aspect, scale);
       fx.sprite.setAlpha(Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t));
@@ -263,8 +264,18 @@ export class FxSystem {
     }
   }
 
+  /** Effekt-Runtimes vor dem ersten Spawn anlegen (Peak-Allokation vermeiden). */
+  prewarm(n: number): void {
+    while (this.free.length < n) {
+      const fx = this.createRuntime();
+      fx.active = false;
+      fx.sprite.setVisible(false).setActive(false);
+      this.free.push(fx);
+    }
+  }
+
   private createRuntime(): FxRuntime {
-    const sprite = this.scene.add.image(0, 0, "fx_spark").setDepth(DEPTH.fxLow);
+    const sprite = makeImage(this.scene, 0, 0, "fx_spark").setDepth(DEPTH.fxLow);
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
@@ -327,7 +338,7 @@ export class ParticleSystem {
     p.frameRate = opts.frameRate ?? 18;
     p.active = true;
     const s = p.sprite;
-    s.setTexture(p.frames[0]);
+    applyTexture(s, p.frames[0]);
     s.setPosition(Math.round(p.x), Math.round(p.y));
     s.setScale(p.scaleFrom * p.aspect, p.scaleFrom);
     s.setAlpha(p.alphaFrom);
@@ -402,7 +413,7 @@ export class ParticleSystem {
       p.rotation += p.spin * dt;
       const scale = p.scaleFrom + (p.scaleTo - p.scaleFrom) * t;
       const frame = p.frames[Math.min(p.frames.length - 1, Math.floor(t * p.frames.length))];
-      if (frame && p.sprite.texture.key !== frame) p.sprite.setTexture(frame);
+      if (frame && currentFrame(p.sprite) !== frame) applyTexture(p.sprite, frame);
       p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
       p.sprite.setScale(scale * p.aspect, scale);
       p.sprite.setAlpha(Math.max(0, p.alphaFrom + (p.alphaTo - p.alphaFrom) * t));
@@ -410,8 +421,17 @@ export class ParticleSystem {
     }
   }
 
+  prewarm(n: number): void {
+    while (this.free.length < n) {
+      const p = this.createRuntime();
+      p.active = false;
+      p.sprite.setVisible(false).setActive(false);
+      this.free.push(p);
+    }
+  }
+
   private createRuntime(): FxRuntime {
-    const sprite = this.scene.add.image(0, 0, "fx_spark").setDepth(DEPTH.fxLow);
+    const sprite = makeImage(this.scene, 0, 0, "fx_spark").setDepth(DEPTH.fxLow);
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,

@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
+import { applyTexture } from "./atlas";
 
 interface Ripple {
   img: Phaser.GameObjects.Image;
@@ -15,6 +16,19 @@ interface ChunkEntry {
   key: string;
   props: Phaser.GameObjects.Image[];
   ripples: Ripple[];
+}
+
+interface ChunkJob {
+  cx: number;
+  cy: number;
+  key: string;
+}
+
+interface ReadyChunk {
+  cx: number;
+  cy: number;
+  key: string;
+  bitmap: ImageBitmap;
 }
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
@@ -72,9 +86,49 @@ export class GroundRenderer {
   private lastCx = Number.NaN;
   private lastCy = Number.NaN;
 
+  /** Asynchroner Chunk-Bau: Malen im Worker, Main-Thread fertigt nur an. */
+  private worker: Worker | null = null;
+  /** Keys, die angefragt/gemalt, aber noch nicht eingebaut sind. */
+  private readonly requested = new Set<string>();
+  /** Beim Worker in Arbeit (max. 2 parallel) mit Startzeit fuer Timeout. */
+  private readonly inflight = new Map<string, number>();
+  private readonly queue: ChunkJob[] = [];
+  private readonly ready: ReadyChunk[] = [];
+  /** Sync-Fallback (kein Worker): höchstens ein Chunk pro Frame. */
+  private syncBudget = 1;
+
   constructor(scene: Phaser.Scene, seed: number) {
     this.scene = scene;
     this.seed = seed;
+    try {
+      if (typeof Worker !== "undefined" && typeof OffscreenCanvas !== "undefined") {
+        const worker = new Worker(new URL("./terrainWorker.ts", import.meta.url), { type: "module" });
+        worker.onmessage = (event: MessageEvent<{ cx: number; cy: number; bitmap: ImageBitmap | null }>) => {
+          const { cx, cy, bitmap } = event.data;
+          const key = `${cx},${cy}`;
+          this.inflight.delete(key);
+          if (!bitmap) {
+            this.useSyncFallback();
+            return;
+          }
+          this.ready.push({ cx, cy, key, bitmap });
+        };
+        worker.onerror = () => this.useSyncFallback();
+        this.worker = worker;
+      }
+    } catch {
+      this.worker = null;
+    }
+  }
+
+  /** Worker-Start/-Lauf fehlgeschlagen → wieder synchron auf dem Main-Thread. */
+  private useSyncFallback(): void {
+    this.worker?.terminate();
+    this.worker = null;
+    while (this.ready.length > 0) this.ready.pop()?.bitmap.close();
+    this.requested.clear();
+    this.inflight.clear();
+    this.queue.length = 0;
   }
 
   /** Vignette/Background bleibt dunkel, bis Chunks da sind. */
@@ -85,11 +139,29 @@ export class GroundRenderer {
     const minCy = Math.max(0, Math.floor((camera.scrollY - marginChunks * CHUNK_SIZE) / CHUNK_SIZE));
     const maxCy = Math.min(Math.ceil(WORLD_SIZE / CHUNK_SIZE) - 1, Math.floor((camera.scrollY + camera.height + marginChunks * CHUNK_SIZE) / CHUNK_SIZE));
 
+    const centerX = camera.scrollX + camera.width / 2;
+    const centerY = camera.scrollY + camera.height / 2;
     for (let cx = minCx; cx <= maxCx; cx++) {
       for (let cy = minCy; cy <= maxCy; cy++) {
         const key = `${cx},${cy}`;
-        if (!this.chunks.has(key)) this.createChunk(cx, cy, key);
+        if (this.chunks.has(key) || this.requested.has(key)) continue;
+        this.requested.add(key);
+        this.queue.push({ cx, cy, key });
       }
+    }
+    this.dispatch(centerX, centerY);
+    this.finalizeReady(centerX, centerY);
+
+    // Sync-Fallback: höchstens einen Chunk pro Frame, damit kein Totalausfall.
+    if (!this.worker) {
+      while (this.syncBudget > 0 && this.queue.length > 0) {
+        const job = this.queue.shift()!;
+        this.syncBudget -= 1;
+        const live = job.cx >= minCx && job.cx <= maxCx && job.cy >= minCy && job.cy <= maxCy;
+        if (live && !this.chunks.has(job.key)) this.createChunk(job.cx, job.cy, job.key);
+        this.requested.delete(job.key);
+      }
+      this.syncBudget = 1;
     }
 
     // Ferne Chunks freigeben (Textur + Bilder), gegen Speicherwachstum.
@@ -118,7 +190,7 @@ export class GroundRenderer {
       r.img.setVisible(onScreen);
       if (!onScreen) continue;
       const frame = Math.floor((timeMs + r.phase) / 620) % 2;
-      r.img.setTexture(frame === 0 ? "water_ripple_0" : "water_ripple_1");
+      applyTexture(r.img, frame === 0 ? "water_ripple_0" : "water_ripple_1");
       r.img.x = r.x + frame;
     }
     this.lastCx = minCx;
@@ -130,14 +202,81 @@ export class GroundRenderer {
     return terrainKindAt(worldX, worldY, this.seed, WORLD_SIZE);
   }
 
-  private createChunk(cx: number, cy: number, key: string): void {
-    const textureKey = `chunk_${cx}_${cy}`;
+  /** Schickt faellige Chunk-Jobs an den Worker, naechstgelegene zuerst. */
+  private dispatch(centerX: number, centerY: number): void {
+    if (!this.worker) return;
+    // Robustheit: eine verlorene Worker-Antwort wuerde sonst beide Slots
+    // dauerhaft blockieren. Nach 2 s ohne Antwort auf Sync-Fallback wechseln.
+    const now = Date.now();
+    for (const startedAt of this.inflight.values()) {
+      if (now - startedAt > 2000) {
+        this.useSyncFallback();
+        return;
+      }
+    }
+    if (this.queue.length === 0) return;
+    this.queue.sort((a, b) => {
+      const da = (a.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (a.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
+      const db = (b.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (b.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
+      return da - db;
+    });
+    // Höchstens zwei parallele Aufträge: mehr Worker-Last bringt wenig und
+    // verzoegert die Fertigstellung der sichtbaren Kanten.
+    while (this.queue.length > 0 && this.inflight.size < 2) {
+      const job = this.queue.shift()!;
+      this.inflight.set(job.key, Date.now());
+      this.worker.postMessage({ cx: job.cx, cy: job.cy, seed: this.seed });
+    }
+  }
+
+  /** Fertige Worker-Bitmaps einbauen, hoechstens einen Chunk pro Frame. */
+  private finalizeReady(centerX: number, centerY: number): void {
+    if (this.ready.length === 0) return;
+    this.ready.sort((a, b) => {
+      const da = (a.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (a.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
+      const db = (b.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (b.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
+      return da - db;
+    });
+    const job = this.ready.shift()!;
+    const textureKey = `chunk_${job.key.replace(",", "_")}`;
     const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE);
-    if (!texture) return;
+    if (!texture) {
+      job.bitmap.close();
+      this.requested.delete(job.key);
+      return;
+    }
+    const ctx = texture.getContext();
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(job.bitmap, 0, 0);
+    job.bitmap.close();
+    texture.refresh();
+    this.buildChunk(job.cx, job.cy, job.key, textureKey);
+    this.requested.delete(job.key);
+  }
+
+  private createChunk(cx: number, cy: number, key: string): void {
+    const textureKey = `chunk_${key.replace(",", "_")}`;
+    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE);
+    if (!texture) {
+      // Kein Canvas (Speicher/GPU-Limit): Chunk erneut anfragbar machen statt
+      // ihn dauerhaft als "requested" zu blockieren (Loch ohne Retry).
+      this.requested.delete(key);
+      return;
+    }
     const ctx = texture.getContext();
     ctx.imageSmoothingEnabled = false;
     paintTerrain(ctx, cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE);
     texture.refresh();
+    this.buildChunk(cx, cy, key, textureKey);
+    this.requested.delete(key);
+  }
+
+  /** Bild + Requisiten/Wellen fuer einen fertig gemalten Chunk anlegen. */
+  private buildChunk(cx: number, cy: number, key: string, textureKey: string): void {
+    if (this.chunks.has(key)) {
+      this.scene.textures.remove(textureKey);
+      return;
+    }
     const image = this.scene.add.image(cx * CHUNK_SIZE, cy * CHUNK_SIZE, textureKey)
       .setOrigin(0, 0)
       .setDepth(-100);
@@ -272,6 +411,12 @@ export class GroundRenderer {
   }
 
   destroy(): void {
+    this.worker?.terminate();
+    this.worker = null;
+    while (this.ready.length > 0) this.ready.pop()?.bitmap.close();
+    this.requested.clear();
+    this.inflight.clear();
+    this.queue.length = 0;
     for (const entry of this.chunks.values()) {
       entry.image.destroy();
       for (const p of entry.props) p.destroy();

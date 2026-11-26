@@ -119,8 +119,12 @@ async function shotAtPhoenix(page, path, timeoutMs = 8000) {
       const cam = run.cameras.main;
       const px = run.player?.x ?? 0;
       const py = run.player?.y ?? 0;
+      const keyOf = (s) => {
+        const f = s?.frame?.name;
+        return f && f !== "__BASE" ? f : s?.texture?.key;
+      };
       return (run.combat?.projectiles?.active ?? [])
-        .filter((p) => p.sprite?.texture?.key === "projectile_phoenix")
+        .filter((p) => keyOf(p.sprite) === "projectile_phoenix")
         .map((p) => ({
           d: Math.round(Math.hypot(p.x - px, p.y - py)),
           vis: Boolean(p.sprite.visible),
@@ -171,8 +175,12 @@ async function shotAtFrost(page, path, timeoutMs = 8000) {
       const run = window.__game.scene.getScene("run");
       const px = run.player?.x ?? 0;
       const py = run.player?.y ?? 0;
+      const keyOf = (s) => {
+        const f = s?.frame?.name;
+        return f && f !== "__BASE" ? f : s?.texture?.key;
+      };
       const fx = (run.combat?.fx?.active ?? []).find(
-        (f) => f.sprite?.texture?.key === "ring_frost" && Math.hypot((f.x ?? 0) - px, (f.y ?? 0) - py) < 60,
+        (f) => keyOf(f.sprite) === "ring_frost" && Math.hypot((f.x ?? 0) - px, (f.y ?? 0) - py) < 60,
       );
       return fx ? { scale: fx.sprite.scaleX } : null;
     });
@@ -249,7 +257,8 @@ async function activeFxKeys(page, nearPlayer = false) {
       return sx > 6 && sy > 6 && sx < cam.width - 6 && sy < cam.height - 6;
     };
     const push = (sprite, wx, wy) => {
-      const key = sprite?.texture?.key;
+      const logical = sprite?.frame?.name;
+      const key = logical && logical !== "__BASE" ? logical : sprite?.texture?.key;
       if (!key || !sprite.visible) return;
       if ((sprite.alpha ?? 1) < 0.6) return;
       if (!onScreen(wx, wy)) return;

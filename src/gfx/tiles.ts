@@ -118,7 +118,7 @@ export function terrainKindAt(wx: number, wy: number, seed: number, worldSize: n
  * `patch` ist die helle Grasinsel (wird intern wie Gras behandelt).
  */
 export function paintTerrain(
-  ctx: CanvasRenderingContext2D,
+  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   ox: number,
   oy: number,
   w: number,
