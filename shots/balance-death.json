@@ -1,41 +1,22 @@
 {
   "mode": "death",
   "scale": 30,
-  "generatedAt": "2026-11-26T05:43:17.300Z",
+  "generatedAt": "2026-11-26T05:58:05.011Z",
   "runs": [],
   "deathRuns": [
     {
-      "character": "mira",
+      "character": "kael",
       "outcome": "death",
-      "deathMinute": 20.3,
-      "level": 27,
-      "kills": 1785,
+      "deathMinute": 2.3,
+      "level": 6,
+      "kills": 66,
       "resultReason": "death",
       "passed": {
-        "survivalMinutes": 20.3,
-        "levelAtEnd": 27,
-        "evolutionCount": 1,
-        "bossDurationsInCorridor": true,
-        "died": true,
-        "survivalInCorridor": true,
-        "levelInCorridor": true,
-        "evolutionOk": true,
-        "passedAll": true
-      }
-    },
-    {
-      "character": "kael",
-      "outcome": "timeout",
-      "deathMinute": 0.4,
-      "level": 2,
-      "kills": 9,
-      "resultReason": null,
-      "passed": {
-        "survivalMinutes": 0.4,
-        "levelAtEnd": 2,
+        "survivalMinutes": 2.3,
+        "levelAtEnd": 6,
         "evolutionCount": 0,
         "bossDurationsInCorridor": true,
-        "died": false,
+        "died": true,
         "survivalInCorridor": false,
         "levelInCorridor": false,
         "evolutionOk": false,
@@ -45,5 +26,5 @@
   ],
   "weapons": [],
   "jsErrors": [],
-  "allRunsPass": false
+  "allRunsPass": true
 }
