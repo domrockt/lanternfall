@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1027,
+  "next": 1030,
   "cards": [
     {
       "id": 1,
@@ -2364,6 +2364,54 @@
       ],
       "created": "2026-11-26T21:48:44Z",
       "updated": "2026-11-26T21:49:15Z"
+    },
+    {
+      "id": 1027,
+      "title": "m10-weapons-flake-01 Laeufe: verify-weapons 12x, Flake-Rate messen",
+      "description": "12 Loop-Laeufe von scripts/verify-weapons.mjs seriell, je eigenes Log, Laufzeit und rc; Ergebnis in shots/m10-weapons-flake-runs.json. Abnahme: 12/12 Laeufe mit Dauer+rc+chest-roll-names-Status dokumentiert.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-26T22:22:21Z",
+          "by": "build",
+          "text": "Lane m10-weapons-flake, lane #1: Beleg shots/m10-weapons-flake-runs.json + docs/lanes/m10-weapons-flake.md"
+        }
+      ],
+      "created": "2026-11-26T22:22:21Z",
+      "updated": "2026-11-26T22:22:36Z"
+    },
+    {
+      "id": 1028,
+      "title": "m10-weapons-flake-02 Analyse: Fehllauf vs. PASS, Timing- vs. RNG-Hypothese",
+      "description": "Fehlschlag-Laeufe gegen PASS-Laeufe stellen, Code-Lesung von verify-weapons.mjs und UI.ts. Abnahme: Flake-Rate als Zahl, Ursache mit Datei:Zeile belegt (RNG ausgeschlossen, Timing-Fenster benannt).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-26T22:22:21Z",
+          "by": "build",
+          "text": "Lane m10-weapons-flake, lane #2: Beleg shots/m10-weapons-flake-runs.json + docs/lanes/m10-weapons-flake.md"
+        }
+      ],
+      "created": "2026-11-26T22:22:21Z",
+      "updated": "2026-11-26T22:22:36Z"
+    },
+    {
+      "id": 1029,
+      "title": "m10-weapons-flake-03 Report: Tabelle + Umbau-Empfehlung",
+      "description": "docs/lanes/m10-weapons-flake.md mit Lauf-Tabelle, Hypothese und konkreter Umbau-Empfehlung (keine Umsetzung). Abnahme: Datei enthaelt alle 13 Laeufe, Flake-Rate und >=2 Zeilen-bezogene Umbau-Empfehlungen.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-26T22:22:21Z",
+          "by": "build",
+          "text": "Lane m10-weapons-flake, lane #3: Beleg shots/m10-weapons-flake-runs.json + docs/lanes/m10-weapons-flake.md"
+        }
+      ],
+      "created": "2026-11-26T22:22:21Z",
+      "updated": "2026-11-26T22:22:36Z"
     }
   ]
 }
