@@ -147,6 +147,8 @@ export class Run extends Phaser.Scene {
   private hpBg!: Phaser.GameObjects.Rectangle;
   private player!: Phaser.GameObjects.Container;
   private playerBody!: Phaser.GameObjects.Image;
+  /** M8: Vignette folgt der aktuellen View-Groesse (Resize/Rotation). */
+  private vignette?: Phaser.GameObjects.Image;
   private lantern?: Phaser.GameObjects.Image;
   /** Lauf-/Idle-Animation (32-px-Spielerframes). */
   private moving = false;
@@ -267,8 +269,10 @@ export class Run extends Phaser.Scene {
       .setDepth(20)
       .setScale(1.35)
       .setAlpha(0.85);
-    this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
+    this.vignette = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
       .setScrollFactor(0).setDepth(80).setAlpha(0.9);
+    this.vignette.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.onViewResize, this);
 
     this.hpBg = this.add.rectangle(startX - 13, startY - 23, 26, 5, PAL[C.ink]).setOrigin(0, 0.5).setDepth(25).setVisible(false);
     this.hpFill = this.add.rectangle(startX - 12, startY - 22, 24, 2, PAL[C.crimson]).setOrigin(0, 0.5).setDepth(26).setVisible(false);
@@ -318,6 +322,7 @@ export class Run extends Phaser.Scene {
     this.registry.set("lf-elapsed", 0);
     getAudio().setMusic("run");
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.onViewResize, this);
       this.inputState.reset();
       resetTouchSnapshot();
       this.ground.destroy();
@@ -981,6 +986,19 @@ export class Run extends Phaser.Scene {
     }
     if (!hit) return;
     this.hurtPlayer(hit.damage, hit.x, hit.y);
+  }
+
+  /** M8: View-Wechsel im laufenden Spiel (Resize/Rotation). Kamera und
+   *  bildschirmfeste Overlays folgen der neuen logischen Groesse. */
+  private onViewResize(): void {
+    if (this.vignette) {
+      this.vignette.setPosition(GAME_WIDTH / 2, GAME_HEIGHT / 2)
+        .setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+    }
+    if (this.dawnRect) {
+      this.dawnRect.setPosition(GAME_WIDTH / 2, GAME_HEIGHT / 2)
+        .setSize(GAME_WIDTH, GAME_HEIGHT);
+    }
   }
 
   private updateVisuals(realDt: number): void {
