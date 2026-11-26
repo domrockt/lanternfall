@@ -1,0 +1,12 @@
+Lane m10-weapons-flake — Versuch 2 abgeschlossen (Basis-SHA 9477f33)
+- Ziel-Check: `chest-roll-names` in scripts/verify-weapons.mjs (Seed 12, ember Lvl8 + tome Lvl1).
+- Läufe: 12/12 Loop-Läufe (01–12) + Baseline 00, je eigenes Log in ~/tmp/m10-weapons-flake/.
+- Ergebnis: Flake-Rate `chest-roll-names` = 0/12 (Loop), 0/13 inkl. Baseline; alle rc=0, 0 JS-Fehler.
+- Laufzeiten 213,3–217,3 s (Spanne 4,0 s, kein Lastausreißer beobachtet).
+- Baseline 00 (rc=1) scheiterte nur am separaten `evolution-state`-Flake (Seele 0), nicht am Roll-Check.
+- Hypothese: Timing-Rennen, kein RNG — Assertion nur ≈930 ms wahr (UI.ts:443 → UI.ts:465), Poll über
+  Screenshot-Schleife (verify-weapons.mjs:468–479) kann das Fenster unter Last überspringen.
+- Empfehlung (keine Umsetzung): Roll-Assertion als waitForFunction direkt nach openChest, Screenshots
+  danach separat; Latch auf rAF; Zwei-Zeilen-Prüfung als Unit-Test auf slotNameLines.
+- Belege: shots/m10-weapons-flake-runs.json, docs/lanes/m10-weapons-flake.md.
+- Build grün, npm test 192/192 grün. Keine geschützten Pfade berührt; m2-Shot-Überschreibungen zurückgesetzt.
