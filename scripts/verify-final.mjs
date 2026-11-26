@@ -103,7 +103,7 @@ try {
     const sc = window.__game.scene.getScene("run");
     Object.assign(sc.damageByWeapon, {
       phoenix: 2663937, soul_beacon: 514758, eternal_winter: 202820,
-      thorn_storm: 143437, frostnova: 27513, ember: 15227, thunder_seal: 11455,
+      thorn_storm: 143437, frost: 27513, ember: 15227, thunder_seal: 11455,
       lantern: 1748, wrath_pendulum: 1104, storm: 980, thorn: 640, flail: 320,
     });
   });

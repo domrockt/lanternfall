@@ -114,10 +114,18 @@ ux-check: PASS (siehe Commit-Notiz #76).
 
 ## A10 — Art-Director-Endnote
 
-**A10 Endnote: 4/5** (art-director, Begründung folgt aus dem Trailer-Check:
-konsistente Palette/Silhouetten, lesbares Chaos durch LOD-Dämpfung, klare
-Boss-/Truhen-Inszenierung, solide Menü-/HUD-Qualität; Restpunkte: Wasser-
-Tiefenstufe, einzelne Glows im Minimal-LOD flacher, Menü ohne Gamepad).
+**A10 Endnote: 4/5 — Ziel ≥4 erreicht (JA).** art-director nach Vision von
+Trailer-Storyboard (285 Frames), 6 Overviews und 4 finalen Belegen:
+- Palette/Silhouetten **4/5** (einheitliche Nacht-/Gold-Palette; Wasser, Spinne,
+  Hollow-König jetzt stimmig; im Chaos verschwimmen einzelne Typen rechts).
+- Lesbarkeit im Chaos **4/5** (Spieler/HUD klar, Horde überlagert sich stark).
+- Boss-/Truhen-Inszenierung **4/5** (Truhe stark; Boss spawnt am oberen Rand
+  hinter seiner HP-Leiste, Banner überdeckt die Mitte — Restpunkt).
+- Menü-/HUD-Qualität **4/5** (crisp, konsistent; der doppelte FROSTNOVA-Eintrag
+  im Stress-Screenshot kam von einem künstlichen Testschlüssel und ist nach
+  Korrektur der Stress-Injektion weg).
+Restpunkte: Boss-Spawn-Komposition tiefer/HP-Leiste später, Chaos-Rim-Light für
+Elites, Menü ohne Gamepad.
 
 ## A11 — Worktrees entfernt
 
@@ -137,6 +145,8 @@ Nachträge, Restmängel).
 ## Offene Punkte / Restmängel
 
 - Balance: Kael/Seed 101 erreicht Level 47 (Ziel 25–40); AutoPlay streut.
+- Boss-Inszenierung: Knochenfürst spawnt am oberen Rand hinter der HP-Leiste
+  (art-director-Restpunkt; keine Abnahme-Blockade).
 - fullrun-Heap in diesem Lauf +22,2 % (25,7 → 31,4 MB) über dem 15-%-Ziel;
   CDP-Diagnose 12,5 → 13,4 MB, kein JS-Objekt-Leak, Host-Last/GC-Streuung.
 - VFX-Minimal-LOD ist bewusst stark gedämpft (Alpha 0,5/NORMAL); Glows flacher.

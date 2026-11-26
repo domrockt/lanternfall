@@ -33,7 +33,7 @@
     {
       "name": "Ergebnis-Screen Sieg mit Schadenstabelle",
       "ok": true,
-      "detail": "reason=dawn weapons=13"
+      "detail": "reason=dawn weapons=12"
     }
   ],
   "report": {
@@ -243,7 +243,7 @@
     },
     "damageBeforeFinish": {
       "scene": "run",
-      "time": 50.9,
+      "time": 51.1,
       "level": 1,
       "xp": 0,
       "xpNeed": 8,
@@ -298,15 +298,15 @@
       "enemyShots": 0,
       "hazards": 0,
       "enemyList": [],
-      "fps": 59.6,
+      "fps": 59.9,
       "character": "mira",
       "damageByWeapon": {
-        "ember": 892,
-        "frost": 772,
-        "storm": 2807,
-        "flail": 7857,
-        "thorn": 448,
-        "lantern": 132
+        "ember": 864,
+        "frost": 745,
+        "storm": 3401,
+        "flail": 6966,
+        "thorn": 672,
+        "lantern": 88
       },
       "stats": {
         "moveSpeedPct": 0,
@@ -348,7 +348,7 @@
     "results": {
       "scene": "results",
       "reason": "dawn",
-      "entries": 13
+      "entries": 12
     }
   },
   "errors": []
