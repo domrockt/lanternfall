@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1024,
+  "next": 1462,
   "cards": [
     {
       "id": 1,
@@ -2319,6 +2319,74 @@
       ],
       "created": "2026-11-26T21:21:02Z",
       "updated": "2026-11-26T21:22:00Z"
+    },
+    {
+      "id": 1458,
+      "title": "m10-audio-distinct #1 Audit + Hörprobe",
+      "description": "Mapping SFX-Key -> Waffe/Evolution aus src/audio/AudioSystem.ts und scripts/gen_sfx.py als shots/m10-audio-distinct-audit.json (Welle, Dauer, Hüllkurve je Key); Lücken benennen (fehlende Evolution-Stinger, identische Keys, zu laut/lang). Abnahme: JSON im Commit, mind. 12 Keys + Lückenliste, Commit nennt #<karte>.",
+      "column": "review",
+      "assignee": "audio-designer",
+      "notes": [
+        {
+          "at": "2026-11-26T22:12:52Z",
+          "by": "build",
+          "text": "todo → doing: Start Versuch 2: Audit-Skript + Mapping aus AudioSystem/gen_sfx lesen, Ist-Signaturen messen."
+        },
+        {
+          "at": "2026-11-26T22:23:53Z",
+          "by": "build",
+          "text": "doing → review: Commit 6887705: Audit-JSON 12 Keys, 6 fehlende Evolution-Stinger, 24 identische Signaturen. Kontrolle audio-check offen."
+        }
+      ],
+      "created": "2026-11-26T22:09:35Z",
+      "updated": "2026-11-26T22:23:53Z"
+    },
+    {
+      "id": 1459,
+      "title": "m10-audio-distinct #2 Test zuerst: tests/audio-mix.test.ts",
+      "description": "Vitest: 12 Waffen-/Evolutions-Keys existieren, paarweise unterschiedliche Wellenform-Signatur (aus WAV), Mixer respektiert MAX_TOTAL_VOICES und PRIORITY (kein Verdängen hoher Prio durch Spam), Lautstärken in [0,1], Mute blockt alle Requests. Abnahme: Test rot vor Fix, grün danach, Commit nennt #<karte>.",
+      "column": "review",
+      "assignee": "audio-designer",
+      "notes": [
+        {
+          "at": "2026-11-26T22:23:53Z",
+          "by": "build",
+          "text": "todo → doing: Start: Test zuerst (rot erwartet), WAV-Signaturen + Mixer + Mute."
+        },
+        {
+          "at": "2026-11-26T22:37:51Z",
+          "by": "build",
+          "text": "doing → review: Commit b6113e0: Test zuerst, rot belegt (2/7: phoenix 0,26s statt >=0,6s; ember/frost Distanz 0,019). Gruen nach Fix #1460."
+        }
+      ],
+      "created": "2026-11-26T22:09:35Z",
+      "updated": "2026-11-26T22:37:51Z"
+    },
+    {
+      "id": 1460,
+      "title": "m10-audio-distinct #3 Fix: 6 Evolutions-Klänge eigenständig",
+      "description": "In scripts/gen_sfx.py die 6 Evolutions-Keys als eigenständige Klänge neu erzeugen (Treffer <0,4 s, Evolution-Stinger 0,6-1,0 s mit Aufwärts-Glissando, eigene Wellenform-Kombination je Key); AudioSystem-Mapping/Cooldowns ergänzen ohne Umbenennen; Master-Mute-Pfad unverändert. Abnahme: tests/audio-mix.test.ts grün, WAV-Signaturen paarweise verschieden, Commit nennt #<karte>.",
+      "column": "doing",
+      "assignee": "audio-designer",
+      "notes": [
+        {
+          "at": "2026-11-26T22:37:51Z",
+          "by": "build",
+          "text": "todo → doing: Start: gen_sfx 6 Bases + 6 Evolutions-Stinger neu, Distanzen >=0,12, AudioSystem-Cooldowns."
+        }
+      ],
+      "created": "2026-11-26T22:09:35Z",
+      "updated": "2026-11-26T22:37:51Z"
+    },
+    {
+      "id": 1461,
+      "title": "m10-audio-distinct #4 Beleg + Abnahme",
+      "description": "node scripts/verify-final.mjs (Master-Mute 7/7) und node scripts/verify-weapons.mjs (12/12) ohne flock; WAV-/Spektral-Belege der 12 Klänge nach shots/m10-audio-*; npm run build + npx vitest run gesamt grün mit Ist-Zahl; docs/lanes/m10-audio-distinct.md mit Key-/Klang-Tabelle; .lane-done mit Messwerten committen. Abnahme: alle Belege im Commit, Zahlen in Doku, Commit nennt #<karte>.",
+      "column": "todo",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-26T22:09:35Z",
+      "updated": "2026-11-26T22:09:35Z"
     }
   ]
 }
