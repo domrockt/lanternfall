@@ -75,3 +75,42 @@ Belege: `npx vitest run tests/balance-curve.test.ts tests/logic.test.ts` → 48 
 Die XP-Kurve allein reicht: der Nachlauf (siehe Karte 05) liegt mit 6/6 im Korridor,
 Boss-Dauern 23–51 s, kein Tod vor Minute 15. `src/logic/scaling.ts` und `src/logic/waves.ts`
 bleiben unverändert, ebenso Waffen-/Gegnerdaten und `src/scenes/Run.ts` (Claim m9-art-polish).
+
+## Karte m10-balance-kael-05 — Nachmessen und Abnahme (Basis 252fd98)
+
+Fix-Commit: `7629b2f` (#1440). Nachlauf: `node scripts/balance.mjs` ohne flock,
+viewport 960x540, dpr 1, timeScale 30, autoPlay, kein god — 6 Läufe, Beleg
+`shots/m10-kael-final.json` (Roh: `shots/balance-main.json`, `shots/balance-main-runs.json`).
+
+| Char | Seed | Ergebnis | Minuten | Endlevel | Kills | Evos | Boss-Dauern (s) | Korridor |
+|---|---|---|---|---|---|---|---|---|
+| Mira | 101 | Tod | 22,2 | 27 | 2.088 | phoenix, thorn_storm | 27/33/30/29 | JA |
+| Kael | 101 | Sieg (Dawn) | 30,6 | **27** | 9.433 | wrath_pendulum, phoenix | 33/48/35/36/40/32 | JA |
+| Mira | 202 | Sieg (Dawn) | 30,6 | 30 | 5.378 | phoenix, thorn_storm, eternal_winter | 24/26/25/23/25/33 | JA |
+| Kael | 202 | Sieg (Dawn) | 30,6 | 28 | 6.629 | wrath_pendulum, thorn_storm | 34/51/33/34/33/35 | JA |
+| Mira | 404 | Tod | 20,3 | 27 | 1.634 | phoenix | 30/45/27 | JA |
+| Kael | 404 | Sieg (Dawn) | 30,6 | 28 | 6.815 | wrath_pendulum, thorn_storm | 32/37/32/35/35/34 | JA |
+
+**Korridor-Quote: 6/6** (Ziel ≥5/6). Boss-Dauern 23–51 s (Ziel 20–60 s). Kein Tod vor Minute 15
+(Tode 22,2 und 20,3 min). 0 JS-Fehler.
+
+Vorher/Nachher (gleiche Seeds, Repro-Karte vs. Nachlauf):
+
+| Lauf | Vorher Endlevel | Nachher Endlevel | Vorher Ergebnis | Nachher Ergebnis |
+|---|---|---|---|---|
+| Kael/101 (alter A5-Kandidat) | 28 (A5-Bericht: 47) | 27 | Sieg 30,6 | Sieg 30,6 |
+| Kael/202 | 29 | 28 | Sieg 30,6 | Sieg 30,6 |
+| Kael/404 | 26 | 28 | Sieg 30,5 | Sieg 30,6 |
+| Mira/101 | 26 | 27 | Tod 20,7 | Tod 22,2 |
+| Mira/202 | 26 | 30 | Tod 21,3 | Sieg 30,6 |
+
+**Tests:** `npx vitest run` → **197 Tests grün** (Basis war 192; +5 neue `tests/balance-curve.test.ts`).
+`npm run build` grün. Keine Änderung an Waffen-/Gegnerdaten, `src/logic/scaling.ts`, `src/logic/waves.ts`
+oder `src/scenes/Run.ts`, kein Push/Merge.
+
+**Fazit für ACCEPTANCE A5:** Der Level-47-Ausreißer ist auf Basis 252fd98 nicht reproduzierbar
+(Kael/101 Level 27–28). Ursache des alten Werts war die seit A5 veränderte M8-Dichte (weniger Kills
+und ~20–43 % Gem-Sammelquote bei hoher Last), nicht die Kurve selbst. Der XP-Fix deckelt zusätzlich
+das theoretische Voll-Sammel-Budget des alten Falls (34.366 XP) auf Level 40, damit die Kurve nicht
+wieder ausreißen kann. Rest-Ausreißer: Kael/505 stirbt im 8er-Repro bei 15,3 min (außerhalb 20–28);
+im 6er-Nachlauf kommt Seed 505 nicht vor.

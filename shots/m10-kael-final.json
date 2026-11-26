@@ -1,0 +1,210 @@
+{
+  "lane": "m10-balance-kael",
+  "card": "m10-balance-kael-05",
+  "baseSha": "252fd98",
+  "fixCommit": "7629b2f",
+  "generatedAt": "2026-11-26T23:12:13.912Z",
+  "harness": "node scripts/balance.mjs (ohne flock, timeScale 30, viewport 960x540, dpr 1, autoPlay, kein god)",
+  "target": {
+    "levelAt30": [
+      25,
+      40
+    ],
+    "bossSeconds": [
+      20,
+      60
+    ],
+    "survivalMin": [
+      20,
+      28
+    ]
+  },
+  "corridorQuote": "6/6",
+  "corridorOk": true,
+  "bossDurationsOk": true,
+  "deathsBeforeMinute15": 0,
+  "runs": [
+    {
+      "character": "mira",
+      "seed": 101,
+      "outcome": "death",
+      "deathMinute": 22.2,
+      "endLevel": 27,
+      "kills": 2088,
+      "evolutions": [
+        "phoenix",
+        "thorn_storm"
+      ],
+      "bossDurationsSec": [
+        27,
+        33,
+        30,
+        29
+      ],
+      "passed": {
+        "survivalMinutes": 22.2,
+        "levelAtEnd": 27,
+        "evolutionCount": 2,
+        "bossDurationsInCorridor": true,
+        "died": true,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    },
+    {
+      "character": "kael",
+      "seed": 101,
+      "outcome": "dawn",
+      "deathMinute": 30.6,
+      "endLevel": 27,
+      "kills": 9433,
+      "evolutions": [
+        "wrath_pendulum",
+        "phoenix"
+      ],
+      "bossDurationsSec": [
+        33,
+        48,
+        35,
+        36,
+        40,
+        32
+      ],
+      "passed": {
+        "survivalMinutes": 30.6,
+        "levelAtEnd": 27,
+        "evolutionCount": 2,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    },
+    {
+      "character": "mira",
+      "seed": 202,
+      "outcome": "dawn",
+      "deathMinute": 30.6,
+      "endLevel": 30,
+      "kills": 5378,
+      "evolutions": [
+        "phoenix",
+        "thorn_storm",
+        "eternal_winter"
+      ],
+      "bossDurationsSec": [
+        24,
+        26,
+        25,
+        23,
+        25,
+        33
+      ],
+      "passed": {
+        "survivalMinutes": 30.6,
+        "levelAtEnd": 30,
+        "evolutionCount": 3,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    },
+    {
+      "character": "kael",
+      "seed": 202,
+      "outcome": "dawn",
+      "deathMinute": 30.6,
+      "endLevel": 28,
+      "kills": 6629,
+      "evolutions": [
+        "wrath_pendulum",
+        "thorn_storm"
+      ],
+      "bossDurationsSec": [
+        34,
+        51,
+        33,
+        34,
+        33,
+        35
+      ],
+      "passed": {
+        "survivalMinutes": 30.6,
+        "levelAtEnd": 28,
+        "evolutionCount": 2,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    },
+    {
+      "character": "mira",
+      "seed": 404,
+      "outcome": "death",
+      "deathMinute": 20.3,
+      "endLevel": 27,
+      "kills": 1634,
+      "evolutions": [
+        "phoenix"
+      ],
+      "bossDurationsSec": [
+        30,
+        45,
+        27
+      ],
+      "passed": {
+        "survivalMinutes": 20.3,
+        "levelAtEnd": 27,
+        "evolutionCount": 1,
+        "bossDurationsInCorridor": true,
+        "died": true,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    },
+    {
+      "character": "kael",
+      "seed": 404,
+      "outcome": "dawn",
+      "deathMinute": 30.6,
+      "endLevel": 28,
+      "kills": 6815,
+      "evolutions": [
+        "wrath_pendulum",
+        "thorn_storm"
+      ],
+      "bossDurationsSec": [
+        32,
+        37,
+        32,
+        35,
+        35,
+        34
+      ],
+      "passed": {
+        "survivalMinutes": 30.6,
+        "levelAtEnd": 28,
+        "evolutionCount": 2,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    }
+  ],
+  "jsErrors": []
+}

@@ -1,0 +1,7 @@
+Lane m10-balance-kael — Balance-Korridor, Basis 252fd98
+- Repro (8 Läufe): Kael/101 Level 28 statt der in A5 behaupteten 47 → nicht reproduzierbar; 7/8 im Korridor (Kael/505 Tod 15,3 min).
+- Ursache: M8-Dichte/960x540 → 8.438 statt 11.689 Kills und nur 28,4 % Gem-Sammelquote; Kill-Potenzial (39.129 Roh-XP) lag weiter über Level 40.
+- Fix #1440 (7629b2f): xp.ts ab Level 26 Aufschlag 10·(n−24)², Level 1–25 bitgleich; 34.366-XP-Fall mappt auf Level 40 statt 46.
+- Nachlauf 6 Läufe: 6/6 Korridor, Level 27–30, Boss 23–51 s, Tode 22,2/20,3 min (kein Tod <15 min), 0 JS-Fehler.
+- Tests 197 grün (Basis 192, +5 balance-curve.test.ts); npm run build grün.
+- Keine Waffen-/Gegnerdaten, scaling.ts/waves.ts/Run.ts unverändert; kein Push/Merge.
