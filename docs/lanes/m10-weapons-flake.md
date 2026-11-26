@@ -12,7 +12,8 @@
 - [x] **Karte 1 — Läufe:** `node scripts/verify-weapons.mjs` seriell, je Lauf eigenes Log + Laufzeit + Ergebnis.
       Beleg: `shots/m10-weapons-flake-runs.json`. Versuch 1: Läufe 00–07 (8 Läufe). Versuch 2: Läufe 08–12
       nachgeholt → **12/12 Loop-Läufe + Baseline 00**, alle `Roll-Namen` PASS.
-- [ ] **Karte 2 — Analyse:** Fehlschlag-Läufe vs. PASS-Läufe, Code-Lesung (Zeile/Bedingung). Abnahme: Flake-Rate n/12, Hypothese mit Zeile.
+- [x] **Karte 2 — Analyse:** Fehlschlag-Läufe vs. PASS-Läufe, Code-Lesung (Zeile/Bedingung).
+      Abnahme: Flake-Rate 0/12 (Loop) bzw. 0/13 inkl. Baseline, Hypothese mit Zeile — erfüllt.
 - [ ] **Karte 3 — Report:** diese Datei mit Tabelle, Hypothese, Umbau-Empfehlung (Zeilenbezug).
 
 ## Karte 1 (Läufe) — alle 13 dokumentiert
@@ -44,9 +45,16 @@ kein Polling). Versuch 2 hat die fehlenden Läufe 08–12 mit demselben Skript u
 
 ## Analyse (Karte 2)
 
-**Beobachtung:** In 8 gewerteten Läufen (00–07) trat `chest-roll-names` **0×** auf; die 7 Loop-Läufe 01–07
-endeten mit rc=0. Die Baseline 00 endete rc=1 nur wegen des separaten `evolution-state`-Fehlers (Seele 0).
-Ein Fehlschlag von `chest-roll-names` ließ sich in diesem Lauf-Zeitfenster also nicht reproduzieren.
+**Beobachtung:** In 13 gewerteten Läufen (00–12) trat `chest-roll-names` **0×** auf; die 12 Loop-Läufe
+01–12 endeten mit rc=0. Die Baseline 00 endete rc=1 nur wegen des separaten `evolution-state`-Fehlers (Seele 0).
+Ein Fehlschlag von `chest-roll-names` ließ sich in diesem Lauf-Zeitfenster also nicht reproduzieren — der
+bekannte Flake ist in dieser Lane **nicht belegt**, die Flake-Rate ist **0/12** (Loop) bzw. 0/13 (inkl. Baseline).
+
+**Versuch 2 (Läufe 08–12):** Alle fünf Nachhol-Läufe 08–12 waren `Roll-Namen`-PASS mit rc=0 und ohne JS-Fehler;
+Laufzeiten 214,4–215,1 s — identisches Bild wie 01–07. Damit ist die Stichprobe vollständig (12 Loop-Läufe),
+und der Flake trat über die gesamte Stichprobe nicht auf. Die Abwesenheit eines Repro-Falls widerlegt die
+Timing-Hypothese nicht: die Latenz müsste erst das ≈930-ms-Fenster überschreiten, was bei ~215-s-Läufen ohne
+parallele Screenshot-Last selten passiert.
 
 **RNG ist für diesen Check ausgeschlossen.** Das Szenario ist fix: `seed=12`, `ember` Lvl 8 + `tome` Lvl 1.
 Die Truhe enthält dann die Evolution `Phönixschwarm` (upper `PHÖNIXSCHWARM` = 13 Zeichen) plus Angebote aus
