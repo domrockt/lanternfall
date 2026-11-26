@@ -81,7 +81,13 @@ Urteil: siehe Kontrolle unten (ux-check).
   (`screenY min 37 < 52`); nachher alle 6 Bosse `screenY 153..193 > 136`,
   Banner-Unterkante 116 frei, Banner bleibt in der oberen Bildhaelfte
   (Unterkante < Mitte 180) und ueberdeckt die Mitte nicht.
-- vfx-check art-02: _(folgt)_
+- vfx-check art-02: **PASS** — Near-White im A7-Crop 2186/52800 = **4,14 %**
+  <= 4,16 %; vorher 7,00 %/7,66 %, Lesbarkeit nicht schlechter. 6x-Crop der
+  Horde (399 Gegner / 64 Elites, t=1500): diffuse weisse ADD-Auren weg,
+  Silhouetten/Projektile klar getrennt, Amber-Kanten (~1 Spielpixel) liegen
+  direkt an der Kontur, kein Flackern/ADD-Bleed. Tint exakt `0xFFB84D`
+  (Palette 20), Blend NORMAL, Alpha 0,92. Einschraenkung: Rand bewusst dezent
+  und stellenweise von Nachbarsprites verdeckt — kein FAIL.
 - ux-check art-03: **PASS** — 16:9 (640x360): Boss-Name (~33..40) und
   HP-Leiste (~40..52) enden ~17 px ueber der Level-up-Rahmenkante (~69..72),
   Header/Karten beginnen darunter; 19.5:9 (780x360): identische Y-Stapelung,
