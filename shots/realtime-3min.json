@@ -1,0 +1,46 @@
+{
+  "mode": "partial-3min",
+  "minutes": 3,
+  "timeScale": 1,
+  "simMinutes": 3,
+  "elapsedRealSeconds": 183,
+  "truncated": true,
+  "completed": true,
+  "bosses": [],
+  "bossesDefeated": 0,
+  "chestsDropped": 0,
+  "evolutions": [],
+  "levels": 7,
+  "kills": 151,
+  "fps": {
+    "min": 42.3,
+    "median": 51.3,
+    "samples": 660,
+    "target": 55,
+    "passed": true
+  },
+  "heap": {
+    "startMB": 19.8,
+    "minute1MB": 29.9,
+    "minute29MB": null,
+    "endMB": 27.6,
+    "cdpUsedMB": {
+      "start": 8.9,
+      "minute1": 11.7,
+      "minute29": null,
+      "end": 11.2
+    },
+    "measured": true,
+    "deltaVsMinute1Pct": -7.7,
+    "targetPct": 15,
+    "gate": "informational-partial",
+    "passed": null
+  },
+  "screenshots": [
+    "shots/realtime-end.png"
+  ],
+  "victory": false,
+  "resultReason": null,
+  "jsErrors": [],
+  "passed": true
+}
