@@ -31,14 +31,52 @@ export function isEliteMinute(minute: number): boolean {
   return minute >= 4 && minute % 6 === 4;
 }
 
+/** M8: Referenzfläche der M6-Balance (16:9 bei 360p). */
+export const BASE_VIEW_AREA = 640 * 360;
+
+/**
+ * M8: Sichtflächen-Faktor gegenüber 640x360. Breite Formate (780x360 = 1,22x)
+ * bekommen proportional mehr Gegner, damit sie nicht leerer wirken; schmale
+ * 4:3-Formate bekommen etwas weniger. Gedeckelt auf 0,75..1,5.
+ */
+export function viewAreaFactor(width: number, height: number): number {
+  if (!(width > 0) || !(height > 0)) return 1;
+  return Math.max(0.75, Math.min(1.5, (width * height) / BASE_VIEW_AREA));
+}
+
 /**
  * Maximal gleichzeitig aktive Gegner für den normalen Run. M6-Balance:
- * gleichmäßigerer Anstieg bis Deckel 360 (Minute ~20). Die 500-Gegner-Last
- * wird weiterhin separat in perf.mjs mit erzwungenen Spawns gemessen.
+ * gleichmäßiger Anstieg bis Deckel 360 (Minute ~20) auf 640x360; M8 skaliert
+ * den Deckel mit der sichtbaren Fläche (780x360 ~ 439, harte Obergrenze 500).
  */
-export function maxActiveEnemies(elapsedSeconds: number): number {
+export function maxActiveEnemies(
+  elapsedSeconds: number,
+  width = 640,
+  height = 360,
+): number {
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
-  return Math.min(360, 100 + minute * 13);
+  const base = 100 + minute * 13;
+  return Math.min(500, Math.round(Math.min(360, base) * viewAreaFactor(width, height)));
+}
+
+/** M8: Recycle-Abstand knapp außerhalb der View-Diagonale (mind. 340 px). */
+export function recycleDistance(width: number, height: number): number {
+  if (!(width > 0) || !(height > 0)) return 340;
+  return Math.max(340, Math.hypot(width, height) * 0.8 / 2);
+}
+
+/** M8: Ring-/Stream-Spawnradius juste außerhalb der sichtbaren Fläche.
+ *  Die laengere Kante bestimmt den Radius, damit auch bei 780x360 kein Gegner
+ *  am linken/rechten Bildrand sichtbar aufploppt. */
+export function spawnRingRadius(width: number, height: number, extra = 20): number {
+  if (!(width > 0) || !(height > 0)) return 300;
+  return Math.ceil(Math.max(width, height) / 2) + Math.max(0, extra);
+}
+
+/** M8: Boss erscheint sichtbar, aber nicht auf dem Spieler; mit der Höhe skaliert. */
+export function bossSpawnDistance(width: number, height: number): number {
+  const shorter = Math.min(width, height);
+  return Math.max(130, Math.round(shorter * 0.55));
 }
 
 /** Ferne, alte Gegner dürfen recycelt werden (kein Kill, kein Drop). */
@@ -47,20 +85,21 @@ export function shouldRecycle(
   distanceToPlayer: number,
   elite: boolean,
   boss = false,
+  minDistance = 340,
 ): boolean {
-  return !elite && !boss && ageSeconds > 45 && distanceToPlayer > 340;
+  return !elite && !boss && ageSeconds > 45 && distanceToPlayer > minDistance;
 }
 
 /** Ältesten fernen Gegner finden (für Cap-Recycling). */
 export function pickRecycleIndex<
   T extends { age: number; x: number; y: number; elite: boolean; boss?: boolean },
->(list: readonly T[], playerX: number, playerY: number): number {
+>(list: readonly T[], playerX: number, playerY: number, minDistance = 340): number {
   let best = -1;
   let bestScore = -Infinity;
   for (let i = 0; i < list.length; i++) {
     const e = list[i];
     const d = Math.hypot(e.x - playerX, e.y - playerY);
-    if (!shouldRecycle(e.age, d, e.elite, e.boss)) continue;
+    if (!shouldRecycle(e.age, d, e.elite, e.boss, minDistance)) continue;
     const score = e.age + d / 40;
     if (score > bestScore) {
       bestScore = score;

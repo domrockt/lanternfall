@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { bossSpawnDistance } from "../logic/scaling";
 import { BOSSES } from "../data/bosses";
 import { ENEMIES } from "../data/enemies";
 import type { EnemyDef } from "../data/types";
@@ -38,7 +39,7 @@ const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 // Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
 // Grundtempo und Kontaktschaden stehen in src/data/bosses.ts; das Tempo bleibt
 // unter 90 % des Spielertempos, Gefahr kommt über Mechaniken statt Verfolgung.
-const BOSS_SPAWN_DISTANCE = 130;
+
 const BOSS_COLOR = [30, 10, 8, 5, 25, 14];
 
 /** Synthetisches EnemyDef für den Boss-Pool (Kampf kommt aus dem BossSystem). */
@@ -92,8 +93,8 @@ export class BossSystem {
     if (!boss) throw new RangeError(`Boss ${index} unbekannt`);
     const def = bossEnemyDef(index);
     const angle = this.rng.next() * Math.PI * 2;
-    // Sichtbar im View, aber nicht auf dem Spieler: 130 px bei 480x270.
-    const distance = BOSS_SPAWN_DISTANCE;
+    // M8: Sichtbar im View, aber nicht auf dem Spieler; Abstand skaliert mit der View-Hoehe.
+    const distance = bossSpawnDistance(this.camera.width, this.camera.height);
     const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * distance, 30, 4096 - 30);
     const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * distance, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
