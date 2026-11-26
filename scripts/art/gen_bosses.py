@@ -86,11 +86,13 @@ def moor_queen(f: int) -> Grid:
     g.put(42, 28 - bob, 28)
     # Krone.
     crown_y = 12 - bob + squash
-    g.rect(19, crown_y + 3, 18, 2, 20)
-    g.rect(19, crown_y + 3, 18, 1, 21)
-    for x in (19, 26, 33):
-        g.rect(x, crown_y, 3, 4, 20)
-        g.put(x, crown_y, 21)
+    g.rect(17, crown_y + 4, 22, 2, 20)
+    g.rect(17, crown_y + 4, 22, 1, 21)
+    for x in (17, 24, 31):
+        g.rect(x, crown_y - 1, 4, 6, 20)
+        g.put(x, crown_y - 1, 21)
+        g.put(x + 2, crown_y - 1, 22)
+    g.put(27, crown_y + 4, 13)   # Juwel der Krone
     g.put(21, crown_y + 4, 22)
     g.put(30, crown_y + 4, 22)
     # Vorderfüße.
