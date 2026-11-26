@@ -61,7 +61,7 @@ async function openRun(page, seed, character, setup) {
   await page.keyboard.press("Enter");
   await waitForScene(page, "run");
   await page.evaluate((setup) => {
-    window.__lf.autoPlay(true);
+    window.__lf.autoPlay(setup?.autoPlay ?? true);
     window.__lf.god(false);
     if (setup?.weapons) for (const w of setup.weapons) window.__lf.addWeapon(w.id, w.level);
     if (setup?.passives) for (const p of setup.passives) window.__lf.addPassive(p.id, p.level);
@@ -188,6 +188,7 @@ async function runOnce(seed, character, setup, maxSimSeconds = 33 * 60) {
   const started = Date.now();
   const trace = {
     seed, character, outcome: null, deathSecond: null, samples: [],
+    autoPlay: setup?.autoPlay ?? true,
     lastSeenByBoss: {}, bossObserved: {}, defeatedEndByBoss: {},
   };
   try {
@@ -195,10 +196,21 @@ async function runOnce(seed, character, setup, maxSimSeconds = 33 * 60) {
     let nextMinute = 1;
     let prevDefeated = 0;
     let activeBoss = null;
+    let pollTick = 0;
     let last = await snapshot(page);
     trace.samples.push(stripSample(last));
     while (Date.now() - started < 150000) {
       await page.waitForTimeout(POLL_MS);
+      // Waffen-Audit: kurze Waffen (Frostnova/Geisterlaterne) treffen nur nah am
+      // Spieler. Der kite-Bot hält Abstand, daher werden für den fairen
+      // Waffenvergleich einige Gegner nahe am Spieler nachgespawnt (kein god).
+      if (setup?.closeSpawns && pollTick++ % 15 === 0) {
+        await page.evaluate(() => {
+          const p = window.__lf.state()?.player;
+          if (!p) return;
+          window.__lf.spawnEnemy("bog_rat", 3, p.x + 26, p.y + 18);
+        });
+      }
       const s = await snapshot(page);
       if (s.scene === "results") {
         trace.outcome = s.reason === "dawn" ? "dawn" : "death";
@@ -331,11 +343,19 @@ if (mode === "main" || mode === "all") {
 const deathRuns = [];
 if (mode === "death" || mode === "all") {
   // Ein Lauf je Charakter ohne god bis zum Tod, mit genau demselben Bot wie im Hauptmodus.
-  for (const character of chars) {
+  // Seeds über --deathSeeds überschreibbar (Reihenfolge = chars). Charaktere in
+  // --deathIdleChars sterben ohne Bot (stehender Spieler, kein god), falls der
+  // AutoPlay-Bot mit diesem Charakter sonst jeden Seed gewinnt.
+  const deathSeeds = String(args.deathSeeds ?? "").split(",").map((s) => Number(s.trim())).filter(Number.isFinite);
+  const idleDeath = String(args.deathIdleChars ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  for (let i = 0; i < chars.length; i++) {
+    const character = chars[i];
     console.log(`[balance] Todeslauf ${character} ...`);
     // Seeds bewusst so gewählt, dass beide Charaktere ohne god sterben und der
-    // Results-/Game-Over-Screen ausgelöst wird (Kael 505: Tod @ ~15 min).
-    deathRuns.push(await runOnce(character === "mira" ? 101 : 505, character, {}));
+    // Results-/Game-Over-Screen ausgelöst wird.
+    deathRuns.push(await runOnce(deathSeeds[i] ?? (character === "mira" ? 101 : 505), character, {
+      autoPlay: !idleDeath.includes(character),
+    }));
     const t = deathRuns[deathRuns.length - 1];
     console.log(`[balance]   -> ${t.outcome} @ ${t.passed.survivalMinutes} min, Level ${t.passed.levelAtEnd}, ${t.wallSeconds}s wall`);
   }
@@ -348,7 +368,7 @@ if (mode === "weapons" || mode === "all") {
   const passives = ["boots", "tome", "heart", "charm", "whetstone", "hourglass"].map((id) => ({ id, level: 3 }));
   for (const weapon of ALL_WEAPONS) {
     console.log(`[balance] Waffe ${weapon} ...`);
-    const t = await runOnce(303, "mira", { weapons: [{ id: weapon, level: 8 }], passives }, 6 * 60);
+    const t = await runOnce(303, "mira", { weapons: [{ id: weapon, level: 8 }], passives, closeSpawns: true }, 6 * 60);
     t.weapon = weapon;
     t.windowMinutes = (t.deathSecond ?? t.run?.time ?? 0) / 60;
     const dmg = t.run?.damageByWeapon?.[weapon] ?? 0;
@@ -483,10 +503,10 @@ function deathMarkdown(list) {
   const out = [];
   out.push("### Todesläufe je Charakter (ohne god, 30x, bis zum Tod)");
   out.push("");
-  out.push("| Char | Seed | Ergebnis | Todeszeit | Level | Kills | Result-Grund | Screenshot |");
-  out.push("|---|---|---|---|---|---|---|---|");
+  out.push("| Char | Seed | Bot | Ergebnis | Todeszeit | Level | Kills | Result-Grund | Screenshot |");
+  out.push("|---|---|---|---|---|---|---|---|---|");
   for (const r of list) {
-    out.push(`| ${r.character} | ${r.seed} | ${r.outcome} | ${fmt(r.passed.survivalMinutes)} min | ${r.passed.levelAtEnd} | ${r.run?.kills ?? r.result?.kills ?? 0} | ${r.result?.reason ?? "–"} | shots/balance-death-${r.character}-${r.seed}.png |`);
+    out.push(`| ${r.character} | ${r.seed} | ${r.autoPlay ? "autoPlay" : "steht still"} | ${r.outcome} | ${fmt(r.passed.survivalMinutes)} min | ${r.passed.levelAtEnd} | ${r.run?.kills ?? r.result?.kills ?? 0} | ${r.result?.reason ?? "–"} | shots/balance-death-${r.character}-${r.seed}.png |`);
   }
   out.push("");
   return out;
@@ -495,6 +515,8 @@ function deathMarkdown(list) {
 function weaponMarkdown(list) {
   const out = [];
   out.push("### Waffen-Audit (je Waffe allein auf Stufe 8, 6 Sim-Minuten, kein god)");
+  out.push("");
+  out.push("Der Bot kitet normalerweise; für kurze Waffen (Frostnova, Geisterlaterne) werden einige Gegner nah am Spieler nachgespawnt, damit der Vergleich fair ist.");
   out.push("");
   out.push("| Waffe | Schaden | DPS | Kills/Min | Fenster (min) | tot? |");
   out.push("|---|---|---|---|---|---|");

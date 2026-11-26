@@ -1,0 +1,32 @@
+[balance] Todeslauf kael ...
+[balance]   -> dawn @ 30.7 min, Level 31, 102s wall
+{
+  "mode": "death",
+  "scale": 30,
+  "generatedAt": "2026-11-26T05:39:07.616Z",
+  "runs": [],
+  "deathRuns": [
+    {
+      "character": "kael",
+      "outcome": "dawn",
+      "deathMinute": 30.7,
+      "level": 31,
+      "kills": 14836,
+      "resultReason": "dawn",
+      "passed": {
+        "survivalMinutes": 30.7,
+        "levelAtEnd": 31,
+        "evolutionCount": 2,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": true,
+        "levelInCorridor": true,
+        "evolutionOk": true,
+        "passedAll": true
+      }
+    }
+  ],
+  "weapons": [],
+  "jsErrors": [],
+  "allRunsPass": false
+}

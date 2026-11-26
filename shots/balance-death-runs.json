@@ -1,0 +1,1622 @@
+[
+  {
+    "seed": 202,
+    "character": "mira",
+    "outcome": "death",
+    "deathSecond": 1218.4,
+    "samples": [
+      {
+        "time": 0.5158400000000003,
+        "level": 1,
+        "hp": 250,
+        "maxHp": 250,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      },
+      {
+        "time": 62.519839999998545,
+        "level": 6,
+        "hp": 270,
+        "maxHp": 270,
+        "enemies": 0,
+        "kills": 41,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 880
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 122.3149399999953,
+        "level": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "enemies": 0,
+        "kills": 74,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 1769
+        },
+        "dawn": false,
+        "minute": 2
+      },
+      {
+        "time": 182.81024000000724,
+        "level": 10,
+        "hp": 290,
+        "maxHp": 290,
+        "enemies": 7,
+        "kills": 121,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 3503
+        },
+        "dawn": false,
+        "minute": 3
+      },
+      {
+        "time": 242.4574400000207,
+        "level": 11,
+        "hp": 310,
+        "maxHp": 310,
+        "enemies": 6,
+        "kills": 177,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 5785
+        },
+        "dawn": false,
+        "minute": 4
+      },
+      {
+        "time": 301.00514000003307,
+        "level": 13,
+        "hp": 330,
+        "maxHp": 330,
+        "enemies": 6,
+        "kills": 224,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 0,
+          "name": "Moorkönigin",
+          "hp": 3144,
+          "maxHp": 3200,
+          "ratio": 0.9825,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 7871
+        },
+        "dawn": false,
+        "minute": 5
+      },
+      {
+        "time": 363.9523400000461,
+        "level": 15,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 11,
+        "kills": 343,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 20349.02836000002,
+          "flail": 348
+        },
+        "dawn": false,
+        "minute": 6
+      },
+      {
+        "time": 420.29854000005776,
+        "level": 16,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 11,
+        "kills": 454,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 29155.02836000002,
+          "flail": 394
+        },
+        "dawn": false,
+        "minute": 7
+      },
+      {
+        "time": 481.74494000007013,
+        "level": 18,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 8,
+        "kills": 560,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 2
+          },
+          {
+            "id": "thorn",
+            "level": 1
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 39095.02836000002,
+          "flail": 648,
+          "thorn": 300
+        },
+        "dawn": false,
+        "minute": 8
+      },
+      {
+        "time": 542.0922400000495,
+        "level": 20,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 10,
+        "kills": 719,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 2
+          },
+          {
+            "id": "thorn",
+            "level": 2
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 53837.02836000002,
+          "flail": 890,
+          "thorn": 752,
+          "lantern": 21
+        },
+        "dawn": false,
+        "minute": 9
+      },
+      {
+        "time": 602.0390399999961,
+        "level": 21,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 18,
+        "kills": 822,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 2
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 10165,
+          "maxHp": 10500,
+          "ratio": 0.9680952380952381,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 65639.02836000003,
+          "flail": 1167,
+          "thorn": 1122,
+          "lantern": 21
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 664.33655999994,
+        "level": 22,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 3,
+        "kills": 999,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 3
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 4667.164070000017,
+          "thorn": 2878.812980000014,
+          "lantern": 219.18111000000084,
+          "phoenix": 10290
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 723.4329599998875,
+        "level": 23,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 6,
+        "kills": 1077,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 4
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 4748.164070000017,
+          "thorn": 2999.812980000014,
+          "lantern": 219.18111000000084,
+          "phoenix": 23443
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 780.1299599998368,
+        "level": 23,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 9,
+        "kills": 1155,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 4
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 4937.164070000017,
+          "thorn": 3125.812980000014,
+          "lantern": 219.18111000000084,
+          "phoenix": 38454
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 840.6247599997829,
+        "level": 24,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 11,
+        "kills": 1243,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 5
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 5073.164070000017,
+          "thorn": 3892.812980000014,
+          "lantern": 219.18111000000084,
+          "phoenix": 58083
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 903.5712599997263,
+        "level": 25,
+        "hp": 330.1245,
+        "maxHp": 350,
+        "enemies": 12,
+        "kills": 1343,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 11541,
+          "maxHp": 12500,
+          "ratio": 0.92328,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 5614.164070000017,
+          "thorn": 5328.812980000013,
+          "lantern": 240.18111000000084,
+          "phoenix": 83287
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 961.6181599996745,
+        "level": 25,
+        "hp": 137.2417500000007,
+        "maxHp": 350,
+        "enemies": 40,
+        "kills": 1415,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 8509.537490000022,
+          "thorn": 14345.530980000025,
+          "lantern": 385.18111000000084,
+          "phoenix": 124332.83270000007
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1022.8142599996198,
+        "level": 25,
+        "hp": 262.23200000000116,
+        "maxHp": 350,
+        "enemies": 47,
+        "kills": 1499,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 9998.537490000022,
+          "thorn": 26141.530980000025,
+          "lantern": 452.18111000000084,
+          "phoenix": 171032.8327000001
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1080.7099599995684,
+        "level": 26,
+        "hp": 318.9712500000014,
+        "maxHp": 350,
+        "enemies": 63,
+        "kills": 1574,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 11566.537490000022,
+          "thorn": 38741.530980000025,
+          "lantern": 596.1811100000009,
+          "phoenix": 211421.8327000001
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1143.0076599995123,
+        "level": 26,
+        "hp": 280.7155000000013,
+        "maxHp": 350,
+        "enemies": 86,
+        "kills": 1652,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 13917.537490000022,
+          "thorn": 53417.530980000025,
+          "lantern": 660.1811100000009,
+          "phoenix": 254585.8327000001
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1200.8551599994603,
+        "level": 26,
+        "hp": 308.2477500000001,
+        "maxHp": 350,
+        "enemies": 105,
+        "kills": 1734,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 3
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 13607,
+          "maxHp": 14000,
+          "ratio": 0.9719285714285715,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 89237.21212000013,
+          "flail": 15524.537490000022,
+          "thorn": 66785.53098000003,
+          "lantern": 764.1811100000009,
+          "phoenix": 300788.8327000001
+        },
+        "dawn": false,
+        "minute": 20
+      }
+    ],
+    "autoPlay": true,
+    "lastSeenByBoss": {
+      "0": 329.902840000039,
+      "1": 637.8367399999644,
+      "2": 926.8207599997054,
+      "3": 1217.003159999446
+    },
+    "bossObserved": {
+      "0": {
+        "firstSecond": 301.00514000003307,
+        "minHp": 0.09437333749999427
+      },
+      "1": {
+        "firstSecond": 602.0390399999961,
+        "minHp": 0.027819260952370313
+      },
+      "2": {
+        "firstSecond": 903.5712599997263,
+        "minHp": 0.052499034399995155
+      },
+      "3": {
+        "firstSecond": 1200.8551599994603,
+        "minHp": 0.4898571428571429
+      }
+    },
+    "defeatedEndByBoss": {
+      "0": 331.9030400000395,
+      "1": 637.8867399999643,
+      "2": 927.7205599997046
+    },
+    "result": {
+      "reason": "death",
+      "time": 1218.4033599994448,
+      "level": 27,
+      "kills": 1790,
+      "damageByWeapon": {
+        "ember": 89237.21212000013,
+        "flail": 18688.537490000024,
+        "thorn": 81111.53098000003,
+        "lantern": 944.1811100000009,
+        "phoenix": 328354.8327000001
+      },
+      "character": "mira",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "ember": 89237.21212000013,
+      "flail": 18688.537490000024,
+      "thorn": 81111.53098000003,
+      "lantern": 944.1811100000009,
+      "phoenix": 328354.8327000001
+    },
+    "run": {
+      "time": 1217.003159999446,
+      "level": 27,
+      "kills": 1785,
+      "hp": 28,
+      "maxHp": 350,
+      "enemies": 118,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "flail",
+          "level": 3
+        },
+        {
+          "id": "thorn",
+          "level": 7
+        },
+        {
+          "id": "lantern",
+          "level": 2
+        }
+      ],
+      "passives": [
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "boots",
+          "level": 3
+        },
+        {
+          "id": "tome",
+          "level": 2
+        }
+      ],
+      "bossesDefeated": 3,
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        },
+        {
+          "index": 3,
+          "at": 1200
+        }
+      ],
+      "chestsDropped": 3,
+      "dawn": false,
+      "damageByWeapon": {
+        "ember": 89237.21212000013,
+        "flail": 18093.537490000024,
+        "thorn": 78773.53098000003,
+        "lantern": 936.1811100000009,
+        "phoenix": 324731.8327000001
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 65.9,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 63,
+        "level": 6,
+        "hp": 270,
+        "maxHp": 270,
+        "enemies": 0,
+        "kills": 41,
+        "dps": {
+          "ember": 14.2
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 63,
+        "tTo": 122,
+        "level": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "enemies": 0,
+        "kills": 74,
+        "dps": {
+          "ember": 14.9
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 2,
+        "minuteTo": 3,
+        "tFrom": 122,
+        "tTo": 183,
+        "level": 10,
+        "hp": 290,
+        "maxHp": 290,
+        "enemies": 7,
+        "kills": 121,
+        "dps": {
+          "ember": 28.7
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 3,
+        "minuteTo": 4,
+        "tFrom": 183,
+        "tTo": 242,
+        "level": 11,
+        "hp": 310,
+        "maxHp": 310,
+        "enemies": 6,
+        "kills": 177,
+        "dps": {
+          "ember": 38.3
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 4,
+        "minuteTo": 5,
+        "tFrom": 242,
+        "tTo": 301,
+        "level": 13,
+        "hp": 330,
+        "maxHp": 330,
+        "enemies": 6,
+        "kills": 224,
+        "dps": {
+          "ember": 35.6
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 5,
+        "minuteTo": 6,
+        "tFrom": 301,
+        "tTo": 364,
+        "level": 15,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 11,
+        "kills": 343,
+        "dps": {
+          "ember": 198.2,
+          "flail": 5.5
+        },
+        "sharePct": {
+          "ember": 97.3,
+          "flail": 2.7
+        }
+      },
+      {
+        "minuteFrom": 6,
+        "minuteTo": 7,
+        "tFrom": 364,
+        "tTo": 420,
+        "level": 16,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 11,
+        "kills": 454,
+        "dps": {
+          "ember": 156.3,
+          "flail": 0.8
+        },
+        "sharePct": {
+          "ember": 99.5,
+          "flail": 0.5
+        }
+      },
+      {
+        "minuteFrom": 7,
+        "minuteTo": 8,
+        "tFrom": 420,
+        "tTo": 482,
+        "level": 18,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 8,
+        "kills": 560,
+        "dps": {
+          "ember": 161.8,
+          "flail": 4.1,
+          "thorn": 4.9
+        },
+        "sharePct": {
+          "ember": 94.7,
+          "flail": 2.4,
+          "thorn": 2.9
+        }
+      },
+      {
+        "minuteFrom": 8,
+        "minuteTo": 9,
+        "tFrom": 482,
+        "tTo": 542,
+        "level": 20,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 10,
+        "kills": 719,
+        "dps": {
+          "ember": 244.3,
+          "flail": 4,
+          "thorn": 7.5,
+          "lantern": 0.3
+        },
+        "sharePct": {
+          "ember": 95.4,
+          "flail": 1.6,
+          "thorn": 2.9,
+          "lantern": 0.1
+        }
+      },
+      {
+        "minuteFrom": 9,
+        "minuteTo": 10,
+        "tFrom": 542,
+        "tTo": 602,
+        "level": 21,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 18,
+        "kills": 822,
+        "dps": {
+          "ember": 196.9,
+          "flail": 4.6,
+          "thorn": 6.2
+        },
+        "sharePct": {
+          "ember": 94.8,
+          "flail": 2.2,
+          "thorn": 3
+        }
+      },
+      {
+        "minuteFrom": 10,
+        "minuteTo": 11,
+        "tFrom": 602,
+        "tTo": 664,
+        "level": 22,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 3,
+        "kills": 999,
+        "dps": {
+          "ember": 378.8,
+          "flail": 56.2,
+          "thorn": 28.2,
+          "lantern": 3.2,
+          "phoenix": 165.2
+        },
+        "sharePct": {
+          "ember": 60,
+          "flail": 8.9,
+          "thorn": 4.5,
+          "lantern": 0.5,
+          "phoenix": 26.2
+        }
+      },
+      {
+        "minuteFrom": 11,
+        "minuteTo": 12,
+        "tFrom": 664,
+        "tTo": 723,
+        "level": 23,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 6,
+        "kills": 1077,
+        "dps": {
+          "flail": 1.4,
+          "thorn": 2,
+          "phoenix": 222.6
+        },
+        "sharePct": {
+          "flail": 0.6,
+          "thorn": 0.9,
+          "phoenix": 98.5
+        }
+      },
+      {
+        "minuteFrom": 12,
+        "minuteTo": 13,
+        "tFrom": 723,
+        "tTo": 780,
+        "level": 23,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 9,
+        "kills": 1155,
+        "dps": {
+          "flail": 3.3,
+          "thorn": 2.2,
+          "phoenix": 264.8
+        },
+        "sharePct": {
+          "flail": 1.2,
+          "thorn": 0.8,
+          "phoenix": 98
+        }
+      },
+      {
+        "minuteFrom": 13,
+        "minuteTo": 14,
+        "tFrom": 780,
+        "tTo": 841,
+        "level": 24,
+        "hp": 350,
+        "maxHp": 350,
+        "enemies": 11,
+        "kills": 1243,
+        "dps": {
+          "flail": 2.2,
+          "thorn": 12.7,
+          "phoenix": 324.5
+        },
+        "sharePct": {
+          "flail": 0.6,
+          "thorn": 3.7,
+          "phoenix": 95.6
+        }
+      },
+      {
+        "minuteFrom": 14,
+        "minuteTo": 15,
+        "tFrom": 841,
+        "tTo": 904,
+        "level": 25,
+        "hp": 330,
+        "maxHp": 350,
+        "enemies": 12,
+        "kills": 1343,
+        "dps": {
+          "flail": 8.6,
+          "thorn": 22.8,
+          "lantern": 0.3,
+          "phoenix": 400.4
+        },
+        "sharePct": {
+          "flail": 2,
+          "thorn": 5.3,
+          "lantern": 0.1,
+          "phoenix": 92.7
+        }
+      },
+      {
+        "minuteFrom": 15,
+        "minuteTo": 16,
+        "tFrom": 904,
+        "tTo": 962,
+        "level": 25,
+        "hp": 137,
+        "maxHp": 350,
+        "enemies": 40,
+        "kills": 1415,
+        "dps": {
+          "flail": 49.9,
+          "thorn": 155.3,
+          "lantern": 2.5,
+          "phoenix": 707.1
+        },
+        "sharePct": {
+          "flail": 5.5,
+          "thorn": 17,
+          "lantern": 0.3,
+          "phoenix": 77.3
+        }
+      },
+      {
+        "minuteFrom": 16,
+        "minuteTo": 17,
+        "tFrom": 962,
+        "tTo": 1023,
+        "level": 25,
+        "hp": 262,
+        "maxHp": 350,
+        "enemies": 47,
+        "kills": 1499,
+        "dps": {
+          "flail": 24.3,
+          "thorn": 192.8,
+          "lantern": 1.1,
+          "phoenix": 763.1
+        },
+        "sharePct": {
+          "flail": 2.5,
+          "thorn": 19.6,
+          "lantern": 0.1,
+          "phoenix": 77.8
+        }
+      },
+      {
+        "minuteFrom": 17,
+        "minuteTo": 18,
+        "tFrom": 1023,
+        "tTo": 1081,
+        "level": 26,
+        "hp": 319,
+        "maxHp": 350,
+        "enemies": 63,
+        "kills": 1574,
+        "dps": {
+          "flail": 27.1,
+          "thorn": 217.6,
+          "lantern": 2.5,
+          "phoenix": 697.6
+        },
+        "sharePct": {
+          "flail": 2.9,
+          "thorn": 23,
+          "lantern": 0.3,
+          "phoenix": 73.8
+        }
+      },
+      {
+        "minuteFrom": 18,
+        "minuteTo": 19,
+        "tFrom": 1081,
+        "tTo": 1143,
+        "level": 26,
+        "hp": 281,
+        "maxHp": 350,
+        "enemies": 86,
+        "kills": 1652,
+        "dps": {
+          "flail": 37.7,
+          "thorn": 235.6,
+          "lantern": 1,
+          "phoenix": 692.9
+        },
+        "sharePct": {
+          "flail": 3.9,
+          "thorn": 24.4,
+          "lantern": 0.1,
+          "phoenix": 71.6
+        }
+      },
+      {
+        "minuteFrom": 19,
+        "minuteTo": 20,
+        "tFrom": 1143,
+        "tTo": 1201,
+        "level": 26,
+        "hp": 308,
+        "maxHp": 350,
+        "enemies": 105,
+        "kills": 1734,
+        "dps": {
+          "flail": 27.8,
+          "thorn": 231.1,
+          "lantern": 1.8,
+          "phoenix": 798.7
+        },
+        "sharePct": {
+          "flail": 2.6,
+          "thorn": 21.8,
+          "lantern": 0.2,
+          "phoenix": 75.4
+        }
+      }
+    ],
+    "bossDurations": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "spawnSecond": 300,
+        "endSecond": 332,
+        "durationSec": 32,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "spawnSecond": 600,
+        "endSecond": 638,
+        "durationSec": 38,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "spawnSecond": 900,
+        "endSecond": 928,
+        "durationSec": 28,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "spawnSecond": 1200,
+        "endSecond": 1217,
+        "durationSec": null,
+        "defeated": false,
+        "aliveAtDeath": true
+      }
+    ],
+    "evolutions": [
+      "phoenix"
+    ],
+    "damageShare": {
+      "totalDamage": 511772,
+      "sharePct": {
+        "ember": 17.4,
+        "flail": 3.5,
+        "thorn": 15.4,
+        "lantern": 0.2,
+        "phoenix": 63.5
+      },
+      "avgDpsOverRun": {
+        "ember": 73.3,
+        "flail": 14.9,
+        "thorn": 64.7,
+        "lantern": 0.8,
+        "phoenix": 266.8
+      }
+    },
+    "passed": {
+      "survivalMinutes": 20.3,
+      "levelAtEnd": 27,
+      "evolutionCount": 1,
+      "bossDurationsInCorridor": true,
+      "died": true,
+      "survivalInCorridor": true,
+      "levelInCorridor": true,
+      "evolutionOk": true,
+      "passedAll": true
+    }
+  },
+  {
+    "seed": 606,
+    "character": "kael",
+    "outcome": "timeout",
+    "deathSecond": 22.4,
+    "samples": [
+      {
+        "time": 0.5160399999999998,
+        "level": 1,
+        "hp": 253,
+        "maxHp": 253,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      }
+    ],
+    "autoPlay": false,
+    "lastSeenByBoss": {},
+    "bossObserved": {},
+    "defeatedEndByBoss": {},
+    "run": {
+      "time": 22.382640000000155,
+      "level": 2,
+      "kills": 9,
+      "hp": 253,
+      "maxHp": 253,
+      "enemies": 5,
+      "weapons": [
+        {
+          "id": "flail",
+          "level": 1
+        }
+      ],
+      "passives": [],
+      "bossesDefeated": 0,
+      "bossFlags": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "bossesSpawned": [],
+      "chestsDropped": 0,
+      "dawn": false,
+      "damageByWeapon": {
+        "flail": 210
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 150,
+    "dpsRows": [],
+    "bossDurations": [],
+    "evolutions": [],
+    "damageShare": {
+      "totalDamage": 210,
+      "sharePct": {
+        "flail": 100
+      },
+      "avgDpsOverRun": {
+        "flail": 9.4
+      }
+    },
+    "passed": {
+      "survivalMinutes": 0.4,
+      "levelAtEnd": 2,
+      "evolutionCount": 0,
+      "bossDurationsInCorridor": true,
+      "died": false,
+      "survivalInCorridor": false,
+      "levelInCorridor": false,
+      "evolutionOk": false,
+      "passedAll": false
+    }
+  }
+]

@@ -7,5 +7,5 @@ export const BOSSES: BossDef[] = [
   { index: 2, id: "pale_shepherd", name: "Der Fahle Hirte", atSecond: 15 * 60, mechanic: "ruft Wolfsrudel, Sichel-Schwung", hp: 12500, speed: 50, touchDamage: 16, implemented: true },
   { index: 3, id: "bell_golem", name: "Glockenturm-Golem", atSecond: 20 * 60, mechanic: "langsame Stampfer, Steinregen mit Bodenmarkierung", hp: 14000, speed: 44, touchDamage: 18, implemented: true },
   { index: 4, id: "coven", name: "Hexenzirkel", atSecond: 25 * 60, mechanic: "Teleport-Wechsel, kreuzende Feuerstrahlen", hp: 13500, speed: 50, touchDamage: 16, implemented: true },
-  { index: 5, id: "hollow_king", name: "Der Hohle König", atSecond: 30 * 60, mechanic: "3 Phasen, Arena-Ring aus Dornen, Sieg = Morgendämmerung", hp: 17500, speed: 42, touchDamage: 22, implemented: true },
+  { index: 5, id: "hollow_king", name: "Der Hohle König", atSecond: 30 * 60, mechanic: "3 Phasen, Arena-Ring aus Dornen, Sieg = Morgendämmerung", hp: 15000, speed: 42, touchDamage: 22, implemented: true },
 ];
