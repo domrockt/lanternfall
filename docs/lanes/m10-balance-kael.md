@@ -52,3 +52,20 @@ heute sind es 8.438 Kills und nur ~28 % Sammelquote, weil der Kristall-Cap im Mi
 Kill-Potenzial (bis 39.129 Roh-XP) liegt aber weiterhin über der Level-40-Schwelle (21.235 XP),
 d. h. ohne Sammelverlust wäre Level 47+ weiter möglich. Genau dort setzt der Fix an: die Kurve
 ab Level 25 steiler machen, damit auch ein voll eingesammeltes 30-min-Budget ≤ Level 40 bleibt.
+
+## Karte m10-balance-kael-03 — Fix: XP-Kurve ab Level 25 steiler (Basis 252fd98)
+
+Änderung nur in `src/logic/xp.ts`: für Level ≥ 26 kommt ein quadratischer Aufschlag
+`10·(n−24)²` (n = level−1) auf die bestehende `8 + 1.1·n²`-Kurve. Level 1–25 sind bitgleich
+zur alten Kurve (Regressionstabelle in `tests/balance-curve.test.ts`), damit der frühe
+Spielfluss und die 5-Minuten-Boss-Kurve unverändert bleiben. Zusätzlich `totalXpForLevel` und
+`levelForXp` als reine Umkehr-Funktionen exportiert.
+
+| XP-Budget | Level vorher | Level nachher |
+|---|---|---|
+| 9.652 (Kael/606, tatsächlich gesammelt) | 31 | 30 |
+| 29.347 (Kael/606, voll eingesammeltes Kill-Potenzial) | 44 | 39 |
+| 34.366 (alter A5-Ausreißer Kael/101) | 46 | 40 |
+
+Belege: `npx vitest run tests/balance-curve.test.ts tests/logic.test.ts` → 48 Tests grün,
+`npx tsc --noEmit` grün. Der Fix deckelt auch den alten Level-47-Fall auf Level 40.
