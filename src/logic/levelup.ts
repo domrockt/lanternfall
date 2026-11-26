@@ -58,7 +58,7 @@ export function generateOffers(
     candidates.push({
       kind: "weapon", id: def.id, name: def.name,
       description: def.levels[next - 1]?.note ?? def.description,
-      level: next, isNew: false, iconColor: def.iconColor, weight: 8,
+      level: next, isNew: false, iconColor: def.iconColor, weight: 20,
     });
   }
   for (const owned of passives) {
@@ -76,7 +76,7 @@ export function generateOffers(
       if (weaponIds.has(def.id) || !def.implemented) continue;
       candidates.push({
         kind: "weapon", id: def.id, name: def.name,
-        description: def.description, level: 1, isNew: true, iconColor: def.iconColor, weight: 2,
+        description: def.description, level: 1, isNew: true, iconColor: def.iconColor, weight: 1,
       });
     }
   }

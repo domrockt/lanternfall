@@ -265,6 +265,17 @@ describe("AutoPlay-Bot", () => {
     expect(offerScore(offers[3], build)).toBeGreaterThan(offerScore(offers[2], build));
     expect(chooseBestOffer([])).toBe(0);
   });
+
+  it("priorisiert das letzte Fokus-Upgrade 7→8 vor Passiven (M6-Regression)", () => {
+    const offers: Offer[] = [
+      { kind: "passive", id: "heart", name: "Eisenherz", description: "", level: 1, isNew: true, iconColor: 1 },
+      { kind: "weapon", id: "ember", name: "Glutfunke", description: "", level: 8, isNew: false, iconColor: 1 },
+      { kind: "passive", id: "boots", name: "Windstiefel", description: "", level: 1, isNew: true, iconColor: 1 },
+    ];
+    const build = { weapons: [{ id: "ember", level: 7 }], passives: [], startingWeapon: "ember" };
+    expect(chooseBestOffer(offers, build)).toBe(1);
+    expect(offerScore(offers[1], build)).toBeGreaterThan(offerScore(offers[0], build));
+  });
 });
 
 describe("Datentabellen M3", () => {

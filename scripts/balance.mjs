@@ -26,7 +26,8 @@ const TARGET = {
   survivalMin: [20, 28],
   levelAt30: [25, 40],
   bossSeconds: [20, 60],
-  bossSpeedRatio: 0.9,
+  // Boss-Grundtempo <= 90 % wird als Datentabelle im Unit-Test geprüft
+  // (tests/m3-logic.test.ts), nicht in jedem Lauf erneut.
 };
 const EVOLVED = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const ALL_WEAPONS = ["ember", "flail", "frost", "thorn", "storm", "lantern",
@@ -38,7 +39,7 @@ const MARK_END = "<!-- BALANCE-TABLE:END -->";
 
 const args = parseArgs(process.argv.slice(2));
 const mode = args.death ? "death" : args.weapons ? "weapons" : args.all ? "all" : "main";
-const seeds = String(args.seeds ?? "101,202,303").split(",").map((s) => Number(s.trim())).filter(Number.isFinite);
+const seeds = String(args.seeds ?? "101,202,404").split(",").map((s) => Number(s.trim())).filter(Number.isFinite);
 const chars = String(args.characters ?? "mira,kael").split(",").map((s) => s.trim()).filter(Boolean);
 const charsPerRun = mode === "main" || mode === "all";
 
@@ -259,7 +260,8 @@ async function runOnce(seed, character, setup, maxSimSeconds = 33 * 60) {
     defeatedEndByBoss: trace.defeatedEndByBoss,
   });
   trace.evolutions = (trace.run?.weapons ?? []).map((w) => w.id).filter((id) => EVOLVED.includes(id));
-  trace.damageShare = damageShare(trace.run?.damageByWeapon ?? trace.finalDamageByWeapon ?? {});
+  const runSeconds = trace.run?.time ?? trace.result?.time ?? trace.deathSecond ?? 0;
+  trace.damageShare = damageShare(trace.run?.damageByWeapon ?? trace.finalDamageByWeapon ?? {}, runSeconds);
   trace.passed = evaluateRun(trace);
   errors.push(...pageErrors.map((e) => `${character}/${seed}: ${e}`));
   return trace;
@@ -273,11 +275,11 @@ function stripSample(s) {
   };
 }
 
-function damageShare(map) {
+function damageShare(map, seconds = 30 * 60) {
   const total = Object.values(map).reduce((s, v) => s + v, 0);
   const share = {};
   const dps = {};
-  const span = 30 * 60;
+  const span = Math.max(1, seconds);
   for (const [id, v] of Object.entries(map)) {
     if (v <= 0) continue;
     dps[id] = Math.round((v / span) * 10) / 10;
@@ -387,14 +389,17 @@ const summary = {
     id: r.weapon, dps: r.weaponDps, damage: r.weaponDamage, killsPerMinute: r.killsPerMinute, dead: r.dead,
   })),
   jsErrors: errors,
-  allRunsPass: runs.length === 0 || runs.every((r) => r.passed.passedAll),
+  allRunsPass: (runs.length === 0 || runs.every((r) => r.passed.passedAll)) &&
+    deathRuns.every((r) => r.outcome === "death" && r.result?.reason && r.result.god === false) &&
+    weaponRuns.every((r) => !r.dead),
 };
 writeFileSync(`shots/balance-${mode}.json`, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
 
 await browser.close();
 server.stop();
-process.exit(errors.length === 0 ? 0 : 1);
+const failed = errors.length > 0 || (mode === "all" && !summary.allRunsPass);
+process.exit(failed ? 1 : 0);
 
 // ── Helfer ──────────────────────────────────────────────────────────
 function parseArgs(argv) {

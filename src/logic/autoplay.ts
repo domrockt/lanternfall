@@ -72,7 +72,9 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
   const evo = focus ? EVOLUTIONS.find((e) => e.baseWeapon === focus!.id) : undefined;
 
   if (offer.kind === "weapon") {
-    if (focus && offer.id === focus.id && !offer.isNew && offer.level < 8) return 1250 + offer.level;
+    // Auch das letzte Fokus-Upgrade (7→8) muss Vorrang vor Passiven haben,
+    // sonst bleibt die Basiswaffe auf 7 und die Evolution kommt nie.
+    if (focus && offer.id === focus.id && !offer.isNew && offer.level <= 8) return 1250 + offer.level;
     // Solange der Fokus-Slot nicht Stufe 8 ist, keine Nebenwaffen nehmen: das
     // verzögert die Evolution und macht Runs unzuverlässig. Stattdessen lieber
     // Passiven (HP/Tempo/Evolutions-Powerup) verbessern.
@@ -84,10 +86,13 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
   }
 
   const level = passiveLevel.get(id) ?? 0;
-  if (evo && evo.passive === id) return offer.isNew ? 900 : 820 + level * 4;
-  // Heart ist nur für Nahkampf-Builds (Flegel-Evolution) wichtig; für Mira
-  // bleibt die Evolutions-Passive (Tome) vor der HP-Reserve.
-  if (id === "heart") return (build?.startingWeapon === "flail" ? 1050 : 850) + (offer.isNew ? 0 : level * 5);
+  // Evolutions-Passive zuerst; für Kael (Flegel + Herz) ist Heart gleichzeitig
+  // Überlebens-Passive und wird deshalb höher gewichtet als bei Mira.
+  if (evo && evo.passive === id) {
+    const base = build?.startingWeapon === "flail" ? 1050 : 900;
+    return offer.isNew ? base : base - 80 + level * 4;
+  }
+  if (id === "heart") return (offer.isNew ? 850 : 750) + level * 5;
   if (id === "boots") return offer.isNew ? 950 : 650 + level * 4;
   if (offer.isNew) return 420 + (PASSIVE_PRIORITY[id] ?? 0);
   return 380 + (PASSIVE_PRIORITY[id] ?? 0) + offer.level * 4;
@@ -148,8 +153,10 @@ export function botDirection(input: BotInput): { x: number; y: number } {
     const nx = dx / d;
     const ny = dy / d;
     if (input.melee) {
-      if (d > 95) { x += nx * 18; y += ny * 18; }
-      else if (d < 72) { x -= nx * 4; y -= ny * 4; }
+      // Nahkampf folgt dem Boss dichter (Boss hält 56–86 px), damit der
+      // Waffensektor trifft; nicht in ihn hineinlaufen.
+      if (d > 80) { x += nx * 40; y += ny * 40; }
+      else if (d < 52) { x -= nx * 4; y -= ny * 4; }
     } else if (d > 260) {
       x += nx * 4;
       y += ny * 4;

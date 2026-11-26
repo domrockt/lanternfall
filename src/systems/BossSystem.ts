@@ -146,16 +146,23 @@ export class BossSystem {
       const ny = dy / dist;
       let mx = 0;
       let my = 0;
-      if (dist > 118) {
+      // M6-Balance: etwas näher am Spieler halten (56–86 px), damit Nahkampf-
+      // Builds (Flegel/Zornpendel) den Boss zuverlässig treffen und die
+      // Kampfdauer nicht zwischen 13 s und 64 s schwankt. Kontakt bleibt selten,
+      // die Gefahr kommt weiter über Mechaniken.
+      if (dist > 86) {
         mx = nx;
         my = ny;
-      } else if (dist < 84) {
+      } else if (dist < 56) {
         mx = -nx;
         my = -ny;
       } else {
         mx = -ny * 0.6;
         my = nx * 0.6;
       }
+      // Grundtempo aus src/data/bosses.ts (<= 90 % Spielertempo). Ausnahme ist
+      // nur die finale Phase des Endbosses: kurzfristiger Verfolgungs-Sprint,
+      // die Gefahr bleibt primär an Mechaniken gebunden.
       const speed = boss.speed * (boss.bossIndex === 5 && phase === 3 ? 1.25 : 1);
       boss.x += mx * speed * dt;
       boss.y += my * speed * dt;

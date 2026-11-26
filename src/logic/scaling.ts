@@ -32,13 +32,12 @@ export function isEliteMinute(minute: number): boolean {
 }
 
 /**
- * Maximal gleichzeitig aktive Gegner (Performance-Deckel). Startet moderat,
- * steigt bis Minute 25 auf 500 (Original-Perf-Ziel) und bleibt dort.
+ * Maximal gleichzeitig aktive Gegner für den normalen Run. M6-Balance:
+ * gleichmäßigerer Anstieg bis Deckel 360 (Minute ~20). Die 500-Gegner-Last
+ * wird weiterhin separat in perf.mjs mit erzwungenen Spawns gemessen.
  */
 export function maxActiveEnemies(elapsedSeconds: number): number {
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
-  // M6-Balance: gleichmäßigerer Anstieg; der Deckel bleibt bei 500, wird durch
-  // die niedrigere Spawnrate aber erst spät erreicht (perf.mjs testet 500 separat).
   return Math.min(360, 100 + minute * 13);
 }
 
