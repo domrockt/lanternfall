@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1024,
+  "next": 1027,
   "cards": [
     {
       "id": 1,
@@ -2319,6 +2319,51 @@
       ],
       "created": "2026-11-26T21:21:02Z",
       "updated": "2026-11-26T21:22:00Z"
+    },
+    {
+      "id": 1024,
+      "title": "M10-input-qa #1 Touch-Matrix: 7 Profile x 15 Checks",
+      "description": "Touch-Regression unabhaengig nachmessen (f26dc4b): 7 Geraeteprofile (Pixel 7, iPhone 13/SE, Galaxy S9+, Nexus 5X, iPad Mini, Galaxy Tab S4), echte CDP-Touch-Events; Menue->Run, Joystick, 2-Finger-Pause, Sperren Pause/Level-up/Truhe, Results, 0 JS-Fehler. Abnahme: 7/7 Profile x 15 Checks mit PASS/FAIL und 0 JS-Fehlern belegt (shots/m10-input-profiles.json|png).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T21:49:15Z",
+          "by": "build",
+          "text": "Merge Lane m10-input-qa, lane #1. 7/7 Profile, 105 Checks: 98 PASS, 7 FAIL (Truhen-Gesten-Sperre F1, identisch auf allen Profilen). 0 JS-Fehler. Belege shots/m10-input-profiles.json + profile-*.png."
+        }
+      ],
+      "created": "2026-11-26T21:48:44Z",
+      "updated": "2026-11-26T21:49:15Z"
+    },
+    {
+      "id": 1025,
+      "title": "M10-input-qa #2 Menue-Gamepad 13/13 PASS",
+      "description": "Titel, CharSelect, Kael-Run, Pause+Optionen, Results je einmal per Gamepad-Snapshot und einmal per Tastatur pruefen; dokumentieren, welche Aktionen ohne Pad erreichbar sind. Abnahme: 13/13 Aktionen mit Pad UND Tastatur PASS, 0 JS-Fehler, Beleg shots/m10-input-menu-gamepad.json|png.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T21:49:15Z",
+          "by": "build",
+          "text": "Merge Lane m10-input-qa, lane #2. Gamepad-Menues 13/13 PASS (Titel/CharSelect/Run/Pause+Optionen/Results je Pad und Tastatur), 0 JS-Fehler. Beleg shots/m10-input-menu-gamepad.json|png."
+        }
+      ],
+      "created": "2026-11-26T21:48:44Z",
+      "updated": "2026-11-26T21:49:15Z"
+    },
+    {
+      "id": 1026,
+      "title": "M10-input-qa #3 Report: FAIL-Liste F1/F2 + Fix-Empfehlung",
+      "description": "docs/lanes/m10-input-qa.md mit vollstaendiger Matrix, FAIL-Liste (Repro, erwartet/ist) und Empfehlung fuer Fix-Lane. Abnahme: 7/7 Profile belegt, 0 unbelegte Aussage, F1 (Truhen-Skip-Zone pointerdown, deterministischer Repro shots/m10-input-chest-repro.json) und F2 (verify-input.mjs CharSelect-Selektor) dokumentiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T21:49:15Z",
+          "by": "build",
+          "text": "Merge Lane m10-input-qa, lane #3. Report docs/lanes/m10-input-qa.md: F1 Truhen-Skip-Zone auf pointerdown (Fix: pointerup bzw. Touch verwerfen, Repro shots/m10-input-chest-repro.json), F2 verify-input.mjs Selektor BRUDER KAEL veraltet. Empfehlung Fix-Lane."
+        }
+      ],
+      "created": "2026-11-26T21:48:44Z",
+      "updated": "2026-11-26T21:49:15Z"
     }
   ]
 }
