@@ -1,0 +1,1605 @@
+{
+  "generatedAt": "2026-11-26T22:31:27.369Z",
+  "baseSha": "252fd98",
+  "summary": {
+    "levelAt30Target": [
+      25,
+      40
+    ],
+    "xpToNextSamples": {
+      "20": 405,
+      "25": 642,
+      "28": 810,
+      "30": 933,
+      "33": 1134,
+      "35": 1280,
+      "40": 1681,
+      "41": 1768,
+      "45": 2138,
+      "47": 2336
+    },
+    "cumulativeToLevel": {
+      "20": 2473,
+      "25": 4949,
+      "28": 7039,
+      "30": 8719,
+      "33": 11715,
+      "35": 14055,
+      "40": 21235,
+      "47": 34905
+    },
+    "avgGemValue": 3.92,
+    "observations": {
+      "minEndLevel": 24,
+      "maxEndLevel": 31,
+      "maxEffectiveBudget": 9652,
+      "maxRawBudget": 12869,
+      "maxPotentialRaw": 39129,
+      "maxCollectedSharePct": 97.5
+    }
+  },
+  "runs": [
+    {
+      "character": "kael",
+      "seed": 101,
+      "outcome": "dawn",
+      "deathMinute": 30.6,
+      "endLevel": 28,
+      "kills": 8438,
+      "xpPct": -25,
+      "effectiveBudget": 7039,
+      "rawBudget": 9385,
+      "potentialRawXpFromKills": 33077,
+      "collectedShareOfPotentialPct": 28.4,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 30,
+          "level": 6,
+          "effectiveXpDelta": 73,
+          "effectiveXpPerKill": 2.43
+        },
+        {
+          "minute": 2,
+          "killDelta": 40,
+          "level": 7,
+          "effectiveXpDelta": 36,
+          "effectiveXpPerKill": 0.9
+        },
+        {
+          "minute": 3,
+          "killDelta": 32,
+          "level": 8,
+          "effectiveXpDelta": 48,
+          "effectiveXpPerKill": 1.5
+        },
+        {
+          "minute": 4,
+          "killDelta": 49,
+          "level": 10,
+          "effectiveXpDelta": 140,
+          "effectiveXpPerKill": 2.86
+        },
+        {
+          "minute": 5,
+          "killDelta": 51,
+          "level": 12,
+          "effectiveXpDelta": 215,
+          "effectiveXpPerKill": 4.22
+        },
+        {
+          "minute": 6,
+          "killDelta": 47,
+          "level": 13,
+          "effectiveXpDelta": 141,
+          "effectiveXpPerKill": 3
+        },
+        {
+          "minute": 7,
+          "killDelta": 84,
+          "level": 14,
+          "effectiveXpDelta": 166,
+          "effectiveXpPerKill": 1.98
+        },
+        {
+          "minute": 8,
+          "killDelta": 91,
+          "level": 15,
+          "effectiveXpDelta": 194,
+          "effectiveXpPerKill": 2.13
+        },
+        {
+          "minute": 9,
+          "killDelta": 118,
+          "level": 16,
+          "effectiveXpDelta": 224,
+          "effectiveXpPerKill": 1.9
+        },
+        {
+          "minute": 10,
+          "killDelta": 78,
+          "level": 17,
+          "effectiveXpDelta": 256,
+          "effectiveXpPerKill": 3.28
+        },
+        {
+          "minute": 11,
+          "killDelta": 245,
+          "level": 19,
+          "effectiveXpDelta": 616,
+          "effectiveXpPerKill": 2.51
+        },
+        {
+          "minute": 12,
+          "killDelta": 116,
+          "level": 21,
+          "effectiveXpDelta": 769,
+          "effectiveXpPerKill": 6.63
+        },
+        {
+          "minute": 13,
+          "killDelta": 111,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 4.04
+        },
+        {
+          "minute": 14,
+          "killDelta": 90,
+          "level": 22,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 15,
+          "killDelta": 141,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 3.5
+        },
+        {
+          "minute": 16,
+          "killDelta": 56,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 17,
+          "killDelta": 50,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 10.8
+        },
+        {
+          "minute": 18,
+          "killDelta": 42,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 19,
+          "killDelta": 45,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 51,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 21,
+          "killDelta": 254,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 2.32
+        },
+        {
+          "minute": 22,
+          "killDelta": 300,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 23,
+          "killDelta": 510,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 24,
+          "killDelta": 698,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 0.92
+        },
+        {
+          "minute": 25,
+          "killDelta": 756,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 26,
+          "killDelta": 817,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 27,
+          "killDelta": 784,
+          "level": 27,
+          "effectiveXpDelta": 696,
+          "effectiveXpPerKill": 0.89
+        },
+        {
+          "minute": 28,
+          "killDelta": 729,
+          "level": 27,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 29,
+          "killDelta": 729,
+          "level": 28,
+          "effectiveXpDelta": 752,
+          "effectiveXpPerKill": 1.03
+        },
+        {
+          "minute": 30,
+          "killDelta": 807,
+          "level": 28,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        }
+      ]
+    },
+    {
+      "character": "kael",
+      "seed": 202,
+      "outcome": "dawn",
+      "deathMinute": 30.6,
+      "endLevel": 29,
+      "kills": 7464,
+      "xpPct": -25,
+      "effectiveBudget": 7849,
+      "rawBudget": 10465,
+      "potentialRawXpFromKills": 29259,
+      "collectedShareOfPotentialPct": 35.8,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 19,
+          "level": 5,
+          "effectiveXpDelta": 47,
+          "effectiveXpPerKill": 2.47
+        },
+        {
+          "minute": 2,
+          "killDelta": 27,
+          "level": 6,
+          "effectiveXpDelta": 26,
+          "effectiveXpPerKill": 0.96
+        },
+        {
+          "minute": 3,
+          "killDelta": 30,
+          "level": 7,
+          "effectiveXpDelta": 36,
+          "effectiveXpPerKill": 1.2
+        },
+        {
+          "minute": 4,
+          "killDelta": 40,
+          "level": 9,
+          "effectiveXpDelta": 110,
+          "effectiveXpPerKill": 2.75
+        },
+        {
+          "minute": 5,
+          "killDelta": 37,
+          "level": 10,
+          "effectiveXpDelta": 78,
+          "effectiveXpPerKill": 2.11
+        },
+        {
+          "minute": 6,
+          "killDelta": 56,
+          "level": 11,
+          "effectiveXpDelta": 97,
+          "effectiveXpPerKill": 1.73
+        },
+        {
+          "minute": 7,
+          "killDelta": 47,
+          "level": 12,
+          "effectiveXpDelta": 118,
+          "effectiveXpPerKill": 2.51
+        },
+        {
+          "minute": 8,
+          "killDelta": 100,
+          "level": 14,
+          "effectiveXpDelta": 307,
+          "effectiveXpPerKill": 3.07
+        },
+        {
+          "minute": 9,
+          "killDelta": 91,
+          "level": 15,
+          "effectiveXpDelta": 194,
+          "effectiveXpPerKill": 2.13
+        },
+        {
+          "minute": 10,
+          "killDelta": 105,
+          "level": 15,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 11,
+          "killDelta": 254,
+          "level": 17,
+          "effectiveXpDelta": 480,
+          "effectiveXpPerKill": 1.89
+        },
+        {
+          "minute": 12,
+          "killDelta": 283,
+          "level": 18,
+          "effectiveXpDelta": 290,
+          "effectiveXpPerKill": 1.02
+        },
+        {
+          "minute": 13,
+          "killDelta": 358,
+          "level": 20,
+          "effectiveXpDelta": 690,
+          "effectiveXpPerKill": 1.93
+        },
+        {
+          "minute": 14,
+          "killDelta": 106,
+          "level": 22,
+          "effectiveXpDelta": 853,
+          "effectiveXpPerKill": 8.05
+        },
+        {
+          "minute": 15,
+          "killDelta": 111,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 4.44
+        },
+        {
+          "minute": 16,
+          "killDelta": 80,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 17,
+          "killDelta": 84,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 6.43
+        },
+        {
+          "minute": 18,
+          "killDelta": 61,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 19,
+          "killDelta": 85,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 95,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 6.21
+        },
+        {
+          "minute": 21,
+          "killDelta": 261,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 22,
+          "killDelta": 250,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 2.57
+        },
+        {
+          "minute": 23,
+          "killDelta": 297,
+          "level": 27,
+          "effectiveXpDelta": 696,
+          "effectiveXpPerKill": 2.34
+        },
+        {
+          "minute": 24,
+          "killDelta": 343,
+          "level": 28,
+          "effectiveXpDelta": 752,
+          "effectiveXpPerKill": 2.19
+        },
+        {
+          "minute": 25,
+          "killDelta": 421,
+          "level": 28,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 26,
+          "killDelta": 477,
+          "level": 28,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 27,
+          "killDelta": 443,
+          "level": 28,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 28,
+          "killDelta": 587,
+          "level": 28,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 29,
+          "killDelta": 901,
+          "level": 28,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 30,
+          "killDelta": 866,
+          "level": 29,
+          "effectiveXpDelta": 810,
+          "effectiveXpPerKill": 0.94
+        }
+      ]
+    },
+    {
+      "character": "kael",
+      "seed": 303,
+      "outcome": "dawn",
+      "deathMinute": 30.5,
+      "endLevel": 29,
+      "kills": 6227,
+      "xpPct": -25,
+      "effectiveBudget": 7849,
+      "rawBudget": 10465,
+      "potentialRawXpFromKills": 24410,
+      "collectedShareOfPotentialPct": 42.9,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 28,
+          "level": 5,
+          "effectiveXpDelta": 47,
+          "effectiveXpPerKill": 1.68
+        },
+        {
+          "minute": 2,
+          "killDelta": 27,
+          "level": 7,
+          "effectiveXpDelta": 62,
+          "effectiveXpPerKill": 2.3
+        },
+        {
+          "minute": 3,
+          "killDelta": 54,
+          "level": 9,
+          "effectiveXpDelta": 110,
+          "effectiveXpPerKill": 2.04
+        },
+        {
+          "minute": 4,
+          "killDelta": 74,
+          "level": 11,
+          "effectiveXpDelta": 175,
+          "effectiveXpPerKill": 2.36
+        },
+        {
+          "minute": 5,
+          "killDelta": 50,
+          "level": 12,
+          "effectiveXpDelta": 118,
+          "effectiveXpPerKill": 2.36
+        },
+        {
+          "minute": 6,
+          "killDelta": 79,
+          "level": 14,
+          "effectiveXpDelta": 307,
+          "effectiveXpPerKill": 3.89
+        },
+        {
+          "minute": 7,
+          "killDelta": 110,
+          "level": 16,
+          "effectiveXpDelta": 418,
+          "effectiveXpPerKill": 3.8
+        },
+        {
+          "minute": 8,
+          "killDelta": 91,
+          "level": 17,
+          "effectiveXpDelta": 256,
+          "effectiveXpPerKill": 2.81
+        },
+        {
+          "minute": 9,
+          "killDelta": 112,
+          "level": 18,
+          "effectiveXpDelta": 290,
+          "effectiveXpPerKill": 2.59
+        },
+        {
+          "minute": 10,
+          "killDelta": 125,
+          "level": 19,
+          "effectiveXpDelta": 326,
+          "effectiveXpPerKill": 2.61
+        },
+        {
+          "minute": 11,
+          "killDelta": 195,
+          "level": 21,
+          "effectiveXpDelta": 769,
+          "effectiveXpPerKill": 3.94
+        },
+        {
+          "minute": 12,
+          "killDelta": 91,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 4.92
+        },
+        {
+          "minute": 13,
+          "killDelta": 121,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 4.07
+        },
+        {
+          "minute": 14,
+          "killDelta": 122,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 15,
+          "killDelta": 86,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 6.28
+        },
+        {
+          "minute": 16,
+          "killDelta": 84,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 17,
+          "killDelta": 74,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 18,
+          "killDelta": 78,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 7.56
+        },
+        {
+          "minute": 19,
+          "killDelta": 91,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 89,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 7.21
+        },
+        {
+          "minute": 21,
+          "killDelta": 151,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 22,
+          "killDelta": 258,
+          "level": 27,
+          "effectiveXpDelta": 696,
+          "effectiveXpPerKill": 2.7
+        },
+        {
+          "minute": 23,
+          "killDelta": 222,
+          "level": 28,
+          "effectiveXpDelta": 752,
+          "effectiveXpPerKill": 3.39
+        },
+        {
+          "minute": 24,
+          "killDelta": 416,
+          "level": 29,
+          "effectiveXpDelta": 810,
+          "effectiveXpPerKill": 1.95
+        },
+        {
+          "minute": 25,
+          "killDelta": 567,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 26,
+          "killDelta": 497,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 27,
+          "killDelta": 316,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 28,
+          "killDelta": 516,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 29,
+          "killDelta": 568,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 30,
+          "killDelta": 509,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        }
+      ]
+    },
+    {
+      "character": "kael",
+      "seed": 404,
+      "outcome": "dawn",
+      "deathMinute": 30.5,
+      "endLevel": 26,
+      "kills": 9256,
+      "xpPct": -25,
+      "effectiveBudget": 5591,
+      "rawBudget": 7455,
+      "potentialRawXpFromKills": 36284,
+      "collectedShareOfPotentialPct": 20.5,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 15,
+          "level": 3,
+          "effectiveXpDelta": 17,
+          "effectiveXpPerKill": 1.13
+        },
+        {
+          "minute": 2,
+          "killDelta": 21,
+          "level": 5,
+          "effectiveXpDelta": 30,
+          "effectiveXpPerKill": 1.43
+        },
+        {
+          "minute": 3,
+          "killDelta": 28,
+          "level": 6,
+          "effectiveXpDelta": 26,
+          "effectiveXpPerKill": 0.93
+        },
+        {
+          "minute": 4,
+          "killDelta": 54,
+          "level": 9,
+          "effectiveXpDelta": 146,
+          "effectiveXpPerKill": 2.7
+        },
+        {
+          "minute": 5,
+          "killDelta": 47,
+          "level": 10,
+          "effectiveXpDelta": 78,
+          "effectiveXpPerKill": 1.66
+        },
+        {
+          "minute": 6,
+          "killDelta": 38,
+          "level": 10,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 7,
+          "killDelta": 78,
+          "level": 12,
+          "effectiveXpDelta": 215,
+          "effectiveXpPerKill": 2.76
+        },
+        {
+          "minute": 8,
+          "killDelta": 67,
+          "level": 13,
+          "effectiveXpDelta": 141,
+          "effectiveXpPerKill": 2.1
+        },
+        {
+          "minute": 9,
+          "killDelta": 72,
+          "level": 14,
+          "effectiveXpDelta": 166,
+          "effectiveXpPerKill": 2.31
+        },
+        {
+          "minute": 10,
+          "killDelta": 64,
+          "level": 15,
+          "effectiveXpDelta": 194,
+          "effectiveXpPerKill": 3.03
+        },
+        {
+          "minute": 11,
+          "killDelta": 359,
+          "level": 17,
+          "effectiveXpDelta": 480,
+          "effectiveXpPerKill": 1.34
+        },
+        {
+          "minute": 12,
+          "killDelta": 128,
+          "level": 19,
+          "effectiveXpDelta": 616,
+          "effectiveXpPerKill": 4.81
+        },
+        {
+          "minute": 13,
+          "killDelta": 88,
+          "level": 20,
+          "effectiveXpDelta": 364,
+          "effectiveXpPerKill": 4.14
+        },
+        {
+          "minute": 14,
+          "killDelta": 108,
+          "level": 21,
+          "effectiveXpDelta": 405,
+          "effectiveXpPerKill": 3.75
+        },
+        {
+          "minute": 15,
+          "killDelta": 92,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 4.87
+        },
+        {
+          "minute": 16,
+          "killDelta": 92,
+          "level": 22,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 17,
+          "killDelta": 56,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 8.8
+        },
+        {
+          "minute": 18,
+          "killDelta": 46,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 19,
+          "killDelta": 68,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 55,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 21,
+          "killDelta": 222,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 2.43
+        },
+        {
+          "minute": 22,
+          "killDelta": 352,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 23,
+          "killDelta": 762,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 0.77
+        },
+        {
+          "minute": 24,
+          "killDelta": 1001,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 25,
+          "killDelta": 841,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 26,
+          "killDelta": 837,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 27,
+          "killDelta": 942,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 0.68
+        },
+        {
+          "minute": 28,
+          "killDelta": 823,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 29,
+          "killDelta": 860,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 30,
+          "killDelta": 591,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        }
+      ]
+    },
+    {
+      "character": "kael",
+      "seed": 505,
+      "outcome": "death",
+      "deathMinute": 15.3,
+      "endLevel": 24,
+      "kills": 1521,
+      "xpPct": -25,
+      "effectiveBudget": 4359,
+      "rawBudget": 5812,
+      "potentialRawXpFromKills": 5962,
+      "collectedShareOfPotentialPct": 97.5,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 24,
+          "level": 6,
+          "effectiveXpDelta": 73,
+          "effectiveXpPerKill": 3.04
+        },
+        {
+          "minute": 2,
+          "killDelta": 35,
+          "level": 8,
+          "effectiveXpDelta": 84,
+          "effectiveXpPerKill": 2.4
+        },
+        {
+          "minute": 3,
+          "killDelta": 34,
+          "level": 10,
+          "effectiveXpDelta": 140,
+          "effectiveXpPerKill": 4.12
+        },
+        {
+          "minute": 4,
+          "killDelta": 55,
+          "level": 11,
+          "effectiveXpDelta": 97,
+          "effectiveXpPerKill": 1.76
+        },
+        {
+          "minute": 5,
+          "killDelta": 49,
+          "level": 13,
+          "effectiveXpDelta": 259,
+          "effectiveXpPerKill": 5.29
+        },
+        {
+          "minute": 6,
+          "killDelta": 65,
+          "level": 14,
+          "effectiveXpDelta": 166,
+          "effectiveXpPerKill": 2.55
+        },
+        {
+          "minute": 7,
+          "killDelta": 75,
+          "level": 15,
+          "effectiveXpDelta": 194,
+          "effectiveXpPerKill": 2.59
+        },
+        {
+          "minute": 8,
+          "killDelta": 127,
+          "level": 16,
+          "effectiveXpDelta": 224,
+          "effectiveXpPerKill": 1.76
+        },
+        {
+          "minute": 9,
+          "killDelta": 79,
+          "level": 18,
+          "effectiveXpDelta": 546,
+          "effectiveXpPerKill": 6.91
+        },
+        {
+          "minute": 10,
+          "killDelta": 79,
+          "level": 18,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 11,
+          "killDelta": 203,
+          "level": 20,
+          "effectiveXpDelta": 690,
+          "effectiveXpPerKill": 3.4
+        },
+        {
+          "minute": 12,
+          "killDelta": 140,
+          "level": 21,
+          "effectiveXpDelta": 405,
+          "effectiveXpPerKill": 2.89
+        },
+        {
+          "minute": 13,
+          "killDelta": 149,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 3.01
+        },
+        {
+          "minute": 14,
+          "killDelta": 143,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 3.45
+        },
+        {
+          "minute": 15,
+          "killDelta": 219,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 2.47
+        }
+      ]
+    },
+    {
+      "character": "kael",
+      "seed": 606,
+      "outcome": "dawn",
+      "deathMinute": 30.7,
+      "endLevel": 31,
+      "kills": 9982,
+      "xpPct": -25,
+      "effectiveBudget": 9652,
+      "rawBudget": 12869,
+      "potentialRawXpFromKills": 39129,
+      "collectedShareOfPotentialPct": 32.9,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 19,
+          "level": 5,
+          "effectiveXpDelta": 47,
+          "effectiveXpPerKill": 2.47
+        },
+        {
+          "minute": 2,
+          "killDelta": 45,
+          "level": 8,
+          "effectiveXpDelta": 110,
+          "effectiveXpPerKill": 2.44
+        },
+        {
+          "minute": 3,
+          "killDelta": 37,
+          "level": 9,
+          "effectiveXpDelta": 62,
+          "effectiveXpPerKill": 1.68
+        },
+        {
+          "minute": 4,
+          "killDelta": 43,
+          "level": 11,
+          "effectiveXpDelta": 175,
+          "effectiveXpPerKill": 4.07
+        },
+        {
+          "minute": 5,
+          "killDelta": 53,
+          "level": 12,
+          "effectiveXpDelta": 118,
+          "effectiveXpPerKill": 2.23
+        },
+        {
+          "minute": 6,
+          "killDelta": 55,
+          "level": 13,
+          "effectiveXpDelta": 141,
+          "effectiveXpPerKill": 2.56
+        },
+        {
+          "minute": 7,
+          "killDelta": 102,
+          "level": 15,
+          "effectiveXpDelta": 360,
+          "effectiveXpPerKill": 3.53
+        },
+        {
+          "minute": 8,
+          "killDelta": 72,
+          "level": 15,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 9,
+          "killDelta": 45,
+          "level": 15,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 10,
+          "killDelta": 65,
+          "level": 16,
+          "effectiveXpDelta": 224,
+          "effectiveXpPerKill": 3.45
+        },
+        {
+          "minute": 11,
+          "killDelta": 275,
+          "level": 17,
+          "effectiveXpDelta": 256,
+          "effectiveXpPerKill": 0.93
+        },
+        {
+          "minute": 12,
+          "killDelta": 264,
+          "level": 19,
+          "effectiveXpDelta": 616,
+          "effectiveXpPerKill": 2.33
+        },
+        {
+          "minute": 13,
+          "killDelta": 270,
+          "level": 20,
+          "effectiveXpDelta": 364,
+          "effectiveXpPerKill": 1.35
+        },
+        {
+          "minute": 14,
+          "killDelta": 326,
+          "level": 21,
+          "effectiveXpDelta": 405,
+          "effectiveXpPerKill": 1.24
+        },
+        {
+          "minute": 15,
+          "killDelta": 265,
+          "level": 21,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 16,
+          "killDelta": 134,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 3.34
+        },
+        {
+          "minute": 17,
+          "killDelta": 78,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 6.32
+        },
+        {
+          "minute": 18,
+          "killDelta": 57,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 19,
+          "killDelta": 48,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 63,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 8.57
+        },
+        {
+          "minute": 21,
+          "killDelta": 210,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 22,
+          "killDelta": 235,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 2.51
+        },
+        {
+          "minute": 23,
+          "killDelta": 409,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 24,
+          "killDelta": 694,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 0.93
+        },
+        {
+          "minute": 25,
+          "killDelta": 744,
+          "level": 27,
+          "effectiveXpDelta": 696,
+          "effectiveXpPerKill": 0.94
+        },
+        {
+          "minute": 26,
+          "killDelta": 821,
+          "level": 27,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 27,
+          "killDelta": 1001,
+          "level": 28,
+          "effectiveXpDelta": 752,
+          "effectiveXpPerKill": 0.75
+        },
+        {
+          "minute": 28,
+          "killDelta": 1075,
+          "level": 29,
+          "effectiveXpDelta": 810,
+          "effectiveXpPerKill": 0.75
+        },
+        {
+          "minute": 29,
+          "killDelta": 820,
+          "level": 29,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 30,
+          "killDelta": 988,
+          "level": 30,
+          "effectiveXpDelta": 870,
+          "effectiveXpPerKill": 0.88
+        }
+      ]
+    },
+    {
+      "character": "mira",
+      "seed": 101,
+      "outcome": "death",
+      "deathMinute": 20.7,
+      "endLevel": 26,
+      "kills": 1549,
+      "xpPct": 0,
+      "effectiveBudget": 5591,
+      "rawBudget": 5591,
+      "potentialRawXpFromKills": 6072,
+      "collectedShareOfPotentialPct": 92.1,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 26,
+          "level": 4,
+          "effectiveXpDelta": 29,
+          "effectiveXpPerKill": 1.12
+        },
+        {
+          "minute": 2,
+          "killDelta": 35,
+          "level": 6,
+          "effectiveXpDelta": 44,
+          "effectiveXpPerKill": 1.26
+        },
+        {
+          "minute": 3,
+          "killDelta": 32,
+          "level": 9,
+          "effectiveXpDelta": 146,
+          "effectiveXpPerKill": 4.56
+        },
+        {
+          "minute": 4,
+          "killDelta": 57,
+          "level": 11,
+          "effectiveXpDelta": 175,
+          "effectiveXpPerKill": 3.07
+        },
+        {
+          "minute": 5,
+          "killDelta": 36,
+          "level": 12,
+          "effectiveXpDelta": 118,
+          "effectiveXpPerKill": 3.28
+        },
+        {
+          "minute": 6,
+          "killDelta": 80,
+          "level": 13,
+          "effectiveXpDelta": 141,
+          "effectiveXpPerKill": 1.76
+        },
+        {
+          "minute": 7,
+          "killDelta": 94,
+          "level": 15,
+          "effectiveXpDelta": 360,
+          "effectiveXpPerKill": 3.83
+        },
+        {
+          "minute": 8,
+          "killDelta": 104,
+          "level": 17,
+          "effectiveXpDelta": 480,
+          "effectiveXpPerKill": 4.62
+        },
+        {
+          "minute": 9,
+          "killDelta": 93,
+          "level": 18,
+          "effectiveXpDelta": 290,
+          "effectiveXpPerKill": 3.12
+        },
+        {
+          "minute": 10,
+          "killDelta": 125,
+          "level": 20,
+          "effectiveXpDelta": 690,
+          "effectiveXpPerKill": 5.52
+        },
+        {
+          "minute": 11,
+          "killDelta": 145,
+          "level": 21,
+          "effectiveXpDelta": 405,
+          "effectiveXpPerKill": 2.79
+        },
+        {
+          "minute": 12,
+          "killDelta": 70,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 6.4
+        },
+        {
+          "minute": 13,
+          "killDelta": 70,
+          "level": 22,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 14,
+          "killDelta": 73,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 6.75
+        },
+        {
+          "minute": 15,
+          "killDelta": 83,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 6.51
+        },
+        {
+          "minute": 16,
+          "killDelta": 74,
+          "level": 24,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 17,
+          "killDelta": 74,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 7.97
+        },
+        {
+          "minute": 18,
+          "killDelta": 81,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 19,
+          "killDelta": 63,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 73,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 8.79
+        }
+      ]
+    },
+    {
+      "character": "mira",
+      "seed": 202,
+      "outcome": "death",
+      "deathMinute": 21.3,
+      "endLevel": 26,
+      "kills": 1847,
+      "xpPct": 0,
+      "effectiveBudget": 5591,
+      "rawBudget": 5591,
+      "potentialRawXpFromKills": 7240,
+      "collectedShareOfPotentialPct": 77.2,
+      "perMinute": [
+        {
+          "minute": 1,
+          "killDelta": 19,
+          "level": 5,
+          "effectiveXpDelta": 47,
+          "effectiveXpPerKill": 2.47
+        },
+        {
+          "minute": 2,
+          "killDelta": 29,
+          "level": 6,
+          "effectiveXpDelta": 26,
+          "effectiveXpPerKill": 0.9
+        },
+        {
+          "minute": 3,
+          "killDelta": 43,
+          "level": 7,
+          "effectiveXpDelta": 36,
+          "effectiveXpPerKill": 0.84
+        },
+        {
+          "minute": 4,
+          "killDelta": 76,
+          "level": 12,
+          "effectiveXpDelta": 403,
+          "effectiveXpPerKill": 5.3
+        },
+        {
+          "minute": 5,
+          "killDelta": 59,
+          "level": 14,
+          "effectiveXpDelta": 307,
+          "effectiveXpPerKill": 5.2
+        },
+        {
+          "minute": 6,
+          "killDelta": 104,
+          "level": 15,
+          "effectiveXpDelta": 194,
+          "effectiveXpPerKill": 1.87
+        },
+        {
+          "minute": 7,
+          "killDelta": 106,
+          "level": 16,
+          "effectiveXpDelta": 224,
+          "effectiveXpPerKill": 2.11
+        },
+        {
+          "minute": 8,
+          "killDelta": 71,
+          "level": 17,
+          "effectiveXpDelta": 256,
+          "effectiveXpPerKill": 3.61
+        },
+        {
+          "minute": 9,
+          "killDelta": 75,
+          "level": 18,
+          "effectiveXpDelta": 290,
+          "effectiveXpPerKill": 3.87
+        },
+        {
+          "minute": 10,
+          "killDelta": 136,
+          "level": 19,
+          "effectiveXpDelta": 326,
+          "effectiveXpPerKill": 2.4
+        },
+        {
+          "minute": 11,
+          "killDelta": 156,
+          "level": 20,
+          "effectiveXpDelta": 364,
+          "effectiveXpPerKill": 2.33
+        },
+        {
+          "minute": 12,
+          "killDelta": 96,
+          "level": 21,
+          "effectiveXpDelta": 405,
+          "effectiveXpPerKill": 4.22
+        },
+        {
+          "minute": 13,
+          "killDelta": 74,
+          "level": 22,
+          "effectiveXpDelta": 448,
+          "effectiveXpPerKill": 6.05
+        },
+        {
+          "minute": 14,
+          "killDelta": 72,
+          "level": 22,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 15,
+          "killDelta": 76,
+          "level": 23,
+          "effectiveXpDelta": 493,
+          "effectiveXpPerKill": 6.49
+        },
+        {
+          "minute": 16,
+          "killDelta": 75,
+          "level": 23,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 17,
+          "killDelta": 78,
+          "level": 24,
+          "effectiveXpDelta": 540,
+          "effectiveXpPerKill": 6.92
+        },
+        {
+          "minute": 18,
+          "killDelta": 77,
+          "level": 25,
+          "effectiveXpDelta": 590,
+          "effectiveXpPerKill": 7.66
+        },
+        {
+          "minute": 19,
+          "killDelta": 86,
+          "level": 25,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        },
+        {
+          "minute": 20,
+          "killDelta": 70,
+          "level": 26,
+          "effectiveXpDelta": 642,
+          "effectiveXpPerKill": 9.17
+        },
+        {
+          "minute": 21,
+          "killDelta": 165,
+          "level": 26,
+          "effectiveXpDelta": 0,
+          "effectiveXpPerKill": 0
+        }
+      ]
+    }
+  ]
+}
