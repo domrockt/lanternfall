@@ -52,3 +52,24 @@ src/scenes/Run.ts Zeile 1066 waehlt Gegner-Frames mit Math.min(2, frames.length)
 - Banshee: Traenenstreifen; Wraith: zerbrochene Kette als Markenzeichen.
 - npx tsc --noEmit gruen, npm run build gruen, npm test 175 gruen,
   0 JS-Fehler im In-Game-Shot. Belege: shots/m9-art-enemies-02-before/-after/-ing.png.
+
+## #299 Abnahme: Tier 2-3
+
+- Maschinenpruefung (~/tmp/m9-frames-check.py`): 30 Keys, alle 4 Frames,
+  keine identischen F0==F2 oder F1==F3, 0 Off-Palette-Farben, 30 eindeutige Silhouetten.
+  Tier 2-3-Kontaktboegen: shots/m9-art-enemies-tier2-1.png, tier2-2.png,
+  tier3-1.png, tier3-2.png (4 Frames je Zeile, 6x).
+- Vorher/Nachher: shots/m_length/m9-art-enemies-02-before.png (alte 2-4 Frames) vs.
+  02-after.png (4 echte Laufphasen) + 02-ing.png In-Game (0 JS-Fehler).
+- art-director-Urteil Tier 2-3: PASS, Note 4,5 (4 Frames unterscheidbar: Beine/Saum/
+  Wolf-Schwanz; 3-Ton-Sch + Kontur; Pilzbomber klar als Flammenpilz statt grauer Kugel).
+- npx tsc --noEmit gruen, npm run build gruen (2,6 s), npm test 175/175 gruen.
+
+## Run-Frame-Hinweis
+
+In-Game zeigt src/scenes/Run.ts:1066 weiter mit `Math.min(2, frames.length)` nur F0/F1.
+Deshalb belegen die Kontaktboegen die 4 Lauf-Frames; ein Einzeiler-Antrag (2x) in
+/home/ai/games/.dispatch/requests.md an den Disponenten (Run.ts gehoert zur m8-display-Claim,
+die Lane darf fremde Dateก่อนArtist else nicht schreiben). Bis zur Antwort bleibt #301 offen.
+
+ offen.

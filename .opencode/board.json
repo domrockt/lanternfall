@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 618,
+  "next": 718,
   "cards": [
     {
       "id": 1,
@@ -1801,17 +1801,22 @@
       "id": 298,
       "title": "m9-art-enemies-01 Tier 0-1: 4 Lauf-Frames + Silhouetten",
       "description": "Owner pixel-artist, Kontrolle art-director + reviewer. 12 Gegner Stufe 0-1: bog_rat, wisp, mudling, crow, bogzombie, toad, skeleton, bat, ghoul, witchling, slime, scarecrow. Abnahme: 4 echte Frames (F1 != F3), eindeutige Silhouetten, 3-Ton-Shading + 1px Kontur, 0 Off-Palette. Vorher/Nachher-Sheet shots/m9-art-enemies-01-*.png 4x. art-director PASS Note >=4.5 in docs/lanes/m9-art-enemies.md. build + Tests gruen.",
-      "column": "doing",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T12:29:38Z",
           "by": "build",
           "text": "todo \u2192 doing: 4 Lauf-Frames + Schattierung fuer 12 Gegner Stufe 0-1; tsc/build/175 Tests gruen, 0 JS-Fehler In-Game-Shot; art-director-Urteil offen."
+        },
+        {
+          "at": "2026-11-26T13:52:16Z",
+          "by": "build",
+          "text": "doing \u2192 done: Abnahme: Tier 0-1 Kontaktboegen, 4 Lauf-Frames, In-Game 165 Gegner 0 JS-Fehler, build+175 Tests gruen, art-director PASS 4,5. Commit 7170e47 + Nachtrag c8b2c33."
         }
       ],
       "created": "2026-11-26T12:07:53Z",
-      "updated": "2026-11-26T12:29:38Z"
+      "updated": "2026-11-26T13:52:16Z"
     },
     {
       "id": 299,
