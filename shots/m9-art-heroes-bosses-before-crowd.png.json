@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:5721/?debug=1",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bog_rat",
+        70
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "skeleton",
+        36
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "wisp",
+        30
+      ]
+    }
+  ],
+  "out": "shots/m9-art-heroes-bosses-before-crowd.png",
+  "gif": null,
+  "jsErrors": []
+}
