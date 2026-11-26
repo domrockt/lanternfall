@@ -50,3 +50,19 @@ Tests  1 failed | 5 passed (6)
 Die übrigen 5 Tests waren schon grün: die Hazard-Umsetzung trifft korrekt erst
 nach Ablauf der Warnung und genau einmal pro Instanz. Der Fehler lag allein in
 den zu kurzen Angriffsdaten.
+
+## 3. Fix — Vorher/Nachher der Warnzeiten
+
+Nur `src/logic/bosses.ts` (Angriffsdaten) geändert. `interval`, `damageMul`,
+Boss-HP und Spawnzeiten blieben unverändert; kein DPS-Ausgleich über Schaden.
+`src/systems/Hazards.ts` war bereits korrekt (Zeichnung der Warnfläche + Treffer
+erst nach `warn <= 0`) und wurde durch den Test bestätigt, daher keine Änderung.
+
+| Boss | Phase | Angriff | Warnzeit vorher | Warnzeit nachher |
+|---|---|---|---|---|
+| 1 Knochenfürst | 1 | bone_boomerang | 550 ms | **600 ms** |
+| 4 Hexenzirkel | 1 | teleport | 350 ms | **600 ms** |
+| 5 Hohler König | 1 | bone_boomerang | 500 ms | **600 ms** |
+
+Ergebnis: alle 18 Angriffe ≥ 600 ms; `npx vitest run tests/hazard-telegraph.test.ts`
+→ 6/6 grün.
