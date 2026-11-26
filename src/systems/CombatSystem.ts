@@ -146,7 +146,7 @@ export class CombatSystem {
 
   /** effectiveRadius mit View-Faktor (nur Laufzeit, Tests bleiben rein). */
   private effRadius(base: number, agg: AggregateStats): number {
-    return this.effRadius(base, agg) * this.rangeScale;
+    return effectiveRadius(base, agg) * this.rangeScale;
   }
 
   setLod(lod: LodState): void {
