@@ -2369,10 +2369,21 @@
       "id": 1498,
       "title": "m10-levelup-offers-01 Audit generateOffers 30 Seeds x 4 Builds",
       "description": "generateOffers mit 30 Seeds und 4 Build-Zustaenden (leer; 5 Waffen; 6 Waffen ohne Passiv; 6 Waffen Stufe 8 + 6 Passives). JSON shots/m10-levelup-offers-audit.json: Anzahl je Aufruf, doppelte IDs, Evolution ohne Voraussetzung, fehlende Evolution trotz Voraussetzung. Befund docs/lanes/m10-levelup-offers.md. Abnahme: JSON + Doku, Zahlen belegt.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T22:39:31Z",
+          "by": "build",
+          "text": "todo → review: Commit d6eaba5 (#1498/#01): Audit 30 Seeds x 5 Builds, JSON shots/m10-levelup-offers-audit.json, Befund docs/lanes/m10-levelup-offers.md. 150 Aufrufe: 0 Duplikate, 0 unowned upgrades, 60x fehlende Evolution trotz erfuellter Voraussetzung, 0 Evolution-Angebote gesamt."
+        },
+        {
+          "at": "2026-11-26T22:39:31Z",
+          "by": "build",
+          "text": "review → done: Audit abgenommen; Beleg im Commit, keine offenen Punkte."
+        }
+      ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T22:28:58Z"
+      "updated": "2026-11-26T22:39:31Z"
     },
     {
       "id": 1499,
@@ -2387,10 +2398,16 @@
       "id": 1500,
       "title": "m10-levelup-offers-03 Fix in levelup.ts",
       "description": "Kleinste Aenderung in src/logic/levelup.ts (ggf. evolution.ts/LevelUpSystem): Evolution-Angebote nur bei Basiswaffe Stufe 8 + passendem Powerup >=1, max. 1, keine Duplikate, 3 Angebote falls Pool reicht. Keine Balance-/Waffendaten. Abnahme: Tests gruen, tsc gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T23:00:52Z",
+          "by": "build",
+          "text": "todo → doing: Fix levelup.ts + chest-Opt-out evolution.ts; tsc gruen, 201 Tests gruen."
+        }
+      ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T22:28:58Z"
+      "updated": "2026-11-26T23:00:52Z"
     },
     {
       "id": 1501,

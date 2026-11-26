@@ -87,7 +87,33 @@ fehlenden Evolutionen (Audit-Befund Karte 01).
 
 ## Karte 03 — Fix
 
-_(folgt)_
+Änderung ausschließlich in `src/logic/levelup.ts` (keine Waffen-/Balancedaten, keine neuen Inhalte):
+
+- lokale `eligibleEvolutions()`-Regel (Basiswaffe Stufe 8, passendes Powerup ≥ 1, Evolution nicht im Slot,
+  Evolutionswaffe implementiert) — identisch zu `evolvableList` in `evolution.ts`, aber ohne Zyklus-Import.
+- Wird eine Evolution einlösbar, wird **genau eine** (erster Treffer aus `EVOLUTIONS`) fest als Angebot
+  vorangestellt; der Rest wird wie bisher gewichtet gezogen. Dadurch max. 1 Evolution und keine Duplikate.
+- Das Evolutionsangebot läuft als `kind: "weapon"` mit Evolutions-ID, `isNew: true`, Stufe 8. Damit bleibt
+  die UI unverändert (`iconKeyForOffer` erkennt Evolutionswaffen) und `applyOffer` → `addWeapon` ersetzt die
+  Basiswaffe im selben Slot. Kein `Run.ts`-Edit nötig.
+- `tests/logic.test.ts`: alter Fall „alles maxed → keine Angebote“ an die neue, korrekte Semantik angepasst
+  (alles maxed + 6 einlösbare Evolutionen → genau 1 Evolutionsangebot, nicht 0).
+
+**Audit Nachher** (`shots/m10-levelup-offers-audit-after.json`, gleiche Methode/Seeds/Builds):
+
+| Metrik | Vorher | Nachher |
+|---|---|---|
+| Anzahl-Verteilung | `3`: 120, `0`: 30 | `3`: 120, `1`: 30 |
+| doppelte IDs | 0 | 0 |
+| Evolution ohne Voraussetzung | 0 | 0 |
+| fehlende Evolution trotz Voraussetzung | **60** | **0** |
+| Upgrade nicht besessener Waffe | 0 | 0 |
+| falsche Upgrade-Stufe | 0 | 0 |
+| Evolution-Angebote insgesamt | 0 | **60** |
+| Aufrufe mit >1 Evolution | – | **0** |
+
+Die 30 Aufrufe mit nur 1 Angebot sind die dokumentierte Ausnahme „Pool erschöpft“ (alle 6 Waffen Stufe 8,
+alle 6 Powerups Stufe 5): Es gibt keine Upgrades/neuen Items mehr, nur die einlösbare Evolution.
 
 ## Karte 04 — Beleg + Abnahme
 

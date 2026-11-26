@@ -1,0 +1,2713 @@
+{
+  "generatedAt": "2026-11-26T22:53:58.961Z",
+  "baseSha": "55c930690fb5d5391b794bb6a5badc66b8365e4c",
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "builds": [
+    {
+      "name": "leer",
+      "weapons": [],
+      "passives": [],
+      "eligibleEvolutions": []
+    },
+    {
+      "name": "5-waffen",
+      "weapons": [
+        {
+          "id": "ember",
+          "level": 3
+        },
+        {
+          "id": "flail",
+          "level": 2
+        },
+        {
+          "id": "frost",
+          "level": 4
+        },
+        {
+          "id": "thorn",
+          "level": 1
+        },
+        {
+          "id": "storm",
+          "level": 5
+        }
+      ],
+      "passives": [
+        {
+          "id": "boots",
+          "level": 2
+        },
+        {
+          "id": "heart",
+          "level": 1
+        }
+      ],
+      "eligibleEvolutions": []
+    },
+    {
+      "name": "6-waffen-ohne-passiv",
+      "weapons": [
+        {
+          "id": "ember",
+          "level": 4
+        },
+        {
+          "id": "flail",
+          "level": 4
+        },
+        {
+          "id": "frost",
+          "level": 4
+        },
+        {
+          "id": "thorn",
+          "level": 4
+        },
+        {
+          "id": "storm",
+          "level": 4
+        },
+        {
+          "id": "lantern",
+          "level": 4
+        }
+      ],
+      "passives": [],
+      "eligibleEvolutions": []
+    },
+    {
+      "name": "6-waffen-stufe8-6-passives",
+      "weapons": [
+        {
+          "id": "ember",
+          "level": 8
+        },
+        {
+          "id": "flail",
+          "level": 8
+        },
+        {
+          "id": "frost",
+          "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "passives": [
+        {
+          "id": "boots",
+          "level": 2
+        },
+        {
+          "id": "tome",
+          "level": 2
+        },
+        {
+          "id": "heart",
+          "level": 2
+        },
+        {
+          "id": "charm",
+          "level": 2
+        },
+        {
+          "id": "whetstone",
+          "level": 2
+        },
+        {
+          "id": "hourglass",
+          "level": 2
+        }
+      ],
+      "eligibleEvolutions": [
+        "phoenix",
+        "wrath_pendulum",
+        "eternal_winter",
+        "thorn_storm",
+        "thunder_seal",
+        "soul_beacon"
+      ]
+    },
+    {
+      "name": "alles-maxed-plus-evolution",
+      "weapons": [
+        {
+          "id": "ember",
+          "level": 8
+        },
+        {
+          "id": "flail",
+          "level": 8
+        },
+        {
+          "id": "frost",
+          "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "passives": [
+        {
+          "id": "boots",
+          "level": 5
+        },
+        {
+          "id": "tome",
+          "level": 5
+        },
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "charm",
+          "level": 5
+        },
+        {
+          "id": "whetstone",
+          "level": 5
+        },
+        {
+          "id": "hourglass",
+          "level": 5
+        }
+      ],
+      "eligibleEvolutions": [
+        "phoenix",
+        "wrath_pendulum",
+        "eternal_winter",
+        "thorn_storm",
+        "thunder_seal",
+        "soul_beacon"
+      ]
+    }
+  ],
+  "summary": {
+    "calls": 150,
+    "countDistribution": {
+      "1": 30,
+      "3": 120
+    },
+    "callsWithDuplicates": 0,
+    "callsWithEvolutionWithoutPrecondition": 0,
+    "callsWithMissingEligibleEvolution": 0,
+    "callsWithUnownedUpgrade": 0,
+    "callsWithWrongLevelUpgrade": 0,
+    "totalEvolutionOffers": 60,
+    "callsWithMoreThanOneEvolution": 0
+  },
+  "calls": [
+    {
+      "seed": 1,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:heart",
+        "weapon:ember",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 2,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:charm",
+        "weapon:lantern",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 3,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:charm",
+        "weapon:ember",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 4,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:hourglass",
+        "weapon:lantern",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 5,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:charm",
+        "passive:whetstone",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 6,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:tome",
+        "weapon:ember",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 7,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:frost",
+        "passive:hourglass"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 8,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "passive:heart",
+        "weapon:lantern"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 9,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "passive:whetstone",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 10,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:tome",
+        "passive:hourglass",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 11,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:tome",
+        "passive:heart",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 12,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:lantern",
+        "weapon:flail",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 13,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:heart",
+        "weapon:lantern",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 14,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:tome",
+        "passive:boots",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 15,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "passive:boots",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 16,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:heart",
+        "weapon:frost",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 17,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:charm",
+        "weapon:thorn",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 18,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:boots",
+        "passive:heart",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 19,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "passive:boots",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 20,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:charm",
+        "passive:boots",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 21,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:boots",
+        "passive:tome",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 22,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:heart",
+        "weapon:thorn",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 23,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:frost",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 24,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:lantern",
+        "passive:hourglass",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 25,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:heart",
+        "passive:whetstone",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 26,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:tome",
+        "passive:charm",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 27,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:boots",
+        "weapon:ember",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 28,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:boots",
+        "passive:charm",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 29,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:frost",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 30,
+      "build": "leer",
+      "count": 3,
+      "offers": [
+        "passive:whetstone",
+        "passive:charm",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 1,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:ember",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 2,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:flail",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 3,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:ember",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 4,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:lantern",
+        "weapon:flail",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 5,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:thorn",
+        "weapon:ember"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 6,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:ember",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 7,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:flail",
+        "passive:hourglass"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 8,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:storm",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 9,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "passive:boots",
+        "weapon:ember"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 10,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "passive:tome",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 11,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:thorn",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 12,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:ember",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 13,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:flail",
+        "weapon:ember"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 14,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:thorn",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 15,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:frost",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 16,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:ember",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 17,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:ember",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 18,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:thorn",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 19,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:frost",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 20,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:flail",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 21,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:thorn",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 22,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:flail",
+        "weapon:ember"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 23,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:flail",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 24,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "passive:whetstone",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 25,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:storm",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 26,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:storm",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 27,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:ember",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 28,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:storm",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 29,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:ember",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 30,
+      "build": "5-waffen",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "passive:heart",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 1,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:ember",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 2,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:flail",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 3,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:ember",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 4,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "passive:boots",
+        "weapon:frost",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 5,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:lantern",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 6,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:ember",
+        "weapon:lantern"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 7,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:flail",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 8,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:storm",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 9,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:lantern",
+        "weapon:ember"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 10,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "passive:tome",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 11,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:frost",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 12,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:ember",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 13,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:frost",
+        "weapon:ember"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 14,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:thorn",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 15,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:thorn",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 16,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:ember",
+        "weapon:lantern"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 17,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:flail",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 18,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:storm",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 19,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:frost",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 20,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:frost",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 21,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:thorn",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 22,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:storm",
+        "weapon:flail",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 23,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:ember",
+        "weapon:flail",
+        "weapon:storm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 24,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "passive:charm",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 25,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:lantern",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 26,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:thorn",
+        "weapon:lantern",
+        "weapon:frost"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 27,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:ember",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 28,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:frost",
+        "weapon:storm",
+        "weapon:lantern"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 29,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:flail",
+        "weapon:ember",
+        "weapon:thorn"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 30,
+      "build": "6-waffen-ohne-passiv",
+      "count": 3,
+      "offers": [
+        "weapon:lantern",
+        "weapon:storm",
+        "weapon:flail"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 1,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:charm",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 2,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:whetstone",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 3,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:whetstone",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 4,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:hourglass",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 5,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:whetstone",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 6,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 7,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:boots",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 8,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:boots",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 9,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:tome",
+        "passive:hourglass"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 10,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:hourglass"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 11,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 12,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:tome",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 13,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:charm",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 14,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 15,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:tome",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 16,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:charm",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 17,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:charm",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 18,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 19,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:boots",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 20,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:whetstone",
+        "passive:heart"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 21,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:charm"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 22,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:charm",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 23,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:boots",
+        "passive:tome"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 24,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:hourglass"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 25,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:charm",
+        "passive:hourglass"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 26,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 27,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 28,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:heart",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 29,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:tome",
+        "passive:boots"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 30,
+      "build": "6-waffen-stufe8-6-passives",
+      "count": 3,
+      "offers": [
+        "weapon:phoenix",
+        "passive:hourglass",
+        "passive:whetstone"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 1,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 2,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 3,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 4,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 5,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 6,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 7,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 8,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 9,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 10,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 11,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 12,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 13,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 14,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 15,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 16,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 17,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 18,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 19,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 20,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 21,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 22,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 23,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 24,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 25,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 26,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 27,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 28,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 29,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    },
+    {
+      "seed": 30,
+      "build": "alles-maxed-plus-evolution",
+      "count": 1,
+      "offers": [
+        "weapon:phoenix"
+      ],
+      "duplicateIds": [],
+      "evolutionOffers": [
+        "phoenix"
+      ],
+      "evolutionWithoutPrecondition": [],
+      "missingEvolution": [],
+      "upgradeOfUnownedWeapon": [],
+      "wrongLevelUpgrade": []
+    }
+  ]
+}

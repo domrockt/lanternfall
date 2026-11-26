@@ -64,10 +64,16 @@ describe("Level-up-Angebote", () => {
     for (const o of offers) expect(o.isNew).toBe(false);
   });
 
-  it("alles maxed und Slots voll → keine Angebote", () => {
+  it("alles maxed und Slots voll → nur noch die einlösbare Evolution", () => {
+    // M10: Der Pool ist nicht erschöpft, solange Evolutionen einlösbar sind.
     const weapons = ["ember", "flail", "frost", "thorn", "storm", "lantern"].map((id) => w(id, 8));
     const passives = ["boots", "tome", "heart", "charm", "whetstone", "hourglass"].map((id) => p(id, 5));
-    expect(generateOffers(weapons, passives, new SeededRng(9))).toHaveLength(0);
+    const offers = generateOffers(weapons, passives, new SeededRng(9));
+    expect(offers).toHaveLength(1);
+    expect(offers[0].kind).toBe("weapon");
+    expect(offers[0].isNew).toBe(true);
+    expect(offers[0].id).toBe("phoenix");
+    expect(offers[0].level).toBe(8);
   });
 
   it("Upgrade erhöht exakt um eine Stufe", () => {
