@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 88,
+  "next": 92,
   "cards": [
     {
       "id": 1,
@@ -1594,6 +1594,70 @@
       ],
       "created": "2026-11-26T10:10:53Z",
       "updated": "2026-11-26T10:11:12Z"
+    },
+    {
+      "id": 88,
+      "title": "m7-tooling-1 Inkrementeller Typecheck + Build-Cache",
+      "description": "tsconfig.json: incremental true, tsBuildInfoFile .cache/tsc.tsbuildinfo; .cache/ in .gitignore. npm run build nutzt den Cache (tsc --noEmit). Abnahme: Messung kalt vs. 2. Lauf bzw. nach kleiner Aenderung (<10s), Build+Tests gruen, Commit nennt #<Karte>.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T10:15:59Z",
+          "by": "build",
+          "text": "Lane m7-tooling: umgesetzt in c96e160; tsc warm 316ms, nach kleiner Aenderung 288ms (<10s); build gruen (Cache warm 1,28s), Tests 175/175 nach Merge gruen."
+        }
+      ],
+      "created": "2026-11-26T10:15:56Z",
+      "updated": "2026-11-26T10:15:59Z"
+    },
+    {
+      "id": 89,
+      "title": "m7-tooling-2 npm run check fuer die taegliche Schleife",
+      "description": "scripts/check.mjs: inkrementeller tsc + nur Vitest-Dateien zu geaenderten Dateien (vitest related), kompakte Ausgabe (Fehler+Summary). package.json Script check. Abnahme: npm run check <15s bei kleiner Aenderung, zeigt gezielt betroffene Tests, Build+Tests gruen, Commit nennt Karte.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T10:15:59Z",
+          "by": "build",
+          "text": "Lane m7-tooling: umgesetzt in edaa46c; node scripts/check.mjs src/logic/stats.ts 605ms (2 Testdateien/54 Tests), ohne Aenderung 206ms (<15s)."
+        }
+      ],
+      "created": "2026-11-26T10:15:56Z",
+      "updated": "2026-11-26T10:15:59Z"
+    },
+    {
+      "id": 90,
+      "title": "m7-tooling-3 scripts/shot.mjs als generischer Screenshot/GIF-Helfer",
+      "description": "scripts/shot.mjs auf Basis von harness.mjs: URL-Parameter, __lf-Befehle als JSON, Ausgabepfad, optional GIF mit N Frames. Alte scripts/tmp-*.mjs entfernen. Abnahme: ein Beispiel-Shot/GIF erzeugt und gesichtet, keine JS-Fehler, Build+Tests gruen, Commit nennt Karte.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T10:15:59Z",
+          "by": "build",
+          "text": "Lane m7-tooling: umgesetzt in 58b6d7f; Beispiel shots/m7-shot.png+gif, 0 JS-Fehler, gesichtet; 3 tmp-Skripte entfernt."
+        }
+      ],
+      "created": "2026-11-26T10:15:56Z",
+      "updated": "2026-11-26T10:15:59Z"
+    },
+    {
+      "id": 91,
+      "title": "m7-tooling-4 Doku: Messwerte + Kurzanleitung",
+      "description": "KB COMMANDS.md/Befehle und Kosten.md mit neuen Messwerten; INDEX.md im Repo als Kurzanleitung; docs/lanes/m7-tooling.md mit Vorher/Nachher. Abnahme: Messwerte vorher/nachher belegt, build+Tests gruen, Karte=ein Commit, .lane-done mit Zusammenfassung.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T10:15:59Z",
+          "by": "build",
+          "text": "Lane m7-tooling: INDEX.md + docs/lanes/m7-tooling.md + KB-Messwerte in 55a3dad (Pause-Snapshot) enthalten; nach Merge uebernommen."
+        }
+      ],
+      "created": "2026-11-26T10:15:56Z",
+      "updated": "2026-11-26T10:15:59Z"
     }
   ]
 }
