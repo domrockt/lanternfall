@@ -145,7 +145,9 @@ async function runTouchSuite() {
   await tapText(page, "START");
   await waitForScene(page, "charselect");
   await page.waitForTimeout(250);
-  await tapText(page, "BRUDER KAEL");
+  // M10-input-fix: CharSelect rendert den Namen als PixelText-Wert (Mixed Case),
+  // nicht mehr als Knopf-Label "BRUDER KAEL".
+  await tapText(page, "Bruder Kael");
   await tapText(page, "START (ENTER)");
   await waitRun(page);
   check("Touch: Menues per Tippen bis in den Run", (await state(page)).scene === "run");

@@ -395,10 +395,13 @@ export class UI extends Phaser.Scene {
     this.chestGroup.add(new PixelText(this, cx, H - 14, "TIPPE ODER A = ÜBERNEHMEN", C.fog, "center"));
     // M8-input: Truhe per Tippen/Bestaetigen uebernehmen (Belohnungen werden
     // sofort angewendet). Die automatische Sequenz bleibt unveraendert.
+    // M10-input-fix: erst bei pointerup uebernehmen. Bei pointerdown haette
+    // derselbe Touchstart die Truhe geschlossen, bevor TouchControls ihn als
+    // Joystick ablehnt (canTouchMove() waere dann schon true) -> Spieler laeuft.
     const skip = this.add.zone(cx, H / 2, W, H);
     skip.setInteractive();
     skip.disableInteractive();
-    skip.on("pointerdown", () => {
+    skip.on("pointerup", () => {
       if (this.run?.chestOpen) this.run.finishChest();
     });
     this.chestGroup.add(skip);
