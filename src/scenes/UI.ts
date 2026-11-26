@@ -80,10 +80,17 @@ export class UI extends Phaser.Scene {
 
   constructor() { super("ui"); }
 
+  /** M8: Bei View-Wechsel (Resize/Rotation) wird die UI neu aufgebaut. */
+  private viewW = 0;
+  private viewH = 0;
+
   create(): void {
     this.run = this.scene.get("run") as Run;
+    this.viewW = GAME_WIDTH;
+    this.viewH = GAME_HEIGHT;
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
 
-    // HUD-Leiste oben
+    // HUD-Leiste oben (volle aktuelle View-Breite).
     this.add.rectangle(0, 0, GAME_WIDTH, 12, PAL[C.nightDeep], 0.82).setOrigin(0, 0).setDepth(10);
     // Texte auf y=1 (7 px hoch) und Depth 13: der XP-Balken darf keine
     // Glyphenzeile mehr ueberdecken (sonst wird aus "02:02" optisch "07:07").
@@ -124,6 +131,7 @@ export class UI extends Phaser.Scene {
     this.run.events.on("dawn", this.onDawn, this);
     this.run.events.on("evolution", this.onEvolution, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
       this.touch?.destroy();
       this.touch = undefined;
       this.pad.reset();

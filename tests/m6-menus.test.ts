@@ -34,9 +34,9 @@ describe("M6 Optionen: Damage-Numbers, Skalierung, Anzeige", () => {
     expect(stepOption(DEFAULT_OPTIONS, 1, 1).sfx).toBeCloseTo(0.9);
     expect(stepOption(DEFAULT_OPTIONS, 4, 1).muted).toBe(true);
     expect(stepOption({ ...DEFAULT_OPTIONS, muted: true }, 4, -1).muted).toBe(false);
-    expect(stepOption(DEFAULT_OPTIONS, 5, 1).scale).toBe(1);
-    expect(stepOption({ ...DEFAULT_OPTIONS, scale: 3 }, 5, 1).scale).toBe(3);
-    expect(stepOption({ ...DEFAULT_OPTIONS, scale: 0 }, 5, -1).scale).toBe(0);
+    expect(stepOption(DEFAULT_OPTIONS, 5, 1).scale).toBe(2);
+    expect(stepOption({ ...DEFAULT_OPTIONS, scale: 3 }, 5, 1).scale).toBe(4);
+    expect(stepOption({ ...DEFAULT_OPTIONS, scale: 0 }, 5, -1).scale).toBe(6);
   });
   it("Labels und Value-Texte passen zu den Optionen", () => {
     expect(optionValueLabel(DEFAULT_OPTIONS, 0)).toBe("55%");
@@ -53,7 +53,7 @@ describe("M6 Optionen: Damage-Numbers, Skalierung, Anzeige", () => {
     expect(resolveScale(3, 960, 540, 480, 270)).toBe(2);
     expect(resolveScale(2, 1920, 1080, 480, 270)).toBe(2);
     expect(resolveScale(1, 1920, 1080, 480, 270)).toBe(1);
-    expect(clampScale(9)).toBe(3);
+    expect(clampScale(9)).toBe(6);
   });
   it("Persistenz speichert neue Felder und lädt alte Saves defensiv", () => {
     const s = memStorage();
@@ -67,7 +67,7 @@ describe("M6 Optionen: Damage-Numbers, Skalierung, Anzeige", () => {
     expect(loaded.damageNumbers).toBe(true);
     expect(loaded.muted).toBe(false);
     expect(loaded.scale).toBe(0);
-    expect(setOption(DEFAULT_OPTIONS, "scale", 99).scale).toBe(3);
+    expect(setOption(DEFAULT_OPTIONS, "scale", 99).scale).toBe(6);
   });
 });
 
