@@ -53,15 +53,15 @@ export class Results extends Phaser.Scene {
     const charName = char ? char.name.toUpperCase() : "?";
     const portraitKey = char ? `portrait_${char.id}` : "portrait_mira";
     if (this.textures.exists(portraitKey)) {
-      this.add.image(52, 78, portraitKey).setScale(2).setDepth(2);
+      this.add.image(54, 72, portraitKey).setScale(2).setDepth(2);
     }
     new PixelText(this, 104, 58, "CHARAKTER", C.mist).setDepth(2);
     new PixelText(this, 104, 70, charName.slice(0, 14), C.bone).setDepth(2);
 
-    new PixelText(this, 40, 108, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
-    new PixelText(this, 40, 122, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
-    new PixelText(this, 40, 136, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
-    if (this.result.god) new PixelText(this, 40, 150, "GOTT-MODUS - NICHT GESPEICHERT", C.amber).setDepth(2);
+    new PixelText(this, 40, 134, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
+    new PixelText(this, 40, 148, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
+    new PixelText(this, 40, 162, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
+    if (this.result.god) new PixelText(this, 40, 176, "GOTT-MODUS - NICHT GESPEICHERT", C.amber).setDepth(2);
 
     // Bestwert als zentriertes Banner in der linken Spalte.
     let bannerText = "BESTWERTE BLEIBEN STEHEN";
@@ -81,13 +81,13 @@ export class Results extends Phaser.Scene {
       if (recorded.records.level) labels.push("LEVEL");
       if (recorded.records.victory) labels.push("SIEG");
       if (labels.length > 0) {
-        bannerText = `NEUER BESTWERT: ${labels.join(", ")}`;
+        bannerText = labels.length > 2 ? "NEUER BESTWERT" : `NEUER BESTWERT: ${labels.join(", ")}`;
         bannerColor = C.lantern;
       }
     }
-    this.add.rectangle(122, 174, 164, 17, PAL[C.nightMid], 0.9)
+    this.add.rectangle(122, 196, 164, 17, PAL[C.nightMid], 0.9)
       .setStrokeStyle(1, bannerColor).setDepth(1);
-    new PixelText(this, 122, 174, bannerText.slice(0, 26), bannerColor, "center").setDepth(2);
+    new PixelText(this, 122, 196, bannerText.slice(0, 26), bannerColor, "center").setDepth(2);
 
     // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons.
     new PixelText(this, 220, 58, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
