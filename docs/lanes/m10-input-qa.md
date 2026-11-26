@@ -74,9 +74,30 @@ Belege-Bilder: `shots/m10-input-profile-pause-lock.png`, `…-level-up-lock.png`
 3. **Pause/Level-up-Sperre, Joystick/Pause nur im Run** — PASS in allen 7 Profilen (Gegenbeleg zu #2 oben:
    dort griff die Sperre). Menüs/Results haben kein Touch-Overlay (UI-Szene inaktiv).
 
-## #2 Menü-Gamepad
+## #2 Menü-Gamepad (Basis `f26dc4b`, headless Chromium, gemocktes Pad)
 
-_(offen)_
+Pad-Snapshot-Quelle: gemocktes `navigator.getGamepads()` (`id: "Mock Pad (M10-input-qa)"`, `mapping: standard`,
+17 Buttons). Das ist exakt der erste Pfad, den `readSceneGamepad()` liest; das Phaser-Plugin bleibt Fallback.
+Beleg: `shots/m10-input-menu-gamepad.json` (`passed: true`, 13/13 Checks, 0 JS-Fehler).
+
+| Szene | Pad-Aktionen | Pad: ja/nein | Beleg-Shot |
+|---|---|---|---|
+| Titel | D-Pad rechts setzt Fokus auf OPTIONEN (Fokusrahmen sichtbar), links zurück, A startet CharSelect | **ja** | `shots/m10-input-menu-title-pad.png` |
+| CharSelect | D-Pad rechts wählt Kael (Rahmen), A startet Run mit `character=kael` | **ja** | `shots/m10-input-menu-charselect-pad.png` |
+| Pause (Run) | Start pausiert; A öffnet Optionen, Start hebt Pause im Optionsmenü nicht auf, B schließt nur das Menü, links + A setzt fort | **ja** | `shots/m10-input-menu-pause-pad.png`, `shots/m10-input-menu-options-pad.png` |
+| Results | D-Pad rechts fokussiert TITEL, A wechselt zum Titel | **ja** | `shots/m10-input-menu-results-pad.png` |
+
+Tastatur-Gegenprobe in denselben Szenen (Enter / Pfeil rechts + Enter / ESC): 4/4 PASS,
+Shots `shots/m10-input-menu-charselect-kb.png`, `…-pause-kb.png`, `…-results-kb.png`.
+
+**Welche Aktionen sind ohne Pad erreichbar?** Alle vier geprüften Szenen sind ohne Pad voll bedienbar:
+Titel (START/OPTIONEN/CREDITS per Pfeilen+Enter oder Maus/Touch, VOLLBILD per Maus/Touch),
+CharSelect (Wahl per Pfeilen/1/2/Maus, Start per Enter/Knopf, Zurück per ESC/Knopf),
+Pause (Fortsetzen per ESC oder FORTSETZEN-Knopf/Touch, Optionen per O/Knopf, Aufgabe per Knopf/Touch),
+Results (NEUE RUNDE/TITEL per Pfeilen+Enter oder Maus/Touch). Die früher bekannte Lücke „Menüs ohne Gamepad“
+ist für diese vier Szenen **nicht reproduzierbar**; Credits hat ebenfalls Pad-Handling (`update()` mit
+`confirm`/`back`), wurde hier aber nicht separat gespielt. Nicht per Pad erreichbar: nichts in den vier Szenen;
+offen bleibt echte Hardware (kein physisches Pad am Host).
 
 ## #3 Report / Empfehlung
 
