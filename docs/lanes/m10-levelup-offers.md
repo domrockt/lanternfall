@@ -117,4 +117,23 @@ alle 6 Powerups Stufe 5): Es gibt keine Upgrades/neuen Items mehr, nur die einl�
 
 ## Karte 04 — Beleg + Abnahme
 
-_(folgt)_
+**In-Game-Belege** (Playwright, Debug-API, kein `Run.ts`-Edit):
+
+- Drei echte Level-Ups per `__lf.giveXp` (8, 9, 12 XP = exakt die Schwellen), jeweils `pickLevelUp(0)`.
+  Danach `__lf.addWeapon("ember", 8)` + `__lf.addPassive("tome", 1)` und ein weiteres Level-Up
+  (`giveXp(20)`): Der Screen zeigt **genau 3 Karten** — „PHÖNIXSCHWARM · NEU 8“, „MAGNETAMULETT · NEU 1“,
+  „ARKANES BUCH · STUFE 2“. Eine Evolution, keine Duplikate.
+  Beleg: `shots/m10-levelup-evolution-offer.png`.
+- Nach `pickLevelUp(0)` liegt **Phönixschwarm Stufe 8** im Waffen-Slot (`state().weapons = [{id:"phoenix",level:8}]`),
+  HUD zeigt Evolutions- und Tome-Icon. Beleg: `shots/m10-levelup-after-evolution.png`.
+- 0 JS-Fehler in beiden Läufen.
+
+**Messwerte:**
+
+- `npx vitest run`: **201 Tests / 13 Dateien grün** (inkl. 9 neue Fälle in `tests/levelup-offers.test.ts`).
+- `npm run build`: grün (`tsc --noEmit` + `vite build`, ~1,1 s).
+- `node scripts/verify-menus.mjs`: **FAIL 1/2** — Timeout in `waitForScene(page, "credits")` nach Klick
+  `clickGame(346, 214)`. Befund: `clickGame` rechnet fest mit 480×270, der M8-View ist bei 960×540@dpr1
+  aber 860×360; der Credits-Knopf liegt logisch bei ~x 279–352, y 187–203, der Klick bei y 214 trifft daneben.
+  Das ist **nicht** durch diese Lane verursacht (Titel-/Menü-Szenen unangetastet; Fehler tritt schon vor
+  jedem Level-Up auf). Als Befund dokumentiert, nicht umgangen. Die Level-Up-Belege oben sind unabhängig davon.

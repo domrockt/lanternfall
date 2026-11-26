@@ -2389,34 +2389,56 @@
       "id": 1499,
       "title": "m10-levelup-offers-02 Test zuerst (RED)",
       "description": "tests/levelup-offers.test.ts: genau 3 Angebote (Ausnahme erschoepfter Pool), keine doppelten IDs, kein Upgrade nicht besessener Waffen, Evolution nur bei Stufe 8 + Powerup >=1, max. eine Evolution. Zuerst RED gegen Audit-Luecken belegen. Abnahme: RED-Log im Commit/Doku, Testdatei mit Faellen.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T23:01:44Z",
+          "by": "build",
+          "text": "todo → done: Commit cffafa6 (#1499/#02): tests/levelup-offers.test.ts mit 9 Faellen, RED belegt (4 failed/5 passed) vor Fix, Doku-Abschnitt Karte 02."
+        }
+      ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T22:28:58Z"
+      "updated": "2026-11-26T23:01:44Z"
     },
     {
       "id": 1500,
       "title": "m10-levelup-offers-03 Fix in levelup.ts",
       "description": "Kleinste Aenderung in src/logic/levelup.ts (ggf. evolution.ts/LevelUpSystem): Evolution-Angebote nur bei Basiswaffe Stufe 8 + passendem Powerup >=1, max. 1, keine Duplikate, 3 Angebote falls Pool reicht. Keine Balance-/Waffendaten. Abnahme: Tests gruen, tsc gruen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T23:00:52Z",
           "by": "build",
           "text": "todo → doing: Fix levelup.ts + chest-Opt-out evolution.ts; tsc gruen, 201 Tests gruen."
+        },
+        {
+          "at": "2026-11-26T23:01:44Z",
+          "by": "build",
+          "text": "doing → review: Commit 2e113f9 (#1500/#03): Evolution-Angebote in levelup.ts, max 1, nur Stufe8+Powerup>=1; chestRewards mit includeEvolutions=false; tests/logic.test.ts angepasst. tsc gruen, 201 Tests gruen, Audit after: 0 fehlende Evolutionen, 60 Evo-Angebote, 0 >1."
+        },
+        {
+          "at": "2026-11-26T23:01:44Z",
+          "by": "build",
+          "text": "review → done: Fix abgenommen (Review folgt in Karte 04 durch reviewer)."
         }
       ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T23:00:52Z"
+      "updated": "2026-11-26T23:01:44Z"
     },
     {
       "id": 1501,
       "title": "m10-levelup-offers-04 Beleg + Abnahme",
       "description": "In-Game Level-Up-Screen nach >=3 Level-Ups als shots/m10-levelup-* im Commit; node scripts/verify-menus.mjs PASS (15/15); npm run build gruen; npx vitest run gesamt gruen (Ist-Zahl); Docs Vorher/Nachher-Audit; .lane-done mit Messwerten. Abnahme: alle Belege committed.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T23:23:41Z",
+          "by": "build",
+          "text": "todo → doing: [Supervisor] Karte 04 in Arbeit: In-Game-Shots erzeugt (Level-Up mit Phönixangebot + HUD nach Pick), verify-menus FAIL bei Credits-Klick (Timeout) - Untersuchung timeboxed."
+        }
+      ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T22:28:58Z"
+      "updated": "2026-11-26T23:23:41Z"
     }
   ]
 }
