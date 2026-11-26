@@ -16,7 +16,7 @@ Reihenfolge linear im Log. Konflikte in `package.json`, `src/scenes/Run.ts`
 und `src/main.ts` wurden mit beiden Absichten aufgelöst (beide Scripts, robuste
 Bot-Scratch-Arrays + Balance-Threat, Worker-Skalierung + Skalierungsoption).
 Nach jedem Merge: `npm run build` grün und Tests grün (135 nach balance+robust,
-144 nach menus; aktuell 146). Kein Konflikt-Rest (`git status` sauber, `tsc` grün).
+144 nach menus; aktuell 147). Kein Konflikt-Rest (`git status` sauber, `tsc` grün).
 `.opencode/board.json` blieb die main-Version; Lane-Karten #56–#72 nachgetragen.
 
 ## A2 — GAME.md "Definition of Done"
@@ -26,7 +26,7 @@ Nach jedem Merge: `npm run build` grün und Tests grün (135 nach balance+robust
 | Alle Listen vollständig umgesetzt | `node scripts/acceptance-count.mjs` → 30/6/6/6/6/2 (siehe A3) | OK |
 | 30-min-Run per autoPlay + setTimeScale(30) ohne Crash/JS-Fehler; alle 6 Bosse, Truhen, ≥1 Evolution | `shots/m3-fullrun.json` (30,1 min, 6 Bosse 300–1800 s, 6 Truhen, Sieg, 0 JS-Fehler); voller Echtzeit-Lauf siehe A4 | OK |
 | Performance-Ziel ≥ 55 FPS mit 500 Gegnern + Projektilen | `shots/perf-m3.json` → Burst 60,1 FPS | OK |
-| Tests grün | `npm test` → 146 Tests grün | OK |
+| Tests grün | `npm test` → 147 Tests grün | OK |
 | Screenshots aller Gegner/Bosse/Waffen geprüft | `shots/m4-enemy-*.png` (30), `shots/m4-boss-*.png` (6), `shots/m5-vfx-*.gif` (18 Waffen/Events), per Vision geprüft; Kontaktbögen in `shots/` | OK |
 
 ## A3 — Inhaltszählung automatisch aus `src/data`
@@ -42,10 +42,18 @@ und vergleicht mit den Sollwerten:
 
 ## A4 — Realtime-Run 30:00
 
-`flock /home/ai/games/.lf-perf.lock node scripts/realtime-run.mjs`
-(timeScale 1, autoPlay, god nur gegen den Tod) → Ergebnis wird hier nach dem
-Lauf eingetragen: `shots/realtime-30min.json`, Endbild `shots/realtime-results.png`,
-GIF-Ausschnitt `shots/final-trailer.gif` (Morgendämmerungs-Station A6).
+`flock /home/ai/games/.lf-perf.lock node scripts/realtime-run.mjs` lief
+**einmal voll**: timeScale 1, autoPlay, god nur gegen den Tod, **30,4 Sim-Minuten
+in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
+- Alle 6 Bosse exakt zu 300/600/900/1200/1500/1800 s (alle `ok`), 6 Truhen,
+  9.938 Kills, Level 49, 4 Evolutionen; **Sieg: `victory=true`, `resultReason=dawn`**
+  (Morgendämmerung echt ausgelöst, kein Debug-Sprung).
+- FPS min **57,2** / Median 60,3 (7181 Samples); **0 JS-Fehler**.
+- Heap Minute 1 → 29: 27,9 → 32,3 MB **+15,8 %** (Ziel 15 %, 0,8 pp darüber;
+  nur dieser Gate macht `passed=false`; CDP-Diagnose 11,3 → 16,2 MB).
+- Belege: `shots/realtime-30min.json`, `shots/realtime-results.png`,
+  Minuten-Shots `shots/realtime-minute-5/10/15/20/25/30.png`.
+- GIF-Ausschnitt: `shots/final-trailer.gif` (Morgendämmerungs-Station A6).
 
 ## A5 — Messungen auf dem gemergten Stand
 
@@ -57,14 +65,16 @@ GIF-Ausschnitt `shots/final-trailer.gif` (Morgendämmerungs-Station A6).
 | fullrun Gesamt | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler | `shots/m3-fullrun.json` |
 | balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Kael/101 Level 47 (Restmangel) | `shots/balance-main.json` |
 | balance Boss-Dauern | 23–54 s (Ziel 20–60 s) | `shots/balance-main.json` |
-| Tests | 146 grün | `npm test` |
+| Tests | 147 grün | `npm test` |
 
 ## A6 — Abschluss-Material
 
-Wird nach dem Trailer-Lauf eingetragen: `shots/final-trailer.gif`
-(30–40 s, 9 Stationen: Titel, Charakterwahl, frühe Minute, Boss, Truhe,
-Evolution, Chaos Minute 25, Endboss, Morgendämmerung) + 6 Übersichts-Shots
-`shots/overview-1..6-*.png`, per Vision geprüft.
+`shots/final-trailer.gif`: **8 Segmente, 35,6 s, 285 Frames, 480×270, 8 fps**
+(Titel+Charakterwahl, frühe Minute, Boss, Truhe, Evolution, Chaos Minute 25,
+Endboss, Morgendämmerung). Segmente einzeln mit Timeout gerendert (Segment 7
+Endboss brauchte im 2. Versuch 141,6 s; #79 deshalb blocked, Nachzügler #82).
+6 Übersichts-Shots `shots/overview-1-intro.png` … `-6-dawn.png`, per Vision geprüft
+(Titel, Knochenfürst-Intro, Truhen-Panel, Chaos-Horde, Dawn-Banner).
 
 ## A7 — Nachträge VFX / Damage-Numbers / Master-Mute
 
@@ -104,18 +114,25 @@ ux-check: PASS (siehe Commit-Notiz #76).
 
 ## A10 — Art-Director-Endnote
 
-Wird nach dem Trailer eingetragen; Ziel ≥ 4 mit Begründung.
+**A10 Endnote: 4/5** (art-director, Begründung folgt aus dem Trailer-Check:
+konsistente Palette/Silhouetten, lesbares Chaos durch LOD-Dämpfung, klare
+Boss-/Truhen-Inszenierung, solide Menü-/HUD-Qualität; Restpunkte: Wasser-
+Tiefenstufe, einzelne Glows im Minimal-LOD flacher, Menü ohne Gamepad).
 
 ## A11 — Worktrees entfernt
 
-Wird am Ende eingetragen: `/home/ai/games/lf-lanes/{balance,robust,menus}`
-mit `git worktree remove` entfernt, Branches `m6-balance`, `m6-robust`,
-`m6-menus` bleiben.
+Erledigt: `/home/ai/games/lf-lanes/{balance,robust,menus}` mit
+`git worktree remove` entfernt; `git worktree list` zeigt nur noch das
+Hauptrepo (plus fremdes `.apkbuild`). Branches `m6-balance`, `m6-robust`,
+`m6-menus` bleiben erhalten.
 
 ## A12 — Build/Tests/Board/GAME.md
 
-Wird am Ende eingetragen: `npm run build` + `npm test` grün, Board-Karten
-#56–#81 passend (done/review), GAME.md auf M6-Stand.
+`npm run build` grün, `npm test` **147 Tests grün** auf dem finalen Stand.
+Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#77/#81/#82 review,
+#79 blocked (Trailer-Segment-Timeout, durch #82 ersetzt), #80 folgt mit dem
+Abschluss-Commit. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
+Nachträge, Restmängel).
 
 ## Offene Punkte / Restmängel
 
@@ -123,4 +140,8 @@ Wird am Ende eingetragen: `npm run build` + `npm test` grün, Board-Karten
 - fullrun-Heap in diesem Lauf +22,2 % (25,7 → 31,4 MB) über dem 15-%-Ziel;
   CDP-Diagnose 12,5 → 13,4 MB, kein JS-Objekt-Leak, Host-Last/GC-Streuung.
 - VFX-Minimal-LOD ist bewusst stark gedämpft (Alpha 0,5/NORMAL); Glows flacher.
+- Realtime-Heap +15,8 % und fullrun-Heap +22,2 % über dem 15-%-Ziel
+  (nur Heap-Gate; Spiel, FPS und JS-Fehler sind grün).
+- Trailer-Segment 7 (Endboss) lief erst im 2. Versuch (141,6 s, Timeout 180 s);
+  #79 ist deshalb blocked, die Belege kamen über #82.
 - Menüs ohne Gamepad, Meta ohne Gold/Shop.

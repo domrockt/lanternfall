@@ -409,13 +409,13 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 
 | Messung | Wert |
 |---|---|
-| `npm run build` / `npm test` | grün / **146 Tests** |
+| `npm run build` / `npm test` | grün / **147 Tests** |
 | perf Burst (500 Gegner) | **60,1 FPS**, worst 16,8 ms |
 | perf Minute 25 (300 + 6 Evolutionen) | **57,5 FPS**, worst 33,4 ms |
 | fullrun FPS-Minimum (29:20–Sieg) | **55,8** (Ziel ≥55) |
 | fullrun | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler |
 | balance | 6 Läufe, 5/6 im Korridor, Kael/101 Level 47 (Restmangel) |
-| realtime 30:00 | ein voller Lauf, Ergebnis in `ACCEPTANCE.md` / `shots/realtime-30min.json` |
+| realtime 30:00 | voll: 30,4 Sim-min in 1869 s, 6 Bosse exakt, Sieg/Dawn, FPS-min 57,2, 0 JS-Fehler, Heap +15,8 % (`shots/realtime-30min.json`) |
 
 **Bekannte Lücken (M6):**
 - Kael/Seed 101 Level 47 über dem Balance-Ziel 25–40 (AutoPlay-Streuung).
