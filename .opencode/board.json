@@ -223,11 +223,17 @@
       "id": 15,
       "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
       "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T07:50:44Z",
+          "by": "build",
+          "text": "backlog → done: M6 komplett: Lanes gemergt, Nachträge #73-#82, A10 4/5, ACCEPTANCE.md; #79 blocked, Deliverables via #82."
+        }
+      ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-24T23:44:35Z"
+      "updated": "2026-11-26T07:50:44Z"
     },
     {
       "id": 16,
