@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 87,
+  "next": 88,
   "cards": [
     {
       "id": 1,
@@ -1503,48 +1503,82 @@
     {
       "id": 83,
       "title": "input-01 Eingabeschicht InputState (reine Logik + Tests)",
-      "description": "src/input/InputState.ts: pro Frame Bewegungsvektor (Laenge 0..1) + Aktionen (pause/confirm/back/up/down/left/right) aus Tastatur+Touch+Gamepad vereint; Totzone 12% Touch / 18% Pad, radial, Normierung, Diagonale, Quellenprioritaet touch>gamepad>keyboard, D-Pad>Stick, Flanken. Tests tests/input.test.ts. Abnahme: npx vitest run tests/input.test.ts gruen, mind. 10 Faelle inkl. Totzone/Remap/Normierung/Diagonale/Prio/Flanken/reset; npx tsc --noEmit gruen.",
-      "column": "doing",
+      "description": "src/input/InputState.ts: pro Frame Bewegungsvektor (0..1) + Aktionen (pause/confirm/back/up/down/left/right) aus Tastatur+Touch+Gamepad vereint; Totzone 12% Touch / 18% Pad, radial, Normierung, Diagonale, Quellenprioritaet touch>gamepad>keyboard, D-Pad>Stick, Flanken. Tests tests/input.test.ts. Abnahme: npx vitest run tests/input.test.ts gruen (21 Faelle inkl. Totzone/Remap/Normierung/Diagonale/Prio/Flanken/reset); npx tsc --noEmit gruen.",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
-          "at": "2026-11-26T08:26:10Z",
+          "at": "2026-11-26T10:01:45Z",
           "by": "build",
-          "text": "todo → doing: InputState.ts + 21 Tests umgesetzt; npx vitest run tests/input.test.ts 21/21 gruen, npx tsc --noEmit gruen. Commit folgt."
+          "text": "Lane m8-input: umgesetzt in  6ab1b5c (#83); tests/input.test.ts 21/21 gruen, tsc gruen."
         }
       ],
-      "created": "2026-11-26T08:16:32Z",
-      "updated": "2026-11-26T08:26:10Z"
+      "created": "2026-11-26T10:01:34Z",
+      "updated": "2026-11-26T10:01:45Z"
     },
     {
       "id": 84,
       "title": "input-02 Touch-Joystick, Pause-Knopf, index.html",
       "description": "src/input/TouchState.ts + TouchControls.ts: schwebender Joystick links (Ring+Knauf, halbtransparent, Palette, View-Groesse statt 480x270), Totzone 12% in InputState, Pause-Knopf oben rechts, Mehrfinger sauber, nur Touch (pointer:coarse/maxTouchPoints/erster Touch), index.html touch-action none/user-scalable no/keine Textauswahl/kein Doppeltipp-Zoom. Abnahme: tsc gruen; Touch-Snapshot liefert Rohvektor; Playwright-Touch-Geste bewegt Spieler; 0 JS-Fehler.",
-      "column": "todo",
+      "column": "done",
       "assignee": "ui-dev",
-      "notes": [],
-      "created": "2026-11-26T08:16:32Z",
-      "updated": "2026-11-26T08:16:32Z"
+      "notes": [
+        {
+          "at": "2026-11-26T10:01:45Z",
+          "by": "build",
+          "text": "Lane m8-input: umgesetzt in Commit 685aeff (#84); Touch-Joystick/Pause-Knopf, index.html Zoom-Sperre."
+        }
+      ],
+      "created": "2026-11-26T10:01:34Z",
+      "updated": "2026-11-26T10:01:45Z"
     },
     {
       "id": 85,
       "title": "input-03 Gamepad + Menue-/Szenen-Navigation",
       "description": "src/input/Gamepad.ts: Phaser Gamepad-Plugin (main.ts input.gamepad:true, activePointers 3) + navigator.getGamepads-Fallback; Hotplug per Polling. Anbindung Run.ts (Bewegung analog, Start=Pause) und Menue-Szenen (Title, CharSelect, Results, Credits, OptionsMenu, Pause, Level-up, Truhe): A=bestaetigen, B=zurueck, D-Pad/Stick=Navigation, Fokus sichtbar. Abnahme: tsc gruen; gemocktes navigator.getGamepads bewegt Spieler und bedient Menue vollstaendig; Tastatur unveraendert.",
-      "column": "todo",
+      "column": "done",
       "assignee": "ui-dev",
-      "notes": [],
-      "created": "2026-11-26T08:16:32Z",
-      "updated": "2026-11-26T08:16:32Z"
+      "notes": [
+        {
+          "at": "2026-11-26T10:01:45Z",
+          "by": "build",
+          "text": "Lane m8-input: umgesetzt in Commit 97d9cf4 (#85); Gamepad-Adapter + Menue-/Szenen-Navigation, Fokus sichtbar."
+        }
+      ],
+      "created": "2026-11-26T10:01:34Z",
+      "updated": "2026-11-26T10:01:45Z"
     },
     {
       "id": 86,
       "title": "input-04 Abnahme Touch+Gamepad+Tastatur-Regression",
       "description": "scripts/verify-input.mjs mit Playwright Pixel-7-Profil (hasTouch/isMobile, landscape): eine Minute Spiel nur per Touch (Joystick-Drag+Level-up-Tap), Menues per Tippen; Gamepad via gemocktem navigator.getGamepads (Stick+A/B/Start); Tastatur-Regression. Shots shots/m8-input-*.png, docs/lanes/input.md, Vault-Notiz coding-brain/Wissen/Phaser 3.md. Abnahme: build+test gruen, verify-input PASS, 0 JS-Fehler, alle Shots >10KB, .lane-done.",
-      "column": "todo",
+      "column": "review",
       "assignee": "ui-dev",
-      "notes": [],
-      "created": "2026-11-26T08:16:32Z",
-      "updated": "2026-11-26T08:16:32Z"
+      "notes": [
+        {
+          "at": "2026-11-26T10:01:45Z",
+          "by": "build",
+          "text": "Lane m8-input: verify-input.mjs PASS 25/25, 0 JS-Fehler; build gruen, Tests 168/168; Belege 095b694, shots/m8-input-*.png. Wartet auf Merge-Verifikation."
+        }
+      ],
+      "created": "2026-11-26T10:01:34Z",
+      "updated": "2026-11-26T10:01:45Z"
+    },
+    {
+      "id": 87,
+      "title": "input-04b Fix: ESC-Check in verify-input stabilisieren",
+      "description": "Merge-Befund: scripts/verify-input.mjs Tastatur-Check 'ESC pausiert' schlaegt reproduzierbar fehl, wenn Escape direkt nach ArrowRight-Keyup kommt (Phaser-Keyboard-Queue verliert die erste Flanke); zweites ESC pausiert. Abnahme: 120-ms-Frame-Luecke nach Keyup + Kommentar; node scripts/verify-input.mjs PASS 28/28, 0 JS-Fehler.",
+      "column": "doing",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T10:10:53Z",
+          "by": "build",
+          "text": "todo → doing: Reproduziert: ESC direkt nach ArrowRight-Keyup wird verschluckt; 120 ms Frame-Luecke behebt es (PASS 28/28)."
+        }
+      ],
+      "created": "2026-11-26T10:10:53Z",
+      "updated": "2026-11-26T10:10:53Z"
     }
   ]
 }
