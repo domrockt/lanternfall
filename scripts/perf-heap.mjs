@@ -96,6 +96,12 @@ async function takeSnapshot(cdp, page, label) {
   await page.evaluate(() => {
     if (typeof globalThis.gc === "function") globalThis.gc();
   });
+  // JS-Heap-Gate (performance.memory) direkt nach demselben GC gemessen;
+  // vergleichbar mit ACCEPTANCE/fullrun.
+  const jsHeapMB = await page.evaluate(() => {
+    const used = performance.memory?.usedJSHeapSize ?? 0;
+    return Math.round((used / 1048576) * 10) / 10;
+  });
   const chunks = [];
   const onChunk = (ev) => chunks.push(ev.chunk);
   cdp.on("HeapProfiler.addHeapSnapshotChunk", onChunk);
@@ -106,6 +112,7 @@ async function takeSnapshot(cdp, page, label) {
   }
   const raw = chunks.join("");
   const parsed = parseSnapshot(raw);
+  parsed.jsHeapMB = jsHeapMB;
   console.log(`[heap] ${label}: ${parsed.nodeCount} Knoten, ${(parsed.totalBytes / 1048576).toFixed(1)} MB, Snapshot ${(parsed.rawBytes / 1048576).toFixed(1)} MB`);
   return parsed;
 }
@@ -213,6 +220,9 @@ async function oneRun(runIndex) {
     const deltaPct = base.totalBytes > 0
       ? Math.round((deltaBytes / base.totalBytes) * 1000) / 10
       : null;
+    const jsHeapPct = base.jsHeapMB > 0
+      ? Math.round(((end.jsHeapMB - base.jsHeapMB) / base.jsHeapMB) * 1000) / 10
+      : null;
 
     const growth = growthList(base, end);
     const topByCount = [...growth].sort((a, b) => b.deltaCount - a.deltaCount || b.deltaBytes - a.deltaBytes).slice(0, 5);
@@ -234,15 +244,18 @@ async function oneRun(runIndex) {
           nodes: base.nodeCount,
           bytes: base.totalBytes,
           mb: Math.round((base.totalBytes / 1048576) * 10) / 10,
+          jsHeapMB: base.jsHeapMB,
         },
         end: {
           nodes: end.nodeCount,
           bytes: end.totalBytes,
           mb: Math.round((end.totalBytes / 1048576) * 10) / 10,
+          jsHeapMB: end.jsHeapMB,
         },
         deltaNodes,
         deltaBytes,
         deltaPct,
+        jsHeapPct,
         top5GrowthByCount: topByCount,
         top5GrowthByBytes: topByBytes,
       },
@@ -277,6 +290,7 @@ try {
 }
 
 const deltas = runs.map((r) => r.heap?.deltaPct).filter((v) => Number.isFinite(v));
+const jsHeapDeltas = runs.map((r) => r.heap?.jsHeapPct).filter((v) => Number.isFinite(v));
 let spreadPp = null;
 let spreadPct = null;
 if (deltas.length >= 2) {
@@ -299,6 +313,9 @@ const result = {
   summary: {
     deltasPct: deltas,
     medianDeltaPct: median,
+    jsHeapDeltasPct: jsHeapDeltas,
+    medianJsHeapDeltaPct: jsHeapDeltas.length
+      ? [...jsHeapDeltas].sort((a, b) => a - b)[Math.floor(jsHeapDeltas.length / 2)] : null,
     spreadPp,
     spreadPct,
     // Abnahmekriterium "Delta-Abweichung unter 10 %" als Prozentpunkte.

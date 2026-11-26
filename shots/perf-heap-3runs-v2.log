@@ -1,0 +1,24 @@
+[heap] Lauf 1 Start: 304260 Knoten, 28.3 MB, Snapshot 25.2 MB
+[heap] Lauf 1 Ende: 399591 Knoten, 32.1 MB, Snapshot 31.0 MB
+[heap] Lauf 2 Start: 306208 Knoten, 28.6 MB, Snapshot 25.3 MB
+[heap] Lauf 2 Ende: 389325 Knoten, 32.3 MB, Snapshot 30.7 MB
+[heap] Lauf 3 Start: 309939 Knoten, 28.9 MB, Snapshot 25.6 MB
+[heap] Lauf 3 Ende: 396828 Knoten, 30.9 MB, Snapshot 30.7 MB
+{
+  "deltasPct": [
+    13.4,
+    13.1,
+    6.8
+  ],
+  "medianDeltaPct": 13.1,
+  "jsHeapDeltasPct": [
+    9.4,
+    13.7,
+    6.8
+  ],
+  "medianJsHeapDeltaPct": 9.4,
+  "spreadPp": 6.6,
+  "spreadPct": 59.5,
+  "spreadUnder10Pct": true,
+  "jsErrors": 0
+}
