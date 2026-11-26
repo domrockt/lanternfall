@@ -214,3 +214,11 @@ gegen die Rohdaten geprüft. Er hat die Abnahme **unabhängig neu nachgerechnet*
 - **Befund unverändert:** Kael/Seed 101 = **Level 29** auf Basis f26dc4b, der Level-47-Lauf ist der historische
   XP-Aufsammel-Ausreißer aus 62a586f. Empfehlung (Viewport pinnen, stückweise XP-Kurve) bleibt wie in Karte 4.
 
+## Abschluss / Übergabe (HEAD 29a4c1c)
+
+- Lane fertig: alle vier Karten committet und abgenommen, Build rc=0, 12 Files / 192 Tests grün, keine JS-Fehler.
+- `.lane-done` ist im Worktree vorbereitet, aber **untracked**: der Disponent-Claim dafür liegt beim
+  `merge-m10-*-qa`-Job auf main. Der Commit wurde vom Hook blockiert (korrekt, kein `--no-verify`);
+  Bedarf steht in `/home/ai/games/.dispatch/requests.md` — der Merge-Job soll die Datei aus diesem
+  Worktree übernehmen. `.opencode/board.json` bleibt unangetastet (Merge-Job).
+
