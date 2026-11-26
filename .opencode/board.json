@@ -1336,7 +1336,7 @@
       "id": 76,
       "title": "final-04 Ergebnis-Screen zweispaltig (links Zeit/Kills/Level/Portrait, rechts Schaden-Balken sortiert, Titel zentriert, Bestwert-Banner)",
       "description": "Abnahme: Screenshot + ux-check PASS, keine Ueberlappung, Schadenszahl nicht unter Waffenname.",
-      "column": "doing",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
@@ -1353,10 +1353,15 @@
           "at": "2026-11-26T08:35:58Z",
           "by": "build",
           "text": "done → doing: Re-Verifikation Ergebnis Layout/Stresswert auf finalem Build (Screenshot aus verify-final)."
+        },
+        {
+          "at": "2026-11-26T08:39:04Z",
+          "by": "build",
+          "text": "doing → done: Re-Verifikation ab-Screen PASS (Screenshot 2.7M/514.8K, voller Name, God-Zeile links)."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
-      "updated": "2026-11-26T08:35:58Z"
+      "updated": "2026-11-26T08:39:04Z"
     },
     {
       "id": 77,
