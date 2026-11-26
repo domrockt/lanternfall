@@ -168,3 +168,12 @@ die Safe-Area des Geräts.
 
 - `npm run build`: grün (`✓ built in …`, Log `~/tmp/m10-display-qa/card4-build.log`).
 - `npx vitest run`: 12 Dateien / 192 Tests grün (Log `~/tmp/m10-display-qa/card4-tests.log`).
+
+## Lane-Abschluss / .lane-done
+
+Alle vier Karten sind committet (`5250ccd`, `d7eab43`, `6f784cf`, `667a08d`). Das `.lane-done`-Signal
+konnte **nicht** committet werden: der Disponent hat `.lane-done` an den Job `merge-m10-vfx-evo` (main)
+vergeben (Commit-Gate blockte). Der Inhalt ist als Backup unter `~/tmp/m10-lane-done-m10-display-qa.txt`
+(nicht Teil des Repos) abgelegt und eine Freigabe-/Übernahme-Anfrage steht in
+`/home/ai/games/.dispatch/requests.md` (Eintrag `m10-display-qa`). Inhalt: 6/7 Profile PASS,
+iphone14 Safe-Area FAIL, #638 Minute 25 39,5 FPS FAIL (dpr1-Kontrolllauf 54,5 FPS).
