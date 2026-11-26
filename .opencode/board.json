@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 518,
+  "next": 778,
   "cards": [
     {
       "id": 1,
@@ -1801,11 +1801,17 @@
       "id": 278,
       "title": "m9-art-world-01 Terrain Tiles",
       "description": "Abnahme: kein Kachelmuster im 960x540-Bild, weiche Uebergaenge Gras/Weg/Schlamm/Wasser, Kollision unveraendert, verify:terrain PASS, Shots 2x, art-director PASS.",
-      "column": "todo",
+      "column": "review",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T13:45:09Z",
+          "by": "build",
+          "text": "todo \u2192 review: Commit b59f9f3: Terrain-Tiles weiche Kanten (Dither, 2-px-Saum). Tests Vorher/Nachher-Shot vorhand vorhand daen. Pret auf Art-Director-Nachpr\u00fcfung im Rahmen Rahmen Abnahme-Comritt."
+        }
+      ],
       "created": "2026-11-26T12:09:31Z",
-      "updated": "2026-11-26T12:09:45Z"
+      "updated": "2026-11-26T13:45:09Z"
     },
     {
       "id": 279,
@@ -1827,11 +1833,17 @@
       "id": 280,
       "title": "m9-art-world-03 Gluehwurrmchen und Nebel",
       "description": "Abnahme: Gluehwurm animiert, Nebel dezent im Hintergrund, Lesbarkeit bleibt, GIF mit lebenden Gegnern, art-director PASS.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T13:45:09Z",
+          "by": "build",
+          "text": "todo \u2192 doing: Ownerient-Layer (Gl\u00fchw\u00fcrmchen + Nebel) wird von engine-dev in GroundRenderer implementiert."
+        }
+      ],
       "created": "2026-11-26T12:09:31Z",
-      "updated": "2026-11-26T12:09:31Z"
+      "updated": "2026-11-26T13:45:09Z"
     },
     {
       "id": 281,
