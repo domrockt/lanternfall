@@ -157,8 +157,8 @@ def sfx() -> None:
     # ── 6 Evolutions-Stinger: 0,6–1,0 s, Aufwärts-Glissando ────────────────
     # Phönixschwarm: feuriges Triangle-Glissando Band 8→9 + rauer Anlauf Band 3.
     write_wav("sfx_phoenix.wav", mix(
-        tone(5600, 9800, 0.82, triangle, 0.30, attack=0.01, sustain=0.5, release=0.25),
-        tone(230, 230, 0.82, triangle, 0.22, sustain=0.35, release=0.25),
+        tone(5600, 9800, 0.82, triangle, 0.24, attack=0.01, sustain=0.5, release=0.25),
+        tone(230, 230, 0.82, triangle, 0.30, sustain=0.4, release=0.25),
     ))
     # Zornpendel: metallisches Triangle-Glissando Band 2→3.
     write_wav("sfx_wrath.wav", mix(
@@ -167,8 +167,8 @@ def sfx() -> None:
     ))
     # Ewiger Winter: eisiges Triangle-Glissando Band 8→9 + Fundament Band 6.
     write_wav("sfx_winter.wav", mix(
-        tone(7200, 14800, 0.90, triangle, 0.28, attack=0.02, sustain=0.45, release=0.3),
-        tone(760, 760, 0.90, triangle, 0.22, sustain=0.35, release=0.3),
+        tone(7200, 14800, 0.90, triangle, 0.24, attack=0.02, sustain=0.45, release=0.3),
+        tone(760, 760, 0.90, triangle, 0.30, sustain=0.4, release=0.3),
     ))
     # Dornensturm: schmaler Triangle-Wirbel Band 5→6.
     write_wav("sfx_thornstorm.wav", mix(
