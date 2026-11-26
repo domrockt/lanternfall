@@ -30,6 +30,8 @@ export class DamageNumberSystem {
   private clock = 0;
   private lod: LodState | null = null;
   private enabled = true;
+  /** Endgame-Dämpfung der Zahlen (1 = voll); Hauptteil der hellen Fläche. */
+  private dim = 1;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -41,6 +43,18 @@ export class DamageNumberSystem {
 
   setLod(lod: LodState): void {
     this.lod = lod;
+    this.setDim(lod.level === "minimal" ? 0.55 : lod.level === "reduced" ? 0.8 : 1);
+  }
+
+  /** Endgame-Dim sofort anwenden (Debug-Vorher/Nachher im gleichen Frame). */
+  setDim(value: number): void {
+    const next = Math.max(0.2, Math.min(1, value));
+    if (next === this.dim) return;
+    const ratio = next / this.dim;
+    this.dim = next;
+    for (const v of this.views) {
+      if (v.active) v.text.setAlpha(Math.max(0, Math.min(1, v.text.alpha * ratio)));
+    }
   }
 
   /** Option "Damage-Numbers": aus = keine neuen Zahlen, la sofort ausblenden. */
@@ -80,7 +94,7 @@ export class DamageNumberSystem {
       // Alle belegt: ältesten wiederverwenden (kein Draw-Call-Wachstum).
       view = this.views.reduce((a, b) => (a.life < b.life ? a : b));
     }
-    const limit = aggregate ? 10 : this.maxViews;
+    const limit = aggregate ? (this.lod?.level === "minimal" ? 6 : 10) : this.maxViews;
     const activeCount = this.views.filter((v) => v.active).length;
     if (!view.active && activeCount >= limit) return;
     view.active = true;
@@ -112,7 +126,7 @@ export class DamageNumberSystem {
       const p = 1 - v.life / v.maxLife;
       const y = v.y - p * 18;
       v.text.setPosition(Math.round(v.x), Math.round(y));
-      v.text.setAlpha(Math.max(0, 1 - p * p));
+      v.text.setAlpha(Math.max(0, 1 - p * p) * this.dim);
       if (camera) {
         const sx = v.x - camera.scrollX;
         const sy = y - camera.scrollY;

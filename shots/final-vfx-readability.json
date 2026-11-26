@@ -1,26 +1,108 @@
 {
   "frames": [],
+  "gifFrames": [
+    {
+      "frame": 0,
+      "time": 1405.6,
+      "kills": 3200,
+      "enemies": 429,
+      "fxAlpha": 0.5,
+      "lodLevel": "minimal"
+    },
+    {
+      "frame": 1,
+      "time": 1405.8,
+      "kills": 3206,
+      "enemies": 427,
+      "fxAlpha": 0.5,
+      "lodLevel": "minimal"
+    },
+    {
+      "frame": 2,
+      "time": 1406,
+      "kills": 3209,
+      "enemies": 428,
+      "fxAlpha": 0.5,
+      "lodLevel": "minimal"
+    },
+    {
+      "frame": 3,
+      "time": 1406.2,
+      "kills": 3280,
+      "enemies": 359,
+      "fxAlpha": 0.72,
+      "lodLevel": "reduced"
+    },
+    {
+      "frame": 4,
+      "time": 1406.4,
+      "kills": 3311,
+      "enemies": 329,
+      "fxAlpha": 0.72,
+      "lodLevel": "reduced"
+    },
+    {
+      "frame": 5,
+      "time": 1406.7,
+      "kills": 3353,
+      "enemies": 287,
+      "fxAlpha": 0.72,
+      "lodLevel": "reduced"
+    },
+    {
+      "frame": 6,
+      "time": 1406.9,
+      "kills": 3420,
+      "enemies": 220,
+      "fxAlpha": 1,
+      "lodLevel": "full"
+    },
+    {
+      "frame": 7,
+      "time": 1407.1,
+      "kills": 3427,
+      "enemies": 214,
+      "fxAlpha": 1,
+      "lodLevel": "full"
+    },
+    {
+      "frame": 8,
+      "time": 1407.4,
+      "kills": 3431,
+      "enemies": 210,
+      "fxAlpha": 1,
+      "lodLevel": "full"
+    },
+    {
+      "frame": 9,
+      "time": 1407.6,
+      "kills": 3452,
+      "enemies": 192,
+      "fxAlpha": 1,
+      "lodLevel": "full"
+    }
+  ],
   "paused": {
-    "time": 1407.5,
+    "time": 1405.6,
     "level": 17,
-    "kills": 3244,
-    "enemies": 407,
-    "fxCount": 58,
-    "particleCount": 87
+    "kills": 3200,
+    "enemies": 429,
+    "fxCount": 63,
+    "particleCount": 202
   },
   "after": {
-    "time": 1407.5,
+    "time": 1405.6,
     "level": 17,
-    "kills": 3244,
-    "enemies": 407,
-    "fxAlpha": 0.62,
+    "kills": 3200,
+    "enemies": 429,
+    "fxAlpha": 0.5,
     "lodLevel": "minimal"
   },
   "before": {
-    "time": 1407.5,
+    "time": 1405.6,
     "level": 17,
-    "kills": 3244,
-    "enemies": 407,
+    "kills": 3200,
+    "enemies": 429,
     "fxAlpha": 1,
     "lodLevel": "minimal"
   },

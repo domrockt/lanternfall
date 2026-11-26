@@ -165,6 +165,9 @@ export class CombatSystem {
   setFxDamping(enabled: boolean): void {
     this.fxDamping = enabled;
     this.applyFxDamping();
+    this.damageNumbers.setDim(enabled
+      ? (this.lod.level === "minimal" ? 0.55 : this.lod.level === "reduced" ? 0.8 : 1)
+      : 1);
   }
 
   update(ctx: CombatContext): void {

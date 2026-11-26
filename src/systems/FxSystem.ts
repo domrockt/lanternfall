@@ -22,6 +22,7 @@ interface FxRuntime {
   frames: string[];
   frameRate: number;
   active: boolean;
+  additive: boolean;
 }
 
 export interface FxOptions {
@@ -81,6 +82,7 @@ export class FxSystem {
     for (const fx of this.active) {
       fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
       fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
+      fx.sprite.setBlendMode(fx.additive && next >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     }
   }
 
@@ -100,7 +102,11 @@ export class FxSystem {
     fx.scaleFrom = opts.scaleFrom ?? 1;
     fx.scaleTo = opts.scaleTo ?? fx.scaleFrom;
     fx.aspect = opts.aspect ?? 1;
-    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * this.alphaScale;
+    // Additive Glows stacken auf 255: im Endgame deshalb quadratisch dämpfen,
+    // sonst bleibt der weiße Kern trotz Alpha-Faktor stehen.
+    const additive = opts.additive !== false;
+    const extra = additive ? this.alphaScale : 1;
+    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * this.alphaScale * extra;
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
     fx.spin = opts.spin ?? 0;
@@ -114,7 +120,10 @@ export class FxSystem {
     sprite.setAlpha(fx.alphaFrom);
     sprite.setRotation(fx.rotation);
     sprite.setDepth(opts.depth ?? DEPTH.fxLow);
-    sprite.setBlendMode(opts.additive === false ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
+    fx.additive = opts.additive !== false;
+    // Minimal-LOD: grosse additive Flächen auf NORMAL legen, sonst bleibt der
+    // Kern trotz Alpha-Dämpfung weiß (additive Sprites stacken auf 255).
+    sprite.setBlendMode(fx.additive && this.alphaScale >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     if (opts.tint !== undefined) sprite.setTint(opts.tint);
     else sprite.clearTint();
     sprite.setVisible(true).setActive(true);
@@ -295,7 +304,7 @@ export class FxSystem {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
-      frames: ["fx_spark"], frameRate: 18, active: false,
+      frames: ["fx_spark"], frameRate: 18, active: false, additive: true,
     };
   }
 
@@ -340,6 +349,7 @@ export class ParticleSystem {
     for (const p of this.active) {
       p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
+      p.sprite.setBlendMode(p.additive && next >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     }
   }
 
@@ -359,7 +369,9 @@ export class ParticleSystem {
     p.scaleFrom = opts.scaleFrom ?? 1;
     p.scaleTo = opts.scaleTo ?? 0.2;
     p.aspect = opts.aspect ?? 1;
-    p.alphaFrom = (opts.alphaFrom ?? 0.95) * this.alphaScale;
+    const additive = opts.additive !== false;
+    const extra = additive ? this.alphaScale : 1;
+    p.alphaFrom = (opts.alphaFrom ?? 0.95) * this.alphaScale * extra;
     p.alphaTo = opts.alphaTo ?? 0;
     p.rotation = opts.rotation ?? 0;
     p.spin = opts.spin ?? 0;
@@ -373,7 +385,8 @@ export class ParticleSystem {
     s.setAlpha(p.alphaFrom);
     s.setRotation(p.rotation);
     s.setDepth(opts.depth ?? DEPTH.fxLow);
-    s.setBlendMode(opts.additive === false ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
+    p.additive = opts.additive !== false;
+    s.setBlendMode(p.additive && this.alphaScale >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     if (opts.tint !== undefined) s.setTint(opts.tint);
     else s.clearTint();
     s.setVisible(true).setActive(true);
@@ -464,7 +477,7 @@ export class ParticleSystem {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
-      frames: ["fx_spark"], frameRate: 18, active: false,
+      frames: ["fx_spark"], frameRate: 18, active: false, additive: true,
     };
   }
 

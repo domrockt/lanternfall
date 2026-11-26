@@ -15,7 +15,7 @@ export interface LodState {
 
 /** M6: Effekt-Alpha je LOD-Stufe (Endgame lesbar halten). */
 export function fxAlphaFor(level: LodState["level"]): number {
-  return level === "minimal" ? 0.62 : level === "reduced" ? 0.8 : 1;
+  return level === "minimal" ? 0.5 : level === "reduced" ? 0.72 : 1;
 }
 
 export const LOD_THRESHOLD = 400;

@@ -448,6 +448,7 @@ export class Run extends Phaser.Scene {
   setFxDamping(enabled: boolean): void {
     this.fxDampingEnabled = enabled;
     this.combat?.setFxDamping(enabled);
+    this.light?.setAlpha(0.85 * (enabled ? fxAlphaFor(this.lod.level) : 1));
   }
 
   /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */
@@ -458,6 +459,9 @@ export class Run extends Phaser.Scene {
       this.lod = lod;
       this.combat?.setLod(lod);
       this.pickups?.setCap(lod.gemCap);
+      // Auch die additive Laternen-Lichtfläche dämpfen: sie liegt über den
+      // Gegnern und ist im Endgame ein Hauptteil der Überstrahlung.
+      this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? fxAlphaFor(lod.level) : 1));
     }
   }
 

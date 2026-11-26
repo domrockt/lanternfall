@@ -55,18 +55,11 @@ try {
     const sc = window.__game.scene.getScene("run");
     while (sc.levelUpOpen) window.__lf.pickLevelUp(0);
     window.__lf.setTimeScale(1);
-    window.__lf.spawnEnemy("bog_rat", 220);
-    window.__lf.spawnEnemy("skeleton", 200);
-    window.__lf.spawnEnemy("wolf", 160);
+    window.__lf.spawnEnemy("bog_rat", 240);
+    window.__lf.spawnEnemy("wolf", 120);
+    window.__lf.spawnEnemy("spider", 100);
   });
-  await page.waitForTimeout(420);
-  // GIF zuerst: 12 Frames im echten Lauf, waehrend die Effekte wirken.
-  for (let i = 0; i < 8; i++) {
-    await page.screenshot({ path: `shots/tmp-vfx-${String(i).padStart(2, "0")}.png` });
-    await page.waitForTimeout(70);
-  }
-  // Grossen Evolutions-Effekt waehrend der Horde ausloesen, kurz wirken
-  // lassen, dann den Frame einfrieren (Vorher/Nachher exakt identisch).
+  await page.waitForTimeout(320);
   // Reproduzierbarer Pool-Effekt (echtes FxSystem-Sprite, das die Daempfung
   // skaliert) mitten in der Horde; danach Frame einfrieren.
   await page.evaluate(() => {
@@ -96,10 +89,23 @@ try {
   });
   await page.screenshot({ path: "shots/final-vfx-m25-after.png" });
   await page.evaluate(() => { window.__lf.setFxDamping(true); window.__game.scene.resume("run"); });
+  // GIF zuerst: 12 Frames im echten Lauf, waehrend die Effekte wirken.
+  report.gifFrames = [];
+  for (let i = 0; i < 10; i++) {
+    const st = await page.evaluate(() => window.__lf.stats());
+    await page.screenshot({ path: `shots/tmp-vfx-${String(i).padStart(2, "0")}.png` });
+    report.gifFrames.push({
+      frame: i, time: st.time, kills: st.kills, enemies: st.enemies,
+      fxAlpha: st.fxAlpha, lodLevel: st.lod?.level,
+    });
+    await page.waitForTimeout(50);
+  }
+  // Grossen Evolutions-Effekt waehrend der Horde ausloesen, kurz wirken
+  // lassen, dann den Frame einfrieren (Vorher/Nachher exakt identisch).
 
   execFileSync("ffmpeg", [
     "-y", "-framerate", "8", "-i", "shots/tmp-vfx-%02d.png",
-    "-vf", "scale=480:270:flags=neighbor,split[a][b];[a]palettegen=max_colors=32[p];[b][p]paletteuse=dither=none",
+    "-vf", "split[a][b];[a]palettegen=max_colors=64:stats_mode=diff[p];[b][p]paletteuse=dither=none",
     "-loop", "0", "shots/final-vfx-m25.gif",
   ], { stdio: "ignore" });
 
