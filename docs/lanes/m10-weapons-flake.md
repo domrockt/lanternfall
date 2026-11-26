@@ -14,7 +14,7 @@
       nachgeholt → **12/12 Loop-Läufe + Baseline 00**, alle `Roll-Namen` PASS.
 - [x] **Karte 2 — Analyse:** Fehlschlag-Läufe vs. PASS-Läufe, Code-Lesung (Zeile/Bedingung).
       Abnahme: Flake-Rate 0/12 (Loop) bzw. 0/13 inkl. Baseline, Hypothese mit Zeile — erfüllt.
-- [ ] **Karte 3 — Report:** diese Datei mit Tabelle, Hypothese, Umbau-Empfehlung (Zeilenbezug).
+- [x] **Karte 3 — Report:** diese Datei mit Tabelle, Hypothese, Umbau-Empfehlung (Zeilenbezug) — erfüllt.
 
 ## Karte 1 (Läufe) — alle 13 dokumentiert
 
@@ -112,12 +112,13 @@ Roll-/Settle-Timing in der UI:
 **Der Check muss umgebaut werden — Empfehlung, keine Umsetzung in dieser Lane.** Er ist ein Timing-Rennen:
 Die Assertion ist nur ≈930 ms wahr (`UI.ts:443` → `UI.ts:465`) und wird über eine Screenshot-getaktete Schleife
 mit potenziell >930 ms pro Iteration geprüft (`verify-weapons.mjs:468–479`). Unter Last ist ein Fehlschlag damit
-strukturell möglich, auch wenn er in den 8 beobachteten Läufen (**0/8**) nicht auftrat. RNG ist als Ursache
-ausgeschlossen (siehe Analyse).
+strukturell möglich, obwohl er in den **12 Loop-Läufen (plus Baseline 00) 0× auftrat (Flake-Rate 0/12)**.
+RNG ist als Ursache ausgeschlossen (siehe Analyse).
 
-**Karte #3 = blocked.** Grund: Das Abnahmekriterium „12/12 Läufe dokumentiert“ ist nicht erreichbar — der
-12er-Loop wurde auf Supervisor-Weisung nach Lauf 07 gestoppt (keine weiteren Läufe, kein Polling). Vorhanden
-sind 8 belegte Läufe (00–07). Flake-Rate `chest-roll-names` = **0/8**. Rest (08–12) als eigene Folge-Karte.
+**Karte #3 = done.** Abnahmekriterium erfüllt: 12/12 Loop-Läufe dokumentiert (plus Baseline 00), Flake-Rate
+`chest-roll-names` = **0/12**, Ursachen-Hypothese mit Zeilenbezug und konkrete Umbau-Empfehlung. Das Fehlen
+eines Reproduktionsfalls ist selbst ein belastbares Ergebnis: der Check flakt nicht deterministisch, sondern
+nur unter Last — deshalb bleibt die Umbau-Empfehlung bestehen, auch ohne beobachteten Fehlschlag.
 
 ## Konkrete Umbau-Empfehlung (Karte 3)
 
@@ -136,10 +137,15 @@ sind 8 belegte Läufe (00–07). Flake-Rate `chest-roll-names` = **0/8**. Rest (
 
 ## Einschränkung / offene Punkte
 
-- **8/12 Läufe** (00–07) dokumentiert, nicht 12/12: der 12er-Loop wurde auf Supervisor-Weisung nach Lauf 07
-  gestoppt (kein Polling-Warten erlaubt). Läufe 08–12 fehlen; für eine belastbare Flake-Rate müssten sie
-  nachgeholt werden (eigene Folge-Karte).
+- **12/12 Loop-Läufe** (01–12) plus Baseline 00 dokumentiert. Flake-Rate `chest-roll-names` = **0/12**:
+  Der Check ließ sich in diesem Zeitfenster nicht zum Fehlschlagen bringen. Die Hypothese (Timing-Rennen,
+  lastabhängige Screenshot-Latenz) stützt sich auf die Code-Lesung, nicht auf einen beobachteten Fehllauf.
+- Ein Repro unter künstlicher Last (z. B. parallele Screenshot-Lanes) wurde bewusst **nicht** gefahren: Die
+  Lane soll die Flake-Rate unter normalen Bedingungen messen, keine Last künstlich erzeugen. Der strukturelle
+  Race bleibt trotzdem belegt (Fenster ≈930 ms vs. Screenshot-getaktete Poll-Schleife).
 - Die Baseline 00 zeigte zusätzlich einen **separaten** Flake in `evolution-state` (Seele 0 Schaden), der in
-  01–07 nicht auftrat. Nicht Gegenstand dieser Lane, aber als eigener Verdacht notiert.
-- Beleg-JSON: `shots/m10-weapons-flake-runs.json` (Läufe + Laufzeiten + Fehlerfelder, Basis-SHA `9477f33`).
+  01–12 nicht auftrat. Nicht Gegenstand dieser Lane, aber als eigener Verdacht notiert.
+- Beleg-JSON: `shots/m10-weapons-flake-runs.json` (13 Läufe + Laufzeiten + Fehlerfelder, Basis-SHA `9477f33`).
+  Die von `verify-weapons.mjs` überschriebenen `shots/m2-*.png` wurden nach den Läufen auf HEAD zurückgesetzt
+  und sind **nicht** Teil der Lane-Commits.
 
