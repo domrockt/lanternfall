@@ -59,9 +59,18 @@ Touch/Gamepad kam aus der bereits gemergten Lane `m8-input` (5d29b81); hier nur 
 
 Alle 6 Läufe im M6-Korridor (Überleben 20–28 min bzw. Sieg, Level 25–40, Bosse 20–60 s, ≥1 Evolution).
 
-### Balance 780×360
+### Balance 780×360 (1920×1080-Ersatz: 780×360 @ dpr 3, 2 Seeds × 2 Charaktere, 30x, kein god)
 
-folgt nach dem Lauf.
+| Char | Seed | Ergebnis | Minuten | Level | Kills | Evos | Boss-Dauern (s) | Korridor |
+|---|---|---|---|---|---|---|---|---|
+| Mira | 101 | Tod | 20,4 | 26 | 1779 | 1 | 29/29/26/25 | JA |
+| Kael | 101 | Sieg | 30,5 | 27 | 6530 | 3 | 30/30/32/29/23/24 | JA |
+| Mira | 404 | Sieg | 30,4 | 34 | 7351 | 3 | 27/26/29/27/25/23 | JA |
+| Kael | 404 | Sieg | 30,5 | 30 | 11852 | 2 | 34/46/38/28/29/28 | JA |
+
+Alle vier Läufe im Korridor (Überleben ab 20 min bzw. Sieg, Level 25–40, Bosse 20–60 s, ≥1 Evolution);
+`shots/balance-main-m8-780-clean.json` meldet `allRunsPass: true` und 0 JS-Fehler. Gemessen ohne
+konkurrierende Messlast: Balance-Läufe sind CPU-empfindlich, parallele Läufe verzerren den AutoPlay-Bot.
 
 ### Performance/FPS 780×360
 
