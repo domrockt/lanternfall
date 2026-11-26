@@ -1,0 +1,10 @@
+M6-Lane "menus" — fertig (Branch m6-menus, 2026-11-25)
+- Titel (Start/Optionen/Credits), Credits-Szene, CharSelect mit beiden Portraits, Stats, Startwaffe, Meta.
+- Pause: Build 6/6 Waffen + 6/6 Powerups mit Icons/Stufen, Fortsetzen/Optionen/Aufgeben.
+- Results: Sieg/Niederlage/Aufgabe, Zeit/Kills/Level/Schadenstabelle, NEUE RUNDE/TITEL, Meta-Rekord.
+- Optionen: Musik/SFX/Shake/Damage-Numbers/Skalierung, localStorage; Reload-Werte identisch.
+- Meta: Bestzeit/Best-Kills/Best-Level/Siege/Runs pro Charakter auf Titel + CharSelect.
+- Tastatur + Maus/Touch, 9-Slice/Bitmap-Font, ganzzahlige Skalierung (AUTO/1X/2X/3X).
+- Belege: shots/m6-menus-*.png, `node scripts/verify-menus.mjs` 15/15 PASS, 0 JS-Fehler.
+- Messwerte: `npm test` 132/132 grün, `npm run build` grün; 1X zentriert 480/270 im 960x540.
+- Grenzen: kein Gold/Shop, God-Mode wird nicht gewertet, Sieg-Shot per Debug skipTo/finishRun.
