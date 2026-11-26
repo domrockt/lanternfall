@@ -1,0 +1,25 @@
+{
+  "spiderPos": {
+    "x": 2139,
+    "y": 1946
+  },
+  "spiders": 1,
+  "boss": {
+    "x": 2046.8113608913711,
+    "y": 2133.3432553010284,
+    "id": "bogzombie"
+  },
+  "bossList": [
+    {
+      "id": "bogzombie",
+      "bossIndex": 5,
+      "x": 2061,
+      "y": 2132
+    }
+  ],
+  "waterSpot": {
+    "x": 1916,
+    "y": 2156
+  },
+  "errors": []
+}
