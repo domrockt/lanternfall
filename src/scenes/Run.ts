@@ -46,6 +46,9 @@ import { shakeFor, hitStopFor } from "../logic/feedback";
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
 import { getAudio } from "../audio/AudioSystem";
+import { InputState, type Vec2 } from "../input/InputState";
+import { readSceneGamepad } from "../input/Gamepad";
+import { getTouchSnapshot, resetTouchSnapshot } from "../input/TouchState";
 
 export interface RunData {
   character?: CharacterId;
@@ -164,6 +167,9 @@ export class Run extends Phaser.Scene {
   private bosses!: BossSystem;
   private dawnRect?: Phaser.GameObjects.Rectangle;
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
+  /** M8-input: proengefuehrte Bewegung (Tastatur/Touch/Gamepad),  pro Frame. */
+  private inputState = new InputState();
+  private moveInput: Vec2 = { x: 0, y: 0 };
   private scratch: EnemyRuntime[] = [];
   /** Terrain-Faktor-Cache pro 16-px-Tile: kindAt() ist Noise-teuer und wurde
    *  vorher fuer jeden Gegner in jedem Frame aufgerufen. 0 = unbekannt,
@@ -304,10 +310,16 @@ export class Run extends Phaser.Scene {
 
     this.input.keyboard!.removeAllListeners("keydown-ESC");
 
+    this.inputState.reset();
+    this.moveInput = { x: 0, y: 0 };
+    resetTouchSnapshot();
+
     this.scene.launch("ui");
     this.registry.set("lf-elapsed", 0);
     getAudio().setMusic("run");
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.inputState.reset();
+      resetTouchSnapshot();
       this.ground.destroy();
       this.combat.clear();
       this.enemies.releaseAll();
@@ -323,6 +335,21 @@ export class Run extends Phaser.Scene {
     this.combat?.damageNumbers.setEnabled(getSettings().damageNumbers);
     if (this.finished) return;
     const realDt = Math.min(0.05, delta / 1000);
+
+    // M8-input: Tastatur + Touch + Gamepad werden einmal pro echtem Frame zu einem
+    // Bewegungsvektor (Länge 0..1) und flankengetriggerten Aktionen vereint.
+    const frame = this.inputState.update({
+      keyboard: {
+        up: this.keys.up.isDown || this.keys.up2.isDown,
+        down: this.keys.down.isDown || this.keys.down2.isDown,
+        left: this.keys.left.isDown || this.keys.left2.isDown,
+        right: this.keys.right.isDown || this.keys.right2.isDown,
+      },
+      gamepad: readSceneGamepad(this),
+      touch: getTouchSnapshot(),
+    });
+    this.moveInput = frame.move;
+    if (frame.actions.pause && !this.levelUpOpen && !this.chestOpen) this.togglePause();
 
     // AutoPlay wählt Level-Up-Angebote nach kurzer Anzeige (unbeaufsichtigter Run).
     if (this.levelUpOpen || this.chestOpen) {
@@ -571,23 +598,29 @@ export class Run extends Phaser.Scene {
       dx = dir.x;
       dy = dir.y;
     } else {
-      if (this.keys.left.isDown || this.keys.left2.isDown) dx -= 1;
-      if (this.keys.right.isDown || this.keys.right2.isDown) dx += 1;
-      if (this.keys.up.isDown || this.keys.up2.isDown) dy -= 1;
-      if (this.keys.down.isDown || this.keys.down2.isDown) dy += 1;
+      // Analoger Vektor aus InputState (Tastatur digital, Touch/Stick stufenlos).
+      dx = this.moveInput.x;
+      dy = this.moveInput.y;
     }
-    if (dx === 0 && dy === 0) {
+    const len = Math.hypot(dx, dy);
+    if (len < 0.001) {
       this.moving = false;
       return;
     }
+    // Sicherheitsklemme; die Quellen liefern bereits Länge <= 1. Die Magnitude
+    // bleibt erhalten (anal/Stick:gen langsamer), nur die Blickrichtung
+    // wird auf Einheitslänge gebracht.
+    if (len > 1) {
+      dx /= len;
+      dy /= len;
+    }
     this.moving = true;
-    const len = Math.hypot(dx, dy);
-    dx /= len;
-    dy /= len;
     const terrain = this.terrainFactorAt(this.posX, this.posY);
     const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
-    this.facingX = dx;
-    this.facingY = dy;
+    const lookX = dx / len;
+    const lookY = dy / len;
+    this.facingX = lookX;
+    this.facingY = lookY;
     // AutoPlay zielt auf den nächsten Gegner (Nahkampf-Flegel trifft sonst nur
     // in Laufrichtung, die beim Kiten vom Trupp wegzeigt). Nur die Blickrichtung,
     // nicht die Bewegung, wird gedreht; manuelle Steuerung bleibt unverändert.
@@ -835,7 +868,7 @@ export class Run extends Phaser.Scene {
       }
       if (e.boss) {
         this.bossesDefeated += 1;
-        this.chests.spawn(e.x, e.y);
+        this.attachChestTap(this.chests.spawn(e.x, e.y));
         this.chestsDropped += 1;
         const bossShake = shakeFor("bossDeath", getSettings().shake);
         if (bossShake.durationMs > 0) this.cameras.main.shake(bossShake.durationMs, bossShake.intensity);
@@ -1213,6 +1246,20 @@ export class Run extends Phaser.Scene {
     this.events.emit("chestOpen", result);
   }
 
+  /**
+   * M8-input: Truhe per Tippen öffnen. Nur in Reichweite (<= 220 px), damit
+   * ein Tap nicht quer über die Karte eine Truhe auslöst. Das Laufen über
+   * die Truhe bleibt unverändert der Hauptweg.
+   */
+  private attachChestTap(chest: ChestRuntime): void {
+    chest.sprite.setInteractive({ useHandCursor: true });
+    chest.sprite.on("pointerdown", () => {
+      if (this.chestOpen || this.levelUpOpen || this.paused || this.finished) return;
+      const distance = Phaser.Math.Distance.Between(chest.x, chest.y, this.posX, this.posY);
+      if (distance <= 220) this.openChest(chest);
+    });
+  }
+
   /** Debug: Truhe direkt vor dem Spieler spawnen und öffnen. */
   debugOpenChest(): void {
     if (this.chestOpen || this.levelUpOpen) throw new Error("openChest: Es ist bereits eine Truhe/ein Level-Up offen");
@@ -1308,6 +1355,8 @@ export class Run extends Phaser.Scene {
       xpRatio: xpProgress(this.xpState),
       hp: Math.round(this.hp),
       maxHp: this.maxHp,
+      playerX: Math.round(this.posX),
+      playerY: Math.round(this.posY),
       kills: this.kills,
       enemies: this.enemies?.count ?? 0,
       weapons: this.levelSys?.weapons.map((w) => ({ id: w.id, level: w.level })) ?? [],
