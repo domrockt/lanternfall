@@ -99,10 +99,14 @@ export function terrainSampleAt(wx: number, wy: number, seed: number, worldSize:
     return { kind: "mud", shade, light: false, depth: lake };
   }
 
-  // Gras: großflächige, weiche Schattierung + helle Inseln.
+  // Gras: weiche Schattierung + helle Inseln. Die Bandgrenzen werden
+  // pro Pixel gedithert statt hart geschnitten (keine Tarnflecken).
   const g = fbm(wx, wy, 43, seed + 911);
-  const shade: 0 | 1 | 2 = g < 0.33 ? 0 : g > 0.67 ? 2 : 1;
-  const light = fbm(fx + 33, fy - 63, 76, seed + 33) > 0.60;
+  const gd = tileHash(wx, wy, seed + 917) * 0.075 - 0.0375;</
+  const gs = g + gd;
+  const shade: 0 | 1 | 2 = gs < 0.33 ? 0 : gs > 0.67 ? 2 : 1;
+  const lightBoundary = 0.60 + (tileHash(wx, wy, seed + 919) - 0.5) * 0.10;
+  const light = fbm(fx + 33, fy - 63, 76, seed + 33) > lightBoundary;
   return { kind: "grass", shade, light, depth: lake };
 }
 
@@ -180,9 +184,11 @@ export function paintTerrain(
       const wy = oy + y;
       let col: number;
       if (k === 3) {
-        // Wasser: ruhige Mittellage blueGrey(5), nur tiefe Becken night(2).
-        // Kein per-Pixel-Noise mehr (das erzeugte 1-px-Sprenkel).
-        col = depth[i] < 0.095 ? 2 : 5;
+        // Water: Mittellage blueGrey(5), tiefe Becken night(2); die
+        // Bandgrenze wird pro Pixel gedithert.
+        const dn = (tileHash(wx, wy, seed + 923) - 0.5) * 0.03;
+        const dv = depth[i] + dn;
+        col = dv < 0.095 ? 2 : dv < 0.15 ? 4 : 5;
       } else if (k === 2) {
         // Schlamm: dunkles, nasses Moor (3/14/15), kein großer Glutbraun-Block.
         const n = fbm(wx + 300, wy - 90, 26, seed + 5);
@@ -230,32 +236,46 @@ export function paintTerrain(
       const m = maskAt(x, y, 1);
       if (m === 0xff) continue;
       const miss = missingSides(m);
-      const cor = cornerMask(m);
-      // Grasiger Übergang: Moos kriecht unregelmäßig über den Wegrand,
-      // dazwischen 1-px-Erdspitzen und Lücken. Kein harter Braun/Grün-Sprung.
-      const hsh = tileHash(Math.floor((ox + x) / 3), Math.floor((oy + y) / 3), seed + 191);
-      if (miss.n || miss.w || miss.e || miss.s || cor !== 0) {
-        // Helle Moosspitzen 29/30 als sichtbarer Aufbruch bei 1x.
-        if (hsh > 0.70) setPx(x, y, 30);
-        else if (hsh > 0.40) setPx(x, y, 29);
-        else if (hsh > 0.18) setPx(x, y, 28);
-        else setPx(x, y, 14);
-      } else if (atDist(x, y, 2, 1) === false) setPx(x, y, 14);
+      // Grasiger Saum als 2-px-Bloecke (kein 1-px-Pfeffer): helle
+      // Moosspitzen oben-links, dunkles Moos unten-rechts, dazw Erd.
+      const bx = tileHash(Math.floor((ox + x) / 2), Math.floor((oy + y) / 2), seed + 191);
+      const cluster = tileHash(Math.floor((ox + x) / 6), Math.floor((oy + y) / 6), seed + 193);
+      if (cluster > 0.55) {
+        setPx(x, y, bx > 0.5 ? 30 : 29);
+      } else if ((miss.n || miss.w) && bx > 0.42) {
+        setPx(x, y, 29);
+      } else if (bx > 0.62) {
+        setPx(x, y, 28);
+      } else {
+        setPx(x, y, 14);
+      }
     }
   }
 
-  // Weg-Ausfransung: an etwa jedem zweiten Randpixel kriecht Erde 1 px
-  // ins Gras (Breite ±2 px), oben-links punktuell 16 als Lichtkante.
+  // Weg-Ausfransung: per-Pixel kriecht Erde 1 px ins Gras,
+  // oben-links punktuell 16 als Lichtkante, sonst 15 und 14.
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       if (codeAt(x, y) !== 0) continue;
       if (!atDist(x, y, 1, 1)) continue;
-      if (tileHash(Math.floor((ox + x) / 7), Math.floor((oy + y) / 7), seed + 197) < 0.45) continue;
-      setPx(x, y, tileHash(Math.floor((ox + x) / 11), Math.floor((oy + y) / 11), seed + 199) > 0.7 ? 16 : 15);
+      if (tileHash(ox + x, oy + y, seed + 197) < 0.52) continue;
+      const e = tileHash(ox + x, oy + y, seed + 199);
+      setPx(x, y, e > 0.72 ? 14 : e > 0.34 ? 15 : 16);
     }
   }
 
-  // Schlammkanten: feuchter, leicht hellerer Saum; 2 px nach innen 15.
+  // Weg-Innenkante: Licht oben-links (16), Schatten unten-rechts (14),
+  // nur auf dem zweiten Ring, damit der Saum weich bleibt.
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (codeAt(x, y) !== 1) continue;
+      if (atDist(x, y, 2, 1)) continue;
+      const north = codeAt(x, y - 1) !== 1 || codeAt(x - 1, y) !== 1;
+      const south = codeAt(x, y + 1) !== 1 || codeAt(x + 1, y) !== 1;
+      if (north && tileHash(ox + x, oy + y, seed + 201) > 0.35) setPx(x, y, 16);
+      else if (south && tileHash(ox + x, oy + y, seed + 203) > 0.35) setPx(x, y, 14);
+    }
+  }
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       if (codeAt(x, y) !== 2) continue;
@@ -280,16 +300,21 @@ export function paintTerrain(
     }
   }
 
-  // Wasserbank (Land): Moos 29/30 statt eines rotbraunen Glutrings.
-  // Weltverankert, dadurch ausgefranste Ufer.
+  // Wasserbank (Land): schmaler feuchter Torf/Moos-Saum von 1-2 px.
+  // Per-Pixel-Koernung statt 4-px-Bloecken, damit das Ufer ausgefranst wirkt.
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const k = codeAt(x, y);
       if (k === 3) continue;
-      const hsh = tileHash(Math.floor((ox + x) / 4), Math.floor((oy + y) / 4), seed + 211);
-      if (atDist(x, y, 1, 3)) setPx(x, y, hsh > 0.5 ? 29 : 30);
-      else if (atDist(x, y, 2, 3)) setPx(x, y, hsh > 0.55 ? 28 : 29);
-      else if (atDist(x, y, 3, 3)) setPx(x, y, hsh > 0.4 ? 28 : 29);
+      const hsh = tileHash(ox + x, oy + y, seed + 211);
+      const wet = valueNoise(ox + x, oy + y, 11, seed + 213);
+      if (atDist(x, y, 1, 3)) {
+        setPx(x, y, hsh > 0.55 ? 30 : hsh > 0.24 ? 29 : 28);
+      } else if (atDist(x, y, 2, 3) && wet > 0.52) {
+        setPx(x, y, hsh > 0.5 ? 29 : 28);
+      } else if (atDist(x, y, 3, 3) && wet > 0.72) {
+        setPx(x, y, 28);
+      }
     }
   }
 
@@ -334,10 +359,9 @@ export function paintTerrain(
       const r = tileHash(tx, ty, seed + 77);
 
       if (k === 0) {
-        // Grasbüschel: 2-px-Stängel + 2×2-Spitze in Clustern; Dichte um rund 30 %
-        // reduziert, damit zwischen den Clustern ruhige ≥8-px-Flächen bleiben.
-        const tuft = valueNoise(tx * 0.85 + 11, ty * 0.85 - 5, 2.6, seed + 413);
-        if (tuft > 0.52 && r > 0.32) {
+        // Grasbueschel nur in 2x2-Tile-Clustern; zwischen den bleibt Ruhe.
+        const tuft = valueNoise(Math.floor(tx / 2) * 0.85 + 11, Math.floor(ty / 2) * 0.85 - 5, 2.6, seed + 413);
+        if (tuft > 0.56 && r > 0.40) {
           const bx = px + 3 + Math.floor(tileHash(tx, ty, seed + 47) * 7);
           const by = py + 5 + Math.floor(tileHash(ty, tx, seed + 53) * 5);
           const stem = light[i] ? 31 : 30;
@@ -353,7 +377,7 @@ export function paintTerrain(
           ctx.fillRect(bx + 3, by + 5, 3, 1);
         }
         // Ruhige 2×2-Flecken in derselben Rampe (kein Einzelpixel).
-        if (r > 0.56) {
+        if (r > 0.74) {
           const sx = px + 2 + Math.floor(tileHash(tx, ty, seed + 401) * 11);
           const sy = py + 2 + Math.floor(tileHash(ty, tx, seed + 403) * 11);
           ctx.fillStyle = hex(light[i] ? (tileHash(tx + 1, ty + 1, seed + 405) > 0.5 ? 31 : 29) : (tileHash(tx + 1, ty + 1, seed + 405) > 0.5 ? 30 : 28));
@@ -362,7 +386,7 @@ export function paintTerrain(
         // Moosinseln: 3×2-Cluster aus einer zweiten, kleineren Noise-Oktave,
         // damit auch große hellen Flächen alle paar Kacheln Struktur bekommen.
         const moss = valueNoise(tx * 0.42 + 7, ty * 0.42 - 3, 1.9, seed + 421);
-        if (moss > 0.60 && r > 0.30) {
+        if (moss > 0.66 && r > 0.36) {
           const mx = px + 2 + Math.floor(tileHash(tx + 5, ty + 9, seed + 423) * 10);
           const my = py + 3 + Math.floor(tileHash(ty + 7, tx + 2, seed + 427) * 9);
           ctx.fillStyle = hex(light[i] ? 29 : 28);
@@ -414,8 +438,8 @@ export function paintTerrain(
       } else if (k === 1) {
         // Kies: 3–4 kühle Steine als geschlossene 2×2-Gruppen mit
         // Lichtkante oben-links (5/6/8), keine 1-px-Sprenkel (kein Glutbraun).
-        if (tileHash(Math.floor(tx / 2), Math.floor(ty / 2), seed + 61) > 0.40) {
-          const stones = 4 + (tileHash(tx, ty, seed + 63) > 0.5 ? 1 : 0);
+        if (tileHash(Math.floor(tx / 2), Math.floor(ty / 2), seed + 61) > 0.62) {
+          const stones = 3 + (tileHash(tx, ty, seed + 63) > 0.5 ? 1 : 0);
           for (let s = 0; s < stones; s++) {
             const sx = px + 2 + Math.floor(tileHash(tx + s, ty, seed + 67) * 10);
             const sy = py + 3 + Math.floor(tileHash(ty, tx + s, seed + 69) * 8);
