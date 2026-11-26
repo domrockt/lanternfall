@@ -433,6 +433,10 @@ async function runKeyboardSuite() {
   await page.keyboard.down("ArrowRight");
   await page.waitForTimeout(850);
   await page.keyboard.up("ArrowRight");
+  // Phaser verarbeitet Keydowns in der naechsten Frame-Queue; kommt Escape im
+  // selben Browser-Task wie das ArrowRight-Keyup, geht die Pause-Flanke verloren.
+  // Eine Frame-Luecke macht den Check deterministisch (Merge-Befund M8-input).
+  await page.waitForTimeout(120);
   const kbAfter = await state(page);
   check(
     "Tastatur: Pfeil rechts bewegt den Spieler unveraendert",
