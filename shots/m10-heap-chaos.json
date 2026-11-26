@@ -1,0 +1,171 @@
+{
+  "tool": "m10-heap-qa/variants.mjs (read-only scripts/harness.mjs + perf-heap-Muster)",
+  "variant": "chaos",
+  "label": "Chaos: Minute 24 -> Minute 26 (Chaos bei Minute 25)",
+  "generatedAt": "2026-11-26T19:14:48.496Z",
+  "args": {
+    "seed": 99,
+    "timeScale": 30,
+    "baselineAtSimSecond": 1440,
+    "endAtSimSecond": 1560
+  },
+  "actions": [
+    {
+      "at": 1500,
+      "kind": "enemies",
+      "n": 300,
+      "label": "Chaos-Minute 25: 300 Gegner"
+    },
+    {
+      "at": 1500,
+      "kind": "evolution",
+      "n": 6,
+      "label": "Chaos-Minute 25: 6 Evolutionen"
+    }
+  ],
+  "heap": {
+    "start": {
+      "nodes": 578977,
+      "bytes": 33724200,
+      "mb": 32.2,
+      "jsHeapMB": 34.1
+    },
+    "end": {
+      "nodes": 413461,
+      "bytes": 30966353,
+      "mb": 29.5,
+      "jsHeapMB": 29
+    },
+    "deltaNodes": -165516,
+    "deltaBytes": -2757847,
+    "deltaPct": -8.2,
+    "jsHeapDeltaMB": -5.1,
+    "jsHeapPct": -15,
+    "top5GrowthByBytes": [
+      {
+        "constructor": "a",
+        "type": "closure",
+        "startCount": 2909,
+        "endCount": 5706,
+        "deltaCount": 2797,
+        "startBytes": 81508,
+        "endBytes": 159824,
+        "deltaBytes": 78316
+      },
+      {
+        "constructor": "i",
+        "type": "object",
+        "startCount": 15380,
+        "endCount": 15857,
+        "deltaCount": 477,
+        "startBytes": 369120,
+        "endBytes": 380568,
+        "deltaBytes": 11448
+      },
+      {
+        "constructor": "fx_orb_4",
+        "type": "string",
+        "startCount": 4,
+        "endCount": 18,
+        "deltaCount": 14,
+        "startBytes": 80,
+        "endBytes": 340,
+        "deltaBytes": 260
+      },
+      {
+        "constructor": "(anonymous array)",
+        "type": "array",
+        "startCount": 373,
+        "endCount": 373,
+        "deltaCount": 0,
+        "startBytes": 182252,
+        "endBytes": 182452,
+        "deltaBytes": 200
+      },
+      {
+        "constructor": "fx_orb_3",
+        "type": "string",
+        "startCount": 5,
+        "endCount": 13,
+        "deltaCount": 8,
+        "startBytes": 100,
+        "endBytes": 240,
+        "deltaBytes": 140
+      }
+    ],
+    "top5GrowthByCount": [
+      {
+        "constructor": "a",
+        "type": "closure",
+        "startCount": 2909,
+        "endCount": 5706,
+        "deltaCount": 2797,
+        "startBytes": 81508,
+        "endBytes": 159824,
+        "deltaBytes": 78316
+      },
+      {
+        "constructor": "1",
+        "type": "string",
+        "startCount": 7065,
+        "endCount": 8573,
+        "deltaCount": 1508,
+        "startBytes": 0,
+        "endBytes": 0,
+        "deltaBytes": 0
+      },
+      {
+        "constructor": "i",
+        "type": "object",
+        "startCount": 15380,
+        "endCount": 15857,
+        "deltaCount": 477,
+        "startBytes": 369120,
+        "endBytes": 380568,
+        "deltaBytes": 11448
+      },
+      {
+        "constructor": "1.2",
+        "type": "string",
+        "startCount": 463,
+        "endCount": 922,
+        "deltaCount": 459,
+        "startBytes": 0,
+        "endBytes": 0,
+        "deltaBytes": 0
+      },
+      {
+        "constructor": "20",
+        "type": "string",
+        "startCount": 131,
+        "endCount": 407,
+        "deltaCount": 276,
+        "startBytes": 16,
+        "endBytes": 16,
+        "deltaBytes": 0
+      }
+    ]
+  },
+  "sim": {
+    "simSecondsReached": 1560,
+    "kills": 6142,
+    "level": 34,
+    "enemiesAtEnd": 162,
+    "enemiesAfterSpawn": 306
+  },
+  "fps": {
+    "min": 30.9,
+    "median": 47.4,
+    "samples": 469
+  },
+  "cdp": {
+    "usedJSHeapStartMB": 34.1,
+    "usedJSHeapEndMB": 29,
+    "usedJSHeapPeakMB": 81.6,
+    "majorGC": 9,
+    "minorGC": 147,
+    "note": "Snapshot-Bytes nach erzwungenem Voll-GC vs. performance.memory; Peak = roher usedJSHeapSize waehrend des Laufs; GC ueber v8.gc-Trace"
+  },
+  "jsErrors": [],
+  "criterion15Pct": true
+}

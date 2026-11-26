@@ -1,0 +1,7 @@
+Lane m10-heap-qa — Heap-Nachmessung, Basis-SHA f26dc4b
+Gate GRUEN: Basis Minute 1->29 (Sim 60 s -> 1740 s) -0,2 % Snapshot-Wachstum (+0,7 % JS-Heap nach GC), Ziel <=15 % erfuellt.
+Chaos-Minute 25 (300 Gegner + 6 Evolutionen): -8,2 % Snapshot (-15,0 % JS-Heap), Peak roh 81,6 MB, FPS-Min 30,9.
+500-Gegner-Burst bei 65 s: +1,1 % Snapshot (+1,7 % JS-Heap), Peak roh 41,0 MB, FPS-Min 53,0.
+CDP: Snapshot-Bytes nach Voll-GC flach; roher usedJSHeapSize streut bis ~79-82 MB (Host/GC), kein JS-Objekt-Leak belegt.
+0 JS-Fehler in allen Laeufen; tsc OK, Vitest 192/192 gruen. Belege: shots/m10-heap-{smoke,basis,chaos,burst}.json, docs/lanes/m10-heap-qa.md.
+Hinweis: scripts/perf-heap.mjs liegt in f26dc4b nicht auf main (aus m9-perf-heap, c869667), read-only genutzt; Varianten-Huelle in ~/tmp/m10-heap-qa/variants.mjs (nicht im Repo).
