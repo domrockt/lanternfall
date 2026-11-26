@@ -61,7 +61,7 @@ export class Results extends Phaser.Scene {
     new PixelText(this, 40, 134, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
     new PixelText(this, 40, 148, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
     new PixelText(this, 40, 162, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
-    if (this.result.god) new PixelText(this, 40, 176, "GOTT-MODUS: NICHT GESPEICHERT", C.amber).setDepth(2);
+    if (this.result.god) new PixelText(this, 40, 176, "GOTT-MODUS - NICHT GEWERTET", C.amber).setDepth(2);
 
     // Bestwert als zentriertes Banner in der linken Spalte.
     let bannerText = "BESTWERTE BLEIBEN STEHEN";
