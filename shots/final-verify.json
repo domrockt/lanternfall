@@ -106,7 +106,7 @@
           "enemies": 110,
           "hp": 250,
           "maxHp": 250,
-          "fps": 58.3,
+          "fps": 58,
           "weapons": [
             {
               "id": "ember",
@@ -154,7 +154,7 @@
         "enemies": 110,
         "hp": 250,
         "maxHp": 250,
-        "fps": 58.3,
+        "fps": 58,
         "weapons": [
           {
             "id": "ember",
@@ -201,7 +201,7 @@
         "enemies": 129,
         "hp": 250,
         "maxHp": 250,
-        "fps": 58.3,
+        "fps": 58,
         "weapons": [
           {
             "id": "ember",
@@ -243,7 +243,7 @@
     },
     "damageBeforeFinish": {
       "scene": "run",
-      "time": 51.1,
+      "time": 50.9,
       "level": 1,
       "xp": 0,
       "xpNeed": 8,
@@ -298,15 +298,15 @@
       "enemyShots": 0,
       "hazards": 0,
       "enemyList": [],
-      "fps": 59.9,
+      "fps": 59.4,
       "character": "mira",
       "damageByWeapon": {
-        "ember": 864,
-        "frost": 745,
-        "storm": 3401,
-        "flail": 6966,
-        "thorn": 672,
-        "lantern": 88
+        "ember": 892,
+        "frost": 772,
+        "storm": 2807,
+        "flail": 7857,
+        "thorn": 448,
+        "lantern": 132
       },
       "stats": {
         "moveSpeedPct": 0,
