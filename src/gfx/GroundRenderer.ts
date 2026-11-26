@@ -195,6 +195,25 @@ export class GroundRenderer {
     }
     this.lastCx = minCx;
     this.lastCy = minCy;
+    this.updatePropsDepth();
+  }
+
+  private updatePropsDepth(): void {
+    const player = (this.scene as unknown as { player?: Phaser.GameObjects.Container }).player;
+    const py = player?.y;
+    if (py === undefined) return;
+    for (const entry of this.chunks.values()) {
+      for (const p of entry.props) {
+        if (p.getData("isShadow")) {
+          p.setDepth(11.15);
+          continue;
+        }
+        const footY = p.getData("footY") as number | undefined;
+        if (footY === undefined) continue;
+        const glow = p.getData("glow") ? 0.06 : 0;
+        p.setDepth(footY < py ? 11.6 + glow : 12.4 + glow);
+      }
+    }
   }
 
   /** Terrain an einer Weltposition (für Wasser-Slow und Spritzer). */
@@ -303,8 +322,8 @@ export class GroundRenderer {
   ): void {
     if (!PROP_KEYS.has(key) || !this.scene.textures.exists(key)) return;
     const img = this.scene.add.image(wx, wy, key).setOrigin(0.5, 1);
-    //.setDepth(-90 + Math.min(0.85, wy * 0.00002));
     img.setFlipX(flip);
+    img.setData("footY", wy);
     // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
     if (this.scene.textures.exists("shadow")) {
       const sw = Math.max(0.7, Math.min(4, img.width / 16));
@@ -313,6 +332,7 @@ export class GroundRenderer {
         .setScale(sw, 0.85)
         .setAlpha(0.62)
         .setDepth(-90.5 + Math.min(0.85, wy * 0.00002));
+      shadow.setData("isShadow", true);
       props.push(shadow);
     }
     if (tinted) img.setAlpha(0.92);
@@ -324,6 +344,8 @@ export class GroundRenderer {
         .setScale(0.42)
         .setAlpha(0.22)
         .setDepth(-89.5);
+      glow.setData("footY", wy);
+      glow.setData("glow", true);
       props.push(glow);
     }
   }
