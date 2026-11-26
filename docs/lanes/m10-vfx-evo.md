@@ -125,3 +125,18 @@ bei 300+ Gegnern zu verlieren (Stills/GIFs erneut belegen).
 
 Hinweis: `.gitignore` ignoriert `shots/*.gif`; die 12 GIFs wurden mit `git add -f`
 in den Karten-Commit gezwungen (keine Änderung an `.gitignore`).
+
+## Abnahme
+
+- 12/12 Effekte mit Trigger-Pfad, GIF (480x270) und Still belegt; Frame-Zahlen:
+  16 Frames für 11 Effekte, 10 Frames für `event-dawn` (Run endet ~1,2 s nach Dawn).
+- Zwei vollständige Capture-Läufe, **0 JS-Fehler** (`errors: []` in
+  `shots/m10-vfx-evo-readability.json`).
+- Sichtprüfung: Kontaktbögen `~/tmp/m10-vfx-evo/view/evos2.png` und `events2.png`
+  sowie Frame-Strips `phoenix`, `event-dawn`, `event-elite` angesehen; Effekte sind
+  während der Wirkung mit lebenden Gegnern sichtbar (kein Post-Kampf-Bild).
+- Near-White-Peak-Ziel 4,16 %: 1/12 PASS (eternal_winter), 11/12 FAIL (Peak);
+  Mean-Ziel: 11/12 PASS, nur event-elite 4,18 % knapp darüber.
+- Kein Skript unter `scripts/`/`src/` geändert; Board nicht angefasst
+  (Supervisor-Snapshot s. o.).
+
