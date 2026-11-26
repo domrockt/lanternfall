@@ -25,9 +25,9 @@ Nach jedem Merge: `npm run build` grün und Tests grün (135 nach balance+robust
 |---|---|---|
 | Alle Listen vollständig umgesetzt | `node scripts/acceptance-count.mjs` → 30/6/6/6/6/2 (siehe A3) | OK |
 | 30-min-Run per autoPlay + setTimeScale(30) ohne Crash/JS-Fehler; alle 6 Bosse, Truhen, ≥1 Evolution | `shots/m3-fullrun.json` (30,1 min, 6 Bosse 300–1800 s, 6 Truhen, Sieg, 0 JS-Fehler); voller Echtzeit-Lauf siehe A4 | OK |
-| Performance-Ziel ≥ 55 FPS mit 500 Gegnern + Projektilen | `shots/perf-m3.json` → Burst 60,1 FPS | OK |
+| Performance-Ziel ≥ 55 FPS mit 500 Gegnern + Projektilen | `shots/perf-m3.json` → Burst **59,7 FPS** (worst 33,4 ms) | OK |
 | Tests grün | `npm test` → 147 Tests grün | OK |
-| Screenshots aller Gegner/Bosse/Waffen geprüft | `shots/m4-enemy-*.png` (30), `shots/m4-boss-*.png` (6), `shots/m5-vfx-*.gif` (18 Waffen/Events), per Vision geprüft; Kontaktbögen in `shots/` | OK |
+| Screenshots aller Gegner/Bosse/Waffen geprüft | `shots/m4-enemy-*.png` (30), `shots/m4-boss-*.png` (6), `shots/m5-vfx-*.gif` (12 Waffen-/Evolutions-GIFs, alle 12 Waffen), per Vision geprüft; Kontaktbögen in `shots/` | OK |
 
 ## A3 — Inhaltszählung automatisch aus `src/data`
 
@@ -59,10 +59,10 @@ in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
 
 | Messung | Wert | Beleg |
 |---|---|---|
-| perf Burst (500 Gegner) | **60,1 FPS**, worst 16,8 ms | `shots/perf-m3.json` |
-| perf Minute 25 (300 + 6 Evolutionen) | **57,5 FPS**, worst 33,4 ms | `shots/perf-m3.json` |
+| perf Burst (500 Gegner) | **59,7 FPS**, worst 33,4 ms | `shots/perf-m3.json` |
+| perf Minute 25 (300 + 6 Evolutionen) | **57,2 FPS**, worst 33,4 ms | `shots/perf-m3.json` |
 | fullrun FPS-Minimum (29:20–Sieg, 1×) | **55,8** (Ziel ≥ 55) | `shots/m3-fullrun.json` |
-| fullrun Gesamt | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler | `shots/m3-fullrun.json` |
+| fullrun Gesamt | 30,2 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler; Heap +18,7 % (25,7 → 30,5 MB, Ziel 15 % verfehlt) | `shots/m3-fullrun.json` |
 | balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Kael/101 Level 47 (Restmangel) | `shots/balance-main.json` |
 | balance Boss-Dauern | 23–54 s (Ziel 20–60 s) | `shots/balance-main.json` |
 | Tests | 147 grün | `npm test` |
@@ -82,8 +82,10 @@ Endboss brauchte im 2. Versuch 141,6 s; #79 deshalb blocked, Nachzügler #82).
   `-after.png` (Minimal-LOD: additive Glows NORMAL, Alpha 0,5, Laternenlicht
   0,85·0,5, Damage-Numbers 0,55) und `shots/final-vfx-m25.gif`. Beide Stills
   sind derselbe eingefrorene Frame (time 1405,6 s, kills 3200, 429 Gegner);
-  Pixel-Diff AE 206.684; Near-White im AoE-Crop **10,15 % → 4,16 % (−59 %)**,
-  vfx-check unabhängig **−55…−66 % → PASS (4/5)**. Rohdaten
+  Pixel-Diff AE 206.684; Near-White im AoE-Crop (240×220+360+160, Definition
+  r,g,b ≥ 150 und r ≥ 235) **10,15 % → 4,16 % (−59 %)**; unabhängig über das
+  ganze Spielfeld **0,92 % → 0,22 % (−75,8 %)**; vfx-check **−55…−66 % →
+  PASS (4/5)**. Rohdaten
   `shots/final-vfx-readability.json` (63 fx/202 Partikel im Frame, GIF-Frames
   mit Zeit/Kills/fxAlpha dokumentiert; HUD-KILL rundet auf 3196).
 - **Damage-Aggregation ab ~120 Gegnern:** Runtime-Beleg
@@ -130,18 +132,20 @@ Elites, Menü ohne Gamepad.
 ## A11 — Worktrees entfernt
 
 Erledigt: `/home/ai/games/lf-lanes/{balance,robust,menus}` mit
-`git worktree remove` entfernt; `git worktree list` zeigt nur noch das
-Hauptrepo (plus fremdes `.apkbuild`). Branches `m6-balance`, `m6-robust`,
-`m6-menus` bleiben erhalten.
+`git worktree remove` entfernt; `git worktree list` zeigt das Hauptrepo,
+das fremde `.apkbuild` und die **neue, nicht angetastete Lane
+`lf-lanes/input` (Branch `m8-input`)**. Kein `worktree prune` ausgeführt.
+Branches `m6-balance`, `m6-robust`, `m6-menus` sowie `m8-input` bleiben erhalten.
 
 ## A12 — Build/Tests/Board/GAME.md
 
 `npm run build` grün, `npm test` **147 Tests grün** auf dem finalen Stand.
-Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#78/#80–#82 done.
+Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#78/#80–#82 done; #15 wird mit diesem Commit abgeschlossen.
 Ausnahme: #79 bleibt `blocked` (Trailer-Segment 7 zweimal 120-s-Timeout);
 die Deliverables wurden über #82 erledigt, deshalb ist A6/A12 inhaltlich grün.
 Abschluss-Commits: `f76880d` (A10/Result-Fix), `6896f1b` (Board/ACCEPTANCE),
-Epic #15 mit `26c7074`/`cc62619` abgeschlossen. Kein Push. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
+Epic #15: Nachlauf-Audit (acceptance-auditor) mit diesem Commit abgeschlossen;
+Korrektur der A5-Zahlen auf die tatsächlichen JSON-Werte. Kein Push. GAME.md auf M6-Stand (Lanes, Messwerte, Balance-Tabelle,
 Nachträge, Restmängel).
 
 ## Offene Punkte / Restmängel
@@ -149,10 +153,10 @@ Nachträge, Restmängel).
 - Balance: Kael/Seed 101 erreicht Level 47 (Ziel 25–40); AutoPlay streut.
 - Boss-Inszenierung: Knochenfürst spawnt am oberen Rand hinter der HP-Leiste
   (art-director-Restpunkt; keine Abnahme-Blockade).
-- fullrun-Heap in diesem Lauf +22,2 % (25,7 → 31,4 MB) über dem 15-%-Ziel;
+- fullrun-Heap in diesem Lauf +18,7 % (25,7 → 30,5 MB) über dem 15-%-Ziel;
   CDP-Diagnose 12,5 → 13,4 MB, kein JS-Objekt-Leak, Host-Last/GC-Streuung.
 - VFX-Minimal-LOD ist bewusst stark gedämpft (Alpha 0,5/NORMAL); Glows flacher.
-- Realtime-Heap +15,8 % und fullrun-Heap +22,2 % über dem 15-%-Ziel
+- Realtime-Heap +15,8 % und fullrun-Heap +18,7 % über dem 15-%-Ziel
   (nur Heap-Gate; Spiel, FPS und JS-Fehler sind grün).
 - Trailer-Segment 7 (Endboss) lief erst im 2. Versuch (141,6 s, Timeout 180 s);
   #79 ist deshalb blocked, die Belege kamen über #82.

@@ -375,11 +375,11 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 
 - Terrain-Chunks im Worker (vorher 25–45 ms/Chunk, 150–200 ms Hitches), Laufzeit-Atlas (Texture-Binds 269 → 125),
   SpatialHash-FreeList, Scratch-Arrays im Bot, Separation-/Boss-LOD, Pool-Prewarm, Audio-Voice-Pools.
-- `flock npm run perf` (final gemergter Stand): **Burst 60,1 FPS** (500 Gegner, worst 16,8 ms),
-  **Minute 25: 57,5 FPS** (300 Gegner + 6 Evolutionen), 0 JS-Fehler. JSON `shots/perf-m3.json`.
+- `flock npm run perf` (final gemergter Stand): **Burst 59,7 FPS** (500 Gegner, worst 33,4 ms),
+  **Minute 25: 57,2 FPS** (300 Gegner + 6 Evolutionen), 0 JS-Fehler. JSON `shots/perf-m3.json`.
 - `flock npm run fullrun` (final): 30,1 Sim-Minuten, 6 Bosse 300–1800 s, 6 Truhen, Sieg/Morgendämmerung,
   **FPS-Minimum 55,8** (29:20–Sieg, 1×), 0 JS-Fehler. JSON `shots/m3-fullrun.json`.
-  Heap-Diagnose diesmal +22,2 % (25,7 → 31,4 MB) über dem 15-%-Ziel — Streuung/Host-Last, nicht A5-Kriterium (offener Punkt).
+  Heap-Diagnose +18,7 % (25,7 → 30,5 MB) über dem 15-%-Ziel — Streuung/Host-Last, nicht A5-Kriterium (offener Punkt).
 - Robustheit: `visibilitychange` pausiert (Delta 0 s, Resume ohne Sprung), Resize 1×/2×/3×/4× ganzzahlig,
   Worker-Timeout/Sync-Fallback, Atlas 224 Frames (`npm run verify:robust` PASS).
 
@@ -410,8 +410,8 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 | Messung | Wert |
 |---|---|
 | `npm run build` / `npm test` | grün / **147 Tests** |
-| perf Burst (500 Gegner) | **60,1 FPS**, worst 16,8 ms |
-| perf Minute 25 (300 + 6 Evolutionen) | **57,5 FPS**, worst 33,4 ms |
+| perf Burst (500 Gegner) | **59,7 FPS**, worst 33,4 ms |
+| perf Minute 25 (300 + 6 Evolutionen) | **57,2 FPS**, worst 33,4 ms |
 | fullrun FPS-Minimum (29:20–Sieg) | **55,8** (Ziel ≥55) |
 | fullrun | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler |
 | balance | 6 Läufe, 5/6 im Korridor, Kael/101 Level 47 (Restmangel) |
@@ -419,6 +419,6 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 
 **Bekannte Lücken (M6):**
 - Kael/Seed 101 Level 47 über dem Balance-Ziel 25–40 (AutoPlay-Streuung).
-- fullrun-Heap +22,2 % über dem 15-%-Ziel in diesem Lauf (Host-Last/GC-Streuung; CDP-Diagnose 12,5 → 13,4 MB).
+- fullrun-Heap +18,7 % über dem 15-%-Ziel in diesem Lauf (Host-Last/GC-Streuung; CDP-Diagnose 12,5 → 13,4 MB).
 - VFX-Dämpfung im Minimal-LOD ist bewusst stark (Alpha 0,5, NORMAL-Blend); einzelne Glows wirken dort flacher.
 - Menüs ohne Gamepad, Meta ohne Gold/Shop.
