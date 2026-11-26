@@ -1284,7 +1284,7 @@
       "id": 74,
       "title": "final-02 Damage-Number-Aggregation ab ~120 Gegnern + Master-Mute in Optionen testen",
       "description": "Abnahme: Aggregation ab 120 Gegnern wirksam (Messung/Test), Master-Mute in Optionen vorhanden und verify belegt.",
-      "column": "doing",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
@@ -1301,10 +1301,15 @@
           "at": "2026-11-26T08:35:37Z",
           "by": "build",
           "text": "done → doing: Re-Verifikation Damage-Aggregation ab 120 + Master-Mute auf finalem Build."
+        },
+        {
+          "at": "2026-11-26T08:35:58Z",
+          "by": "build",
+          "text": "doing → done: Re-Verifikation PASS 7/7 auf finalem Build."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
-      "updated": "2026-11-26T08:35:37Z"
+      "updated": "2026-11-26T08:35:58Z"
     },
     {
       "id": 75,
@@ -1331,7 +1336,7 @@
       "id": 76,
       "title": "final-04 Ergebnis-Screen zweispaltig (links Zeit/Kills/Level/Portrait, rechts Schaden-Balken sortiert, Titel zentriert, Bestwert-Banner)",
       "description": "Abnahme: Screenshot + ux-check PASS, keine Ueberlappung, Schadenszahl nicht unter Waffenname.",
-      "column": "done",
+      "column": "doing",
       "assignee": "ui-dev",
       "notes": [
         {
@@ -1343,10 +1348,15 @@
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
           "text": "review → done: ux-check PASS final (God-Zeile 4px links, Namen bis x339, Balken ab 340, K/M-Werte)."
+        },
+        {
+          "at": "2026-11-26T08:35:58Z",
+          "by": "build",
+          "text": "done → doing: Re-Verifikation Ergebnis Layout/Stresswert auf finalem Build (Screenshot aus verify-final)."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
-      "updated": "2026-11-26T07:50:21Z"
+      "updated": "2026-11-26T08:35:58Z"
     },
     {
       "id": 77,
