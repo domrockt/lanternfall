@@ -71,7 +71,7 @@ def sky(g: Grid) -> None:
             else:
                 g.put(x, y, 13)
     # Harte, unterbrochene Pixelringe als Halo (statt ADD-Glow).
-    for rr, col, seg in ((28, 19, 9), (32, 20, 7), (36, 19, 5)):
+    for rr, col, seg in ((30, 19, 9), (35, 20, 7), (40, 19, 5)):
         for deg in range(0, 360, 2):
             if (deg // 2) % (seg + 3) >= seg:
                 continue
