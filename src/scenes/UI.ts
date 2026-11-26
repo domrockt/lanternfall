@@ -10,6 +10,9 @@ import { slotNameLines } from "../logic/text";
 import { chooseBestOffer } from "../logic/autoplay";
 import { OptionsMenu } from "../ui/options-menu";
 import { createMenuButton, type MenuButton } from "../ui/menu";
+import { InputState, type ActionState } from "../input/InputState";
+import { readSceneGamepad } from "../input/Gamepad";
+import { TouchControls } from "../input/TouchControls";
 import type { HudState, Run } from "./Run";
 
 interface CardView {
@@ -57,6 +60,7 @@ export class UI extends Phaser.Scene {
   private chestTitle!: PixelText;
   private chestSlots: { bg: Phaser.GameObjects.Rectangle; slotBg: Phaser.GameObjects.Rectangle; icon: Phaser.GameObjects.Image; text: PixelText; text2: PixelText; level: PixelText }[] = [];
   private chestHideTimer?: Phaser.Time.TimerEvent;
+  private chestSkip?: Phaser.GameObjects.Zone;
 
   private bossGroup!: Phaser.GameObjects.Container;
   private bossName!: PixelText;
@@ -70,6 +74,9 @@ export class UI extends Phaser.Scene {
   private bannerTimer?: Phaser.Time.TimerEvent;
 
   private options!: OptionsMenu;
+  /** M8-input: Gamepad-Flanken für Menü-Navigation. */
+  private pad = new InputState();
+  private touch?: TouchControls;
 
   constructor() { super("ui"); }
 
@@ -98,6 +105,11 @@ export class UI extends Phaser.Scene {
     this.createChestUI();
     this.createBossUI();
     this.options = new OptionsMenu(this, 125, () => {});
+    // M8-input: Touch-Overlay liegt über allen Menüs und liefert den Joystick-Vektor
+    // an die globale TouchState (vom Run gelesen). Der Pause-Puls wird dort von Run
+    // über InputState entgegengenommen.
+    this.pad.reset();
+    this.touch = new TouchControls(this, { canMove: () => this.canTouchMove() });
 
     this.input.keyboard!.removeAllListeners("keydown");
     this.input.keyboard!.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
@@ -112,6 +124,9 @@ export class UI extends Phaser.Scene {
     this.run.events.on("dawn", this.onDawn, this);
     this.run.events.on("evolution", this.onEvolution, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.touch?.destroy();
+      this.touch = undefined;
+      this.pad.reset();
       this.run.events.off("levelup", this.onLevelUp, this);
       this.run.events.off("levelupClosed", this.onLevelUpClosed, this);
       this.run.events.off("pauseChanged", this.onPauseChanged, this);
@@ -328,7 +343,17 @@ export class UI extends Phaser.Scene {
       this.chestGroup.add([bg, slotBg, icon, text, text2, level]);
       this.chestSlots.push({ bg, slotBg, icon, text, text2, level });
     }
-    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 250, "DIE TRUHE IST GEÖFFNET", C.fog, "center"));
+    this.chestGroup.add(new PixelText(this, GAME_WIDTH / 2, 250, "TIPPE ODER A = ÜBERNEHMEN", C.fog, "center"));
+    // M8-input: Truhe per Tippen/Bestaetigen uebernehmen (Belohnungen werden
+    // sofort angewendet). Die automatische Sequenz bleibt unveraendert.
+    const skip = this.add.zone(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT);
+    skip.setInteractive();
+    skip.disableInteractive();
+    skip.on("pointerdown", () => {
+      if (this.run?.chestOpen) this.run.finishChest();
+    });
+    this.chestGroup.add(skip);
+    this.chestSkip = skip;
   }
 
   private onChestOpen(result: import("../logic/evolution").ChestResult): void {
@@ -336,6 +361,7 @@ export class UI extends Phaser.Scene {
     this.chestHideTimer?.remove(false);
     this.chestHideTimer = undefined;
     this.chestGroup.setVisible(true);
+    this.chestSkip?.setInteractive();
     this.chestTitle.setText("TRUHE");
     this.chestSprite.setTexture("chest_closed").setScale(2.2).setAlpha(1);
     this.chestBeam.setAlpha(0).setScale(0.25);
@@ -409,6 +435,7 @@ export class UI extends Phaser.Scene {
     this.chestHideTimer?.remove(false);
     this.chestHideTimer = undefined;
     this.chestGroup.setVisible(false);
+    this.chestSkip?.disableInteractive();
   }
 
   private spawnChestCoins(): void {
@@ -439,6 +466,9 @@ export class UI extends Phaser.Scene {
   update(_time: number, delta: number): void {
     if (!this.run || !this.run.scene.isActive()) return;
     const s = this.run.getHudState();
+    this.registry.set("lf-options-open", this.options.visible);
+    this.touch?.update();
+    this.handlePad(s);
     this.refreshHud(s);
     this.refreshBoss(s.boss);
 
@@ -464,6 +494,58 @@ export class UI extends Phaser.Scene {
       this.lastPauseShown = pauseVisible;
       this.refreshPause();
       if (!pauseVisible && this.options.visible) this.options.close();
+    }
+  }
+
+  /** Touch-Overlay nur, wenn eine Bewegung jetzt moeglich ist. */
+  private canTouchMove(): boolean {
+    if (!this.run || !this.run.scene.isActive()) return false;
+    const s = this.run.getHudState();
+    return !s.paused && !s.levelUpOpen && !s.chestOpen && !this.options.visible;
+  }
+
+  /**
+   * M8-input: Gamepad bedient alle Menüs. Start/Pause wird im Run
+   * verarbeitet (InputState-Bewegungsframe); hier nur Fokus/Bestaetigen/Zurueck.
+   * Fokus entsteht aus dem bestehenden setFocused/selected-Pfad und ist sichtbar.
+   */
+  private handlePad(s: HudState): void {
+    const a: ActionState = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
+    const any = a.up || a.down || a.left || a.right || a.confirm || a.back;
+    if (!any) return;
+    if (this.options.visible) {
+      this.options.handlePad(a);
+      return;
+    }
+    if (s.levelUpOpen) {
+      const count = Math.max(1, s.offers.length);
+      if (a.left || a.up) {
+        this.selected = (this.selected + count - 1) % count;
+        this.highlight();
+      } else if (a.right || a.down) {
+        this.selected = (this.selected + 1) % count;
+        this.highlight();
+      } else if (a.confirm) {
+        if (this.selected < s.offers.length) this.pick(this.selected);
+      }
+      return;
+    }
+    if (s.chestOpen) {
+      if (a.confirm || a.back) this.run.finishChest();
+      return;
+    }
+    if (s.paused) {
+      if (a.left || a.up) {
+        this.pauseSelected = (this.pauseSelected + this.pauseButtons.length - 1) % this.pauseButtons.length;
+        this.refreshPauseButtons();
+      } else if (a.right || a.down) {
+        this.pauseSelected = (this.pauseSelected + 1) % this.pauseButtons.length;
+        this.refreshPauseButtons();
+      } else if (a.confirm) {
+        this.activatePauseButton();
+      } else if (a.back) {
+        this.run.resumeRun();
+      }
     }
   }
 

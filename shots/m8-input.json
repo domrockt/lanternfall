@@ -1,0 +1,134 @@
+{
+  "milestone": "M8-input",
+  "passed": false,
+  "checks": [
+    {
+      "name": "index.html: touch-action none + kein Textselect",
+      "ok": true
+    },
+    {
+      "name": "Touch: Menues per Tippen bis in den Run",
+      "ok": true
+    },
+    {
+      "name": "Touch-Joystick bewegt den Spieler",
+      "ok": true,
+      "detail": "x 2048 -> 2109"
+    },
+    {
+      "name": "Touch: Pause per zweitem Finger bei aktivem Joystick",
+      "ok": true
+    },
+    {
+      "name": "Touch: FORTSETZEN per Tippen",
+      "ok": true
+    },
+    {
+      "name": "Touch: Level-up-Karten per Tippen gewaehlt",
+      "ok": true,
+      "detail": "loadoutChanged=true"
+    },
+    {
+      "name": "Touch: Truhe per Tippen uebernommen",
+      "ok": true
+    },
+    {
+      "name": "Touch: eine Minute Spiel ohne Tastatur/Gamepad",
+      "ok": true,
+      "detail": "scene=run, sim=63.5s, levelTaps=1"
+    },
+    {
+      "name": "Touch: Results/Titel per Tippen",
+      "ok": true
+    },
+    {
+      "name": "Gamepad Hotplug: A startet Charakterwahl",
+      "ok": true
+    },
+    {
+      "name": "Gamepad: D-Pad + A waehlt Kael und startet",
+      "ok": true,
+      "detail": "kael"
+    },
+    {
+      "name": "Gamepad: linker Stick bewegt den Spieler",
+      "ok": true,
+      "detail": "x 2048 -> 2109"
+    },
+    {
+      "name": "Gamepad: getrenntes Pad bewegt nicht",
+      "ok": true,
+      "detail": "x 2109 -> 2109"
+    },
+    {
+      "name": "Gamepad: Reconnect bewegt wieder",
+      "ok": true,
+      "detail": "x 2128 -> 2168"
+    },
+    {
+      "name": "Gamepad: Start pausiert",
+      "ok": true
+    },
+    {
+      "name": "Gamepad: B setzt Pause fort",
+      "ok": true
+    },
+    {
+      "name": "Gamepad: A bestaetigt Fokus (Fortsetzen)",
+      "ok": true
+    },
+    {
+      "name": "Gamepad: Level-up per A",
+      "ok": true,
+      "detail": "loadoutChanged=true"
+    },
+    {
+      "name": "Gamepad: Truhe per A uebernommen",
+      "ok": true
+    },
+    {
+      "name": "Gamepad: Results per D-Pad+A verlaesst zum Titel",
+      "ok": true
+    },
+    {
+      "name": "Tastatur: Pfeil rechts bewegt den Spieler unveraendert",
+      "ok": true,
+      "detail": "x 2048 -> 2101"
+    },
+    {
+      "name": "Tastatur: ESC pausiert",
+      "ok": false,
+      "detail": "{\"paused\":false,\"levelUp\":false,\"chest\":false,\"keys\":[\"Escape\"],\"listeners\":1,\"optionsVisible\":false,\"runPausedBefore\":false}"
+    },
+    {
+      "name": "Tastatur: ESC setzt fort",
+      "ok": false,
+      "detail": "{\"paused\":true,\"keys\":[\"Escape\"],\"listeners\":1,\"optionsVisible\":false}"
+    },
+    {
+      "name": "alle Shots vorhanden (>10KB)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "shots": [
+    "shots/m8-input-touch-menus.png",
+    "shots/m8-input-joystick-touch.png",
+    "shots/m8-input-pause-touch.png",
+    "shots/m8-input-levelup-touch.png",
+    "shots/m8-input-chest-touch.png",
+    "shots/m8-input-touch-run.png",
+    "shots/m8-input-touch-results.png",
+    "shots/m8-input-gamepad-run.png",
+    "shots/m8-input-gamepad-pause-focus.png",
+    "shots/m8-input-gamepad-levelup.png",
+    "shots/m8-input-gamepad-results.png",
+    "shots/m8-input-keyboard-run.png"
+  ],
+  "jsErrors": []
+}

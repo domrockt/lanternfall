@@ -1,0 +1,7 @@
+M8-input: Touch-Steuerung + Gamepad fertig (Branch m8-input).
+- src/input/InputState.ts (reine Logik) + 21 Tests: Touch-Totzone 12%, Pad 18%, Normierung/Diagonale, Prio Touch>Gamepad>Tastatur, A/B/Start/D-Pad, Flanken.
+- src/input/TouchState.ts + TouchControls.ts: schwebender Pixel-Joystick links, Pause-Knopf oben rechts, Mehrfinger; index.html touch-action none/user-scalable no.
+- src/input/Gamepad.ts: Phaser-Plugin aktiviert + navigator.getGamepads-Fallback; Menues (Title/CharSelect/Results/Credits/Options/Pause/Level-up/Truhe) per Pad, Fokus sichtbar, Hotplug + PadLock.
+- Abnahme: node scripts/verify-input.mjs PASS 25/25, 0 JS-Fehler; Touch 64,4 s Spiel nur per Gesten, Joystick x 2048->2119, Pause per 2. Finger, Level-up/Truhe per Tipp; Gamepad Stick x 2048->2108, Disconnect 0 px, Reconnect bewegt, Start/B/A; Tastatur-Regression x 2048->2101, ESC pause/resume.
+- npm run build gruen; npm test 168/168; Shots shots/m8-input-*.png + shots/m8-input.json; Doku docs/lanes/input.md + Vault Wissen/Phaser 3.md.
+- Grenzen: kein physisches Gamepad (Mock + Plugin-Fallback); verify-menus 13/15 wegen vorbestehender stale Klick-Koordinaten nach Master-Mute, keine Input-Regression.
