@@ -51,3 +51,15 @@ und Abschluss.
   fuer den noch leicht weichen Kern-Glow und die etwas zu regelmaessige Kreisform der
   aeusseren Ringe. 0 JS-Fehler im Shot-Lauf.
 - Offener Punkt: Ringform/Kern-Glow beim Gesamturteil in #322 erneut pruefen.
+
+## #320 Icons
+- Vorher: `shots/m9-art-fx-ui-icons-before-4x.png` (18 Icons, 4x nearest)
+- Nachher: `shots/m9-art-fx-ui-icons-after-4x.png` (aus dem aktuellen Build, 4x nearest)
+- Korrektur: alle 18 Icons laufen durch dieselbe Pipeline `outline(g, diagonal=True)`;
+  die 1-px-Ink-Kontur schliesst jetzt auch Diagonalluecken (einheitliche Aussenkontur).
+  Lichtkante oben-links und Schatten unten-rechts stammen aus `shade_edges` (band=1).
+- Pruefung: 16x16-Raster, 18 Keys, nur Palettenindizes, kein Duplikat
+  (`validateIcons` in `src/gfx/icons.ts`, laeuft in `createIconTextures`).
+  Evolutionen (letzte 6) sind groesser/heller als die Basis-Waffen (erste 6).
+- art-director-Urteil (#320): ausstehend (Bild liegt fuer die naechste Kontrolle bereit).
+- 0 JS-Fehler im Kontaktbogen-Lauf.

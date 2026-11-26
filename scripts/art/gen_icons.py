@@ -44,7 +44,7 @@ def special() -> dict[str, Grid]:
     g.rect(11, 4, 2, 3, 24)         # Schatten rechts
     g.rect(9, 9, 3, 5, 24)
     g.rect(4, 3, 2, 2, 12)          # Glanz
-    out["passive_heart"] = outline(g)
+    out["passive_heart"] = outline(g, diagonal=True)
 
     # Stiefel: Schaft, Ferse, Fuß, Sohle, Schnürung.
     g = Grid(16, 16)
@@ -59,7 +59,7 @@ def special() -> dict[str, Grid]:
     g.rect(3, 13, 11, 1, 4)
     for y in (5, 7, 9):
         g.rect(4, y, 2, 1, 11)      # Schnürsenkel 2x1
-    out["passive_boots"] = outline(g)
+    out["passive_boots"] = outline(g, diagonal=True)
 
     # Wetzstein: keilförmiger Stein mit Funken.
     g = Grid(16, 16)
@@ -73,7 +73,7 @@ def special() -> dict[str, Grid]:
     g.rect(12, 1, 2, 2, 13)         # Funken
     g.put(14, 3, 13)
     g.rect(11, 12, 2, 2, 17)
-    out["passive_whetstone"] = outline(g)
+    out["passive_whetstone"] = outline(g, diagonal=True)
 
     # Gluecksbringer: eisernes U (4/5/6/7) mit 2x2-Amberkern.
     g = Grid(16, 16)
@@ -89,7 +89,7 @@ def special() -> dict[str, Grid]:
     g.rect(7, 10, 2, 2, 22)          # Glanz am Bogen
     g.put(5, 4, 7)
     g.put(11, 5, 6)
-    out["passive_charm"] = outline(g)
+    out["passive_charm"] = outline(g, diagonal=True)
 
     # Phoenix: Fluegel/Flammen-Silhouette ohne Blob.
     g = Grid(16, 16)
@@ -109,7 +109,7 @@ def special() -> dict[str, Grid]:
     g.rect(4, 12, 3, 3, 18)
     g.rect(7, 12, 2, 2, 21)
     g.rect(5, 13, 2, 2, 20)
-    out["evo_phoenix"] = outline(g)
+    out["evo_phoenix"] = outline(g, diagonal=True)
 
     # Flegel: Kette oben-links, Metallkugel mit 2-px-Spikes unten-rechts.
     g = Grid(16, 16)
@@ -124,7 +124,7 @@ def special() -> dict[str, Grid]:
     g.rect(9, 14, 2, 2, 9)
     g.rect(4, 10, 2, 2, 9)
     g.rect(14, 10, 2, 2, 9)
-    out["weapon_flail"] = outline(g)
+    out["weapon_flail"] = outline(g, diagonal=True)
 
     # Dornenranke: 2-px-Zweig diagonal + 2x2-Knochendornen.
     g = Grid(16, 16)
@@ -135,7 +135,7 @@ def special() -> dict[str, Grid]:
     for x, y in ((4, 11), (7, 8), (10, 5), (12, 3)):
         g.rect(x, y - 2, 2, 2, 11)
         g.rect(x + 1, y + 2, 2, 2, 10)
-    out["weapon_thorn"] = outline(g)
+    out["weapon_thorn"] = outline(g, diagonal=True)
 
     # Ewiger Winter: Schneekristall mit sechs 2-px-Armen + 2x2-Kern (13).
     g = Grid(16, 16)
@@ -152,7 +152,7 @@ def special() -> dict[str, Grid]:
     g.rect(7, 13, 2, 2, 12)
     g.rect(6, 6, 4, 4, 9)            # Kern
     g.rect(7, 7, 2, 2, 13)           # Glow-Kern 2x2
-    out["evo_eternal_winter"] = outline(g)
+    out["evo_eternal_winter"] = outline(g, diagonal=True)
 
     # Seelenleuchte: Laterne mit Flamme, Eisenrahmen 5/7/8, Glas 12/13.
     g = Grid(16, 16)
@@ -169,7 +169,7 @@ def special() -> dict[str, Grid]:
     g.rect(7, 7, 1, 2, 13)
     g.rect(3, 13, 10, 2, 6)          # Sockel
     g.rect(3, 13, 10, 1, 7)
-    out["evo_soul_beacon"] = outline(g)
+    out["evo_soul_beacon"] = outline(g, diagonal=True)
 
     # Donnersiegel: geschlossene Goldscheibe (19/20/17) mit dunklem Blitz.
     g = Grid(16, 16)
@@ -188,7 +188,7 @@ def special() -> dict[str, Grid]:
     g.rect(7, 9, 2, 1, 15)
     g.put(7, 4, 22)
     g.put(6, 8, 22)
-    out["evo_thunder_seal"] = outline(g)
+    out["evo_thunder_seal"] = outline(g, diagonal=True)
 
     # Zornpendel: Kette + Stachelkugel (bleibt).
     g = Grid(16, 16)
@@ -203,7 +203,7 @@ def special() -> dict[str, Grid]:
     g.rect(7, 14, 2, 2, 26)
     g.rect(2, 10, 2, 2, 26)
     g.rect(12, 10, 2, 2, 26)
-    out["evo_wrath_pendulum"] = outline(g)
+    out["evo_wrath_pendulum"] = outline(g, diagonal=True)
 
     # Dornensturm: acht 2-px-Dornen strahlen aus einem 4x4-Kern.
     g = Grid(16, 16)
@@ -220,7 +220,7 @@ def special() -> dict[str, Grid]:
     g.rect(6, 6, 4, 4, 31)           # Kern 4x4
     g.rect(7, 7, 2, 2, 30)
     g.put(6, 6, 31)
-    out["evo_thorn_storm"] = outline(g)
+    out["evo_thorn_storm"] = outline(g, diagonal=True)
 
     return out
 
@@ -232,7 +232,7 @@ def build() -> dict[str, list[Grid]]:
         for x, y, w, h, c in rects:
             g.rect(x, y, w, h, c)
         g = shade_edges(g, band=1, region_aware=False)
-        data[key] = [outline(g)]
+        data[key] = [outline(g, diagonal=True)]
     # Sturm-Blitz bolder als die Rechteck-Vorlage (16 px lesbar).
     from lib import from_rows as _fr
     data["weapon_storm"] = [outline(_fr([
@@ -259,7 +259,7 @@ def build() -> dict[str, list[Grid]]:
         # Handgezeichnete Icons bringen Schattierung mit; nur Außenkontur ergänzen.
         if key in data:
             continue
-        data[key] = [outline(g)]
+        data[key] = [outline(g, diagonal=True)]
         if key not in read_rects():
             raise SystemExit(f"handdrawn icon {key} hat keine Rechteck-Vorlage")
     ordered = {k: data[k] for k in read_rects()}
