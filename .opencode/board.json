@@ -1062,46 +1062,76 @@
       "id": 56,
       "title": "balance-01: scripts/balance.mjs Harness (6 Runs, Minuten-Log, Boss-Dauer)",
       "description": "N=6 Runs (3 Seeds x 2 Chars), autoPlay kitend, ohne god, timeScale 30. Pro Minute Level/HP/DPS je Waffe/Gegnerzahl, Todeszeit, Boss-Dauer, JSON+Tabelle. Baseline messen.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T05:59:57Z",
+          "by": "build",
+          "text": "doing → done: #56: Harness fertig (6 Hauptlaeufe, Todes-/Waffen-Modi, flock, festes Limit). Belege: shots/balance-main.json u. balance-weapons.json. Commit 7a29931."
+        }
+      ],
       "created": "2026-11-25T22:53:57Z",
-      "updated": "2026-11-25T22:53:57Z"
+      "updated": "2026-11-26T05:59:57Z"
     },
     {
       "id": 57,
       "title": "balance-02: XP-Kurve/Kristalle auf Level 25-40 @30min",
       "description": "Level 147 im fullrun -> XP-Bedarf und Gem-Werte anziehen, mit balance.mjs belegen.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T06:00:11Z",
+          "by": "build",
+          "text": "todo → done: XP-Kurve 8+1.1*n^2 belegt: Level 28-32 bei Minute 30 (Ziel 25-40). Regressionstest Stufe30>500 XP. Belege: docs/lanes/balance.md Hauptlaeufe, shots/balance-main.json. Commit d5d12c8."
+        }
+      ],
       "created": "2026-11-25T22:53:57Z",
-      "updated": "2026-11-25T22:53:57Z"
+      "updated": "2026-11-26T06:00:11Z"
     },
     {
       "id": 58,
       "title": "balance-03: Boss-Grundtempo <=90% Spielertempo + Boss-Dauer 20-60s",
       "description": "BOSS_SPEED in src/data/bosses.ts verschieben, Basespeed <=55, HP so dass Kills 20-60s dauern.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T05:59:57Z",
+          "by": "build",
+          "text": "todo → done: #58: Boss-Grundtempo 42-50 <= 90% Spielertempo (Tests/m3-logic.test.ts); Boss-Dauern 24-48 s (Ziel 20-60 s), Hollow King HP 15000. Belege: balance-main.json."
+        }
+      ],
       "created": "2026-11-25T22:53:57Z",
-      "updated": "2026-11-25T22:53:57Z"
+      "updated": "2026-11-26T05:59:57Z"
     },
     {
       "id": 59,
       "title": "balance-04: Charakter-Differenz + Waffen-Audit (keine tote Waffe)",
       "description": "Mira/Kael unterschiedliche Startwaffe + Stats belegen; jede der 12 Waffen mit DPS-Zahlen aus balance.mjs.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T05:59:57Z",
+          "by": "build",
+          "text": "todo → done: #59: Charaktere verschieden (Mira Ember/250 HP/62 Tempo, Kael Flail/253 eff. HP/55.9/Ruestung 2); alle 12 Waffen Stufe 8 verursachen Schaden, Audit in docs/lanes/balance.md. Commit f90ff0b."
+        }
+      ],
       "created": "2026-11-25T22:53:57Z",
-      "updated": "2026-11-25T22:53:57Z"
+      "updated": "2026-11-26T05:59:57Z"
     },
     {
       "id": 60,
       "title": "balance-05: Todeslaeufe je Charakter + docs/lanes/balance.md + Abnahme",
       "description": "2 Runs ohne god bis Tod, Results-Screenshot, Doku-Tabelle, Tests/Build/Commit, .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T05:59:57Z",
+          "by": "build",
+          "text": "todo → done: #60: Todeslaeufe: Mira autoPlay Seed 202 @25.1 min, Kael stehend Seed 606 @2.3 min (Game-Over-Shots); docs/lanes/balance.md komplett; build + 126 Tests gruen. Commit df490c5."
+        }
+      ],
       "created": "2026-11-25T22:53:57Z",
-      "updated": "2026-11-25T22:53:57Z"
+      "updated": "2026-11-26T05:59:57Z"
     }
   ]
 }
