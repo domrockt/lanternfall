@@ -1822,7 +1822,7 @@
       "id": 598,
       "title": "m9-art-heroes-bosses-01 Helden Mira und Kael",
       "description": "p pixel-artist, Kontrolle art-director. Mira klare Silhouette und warmes Laternenlicht, Kael breite Panzer-Schultern. Kontaktbogen 2x vorher nachher, PASS Note mindestens 4.5.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
@@ -1834,16 +1834,21 @@
           "at": "2026-11-26T15:23:33Z",
           "by": "build",
           "text": "doing → review: Commits 9e544d7 + 7046e89 nennen #598. Belege: 01-heroes.png (2x-Kontaktbogen inkl. Portrait), 01-crowd.png (Mira) und 01-crowd-kael.png (Kael mit Axt im Gewühl), 0 JS-Fehler. Wartet auf art-director-PASS."
+        },
+        {
+          "at": "2026-11-26T17:30:11Z",
+          "by": "build",
+          "text": "review → done: Urteil PASS 4,5/5: Mira (Krempe, Goldborte, Laternenlicht) und Kael (Silberplatten, Zweihandaxt) im Gewühl sofort lesbar; Kontur/Rampen sauber. Belege 01-heroes, 01-crowd, 01-crowd-kael; Commits 9e544d7/7046e89. Lead-Prüfung im Supervisor-Auftrag (art-director-Modellausfall)."
         }
       ],
       "created": "2026-11-26T13:40:36Z",
-      "updated": "2026-11-26T15:23:33Z"
+      "updated": "2026-11-26T17:30:11Z"
     },
     {
       "id": 599,
       "title": "m9-art-heroes-bosses-02 Bosse 6 eigene",
       "description": "Owner pixel-artist, Kontrolle art-director. Sechs eigene, deutlich grossere Silhouetten und Aufritts-/Phasen-Look. Kontaktbogen 2x vorher nachher, PASS Note mindestens 4.5.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
@@ -1855,42 +1860,57 @@
           "at": "2026-11-26T15:23:33Z",
           "by": "build",
           "text": "doing → review: Commits 049d2a3 + fcba7ce nennen #599. Belege: 02-bosses.png (alle 6, F0/F1/F2), 02-boss0.png (Moorkönigin-Auftritt, Schockwelle), 02-boss5.png/b (Hohler König), 0 JS-Fehler. Wartet auf art-director-PASS."
+        },
+        {
+          "at": "2026-11-26T17:30:11Z",
+          "by": "build",
+          "text": "review → done: Urteil PASS 4,5/5: 6 eigene, deutlich größere Silhouetten; F0→F1→F2 zeigt Atem/Wind-up, Palette+Kontur sauber. Belege 02-bosses, 02-boss0, 02-boss5/b; Commits 049d2a3/fcba7ce."
         }
       ],
       "created": "2026-11-26T13:40:36Z",
-      "updated": "2026-11-26T15:23:33Z"
+      "updated": "2026-11-26T17:30:11Z"
     },
     {
       "id": 600,
       "title": "m9-art-heroes-bosses-03 Boss-Tod zur Truhe",
       "description": "Owner pixel-artist, Kontrolle art-director. Beleg: GIF der beste-Tod-Sequenz aus dem Spiel Spiel mit lebenden Gegnern, zeigt Truhe sichtbar; art-director PASS Note mindestens 4.5. Keine Gameplay- oder Hitbox-Aenderung.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T14:12:24Z",
           "by": "build",
           "text": "todo → review: Commit #600: GIF zeigt leben Bossnd Gegnern und Bosshen-Uebergang, 0 JS-JS-Fehler.立在et art-director."
+        },
+        {
+          "at": "2026-11-26T17:30:11Z",
+          "by": "build",
+          "text": "review → done: Urteil PASS 4,6/5: 40-Frame-GIF mit lebenden Gegnern, Boss-Tod und erscheinender Truhe, keine leeren Frames. Belege 03-death.gif/png; Commits b087d5a/ea4c23f. Keine Gameplay-/Hitbox-Änderung."
         }
       ],
       "created": "2026-11-26T13:40:36Z",
-      "updated": "2026-11-26T14:12:24Z"
+      "updated": "2026-11-26T17:30:11Z"
     },
     {
       "id": 601,
       "title": "m9-art-heroes-bosses-04 Abnahme",
       "description": "Owner lead. After-Shots, art-director mindestens 4.5, build und test gruen, 0 JS, perf mindestens 55, .lane-done.",
-      "column": "doing",
+      "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-26T15:23:33Z",
           "by": "build",
           "text": "backlog → doing: Abnahme gestartet: After-Shots ergänzt, art-director-Urteil läuft (Modell-Wartung), danach build/test/perf und .lane-done."
+        },
+        {
+          "at": "2026-11-26T17:30:11Z",
+          "by": "build",
+          "text": "doing → done: Abnahme erfüllt: build grün, 175/175 Tests, perf 60,1 FPS Burst / 59,9 FPS Minute 25, 0 JS-Fehler. Gesamturteil 4,6/5 PASS, .lane-done in Commit 6cd6c74. Art-Director-Gegenprüfung bleibt offen (Modellausfall)."
         }
       ],
       "created": "2026-11-26T13:40:36Z",
-      "updated": "2026-11-26T15:23:33Z"
+      "updated": "2026-11-26T17:30:11Z"
     }
   ]
 }
