@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 92,
+  "next": 97,
   "cards": [
     {
       "id": 1,
@@ -203,21 +203,43 @@
       "id": 13,
       "title": "Epic M4: Bosse 5/10/15/20/25 + Truhen + Evolutionen",
       "description": "5 Bosse, HP-Leiste, Warn-Banner, Truhen-Sequenz, 6 Evolutionen, Boss-Drops.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:36:33Z",
+          "by": "build",
+          "text": "QA-Nachabnahme 2026-11-26: M4 ist abgenommen (GAME.md Status M4/M4b, ACCEPTANCE.md A8/A10, shots/m4-*/m4b-*). Epic damit erledigt."
+        },
+        {
+          "at": "2026-11-26T10:36:38Z",
+          "by": "build",
+          "text": "backlog → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+        }
+      ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-24T23:44:35Z"
+      "updated": "2026-11-26T10:36:38Z"
     },
     {
       "id": 14,
       "title": "Epic M5: Endboss 30:00, Sieg/Niederlage, Meta (Gold/Shop)",
       "description": "Hohler König 3 Phasen, Morgendämmerung-Sieg, Results-Ausbau, evtl. Meta-Progression.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:36:33Z",
+          "by": "build",
+          "text": "QA-Nachabnahme 2026-11-26: M5 ist abgenommen (GAME.md Status M5, ACCEPTANCE.md A7, verify-vfx 18/18). Epic damit erledigt."
+        },
+        {
+          "at": "2026-11-26T10:36:38Z",
+          "by": "build",
+          "text": "backlog → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+        }
+      ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-24T23:44:35Z"
+      "updated": "2026-11-26T10:36:38Z"
     },
     {
       "id": 15,
@@ -260,11 +282,22 @@
       "id": 16,
       "title": "M1-Nachzug: Runtime-Tests (Substep/Pause, UID-Pooling, Spawn außerhalb View)",
       "description": "Unit-/Integrationstests für: Teilschritt-Abbruch bei Level-up, Projektile mit Spawn-UID über Pool-Recycling, Ring-/spawnOne-Spawns außerhalb camera.worldView, Integer-Scaling. Danach verify-Wall-Clock-Abhängigkeit entschärfen.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:36:33Z",
+          "by": "build",
+          "text": "QA-Nachabnahme 2026-11-26: M1-Nachzug erledigt (Separation/UID-Pooling in M1-Fix #17 + Tests, Substep-Reset; im M6-Stand 147 Tests gruen)."
+        },
+        {
+          "at": "2026-11-26T10:36:38Z",
+          "by": "build",
+          "text": "backlog → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+        }
+      ],
       "created": "2026-11-25T00:24:40Z",
-      "updated": "2026-11-25T00:24:40Z"
+      "updated": "2026-11-26T10:36:38Z"
     },
     {
       "id": 17,
@@ -1415,7 +1448,7 @@
       "id": 79,
       "title": "final-07 Abschluss-Material: final-trailer.gif 30-40s (8 Stationen) + 6 Uebersichts-Shots",
       "description": "Abnahme: GIF + 6 Shots existieren, per Vision geprueft.",
-      "column": "blocked",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
@@ -1427,10 +1460,20 @@
           "at": "2026-11-26T07:40:53Z",
           "by": "build",
           "text": "doing → blocked: 2x Timeout (120s) bei Segment 7 Endboss; Segmente 1-5,8 committed, Segment 6 lief durch aber 0 Frames (Capture-Fenster ab Seitenstart statt ab Setup). Rest gesichert; Nachzuegler in #82."
+        },
+        {
+          "at": "2026-11-26T10:36:33Z",
+          "by": "build",
+          "text": "QA-Nachabnahme 2026-11-26: Trailer ueber Nachzuegler #82 geliefert: shots/final-trailer.gif 35,6 s / 285 Frames (ACCEPTANCE.md A6). blocked-Grund entfallen."
+        },
+        {
+          "at": "2026-11-26T10:36:38Z",
+          "by": "build",
+          "text": "blocked → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
-      "updated": "2026-11-26T07:40:53Z"
+      "updated": "2026-11-26T10:36:38Z"
     },
     {
       "id": 80,
@@ -1658,6 +1701,67 @@
       ],
       "created": "2026-11-26T10:15:56Z",
       "updated": "2026-11-26T10:15:59Z"
+    },
+    {
+      "id": 92,
+      "title": "qa-00 Harness-Reste: .lane-done weg, check-ux-Shots mit Doku-Bezug",
+      "description": "Abnahme: .lane-done ist weder getrackt noch im Worktree; alle 29 shots/check-ux-*.png sind in docs/qa/<datum>.md als M6-#77-Belege referenziert; ein Commit mit #qa-00.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-26T10:36:17Z",
+          "by": "build",
+          "text": "todo → doing: Start: .lane-done bereits in f954226 entfernt; check-ux-Shots pruefen"
+        },
+        {
+          "at": "2026-11-26T10:36:25Z",
+          "by": "build",
+          "text": "doing → done: Commit 9444da7 (#92). Beleg: .lane-done weder getrackt noch im Worktree (f954226); 29 check-ux-Shots aus 62a586f in docs/qa/2026-11-26.md referenziert."
+        }
+      ],
+      "created": "2026-11-26T10:36:13Z",
+      "updated": "2026-11-26T10:36:25Z"
+    },
+    {
+      "id": 93,
+      "title": "qa-01 Board-Hygiene: #13/#14/#16/#79 auf done",
+      "description": "Abnahme: board_list zeigt #13,#14,#16,#79 in done mit Notiz (Verweis auf M1/M4/M5-Abnahme bzw. #82/final-trailer.gif 35,6s/285 Frames); board_list vorher/nachher im Commit dokumentiert; ein Commit mit #qa-01.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-26T10:36:13Z",
+      "updated": "2026-11-26T10:36:13Z"
+    },
+    {
+      "id": 94,
+      "title": "qa-02 M8-input unabhaengig: verify-input 25/25 PASS",
+      "description": "Abnahme: node scripts/verify-input.mjs auf main liefert Exit 0 mit 25/25 PASS und 0 JS-Fehler; Ergebnis mit Zeitstempel in docs/qa/<datum>.md; bei Spielbug Karte blocked, bei Testfehler Fix-Commit; ein Commit mit #qa-02.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-26T10:36:13Z",
+      "updated": "2026-11-26T10:36:13Z"
+    },
+    {
+      "id": 95,
+      "title": "qa-03 Gesamtlauf: build/test/count/verify:final/perf",
+      "description": "Abnahme: npm run build gruen, npm test mit Testzahl, acceptance-count 30/6/6/6/6/2, verify:final + perf mit flock/Timeout; alle Werte mit Zeitstempel und Abweichung >=5% gegen ACCEPTANCE.md (59,3 FPS Burst, 56,4 FPS Minute 25, 147 Tests) markiert in docs/qa/<datum>.md; ein Commit mit #qa-03.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-26T10:36:13Z",
+      "updated": "2026-11-26T10:36:13Z"
+    },
+    {
+      "id": 96,
+      "title": "qa-04 APK-Stand vs main-HEAD",
+      "description": "Abnahme: mtime ~/lf-apk/out/lanternfall.apk und GitHub-Release latest-build gegen main-HEAD in Minuten in docs/qa/<datum>.md notiert; kein eigener Build/Publish; ein Commit mit #qa-04.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-26T10:36:13Z",
+      "updated": "2026-11-26T10:36:13Z"
     }
   ]
 }
