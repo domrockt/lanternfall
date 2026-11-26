@@ -1,0 +1,76 @@
+{
+  "lane": "m10-weapons-flake",
+  "base_sha": "9477f33",
+  "check": "chest-roll-names",
+  "command": "node scripts/verify-weapons.mjs (12x seriell)",
+  "generated_at": "2026-11-26T20:04:17.177Z",
+  "runs": [
+    {
+      "run": 1,
+      "start_ms": 1795722186987,
+      "end_ms": 1795722401954,
+      "duration_ms": 214967,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 2,
+      "start_ms": 1795722401956,
+      "end_ms": 1795722615214,
+      "duration_ms": 213258,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 3,
+      "start_ms": 1795722615215,
+      "end_ms": 1795722828945,
+      "duration_ms": 213730,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 4,
+      "start_ms": 1795722828947,
+      "end_ms": 1795723044031,
+      "duration_ms": 215084,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "run": 5,
+      "start_ms": 1795723044033,
+      "end_ms": 1795723258889,
+      "duration_ms": 214856,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
+    }
+  ],
+  "totals": {
+    "runs": 5,
+    "roll_pass": 5,
+    "roll_fail": 0,
+    "flake_rate": 0,
+    "other_failures": 0
+  }
+}
