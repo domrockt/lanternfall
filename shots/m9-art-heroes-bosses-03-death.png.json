@@ -1,7 +1,13 @@
 {
-  "url": "http://127.0.0.1:5440/?debug=1",
+  "url": "http://127.0.0.1:5505/?debug=1&seed=21",
   "scene": "run",
   "commands": [
+    {
+      "call": "setSuppressLevelUps",
+      "args": [
+        true
+      ]
+    },
     {
       "call": "god",
       "args": [
@@ -12,14 +18,21 @@
       "call": "spawnEnemy",
       "args": [
         "bog_rat",
-        24
+        28
       ]
     },
     {
       "call": "spawnEnemy",
       "args": [
         "skeleton",
-        12
+        18
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "wisp",
+        10
       ]
     },
     {
