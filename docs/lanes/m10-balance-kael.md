@@ -69,3 +69,9 @@ Spielfluss und die 5-Minuten-Boss-Kurve unverändert bleiben. Zusätzlich `total
 
 Belege: `npx vitest run tests/balance-curve.test.ts tests/logic.test.ts` → 48 Tests grün,
 `npx tsc --noEmit` grün. Der Fix deckelt auch den alten Level-47-Fall auf Level 40.
+
+## Karte m10-balance-kael-04 — Skalierung: keine Änderung nötig (Basis 252fd98)
+
+Die XP-Kurve allein reicht: der Nachlauf (siehe Karte 05) liegt mit 6/6 im Korridor,
+Boss-Dauern 23–51 s, kein Tod vor Minute 15. `src/logic/scaling.ts` und `src/logic/waves.ts`
+bleiben unverändert, ebenso Waffen-/Gegnerdaten und `src/scenes/Run.ts` (Claim m9-art-polish).
