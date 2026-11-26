@@ -1253,7 +1253,7 @@
       "id": 73,
       "title": "final-01 VFX-Lesbarkeit Endgame daempfen (Alpha/Dichte), Vorher/Nachher Minute 25",
       "description": "Abnahme: Vorher/Nachher-Shot Minute 25 mit 6 Waffen Maximalstufe + lebenden Gegnern, Effekte lesbar; vfx-check PASS.",
-      "column": "doing",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -1270,10 +1270,15 @@
           "at": "2026-11-26T08:34:14Z",
           "by": "build",
           "text": "done → doing: Re-Verifikation auf finalem Build: Vorher/Nachher-Paar + GIF neu messen."
+        },
+        {
+          "at": "2026-11-26T08:35:32Z",
+          "by": "build",
+          "text": "doing → done: Re-Verifikation PASS: gleicher Frame 468 Gegner, fxAlpha 1 vs 0,5, AE 209052, GIF 10 Frames."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
-      "updated": "2026-11-26T08:34:14Z"
+      "updated": "2026-11-26T08:35:32Z"
     },
     {
       "id": 74,
