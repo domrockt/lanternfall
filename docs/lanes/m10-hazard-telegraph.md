@@ -66,3 +66,32 @@ erst nach `warn <= 0`) und wurde durch den Test bestätigt, daher keine Änderun
 
 Ergebnis: alle 18 Angriffe ≥ 600 ms; `npx vitest run tests/hazard-telegraph.test.ts`
 → 6/6 grün.
+
+## 4. Beleg + Abnahme (26.11.)
+
+- `npm run build` → **grün** (`tsc --noEmit` + Vite, `✓ built`).
+- `npx vitest run` → **13 Testdateien, 198/198 Tests grün** (inkl. 6 neue Hazard-Telegraph-Tests).
+- `node scripts/verify-bosses.mjs` (ohne flock) → **keine JS-Fehler**, alle 6 Bosse spawnen
+  und zeigen Warnflächen (Warnflächen 1–8 je Boss). Urteil des Skripts: **5/6 OK**.
+  `hollow_king` FAIL allein wegen `Truhe nein` im Skript-Kriterium; derselbe FAIL
+  tritt auch auf Basis-SHA `252fd98` ohne unseren Fix auf (Endboss/Truhen-Zählung,
+  nicht Telegraph). Nicht durch diese Lane verursacht, Boss bleibt spielbar
+  (HP min 0 %, Phasen 1/2/3, Warnflächen 8).
+- Warnphasen-Screenshots je Boss (mit lebenden Gegnern im Bild, 50 ms nach
+  Sichtbarwerden der ersten Warnfläche aufgenommen):
+  `shots/m10-hazard-warn-moor_queen.png`, `m10-hazard-warn-bone_lord.png`,
+  `m10-hazard-warn-pale_shepherd.png`, `m10-hazard-warn-bell_golem.png`,
+  `shots/m10-hazard-warn-coven.png`, `m10-hazard-warn-hollow_king.png`.
+  Aufnahme-Skript: `~/tmp/m10-hazard-telegraph/warn-shots.mjs` (nicht im Repo,
+  Belege sind die PNGs).
+
+### Messwerte vorher/nachher
+
+| Kennzahl | vorher | nachher |
+|---|---|---|
+| Angriffe mit warnMs < 600 | 3 von 18 | **0 von 18** |
+| kleinste Warnzeit | 350 ms (teleport) | **600 ms** |
+| Vitest gesamt | – | 198/198 grün |
+| verify-bosses OK | 5/6 (hollow_king Truhe) | 5/6 (unverändert, pre-existing) |
+| JS-Fehler in verify-bosses | 0 | **0** |
+
