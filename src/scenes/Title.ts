@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
-import { GAME_WIDTH } from "../config";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { readMeta, metaLine } from "../logic/meta";
 import { createMenuButton, type MenuButton } from "../ui/menu";
 import { OptionsMenu } from "../ui/options-menu";
@@ -34,48 +34,94 @@ export class Title extends Phaser.Scene {
     this.pad.reset();
     this.padArmed = false;
     this.buttons = [];
+    const W = GAME_WIDTH;
+    const H = GAME_HEIGHT;
+    const cx = W / 2;
+    const oy = Math.round((H - 270) / 2);
+    this.viewW = W;
+    this.viewH = H;
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN,
+      () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
+
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-    this.add.image(0, 0, "title_background").setOrigin(0, 0).setDepth(0);
+    // Titelbild fuellt die aktuelle Breite (Pixel-Art wird ganzzahlig gestreckt).
+    this.add.image(0, 0, "title_background").setOrigin(0, 0).setDepth(0)
+      .setDisplaySize(W, H);
     // Atmender Mond-Glow (additiv, nur Licht – keine Off-Palette-Flächen).
-    const glow = this.add.image(404, 56, "light_radius")
+    const glow = this.add.image(W - 76, 56, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD).setScale(0.9).setAlpha(0.45).setDepth(1);
     this.tweens.add({ targets: glow, alpha: 0.3, scale: 1.0, duration: 2400, yoyo: true, repeat: -1 });
     // Dunkle Bodenlasur unter dem Textblock (nur Palettenfarbe, Alpha-Overlay).
-    this.add.rectangle(0, 132, GAME_WIDTH, 138, PAL[C.nightDeep], 0.62)
+    this.add.rectangle(0, 132 + oy, W, 138, PAL[C.nightDeep], 0.62)
       .setOrigin(0, 0).setDepth(3);
-    this.add.image(240, 135, "vignette").setScrollFactor(0).setDepth(50);
+    this.add.image(cx, H / 2, "vignette").setScrollFactor(0).setDepth(50)
+      .setDisplaySize(W, H);
 
-    this.add.image(240, 58, "title_logo").setScale(2).setDepth(2);
-    new PixelText(this, 240, 116, "LANTERNFALL", C.lantern, "center").setScale(3).setDepth(4);
-    new PixelText(this, 240, 142, "DIE LETZTE LATERNE", C.bone, "center").setDepth(4);
-    new PixelText(this, 240, 154, "30 MINUTEN BIS ZUR MORGENDAMMERUNG", C.mist, "center").setDepth(4);
+    this.add.image(cx, 58 + oy, "title_logo").setScale(2).setDepth(2);
+    new PixelText(this, cx, 116 + oy, "LANTERNFALL", C.lantern, "center").setScale(3).setDepth(4);
+    new PixelText(this, cx, 142 + oy, "DIE LETZTE LATERNE", C.bone, "center").setDepth(4);
+    new PixelText(this, cx, 154 + oy, "30 MINUTEN BIS ZUR MORGENDAMMERUNG", C.mist, "center").setDepth(4);
 
     // Meta-Bestwerte pro Charakter (localStorage, ohne Login/Shop).
     const meta = readMeta();
-    new PixelText(this, 240, 172, "BESTWERTE", C.lantern, "center").setDepth(4);
-    new PixelText(this, 240, 184, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
-    new PixelText(this, 240, 194, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
+    new PixelText(this, cx, 172 + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
+    new PixelText(this, cx, 184 + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
+    new PixelText(this, cx, 194 + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
 
     this.buttons.push(createMenuButton(
-      this, 136, 214, 96, "START", () => this.startSelect(), { depth: 6 },
+      this, cx - 104, 214 + oy, 96, "START", () => this.startSelect(), { depth: 6 },
     ));
     this.buttons.push(createMenuButton(
-      this, 240, 214, 108, "OPTIONEN", () => this.openOptions(), { depth: 6 },
+      this, cx, 214 + oy, 108, "OPTIONEN", () => this.openOptions(), { depth: 6 },
     ));
     this.buttons.push(createMenuButton(
-      this, 346, 214, 92, "CREDITS", () => this.openCredits(), { depth: 6 },
+      this, cx + 106, 214 + oy, 92, "CREDITS", () => this.openCredits(), { depth: 6 },
     ));
     this.refreshButtons();
 
-    new PixelText(this, 240, 238, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
-    new PixelText(this, 240, 248, "MAUS ODER PFEILE + ENTER WÄHLEN", C.fog, "center").setDepth(4);
-    new PixelText(this, 240, 258, "ESC = PAUSE - O = OPTIONEN", C.fog, "center").setDepth(4);
+    // M8: Vollbild-Knopf oben rechts (Desktop + Android-WebView).
+    this.fullscreenButton = createMenuButton(
+      this, W - 54, 18, 92, "VOLLBILD", () => this.toggleFullscreen(), { height: 18, depth: 6 },
+    );
+    this.fullscreenButton.setEnabled(true);
+
+    // Hinweise am unteren Rand (nicht auf festen 270er-Koordinaten).
+    new PixelText(this, cx, H - 38, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
+    new PixelText(this, cx, H - 28, "MAUS ODER PFEILE + ENTER WÄHLEN", C.fog, "center").setDepth(4);
+    new PixelText(this, cx, H - 18, "ESC = PAUSE - O = OPTIONEN", C.fog, "center").setDepth(4);
+    if (isIos()) {
+      // iOS: Web-App nur ueber den Home-Bildschirm im Vollbild spielbar.
+      new PixelText(this, cx, H - 8, "IOS: TEILEN > ZUM HOME-BILDSCHIRM", C.amber, "center").setDepth(4);
+    }
 
     this.options = new OptionsMenu(this, 110, () => this.refreshButtons());
     const kb = this.input.keyboard!;
     // Szenen-Restart darf keine alten Tastatur-Handler ansammeln.
     kb.removeAllListeners("keydown");
     kb.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
+  }
+
+  private viewW = 0;
+  private viewH = 0;
+  private fullscreenButton?: MenuButton;
+
+  private onScaleResize(): void {
+    if (this.viewW === GAME_WIDTH && this.viewH === GAME_HEIGHT) return;
+    this.time.delayedCall(0, () => {
+      if (this.scene.isActive()) this.scene.restart();
+    });
+  }
+
+  /** M8: Vollbild anfordern (still ignorieren, wenn der Browser es blockt). */
+  private toggleFullscreen(): void {
+    try {
+      if (!document.fullscreenElement) {
+        void document.documentElement.requestFullscreen?.();
+      } else {
+        void document.exitFullscreen?.();
+      }
+    } catch { /* iOS Safari: kein Fullscreen API -> Home-Bildschirm-Hinweis */ }
   }
 
   update(): void {
@@ -135,4 +181,9 @@ export class Title extends Phaser.Scene {
     this.cameras.main.fadeOut(180, 6, 7, 12);
     this.time.delayedCall(180, () => this.scene.start("charselect", { seed: this.seed, debug: this.debug }));
   }
+}
+
+function isIos(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }
