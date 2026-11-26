@@ -71,219 +71,219 @@ Alle Messläufe wurden mit `flock /home/ai/games/.lf-perf.lock` gestartet.
 
 | # | Char | Seed | Ergebnis | Minuten | Level | Kills | Evos | Boss-Dauern (s) | Korridor |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | mira | 101 | dawn | 30.7 | 32 | 12273 | 2 | Moorkönigin 27, Knochenfürst 28, Der 27, Glockenturm-Golem 27, Hexenzirkel 33, Der 37 | Sieg |
-| 2 | kael | 101 | dawn | 30.5 | 30 | 6574 | 3 | Moorkönigin 32, Knochenfürst 44, Der 32, Glockenturm-Golem 34, Hexenzirkel 33, Der 27 | Sieg |
-| 3 | mira | 202 | Tod | 23.1 | 28 | 2651 | 2 | Moorkönigin 24, Knochenfürst 25, Der 28, Glockenturm-Golem 27 | JA |
-| 4 | kael | 202 | dawn | 30.7 | 29 | 10251 | 2 | Moorkönigin 28, Knochenfürst 41, Der 40, Glockenturm-Golem 39, Hexenzirkel 44, Der 38 | Sieg |
-| 5 | mira | 404 | Tod | 22.1 | 31 | 2321 | 2 | Moorkönigin 28, Knochenfürst 31, Der 31, Glockenturm-Golem 33 | JA |
-| 6 | kael | 404 | dawn | 30.7 | 31 | 9444 | 2 | Moorkönigin 34, Knochenfürst 48, Der 38, Glockenturm-Golem 42, Hexenzirkel 44, Der 39 | Sieg |
+| 1 | mira | 101 | dawn | 30.5 | 33 | 10233 | 2 | Moorkönigin 26, Knochenfürst 28, Der 26, Glockenturm-Golem 25, Hexenzirkel 23, Der 28 | Sieg |
+| 2 | kael | 101 | dawn | 30.4 | 47 | 11689 | 4 | Moorkönigin 33, Knochenfürst 54, Der 49, Glockenturm-Golem 51, Hexenzirkel 46, Der 23 | NEIN (Level) |
+| 3 | mira | 202 | Tod | 20.4 | 26 | 1720 | 2 | Moorkönigin 29, Knochenfürst 29, Der 38 | JA |
+| 4 | kael | 202 | dawn | 30.7 | 30 | 12761 | 2 | Moorkönigin 34, Knochenfürst 52, Der 43, Glockenturm-Golem 40, Hexenzirkel 40, Der 40 | Sieg |
+| 5 | mira | 404 | Tod | 25.2 | 36 | 4124 | 2 | Moorkönigin 27, Knochenfürst 31, Der 33, Glockenturm-Golem 40 | JA |
+| 6 | kael | 404 | dawn | 30.7 | 33 | 10512 | 3 | Moorkönigin 34, Knochenfürst 51, Der 41, Glockenturm-Golem 40, Hexenzirkel 52, Der 37 | Sieg |
 
 #### Minuten-Protokoll
 
-<details><summary>mira / Seed 101 — dawn @ 30.7 min, Level 32</summary>
+<details><summary>mira / Seed 101 — dawn @ 30.5 min, Level 33</summary>
 
 | Min | Level | HP | Gegner | Kills | Waffen-DPS (Anteil %) |
 |---|---|---|---|---|---|
-| 1 | 5 | 250/250 | 1 | 35 | ember 11.5 (100%) |
-| 2 | 7 | 250/250 | 1 | 61 | ember 12.3 (100%) |
-| 3 | 8 | 250/250 | 4 | 113 | ember 26.8 (100%) |
-| 4 | 11 | 250/250 | 2 | 183 | ember 40 (100%) |
-| 5 | 13 | 270/270 | 7 | 253 | ember 48.2 (100%) |
-| 6 | 14 | 290/290 | 8 | 341 | ember 105.1 (62.2%), phoenix 63.8 (37.8%) |
-| 7 | 16 | 290/290 | 5 | 464 | phoenix 154.7 (99.7%), flail 0.5 (0.3%) |
-| 8 | 18 | 290/290 | 1 | 631 | phoenix 200.2 (100%) |
-| 9 | 19 | 290/290 | 3 | 757 | phoenix 230.9 (97%), flail 7.2 (3%) |
-| 10 | 20 | 290/290 | 13 | 868 | phoenix 188 (98.2%), flail 3.5 (1.8%) |
-| 11 | 21 | 290/290 | 9 | 979 | phoenix 365.2 (82.8%), flail 75.6 (17.2%) |
-| 12 | 22 | 290/290 | 11 | 1065 | phoenix 226.1 (97.4%), flail 6.1 (2.6%) |
-| 13 | 22 | 290/290 | 10 | 1159 | phoenix 258.9 (96.8%), flail 8.5 (3.2%) |
-| 14 | 23 | 310/310 | 10 | 1254 | phoenix 318.3 (93.5%), flail 22.1 (6.5%) |
-| 15 | 23 | 310/310 | 12 | 1348 | phoenix 344.9 (93%), flail 25.9 (7%) |
-| 16 | 24 | 330/330 | 32 | 1440 | phoenix 769.5 (72.7%), flail 149.7 (14.1%), wrath_pendulum 139 (13.1%) |
-| 17 | 25 | 348/350 | 42 | 1518 | phoenix 895.7 (79%), wrath_pendulum 238.4 (21%) |
-| 18 | 25 | 350/350 | 43 | 1610 | phoenix 917.2 (74.5%), wrath_pendulum 313.3 (25.5%) |
-| 19 | 26 | 350/350 | 52 | 1695 | phoenix 826.7 (71%), wrath_pendulum 337.5 (29%) |
-| 20 | 26 | 344/350 | 78 | 1775 | phoenix 894 (80.5%), wrath_pendulum 217 (19.5%) |
-| 21 | 27 | 350/350 | 136 | 1942 | phoenix 1313.8 (55.9%), wrath_pendulum 1038.4 (44.1%) |
-| 22 | 28 | 350/350 | 172 | 2372 | phoenix 1711.7 (58.6%), wrath_pendulum 1207.6 (41.4%) |
-| 23 | 28 | 350/350 | 311 | 3045 | phoenix 2354.5 (60.5%), wrath_pendulum 1536.1 (39.5%) |
-| 24 | 28 | 350/350 | 326 | 4103 | phoenix 3638.5 (64.8%), wrath_pendulum 1976 (35.2%) |
-| 25 | 29 | 350/350 | 343 | 5352 | phoenix 4102.9 (65.2%), wrath_pendulum 2170.9 (34.5%), thorn 19 (0.3%) |
-| 26 | 30 | 316/350 | 352 | 6836 | wrath_pendulum 4750.7 (55%), phoenix 3850.4 (44.6%), thorn 31.8 (0.4%) |
-| 27 | 30 | 350/350 | 342 | 8031 | phoenix 4324.5 (61.2%), wrath_pendulum 2712.3 (38.4%), thorn 28.2 (0.4%) |
-| 28 | 30 | 334/350 | 359 | 9189 | phoenix 4255.4 (61.9%), wrath_pendulum 2584.2 (37.6%), thorn 30.4 (0.4%) |
-| 29 | 31 | 350/350 | 337 | 10300 | phoenix 4371.5 (63.9%), wrath_pendulum 2410.1 (35.2%), thorn 63.8 (0.9%) |
-| 30 | 31 | 350/350 | 360 | 11416 | phoenix 3969.3 (52.4%), wrath_pendulum 3506.1 (46.3%), thorn 95.2 (1.3%) |
+| 1 | 6 | 250/250 | 1 | 52 | ember 17.2 (100%) |
+| 2 | 7 | 250/250 | 1 | 85 | ember 15.1 (100%) |
+| 3 | 10 | 250/250 | 5 | 148 | ember 33.7 (100%) |
+| 4 | 11 | 250/250 | 3 | 205 | ember 35.6 (100%) |
+| 5 | 13 | 250/250 | 8 | 258 | ember 35.5 (100%) |
+| 6 | 14 | 270/270 | 4 | 388 | ember 123.5 (61.3%), phoenix 78.1 (38.7%) |
+| 7 | 16 | 270/270 | 4 | 487 | phoenix 156.2 (100%) |
+| 8 | 17 | 270/270 | 9 | 611 | phoenix 183.1 (99.8%), flail 0.3 (0.2%) |
+| 9 | 19 | 290/290 | 5 | 738 | phoenix 191.9 (100%) |
+| 10 | 20 | 273/290 | 14 | 850 | phoenix 217.4 (99%), flail 2.3 (1%) |
+| 11 | 21 | 290/290 | 3 | 964 | phoenix 435 (94.5%), flail 25.1 (5.5%) |
+| 12 | 22 | 290/290 | 3 | 1044 | phoenix 264.4 (97.8%), flail 5.9 (2.2%) |
+| 13 | 22 | 290/290 | 10 | 1113 | phoenix 281.7 (99%), flail 2.9 (1%) |
+| 14 | 23 | 290/290 | 4 | 1206 | phoenix 329.2 (97.4%), flail 8.7 (2.6%) |
+| 15 | 24 | 290/290 | 11 | 1293 | phoenix 286.1 (94.6%), flail 16.4 (5.4%) |
+| 16 | 25 | 310/310 | 22 | 1386 | phoenix 768.3 (73.6%), flail 146 (14%), wrath_pendulum 129.4 (12.4%), lantern 0.4 (0%) |
+| 17 | 25 | 310/310 | 26 | 1469 | phoenix 873.4 (72.8%), wrath_pendulum 325.2 (27.1%), lantern 0.6 (0.1%) |
+| 18 | 26 | 310/310 | 32 | 1559 | phoenix 872.2 (77.7%), wrath_pendulum 249.2 (22.2%), lantern 0.5 (0%) |
+| 19 | 26 | 310/310 | 31 | 1661 | phoenix 868.6 (70.6%), wrath_pendulum 360.6 (29.3%), lantern 0.8 (0.1%) |
+| 20 | 27 | 310/310 | 42 | 1748 | phoenix 905.4 (73.9%), wrath_pendulum 317.9 (25.9%), lantern 2.3 (0.2%) |
+| 21 | 28 | 296/310 | 93 | 2018 | wrath_pendulum 1587.3 (50.6%), phoenix 1534.4 (48.9%), lantern 14.9 (0.5%) |
+| 22 | 29 | 310/310 | 150 | 2584 | wrath_pendulum 1985.6 (50.4%), phoenix 1940.9 (49.3%), lantern 13.9 (0.4%) |
+| 23 | 30 | 295/310 | 197 | 3417 | wrath_pendulum 2831 (52.9%), phoenix 2490.1 (46.6%), lantern 27 (0.5%) |
+| 24 | 30 | 310/310 | 355 | 4486 | phoenix 3317.4 (55.2%), wrath_pendulum 2668.2 (44.4%), lantern 25.2 (0.4%), frost 1.7 (0%) |
+| 25 | 30 | 310/310 | 341 | 5270 | phoenix 2555 (50.2%), wrath_pendulum 2501.5 (49.2%), lantern 27.3 (0.5%), frost 2.6 (0.1%) |
+| 26 | 30 | 286/310 | 325 | 6109 | phoenix 2903.1 (50.2%), wrath_pendulum 2821.7 (48.8%), lantern 46.6 (0.8%), frost 8.6 (0.1%) |
+| 27 | 30 | 310/310 | 355 | 6906 | phoenix 3244.4 (54.3%), wrath_pendulum 2694.4 (45.1%), lantern 31.3 (0.5%), frost 4.1 (0.1%) |
+| 28 | 30 | 310/310 | 292 | 7991 | phoenix 3800.4 (49.9%), wrath_pendulum 3770.2 (49.5%), lantern 38.4 (0.5%), frost 6.4 (0.1%) |
+| 29 | 30 | 310/310 | 359 | 8929 | phoenix 3780.8 (52%), wrath_pendulum 3468.5 (47.7%), lantern 24.5 (0.3%), frost 3.8 (0.1%) |
+| 30 | 31 | 310/310 | 269 | 9700 | phoenix 3381.5 (50.6%), wrath_pendulum 3241.4 (48.5%), lantern 54.4 (0.8%), frost 8.4 (0.1%) |
 
 </details>
 
-<details><summary>kael / Seed 101 — dawn @ 30.5 min, Level 30</summary>
+<details><summary>kael / Seed 101 — dawn @ 30.4 min, Level 47</summary>
 
 | Min | Level | HP | Gegner | Kills | Waffen-DPS (Anteil %) |
 |---|---|---|---|---|---|
-| 1 | 6 | 253/253 | 3 | 32 | flail 18.2 (100%) |
-| 2 | 8 | 253/253 | 4 | 70 | flail 31.3 (100%) |
-| 3 | 10 | 293/293 | 10 | 131 | flail 58.1 (100%) |
-| 4 | 12 | 313/313 | 11 | 190 | flail 54.5 (100%) |
-| 5 | 13 | 333/333 | 17 | 237 | flail 53.1 (100%) |
-| 6 | 14 | 353/353 | 18 | 340 | flail 193.7 (100%) |
-| 7 | 15 | 353/353 | 19 | 453 | flail 123.3 (62%), wrath_pendulum 65.3 (32.8%), thorn 10.2 (5.1%) |
-| 8 | 16 | 353/353 | 34 | 537 | wrath_pendulum 157.4 (89.4%), thorn 18.7 (10.6%) |
-| 9 | 17 | 353/353 | 38 | 647 | wrath_pendulum 187.1 (78.8%), thorn 50.3 (21.2%) |
-| 10 | 18 | 337/353 | 28 | 830 | wrath_pendulum 279.6 (85.3%), thorn 48.3 (14.7%) |
-| 11 | 20 | 353/353 | 16 | 1021 | wrath_pendulum 572.9 (85.4%), thorn 98.2 (14.6%) |
-| 12 | 21 | 353/353 | 20 | 1137 | wrath_pendulum 190.4 (58.8%), thorn 133.6 (41.2%) |
-| 13 | 22 | 353/353 | 18 | 1244 | wrath_pendulum 190.3 (53.7%), thorn 163.9 (46.3%) |
-| 14 | 23 | 353/353 | 19 | 1352 | wrath_pendulum 203.5 (56.4%), thorn 154.5 (42.8%), ember 3 (0.8%) |
-| 15 | 23 | 353/353 | 23 | 1481 | wrath_pendulum 212 (55.8%), thorn 157.3 (41.4%), ember 10.5 (2.8%) |
-| 16 | 24 | 353/353 | 41 | 1588 | wrath_pendulum 467.7 (40.5%), thorn_storm 393.1 (34.1%), thorn 274.3 (23.8%), ember 15 (1.3%), storm 3.7 (0.3%) |
-| 17 | 24 | 353/353 | 34 | 1685 | thorn_storm 989.5 (74.6%), wrath_pendulum 313.7 (23.6%), ember 15.6 (1.2%), storm 8.1 (0.6%) |
-| 18 | 25 | 353/353 | 38 | 1777 | thorn_storm 818.6 (74.1%), wrath_pendulum 246.7 (22.3%), ember 31.4 (2.8%), storm 8.3 (0.8%) |
-| 19 | 25 | 353/353 | 41 | 1870 | thorn_storm 1078.7 (77%), wrath_pendulum 277.3 (19.8%), ember 35.9 (2.6%), storm 8.5 (0.6%) |
-| 20 | 25 | 353/353 | 47 | 1967 | thorn_storm 1222.8 (76.1%), wrath_pendulum 340.4 (21.2%), ember 36.2 (2.3%), storm 8.3 (0.5%) |
-| 21 | 25 | 344/353 | 66 | 2208 | thorn_storm 2066 (74.7%), wrath_pendulum 648.9 (23.5%), ember 42.4 (1.5%), storm 8.8 (0.3%) |
-| 22 | 26 | 353/353 | 113 | 2543 | thorn_storm 2978.2 (71.9%), wrath_pendulum 1073.4 (25.9%), ember 82.8 (2%), storm 7.8 (0.2%) |
-| 23 | 27 | 353/353 | 91 | 2958 | thorn_storm 3212.2 (73.3%), wrath_pendulum 1072.8 (24.5%), ember 87.8 (2%), storm 8.7 (0.2%) |
-| 24 | 27 | 353/353 | 111 | 3401 | thorn_storm 3650.9 (75.4%), wrath_pendulum 1070 (22.1%), ember 112.4 (2.3%), storm 8 (0.2%) |
-| 25 | 28 | 353/353 | 116 | 3737 | thorn_storm 3752.3 (74.8%), wrath_pendulum 1029.8 (20.5%), ember 224.3 (4.5%), storm 8.2 (0.2%) |
-| 26 | 28 | 343/353 | 81 | 4176 | thorn_storm 4212.2 (63.5%), wrath_pendulum 2102.1 (31.7%), ember 311.1 (4.7%), storm 7.9 (0.1%) |
-| 27 | 28 | 353/353 | 107 | 4606 | thorn_storm 3743.5 (68%), wrath_pendulum 1443.2 (26.2%), ember 310 (5.6%), storm 11.3 (0.2%) |
-| 28 | 29 | 353/353 | 176 | 5064 | thorn_storm 4273.1 (69.1%), wrath_pendulum 1037.3 (16.8%), ember 839.3 (13.6%), storm 31.4 (0.5%) |
-| 29 | 29 | 353/353 | 209 | 5641 | thorn_storm 4505.6 (70%), wrath_pendulum 964.9 (15%), ember 930.1 (14.5%), storm 31.4 (0.5%) |
-| 30 | 29 | 353/353 | 168 | 6293 | thorn_storm 5722.7 (71.4%), wrath_pendulum 1319.1 (16.4%), ember 945.5 (11.8%), storm 32.3 (0.4%) |
+| 1 | 7 | 253/253 | 3 | 33 | flail 18.6 (100%) |
+| 2 | 8 | 253/253 | 5 | 69 | flail 33.5 (100%) |
+| 3 | 10 | 273/273 | 10 | 108 | flail 34.5 (100%) |
+| 4 | 11 | 293/293 | 15 | 171 | flail 57.7 (100%) |
+| 5 | 13 | 313/313 | 19 | 211 | flail 44.8 (100%) |
+| 6 | 14 | 304/313 | 28 | 282 | flail 171.7 (100%) |
+| 7 | 15 | 313/313 | 31 | 390 | flail 193.4 (98.7%), lantern 2 (1%), frost 0.6 (0.3%) |
+| 8 | 16 | 333/333 | 43 | 462 | flail 142.7 (99.2%), lantern 0.7 (0.5%), frost 0.4 (0.3%) |
+| 9 | 17 | 333/333 | 64 | 550 | wrath_pendulum 103.4 (55.5%), flail 81.4 (43.7%), lantern 0.9 (0.5%), frost 0.6 (0.3%) |
+| 10 | 17 | 333/333 | 99 | 631 | wrath_pendulum 195.1 (99.2%), lantern 1.2 (0.6%), frost 0.4 (0.2%) |
+| 11 | 19 | 333/333 | 26 | 961 | wrath_pendulum 823 (99.1%), lantern 5.4 (0.7%), frost 1.9 (0.2%) |
+| 12 | 21 | 333/333 | 32 | 1137 | wrath_pendulum 395.8 (96.7%), lantern 10.5 (2.6%), frost 2.8 (0.7%) |
+| 13 | 22 | 315/333 | 23 | 1314 | wrath_pendulum 415.2 (96.4%), lantern 13.2 (3.1%), frost 2.3 (0.5%) |
+| 14 | 23 | 328/333 | 18 | 1469 | wrath_pendulum 422.6 (92.7%), lantern 30.5 (6.7%), frost 2.9 (0.6%) |
+| 15 | 24 | 353/353 | 21 | 1571 | wrath_pendulum 330.7 (91.7%), lantern 27.1 (7.5%), frost 2.9 (0.8%) |
+| 16 | 24 | 353/353 | 65 | 1657 | wrath_pendulum 740.6 (87.4%), lantern 98.8 (11.7%), frost 7.8 (0.9%) |
+| 17 | 24 | 353/353 | 107 | 1703 | wrath_pendulum 499.5 (90.9%), lantern 45.4 (8.3%), frost 4.4 (0.8%) |
+| 18 | 25 | 353/353 | 153 | 1753 | wrath_pendulum 474.8 (90.2%), lantern 46.3 (8.8%), frost 5.2 (1%) |
+| 19 | 25 | 353/353 | 189 | 1814 | wrath_pendulum 611.3 (88.5%), lantern 73 (10.6%), frost 6.6 (1%) |
+| 20 | 26 | 288/353 | 245 | 1865 | wrath_pendulum 544.2 (90.2%), lantern 52.7 (8.7%), frost 6.1 (1%) |
+| 21 | 27 | 353/353 | 183 | 2230 | wrath_pendulum 3750.4 (88.2%), lantern 378.1 (8.9%), soul_beacon 81.7 (1.9%), frost 40.7 (1%) |
+| 22 | 29 | 353/353 | 331 | 2703 | wrath_pendulum 1889 (74.6%), soul_beacon 631 (24.9%), frost 13.6 (0.5%) |
+| 23 | 32 | 328/353 | 362 | 3627 | wrath_pendulum 3162.6 (70.1%), soul_beacon 1281.2 (28.4%), frost 69 (1.5%) |
+| 24 | 34 | 353/353 | 342 | 4640 | wrath_pendulum 4028.8 (75.7%), soul_beacon 1162.4 (21.8%), frost 125.8 (2.4%), storm 3.9 (0.1%) |
+| 25 | 37 | 353/353 | 350 | 5719 | wrath_pendulum 4608.5 (70.9%), soul_beacon 1721.2 (26.5%), frost 137.5 (2.1%), thorn 22.6 (0.3%), storm 8.6 (0.1%) |
+| 26 | 40 | 353/353 | 348 | 7154 | wrath_pendulum 5630 (70.6%), soul_beacon 1985.7 (24.9%), frost 259.7 (3.3%), thorn 71.5 (0.9%), ember 18.2 (0.2%), storm 8.5 (0.1%) |
+| 27 | 42 | 353/353 | 322 | 8287 | wrath_pendulum 4712.3 (63.9%), eternal_winter 1251 (17%), soul_beacon 1188.9 (16.1%), thorn 164.3 (2.2%), ember 37.6 (0.5%), storm 11.2 (0.2%), frost 5.8 (0.1%) |
+| 28 | 43 | 353/353 | 348 | 9059 | wrath_pendulum 3497.7 (60.3%), eternal_winter 1148.8 (19.8%), soul_beacon 830.2 (14.3%), thorn 256 (4.4%), ember 52.4 (0.9%), storm 14.1 (0.2%) |
+| 29 | 45 | 353/353 | 329 | 10029 | wrath_pendulum 4540.3 (56%), eternal_winter 1579.7 (19.5%), soul_beacon 1304 (16.1%), thorn 613 (7.6%), ember 55.5 (0.7%), storm 14 (0.2%) |
+| 30 | 46 | 353/353 | 336 | 11152 | wrath_pendulum 5026.6 (54.9%), eternal_winter 1509 (16.5%), thorn 1274.8 (13.9%), soul_beacon 1249.8 (13.6%), ember 89.2 (1%), storm 14.5 (0.2%) |
 
 </details>
 
-<details><summary>mira / Seed 202 — death @ 23.1 min, Level 28</summary>
+<details><summary>mira / Seed 202 — death @ 20.4 min, Level 26</summary>
 
 | Min | Level | HP | Gegner | Kills | Waffen-DPS (Anteil %) |
 |---|---|---|---|---|---|
-| 1 | 6 | 250/250 | 1 | 34 | ember 11.4 (100%) |
-| 2 | 8 | 250/250 | 1 | 68 | ember 18.3 (100%) |
-| 3 | 9 | 250/250 | 6 | 104 | ember 24.8 (100%) |
-| 4 | 12 | 250/250 | 3 | 181 | ember 42.5 (99.5%), thorn 0.2 (0.5%) |
-| 5 | 13 | 250/250 | 9 | 227 | ember 30 (97.4%), thorn 0.8 (2.6%) |
-| 6 | 15 | 250/250 | 4 | 349 | ember 117.3 (57.5%), phoenix 70.7 (34.7%), thorn 15.8 (7.7%), lantern 0.2 (0.1%) |
-| 7 | 17 | 250/250 | 10 | 453 | phoenix 148.3 (97.1%), thorn 4.4 (2.9%) |
-| 8 | 18 | 250/250 | 1 | 565 | phoenix 151.1 (92.3%), thorn 12.6 (7.7%) |
-| 9 | 19 | 250/250 | 8 | 654 | phoenix 139.9 (94.9%), thorn 7.5 (5.1%) |
-| 10 | 20 | 250/250 | 12 | 779 | phoenix 220.5 (93%), thorn 16.7 (7%) |
-| 11 | 21 | 250/250 | 9 | 882 | phoenix 338.7 (78.3%), thorn 92.9 (21.5%), frost 0.5 (0.1%), lantern 0.4 (0.1%) |
-| 12 | 22 | 250/250 | 2 | 972 | phoenix 214.5 (90%), thorn 23.9 (10%) |
-| 13 | 22 | 250/250 | 11 | 1045 | phoenix 275.9 (92.1%), thorn 23.7 (7.9%) |
-| 14 | 23 | 270/270 | 10 | 1143 | phoenix 310.9 (89.7%), thorn 35.6 (10.3%) |
-| 15 | 23 | 270/270 | 10 | 1233 | phoenix 287 (92.1%), thorn 24.4 (7.8%), frost 0.2 (0.1%) |
-| 16 | 24 | 270/270 | 30 | 1324 | phoenix 669.7 (65.2%), thorn_storm 200.9 (19.6%), thorn 149.2 (14.5%), storm 4.4 (0.4%), frost 2.1 (0.2%), lantern 0.7 (0.1%) |
-| 17 | 24 | 270/270 | 31 | 1417 | phoenix 686.3 (49.8%), thorn_storm 679.7 (49.3%), storm 8.3 (0.6%), frost 2.9 (0.2%), lantern 0.8 (0.1%) |
-| 18 | 25 | 270/270 | 22 | 1516 | phoenix 659.4 (52.2%), thorn_storm 591.3 (46.8%), storm 8 (0.6%), frost 2.7 (0.2%), lantern 0.8 (0.1%) |
-| 19 | 26 | 270/270 | 32 | 1604 | phoenix 676.8 (51.3%), thorn_storm 627.4 (47.6%), storm 8 (0.6%), frost 6 (0.5%), lantern 0.9 (0.1%) |
-| 20 | 27 | 242/270 | 29 | 1710 | thorn_storm 919.9 (54.2%), phoenix 756.7 (44.6%), frost 13 (0.8%), storm 7.9 (0.5%), lantern 0.5 (0%) |
-| 21 | 27 | 217/270 | 56 | 1917 | thorn_storm 1488.1 (56.9%), phoenix 1070.6 (40.9%), frost 47.5 (1.8%), storm 9.4 (0.4%), lantern 1.9 (0.1%) |
-| 22 | 27 | 221/270 | 82 | 2220 | thorn_storm 2124.7 (64%), phoenix 1139.3 (34.3%), frost 43.3 (1.3%), storm 10.9 (0.3%), lantern 3.2 (0.1%) |
-| 23 | 28 | 81/270 | 79 | 2628 | thorn_storm 2819.1 (68.9%), phoenix 1196.2 (29.2%), frost 61.1 (1.5%), storm 10.7 (0.3%), lantern 4.1 (0.1%) |
+| 1 | 5 | 250/250 | 0 | 34 | ember 11.7 (100%) |
+| 2 | 8 | 250/250 | 1 | 90 | ember 24 (100%) |
+| 3 | 9 | 250/250 | 7 | 139 | ember 26.2 (100%) |
+| 4 | 10 | 250/250 | 4 | 204 | ember 39.6 (100%) |
+| 5 | 12 | 259/270 | 7 | 260 | ember 43 (100%) |
+| 6 | 14 | 270/270 | 4 | 343 | ember 101.5 (66.6%), phoenix 50.7 (33.3%), lantern 0.1 (0.1%) |
+| 7 | 15 | 270/270 | 8 | 442 | phoenix 131.8 (100%) |
+| 8 | 17 | 270/270 | 6 | 554 | phoenix 168.4 (100%) |
+| 9 | 17 | 270/270 | 7 | 687 | phoenix 185.2 (100%) |
+| 10 | 18 | 290/290 | 13 | 807 | phoenix 207.2 (99.9%), lantern 0.2 (0.1%) |
+| 11 | 19 | 290/290 | 7 | 929 | phoenix 504.3 (99%), lantern 5.1 (1%) |
+| 12 | 20 | 290/290 | 9 | 1009 | phoenix 230.3 (99.4%), lantern 1.5 (0.6%) |
+| 13 | 21 | 290/290 | 10 | 1091 | phoenix 294.1 (98.9%), lantern 2.4 (0.8%), thorn 0.8 (0.3%) |
+| 14 | 22 | 310/310 | 11 | 1181 | phoenix 275.8 (97.8%), lantern 3.7 (1.3%), thorn 2.5 (0.9%) |
+| 15 | 22 | 310/310 | 10 | 1277 | phoenix 354.9 (98%), thorn 4.3 (1.2%), lantern 3.1 (0.9%) |
+| 16 | 23 | 306/310 | 40 | 1358 | phoenix 772.3 (91.5%), soul_beacon 38.8 (4.6%), lantern 17.1 (2%), thorn 15.5 (1.8%) |
+| 17 | 24 | 258/310 | 43 | 1445 | phoenix 801.8 (86.8%), soul_beacon 93.2 (10.1%), thorn 29.1 (3.1%) |
+| 18 | 25 | 273/310 | 61 | 1522 | phoenix 860.1 (85.6%), soul_beacon 105 (10.5%), thorn 39.6 (3.9%) |
+| 19 | 26 | 114/310 | 58 | 1624 | phoenix 989.5 (74.3%), soul_beacon 267.3 (20.1%), thorn 74.7 (5.6%) |
+| 20 | 26 | 153/310 | 83 | 1699 | phoenix 949 (76.8%), soul_beacon 177 (14.3%), thorn 109.2 (8.8%) |
 
 </details>
 
-<details><summary>kael / Seed 202 — dawn @ 30.7 min, Level 29</summary>
+<details><summary>kael / Seed 202 — dawn @ 30.7 min, Level 30</summary>
 
 | Min | Level | HP | Gegner | Kills | Waffen-DPS (Anteil %) |
 |---|---|---|---|---|---|
-| 1 | 6 | 253/253 | 5 | 30 | flail 17.3 (100%) |
-| 2 | 9 | 253/253 | 3 | 84 | flail 42.5 (97.7%), ember 1 (2.3%) |
-| 3 | 10 | 253/253 | 6 | 142 | flail 32.7 (74%), ember 11.5 (26%) |
-| 4 | 12 | 253/253 | 3 | 203 | flail 23.5 (60.9%), ember 15.1 (39.1%) |
-| 5 | 13 | 243/253 | 13 | 252 | ember 25.6 (78.8%), flail 6.9 (21.2%) |
-| 6 | 14 | 253/253 | 14 | 346 | flail 135.9 (69.4%), ember 59.3 (30.3%), frost 0.7 (0.4%) |
-| 7 | 16 | 253/253 | 12 | 445 | ember 97.8 (69.9%), flail 42.2 (30.1%) |
-| 8 | 17 | 273/273 | 16 | 540 | ember 130.9 (83.7%), flail 25.3 (16.2%), frost 0.2 (0.1%) |
-| 9 | 18 | 273/273 | 13 | 665 | ember 136.4 (67.9%), flail 60.2 (30%), storm 4.1 (2%), frost 0.1 (0%) |
-| 10 | 19 | 293/293 | 20 | 808 | ember 153.1 (61.7%), flail 87.2 (35.2%), storm 7.6 (3.1%), frost 0.1 (0%) |
-| 11 | 20 | 293/293 | 6 | 970 | ember 280.7 (54.9%), flail 206.5 (40.4%), wrath_pendulum 16.4 (3.2%), storm 7 (1.4%), frost 0.6 (0.1%) |
-| 12 | 21 | 293/293 | 7 | 1053 | ember 184.4 (75.5%), wrath_pendulum 52.4 (21.4%), storm 7.5 (3.1%), frost 0.1 (0%) |
-| 13 | 22 | 313/313 | 13 | 1126 | ember 239.5 (70.6%), wrath_pendulum 92.2 (27.2%), storm 7.1 (2.1%), frost 0.3 (0.1%) |
-| 14 | 22 | 308/313 | 12 | 1215 | ember 220.6 (67.6%), wrath_pendulum 97.3 (29.8%), storm 7.3 (2.2%), frost 1 (0.3%) |
-| 15 | 23 | 333/333 | 17 | 1311 | ember 229 (69.1%), wrath_pendulum 95.2 (28.7%), storm 7.1 (2.1%), frost 0.3 (0.1%) |
-| 16 | 23 | 333/333 | 44 | 1402 | wrath_pendulum 521.9 (51%), ember 488.3 (47.7%), storm 9.1 (0.9%), frost 3.6 (0.4%) |
-| 17 | 23 | 333/333 | 63 | 1479 | ember 436.3 (60.1%), wrath_pendulum 275.3 (37.9%), storm 11 (1.5%), frost 3.6 (0.5%) |
-| 18 | 24 | 353/353 | 92 | 1541 | ember 495.1 (58.2%), wrath_pendulum 340.6 (40.1%), storm 10.9 (1.3%), frost 3.5 (0.4%) |
-| 19 | 24 | 353/353 | 132 | 1596 | ember 454.1 (60.9%), wrath_pendulum 277.8 (37.2%), storm 11.2 (1.5%), frost 2.9 (0.4%) |
-| 20 | 24 | 339/353 | 195 | 1637 | ember 526.9 (65.7%), wrath_pendulum 260.5 (32.5%), storm 11.3 (1.4%), frost 2.7 (0.3%) |
-| 21 | 25 | 353/353 | 278 | 2022 | wrath_pendulum 2376.9 (71.8%), ember 902.2 (27.2%), frost 20.1 (0.6%), storm 11.8 (0.4%) |
-| 22 | 25 | 353/353 | 354 | 2729 | wrath_pendulum 2489 (71.7%), ember 964.6 (27.8%), storm 11.2 (0.3%), frost 8.1 (0.2%) |
-| 23 | 26 | 321/353 | 348 | 3598 | wrath_pendulum 3615.2 (78.1%), ember 987.2 (21.3%), storm 11.4 (0.2%), thorn 8.4 (0.2%), frost 5.8 (0.1%) |
-| 24 | 26 | 353/353 | 334 | 4540 | wrath_pendulum 3695.8 (78.2%), ember 986.1 (20.9%), thorn 24.6 (0.5%), storm 11.3 (0.2%), frost 7.1 (0.2%) |
-| 25 | 27 | 353/353 | 339 | 5411 | wrath_pendulum 3997.2 (78.8%), ember 1007.2 (19.9%), frost 28.9 (0.6%), thorn 25.3 (0.5%), storm 11.9 (0.2%) |
-| 26 | 27 | 353/353 | 349 | 6456 | wrath_pendulum 5855.2 (83.1%), ember 1008.6 (14.3%), frost 143.6 (2%), thorn 26.8 (0.4%), storm 11.3 (0.2%) |
-| 27 | 28 | 353/353 | 299 | 7293 | wrath_pendulum 4445.3 (80.2%), ember 991.3 (17.9%), frost 65.8 (1.2%), thorn 26.5 (0.5%), storm 11.3 (0.2%) |
-| 28 | 28 | 353/353 | 288 | 8068 | wrath_pendulum 4692.3 (79.6%), ember 1018.2 (17.3%), frost 150 (2.5%), thorn 26.1 (0.4%), storm 10.8 (0.2%) |
-| 29 | 28 | 353/353 | 360 | 8677 | wrath_pendulum 3662.3 (77.1%), ember 982.4 (20.7%), frost 73.5 (1.5%), thorn 21.7 (0.5%), storm 11.2 (0.2%) |
-| 30 | 28 | 353/353 | 307 | 9508 | phoenix 4638.1 (60.1%), wrath_pendulum 2958.6 (38.3%), frost 49.9 (0.6%), thorn 34.6 (0.4%), storm 28.4 (0.4%), ember 13.8 (0.2%) |
+| 1 | 6 | 253/253 | 4 | 30 | flail 19.1 (100%) |
+| 2 | 9 | 253/253 | 5 | 75 | flail 39 (100%) |
+| 3 | 10 | 253/253 | 13 | 110 | flail 32.3 (100%) |
+| 4 | 12 | 273/273 | 11 | 184 | flail 71 (100%) |
+| 5 | 14 | 293/293 | 11 | 243 | flail 61.7 (100%) |
+| 6 | 14 | 293/293 | 23 | 333 | flail 118.3 (63.3%), wrath_pendulum 67.9 (36.3%), frost 0.8 (0.4%) |
+| 7 | 17 | 293/293 | 16 | 497 | wrath_pendulum 224.5 (99.9%), frost 0.3 (0.1%) |
+| 8 | 18 | 293/293 | 15 | 605 | wrath_pendulum 228.9 (98.9%), frost 2.5 (1.1%) |
+| 9 | 19 | 293/293 | 27 | 722 | wrath_pendulum 219.3 (99.1%), frost 2.1 (0.9%) |
+| 10 | 19 | 293/293 | 41 | 830 | wrath_pendulum 216.9 (98.1%), frost 4.2 (1.9%) |
+| 11 | 20 | 293/293 | 46 | 1022 | wrath_pendulum 583 (94.9%), frost 31.6 (5.1%) |
+| 12 | 21 | 293/293 | 43 | 1235 | wrath_pendulum 495.9 (96.6%), frost 17.5 (3.4%) |
+| 13 | 23 | 333/333 | 26 | 1543 | wrath_pendulum 607.9 (83.7%), eternal_winter 98 (13.5%), frost 20.3 (2.8%) |
+| 14 | 24 | 353/353 | 15 | 1682 | wrath_pendulum 239.6 (58.1%), eternal_winter 172.8 (41.9%) |
+| 15 | 25 | 353/353 | 16 | 1771 | wrath_pendulum 203.6 (55.7%), eternal_winter 161.6 (44.2%), lantern 0.4 (0.1%) |
+| 16 | 25 | 353/353 | 40 | 1860 | eternal_winter 542.3 (50.1%), wrath_pendulum 536.9 (49.6%), lantern 3.1 (0.3%) |
+| 17 | 25 | 353/353 | 63 | 1923 | wrath_pendulum 325.8 (51.7%), eternal_winter 301.9 (47.9%), lantern 2.5 (0.4%) |
+| 18 | 26 | 353/353 | 88 | 1994 | eternal_winter 342.3 (50.1%), wrath_pendulum 338 (49.5%), lantern 2.6 (0.4%) |
+| 19 | 26 | 353/353 | 103 | 2081 | wrath_pendulum 756.7 (52.4%), eternal_winter 679.7 (47.1%), lantern 7.1 (0.5%) |
+| 20 | 26 | 353/353 | 134 | 2148 | eternal_winter 401.5 (52%), wrath_pendulum 367.2 (47.5%), lantern 3.6 (0.5%) |
+| 21 | 26 | 353/353 | 131 | 2444 | wrath_pendulum 2414.8 (66.2%), eternal_winter 1218.9 (33.4%), lantern 16.1 (0.4%) |
+| 22 | 26 | 353/353 | 253 | 3009 | wrath_pendulum 2575.3 (71.7%), eternal_winter 1008.3 (28.1%), lantern 6 (0.2%) |
+| 23 | 27 | 353/353 | 325 | 3997 | wrath_pendulum 4258.2 (78.2%), eternal_winter 1181.9 (21.7%), lantern 6.3 (0.1%) |
+| 24 | 27 | 353/353 | 349 | 5195 | wrath_pendulum 5239.1 (80.5%), eternal_winter 1263.7 (19.4%), lantern 3.4 (0.1%) |
+| 25 | 27 | 353/353 | 299 | 6401 | wrath_pendulum 5592.5 (79.2%), eternal_winter 1463.6 (20.7%), lantern 9.3 (0.1%) |
+| 26 | 27 | 353/353 | 358 | 7640 | wrath_pendulum 5949.5 (77.2%), eternal_winter 1746.6 (22.7%), lantern 13.8 (0.2%) |
+| 27 | 27 | 353/353 | 346 | 8696 | wrath_pendulum 5548.5 (79.4%), eternal_winter 1423.5 (20.4%), lantern 12.6 (0.2%) |
+| 28 | 28 | 353/353 | 354 | 9747 | wrath_pendulum 5574.5 (80.7%), eternal_winter 1324 (19.2%), lantern 13.1 (0.2%) |
+| 29 | 28 | 353/353 | 332 | 10721 | wrath_pendulum 6636.7 (79.8%), eternal_winter 1663 (20%), lantern 20.6 (0.2%) |
+| 30 | 29 | 353/353 | 332 | 11859 | wrath_pendulum 7905.6 (81.4%), eternal_winter 1782.7 (18.4%), lantern 22.7 (0.2%) |
 
 </details>
 
-<details><summary>mira / Seed 404 — death @ 22.1 min, Level 31</summary>
+<details><summary>mira / Seed 404 — death @ 25.2 min, Level 36</summary>
 
 | Min | Level | HP | Gegner | Kills | Waffen-DPS (Anteil %) |
 |---|---|---|---|---|---|
-| 1 | 7 | 250/250 | 1 | 35 | ember 11.2 (100%) |
-| 2 | 7 | 250/250 | 1 | 67 | ember 18.1 (100%) |
-| 3 | 10 | 250/250 | 3 | 120 | ember 28.4 (100%) |
-| 4 | 12 | 250/250 | 9 | 168 | ember 32 (100%) |
-| 5 | 14 | 250/250 | 8 | 227 | ember 36 (100%) |
-| 6 | 16 | 250/250 | 1 | 345 | ember 108.3 (57.5%), phoenix 80.1 (42.5%) |
-| 7 | 17 | 250/250 | 3 | 430 | phoenix 128.2 (100%) |
-| 8 | 18 | 250/250 | 3 | 523 | phoenix 140.8 (100%) |
-| 9 | 20 | 250/250 | 3 | 656 | phoenix 225.7 (100%) |
-| 10 | 21 | 269/270 | 24 | 774 | phoenix 225.9 (99.8%), lantern 0.5 (0.2%) |
-| 11 | 22 | 310/310 | 6 | 915 | phoenix 493 (98.2%), storm 5.9 (1.2%), lantern 3 (0.6%) |
-| 12 | 23 | 310/310 | 11 | 980 | phoenix 211.4 (94.9%), storm 10.7 (4.8%), lantern 0.6 (0.3%) |
-| 13 | 23 | 310/310 | 7 | 1079 | phoenix 258.7 (95.7%), storm 10.8 (4%), lantern 0.9 (0.3%) |
-| 14 | 24 | 310/310 | 11 | 1155 | phoenix 289.2 (95.4%), storm 11.1 (3.7%), lantern 2.8 (0.9%) |
-| 15 | 24 | 310/310 | 16 | 1244 | phoenix 328.2 (96%), storm 11 (3.2%), lantern 2.7 (0.8%) |
-| 16 | 25 | 215/310 | 38 | 1323 | phoenix 927.7 (91%), soul_beacon 53.2 (5.2%), storm 21.9 (2.1%), lantern 17.1 (1.7%) |
-| 17 | 26 | 279/310 | 42 | 1410 | phoenix 990 (87.1%), soul_beacon 83.9 (7.4%), storm 62.9 (5.5%) |
-| 18 | 27 | 310/310 | 41 | 1501 | phoenix 990.7 (81.9%), storm 121.5 (10%), soul_beacon 96.8 (8%) |
-| 19 | 27 | 310/310 | 55 | 1587 | phoenix 1015.7 (78.4%), storm 188.1 (14.5%), soul_beacon 91.6 (7.1%) |
-| 20 | 28 | 310/310 | 64 | 1683 | phoenix 965.7 (70.9%), storm 242.7 (17.8%), soul_beacon 154 (11.3%) |
-| 21 | 29 | 192/310 | 136 | 1858 | phoenix 1225.2 (65.7%), storm 419.7 (22.5%), soul_beacon 220.4 (11.8%) |
-| 22 | 31 | 12/330 | 246 | 2321 | phoenix 1667.7 (52%), storm 1195.7 (37.3%), soul_beacon 346.3 (10.8%) |
+| 1 | 5 | 250/250 | 5 | 42 | ember 14.5 (100%) |
+| 2 | 9 | 250/250 | 1 | 74 | ember 15.7 (100%) |
+| 3 | 11 | 270/270 | 2 | 121 | ember 29.6 (100%) |
+| 4 | 11 | 270/270 | 5 | 174 | ember 33.3 (100%) |
+| 5 | 12 | 290/290 | 8 | 222 | ember 34.3 (100%) |
+| 6 | 13 | 310/310 | 8 | 312 | ember 110.5 (67.2%), phoenix 54 (32.8%) |
+| 7 | 15 | 310/310 | 4 | 435 | phoenix 146.6 (100%) |
+| 8 | 16 | 310/310 | 3 | 553 | phoenix 165.1 (100%) |
+| 9 | 18 | 310/310 | 8 | 687 | phoenix 206.4 (100%) |
+| 10 | 18 | 310/310 | 14 | 806 | phoenix 228.9 (100%) |
+| 11 | 19 | 310/310 | 11 | 955 | phoenix 467.3 (98.2%), lantern 8.4 (1.8%), frost 0.4 (0.1%) |
+| 12 | 20 | 310/310 | 13 | 1034 | phoenix 234.3 (98.2%), lantern 3.3 (1.4%), thorn 0.9 (0.4%) |
+| 13 | 21 | 310/310 | 10 | 1135 | phoenix 316.4 (97.7%), lantern 4 (1.2%), thorn 3.3 (1%) |
+| 14 | 22 | 310/310 | 7 | 1230 | phoenix 286.6 (98.3%), lantern 2.7 (0.9%), thorn 2.4 (0.8%) |
+| 15 | 22 | 310/310 | 12 | 1312 | phoenix 283.6 (98.7%), thorn 2.1 (0.7%), lantern 1.7 (0.6%) |
+| 16 | 23 | 330/330 | 43 | 1388 | phoenix 809.3 (90.3%), soul_beacon 46.9 (5.2%), thorn 19.5 (2.2%), lantern 18 (2%), frost 2.5 (0.3%) |
+| 17 | 24 | 330/330 | 52 | 1468 | phoenix 825.6 (88.8%), soul_beacon 84.4 (9.1%), thorn 17.7 (1.9%), frost 1.8 (0.2%) |
+| 18 | 25 | 310/330 | 56 | 1559 | phoenix 853.6 (86.8%), soul_beacon 112 (11.4%), thorn 15.5 (1.6%), frost 2.4 (0.2%) |
+| 19 | 26 | 330/330 | 63 | 1650 | phoenix 906.6 (81.5%), soul_beacon 182.6 (16.4%), thorn 19.4 (1.7%), frost 4.4 (0.4%) |
+| 20 | 26 | 253/330 | 75 | 1739 | phoenix 967.5 (82.5%), soul_beacon 179 (15.3%), thorn 20 (1.7%), frost 6.9 (0.6%) |
+| 21 | 27 | 121/330 | 124 | 1879 | phoenix 1111.3 (74.4%), soul_beacon 317.8 (21.3%), thorn 41.7 (2.8%), frost 13.3 (0.9%), flail 8.7 (0.6%) |
+| 22 | 29 | 114/330 | 269 | 2200 | phoenix 1631.3 (73.3%), soul_beacon 453.1 (20.4%), thorn 78.2 (3.5%), frost 34.9 (1.6%), flail 27.1 (1.2%) |
+| 23 | 31 | 144/350 | 356 | 2741 | phoenix 2163 (69.5%), soul_beacon 754.4 (24.2%), thorn 90.1 (2.9%), frost 76 (2.4%), flail 29.4 (0.9%) |
+| 24 | 33 | 92/350 | 328 | 3300 | phoenix 2568 (74.4%), soul_beacon 601.5 (17.4%), thorn 207.1 (6%), frost 52.9 (1.5%), flail 23.8 (0.7%) |
+| 25 | 35 | 190/350 | 371 | 3866 | phoenix 2597.5 (69.6%), soul_beacon 765.1 (20.5%), thorn 265.4 (7.1%), frost 73.4 (2%), flail 27.5 (0.7%), storm 5.4 (0.1%) |
 
 </details>
 
-<details><summary>kael / Seed 404 — dawn @ 30.7 min, Level 31</summary>
+<details><summary>kael / Seed 404 — dawn @ 30.7 min, Level 33</summary>
 
 | Min | Level | HP | Gegner | Kills | Waffen-DPS (Anteil %) |
 |---|---|---|---|---|---|
-| 1 | 7 | 253/253 | 3 | 20 | flail 11.8 (100%) |
-| 2 | 9 | 273/273 | 4 | 70 | flail 44.4 (100%) |
-| 3 | 11 | 293/293 | 10 | 116 | flail 44.3 (100%) |
-| 4 | 12 | 333/333 | 17 | 166 | flail 47.6 (100%) |
-| 5 | 13 | 353/353 | 20 | 216 | flail 51 (100%) |
-| 6 | 13 | 353/353 | 26 | 322 | flail 205.4 (100%) |
-| 7 | 15 | 344/353 | 32 | 404 | flail 140.5 (93.4%), ember 9.9 (6.6%) |
-| 8 | 16 | 353/353 | 36 | 510 | flail 169.4 (93.1%), ember 10.7 (5.9%), thorn 1.9 (1%) |
-| 9 | 16 | 350/353 | 52 | 596 | flail 141.7 (85.4%), thorn 13.8 (8.3%), ember 10.4 (6.3%) |
-| 10 | 17 | 353/353 | 74 | 671 | wrath_pendulum 98.7 (54.8%), flail 52.8 (29.3%), thorn 15.8 (8.8%), ember 12.9 (7.2%) |
-| 11 | 19 | 353/353 | 93 | 908 | wrath_pendulum 580.4 (89.7%), ember 43.4 (6.7%), thorn 22.9 (3.5%) |
-| 12 | 21 | 353/353 | 83 | 1277 | wrath_pendulum 615.2 (89.5%), ember 55.8 (8.1%), thorn 16.6 (2.4%) |
-| 13 | 22 | 353/353 | 21 | 1703 | wrath_pendulum 512.2 (76.3%), ember 143.3 (21.3%), thorn 15.9 (2.4%) |
-| 14 | 24 | 353/353 | 20 | 1845 | wrath_pendulum 228.3 (50.7%), ember 208.5 (46.3%), thorn 13.8 (3.1%) |
-| 15 | 25 | 353/353 | 19 | 1947 | ember 251.7 (60.2%), wrath_pendulum 152.3 (36.4%), thorn 14 (3.3%) |
-| 16 | 25 | 353/353 | 56 | 2059 | ember 481.1 (49.9%), wrath_pendulum 426.8 (44.3%), thorn 55.9 (5.8%) |
-| 17 | 25 | 343/353 | 79 | 2128 | ember 549.3 (55.4%), wrath_pendulum 383.4 (38.7%), thorn 58.3 (5.9%) |
-| 18 | 26 | 353/353 | 109 | 2185 | ember 528.4 (57.6%), wrath_pendulum 329.7 (36%), thorn 58.9 (6.4%) |
-| 19 | 26 | 340/353 | 140 | 2250 | ember 516.9 (57.3%), wrath_pendulum 327.2 (36.3%), thorn 57.8 (6.4%) |
-| 20 | 26 | 352/353 | 194 | 2303 | ember 565.5 (57.4%), wrath_pendulum 358.4 (36.4%), thorn 60.7 (6.2%) |
-| 21 | 27 | 353/353 | 181 | 2520 | wrath_pendulum 1518.9 (64.6%), ember 741.4 (31.5%), thorn 87.1 (3.7%), frost 3.9 (0.2%) |
-| 22 | 27 | 353/353 | 298 | 2846 | wrath_pendulum 1209 (56.8%), ember 811.4 (38.1%), thorn 101.4 (4.8%), frost 3 (0.1%), lantern 2.9 (0.1%) |
-| 23 | 27 | 353/353 | 356 | 3400 | wrath_pendulum 2285.1 (69.9%), ember 866.1 (26.5%), thorn 111.9 (3.4%), frost 2.6 (0.1%), lantern 2.5 (0.1%) |
-| 24 | 28 | 352/353 | 344 | 4127 | wrath_pendulum 2689.8 (73.2%), ember 872.5 (23.7%), thorn 108.6 (3%), lantern 2.7 (0.1%), frost 1.8 (0%) |
-| 25 | 28 | 353/353 | 358 | 4811 | wrath_pendulum 3239.4 (76.7%), ember 878.2 (20.8%), thorn 99 (2.3%), frost 2.5 (0.1%), lantern 2.4 (0.1%) |
-| 26 | 29 | 353/353 | 355 | 5648 | wrath_pendulum 4922.4 (81.4%), ember 942.4 (15.6%), thorn 115.3 (1.9%), frost 42.9 (0.7%), lantern 27.5 (0.5%) |
-| 27 | 29 | 353/353 | 304 | 6289 | wrath_pendulum 3594.4 (76.7%), ember 967 (20.6%), thorn 118.3 (2.5%), frost 5.2 (0.1%), lantern 3.9 (0.1%) |
-| 28 | 29 | 353/353 | 346 | 6873 | wrath_pendulum 3132.7 (68.1%), ember 904.6 (19.7%), phoenix 436.4 (9.5%), thorn 117.4 (2.6%), lantern 4.4 (0.1%), frost 4.3 (0.1%) |
-| 29 | 29 | 353/353 | 288 | 7819 | phoenix 3980.1 (60.2%), wrath_pendulum 2509.4 (38%), thorn 107.4 (1.6%), frost 5.5 (0.1%), lantern 4 (0.1%) |
-| 30 | 29 | 353/353 | 343 | 8615 | phoenix 4479.3 (68.5%), wrath_pendulum 1962.5 (30%), thorn 93.7 (1.4%), frost 3.2 (0%), lantern 2.5 (0%) |
+| 1 | 4 | 253/253 | 6 | 17 | flail 9 (100%) |
+| 2 | 7 | 253/253 | 9 | 47 | flail 19.3 (100%) |
+| 3 | 8 | 253/253 | 17 | 96 | flail 35.9 (100%) |
+| 4 | 9 | 253/253 | 25 | 130 | flail 35.4 (100%) |
+| 5 | 11 | 253/253 | 36 | 168 | flail 40.5 (100%) |
+| 6 | 12 | 248/273 | 48 | 232 | flail 154.8 (100%) |
+| 7 | 13 | 255/273 | 67 | 292 | flail 117 (100%) |
+| 8 | 14 | 272/273 | 82 | 378 | flail 157.3 (100%) |
+| 9 | 15 | 293/293 | 96 | 470 | flail 180.3 (100%) |
+| 10 | 16 | 308/313 | 129 | 566 | flail 189.3 (100%) |
+| 11 | 19 | 353/353 | 65 | 980 | wrath_pendulum 640.5 (71.5%), flail 245.2 (27.4%), storm 10.3 (1.1%) |
+| 12 | 22 | 353/353 | 6 | 1216 | wrath_pendulum 424.8 (79.9%), storm 102.2 (19.2%), ember 4.5 (0.8%) |
+| 13 | 23 | 353/353 | 15 | 1301 | storm 172.7 (56.4%), wrath_pendulum 123.4 (40.3%), ember 10.1 (3.3%) |
+| 14 | 23 | 353/353 | 19 | 1418 | storm 233 (65.3%), wrath_pendulum 115.4 (32.3%), ember 8.4 (2.4%) |
+| 15 | 24 | 353/353 | 18 | 1542 | storm 283.4 (73.9%), wrath_pendulum 87.3 (22.8%), ember 13 (3.4%) |
+| 16 | 24 | 353/353 | 44 | 1631 | storm 356.9 (39.2%), wrath_pendulum 335.7 (36.9%), thunder_seal 196.8 (21.6%), ember 20.2 (2.2%) |
+| 17 | 25 | 340/353 | 46 | 1712 | thunder_seal 887.8 (77.3%), wrath_pendulum 234.1 (20.4%), ember 27.3 (2.4%) |
+| 18 | 25 | 353/353 | 43 | 1811 | thunder_seal 738.3 (75.3%), wrath_pendulum 206 (21%), ember 36.3 (3.7%) |
+| 19 | 25 | 353/353 | 67 | 1883 | thunder_seal 1051.4 (78%), wrath_pendulum 261.3 (19.4%), ember 35.1 (2.6%) |
+| 20 | 26 | 353/353 | 77 | 1977 | thunder_seal 836 (80.2%), wrath_pendulum 166.3 (16%), ember 40.3 (3.9%) |
+| 21 | 26 | 352/353 | 137 | 2202 | thunder_seal 1418 (58.7%), wrath_pendulum 900.4 (37.3%), ember 97.2 (4%) |
+| 22 | 27 | 353/353 | 249 | 2556 | thunder_seal 1365.6 (53.6%), wrath_pendulum 1074.4 (42.2%), ember 107.1 (4.2%) |
+| 23 | 28 | 353/353 | 358 | 3238 | wrath_pendulum 2224.5 (59.2%), thunder_seal 1380.4 (36.8%), ember 151.1 (4%) |
+| 24 | 28 | 353/353 | 370 | 4110 | wrath_pendulum 2807.4 (62.1%), thunder_seal 1404.6 (31.1%), ember 307.3 (6.8%) |
+| 25 | 29 | 320/353 | 360 | 5059 | wrath_pendulum 3033 (63.5%), thunder_seal 1419.3 (29.7%), ember 326.3 (6.8%) |
+| 26 | 30 | 353/353 | 329 | 6126 | wrath_pendulum 4837 (72.1%), thunder_seal 1372.6 (20.5%), ember 499 (7.4%) |
+| 27 | 30 | 353/353 | 343 | 6994 | wrath_pendulum 2631.3 (53.6%), thunder_seal 1409.8 (28.7%), ember 867.2 (17.7%) |
+| 28 | 31 | 353/353 | 357 | 7943 | wrath_pendulum 2882.9 (54.3%), thunder_seal 1490.1 (28%), ember 938.4 (17.7%), thorn 1.9 (0%) |
+| 29 | 31 | 353/353 | 359 | 8869 | wrath_pendulum 3004.7 (54.6%), thunder_seal 1499.1 (27.2%), ember 977.2 (17.8%), thorn 23.2 (0.4%) |
+| 30 | 31 | 353/353 | 346 | 9754 | wrath_pendulum 3624.8 (59.4%), thunder_seal 1495.8 (24.5%), ember 960.4 (15.7%), thorn 23 (0.4%) |
 
 </details>
 
@@ -291,40 +291,11 @@ Alle Messläufe wurden mit `flock /home/ai/games/.lf-perf.lock` gestartet.
 
 | Char/Seed | Gesamtschaden | ember | flail | frost | thorn | storm | lantern | phoenix | wrath_pendulum | eternal_winter | thorn_storm | thunder_seal | soul_beacon |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| mira/101 | 4511883 | 0.3% | 0.4% | – | 0.5% | – | – | 58.2% | 40.6% | – | – | – | – |
-| kael/101 | 4100734 | 6.6% | 0.8% | – | 1.6% | 0.3% | – | – | 24% | – | 66.7% | – | – |
-| mira/202 | 1186917 | 1.2% | – | 0.9% | 2.1% | 0.3% | 0.1% | 46% | – | – | 49.3% | – | – |
-| kael/202 | 4053189 | 19.4% | 1% | 1.2% | 0.3% | 0.4% | – | 11.5% | 66.1% | – | – | – | – |
-| mira/404 | 832755 | 1.7% | – | – | – | 16.8% | 0.2% | 73.6% | – | – | – | – | 7.6% |
-| kael/404 | 3677414 | 16.9% | 1.5% | 0.2% | 2.8% | – | 0.1% | 19.8% | 58.7% | – | – | – | – |
+| mira/101 | 4366143 | 0.4% | 0.3% | 0.1% | – | – | 0.6% | 53.3% | 45.4% | – | – | – | – |
+| kael/101 | 4511228 | 0.4% | 1% | 0.9% | 4.2% | 0.1% | 1.1% | – | 66.8% | 8.8% | – | – | 16.6% |
+| mira/202 | 508237 | 2.9% | – | – | 4% | – | 0.4% | 84.1% | – | – | – | – | 8.6% |
+| kael/202 | 5122101 | – | 0.4% | 0.1% | – | – | 0.3% | – | 76.6% | 22.6% | – | – | – |
+| mira/404 | 1406744 | 1% | 0.8% | 1.6% | 3.9% | 0% | 0.2% | 75.7% | – | – | – | – | 16.8% |
+| kael/404 | 3836520 | 8.7% | 1.9% | – | 0.2% | 1.8% | – | 3% | 54.7% | – | – | 29.7% | – |
 
-### Todesläufe je Charakter (ohne god, 30x, bis zum Tod)
-
-| Char | Seed | Bot | Ergebnis | Todeszeit | Level | Kills | Result-Grund | Screenshot |
-|---|---|---|---|---|---|---|---|---|
-| mira | 202 | autoPlay | death | 25.1 min | 29 | 3110 | death | shots/balance-death-mira-202.png |
-| kael | 606 | steht still | death | 2.3 min | 6 | 68 | death | shots/balance-death-kael-606.png |
-
-Kael wurde zusätzlich mit AutoPlay auf den Seeds 111/505/606/707 gemessen; alle
-gewannen (Morgendämmerung), daher der stehende Todeslauf für den Game-Over-Beleg.
-JSON: `shots/balance-death-mira-202.json` und `shots/balance-death-runs.json`.
-
-### Waffen-Audit (je Waffe allein auf Stufe 8, 6 Sim-Minuten, kein god)
-
-Der Bot kitet normalerweise; für kurze Waffen (Frostnova, Geisterlaterne) werden einige Gegner nah am Spieler nachgespawnt, damit der Vergleich fair ist.
-
-| Waffe | Schaden | DPS | Kills/Min | Fenster (min) | tot? |
-|---|---|---|---|---|---|
-| ember | 10008 | 27.9 | 59.4 | 6 | nein |
-| flail | 5776 | 16.2 | 74.2 | 5.9 | nein |
-| frost | 823 | 2.3 | 51.5 | 6 | nein |
-| thorn | 4986 | 13.9 | 60.4 | 6 | nein |
-| storm | 20884 | 58.2 | 58.5 | 6 | nein |
-| lantern | 537 | 1.5 | 58.9 | 6 | nein |
-| phoenix | 19342 | 54.1 | 68.5 | 6 | nein |
-| wrath_pendulum | 7297 | 20.4 | 58.4 | 6 | nein |
-| eternal_winter | 3790 | 10.6 | 60.5 | 5.9 | nein |
-| thorn_storm | 9724 | 27.2 | 61 | 6 | nein |
-| thunder_seal | 6546 | 18.4 | 61.8 | 5.9 | nein |
-| soul_beacon | 2175 | 6.1 | 59.9 | 6 | nein |
 <!-- BALANCE-TABLE:END -->

@@ -17,7 +17,11 @@
 "verify:terrain": "node scripts/verify-terrain.mjs",
 "verify:vfx": "node scripts/verify-vfx.mjs",
 "verify:robust": "node scripts/verify-robust.mjs",
-"verify:menus": "node scripts/verify-menus.mjs"
+"verify:menus": "node scripts/verify-menus.mjs",
+"verify:final": "node scripts/verify-final.mjs",
+"acceptance": "node scripts/acceptance-count.mjs",
+"vfx:read": "node scripts/final-vfx-readability.mjs",
+"trailer": "node scripts/final-trailer.mjs"
 },
 "dependencies": {
 "phaser": "^3.90.0"

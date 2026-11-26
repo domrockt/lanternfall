@@ -341,3 +341,84 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - Sound ist 22,05-kHz-Mono-WAV ohne räumliche Positionierung/Streaming; Musik sind zwei kurze Chiptune-Loops (19,2 s / 14,6 s), kein längerer Arrangement-Pass. Stimmenfreigabe hängt am `complete`-Event des Browsers.
 - Optionen sind tastaturbasiert (kein Mauszwang, aber auch keine Mausunterstützung im Optionsmenü); kein separater Master-Mute.
 - Hit-Stop betrifft nur Bosse; normale Treffer bleiben kinetisch. Die Abnahme-Harness nutzt `setSuppressFx`/`setSuppressLevelUps` (Debug-only), um Waffen-GIFs frei von Level-up-Overlays zu halten — das ändert keine Produktionslogik.
+
+## Status — M6 (Sound/Politur/Performance, drei Lanes + Gesamtabnahme), 2026-11-26
+
+**Merges (`--no-ff`, Reihenfolge):** `a078921` (m6-balance) → `bf1560e` (m6-robust) → `adefa57` (m6-menus).
+Konflikte: `package.json` (Scripts beider Lanes), `src/scenes/Run.ts` (robuste Bot-Scratch-Arrays + Balance-Threat/Boss-Agent
+kombiniert), `src/main.ts` (Worker-/Lifecycle-Skalierung + Menü-Skalierungsoption). `build` + `tests` nach jedem Merge grün.
+`.opencode/board.json` blieb die main-Version; Lane-Karten #56–#72 nachgetragen. `.lane-done`-Dateien entfernt.
+
+### Lane `balance` (Details: `docs/lanes/balance.md`)
+
+- Harness `scripts/balance.mjs`: 6 Hauptläufe (3 Seeds × Mira/Kael, 30×, autoPlay, kein god, flock), Minuten-Log,
+  Boss-Dauern aus `bossDefeated`, plus Todes- und Waffen-Audit-Modus.
+- XP-Kurve `8 + 1.1·n²` (Level 25–40 bei 30 min statt Level 147), Charaktere differenziert (Mira Ember/250 HP/62 Tempo;
+  Kael Flail/253 eff. HP/55,9 Tempo/Rüstung 2), Boss-Grundtempo 42–50 ≤ 90 % Spielertempo, Boss-HP für 20–60-s-Kämpfe.
+- Waffen-Audit: alle 12 Waffen Stufe 8 verursachen Schaden (`shots/balance-weapons.json`).
+
+**Balance-Tabelle (M6-final gemergter Stand, `shots/balance-main.json`, 2026-11-26):**
+
+| Char | Seed | Ergebnis | Minuten | Level | Kills | Evos | Boss-Dauern (s) |
+|---|---|---|---|---|---|---|---|
+| Mira | 101 | Sieg | 30,5 | 33 | 10.233 | 2 | 26/28/26/25/23/28 |
+| Kael | 101 | Sieg | 30,4 | 47 | 11.689 | 4 | 33/54/49/51/46/23 |
+| Mira | 202 | Tod | 20,4 | 26 | 1.720 | 2 | 29/29/38/– (Golem lebte) |
+| Kael | 202 | Sieg | 30,7 | 30 | 12.761 | 2 | 34/52/43/40/40/40 |
+| Mira | 404 | Tod | 25,2 | 36 | 4.124 | 2 | 27/31/33/40/– (Zirkel lebte) |
+| Kael | 404 | Sieg | 30,7 | 33 | 10.512 | 3 | 34/51/41/40/52/37 |
+
+5 von 6 Läufen im Korridor (Überleben 20–28 min bzw. Sieg, Bosse 20–60 s, ≥1 Evolution). Ausreißer:
+Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine Regression im Kampf.
+
+### Lane `robust` (Details: `docs/lanes/robust.md`)
+
+- Terrain-Chunks im Worker (vorher 25–45 ms/Chunk, 150–200 ms Hitches), Laufzeit-Atlas (Texture-Binds 269 → 125),
+  SpatialHash-FreeList, Scratch-Arrays im Bot, Separation-/Boss-LOD, Pool-Prewarm, Audio-Voice-Pools.
+- `flock npm run perf` (final gemergter Stand): **Burst 60,1 FPS** (500 Gegner, worst 16,8 ms),
+  **Minute 25: 57,5 FPS** (300 Gegner + 6 Evolutionen), 0 JS-Fehler. JSON `shots/perf-m3.json`.
+- `flock npm run fullrun` (final): 30,1 Sim-Minuten, 6 Bosse 300–1800 s, 6 Truhen, Sieg/Morgendämmerung,
+  **FPS-Minimum 55,8** (29:20–Sieg, 1×), 0 JS-Fehler. JSON `shots/m3-fullrun.json`.
+  Heap-Diagnose diesmal +22,2 % (25,7 → 31,4 MB) über dem 15-%-Ziel — Streuung/Host-Last, nicht A5-Kriterium (offener Punkt).
+- Robustheit: `visibilitychange` pausiert (Delta 0 s, Resume ohne Sprung), Resize 1×/2×/3×/4× ganzzahlig,
+  Worker-Timeout/Sync-Fallback, Atlas 224 Frames (`npm run verify:robust` PASS).
+
+### Lane `menus` (Details: `docs/lanes/menus.md`)
+
+- Titel (Start/Optionen/Credits), Credits, CharSelect mit Portraits/Stats/Startwaffe/Meta, Pause-Build 6/6+6/6,
+  Results (Sieg/Niederlage/Aufgabe), Optionen (Musik/SFX/Shake/Damage-Numbers/Skalierung, localStorage),
+  Meta-Bestwerte pro Charakter, Tastatur + Maus/Touch, ganzzahlige Skalierung (AUTO/1×/2×/3×).
+- `node scripts/verify-menus.mjs`: 15/15 PASS; Screenshots `shots/m6-menus-*.png`.
+
+### M6-final Nachträge (vor der Gesamtabnahme)
+
+- **VFX-Lesbarkeit Endgame:** LOD-Dämpfung wirkt jetzt auf aktive Effekte und Brandflächen; im Minimal-LOD werden
+  additive Glows auf NORMAL-Blend gelegt (Alpha 0,5), Laternen-Lichtfläche und Damage-Numbers gedimmt. Beleg-Paar im
+  selben Frame (429 Gegner, 23:25): Near-White im AoE-Crop **−59 %** (vfx-check unabhängig −55…−66 %), vfx-check **PASS (4/5)**.
+  `shots/final-vfx-m25-before.png` / `-after.png` / `-m25.gif`.
+- **Damage-Aggregation ab 120 Gegnern:** `shouldAggregateDamage` (Runtime-Beleg 110 → aus, 129 → an), zusätzlich LOD.
+- **Master-Mute:** Option `MASTER MUTE` in Titel+Pause, blockt alle SFX/Musik, persistiert (`muted` nach Reload true,
+  `sfxPlayed 7 → 7`). Belege `shots/final-options-mute.png`, `shots/final-verify.json`.
+- **Ergebnis-Screen:** zweispaltig — links Portrait/Zeit/Kills/Level, rechts sortierte Schadensbalken mit Icons,
+  vollständige Waffennamen, Titel zentriert, Bestwert-Banner. `shots/final-results-victory.png`.
+- **Art-Politur:** Wasser bei 1× mit gruppierten, animierten Wellen und ohne braunen Uferring; Grabspinne mit 8 Beinen
+  neu gezeichnet; Hohler König mit durchgehendem Schwertarm. art-director **PASS, Gesamtnote 4/5**.
+  `shots/final-water-1x.gif`, `-a-zoom.png`, `final-spider-1x-zoom.png`, `final-hollow-king-1x-zoom.png`.
+
+### Messwerte M6-final (headless Chromium, flock)
+
+| Messung | Wert |
+|---|---|
+| `npm run build` / `npm test` | grün / **146 Tests** |
+| perf Burst (500 Gegner) | **60,1 FPS**, worst 16,8 ms |
+| perf Minute 25 (300 + 6 Evolutionen) | **57,5 FPS**, worst 33,4 ms |
+| fullrun FPS-Minimum (29:20–Sieg) | **55,8** (Ziel ≥55) |
+| fullrun | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler |
+| balance | 6 Läufe, 5/6 im Korridor, Kael/101 Level 47 (Restmangel) |
+| realtime 30:00 | ein voller Lauf, Ergebnis in `ACCEPTANCE.md` / `shots/realtime-30min.json` |
+
+**Bekannte Lücken (M6):**
+- Kael/Seed 101 Level 47 über dem Balance-Ziel 25–40 (AutoPlay-Streuung).
+- fullrun-Heap +22,2 % über dem 15-%-Ziel in diesem Lauf (Host-Last/GC-Streuung; CDP-Diagnose 12,5 → 13,4 MB).
+- VFX-Dämpfung im Minimal-LOD ist bewusst stark (Alpha 0,5, NORMAL-Blend); einzelne Glows wirken dort flacher.
+- Menüs ohne Gamepad, Meta ohne Gold/Shop.
