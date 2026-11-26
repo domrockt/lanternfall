@@ -12,7 +12,7 @@ Safe-Area auf Touch-Profilen, plus Beleg für die offene 42-FPS-Minute-25-Karte 
 
 - [ ] **C1 / #1101 — Basis:** `npm run build`, `node scripts/verify-display.mjs` einmal komplett (ohne flock),
       Belege nach `shots/m10-display-*` umbenannt.
-- [ ] **C2 / #1102 — Pixel-genau:** View je Profil gegen Formel aus `src/logic/view.ts` nachrechnen
+- [x] **C2 / #1102 — Pixel-genau:** View je Profil gegen Formel aus `src/logic/view.ts` nachrechnen
       (`devicePixelWidth % n == 0`), Screenshots sichten, abgeschnittene Texte listen.
 - [ ] **C3 / #1103 — Safe-Area/HUD:** iPhone 14 + Pixel 7 gegen Notch/Rundung prüfen (HUD, Pause, Joystick vs.
       Safe-Area-Rechtecke), FPS Minute 25 via `flock … node scripts/perf.mjs`, Ist-Wert gegen 57 FPS.
@@ -36,3 +36,31 @@ werden hier **nicht** angefasst/committet; dieser Lauf schreibt ausschließlich 
 - Belege: 50 Dateien `shots/m10-display-<profil>-<szene>.png` (title/options/credits/charselect/run/levelup/
   chest/pause/results je Profil) + `shots/m10-display-iphone14-touch-run.png` + `shots/m10-display-portrait-rotate.png`
   + `shots/m10-display.json`.
+
+## C2 — Pixel-genau: Formel vs. Ist (Basis `f26dc4b`)
+
+Nachrechnung mit `~/tmp/m10-display-qa/card2-check.mjs` (liest `shots/m10-display.json`, Formel identisch zu
+`src/logic/view.ts`: `n = floor(min(deviceH/360, deviceW/480))`, `Breite = clamp(round(deviceW/n), 480, 860)`):
+
+| Profil | CSS-Viewport | dpr | Gerätepixel | n | View (Ist) | Formel | device % n | pixel-perfect |
+|---|---|---|---|---|---|---|---|---|
+| hd | 1920×1080 | 1 | 1920×1080 | 3 | 640×360 | 640×360 | 0/0 | ja |
+| uhd | 3840×2160 | 1 | 3840×2160 | 6 | 640×360 | 640×360 | 0/0 | ja |
+| wqhd15 | 2560×1440 | 1.5 | 3840×2160 | 6 | 640×360 | 640×360 | 0/0 | ja |
+| laptop | 1366×768 | 1 | 1366×720 | 2 | 683×360 | 683×360 | 0/0 | ja |
+| iphone14 | 844×390 | 3 | 2532×1080 | 3 | 844×360 | 844×360 | 0/0 | ja |
+| pixel7 | 915×412 | 2 | 1720×720 | 2 | 860×360 | 860×360 | 0/0 | ja |
+| ipadpro | 1366×1024 | 2 | 2730×1800 | 5 | 546×360 | 546×360 | 0/0 | ja |
+
+**7/7 Pixel-genau PASS** (Ist-View == Formel-View, Gerätepixelbreite/-höhe ohne Rest durch n teilbar,
+Canvas-Gerätepixel == View × n). Keine ungeprüften Profile.
+
+### Sichtprüfung der Screenshots (Kontaktbögen 7 Profile × 9 Szenen, 2× nearest in `~/tmp/m10-display-qa/sheets/`)
+
+Geprüfte Szenen je Profil: title, options, credits, charselect, run, levelup, chest, pause, results
+(`shots/m10-display-<profil>-<szene>.png`). Befund: **keine abgeschnittenen HUD-/Menü-Texte**;
+HUD-Anker oben links (HP/Level), oben Mitte (Timer), oben rechts (Kills + Pause-Knopf) liegen in der View.
+Auf den schmalsten Views (ipadpro 546, iphone14 844, pixel7 860) skalieren Panels mit, Menüknöpfe bleiben
+innerhalb des 9-Slice-Rahmens. Einzige kosmetische Auffälligkeit (kein FAIL): im Truhen-Screen ragt die
+5er-Kartenreihe bei iphone14/pixel7/uhd knapp über den Panel-Rahmen, bleibt aber vollständig in der View und
+der Hinweistext „TIPPE ODER A – ÜBERNEHMEN“ ist lesbar.
