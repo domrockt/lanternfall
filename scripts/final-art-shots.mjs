@@ -50,7 +50,19 @@ try {
     }
     return best;
   });
-  await page.evaluate((p) => window.__lf.teleport(p.x, p.y), water);
+  // Am Ufer stehen, damit das Laternenlicht den Teich nicht flächig aufhellt.
+  const shore = await page.evaluate((w) => {
+    const sc = window.__game.scene.getScene("run");
+    for (let r = 72; r <= 180; r += 8) {
+      for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
+        const x = Math.round(w.x + Math.cos(a) * r);
+        const y = Math.round(w.y + Math.sin(a) * r);
+        if (sc.ground.kindAt(x, y) !== "water") return { x, y };
+      }
+    }
+    return { x: w.x, y: w.y };
+  }, water);
+  await page.evaluate((p) => window.__lf.teleport(p.x, p.y), shore);
   await page.waitForTimeout(500);
   await canvas.screenshot({ path: "shots/final-water-1x-a.png" });
   for (let i = 0; i < 8; i++) {
@@ -117,6 +129,7 @@ try {
   });
 
   report.waterSpot = water;
+  report.waterShore = shore;
   report.errors = errors;
 } finally {
   writeFileSync("shots/final-art-shots.json", JSON.stringify(report, null, 2));
