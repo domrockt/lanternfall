@@ -1,0 +1,35 @@
+{
+  "url": "http://127.0.0.1:5590/?debug=1&seed=21",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "autoPlay",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "addWeapon",
+      "args": [
+        "ember",
+        8
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bog_rat",
+        40
+      ]
+    }
+  ],
+  "out": "shots/m7-shot.png",
+  "gif": "shots/m7-shot.gif",
+  "jsErrors": []
+}
