@@ -1,0 +1,10 @@
+# m10-vfx-evo — fertig
+
+Basis-SHA f26dc4b. 4 Karten, 4 Commits (#1 Trigger-Tabelle, #2 Evolutions-GIFs, #3 Ereignis-GIFs + Messung, #4 Report).
+12/12 Effekte belegt: 6 Evolutions-GIFs/Stills + 6 Ereignis-GIFs/Stills, 0 JS-Fehler in zwei Läufen.
+GIFs 480x270, 16 Frames (event-dawn 10 Frames), Aufnahme 1–3 s nach Auslösung mit >=300 lebenden Gegnern.
+Near-White (Crop 240x220+360+160, min(R,G,B)>=200, Ziel <=4,16 %): Peak 1/12 PASS (eternal_winter 2,40 %),
+11/12 FAIL; Mean 11/12 PASS (nur event-elite 4,18 %). Schlechteste Peaks: phoenix 6,22 %, event-elite 6,08 %,
+event-bossDeath 5,76 %. Empfehlungen je Effekt in docs/lanes/m10-vfx-evo.md.
+tsc 0, 192 Tests grün, build grün. Kein Skript unter scripts/ oder src/ geändert.
+Hinweis: Supervisor-Snapshot 1238df1 enthält .opencode/board.json (Merge-Job-Datei), nicht von dieser Lane.
