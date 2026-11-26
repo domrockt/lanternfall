@@ -1,0 +1,428 @@
+[
+  {
+    "f": "balance-all.json",
+    "date": "2026-11-26T05:09:10.106Z",
+    "kind": "Balance",
+    "note": "6 Läufe; allRunsPass false; seeds 101,101,202,202,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-death-mira-202.json",
+    "date": "2026-11-26",
+    "kind": "Balance-Rohdaten (Array)",
+    "note": "2 Läufe/Keys"
+  },
+  {
+    "f": "balance-death-runs.json",
+    "date": "2026-11-26",
+    "kind": "Balance-Rohdaten (Array)",
+    "note": "1 Läufe/Keys"
+  },
+  {
+    "f": "balance-death.json",
+    "date": "2026-11-26T05:58:05.011Z",
+    "kind": "Balance",
+    "note": "0 Läufe; allRunsPass true; seeds ; chars "
+  },
+  {
+    "f": "balance-main-m8-640.json",
+    "date": "2026-11-26T10:41:49.127Z",
+    "kind": "Balance",
+    "note": "6 Läufe; allRunsPass true; seeds 101,101,202,202,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-main-m8-780-clean.json",
+    "date": "2026-11-26T12:20:37.880Z",
+    "kind": "Balance",
+    "note": "4 Läufe; allRunsPass true; seeds 101,101,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-main-m8-780-final.json",
+    "date": "2026-11-26T11:23:27.374Z",
+    "kind": "Balance",
+    "note": "6 Läufe; allRunsPass false; seeds 101,101,202,202,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-main-m8-780-tune07.json",
+    "date": "2026-11-26T11:07:40.115Z",
+    "kind": "Balance",
+    "note": "4 Läufe; allRunsPass false; seeds 101,101,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-main-m8-780.json",
+    "date": "2026-11-26T10:51:13.706Z",
+    "kind": "Balance",
+    "note": "6 Läufe; allRunsPass false; seeds 101,101,202,202,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-main-m8-780b.json",
+    "date": "2026-11-26T10:59:32.942Z",
+    "kind": "Balance",
+    "note": "6 Läufe; allRunsPass false; seeds 101,101,202,202,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-main-runs.json",
+    "date": "2026-11-26",
+    "kind": "Balance-Rohdaten (Array)",
+    "note": "4 Läufe/Keys"
+  },
+  {
+    "f": "balance-main.json",
+    "date": "2026-11-26T12:14:10.184Z",
+    "kind": "Balance",
+    "note": "1 Läufe; allRunsPass true; seeds 101; chars kael"
+  },
+  {
+    "f": "balance-mainm8-780-final.json",
+    "date": "2026-11-26T11:54:58.729Z",
+    "kind": "Balance",
+    "note": "4 Läufe; allRunsPass false; seeds 101,101,404,404; chars mira,kael"
+  },
+  {
+    "f": "balance-maintune070.json",
+    "date": "2026-11-26T12:08:49.232Z",
+    "kind": "Balance",
+    "note": "1 Läufe; allRunsPass true; seeds 101; chars kael"
+  },
+  {
+    "f": "balance-maintune085.json",
+    "date": "2026-11-26T12:07:11.688Z",
+    "kind": "Balance",
+    "note": "1 Läufe; allRunsPass false; seeds 101; chars kael"
+  },
+  {
+    "f": "balance-weapons-runs.json",
+    "date": "2026-11-26",
+    "kind": "Balance-Rohdaten (Array)",
+    "note": "12 Läufe/Keys"
+  },
+  {
+    "f": "balance-weapons.json",
+    "date": "2026-11-26T05:47:59.153Z",
+    "kind": "Balance",
+    "note": "0 Läufe; allRunsPass true; seeds ; chars "
+  },
+  {
+    "f": "final-art-shots.json",
+    "date": "2026-11-26",
+    "kind": "Art-Shot-Metadaten",
+    "note": "spiders –; errors 0"
+  },
+  {
+    "f": "final-trailer.json",
+    "date": "2026-11-26",
+    "kind": "Trailer",
+    "note": "8 Segmente, 36 s, 8 fps, 480x270, overview 6"
+  },
+  {
+    "f": "final-verify.json",
+    "date": "2026-11-26",
+    "kind": "Verify",
+    "note": "7/7 Checks PASS; jsErrors/errors 0; "
+  },
+  {
+    "f": "final-vfx-readability.json",
+    "date": "2026-11-26",
+    "kind": "VFX-Readability",
+    "note": "paused time 1405.4 s, kills 2919, 468 Gegner, fx 60, Partikel 158; sameDensity true; errors 0"
+  },
+  {
+    "f": "latest.json",
+    "date": "2026-11-25",
+    "kind": "Shot-Metadaten",
+    "note": "jsErrors 0"
+  },
+  {
+    "f": "lead-accept.json",
+    "date": "2026-11-25",
+    "kind": "Lead-Accept",
+    "note": "sheet 33 Sprite-Paare (identisch 0); victory true; jsErrors 0; passed true"
+  },
+  {
+    "f": "m10-heap-basis.json",
+    "date": "2026-11-26T19:13:14.592Z",
+    "kind": "Heap-Serie (ein Lauf)",
+    "note": "variant basis; heap 30.9→30.9 MB, Δ -0.2 %; JS-Heap 30.5→30.7 MB (0.7 %); neurons 72262; jsErrors 0; criterion15 true"
+  },
+  {
+    "f": "m10-heap-burst.json",
+    "date": "2026-11-26T19:13:05.478Z",
+    "kind": "Heap-Serie (ein Lauf)",
+    "note": "variant burst; heap 30.6→31 MB, Δ 1.1 %; JS-Heap 29.8→30.3 MB (1.7 %); neurons 35731; jsErrors 0; criterion15 true"
+  },
+  {
+    "f": "m10-heap-chaos.json",
+    "date": "2026-11-26T19:14:48.496Z",
+    "kind": "Heap-Serie (ein Lauf)",
+    "note": "variant chaos; heap 32.2→29.5 MB, Δ -8.2 %; JS-Heap 34.1→29 MB (-15 %); neurons -165516; jsErrors 0; criterion15 true"
+  },
+  {
+    "f": "m10-heap-smoke.json",
+    "date": "2026-11-26T18:39:53.310Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 7.1 %; median 7.1 %; spread – pp; jsErrors 0"
+  },
+  {
+    "f": "m10-vfx-evo-readability.json",
+    "date": "2026-11-26",
+    "kind": "VFX-Readability",
+    "note": "baseSha 1238df1; 12 Effekte; Ziel <= 4.16 %; jsErrors 0"
+  },
+  {
+    "f": "m3-bosses.json",
+    "date": "2026-11-25",
+    "kind": "Boss-/Verify-Rohdaten",
+    "note": "6 Ergebnisse; jsErrors 0"
+  },
+  {
+    "f": "m3-fullrun-m8-780.json",
+    "date": "2026-11-26",
+    "kind": "fullrun (30 min)",
+    "note": "sim 30.2 min; fpsMin 29.5; heap 30→35 MB (16.7 %); Boss 6/6; Truhen 6; Kills 4141; Level 38; victory true; jsErrors 0; passed false"
+  },
+  {
+    "f": "m3-fullrun.json",
+    "date": "2026-11-26",
+    "kind": "fullrun (30 min)",
+    "note": "sim 30.2 min; fpsMin 55.8; heap 25.7→30.5 MB (18.7 %); Boss 6/6; Truhen 6; Kills 4222; Level 38; victory true; jsErrors 0; passed false"
+  },
+  {
+    "f": "m3-fullrunm8-780.json",
+    "date": "2026-11-26",
+    "kind": "fullrun (30 min)",
+    "note": "sim 30.2 min; fpsMin 38.9; heap 29.7→31.8 MB (7.1 %); Boss 6/6; Truhen 6; Kills 4115; Level 38; victory true; jsErrors 0; passed false"
+  },
+  {
+    "f": "m3-terrain.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "jsErrors 0"
+  },
+  {
+    "f": "m5-vfx.json",
+    "date": "2026-11-26",
+    "kind": "VFX-Serie",
+    "note": "12 Waffen, 6 Events, 18 GIFs, failed 0, jsErrors 0, passed true"
+  },
+  {
+    "f": "m6-menus.json",
+    "date": "2026-11-26",
+    "kind": "Verify",
+    "note": "15/15 Checks PASS; jsErrors/errors 0; M6-menus"
+  },
+  {
+    "f": "m7-shot.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m7-shot.png"
+  },
+  {
+    "f": "m8-display.json",
+    "date": "2026-11-26",
+    "kind": "Verify",
+    "note": "38/38 Checks PASS; jsErrors/errors 0; M8-display"
+  },
+  {
+    "f": "m8-input.json",
+    "date": "2026-11-26",
+    "kind": "Verify",
+    "note": "28/28 Checks PASS; jsErrors/errors 0; M8-input"
+  },
+  {
+    "f": "m8-view-hd.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene title; jsErrors 0; out shots/m8-view-hd.png"
+  },
+  {
+    "f": "m9-art-fx-ui-title-after.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene title; jsErrors 0; out shots/m9-art-fx-ui-title-after.png"
+  },
+  {
+    "f": "m9-art-fx-ui-title-before.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene title; jsErrors 0; out shots/m9-art-fx-ui-title-before.png"
+  },
+  {
+    "f": "m9-art-fx-ui-title-step-after.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene title; jsErrors 0; out shots/m9-art-fx-ui-title-step-after.png"
+  },
+  {
+    "f": "m9-art-fx-ui-title-step-before.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene title; jsErrors 0; out shots/m9-art-fx-ui-title-step-before.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-01-crowd.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-01-crowd.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-02-boss5.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-02-boss5.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-02-boss5b.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-02-boss5b.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-03-death.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-03-death.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-before-boss0.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-before-boss0.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-before-boss5.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-before-boss5.png"
+  },
+  {
+    "f": "m9-art-heroes-bosses-before-crowd.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-heroes-bosses-before-crowd.png"
+  },
+  {
+    "f": "m9-art-world-01-after-grass.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-01-after-grass.png"
+  },
+  {
+    "f": "m9-art-world-01-before-grass.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-01-before-grass.png"
+  },
+  {
+    "f": "m9-art-world-01-before-path.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-01-before-path.png"
+  },
+  {
+    "f": "m9-art-world-01-before-ruins.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-01-before-ruins.png"
+  },
+  {
+    "f": "m9-art-world-02-props-depth.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-02-props-depth.png"
+  },
+  {
+    "f": "m9-art-world-03-ambient.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-03-ambient.png"
+  },
+  {
+    "f": "m9-art-world-before-run.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-before-run.png"
+  },
+  {
+    "f": "m9-art-world-before-start.png.json",
+    "date": "2026-11-26",
+    "kind": "Shot-Metadaten",
+    "note": "scene run; jsErrors 0; out shots/m9-art-world-before-start.png"
+  },
+  {
+    "f": "perf-heap-30min-2runs.json",
+    "date": "2026-11-26T12:15:21.995Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 6.8 / 7.9 %; median 7.9 %; spread 1.1 pp; jsErrors 0"
+  },
+  {
+    "f": "perf-heap-3runs-v2.json",
+    "date": "2026-11-26T12:52:41.391Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 13.4 / 13.1 / 6.8 %; median 13.1 %; spread 6.6 pp; jsErrors 0"
+  },
+  {
+    "f": "perf-heap-3runs.json",
+    "date": "2026-11-26T12:39:49.937Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 20.7 / 8.6 / 1 %; median 8.6 %; spread 19.7 pp; jsErrors 0"
+  },
+  {
+    "f": "perf-heap-diag10.json",
+    "date": "2026-11-26T13:41:51.146Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 1.7 %; median 1.7 %; spread – pp; jsErrors 0"
+  },
+  {
+    "f": "perf-heap-smoke.json",
+    "date": "2026-11-26T12:47:34.578Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 5 %; median 5 %; spread – pp; jsErrors 0"
+  },
+  {
+    "f": "perf-heap.json",
+    "date": "2026-11-26T13:55:30.388Z",
+    "kind": "Heap-Serie",
+    "note": "Δ 7.4 / 20 %; median 20 %; spread 12.6 pp; jsErrors 0"
+  },
+  {
+    "f": "perf-m3-baseline.json",
+    "date": "2026-11-26",
+    "kind": "perf (Burst + Minute 25)",
+    "note": "Burst fps 40 / measured 39.4; Minute25 fps 28.8 / measured 27.9, frames 289; jsErrors 0; passed false"
+  },
+  {
+    "f": "perf-m3-m8-780.json",
+    "date": "2026-11-26",
+    "kind": "perf (Burst + Minute 25)",
+    "note": "Burst fps 47.9 / measured 45.4; Minute25 fps 37.9 / measured 36.9, frames 380; jsErrors 0; passed false"
+  },
+  {
+    "f": "perf-m3.json",
+    "date": "2026-11-26",
+    "kind": "perf (Burst + Minute 25)",
+    "note": "Burst fps 60.1 / measured 59.8; Minute25 fps 54.7 / measured 53.1, frames 549; jsErrors 0; passed false"
+  },
+  {
+    "f": "perf-m3m8-640.json",
+    "date": "2026-11-26",
+    "kind": "perf (Burst + Minute 25)",
+    "note": "Burst fps 60 / measured 59.7; Minute25 fps 50.5 / measured 51.6, frames 507; jsErrors 0; passed false"
+  },
+  {
+    "f": "perf-m3m8-780.json",
+    "date": "2026-11-26",
+    "kind": "perf (Burst + Minute 25)",
+    "note": "Burst fps 59.1 / measured 57.3; Minute25 fps 40.2 / measured 40.9, frames 403; jsErrors 0; passed false"
+  },
+  {
+    "f": "realtime-30min.json",
+    "date": "2026-11-26",
+    "kind": "realtime 30 min",
+    "note": "sim 30.4 min in 1869 s; fps min 57.2 / median 60.3 (7181 Samples); heap 27.9→32.3 MB (15.8 %), CDP 11.3→16.2; Boss 6; Truhen 6; Kills 9938; Level 49; Evos 4; victory true (dawn); jsErrors 0; passed false"
+  },
+  {
+    "f": "realtime-3min.json",
+    "date": "2026-11-26",
+    "kind": "realtime 30 min",
+    "note": "sim 3 min in 183 s; fps min 42.3 / median 51.3 (660 Samples); heap 29.9→– MB (-7.7 %), CDP 11.7→–; Boss 0; Truhen 0; Kills 151; Level 7; Evos 0; victory false (null); jsErrors 0; passed true"
+  }
+]
