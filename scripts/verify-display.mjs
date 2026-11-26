@@ -224,6 +224,7 @@ async function touchMinute() {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=11`);
   await page.waitForFunction(() => Boolean(window.__lf && window.__game), { timeout: 8000 });
   await waitForScene(page, "title");
+  await page.waitForTimeout(350);
   const box = await page.locator("canvas").boundingBox();
   const view = await page.evaluate(() => [window.__game.scale.width, window.__game.scale.height]);
   const toClient = (x, y) => ({
@@ -240,7 +241,13 @@ async function touchMinute() {
     const b = await page.evaluate((wanted) => {
       const visit = (obj) => {
         if (!obj || obj.visible === false) return null;
-        if (typeof obj.textWidth === "number" && obj.valueText === wanted) return obj.getBounds();
+        if (typeof obj.textWidth === "number" && String(obj.valueText ?? "").toUpperCase() === wanted.toUpperCase()) {
+          // Menueknopf: das ist Kind des Button-Containers und liegt ueber dessen
+          // klickbarem 9-Slice; die Container-Mitte treffen, sonst geht der Tap ins Leere.
+          if (obj.parentContainer) return { x: obj.parentContainer.x, y: obj.parentContainer.y };
+          const r = obj.getBounds();
+          return { x: r.centerX, y: r.centerY };
+        }
         if (obj.type === "Container" && Array.isArray(obj.list)) {
           for (const c of obj.list) { const r = visit(c); if (r) return r; }
         }
@@ -249,7 +256,7 @@ async function touchMinute() {
       for (const scene of window.__game.scene.getScenes(true)) {
         for (const obj of scene.children.list) {
           const r = visit(obj);
-          if (r) return { x: r.centerX, y: r.centerY };
+          if (r) return r;
         }
       }
       return null;
@@ -279,6 +286,7 @@ async function touchMinute() {
 
   await tapText("START");
   await waitForScene(page, "charselect");
+  await page.waitForTimeout(350);
   await tapText("BRUDER KAEL");
   await tapText("START (ENTER)");
   await waitForScene(page, "run");

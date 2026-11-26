@@ -175,6 +175,21 @@
       "name": "ipadpro: Ergebnis ohne Text-Cutoff",
       "ok": true,
       "detail": "[]"
+    },
+    {
+      "name": "Touch-Minute iPhone: Run aktiv >= 50 Sim-Sekunden",
+      "ok": true,
+      "detail": "scene=run sim=58s levelTaps=3"
+    },
+    {
+      "name": "Hochkant: Dreh-Overlay + Pause",
+      "ok": true,
+      "detail": "{\"overlay\":true,\"paused\":true,\"view\":[480,360],\"internal\":[480,360]}"
+    },
+    {
+      "name": "Querformat zurueck: kein Overlay, View 844x360",
+      "ok": true,
+      "detail": "{\"overlay\":false,\"view\":[844,360]}"
     }
   ],
   "errors": [],
@@ -423,5 +438,5 @@
       }
     }
   ],
-  "passed": false
+  "passed": true
 }
