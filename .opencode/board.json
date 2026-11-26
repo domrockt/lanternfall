@@ -1952,16 +1952,21 @@
       "id": 998,
       "title": "verify-02 perf/fullrun 780 + Doku",
       "description": "Lane m8-display: perf/fullrun bei View 780x360 messen und in docs/lane dokumentieren. Abnahme: perf/verify-Lauf mit Werten (FPS Burst + Minute 25, Gegnerzahl) und Doku-Beleg im Commit. lane #97",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T18:24:14Z",
           "by": "build",
           "text": "Abnahme: Doku in docs/lanes/m8-display.md ergaenzt — perf 780x360@dpr3: Burst 59,1 FPS PASS / Minute 25 40,2 FPS FAIL (Ziel 55), fullrun-Beleg shots/m3-fullrun-m8-780.json (Sieg/Dawn, fpsMin 29,5 unter Last), verify-display 38/38 PASS, 0 JS-Fehler. FPS-Luecke als offener Punkt an #638/#1000 uebergeben. lane #97"
+        },
+        {
+          "at": "2026-11-26T18:25:08Z",
+          "by": "build",
+          "text": "doing → done: Doku + Messwerte belegt (3d4fb0d); Perf-Fix bleibt #638."
         }
       ],
       "created": "2026-11-26T18:20:54Z",
-      "updated": "2026-11-26T18:24:14Z"
+      "updated": "2026-11-26T18:25:08Z"
     },
     {
       "id": 999,
