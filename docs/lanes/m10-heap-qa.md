@@ -60,3 +60,53 @@ nur um ~1 MB, nachdem die Gegner wieder abgebaut sind.
 JSON-Belege: `shots/m10-heap-basis.json`, `shots/m10-heap-chaos.json`, `shots/m10-heap-burst.json`
 (jeweils `heap.start/end`, `heap.deltaPct`, `heap.jsHeapPct`, `cdp.*`, `fps.*`, `sim.*`, `jsErrors`).
 
+## Karte 3 — Report, CDP-Diagnose, Verdikt
+
+### Verdikt: **Gate GRUEN** (bei Basis-SHA `f26dc4b`)
+
+Basis-Lauf Minute 1 (Sim 60 s) → Minute 29 (Sim 1740 s): **−0,2 % Snapshot-Wachstum** (+0,7 % JS-Heap nach GC).
+Ziel „≤ 15 %“ ist damit klar erfuellt; es gibt **keinen belegten JS-Objekt-Leak**. Der frueher in
+ACCEPTANCE.md genannte Wert (+22,2 % / +18,7 % mit roher `performance.memory`) ist mit dieser
+Messung nicht reproduzierbar — die Streuung der rohen Heap-Groesse (Peak bis 79 MB bei 31 MB nach GC)
+ist Host-/GC-Rauschen, kein gehaltener Objekt-Zuwachs.
+
+| Variante | Delta % (Snapshot) | Delta % (JS-Heap nach GC) | Peak (roh) | FPS Min | Gate ≤ 15 % |
+|---|---|---|---|---|---|
+| Basis 1→29 | −0,2 % | +0,7 % | 79,0 MB | 43,2 | **GRUEN** |
+| Chaos-Minute 25 | −8,2 % | −15,0 % | 81,6 MB | 30,9 | **GRUEN** |
+| 500-Gegner-Burst | +1,1 % | +1,7 % | 41,0 MB | 53,0 | **GRUEN** |
+
+### CDP-Diagnose: JS-Heap vs. Host-Streuung
+
+- **Snapshot-Bytes nach erzwungenem Voll-GC** (`HeapProfiler.collectGarbage` + `globalThis.gc()`)
+  sind die belastbare Zahl: Basis flach (−0,2 %), Chaos −8,2 %, Burst +1,1 %.
+- **Roher `usedJSHeapSize`** (`performance.memory`) schwankt dagegen massiv: Peak 79,0 MB im
+  Basis-Lauf gegen 30,9 MB nach GC; Chaos-Peak 81,6 MB gegen 29,5 MB; Burst-Peak 41,0 MB gegen
+  31,0 MB. Diese Spitzen sind nicht gehaltene Objekte, sondern GC-/Host-Streuung (allokierte,
+  noch nicht eingesammelte Zwischenobjekte).
+- **GC-Zaehlung** (v8.gc-Trace): Basis 35 Major / 10 570 Minor, Chaos 9 / 147, Burst 2 / 367.
+  Der Basis-Lauf hat die mit Abstand meisten Minor-GCs (28 Sim-Minuten) und bleibt trotzdem flach.
+- **Top-Wachstum nach Bytes** (Basis): `system / Context` +173 kB, Klasse `i` +102 kB,
+  Closure `a` +98 kB — zusammen < 0,4 MB von 30,9 MB (< 1,5 %), kein einzelner Konstruktor
+  dominiert reproduzierbar. Da das Gate gruen ist, entfaellt die „rot“-Pflicht (Top-2-Treiber
+  mit Datei+Zeile); diese drei sind trotzdem als groesste Einzelposten im JSON dokumentiert.
+- **Chaos/Burst**: 300 Gegner + 6 Evolutionen bzw. 500 Gegner erzeugen kurzfristig hohe rohe
+  Heap-Peaks (bis 81,6 MB), aber nach Abbau/GC liegt der Heap wieder auf/unter Startniveau.
+  FPS-Minimum 30,9 (Chaos) bzw. 53,0 (Burst) — Chaos drueckt die Framerate, ist aber nicht
+  Heap-Wachstum.
+
+### Test-/Build-Stand
+
+- `npx tsc --noEmit`: OK.
+- `npm test` (vitest run): **12 Dateien, 192 Tests, alle gruen**.
+- `jsErrors` in allen drei Messlaeufen: **0**.
+
+### Offener Punkt / Einordnung
+
+Das Messwerkzeug `scripts/perf-heap.mjs` ist in `f26dc4b` nicht auf main (es stammt aus
+`m9-perf-heap`, Commit `c869667`); die Lane hat es read-only aus dem m9-Worktree aufgerufen und
+eine Varianten-Huelle in `~/tmp` genutzt. Nach dem Merge von `m9-perf-heap`/`m8-display` sollte
+die Basis-Messung auf dem dann aktuellen main-HEAD einmal wiederholt werden, um die Zahl an den
+finalen Build zu binden.
+
+
