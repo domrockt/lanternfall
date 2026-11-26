@@ -27,6 +27,12 @@ export const SFX_KEYS = {
 
 export const MUSIC_KEYS = { run: "music_run", boss: "music_boss" } as const;
 
+/** Die 6 Basiswaffen und die 6 Evolutionen, deren Klänge sich hörbar unterscheiden müssen. */
+export const WEAPON_SFX_IDS = ["ember", "flail", "frost", "thorn", "storm", "lantern"] as const;
+export const EVOLUTION_SFX_IDS = [
+  "phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon",
+] as const;
+
 type SfxId = keyof typeof SFX_KEYS;
 
 interface SfxConfig {
@@ -60,6 +66,9 @@ const CONFIG: Record<SfxId, SfxConfig> = {
   victory: { priority: PRIORITY.boss, cooldown: 2, maxVoices: 1, volume: 0.85 },
   defeat: { priority: PRIORITY.boss, cooldown: 2, maxVoices: 1, volume: 0.8 },
 };
+
+/** Öffentlich für Tests/Doku: Prioritäts-/Cooldown-/Stimmen-Tabelle. */
+export const SFX_CONFIG: Record<string, SfxConfig> = CONFIG;
 
 /** Audio-System: prozedurale SFX + zwei Chiptune-Loops mit Spam-Begrenzung. */
 export class AudioSystem {
