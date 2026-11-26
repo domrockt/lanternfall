@@ -3,7 +3,7 @@
   "base_sha": "9477f33",
   "check": "chest-roll-names",
   "command": "node scripts/verify-weapons.mjs (12x seriell)",
-  "generated_at": "2026-11-26T20:14:24.438Z",
+  "generated_at": "2026-11-26T20:44:53.365Z",
   "runs": [
     {
       "run": 0,
@@ -91,11 +91,23 @@
       "failed": [],
       "jsErrors": [],
       "passed": true
+    },
+    {
+      "run": 7,
+      "start_ms": 1795723474109,
+      "end_ms": 1795723691369,
+      "duration_ms": 217260,
+      "rc": 0,
+      "rollNames": true,
+      "rollLine": "Roll-Namen: alle Slots vollständig (auch 2-zeilig), OK",
+      "failed": [],
+      "jsErrors": [],
+      "passed": true
     }
   ],
   "totals": {
-    "runs": 7,
-    "roll_pass": 7,
+    "runs": 8,
+    "roll_pass": 8,
     "roll_fail": 0,
     "flake_rate": 0,
     "other_failures": 1
