@@ -48,8 +48,10 @@ try {
     await page.evaluate(() => {
       window.__lf.setTimeScale(1);
       for (let i = 0; i < 6; i++) window.__lf.spawnBoss(i);
+      // Sofort einfrieren: Beleg zeigt den Spawn-Moment, nicht die Annäherung.
+      window.__game.scene.pause("run");
     });
-    await page.waitForTimeout(700);
+    await page.waitForTimeout(200);
     const data = await page.evaluate(() => {
       const sc = window.__game.scene.getScene("run");
       const cam = sc.cameras.main;
