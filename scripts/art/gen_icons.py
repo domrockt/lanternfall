@@ -11,7 +11,44 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from lib import Grid, SHOTS, outline, shade_edges, emit_ts, save_sheet_png  # noqa: E402
+from lib import Grid, RAMPS, SHOTS, outline, shade_edges, emit_ts, save_sheet_png  # noqa: E402
+
+# Evolutionen eine Rampe heller als ihre Basiswaffen (#320: "deutlich kraeftiger").
+EVO_BOOST = {
+    "evo_phoenix": {18: 19, 19: 20, 20: 21, 21: 22},
+    "evo_wrath_pendulum": {23: 24, 24: 25, 25: 26, 26: 27},
+    "evo_eternal_winter": {6: 7, 8: 10, 9: 11, 10: 12, 12: 13},
+    "evo_thorn_storm": {28: 30, 29: 30, 30: 31},
+    "evo_thunder_seal": {15: 16, 16: 17, 17: 18, 18: 19, 19: 20, 20: 21, 21: 22},
+    "evo_soul_beacon": {5: 6, 6: 7, 7: 8, 8: 10, 12: 13},
+}
+
+
+def normalize(g: Grid, boost: dict[int, int] | None = None) -> Grid:
+    """Eine gemeinsame Lichtlogik fuer alle 18 Icons.
+
+    1. vorhandene (ggf. 2-3 px dicke) Ink-Rahmen entfernen,
+    2. Materialfarben auf ihre Rampe-Basis zuruecksetzen (optional vorher
+       eine Rampe aufhellen), damit Licht/Schatten neu berechnet werden,
+    3. shade_edges (Licht oben-links, Schatten unten-rechts),
+    4. exact 1-px-Aussenkontur.
+    """
+    base = Grid(g.w, g.h)
+    for y in range(g.h):
+        for x in range(g.w):
+            c = g.px[y][x]
+            if c is None or c == 0:
+                continue
+            if boost and c in boost:
+                c = boost[c]
+            found = c
+            for mid, (sh, _base, li) in RAMPS.items():
+                if c in (mid, sh, li):
+                    found = mid
+                    break
+            base.px[y][x] = found
+    shaded = shade_edges(base, band=1, region_aware=True)
+    return outline(shaded, diagonal=True)
 
 
 def read_rects() -> dict[str, list[tuple[int, int, int, int, int]]]:
