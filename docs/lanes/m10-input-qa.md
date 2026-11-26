@@ -169,6 +169,24 @@ Kein Auto-Finish-Race, sondern ein echter Eingabe-Bug. Pause-/Level-up-Sperre is
   (veralteter Selektor im M8-Regressionsskript). Keine Fixes in dieser Lane, keine geschützten Pfade
   angefasst.
 
+### Versuch 3 — Endabnahme (2026-11-26, Build aus diesem Worktree)
+
+- `npm run build` **grün** (91 Module, vite 710 ms). `npx vitest run` **192/192 Tests grün** (12 Dateien, 947 ms).
+- `node scripts/verify-input.mjs` (read-only, ohne flock) erneut gefahren → **FAIL 2/3**, identischer Abbruch
+  `tapText: "BRUDER KAEL" nicht sichtbar`; Ausgaben nach `shots/m10-input-verify.json` +
+  `shots/m10-input-verify-touch-menus.png` umbenannt (Originale `shots/m8-input.json` /
+  `shots/m8-input-touch-menus.png` unverändert wiederhergestellt, geschützter Pfad bleibt unangetastet).
+  F2 damit erneut reproduziert, nicht nur aus Versuch 2 übernommen.
+- Belege unverändert vorhanden und konsistent: `shots/m10-input-profiles.json` (baseSha `f26dc4b`,
+  `passed:false`, 7 Profile; Pixel 7 exemplarisch 14 Checks ok außer Truhen-Sperre),
+  `shots/m10-input-chest-repro.json` (Sperre bei offener Truhe ok, Skip-Zone-Tap ok, derselbe Finger
+  bewegt +22 px → `ok:false`), `shots/m10-input-menu-gamepad.json` (`passed:true`, 13/13).
+- Sichtprüfung des Bildpaars: `m10-input-chest-open-lock.png` zeigt Truhe offen, **keinen** Joystick;
+  `m10-input-chest-dismiss-drag.png` zeigt dieselbe Run-Szene (Timer 00:01) mit sichtbarem Joystick
+  links und ohne Truhen-Panel → F1 visuell belegt.
+- Kartenstatus: #1 Matrix, #2 Menü-Gamepad, #3 Report sind committet und abgehakt; Lane-Signal
+  `.lane-done` angelegt. Keine Fixes, keine geschützten Pfade im neuen Commit.
+
 **Abnahme dieser Lane:** 7/7 Profile gemessen (105 Checks), jede Aussage oben hat JSON-/Shot-Pfad oder
 Befehl; keine unbelegte Behauptung. Keine Datei unter `src/**`, `scripts/**`, `tests/**`, `index.html`,
 `public/**`, `shots/m8-*`, `shots/balance-*`, `shots/perf-*`, `.opencode/board.json` wurde von dieser Lane

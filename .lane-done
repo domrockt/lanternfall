@@ -1,0 +1,25 @@
+Lane m10-input-qa — Touch/Gamepad unabhängig nachgemessen (keine Fixes).
+
+Basis-SHA: f26dc4b. Alle Zahlen gelten für den daraus gebauten Worktree-Build.
+Karten #1 Matrix, #2 Menü-Gamepad, #3 Report: alle committet und abgehakt.
+
+Ergebnis:
+- Touch 7/7 Profile (Pixel 7, iPhone 13/SE, Galaxy S9+, Nexus 5X, iPad Mini, Galaxy Tab S4),
+  105 Checks: 98 PASS, 7 FAIL — jeweils dieselbe Truhen-Gesten-Sperre (F1).
+- Gamepad-Menüs: 13/13 PASS (Titel, CharSelect, Kael-Run, Pause+Optionen, Results; je Pad und Tastatur).
+- F1 (echter Eingabe-Bug, deterministisch): Skip-Zone der Truhe hört auf pointerdown und schließt die
+  Truhe; derselbe gehaltene Finger wird danach Joystick (identifier=4, playerX +22…+46 px bei 7/7 Profilen).
+  Sperre *während* offener Truhe funktioniert (canMove=false, stickVisible=false).
+  Fix-Richtung: Skip-Zone auf pointerup, oder Touch verwerfen, dessen Start bei canMove=false lag.
+- F2 (Test-Schuld): scripts/verify-input.mjs bricht bei CharSelect ab, tapText("BRUDER KAEL") nicht sichtbar;
+  FAIL 2/3, keine Touch-/Pad-Messung. Selektor an aktuellen CharSelect-Text anpassen.
+
+Endabnahme Versuch 3: npm run build grün, npx vitest run 192/192 grün, verify-input erneut FAIL 2/3
+(reproduziert), Belege shots/m10-input-*.json|png vollständig, Bildpaar F1 gesichtet. 0 JS-Fehler in
+Profil- und Pad-Läufen.
+
+Merge-Hinweis: .opencode/board.json-Diff stammt aus Supervisor-Snapshot 72a883d, nicht aus dieser Lane —
+beim Merge main-Board behalten. Lane hat keine Datei unter src/**, scripts/**, tests/**, index.html,
+public/**, shots/m8-*, shots/balance-*, shots/perf-* neu verändert (das frische verify-input-Ergebnis
+wurde nach shots/m10-input-verify.* umbenannt, m8-Originale unverändert).
+Empfehlung Fix-Lane: erst F1 (klein), dann F2-Selektor, dann echte-Hardware-Abnahme.
