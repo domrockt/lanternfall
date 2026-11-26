@@ -94,10 +94,17 @@ def ui_frame() -> Grid:
     g.rect(2, 20, 20, 2, 4)
     g.rect(2, 2, 2, 20, 4)
     g.rect(20, 2, 2, 20, 2)
-    # Goldnieten 2x2 in allen vier Ecken.
-    for x, y in ((4, 4), (18, 4), (4, 18), (18, 18)):
-        g.rect(x, y, 2, 2, 20)
-        g.put(x, y, 21)
+    # Goldnieten 3x3 in allen vier Ecken: Glanz (22) oben-links, Schatten (0) unten-rechts.
+    # Hoeherer Eckenkontrast, damit der Rahmen nicht oben flach wirkt (#321).
+    for x, y in ((3, 3), (18, 3), (3, 18), (18, 18)):
+        g.rect(x, y, 3, 3, 20)
+        g.put(x, y, 22)
+        g.put(x + 1, y, 21)
+        g.put(x, y + 1, 21)
+        g.put(x + 2, y + 2, 0)
+    # Aussenecken hart mit Ink absetzen.
+    for x, y in ((0, 0), (23, 0), (0, 23), (23, 23)):
+        g.put(x, y, 0)
     return outline(g)
 
 

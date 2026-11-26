@@ -63,3 +63,14 @@ und Abschluss.
   Evolutionen (letzte 6) sind groesser/heller als die Basis-Waffen (erste 6).
 - art-director-Urteil (#320): ausstehend (Bild liegt fuer die naechste Kontrolle bereit).
 - 0 JS-Fehler im Kontaktbogen-Lauf.
+
+## #321 Font und UI-Rahmen
+- Vorher: `shots/m9-art-fx-ui-frame-321.png` (Truhen-Panel vor Ecknieten-Fix im Snapshot)
+- Nachher: `shots/m9-art-fx-ui-frame-321-2x.png` (9-Slice-Rahmen, 4 Goldnieten 3x3 mit
+  Glanz 22 oben-links / Schatten 0 unten-rechts, Ink-Aussenecken)
+- Font-Beleg: `shots/m9-art-fx-ui-font-321-2x.png` — Level-up-Panel mit "STUFE 7 -
+  WÄHLE EINE BELOHNUNG"; Umlaute Ä/Ö/Ü/ß kommen aus `src/gfx/glyphs.ts` und werden
+  im Font ueber `toUpperCase` als Versalien genutzt, Wortabstaende 6 px.
+- Pruefung: Umlaute lesbar, keine zusammengeklebten Woerter, Eckenkontrast hoeher.
+- art-director-Urteil (#321): ausstehend (Belege liegen bereit).
+- 0 JS-Fehler in beiden Shot-Laeufen.
