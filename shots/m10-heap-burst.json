@@ -1,0 +1,165 @@
+{
+  "tool": "m10-heap-qa/variants.mjs (read-only scripts/harness.mjs + perf-heap-Muster)",
+  "variant": "burst",
+  "label": "500-Gegner-Burst: Minute 1 -> Ende kurz nach dem Burst (80 s)",
+  "generatedAt": "2026-11-26T19:13:05.478Z",
+  "args": {
+    "seed": 99,
+    "timeScale": 30,
+    "baselineAtSimSecond": 60,
+    "endAtSimSecond": 80
+  },
+  "actions": [
+    {
+      "at": 65,
+      "kind": "enemies",
+      "n": 500,
+      "label": "500-Gegner-Burst"
+    }
+  ],
+  "heap": {
+    "start": {
+      "nodes": 335265,
+      "bytes": 32116519,
+      "mb": 30.6,
+      "jsHeapMB": 29.8
+    },
+    "end": {
+      "nodes": 370996,
+      "bytes": 32479667,
+      "mb": 31,
+      "jsHeapMB": 30.3
+    },
+    "deltaNodes": 35731,
+    "deltaBytes": 363148,
+    "deltaPct": 1.1,
+    "jsHeapDeltaMB": 0.5,
+    "jsHeapPct": 1.7,
+    "top5GrowthByBytes": [
+      {
+        "constructor": "initialize",
+        "type": "object",
+        "startCount": 17497,
+        "endCount": 18009,
+        "deltaCount": 512,
+        "startBytes": 858472,
+        "endBytes": 883416,
+        "deltaBytes": 24944
+      },
+      {
+        "constructor": "(object elements)",
+        "type": "array",
+        "startCount": 1923,
+        "endCount": 2166,
+        "deltaCount": 243,
+        "startBytes": 279184,
+        "endBytes": 299696,
+        "deltaBytes": 20512
+      },
+      {
+        "constructor": "Object",
+        "type": "object",
+        "startCount": 28033,
+        "endCount": 28296,
+        "deltaCount": 263,
+        "startBytes": 1057180,
+        "endBytes": 1076152,
+        "deltaBytes": 18972
+      },
+      {
+        "constructor": "i",
+        "type": "object",
+        "startCount": 10420,
+        "endCount": 10840,
+        "deltaCount": 420,
+        "startBytes": 250080,
+        "endBytes": 260160,
+        "deltaBytes": 10080
+      },
+      {
+        "constructor": "Array",
+        "type": "object",
+        "startCount": 15891,
+        "endCount": 16449,
+        "deltaCount": 558,
+        "startBytes": 254256,
+        "endBytes": 263184,
+        "deltaBytes": 8928
+      }
+    ],
+    "top5GrowthByCount": [
+      {
+        "constructor": "1",
+        "type": "string",
+        "startCount": 2593,
+        "endCount": 6155,
+        "deltaCount": 3562,
+        "startBytes": 0,
+        "endBytes": 0,
+        "deltaBytes": 0
+      },
+      {
+        "constructor": "0",
+        "type": "string",
+        "startCount": 7670,
+        "endCount": 9451,
+        "deltaCount": 1781,
+        "startBytes": 0,
+        "endBytes": 0,
+        "deltaBytes": 0
+      },
+      {
+        "constructor": "1.2",
+        "type": "string",
+        "startCount": 18,
+        "endCount": 1014,
+        "deltaCount": 996,
+        "startBytes": 0,
+        "endBytes": 0,
+        "deltaBytes": 0
+      },
+      {
+        "constructor": "Array",
+        "type": "object",
+        "startCount": 15891,
+        "endCount": 16449,
+        "deltaCount": 558,
+        "startBytes": 254256,
+        "endBytes": 263184,
+        "deltaBytes": 8928
+      },
+      {
+        "constructor": "initialize",
+        "type": "object",
+        "startCount": 17497,
+        "endCount": 18009,
+        "deltaCount": 512,
+        "startBytes": 858472,
+        "endBytes": 883416,
+        "deltaBytes": 24944
+      }
+    ]
+  },
+  "sim": {
+    "simSecondsReached": 81.2,
+    "kills": 189,
+    "level": 12,
+    "enemiesAtEnd": 334,
+    "enemiesAfterSpawn": 500
+  },
+  "fps": {
+    "min": 53,
+    "median": 54.2,
+    "samples": 13
+  },
+  "cdp": {
+    "usedJSHeapStartMB": 29.8,
+    "usedJSHeapEndMB": 30.3,
+    "usedJSHeapPeakMB": 41,
+    "majorGC": 2,
+    "minorGC": 367,
+    "note": "Snapshot-Bytes nach erzwungenem Voll-GC vs. performance.memory; Peak = roher usedJSHeapSize waehrend des Laufs; GC ueber v8.gc-Trace"
+  },
+  "jsErrors": [],
+  "criterion15Pct": true
+}
