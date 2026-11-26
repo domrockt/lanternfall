@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5798/?debug=1&seed=1",
+  "scene": "title",
+  "commands": [],
+  "out": "shots/m8-view-hd.png",
+  "gif": null,
+  "jsErrors": []
+}
