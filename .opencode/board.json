@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1024,
+  "next": 1482,
   "cards": [
     {
       "id": 1,
@@ -2319,6 +2319,96 @@
       ],
       "created": "2026-11-26T21:21:02Z",
       "updated": "2026-11-26T21:22:00Z"
+    },
+    {
+      "id": 1478,
+      "title": "m10-hazard-telegraph #1 Audit Warnzeiten aller Boss-Angriffe",
+      "description": "Fuer alle 6 Bosse jeden BOSS_ATTACKS-Eintrag: warnMs, Form, Trefferzeitpunkt aus Code. Beleg shots/m10-hazard-telegraph-audit.json (getrackt). Angriffe mit warnMs<600 in docs/lanes/m10-hazard-telegraph.md. Abnahme: JSON+Doc vorhanden und jeder Eintrag gelistet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T22:09:17Z",
+          "by": "build",
+          "text": "todo → doing: Start Audit, Basis-SHA 252fd98"
+        },
+        {
+          "at": "2026-11-26T22:21:22Z",
+          "by": "build",
+          "text": "doing → review: Commit 7f894fc: Audit-JSON 18 Angriffe/3 FAIL + Docs. Treffer erst nach warn<=0 belegt in Hazards.update."
+        },
+        {
+          "at": "2026-11-26T22:21:44Z",
+          "by": "build",
+          "text": "review → done: Commit 7f894fc, Beleg JSON+Docs, Audit PASS (Basis 252fd98)"
+        }
+      ],
+      "created": "2026-11-26T22:07:38Z",
+      "updated": "2026-11-26T22:21:44Z"
+    },
+    {
+      "id": 1479,
+      "title": "m10-hazard-telegraph #2 Test zuerst hazard-telegraph.test.ts",
+      "description": "tests/hazard-telegraph.test.ts: warnMs>=600 je Angriff, Trefferzeit==warnMs (1 Frame Toleranz), Radius/Winkel endlich und >0, keine Doppel-Treffer pro Hazard-Instanz. RED gegen Ist-Stand belegen, dann nach Fix gruen. Abnahme: RED-Log + gruener Lauf dokumentiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T22:20:40Z",
+          "by": "build",
+          "text": "todo → doing: Test zuerst; RED belegt"
+        },
+        {
+          "at": "2026-11-26T22:21:22Z",
+          "by": "build",
+          "text": "doing → review: Commit 49fadca: Test zuerst, RED 1 failed/5 passed (3 Warnzeiten <600ms)."
+        },
+        {
+          "at": "2026-11-26T22:21:44Z",
+          "by": "build",
+          "text": "review → done: Commit 49fadca, RED belegt; nach Fix gruen (Karte #1480)"
+        }
+      ],
+      "created": "2026-11-26T22:07:38Z",
+      "updated": "2026-11-26T22:21:44Z"
+    },
+    {
+      "id": 1480,
+      "title": "m10-hazard-telegraph #3 Fix Warnzeiten + Hazard-Trefferzeitpunkt",
+      "description": "src/logic/bosses.ts: Warnzeiten <0.6s auf >=0.6s, DPS nur ueber Angriffsdauer, Boss-HP/Spawnzeiten unveraendert. src/systems/Hazards.ts: Warnphase sichtbar, Schaden nur am Ende der Warnung. Abnahme: tsc + gezielter Test gruen, Diff zeigt nur erlaubte Dateien.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T22:21:56Z",
+          "by": "build",
+          "text": "todo → doing: Fix: 3 Warnzeiten >=600ms"
+        },
+        {
+          "at": "2026-11-26T22:26:56Z",
+          "by": "build",
+          "text": "doing → done: Commit 73e7822: 3 Warnzeiten 0.55/0.35/0.5 -> 0.6, interval+damage unveraendert, Test 6/6 gruen."
+        }
+      ],
+      "created": "2026-11-26T22:07:38Z",
+      "updated": "2026-11-26T22:26:56Z"
+    },
+    {
+      "id": 1481,
+      "title": "m10-hazard-telegraph #4 Beleg + Abnahme",
+      "description": "node scripts/verify-bosses.mjs ohne flock: 6/6 Bosse spielbar, keine JS-Fehler. Warnphasen-Screenshots je Boss shots/m10-hazard-*. npm run build gruen, npx vitest run gesamt gruen (Ist-Zahl). Docs Vorher/Nachher-Tabelle, .lane-done committen. Abnahme: Belege im Commit + Zahlen in Docs.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T22:26:56Z",
+          "by": "build",
+          "text": "todo → doing: Belege verify-bosses + Warnphasen-Shots + build/vitest"
+        },
+        {
+          "at": "2026-11-26T22:53:56Z",
+          "by": "build",
+          "text": "doing → done: Commit fabf5ad + fdf0518 (.lane-done): 6 Warnphasen-Shots, build gruen, 198/198 Tests, verify-bosses 5/6 (hollow_king Truhe pre-existing)."
+        }
+      ],
+      "created": "2026-11-26T22:07:38Z",
+      "updated": "2026-11-26T22:53:56Z"
     }
   ]
 }
