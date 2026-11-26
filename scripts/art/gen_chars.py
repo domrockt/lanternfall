@@ -67,7 +67,7 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
 
     body_y = 16 + bob - recoil
     # ── Rock/Cloak ──
-    rock_w = [12 - bw, 13 - bw, 14 - bw, 14 - bw, 15 - bw, 15 - bw, 16 - bw]
+    rock_w = [14 - bw, 15 - bw, 16 - bw, 18 - bw, 20 - bw, 21 - bw, 21 - bw]
     hem = 26 + bob - recoil
     for i, w in enumerate(rock_w):
         g.rect(cx + ox - w // 2, 22 + bob - recoil + i, w, 1, CLOTH if i < 5 else CLOTH_S)
@@ -240,7 +240,7 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     g.put(lx - 1, ly - 3, GLOW)
     g.put(lx + 2, ly - 3, GLOW_H)
     g.put(lx - 3, ly - 1, GOLD)
-    g.put(lx + 4, ly - 1, GOLD)</)
+    g.put(lx + 4, ly - 1, GOLD)
 
 
     # ── Gesicht ──
@@ -349,10 +349,30 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.put(x0 + w // 2 - 1, y0 + 1, GOLD_L)
 
     if side:
-        pauldron(cx + ox + 7, body_y, 5)
+        pauldron(cx + ox + 7, body_y, 6)
     else:
-        pauldron(4, body_y, 6)
-        pauldron(22, body_y, 6)
+        pauldron(3, body_y, 8)
+        pauldron(21, body_y, 8)
+
+    # ── Zweihandaxt auf dem Ruecken: K Kael sofort als Schwergepanzerten
+    #     lesbar (langer Schaft, breiter A, Goldniete).
+    if side:
+        hx = cx - 9
+        g.rect(hx, body_y + 1, 2, 12, BOOT_D)
+        g.rect(hx, body_y + 1, 1, 11, BOOT)
+        g.rect(hx - 2, body_y - 2, 6, 3, IRON_D)
+        g.rect(hx - 1, body_y - 2, 4, 2, IRON)
+        g.put(hx - 1, body_y - 2, IRON_L)
+        g.put(hx + 2, body_y, GOLD)
+    else:
+        hx = cx + 9
+        g.rect(hx, body_y + 1, 2, 12, BOOT_D)
+        g.rect(hx, body_y + 1, 1, 11, BOOT)
+        g.rect(hx - 2, body_y - 2, 6, 3, IRON_D)
+        g.rect(hx - 1, body_y - 2, 4, 2, IRON)
+        g.put(hx - 1, body_y - 2, IRON_L)
+        g.put(hx + 2, body_y, GOLD)
+        g.put(hx + 2, body_y - 2, GOLD_L)
 
     # ── Arme (gewickelte Faeuste, Handschuh-Rampe 8/10/11) ──
     swing = 0 if idle else [1, 0, -1, 0][frame]
