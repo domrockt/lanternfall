@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 83,
+  "next": 87,
   "cards": [
     {
       "id": 1,
@@ -1499,6 +1499,58 @@
       ],
       "created": "2026-11-26T07:40:53Z",
       "updated": "2026-11-26T07:50:21Z"
+    },
+    {
+      "id": 83,
+      "title": "m7-tooling-1 Inkrementeller Typecheck + Build-Cache",
+      "description": "tsconfig.json: incremental true, tsBuildInfoFile .cache/tsc.tsbuildinfo; .cache/ in .gitignore. Vor run build nutzt dens (tsc --noEmit). Abnahme: Messung kalt vs. 2. Lauf nach kleiner Aenderung iniert (<, zwe iter Lauf <10s, Build+Tests gruen, Commit= #nt #<Karte>.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T08:49:40Z",
+          "by": "build",
+          "text": "todo → doing: Owner: Lead/Lane. Baseline: tsc 350/366 ms, build 3446 ms (TS7 nativ); historical 76s/."
+        },
+        {
+          "at": "2026-11-26T08:50:27Z",
+          "by": "build",
+          "text": "doing → review: M6-m7-tooling: #83 (c96e160). tsc kalt 358ms, warm 316ms, nach touch 288ms (<10s); build 3618ms rc0; npm test 147/147 rc0; .cache/t scallop ig"
+        },
+        {
+          "at": "2026-11-26T08:50:27Z",
+          "by": "build",
+          "text": "review → done: Selbstpruefung PASS: Cache-Datei .cache/tsc.tsbuildinfo 22,7KB, gitignored; build+147 Tests gruen."
+        }
+      ],
+      "created": "2026-11-26T08:49:35Z",
+      "updated": "2026-11-26T08:50:27Z"
+    },
+    {
+      "id": 84,
+      "title": "m7-tooling-2 npm run check fuer die taegliche Schleife",
+      "description": "scripts/check.mjs: inkrementeller tsc + nur Vitest-Dateien zu geaenderten Dateien (vitest related), kompakte Ausgabe (Fehler+Summary). package.json Script check. Abnahme: npm run check <15s bei kleiner Aenderung, zeigt gezielt betroffene Tests, Build+Tests gruen, Commit nennt Karte.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T08:49:35Z",
+      "updated": "2026-11-26T08:49:35Z"
+    },
+    {
+      "id": 85,
+      "title": "m7-tooling-3 scripts/shot.mjs als generischer Screenshot/GIF-Helfer",
+      "description": "scripts/shot.mjs auf Basis von harness.mjs: URL-Parameter, __lf-Befehle als JSON, Ausgabepfad, optional GIF mit N Frames. Alte scripts/tmp-*.mjs entfernen. Abnahme: ein Beispiel-Shot/GIF erzeugt und gesichtet, keine JS-Fehler, Build+Tests gruen, Commit nennt Karte.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T08:49:35Z",
+      "updated": "2026-11-26T08:49:35Z"
+    },
+    {
+      "id": 86,
+      "title": "m7-tooling-4 Doku: Messwerte + Kurzanleitung",
+      "description": "/home/ai/games/.team/kb/COMMANDS.md bzw. vorhandene KB-Datei mit neuen Messwerten aktualisieren; AGENTS-taugliche Kurzanleitung in INDEX.md; docs/lanes/m7-tooling.md mit Vorher/Nachher. Abnahme: Messwerte vorher/nachher belegt, build+Tests gruen, Karte=ein Commit, .lane-done mit Zusammenfassung.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T08:49:35Z",
+      "updated": "2026-11-26T08:49:35Z"
     }
   ]
 }
