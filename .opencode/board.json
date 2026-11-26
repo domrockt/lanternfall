@@ -1856,10 +1856,16 @@
       "id": 321,
       "title": "m9-art-fx-ui-04 Font und UI-Rahmen polieren",
       "description": "Pixel-Font Umlaute/Satz, 9-Slice-Rahmen Kontrast. Abnahme: Text-Be-Muster-Sh 2x, art-director PASS.",
-      "column": "backlog",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-26T21:00:08Z",
+          "by": "build",
+          "text": "backlog → review: Commit b867af8 (#321): 9-Slice-Ecknieten 3x3 (Glanz 22 oben-links, Schatten 0 unten-rechts), Ink-Aussenecken; Font-Umlaute/Wortabstaende am Level-up-Panel geprueft. Belege shots/m9-art-fx-ui-font-321-2x.png, m9-art-fx-ui-frame-321-2x.png. build+175 Tests gruen, 0 JS-Fehler. art-director-Urteil ausstehend."
+        }
+      ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T12:22:29Z"
+      "updated": "2026-11-26T21:00:08Z"
     },
     {
       "id": 322,
