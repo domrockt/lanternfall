@@ -1,0 +1,35 @@
+{
+  "url": "http://127.0.0.1:5440/?debug=1",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bog_rat",
+        24
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "skeleton",
+        12
+      ]
+    },
+    {
+      "call": "event",
+      "args": [
+        "bossDeath"
+      ]
+    }
+  ],
+  "out": "shots/m9-art-heroes-bosses-03-death.png",
+  "gif": "shots/m9-art-heroes-bosses-03-death.gif",
+  "jsErrors": []
+}
