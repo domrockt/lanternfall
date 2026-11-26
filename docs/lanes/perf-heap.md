@@ -35,19 +35,21 @@ Aufruf (Heap-Messung braucht **keine** FPS-Sperre):
 node scripts/perf-heap.mjs --minutes=30 --runs=3 --out=shots/perf-heap.json
 ```
 
-## Befund heap-01 — Werk Messwerkzeug ( (2026-11-26)
+## Befund heap-01: Messwerkzeug (2026-11-26)
 
-Belegdatei: `shots/perf-heap-30min-2runs.json` (zwei komplette 30-min-Laeufe, Seed seed 99, timeScale 30, Baseline Sim-Sekunde 60).
+Belegdatei: `shots/perf-heap-30min-2runs.json` (zwei komplette 30-min-Laeufe, Seed 99, timeScale 30, Baseline Sim-Sekunde 60).
 
-| Lauf | Baseline Start | Ende | Delta Bytes | Delta % | Major/Min/ Minor GC | JS-Fehler |
+| Lauf | Baseline | Ende | Delta Bytes | Delta % | Major / Minor GC | JS-Fehler |
 |---|---|---|---|---|---|---|
-| 1 | 27,7 MB (300 275 Knoten) | 29,6 MB (379 403) | +1,98 MB | **+6,8 %** | 36 / 9 581 | 0 |
-| 2 | 28,6 MB | 30,8 MB | +2,2 MB | **+7,9 %** | 38 / 7 443 | 0 |
+| 1 | 27,7 MB (300 275 Knoten) | 29,6 MB (379 403 Knoten) | +1,98 MB | **+6,8 %** | 36 / 9581 | 0 |
+| 2 | 28,6 MB | 30,8 MB | +2,2 MB | **+7,9 %** | 38 / 7443 | 0 |
 
-Median--Abweichung: **1,1 Prozentpunkte** (6,8 → 7,9 %), también unter dem Kriterium von 10 %. % (im JSON als `summary.spreadPp`, zelle `spreadUnder10Pct: true`).
+Delta-Abweichung: **1,1 Prozentpunkte** (6,8 vs. 7,9 %), also unter dem Kriterium von 10 % (JSON: `summary.spreadPp = 1.1`, `spreadUnder10Pct = true`). Keine JS-Fehler in beiden Laeufen.
 
-Top-Wachstum (Bytes, Lauf 1): `system / Context` +173 kB, `i` +126 kB, Strings +0 B, Closure Closure `a` +101 kB — also Spiel verd-Datenstruktur dominiert (Details im JSON). Die ist das Werkzeug la Briefing belegt: CD Laeufe hinter hintereinander, Delta reproduzierbar, GC-Zahl und Top-5-Konstruktoren im JSON.
+Top-Wachstum nach Bytes (Lauf 1): `system / Context` +173 kB, `i` +126 kB, Closure `a` +101 kB, Strings +0 B. Details stehen im JSON.
 
-Werkzeug: `scriptsscripts/perf-heap.mjs` (Headless Chrom Chromium, CDP `HeapProfiler.takeHeapSnapshot`, GC-Trace `v8.gc`, `--runs=N`). Der Lauf braucht kein FPS-Sperre (feste Substeps/schneller Uh Vorlauf), Messungen der Lane Lane bee unberuehrt.
+Das Werkzeug `scripts/perf-heap.mjs` belegt das Briefing: zwei Laeufe hintereinander, reproduzierbares Delta, GC-Zahl und Top-5-Konstruktoren im JSON. Headless Chromium, CDP `HeapProfiler.takeHeapSnapshot` nach erzwungenem GC, GC-Zaehlung ueber `v8.gc`-Trace-Events, `--runs=N`.
 
-Hinweis zur Einordnung (no heap-02):ap-03): Dieses CDP-Mass（ im -Zwischenstand **+ 15 %** Wach-Wachstum, waehrend ACCEPTANCE +22,2 %/+18,7 % mit `performance.memory` nannte. Die Abenz (Snapshot-Bytes nach er-GC vs. roher `usedJSHeapSize`)`) ist noch zu klaeren; eb eb die Endabnahme muss nach dem Merge von m8-display Wiederholen.
+Der Lauf braucht keine FPS-Sperre (feste Substeps, kein Echtzeit-Takt) und stoert die anderen Lanes nicht.
+
+Hinweis zur Einordnung (fuer heap-02/03): Dieses CDP-Mass zeigt im Zwischenstand **+6,8/+7,9 %** Wachstum, waehrend ACCEPTANCE.md +22,2 %/+18,7 % mit `performance.memory` nannte. Die Differenz (Snapshot-Bytes nach Voll-GC vs. roher `usedJSHeapSize`) ist noch zu klaeren. Die Endabnahme muss nach dem Merge von m8-display auf main wiederholt werden.
