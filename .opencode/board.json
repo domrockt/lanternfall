@@ -1764,27 +1764,38 @@
       "id": 95,
       "title": "qa-03 Gesamtlauf: build/test/count/verify:final/perf",
       "description": "Abnahme: npm run build gruen, npm test mit Testzahl, acceptance-count 30/6/6/6/6/2, verify:final + perf mit flock/Timeout; alle Werte mit Zeitstempel und Abweichung >=5% gegen ACCEPTANCE.md (59,3 FPS Burst, 56,4 FPS Minute 25, 147 Tests) markiert in docs/qa/<datum>.md; ein Commit mit #qa-03.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-26T10:43:44Z",
           "by": "build",
           "text": "todo → doing: Start: build/test/count, dann verify:final und perf (flock)"
+        },
+        {
+          "at": "2026-11-26T10:52:33Z",
+          "by": "build",
+          "text": "doing → done: Commit 0b42ffe (#95). build gruen, 175 Tests (+19% markiert), count 30/6/6/6/6/2, verify:final 7/7, perf 59,3/59,3 FPS."
         }
       ],
       "created": "2026-11-26T10:36:13Z",
-      "updated": "2026-11-26T10:43:44Z"
+      "updated": "2026-11-26T10:52:33Z"
     },
     {
       "id": 96,
       "title": "qa-04 APK-Stand vs main-HEAD",
       "description": "Abnahme: mtime ~/lf-apk/out/lanternfall.apk und GitHub-Release latest-build gegen main-HEAD in Minuten in docs/qa/<datum>.md notiert; kein eigener Build/Publish; ein Commit mit #qa-04.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:52:38Z",
+          "by": "build",
+          "text": "todo → done: Commit be29136 (#96). APK 09:00:08, GH-Asset 09:00:17, sha256 identisch, 112 min hinter HEAD 0b42ffe."
+        }
+      ],
       "created": "2026-11-26T10:36:13Z",
-      "updated": "2026-11-26T10:36:13Z"
+      "updated": "2026-11-26T10:52:38Z"
     }
   ]
 }
