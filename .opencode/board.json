@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1020,
+  "next": 1021,
   "cards": [
     {
       "id": 1,
@@ -2255,6 +2255,22 @@
       ],
       "created": "2026-11-26T20:18:34Z",
       "updated": "2026-11-26T20:18:56Z"
+    },
+    {
+      "id": 1020,
+      "title": "Display: iPhone14 Safe-Area (HUD unter Notch)",
+      "description": "Aus m10-display-qa (lane #1103): Canvas full-bleed x=0, HUD liegt unter 47-px-Notch-Zone (shots/m10-display-iphone14-safearea.png, shots/m10-display-safearea.json). Fix: CSS-Breite min(cssWidth,100vw-insets), Insets an HUD/Joystick. Abnahme: iphone14-Profil PASS in verify-display.",
+      "column": "backlog",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T20:23:21Z",
+          "by": "build",
+          "text": "Quelle: Merge m10-display-qa, FAIL 1 (lane #1103)"
+        }
+      ],
+      "created": "2026-11-26T20:23:21Z",
+      "updated": "2026-11-26T20:23:21Z"
     }
   ]
 }
