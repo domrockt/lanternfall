@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 938,
+  "next": 1001,
   "cards": [
     {
       "id": 1,
@@ -1947,6 +1947,35 @@
       ],
       "created": "2026-11-26T15:24:30Z",
       "updated": "2026-11-26T15:24:36Z"
+    },
+    {
+      "id": 998,
+      "title": "verify-02 perf/fullrun 780 + Doku",
+      "description": "Lane m8-display: perf/fullrun bei View 780x360 messen und in docs/lane dokumentieren. Abnahme: perf/verify-Lauf mit Werten (FPS Burst + Minute 25, Gegnerzahl) und Doku-Beleg im Commit. lane #97",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-26T18:20:54Z",
+      "updated": "2026-11-26T18:20:54Z"
+    },
+    {
+      "id": 999,
+      "title": "verify-touch-01 Touch-Regression im 780-View",
+      "description": "Lane m8-display: verify-touch isoliert PASS. Abnahme: Skript-Ausgabe mit PASS-Zahl und 0 JS-Fehlern. lane #478",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-26T18:20:54Z",
+      "updated": "2026-11-26T18:20:54Z"
+    },
+    {
+      "id": 1000,
+      "title": "perf-780-01 Minute-25 FPS im 780-View",
+      "description": "Lane m8-display: FPS bei Minute 25 im 780x360-View messen und >=55 FPS nachweisen. Abnahme: Messlauf mit fpsMin bei Minute 25 und Beleg. lane #638",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-26T18:20:54Z",
+      "updated": "2026-11-26T18:20:54Z"
     }
   ]
 }
