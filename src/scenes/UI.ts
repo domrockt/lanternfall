@@ -8,8 +8,8 @@ import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
 import { slotNameLines } from "../logic/text";
 import { chooseBestOffer } from "../logic/autoplay";
-import { getSettings, changeSetting } from "../audio/settings";
-import { applyOptions } from "../audio/AudioSystem";
+import { OptionsMenu } from "../ui/options-menu";
+import { createMenuButton, type MenuButton } from "../ui/menu";
 import type { HudState, Run } from "./Run";
 
 interface CardView {
@@ -42,6 +42,10 @@ export class UI extends Phaser.Scene {
 
   private pauseGroup!: Phaser.GameObjects.Container;
   private pauseLines: Phaser.GameObjects.GameObject[] = [];
+  private pauseWeaponHead!: PixelText;
+  private pausePassiveHead!: PixelText;
+  private pauseButtons: MenuButton[] = [];
+  private pauseSelected = 0;
   private lastPauseShown = false;
 
   private hudIconBg!: Phaser.GameObjects.Rectangle;
@@ -65,10 +69,7 @@ export class UI extends Phaser.Scene {
   private bannerSub!: PixelText;
   private bannerTimer?: Phaser.Time.TimerEvent;
 
-  private optionsGroup!: Phaser.GameObjects.Container;
-  private optionsRows: PixelText[] = [];
-  private optionsSelected = 0;
-  private lastOptionsShown = false;
+  private options!: OptionsMenu;
 
   constructor() { super("ui"); }
 
@@ -96,8 +97,9 @@ export class UI extends Phaser.Scene {
     this.createPauseUI();
     this.createChestUI();
     this.createBossUI();
-    this.createOptionsUI();
+    this.options = new OptionsMenu(this, 125, () => {});
 
+    this.input.keyboard!.removeAllListeners("keydown");
     this.input.keyboard!.on("keydown", (ev: KeyboardEvent) => this.onKey(ev));
     this.run.events.on("levelup", this.onLevelUp, this);
     this.run.events.on("levelupClosed", this.onLevelUpClosed, this);
@@ -219,6 +221,18 @@ export class UI extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       const cx = 84 + i * 156;
       const bg = this.add.rectangle(cx, 158, 132, 150, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate]);
+      bg.setInteractive({ useHandCursor: true });
+      bg.on("pointerover", () => {
+        if (!this.run?.levelUpOpen) return;
+        this.selected = i;
+        this.highlight();
+      });
+      bg.on("pointerdown", () => {
+        if (!this.run?.levelUpOpen) return;
+        this.selected = i;
+        this.highlight();
+        this.pick(i);
+      });
       const slotBg = this.add.rectangle(cx, 112, 60, 60, PAL[C.nightDeep]).setStrokeStyle(2, PAL[C.ink]);
       const icon = this.add.image(cx, 112, "icon_weapon_ember").setScale(3).setVisible(false);
       const divider = this.add.rectangle(cx - 62, 148, 124, 1, PAL[C.nightSlate]);
@@ -233,73 +247,54 @@ export class UI extends Phaser.Scene {
       this.levelGroup.add([bg, slotBg, icon, divider, number, name, level, ...desc]);
       this.cards.push({ bg, icon, number, name, level, desc });
     }
-    const hint = new PixelText(this, GAME_WIDTH / 2, 251, "1-3 ODER PFEILE + ENTER", C.fog, "center");
+    const hint = new PixelText(this, GAME_WIDTH / 2, 251, "1-3, PFEILE + ENTER ODER MAUS", C.fog, "center");
     this.levelGroup.add(hint);
+    this.setLevelCardsEnabled(false);
+  }
+
+  /** Verhindert, dass unsichtbare Level-up-Karten Mausklicks schlucken. */
+  private setLevelCardsEnabled(value: boolean): void {
+    for (const card of this.cards) {
+      if (value) card.bg.setInteractive({ useHandCursor: true });
+      else card.bg.disableInteractive();
+    }
   }
 
   private createPauseUI(): void {
     this.pauseGroup = this.add.container(0, 0).setDepth(120).setVisible(false);
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.8).setOrigin(0, 0);
     this.pauseGroup.add(dim);
-    const frame = this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 360, 220, 8, 8, 8, 8);
+    const frame = this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 384, 232, 8, 8, 8, 8);
     this.pauseGroup.add(frame);
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 36, "PAUSE", C.lantern, "center").setScale(2));
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 54, "DEIN BUILD", C.bone, "center"));
-    this.pauseGroup.add(new PixelText(this, 116, 66, "WAFFEN", C.lantern));
-    this.pauseGroup.add(new PixelText(this, 266, 66, "POWERUPS", C.lantern));
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 232, "O = OPTIONEN", C.lantern, "center"));
-    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 244, "ESC = WEITER", C.mist, "center"));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 28, "PAUSE", C.lantern, "center").setScale(2));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 46, "DEIN BUILD", C.bone, "center"));
+    this.pauseWeaponHead = new PixelText(this, 84, 62, "", C.lantern);
+    this.pausePassiveHead = new PixelText(this, 234, 62, "", C.lantern);
+    this.pauseGroup.add([this.pauseWeaponHead, this.pausePassiveHead]);
+
+    const resume = createMenuButton(this, 108, 201, 108, "FORTSETZEN", () => this.run.resumeRun(), { height: 20, depth: 1 });
+    const options = createMenuButton(this, 240, 201, 96, "OPTIONEN", () => this.options.open(), { height: 20, depth: 1 });
+    const giveUp = createMenuButton(this, 368, 201, 92, "AUFGABE", () => this.run.giveUp(), { height: 20, depth: 1 });
+    this.pauseButtons = [resume, options, giveUp];
+    this.pauseSelected = 0;
+    resume.setFocused(true);
+    for (const b of this.pauseButtons) {
+      b.setEnabled(false);
+      this.pauseGroup.add(b.container);
+    }
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 222, "ESC = WEITER - O = OPTIONEN - Q = AUFGABE", C.mist, "center"));
+    this.pauseGroup.add(new PixelText(this, GAME_WIDTH / 2, 234, "PFEILE + ENTER ODER MAUS", C.fog, "center"));
     this.pauseLines = [];
   }
 
-  private createOptionsUI(): void {
-    this.optionsGroup = this.add.container(0, 0).setDepth(125).setVisible(false);
-    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PAL[C.ink], 0.9).setOrigin(0, 0);
-    this.optionsGroup.add(dim);
-    const frame = this.add.nineslice(GAME_WIDTH / 2, 135, "ui_frame", undefined, 340, 196, 8, 8, 8, 8);
-    this.optionsGroup.add(frame);
-    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 58, "OPTIONEN", C.lantern, "center").setScale(2));
-    this.optionsGroup.add(new PixelText(this, GAME_WIDTH / 2, 78, "PFEILE + ENTER", C.fog, "center"));
-    this.optionsRows = [];
-    const labels = ["MUSIK", "SFX", "SCREEN-SHAKE", "ZURÜCK"];
-    for (let i = 0; i < labels.length; i++) {
-      const t = new PixelText(this, GAME_WIDTH / 2 - 92, 104 + i * 22, "", C.bone);
-      this.optionsGroup.add(t);
-      this.optionsRows.push(t);
-    }
-    this.refreshOptions();
+  private refreshPauseButtons(): void {
+    this.pauseButtons.forEach((b, i) => b.setFocused(i === this.pauseSelected));
   }
 
-  private refreshOptions(): void {
-    const opts = getSettings();
-    const labels = [
-      `MUSIK        < ${Math.round(opts.music * 100)}% >`,
-      `SFX          < ${Math.round(opts.sfx * 100)}% >`,
-      `SCREEN-SHAKE     ${opts.shake ? "AN" : "AUS"}`,
-      "ZURÜCK",
-    ];
-    this.optionsRows.forEach((row, i) => {
-      row.setText(`${i === this.optionsSelected ? "> " : "  "}${labels[i]}`);
-      row.setColorIndex(i === this.optionsSelected ? C.lantern : C.bone);
-    });
-  }
-
-  private openOptions(): void {
-    this.optionsSelected = 0;
-    this.refreshOptions();
-    this.optionsGroup.setVisible(true);
-  }
-
-  private closeOptions(): void {
-    this.optionsGroup.setVisible(false);
-  }
-
-  private changeOptionRow(delta: number): void {
-    const opts = getSettings();
-    if (this.optionsSelected === 0) applyOptions(changeSetting("music", Math.round((opts.music + delta) * 10) / 10));
-    else if (this.optionsSelected === 1) applyOptions(changeSetting("sfx", Math.round((opts.sfx + delta) * 10) / 10));
-    else if (this.optionsSelected === 2) applyOptions(changeSetting("shake", !opts.shake));
-    this.refreshOptions();
+  private activatePauseButton(): void {
+    if (this.pauseSelected === 0) this.run.resumeRun();
+    else if (this.pauseSelected === 1) this.options.open();
+    else this.run.giveUp();
   }
 
   private createChestUI(): void {
@@ -458,14 +453,17 @@ export class UI extends Phaser.Scene {
       }
     } else {
       this.autoPickTimer = 0;
-      this.levelGroup.setVisible(false);
+      if (this.levelGroup.visible) {
+        this.levelGroup.setVisible(false);
+        this.setLevelCardsEnabled(false);
+      }
     }
 
     const pauseVisible = s.paused && !s.levelUpOpen && !s.chestOpen;
     if (pauseVisible !== this.lastPauseShown) {
       this.lastPauseShown = pauseVisible;
       this.refreshPause();
-      if (!pauseVisible && this.optionsGroup.visible) this.closeOptions();
+      if (!pauseVisible && this.options.visible) this.options.close();
     }
   }
 
@@ -506,6 +504,7 @@ export class UI extends Phaser.Scene {
   }
 
   private onPauseChanged(): void {
+    this.pauseSelected = 0;
     this.refreshPause();
   }
 
@@ -517,6 +516,7 @@ export class UI extends Phaser.Scene {
 
   private onLevelUpClosed(): void {
     this.levelGroup.setVisible(false);
+    this.setLevelCardsEnabled(false);
     this.selected = 0;
   }
 
@@ -553,6 +553,7 @@ export class UI extends Phaser.Scene {
     }
     this.highlight();
     this.levelGroup.setVisible(true);
+    this.setLevelCardsEnabled(true);
   }
 
   private highlight(): void {
@@ -564,26 +565,34 @@ export class UI extends Phaser.Scene {
   private onKey(ev: KeyboardEvent): void {
     if (!this.run || ev.repeat) return;
     const key = ev.key.toLowerCase();
-    if (this.optionsGroup?.visible) {
-      if (key === "o") { this.closeOptions(); return; }
-      if (ev.key === "ArrowUp" || key === "w") {
-        this.optionsSelected = (this.optionsSelected + 3) % 4; this.refreshOptions(); return;
-      }
-      if (ev.key === "ArrowDown" || key === "s") {
-        this.optionsSelected = (this.optionsSelected + 1) % 4; this.refreshOptions(); return;
-      }
-      if (ev.key === "ArrowLeft" || key === "a") { this.changeOptionRow(-0.1); return; }
-      if (ev.key === "ArrowRight" || key === "d") { this.changeOptionRow(0.1); return; }
-      if (ev.key === "Enter" || ev.key === " ") {
-        if (this.optionsSelected === 3) this.closeOptions();
-        else this.changeOptionRow(this.optionsSelected === 2 ? 1 : 0);
-        return;
-      }
+    if (this.options?.visible) {
+      this.options.handleKey(ev);
       return;
     }
+    if (ev.key === "Escape") { this.run.togglePause(); return; }
     if (key === "o" && this.run.getHudState().paused && !this.run.levelUpOpen && !this.run.chestOpen) {
-      this.openOptions();
+      this.options.open();
       return;
+    }
+    const hud = this.run.getHudState();
+    if (hud.paused && !hud.levelUpOpen && !hud.chestOpen) {
+      if (ev.key === "ArrowLeft" || ev.key === "ArrowUp" || key === "a" || key === "w") {
+        this.pauseSelected = (this.pauseSelected + this.pauseButtons.length - 1) % this.pauseButtons.length;
+        this.refreshPauseButtons();
+        return;
+      }
+      if (ev.key === "ArrowRight" || ev.key === "ArrowDown" || key === "d" || key === "s") {
+        this.pauseSelected = (this.pauseSelected + 1) % this.pauseButtons.length;
+        this.refreshPauseButtons();
+        return;
+      }
+      if (ev.key === "Enter" || ev.key === " ") { this.activatePauseButton(); return; }
+      if (key === "q") { this.run.giveUp(); return; }
+      if (ev.key === "1" || ev.key === "2" || ev.key === "3") {
+        this.pauseSelected = Number(ev.key) - 1;
+        this.refreshPauseButtons();
+        return;
+      }
     }
     if (this.run.levelUpOpen) {
       const offers = this.run.currentOffers;
@@ -622,7 +631,9 @@ export class UI extends Phaser.Scene {
     const visible = s.paused && !s.levelUpOpen && !s.chestOpen;
     this.pauseGroup.setVisible(visible);
     this.lastPauseShown = visible;
+    for (const b of this.pauseButtons) b.setEnabled(visible);
     if (!visible) return;
+    this.refreshPauseButtons();
     for (const line of this.pauseLines) line.destroy();
     this.pauseLines = [];
     const addRow = (
@@ -630,26 +641,28 @@ export class UI extends Phaser.Scene {
       x: number, levelRight: number, iconKey: string,
     ): void => {
       const icon = this.add.image(x - 20, y - 4, iconKey).setOrigin(0, 0).setScale(1);
-      const left = new PixelText(this, x, y, name.slice(0, 14), color);
+      const left = new PixelText(this, x, y, name, color);
       // Feste rechte Spalte, damit alle "LV n" bündig stehen.
       const right = new PixelText(this, levelRight, y, `LV ${level}`, color, "right");
       this.pauseGroup.add([icon, left, right]);
       this.pauseLines.push(icon, left, right);
     };
-    let y = 82;
+    let y = 76;
     for (const w of s.weapons) {
       const def = weaponDef(w.id);
-      addRow(def?.name.toUpperCase() ?? w.id.toUpperCase(), w.level, C.bone, 116, 238,
+      addRow(def?.name.toUpperCase() ?? w.id.toUpperCase(), w.level, C.bone, 84, 212,
         iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id));
       y += 15;
     }
-    y = 82;
+    y = 76;
     for (const p of s.passives) {
       const def = PASSIVES[p.id as keyof typeof PASSIVES];
-      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.mist, 266, 388,
+      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.mist, 234, 386,
         iconTextureKey("passive", p.id));
       y += 15;
     }
+    this.pauseWeaponHead.setText(`WAFFEN ${s.weapons.length}/6`);
+    this.pausePassiveHead.setText(`POWERUPS ${s.passives.length}/6`);
   }
 }
 

@@ -138,8 +138,12 @@ describe("Optionen-Persistenz", () => {
   });
   it("speichert und lädt gerundet/validiert", () => {
     const s = memStorage();
-    saveOptions(s, { music: 0.3, sfx: 0.7, shake: false });
-    expect(loadOptions(s)).toEqual({ music: 0.3, sfx: 0.7, shake: false });
+    saveOptions(s, {
+      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, scale: 2,
+    });
+    expect(loadOptions(s)).toEqual({
+      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, scale: 2,
+    });
   });
   it("kaputtes JSON und ungueltige Werte → Defaults/Clamp", () => {
     const s: StorageLike = { getItem: () => "{kaputt", setItem: () => {} };

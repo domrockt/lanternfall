@@ -13,7 +13,8 @@
 "verify:bosses": "node scripts/verify-bosses.mjs",
 "fullrun": "node scripts/fullrun.mjs",
 "verify:terrain": "node scripts/verify-terrain.mjs",
-"verify:vfx": "node scripts/verify-vfx.mjs"
+"verify:vfx": "node scripts/verify-vfx.mjs",
+"verify:menus": "node scripts/verify-menus.mjs"
 },
 "dependencies": {
 "phaser": "^3.90.0"

@@ -272,7 +272,7 @@ export class Run extends Phaser.Scene {
       right2: Phaser.Input.Keyboard.KeyCodes.RIGHT,
     }) as Record<string, Phaser.Input.Keyboard.Key>;
 
-    this.input.keyboard!.on("keydown-ESC", () => this.togglePause());
+    this.input.keyboard!.removeAllListeners("keydown-ESC");
 
     this.scene.launch("ui");
     this.registry.set("lf-elapsed", 0);
@@ -290,6 +290,7 @@ export class Run extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+    this.combat?.damageNumbers.setEnabled(getSettings().damageNumbers);
     if (this.finished) return;
     const realDt = Math.min(0.05, delta / 1000);
 
@@ -952,10 +953,31 @@ export class Run extends Phaser.Scene {
     if (this.hp > this.maxHp) this.hp = this.maxHp;
   }
 
-  private togglePause(): void {
+  /** ESC wird zentral in der UI-Szene verarbeitet (Optionsmenü hat Vorrang). */
+  togglePause(): void {
     if (this.levelUpOpen || this.chestOpen || this.finished) return;
     this.paused = !this.paused;
     this.events.emit("pauseChanged", this.paused);
+  }
+
+  /** Pause-Menü: Fortsetzen per Knopf/Maus. */
+  resumeRun(): void {
+    if (!this.paused || this.levelUpOpen || this.chestOpen || this.finished) return;
+    this.paused = false;
+    this.events.emit("pauseChanged", false);
+  }
+
+  /** Pause-Menü: Aufgabe beendet den Lauf und führt zum Ergebnis. */
+  giveUp(): void {
+    if (this.finished || this.levelUpOpen || this.chestOpen) return;
+    this.endRun("giveup");
+  }
+
+  /** Debug/Abnahme: Lauf direkt beenden (z. B. Sieg-Screen ohne 30-Minuten-Wartezeit). */
+  debugFinishRun(reason: "death" | "dawn" | "giveup"): void {
+    if (this.finished) return;
+    if (reason === "dawn") this.dawn = true;
+    this.endRun(reason);
   }
 
   // ── Debug-API ────────────────────────────────────────────────
@@ -1353,9 +1375,9 @@ export class Run extends Phaser.Scene {
     }
   }
 
-  private endRun(reason: "death" | "dawn"): void {
+  private endRun(reason: "death" | "dawn" | "giveup"): void {
     if (this.finished) return;
-    if (reason === "death") getAudio().play("defeat");
+    if (reason !== "dawn") getAudio().play("defeat");
     this.finished = true;
     this.paused = true;
     const result: RunResult = {

@@ -1,1062 +1,1168 @@
 {
- "version": 1,
- "next": 56,
- "cards": [
-  {
-   "id": 1,
-   "title": "M1-01 Fundament: Palette 32, Config 480x270, Szenen-Skelett",
-   "description": "src/palette.ts neu (32 Farben dokumentiert), main.ts 480x270, Boot/Title/CharSelect/Run/UI/Results Grundgerüst.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
+  "version": 1,
+  "next": 62,
+  "cards": [
     {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: Palette 32 Farben, 480x270, Szenen Boot/Title/CharSelect/Run+UI/Results; Sichtprüfung ok"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 2,
-   "title": "M1-02 Datentabellen src/data/*",
-   "description": "characters, weapons (6x Stufe 1-8), passives (6x5), evolutions, enemies (30), bosses (6), waves (30 min) als typisierte Tabellen.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: Alle Datentabellen typisiert: 6 Waffen x8, 6 Passives x5, 6 Evo, 30 Gegner, 6 Bosse, 30 Wellen; data.test.ts grün"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 3,
-   "title": "M1-03 Reine Logik src/logic/* + Tests",
-   "description": "rng, stats, xp, levelup-Angebote (Slots 6+6, keine maxed), waves, combat-Helfer; Vitest.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: rng/stats/xp/levelup/waves/combat + 29 Tests grün (Slots 6+6, keine maxed)"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 4,
-   "title": "M1-04 Systeme: Pools, SpatialHash, Spawner, Spieler/Gegner",
-   "description": "8-Wege-Bewegung, Kamera, Chunk-Karte, I-Frames, Gegner-Pools, Separation, chaser/swarm, bog_rat/wisp/bogzombie.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: Pools, SpatialHash, Separation, chaser/swarm, bog_rat/wisp/bogzombie; Chunk-Karte 4096px, I-Frames"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 5,
-   "title": "M1-05 Ember-Waffe + Projektil-Framework",
-   "description": "Glutfunke Stufe 1-8, Cooldown, Zielsuche, Projektil-Pool, Durchschlag, Schaden, Rückstoß.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: ember St.1-8, Projektil-Pool, Homing, Durchschlag, Rückstoß; DPS-Tracking"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 6,
-   "title": "M1-06 XP-Kristalle, Pickup, Level-up-Dialog",
-   "description": "3 Gem-Größen, Magnetradius, 3 Angebote, Tastatur 1-3 / Pfeile+Enter, Pause.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: 3 Gems, Magnet, Level-up-Pause mit 3 Angeboten, Tasten 1-3/Pfeile+Enter; verify: Level 4 erreicht"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 7,
-   "title": "M1-07 Wellen-Director + Spawn-Ring",
-   "description": "Spawnrate/Mix aus waves.ts pro Minute, Spawns außerhalb des Bildschirms, Spezialwellen-Hook.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: waves-Director pro Minute, Spawn-Ring außerhalb des Screens; verify 66 s Spielzeit"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 8,
-   "title": "M1-08 Debug-API window.__lf komplett",
-   "description": "state, setTimeScale, skipTo, god, giveXp, addWeapon, addPassive, spawnEnemy, spawnBoss, openChest, pickLevelUp, autoPlay; klare Fehler für M4+.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: window.__lf komplett, Cheats nur ?debug=1, M4/M5-Funktionen werfen klare Fehler"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 9,
-   "title": "M1-09 perf.mjs + verify.mjs",
-   "description": "Playwright-Harness FPS mit 500 Gegnern (>=55) und 60s AutoPlay-Verifikation, Screenshots shots/m1-*.png.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → done: perf: 60,1 FPS bei 497 Gegnern; verify: alle Checks grün, 0 JS-Fehler, shots/m1-*.png"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:03:38Z"
-  },
-  {
-   "id": 10,
-   "title": "M1-10 HUD-Politur, Sichtprüfung, GAME.md Status, Commit",
-   "description": "HUD lesbar, Palette/Schärfe per Vision prüfen, GAME.md Status + Messwerte, build+test grün, Commit.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T00:03:38Z",
-     "by": "build",
-     "text": "todo → review: build+test grün, perf/verify grün, Sichtprüfung ok, GAME.md Status ergänzt; Reviewer läuft noch"
+      "id": 1,
+      "title": "M1-01 Fundament: Palette 32, Config 480x270, Szenen-Skelett",
+      "description": "src/palette.ts neu (32 Farben dokumentiert), main.ts 480x270, Boot/Title/CharSelect/Run/UI/Results Grundgerüst.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: Palette 32 Farben, 480x270, Szenen Boot/Title/CharSelect/Run+UI/Results; Sichtprüfung ok"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
     },
     {
-     "at": "2026-11-25T00:24:40Z",
-     "by": "build",
-     "text": "review → done: build+test (31) grün, verify passed, perf 60 FPS/497 Gegner, 0 JS-Fehler; Reviewer-OK nach Fixrunde (Passive-Kumulierung, Substepping, UID-Pooling, Spawn-Rand, Integer-Scale); committed"
+      "id": 2,
+      "title": "M1-02 Datentabellen src/data/*",
+      "description": "characters, weapons (6x Stufe 1-8), passives (6x5), evolutions, enemies (30), bosses (6), waves (30 min) als typisierte Tabellen.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: Alle Datentabellen typisiert: 6 Waffen x8, 6 Passives x5, 6 Evo, 30 Gegner, 6 Bosse, 30 Wellen; data.test.ts grün"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 3,
+      "title": "M1-03 Reine Logik src/logic/* + Tests",
+      "description": "rng, stats, xp, levelup-Angebote (Slots 6+6, keine maxed), waves, combat-Helfer; Vitest.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: rng/stats/xp/levelup/waves/combat + 29 Tests grün (Slots 6+6, keine maxed)"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 4,
+      "title": "M1-04 Systeme: Pools, SpatialHash, Spawner, Spieler/Gegner",
+      "description": "8-Wege-Bewegung, Kamera, Chunk-Karte, I-Frames, Gegner-Pools, Separation, chaser/swarm, bog_rat/wisp/bogzombie.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: Pools, SpatialHash, Separation, chaser/swarm, bog_rat/wisp/bogzombie; Chunk-Karte 4096px, I-Frames"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 5,
+      "title": "M1-05 Ember-Waffe + Projektil-Framework",
+      "description": "Glutfunke Stufe 1-8, Cooldown, Zielsuche, Projektil-Pool, Durchschlag, Schaden, Rückstoß.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: ember St.1-8, Projektil-Pool, Homing, Durchschlag, Rückstoß; DPS-Tracking"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 6,
+      "title": "M1-06 XP-Kristalle, Pickup, Level-up-Dialog",
+      "description": "3 Gem-Größen, Magnetradius, 3 Angebote, Tastatur 1-3 / Pfeile+Enter, Pause.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: 3 Gems, Magnet, Level-up-Pause mit 3 Angeboten, Tasten 1-3/Pfeile+Enter; verify: Level 4 erreicht"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 7,
+      "title": "M1-07 Wellen-Director + Spawn-Ring",
+      "description": "Spawnrate/Mix aus waves.ts pro Minute, Spawns außerhalb des Bildschirms, Spezialwellen-Hook.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: waves-Director pro Minute, Spawn-Ring außerhalb des Screens; verify 66 s Spielzeit"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 8,
+      "title": "M1-08 Debug-API window.__lf komplett",
+      "description": "state, setTimeScale, skipTo, god, giveXp, addWeapon, addPassive, spawnEnemy, spawnBoss, openChest, pickLevelUp, autoPlay; klare Fehler für M4+.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: window.__lf komplett, Cheats nur ?debug=1, M4/M5-Funktionen werfen klare Fehler"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 9,
+      "title": "M1-09 perf.mjs + verify.mjs",
+      "description": "Playwright-Harness FPS mit 500 Gegnern (>=55) und 60s AutoPlay-Verifikation, Screenshots shots/m1-*.png.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → done: perf: 60,1 FPS bei 497 Gegnern; verify: alle Checks grün, 0 JS-Fehler, shots/m1-*.png"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:03:38Z"
+    },
+    {
+      "id": 10,
+      "title": "M1-10 HUD-Politur, Sichtprüfung, GAME.md Status, Commit",
+      "description": "HUD lesbar, Palette/Schärfe per Vision prüfen, GAME.md Status + Messwerte, build+test grün, Commit.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T00:03:38Z",
+          "by": "build",
+          "text": "todo → review: build+test grün, perf/verify grün, Sichtprüfung ok, GAME.md Status ergänzt; Reviewer läuft noch"
+        },
+        {
+          "at": "2026-11-25T00:24:40Z",
+          "by": "build",
+          "text": "review → done: build+test (31) grün, verify passed, perf 60 FPS/497 Gegner, 0 JS-Fehler; Reviewer-OK nach Fixrunde (Passive-Kumulierung, Substepping, UID-Pooling, Spawn-Rand, Integer-Scale); committed"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T00:24:40Z"
+    },
+    {
+      "id": 11,
+      "title": "Epic M2: Alle 6 Waffen + Verhalten/VFX",
+      "description": "flail, frost, thorn, storm, lantern mit Stufen 1-8, generisches Framework erweitern, Waffen-Icons.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T03:55:30Z",
+          "by": "coder",
+          "text": "Abnahme durch coder: alle M2-Karten #18-#28 done, verify-weapons 12/12, Tests 61, perf 57,5 FPS; VFX-Lesbarkeit in 2 Fix-Runden + eigener Politur nachgezogen"
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T03:55:30Z"
+    },
+    {
+      "id": 12,
+      "title": "Epic M3: Alle 30 Gegner + Spezialwellen",
+      "description": "Restliche Archetypen (tank/ranged/charger/splitter/exploder/phaser/orbiter/summoner), 30 Sprites+Animationen, Ring-/Schwarmwellen.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "backlog → done: Epic M3 durch #29-#34 abgeschlossen: 30 Gegner, Director, 6 Bosse, Dawn, Abnahme."
+        }
+      ],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 13,
+      "title": "Epic M4: Bosse 5/10/15/20/25 + Truhen + Evolutionen",
+      "description": "5 Bosse, HP-Leiste, Warn-Banner, Truhen-Sequenz, 6 Evolutionen, Boss-Drops.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 14,
+      "title": "Epic M5: Endboss 30:00, Sieg/Niederlage, Meta (Gold/Shop)",
+      "description": "Hohler König 3 Phasen, Morgendämmerung-Sieg, Results-Ausbau, evtl. Meta-Progression.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 15,
+      "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
+      "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-24T23:44:35Z",
+      "updated": "2026-11-24T23:44:35Z"
+    },
+    {
+      "id": 16,
+      "title": "M1-Nachzug: Runtime-Tests (Substep/Pause, UID-Pooling, Spawn außerhalb View)",
+      "description": "Unit-/Integrationstests für: Teilschritt-Abbruch bei Level-up, Projektile mit Spawn-UID über Pool-Recycling, Ring-/spawnOne-Spawns außerhalb camera.worldView, Integer-Scaling. Danach verify-Wall-Clock-Abhängigkeit entschärfen.",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T00:24:40Z",
+      "updated": "2026-11-25T00:24:40Z"
+    },
+    {
+      "id": 17,
+      "title": "M1-Fix: Separation bei Deckung + Pause-Spalte bündig",
+      "description": "Deterministischer UID-Fallback (goldener Winkel) in src/logic/separation.ts, 4 Unit-Tests, scripts/separation-check.mjs (minDist 1,68 px, 0 Overlaps). Pause zeigt STUFE rechtsbündig. build/test/perf/verify grün.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-25T00:32:28Z",
+      "updated": "2026-11-25T00:32:28Z"
+    },
+    {
+      "id": 18,
+      "title": "M2-01 Waffen-Framework + 5 Basen (flail/frost/thorn/storm/lantern) mit VFX",
+      "description": "Gemeinsames Framework, Treffer/FX, alle 8 Stufen, Schaden>0, Screenshots.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:39:44Z",
+          "by": "build",
+          "text": "todo → doing: Start: Framework erweitern"
+        },
+        {
+          "at": "2026-11-25T00:43:44Z",
+          "by": "build",
+          "text": "doing → review: Alle 5 Basen spielbar, 8 Stufen, Schaden>0 (flail 1840, frost 216, thorn 336, storm 4158, lantern), 0 JS-Fehler. Screenshots geprueft; Rand: Hit-Partikel reduziert, Storm/Orbs sichtbarer. Commit aa5a289."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK (2. Runde). 6 Basen mit 8 Stufen + VFX, verify 12/12, Schaden 1400-7100."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 19,
+      "title": "M2-02 Powerups Stufe 1-5 wirken + Tests",
+      "description": "Alle 6 Passives nachweislich auf Stats (Unit-Tests + Debug-Stats).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:43:44Z",
+          "by": "build",
+          "text": "todo → doing: Tests fuer alle 6 Passives"
+        },
+        {
+          "at": "2026-11-25T00:43:57Z",
+          "by": "build",
+          "text": "doing → review: 42 Tests gruen; je Passive alle Stufen 1-5 gegen effective*-Funktionen geprueft. Commit 4ae078c."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. Powerups 1-5 statsgetestet, 56 Tests gruen."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 20,
+      "title": "M2-03 Evolutionslogik canEvolve/chestRewards + Tests",
+      "description": "Reine Funktionen, Daten, Evolution ersetzt Basiswaffe im Slot.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:43:57Z",
+          "by": "build",
+          "text": "todo → doing: canEvolve/chestRewards + Evolutionswaffen"
+        },
+        {
+          "at": "2026-11-25T00:46:33Z",
+          "by": "build",
+          "text": "doing → review: canEvolve/chestRewards pur + 12 neue Tests (53 gesamt). Alle 6 Evolutionen mit eigenen Effekten, Schaden>0 (Wrath-Bug gefixt: Schaden lief unter flail statt wrath_pendulum). Commit 106a4f1."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. canEvolve/chestRewards getestet, Evolutions-State-Leak gefixt (ba4676d) und im verify-Skript abgesichert."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 21,
+      "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, Öffnungs-Sequenz, Platzhalter-Boss",
+      "description": "openChest/spawnBoss(0), 1/3/5 Belohnungen, Evolution Vorrang, GIF.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:46:33Z",
+          "by": "build",
+          "text": "todo → doing: Chest-System + Sequenz + Boss-Platzhalter"
+        },
+        {
+          "at": "2026-11-25T00:49:57Z",
+          "by": "build",
+          "text": "doing → review: Truhe droppt (Boss-Platzhalter), Glanz, Randpfeil sichtbar/getestet, Sequenz pausiert Run, 5 Slots rollen, Evolution Vorrang. openChest -> phoenix im Slot. GIF shots/m2-chest.gif. 0 JS-Fehler. Commit 58645ec."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. Truhe/Sequenz/GIF, Evolution via Truhe; Roll-/Hide-Timer gefixt."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 22,
+      "title": "M2-05 UI: 16x16-Icons, HUD-Leiste, Pause, Umlaute im Bitmap-Font",
+      "description": "6 Waffen + 6 Powerups + 6 Evolutionen, Level-up/Pause/HUD.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:49:57Z",
+          "by": "build",
+          "text": "todo → doing: Icons + HUD/Pause + Umlaute"
+        },
+        {
+          "at": "2026-11-25T00:54:21Z",
+          "by": "build",
+          "text": "doing → review: 18 Icons 16x16 (Kontur, Palette, Distinktheit validiert), Kontaktbogen geprueft; in Level-up-Karten, HUD-Leiste, Pause (2 Spalten) und Truhen-Slots. Font rendert ÄÖÜäöüß, Texte auf Umlaute umgestellt. 54 Tests, Build gruen. Commit 5e24cb4."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. 18 Icons, HUD/Pause/Levelup/Truhe, echte Umlaute; Font jetzt konsistent versal."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 23,
+      "title": "M2-06 Gras-Kacheln beruhigen + gezielte Dekor-Kacheln",
+      "description": "Weniger Pixelrauschen, ruhige Flächen, gruppierte Deko.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:54:21Z",
+          "by": "build",
+          "text": "todo → doing: Gras beruhigen + Deko gruppiert"
+        },
+        {
+          "at": "2026-11-25T00:56:28Z",
+          "by": "build",
+          "text": "doing → review: Gras ohne Pixelrauschen, Bueschel in 2x2-Bloecken, Deko gruppiert; Screenshots vor/nach Laufen geprueft, 0 JS-Fehler. 54 Tests. Commit 2afd7f5."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. Gras ruhig, gruppierte Bueschel, Screenshots geprueft."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 24,
+      "title": "M2-07 Ergebnis-Screen: Schadenstabelle mit Icons",
+      "description": "Alle Waffen inkl. Evolutionen, sortiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:56:28Z",
+          "by": "build",
+          "text": "todo → review: 3-spaltige Schadenstabelle mit Icons, filtert 0, sortiert, max 12; reine damageTable + 2 Tests (56 gesamt). Ergebnisse per skipTo(1800) geprueft. Commit 77f..."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. 3-spaltige Schadenstabelle mit Icons, reine damageTable + Tests."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 25,
+      "title": "M2-08 Abnahme: verify-weapons.mjs, 12 Screenshots, GIF, perf 500+6 Waffen",
+      "description": "Vision-Prüfung aller Shots, Mängel beheben, Messwerte.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T00:56:28Z",
+          "by": "build",
+          "text": "todo → doing: verify-weapons 12 Shots, GIF, perf 500+6"
+        },
+        {
+          "at": "2026-11-25T01:06:21Z",
+          "by": "build",
+          "text": "doing → review: verify-weapons.mjs: 12/12 Waffen Stufe 8, Schaden 1400-9090, 0 JS-Fehler; alle 12 Shots gesichtet. Truhe->Phoenix Evolution bewiesen; GIF 48 Frames 480x270. perf: 56.9 FPS, min 505/avg 575 Gegner, 6 Waffen Stufe 8 (Fx-Cap 360). Bolt-Checkerboard gefixt. Commit e5..."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. verify-weapons 12/12 + evolution-state, GIF, perf 580 Gegner bei 56.6-58.6 FPS, 0 JS-Fehler, alle Shots gesichtet."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 26,
+      "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
+      "description": "Build/Tests grün, offene Punkte ehrlich.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T01:06:21Z",
+          "by": "build",
+          "text": "todo → doing: GAME.md M2-Status"
+        },
+        {
+          "at": "2026-11-25T01:08:59Z",
+          "by": "build",
+          "text": "doing → review: GAME.md Status M2 mit Messwerten (56 Tests, 12/12 Waffen 1400-9090 Schaden, 56.9 FPS bei 505/575 Gegnern) und ehrlichen Luecken (Bso-Platzhalter, 3/30 Gegner, Sound/Meta offen). Commit 2415a5e."
+        },
+        {
+          "at": "2026-11-25T01:21:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer-OK. GAME.md Status M2 mit Messwerten und ehrlichen Luecken."
+        }
+      ],
+      "created": "2026-11-25T00:39:13Z",
+      "updated": "2026-11-25T01:21:43Z"
+    },
+    {
+      "id": 27,
+      "title": "M2-Fix: Abnahme-Artefakte (VFX-Peak-Shots, Evolutions-Panel, volle Slot-Namen)",
+      "description": "verify-weapons Screenshots im FX-Peak via Poll+Pause; Evolutions-Screenshot waehrend Truhen-Panel; Slot-Namen 2-zeilig; GIF neu; build/test/perf.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T02:23:28Z",
+          "by": "build",
+          "text": "doing → review: Umgesetzt: verify-weapons pollt aktive FX-/Projektil-/Orb-/Swing-Keys, pausiert Run fuer Peak-Shots, Timeout=FAIL; Evolutions-Shot per UI-State (EVOLUTION-Slot fertig, Tween abgewartet); Slot-Namen 2-zeilig via slotNameLines (verlustfrei, Tests fuer >22 Zeichen/Mehrwort); m2-chest-longname.png zeigt SEELENLEUCHTFEUER vollstaendig; GIF-Frame mit allen 5 Settle-Namen gesichtet. build grün, 60 Tests, verify passed (failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit 673365b."
+        },
+        {
+          "at": "2026-11-25T02:32:12Z",
+          "by": "build",
+          "text": "review → done: Reviewer 2. Runde: keine Blocker. Findings gefixt: summary zaehlt nur die 12 Waffen-IDs (longName jetzt eigenes Feld), Orb-Poll nur sichtbare Orbs, shotAtSwing mit Level-up-Check + try/finally, evolutionSlotReady prueft chestGroup.visible. Abschluss: build gruen, 60 Tests, verify passed (weapons:12, evolved:true, longName:true, failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit f69ff81."
+        }
+      ],
+      "created": "2026-11-25T01:38:42Z",
+      "updated": "2026-11-25T02:32:12Z"
+    },
+    {
+      "id": 28,
+      "title": "M2-Fix2: Feuervogel-Sprite, Frost-Ring-Shot, Rolltexte",
+      "description": "Phoenix-Projektil als gefluegeltes 13x9-Sprite; frost/eternal_winter Delay 0 + Pixel-Assert; Truhen-Rolltexte via slotNameLines (2 Zeilen, keine Kuerzung); GIF neu; build/test/verify/perf.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T03:09:37Z",
+          "by": "build",
+          "text": "doing → review: Umgesetzt: projectile_phoenix 13x9 mit Fluegeln/Koerper/Schwanz/Auge, 1px Kontur, warme 5-Stufen-Palette; Projektil auf Normal-Blend, Trail bleibt additiv/warm (Hitbox/Schaden unveraendert). frost/eternal_winter/phoenix Delay 0; shotAtFrost misst Ring-Radius aus FX-Scale und Pixel-Assert zaehlt helle Ring-Pixel im Band (274-282). shotAtPhoenix pollt >=2 Voegel 18-90px, Assert. Roll-Callback nutzt slotNameLines, Roll-Frame-Assert. GIF neu. build gruen, 61 Tests, verify passed (failed:[], jsErrors:[], phoenixBirds/frostRingPixels/rollNames true), perf 57,0 FPS bei 580."
+        },
+        {
+          "at": "2026-11-25T03:09:43Z",
+          "by": "build",
+          "text": "review → done: Reviewer: keine Blocker. Empfehlungen umgesetzt: Frost-Assert nutzt gemessenen FX-Radius statt fixem Band, Groessencheck des raw-Buffers; Roll-Frame-Assert (vollstaendige Namen waehrend Rollen); Grid-Palettentest. Final: build gruen, 61 Tests, verify passed (weapons:12, phoenixBirds:true, frostRingPixels:true, rollNames:true, evolved:true, longName:true, failed:[], jsErrors:[]), perf 57,0 FPS bei 580 Gegnern. Commit 137fb18."
+        }
+      ],
+      "created": "2026-11-25T02:51:35Z",
+      "updated": "2026-11-25T03:09:43Z"
+    },
+    {
+      "id": 29,
+      "title": "M3-01 Archetypen-Logik + Skalierungs-/Wellen-/Boss-/Terrain-Helfer + Tests",
+      "description": "Reine Module: enemy-ai (10 Archetypen-State-Machines), scaling (HP/Schaden/Tempo-Kurven), waves special/elite/cap, terrain (Wasser 40%), bosses (Phasen/Schedules), autoplay (Ziel-/Dodge-Priorität). Vitest.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T04:00:25Z",
+          "by": "build",
+          "text": "todo → doing: Implementiere reine Logikmodule + Tests"
+        },
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "doing → review: M3-01 Logikmodule + 22 Tests implementiert (bereits in d9bf8cb); Build/Test gruen."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: M3-01 Logikmodule + Tests: 24 M3-Tests (85 gesamt) gruen, Reviewer-OK."
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 30,
+      "title": "M3-02 Alle 30 Gegner spielbar + Platzhalter-Sprites + Gegner-Projektile + Warnflächen",
+      "description": "30 eindeutige Silhouetten/Farben, 2 Frames, Hit-Flash, Tod-Partikel. EnemyProjectilePool (klar getrennt vom Spielerfeuer), Telegraph/Warnmarker.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: 30 Gegner live, KI-Zustaende, Projektile/Warnflaechen; verify-enemies 30/30 OK, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: 30/30 Gegner verifiziert (verify-enemies, Bewegung+Effekte, 0 JS-Fehler); Splitter max. 2 Generationen getestet."
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 31,
+      "title": "M3-03 Wellen-Director 00-30, Spezialwellen, Elite, Gegner-Cap/Recycling",
+      "description": "Ring-Einkesselung, Schwarm-Ströme, Elite mit Leuchtrand + großer XP-Kristall, max. aktive Gegner, älteste/ferne recyceln.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: Director 0-30 mit Ring/Stream/Elite/Cap/Recycling; fullrun 700 Elites, Dichte bis 500."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: Director 0-30, Spezial-/Elite-Wellen, Cap 500 inkl. Boss/Elite-Recycling-Ausschluss; fullrun 694 Elites."
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 32,
+      "title": "M3-04 6 Bosse mit Mechaniken, HP-Leiste, Warn-Banner, Truhe; Endboss 3 Phasen + Morgendämmerung",
+      "description": "Moorkönigin, Knochenfürst, Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler König. Telegraphing, Boss-HP-Bar, Banner, Chest-Drop, Sieg-Sequenz + Ergebnis Überlebt.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: 6 Bosse + HP-Leiste/Banner/Truhen; verify-bosses 6/6 OK, Endboss 3 Phasen, Dawn-Sieg im fullrun."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: 6/6 Bosse verifiziert (verify-bosses, Truhen, Endboss-Phasen 1/2/3, Boss-JSON); Dawn-Sieg im fullrun."
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 33,
+      "title": "M3-05 Moorwasser-Slow + ganzzahlige Skalierung <960px + autoPlay-Bot",
+      "description": "Wasser verlangsamt Spieler+Gegner 40% mit Spritzern; 1x-Rand bei kleinen Fenstern, Glyphen sichtbar; Bot kitet, meidet Projektile/Warnflächen, sammelt XP, wählt Level-ups nach Priorität.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: Wasser-Slow + 1x-Rand <960 (800er Screenshot) + Bot-Prioritaeten; Regressionen gruen."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: Wasser-Slow getestet, 1x-Rand bei 800px gesichtet, Bot-Prioritaeten; Reviewer-OK."
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 34,
+      "title": "M3-06 Abnahme: verify-enemies, verify-bosses, fullrun, perf, GAME.md Status M3",
+      "description": "Headless-Skripte mit OK/FAIL-Zeilen, Screenshots/GIFs, fullrun-JSON; perf Minute 25 >=55 FPS; GAME.md Status + Bericht.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T05:20:43Z",
+          "by": "build",
+          "text": "todo → review: verify-enemies/bosses/fullrun/perf + GAME.md Status M3 mit JSON; Messwerte dokumentiert."
+        },
+        {
+          "at": "2026-11-25T05:38:53Z",
+          "by": "build",
+          "text": "review → done: verify-enemies/bosses/fullrun/perf + GAME.md M3-Status mit JSON; Build/85 Tests gruen, Reviewer-OK nach 2 Fixrunden."
+        }
+      ],
+      "created": "2026-11-25T03:58:41Z",
+      "updated": "2026-11-25T05:38:53Z"
+    },
+    {
+      "id": 35,
+      "title": "M4-01 ART.md + Art-Pipeline (lib.py, gen.py, contact.py) + 3 Referenz-Assets",
+      "description": "Stil-Leitfaden mit Rampen, Kontur, Proportionen, Licht, Animationslängen. Python-Pipeline (pure-python PNG), Asset-Server-Client, Kontaktbogen-Tool. Referenzen: Mira, Irrlicht, Laternenpfahl; art-director-Noten dokumentiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:25Z",
+          "by": "build",
+          "text": "todo → doing: Art-Pipeline + ART.md fertig, Referenz-Assets erzeugt."
+        },
+        {
+          "at": "2026-11-25T10:40:25Z",
+          "by": "build",
+          "text": "doing → done: M4-01 war faktisch fertig (ART.md, lib.py, gen.py, contact.py, Referenzen); Board-Nachlauf."
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:40:25Z"
+    },
+    {
+      "id": 36,
+      "title": "M4-02 Spielfiguren: Mira + Kael, Lauf 4 Frames x 4 Richtungen, Idle 2, Hit, Portrait 48x48",
+      "description": "32px hoch, 4-Dir-Lauf, Spiegelung fuer Seite, Idle, Treffer-Frame, CharSelect-Portraits. Integration in Run/CharSelect, Offsets anpassen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:34Z",
+          "by": "build",
+          "text": "todo → doing: Laufzyklus mit echter Beinphase + Arm/Laterne-Schwung geprueft."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 37,
+      "title": "M4-03 30 Gegner: 2-4 Lauf-Frames, Tod-Effekt, Tier-Farbcodes, Elite-Leuchtrand",
+      "description": "16-32px nach Tier, eindeutige Silhouetten, 3+ Schattierungsstufen, Kontur, Tod-Puff je Gegnerfarbe; Elite via Rim.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:47Z",
+          "by": "build",
+          "text": "todo → doing: 30 Gegner-Silhouetten ueberarbeitet (mudling/slime/abom/treant/wraith/voidcaller)."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 38,
+      "title": "M4-04 6 Bosse 48-96px mit Wind-up-/Angriffs-Frames passend zu bosses.ts",
+      "description": "Moorkoenigin/Knochenfuerst/Fahler Hirte/Glockenturm-Golem/Hexenzirkel/Hohler Koenig, groessere Silhouetten, Angriffs-Frames im BossSystem verdrahtet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T09:02:53Z",
+          "by": "build",
+          "text": "todo → doing: Pale-Shepherd-Falten + Wind-up und Boss-Skalierung geprueft."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 39,
+      "title": "M4-05 Tileset 16x16 mit Autotiling, Dekor-Gruppen, Laternen als Lichtquellen",
+      "description": "Moorgras-Varianten, Wege, Moorwasser mit Uferkanten, Steine, tote Baeume, Ruinen, Graeber, Laternenpfaehle; kein Pixelrauschen; Licht/Vignette bleibt.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T09:03:03Z",
+          "by": "build",
+          "text": "todo → doing: Pixel-Terrain neu: ruhige Grasflaechen, Weg heller, weiches Ufer, Dekor-Cluster."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 40,
+      "title": "M4-06 FX/Projektile 12 Waffen, XP-Kristalle, Truhe, Pickups, Icons, 9-Slice-UI, Titelbild+Logo",
+      "description": "Alle Effekt-Texturen hochwertiger, Truhe geschlossen/offen, Pickups, 18 Icons, UI-Rahmen, Titelbild mit Logo.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T09:03:14Z",
+          "by": "build",
+          "text": "todo → doing: FX-Ringe/Zickzack/Coin, Icons und 9-Slice-UI geprueft."
+        },
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 41,
+      "title": "M4-07 Abnahme: Kontaktboegen, In-Game-Shots, art-director-Bericht >=4, perf/verify, GAME.md",
+      "description": "shots/m4-sheet-*.png, shots/m4-*.png (Minute 2/12/22, Boss, Truhe, CharSelect, Titel), m4-art-review.md, perf >=55, verify:terrain + verify:enemies, GAME.md M4.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T10:38:36Z",
+          "by": "coder",
+          "text": "todo → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+        }
+      ],
+      "created": "2026-11-25T06:40:27Z",
+      "updated": "2026-11-25T10:38:36Z"
+    },
+    {
+      "id": 42,
+      "title": "M4b-01 Terrain: Autotiling, organische Regionen, Wasser animiert, Deko-Cluster",
+      "description": "Wang/Blob-Autotiling zwischen Moorgras dunkel/hell, Schlamm, Weg, Wasser; Noise-Felder mit Domain-Warp; Ufer/Schilf/Seerosen/Wellen; Requisiten 32-48px gruppiert mit Schatten; kein 6x6-Bereich ohne Variation.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T10:40:25Z",
+          "by": "build",
+          "text": "todo → doing: Start: Terrain-Rewrite mit Autotiling + organischen Noise-Regionen + Requisiten"
+        },
+        {
+          "at": "2026-11-25T18:48:59Z",
+          "by": "build",
+          "text": "doing → review: M4b-01 umgesetzt: Blob-47-Masken normalisiert, Weg ±2 px mit Aufbruch + 2×2-Kies, Wasserufer/Schaum, Ripples 52 %, Props mit 28/29-Schatten; Chunk-Naht-Blocker gefixt. Belege: shots/m4b-sheet-tiles.png (6×3x), m4b-water.gif (Diff 348–1168), m4b-sheet-props.png. Build/98 Tests/verify:terrain grün. Commit cabc33f."
+        },
+        {
+          "at": "2026-11-25T19:20:37Z",
+          "by": "coder",
+          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-01), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T19:20:37Z"
+    },
+    {
+      "id": 43,
+      "title": "M4b-02 Bruder Kael: klare Silhouette, Kapuze/Tonsur, Kettenbaender, 2 Akzente",
+      "description": "Breite Schultern, Kapuze/Tonsur, Kettengewand als 2-3 klare Baender statt Pixelrauschen, max 2 Akzentfarben, lesbares Gesicht.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-02 umgesetzt: breite Schultern, Kapuze/Tonsur, 3 Kettenbänder, 2 Akzente; Portrait-Lichtkante 8 px, Augensockel 27. Belege: shots/m4b-sheet-chars.png, m4b-kael-dark-6x.png. Commit ade7628."
+        },
+        {
+          "at": "2026-11-25T19:20:37Z",
+          "by": "coder",
+          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-02), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T19:20:37Z"
+    },
+    {
+      "id": 44,
+      "title": "M4b-03 Warme Haut-Rampe fuer alle Menschen (Mira, Kael, Kultisten, Hexen)",
+      "description": "2-3 warme Hautstufen aus Palette statt grau 9/11/12; gilt fuer Mira/Kael-Portraits und menschliche Gegner/Bosse.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-03 umgesetzt: Rampe 16/27/21, 21 nur isolierte 1-px-Lichtkante, shade_edges hellt 21 nicht zu 22 auf, 0 benachbarte 21-Pixel. Beleg: shots/m4b-sheet-skin.png. Commit 196cb17."
+        },
+        {
+          "at": "2026-11-25T19:20:37Z",
+          "by": "coder",
+          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-03), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T19:20:37Z"
+    },
+    {
+      "id": 45,
+      "title": "M4b-04 Boss-Animation + Fahler Hirte + Hohler Koenig neu",
+      "description": "Idle/Atem sichtbar (2px Hub, Glut pulsiert); Fahler Hirte: Umhang/Stab mit Sichel/hageres Gesicht/Wolfsfell; Hohler Koenig: zerschlissener Umhang, schiefe Krone, leere Glutaugen, Thronfragmente.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-04 umgesetzt: 6 Bosse F0/F1/F2 messbar, Fahler Hirte + Hohler König neu. Belege: shots/m4b-sheet-bosses.png (4x), f0f1-6x. Commit d80bac4."
+        },
+        {
+          "at": "2026-11-25T19:20:37Z",
+          "by": "coder",
+          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-04), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T19:20:37Z"
+    },
+    {
+      "id": 46,
+      "title": "M4b-05 Gegner: Silhouetten auf dunklem Grund + Lichtkante fuer dunkle Gegner",
+      "description": "Alle 30 auf dunklem Grund pruefen; Spinne/Kraehe/Wolf/Leerenrufer hellere Lichtkante oben-links.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-05 umgesetzt: 30/30 auf Nightdeep lesbar, Lichtkante für dunkle Gegner, 0 Off-Palette/0 Einzelpixel. Belege: shots/m4b-sheet-enemies-dark.png, m4b-dark-*-f0-dark.png. Commit d0f9df1."
+        },
+        {
+          "at": "2026-11-25T19:20:37Z",
+          "by": "coder",
+          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-05), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T19:20:37Z"
+    },
+    {
+      "id": 47,
+      "title": "M4b-06 Abnahme: m4b-Kontaktboegen/Shots, Art-Review >=4, perf, GAME.md",
+      "description": "shots/m4b-sheet-*.png, m4b-run-minute2/12/22, Boss, Wasserufer; m4b-art-review.md alle Punkte >=4; perf>=55; build+tests+verify gruen; GAME.md Status M4b.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T18:49:06Z",
+          "by": "build",
+          "text": "todo → review: M4b-06 umgesetzt: frische In-Game-Shots (Minute 2/12/22, Boss, Roster, Level-up, Truhe), perf 55.6/56.7 FPS, Art-Review Runde 5 alle 5 Punkte ≥4. Belege: shots/m4b-art-review.md, m4b-run-minute*.png, GAME.md. Commit 578dac3."
+        },
+        {
+          "at": "2026-11-25T19:20:37Z",
+          "by": "coder",
+          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-06), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+        }
+      ],
+      "created": "2026-11-25T10:40:23Z",
+      "updated": "2026-11-25T19:20:37Z"
+    },
+    {
+      "id": 48,
+      "title": "M5-01 VFX-Fundament",
+      "description": "Eigener Partikel-Pool, Frames aus src/gfx/gen-fx.ts, Glow-Halos, Trails, Decals, Lichtquellen; Depth-Ordnung. Tests+Build+Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T19:49:28Z",
+          "by": "build",
+          "text": "todo → doing: gen-fx Frames, ParticleSystem, Depth-Ordnung, LOD/Damage/Mixing-Grundlagen + Tests"
+        },
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: VFX-Fundament committed 212d352 (Lead-Nachprüfung: gen-fx 18 Motive, Pool/LOD live)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 49,
+      "title": "M5-02 Waffen-Effekte (12)",
+      "description": "Alle 6 Basis + 6 Evolutionen mit eigenstaendiger Frame-Animation; Storm gezackt/verzweigt, Frost Kristalle, Flail Smear. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T19:54:00Z",
+          "by": "build",
+          "text": "todo → doing: 12 Waffen-VFX mit Frame-Animationen umgesetzt"
+        },
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: 12 Waffen-Effekte committed db91976 (verify-vfx 18/18, Lead-Sicht Storm/Frost/Flail/Winter/Soul)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 50,
+      "title": "M5-03 Treffer-Feedback",
+      "description": "Hit-Flash, Rückstoß nach Masse, Damage-Numbers (Pool, Krit, Summen), Tod-Effekte 4 Klassen, Screen-Shake-Dosierung, Hit-Stop Bosse. Tests. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T19:55:35Z",
+          "by": "build",
+          "text": "todo → doing: DamageNumbers, Tod-Klassen, Masse-Knockback, Shake/Hit-Stop integriert"
+        },
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: Treffer-Feedback committed d7676b3 (Damage-Numbers, 4 Tod-Klassen, Shake/Hit-Stop)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 51,
+      "title": "M5-04 Ereignis-Inszenierung",
+      "description": "Level-up Lichtsäule, Evolution mit Zeitlupe, Truhe, Boss-Auftritt, Boss-Tod in Stufen, Morgendämmerung. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T19:57:40Z",
+          "by": "build",
+          "text": "todo → doing: Event-Sequenzen: Level-up, Evolution-Zeitlupe, Truhe, Boss-Intro Zoom, Boss-Tod Stufen, Dawn"
+        },
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: Ereignis-Inszenierung committed d240ee2 (Lead-Sicht Boss-Tod-Stufen + Dawn)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 52,
+      "title": "M5-05 Lesbarkeit + LOD",
+      "description": "Before/After shots m12/m25, Projektile/Warnflächen Kontur+Randpuls+Depth, LOD >400 Gegner, XP-Kristalle. Tests. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: Lesbarkeit+LOD committed 2b295c1 (Lead-Paar-Shots m12/m25 bei gleicher Dichte neu erzeugt)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 53,
+      "title": "M5-06 Sound",
+      "description": "scripts/gen_sfx.py, public/sfx WAVs, AudioSystem mit Mixing/Cooldowns/Prioritaet, Musik Run+Boss, window.__lf.audio(). Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T20:01:55Z",
+          "by": "build",
+          "text": "todo → doing: gen_sfx.py, WAVs, AudioSystem, Mixing, Musik-Loops integriert"
+        },
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: Sound committed 48e1edc (Lead: __lf.audio sfxPlayed 14, Run->Boss-Wechsel ok)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 54,
+      "title": "M5-07 Optionen",
+      "description": "Optionen-Menue Titel+Pause, Musik/SFX/Shake, localStorage, Tastatur, __lf.options. Tests. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: Optionen committed cccc4ff (Lead: Musik/SFX/Shake geändert + localStorage-Persistenz ok)"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 55,
+      "title": "M5-08 Abnahme",
+      "description": "verify-vfx 18 GIFs, art-director review >=4, perf, Regressionen, GAME.md Status M5, Board done. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-25T21:22:40Z",
+          "by": "build",
+          "text": "todo → doing: verify-vfx 18/18 grün, Regressionsmessungen laufen, Art-Review R3 läuft"
+        },
+        {
+          "at": "2026-11-25T22:49:17Z",
+          "by": "coder",
+          "text": "done: Abnahme committed 3c4168a; Lead-Messung perf 56,6/56,2 FPS, verify-vfx 18/18, enemies 30/30, bosses 6/6, terrain 0,60, fullrun Sieg (fpsMin 55,4), 123 Tests"
+        }
+      ],
+      "created": "2026-11-25T19:46:37Z",
+      "updated": "2026-11-25T22:49:17Z"
+    },
+    {
+      "id": 56,
+      "title": "menus-01 Meta+Options-Fundament",
+      "description": "Options um Damage-Numbers + Skalierung erweitern (localStorage), Settings-Listener, Integer-Skalierung in main.ts, DamageNumberSystem-Schalter, reine Meta-Logik (Bestzeit/Kills/Level pro Char) + Tests. Abnahme: tsc + gezielte Tests grün.",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-25T22:58:39Z",
+          "by": "build",
+          "text": "todo → doing: Start: Options/Meta/Scale/DamageNumbers-Fundament bauen."
+        },
+        {
+          "at": "2026-11-26T00:02:42.198Z",
+          "by": "coder",
+          "text": "PASS: Options/Meta/Scale/DamageNumbers-Fundament; build + 132 Tests gruen, verify:menus 15/15. reviewer PASS."
+        }
+      ],
+      "created": "2026-11-25T22:58:36Z",
+      "updated": "2026-11-26T00:02:42.198Z"
+    },
+    {
+      "id": 57,
+      "title": "menus-02 Title mit Start/Optionen/Credits",
+      "description": "Titel mit Start/Optionen/Credits, M-Bestwerte, Optionsmenü (6 Zeilen) und Credits-Szene; Tastatur + Maus/Touch, 9-Slice/Pixel-Font. Abnahme: Szenenwechsel erreichbar, zurück, tsc grün.",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T00:02:42.198Z",
+          "by": "coder",
+          "text": "PASS: Titel mit Start/Optionen/Credits + Credits-Szene, Meta, Maus/Tastatur; shots m6-menus-title/options/credits. playtester+ux-check PASS."
+        }
+      ],
+      "created": "2026-11-25T22:58:36Z",
+      "updated": "2026-11-26T00:02:42.198Z"
+    },
+    {
+      "id": 58,
+      "title": "menus-03 Charakterwahl mit Stats/Meta",
+      "description": "Beide Portraits, Stats (HP/Tempo/Ruestung/Bonus), Startwaffe mit Icon, Bestwerte pro Char, Maus/Touch-Karten + Start/Zurueck. Abnahme: tsc + Sichtpruefung.",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T00:02:42.198Z",
+          "by": "coder",
+          "text": "PASS: CharSelect Portraits/Stats/Startwaffe/Meta, Kael-Icon getrennt; Maus + 1/2/Pfeile/Enter/Esc. playtester+ux-check PASS."
+        }
+      ],
+      "created": "2026-11-25T22:58:36Z",
+      "updated": "2026-11-26T00:02:42.198Z"
+    },
+    {
+      "id": 59,
+      "title": "menus-04 Pause Build + Fortsetzen/Aufgeben",
+      "description": "Pause mit Icons+Stufen aller Waffen/Powerups, Fortsetzen/Aufgeben/Optionen per Tastatur+Maus, Run.giveUp -> Results. Abnahme: tsc + gezielte Tests.",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T00:02:42.198Z",
+          "by": "coder",
+          "text": "PASS: Pause Build 6/6 mit Icons/Stufen, Fortsetzen/Optionen/Aufgabe (Maus+Pfeile/Enter/Q), ESC-Optionen bleibt pausiert. playtester+ux-check PASS."
+        }
+      ],
+      "created": "2026-11-25T22:58:36Z",
+      "updated": "2026-11-26T00:02:42.198Z"
+    },
+    {
+      "id": 60,
+      "title": "menus-05 Ergebnis neu/Titel + Meta-Rekord",
+      "description": "Victory/Defeat, Schadenstabelle, NEUE RUNDE / TITEL per Tastatur+Maus/Touch, Meta-Rekord speichern und anzeigen. Abnahme: tsc.",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T00:02:42.198Z",
+          "by": "coder",
+          "text": "PASS: Results Sieg/Niederlage/Aufgabe, Schadenstabelle, NEUE RUNDE/TITEL, Meta-Rekord. Maus + 1/2/Pfeile/Enter/Esc; playtester PASS."
+        }
+      ],
+      "created": "2026-11-25T22:58:36Z",
+      "updated": "2026-11-26T00:02:42.198Z"
+    },
+    {
+      "id": 61,
+      "title": "menus-06 Belege + Lane-Doku",
+      "description": "verify-menus.mjs: Screenshots shots/m6-menus-*.png aller Szenen, Optionen-Reload-Test, 0 JS-Fehler; playtester-Prüfung, docs/lanes/menus.md, .lane-done. Abnahme: build+Tests grün.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-25T23:21:47Z",
+          "by": "build",
+          "text": "todo → doing: Belege/Doku: verify-menus 13/13, playtester+ux-check+reviewer laufen."
+        },
+        {
+          "at": "2026-11-26T00:02:42.198Z",
+          "by": "coder",
+          "text": "PASS: verify:menus 15/15 + 0 JS-Fehler, 12 Screenshots, Options-Reload, 1X-Center. playtester 24/24, ux-check PASS, reviewer PASS, commit-gate PASS."
+        }
+      ],
+      "created": "2026-11-25T22:58:36Z",
+      "updated": "2026-11-26T00:02:42.198Z"
     }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T00:24:40Z"
-  },
-  {
-   "id": 11,
-   "title": "Epic M2: Alle 6 Waffen + Verhalten/VFX",
-   "description": "flail, frost, thorn, storm, lantern mit Stufen 1-8, generisches Framework erweitern, Waffen-Icons.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T03:55:30Z",
-     "by": "coder",
-     "text": "Abnahme durch coder: alle M2-Karten #18-#28 done, verify-weapons 12/12, Tests 61, perf 57,5 FPS; VFX-Lesbarkeit in 2 Fix-Runden + eigener Politur nachgezogen"
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T03:55:30Z"
-  },
-  {
-   "id": 12,
-   "title": "Epic M3: Alle 30 Gegner + Spezialwellen",
-   "description": "Restliche Archetypen (tank/ranged/charger/splitter/exploder/phaser/orbiter/summoner), 30 Sprites+Animationen, Ring-/Schwarmwellen.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "backlog → done: Epic M3 durch #29-#34 abgeschlossen: 30 Gegner, Director, 6 Bosse, Dawn, Abnahme."
-    }
-   ],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 13,
-   "title": "Epic M4: Bosse 5/10/15/20/25 + Truhen + Evolutionen",
-   "description": "5 Bosse, HP-Leiste, Warn-Banner, Truhen-Sequenz, 6 Evolutionen, Boss-Drops.",
-   "column": "backlog",
-   "assignee": "coder",
-   "notes": [],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-24T23:44:35Z"
-  },
-  {
-   "id": 14,
-   "title": "Epic M5: Endboss 30:00, Sieg/Niederlage, Meta (Gold/Shop)",
-   "description": "Hohler König 3 Phasen, Morgendämmerung-Sieg, Results-Ausbau, evtl. Meta-Progression.",
-   "column": "backlog",
-   "assignee": "coder",
-   "notes": [],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-24T23:44:35Z"
-  },
-  {
-   "id": 15,
-   "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
-   "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
-   "column": "backlog",
-   "assignee": "coder",
-   "notes": [],
-   "created": "2026-11-24T23:44:35Z",
-   "updated": "2026-11-24T23:44:35Z"
-  },
-  {
-   "id": 16,
-   "title": "M1-Nachzug: Runtime-Tests (Substep/Pause, UID-Pooling, Spawn außerhalb View)",
-   "description": "Unit-/Integrationstests für: Teilschritt-Abbruch bei Level-up, Projektile mit Spawn-UID über Pool-Recycling, Ring-/spawnOne-Spawns außerhalb camera.worldView, Integer-Scaling. Danach verify-Wall-Clock-Abhängigkeit entschärfen.",
-   "column": "backlog",
-   "assignee": "coder",
-   "notes": [],
-   "created": "2026-11-25T00:24:40Z",
-   "updated": "2026-11-25T00:24:40Z"
-  },
-  {
-   "id": 17,
-   "title": "M1-Fix: Separation bei Deckung + Pause-Spalte bündig",
-   "description": "Deterministischer UID-Fallback (goldener Winkel) in src/logic/separation.ts, 4 Unit-Tests, scripts/separation-check.mjs (minDist 1,68 px, 0 Overlaps). Pause zeigt STUFE rechtsbündig. build/test/perf/verify grün.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [],
-   "created": "2026-11-25T00:32:28Z",
-   "updated": "2026-11-25T00:32:28Z"
-  },
-  {
-   "id": 18,
-   "title": "M2-01 Waffen-Framework + 5 Basen (flail/frost/thorn/storm/lantern) mit VFX",
-   "description": "Gemeinsames Framework, Treffer/FX, alle 8 Stufen, Schaden>0, Screenshots.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:39:44Z",
-     "by": "build",
-     "text": "todo → doing: Start: Framework erweitern"
-    },
-    {
-     "at": "2026-11-25T00:43:44Z",
-     "by": "build",
-     "text": "doing → review: Alle 5 Basen spielbar, 8 Stufen, Schaden>0 (flail 1840, frost 216, thorn 336, storm 4158, lantern), 0 JS-Fehler. Screenshots geprueft; Rand: Hit-Partikel reduziert, Storm/Orbs sichtbarer. Commit aa5a289."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK (2. Runde). 6 Basen mit 8 Stufen + VFX, verify 12/12, Schaden 1400-7100."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 19,
-   "title": "M2-02 Powerups Stufe 1-5 wirken + Tests",
-   "description": "Alle 6 Passives nachweislich auf Stats (Unit-Tests + Debug-Stats).",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:43:44Z",
-     "by": "build",
-     "text": "todo → doing: Tests fuer alle 6 Passives"
-    },
-    {
-     "at": "2026-11-25T00:43:57Z",
-     "by": "build",
-     "text": "doing → review: 42 Tests gruen; je Passive alle Stufen 1-5 gegen effective*-Funktionen geprueft. Commit 4ae078c."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. Powerups 1-5 statsgetestet, 56 Tests gruen."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 20,
-   "title": "M2-03 Evolutionslogik canEvolve/chestRewards + Tests",
-   "description": "Reine Funktionen, Daten, Evolution ersetzt Basiswaffe im Slot.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:43:57Z",
-     "by": "build",
-     "text": "todo → doing: canEvolve/chestRewards + Evolutionswaffen"
-    },
-    {
-     "at": "2026-11-25T00:46:33Z",
-     "by": "build",
-     "text": "doing → review: canEvolve/chestRewards pur + 12 neue Tests (53 gesamt). Alle 6 Evolutionen mit eigenen Effekten, Schaden>0 (Wrath-Bug gefixt: Schaden lief unter flail statt wrath_pendulum). Commit 106a4f1."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. canEvolve/chestRewards getestet, Evolutions-State-Leak gefixt (ba4676d) und im verify-Skript abgesichert."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 21,
-   "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, Öffnungs-Sequenz, Platzhalter-Boss",
-   "description": "openChest/spawnBoss(0), 1/3/5 Belohnungen, Evolution Vorrang, GIF.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:46:33Z",
-     "by": "build",
-     "text": "todo → doing: Chest-System + Sequenz + Boss-Platzhalter"
-    },
-    {
-     "at": "2026-11-25T00:49:57Z",
-     "by": "build",
-     "text": "doing → review: Truhe droppt (Boss-Platzhalter), Glanz, Randpfeil sichtbar/getestet, Sequenz pausiert Run, 5 Slots rollen, Evolution Vorrang. openChest -> phoenix im Slot. GIF shots/m2-chest.gif. 0 JS-Fehler. Commit 58645ec."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. Truhe/Sequenz/GIF, Evolution via Truhe; Roll-/Hide-Timer gefixt."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 22,
-   "title": "M2-05 UI: 16x16-Icons, HUD-Leiste, Pause, Umlaute im Bitmap-Font",
-   "description": "6 Waffen + 6 Powerups + 6 Evolutionen, Level-up/Pause/HUD.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:49:57Z",
-     "by": "build",
-     "text": "todo → doing: Icons + HUD/Pause + Umlaute"
-    },
-    {
-     "at": "2026-11-25T00:54:21Z",
-     "by": "build",
-     "text": "doing → review: 18 Icons 16x16 (Kontur, Palette, Distinktheit validiert), Kontaktbogen geprueft; in Level-up-Karten, HUD-Leiste, Pause (2 Spalten) und Truhen-Slots. Font rendert ÄÖÜäöüß, Texte auf Umlaute umgestellt. 54 Tests, Build gruen. Commit 5e24cb4."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. 18 Icons, HUD/Pause/Levelup/Truhe, echte Umlaute; Font jetzt konsistent versal."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 23,
-   "title": "M2-06 Gras-Kacheln beruhigen + gezielte Dekor-Kacheln",
-   "description": "Weniger Pixelrauschen, ruhige Flächen, gruppierte Deko.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:54:21Z",
-     "by": "build",
-     "text": "todo → doing: Gras beruhigen + Deko gruppiert"
-    },
-    {
-     "at": "2026-11-25T00:56:28Z",
-     "by": "build",
-     "text": "doing → review: Gras ohne Pixelrauschen, Bueschel in 2x2-Bloecken, Deko gruppiert; Screenshots vor/nach Laufen geprueft, 0 JS-Fehler. 54 Tests. Commit 2afd7f5."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. Gras ruhig, gruppierte Bueschel, Screenshots geprueft."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 24,
-   "title": "M2-07 Ergebnis-Screen: Schadenstabelle mit Icons",
-   "description": "Alle Waffen inkl. Evolutionen, sortiert.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:56:28Z",
-     "by": "build",
-     "text": "todo → review: 3-spaltige Schadenstabelle mit Icons, filtert 0, sortiert, max 12; reine damageTable + 2 Tests (56 gesamt). Ergebnisse per skipTo(1800) geprueft. Commit 77f..."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. 3-spaltige Schadenstabelle mit Icons, reine damageTable + Tests."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 25,
-   "title": "M2-08 Abnahme: verify-weapons.mjs, 12 Screenshots, GIF, perf 500+6 Waffen",
-   "description": "Vision-Prüfung aller Shots, Mängel beheben, Messwerte.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T00:56:28Z",
-     "by": "build",
-     "text": "todo → doing: verify-weapons 12 Shots, GIF, perf 500+6"
-    },
-    {
-     "at": "2026-11-25T01:06:21Z",
-     "by": "build",
-     "text": "doing → review: verify-weapons.mjs: 12/12 Waffen Stufe 8, Schaden 1400-9090, 0 JS-Fehler; alle 12 Shots gesichtet. Truhe->Phoenix Evolution bewiesen; GIF 48 Frames 480x270. perf: 56.9 FPS, min 505/avg 575 Gegner, 6 Waffen Stufe 8 (Fx-Cap 360). Bolt-Checkerboard gefixt. Commit e5..."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. verify-weapons 12/12 + evolution-state, GIF, perf 580 Gegner bei 56.6-58.6 FPS, 0 JS-Fehler, alle Shots gesichtet."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 26,
-   "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
-   "description": "Build/Tests grün, offene Punkte ehrlich.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T01:06:21Z",
-     "by": "build",
-     "text": "todo → doing: GAME.md M2-Status"
-    },
-    {
-     "at": "2026-11-25T01:08:59Z",
-     "by": "build",
-     "text": "doing → review: GAME.md Status M2 mit Messwerten (56 Tests, 12/12 Waffen 1400-9090 Schaden, 56.9 FPS bei 505/575 Gegnern) und ehrlichen Luecken (Bso-Platzhalter, 3/30 Gegner, Sound/Meta offen). Commit 2415a5e."
-    },
-    {
-     "at": "2026-11-25T01:21:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer-OK. GAME.md Status M2 mit Messwerten und ehrlichen Luecken."
-    }
-   ],
-   "created": "2026-11-25T00:39:13Z",
-   "updated": "2026-11-25T01:21:43Z"
-  },
-  {
-   "id": 27,
-   "title": "M2-Fix: Abnahme-Artefakte (VFX-Peak-Shots, Evolutions-Panel, volle Slot-Namen)",
-   "description": "verify-weapons Screenshots im FX-Peak via Poll+Pause; Evolutions-Screenshot waehrend Truhen-Panel; Slot-Namen 2-zeilig; GIF neu; build/test/perf.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T02:23:28Z",
-     "by": "build",
-     "text": "doing → review: Umgesetzt: verify-weapons pollt aktive FX-/Projektil-/Orb-/Swing-Keys, pausiert Run fuer Peak-Shots, Timeout=FAIL; Evolutions-Shot per UI-State (EVOLUTION-Slot fertig, Tween abgewartet); Slot-Namen 2-zeilig via slotNameLines (verlustfrei, Tests fuer >22 Zeichen/Mehrwort); m2-chest-longname.png zeigt SEELENLEUCHTFEUER vollstaendig; GIF-Frame mit allen 5 Settle-Namen gesichtet. build grün, 60 Tests, verify passed (failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit 673365b."
-    },
-    {
-     "at": "2026-11-25T02:32:12Z",
-     "by": "build",
-     "text": "review → done: Reviewer 2. Runde: keine Blocker. Findings gefixt: summary zaehlt nur die 12 Waffen-IDs (longName jetzt eigenes Feld), Orb-Poll nur sichtbare Orbs, shotAtSwing mit Level-up-Check + try/finally, evolutionSlotReady prueft chestGroup.visible. Abschluss: build gruen, 60 Tests, verify passed (weapons:12, evolved:true, longName:true, failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit f69ff81."
-    }
-   ],
-   "created": "2026-11-25T01:38:42Z",
-   "updated": "2026-11-25T02:32:12Z"
-  },
-  {
-   "id": 28,
-   "title": "M2-Fix2: Feuervogel-Sprite, Frost-Ring-Shot, Rolltexte",
-   "description": "Phoenix-Projektil als gefluegeltes 13x9-Sprite; frost/eternal_winter Delay 0 + Pixel-Assert; Truhen-Rolltexte via slotNameLines (2 Zeilen, keine Kuerzung); GIF neu; build/test/verify/perf.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T03:09:37Z",
-     "by": "build",
-     "text": "doing → review: Umgesetzt: projectile_phoenix 13x9 mit Fluegeln/Koerper/Schwanz/Auge, 1px Kontur, warme 5-Stufen-Palette; Projektil auf Normal-Blend, Trail bleibt additiv/warm (Hitbox/Schaden unveraendert). frost/eternal_winter/phoenix Delay 0; shotAtFrost misst Ring-Radius aus FX-Scale und Pixel-Assert zaehlt helle Ring-Pixel im Band (274-282). shotAtPhoenix pollt >=2 Voegel 18-90px, Assert. Roll-Callback nutzt slotNameLines, Roll-Frame-Assert. GIF neu. build gruen, 61 Tests, verify passed (failed:[], jsErrors:[], phoenixBirds/frostRingPixels/rollNames true), perf 57,0 FPS bei 580."
-    },
-    {
-     "at": "2026-11-25T03:09:43Z",
-     "by": "build",
-     "text": "review → done: Reviewer: keine Blocker. Empfehlungen umgesetzt: Frost-Assert nutzt gemessenen FX-Radius statt fixem Band, Groessencheck des raw-Buffers; Roll-Frame-Assert (vollstaendige Namen waehrend Rollen); Grid-Palettentest. Final: build gruen, 61 Tests, verify passed (weapons:12, phoenixBirds:true, frostRingPixels:true, rollNames:true, evolved:true, longName:true, failed:[], jsErrors:[]), perf 57,0 FPS bei 580 Gegnern. Commit 137fb18."
-    }
-   ],
-   "created": "2026-11-25T02:51:35Z",
-   "updated": "2026-11-25T03:09:43Z"
-  },
-  {
-   "id": 29,
-   "title": "M3-01 Archetypen-Logik + Skalierungs-/Wellen-/Boss-/Terrain-Helfer + Tests",
-   "description": "Reine Module: enemy-ai (10 Archetypen-State-Machines), scaling (HP/Schaden/Tempo-Kurven), waves special/elite/cap, terrain (Wasser 40%), bosses (Phasen/Schedules), autoplay (Ziel-/Dodge-Priorität). Vitest.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T04:00:25Z",
-     "by": "build",
-     "text": "todo → doing: Implementiere reine Logikmodule + Tests"
-    },
-    {
-     "at": "2026-11-25T05:20:43Z",
-     "by": "build",
-     "text": "doing → review: M3-01 Logikmodule + 22 Tests implementiert (bereits in d9bf8cb); Build/Test gruen."
-    },
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "review → done: M3-01 Logikmodule + Tests: 24 M3-Tests (85 gesamt) gruen, Reviewer-OK."
-    }
-   ],
-   "created": "2026-11-25T03:58:41Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 30,
-   "title": "M3-02 Alle 30 Gegner spielbar + Platzhalter-Sprites + Gegner-Projektile + Warnflächen",
-   "description": "30 eindeutige Silhouetten/Farben, 2 Frames, Hit-Flash, Tod-Partikel. EnemyProjectilePool (klar getrennt vom Spielerfeuer), Telegraph/Warnmarker.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T05:20:43Z",
-     "by": "build",
-     "text": "todo → review: 30 Gegner live, KI-Zustaende, Projektile/Warnflaechen; verify-enemies 30/30 OK, 0 JS-Fehler."
-    },
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "review → done: 30/30 Gegner verifiziert (verify-enemies, Bewegung+Effekte, 0 JS-Fehler); Splitter max. 2 Generationen getestet."
-    }
-   ],
-   "created": "2026-11-25T03:58:41Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 31,
-   "title": "M3-03 Wellen-Director 00-30, Spezialwellen, Elite, Gegner-Cap/Recycling",
-   "description": "Ring-Einkesselung, Schwarm-Ströme, Elite mit Leuchtrand + großer XP-Kristall, max. aktive Gegner, älteste/ferne recyceln.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T05:20:43Z",
-     "by": "build",
-     "text": "todo → review: Director 0-30 mit Ring/Stream/Elite/Cap/Recycling; fullrun 700 Elites, Dichte bis 500."
-    },
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "review → done: Director 0-30, Spezial-/Elite-Wellen, Cap 500 inkl. Boss/Elite-Recycling-Ausschluss; fullrun 694 Elites."
-    }
-   ],
-   "created": "2026-11-25T03:58:41Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 32,
-   "title": "M3-04 6 Bosse mit Mechaniken, HP-Leiste, Warn-Banner, Truhe; Endboss 3 Phasen + Morgendämmerung",
-   "description": "Moorkönigin, Knochenfürst, Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler König. Telegraphing, Boss-HP-Bar, Banner, Chest-Drop, Sieg-Sequenz + Ergebnis Überlebt.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T05:20:43Z",
-     "by": "build",
-     "text": "todo → review: 6 Bosse + HP-Leiste/Banner/Truhen; verify-bosses 6/6 OK, Endboss 3 Phasen, Dawn-Sieg im fullrun."
-    },
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "review → done: 6/6 Bosse verifiziert (verify-bosses, Truhen, Endboss-Phasen 1/2/3, Boss-JSON); Dawn-Sieg im fullrun."
-    }
-   ],
-   "created": "2026-11-25T03:58:41Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 33,
-   "title": "M3-05 Moorwasser-Slow + ganzzahlige Skalierung <960px + autoPlay-Bot",
-   "description": "Wasser verlangsamt Spieler+Gegner 40% mit Spritzern; 1x-Rand bei kleinen Fenstern, Glyphen sichtbar; Bot kitet, meidet Projektile/Warnflächen, sammelt XP, wählt Level-ups nach Priorität.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T05:20:43Z",
-     "by": "build",
-     "text": "todo → review: Wasser-Slow + 1x-Rand <960 (800er Screenshot) + Bot-Prioritaeten; Regressionen gruen."
-    },
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "review → done: Wasser-Slow getestet, 1x-Rand bei 800px gesichtet, Bot-Prioritaeten; Reviewer-OK."
-    }
-   ],
-   "created": "2026-11-25T03:58:41Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 34,
-   "title": "M3-06 Abnahme: verify-enemies, verify-bosses, fullrun, perf, GAME.md Status M3",
-   "description": "Headless-Skripte mit OK/FAIL-Zeilen, Screenshots/GIFs, fullrun-JSON; perf Minute 25 >=55 FPS; GAME.md Status + Bericht.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T05:20:43Z",
-     "by": "build",
-     "text": "todo → review: verify-enemies/bosses/fullrun/perf + GAME.md Status M3 mit JSON; Messwerte dokumentiert."
-    },
-    {
-     "at": "2026-11-25T05:38:53Z",
-     "by": "build",
-     "text": "review → done: verify-enemies/bosses/fullrun/perf + GAME.md M3-Status mit JSON; Build/85 Tests gruen, Reviewer-OK nach 2 Fixrunden."
-    }
-   ],
-   "created": "2026-11-25T03:58:41Z",
-   "updated": "2026-11-25T05:38:53Z"
-  },
-  {
-   "id": 35,
-   "title": "M4-01 ART.md + Art-Pipeline (lib.py, gen.py, contact.py) + 3 Referenz-Assets",
-   "description": "Stil-Leitfaden mit Rampen, Kontur, Proportionen, Licht, Animationslängen. Python-Pipeline (pure-python PNG), Asset-Server-Client, Kontaktbogen-Tool. Referenzen: Mira, Irrlicht, Laternenpfahl; art-director-Noten dokumentiert.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T09:02:25Z",
-     "by": "build",
-     "text": "todo → doing: Art-Pipeline + ART.md fertig, Referenz-Assets erzeugt."
-    },
-    {
-     "at": "2026-11-25T10:40:25Z",
-     "by": "build",
-     "text": "doing → done: M4-01 war faktisch fertig (ART.md, lib.py, gen.py, contact.py, Referenzen); Board-Nachlauf."
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:40:25Z"
-  },
-  {
-   "id": 36,
-   "title": "M4-02 Spielfiguren: Mira + Kael, Lauf 4 Frames x 4 Richtungen, Idle 2, Hit, Portrait 48x48",
-   "description": "32px hoch, 4-Dir-Lauf, Spiegelung fuer Seite, Idle, Treffer-Frame, CharSelect-Portraits. Integration in Run/CharSelect, Offsets anpassen.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T09:02:34Z",
-     "by": "build",
-     "text": "todo → doing: Laufzyklus mit echter Beinphase + Arm/Laterne-Schwung geprueft."
-    },
-    {
-     "at": "2026-11-25T10:38:36Z",
-     "by": "coder",
-     "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:38:36Z"
-  },
-  {
-   "id": 37,
-   "title": "M4-03 30 Gegner: 2-4 Lauf-Frames, Tod-Effekt, Tier-Farbcodes, Elite-Leuchtrand",
-   "description": "16-32px nach Tier, eindeutige Silhouetten, 3+ Schattierungsstufen, Kontur, Tod-Puff je Gegnerfarbe; Elite via Rim.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T09:02:47Z",
-     "by": "build",
-     "text": "todo → doing: 30 Gegner-Silhouetten ueberarbeitet (mudling/slime/abom/treant/wraith/voidcaller)."
-    },
-    {
-     "at": "2026-11-25T10:38:36Z",
-     "by": "coder",
-     "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:38:36Z"
-  },
-  {
-   "id": 38,
-   "title": "M4-04 6 Bosse 48-96px mit Wind-up-/Angriffs-Frames passend zu bosses.ts",
-   "description": "Moorkoenigin/Knochenfuerst/Fahler Hirte/Glockenturm-Golem/Hexenzirkel/Hohler Koenig, groessere Silhouetten, Angriffs-Frames im BossSystem verdrahtet.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T09:02:53Z",
-     "by": "build",
-     "text": "todo → doing: Pale-Shepherd-Falten + Wind-up und Boss-Skalierung geprueft."
-    },
-    {
-     "at": "2026-11-25T10:38:36Z",
-     "by": "coder",
-     "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:38:36Z"
-  },
-  {
-   "id": 39,
-   "title": "M4-05 Tileset 16x16 mit Autotiling, Dekor-Gruppen, Laternen als Lichtquellen",
-   "description": "Moorgras-Varianten, Wege, Moorwasser mit Uferkanten, Steine, tote Baeume, Ruinen, Graeber, Laternenpfaehle; kein Pixelrauschen; Licht/Vignette bleibt.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T09:03:03Z",
-     "by": "build",
-     "text": "todo → doing: Pixel-Terrain neu: ruhige Grasflaechen, Weg heller, weiches Ufer, Dekor-Cluster."
-    },
-    {
-     "at": "2026-11-25T10:38:36Z",
-     "by": "coder",
-     "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:38:36Z"
-  },
-  {
-   "id": 40,
-   "title": "M4-06 FX/Projektile 12 Waffen, XP-Kristalle, Truhe, Pickups, Icons, 9-Slice-UI, Titelbild+Logo",
-   "description": "Alle Effekt-Texturen hochwertiger, Truhe geschlossen/offen, Pickups, 18 Icons, UI-Rahmen, Titelbild mit Logo.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T09:03:14Z",
-     "by": "build",
-     "text": "todo → doing: FX-Ringe/Zickzack/Coin, Icons und 9-Slice-UI geprueft."
-    },
-    {
-     "at": "2026-11-25T10:38:36Z",
-     "by": "coder",
-     "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:38:36Z"
-  },
-  {
-   "id": 41,
-   "title": "M4-07 Abnahme: Kontaktboegen, In-Game-Shots, art-director-Bericht >=4, perf/verify, GAME.md",
-   "description": "shots/m4-sheet-*.png, shots/m4-*.png (Minute 2/12/22, Boss, Truhe, CharSelect, Titel), m4-art-review.md, perf >=55, verify:terrain + verify:enemies, GAME.md M4.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T10:38:36Z",
-     "by": "coder",
-     "text": "todo → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
-    }
-   ],
-   "created": "2026-11-25T06:40:27Z",
-   "updated": "2026-11-25T10:38:36Z"
-  },
-  {
-   "id": 42,
-   "title": "M4b-01 Terrain: Autotiling, organische Regionen, Wasser animiert, Deko-Cluster",
-   "description": "Wang/Blob-Autotiling zwischen Moorgras dunkel/hell, Schlamm, Weg, Wasser; Noise-Felder mit Domain-Warp; Ufer/Schilf/Seerosen/Wellen; Requisiten 32-48px gruppiert mit Schatten; kein 6x6-Bereich ohne Variation.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T10:40:25Z",
-     "by": "build",
-     "text": "todo → doing: Start: Terrain-Rewrite mit Autotiling + organischen Noise-Regionen + Requisiten"
-    },
-    {
-     "at": "2026-11-25T18:48:59Z",
-     "by": "build",
-     "text": "doing → review: M4b-01 umgesetzt: Blob-47-Masken normalisiert, Weg ±2 px mit Aufbruch + 2×2-Kies, Wasserufer/Schaum, Ripples 52 %, Props mit 28/29-Schatten; Chunk-Naht-Blocker gefixt. Belege: shots/m4b-sheet-tiles.png (6×3x), m4b-water.gif (Diff 348–1168), m4b-sheet-props.png. Build/98 Tests/verify:terrain grün. Commit cabc33f."
-    },
-    {
-     "at": "2026-11-25T19:20:37Z",
-     "by": "coder",
-     "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-01), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
-    }
-   ],
-   "created": "2026-11-25T10:40:23Z",
-   "updated": "2026-11-25T19:20:37Z"
-  },
-  {
-   "id": 43,
-   "title": "M4b-02 Bruder Kael: klare Silhouette, Kapuze/Tonsur, Kettenbaender, 2 Akzente",
-   "description": "Breite Schultern, Kapuze/Tonsur, Kettengewand als 2-3 klare Baender statt Pixelrauschen, max 2 Akzentfarben, lesbares Gesicht.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T18:49:06Z",
-     "by": "build",
-     "text": "todo → review: M4b-02 umgesetzt: breite Schultern, Kapuze/Tonsur, 3 Kettenbänder, 2 Akzente; Portrait-Lichtkante 8 px, Augensockel 27. Belege: shots/m4b-sheet-chars.png, m4b-kael-dark-6x.png. Commit ade7628."
-    },
-    {
-     "at": "2026-11-25T19:20:37Z",
-     "by": "coder",
-     "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-02), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
-    }
-   ],
-   "created": "2026-11-25T10:40:23Z",
-   "updated": "2026-11-25T19:20:37Z"
-  },
-  {
-   "id": 44,
-   "title": "M4b-03 Warme Haut-Rampe fuer alle Menschen (Mira, Kael, Kultisten, Hexen)",
-   "description": "2-3 warme Hautstufen aus Palette statt grau 9/11/12; gilt fuer Mira/Kael-Portraits und menschliche Gegner/Bosse.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T18:49:06Z",
-     "by": "build",
-     "text": "todo → review: M4b-03 umgesetzt: Rampe 16/27/21, 21 nur isolierte 1-px-Lichtkante, shade_edges hellt 21 nicht zu 22 auf, 0 benachbarte 21-Pixel. Beleg: shots/m4b-sheet-skin.png. Commit 196cb17."
-    },
-    {
-     "at": "2026-11-25T19:20:37Z",
-     "by": "coder",
-     "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-03), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
-    }
-   ],
-   "created": "2026-11-25T10:40:23Z",
-   "updated": "2026-11-25T19:20:37Z"
-  },
-  {
-   "id": 45,
-   "title": "M4b-04 Boss-Animation + Fahler Hirte + Hohler Koenig neu",
-   "description": "Idle/Atem sichtbar (2px Hub, Glut pulsiert); Fahler Hirte: Umhang/Stab mit Sichel/hageres Gesicht/Wolfsfell; Hohler Koenig: zerschlissener Umhang, schiefe Krone, leere Glutaugen, Thronfragmente.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T18:49:06Z",
-     "by": "build",
-     "text": "todo → review: M4b-04 umgesetzt: 6 Bosse F0/F1/F2 messbar, Fahler Hirte + Hohler König neu. Belege: shots/m4b-sheet-bosses.png (4x), f0f1-6x. Commit d80bac4."
-    },
-    {
-     "at": "2026-11-25T19:20:37Z",
-     "by": "coder",
-     "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-04), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
-    }
-   ],
-   "created": "2026-11-25T10:40:23Z",
-   "updated": "2026-11-25T19:20:37Z"
-  },
-  {
-   "id": 46,
-   "title": "M4b-05 Gegner: Silhouetten auf dunklem Grund + Lichtkante fuer dunkle Gegner",
-   "description": "Alle 30 auf dunklem Grund pruefen; Spinne/Kraehe/Wolf/Leerenrufer hellere Lichtkante oben-links.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T18:49:06Z",
-     "by": "build",
-     "text": "todo → review: M4b-05 umgesetzt: 30/30 auf Nightdeep lesbar, Lichtkante für dunkle Gegner, 0 Off-Palette/0 Einzelpixel. Belege: shots/m4b-sheet-enemies-dark.png, m4b-dark-*-f0-dark.png. Commit d0f9df1."
-    },
-    {
-     "at": "2026-11-25T19:20:37Z",
-     "by": "coder",
-     "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-05), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
-    }
-   ],
-   "created": "2026-11-25T10:40:23Z",
-   "updated": "2026-11-25T19:20:37Z"
-  },
-  {
-   "id": 47,
-   "title": "M4b-06 Abnahme: m4b-Kontaktboegen/Shots, Art-Review >=4, perf, GAME.md",
-   "description": "shots/m4b-sheet-*.png, m4b-run-minute2/12/22, Boss, Wasserufer; m4b-art-review.md alle Punkte >=4; perf>=55; build+tests+verify gruen; GAME.md Status M4b.",
-   "column": "done",
-   "assignee": "coder",
-   "notes": [
-    {
-     "at": "2026-11-25T18:49:06Z",
-     "by": "build",
-     "text": "todo → review: M4b-06 umgesetzt: frische In-Game-Shots (Minute 2/12/22, Boss, Roster, Level-up, Truhe), perf 55.6/56.7 FPS, Art-Review Runde 5 alle 5 Punkte ≥4. Belege: shots/m4b-art-review.md, m4b-run-minute*.png, GAME.md. Commit 578dac3."
-    },
-    {
-     "at": "2026-11-25T19:20:37Z",
-     "by": "coder",
-     "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-06), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
-    }
-   ],
-   "created": "2026-11-25T10:40:23Z",
-   "updated": "2026-11-25T19:20:37Z"
-  },
-  {
-   "id": 48,
-   "title": "M5-01 VFX-Fundament",
-   "description": "Eigener Partikel-Pool, Frames aus src/gfx/gen-fx.ts, Glow-Halos, Trails, Decals, Lichtquellen; Depth-Ordnung. Tests+Build+Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T19:49:28Z",
-     "by": "build",
-     "text": "todo → doing: gen-fx Frames, ParticleSystem, Depth-Ordnung, LOD/Damage/Mixing-Grundlagen + Tests"
-    },
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: VFX-Fundament committed 212d352 (Lead-Nachprüfung: gen-fx 18 Motive, Pool/LOD live)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 49,
-   "title": "M5-02 Waffen-Effekte (12)",
-   "description": "Alle 6 Basis + 6 Evolutionen mit eigenstaendiger Frame-Animation; Storm gezackt/verzweigt, Frost Kristalle, Flail Smear. Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T19:54:00Z",
-     "by": "build",
-     "text": "todo → doing: 12 Waffen-VFX mit Frame-Animationen umgesetzt"
-    },
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: 12 Waffen-Effekte committed db91976 (verify-vfx 18/18, Lead-Sicht Storm/Frost/Flail/Winter/Soul)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 50,
-   "title": "M5-03 Treffer-Feedback",
-   "description": "Hit-Flash, Rückstoß nach Masse, Damage-Numbers (Pool, Krit, Summen), Tod-Effekte 4 Klassen, Screen-Shake-Dosierung, Hit-Stop Bosse. Tests. Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T19:55:35Z",
-     "by": "build",
-     "text": "todo → doing: DamageNumbers, Tod-Klassen, Masse-Knockback, Shake/Hit-Stop integriert"
-    },
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: Treffer-Feedback committed d7676b3 (Damage-Numbers, 4 Tod-Klassen, Shake/Hit-Stop)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 51,
-   "title": "M5-04 Ereignis-Inszenierung",
-   "description": "Level-up Lichtsäule, Evolution mit Zeitlupe, Truhe, Boss-Auftritt, Boss-Tod in Stufen, Morgendämmerung. Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T19:57:40Z",
-     "by": "build",
-     "text": "todo → doing: Event-Sequenzen: Level-up, Evolution-Zeitlupe, Truhe, Boss-Intro Zoom, Boss-Tod Stufen, Dawn"
-    },
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: Ereignis-Inszenierung committed d240ee2 (Lead-Sicht Boss-Tod-Stufen + Dawn)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 52,
-   "title": "M5-05 Lesbarkeit + LOD",
-   "description": "Before/After shots m12/m25, Projektile/Warnflächen Kontur+Randpuls+Depth, LOD >400 Gegner, XP-Kristalle. Tests. Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: Lesbarkeit+LOD committed 2b295c1 (Lead-Paar-Shots m12/m25 bei gleicher Dichte neu erzeugt)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 53,
-   "title": "M5-06 Sound",
-   "description": "scripts/gen_sfx.py, public/sfx WAVs, AudioSystem mit Mixing/Cooldowns/Prioritaet, Musik Run+Boss, window.__lf.audio(). Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T20:01:55Z",
-     "by": "build",
-     "text": "todo → doing: gen_sfx.py, WAVs, AudioSystem, Mixing, Musik-Loops integriert"
-    },
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: Sound committed 48e1edc (Lead: __lf.audio sfxPlayed 14, Run->Boss-Wechsel ok)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 54,
-   "title": "M5-07 Optionen",
-   "description": "Optionen-Menue Titel+Pause, Musik/SFX/Shake, localStorage, Tastatur, __lf.options. Tests. Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: Optionen committed cccc4ff (Lead: Musik/SFX/Shake geändert + localStorage-Persistenz ok)"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  },
-  {
-   "id": 55,
-   "title": "M5-08 Abnahme",
-   "description": "verify-vfx 18 GIFs, art-director review >=4, perf, Regressionen, GAME.md Status M5, Board done. Commit.",
-   "column": "done",
-   "notes": [
-    {
-     "at": "2026-11-25T21:22:40Z",
-     "by": "build",
-     "text": "todo → doing: verify-vfx 18/18 grün, Regressionsmessungen laufen, Art-Review R3 läuft"
-    },
-    {
-     "at": "2026-11-25T22:49:17Z",
-     "by": "coder",
-     "text": "done: Abnahme committed 3c4168a; Lead-Messung perf 56,6/56,2 FPS, verify-vfx 18/18, enemies 30/30, bosses 6/6, terrain 0,60, fullrun Sieg (fpsMin 55,4), 123 Tests"
-    }
-   ],
-   "created": "2026-11-25T19:46:37Z",
-   "updated": "2026-11-25T22:49:17Z"
-  }
- ]
+  ]
 }
