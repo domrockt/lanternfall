@@ -40,21 +40,37 @@ function readWav(file: string): { sr: number; samples: number[] } {
   return { sr, samples };
 }
 
-function fft(x: number[]): number[] {
-  const n = x.length;
-  if (n <= 1) return x;
-  const even = fft(x.filter((_, i) => i % 2 === 0));
-  const odd = fft(x.filter((_, i) => i % 2 === 1));
-  const out = new Array<number>(n);
-  for (let k = 0; k < n / 2; k++) {
-    const re = Math.cos((-2 * Math.PI * k) / n);
-    const im = Math.sin((-2 * Math.PI * k) / n);
-    const or = odd[k] * re - 0 * im;
-    const oi = odd[k] * im + 0 * re;
-    out[k] = even[k] + or;
-    out[k + n / 2] = even[k] - or;
-    void oi;
+/** Iterative Cooley-Tukey-FFT (in-place). Liefert Amplitudenspektrum. */
+function amplitudeSpectrum(samples: number[]): number[] {
+  const n = samples.length;
+  const re = Float64Array.from(samples);
+  const im = new Float64Array(n);
+  for (let i = 1, j = 0; i < n; i++) {
+    let bit = n >> 1;
+    for (; j & bit; bit >>= 1) j ^= bit;
+    j ^= bit;
+    if (i < j) {
+      [re[i], re[j]] = [re[j], re[i]];
+      [im[i], im[j]] = [im[j], im[i]];
+    }
   }
+  for (let len = 2; len <= n; len <<= 1) {
+    const ang = (-2 * Math.PI) / len;
+    for (let i = 0; i < n; i += len) {
+      for (let k = 0; k < len / 2; k++) {
+        const wr = Math.cos(ang * k);
+        const wi = Math.sin(ang * k);
+        const ur = re[i + k]; const ui = im[i + k];
+        const vr = re[i + k + len / 2]; const vi = im[i + k + len / 2];
+        const tr = vr * wr - vi * wi;
+        const ti = vr * wi + vi * wr;
+        re[i + k] = ur + tr; im[i + k] = ui + ti;
+        re[i + k + len / 2] = ur - tr; im[i + k + len / 2] = ui - ti;
+      }
+    }
+  }
+  const out = new Array<number>(n / 2);
+  for (let i = 0; i < n / 2; i++) out[i] = Math.hypot(re[i], im[i]);
   return out;
 }
 
@@ -65,7 +81,7 @@ function bandEnergies(samples: number[], center = 0.5): number[] {
   const seg = samples.slice(start, start + size);
   while (seg.length < size) seg.push(0);
   const win = seg.map((s, i) => s * (0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (size - 1))));
-  const spec = fft(win).slice(0, size / 2).map(Math.abs);
+  const spec = amplitudeSpectrum(win);
   const total = spec.reduce((a, b) => a + b, 0) || 1e-9;
   const edges = [0, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048];
   return edges.slice(0, -1).map((a, i) => spec.slice(a, edges[i + 1]).reduce((s, v) => s + v, 0) / total);
@@ -88,7 +104,8 @@ function pitchTrend(samples: number[], sr: number): "rising" | "falling" | "flat
     const size = 1024;
     const s = seg.slice(0, size);
     while (s.length < size) s.push(0);
-    const spec = fft(s).slice(0, size / 2).map(Math.abs);
+    const win = s.map((v, i) => v * (0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (size - 1))));
+    const spec = amplitudeSpectrum(win);
     const total = spec.reduce((a, b) => a + b, 0) || 1e-9;
     const binHz = sr / size;
     return spec.reduce((acc, v, i) => acc + i * binHz * v, 0) / total;

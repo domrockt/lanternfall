@@ -136,7 +136,7 @@ def sfx() -> None:
     # Frostnova: gläserner Triangle-Sweep um 4,5 kHz (Bänder 8 + 4).
     write_wav("sfx_frost.wav", mix(
         tone(4600, 4400, 0.33, triangle, 0.26, attack=0.008, release=0.18),
-        tone(300, 260, 0.28, triangle, 0.14, release=0.16),
+        tone(300, 260, 0.28, triangle, 0.20, release=0.16),
     ))
     # Dornensalve: nasaler Triangle-Stich (Bänder 3 + 6).
     write_wav("sfx_thorn.wav", concat(
@@ -152,23 +152,23 @@ def sfx() -> None:
     # Geisterlaterne: Glockenklang (Bänder 7 + 9), kein Rauschen.
     write_wav("sfx_lantern.wav", mix(
         tone(4300, 4150, 0.36, triangle, 0.26, release=0.22, vibrato=0.02),
-        tone(129, 125, 0.36, triangle, 0.26, sustain=0.4, release=0.18),
+        tone(129, 125, 0.36, triangle, 0.32, sustain=0.4, release=0.18),
     ))
     # ── 6 Evolutions-Stinger: 0,6–1,0 s, Aufwärts-Glissando ────────────────
     # Phönixschwarm: feuriges Triangle-Glissando Band 8→9 + rauer Anlauf Band 3.
     write_wav("sfx_phoenix.wav", mix(
         tone(5600, 9800, 0.82, triangle, 0.24, attack=0.01, sustain=0.5, release=0.25),
-        tone(230, 230, 0.82, triangle, 0.30, sustain=0.4, release=0.25),
+        tone(230, 230, 0.82, triangle, 0.26, sustain=0.4, release=0.25),
     ))
     # Zornpendel: metallisches Triangle-Glissando Band 2→3.
     write_wav("sfx_wrath.wav", mix(
-        tone(72, 150, 0.72, triangle, 0.32, attack=0.015, sustain=0.5, release=0.2),
-        tone(1200, 1200, 0.72, triangle, 0.10, sustain=0.3, release=0.2),
+        tone(90, 250, 0.72, triangle, 0.30, attack=0.015, sustain=0.5, release=0.2),
+        tone(700, 700, 0.72, triangle, 0.16, sustain=0.35, release=0.2),
     ))
     # Ewiger Winter: eisiges Triangle-Glissando Band 8→9 + Fundament Band 6.
     write_wav("sfx_winter.wav", mix(
-        tone(7200, 14800, 0.90, triangle, 0.24, attack=0.02, sustain=0.45, release=0.3),
-        tone(760, 760, 0.90, triangle, 0.30, sustain=0.4, release=0.3),
+        tone(3000, 6000, 0.90, triangle, 0.18, attack=0.02, sustain=0.45, release=0.3),
+        tone(760, 760, 0.90, triangle, 0.55, sustain=0.4, release=0.3),
     ))
     # Dornensturm: schmaler Triangle-Wirbel Band 5→6.
     write_wav("sfx_thornstorm.wav", mix(
