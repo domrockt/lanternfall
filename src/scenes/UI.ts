@@ -88,6 +88,9 @@ export class UI extends Phaser.Scene {
     this.run = this.scene.get("run") as Run;
     this.viewW = GAME_WIDTH;
     this.viewH = GAME_HEIGHT;
+    // Nach scene.restart() ist das Overlay neu/unsichtbar; der alte Merker
+    // wuerde sonst ein erneutes refreshPause() verhindern (Softlock).
+    this.lastPauseShown = false;
     this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
 
     // HUD-Leiste oben (volle aktuelle View-Breite).
@@ -112,6 +115,9 @@ export class UI extends Phaser.Scene {
     this.createChestUI();
     this.createBossUI();
     this.options = new OptionsMenu(this, 125, () => {});
+    // M8: Nach einem Resize-Restart die offene Truhe rekonstruieren, sonst
+    // bleibt Run.chestOpen ohne UI-Timer fuer immer true (Softlock).
+    if (this.run.chestOpen && this.run.chestResult) this.onChestOpen(this.run.chestResult);
     // M8-input: Touch-Overlay liegt über allen Menüs und liefert den Joystick-Vektor
     // an die globale TouchState (vom Run gelesen). Der Pause-Puls wird dort von Run
     // über InputState entgegengenommen.
@@ -537,7 +543,8 @@ export class UI extends Phaser.Scene {
     }
 
     const pauseVisible = s.paused && !s.levelUpOpen && !s.chestOpen;
-    if (pauseVisible !== this.lastPauseShown) {
+    // Auch ein sichtbarkeits-Drift (z. B. nach Restart) repariert den Zustand.
+    if (pauseVisible !== this.lastPauseShown || pauseVisible !== this.pauseGroup.visible) {
       this.lastPauseShown = pauseVisible;
       this.refreshPause();
       if (!pauseVisible && this.options.visible) this.options.close();
