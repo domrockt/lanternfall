@@ -71,7 +71,10 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 let idx = 0;
 const started = Date.now();
 async function capture(ms = SEG_MS) {
-  while (Date.now() - started < ms) {
+  // Zeitfenster ab Capture-Start, nicht ab Seitenstart (sonst laufen lange
+  // Setup-Phasen wie runTo in das 4,5-s-Fenster und es entstehen 0 Frames).
+  const capStart = Date.now();
+  while (Date.now() - capStart < ms) {
     await page.screenshot({ path: `${dir}/${String(idx).padStart(3, "0")}.png` });
     idx += 1;
     await page.waitForTimeout(FRAME_MS);
