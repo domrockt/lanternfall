@@ -14,10 +14,26 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 
 const canvasCss = () => page.evaluate(() => {
   const c = window.__game.canvas;
-  return { w: Number.parseFloat(c.style.width), h: Number.parseFloat(c.style.height) };
+  const r = c.getBoundingClientRect();
+  return {
+    w: Number.parseFloat(c.style.width), h: Number.parseFloat(c.style.height),
+    deviceW: Math.round(r.width * window.devicePixelRatio),
+    deviceH: Math.round(r.height * window.devicePixelRatio),
+    innerW: window.__game.scale.width, innerH: window.__game.scale.height,
+    dpr: window.devicePixelRatio,
+  };
 });
-const scaleOk = (css) =>
-  Number.isInteger(css.w / 480) && Number.isInteger(css.h / 270) && css.w / 480 === css.h / 270 && css.w >= 480;
+/** M8: 360p-View, ganzzahlig n x n Geraetepixel; n<2 = gebrochener Fit-Rueckfall. */
+const scaleOk = (c, vw, vh) => {
+  if (c.innerH !== 360) return false;
+  const dw = Math.round(vw * c.dpr);
+  const dh = Math.round(vh * c.dpr);
+  const maxN = Math.floor(Math.min(dh / 360, dw / 480));
+  if (maxN < 2) return c.innerW === 480 && c.deviceW <= dw + 1;
+  const n = maxN;
+  const width = Math.min(860, Math.max(480, Math.round(dw / n)), Math.floor(dw / n));
+  return c.innerW === width && Math.abs(c.deviceW - width * n) <= 1 && Math.abs(c.deviceH - 360 * n) <= 1;
+};
 
 let result = null;
 try {
@@ -28,7 +44,13 @@ try {
     await page.setViewportSize({ width: w, height: h });
     await page.waitForTimeout(150);
     const css = await canvasCss();
-    sizes.push({ viewport: `${w}x${h}`, canvas: `${css.w}x${css.h}`, scale: css.w / 480, ok: scaleOk(css) });
+    sizes.push({
+      viewport: `${w}x${h}`,
+      canvas: `${css.w}x${css.h}`,
+      internal: `${css.innerW}x${css.innerH}`,
+      device: `${css.deviceW}x${css.deviceH}`,
+      ok: scaleOk(css, w, h),
+    });
   }
 
   // Tab-Pause: visibilitychange wie im echten Browser ausloesen (hidden ->

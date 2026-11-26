@@ -1683,49 +1683,71 @@
       "id": 93,
       "title": "m8-display view-02 HUD + Run-Overlays an View verankert",
       "description": "UI.ts HUD/Level-up/Pause/Truhe/Boss/Banner an aktuelle view-Groesse (linke/rechte/obere/untere Raender, Mitte); Run Vignette/Dawn-Baender an View; Resize relayout ohne abgeschnittene Elemente. Abnahme: Screenshots 640x360 und 780x360 Level-up/Pause/HUD ohne Cutoff, tsc+Tests gruen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-26T10:24:58Z",
           "by": "build",
           "text": "todo → doing: Start view-02: HUD/Overlays verankern, Resize-Relayout"
+        },
+        {
+          "at": "2026-11-26T10:30:45Z",
+          "by": "build",
+          "text": "doing → review: Commit 5f117d5; Build+Tests 184/184; shots m8-hud/levelup 640+780"
         }
       ],
       "created": "2026-11-26T10:22:23Z",
-      "updated": "2026-11-26T10:24:58Z"
+      "updated": "2026-11-26T10:30:45Z"
     },
     {
       "id": 94,
       "title": "m8-display view-03 Menue-Szenen + Touch an View",
       "description": "Title/CharSelect/Results/Credits/OptionsMenu und TouchControls an dynamische View (Titelbild fuellt Breite, Panels zentriert, kein Cutoff, Portrait-Hinweis); Resize baut Menues sauber neu. Abnahme: shots je Szene in 640x360 und 780x360, Touch-Joystick/Pause oben rechts korrekt, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-26T10:28:00Z",
           "by": "build",
           "text": "todo → doing: Start view-03: Menü-Szenen + Touch an View, Manifest/Vollbild"
+        },
+        {
+          "at": "2026-11-26T10:30:45Z",
+          "by": "build",
+          "text": "doing → review: Commit ee5b0bc; Build+Tests 184/184; Menü-Shots 640+780, 0 JS"
         }
       ],
       "created": "2026-11-26T10:22:23Z",
-      "updated": "2026-11-26T10:28:00Z"
+      "updated": "2026-11-26T10:30:45Z"
     },
     {
       "id": 95,
       "title": "m8-display spawn-01 Spawn/Recycling relativ zur sichtbaren Flaeche",
       "description": "Spawner/BossSystem/Recycle-Abstand aus camera.width/height statt 480x270-Annahmen; Ring knapp ausserhalb der Flaeche; maxActiveEnemies dichte-neutral zur Flaeche; reine Helfer + Tests. Abnahme: Unit-Tests, spawn ausserhalb View bei 640 und 780, tsc+Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-26T10:30:45Z",
+          "by": "build",
+          "text": "todo → review: Commit 9bd9f1e; Tests 190/190; spawn/recycle/dichte view-relativ"
+        }
+      ],
       "created": "2026-11-26T10:22:23Z",
-      "updated": "2026-11-26T10:22:23Z"
+      "updated": "2026-11-26T10:30:45Z"
     },
     {
       "id": 96,
       "title": "m8-display balance-01 Rebalancing 640x360 und 780x360",
       "description": "balance.mjs viewport-Parameter; Spawnrate/Sichtdichte so, dass breite Formate nicht leerer wirken; Zielkorridore M6 (Ueberleben 20-28, Level 25-40@30, Bosse 20-60s, keine tote Waffe) fuer 640 und 780 messen und justieren. Abnahme: shots/balance-*.json + docs/lanes/m8-display.md Tabelle; balance-check PASS.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T10:30:45Z",
+          "by": "build",
+          "text": "todo → doing: Start balance-01: balance.mjs Viewport-Parameter + Messungen 640/780"
+        }
+      ],
       "created": "2026-11-26T10:22:23Z",
-      "updated": "2026-11-26T10:22:23Z"
+      "updated": "2026-11-26T10:30:45Z"
     },
     {
       "id": 97,

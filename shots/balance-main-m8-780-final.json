@@ -1,0 +1,149 @@
+{
+  "mode": "main",
+  "scale": 30,
+  "viewport": {
+    "width": 780,
+    "height": 360
+  },
+  "dpr": 3,
+  "generatedAt": "2026-11-26T11:23:27.374Z",
+  "runs": [
+    {
+      "seed": 101,
+      "character": "mira",
+      "outcome": "timeout",
+      "deathMinute": 0.1,
+      "level": 1,
+      "kills": 0,
+      "evolutions": [],
+      "bossDurations": [],
+      "passed": {
+        "survivalMinutes": 0.1,
+        "levelAtEnd": 1,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    },
+    {
+      "seed": 101,
+      "character": "kael",
+      "outcome": "timeout",
+      "deathMinute": 0.1,
+      "level": 1,
+      "kills": 0,
+      "evolutions": [],
+      "bossDurations": [],
+      "passed": {
+        "survivalMinutes": 0.1,
+        "levelAtEnd": 1,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    },
+    {
+      "seed": 202,
+      "character": "mira",
+      "outcome": "timeout",
+      "deathMinute": 0.1,
+      "level": 1,
+      "kills": 0,
+      "evolutions": [],
+      "bossDurations": [],
+      "passed": {
+        "survivalMinutes": 0.1,
+        "levelAtEnd": 1,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    },
+    {
+      "seed": 202,
+      "character": "kael",
+      "outcome": "timeout",
+      "deathMinute": 0.1,
+      "level": 1,
+      "kills": 0,
+      "evolutions": [],
+      "bossDurations": [],
+      "passed": {
+        "survivalMinutes": 0.1,
+        "levelAtEnd": 1,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    },
+    {
+      "seed": 404,
+      "character": "mira",
+      "outcome": "timeout",
+      "deathMinute": 0.1,
+      "level": 1,
+      "kills": 0,
+      "evolutions": [],
+      "bossDurations": [],
+      "passed": {
+        "survivalMinutes": 0.1,
+        "levelAtEnd": 1,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    },
+    {
+      "seed": 404,
+      "character": "kael",
+      "outcome": "timeout",
+      "deathMinute": 0.1,
+      "level": 1,
+      "kills": 0,
+      "evolutions": [],
+      "bossDurations": [],
+      "passed": {
+        "survivalMinutes": 0.1,
+        "levelAtEnd": 1,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    }
+  ],
+  "deathRuns": [],
+  "weapons": [],
+  "jsErrors": [
+    "mira/101: RangeError: Maximum call stack size exceeded",
+    "kael/101: RangeError: Maximum call stack size exceeded",
+    "mira/202: RangeError: Maximum call stack size exceeded",
+    "kael/202: RangeError: Maximum call stack size exceeded",
+    "mira/404: RangeError: Maximum call stack size exceeded",
+    "kael/404: RangeError: Maximum call stack size exceeded"
+  ],
+  "allRunsPass": false
+}
