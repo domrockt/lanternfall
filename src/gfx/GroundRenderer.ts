@@ -3,6 +3,7 @@ import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
+import { PAL } from "../palette";
 
 interface Ripple {
   img: Phaser.GameObjects.Image;
@@ -29,6 +30,21 @@ interface ReadyChunk {
   cy: number;
   key: string;
   bitmap: ImageBitmap;
+}
+
+interface Firefly {
+  img: Phaser.GameObjects.Image;
+  baseX: number;
+  baseY: number;
+  phase: number;
+  speed: number;
+}
+
+interface FogBank {
+  img: Phaser.GameObjects.Image;
+  baseX: number;
+  baseY: number;
+  phase: number;
 }
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
@@ -96,6 +112,9 @@ export class GroundRenderer {
   private readonly ready: ReadyChunk[] = [];
   /** Sync-Fallback (kein Worker): höchstens ein Chunk pro Frame. */
   private syncBudget = 1;
+  private fireflies: Firefly[] = [];
+  private fogBanks: FogBank[] = [];
+  private ambientReady = false;
 
   constructor(scene: Phaser.Scene, seed: number) {
     this.scene = scene;
@@ -119,6 +138,7 @@ export class GroundRenderer {
     } catch {
       this.worker = null;
     }
+    this.ensureAmbient();
   }
 
   /** Worker-Start/-Lauf fehlgeschlagen → wieder synchron auf dem Main-Thread. */
@@ -195,6 +215,109 @@ export class GroundRenderer {
     }
     this.lastCx = minCx;
     this.lastCy = minCy;
+    this.updatePropsDepth();
+    this.updateAmbient(camera, timeMs);
+  }
+
+  private updatePropsDepth(): void {
+    const player = (this.scene as unknown as { player?: Phaser.GameObjects.Container }).player;
+    const py = player?.y;
+    if (py === undefined) return;
+    for (const entry of this.chunks.values()) {
+      for (const p of entry.props) {
+        if (p.getData("isShadow")) {
+          p.setDepth(11.15);
+          continue;
+        }
+        const footY = p.getData("footY") as number | undefined;
+        if (footY === undefined) continue;
+        const glow = p.getData("glow") ? 0.06 : 0;
+        p.setDepth(footY < py ? 11.6 + glow : 12.4 + glow);
+      }
+    }
+  }
+
+  private ensureAmbient(): void {
+    if (this.ambientReady) return;
+    this.ambientReady = true;
+    const tex = this.scene.textures;
+    if (!tex.exists("m9_ambient_glow")) {
+      const glowCanvas = tex.createCanvas("m9_ambient_glow", 11, 11);
+      if (glowCanvas) {
+        const ctx = glowCanvas.getContext();
+        const g = ctx.createRadialGradient(5.5, 5.5, 0, 5.5, 5.5, 5.5);
+        g.addColorStop(0, "rgba(255,238,176,1)");
+        g.addColorStop(0.45, "rgba(255,215,122,0.55)");
+        g.addColorStop(1, "rgba(255,215,122,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 11, 11);
+        glowCanvas.refresh();
+      }
+    }
+    if (!tex.exists("m9_ambient_fog")) {
+      const fogCanvas = tex.createCanvas("m9_ambient_fog", 128, 64);
+      if (fogCanvas) {
+        const ctx = fogCanvas.getContext();
+        const g = ctx.createRadialGradient(64, 32, 4, 64, 32, 62);
+        g.addColorStop(0, "rgba(255,255,255,0.20)");
+        g.addColorStop(0.6, "rgba(255,255,255,0.09)");
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 128, 64);
+        fogCanvas.refresh();
+      }
+    }
+
+    for (let i = 0; i < 24; i++) {
+      const img = this.scene.add.image(0, 0, "m9_ambient_glow")
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setTint(PAL[21])
+        .setDepth(-89.6)
+        .setAlpha(0);
+      img.setScale(0.7 + tileHash(i, 3, this.seed + 601) * 0.9);
+      this.fireflies.push({
+        img,
+        baseX: tileHash(i, 7, this.seed + 603),
+        baseY: tileHash(11, i, this.seed + 607),
+        phase: tileHash(i, 13, this.seed + 611) * 6.28,
+        speed: 0.6 + tileHash(i, 19, this.seed + 617) * 0.9,
+      });
+    }
+    for (let i = 0; i < 3; i++) {
+      const img = this.scene.add.image(0, 0, "m9_ambient_fog")
+        .setScrollFactor(0)
+        .setTint(PAL[6])
+        .setDepth(-89.85)
+        .setAlpha(0);
+      img.setScale(2.2 + i * 0.55);
+      this.fogBanks.push({
+        img,
+        baseX: 0.2 + i * 0.3,
+        baseY: 0.55 + (i % 2) * 0.2,
+        phase: i * 2.1,
+      });
+    }
+  }
+
+  /** Ambient je Frame: Glühwürmchen umisen, Nebel drif (bildschirmverankert). */
+  private updateAmbient(camera: Phaser.Cameras.Scene2D.Camera, timeMs: number): void {
+    const t = timeMs * 0.001;
+    for (const f of this.fireflies) {
+      const x = camera.scrollX + f.baseX * camera.width
+        + Math.sin(t * f.speed * 0.55 + f.phase) * 14;
+      const y = camera.scrollY + f.baseY * camera.height
+        + Math.cos(t * f.speed * 0.7 + f.phase) * 9;
+      f.img.setPosition(Math.round(x), Math.round(y));
+      const pulse = 0.5 + 0.5 * Math.sin(t * 1.6 + f.phase * 3);
+      f.img.setAlpha(0.16 + pulse * 0.34);
+    }
+    for (const b of this.fogBanks) {
+      b.img.setPosition(
+        Math.round(b.baseX * camera.width + Math.sin(t * 0.055 + b.phase) * 46),
+        Math.round(b.baseY * camera.height + Math.cos(t * 0.04 + b.phase) * 8),
+      );
+      b.img.setAlpha(0.055 + 0.03 * Math.sin(t * 0.12 + b.phase));
+    }
   }
 
   /** Terrain an einer Weltposition (für Wasser-Slow und Spritzer). */
@@ -303,8 +426,19 @@ export class GroundRenderer {
   ): void {
     if (!PROP_KEYS.has(key) || !this.scene.textures.exists(key)) return;
     const img = this.scene.add.image(wx, wy, key).setOrigin(0.5, 1);
-    img.setDepth(-90 + Math.min(0.9, wy / 100000));
     img.setFlipX(flip);
+    img.setData("footY", wy);
+    // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
+    if (this.scene.textures.exists("shadow")) {
+      const sw = Math.max(0.7, Math.min(4, img.width / 16));
+      const shadow = this.scene.add.image(wx, wy - 1, "shadow")
+        .setOrigin(0.5, 0.5)
+        .setScale(sw, 0.85)
+        .setAlpha(0.62)
+        .setDepth(-90.5 + Math.min(0.85, wy * 0.00002));
+      shadow.setData("isShadow", true);
+      props.push(shadow);
+    }
     if (tinted) img.setAlpha(0.92);
     props.push(img);
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
@@ -314,6 +448,8 @@ export class GroundRenderer {
         .setScale(0.42)
         .setAlpha(0.22)
         .setDepth(-89.5);
+      glow.setData("footY", wy);
+      glow.setData("glow", true);
       props.push(glow);
     }
   }
@@ -425,6 +561,10 @@ export class GroundRenderer {
     }
     this.chunks.clear();
     this.ripples.length = 0;
+    for (const f of this.fireflies) f.img.destroy();
+    for (const b of this.fogBanks) b.img.destroy();
+    this.fireflies.length = 0;
+    this.fogBanks.length = 0;
   }
 
   get lastMinChunk(): { x: number; y: number } {

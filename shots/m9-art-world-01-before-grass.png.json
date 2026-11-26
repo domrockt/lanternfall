@@ -1,0 +1,22 @@
+{
+  "url": "http://127.0.0.1:5650/?debug=1",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "teleport",
+      "args": [
+        1000,
+        1000
+      ]
+    }
+  ],
+  "out": "shots/m9-art-world-01-before-grass.png",
+  "gif": null,
+  "jsErrors": []
+}
