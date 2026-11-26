@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 97,
+  "next": 101,
   "cards": [
     {
       "id": 1,
@@ -1796,6 +1796,44 @@
       ],
       "created": "2026-11-26T10:36:13Z",
       "updated": "2026-11-26T10:52:38Z"
+    },
+    {
+      "id": 98,
+      "title": "m9-perf-heap-01 Messwerkzeug: scripts/perf-heap.mjs (CDP-Snapshots, Delta, Top-5, GC)",
+      "description": "Akzeptanz: scripts/perf-heap.mjs startet headless (debug/seed, autoPlay, timeScale 30), nimmt Start- und Ende-Heap-Snapshot via CDP, schreibt shots/perf-heap.json mit Delta %, Top-5-Konstruktoren und GC-Zahl. Zwei Laeufe hintereinander: Delta-Abweichung < 10 %. Belege (JSON) im Karten-Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-26T11:21:45Z",
+          "by": "build",
+          "text": "todo → doing: Gestartet; Heap-Messung laeuft ohne flock (Supervisor-Regel), Smoke-Test 2 min."
+        },
+        {
+          "at": "2026-11-26T11:21:45Z",
+          "by": "build",
+          "text": "[Supervisor] bestaetigt: Heap-Messung ohne /home/ai/games/.lf-perf.lock, laeuft direkt mit timeout 600."
+        }
+      ],
+      "created": "2026-11-26T11:21:42Z",
+      "updated": "2026-11-26T11:21:45Z"
+    },
+    {
+      "id": 99,
+      "title": "m9-perf-heap-02 Leck oder Streuung entscheiden (3-Laeufe-Median)",
+      "description": "Akzeptanz: Mit perf-heap.mjs 3 Laeufe (Median) und --expose-gc-Vergleich entschieden, ob JS-Objekt-Leak (Objektquelle im Snapshot benannt) oder GC-/Host-Streuung. Ursache + Zahl in docs/lanes/perf-heap.md. Beide Roh-JSONs im Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T11:21:42Z",
+      "updated": "2026-11-26T11:21:42Z"
+    },
+    {
+      "id": 100,
+      "title": "m9-perf-heap-03 Senkung oder blocked mit Median-Beleg",
+      "description": "Akzeptanz: Nur bei belegtem Leak kleinste Aenderung an systems/Pool.ts/EnemyPool/ProjectilePool/DamageNumbers, danach Delta erneut messen: <=15 % im 30-min-Lauf, FPS-Burst >=55, 0 JS-Fehler. Bei reiner Streuung: Karte blocked mit 3-Laeufe-Median als Beleg, kein Codeumbau.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T11:21:42Z",
+      "updated": "2026-11-26T11:21:42Z"
     }
   ]
 }
