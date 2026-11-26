@@ -46,4 +46,8 @@ und Abschluss.
 - Korrektur: ferne Huegel als dunkle Silhouette (Palette 2) mit 1-px-Nebelkante (5)
   auf dem Nachthimmel (4); Mond-Halo bleibt als harte, unterbrochene Pixelringe.
 - Kriterien: 1 harte Pixelringe PASS, 2 klare Horizontkante PASS, 3 kein dunkler
-  Mond-Rand PASS. art-director-Urteil: (siehe naechster Abschnitt).
+  Mond-Rand PASS.
+- art-director-Urteil (#319): **4,2/5**. Alle drei Kriterien klar erfuellt; Abzug nur
+  fuer den noch leicht weichen Kern-Glow und die etwas zu regelmaessige Kreisform der
+  aeusseren Ringe. 0 JS-Fehler im Shot-Lauf.
+- Offener Punkt: Ringform/Kern-Glow beim Gesamturteil in #322 erneut pruefen.
