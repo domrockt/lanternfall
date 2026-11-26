@@ -1764,11 +1764,17 @@
       "id": 95,
       "title": "qa-03 Gesamtlauf: build/test/count/verify:final/perf",
       "description": "Abnahme: npm run build gruen, npm test mit Testzahl, acceptance-count 30/6/6/6/6/2, verify:final + perf mit flock/Timeout; alle Werte mit Zeitstempel und Abweichung >=5% gegen ACCEPTANCE.md (59,3 FPS Burst, 56,4 FPS Minute 25, 147 Tests) markiert in docs/qa/<datum>.md; ein Commit mit #qa-03.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T10:43:44Z",
+          "by": "build",
+          "text": "todo → doing: Start: build/test/count, dann verify:final und perf (flock)"
+        }
+      ],
       "created": "2026-11-26T10:36:13Z",
-      "updated": "2026-11-26T10:36:13Z"
+      "updated": "2026-11-26T10:43:44Z"
     },
     {
       "id": 96,

@@ -169,3 +169,17 @@ Nachträge, Restmängel).
   SKALIERUNG-Klickposition — Test korrigiert (`de22ecb`), danach 15/15 PASS. Kein Spielbug.
 - `verify-weapons`-Check `chest-roll-names` ist timing-flaky (1× FAIL bei hoher Last, Wiederholung
   12/12 PASS); Beleg `shots/m2-chest.gif`.
+
+## Nachtrag — unabhängige QA-Nachabnahme 2026-11-26 (nach M7-Tooling und M8-input)
+
+Belege und Befehle: `docs/qa/2026-11-26.md`. Zwei belegte Zahlenabweichungen
+gegenüber den M6-Werten oben (>= 5 %):
+
+- **Tests:** `npm test` → **175** grün statt 147 (**+19,0 %**). Ursache: die M8-input-Lane
+  (#83–#87) hat reine Eingabelogik-Tests ergänzt; keine roten Tests.
+- **perf Minute 25:** **59,3 FPS** (gemessen, roh 58,9) statt 56,4 (**+5,1 %**, positiv,
+  Host-Streuung). Burst unverändert **59,3 FPS** (roh 59,9). `verify:final` **7/7 PASS**,
+  `acceptance-count` **30/6/6/6/6/2**, 0 JS-Fehler.
+
+Der übrige M6-Stand (A1–A12) bleibt unverändert gültig; die Board-Hygiene (#13/#14/#16/#79
+auf done) ist in `docs/qa/2026-11-26.md` belegt.
