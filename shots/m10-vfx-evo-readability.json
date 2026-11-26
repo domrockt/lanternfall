@@ -1,0 +1,1288 @@
+{
+  "meta": {
+    "baseSha": "f26dc4b",
+    "crop": {
+      "x": 360,
+      "y": 160,
+      "width": 240,
+      "height": 220
+    },
+    "nearWhiteDef": "min(R,G,B) >= 200",
+    "targetPct": 4.16
+  },
+  "effects": {
+    "phoenix": {
+      "kind": "evolution",
+      "weapon": "phoenix",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-phoenix.png",
+      "nearWhitePct": 4.75,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-phoenix.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 342,
+          "kills": 87,
+          "time": 1.4
+        },
+        {
+          "i": 1,
+          "enemies": 341,
+          "kills": 161,
+          "time": 1.6
+        },
+        {
+          "i": 2,
+          "enemies": 342,
+          "kills": 189,
+          "time": 1.8
+        },
+        {
+          "i": 3,
+          "enemies": 341,
+          "kills": 241,
+          "time": 2.1
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 261,
+          "time": 2.3
+        },
+        {
+          "i": 5,
+          "enemies": 341,
+          "kills": 310,
+          "time": 2.5
+        },
+        {
+          "i": 6,
+          "enemies": 341,
+          "kills": 357,
+          "time": 2.7
+        },
+        {
+          "i": 7,
+          "enemies": 341,
+          "kills": 386,
+          "time": 2.9
+        },
+        {
+          "i": 8,
+          "enemies": 341,
+          "kills": 430,
+          "time": 3
+        },
+        {
+          "i": 9,
+          "enemies": 325,
+          "kills": 457,
+          "time": 3.2
+        },
+        {
+          "i": 10,
+          "enemies": 341,
+          "kills": 487,
+          "time": 3.5
+        },
+        {
+          "i": 11,
+          "enemies": 342,
+          "kills": 515,
+          "time": 3.7
+        },
+        {
+          "i": 12,
+          "enemies": 341,
+          "kills": 562,
+          "time": 3.9
+        },
+        {
+          "i": 13,
+          "enemies": 322,
+          "kills": 600,
+          "time": 4.2
+        },
+        {
+          "i": 14,
+          "enemies": 342,
+          "kills": 639,
+          "time": 4.5
+        },
+        {
+          "i": 15,
+          "enemies": 341,
+          "kills": 652,
+          "time": 4.7
+        }
+      ]
+    },
+    "wrath_pendulum": {
+      "kind": "evolution",
+      "weapon": "wrath_pendulum",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-wrath_pendulum.png",
+      "nearWhitePct": 1.98,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-wrath_pendulum.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 275,
+          "kills": 359,
+          "time": 1.4
+        },
+        {
+          "i": 1,
+          "enemies": 341,
+          "kills": 387,
+          "time": 1.6
+        },
+        {
+          "i": 2,
+          "enemies": 341,
+          "kills": 387,
+          "time": 1.8
+        },
+        {
+          "i": 3,
+          "enemies": 299,
+          "kills": 573,
+          "time": 2
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 644,
+          "time": 2.3
+        },
+        {
+          "i": 5,
+          "enemies": 340,
+          "kills": 645,
+          "time": 2.4
+        },
+        {
+          "i": 6,
+          "enemies": 340,
+          "kills": 645,
+          "time": 2.6
+        },
+        {
+          "i": 7,
+          "enemies": 305,
+          "kills": 877,
+          "time": 2.8
+        },
+        {
+          "i": 8,
+          "enemies": 342,
+          "kills": 929,
+          "time": 3.1
+        },
+        {
+          "i": 9,
+          "enemies": 342,
+          "kills": 929,
+          "time": 3.2
+        },
+        {
+          "i": 10,
+          "enemies": 294,
+          "kills": 1148,
+          "time": 3.4
+        },
+        {
+          "i": 11,
+          "enemies": 341,
+          "kills": 1217,
+          "time": 3.7
+        },
+        {
+          "i": 12,
+          "enemies": 340,
+          "kills": 1218,
+          "time": 3.9
+        },
+        {
+          "i": 13,
+          "enemies": 286,
+          "kills": 1468,
+          "time": 4.1
+        },
+        {
+          "i": 14,
+          "enemies": 341,
+          "kills": 1539,
+          "time": 4.4
+        },
+        {
+          "i": 15,
+          "enemies": 341,
+          "kills": 1539,
+          "time": 4.6
+        }
+      ]
+    },
+    "eternal_winter": {
+      "kind": "evolution",
+      "weapon": "eternal_winter",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-eternal_winter.png",
+      "nearWhitePct": 1.54,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-eternal_winter.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 342,
+          "kills": 234,
+          "time": 1.4
+        },
+        {
+          "i": 1,
+          "enemies": 342,
+          "kills": 234,
+          "time": 1.7
+        },
+        {
+          "i": 2,
+          "enemies": 341,
+          "kills": 302,
+          "time": 1.8
+        },
+        {
+          "i": 3,
+          "enemies": 338,
+          "kills": 321,
+          "time": 2.1
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 405,
+          "time": 2.3
+        },
+        {
+          "i": 5,
+          "enemies": 341,
+          "kills": 470,
+          "time": 2.6
+        },
+        {
+          "i": 6,
+          "enemies": 341,
+          "kills": 470,
+          "time": 2.9
+        },
+        {
+          "i": 7,
+          "enemies": 341,
+          "kills": 530,
+          "time": 3.2
+        },
+        {
+          "i": 8,
+          "enemies": 340,
+          "kills": 588,
+          "time": 3.4
+        },
+        {
+          "i": 9,
+          "enemies": 341,
+          "kills": 606,
+          "time": 3.7
+        },
+        {
+          "i": 10,
+          "enemies": 341,
+          "kills": 653,
+          "time": 4
+        },
+        {
+          "i": 11,
+          "enemies": 341,
+          "kills": 679,
+          "time": 4.3
+        },
+        {
+          "i": 12,
+          "enemies": 341,
+          "kills": 718,
+          "time": 4.6
+        },
+        {
+          "i": 13,
+          "enemies": 340,
+          "kills": 744,
+          "time": 4.9
+        },
+        {
+          "i": 14,
+          "enemies": 341,
+          "kills": 767,
+          "time": 5.2
+        },
+        {
+          "i": 15,
+          "enemies": 341,
+          "kills": 798,
+          "time": 5.5
+        }
+      ]
+    },
+    "thorn_storm": {
+      "kind": "evolution",
+      "weapon": "thorn_storm",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-thorn_storm.png",
+      "nearWhitePct": 3.71,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-thorn_storm.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 334,
+          "kills": 273,
+          "time": 1.3
+        },
+        {
+          "i": 1,
+          "enemies": 317,
+          "kills": 449,
+          "time": 1.6
+        },
+        {
+          "i": 2,
+          "enemies": 323,
+          "kills": 537,
+          "time": 1.9
+        },
+        {
+          "i": 3,
+          "enemies": 328,
+          "kills": 706,
+          "time": 2.2
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 767,
+          "time": 2.5
+        },
+        {
+          "i": 5,
+          "enemies": 311,
+          "kills": 964,
+          "time": 2.7
+        },
+        {
+          "i": 6,
+          "enemies": 338,
+          "kills": 1042,
+          "time": 3
+        },
+        {
+          "i": 7,
+          "enemies": 306,
+          "kills": 1250,
+          "time": 3.3
+        },
+        {
+          "i": 8,
+          "enemies": 341,
+          "kills": 1341,
+          "time": 3.6
+        },
+        {
+          "i": 9,
+          "enemies": 313,
+          "kills": 1535,
+          "time": 3.9
+        },
+        {
+          "i": 10,
+          "enemies": 342,
+          "kills": 1622,
+          "time": 4.2
+        },
+        {
+          "i": 11,
+          "enemies": 312,
+          "kills": 1812,
+          "time": 4.5
+        },
+        {
+          "i": 12,
+          "enemies": 339,
+          "kills": 1889,
+          "time": 4.8
+        },
+        {
+          "i": 13,
+          "enemies": 311,
+          "kills": 2043,
+          "time": 5.1
+        },
+        {
+          "i": 14,
+          "enemies": 340,
+          "kills": 2154,
+          "time": 5.4
+        },
+        {
+          "i": 15,
+          "enemies": 342,
+          "kills": 2223,
+          "time": 5.6
+        }
+      ]
+    },
+    "thunder_seal": {
+      "kind": "evolution",
+      "weapon": "thunder_seal",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-thunder_seal.png",
+      "nearWhitePct": 2.8,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-thunder_seal.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 341,
+          "kills": 24,
+          "time": 1.4
+        },
+        {
+          "i": 1,
+          "enemies": 341,
+          "kills": 24,
+          "time": 1.6
+        },
+        {
+          "i": 2,
+          "enemies": 341,
+          "kills": 24,
+          "time": 1.8
+        },
+        {
+          "i": 3,
+          "enemies": 340,
+          "kills": 25,
+          "time": 2
+        },
+        {
+          "i": 4,
+          "enemies": 340,
+          "kills": 25,
+          "time": 2.2
+        },
+        {
+          "i": 5,
+          "enemies": 340,
+          "kills": 25,
+          "time": 2.4
+        },
+        {
+          "i": 6,
+          "enemies": 341,
+          "kills": 49,
+          "time": 2.6
+        },
+        {
+          "i": 7,
+          "enemies": 340,
+          "kills": 50,
+          "time": 2.9
+        },
+        {
+          "i": 8,
+          "enemies": 340,
+          "kills": 50,
+          "time": 3.1
+        },
+        {
+          "i": 9,
+          "enemies": 340,
+          "kills": 50,
+          "time": 3.2
+        },
+        {
+          "i": 10,
+          "enemies": 340,
+          "kills": 50,
+          "time": 3.4
+        },
+        {
+          "i": 11,
+          "enemies": 340,
+          "kills": 50,
+          "time": 3.6
+        },
+        {
+          "i": 12,
+          "enemies": 342,
+          "kills": 51,
+          "time": 3.8
+        },
+        {
+          "i": 13,
+          "enemies": 342,
+          "kills": 75,
+          "time": 4
+        },
+        {
+          "i": 14,
+          "enemies": 342,
+          "kills": 75,
+          "time": 4.2
+        },
+        {
+          "i": 15,
+          "enemies": 342,
+          "kills": 75,
+          "time": 4.5
+        }
+      ]
+    },
+    "soul_beacon": {
+      "kind": "evolution",
+      "weapon": "soul_beacon",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-soul_beacon.png",
+      "nearWhitePct": 3.91,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-soul_beacon.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 336,
+          "kills": 180,
+          "time": 1.4
+        },
+        {
+          "i": 1,
+          "enemies": 341,
+          "kills": 220,
+          "time": 1.6
+        },
+        {
+          "i": 2,
+          "enemies": 341,
+          "kills": 247,
+          "time": 1.8
+        },
+        {
+          "i": 3,
+          "enemies": 340,
+          "kills": 272,
+          "time": 2.1
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 302,
+          "time": 2.3
+        },
+        {
+          "i": 5,
+          "enemies": 341,
+          "kills": 328,
+          "time": 2.5
+        },
+        {
+          "i": 6,
+          "enemies": 338,
+          "kills": 350,
+          "time": 2.7
+        },
+        {
+          "i": 7,
+          "enemies": 341,
+          "kills": 367,
+          "time": 2.9
+        },
+        {
+          "i": 8,
+          "enemies": 338,
+          "kills": 390,
+          "time": 3.1
+        },
+        {
+          "i": 9,
+          "enemies": 341,
+          "kills": 411,
+          "time": 3.3
+        },
+        {
+          "i": 10,
+          "enemies": 339,
+          "kills": 429,
+          "time": 3.5
+        },
+        {
+          "i": 11,
+          "enemies": 339,
+          "kills": 455,
+          "time": 3.8
+        },
+        {
+          "i": 12,
+          "enemies": 340,
+          "kills": 481,
+          "time": 4.1
+        },
+        {
+          "i": 13,
+          "enemies": 339,
+          "kills": 509,
+          "time": 4.4
+        },
+        {
+          "i": 14,
+          "enemies": 339,
+          "kills": 534,
+          "time": 4.7
+        },
+        {
+          "i": 15,
+          "enemies": 336,
+          "kills": 556,
+          "time": 4.9
+        }
+      ]
+    },
+    "event-chest": {
+      "kind": "event",
+      "trigger": "__lf.event(\"chest\")",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-chest.png",
+      "nearWhitePct": 3.67,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-chest.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 340,
+          "kills": 0,
+          "time": 0.9
+        },
+        {
+          "i": 1,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.1
+        },
+        {
+          "i": 2,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.3
+        },
+        {
+          "i": 3,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 4,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 5,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 6,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 7,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 8,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 9,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 10,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 11,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 12,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 13,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 14,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 15,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.4
+        }
+      ]
+    },
+    "event-levelup": {
+      "kind": "event",
+      "trigger": "__lf.event(\"levelup\")",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-levelup.png",
+      "nearWhitePct": 2.1,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-levelup.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 340,
+          "kills": 0,
+          "time": 0.7
+        },
+        {
+          "i": 1,
+          "enemies": 340,
+          "kills": 0,
+          "time": 0.9
+        },
+        {
+          "i": 2,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.1
+        },
+        {
+          "i": 3,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.3
+        },
+        {
+          "i": 4,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.5
+        },
+        {
+          "i": 5,
+          "enemies": 340,
+          "kills": 0,
+          "time": 1.7
+        },
+        {
+          "i": 6,
+          "enemies": 342,
+          "kills": 1,
+          "time": 1.9
+        },
+        {
+          "i": 7,
+          "enemies": 342,
+          "kills": 1,
+          "time": 2.1
+        },
+        {
+          "i": 8,
+          "enemies": 342,
+          "kills": 1,
+          "time": 2.3
+        },
+        {
+          "i": 9,
+          "enemies": 342,
+          "kills": 1,
+          "time": 2.5
+        },
+        {
+          "i": 10,
+          "enemies": 342,
+          "kills": 1,
+          "time": 2.7
+        },
+        {
+          "i": 11,
+          "enemies": 341,
+          "kills": 2,
+          "time": 2.9
+        },
+        {
+          "i": 12,
+          "enemies": 341,
+          "kills": 2,
+          "time": 3.1
+        },
+        {
+          "i": 13,
+          "enemies": 341,
+          "kills": 2,
+          "time": 3.3
+        },
+        {
+          "i": 14,
+          "enemies": 341,
+          "kills": 2,
+          "time": 3.4
+        },
+        {
+          "i": 15,
+          "enemies": 341,
+          "kills": 2,
+          "time": 3.6
+        }
+      ]
+    },
+    "event-bossIntro": {
+      "kind": "event",
+      "trigger": "__lf.event(\"bossIntro\")",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-bossIntro.png",
+      "nearWhitePct": 1.49,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-bossIntro.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 341,
+          "kills": 0,
+          "time": 0.8
+        },
+        {
+          "i": 1,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1
+        },
+        {
+          "i": 2,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1.1
+        },
+        {
+          "i": 3,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1.3
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1.5
+        },
+        {
+          "i": 5,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1.7
+        },
+        {
+          "i": 6,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1.9
+        },
+        {
+          "i": 7,
+          "enemies": 340,
+          "kills": 1,
+          "time": 2
+        },
+        {
+          "i": 8,
+          "enemies": 340,
+          "kills": 1,
+          "time": 2.2
+        },
+        {
+          "i": 9,
+          "enemies": 340,
+          "kills": 1,
+          "time": 2.4
+        },
+        {
+          "i": 10,
+          "enemies": 340,
+          "kills": 1,
+          "time": 2.6
+        },
+        {
+          "i": 11,
+          "enemies": 340,
+          "kills": 1,
+          "time": 2.8
+        },
+        {
+          "i": 12,
+          "enemies": 342,
+          "kills": 2,
+          "time": 3
+        },
+        {
+          "i": 13,
+          "enemies": 342,
+          "kills": 2,
+          "time": 3.2
+        },
+        {
+          "i": 14,
+          "enemies": 342,
+          "kills": 2,
+          "time": 3.3
+        },
+        {
+          "i": 15,
+          "enemies": 342,
+          "kills": 2,
+          "time": 3.6
+        }
+      ]
+    },
+    "event-bossDeath": {
+      "kind": "event",
+      "trigger": "__lf.event(\"bossDeath\")",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-bossDeath.png",
+      "nearWhitePct": 2.19,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-bossDeath.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 340,
+          "kills": 1,
+          "time": 0.6
+        },
+        {
+          "i": 1,
+          "enemies": 340,
+          "kills": 1,
+          "time": 0.8
+        },
+        {
+          "i": 2,
+          "enemies": 342,
+          "kills": 2,
+          "time": 1
+        },
+        {
+          "i": 3,
+          "enemies": 342,
+          "kills": 2,
+          "time": 1.2
+        },
+        {
+          "i": 4,
+          "enemies": 342,
+          "kills": 2,
+          "time": 1.4
+        },
+        {
+          "i": 5,
+          "enemies": 342,
+          "kills": 2,
+          "time": 1.6
+        },
+        {
+          "i": 6,
+          "enemies": 342,
+          "kills": 2,
+          "time": 1.8
+        },
+        {
+          "i": 7,
+          "enemies": 341,
+          "kills": 3,
+          "time": 2
+        },
+        {
+          "i": 8,
+          "enemies": 341,
+          "kills": 3,
+          "time": 2.1
+        },
+        {
+          "i": 9,
+          "enemies": 341,
+          "kills": 3,
+          "time": 2.3
+        },
+        {
+          "i": 10,
+          "enemies": 341,
+          "kills": 3,
+          "time": 2.5
+        },
+        {
+          "i": 11,
+          "enemies": 341,
+          "kills": 3,
+          "time": 2.7
+        },
+        {
+          "i": 12,
+          "enemies": 340,
+          "kills": 4,
+          "time": 2.9
+        },
+        {
+          "i": 13,
+          "enemies": 340,
+          "kills": 4,
+          "time": 3.1
+        },
+        {
+          "i": 14,
+          "enemies": 340,
+          "kills": 4,
+          "time": 3.2
+        },
+        {
+          "i": 15,
+          "enemies": 340,
+          "kills": 4,
+          "time": 3.4
+        }
+      ]
+    },
+    "event-dawn": {
+      "kind": "event",
+      "trigger": "__lf.event(\"dawn\")",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-dawn.png",
+      "nearWhitePct": 0,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-dawn.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 350,
+          "kills": 0,
+          "time": 0.7
+        },
+        {
+          "i": 1,
+          "enemies": 349,
+          "kills": 0,
+          "time": 1
+        },
+        {
+          "i": 2,
+          "enemies": 346,
+          "kills": 0,
+          "time": 1.2
+        },
+        {
+          "i": 3,
+          "enemies": 344,
+          "kills": 0,
+          "time": 1.5
+        },
+        {
+          "i": 4,
+          "enemies": 341,
+          "kills": 0,
+          "time": 1.7
+        },
+        {
+          "i": 5,
+          "enemies": 338,
+          "kills": 1,
+          "time": 1.9
+        },
+        {
+          "i": 6,
+          "enemies": 334,
+          "kills": 1,
+          "time": 2.1
+        },
+        {
+          "i": 7,
+          "enemies": 332,
+          "kills": 1,
+          "time": 2.3
+        },
+        {
+          "i": 8,
+          "enemies": 330,
+          "kills": 1,
+          "time": 2.6
+        },
+        {
+          "i": 9,
+          "enemies": 327,
+          "kills": 2,
+          "time": 2.8
+        },
+        {
+          "i": 10,
+          "enemies": 324,
+          "kills": 2,
+          "time": 3
+        },
+        {
+          "i": 11,
+          "enemies": 322,
+          "kills": 2,
+          "time": 3.2
+        },
+        {
+          "i": 12,
+          "enemies": 321,
+          "kills": 2,
+          "time": 3.4
+        },
+        {
+          "i": 13,
+          "enemies": 320,
+          "kills": 2,
+          "time": 3.6
+        },
+        {
+          "i": 14,
+          "enemies": 0,
+          "kills": 0,
+          "time": 0
+        },
+        {
+          "i": 15,
+          "enemies": 0,
+          "kills": 0,
+          "time": 0
+        }
+      ]
+    },
+    "event-elite": {
+      "kind": "event",
+      "trigger": "spawner.spawnEnemy(id,n,x,y,true)",
+      "still": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-elite.png",
+      "nearWhitePct": 2.39,
+      "gif": "/home/ai/games/lf-lanes/m10-vfx-evo/shots/m10-vfx-evo-event-elite.gif",
+      "gifFrames": 16,
+      "frameCounts": [
+        {
+          "i": 0,
+          "enemies": 352,
+          "kills": 0,
+          "time": 1
+        },
+        {
+          "i": 1,
+          "enemies": 352,
+          "kills": 0,
+          "time": 1.2
+        },
+        {
+          "i": 2,
+          "enemies": 352,
+          "kills": 0,
+          "time": 1.4
+        },
+        {
+          "i": 3,
+          "enemies": 352,
+          "kills": 0,
+          "time": 1.6
+        },
+        {
+          "i": 4,
+          "enemies": 352,
+          "kills": 0,
+          "time": 1.8
+        },
+        {
+          "i": 5,
+          "enemies": 351,
+          "kills": 1,
+          "time": 2
+        },
+        {
+          "i": 6,
+          "enemies": 351,
+          "kills": 1,
+          "time": 2.2
+        },
+        {
+          "i": 7,
+          "enemies": 351,
+          "kills": 1,
+          "time": 2.4
+        },
+        {
+          "i": 8,
+          "enemies": 351,
+          "kills": 1,
+          "time": 2.5
+        },
+        {
+          "i": 9,
+          "enemies": 351,
+          "kills": 1,
+          "time": 2.7
+        },
+        {
+          "i": 10,
+          "enemies": 350,
+          "kills": 2,
+          "time": 2.9
+        },
+        {
+          "i": 11,
+          "enemies": 350,
+          "kills": 2,
+          "time": 3.1
+        },
+        {
+          "i": 12,
+          "enemies": 350,
+          "kills": 2,
+          "time": 3.3
+        },
+        {
+          "i": 13,
+          "enemies": 350,
+          "kills": 2,
+          "time": 3.5
+        },
+        {
+          "i": 14,
+          "enemies": 350,
+          "kills": 2,
+          "time": 3.7
+        },
+        {
+          "i": 15,
+          "enemies": 349,
+          "kills": 3,
+          "time": 3.9
+        }
+      ]
+    }
+  },
+  "errors": []
+}
