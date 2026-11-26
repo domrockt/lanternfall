@@ -55,6 +55,9 @@ Belege (`shots/`):
   - nachher/gedaempft: **4,14 %** (2186/52800) — Ziel **<= 4,16 %: PASS**
   - aelterer Baseline-Beleg (`shots/final-vfx-readability.json`): 3,73 %
   Dateien: `final-vfx-m25-before.png`, `final-vfx-m25-after.png`, `.gif`.
+  Zusatzmessung im Elite-Chaos-Shot (Zentralcrop 480x360 @ +400+180):
+  Near-White vorher **9,43 %** -> nachher **3,34 %**; die Lesbarkeit wird
+  also nicht schlechter, sondern deutlich besser.
 
 Urteil: siehe Kontrolle unten.
 
@@ -79,12 +82,19 @@ Urteil: siehe Kontrolle unten (ux-check).
   Banner-Unterkante 116 frei, Banner bleibt in der oberen Bildhaelfte
   (Unterkante < Mitte 180) und ueberdeckt die Mitte nicht.
 - vfx-check art-02: _(folgt)_
-- ux-check art-03: _(folgt)_
+- ux-check art-03: **PASS** — 16:9 (640x360): Boss-Name (~33..40) und
+  HP-Leiste (~40..52) enden ~17 px ueber der Level-up-Rahmenkante (~69..72),
+  Header/Karten beginnen darunter; 19.5:9 (780x360): identische Y-Stapelung,
+  Banner horizontal zentriert, Karte 3 endet bei x ~655 < 780, nichts
+  abgeschnitten. Banner liegt bewusst hinter Dim/Overlay (Depth 95 < 100).
 
 ## Build / Tests / Performance
 - `npm run build`: gruen
 - `npm test`: 192/192 gruen
-- `npm run perf`: _(folgt, unter Last erneut messen)_
+- `flock /home/ai/games/.lf-perf.lock npm run perf`: **PASS**
+  (Burst 60,1 FPS bei 500 Gegnern, Minute 25 56,1 FPS bei 300 Gegnern,
+  `jsErrors: []`; Lauf bei Load Average 4,4). Vorherige Laeufe unter
+  Fremdlast (Load 15-18) ergaben 49-54 / 28-35 FPS und wurden verworfen.
 
 ## Offene Punkte
 - Perf-Messung muss ohne Fremdlast (Load Average < 5) wiederholt werden;

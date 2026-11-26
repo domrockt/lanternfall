@@ -2276,11 +2276,17 @@
       "id": 1378,
       "title": "m9-art-polish-01 Boss-Inszenierung (art-01)",
       "description": "Knochenfuerst spawnt nicht mehr hinter HP-Leiste/Banner: Spawnpunkt mind. 40 px unter der Boss-HP-Leiste und ausserhalb des Banner-Bereichs, gleiche Kameraposition vorher/nachher. Abnahme: shots/art-director PASS, build+Tests gruen, 0 JS-Fehler.",
-      "column": "todo",
+      "column": "review",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-26T23:25:04Z",
+          "by": "build",
+          "text": "todo → review: Commits 427db49 + c8fc491: BOSS_SAFE_TOP=136, Spawn-Spiegelung unter HP-Leiste/Banner; art-director PASS (screenY vorher min 37, nachher 153-193)."
+        }
+      ],
       "created": "2026-11-26T21:33:06Z",
-      "updated": "2026-11-26T21:33:06Z"
+      "updated": "2026-11-26T23:25:04Z"
     },
     {
       "id": 1379,
