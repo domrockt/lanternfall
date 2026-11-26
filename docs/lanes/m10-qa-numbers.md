@@ -15,9 +15,9 @@ Inhaltszählung 30/6/6/6/6/2.
 ## Checkliste (Kartenplan, Board-Pflege macht der Merge-Job)
 
 - [x] **Karte 1 — Quellen inventarisieren:** alle `shots/*.json` und `docs/qa/*.md` mit Zahl + Datum.
-- [ ] **Karte 2 — Abgleich:** ACCEPTANCE-Zahl vs. Belegzahl, Abweichung in Prozent, Status;
+- [x] **Karte 2 — Abgleich:** ACCEPTANCE-Zahl vs. Belegzahl, Abweichung in Prozent, Status;
       `node scripts/acceptance-count.mjs` und `npx vitest run` je einmal gelaufen, Ist-Zahlen notiert.
-- [ ] **Karte 3 — Report:** konsolidierte Tabelle + offene Widersprüche für `m9-final-acceptance`.
+- [x] **Karte 3 — Report:** konsolidierte Tabelle + offene Widersprüche für `m9-final-acceptance`.
 
 ## Karte 1 — Quellen-Inventar
 
@@ -140,3 +140,63 @@ Maschinenlesbar: `shots/m10-qa-numbers-comparison.json`.
 | Balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Kael/101 Level 47; Lead Kael/202 Tod 15,6 min, 0 Evos | `balance-main.json` @HEAD: 1 Lauf (Kael/101, dawn 30,7 min, Level 28, 2 Evos); `balance-all.json`: 6 Läufe, 3/6 `passedAll`; `balance-main-m8-640.json`: 6/6 `passedAll` | `shots/balance-main.json`, `shots/balance-all.json`, `shots/balance-main-m8-640.json` | Korridor 5/6 vs. 3/6 bzw. 6/6; Level 47 nicht belegt | **offen** |
 | Trailer-Länge | 35,6 s | 36 s (JSON) | `shots/final-trailer.json` → `seconds` | +1,1 % | gleich (Rundung) |
 | Trailer-Frames | 285 | 285 | `identify shots/final-trailer.gif \| wc -l` | 0 | gleich |
+
+## Karte 3 — Report: konsolidierte Zahlenliste für die Endabnahme
+
+Alle Zahlen gelten für **Basis-SHA `257416c`** (Worktree `m10-qa-numbers`). Die finale
+Abnahme soll diese Ist-Werte übernehmen, nicht die teils veralteten M6-Texte in
+`ACCEPTANCE.md`.
+
+| Kennzahl | Konsolidierter Ist-Wert | Beleg / Befehl | Urteil |
+|---|---|---|---|
+| Tests | **192 grün** (12 Dateien) | `npx vitest run` → EXIT 0, Log `~/tmp/m10-qa-numbers-vitest.log` | bestätigt (Soll-Zahl in Doku auf 192 heben) |
+| Neue Tests seit QA-Lauf | **17** | `npx vitest run tests/view.test.ts tests/spawn-view.test.ts` → 17 | erklärt 175 → 192 |
+| Inhaltszählung | **30 / 6 / 6 / 6 / 6 / 2** | `node scripts/acceptance-count.mjs` → `ok:true`, Log `~/tmp/m10-qa-numbers-count.log` | bestätigt |
+| perf Burst (500 Gegner) | **60,1 FPS** (measured 59,8), `passed:true` | `shots/perf-m3.json` @257416c → `burst.fps` / `burst.measuredFps` | bestätigt |
+| perf Minute 25 (300 Gegner + 6 Evos) | **54,7 FPS** (measured 53,1), `passed:false` | `shots/perf-m3.json` @257416c → `minute25.fps` / `minute25.measuredFps` | **offen / unter Ziel 55** |
+| fullrun fpsMin | **55,8** (Ziel ≥ 55), `passed:true` | `shots/m3-fullrun.json` → `fpsMin`, `fps.passed` | bestätigt |
+| fullrun Sim-Zeit | **30,2 min** | `shots/m3-fullrun.json` → `simMinutes` | bestätigt |
+| fullrun Heap Minute 1 → 29 | **25,7 → 30,5 MB = +18,7 %** (Ziel 15 %, Gate rot) | `shots/m3-fullrun.json` → `heap.deltaVsMinute1Pct` | Wert bestätigt; Gate-Ausnahme bleibt offener Punkt |
+| realtime 30 min Sim-Zeit | **30,4 min in 1869 s Echtzeit** | `shots/realtime-30min.json` → `simMinutes`, `elapsedRealSeconds` | bestätigt |
+| realtime FPS | min **57,2** / median **60,3**, **7181 Samples** | `shots/realtime-30min.json` → `fps` | bestätigt |
+| realtime Heap Minute 1 → 29 | **27,9 → 32,3 MB = +15,8 %** (Gate rot) | `shots/realtime-30min.json` → `heap.deltaVsMinute1Pct` (CDP 11,3 → 16,2 MB) | Wert bestätigt; Gate-Ausnahme bleibt offener Punkt |
+| realtime Bosse/Truhen/Kills/Level/Evos | **6 / 6 / 9938 / 49 / 4**, `victory=true`, `resultReason=dawn`, 0 JS-Fehler | `shots/realtime-30min.json` | bestätigt |
+| verify:final | **7/7 PASS**, 0 Fehler | `shots/final-verify.json` → `checks[]`, `errors[]` | bestätigt |
+| Trailer | **8 Segmente, 36 s (Text: 35,6 s), 285 Frames, 480×270, 8 fps** | `shots/final-trailer.json`; `identify shots/final-trailer.gif \| wc -l` = 285 | bestätigt |
+
+### Offene Widersprüche, die `m9-final-acceptance` vor der Endabnahme klären muss
+
+1. **perf Minute 25: 59,3 vs. 54,7 FPS (≥ 5 %).** `shots/perf-m3.json` @257416c ist die
+   Fassung aus Commit `946f7f6` (m9-art-world-WIP) und zeigt **54,7 / 53,1 FPS, `passed:false`**.
+   Die behaupteten 59,3 / roh 58,9 stehen nur in der Dateifassung von `0b42ffe`. Aktion:
+   `flock /home/ai/games/.lf-perf.lock npm run perf` auf der finalen Basis neu laufen und
+   `shots/m10-qa-numbers-perf.json` als Beleg ablegen. Bis dahin ist das 55-FPS-Ziel für
+   Minute 25 **nicht belegt**.
+2. **Tests: 147 (A2/A5/A12) bzw. 175 (QA-Nachtrag) vs. 192 (+30,6 % / +9,7 %).**
+   Ursache belegt: 17 Tests aus `tests/view.test.ts` + `tests/spawn-view.test.ts` (m8-display
+   #92/#95). Aktion: ACCEPTANCE-Testzahl auf **192** korrigieren.
+3. **VFX-Readability A7 vs. eigene JSON.** `shots/final-vfx-readability.json` (Commit
+   `a9148d1`) belegt time 1405,4 s / kills 2919 / 468 Gegner / 60 fx / 158 Partikel; A7 nennt
+   1405,6 s / 3200 / 429 / 63 fx / 202 Partikel und AE 206.684 statt 209052. Abweichungen
+   kills **−8,8 %**, Gegner **+9,1 %**, Partikel **−21,8 %**. Aktion: A7 auf `a9148d1`
+   korrigieren oder alten Beleg wiederherstellen.
+4. **Balance: 5/6-Korridor und Level 47 nicht belegt.** `balance-main.json` @HEAD enthält nur
+   einen Lauf (Kael/101, Level 28, 2 Evos); `balance-all.json` hat 3/6 `passedAll`,
+   `balance-main-m8-640.json` 6/6 `passedAll`. Kein Beleg zeigt Kael/101 Level 47 oder
+   Kael/202 Tod 15,6 min / 0 Evos. Aktion: neue dokumentierte Balance-Serie oder A5-Zahlen
+   korrigieren.
+5. **Heap-Gates +18,7 % (fullrun) und +15,8 % (realtime) über 15 %.** Werte sind exakt belegt,
+   aber beide Läufe haben `passed:false` nur wegen des Heap-Gates. Aktion: als bewusste
+   Ausnahme abnehmen oder Heap-Messung wiederholen; neuer `m10-heap-basis`-Lauf (19:13 UTC)
+   zeigt +0,7 % JS-Heap, stützt also eher GC-/Host-Streuung als Leak.
+
+### Abnahme-Selbstprüfung
+
+- Jede der fünf Briefing-Zahlen hat eine Zeile **mit Quelle und Status** (Karte 2).
+- Die konsolidierte Tabelle (Karte 3) nennt für jede Kennzahl Datei/Befehl.
+- Offene Zeilen sind ausschließlich als **offen** markiert und mit einer Aktion versehen; es
+  gibt **0 Zeilen ohne Status**.
+- Geschützte Pfade (`index.html`, `public/**`, `src/**`, `scripts/**`, `tests/**`,
+  `shots/m8-*`, `shots/balance-*`, `shots/perf-*`, `.opencode/board.json`) wurden nicht
+  geändert oder committet; `shots/balance-main*.json` und `shots/perf-m3.json` nur gelesen.
+- Board-Pflege liegt beim Merge-Job; Kartenplan steht als Checkliste oben in dieser Datei.
