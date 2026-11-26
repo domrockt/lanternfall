@@ -61,7 +61,7 @@ export class Results extends Phaser.Scene {
     new PixelText(this, 40, 134, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
     new PixelText(this, 40, 148, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
     new PixelText(this, 40, 162, `LEVEL: ${this.result.level}`, C.candleWhite).setDepth(2);
-    if (this.result.god) new PixelText(this, 40, 176, "GOTT-MODUS - NICHT GESPEICHERT", C.amber).setDepth(2);
+    if (this.result.god) new PixelText(this, 40, 176, "GOTT-MODUS: NICHT GESPEICHERT", C.amber).setDepth(2);
 
     // Bestwert als zentriertes Banner in der linken Spalte.
     let bannerText = "BESTWERTE BLEIBEN STEHEN";
@@ -104,10 +104,10 @@ export class Results extends Phaser.Scene {
       if (this.textures.exists(key)) {
         this.add.image(228, y + 3, key).setDepth(2);
       }
-      const name = entry.name.toUpperCase().slice(0, 10);
+      const name = entry.name.toUpperCase();
       new PixelText(this, 238, y, name, C.bone).setDepth(2);
-      const barX = 300;
-      const barMax = 110;
+      const barX = 322;
+      const barMax = 90;
       const width = Math.max(2, Math.round((entry.damage / maxDamage) * barMax));
       this.add.rectangle(barX, y + 3, barMax, 5, PAL[C.nightMid], 0.9).setOrigin(0, 0.5).setDepth(1);
       this.add.rectangle(barX, y + 3, width, 5, PAL[entry.isEvolution ? C.paleMist : C.lantern], 0.95)
