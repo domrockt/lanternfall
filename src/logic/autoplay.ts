@@ -73,8 +73,13 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
 
   if (offer.kind === "weapon") {
     if (focus && offer.id === focus.id && !offer.isNew && offer.level < 8) return 1250 + offer.level;
-    // Ke Waffen sind nur eine Notlösung; der Fokus-Slot soll Stufe 8 erreichen.
-    if (offer.isNew) return 140 + (WEAPON_PRIORITY[id] ?? 0);
+    // Solange der Fokus-Slot nicht Stufe 8 ist, keine Nebenwaffen nehmen: das
+    // verzögert die Evolution und macht Runs unzuverlässig. Stattdessen lieber
+    // Passiven (HP/Tempo/Evolutions-Powerup) verbessern.
+    if (focus && focus.level < 8) {
+      return offer.isNew ? 60 + (WEAPON_PRIORITY[id] ?? 0) : 120 + (WEAPON_PRIORITY[id] ?? 0) + offer.level;
+    }
+    if (offer.isNew) return 500 + (WEAPON_PRIORITY[id] ?? 0);
     return 450 + (WEAPON_PRIORITY[id] ?? 0) + offer.level * 4;
   }
 

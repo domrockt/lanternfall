@@ -6,7 +6,7 @@ export const CHARACTERS: Record<CharacterId, CharacterDef> = {
     name: "Mira Ashwick",
     title: "Laternen-Hexe",
     description: "Junge Hexe mit rotem Tuch und Laterne. Schnell und flächenstark.",
-    hp: 90,
+    hp: 115,
     speed: 62,
     armor: 0,
     startWeapon: "ember",

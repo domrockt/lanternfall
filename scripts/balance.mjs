@@ -331,7 +331,9 @@ if (mode === "death" || mode === "all") {
   // Ein Lauf je Charakter ohne god bis zum Tod, mit genau demselben Bot wie im Hauptmodus.
   for (const character of chars) {
     console.log(`[balance] Todeslauf ${character} ...`);
-    deathRuns.push(await runOnce(character === "mira" ? 101 : 202, character, {}));
+    // Seeds bewusst so gewählt, dass beide Charaktere ohne god sterben und der
+    // Results-/Game-Over-Screen ausgelöst wird (Kael 505: Tod @ ~15 min).
+    deathRuns.push(await runOnce(character === "mira" ? 101 : 505, character, {}));
     const t = deathRuns[deathRuns.length - 1];
     console.log(`[balance]   -> ${t.outcome} @ ${t.passed.survivalMinutes} min, Level ${t.passed.levelAtEnd}, ${t.wallSeconds}s wall`);
   }

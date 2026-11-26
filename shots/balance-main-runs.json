@@ -1,20 +1,20 @@
 [
   {
-    "seed": 202,
-    "character": "kael",
+    "seed": 101,
+    "character": "mira",
     "outcome": "death",
-    "deathSecond": 1212.2,
+    "deathSecond": 1270.5,
     "samples": [
       {
-        "time": 0.5158399999999995,
+        "time": 0.5160399999999998,
         "level": 1,
-        "hp": 163,
-        "maxHp": 163,
+        "hp": 115,
+        "maxHp": 115,
         "enemies": 0,
         "kills": 0,
         "weapons": [
           {
-            "id": "flail",
+            "id": "ember",
             "level": 1
           }
         ],
@@ -24,49 +24,57 @@
         "dawn": false
       },
       {
-        "time": 63.890839999998555,
-        "level": 6,
-        "hp": 161,
-        "maxHp": 163,
-        "enemies": 3,
-        "kills": 29,
+        "time": 63.22803999999853,
+        "level": 5,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 1,
+        "kills": 35,
         "weapons": [
           {
-            "id": "flail",
-            "level": 5
+            "id": "ember",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 1
           },
           {
-            "id": "ember",
+            "id": "boots",
             "level": 1
           }
         ],
-        "passives": [],
         "boss": null,
         "damageByWeapon": {
-          "flail": 310,
-          "ember": 380
+          "ember": 724
         },
         "dawn": false,
         "minute": 1
       },
       {
-        "time": 123.09093999999513,
-        "level": 9,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 4,
-        "kills": 75,
+        "time": 121.52493999999538,
+        "level": 8,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 1,
+        "kills": 61,
         "weapons": [
           {
-            "id": "flail",
-            "level": 5
-          },
-          {
             "id": "ember",
-            "level": 3
+            "level": 5
           }
         ],
         "passives": [
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 1
+          },
           {
             "id": "heart",
             "level": 1
@@ -74,69 +82,63 @@
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 958,
-          "ember": 1048
+          "ember": 1255
         },
         "dawn": false,
         "minute": 2
       },
       {
-        "time": 182.93974000000728,
-        "level": 10,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 6,
-        "kills": 126,
+        "time": 180.922240000007,
+        "level": 9,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 8,
+        "kills": 109,
         "weapons": [
           {
-            "id": "flail",
-            "level": 5
-          },
-          {
             "id": "ember",
-            "level": 3
+            "level": 5
           }
         ],
         "passives": [
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 1
+          },
           {
             "id": "heart",
             "level": 1
           },
           {
-            "id": "tome",
+            "id": "charm",
             "level": 1
           }
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 1390,
-          "ember": 2070
+          "ember": 2473
         },
         "dawn": false,
         "minute": 3
       },
       {
-        "time": 241.78764000002053,
-        "level": 13,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 10,
-        "kills": 186,
+        "time": 242.86744000002082,
+        "level": 11,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 3,
+        "kills": 164,
         "weapons": [
           {
-            "id": "flail",
-            "level": 6
-          },
-          {
             "id": "ember",
-            "level": 3
+            "level": 6
           }
         ],
         "passives": [
-          {
-            "id": "heart",
-            "level": 1
-          },
           {
             "id": "tome",
             "level": 1
@@ -144,154 +146,178 @@
           {
             "id": "boots",
             "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
+            "level": 1
           }
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 2071,
-          "ember": 3316
+          "ember": 4296
         },
         "dawn": false,
         "minute": 4
       },
       {
-        "time": 300.5864400000339,
-        "level": 16,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 8,
-        "kills": 276,
+        "time": 301.4143400000331,
+        "level": 14,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 7,
+        "kills": 229,
         "weapons": [
           {
-            "id": "flail",
-            "level": 7
-          },
-          {
             "id": "ember",
-            "level": 5
+            "level": 7
           }
         ],
         "passives": [
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "boots",
+            "level": 1
+          },
           {
             "id": "heart",
             "level": 1
           },
           {
-            "id": "tome",
+            "id": "charm",
             "level": 1
           },
           {
-            "id": "boots",
-            "level": 2
+            "id": "hourglass",
+            "level": 1
           }
         ],
         "boss": {
           "index": 0,
           "name": "Moorkönigin",
-          "hp": 1962,
-          "maxHp": 2000,
-          "ratio": 0.981,
+          "hp": 2350,
+          "maxHp": 2400,
+          "ratio": 0.9791666666666666,
           "phase": 1,
           "color": 31,
           "alive": true
         },
         "damageByWeapon": {
-          "flail": 3977,
-          "ember": 5276
+          "ember": 6785
         },
         "dawn": false,
         "minute": 5
       },
       {
-        "time": 363.88584000004784,
-        "level": 17,
-        "hp": 151.50981999998353,
-        "maxHp": 183,
-        "enemies": 11,
-        "kills": 355,
+        "time": 362.36234000004606,
+        "level": 15,
+        "hp": 132.29948999999968,
+        "maxHp": 175,
+        "enemies": 8,
+        "kills": 325,
         "weapons": [
           {
-            "id": "flail",
-            "level": 7
-          },
-          {
             "id": "ember",
-            "level": 7
+            "level": 8
           }
         ],
         "passives": [
           {
-            "id": "heart",
-            "level": 1
-          },
-          {
             "id": "tome",
-            "level": 1
+            "level": 4
           },
           {
             "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
             "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
           }
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 7600,
-          "ember": 10718
+          "ember": 15856
         },
         "dawn": false,
         "minute": 6
       },
       {
-        "time": 421.0352400000608,
-        "level": 18,
-        "hp": 180.8000599999733,
-        "maxHp": 203,
-        "enemies": 10,
-        "kills": 446,
+        "time": 426.75894000006,
+        "level": 16,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 8,
+        "kills": 465,
         "weapons": [
           {
-            "id": "flail",
-            "level": 7
-          },
-          {
             "id": "ember",
-            "level": 7
+            "level": 8
           }
         ],
         "passives": [
           {
-            "id": "heart",
-            "level": 2
-          },
-          {
             "id": "tome",
-            "level": 1
+            "level": 4
           },
           {
             "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
             "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
           }
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 9058,
-          "ember": 17338
+          "ember": 26971
         },
         "dawn": false,
         "minute": 7
       },
       {
-        "time": 481.9880400000748,
-        "level": 19,
-        "hp": 203,
-        "maxHp": 203,
-        "enemies": 11,
-        "kills": 528,
+        "time": 481.25704000007175,
+        "level": 18,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 12,
+        "kills": 574,
         "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
           {
             "id": "ember",
             "level": 8
@@ -299,570 +325,124 @@
         ],
         "passives": [
           {
-            "id": "heart",
-            "level": 2
-          },
-          {
             "id": "tome",
-            "level": 1
+            "level": 5
           },
           {
             "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
             "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
           }
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 9505,
-          "ember": 25743
+          "ember": 38551
         },
         "dawn": false,
         "minute": 8
       },
       {
-        "time": 543.1374400000533,
-        "level": 20,
-        "hp": 217.89999999999725,
-        "maxHp": 223,
-        "enemies": 9,
-        "kills": 639,
+        "time": 541.6547400000513,
+        "level": 19,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 13,
+        "kills": 704,
         "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
           {
             "id": "ember",
             "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 1
           }
         ],
         "passives": [
           {
-            "id": "heart",
-            "level": 3
-          },
-          {
             "id": "tome",
-            "level": 1
+            "level": 5
           },
           {
             "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
             "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
           }
         ],
         "boss": null,
         "damageByWeapon": {
-          "flail": 10328,
-          "ember": 36145
+          "ember": 51417,
+          "thorn": 208
         },
         "dawn": false,
         "minute": 9
       },
       {
-        "time": 600.9851400000017,
+        "time": 600.4511399999989,
         "level": 21,
-        "hp": 243,
-        "maxHp": 243,
+        "hp": 215,
+        "maxHp": 215,
         "enemies": 16,
-        "kills": 757,
+        "kills": 847,
         "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
           {
             "id": "ember",
             "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 2
           }
         ],
         "passives": [
-          {
-            "id": "heart",
-            "level": 4
-          },
           {
             "id": "tome",
-            "level": 1
-          },
-          {
-            "id": "boots",
-            "level": 2
-          }
-        ],
-        "boss": {
-          "index": 1,
-          "name": "Knochenfürst",
-          "hp": 3697,
-          "maxHp": 3800,
-          "ratio": 0.9728947368421053,
-          "phase": 1,
-          "color": 31,
-          "alive": true
-        },
-        "damageByWeapon": {
-          "flail": 11833,
-          "ember": 46771
-        },
-        "dawn": false,
-        "minute": 10
-      },
-      {
-        "time": 664.8366369999452,
-        "level": 23,
-        "hp": 243,
-        "maxHp": 243,
-        "enemies": 1,
-        "kills": 884,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 4
-          },
-          {
-            "id": "tome",
-            "level": 2
-          },
-          {
-            "id": "boots",
-            "level": 2
-          },
-          {
-            "id": "hourglass",
-            "level": 1
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 17528,
-          "ember": 56781,
-          "phoenix": 9670
-        },
-        "dawn": false,
-        "minute": 11
-      },
-      {
-        "time": 726.5360369998892,
-        "level": 23,
-        "hp": 243,
-        "maxHp": 243,
-        "enemies": 3,
-        "kills": 967,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 4
-          },
-          {
-            "id": "tome",
-            "level": 2
-          },
-          {
-            "id": "boots",
-            "level": 2
-          },
-          {
-            "id": "hourglass",
-            "level": 1
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 17998,
-          "ember": 56781,
-          "phoenix": 25519
-        },
-        "dawn": false,
-        "minute": 12
-      },
-      {
-        "time": 785.1813369998372,
-        "level": 23,
-        "hp": 243,
-        "maxHp": 243,
-        "enemies": 4,
-        "kills": 1042,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 4
-          },
-          {
-            "id": "tome",
-            "level": 2
-          },
-          {
-            "id": "boots",
-            "level": 2
-          },
-          {
-            "id": "hourglass",
-            "level": 1
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 18562,
-          "ember": 56781,
-          "phoenix": 40756
-        },
-        "dawn": false,
-        "minute": 13
-      },
-      {
-        "time": 842.8789369997853,
-        "level": 24,
-        "hp": 263,
-        "maxHp": 263,
-        "enemies": 6,
-        "kills": 1122,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
             "level": 5
           },
           {
-            "id": "tome",
-            "level": 2
-          },
-          {
             "id": "boots",
             "level": 2
           },
-          {
-            "id": "hourglass",
-            "level": 1
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 19575,
-          "ember": 56781,
-          "phoenix": 59145
-        },
-        "dawn": false,
-        "minute": 14
-      },
-      {
-        "time": 902.4742369997315,
-        "level": 24,
-        "hp": 263,
-        "maxHp": 263,
-        "enemies": 15,
-        "kills": 1207,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 7
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
           {
             "id": "heart",
             "level": 5
-          },
-          {
-            "id": "tome",
-            "level": 2
-          },
-          {
-            "id": "boots",
-            "level": 2
-          },
-          {
-            "id": "hourglass",
-            "level": 1
-          }
-        ],
-        "boss": {
-          "index": 2,
-          "name": "Der Fahle Hirte",
-          "hp": 7033,
-          "maxHp": 7600,
-          "ratio": 0.9253947368421053,
-          "phase": 1,
-          "color": 31,
-          "alive": true
-        },
-        "damageByWeapon": {
-          "flail": 20539,
-          "ember": 56781,
-          "phoenix": 78120
-        },
-        "dawn": false,
-        "minute": 15
-      },
-      {
-        "time": 961.4680369996803,
-        "level": 25,
-        "hp": 234.7194499999922,
-        "maxHp": 263,
-        "enemies": 30,
-        "kills": 1289,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 8
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 5
-          },
-          {
-            "id": "tome",
-            "level": 3
-          },
-          {
-            "id": "boots",
-            "level": 2
-          },
-          {
-            "id": "hourglass",
-            "level": 2
           },
           {
             "id": "charm",
             "level": 1
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 32600,
-          "ember": 56781,
-          "phoenix": 126857
-        },
-        "dawn": false,
-        "minute": 16
-      },
-      {
-        "time": 1022.5635369996278,
-        "level": 26,
-        "hp": 194.362699999979,
-        "maxHp": 263,
-        "enemies": 29,
-        "kills": 1380,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 8
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 5
-          },
-          {
-            "id": "tome",
-            "level": 3
-          },
-          {
-            "id": "boots",
-            "level": 2
           },
           {
             "id": "hourglass",
-            "level": 2
-          },
-          {
-            "id": "charm",
-            "level": 2
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 43454,
-          "ember": 56781,
-          "phoenix": 176994
-        },
-        "dawn": false,
-        "minute": 17
-      },
-      {
-        "time": 1083.1024369995753,
-        "level": 27,
-        "hp": 174.1710499999704,
-        "maxHp": 263,
-        "enemies": 41,
-        "kills": 1463,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 8
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 5
-          },
-          {
-            "id": "tome",
-            "level": 3
-          },
-          {
-            "id": "boots",
-            "level": 3
-          },
-          {
-            "id": "hourglass",
-            "level": 2
-          },
-          {
-            "id": "charm",
-            "level": 2
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 56765,
-          "ember": 56781,
-          "phoenix": 231667
-        },
-        "dawn": false,
-        "minute": 18
-      },
-      {
-        "time": 1143.8459369995217,
-        "level": 27,
-        "hp": 222.28629999995817,
-        "maxHp": 263,
-        "enemies": 61,
-        "kills": 1543,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 8
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 5
-          },
-          {
-            "id": "tome",
-            "level": 3
-          },
-          {
-            "id": "boots",
-            "level": 3
-          },
-          {
-            "id": "hourglass",
-            "level": 2
-          },
-          {
-            "id": "charm",
-            "level": 2
-          }
-        ],
-        "boss": null,
-        "damageByWeapon": {
-          "flail": 65189,
-          "ember": 56781,
-          "phoenix": 284465
-        },
-        "dawn": false,
-        "minute": 19
-      },
-      {
-        "time": 1201.1432369994702,
-        "level": 28,
-        "hp": 108.23224999995334,
-        "maxHp": 263,
-        "enemies": 61,
-        "kills": 1643,
-        "weapons": [
-          {
-            "id": "flail",
-            "level": 8
-          },
-          {
-            "id": "phoenix",
-            "level": 8
-          }
-        ],
-        "passives": [
-          {
-            "id": "heart",
-            "level": 5
-          },
-          {
-            "id": "tome",
-            "level": 3
-          },
-          {
-            "id": "boots",
-            "level": 3
-          },
-          {
-            "id": "hourglass",
-            "level": 2
-          },
-          {
-            "id": "charm",
             "level": 2
           },
           {
@@ -871,115 +451,784 @@
           }
         ],
         "boss": {
-          "index": 3,
-          "name": "Glockenturm-Golem",
-          "hp": 7240,
-          "maxHp": 7500,
-          "ratio": 0.9653333333333334,
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 4169,
+          "maxHp": 4200,
+          "ratio": 0.9926190476190476,
           "phase": 1,
           "color": 31,
           "alive": true
         },
         "damageByWeapon": {
-          "flail": 78646,
-          "ember": 56781,
-          "phoenix": 363903
+          "ember": 67355,
+          "thorn": 752
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 666.4530219999385,
+        "level": 22,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 2,
+        "kills": 969,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 4
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 2049,
+          "phoenix": 9239
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 722.2497219998887,
+        "level": 23,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 6,
+        "kills": 1037,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 5
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 2335,
+          "phoenix": 23151
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 782.396821999835,
+        "level": 24,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 4,
+        "kills": 1123,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 2998,
+          "phoenix": 38856
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 842.5938219997814,
+        "level": 25,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 2,
+        "kills": 1210,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 3701,
+          "phoenix": 57601
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 903.2407219997273,
+        "level": 25,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 11,
+        "kills": 1300,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 5661,
+          "maxHp": 6500,
+          "ratio": 0.8709230769230769,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 5285,
+          "phoenix": 81610,
+          "lantern": 16
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 960.3353219996768,
+        "level": 26,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 16,
+        "kills": 1385,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 9595,
+          "phoenix": 128277,
+          "lantern": 43
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1022.4309219996218,
+        "level": 27,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 15,
+        "kills": 1478,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 19683,
+          "phoenix": 190356,
+          "lantern": 124
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1080.77622199957,
+        "level": 28,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 20,
+        "kills": 1565,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 28217,
+          "phoenix": 247813,
+          "lantern": 124
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1145.7226219995118,
+        "level": 28,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 23,
+        "kills": 1667,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 40770,
+          "phoenix": 318106,
+          "lantern": 160
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1201.618821999462,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 23,
+        "kills": 1765,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 3
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 8214,
+          "maxHp": 8800,
+          "ratio": 0.9334090909090909,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 53063,
+          "phoenix": 375271,
+          "lantern": 219
         },
         "dawn": false,
         "minute": 20
+      },
+      {
+        "time": 1260.7685219994082,
+        "level": 30,
+        "hp": 61.847900000000195,
+        "maxHp": 215,
+        "enemies": 66,
+        "kills": 1865,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 3
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 4
+          },
+          {
+            "id": "whetstone",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 82462,
+          "thorn": 90224,
+          "phoenix": 451722,
+          "lantern": 403,
+          "storm": 652,
+          "flail": 1253
+        },
+        "dawn": false,
+        "minute": 21
       }
     ],
     "lastSeenByBoss": {
-      "0": 319.787040000038,
-      "1": 622.5351399999821,
-      "2": 925.5712369997118,
-      "3": 1211.4421369994611
+      "0": 334.8121400000402,
+      "1": 624.6501399999771,
+      "2": 916.188321999716,
+      "3": 1218.770321999446
     },
     "bossObserved": {
       "0": {
-        "firstSecond": 300.5864400000339,
-        "minHp": 0.034
+        "firstSecond": 301.4143400000331,
+        "minHp": 0.024166666666666666
       },
       "1": {
-        "firstSecond": 600.9851400000017,
-        "minHp": 0.10052631578947369
+        "firstSecond": 600.4511399999989,
+        "minHp": 0.10523809523809524
       },
       "2": {
-        "firstSecond": 902.4742369997315,
-        "minHp": 0.00039473684210526315
+        "firstSecond": 903.2407219997273,
+        "minHp": 0.06215384615384616
       },
       "3": {
-        "firstSecond": 1201.1432369994702,
-        "minHp": 0.5784
+        "firstSecond": 1201.618821999462,
+        "minHp": 0.03920454545454546
       }
     },
     "defeatedEndByBoss": {
-      "0": 321.1369400000383,
-      "1": 625.3351399999796,
-      "2": 925.6712369997117
+      "0": 335.56214000004036,
+      "1": 627.050039999975,
+      "2": 917.3881219997149,
+      "3": 1219.3703219994454
     },
     "result": {
       "reason": "death",
-      "time": 1212.1917369994605,
-      "level": 28,
-      "kills": 1680,
+      "time": 1270.4685219993994,
+      "level": 30,
+      "kills": 1899,
       "damageByWeapon": {
-        "flail": 99164,
-        "ember": 56781,
-        "phoenix": 391204
+        "ember": 82462,
+        "thorn": 101456,
+        "phoenix": 466018,
+        "lantern": 511,
+        "storm": 799,
+        "flail": 1704
       },
-      "character": "kael",
+      "character": "mira",
       "god": false
     },
     "finalDamageByWeapon": {
-      "flail": 99164,
-      "ember": 56781,
-      "phoenix": 391204
+      "ember": 82462,
+      "thorn": 101456,
+      "phoenix": 466018,
+      "lantern": 511,
+      "storm": 799,
+      "flail": 1704
     },
     "run": {
-      "time": 1211.4421369994611,
-      "level": 28,
-      "kills": 1676,
-      "hp": 19,
-      "maxHp": 263,
-      "enemies": 52,
+      "time": 1268.768621999401,
+      "level": 30,
+      "kills": 1897,
+      "hp": 8,
+      "maxHp": 215,
+      "enemies": 63,
       "weapons": [
-        {
-          "id": "flail",
-          "level": 8
-        },
         {
           "id": "phoenix",
           "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 3
+        },
+        {
+          "id": "flail",
+          "level": 1
+        },
+        {
+          "id": "storm",
+          "level": 1
         }
       ],
       "passives": [
         {
-          "id": "heart",
+          "id": "tome",
           "level": 5
         },
         {
-          "id": "tome",
-          "level": 3
-        },
-        {
           "id": "boots",
-          "level": 3
+          "level": 5
         },
         {
-          "id": "hourglass",
-          "level": 2
+          "id": "heart",
+          "level": 5
         },
         {
           "id": "charm",
           "level": 2
         },
         {
+          "id": "hourglass",
+          "level": 4
+        },
+        {
           "id": "whetstone",
-          "level": 1
+          "level": 3
         }
       ],
-      "bossesDefeated": 3,
+      "bossesDefeated": 4,
       "bossFlags": [
         true,
         true,
@@ -1006,397 +1255,419 @@
           "at": 1200
         }
       ],
-      "chestsDropped": 3,
+      "chestsDropped": 4,
       "dawn": false,
       "damageByWeapon": {
-        "flail": 97984,
-        "ember": 56781,
-        "phoenix": 389683
+        "ember": 82462,
+        "thorn": 99476,
+        "phoenix": 463366,
+        "lantern": 463,
+        "storm": 778,
+        "flail": 1604
       }
     },
     "pageErrors": [],
-    "wallSeconds": 91.3,
+    "wallSeconds": 71.9,
     "dpsRows": [
       {
         "minuteFrom": 0,
         "minuteTo": 1,
         "tFrom": 1,
-        "tTo": 64,
-        "level": 6,
-        "hp": 161,
-        "maxHp": 163,
-        "enemies": 3,
-        "kills": 29,
+        "tTo": 63,
+        "level": 5,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 1,
+        "kills": 35,
         "dps": {
-          "flail": 4.9,
-          "ember": 6
+          "ember": 11.5
         },
         "sharePct": {
-          "flail": 45,
-          "ember": 55
+          "ember": 100
         }
       },
       {
         "minuteFrom": 1,
         "minuteTo": 2,
-        "tFrom": 64,
-        "tTo": 123,
-        "level": 9,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 4,
-        "kills": 75,
+        "tFrom": 63,
+        "tTo": 122,
+        "level": 8,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 1,
+        "kills": 61,
         "dps": {
-          "flail": 10.9,
-          "ember": 11.3
+          "ember": 9.1
         },
         "sharePct": {
-          "flail": 49.1,
-          "ember": 50.9
+          "ember": 100
         }
       },
       {
         "minuteFrom": 2,
         "minuteTo": 3,
-        "tFrom": 123,
-        "tTo": 183,
-        "level": 10,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 6,
-        "kills": 126,
+        "tFrom": 122,
+        "tTo": 181,
+        "level": 9,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 8,
+        "kills": 109,
         "dps": {
-          "flail": 7.2,
-          "ember": 17.1
+          "ember": 20.5
         },
         "sharePct": {
-          "flail": 29.6,
-          "ember": 70.4
+          "ember": 100
         }
       },
       {
         "minuteFrom": 3,
         "minuteTo": 4,
-        "tFrom": 183,
-        "tTo": 242,
-        "level": 13,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 10,
-        "kills": 186,
+        "tFrom": 181,
+        "tTo": 243,
+        "level": 11,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 3,
+        "kills": 164,
         "dps": {
-          "flail": 11.6,
-          "ember": 21.2
+          "ember": 29.4
         },
         "sharePct": {
-          "flail": 35.4,
-          "ember": 64.6
+          "ember": 100
         }
       },
       {
         "minuteFrom": 4,
         "minuteTo": 5,
-        "tFrom": 242,
+        "tFrom": 243,
         "tTo": 301,
-        "level": 16,
-        "hp": 183,
-        "maxHp": 183,
-        "enemies": 8,
-        "kills": 276,
+        "level": 14,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 7,
+        "kills": 229,
         "dps": {
-          "flail": 32.4,
-          "ember": 33.3
+          "ember": 42.5
         },
         "sharePct": {
-          "flail": 49.3,
-          "ember": 50.7
+          "ember": 100
         }
       },
       {
         "minuteFrom": 5,
         "minuteTo": 6,
         "tFrom": 301,
-        "tTo": 364,
-        "level": 17,
-        "hp": 152,
-        "maxHp": 183,
-        "enemies": 11,
-        "kills": 355,
+        "tTo": 362,
+        "level": 15,
+        "hp": 132,
+        "maxHp": 175,
+        "enemies": 8,
+        "kills": 325,
         "dps": {
-          "flail": 57.2,
-          "ember": 86
+          "ember": 148.8
         },
         "sharePct": {
-          "flail": 39.9,
-          "ember": 60.1
+          "ember": 100
         }
       },
       {
         "minuteFrom": 6,
         "minuteTo": 7,
-        "tFrom": 364,
-        "tTo": 421,
-        "level": 18,
-        "hp": 181,
-        "maxHp": 203,
-        "enemies": 10,
-        "kills": 446,
+        "tFrom": 362,
+        "tTo": 427,
+        "level": 16,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 8,
+        "kills": 465,
         "dps": {
-          "flail": 25.5,
-          "ember": 115.8
+          "ember": 172.6
         },
         "sharePct": {
-          "flail": 18,
-          "ember": 82
+          "ember": 100
         }
       },
       {
         "minuteFrom": 7,
         "minuteTo": 8,
-        "tFrom": 421,
-        "tTo": 482,
-        "level": 19,
-        "hp": 203,
-        "maxHp": 203,
-        "enemies": 11,
-        "kills": 528,
+        "tFrom": 427,
+        "tTo": 481,
+        "level": 18,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 12,
+        "kills": 574,
         "dps": {
-          "flail": 7.3,
-          "ember": 137.9
+          "ember": 212.5
         },
         "sharePct": {
-          "flail": 5,
-          "ember": 95
+          "ember": 100
         }
       },
       {
         "minuteFrom": 8,
         "minuteTo": 9,
-        "tFrom": 482,
-        "tTo": 543,
-        "level": 20,
-        "hp": 218,
-        "maxHp": 223,
-        "enemies": 9,
-        "kills": 639,
+        "tFrom": 481,
+        "tTo": 542,
+        "level": 19,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 13,
+        "kills": 704,
         "dps": {
-          "flail": 13.5,
-          "ember": 170.1
+          "ember": 213,
+          "thorn": 3.4
         },
         "sharePct": {
-          "flail": 7.4,
-          "ember": 92.6
+          "ember": 98.4,
+          "thorn": 1.6
         }
       },
       {
         "minuteFrom": 9,
         "minuteTo": 10,
-        "tFrom": 543,
-        "tTo": 601,
+        "tFrom": 542,
+        "tTo": 600,
         "level": 21,
-        "hp": 243,
-        "maxHp": 243,
+        "hp": 215,
+        "maxHp": 215,
         "enemies": 16,
-        "kills": 757,
+        "kills": 847,
         "dps": {
-          "flail": 26,
-          "ember": 183.7
+          "ember": 271.1,
+          "thorn": 9.3
         },
         "sharePct": {
-          "flail": 12.4,
-          "ember": 87.6
+          "ember": 96.7,
+          "thorn": 3.3
         }
       },
       {
         "minuteFrom": 10,
         "minuteTo": 11,
-        "tFrom": 601,
-        "tTo": 665,
-        "level": 23,
-        "hp": 243,
-        "maxHp": 243,
-        "enemies": 1,
-        "kills": 884,
+        "tFrom": 600,
+        "tTo": 666,
+        "level": 22,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 2,
+        "kills": 969,
         "dps": {
-          "flail": 89.2,
-          "ember": 156.8,
-          "phoenix": 151.4
+          "ember": 228.9,
+          "thorn": 19.7,
+          "phoenix": 140
         },
         "sharePct": {
-          "flail": 22.4,
-          "ember": 39.5,
-          "phoenix": 38.1
+          "ember": 58.9,
+          "thorn": 5.1,
+          "phoenix": 36
         }
       },
       {
         "minuteFrom": 11,
         "minuteTo": 12,
-        "tFrom": 665,
-        "tTo": 727,
+        "tFrom": 666,
+        "tTo": 722,
         "level": 23,
-        "hp": 243,
-        "maxHp": 243,
-        "enemies": 3,
-        "kills": 967,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 6,
+        "kills": 1037,
         "dps": {
-          "flail": 7.6,
-          "phoenix": 256.9
+          "thorn": 5.1,
+          "phoenix": 249.3
         },
         "sharePct": {
-          "flail": 2.9,
-          "phoenix": 97.1
+          "thorn": 2,
+          "phoenix": 98
         }
       },
       {
         "minuteFrom": 12,
         "minuteTo": 13,
-        "tFrom": 727,
-        "tTo": 785,
-        "level": 23,
-        "hp": 243,
-        "maxHp": 243,
+        "tFrom": 722,
+        "tTo": 782,
+        "level": 24,
+        "hp": 215,
+        "maxHp": 215,
         "enemies": 4,
-        "kills": 1042,
+        "kills": 1123,
         "dps": {
-          "flail": 9.6,
-          "phoenix": 259.8
+          "thorn": 11,
+          "phoenix": 261.1
         },
         "sharePct": {
-          "flail": 3.6,
-          "phoenix": 96.4
+          "thorn": 4,
+          "phoenix": 96
         }
       },
       {
         "minuteFrom": 13,
         "minuteTo": 14,
-        "tFrom": 785,
+        "tFrom": 782,
         "tTo": 843,
-        "level": 24,
-        "hp": 263,
-        "maxHp": 263,
-        "enemies": 6,
-        "kills": 1122,
+        "level": 25,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 2,
+        "kills": 1210,
         "dps": {
-          "flail": 17.6,
-          "phoenix": 318.7
+          "thorn": 11.7,
+          "phoenix": 311.4
         },
         "sharePct": {
-          "flail": 5.2,
-          "phoenix": 94.8
+          "thorn": 3.6,
+          "phoenix": 96.4
         }
       },
       {
         "minuteFrom": 14,
         "minuteTo": 15,
         "tFrom": 843,
-        "tTo": 902,
-        "level": 24,
-        "hp": 263,
-        "maxHp": 263,
-        "enemies": 15,
-        "kills": 1207,
+        "tTo": 903,
+        "level": 25,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 11,
+        "kills": 1300,
         "dps": {
-          "flail": 16.2,
-          "phoenix": 318.4
+          "thorn": 26.1,
+          "phoenix": 395.9,
+          "lantern": 0.3
         },
         "sharePct": {
-          "flail": 4.8,
-          "phoenix": 95.2
+          "thorn": 6.2,
+          "phoenix": 93.7,
+          "lantern": 0.1
         }
       },
       {
         "minuteFrom": 15,
         "minuteTo": 16,
-        "tFrom": 902,
-        "tTo": 961,
-        "level": 25,
-        "hp": 235,
-        "maxHp": 263,
-        "enemies": 30,
-        "kills": 1289,
+        "tFrom": 903,
+        "tTo": 960,
+        "level": 26,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 16,
+        "kills": 1385,
         "dps": {
-          "flail": 204.4,
-          "phoenix": 826.1
+          "thorn": 75.5,
+          "phoenix": 817.4,
+          "lantern": 0.5
         },
         "sharePct": {
-          "flail": 19.8,
-          "phoenix": 80.2
+          "thorn": 8.5,
+          "phoenix": 91.5,
+          "lantern": 0.1
         }
       },
       {
         "minuteFrom": 16,
         "minuteTo": 17,
-        "tFrom": 961,
-        "tTo": 1023,
-        "level": 26,
-        "hp": 194,
-        "maxHp": 263,
-        "enemies": 29,
-        "kills": 1380,
+        "tFrom": 960,
+        "tTo": 1022,
+        "level": 27,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 15,
+        "kills": 1478,
         "dps": {
-          "flail": 177.7,
-          "phoenix": 820.6
+          "thorn": 162.5,
+          "phoenix": 999.7,
+          "lantern": 1.3
         },
         "sharePct": {
-          "flail": 17.8,
-          "phoenix": 82.2
+          "thorn": 14,
+          "phoenix": 85.9,
+          "lantern": 0.1
         }
       },
       {
         "minuteFrom": 17,
         "minuteTo": 18,
-        "tFrom": 1023,
-        "tTo": 1083,
-        "level": 27,
-        "hp": 174,
-        "maxHp": 263,
-        "enemies": 41,
-        "kills": 1463,
+        "tFrom": 1022,
+        "tTo": 1081,
+        "level": 28,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 20,
+        "kills": 1565,
         "dps": {
-          "flail": 219.9,
-          "phoenix": 903.1
+          "thorn": 146.3,
+          "phoenix": 984.8
         },
         "sharePct": {
-          "flail": 19.6,
-          "phoenix": 80.4
+          "thorn": 12.9,
+          "phoenix": 87.1
         }
       },
       {
         "minuteFrom": 18,
         "minuteTo": 19,
-        "tFrom": 1083,
-        "tTo": 1144,
-        "level": 27,
-        "hp": 222,
-        "maxHp": 263,
-        "enemies": 61,
-        "kills": 1543,
+        "tFrom": 1081,
+        "tTo": 1146,
+        "level": 28,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 23,
+        "kills": 1667,
         "dps": {
-          "flail": 138.7,
-          "phoenix": 869.2
+          "thorn": 193.3,
+          "phoenix": 1082.3,
+          "lantern": 0.6
         },
         "sharePct": {
-          "flail": 13.8,
-          "phoenix": 86.2
+          "thorn": 15.1,
+          "phoenix": 84.8,
+          "lantern": 0
         }
       },
       {
         "minuteFrom": 19,
         "minuteTo": 20,
-        "tFrom": 1144,
-        "tTo": 1201,
-        "level": 28,
-        "hp": 108,
-        "maxHp": 263,
-        "enemies": 61,
-        "kills": 1643,
+        "tFrom": 1146,
+        "tTo": 1202,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 23,
+        "kills": 1765,
         "dps": {
-          "flail": 234.9,
-          "phoenix": 1386.4
+          "thorn": 219.9,
+          "phoenix": 1022.7,
+          "lantern": 1.1
         },
         "sharePct": {
-          "flail": 14.5,
-          "phoenix": 85.5
+          "thorn": 17.7,
+          "phoenix": 82.2,
+          "lantern": 0.1
+        }
+      },
+      {
+        "minuteFrom": 20,
+        "minuteTo": 21,
+        "tFrom": 1202,
+        "tTo": 1261,
+        "level": 30,
+        "hp": 62,
+        "maxHp": 215,
+        "enemies": 66,
+        "kills": 1865,
+        "dps": {
+          "thorn": 628.3,
+          "phoenix": 1292.5,
+          "lantern": 3.1,
+          "storm": 11,
+          "flail": 21.2
+        },
+        "sharePct": {
+          "thorn": 32.1,
+          "phoenix": 66.1,
+          "lantern": 0.2,
+          "storm": 0.6,
+          "flail": 1.1
         }
       }
     ],
@@ -1405,8 +1676,8 @@
         "index": 0,
         "name": "Moorkönigin",
         "spawnSecond": 300,
-        "endSecond": 321,
-        "durationSec": 21,
+        "endSecond": 336,
+        "durationSec": 36,
         "defeated": true,
         "aliveAtDeath": false
       },
@@ -1414,8 +1685,8 @@
         "index": 1,
         "name": "Knochenfürst",
         "spawnSecond": 600,
-        "endSecond": 625,
-        "durationSec": 25,
+        "endSecond": 627,
+        "durationSec": 27,
         "defeated": true,
         "aliveAtDeath": false
       },
@@ -1423,8 +1694,8 @@
         "index": 2,
         "name": "Der Fahle Hirte",
         "spawnSecond": 900,
-        "endSecond": 926,
-        "durationSec": 26,
+        "endSecond": 917,
+        "durationSec": 17,
         "defeated": true,
         "aliveAtDeath": false
       },
@@ -1432,31 +1703,1877 @@
         "index": 3,
         "name": "Glockenturm-Golem",
         "spawnSecond": 1200,
-        "endSecond": 1211,
-        "durationSec": null,
-        "defeated": false,
-        "aliveAtDeath": true
+        "endSecond": 1219,
+        "durationSec": 19,
+        "defeated": true,
+        "aliveAtDeath": false
       }
     ],
     "evolutions": [
       "phoenix"
     ],
     "damageShare": {
-      "totalDamage": 544448,
+      "totalDamage": 648149,
       "sharePct": {
-        "flail": 18,
-        "ember": 10.4,
-        "phoenix": 71.6
+        "ember": 12.7,
+        "thorn": 15.3,
+        "phoenix": 71.5,
+        "lantern": 0.1,
+        "storm": 0.1,
+        "flail": 0.2
       },
       "avgDpsOverRun": {
-        "flail": 54.4,
-        "ember": 31.5,
-        "phoenix": 216.5
+        "ember": 45.8,
+        "thorn": 55.3,
+        "phoenix": 257.4,
+        "lantern": 0.3,
+        "storm": 0.4,
+        "flail": 0.9
       }
     },
     "passed": {
-      "survivalMinutes": 20.2,
-      "levelAtEnd": 28,
+      "survivalMinutes": 21.2,
+      "levelAtEnd": 30,
+      "evolutionCount": 1,
+      "bossDurationsInCorridor": false,
+      "died": true,
+      "survivalInCorridor": true,
+      "levelInCorridor": true,
+      "evolutionOk": true,
+      "passedAll": false
+    }
+  },
+  {
+    "seed": 202,
+    "character": "mira",
+    "outcome": "death",
+    "deathSecond": 1458.4,
+    "samples": [
+      {
+        "time": 0.51584,
+        "level": 1,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      },
+      {
+        "time": 66.51833999999845,
+        "level": 6,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 2,
+        "kills": 35,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 771
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 121.11283999999551,
+        "level": 8,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 1,
+        "kills": 67,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 6
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 1683
+        },
+        "dawn": false,
+        "minute": 2
+      },
+      {
+        "time": 180.2093400000068,
+        "level": 9,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 8,
+        "kills": 108,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 2978
+        },
+        "dawn": false,
+        "minute": 3
+      },
+      {
+        "time": 244.05314000002107,
+        "level": 12,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 3,
+        "kills": 189,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 6093
+        },
+        "dawn": false,
+        "minute": 4
+      },
+      {
+        "time": 301.75004000003327,
+        "level": 14,
+        "hp": 155,
+        "maxHp": 155,
+        "enemies": 8,
+        "kills": 271,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 0,
+          "name": "Moorkönigin",
+          "hp": 2344,
+          "maxHp": 2400,
+          "ratio": 0.9766666666666667,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 9399
+        },
+        "dawn": false,
+        "minute": 5
+      },
+      {
+        "time": 365.2973400000469,
+        "level": 15,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 4,
+        "kills": 357,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 19317
+        },
+        "dawn": false,
+        "minute": 6
+      },
+      {
+        "time": 426.19544000005965,
+        "level": 16,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 4,
+        "kills": 444,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 27928
+        },
+        "dawn": false,
+        "minute": 7
+      },
+      {
+        "time": 480.4922400000712,
+        "level": 18,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 12,
+        "kills": 527,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 36118
+        },
+        "dawn": false,
+        "minute": 8
+      },
+      {
+        "time": 540.1374400000526,
+        "level": 20,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 14,
+        "kills": 671,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 52072,
+          "frost": 7
+        },
+        "dawn": false,
+        "minute": 9
+      },
+      {
+        "time": 602.832939999997,
+        "level": 22,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 21,
+        "kills": 836,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 3967,
+          "maxHp": 4200,
+          "ratio": 0.9445238095238095,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 70115,
+          "frost": 23
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 668.1342129999387,
+        "level": 23,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 2,
+        "kills": 996,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 133,
+          "phoenix": 9234
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 727.3302129998859,
+        "level": 24,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 1,
+        "kills": 1076,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 133,
+          "phoenix": 24790
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 785.6280129998337,
+        "level": 24,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 5,
+        "kills": 1151,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 133,
+          "phoenix": 39359
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 844.923912999781,
+        "level": 25,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 5,
+        "kills": 1236,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 133,
+          "phoenix": 55644
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 900.2206129997317,
+        "level": 26,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 11,
+        "kills": 1314,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 6
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 6500,
+          "maxHp": 6500,
+          "ratio": 1,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 233,
+          "phoenix": 73760
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 963.5145129996757,
+        "level": 26,
+        "hp": 204.02319999999517,
+        "maxHp": 215,
+        "enemies": 37,
+        "kills": 1398,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 6
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 813,
+          "phoenix": 124232
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1020.8587129996251,
+        "level": 27,
+        "hp": 175.79534999999467,
+        "maxHp": 215,
+        "enemies": 42,
+        "kills": 1479,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 2181,
+          "phoenix": 178140
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1084.4038129995686,
+        "level": 28,
+        "hp": 213.1129999999815,
+        "maxHp": 215,
+        "enemies": 39,
+        "kills": 1581,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 4113,
+          "phoenix": 257670
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1140.4490129995188,
+        "level": 28,
+        "hp": 190.51944999999176,
+        "maxHp": 215,
+        "enemies": 56,
+        "kills": 1656,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 3
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 5793,
+          "phoenix": 314122
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1200.794812999465,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 75,
+        "kills": 1742,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 8742,
+          "maxHp": 8800,
+          "ratio": 0.9934090909090909,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 7797,
+          "phoenix": 374770
+        },
+        "dawn": false,
+        "minute": 20
+      },
+      {
+        "time": 1261.3883129994115,
+        "level": 29,
+        "hp": 158.84849999999628,
+        "maxHp": 215,
+        "enemies": 134,
+        "kills": 1910,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 11772,
+          "phoenix": 464111,
+          "storm": 315
+        },
+        "dawn": false,
+        "minute": 21
+      },
+      {
+        "time": 1321.234712999358,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 286,
+        "kills": 2367,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 18612,
+          "phoenix": 597240,
+          "storm": 999
+        },
+        "dawn": false,
+        "minute": 22
+      },
+      {
+        "time": 1380.2829129993047,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 312,
+        "kills": 2957,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 22887,
+          "phoenix": 758079,
+          "storm": 1656
+        },
+        "dawn": false,
+        "minute": 23
+      },
+      {
+        "time": 1442.6795129992488,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 312,
+        "kills": 3669,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 4
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 87843,
+          "frost": 28542,
+          "phoenix": 968536,
+          "storm": 2367
+        },
+        "dawn": false,
+        "minute": 24
+      }
+    ],
+    "lastSeenByBoss": {
+      "0": 326.3496400000385,
+      "1": 641.5798399999627,
+      "2": 924.6174129997103,
+      "3": 1231.391012999438
+    },
+    "bossObserved": {
+      "0": {
+        "firstSecond": 301.75004000003327,
+        "minHp": 0.06666666666666667
+      },
+      "1": {
+        "firstSecond": 602.832939999997,
+        "minHp": 0.002142857142857143
+      },
+      "2": {
+        "firstSecond": 900.2206129997317,
+        "minHp": 0.04892307692307692
+      },
+      "3": {
+        "firstSecond": 1200.794812999465,
+        "minHp": 0.005227272727272727
+      }
+    },
+    "defeatedEndByBoss": {
+      "0": 329.5997400000392,
+      "1": 641.9798399999623,
+      "2": 926.8169129997084,
+      "3": 1231.491012999438
+    },
+    "result": {
+      "reason": "death",
+      "time": 1458.427812999235,
+      "level": 30,
+      "kills": 3959,
+      "damageByWeapon": {
+        "ember": 87843,
+        "frost": 38232,
+        "phoenix": 1062736,
+        "storm": 2529
+      },
+      "character": "mira",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "ember": 87843,
+      "frost": 38232,
+      "phoenix": 1062736,
+      "storm": 2529
+    },
+    "run": {
+      "time": 1455.0788129992377,
+      "level": 30,
+      "kills": 3898,
+      "hp": 57,
+      "maxHp": 215,
+      "enemies": 238,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "frost",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 1
+        }
+      ],
+      "passives": [
+        {
+          "id": "boots",
+          "level": 5
+        },
+        {
+          "id": "hourglass",
+          "level": 5
+        },
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "whetstone",
+          "level": 1
+        },
+        {
+          "id": "charm",
+          "level": 3
+        },
+        {
+          "id": "tome",
+          "level": 3
+        }
+      ],
+      "bossesDefeated": 4,
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        },
+        {
+          "index": 3,
+          "at": 1200
+        }
+      ],
+      "chestsDropped": 4,
+      "dawn": false,
+      "damageByWeapon": {
+        "ember": 87843,
+        "frost": 36102,
+        "phoenix": 1042721,
+        "storm": 2493
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 78.3,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 67,
+        "level": 6,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 2,
+        "kills": 35,
+        "dps": {
+          "ember": 11.7
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 67,
+        "tTo": 121,
+        "level": 8,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 1,
+        "kills": 67,
+        "dps": {
+          "ember": 16.7
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 2,
+        "minuteTo": 3,
+        "tFrom": 121,
+        "tTo": 180,
+        "level": 9,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 8,
+        "kills": 108,
+        "dps": {
+          "ember": 21.9
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 3,
+        "minuteTo": 4,
+        "tFrom": 180,
+        "tTo": 244,
+        "level": 12,
+        "hp": 135,
+        "maxHp": 135,
+        "enemies": 3,
+        "kills": 189,
+        "dps": {
+          "ember": 48.8
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 4,
+        "minuteTo": 5,
+        "tFrom": 244,
+        "tTo": 302,
+        "level": 14,
+        "hp": 155,
+        "maxHp": 155,
+        "enemies": 8,
+        "kills": 271,
+        "dps": {
+          "ember": 57.3
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 5,
+        "minuteTo": 6,
+        "tFrom": 302,
+        "tTo": 365,
+        "level": 15,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 4,
+        "kills": 357,
+        "dps": {
+          "ember": 156.1
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 6,
+        "minuteTo": 7,
+        "tFrom": 365,
+        "tTo": 426,
+        "level": 16,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 4,
+        "kills": 444,
+        "dps": {
+          "ember": 141.4
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 7,
+        "minuteTo": 8,
+        "tFrom": 426,
+        "tTo": 480,
+        "level": 18,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 12,
+        "kills": 527,
+        "dps": {
+          "ember": 150.8
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 8,
+        "minuteTo": 9,
+        "tFrom": 480,
+        "tTo": 540,
+        "level": 20,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 14,
+        "kills": 671,
+        "dps": {
+          "ember": 267.5,
+          "frost": 0.1
+        },
+        "sharePct": {
+          "ember": 100,
+          "frost": 0
+        }
+      },
+      {
+        "minuteFrom": 9,
+        "minuteTo": 10,
+        "tFrom": 540,
+        "tTo": 603,
+        "level": 22,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 21,
+        "kills": 836,
+        "dps": {
+          "ember": 287.8,
+          "frost": 0.3
+        },
+        "sharePct": {
+          "ember": 99.9,
+          "frost": 0.1
+        }
+      },
+      {
+        "minuteFrom": 10,
+        "minuteTo": 11,
+        "tFrom": 603,
+        "tTo": 668,
+        "level": 23,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 2,
+        "kills": 996,
+        "dps": {
+          "ember": 271.5,
+          "frost": 1.7,
+          "phoenix": 141.4
+        },
+        "sharePct": {
+          "ember": 65.5,
+          "frost": 0.4,
+          "phoenix": 34.1
+        }
+      },
+      {
+        "minuteFrom": 11,
+        "minuteTo": 12,
+        "tFrom": 668,
+        "tTo": 727,
+        "level": 24,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 1,
+        "kills": 1076,
+        "dps": {
+          "phoenix": 262.8
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 12,
+        "minuteTo": 13,
+        "tFrom": 727,
+        "tTo": 786,
+        "level": 24,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 5,
+        "kills": 1151,
+        "dps": {
+          "phoenix": 249.9
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 13,
+        "minuteTo": 14,
+        "tFrom": 786,
+        "tTo": 845,
+        "level": 25,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 5,
+        "kills": 1236,
+        "dps": {
+          "phoenix": 274.6
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 14,
+        "minuteTo": 15,
+        "tFrom": 845,
+        "tTo": 900,
+        "level": 26,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 11,
+        "kills": 1314,
+        "dps": {
+          "frost": 1.8,
+          "phoenix": 327.6
+        },
+        "sharePct": {
+          "frost": 0.5,
+          "phoenix": 99.5
+        }
+      },
+      {
+        "minuteFrom": 15,
+        "minuteTo": 16,
+        "tFrom": 900,
+        "tTo": 964,
+        "level": 26,
+        "hp": 204,
+        "maxHp": 215,
+        "enemies": 37,
+        "kills": 1398,
+        "dps": {
+          "frost": 9.2,
+          "phoenix": 797.4
+        },
+        "sharePct": {
+          "frost": 1.1,
+          "phoenix": 98.9
+        }
+      },
+      {
+        "minuteFrom": 16,
+        "minuteTo": 17,
+        "tFrom": 964,
+        "tTo": 1021,
+        "level": 27,
+        "hp": 176,
+        "maxHp": 215,
+        "enemies": 42,
+        "kills": 1479,
+        "dps": {
+          "frost": 23.9,
+          "phoenix": 940.1
+        },
+        "sharePct": {
+          "frost": 2.5,
+          "phoenix": 97.5
+        }
+      },
+      {
+        "minuteFrom": 17,
+        "minuteTo": 18,
+        "tFrom": 1021,
+        "tTo": 1084,
+        "level": 28,
+        "hp": 213,
+        "maxHp": 215,
+        "enemies": 39,
+        "kills": 1581,
+        "dps": {
+          "frost": 30.4,
+          "phoenix": 1251.6
+        },
+        "sharePct": {
+          "frost": 2.4,
+          "phoenix": 97.6
+        }
+      },
+      {
+        "minuteFrom": 18,
+        "minuteTo": 19,
+        "tFrom": 1084,
+        "tTo": 1140,
+        "level": 28,
+        "hp": 191,
+        "maxHp": 215,
+        "enemies": 56,
+        "kills": 1656,
+        "dps": {
+          "frost": 30,
+          "phoenix": 1007.3
+        },
+        "sharePct": {
+          "frost": 2.9,
+          "phoenix": 97.1
+        }
+      },
+      {
+        "minuteFrom": 19,
+        "minuteTo": 20,
+        "tFrom": 1140,
+        "tTo": 1201,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 75,
+        "kills": 1742,
+        "dps": {
+          "frost": 33.2,
+          "phoenix": 1005
+        },
+        "sharePct": {
+          "frost": 3.2,
+          "phoenix": 96.8
+        }
+      },
+      {
+        "minuteFrom": 20,
+        "minuteTo": 21,
+        "tFrom": 1201,
+        "tTo": 1261,
+        "level": 29,
+        "hp": 159,
+        "maxHp": 215,
+        "enemies": 134,
+        "kills": 1910,
+        "dps": {
+          "frost": 65.6,
+          "phoenix": 1474.4,
+          "storm": 5.2
+        },
+        "sharePct": {
+          "frost": 4.2,
+          "phoenix": 95.4,
+          "storm": 0.3
+        }
+      },
+      {
+        "minuteFrom": 21,
+        "minuteTo": 22,
+        "tFrom": 1261,
+        "tTo": 1321,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 286,
+        "kills": 2367,
+        "dps": {
+          "frost": 114.3,
+          "phoenix": 2224.5,
+          "storm": 11.4
+        },
+        "sharePct": {
+          "frost": 4.9,
+          "phoenix": 94.7,
+          "storm": 0.5
+        }
+      },
+      {
+        "minuteFrom": 22,
+        "minuteTo": 23,
+        "tFrom": 1321,
+        "tTo": 1380,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 312,
+        "kills": 2957,
+        "dps": {
+          "frost": 72.4,
+          "phoenix": 2723.9,
+          "storm": 11.1
+        },
+        "sharePct": {
+          "frost": 2.6,
+          "phoenix": 97,
+          "storm": 0.4
+        }
+      },
+      {
+        "minuteFrom": 23,
+        "minuteTo": 24,
+        "tFrom": 1380,
+        "tTo": 1443,
+        "level": 29,
+        "hp": 215,
+        "maxHp": 215,
+        "enemies": 312,
+        "kills": 3669,
+        "dps": {
+          "frost": 90.6,
+          "phoenix": 3372.9,
+          "storm": 11.4
+        },
+        "sharePct": {
+          "frost": 2.6,
+          "phoenix": 97.1,
+          "storm": 0.3
+        }
+      }
+    ],
+    "bossDurations": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "spawnSecond": 300,
+        "endSecond": 330,
+        "durationSec": 30,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "spawnSecond": 600,
+        "endSecond": 642,
+        "durationSec": 42,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "spawnSecond": 900,
+        "endSecond": 927,
+        "durationSec": 27,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "spawnSecond": 1200,
+        "endSecond": 1231,
+        "durationSec": 31,
+        "defeated": true,
+        "aliveAtDeath": false
+      }
+    ],
+    "evolutions": [
+      "phoenix"
+    ],
+    "damageShare": {
+      "totalDamage": 1169159,
+      "sharePct": {
+        "ember": 7.5,
+        "frost": 3.1,
+        "phoenix": 89.2,
+        "storm": 0.2
+      },
+      "avgDpsOverRun": {
+        "ember": 48.8,
+        "frost": 20.1,
+        "phoenix": 579.3,
+        "storm": 1.4
+      }
+    },
+    "passed": {
+      "survivalMinutes": 24.3,
+      "levelAtEnd": 30,
       "evolutionCount": 1,
       "bossDurationsInCorridor": true,
       "died": true,
@@ -1464,6 +3581,2090 @@
       "levelInCorridor": true,
       "evolutionOk": true,
       "passedAll": true
+    }
+  },
+  {
+    "seed": 303,
+    "character": "mira",
+    "outcome": "death",
+    "deathSecond": 1554.6,
+    "samples": [
+      {
+        "time": 0.5157299999999999,
+        "level": 1,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      },
+      {
+        "time": 61.468229999998634,
+        "level": 5,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 0,
+        "kills": 35,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 780
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 122.91462999999531,
+        "level": 7,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 2,
+        "kills": 61,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 1398
+        },
+        "dawn": false,
+        "minute": 2
+      },
+      {
+        "time": 180.26063000000678,
+        "level": 9,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 7,
+        "kills": 97,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 2569
+        },
+        "dawn": false,
+        "minute": 3
+      },
+      {
+        "time": 240.5569300000203,
+        "level": 10,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 10,
+        "kills": 144,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 1
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 4459
+        },
+        "dawn": false,
+        "minute": 4
+      },
+      {
+        "time": 301.95233000003327,
+        "level": 13,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 7,
+        "kills": 206,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 0,
+          "name": "Moorkönigin",
+          "hp": 2229,
+          "maxHp": 2400,
+          "ratio": 0.92875,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 7100
+        },
+        "dawn": false,
+        "minute": 5
+      },
+      {
+        "time": 360.8535165000444,
+        "level": 15,
+        "hp": 122.85485000000006,
+        "maxHp": 155,
+        "enemies": 7,
+        "kills": 289,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 2778
+        },
+        "dawn": false,
+        "minute": 6
+      },
+      {
+        "time": 422.2511165000575,
+        "level": 16,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 7,
+        "kills": 398,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 12393
+        },
+        "dawn": false,
+        "minute": 7
+      },
+      {
+        "time": 485.0503165000712,
+        "level": 17,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 3,
+        "kills": 548,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 24888
+        },
+        "dawn": false,
+        "minute": 8
+      },
+      {
+        "time": 544.3985165000478,
+        "level": 19,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 3,
+        "kills": 680,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 37358
+        },
+        "dawn": false,
+        "minute": 9
+      },
+      {
+        "time": 602.0465164999964,
+        "level": 20,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 14,
+        "kills": 784,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 3
+          }
+        ],
+        "boss": {
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 3842,
+          "maxHp": 4200,
+          "ratio": 0.9147619047619048,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 49562,
+          "frost": 13
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 660.3425164999446,
+        "level": 21,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 8,
+        "kills": 884,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 5
+          },
+          {
+            "id": "thorn",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 70351,
+          "frost": 46,
+          "thorn": 75
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 721.0890164998908,
+        "level": 22,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 9,
+        "kills": 961,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 6
+          },
+          {
+            "id": "thorn",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 84346,
+          "frost": 46,
+          "thorn": 210
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 783.2852164998354,
+        "level": 23,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 5,
+        "kills": 1055,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          },
+          {
+            "id": "thorn",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 101518,
+          "frost": 120,
+          "thorn": 295
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 846.3803164997794,
+        "level": 24,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 4,
+        "kills": 1153,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 122666,
+          "frost": 224,
+          "thorn": 510
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 901.8267164997303,
+        "level": 24,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 13,
+        "kills": 1236,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 6090,
+          "maxHp": 6500,
+          "ratio": 0.936923076923077,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 140902,
+          "frost": 352,
+          "thorn": 730
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 967.6276894996712,
+        "level": 25,
+        "hp": 187.11976000000053,
+        "maxHp": 195,
+        "enemies": 23,
+        "kills": 1336,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 193087,
+          "frost": 1008,
+          "thorn": 1926,
+          "eternal_winter": 11564
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1023.7726894996216,
+        "level": 26,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 30,
+        "kills": 1413,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 240661,
+          "frost": 1008,
+          "thorn": 4355,
+          "eternal_winter": 32782
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1082.1167894995701,
+        "level": 27,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 31,
+        "kills": 1504,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 289061,
+          "frost": 1008,
+          "thorn": 7922,
+          "eternal_winter": 61358
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1140.612189499518,
+        "level": 27,
+        "hp": 192.47832000000082,
+        "maxHp": 195,
+        "enemies": 40,
+        "kills": 1591,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 344075,
+          "frost": 1008,
+          "thorn": 11305,
+          "eternal_winter": 80612
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1201.3084894994638,
+        "level": 28,
+        "hp": 171.89988000000002,
+        "maxHp": 195,
+        "enemies": 39,
+        "kills": 1697,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 8473,
+          "maxHp": 8800,
+          "ratio": 0.9628409090909091,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 401121,
+          "frost": 1008,
+          "thorn": 18268,
+          "eternal_winter": 106848
+        },
+        "dawn": false,
+        "minute": 20
+      },
+      {
+        "time": 1260.0045894994114,
+        "level": 29,
+        "hp": 170.69784000000075,
+        "maxHp": 195,
+        "enemies": 85,
+        "kills": 1845,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 461303,
+          "frost": 1008,
+          "thorn": 29048,
+          "eternal_winter": 136309,
+          "storm": 323
+        },
+        "dawn": false,
+        "minute": 21
+      },
+      {
+        "time": 1324.2531894993533,
+        "level": 29,
+        "hp": 181.08036,
+        "maxHp": 195,
+        "enemies": 229,
+        "kills": 2313,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 567729,
+          "frost": 1008,
+          "thorn": 47516,
+          "eternal_winter": 187399,
+          "storm": 1018
+        },
+        "dawn": false,
+        "minute": 22
+      },
+      {
+        "time": 1389.951289499294,
+        "level": 29,
+        "hp": 184.91808000000307,
+        "maxHp": 195,
+        "enemies": 357,
+        "kills": 3076,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 763436,
+          "frost": 1008,
+          "thorn": 64556,
+          "eternal_winter": 226494,
+          "storm": 1712
+        },
+        "dawn": false,
+        "minute": 23
+      },
+      {
+        "time": 1445.097189499245,
+        "level": 29,
+        "hp": 158.63904000000082,
+        "maxHp": 195,
+        "enemies": 286,
+        "kills": 3899,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 986462,
+          "frost": 1008,
+          "thorn": 81548,
+          "eternal_winter": 281013,
+          "storm": 2312
+        },
+        "dawn": false,
+        "minute": 24
+      },
+      {
+        "time": 1501.4439894991945,
+        "level": 29,
+        "hp": 170.2552000000032,
+        "maxHp": 195,
+        "enemies": 344,
+        "kills": 4547,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "thorn",
+            "level": 6
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "hp": 8785,
+          "maxHp": 9000,
+          "ratio": 0.9761111111111112,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 12779,
+          "phoenix": 1191796,
+          "frost": 1008,
+          "thorn": 95924,
+          "eternal_winter": 314335,
+          "storm": 2902
+        },
+        "dawn": false,
+        "minute": 25
+      }
+    ],
+    "lastSeenByBoss": {
+      "0": 323.0003300000375,
+      "1": 615.8955164999841,
+      "2": 924.0753164997104,
+      "3": 1220.5574894994465,
+      "4": 1539.99118949916
+    },
+    "bossObserved": {
+      "0": {
+        "firstSecond": 301.95233000003327,
+        "minHp": 0.03666666666666667
+      },
+      "1": {
+        "firstSecond": 602.0465164999964,
+        "minHp": 0.13238095238095238
+      },
+      "2": {
+        "firstSecond": 901.8267164997303,
+        "minHp": 0.11830769230769231
+      },
+      "3": {
+        "firstSecond": 1201.3084894994638,
+        "minHp": 0.22886363636363635
+      },
+      "4": {
+        "firstSecond": 1501.4439894991945,
+        "minHp": 0.04377777777777778
+      }
+    },
+    "defeatedEndByBoss": {
+      "0": 324.30023000003774,
+      "1": 618.2955164999819,
+      "2": 926.5748164997083,
+      "3": 1224.556789499443,
+      "4": 1540.6909894991595
+    },
+    "result": {
+      "reason": "death",
+      "time": 1554.640689499147,
+      "level": 29,
+      "kills": 5248,
+      "damageByWeapon": {
+        "ember": 12779,
+        "phoenix": 1409101,
+        "frost": 1008,
+        "thorn": 115292,
+        "eternal_winter": 375462,
+        "storm": 3493
+      },
+      "character": "mira",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "ember": 12779,
+      "phoenix": 1409101,
+      "frost": 1008,
+      "thorn": 115292,
+      "eternal_winter": 375462,
+      "storm": 3493
+    },
+    "run": {
+      "time": 1551.3409894991498,
+      "level": 29,
+      "kills": 5199,
+      "hp": 34,
+      "maxHp": 195,
+      "enemies": 228,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 6
+        },
+        {
+          "id": "storm",
+          "level": 1
+        }
+      ],
+      "passives": [
+        {
+          "id": "boots",
+          "level": 2
+        },
+        {
+          "id": "whetstone",
+          "level": 2
+        },
+        {
+          "id": "tome",
+          "level": 2
+        },
+        {
+          "id": "charm",
+          "level": 1
+        },
+        {
+          "id": "heart",
+          "level": 4
+        },
+        {
+          "id": "hourglass",
+          "level": 1
+        }
+      ],
+      "bossesDefeated": 5,
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        },
+        {
+          "index": 3,
+          "at": 1200
+        },
+        {
+          "index": 4,
+          "at": 1500
+        }
+      ],
+      "chestsDropped": 5,
+      "dawn": false,
+      "damageByWeapon": {
+        "ember": 12779,
+        "phoenix": 1394955,
+        "frost": 1008,
+        "thorn": 113660,
+        "eternal_winter": 370630,
+        "storm": 3455
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 83.1,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 61,
+        "level": 5,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 0,
+        "kills": 35,
+        "dps": {
+          "ember": 12.8
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 61,
+        "tTo": 123,
+        "level": 7,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 2,
+        "kills": 61,
+        "dps": {
+          "ember": 10.1
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 2,
+        "minuteTo": 3,
+        "tFrom": 123,
+        "tTo": 180,
+        "level": 9,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 7,
+        "kills": 97,
+        "dps": {
+          "ember": 20.4
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 3,
+        "minuteTo": 4,
+        "tFrom": 180,
+        "tTo": 241,
+        "level": 10,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 10,
+        "kills": 144,
+        "dps": {
+          "ember": 31.3
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 4,
+        "minuteTo": 5,
+        "tFrom": 241,
+        "tTo": 302,
+        "level": 13,
+        "hp": 115,
+        "maxHp": 115,
+        "enemies": 7,
+        "kills": 206,
+        "dps": {
+          "ember": 43
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 5,
+        "minuteTo": 6,
+        "tFrom": 302,
+        "tTo": 361,
+        "level": 15,
+        "hp": 123,
+        "maxHp": 155,
+        "enemies": 7,
+        "kills": 289,
+        "dps": {
+          "ember": 96.4,
+          "phoenix": 47.2
+        },
+        "sharePct": {
+          "ember": 67.1,
+          "phoenix": 32.9
+        }
+      },
+      {
+        "minuteFrom": 6,
+        "minuteTo": 7,
+        "tFrom": 361,
+        "tTo": 422,
+        "level": 16,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 7,
+        "kills": 398,
+        "dps": {
+          "phoenix": 156.6
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 7,
+        "minuteTo": 8,
+        "tFrom": 422,
+        "tTo": 485,
+        "level": 17,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 3,
+        "kills": 548,
+        "dps": {
+          "phoenix": 199
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 8,
+        "minuteTo": 9,
+        "tFrom": 485,
+        "tTo": 544,
+        "level": 19,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 3,
+        "kills": 680,
+        "dps": {
+          "phoenix": 210.1
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 9,
+        "minuteTo": 10,
+        "tFrom": 544,
+        "tTo": 602,
+        "level": 20,
+        "hp": 175,
+        "maxHp": 175,
+        "enemies": 14,
+        "kills": 784,
+        "dps": {
+          "phoenix": 211.7,
+          "frost": 0.2
+        },
+        "sharePct": {
+          "phoenix": 99.9,
+          "frost": 0.1
+        }
+      },
+      {
+        "minuteFrom": 10,
+        "minuteTo": 11,
+        "tFrom": 602,
+        "tTo": 660,
+        "level": 21,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 8,
+        "kills": 884,
+        "dps": {
+          "phoenix": 356.6,
+          "frost": 0.6,
+          "thorn": 1.3
+        },
+        "sharePct": {
+          "phoenix": 99.5,
+          "frost": 0.2,
+          "thorn": 0.4
+        }
+      },
+      {
+        "minuteFrom": 11,
+        "minuteTo": 12,
+        "tFrom": 660,
+        "tTo": 721,
+        "level": 22,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 9,
+        "kills": 961,
+        "dps": {
+          "phoenix": 230.4,
+          "thorn": 2.2
+        },
+        "sharePct": {
+          "phoenix": 99.1,
+          "thorn": 0.9
+        }
+      },
+      {
+        "minuteFrom": 12,
+        "minuteTo": 13,
+        "tFrom": 721,
+        "tTo": 783,
+        "level": 23,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 5,
+        "kills": 1055,
+        "dps": {
+          "phoenix": 276.1,
+          "frost": 1.2,
+          "thorn": 1.4
+        },
+        "sharePct": {
+          "phoenix": 99.1,
+          "frost": 0.4,
+          "thorn": 0.5
+        }
+      },
+      {
+        "minuteFrom": 13,
+        "minuteTo": 14,
+        "tFrom": 783,
+        "tTo": 846,
+        "level": 24,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 4,
+        "kills": 1153,
+        "dps": {
+          "phoenix": 335.2,
+          "frost": 1.6,
+          "thorn": 3.4
+        },
+        "sharePct": {
+          "phoenix": 98.5,
+          "frost": 0.5,
+          "thorn": 1
+        }
+      },
+      {
+        "minuteFrom": 14,
+        "minuteTo": 15,
+        "tFrom": 846,
+        "tTo": 902,
+        "level": 24,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 13,
+        "kills": 1236,
+        "dps": {
+          "phoenix": 328.9,
+          "frost": 2.3,
+          "thorn": 4
+        },
+        "sharePct": {
+          "phoenix": 98.1,
+          "frost": 0.7,
+          "thorn": 1.2
+        }
+      },
+      {
+        "minuteFrom": 15,
+        "minuteTo": 16,
+        "tFrom": 902,
+        "tTo": 968,
+        "level": 25,
+        "hp": 187,
+        "maxHp": 195,
+        "enemies": 23,
+        "kills": 1336,
+        "dps": {
+          "phoenix": 793.1,
+          "frost": 10,
+          "thorn": 18.2,
+          "eternal_winter": 175.7
+        },
+        "sharePct": {
+          "phoenix": 79.5,
+          "frost": 1,
+          "thorn": 1.8,
+          "eternal_winter": 17.6
+        }
+      },
+      {
+        "minuteFrom": 16,
+        "minuteTo": 17,
+        "tFrom": 968,
+        "tTo": 1024,
+        "level": 26,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 30,
+        "kills": 1413,
+        "dps": {
+          "phoenix": 847.3,
+          "thorn": 43.3,
+          "eternal_winter": 377.9
+        },
+        "sharePct": {
+          "phoenix": 66.8,
+          "thorn": 3.4,
+          "eternal_winter": 29.8
+        }
+      },
+      {
+        "minuteFrom": 17,
+        "minuteTo": 18,
+        "tFrom": 1024,
+        "tTo": 1082,
+        "level": 27,
+        "hp": 195,
+        "maxHp": 195,
+        "enemies": 31,
+        "kills": 1504,
+        "dps": {
+          "phoenix": 829.6,
+          "thorn": 61.1,
+          "eternal_winter": 489.8
+        },
+        "sharePct": {
+          "phoenix": 60.1,
+          "thorn": 4.4,
+          "eternal_winter": 35.5
+        }
+      },
+      {
+        "minuteFrom": 18,
+        "minuteTo": 19,
+        "tFrom": 1082,
+        "tTo": 1141,
+        "level": 27,
+        "hp": 192,
+        "maxHp": 195,
+        "enemies": 40,
+        "kills": 1591,
+        "dps": {
+          "phoenix": 940.5,
+          "thorn": 57.8,
+          "eternal_winter": 329.2
+        },
+        "sharePct": {
+          "phoenix": 70.8,
+          "thorn": 4.4,
+          "eternal_winter": 24.8
+        }
+      },
+      {
+        "minuteFrom": 19,
+        "minuteTo": 20,
+        "tFrom": 1141,
+        "tTo": 1201,
+        "level": 28,
+        "hp": 172,
+        "maxHp": 195,
+        "enemies": 39,
+        "kills": 1697,
+        "dps": {
+          "phoenix": 939.9,
+          "thorn": 114.7,
+          "eternal_winter": 432.3
+        },
+        "sharePct": {
+          "phoenix": 63.2,
+          "thorn": 7.7,
+          "eternal_winter": 29.1
+        }
+      },
+      {
+        "minuteFrom": 20,
+        "minuteTo": 21,
+        "tFrom": 1201,
+        "tTo": 1260,
+        "level": 29,
+        "hp": 171,
+        "maxHp": 195,
+        "enemies": 85,
+        "kills": 1845,
+        "dps": {
+          "phoenix": 1025.3,
+          "thorn": 183.7,
+          "eternal_winter": 501.9,
+          "storm": 5.5
+        },
+        "sharePct": {
+          "phoenix": 59.7,
+          "thorn": 10.7,
+          "eternal_winter": 29.2,
+          "storm": 0.3
+        }
+      },
+      {
+        "minuteFrom": 21,
+        "minuteTo": 22,
+        "tFrom": 1260,
+        "tTo": 1324,
+        "level": 29,
+        "hp": 181,
+        "maxHp": 195,
+        "enemies": 229,
+        "kills": 2313,
+        "dps": {
+          "phoenix": 1656.5,
+          "thorn": 287.4,
+          "eternal_winter": 795.2,
+          "storm": 10.8
+        },
+        "sharePct": {
+          "phoenix": 60.2,
+          "thorn": 10.5,
+          "eternal_winter": 28.9,
+          "storm": 0.4
+        }
+      },
+      {
+        "minuteFrom": 22,
+        "minuteTo": 23,
+        "tFrom": 1324,
+        "tTo": 1390,
+        "level": 29,
+        "hp": 185,
+        "maxHp": 195,
+        "enemies": 357,
+        "kills": 3076,
+        "dps": {
+          "phoenix": 2978.9,
+          "thorn": 259.4,
+          "eternal_winter": 595.1,
+          "storm": 10.6
+        },
+        "sharePct": {
+          "phoenix": 77.5,
+          "thorn": 6.7,
+          "eternal_winter": 15.5,
+          "storm": 0.3
+        }
+      },
+      {
+        "minuteFrom": 23,
+        "minuteTo": 24,
+        "tFrom": 1390,
+        "tTo": 1445,
+        "level": 29,
+        "hp": 159,
+        "maxHp": 195,
+        "enemies": 286,
+        "kills": 3899,
+        "dps": {
+          "phoenix": 4044.3,
+          "thorn": 308.1,
+          "eternal_winter": 988.6,
+          "storm": 10.9
+        },
+        "sharePct": {
+          "phoenix": 75.6,
+          "thorn": 5.8,
+          "eternal_winter": 18.5,
+          "storm": 0.2
+        }
+      },
+      {
+        "minuteFrom": 24,
+        "minuteTo": 25,
+        "tFrom": 1445,
+        "tTo": 1501,
+        "level": 29,
+        "hp": 170,
+        "maxHp": 195,
+        "enemies": 344,
+        "kills": 4547,
+        "dps": {
+          "phoenix": 3644.1,
+          "thorn": 255.1,
+          "eternal_winter": 591.4,
+          "storm": 10.5
+        },
+        "sharePct": {
+          "phoenix": 81,
+          "thorn": 5.7,
+          "eternal_winter": 13.1,
+          "storm": 0.2
+        }
+      }
+    ],
+    "bossDurations": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "spawnSecond": 300,
+        "endSecond": 324,
+        "durationSec": 24,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "spawnSecond": 600,
+        "endSecond": 618,
+        "durationSec": 18,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "spawnSecond": 900,
+        "endSecond": 927,
+        "durationSec": 27,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "spawnSecond": 1200,
+        "endSecond": 1225,
+        "durationSec": 25,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 4,
+        "name": "Hexenzirkel",
+        "spawnSecond": 1500,
+        "endSecond": 1541,
+        "durationSec": 41,
+        "defeated": true,
+        "aliveAtDeath": false
+      }
+    ],
+    "evolutions": [
+      "phoenix",
+      "eternal_winter"
+    ],
+    "damageShare": {
+      "totalDamage": 1896487,
+      "sharePct": {
+        "ember": 0.7,
+        "phoenix": 73.6,
+        "frost": 0.1,
+        "thorn": 6,
+        "eternal_winter": 19.5,
+        "storm": 0.2
+      },
+      "avgDpsOverRun": {
+        "ember": 7.1,
+        "phoenix": 775,
+        "frost": 0.6,
+        "thorn": 63.1,
+        "eternal_winter": 205.9,
+        "storm": 1.9
+      }
+    },
+    "passed": {
+      "survivalMinutes": 25.9,
+      "levelAtEnd": 29,
+      "evolutionCount": 2,
+      "bossDurationsInCorridor": false,
+      "died": true,
+      "survivalInCorridor": true,
+      "levelInCorridor": true,
+      "evolutionOk": true,
+      "passedAll": false
     }
   }
 ]
