@@ -1,0 +1,4186 @@
+[
+  {
+    "seed": 101,
+    "character": "mira",
+    "outcome": "death",
+    "deathSecond": 1209.1,
+    "samples": [
+      {
+        "time": 0.5158333333333334,
+        "level": 1,
+        "hp": 90,
+        "maxHp": 90,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      },
+      {
+        "time": 61.365433333332106,
+        "level": 6,
+        "hp": 130,
+        "maxHp": 130,
+        "enemies": 1,
+        "kills": 44,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 935
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 124.36643333332869,
+        "level": 8,
+        "hp": 130,
+        "maxHp": 130,
+        "enemies": 2,
+        "kills": 95,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 2195
+        },
+        "dawn": false,
+        "minute": 2
+      },
+      {
+        "time": 181.91283333334061,
+        "level": 10,
+        "hp": 130,
+        "maxHp": 130,
+        "enemies": 6,
+        "kills": 150,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 3878
+        },
+        "dawn": false,
+        "minute": 3
+      },
+      {
+        "time": 242.20913333335417,
+        "level": 13,
+        "hp": 150,
+        "maxHp": 150,
+        "enemies": 6,
+        "kills": 230,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 6157
+        },
+        "dawn": false,
+        "minute": 4
+      },
+      {
+        "time": 302.15613333336717,
+        "level": 15,
+        "hp": 138.02982,
+        "maxHp": 150,
+        "enemies": 5,
+        "kills": 308,
+        "weapons": [
+          {
+            "id": "ember",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 0,
+          "name": "Moorkönigin",
+          "hp": 1876,
+          "maxHp": 2000,
+          "ratio": 0.938,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 9110
+        },
+        "dawn": false,
+        "minute": 5
+      },
+      {
+        "time": 362.1059698333792,
+        "level": 17,
+        "hp": 170,
+        "maxHp": 170,
+        "enemies": 2,
+        "kills": 420,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 6430
+        },
+        "dawn": false,
+        "minute": 6
+      },
+      {
+        "time": 420.60206983339185,
+        "level": 18,
+        "hp": 170,
+        "maxHp": 170,
+        "enemies": 9,
+        "kills": 538,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 17190
+        },
+        "dawn": false,
+        "minute": 7
+      },
+      {
+        "time": 487.398769833406,
+        "level": 20,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 2,
+        "kills": 695,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 34066
+        },
+        "dawn": false,
+        "minute": 8
+      },
+      {
+        "time": 543.7961698333826,
+        "level": 21,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 5,
+        "kills": 836,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 51398
+        },
+        "dawn": false,
+        "minute": 9
+      },
+      {
+        "time": 600.3429698333324,
+        "level": 22,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 13,
+        "kills": 969,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 2884,
+          "maxHp": 3200,
+          "ratio": 0.90125,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 67741
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 663.4388698332763,
+        "level": 23,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 2,
+        "kills": 1072,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 4
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 96158,
+          "lantern": 30,
+          "flail": 84
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 720.9341698332252,
+        "level": 23,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 5,
+        "kills": 1154,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 4
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 112897,
+          "lantern": 54,
+          "flail": 126,
+          "frost": 7
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 784.278169833169,
+        "level": 24,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 3,
+        "kills": 1251,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 4
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 134280,
+          "lantern": 78,
+          "flail": 189,
+          "frost": 7
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 841.0241698331189,
+        "level": 25,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 6,
+        "kills": 1345,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 5
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 157515,
+          "lantern": 78,
+          "flail": 252,
+          "frost": 7
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 900.6688698330664,
+        "level": 26,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 12,
+        "kills": 1444,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 6
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 11868,
+          "maxHp": 12000,
+          "ratio": 0.989,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 183074,
+          "lantern": 112,
+          "flail": 494,
+          "frost": 7
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 962.1642698330116,
+        "level": 27,
+        "hp": 176.1953000000132,
+        "maxHp": 190,
+        "enemies": 26,
+        "kills": 1551,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 261669,
+          "lantern": 1257,
+          "flail": 2503,
+          "frost": 102
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1023.4088698329573,
+        "level": 28,
+        "hp": 178.4399000000268,
+        "maxHp": 190,
+        "enemies": 20,
+        "kills": 1662,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          },
+          {
+            "id": "boots",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 342710,
+          "lantern": 2721,
+          "flail": 4250,
+          "frost": 174
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1084.9054698329023,
+        "level": 29,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 26,
+        "kills": 1767,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "boots",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 420295,
+          "lantern": 3580,
+          "flail": 5273,
+          "frost": 220
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1143.6525698328496,
+        "level": 30,
+        "hp": 36.94880000000124,
+        "maxHp": 190,
+        "enemies": 44,
+        "kills": 1861,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "boots",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 509649,
+          "lantern": 5556,
+          "flail": 7473,
+          "frost": 418
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1200.1486698327992,
+        "level": 30,
+        "hp": 34.44489999999906,
+        "maxHp": 190,
+        "enemies": 50,
+        "kills": 1969,
+        "weapons": [
+          {
+            "id": "phoenix",
+            "level": 8
+          },
+          {
+            "id": "lantern",
+            "level": 8
+          },
+          {
+            "id": "flail",
+            "level": 1
+          },
+          {
+            "id": "frost",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "charm",
+            "level": 5
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          },
+          {
+            "id": "boots",
+            "level": 3
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 13000,
+          "maxHp": 13000,
+          "ratio": 1,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "ember": 14575,
+          "phoenix": 603125,
+          "lantern": 7051,
+          "flail": 9788,
+          "frost": 550
+        },
+        "dawn": false,
+        "minute": 20
+      }
+    ],
+    "lastSeenByBoss": {
+      "0": 319.9054333333708,
+      "1": 606.8426698333267,
+      "2": 930.01786983304,
+      "3": 1208.4981698327917
+    },
+    "bossObserved": {
+      "0": {
+        "firstSecond": 302.15613333336717,
+        "minHp": 0.0295
+      },
+      "1": {
+        "firstSecond": 600.3429698333324,
+        "minHp": 0.24
+      },
+      "2": {
+        "firstSecond": 900.6688698330664,
+        "minHp": 0.08466666666666667
+      },
+      "3": {
+        "firstSecond": 1200.1486698327992,
+        "minHp": 0.854
+      }
+    },
+    "defeatedEndByBoss": {
+      "0": 320.805233333371,
+      "1": 608.1927698333254,
+      "2": 931.5672698330387
+    },
+    "result": {
+      "reason": "death",
+      "time": 1209.1479698327912,
+      "level": 30,
+      "kills": 1989,
+      "damageByWeapon": {
+        "ember": 14575,
+        "phoenix": 619452,
+        "lantern": 7558,
+        "flail": 10732,
+        "frost": 640
+      },
+      "character": "mira",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "ember": 14575,
+      "phoenix": 619452,
+      "lantern": 7558,
+      "flail": 10732,
+      "frost": 640
+    },
+    "run": {
+      "time": 1208.4981698327917,
+      "level": 30,
+      "kills": 1988,
+      "hp": 26,
+      "maxHp": 190,
+      "enemies": 48,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        },
+        {
+          "id": "flail",
+          "level": 1
+        },
+        {
+          "id": "frost",
+          "level": 3
+        }
+      ],
+      "passives": [
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "tome",
+          "level": 3
+        },
+        {
+          "id": "charm",
+          "level": 5
+        },
+        {
+          "id": "whetstone",
+          "level": 2
+        },
+        {
+          "id": "boots",
+          "level": 3
+        }
+      ],
+      "bossesDefeated": 3,
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        },
+        {
+          "index": 3,
+          "at": 1200
+        }
+      ],
+      "chestsDropped": 3,
+      "dawn": false,
+      "damageByWeapon": {
+        "ember": 14575,
+        "phoenix": 618300,
+        "lantern": 7558,
+        "flail": 10686,
+        "frost": 640
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 66.4,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 61,
+        "level": 6,
+        "hp": 130,
+        "maxHp": 130,
+        "enemies": 1,
+        "kills": 44,
+        "dps": {
+          "ember": 15.4
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 61,
+        "tTo": 124,
+        "level": 8,
+        "hp": 130,
+        "maxHp": 130,
+        "enemies": 2,
+        "kills": 95,
+        "dps": {
+          "ember": 20
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 2,
+        "minuteTo": 3,
+        "tFrom": 124,
+        "tTo": 182,
+        "level": 10,
+        "hp": 130,
+        "maxHp": 130,
+        "enemies": 6,
+        "kills": 150,
+        "dps": {
+          "ember": 29.2
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 3,
+        "minuteTo": 4,
+        "tFrom": 182,
+        "tTo": 242,
+        "level": 13,
+        "hp": 150,
+        "maxHp": 150,
+        "enemies": 6,
+        "kills": 230,
+        "dps": {
+          "ember": 37.8
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 4,
+        "minuteTo": 5,
+        "tFrom": 242,
+        "tTo": 302,
+        "level": 15,
+        "hp": 138,
+        "maxHp": 150,
+        "enemies": 5,
+        "kills": 308,
+        "dps": {
+          "ember": 49.3
+        },
+        "sharePct": {
+          "ember": 100
+        }
+      },
+      {
+        "minuteFrom": 5,
+        "minuteTo": 6,
+        "tFrom": 302,
+        "tTo": 362,
+        "level": 17,
+        "hp": 170,
+        "maxHp": 170,
+        "enemies": 2,
+        "kills": 420,
+        "dps": {
+          "ember": 91.2,
+          "phoenix": 107.3
+        },
+        "sharePct": {
+          "ember": 45.9,
+          "phoenix": 54.1
+        }
+      },
+      {
+        "minuteFrom": 6,
+        "minuteTo": 7,
+        "tFrom": 362,
+        "tTo": 421,
+        "level": 18,
+        "hp": 170,
+        "maxHp": 170,
+        "enemies": 9,
+        "kills": 538,
+        "dps": {
+          "phoenix": 183.9
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 7,
+        "minuteTo": 8,
+        "tFrom": 421,
+        "tTo": 487,
+        "level": 20,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 2,
+        "kills": 695,
+        "dps": {
+          "phoenix": 252.6
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 8,
+        "minuteTo": 9,
+        "tFrom": 487,
+        "tTo": 544,
+        "level": 21,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 5,
+        "kills": 836,
+        "dps": {
+          "phoenix": 307.3
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 9,
+        "minuteTo": 10,
+        "tFrom": 544,
+        "tTo": 600,
+        "level": 22,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 13,
+        "kills": 969,
+        "dps": {
+          "phoenix": 289
+        },
+        "sharePct": {
+          "phoenix": 100
+        }
+      },
+      {
+        "minuteFrom": 10,
+        "minuteTo": 11,
+        "tFrom": 600,
+        "tTo": 663,
+        "level": 23,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 2,
+        "kills": 1072,
+        "dps": {
+          "phoenix": 450.4,
+          "lantern": 0.5,
+          "flail": 1.3
+        },
+        "sharePct": {
+          "phoenix": 99.6,
+          "lantern": 0.1,
+          "flail": 0.3
+        }
+      },
+      {
+        "minuteFrom": 11,
+        "minuteTo": 12,
+        "tFrom": 663,
+        "tTo": 721,
+        "level": 23,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 5,
+        "kills": 1154,
+        "dps": {
+          "phoenix": 291.1,
+          "lantern": 0.4,
+          "flail": 0.7,
+          "frost": 0.1
+        },
+        "sharePct": {
+          "phoenix": 99.6,
+          "lantern": 0.1,
+          "flail": 0.2,
+          "frost": 0
+        }
+      },
+      {
+        "minuteFrom": 12,
+        "minuteTo": 13,
+        "tFrom": 721,
+        "tTo": 784,
+        "level": 24,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 3,
+        "kills": 1251,
+        "dps": {
+          "phoenix": 337.6,
+          "lantern": 0.4,
+          "flail": 1
+        },
+        "sharePct": {
+          "phoenix": 99.6,
+          "lantern": 0.1,
+          "flail": 0.3
+        }
+      },
+      {
+        "minuteFrom": 13,
+        "minuteTo": 14,
+        "tFrom": 784,
+        "tTo": 841,
+        "level": 25,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 6,
+        "kills": 1345,
+        "dps": {
+          "phoenix": 409.5,
+          "flail": 1.1
+        },
+        "sharePct": {
+          "phoenix": 99.7,
+          "flail": 0.3
+        }
+      },
+      {
+        "minuteFrom": 14,
+        "minuteTo": 15,
+        "tFrom": 841,
+        "tTo": 901,
+        "level": 26,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 12,
+        "kills": 1444,
+        "dps": {
+          "phoenix": 428.5,
+          "lantern": 0.6,
+          "flail": 4.1
+        },
+        "sharePct": {
+          "phoenix": 98.9,
+          "lantern": 0.1,
+          "flail": 0.9
+        }
+      },
+      {
+        "minuteFrom": 15,
+        "minuteTo": 16,
+        "tFrom": 901,
+        "tTo": 962,
+        "level": 27,
+        "hp": 176,
+        "maxHp": 190,
+        "enemies": 26,
+        "kills": 1551,
+        "dps": {
+          "phoenix": 1278.1,
+          "lantern": 18.6,
+          "flail": 32.7,
+          "frost": 1.5
+        },
+        "sharePct": {
+          "phoenix": 96,
+          "lantern": 1.4,
+          "flail": 2.5,
+          "frost": 0.1
+        }
+      },
+      {
+        "minuteFrom": 16,
+        "minuteTo": 17,
+        "tFrom": 962,
+        "tTo": 1023,
+        "level": 28,
+        "hp": 178,
+        "maxHp": 190,
+        "enemies": 20,
+        "kills": 1662,
+        "dps": {
+          "phoenix": 1323.2,
+          "lantern": 23.9,
+          "flail": 28.5,
+          "frost": 1.2
+        },
+        "sharePct": {
+          "phoenix": 96.1,
+          "lantern": 1.7,
+          "flail": 2.1,
+          "frost": 0.1
+        }
+      },
+      {
+        "minuteFrom": 17,
+        "minuteTo": 18,
+        "tFrom": 1023,
+        "tTo": 1085,
+        "level": 29,
+        "hp": 190,
+        "maxHp": 190,
+        "enemies": 26,
+        "kills": 1767,
+        "dps": {
+          "phoenix": 1261.6,
+          "lantern": 14,
+          "flail": 16.6,
+          "frost": 0.7
+        },
+        "sharePct": {
+          "phoenix": 97.6,
+          "lantern": 1.1,
+          "flail": 1.3,
+          "frost": 0.1
+        }
+      },
+      {
+        "minuteFrom": 18,
+        "minuteTo": 19,
+        "tFrom": 1085,
+        "tTo": 1144,
+        "level": 30,
+        "hp": 37,
+        "maxHp": 190,
+        "enemies": 44,
+        "kills": 1861,
+        "dps": {
+          "phoenix": 1521,
+          "lantern": 33.6,
+          "flail": 37.4,
+          "frost": 3.4
+        },
+        "sharePct": {
+          "phoenix": 95.3,
+          "lantern": 2.1,
+          "flail": 2.3,
+          "frost": 0.2
+        }
+      },
+      {
+        "minuteFrom": 19,
+        "minuteTo": 20,
+        "tFrom": 1144,
+        "tTo": 1200,
+        "level": 30,
+        "hp": 34,
+        "maxHp": 190,
+        "enemies": 50,
+        "kills": 1969,
+        "dps": {
+          "phoenix": 1654.6,
+          "lantern": 26.5,
+          "flail": 41,
+          "frost": 2.3
+        },
+        "sharePct": {
+          "phoenix": 96,
+          "lantern": 1.5,
+          "flail": 2.4,
+          "frost": 0.1
+        }
+      }
+    ],
+    "bossDurations": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "spawnSecond": 300,
+        "endSecond": 321,
+        "durationSec": 21,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "spawnSecond": 600,
+        "endSecond": 608,
+        "durationSec": 8,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "spawnSecond": 900,
+        "endSecond": 932,
+        "durationSec": 32,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "spawnSecond": 1200,
+        "endSecond": 1208,
+        "durationSec": null,
+        "defeated": false,
+        "aliveAtDeath": true
+      }
+    ],
+    "evolutions": [
+      "phoenix"
+    ],
+    "damageShare": {
+      "totalDamage": 651759,
+      "sharePct": {
+        "ember": 2.2,
+        "phoenix": 94.9,
+        "lantern": 1.2,
+        "flail": 1.6,
+        "frost": 0.1
+      },
+      "avgDpsOverRun": {
+        "ember": 8.1,
+        "phoenix": 343.5,
+        "lantern": 4.2,
+        "flail": 5.9,
+        "frost": 0.4
+      }
+    },
+    "passed": {
+      "survivalMinutes": 20.2,
+      "levelAtEnd": 30,
+      "evolutionCount": 1,
+      "bossDurationsInCorridor": false,
+      "died": true,
+      "survivalInCorridor": true,
+      "levelInCorridor": true
+    }
+  },
+  {
+    "seed": 101,
+    "character": "kael",
+    "outcome": "dawn",
+    "deathSecond": 1879.2,
+    "samples": [
+      {
+        "time": 0.5160466666666668,
+        "level": 1,
+        "hp": 156,
+        "maxHp": 156,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      },
+      {
+        "time": 61.03194666666539,
+        "level": 5,
+        "hp": 156,
+        "maxHp": 156,
+        "enemies": 4,
+        "kills": 23,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 3
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 654
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 124.42474666666213,
+        "level": 10,
+        "hp": 151,
+        "maxHp": 156,
+        "enemies": 3,
+        "kills": 76,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 6
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 4
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 2656
+        },
+        "dawn": false,
+        "minute": 2
+      },
+      {
+        "time": 180.57054666667378,
+        "level": 12,
+        "hp": 173.09979999999828,
+        "maxHp": 176,
+        "enemies": 9,
+        "kills": 140,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 6
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 5638
+        },
+        "dawn": false,
+        "minute": 3
+      },
+      {
+        "time": 243.21464666668777,
+        "level": 14,
+        "hp": 196,
+        "maxHp": 196,
+        "enemies": 11,
+        "kills": 226,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 7
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 9767
+        },
+        "dawn": false,
+        "minute": 4
+      },
+      {
+        "time": 300.6119466666997,
+        "level": 17,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 13,
+        "kills": 305,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 4
+          }
+        ],
+        "boss": {
+          "index": 0,
+          "name": "Moorkönigin",
+          "hp": 1946,
+          "maxHp": 2000,
+          "ratio": 0.973,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 14508
+        },
+        "dawn": false,
+        "minute": 5
+      },
+      {
+        "time": 364.1138466667125,
+        "level": 18,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 11,
+        "kills": 389,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 4521
+        },
+        "dawn": false,
+        "minute": 6
+      },
+      {
+        "time": 420.311646666724,
+        "level": 20,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 14,
+        "kills": 503,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 16170
+        },
+        "dawn": false,
+        "minute": 7
+      },
+      {
+        "time": 482.55744666673655,
+        "level": 21,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 21,
+        "kills": 593,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 27390,
+          "frost": 10
+        },
+        "dawn": false,
+        "minute": 8
+      },
+      {
+        "time": 540.1552466667175,
+        "level": 23,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 17,
+        "kills": 753,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 4
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 45177,
+          "frost": 64
+        },
+        "dawn": false,
+        "minute": 9
+      },
+      {
+        "time": 600.3511466666638,
+        "level": 24,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 23,
+        "kills": 917,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 1,
+          "name": "Knochenfürst",
+          "hp": 3134,
+          "maxHp": 3200,
+          "ratio": 0.979375,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 65241,
+          "frost": 136
+        },
+        "dawn": false,
+        "minute": 10
+      },
+      {
+        "time": 661.4444466666101,
+        "level": 26,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 15,
+        "kills": 1056,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 6
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 91278,
+          "frost": 358,
+          "ember": 10
+        },
+        "dawn": false,
+        "minute": 11
+      },
+      {
+        "time": 721.0398466665574,
+        "level": 27,
+        "hp": 255.30010000000007,
+        "maxHp": 256,
+        "enemies": 14,
+        "kills": 1167,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 6
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 110517,
+          "frost": 736,
+          "ember": 715
+        },
+        "dawn": false,
+        "minute": 12
+      },
+      {
+        "time": 783.9339466665018,
+        "level": 27,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 22,
+        "kills": 1279,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 7
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 132396,
+          "frost": 1473,
+          "ember": 1410
+        },
+        "dawn": false,
+        "minute": 13
+      },
+      {
+        "time": 840.8291466664515,
+        "level": 28,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 18,
+        "kills": 1395,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 151173,
+          "frost": 1887,
+          "ember": 2020
+        },
+        "dawn": false,
+        "minute": 14
+      },
+      {
+        "time": 900.7721466663992,
+        "level": 29,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 16,
+        "kills": 1538,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 11924,
+          "maxHp": 12000,
+          "ratio": 0.9936666666666667,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 176352,
+          "frost": 3022,
+          "ember": 2685
+        },
+        "dawn": false,
+        "minute": 15
+      },
+      {
+        "time": 961.7172466663449,
+        "level": 30,
+        "hp": 236,
+        "maxHp": 256,
+        "enemies": 57,
+        "kills": 1633,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "frost",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 1
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "hp": 5288,
+          "maxHp": 12000,
+          "ratio": 0.44066666666666665,
+          "phase": 1,
+          "color": 20,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 236511,
+          "frost": 6282,
+          "ember": 3458
+        },
+        "dawn": false,
+        "minute": 16
+      },
+      {
+        "time": 1024.3094376662898,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 34,
+        "kills": 1783,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 345312,
+          "frost": 11203,
+          "ember": 4376,
+          "eternal_winter": 5860
+        },
+        "dawn": false,
+        "minute": 17
+      },
+      {
+        "time": 1084.356237666236,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 82,
+        "kills": 1845,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 369534,
+          "frost": 11203,
+          "ember": 5282,
+          "eternal_winter": 23987
+        },
+        "dawn": false,
+        "minute": 18
+      },
+      {
+        "time": 1141.9519376661847,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 129,
+        "kills": 1907,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 402138,
+          "frost": 11203,
+          "ember": 6242,
+          "eternal_winter": 46650
+        },
+        "dawn": false,
+        "minute": 19
+      },
+      {
+        "time": 1201.1985376661316,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 169,
+        "kills": 1986,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 2
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 12769,
+          "maxHp": 13000,
+          "ratio": 0.9822307692307692,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 436722,
+          "frost": 11203,
+          "ember": 7178,
+          "eternal_winter": 72733
+        },
+        "dawn": false,
+        "minute": 20
+      },
+      {
+        "time": 1262.6945376660767,
+        "level": 32,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 101,
+        "kills": 2331,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "hp": 2235,
+          "maxHp": 13000,
+          "ratio": 0.17192307692307693,
+          "phase": 1,
+          "color": 25,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 642048,
+          "frost": 11203,
+          "ember": 8342,
+          "eternal_winter": 140308
+        },
+        "dawn": false,
+        "minute": 21
+      },
+      {
+        "time": 1322.1418376660233,
+        "level": 32,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 222,
+        "kills": 2779,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 800085,
+          "frost": 11203,
+          "ember": 9488,
+          "eternal_winter": 184988
+        },
+        "dawn": false,
+        "minute": 22
+      },
+      {
+        "time": 1383.689137665968,
+        "level": 33,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 329,
+        "kills": 3829,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 1119690,
+          "frost": 11203,
+          "ember": 11793,
+          "eternal_winter": 233714
+        },
+        "dawn": false,
+        "minute": 23
+      },
+      {
+        "time": 1444.1876376659134,
+        "level": 33,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 349,
+        "kills": 5181,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 1
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 1507209,
+          "frost": 11203,
+          "ember": 14537,
+          "eternal_winter": 278103
+        },
+        "dawn": false,
+        "minute": 24
+      },
+      {
+        "time": 1501.7358376658615,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 350,
+        "kills": 6360,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 3
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "hp": 6739,
+          "maxHp": 7000,
+          "ratio": 0.9627142857142857,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 1902714,
+          "frost": 11203,
+          "ember": 17085,
+          "eternal_winter": 321930
+        },
+        "dawn": false,
+        "minute": 25
+      },
+      {
+        "time": 1564.8806376658054,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 309,
+        "kills": 7728,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 4
+          },
+          {
+            "id": "lantern",
+            "level": 1
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 2
+          },
+          {
+            "id": "tome",
+            "level": 3
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 2402105,
+          "frost": 11203,
+          "ember": 20219,
+          "eternal_winter": 388982,
+          "storm": 72,
+          "lantern": 16
+        },
+        "dawn": false,
+        "minute": 26
+      },
+      {
+        "time": 1621.0805376657543,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 351,
+        "kills": 8600,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 5
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 2731098,
+          "frost": 11203,
+          "ember": 29499,
+          "eternal_winter": 429538,
+          "storm": 800,
+          "lantern": 119
+        },
+        "dawn": false,
+        "minute": 27
+      },
+      {
+        "time": 1681.9744376657,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 353,
+        "kills": 9353,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 5
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 3081917,
+          "frost": 11203,
+          "ember": 40176,
+          "eternal_winter": 484750,
+          "storm": 1620,
+          "lantern": 199
+        },
+        "dawn": false,
+        "minute": 28
+      },
+      {
+        "time": 1742.5707376656458,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 333,
+        "kills": 10116,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 5
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 3440925,
+          "frost": 11203,
+          "ember": 50876,
+          "eternal_winter": 535536,
+          "storm": 2439,
+          "lantern": 324
+        },
+        "dawn": false,
+        "minute": 29
+      },
+      {
+        "time": 1800.6162376655946,
+        "level": 36,
+        "hp": 243.09990000000002,
+        "maxHp": 256,
+        "enemies": 171,
+        "kills": 11177,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "storm",
+            "level": 1
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 4
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 5,
+          "name": "Der Hohle König",
+          "hp": 21815,
+          "maxHp": 22000,
+          "ratio": 0.9915909090909091,
+          "phase": 1,
+          "color": 31,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 4088601,
+          "frost": 11203,
+          "ember": 79422,
+          "eternal_winter": 639566,
+          "storm": 3191,
+          "lantern": 564
+        },
+        "dawn": false,
+        "minute": 30
+      },
+      {
+        "time": 1860.7644376655403,
+        "level": 38,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 73,
+        "kills": 12067,
+        "weapons": [
+          {
+            "id": "wrath_pendulum",
+            "level": 8
+          },
+          {
+            "id": "eternal_winter",
+            "level": 8
+          },
+          {
+            "id": "ember",
+            "level": 7
+          },
+          {
+            "id": "lantern",
+            "level": 2
+          },
+          {
+            "id": "storm",
+            "level": 2
+          }
+        ],
+        "passives": [
+          {
+            "id": "boots",
+            "level": 5
+          },
+          {
+            "id": "heart",
+            "level": 5
+          },
+          {
+            "id": "charm",
+            "level": 3
+          },
+          {
+            "id": "tome",
+            "level": 5
+          },
+          {
+            "id": "hourglass",
+            "level": 2
+          },
+          {
+            "id": "whetstone",
+            "level": 2
+          }
+        ],
+        "boss": {
+          "index": 5,
+          "name": "Der Hohle König",
+          "hp": 5180,
+          "maxHp": 22000,
+          "ratio": 0.23545454545454544,
+          "phase": 3,
+          "color": 25,
+          "alive": true
+        },
+        "damageByWeapon": {
+          "flail": 20178,
+          "wrath_pendulum": 4725147,
+          "frost": 11203,
+          "ember": 115062,
+          "eternal_winter": 745836,
+          "storm": 4013,
+          "lantern": 854
+        },
+        "dawn": false,
+        "minute": 31
+      }
+    ],
+    "lastSeenByBoss": {
+      "0": 323.0101466667043,
+      "1": 628.6477466666389,
+      "2": 1008.610246666304,
+      "3": 1272.8936376660677,
+      "4": 1545.3821376658227,
+      "5": 1874.6619376655283
+    },
+    "bossObserved": {
+      "0": {
+        "firstSecond": 300.6119466666997,
+        "minHp": 0.082
+      },
+      "1": {
+        "firstSecond": 600.3511466666638,
+        "minHp": 0.0203125
+      },
+      "2": {
+        "firstSecond": 900.7721466663992,
+        "minHp": 0.014666666666666666
+      },
+      "3": {
+        "firstSecond": 1201.1985376661316,
+        "minHp": 0.031461538461538464
+      },
+      "4": {
+        "firstSecond": 1501.7358376658615,
+        "minHp": 0.018857142857142857
+      },
+      "5": {
+        "firstSecond": 1800.6162376655946,
+        "minHp": 0.01840909090909091
+      }
+    },
+    "defeatedEndByBoss": {
+      "0": 325.26084666670477,
+      "1": 629.2979466666383,
+      "2": 1010.1605466663026,
+      "3": 1275.2938376660654,
+      "4": 1546.4324376658217,
+      "5": 1875.962037665527
+    },
+    "result": {
+      "reason": "dawn",
+      "time": 1879.2113376655243,
+      "level": 39,
+      "kills": 12167,
+      "damageByWeapon": {
+        "flail": 20178,
+        "wrath_pendulum": 4810985,
+        "frost": 11203,
+        "ember": 124962,
+        "eternal_winter": 760266,
+        "storm": 4266,
+        "lantern": 904
+      },
+      "character": "kael",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "flail": 20178,
+      "wrath_pendulum": 4810985,
+      "frost": 11203,
+      "ember": 124962,
+      "eternal_winter": 760266,
+      "storm": 4266,
+      "lantern": 904
+    },
+    "run": {
+      "time": 1878.8113376655247,
+      "level": 39,
+      "kills": 12167,
+      "hp": 256,
+      "maxHp": 256,
+      "enemies": 0,
+      "weapons": [
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "ember",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 2
+        },
+        {
+          "id": "storm",
+          "level": 4
+        }
+      ],
+      "passives": [
+        {
+          "id": "boots",
+          "level": 5
+        },
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "charm",
+          "level": 3
+        },
+        {
+          "id": "tome",
+          "level": 5
+        },
+        {
+          "id": "hourglass",
+          "level": 2
+        },
+        {
+          "id": "whetstone",
+          "level": 3
+        }
+      ],
+      "bossesDefeated": 6,
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        },
+        {
+          "index": 3,
+          "at": 1200
+        },
+        {
+          "index": 4,
+          "at": 1500
+        },
+        {
+          "index": 5,
+          "at": 1800
+        }
+      ],
+      "chestsDropped": 6,
+      "dawn": true,
+      "damageByWeapon": {
+        "flail": 20178,
+        "wrath_pendulum": 4810985,
+        "frost": 11203,
+        "ember": 124962,
+        "eternal_winter": 760266,
+        "storm": 4266,
+        "lantern": 904
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 114.2,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 61,
+        "level": 5,
+        "hp": 156,
+        "maxHp": 156,
+        "enemies": 4,
+        "kills": 23,
+        "dps": {
+          "flail": 10.8
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 61,
+        "tTo": 124,
+        "level": 10,
+        "hp": 151,
+        "maxHp": 156,
+        "enemies": 3,
+        "kills": 76,
+        "dps": {
+          "flail": 31.6
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 2,
+        "minuteTo": 3,
+        "tFrom": 124,
+        "tTo": 181,
+        "level": 12,
+        "hp": 173,
+        "maxHp": 176,
+        "enemies": 9,
+        "kills": 140,
+        "dps": {
+          "flail": 53.1
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 3,
+        "minuteTo": 4,
+        "tFrom": 181,
+        "tTo": 243,
+        "level": 14,
+        "hp": 196,
+        "maxHp": 196,
+        "enemies": 11,
+        "kills": 226,
+        "dps": {
+          "flail": 65.9
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 4,
+        "minuteTo": 5,
+        "tFrom": 243,
+        "tTo": 301,
+        "level": 17,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 13,
+        "kills": 305,
+        "dps": {
+          "flail": 82.6
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 5,
+        "minuteTo": 6,
+        "tFrom": 301,
+        "tTo": 364,
+        "level": 18,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 11,
+        "kills": 389,
+        "dps": {
+          "flail": 89.3,
+          "wrath_pendulum": 71.2
+        },
+        "sharePct": {
+          "flail": 55.6,
+          "wrath_pendulum": 44.4
+        }
+      },
+      {
+        "minuteFrom": 6,
+        "minuteTo": 7,
+        "tFrom": 364,
+        "tTo": 420,
+        "level": 20,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 14,
+        "kills": 503,
+        "dps": {
+          "wrath_pendulum": 207.3
+        },
+        "sharePct": {
+          "wrath_pendulum": 100
+        }
+      },
+      {
+        "minuteFrom": 7,
+        "minuteTo": 8,
+        "tFrom": 420,
+        "tTo": 483,
+        "level": 21,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 21,
+        "kills": 593,
+        "dps": {
+          "wrath_pendulum": 180.3,
+          "frost": 0.2
+        },
+        "sharePct": {
+          "wrath_pendulum": 99.9,
+          "frost": 0.1
+        }
+      },
+      {
+        "minuteFrom": 8,
+        "minuteTo": 9,
+        "tFrom": 483,
+        "tTo": 540,
+        "level": 23,
+        "hp": 236,
+        "maxHp": 236,
+        "enemies": 17,
+        "kills": 753,
+        "dps": {
+          "wrath_pendulum": 308.8,
+          "frost": 0.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 99.7,
+          "frost": 0.3
+        }
+      },
+      {
+        "minuteFrom": 9,
+        "minuteTo": 10,
+        "tFrom": 540,
+        "tTo": 600,
+        "level": 24,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 23,
+        "kills": 917,
+        "dps": {
+          "wrath_pendulum": 333.3,
+          "frost": 1.2
+        },
+        "sharePct": {
+          "wrath_pendulum": 99.6,
+          "frost": 0.4
+        }
+      },
+      {
+        "minuteFrom": 10,
+        "minuteTo": 11,
+        "tFrom": 600,
+        "tTo": 661,
+        "level": 26,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 15,
+        "kills": 1056,
+        "dps": {
+          "wrath_pendulum": 426.2,
+          "frost": 3.6,
+          "ember": 0.2
+        },
+        "sharePct": {
+          "wrath_pendulum": 99.1,
+          "frost": 0.8,
+          "ember": 0
+        }
+      },
+      {
+        "minuteFrom": 11,
+        "minuteTo": 12,
+        "tFrom": 661,
+        "tTo": 721,
+        "level": 27,
+        "hp": 255,
+        "maxHp": 256,
+        "enemies": 14,
+        "kills": 1167,
+        "dps": {
+          "wrath_pendulum": 322.8,
+          "frost": 6.3,
+          "ember": 11.8
+        },
+        "sharePct": {
+          "wrath_pendulum": 94.7,
+          "frost": 1.8,
+          "ember": 3.5
+        }
+      },
+      {
+        "minuteFrom": 12,
+        "minuteTo": 13,
+        "tFrom": 721,
+        "tTo": 784,
+        "level": 27,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 22,
+        "kills": 1279,
+        "dps": {
+          "wrath_pendulum": 347.9,
+          "frost": 11.7,
+          "ember": 11.1
+        },
+        "sharePct": {
+          "wrath_pendulum": 93.8,
+          "frost": 3.2,
+          "ember": 3
+        }
+      },
+      {
+        "minuteFrom": 13,
+        "minuteTo": 14,
+        "tFrom": 784,
+        "tTo": 841,
+        "level": 28,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 18,
+        "kills": 1395,
+        "dps": {
+          "wrath_pendulum": 330,
+          "frost": 7.3,
+          "ember": 10.7
+        },
+        "sharePct": {
+          "wrath_pendulum": 94.8,
+          "frost": 2.1,
+          "ember": 3.1
+        }
+      },
+      {
+        "minuteFrom": 14,
+        "minuteTo": 15,
+        "tFrom": 841,
+        "tTo": 901,
+        "level": 29,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 16,
+        "kills": 1538,
+        "dps": {
+          "wrath_pendulum": 420,
+          "frost": 18.9,
+          "ember": 11.1
+        },
+        "sharePct": {
+          "wrath_pendulum": 93.3,
+          "frost": 4.2,
+          "ember": 2.5
+        }
+      },
+      {
+        "minuteFrom": 15,
+        "minuteTo": 16,
+        "tFrom": 901,
+        "tTo": 962,
+        "level": 30,
+        "hp": 236,
+        "maxHp": 256,
+        "enemies": 57,
+        "kills": 1633,
+        "dps": {
+          "wrath_pendulum": 987.1,
+          "frost": 53.5,
+          "ember": 12.7
+        },
+        "sharePct": {
+          "wrath_pendulum": 93.7,
+          "frost": 5.1,
+          "ember": 1.2
+        }
+      },
+      {
+        "minuteFrom": 16,
+        "minuteTo": 17,
+        "tFrom": 962,
+        "tTo": 1024,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 34,
+        "kills": 1783,
+        "dps": {
+          "wrath_pendulum": 1738.3,
+          "frost": 78.6,
+          "ember": 14.7,
+          "eternal_winter": 93.6
+        },
+        "sharePct": {
+          "wrath_pendulum": 90.3,
+          "frost": 4.1,
+          "ember": 0.8,
+          "eternal_winter": 4.9
+        }
+      },
+      {
+        "minuteFrom": 17,
+        "minuteTo": 18,
+        "tFrom": 1024,
+        "tTo": 1084,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 82,
+        "kills": 1845,
+        "dps": {
+          "wrath_pendulum": 403.4,
+          "ember": 15.1,
+          "eternal_winter": 301.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 56,
+          "ember": 2.1,
+          "eternal_winter": 41.9
+        }
+      },
+      {
+        "minuteFrom": 18,
+        "minuteTo": 19,
+        "tFrom": 1084,
+        "tTo": 1142,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 129,
+        "kills": 1907,
+        "dps": {
+          "wrath_pendulum": 566.1,
+          "ember": 16.7,
+          "eternal_winter": 393.5
+        },
+        "sharePct": {
+          "wrath_pendulum": 58,
+          "ember": 1.7,
+          "eternal_winter": 40.3
+        }
+      },
+      {
+        "minuteFrom": 19,
+        "minuteTo": 20,
+        "tFrom": 1142,
+        "tTo": 1201,
+        "level": 31,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 169,
+        "kills": 1986,
+        "dps": {
+          "wrath_pendulum": 583.7,
+          "ember": 15.8,
+          "eternal_winter": 440.2
+        },
+        "sharePct": {
+          "wrath_pendulum": 56.1,
+          "ember": 1.5,
+          "eternal_winter": 42.3
+        }
+      },
+      {
+        "minuteFrom": 20,
+        "minuteTo": 21,
+        "tFrom": 1201,
+        "tTo": 1263,
+        "level": 32,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 101,
+        "kills": 2331,
+        "dps": {
+          "wrath_pendulum": 3338.9,
+          "ember": 18.9,
+          "eternal_winter": 1098.9
+        },
+        "sharePct": {
+          "wrath_pendulum": 74.9,
+          "ember": 0.4,
+          "eternal_winter": 24.7
+        }
+      },
+      {
+        "minuteFrom": 21,
+        "minuteTo": 22,
+        "tFrom": 1263,
+        "tTo": 1322,
+        "level": 32,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 222,
+        "kills": 2779,
+        "dps": {
+          "wrath_pendulum": 2658.4,
+          "ember": 19.3,
+          "eternal_winter": 751.6
+        },
+        "sharePct": {
+          "wrath_pendulum": 77.5,
+          "ember": 0.6,
+          "eternal_winter": 21.9
+        }
+      },
+      {
+        "minuteFrom": 22,
+        "minuteTo": 23,
+        "tFrom": 1322,
+        "tTo": 1384,
+        "level": 33,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 329,
+        "kills": 3829,
+        "dps": {
+          "wrath_pendulum": 5192.8,
+          "ember": 37.5,
+          "eternal_winter": 791.7
+        },
+        "sharePct": {
+          "wrath_pendulum": 86.2,
+          "ember": 0.6,
+          "eternal_winter": 13.1
+        }
+      },
+      {
+        "minuteFrom": 23,
+        "minuteTo": 24,
+        "tFrom": 1384,
+        "tTo": 1444,
+        "level": 33,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 349,
+        "kills": 5181,
+        "dps": {
+          "wrath_pendulum": 6405.4,
+          "ember": 45.4,
+          "eternal_winter": 733.7
+        },
+        "sharePct": {
+          "wrath_pendulum": 89.2,
+          "ember": 0.6,
+          "eternal_winter": 10.2
+        }
+      },
+      {
+        "minuteFrom": 24,
+        "minuteTo": 25,
+        "tFrom": 1444,
+        "tTo": 1502,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 350,
+        "kills": 6360,
+        "dps": {
+          "wrath_pendulum": 6872.6,
+          "ember": 44.3,
+          "eternal_winter": 761.6
+        },
+        "sharePct": {
+          "wrath_pendulum": 89.5,
+          "ember": 0.6,
+          "eternal_winter": 9.9
+        }
+      },
+      {
+        "minuteFrom": 25,
+        "minuteTo": 26,
+        "tFrom": 1502,
+        "tTo": 1565,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 309,
+        "kills": 7728,
+        "dps": {
+          "wrath_pendulum": 7908.7,
+          "ember": 49.6,
+          "eternal_winter": 1061.9,
+          "storm": 1.1,
+          "lantern": 0.3
+        },
+        "sharePct": {
+          "wrath_pendulum": 87.7,
+          "ember": 0.5,
+          "eternal_winter": 11.8,
+          "storm": 0,
+          "lantern": 0
+        }
+      },
+      {
+        "minuteFrom": 26,
+        "minuteTo": 27,
+        "tFrom": 1565,
+        "tTo": 1621,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 351,
+        "kills": 8600,
+        "dps": {
+          "wrath_pendulum": 5854,
+          "ember": 165.1,
+          "eternal_winter": 721.6,
+          "storm": 13,
+          "lantern": 1.8
+        },
+        "sharePct": {
+          "wrath_pendulum": 86.7,
+          "ember": 2.4,
+          "eternal_winter": 10.7,
+          "storm": 0.2,
+          "lantern": 0
+        }
+      },
+      {
+        "minuteFrom": 27,
+        "minuteTo": 28,
+        "tFrom": 1621,
+        "tTo": 1682,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 353,
+        "kills": 9353,
+        "dps": {
+          "wrath_pendulum": 5761.2,
+          "ember": 175.3,
+          "eternal_winter": 906.7,
+          "storm": 13.5,
+          "lantern": 1.3
+        },
+        "sharePct": {
+          "wrath_pendulum": 84,
+          "ember": 2.6,
+          "eternal_winter": 13.2,
+          "storm": 0.2,
+          "lantern": 0
+        }
+      },
+      {
+        "minuteFrom": 28,
+        "minuteTo": 29,
+        "tFrom": 1682,
+        "tTo": 1743,
+        "level": 34,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 333,
+        "kills": 10116,
+        "dps": {
+          "wrath_pendulum": 5924.6,
+          "ember": 176.6,
+          "eternal_winter": 838.1,
+          "storm": 13.5,
+          "lantern": 2.1
+        },
+        "sharePct": {
+          "wrath_pendulum": 85.2,
+          "ember": 2.5,
+          "eternal_winter": 12.1,
+          "storm": 0.2,
+          "lantern": 0
+        }
+      },
+      {
+        "minuteFrom": 29,
+        "minuteTo": 30,
+        "tFrom": 1743,
+        "tTo": 1801,
+        "level": 36,
+        "hp": 243,
+        "maxHp": 256,
+        "enemies": 171,
+        "kills": 11177,
+        "dps": {
+          "wrath_pendulum": 11158.1,
+          "ember": 491.8,
+          "eternal_winter": 1792.2,
+          "storm": 13,
+          "lantern": 4.1
+        },
+        "sharePct": {
+          "wrath_pendulum": 82.9,
+          "ember": 3.7,
+          "eternal_winter": 13.3,
+          "storm": 0.1,
+          "lantern": 0
+        }
+      },
+      {
+        "minuteFrom": 30,
+        "minuteTo": 31,
+        "tFrom": 1801,
+        "tTo": 1861,
+        "level": 38,
+        "hp": 256,
+        "maxHp": 256,
+        "enemies": 73,
+        "kills": 12067,
+        "dps": {
+          "wrath_pendulum": 10583,
+          "ember": 592.5,
+          "eternal_winter": 1766.8,
+          "storm": 13.7,
+          "lantern": 4.8
+        },
+        "sharePct": {
+          "wrath_pendulum": 81.7,
+          "ember": 4.6,
+          "eternal_winter": 13.6,
+          "storm": 0.1,
+          "lantern": 0
+        }
+      }
+    ],
+    "bossDurations": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "spawnSecond": 300,
+        "endSecond": 325,
+        "durationSec": 25,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "spawnSecond": 600,
+        "endSecond": 629,
+        "durationSec": 29,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "spawnSecond": 900,
+        "endSecond": 1010,
+        "durationSec": 110,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "spawnSecond": 1200,
+        "endSecond": 1275,
+        "durationSec": 75,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 4,
+        "name": "Hexenzirkel",
+        "spawnSecond": 1500,
+        "endSecond": 1546,
+        "durationSec": 46,
+        "defeated": true,
+        "aliveAtDeath": false
+      },
+      {
+        "index": 5,
+        "name": "Der Hohle König",
+        "spawnSecond": 1800,
+        "endSecond": 1876,
+        "durationSec": 76,
+        "defeated": true,
+        "aliveAtDeath": false
+      }
+    ],
+    "evolutions": [
+      "wrath_pendulum",
+      "eternal_winter"
+    ],
+    "damageShare": {
+      "totalDamage": 5732764,
+      "sharePct": {
+        "flail": 0.4,
+        "wrath_pendulum": 83.9,
+        "frost": 0.2,
+        "ember": 2.2,
+        "eternal_winter": 13.3,
+        "storm": 0.1,
+        "lantern": 0
+      },
+      "avgDpsOverRun": {
+        "flail": 11.2,
+        "wrath_pendulum": 2672.8,
+        "frost": 6.2,
+        "ember": 69.4,
+        "eternal_winter": 422.4,
+        "storm": 2.4,
+        "lantern": 0.5
+      }
+    },
+    "passed": {
+      "survivalMinutes": 31.3,
+      "levelAtEnd": 39,
+      "evolutionCount": 2,
+      "bossDurationsInCorridor": false,
+      "died": false,
+      "survivalInCorridor": false,
+      "levelInCorridor": true
+    }
+  }
+]

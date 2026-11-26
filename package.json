@@ -12,6 +12,7 @@
 "verify:enemies": "node scripts/verify-enemies.mjs",
 "verify:bosses": "node scripts/verify-bosses.mjs",
 "fullrun": "node scripts/fullrun.mjs",
+"balance": "node scripts/balance.mjs",
 "verify:terrain": "node scripts/verify-terrain.mjs",
 "verify:vfx": "node scripts/verify-vfx.mjs"
 },

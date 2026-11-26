@@ -32,7 +32,7 @@ export const WAVES: WaveDef[] = Array.from({ length: 30 }, (_, minute) => {
   const tierProgress = (minute % 5) / 5;
   return {
     minute,
-    spawnRate: 0.9 + minute * 0.34 + tierProgress * 0.12,
+    spawnRate: 0.45 + minute * 0.07 + tierProgress * 0.05,
     mix: TIER_MIXES[tier],
     special: specialForMinute(minute),
     elitePack: isEliteMinute(minute),

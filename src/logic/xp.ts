@@ -16,9 +16,15 @@ export const GEMS: Record<GemSize, GemMeta> = {
   large: { size: "large", value: 18, color: 25, weight: 6 },
 };
 
-/** Benötigte XP vom aktuellen Level zum nächsten. */
+/**
+ * Benötigte XP vom aktuellen Level zum nächsten.
+ * M6-Balance: früh günstig (damit der 5-min-Boss nicht mit Level 6 kommt),
+ * im Verlauf quadratisch teurer (natürlicher 30-min-Run landet bei Level
+ * 25–40 statt bei ~147 wie mit dem M1-Rohbau 8 + 7/Level).
+ */
 export function xpToNext(level: number): number {
-  return 8 + (Math.max(1, level) - 1) * 7;
+  const n = Math.max(1, level) - 1;
+  return 8 + Math.round(0.9 * n * n);
 }
 
 export interface XpState {

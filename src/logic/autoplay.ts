@@ -1,3 +1,4 @@
+import { EVOLUTIONS } from "../data/evolutions";
 import type { Offer } from "./levelup";
 
 export interface BotPoint {
@@ -21,6 +22,12 @@ export interface BotInput {
   projectiles: readonly BotThreat[];
   hazards: readonly BotThreat[];
   gems: readonly BotPoint[];
+  /** Nahkampf-Build (Kettenflegel/Zornpendel): weniger Abstand, um in Reichweite zu bleiben. */
+  melee?: boolean;
+  /** Aktiver Boss: Nahkampf hält 38–60 px Abstand, damit der Schwung trifft. */
+  boss?: BotPoint;
+  /** Truhen: Bot läuft hin, damit Evolutionen nicht liegen bleiben. */
+  chests?: readonly BotPoint[];
 }
 
 const WEAPON_PRIORITY: Record<string, number> = {
@@ -32,22 +39,61 @@ const PASSIVE_PRIORITY: Record<string, number> = {
   heart: 34, boots: 30, tome: 28, charm: 22, whetstone: 20, hourglass: 18,
 };
 
-export function offerScore(offer: Offer): number {
-  const id = String(offer.id);
-  if (offer.kind === "weapon") {
-    if (offer.isNew) return 500 + (WEAPON_PRIORITY[id] ?? 0);
-    return 320 + (WEAPON_PRIORITY[id] ?? 0) + offer.level * 6;
-  }
-  if (offer.isNew) return 220 + (PASSIVE_PRIORITY[id] ?? 0);
-  return 140 + (PASSIVE_PRIORITY[id] ?? 0) + offer.level * 4;
+/** Aktueller Build des Bots (für Evolutions-Fokus und Slot-Begrenzung). */
+export interface BuildContext {
+  weapons: readonly { id: string; level: number }[];
+  passives: readonly { id: string; level: number }[];
+  /** Startwaffe des Charakters: bleibt der Fokus-Slot, nicht die zufällig höchste Waffe. */
+  startingWeapon?: string;
 }
 
-/** Index des besten Level-up-Angebots nach einfacher Prioritätsliste. */
-export function chooseBestOffer(offers: readonly Offer[]): number {
+/**
+ * Balance M6: Der Bot spielt auf Überleben UND eine Evolution, statt alle 6
+ * Waffen anzusammeln. Er konzentriert sich auf die höchste Basiswaffe, nimmt
+ * deren Evolutions-Powerup und hält HP/Tempo hoch. Neue Waffen sind nur eine
+ * Option, wenn noch kein Fokus-Slot existiert.
+ */
+export function offerScore(offer: Offer, build?: BuildContext): number {
+  const id = String(offer.id);
+  const weapons = build?.weapons ?? [];
+  const passives = build?.passives ?? [];
+  const passiveLevel = new Map(passives.map((p) => [p.id, p.level]));
+  // Fokus = Startwaffe (bleibt stabil); nur wenn sie evolviert/maxed ist, zählt
+  // die höchste andere Basiswaffe. So erreicht genau ein Slot Stufe 8.
+  const baseOwned = weapons.filter((w) => w.id in WEAPON_PRIORITY && !EVOLUTIONS.some((e) => e.id === w.id));
+  let focus: { id: string; level: number } | null = null;
+  const start = build?.startingWeapon ? baseOwned.find((w) => w.id === build.startingWeapon) : undefined;
+  if (start) focus = { id: start.id, level: start.level };
+  else {
+    for (const w of baseOwned) {
+      if (!focus || w.level > focus.level) focus = { id: w.id, level: w.level };
+    }
+  }
+  const evo = focus ? EVOLUTIONS.find((e) => e.baseWeapon === focus!.id) : undefined;
+
+  if (offer.kind === "weapon") {
+    if (focus && offer.id === focus.id && !offer.isNew && offer.level < 8) return 1250 + offer.level;
+    // Ke Waffen sind nur eine Notlösung; der Fokus-Slot soll Stufe 8 erreichen.
+    if (offer.isNew) return 140 + (WEAPON_PRIORITY[id] ?? 0);
+    return 450 + (WEAPON_PRIORITY[id] ?? 0) + offer.level * 4;
+  }
+
+  const level = passiveLevel.get(id) ?? 0;
+  if (evo && evo.passive === id) return offer.isNew ? 900 : 820 + level * 4;
+  // Heart ist nur für Nahkampf-Builds (Flegel-Evolution) wichtig; für Mira
+  // bleibt die Evolutions-Passive (Tome) vor der HP-Reserve.
+  if (id === "heart") return (build?.startingWeapon === "flail" ? 1050 : 850) + (offer.isNew ? 0 : level * 5);
+  if (id === "boots") return offer.isNew ? 950 : 650 + level * 4;
+  if (offer.isNew) return 420 + (PASSIVE_PRIORITY[id] ?? 0);
+  return 380 + (PASSIVE_PRIORITY[id] ?? 0) + offer.level * 4;
+}
+
+/** Index des besten Level-up-Angebots nach Prioritätsliste + Build-Kontext. */
+export function chooseBestOffer(offers: readonly Offer[], build?: BuildContext): number {
   let best = 0;
   let bestScore = -Infinity;
   for (let i = 0; i < offers.length; i++) {
-    const score = offerScore(offers[i]);
+    const score = offerScore(offers[i], build);
     if (score > bestScore) {
       bestScore = score;
       best = i;
@@ -81,9 +127,57 @@ export function botDirection(input: BotInput): { x: number; y: number } {
     y += ny * falloff * weight;
   };
 
-  for (const e of input.enemies) repel(e, 118, e.threat ?? 1.0);
+  // Nahkampf-Builds müssen in Waffenreichweite bleiben, Fernkampf kitet breiter.
+  const enemyRange = input.melee ? 105 : 118;
+  const enemyWeight = input.melee ? 0.75 : 1.0;
+  for (const e of input.enemies) repel(e, enemyRange, (e.threat ?? 1.0) * enemyWeight);
   for (const p of input.projectiles) repel(p, 96, p.threat ?? 2.3, 0.28);
   for (const h of input.hazards) repel(h, 42, h.threat ?? 3.0);
+
+  // Boss-Standoff für Nahkampf: heranlaufen, aber Kontakt vermeiden.
+  if (input.melee && input.boss) {
+    const dx = input.boss.x - px;
+    const dy = input.boss.y - py;
+    const d = Math.hypot(dx, dy) || 1;
+    const nx = dx / d;
+    const ny = dy / d;
+    if (d > 115) { x += nx * 8; y += ny * 8; }
+    else if (d < 95) { x -= nx * 4; y -= ny * 4; }
+  }
+
+  // Truhe zuerst: Evolutionen kommen nur über die Boss-Truhe.
+  if (input.chests && input.chests.length > 0) {
+    let chest: BotPoint | null = null;
+    let best = Number.POSITIVE_INFINITY;
+    for (const c of input.chests) {
+      const d = (c.x - px) ** 2 + (c.y - py) ** 2;
+      if (d < best) { best = d; chest = c; }
+    }
+    if (chest) {
+      const dx = chest.x - px;
+      const dy = chest.y - py;
+      const d = Math.hypot(dx, dy) || 1;
+      x += (dx / d) * 1.2;
+      y += (dy / d) * 1.2;
+    }
+  }
+
+  // Nahkampf: in den Gegner-Trupp hineinlaufen, damit der Schwung trifft.
+  if (input.melee) {
+    let closest: BotThreat | null = null;
+    let bestDist = 220 * 220;
+    for (const e of input.enemies) {
+      const d = (e.x - px) ** 2 + (e.y - py) ** 2;
+      if (d < bestDist) { bestDist = d; closest = e; }
+    }
+    if (closest) {
+      const dx = closest.x - px;
+      const dy = closest.y - py;
+      const d = Math.hypot(dx, dy) || 1;
+      x += (dx / d) * 0.40;
+      y += (dy / d) * 0.40;
+    }
+  }
 
   // XP sammeln, solange kein massiver Druck herrscht.
   let nearest: BotPoint | null = null;
@@ -101,8 +195,9 @@ export function botDirection(input: BotInput): { x: number; y: number } {
     const dx = nearest.x - px;
     const dy = nearest.y - py;
     const d = Math.hypot(dx, dy) || 1;
-    x += (dx / d) * 0.85;
-    y += (dy / d) * 0.85;
+    const gemWeight = input.melee ? 0.45 : 0.85;
+    x += (dx / d) * gemWeight;
+    y += (dy / d) * gemWeight;
   }
 
   // Wandmeidung mit weichem Rand.

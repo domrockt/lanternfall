@@ -202,6 +202,10 @@ export interface BossDef {
   atSecond: number;
   mechanic: string;
   hp: number;
+  /** Grundtempo in px/s. Muss ≤ 90 % des langsamsten Spielertempos (Kael 59) bleiben. */
+  speed: number;
+  /** Kontaktschaden pro Treffer (vor Rüstung). */
+  touchDamage: number;
   implemented: boolean;
 }
 

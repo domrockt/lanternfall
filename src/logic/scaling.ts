@@ -2,18 +2,22 @@
 
 export function enemyHpScale(elapsedSeconds: number, tier: number): number {
   const t = Math.max(0, elapsedSeconds);
-  return 1 + t / 240 + tier * 0.12 + Math.pow(t / 600, 1.35) * 0.85;
+  // M6-Balance: flacherer Frühverlauf (Bot soll bis 20–28 min kommen), im
+  // Endgame weiterhin deutlich skalierend.
+  return 1 + t / 480 + tier * 0.10 + Math.pow(t / 900, 1.35) * 0.50;
 }
 
 export function enemyDamageScale(elapsedSeconds: number): number {
   const t = Math.max(0, elapsedSeconds);
-  return 1 + t / 600 + Math.pow(t / 900, 2) * 0.7;
+  // M6-Balance: Kontaktschaden steigt langsamer; Gefahr kommt aus Masse,
+  // Mechaniken und Projektilen, nicht aus frühem Chip-Schaden.
+  return 1 + t / 3600 + Math.pow(t / 3600, 2) * 0.4;
 }
 
-/** Gegner werden im Lauf etwas flinker, aber gedeckelt (+25 %). */
+/** Gegner werden im Lauf etwas flinker, aber gedeckelt (+12 %). */
 export function enemySpeedScale(elapsedSeconds: number): number {
   const t = Math.max(0, elapsedSeconds);
-  return 1 + Math.min(0.25, (t / 1800) * 0.25);
+  return 1 + Math.min(0.12, (t / 1800) * 0.12);
 }
 
 /** Elite-Chance pro normalem Spawn ab Minute 2, steigt bis 10 %. */
@@ -33,7 +37,9 @@ export function isEliteMinute(minute: number): boolean {
  */
 export function maxActiveEnemies(elapsedSeconds: number): number {
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
-  return Math.min(500, 160 + minute * 16);
+  // M6-Balance: gleichmäßigerer Anstieg; der Deckel bleibt bei 500, wird durch
+  // die niedrigere Spawnrate aber erst spät erreicht (perf.mjs testet 500 separat).
+  return Math.min(360, 100 + minute * 13);
 }
 
 /** Ferne, alte Gegner dürfen recycelt werden (kein Kill, kein Drop). */

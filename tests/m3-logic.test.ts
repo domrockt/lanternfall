@@ -108,8 +108,8 @@ describe("Zeit-Skalierung und Director", () => {
     expect(enemyHpScale(1500, 4)).toBeGreaterThan(enemyHpScale(300, 4));
     expect(enemyHpScale(0, 4)).toBeGreaterThan(enemyHpScale(0, 0));
     expect(enemyDamageScale(1800)).toBeGreaterThan(enemyDamageScale(0));
-    expect(enemySpeedScale(9999)).toBeCloseTo(1.25);
-    expect(enemySpeedScale(1800)).toBeCloseTo(1.25);
+    expect(enemySpeedScale(9999)).toBeCloseTo(1.12);
+    expect(enemySpeedScale(1800)).toBeCloseTo(1.12);
   });
 
   it("Elite-Chance steigt, Elite-Minuten sind 4/10/16/22/28", () => {
@@ -120,10 +120,11 @@ describe("Zeit-Skalierung und Director", () => {
     expect(isEliteMinute(5)).toBe(false);
   });
 
-  it("Gegner-Cap wächst bis 500 und bleibt dort", () => {
+  it("Gegner-Cap wächst bis 360 und bleibt dort (M6-Balance)", () => {
     expect(maxActiveEnemies(0)).toBeGreaterThan(0);
-    expect(maxActiveEnemies(25 * 60)).toBe(500);
-    expect(maxActiveEnemies(30 * 60)).toBe(500);
+    expect(maxActiveEnemies(20 * 60)).toBe(360);
+    expect(maxActiveEnemies(30 * 60)).toBe(360);
+    // perf.mjs prüft die 500-Gegner-Last weiterhin separat mit erzwungenen Spawns.
   });
 
   it("Recycling nur für alte, ferne, nicht-elite Gegner", () => {
@@ -238,14 +239,20 @@ describe("AutoPlay-Bot", () => {
     expect(dir.x).toBeGreaterThan(0.5);
   });
 
-  it("wählt Level-ups nach Prioritätsliste", () => {
+  it("wählt Level-ups build-bewusst (Fokuswaffe + Evolutions-Powerup + Überleben)", () => {
     const offers: Offer[] = [
       { kind: "passive", id: "hourglass", name: "Sanduhr", description: "", level: 2, isNew: false, iconColor: 1 },
       { kind: "weapon", id: "ember", name: "Glutfunke", description: "", level: 2, isNew: false, iconColor: 1 },
       { kind: "weapon", id: "thorn", name: "Dornen", description: "", level: 1, isNew: true, iconColor: 1 },
+      { kind: "passive", id: "heart", name: "Eisenherz", description: "", level: 1, isNew: true, iconColor: 1 },
+      { kind: "passive", id: "tome", name: "Arkanes Buch", description: "", level: 1, isNew: true, iconColor: 1 },
     ];
-    expect(chooseBestOffer(offers)).toBe(2);
-    expect(offerScore(offers[2])).toBeGreaterThan(offerScore(offers[1]));
+    const build = { weapons: [{ id: "ember", level: 1 }], passives: [], startingWeapon: "ember" };
+    // Fokuswaffe zuerst (Stufe 8 -> Phönixschwarm erreichbar), Tome für die Evolution danach.
+    expect(chooseBestOffer(offers, build)).toBe(1);
+    expect(offerScore(offers[1], build)).toBeGreaterThan(offerScore(offers[4], build));
+    expect(offerScore(offers[4], build)).toBeGreaterThan(offerScore(offers[3], build));
+    expect(offerScore(offers[3], build)).toBeGreaterThan(offerScore(offers[2], build));
     expect(chooseBestOffer([])).toBe(0);
   });
 });

@@ -39,8 +39,8 @@ export class Spawner {
     const wave = this.currentWave(elapsedSeconds);
     if (wave.minute !== this.lastMinute) {
       this.lastMinute = wave.minute;
-      if (wave.special === "ring") this.spawnRing(wave, playerX, playerY, spawned, 10 + Math.floor(wave.minute / 4));
-      else if (wave.special === "stream") this.spawnStream(wave, playerX, playerY, spawned, 10 + Math.floor(wave.minute / 3));
+      if (wave.special === "ring") this.spawnRing(wave, playerX, playerY, spawned, 6 + Math.floor(wave.minute / 6));
+      else if (wave.special === "stream") this.spawnStream(wave, playerX, playerY, spawned, 6 + Math.floor(wave.minute / 5));
       if (wave.elitePack) this.spawnElitePack(wave, playerX, playerY, spawned);
     }
 

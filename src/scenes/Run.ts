@@ -517,6 +517,34 @@ export class Run extends Phaser.Scene {
     const speed = effectiveMoveSpeed(this.character.speed, this.agg) * terrain;
     this.facingX = dx;
     this.facingY = dy;
+    // AutoPlay zielt auf den nächsten Gegner (Nahkampf-Flegel trifft sonst nur
+    // in Laufrichtung, die beim Kiten vom Trupp wegzeigt). Nur die Blickrichtung,
+    // nicht die Bewegung, wird gedreht; manuelle Steuerung bleibt unverändert.
+    if (this.autoPlay) {
+      let best: { x: number; y: number } | null = null;
+      let bestD = 280 * 280;
+      // Boss hat Zielpriorität: sonst bleibt er im Getümmel unverwundet und der
+      // Bot kitet nur Trash. Nur die Blickrichtung zielt, die Bewegung bleibt.
+      for (const e of this.enemies.active) {
+        if (!e.alive || !e.boss) continue;
+        const d = (e.x - this.posX) ** 2 + (e.y - this.posY) ** 2;
+        if (d < 220 * 220) { best = e; bestD = d; break; }
+      }
+      if (!best) {
+        for (const e of this.enemies.active) {
+          if (!e.alive) continue;
+          const d = (e.x - this.posX) ** 2 + (e.y - this.posY) ** 2;
+          if (d < bestD) { bestD = d; best = e; }
+        }
+      }
+      if (best) {
+        const adx = best.x - this.posX;
+        const ady = best.y - this.posY;
+        const alen = Math.hypot(adx, ady) || 1;
+        this.facingX = adx / alen;
+        this.facingY = ady / alen;
+      }
+    }
     this.walkDir = Math.abs(dx) > Math.abs(dy) ? "side" : dy < 0 ? "up" : "down";
     this.posX = Phaser.Math.Clamp(this.posX + dx * speed * dt, 10, WORLD_SIZE - 10);
     this.posY = Phaser.Math.Clamp(this.posY + dy * speed * dt, 10, WORLD_SIZE - 10);
@@ -533,6 +561,7 @@ export class Run extends Phaser.Scene {
     }));
     const hazards = this.hazards.threats().map((h) => ({ ...h, threat: 3.2 }));
     const gems = this.pickups.gems.map((g) => ({ x: g.x, y: g.y }));
+    const bossAgent = this.enemies.active.find((e) => e.alive && e.boss);
     return botDirection({
       playerX: this.posX,
       playerY: this.posY,
@@ -541,6 +570,9 @@ export class Run extends Phaser.Scene {
       projectiles,
       hazards,
       gems,
+      melee: (this.levelSys?.weapons ?? []).some((w) => w.id === "flail" || w.id === "wrath_pendulum"),
+      boss: bossAgent ? { x: bossAgent.x, y: bossAgent.y, radius: bossAgent.radius } : undefined,
+      chests: this.chests.chests.map((c) => ({ x: c.x, y: c.y })),
     });
   }
 

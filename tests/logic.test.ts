@@ -100,6 +100,17 @@ describe("XP", () => {
     expect(xpToNext(1)).toBe(8);
     expect(xpToNext(2)).toBeGreaterThan(xpToNext(1));
   });
+  it("M6-Zielkurve: Level 30 braucht 6-10k XP, Level 40 deutlich mehr", () => {
+    let total30 = 0;
+    for (let level = 1; level < 30; level++) total30 += xpToNext(level);
+    expect(total30).toBeGreaterThan(6000);
+    expect(total30).toBeLessThan(10000);
+    let total40 = 0;
+    for (let level = 1; level < 40; level++) total40 += xpToNext(level);
+    expect(total40).toBeGreaterThan(15000);
+    // Quadratische Kurve: hohe Level werden sehr teuer (kein Level 147 mehr).
+    expect(xpToNext(100)).toBeGreaterThan(8000);
+  });
   it("mehrere Level-Ups in einem Schritt", () => {
     const r = applyXp({ level: 1, xp: 0, pendingLevelUps: 0 }, 1000);
     expect(r.level).toBeGreaterThan(5);

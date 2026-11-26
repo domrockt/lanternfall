@@ -1,0 +1,146 @@
+{
+  "mode": "main",
+  "scale": 30,
+  "generatedAt": "2026-11-26T00:50:56.833Z",
+  "runs": [
+    {
+      "seed": 101,
+      "character": "mira",
+      "outcome": "death",
+      "deathMinute": 20.2,
+      "level": 30,
+      "kills": 1988,
+      "evolutions": [
+        "phoenix"
+      ],
+      "bossDurations": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "endSecond": 321,
+          "durationSec": 21,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "endSecond": 608,
+          "durationSec": 8,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "endSecond": 932,
+          "durationSec": 32,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "spawnSecond": 1200,
+          "endSecond": 1208,
+          "durationSec": null,
+          "defeated": false,
+          "aliveAtDeath": true
+        }
+      ],
+      "passed": {
+        "survivalMinutes": 20.2,
+        "levelAtEnd": 30,
+        "evolutionCount": 1,
+        "bossDurationsInCorridor": false,
+        "died": true,
+        "survivalInCorridor": true,
+        "levelInCorridor": true
+      }
+    },
+    {
+      "seed": 101,
+      "character": "kael",
+      "outcome": "dawn",
+      "deathMinute": 31.3,
+      "level": 39,
+      "kills": 12167,
+      "evolutions": [
+        "wrath_pendulum",
+        "eternal_winter"
+      ],
+      "bossDurations": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "endSecond": 325,
+          "durationSec": 25,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "endSecond": 629,
+          "durationSec": 29,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "endSecond": 1010,
+          "durationSec": 110,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "spawnSecond": 1200,
+          "endSecond": 1275,
+          "durationSec": 75,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "spawnSecond": 1500,
+          "endSecond": 1546,
+          "durationSec": 46,
+          "defeated": true,
+          "aliveAtDeath": false
+        },
+        {
+          "index": 5,
+          "name": "Der Hohle König",
+          "spawnSecond": 1800,
+          "endSecond": 1876,
+          "durationSec": 76,
+          "defeated": true,
+          "aliveAtDeath": false
+        }
+      ],
+      "passed": {
+        "survivalMinutes": 31.3,
+        "levelAtEnd": 39,
+        "evolutionCount": 2,
+        "bossDurationsInCorridor": false,
+        "died": false,
+        "survivalInCorridor": false,
+        "levelInCorridor": true
+      }
+    }
+  ],
+  "deathRuns": [],
+  "weapons": [],
+  "jsErrors": [],
+  "allRunsPass": true
+}

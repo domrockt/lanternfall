@@ -36,10 +36,9 @@ export interface BossInfo {
 
 const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 // Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
-// Bewusst flott: Kontakt ist god-mode-sicher, normale Runs bleiben fordernd.
+// Grundtempo und Kontaktschaden stehen in src/data/bosses.ts; das Tempo bleibt
+// unter 90 % des Spielertempos, Gefahr kommt über Mechaniken statt Verfolgung.
 const BOSS_SPAWN_DISTANCE = 130;
-const BOSS_SPEED = [72, 68, 74, 64, 78, 74];
-const BOSS_TOUCH_DAMAGE = [16, 18, 20, 24, 22, 28];
 const BOSS_COLOR = [30, 10, 8, 5, 25, 14];
 
 /** Synthetisches EnemyDef für den Boss-Pool (Kampf kommt aus dem BossSystem). */
@@ -51,8 +50,8 @@ export function bossEnemyDef(index: number): EnemyDef {
     archetype: "tank",
     tier: 4,
     hp: boss.hp,
-    speed: BOSS_SPEED[index] ?? 20,
-    damage: BOSS_TOUCH_DAMAGE[index] ?? 20,
+    speed: boss.speed,
+    damage: boss.touchDamage,
     radius: BOSS_RADIUS[index] ?? 18,
     xp: 40 + index * 15,
     implemented: true,
