@@ -23,8 +23,9 @@ def heroes(tag: str) -> str:
     data = gen_chars.build()
     dirs = (("down", "UNTEN"), ("side", "SEITE"), ("up", "OBEN"))
     cell_w, cell_h = 150, 120
+    extra_w = 270
     cols = 3 * 4 + 1
-    sw, sh = cols * cell_w + 40, 2 * cell_h + 130
+    sw, sh = 20 + (cols - 1) * cell_w + extra_w + 20, 2 * cell_h + 130
     sheet = Sheet(sw, sh)
     sheet.text(20, 16, "LANTERNFALL  M9  -  HELDEN (32PX, 2X)", TITLE, 3)
     sheet.text(20, 52, "LAUF 4 POSES / IDLE / HIT / PORTRAIT 48  -  KONTUR 1PX INK 0", LABEL, 2)
@@ -38,10 +39,10 @@ def heroes(tag: str) -> str:
                 sheet.blit(data[f"player_{name}_{d}"][f], x + 28, y + 14, SCALE)
                 sheet.text(x + 4, y + cell_h - 30, f"{dl} {f}", LABEL, 1)
                 x += cell_w
-        sheet.cell(x, y, cell_w + 60, cell_h - 10, True)
-        sheet.blit(data[f"player_{name}_down_idle"][0], x + 2, y + 14, SCALE)
-        sheet.blit(data[f"player_{name}_down"][0], x + 70, y + 14, SCALE)
-        sheet.blit(data[f"portrait_{name}"][0], x + 140, y + 20, SCALE)
+        sheet.cell(x, y, extra_w, cell_h - 10, True)
+        sheet.blit(data[f"player_{name}_down_idle"][0], x + 8, y + 14, SCALE)
+        sheet.blit(data[f"player_{name}_down"][0], x + 76, y + 14, SCALE)
+        sheet.blit(data[f"portrait_{name}"][0], x + 146, y + 20, SCALE)
         sheet.text(x + 4, y + cell_h - 30, "IDLE / HIT / PORTRAIT 48", LABEL, 1)
         y += cell_h
     sheet.text(20, sh - 30, "KONTUR 1PX INK 0  -  HAUT-RAMPE 16/27/21  -  LICHT OBEN-LINKS", LABEL, 2)
