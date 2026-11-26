@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1016,
+  "next": 1020,
   "cards": [
     {
       "id": 1,
@@ -2191,6 +2191,70 @@
       "notes": [],
       "created": "2026-11-26T20:00:44Z",
       "updated": "2026-11-26T20:00:44Z"
+    },
+    {
+      "id": 1016,
+      "title": "m10-display-qa-01 Basis: build + verify-display 38/38 PASS",
+      "description": "Build grün, verify-display alle 38 Checks PASS, 0 JS-Fehler, Belege shots/m10-display-* (lane #1101). Abnahme: 38/38 PASS belegt.",
+      "column": "done",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-26T20:18:56Z",
+          "by": "build",
+          "text": "Merge m10-display-qa: C1 = lane #1101, verify-display 38/38 PASS"
+        }
+      ],
+      "created": "2026-11-26T20:18:34Z",
+      "updated": "2026-11-26T20:18:56Z"
+    },
+    {
+      "id": 1017,
+      "title": "m10-display-qa-02 Pixel-genau 7/7 Profile PASS",
+      "description": "View je Profil gegen Formel src/logic/view.ts, devicePixelWidth % n == 0, Screenshots gesichtet (lane #1102). Abnahme: 7/7 PASS.",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T20:18:56Z",
+          "by": "build",
+          "text": "Merge m10-display-qa: C2 = lane #1102, 7/7 pixel-genau PASS"
+        }
+      ],
+      "created": "2026-11-26T20:18:34Z",
+      "updated": "2026-11-26T20:18:56Z"
+    },
+    {
+      "id": 1018,
+      "title": "m10-display-qa-03 Safe-Area/HUD + FPS Minute 25",
+      "description": "iPhone14+Pixel7 Notch/Rundung prüfen, FPS Minute 25 messen (lane #1103). Ergebnis: iphone14 Safe-Area FAIL, FPS 39,5 (Ziel 55).",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-26T20:18:56Z",
+          "by": "build",
+          "text": "Merge m10-display-qa: C3 = lane #1103, iphone14 Safe-Area FAIL, FPS Minute 25 39,5"
+        }
+      ],
+      "created": "2026-11-26T20:18:34Z",
+      "updated": "2026-11-26T20:18:56Z"
+    },
+    {
+      "id": 1019,
+      "title": "m10-display-qa-04 Report: 6/7 PASS, iphone14 FAIL, #638 offen",
+      "description": "docs/lanes/m10-display-qa.md mit PASS/FAIL je Profil, Repro, FPS-Zahl, Empfehlung (lane #1104). Abnahme: Build+Tests grün, Report vollständig.",
+      "column": "done",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-26T20:18:56Z",
+          "by": "build",
+          "text": "Merge m10-display-qa: C4 = lane #1104, Report docs/lanes/m10-display-qa.md"
+        }
+      ],
+      "created": "2026-11-26T20:18:34Z",
+      "updated": "2026-11-26T20:18:56Z"
     }
   ]
 }
