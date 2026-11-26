@@ -134,6 +134,12 @@ alle 6 Powerups Stufe 5): Es gibt keine Upgrades/neuen Items mehr, nur die einl�
 - `npm run build`: grün (`tsc --noEmit` + `vite build`, ~1,1 s).
 - `node scripts/verify-menus.mjs`: **FAIL 1/2** — Timeout in `waitForScene(page, "credits")` nach Klick
   `clickGame(346, 214)`. Befund: `clickGame` rechnet fest mit 480×270, der M8-View ist bei 960×540@dpr1
-  aber 860×360; der Credits-Knopf liegt logisch bei ~x 279–352, y 187–203, der Klick bei y 214 trifft daneben.
-  Das ist **nicht** durch diese Lane verursacht (Titel-/Menü-Szenen unangetastet; Fehler tritt schon vor
-  jedem Level-Up auf). Als Befund dokumentiert, nicht umgangen. Die Level-Up-Belege oben sind unabhängig davon.
+  aber 480×360 (Fit-Rückfall) bzw. 860×360; der Credits-Knopf liegt logisch bei ~y 187–203, der Klick bei
+  y 214 trifft daneben. Das ist **nicht** durch diese Lane verursacht (Titel-/Menü-Szenen unangetastet;
+  Fehler tritt schon vor jedem Level-Up auf) und bereits in `docs/lanes/m8-display.md` („verify-menus nutzt
+  noch feste 480×270-Klickkoordinaten … nicht Teil dieser Lane“) sowie `docs/lanes/input.md` vermerkt.
+  Als Befund dokumentiert, nicht umgangen; die Level-Up-Belege oben sind unabhängig davon.
+  Der Lauf bricht nach 2 von 15 Checks am veralteten Credits-Klick ab; spätere Menu-Checks
+  werden dadurch nicht ausgeführt. Ehrlich: **verify-menus 15/15 ist mit dem unveränderten
+  Skript auf diesem M8-View-Stand nicht erreichbar** (Skript-Update wäre eine eigene Karte
+  außerhalb dieser Lane).

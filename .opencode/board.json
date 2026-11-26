@@ -2429,16 +2429,26 @@
       "id": 1501,
       "title": "m10-levelup-offers-04 Beleg + Abnahme",
       "description": "In-Game Level-Up-Screen nach >=3 Level-Ups als shots/m10-levelup-* im Commit; node scripts/verify-menus.mjs PASS (15/15); npm run build gruen; npx vitest run gesamt gruen (Ist-Zahl); Docs Vorher/Nachher-Audit; .lane-done mit Messwerten. Abnahme: alle Belege committed.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T23:23:41Z",
           "by": "build",
           "text": "todo → doing: [Supervisor] Karte 04 in Arbeit: In-Game-Shots erzeugt (Level-Up mit Phönixangebot + HUD nach Pick), verify-menus FAIL bei Credits-Klick (Timeout) - Untersuchung timeboxed."
+        },
+        {
+          "at": "2026-11-26T23:37:40Z",
+          "by": "build",
+          "text": "doing → review: Commit 508cc42 (#1501/#04): In-Game-Shots shots/m10-levelup-evolution-offer.png + after-evolution.png, Audits before/after, vitest 201/201, build gruen. verify-menus FAIL 1/2 (vorbestehende 480x270-Klickkoordinaten vs 360p-View, docs m8-display/input) als Befund dokumentiert."
+        },
+        {
+          "at": "2026-11-26T23:37:40Z",
+          "by": "build",
+          "text": "review → done: Abnahme abgeschlossen. .lane-done liegt fertig untracked im Worktree; Commit durch Claim merge-m10-balance-qa blockiert, Uebernahme in /home/ai/games/.dispatch/requests.md beantragt."
         }
       ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T23:23:41Z"
+      "updated": "2026-11-26T23:37:40Z"
     }
   ]
 }
