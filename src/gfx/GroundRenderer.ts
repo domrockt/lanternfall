@@ -303,8 +303,18 @@ export class GroundRenderer {
   ): void {
     if (!PROP_KEYS.has(key) || !this.scene.textures.exists(key)) return;
     const img = this.scene.add.image(wx, wy, key).setOrigin(0.5, 1);
-    img.setDepth(-90 + Math.min(0.9, wy / 100000));
+    //.setDepth(-90 + Math.min(0.85, wy * 0.00002));
     img.setFlipX(flip);
+    // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
+    if (this.scene.textures.exists("shadow")) {
+      const sw = Math.max(0.7, Math.min(4, img.width / 16));
+      const shadow = this.scene.add.image(wx, wy - 1, "shadow")
+        .setOrigin(0.5, 0.5)
+        .setScale(sw, 0.85)
+        .setAlpha(0.62)
+        .setDepth(-90.5 + Math.min(0.85, wy * 0.00002));
+      props.push(shadow);
+    }
     if (tinted) img.setAlpha(0.92);
     props.push(img);
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
