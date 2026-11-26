@@ -100,6 +100,20 @@ describe("XP", () => {
     expect(xpToNext(1)).toBe(8);
     expect(xpToNext(2)).toBeGreaterThan(xpToNext(1));
   });
+  it("M6-Zielkurve: Level 30 braucht 6-10k XP, Level 40 deutlich mehr", () => {
+    let total30 = 0;
+    for (let level = 1; level < 30; level++) total30 += xpToNext(level);
+    expect(total30).toBeGreaterThan(6000);
+    expect(total30).toBeLessThan(10000);
+    let total40 = 0;
+    for (let level = 1; level < 40; level++) total40 += xpToNext(level);
+    expect(total40).toBeGreaterThan(15000);
+    // Quadratische Kurve: hohe Level werden sehr teuer (kein Level 147 mehr).
+    expect(xpToNext(100)).toBeGreaterThan(8000);
+    // Regression gegen die alte Rohbau-Kurve 8 + 7/Level (Stufe 30 = 239):
+    // Stufe 30 allein muss schon deutlich teurer sein.
+    expect(xpToNext(30)).toBeGreaterThan(500);
+  });
   it("mehrere Level-Ups in einem Schritt", () => {
     const r = applyXp({ level: 1, xp: 0, pendingLevelUps: 0 }, 1000);
     expect(r.level).toBeGreaterThan(5);
@@ -154,10 +168,10 @@ describe("Stats", () => {
     expect(PASSIVES.whetstone.levels[2].mods.damagePct).toBe(30);
     expect(PASSIVES.heart.levels[4].mods.maxHpFlat).toBe(100);
   });
-  it("Kael: +20 % Max-HP auf Basis-HP", () => {
+  it("Kael: +25 % Max-HP auf Basis-HP (M6-Tankprofil)", () => {
     const agg = aggregateMods([CHARACTERS.kael.mods]);
-    expect(agg.maxHpPct).toBe(20);
-    expect(Math.round(CHARACTERS.kael.hp * (1 + agg.maxHpPct / 100))).toBe(156);
+    expect(agg.maxHpPct).toBe(25);
+    expect(Math.round(CHARACTERS.kael.hp * (1 + agg.maxHpPct / 100))).toBe(163);
   });
   it("weaponLevel clamped", () => {
     expect(weaponLevel(WEAPONS.ember, 0).level).toBe(1);
@@ -180,11 +194,11 @@ describe("Powerups wirken auf die Stats (alle 6, Stufe 1-5)", () => {
       expect(effectiveCooldown(1, statFor("tome", l))).toBeCloseTo(1 - l * 0.08);
     }
   });
-  it("Eisenherz: +20 Max-HP und +0.2 HP/s pro Stufe", () => {
+  it("Eisenherz: +20 Max-HP und +0.3 HP/s pro Stufe (M6-Nachregelung)", () => {
     for (let l = 1; l <= 5; l++) {
       const agg = statFor("heart", l);
       expect(agg.maxHpFlat).toBe(l * 20);
-      expect(agg.regen).toBeCloseTo(l * 0.2);
+      expect(agg.regen).toBeCloseTo(l * 0.3);
     }
   });
   it("Magnetamulett: +25 % Aufsammelradius pro Stufe", () => {

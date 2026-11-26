@@ -36,10 +36,9 @@ export interface BossInfo {
 
 const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 // Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
-// Bewusst flott: Kontakt ist god-mode-sicher, normale Runs bleiben fordernd.
+// Grundtempo und Kontaktschaden stehen in src/data/bosses.ts; das Tempo bleibt
+// unter 90 % des Spielertempos, Gefahr kommt über Mechaniken statt Verfolgung.
 const BOSS_SPAWN_DISTANCE = 130;
-const BOSS_SPEED = [72, 68, 74, 64, 78, 74];
-const BOSS_TOUCH_DAMAGE = [16, 18, 20, 24, 22, 28];
 const BOSS_COLOR = [30, 10, 8, 5, 25, 14];
 
 /** Synthetisches EnemyDef für den Boss-Pool (Kampf kommt aus dem BossSystem). */
@@ -51,8 +50,8 @@ export function bossEnemyDef(index: number): EnemyDef {
     archetype: "tank",
     tier: 4,
     hp: boss.hp,
-    speed: BOSS_SPEED[index] ?? 20,
-    damage: BOSS_TOUCH_DAMAGE[index] ?? 20,
+    speed: boss.speed,
+    damage: boss.touchDamage,
     radius: BOSS_RADIUS[index] ?? 18,
     xp: 40 + index * 15,
     implemented: true,
@@ -147,16 +146,23 @@ export class BossSystem {
       const ny = dy / dist;
       let mx = 0;
       let my = 0;
-      if (dist > 118) {
+      // M6-Balance: etwas näher am Spieler halten (56–86 px), damit Nahkampf-
+      // Builds (Flegel/Zornpendel) den Boss zuverlässig treffen und die
+      // Kampfdauer nicht zwischen 13 s und 64 s schwankt. Kontakt bleibt selten,
+      // die Gefahr kommt weiter über Mechaniken.
+      if (dist > 86) {
         mx = nx;
         my = ny;
-      } else if (dist < 84) {
+      } else if (dist < 56) {
         mx = -nx;
         my = -ny;
       } else {
         mx = -ny * 0.6;
         my = nx * 0.6;
       }
+      // Grundtempo aus src/data/bosses.ts (<= 90 % Spielertempo). Ausnahme ist
+      // nur die finale Phase des Endbosses: kurzfristiger Verfolgungs-Sprint,
+      // die Gefahr bleibt primär an Mechaniken gebunden.
       const speed = boss.speed * (boss.bossIndex === 5 && phase === 3 ? 1.25 : 1);
       boss.x += mx * speed * dt;
       boss.y += my * speed * dt;

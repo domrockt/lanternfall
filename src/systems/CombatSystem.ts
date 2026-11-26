@@ -24,6 +24,20 @@ import type { OwnedWeapon } from "./LevelUpSystem";
 
 export type HitCallback = (enemy: EnemyRuntime, damage: number, weaponId: string, killed: boolean) => void;
 
+/**
+ * M6-Balance: Ein aktiver Boss im Umkreis von 320 px ist das Ziel des ersten
+ * Projektils je Salve. Die übrigen Projektile bleiben auf dem nächsten Trash,
+ * damit die Adds nicht außer Kontrolle geraten. Ohne diesen Boss-Fokus schwankt
+ * die Bossdauer zwischen 13 und 99 s (Boss im Getümmel unverwundet).
+ */
+function bossNearby(enemies: readonly EnemyRuntime[], px: number, py: number): EnemyRuntime | null {
+  for (const e of enemies) {
+    if (!e.alive || e.hp <= 0 || !e.boss) continue;
+    if ((e.x - px) ** 2 + (e.y - py) ** 2 <= 320 * 320) return e;
+  }
+  return null;
+}
+
 export interface CombatContext {
   dt: number;
   playerX: number;
@@ -197,11 +211,12 @@ export class CombatSystem {
     const sorted = enemies
       .map((e) => ({ e, d: (e.x - ctx.playerX) ** 2 + (e.y - ctx.playerY) ** 2 }))
       .sort((a, b) => a.d - b.d);
+    const bossTarget = bossNearby(enemies, ctx.playerX, ctx.playerY);
     const damage = effectiveDamage(stats.damage, ctx.agg);
     const speed = stats.speed ?? 200;
     const baseAngle = Math.atan2(sorted[0].e.y - ctx.playerY, sorted[0].e.x - ctx.playerX);
     for (let i = 0; i < count; i++) {
-      const target = sorted[i]?.e;
+      const target = (i === 0 ? bossTarget : null) ?? sorted[i]?.e;
       const angle = target
         ? Math.atan2(target.y - ctx.playerY, target.x - ctx.playerX)
         : baseAngle + (i - (count - 1) / 2) * 0.16;
@@ -237,8 +252,9 @@ export class CombatSystem {
     const sorted = enemies
       .map((e) => ({ e, d: (e.x - ctx.playerX) ** 2 + (e.y - ctx.playerY) ** 2 }))
       .sort((a, b) => a.d - b.d);
+    const bossTarget = bossNearby(enemies, ctx.playerX, ctx.playerY);
     for (let i = 0; i < count; i++) {
-      const target = sorted[i % Math.max(1, sorted.length)]?.e ?? null;
+      const target = (i === 0 ? bossTarget : null) ?? sorted[i % Math.max(1, sorted.length)]?.e ?? null;
       // Fächer: mehrere Vögel dürfen nicht exakt auf derselben Linie starten,
       // sonst überlappen sie zu einem einzigen Sprite und der "Schwarm" ist unsichtbar.
       const fan = (i - (count - 1) / 2) * 0.14;
@@ -901,8 +917,12 @@ export class CombatSystem {
 
   private hitEnemy(e: EnemyRuntime, damage: number, ctx: CombatContext, weaponId: string): boolean {
     const wasAlive = e.hp > 0;
+    // M6-Balance: Boss-Enrage. Ab 20 s Kampfdauer steigt der erlittene Schaden
+    // um 10 %/s, damit ein Boss nicht durch Positionierungs-/Trash-Pech 60 s
+    // überschreitet (beobachtete Ausreißer 88–99 s).
+    const scaled = e.boss && e.age > 20 ? damage * (1 + (e.age - 20) * 0.1) : damage;
     const crit = rollCrit(ctx.rng.next());
-    const finalDamage = crit ? critDamage(damage) : damage;
+    const finalDamage = crit ? critDamage(scaled) : scaled;
     e.hp -= finalDamage;
     e.flash = 0.12;
     // Crit ab 15 Schaden als eigene Feedback-Klasse sichtbar (weißer Blitz über Weiß-Kern).

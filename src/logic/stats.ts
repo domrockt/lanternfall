@@ -6,6 +6,7 @@ export interface AggregateStats {
   maxHpFlat: number;
   maxHpPct: number;
   regen: number;
+  xpPct: number;
   pickupRadiusPct: number;
   damagePct: number;
   areaPct: number;
@@ -20,6 +21,7 @@ export function aggregateMods(modsList: readonly StatMods[]): AggregateStats {
     maxHpFlat: 0,
     maxHpPct: 0,
     regen: 0,
+    xpPct: 0,
     pickupRadiusPct: 0,
     damagePct: 0,
     areaPct: 0,
@@ -32,6 +34,7 @@ export function aggregateMods(modsList: readonly StatMods[]): AggregateStats {
     agg.maxHpFlat += m.maxHpFlat ?? 0;
     agg.maxHpPct += m.maxHpPct ?? 0;
     agg.regen += m.regen ?? 0;
+    agg.xpPct += m.xpPct ?? 0;
     agg.pickupRadiusPct += m.pickupRadiusPct ?? 0;
     agg.damagePct += m.damagePct ?? 0;
     agg.areaPct += m.areaPct ?? 0;

@@ -1,0 +1,30 @@
+{
+  "mode": "death",
+  "scale": 30,
+  "generatedAt": "2026-11-26T05:58:05.011Z",
+  "runs": [],
+  "deathRuns": [
+    {
+      "character": "kael",
+      "outcome": "death",
+      "deathMinute": 2.3,
+      "level": 6,
+      "kills": 66,
+      "resultReason": "death",
+      "passed": {
+        "survivalMinutes": 2.3,
+        "levelAtEnd": 6,
+        "evolutionCount": 0,
+        "bossDurationsInCorridor": true,
+        "died": true,
+        "survivalInCorridor": false,
+        "levelInCorridor": false,
+        "evolutionOk": false,
+        "passedAll": false
+      }
+    }
+  ],
+  "weapons": [],
+  "jsErrors": [],
+  "allRunsPass": true
+}

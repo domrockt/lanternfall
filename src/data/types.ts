@@ -78,6 +78,8 @@ export interface StatMods {
   maxHpPct?: number;
   /** +x HP pro Sekunde */
   regen?: number;
+  /** +x % XP-Gewinn (negativ = langsamer leveln) */
+  xpPct?: number;
   /** +x % Aufsammelradius */
   pickupRadiusPct?: number;
   /** +x % Waffenschaden */
@@ -202,6 +204,10 @@ export interface BossDef {
   atSecond: number;
   mechanic: string;
   hp: number;
+  /** Grundtempo in px/s. Muss ≤ 90 % des langsamsten Spielertempos (Kael 59) bleiben. */
+  speed: number;
+  /** Kontaktschaden pro Treffer (vor Rüstung). */
+  touchDamage: number;
   implemented: boolean;
 }
 

@@ -1,0 +1,193 @@
+[
+  {
+    "seed": 606,
+    "character": "kael",
+    "outcome": "death",
+    "deathSecond": 136.9,
+    "samples": [
+      {
+        "time": 0.5160466666666664,
+        "level": 1,
+        "hp": 253,
+        "maxHp": 253,
+        "enemies": 0,
+        "kills": 0,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 1
+          }
+        ],
+        "passives": [],
+        "boss": null,
+        "damageByWeapon": {},
+        "dawn": false
+      },
+      {
+        "time": 62.16344666666527,
+        "level": 5,
+        "hp": 246.35219999999285,
+        "maxHp": 253,
+        "enemies": 4,
+        "kills": 25,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 4
+          }
+        ],
+        "passives": [
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 786
+        },
+        "dawn": false,
+        "minute": 1
+      },
+      {
+        "time": 124.2555466666622,
+        "level": 6,
+        "hp": 72.49034999998356,
+        "maxHp": 253,
+        "enemies": 5,
+        "kills": 62,
+        "weapons": [
+          {
+            "id": "flail",
+            "level": 5
+          }
+        ],
+        "passives": [
+          {
+            "id": "hourglass",
+            "level": 1
+          }
+        ],
+        "boss": null,
+        "damageByWeapon": {
+          "flail": 2270
+        },
+        "dawn": false,
+        "minute": 2
+      }
+    ],
+    "autoPlay": false,
+    "lastSeenByBoss": {},
+    "bossObserved": {},
+    "defeatedEndByBoss": {},
+    "result": {
+      "reason": "death",
+      "time": 136.85414666666398,
+      "level": 6,
+      "kills": 68,
+      "damageByWeapon": {
+        "flail": 2504
+      },
+      "character": "kael",
+      "god": false
+    },
+    "finalDamageByWeapon": {
+      "flail": 2504
+    },
+    "run": {
+      "time": 133.2549466666632,
+      "level": 6,
+      "kills": 66,
+      "hp": 20,
+      "maxHp": 253,
+      "enemies": 6,
+      "weapons": [
+        {
+          "id": "flail",
+          "level": 5
+        }
+      ],
+      "passives": [
+        {
+          "id": "hourglass",
+          "level": 1
+        }
+      ],
+      "bossesDefeated": 0,
+      "bossFlags": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "bossesSpawned": [],
+      "chestsDropped": 0,
+      "dawn": false,
+      "damageByWeapon": {
+        "flail": 2432
+      }
+    },
+    "pageErrors": [],
+    "wallSeconds": 7.4,
+    "dpsRows": [
+      {
+        "minuteFrom": 0,
+        "minuteTo": 1,
+        "tFrom": 1,
+        "tTo": 62,
+        "level": 5,
+        "hp": 246,
+        "maxHp": 253,
+        "enemies": 4,
+        "kills": 25,
+        "dps": {
+          "flail": 12.7
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      },
+      {
+        "minuteFrom": 1,
+        "minuteTo": 2,
+        "tFrom": 62,
+        "tTo": 124,
+        "level": 6,
+        "hp": 72,
+        "maxHp": 253,
+        "enemies": 5,
+        "kills": 62,
+        "dps": {
+          "flail": 23.9
+        },
+        "sharePct": {
+          "flail": 100
+        }
+      }
+    ],
+    "bossDurations": [],
+    "evolutions": [],
+    "damageShare": {
+      "totalDamage": 2432,
+      "sharePct": {
+        "flail": 100
+      },
+      "avgDpsOverRun": {
+        "flail": 18.3
+      }
+    },
+    "passed": {
+      "survivalMinutes": 2.3,
+      "levelAtEnd": 6,
+      "evolutionCount": 0,
+      "bossDurationsInCorridor": true,
+      "died": true,
+      "survivalInCorridor": false,
+      "levelInCorridor": false,
+      "evolutionOk": false,
+      "passedAll": false
+    }
+  }
+]

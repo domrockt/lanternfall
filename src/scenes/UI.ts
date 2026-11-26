@@ -453,7 +453,7 @@ export class UI extends Phaser.Scene {
         this.autoPickTimer += delta / 1000;
         if (this.autoPickTimer > 0.35) {
           this.autoPickTimer = 0;
-          try { this.run.pickLevelUp(chooseBestOffer(s.offers)); } catch { /* Angebot evtl. schon weg */ }
+          try { this.run.pickLevelUp(chooseBestOffer(s.offers, { weapons: s.weapons, passives: s.passives, startingWeapon: this.run.character.startWeapon })); } catch { /* Angebot evtl. schon weg */ }
         }
       }
     } else {

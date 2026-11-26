@@ -93,7 +93,13 @@ describe("Datentabellen", () => {
     expect(CHARACTER_LIST).toHaveLength(2);
     expect(CHARACTER_LIST[0].startWeapon).toBe("ember");
     expect(CHARACTER_LIST[1].startWeapon).toBe("flail");
-    expect(CHARACTER_LIST[1].hp).toBeGreaterThan(CHARACTER_LIST[0].hp);
+    // Kael ist der Tank: Basis-HP plus Charakter-Mods ergeben mehr effektive HP
+    // als Mira (M6-Balance: Mira 250, Kael 253).
+    const effectiveHp = (c: (typeof CHARACTER_LIST)[number]) =>
+      Math.round(c.hp * (1 + (c.mods.maxHpPct ?? 0) / 100)) + (c.mods.maxHpFlat ?? 0);
+    expect(effectiveHp(CHARACTER_LIST[1])).toBeGreaterThan(effectiveHp(CHARACTER_LIST[0]));
+    expect(CHARACTER_LIST[0].speed).toBeGreaterThan(CHARACTER_LIST[1].speed);
+    expect(CHARACTER_LIST[1].armor).toBeGreaterThan(CHARACTER_LIST[0].armor);
   });
 
   it("Bitmap-Font hat echte Umlaute und ß (keine AE/OE/UE-Ersetzung)", () => {

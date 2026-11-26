@@ -1,0 +1,95 @@
+{
+  "mode": "weapons",
+  "scale": 30,
+  "generatedAt": "2026-11-26T05:47:59.153Z",
+  "runs": [],
+  "deathRuns": [],
+  "weapons": [
+    {
+      "id": "ember",
+      "dps": 27.9,
+      "damage": 10008,
+      "killsPerMinute": 59.4,
+      "dead": false
+    },
+    {
+      "id": "flail",
+      "dps": 16.2,
+      "damage": 5776,
+      "killsPerMinute": 74.2,
+      "dead": false
+    },
+    {
+      "id": "frost",
+      "dps": 2.3,
+      "damage": 823,
+      "killsPerMinute": 51.5,
+      "dead": false
+    },
+    {
+      "id": "thorn",
+      "dps": 13.9,
+      "damage": 4986,
+      "killsPerMinute": 60.4,
+      "dead": false
+    },
+    {
+      "id": "storm",
+      "dps": 58.2,
+      "damage": 20884,
+      "killsPerMinute": 58.5,
+      "dead": false
+    },
+    {
+      "id": "lantern",
+      "dps": 1.5,
+      "damage": 537,
+      "killsPerMinute": 58.9,
+      "dead": false
+    },
+    {
+      "id": "phoenix",
+      "dps": 54.1,
+      "damage": 19342,
+      "killsPerMinute": 68.5,
+      "dead": false
+    },
+    {
+      "id": "wrath_pendulum",
+      "dps": 20.4,
+      "damage": 7297,
+      "killsPerMinute": 58.4,
+      "dead": false
+    },
+    {
+      "id": "eternal_winter",
+      "dps": 10.6,
+      "damage": 3790,
+      "killsPerMinute": 60.5,
+      "dead": false
+    },
+    {
+      "id": "thorn_storm",
+      "dps": 27.2,
+      "damage": 9724,
+      "killsPerMinute": 61,
+      "dead": false
+    },
+    {
+      "id": "thunder_seal",
+      "dps": 18.4,
+      "damage": 6546,
+      "killsPerMinute": 61.8,
+      "dead": false
+    },
+    {
+      "id": "soul_beacon",
+      "dps": 6.1,
+      "damage": 2175,
+      "killsPerMinute": 59.9,
+      "dead": false
+    }
+  ],
+  "jsErrors": [],
+  "allRunsPass": true
+}
