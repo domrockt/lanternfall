@@ -67,7 +67,7 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
 
     body_y = 16 + bob - recoil
     # ── Rock/Cloak ──
-    rock_w = [12 - bw, 13 - bw, 14 - bw, 14 - bw, 15 - bw, 15 - bw, 16 - bw]
+    rock_w = [14 - bw, 15 - bw, 16 - bw, 18 - bw, 20 - bw, 21 - bw, 21 - bw]
     hem = 26 + bob - recoil
     for i, w in enumerate(rock_w):
         g.rect(cx + ox - w // 2, 22 + bob - recoil + i, w, 1, CLOTH if i < 5 else CLOTH_S)
@@ -198,20 +198,27 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.put(hcx + 8, brim_y + 1, CLOTH_S)
         g.put(hcx - 7, brim_y, CLOTH_L)
         _cone(g, hcx + 1, brim_y - 6, brim_y - 1, 5, 4, CLOTH, CLOTH_S)
+        g.rect(hcx - 6, brim_y - 1, 13, 1, GOLD)
+        g.put(hcx - 6, brim_y - 1, GOLD_L)
     else:
-        g.rect(hcx - 10, brim_y + 1, 21, 2, CLOTH_S)
-        g.rect(hcx - 9, brim_y, 19, 2, CLOTH)
-        g.put(hcx - 10, brim_y + 1, CLOTH_S)
+        # Breitere Krempe und hoeherer Kegel fuer eine klare Hut-Silhouette.
+        g.rect(hcx - 12, brim_y + 1, 25, 2, CLOTH_S)
+        g.rect(hcx - 11, brim_y, 23, 2, CLOTH)
+        g.put(hcx - 12, brim_y + 1, CLOTH_S)
+        g.put(hcx + 12, brim_y + 1, CLOTH_S)
+        g.put(hcx - 11, brim_y, CLOTH_L)
+        g.put(hcx - 10, brim_y, CLOTH_L)
         g.put(hcx + 10, brim_y + 1, CLOTH_S)
-        g.put(hcx - 9, brim_y, CLOTH_L)
-        g.put(hcx - 8, brim_y, CLOTH_L)
-        g.put(hcx + 8, brim_y + 1, CLOTH_S)
-        g.put(hcx + 9, brim_y + 1, CLOTH_S)
-        _cone(g, hcx, brim_y - 6, brim_y - 1, 6, 3, CLOTH, CLOTH_S)
-    g.rect(hcx - 5, brim_y - 1, 11, 1, CLOTH_H)
-    g.put(hcx - 5, brim_y - 1, 26)
-    g.put(hcx - 4, brim_y - 1, 26)
-    g.put(hcx + 5, brim_y - 1, 23)
+        g.put(hcx + 11, brim_y + 1, CLOTH_S)
+        _cone(g, hcx, brim_y - 8, brim_y - 1, 7, 4, CLOTH, CLOTH_S)
+        g.rect(hcx - 5, brim_y - 1, 11, 1, CLOTH_H)
+        g.put(hcx - 5, brim_y - 1, 26)
+        g.put(hcx - 4, brim_y - 1, 26)
+        g.put(hcx + 5, brim_y - 1, 23)
+        # Goldene Hutborte als warme Mitte zweiter Akzent (GOLD-Rampe).
+        g.rect(hcx - 7, brim_y - 1, 15  , 1, GOLD)
+        g.put(hcx - 7, brim_y - 1, GOLD_L)
+        g.put(hcx + 7, brim_y - 1, GOLD_L)
 
     # ── Laterne schwingt mit dem vorderen Arm (Seitenprofil) ──
     lx = hcx + 9 + (swing * 2 if side else 0)
@@ -227,6 +234,14 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     g.put(lx - 3, ly + 1, GOLD_L)
     g.put(lx + 3, ly + 1, GOLD_L)
     g.put(lx, ly + 2, 13)
+    # Warmes Lichtkreuz um die Laterne hebt Mira im Gedraenge heraus.
+    g.put(lx - 4, ly + 2, GOLD_L)
+    g.put(lx + 4, ly + 2, GOLD_L)
+    g.put(lx - 1, ly - 3, GLOW)
+    g.put(lx + 2, ly - 3, GLOW_H)
+    g.put(lx - 3, ly - 1, GOLD)
+    g.put(lx + 4, ly - 1, GOLD)
+
 
     # ── Gesicht ──
     face = []
@@ -334,10 +349,30 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.put(x0 + w // 2 - 1, y0 + 1, GOLD_L)
 
     if side:
-        pauldron(cx + ox + 7, body_y, 5)
+        pauldron(cx + ox + 7, body_y, 6)
     else:
-        pauldron(4, body_y, 6)
-        pauldron(22, body_y, 6)
+        pauldron(3, body_y, 8)
+        pauldron(21, body_y, 8)
+
+    # ── Zweihandaxt auf dem Ruecken: K Kael sofort als Schwergepanzerten
+    #     lesbar (langer Schaft, breiter A, Goldniete).
+    if side:
+        hx = cx - 9
+        g.rect(hx, body_y + 1, 2, 12, BOOT_D)
+        g.rect(hx, body_y + 1, 1, 11, BOOT)
+        g.rect(hx - 2, body_y - 2, 6, 3, IRON_D)
+        g.rect(hx - 1, body_y - 2, 4, 2, IRON)
+        g.put(hx - 1, body_y - 2, IRON_L)
+        g.put(hx + 2, body_y, GOLD)
+    else:
+        hx = cx + 9
+        g.rect(hx, body_y + 1, 2, 12, BOOT_D)
+        g.rect(hx, body_y + 1, 1, 11, BOOT)
+        g.rect(hx - 2, body_y - 2, 6, 3, IRON_D)
+        g.rect(hx - 1, body_y - 2, 4, 2, IRON)
+        g.put(hx - 1, body_y - 2, IRON_L)
+        g.put(hx + 2, body_y, GOLD)
+        g.put(hx + 2, body_y - 2, GOLD_L)
 
     # ── Arme (gewickelte Faeuste, Handschuh-Rampe 8/10/11) ──
     swing = 0 if idle else [1, 0, -1, 0][frame]
