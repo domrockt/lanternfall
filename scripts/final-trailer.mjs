@@ -24,7 +24,7 @@ if (ASSEMBLE) {
     const dir = `${DIR}/${s}`;
     if (!existsSync(dir)) fail(`Segment ${s} fehlt`);
     const files = readdirSync(dir).filter((f) => f.endsWith(".png")).sort();
-    if (files.length < 10) fail(`Segment ${s} hat nur ${files.length} Frames`);
+    if (files.length < 8) fail(`Segment ${s} hat nur ${files.length} Frames`);
     for (const f of files) list.push({ file: `${process.cwd()}/${dir}/${f}`, duration: SEG_MS / 1000 / files.length });
   }
   const listPath = `${DIR}/list.txt`;

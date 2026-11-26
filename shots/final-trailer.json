@@ -1,0 +1,15 @@
+{
+  "segments": 8,
+  "seconds": 36,
+  "fps": 8,
+  "resolution": "480x270",
+  "gif": "shots/final-trailer.gif",
+  "overview": [
+    "shots/overview-1-intro.png",
+    "shots/overview-2-early.png",
+    "shots/overview-3-boss.png",
+    "shots/overview-4-chest.png",
+    "shots/overview-5-chaos.png",
+    "shots/overview-6-dawn.png"
+  ]
+}
