@@ -14,7 +14,7 @@ Safe-Area auf Touch-Profilen, plus Beleg für die offene 42-FPS-Minute-25-Karte 
       Belege nach `shots/m10-display-*` umbenannt.
 - [x] **C2 / #1102 — Pixel-genau:** View je Profil gegen Formel aus `src/logic/view.ts` nachrechnen
       (`devicePixelWidth % n == 0`), Screenshots sichten, abgeschnittene Texte listen.
-- [ ] **C3 / #1103 — Safe-Area/HUD:** iPhone 14 + Pixel 7 gegen Notch/Rundung prüfen (HUD, Pause, Joystick vs.
+- [x] **C3 / #1103 — Safe-Area/HUD:** iPhone 14 + Pixel 7 gegen Notch/Rundung prüfen (HUD, Pause, Joystick vs.
       Safe-Area-Rechtecke), FPS Minute 25 via `flock … node scripts/perf.mjs`, Ist-Wert gegen 57 FPS.
 - [ ] **C4 / #1104 — Report:** PASS/FAIL je Profil, FAIL-Liste mit Repro, FPS-Zahl, Empfehlung #638,
       Build + Tests grün.
@@ -64,3 +64,48 @@ Auf den schmalsten Views (ipadpro 546, iphone14 844, pixel7 860) skalieren Panel
 innerhalb des 9-Slice-Rahmens. Einzige kosmetische Auffälligkeit (kein FAIL): im Truhen-Screen ragt die
 5er-Kartenreihe bei iphone14/pixel7/uhd knapp über den Panel-Rahmen, bleibt aber vollständig in der View und
 der Hinweistext „TIPPE ODER A – ÜBERNEHMEN“ ist lesbar.
+
+## C3 — Safe-Area/Touch-Profile + FPS Minute 25 (Basis `f26dc4b`)
+
+Messskript: `~/tmp/m10-display-qa/card3-safearea.mjs` (Chromium emuliert die Insel per
+`Emulation.setSafeAreaInsetsOverride`; `getComputedStyle(body).padding` spiegelt die Insets,
+kein Quellcode geändert). Rohwerte: `shots/m10-display-safearea.json`.
+Belege: `shots/m10-display-iphone14-safearea.png`, `shots/m10-display-pixel7-safearea.png`
+(Joystick während des Haltens sichtbar).
+
+Angenommene Safe-Area-Rechtecke (CSS px, dokumentierte Gerätewerte):
+- **iPhone 14 quer:** links 47, rechts 47, unten 21 (Notch + Home-Indikator).
+- **Pixel 7 quer:** rundum 12 (Punch-Hole mittig, keine Seiten-Notch; 12 px Rundungs-Reserve).
+
+| Profil | View | Canvas (CSS) | HUD/HP links | Kills rechts | Pause rechts | Joystick | Urteil |
+|---|---|---|---|---|---|---|---|
+| iphone14 | 844×360 | x=0, w=844 | x=5 (<47) | 839 (>797) | 834 (>797) | 76–164 (ok) | **FAIL** |
+| pixel7 | 860×360 | x=28, w=860 | 33 (>12) | 867 (<903) | 862 (<903) | 104–192 (ok) | **PASS** |
+
+**iPhone 14: FAIL — HUD liegt in der Notch-Zone.** `body` bekommt zwar das Safe-Area-Padding
+(`index.html:32-33`, gemessen `padding: 0px 47px 21px`), aber der Canvas ist mit `cssWidth = 844`
+breiter als die Content-Box (844 − 94 = 750) und wird bei x=0 full-bleed gerendert. HP-Leiste/Level
+(x=5) und Kills/Pause (rechte Kante 834–839) ragen damit in die 47-px-Notch-/Rundungszonen.
+Repro: `node ~/tmp/m10-display-qa/card3-safearea.mjs`, Werte im JSON oben.
+**Pixel 7: PASS** — Canvas sitzt durch das Padding bei x=28..888, alle HUD-Anker haben ≥20 px
+Abstand zu den Rundungen.
+
+Empfehlung für die Engine-/UI-Karte (nicht Teil dieser Lane): Safe-Area-Insets beim Setzen der
+Canvas-CSS-Größe abziehen (`src/main.ts:88-106` `applyView`/CSS statt `width*n/dpr`) oder die
+HUD-Offsets (`src/scenes/UI.ts:91-102`) und `PAUSE_MARGIN` (`src/input/TouchControls.ts:15`) um
+`env(safe-area-inset-*)` verschieben; alternative wäre ein Wrapper mit `padding` + `width:100%`.
+
+### FPS Minute 25 (offene Karte #638)
+
+`flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 780x360 --dpr 3 --tag m10-638`
+(synchron, ohne Polling; Log `~/tmp/m10-display-qa/card3-perf.log`):
+
+| Phase | FPS (roh) | Frames / Messdauer | gemessene Roll-FPS | Gegner min | Ziel | Urteil |
+|---|---|---|---|---|---|---|
+| Burst 500 | 59,5 | 596 / 10,013 s | 57,9 | 500 | ≥55 | PASS |
+| Minute 25 | **39,5** | **396 / 10,021 s** | 41,0 | 300 | ≥55 (Referenz 57) | **FAIL** |
+
+Beleg: `shots/m10-display-perf-minute-25.json` (umbenannt aus `shots/perf-m3m10-638.json`, Original gelöscht).
+Ergebnis bestätigt die M8-Messung (40,2 FPS): Minute 25 bleibt mit **39,5 FPS** klar unter dem
+55-FPS-Ziel und unter der 57-FPS-Referenz; `jsErrors: 0`. Ursache ist weiterhin die hohe
+Gerätepixel-Fläche (780×360 @ dpr 3 → 2340×1080) — Empfehlung siehe Report (C4).
