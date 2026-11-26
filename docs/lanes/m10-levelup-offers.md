@@ -58,7 +58,32 @@ Der Audit-Runner wird nach Karte 01 entfernt; das JSON bleibt als Beleg im Commi
 
 ## Karte 02 — Tests zuerst (RED)
 
-_(folgt)_
+`tests/levelup-offers.test.ts` (9 Fälle, 30 Seeds × 4 Builds, Regeln aus `evolvableList`):
+
+- exakt 3 Angebote für nicht erschöpfte Pools
+- dokumentierte Ausnahme: alles maxed + Evolution einlösbar → mind. 1 Evolution statt 0
+- keine doppelten IDs (`kind:id`)
+- nie Upgrade einer nicht besessenen Waffe, Upgrade-Stufe exakt `Ist+1`
+- Evolution nur bei Basiswaffe 8 + passendem Powerup ≥ 1
+- höchstens eine Evolution pro Angebot
+- Evolutionsangebot UI-kompatibel: `kind: "weapon"`, `isNew`, Stufe 8, Name/Effect aus `EVOLUTIONS`
+- angebotene Evolutionen = exakt `evolvableList` (keine fehlende, keine unerlaubte)
+
+**RED-Lauf vor dem Fix** (`npx tsx`/Vitest, Log `~/tmp/m10-levelup-offers-card02-red.log`):
+
+```
+Test Files  1 failed (1)
+     Tests  4 failed | 5 passed (9)
+FAIL  alles maxed + Evolution einloesbar → genau 1 ... expected 0 to be greater than or equal to 1
+FAIL  bietet eine einloesbare Evolution an ... expected [] to include 'phoenix'
+FAIL  Evolutionsangebot ist neu, auf Maximalstufe ... expected undefined to be defined
+FAIL  Evolutionen entsprechen exakt evolvableList ... 6-waffen-stufe8-6-passives seed 1:
+      keine Evolution angeboten: expected false to be true
+```
+
+Die 5 grünen Fälle belegen, dass Duplikate, nicht besessene Waffen und unerlaubte
+Evolutionen bereits vor dem Fix nicht vorkommen; rot sind ausschließlich die
+fehlenden Evolutionen (Audit-Befund Karte 01).
 
 ## Karte 03 — Fix
 
