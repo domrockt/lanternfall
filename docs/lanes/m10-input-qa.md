@@ -12,7 +12,7 @@ Keine Fixes in dieser Lane — nur belegte PASS/FAIL-Liste und Empfehlung.
       `shots/m10-input-verify.json`, `shots/m10-input-profile-*.png`.
 - [ ] **#2 Menü-Gamepad** — Titel, CharSelect, Pause, Results je einmal per Pad-Snapshot (`readSceneGamepad`)
       und einmal per Tastatur; welche Aktionen sind ohne Pad erreichbar?
-- [ ] **#3 Report** — diese Datei mit vollständiger Tabelle, FAIL-Liste (Repro, erwartet/ist) und Empfehlung.
+- [x] **#3 Report** — diese Datei mit vollständiger Tabelle, FAIL-Liste (Repro, erwartet/ist) und Empfehlung.
       Abnahme: 7/7 Profile, 0 unbelegte Aussage.
 
 ## #1 Matrix (Basis `f26dc4b`, headless Chromium, Worktree-Build)
@@ -99,6 +99,55 @@ ist für diese vier Szenen **nicht reproduzierbar**; Credits hat ebenfalls Pad-H
 `confirm`/`back`), wurde hier aber nicht separat gespielt. Nicht per Pad erreichbar: nichts in den vier Szenen;
 offen bleibt echte Hardware (kein physisches Pad am Host).
 
-## #3 Report / Empfehlung
+## #3 Report / Empfehlung (Basis `f26dc4b`)
 
-_(offen)_
+### Gesamtbild
+
+- **Touch:** 7/7 Profile × 15 Checks = 105 Checks; **98 PASS, 7 FAIL** (jeweils dieselbe Truhen-Sperre).
+  Alle 7 Profile starten per Tippen, bewegen per Joystick (+55…+65 px im 1-s-Drag), pausieren per zweitem
+  Finger, sind gegen Joystick bei Pause und Level-up gesperrt, haben kein Overlay in Titel/Results.
+- **Gamepad Menüs:** 13/13 Checks PASS (Titel, CharSelect, Pause inkl. Options, Results; je Pad und Tastatur).
+- **Bestehendes Regressionsskript:** FAIL, bricht bei CharSelect ab (Selektor veraltet).
+- **Echte Hardware:** kein physisches Pad am Host; alle Pad-Aussagen beruhen auf gemocktem
+  `navigator.getGamepads()` (gleicher Snapshot-Pfad wie `readSceneGamepad`).
+
+### FAIL-Liste (priorisiert, Repro + erwartet/ist)
+
+| # | FAIL | Repro | Erwartet | Ist | Beleg |
+|---|---|---|---|---|---|
+| F1 | Truhen-Gesten-Sperre, 7/7 Profile | Run, `window.__lf.openChest()`, 200 ms, Touch links (92,200) + Drag, 500 ms messen | Joystick unsichtbar, `playerX` konstant, `chestOpen=true` | `stickVisible=true`, `identifier=4`, `playerX` +36…+46 px, `chestOpen` schon `false` | `shots/m10-input-profiles.json` (7×`Gesten-Sperre: Joystick bei Truhe bewegt nicht`), `shots/m10-input-profile-chest-lock.png` |
+| F2 | `scripts/verify-m8-input` bricht ab | `node scripts/verify-input.mjs` | 25/25 wie `docs/lanes/input.md` | 2/3 Checks, `tapText("BRUDER KAEL")` nicht sichtbar, keine Touch-/Pad-Messung | `shots/m10-input-verify.json` |
+
+**Einordnung F1 (ehrlich):** Vor dem Touchstart war `canTouchMove() === false`, `chestOpen === true`,
+Joystick unsichtbar. Die Debug-Truhe beendet sich aber nach ~300–500 ms selbst (`finishAt`-Timer), der Drag
+fällt also in einen schon fortgesetzten Run. Der Check ist damit **nicht sauber widerlegt und nicht belegt** —
+er raced den Auto-Finish. Kein Produktions-Bug bewiesen; die Sperre bei Pause/Level-up funktioniert
+(Gegenprobe PASS). Trotzdem bleibt F1 als FAIL des spezifizierten Checks stehen.
+
+### Empfehlung: erste Fix-Lane
+
+1. **F1 zuerst deterministisch nachstellen** (nicht blind fixen): Truhe offen halten (`finishChest` erst nach
+   Drag, z. B. via Debug-Flag) und Drag **sofort** (<100 ms) nach `openChest` starten. Wenn dann noch Bewegung
+   auftritt, ist es ein echter Bug in `TouchControls.onTouchStart` (canMove-Bail) bzw. `TouchState`-Reset;
+   sonst war es ein Mess-Artefakt und der Check muss im Skript entschärft werden (Test-Schuld).
+2. **F2 Skript-Selektor reparieren** (klein, hoher Wert): `BRUDER KAEL` an den aktuellen CharSelect-Text/Knopf
+   anpassen; danach `verify-input.mjs` als Regressionsschutz wieder grün fahren. Solange F2 offen ist, ist die
+   Touch-/Pad-Abnahme im bestehenden Skript blind.
+3. **Echte-Hardware-Test** (Xbox/PlayStation/Android-TV) bleibt offen und ist keine Code-Fix-Karte, sondern
+   ein manueller Abnahmeschritt.
+
+### Messbefehle / Belege
+
+- `node scripts/verify-input.mjs` (read-only, ohne flock) → `~/tmp/m10-input-qa/verify-input.log`,
+  JSON nach `shots/m10-input-verify.json`, Shot `shots/m10-input-verify-touch-menus.png`.
+- `BASE_SHA=f26dc4b node ~/tmp/m10-input-qa/profiles.mjs` (Temp, nicht committet) → voller Lauf in
+  `~/tmp/m10-input-qa/profiles-final2.log`, JSON `shots/m10-input-profiles.json`, 12 Profil-Shots.
+- `BASE_SHA=f26dc4b node ~/tmp/m10-input-qa/menu.mjs` (Temp) → `~/tmp/m10-input-qa/menu.log`,
+  JSON `shots/m10-input-menu-gamepad.json`, 8 Shots.
+- `npx tsc --noEmit` rc=0; `npx vitest run tests/input.test.ts` **23/23 Tests grün**.
+
+**Abnahme dieser Lane:** 7/7 Profile gemessen (105 Checks), jede Aussage oben hat JSON-/Shot-Pfad oder
+Befehl; keine unbelegte Behauptung. Keine Datei unter `src/**`, `scripts/**`, `tests/**`, `index.html`,
+`public/**`, `shots/m8-*`, `shots/balance-*`, `shots/perf-*`, `.opencode/board.json` wurde von dieser Lane
+verändert oder committet (Ausnahme: der Supervisor-WIP-Commit `72a883d` enthielt das vorbestehende
+`board.json`-Diff; nicht von dieser Lane erzeugt, nicht erneut angefasst).
