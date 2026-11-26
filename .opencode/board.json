@@ -1801,17 +1801,22 @@
       "id": 218,
       "title": "m9-art-heroes-bosses-00 Vorher-Belege plus Kontaktbogen-Skript",
       "description": "Kontaktboegen 2x fuerriftet fuer Mira, Kael und die 6 Bosse sowie Vorher-shots (Gewuehl, Bos-Auftritt). Abnahme: shots/m9-art-heroes-bosses-before-*.png existieren, scripts/art/m9-sheet.py laeuft, tsc gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T13:16:32Z",
           "by": "build",
           "text": "doing → review: Owner: Vorher-Belege vorhanden (before/m9-art-heroes-before-*.png 5+json), m/art/m9-sheet.pypy exit 0 (npx tsc --noEnoEmit) gruen; Commit f8f8931 ennnt #218. Wartet auf Kontrollere"
+        },
+        {
+          "at": "2026-11-26T15:26:19Z",
+          "by": "build",
+          "text": "review → done: Abnahme erfüllt: 5 before-Shots +en, m9-sheet.py Exit 0 (Heldenbogen nach Fix 2110px, Portrait vollständig), tsc grün. Commits f8f8931 + 9a11605 nennen #218."
         }
       ],
       "created": "2026-11-26T12:22:49Z",
-      "updated": "2026-11-26T13:16:32Z"
+      "updated": "2026-11-26T15:26:19Z"
     },
     {
       "id": 598,
