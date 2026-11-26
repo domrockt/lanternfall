@@ -1,0 +1,15 @@
+M10 balance-qa — Lane fertig (Basis-SHA f26dc4b, HEAD c3f8a5f)
+
+Karten: #1 Harness-Matrix, #2 Korridor-Quote, #3 Ursachen-Diff L47, #4 Report+Empfehlung.
+Alle vier committet und abgenommen (7f8faec, df0a300, 91dbadd, a25a642; Versuch 2/3: 26bd762, 29a4c1c).
+
+Messwerte (unabhaengig aus shots/m10-balance-main-runs.json nachgerechnet):
+- 6 Laeufe (Mira/Kael x Seed 101/202/404), 0 pageErrors, je >=1 Evolution.
+- Korridor passedAll 6/6; Level 25-40 6/6; Ueberleben/Sieg 6/6; Boss-Dauer 20-60s 30/30.
+- Level min/median/max 26/27/36; Endzeit 20,7/26,0/30,8 min; Boss-Dauer 23/35,5/52 s.
+- Kael/101 auf f26dc4b = Level 29 (nicht 47); L47-Lauf ist historischer XP-Aufsammel-Ausreisser
+  (effektive XP/Kill 2,99 vs 0,82-1,05; XP-Kurve/Gems/spawnRate/TIER_MIXES per git diff ausgeschlossen).
+- Build rc=0 (657 ms), npm test 12 Files / 192 Tests gruen.
+
+Empfehlung fuer naechste Balance-Lane: Harness-Viewport auf logisch 640x360 pinnen (--viewport 1280x720 --dpr 1),
+10 Laeufe; falls erneut >L40, xpToNext stueckweise 1,1 (<30) / 2,5 (>=30).

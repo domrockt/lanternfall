@@ -217,8 +217,20 @@ gegen die Rohdaten geprüft. Er hat die Abnahme **unabhängig neu nachgerechnet*
 ## Abschluss / Übergabe (HEAD 29a4c1c)
 
 - Lane fertig: alle vier Karten committet und abgenommen, Build rc=0, 12 Files / 192 Tests grün, keine JS-Fehler.
-- `.lane-done` ist im Worktree vorbereitet, aber **untracked**: der Disponent-Claim dafür liegt beim
-  `merge-m10-*-qa`-Job auf main. Der Commit wurde vom Hook blockiert (korrekt, kein `--no-verify`);
-  Bedarf steht in `/home/ai/games/.dispatch/requests.md` — der Merge-Job soll die Datei aus diesem
-  Worktree übernehmen. `.opencode/board.json` bleibt unangetastet (Merge-Job).
+- `.lane-done` ist im Worktree vorbereitet und wird mit dem Abschluss-Commit übernommen.
+  Zwischenzeitlich lag der Disponent-Claim beim `merge-m10-*-qa`-Job auf main (Commit damals per Hook
+  blockiert, kein `--no-verify`); dieser Job ist inzwischen nicht mehr in `claims.json`, daher ist der
+  Pfad frei. `.opencode/board.json` bleibt unangetastet (Merge-Job).
+
+## Unabhängige Nachprüfung (Versuch 2, 2026-11-26, HEAD c3f8a5f)
+
+- **Rohdaten selbst nachgerechnet** (`/home/ai/tmp/m10-balance-qa/recheck2.py`, Log `recheck2.log`):
+  Korridor `passedAll` **6/6**, Level 25–40 **6/6**, Überleben/Sieg **6/6**, Boss-Dauer 20–60 s **30/30**;
+  Level min/median/max **26/27/36**, Endzeit **20,7/26,0/30,8 min**, Boss-Dauer **23/35,5/52 s**,
+  `pageErrors` **0** in allen 6 Läufen. Deckt sich exakt mit der Versuch-2/3-Tabelle; keine Zahl korrigiert.
+- **Build/Tests:** `npm run build` rc=0 (`✓ built in 657ms`), `npm test` **12 Files / 192 Tests grün**.
+- **Geschützte Pfade:** `git diff --name-only f26dc4b..HEAD` enthält ausschließlich
+  `docs/lanes/m10-balance-qa.md` und `shots/m10-balance-*`; keine
+  Datei aus `index.html`, `public/`, `src/`, `scripts/`, `tests/`, `shots/m8-*`, `shots/balance-*`,
+  `shots/perf-*`, `GAME.md`, `ART.md`, `.opencode/board.json`.
 
