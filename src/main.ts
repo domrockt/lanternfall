@@ -60,14 +60,23 @@ function rotateOverlay(): HTMLElement | null {
   return document.getElementById("lf-rotate");
 }
 
+let portraitAutoPaused = false;
 function pauseForPortrait(portrait: boolean): void {
   const overlay = rotateOverlay();
   if (overlay) overlay.classList.toggle("visible", portrait);
-  if (!portrait) return;
-  // Hochkant: laufendes Spiel pausieren, damit nichts im Hintergrund weiterlaeuft.
-  if (game.scene.isActive("run")) {
-    const run = game.scene.getScene("run") as Run;
-    if (run && !run.paused && !run.levelUpOpen && !run.chestOpen) run.togglePause();
+  if (!game.scene.isActive("run")) return;
+  const run = game.scene.getScene("run") as Run;
+  if (!run) return;
+  if (portrait) {
+    // Hochkant: laufendes Spiel pausieren, damit nichts im Hintergrund weiterlaeuft.
+    if (!run.paused && !run.levelUpOpen && !run.chestOpen) {
+      run.togglePause();
+      portraitAutoPaused = true;
+    }
+  } else if (portraitAutoPaused) {
+    // Zurueck im Querformat: die automatische Dreh-Pause wieder aufheben.
+    portraitAutoPaused = false;
+    if (run.paused && !run.levelUpOpen && !run.chestOpen) run.resumeRun();
   }
 }
 
@@ -81,16 +90,16 @@ function applyView(spec: ViewSpec, force = false): void {
   if (!canvas) return;
   const changed = force || key !== appliedKey || GAME_WIDTH !== spec.width || GAME_HEIGHT !== spec.height;
   appliedKey = key;
-  if (changed && game.scale && game.isBooted) {
-    setGameView(spec.width, spec.height, spec.scale);
-    game.scale.resize(spec.width, spec.height);
-  }
+  // CSS zuerst setzen, dann EIN resize(): ScaleManager.refresh() laeuft darin
+  // und emittiert genau ein RESIZE (kein doppelter Szenen-Restart).
   canvas.style.width = `${spec.cssWidth}px`;
   canvas.style.height = `${spec.cssHeight}px`;
   canvas.style.maxWidth = "100vw";
   canvas.style.maxHeight = "100dvh";
-  // Input-Hitboxen sofort an die neue CSS-Groesse anpassen (kein Fehlklick-Fenster).
-  game.scale.refresh();
+  if (changed && game.scale && game.isBooted) {
+    setGameView(spec.width, spec.height, spec.scale);
+    game.scale.resize(spec.width, spec.height);
+  }
   pauseForPortrait(spec.portrait);
 }
 
