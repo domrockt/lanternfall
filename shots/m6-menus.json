@@ -1,0 +1,122 @@
+{
+  "milestone": "M6-menus",
+  "shots": [
+    "shots/m6-menus-title.png",
+    "shots/m6-menus-options.png",
+    "shots/m6-menus-credits.png",
+    "shots/m6-menus-charselect.png",
+    "shots/m6-menus-pause.png",
+    "shots/m6-menus-options-pause.png",
+    "shots/m6-menus-results-defeat.png",
+    "shots/m6-menus-results-victory.png",
+    "shots/m6-menus-title-meta.png",
+    "shots/m6-menus-options-open-final.png",
+    "shots/m6-menus-options-changed.png",
+    "shots/m6-menus-options-reload-menu.png"
+  ],
+  "checks": [
+    {
+      "name": "charselect erreichbar",
+      "ok": true,
+      "detail": "charselect"
+    },
+    {
+      "name": "run erreicht",
+      "ok": true
+    },
+    {
+      "name": "Pause geöffnet",
+      "ok": true
+    },
+    {
+      "name": "ESC schliesst Pause-Optionen, Pause bleibt",
+      "ok": true,
+      "detail": "paused=true"
+    },
+    {
+      "name": "Aufgeben führt zu Results",
+      "ok": true,
+      "detail": "results"
+    },
+    {
+      "name": "Sieg-Ergebnis erreichbar",
+      "ok": true
+    },
+    {
+      "name": "Meta: Kael hat 2 Runs",
+      "ok": true,
+      "detail": "5"
+    },
+    {
+      "name": "Meta: Kael-Sieg gespeichert",
+      "ok": true,
+      "detail": "2"
+    },
+    {
+      "name": "1X-Skalierung exakt zentriert",
+      "ok": true,
+      "detail": "center 480/270, 480x270"
+    },
+    {
+      "name": "Optionen: Musik erhöht",
+      "ok": true,
+      "detail": "0.7"
+    },
+    {
+      "name": "Optionen: Damage-Numbers aus",
+      "ok": true
+    },
+    {
+      "name": "Optionen: Skalierung 1",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "Optionen überleben Reload",
+      "ok": true,
+      "detail": "{\"music\":0.7,\"sfx\":0.8,\"shake\":false,\"damageNumbers\":false,\"scale\":1}"
+    },
+    {
+      "name": "alle Screenshots vorhanden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "optionsBeforeReload": {
+    "music": 0.7,
+    "sfx": 0.8,
+    "shake": false,
+    "damageNumbers": false,
+    "scale": 1
+  },
+  "optionsAfterReload": {
+    "music": 0.7,
+    "sfx": 0.8,
+    "shake": false,
+    "damageNumbers": false,
+    "scale": 1
+  },
+  "meta": {
+    "mira": {
+      "time": 754,
+      "kills": 456,
+      "level": 12,
+      "victories": 0,
+      "runs": 2
+    },
+    "kael": {
+      "time": 1700,
+      "kills": 301,
+      "level": 9,
+      "victories": 2,
+      "runs": 5
+    }
+  },
+  "jsErrors": [],
+  "passed": true
+}

@@ -6,8 +6,10 @@ import { CharSelect } from "./scenes/CharSelect";
 import { Run } from "./scenes/Run";
 import { UI } from "./scenes/UI";
 import { Results } from "./scenes/Results";
+import { Credits } from "./scenes/Credits";
 import { installDebugApi } from "./debug";
-import { integerScale } from "./logic/scale";
+import { getSettings, onSettingsChanged } from "./audio/settings";
+import { resolveScale } from "./audio/options";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -18,21 +20,33 @@ const game = new Phaser.Game({
   antialias: false,
   scale: {
     // Ganzzahlige Skalierung: Canvas bleibt 480x270, CSS-Größe wird per resize gesetzt.
+    // Zentrierung erfolgt per CSS-Flexbox (keine doppelten Phaser-Margins).
     mode: Phaser.Scale.NONE,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [Boot, Title, CharSelect, Run, UI, Results],
+  scene: [Boot, Title, CharSelect, Run, UI, Results, Credits],
 });
 
 installDebugApi(game);
 
-/** Nur ganzzahlige Vielfache (2x, 3x, ...) — keine weichen Skalierungsartefakte. */
+/**
+ * Nur ganzzahlige Vielfache (2x, 3x, ...) — keine weichen Skalierungsartefakte.
+ * Die Option "Skalierung" kann AUTO oder 1x/2x/3x erzwingen (persistiert);
+ * AUTO = größtes ganzzahliges Vielfaches, das in den Viewport passt.
+ */
 function applyIntegerScale(): void {
   const canvas = game.canvas;
   if (!canvas) return;
-  const scale = integerScale(window.innerWidth, window.innerHeight, GAME_WIDTH, GAME_HEIGHT);
+  const scale = resolveScale(
+    getSettings().scale,
+    window.innerWidth,
+    window.innerHeight,
+    GAME_WIDTH,
+    GAME_HEIGHT,
+  );
   canvas.style.width = `${GAME_WIDTH * scale}px`;
   canvas.style.height = `${GAME_HEIGHT * scale}px`;
+  // Input-Hitboxen sofort an die neue CSS-Größe anpassen (kein Fehlklick-Fenster).
+  game.scale.refresh();
 }
 
 /**
@@ -49,6 +63,7 @@ function installLifecycle(): void {
   });
   game.events.once(Phaser.Core.Events.READY, applyIntegerScale);
   window.addEventListener("resize", applyIntegerScale);
+  onSettingsChanged(() => applyIntegerScale());
   applyIntegerScale();
 }
 

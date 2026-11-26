@@ -108,6 +108,9 @@ describe("Datentabellen", () => {
       expect(GLYPHS[ch], ch).toHaveLength(7);
       for (const row of GLYPHS[ch]) expect(row.length).toBe(5);
     }
+    // Meta-Zeilen nutzen den Mittelpunkt; ohne Glyphe würde "?" gerendert.
+    expect(GLYPHS["·"], "·").toBeTruthy();
+    for (const row of GLYPHS["·"]) expect(row.length).toBe(5);
     // Umlaute unterscheiden sich sichtbar von ihren Grundbuchstaben.
     expect(GLYPHS["Ä"].join("")).not.toBe(GLYPHS["A"].join(""));
     expect(GLYPHS["Ö"].join("")).not.toBe(GLYPHS["O"].join(""));

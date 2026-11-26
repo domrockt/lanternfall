@@ -29,6 +29,7 @@ export class DamageNumberSystem {
   private readonly maxViews = 24;
   private clock = 0;
   private lod: LodState | null = null;
+  private enabled = true;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -42,8 +43,20 @@ export class DamageNumberSystem {
     this.lod = lod;
   }
 
+  /** Option "Damage-Numbers": aus = keine neuen Zahlen, la sofort ausblenden. */
+  setEnabled(value: boolean): void {
+    if (value === this.enabled) return;
+    this.enabled = value;
+    if (!value) this.clear();
+  }
+
+  get isEnabled(): boolean {
+    return this.enabled;
+  }
+
   /** Treffer melden; aggregiert Spam pro Gegner. */
   report(uid: number, x: number, y: number, damage: number, crit: boolean): void {
+    if (!this.enabled) return;
     if (damage <= 0) return;
     // Nur Gegner im/nahe am Viewport zeigen Zahlen (spart Aufwand im 300er-Lauf).
     const cam = this.scene.cameras?.main;

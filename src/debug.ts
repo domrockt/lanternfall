@@ -7,6 +7,7 @@ import { paintTerrain, terrainKindAt, type TileKind } from "./gfx/tiles";
 import type { Run } from "./scenes/Run";
 import { getAudio, applyOptions } from "./audio/AudioSystem";
 import { getSettings, changeSetting } from "./audio/settings";
+import { readMeta, writeMeta, emptyMeta } from "./logic/meta";
 
 /**
  * `window.__lf` laut GAME.md. Immer vorhanden; Cheats nur mit `?debug=1`.
@@ -32,7 +33,7 @@ export function installDebugApi(game: Phaser.Game): void {
   };
 
   const activeScene = (): string => {
-    for (const key of ["run", "charselect", "results", "title", "boot"]) {
+    for (const key of ["run", "charselect", "results", "credits", "title", "boot"]) {
       if (game.scene.isActive(key) || game.scene.isPaused(key)) return key;
     }
     return "boot";
@@ -114,6 +115,13 @@ export function installDebugApi(game: Phaser.Game): void {
       run.pickLevelUp(i);
     },
     autoPlay: (value: boolean) => requireRun().setAutoPlay(value),
+    /** M6-Abnahme: direkt Lauf ohne direkt beenden (nur debug). */
+    finishRun: (reason: string) => {
+      if (reason !== "death" && reason !== "dawn" && reason !== "giveup") {
+        throw new Error(`window.__lf.finishRun: unbekannter Grund "${reason}"`);
+      }
+      requireRun().debugFinishRun(reason);
+    },
     /** M5: Ereignis-Sequenz für die VFX-Abnahme auslösen. */
     event: (name: string) => requireRun().debugTriggerEvent(String(name)),
 
@@ -125,11 +133,17 @@ export function installDebugApi(game: Phaser.Game): void {
     audio: () => getAudio().debugState(),
     options: () => getSettings(),
     setOption: (key: string, value: number | boolean) => {
-      if (key !== "music" && key !== "sfx" && key !== "shake") {
+      if (key !== "music" && key !== "sfx" && key !== "shake"
+        && key !== "damageNumbers" && key !== "scale") {
         throw new Error(`window.__lf.setOption: unbekannter Schlüssel "${key}"`);
       }
       applyOptions(changeSetting(key, value));
       return getSettings();
+    },
+    meta: () => readMeta(),
+    resetMeta: () => {
+      requireDebug();
+      return writeMeta(emptyMeta());
     },
     setMuted: (value: boolean) => {
       getAudio().setMuted(Boolean(value));

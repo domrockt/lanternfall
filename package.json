@@ -16,7 +16,8 @@
 "realtime": "node scripts/realtime-run.mjs",
 "verify:terrain": "node scripts/verify-terrain.mjs",
 "verify:vfx": "node scripts/verify-vfx.mjs",
-"verify:robust": "node scripts/verify-robust.mjs"
+"verify:robust": "node scripts/verify-robust.mjs",
+"verify:menus": "node scripts/verify-menus.mjs"
 },
 "dependencies": {
 "phaser": "^3.90.0"
