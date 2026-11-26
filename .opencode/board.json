@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1024,
+  "next": 1443,
   "cards": [
     {
       "id": 1,
@@ -2319,6 +2319,56 @@
       ],
       "created": "2026-11-26T21:21:02Z",
       "updated": "2026-11-26T21:22:00Z"
+    },
+    {
+      "id": 1438,
+      "title": "m10-balance-kael-01 Balance-Reproduktion Kael/Seed 101 Level 47",
+      "description": "build + node scripts/m10-balance-kael repro (balance.mjs ohne flock): Kael 101/202 + 4 Seeds, Mira 2 Seeds; je Lauf Endlevel, Todeszeit, Evolutionen, Boss-Dauern, Kills in shots/m10-balance-kael-repro.json (getrackt). Abnahme: JSON mit >=8 Laeufen, Level-47-Fall belegt oder Ausreisser ehrlich benannt.",
+      "column": "doing",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-26T21:48:35Z",
+      "updated": "2026-11-26T21:48:35Z"
+    },
+    {
+      "id": 1439,
+      "title": "m10-balance-kael-02 Diagnose XP-Budget",
+      "description": "Aus Laufdaten XP-Budget bis Minute 30 vs xpToNext berechnen, Kristall- vs Kill-Anteil; Befund 5-10 Zeilen in docs/lanes/m10-balance-kael.md, Beleg shots/m10-balance-kael-xp-budget.json. Abnahme: Ursache benannt (Kurve zu flach/Gems/Killrate), nicht geraten.",
+      "column": "todo",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-26T21:48:35Z",
+      "updated": "2026-11-26T21:48:35Z"
+    },
+    {
+      "id": 1440,
+      "title": "m10-balance-kael-03 Fix XP-Kurve ab Level 25",
+      "description": "src/logic/xp.ts minimal: Wachstum ab Level 25 steiler, Level 1-10 unveraendert; neue tests/balance-curve.test.ts (monoton, keine Spruenge, 30-min-Budget landet Level 25-40, fruehe Kurve unveraendert). Abnahme: npx vitest run tests/balance-curve.test.ts gruen, 1 Commit.",
+      "column": "todo",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-26T21:48:35Z",
+      "updated": "2026-11-26T21:48:35Z"
+    },
+    {
+      "id": 1441,
+      "title": "m10-balance-kael-04 Nur falls noetig Skalierung nachziehen",
+      "description": "Nur wenn XP-Kurve allein Korridor nicht erreicht: src/logic/scaling.ts/waves.ts minimal; keine Waffen-/Gegnerdaten, kein Run.ts. Abnahme: begruendete Entscheidung, ggf. Test+Commit.",
+      "column": "todo",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-26T21:48:35Z",
+      "updated": "2026-11-26T21:48:35Z"
+    },
+    {
+      "id": 1442,
+      "title": "m10-balance-kael-05 Nachmessen und Abnahme",
+      "description": "6 Balance-Laeufe ohne flock, Korridor >=5/6, Boss 20-60s, kein Tod vor Minute 15; shots/m10-balance-kael-final.json, build+gesamte Tests gruen (Ist-Zahl), docs/lanes/m10-balance-kael.md Vorher/Nachher + SHAs, .lane-done committen. Abnahme: alle Belege im Commit.",
+      "column": "todo",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-26T21:48:35Z",
+      "updated": "2026-11-26T21:48:35Z"
     }
   ]
 }
