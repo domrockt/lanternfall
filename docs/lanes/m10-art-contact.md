@@ -97,6 +97,17 @@ Nicht als Mangel gewertet (geprüft, sauber):
 - In-Game-Shot: `shots/m10-art-contact-game.png` + `.png.json`, `jsErrors: []` (0 JS-Fehler).
 - Belege vollständig im Lane-Commit; keine geschützten Pfade angefasst.
 
+### Zusätzliche Tooling-Belege (Supervisor-Hinweis, 26.11.)
+
+Auf Hinweis des Supervisors wurden die vorhandenen, read-only Art-Skripte erneut ausgeführt
+(statt weiterer Inline-Parser), mit `lib.SHOTS` auf ein Temp-Verzeichnis gepatcht, damit die
+getrackten m4/m4b-Belege unverändert bleiben:
+
+- `scripts/art/contact.py` → `shots/m10-art-contact-tooling-bosses.png`, `-heroes.png`, `-enemies.png` (4×)
+- `scripts/art/sheet-enemies-dark.py` → `shots/m10-art-contact-tooling-enemies-dark.png`
+  (Selbstcheck: **30 Gegner, 96 Frames, 0 Off-Palette, 0 Einzelpixel**, Lichtkanten/Haut/Akzente geprüft)
+- Beide Skripte rc=0 beim ersten Lauf (kein Abbruchkriterium erreicht), Logs in `~/tmp/m10-art-contact/tooling.log`.
+
 ### art-director-Urteil
 
 _(wird aus dem unabhängigen Review eingetragen)_
