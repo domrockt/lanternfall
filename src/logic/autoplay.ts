@@ -128,21 +128,30 @@ export function botDirection(input: BotInput): { x: number; y: number } {
   };
 
   // Nahkampf-Builds müssen in Waffenreichweite bleiben, Fernkampf kitet breiter.
-  const enemyRange = input.melee ? 105 : 118;
-  const enemyWeight = input.melee ? 0.75 : 1.0;
+  const enemyRange = input.melee ? 92 : 118;
+  const enemyWeight = input.melee ? 0.85 : 1.0;
   for (const e of input.enemies) repel(e, enemyRange, (e.threat ?? 1.0) * enemyWeight);
   for (const p of input.projectiles) repel(p, 96, p.threat ?? 2.3, 0.28);
   for (const h of input.hazards) repel(h, 42, h.threat ?? 3.0);
 
-  // Boss-Standoff für Nahkampf: heranlaufen, aber Kontakt vermeiden.
-  if (input.melee && input.boss) {
+  // Akt anlaufen: Ein aktiver Boss darf nicht am Spawn-Ring stehen bleiben,
+  // sonst farmt der Bot Trash und der Bosskamptankt minutenlang (535-s-Ausreißer).
+  if (input.boss) {
     const dx = input.boss.x - px;
     const dy = input.boss.y - py;
     const d = Math.hypot(dx, dy) || 1;
     const nx = dx / d;
     const ny = dy / d;
-    if (d > 115) { x += nx * 8; y += ny * 8; }
-    else if (d < 95) { x -= nx * 4; y -= ny * 4; }
+    if (input.melee) {
+      if (d > 95) { x += nx * 18; y += ny * 18; }
+      else if (d < 72) { x -= nx * 4; y -= ny * 4; }
+    } else if (d > 260) {
+      x += nx * 4;
+      y += ny * 4;
+    } else if (d < 120) {
+      x -= nx * 2;
+      y -= ny * 2;
+    }
   }
 
   // Truhe zuerst: Evolutionen kommen nur über die Boss-Truhe.

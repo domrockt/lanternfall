@@ -33,10 +33,10 @@ export const PASSIVES: Record<PassiveId, PassiveDef> = {
   heart: {
     id: "heart",
     name: "Eisenherz",
-    description: "+20 Max-HP und +0.2 HP/s pro Stufe",
+    description: "+20 Max-HP und +0.3 HP/s pro Stufe",
     maxLevel: 5,
     iconColor: 25,
-    levels: perLevel({ maxHpFlat: 20, regen: 0.2 }),
+    levels: perLevel({ maxHpFlat: 20, regen: 0.3 }),
   },
   charm: {
     id: "charm",

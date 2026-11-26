@@ -165,10 +165,10 @@ describe("Stats", () => {
     expect(PASSIVES.whetstone.levels[2].mods.damagePct).toBe(30);
     expect(PASSIVES.heart.levels[4].mods.maxHpFlat).toBe(100);
   });
-  it("Kael: +20 % Max-HP auf Basis-HP", () => {
+  it("Kael: +25 % Max-HP auf Basis-HP (M6-Tankprofil)", () => {
     const agg = aggregateMods([CHARACTERS.kael.mods]);
-    expect(agg.maxHpPct).toBe(20);
-    expect(Math.round(CHARACTERS.kael.hp * (1 + agg.maxHpPct / 100))).toBe(156);
+    expect(agg.maxHpPct).toBe(25);
+    expect(Math.round(CHARACTERS.kael.hp * (1 + agg.maxHpPct / 100))).toBe(163);
   });
   it("weaponLevel clamped", () => {
     expect(weaponLevel(WEAPONS.ember, 0).level).toBe(1);
@@ -191,11 +191,11 @@ describe("Powerups wirken auf die Stats (alle 6, Stufe 1-5)", () => {
       expect(effectiveCooldown(1, statFor("tome", l))).toBeCloseTo(1 - l * 0.08);
     }
   });
-  it("Eisenherz: +20 Max-HP und +0.2 HP/s pro Stufe", () => {
+  it("Eisenherz: +20 Max-HP und +0.3 HP/s pro Stufe (M6-Nachregelung)", () => {
     for (let l = 1; l <= 5; l++) {
       const agg = statFor("heart", l);
       expect(agg.maxHpFlat).toBe(l * 20);
-      expect(agg.regen).toBeCloseTo(l * 0.2);
+      expect(agg.regen).toBeCloseTo(l * 0.3);
     }
   });
   it("Magnetamulett: +25 % Aufsammelradius pro Stufe", () => {

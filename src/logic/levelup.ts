@@ -58,7 +58,7 @@ export function generateOffers(
     candidates.push({
       kind: "weapon", id: def.id, name: def.name,
       description: def.levels[next - 1]?.note ?? def.description,
-      level: next, isNew: false, iconColor: def.iconColor, weight: 5,
+      level: next, isNew: false, iconColor: def.iconColor, weight: 8,
     });
   }
   for (const owned of passives) {
@@ -68,7 +68,7 @@ export function generateOffers(
       kind: "passive", id: def.id, name: def.name,
       description: def.description,
       level: owned.level + 1, isNew: false, iconColor: def.iconColor,
-      weight: def.id === "heart" ? 4 : def.id === "boots" ? 3 : 2,
+      weight: def.id === "heart" ? 4 : def.id === "boots" ? 3 : 3,
     });
   }
   if (weaponSlotsFree) {

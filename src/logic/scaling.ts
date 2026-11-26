@@ -11,7 +11,7 @@ export function enemyDamageScale(elapsedSeconds: number): number {
   const t = Math.max(0, elapsedSeconds);
   // M6-Balance: Kontaktschaden steigt langsamer; Gefahr kommt aus Masse,
   // Mechaniken und Projektilen, nicht aus frühem Chip-Schaden.
-  return 1 + t / 3600 + Math.pow(t / 3600, 2) * 0.4;
+  return 1 + t / 5000 + Math.pow(t / 5000, 2) * 0.35;
 }
 
 /** Gegner werden im Lauf etwas flinker, aber gedeckelt (+12 %). */

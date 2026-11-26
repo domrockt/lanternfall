@@ -294,15 +294,21 @@ function evaluateRun(t) {
   const bossOk = killedBosses.length === 0
     ? true
     : killedBosses.every((b) => Number.isFinite(b.durationSec) && b.durationSec >= TARGET.bossSeconds[0] && b.durationSec <= TARGET.bossSeconds[1]);
+  const survivalOrWin = t.outcome === "dawn" ||
+    (t.outcome === "death" && minutes >= TARGET.survivalMin[0] && minutes <= TARGET.survivalMin[1]);
+  const evolutionOk = (t.evolutions ?? []).length >= 1;
   return {
     survivalMinutes: Math.round(minutes * 10) / 10,
     levelAtEnd,
     evolutionCount: (t.evolutions ?? []).length,
     bossDurationsInCorridor: bossOk,
     died: t.outcome === "death",
-    // Zielkorridor nur für Todesläufe im 20–28-min-Fenster; Siege werden separat bewertet.
-    survivalInCorridor: t.outcome === "death" && minutes >= TARGET.survivalMin[0] && minutes <= TARGET.survivalMin[1],
+    // Sieg (Morgendämmerung) zählt als bestandener Überlebensfall; ein Tod muss
+    // im 20–28-min-Fenster liegen.
+    survivalInCorridor: survivalOrWin,
     levelInCorridor: levelAtEnd >= TARGET.levelAt30[0] && levelAtEnd <= TARGET.levelAt30[1],
+    evolutionOk,
+    passedAll: survivalOrWin && bossOk && levelAtEnd >= TARGET.levelAt30[0] && levelAtEnd <= TARGET.levelAt30[1] && evolutionOk,
   };
 }
 
@@ -379,7 +385,7 @@ const summary = {
     id: r.weapon, dps: r.weaponDps, damage: r.weaponDamage, killsPerMinute: r.killsPerMinute, dead: r.dead,
   })),
   jsErrors: errors,
-  allRunsPass: runs.length === 0 || runs.every((r) => r.passed.survivalInCorridor || r.outcome === "dawn"),
+  allRunsPass: runs.length === 0 || runs.every((r) => r.passed.passedAll),
 };
 writeFileSync(`shots/balance-${mode}.json`, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
@@ -425,7 +431,13 @@ function mainMarkdown(list) {
   list.forEach((r, i) => {
     const bossText = (r.bossDurations ?? []).filter((b) => b.defeated)
       .map((b) => `${b.name.split(" ")[0]} ${fmt(b.durationSec, 0)}`).join(", ") || "–";
-    const corridor = r.passed.survivalInCorridor ? "JA" : r.outcome === "dawn" ? "Sieg" : "NEIN";
+    const fails = [];
+    if (!r.passed.survivalInCorridor) fails.push("Überleben");
+    if (!r.passed.levelInCorridor) fails.push("Level");
+    if (!r.passed.bossDurationsInCorridor) fails.push("Boss-Dauer");
+    if (!r.passed.evolutionOk) fails.push("Evolution");
+    const corridor = r.outcome === "dawn" && fails.length === 0 ? "Sieg"
+      : r.passed.passedAll ? "JA" : (fails.length ? `NEIN (${fails.join(", ")})` : "NEIN");
     out.push(`| ${i + 1} | ${r.character} | ${r.seed} | ${r.outcome === "death" ? "Tod" : r.outcome} | ${fmt(r.passed.survivalMinutes)} | ${r.passed.levelAtEnd} | ${r.run?.kills ?? 0} | ${r.evolutions.length} | ${bossText} | ${corridor} |`);
   });
   out.push("");
@@ -477,10 +489,10 @@ function weaponMarkdown(list) {
   const out = [];
   out.push("### Waffen-Audit (je Waffe allein auf Stufe 8, 6 Sim-Minuten, kein god)");
   out.push("");
-  out.push("| Waffe | Schaden | DPS | Kills/Min | tot? |");
-  out.push("|---|---|---|---|---|");
+  out.push("| Waffe | Schaden | DPS | Kills/Min | Fenster (min) | tot? |");
+  out.push("|---|---|---|---|---|---|");
   for (const r of list) {
-    out.push(`| ${r.weapon} | ${r.weaponDamage} | ${fmt(r.weaponDps)} | ${fmt(r.killsPerMinute)} | ${r.dead ? "JA" : "nein"} |`);
+    out.push(`| ${r.weapon} | ${r.weaponDamage} | ${fmt(r.weaponDps)} | ${fmt(r.killsPerMinute)} | ${fmt(r.windowMinutes)} | ${r.dead ? "JA" : "nein"} |`);
   }
   out.push("");
   return out;

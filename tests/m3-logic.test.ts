@@ -16,7 +16,7 @@ import {
 import { directorPlan, elitePackCount, streamSpawnOffsets } from "../src/logic/waves";
 import { SeededRng } from "../src/logic/rng";
 import type { Offer } from "../src/logic/levelup";
-import { BOSSES, ENEMIES, ENEMY_IDS, ENEMY_LIST } from "../src/data";
+import { BOSSES, CHARACTERS, ENEMIES, ENEMY_IDS, ENEMY_LIST } from "../src/data";
 import { enemySpriteFrames, silhouette, type Grid } from "../src/gfx/enemySprites";
 
 const rng = () => new SeededRng(99);
@@ -125,6 +125,16 @@ describe("Zeit-Skalierung und Director", () => {
     expect(maxActiveEnemies(20 * 60)).toBe(360);
     expect(maxActiveEnemies(30 * 60)).toBe(360);
     // perf.mjs prüft die 500-Gegner-Last weiterhin separat mit erzwungenen Spawns.
+  });
+
+  it("Boss-Grundtempo bleibt <= 90 % des langsamsten Spielertempos (M6)", () => {
+    // Langsamster Charakter inkl. Charakter-Mod: Kael 59 * 0,95 = 56,05 px/s.
+    const slowest = Math.min(...Object.values(CHARACTERS).map((c) => c.speed * (1 + (c.mods.moveSpeedPct ?? 0) / 100)));
+    for (const boss of BOSSES) {
+      expect(boss.speed).toBeGreaterThan(0);
+      expect(boss.speed).toBeLessThanOrEqual(Math.floor(slowest * 0.9));
+      expect(boss.touchDamage).toBeGreaterThan(0);
+    }
   });
 
   it("Recycling nur für alte, ferne, nicht-elite Gegner", () => {
