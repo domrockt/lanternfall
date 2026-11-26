@@ -223,7 +223,7 @@
       "id": 15,
       "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
       "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
@@ -245,10 +245,15 @@
           "at": "2026-11-26T08:33:59Z",
           "by": "build",
           "text": "done → doing: Sichtbar fuer Supervisor-Durchlauf; dirty-Stand 37 (extern neu erzeugte Verify-Shots), wird jetzt thematisch committed."
+        },
+        {
+          "at": "2026-11-26T08:39:09Z",
+          "by": "build",
+          "text": "doing → done: Dirty-Stand 37 thematisch committed (shots/ + board), offene Nachträge #73/#74/#76 re-verifiziert und done; dirty=0. Externe m8-input-Lane schreibt zeitweise in main-shots, nicht angetastet."
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-26T08:33:59Z"
+      "updated": "2026-11-26T08:39:09Z"
     },
     {
       "id": 16,
