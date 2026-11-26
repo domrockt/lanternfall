@@ -1,0 +1,11 @@
+# m10-hazard-telegraph — Lane abgeschlossen (Basis 252fd98)
+
+- #1478 Audit: 6 Bosse, 18 BOSS_ATTACKS-Einträge, Beleg shots/m10-hazard-telegraph-audit.json.
+- #1479 Test zuerst: tests/hazard-telegraph.test.ts, RED mit 3 Warnzeiten < 600 ms belegt.
+- #1480 Fix: bone_boomerang 550→600 ms (Boss 1), teleport 350→600 ms (Boss 4),
+  bone_boomerang 500→600 ms (Boss 5). Interval/Schaden/Boss-HP unverändert.
+- #1481 Belege: 6 Warnphasen-Screenshots shots/m10-hazard-warn-*.png (lebende Gegner).
+- Tests: npx vitest run 13 Dateien / 198 Tests grün; npm run build grün.
+- verify-bosses (ohne flock): alle 6 spielbar, Warnflächen 1–8, 0 JS-Fehler;
+  Skript-Urteil 5/6 OK — hollow_king "Truhe nein" ist pre-existing (auch auf 252fd98).
+- Hazards.ts geprüft: Schaden fällt nur nach warn<=0, einmal pro Instanz (linger 0).
