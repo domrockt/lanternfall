@@ -1821,7 +1821,7 @@
       "id": 319,
       "title": "m9-art-fx-ui-02 Titelbild polieren",
       "description": "Mond-Halo als harte Pixelringe statt weichem Quadrat, Stergruppen, Silhouettenkante. Abnahme: Vorher/Nachher-Shot 2x, art-director PASS >=4.5, Layout keine build gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T14:13:38Z",
@@ -1832,40 +1832,55 @@
           "at": "2026-11-26T19:31:42Z",
           "by": "build",
           "text": "doing → review: Commit 29d06d0 (#319). art-director 4,2/5: harte Pixelringe PASS, klare Horizontkante PASS, kein dunkler Mond-Rand PASS. Horizontkante = dunkle Silhouette (2) + 1-px Nebelkante (5). Offen: Ringform/Kern-Glow fuer #322. Belege shots/m9-art-fx-ui-title-before-2x.png / -after-2x.png."
+        },
+        {
+          "at": "2026-11-26T21:09:43Z",
+          "by": "build",
+          "text": "review → done: Abnahme: Commit 8db064b (#319). Titel after-2x zeigt harte Pixelringe, klare Horizontkante (Silhouette 2 + 1px Nebel 5), kein dunkler Mond-Rand; art-director 4,2/5, 3/3 Kriterien PASS, 0 JS-Fehler. Belege shots/m9-art-fx-ui-title-before-2x.png / -after-2x.png. Offener Kern-Glow geht in #322."
         }
       ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T19:31:42Z"
+      "updated": "2026-11-26T21:09:43Z"
     },
     {
       "id": 320,
       "title": "m9-art-fx-ui-03 Icons polieren",
       "description": "18 Icons kons: Kontur/Lichtkante vereistent, Evolutionen praechtiger als Basis, 16px lesbar. Abnahme: Kontaktbogen Vor/Nach, validateIcons gruen, art-director PASS >=4.5.",
-      "column": "blocked",
+      "column": "doing",
       "notes": [
         {
           "at": "2026-11-26T20:55:54Z",
           "by": "build",
           "text": "backlog → blocked: Commit 05eca0f (#320) + 7fb5d26 (Urteil). art-director FAIL 2,5/5: Ink-Rahmen teils 2-3 px statt 1 px (ember/frost/lantern/tome/hourglass), Licht teils unten-rechts, wrath_pendulum+thorn_storm dunkler als Basen, ember/lantern ~95 % gleiche Maske. 1. FAIL-Runde; Fixes in naechster Iteration (Ink 1 px, Licht oben-links, Evos 4-5 Tiers, Silhouetten trennen). Belege shots/m9-art-fx-ui-icons-before-4x.png / -after-4x.png."
+        },
+        {
+          "at": "2026-11-26T21:09:43Z",
+          "by": "build",
+          "text": "blocked → doing: Start: 18 Icons regenerieren, Kontur/Lichtkante prüfen, Evolutionen kräftiger, 4x-Kontaktbogen vorher/nachher."
         }
       ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T20:55:54Z"
+      "updated": "2026-11-26T21:09:43Z"
     },
     {
       "id": 321,
       "title": "m9-art-fx-ui-04 Font und UI-Rahmen polieren",
       "description": "Pixel-Font Umlaute/Satz, 9-Slice-Rahmen Kontrast. Abnahme: Text-Be-Muster-Sh 2x, art-director PASS.",
-      "column": "review",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-26T21:00:08Z",
           "by": "build",
           "text": "backlog → review: Commit b867af8 (#321): 9-Slice-Ecknieten 3x3 (Glanz 22 oben-links, Schatten 0 unten-rechts), Ink-Aussenecken; Font-Umlaute/Wortabstaende am Level-up-Panel geprueft. Belege shots/m9-art-fx-ui-font-321-2x.png, m9-art-fx-ui-frame-321-2x.png. build+175 Tests gruen, 0 JS-Fehler. art-director-Urteil ausstehend."
+        },
+        {
+          "at": "2026-11-26T21:27:37Z",
+          "by": "build",
+          "text": "review → blocked: Commits b867af8, f43efb2 (#321). art-director FAIL 2,7/5: Umlaut-Akzente falsch (Ä-Strich versetzt, Ö asymmetrisch, Ü-Punkte fehlen in kleiner Schrift), 9-Slice-Kanten/Ecken-Licht falsch, Belohnungskarten laufen ~30 px über Seitenkante. Wortabstände PASS. 1. FAIL-Runde; Fixes in nächster Iteration. Belege shots/m9-art-fx-ui-font-321-2x.png, m9-art-fx-ui-frame-321-2x.png."
         }
       ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-26T21:00:08Z"
+      "updated": "2026-11-26T21:27:37Z"
     },
     {
       "id": 322,

@@ -78,7 +78,13 @@ und Abschluss.
   WÄHLE EINE BELOHNUNG"; Umlaute Ä/Ö/Ü/ß kommen aus `src/gfx/glyphs.ts` und werden
   im Font ueber `toUpperCase` als Versalien genutzt, Wortabstaende 6 px.
 - Pruefung: Umlaute lesbar, keine zusammengeklebten Woerter, Eckenkontrast hoeher.
-- art-director-Urteil (#321): ausstehend (Belege liegen bereit).
+- art-director-Urteil (#321): **2,7/5 FAIL**. Befunde: (1) Umlaut-Akzente falsch
+  gebaut — Ä hat einen versetzten Strich ohne 1-px-Luft (klebt optisch ans Folgzeichen),
+  Ö hat asymmetrische Punkte + abgeloestes Pixel; in der kleinen Schrift fehlen Ü-Punkte
+  komplett ("UBERNEHMEN"). (2) 9-Slice: obere Kante flach/ohne Aufhellung, Ecken wirken
+  heller unten-rechts (Lichtlogik widerspruechlich), Ecknieten zu kontrastarm. (3) Im
+  Truhen-Panel laufen die 5 Belohnungskarten ~30 px ueber die Seitenkante hinaus.
+  Wortabstaende/Laufweite selbst sind PASS.
 - 0 JS-Fehler in beiden Shot-Laeufen.
 
 ## #322 FX-Belege und Abschluss
