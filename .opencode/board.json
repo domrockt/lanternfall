@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1027,
+  "next": 1502,
   "cards": [
     {
       "id": 1,
@@ -2364,6 +2364,42 @@
       ],
       "created": "2026-11-26T21:48:44Z",
       "updated": "2026-11-26T21:49:15Z"
+    },
+    {
+      "id": 1498,
+      "title": "m10-levelup-offers-01 Audit generateOffers 30 Seeds x 4 Builds",
+      "description": "generateOffers mit 30 Seeds und 4 Build-Zustaenden (leer; 5 Waffen; 6 Waffen ohne Passiv; 6 Waffen Stufe 8 + 6 Passives). JSON shots/m10-levelup-offers-audit.json: Anzahl je Aufruf, doppelte IDs, Evolution ohne Voraussetzung, fehlende Evolution trotz Voraussetzung. Befund docs/lanes/m10-levelup-offers.md. Abnahme: JSON + Doku, Zahlen belegt.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T22:28:58Z",
+      "updated": "2026-11-26T22:28:58Z"
+    },
+    {
+      "id": 1499,
+      "title": "m10-levelup-offers-02 Test zuerst (RED)",
+      "description": "tests/levelup-offers.test.ts: genau 3 Angebote (Ausnahme erschoepfter Pool), keine doppelten IDs, kein Upgrade nicht besessener Waffen, Evolution nur bei Stufe 8 + Powerup >=1, max. eine Evolution. Zuerst RED gegen Audit-Luecken belegen. Abnahme: RED-Log im Commit/Doku, Testdatei mit Faellen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T22:28:58Z",
+      "updated": "2026-11-26T22:28:58Z"
+    },
+    {
+      "id": 1500,
+      "title": "m10-levelup-offers-03 Fix in levelup.ts",
+      "description": "Kleinste Aenderung in src/logic/levelup.ts (ggf. evolution.ts/LevelUpSystem): Evolution-Angebote nur bei Basiswaffe Stufe 8 + passendem Powerup >=1, max. 1, keine Duplikate, 3 Angebote falls Pool reicht. Keine Balance-/Waffendaten. Abnahme: Tests gruen, tsc gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T22:28:58Z",
+      "updated": "2026-11-26T22:28:58Z"
+    },
+    {
+      "id": 1501,
+      "title": "m10-levelup-offers-04 Beleg + Abnahme",
+      "description": "In-Game Level-Up-Screen nach >=3 Level-Ups als shots/m10-levelup-* im Commit; node scripts/verify-menus.mjs PASS (15/15); npm run build gruen; npx vitest run gesamt gruen (Ist-Zahl); Docs Vorher/Nachher-Audit; .lane-done mit Messwerten. Abnahme: alle Belege committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-26T22:28:58Z",
+      "updated": "2026-11-26T22:28:58Z"
     }
   ]
 }
