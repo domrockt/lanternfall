@@ -16,7 +16,7 @@ Safe-Area auf Touch-Profilen, plus Beleg für die offene 42-FPS-Minute-25-Karte 
       (`devicePixelWidth % n == 0`), Screenshots sichten, abgeschnittene Texte listen.
 - [x] **C3 / #1103 — Safe-Area/HUD:** iPhone 14 + Pixel 7 gegen Notch/Rundung prüfen (HUD, Pause, Joystick vs.
       Safe-Area-Rechtecke), FPS Minute 25 via `flock … node scripts/perf.mjs`, Ist-Wert gegen 57 FPS.
-- [ ] **C4 / #1104 — Report:** PASS/FAIL je Profil, FAIL-Liste mit Repro, FPS-Zahl, Empfehlung #638,
+- [x] **C4 / #1104 — Report:** PASS/FAIL je Profil, FAIL-Liste mit Repro, FPS-Zahl, Empfehlung #638,
       Build + Tests grün.
 
 ## Belege
@@ -171,9 +171,18 @@ die Safe-Area des Geräts.
 
 ## Lane-Abschluss / .lane-done
 
-Alle vier Karten sind committet (`5250ccd`, `d7eab43`, `6f784cf`, `667a08d`). Das `.lane-done`-Signal
-konnte **nicht** committet werden: der Disponent hat `.lane-done` an den Job `merge-m10-vfx-evo` (main)
-vergeben (Commit-Gate blockte). Der Inhalt ist als Backup unter `~/tmp/m10-lane-done-m10-display-qa.txt`
-(nicht Teil des Repos) abgelegt und eine Freigabe-/Übernahme-Anfrage steht in
-`/home/ai/games/.dispatch/requests.md` (Eintrag `m10-display-qa`). Inhalt: 6/7 Profile PASS,
-iphone14 Safe-Area FAIL, #638 Minute 25 39,5 FPS FAIL (dpr1-Kontrolllauf 54,5 FPS).
+Alle vier Karten sind committet (`5250ccd`, `d7eab43`, `6f784cf`, `667a08d`). In Versuch 2 war der
+Claim auf `.lane-done` frei, daher ist das Abschluss-Signal jetzt als eigene Datei committet.
+Inhalt: 6/7 Profile PASS, iphone14 Safe-Area FAIL, #638 Minute 25 39,5 FPS FAIL (dpr1-Kontrolllauf 54,5 FPS).
+
+## Versuch 2 — unabhängige Nachprüfung (2026-11-26, Basis `f26dc4b`)
+
+- `npm run build` frisch: rc=0, `✓ built in 686ms` (`~/tmp/m10-display-qa/v2-build.log`).
+- `npx vitest run` frisch: 12 Dateien / **192 Tests** grün (`~/tmp/m10-display-qa/v2-tests.log`).
+- `shots/m10-display.json`: `passed: true`, 7/7 Profile; 38/38 Checks aus dem C1-Lauf sind im Commit.
+- Screenshots erneut gesichtet (Kontaktbögen 7×9 Szenen, 2× nearest in `~/tmp/m10-display-qa/v2sheets/`)
+  plus `shots/m10-display-iphone14-safearea.png` und `shots/m10-display-pixel7-safearea.png`:
+  Befund unverändert — keine abgeschnittenen HUD-/Menü-Texte, iphone14-HUD ragt in die
+  linke/rechte 47-px-Notch-Zone (x=0 full-bleed), pixel7 sitzt mit 28 px Offset sicher.
+  Bekannte kosmetische Kartenreihe im Truhen-Screen bleibt (kein FAIL, Text sichtbar).
+- Ergebnis: Karten C1–C4 abgenommen; offene Befunde bleiben `iphone14 Safe-Area` und `#638`.
