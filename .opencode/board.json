@@ -1554,10 +1554,26 @@
       "id": 85,
       "title": "m7-tooling-3 scripts/shot.mjs als generischer Screenshot/GIF-Helfer",
       "description": "scripts/shot.mjs auf Basis von harness.mjs: URL-Parameter, __lf-Befehle als JSON, Ausgabepfad, optional GIF mit N Frames. Alte scripts/tmp-*.mjs entfernen. Abnahme: ein Beispiel-Shot/GIF erzeugt und gesichtet, keine JS-Fehler, Build+Tests gruen, Commit nennt Karte.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T08:51:56Z",
+          "by": "build",
+          "text": "todo → doing: Owner: Lead/Lane. Generischer shot.mjs (URL-Query, __lf-Befehle JSON, out, optional GIF); tmp-*.mjs entfernen."
+        },
+        {
+          "at": "2026-11-26T08:54:47Z",
+          "by": "build",
+          "text": "doing → review: M6-m7-tooling: #85 (58b6d7f). node scripts/shot.mjs ... 5,7s rc0, 0 JS-Fehler, PNG+GIF 16 Frames; m7-shot.png gesichtet (Leben/Gegner/XP, HUD lesbar); 3 tmp-Skripte entfernt; build+147 Tests gruen."
+        },
+        {
+          "at": "2026-11-26T08:54:47Z",
+          "by": "build",
+          "text": "review → done: SelfDaumen PASS: Helfer generisch (Query, JSON-Befehle, scene, out, gif); Beispiel GIFleg shots/m7-shot.png+gif."
+        }
+      ],
       "created": "2026-11-26T08:49:35Z",
-      "updated": "2026-11-26T08:49:35Z"
+      "updated": "2026-11-26T08:54:47Z"
     },
     {
       "id": 86,
