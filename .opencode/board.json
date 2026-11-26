@@ -1062,40 +1062,57 @@
       "id": 56,
       "title": "robust-01 Perf-Analyse: Baseline + Profil (wo geht Frame-Zeit hin)",
       "description": "flock perf baseline, CPU-Profil im 500er/300er-Lauf, Hotspots dokumentieren. Abnahme: Messwerte notiert.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T01:49:56Z",
+          "by": "build",
+          "text": "doing → done: Perf-Analyse: Chunk-Malen 25–45 ms/Chunk war Ursache (Hitches 150–200 ms alle ~4 s), nicht Gegnerzahl. Baseline/Profil in docs/lanes/robust.md. Final flock perf 58,3/57,8 FPS."
+        }
+      ],
       "created": "2026-11-25T22:55:53Z",
-      "updated": "2026-11-25T22:55:53Z"
+      "updated": "2026-11-26T01:49:56Z"
     },
     {
       "id": 57,
       "title": "robust-02 Render-/Batch-Pass: Gegner-Batch, Gem-Merging, Partikel-LOD",
       "description": "500 Gegner + Minute 25 >= 55 FPS (flock npm run perf). Keine Gameplay-Änderung.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T01:49:56Z",
+          "by": "build",
+          "text": "todo → done: Render-/Batch-Pass: terrainWorker (ImageBitmap), Laufzeit-Atlas 224 Frames (Texture-Binds 269→125), Terrain-Cache Tile-Mitte, Boss-LOD. flock perf 500er 58,3 / Minute25 57,8 FPS. verify:terrain/vfx/weapons grün."
+        }
+      ],
       "created": "2026-11-25T22:55:53Z",
-      "updated": "2026-11-25T22:55:53Z"
+      "updated": "2026-11-26T01:49:56Z"
     },
     {
       "id": 58,
       "title": "robust-03 Speicher: Heap Minute 1 vs 29 im fullrun < 15% Differenz",
       "description": "Heap-Messung in fullrun + Langlauf; Leck finden/fixen, Zahlen dokumentieren.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T00:05:50Z",
           "by": "build",
           "text": "todo → doing: Heap-Messung in fullrun eingebaut (Minute 1 vs 29, <15%). Erster Lauf: +5,8% PASS."
+        },
+        {
+          "at": "2026-11-26T01:49:56Z",
+          "by": "build",
+          "text": "doing → done: Heap Minute1→29: 25,8→27,2 MB = +5,4 % (3× GC, Minimum), Ziel <15 % PASS. Leckquellen Terrain-Cache/Sound-Objekte behoben; shots/m3-fullrun.json."
         }
       ],
       "created": "2026-11-25T22:55:53Z",
-      "updated": "2026-11-26T00:05:50Z"
+      "updated": "2026-11-26T01:49:56Z"
     },
     {
       "id": 59,
       "title": "robust-04 Robustheit: visibilitychange pausiert, Resize ganzzahlig",
       "description": "Tab-Wechsel pausiert Run (und Timer), Fenstergröße ändern bleibt ganzzahlig; Tests/Verify.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T00:05:50Z",
@@ -1106,19 +1123,30 @@
           "at": "2026-11-26T01:18:19Z",
           "by": "build",
           "text": "visibilityverify:robust ausstehend (Skalierung/Pause/Worker)."
+        },
+        {
+          "at": "2026-11-26T01:49:56Z",
+          "by": "build",
+          "text": "doing → done: Robustheit PASS (verify:robust): 5 Fenstergrößen ganzzahlig 1x–4x, visibilitychange Pause Delta 0 s, Resume ohne Sprung <3 s, Worker 16 Chunks, Atlas 224 Frames, 0 JS-Fehler."
         }
       ],
       "created": "2026-11-25T22:55:53Z",
-      "updated": "2026-11-26T01:18:19Z"
+      "updated": "2026-11-26T01:49:56Z"
     },
     {
       "id": 60,
       "title": "robust-05 scripts/realtime-run.mjs: echter 30-min-Lauf, Boss-Timing, FPS, Heap, Shots",
       "description": "Bauen + --minutes 3 in Lane testen; Boss 5/10/15/20/25/30 ±2s, Truhen, Evolutionen, FPS min/median, Heap start/end, JS-Fehler, alle 5 min Screenshot.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-26T01:49:56Z",
+          "by": "build",
+          "text": "todo → done: realtime-run.mjs gebaut; --minutes 3 PASS: 3 Sim-Min in 183 s, Boss-/Heap-/FPS-Protokoll, Shot am Ende, 0 JS-Fehler, Heap Minute1→Ende −7,7 %. Voller 30-min-Lauf nach Merge."
+        }
+      ],
       "created": "2026-11-25T22:55:53Z",
-      "updated": "2026-11-25T22:55:53Z"
+      "updated": "2026-11-26T01:49:56Z"
     },
     {
       "id": 61,
