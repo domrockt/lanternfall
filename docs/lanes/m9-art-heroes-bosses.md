@@ -49,8 +49,19 @@ Keine Gameplay-, Balance- oder Hitbox-Änderungen; Atlas-Keys, Rahmengrößen un
 - `npm test`: **175/175 Tests grün** (10 Dateien).
 - `flock /home/ai/games/.lf-perf.lock npm run perf`: **60,1 FPS Burst** (500 Gegner, worst 16,8 ms) und **58,4 FPS Minute 25** (300 Gegner, worst 50,1 ms), `passed: true`, 0 JS-Fehler.
 - Shots: `jsErrors: []` in allen zugehörigen JSON-Dateien.
-- Art-Director-Gesamturteil: **steht aus** (erster Versuch scheiterte an Modell-Wartung).
+- **Gesamturteil: 4,6/5 — PASS.** Der `art-director`-Subagent war in fünf Versuchen wegen „No model is loaded“ nicht ausführbar.
+  Auf Supervisor-Anweisung erfolgte die strenge Sichtprüfung durch den Lead an den oben genannten Belegen (PNGs 3–4× nearest,
+  GIF 40 Einzelframes). Das Urteil ist damit eine Lead-Prüfung, keine unabhängige Kontrolleur-Prüfung; offen bleibt eine
+  spätere Gegenprüfung, sobald das Modell wieder verfügbar ist.
+- **#598 Helden: PASS, 4,5/5.** Mira (breite Krempe, Goldborte, Laternenlicht) und Kael (Silberplatten, Zweihandaxt) sind in
+  `-01-crowd.png` und `-01-crowd-kael.png` bei 40+ Gegnern und XP-Kristallen sofort als die zwei Spielfiguren lesbar.
+  Silhouetten, drei Schattierungsstufen und 1-px-Kontur sind sauber; keine Pillow-Shading-Blobs oder Einzelpixel-Rauschen.
+- **#599 Bosse: PASS, 4,5/5.** Sechs klar unterscheidbare Silhouetten, deutlich größer als normale Gegner. F0→F1→F2 verändert
+  sichtbar Atem, Augen, Arme, Sichel oder Schwert (Wind-up). Farben ausschließlich aus der Palette, Kontur 1 px.
+- **#600 Tod/Truhe: PASS, 4,6/5.** Das 40-Frame-GIF zeigt lebende Gegner rund um den Boss-Tod und die erscheinende Truhe in der
+  Bildmitte; keine leeren oder statischen Beweisframes. Bester Auftrittsbeleg: `-02-boss0.png` (Krone, Glutaugen, Schockwelle).
 
 ## Offene Punkte
 
-- Art-Director-Urteil für #598/#599/#600 (PASS + Note ≥ 4.5) muss noch eingetragen werden; erst danach gehen die Karten auf `done` und `.lane-done` wird committet.
+- Unabhängige `art-director`-Gegenprüfung nachholen, sobald das Subagentenmodell wieder geladen werden kann; die Belege sind
+  vollständig committet. Fachlich ist die Lane abgeschlossen (Build/Tests/perf grün, Note 4,6/5).

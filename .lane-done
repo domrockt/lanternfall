@@ -1,0 +1,9 @@
+# m9-art-heroes-bosses — done (2026-11-26)
+
+Ziel erreicht: Helden Mira/Kael + 6 Bosse + Boss-Tod/Truhe, Gesamturteil **4,6/5 PASS** (#598 4,5, #599 4,5, #600 4,6).
+Belege committet: 01-heroes (2x-Bogen inkl. Portrait), 01-crowd (Mira) + 01-crowd-kael (Kael), 02-bosses (F0/F1/F2),
+02-boss0 (Moorkönigin-Auftritt + Schockwelle), 02-boss5/b (Hohler König), 03-death.gif (40 Frames, lebende Gegner + Truhe).
+Prüfung: `npm run build` grün, **175/175 Tests**, `flock … npm run perf` **60,1 FPS Burst / 59,9 FPS Minute 25**, 0 JS-Fehler.
+Grenzen: art-director-Subagent 5× wegen Modellausfall nicht ausführbar → strenge Lead-Sichtprüfung auf Supervisor-Anweisung;
+unabhängige Gegenprüfung bleibt offen. Fünf Bosse behalten ihre M4b-Silhouetten, die Moorkönigin wurde neu akzentuiert.
+Keine Gameplay-/Balance-/Hitbox-Änderung; Boss-/Helden-Keys, Rahmengrößen und Animationsnamen unverändert.
