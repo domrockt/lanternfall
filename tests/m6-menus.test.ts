@@ -6,6 +6,7 @@ import {
 import {
   META_KEY, emptyMeta, formatDuration, loadMeta, metaLine, recordRun, saveMeta,
 } from "../src/logic/meta";
+import { formatDamageCompact } from "../src/logic/results";
 
 function memStorage(seed?: string): StorageLike & { data: string | null } {
   const box = {
@@ -114,5 +115,15 @@ describe("M6 Meta: Bestwerte pro Charakter", () => {
     const broken = memStorage("{kaputt");
     expect(loadMeta(broken)).toEqual(emptyMeta());
     expect(META_KEY).toBe("lanternfall-meta-v1");
+  });
+});
+
+describe("M6 Results: kompakte Schadenszahlen", () => {
+  it("formatiert grosse Werte ohne Spalten-Overflow", () => {
+    expect(formatDamageCompact(88)).toBe("88");
+    expect(formatDamageCompact(9999)).toBe("9999");
+    expect(formatDamageCompact(14337)).toBe("14.3K");
+    expect(formatDamageCompact(2663937)).toBe("2.7M");
+    expect(formatDamageCompact(1000000)).toBe("1M");
   });
 });

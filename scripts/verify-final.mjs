@@ -98,6 +98,15 @@ try {
   });
   await page.waitForTimeout(4200);
   report.damageBeforeFinish = await page.evaluate(() => window.__lf.state());
+  // Grosse Endgame-Schadenswerte + langer Evolutionsname als Layout-Stresstest.
+  await page.evaluate(() => {
+    const sc = window.__game.scene.getScene("run");
+    Object.assign(sc.damageByWeapon, {
+      phoenix: 2663937, soul_beacon: 514758, eternal_winter: 202820,
+      thorn_storm: 143437, frostnova: 27513, ember: 15227, thunder_seal: 11455,
+      lantern: 1748, wrath_pendulum: 1104, storm: 980, thorn: 640, flail: 320,
+    });
+  });
   await page.evaluate(() => window.__lf.finishRun("dawn"));
   await page.waitForFunction(() => window.__lf.state().scene === "results", { timeout: 6000 });
   await page.waitForTimeout(400);

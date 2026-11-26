@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { iconTextureKey } from "../gfx/icons";
-import { damageTable } from "../logic/results";
+import { damageTable, formatDamageCompact } from "../logic/results";
 import { CHARACTERS } from "../data/characters";
 import type { CharacterId } from "../data/types";
 import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
@@ -106,13 +106,13 @@ export class Results extends Phaser.Scene {
       }
       const name = entry.name.toUpperCase();
       new PixelText(this, 238, y, name, C.bone).setDepth(2);
-      const barX = 322;
-      const barMax = 90;
+      const barX = 340;
+      const barMax = 70;
       const width = Math.max(2, Math.round((entry.damage / maxDamage) * barMax));
       this.add.rectangle(barX, y + 3, barMax, 5, PAL[C.nightMid], 0.9).setOrigin(0, 0.5).setDepth(1);
       this.add.rectangle(barX, y + 3, width, 5, PAL[entry.isEvolution ? C.paleMist : C.lantern], 0.95)
         .setOrigin(0, 0.5).setDepth(1);
-      new PixelText(this, 446, y, `${entry.damage}`, C.candleWhite, "right").setDepth(2);
+      new PixelText(this, 446, y, formatDamageCompact(entry.damage), C.candleWhite, "right").setDepth(2);
     });
 
     this.buttons.push(createMenuButton(
