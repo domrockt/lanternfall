@@ -19,8 +19,6 @@ interface DamageView {
   maxLife: number;
   big: boolean;
   active: boolean;
-  /** Label erst im Frame-Flush setzen, nicht pro Treffer. */
-  dirty: boolean;
   /** Farbe/Scale ebenfalls nur bei Änderung anwenden. */
   color: number;
   scale: number;
@@ -32,10 +30,9 @@ interface DamageView {
  * Gepoolte Damage-Numbers: max. 24 (Aggregat: 10) gleichzeitig, pro Gegner wird
  * innerhalb des Aggregat-Fensters summiert. Nutzt den Bitmap-Font.
  *
- * M10-Batch: Treffer markieren den View nur noch dirty; `setText` läuft
- * höchstens einmal pro Frame und ausschließlich bei echter Wert-/Krit-Änderung
- * (LabelMemo). Vorher rief jeder einzelne Treffer `setText` erneut auf, auch
- * wenn sich der sichtbare Text nicht änderte.
+ * M10-Batch: `setText` läuft höchstens einmal pro Frame und ausschließlich bei
+ * echter Wert-/Krit-Änderung (LabelMemo). Vorher rief jeder einzelne Treffer
+ * `setText` erneut auf, auch wenn sich der sichtbare Text nicht änderte.
  */
 export class DamageNumberSystem {
   private readonly scene: Phaser.Scene;
@@ -70,7 +67,7 @@ export class DamageNumberSystem {
       const text = new PixelText(scene, 0, 0, "", C.candleWhite, "center").setDepth(15).setVisible(false);
       this.views.push({
         text, key: 0, x: 0, y: 0, life: 0, maxLife: 0.8, big: false, active: false,
-        dirty: false, color: C.candleWhite, scale: 1, colorApplied: C.candleWhite, scaleApplied: 1,
+        color: C.candleWhite, scale: 1, colorApplied: C.candleWhite, scaleApplied: 1,
       });
     }
   }
@@ -120,7 +117,6 @@ export class DamageNumberSystem {
     for (const v of active) {
       if (this.viewBudget.count <= limit) break;
       v.active = false;
-      v.dirty = false;
       this.viewBudget.deactivate();
       this.labelMemo.forget(v.key);
       v.text.setVisible(false);
@@ -180,7 +176,6 @@ export class DamageNumberSystem {
     view.big = crit || (entry.hits > 3 && entry.damage > 20);
     view.color = crit ? C.amber : view.big ? C.lantern : C.candleWhite;
     view.scale = view.big ? 1.6 : 1;
-    view.dirty = true;
     // Position/Alpha duerfen sofort folgen, der teure Text erst im Flush.
     view.text.setPosition(Math.round(x), Math.round(view.y));
     view.text.setAlpha(1).setVisible(true);
@@ -209,7 +204,6 @@ export class DamageNumberSystem {
       if (labelChanged) {
         v.text.setText(label);
         entry.label = label;
-        v.dirty = false;
       }
     }
   }
@@ -251,7 +245,6 @@ export class DamageNumberSystem {
     this.labelMemo.reset();
     for (const v of this.views) {
       v.active = false;
-      v.dirty = false;
       v.text.setVisible(false);
     }
   }
