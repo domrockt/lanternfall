@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5162,
+  "next": 5222,
   "cards": [
     {
       "id": 1,
@@ -5937,6 +5937,52 @@
       ],
       "created": "2026-11-27T11:28:18Z",
       "updated": "2026-11-27T20:17:44Z"
+    },
+    {
+      "id": 5218,
+      "title": "m10-boss-fx-contrast #1: Ist-Zustand — Baseline-Shots + Kontrast-JSON (6 Bosse x 640/780)",
+      "description": "Abnahmekriterium: scripts/m10-boss-fx-contrast.mjs erzeugt für alle 6 Bosse bei 640x360 und 780x360@3 je einen Screenshot im Horde-Kontext (>= 200 Gegner) mit aktivem Boss-FX (fx_boss_core/fx_shock) sowie shots/m10-boss-fx-contrast-baseline.json mit Luminanz-Spread (p95-p05) Boss-Effekt-Crop vs. Hintergrund-Crop + Near-White-% je Boss. Owner: vfx-artist, Kontrolleur: vfx-check.",
+      "column": "doing",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T20:28:40Z",
+          "by": "build",
+          "text": "todo → doing: m10-boss-fx-contrast: Mess-Skript + Baseline-Lauf (6 Bosse x 640/780 im Horde-Kontext)"
+        }
+      ],
+      "created": "2026-11-27T20:24:07Z",
+      "updated": "2026-11-27T20:28:40Z"
+    },
+    {
+      "id": 5219,
+      "title": "m10-boss-fx-contrast #2: Hebel 1 gen-fx.ts — dunkle Kern-Kontur + Offset-Outline für Boss-FX",
+      "description": "Abnahmekriterium: bossCoreFrame (fx_boss_core) bekommt geschlossene 1-px-Tintenkontur um den Glutkern + 1-px versetzte Offset-Outline (Technik wie Ember-Fix #2879), nur Palettenfarben, binäres Alpha; Unit-Test in tests/boss-fx-contrast.test.ts prüft Kontur-Regel (Kontrast Kern vs. Kontur >= 5:1, Near-White <= 4,16 % im Frame). Normale FX-Keys unverändert. Owner: vfx-artist, Kontrolleure: vfx-check + test-auditor.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T20:24:07Z",
+      "updated": "2026-11-27T20:24:07Z"
+    },
+    {
+      "id": 5220,
+      "title": "m10-boss-fx-contrast #3: Hebel 2 FxSystem.ts — Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme",
+      "description": "Abnahmekriterium: Boss-FX (fx_boss_core via isBossFxKey) sind von fxAlpha-Dämpfung (alphaScaleExempt) und ADD-Flächendeckel ausgenommen und bekommen Alpha-Boden >= 0,7; normale FX unverändert (Regel-Test beider Richtungen). Neuer Test tests/boss-fx-contrast.test.ts deckt Mindest-Alpha-Boden + Ausnahmen ab; tsc + npm test grün. Owner: vfx-artist, Kontrolleure: test-auditor + reviewer.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T20:24:07Z",
+      "updated": "2026-11-27T20:24:07Z"
+    },
+    {
+      "id": 5221,
+      "title": "m10-boss-fx-contrast #4: Nachher-Messung + art-director-Vision + Lane-Doku",
+      "description": "Abnahmekriterium: Nachher-Lauf des Skripts (Tag 'after') zeigt je Boss Kontrast-Zahl >= +25 % gegen Baseline (6 Bosse x 2 Views, shots/m10-boss-fx-contrast-after.json), Near-White im Boss-Crop <= 4,16 %; art-director-Urteil per Vision über die Nachher-Shots >= 4/5 für alle 6 Bosse, notiert in docs/lanes/m10-boss-fx-contrast.md; PNG/JSON-Belege im Commit. Owner: vfx-artist, Kontrolleur: art-director.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T20:24:07Z",
+      "updated": "2026-11-27T20:24:07Z"
     }
   ]
 }
