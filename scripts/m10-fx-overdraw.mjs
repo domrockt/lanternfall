@@ -27,6 +27,9 @@ const OUT = String(
   argOf("out", `shots/m10-fx-overdraw-${SUITE}.json`),
 );
 const SHOT = argOf("shot", "");
+// Nur dieser Config-Name bekommt den Screenshot (Default: m25-780@3).
+const SHOT_CONFIG = String(argOf("shot-config", "m25-780@3"));
+const ONLY = String(argOf("only", ""));
 
 const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
@@ -326,10 +329,14 @@ try {
       { name: "m25-640@1", width: 640, height: 360, dpr: 1 },
     ];
     for (const cfg of configs) {
+      if (ONLY && cfg.name !== ONLY) continue;
       for (let r = 0; r < RUNS; r++) {
         const m = await runOnce({ width: cfg.width, height: cfg.height, dpr: cfg.dpr, variant: "full" });
         runs.push({ config: cfg.name, run: r + 1, ...m, msPerFrame: msPerFrame(m.fps) });
         console.log(`[after] ${cfg.name} run ${r + 1}: ${m.fps} fps, min ${m.fpsMin}, ${msPerFrame(m.fps)} ms/frame`);
+        if (SHOT && cfg.name === SHOT_CONFIG && r === RUNS - 1) {
+          console.log(`[shot] ${SHOT} @ ${cfg.name}: dpr=${m.state.dpr}, glowCap=${m.state.glowBudget}, glowUsed=${m.state.glowUsed}, enemies=${m.state.enemies}, internal=${m.state.internal}, css=${m.state.css}`);
+        }
       }
     }
     const summary = {};
