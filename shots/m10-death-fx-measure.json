@@ -1,0 +1,95 @@
+[
+  {
+    "cls": "crumble",
+    "enemy": "wisp",
+    "particles": 132,
+    "areaGamePx2": 17472,
+    "bboxGamePx": {
+      "w": 27,
+      "h": 22
+    },
+    "textures": [
+      "fx_death_bone",
+      "fx_ash"
+    ],
+    "tints": [
+      "#0a0e16",
+      "#d9ddcd",
+      "#6b7c86"
+    ],
+    "additive": [
+      false
+    ]
+  },
+  {
+    "cls": "burst",
+    "enemy": "bog_rat",
+    "particles": 140,
+    "areaGamePx2": 47604,
+    "bboxGamePx": {
+      "w": 45,
+      "h": 45
+    },
+    "textures": [
+      "fx_death_blob",
+      "fx_star"
+    ],
+    "tints": [
+      "#0a0e16",
+      "#6f9b58",
+      "#22382a",
+      "#fff8e6"
+    ],
+    "additive": [
+      false,
+      true
+    ]
+  },
+  {
+    "cls": "dissolve",
+    "enemy": "banshee",
+    "particles": 120,
+    "areaGamePx2": 39450,
+    "bboxGamePx": {
+      "w": 26,
+      "h": 27
+    },
+    "textures": [
+      "fx_death_void",
+      "fx_dusk"
+    ],
+    "tints": [
+      "#0a0e16",
+      "#3a4a5c",
+      "#17202e"
+    ],
+    "additive": [
+      false,
+      true
+    ]
+  },
+  {
+    "cls": "sputter",
+    "enemy": "toad",
+    "particles": 140,
+    "areaGamePx2": 40852,
+    "bboxGamePx": {
+      "w": 37,
+      "h": 37
+    },
+    "textures": [
+      "fx_death_dust",
+      "fx_fire",
+      "fx_star"
+    ],
+    "tints": [
+      "#0a0e16",
+      "#ffb84d",
+      "#ef9130"
+    ],
+    "additive": [
+      false,
+      true
+    ]
+  }
+]

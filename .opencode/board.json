@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2642,
+  "next": 2648,
   "cards": [
     {
       "id": 1,
@@ -3811,6 +3811,102 @@
       ],
       "created": "2026-11-27T08:36:27Z",
       "updated": "2026-11-27T08:42:34Z"
+    },
+    {
+      "id": 2642,
+      "title": "m10-death-fx K1 Ist-Stand: effektive DeathFxSpecs erheben",
+      "description": "Alle 30 Archetypen + Boss: effektive DeathFxSpec (Shard/Dust/Count/Additive) erheben, Tabelle in docs/lanes/m10-death-fx.md; belegen wie viele visuell unterscheidbare Klassen heute ankommen. Abnahme: Tabelle mit 30 Archetypen und Anzahl distinkter Klassen belegt. Commit.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T09:05:10Z",
+          "by": "build",
+          "text": "lane #1778 · Commit 23f3c4a: Tabelle 30 Archetypen, 4 Klassen im Kampfpfad."
+        }
+      ],
+      "created": "2026-11-27T09:04:13Z",
+      "updated": "2026-11-27T09:05:10Z"
+    },
+    {
+      "id": 2643,
+      "title": "m10-death-fx K2 Spec schärfen in src/logic/death.ts",
+      "description": "Pro Klasse eigene deterministische Werte für Count, Größe (scale), Dauer, Farbe/Tint, Textur und Streuung; Boss skaliert >=2x Fläche + eigene Textur. Keine Gameplay-/Balance-Werte. Abnahme: DeathFxSpec trägt diese Felder, tsc grün. Commit.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T09:05:10Z",
+          "by": "build",
+          "text": "lane #1779 · Commit b631b71: Spec-Felder + Boss fx_boss_core, 2,56x Flaeche."
+        }
+      ],
+      "created": "2026-11-27T09:04:13Z",
+      "updated": "2026-11-27T09:05:10Z"
+    },
+    {
+      "id": 2644,
+      "title": "m10-death-fx K3 Umsetzung in CombatSystem.killsFx",
+      "description": "Tod nutzt die Spec vollständig (vorhandene FX-Texturen, keine neuen Assets); keine Änderung an Schaden/Hitboxen. Abnahme: killsFx übergibt alle Spec-Felder an Partikel/FX, tsc grün. Commit.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T09:05:10Z",
+          "by": "build",
+          "text": "lane #1780 · Commit 0d405c8: killsFx nutzt alle Spec-Felder; keine Schadens-/Hitbox-Aenderung."
+        }
+      ],
+      "created": "2026-11-27T09:04:13Z",
+      "updated": "2026-11-27T09:05:10Z"
+    },
+    {
+      "id": 2645,
+      "title": "m10-death-fx K4 Test tests/death-fx.test.ts",
+      "description": "Alle 4 Klassen unterscheidbar in >=3 Dimensionen; jeder Archetyp mappt auf eine der 4 Klassen; Boss-Spec != Nicht-Boss-Spec; deterministisch (2 Läufe gleiche Werte). Abnahme: npx vitest run tests/death-fx.test.ts grün. Commit.",
+      "column": "done",
+      "assignee": "test-auditor",
+      "notes": [
+        {
+          "at": "2026-11-27T09:05:10Z",
+          "by": "build",
+          "text": "lane #1781 · Commit f944652: 30 Archetypen einzeln, 5/5 gruen; test-auditor PASS."
+        }
+      ],
+      "created": "2026-11-27T09:04:13Z",
+      "updated": "2026-11-27T09:05:10Z"
+    },
+    {
+      "id": 2646,
+      "title": "m10-death-fx K5 Beleg + Doku",
+      "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Grössenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test grün; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test grün, .lane-done tracked. Commit.",
+      "column": "blocked",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T09:05:10Z",
+          "by": "build",
+          "text": "lane #1782 blocked · art-director FAIL 2,5/5 (Silhouetten brauchen gfx-Nachzug); Folge als #2647. Belege shots/m10-death-fx-*."
+        }
+      ],
+      "created": "2026-11-27T09:04:13Z",
+      "updated": "2026-11-27T09:05:10Z"
+    },
+    {
+      "id": 2647,
+      "title": "m10-death-fx GFX-Nachzug: Death-Motifs mit Rim/Kern/Silhouette",
+      "description": "Folge aus Lane m10-death-fx #1782 (art-director FAIL 2,5/5). In src/gfx/gen-fx.ts neue/ueberarbeitete Death-Frames zeichnen: fx_death_blob = dunkler Koerper + harter 1-px-nightDeep-Rim + grosser heller Kern + 3-4 grosse Tropfen; fx_death_dust/fx_fire = echte 4-7-px-Flammenzungen mit Taper + 1-2 Ascheflakes mit emberShadow-Kontur; fx_boss_core = 3-Stufen-Kern + Kontur + 2 gebrochene Ringe + 4-6 Knochensplitter; fx_death_bone = 2-3 unterscheidbare Knochenformen statt identischer Rechtecke. Keine Gameplay-/Balance-Werte. Abnahme: 4 Crops shots/m10-death-fx-<klasse>.png erneut, art-director PASS >=4/5, Tests gruen.",
+      "column": "backlog",
+      "assignee": "pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T09:05:10Z",
+          "by": "build",
+          "text": "lane #2418 (backlog) · Folge aus #1782: Death-Motifs mit Rim/Kern/Silhouette in src/gfx/gen-fx.ts."
+        }
+      ],
+      "created": "2026-11-27T09:04:13Z",
+      "updated": "2026-11-27T09:05:10Z"
     }
   ]
 }

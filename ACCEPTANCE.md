@@ -29,9 +29,27 @@ Tests +47,5 % (204→301); Burst 640×60,7/59,3 → 46,3 (**−22…−24 %**); 
 55,8 → 37,9/40,2 (**−28…−32 %**); Minute-25 56,4/59,3 → 50,7 (−10…−14 %).
 
 **Ergebnis: nicht abgenommen.** Offener Blocker ist die Endgame-/640×360-Performance
-(2/2 fullrun und 3/3 640er Burst unter 55 FPS). Alle übrigen Abnahmepunkte sind grün;
-die Sicht-Belege (fa-02), Board-Hygiene (fa-03) und der APK-Stand (fa-04) werden im
-selben Lauf nachgetragen.
+(2/2 fullrun und 3/3 640er Burst unter 55 FPS). Alle übrigen Abnahmepunkte sind grün.
+
+### Versuch 2 — Nachlauf auf `main` @ `217316d` (2026-11-27T08:44:29Z)
+
+| Punkt | Gemessen (Versuch 2) | Urteil |
+|---|---|---|
+| Build | `npm run build` rc=0, `✓ built in 1.01 s` (08:49Z) | OK |
+| Tests | **305/305** in 27 Dateien, 0 fail (08:49:41Z) | OK (+49,5 % gegen 204; Palette-Guard +4) |
+| Inhalte | `acceptance-count` **30/6/6/6/6/2** | OK |
+| Sicht-Belege | Display 38/38 PASS; 30 Gegner + 6 Bosse + 12 VFX-GIFs @640×360 gesichtet | PASS (Restpunkt Halo-Überstrahlung) |
+| Branch-Integrität | m8-display, m9-art-world, m9-art-enemies, m9-perf-heap, m9-art-heroes-bosses, m9-art-fx-ui: alle in main | OK |
+| Board-Hygiene | #13/#14/#16/#79/#82 done; keine abgenommene Karte in backlog/blocked | PASS |
+| APK/Release | `latest-build` = Build `0c525c8` (08:00:04Z), 44 min / 4 Commits hinter HEAD | dokumentiert |
+| FPS | unverändert rot: 640er Burst 46,3 / fullrun-Min 37,9–40,2 / M25-780 43,1 | **FAIL** |
+
+**Ergebnis Versuch 2: nicht abgenommen**, einziger Blocker bleibt die FPS-Latte.
+Die Fix-Lanes `m10-endgame-fps` (Baseline 3× Burst 60,1; M25 56,7/55,1/53,8),
+`m10-separation-crowd`, `m10-ground-cost` sind **noch nicht in main**; nach Merge neu messen.
+Offene, ehrlich benannte Punkte: Heap +12,2 % (kein Leak, #1008), Art-Restpunkte
+(Halo-Überstrahlung, #320–#322), nicht geprüft: echte Geräte. Details/Befehle:
+`docs/qa/final-2026-11-27.md`.
 
 ## A1 — Drei Merges in main (--no-ff)
 

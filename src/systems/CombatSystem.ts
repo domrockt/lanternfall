@@ -10,7 +10,7 @@ import { knockbackVector } from "../logic/combat";
 import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
-import { fxFrames } from "../gfx/gen-fx";
+import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -986,26 +986,120 @@ export class CombatSystem {
   }
 
   private killsFx(e: EnemyRuntime): void {
-    const tint = PAL[e.def.color] ?? PAL[C.flame];
     const cls = deathClassFor(e.def.archetype);
     const spec = deathFxFor(cls, e.boss);
-    const count = e.boss ? spec.count : e.elite ? Math.round(spec.count * 1.4) : spec.count;
-    // Vier klar unterscheidbare Tod-Klassen: zerfallen / platzen / verpuffen / stieben.
-    // Shards behalten ihre Materialrampe (Knochen bleibt Knochen, Geist blau);
-    // nur die leichte Staubschicht nimmt die Gegnerfarbe an.
-    this.particles.shards(spec.shard, e.x, e.y, count, {
-      life: e.boss ? 0.75 : 0.5,
-      scaleFrom: e.boss ? 1.8 : e.elite ? 1.3 : 1.1,
+    // Elite sind etwas größer/partikelreicher, aber keine eigene Klasse.
+    const eliteScale = e.elite && !e.boss ? 1.15 : 1;
+    const count = e.elite && !e.boss ? Math.round(spec.count * 1.4) : spec.count;
+    const dustCount = e.elite && !e.boss ? Math.round(spec.dustCount * 1.4) : spec.dustCount;
+    const shardFrames = fxFrames(spec.shard, FX_FRAME_COUNTS[spec.shard] ?? 1);
+    const dustFrames = fxFrames(spec.dust, FX_FRAME_COUNTS[spec.dust] ?? 1);
+    // Kontur/Rim: dieselbe Shard-Textur minimal größer und dunkel (nightDeep)
+    // hinter den hellen Splittern. Ohne Rim gehen crumble/burst im Moorgrün
+    // unter (art-director Runde 1: "nur über Farbe unterscheidbar").
+    const rimFrames = fxFrames(spec.rim, FX_FRAME_COUNTS[spec.rim] ?? 1);
+    this.particles.burst(spec.rim, e.x, e.y, Math.max(3, Math.round(count * 0.4)), {
+      frames: rimFrames,
+      life: spec.life * 1.05,
+      scaleFrom: spec.scaleFrom * spec.rimScale * eliteScale,
+      scaleTo: spec.scaleTo * 1.15,
+      // Art R2: Rim als duenner Saum, nicht als Mittelklecks.
+      alphaFrom: 0.35, alphaTo: 0,
+      vx: spec.spread * 0.6,
+      additive: false,
+      tint: PAL[spec.rimTint],
+      // 10.5: über Boss-Sprite (10), aber unter dem hellen Haupt-Burst (11).
+      depth: DEPTH.enemyDeath - 0.5,
+    });
+    // Vier klar unterscheidbare Tod-Klassen: Anzahl, Größe, Dauer, Streuung,
+    // Farbe und Textur kommen vollständig aus der deterministischen Spec.
+    // Bosse nutzen die skalierte Spec mit eigener Kern-Textur.
+    this.particles.burst(spec.shard, e.x, e.y, count, {
+      frames: shardFrames,
+      life: spec.life,
+      scaleFrom: spec.scaleFrom * eliteScale,
+      scaleTo: spec.scaleTo,
+      alphaFrom: cls === "dissolve" ? 0.65 : 0.95, alphaTo: 0,
+      vx: spec.spread,
       additive: spec.additive,
+      tint: PAL[spec.tint],
+      // enemyDeath (11) liegt über Gegnern (9): im 300er-Gedränge sonst unsichtbar.
+      depth: DEPTH.enemyDeath,
     });
-    this.particles.shards(spec.dust, e.x, e.y, Math.max(3, Math.round(count / 2)), {
-      life: 0.5, scaleFrom: e.boss ? 1.5 : 0.9, additive: false, tint,
-      alphaFrom: 0.32, scaleTo: 0.2,
+    this.particles.burst(spec.dust, e.x, e.y, dustCount, {
+      frames: dustFrames,
+      life: spec.dustLife,
+      scaleFrom: spec.dustScale * eliteScale,
+      scaleTo: 0.2,
+      alphaFrom: 0.4, alphaTo: 0,
+      vx: spec.spread * 0.6,
+      additive: spec.additive,
+      tint: PAL[spec.dustTint],
+      depth: DEPTH.enemyDeath,
     });
+    // Lesbarer Kern: heller Mittelpunkt, der die Silhouette verankert.
+    // Art R2: Kern deutlich groesser und als letzter Burst (Depth 11.2).
+    const core = cls === "burst" ? "fx_star" : cls === "sputter" ? "fx_star" : "";
+    if (cls === "burst") {
+      // Dunkle Tropfen-Ring aussen statt Mittelklecks: 8 nightDeep-Chunks
+      // auf Radius 12 px, danach der helle Blob-Spray.
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        this.particles.spawn({
+          texture: spec.rim, frames: rimFrames,
+          x: e.x + Math.cos(a) * 12, y: e.y + Math.sin(a) * 12,
+          vx: Math.cos(a) * 40, vy: Math.sin(a) * 40,
+          life: spec.life, scaleFrom: spec.scaleFrom * 0.85, scaleTo: spec.scaleTo,
+          alphaFrom: 0.5, alphaTo: 0, additive: false,
+          tint: PAL[C.nightDeep], depth: DEPTH.enemyDeath - 0.5,
+        });
+      }
+    }
+    if (cls === "crumble") {
+      // 4 lange, schmale Knochensplitter fallen nach unten (kein Zahnrad-Ring).
+      for (let i = 0; i < 4; i++) {
+        const dir = i % 2 === 0 ? -1 : 1;
+        this.particles.spawn({
+          texture: spec.shard, frames: shardFrames,
+          x: e.x + dir * (3 + i * 2), y: e.y,
+          vx: dir * (36 + i * 9), vy: 55 + i * 12,
+          life: spec.life * 1.15, scaleFrom: 1.1 + i * 0.12, scaleTo: 0.2,
+          aspect: 0.42, alphaFrom: 0.95, alphaTo: 0, additive: false,
+          tint: PAL[C.boneLight], depth: DEPTH.enemyDeath,
+        });
+      }
+    }
+    if (cls === "sputter") {
+      // 6 senkrechte Flammenzungen (non-uniform aspect) statt duenner Punkte.
+      for (let i = 0; i < 6; i++) {
+        this.particles.spawn({
+          texture: "fx_death_dust", frames: dustFrames,
+          x: e.x + (i - 2.5) * 4, y: e.y + 2,
+          vx: (i - 2.5) * 26, vy: -28 - i * 6,
+          life: spec.life * 1.2, scaleFrom: 1.5, scaleTo: 0.2,
+          aspect: 0.4, alphaFrom: 0.95, alphaTo: 0, additive: true,
+          tint: PAL[C.flameBright], depth: DEPTH.enemyDeath,
+        });
+      }
+    }
+    if (core) {
+      this.particles.burst(core, e.x, e.y, 1, {
+        life: spec.life * 0.7,
+        scaleFrom: spec.scaleFrom * 1.2,
+        scaleTo: 0.2,
+        alphaFrom: 1, alphaTo: 0,
+        additive: true,
+        tint: PAL[cls === "burst" ? C.lanternWhite : C.flameBright],
+        depth: DEPTH.enemyDeath + 0.2,
+      });
+    }
     if (cls === "dissolve" || e.boss) {
       this.fx.spawnAnim("fx_halo", e.x, e.y, {
-        life: 0.4, scaleFrom: 0.5, scaleTo: e.boss ? 2.4 : 1.1,
-        alphaFrom: 0.8, alphaTo: 0, additive: true, tint,
+        life: spec.life * 0.6,
+        scaleFrom: spec.scaleFrom * 0.5,
+        scaleTo: e.boss ? spec.scaleFrom * 1.6 : spec.scaleFrom,
+        alphaFrom: 0.8, alphaTo: 0, additive: true,
+        tint: PAL[spec.tint],
       });
     }
   }

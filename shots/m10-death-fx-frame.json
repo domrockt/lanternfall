@@ -1,0 +1,168 @@
+{
+  "info": {
+    "canvasW": 480,
+    "canvasH": 360,
+    "cssW": 960,
+    "cssH": 720,
+    "left": 0,
+    "top": 0,
+    "px": 2048,
+    "py": 2048,
+    "worldX": 1808,
+    "worldY": 1868,
+    "worldW": 480,
+    "worldH": 360
+  },
+  "spots": [
+    {
+      "cls": "crumble",
+      "id": "wisp",
+      "dx": -120,
+      "dy": -70
+    },
+    {
+      "cls": "burst",
+      "id": "bog_rat",
+      "dx": 120,
+      "dy": -70
+    },
+    {
+      "cls": "dissolve",
+      "id": "banshee",
+      "dx": -120,
+      "dy": 70
+    },
+    {
+      "cls": "sputter",
+      "id": "toad",
+      "dx": 120,
+      "dy": 70
+    }
+  ],
+  "classes": [
+    {
+      "cls": "crumble",
+      "id": "wisp",
+      "dx": -120,
+      "dy": -70,
+      "clip": {
+        "x": 80,
+        "y": 87,
+        "width": 320,
+        "height": 266
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-crumble.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-crumble.png",
+      "spawned": 6,
+      "particleActive": 128,
+      "nearby": 128,
+      "textures": [
+        "fx_death_bone",
+        "fx_ash"
+      ],
+      "bboxGamePx": {
+        "w": 39,
+        "h": 37
+      },
+      "frames": [
+        4,
+        2
+      ]
+    },
+    {
+      "cls": "burst",
+      "id": "bog_rat",
+      "dx": 120,
+      "dy": -70,
+      "clip": {
+        "x": 560,
+        "y": 87,
+        "width": 320,
+        "height": 266
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-burst.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-burst.png",
+      "spawned": 6,
+      "particleActive": 107,
+      "nearby": 102,
+      "textures": [
+        "fx_death_blob",
+        "fx_star"
+      ],
+      "bboxGamePx": {
+        "w": 105,
+        "h": 89
+      },
+      "frames": [
+        4,
+        1
+      ]
+    },
+    {
+      "cls": "dissolve",
+      "id": "banshee",
+      "dx": -120,
+      "dy": 70,
+      "clip": {
+        "x": 80,
+        "y": 367,
+        "width": 320,
+        "height": 266
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-dissolve.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-dissolve.png",
+      "spawned": 6,
+      "particleActive": 120,
+      "nearby": 120,
+      "textures": [
+        "fx_death_void",
+        "fx_dusk"
+      ],
+      "bboxGamePx": {
+        "w": 34,
+        "h": 33
+      },
+      "frames": [
+        4,
+        3
+      ]
+    },
+    {
+      "cls": "sputter",
+      "id": "toad",
+      "dx": 120,
+      "dy": 70,
+      "clip": {
+        "x": 560,
+        "y": 367,
+        "width": 320,
+        "height": 266
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-sputter.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-sputter.png",
+      "spawned": 6,
+      "particleActive": 103,
+      "nearby": 103,
+      "textures": [
+        "fx_death_dust",
+        "fx_fire",
+        "fx_star"
+      ],
+      "bboxGamePx": {
+        "w": 69,
+        "h": 69
+      },
+      "frames": [
+        4,
+        6,
+        1
+      ]
+    }
+  ],
+  "final": {
+    "enemies": 309,
+    "scene": "run",
+    "fps": 59.9
+  },
+  "jsErrors": []
+}

@@ -422,3 +422,24 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 - fullrun-Heap +18,7 % über dem 15-%-Ziel in diesem Lauf (Host-Last/GC-Streuung; CDP-Diagnose 12,5 → 13,4 MB).
 - VFX-Dämpfung im Minimal-LOD ist bewusst stark (Alpha 0,5, NORMAL-Blend); einzelne Glows wirken dort flacher.
 - Menüs ohne Gamepad, Meta ohne Gold/Shop.
+
+## Status — M9 (Grafik) + M10 (QA-Härtung), 2026-11-27
+
+**Stand `main` @ `217316d`** (2026-11-27T08:44:29Z). Gesamtabnahme: `docs/qa/final-2026-2027?` →
+`docs/qa/final-2026-11-27.md`.
+
+- **Inhalte:** 30 Gegnertypen, 6 Waffen, 6 Powerups, 6 Evolutionen, 6 Bosse, 2 Charaktere
+  (`node scripts/acceptance-count.mjs` → `ok:true`, Soll = Ist).
+- **Grafik M9:** Terrain-Tiles, Props mit Tiefe/Schatten, Glühwürmchen/Nebel, Helden Mira/Kael,
+  6 eigene Boss-Silhouetten, Boss-Tod→Truhe; Art-Director-Endnote 4/5 (Restpunkte: Halo-Überstrahlung,
+  Icons/Font/UI-Rahmen #320–#322 im backlog).
+- **M10-QA:** Palette-Guard (458 Assets/432418 px, 0 off-palette), Display 7/7 Profile pixelgenau
+  (38/38 Checks), Touch-Latenz Median 1 Frame, Ergebnis-Screen-Schaden summiert exakt (delta 0 %),
+  Kael-Balance-Korridor 6/6 Level 27–30 (Level-47-Befund widerlegt).
+- **Build/Tests:** `npm run build` grün, `npm test` **305/305** in 27 Dateien, 0 fail (08:49Z).
+- **Offener Abnahme-Blocker:** FPS im 640×360-View und im 30-min-Endgame
+  (Burst 46,3 < 55; fullrun-FPS-Min 37,9–40,2 < 55; Minute-25 780 43,1 < 50). Attribution:
+  Render/Draw, nicht Sim/Terrain. Fix-Lanes `m10-endgame-fps`, `m10-separation-crowd`,
+  `m10-ground-cost` sind noch **nicht gemerged**; danach neu messen.
+- **APK:** Release `latest-build` = Build `0c525c8` (08:00Z), 44 min / 4 Commits hinter HEAD —
+  erwartungsgemäß nicht HEAD-genau (stündlicher Timer).
