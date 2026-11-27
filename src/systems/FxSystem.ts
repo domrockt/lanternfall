@@ -3,6 +3,7 @@ import { DEPTH } from "../gfx/depth";
 import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, isBossFxKey, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { ambientBudgetFor, lodFor } from "../logic/lod";
+import { RENDER_SCALE } from "../config";
 
 /**
  * M10-A4 (Bedarfsmeldung m10-android-perf, 2026-11-27): ADD-Glows klein halten.
@@ -24,16 +25,22 @@ export const ADD_GLOW_ALPHA_FLOOR = 0.04;
  */
 export const BOSS_FX_ALPHA_FLOOR = 0.7;
 
-/** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow bei dpr > 1,5 (96x96 @dpr3). */
+/** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow, solange der Regler gesenkt hat (96x96 @dpr3). */
 export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
-/** dpr-Schwelle, ab der der Flaechen-Deckel greift (Mobil-Views @2/@3; Desktop unveraendert). */
-export const ADD_GLOW_DPR_THRESHOLD = 1.5;
 
-/** Flaeche-Deckel je dpr: ab dpr > 1,5 aktiv (Mobil-Views 780x360@2/@3), Desktop unveraendert. */
-export function glowAreaCapForDpr(dpr: number): number {
-  if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
-  const d = dpr > 0 ? dpr : 1;
-  return d > ADD_GLOW_DPR_THRESHOLD ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+/**
+ * M10-perf-cap-rollback (2026-11-27): der Flaechen-Deckel greift nur noch, wenn
+ * der adaptive DPR-Budget-Regler tatsaechlich gesenkt hat (RENDER_SCALE > 1,
+ * Android-Sicherheitsnetz). Auf iGPU/GPU bleibt RENDER_SCALE = 1 — grosse Feuer-/
+ * Aura-Glows laufen wieder volllaufend (Befund: Deckel kostete Optik ohne
+ * FPS-Nutzen, alle iGPU-Läufe vsync-60, siehe docs/lanes/m10-perf-cap-rollback.md).
+ * Rein funktional; Laufzeit nutzt das Live-Binding RENDER_SCALE aus config.ts.
+ */
+export function glowAreaCapForRenderScale(renderScale: number): number {
+  if (!Number.isFinite(renderScale)) {
+    return renderScale === Number.POSITIVE_INFINITY ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+  }
+  return renderScale > 1 ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
 }
 
 export interface GlowScaleClamp {
@@ -238,12 +245,13 @@ export class FxSystem {
     const sprite = fx.sprite;
     applyTexture(sprite, fx.frames[0]);
     sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
-    // M10-A4: additive Glows auf Screengroesse cappen (dpr-abhaengig, siehe oben).
+    // M10-A4: additive Glows auf Screengroesse cappen — nur wenn der DPR-Budget-
+    // Regler gesenkt hat (RENDER_SCALE > 1); auf iGPU unveraendert volllaufend.
     if (additive) {
       const clamped = clampGlowScreenArea(
         sprite.width || 0, sprite.height || 0,
         fx.scaleFrom, fx.scaleTo, fx.aspect,
-        glowAreaCapForDpr(currentDpr()),
+        glowAreaCapForRenderScale(RENDER_SCALE),
       );
       if (clamped.capped) {
         fx.scaleFrom = clamped.scaleFrom;
@@ -589,6 +597,11 @@ export class ParticleSystem {
     this.alphaScale = next;
     const budget = glowBudgetFor(this.scene);
     for (const p of this.active) {
+      // M10 m10-boss-death-shards (Folgekarte aus m10-boss-fx-contrast, analog
+      // #5220 im FxSystem-Pfad): Boss-Partikel sind vom Alpha-LOD-Pfad
+      // komplett ausgenommen — weder Daempfung noch Re-Promotion (sie
+      // rendern dauerhaft NORMAL, s. spawn()).
+      if (isBossFxKey(p.frames[0])) continue;
       p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
       const blendAdd = p.additive && next >= 0.7;
@@ -624,12 +637,23 @@ export class ParticleSystem {
     p.scaleFrom = opts.scaleFrom ?? 1;
     p.scaleTo = opts.scaleTo ?? 0.2;
     p.aspect = opts.aspect ?? 1;
-    const additive = opts.additive !== false;
-    const extra = additive ? this.alphaScale : 1;
+    // M10 m10-boss-death-shards (Folgekarte aus m10-boss-fx-contrast): Boss-
+    // Partikel (isBossFxKey, aktuell nur fx_boss_core — eine Wahrheit via
+    // gen-fx.ts, SYNC-Hinweis im Patch) sind analog #5220 im FxSystem-Pfad vom
+    // gesamten LOD-Pfad ausgenommen: keine fxAlpha-/dpr-Daempfung, Mindest-
+    // Alpha-Boden 0,7, kein Glow-Slot, bewusst NORMAL — unter ADD waere die
+    // dunkle Tintenkontur aus #5219 unsichtbar. Der Lifetime-Fade (alphaTo)
+    // bleibt wie bei allen Partikeln unveraendert.
+    const bossFx = isBossFxKey(opts.texture) || (opts.frames !== undefined && isBossFxKey(opts.frames[0]));
+    const additive = opts.additive !== false && !bossFx;
+    const scaleFactor = bossFx ? 1 : this.alphaScale;
+    const extra = additive ? scaleFactor : 1;
     // M10: dpr-Skalierung — bei dpr > 2 kostet jedes additive Sprite die volle
     // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher auf 0,6.
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
-    p.alphaFrom = (opts.alphaFrom ?? 0.95) * this.alphaScale * extra * dprAlpha;
+    let alphaFrom = (opts.alphaFrom ?? 0.95) * scaleFactor * extra * dprAlpha;
+    if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);
+    p.alphaFrom = alphaFrom;
     p.alphaTo = opts.alphaTo ?? 0;
     p.rotation = opts.rotation ?? 0;
     p.spin = opts.spin ?? 0;
@@ -639,12 +663,13 @@ export class ParticleSystem {
     const s = p.sprite;
     applyTexture(s, p.frames[0]);
     s.setPosition(Math.round(p.x), Math.round(p.y));
-    // M10-A4: additive Glows auf Screengroesse cappen (dpr-abhaengig, siehe oben).
+    // M10-A4: additive Glows auf Screengroesse cappen — nur wenn der DPR-Budget-
+    // Regler gesenkt hat (RENDER_SCALE > 1); auf iGPU unveraendert volllaufend.
     if (additive) {
       const clamped = clampGlowScreenArea(
         s.width || 0, s.height || 0,
         p.scaleFrom, p.scaleTo, p.aspect,
-        glowAreaCapForDpr(currentDpr()),
+        glowAreaCapForRenderScale(RENDER_SCALE),
       );
       if (clamped.capped) {
         p.scaleFrom = clamped.scaleFrom;
@@ -657,7 +682,8 @@ export class ParticleSystem {
     s.setDepth(opts.depth ?? DEPTH.fxLow);
     p.additive = additive;
     // M10: Deckel — geteilt mit FxSystem, nur echte ADD-Sprites belegen Slots.
-    const blendAdd = p.additive && this.alphaScale >= 0.7;
+    // Boss-Partikel sind ab oben non-additiv und belegen deshalb nie einen Slot.
+    const blendAdd = p.additive && this.alphaScale >= 0.7 && !bossFx;
     const budget = glowBudgetFor(this.scene);
     p.glow = blendAdd ? budget.request() : false;
     s.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);

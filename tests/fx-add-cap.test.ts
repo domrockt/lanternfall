@@ -2,9 +2,10 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import {
   ADD_GLOW_ALPHA_FLOOR,
   ADD_GLOW_MAX_SCREEN_AREA,
-  glowAreaCapForDpr,
+  glowAreaCapForRenderScale,
   clampGlowScreenArea,
 } from "../src/systems/FxSystem";
+import { setRenderScale } from "../src/config";
 
 /**
  * M10-A4 (Bedarfsmeldung m10-android-perf, 2026-11-27): ADD-Glows klein halten
@@ -14,24 +15,24 @@ import {
  * sind rein visuell — kein Gameplay-/Balance-Eingriff.
  */
 
-describe("glowAreaCapForDpr (Deckel nur im Mobil-Bereich)", () => {
-  it("dpr <= 1,5 (Desktop): kein Deckel", () => {
-    expect(glowAreaCapForDpr(1)).toBe(Number.POSITIVE_INFINITY);
-    expect(glowAreaCapForDpr(1.5)).toBe(Number.POSITIVE_INFINITY);
+describe("glowAreaCapForRenderScale (Deckel nur wenn der DPR-Budget-Regler gesenkt hat)", () => {
+  it("RENDER_SCALE 1 (iGPU/GPU, volllaufend): kein Deckel", () => {
+    expect(glowAreaCapForRenderScale(1)).toBe(Number.POSITIVE_INFINITY);
+    expect(glowAreaCapForRenderScale(0.5)).toBe(Number.POSITIVE_INFINITY);
   });
 
-  it("dpr > 1,5: Deckel ADD_GLOW_MAX_SCREEN_AREA (96x96 Device-Pixel)", () => {
-    expect(glowAreaCapForDpr(1.6)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
-    expect(glowAreaCapForDpr(2)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
-    expect(glowAreaCapForDpr(3)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
+  it("RENDER_SCALE > 1 (Regler aktiv, Android-Sicherheitsnetz): Deckel ADD_GLOW_MAX_SCREEN_AREA", () => {
+    expect(glowAreaCapForRenderScale(2)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
+    expect(glowAreaCapForRenderScale(3)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
+    expect(glowAreaCapForRenderScale(1.0001)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
   });
 
-  it("ungueltige dpr-Werte deckeln nie (nie kleiner als Desktop)", () => {
-    expect(glowAreaCapForDpr(0)).toBe(Number.POSITIVE_INFINITY);
-    expect(glowAreaCapForDpr(-1)).toBe(Number.POSITIVE_INFINITY);
-    expect(glowAreaCapForDpr(Number.NaN)).toBe(Number.POSITIVE_INFINITY);
-    expect(glowAreaCapForDpr(Number.NEGATIVE_INFINITY)).toBe(Number.POSITIVE_INFINITY);
-    expect(glowAreaCapForDpr(Number.POSITIVE_INFINITY)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
+  it("ungueltige Werte deckeln nie (nie kleiner als volllaufend)", () => {
+    expect(glowAreaCapForRenderScale(0)).toBe(Number.POSITIVE_INFINITY);
+    expect(glowAreaCapForRenderScale(-1)).toBe(Number.POSITIVE_INFINITY);
+    expect(glowAreaCapForRenderScale(Number.NaN)).toBe(Number.POSITIVE_INFINITY);
+    expect(glowAreaCapForRenderScale(Number.NEGATIVE_INFINITY)).toBe(Number.POSITIVE_INFINITY);
+    expect(glowAreaCapForRenderScale(Number.POSITIVE_INFINITY)).toBe(ADD_GLOW_MAX_SCREEN_AREA);
   });
 });
 
@@ -163,11 +164,13 @@ function fakeScene(sprite: FakeSprite): { scene: Phaser.Scene; addCalls: number 
 
 afterEach(() => {
   delete (globalThis as { window?: unknown }).window;
+  setRenderScale(1); // Reglerstufe zuruecksetzen (Live-Binding RENDER_SCALE)
 });
 
 describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
-  it("dpr 3: grosser Glow wird beim Spawn verkleinert (32px-Textur, Scale 6 -> 3)", () => {
+  it("RENDER_SCALE 2 (Regler gesenkt) + dpr 3: grosser Glow wird beim Spawn verkleinert", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    setRenderScale(2);
     const sprite = fakeSprite(32, 32);
     const { scene } = fakeScene(sprite);
     const fx = new FxSystem(scene);
@@ -181,7 +184,18 @@ describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
     expect(last[1]).toBeCloseTo(3, 10);
   });
 
-  it("dpr 1 (Desktop, kein window): unveraendert", () => {
+  it("RENDER_SCALE 1 (iGPU): grosser Glow bleibt volllaufend, auch bei dpr 3", () => {
+    (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    setRenderScale(1);
+    const sprite = fakeSprite(32, 32);
+    const { scene } = fakeScene(sprite);
+    const fx = new FxSystem(scene);
+    const runtime = fx.spawn({ texture: "fx_halo", x: 0, y: 0, scaleFrom: 6, scaleTo: 6, life: 1 });
+    expect(runtime?.scaleFrom).toBe(6);
+    expect(runtime?.scaleTo).toBe(6);
+  });
+
+  it("kein window (Node-Tests, RENDER_SCALE 1): unveraendert", () => {
     const sprite = fakeSprite(32, 32);
     const { scene } = fakeScene(sprite);
     const fx = new FxSystem(scene);
@@ -191,6 +205,7 @@ describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
 
   it("NORMAL-Blend (additive:false) wird nicht gecappt", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    setRenderScale(2);
     const sprite = fakeSprite(32, 32);
     const { scene } = fakeScene(sprite);
     const fx = new FxSystem(scene);
@@ -200,6 +215,7 @@ describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
 
   it("kleiner Glow bleibt unveraendert (Deckel greift erst ab 96x96 dev-px)", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    setRenderScale(2);
     const sprite = fakeSprite(16, 16);
     const { scene } = fakeScene(sprite);
     const fx = new FxSystem(scene);
@@ -208,8 +224,9 @@ describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
     expect(runtime?.scaleFrom).toBe(3);
   });
 
-  it("ParticleSystem cappt ebenso", () => {
+  it("ParticleSystem cappt ebenso (RENDER_SCALE 2)", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    setRenderScale(2);
     const sprite = fakeSprite(32, 32);
     const { scene } = fakeScene(sprite);
     const ps = new ParticleSystem(scene);
@@ -310,8 +327,9 @@ describe("Anzahl ueber LOD-Caps zaehlen (geteilter Glow-Deckel)", () => {
 });
 
 describe("Determinismus", () => {
-  it("gleiche Spawn-Sequenz -> identische Scales (LCG unveraendert)", () => {
+  it("gleiche Spawn-Sequenz -> identische Scales (LCG unveraendert, Deckel aktiv)", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    setRenderScale(2);
     const run = (): number[] => {
       const sprite = fakeSprite(32, 32);
       const { scene } = fakeScene(sprite);

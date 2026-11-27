@@ -9,10 +9,13 @@ const argOf = (name, fallback) => {
   return i >= 0 ? argv[i + 1] : fallback;
 };
 
-const CAP = String(argOf("cap", "on"));
+// M10-perf-cap-rollback: der --cap-Schalter ist entfallen (Crowd-Deckel rueckgebaut).
 const SECONDS = Number(argOf("seconds", "10")) || 10;
 const ENEMIES = Number(argOf("enemies", "500")) || 500;
-const TAG = String(argOf("tag", "cap"));
+// M10-perf-cap-rollback: --minute 25 = Skip in die Minute-25-Nachstellung
+// (skipTo, wie scripts/m10-fx-add-cap.mjs), Ziel-Gegnerzahl dann 300 (M25-Last).
+const MINUTE = Number(argOf("minute", "0")) || 0;
+const TAG = String(argOf("tag", "m10-perf-cap-rollback"));
 const OUT = String(argOf("out", `shots/m10-view-width-${TAG}.json`));
 const SHOT = String(argOf("shot", `shots/m10-view-width-${TAG}.png`));
 const viewportArg = String(argOf("viewport", "780x360")).split("x").map(Number);
@@ -35,7 +38,7 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 
 let result = null;
 try {
-  const url = `http://127.0.0.1:${server.port}/?debug=1&seed=1${CAP === "off" ? "&viewcap=off" : ""}`;
+  const url = `http://127.0.0.1:${server.port}/?debug=1&seed=1`;
   await page.goto(url);
   await startRun(page);
   await page.evaluate(() => {
@@ -50,6 +53,22 @@ try {
     window.__lf.spawnEnemy("bogzombie", 50);
   });
   await page.waitForTimeout(1600);
+
+  // M10-perf-cap-rollback: Minute-25-Nachstellung — in die Minute skippen,
+  // Level-up-Panels schliessen, dann messen (Muster m10-fx-add-cap.mjs).
+  if (MINUTE > 0) {
+    await page.evaluate((minute) => {
+      window.__lf.skipTo(minute * 60 - 10);
+      window.__lf.setTimeScale(1);
+    }, MINUTE);
+    await page.waitForTimeout(5000);
+    for (let i = 0; i < 40; i++) {
+      const open = await page.evaluate(() => window.__lf?.stats().levelUpOpen);
+      if (!open) break;
+      await page.evaluate(() => window.__lf.pickLevelUp(0));
+    }
+    await page.waitForTimeout(500);
+  }
 
   const measure = await page.evaluate(async ({ ENEMIES, SECONDS }) => {
     const start = performance.now();
@@ -97,6 +116,19 @@ try {
     };
   });
 
+  // M10-perf-cap-rollback: Renderer-String (SwiftShader-Belege sind ungueltig)
+  // + effektive Reglerstufe des DPR-Budget-Reglers (Teil C: bleibt 1 auf iGPU).
+  const gpu = await page.evaluate(() => {
+    const gl = window.__game?.renderer?.gl;
+    if (!gl) return { renderer: null, vendor: null };
+    const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+    return {
+      renderer: dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER)),
+      vendor: dbg ? String(gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL)) : String(gl.getParameter(gl.VENDOR)),
+    };
+  });
+  const renderScale = await page.evaluate(() => Number(window.__rbDbg?.scale ?? 1));
+
   // M10-view-width: optionaler overlay-freier Sicht-Beleg (art-director 27.11.):
   // Level-up-Overlays schliessen, Gegner auf Zielzahl auffüllen und kurz laufen
   // lassen, damit der Screenshot die Crowd (Klemme aktiv) zeigt, nicht das Panel.
@@ -116,7 +148,11 @@ try {
   await page.screenshot({ path: SHOT });
 
   result = {
-    cap: CAP,
+    suite: "view-width",
+    when: new Date().toISOString(),
+    minute: MINUTE,
+    gpu,
+    renderScale,
     viewport: VIEWPORT,
     dpr: DPR,
     view,

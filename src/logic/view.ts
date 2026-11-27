@@ -8,26 +8,16 @@
  * M10-view-fill: Im Fit-Rueckfall (n < 2) fuellt das Spielfeld das Fenster
  * komplett (fillView) statt auf der 4:3-Basis 480x360 Balken zu lassen.
  * Reine Funktionen ohne DOM/Phaser, in Vitest testbar.
+ *
+ * M10-perf-cap-rollback (2026-11-27): der M10-Crowd-Deckel (interne Breite 640
+ * ab 300 Gegnern) ist rueckgebaut — auf der iGPU (Mesa Intel RPL-S) liegt M25
+ * 780x360@3 mit und ohne Deckel bei vsync-60 (Median 60,0 >= 55, Belege
+ * shots/m10-perf-cap-rollback-m25-cap-{on,off}-*.json); der Deckel kostete
+ * Optik (schwarzene Balken an 780/1080-Views) ohne messbaren Nutzen.
  */
 export const BASE_HEIGHT = 360;
 export const MIN_WIDTH = 480;
 export const MAX_WIDTH = 860;
-
-/**
- * M10-Crowd: bei hoher Gegnerlast intern nur noch 640 px breit rendern.
- * Die ganzzahlige Stufe n bleibt erhalten (Pixel bleiben scharf), das Canvas
- * wird entsprechend schmaler/zentriert. Hysterese verhindert Flattern an der
- * Schwelle (einklemmen ab 300, loesen erst unter 260 aktiven Gegnern).
- */
-export const CROWD_WIDTH = 640;
-export const CROWD_ENEMY_THRESHOLD = 300;
-export const CROWD_RELEASE_THRESHOLD = 260;
-
-/** Reine Schwellen-Logik: gewuenschter Crowd-Zustand nach aktiver Gegnerzahl. */
-export function shouldCapForCrowd(activeEnemies: number, currentlyCapped: boolean): boolean {
-  const count = Number.isFinite(activeEnemies) ? activeEnemies : 0;
-  return currentlyCapped ? count >= CROWD_RELEASE_THRESHOLD : count >= CROWD_ENEMY_THRESHOLD;
-}
 
 export interface ViewSpec {
   /** Logische Breite in Spielpixeln. */
@@ -57,8 +47,6 @@ export interface DeviceInput {
   dpr: number;
   /** Option "SKALIERUNG": 0 = AUTO, 2..6 = fest. */
   setting?: number;
-  /** true = hohe Gegnerlast: interne Breite auf CROWD_WIDTH deckeln. */
-  crowd?: boolean;
 }
 
 function finitePositive(value: number, fallback: number): number {
@@ -98,9 +86,10 @@ function fitView(deviceWidth: number, deviceHeight: number, dpr: number, portrai
  * (640x360 -> 1x, 1280x720 -> 2x), sonst gebrochen (960x540 -> 1.5x) und
  * dokumentiert; roundPixels bleibt aktiv, die Kamera bleibt subpixelfrei.
  * Fiele die Fuell-Breite unter MIN_WIDTH (sehr schmales Fenster), Rueckfall
- * auf die alte 4:3-Fit-View statt Canvas-Overflow. hardMax (MAX_WIDTH bzw.
- * CROWD_WIDTH) bleibt Obergrenze: dokumentierte Randbedingung — Ultrawide-
- * Fenster und Fenster unter aktiver Crowd-Klemme koennen wieder Balken zeigen.
+ * auf die alte 4:3-Fit-View statt Canvas-Overflow. hardMax (MAX_WIDTH) bleibt
+ * Obergrenze: dokumentierte Randbedingung — Ultrawide-Fenster koennen wieder
+ * Balken zeigen. (M10-perf-cap-rollback: die ehemalige Crowd-Klemme
+ * CROWD_WIDTH ist rueckgebaut, hardMax ist immer MAX_WIDTH.)
  */
 function fillView(
   deviceWidth: number,
@@ -142,14 +131,15 @@ export function computeView(input: DeviceInput): ViewSpec {
   if (portrait) return fitView(deviceWidth, deviceHeight, dpr, true);
 
   // Maximale ganzzahlige Stufe, bei der die Mindestbreite noch passt.
-  const hardMax = input.crowd ? CROWD_WIDTH : MAX_WIDTH;
+  // M10-perf-cap-rollback: keine Crowd-Klemme mehr, hardMax ist immer MAX_WIDTH.
+  const hardMax = MAX_WIDTH;
   const maxFitN = Math.floor(Math.min(deviceHeight / BASE_HEIGHT, deviceWidth / MIN_WIDTH));
   const requested = Number.isFinite(input.setting) ? Math.max(0, Math.round(input.setting as number)) : 0;
   const n = requested > 0 ? Math.min(requested, maxFitN) : maxFitN;
   if (n < 2) return fillView(deviceWidth, deviceHeight, dpr, hardMax, false);
 
   const width = Math.min(
-    hardMax,
+    MAX_WIDTH,
     Math.max(MIN_WIDTH, Math.round(deviceWidth / n)),
     Math.floor(deviceWidth / n),
   );

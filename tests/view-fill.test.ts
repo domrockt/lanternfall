@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  BASE_HEIGHT, CROWD_WIDTH, computeView, isIntegerPixelPerfect, viewKey,
+  BASE_HEIGHT, computeView, isIntegerPixelPerfect, viewKey,
 } from "../src/logic/view";
 
 /**
@@ -45,16 +45,6 @@ describe("M10-view-fill: Spielfeld fuellt 16:9-Fenster ohne Balken", () => {
     // ungleichmassig auf Geraetepixel fallen (roundPixels verhindert Blur).
     expect(isIntegerPixelPerfect(computeView({ width: 640, height: 360, dpr: 1 }))).toBe(false);
     expect(isIntegerPixelPerfect(computeView({ width: 960, height: 540, dpr: 1 }))).toBe(false);
-  });
-
-  it("Crowd-Klemme (CROWD_WIDTH) veraendert 16:9-Fill nicht: 640 bleibt Fuell-Breite", () => {
-    // Randbedingung m10-view-width-cap: Klemme auf 640 greift bei 16:9 nicht,
-    // weil die Fuell-Breite exakt 640 betraegt (ganzzahliger Pfad UND Fit-Pfad).
-    for (const f of FORMATS) {
-      const capped = computeView({ width: f.w, height: f.h, dpr: 1, crowd: true });
-      expect(capped.width).toBeLessThanOrEqual(CROWD_WIDTH);
-      expect(capped.width * capped.scale).toBe(f.w);
-    }
   });
 
   it("sehr schmales Fenster faellt auf die 4:3-Fit-View zurueck (kein Overflow)", () => {
