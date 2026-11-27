@@ -32,10 +32,8 @@ const prefixes = [...prefixesBlock.matchAll(/"([a-z0-9_]+)"/g)].map((m) => m[1])
 const denyBlock = /const ATLAS_DENY = new Set\(\[([\s\S]*?)\]\)/.exec(atlasSrc)?.[1] ?? "";
 const deny = new Set([...denyBlock.matchAll(/"([a-z0-9_]+)"/g)].map((m) => m[1]));
 
-const shouldAtlas = (key) => {
-  if (deny.has(key) || key === atlasKey) return false;
-  return prefixes.some((p) => key.startsWith(p));
-};
+// Drei Pflichtpruefungen: (1) Frame-Keys vollstaendig, (2) Gutter >= 2 px,
+// (3) kein Bleed im 2-px-Ring. Alles andere ist nur Berichtskontext.
 
 /** Liest GEN_ENEMIES/GEN_BOSSES: Key + w/h + Frame-Anzahl. */
 function parseGen(file) {

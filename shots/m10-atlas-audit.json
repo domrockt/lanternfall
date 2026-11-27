@@ -1,6 +1,6 @@
 {
   "tool": "scripts/art/atlas-audit.mjs",
-  "generatedAt": "2026-11-27T00:53:42.778Z",
+  "generatedAt": "2026-11-27T01:49:43.657Z",
   "atlasKey": "runtime_atlas",
   "atlasSize": {
     "width": 1024,
