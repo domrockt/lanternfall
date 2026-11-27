@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5162,
+  "next": 5262,
   "cards": [
     {
       "id": 1,
@@ -5937,6 +5937,48 @@
       ],
       "created": "2026-11-27T11:28:18Z",
       "updated": "2026-11-27T20:17:44Z"
+    },
+    {
+      "id": 5258,
+      "title": "m10-hud-wide-anchor: K1 Probe-Skript scripts/m10-hud-anchor.mjs",
+      "description": "Messskript fuer 4 Formate (640x360-ref, 780x360@3, 1280x720, 1920x1080): Bounding-Boxen der HUD-Elemente per SetName-Instrumentierung, JSON in shots/. AK: Skript laeuft, JSON pro Format mit Bloecken + Verletzungen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T20:26:53Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Probe-Skript + SetName-Instrumentierung (nur Namen, kein Layout-Edit)"
+        }
+      ],
+      "created": "2026-11-27T20:26:51Z",
+      "updated": "2026-11-27T20:26:53Z"
+    },
+    {
+      "id": 5259,
+      "title": "m10-hud-wide-anchor: K2 Ist-Baseline + Screenshots",
+      "description": "Lauf mit --tag baseline: shots/m10-hud-anchor-baseline-*.png + JSON; Kollisions-/Rand-Verletzungen je Format gezaehlt und in docs/lanes/m10-hud-wide-anchor.md dokumentiert. AK: baseline-JSON + PNGs committed, Verletzungszahl notiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T20:26:51Z",
+      "updated": "2026-11-27T20:26:51Z"
+    },
+    {
+      "id": 5260,
+      "title": "m10-hud-wide-anchor: K3 Anker in UI.ts fixen (Anker+Margin)",
+      "description": "Ankerpunkte in src/scenes/UI.ts auf Anker+Margin statt fixer Koordinaten; tests/hud-anchor.test.ts prueft Anker-Boxen gegen Safe-Area je Format; AE gegen 640x360-Referenz = 0. AK: tsc + npm test gruen, Test deckt 4 Formate ab.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T20:26:51Z",
+      "updated": "2026-11-27T20:26:51Z"
+    },
+    {
+      "id": 5261,
+      "title": "m10-hud-wide-anchor: K4 Nachher-Messung + Vision-Pruefung",
+      "description": "Lauf mit --tag after: 0 Verletzungen in 4 Formaten; Screenshots per Vision geprueft; Pixelgenauigkeit (ganzzahlige Spielpixel) belegt; Lane-Doku final. AK: after-JSON 0 Verletzungen, Vision-Urteil notiert, .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T20:26:51Z",
+      "updated": "2026-11-27T20:26:51Z"
     }
   ]
 }
