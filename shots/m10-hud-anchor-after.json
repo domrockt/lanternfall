@@ -1,0 +1,1092 @@
+{
+  "tag": "after",
+  "generated": "2026-11-27T20:50:07.026Z",
+  "safeArea": {
+    "left": 5,
+    "right": 5,
+    "top": 1,
+    "bottom": 7
+  },
+  "formats": [
+    {
+      "name": "640x360-ref",
+      "width": 1920,
+      "height": 1080,
+      "dpr": 1
+    },
+    {
+      "name": "780x360@3",
+      "width": 780,
+      "height": 360,
+      "dpr": 3
+    },
+    {
+      "name": "1280x720",
+      "width": 1280,
+      "height": 720,
+      "dpr": 1
+    },
+    {
+      "name": "1920x1080",
+      "width": 1920,
+      "height": 1080,
+      "dpr": 1
+    }
+  ],
+  "results": [
+    {
+      "format": "640x360-ref",
+      "device": {
+        "width": 1920,
+        "height": 1080,
+        "dpr": 1
+      },
+      "view": {
+        "w": 640,
+        "h": 360,
+        "dpr": 1
+      },
+      "shotHud": "shots/m10-hud-anchor-after-640x360-ref-hud.png",
+      "shotBanner": "shots/m10-hud-anchor-after-640x360-ref-banner.png",
+      "shotLevel": "shots/m10-hud-anchor-after-640x360-ref-levelup.png",
+      "shotChest": "shots/m10-hud-anchor-after-640x360-ref-chest.png",
+      "hud": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "banner": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "banner": {
+            "x": 170,
+            "y": 68,
+            "w": 300,
+            "h": 48
+          }
+        },
+        "violations": []
+      },
+      "levelup": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "levelup-cards": {
+            "x": 48,
+            "y": 69,
+            "w": 544,
+            "h": 220
+          },
+          "levelup-text": {
+            "x": 228,
+            "y": 81,
+            "w": 185,
+            "h": 37
+          },
+          "foot": {
+            "x": 234,
+            "y": 346,
+            "w": 173,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "chest": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "chest-title": {
+            "x": 238,
+            "y": 83,
+            "w": 166,
+            "h": 14,
+            "xi": true
+          },
+          "chest-hint": {
+            "x": 177,
+            "y": 153,
+            "w": 287,
+            "h": 7,
+            "xi": true
+          },
+          "foot": {
+            "x": 246,
+            "y": 346,
+            "w": 149,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "violationCount": 0
+    },
+    {
+      "format": "780x360@3",
+      "device": {
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "view": {
+        "w": 780,
+        "h": 360,
+        "dpr": 3
+      },
+      "shotHud": "shots/m10-hud-anchor-after-780x360@3-hud.png",
+      "shotBanner": "shots/m10-hud-anchor-after-780x360@3-banner.png",
+      "shotLevel": "shots/m10-hud-anchor-after-780x360@3-levelup.png",
+      "shotChest": "shots/m10-hud-anchor-after-780x360@3-chest.png",
+      "hud": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 770,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 376,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 740,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "banner": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 770,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 376,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 740,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "banner": {
+            "x": 240,
+            "y": 68,
+            "w": 300,
+            "h": 48
+          }
+        },
+        "violations": []
+      },
+      "levelup": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 770,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 376,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 740,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "levelup-cards": {
+            "x": 118,
+            "y": 69,
+            "w": 544,
+            "h": 220
+          },
+          "levelup-text": {
+            "x": 298,
+            "y": 81,
+            "w": 185,
+            "h": 37
+          },
+          "foot": {
+            "x": 304,
+            "y": 346,
+            "w": 173,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "chest": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 770,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 376,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 740,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "chest-title": {
+            "x": 308,
+            "y": 83,
+            "w": 166,
+            "h": 14,
+            "xi": true
+          },
+          "chest-hint": {
+            "x": 247,
+            "y": 153,
+            "w": 287,
+            "h": 7,
+            "xi": true
+          },
+          "foot": {
+            "x": 316,
+            "y": 346,
+            "w": 149,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "violationCount": 0
+    },
+    {
+      "format": "1280x720",
+      "device": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1
+      },
+      "view": {
+        "w": 640,
+        "h": 360,
+        "dpr": 1
+      },
+      "shotHud": "shots/m10-hud-anchor-after-1280x720-hud.png",
+      "shotBanner": "shots/m10-hud-anchor-after-1280x720-banner.png",
+      "shotLevel": "shots/m10-hud-anchor-after-1280x720-levelup.png",
+      "shotChest": "shots/m10-hud-anchor-after-1280x720-chest.png",
+      "hud": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "banner": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "banner": {
+            "x": 170,
+            "y": 68,
+            "w": 300,
+            "h": 48
+          }
+        },
+        "violations": []
+      },
+      "levelup": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "levelup-cards": {
+            "x": 48,
+            "y": 69,
+            "w": 544,
+            "h": 220
+          },
+          "levelup-text": {
+            "x": 228,
+            "y": 81,
+            "w": 185,
+            "h": 37
+          },
+          "foot": {
+            "x": 234,
+            "y": 346,
+            "w": 173,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "chest": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "chest-title": {
+            "x": 238,
+            "y": 83,
+            "w": 166,
+            "h": 14,
+            "xi": true
+          },
+          "chest-hint": {
+            "x": 177,
+            "y": 153,
+            "w": 287,
+            "h": 7,
+            "xi": true
+          },
+          "foot": {
+            "x": 246,
+            "y": 346,
+            "w": 149,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "violationCount": 0
+    },
+    {
+      "format": "1920x1080",
+      "device": {
+        "width": 1920,
+        "height": 1080,
+        "dpr": 1
+      },
+      "view": {
+        "w": 640,
+        "h": 360,
+        "dpr": 1
+      },
+      "shotHud": "shots/m10-hud-anchor-after-1920x1080-hud.png",
+      "shotBanner": "shots/m10-hud-anchor-after-1920x1080-banner.png",
+      "shotLevel": "shots/m10-hud-anchor-after-1920x1080-levelup.png",
+      "shotChest": "shots/m10-hud-anchor-after-1920x1080-chest.png",
+      "hud": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "banner": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 23,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "banner": {
+            "x": 170,
+            "y": 68,
+            "w": 300,
+            "h": 48
+          }
+        },
+        "violations": []
+      },
+      "levelup": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "evo-hint": {
+            "x": 330,
+            "y": 15,
+            "w": 95,
+            "h": 15
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "levelup-cards": {
+            "x": 48,
+            "y": 69,
+            "w": 544,
+            "h": 220
+          },
+          "levelup-text": {
+            "x": 228,
+            "y": 81,
+            "w": 185,
+            "h": 37
+          },
+          "foot": {
+            "x": 234,
+            "y": 346,
+            "w": 173,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "chest": {
+        "blocks": {
+          "icons-bg": {
+            "x": 114,
+            "y": 13,
+            "w": 212,
+            "h": 19,
+            "xi": true
+          },
+          "hp-xp": {
+            "x": 5,
+            "y": 8,
+            "w": 630,
+            "h": 16
+          },
+          "weapon-icons": {
+            "x": 122,
+            "y": 15,
+            "w": 203,
+            "h": 16
+          },
+          "level": {
+            "x": 5,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "timer": {
+            "x": 306,
+            "y": 1,
+            "w": 29,
+            "h": 7,
+            "xi": true
+          },
+          "kills": {
+            "x": 600,
+            "y": 1,
+            "w": 35,
+            "h": 7,
+            "xi": true
+          },
+          "chest-title": {
+            "x": 238,
+            "y": 83,
+            "w": 166,
+            "h": 14,
+            "xi": true
+          },
+          "chest-hint": {
+            "x": 177,
+            "y": 153,
+            "w": 287,
+            "h": 7,
+            "xi": true
+          },
+          "foot": {
+            "x": 246,
+            "y": 346,
+            "w": 149,
+            "h": 7,
+            "xi": true
+          }
+        },
+        "violations": []
+      },
+      "violationCount": 0
+    }
+  ],
+  "aeVs640Ref": {
+    "count": 0,
+    "details": []
+  },
+  "totalViolations": 0,
+  "errors": []
+}
