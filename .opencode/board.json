@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5803,
+  "next": 5922,
   "cards": [
     {
       "id": 1,
@@ -6716,6 +6716,42 @@
       "notes": [],
       "created": "2026-11-27T21:46:10Z",
       "updated": "2026-11-27T21:46:10Z"
+    },
+    {
+      "id": 5918,
+      "title": "m10-boss-death-shards K1: Ist-Stand messen (Boss-Tod-Shards ADD+gedämpft?)",
+      "description": "Skript scripts/m10-boss-shards.mjs stellt Boss-Tod nach (spawnBoss, hp=0, playBossDeathFx-Kette), Views 640x360@1 + 780x360@3, je Screenshot + JSON mit Rendermode/Alpha/Glow-Slot der Shard-Partikel + WebGL-Renderer-String. Belege shots/m10-boss-shards-before.png/-before.json. EINMAL messen, committen.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-27T21:54:05Z",
+      "updated": "2026-11-27T21:54:05Z"
+    },
+    {
+      "id": 5919,
+      "title": "m10-boss-death-shards K2: Fix ParticleSystem — Boss-Shards NORMAL + Alpha-Boden 0,7 ohne Glow-Slot",
+      "description": "Partikel mit Boss-FX-Key (isBossFxKey/BOSS_FX_BASES, analog #5220 im FxSystem) rendern NORMAL mit Alpha-Boden 0,7, ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot. Reguläre Partikel unverändert. BLOCKER: Klasse liegt in src/systems/FxSystem.ts (Claim m10-perf-cap-rollback, nicht gemergt); isBossFxKey liegt nur auf ungemergtem m10-boss-fx-contrast (fd66146).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:54:05Z",
+      "updated": "2026-11-27T21:54:05Z"
+    },
+    {
+      "id": 5920,
+      "title": "m10-boss-death-shards K3: Tests tests/boss-death-shards.test.ts",
+      "description": "Boss-Shards NORMAL + Alpha >= 0,7 + kein Glow-Slot; reguläre Partikel bleiben ADD + gedämpft (Regression); bestehende Tests grün. npx tsc --noEmit + npm run build rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:54:05Z",
+      "updated": "2026-11-27T21:54:05Z"
+    },
+    {
+      "id": 5921,
+      "title": "m10-boss-death-shards K4: Nachher-Messung + art-director-Sichtprüfung + Lane-Doku",
+      "description": "shots/m10-boss-shards-after.png/-after.json, art-director-Sichtprüfung (Vision) dokumentiert (Boss-Tod-Explosion lesbar, dunkle Kontur + heller Kern, nicht ausgewaschen), docs/lanes/m10-boss-death-shards.md mit Vorher/Nachher.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:54:05Z",
+      "updated": "2026-11-27T21:54:05Z"
     }
   ]
 }
