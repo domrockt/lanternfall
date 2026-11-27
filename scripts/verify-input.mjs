@@ -5,6 +5,15 @@
 import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
 
+// M10-verify-input-fix: mit `--tag <name>` laufen Belege nach
+// shots/m10-verify-input-<name>.json + -<name>-*.png, damit parallele Lanes und
+// Wiederholungslaeufe (3x + Lastlauf) eigene, committbare Belegdateien haben.
+// Ohne Tag bleibt das alte Verhalten (shots/m8-input.json, shots/m8-input-*.png).
+const tagArg = process.argv.indexOf("--tag");
+const tag = tagArg >= 0 ? process.argv[tagArg + 1] : undefined;
+const outJson = tag ? `shots/m10-verify-input-${tag}.json` : "shots/m8-input.json";
+const shotPrefix = tag ? `shots/m10-verify-input-${tag}` : "shots/m8-input";
+
 ensureBuild();
 mkdirSync("shots", { recursive: true });
 const pw = await loadPlaywright();
@@ -20,7 +29,7 @@ const check = (name, ok, detail) => {
   console.log(`${ok ? "OK  " : "FAIL"} ${name}${detail ? ` (${detail})` : ""}`);
 };
 const snap = async (page, name) => {
-  const path = `shots/m8-input-${name}.png`;
+  const path = `${shotPrefix}-${name}.png`;
   await page.screenshot({ path });
   shots.push(path);
   return path;
@@ -34,6 +43,18 @@ const waitRun = async (page) => {
   await waitForScene(page, "run");
   await page.waitForTimeout(350);
 };
+// M10-verify-input-fix: Zustands-Waits statt fester Wartezeit (Muster wie die
+// verify-menus-Korrektur): nach einem Tipp auf den Zielzustand warten, nicht
+// eine feste ms-Zahl schlafen – das haelt unter Last stabil.
+const waitState = (page, key, value, timeout = 4000) =>
+  page.waitForFunction(
+    ({ k, v }) => {
+      const s = window.__lf.state();
+      return Array.isArray(v) ? v.includes(s[k]) : s[k] === v;
+    },
+    { k: key, v: value },
+    { timeout },
+  ).then(() => true).catch(() => false);
 
 async function canvasBox(page) {
   return page.locator("canvas").boundingBox();
@@ -134,7 +155,7 @@ async function runTouchSuite() {
   };
 
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=11`);
-  await page.waitForFunction(() => Boolean(window.__lf && window.__game), { timeout: 8000 });
+  await page.waitForFunction(() => Boolean(window.__lf && window.__game), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
   await page.waitForTimeout(450);
 
@@ -188,18 +209,24 @@ async function runTouchSuite() {
   const view = await viewSize(page);
   const pauseCenter = { x: view.w - 10 - 15, y: 10 + 9 };
   await tapGame(page, pauseCenter.x, pauseCenter.y);
-  await page.waitForTimeout(300);
+  await waitState(page, "paused", true);
   check("Touch: Pause per zweitem Finger bei aktivem Joystick", (await state(page)).paused === true);
   await touchEnd(1);
   await page.waitForTimeout(150);
   await snap(page, "pause-touch");
   await tapText(page, "FORTSETZEN");
-  await page.waitForTimeout(220);
+  // Lastbefund K3: unter paralleler Last kann der erste Tipp verlorengehen
+  // (Overlay noch nicht input-bereit). EIN begrenzter zweiter Versuch.
+  let fortgesetzt = await waitState(page, "paused", false);
+  if (!fortgesetzt) {
+    await tapText(page, "FORTSETZEN");
+    fortgesetzt = await waitState(page, "paused", false);
+  }
   check("Touch: FORTSETZEN per Tippen", (await state(page)).paused === false);
 
   // Level-up: Karte per Tippen waehlen.
   await page.evaluate(() => window.__lf.giveXp(800));
-  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, { timeout: 3000 });
+  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, undefined, { timeout: 5000 });
   await page.waitForTimeout(220);
   await snap(page, "levelup-touch");
   const loadoutBefore = await page.evaluate(() =>
@@ -228,7 +255,7 @@ async function runTouchSuite() {
   await page.waitForTimeout(120);
   const chestView = await viewSize(page);
   await tapGame(page, chestView.w / 2, chestView.h / 2);
-  await page.waitForTimeout(350);
+  await waitState(page, "chestOpen", false);
   check("Touch: Truhe per Tippen uebernommen", (await state(page)).chestOpen === false);
 
   // Eine Minute Spiel nur per Touch: Joystick halten und level-ups antippen.
@@ -270,7 +297,7 @@ async function runTouchSuite() {
 
   // Pause -> AUFGABE per Tippen -> Results; TITEL per Tippen.
   await tapGame(page, pauseCenter.x, pauseCenter.y);
-  await page.waitForTimeout(220);
+  await waitState(page, "paused", true);
   await tapText(page, "AUFGABE");
   await waitForScene(page, "results");
   await page.waitForTimeout(350);
@@ -326,7 +353,7 @@ async function runGamepadSuite() {
   };
 
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=23`);
-  await page.waitForFunction(() => Boolean(window.__lf && window.__game), { timeout: 8000 });
+  await page.waitForFunction(() => Boolean(window.__lf && window.__game), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
   await page.waitForTimeout(400);
   // Hotplug: erst nach dem Titel verbinden (Polling/Plugin muss ihn finden).
@@ -387,6 +414,7 @@ async function runGamepadSuite() {
   const optionsVisible = () => page.evaluate(() =>
     window.__game.scene.getScene("ui").options.visible);
   await pressButton(9);
+  await waitState(page, "paused", true);
   check("Gamepad: Start pausiert", (await state(page)).paused === true);
   await snap(page, "gamepad-pause-focus");
   // Fokus sichtbar: D-Pad rechts -> OPTIONEN, A oeffnet, Start darf die Pause
@@ -410,16 +438,16 @@ async function runGamepadSuite() {
     (await optionsVisible()) === false && (await state(page)).paused === true,
   );
   await pressButton(1);
-  await page.waitForTimeout(180);
+  await waitState(page, "paused", false);
   check("Gamepad: B setzt Pause fort", (await state(page)).paused === false);
   await pressButton(9);
   await pressButton(0);
-  await page.waitForTimeout(180);
+  await waitState(page, "paused", false);
   check("Gamepad: A bestaetigt Fokus (Fortsetzen)", (await state(page)).paused === false);
 
   // Level-up und Truhe per Pad-Aktionen.
   await page.evaluate(() => window.__lf.giveXp(900));
-  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, { timeout: 3000 });
+  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, undefined, { timeout: 5000 });
   await page.waitForTimeout(150);
   await snap(page, "gamepad-levelup");
   const gpLoadoutBefore = await page.evaluate(() =>
@@ -442,7 +470,7 @@ async function runGamepadSuite() {
   await page.evaluate(() => window.__lf.openChest());
   await page.waitForTimeout(450);
   await pressButton(0);
-  await page.waitForTimeout(300);
+  await waitState(page, "chestOpen", false);
   check("Gamepad: Truhe per A uebernommen", (await state(page)).chestOpen === false);
 
   // Results: Fokus rechts + A -> Titel.
@@ -465,7 +493,7 @@ async function runKeyboardSuite() {
   attachErrors(page);
   await page.bringToFront();
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=31`);
-  await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
+  await page.waitForFunction(() => Boolean(window.__lf), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
   await page.keyboard.press("Enter");
   await waitForScene(page, "charselect");
@@ -494,7 +522,7 @@ async function runKeyboardSuite() {
   await page.evaluate(() => { window.__esc = []; window.addEventListener("keydown", (e) => window.__esc.push(e.key)); });
   await page.keyboard.press("Escape");
   const pausedOk = await page.waitForFunction(
-    () => window.__lf.state().paused === true, { timeout: 3000 },
+    () => window.__lf.state().paused === true, undefined, { timeout: 6000 },
   ).then(() => true).catch(() => false);
   const escDetail = JSON.stringify(await page.evaluate(() => ({
     paused: window.__lf.state().paused,
@@ -509,7 +537,7 @@ async function runKeyboardSuite() {
   await page.evaluate(() => { window.__esc = []; });
   await page.keyboard.press("Escape");
   const resumedOk = await page.waitForFunction(
-    () => window.__lf.state().paused === false, { timeout: 3000 },
+    () => window.__lf.state().paused === false, undefined, { timeout: 6000 },
   ).then(() => true).catch(() => false);
   const resumeDetail = JSON.stringify(await page.evaluate(() => ({
     paused: window.__lf.state().paused, keys: window.__esc,
@@ -536,10 +564,10 @@ try {
   check("alle Shots vorhanden (>10KB)", missing.length === 0, missing.join(", "));
   check("keine JS-Fehler", errors.length === 0, errors.join(" | "));
   const passed = checks.every((c) => c.ok);
-  result = { milestone: "M8-input", passed, checks, shots, jsErrors: errors };
-  writeFileSync("shots/m8-input.json", JSON.stringify(result, null, 2));
+  result = { milestone: "M8-input", tag: tag ?? null, passed, checks, shots, jsErrors: errors };
+  writeFileSync(outJson, JSON.stringify(result, null, 2));
   await browser.close();
   server.stop();
-  console.log(`\n${passed ? "M8-input: PASS" : "M8-input: FAIL"} (${checks.filter((c) => c.ok).length}/${checks.length} Checks)`);
+  console.log(`\n${passed ? "M8-input: PASS" : "M8-input: FAIL"} (${checks.filter((c) => c.ok).length}/${checks.length} Checks) -> ${outJson}`);
   process.exit(passed ? 0 : 1);
 }

@@ -1,0 +1,6 @@
+URI: http://127.0.0.1:5679/?debug=1&seed=11
+alter Selektor "BRUDER KAEL" sichtbar: false
+neuer Selektor "Bruder Kael" sichtbar: true
+CharSelect-PixelText-Werte: ["WÄHLE DEINEN CHARAKTER","SEED 11 · PFEILE/MAUS = WAHL","Mira Ashwick","LATERNEN-HEXE","HP        250","TEMPO     62","RÜSTUNG   1","+10% FLÄCHENWIRKUNG","START: GLUTFUNKE","NOCH KEIN LAUF","Bruder Kael","EISEN-MÖNCH","HP        130","TEMPO     59","RÜSTUNG   2","+20% MAX-HP / -5% TEMPO","START: KETTENFLEGEL","NOCH KEIN LAUF","ZURÜCK","START (ENTER)"]
+JS-Fehler: 0
+pass=true -> shots/m10-verify-input-f2-before.json
