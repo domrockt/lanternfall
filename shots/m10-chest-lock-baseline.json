@@ -1,7 +1,7 @@
 {
   "milestone": "m10-chest-lock-touch",
-  "baseSha": "b212e1c",
-  "passed": false,
+  "baseSha": "44d95ca",
+  "passed": true,
   "checks": [
     {
       "name": "C1 Joystick-Drift: Touchstart bei offener Truhe + Drag bewegt nicht",
@@ -21,39 +21,39 @@
     {
       "name": "C4 Dash-Swipe: schneller Swipe bei offener Truhe bewegt nicht",
       "ok": true,
-      "detail": "movedPx=0 stick=false chestWaehrendSwipe=true x0=2051"
+      "detail": "movedPx=0 stick=false chestWaehrendSwipe=true x0=2048"
     },
     {
       "name": "C5 Langzeit-Drift: 60 Frames Move-Versuche bei offener Truhe bewegen nicht",
-      "ok": false,
-      "detail": "movedPx=1.5 stick=true frames=60 stickAbFrame=0 chest=false paused=false id=1 verlauf=cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 evlog=pointerdown() touchstart(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) pointerup() touchend(1) finishChest() pointerdown() touchstart(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1)"
+      "ok": true,
+      "detail": "movedPx=0 stick=false frames=60 verlauf=CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- CsP- evlog=pointerdown() touchstart(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) pointerup() touchend(1)"
     },
     {
-      "name": "C6 Pause-Tap: Tap auf Pause-Position bei offener Truhe pausiert nicht",
-      "ok": false,
-      "detail": "pausedLeak=true movedPx=0 stick=false chestNachTap=false pausedVerlauf=11110000000000"
+      "name": "C6 Pause-Tap: Tap auf Pause-Position bei offener Truhe uebernimmt nur die Truhe",
+      "ok": true,
+      "detail": "pausedNachTruheZu=false movedPx=0 stick=false chestNachTap=false"
     },
     {
       "name": "C7 Kein Kleben + neue Geste: alter Finger bleibt tot, neuer Touchstart bewegt",
       "ok": true,
-      "detail": "movedOldPx=0 movedNewPx=24.8 stickNeu=true"
+      "detail": "movedOldPx=0 movedNewPx=23.3 stickNeu=true"
     }
   ],
   "negative": [
     {
       "name": "N1 normaler Drag bewegt den Spieler",
       "ok": true,
-      "detail": "movedPx=22.3"
+      "detail": "movedPx=20.1"
     },
     {
       "name": "N2 Pause-Tap im Run pausiert",
-      "ok": false,
+      "ok": true,
       "detail": ""
     },
     {
       "name": "N3 nach Resume bewegt der Joystick wieder",
-      "ok": false,
-      "detail": "movedPx=0"
+      "ok": true,
+      "detail": "movedPx=18.4"
     }
   ],
   "jsErrors": []

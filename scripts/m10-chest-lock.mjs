@@ -36,8 +36,12 @@ const baseSha = execFileSync("git", ["rev-parse", "--short", "HEAD"]).toString()
 // Move-Pfad links unten (linke Bildhaelfte -> Joystick), wie im m10-input-qa-Repro.
 const STICK_X = 92;
 const STICK_Y = 200;
-const PAUSE_X = 455; // Pause-Knopf: 480 - 10 Margin - 15 halbe Breite
-const PAUSE_Y = 19;  // 10 Margin + 9 halbe Hoehe
+// Pause-Knopf: Dynamisch (M10-View ist breiter als 480; Pause haengt an
+// view.width - 10 Margin, Knopf 30x18, Mitte +15/+9 im Container).
+const pauseButtonPos = (page) => page.evaluate(() => {
+  const t = window.__game.scene.getScene("ui").touch;
+  return t?.pauseContainer ? { x: t.pauseContainer.x + 15, y: t.pauseContainer.y + 9 } : null;
+});
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -274,7 +278,8 @@ async function c5LongDrift(page, touch) {
 async function c6PauseTap(page, touch) {
   await openChest(page);
   await page.waitForTimeout(120);
-  await touch.touchStart(1, PAUSE_X, PAUSE_Y);
+  const pos = await pauseButtonPos(page);
+  await touch.touchStart(1, pos.x, pos.y);
   const p = sample(page, 14);
   await page.waitForTimeout(60);
   await touch.touchEnd();
@@ -337,7 +342,8 @@ async function negativeSuite(page, touch) {
   check(negative, "N1 normaler Drag bewegt den Spieler", moved > 5, `movedPx=${Math.round(moved * 10) / 10}`);
 
   // N2: Pause-Tap im Run pausiert (Puls), danach ESC weiter.
-  await touch.touchStart(2, PAUSE_X, PAUSE_Y);
+  const pos = await pauseButtonPos(page);
+  await touch.touchStart(2, pos.x, pos.y);
   await page.waitForTimeout(80);
   await touch.touchEnd();
   const paused = await page.waitForFunction(
