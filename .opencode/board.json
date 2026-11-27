@@ -3000,11 +3000,17 @@
       "id": 2059,
       "title": "m10-heap-tail-02 Pool.ts: per-Frame-Allokationen/Retention entfernen",
       "description": "src/systems/Pool.ts ohne per-Frame Arrays/Closures; Reuse-Test tests/pool-reuse.test.ts (Objektidentitaet bleibt, keine Neuanlage im Steady State). Abnahme: Test rot vor Fix, gruen danach, tsc gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:31:31Z",
+          "by": "build",
+          "text": "todo → doing: Start: Pool.ts Reuse + trim, tests/pool-reuse.test.ts"
+        }
+      ],
       "created": "2026-11-27T02:32:10Z",
-      "updated": "2026-11-27T02:32:10Z"
+      "updated": "2026-11-27T03:31:31Z"
     },
     {
       "id": 2060,
