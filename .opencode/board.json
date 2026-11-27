@@ -4434,17 +4434,22 @@
       "id": 3458,
       "title": "m10-view-width-cap K0: Baseline messen + Doku-Gerüst",
       "description": "Vorher-Belege: 3x perf.mjs --viewport 640x360 --dpr 1 und 3x --viewport 780x360 --dpr 3 unter flock, JSON shots/m10-view-width-before-*.json; docs/lanes/m10-view-width-cap.md mit Vorher-Tabelle. Abnahme: 6/6 JSON im Commit, je FPS avg/min + intern Breite im JSON, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T13:25:24Z",
           "by": "build",
           "text": "todo → doing: Start: Baseline 3x 640x360@dpr1 + 3x 780x360@dpr3 unter flock"
+        },
+        {
+          "at": "2026-11-27T13:47:19Z",
+          "by": "build",
+          "text": "doing → review: Commit e0ba6e2 + 89165e7: 6/6 Vorher-JSON, intern 480/780, Median M25 54,7 (640) und 31,9 (780), 0 JS-Fehler. Kontrolle: perf-check."
         }
       ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T13:25:24Z"
+      "updated": "2026-11-27T13:47:19Z"
     },
     {
       "id": 3459,
