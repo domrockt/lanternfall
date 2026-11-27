@@ -1,0 +1,18 @@
+Lane m10-menu-art-crisp — Menü-/HUD-Art-Qualität (A10: 4/5 → 5/5), 2026-11-27
+
+Ergebnis:
+- Vorher-/Nachher-Scan (scripts/m10-menu-art-crisp.mjs, 5 Screens × 2 Profile 640x360@2 + 780x360@3,
+  iGPU-Renderer im JSON, Belege shots/m10-menu-art-crisp-{before,after}*):
+  Icon-Kontrast-Fails 8 → 0 (alle 12 HUD- + 12 Build-Icons >= 3:1, beide Profile),
+  0 Off-Palette-Pixel, 0 weiches Alpha (binaer), 0 Subpixel-Kanten, 0 JS-Fehler.
+- F3 gefixt (gen-icons.ts): passive_boots/tome/heart/charm neu gefärbt, Silhouetten pixelidentisch,
+  Kontrast jetzt 4.5–10.9:1. Regressionsschutz: tests/menu-art-crisp.test.ts (19 Tests).
+- Offen (dokumentiert, Hebel außerhalb der Lane-Claims): F1 title_background 1.333x/1.625x
+  (src/scenes/Title.ts, Disponenten-Anfrage gestellt) und F2 chest_closed 2.4x (src/scenes/UI.ts,
+  Lane-tabu). Empfehlung Folge-Lane; „Menü-Art 5/5" ist an F1 gebunden (art-director: ~4.5/5 aktuell).
+- Abnahme: reviewer PASS, art-director PASS (Noten 5/5/5/4/4, Rest = F1 + Results-Overlap-Altlast #3424).
+- Builds/Tests: npx tsc --noEmit rc=0, npm test 839/839 grün.
+
+Karten: #6418 Scan (18947ba), #6419 Befund-Liste (9a7a6ad), #6420 Tests (a006a75),
+#6421 F3-Fix + Nachher-Belege (00c500e), #6422 Abnahme + Doku (dieser Commit).
+Doku: docs/lanes/m10-menu-art-crisp.md

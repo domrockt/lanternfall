@@ -75,4 +75,29 @@ Beide Profile liefern **identische Befunde** — die Mängel sind also view-unab
 - F2 → tabu, bleibt dokumentiert (Folge-Lane-Empfehlung oben).
 
 ## Nachher-Stand (Karte 5)
-> Wird nach dem Fix-Scan ergänzt.
+
+- **F3 behoben** (`src/gfx/gen-icons.ts`, Commit im Karten-Commit #6421): Icon-Kontrast-Fails
+  8 → **0** in beiden Profilen. Messwerte (Median-Körperkontrast, HUD #090c10 / Panel #101724):
+  boots 1.59/1.45 → **4.53/4.15**, tome 2.16/1.98 → **10.93/10.01**, heart 1.20/1.12 → **5.32/4.93**,
+  charm 1.57/1.45 → **4.47/4.15**. Silhouetten pixelidentisch (Reviewer: 0 Masken-Mismatches),
+  1-px-ink-Kontur erhalten, nur Palettenzeichen gemappt.
+- **Beide Profile identisch:** offPalette 0, softAlpha 0, subpixel 0, jsErrors 0, iconContrastFails 0.
+- **Verbleibende Mixel (dokumentiert, nicht in dieser Lane fixbar):** F1 `title_background`
+  1.333x/1.625x (Hebel `src/scenes/Title.ts`, Disponenten-Anfrage gestellt) und F2 `chest_closed`
+  2.4x (`src/scenes/UI.ts`, Lane-tabu). Empfehlung Folge-Lane: Titel-Hintergrund in Zielgröße
+  zeichnen bzw. ganzzahlige Skalierung + Kanten-Füllung; Truhe 32/40 px oder Scale 2.
+- **Altlast (nicht Lane-Scope):** Results-Text-Overlap „SCHADEN PRO WAFFE"/„GESAMT" und
+  „CHARAKTER"/„MIRA ASHWICK" — im Before-Shot identisch, also vorbestehend; läuft bereits
+  als backlog #3424 (`m10-results-layout`).
+- **Abnahme:** reviewer **PASS** (Diff-Scope/Palette/Silhouetten/Tests geprüft);
+  art-director **PASS** (Notentabelle: HUD-Icons 5, Build-Panel 5, CharSelect/Pause 5,
+  Titel/Options 4 — F1, Results 4 — Altlast). Bedingungen erfüllt: diese Doku + Belege
+  committet; F1/F2 als Folge-Lane weiterverfolgen. Aussage „Menü-Art = 5/5" bleibt an den
+  F1-Fix gebunden (aktuell ~4.5/5; alle anderen Messkriterien auf 5/5).
+- **Tests:** `tests/menu-art-crisp.test.ts` 19/19, Gesamt-Suite 839/839 grün, `tsc --noEmit` rc=0.
+
+### Belege
+- Rohdaten: `shots/m10-menu-art-crisp-before.json` / `-after.json` (je 2 Profile, Renderer-String).
+- Screens: `shots/m10-menu-art-crisp-{before,after}-<profil>-<screen>.png` (je 12).
+- Vorher/Nachher vergrößert: `shots/m10-menu-art-crisp-icons-hud-before-after.png`,
+  `shots/m10-menu-art-crisp-icons-build-before-after.png` (4x nearest).
