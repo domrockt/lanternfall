@@ -1,0 +1,25 @@
+{
+  "tag": "after3",
+  "runs": 3,
+  "windowSeconds": 10,
+  "conditions": [
+    {
+      "condition": "640",
+      "fpsMedian": 60.1,
+      "fpsMinMedian": 60,
+      "medianFrameMsMedian": 16.7,
+      "drawCallCandidatesMedian": 71,
+      "blendSwitchesMedian": 5
+    },
+    {
+      "condition": "780",
+      "fpsMedian": 60,
+      "fpsMinMedian": 60,
+      "medianFrameMsMedian": 16.7,
+      "drawCallCandidatesMedian": 83,
+      "blendSwitchesMedian": 5
+    }
+  ],
+  "jsErrors": [],
+  "passed": true
+}

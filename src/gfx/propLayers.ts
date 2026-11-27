@@ -10,6 +10,34 @@ export const PROP_KEYS = new Set([
   "prop_bones", "prop_reeds", "prop_lilypad",
 ]);
 
+/**
+ * Prop-Tiers fuer das gestufte Dichte-LOD (m10-prop-density-lod):
+ * 0 = Landmarke (Laternen/Lichtquellen — bleiben immer sichtbar, Orientierung),
+ * 1 = grosse Struktur (Baeume, Ruinen, Saeulen, Graeber — Horizont-Verankerung),
+ * 2 = kleine Deko (zuerst ausgeblendet; entspricht dem alten DENSE_HIDE_PROPS).
+ * Unbekannte Keys gelten als Tier 2 (konservativ: werden im Chaos zuerst versteckt).
+ */
+export const PROP_TIERS: Record<string, 0 | 1 | 2> = {
+  prop_post: 0,
+  prop_tree_a: 1,
+  prop_tree_b: 1,
+  prop_ruin: 1,
+  prop_column: 1,
+  prop_grave: 1,
+  prop_stump: 2,
+  prop_boulder: 2,
+  prop_cross: 2,
+  prop_bones: 2,
+  prop_reeds: 2,
+  prop_lilypad: 2,
+  prop_mushroom_ring: 2,
+};
+
+/** Hoechster Prop-Tier dieser Textur (0 Landmarke, 1 gross, 2 kleine Deko). */
+export function propTierFor(key: string | undefined | null): 0 | 1 | 2 {
+  return PROP_TIERS[key ?? ""] ?? 2;
+}
+
 /** Feste Tiefen der Batch-Layer. Spieler-Tiefe ist 12 (Run.ts), Chunks liegen bei -100. */
 export const PROP_LAYER_DEPTHS = {
   shadow: 11.15,

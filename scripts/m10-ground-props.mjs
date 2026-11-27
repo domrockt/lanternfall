@@ -20,6 +20,8 @@ const argValue = (name) => {
   return i >= 0 ? ARGV[i + 1] : null;
 };
 const TAG = argValue("tag") || "before";
+/** Datei-Praefix der Mess-JSONs/PNGs (m10-prop-density-lod nutzt m10-prop-density). */
+const OUT = argValue("out") || "m10-ground-props";
 const RUNS = Math.max(1, Number(argValue("runs") || 1));
 const WINDOW_S = 10;
 const TARGET_ENEMIES = 300;
@@ -153,6 +155,7 @@ const measure = async (page) =>
       fps: Math.round((deltas.length / (elapsed / 1000)) * 10) / 10,
       fpsMin: Math.round(Math.min(...buckets) * 10) / 10,
       medianFrameMs: Math.round(q(0.5) * 100) / 100,
+      p90FrameMs: Math.round(q(0.9) * 100) / 100,
       p95FrameMs: Math.round(q(0.95) * 100) / 100,
       worstFrameMs: Math.round(sorted[sorted.length - 1] * 100) / 100,
       drawCallCandidatesPerFrame: candidates,
@@ -193,9 +196,24 @@ try {
         await setup(page);
         const m = await measure(page);
         m.blend = await page.evaluate(blendProbe);
+        // Snapshot: sichtbare Props je Textur (inkl. Schatten/Glow) fuer LOD-Entscheidung.
+        m.propComposition = await page.evaluate(() => {
+          const g = window.__game.scene.getScene("run").ground;
+          const counts = {};
+          let total = 0;
+          for (const e of g.chunks.values()) {
+            for (const p of e.props) {
+              if (!p.visible) continue;
+              const k = p.getData("isShadow") ? "shadow" : p.getData("glow") ? "glow" : (p.texture?.key ?? "?");
+              counts[k] = (counts[k] || 0) + 1;
+              total++;
+            }
+          }
+          return { total, counts };
+        });
         const runNo = run + 1;
         const suffix = RUNS > 1 ? `-${runNo}` : "";
-        writeFileSync(`shots/m10-ground-props-${TAG}-${cond.name}${suffix}.json`, JSON.stringify({
+        writeFileSync(`shots/${OUT}-${TAG}-${cond.name}${suffix}.json`, JSON.stringify({
           card: "m10-ground-props-batch",
           tag: TAG,
           condition: cond.name,
@@ -209,9 +227,9 @@ try {
           result: m,
           jsErrors: errors.slice(),
         }, null, 2));
-        if (PNG) await page.screenshot({ path: `shots/m10-ground-props-${TAG}-${cond.name}${suffix}.png` });
+        if (PNG) await page.screenshot({ path: `shots/${OUT}-${TAG}-${cond.name}${suffix}.png` });
         runs.push(m);
-        console.log(`${TAG} ${cond.name} run${runNo}: ${m.fps} FPS (min ${m.fpsMin}, median ${m.medianFrameMs} ms, p95 ${m.p95FrameMs} ms) | Kandidaten ${m.drawCallCandidatesPerFrame}/Frame | Blend ${m.blend.blendSwitches} | Props sichtbar ${m.visiblePropsPerFrame}, Batches ${JSON.stringify(m.batches)}`);
+        console.log(`${TAG} ${cond.name} run${runNo}: ${m.fps} FPS (min ${m.fpsMin}, median ${m.medianFrameMs} ms, p90 ${m.p90FrameMs} ms, p95 ${m.p95FrameMs} ms) | Kandidaten ${m.drawCallCandidatesPerFrame}/Frame | Blend ${m.blend.blendSwitches} | Props sichtbar ${m.visiblePropsPerFrame}, Batches ${JSON.stringify(m.batches)}`);
       } finally {
         await page.close();
       }
@@ -238,6 +256,6 @@ const summary = {
   jsErrors: errors,
   passed: errors.length === 0,
 };
-writeFileSync(`shots/m10-ground-props-${TAG}-summary.json`, JSON.stringify(summary, null, 2));
+writeFileSync(`shots/${OUT}-${TAG}-summary.json`, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
 process.exit(errors.length === 0 ? 0 : 1);

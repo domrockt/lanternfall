@@ -1,0 +1,22 @@
+# Lane m10-prop-density-lod — abgeschlossen (Abbruchkriterium greift)
+
+Ziel war FPS 640x360 M25 (Median 48,5) Richtung >= 55 über weniger gerenderte
+Prop-Quads (gestuftes Dichte-LOD). Ergebnis: gestuftes Tier-LOD implementiert
+und gemessen (3 Hebel), Kriterium 1 (< 360 Quads = −60 %) nicht erfüllt —
+bester Stand (Hebel 2: N1=150/N2=200) ist committet und bleibt im Spiel.
+
+Kernzahlen (Messbedingungen wie Vorher-Lane, seed 7, skipTo(1490), Top-up 300):
+- Quads: 640 Median 422 (−53 % gegen 906 Vollzustand), 780 Median 714 (−43 %).
+- Draw-Call-Kandidaten: 61-86/Frame, < 300 PASS.
+- FPS: 60 FPS Median in ALLEN Bedingungen inkl. Vorher (idle Host, vsync-Cap);
+  p90 = 16,7 ms überall → p90-Differenz ground-hidden vs. ground-on auf diesem
+  Host: 0 ms (vsync schluckt die ~2,5 ms Prop-Anteil am 4,09-ms-Renderpfad).
+- Optik: art-director PASS 4/5 (keine Löcher, keine schwebenden Schatten).
+- npm test 582/582, tsc 0, build 0.
+
+Befund für den Lead: Die Gegnerzahl oszilliert im Endgame-Fenster heftig
+(16..300 lebende Gegner trotz Top-up 300). Momentbasierte LOD-Schwellen sind
+deshalb entweder flackrig (ohne Hysterese) oder wirkungslos (Hysterese mit
+sofortiger Entspannung, gemessen). Der nächste Hebel wäre eine EMA-geglättete
+Dichte als LOD-Grundlage — danach sind Gegner-/FX-Quads oder das vsync-Thema
+die verbliebenen Stellschrauben. Details: docs/lanes/m10-prop-density-lod.md.
