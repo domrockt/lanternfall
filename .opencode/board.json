@@ -6177,11 +6177,17 @@
       "id": 5479,
       "title": "m10-flock-sweep-2: bare-flock-Reste ground-cost + kopierbare Anleitungen auf flock -w",
       "description": "Folge-Karte zu m10-flock-sweep. scripts/m10-ground-cost.mjs echte Spawns auf `flock -w 520/300` (+ Kommentar-Muster mit Timeout-Meldung, Exitcode weiterreichen); m10-fx-overdraw.mjs Z.4, m10-ui-cost.mjs Z.15, m10-heap-margin.mjs Z.7-8 kopierbare Anleitungen auf `flock -w <N>` (Heap-Szenario bleibt absichtlich OHNE Lock). Abnahme: Vorher/Nachher-Grep in docs/lanes/m10-flock-sweep-2.md, Negativtest (Sperre + flock -w 1 → rc=1 nach ~1 s mit Meldung, shots/m10-flock-sweep-2-negativtest.log), node --check 4/4, build+tests grün.",
-      "column": "review",
+      "column": "done",
       "assignee": "m10-flock-sweep-2",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:56:24Z",
+          "by": "build",
+          "text": "review → done: lane #5098, Merge bd24ed9 — git merge-base --is-ancestor m10-flock-sweep-2 main rc=0; Merge-Commit bd24ed9 (Parents 4f3565e + 064b5bf); .lane-done aus Merge entfernt"
+        }
+      ],
       "created": "2026-11-27T20:55:59Z",
-      "updated": "2026-11-27T20:55:59Z"
+      "updated": "2026-11-27T20:56:24Z"
     }
   ]
 }
