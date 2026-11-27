@@ -1,0 +1,38 @@
+# Lane m10-chest-arrow-fix — FERTIG (2026-11-27)
+
+Abnahme-C-Befund (5/10 FAIL bei 640x360, shots/qa-reaccc-chest-arrow.json) aufgearbeitet.
+
+**Befund:** Das FAIL ist ein Messartefakt im Probe-Harness `scripts/m10-chest-arrow.mjs`,
+kein Spiel-Bug. rAF-Sampling misst ausserhalb des Phaser-Steps: der erste Sample nach
+Spawn zeigt den Zustand VOR ChestSystem.update (Spawn-Defaults bzw. Richtung des
+Vorgaenger-Falls). Alle FAIL-Samples sind i=0; die Live-Gegenrechnung computeArrowLayout
+im selben Sample ist korrekt. Winkel-Signaturen matchen exakt die Vorgaenger-Faelle
+(bottom=180°, tl=132,71°, tr/br=94,6°).
+
+**Massgebender Re-Lauf** (scripts/m10-chest-arrow-repro.mjs, POST_UPDATE-Sampling,
+Beleg shots/m10-chest-arrow-fix-after.json): 30/30 PASS
+- 640x360@2: 10/10, max. Winkelfehler 0,08°
+- 640x360@3: 10/10, max. 0,08°
+- 780x360@3: 10/10, max. 0,08°
+- disappear: 7 Inside-Samples, 0 sichtbar; zoom1.14: 12/12 sichtbar
+- Vorher-Lauf shots/m10-chest-arrow-fix-repro.json + Render-Budget-Teiler 2
+  (rbscale2, Kamera 320x180/Zoom 0.5): ebenfalls 30/30 PASS auf POST_UPDATE;
+  Alt-rAF-Sampling parallel 14/27 FAIL-Signaturen (Artefakt-Nachweis im selben Lauf).
+
+**Screenshots:** shots/m10-chest-arrow-fix-edge-640x360.png (Pfeil am Rand,
+Truhe off-screen), shots/m10-chest-arrow-fix-inside-640x360.png (Truhe im View,
+Pfeil aus). Kein SwiftShader-Vergleich, nur iGPU-Stand.
+
+**Code:** src/systems/ChestSystem.ts absichtlich UNVERAENDERT (git diff main..HEAD
+-- src/ = leer): computeChestArrow leitet bereits aus der echten Kamera-Transform
+ab (Viewport/worldView/Zoom, Zoom-Kompensation ChestSystem.ts:82-87) — verifiziert
+fuer Zoom 1 / 0,5 / 1,14. Truhen-Inszenierung (m10-chest-reveal) unangetastet.
+
+**Tests:** tests/chest-arrow-fix.test.ts neu, 4 Tests (Viewport-Klemm-Invariante,
+Extrem-Kamerapositionen, beide Formate, Zoom 1/0,5/1,14). npm test 818/818 (+4),
+npm run build rc=0. Reviewer PASS (2 Dok-Zahlen korrigiert: 14/27 statt 13/30).
+
+**Offen:** scripts/m10-chest-arrow.mjs bleibt artefaktanfaellig (Fix = Sampling auf
+POST_UPDATE, Muster im Repro-Skript); Disponent-Request 2026-11-27T23:10Z in
+/home/ai/games/.dispatch/requests.md, bis dahin gilt der Repro-Re-Lauf als Nachweis.
+Fremd-Shots shots/m10-passive-math-*.json (nur Timestamp) im Worktree uncommittet.

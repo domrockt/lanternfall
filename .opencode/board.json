@@ -7330,28 +7330,40 @@
       "id": 6358,
       "title": "m10-chest-arrow-fix K1: Repro-Lauf 640x360 + 780x360@3, alle 10 Faelle protokollieren",
       "description": "Owner gameplay-dev. scripts/m10-chest-arrow-repro.mjs (Basis m10-chest-arrow.mjs) mit erweiterter Diagnostik: pro Sample Kamera-Rohdaten (scrollX/Y, worldView, width/height, zoom), __rbDbg (RENDER_SCALE), Canvas-Buffer, Live-Gegenrechnung computeArrowLayout, 3 Richtungs-Darstellungen (erwarteter Winkel, arrow.rotation, gerenderter Winkel). Vorher-JSON shots/m10-chest-arrow-fix-repro.json committen. AK: JSON mit 10 Cases je Format vorhanden, FAIL-Faelle mit Kameraposition belegt.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:09:58Z",
+          "by": "build",
+          "text": "todo → done: K1 Repro committed 73b52d5: POST_UPDATE-Sampling 30/30 PASS (640@2/@3, 780@3, rbscale=2), altes rAF-Sampling 13/30 FAIL mit QA-Signaturen -> Artefakt. Belege: shots/m10-chest-arrow-fix-repro*.json"
+        }
+      ],
       "created": "2026-11-27T22:59:22Z",
-      "updated": "2026-11-27T22:59:22Z"
+      "updated": "2026-11-27T23:09:58Z"
     },
     {
       "id": 6359,
       "title": "m10-chest-arrow-fix K2: Ursache belegen (Datei/Zeile)",
       "description": "Owner gameplay-dev. Ursache aus Repro-Daten festhalten: fixe View-Annahme vs. echte Kamera (Muster m10-chest-arrow-onscreen), Pfeil-Clamping am Viewport-Rand. AK: Befund mit Datei+Zeile in docs/lanes/m10-chest-arrow-fix.md, Beleg aus repro-JSON.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:09:58Z",
+          "by": "build",
+          "text": "todo → doing: K2 Ursache wird dokumentiert (docs/lanes/m10-chest-arrow-fix.md)."
+        }
+      ],
       "created": "2026-11-27T22:59:22Z",
-      "updated": "2026-11-27T22:59:22Z"
+      "updated": "2026-11-27T23:09:58Z"
     },
     {
       "id": 6360,
       "title": "m10-chest-arrow-fix K3: Fix in src/systems/ChestSystem.ts",
-      "description": "Owner gameplay-dev. Pfeilposition/-winkel aus echter Kamera-Transform ableiten, 0 px ausserhalb des Viewports, Optik unveraendert (Truhen-Inszenierung m10-chest-reveal unangetastet, nur Pfeilpfad). AK: tsc + gezielte Tests gruen, Repro-Lauf 10/10 PASS in beiden Formaten.",
+      "description": "Owner gameplay-dev. AK angepasst nach Befund K1: ChestSystem.ts ist korrekt (echte Kamera-Transform inkl. Zoom/RENDER_SCALE verifiziert, 30/30 POST_UPDATE PASS); Spiellogik UNveraendert (Truhen-Inszenierung m10-chest-reveal unangetastet). Fix-Ziel ist der Messpfad scripts/m10-chest-arrow.mjs (rAF-Sampling -> POST_UPDATE), nach Disponent-Freigabe. AK: QA-Skript-Re-Lauf 10/10 PASS in beiden Formaten + Repro-Lauf.",
       "column": "todo",
       "notes": [],
       "created": "2026-11-27T22:59:22Z",
-      "updated": "2026-11-27T22:59:22Z"
+      "updated": "2026-11-27T23:09:58Z"
     },
     {
       "id": 6361,

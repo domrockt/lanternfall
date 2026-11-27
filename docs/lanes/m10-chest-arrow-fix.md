@@ -25,11 +25,15 @@ Frame, und **zwei** Sampling-Wege:
 
 Ergebnis (`shots/m10-chest-arrow-fix-repro.json`, Vorher-Lauf):
 
-| Format | post (massgebend) | raf (Alt-Methode) |
+| Format | post (massgebend) | raf (Alt-Methode, ohne `disappear` = 9 Cases) |
 |---|---|---|
-| 640×360@2 | **10/10 PASS**, max. 0,08° | 6/10 FAIL (29,36°/180°/94,58°) |
-| 640×360@3 | **10/10 PASS** | 6/10 FAIL (90°/132,71°/180°) |
-| 780×360@3 | **10/10 PASS** | 6/10 FAIL (24,78°/90°/96,65°/180°) |
+| 640×360@2 | **10/10 PASS**, max. 0,08° | 3/9 FAIL (left 29,36°, bottom 180°, tr 94,58°) |
+| 640×360@3 | **10/10 PASS** | 5/9 FAIL (90°/132,71°/180°) |
+| 780×360@3 | **10/10 PASS** | 6/9 FAIL (24,78°/90°/96,65°/180°) |
+
+Summe 14/27 FAIL-Signaturen des Alt-Samplings (Korrektur gegenüber der
+Kartennorm in Commit 73b52d5, dort „13/30" — disappear hat keinen rAF-Pfad,
+Zählung war aus dem ersten Diagnose-Lauf übernommen).
 
 Zusatzlauf mit gepinntem Render-Budget-Teiler 2
 (`shots/m10-chest-arrow-fix-repro-rbscale2.json`, Kamera dann 320×180 mit
@@ -91,4 +95,38 @@ Pfeilpfad bleiben unangetastet.
 Funktion `computeChestArrow` — Pfeil-Layoutpunkt liegt in beiden Formaten
 (640×360, 780×360) und Kamera-Varianten (Zoom 1/0,5/1,14, Extrem-Kamerapositionen
 an allen 4 Welträndern + 4 Ecken) vollständig im Viewport (≥ `CHEST_ARROW_MARGIN`
-Einzug, 0 px ausserhalb) und zeigt zur Truhe.
+Einzug, 0 px ausserhalb) und zeigt zur Truhe. 4 Tests, gesamt 818/818 grün
+(vorher 814), `npm run build` rc=0.
+
+## Nachher-Beleg (Re-Lauf, Commit 79b0163)
+
+`shots/m10-chest-arrow-fix-after.json` — massgebendes POST_UPDATE-Sampling:
+
+| Format | Ergebnis | max. Winkelfehler |
+|---|---|---|
+| 640×360@2 (QA-Bedingung) | **10/10 PASS** | 0,08° |
+| 640×360@3 | **10/10 PASS** | 0,08° |
+| 780×360@3 (Abnahme-Stand) | **10/10 PASS** | 0,08° |
+
+`disappear`: Pfeil verschwindet bei View-Eintritt (7 Inside-Samples,
+0 sichtbar); `zoom1.14`: 12/12 Samples sichtbar am Rand. Screenshots:
+`shots/m10-chest-arrow-fix-edge-640x360.png` (Pfeil am rechten Rand während
+der Wirkung, Truhe off-screen) und `shots/m10-chest-arrow-fix-inside-640x360.png`
+(Truhe im View, Pfeil aus; `insideShot.arrowVisible=false, inView=true`).
+Kein SwiftShader-Vergleich — nur iGPU-Stand (Playwright/chromium, gleiche
+Bedingungen wie der Befund-Lauf).
+
+## Offene Punkte
+
+1. `scripts/m10-chest-arrow.mjs` (QA-Skript, NICHT im Disponent-Bereich der
+   Lane): rAF-Sampling weiterhin artefaktanfällig — ein Re-Lauf dieses
+   Skripts kann pseudo-FAILs produzieren (Vorher-Lauf dieser Lane: 14/27
+   FAIL-Signaturen des Alt-Samplings über alle Formate). Fix = Sampling auf POST_UPDATE der
+   Run-Szene umstellen (Muster: `scripts/m10-chest-arrow-repro.mjs`,
+   `SAMPLER`). Request liegt in `/home/ai/games/.dispatch/requests.md`
+   (2026-11-27T23:10Z); bis zur Freigabe gilt der Re-Lauf über das
+   Repro-Skript als massgebender Nachweis (identische 10 Cases/Kriterien).
+2. Fremde Schreibvorgänge im Worktree beobachtet: `shots/m10-passive-math-*.json`
+   nur mit neuem `generatedAt` (23:13:59Z) — parallel laufender Job, von der
+   Lane nicht committet.
+
