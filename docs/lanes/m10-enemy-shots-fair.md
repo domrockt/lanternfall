@@ -47,26 +47,24 @@ geändert (keine Kollisions-/Radius-Änderung):
 
 | Optik | Form | Kontur | Kern/Glanz | waterMid min/mean/max | nightDeep min/mean/max |
 |---|---|---|---|---|---|
-| spit | runde Giftkugel (Kreuz-Kern) | ink 0 | 31 / 20 | 1,02 / 1,95 / 3,83 | 1,53 / 3,04 / 5,98 |
-| bone | Knochenpaar | ink 0 | 11 / 10 / 13 | 6,90 / 9,03 / 11,67 | 10,77 / 14,11 / 18,23 |
-| shadow | Halo-Ring mit Lücke | ink 0 | 9 / 26 / 13 | 2,86 / 3,71 / 4,56 | 4,46 / — / — |
-| fire | Flamme mit Schweif | ink 0 | 19 / 18 / 12 | 1,36 / 5,78 / 10,66 | 2,13 / — / — |
+| spit | runde Giftkugel + 1-px Tropfen-Tail | ink 0 | 31 / 30 / 29 | 1,17 / 1,43 / 2,04 | 1,53 / 3,43 / 5,98 |
+| bone | Knochenpaar 9×7, Highlight oben-links | ink 0 | 10 / 11 / 13 | 3,68 / 4,34 / 6,22 | 10,77 / 12,73 / 18,23 |
+| shadow | Halo-Ring mit C-Mund, 3 Stufen | ink 0 | 6 / 9 / 8 / 5 | 1,52 / 2,09 / 2,43 | 1,56 / 4,83 / 7,12 |
+| fire | elongierte Flamme 9×12 | ink 0 | 19 / 20 / 22 / 17 | 1,15 / 3,03 / 5,68 | 3,37 / 9,22 / 16,65 |
 
 Kontrast = WCAG-Verhältnis (sRGB-Luminanz) je Nicht-Kontur-Pixel gegen den Hintergrund
 (`minInner` = schwächster, `meanInner` = Mittel, `max` = hellster Pixel),
-`shots/m10-enemy-shots-contrast.json`. Messung: **ein Lauf**, fester Satz Hintergründe
+`shots/m10-enemy-shots-contrast.json` — Messung: **ein Lauf**, fester Satz Hintergründe
 (nightDeep/night/waterDeep/waterMid/grassMarsh), Stichprobe = alle opaken Nicht-Kontur-
-Pixel der 4 Texturen; keine weiteren Crops/Montagen. Schwelle für die Innenfüllung:
-`meanInner ≥ 2,0` gegen Wasser/Nacht, `greenMarsh ≥ 1,5` als Grenzfall.
-Ergebnis: bone (4,31–14,11) und shadow (1,79–5,79) sowie fire (1,17–9,03) erfüllen die
-Wasser-/Nacht-Schwelle; **spit** liegt gegen waterMid bei mean 1,95 und gegen Gras bei
-1,32 darunter. Ehrlich: die dunklen Innenpixel von spit/fire liegen gegen Wasser bei
-1,0–1,4; die Lesbarkeit tragen dort die 1-px-Tint-Kontur (ink 0) und die klar
-verschiedenen Silhouetten, nicht die Innenfüllung. Auf Gras (`grassMarsh`,
-Index 30) liegt bone bei 4,31, shadow/fire bei 1,79/1,17. Form-IoU der Paare 0,38–0,86
-(spit/shadow 0,66, spit/fire 0,86 — Form ähnlich, aber Kernfarbe/Halo-Lücke/Flamme
-verschieden); Kontaktbogen `shots/m10-enemy-shots-optics.png`, Dichte-Beleg
-`shots/m10-enemy-shots-density.png` (500 Gegner, 63 Schüsse aktiv), 2-s-GIF
+Pixel der 4 Texturen; keine weiteren Crops/Montagen. Ergebnis ehrlich: bone (mean 4,34–12,73)
+und fire (3,03–9,22) tragen über die Innenfüllung; shadow (2,09) knapp; **spit** liegt gegen
+waterMid/Gras bei mean 1,43/1,40 unter der Innenfüll-Schwelle 2,0. Dort tragen die
+1-px-Kontur (ink 0), der aufgehellte Rand (31) und die eindeutig andere Silhouette
+(Form-IoU max 0,62, spit/fire nur 0,47); das ist als offener Punkt dokumentiert,
+kein Rebalancing. Auf Gras (`grassMarsh`, Index 30) liegt bone bei 4,31, shadow/fire bei
+1,60/1,35. Form-IoU aller 6 Paare 0,26–0,62 (vorher spit/fire 0,86). Kontaktbogen
+`shots/m10-enemy-shots-optics.png` (480×120, 10× nearest), Dichte-Beleg
+`shots/m10-enemy-shots-density.png` (500 Gegner: 125 toad/witchling/lich/horror), 2-s-GIF
 `shots/m10-enemy-shots-density.gif` (24 Frames, 12 fps), 0 JS-Fehler.
 
 Mapping: ranged TI0 → spit, TI1 → bone, TI3 → shadow, TI4 (horror) → fire; damit
