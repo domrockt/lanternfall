@@ -1,0 +1,8 @@
+m10-palette-guard — harter Pixel-Regressionsschutz (done)
+- tests/palette-compliance.test.ts: prüft 458 Grids/Frames (320 statisch + 138 numerisch) auf Palettenindizes 0..31 / Transparenz; 0 off-palette, 0 Alpha-Verstöße.
+- scripts/art/palette-check.mjs: Vite-SSR-Messung, Baseline shots/m10-palette-guard-baseline.json.
+- Baseline: 432.418 Pixel, 256.689 opaque, transparent 40,64 %, off-palette 0, Alpha 0.
+- Guard-Laufzeit 25,0 ms (< 2 s Assert). Negativprobe: 'z' im Grid -> off-palette 1, Guard wirft; externer Lauf rc=1.
+- npm test: 291/291 grün (vor Lane 287, +4). npm run build: rc=0, ✓ 828 ms.
+- Ausnahmeliste leer. Fund (nicht gefixt, Fremddatei gen-fx.ts): fx_smear/Frames 0-1 und fx_death_blob/Frame 0 sind vollständig transparent (0 opaque).
+- Keine Änderung an src/gfx/gen-*.ts, textures.ts, enemySprites.ts; GAME.md unangetastet.
