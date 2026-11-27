@@ -613,10 +613,10 @@ def portrait(kind: str) -> Grid:
         # Gesichtsfenster mit dunklem Innenrand.
         g.ellipse(24, 24, 12, 11, K_ROBE_D)
         g.ellipse(24, 24, 9, 8, SKIN)
-        # Tonsure: grauer Haarkranz am Rand, kahle Stirn über dem Eisenreif.
+        # Tonsure: durchgehender grauer Haarkranz, kahle Stirn ueber dem Reif
+        # (art-director: keine Farbnoppen an der Stirn-Silhouette).
         g.rect(21, 17, 7, 1, 8)
-        g.rect(19, 18, 2, 1, 8)
-        g.rect(28, 18, 2, 1, 8)
+        g.rect(20, 18, 9, 1, 8)
         # Eiserner Reif mit Rost-Niete (Eisen-Moench).
         g.rect(16, 20, 17, 2, IRON_D)
         g.rect(16, 20, 17, 1, IRON)
