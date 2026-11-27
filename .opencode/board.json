@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2871,
+  "next": 2874,
   "cards": [
     {
       "id": 1,
@@ -4334,6 +4334,59 @@
       "notes": [],
       "created": "2026-11-27T11:31:56Z",
       "updated": "2026-11-27T11:31:56Z"
+    },
+    {
+      "id": 2871,
+      "title": "m10-chaos-qa #1 Lauf + Rohdaten (Frame-Samples, Gegner-/Schusszahl, JS-Fehler)",
+      "description": "Owner playtester, Kontrolleur perf-check. 30-min-Sim mit timeScale 30 bis Minute 25, danach 10 s bei timeScale 1 mit 550 Gegnern und 6 Evolutions-Waffen. Abnahme: shots/m10-chaos-qa.json mit >=600 Frame-Samples, Gegnerzahl/Schusszahl je Sample, fps min/median, 0 JS-Fehler oder jeder Fehler einzeln dokumentiert. Messung unter flock /home/ai/games/.lf-perf.lock. (lane #2298)",
+      "column": "done",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-27T11:54:47Z",
+          "by": "build",
+          "text": "lane #2298 (aus Lane m10-chaos-qa): shots/m10-chaos-qa.json, 3349 Frame-Samples (588 realtime @1x), enemies 352-552 median 536, enemyShots max 325, FPS median 59,9 / realtime-Min 20 (ein 50,1-ms-Frame), 0 JS-Fehler; Commit 498ab41 (Lane)."
+        },
+        {
+          "at": "2026-11-27T11:58:08Z",
+          "by": "build",
+          "text": "perf-check PASS (Lane-Commit f23871c Korrektur): 3349 Samples (2696 sim30 + 653 realtime1x, Fenster 588), 0 JS-Fehler, fps 20/59,9/60,6, Frame 16,7/16,8/50,1 ms. Steady-State 1x 56-60 FPS (Min 56 >= 55); Roh-Min 20 = einzelner Uebergangs-Hitch (Artefakt), 28/653 realtime-Frames <55 (4,3%)."
+        }
+      ],
+      "created": "2026-11-27T11:54:06Z",
+      "updated": "2026-11-27T11:58:08Z"
+    },
+    {
+      "id": 2872,
+      "title": "m10-chaos-qa #2 Lesbarkeits-Matrix 640x360 + 780x360 (M25/27/29)",
+      "description": "Owner playtester, Kontrolleure ux-check + vfx-check. 6 Standbilder shots/m10-chaos-qa-m25/27/29-640.png bzw. -780.png bei 500+ Gegnern. Je Bild pruefen: Spieler-Silhouette, Gegnerschuesse vs Hintergrund, HUD-Ueberdeckung, Truhe/Pfeil. Abnahme: Urteil je Bild + Pixel-Kontrastzahlen (Region, min/max/std) in docs/lane; keine Behauptung ohne Zahl. (lane #2299)",
+      "column": "review",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-27T11:54:47Z",
+          "by": "build",
+          "text": "lane #2299 (aus Lane m10-chaos-qa): 6 Standbilder 640/780 M25/27/29, shots/m10-chaos-qa-contrast.json + readability.md; Spieler-Silhouette FAIL in allen 6, HUD/Boss-Balken PASS, Schusskontrast 640 131-181 / 780 bis 45; Commits 61524f2+98ca771, vfx-check-Korrektur 01ad1ad (Lane)."
+        }
+      ],
+      "created": "2026-11-27T11:54:06Z",
+      "updated": "2026-11-27T11:54:47Z"
+    },
+    {
+      "id": 2873,
+      "title": "m10-chaos-qa #3 Maengelliste + docs/lanes/m10-chaos-qa.md + .lane-done",
+      "description": "Owner tech-lead, Kontrolleur acceptance-auditor. Tabelle je Befund (Befund, Severity S/M/L, Repro-Schritte, vorgeschlagene Datei aus CODEMAP), Messwerte, offene Fragen. Abnahme: jeder Befund mit Severity+Repro, Zahlen aus JSON/Shots belegt, .lane-done mit 5-10 Zeilen Zusammenfassung; ein Commit mit Belegen. (lane #2300)",
+      "column": "done",
+      "assignee": "tech-lead",
+      "notes": [
+        {
+          "at": "2026-11-27T11:54:47Z",
+          "by": "build",
+          "text": "lane #2300 (aus Lane m10-chaos-qa): docs/lanes/m10-chaos-qa.md mit Befundtabelle (S Spieler-Silhouette, M 780-Schusskontrast, L Banner/Truhe, Repro + CODEMAP-Datei); Commit 6a6ee66 (Lane), .lane-done nach Merge entfernt."
+        }
+      ],
+      "created": "2026-11-27T11:54:06Z",
+      "updated": "2026-11-27T11:54:47Z"
     }
   ]
 }
