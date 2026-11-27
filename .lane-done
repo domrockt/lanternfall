@@ -1,0 +1,31 @@
+# Lane m10-hud-wide-anchor — DONE (2026-11-27)
+
+HUD-Anker bei breiten Formaten verifiziert und fixiert. Alle 4 Karten (#5258–#5261) erledigt,
+eine Karte = ein Commit, Reviewer-PASS vor Abschluss.
+
+## Zusammenfassung
+
+- **Probe-Skript** `scripts/m10-hud-anchor.mjs` (Commit 6583c14): misst in 4 Formaten
+  (640x360-ref, 780x360@3, 1280x720, 1920x1080; M8-Display-Tabelle) je Zustand
+  hud/banner/levelup/chest die echten Bounding-Boxen benannter HUD-Elemente
+  (SetName-Instrumentierung in UI.ts, kein Layout-Edit) und prueft Safe-Area-Rand
+  (links/rechts 5 px, oben 1 px, unten 7 px Spielpixel), Kollisionen und Pixelgenauigkeit.
+- **Ist-Baseline** (598823a): 64 Verletzungen, alle eine Ursache — `hud-icons-bg` fix bei
+  x=0 (Rand-Verletzung links + Kollision mit der HP-Zeile), in allen 4 Formaten identisch.
+  AE gegen 640x360-Referenz = 0. Belege: shots/m10-hud-anchor-baseline*.{json,png}.
+- **Fix** (41e616b): HUD-Anker in src/scenes/UI.ts ueber Konstanten (Ankerpunkt + Margin):
+  HUD_MARGIN_X=5, HUD_ICONS_X=122 (= HP-Ende + 11 px), HUD_ICON_PITCH=17,
+  HUD_EVO_HINT_X=330 (= Icon-Reihen-Ende + 13 px); icons-bg am Icon-Cluster verankert
+  (x=0→114, Breite 8+n*18→8+n*17). Einzige Pixel-Aenderung bei 640x360.
+  tests/hud-anchor.test.ts: 7 Tests gegen Safe-Area je Format + Golden Values aus der
+  Baseline. tsc rc=0, 594/594 Tests, Build rc=0.
+- **Nachher** (bdf9bdf): **0 Verletzungen in allen 4 Formaten**, AE-vs-640ref=0, 0 JS-Fehler,
+  alle Boxen ganzzahlige Spielpixel. Vision-Pruefung der Shots (2x nearest): icons-bg-Fix
+  sichtbar, Banner/Level-up/Truhe ohne Ueberlapp oder Cutoff.
+  Belege: shots/m10-hud-anchor-after*.{json,png}; Doku: docs/lanes/m10-hud-wide-anchor.md.
+
+## Offene Punkte (nicht diese Lane)
+
+- Kettenflegel-Text-Typo „STARKER ROCKSTOB“ (vermutlich „RÜCKSTOSS“) in src/data.
+- Truhen-Hinweis fehlt im Baseline-JSON (Probe-Fake ohne evolution-Feld); Anker im
+  After-Lauf belegt (zentriert im Rahmen, vom Fix unberuehrt).

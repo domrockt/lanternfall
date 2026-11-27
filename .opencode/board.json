@@ -5942,22 +5942,27 @@
       "id": 5258,
       "title": "m10-hud-wide-anchor: K1 Probe-Skript scripts/m10-hud-anchor.mjs",
       "description": "Messskript fuer 4 Formate (640x360-ref, 780x360@3, 1280x720, 1920x1080): Bounding-Boxen der HUD-Elemente per SetName-Instrumentierung, JSON in shots/. AK: Skript laeuft, JSON pro Format mit Bloecken + Verletzungen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:26:53Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Probe-Skript + SetName-Instrumentierung (nur Namen, kein Layout-Edit)"
+        },
+        {
+          "at": "2026-11-27T20:52:10Z",
+          "by": "build",
+          "text": "doing → done: lane #5258, Commit 6583c14; Reviewer PASS; Skript laeuft, plausibler Boxen, kein flock"
         }
       ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:26:53Z"
+      "updated": "2026-11-27T20:52:10Z"
     },
     {
       "id": 5259,
       "title": "m10-hud-wide-anchor: K2 Ist-Baseline + Screenshots",
       "description": "Lauf mit --tag baseline: shots/m10-hud-anchor-baseline-*.png + JSON; Kollisions-/Rand-Verletzungen je Format gezaehlt und in docs/lanes/m10-hud-wide-anchor.md dokumentiert. AK: baseline-JSON + PNGs committed, Verletzungszahl notiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:38:11Z",
@@ -5968,34 +5973,50 @@
           "at": "2026-11-27T20:38:18Z",
           "by": "build",
           "text": "doing → review: K2 fertig: baseline-JSON + 16 PNGs committed (598823a); Befund icons-bg dokumentiert"
+        },
+        {
+          "at": "2026-11-27T20:52:10Z",
+          "by": "build",
+          "text": "review → done: lane #5259, Commit 598823a; Baseline 64 Verletzungen (alle icons-bg x=0), AE=0; Reviewer PASS"
         }
       ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:38:18Z"
+      "updated": "2026-11-27T20:52:10Z"
     },
     {
       "id": 5260,
       "title": "m10-hud-wide-anchor: K3 Anker in UI.ts fixen (Anker+Margin)",
       "description": "Ankerpunkte in src/scenes/UI.ts auf Anker+Margin statt fixer Koordinaten; tests/hud-anchor.test.ts prueft Anker-Boxen gegen Safe-Area je Format; AE gegen 640x360-Referenz = 0. AK: tsc + npm test gruen, Test deckt 4 Formate ab.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:38:18Z",
           "by": "build",
           "text": "todo → doing: K3: Fix icons-bg-Anker aus Baseline-JSON abgeleitet (Ankerpunkt + Margin), Test hud-anchor.test.ts"
+        },
+        {
+          "at": "2026-11-27T20:52:10Z",
+          "by": "build",
+          "text": "doing → done: lane #5260, Commit 41e616b; Anker+Margin in UI.ts, 7 Tests gruen, 594 Tests + Build gruen; Reviewer PASS"
         }
       ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:38:18Z"
+      "updated": "2026-11-27T20:52:10Z"
     },
     {
       "id": 5261,
       "title": "m10-hud-wide-anchor: K4 Nachher-Messung + Vision-Pruefung",
       "description": "Lauf mit --tag after: 0 Verletzungen in 4 Formaten; Screenshots per Vision geprueft; Pixelgenauigkeit (ganzzahlige Spielpixel) belegt; Lane-Doku final. AK: after-JSON 0 Verletzungen, Vision-Urteil notiert, .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:52:10Z",
+          "by": "build",
+          "text": "todo → done: lane #5261, Commit bdf9bdf; after: 0 Verletzungen in 4 Formaten, AE=0, Vision-Pruefung PASS, Pixelgenauigkeit belegt"
+        }
+      ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:26:51Z"
+      "updated": "2026-11-27T20:52:10Z"
     }
   ]
 }
