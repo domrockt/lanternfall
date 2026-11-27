@@ -1,0 +1,17 @@
+Lane m10-shot-path-budget — Gegner-Schuss-Pfad-Budget (4/4 Karten erledigt)
+
+Roter Abnahmepunkt „Burst 640x360 < Ziel 55": Schuss-Pfad optimiert.
+- Bench scripts/m10-shot-path.mjs (500 Gegner, 71 Schuetzen, Seed 20261127, echtes
+  EnemyProjectiles.ts via Loader-Hook + Phaser/Atlas-Stubs + Mini-Tween-Manager).
+- Vorher 0,047 ms/Frame -> Nachher 0,030 ms/Frame = -36,2% (Bestaetigungslauf 0,027,
+  -43%). Stub-Aufrufe/Frame -40%: setRotation/atan2 je Frame gestrichen, setScale(1)
+  je Frame gestrichen, View-Probe statt Objekt-Allokation je Gate-Check, Trail-Pool
+  mit manuellem 30-Hz-Fade statt makeImage+tween.add (~2400 Allokationen/s -> 0).
+- Verhalten bitgleich: Bench-Zaehler identisch (369 Versuche/186 Schuesse/173
+  Offscreen-Verwerfen/0 Treffer), Fairness-Gates unangetastet (Windup >= 0,3 s,
+  0 Offscreen-Treffer). Tests: shot-path-budget 8/8, enemy-shots-fair 14/14, tsc gruen.
+- In-game (flock): Burst 640x360 60,1 FPS @ 500 Gegnern, passed (Ziel >= 55).
+- Chaos-Screenshot shots/m10-shot-path-after.png (Minute 25, 653 Gegner, 21 aktive
+  Schuesse, 0 Offscreen, windupOk 106/106, keine JS-Fehler).
+- Doku: docs/lanes/m10-shot-path-budget.md. Offen: Trail-Fade 30 Hz (visuell
+  nicht unterscheidbar; 60 Hz per Konstante moeglich).
