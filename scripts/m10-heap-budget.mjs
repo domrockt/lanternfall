@@ -221,6 +221,6 @@ const out = {
 };
 writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
 if (fatal) console.log(`FATAL (partielles JSON geschrieben): ${fatal}`);
-console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${GATE_PCT} %), soft=${gate.softVerdict} (maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${renderer.renderer}, errors=${errors.length}, victory=${victory}`);
+console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${gate.gatePct} %), soft=${gate.softVerdict} (maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${renderer.renderer}, errors=${errors.length}, victory=${victory}`);
 await browser.close();
 process.exit(0);

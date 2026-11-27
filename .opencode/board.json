@@ -7232,6 +7232,11 @@
      "at": "2026-11-27T22:58:03Z",
      "by": "lead",
      "text": "Mess-Skript committed (798e0f2, 20d5616), Smoke 3 min valide (RPL-S iGPU, endMB nach GC, truncated exakt). 30-min-Ist-Lauf laeuft im Hintergrund -> shots/m10-heap-budget-before.json. Tor-Modul + 8/8 Tests (#6240-Vorlauf) committed."
+    },
+    {
+     "at": "2026-11-27T23:30:49Z",
+     "by": "lead",
+     "text": "30-min-Ist-Lauf fertig: RPL-S iGPU, 0 JS-Fehler, FPS min 59,7. Post-GC-Timeline Minute1 32,6 -> Minute30 40,1 MB (+23 % > Tor +15 %) -> Gate FAIL -> Fall B. before.json committed."
     }
    ],
    "created": "2026-11-27T22:36:37Z",
