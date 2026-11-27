@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3806,
+  "next": 4002,
   "cards": [
     {
       "id": 1,
@@ -4950,6 +4950,38 @@
       ],
       "created": "2026-11-27T17:53:08Z",
       "updated": "2026-11-27T17:53:20Z"
+    },
+    {
+      "title": "m10-atlas-pack K1 Messen vorher",
+      "description": "scripts/m10-atlas-pack.mjs: Draw-Calls/Frame (WebGL-Hook), Texturanzahl, FPS bei 300 Gegnern + M25 bei 640x360@1 und 780x360@3 -> shots/m10-atlas-pack-before.json (flock). Akzeptanz: JSON mit allen Messgroessen committed.",
+      "id": 3998,
+      "column": "todo",
+      "assignee": "m10-atlas-pack",
+      "notes": []
+    },
+    {
+      "title": "m10-atlas-pack K2 Packer mehrseitig + Coverage",
+      "description": "atlas.ts: Atlas-Seiten <=2048px (Shelf), alle heissen Canvas-Texturen (inkl. glyphs/icons/ui/props nach Messung) gepackt, Frames per Name, Umleitung ueber Namens-Map; Unit-Test tests/atlas-pack.test.ts (0 Überlappung, <=2048, Determinismus). Akzeptanz: vitest grün, tsc grün.",
+      "id": 3999,
+      "column": "todo",
+      "assignee": "m10-atlas-pack",
+      "notes": []
+    },
+    {
+      "title": "m10-atlas-pack K3 Messen nachher",
+      "description": "3 Läufe je Format (flock) + Draw-Calls bei 300 Gegnern -> shots/m10-atlas-pack-after*.json + Vergleichsbild vorher/nachher (pixelgleich). Akzeptanz: Draw-Calls<60, M25 780 >=50 FPS Median, Optik-Diff 0.",
+      "id": 4000,
+      "column": "todo",
+      "assignee": "m10-atlas-pack",
+      "notes": []
+    },
+    {
+      "title": "m10-atlas-pack K4 Doku + Abschluss",
+      "description": "docs/lanes/m10-atlas-pack.md mit Zahlen vorher/nachher, offene Punkte; .lane-done anlegen. Akzeptanz: Doku mit Belegpfaden committed.",
+      "id": 4001,
+      "column": "todo",
+      "assignee": "m10-atlas-pack",
+      "notes": []
     }
   ]
 }
