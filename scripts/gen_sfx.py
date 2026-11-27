@@ -117,66 +117,73 @@ def write_wav(name: str, samples: list[float]) -> None:
 
 
 def sfx() -> None:
-    # Waffen: Glutfunke (warmes Zischen mit Pitch-Down)
+    # M10: Die 12 Waffen-/Evolutions-Klänge belegen bewusst unterschiedliche
+    # Frequenzbänder und Wellenform-Mixe (Tests: tests/audio-mix.test.ts,
+    # Band-Distanz >= 0,12 für alle 66 Paare). Jeder Klang hat einen eigenen
+    # Primär- und Sekundär-Bandschwerpunkt; Evolutionen steigen aufwärts.
+    # ── 6 Basiswaffen: kurze Treffer < 0,4 s ────────────────────────────────
+    # Glutfunke: tiefes warmes Triangle (Band 2) + leiser 3-kHz-Funken (Band 7).
     write_wav("sfx_ember.wav", mix(
-        tone(880, 220, 0.20, square, 0.18, 0.35, vibrato=0.05),
-        noise_burst(0.18, 0.15, 0.06, 0.35),
+        tone(135, 110, 0.19, triangle, 0.30, release=0.08),
+        tone(3200, 2600, 0.10, triangle, 0.07, release=0.05),
+        noise_burst(0.10, 0.05, 0.03, 0.6),
     ))
-    # Kettenflegel: metallischer Schwung (triangular + noise)
+    # Kettenflegel: sehr tiefer Triangle-Schwung (Bänder 1 + 4).
     write_wav("sfx_flail.wav", mix(
-        tone(300, 160, 0.24, triangle, 0.30, attack=0.01, release=0.1),
-        noise_burst(0.24, 0.18, 0.09, 0.5),
+        tone(58, 48, 0.26, triangle, 0.34, attack=0.01, release=0.1),
+        tone(410, 360, 0.22, triangle, 0.10, release=0.08),
     ))
-    # Frostnova: gläserner Aufwärts-Sweep
+    # Frostnova: gläserner Triangle-Sweep um 4,5 kHz (Bänder 8 + 4).
     write_wav("sfx_frost.wav", mix(
-        tone(520, 1320, 0.32, triangle, 0.22, attack=0.01, release=0.16),
-        tone(1040, 1660, 0.28, square, 0.10, duty=0.25),
+        tone(4600, 4400, 0.33, triangle, 0.26, attack=0.008, release=0.18),
+        tone(300, 260, 0.28, triangle, 0.20, release=0.16),
     ))
-    # Dornensalve: kurze gezackte Salve
+    # Dornensalve: nasaler Triangle-Stich (Bänder 3 + 6).
     write_wav("sfx_thorn.wav", concat(
-        mix(tone(460, 300, 0.06, square, 0.18, duty=0.2), noise_burst(0.06, 0.12, 0.02)),
-        mix(tone(380, 250, 0.06, square, 0.16, duty=0.2), noise_burst(0.06, 0.10, 0.02)),
+        mix(tone(275, 230, 0.08, triangle, 0.28), tone(1900, 1600, 0.07, triangle, 0.10)),
+        mix(tone(255, 210, 0.07, triangle, 0.26), tone(1700, 1500, 0.07, triangle, 0.08)),
     ))
-    # Sturmrune: Donnerknall + gezackter Nachhall
-    write_wav("sfx_storm.wav", concat(
-        mix(noise_burst(0.12, 0.42, 0.02, 0.15), tone(120, 60, 0.12, saw, 0.18)),
-        mix(noise_burst(0.22, 0.22, 0.08, 0.05), tone(90, 40, 0.20, triangle, 0.14)),
+    # Sturmrune: tiefes Grollen (Band 0) + mittleres Rumpeln (Band 5).
+    write_wav("sfx_storm.wav", mix(
+        tone(34, 27, 0.31, triangle, 0.32, decay=0.1, release=0.18),
+        tone(1080, 900, 0.20, triangle, 0.09, release=0.14),
+        noise_burst(0.20, 0.05, 0.06, 0.02),
     ))
-    # Geisterlaterne: schwebender Glockenklang
+    # Geisterlaterne: Glockenklang (Bänder 7 + 9), kein Rauschen.
     write_wav("sfx_lantern.wav", mix(
-        tone(740, 700, 0.34, triangle, 0.20, release=0.22, vibrato=0.02),
-        tone(1480, 1400, 0.30, square, 0.06, duty=0.125, release=0.2),
+        tone(4300, 4150, 0.36, triangle, 0.26, release=0.22, vibrato=0.02),
+        tone(129, 125, 0.36, triangle, 0.32, sustain=0.4, release=0.18),
     ))
-    # Phönixschwarm: Flügelschlag + Feuer
-    write_wav("sfx_phoenix.wav", concat(
-        mix(noise_burst(0.10, 0.30, 0.04, 0.2), tone(600, 900, 0.10, square, 0.14, duty=0.3)),
-        mix(noise_burst(0.16, 0.18, 0.08, 0.08), tone(1400, 500, 0.16, triangle, 0.12)),
+    # ── 6 Evolutions-Stinger: 0,6–1,0 s, Aufwärts-Glissando ────────────────
+    # Phönixschwarm: feuriges Triangle-Glissando Band 8→9 + rauer Anlauf Band 3.
+    write_wav("sfx_phoenix.wav", mix(
+        tone(5600, 9800, 0.82, triangle, 0.24, attack=0.01, sustain=0.5, release=0.25),
+        tone(230, 230, 0.82, triangle, 0.26, sustain=0.4, release=0.25),
     ))
-    # Zornpendel: tiefer Metallschwung
+    # Zornpendel: metallisches Triangle-Glissando Band 2→3.
     write_wav("sfx_wrath.wav", mix(
-        tone(180, 90, 0.34, saw, 0.24, attack=0.02, release=0.14),
-        noise_burst(0.30, 0.18, 0.12, 0.7),
+        tone(90, 250, 0.72, triangle, 0.30, attack=0.015, sustain=0.5, release=0.2),
+        tone(700, 700, 0.72, triangle, 0.16, sustain=0.35, release=0.2),
     ))
-    # Ewiger Winter: langer eisiger Akkord
+    # Ewiger Winter: eisiges Triangle-Glissando Band 8→9 + Fundament Band 6.
     write_wav("sfx_winter.wav", mix(
-        tone(392, 392, 0.55, triangle, 0.12, sustain=0.28, release=0.25),
-        tone(587, 587, 0.55, square, 0.06, duty=0.25, sustain=0.2, release=0.25),
-        tone(880, 880, 0.55, triangle, 0.05, sustain=0.15, release=0.25),
+        tone(3000, 6000, 0.90, triangle, 0.18, attack=0.02, sustain=0.45, release=0.3),
+        tone(760, 760, 0.90, triangle, 0.55, sustain=0.4, release=0.3),
     ))
-    # Dornensturm: Wirbel
-    write_wav("sfx_thornstorm.wav", concat(
-        mix(tone(300, 900, 0.16, saw, 0.16), noise_burst(0.16, 0.12, 0.05)),
-        mix(tone(900, 340, 0.18, saw, 0.14), noise_burst(0.18, 0.10, 0.06)),
+    # Dornensturm: schmaler Triangle-Wirbel Band 5→6.
+    write_wav("sfx_thornstorm.wav", mix(
+        tone(820, 1550, 0.75, triangle, 0.30, attack=0.01, sustain=0.45, release=0.2),
+        tone(280, 280, 0.75, triangle, 0.08, sustain=0.3, release=0.2),
     ))
-    # Gewittersiegel: aufgeladener Summ-Ton
+    # Gewittersiegel: summendes Triangle-Glissando Band 4→5 mit Vibrato.
     write_wav("sfx_seal.wav", mix(
-        tone(220, 440, 0.30, square, 0.14, duty=0.125, vibrato=0.08),
-        tone(660, 880, 0.30, triangle, 0.10, vibrato=0.05),
+        tone(410, 720, 0.70, triangle, 0.30, vibrato=0.08, sustain=0.5, release=0.2),
+        tone(2100, 2100, 0.40, triangle, 0.05, release=0.16),
     ))
-    # Seelenleuchtfeuer: warmes Seelen-Glühen
+    # Seelenleuchtfeuer: warmes Triangle-Glissando Band 6→7 + Grundton 65.
     write_wav("sfx_soul.wav", mix(
-        tone(520, 780, 0.36, triangle, 0.16, release=0.2, vibrato=0.03),
-        tone(260, 390, 0.36, square, 0.08, duty=0.25, release=0.2),
+        tone(1700, 2800, 0.85, triangle, 0.28, attack=0.02, sustain=0.5, release=0.3),
+        tone(65, 65, 0.85, triangle, 0.09, sustain=0.35, release=0.3),
     ))
     # Treffer: kurzer harter Klick
     write_wav("sfx_hit.wav", mix(

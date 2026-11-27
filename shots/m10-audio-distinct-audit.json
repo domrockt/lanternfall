@@ -1,0 +1,1094 @@
+{
+  "source": "public/sfx/*.wav @22050Hz mono 16bit",
+  "keys": {
+    "ember": {
+      "file": "sfx_ember.wav",
+      "baseWeapon": "ember",
+      "name": "Glutfunke",
+      "kind": "base",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.09,
+        "maxVoices": 3,
+        "volume": 0.55
+      },
+      "durationSec": 0.19,
+      "peak": 0.345,
+      "rms": 0.081,
+      "crestFactor": 4.26,
+      "attackSec": 0.004,
+      "zeroCrossRate": 663.2,
+      "spectralCentroidHz": 1983.7,
+      "spectralFlatness": 0.266,
+      "bandEnergies": [
+        0.001,
+        0.001,
+        0.003,
+        0.42,
+        0.009,
+        0.1,
+        0.047,
+        0.077,
+        0.231,
+        0.111
+      ],
+      "pitchTrend": "falling",
+      "family": "square",
+      "signature": "square/falling/hit"
+    },
+    "phoenix": {
+      "file": "sfx_phoenix.wav",
+      "baseWeapon": "ember",
+      "name": "Phönixschwarm",
+      "kind": "evolution",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.9,
+        "maxVoices": 1,
+        "volume": 0.55
+      },
+      "durationSec": 0.82,
+      "peak": 0.456,
+      "rms": 0.088,
+      "crestFactor": 5.16,
+      "attackSec": 0.009,
+      "zeroCrossRate": 11082.9,
+      "spectralCentroidHz": 5965.1,
+      "spectralFlatness": 0.229,
+      "bandEnergies": [
+        0.0,
+        0.001,
+        0.001,
+        0.002,
+        0.095,
+        0.023,
+        0.07,
+        0.042,
+        0.038,
+        0.728
+      ],
+      "pitchTrend": "rising",
+      "family": "square",
+      "signature": "square/rising/stinger"
+    },
+    "flail": {
+      "file": "sfx_flail.wav",
+      "baseWeapon": "flail",
+      "name": "Kettenflegel",
+      "kind": "base",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.12,
+        "maxVoices": 2,
+        "volume": 0.55
+      },
+      "durationSec": 0.26,
+      "peak": 0.384,
+      "rms": 0.088,
+      "crestFactor": 4.37,
+      "attackSec": 0.008,
+      "zeroCrossRate": 184.6,
+      "spectralCentroidHz": 469.7,
+      "spectralFlatness": 0.051,
+      "bandEnergies": [
+        0.002,
+        0.009,
+        0.528,
+        0.069,
+        0.034,
+        0.233,
+        0.055,
+        0.035,
+        0.02,
+        0.015
+      ],
+      "pitchTrend": "falling",
+      "family": "square",
+      "signature": "square/falling/hit"
+    },
+    "wrath_pendulum": {
+      "file": "sfx_wrath.wav",
+      "baseWeapon": "flail",
+      "name": "Zornpendel",
+      "kind": "evolution",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.85,
+        "maxVoices": 1,
+        "volume": 0.6
+      },
+      "durationSec": 0.72,
+      "peak": 0.422,
+      "rms": 0.09,
+      "crestFactor": 4.68,
+      "attackSec": 0.016,
+      "zeroCrossRate": 488.9,
+      "spectralCentroidHz": 734.3,
+      "spectralFlatness": 0.065,
+      "bandEnergies": [
+        0.0,
+        0.0,
+        0.0,
+        0.274,
+        0.295,
+        0.101,
+        0.211,
+        0.065,
+        0.035,
+        0.02
+      ],
+      "pitchTrend": "rising",
+      "family": "square",
+      "signature": "square/rising/stinger"
+    },
+    "frost": {
+      "file": "sfx_frost.wav",
+      "baseWeapon": "frost",
+      "name": "Frostnova",
+      "kind": "base",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.22,
+        "maxVoices": 2,
+        "volume": 0.5
+      },
+      "durationSec": 0.33,
+      "peak": 0.376,
+      "rms": 0.072,
+      "crestFactor": 5.24,
+      "attackSec": 0.006,
+      "zeroCrossRate": 8800.6,
+      "spectralCentroidHz": 3927.3,
+      "spectralFlatness": 0.11,
+      "bandEnergies": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.19,
+        0.039,
+        0.038,
+        0.03,
+        0.55,
+        0.153
+      ],
+      "pitchTrend": "rising",
+      "family": "square",
+      "signature": "square/rising/hit"
+    },
+    "eternal_winter": {
+      "file": "sfx_winter.wav",
+      "baseWeapon": "frost",
+      "name": "Ewiger Winter",
+      "kind": "evolution",
+      "config": {
+        "priority": 1,
+        "cooldown": 1.0,
+        "maxVoices": 1,
+        "volume": 0.45
+      },
+      "durationSec": 0.9,
+      "peak": 0.588,
+      "rms": 0.131,
+      "crestFactor": 4.51,
+      "attackSec": 0.004,
+      "zeroCrossRate": 2675.6,
+      "spectralCentroidHz": 3813.1,
+      "spectralFlatness": 0.127,
+      "bandEnergies": [
+        0.001,
+        0.001,
+        0.001,
+        0.003,
+        0.005,
+        0.01,
+        0.278,
+        0.037,
+        0.536,
+        0.13
+      ],
+      "pitchTrend": "flat",
+      "family": "square",
+      "signature": "square/flat/stinger"
+    },
+    "thorn": {
+      "file": "sfx_thorn.wav",
+      "baseWeapon": "thorn",
+      "name": "Dornensalve",
+      "kind": "base",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.12,
+        "maxVoices": 2,
+        "volume": 0.45
+      },
+      "durationSec": 0.15,
+      "peak": 0.339,
+      "rms": 0.105,
+      "crestFactor": 3.21,
+      "attackSec": 0.004,
+      "zeroCrossRate": 1080.2,
+      "spectralCentroidHz": 1379.8,
+      "spectralFlatness": 0.166,
+      "bandEnergies": [
+        0.0,
+        0.001,
+        0.004,
+        0.025,
+        0.446,
+        0.046,
+        0.097,
+        0.267,
+        0.065,
+        0.048
+      ],
+      "pitchTrend": "falling",
+      "family": "square",
+      "signature": "square/falling/hit"
+    },
+    "thorn_storm": {
+      "file": "sfx_thornstorm.wav",
+      "baseWeapon": "thorn",
+      "name": "Dornensturm",
+      "kind": "evolution",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.85,
+        "maxVoices": 1,
+        "volume": 0.5
+      },
+      "durationSec": 0.75,
+      "peak": 0.338,
+      "rms": 0.078,
+      "crestFactor": 4.31,
+      "attackSec": 0.009,
+      "zeroCrossRate": 2370.7,
+      "spectralCentroidHz": 2386.4,
+      "spectralFlatness": 0.125,
+      "bandEnergies": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.041,
+        0.002,
+        0.669,
+        0.01,
+        0.138,
+        0.139
+      ],
+      "pitchTrend": "rising",
+      "family": "square",
+      "signature": "square/rising/stinger"
+    },
+    "storm": {
+      "file": "sfx_storm.wav",
+      "baseWeapon": "storm",
+      "name": "Sturmrune",
+      "kind": "base",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.16,
+        "maxVoices": 2,
+        "volume": 0.6
+      },
+      "durationSec": 0.31,
+      "peak": 0.359,
+      "rms": 0.082,
+      "crestFactor": 4.38,
+      "attackSec": 0.013,
+      "zeroCrossRate": 229.0,
+      "spectralCentroidHz": 624.2,
+      "spectralFlatness": 0.062,
+      "bandEnergies": [
+        0.008,
+        0.564,
+        0.021,
+        0.095,
+        0.03,
+        0.021,
+        0.177,
+        0.008,
+        0.049,
+        0.026
+      ],
+      "pitchTrend": "falling",
+      "family": "square",
+      "signature": "square/falling/hit"
+    },
+    "thunder_seal": {
+      "file": "sfx_seal.wav",
+      "baseWeapon": "storm",
+      "name": "Gewittersiegel",
+      "kind": "evolution",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.85,
+        "maxVoices": 1,
+        "volume": 0.55
+      },
+      "durationSec": 0.7,
+      "peak": 0.317,
+      "rms": 0.084,
+      "crestFactor": 3.79,
+      "attackSec": 0.004,
+      "zeroCrossRate": 1131.5,
+      "spectralCentroidHz": 1446.8,
+      "spectralFlatness": 0.113,
+      "bandEnergies": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.695,
+        0.001,
+        0.158,
+        0.093,
+        0.052
+      ],
+      "pitchTrend": "rising",
+      "family": "square",
+      "signature": "square/rising/stinger"
+    },
+    "lantern": {
+      "file": "sfx_lantern.wav",
+      "baseWeapon": "lantern",
+      "name": "Geisterlaterne",
+      "kind": "base",
+      "config": {
+        "priority": 1,
+        "cooldown": 0.3,
+        "maxVoices": 1,
+        "volume": 0.4
+      },
+      "durationSec": 0.36,
+      "peak": 0.522,
+      "rms": 0.094,
+      "crestFactor": 5.55,
+      "attackSec": 0.008,
+      "zeroCrossRate": 4450.0,
+      "spectralCentroidHz": 3455.3,
+      "spectralFlatness": 0.093,
+      "bandEnergies": [
+        0.0,
+        0.0,
+        0.0,
+        0.255,
+        0.001,
+        0.05,
+        0.037,
+        0.016,
+        0.504,
+        0.138
+      ],
+      "pitchTrend": "falling",
+      "family": "square",
+      "signature": "square/falling/hit"
+    },
+    "soul_beacon": {
+      "file": "sfx_soul.wav",
+      "baseWeapon": "lantern",
+      "name": "Seelenleuchtfeuer",
+      "kind": "evolution",
+      "config": {
+        "priority": 1,
+        "cooldown": 1.0,
+        "maxVoices": 1,
+        "volume": 0.5
+      },
+      "durationSec": 0.85,
+      "peak": 0.335,
+      "rms": 0.077,
+      "crestFactor": 4.33,
+      "attackSec": 0.022,
+      "zeroCrossRate": 4491.9,
+      "spectralCentroidHz": 3350.5,
+      "spectralFlatness": 0.101,
+      "bandEnergies": [
+        0.0,
+        0.0,
+        0.046,
+        0.0,
+        0.007,
+        0.002,
+        0.006,
+        0.702,
+        0.014,
+        0.222
+      ],
+      "pitchTrend": "rising",
+      "family": "square",
+      "signature": "square/rising/stinger"
+    }
+  },
+  "missing": [],
+  "pairs": [
+    {
+      "a": "frost",
+      "b": "eternal_winter",
+      "bandDistance": 0.125,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "frost",
+      "b": "lantern",
+      "bandDistance": 0.146,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "lantern",
+      "bandDistance": 0.171,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "lantern",
+      "bandDistance": 0.173,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thorn",
+      "bandDistance": 0.274,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thorn_storm",
+      "bandDistance": 0.355,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "wrath_pendulum",
+      "bandDistance": 0.364,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "soul_beacon",
+      "bandDistance": 0.488,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "frost",
+      "bandDistance": 0.502,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "eternal_winter",
+      "bandDistance": 0.504,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thorn_storm",
+      "bandDistance": 0.509,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "frost",
+      "b": "thorn",
+      "bandDistance": 0.565,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "thunder_seal",
+      "bandDistance": 0.597,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "lantern",
+      "bandDistance": 0.622,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "soul_beacon",
+      "bandDistance": 0.647,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "frost",
+      "bandDistance": 0.653,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "frost",
+      "bandDistance": 0.677,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "frost",
+      "b": "thorn_storm",
+      "bandDistance": 0.69,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn_storm",
+      "b": "storm",
+      "bandDistance": 0.691,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "thorn_storm",
+      "bandDistance": 0.695,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "eternal_winter",
+      "bandDistance": 0.701,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "thunder_seal",
+      "bandDistance": 0.704,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "eternal_winter",
+      "bandDistance": 0.706,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "lantern",
+      "bandDistance": 0.712,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn_storm",
+      "b": "lantern",
+      "bandDistance": 0.721,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "storm",
+      "bandDistance": 0.729,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "thorn_storm",
+      "bandDistance": 0.729,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "ember",
+      "b": "phoenix",
+      "bandDistance": 0.735,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thunder_seal",
+      "bandDistance": 0.75,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "thorn",
+      "bandDistance": 0.751,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "wrath_pendulum",
+      "bandDistance": 0.757,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thorn",
+      "bandDistance": 0.757,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "thorn",
+      "bandDistance": 0.764,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thunder_seal",
+      "b": "soul_beacon",
+      "bandDistance": 0.765,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "thorn_storm",
+      "bandDistance": 0.775,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "flail",
+      "bandDistance": 0.78,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "soul_beacon",
+      "bandDistance": 0.781,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thunder_seal",
+      "b": "lantern",
+      "bandDistance": 0.783,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "storm",
+      "bandDistance": 0.785,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "storm",
+      "bandDistance": 0.785,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "thunder_seal",
+      "bandDistance": 0.786,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "frost",
+      "b": "thunder_seal",
+      "bandDistance": 0.791,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "wrath_pendulum",
+      "bandDistance": 0.816,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "lantern",
+      "bandDistance": 0.821,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "storm",
+      "b": "lantern",
+      "bandDistance": 0.829,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thunder_seal",
+      "bandDistance": 0.844,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "soul_beacon",
+      "bandDistance": 0.845,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "thorn",
+      "bandDistance": 0.853,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "frost",
+      "b": "soul_beacon",
+      "bandDistance": 0.856,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "soul_beacon",
+      "bandDistance": 0.86,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "lantern",
+      "bandDistance": 0.872,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "storm",
+      "bandDistance": 0.873,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "soul_beacon",
+      "bandDistance": 0.876,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "frost",
+      "b": "storm",
+      "bandDistance": 0.878,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "thunder_seal",
+      "bandDistance": 0.88,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "lantern",
+      "b": "soul_beacon",
+      "bandDistance": 0.886,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "flail",
+      "b": "storm",
+      "bandDistance": 0.887,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "thorn_storm",
+      "bandDistance": 0.893,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "frost",
+      "bandDistance": 0.91,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "eternal_winter",
+      "bandDistance": 0.91,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn_storm",
+      "b": "soul_beacon",
+      "bandDistance": 0.914,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "storm",
+      "bandDistance": 0.916,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "flail",
+      "bandDistance": 0.939,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "storm",
+      "b": "thunder_seal",
+      "bandDistance": 0.949,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "thorn_storm",
+      "b": "thunder_seal",
+      "bandDistance": 0.953,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "storm",
+      "b": "soul_beacon",
+      "bandDistance": 0.968,
+      "sameSignature": false,
+      "sameBase": false
+    }
+  ],
+  "closestPairs": [
+    {
+      "a": "frost",
+      "b": "eternal_winter",
+      "bandDistance": 0.125,
+      "sameSignature": false,
+      "sameBase": true
+    },
+    {
+      "a": "frost",
+      "b": "lantern",
+      "bandDistance": 0.146,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "lantern",
+      "bandDistance": 0.171,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "lantern",
+      "bandDistance": 0.173,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thorn",
+      "bandDistance": 0.274,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thorn_storm",
+      "bandDistance": 0.355,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "wrath_pendulum",
+      "bandDistance": 0.364,
+      "sameSignature": false,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "soul_beacon",
+      "bandDistance": 0.488,
+      "sameSignature": false,
+      "sameBase": false
+    }
+  ],
+  "identicalSignaturePairs": [
+    {
+      "a": "ember",
+      "b": "lantern",
+      "bandDistance": 0.173,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thorn_storm",
+      "bandDistance": 0.509,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "soul_beacon",
+      "bandDistance": 0.647,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "thorn_storm",
+      "bandDistance": 0.695,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thunder_seal",
+      "bandDistance": 0.75,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "thorn",
+      "bandDistance": 0.764,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thunder_seal",
+      "b": "soul_beacon",
+      "bandDistance": 0.765,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "flail",
+      "bandDistance": 0.78,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "ember",
+      "b": "storm",
+      "bandDistance": 0.785,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "wrath_pendulum",
+      "bandDistance": 0.816,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "lantern",
+      "bandDistance": 0.821,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "storm",
+      "b": "lantern",
+      "bandDistance": 0.829,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "soul_beacon",
+      "bandDistance": 0.845,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "thorn",
+      "bandDistance": 0.853,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "lantern",
+      "bandDistance": 0.872,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thorn",
+      "b": "storm",
+      "bandDistance": 0.873,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "phoenix",
+      "b": "thunder_seal",
+      "bandDistance": 0.88,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "flail",
+      "b": "storm",
+      "bandDistance": 0.887,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thorn_storm",
+      "b": "soul_beacon",
+      "bandDistance": 0.914,
+      "sameSignature": true,
+      "sameBase": false
+    },
+    {
+      "a": "thorn_storm",
+      "b": "thunder_seal",
+      "bandDistance": 0.953,
+      "sameSignature": true,
+      "sameBase": false
+    }
+  ],
+  "gaps": [
+    "grobe Signatur (Familie/Trend/Laenge) in 20 Paaren gleich (z. B. ember/lantern, wrath_pendulum/thorn_storm, phoenix/soul_beacon, phoenix/thorn_storm, wrath_pendulum/thunder_seal, ember/thorn) — Feindistanz entscheidet",
+    "keine Luecke: alle 66 Paare >= 0,12 Band-Distanz (Minimum 0.125 frost/eternal_winter)"
+  ]
+}
