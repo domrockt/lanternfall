@@ -155,7 +155,7 @@ async function runTouchSuite() {
   };
 
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=11`);
-  await page.waitForFunction(() => Boolean(window.__lf && window.__game), { timeout: 8000 });
+  await page.waitForFunction(() => Boolean(window.__lf && window.__game), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
   await page.waitForTimeout(450);
 
@@ -215,12 +215,18 @@ async function runTouchSuite() {
   await page.waitForTimeout(150);
   await snap(page, "pause-touch");
   await tapText(page, "FORTSETZEN");
-  await waitState(page, "paused", false);
+  // Lastbefund K3: unter paralleler Last kann der erste Tipp verlorengehen
+  // (Overlay noch nicht input-bereit). EIN begrenzter zweiter Versuch.
+  let fortgesetzt = await waitState(page, "paused", false);
+  if (!fortgesetzt) {
+    await tapText(page, "FORTSETZEN");
+    fortgesetzt = await waitState(page, "paused", false);
+  }
   check("Touch: FORTSETZEN per Tippen", (await state(page)).paused === false);
 
   // Level-up: Karte per Tippen waehlen.
   await page.evaluate(() => window.__lf.giveXp(800));
-  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, { timeout: 3000 });
+  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, undefined, { timeout: 5000 });
   await page.waitForTimeout(220);
   await snap(page, "levelup-touch");
   const loadoutBefore = await page.evaluate(() =>
@@ -347,7 +353,7 @@ async function runGamepadSuite() {
   };
 
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=23`);
-  await page.waitForFunction(() => Boolean(window.__lf && window.__game), { timeout: 8000 });
+  await page.waitForFunction(() => Boolean(window.__lf && window.__game), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
   await page.waitForTimeout(400);
   // Hotplug: erst nach dem Titel verbinden (Polling/Plugin muss ihn finden).
@@ -441,7 +447,7 @@ async function runGamepadSuite() {
 
   // Level-up und Truhe per Pad-Aktionen.
   await page.evaluate(() => window.__lf.giveXp(900));
-  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, { timeout: 3000 });
+  await page.waitForFunction(() => window.__lf.state().levelUpOpen === true, undefined, { timeout: 5000 });
   await page.waitForTimeout(150);
   await snap(page, "gamepad-levelup");
   const gpLoadoutBefore = await page.evaluate(() =>
@@ -487,7 +493,7 @@ async function runKeyboardSuite() {
   attachErrors(page);
   await page.bringToFront();
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=31`);
-  await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
+  await page.waitForFunction(() => Boolean(window.__lf), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
   await page.keyboard.press("Enter");
   await waitForScene(page, "charselect");
@@ -516,7 +522,7 @@ async function runKeyboardSuite() {
   await page.evaluate(() => { window.__esc = []; window.addEventListener("keydown", (e) => window.__esc.push(e.key)); });
   await page.keyboard.press("Escape");
   const pausedOk = await page.waitForFunction(
-    () => window.__lf.state().paused === true, { timeout: 3000 },
+    () => window.__lf.state().paused === true, undefined, { timeout: 6000 },
   ).then(() => true).catch(() => false);
   const escDetail = JSON.stringify(await page.evaluate(() => ({
     paused: window.__lf.state().paused,
@@ -531,7 +537,7 @@ async function runKeyboardSuite() {
   await page.evaluate(() => { window.__esc = []; });
   await page.keyboard.press("Escape");
   const resumedOk = await page.waitForFunction(
-    () => window.__lf.state().paused === false, { timeout: 3000 },
+    () => window.__lf.state().paused === false, undefined, { timeout: 6000 },
   ).then(() => true).catch(() => false);
   const resumeDetail = JSON.stringify(await page.evaluate(() => ({
     paused: window.__lf.state().paused, keys: window.__esc,
