@@ -39,18 +39,19 @@ Der Cap brachte auf iGPU 0,0 FPS (beide Varianten vsync-60), kostete aber Optik:
 
 ### Sichtprüfung (Abnahme-Kriterium "keine schwarzen Balken bei 960x540")
 
-- `shots/m10-perf-cap-rollback-m25-after-rollback.png` (780x360@3 → 2340x1080 device px):
-  **0 px Balken** links/rechts (Spaltenmessung, erste helle Spalte x=0, letzte x=2339).
-  Vor dem Rollback waren hier 2x70 device-px Rand (Canvas 640 statt 780 breit, siehe
-  `docs/lanes/m10-view-width-cap.md` Abs. 3: Balken exakt (780−640)/2).
+- **780x360@3 mit Cap (Vorher):** `shots/m10-perf-cap-rollback-m25-cap-on-{1..3}.png` — uniformes
+  Hintergrundband (Helligkeit 8,3) von **210 device-px je Seite** (Spalten 0–209 und 2131–2339), Canvas
+  nur 640 statt 780 Spielpixel breit. Das war der Optik-Verlust des Deckels.
+- **780x360@3 nach Rollback:** `shots/m10-perf-cap-rollback-m25-after-rollback.png` (2340x1080 device px):
+  Spaltenprofil durchgehend Canvas-Inhalt (9,4–53, variierend, kein uniformes Band) — **0 px Balken**.
+  identisch `m25-cap-off-{1..3}.png`.
 - `shots/m10-perf-cap-rollback-m{20,30}-960x540.{png,json}` (Minute-20/-30-Nachstellung, 960x540@1):
-  dort bleiben dunkle Ränder von je ~120 CSS-px — **aber das ist der M8-Fit-Fallback, nicht der Cap**:
-  bei 960x540@1 ist n = floor(min(540/360, 960/480)) = 1 < 2 → `fitView()` kehrt zurück, BEVOR die
-  (entfernte) Klemm-Logik greift. intern 480x360, CSS 720x540, Ränder-Helligkeit 8,3 (Seitenhintergrund).
+  dort bleiben dunkle Ränder von je 120 CSS-px (uniformes 8,3-Band, Spalten 0–119/840–959) — **aber das
+  ist der M8-Fit-Fallback, nicht der Cap**: bei 960x540@1 ist n = floor(min(540/360, 960/480)) = 1 < 2 →
+  `fitView()` kehrt zurück, BEVOR die (entfernte) Klemm-Logik greift. intern 480x360, CSS 720x540.
   Verhalten vor/nach dem Rollback identisch (Klemm-Pfad war bei n=1 nie erreichbar) — gleiche Balken
-  wie im Fullrun der Ursprungs-Lane (`docs/lanes/m10-view-width-cap.md` Abs. 2c). Der Rollback macht
-  960x540 weder besser noch schlechter; ein evtl. gewünschter Fit-Fallback ohne Balken wäre eine eigene
-  M8-Karte (nicht Teil dieses Briefings).
+  wie im Fullrun der Ursprungs-Lane (`docs/lanes/m10-view-width-cap.md` Abs. 2c). Ein evtl. gewünschter
+  Fit-Fallback ohne Balken wäre eine eigene M8-Karte (nicht Teil dieses Briefings).
 - Abnahme-Kriterium nach Regeltext geprüft: **Cap entfernt, M25 bleibt >= 55 FPS (60,0–60,1)** ✓.
 
 ## Teil B — ADD-Glow-Flächen-Deckel entschärft (Alpha-Floor bleibt)
@@ -91,5 +92,9 @@ Skript hierfür: `--viewport 960x540 --dpr 1 --shot`; neu geschlossen werden Lev
 ## Teil C — DPR-Budget-Regler: unverändert
 
 Teil C nicht angefasst (`e85f890`, `src/logic/scale.ts` + `src/config.ts` bleiben, Android-Sicherheitsnetz).
-Beleg iGPU: `renderScale`-Feld in allen Mess-JSONs = **1** (Regler bleibt auf iGPU bei Teiler 1,
-RENDER_SCALE = 1 — kein Schrumpfen ohne Beleg, erwartet: vsync-60 >= 57-FPS-Hebeschwelle).
+Beleg iGPU (Zahl): `renderScale` in allen Mess-JSONs = **1** —
+`shots/m10-perf-cap-rollback-m25-after-rollback.json`, `...-m25-cap-off-{1..3}.json`,
+`...-fx-after.json`, `...-fx-after-960.json` je Feld `renderScale: 1`. Auf iGPU bleibt RENDER_SCALE = 1
+(Regler senkt nur unter 45 FPS über 2 s; alle Läufe vsync-60 → Hebeschwelle 57 hält Stufe 1).
+Damit ist der Teil-B-Deckel auf iGPU definitionsgemäß inaktiv (RENDER_SCALE > 1 nötig) und der
+Android-Pfad (Regler senkt → Deckel greift) ist in `tests/fx-add-cap.test.ts` (setRenderScale(2)) gedeckt.
