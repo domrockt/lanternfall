@@ -7188,7 +7188,7 @@
       "id": 6198,
       "title": "m10-hero-portraits K1: Ist festhalten (Vorher-Belege + JSON)",
       "description": "Vorher-Belege EINMAL: shots/m10-hero-portraits-before-portrait-{mira,kael}.png (4x nearest, aus gen_chars.build()), Auswahl-Szene shots/m10-hero-portraits-before-select.png + shots/m10-hero-portraits-before.json (Canvas-Größe 48x48, genutzte Pixel-Fläche/BBox je Porträt). Kein Skript-Tuning-Loop. Abnahme: Belege existieren, JSON enthält BBox+Fläche.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:31:40Z",
@@ -7199,16 +7199,21 @@
           "at": "2026-11-27T22:32:44Z",
           "by": "build",
           "text": "doing → review: Vorher-Belege in Commit 867cb3b: 4x-Portraets bestätigen Befund (Kael=Kopf über Kasten, Mira grob), select.png ohne JS-Fehler. Beleg: shots/m10-hero-portraits-before-*."
+        },
+        {
+          "at": "2026-11-27T23:09:13Z",
+          "by": "build",
+          "text": "review → done: done: Vorher-Belege in 867cb3b — Befund von art-director Runde 1 als Grundlage verwendet (Kael=Kopf über Kasten, Mira grob) und bestätigt."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:32:44Z"
+      "updated": "2026-11-27T23:09:13Z"
     },
     {
       "id": 6199,
       "title": "m10-hero-portraits K2: Portraits neu zeichnen (Kael=Mönch, Mira=Jägerin)",
       "description": "Beide 48x48-Porträts in scripts/art/gen_chars.py neu: Kael eindeutig Mönch (Kutte, Gurt, Tonsure), Mira Jägerin/Bogenschützin. Silhouette zuerst, nur Palette src/palette.ts, Ausgabe-Pixelgröße exakt 48x48 (kein Mixel). Danach gen-chars.ts regenerieren. Abnahme: Silhouetten klar lesbar, tsc rc=0.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:32:44Z",
@@ -7224,40 +7229,60 @@
           "at": "2026-11-27T23:07:13Z",
           "by": "build",
           "text": "doing → review: K2 abgeschlossen: r2 (f1d4943, art-director-Korrekturen + frische after-Belege), r3 (cbb99e5, Kael Tonsure-Kranz; Mira Brim revert) + m4-Ref-Shots (a3…). Silhouetten 2x unterscheidbar (art-director Kriterium 3 PASS Note 5), tsc rc=0, Tests grün. Mira bleibt Laternen-Hexe (Spieldaten), kein Bogen — begründet in docs/lanes/m10-hero-portraits.md."
+        },
+        {
+          "at": "2026-11-27T23:09:13Z",
+          "by": "build",
+          "text": "review → done: done: art-director PASS (Re-Check, 5/5). r2 f1d4943 + r3 cbb99e5 — r3 glättet genau die nicht-blockierende Stirn-Notiz des Re-Checks und entfernt Streupixel-Risiko; PASS bleibt gültig."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T23:07:13Z"
+      "updated": "2026-11-27T23:09:13Z"
     },
     {
       "id": 6200,
       "title": "m10-hero-portraits K3: Tests hero-portraits.test.ts",
       "description": "tests/hero-portraits.test.ts: beide Porträt-Sprites in erwarteter Größe (48x48) vorhanden, nur Palettenfarben, Auswahl-Szene rendert beide ohne Fehltextur. Abnahme: npx vitest run tests/hero-portraits.test.ts rc=0.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:34:49Z",
           "by": "build",
           "text": "todo → review: Tests in Commit eb10d33: 3 Tests (48x48-Größe, Palette 0..31, CharSelect-Key löst für beide Charaktere auf). Beleg: npx tsc --noEmit rc=0, npx vitest run tests/hero-portraits.test.ts 3/3 grün."
+        },
+        {
+          "at": "2026-11-27T23:09:13Z",
+          "by": "build",
+          "text": "review → done: done: eb10d33 — 3 Tests grün, in der Full-Suite 786/786 bestätigt; hero-contrast-Region-Fix geprüft."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:34:49Z"
+      "updated": "2026-11-27T23:09:13Z"
     },
     {
       "id": 6201,
       "title": "m10-hero-portraits K4: Nachher + art-director-Abnahme + Doku",
       "description": "shots/m10-hero-portraits-after-*.png, art-director-Sichtprüfung (Vision) dokumentiert in docs/lanes/m10-hero-portraits.md, npm run build + Tests rc=0, lane-done. Abnahme: art-director PASS, Doku enthält Vorher/Nachher + Urteil.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:52:13Z",
           "by": "build",
           "text": "todo → doing: Nachher-Belege + art-director-Sichtprüfung + Doku."
+        },
+        {
+          "at": "2026-11-27T23:08:57Z",
+          "by": "build",
+          "text": "doing → review: K4 abgeschlossen, Commit mit Doku-Urteil + lane-done: art-director PASS 5/5 (Kael=Mönch, Mira=Laternen-Hexe, Silhouetten 2x, Palette sauber, frische Szene md5 73bef5cb), build rc=0, 786/786 Tests, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-27T23:09:13Z",
+          "by": "build",
+          "text": "review → done: done: art-director PASS 5/5, Doku final (docs/lanes/m10-hero-portraits.md), build rc=0, 786/786 Tests, 0 JS-Fehler, .lane-done committet."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:52:13Z"
+      "updated": "2026-11-27T23:09:13Z"
     }
   ]
 }
