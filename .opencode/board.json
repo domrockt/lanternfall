@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2440,
+  "next": 2444,
   "cards": [
     {
       "id": 1,
@@ -3608,6 +3608,46 @@
       "notes": [],
       "created": "2026-11-27T05:53:36Z",
       "updated": "2026-11-27T05:53:36Z"
+    },
+    {
+      "id": 2440,
+      "title": "m10-touch-latency #1 Messung Touch→Bewegung (iPhone14/Pixel7 quer)",
+      "description": "Scripted Touch-Sweep (Pointer down→move→up) in iPhone-14-quer- und Pixel-7-quer-Profil, pro Ereignis Frame-Zeitstempel; Latenz Median/p95 in shots/m10-touch-latency.json; Ist-Werte in docs/lanes/m10-touch-latency.md. Abnahme: JSON mit 2 Profilen + Median/p95, 0 JS-Fehler. (lane #2118)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T05:57:17Z",
+      "updated": "2026-11-27T05:57:17Z"
+    },
+    {
+      "id": 2441,
+      "title": "m10-touch-latency #2 Pfad straffen + Deadzone-Hysterese",
+      "description": "Snapshot-Übergabe ohne Zusatzframe; Deadzone-Hysterese (Enter 0.12 / Release 0.09) gegen Zittern, Priorität touch>gamepad>keyboard unverändert. Abnahme: tests/input-latency.test.ts prüft Hysterese + 0-Vektor bei Ruhe, tsc/build grün. (lane #2119)",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:57:17Z",
+      "updated": "2026-11-27T05:57:17Z"
+    },
+    {
+      "id": 2442,
+      "title": "m10-touch-latency #3 Loslassen: pointerup → Achse 0 im nächsten Frame",
+      "description": "Nach touchend/pointerup ist move im nächsten Frame (0,0); Pause/Level-up/Truhe blockieren Gesten weiterhin. Abnahme: Test in tests/input-latency.test.ts + tests/input.test.ts grün, Beleg-Screenshot. (lane #2120)",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:57:17Z",
+      "updated": "2026-11-27T05:57:17Z"
+    },
+    {
+      "id": 2443,
+      "title": "m10-touch-latency #4 Doku + .lane-done",
+      "description": "docs/lanes/m10-touch-latency.md mit Latenz vorher/nachher (Median/p95), 0 JS-Fehler, Urteil. Abnahme: build+test grün, JSON-Belege committed, 0 JS-Fehler in beiden Profilen. (lane #2121)",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-27T05:57:17Z",
+      "updated": "2026-11-27T05:57:17Z"
     }
   ]
 }
