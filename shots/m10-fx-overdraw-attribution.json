@@ -1,0 +1,495 @@
+{
+  "suite": "attribution",
+  "viewport": {
+    "width": 780,
+    "height": 360,
+    "dpr": 3
+  },
+  "seconds": 10,
+  "runsPerVariant": 3,
+  "summary": {
+    "fx-off": {
+      "fps": 40.4,
+      "fpsMin": 35.8,
+      "msPerFrame": 24.75,
+      "particles": 0
+    },
+    "particle-25": {
+      "fps": 45.7,
+      "fpsMin": 38.4,
+      "msPerFrame": 21.88,
+      "particles": 0
+    },
+    "full": {
+      "fps": 45.6,
+      "fpsMin": 40.3,
+      "msPerFrame": 21.95,
+      "particles": 0
+    }
+  },
+  "fxDeltaMsPerFrame": -2.8,
+  "particleDeltaMsPerFrame": 0.07,
+  "targetFps": 50,
+  "runs": [
+    {
+      "run": 1,
+      "variant": "fx-off",
+      "fps": 38.2,
+      "fpsMin": 35.8,
+      "fpsBuckets": [
+        39.7,
+        38,
+        37.4,
+        41,
+        40.3,
+        38,
+        36.8,
+        36,
+        35.8
+      ],
+      "frames": 383,
+      "elapsedMs": 10021,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 30,
+        "particles": 0,
+        "particleCap": 140,
+        "fx": 0,
+        "fxCap": 90,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 20268,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "fx-off",
+        "particlesBefore": 120,
+        "fxBefore": 83,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 26.18
+    },
+    {
+      "run": 1,
+      "variant": "particle-25",
+      "fps": 47.9,
+      "fpsMin": 45.2,
+      "fpsBuckets": [
+        48.5,
+        45.3,
+        46,
+        51,
+        54,
+        47.2,
+        47.4,
+        45.2,
+        46
+      ],
+      "frames": 480,
+      "elapsedMs": 10015,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 300,
+        "particles": 132,
+        "particleCap": 280,
+        "fx": 136,
+        "fxCap": 180,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 20261,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "particle-25",
+        "particlesBefore": 132,
+        "fxBefore": 84,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 20.88
+    },
+    {
+      "run": 1,
+      "variant": "full",
+      "fps": 44.7,
+      "fpsMin": 40.3,
+      "fpsBuckets": [
+        44.5,
+        45.5,
+        46,
+        47.2,
+        53,
+        42,
+        40.3,
+        41.3,
+        42.3
+      ],
+      "frames": 448,
+      "elapsedMs": 10029,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 300,
+        "particles": 274,
+        "particleCap": 280,
+        "fx": 179,
+        "fxCap": 180,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 20475,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "full",
+        "particlesBefore": 134,
+        "fxBefore": 76,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 22.37
+    },
+    {
+      "run": 2,
+      "variant": "fx-off",
+      "fps": 41.6,
+      "fpsMin": 39.3,
+      "fpsBuckets": [
+        41.7,
+        42,
+        41.3,
+        41.3,
+        41.3,
+        40.3,
+        39.3,
+        40.7,
+        44
+      ],
+      "frames": 417,
+      "elapsedMs": 10027,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 300,
+        "particles": 0,
+        "particleCap": 140,
+        "fx": 0,
+        "fxCap": 90,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 51,
+        "kills": 28037,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "fx-off",
+        "particlesBefore": 106,
+        "fxBefore": 89,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 24.04
+    },
+    {
+      "run": 2,
+      "variant": "particle-25",
+      "fps": 45.7,
+      "fpsMin": 41.3,
+      "fpsBuckets": [
+        44.6,
+        49.2,
+        51.2,
+        47,
+        46.2,
+        41.6,
+        41.3,
+        42.6,
+        49
+      ],
+      "frames": 458,
+      "elapsedMs": 10031,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 242,
+        "particles": 121,
+        "particleCap": 100,
+        "fx": 55,
+        "fxCap": 60,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 51,
+        "kills": 26612,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "particle-25",
+        "particlesBefore": 93,
+        "fxBefore": 86,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 21.88
+    },
+    {
+      "run": 2,
+      "variant": "full",
+      "fps": 45.8,
+      "fpsMin": 40.3,
+      "fpsBuckets": [
+        48.8,
+        50,
+        49,
+        47.2,
+        46.2,
+        43.3,
+        40.3,
+        44,
+        44.3
+      ],
+      "frames": 459,
+      "elapsedMs": 10012,
+      "worstFrameMs": 33.4,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 300,
+        "particles": 238,
+        "particleCap": 280,
+        "fx": 179,
+        "fxCap": 180,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 20326,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "full",
+        "particlesBefore": 119,
+        "fxBefore": 88,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 21.83
+    },
+    {
+      "run": 3,
+      "variant": "fx-off",
+      "fps": 41.4,
+      "fpsMin": 40.7,
+      "fpsBuckets": [
+        40.7,
+        42.3,
+        42,
+        41.6,
+        42,
+        41.3,
+        40.7,
+        42,
+        41.3
+      ],
+      "frames": 415,
+      "elapsedMs": 10017,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 300,
+        "particles": 0,
+        "particleCap": 140,
+        "fx": 0,
+        "fxCap": 90,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 21340,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "fx-off",
+        "particlesBefore": 86,
+        "fxBefore": 87,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 24.15
+    },
+    {
+      "run": 3,
+      "variant": "particle-25",
+      "fps": 43.5,
+      "fpsMin": 38.4,
+      "fpsBuckets": [
+        47.6,
+        46,
+        45.5,
+        44.5,
+        47.2,
+        40.3,
+        38.4,
+        40.3,
+        41
+      ],
+      "frames": 436,
+      "elapsedMs": 10021,
+      "worstFrameMs": 33.4,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 29,
+        "particles": 262,
+        "particleCap": 140,
+        "fx": 138,
+        "fxCap": 90,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 20176,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "particle-25",
+        "particlesBefore": 121,
+        "fxBefore": 89,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 22.99
+    },
+    {
+      "run": 3,
+      "variant": "full",
+      "fps": 46.2,
+      "fpsMin": 43.5,
+      "fpsBuckets": [
+        45.5,
+        44.3,
+        47,
+        45.2,
+        46.2,
+        43.5,
+        47.2,
+        45,
+        49
+      ],
+      "frames": 463,
+      "elapsedMs": 10026,
+      "worstFrameMs": 33.5,
+      "targetEnemies": 300,
+      "state": {
+        "enemies": 300,
+        "particles": 140,
+        "particleCap": 140,
+        "fx": 132,
+        "fxCap": 90,
+        "glowBudget": null,
+        "glowUsed": null,
+        "level": 48,
+        "kills": 20378,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "setup": {
+        "variant": "full",
+        "particlesBefore": 129,
+        "fxBefore": 89,
+        "particleCapBefore": 140,
+        "fxCapBefore": 90,
+        "glowBudgetBefore": null
+      },
+      "jsErrors": [],
+      "msPerFrame": 21.65
+    }
+  ],
+  "jsErrors": []
+}

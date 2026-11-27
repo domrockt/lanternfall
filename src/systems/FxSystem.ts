@@ -70,6 +70,8 @@ export class FxSystem {
   trailsEnabled = true;
   /** M6-Endgame-Dämpfung: Alpha-Faktor für alle neuen Effekte (1 = unverändert). */
   alphaScale = 1;
+  /** M10-Attribution: kompletter FX-Pool abschaltbar (nur Messung, kein Spielpfad). */
+  enabled = true;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -96,6 +98,7 @@ export class FxSystem {
   }
 
   spawn(opts: FxOptions): FxRuntime | null {
+    if (!this.enabled) return null;
     if (this.active.length >= this.maxActive) return null;
     const fx = this.free.pop() ?? this.createRuntime();
     fx.x = opts.x;
@@ -391,6 +394,8 @@ export class ParticleSystem {
   private maxActive = 360;
   /** M6-Endgame-Dämpfung: Alpha-Faktor für neue Partikel (1 = unverändert). */
   alphaScale = 1;
+  /** M10-Attribution: kompletter Partikel-Pool abschaltbar (nur Messung). */
+  enabled = true;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -413,6 +418,7 @@ export class ParticleSystem {
   }
 
   spawn(opts: FxOptions): FxRuntime | null {
+    if (!this.enabled) return null;
     if (this.active.length >= this.maxActive) return null;
     const p = this.free.pop() ?? this.createRuntime();
     p.x = opts.x;
