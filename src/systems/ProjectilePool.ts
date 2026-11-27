@@ -64,7 +64,17 @@ export class ProjectilePool {
     p.target = opts.target ?? null;
     p.targetUid = opts.target?.uid ?? 0;
     p.trail = opts.trail ?? null;
-    p.trailFrames = opts.trailFrames ?? (p.trail ? [p.trail] : []);
+    // trailFrames wird IN PLACE befüllt (kein Array pro Spawn): Churn-Hebel
+    // Heap-Margin — das Runtime-Objekt behält seine Array-Identität.
+    if (opts.trailFrames) {
+      p.trailFrames.length = opts.trailFrames.length;
+      for (let i = 0; i < opts.trailFrames.length; i++) p.trailFrames[i] = opts.trailFrames[i];
+    } else if (p.trail) {
+      p.trailFrames.length = 1;
+      p.trailFrames[0] = p.trail;
+    } else {
+      p.trailFrames.length = 0;
+    }
     p.trailTimer = 0;
     p.trailInterval = opts.trailInterval ?? 0.045;
     p.blendAdd = opts.blendAdd ?? false;
