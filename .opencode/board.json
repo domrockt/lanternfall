@@ -4434,10 +4434,16 @@
       "id": 3438,
       "title": "m10-menu-touch-targets #K1 Messbasis: Tap-Probe 640x360 + 780x360@3",
       "description": "Owner ui-dev, Kontrolleur ux-check. scripts/verify-menu-touch.mjs tippt synthetisch Titel/CharSelect/Pause/Results/Options, loggt Treffer/Misserfolg je Button + getBounds je Profil als JSON. Abnahme: shots/m10-menu-touch-before.json mit Trefferquote <100% belegt echte Luecken.",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T13:52:02Z",
+          "by": "build",
+          "text": "doing → review: K1 Beleg: shots/m10-menu-touch-before.json 12/34 Checks (35,3%); Menuebuttons 96x22, Pfeilzonen 24x18, Optionszeilen ohne Tap-Handler. Commit 3dafe2b."
+        }
+      ],
       "created": "2026-11-27T13:30:21Z",
-      "updated": "2026-11-27T13:30:21Z"
+      "updated": "2026-11-27T13:52:02Z"
     },
     {
       "id": 3439,
