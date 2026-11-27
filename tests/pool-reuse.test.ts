@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { Pool } from "../src/systems/Pool";
+import {
+  MAX_ENTRIES, addDamage, expireDamage, type AggregateEntry, type EntrySink,
+} from "../src/logic/damage-numbers";
+import { resetAiState } from "../src/logic/ai-state";
+import type { AiState } from "../src/logic/enemy-ai";
 
 describe("Pool: Reuse ohne Neuanlage im Steady State", () => {
   it("liefert nach release dasselbe Objekt (Identität bleibt)", () => {
@@ -66,5 +71,68 @@ describe("Pool: Reuse ohne Neuanlage im Steady State", () => {
     expect(pool.trim(10)).toBe(0);
     expect(pool.trim(-5)).toBe(10);
     expect(pool.freeCount).toBe(0);
+  });
+});
+
+describe("Damage-Number-Einträge: Reuse + Cap", () => {
+  it("nutzt einen Eintrag aus dem Free-Pool wieder (keine Neuanlage)", () => {
+    const entries: AggregateEntry[] = [];
+    const free: AggregateEntry[] = [];
+    const sink: EntrySink = {
+      take: () => free.pop() ?? {
+        enemyUid: 0, damage: 0, crit: false, firstTime: 0, lastTime: 0, hits: 0,
+      },
+      give: (e) => { free.push(e); },
+    };
+    addDamage(entries, { enemyUid: 1, damage: 10, crit: false, time: 0 }, undefined, sink);
+    expect(entries).toHaveLength(1);
+    const first = entries[0];
+    expireDamage(entries, 10, 0.8, sink);
+    expect(entries).toHaveLength(0);
+    expect(free).toHaveLength(1);
+    addDamage(entries, { enemyUid: 2, damage: 4, crit: false, time: 0 }, undefined, sink);
+    expect(entries[0]).toBe(first);
+    expect(entries[0].enemyUid).toBe(2);
+    expect(entries[0].damage).toBe(4);
+    expect(entries[0].hits).toBe(1);
+  });
+
+  it("kappt die Eintragsliste bei MAX_ENTRIES und gibt den ältesten zurück", () => {
+    const entries: AggregateEntry[] = [];
+    const given: AggregateEntry[] = [];
+    const sink: EntrySink = {
+      take: () => ({
+        enemyUid: 0, damage: 0, crit: false, firstTime: 0, lastTime: 0, hits: 1,
+      }),
+      give: (e) => { given.push(e); },
+    };
+    for (let i = 0; i < MAX_ENTRIES + 10; i++) {
+      addDamage(entries, { enemyUid: i, damage: 1, crit: false, time: i * 0.01 }, undefined, sink);
+    }
+    expect(entries).toHaveLength(MAX_ENTRIES);
+    expect(given).toHaveLength(10);
+    expect(entries.some((e) => e.enemyUid === 0)).toBe(false);
+  });
+});
+
+describe("EnemyPool: KI-Zustand in-place zurücksetzen", () => {
+  it("behält die Objektidentität und setzt alle Felder zurück", () => {
+    const rng = { next: () => 0.5 };
+    const state: AiState = {
+      mode: "charge", timer: 9, cooldown: 9, aimX: 0, aimY: 1,
+      orbitDir: 1, fuse: 3, blinks: 7, attacks: 11,
+    };
+    const before = state;
+    resetAiState(state, rng);
+    expect(state).toBe(before);
+    expect(state.mode).toBe("approach");
+    expect(state.timer).toBeCloseTo(1.9, 5);
+    expect(state.cooldown).toBeCloseTo(1.7, 5);
+    expect(state.aimX).toBe(1);
+    expect(state.aimY).toBe(0);
+    expect(state.orbitDir).toBe(1);
+    expect(state.fuse).toBe(0);
+    expect(state.blinks).toBe(0);
+    expect(state.attacks).toBe(0);
   });
 });

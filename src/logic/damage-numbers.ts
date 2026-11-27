@@ -33,10 +33,30 @@ export function shouldAggregateDamage(enemies: number, lodAggregate: boolean): b
 }
 
 /**
+ * Harte Obergrenze der gleichzeitig gehaltenen Aggregat-Einträge. Mehr als
+ * ~2 Einträge pro sichtbarer Damage-Number bringen keine Anzeige, kosten aber
+ * Objekte/Strings im Endgame-Spam.
+ */
+export const MAX_ENTRIES = 48;
+
+/** Optionaler Objekt-Reuse-Speicher (Pool), damit kein Eintrag neu entsteht. */
+export interface EntrySink {
+  take(): AggregateEntry;
+  give(entry: AggregateEntry): void;
+}
+
+/**
  * Fügt ein Ereignis in die Liste ein. Liegt für denselben Gegner bereits ein
  * Eintrag innerhalb des Fensters, wird summiert (Krit bleibt erhalten).
+ * Bei Erreichen von MAX_ENTRIES wird der älteste Eintrag verdrängt und (falls
+ * ein Sink übergeben wurde) zur Wiederverwendung zurückgegeben.
  */
-export function addDamage(entries: AggregateEntry[], ev: DamageEvent, window = AGGREGATE_WINDOW): AggregateEntry[] {
+export function addDamage(
+  entries: AggregateEntry[],
+  ev: DamageEvent,
+  window = AGGREGATE_WINDOW,
+  sink?: EntrySink,
+): AggregateEntry[] {
   const existing = entries.find(
     (e) => e.enemyUid === ev.enemyUid && ev.time - e.lastTime <= window,
   );
@@ -47,21 +67,44 @@ export function addDamage(entries: AggregateEntry[], ev: DamageEvent, window = A
     existing.hits += 1;
     return entries;
   }
-  entries.push({
-    enemyUid: ev.enemyUid,
-    damage: ev.damage,
-    crit: ev.crit,
-    firstTime: ev.time,
-    lastTime: ev.time,
-    hits: 1,
-  });
+  if (entries.length >= MAX_ENTRIES) {
+    // Ältesten Eintrag per Swap-Remove verdrängen (O(1) statt splice-Shift).
+    let oldest = 0;
+    for (let i = 1; i < entries.length; i++) {
+      if (entries[i].lastTime < entries[oldest].lastTime) oldest = i;
+    }
+    const victim = entries[oldest];
+    entries[oldest] = entries[entries.length - 1];
+    entries.pop();
+    sink?.give(victim);
+  }
+  const entry = sink?.take() ?? {
+    enemyUid: 0, damage: 0, crit: false, firstTime: 0, lastTime: 0, hits: 0,
+  };
+  entry.enemyUid = ev.enemyUid;
+  entry.damage = ev.damage;
+  entry.crit = ev.crit;
+  entry.firstTime = ev.time;
+  entry.lastTime = ev.time;
+  entry.hits = 1;
+  entries.push(entry);
   return entries;
 }
 
 /** Entfernt Einträge, deren Anzeigezeit abgelaufen ist (mutiert die Liste). */
-export function expireDamage(entries: AggregateEntry[], now: number, displayTime = 0.8): AggregateEntry[] {
+export function expireDamage(
+  entries: AggregateEntry[],
+  now: number,
+  displayTime = 0.8,
+  sink?: EntrySink,
+): AggregateEntry[] {
   for (let i = entries.length - 1; i >= 0; i--) {
-    if (now - entries[i].lastTime > displayTime) entries.splice(i, 1);
+    if (now - entries[i].lastTime > displayTime) {
+      const expired = entries[i];
+      entries[i] = entries[entries.length - 1];
+      entries.pop();
+      sink?.give(expired);
+    }
   }
   return entries;
 }

@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import type { EnemyDef } from "../data/types";
 import { SPRITE_FRAMES } from "../gfx/textures";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
+import { resetAiState } from "../logic/ai-state";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 
@@ -74,6 +75,9 @@ export interface EnemyRuntime {
   aiRng: AiRng;
 }
 
+/** Ein einziger Default-RNG statt einer Closure pro Spawn. */
+const DEFAULT_AI_RNG: AiRng = { next: () => Math.random() };
+
 /** Gegner-Pool: Sprites werden wiederverwendet, nie pro Spawn neu erzeugt. */
 export class EnemyPool {
   active: EnemyRuntime[] = [];
@@ -127,8 +131,8 @@ export class EnemyPool {
     enemy.hitFlash = 0;
     enemy.tint = "none";
     enemy.alpha = 1;
-    enemy.aiRng = rng ?? { next: () => Math.random() };
-    enemy.ai = newAiState(enemy.aiRng);
+    enemy.aiRng = rng ?? DEFAULT_AI_RNG;
+    resetAiState(enemy.ai, enemy.aiRng);
     enemy.threat = enemy.boss ? 0.35 : def.archetype === "exploder" ? 1.8 : 1;
     enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
     const frames = SPRITE_FRAMES[def.spriteKey];
@@ -168,9 +172,9 @@ export class EnemyPool {
       sprite, aura, uid: 0, def: {} as EnemyDef, x: 0, y: 0, vx: 0, vy: 0, hp: 0, maxHp: 0,
       damage: 0, radius: 6, speed: 0, hpScale: 1, flash: 0, phase: 0, alive: false, bob: 0,
       slowFactor: 0, slowTimer: 0, freezeTimer: 0, boss: false, bossIndex: -1, elite: false,
-      splitDepth: 0, age: 0, recycled: false, ai: newAiState({ next: () => 0.5 }), threat: 1, telegraph: 0,
+      splitDepth: 0, age: 0, recycled: false, ai: newAiState(DEFAULT_AI_RNG), threat: 1, telegraph: 0,
       attackCounter: 0, bossPhase: 1, contactCooldown: 0, hitFlash: 0, tint: "none", alpha: 1,
-      aiRng: { next: () => 0.5 },
+      aiRng: DEFAULT_AI_RNG,
     };
   }
 

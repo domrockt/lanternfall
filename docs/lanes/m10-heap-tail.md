@@ -30,3 +30,17 @@ Alloc-Sampling (HeapProfiler, 259 Samples, 30,2 Sim-Minuten): Top-Sites sind
 Churn, nicht Retention — `sortByDepth`/`addProp` (Phaser-DisplayList/Terrain),
 `t.onended` (WebAudio-Clip-Handler), `initialize`/`set` (Phaser-Helfer),
 `setText` (Damage-Numbers). Keine dieser Sites wächst monoton mit der Spielzeit.
+
+## Karte #2060 — DamageNumbers/EnemyPool Reuse (COMMIT folgt)
+
+- `DamageNumberSystem` hält Aggregat-Einträge jetzt in einem `Pool<AggregateEntry>`
+  (`MAX_ENTRIES = 48`, Kap beim Einfügen: ältester per Swap-Remove verdrängt und
+  zurückgegeben). Kein `Array.filter` mehr pro Treffer für die View-Zählung;
+  `activeViews` wird inkrementell geführt (`report`/`update`/`clear`).
+- `src/logic/damage-numbers.ts`: `addDamage(..., sink?)` und
+  `expireDamage(..., sink?)` recyceln Einträge; `MAX_ENTRIES` hart gekappt.
+- `EnemyPool.spawn`: KI-Zustand wird per `resetAiState` in-place zurückgesetzt
+  statt `newAiState` (kein Objekt pro Spawn); ein `DEFAULT_AI_RNG` ersetzt die
+  RNG-Closure pro Spawn.
+- Tests `tests/pool-reuse.test.ts`: 8/8 (Pool-Identität, Steady-State ohne
+  Neuanlage, trim, Release-Fremdobjekt, Damage-Reuse, Cap, KI-Reset in-place).
