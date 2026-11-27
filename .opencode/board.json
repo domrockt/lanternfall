@@ -5641,9 +5641,15 @@
       "description": "AC: scripts/m10-separation-budget.mjs misst deterministisch (mulberry32, Minute-25-Chaos, 500 gedraengte Gegner) ms/Frame fuer Hash-Rebuild + Separations-Pfad sowie min-Paarabstand als Trennqualitaet; Ergebnis in shots/m10-separation-budget-before.json, ein Commit.",
       "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T19:56:14Z",
+          "by": "build",
+          "text": "done → done: lane #4618, Merge c96929d"
+        }
+      ],
       "created": "2026-11-27T19:55:58Z",
-      "updated": "2026-11-27T19:55:58Z"
+      "updated": "2026-11-27T19:56:14Z"
     },
     {
       "id": 4959,
@@ -5651,9 +5657,15 @@
       "description": "AC: Hot-Path (queryCircle/separationPush/insert) messbar verbilligt, Trennqualitaet (min-Paarabstand) >= Vorher, tests/separation-crowd.test.ts bleibt gruen; nur eigene Dateien, kein Run.ts.",
       "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T19:56:14Z",
+          "by": "build",
+          "text": "done → done: lane #4619, Merge c96929d"
+        }
+      ],
       "created": "2026-11-27T19:55:58Z",
-      "updated": "2026-11-27T19:55:58Z"
+      "updated": "2026-11-27T19:56:14Z"
     },
     {
       "id": 4960,
@@ -5661,9 +5673,15 @@
       "description": "AC: deterministisch (mulberry32) - Trennung haelt min-Abstand nach N Frames, Budget-Pfad aktiv und begrenzt Nachbarn/Arbeit je Gegner; npx vitest run tests/separation-budget.test.ts gruen.",
       "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T19:56:14Z",
+          "by": "build",
+          "text": "done → done: lane #4620, Merge c96929d"
+        }
+      ],
       "created": "2026-11-27T19:55:58Z",
-      "updated": "2026-11-27T19:55:58Z"
+      "updated": "2026-11-27T19:56:14Z"
     },
     {
       "id": 4961,
@@ -5671,9 +5689,15 @@
       "description": "AC: shots/m10-separation-budget-after.json mit Vorher/Nachher-Vergleich, docs/lanes/m10-separation-budget.md mit Zahlen + offene Punkte; Abnahme: -30% ms/Frame ODER fullrun-fpsMin +5, min-Paarabstand >= Vorher. Befund Lane: 1,88-ms-Baseline = OSR-Harness-Artefakt, real ~2% des Framebudgets.",
       "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T19:56:14Z",
+          "by": "build",
+          "text": "done → done: lane #4621, Merge c96929d"
+        }
+      ],
       "created": "2026-11-27T19:55:58Z",
-      "updated": "2026-11-27T19:55:58Z"
+      "updated": "2026-11-27T19:56:14Z"
     }
   ]
 }
