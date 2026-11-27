@@ -37,12 +37,8 @@ const HOT_KEYS = [
   "water_ripple_0", "water_ripple_1",
 ];
 
-/** Massangaben wie im echten Spiel (16er-Gegner bis 96er-Bosse/Deko). */
-const SIZES = [
-  ...Object.values(ALL_ENEMY_FRAMES).flat().map((key) => ({ key, w: 16, h: 16 })),
-  ...Object.values(ALL_BOSS_FRAMES).flat().map((key) => ({ key, w: 96, h: 96 })),
-  ...HOT_KEYS.map((key, i) => ({ key, w: 5 + (i * 7) % 44, h: 5 + (i * 11) % 72 })),
-];
+/** Alle realen Atlas-Frames inkl. echter Masse aus dem Audit-Beleg. */
+const FULL_SIZES = (auditReport as { frames: { key: string; w: number; h: number }[] }).frames;
 
 function gap(a: AtlasFrameRect, b: AtlasFrameRect): number {
   const dx = Math.max(b.x - (a.x + a.w), a.x - (b.x + b.w));
@@ -88,8 +84,9 @@ describe("Runtime-Atlas", () => {
   });
 
   it("Gutter ≥ 2 px zwischen allen Zellen (horizontal und vertikal)", () => {
-    const packed = packAtlas(SIZES);
-    expect(packed.frames.length).toBe(SIZES.length);
+    const packed = packAtlas(FULL_SIZES);
+    expect(FULL_SIZES.length).toBe(227);
+    expect(packed.frames.length).toBe(FULL_SIZES.length);
     expect(ATLAS_GUTTER).toBeGreaterThanOrEqual(2);
     let minGap = Infinity;
     for (let i = 0; i < packed.frames.length; i++) {
@@ -104,7 +101,8 @@ describe("Runtime-Atlas", () => {
 
   it("keine Bleed-Fälle: 1-px-Padding jeder Zelle gehört exklusiv zu ihrem Frame", () => {
     expect(ATLAS_PAD).toBeGreaterThanOrEqual(1);
-    const packed = packAtlas(SIZES);
+    const packed = packAtlas(FULL_SIZES);
+    expect(packed.frames.length).toBe(227);
     for (const f of packed.frames) {
       expect(f.x - ATLAS_PAD).toBeGreaterThanOrEqual(0);
       expect(f.y - ATLAS_PAD).toBeGreaterThanOrEqual(0);
@@ -120,9 +118,11 @@ describe("Runtime-Atlas", () => {
   });
 
   it("deterministische Atlas-Grösse unabhängig von der Eingabereihenfolge", () => {
-    const a = packAtlas(SIZES);
-    const shuffled = [...SIZES].sort((x, y) => (x.key < y.key ? 1 : x.key > y.key ? -1 : 0));
+    const a = packAtlas(FULL_SIZES);
+    const shuffled = [...FULL_SIZES].sort((x, y) => (x.key < y.key ? 1 : x.key > y.key ? -1 : 0));
     const b = packAtlas(shuffled);
+    expect(FULL_SIZES.length).toBe(227);
+    expect(a.frames.length).toBe(227);
     expect(a.height).toBe(b.height);
     expect(a.width).toBe(b.width);
     expect(a.frames).toEqual(b.frames);
@@ -132,12 +132,18 @@ describe("Runtime-Atlas", () => {
 
   it("Audit-Beleg bestätigt 100 % Coverage, Gutter ≥ 2 px und 0 Bleed", () => {
     const report = auditReport as {
-      coverage: { complete: boolean; percent: number; missing: string[]; uncoveredHotKeys: string[] };
+      frameCount: number;
+      coverage: { complete: boolean; percent: number; present: number; total: number; missing: string[]; uncoveredHotKeys: string[] };
+      expected: { total: number };
       gutter: { ok: boolean; minGapPx: number; violations: unknown[] };
       bleed: { ok: boolean; count: number; cases: unknown[] };
       jsErrors: unknown[];
     };
     expect(report.coverage).toBeTruthy();
+    expect(report.frameCount).toBe(227);
+    expect(report.coverage.present).toBe(227);
+    expect(report.coverage.total).toBe(227);
+    expect(report.expected.total).toBe(227);
     expect(report.coverage.complete, "Coverage nicht complete").toBe(true);
     expect(report.coverage.percent).toBe(100);
     expect(report.coverage.missing).toEqual([]);

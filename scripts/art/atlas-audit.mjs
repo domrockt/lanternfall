@@ -234,6 +234,7 @@ const report = {
   atlasKey: result.atlasKey,
   atlasSize: result.atlasSize,
   frameCount: result.frameCount,
+  frames: result.rects.map((r) => ({ key: r.key, w: r.w, h: r.h })),
   expected: {
     enemyFrames: expectedEnemyFrames.map((e) => ({ base: e.key, frames: e.frames.length, missingGen: !!e.missingGen })),
     bossFrames: expectedBossFrames.map((e) => ({ base: e.key, frames: e.frames.length, missingGen: !!e.missingGen })),
