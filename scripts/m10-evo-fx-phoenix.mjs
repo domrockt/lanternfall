@@ -80,9 +80,10 @@ const PROBE = (FX_KEYS) => {
   return out;
 };
 
+const TAG = process.argv[2] ?? "before";
 const configs = [
-  { tag: "640", viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1, shot: "shots/m10-evo-fx-phoenix-before-640.png" },
-  { tag: "960x540", viewport: { width: 960, height: 540 }, deviceScaleFactor: 1, shot: "shots/m10-evo-fx-phoenix-before-960.png" },
+  { tag: "640", viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1, shot: `shots/m10-evo-fx-phoenix-${TAG}-640.png` },
+  { tag: "960x540", viewport: { width: 960, height: 540 }, deviceScaleFactor: 1, shot: `shots/m10-evo-fx-phoenix-${TAG}-960.png` },
 ];
 
 const results = {};
@@ -102,12 +103,12 @@ try {
       window.__lf.spawnEnemy("mudling", 12);
       window.__lf.spawnEnemy("bog_rat", 8);
     });
-    // Warten, bis Schwarm + Impact (fx_shock-Explosion) sichtbar sind.
+    // Warten, bis Schwarm + Impact (fx_boom_phoenix / Brandfleck) sichtbar sind.
     await page.waitForFunction(
       () => {
         const scene = window.__game.scene.getScene("run");
         const keys = scene.combat.fx.keys ?? [];
-        return keys.some((k) => k === "fx_shock" || k === "fx_halo");
+        return keys.some((k) => k === "fx_boom_phoenix" || k === "fx_burn_phoenix");
       },
       { timeout: 10000 },
     );
@@ -134,6 +135,6 @@ const summary = {
   errors: allErrors,
   configs: results,
 };
-writeFileSync("shots/m10-evo-fx-phoenix-before.json", JSON.stringify(summary, null, 2));
+writeFileSync(`shots/m10-evo-fx-phoenix-${TAG}.json`, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
 if (allErrors.length > 0 || !summary.valid) process.exit(1);
