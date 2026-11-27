@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2867,
+  "next": 2871,
   "cards": [
     {
       "id": 1,
@@ -4294,6 +4294,46 @@
       ],
       "created": "2026-11-27T11:15:15Z",
       "updated": "2026-11-27T11:16:55Z"
+    },
+    {
+      "id": 2867,
+      "title": "m10-separation-crowd #1 Baseline 500er-Klumpen + FPS",
+      "description": "scripts/m10-crowd-probe.mjs (auf harness.mjs): 500 Gegner dicht in der Mitte, 300 Frames messen: Anteil Paare <4px, mittlerer Naechster-Nachbar-Abstand, Gegner in 32px-Kreis um Spieler, FPS min/median (flock). Belege shots/m10-separation-before.json + -before.png (Frame Minute 25). Abnahme: beide Dateien im Commit, Zahlen im JSON. (lane #2358)",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T11:31:56Z",
+      "updated": "2026-11-27T11:31:56Z"
+    },
+    {
+      "id": 2868,
+      "title": "m10-separation-crowd #2 Separation haerten (Massengewicht, Fallback, Deckel)",
+      "description": "src/logic/separation.ts: Massengewichtung (grosse/Elite druecken staerker, kleine weichen), deterministischer Golden-Angle-Fallback, Iterationsdeckel in neuer Resolver-Export-Funktion; bestehende API-Signaturen unveraendert. Tests tests/separation-crowd.test.ts: 20 exakt uebereinanderliegende nach 2s Sim >=6px getrennt, keine NaN/Infinity, 2 Laeufe seed-stabil identisch. Abnahme: npx vitest run tests/separation-crowd.test.ts gruen + npm test gruen. (lane #2359)",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T11:31:56Z",
+      "updated": "2026-11-27T11:31:56Z"
+    },
+    {
+      "id": 2869,
+      "title": "m10-separation-crowd #3 SpatialHash Nachbar-Query",
+      "description": "src/systems/SpatialHash.ts: Zellgroesse/Neighbor-Radius aus max. Separationsradius ableiten, gefilterte Nachbar-Query (Distanzfilter) anbieten, damit Separation nur Nachbarzellen liest. Test: 500 Query-Zyklen <5 ms auf Testrechner, Trefferzahl identisch zu Brute-Force auf 3 Seeds. Abnahme: Test gruen, Messwert im Test-Log/Notiz. (lane #2360)",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T11:31:56Z",
+      "updated": "2026-11-27T11:31:56Z"
+    },
+    {
+      "id": 2870,
+      "title": "m10-separation-crowd #4 Nachmessen + Art-Urteil",
+      "description": "Gleiches Probe-Skript wie #1: shots/m10-separation-after.json + -after.png bei 500 Gegnern. Ziel: Anteil <4px-Paare -50% vs Baseline, Gegner im 32px-Kreis <=40, FPS min >=55. Chaos-Frame von art-director bewerten (einzelne Gegnertypen rechts unterscheidbar JA/NEIN) in docs/lanes/m10-separation-crowd.md. Abnahme: JSON/PNG im Commit, Doku mit Vorher/Nachher-Tabelle + Urteil, .lane-done. (lane #2361)",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T11:31:56Z",
+      "updated": "2026-11-27T11:31:56Z"
     }
   ]
 }

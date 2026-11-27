@@ -103,6 +103,52 @@ export class SpatialHash<T extends PointLike> {
     return out;
   }
 
+  /**
+   * Wie `queryCircle`, aber mit echtem Distanzfilter: liefert genau die Items
+   * im Kreis (gleiche Treffermenge wie eine Brute-Force-Referenz). Fuer
+   * Separation ist das die richtige Query — nur Nachbarzellen werden gelesen,
+   * der Distanzfilter ersetzt die quadratische Vollsuche.
+   */
+  queryNeighbors(x: number, y: number, radius: number, out: T[] = []): T[] {
+    out.length = 0;
+    const r2 = radius * radius;
+    const minCx = Math.floor((x - radius) * this.inv);
+    const maxCx = Math.floor((x + radius) * this.inv);
+    const minCy = Math.floor((y - radius) * this.inv);
+    const maxCy = Math.floor((y + radius) * this.inv);
+    for (let cx = minCx; cx <= maxCx; cx++) {
+      const ix = cx - this.minCell;
+      const xIn = ix >= 0 && ix < this.dim;
+      for (let cy = minCy; cy <= maxCy; cy++) {
+        const iy = cy - this.minCell;
+        let bucket: T[] | undefined;
+        if (xIn && iy >= 0 && iy < this.dim) {
+          bucket = this.grid[ix * this.dim + iy];
+        } else {
+          bucket = this.overflow.get(this.key(cx, cy));
+        }
+        if (!bucket) continue;
+        for (let i = 0; i < bucket.length; i++) {
+          const item = bucket[i];
+          const dx = item.x - x;
+          const dy = item.y - y;
+          if (dx * dx + dy * dy <= r2) out.push(item);
+        }
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Empfohlene Zellgroesse fuer eine maximale Suchradius-Klasse: so gross,
+   * dass ein Suchkreis in hoechstens 2x2 Zellen faellt. Damit liest eine
+   * Separation-Query pro Gegner nur Nachbarzellen statt der ganzen Welt.
+   */
+  static recommendedCellSize(maxQueryRadius: number): number {
+    const r = Number.isFinite(maxQueryRadius) ? Math.max(2, maxQueryRadius) : 8;
+    return Math.max(16, Math.min(64, Math.ceil(r * 2)));
+  }
+
   get cellCount(): number {
     return this.usedIdx.length;
   }
