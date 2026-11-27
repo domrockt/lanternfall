@@ -5110,25 +5110,36 @@
       "id": 4318,
       "title": "m10-verify-input-fix #1: F2-Befund belegen (Selektor, URI, Timestamp, Ursache)",
       "description": "Abnahme: shots/m10-verify-input-f2-before.json + .log belegen den F2-Selektor-FAIL aus m10-input-qa (tapText \"BRUDER KAEL\" nicht sichtbar) und benennen die Ursache; Statement, ob der FAIL am aktuellen HEAD noch auftritt. Kontrolleure: reviewer.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T18:23:24Z",
           "by": "build",
           "text": "todo → doing: Start: F2-Befund – alter Selektor 'BRUDER KAEL' existiert nicht mehr, Fix 9f298f3 (m10-input-fix) bereits gemerged; Repro-Probe läuft."
+        },
+        {
+          "at": "2026-11-27T18:23:47Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig, Commits c8df1ef (Belege) + d71234f (Board): shots/m10-verify-input-f2-before.json+log – alter Selektor 'BRUDER KAEL' sichtbar=false, 'Bruder Kael' sichtbar=true, 0 JS-Fehler; Ursache = veralteter Selektor, gefixt in 9f298f3 (m10-input-fix); build rc=0, vitest 446/446."
         }
       ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:23:24Z"
+      "updated": "2026-11-27T18:23:47Z"
     },
     {
       "id": 4319,
       "title": "m10-verify-input-fix #2: Harness-Härtung (Zustands-Waits, --tag Output)",
       "description": "Abnahme: nur scripts/verify-input.mjs geändert; fragile feste Wartezeiten durch Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.* (Default m8-input unverändert); verify-input läuft 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T18:24:02Z",
+          "by": "build",
+          "text": "todo → doing: Start: --tag-Output + Zustands-Waits statt fester Wartezeiten, nur scripts/verify-input.mjs."
+        }
+      ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:22:28Z"
+      "updated": "2026-11-27T18:24:02Z"
     },
     {
       "id": 4320,
