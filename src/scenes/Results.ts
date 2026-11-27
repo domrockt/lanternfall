@@ -72,7 +72,9 @@ export class Results extends Phaser.Scene {
     const giveUp = this.result.reason === "giveup";
     const title = victory ? "MORGENDÄMMERUNG" : giveUp ? "AUFGEGEBEN" : "DIE LATERNE ERLISCHT";
     new PixelText(this, cx, 24 + oy, title, victory ? C.lantern : C.crimson, "center").setScale(2).setDepth(2);
-    new PixelText(this, cx, 42 + oy, victory ? "SIEG - DU HAST ÜBERLEBT" : "NIEDERLAGE", C.mist, "center").setDepth(2);
+    // Untertitel top 40+oy (Ende 47+oy): laesst 3px zu Header (50+oy) und 2px
+    // zum skalierten Titel - keine gebrochene Grundlinie mehr in der Bildmitte.
+    new PixelText(this, cx, 40 + oy, victory ? "SIEG - DU HAST ÜBERLEBT" : "NIEDERLAGE", C.mist, "center").setDepth(2);
 
     // Zwei Spalten: links Charakter/Zeit/Kills/Level, rechts Schadensbalken.
     this.add.rectangle(cx - 34, 132 + oy, 1, 140, PAL[C.nightMid], 1).setOrigin(0.5).setDepth(1);
@@ -80,11 +82,13 @@ export class Results extends Phaser.Scene {
     const char = CHARACTERS[this.result.character as CharacterId];
     const charName = char ? char.name.toUpperCase() : "?";
     const portraitKey = char ? `portrait_${char.id}` : "portrait_mira";
+    // Portrait ganz im Panel: Center cx-169 -> linke Kante cx-217, 2px neben
+    // dem Panel-Rahmen (cx-220); zuvor cx-186 ragte die Flagge 14px heraus.
     if (this.textures.exists(portraitKey)) {
-      this.add.image(cx - 186, 72 + oy, portraitKey).setScale(2).setDepth(2);
+      this.add.image(cx - 169, 72 + oy, portraitKey).setScale(2).setDepth(2);
     }
-    new PixelText(this, cx - 136, 58 + oy, "CHARAKTER", C.mist).setDepth(2);
-    new PixelText(this, cx - 136, 70 + oy, charName.slice(0, 14), C.bone).setDepth(2);
+    new PixelText(this, cx - 114, 58 + oy, "CHARAKTER", C.mist).setDepth(2);
+    new PixelText(this, cx - 114, 70 + oy, charName.slice(0, 14), C.bone).setDepth(2);
 
     new PixelText(this, cx - 200, 134 + oy, `ZEIT: ${formatDuration(this.result.elapsed)}`, C.candleWhite).setDepth(2);
     new PixelText(this, cx - 200, 148 + oy, `KILLS: ${this.result.kills}`, C.candleWhite).setDepth(2);
@@ -109,21 +113,27 @@ export class Results extends Phaser.Scene {
       if (recorded.records.level) labels.push("LEVEL");
       if (recorded.records.victory) labels.push("SIEG");
       if (labels.length > 0) {
-        bannerText = labels.length > 2 ? "NEUER BESTWERT" : `NEUER BESTWERT: ${labels.join(", ")}`;
+        // Ganz oder gar nicht: ein abgeschnittener Text ("... ZEIT, LEVE")
+        // ist schlimmer als das kurze Fallback. 26 Zeichen passen in die
+        // 164px-Box (27 Zeichen wären 161px + Rahmen).
+        const full = `NEUER BESTWERT: ${labels.join(", ")}`;
+        bannerText = labels.length > 2 || full.length > 26 ? "NEUER BESTWERT" : full;
         bannerColor = C.lantern;
       }
     }
     this.add.rectangle(cx - 118, 196 + oy, 164, 17, PAL[C.nightMid], 0.9)
       .setStrokeStyle(1, bannerColor).setDepth(1);
-    new PixelText(this, cx - 118, 196 + oy, bannerText.slice(0, 26), bannerColor, "center").setDepth(2);
+    new PixelText(this, cx - 118, 196 + oy, bannerText, bannerColor, "center").setDepth(2);
 
     // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons. Positionen kommen
     // aus resultsLayout(), damit Tests und Screen exakt dieselben Rechtecke pruefen.
     // ?debug=1&stress12 = Layout-Stressbeleg mit allen 12 moeglichen Waffennamen.
+    // rowsTop 68: 12 Zeilen enden mit Icon bei 302..304 (Panel-Inneres bis
+    // 306) und lassen 2px Luft zum Total-Label (59..66+oy).
     const stress = this.result.debug === true && hasFlag("stress12");
     const layout = stress
-      ? layoutResultRows(stressEntries(), { width: W, oy, rowsTop: 66 })
-      : resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 66 });
+      ? layoutResultRows(stressEntries(), { width: W, oy, rowsTop: 68 })
+      : resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 68 });
     const totalDamage = stress
       ? layout.rows.reduce((sum, row) => sum + row.damage, 0)
       : damageTotal(this.result.damageByWeapon);

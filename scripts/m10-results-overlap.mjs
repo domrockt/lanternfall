@@ -174,10 +174,11 @@ try {
       await page.waitForTimeout(400);
       const shot = `shots/m10-results-overlap-${v.view.replace("@3", "")}-${c.case}-${TAG}.png`;
       await page.screenshot({ path: shot });
-      const { items, proof } = await collect(page);
-      const m = findOverlaps(items, { w: v.width, h: v.height });
+      const { items, proof, view } = await collect(page);
+      const m = findOverlaps(items, view);
       results.push({
         view: v.view, case: c.case, reason: c.reason, shot,
+        canvas: view,
         elements: m.elements,
         overlapCount: m.overlaps.length,
         overlaps: m.overlaps,
