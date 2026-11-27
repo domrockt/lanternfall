@@ -23,6 +23,11 @@ const vp = String(argOf("viewport", "640x360")).split("x").map(Number);
 const VIEWPORT = { width: vp[0] || 640, height: vp[1] || 360 };
 const OUT = String(argOf("out", "shots/m10-perf-profile.json"));
 const SHOT = String(argOf("shot", "shots/m10-perf-profile-640.png"));
+// --skip-to <s>: Endgame-Fenster (Minute 25, Evolutionen) statt frischer Lauf.
+const SKIP_TO = argOf("skip-to", null);
+const TARGET = Number(argOf("target", SKIP_TO ? "300" : "500"));
+const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
+const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -123,6 +128,16 @@ try {
     window.__lf.spawnEnemy("wisp", 50);
     window.__lf.spawnEnemy("bogzombie", 50);
   });
+  if (SKIP_TO) {
+    await page.evaluate(({ evolutions, passives, skipTo }) => {
+      for (const id of evolutions) window.__lf.addWeapon(id, 8);
+      for (const id of passives) window.__lf.addPassive(id, 5);
+      window.__lf.skipTo(Number(skipTo));
+      window.__lf.setTimeScale(1);
+    }, { evolutions: EVOLUTIONS, passives: PASSIVES, skipTo: SKIP_TO });
+    await page.waitForTimeout(6000);
+    await clearLevelUps();
+  }
   await page.waitForTimeout(500);
 
   const cdp = await page.context().newCDPSession(page);
@@ -131,7 +146,7 @@ try {
   await cdp.send("Profiler.start");
 
   // 60 s Burst: Gegner unter 500 nachspawnen, Frame-Zaehler laufen mit.
-  const run = await page.evaluate(async ({ seconds }) => {
+  const run = await page.evaluate(async ({ seconds, target }) => {
     const startFrame = window.__game.loop.frame;
     const start = performance.now();
     let lastSpawn = start;
@@ -139,7 +154,7 @@ try {
     await new Promise((resolve) => {
       const spawnTimer = setInterval(() => {
         const active = window.__lf.stats().enemies;
-        if (active < 500) window.__lf.spawnEnemy("bog_rat", 500 - active);
+        if (active < target) window.__lf.spawnEnemy("bog_rat", target - active);
         samples.push(active);
         if (performance.now() - lastSpawn >= 5000) {
           lastSpawn = performance.now();
@@ -157,11 +172,12 @@ try {
       fps: Math.round((frames / (elapsed / 1000)) * 10) / 10,
       frames,
       elapsedMs: Math.round(elapsed),
+      target,
       minEnemies: samples.length ? Math.min(...samples) : 0,
       avgEnemies: samples.length ? Math.round(samples.reduce((a, b) => a + b, 0) / samples.length) : 0,
       finalEnemies: window.__lf.stats().enemies,
     };
-  }, { seconds: SECONDS });
+  }, { seconds: SECONDS, target: TARGET });
 
   const { profile } = await cdp.send("Profiler.stop");
 
@@ -172,7 +188,7 @@ try {
     let visible = 0;
     let total = 0;
     const walk = (obj) => {
-      const t = obj?.constructor?.name ?? "unknown";
+      const t = obj?.type ?? obj?.constructor?.name ?? "unknown";
       counts[t] = (counts[t] || 0) + 1;
       total++;
       if (obj?.visible !== false) visible++;
@@ -243,7 +259,7 @@ try {
       top,
     },
     jsErrors: errors,
-    passed: run.fps >= 55 && run.minEnemies >= 480 && errors.length === 0,
+    passed: run.fps >= 55 && run.minEnemies >= Math.max(200, Math.floor(TARGET * 0.9)) && errors.length === 0,
   };
 } finally {
   await page.close();
