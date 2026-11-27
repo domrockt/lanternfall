@@ -1,22 +1,49 @@
 {
   "card": "#K5",
-  "simSeconds": 305.8,
-  "timeScale": 10,
-  "elapsedRealSeconds": 38,
+  "acceptance": "5 min @ nominal timeScale 10, FPS-Min >= 55, >= 100 Gegner im Shot, 0 JS-Fehler",
+  "nominalTimeScale": 10,
+  "effectiveTimeScale": 8.75,
+  "simSeconds": 300.2,
+  "elapsedRealSeconds": 37,
+  "warmup": {
+    "realMs": 3000,
+    "simSeconds": 10
+  },
   "fps": {
-    "minWindow": 57.9,
-    "minRawSample": 57.5,
-    "median": 60.5,
-    "samples": 166,
-    "windows": 34,
+    "minWindow": 59.3,
+    "minRawSample": 59,
+    "median": 60,
+    "samples": 150,
+    "windows": 31,
     "target": 55,
     "passed": true
   },
+  "windowSample": [
+    {
+      "second": 3,
+      "fpsAvg": 59.3,
+      "enemiesMin": 0,
+      "enemiesAvg": 0
+    },
+    {
+      "second": 4,
+      "fpsAvg": 59.6,
+      "enemiesMin": 0,
+      "enemiesAvg": 1
+    },
+    {
+      "second": 5,
+      "fpsAvg": 59.8,
+      "enemiesMin": 0,
+      "enemiesAvg": 1
+    }
+  ],
   "massShot": {
     "path": "shots/m10-enemy-ai-mass.png",
-    "enemiesHud": 178,
-    "playerLevel": 13,
-    "kills": 324,
+    "enemiesAtShot": 169,
+    "playerLevel": 14,
+    "kills": 329,
+    "bossActive": true,
     "passed": true
   },
   "jsErrors": [],
