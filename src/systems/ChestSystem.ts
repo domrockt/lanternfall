@@ -22,6 +22,71 @@ export interface ChestSpawnRecord {
   at: number;
 }
 
+/** Kamera-Stück für das Pfeil-Layout (reine Funktion, unit-testbar). */
+export interface ArrowView {
+  /** Viewport in Screen-Pixeln (camera.width/height). */
+  width: number;
+  height: number;
+  /** Sichtbarer Weltbereich (camera.worldView). */
+  viewX: number;
+  viewY: number;
+  viewWidth: number;
+  viewHeight: number;
+  /** Kamera-Zoom (Boss-Intro-Puls 1.14). */
+  zoom: number;
+}
+
+export interface ArrowLayout {
+  visible: boolean;
+  /** Renderposition für das scrollFactor-0-Bild (zoom-kompensiert). */
+  x: number;
+  y: number;
+  /** Screen-Rotation (Bogenmaß) in Richtung Truhe. */
+  angle: number;
+}
+
+/** Einzug, ab dem die Truhe als "im View" gilt (Pfeil aus). */
+export const CHEST_ARROW_INSET = 8;
+/** Randabstand des Pfeils vom Viewportrand. */
+export const CHEST_ARROW_MARGIN = 24;
+
+/**
+ * Randpfeil-Layout als reine Funktion:
+ * - Screen-Position der Truhe aus der worldView-Mitte × zoom (zoom-fest).
+ * - Sichtbarkeits-Check gegen die SICHTBARE Fläche (nicht camera.width).
+ * - Randpunkt = Schnitt des Strahls Mitte→Truhe mit dem Margin-Rechteck,
+ *   damit der Pfeil in Eckfällen in der echten Richtung liegt.
+ * - Renderposition rückgerechnet, weil scrollFactor-0-Objekte in Phaser um
+ *   die Kameramitte mit zoom skaliert werden.
+ */
+export function computeChestArrow(view: ArrowView, chestX: number, chestY: number): ArrowLayout {
+  const cx = view.width / 2;
+  const cy = view.height / 2;
+  const zoom = view.zoom > 0 ? view.zoom : 1;
+  const sx = cx + (chestX - (view.viewX + view.viewWidth / 2)) * zoom;
+  const sy = cy + (chestY - (view.viewY + view.viewHeight / 2)) * zoom;
+  const inside =
+    sx > CHEST_ARROW_INSET && sx < view.width - CHEST_ARROW_INSET &&
+    sy > CHEST_ARROW_INSET && sy < view.height - CHEST_ARROW_INSET;
+  if (inside) return { visible: false, x: cx, y: cy, angle: 0 };
+  const dx = sx - cx;
+  const dy = sy - cy;
+  // Strahl Mitte->Truhe mit dem Margin-Rechteck schneiden. dx/dy koennen
+  // nicht beide 0 sein, weil die Truhe dann im View laege.
+  const t = Math.min(
+    (cx - CHEST_ARROW_MARGIN) / Math.max(1e-6, Math.abs(dx)),
+    (cy - CHEST_ARROW_MARGIN) / Math.max(1e-6, Math.abs(dy)),
+  );
+  const bx = cx + dx * t;
+  const by = cy + dy * t;
+  return {
+    visible: true,
+    x: cx + (bx - cx) / zoom,
+    y: cy + (by - cy) / zoom,
+    angle: Math.atan2(dy, dx),
+  };
+}
+
 export class ChestSystem {
   readonly chests: ChestRuntime[] = [];
   /** M10-Timing-Beleg: jede Spawn-Zeit wird mitgeschrieben (nur Diagnose). */
@@ -38,6 +103,31 @@ export class ChestSystem {
       .setTint(PAL[C.lantern])
       .setScale(1.35)
       .setVisible(false);
+  }
+
+  /**
+   * M10-chest-arrow: Layout des Randpfeils als reine Funktion (unit-getestet).
+   *
+   * Vorher zwei Fehler: (1) `Clamp` pro Achse — bei Truhe diagonal hinter einer
+   * Ecke lag der Pfeil in der Ecke, zeigte aber bis ~19° daneben; (2) die
+   * worldView-Koordinaten wurden gegen `camera.width` geprueft und die Position
+   * ohne Zoom-Kompensation gesetzt — beim Boss-Intro-Zoom (1.14) blieb der
+   * Pfeil verborgen, obwohl die Truhe off-screen war.
+   */
+  computeArrowLayout(camera: Phaser.Cameras.Scene2D.Camera, chestX: number, chestY: number): ArrowLayout {
+    return computeChestArrow(
+      {
+        width: camera.width,
+        height: camera.height,
+        viewX: camera.worldView.x,
+        viewY: camera.worldView.y,
+        viewWidth: camera.worldView.width,
+        viewHeight: camera.worldView.height,
+        zoom: camera.zoom,
+      },
+      chestX,
+      chestY,
+    );
   }
 
   spawn(x: number, y: number): ChestRuntime {
@@ -69,29 +159,23 @@ export class ChestSystem {
       chest.glow.setAlpha(0.38 + pulse * 0.2);
       chest.glow.setScale(0.3 + pulse * 0.08);      chest.sprite.setY(Math.round(chest.y + Math.sin(chest.age * 2.2 + chest.phase) * 1.5));
     }
-    // Pfeil nur, wenn die nächste Truhe außerhalb des Views liegt.
+    // Pfeil nur, wenn die nächste Truhe außerhalb des Views liegt; Layout
+    // (Randprojektion entlang der echten Truchenrichtung, zoom-kompensiert)
+    // kommt aus der reinen Funktion.
     let nearest = this.chests[0];
     let best = Number.POSITIVE_INFINITY;
     for (const chest of this.chests) {
       const d = (chest.x - playerX) ** 2 + (chest.y - playerY) ** 2;
       if (d < best) { best = d; nearest = chest; }
     }
-    const sx = nearest.x - camera.worldView.x;
-    const sy = nearest.y - camera.worldView.y;
-    const inside = sx > 8 && sx < camera.width - 8 && sy > 8 && sy < camera.height - 8;
-    if (inside) {
+    const layout = this.computeArrowLayout(camera, nearest.x, nearest.y);
+    if (!layout.visible) {
       this.arrow.setVisible(false);
       return;
     }
-    const cx = camera.width / 2;
-    const cy = camera.height / 2;
-    const angle = Math.atan2(sy - cy, sx - cx);
-    const margin = 24;
-    const ax = Phaser.Math.Clamp(sx, margin, camera.width - margin);
-    const ay = Phaser.Math.Clamp(sy, margin, camera.height - margin);
     this.arrow.setVisible(true)
-      .setPosition(Math.round(ax), Math.round(ay))
-      .setRotation(angle);
+      .setPosition(Math.round(layout.x), Math.round(layout.y))
+      .setRotation(layout.angle);
   }
 
   /** Nächstgelegene Truhe in Reichweite (px) oder null. */

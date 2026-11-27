@@ -4510,34 +4510,56 @@
       "id": 3638,
       "title": "m10-chest-arrow-onscreen K1: Fehlerfälle Randpfeil",
       "description": "ChestSystem.ts + Run.ts-Aufrufer lesen; Fehlerfälle auflisten: Winkel bei Kamera-Ecken, Randposition bei breitem View (780x360), Zoom-Puls, Verschwinden beim View-Eintritt. AK: Fehlerliste in docs/lanes/m10-chest-arrow.md.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T15:57:24Z",
           "by": "build",
           "text": "todo → doing: Code gelesen: ChestSystem.ts, Run.ts-Aufrufer (914/1141/1315/1344/1657), Zoom-Puls Run.ts:1596-1601."
+        },
+        {
+          "at": "2026-11-27T16:31:44Z",
+          "by": "build",
+          "text": "doing → done: Commit 0886c19 + e53b165: Fehlerliste + Baseline-Beleg (Ecken 15-18,7°, zoom Pfeil fehlt)."
         }
       ],
       "created": "2026-11-27T15:54:05Z",
-      "updated": "2026-11-27T15:57:24Z"
+      "updated": "2026-11-27T16:31:44Z"
     },
     {
       "id": 3639,
       "title": "m10-chest-arrow-onscreen K2: Harness + Baseline",
       "description": "scripts/m10-chest-arrow.mjs: Truhe an 4 Rand- + 4 Eckpositionen, pro Frame Winkel/Position/Sichtbarkeit messen; baseline JSON shots/m10-chest-arrow-baseline.json. AK: JSON vorhanden, Fehlfälle dokumentiert.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T15:59:53Z",
+          "by": "build",
+          "text": "todo → doing: Harness scripts/m10-chest-arrow.mjs schreiben."
+        },
+        {
+          "at": "2026-11-27T16:31:44Z",
+          "by": "build",
+          "text": "doing → done: Commit 3a8a74f: scripts/m10-chest-arrow.mjs + shots/m10-chest-arrow-baseline.json."
+        }
+      ],
       "created": "2026-11-27T15:54:05Z",
-      "updated": "2026-11-27T15:54:05Z"
+      "updated": "2026-11-27T16:31:44Z"
     },
     {
       "id": 3640,
       "title": "m10-chest-arrow-onscreen K3: Fix + Unit-Tests",
       "description": "Fix in src/systems/ChestSystem.ts (einzige Code-Datei): Randprojektion entlang Zentrum→Truhe, Kamera-Zoom berücksichtigen; tests/chest-arrow.test.ts >=3 Tests grün. AK: npx vitest run tests/chest-arrow.test.ts grün, tsc sauber.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T16:31:44Z",
+          "by": "build",
+          "text": "todo → doing: Fix computeChestArrow + tests/chest-arrow.test.ts."
+        }
+      ],
       "created": "2026-11-27T15:54:05Z",
-      "updated": "2026-11-27T15:54:05Z"
+      "updated": "2026-11-27T16:31:44Z"
     },
     {
       "id": 3641,
