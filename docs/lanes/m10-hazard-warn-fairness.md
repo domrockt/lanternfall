@@ -98,10 +98,17 @@ Baseline: `shots/m10-hazard-baseline.json`, Warnframe mit 500-Gegner-Schwarm:
 ## K3 — Fix (`src/systems/Hazards.ts`)
 
 - Exportierte Konstante `MIN_WARN_S = 0.45` + reine Helfer `effectiveWarn()`; beide Spawn-Pfade
-  clamps auf die Mindest-Warnzeit (Exploder: 0.16 → 0.45 s; Boss-Angriffe unverändert).
-- Rim-Puls-Minimum von 0.12 auf `MIN_RIM_ALPHA = 0.3` angehoben (`0.3 + |sin|·0.35` → 0.30–0.65),
-  damit der Rand auch unter 300+ Gegnern lesbar bleibt; Strahl-Rim gleiches Minimum.
-- Unit-Tests: `tests/hazard-fairness.test.ts` (≥ 4 Tests, siehe K4-Zahlen).
+  (`spawnCircle`, `spawnBeam`) clampen auf die Mindest-Warnzeit (Exploder: 0.16 → 0.45 s; alle
+  Boss-Angriffe ≥ 0.60 s bleiben exakt unverändert).
+- Rim-Puls-Minimum von 0.12 auf `MIN_RIM_ALPHA = 0.3` angehoben; reiner Helfer
+  `rimAlpha(elapsed)` → `0.3 + |sin|·0.35` (0.30–0.65), damit der Rand auch unter 300+ Gegnern
+  lesbar bleibt. Circle- und Strahl-Rim nutzen denselben Helfer (Spawn und Update).
+- `effectiveWarn()`-Randfälle: `undefined`/`NaN`/`Infinity`/negativ fallen auf Default bzw. Minimum
+  zurück; Werte > Minimum werden nie verlängert (keine künstlichen Boss-Warnungen).
+- Unit-Tests `tests/hazard-fairness.test.ts`: **8/8 grün** (isolierter Lauf,
+  `npx vitest run tests/hazard-fairness.test.ts`, 188 ms) — Mindest-Warnzeit-Clamp, unveränderte
+  lange Warnungen, Default-/NaN-Randfälle, Rim-Alpha-Untergrenze über 2 s, Rim-Alpha-Maximum ≤ 0.65,
+  spawnCircle/spawnBeam-Clamp und Trefferzeitpunkt erst nach der angehobenen Warnzeit.
 
 ## K4 — Vorher/Nachher
 
