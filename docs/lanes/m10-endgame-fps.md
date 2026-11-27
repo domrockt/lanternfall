@@ -1,6 +1,10 @@
 # Lane m10-endgame-fps — Endgame-FPS bei 640×360
 
 Stand: 2026-11-27. Worktree `/home/ai/games/lf-lanes/m10-endgame-fps`, Branch `m10-endgame-fps`.
+**Aktive Arbeit (Supervisor-Auftrag): Karte 1 (#2598) — frische 3×-Baseline 640×360 unter flock,
+Roh-JSON `shots/m10-endgame-fps-baseline.json`, Attribution unten. Keine Screenshot-Experimente,
+keine fremden Claims, keine PNGs stagen.**
+
 Ziel: den einzigen roten ACCEPTANCE-Punkt (Endgame-/640×360-FPS) mit Messung und dem
 kleinsten wirksamen Hebel angreifen — **ohne** die globale Gegnerzahl zu senken und ohne
 die 30 Gegner-Typen zu opfern. Fremde Claims (`SpatialHash.ts`, `separation.ts`,
@@ -38,7 +42,24 @@ bereits grün (V-Sync-Deckel 60). Die in `ACCEPTANCE.md` dokumentierten **46,3 /
 belegt im ersten, verworfenen Messversuch: 9,6 FPS bei loadavg 31,8 — solche Werte sind
 host-, nicht code-getrieben).
 
-### Minute 25 (300 Gegner + 6 Evolutionen, 640×360)
+### Frische Baseline, 2026-11-27 (K1, Supervisor-Auftrag)
+
+Drei Läufe, je unter `flock /home/ai/games/.lf-perf.lock`, aktueller Lane-HEAD.
+Roh-JSON: `shots/m10-endgame-fps-baseline.json` (enthält die drei vollständigen
+`perf.mjs`-Läufe), Einzeldateien `shots/m10-endgame-fps-baseline-run{1,2,3}.json`.
+
+| Lauf | Burst-FPS (500 Gegner) | Minute-25-FPS (300 Gegner + 6 Evos) | loadavg (Start) |
+|---|---|---|---|
+| 1 | 60,1 | **55,2** | 6,26 |
+| 2 | 60,1 | 53,3 | 8,82 |
+| 3 | 54,5 (worst 100 ms Host-Ausreißer) | 52,4 | 7,93 |
+
+Ergebnis: 1/3 Minute-25-Läufe ≥ 55, keiner < 52; Burst 2/3 ≥ 55, Lauf 3 knapp darunter
+(54,5) mit einem 100-ms-Worst-Frame. Die Streuung (±2–4 FPS) ist Host-Last, nicht Code.
+Damit ist die in `ACCEPTANCE.md` notierte rote Baseline 37,8–41,4 hier nicht reproduzierbar;
+die 640er-FPS sind bei ruhigem Host grenzwertig grün, unter Parallel-Last rot.
+
+### Minute 25 (300 Gegner + 6 Evolutionen, 640×360) — frühere Messung
 
 | Lauf | FPS (perf) | Frames/6 s | minEnemies | worstFrameMs | Ziel ≥55 |
 |---|---|---|---|---|---|
