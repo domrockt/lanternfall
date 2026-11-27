@@ -3052,17 +3052,22 @@
       "id": 2101,
       "title": "m10-gem-magnet #4 Lesbarkeit: 3 Groessen farblich von Gegnern/Effekten unterscheidbar, 4x-Zoom im Chaos",
       "description": "Pixel-Diff der Kristallfarben gegen Gegnerpalette > Schwelle, 1-px-Kontur, 4x-Nearest-Zoom-Shot mit 300+ Gegnern; Near-White-Anteil im Frame <=4,16 %. Abnahme: Lesbarkeits-Urteil PASS im Lane-Doc.",
-      "column": "todo",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-27T03:35:26Z",
           "by": "build",
           "text": "Doing: Lesbarkeit 3 Groessen + 4x Zoom im Chaos"
+        },
+        {
+          "at": "2026-11-27T05:24:13Z",
+          "by": "build",
+          "text": "todo → done: Lesbarkeit PASS: RGB-Abstand 3 Groessen >=131,9; 1-px-Kontur; 319 Gegner + 24 Kristalle im Chaos-Shot; Near-White 0,3% <=4,16%. Commits ef5d88e + e7019fa."
         }
       ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T03:35:26Z"
+      "updated": "2026-11-27T05:24:13Z"
     },
     {
       "id": 2102,
