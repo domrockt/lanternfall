@@ -65,6 +65,8 @@ export interface EnemyShotStats {
 
 const TELEGRAPH_SCALE_MIN = 0.34;
 const TELEGRAPH_SCALE_MAX = 0.62;
+const TELEGRAPH_ALPHA_START = 0.55;
+const TELEGRAPH_ALPHA_END = 0.25;
 const TELEGRAPH_POOL_CAP = 96;
 
 /**
@@ -74,10 +76,13 @@ const TELEGRAPH_POOL_CAP = 96;
  */
 const HD_PREFIX = "enemy_shot_hd_";
 const HD_GRIDS: Record<string, string[]> = {
-  spit: ["...000...", "..0vvv0..", ".0vvvvv0.", "0vvvkvvv0", "0vvkkkvv0", "0vvvkvvv0", ".0vvvvv0.", "..0vvv0..", "...000..."],
+  // 3 Grüntöne (31 nur als 1-px Lichtkante oben-links) → hebt sich vom Moorgras ab.
+  spit: ["...000...", "..0vv0...", ".0vvuuv0.", "0vuuuuuv0", "0uuuuuuu0", "0uuuuuut0", ".0uuuutt0", "..0uuut0.", "...000..."],
   bone: ["..00000..", ".0bb0bb0.", "0dab0bad0", ".0bb0bb0.", "..00000.."],
-  shadow: ["...000...", "..09990..", ".0999990.", "099...990", "099.q.990", "099...990", ".0999990.", "..09990..", "...000..."],
-  fire: ["....d....", "...0d0...", "..0jjj0..", ".0jiiij0.", "0ji999ij0", "0jii9iij0", ".0jiiij0.", "..0jjj0..", "...000..."],
+  // Offener Halo (Lücke rechts) statt runder Kugel: Form-IoU < 0,7 zu spit.
+  shadow: ["...000...", "..09990..", ".0990.90.", "0990...90", "0880.....", "0880.....", ".0880....", "..08880..", "...000..."],
+  // Warme 3-Stufen-Flamme (19/20/22, Basis 16), kein unkonturierter Einzelpixel.
+  fire: ["....0....", "...0j0...", "..0jjk0..", ".0jkkkj0.", "0jkmmmkj0", "0jkkkkkj0", ".0jgggj0.", "..0jggj0.", "...000..."],
 };
 
 function addHdShotTexture(scene: Phaser.Scene, family: string, rows: readonly string[]): void {
@@ -109,9 +114,6 @@ function ensureHdShotTextures(scene: Phaser.Scene): void {
   for (const [family, rows] of Object.entries(HD_GRIDS)) addHdShotTexture(scene, family, rows);
 }
 
-/** Optik-Daten je Familie (der angefragte Key kann der HD-Key sein). */
-const FAMILY_VISUALS: Record<string, (typeof ENEMY_SHOT_VISUALS)[string]> = {};
-for (const visual of Object.values(ENEMY_SHOT_VISUALS)) FAMILY_VISUALS[visual.family] = visual;
 
 /**
  * Eigener Pool für Gegner-Projektile. Bewusst getrennt vom Spieler-Pool:
@@ -173,11 +175,9 @@ export class EnemyProjectilePool {
     }
     const telegraph = this.acquireTelegraph(texture);
     if (telegraph) {
-      const family = ENEMY_SHOT_VISUALS[opts.texture]?.family ?? "spit";
       telegraph.setPosition(Math.round(opts.x), Math.round(opts.y));
       telegraph.setScale(TELEGRAPH_SCALE_MIN);
-      telegraph.setAlpha(0.95);
-      telegraph.setTint(PAL[FAMILY_VISUALS[family]?.spark ?? C.crimson]);
+      telegraph.setAlpha(TELEGRAPH_ALPHA_START);
       telegraph.setVisible(true).setActive(true);
     }
     this.pending.push({
@@ -239,13 +239,16 @@ export class EnemyProjectilePool {
   }
 
   private acquireTelegraph(texture: string): Phaser.GameObjects.Image | null {
-    if (this.telegraphFree.length > 0) {
-      return this.telegraphFree.pop()!;
-    }
-    if (this.telegraphUsed >= TELEGRAPH_POOL_CAP) return null;
-    this.telegraphUsed += 1;
-    const img = makeImage(this.scene, 0, 0, "telegraph_disc").setDepth(DEPTH.hazard);
+    const img = this.telegraphFree.pop()
+      ?? (this.telegraphUsed < TELEGRAPH_POOL_CAP
+        ? (this.telegraphUsed += 1, makeImage(this.scene, 0, 0, texture))
+        : null);
+    if (!img) return null;
+    // Vorwarnung zeigt die eigene Schuss-Silhouette (Familien bleiben unterscheidbar).
+    applyTexture(img, texture);
+    img.setDepth(DEPTH.hazard);
     img.setBlendMode(Phaser.BlendModes.NORMAL);
+    img.clearTint();
     return img;
   }
 
@@ -296,7 +299,7 @@ export class EnemyProjectilePool {
       const t = Phaser.Math.Clamp(p.elapsed / p.duration, 0, 1);
       if (p.telegraph) {
         p.telegraph.setScale(TELEGRAPH_SCALE_MIN + (TELEGRAPH_SCALE_MAX - TELEGRAPH_SCALE_MIN) * t);
-        p.telegraph.setAlpha(0.95 - 0.35 * t);
+        p.telegraph.setAlpha(TELEGRAPH_ALPHA_START - (TELEGRAPH_ALPHA_START - TELEGRAPH_ALPHA_END) * t);
       }
       if (p.elapsed < p.duration) continue;
       const originInView = this.isInView(p.x, p.y);

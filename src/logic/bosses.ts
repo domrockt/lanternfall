@@ -180,6 +180,8 @@ export const ENEMY_SHOT_VISUALS: Record<string, EnemyShotVisual> = {
 export function shotTextureKeyFor(archetype: string, tier: number): string {
   if (archetype === "summoner") return "enemy_shot_shadow";
   if (archetype === "ranged") {
+    // Alle vier Optiken kommen im Spiel vor: TI4 (horror) → Feuer, TI3 (lich) → Schatten.
+    if (tier >= 4) return "enemy_shot_fire";
     if (tier >= 3) return "enemy_shot_shadow";
     return tier >= 1 ? "enemy_shot_bone" : "enemy_shot_spit";
   }
