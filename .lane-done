@@ -1,0 +1,22 @@
+# Lane m10-boss-idle-anim — fertig (2026-11-27)
+
+Die 6 Bosse haben jetzt eine sichtbare Idle-Animation (vorher Standbild-Wirkung):
+pro Boss F0 Ruhe, F1 Atmen (Oberkörper 1 px Squash, Füsse fix), F2 Telegraph-Zucken
+(1 px Lunge, im Spiel + rot getoent). Nur src/gfx/gen-bosses.ts geändert (Disponent-
+Bereich), BossSystem/Run.ts unberührt, Palette byte-identisch, Frame-Budget neutral
+(3 Frames je Boss), Mixel-Regel eingehalten (ganzzahlige 1-px-Versätze, keine Skalierung).
+
+Karten: #6518 Ist-Aufnahme, #6519 Bosse 1-3, #6520 Bosse 4-6 (+Beleg-Layout-Fix),
+#6521 Regressionstest, #6522 Belege/Doku.
+Commits: 7727a71, 30ddad3, 1237d3c, f9c4a4d, f35e618.
+
+Messwerte (shots/m10-boss-idle-anim-after.json):
+- 6/6 Bosse: 3 Frames, 0 Duplikate; Idle-Versatz +1 px (vorher -2/-3), Telegraph -1 px
+- F0-F1-Diff 431-887 px (vorher teils 110 px Fast-Duplikat), F0-F2-Diff 733-1593 px
+- art-director: PASS (Bosse 1-3 und 4-6, je Note 4-5/5) — lebendig, keine Wackel-Artefakte
+- FPS-Burst (flock perf): 60.2 FPS (>= 55, unverändert zur Baseline), 0 JS-Fehler
+- npm test 843/843 grün, tsc rc=0, build rc=0
+
+Offene Punkte: siehe docs/lanes/m10-boss-idle-anim.md (Idle-Zyklus zeigt F2 mit —
+semantisch doppelt belegt, eigener Karte in enemy-frames.ts/Run.ts; optionaler
+Posen-Akzent für F2).

@@ -1,0 +1,126 @@
+{
+  "tag": "after",
+  "generated": "2026-11-27T23:47:23.427Z",
+  "bosses": [
+    {
+      "id": "moor_queen",
+      "w": 55,
+      "h": 57,
+      "frames": 3,
+      "duplicateFrames": 0,
+      "pixelDiffs": [
+        {
+          "pair": "F0-F1",
+          "diffPx": 431
+        },
+        {
+          "pair": "F0-F2",
+          "diffPx": 733
+        }
+      ],
+      "idleShiftTopPx": 1,
+      "telegraphShiftTopPx": -1,
+      "chars": ".01239cdghklmstuv"
+    },
+    {
+      "id": "bone_lord",
+      "w": 63,
+      "h": 65,
+      "frames": 3,
+      "duplicateFrames": 0,
+      "pixelDiffs": [
+        {
+          "pair": "F0-F1",
+          "diffPx": 634
+        },
+        {
+          "pair": "F0-F2",
+          "diffPx": 849
+        }
+      ],
+      "idleShiftTopPx": 1,
+      "telegraphShiftTopPx": -1,
+      "chars": ".012356789abcgklmnp"
+    },
+    {
+      "id": "pale_shepherd",
+      "w": 71,
+      "h": 73,
+      "frames": 3,
+      "duplicateFrames": 0,
+      "pixelDiffs": [
+        {
+          "pair": "F0-F1",
+          "diffPx": 630
+        },
+        {
+          "pair": "F0-F2",
+          "diffPx": 898
+        }
+      ],
+      "idleShiftTopPx": 1,
+      "telegraphShiftTopPx": -1,
+      "chars": ".012356789abcdeghkm"
+    },
+    {
+      "id": "bell_golem",
+      "w": 79,
+      "h": 81,
+      "frames": 3,
+      "duplicateFrames": 0,
+      "pixelDiffs": [
+        {
+          "pair": "F0-F1",
+          "diffPx": 619
+        },
+        {
+          "pair": "F0-F2",
+          "diffPx": 1104
+        }
+      ],
+      "idleShiftTopPx": 1,
+      "telegraphShiftTopPx": -1,
+      "chars": ".0123456789aeghklmstv"
+    },
+    {
+      "id": "coven",
+      "w": 95,
+      "h": 97,
+      "frames": 3,
+      "duplicateFrames": 0,
+      "pixelDiffs": [
+        {
+          "pair": "F0-F1",
+          "diffPx": 731
+        },
+        {
+          "pair": "F0-F2",
+          "diffPx": 1260
+        }
+      ],
+      "idleShiftTopPx": 1,
+      "telegraphShiftTopPx": -1,
+      "chars": ".02679befghjklmnopqr"
+    },
+    {
+      "id": "hollow_king",
+      "w": 95,
+      "h": 97,
+      "frames": 3,
+      "duplicateFrames": 0,
+      "pixelDiffs": [
+        {
+          "pair": "F0-F1",
+          "diffPx": 887
+        },
+        {
+          "pair": "F0-F2",
+          "diffPx": 1593
+        }
+      ],
+      "idleShiftTopPx": 1,
+      "telegraphShiftTopPx": -1,
+      "chars": ".0123456789abcdeghklmnopqr"
+    }
+  ]
+}
