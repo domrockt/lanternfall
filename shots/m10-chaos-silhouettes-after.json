@@ -1,16 +1,16 @@
 {
   "lane": "m10-chaos-silhouettes",
   "kind": "after",
-  "generatedAt": "2026-11-27T12:25:38.261Z",
+  "generatedAt": "2026-11-27T13:52:35.866Z",
   "method": "Silhouetten-Rim-Band (Randpixel + 1px innen) aus den in-game Textur-Masken, gerendert über den tatsächlichen Code (enemySpriteFrames/sharpenEnemyGrid), Luminanz gegen dunklen Moorboden PAL[28] und helles Moor PAL[31], Schwelle 40",
   "backgroundDark": 34,
   "backgroundLight": 140.8,
   "threshold": 40,
   "averages": {
-    "rimLightPct": 60.2,
-    "topLightPct": 88.6,
-    "meanEdgeContrastDark": 73.9,
-    "rimBelowThresholdDarkPct": 42.5
+    "rimLightPct": 80.3,
+    "topLightPct": 91.8,
+    "meanEdgeContrastDark": 96.3,
+    "rimBelowThresholdDarkPct": 21.7
   },
   "sprites": [
     {
@@ -50,11 +50,11 @@
       "aspect": 0.733,
       "rimBandCount": 111,
       "rimInkPct": 12.6,
-      "rimLightPct": 45.9,
-      "topLightPct": 71.4,
-      "meanEdgeContrastDark": 81.3,
-      "meanEdgeContrastLight": 83.3,
-      "rimBelowThresholdDarkPct": 54.1,
+      "rimLightPct": 87.4,
+      "topLightPct": 81,
+      "meanEdgeContrastDark": 163.8,
+      "meanEdgeContrastLight": 88.3,
+      "rimBelowThresholdDarkPct": 12.6,
       "rimBelowThresholdLightPct": 17.1
     },
     {
@@ -72,12 +72,12 @@
       "aspect": 1.143,
       "rimBandCount": 156,
       "rimInkPct": 16.7,
-      "rimLightPct": 66,
+      "rimLightPct": 83.3,
       "topLightPct": 87.5,
-      "meanEdgeContrastDark": 47.3,
-      "meanEdgeContrastLight": 70.2,
-      "rimBelowThresholdDarkPct": 34,
-      "rimBelowThresholdLightPct": 12.2
+      "meanEdgeContrastDark": 59.9,
+      "meanEdgeContrastLight": 55.8,
+      "rimBelowThresholdDarkPct": 16.7,
+      "rimBelowThresholdLightPct": 29.5
     },
     {
       "id": "crow",
@@ -94,12 +94,12 @@
       "aspect": 1.333,
       "rimBandCount": 111,
       "rimInkPct": 16.2,
-      "rimLightPct": 51.4,
+      "rimLightPct": 83.8,
       "topLightPct": 100,
-      "meanEdgeContrastDark": 64.9,
-      "meanEdgeContrastLight": 62.9,
-      "rimBelowThresholdDarkPct": 48.6,
-      "rimBelowThresholdLightPct": 46.8
+      "meanEdgeContrastDark": 108.6,
+      "meanEdgeContrastLight": 54,
+      "rimBelowThresholdDarkPct": 16.2,
+      "rimBelowThresholdLightPct": 60.4
     },
     {
       "id": "bogzombie",
@@ -116,12 +116,12 @@
       "aspect": 0.938,
       "rimBandCount": 158,
       "rimInkPct": 20.3,
-      "rimLightPct": 56.3,
+      "rimLightPct": 79.7,
       "topLightPct": 92.6,
-      "meanEdgeContrastDark": 58.9,
-      "meanEdgeContrastLight": 64.5,
-      "rimBelowThresholdDarkPct": 43.7,
-      "rimBelowThresholdLightPct": 39.2
+      "meanEdgeContrastDark": 78.4,
+      "meanEdgeContrastLight": 44.4,
+      "rimBelowThresholdDarkPct": 20.3,
+      "rimBelowThresholdLightPct": 62.7
     },
     {
       "id": "toad",
@@ -138,12 +138,12 @@
       "aspect": 1.25,
       "rimBandCount": 137,
       "rimInkPct": 13.9,
-      "rimLightPct": 55.5,
-      "topLightPct": 96.4,
-      "meanEdgeContrastDark": 41.9,
-      "meanEdgeContrastLight": 74.3,
-      "rimBelowThresholdDarkPct": 44.5,
-      "rimBelowThresholdLightPct": 13.9
+      "rimLightPct": 86.1,
+      "topLightPct": 100,
+      "meanEdgeContrastDark": 66.8,
+      "meanEdgeContrastLight": 47.4,
+      "rimBelowThresholdDarkPct": 13.9,
+      "rimBelowThresholdLightPct": 44.5
     },
     {
       "id": "skeleton",
@@ -160,12 +160,12 @@
       "aspect": 0.65,
       "rimBandCount": 185,
       "rimInkPct": 24.3,
-      "rimLightPct": 73,
+      "rimLightPct": 75.7,
       "topLightPct": 91.7,
-      "meanEdgeContrastDark": 129.8,
-      "meanEdgeContrastLight": 85.4,
-      "rimBelowThresholdDarkPct": 27,
-      "rimBelowThresholdLightPct": 12.4
+      "meanEdgeContrastDark": 131.8,
+      "meanEdgeContrastLight": 82.7,
+      "rimBelowThresholdDarkPct": 24.3,
+      "rimBelowThresholdLightPct": 15.1
     },
     {
       "id": "bat",
@@ -182,12 +182,12 @@
       "aspect": 1.429,
       "rimBandCount": 171,
       "rimInkPct": 14.6,
-      "rimLightPct": 44.4,
-      "topLightPct": 72.5,
-      "meanEdgeContrastDark": 35.6,
-      "meanEdgeContrastLight": 87.7,
-      "rimBelowThresholdDarkPct": 55.6,
-      "rimBelowThresholdLightPct": 0
+      "rimLightPct": 85.4,
+      "topLightPct": 95,
+      "meanEdgeContrastDark": 90.2,
+      "meanEdgeContrastLight": 61.7,
+      "rimBelowThresholdDarkPct": 14.6,
+      "rimBelowThresholdLightPct": 40.9
     },
     {
       "id": "ghoul",
@@ -204,12 +204,12 @@
       "aspect": 0.889,
       "rimBandCount": 183,
       "rimInkPct": 15.3,
-      "rimLightPct": 53.6,
-      "topLightPct": 87.1,
-      "meanEdgeContrastDark": 41.4,
-      "meanEdgeContrastLight": 79.3,
-      "rimBelowThresholdDarkPct": 46.4,
-      "rimBelowThresholdLightPct": 3.8
+      "rimLightPct": 84.7,
+      "topLightPct": 90.3,
+      "meanEdgeContrastDark": 65.1,
+      "meanEdgeContrastLight": 55.3,
+      "rimBelowThresholdDarkPct": 15.3,
+      "rimBelowThresholdLightPct": 35
     },
     {
       "id": "witchling",
@@ -226,12 +226,12 @@
       "aspect": 0.842,
       "rimBandCount": 210,
       "rimInkPct": 13.8,
-      "rimLightPct": 55.2,
-      "topLightPct": 84.4,
-      "meanEdgeContrastDark": 56.8,
-      "meanEdgeContrastLight": 75,
-      "rimBelowThresholdDarkPct": 44.8,
-      "rimBelowThresholdLightPct": 21.4
+      "rimLightPct": 73.8,
+      "topLightPct": 87.5,
+      "meanEdgeContrastDark": 71.1,
+      "meanEdgeContrastLight": 58.6,
+      "rimBelowThresholdDarkPct": 26.2,
+      "rimBelowThresholdLightPct": 40
     },
     {
       "id": "slime",
@@ -248,12 +248,12 @@
       "aspect": 1.385,
       "rimBandCount": 180,
       "rimInkPct": 12.8,
-      "rimLightPct": 84.4,
+      "rimLightPct": 87.2,
       "topLightPct": 85.7,
-      "meanEdgeContrastDark": 96.5,
-      "meanEdgeContrastLight": 56.9,
-      "rimBelowThresholdDarkPct": 25.6,
-      "rimBelowThresholdLightPct": 38.3
+      "meanEdgeContrastDark": 98.6,
+      "meanEdgeContrastLight": 54.2,
+      "rimBelowThresholdDarkPct": 22.8,
+      "rimBelowThresholdLightPct": 41.1
     },
     {
       "id": "scarecrow",
@@ -270,12 +270,12 @@
       "aspect": 1.053,
       "rimBandCount": 250,
       "rimInkPct": 18.8,
-      "rimLightPct": 48,
+      "rimLightPct": 66.4,
       "topLightPct": 78.9,
-      "meanEdgeContrastDark": 82,
-      "meanEdgeContrastLight": 86.8,
-      "rimBelowThresholdDarkPct": 52,
-      "rimBelowThresholdLightPct": 0
+      "meanEdgeContrastDark": 96.2,
+      "meanEdgeContrastLight": 69.4,
+      "rimBelowThresholdDarkPct": 33.6,
+      "rimBelowThresholdLightPct": 18.4
     },
     {
       "id": "wolf",
@@ -292,12 +292,12 @@
       "aspect": 1.353,
       "rimBandCount": 251,
       "rimInkPct": 18.3,
-      "rimLightPct": 59.4,
+      "rimLightPct": 81.7,
       "topLightPct": 87,
-      "meanEdgeContrastDark": 71.4,
-      "meanEdgeContrastLight": 73.1,
-      "rimBelowThresholdDarkPct": 40.6,
-      "rimBelowThresholdLightPct": 26.7
+      "meanEdgeContrastDark": 89.2,
+      "meanEdgeContrastLight": 55.1,
+      "rimBelowThresholdDarkPct": 18.3,
+      "rimBelowThresholdLightPct": 49
     },
     {
       "id": "banshee",
@@ -314,12 +314,12 @@
       "aspect": 1.211,
       "rimBandCount": 254,
       "rimInkPct": 15.7,
-      "rimLightPct": 72.4,
+      "rimLightPct": 83.5,
       "topLightPct": 95.6,
-      "meanEdgeContrastDark": 99.3,
-      "meanEdgeContrastLight": 75.5,
-      "rimBelowThresholdDarkPct": 42.5,
-      "rimBelowThresholdLightPct": 18.5
+      "meanEdgeContrastDark": 107.4,
+      "meanEdgeContrastLight": 66.2,
+      "rimBelowThresholdDarkPct": 31.5,
+      "rimBelowThresholdLightPct": 29.5
     },
     {
       "id": "golem",
@@ -358,12 +358,12 @@
       "aspect": 1.333,
       "rimBandCount": 285,
       "rimInkPct": 16.1,
-      "rimLightPct": 60,
-      "topLightPct": 95.8,
-      "meanEdgeContrastDark": 65.8,
-      "meanEdgeContrastLight": 76.6,
-      "rimBelowThresholdDarkPct": 52.3,
-      "rimBelowThresholdLightPct": 13.7
+      "rimLightPct": 83.9,
+      "topLightPct": 97.9,
+      "meanEdgeContrastDark": 83.8,
+      "meanEdgeContrastLight": 56.4,
+      "rimBelowThresholdDarkPct": 28.4,
+      "rimBelowThresholdLightPct": 37.5
     },
     {
       "id": "cultist",
@@ -380,12 +380,12 @@
       "aspect": 1,
       "rimBandCount": 213,
       "rimInkPct": 15,
-      "rimLightPct": 62,
-      "topLightPct": 88.2,
-      "meanEdgeContrastDark": 65.5,
-      "meanEdgeContrastLight": 74,
-      "rimBelowThresholdDarkPct": 38,
-      "rimBelowThresholdLightPct": 16
+      "rimLightPct": 83.6,
+      "topLightPct": 91.2,
+      "meanEdgeContrastDark": 81.7,
+      "meanEdgeContrastLight": 56,
+      "rimBelowThresholdDarkPct": 16.4,
+      "rimBelowThresholdLightPct": 37.6
     },
     {
       "id": "bomber",
@@ -402,12 +402,12 @@
       "aspect": 0.773,
       "rimBandCount": 229,
       "rimInkPct": 13.5,
-      "rimLightPct": 69.9,
+      "rimLightPct": 84.3,
       "topLightPct": 90.9,
-      "meanEdgeContrastDark": 99,
-      "meanEdgeContrastLight": 61.2,
-      "rimBelowThresholdDarkPct": 30.1,
-      "rimBelowThresholdLightPct": 44.1
+      "meanEdgeContrastDark": 110.1,
+      "meanEdgeContrastLight": 49.5,
+      "rimBelowThresholdDarkPct": 15.7,
+      "rimBelowThresholdLightPct": 58.5
     },
     {
       "id": "knight",
@@ -424,12 +424,12 @@
       "aspect": 1,
       "rimBandCount": 508,
       "rimInkPct": 18.1,
-      "rimLightPct": 60.2,
-      "topLightPct": 89.3,
-      "meanEdgeContrastDark": 72.8,
-      "meanEdgeContrastLight": 72.4,
-      "rimBelowThresholdDarkPct": 44.7,
-      "rimBelowThresholdLightPct": 26
+      "rimLightPct": 81.7,
+      "topLightPct": 92.9,
+      "meanEdgeContrastDark": 88.7,
+      "meanEdgeContrastLight": 54.4,
+      "rimBelowThresholdDarkPct": 23.2,
+      "rimBelowThresholdLightPct": 47.4
     },
     {
       "id": "harpy",
@@ -446,12 +446,12 @@
       "aspect": 1.217,
       "rimBandCount": 260,
       "rimInkPct": 23.5,
-      "rimLightPct": 61.5,
+      "rimLightPct": 76.5,
       "topLightPct": 96.3,
-      "meanEdgeContrastDark": 101.6,
-      "meanEdgeContrastLight": 90.2,
-      "rimBelowThresholdDarkPct": 38.8,
-      "rimBelowThresholdLightPct": 8.5
+      "meanEdgeContrastDark": 112.7,
+      "meanEdgeContrastLight": 76.9,
+      "rimBelowThresholdDarkPct": 23.8,
+      "rimBelowThresholdLightPct": 23.5
     },
     {
       "id": "lich",
@@ -468,12 +468,12 @@
       "aspect": 1,
       "rimBandCount": 456,
       "rimInkPct": 23,
-      "rimLightPct": 45.2,
-      "topLightPct": 78.8,
-      "meanEdgeContrastDark": 79.5,
-      "meanEdgeContrastLight": 93.6,
-      "rimBelowThresholdDarkPct": 57,
-      "rimBelowThresholdLightPct": 8.1
+      "rimLightPct": 77,
+      "topLightPct": 86.5,
+      "meanEdgeContrastDark": 115.7,
+      "meanEdgeContrastLight": 66.6,
+      "rimBelowThresholdDarkPct": 25.2,
+      "rimBelowThresholdLightPct": 39.9
     },
     {
       "id": "wraith",
@@ -490,12 +490,12 @@
       "aspect": 1.333,
       "rimBandCount": 321,
       "rimInkPct": 14,
-      "rimLightPct": 64.5,
-      "topLightPct": 92.6,
-      "meanEdgeContrastDark": 87.8,
-      "meanEdgeContrastLight": 75.9,
-      "rimBelowThresholdDarkPct": 38.9,
-      "rimBelowThresholdLightPct": 23.4
+      "rimLightPct": 86,
+      "topLightPct": 96.3,
+      "meanEdgeContrastDark": 104.1,
+      "meanEdgeContrastLight": 57.1,
+      "rimBelowThresholdDarkPct": 17.4,
+      "rimBelowThresholdLightPct": 44.9
     },
     {
       "id": "treant",
@@ -534,12 +534,12 @@
       "aspect": 1.222,
       "rimBandCount": 207,
       "rimInkPct": 25.1,
-      "rimLightPct": 43,
-      "topLightPct": 64.3,
-      "meanEdgeContrastDark": 45,
-      "meanEdgeContrastLight": 82.7,
-      "rimBelowThresholdDarkPct": 57,
-      "rimBelowThresholdLightPct": 18.4
+      "rimLightPct": 74.9,
+      "topLightPct": 88.1,
+      "meanEdgeContrastDark": 76.7,
+      "meanEdgeContrastLight": 78.8,
+      "rimBelowThresholdDarkPct": 25.1,
+      "rimBelowThresholdLightPct": 1.9
     },
     {
       "id": "horror",
@@ -556,12 +556,12 @@
       "aspect": 1.318,
       "rimBandCount": 388,
       "rimInkPct": 18,
-      "rimLightPct": 61.9,
-      "topLightPct": 89.7,
-      "meanEdgeContrastDark": 76.2,
-      "meanEdgeContrastLight": 73.5,
-      "rimBelowThresholdDarkPct": 38.1,
-      "rimBelowThresholdLightPct": 34.3
+      "rimLightPct": 82,
+      "topLightPct": 93.1,
+      "meanEdgeContrastDark": 91.5,
+      "meanEdgeContrastLight": 56.3,
+      "rimBelowThresholdDarkPct": 18,
+      "rimBelowThresholdLightPct": 54.4
     },
     {
       "id": "centipede",
@@ -578,12 +578,12 @@
       "aspect": 2.133,
       "rimBandCount": 333,
       "rimInkPct": 21.6,
-      "rimLightPct": 77.2,
+      "rimLightPct": 78.4,
       "topLightPct": 96.8,
-      "meanEdgeContrastDark": 133.7,
-      "meanEdgeContrastLight": 81,
-      "rimBelowThresholdDarkPct": 22.8,
-      "rimBelowThresholdLightPct": 17.4
+      "meanEdgeContrastDark": 134.6,
+      "meanEdgeContrastLight": 79.8,
+      "rimBelowThresholdDarkPct": 21.6,
+      "rimBelowThresholdLightPct": 18.6
     },
     {
       "id": "gargoyle",
@@ -600,12 +600,12 @@
       "aspect": 1.136,
       "rimBandCount": 347,
       "rimInkPct": 15,
-      "rimLightPct": 64,
+      "rimLightPct": 85,
       "topLightPct": 96,
-      "meanEdgeContrastDark": 82.4,
-      "meanEdgeContrastLight": 68.5,
-      "rimBelowThresholdDarkPct": 39.5,
-      "rimBelowThresholdLightPct": 24.8
+      "meanEdgeContrastDark": 98.1,
+      "meanEdgeContrastLight": 51.3,
+      "rimBelowThresholdDarkPct": 18.4,
+      "rimBelowThresholdLightPct": 45.8
     },
     {
       "id": "reaper_bat",
@@ -622,12 +622,12 @@
       "aspect": 1.154,
       "rimBandCount": 336,
       "rimInkPct": 19,
-      "rimLightPct": 46.1,
-      "topLightPct": 90,
-      "meanEdgeContrastDark": 45.4,
-      "meanEdgeContrastLight": 76.8,
-      "rimBelowThresholdDarkPct": 59.8,
-      "rimBelowThresholdLightPct": 21.7
+      "rimLightPct": 81,
+      "topLightPct": 96.7,
+      "meanEdgeContrastDark": 93.9,
+      "meanEdgeContrastLight": 58.3,
+      "rimBelowThresholdDarkPct": 25,
+      "rimBelowThresholdLightPct": 56.5
     },
     {
       "id": "abom",
@@ -644,12 +644,12 @@
       "aspect": 1.333,
       "rimBandCount": 495,
       "rimInkPct": 15.4,
-      "rimLightPct": 53.5,
+      "rimLightPct": 84.6,
       "topLightPct": 93.5,
-      "meanEdgeContrastDark": 67.8,
-      "meanEdgeContrastLight": 80.6,
-      "rimBelowThresholdDarkPct": 46.5,
-      "rimBelowThresholdLightPct": 27.3
+      "meanEdgeContrastDark": 91.1,
+      "meanEdgeContrastLight": 54.5,
+      "rimBelowThresholdDarkPct": 15.4,
+      "rimBelowThresholdLightPct": 58.4
     },
     {
       "id": "voidcaller",
@@ -666,11 +666,11 @@
       "aspect": 1.154,
       "rimBandCount": 440,
       "rimInkPct": 16.4,
-      "rimLightPct": 65.7,
+      "rimLightPct": 83.6,
       "topLightPct": 96.4,
-      "meanEdgeContrastDark": 57.4,
-      "meanEdgeContrastLight": 72.5,
-      "rimBelowThresholdDarkPct": 59.1,
+      "meanEdgeContrastDark": 149,
+      "meanEdgeContrastLight": 83.2,
+      "rimBelowThresholdDarkPct": 16.4,
       "rimBelowThresholdLightPct": 22.3
     }
   ]

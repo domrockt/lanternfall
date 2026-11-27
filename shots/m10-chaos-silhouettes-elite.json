@@ -1,28 +1,28 @@
 {
   "lane": "m10-chaos-silhouettes",
   "kind": "elite-vs-normal",
-  "generatedAt": "2026-11-27T12:39:01.592Z",
-  "minute": 4.68,
-  "enemies": 64,
-  "elites": 4,
+  "generatedAt": "2026-11-27T12:56:33.778Z",
+  "minute": 4.29,
+  "enemies": 13,
+  "elites": 2,
   "elite": {
-    "uid": 18,
+    "uid": 14,
     "id": "bogzombie",
-    "screenX": 916,
-    "screenY": 560,
+    "screenX": 1434,
+    "screenY": 678,
     "radius": 8
   },
   "normal": {
-    "uid": 72,
-    "id": "spider",
-    "screenX": 844,
-    "screenY": 564
+    "uid": 2,
+    "id": "mudling",
+    "screenX": 951,
+    "screenY": 603
   },
   "clip": {
-    "x": 704,
-    "y": 450,
-    "width": 352,
-    "height": 224
+    "x": 1344,
+    "y": 603,
+    "width": 180,
+    "height": 150
   },
   "jsErrors": []
 }

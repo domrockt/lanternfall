@@ -50,6 +50,15 @@ const CONTRAST_TONES: Record<string, ContrastTones> = {
   treant: { top: 12, mid: 17, midLimit: 62 },
   golem: { top: 12, mid: 8, midLimit: 62 },
   bog_rat: { top: 12, mid: 8, midLimit: 62 },
+  // art-director-Runde 2: dunkle Flieger/Geister mit zu wenig Rim-Kontrast
+  // bekommen ebenfalls eine helle Oberkante und aufgehellte Mitteltöne.
+  bat: { top: 12, mid: 8, midLimit: 70 },
+  reaper_bat: { top: 12, mid: 8, midLimit: 70 },
+  lich: { top: 12, mid: 9, midLimit: 70 },
+  imp: { top: 12, mid: 17, midLimit: 70 },
+  wisp: { top: 12, mid: 13, midLimit: 70 },
+  crow: { top: 12, mid: 8, midLimit: 70 },
+  voidcaller: { top: 13, mid: 12, midLimit: 75 },
 };
 
 export function sharpenEnemyGrid(src: Grid, color: number, id = ""): Grid {
@@ -58,8 +67,11 @@ export function sharpenEnemyGrid(src: Grid, color: number, id = ""): Grid {
   const w = g[0]?.length ?? 0;
   const filled = (x: number, y: number): boolean =>
     x >= 0 && x < w && y >= 0 && y < h && g[y][x] !== null;
-  const tones = CONTRAST_TONES[id];
-  const light = tones?.top ?? lightEdgeIndex(color);
+  // Ohne Spezialfall bleibt die Lichtkante farbabhängig; sehr dunkle
+  // Mitteltöne (< 52) werden zusätzlich auf PAL 8 (mist) angehoben, damit
+  // die Silhouette auf dunklem Moor nicht in der Fläche verschwindet.
+  const tones = CONTRAST_TONES[id] ?? { top: lightEdgeIndex(color), mid: 8, midLimit: 52 };
+  const light = tones.top;
 
   // 1) 1-px-Kontur: dunkle Randpixel werden Tinte (0); helle Highlights an
   //    Spitzen bleiben erhalten, damit die Lichtkante nicht überschrieben wird.

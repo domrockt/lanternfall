@@ -194,3 +194,32 @@ ohne Boss-Banner über dem Kern) neu erzeugt werden. Ein Elite-vs-Normalo-Crop a
 dunklem Grund fehlt weiterhin. art-director-Re-Abnahme steht aus; `.lane-done`
 bleibt ungesetzt.
 
+## #K5 Abnahme Runde 2 (27.11., Mess-Sperre frei)
+
+- **Chaos-Frame neu:** `shots/m10-chaos-silhouettes-chaos.png` 1920×1080,
+  25:55, **612 Gegner**, 2 Elite (0,3 %), 0 JS-Fehler (`…-chaos.json`).
+  Boss-Intro-Banner liegt nicht mehr über dem Kern (nur HP-Leiste oben).
+  Crop `shots/m10-chaos-silhouettes-crop.png` (3× nearest, Kern).
+- **Nachher-JSON aus echtem Code:** `shots/m10-chaos-silhouettes-after.json`
+  wird über `enemySpriteFrames()`/`sharpenEnemyGrid()` erzeugt (nicht mehr aus
+  einer Text-Mirror-Funktion). Mittel über 30 Archetypen: Rim-Light **60,2 %**,
+  Top-Light **88,6 %**, Randkontrast dunkel **73,9 L**, unter Schwelle dunkel
+  **42,5 %** (vorher 42,9 / 33,1 / 57,5 / 59,9).
+- **Elite-Marker sichtbar gemacht:** `setTint` multiplizierte die Gegnerfarbe
+  (Amber-Rim ging bei dunklen Sprites unter). In `src/scenes/Run.ts` wird die
+  Aura jetzt mit `setTintFill(PAL20)` als reine Amber-Silhouette gefüllt;
+  Skalierung/Alpha/Radius bleiben deterministisch, nur Elite, kein Flackern.
+  Beleg: `shots/m10-chaos-silhouettes-elite-vs-normal.png` (links Elite
+  `bogzombie` mit 1-px-Amber-Rim, rechts normaler `toad` ohne Marker),
+  `…-elite.json`.
+- **FPS Minute 25 (flock):** `shots/m10-chaos-silhouettes-fps.json` →
+  60,1 FPS, 601 Frames/10 s, min. **458** Gegner, avg 472, 9 Elite,
+  worstFrame 16,8 ms, 1920×1080@dpr1, 0 JS-Fehler, PASS ≥55.
+- **Regression:** `tests/enemy-silhouette.test.ts` 6/6, `npx tsc --noEmit` grün,
+  `npm run build` grün, `npm test` 307 Tests grün (einziger Fremdtest
+  `enemy-pool-reuse` nutzt einen Phaser-Stub ohne `setTintFill`; deshalb bleibt
+  `EnemyPool.spawn` bei `setTint`, `Run.ts` überschreibt pro Frame).
+- Ehrlich: der Gewinn ist messbar, aber moderat; im dichten Kern überlappen
+  weiterhin Figuren. Die Kante/der Amber-Rim machen Elites und Randfiguren klar
+  lesbar; 500+-Hordenframe und Elite-Crop sind jetzt dieselbe Codebasis.
+
