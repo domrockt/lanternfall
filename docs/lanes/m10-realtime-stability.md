@@ -53,7 +53,19 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
 - Wird in K4 als Gate vor dem Langlauf benutzt; Exit 0 = Gate offen.
 
 ## K4 Vollständiger Lauf
-- (wird nach dem Lauf ausgefüllt)
+- **Lauf 1 (2026-11-27 18:20–18:50Z, 1875 s Echtzeit):** **kein Renderer-Abbruch** —
+  der K2-Fix hält: `shots/m10-realtime-30min.json` vollständig geschrieben, 0 Crashes,
+  0 JS-Fehler, 0 Screenshot-Fehler, Minuten-Shots 10/20/30 + Results.
+  Inhaltlich voll: **Sieg (dawn) bei 30.5 Sim-Minuten, 6/6 Bosse pünktlich
+  (300/600/900/1200/1500/1800 ±0 s), 6 Truhen**, Heap-Delta Minute 1→29
+  **8,9 % < 15 % (Gate PASS)**, Level 39, 6791 Kills, 3 Evolutionen.
+- **Gate FAIL nur FPS:** min 12.6 / median 48 (Ziel ≥55). Ursache: Host-Last durch
+  parallele Lanes — loadavg1 14.95 im Lauf-JSON, direkt danach 17–20. Vergleich:
+  26.11-Lauf gleicher Seed: 57.2/60.3 bei ruhigem Host. Kein Spielfehler; Boss-Timings
+  exakt, Sim unbeeinträchtigt.
+- Zweiter Lauf geplant, sobald loadavg < ~8 und flock frei (Abbruchkriterium des
+  Briefings: Ursache dokumentieren, zweiter Lauf).
+- (Ergebnis des zweiten Laufs wird hier ergänzt)
 
 ## Messwerte
 - (K4)
