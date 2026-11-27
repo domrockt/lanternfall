@@ -5977,22 +5977,27 @@
       "id": 5298,
       "title": "m10-vfx-restore K1: Baseline M25-Frame 640+780@3 (Near-White, fxAlpha, Draw-Calls, FPS)",
       "description": "Owner @vfx-artist. Skript scripts/m10-vfx-restore.mjs: M25-Szenario (skipTo 1400, 300 Gegner, 6 Waffen Lv8+Evos), Frame pausiert, Vorher(fxDamping an)/Vorher(aus). Misst Near-White A7 (Crop + Fullframe), fxAlpha-Setup, Renderer-String, Draw-Calls/Frame, FPS 45 s. Belege: shots/m10-vfx-restore-baseline-{640,780}.{json,png}. Abnahme: JSON+PNG committet, Werte in docs/lanes/m10-vfx-restore.md.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:31:38Z",
           "by": "build",
           "text": "todo → doing: Start: scripts/m10-vfx-restore.mjs (M25-Frame, Near-White A7, Draw-Calls, FPS, Renderer-String)"
+        },
+        {
+          "at": "2026-11-27T21:35:36Z",
+          "by": "build",
+          "text": "doing → done: K1 Baseline committet (d97c566): minimal-LOD fxAlpha 0,5, Near-White 1,57/3,43 %, FPS 60, Draws 16; Sichtprüfung OK."
         }
       ],
       "created": "2026-11-27T20:30:10Z",
-      "updated": "2026-11-27T20:31:38Z"
+      "updated": "2026-11-27T21:35:36Z"
     },
     {
       "id": 5299,
       "title": "m10-vfx-restore K2: Stufe 1 fxAlpha 0,5->0,65 (Run.ts-Teil), Near-White <= 4,16 %",
       "description": "Owner @vfx-artist. Run.ts: FX_RESTORE-Alpha 0,65 im minimal-LOD (fx/particles.setAlphaScale + Licht 0,85*a + Debug-Report). Near-White-Gate: <=4,16 %, sonst Rueckgaengig. lod.ts ist fremd geclaimed (m10-prop-density-lod) -> Bedarf in /home/ai/games/.dispatch/requests.md eintragen. Test tests/vfx-restore.test.ts gegen gemessene Grenzen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:54:31Z",
@@ -6003,28 +6008,45 @@
           "at": "2026-11-27T21:01:42Z",
           "by": "build",
           "text": "[Supervisor] bestätigt: Stage-1-Messschleife abgebrochen; letzte Messung gilt als verbindlich, K2 wird jetzt mit dem vorliegenden Ergebnis abgeschlossen (0,65 committet oder auf 0,5 zurückgesetzt), danach direkt K3."
+        },
+        {
+          "at": "2026-11-27T21:35:36Z",
+          "by": "build",
+          "text": "doing → done: K2 committet (0,65 im minimal-LOD, Near-White 2,99 % ≤ 4,16 %, test-auditor-Äquivalent: tests/vfx-restore.test.ts 9/9 gegen Messgrenzen, 596/596 grün)."
         }
       ],
       "created": "2026-11-27T20:30:10Z",
-      "updated": "2026-11-27T21:01:42Z"
+      "updated": "2026-11-27T21:35:36Z"
     },
     {
       "id": 5300,
       "title": "m10-vfx-restore K3: Stufe 2 Glows +0,1 + Nachmessen (Draw-Calls <= Baseline+10 %, FPS >= 50)",
       "description": "Owner @vfx-artist. Glow-Alpha sitzt in gen-fx.ts/FxSystem.ts (Claim m10-boss-fx-contrast) -> Anfrage, soweit moeglich Run.ts-Teil. Messung mit flock: Draw-Calls/Frame <= Baseline+10 %, M25 >= 50 FPS bei 640 und 780@3 (iGPU-Renderer-String im JSON). Belege shots/m10-vfx-restore-stage*.{json,png}.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:35:36Z",
+          "by": "build",
+          "text": "todo → done: K3 committet: Glow-Hebel claim-blockiert (Anfrage), 45-s-Messung Stufe 1: FPS 60/60, Draws 16/16 ≤ Baseline+10 %, Near-White 3,98/2,06 %, iGPU-Renderer-String im JSON."
+        }
+      ],
       "created": "2026-11-27T20:30:10Z",
-      "updated": "2026-11-27T20:30:10Z"
+      "updated": "2026-11-27T21:35:36Z"
     },
     {
       "id": 5301,
       "title": "m10-vfx-restore K4: art-director Vorher/Nachher + Lane-Abschluss (.lane-done)",
       "description": "Owner @tech-lead. art-director urteilt ueber Vorher/Nachher-Frames (Ziel Effekte wieder praesent, >=4/5). Ergebnis + gewaehlte Stufe in docs/lanes/m10-vfx-restore.md, .lane-done committet.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:35:36Z",
+          "by": "build",
+          "text": "todo → done: K4: art-director PASS 4/5 (640 + 780@3), gewählte Stufe 1 dokumentiert, Glow-Core-Polish als Backlog #5302. Commit 00e190e: Lane-Doku + .lane-done; 596/596 Tests grün."
+        }
+      ],
       "created": "2026-11-27T20:30:10Z",
-      "updated": "2026-11-27T20:30:10Z"
+      "updated": "2026-11-27T21:35:36Z"
     },
     {
       "id": 5302,
