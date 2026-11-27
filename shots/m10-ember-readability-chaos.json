@@ -1,0 +1,20 @@
+{
+  "lane": "m10-ember-readability",
+  "card": "#2880 (#3)",
+  "screenshot": "shots/m10-ember-readability-chaos-640.png",
+  "viewport": "640x360",
+  "seed": 77,
+  "time": 0.2,
+  "enemies": 560,
+  "projectilesInFlight": 4,
+  "projectileFrame": "projectile_ember",
+  "projectileTexture": "runtime_atlas",
+  "inFlight": [
+    { "screenX": 267, "screenY": 145, "dist": 44 },
+    { "screenX": 278, "screenY": 157, "dist": 44 },
+    { "screenX": 284, "screenY": 175, "dist": 44 },
+    { "screenX": 214, "screenY": 144, "dist": 44 }
+  ],
+  "jsErrors": [],
+  "note": "Aufnahme bei time=0,2 s mit 560 lebenden Gegnern und vier aktiven Ember-Projektilen in Flug (dist 44 px); Szene nicht pausiert."
+}

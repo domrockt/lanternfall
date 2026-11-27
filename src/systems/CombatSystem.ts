@@ -286,9 +286,10 @@ export class CombatSystem {
         trailFrames: fxFrames("fx_fire", 6),
         trailInterval: 0.05,
       });
-      // Mündungsglut: kurzer weißer Kern + Halo.
-      this.fx.spawnAnim("fx_fire", ctx.playerX + Math.cos(angle) * 10, ctx.playerY + Math.sin(angle) * 10, {
-        life: 0.22, scaleFrom: 0.9, scaleTo: 0.2, alphaFrom: 0.95, alphaTo: 0, additive: true,
+      // Mündungsglut: eigener Klecks mit Tintenkontur, gedaempft additiv.
+      // 0,55 statt 0,95 haelt den Kern unter der Near-White-Schwelle.
+      this.fx.spawnAnim("fx_ember_muzzle", ctx.playerX + Math.cos(angle) * 10, ctx.playerY + Math.sin(angle) * 10, {
+        life: 0.22, scaleFrom: 0.9, scaleTo: 0.2, alphaFrom: 0.55, alphaTo: 0, additive: true,
       });
     }
   }
