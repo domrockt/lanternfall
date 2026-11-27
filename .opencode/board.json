@@ -4412,11 +4412,17 @@
       "id": 3479,
       "title": "m10-gem-drawcap #2 Fix PickupSystem: harter 120er-Deckel + Gem-Zahl-Magnet",
       "description": "Obergrenze sichtbarer Gems hart 120 (auch bei LOD full/reduced), Ueberschuss in naechsten freien Gem mergen (XP exakt erhalten), Magnetradius mit Gem-Zahl skalieren, pro Gem hoechstens ein Tween. Abnahme: npx tsc --noEmit gruen, bestehende pickup-gems-Tests gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T13:38:40Z",
+          "by": "build",
+          "text": "todo → doing: Fix in src/systems/PickupSystem.ts: harter 120er-Deckel + Gem-Zahl-Magnet + XP-Erhaltungs-Statistik."
+        }
+      ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:13:48Z"
+      "updated": "2026-11-27T13:38:40Z"
     },
     {
       "id": 3480,
