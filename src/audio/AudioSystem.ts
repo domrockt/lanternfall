@@ -2,10 +2,15 @@ import Phaser from "phaser";
 import { getSettings, setSettings } from "./settings";
 import {
   canPlay, effectiveVolume, newMixerState, notePlayed, releaseVoice, PRIORITY,
+  EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
   type MixerState, type SoundRequest,
 } from "./mixing";
 import type { WeaponAnyId } from "../data/types";
 import { acquireVoiceSlot } from "../logic/voice-pool";
+
+// Reine Datentabellen leben in mixing.ts (phaser-frei, für Tests/Messskripte);
+// hier unverändert re-exportiert (bestehende Importe bleiben gültig).
+export { SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS, EVOLUTION_SFX_IDS };
 
 /** Eine wiederverwendete SFX-Stimme. `token` schuetzt vor Doppel-Freigabe. */
 interface Voice {
@@ -14,63 +19,10 @@ interface Voice {
   token: number;
 }
 
-/** Alle prozedural erzeugten WAVs (scripts/gen_sfx.py). */
-export const SFX_KEYS = {
-  ember: "sfx_ember", flail: "sfx_flail", frost: "sfx_frost", thorn: "sfx_thorn",
-  storm: "sfx_storm", lantern: "sfx_lantern", phoenix: "sfx_phoenix",
-  wrath_pendulum: "sfx_wrath", eternal_winter: "sfx_winter", thorn_storm: "sfx_thornstorm",
-  thunder_seal: "sfx_seal", soul_beacon: "sfx_soul",
-  hit: "sfx_hit", kill: "sfx_kill", xp: "sfx_xp", levelup: "sfx_levelup",
-  chest: "sfx_chest", evolution: "sfx_evolution", bossWarn: "sfx_boss_warn",
-  bossDeath: "sfx_boss_death", victory: "sfx_victory", defeat: "sfx_defeat",
-} as const;
-
 export const MUSIC_KEYS = { run: "music_run", boss: "music_boss" } as const;
-
-/** Die 6 Basiswaffen und die 6 Evolutionen, deren Klänge sich hörbar unterscheiden müssen. */
-export const WEAPON_SFX_IDS = ["ember", "flail", "frost", "thorn", "storm", "lantern"] as const;
-export const EVOLUTION_SFX_IDS = [
-  "phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon",
-] as const;
 
 type SfxId = keyof typeof SFX_KEYS;
 
-interface SfxConfig {
-  priority: number;
-  cooldown: number;
-  maxVoices: number;
-  volume: number;
-}
-
-const CONFIG: Record<SfxId, SfxConfig> = {
-  ember: { priority: PRIORITY.weapon, cooldown: 0.09, maxVoices: 3, volume: 0.55 },
-  flail: { priority: PRIORITY.weapon, cooldown: 0.12, maxVoices: 2, volume: 0.55 },
-  frost: { priority: PRIORITY.weapon, cooldown: 0.22, maxVoices: 2, volume: 0.5 },
-  thorn: { priority: PRIORITY.weapon, cooldown: 0.12, maxVoices: 2, volume: 0.45 },
-  storm: { priority: PRIORITY.weapon, cooldown: 0.16, maxVoices: 2, volume: 0.6 },
-  lantern: { priority: PRIORITY.weapon, cooldown: 0.3, maxVoices: 1, volume: 0.4 },
-  // Evolutions-Stinger sind 0,6–1,0 s lang: Cooldown >= Länge und eine Stimme,
-  // damit ein Dauerfeuer der Evolutionswaffe den Stinger nicht überlagert.
-  phoenix: { priority: PRIORITY.weapon, cooldown: 0.9, maxVoices: 1, volume: 0.55 },
-  wrath_pendulum: { priority: PRIORITY.weapon, cooldown: 0.85, maxVoices: 1, volume: 0.6 },
-  eternal_winter: { priority: PRIORITY.weapon, cooldown: 1.0, maxVoices: 1, volume: 0.45 },
-  thorn_storm: { priority: PRIORITY.weapon, cooldown: 0.85, maxVoices: 1, volume: 0.5 },
-  thunder_seal: { priority: PRIORITY.weapon, cooldown: 0.85, maxVoices: 1, volume: 0.55 },
-  soul_beacon: { priority: PRIORITY.weapon, cooldown: 1.0, maxVoices: 1, volume: 0.5 },
-  hit: { priority: PRIORITY.hit, cooldown: 0.05, maxVoices: 4, volume: 0.45 },
-  kill: { priority: PRIORITY.hit, cooldown: 0.04, maxVoices: 4, volume: 0.35 },
-  xp: { priority: PRIORITY.weapon, cooldown: 0.05, maxVoices: 3, volume: 0.25 },
-  levelup: { priority: PRIORITY.boss, cooldown: 0.5, maxVoices: 1, volume: 0.7 },
-  chest: { priority: PRIORITY.boss, cooldown: 0.6, maxVoices: 1, volume: 0.65 },
-  evolution: { priority: PRIORITY.crit, cooldown: 0.8, maxVoices: 1, volume: 0.85 },
-  bossWarn: { priority: PRIORITY.warning, cooldown: 1.2, maxVoices: 1, volume: 0.9 },
-  bossDeath: { priority: PRIORITY.warning, cooldown: 1.4, maxVoices: 1, volume: 0.95 },
-  victory: { priority: PRIORITY.boss, cooldown: 2, maxVoices: 1, volume: 0.85 },
-  defeat: { priority: PRIORITY.boss, cooldown: 2, maxVoices: 1, volume: 0.8 },
-};
-
-/** Öffentlich für Tests/Doku: Prioritäts-/Cooldown-/Stimmen-Tabelle. */
-export const SFX_CONFIG: Record<string, SfxConfig> = CONFIG;
 
 /** Audio-System: prozedurale SFX + zwei Chiptune-Loops mit Spam-Begrenzung. */
 export class AudioSystem {
@@ -97,7 +49,7 @@ export class AudioSystem {
   /** Spielt einen SFX mit Priorität/Cooldown/Stimmenlimit. */
   play(id: SfxId): boolean {
     if (this.muted || this.failed) return false;
-    const cfg = CONFIG[id];
+    const cfg = SFX_CONFIG[id];
     const settings = getSettings();
     if (settings.sfx <= 0) return false;
     this.mixer.now = performance.now() / 1000;
