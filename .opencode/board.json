@@ -3813,10 +3813,15 @@
           "at": "2026-11-27T10:50:16Z",
           "by": "build",
           "text": "todo → blocked: BLOCKED: art-director FAIL 3/5 (>=4/5 nötig). 57.6% Randpixel unter Kontrastschwelle; treant 82.3%/26.5, golem 77.4%/28.5, bog_rat 70.7%/32.8; Elite-Amber im Feuer/Boss-Banner nicht sichtbar; after.png falscher Frame (26:19 leer vs JSON 25:13/358). Korrekturen in docs/lanes/m10-chaos-silhouettes.md notiert. Supervisor-Stopp vor weiterer Pixel-Analyse. Kein .lane-done."
+        },
+        {
+          "at": "2026-11-27T12:06:13Z",
+          "by": "build",
+          "text": "27.11. Korrekturrunde: art-director-Korrekturen in sharpenEnemyGrid umgesetzt (Top-Bogen-Licht, treant/golem/bog_rat-Mitteltöne 17/8, Kontur PAL0), Regressionstest 6/6, Commit a1ad909 (WIP). Offline-Mittel: unter Schwelle 57.6→42.5 %, Rim-Light 44.9→60.2 %, Top-Light 37.1→88.6 %, Randkontrast 59.5→73.9. BLOCKED bis Mess-Sperre frei: frische 500+-Hordenframe-PNG/JSON + Elite-vs-Normalo-Crop + art-director-PASS ≥4/5."
         }
       ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T10:50:16Z"
+      "updated": "2026-11-27T12:06:13Z"
     }
   ]
 }
