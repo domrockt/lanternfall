@@ -19,7 +19,6 @@ const argValue = (name) => {
   return i >= 0 ? ARGV[i + 1] : null;
 };
 const OUT = argValue("out") || "shots/m10-ground-cost-baseline.json";
-const SHOT = argValue("shot") || "shots/m10-ground-cost-before.png";
 const RUNS = 3;
 const CYCLES = 4;
 const WINDOW_S = 3;
@@ -59,7 +58,6 @@ const setGroundMode = async (page, mode) =>
     for (const r of g.ripples) imgs.add(r.img);
     for (const f of g.fireflies) imgs.add(f.img);
     for (const b of g.fogBanks) imgs.add(b.img);
-    if (g.composite) imgs.add(g.composite);
     if (!g.__origUpdate) {
       g.__origUpdate = g.update;
       // Direkte Messung der Per-Frame-Update-Kosten (nur Debug, kein Verhalten).
@@ -271,7 +269,6 @@ if (INSTRUMENT) {
           chunks.push(e.image);
           props.push(...e.props);
         }
-        if (g.composite) chunks.push(g.composite);
         for (const r of g.ripples) ripples.push(r.img);
         for (const f of g.fireflies) ambient.push(f.img);
         for (const b of g.fogBanks) ambient.push(b.img);
@@ -379,7 +376,7 @@ try {
       await page.evaluate(() => window.__lf.pickLevelUp(0));
     }
     // Baseline-Screenshot fuer den spaeteren Pixel-Diff (vor dem Fix).
-    if (run === 0) await page.screenshot({ path: SHOT });
+    if (run === 0) await page.screenshot({ path: "shots/m10-ground-cost-before.png" });
 
     const result = { run: run + 1, cycles: [], modes: {} };
     const windows = { on: [], hidden: [], frozen: [] };
