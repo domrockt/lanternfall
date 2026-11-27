@@ -1349,32 +1349,37 @@
     },
     {
       "profile": "640x360@3",
+      "name": "Options nach Skalenwechsel offen",
+      "ok": true
+    },
+    {
+      "profile": "640x360@3",
       "name": "Options-Pfeil Randtreffer (16 px neben Glyph)",
-      "ok": false,
-      "detail": "0.7 -> 0.7"
+      "ok": true,
+      "detail": "0.7 -> 0.6"
     },
     {
       "profile": "640x360@3",
       "name": "Options-Zeilenlabel Tap trifft Wert",
-      "ok": false,
-      "detail": "0.7 -> 0.7"
+      "ok": true,
+      "detail": "0.6 -> 0.7"
     },
     {
       "profile": "640x360@3",
       "name": "ZURUECK-Zeile schliesst per Tap",
-      "ok": false
+      "ok": true
     },
     {
       "profile": "640x360@3",
       "name": "START-Knopf Randtreffer (Offset 16)",
-      "ok": false,
-      "detail": "title"
+      "ok": true,
+      "detail": "charselect"
     },
     {
       "profile": "640x360@3",
       "name": "CharSelect START Randtreffer (Offset 16)",
-      "ok": false,
-      "detail": "charselect"
+      "ok": true,
+      "detail": "run"
     },
     {
       "profile": "640x360@3",
@@ -1446,32 +1451,37 @@
     },
     {
       "profile": "780x360@3",
+      "name": "Options nach Skalenwechsel offen",
+      "ok": true
+    },
+    {
+      "profile": "780x360@3",
       "name": "Options-Pfeil Randtreffer (16 px neben Glyph)",
-      "ok": false,
-      "detail": "0.7 -> 0.7"
+      "ok": true,
+      "detail": "0.7 -> 0.6"
     },
     {
       "profile": "780x360@3",
       "name": "Options-Zeilenlabel Tap trifft Wert",
-      "ok": false,
-      "detail": "0.7 -> 0.7"
+      "ok": true,
+      "detail": "0.6 -> 0.7"
     },
     {
       "profile": "780x360@3",
       "name": "ZURUECK-Zeile schliesst per Tap",
-      "ok": false
+      "ok": true
     },
     {
       "profile": "780x360@3",
       "name": "START-Knopf Randtreffer (Offset 16)",
-      "ok": false,
-      "detail": "title"
+      "ok": true,
+      "detail": "charselect"
     },
     {
       "profile": "780x360@3",
       "name": "CharSelect START Randtreffer (Offset 16)",
-      "ok": false,
-      "detail": "charselect"
+      "ok": true,
+      "detail": "run"
     },
     {
       "profile": "780x360@3",
@@ -1501,10 +1511,10 @@
       "detail": ""
     }
   ],
-  "passed": false,
+  "passed": true,
   "summary": {
-    "checks": 34,
-    "passed": 24,
-    "hitRate": 70.6
+    "checks": 36,
+    "passed": 36,
+    "hitRate": 100
   }
 }

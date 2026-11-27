@@ -1,0 +1,21 @@
+Lane m10-menu-touch-targets — TOUCH-TREFFERFLAECHEN MENUES: FERTIG.
+
+Alle Menues (Titel, CharSelect, Pause, Results, Options) auf 640x360@3 und
+780x360@3 per Touch zuverlaessig bedienbar: Hit-Zonen >=44x44 logische Pixel
+(unsichtbar, Optik unveraendert, View-Clamp an Raendern), Optionszeilen mit
+zusammenhaengender Vollbreiten-Trefferflaeche und Tap-Fokus.
+
+Messwerte:
+- Tap-Probe: vorher 12/34 Checks (35,3 %) -> nachher 36/36 (100 %),
+  Kern der 34 Vorher-Checks 34/34; 0 JS-Fehler.
+- Kleinstes interaktives Rechteck: vorher 24x18 -> nachher 92x44,
+  alle Zonen in der View.
+- Pixel-Diff Optionsmenue: AE 3141/3501 (640/780) < Same-Run-Animations-
+  rauschen 15876 -> statische Menuegrafik unveraendert; Knopfzentren
+  vor/nachher identisch (getBounds-Aequivalenz).
+
+Belege: shots/m10-menu-touch-before.json, shots/m10-menu-touch-after.json,
+shots/m10-menu-touch-options-640.png, shots/m10-menu-touch-options-780.png.
+Tests: tests/menu-touch-targets.test.ts 21 Assertions; tsc gruen, build gruen,
+npm test 376/376 gruen. Doku: docs/lanes/m10-menu-touch.md.
+Karten: #3438 (K1), #3439 (K2), #3440 (K3), #3441 (K4), #3442 (K5).

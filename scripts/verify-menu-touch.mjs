@@ -63,7 +63,19 @@ async function tapGame(page, x, y) {
     box.x + (x / view.w) * box.width,
     box.y + (y / view.h) * box.height,
   );
-  await page.waitForTimeout(180);
+  await page.waitForTimeout(200);
+}
+
+/** Pollt eine Page-Bedingung (Scene-Fades dauern 180-200 ms > fester Wait). */
+async function pollPage(page, fn, timeout = 2500, step = 80) {
+  const t0 = Date.now();
+  for (;;) {
+    let ok = false;
+    try { ok = await fn(); } catch { ok = false; }
+    if (ok) return true;
+    if (Date.now() - t0 > timeout) return false;
+    await page.waitForTimeout(step);
+  }
 }
 
 /** Alle interaktiven Rechtecke der aktiven Szenen in logischen Pixeln. */
@@ -155,12 +167,15 @@ for (const profile of PROFILES) {
 
   // Journeys + Bounds je Szene einsammeln.
   await boot(page);
+  await page.waitForTimeout(300);
   view = await viewOf(page);
   ({ W, H, cx, oy, rowW, arrowL, labelX } = layoutOf(view));
   boundsByProfile[profile.name] = { view, title: await collectBounds(page) };
 
   await tapGame(page, cx, 214 + oy); // OPTIONEN
-  addCheck(profile, "Titel -> Options per Tap", await optionsOpen(page, "title"));
+  addCheck(profile, "Titel -> Options per Tap", await pollPage(
+    page, () => optionsOpen(page, "title"),
+  ));
   boundsByProfile[profile.name].options = await collectBounds(page);
   await page.screenshot({ path: `shots/m10-menu-touch-options-${profile.width}.png` });
 
@@ -178,11 +193,18 @@ for (const profile of PROFILES) {
     );
   }
   // Die Skalierungszeile hat die View veraendert: Layout neu lesen, bevor die
-  // Pfeil-/Label-/ZURUECK-Proben auf festen Zeilenkoordinaten laufen.
+  // Pfeil-/Label-/ZURUECK-Proben auf festen Zeilenkoordinaten laufen. Bei
+  // Profilwechsel kann die Title-Szene neustarten und das Menue schliessen -
+  // dann ueber den OPTIONEN-Knopf wieder oeffnen.
   await page.evaluate(() => window.__lf.setOption("scale", 0));
-  await page.waitForTimeout(250);
+  await page.waitForTimeout(400);
   view = await viewOf(page);
   ({ W, H, cx, oy, rowW, arrowL, labelX } = layoutOf(view));
+  if (!(await optionsOpen(page, "title"))) {
+    await tapGame(page, cx, 214 + oy); // OPTIONEN erneut
+    await pollPage(page, () => optionsOpen(page, "title"));
+  }
+  addCheck(profile, "Options nach Skalenwechsel offen", await optionsOpen(page, "title"));
 
   // Pfeil-Randprobe in Options: 16 px neben dem "<"-Glyph tippen.
   const beforeMusic = await optionState(page);
@@ -202,7 +224,9 @@ for (const profile of PROFILES) {
 
   const beforeBack = await optionsOpen(page, "title");
   await tapGame(page, cx, 84 + oy + 6 * 20 + 2);
-  addCheck(profile, "ZURUECK-Zeile schliesst per Tap", beforeBack && !(await optionsOpen(page, "title")));
+  addCheck(profile, "ZURUECK-Zeile schliesst per Tap", beforeBack && await pollPage(
+    page, async () => !(await optionsOpen(page, "title")),
+  ));
   await waitForScene(page, "title");
 
   // Edge-Probe: START-Knopf 16 px ueber der sichtbaren Unterkante tippen.
@@ -213,8 +237,8 @@ for (const profile of PROFILES) {
   view = await viewOf(page);
   ({ W, H, cx, oy, rowW, arrowL, labelX } = layoutOf(view));
   await tapGame(page, cx - 104, 214 + oy + 16); // START, sichtbar 22 hoch
-  addCheck(profile, "START-Knopf Randtreffer (Offset 16)", await page.evaluate(
-    () => window.__lf.state().scene === "charselect",
+  addCheck(profile, "START-Knopf Randtreffer (Offset 16)", await pollPage(
+    page, async () => (await sceneOf(page)) === "charselect",
   ), await sceneOf(page));
 
   // Fuer die Folgepruefungen per Tastatur weitergehen, falls der Randtreffer
@@ -228,8 +252,8 @@ for (const profile of PROFILES) {
   // CharSelect START-Randtreffer (16 px ueber Knopfmitte).
   boundsByProfile[profile.name].charselect = await collectBounds(page);
   await tapGame(page, cx + 40, H - 18 - 16);
-  addCheck(profile, "CharSelect START Randtreffer (Offset 16)", await page.evaluate(
-    () => window.__lf.state().scene === "run",
+  addCheck(profile, "CharSelect START Randtreffer (Offset 16)", await pollPage(
+    page, async () => (await sceneOf(page)) === "run",
   ), await sceneOf(page));
   if ((await sceneOf(page)) === "charselect") {
     await page.keyboard.press("Enter");
@@ -248,8 +272,8 @@ for (const profile of PROFILES) {
   await tapGame(page, cx, 84 + oy + 6 * 20 + 2); // ZURUECK
   addCheck(profile, "Pause-Options ZURUECK per Tap", !(await optionsOpen(page, "ui")));
   await tapGame(page, 108 + (cx - 240), 201 + oy); // FORTSETZEN
-  addCheck(profile, "FORTSETZEN per Tap", await page.evaluate(
-    () => window.__lf.state().paused === false,
+  addCheck(profile, "FORTSETZEN per Tap", await pollPage(
+    page, async () => (await page.evaluate(() => window.__lf.state().paused)) === false,
   ));
 
   // Results erreichen (debug) und TITEL-Randtreffer tippen.
@@ -258,8 +282,8 @@ for (const profile of PROFILES) {
   await page.waitForTimeout(250);
   boundsByProfile[profile.name].results = await collectBounds(page);
   await tapGame(page, cx + 76, H - 26 + 12); // TITEL, sichtbar 20 hoch, Offset 12
-  addCheck(profile, "Results -> TITEL Randtreffer (Offset 12)", await page.evaluate(
-    () => window.__lf.state().scene === "title",
+  addCheck(profile, "Results -> TITEL Randtreffer (Offset 12)", await pollPage(
+    page, async () => (await sceneOf(page)) === "title",
   ), await sceneOf(page));
 
   errorsByProfile[profile.name] = errors;
