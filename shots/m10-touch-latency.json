@@ -1,13 +1,13 @@
 {
   "milestone": "M10-touch-latency",
-  "baseSha": "21fdd0f86d58cdac57490e682966b6d0c04489c1",
-  "generatedAt": "2026-11-27T03:15:50.420Z",
+  "baseSha": "a3ebd2eae5c07ee1cba0e46276b15f29f912889b",
+  "generatedAt": "2026-11-27T03:44:40.895Z",
   "criterion": "Median <= 2 Frames (33 ms), p95 <= 3 Frames; Loslassen <= 1 Frame",
   "passed": true,
   "overall": {
     "latencyMs": {
-      "median": 0.8,
-      "p95": 1.4
+      "median": 0.7,
+      "p95": 1.6
     },
     "latencyFrames": {
       "median": 1,
@@ -30,10 +30,10 @@
       "trials": 12,
       "moved": 12,
       "latencyMs": {
-        "median": 0.85,
-        "p95": 1.5,
+        "median": 0.8,
+        "p95": 1.6,
         "min": 0.5,
-        "max": 1.5
+        "max": 1.6
       },
       "latencyFrames": {
         "median": 1,
@@ -43,7 +43,7 @@
         "median": 1,
         "p95": 1
       },
-      "frameMs": 16.5,
+      "frameMs": 15.8,
       "perTrial": [
         {
           "i": 0,
@@ -51,11 +51,11 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 1.5,
+          "latencyMs": 1.6,
           "latencyFrames": 1,
-          "releaseMs": 1.1,
+          "releaseMs": 1.2,
           "releaseFrames": 1,
-          "frameMs": 16.5,
+          "frameMs": 15.8,
           "paused": false,
           "movedX": 0
         },
@@ -65,11 +65,11 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 1,
+          "latencyMs": 0.6,
           "latencyFrames": 1,
-          "releaseMs": 0.7,
+          "releaseMs": 0.9,
           "releaseFrames": 1,
-          "frameMs": 19.15,
+          "frameMs": 17.65,
           "paused": false,
           "movedX": 0
         },
@@ -79,11 +79,11 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.9,
+          "latencyMs": 1.2,
           "latencyFrames": 1,
-          "releaseMs": 1.5,
+          "releaseMs": 3,
           "releaseFrames": 1,
-          "frameMs": 19.9,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -93,11 +93,11 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.8,
+          "latencyMs": 0.9,
           "latencyFrames": 1,
-          "releaseMs": 0.9,
+          "releaseMs": 4,
           "releaseFrames": 1,
-          "frameMs": 16.6,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -107,11 +107,11 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 0.5,
+          "latencyMs": 0.8,
           "latencyFrames": 1,
-          "releaseMs": 1.9,
+          "releaseMs": 3.8,
           "releaseFrames": 1,
-          "frameMs": 16.7,
+          "frameMs": 16.6,
           "paused": false,
           "movedX": 0
         },
@@ -121,11 +121,11 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.9,
+          "latencyMs": 0.8,
           "latencyFrames": 1,
-          "releaseMs": 4.8,
+          "releaseMs": 3,
           "releaseFrames": 1,
-          "frameMs": 16.6,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -135,11 +135,11 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 1,
+          "latencyMs": 0.7,
           "latencyFrames": 1,
-          "releaseMs": 4,
+          "releaseMs": 3.8,
           "releaseFrames": 1,
-          "frameMs": 16.7,
+          "frameMs": 16.6,
           "paused": false,
           "movedX": 0
         },
@@ -151,7 +151,7 @@
           },
           "latencyMs": 0.8,
           "latencyFrames": 1,
-          "releaseMs": 4.9,
+          "releaseMs": 2.8,
           "releaseFrames": 1,
           "frameMs": 16.6,
           "paused": false,
@@ -165,9 +165,9 @@
           },
           "latencyMs": 0.5,
           "latencyFrames": 1,
-          "releaseMs": 4.9,
+          "releaseMs": 3.5,
           "releaseFrames": 1,
-          "frameMs": 16.65,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -177,9 +177,9 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.9,
+          "latencyMs": 0.8,
           "latencyFrames": 1,
-          "releaseMs": 4.7,
+          "releaseMs": 1.7,
           "releaseFrames": 1,
           "frameMs": 16.7,
           "paused": false,
@@ -191,9 +191,9 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.5,
+          "latencyMs": 0.7,
           "latencyFrames": 1,
-          "releaseMs": 2.9,
+          "releaseMs": 4.1,
           "releaseFrames": 1,
           "frameMs": 16.6,
           "paused": false,
@@ -207,7 +207,7 @@
           },
           "latencyMs": 0.7,
           "latencyFrames": 1,
-          "releaseMs": 4.6,
+          "releaseMs": 3.4,
           "releaseFrames": 1,
           "frameMs": 16.7,
           "paused": false,
@@ -225,10 +225,10 @@
       "trials": 12,
       "moved": 12,
       "latencyMs": {
-        "median": 0.7,
-        "p95": 1.4,
-        "min": 0.5,
-        "max": 1.4
+        "median": 0.65,
+        "p95": 3.4,
+        "min": 0.3,
+        "max": 3.4
       },
       "latencyFrames": {
         "median": 1,
@@ -238,7 +238,7 @@
         "median": 1,
         "p95": 1
       },
-      "frameMs": 16.5,
+      "frameMs": 16.7,
       "perTrial": [
         {
           "i": 0,
@@ -246,11 +246,11 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 1.4,
+          "latencyMs": 3.4,
           "latencyFrames": 1,
-          "releaseMs": 3.7,
+          "releaseMs": 3.3,
           "releaseFrames": 1,
-          "frameMs": 16.5,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -260,9 +260,9 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.5,
+          "latencyMs": 1,
           "latencyFrames": 1,
-          "releaseMs": 3.4,
+          "releaseMs": 3.1,
           "releaseFrames": 1,
           "frameMs": 16.6,
           "paused": false,
@@ -274,11 +274,11 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.7,
+          "latencyMs": 0.8,
           "latencyFrames": 1,
-          "releaseMs": 2.8,
+          "releaseMs": 4.3,
           "releaseFrames": 1,
-          "frameMs": 16.6,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -288,9 +288,9 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.9,
+          "latencyMs": 1.1,
           "latencyFrames": 1,
-          "releaseMs": 4.2,
+          "releaseMs": 3.1,
           "releaseFrames": 1,
           "frameMs": 16.6,
           "paused": false,
@@ -302,11 +302,11 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 0.7,
+          "latencyMs": 0.6,
           "latencyFrames": 1,
-          "releaseMs": 2.2,
+          "releaseMs": 4.9,
           "releaseFrames": 1,
-          "frameMs": 16.7,
+          "frameMs": 16.65,
           "paused": false,
           "movedX": 0
         },
@@ -318,7 +318,7 @@
           },
           "latencyMs": 0.6,
           "latencyFrames": 1,
-          "releaseMs": 4.7,
+          "releaseMs": 1.9,
           "releaseFrames": 1,
           "frameMs": 16.65,
           "paused": false,
@@ -330,9 +330,9 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.8,
+          "latencyMs": 0.5,
           "latencyFrames": 1,
-          "releaseMs": 3,
+          "releaseMs": 2.3,
           "releaseFrames": 1,
           "frameMs": 16.7,
           "paused": false,
@@ -344,11 +344,11 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.6,
+          "latencyMs": 0.3,
           "latencyFrames": 1,
-          "releaseMs": 2.1,
+          "releaseMs": 3.5,
           "releaseFrames": 1,
-          "frameMs": 16.6,
+          "frameMs": 16.7,
           "paused": false,
           "movedX": 0
         },
@@ -358,9 +358,9 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 0.8,
+          "latencyMs": 0.5,
           "latencyFrames": 1,
-          "releaseMs": 3.5,
+          "releaseMs": 3.8,
           "releaseFrames": 1,
           "frameMs": 16.7,
           "paused": false,
@@ -372,9 +372,9 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.7,
+          "latencyMs": 0.5,
           "latencyFrames": 1,
-          "releaseMs": 4.3,
+          "releaseMs": 4.6,
           "releaseFrames": 1,
           "frameMs": 16.7,
           "paused": false,
@@ -386,11 +386,11 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.5,
+          "latencyMs": 0.7,
           "latencyFrames": 1,
-          "releaseMs": 4.3,
+          "releaseMs": 4,
           "releaseFrames": 1,
-          "frameMs": 16.7,
+          "frameMs": 16.6,
           "paused": false,
           "movedX": 0
         },
@@ -400,9 +400,9 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.8,
+          "latencyMs": 0.7,
           "latencyFrames": 1,
-          "releaseMs": 2,
+          "releaseMs": 4.3,
           "releaseFrames": 1,
           "frameMs": 16.65,
           "paused": false,

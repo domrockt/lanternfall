@@ -3026,11 +3026,22 @@
       "id": 2120,
       "title": "m10-touch-latency #3 Loslassen: pointerup → Achse 0 im nächsten Frame",
       "description": "Nach touchend/pointerup ist move im nächsten Frame (0,0); Pause/Level-up/Truhe blockieren Gesten weiterhin. Abnahme: Test in tests/input-latency.test.ts + tests/input.test.ts grün, Beleg-Screenshot.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:45:11Z",
+          "by": "build",
+          "text": "todo → doing: Loslassen-Tests (touchend→nächster Frame 0, canMove-Sperren) ergänzt; Messung nach Hysterese erneut gefahren"
+        },
+        {
+          "at": "2026-11-27T03:45:42Z",
+          "by": "build",
+          "text": "doing → review: PASS: 3 neue Tests (touchend→0 im selben update, Pause/Level-up/Truhe blockieren, reset Hysterese); 40 Tests grün; Nachher-Messung 24/24 bewegt, Release 1 Frame, 0 JS-Fehler; Commit 53f4241"
+        }
+      ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T02:39:33Z"
+      "updated": "2026-11-27T03:45:42Z"
     },
     {
       "id": 2121,
