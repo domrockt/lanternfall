@@ -3453,41 +3453,75 @@
       "id": 2358,
       "title": "m10-separation-crowd #1 Baseline 500er-Klumpen + FPS",
       "description": "scripts/m10-crowd-probe.mjs (auf harness.mjs): 500 Gegner dicht in der Mitte, 300 Frames messen: Anteil Paare <4px, mittlerer Naechster-Nachbar-Abstand, Gegner in 32px-Kreis um Spieler, FPS min/median (flock). Belege shots/m10-separation-before.json + -before.png (Frame Minute 25). Abnahme: beide Dateien im Commit, Zahlen im JSON.",
-      "column": "todo",
+      "column": "review",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:58:49Z",
+          "by": "build",
+          "text": "todo → review: Baseline 500 Gegner dicht in der Mitte, 300 Frames: closePairRatio 0.45% (561/124750 Paare <4px), meanNearestNeighbor 3.83px, enemiesWithin32px 280, FPS min 59.5 / median 59.9, 0 JS-Fehler. Belege shots/m10-separation-before.json+png, Commit 20e6fa5. Probe-Skript eingefroren (Supervisor)."
+        }
+      ],
       "created": "2026-11-27T05:26:47Z",
-      "updated": "2026-11-27T05:26:47Z"
+      "updated": "2026-11-27T05:58:49Z"
     },
     {
       "id": 2359,
       "title": "m10-separation-crowd #2 Separation haerten (Massengewicht, Fallback, Deckel)",
       "description": "src/logic/separation.ts: Massengewichtung (grosse/Elite druecken staerker, kleine weichen), deterministischer Golden-Angle-Fallback, Iterationsdeckel in neuer Resolver-Export-Funktion; bestehende API-Signaturen unveraendert. Tests tests/separation-crowd.test.ts: 20 exakt uebereinanderliegende nach 2s Sim >=6px getrennt, keine NaN/Infinity, 2 Laeufe seed-stabil identisch. Abnahme: npx vitest run tests/separation-crowd.test.ts gruen + npm test gruen.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:58:49Z",
+          "by": "build",
+          "text": "todo → doing: Start: separationPush Massengewichtung + Fallback + Resolver-Iterationsdeckel, Tests separation-crowd.test.ts."
+        },
+        {
+          "at": "2026-11-27T06:16:08Z",
+          "by": "build",
+          "text": "doing → review: separationPush mit Massengewichtung (Gewicht 2*otherMass/(sum), gleich = 1 wie vorher, geklemmt 0.25..2), Golden-Angle-Fallback deterministisch, neuer resolveCrowdSeparation mit maxIterations<=8 und maxPairChecks (Default 400k) + separationCellSize. API-Signaturen unveraendert. tests/separation-crowd.test.ts 10/10 gruen, tsc gruen. Commit d7749ee."
+        }
+      ],
       "created": "2026-11-27T05:26:47Z",
-      "updated": "2026-11-27T05:26:47Z"
+      "updated": "2026-11-27T06:16:08Z"
     },
     {
       "id": 2360,
       "title": "m10-separation-crowd #3 SpatialHash Nachbar-Query",
       "description": "src/systems/SpatialHash.ts: Zellgroesse/Neighbor-Radius aus max. Separationsradius ableiten, gefilterte Nachbar-Query (Distanzfilter) anbieten, damit Separation nur Nachbarzellen liest. Test: 500 Query-Zyklen <5 ms auf Testrechner, Trefferzahl identisch zu Brute-Force auf 3 Seeds. Abnahme: Test gruen, Messwert im Test-Log/Notiz.",
-      "column": "todo",
+      "column": "review",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T06:16:08Z",
+          "by": "build",
+          "text": "todo → doing: Start: SpatialHash gefilterte Nachbar-Query + Zellgroessen-Ableitung, Perf-Test 500 Queries <5ms."
+        },
+        {
+          "at": "2026-11-27T06:27:13Z",
+          "by": "build",
+          "text": "doing → review: SpatialHash.queryNeighbors (Kreis-Query mit Distanzfilter, Treffermenge == Brute-Force), static recommendedCellSize(maxQueryRadius) = ceil(2r) geklemmt 16..64; separationCellSize delegiert daran. Test: 3 Seeds x 200 Queries Trefferzahl identisch zu Brute-Force; 500 Query-Zyklen Median 0,872 ms (<5). Tests 12/12, npm test 280/280, build rc=0. Commits 8374539 + 4f? (Delegation)."
+        }
+      ],
       "created": "2026-11-27T05:26:47Z",
-      "updated": "2026-11-27T05:26:47Z"
+      "updated": "2026-11-27T06:27:13Z"
     },
     {
       "id": 2361,
       "title": "m10-separation-crowd #4 Nachmessen + Art-Urteil",
       "description": "Gleiches Probe-Skript wie #1: shots/m10-separation-after.json + -after.png bei 500 Gegnern. Ziel: Anteil <4px-Paare -50% vs Baseline, Gegner im 32px-Kreis <=40, FPS min >=55. Chaos-Frame von art-director bewerten (einzelne Gegnertypen rechts unterscheidbar JA/NEIN) in docs/lanes/m10-separation-crowd.md. Abnahme: JSON/PNG im Commit, Doku mit Vorher/Nachher-Tabelle + Urteil, .lane-done.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T06:26:28Z",
+          "by": "build",
+          "text": "todo → doing: Start: Probe --tag=after (flock), Vorher/Nachher-Vergleich, Art-Director-Urteil, Doku."
+        }
+      ],
       "created": "2026-11-27T05:26:47Z",
-      "updated": "2026-11-27T05:26:47Z"
+      "updated": "2026-11-27T06:26:28Z"
     }
   ]
 }

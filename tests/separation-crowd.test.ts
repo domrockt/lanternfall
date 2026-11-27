@@ -75,9 +75,12 @@ describe("Separation: Massengewichtung", () => {
     const big = separationPush(10, 10, 20, 10, 10, 5, 3)!;
     expect(Math.hypot(small.x, small.y)).toBeGreaterThan(Math.hypot(big.x, big.y));
     // Ueberlappend, aber nicht deckungsgleich: Richtung zeigt von other weg.
+    // Der deterministische Tangential-Anteil (M10) dreht leicht, bleibt aber
+    // klein gegenueber der radialen Komponente.
     const push = separationPush(10, 0, 6, 0, 0, 6, 1)!;
     expect(push.x).toBeGreaterThan(0);
-    expect(Math.abs(push.y)).toBeLessThan(1e-6);
+    expect(Math.abs(push.y)).toBeLessThan(0.4);
+    expect(Math.abs(push.y)).toBeLessThan(Math.abs(push.x) * 0.4);
   });
 });
 
@@ -165,6 +168,19 @@ describe("Separation: Mengen-Resolver mit Deckel", () => {
     expect(separationCellSize(5)).toBe(16);
     expect(separationCellSize(18)).toBe(36);
     expect(separationCellSize(1000)).toBe(64);
+  });
+
+  it("Verschiebung pro Durchlauf ist auf 2*Radius gedeckelt (kein Teleport)", () => {
+    const nodes: CrowdNode[] = [
+      { x: 100, y: 100, radius: 6, uid: 1, alive: true },
+      { x: 100, y: 100, radius: 6, uid: 2, alive: true },
+    ];
+    resolveCrowdSeparation(nodes, { maxIterations: 1, strength: 1 });
+    for (const n of nodes) {
+      const moved = Math.hypot(n.x - 100, n.y - 100);
+      expect(moved).toBeLessThanOrEqual(12 + 1e-6);
+      expect(Number.isFinite(moved)).toBe(true);
+    }
   });
 });
 

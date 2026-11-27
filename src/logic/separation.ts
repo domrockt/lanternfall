@@ -82,8 +82,15 @@ export function separationPush(
     return { x: dir.x * weight, y: dir.y * weight };
   }
   const d = Math.sqrt(d2);
-  const push = ((minDist - d) / minDist) * weight;
-  return { x: (dx / d) * push, y: (dy / d) * push };
+  const ratio = (minDist - d) / minDist;
+  // M10: Grundverstaerkung + deterministischer Tangential-Anteil. Reiner
+  // Radial-Push loescht sich in dichten Klumpen gegenseitig aus; die UID-
+  // abhaengige Scherung faechert Horden auf, ohne Zufall und ohne Jitter.
+  const radial = ratio * weight * 14.0;
+  const ux = dx / d;
+  const uy = dy / d;
+  const swirl = ratio * 1.0 * (uid % 2 === 0 ? 1 : -1);
+  return { x: ux * radial - uy * swirl, y: uy * radial + ux * swirl };
 }
 
 /* ── Mengen-Resolver mit Iterations- und Paar-Deckel (M10) ────── */
