@@ -5002,10 +5002,17 @@
       "title": "m10-atlas-pack K3 Messen nachher",
       "description": "3 Läufe je Format (flock) + Draw-Calls bei 300 Gegnern -> shots/m10-atlas-pack-after*.json + Vergleichsbild vorher/nachher (pixelgleich). Akzeptanz: Draw-Calls<60, M25 780 >=50 FPS Median, Optik-Diff 0.",
       "id": 4000,
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-atlas-pack",
-      "notes": [],
-      "created": "2026-11-27T18:02:30Z"
+      "notes": [
+        {
+          "at": "2026-11-27T19:53:20Z",
+          "by": "build",
+          "text": "todo → doing: todo → doing: Compare-Belege fertig (AE=0, baked_pages 512x512 + 2048x94, missing=[]); Nachher-Messung (3 Laeufe) wartet im Hintergrund auf flock /home/ai/games/.lf-perf.lock (gehalten von m10-realtime, timeout 2600s)"
+        }
+      ],
+      "created": "2026-11-27T18:02:30Z",
+      "updated": "2026-11-27T19:53:20Z"
     },
     {
       "title": "m10-atlas-pack K4 Doku + Abschluss",
