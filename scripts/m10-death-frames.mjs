@@ -123,7 +123,7 @@ function sheetPng(set) {
   const wPx = (fw * set.frames.length - gap) * SCALE;
   const hPx = set.h * SCALE;
   const rgba = new Uint8Array(wPx * hPx * 4);
-  const bg = hexToRgb(PAL[1]);
+  const bg = hexToRgb(PAL[3]); // nightMid: nightDeep-Rims bleiben als dunkle Kante lesbar
   for (let i = 0; i < wPx * hPx; i++) rgba.set(bg, i * 4);
   set.frames.forEach((rows, f) => {
     const ox = f * fw * SCALE;
