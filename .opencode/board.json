@@ -3160,11 +3160,17 @@
       "id": 2199,
       "title": "m10-enemy-shots-fair-02 Fairness: Wind-up >=0,3 s am Schuetzen + Offscreen-Sperre",
       "description": "In EnemyProjectiles (lokal) Telegraph >= 0,3 s vor Schuss, Abbruch bei Tod/Recycling, kein Spielertreffer durch Offscreen-Schuss; Kollisionsradius unveraendert. Abgabe: Code + Tests RED->GREEN.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:22:56Z",
+          "by": "build",
+          "text": "todo → review: Fix: ENEMY_SHOT_WINDUP_SECONDS 0,36 s (>=0,3) Telegraph am Schuetzen, Abbruch bei Tod/Recycling + Offscreen-Sperre. Nachher-Sim: 500/501 Schuss, offscreenFired 0, offscreenHits 0, windupOk 500/501 (100%), 9/12 cancelledShooterDeath, 0 JS-Fehler. Build + 232 Tests gruen. Commit e57a402."
+        }
+      ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T04:04:48Z"
+      "updated": "2026-11-27T05:22:56Z"
     },
     {
       "id": 2200,

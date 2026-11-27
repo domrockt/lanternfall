@@ -68,6 +68,52 @@ const TELEGRAPH_SCALE_MAX = 0.62;
 const TELEGRAPH_POOL_CAP = 96;
 
 /**
+ * Aufgewertete Schuss-Optiken (M10-Lesbarkeit): je 1-px helle Kontur, eigene
+ * Silhouette und Kernfarbe. Ersetzt nur die Optik der Gegnerschüsse, nicht
+ * Radius/Kollision. Kontrastmessung: shots/m10-enemy-shots-contrast.json.
+ */
+const HD_PREFIX = "enemy_shot_hd_";
+const HD_GRIDS: Record<string, string[]> = {
+  spit: ["...000...", "..0vvv0..", ".0vvvvv0.", "0vvvkvvv0", "0vvkkkvv0", "0vvvkvvv0", ".0vvvvv0.", "..0vvv0..", "...000..."],
+  bone: ["..00000..", ".0bb0bb0.", "0dab0bad0", ".0bb0bb0.", "..00000.."],
+  shadow: ["...000...", "..09990..", ".0999990.", "099...990", "099.q.990", "099...990", ".0999990.", "..09990..", "...000..."],
+  fire: ["....d....", "...0d0...", "..0jjj0..", ".0jiiij0.", "0ji999ij0", "0jii9iij0", ".0jiiij0.", "..0jjj0..", "...000..."],
+};
+
+function addHdShotTexture(scene: Phaser.Scene, family: string, rows: readonly string[]): void {
+  const key = HD_PREFIX + family;
+  if (scene.textures.exists(key)) return;
+  const h = rows.length;
+  const w = rows[0].length;
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const map = (ch: string): number => {
+    if (ch >= "0" && ch <= "9") return ch.charCodeAt(0) - 48;
+    if (ch >= "a" && ch <= "z") return ch.charCodeAt(0) - 97 + 10;
+    return -1;
+  };
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = map(rows[y][x]);
+      if (i < 0) continue;
+      ctx.fillStyle = "#" + PAL[i].toString(16).padStart(6, "0");
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
+  scene.textures.addCanvas(key, canvas);
+}
+
+function ensureHdShotTextures(scene: Phaser.Scene): void {
+  for (const [family, rows] of Object.entries(HD_GRIDS)) addHdShotTexture(scene, family, rows);
+}
+
+/** Optik-Daten je Familie (der angefragte Key kann der HD-Key sein). */
+const FAMILY_VISUALS: Record<string, (typeof ENEMY_SHOT_VISUALS)[string]> = {};
+for (const visual of Object.values(ENEMY_SHOT_VISUALS)) FAMILY_VISUALS[visual.family] = visual;
+
+/**
  * Eigener Pool für Gegner-Projektile. Bewusst getrennt vom Spieler-Pool:
  * andere Texturen (dunkle Kontur, kein ADD-Blend), eigene Kollision gegen den
  * Spieler und keine Verwechslung mit Waffen-Projektilen.
@@ -87,6 +133,7 @@ export class EnemyProjectilePool {
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
+    ensureHdShotTextures(scene);
     this.stats = {
       attempted: 0, fired: 0, hits: 0,
       offscreenAttempts: 0, offscreenFired: 0, offscreenHits: 0,
@@ -126,10 +173,11 @@ export class EnemyProjectilePool {
     }
     const telegraph = this.acquireTelegraph(texture);
     if (telegraph) {
+      const family = ENEMY_SHOT_VISUALS[opts.texture]?.family ?? "spit";
       telegraph.setPosition(Math.round(opts.x), Math.round(opts.y));
       telegraph.setScale(TELEGRAPH_SCALE_MIN);
       telegraph.setAlpha(0.95);
-      telegraph.setTint(PAL[ENEMY_SHOT_VISUALS[texture]?.spark ?? C.crimson]);
+      telegraph.setTint(PAL[FAMILY_VISUALS[family]?.spark ?? C.crimson]);
       telegraph.setVisible(true).setActive(true);
     }
     this.pending.push({
@@ -166,10 +214,9 @@ export class EnemyProjectilePool {
   }
 
   private textureFor(requested: string): string {
-    // Run.ts übergibt die Familien-Keys aus shotTextureFor(); die 4 Optiken
-    // bleiben unverändert (keine neue Textur nötig, siehe Kontrastmessung).
-    if (ENEMY_SHOT_VISUALS[requested]) return requested;
-    return "enemy_shot_spit";
+    const visual = ENEMY_SHOT_VISUALS[requested];
+    const family = visual?.family ?? "spit";
+    return HD_PREFIX + family;
   }
 
   private isInView(x: number, y: number): boolean {

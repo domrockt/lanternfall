@@ -1,0 +1,200 @@
+{
+  "note": "Pixel-Kontrast (WCAG-Verhaeltnis) der 4 Gegner-Schuss-Optiken gegen Nacht-/Wasser-Hintergruende; minInner = schwaechstes nicht-Kontur-Pixel.",
+  "shots": {
+    "enemy_shot_spit": {
+      "w": 9,
+      "h": 9,
+      "opaquePixels": 57,
+      "colors": [
+        0,
+        20,
+        31
+      ],
+      "bg": {
+        "nightDeep": {
+          "minInner": 5.98,
+          "meanInner": 6.69,
+          "max": 11.23,
+          "worstColorIndex": 31
+        },
+        "night": {
+          "minInner": 5.56,
+          "meanInner": 6.22,
+          "max": 10.44,
+          "worstColorIndex": 31
+        },
+        "waterDeep": {
+          "minInner": 5.07,
+          "meanInner": 5.67,
+          "max": 9.52,
+          "worstColorIndex": 31
+        },
+        "waterMid": {
+          "minInner": 3.83,
+          "meanInner": 4.28,
+          "max": 7.19,
+          "worstColorIndex": 31
+        },
+        "grassMarsh": {
+          "minInner": 2.39,
+          "meanInner": 2.68,
+          "max": 4.49,
+          "worstColorIndex": 31
+        }
+      },
+      "minInnerAllBg": 2.39
+    },
+    "enemy_shot_bone": {
+      "w": 9,
+      "h": 5,
+      "opaquePixels": 33,
+      "colors": [
+        0,
+        10,
+        11,
+        13
+      ],
+      "bg": {
+        "nightDeep": {
+          "minInner": 10.77,
+          "meanInner": 14.11,
+          "max": 18.23,
+          "worstColorIndex": 10
+        },
+        "night": {
+          "minInner": 10.01,
+          "meanInner": 13.11,
+          "max": 16.94,
+          "worstColorIndex": 10
+        },
+        "waterDeep": {
+          "minInner": 9.13,
+          "meanInner": 11.96,
+          "max": 15.46,
+          "worstColorIndex": 10
+        },
+        "waterMid": {
+          "minInner": 6.9,
+          "meanInner": 9.03,
+          "max": 11.67,
+          "worstColorIndex": 10
+        },
+        "grassMarsh": {
+          "minInner": 4.31,
+          "meanInner": 5.65,
+          "max": 7.29,
+          "worstColorIndex": 10
+        }
+      },
+      "minInnerAllBg": 4.31
+    },
+    "enemy_shot_shadow": {
+      "w": 9,
+      "h": 9,
+      "opaquePixels": 54,
+      "colors": [
+        0,
+        9,
+        26
+      ],
+      "bg": {
+        "nightDeep": {
+          "minInner": 5.31,
+          "meanInner": 7.07,
+          "max": 7.12,
+          "worstColorIndex": 26
+        },
+        "night": {
+          "minInner": 4.93,
+          "meanInner": 6.57,
+          "max": 6.62,
+          "worstColorIndex": 26
+        },
+        "waterDeep": {
+          "minInner": 4.5,
+          "meanInner": 6.0,
+          "max": 6.04,
+          "worstColorIndex": 26
+        },
+        "waterMid": {
+          "minInner": 3.4,
+          "meanInner": 4.53,
+          "max": 4.56,
+          "worstColorIndex": 26
+        },
+        "grassMarsh": {
+          "minInner": 2.12,
+          "meanInner": 2.83,
+          "max": 2.85,
+          "worstColorIndex": 26
+        }
+      },
+      "minInnerAllBg": 2.12
+    },
+    "enemy_shot_fire": {
+      "w": 9,
+      "h": 9,
+      "opaquePixels": 49,
+      "colors": [
+        0,
+        9,
+        13,
+        18,
+        19
+      ],
+      "bg": {
+        "nightDeep": {
+          "minInner": 5.32,
+          "meanInner": 7.55,
+          "max": 18.23,
+          "worstColorIndex": 18
+        },
+        "night": {
+          "minInner": 4.94,
+          "meanInner": 7.02,
+          "max": 16.94,
+          "worstColorIndex": 18
+        },
+        "waterDeep": {
+          "minInner": 4.51,
+          "meanInner": 6.4,
+          "max": 15.46,
+          "worstColorIndex": 18
+        },
+        "waterMid": {
+          "minInner": 3.41,
+          "meanInner": 4.83,
+          "max": 11.67,
+          "worstColorIndex": 18
+        },
+        "grassMarsh": {
+          "minInner": 2.13,
+          "meanInner": 3.02,
+          "max": 7.29,
+          "worstColorIndex": 18
+        }
+      },
+      "minInnerAllBg": 2.13
+    }
+  },
+  "pairs": {
+    "enemy_shot_spit vs enemy_shot_bone": {
+      "shapeIoU": 0.48
+    },
+    "enemy_shot_spit vs enemy_shot_shadow": {
+      "shapeIoU": 0.95
+    },
+    "enemy_shot_spit vs enemy_shot_fire": {
+      "shapeIoU": 0.86
+    },
+    "enemy_shot_bone vs enemy_shot_shadow": {
+      "shapeIoU": 0.47
+    },
+    "enemy_shot_bone vs enemy_shot_fire": {
+      "shapeIoU": 0.44
+    },
+    "enemy_shot_shadow vs enemy_shot_fire": {
+      "shapeIoU": 0.81
+    }
+  }
+}
