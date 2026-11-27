@@ -6762,10 +6762,15 @@
           "at": "2026-11-27T22:30:00Z",
           "by": "build",
           "text": "doing → blocked (erneut): Disponent hat FxSystem.ts NEU an m10-fx-mixel-fix vergeben (claims.json 22:19Z, mit gen-fx.ts). Fix fertig + Reviewer-PASS (regulaerer Pfad algebraisch unveraendert, SYNC gegen main verifiziert) + Commit-Gate: nur Claim-FAIL. Patch 83 Zeilen: ~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch; Anfrage (Rueckgabe oder Merge-Übernahme) in requests.md aktualisiert."
+        },
+        {
+          "at": "2026-11-27T22:32:11Z",
+          "by": "build",
+          "text": "Versuch 3 (22:35Z): Stand unveraendert, lokal gruen (tsc rc=0, 11/11 tests/boss-death-shards.test.ts). Claim FxSystem.ts weiterhin m10-fx-mixel-fix (claims.json 22:19Z, Lane bisher ohne Code-Commits). Patch frisch gesichert: ~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch (83 Zeilen). claim-watch-Automation aut_21f231093001oFK4V9gt4txgMt prueft alle 15 min und schliesst K2-K4 ab, sobald der Claim frei ist; Anfrage in requests.md bleibt (a) Claim-Rueckgabe oder (b) Merge-Job nimmt Patch + Testfile."
         }
       ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T22:10:19Z"
+      "updated": "2026-11-27T22:32:11Z"
     },
     {
       "id": 5920,
