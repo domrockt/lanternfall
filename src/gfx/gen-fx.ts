@@ -74,22 +74,27 @@ function addFrames(scene: Phaser.Scene, base: string, def: FxDef): void {
   def.frames.forEach((rows, i) => addFrame(scene, i === 0 ? base : `${base}_${i + 1}`, rows, def.w, def.h));
 }
 
-/** Kreis-/Blob-Maske mit Palette-Farbrampe; deterministisch (kein Math.random). */
-function blob(w: number, h: number, ramp: number[], opts: { squash?: number; core?: number; seed?: number } = {}): string[] {
+/** Kreis-/Blob-Maske mit Palette-Farbrampe; deterministisch (kein Math.random).
+ *  density > 1 rendert dieselbe normierte Geometrie in w*density x h*density
+ *  Pixeln (Mixel-Fix) — Level 1 bleibt byte-identisch zum alten Output. */
+function blob(w: number, h: number, ramp: number[], opts: { squash?: number; core?: number; seed?: number } = {}, density = 1): string[] {
   const out: string[] = [];
-  const cx = (w - 1) / 2;
-  const cy = (h - 1) / 2;
-  const rx = w / 2 - 1;
-  const ry = (h / 2 - 1) * (opts.squash ?? 1);
+  const W = w * density;
+  const H = h * density;
+  const cx = (W - 1) / 2;
+  const cy = (H - 1) / 2;
+  const rx = (w / 2 - 1) * density;
+  const ry = (h / 2 - 1) * (opts.squash ?? 1) * density;
   const core = opts.core ?? 0.32;
-  for (let y = 0; y < h; y++) {
+  for (let y = 0; y < H; y++) {
     let row = "";
-    for (let x = 0; x < w; x++) {
+    for (let x = 0; x < W; x++) {
       const nx = (x - cx) / Math.max(1, rx);
       const ny = (y - cy) / Math.max(1, ry);
       let d = Math.sqrt(nx * nx + ny * ny);
       // leichte, deterministische Formwelle für handgesetzte Silhouette
-      d += Math.sin((x + y * 0.7) * 1.7 + (opts.seed ?? 0)) * 0.055;
+      // (normierte Koordinaten, damit die Welle bei jeder Stufe gleich bleibt)
+      d += Math.sin((x / density + (y / density) * 0.7) * 1.7 + (opts.seed ?? 0)) * 0.055;
       if (d > 1) row += ".";
       else if (d < core) row += "d"; // lanternWhite (13): Kern
       else if (d < core + 0.18) row += "c"; // candleWhite (12)
@@ -103,15 +108,17 @@ function blob(w: number, h: number, ramp: number[], opts: { squash?: number; cor
   return out;
 }
 
-function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1): string[] {
+function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1, density = 1): string[] {
   const out: string[] = [];
-  const cx = (w - 1) / 2;
-  const cy = (h - 1) / 2;
-  const rx = w / 2 - 1;
-  const ry = h / 2 - 1;
-  for (let y = 0; y < h; y++) {
+  const W = w * density;
+  const H = h * density;
+  const cx = (W - 1) / 2;
+  const cy = (H - 1) / 2;
+  const rx = (w / 2 - 1) * density;
+  const ry = (h / 2 - 1) * density;
+  for (let y = 0; y < H; y++) {
     let row = "";
-    for (let x = 0; x < w; x++) {
+    for (let x = 0; x < W; x++) {
       const nx = (x - cx) / Math.max(1, rx);
       const ny = (y - cy) / Math.max(1, ry);
       const d = Math.sqrt(nx * nx + ny * ny);
@@ -279,21 +286,22 @@ function pillarFrame(stage: number, width = 26, height = 72): string[] {
 }
 
 /** Explosionsring in Stufen: Kern → Ring → Splitter → Nachglühen. */
-function shockFrame(stage: number, size = 48): string[] {
+function shockFrame(stage: number, size = 48, density = 1): string[] {
   const out: string[] = [];
-  const cx = (size - 1) / 2;
-  const cy = (size - 1) / 2;
-  const r = 3 + stage * 5.2;
-  const thick = Math.max(1, 5 - stage);
-  for (let y = 0; y < size; y++) {
+  const S = size * density;
+  const cx = (S - 1) / 2;
+  const cy = (S - 1) / 2;
+  const r = (3 + stage * 5.2) * density;
+  const thick = Math.max(1, 5 - stage) * density;
+  for (let y = 0; y < S; y++) {
     let row = "";
-    for (let x = 0; x < size; x++) {
+    for (let x = 0; x < S; x++) {
       const d = Math.hypot(x - cx, y - cy);
       const a = Math.atan2(y - cy, x - cx);
-      const jag = Math.sin(a * 11) * 1.4;
+      const jag = Math.sin(a * 11) * 1.4 * density;
       if (stage === 0 && d < r) row += d < r * 0.4 ? "d" : "c";
       else if (Math.abs(d - (r + jag)) < thick) row += stage < 2 ? "c" : "a";
-      else if (stage >= 2 && Math.abs(d - (r * 0.7 + jag)) < thick - 1) row += "g";
+      else if (stage >= 2 && Math.abs(d - (r * 0.7 + jag)) < thick - density) row += "g";
       else row += ".";
     }
     out.push(row);
@@ -629,17 +637,17 @@ function orbFrame(stage: number): string[] {
 }
 
 /** Kalter, hohler Halo (kein warmes Weiß im Zentrum): nur ein 2-px-Ring. */
-function coldHaloFrame(stage: number): string[] {
-  const size = 24;
+function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
+  const S = size * density;
   const out: string[] = [];
-  const c = (size - 1) / 2;
-  const r = 10.5 + stage * 0.4;
-  for (let y = 0; y < size; y++) {
+  const c = (S - 1) / 2;
+  const r = (10.5 + stage * 0.4) * density;
+  for (let y = 0; y < S; y++) {
     let row = "";
-    for (let x = 0; x < size; x++) {
+    for (let x = 0; x < S; x++) {
       const d = Math.hypot(x - c, y - c);
-      if (d < r - 2 || d > r + 0.7) row += ".";
-      else if (d > r - 0.8) row += "9";   // paleMist heller Rand
+      if (d < r - 2 * density || d > r + 0.7 * density) row += ".";
+      else if (d > r - 0.8 * density) row += "9";   // paleMist heller Rand
       else row += "6";                    // fogBlue
     }
     out.push(row);
@@ -968,9 +976,140 @@ export function signatureFrame(
   return outlineAndRim(rows);
 }
 
+// ── Mixel-Fix (Dom-Wunsch 21:15Z, Punkt 4a) ─────────────────────────────────
+// Befund: große Feuer-/Aura-Effekte liegen als kleine Texturen vor (fx_fire
+// 14x14, fx_halo/fx_halo_cold 24x24, fx_shock 48x48) und werden mit Scale > 1
+// gezeichnet — ein Textur-Pixel deckt dann 1,4–4,6 Spielpixel (bei dpr 3 bis
+// ~14 Device-Pixel) ab: grobe 6–8-px-Blöcke statt weicher Glow-Stufen.
+//
+// Fix: dieselben prozeduralen Generatoren rendern je Bake-Stufe L in L-facher
+// Pixelgröße (w0*L x h0*L, identische normierte Geometrie). Das FxSystem wählt
+// die kleinste Stufe L >= gewünschter Scale und zeichnet mit Scale/L <= 1 —
+// ein Textur-Pixel deckt damit höchstens 1 Spielpixel ab, der Glow läuft in
+// 1-px-Stufen. Level-1-Keys bleiben unverändert (Direkt-Pfaden kompatibel).
+
+/** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix). */
+export const FX_MIXEL_BASES = ["fx_fire", "fx_halo_cold", "fx_halo", "fx_shock"] as const;
+
+export type FxMixelBase = (typeof FX_MIXEL_BASES)[number];
+
+interface MixelBakeDef {
+  base: FxMixelBase;
+  /** Level-1-Texturgröße (Spielpixel-Basis). */
+  w: number;
+  h: number;
+  frameCount: number;
+  /** Höchste Bake-Stufe: deckt den größten real gezeichneten Scale ab
+   *  (fx_halo bis 4,6 im Boss-Tod; shock bis 3,3; fire/cold < 2 + Reserve). */
+  maxLevel: number;
+  /** Frame-Generator in Spielpixel-Basis + Stufe (Stufe 1 == Level-1-Frame). */
+  frame: (stage: number, density: number) => string[];
+}
+
+const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
+  {
+    base: "fx_fire", w: 14, h: 14, frameCount: 6, maxLevel: 3,
+    frame: (i, d) => blob(14, 14, [21, 20, 18, 17, 16, 15], { core: 0.18 + i * 0.045, seed: i * 1.3 }, d),
+  },
+  {
+    base: "fx_halo", w: 24, h: 24, frameCount: 2, maxLevel: 6,
+    frame: (i, d) => ring(24, 24, [20, 18, 17], 0.3 + i * 0.16, i, d),
+  },
+  {
+    base: "fx_halo_cold", w: 24, h: 24, frameCount: 2, maxLevel: 3,
+    frame: (i, d) => coldHaloFrame(i, 24, d),
+  },
+  {
+    base: "fx_shock", w: 48, h: 48, frameCount: 6, maxLevel: 4,
+    frame: (i, d) => shockFrame(i, 48, d),
+  },
+];
+
+/** Texture-Key einer Bake-Stufe (Level 1 = der normale Basis-Key). */
+export function mixelTextureKey(base: string, level: number): string {
+  return level <= 1 ? base : `${base}@${level}`;
+}
+
+/** Basis-Key eines Mixel-Effekts, wenn der Frame-Key dazugehört (sonst null).
+ *  Laengste Basen zuerst, damit fx_halo_cold nicht als fx_halo matcht. */
+export function mixelBaseFor(key: string): FxMixelBase | null {
+  const bases = [...FX_MIXEL_BASES].sort((a, b) => b.length - a.length);
+  for (const base of bases) {
+    if (key === base || key.startsWith(`${base}_`)) return base;
+  }
+  return null;
+}
+
+/** Frame-Key in der Stufen-Variante (Level 1 = unverändert, nicht-Mixel = unverändert). */
+export function mixelFrameKey(key: string, level: number): string {
+  if (level <= 1) return key;
+  const base = mixelBaseFor(key);
+  if (!base) return key;
+  return `${base}@${level}${key.slice(base.length)}`;
+}
+
+/** Hoechste Bake-Stufe eines Basis-Keys (0, wenn kein Mixel-Effekt). */
+export function mixelMaxLevel(key: string): number {
+  const base = mixelBaseFor(key);
+  if (!base) return 0;
+  return MIXEL_BAKE_DEFS.find((def) => def.base === base)?.maxLevel ?? 1;
+}
+
+/**
+ * Kleinste Bake-Stufe >= |scale| (1, wenn scale <= 1 oder kein Mixel-Key).
+ * Nach der Stufenwahl zeichnet FxSystem mit Scale/L: der Draw-Scale bleibt
+ * <= 1, solange der gewuenschte Scale <= maxLevel der Basis ist.
+ */
+export function mixelLevelFor(key: string, scale: number): number {
+  const max = mixelMaxLevel(key);
+  if (max <= 1) return 1;
+  const s = Number.isFinite(scale) ? Math.abs(scale) : 1;
+  if (!(s > 1)) return 1;
+  return Math.min(max, Math.ceil(s));
+}
+
+/** Eine gebackene Stufe: Textur in Sprite-Pixelgroesse (w0*L x h0*L). */
+export interface MixelBakedSet {
+  base: FxMixelBase;
+  level: number;
+  w: number;
+  h: number;
+  frames: string[][];
+}
+
+/** Alle Bake-Stufen >= 2 (Level-1-Frames kommen aus den normalen addFrames-Pfaden). */
+export function mixelBakes(): MixelBakedSet[] {
+  const out: MixelBakedSet[] = [];
+  for (const def of MIXEL_BAKE_DEFS) {
+    for (let level = 2; level <= def.maxLevel; level++) {
+      out.push({
+        base: def.base,
+        level,
+        w: def.w * level,
+        h: def.h * level,
+        frames: Array.from({ length: def.frameCount }, (_, i) => def.frame(i, level)),
+      });
+    }
+  }
+  return out;
+}
+
+/** Level-1-Frames der Mixel-Basen (Quelle der normalen Textur-Keys; Beleg-Skript
+ *  scripts/m10-fx-mixel.mjs und tests/fx-mixel.test.ts verglichen damit). */
+export function mixelLevel1Frames(): Record<string, { w: number; h: number; frames: string[][] }> {
+  const out: Record<string, { w: number; h: number; frames: string[][] }> = {};
+  for (const def of MIXEL_BAKE_DEFS) {
+    out[def.base] = {
+      w: def.w,
+      h: def.h,
+      frames: Array.from({ length: def.frameCount }, (_, i) => def.frame(i, 1)),
+    };
+  }
+  return out;
+}
+
 /** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
-function addEvolutionSignatures(scene: Phaser.Scene): void {
-  for (const id of EVOLUTION_SIGNATURE_IDS) {
+function addEvolutionSignatures(scene: Phaser.Scene): void {  for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
     for (const kind of ["hit", "death"] as const) {
       const def: FxDef = {
@@ -1016,7 +1155,15 @@ export function createFxTextures(scene: Phaser.Scene): void {
   // Seelenflamme fuer das Seelenleuchtfeuer (2 Frames, 15x22).
   addFrames(scene, "orb_soul", { w: 15, h: 22, frames: [0, 1, 2].map(orbSoulFrame) });
   // Kalter Halo fuer Seelen (blau-grau statt warmem Amber-Ring).
-  addFrames(scene, "fx_halo_cold", { w: 24, h: 24, frames: [0, 1].map(coldHaloFrame) });
+  addFrames(scene, "fx_halo_cold", { w: 24, h: 24, frames: [0, 1].map((i) => coldHaloFrame(i)) });
+  // Mixel-Fix: Bake-Stufen der vier weichen Glow-Effekte (Level 1 = obige Keys,
+  // unverändert). Jede Stufe rendert dieselbe Geometrie in L-facher Pixelgröße,
+  // damit das FxSystem mit Draw-Scale <= 1 zeichnen kann (siehe FxSystem.spawn).
+  for (const bake of mixelBakes()) {
+    addFrames(scene, mixelTextureKey(bake.base, bake.level), {
+      w: bake.w, h: bake.h, frames: bake.frames,
+    });
+  }
   // M10: eigene Treffer-/Todes-Signatur je Evolution (Form + Palette + Timing).
   addEvolutionSignatures(scene);
 }

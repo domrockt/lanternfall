@@ -1,0 +1,208 @@
+{
+  "path": "legacy",
+  "pngScale": 2,
+  "note": "Blockgroesse = Spielpixel je Textur-Pixel. legacy: = Sprite-Scale (Mixel, wenn > 1). mixel: = Scale/Stufe (<= 1).",
+  "effects": {
+    "640": [
+      {
+        "label": "ember-aura",
+        "base": "fx_fire",
+        "frame": 0,
+        "requestedScale": 1.4,
+        "texture": {
+          "key": "fx_fire",
+          "w": 14,
+          "h": 14
+        },
+        "bakeLevel": 1,
+        "spriteScale": 1.4,
+        "blockGamePx": 1.4,
+        "blockDevicePx": 2.8,
+        "mixel": true
+      },
+      {
+        "label": "explosion-klein",
+        "base": "fx_fire",
+        "frame": 0,
+        "requestedScale": 2,
+        "texture": {
+          "key": "fx_fire",
+          "w": 14,
+          "h": 14
+        },
+        "bakeLevel": 1,
+        "spriteScale": 2,
+        "blockGamePx": 2,
+        "blockDevicePx": 4,
+        "mixel": true
+      },
+      {
+        "label": "karo-halo",
+        "base": "fx_halo",
+        "frame": 0,
+        "requestedScale": 2.8,
+        "texture": {
+          "key": "fx_halo",
+          "w": 24,
+          "h": 24
+        },
+        "bakeLevel": 1,
+        "spriteScale": 2.8,
+        "blockGamePx": 2.8,
+        "blockDevicePx": 5.6,
+        "mixel": true
+      },
+      {
+        "label": "boss-death-halo",
+        "base": "fx_halo",
+        "frame": 0,
+        "requestedScale": 4.6,
+        "texture": {
+          "key": "fx_halo",
+          "w": 24,
+          "h": 24
+        },
+        "bakeLevel": 1,
+        "spriteScale": 4.6,
+        "blockGamePx": 4.6,
+        "blockDevicePx": 9.2,
+        "mixel": true
+      },
+      {
+        "label": "soul-orb-halo",
+        "base": "fx_halo_cold",
+        "frame": 1,
+        "requestedScale": 1.8,
+        "texture": {
+          "key": "fx_halo_cold",
+          "w": 24,
+          "h": 24
+        },
+        "bakeLevel": 1,
+        "spriteScale": 1.8,
+        "blockGamePx": 1.8,
+        "blockDevicePx": 3.6,
+        "mixel": true
+      },
+      {
+        "label": "explosionsring",
+        "base": "fx_shock",
+        "frame": 2,
+        "requestedScale": 3.3,
+        "texture": {
+          "key": "fx_shock",
+          "w": 48,
+          "h": 48
+        },
+        "bakeLevel": 1,
+        "spriteScale": 3.3,
+        "blockGamePx": 3.3,
+        "blockDevicePx": 6.6,
+        "mixel": true
+      }
+    ],
+    "960": [
+      {
+        "label": "ember-aura",
+        "base": "fx_fire",
+        "frame": 0,
+        "requestedScale": 1.4,
+        "texture": {
+          "key": "fx_fire",
+          "w": 14,
+          "h": 14
+        },
+        "bakeLevel": 1,
+        "spriteScale": 1.4,
+        "blockGamePx": 1.4,
+        "blockDevicePx": 2.8,
+        "mixel": true
+      },
+      {
+        "label": "explosion-klein",
+        "base": "fx_fire",
+        "frame": 0,
+        "requestedScale": 2,
+        "texture": {
+          "key": "fx_fire",
+          "w": 14,
+          "h": 14
+        },
+        "bakeLevel": 1,
+        "spriteScale": 2,
+        "blockGamePx": 2,
+        "blockDevicePx": 4,
+        "mixel": true
+      },
+      {
+        "label": "karo-halo",
+        "base": "fx_halo",
+        "frame": 0,
+        "requestedScale": 2.8,
+        "texture": {
+          "key": "fx_halo",
+          "w": 24,
+          "h": 24
+        },
+        "bakeLevel": 1,
+        "spriteScale": 2.8,
+        "blockGamePx": 2.8,
+        "blockDevicePx": 5.6,
+        "mixel": true
+      },
+      {
+        "label": "boss-death-halo",
+        "base": "fx_halo",
+        "frame": 0,
+        "requestedScale": 4.6,
+        "texture": {
+          "key": "fx_halo",
+          "w": 24,
+          "h": 24
+        },
+        "bakeLevel": 1,
+        "spriteScale": 4.6,
+        "blockGamePx": 4.6,
+        "blockDevicePx": 9.2,
+        "mixel": true
+      },
+      {
+        "label": "soul-orb-halo",
+        "base": "fx_halo_cold",
+        "frame": 1,
+        "requestedScale": 1.8,
+        "texture": {
+          "key": "fx_halo_cold",
+          "w": 24,
+          "h": 24
+        },
+        "bakeLevel": 1,
+        "spriteScale": 1.8,
+        "blockGamePx": 1.8,
+        "blockDevicePx": 3.6,
+        "mixel": true
+      },
+      {
+        "label": "explosionsring",
+        "base": "fx_shock",
+        "frame": 2,
+        "requestedScale": 3.3,
+        "texture": {
+          "key": "fx_shock",
+          "w": 48,
+          "h": 48
+        },
+        "bakeLevel": 1,
+        "spriteScale": 3.3,
+        "blockGamePx": 3.3,
+        "blockDevicePx": 6.6,
+        "mixel": true
+      }
+    ]
+  },
+  "summary": {
+    "worstBlockGamePx": 4.6,
+    "mixelCount": 12,
+    "acceptance": "BEFORE: Blockgroesse > 1 px auf Nimbus-/Explosions-Effekten = Mixel-Befund."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6008,
+  "next": 6102,
   "cards": [
     {
       "id": 1,
@@ -7055,6 +7055,42 @@
       "notes": [],
       "created": "2026-11-27T22:16:30Z",
       "updated": "2026-11-27T22:16:30Z"
+    },
+    {
+      "id": 6098,
+      "title": "m10-fx-mixel-fix #1: Ist-Messung Mixel-Szene (before)",
+      "description": "Skript scripts/m10-fx-mixel.mjs stellt die Mixel-Szene nach (fx_fire-Explosion Scale 1.4, fx_halo-Halo Scale 2.8/4.6, fx_shock Scale 3.3) in 640x360 und 960x540. Abnahme: shots/m10-fx-mixel-before-640.png, -960.png und shots/m10-fx-mixel-before.json existieren; JSON listet je Effekt Textur-px vs. Draw-Spielpixel (Blockgröße >= 2 px für Halo/Shock = Mixel-Befund). Einmal messen, max. 2 Iterationen am Skript.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:32:56Z",
+      "updated": "2026-11-27T22:32:56Z"
+    },
+    {
+      "id": 6099,
+      "title": "m10-fx-mixel-fix #2: Fix — Effekt-Texturen in Sprite-Pixelgröße backen, Draw-Scale <= 1",
+      "description": "src/gfx/gen-fx.ts: fx_fire/fx_halo/fx_halo_cold/fx_shock werden zusätzlich in Bake-Stufen (w0*L x h0*L, L=2..max) mit weichem 1-px-Glow erzeugt; Level-1-Keys unverändert. src/systems/FxSystem.ts (+ParticleSystem im selben File): kleinste Stufe L >= gewünschter Scale wählen, Frames auf Level-Keys umschreiben, Sprite-Draw-Scale = Scale/L <= 1; runtime.scaleFrom bleibt Spielpixel-Größe. Abnahme: npx tsc --noEmit rc=0, gezielte vitest-Tests für neue Helper grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:32:56Z",
+      "updated": "2026-11-27T22:32:56Z"
+    },
+    {
+      "id": 6100,
+      "title": "m10-fx-mixel-fix #3: Regressionstests tests/fx-mixel.test.ts",
+      "description": "Tests: (a) Bake-Texturgröße = w0*L/h0*L, (b) Level-Auswahl liefert Draw-Scale <= 1 für alle realen Caller-Scales (fx_halo bis 4.6), (c) kein Scale > 1 am Sprite-Draw in spawn+update, (d) Glow-Abstufungen fein (max. Farb-Run entlang Strahl kleiner als Level 1), (e) nicht-Mixel-Keys unverändert, fx_halo_cold-Prefix gewinnt. Alt-Tests (tests/fx-add-cap.test.ts, tests/boss-fx-contrast.test.ts) minimal an neue Draw-Scale-Semantik angepasst, Begruendung in docs/lanes/m10-fx-mixel-fix.md. Abnahme: npx vitest run tests/fx-mixel.test.ts tests/fx-add-cap.test.ts tests/boss-fx-contrast.test.ts rc=0, npx tsc --noEmit rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:32:56Z",
+      "updated": "2026-11-27T22:32:56Z"
+    },
+    {
+      "id": 6101,
+      "title": "m10-fx-mixel-fix #4: Nachher-Screenshots + art-director + Doku",
+      "description": "Skript-Lauf --prefix shots/m10-fx-mixel-after: nach-Screenshots zeigen weiche 1-px-Glow-Stufen statt Bloecke; art-director-Sichtprüfung (Vision, before/after) dokumentiert in docs/lanes/m10-fx-mixel-fix.md mit PASS/FAIL + Screenshot-Pfaden. Abnahme: art-director PASS (keine Mixel-Bloecke sichtbar, Halo weich), npx tsc --noEmit rc=0, npm test rc=0, npm run build rc=0, Commit enthaelt shots-Belege.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:32:56Z",
+      "updated": "2026-11-27T22:32:56Z"
     }
   ]
 }
