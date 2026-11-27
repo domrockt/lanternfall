@@ -137,9 +137,55 @@ Perf-Merges (view-width-cap, fx-add-cap, ground-props-batch, passive-math) haben
 ## K7 — 30-min-Echtzeitlauf (A4)
 
 Der iGPU-Beleg von m10-realtime-stability (Lauf 1: 18:20–18:50Z) liegt **vor** 19:13Z und
-trägt keinen Renderer-String → keine Übernahme. Neuer 30-min-Lauf auf iGPU in dieser Lane:
-(siehe unten)
+trägt keinen Renderer-String → keine Übernahme. Neuer Lauf auf iGPU in dieser Lane:
+`flock -w 60 … node scripts/realtime-run.mjs --minutes 30` (gestartet ~20:57Z, beendet
+~21:28Z, 1854 s Echtzeit, `truncated:false`), Belege `shots/qa-reaccc-realtime-30min.json`
++ `-minute-{5,10,15,20,25,30}.png` + `-end.png` + `-results.png`. Renderer wie K2 (iGPU,
+RPL-S).
+
+| Tor | Ist | Soll | Urteil |
+|---|---|---|---|
+| FPS (7307 Samples) | **min 60,1 / Median 60,5** | min ≥ 55 | **PASS** |
+| Inhalt | Sieg `dawn` bei 30,3 Sim-Min, **6/6 Bosse pünktlich (300–1800 s ±0 s)**, 6 Truhen, 3 Evolutionen (phoenix, eternal_winter, thunder_seal), Level 38, 5687 Kills | vollständiger Run | **PASS** |
+| JS-Fehler / Abbrüche | **0 / 0**, 6 Minuten-Shots geschrieben | 0 | **PASS** |
+| Heap (hard) | Minute 1 → 29: 31,9 → 38,6 MB = **+21 %** (endMB 27,1) | ≤ +15 % | **FAIL** |
+
+**Urteil K7: FPS-Tor PASS — Heap-Tor FAIL (+21 % > 15 %).** Einordnung: `endMB 27,1`
+liegt unter dem Minute-1-Wert (31,9 MB) → klassischer GC-Sägezahn, kein monotoner Leak;
+das m10-realtime-stability-Urteil hatte denselben Jitter-Effekt („Heap-Delta 16 % (Jitter)“).
+Das Tor ist ein Hard-Gate und zählt als FAIL — Behebung (z. B. GC-Timing/Messfenster,
+`m10-heap-margin`-Nachfolge) geht als Folge-Job an den Lead, nicht durch die Abnahme.
 
 ## Gesamturteil
 
-(folgt)
+Auf PIN `43fd9eb` (2026-11-27T20:29:24Z), alle Belege iGPU (kein SwiftShader):
+
+| Kriterium | Urteil |
+|---|---|
+| `npx tsc --noEmit` rc=0 | **PASS** |
+| `npm test` 0 fail (587/587, 58 Dateien) | **PASS** |
+| `acceptance-count` 30/6/6/6/6/2 | **PASS** |
+| `npm run build` rc=0 | **PASS** |
+| verify:final 7/7 | **PASS** |
+| verify-input 28/28 | **FAIL — 27/28**, stabile Regression „Tastatur: ESC setzt fort“ (K4) |
+| 640-Korridor ≥ 55 FPS / M25 ≥ 50 | **PASS** (60,0 / 60,0) |
+| 780×360@3 ≥ 50 FPS (IST) | **PASS** (60,0) |
+| 30-min-Echtzeitlauf: FPS-Tor | **PASS** (min 60,1) |
+| 30-min-Echtzeitlauf: Inhalt | **PASS** (Sieg, 6/6 Bosse ±0 s, 6 Truhen, 3 Evolutionen) |
+| 30-min-Echtzeitlauf: Heap-Tor ≤ 15 % | **FAIL** (+21 %, GC-Sägezahn, endMB < Minute-1) |
+| Renderer-Pflicht (kein SwiftShader-Beleg) | **PASS** |
+| 19/19 Drain-Merges zugeordnet (Tabelle in `docs/lanes/m10-reacceptance-c.md`) | **PASS** |
+| Keine Änderung an Spielcode/Tests | **PASS** (nur ACCEPTANCE.md, docs/qa, docs/lanes, shots/qa-reaccc-*) |
+
+**Ergebnis Nachabnahme C: NICHT abgenommen.** Zwei Kriterien FAIL auf dem PIN:
+1. **verify-input 27/28** — ESC setzt den Pause-Zustand nicht fort (stabil reproduziert,
+   Folge-Karte im Board-Backlog). Regression gegen den 28/28-Stand der ersten Nachabnahme
+   (13:43Z); Verdächtige sind die 19 Drain-Merges.
+2. **Heap-Tor +21 % > 15 %** im 30-min-Echtzeitlauf (hard gate; GC-Sägezahn-Bild, kein
+   monotoner Leak, aber Tor ist Tor).
+
+Zusätzlich dokumentiert (nicht Abnahmekriterium, aber belegt): Chest-Arrow 640×360
+Re-Lauf 5/10 FAIL gegen PASS im SwiftShader-Ära-Lauf der Lane (K5b, Folge-Karte).
+
+Alle Mess-/Prüfbefehle und Zeitstempel: diese Datei; Merge-Zuordnung:
+`docs/lanes/m10-reacceptance-c.md`; historische Einordnung: ACCEPTANCE.md Versuch (c).

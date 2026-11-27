@@ -303,6 +303,43 @@ Erzeuger: `scripts/qa-640-vfx.mjs`, `scripts/qa-640-sheets.py`; Karte #2499, Com
 Karten-Abschluss #2499: Belege oben sind auf `main` @ `217316d`/`17c9f25` erzeugt und
 per Vision geprüft; keine fehlenden Belege. Karte → done.
 
+## Nachabnahme C (27.11., PIN `43fd9eb`) — Versuch (c)
+
+Dritte unabhängige Re-Abnahme („Drain-Welle“) auf bei Job-Start gepinntem main-Commit
+`43fd9eb7ef8ddb8a03fa26b66c62acd31a907dea` (2026-11-27T20:29:24Z), Worktree
+`m10-reacceptance-c`, Branch `m10-reacceptance-c`. Doku: `docs/qa/reacceptance-c-2026-11-27.md`,
+Merge-Zuordnung (19 Lane-Merges ohne Abnahme-Beleg seit PIN `49727faa`, Briefing nannte
+11 + separation-budget = 12 — der Drain lief weiter): `docs/lanes/m10-reacceptance-c.md`.
+**Renderer-Pflicht erfüllt:** alle Belege auf iGPU „ANGLE (Intel, Mesa Intel(R) Graphics
+(RPL-S), OpenGL ES 3.2)“ (`shots/qa-reaccc-renderer.json`); ältere SwiftShader-Urteile
+(z. B. m10-realtime-stability Lauf 1, 18:20–18:50Z) sind damit gegenstandslos.
+
+| Kriterium | Urteil | Beleg |
+|---|---|---|
+| `npx tsc --noEmit` rc=0 | **PASS** | QA-Doku K1 |
+| `npm test` 0 fail | **PASS** (587/587, 58 Dateien, 1,82 s) | QA-Doku K1 |
+| `acceptance-count` 30/6/6/6/6/2 | **PASS** (`ok:true`) | QA-Doku K1 |
+| `npm run build` rc=0 | **PASS** (413 ms) | QA-Doku K1 |
+| verify:final 7/7 | **PASS**, 0 JS-Fehler | `shots/qa-reaccc-final-verify.json` |
+| verify-input 28/28 | **FAIL — 27/28**, ESC setzt Pause nicht fort, 2× stabil reproduziert; Folge-Karte im Board-Backlog | `shots/qa-reaccc-verify-input.json`, `-run2.json` |
+| Burst 640×360 ≥ 55 | **PASS** (min 60,0) | `shots/qa-reaccc-perf-iter{1,2}-640x360@1.json` |
+| Minute 25 640×360 ≥ 50 | **PASS** (min 60,0; Vorwert 56,3) | dito, `shots/qa-reaccc-perf-summary.json` |
+| 780×360@3 ≥ 50 (IST) | **PASS** (min 60,0; „Atlas-Pack offen, Hebel läuft“ damit auf diesem PIN kein Blocker mehr) | `shots/qa-reaccc-perf-iter{1,2}-780x360@3.json` |
+| 30-min-Echtzeitlauf FPS-Tor ≥ 55 | **PASS** (min 60,1 / Median 60,5, 7307 Samples, iGPU, 0 Crashes/0 JS-Fehler) | `shots/qa-reaccc-realtime-30min.json` |
+| 30-min-Echtzeitlauf Inhalt | **PASS** (Sieg `dawn` 30,3 Sim-Min, 6/6 Bosse 300–1800 s ±0 s, 6 Truhen, 3 Evolutionen, Level 38, 5687 Kills) | dito + `shots/qa-reaccc-realtime-minute-*.png` |
+| 30-min-Echtzeitlauf Heap-Tor ≤ +15 % | **FAIL — +21 %** (Minute 1→29 31,9→38,6 MB; endMB 27,1 < Minute-1 → GC-Sägezahn, kein monotoner Leak; hard gate zählt) | dito (`heap.deltaVsMinute1Pct`) |
+| Separation (Nachtrag 20:04Z) | **Blocker entkräftet, kein offener Performance-Blocker**: 1,88-ms-Acceptance-Baseline war OSR-Harness-Artefakt, realer Pfad ~2 % Framebudget; Fix (Nachbar-Deckel + Paar-Budget) in main (`c96929d`); `tests/separation-budget.test.ts` grün | `docs/lanes/m10-separation-budget.md`, QA-Doku K5 |
+| Drain-Merges zugeordnet | **PASS** — 19/19 Merges → Kriteriumszeile/Beleg (Tabelle) | `docs/lanes/m10-reacceptance-c.md` |
+| Visuelle Belege geänderter Bereiche | Hazard-Fairness ok (MIN_WARN 0,45 s, Hitrate 8/8), Results-Overlap PASS (0 Overlaps, 640 + 780@3, stress12), Android-Audit ok (iGPU, 60,2 FPS Titel, 0 oversized Texturen), Passive-Math-Kaps ok | `shots/qa-reaccc-*` |
+| Chest-Arrow Re-Lauf | **Befund:** 640×360 5/10 FAIL (Lane-nachher 17:52Z, SwiftShader-Ära, war PASS; Unit-Tests grün) → Folge-Karte, nicht bewertet als Abnahmekriterium | `shots/qa-reaccc-chest-arrow.json` |
+
+**Ergebnis Nachabnahme C: NICHT abgenommen.** Zwei FAILs auf dem PIN:
+(1) verify-input 27/28 (ESC-Regression, Folge-Karte), (2) Heap-Tor +21 % > 15 % im
+Echtzeitlauf (GC-Sägezahn-Bild, Folge-Job). Alle FPS-Tore auf iGPU grün (60–60,5 FPS,
+vsync-gecappt) — die Performance-Latte der ersten Abnahme ist damit auf diesem Stand
+erfüllt; die verbleibenden Blocker sind Input-Regression und Heap-Tor. Kein Spielcode/
+Tests durch die Abnahme geändert.
+
 ## Nachabnahme B (27.11., PIN `49727faa`)
 
 Zweite unabhängige Re-Abnahme auf bei Job-Start gepinntem main-Commit

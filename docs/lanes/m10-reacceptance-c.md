@@ -65,8 +65,34 @@ Renderer iGPU (RPL-S, `shots/qa-reaccc-renderer.json`). Belege:
 
 Der iGPU-Beleg von m10-realtime-stability (Lauf 1: 18:20–18:50Z) ist **vor** 19:13Z
 (iGPU aktiv) gefahren und trägt keinen Renderer-String → **keine Übernahme möglich**.
-Neuer Lauf auf iGPU in dieser Lane gestartet; Ergebnis in der QA-Doku.
+Neuer Lauf auf iGPU in dieser Lane (`flock -w 60 … realtime-run.mjs --minutes 30`,
+~20:57–21:28Z, 1854 s): **FPS-Tor PASS** (min 60,1 / Median 60,5, 7307 Samples, 0 Crashes,
+0 JS-Fehler), **Inhalt PASS** (Sieg `dawn` 30,3 Sim-Min, 6/6 Bosse 300–1800 s ±0 s,
+6 Truhen, 3 Evolutionen), **Heap-Tor FAIL** (+21 % > 15 %; endMB 27,1 < Minute-1 31,9 MB
+→ GC-Sägezahn, kein monotoner Leak, hard gate zählt). Belege:
+`shots/qa-reaccc-realtime-30min.json`, `-minute-{5..30}.png`, `-end.png`, `-results.png`.
+Details + Urteil: `docs/qa/reacceptance-c-2026-11-27.md` K7.
 
 ## Offene Punkte / Urteil
 
-(folgt)
+**Gesamturteil Nachabnahme C: NICHT abgenommen** (Abnahme misst, sie repariert nicht):
+
+| Kriterium | Urteil |
+|---|---|
+| tsc rc=0 / Tests 587/587 (58 Dateien) / count 30/6/6/6/6/2 / build rc=0 | **PASS** |
+| verify:final 7/7 | **PASS** |
+| verify-input 28/28 | **FAIL — 27/28**: ESC setzt Pause nicht fort (2× stabil, Folge-Karte im Backlog) |
+| 640-Korridor ≥ 55 / M25 ≥ 50 | **PASS** (60,0 / 60,0, iGPU, vsync-gecappt) |
+| 780×360@3 ≥ 50 (IST) | **PASS** (60,0) |
+| 30-min-Echtzeitlauf FPS-Tor ≥ 55 | **PASS** (min 60,1) |
+| 30-min-Echtzeitlauf Inhalt | **PASS** (Sieg, 6/6 Bosse ±0 s, 6 Truhen, 3 Evolutionen) |
+| 30-min-Echtzeitlauf Heap-Tor ≤ +15 % | **FAIL — +21 %** (GC-Sägezahn, endMB < Minute-1; Folge-Job) |
+| Renderer-Pflicht (kein SwiftShader) | **PASS** (iGPU RPL-S, `shots/qa-reaccc-renderer.json`) |
+| 19/19 Drain-Merges zugeordnet | **PASS** (Tabelle oben) |
+| Kein Spielcode/Tests geändert | **PASS** |
+
+Folge-Jobs (Board-Backlog, nicht durch diese Abnahme gefixt):
+1. verify-input „Tastatur: ESC setzt fort“ — Regression gegen den 28/28-Stand 13:43Z.
+2. Heap-Tor +21 % im Echtzeitlauf (m10-heap-margin-Nachfolge; Jitter/GC-Timing klären).
+3. Chest-Arrow 640×360 Re-Lauf 5/10 FAIL gegen SwiftShader-Ära-Lauf (iGPU-Timing des
+   Probe-Harness vs. echte Regression durch Drain-Merges — zu lokalisieren).
