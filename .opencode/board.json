@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4482,
+  "next": 4521,
   "cards": [
     {
       "id": 1,
@@ -5482,6 +5482,33 @@
       "notes": [],
       "created": "2026-11-27T18:47:17Z",
       "updated": "2026-11-27T18:47:17Z"
+    },
+    {
+      "id": 4518,
+      "title": "m10-evo-signature-calls K1: Spawn-Aufruf im onHit verankern (tsc + Tests)",
+      "description": "Aufruf combat.fx.spawnEvolution(weaponId, killed?'death':'hit', enemy.x, enemy.y) im onHit-Callback von src/scenes/Run.ts vorhanden/pruefen, npx tsc --noEmit + gezielte Tests gruen, WIP-Commit. AK: tsc 0 Fehler, keine Gameplay-Aenderung (diff nur Run.ts onHit).",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-27T18:53:52Z",
+      "updated": "2026-11-27T18:53:52Z"
+    },
+    {
+      "id": 4519,
+      "title": "m10-evo-signature-calls K2: tests/evo-signature-calls.test.ts",
+      "description": "Test: Spawn-Ereignis feuert bei Hit und bei Kill mit korrektem Typ + Position; bei Nicht-Evolutions-Waffen kein Spawn. AK: npx vitest run tests/evo-signature-calls.test.ts gruen, Commit mit Tests.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T18:53:52Z",
+      "updated": "2026-11-27T18:53:52Z"
+    },
+    {
+      "id": 4520,
+      "title": "m10-evo-signature-calls K3: In-Game-Beleg + Doku",
+      "description": "Evolutions-Waffe im Spiel ausloesen, Screenshots shots/m10-evo-signature-hit.png + shots/m10-evo-signature-death.png mit sichtbarer Signatur, 0 JS-Fehler; Doku docs/lanes/m10-evo-signature-calls.md mit Zeilenangabe der Run.ts-Aenderung. AK: Belege committed, Doku enthaelt Zeilennummer.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T18:53:52Z",
+      "updated": "2026-11-27T18:53:52Z"
     }
   ]
 }
