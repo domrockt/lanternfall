@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4243,
+  "next": 4321,
   "cards": [
     {
       "id": 1,
@@ -5105,6 +5105,39 @@
       "notes": [],
       "created": "2026-11-27T18:14:41Z",
       "updated": "2026-11-27T18:14:41Z"
+    },
+    {
+      "id": 4318,
+      "title": "m10-verify-input-fix #1: F2-Befund belegen (Selektor, URI, Timestamp, Ursache)",
+      "description": "Abnahme: shots/m10-verify-input-f2-before.json + .log belegen den F2-Selektor-FAIL aus m10-input-qa (tapText \"BRUDER KAEL\" nicht sichtbar) und benennen die Ursache; Statement, ob der FAIL am aktuellen HEAD noch auftritt. Kontrolleure: reviewer.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T18:23:24Z",
+          "by": "build",
+          "text": "todo → doing: Start: F2-Befund – alter Selektor 'BRUDER KAEL' existiert nicht mehr, Fix 9f298f3 (m10-input-fix) bereits gemerged; Repro-Probe läuft."
+        }
+      ],
+      "created": "2026-11-27T18:22:28Z",
+      "updated": "2026-11-27T18:23:24Z"
+    },
+    {
+      "id": 4319,
+      "title": "m10-verify-input-fix #2: Harness-Härtung (Zustands-Waits, --tag Output)",
+      "description": "Abnahme: nur scripts/verify-input.mjs geändert; fragile feste Wartezeiten durch Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.* (Default m8-input unverändert); verify-input läuft 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T18:22:28Z",
+      "updated": "2026-11-27T18:22:28Z"
+    },
+    {
+      "id": 4320,
+      "title": "m10-verify-input-fix #3: Stabilität 3x + Lastlauf 28/28 PASS, Lane-Doku",
+      "description": "Abnahme: verify-input 3x hintereinander + 1x unter paralleler Last (zwei Builds im Hintergrund), jedes Mal 28/28 PASS, 0 JS-Fehler; Belege shots/m10-verify-input-pass-{1,2,3}.json + Lastfall-JSON; Ergebnis in docs/lanes/m10-verify-input-fix.md; vitest grün. Kontrolleure: test-auditor + reviewer.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T18:22:28Z",
+      "updated": "2026-11-27T18:22:28Z"
     }
   ]
 }
