@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5022,
+  "next": 5062,
   "cards": [
     {
       "id": 1,
@@ -5738,6 +5738,66 @@
       "notes": [],
       "created": "2026-11-27T20:00:48Z",
       "updated": "2026-11-27T20:00:54Z"
+    },
+    {
+      "id": 5058,
+      "title": "m10-fx-add-cap K1: Messbasis ADD-Glows (500-Gegner-Frame, M25)",
+      "description": "AK: scripts/m10-fx-add-cap.mjs misst ADD-Glows im 500-Gegner-Frame (780x360@3, M25, Seed 1); Baseline-JSON shots/m10-fx-add-cap-baseline.json committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:06:20Z",
+          "by": "build",
+          "text": "review → done: lane #4818, Merge 0ef46d6"
+        }
+      ],
+      "created": "2026-11-27T20:06:15Z",
+      "updated": "2026-11-27T20:06:20Z"
+    },
+    {
+      "id": 5059,
+      "title": "m10-fx-add-cap K2: ADD-Glows klein halten + LOD-Cap-Drossel in FxSystem.ts",
+      "description": "AK: FxSystem.ts haelt ADD-Glows klein (ADD_GLOW_DPR_THRESHOLD) und drosselt die Anzahl ueber das LOD-Cap; reviewer PASS (tsc rc=0, vitest 544/544).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:06:20Z",
+          "by": "build",
+          "text": "review → done: lane #4819, Merge 0ef46d6"
+        }
+      ],
+      "created": "2026-11-27T20:06:15Z",
+      "updated": "2026-11-27T20:06:20Z"
+    },
+    {
+      "id": 5060,
+      "title": "m10-fx-add-cap K3: tests/fx-add-cap.test.ts",
+      "description": "AK: 24 Tests in tests/fx-add-cap.test.ts gruen (inkl. eigener Floor-Assert); vitest auf main 574/574 PASS.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:06:20Z",
+          "by": "build",
+          "text": "review → done: lane #4820, Merge 0ef46d6"
+        }
+      ],
+      "created": "2026-11-27T20:06:15Z",
+      "updated": "2026-11-27T20:06:20Z"
+    },
+    {
+      "id": 5061,
+      "title": "m10-fx-add-cap K4: Nachher-Messung + Doku",
+      "description": "AK: fx-ADD-Overdraw -89 % vs. Ziel -30 % (shots/m10-fx-add-cap-after.json), Doku docs/lanes/m10-fx-add-cap.md + Chaos-Sichtbeleg shots/m10-fx-add-cap-m25-780.png.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:06:20Z",
+          "by": "build",
+          "text": "review → done: lane #4821, Merge 0ef46d6"
+        }
+      ],
+      "created": "2026-11-27T20:06:15Z",
+      "updated": "2026-11-27T20:06:20Z"
     }
   ]
 }
