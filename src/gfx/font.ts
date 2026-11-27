@@ -157,3 +157,10 @@ export class PixelText extends Phaser.GameObjects.Container {
     return this.value;
   }
 }
+
+// m10-font-glyph-pack: PixelText für Mess-/Shot-Skripte (deterministische
+// Glyph-Szene in scripts/Harness-Runs) lesbar machen — erst NACH der
+// Klassendeklaration registrieren.
+if (typeof window !== "undefined") {
+  (window as unknown as { __lfFont: { PixelText: typeof PixelText } }).__lfFont = { PixelText };
+}

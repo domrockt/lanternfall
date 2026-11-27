@@ -6161,19 +6161,31 @@
       "id": 5498,
       "title": "m10-font-glyph-pack K1: Tests Glyph-Pack (tests/font-glyph-pack.test.ts)",
       "description": "Suite belegt: Glyph-Keys als Frames auf EINER geteilten Atlas-Seite (addCanvas nur fuer Seite), pro Glyphe KEINE neue Canvas-Textur (Wiederverwendung), Glyph-Geometrie bit-identisch zur alten addCanvas-Erzeugung, Key-Schema glyph_<color>_<charCode> + GLYPH_W/H/ADVANCE + PixelText-API unveraendert. Abnahmekriterium: npx vitest run tests/font-glyph-pack.test.ts gruen (5/5) + npx tsc --noEmit rc=0. Hinweis: Briefing-K1 (font.ts ensureGlyph -> packCanvasTexture) ist bereits durch Merge 5fa1c87 (m10-atlas-pack Font-Integration) auf dem Branch; Verifikation erfolgt ueber diese Suite.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:06:19Z",
+          "by": "build",
+          "text": "doing → done: K1 abgeschlossen, Commit 9000a09 (Test-Suite + Board). test-auditor PASS; Kriterien erfuellt: Atlas-Registrierung auf geteilter Seite, keine Einzel-Glyph-Texturen, bitidentische Geometrie, Key-Schema/API stabil. tsc rc=0."
+        }
+      ],
       "created": "2026-11-27T21:04:25Z",
-      "updated": "2026-11-27T21:04:25Z"
+      "updated": "2026-11-27T21:06:19Z"
     },
     {
       "id": 5499,
       "title": "m10-font-glyph-pack K2: Doku + Vor/Nach-Shots (AE=0)",
       "description": "Deterministische Glyph-Szene (HUD-Strings + Damage-Text via PixelText, mehrere Farben) vor (addCanvas) und nach (packCanvasTexture) rendern: shots/m10-font-glyph-before.png / -after.png, Vergleich mit ImageMagick compare -metric AE -> AE=0 belegt; dazu shots/m10-font-glyph-*.json mit Texturzahlen (glyph_-Keys, baked_page_). Doku docs/lanes/m10-font-glyph-pack.md mit Texturwechsel-Zahlen (~250 Glyph-Einzeltexturen -> Atlas-Seiten). Abnahmekriterium: AE=0 belegt, Doku vorhanden, Belege im Karten-Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T21:06:23Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: font.ts exposure __lfFont (eigene Datei), Shot-Skript ~/tmp/m10-font-glyph-pack/font-shots.mjs, before-State via temporaerer addCanvas-Ruecksetzarbeit in font.ts (nicht committet)."
+        }
+      ],
       "created": "2026-11-27T21:04:25Z",
-      "updated": "2026-11-27T21:04:25Z"
+      "updated": "2026-11-27T21:06:23Z"
     }
   ]
 }
