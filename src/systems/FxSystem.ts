@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { DEPTH } from "../gfx/depth";
-import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
+import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, isBossFxKey, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { ambientBudgetFor, lodFor } from "../logic/lod";
 
@@ -13,6 +13,17 @@ import { ambientBudgetFor, lodFor } from "../logic/lod";
  */
 /** ADD-Glows unter diesem Alpha sind unsichtbar, aber voll rasterisiert -> frueh freigeben. */
 export const ADD_GLOW_ALPHA_FLOOR = 0.04;
+
+/**
+ * M10 #5220 (Blocker "Boss-FX-Kontrast"): Mindest-Alpha-Boden fuer Boss-spezifische
+ * Effekte (isBossFxKey, nur fx_boss_core). Beim Spawn wird alphaFrom auf >= 0,7
+ * geklemmt; Boss-FX sind von fxAlpha-Daempfung, dpr-Alpha und ADD-Glow-Deckel
+ * ausgenommen und rendern bewusst NORMAL — unter ADD waere die dunkle Tintenkontur
+ * aus Karte #5219 unsichtbar (ADD kann nicht abdunkeln). Der Lifetime-Fade
+ * (alphaTo) bleibt wie bei allen FX unveraendert.
+ */
+export const BOSS_FX_ALPHA_FLOOR = 0.7;
+
 /** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow bei dpr > 1,5 (96x96 @dpr3). */
 export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
 /** dpr-Schwelle, ab der der Flaechen-Deckel greift (Mobil-Views @2/@3; Desktop unveraendert). */
@@ -204,14 +215,20 @@ export class FxSystem {
     fx.aspect = opts.aspect ?? 1;
     // Additive Glows stacken auf 255: im Endgame deshalb quadratisch dämpfen,
     // sonst bleibt der weiße Kern trotz Alpha-Faktor stehen.
-    const additive = opts.additive !== false;
-    const scaleFactor = opts.alphaScaleExempt ? 1 : this.alphaScale;
+    // M10 #5220: Boss-spezifische Effekte sind vom gesamten LOD-Pfad ausgenommen
+    // (Daempfung, dpr-Alpha, ADD-Glow-Deckel) und bekommen den Mindest-Alpha-Boden.
+    const bossFx = isBossFxKey(opts.texture) || (opts.frames !== undefined && isBossFxKey(opts.frames[0]));
+    const additive = opts.additive !== false && !bossFx;
+    const exempt = opts.alphaScaleExempt === true || bossFx;
+    const scaleFactor = exempt ? 1 : this.alphaScale;
     const extra = additive ? scaleFactor : 1;
     // M10: dpr-Skalierung — bei dpr > 2 kostet jedes additive Sprite die volle
     // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher auf 0,6.
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
-    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra * dprAlpha;
-    fx.alphaScaleExempt = opts.alphaScaleExempt === true;
+    let alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra * dprAlpha;
+    if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);
+    fx.alphaFrom = alphaFrom;
+    fx.alphaScaleExempt = exempt;
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
     fx.spin = opts.spin ?? 0;
