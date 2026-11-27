@@ -1,0 +1,24 @@
+# Lane m10-flock-sweep-2 — fertig (2026-11-27, ~20:10Z)
+
+Letzte bare-flock-Reste auf `flock -w <N>` umgestellt (Folge-Lane zu m10-flock-sweep,
+dort wegen Claim-Konflikt mit merge-m10-flock-timeout ausgespart):
+
+- scripts/m10-ground-cost.mjs: echte Spawns Z. 333 (instrument) → `flock -w 520`, Z. 472
+  (Normal) → `flock -w 300`; Kommentar mit Meldungsmuster „Sperre … belegt — spaeter erneut
+  versuchen" + Exitcode weiterreichen.
+- scripts/m10-fx-overdraw.mjs Z. 4, scripts/m10-ui-cost.mjs Z. 15: Anleitungen auf
+  `flock -w 300` (+ `\|\| { echo …; exit $?; }` bei ui-cost).
+- scripts/m10-heap-margin.mjs: fullrun-FPS-Anleitung `flock -w 300`; Heap-Szenario läuft
+  absichtlich OHNE Lock (Begründung im Kommentar bleibt).
+
+Belege (docs/lanes/m10-flock-sweep-2.md, Commit ebe3cb9):
+- Grep: vorher 18 Treffer ohne `flock -w` auf main@9055126 (7 in den 4 Area-Dateien) →
+  nachher 0 unkommentierte Treffer in den 4 Dateien; nur heap-margin-„OHNE flock"-Begründung
+  und qa-reaccept-perf-Split-Line-False-Positive bleiben.
+- Negativtest (shots/m10-flock-sweep-2-negativtest.log): Sperre belegt + `-w 1` → rc=1
+  nach 1.00 s MIT Meldung, Exitcode weitergereicht; keine Messung gestartet.
+- node --check 4/4 OK; npm run build rc=0; npm test 550/550 grün; nur Area-Dateien geändert.
+
+Wichtiger Befund für den Merge-Job: m10-flock-timeout (K1/K2) ist weiterhin NICHT in main
+gemerged; ground-cost/fx-overdraw/ui-cost sind in dieser Lane byte-identisch zum
+flock-timeout-Diff → Merge löst automatisch auf, kein Konflikt. Beide Branches mitnehmen.
