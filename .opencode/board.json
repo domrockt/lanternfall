@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2238,
+  "next": 2262,
   "cards": [
     {
       "id": 1,
@@ -3294,6 +3294,46 @@
       ],
       "created": "2026-11-27T00:55:35Z",
       "updated": "2026-11-27T03:00:30Z"
+    },
+    {
+      "id": 2258,
+      "title": "m10-evolution-hint #1 Ist-Beleg: 6 Evolutionen ohne Hinweis",
+      "description": "Debug-Run je Evolution (Waffe 8, Powerup >=1), Level-up-Panel + Truhe bei 640x360 und 780x360 als shots/m10-evolution-hint-before-*.png; shots/m10-evolution-hint-before.json zaehlt Evolutionen ohne Hinweis. Abnahme: 12 Szenarien, JSON nennt Zahl, Shots zeigen Panels, 0 JS-Fehler.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:05:32Z",
+      "updated": "2026-11-27T05:05:32Z"
+    },
+    {
+      "id": 2259,
+      "title": "m10-evolution-hint #2 Reine Logik evolutionReadyList + Tests",
+      "description": "src/logic/evolution.ts: evolutionReadyList(weapons, passives) nutzt bestehende canEvolve-Regeln, keine Duplikate, deterministische Reihenfolge; tests/evolution-hint.test.ts deckt 0/1/6 Treffer, Reihenfolge, keine Duplikate, Level-8+Powerup-Schwelle. Abnahme: npx vitest run tests/evolution-hint.test.ts gruen, tsc gruen.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:05:32Z",
+      "updated": "2026-11-27T05:05:32Z"
+    },
+    {
+      "id": 2260,
+      "title": "m10-evolution-hint #3 UI-Hinweis EVOLUTION BEREIT + Truhensatz",
+      "description": "src/scenes/UI.ts: Badge/Zeile im Level-up-Panel und HUD, Text via slotNameLines/wrapText max. 2 Zeilen; Truhe erklaert in einem Satz, was evolviert; Hit-/Fokusflaechen unveraendert (Tastatur/Touch). Abnahme: 6/6 Evolutionen mit Hinweis in Shots, Pixel-Check Randabstand >=2 px und keine Ueberlappung mit Trennlinie in 640x360 + 780x360, 0 JS-Fehler, logic/levelup.ts unveraendert.",
+      "column": "todo",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T05:05:32Z",
+      "updated": "2026-11-27T05:05:32Z"
+    },
+    {
+      "id": 2261,
+      "title": "m10-evolution-hint #4 Doku + .lane-done",
+      "description": "docs/lanes/m10-evolution-hint.md: Vorher/Nachher-Belege, 6/6 Hinweis, Pixel-Check-Messwerte, build+Tests; .lane-done mit Messwerten committen. Abnahme: Belege im Commit, build + alle Tests gruen, .lane-done vorhanden.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T05:05:32Z",
+      "updated": "2026-11-27T05:05:32Z"
     }
   ]
 }
