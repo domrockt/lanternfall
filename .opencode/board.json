@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5803,
+  "next": 5902,
   "cards": [
     {
       "id": 1,
@@ -6716,6 +6716,42 @@
       "notes": [],
       "created": "2026-11-27T21:46:10Z",
       "updated": "2026-11-27T21:46:10Z"
+    },
+    {
+      "id": 5898,
+      "title": "m10-esc-pause-fix #1: Repro ESC-Resume-Regression",
+      "description": "scripts/m10-esc-pause.mjs faehrt den verify-input-Keyboard-Pfad (ESC->Pause->ESC->fortsetzen) mit Instrumentierung (togglePause-Aufrufe, ev.repeat, levelUp/chest/finished, 20-ms-Poll) und schreibt den Ist-Zustand nach shots/m10-esc-pause-before.json. Abnahme: Skript laeuft, Beleg existiert und zeigt den FAIL reproduzierbar (oder widerlegt ihn).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:52:57Z",
+      "updated": "2026-11-27T21:52:57Z"
+    },
+    {
+      "id": 5899,
+      "title": "m10-esc-pause-fix #2: Ursache fixen (ESC-Resume)",
+      "description": "Fix in src/scenes/Run.ts / src/input/InputState.ts: Resume per ESC und per Optionsmenue-ZURUECK verlaesslich; kein Duplikat-Trigger durch Key-Repeat. Abnahme: Repro-Skript zeigt ESC pausiert+fortsetzen robust (10x Press-Test), Touch/Gamepad-Pfade unveraendert, npx tsc --noEmit gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:52:57Z",
+      "updated": "2026-11-27T21:52:57Z"
+    },
+    {
+      "id": 5900,
+      "title": "m10-esc-pause-fix #3: Tests tests/esc-pause.test.ts",
+      "description": "Unit-Tests: ESC pausiert, ESC setzt fort, ESC im Untermenue verlaesst es (ZURUECK-Pfad), Touch/Gamepad-Resumepfade unveraendert. Abnahme: npx vitest run tests/esc-pause.test.ts gruen, Ganzsuite gruen, tsc gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:52:57Z",
+      "updated": "2026-11-27T21:52:57Z"
+    },
+    {
+      "id": 5901,
+      "title": "m10-esc-pause-fix #4: verify-input 28/28 2x + Doku",
+      "description": "verify-input 28/28 PASS zweimal hintereinander unter Last (Belege shots/m10-esc-pause-*), 0 JS-Fehler, build+tests gruen, Doku docs/lanes/m10-esc-pause-fix.md, .lane-done. Abnahme: beide JSON-Belege passed=true mit 28 Checks, Board/Doku aktualisiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:52:57Z",
+      "updated": "2026-11-27T21:52:57Z"
     }
   ]
 }

@@ -1,0 +1,1367 @@
+{
+  "name": "m10-esc-pause-bind",
+  "generatedAt": "2026-11-27T22:05:41.221Z",
+  "checks": [
+    {
+      "name": "ESC pausiert",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ESC setzt fort",
+      "ok": false,
+      "detail": "resumed=false (Probe im JSON-Feld \"probe\")"
+    },
+    {
+      "name": "10x ESC wechselt abwechselnd (kein Doppel-Trigger)",
+      "ok": false,
+      "detail": "zuletzt paused=false"
+    },
+    {
+      "name": "ESC halten togglet exakt einmal",
+      "ok": true,
+      "detail": "vor=false beimHalten=true nach=true"
+    },
+    {
+      "name": "ESC im Untermenue verlaesst es, Pause bleibt",
+      "ok": true,
+      "detail": "{\"optionsOpen\":true,\"paused\":true,\"optionsVisible\":false}"
+    },
+    {
+      "name": "Touch: Pause-Knopf pausiert (Pfad unveraendert)",
+      "ok": false,
+      "detail": null
+    },
+    {
+      "name": "Touch: FORTSETZEN setzt fort (Pfad unveraendert)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "probe": {
+    "calls": [
+      {
+        "fn": "togglePause",
+        "at": 3078.0999999940395,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3083,
+        "paused": true,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3083.0999999940395,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3083.7999999970198,
+        "paused": true,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3083.8999999910593,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5743/assets/index-BWU4wb5L.js:812:661518)"
+      }
+    ],
+    "keydowns": [
+      {
+        "key": "Escape",
+        "repeat": false,
+        "trusted": true,
+        "at": 3083.5
+      }
+    ],
+    "polls": [
+      {
+        "at": 3097.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3117.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3137.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3157.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3177.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3197.3999999910593,
+        "paused": true
+      },
+      {
+        "at": 3217.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3237.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3257.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3277.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3297.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3317.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3337.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3357.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3377.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3397.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3417.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3437.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3457.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3477.5999999940395,
+        "paused": true
+      },
+      {
+        "at": 3497.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3517.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3537.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3557.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3578.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 3597.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3617.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3637.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3657.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3678.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3697.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3717.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3737.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3757.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3777.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3797.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3817.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3837.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3857.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3877.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3897.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3917.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3937.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3957.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3978,
+        "paused": true
+      },
+      {
+        "at": 3997.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 4017.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 4037.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 4057.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 4077.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 4097.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4117.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4137.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4157.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4178,
+        "paused": true
+      },
+      {
+        "at": 4197.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4217.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4237.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4257.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4278.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4297.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4317.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4337.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4357.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4377.5999999940395,
+        "paused": true
+      },
+      {
+        "at": 4397.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4417.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4437.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4457.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4478,
+        "paused": true
+      },
+      {
+        "at": 4497.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4517.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4537.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4557.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4577.899999991059,
+        "paused": true
+      },
+      {
+        "at": 4597.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4617.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4637.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4657.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4678.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 4697.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4717.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4737.399999991059,
+        "paused": true
+      },
+      {
+        "at": 4757.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4778.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4797.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4817.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4837.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4857.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4878.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 4897.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4917.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4937.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4957.20000000298,
+        "paused": true
+      },
+      {
+        "at": 4977.29999999702,
+        "paused": true
+      },
+      {
+        "at": 4997.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5017.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5037.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5057.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5078.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 5097.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5117.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5137.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5157.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5177.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5197.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5217.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5237.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5257.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5277.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5297.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5317.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5337.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5357.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5378.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5397.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5417.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5437.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5457.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5478.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 5497.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5517.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5537.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5557.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5577.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5597.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5617.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5637.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5657.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5678,
+        "paused": true
+      },
+      {
+        "at": 5697.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5717.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5737.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5757.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5777.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5797.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5817.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5837.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5857.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5878.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 5897.29999999702,
+        "paused": true
+      },
+      {
+        "at": 5917.399999991059,
+        "paused": true
+      },
+      {
+        "at": 5937.399999991059,
+        "paused": true
+      },
+      {
+        "at": 5957.399999991059,
+        "paused": true
+      },
+      {
+        "at": 5977.20000000298,
+        "paused": true
+      },
+      {
+        "at": 5997.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6017.399999991059,
+        "paused": true
+      },
+      {
+        "at": 6037.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6057.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6077.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6097.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6117.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6137.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6157.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6177.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6197.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6217.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6237.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6257.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6277.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6297.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6317.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6337.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6357.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6377.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6397.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6417.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6437.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6457.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6477.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6497.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6517.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6537.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6557.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6578.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 6597.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6617.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6637.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6657.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6677.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6697.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6717.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6737.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6757.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6777.70000000298,
+        "paused": true
+      },
+      {
+        "at": 6797.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6817.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6837.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6857.399999991059,
+        "paused": true
+      },
+      {
+        "at": 6877.20000000298,
+        "paused": true
+      },
+      {
+        "at": 6897.399999991059,
+        "paused": true
+      },
+      {
+        "at": 6917.399999991059,
+        "paused": true
+      },
+      {
+        "at": 6937.399999991059,
+        "paused": true
+      },
+      {
+        "at": 6957.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6977.29999999702,
+        "paused": true
+      },
+      {
+        "at": 6997.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7017.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7037.399999991059,
+        "paused": true
+      },
+      {
+        "at": 7057.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7077.70000000298,
+        "paused": true
+      },
+      {
+        "at": 7097.399999991059,
+        "paused": true
+      },
+      {
+        "at": 7117.399999991059,
+        "paused": true
+      },
+      {
+        "at": 7137.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7157.399999991059,
+        "paused": true
+      },
+      {
+        "at": 7178,
+        "paused": true
+      },
+      {
+        "at": 7197.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7217.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7237.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7257.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7277.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7297.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7317.399999991059,
+        "paused": true
+      },
+      {
+        "at": 7337.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7357.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7377.899999991059,
+        "paused": true
+      },
+      {
+        "at": 7397.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7417.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7437.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7457.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7478.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 7497.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7517.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7537.20000000298,
+        "paused": true
+      },
+      {
+        "at": 7557.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7577.899999991059,
+        "paused": true
+      },
+      {
+        "at": 7597.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7617.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7637.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7657.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7677.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7697.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7717.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7737.20000000298,
+        "paused": true
+      },
+      {
+        "at": 7757.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7777.5,
+        "paused": true
+      },
+      {
+        "at": 7797.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7817.20000000298,
+        "paused": true
+      },
+      {
+        "at": 7837.20000000298,
+        "paused": true
+      },
+      {
+        "at": 7857.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7878.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 7897.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7917.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7937.20000000298,
+        "paused": true
+      },
+      {
+        "at": 7957.29999999702,
+        "paused": true
+      },
+      {
+        "at": 7977.20000000298,
+        "paused": true
+      },
+      {
+        "at": 7997.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8017.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8037.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8057.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8077.399999991059,
+        "paused": true
+      },
+      {
+        "at": 8097.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8117.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8137.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8157.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8177.399999991059,
+        "paused": true
+      },
+      {
+        "at": 8197.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8217.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8237.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8257.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8278.09999999404,
+        "paused": true
+      },
+      {
+        "at": 8297.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8317.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8337.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8357.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8378.09999999404,
+        "paused": true
+      },
+      {
+        "at": 8397.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8417.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8437.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8457.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8478,
+        "paused": true
+      },
+      {
+        "at": 8497.39999999106,
+        "paused": true
+      },
+      {
+        "at": 8517.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8537.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8557.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8577.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8597.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8617.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8637.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8657.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8677.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8697.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8717.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8737.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8757.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8777.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8797.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8817.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8837.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8857.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8877.39999999106,
+        "paused": true
+      },
+      {
+        "at": 8897.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8917.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8937.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8957.29999999702,
+        "paused": true
+      },
+      {
+        "at": 8977.59999999404,
+        "paused": true
+      },
+      {
+        "at": 8997.29999999702,
+        "paused": true
+      },
+      {
+        "at": 9017.29999999702,
+        "paused": true
+      },
+      {
+        "at": 9037.29999999702,
+        "paused": true
+      },
+      {
+        "at": 9057.29999999702,
+        "paused": true
+      },
+      {
+        "at": 9077.29999999702,
+        "paused": true
+      }
+    ],
+    "onKeyCalls": [
+      {
+        "at": 2103.5,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3078,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3083,
+        "paused": true,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3083.0999999940395,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3083.7999999970198,
+        "paused": true,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3083.8999999910593,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      }
+    ],
+    "activeScenes": [
+      "run",
+      "ui"
+    ],
+    "allScenes": [
+      "boot",
+      "title",
+      "charselect",
+      "run",
+      "ui",
+      "results",
+      "credits"
+    ],
+    "uiKeydownListeners": 1,
+    "globalKeydownListeners": "n/a"
+  },
+  "kbDiag": {
+    "uiPluginProcessListeners": 2,
+    "pluginEmitListenerCount": 1,
+    "sceneStatus": 5,
+    "sceneActive": true,
+    "kbLog": []
+  },
+  "passed": false,
+  "jsErrors": []
+}

@@ -1,0 +1,1402 @@
+{
+  "name": "m10-esc-pause-proc",
+  "generatedAt": "2026-11-27T22:07:24.798Z",
+  "checks": [
+    {
+      "name": "ESC pausiert",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ESC setzt fort",
+      "ok": false,
+      "detail": "resumed=false (Probe im JSON-Feld \"probe\")"
+    },
+    {
+      "name": "10x ESC wechselt abwechselnd (kein Doppel-Trigger)",
+      "ok": false,
+      "detail": "zuletzt paused=true"
+    },
+    {
+      "name": "ESC halten togglet exakt einmal",
+      "ok": false,
+      "detail": "vor=true beimHalten=true nach=true"
+    },
+    {
+      "name": "ESC im Untermenue verlaesst es, Pause bleibt",
+      "ok": false,
+      "detail": "{\"optionsOpen\":false,\"paused\":true,\"optionsVisible\":false}"
+    },
+    {
+      "name": "Touch: Pause-Knopf pausiert (Pfad unveraendert)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "Touch: FORTSETZEN setzt fort (Pfad unveraendert)",
+      "ok": false,
+      "detail": null
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": false,
+      "detail": "TypeError: Cannot read properties of undefined (reading 'call') | TypeError: Cannot read properties of undefined (reading 'call') | TypeError: Cannot read properties of undefined (reading 'call') | TypeError: Cannot read properties of undefined (reading 'call') | TypeError: Cannot read properties of undefined (reading 'call') | TypeError: Cannot read properties of undefined (reading 'call') | Type"
+    }
+  ],
+  "probe": {
+    "calls": [
+      {
+        "fn": "togglePause",
+        "at": 3031.7000000029802,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3036.5999999940395,
+        "paused": true,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3036.7999999970198,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3037.7999999970198,
+        "paused": true,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3037.7999999970198,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:29:16) <-     at lc.onKey (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:21:12) <-     at initialize.<anonymous> (http://127.0.0.1:5539/assets/index-BWU4wb5L.js:812:661518)"
+      }
+    ],
+    "keydowns": [
+      {
+        "key": "Escape",
+        "repeat": false,
+        "trusted": true,
+        "at": 3037.2999999970198
+      }
+    ],
+    "polls": [
+      {
+        "at": 3051.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3070.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3090.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3151,
+        "paused": true
+      },
+      {
+        "at": 3170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3190.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3210.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3250.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3270.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3290.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3310.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3350.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3370.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3390.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3410.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3450.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3470.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3490.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3511,
+        "paused": true
+      },
+      {
+        "at": 3530.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3550.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3570.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3590.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3610.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3631,
+        "paused": true
+      },
+      {
+        "at": 3650.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3670.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3690.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3710.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3750.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3790.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3810.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3851.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3890.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3931,
+        "paused": true
+      },
+      {
+        "at": 3950.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 3970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3990.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4010.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4030.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4050.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 4070.7999999970198,
+        "paused": true
+      },
+      {
+        "at": 4090.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4150.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4190.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4210.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4250.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4270.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4290.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4310.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4350.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4370.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4390.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4410.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4451,
+        "paused": true
+      },
+      {
+        "at": 4470.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4490.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4511,
+        "paused": true
+      },
+      {
+        "at": 4530.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4550.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4570.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4590.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4611,
+        "paused": true
+      },
+      {
+        "at": 4630.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4650.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4670.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4690.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4710.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4750.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4790.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4810.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4850.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4890.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4930.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4950.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4990.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5010.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5030.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5050.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5070.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5090.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5150.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5170.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5190.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5210.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5250.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5270.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5290.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5310.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5350.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5370.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5390.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5410.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5450.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5470.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5490.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5510.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5530.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5550.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5570.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5590.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5610.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5630.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5650.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5670.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5690.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5710.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5750.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5790.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5811,
+        "paused": true
+      },
+      {
+        "at": 5830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5851,
+        "paused": true
+      },
+      {
+        "at": 5870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5890.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5930.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5950.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5971,
+        "paused": true
+      },
+      {
+        "at": 5990.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6010.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6031,
+        "paused": true
+      },
+      {
+        "at": 6050.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6070.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6090.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6150.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6190.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6210.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6250.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6270.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6290.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6310.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6350.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6370.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6390.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6410.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6450.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6470.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6490.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6510.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6531,
+        "paused": true
+      },
+      {
+        "at": 6550.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6570.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6590.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6610.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6630.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6650.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6670.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6690.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6710.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6750.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6790.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6810.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6850.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6890.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6930.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6950.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6990.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7010.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7030.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7050.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7072.5,
+        "paused": true
+      },
+      {
+        "at": 7090.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7150.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7191,
+        "paused": true
+      },
+      {
+        "at": 7210.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7250.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7270.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7290.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7310.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7350.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7370.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7390.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7410.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7450.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7470.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7490.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7510.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7531,
+        "paused": true
+      },
+      {
+        "at": 7550.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7570.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7590.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7610.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7630.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7650.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7670.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7690.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7710.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7750.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7790.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7810.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7850.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7870.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7891,
+        "paused": true
+      },
+      {
+        "at": 7910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7930.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7950.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7970.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7990.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8011,
+        "paused": true
+      },
+      {
+        "at": 8030.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8050.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8070.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8091,
+        "paused": true
+      },
+      {
+        "at": 8110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8150.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8190.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8210.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8230.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8250.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8270.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8291,
+        "paused": true
+      },
+      {
+        "at": 8310.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8330.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8350.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8370.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8390.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8410.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8430.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8450.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8470.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8490.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8510.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8530.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8550.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8570.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8590.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8611,
+        "paused": true
+      },
+      {
+        "at": 8630.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8650.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8670.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8690.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8710.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8730.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8750.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8770.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8790.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8810.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8830.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8850.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8870.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8890.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8910.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8930.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8950.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8970.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8990.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9011,
+        "paused": true
+      },
+      {
+        "at": 9030.90000000596,
+        "paused": true
+      }
+    ],
+    "onKeyCalls": [
+      {
+        "at": 2058.0999999940395,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3031.7000000029802,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3036.5999999940395,
+        "paused": true,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3036.7999999970198,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3037.7000000029802,
+        "paused": true,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3037.7999999970198,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      }
+    ],
+    "activeScenes": [
+      "run",
+      "ui"
+    ],
+    "allScenes": [
+      "boot",
+      "title",
+      "charselect",
+      "run",
+      "ui",
+      "results",
+      "credits"
+    ],
+    "uiKeydownListeners": 1,
+    "globalKeydownListeners": "n/a"
+  },
+  "kbDiag": {
+    "uiPluginProcessListeners": 2,
+    "pluginEmitListenerCount": 1,
+    "sceneStatus": 5,
+    "sceneActive": true,
+    "kbLog": [],
+    "eventKeys": [
+      "gameout",
+      "gameover",
+      "process"
+    ],
+    "processType": "array:2"
+  },
+  "procCalls": [],
+  "keydownsAfter": [
+    {
+      "key": "Escape",
+      "repeat": false,
+      "trusted": true,
+      "at": 9058.70000000298
+    }
+  ],
+  "pausedAfter": true,
+  "passed": false,
+  "jsErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')",
+    "TypeError: Cannot read properties of undefined (reading 'call')"
+  ]
+}
