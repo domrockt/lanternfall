@@ -1,0 +1,151 @@
+{
+  "tag": "combined",
+  "config": {
+    "viewport": "640x360",
+    "dpr": 1,
+    "seed": 1,
+    "skipTo": 1490,
+    "steps": 1800,
+    "step": "1/60",
+    "margins": [
+      0,
+      48,
+      96,
+      192
+    ],
+    "density": 16
+  },
+  "deterministicHarness": "create()-Freeze + loop.delta-Pin + run.simulate(1/60)-Chunks; Vorher/Nachher als zwei Pages im selben Browser-Prozess (registry lf-proj-cull 0/1)",
+  "simSeconds": 30,
+  "before": {
+    "liveProjectiles": {
+      "avg": 40.3,
+      "max": 50
+    },
+    "withLiveTarget": {
+      "avg": 10.7
+    },
+    "enemiesAvg": 279,
+    "enemiesBeyondViewMax": 107,
+    "enemiesBeyondView64Max": 40,
+    "offscreenByMargin": {
+      ">0px": {
+        "avg": 27.8,
+        "max": 49,
+        "pctOfLive": 69
+      },
+      ">48px": {
+        "avg": 21.3,
+        "max": 43,
+        "pctOfLive": 52.9
+      },
+      ">96px": {
+        "avg": 15.7,
+        "max": 31,
+        "pctOfLive": 38.8
+      },
+      ">192px": {
+        "avg": 11.8,
+        "max": 29,
+        "pctOfLive": 29.3
+      }
+    },
+    "msPerFrame": {
+      "projectileUpdate": 0.016,
+      "combatUpdate": 0.103,
+      "rendererTotal": 1.104
+    },
+    "totals": {
+      "hits": 7925,
+      "projectileHits": 3149,
+      "hitDamage": 456311,
+      "kills": 830,
+      "spawns": 922,
+      "hitsBeyondView96": 225,
+      "hitsBeyondView192": 5,
+      "projectileHitsBeyondMargin": {
+        "96": 110,
+        "128": 61,
+        "160": 36,
+        "192": 3,
+        "256": 0,
+        "288": 0,
+        "320": 0
+      },
+      "enemyMaxBeyondView": 215.1
+    }
+  },
+  "after": {
+    "liveProjectiles": {
+      "avg": 29.7,
+      "max": 44
+    },
+    "withLiveTarget": {
+      "avg": 10.7
+    },
+    "enemiesAvg": 279,
+    "enemiesBeyondViewMax": 107,
+    "enemiesBeyondView64Max": 40,
+    "offscreenByMargin": {
+      ">0px": {
+        "avg": 17.2,
+        "max": 27,
+        "pctOfLive": 57.9
+      },
+      ">48px": {
+        "avg": 10.7,
+        "max": 19,
+        "pctOfLive": 36
+      },
+      ">96px": {
+        "avg": 5,
+        "max": 9,
+        "pctOfLive": 16.9
+      },
+      ">192px": {
+        "avg": 1.2,
+        "max": 5,
+        "pctOfLive": 3.9
+      }
+    },
+    "msPerFrame": {
+      "projectileUpdate": 0.018,
+      "combatUpdate": 0.112,
+      "rendererTotal": 1.173
+    },
+    "totals": {
+      "hits": 7925,
+      "projectileHits": 3149,
+      "hitDamage": 456311,
+      "kills": 830,
+      "spawns": 922,
+      "hitsBeyondView96": 225,
+      "hitsBeyondView192": 5,
+      "projectileHitsBeyondMargin": {
+        "96": 110,
+        "128": 61,
+        "160": 36,
+        "192": 3,
+        "256": 0,
+        "288": 0,
+        "320": 0
+      },
+      "enemyMaxBeyondView": 215.1
+    }
+  },
+  "delta": {
+    "projectileUpdateMsPerFramePct": -12.5,
+    "rendererMsPerFramePct": -6.2,
+    "hitsIdentical": true,
+    "projectileHitsIdentical": true,
+    "hitDamageIdentical": true,
+    "killsIdentical": true
+  },
+  "fpsReference": {},
+  "batchStable": true,
+  "pairFingerprint": {
+    "enemies": 270,
+    "hash": "211223809",
+    "kills": 111
+  }
+}
