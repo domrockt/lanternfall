@@ -18,6 +18,7 @@ const argOf = (name, fallback) => {
   return i >= 0 ? process.argv[i + 1] : fallback;
 };
 const AFTER_RUNS = Math.max(1, Number(argOf("after-runs", "2")));
+const STRESS = Math.max(0, Number(argOf("stress", "0")));
 const OUT = String(argOf("out", "shots/m10-dpr-budget.json"));
 
 ensureBuild();
@@ -27,7 +28,7 @@ const browser = await chromium.launch({
   args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"],
 });
 
-const measureMinute25 = async (mode) => {
+const measureMinute25 = async (mode, stressEnemies = 0) => {
   const query = mode === "before" ? "?debug=1&seed=1&rbscale=0" : "?debug=1&seed=1";
   const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: DPR });
   const errors = [];
@@ -86,7 +87,7 @@ const measureMinute25 = async (mode) => {
         if (now - lastSpawn >= 50) {
           lastSpawn = now;
           const active = window.__lf.stats().enemies;
-          const deficit = 300 - active;
+          const deficit = target - active;
           if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
           // Nach dem Nachspawnen sampeln (wie perf.mjs): Max-AoE toetet die
           // 300 Gegner zwischen zwei Ticks, sonst misst man nur das Tal.
@@ -113,7 +114,7 @@ const measureMinute25 = async (mode) => {
       renderWidth: canvas.width,
       renderScaleDivisor: Math.round(rect.width * window.devicePixelRatio / (canvas.width * window.devicePixelRatio) * 100) / 100,
     };
-  }, { seconds: 10 });
+  }, { seconds: 10, target: Math.max(300, stressEnemies) });
 
   await page.close();
   return { ...result, jsErrors: errors, passed: result.fps >= TARGET_FPS && result.minEnemies >= 250 && errors.length === 0 };
@@ -123,6 +124,11 @@ const runs = [];
 runs.push({ id: "before-rbscale0", mode: "before", ...(await measureMinute25("before")) });
 for (let i = 1; i <= AFTER_RUNS; i++) {
   runs.push({ id: `after-auto-${i}`, mode: "after", ...(await measureMinute25("after")) });
+}
+// Optionaler Stress-Lauf: so viele Gegner, dass selbst Teiler 1 unter 45 FPS
+// faellt -> belegt, dass der Regler unter Last wirklich senkt (Hysterese).
+if (STRESS > 0) {
+  runs.push({ id: `after-stress-${STRESS}`, mode: "after-stress", stressEnemies: STRESS, ...(await measureMinute25("after", STRESS)) });
 }
 
 const after = runs.filter((r) => r.mode === "after");
@@ -139,6 +145,7 @@ const result = {
     afterMinFps: Math.min(...after.map((r) => r.fps)),
     afterPassedCount: after.filter((r) => r.passed).length,
     afterCount: after.length,
+    stressRun: runs.find((r) => r.mode === "after-stress") ?? null,
     jsErrors: runs.reduce((n, r) => n + r.jsErrors.length, 0),
   },
 };
