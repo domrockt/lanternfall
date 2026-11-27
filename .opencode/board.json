@@ -2318,7 +2318,7 @@
       "id": 1380,
       "title": "m9-polish-03 HUD-/Level-up-Anker pruefen (art-03)",
       "description": "Bei 640x360 (16:9) und 780x360 (19.5:9) sicherstellen, dass Boss-Leiste, Banner und Level-up-Karte nicht ueberlappen; ein Shot je Auflaesung. Wenn sauber: Karte mit Beleg auf done, keine Aenderung.",
-      "column": "review",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
@@ -2330,10 +2330,15 @@
           "at": "2026-11-26T23:29:25Z",
           "by": "build",
           "text": "doing → review: Commit 71cccf1: HUD-Worst-Case 16:9 (640x360) und 19.5:9 (780x360) geprueft, ux-check PASS; keine Aenderung noetig. Zusaetzlich perf 60,1/56,1 FPS PASS."
+        },
+        {
+          "at": "2026-11-27T00:05:12Z",
+          "by": "build",
+          "text": "review → done: Abnahme (Versuch 3): HUD-Worst-Case bei 640x360 (16:9) und 780x360 (19.5:9) mit Boss + Banner + offenen Level-up-Karten geprueft: keine Ueberlappung, Karte 3 endet x~655 < 780. ux-check PASS, keine Aenderung noetig. Shots shots/art-polish-hud-16.png / -195.png."
         }
       ],
       "created": "2026-11-26T21:33:06Z",
-      "updated": "2026-11-26T23:29:25Z"
+      "updated": "2026-11-27T00:05:12Z"
     }
   ]
 }
