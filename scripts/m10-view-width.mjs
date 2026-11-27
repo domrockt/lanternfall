@@ -96,6 +96,23 @@ try {
       dpr: window.devicePixelRatio,
     };
   });
+
+  // M10-view-width: optionaler overlay-freier Sicht-Beleg (art-director 27.11.):
+  // Level-up-Overlays schliessen, Gegner auf Zielzahl auffüllen und kurz laufen
+  // lassen, damit der Screenshot die Crowd (Klemme aktiv) zeigt, nicht das Panel.
+  if (argOf("clear-levelups", "off") === "on") {
+    for (let i = 0; i < 40; i++) {
+      const open = await page.evaluate(() => window.__lf?.stats().levelUpOpen);
+      if (!open) break;
+      await page.evaluate(() => window.__lf.pickLevelUp(0));
+    }
+    await page.evaluate(({ ENEMIES }) => {
+      const s = window.__lf.stats();
+      const deficit = ENEMIES - s.enemies;
+      if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
+    }, { ENEMIES });
+    await page.waitForTimeout(1200);
+  }
   await page.screenshot({ path: SHOT });
 
   result = {
