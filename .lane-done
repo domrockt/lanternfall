@@ -1,0 +1,23 @@
+# Lane m10-audio-mix-chaos — fertig (27.11.2026)
+
+SFX-Mix-Budget im 500-Gegner-Chaos: Voice-Starts/s gedeckelt, 0 Clipping,
+12/12 Waffen-/Evolutions-Klänge hörbar, Master-Mute bitgleich.
+
+- Vorher (shots/m10-audio-mix-before.json): 52,65 Voice-Starts/s (max 64),
+  13 Voices gleichzeitig, Chaos-Peak −3,84 dBFS; Worst-Case-Burst +0,77 dBFS
+  mit 5 Clipping-Samples.
+- Nachher (shots/m10-audio-mix-after.json): 22,65 Voice-Starts/s (Prio<3-max
+  24 = Deckel), 12 Voices, Chaos-Peak −6,46 dBFS; Worst-Case-Burst −1,37 dBFS,
+  0 Clipping; 12/12 Klang-IDs mit 29–60 Starts in 60 s.
+- Fix (Karte #6539, mixing.ts + AudioSystem.ts): planPlay mit Fairness-
+  Verdrängung (Prio≥2 nimmt älteste/leiseste niederpriorere Stimme),
+  24/s-Deckel in zwei Bändern mit Fair-Anteil je Klang-ID (min. 1/s),
+  Limiter TARGET_PEAK −1 dBFS über gleichmäßige Rücknahme aller aktiven
+  Stimmen. Master-Mute-Pfad bitgleich.
+- Tests (Karte #6540): tests/audio-mix-chaos.test.ts, 11 Tests; Testbefund
+  führte zur Limiter-Formel-Korrektur (target/(sum+incoming), nie 0).
+- Verifikation: 845/845 Tests grün (83 Dateien), tsc rc=0, Build rc=0.
+  Bestehende tests/audio-mix.test.ts 7/7 grün (Unterscheidbarkeit + Mute).
+- Doku: docs/lanes/m10-audio-mix-chaos.md (Vorher/Nachher-Tabelle, offene Punkte).
+- Messskript scripts/m10-audio-mix.mjs einmalig gebaut (2 Iterationen im
+  Briefing-Limit) und eingefroren; kein flock (keine FPS-Messung).
