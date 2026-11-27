@@ -6,7 +6,7 @@
   },
   "dpr": 1,
   "simMinutes": 30.2,
-  "pollSamples": 214,
+  "pollSamples": 195,
   "bosses": {
     "expectedSeconds": [
       300,
@@ -75,33 +75,33 @@
     ]
   },
   "chestsDropped": 6,
-  "elitesSpawned": 150,
+  "elitesSpawned": 172,
   "enemiesAtEnd": 0,
-  "kills": 4185,
+  "kills": 4056,
   "level": 37,
   "dawn": true,
   "victory": true,
   "resultReason": "dawn",
-  "fpsMin": 40.2,
+  "fpsMin": 31.3,
   "fpsWindow": "ab Sim-Zeit 29:20 bei 1x (volle Dichte + Endboss)",
   "heap": {
-    "startMB": 21.4,
-    "minute1MB": 30.3,
-    "minute29MB": 30.6,
+    "startMB": 21.5,
+    "minute1MB": 30,
+    "minute29MB": 30.1,
     "endMB": 23.2,
     "cdpUsedMB": {
       "start": 10.5,
-      "minute1": 12.8,
-      "minute29": 14.2,
+      "minute1": 13.7,
+      "minute29": 14,
       "end": 11.8
     },
     "measured": true,
-    "deltaVsMinute1Pct": 1,
+    "deltaVsMinute1Pct": 0.3,
     "targetPct": 15,
     "passed": true
   },
   "fps": {
-    "min": 40.2,
+    "min": 31.3,
     "target": 55,
     "passed": false
   },
