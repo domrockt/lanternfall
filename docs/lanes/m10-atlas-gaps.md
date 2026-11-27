@@ -26,6 +26,7 @@ node scripts/art/atlas-audit.mjs --out shots/m10-atlas-audit.json
 
 Messung: Atlas `runtime_atlas` **1024×343 px**, **224 Frames**.
 Audit-JSON: `shots/m10-atlas-audit.json`.
+Beleg für #1679: Ist-Stand vollständig erfasst (Coverage, Gutter, Bleed, heisse Einzeltexturen) und mit Commit 3aba53e dokumentiert.
 
 ### a) Coverage
 
