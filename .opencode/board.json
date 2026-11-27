@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5807,
+  "next": 5962,
   "cards": [
     {
       "id": 1,
@@ -6776,6 +6776,91 @@
       ],
       "created": "2026-11-27T21:51:44Z",
       "updated": "2026-11-27T21:51:47Z"
+    },
+    {
+      "id": 5958,
+      "title": "m10-chest-reveal K1: Vorher-Beleg Truhen-Moment + Öffnen (640x360, 780x360@3) + Überlapp-Doku",
+      "description": "scripts/m10-chest-reveal.mjs rendert Truhe am Boden + Öffnungs-Panel in beiden Viewports, misst Subtitle-/Icon-Überlappung pixelgenau, schreibt shots/m10-chest-reveal-before.png/-before.json mit iGPU-Renderer-String. AK: JSON enthält Renderer-String, Overlap-Messung belegt Befund, 0 JS-Fehler.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:00:36Z",
+          "by": "build",
+          "text": "todo → doing: Start: Mess-Skript scripts/m10-chest-reveal.mjs (Vorher-Beleg)"
+        },
+        {
+          "at": "2026-11-27T22:09:27Z",
+          "by": "build",
+          "text": "doing → review: K1 Commit 9276723: before-Shots 640+780@3 (ground/open-mid/open-settled + Montage), JSON mit Renderer-String; Befund: Titel-Unterkante schneidet Untertitel-Oberkante (~2px), Panel-Bounds gemessen"
+        },
+        {
+          "at": "2026-11-27T22:47:24Z",
+          "by": "build",
+          "text": "review → done: Commit 9276723 — Vorher-Beleg belegt Quetschung, Renderer-String im JSON"
+        }
+      ],
+      "created": "2026-11-27T21:58:52Z",
+      "updated": "2026-11-27T22:47:24Z"
+    },
+    {
+      "id": 5959,
+      "title": "m10-chest-reveal K2: Öffnungs-Sequenz in ChestSystem (Aufleuchten, Münzen/Funken, Reveal) + Untertitel-Fix 0 Überlappung",
+      "description": "Oeffnungs-Sequenz: Glanz-Animation hoch, Münzen-/Funken-Partikel aus der Truhe (ChestSystem-eigener Renderer, NICHT FxSystem), klare Reveal-Reihenfolge; Untertitel so positioniert, dass 0 Überlappung mit dem Truhen-Icon (640 + 780@3). AK: npx tsc --noEmit grün, Nachher-Shots zeigen Sequenz.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:09:27Z",
+          "by": "build",
+          "text": "todo → doing: K2 Start: ChestSystem-Sequenz (Timeline, Burst-Spec, eigener Partikel-Renderer) + Panel-Layout"
+        },
+        {
+          "at": "2026-11-27T22:47:24Z",
+          "by": "build",
+          "text": "doing → done: Commit 938d9da — Sequenz im ChestSystem-eigenen Renderer, UI.ts unberuehrt, 0 Ueberlappungen belegt, art-director PASS"
+        }
+      ],
+      "created": "2026-11-27T21:58:52Z",
+      "updated": "2026-11-27T22:47:24Z"
+    },
+    {
+      "id": 5960,
+      "title": "m10-chest-reveal K3: evolution.ts Reveal-Reihenfolge/Labels chestRewards lesbar, Rewards unverändert",
+      "description": "Reveal-Reihenfolge/Labels der chestRewards so, dass jede Belohnung lesbar erscheint (Evolution zuerst, klare Labels); Reward-Werte selbst unverändert. AK: Tests bestätigen Reihenfolge + unveränderte Werte.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:33:27Z",
+          "by": "build",
+          "text": "todo → doing: K3 Start: chestRewardLabel + revealOrder (rein) in src/logic/evolution.ts"
+        },
+        {
+          "at": "2026-11-27T22:47:24Z",
+          "by": "build",
+          "text": "doing → done: Commit b214553 — Labels/Reveal-Ordnung rein+getestet, Rewards unveraendert"
+        }
+      ],
+      "created": "2026-11-27T21:58:52Z",
+      "updated": "2026-11-27T22:47:24Z"
+    },
+    {
+      "id": 5961,
+      "title": "m10-chest-reveal K4: tests/chest-reveal.test.ts + Nachher-Shots + Doku + .lane-done",
+      "description": "Sequenz-Reihenfolge deterministisch, 0 Überlappungen bei 640 + 780@3, Truhen-Count 6/6 unberührt; Nachher-Shots + docs/lanes/m10-chest-reveal.md; art-director >= 4/5 Inszenierung. AK: Tests + tsc grün, Belege im Commit.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:42:57Z",
+          "by": "build",
+          "text": "K4: 14 Tests chest-reveal (Timeline/Burst/Layout/Labels/Lesbarkeit), 30-min-Sim 6/6 Truhen (sim.json), after-Belege + GIF, docs/lanes/m10-chest-reveal.md; 724 Tests + tsc + build gruen. Commit folgt nach art-director-Urteil."
+        },
+        {
+          "at": "2026-11-27T22:47:24Z",
+          "by": "build",
+          "text": "todo → review: K4 Commit 6c0f543: 14 Tests, 30-min-Sim 6/6 Truhen, after-Shots+GIF (Pixel-Grid-Fix), Doku+.lane-done; art-director PASS 4/5 + Re-Check PASS (Korrekturen im Scope erledigt)"
+        }
+      ],
+      "created": "2026-11-27T21:58:52Z",
+      "updated": "2026-11-27T22:47:24Z"
     }
   ]
 }
