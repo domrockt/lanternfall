@@ -1,0 +1,432 @@
+{
+  "viewports": [
+    {
+      "profile": "640",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "dpr": 1
+      },
+      "shots": [
+        {
+          "minute": 25,
+          "file": "/home/ai/games/lf-lanes/m10-chaos-qa/shots/m10-chaos-qa-m25-640.png",
+          "state": {
+            "time": 1509.5,
+            "enemies": 528,
+            "enemyShots": 63,
+            "chestsDropped": 5,
+            "chests": [
+              {
+                "x": 1198.9801859901158,
+                "y": 1115.9320742279092
+              }
+            ],
+            "chestsOnField": 1,
+            "canvas": {
+              "width": 640,
+              "height": 360,
+              "cssWidth": 1920,
+              "cssHeight": 1080,
+              "dpr": 1
+            },
+            "logicalWidth": 640,
+            "logicalHeight": 360,
+            "playerX": 1247,
+            "playerY": 1084,
+            "playerScreenX": 320,
+            "playerScreenY": 180,
+            "camera": {
+              "scrollX": 927,
+              "scrollY": 904,
+              "width": 640,
+              "height": 360,
+              "zoom": 1
+            },
+            "level": 33,
+            "kills": 4430,
+            "weapons": [
+              {
+                "id": "phoenix",
+                "level": 8
+              },
+              {
+                "id": "wrath_pendulum",
+                "level": 8
+              },
+              {
+                "id": "eternal_winter",
+                "level": 8
+              },
+              {
+                "id": "thorn_storm",
+                "level": 8
+              },
+              {
+                "id": "thunder_seal",
+                "level": 8
+              },
+              {
+                "id": "soul_beacon",
+                "level": 8
+              }
+            ]
+          }
+        },
+        {
+          "minute": 27,
+          "file": "/home/ai/games/lf-lanes/m10-chaos-qa/shots/m10-chaos-qa-m27-640.png",
+          "state": {
+            "time": 1617.7,
+            "enemies": 575,
+            "enemyShots": 108,
+            "chestsDropped": 5,
+            "chests": [
+              {
+                "x": 1198.9801859901158,
+                "y": 1115.9320742279092
+              }
+            ],
+            "chestsOnField": 1,
+            "canvas": {
+              "width": 640,
+              "height": 360,
+              "cssWidth": 1920,
+              "cssHeight": 1080,
+              "dpr": 1
+            },
+            "logicalWidth": 640,
+            "logicalHeight": 360,
+            "playerX": 1247,
+            "playerY": 1084,
+            "playerScreenX": 320,
+            "playerScreenY": 180,
+            "camera": {
+              "scrollX": 927,
+              "scrollY": 904,
+              "width": 640,
+              "height": 360,
+              "zoom": 1
+            },
+            "level": 33,
+            "kills": 5769,
+            "weapons": [
+              {
+                "id": "phoenix",
+                "level": 8
+              },
+              {
+                "id": "wrath_pendulum",
+                "level": 8
+              },
+              {
+                "id": "eternal_winter",
+                "level": 8
+              },
+              {
+                "id": "thorn_storm",
+                "level": 8
+              },
+              {
+                "id": "thunder_seal",
+                "level": 8
+              },
+              {
+                "id": "soul_beacon",
+                "level": 8
+              }
+            ]
+          }
+        },
+        {
+          "minute": 29,
+          "file": "/home/ai/games/lf-lanes/m10-chaos-qa/shots/m10-chaos-qa-m29-640.png",
+          "state": {
+            "time": 1737.7,
+            "enemies": 583,
+            "enemyShots": 116,
+            "chestsDropped": 6,
+            "chests": [
+              {
+                "x": 1198.9801859901158,
+                "y": 1115.9320742279092
+              },
+              {
+                "x": 1307.5304297558093,
+                "y": 1144.2480193259532
+              }
+            ],
+            "chestsOnField": 2,
+            "canvas": {
+              "width": 640,
+              "height": 360,
+              "cssWidth": 1920,
+              "cssHeight": 1080,
+              "dpr": 1
+            },
+            "logicalWidth": 640,
+            "logicalHeight": 360,
+            "playerX": 1247,
+            "playerY": 1084,
+            "playerScreenX": 320,
+            "playerScreenY": 180,
+            "camera": {
+              "scrollX": 927,
+              "scrollY": 904,
+              "width": 640,
+              "height": 360,
+              "zoom": 1
+            },
+            "level": 34,
+            "kills": 7101,
+            "weapons": [
+              {
+                "id": "phoenix",
+                "level": 8
+              },
+              {
+                "id": "wrath_pendulum",
+                "level": 8
+              },
+              {
+                "id": "eternal_winter",
+                "level": 8
+              },
+              {
+                "id": "thorn_storm",
+                "level": 8
+              },
+              {
+                "id": "thunder_seal",
+                "level": 8
+              },
+              {
+                "id": "soul_beacon",
+                "level": 8
+              }
+            ]
+          }
+        }
+      ],
+      "jsErrors": [],
+      "chestSeen": true,
+      "finalErrors": []
+    },
+    {
+      "profile": "780",
+      "viewport": {
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "shots": [
+        {
+          "minute": 25,
+          "file": "/home/ai/games/lf-lanes/m10-chaos-qa/shots/m10-chaos-qa-m25-780.png",
+          "state": {
+            "time": 1510.2,
+            "enemies": 574,
+            "enemyShots": 56,
+            "chestsDropped": 5,
+            "chests": [
+              {
+                "x": 244.2679031091668,
+                "y": 3543.2044620865695
+              }
+            ],
+            "chestsOnField": 1,
+            "canvas": {
+              "width": 780,
+              "height": 360,
+              "cssWidth": 780,
+              "cssHeight": 360,
+              "dpr": 3
+            },
+            "logicalWidth": 780,
+            "logicalHeight": 360,
+            "playerX": 242,
+            "playerY": 3484,
+            "playerScreenX": 242,
+            "playerScreenY": 180,
+            "camera": {
+              "scrollX": 0,
+              "scrollY": 3304,
+              "width": 780,
+              "height": 360,
+              "zoom": 1
+            },
+            "level": 33,
+            "kills": 4461,
+            "weapons": [
+              {
+                "id": "phoenix",
+                "level": 8
+              },
+              {
+                "id": "wrath_pendulum",
+                "level": 8
+              },
+              {
+                "id": "eternal_winter",
+                "level": 8
+              },
+              {
+                "id": "thorn_storm",
+                "level": 8
+              },
+              {
+                "id": "thunder_seal",
+                "level": 8
+              },
+              {
+                "id": "soul_beacon",
+                "level": 8
+              }
+            ]
+          }
+        },
+        {
+          "minute": 27,
+          "file": "/home/ai/games/lf-lanes/m10-chaos-qa/shots/m10-chaos-qa-m27-780.png",
+          "state": {
+            "time": 1617.7,
+            "enemies": 580,
+            "enemyShots": 72,
+            "chestsDropped": 6,
+            "chests": [
+              {
+                "x": 244.2679031091668,
+                "y": 3543.2044620865695
+              },
+              {
+                "x": 139.32798702126522,
+                "y": 3500.3137898905616
+              }
+            ],
+            "chestsOnField": 2,
+            "canvas": {
+              "width": 780,
+              "height": 360,
+              "cssWidth": 780,
+              "cssHeight": 360,
+              "dpr": 3
+            },
+            "logicalWidth": 780,
+            "logicalHeight": 360,
+            "playerX": 242,
+            "playerY": 3484,
+            "playerScreenX": 242,
+            "playerScreenY": 180,
+            "camera": {
+              "scrollX": 0,
+              "scrollY": 3304,
+              "width": 780,
+              "height": 360,
+              "zoom": 1
+            },
+            "level": 33,
+            "kills": 6279,
+            "weapons": [
+              {
+                "id": "phoenix",
+                "level": 8
+              },
+              {
+                "id": "wrath_pendulum",
+                "level": 8
+              },
+              {
+                "id": "eternal_winter",
+                "level": 8
+              },
+              {
+                "id": "thorn_storm",
+                "level": 8
+              },
+              {
+                "id": "thunder_seal",
+                "level": 8
+              },
+              {
+                "id": "soul_beacon",
+                "level": 8
+              }
+            ]
+          }
+        },
+        {
+          "minute": 29,
+          "file": "/home/ai/games/lf-lanes/m10-chaos-qa/shots/m10-chaos-qa-m29-780.png",
+          "state": {
+            "time": 1738,
+            "enemies": 575,
+            "enemyShots": 79,
+            "chestsDropped": 6,
+            "chests": [
+              {
+                "x": 244.2679031091668,
+                "y": 3543.2044620865695
+              },
+              {
+                "x": 139.32798702126522,
+                "y": 3500.3137898905616
+              }
+            ],
+            "chestsOnField": 2,
+            "canvas": {
+              "width": 780,
+              "height": 360,
+              "cssWidth": 780,
+              "cssHeight": 360,
+              "dpr": 3
+            },
+            "logicalWidth": 780,
+            "logicalHeight": 360,
+            "playerX": 242,
+            "playerY": 3484,
+            "playerScreenX": 242,
+            "playerScreenY": 180,
+            "camera": {
+              "scrollX": 0,
+              "scrollY": 3304,
+              "width": 780,
+              "height": 360,
+              "zoom": 1
+            },
+            "level": 34,
+            "kills": 8083,
+            "weapons": [
+              {
+                "id": "phoenix",
+                "level": 8
+              },
+              {
+                "id": "wrath_pendulum",
+                "level": 8
+              },
+              {
+                "id": "eternal_winter",
+                "level": 8
+              },
+              {
+                "id": "thorn_storm",
+                "level": 8
+              },
+              {
+                "id": "thunder_seal",
+                "level": 8
+              },
+              {
+                "id": "soul_beacon",
+                "level": 8
+              }
+            ]
+          }
+        }
+      ],
+      "jsErrors": [],
+      "chestSeen": true,
+      "finalErrors": []
+    }
+  ]
+}

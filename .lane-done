@@ -1,0 +1,9 @@
+m10-chaos-qa – Endgame-Chaos QA (Minute 25–29), nur Messung/Doku, kein Spiel-Code geändert.
+Lauf: 30-min-Sim @timeScale 30 bis Minute 25 (1506 s), dann 10 s @1×; Seed 99; 6 Evolutions-Waffen + 6 Passives Stufe 5.
+Rohdaten: shots/m10-chaos-qa.json – 3349 Frame-Samples (588 realtime), 0 JS-Fehler.
+FPS realtime: min 20 (einzelner 50,1-ms-Frame) / median 59,9 / max 60,6; Frame median 16,7 ms, p95 16,8 ms.
+Gegner 352–552 (median 536), Gegnerschüsse max 325.
+6 Standbilder 640×360 und 780×360 @dpr3 bei Minute 25/27/29; Kontrastzahlen in shots/m10-chaos-qa-contrast.json.
+Urteile: HUD/Boss-Balken überall lesbar; Gegnerschüsse bei 640 klar (Kontrast 131–181), bei 780 marginal (bis 45).
+Befund S: Spieler-Silhouette in allen 6 Bildern nicht lesbar (heller additiver AoE auf Spielerposition: 640 near-white, 780 gold-orange).
+Befunde M/L + Repro + vorgeschlagene CODEMAP-Dateien in docs/lanes/m10-chaos-qa.md.
