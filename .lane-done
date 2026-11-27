@@ -1,0 +1,20 @@
+# Lane m10-perf-cap-rollback — fertig (2026-11-27)
+
+Dom-Wunsch 21:15Z umgesetzt: Perf-Deckel gegen SwiftShader-Zahlen zurückgebaut/entschärft.
+Messgrundlage: iGPU (ANGLE / Mesa Intel(R) Graphics (RPL-S)) — Renderer-String in jedem Mess-JSON.
+
+- Teil A (#5778): View-Width-Cap ENTFERNT (view.ts/main.ts/tests). iGPU-A/B M25 780x360@3, je 3 Läufe:
+  mit Cap 60,1/60,0/60,1 (intern 640, Klemme aktiv), ohne Cap 60,0/60,0/59,9 — Median 60,0 >= 55
+  (Entscheidungsregel) → Rollback. Cap brachte 0,0 FPS, kostete aber 210 device-px Balken je Seite.
+  Sichtcheck 960x540 (Min-20/-30): Ränder dort = M8-Fit-Fallback (n=1, Klemm-Pfad nie erreichbar,
+  vor/nach identisch) — dokumentiert, nicht Cap-bedingt.
+- Teil B (#5779): ADD-Glow-Flächen-Deckel nur noch über DPR-Budget-Regler (RENDER_SCALE > 1);
+  Alpha-Floor 0,04 bleibt. Overdraw fx-Klasse 17.025 → 128.592 dev-px (Optik zurück, max Sprite
+  93 → 416 dev-px); Sichtbeleg shots/m10-perf-cap-rollback-glows-960x540.png ohne Overlays.
+- Teil C (#5780): DPR-Budget-Regler + Canvas-Budget unverändert; renderScale = 1 in allen 6 iGPU-JSONs.
+
+Qualität: npm test 683/683, npx tsc --noEmit rc=0, npm run build rc=0.
+Kontrolleure: test-auditor PASS (49/49 gezielt, Schaltstelle abgedeckt), reviewer PASS (siehe Board-Notiz #5778/#5779).
+Commits: 0a6b2bf (#5778), 2dea49a (#5778 Belege), 955d05c (Doku-Präzision), 4eedba2 (#5779), ea27a0a (#5780).
+Doku: docs/lanes/m10-perf-cap-rollback.md. Offen (nicht diese Lane): M8-Fit-Fallback-Balken bei 960x540@1
+als eigene Karte; viewcap-Param-Rest in fremdem scripts/m10-ember-trail.mjs (no-op).
