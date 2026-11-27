@@ -3717,49 +3717,72 @@
       "id": 2538,
       "title": "m10-boss-onscreen #K1 Ist-Geometrie",
       "description": "Fuer alle 6 Bosse bei 1920x1080 und 640x360 Sprite-Rect vs HP-Leisten-Rect und Banner-Rect headless messen; vorher-JSON shots/m10-boss-onscreen-before.json + Tabelle docs/lanes/m10-boss-onscreen.md. Abnahme: 12 Messzeilen, verdeckte Flaeche in px/% je Boss, Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T07:49:41Z",
           "by": "build",
           "text": "todo → doing: Start: Messskript ~/tmp/m10-boss-onscreen/measure-boss.mjs, 72 Ring-Winkel je Boss x 2 Views, headless Playwright"
+        },
+        {
+          "at": "2026-11-27T09:47:20Z",
+          "by": "build",
+          "text": "doing → done: Commit f9dce90; before-JSON 12 Messzeilen, Banner-Overlap bis 13,44%"
         }
       ],
       "created": "2026-11-27T07:49:28Z",
-      "updated": "2026-11-27T07:49:41Z"
+      "updated": "2026-11-27T09:47:20Z"
     },
     {
       "id": 2539,
       "title": "m10-boss-onscreen #K2 Spawn-Komposition",
       "description": "BossSystem: Boss-Mittelpunkt so legen, dass Sprite-Rect vollstaendig unter der HP-Leiste liegt (>=6 px Luft). Spawn-Ring nur so weit anpassen wie noetig, keine Balance-Werte. Abnahme: Logik + tsc grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T09:47:20Z",
+          "by": "build",
+          "text": "todo → done: Commit fa07e09; composedBossCenterY, Frame-Hoehe, 6px Luft"
+        }
+      ],
       "created": "2026-11-27T07:49:28Z",
-      "updated": "2026-11-27T07:49:28Z"
+      "updated": "2026-11-27T09:47:20Z"
     },
     {
       "id": 2540,
       "title": "m10-boss-onscreen #K3 Banner/Intro",
       "description": "Run.ts: Intro-Banner erst zeigen, wenn Boss vollstaendig sichtbar, nie ueber Boss-Rect; Banner-Dauer nicht verlaengern, AutoPlay/God unveraendert. Abnahme: Code-Diff + tsc grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T09:47:20Z",
+          "by": "build",
+          "text": "todo → done: Commit 5d9df73; Banner erst wenn Boss-Rect frei, Dauer unveraendert"
+        }
+      ],
       "created": "2026-11-27T07:49:28Z",
-      "updated": "2026-11-27T07:49:28Z"
+      "updated": "2026-11-27T09:47:20Z"
     },
     {
       "id": 2541,
       "title": "m10-boss-onscreen #K4 Test",
       "description": "tests/boss-spawn-composition.test.ts: alle 6 Bosse bei View 640x360 und 480x360: boss.top >= hpBar.bottom+6 und banner ∩ boss = ∅, deterministisch. Abnahme: npx vitest run Datei grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T09:47:20Z",
+          "by": "build",
+          "text": "todo → done: Commit 8d7344a; 13/13 Tests gruen, 6 Bosse x 2 Views x 72 Winkel"
+        }
+      ],
       "created": "2026-11-27T07:49:28Z",
-      "updated": "2026-11-27T07:49:28Z"
+      "updated": "2026-11-27T09:47:20Z"
     },
     {
       "id": 2542,
       "title": "m10-boss-onscreen #K5 Belege + Doku",
       "description": "6 Spawn-Shots 1920x1080 + 6 bei 640x360, Nachher-JSON, art-director PASS (Boss-Inszenierung >=4/5), npm run build+test grün, .lane-done. Abnahme: 0 verdeckte Pixel/0 Banner-Overlap 6/6 x 2 Views, 12 Shots, Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T08:58:48Z",
@@ -3770,10 +3793,15 @@
           "at": "2026-11-27T08:59:06Z",
           "by": "build",
           "text": "doing → doing: K5 Start: Nachher-JSON + 12 Shots vorhanden (untracked), art-director-Pruefung + build/test, dann Doku/.lane-done/Commit."
+        },
+        {
+          "at": "2026-11-27T09:47:20Z",
+          "by": "build",
+          "text": "doing → done: Commit 7fe7de0; 12 Shots + after-JSON (725fcc8), art-director PASS 4/5, min 71px Abstand, .lane-done"
         }
       ],
       "created": "2026-11-27T07:49:28Z",
-      "updated": "2026-11-27T08:59:06Z"
+      "updated": "2026-11-27T09:47:20Z"
     }
   ]
 }
