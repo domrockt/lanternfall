@@ -1,0 +1,30 @@
+# Lane m10-enemy-frame-cadence — done (2026-11-27)
+
+Alle 3 Karten committed (Commits mit Prefix M10-m10-enemy-frame-cadence).
+
+## Ergebnis
+- Run.ts zeigt jetzt zyklisch ALLE Lauf-Frames (6 fps): vorher hart auf
+  F0/F1 begrenzt (% Math.min(2, frames.length)).
+- Zusaetzlich (Hauptursache) der SPRITE_FRAMES-Lookup gefixt: die Map ist
+  nach def.id bzw. Boss-ID verschluesselt, gesucht wurde nach spriteKey —
+  27/30 Gegner und alle 6 Bosse hatten undefined (keine Animation, kein
+  Wind-up). Fix als reine Funktionen in src/logic/enemy-frames.ts
+  (framesForDef + runFrameIndex), Textur-/Atlas-Keys unveraendert.
+- tests/enemy-run-frames.test.ts: 5 Tests (4/4 Frames bei allen 30 Gegnern,
+  3 Frames + Wind-up bei Bossen, 2-Frame-Typen F0/F1).
+
+## Messwerte / Belege (alle im Commit)
+- tests: 451/451 gruen (43 Dateien), npm run build rc=0.
+- verify-enemies.mjs: 30/30 PASS, failed [], jsErrors [] (unveraendert).
+- shots/m10-enemy-frame-cadence-run.gif: 640x360, 30 Frames, Ritter
+  (4-Frame-Typ) mit sichtbarem Frame-Wechsel.
+- shots/m10-enemy-frame-cadence-frames.png: Zoom-Montage F0..F3, 4 Posen.
+- shots/m10-enemy-frame-cadence-run.json: Frame-Log am Sprite — alle 4
+  Keys (enemy_knight/_2/_3/_4) kommen vor, keine JS-Fehler.
+- Board: #4298, #4299, #4300 (done).
+
+## Offene Punkte
+- EnemyPool.ts ~183 nutzt denselben Lookup fuer die Spawn-Textur (visuell
+  folgenlos, Fallback = Basis-Textur); kuenftig framesForDef() nutzen.
+- 3 Legacy-2-Frame-Eintraege in SPRITE_FRAMES sind toter Code (textures.ts
+  fremd) — Aufraeum-Karte.
