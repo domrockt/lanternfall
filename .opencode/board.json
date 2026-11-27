@@ -6676,7 +6676,7 @@
       "id": 5838,
       "title": "m10-hero-contrast K1: Vorher-Belege + Kontrast-Metrik",
       "description": "scripts/m10-hero-contrast.mjs rendert CharSelect-Portraets (Mira+Kael) und Kael im 300+-Gegner-Chaos-Frame; schreibt shots/m10-hero-contrast-before.png, -before-charselect.png, -before-portraits.png (6x nearest) und -before.json (Kontrast-Metrik Spieler-Flaeche vs. umliegende Gegner). Abnahme: Skript laeuft mit Timeout, JSON enthaelt Metrik + Gegnerzahl + 0 JS-Fehler, Commit enthaelt alle Belege.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:46:01Z",
@@ -6687,43 +6687,65 @@
           "at": "2026-11-27T21:56:42Z",
           "by": "build",
           "text": "doing → review: Commit cc024ad (+Board d45c558): Mess-Skript scripts/m10-hero-contrast.mjs + scripts/art/m10_hero_portraits.py; Belege shots/m10-hero-contrast-before{,-charselect,-portrait-mira,-portrait-kael}.png + -before.json. Metrik: heroRarity 2.07%, lumDelta 52.1, 320 Gegner, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-27T22:23:36Z",
+          "by": "build",
+          "text": "review → done: lane #5838, Commit cc024ad — Vorher-Belege + Metrik (heroRarity 2.07, Rim 19, 320 Gegner, 0 JS-Fehler)."
         }
       ],
       "created": "2026-11-27T21:45:59Z",
-      "updated": "2026-11-27T21:56:42Z"
+      "updated": "2026-11-27T22:23:36Z"
     },
     {
       "id": 5839,
       "title": "m10-hero-contrast K2: Portraets ueberarbeiten (Kael=Moench, Mira feiner)",
       "description": "scripts/art/gen_chars.py: _bust_base/portrait so ueberarbeiten, dass Kael klar als Moench lesbar ist (Kapuze/Gewand/Laterne-Silhouette statt Kopf ueber Zackenkasten) und Mira verfeinert wird. gen-chars.ts NUR durch Pipeline-Regeneration (python3 scripts/art/gen_chars.py). Abnahme: art-director-Urteil >= 4/5 fuer beide Portraets, Beleg -after-portraits.png im Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:58:28Z",
           "by": "build",
           "text": "todo → doing: Start: gen_chars.py portrait() — Kael als Moench (Kapuze/Kutte/Laterne), Mira verfeinern; gen-chars.ts nur per Regeneration."
+        },
+        {
+          "at": "2026-11-27T22:23:36Z",
+          "by": "build",
+          "text": "doing → done: lane #5839, Commit f387f41 — Portraets: art-director Mira 4/5 PASS, Kael R2 4/5 PASS (Pixel-Belege im Urteil)."
         }
       ],
       "created": "2026-11-27T21:45:59Z",
-      "updated": "2026-11-27T21:58:28Z"
+      "updated": "2026-11-27T22:23:36Z"
     },
     {
       "id": 5840,
       "title": "m10-hero-contrast K3: Spieler-Kontur/Licht-Akzent gegen Gegnergrau",
       "description": "Kael/Mira-Sprites (gen_chars.py) + ggf. Texture-Seite (chars.ts): helle Kontur/Laternen-Akzent, der Kael zwischen 300+ grauen Gegnern sofort identifizierbar macht. Regel: eine Pixelgroesse, binaeres Alpha, nur Palettenfarben, Gegner werden NICHT umgefaerbt. Abnahme: Chaos-Nachher-Shot + Metrik deutlich besser als before; sichtbar im -after.png.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:23:36Z",
+          "by": "build",
+          "text": "todo → done: lane #5840, Commit d5e02b6 — warm_rim-Lichtkante; Chaos-Nachher: Rim 19->37, warmShare 0.23->0.27, Texture-Metrik Kael 0.192->0.270; 4x-Schnitte."
+        }
+      ],
       "created": "2026-11-27T21:45:59Z",
-      "updated": "2026-11-27T21:45:59Z"
+      "updated": "2026-11-27T22:23:36Z"
     },
     {
       "id": 5841,
       "title": "m10-hero-contrast K4: Tests + Nachher-Belege + Doku + lane-done",
       "description": "tests/hero-contrast.test.ts: beide Charaktere, 4 Richtungen, 0 Off-Palette-Pixel, Kontur-Metrik >= Schwellwert. Nachher-Shots neu erzeugen, docs/lanes/m10-hero-contrast.md schreiben, .lane-done anlegen. Abnahme: npx vitest run tests/hero-contrast.test.ts + npx tsc --noEmit + npm run build gruen; alles committet.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:23:36Z",
+          "by": "build",
+          "text": "todo → done: lane #5841, Commit 5f7db70 — tests/hero-contrast.test.ts 5/5, build+tsc gruen, 698 Tests gruen, Doku docs/lanes/m10-hero-contrast.md."
+        }
+      ],
       "created": "2026-11-27T21:45:59Z",
-      "updated": "2026-11-27T21:45:59Z"
+      "updated": "2026-11-27T22:23:36Z"
     }
   ]
 }
