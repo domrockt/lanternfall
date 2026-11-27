@@ -69,8 +69,49 @@ Audit-JSON: `shots/m10-atlas-audit.json`.
    `applyTexture`, `currentFrame`, `makeImage`) bleiben unverändert.
 5. Deterministische Packung: gleiche Eingaben → gleiche Masse/Rechtecke.
 
+## Ergebnis nach Fix (#K3)
+
+Neuer Audit-Lauf (`shots/m10-atlas-audit.json`):
+
+| Messgrösse | vorher | nachher |
+|---|---|---|
+| Atlas-Frames | 224 | **227** (+ `flail_ball`, `chain_link`, `puddle_poison`) |
+| Atlasgrösse | 1024×343 | 1024×387 |
+| Coverage erwartete Keys | 224/224 | **227/227 (100 %)** |
+| nicht-atlaste heisse Keys | 3 | **0** |
+| Gutter min. | 0 px | **4 px** (2 px Gutter + 2×1 px Padding) |
+| Gutter-Verstösse | 358 | **0** |
+| Bleed-Fälle (2-px-Ring) | 131 | **0** |
+| Frames mit opakem Randpixel (advisory) | 129 | 131 (durch Padding abgesichert) |
+| Determinismus | – | `packAtlas` 2×/shuffled → identisch |
+
+Coverage/API: `ATLAS_KEY` bleibt `runtime_atlas`; `atlasTextureKey`,
+`applyTexture`, `currentFrame`, `makeImage` unverändert.
+
+## Belege (#K5)
+
+Kontrollierte Render-Szene `scripts/art/atlas-evidence.mjs`: 47 Sprites,
+Reihenfolge wie im Flail-Kampf (Gegner/Gems/FX im Wechsel mit Kugel/Kette/Pfütze,
+dazu 13 Glyph-Einzeltexturen). WebGL-Draw-Calls via `drawArrays`/`drawElements`-
+Hook pro Frame gezählt.
+
+| Messgrösse | vorher (alter Atlas) | nachher (neuer Atlas) |
+|---|---|---|
+| Renderer | WebGL (`renderer.type=2`) | WebGL (`renderer.type=2`) |
+| distinkte Texturen in der Szene | 17 (> 16 Textureinheiten) | **14** |
+| Draw-Calls/Frame (72 Frames) | 144 → **2.0** | 72 → **1.0** |
+| PNG | `shots/m10-atlas-before.png` | `shots/m10-atlas-after.png` |
+| Pixel-Diff (ImageMagick AE) | – | **0** (`compare -metric AE` = 0, RMSE 0) |
+| JS-Fehler | 0 | 0 |
+
+Belege:
+- `shots/m10-atlas-before.png`, `shots/m10-atlas-after.png` (960×540, identisch)
+- `shots/m10-atlas-before.json`, `shots/m10-atlas-after.json`
+- `shots/m10-atlas-audit.json`
+- Tests: `npx vitest run tests/atlas.test.ts` 7/7 grün, `npm test` 211/211 grün.
+ 
+
 ## Offene Punkte
 
-- Draw-Call-/Batch-Zahl vor/nach wird in #K5 per Phaser-Renderer-Statistik
-  (`game.renderer` Batch-Count) gemessen und hier eingetragen.
-- Pixel-Diff vorher/nachher desselben Frames muss 0 sein (#K5).
+- Keine offenen Punkte für diese Lane.
+
