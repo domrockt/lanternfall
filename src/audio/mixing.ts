@@ -183,14 +183,15 @@ export function activeVolumeSum(state: MixerState): number {
 
 /**
  * Limiter-Faktor für eine einlaufende Stimme: 1, solange der Ziel-Peak
- * eingehalten wird, sonst der Faktor, der `sum + gain * incoming` exakt auf
- * `target` setzt (alle aktiven Stimmen werden mit demselben Faktor
- * multipliziert — gleichmäßige, hörbare Rücknahme statt Stummschaltung).
+ * eingehalten wird, sonst `target / (sum + incoming)` — alle aktiven Stimmen
+ * werden mit demselben Faktor multipliziert (inklusive der neuen), sodass die
+ * Gesamtlautstärke exakt am Ziel-Peak sitzt. Gleichmäßige, hörbare Rücknahme
+ * statt Stummschaltung; der Faktor ist nie 0.
  */
 export function limiterGain(sum: number, incoming: number, target: number = TARGET_PEAK): number {
   if (incoming <= 0) return 1;
   if (sum + incoming <= target) return 1;
-  return Math.max(0, (target - sum) / incoming);
+  return target / (sum + incoming);
 }
 
 /** Effektive Lautstärke: Master-SFX × Request-Volume × Prioritäts-Boost. */
