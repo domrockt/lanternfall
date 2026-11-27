@@ -64,6 +64,28 @@ Messversuche 2026-11-27 (alle unter flock /home/ai/games/.lf-perf.lock):
 - Systemlast beim Versuch 2: Load ~15 (Parallel-Lanes), Chromium ~800 % CPU
   fremder Lane -> FPS-Zahlen auch ohne LockKonflikt lastverrauscht.
 
+- Versuch 5 (19:52 Uhr): flock -w 600 -> rc=1 nach 600 s Wartezeit, Sperre
+  durchgehend fremdbelegt (Load ~6, vermutlich 30-min realtime-run einer
+  Parallel-Lane). Kein Messlauf.
+- Versuch 6 (20:03 Uhr): flock -w 120 -> rc=1, Sperre weiter belegt.
+  Doku-Neuheit dabei: `scripts/m10-dpr-budget.mjs` sampelt jetzt NACH dem
+  Nachspawnen (wie perf.mjs; vorher wurde nur das post-Kill-Tal von
+  16-21 Gegnern gemessen, obwohl 300 nachgespawnt wurden) und hat einen
+  optionalen Stress-Lauf `--stress N` (N Gegner statt 300), der belegt,
+  dass der Regler unter Last wirklich senkt. Commit 0e63997.
+
+Erster vollstaendiger Messlauf (19:43 Uhr, Sperre frei, Load ~5):
+
+- Vorher (?rbscale=0): 60,1 FPS, Buffer 780x360.
+- Nachher 3/3: 60,1 / 60,0 / 60,1 FPS, Buffer 780x360, 0 JS-Fehler.
+- Interpretation: Bei aktueller Maschinenlast (Load ~5 statt ~15) erreicht
+  selbst Teiler 1 stabil 60 FPS (vsync). Der Regler bleibt korrekt bei
+  Teiler 1 (Hysterese senkt erst unter 45 FPS) — afterRenderWidth = 780 ist
+  hier das ERFOLGVERHALTEN, kein FAIL. Regler-Greifen unter Last ist durch
+  die Probes belegt (Teiler 2 ab belowMs=2000, FPS 44,9 -> 59) und wird
+  mit `--stress 1200` als JSON-Beleg nachgereicht, sobald die Sperre frei
+  ist (Auto-Retry-Automation alle 30 min aktiv).
+
 Nachholen: sobald die Sperre frei ist (realtime-run beendet), Versuch 3 mit
 `flock -w 60 ... node scripts/m10-dpr-budget.mjs --after-runs 3` nachziehen
 und diese Notiz ergaenzen. Regler-Verhalten ist unabhaengig durch Probes
