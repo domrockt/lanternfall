@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5602,
+  "next": 5662,
   "cards": [
     {
       "id": 1,
@@ -6468,6 +6468,57 @@
       ],
       "created": "2026-11-27T21:16:02Z",
       "updated": "2026-11-27T21:16:05Z"
+    },
+    {
+      "id": 5658,
+      "title": "m10-shot-path-budget K1: Bench m10-shot-path.mjs + Vorher-Messung",
+      "description": "Deterministischer Bench (500 Gegner, Seed fix) für EnemyProjectilePool-Update + Gate-Aufrufe. Ergebnis shots/m10-shot-path-before.json + Profil (welche Teile dominieren: Sprite-API-Aufrufe/Frame, Gate-Scans, Allokationen). Akzeptanz: JSON existiert, Szenario deterministisch (2 Läufe identische Zähler), Profil dokumentiert.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T21:31:34Z",
+          "by": "build",
+          "text": "todo → doing: Bench gebaut + deterministisch verifiziert; Commit folgt"
+        },
+        {
+          "at": "2026-11-27T21:45:58Z",
+          "by": "build",
+          "text": "Supervisor-Hinweis geprueft: K1 seit bf0d4cc + f7b55a4 vollstaendig committed (before.json + Profil), tsc gruen; EnemyProjectiles.ts-Fix liegt SEPARAT als K2-Commit 1814996 vor, keine uncommitteten Produktionscode-Aenderungen. Baseline sauber — K2 wurde erst nach K1-Commit gestartet."
+        }
+      ],
+      "created": "2026-11-27T21:24:19Z",
+      "updated": "2026-11-27T21:45:58Z"
+    },
+    {
+      "id": 5659,
+      "title": "m10-shot-path-budget K2: Fix Schuss-Pfad",
+      "description": "Optimierungen in src/systems/EnemyProjectiles.ts (z. B. tote Rotation/Scale-Setter sparen, isInView-Allokation cachen, Gate-Check nur nötig). Verhalten für sichtbare Schüsse bitgleich (Fairness-Invarianten unangetastet). Akzeptanz: npx tsc --noEmit grün, bestehende tests grün, Bench schneller.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T21:24:19Z",
+      "updated": "2026-11-27T21:24:19Z"
+    },
+    {
+      "id": 5660,
+      "title": "m10-shot-path-budget K3: tests/shot-path-budget.test.ts",
+      "description": "Tests: Gates feuern unverändert (Windup-Ordnung, erst Warnung dann Schaden), kein Shot verloren, 0 Offscreen-Treffer; tests/enemy-shots-fair.test.ts bleibt grün. Akzeptanz: npx vitest run tests/shot-path-budget.test.ts tests/enemy-shots-fair.test.ts grün.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T21:24:19Z",
+      "updated": "2026-11-27T21:24:19Z"
+    },
+    {
+      "id": 5661,
+      "title": "m10-shot-path-budget K4: Nachher-Messung + Doku + .lane-done",
+      "description": "shots/m10-shot-path-after.json + Chaos-Screenshot shots/m10-shot-path-after.png; scripts/m10-endgame-fps.mjs Burst-640 nicht verschlechtert (flock). Doku docs/lanes/m10-shot-path-budget.md mit Vorher/Nachher. Akzeptanz: Schuss-Pfad −30 % (min. −15 % sonst Befund), endgame-fps OK, .lane-done committed.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T21:24:19Z",
+      "updated": "2026-11-27T21:24:19Z"
     }
   ]
 }
