@@ -267,6 +267,7 @@ function analyze(series, samples) {
   let updates = 0;
   let wrong = 0;
   let scored = 0;
+  let maxAngleErr = 0;
   let prevSector = -1;
   for (const s of samples) {
     const sec = sector(s);
@@ -290,7 +291,13 @@ function analyze(series, samples) {
         const err = angleErr(s);
         if (err !== null) {
           scored++;
-          if (err > Math.PI / 8) wrong++;
+          if (err > maxAngleErr) maxAngleErr = err;
+          // Fehlrichtung (verbindliche Definition, K4): Ausgabe weicht um mehr
+          // als halber Sektor (8-Snapping-Quantisierung, 22,5°) PLUS die
+          // dokumentierte Sektor-Hysterese-Marge (5,625°) vom Sollwinkel ab.
+          // Beides ist Feel-Design, kein Richtungsfehler.
+          const allowed = Math.PI / 8 + (TouchControlsMod.SECTOR_HYSTERESIS_RAD ?? 0);
+          if (err > allowed) wrong++;
         }
       }
     }
@@ -308,6 +315,7 @@ function analyze(series, samples) {
     wrongDirectionSamples: wrong,
     scoredSamples: scored,
     wrongDirection: scored > 0 ? round(wrong / scored) : null,
+    maxAngleErrDeg: maxAngleErr > 0 ? round((maxAngleErr * 180) / Math.PI) : 0,
   };
 }
 
