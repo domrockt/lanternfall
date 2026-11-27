@@ -63,18 +63,25 @@ Headless-Lauf des echten Spiels (Playwright, iGPU):
 
 ## Abnahme
 
-- art-director: ausstehend (Chaos-Shot + Kontaktbogen liegen in shots/)
+- art-director (27.11., Subagent): **PASS 4/5** — Lesbarkeit der Masse 4/5
+  (vorher grau-weisses Rauschen mit vereinzeltem Rotbraun, nachher sichtbare
+  Farbcluster je Theme), 6/6 Familien unterscheidbar, Paletten-Disziplin:
+  0 off-palette px (Gegenprobe gegen src/palette.ts), Silhouetten pixelidentisch
+  (16 388/300 000 px umgefaerbt, nur Umfaerbung). Vergrösserte Belege:
+  `shots/m10-enemy-palette-{before2,after}-2x.png`, `*-sheet-4x.png`.
 - Tests: `npm test` 699/699 grün, `npx tsc --noEmit` grün
 - >= 4 Familien im 500er-Frame: belegt (5 starke Familien, s. o.)
 - iGPU-Renderer-String in jedem Beleg-JSON
 
 ## Offene Punkte
 
-- art-director-Abnahme (Lesbarkeit der Masse im Chaos-Shot) steht aus; die
-  after-Shots liegen bereit.
+- art-director-Nachbesser (nicht blockierend, Backlog-Karte #5822): 6 von 30
+  Typen bleiben Blaugrau/dominiert-Weiß (Wolf, Banshee, Knight, Lich, Wraith,
+  Gargoyle) — unter Elite-Gegnern ist die Familien-Abdeckung dünn; Empfehlung,
+  Knight/Lich in eine zweite warme Familie zu heben.
 - Wisp- und Scarecrow-Gold liegt mit 4,3 % knapp unter der 8-%-Schwelle — die
   Gold-Familie ist im 500er-Frame nur schwach vertreten (2 Typen mit kleinen
   Sprites); falls art-director eine stärkere Gold-Gruppe will, wären 2–3 weitere
-  Gold-Typen nötig (neue Karte).
+  Gold-Typen nötig (Teil von #5822).
 - Wraith/Voidcaller/Abom nutzen feste Literal-Paletten (nacht/blut passend), aber
   ohne Tier-Progression über Rampen — kosmetisch, ggf. eigene Karte.

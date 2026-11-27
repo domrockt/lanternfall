@@ -1,0 +1,29 @@
+Lane m10-enemy-palette — fertig (27.11., 4 Karten + art-director-PASS).
+
+Ziel: Gegner-Palette war zu einfarbig (Grau/Weiss + Rotbraun, 300-500 Gegner
+lasen sich als dunkler Block). Jetzt je Biom-Thema eigene Farbfamilie:
+Moor->gruen, Friedhof->knochen, Wald/Nacht->blaugrau, Hoehle/Glut->glut,
+Kult->blut, Laterne/Stroh->gold; Tier-Fortschritt hebt Saettigung/Helligkeit.
+
+Karten:
+- #5818 K1 Vorher-Beleg: scripts/m10-enemy-palette.mjs (Chaos-Frame 500,
+  Kontaktbogen, Familien-Zaehlung aus Sprite-Pixeln) — Commit b96439f
+- #5819 K2 Farb-Reassign gen_enemies.py + Regeneration gen-enemies.ts,
+  Silhouetten-Masken bitidentisch — Commit 0f60a0b
+- #5820 K3 enemySprites.ts unveraendert, Elite-Rim unberuehrt — Commit 7bea717
+- #5821 K4 tests/enemy-palette.test.ts (6 Tests) + Vor/Nach-Belege — Commit aff01b7
+
+Messwerte (identische Index-Metrik, gleiche Chaos-Mischung, je ~517 Gegner,
+0 JS-Fehler, Renderer iGPU "Mesa Intel(R) Graphics (RPL-S)"):
+- strongFamilies (>=8% Anteil, ohne Kontur/dunkel/mittel-neutral): 3 -> 5
+  (nachher: gruen 14,9%, hell-neutral 13,5%, glut-braun 12,1%, blut-rot 10,0%,
+  blau 9,0%; gold 4,3% knapp unter Schwelle)
+- mittel-neutral (Grau-Masse): 24,6% -> 16,4%
+
+Qualitaet: npm test 699/699, npx tsc --noEmit gruen, 0 off-palette px,
+Silhouetten pixelidentisch (nur Umfaerbung), Elite-Rim/Elite-Marker unveraendert,
+tests/elite-rim.test.ts gruen.
+
+Abnahme: art-director PASS 4/5 (Lesbarkeit der Masse, 6/6 Familien sichtbar).
+Backlog #5822: Elite-Tier-Familienabdeckung (Wolf/Banshee/Knight/Lich/Wraith/
+Gargoyle) + Gold-Anteil staerken.

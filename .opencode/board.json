@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5822,
+  "next": 5823,
   "cards": [
     {
       "id": 1,
@@ -6676,43 +6676,80 @@
       "id": 5818,
       "title": "m10-enemy-palette K1: Vorher-Beleg — Chaos-Frame 500 + Kontaktbogen + Familien-Zählung",
       "description": "scripts/m10-enemy-palette.mjs rendert Chaos-Frame (500 Gegner, Mischung mehrerer Stufen) + Kontaktbogen aller 30 Typen, zählt unterscheidbare Farbfamilien je Frame (Hue-Cluster aus Sprite-Pixeln, iGPU-Renderer-String im JSON). Belege: shots/m10-enemy-palette-before.png, -before-sheet.png, -before.json. Abnahme: JSON enthält renderer-String, Familien-Zahl vorher belegt.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T21:50:45Z",
           "by": "build",
           "text": "todo → doing: Start: Mess-Skript scripts/m10-enemy-palette.mjs (Chaos-Frame + Kontaktbogen + Familien-Zaehlung)."
+        },
+        {
+          "at": "2026-11-27T22:05:17Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig (Commit b96439f): scripts/m10-enemy-palette.mjs rendert Chaos-Frame (517 Gegner, 0 JS-Fehler) + Kontaktbogen + Familien-Zaehlung aus Sprite-Pixeln. Vorher: strongFamilies=2 (glut-braun 19,5%, gruen 11,8%), 38% neutral, blau 1,5%. iGPU-Renderer-String im JSON. Belege shots/m10-enemy-palette-before.* im Commit."
         }
       ],
       "created": "2026-11-27T21:50:43Z",
-      "updated": "2026-11-27T21:50:45Z"
+      "updated": "2026-11-27T22:05:17Z"
     },
     {
       "id": 5819,
       "title": "m10-enemy-palette K2: Farb-Reassign gen_enemies.py je Biom-Familie + Tier-Progression",
       "description": "Je Biom-Thema (Moor/Friedhof/Wald-Nacht/Höhle-Glut/Kult/Gold) eigene Farbfamilie in scripts/art/gen_enemies.py; Tier-Fortschritt lässt Sättigung/Helligkeit ansteigen; Silhouetten-Formen unveraendert; gen-enemies.ts NUR durch Regeneration (AUTO-GENERIERT) erzeugt. Abnahme: Regenerationslauf ohne Fehler, Silhouetten-Masken identisch (git diff der Masken leer).",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:05:17Z",
+          "by": "build",
+          "text": "todo → doing: Start: Farb-Reassign in gen_enemies.py — Familien je Biom, Tier-Progression (Saettigung/Helligkeit), Silhouetten unveraendert."
+        },
+        {
+          "at": "2026-11-27T22:23:59Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig (Commit 0f60a0b): 6 Familien-Rampen mit 5 Tier-Stufen in gen_enemies.py; 30 Typen neu zugewiesen (wisp->gold, slime/mudling/toad/ghoul->moor, bat/witchling/cultist->blut, crow/wolf/spider/knight->nacht, bomber/golem/treant/imp->glut, skeleton/banshee/harpy/centipede/lich->knochen). gen-enemies.ts nur regeneriert, Silhouetten-Masken bitidentisch. enemy-silhouette/palette-compliance/elite-rim/enemy-run-frames 26/26 gruen. strongFamilies im 500er-Frame: 4 (glut-braun 20%, gruen 15%, blut-rot 10%, blau 9%), Neutral 38%->21%."
+        }
+      ],
       "created": "2026-11-27T21:50:43Z",
-      "updated": "2026-11-27T21:50:43Z"
+      "updated": "2026-11-27T22:23:59Z"
     },
     {
       "id": 5820,
       "title": "m10-enemy-palette K3: enemySprites.ts nur regenerationsbedingt anfassen; Elite-Rim unveraendert",
       "description": "src/gfx/enemySprites.ts nur soweit anfassen, wie die Regeneration es erfordert; eliteRimGrid/eliteRimFrame/ELITE_RIM_COLOR und Elite-Marker unveraendert. Abnahme: npx tsc --noEmit gruen, Elite-Rim-Tests (tests/elite-rim.test.ts) gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T22:23:59Z",
+          "by": "build",
+          "text": "todo → doing: Start: enemySprites.ts pruefen — nur regenerationsbedingte Anpassungen, Elite-Rim unveraendert."
+        }
+      ],
       "created": "2026-11-27T21:50:43Z",
-      "updated": "2026-11-27T21:50:43Z"
+      "updated": "2026-11-27T22:23:59Z"
     },
     {
       "id": 5821,
       "title": "m10-enemy-palette K4: tests/enemy-palette.test.ts + Nachher-Shots + Doku vor/nach",
       "description": "tests/enemy-palette.test.ts: 30/30 Typen, je Typ Palette/Familie aus den Daten, binaeres Alpha, 0 Off-Palette-Pixel. Nachher-Shots (after.png/-sheet.png/-after.json) + docs/lanes/m10-enemy-palette.md mit Familien-Zahl vor/nach. Abnahme: Tests + npx tsc --noEmit gruen, >=4 Familien im 500er-Frame belegt.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:42:04Z",
+          "by": "build",
+          "text": "todo → review: K4 fertig (Commit aff01b7): tests/enemy-palette.test.ts 6/6 (30/30 Familien aus GEN_ENEMY_FAMILIES, binaeres Alpha, 0 Off-Palette-Pixel, Familienanteil je Typ >=0,2, Tier-Progression, Chaos-Mix >=4 Familien), npm test 699/699, tsc gruen. Belege: before2/after (identische Index-Metrik): strongFamilies 3->5 (gruen 14,9%, hell 13,5%, glut 12,1%, blut-rot 10%, blau 9%), iGPU-Renderer-String in jedem JSON. Doku docs/lanes/m10-enemy-palette.md. art-director-Abnahme laeuft."
+        }
+      ],
       "created": "2026-11-27T21:50:43Z",
-      "updated": "2026-11-27T21:50:43Z"
+      "updated": "2026-11-27T22:42:04Z"
+    },
+    {
+      "id": 5822,
+      "title": "m10-enemy-palette Follow-up: Elite-Tier-Familien abdecken (Wolf/Banshee/Knight/Lich/Wraith/Gargoyle)",
+      "description": "art-director-Abnahme 27.11. (4/5, nicht blockierend): 6 von 30 Typen bleiben Blaugrau/dominiert-Weiss — unter Elite-Gegnern (Tier 3/4) ist die Familien-Abdeckung duenn; ab Minute 25 kehrt der Grau-Anteil partiell zurueck. Vorschlag: Knight/Lich in zweite warme Familie heben (Gold-Trim bzw. Blut-Roben), Rampen via FAMILIES/ENEMY_FAMILY in scripts/art/gen_enemies.py, Regeneration + tests/enemy-palette.test.ts anpassen.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T22:45:32Z",
+      "updated": "2026-11-27T22:45:32Z"
     }
   ]
 }
