@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2700,
+  "next": 2705,
   "cards": [
     {
       "id": 1,
@@ -3927,6 +3927,56 @@
       "notes": [],
       "created": "2026-11-27T09:17:15Z",
       "updated": "2026-11-27T09:17:15Z"
+    },
+    {
+      "id": 2700,
+      "title": "m10-weapons-stable #K1 Flake reproduzieren",
+      "description": "Lane m10-weapons-stable, lane #2558. verify-weapons 12x serialisiert unter CPU-Last; chest-roll-names PASS/FAIL + Zeiten als shots/m10-weapons-stability.json; 1/12 FAIL belegt. Abnahme erfuellt, Commit 26f442e (Lane). Uebernommen im Merge m10-weapons-stable.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T09:25:03Z",
+      "updated": "2026-11-27T09:25:03Z"
+    },
+    {
+      "id": 2701,
+      "title": "m10-weapons-stable #K2 Ursache belegen",
+      "description": "Lane m10-weapons-stable, lane #2559. Instrumentierung: Read-Takt-Median 299 ms vs Roll-Fenster ~170 ms; Commit 05a4055 (Lane). Uebernommen im Merge m10-weapons-stable.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T09:25:03Z",
+      "updated": "2026-11-27T09:25:03Z"
+    },
+    {
+      "id": 2702,
+      "title": "m10-weapons-stable #K3 Umbau waitForFunction",
+      "description": "Lane m10-weapons-stable, lane #2560. chest-roll-names wartet per waitForFunction auf Panel sichtbar + Namen gesetzt + 2 stabile Frames, Timeout 15 s, Assertions unveraendert; Commit ec84378 (Lane). Uebernommen im Merge m10-weapons-stable.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T09:25:03Z",
+      "updated": "2026-11-27T09:25:03Z"
+    },
+    {
+      "id": 2703,
+      "title": "m10-weapons-stable #K4 12-Lauf-Beleg",
+      "description": "Lane m10-weapons-stable, lane #2561. 12/12 PASS unter 16 CPU-Spinnern, waitMs Median 3961,5 ms (p95 6043 ms); Commit 2769738/669f481 (Lane). Uebernommen im Merge m10-weapons-stable.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T09:25:03Z",
+      "updated": "2026-11-27T09:25:03Z"
+    },
+    {
+      "id": 2704,
+      "title": "m10-weapons-stable #K5 Abschluss",
+      "description": "Lane m10-weapons-stable, lane #2562. build + 301 Tests gruen, Flake-Rate 1/12 -> 0/12, docs/lanes/m10-weapons-stability.md, .lane-done; Commit 4598046/e9c871e (Lane). Uebernommen im Merge m10-weapons-stable, .lane-done danach entfernt.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T09:25:03Z",
+      "updated": "2026-11-27T09:25:03Z"
     }
   ]
 }

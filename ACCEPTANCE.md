@@ -242,3 +242,19 @@ auf done) ist in `docs/qa/2026-11-26.md` belegt.
   **4 Commits hinter** HEAD. Erwartet, da der stündliche Timer baut/publiziert; kein eigener
   Build/Publish durch den Prüfer.
 - Der im Briefing genannte Pfad `~/lf-apk/out/lanternfall.apk` existiert nicht (veraltet).
+
+## Sicht-Belege 640×360 (fa-02 / #2499)
+
+Neu aufgenommen bei 640×360 (vorher nur 480×270), per Vision geprüft (2–4× nearest,
+ganzzahlige Spielpixel, keine abgeschnittenen UI-Teile):
+
+| Beleg | Pfad | Zahl | Urteil |
+|---|---|---|---|
+| Display 7 Profile | `shots/m8-*.png`, `shots/m8-display.json` | **38/38 PASS**, 0 JS-Fehler | PASS |
+| 30 Gegner | `shots/qa-enemy-contact-640.png` (+`@2x`,`@4x`) | 30/30 Typen, 6×5-Raster, Labels lesbar | PASS |
+| 6 Bosse | `shots/qa-boss-contact-640.png` (+`@2x`,`@4x`) | 6/6 klar unterscheidbare Silhouetten | PASS |
+| 12 Waffen-/Evolutions-GIFs | `shots/qa-vfx-<id>.gif`, `shots/qa-vfx-640.json` | **12/12 OK**, je 28 Frames, 10–30 lebende Gegner, 640×360 | PASS |
+| Montage Wirk-Peaks | `shots/qa-vfx-640-contact.png` | 3×4-Raster der zwölf Effekte | PASS |
+
+Restpunkt: Ember-Projektil im Halo teils überstrahlt (bekannter VFX-Restpunkt, kein Blocker).
+Erzeuger: `scripts/qa-640-vfx.mjs`, `scripts/qa-640-sheets.py`; Karte #2499, Commit folgt.
