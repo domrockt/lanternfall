@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { getSettings, setSettings } from "./settings";
 import {
-  canPlay, effectiveVolume, newMixerState, notePlayed, releaseVoice, planPlay,
+  effectiveVolume, newMixerState, notePlayed, releaseVoice, planPlay,
   activeVolumeSum, limiterGain, PRIORITY,
   EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
   type MixerState, type SoundRequest,
