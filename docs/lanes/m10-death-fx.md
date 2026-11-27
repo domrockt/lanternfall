@@ -116,24 +116,27 @@ Canvas 480×360 @1,5). 6×50 Bog-Ratten ringförmig gespawnt, danach je Klasse
 Gegner**, `jsErrors: []`, fps 59,9 im Lauf. Rohdaten:
 `shots/m10-death-fx-frame.json`.
 
-### 4 Klassen-Crops (3× nearest, 160×133 → 480×399)
+### 4 Klassen-Crops (2× nearest, 320×266 → 640×532)
 | Klasse | Datei | Texturen | Partikel (6 Tode @50 ms) | BBox im Bild (Spiel-px) | Fläche 50 ms |
 |---|---|---|---|---|---|
-| crumble | `shots/m10-death-fx-crumble.png` | fx_death_bone + fx_ash (+Rim fx_death_bone/nightDeep) | 108 | 23×23 | 16 536 px² |
-| burst | `shots/m10-death-fx-burst.png` | fx_death_blob + fx_star, additiv (+Rim fx_death_blob/nightDeep) | 140 | 41×40 | 44 252 px² |
-| dissolve | `shots/m10-death-fx-dissolve.png` | fx_death_void + fx_dusk (+Rim fx_death_void/nightDeep) | 120 | 25×25 | 40 929 px² |
-| sputter | `shots/m10-death-fx-sputter.png` | fx_death_dust + fx_fire (+Rim fx_death_dust/nightDeep) | 140 | 38×37 | 43 572 px² |
+| crumble | `shots/m10-death-fx-crumble.png` | fx_death_bone + fx_ash (+Rim fx_death_bone/nightDeep, 4 lange Splitter) | 132 | 27×22 | 17 472 px² |
+| burst | `shots/m10-death-fx-burst.png` | fx_death_blob + fx_star, additiv (+Rim-Ring fx_death_blob/nightDeep) | 140 | 45×45 | 47 604 px² |
+| dissolve | `shots/m10-death-fx-dissolve.png` | fx_death_void + fx_dusk (+Rim fx_death_void/nightDeep) | 120 | 26×27 | 39 450 px² |
+| sputter | `shots/m10-death-fx-sputter.png` | fx_death_dust + fx_fire (+Rim fx_death_dust/nightDeep, 6 Flammenzungen) | 140 | 37×37 | 40 852 px² |
 
 Rohdaten: `shots/m10-death-fx-measure.json`; Messung nach `particles.clear()`
 je Klasse, 6 gleichzeitige Tode, 50 ms nach Auslösen. Fläche = Summe
 `displayWidth × displayHeight` aller Partikel ≤ 90 px um den Effektort.
 Die vier Klassen unterscheiden sich messbar in **Textur, Rim-Tint/Scale,
-Count, Größen-BBox (23–41 px), Fläche (16,5–44,3 k px²), Lebensdauer, Streuung,
+Count, Größen-BBox (26–45 px), Fläche (17,5–47,6 k px²), Lebensdauer, Streuung,
 Tint und Blend-Modus** (≥ 3 Dimensionen, siehe #K4). Die Crops zeigen die
-Effekte über **lebenden** Gegnern.
+Effekte über **lebenden** Gegnern. Messung Runde 2 (nach Art-Fix, Grau-Sheet
+`~/tmp/m10-death-fx/gray-sheet.png` als Lesbarkeitsprobe): alle vier
+Silhouetten bleiben auch ohne Grün-Kontext an der Form unterscheidbar
+(Knochenspur, Tropfen-Ring, Halo-Ring, Flammenzungen).
 
-Ehrlicher Befund: `crumble` bleibt bewusst kleinteilig (22×22 px) und wirkt
-als feine Knochenspur; `dissolve` ist mit 25×25 px der kleinste Effekt, aber
+Ehrlicher Befund: `crumble` bleibt bewusst kleinteilig (27×22 px) und wirkt
+als feine Knochenspur; `dissolve` ist mit 26×27 px der kleinste Effekt, aber
 der weiße Halo-Ring ist der klarste Kontrast. `burst` (grüner Blob-Spray mit
 hellem Kern und dunkler Kontur) und `sputter` (orange Funken vor dunkler
 Asche-Kontur) sind am größten und im Gedränge am schnellsten erkennbar.
@@ -180,4 +183,4 @@ und 0,7–1,4 s Lebensdauer; per Test #K4 belegt. Zusätzlich als Crop belegt:
 50 ms nach dem Tod eines Moor-Bosses: **33 Partikel, BBox 112×110 px,
 Fläche 214 155 px²**, Texturen `fx_boss_core`/`fx_halo`; Rohdaten
 `shots/m10-death-fx-boss.json`. Damit liegt der Boss-Tod sichtbar eine Stufe
-über den Nicht-Boss-Klassen (BBox 23–41 px, Fläche 16,5–44,3 k px²).
+über den Nicht-Boss-Klassen (BBox 26–45 px, Fläche 17,5–47,6 k px²).
