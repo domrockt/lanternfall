@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2418,
+  "next": 2419,
   "cards": [
     {
       "id": 1,
@@ -2788,7 +2788,7 @@
       "id": 1782,
       "title": "m10-death-fx K5 Beleg + Doku",
       "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Grössenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test grün; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test grün, .lane-done tracked. Commit.",
-      "column": "doing",
+      "column": "blocked",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -2805,10 +2805,25 @@
           "at": "2026-11-27T04:09:49Z",
           "by": "build",
           "text": "blocked → doing: Supervisor: Zwischenstand committen; Rest = Pixel-/Groessenmessung + art-director-Urteil, dann .lane-done."
+        },
+        {
+          "at": "2026-11-27T06:45:00Z",
+          "by": "build",
+          "text": "doing → blocked: K5 blocked: Belege+Doku+Messung R2 liegen vor, art-director FAIL 2,5/5 (R1 2,3). Klassen im Bild nur Farbe/Groesse, Formen alle Ring; harte Rims/3-Stufen-Kerne/echte Knochen-/Flammen-Silhouetten brauchen src/gfx/gen-fx.ts (fremder Claim). Request in .dispatch/requests.md, Follow-up #2418. K1-K4 done."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T04:09:49Z"
+      "updated": "2026-11-27T06:45:00Z"
+    },
+    {
+      "id": 2418,
+      "title": "m10-death-fx GFX-Nachzug: Death-Motifs mit Rim/Kern/Silhouette",
+      "description": "Folge aus Lane m10-death-fx #1782 (art-director FAIL 2,5/5). In src/gfx/gen-fx.ts neue/ueberarbeitete Death-Frames zeichnen: fx_death_blob = dunkler Koerper + harter 1-px-nightDeep-Rim + grosser heller Kern + 3-4 grosse Tropfen; fx_death_dust/fx_fire = echte 4-7-px-Flammenzungen mit Taper + 1-2 Ascheflakes mit emberShadow-Kontur; fx_boss_core = 3-Stufen-Kern + Kontur + 2 gebrochene Ringe + 4-6 Knochensplitter; fx_death_bone = 2-3 unterscheidbare Knochenformen statt identischer Rechtecke. Keine Gameplay-/Balance-Werte. Abnahme: 4 Crops shots/m10-death-fx-<klasse>.png erneut, art-director PASS >=4/5, Tests gruen.",
+      "column": "backlog",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-27T06:44:26Z",
+      "updated": "2026-11-27T06:44:26Z"
     }
   ]
 }
