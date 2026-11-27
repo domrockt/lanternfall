@@ -1,10 +1,10 @@
 {
-  "generated": "2026-11-27T04:31:35.854Z",
+  "generated": "2026-11-27T05:46:09.962Z",
   "minutes": 15,
   "timeScale": 30,
   "samples": [
     {
-      "time": 15,
+      "time": 14.5,
       "kills": 11,
       "weapons": [
         {
@@ -39,8 +39,8 @@
       }
     },
     {
-      "time": 32.9,
-      "kills": 30,
+      "time": 30.4,
+      "kills": 29,
       "weapons": [
         {
           "id": "phoenix",
@@ -68,14 +68,14 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 1349,
+        "storm": 1274,
         "thorn": 42,
         "ember": 84,
         "phoenix": 252
       }
     },
     {
-      "time": 48.3,
+      "time": 49.6,
       "kills": 36,
       "weapons": [
         {
@@ -111,8 +111,8 @@
       }
     },
     {
-      "time": 63.8,
-      "kills": 42,
+      "time": 68.8,
+      "kills": 50,
       "weapons": [
         {
           "id": "phoenix",
@@ -140,15 +140,16 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 252
+        "phoenix": 563,
+        "thorn_storm": 78
       }
     },
     {
-      "time": 81.5,
-      "kills": 49,
+      "time": 86.1,
+      "kills": 58,
       "weapons": [
         {
           "id": "phoenix",
@@ -171,94 +172,21 @@
           "level": 8
         },
         {
-          "id": "lantern",
+          "id": "soul_beacon",
           "level": 8
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 387,
-        "thorn_storm": 312
+        "phoenix": 843,
+        "thorn_storm": 156,
+        "eternal_winter": 23
       }
     },
     {
-      "time": 97,
-      "kills": 56,
-      "weapons": [
-        {
-          "id": "phoenix",
-          "level": 8
-        },
-        {
-          "id": "wrath_pendulum",
-          "level": 8
-        },
-        {
-          "id": "eternal_winter",
-          "level": 8
-        },
-        {
-          "id": "thorn_storm",
-          "level": 8
-        },
-        {
-          "id": "thunder_seal",
-          "level": 8
-        },
-        {
-          "id": "lantern",
-          "level": 8
-        }
-      ],
-      "damageByWeapon": {
-        "storm": 2325,
-        "thorn": 42,
-        "ember": 84,
-        "phoenix": 680,
-        "thorn_storm": 390
-      }
-    },
-    {
-      "time": 116,
-      "kills": 65,
-      "weapons": [
-        {
-          "id": "phoenix",
-          "level": 8
-        },
-        {
-          "id": "wrath_pendulum",
-          "level": 8
-        },
-        {
-          "id": "eternal_winter",
-          "level": 8
-        },
-        {
-          "id": "thorn_storm",
-          "level": 8
-        },
-        {
-          "id": "thunder_seal",
-          "level": 8
-        },
-        {
-          "id": "lantern",
-          "level": 8
-        }
-      ],
-      "damageByWeapon": {
-        "storm": 2325,
-        "thorn": 42,
-        "ember": 84,
-        "phoenix": 1040,
-        "thorn_storm": 468
-      }
-    },
-    {
-      "time": 131,
+      "time": 104.3,
       "kills": 72,
       "weapons": [
         {
@@ -287,16 +215,17 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 1310,
-        "thorn_storm": 546
+        "phoenix": 1380,
+        "thorn_storm": 312,
+        "eternal_winter": 23
       }
     },
     {
-      "time": 150.6,
-      "kills": 89,
+      "time": 126.7,
+      "kills": 82,
       "weapons": [
         {
           "id": "phoenix",
@@ -324,16 +253,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 1967,
-        "thorn_storm": 663
+        "phoenix": 1750,
+        "thorn_storm": 312,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
       }
     },
     {
-      "time": 170.3,
-      "kills": 98,
+      "time": 144.6,
+      "kills": 97,
       "weapons": [
         {
           "id": "phoenix",
@@ -361,16 +292,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 2422,
-        "thorn_storm": 663
+        "phoenix": 2399,
+        "thorn_storm": 312,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
       }
     },
     {
-      "time": 186.9,
-      "kills": 119,
+      "time": 164.1,
+      "kills": 107,
       "weapons": [
         {
           "id": "phoenix",
@@ -398,17 +331,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 2913,
-        "thorn_storm": 1326,
-        "eternal_winter": 81
+        "phoenix": 2773,
+        "thorn_storm": 468,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
       }
     },
     {
-      "time": 202.5,
-      "kills": 128,
+      "time": 183.6,
+      "kills": 141,
       "weapons": [
         {
           "id": "phoenix",
@@ -436,17 +370,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 3248,
-        "thorn_storm": 1404,
-        "eternal_winter": 81
+        "phoenix": 3903,
+        "thorn_storm": 819,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
       }
     },
     {
-      "time": 221.2,
-      "kills": 145,
+      "time": 201.6,
+      "kills": 152,
       "weapons": [
         {
           "id": "phoenix",
@@ -474,17 +409,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 3870,
-        "thorn_storm": 1638,
-        "eternal_winter": 81
+        "phoenix": 4380,
+        "thorn_storm": 897,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
       }
     },
     {
-      "time": 236.5,
-      "kills": 166,
+      "time": 219.5,
+      "kills": 162,
       "weapons": [
         {
           "id": "phoenix",
@@ -512,16 +448,56 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 4631,
-        "thorn_storm": 1794,
-        "eternal_winter": 81
+        "phoenix": 4877,
+        "thorn_storm": 897,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
       }
     },
     {
-      "time": 253.2,
+      "time": 235.7,
+      "kills": 177,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 5416,
+        "thorn_storm": 1092,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 252.5,
       "kills": 203,
       "weapons": [
         {
@@ -550,18 +526,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 5576,
-        "thorn_storm": 2652,
-        "eternal_winter": 81,
-        "wrath_pendulum": 198
+        "phoenix": 6280,
+        "thorn_storm": 1404,
+        "eternal_winter": 23,
+        "wrath_pendulum": 396
       }
     },
     {
-      "time": 272,
-      "kills": 227,
+      "time": 270.5,
+      "kills": 214,
       "weapons": [
         {
           "id": "phoenix",
@@ -589,18 +565,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 6570,
-        "thorn_storm": 2808,
-        "eternal_winter": 81,
-        "wrath_pendulum": 198
+        "phoenix": 6663,
+        "thorn_storm": 1638,
+        "eternal_winter": 23,
+        "wrath_pendulum": 396
       }
     },
     {
-      "time": 291.7,
-      "kills": 247,
+      "time": 288.5,
+      "kills": 226,
       "weapons": [
         {
           "id": "phoenix",
@@ -628,18 +604,18 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 7369,
-        "thorn_storm": 3042,
-        "eternal_winter": 81,
-        "wrath_pendulum": 198
+        "phoenix": 7196,
+        "thorn_storm": 1716,
+        "eternal_winter": 23,
+        "wrath_pendulum": 396
       }
     },
     {
-      "time": 309.4,
-      "kills": 271,
+      "time": 304.6,
+      "kills": 261,
       "weapons": [
         {
           "id": "phoenix",
@@ -667,20 +643,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 9875,
-        "thorn_storm": 5148,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 9148,
+        "thorn_storm": 3549,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 329.3,
-      "kills": 302,
+      "time": 321,
+      "kills": 290,
       "weapons": [
         {
           "id": "phoenix",
@@ -708,19 +684,60 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 12107,
-        "thorn_storm": 5538,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 10860,
+        "thorn_storm": 3978,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 349.2,
+      "time": 338.7,
+      "kills": 309,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 13144,
+        "thorn_storm": 4407,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 353.7,
       "kills": 332,
       "weapons": [
         {
@@ -749,20 +766,61 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 14083,
+        "phoenix": 15258,
+        "thorn_storm": 4875,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 372.5,
+      "kills": 382,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 17635,
         "thorn_storm": 5850,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "eternal_winter": 532,
+        "wrath_pendulum": 1436,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 365.1,
-      "kills": 364,
+      "time": 389.2,
+      "kills": 412,
       "weapons": [
         {
           "id": "phoenix",
@@ -790,20 +848,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 15980,
-        "thorn_storm": 6396,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 20073,
+        "thorn_storm": 6045,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1436,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 384.5,
-      "kills": 384,
+      "time": 406.6,
+      "kills": 436,
       "weapons": [
         {
           "id": "phoenix",
@@ -831,20 +889,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 16887,
-        "thorn_storm": 7371,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 21639,
+        "thorn_storm": 6435,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1436,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 403.9,
-      "kills": 405,
+      "time": 423.1,
+      "kills": 485,
       "weapons": [
         {
           "id": "phoenix",
@@ -872,20 +930,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 18641,
-        "thorn_storm": 7761,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 24428,
+        "thorn_storm": 7917,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1634,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 418.9,
-      "kills": 416,
+      "time": 438.1,
+      "kills": 521,
       "weapons": [
         {
           "id": "phoenix",
@@ -913,20 +971,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 19240,
-        "thorn_storm": 8385,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 26597,
+        "thorn_storm": 8931,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1634,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 435.2,
-      "kills": 442,
+      "time": 454.2,
+      "kills": 542,
       "weapons": [
         {
           "id": "phoenix",
@@ -954,20 +1012,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 20963,
-        "thorn_storm": 9633,
-        "eternal_winter": 272,
-        "wrath_pendulum": 594,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 27869,
+        "thorn_storm": 9243,
+        "eternal_winter": 654,
+        "wrath_pendulum": 1634,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 454,
-      "kills": 492,
+      "time": 472.5,
+      "kills": 575,
       "weapons": [
         {
           "id": "phoenix",
@@ -995,20 +1053,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 24867,
-        "thorn_storm": 10530,
-        "eternal_winter": 272,
-        "wrath_pendulum": 1089,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 30292,
+        "thorn_storm": 9672,
+        "eternal_winter": 654,
+        "wrath_pendulum": 1832,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 473.5,
-      "kills": 527,
+      "time": 489.3,
+      "kills": 602,
       "weapons": [
         {
           "id": "phoenix",
@@ -1036,20 +1094,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 27970,
-        "thorn_storm": 11466,
-        "eternal_winter": 394,
-        "wrath_pendulum": 1089,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 31888,
+        "thorn_storm": 10842,
+        "eternal_winter": 897,
+        "wrath_pendulum": 2179,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 489,
-      "kills": 571,
+      "time": 504.3,
+      "kills": 627,
       "weapons": [
         {
           "id": "phoenix",
@@ -1077,20 +1135,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 30966,
-        "thorn_storm": 12792,
-        "eternal_winter": 759,
-        "wrath_pendulum": 1188,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 34228,
+        "thorn_storm": 11154,
+        "eternal_winter": 897,
+        "wrath_pendulum": 2179,
+        "lantern": 99,
+        "thunder_seal": 900
       }
     },
     {
-      "time": 504.7,
-      "kills": 605,
+      "time": 520.8,
+      "kills": 648,
       "weapons": [
         {
           "id": "phoenix",
@@ -1118,20 +1176,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 33923,
-        "thorn_storm": 13182,
-        "eternal_winter": 759,
-        "wrath_pendulum": 1188,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 36483,
+        "thorn_storm": 11739,
+        "eternal_winter": 920,
+        "wrath_pendulum": 2476,
+        "lantern": 99,
+        "thunder_seal": 1050
       }
     },
     {
-      "time": 520.2,
-      "kills": 635,
+      "time": 543.3,
+      "kills": 679,
       "weapons": [
         {
           "id": "phoenix",
@@ -1159,20 +1217,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 36066,
-        "thorn_storm": 13338,
-        "eternal_winter": 759,
-        "wrath_pendulum": 1188,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 38939,
+        "thorn_storm": 12714,
+        "eternal_winter": 920,
+        "wrath_pendulum": 2476,
+        "lantern": 99,
+        "thunder_seal": 1050
       }
     },
     {
-      "time": 539.3,
-      "kills": 671,
+      "time": 561.1,
+      "kills": 701,
       "weapons": [
         {
           "id": "phoenix",
@@ -1200,20 +1258,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 38343,
-        "thorn_storm": 14274,
-        "eternal_winter": 840,
-        "wrath_pendulum": 1188,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 40632,
+        "thorn_storm": 13416,
+        "eternal_winter": 920,
+        "wrath_pendulum": 2922,
+        "lantern": 132,
+        "thunder_seal": 1050
       }
     },
     {
-      "time": 555.4,
-      "kills": 716,
+      "time": 580.5,
+      "kills": 741,
       "weapons": [
         {
           "id": "phoenix",
@@ -1241,20 +1299,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 40385,
-        "thorn_storm": 16185,
-        "eternal_winter": 840,
-        "wrath_pendulum": 1188,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 43602,
+        "thorn_storm": 14196,
+        "eternal_winter": 943,
+        "wrath_pendulum": 3021,
+        "lantern": 132,
+        "thunder_seal": 1050
       }
     },
     {
-      "time": 570.5,
-      "kills": 742,
+      "time": 598.8,
+      "kills": 777,
       "weapons": [
         {
           "id": "phoenix",
@@ -1282,20 +1340,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 42091,
-        "thorn_storm": 16965,
-        "eternal_winter": 863,
-        "wrath_pendulum": 1287,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 46707,
+        "thorn_storm": 14820,
+        "eternal_winter": 1024,
+        "wrath_pendulum": 3120,
+        "lantern": 132,
+        "thunder_seal": 1050
       }
     },
     {
-      "time": 589.5,
-      "kills": 773,
+      "time": 619.1,
+      "kills": 830,
       "weapons": [
         {
           "id": "phoenix",
@@ -1323,60 +1381,20 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 45760,
-        "thorn_storm": 18057,
-        "eternal_winter": 863,
-        "wrath_pendulum": 1287,
-        "soul_beacon": 87,
-        "thunder_seal": 825
+        "phoenix": 53724,
+        "thorn_storm": 19032,
+        "eternal_winter": 2186,
+        "wrath_pendulum": 6983,
+        "lantern": 330,
+        "thunder_seal": 4530,
+        "soul_beacon": 348
       }
     },
     {
-      "time": 605.7,
-      "kills": 829,
-      "weapons": [
-        {
-          "id": "phoenix",
-          "level": 8
-        },
-        {
-          "id": "wrath_pendulum",
-          "level": 8
-        },
-        {
-          "id": "eternal_winter",
-          "level": 8
-        },
-        {
-          "id": "thorn_storm",
-          "level": 8
-        },
-        {
-          "id": "thunder_seal",
-          "level": 8
-        },
-        {
-          "id": "soul_beacon",
-          "level": 8
-        }
-      ],
-      "damageByWeapon": {
-        "storm": 2325,
-        "thorn": 42,
-        "ember": 84,
-        "phoenix": 53208,
-        "thorn_storm": 22971,
-        "eternal_winter": 2082,
-        "wrath_pendulum": 3812,
-        "soul_beacon": 522,
-        "thunder_seal": 4433
-      }
-    },
-    {
-      "time": 621,
+      "time": 637,
       "kills": 847,
       "weapons": [
         {
@@ -1405,20 +1423,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 56479,
-        "thorn_storm": 23712,
-        "eternal_winter": 2082,
-        "wrath_pendulum": 3812,
-        "soul_beacon": 522,
-        "thunder_seal": 4433
+        "phoenix": 54795,
+        "thorn_storm": 19656,
+        "eternal_winter": 2354,
+        "wrath_pendulum": 7181,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 348
       }
     },
     {
-      "time": 641.1,
-      "kills": 869,
+      "time": 656.4,
+      "kills": 866,
       "weapons": [
         {
           "id": "phoenix",
@@ -1446,20 +1465,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 59152,
-        "thorn_storm": 24726,
-        "eternal_winter": 2082,
-        "wrath_pendulum": 3911,
-        "soul_beacon": 522,
-        "thunder_seal": 4583
+        "phoenix": 56677,
+        "thorn_storm": 20124,
+        "eternal_winter": 2539,
+        "wrath_pendulum": 8171,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 435
       }
     },
     {
-      "time": 656.6,
-      "kills": 886,
+      "time": 674.4,
+      "kills": 895,
       "weapons": [
         {
           "id": "phoenix",
@@ -1487,20 +1507,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 63008,
-        "thorn_storm": 25584,
-        "eternal_winter": 2082,
-        "wrath_pendulum": 3911,
-        "soul_beacon": 522,
-        "thunder_seal": 4583
+        "phoenix": 61844,
+        "thorn_storm": 21294,
+        "eternal_winter": 2539,
+        "wrath_pendulum": 8567,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 522
       }
     },
     {
-      "time": 672.8,
-      "kills": 911,
+      "time": 695.3,
+      "kills": 917,
       "weapons": [
         {
           "id": "phoenix",
@@ -1528,20 +1549,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 67066,
-        "thorn_storm": 27456,
-        "eternal_winter": 2325,
-        "wrath_pendulum": 4109,
-        "soul_beacon": 522,
-        "thunder_seal": 4733
+        "phoenix": 66913,
+        "thorn_storm": 22152,
+        "eternal_winter": 2701,
+        "wrath_pendulum": 8864,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 522
       }
     },
     {
-      "time": 692.3,
-      "kills": 933,
+      "time": 710.4,
+      "kills": 936,
       "weapons": [
         {
           "id": "phoenix",
@@ -1569,20 +1591,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 70945,
-        "thorn_storm": 28548,
-        "eternal_winter": 2470,
-        "wrath_pendulum": 4357,
-        "soul_beacon": 522,
-        "thunder_seal": 4733
+        "phoenix": 69306,
+        "thorn_storm": 23205,
+        "eternal_winter": 2724,
+        "wrath_pendulum": 9310,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
       }
     },
     {
-      "time": 707.3,
-      "kills": 955,
+      "time": 727.7,
+      "kills": 961,
       "weapons": [
         {
           "id": "phoenix",
@@ -1610,20 +1633,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 73309,
-        "thorn_storm": 29055,
-        "eternal_winter": 2470,
-        "wrath_pendulum": 4357,
-        "soul_beacon": 522,
-        "thunder_seal": 4733
+        "phoenix": 72109,
+        "thorn_storm": 24570,
+        "eternal_winter": 2950,
+        "wrath_pendulum": 9954,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
       }
     },
     {
-      "time": 722.9,
-      "kills": 982,
+      "time": 742.7,
+      "kills": 980,
       "weapons": [
         {
           "id": "phoenix",
@@ -1651,20 +1675,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 77823,
-        "thorn_storm": 30381,
-        "eternal_winter": 2655,
-        "wrath_pendulum": 4654,
-        "soul_beacon": 522,
-        "thunder_seal": 4733
+        "phoenix": 75569,
+        "thorn_storm": 25038,
+        "eternal_winter": 2950,
+        "wrath_pendulum": 10152,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
       }
     },
     {
-      "time": 741.6,
-      "kills": 1004,
+      "time": 760.7,
+      "kills": 1000,
       "weapons": [
         {
           "id": "phoenix",
@@ -1692,20 +1717,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 80927,
-        "thorn_storm": 31395,
-        "eternal_winter": 2736,
-        "wrath_pendulum": 4654,
-        "soul_beacon": 522,
-        "thunder_seal": 4733
+        "phoenix": 77730,
+        "thorn_storm": 26052,
+        "eternal_winter": 2996,
+        "wrath_pendulum": 10350,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
       }
     },
     {
-      "time": 756.6,
-      "kills": 1022,
+      "time": 778.7,
+      "kills": 1021,
       "weapons": [
         {
           "id": "phoenix",
@@ -1733,20 +1759,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 83145,
-        "thorn_storm": 31863,
-        "eternal_winter": 2736,
-        "wrath_pendulum": 4852,
-        "soul_beacon": 522,
-        "thunder_seal": 5033
+        "phoenix": 79956,
+        "thorn_storm": 26676,
+        "eternal_winter": 3239,
+        "wrath_pendulum": 10548,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
       }
     },
     {
-      "time": 771.9,
-      "kills": 1038,
+      "time": 796.7,
+      "kills": 1058,
       "weapons": [
         {
           "id": "phoenix",
@@ -1774,20 +1801,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 87413,
-        "thorn_storm": 32409,
-        "eternal_winter": 2759,
-        "wrath_pendulum": 5150,
-        "soul_beacon": 522,
-        "thunder_seal": 5033
+        "phoenix": 83416,
+        "thorn_storm": 29601,
+        "eternal_winter": 3627,
+        "wrath_pendulum": 10845,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
       }
     },
     {
-      "time": 787.9,
-      "kills": 1068,
+      "time": 811.7,
+      "kills": 1079,
       "weapons": [
         {
           "id": "phoenix",
@@ -1815,20 +1843,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 91334,
-        "thorn_storm": 34515,
-        "eternal_winter": 3025,
-        "wrath_pendulum": 5348,
-        "soul_beacon": 522,
-        "thunder_seal": 5033
+        "phoenix": 87247,
+        "thorn_storm": 30537,
+        "eternal_winter": 3731,
+        "wrath_pendulum": 11241,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 696
       }
     },
     {
-      "time": 806.8,
-      "kills": 1089,
+      "time": 829.2,
+      "kills": 1100,
       "weapons": [
         {
           "id": "phoenix",
@@ -1856,20 +1885,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 94906,
-        "thorn_storm": 35568,
-        "eternal_winter": 3083,
-        "wrath_pendulum": 5744,
-        "soul_beacon": 609,
-        "thunder_seal": 5033
+        "phoenix": 89521,
+        "thorn_storm": 31122,
+        "eternal_winter": 3812,
+        "wrath_pendulum": 11637,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 696
       }
     },
     {
-      "time": 821.8,
-      "kills": 1108,
+      "time": 845.6,
+      "kills": 1129,
       "weapons": [
         {
           "id": "phoenix",
@@ -1897,20 +1927,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 98064,
-        "thorn_storm": 35841,
-        "eternal_winter": 3164,
-        "wrath_pendulum": 5843,
-        "soul_beacon": 609,
-        "thunder_seal": 5033
+        "phoenix": 95102,
+        "thorn_storm": 32643,
+        "eternal_winter": 3835,
+        "wrath_pendulum": 11934,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 696
       }
     },
     {
-      "time": 837.1,
-      "kills": 1133,
+      "time": 861.4,
+      "kills": 1150,
       "weapons": [
         {
           "id": "phoenix",
@@ -1938,20 +1969,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 101723,
-        "thorn_storm": 36387,
-        "eternal_winter": 3245,
-        "wrath_pendulum": 6239,
-        "soul_beacon": 609,
-        "thunder_seal": 5183
+        "phoenix": 98213,
+        "thorn_storm": 33345,
+        "eternal_winter": 3916,
+        "wrath_pendulum": 12132,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 783
       }
     },
     {
-      "time": 854.1,
-      "kills": 1164,
+      "time": 879.2,
+      "kills": 1179,
       "weapons": [
         {
           "id": "phoenix",
@@ -1979,20 +2011,21 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 107287,
-        "thorn_storm": 37869,
-        "eternal_winter": 3349,
-        "wrath_pendulum": 6437,
-        "soul_beacon": 609,
-        "thunder_seal": 5333
+        "phoenix": 103690,
+        "thorn_storm": 33735,
+        "eternal_winter": 4020,
+        "wrath_pendulum": 12578,
+        "lantern": 413,
+        "thunder_seal": 4830,
+        "soul_beacon": 783
       }
     },
     {
-      "time": 874.3,
-      "kills": 1196,
+      "time": 897.2,
+      "kills": 1206,
       "weapons": [
         {
           "id": "phoenix",
@@ -2020,62 +2053,22 @@
         }
       ],
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 112311,
-        "thorn_storm": 39078,
-        "eternal_winter": 3511,
-        "wrath_pendulum": 6833,
-        "soul_beacon": 609,
-        "thunder_seal": 5333
-      }
-    },
-    {
-      "time": 892.9,
-      "kills": 1221,
-      "weapons": [
-        {
-          "id": "phoenix",
-          "level": 8
-        },
-        {
-          "id": "wrath_pendulum",
-          "level": 8
-        },
-        {
-          "id": "eternal_winter",
-          "level": 8
-        },
-        {
-          "id": "thorn_storm",
-          "level": 8
-        },
-        {
-          "id": "thunder_seal",
-          "level": 8
-        },
-        {
-          "id": "soul_beacon",
-          "level": 8
-        }
-      ],
-      "damageByWeapon": {
-        "storm": 2325,
-        "thorn": 42,
-        "ember": 84,
-        "phoenix": 116819,
-        "thorn_storm": 40014,
-        "eternal_winter": 3534,
-        "wrath_pendulum": 7229,
-        "soul_beacon": 609,
-        "thunder_seal": 5483
+        "phoenix": 109740,
+        "thorn_storm": 34827,
+        "eternal_winter": 4159,
+        "wrath_pendulum": 12974,
+        "lantern": 446,
+        "thunder_seal": 5430,
+        "soul_beacon": 783
       }
     }
   ],
   "proof": {
-    "totalDamage": 184959,
-    "barsSum": 184959,
+    "totalDamage": 176104,
+    "barsSum": 176104,
     "deltaPct": 0,
     "rowCount": 6,
     "overlaps": 0,
@@ -2084,7 +2077,7 @@
       {
         "id": "phoenix",
         "name": "Phönixschwarm",
-        "damage": 120389,
+        "damage": 111870,
         "isEvolution": true,
         "lines": [
           "PHÖNIXSCHWARM"
@@ -2092,7 +2085,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 109,
+            "y": 111,
             "w": 77,
             "h": 7
           }
@@ -2101,7 +2094,7 @@
       {
         "id": "thorn_storm",
         "name": "Dornensturm",
-        "damage": 42396,
+        "damage": 36429,
         "isEvolution": true,
         "lines": [
           "DORNENSTURM"
@@ -2109,25 +2102,8 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 125,
+            "y": 127,
             "w": 65,
-            "h": 7
-          }
-        ]
-      },
-      {
-        "id": "thunder_seal",
-        "name": "Gewittersiegel",
-        "damage": 8963,
-        "isEvolution": true,
-        "lines": [
-          "GEWITTERSIEGEL"
-        ],
-        "nameRects": [
-          {
-            "x": 326,
-            "y": 141,
-            "w": 83,
             "h": 7
           }
         ]
@@ -2135,7 +2111,7 @@
       {
         "id": "wrath_pendulum",
         "name": "Zornpendel",
-        "damage": 8417,
+        "damage": 13420,
         "isEvolution": true,
         "lines": [
           "ZORNPENDEL"
@@ -2143,8 +2119,25 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 157,
+            "y": 143,
             "w": 59,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "thunder_seal",
+        "name": "Gewittersiegel",
+        "damage": 8580,
+        "isEvolution": true,
+        "lines": [
+          "GEWITTERSIEGEL"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 159,
+            "w": 83,
             "h": 7
           }
         ]
@@ -2152,7 +2145,7 @@
       {
         "id": "eternal_winter",
         "name": "Ewiger Winter",
-        "damage": 4054,
+        "damage": 4390,
         "isEvolution": true,
         "lines": [
           "EWIGER WINTER"
@@ -2160,7 +2153,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 173,
+            "y": 175,
             "w": 77,
             "h": 7
           }
@@ -2169,7 +2162,7 @@
       {
         "id": "soul_beacon",
         "name": "Seelenleuchtfeuer",
-        "damage": 740,
+        "damage": 1415,
         "isEvolution": true,
         "lines": [
           "SEELENLEU",
@@ -2178,13 +2171,13 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 189,
+            "y": 191,
             "w": 53,
             "h": 7
           },
           {
             "x": 326,
-            "y": 197,
+            "y": 199,
             "w": 47,
             "h": 7
           }
@@ -2193,20 +2186,21 @@
     ],
     "result": {
       "reason": "giveup",
-      "elapsed": 902.010230166397,
-      "kills": 1234,
-      "level": 23,
+      "elapsed": 901.6633616663956,
+      "kills": 1214,
+      "level": 22,
       "character": "mira",
       "damageByWeapon": {
-        "storm": 2325,
+        "storm": 2250,
         "thorn": 42,
         "ember": 84,
-        "phoenix": 120305,
-        "thorn_storm": 42354,
-        "eternal_winter": 4054,
-        "wrath_pendulum": 8417,
-        "soul_beacon": 740,
-        "thunder_seal": 6638
+        "phoenix": 111786,
+        "thorn_storm": 36387,
+        "eternal_winter": 4390,
+        "wrath_pendulum": 13420,
+        "lantern": 545,
+        "thunder_seal": 6330,
+        "soul_beacon": 870
       },
       "god": true,
       "seed": 99,
@@ -2232,7 +2226,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 109,
+            "y": 111,
             "w": 53,
             "h": 7
           }
@@ -2249,7 +2243,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 125,
+            "y": 127,
             "w": 77,
             "h": 7
           }
@@ -2266,7 +2260,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 141,
+            "y": 143,
             "w": 71,
             "h": 7
           }
@@ -2283,7 +2277,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 157,
+            "y": 159,
             "w": 59,
             "h": 7
           }
@@ -2300,7 +2294,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 173,
+            "y": 175,
             "w": 53,
             "h": 7
           }
@@ -2317,7 +2311,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 189,
+            "y": 191,
             "w": 77,
             "h": 7
           }
@@ -2334,7 +2328,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 205,
+            "y": 207,
             "w": 65,
             "h": 7
           }
@@ -2351,7 +2345,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 221,
+            "y": 223,
             "w": 65,
             "h": 7
           }
@@ -2368,7 +2362,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 237,
+            "y": 239,
             "w": 53,
             "h": 7
           }
@@ -2385,7 +2379,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 253,
+            "y": 255,
             "w": 83,
             "h": 7
           }
@@ -2402,7 +2396,7 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 269,
+            "y": 271,
             "w": 83,
             "h": 7
           }
@@ -2420,13 +2414,13 @@
         "nameRects": [
           {
             "x": 326,
-            "y": 285,
+            "y": 287,
             "w": 53,
             "h": 7
           },
           {
             "x": 326,
-            "y": 293,
+            "y": 295,
             "w": 47,
             "h": 7
           }

@@ -113,12 +113,18 @@ describe("M10 Results: Layout Namensumbruch und Ueberlappung", () => {
   });
 
   it("Header liegt unter dem Szenen-Untertitel und 12 Zeilen bleiben im Panel", () => {
-    const layout = layoutResultRows(stressEntries(), { width: 640, oy: 45, rowsTop: 70 });
-    // Untertitel "SIEDERLAGE"/"SIEG" steht bei y 42+oy und ist 7 px hoch.
+    const layout = layoutResultRows(stressEntries(), { width: 640, oy: 45, rowsTop: 66 });
+    // Untertitel "NIEDERLAGE"/"SIEG" steht bei y 42+oy und ist 7 px hoch.
     expect(layout.header.y).toBeGreaterThanOrEqual(49 + 45);
     expect(layout.totalLabel.y).toBeGreaterThanOrEqual(layout.header.y + 7);
-    const last = layout.rows[layout.rows.length - 1];
-    expect(last.icon.y + last.icon.h).toBeLessThanOrEqual(11 + 45 + 250);
+    // Panel: Mitte 136+oy, Hoehe 250 -> Unterkante 261+oy; 3 px Luft.
+    const panelBottom = 261 + 45;
+    for (const row of layout.rows) {
+      expect(row.icon.y + row.icon.h).toBeLessThanOrEqual(panelBottom - 3);
+      for (const rect of row.nameRects) expect(rect.y + rect.h).toBeLessThanOrEqual(panelBottom - 3);
+      expect(row.barBg.y + row.barBg.h).toBeLessThanOrEqual(panelBottom - 3);
+      expect(row.valueRect.y + row.valueRect.h).toBeLessThanOrEqual(panelBottom - 3);
+    }
   });
 
   it("Banner, Trennlinie und Gesamt-Label kollidieren mit keinem Text", () => {

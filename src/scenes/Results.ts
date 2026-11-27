@@ -122,8 +122,8 @@ export class Results extends Phaser.Scene {
     // ?debug=1&stress12 = Layout-Stressbeleg mit allen 12 moeglichen Waffennamen.
     const stress = this.result.debug === true && hasFlag("stress12");
     const layout = stress
-      ? layoutResultRows(stressEntries(), { width: W, oy, rowsTop: 70 })
-      : resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 70 });
+      ? layoutResultRows(stressEntries(), { width: W, oy, rowsTop: 66 })
+      : resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 66 });
     const totalDamage = stress
       ? layout.rows.reduce((sum, row) => sum + row.damage, 0)
       : damageTotal(this.result.damageByWeapon);

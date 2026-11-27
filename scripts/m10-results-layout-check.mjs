@@ -41,7 +41,7 @@ function intersects(a, b) {
 function measure(layoutResultRows, stressEntries, viewport) {
   // Szenen-Koordinaten sind 480x270; die Viewport-Breite skaliert nur. Alle
   // Rechtecke sind relativ zur Mitte, daher ist die Relation skaleninvariant.
-  const layout = layoutResultRows(stressEntries(), { width: viewport.width, oy: 0, rowsTop: 70 });
+  const layout = layoutResultRows(stressEntries(), { width: viewport.width, oy: 0 });
   // Szenen-Untertitel "NIEDERLAGE"/"SIEG" zentriert bei y 42, 7 px hoch.
   const subtitleLen = 24;
   const subtitle = {
@@ -69,6 +69,11 @@ function measure(layoutResultRows, stressEntries, viewport) {
       }
     }
   }
+  // Panel-Unterkante (Mitte 136, Hoehe 250) darf von keinem Text/Icon beruehrt
+  // werden; 3 px Luft, sonst schneidet der goldene Rahmen die Glyphen.
+  const panelBottom = 261;
+  const clipped = named.filter((entry) => entry.rect.y + entry.rect.h > panelBottom - 3);
+  for (const entry of clipped) overlaps.push(`panelBottom|${entry.label}`);
   return {
     viewport: viewport.label,
     rows: layout.rows.length,
