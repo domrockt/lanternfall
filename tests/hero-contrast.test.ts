@@ -136,9 +136,11 @@ describe("Helden-Kontrast (M10-hero-contrast)", () => {
     let hood = 0;
     for (let y = 4; y < 14; y++) for (let x = 8; x < 40; x++) if ([2, 3, 4, 6].includes(px(x, y) ?? -1)) hood++;
     expect(hood, "Kapuze fehlt/zu klein").toBeGreaterThanOrEqual(120);
-    // Laterne rechts mit Glow-Kern (13/22).
+    // Laterne rechts unten mit Glow-Kern (13/22).
+    // M10-hero-portraits: Porträt neu gezeichnet — Laterne hängt jetzt in
+    // einer Hand rechts unten (x38..46, y36..47) statt mittig-rechts.
     let glow = 0;
-    for (let y = 28; y < 42; y++) for (let x = 34; x < 46; x++) if ([13, 22].includes(px(x, y) ?? -1)) glow++;
+    for (let y = 36; y < 48; y++) for (let x = 38; x < 46; x++) if ([13, 22].includes(px(x, y) ?? -1)) glow++;
     expect(glow, "Laterne ohne Glutkern").toBeGreaterThanOrEqual(6);
     // Grauer Bart (Knochen-Rampe 8/9/10), keine roten Reste (23/24/25).
     let grey = 0;

@@ -504,168 +504,168 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     return g
 
 
-def _bust_base(g: Grid):
-    """Gemeinsame Büste: Augenlinie y=24, Kopf 22 px hoch, Schulter ab y=37."""
-    cx = 24
-    # Hals.
-    g.rect(21, 31, 6, 7, SKIN)
-    g.put(21, 31, SKIN_D)
-    # Kopf + Kiefer.
-    g.ellipse(cx, 24, 10, 10, SKIN)
-    g.rect(17, 32, 15, 2, SKIN)
-    g.put(16, 27, SKIN_D)
-    g.put(31, 27, SKIN_D)
-    g.put(17, 31, SKIN_D)
-    g.put(30, 31, SKIN_D)
-    # Augen: 3x2-Sockel, 2x2-Pupille, 1 px Glanz oben-links.
-    for ex in (17, 28):
-        g.rect(ex, 23, 3, 2, 12)
-        g.rect(ex, 23, 2, 2, EYE)
-        g.put(ex, 23, SKIN_L)
-    # Brauen.
-    g.rect(16, 21, 5, 1, HAIR_D)
-    g.rect(27, 21, 5, 1, HAIR_D)
-    # Nase 2 px, Mund.
-    g.rect(23, 27, 2, 2, SKIN_D)
-    g.line(21, 32, 26, 32, 24)
-    return cx
+def _trapezoid(g: Grid, y0: int, y1: int, xt0: int, xt1: int, xb0: int, xb1: int, col: int):
+    """Trapez/Keil: Reihen y0..y1, obere Kante xt0..xt1, untere xb0..xb1.
+
+    Fuer schraeg auslaufende Schultern (keine Box-Silhouette).
+    """
+    h = max(1, y1 - y0)
+    for y in range(y0, y1 + 1):
+        t = (y - y0) / h
+        g.hline(round(xt0 + (xb0 - xt0) * t), round(xt1 + (xb1 - xt1) * t), y, col)
+
+
+def _lantern(g: Grid, cx: int, top_y: int):
+    """Hangende Laterne (7x10) mit Buegel; Anker (cx, top_y) = Buegelscheitel."""
+    g.put(cx, top_y, GOLD)                       # Buegel
+    g.put(cx - 1, top_y + 1, GOLD)
+    g.put(cx + 1, top_y + 1, GOLD)
+    g.rect(cx - 2, top_y + 2, 5, 1, GOLD)        # Deckel
+    g.put(cx - 2, top_y + 2, GOLD_L)
+    g.rect(cx - 2, top_y + 3, 5, 6, 17)          # Rahmen emberOrange
+    g.rect(cx - 1, top_y + 3, 3, 6, GOLD)        # Glasfassung Bernstein
+    g.rect(cx - 1, top_y + 4, 3, 4, GLOW)        # Glutkern
+    g.rect(cx, top_y + 5, 1, 2, GLOW_H)          # heisse Mitte (2 px)
+    g.rect(cx - 2, top_y + 9, 5, 1, 16)          # Fuss
+    g.rect(cx - 3, top_y + 4, 1, 2, GOLD_L)      # warmer Schein links
+    g.rect(cx + 3, top_y + 4, 1, 2, GOLD_L)      # warmer Schein rechts
 
 
 def portrait(kind: str) -> Grid:
-    """48x48-Büste für CharSelect — beide Figuren mit gleicher Augenlinie."""
+    """48x48-Bueste fuer CharSelect — beide Figuren mit Augenlinie y=24.
+
+    Mira: Laternen-Hexe — glatter Hexenhut (Kegel + Goldborte + Krempe),
+    Locken bis auf die Schultern, feines symmetrisches Gesicht, rotes Tuch,
+    Laterne in der Hand.
+    Kael: Eisen-Moench — spitze Kapuze mit ueber die Schultern ausgehaengten
+    Kuttenklappen, weite Kutte mit Falten, Strickguertel, Eisenreif (Tonsure),
+    grauer Bart, Laterne in der Hand.
+    """
     g = Grid(48, 48)
-    cx = _bust_base(g)
     if kind == "mira":
-        # Schultern + Rock, eine Fläche mit Falten.
-        g.rect(4, 37, 40, 11, CLOTH_S)
-        g.rect(6, 36, 36, 6, CLOTH)
-        for x in range(9, 40, 7):
-            g.vline(x, 39, 46, CLOTH_S)
-        g.rect(9, 33, 31, 4, SCARF)
-        g.rect(10, 32, 29, 1, CLOTH_H)
-        # Wangen-Rouge (gruppiert).
-        g.rect(16, 28, 4, 2, BLUSH)
-        g.rect(28, 28, 4, 2, BLUSH)
-        # Haar: oben breiter Rahmen, Seitenlocken wellig bis auf die Schultern.
-        g.rect(13, 16, 23, 2, HAIR_D)
-        g.rect(12, 18, 2, 12, HAIR)
-        g.rect(34, 18, 2, 12, HAIR)
-        g.vline(11, 19, 29, HAIR_D)                   # aeussere Haar-Kontur
-        g.vline(36, 19, 29, HAIR_D)
-        g.rect(11, 21, 2, 8, HAIR_D)
-        g.rect(35, 21, 2, 8, HAIR_D)
-        g.rect(11, 27, 3, 3, HAIR)
-        g.rect(34, 27, 3, 3, HAIR)
-        g.rect(12, 30, 2, 5, HAIR_D)
-        g.rect(34, 30, 2, 5, HAIR_D)
-        g.put(13, 18, 26)
-        g.put(34, 18, 26)
-        # Hexenhut: Krempe + Kegel, rote Rampe, 1 px Kontur oben.
-        g.rect(3, 12, 42, 3, CLOTH_S)
-        g.rect(5, 11, 38, 2, CLOTH)
-        g.rect(5, 11, 8, 1, CLOTH_L)
-        g.put(3, 12, CLOTH_L)
-        _cone(g, cx, 3, 10, 13, 5, CLOTH, CLOTH_S)
-        g.rect(15, 10, 19, 2, CLOTH_H)
-        # Laterne, vollständig im Bild und getrennt vom Körper.
-        g.rect(37, 34, 2, 3, GOLD)
-        g.rect(35, 35, 10, 2, GOLD)
-        g.rect(36, 37, 8, 9, 17)
-        g.rect(37, 37, 6, 9, GOLD)
-        g.rect(38, 39, 4, 6, GLOW)
-        g.rect(39, 39, 2, 4, GLOW_H)
-        g.rect(36, 46, 8, 1, 16)
-        g.put(34, 38, GOLD_L)
-        g.put(44, 38, GOLD_L)
+        # Koerper: schraeg auslaufende Schulterpartie mit Stofffalten (keine Box).
+        _trapezoid(g, 35, 47, 14, 34, 6, 42, CLOTH)
+        g.vline(12, 38, 47, CLOTH_S)                  # Falte links
+        g.vline(36, 38, 47, CLOTH_S)                  # Falte rechts
+        g.vline(29, 39, 47, CLOTH_S)                  # Falte Mitte-rechts
+        # Hals (vom Schal verdeckt).
+        g.rect(21, 33, 7, 2, SKIN)
+        # Kopf: weiches Oval mit spitzem Kinn.
+        g.ellipse(24, 25, 10, 9, SKIN)
+        # Haar: Pony unter dem Hut, Wellen-Locken bis auf die Schultern.
+        g.rect(14, 16, 21, 3, HAIR)                   # Pony
+        g.rect(14, 18, 21, 1, HAIR_D)                 # Pony-Kante
+        g.rect(12, 16, 5, 10, HAIR)                   # Lockenansatz links
+        g.rect(11, 24, 5, 3, HAIR)                    # Welle links
+        g.rect(11, 27, 4, 3, HAIR_D)
+        g.rect(12, 30, 3, 3, HAIR)                    # Lockenende links
+        g.rect(32, 16, 5, 10, HAIR)                   # Lockenansatz rechts
+        g.rect(33, 24, 5, 3, HAIR)                    # Welle rechts
+        g.rect(34, 27, 4, 3, HAIR_D)
+        g.rect(34, 30, 3, 3, HAIR)                    # Lockenende rechts
+        # Hexenhut: glatter Kegel mit Knick, goldene Borte, glatte Krempe.
+        _cone(g, 24, 3, 12, 8, 3, CLOTH, CLOTH_S)
+        g.put(27, 2, CLOTH)                           # Hutspitze
+        g.rect(17, 11, 15, 2, GOLD)                   # Borte
+        g.rect(18, 11, 4, 1, GOLD_L)
+        g.hline(11, 37, 13, CLOTH)                    # Krempe (glatte Stufen)
+        g.hline(9, 39, 14, CLOTH)
+        g.hline(9, 39, 15, CLOTH_S)                   # Krempe, Unterseite
+        # Rotes Tuch ueber die Schultern: Band + Knoten + herablaufendes Ende.
+        g.rect(13, 34, 23, 3, SCARF)
+        g.rect(22, 35, 5, 3, SCARF)                   # Knoten
+        g.put(22, 35, GOLD_L)
+        g.rect(25, 36, 2, 2, 16)
+        g.rect(23, 38, 3, 4, SCARF)                   # Tuch-Ende
+        g.vline(25, 38, 41, 16)
+        g.put(23, 38, GOLD_L)
+        # Wangen-Rouge: je 2x2 gruppiert, symmetrisch.
+        g.rect(16, 28, 2, 2, BLUSH)
+        g.rect(31, 28, 2, 2, BLUSH)
+        # Aermel, Hand und Laterne mit Buegel (silhouettenpraegender Akzent).
+        g.rect(32, 34, 5, 4, CLOTH_S)                 # Aermel
+        g.rect(37, 34, 4, 3, SKIN)                    # Hand
+        g.rect(37, 36, 4, 1, SKIN_D)                  # Handschatten
+        _lantern(g, 41, 35)
     else:
-        # ── Bruder Kael: Moench mit Kapuze, Kutte, Kettenband + Laterne ──
-        # Portrait-Rampe der Kutte: 4/3/6 (eine Stufe heller als der Sprite,
-        # damit die Kutte vor dem Nacht-Panel des CharSelect lesbar bleibt).
+        # ── Bruder Kael: Eisen-Moench mit spitzer Kapuze und Kutte ──
+        # Portrait-Rampe der Kutte: 4/3/6 (lesbar vor dem Nacht-Panel).
         K_ROBE, K_ROBE_D, K_ROBE_L = 4, 3, 6
-        # Kutte (statt Kettenguertel-Kasten): weite Moenchsrobe mit Lichtkante.
-        g.rect(3, 37, 42, 11, K_ROBE)
-        g.vline(3, 37, 47, K_ROBE_L)                  # Lichtkante links
-        g.vline(44, 37, 47, K_ROBE_D)                 # Schattenkante rechts
-        g.rect(3, 37, 42, 1, K_ROBE_L)                # helle Schulterkante
-        g.vline(24, 40, 47, K_ROBE_D)                 # Kuttenschlitz
-        g.vline(13, 41, 46, K_ROBE_D)                 # Stofffalte links
-        g.vline(35, 41, 46, K_ROBE_D)                 # Stofffalte rechts
-        # Zwei klare Kettenbaender (Eisen) ueber der Kutte.
-        for by, bx0, bw in ((38, 5, 38), (42, 7, 34)):
-            g.rect(bx0, by, bw, 2, IRON_D)
-            g.rect(bx0, by, bw, 1, IRON)
-            g.rect(bx0, by, 12, 1, IRON_L)            # lange Lichtkante
-            g.put(bx0 + 12, by, CHAIN_L)
-            g.rect(bx0 + bw - 8, by, 3, 1, IRON_D)
-            g.rect(bx0 + bw - 5, by, 2, 2, RUST)
-            g.put(bx0 + bw - 5, by, RUST_L)
-        # Kapuze: Kalotte + Seitklappen, Gesichtsfenster mit dunklem Innenrand.
-        g.ellipse(cx, 15, 14, 9, K_ROBE)              # Kapuzenkalotte
-        g.rect(9, 14, 6, 18, K_ROBE)                  # linke Klappe
-        g.rect(33, 14, 6, 18, K_ROBE)                 # rechte Klappe
-        g.rect(9, 31, 30, 7, K_ROBE)                  # Uebergang zu den Schultern
-        g.rect(9, 31, 30, 1, K_ROBE_L)                # Saum-Licht
-        g.ellipse(cx, 24, 10, 9, K_ROBE_D)            # Innenrand des Fensters
-        g.ellipse(cx, 24, 9, 8, SKIN)                 # Gesicht im Fenster
-        # Gesicht im Fenster: Haut-Rampe 16/27/21 vollstaendig.
-        g.rect(16, 22, 17, 1, 16)                     # Schattenband unter dem Reif
-        g.rect(30, 25, 3, 6, 16)                      # rechte Fensterkante im Schatten
-        g.rect(16, 25, 1, 3, SKIN_L)                  # 1-px-Lichtkante links
-        # Kapuzenlicht: 2-px-Lichtkante oben links (Licht von oben-links).
-        g.rect(13, 9, 6, 1, K_ROBE_L)
-        g.rect(11, 11, 4, 1, K_ROBE_L)
-        g.rect(10, 14, 3, 4, K_ROBE_L)
-        g.rect(11, 18, 2, 3, K_ROBE_L)
-        # Stirnreif bleibt unter der Kapuze sichtbar (Eisen-Moench).
+        # Kutte: schraeg auslaufende Moenchsrobe mit vertikalen Falten.
+        _trapezoid(g, 36, 47, 16, 32, 5, 43, K_ROBE)
+        g.vline(14, 41, 47, K_ROBE_D)                 # Falte links
+        g.vline(33, 41, 47, K_ROBE_D)                 # Falte rechts
+        # Strickguertel um die Taille: Rope + Knoten + herabhaengende Enden.
+        g.hline(10, 38, 42, 19)
+        g.hline(9, 39, 43, 19)
+        g.hline(10, 38, 44, 17)
+        g.rect(22, 41, 5, 4, 19)                      # Knoten
+        g.put(22, 41, 20)
+        g.rect(25, 42, 2, 2, 17)
+        g.vline(23, 45, 47, 19)                       # Guertelende links
+        g.vline(26, 45, 47, 17)                       # Guertelende rechts
+        # Kuttenklappen: ueber die Schultern nach unten gelegt (weite Silhouette).
+        _trapezoid(g, 16, 40, 10, 13, 7, 15, K_ROBE)  # links
+        _trapezoid(g, 16, 40, 35, 38, 33, 41, K_ROBE) # rechts
+        # Kapuze: spitz zulaufend mit deutlichem Spitzen-Oberteil.
+        _trapezoid(g, 2, 18, 23, 25, 10, 38, K_ROBE)
+        g.put(24, 1, K_ROBE)                          # Kapuzenspitze
+        # Gesichtsfenster mit dunklem Innenrand.
+        g.ellipse(24, 24, 12, 11, K_ROBE_D)
+        g.ellipse(24, 24, 9, 8, SKIN)
+        # Tonsure: durchgehender grauer Haarkranz, kahle Stirn ueber dem Reif
+        # (art-director: keine Farbnoppen an der Stirn-Silhouette).
+        g.rect(21, 17, 7, 1, 8)
+        g.rect(20, 18, 9, 1, 8)
+        # Eiserner Reif mit Rost-Niete (Eisen-Moench).
         g.rect(16, 20, 17, 2, IRON_D)
         g.rect(16, 20, 17, 1, IRON)
         g.rect(16, 20, 5, 1, IRON_L)
         g.rect(23, 20, 2, 2, RUST)
         g.put(23, 20, RUST_L)
-        # Narbe (2-px-Gruppen).
-        g.rect(31, 22, 2, 2, 25)
-        g.rect(32, 24, 2, 1, 24)
-        # Grauer Bart (Knochen-Rampe 8/9/10) — GAME.md: grauer Bart statt
-        # rotem Balken; Kinnkante 10, Bartbasis 8, Lichtcluster 9.
-        g.rect(19, 31, 13, 1, 10)                     # Kinnkante
-        g.rect(18, 32, 13, 3, 8)
-        g.rect(20, 32, 4, 1, 9)
-        g.rect(25, 32, 3, 1, 9)
-        g.rect(19, 34, 3, 1, 10)
-        g.rect(24, 34, 4, 1, 10)
-        g.rect(21, 35, 3, 1, 8)
-        # Laterne in der Rechten, warme Glut (silhouettenpraegender Akzent).
-        lx = 39
-        g.rect(lx, 28, 2, 2, GOLD)                    # Buegel
-        g.rect(lx - 2, 30, 6, 1, GOLD)                # Deckel
-        g.rect(lx - 1, 31, 4, 8, 17)                  # Rahmen emberOrange
-        g.rect(lx, 31, 2, 8, GOLD)
-        g.rect(lx, 32, 2, 6, GLOW)                    # Glutkern
-        g.rect(lx, 33, 2, 4, GLOW_H)
-        g.rect(lx - 1, 39, 4, 1, 16)                  # Fuss
-        g.put(lx - 2, 33, GOLD_L)                     # warmes Lichtkreuz
-        g.put(lx + 3, 33, GOLD_L)
-        g.put(lx - 1, 27, GLOW)
-        g.put(lx + 2, 27, GLOW_H)
+        # Grauer Bart (Knochen-Rampe 8/9/10), haengt ueber den Kragen.
+        g.rect(15, 29, 19, 6, 8)
+        g.rect(15, 35, 19, 1, 8)
+        g.rect(19, 30, 3, 1, 9)
+        g.rect(26, 30, 3, 1, 9)
+        g.rect(17, 34, 3, 1, 10)
+        g.rect(27, 34, 4, 1, 10)
+        g.rect(18, 35, 13, 1, 10)                     # Kinnkante
+        # Aermel, Hand und Laterne in der Rechten (warmer Akzent am Koerper).
+        g.rect(35, 35, 4, 4, K_ROBE_D)                # Aermel
+        g.rect(39, 36, 4, 3, SKIN)                    # Hand
+        g.rect(39, 38, 4, 1, SKIN_D)                  # Handschatten
+        _lantern(g, 42, 38)
 
     g = shade_edges(g, band=2)
     # Gesichtsdetails nach dem Shading scharf setzen (keine Glow-Flächen).
-    # Beide Augen identisch: 3x2-Sockel, 2x2-Pupille, 1 px Glanz oben-links.
+    # Beide Augen identisch und symmetrisch: 3x2-Sockel, 2x2-Pupille,
+    # 1 px Glanz oben-links; Augenlinie y=23/24 fuer beide Figuren.
     for socket in (17, 29):
-        # Augensockel in Basis 27 (keine 2x1-21-Fläche), nur 1 px Glanz als 21.
         g.rect(socket, 23, 3, 2, SKIN)
         g.rect(socket + 1, 23, 2, 2, EYE)
         g.put(socket + 1, 23, SKIN_L)
-        g.rect(socket - 1, 22, 4, 1, HAIR_D)  # Braue dunkelrot
+        g.rect(socket - 1, 22, 4, 1, HAIR_D if kind == "mira" else 8)
     g.put(23, 27, SKIN_D)
     g.put(24, 27, SKIN_D)
     if kind == "mira":
-        g.rect(23, 31, 3, 1, 24)                  # kleiner Mund (3 px)
-        g.put(22, 31, 25)
-        g.put(26, 31, 23)
+        g.rect(23, 31, 3, 1, 24)                      # kleiner Mund, mittelsymmetrisch
+        g.put(23, 31, 25)
+        g.put(25, 31, 25)
+        # Glutkern nachziehen (Shading hatte 1 px auf Knochen (10) verdunkelt —
+        # art-director: schwebende helle Einzelpixel).
+        g.rect(41, 40, 1, 2, GLOW_H)
     else:
-        g.rect(23, 31, 3, 1, 14)                  # Mund im grauen Bart (kein INK)
+        g.rect(23, 31, 3, 1, 14)                      # Mund im grauen Bart
         g.rect(21, 31, 2, 1, 9)
+        g.rect(26, 31, 2, 1, 9)
+        # Laterne: Hand-Block über dem Deckel in Metall-Laternenkopf umfärben
+        # (art-director: fleischfarbener Block auf der Kerze las sich als Hand).
+        g.rect(39, 36, 4, 1, GOLD_L)                  # Deckel-Licht
+        g.rect(39, 37, 4, 1, GOLD)                    # Deckel
+        g.rect(39, 38, 4, 1, 17)                      # Rahmen emberOrange
+        # Glutkern scharf nachziehen (wie bei Mira).
+        g.rect(42, 43, 1, 2, GLOW_H)
     g = outline(g)
     return g
 
