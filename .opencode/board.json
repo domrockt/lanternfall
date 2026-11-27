@@ -3737,16 +3737,21 @@
       "id": 2499,
       "title": "[fa-02] Sicht-Belege: Display-Profile + 30 Gegner/6 Bosse/12 VFX-GIFs bei 640x360",
       "description": "Prüft shots/m8-*.png je Profil (1920x1080, 3840x2160, 2560x1440@1.5, 1366x768, iPhone 14 quer, Pixel 7 quer, iPad Pro quer): Spielpixel = ganzzahliges n×n, keine abgeschnittenen UI-Teile, Rand <=8 % (4:3 ausgenommen). Neue Kontaktbögen der 30 Gegner und 6 Bosse sowie 12 Waffen-/Evolutions-GIFs bei exakt 640x360 (shots/qa-enemy-*, qa-boss-*, qa-vfx-*). Abnahme: jedes Bild mit Vision geprüft (2–4x nearest), Urteil + Pfad notiert, 0 JS-Fehler im Touch-Lauf (verify-display).",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T08:19:41Z",
           "by": "build",
           "text": "2026-11-27T08:0xZ @864c13b: verify-display 38/38 PASS, 0 JS; 7 Profil-Shots gesichtet (Rand <=8 %, iPad 4:3-Ausnahme); 30-Gegner-/6-Boss-Kontaktbogen 640x360 + 12/12 VFX-GIFs 640x360 (Assert 601-777 KiB, 20-30 Gegner, 0 JS). Belege: shots/qa-*-640*, docs/qa/final-2026-11-27.md#fa-02."
+        },
+        {
+          "at": "2026-11-27T11:42:05Z",
+          "by": "build",
+          "text": "doing → done: profile done (3e334b8): Profil + Bisect abgeschlossen, Top-10 Self-Time + 88 Draw-Calls/82 Blend-Wechsel in docs; Sicht-Belege bereits caea6b6/3ea51b7."
         }
       ],
       "created": "2026-11-27T08:13:06Z",
-      "updated": "2026-11-27T08:19:41Z"
+      "updated": "2026-11-27T11:42:05Z"
     },
     {
       "id": 2638,
