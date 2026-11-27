@@ -1,16 +1,16 @@
 {
   "lane": "m10-chaos-silhouettes",
   "kind": "before",
-  "generatedAt": "2026-11-27T07:39:42.082Z",
+  "generatedAt": "2026-11-27T07:43:35.133Z",
   "method": "Silhouetten-Rim-Band (Randpixel + 1px innen) aus den in-game Textur-Masken (GEN_ENEMIES), Luminanz gegen dunklen Moorboden PAL[28] und helles Moor PAL[31], Schwelle 40",
   "backgroundDark": 34.020799999999994,
   "backgroundLight": 140.8082,
   "threshold": 40,
   "chaos": {
-    "time": 1507,
-    "enemies": 338,
-    "elites": 1,
-    "eliteSharePct": 0.3,
+    "time": 1510,
+    "enemies": 352,
+    "elites": 2,
+    "eliteSharePct": 0.6,
     "eliteChanceMinute25Pct": 10,
     "rimLightWidthPx": 1,
     "jsErrors": []
