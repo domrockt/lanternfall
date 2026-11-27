@@ -1,0 +1,14 @@
+Lane m10-chest-arrow-640-refit — Fix-Job zu #5378 (Versuch 2), Fall A, alle 4 Karten erledigt.
+
+- Re-Lauf Chest-Arrow auf main f4c6acf: 20/20 PASS (640x360 UND 780x360, je 10 Cases,
+  POST_UPDATE-Sampling, jsErrors 0, iGPU "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)").
+- Vorher-Beleg altes rAF-Sampling: shots/m10-chest-arrow-refit-raf-before.json — reproduziert
+  die #5378-Signaturen (tr/br 96.65°, bl 179.92°, disappear sichtbar obwohl inside).
+- Ursache: Messartefakt (rAF-Sampling misst vor dem Phaser-Step -> stale Frames bei fps.limit-Skips).
+  ChestSystem korrekt ( Schwester-Lane m10-chest-arrow-fix: POST_UPDATE 30/30 auch mit View-Width-Cap);
+  View-Width-Cap-Verdacht entkraeftet. ChestSystem von dieser Lane nicht geaendert.
+- Aenderungen: scripts/m10-chest-arrow.mjs (POST_UPDATE-Sampling + webglRenderer im JSON),
+  tests/chest-arrow.test.ts (+2 Regressionstests, 7/7), docs/lanes/m10-chest-arrow-640-refit.md,
+  Board #5378 done. Belege: shots/m10-chest-arrow-refit-before.json + edge/inside PNGs.
+- Abnahme: npx tsc --noEmit rc=0, npm test 839/839, npm run build rc=0.
+- Commits: 144c2f1 (K A), bc3e8ac (K B), <K D>.
