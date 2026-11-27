@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2877,
+  "next": 3424,
   "cards": [
     {
       "id": 1,
@@ -4429,6 +4429,66 @@
       ],
       "created": "2026-11-27T12:26:27Z",
       "updated": "2026-11-27T12:26:59Z"
+    },
+    {
+      "id": 3418,
+      "title": "[fa2-01] Schnelle Checks: build, Tests, Inhaltszählung, verify:final",
+      "description": "Abnahme: `npm run build` rc=0, `npm test` 0 fail (Zahl dokumentiert), `node scripts/acceptance-count.mjs` ok:true 30/6/6/6/6/2, `verify:final` 7/7, 0 JS-Fehler. Belege in docs/qa/reacceptance-2026-11-27.md. Ein Commit nur mit diesen Belegen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T13:15:12Z",
+          "by": "build",
+          "text": "todo → doing: Start: Build, Tests, Inhaltszählung, verify:final"
+        }
+      ],
+      "created": "2026-11-27T13:14:45Z",
+      "updated": "2026-11-27T13:15:12Z"
+    },
+    {
+      "id": 3419,
+      "title": "[fa2-02] Performance 640×360 + 780×360 (flock): Burst + Minute 25, je 3 Läufe",
+      "description": "Abnahme: 3 Läufe je View unter `flock /home/ai/games/.lf-perf.lock` mit scripts/perf.mjs; Burst (500 Gegner) min ≥55 und Minute-25 min ≥50, 0 JS-Fehler, loadavg notiert. Roh-JSON shots/qa-reaccept-*.json. Ergebnis in docs/qa/reacceptance-2026-11-27.md. Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T13:14:45Z",
+      "updated": "2026-11-27T13:14:45Z"
+    },
+    {
+      "id": 3420,
+      "title": "[fa2-03] 30-min-autoPlay fullrun (30×) + Boss/Truhe/Sieg + Heap",
+      "description": "Abnahme: `flock … npm run fullrun` genau einmal: 6/6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Sieg dawn, 0 JS-Fehler, fpsMin und Heap-Delta dokumentiert. Beleg shots/m3-fullrun.json + docs/qa. Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T13:14:45Z",
+      "updated": "2026-11-27T13:14:45Z"
+    },
+    {
+      "id": 3421,
+      "title": "[fa2-04] 30-min-Echtzeitlauf genau einmal (realtime-run) + Heap ≤15 %",
+      "description": "Abnahme: `flock … node scripts/realtime-run.mjs` (voller Lauf, minutes=30) genau einmal: alle 6 Bosse exakt, Sieg/Dawn, Heap-Delta Minute 1→29 ≤15 %, FPS min/median, 0 JS-Fehler; shots/realtime-30min.json + Minuten-Shots. Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T13:14:45Z",
+      "updated": "2026-11-27T13:14:45Z"
+    },
+    {
+      "id": 3422,
+      "title": "[fa2-05] Touch/Gamepad (verify-input) + Optik (art-director shots)",
+      "description": "Abnahme: `node scripts/verify-input.mjs` PASS (Zahl), 0 JS-Fehler; art-director-Urteil zu aktuellen 640×360-Shots (≥4/5 oder konkrete Mängel) in docs/qa. Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T13:14:45Z",
+      "updated": "2026-11-27T13:14:45Z"
+    },
+    {
+      "id": 3423,
+      "title": "[fa2-06] Re-Abnahme-Doku docs/qa + ACCEPTANCE.md aktualisieren",
+      "description": "Abnahme: docs/qa/reacceptance-2026-11-27.md mit allen Messwerten/Befehlen/Zeitstempeln, ACCEPTANCE.md-Kopf auf Ist-Stand (Commit, Zahlen), ehrliches Urteil (abgenommen / blocked). Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T13:14:45Z",
+      "updated": "2026-11-27T13:14:45Z"
     }
   ]
 }
