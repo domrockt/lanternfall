@@ -7,7 +7,7 @@ und über bestehende LOD-Caps zählen. Nur src/systems/FxSystem.ts geändert
 Karten (je ein Commit, Präfix M10-m10-fx-add-cap:):
 - K1 #4818 f976136 Messbasis scripts/m10-fx-add-cap.mjs + shots/m10-fx-add-cap-baseline.json
 - K2 #4819 696c712 Alpha-Boden 0,04 + Flächen-Deckel 9216 dev-px (dpr>1,5) + glowCap/glowUsed + setEnemyLoad
-- K3 #4820 6e5d206 tests/fx-add-cap.test.ts (23 Tests)
+- K3 #4820 6e5d206 tests/fx-add-cap.test.ts (24 Tests nach Review-Fix)
 - K4 #4821 Nachher-Messung + docs/lanes/m10-fx-add-cap.md + Belege
 
 Messwerte (500-Gegner-Frame, Minute 25, 780x360@3, Seed 1, autoPlay/god):

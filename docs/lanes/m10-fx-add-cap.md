@@ -68,7 +68,8 @@ Claims und sind hier nur attributioniert.
 Beam-Schonung, Guards (NaN/0/∞), Spawn-Cap in FxSystem/ParticleSystem (dpr 3
 via `window`-Stub, dpr 1 unverändert), Alpha-Boden gibt Slot+Liste frei,
 Cap-Invariante inkl. geteiltem Budget, `setEnemyLoad`-Kopplung, Determinismus.
-`npm test`: **544/544 grün** (52 Dateien), inkl. Regression
+Nach dem Reviewer-Fix (eigener Floor-Assert, `ADD_GLOW_DPR_THRESHOLD`-Konstante)
+sind es **24 Tests**; `npm test`: **544/544 grün** (52 Dateien), inkl. Regression
 `tests/fx-overdraw.test.ts` (Cap-Verhalten unverändert).
 
 ## Karte 4 — Nachher-Messung (`shots/m10-fx-add-cap-after.json`)
