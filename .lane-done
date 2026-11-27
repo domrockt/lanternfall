@@ -1,0 +1,9 @@
+Lane m10-ember-readability — ACCEPTANCE-Restpunkt "Ember-Projektil im Halo teils ueberstrahlt" geschlossen.
+- Fix (54c1902): projectile_ember 7x7 mit geschlossener 1-px-Tintenkontur + genau einem lanternWhite-Kern; neue fx_ember_muzzle (7x7, Rim) statt fx_fire-Blob, Glow-alphaFrom 0,55 statt 0,95.
+- Near-White-Anteil projectile_ember: 9,09 % -> 3,23 % (Frame 6,12 % -> 2,04 %), minRGB200 ebenfalls 3,23 % <= 4,16 %.
+- Glow-Kleck: 12,39 % -> 0,00 % Near-White, Footprint 113 -> 37 px.
+- 0 Off-Palette-Pixel, Alpha nur 0/255 (binaer), Kern-vs-Kontur-Kontrast >= 5:1, geschlossene Kontur mit >= 8 Tinten-Pixeln.
+- Tests: tests/ember-readability.test.ts 9/9, npm test 337/337, npx tsc --noEmit gruen.
+- Chaos-Beleg (2397d97, 38184b4): shots/m10-ember-readability-chaos-640.png, 640x360, 560 Gegner, 4 Ember-Projektile im Flug (t=0,2 s), 0 JS-Fehler.
+- Sichturteil art-director: PASS 4/5 (Kerne mit dunkler Kontur im Gegnerteppich/Gras lesbar).
+- Kein messbarer FPS-Einfluss (nur Pixeldaten/Alpha/Texturgroesse); Restpunkt: fx_fire-Trail nicht separat vermessen.
