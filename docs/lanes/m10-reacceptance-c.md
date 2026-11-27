@@ -56,7 +56,10 @@ Belege mit SwiftShader werden nur als Vorher-Vergleich geführt.
 
 ## K3 — FPS-Gates (iGPU, unter flock)
 
-(Siehe QA-Doku; Läufe laufen zum Zeitpunkt dieses Zwischenstands.)
+Perf-Gate (`qa-reaccept-perf --runs 2`, ~20:55Z): **PASS** — 640×360 Burst-Min 60,0 /
+M25-Min 60,0; 780×360@3 Burst-Min 60,1 / M25-Min 60,0 (Ziele ≥55/≥50); 0 JS-Fehler.
+Renderer iGPU (RPL-S, `shots/qa-reaccc-renderer.json`). Belege:
+`shots/qa-reaccc-perf-iter{1,2}-*.json`, `shots/qa-reaccc-perf.json`. Details: QA-Doku K6.
 
 ## K4 — 30-min-Echtzeitlauf (A4)
 

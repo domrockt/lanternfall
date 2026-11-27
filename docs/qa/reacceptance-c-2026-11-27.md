@@ -111,7 +111,28 @@ Einordnung (Abnahme misst, sie repariert nicht):
 
 ## K6 — FPS-Gates (iGPU, unter flock /home/ai/games/.lf-perf.lock)
 
-(Läufe folgen.)
+`node scripts/qa-reaccept-perf.mjs --runs 2` (2 Läufe × 2 Views, beendet ~20:55Z),
+Belege `shots/qa-reaccc-perf-iter{1,2}-{640x360@1,780x360@3}.json` +
+`shots/qa-reaccc-perf.json` (Summary).
+
+**Renderer-Bezug (Pflicht):** Alle FPS-Läufe auf demselben Host/iGPU wie die Probe in
+K2 — Renderer **„ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)“**
+(`shots/qa-reaccc-renderer.json`, 20:34:59Z, 10 min vor Lauf 1). Kein SwiftShader-Beleg.
+
+| View | Burst-FPS (min über 2 Läufe) | Minute-25 FPS (min) | Ziel | Urteil |
+|---|---:|---:|---|---|
+| 640×360@1 | **60,0** | **60,0** | Burst ≥ 55, M25 ≥ 50 | **PASS** |
+| 780×360@3 | **60,1** | **60,0** | Burst ≥ 55, M25 ≥ 50 (IST-Wert) | **PASS** |
+
+JS-Fehler: 0 (alle 4 Iterationen). Alle Messwerte ~60 FPS = vsync-gecappt (60-FPS-Cap
+aktiv, siehe K2 `fps.cappedAt60`); damit deutlich über den Vorwerten (640 M25 Median 56,3
+bei Nachabnahme B; ground-props-Lane meldete 48,5/40,3 auf ihrem Stand) — die späteren
+Perf-Merges (view-width-cap, fx-add-cap, ground-props-batch, passive-math) haben die
+640- und 780-Pfade auf vsync-Niveau gebracht. Bekannte vsync-Quantisierung: Einzelwerte
+60,0–60,1, Median-Differenzierung unter dem Cap nicht möglich.
+
+**Urteil K6: PASS** (640-Korridor ≥ 55 erreicht; 780@3 IST-Wert 60,0 ≥ 50 — der
+„offene Hebel“ Atlas-Pack ist damit auf diesem PIN kein FPS-Blocker mehr).
 
 ## K7 — 30-min-Echtzeitlauf (A4)
 
