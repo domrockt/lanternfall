@@ -4336,11 +4336,17 @@
       "id": 2980,
       "title": "m10-feedback-budget #3 Beleg: tests/feedback-budget.test.ts + After-JSON",
       "description": "Test: (a) 1000 Treffer/Frame => Shake <=6 px, (b) Hit-Stop <=120 ms und nicht additiv (fold 1000 Requests), (c) Knockback <= Cap. Zweiter Probelauf schreibt shots/m10-feedback-budget-after.json. Abnahme: npx vitest run tests/feedback-budget.test.ts gruen, After-Peak <=6 px, Stop-Peak <=120 ms, Stutter-Zahl genannt.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "test-auditor",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T12:29:20Z",
+          "by": "build",
+          "text": "todo → doing: Start: tests/feedback-budget.test.ts + After-Beleg committen."
+        }
+      ],
       "created": "2026-11-27T12:06:27Z",
-      "updated": "2026-11-27T12:06:27Z"
+      "updated": "2026-11-27T12:29:20Z"
     },
     {
       "id": 2981,
