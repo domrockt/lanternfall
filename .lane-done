@@ -1,0 +1,8 @@
+m10-reacceptance-b: 2. Nachabnahme auf PIN 49727faa (main @ 18:14:54Z) abgeschlossen.
+Basis: build rc=0 (823ms), tsc rc=0, Tests 446/446 (42 Dateien), acceptance-count 30/6/6/6/6/2.
+4 Fix-Merges belegt: gem-drawcap PASS (Peak-Gems 120, xpLoss 0, Tests 8/8), menu-touch PASS
+(Probe auf PIN erneut 36/36, shots/qa-reaccb-menu-touch-after.json), feedback-budget PASS
+(Shake 2,56px, Hit-Stop 120ms, aktive Stop-Frames 125->55, JSON-Belege), ambient-batching PASS
+(640/M25 Median 54,0->56,3 >= 55; 780/M25 44,8 fill-rate; Lane-Doc 3+4 gefuellt).
+Echtzeitlauf 30 min: offen/blocked (Runner-Limits, Vera), nicht erneut versucht.
+Gesamturteil: PASS — docs/qa/reacceptance-b-2026-11-27.md, ACCEPTANCE.md.

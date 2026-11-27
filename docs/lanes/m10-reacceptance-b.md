@@ -26,3 +26,18 @@ Abnahme-Beleg: gem-drawcap (`50f45ec`), menu-touch-targets (`f359f79`), feedback
 
 - Der 30-min-Echtzeitlauf wird nicht erneut versucht (Runner-Limits, Vera) —
   wird als offen/blocked in ACCEPTANCE.md übernommen.
+
+## Ergebnis (Endstand)
+
+Alle Karten K0–K3 erledigt, je ein Commit (`d04b684`, `1559a50`, `983f58e`+`a3f8e2e`,
+`8ce619a`, `1265c7f`). Gesamturteil: **PASS** — Details in
+`docs/qa/reacceptance-b-2026-11-27.md` und `ACCEPTANCE.md` (Abschnitt „Nachabnahme B“).
+
+- Basis auf PIN `49727faa`: build 823 ms rc=0, tsc rc=0, Tests 446/446 (42 Dateien),
+  acceptance-count 30/6/6/6/6/2.
+- gem-drawcap: Peak-Gems 120 (Cap wirksam), xpLoss 0, Tests 8/8 — PASS.
+- menu-touch: Probe auf PIN erneut 36/36 PASS, `shots/qa-reaccb-menu-touch-after.json` — PASS.
+- feedback-budget: Shake 2,56 px / Hit-Stop 120 ms / aktive Stop-Frames 125→55 — PASS.
+- ambient-batching: 640/M25 Median 54,0→56,3 (≥ 55 PASS), 780/M25 44,8 fill-rate — PASS;
+  Lane-Doc `m10-perf-fix-ambient-batching.md` Abschnitte 3+4 nachgetragen.
+- 30-min-Echtzeitlauf: offen/blocked (Runner-Limits, Vera), nicht erneut versucht.
