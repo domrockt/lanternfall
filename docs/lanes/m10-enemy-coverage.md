@@ -136,19 +136,22 @@ Der Spawn-Zähler wurde minimal ergänzt, ohne Spawning zu steuern:
 - `src/debug.ts`: `window.__lf.state()` und `window.__lf.stats()` hängen `spawnCounts`
   aus der Registry (`lf-spawner`) an. Keine Debug-Steuerung geändert.
 
-Messwerte (`shots/m10-coverage-ingame.json`):
+Messwerte (`shots/m10-coverage-ingame.json`, Versuch 2 erneut gefahren):
 
 | Messwert | Wert |
 |---|---|
-| Sim-Zeit | **1802.7 s** (30:02.7) |
-| Echtzeit | 97.9 s |
+| Sim-Zeit | **1800.3 s** (30:00.3) |
+| Echtzeit | 91.4 s |
 | abgedeckte Typen | **30/30**, `missing: []` |
 | minimale Spawns eines Typs | 10 (`toad`) |
-| maximale Spawns eines Typs | 6968 (`reaper_bat`, inkl. Voidcaller-Beschwörungen) |
-| insgesamt gezählte Spawns | 9403 |
-| **max. gleichzeitig aktive Gegner** | **274** |
+| insgesamt gezählte Spawns | 5380 |
+| **max. gleichzeitig aktive Gegner** | **158** |
 | JS-Fehler | **0** |
 | Gate | **PASS** (`ok: true`) |
+
+Hinweis: der erste Lauf (Commit `aa5ef5d`) erreichte 1802.7 s / 97.9 s real, 9403 Spawns
+und max. 274 aktive Gegner. Beide Läufe sind 30/30 und 0 JS-Fehler; die Streuung kommt
+aus AutoPlay/Zufall. Der Versuch-2-Lauf ist der aktuelle Beleg im JSON.
 
 Beleg-Screenshot während des Laufs: `shots/m10-coverage-ingame-minute25.png`
 (Minute 25, lebende Gegner im Bild).
@@ -162,9 +165,10 @@ Typen werden real gespawnt.
 ## Abnahme-Status
 
 - Sim-JSON: **30/30** in beiden Seeds (101, 202) — `shots/m10-coverage-sim.json`.
-- In-Game-JSON: **30/30**, max. **274** aktive Gegner, 0 JS-Fehler — `shots/m10-coverage-ingame.json`.
+- In-Game-JSON: **30/30**, max. **158** aktive Gegner, 0 JS-Fehler — `shots/m10-coverage-ingame.json` (Versuch 2; Lauf 1: 274 aktiv).
 - `tests/wave-coverage.test.ts`: **4/4 grün**.
-- `npm run build`: grün (via Harness vor dem In-Game-Lauf, `✓ built in 902ms`).
+- `npm run build`: grün (`✓ built in 807ms`).
 - `npm test`: **15 Dateien / 208 Tests grün**, keine neuen roten Tests.
+- `.lane-done`: angelegt und mit dieser Karte committet.
 - Offene Punkte: keine. `src/data/waves.ts` blieb unverändert, weil die Invarianten
   bereits erfüllt waren; die Abdeckung ist jetzt durch K4 gegen Regression gesichert.
