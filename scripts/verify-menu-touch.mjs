@@ -166,6 +166,22 @@ for (const profile of PROFILES) {
       `${JSON.stringify(before)} -> ${JSON.stringify(after)}`,
     );
   }
+  // Pfeil-Randprobe in Options: 16 px neben dem "<"-Glyph tippen.
+  const beforeMusic = await optionState(page);
+  await tapGame(page, arrowL + 16, 84 + oy + 2);
+  const afterMusic = await optionState(page);
+  addCheck(profile, "Options-Pfeil Randtreffer (16 px neben Glyph)",
+    afterMusic.music < beforeMusic.music,
+    `${beforeMusic.music} -> ${afterMusic.music}`);
+
+  // Label-Tap: volle Zeilenbreite muss den Wert treffen (frueher: nur Hover).
+  const beforeLabel = await optionState(page);
+  await tapGame(page, labelX + 5, 84 + oy + 2);
+  const afterLabel = await optionState(page);
+  addCheck(profile, "Options-Zeilenlabel Tap trifft Wert",
+    afterLabel.music !== beforeLabel.music,
+    `${beforeLabel.music} -> ${afterLabel.music}`);
+
   const beforeBack = await optionsOpen(page, "title");
   await tapGame(page, cx, 84 + oy + 6 * 20 + 2);
   addCheck(profile, "ZURUECK-Zeile schliesst per Tap", beforeBack && !(await optionsOpen(page, "title")));
@@ -181,12 +197,25 @@ for (const profile of PROFILES) {
     () => window.__lf.state().scene === "charselect",
   ), await sceneOf(page));
 
+  // Fuer die Folgepruefungen per Tastatur weitergehen, falls der Randtreffer
+  // (noch) nicht greift - ein Fehlschlag soll die Reise nicht abbrechen.
+  if ((await sceneOf(page)) === "title") {
+    await page.keyboard.press("Enter");
+    await waitForScene(page, "charselect");
+    await page.waitForTimeout(150);
+  }
+
   // CharSelect START-Randtreffer (16 px ueber Knopfmitte).
   boundsByProfile[profile.name].charselect = await collectBounds(page);
   await tapGame(page, cx + 40, H - 18 - 16);
   addCheck(profile, "CharSelect START Randtreffer (Offset 16)", await page.evaluate(
     () => window.__lf.state().scene === "run",
   ), await sceneOf(page));
+  if ((await sceneOf(page)) === "charselect") {
+    await page.keyboard.press("Enter");
+    await waitForScene(page, "run");
+    await page.waitForTimeout(200);
+  }
 
   // Pause + Pause-Options per Tap, dann FORTSETZEN.
   await page.waitForTimeout(250);
@@ -212,28 +241,6 @@ for (const profile of PROFILES) {
   addCheck(profile, "Results -> TITEL Randtreffer (Offset 12)", await page.evaluate(
     () => window.__lf.state().scene === "title",
   ), await sceneOf(page));
-
-  // Pfeil-Randprobe in Options: 16 px neben dem "<"-Glyph tippen.
-  await page.waitForTimeout(250);
-  await tapGame(page, cx, 214 + oy); // Options oeffnen
-  const beforeMusic = await optionState(page);
-  await tapGame(page, arrowL + 16, 84 + oy + 2);
-  const afterMusic = await optionState(page);
-  addCheck(profile, "Options-Pfeil Randtreffer (16 px neben Glyph)",
-    afterMusic.music < beforeMusic.music,
-    `${beforeMusic.music} -> ${afterMusic.music}`);
-  await page.keyboard.press("Escape");
-  await page.waitForTimeout(150);
-
-  // Label-Tap: volle Zeilenbreite muss den Wert treffen (frueher: nur Hover).
-  await tapGame(page, cx, 214 + oy);
-  const beforeLabel = await optionState(page);
-  await tapGame(page, labelX + 5, 84 + oy + 2);
-  const afterLabel = await optionState(page);
-  addCheck(profile, "Options-Zeilenlabel Tap trifft Wert",
-    afterLabel.music !== beforeLabel.music,
-    `${beforeLabel.music} -> ${afterLabel.music}`);
-  await page.keyboard.press("Escape");
 
   errorsByProfile[profile.name] = errors;
   addCheck(profile, "keine JS-Fehler", errors.length === 0, errors.join(" | "));
