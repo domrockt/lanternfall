@@ -3144,11 +3144,17 @@
       "id": 2198,
       "title": "m10-enemy-shots-fair-01 Ist-Beleg: 30-min-Sim, Schuss-/Treffer-Zaehler, Offscreen-Anteil",
       "description": "30-min-Sim (timeScale 30) mit Debug-Hook zaehlt abgefeuerte Gegnerschüsse, Spielertreffer, Offscreen-Schuetzen bei 640x360 und 780x360. Abgabe: shots/m10-enemy-shots-before.json + 1 Frame-Screenshot bei ~500 Gegnern; Zwischenstand committen.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:05:51Z",
+          "by": "build",
+          "text": "todo → review: Beleg: shots/m10-enemy-shots-before.json (640: 500 Schuss, 50 offscreen fired, 0 offscreen hits; 780: 503 Schuss, 100 offscreen fired, 2 offscreen hits), Screenshot 593/540 Gegner, 0 JS-Fehler. Commit 40b6016."
+        }
+      ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T04:04:48Z"
+      "updated": "2026-11-27T05:05:51Z"
     },
     {
       "id": 2199,

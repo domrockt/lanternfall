@@ -1,0 +1,64 @@
+{
+  "milestone": "M10",
+  "card": "m10-enemy-shots-fair-01",
+  "phase": "after",
+  "generatedAt": "2026-11-27T05:15:36.960Z",
+  "results": [
+    {
+      "viewport": "640x360",
+      "stats": {
+        "attempted": 695,
+        "fired": 500,
+        "hits": 3,
+        "offscreenAttempts": 182,
+        "offscreenFired": 0,
+        "offscreenHits": 0,
+        "cancelledShooterDeath": 9,
+        "cancelledOffscreen": 186,
+        "windupOk": 500,
+        "active": 8,
+        "pending": 0
+      },
+      "state": {
+        "time": 1665.7,
+        "enemies": 54,
+        "scene": "run"
+      },
+      "wallMs": 86041,
+      "finalState": {
+        "time": 1666.3,
+        "enemies": 549,
+        "fps": 46.5
+      },
+      "jsErrors": []
+    },
+    {
+      "viewport": "780x360",
+      "stats": {
+        "attempted": 644,
+        "fired": 501,
+        "hits": 0,
+        "offscreenAttempts": 126,
+        "offscreenFired": 0,
+        "offscreenHits": 0,
+        "cancelledShooterDeath": 12,
+        "cancelledOffscreen": 131,
+        "windupOk": 501,
+        "active": 16,
+        "pending": 0
+      },
+      "state": {
+        "time": 1181.1,
+        "enemies": 102,
+        "scene": "run"
+      },
+      "wallMs": 59229,
+      "finalState": {
+        "time": 1181.7,
+        "enemies": 578,
+        "fps": 57.1
+      },
+      "jsErrors": []
+    }
+  ]
+}
