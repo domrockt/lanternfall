@@ -69,6 +69,44 @@ async function rollNamesComplete(page) {
 }
 
 /**
+ * #K3: Wartet auf einen stabilen UI-Zustand statt einen Sample-Zeitpunkt zu raten.
+ * Bedingung: Panel sichtbar, alle Slots zeigen den vollständigen Rollnamen (ggf.
+ * 2 Zeilen) und noch keine STUFE/EVOLUTION; derselbe Zustand in 2 Frames.
+ * Timeout 15 s mit klarer Fehlermeldung; die Logik-Assertion bleibt identisch.
+ */
+async function waitForRollNamesStable(page, timeoutMs = 15_000) {
+  const started = Date.now();
+  await page.waitForFunction(() => {
+    const ui = window.__game.scene.getScene("ui");
+    const run = window.__game.scene.getScene("run");
+    if (ui?.chestGroup?.visible === true && window.__m10PanelVisibleAt == null) {
+      window.__m10PanelVisibleAt = performance.now();
+    }
+    const rewards = (run?.chestResult?.rewards ?? []).map((r) => r.name.toUpperCase());
+    const ready = (() => {
+      if (rewards.length === 0) return false;
+      const slots = (ui?.chestSlots ?? []).slice(0, rewards.length);
+      if (slots.length !== rewards.length) return false;
+      const rolling = slots.every((s) => !s.level?.value);
+      const allFull = slots.every((s) => rewards.includes(`${s.text?.value ?? ""}${s.text2?.value ?? ""}`));
+      const twoLine = slots.some((s) => s.text2?.visible && s.text2?.value);
+      const needsTwoLine = rewards.some((r) => r.length > 13);
+      return ui?.chestGroup?.visible === true && rolling && allFull && (!needsTwoLine || twoLine);
+    })();
+    const key = ready
+      ? (ui?.chestSlots ?? []).slice(0, rewards.length).map((s) => `${s.text?.value ?? ""}|${s.text2?.value ?? ""}`).join("~")
+      : "";
+    const state = window.__m10RollStable ?? { key: "", frames: 0 };
+    state.frames = ready && key === state.key ? state.frames + 1 : 0;
+    state.key = ready ? key : "";
+    window.__m10RollStable = state;
+    if (state.frames >= 2 && !window.__m10RollStableAt) window.__m10RollStableAt = performance.now();
+    return state.frames >= 2;
+  }, undefined, { timeout: timeoutMs, polling: "raf" });
+  return { stableMs: Date.now() - started, at: await page.evaluate(() => window.__m10RollStableAt ?? null) };
+}
+
+/**
  * Für Schwung-Waffen (Kettenflegel/Zornpendel) das Schwung-Sprite früh im Bogen
  * pausieren. Der FX-Trail lebt länger als der Schwung und würde sonst statt der
  * Kugel getroffen (Screenshot zeigt nur noch einen fast unsichtbaren Trail).
@@ -465,26 +503,26 @@ try {
     await chestPage.evaluate(() => window.__lf.setTimeScale(1));
     await clearLevelUps(chestPage);
     await chestPage.evaluate(() => window.__lf.skipTo(1500));
-    // Instrumentierung (#K2): Zeit ab openChest für Panel-Sichtbarkeit und Check-Reads.
-    const tOpen = Date.now();
+    // #K3: Ab openChest auf stabilen UI-Zustand warten (raf-Polling, kein sleep).
+    await chestPage.evaluate(() => {
+      window.__m10ChestOpenedAt = performance.now();
+      window.__m10PanelVisibleAt = null;
+      window.__m10RollStableAt = null;
+      window.__m10RollStable = undefined;
+    });
+    await chestPage.waitForTimeout(0);
     await chestPage.evaluate(() => window.__lf.openChest());
+    const rollStable = waitForRollNamesStable(chestPage)
+      .then((r) => ({ ok: true, ...r }))
+      .catch(() => {
+        console.log("Roll-Namen: kein stabiler Panel-/Namenszustand innerhalb 15 s -> FEHLER");
+        return { ok: false };
+      });
     rmSync("shots/chest-frames", { recursive: true, force: true });
     mkdirSync("shots/chest-frames", { recursive: true });
     let evoCaptured = false;
-    let rollCaptured = false;
-    let panelVisibleMs = null;
-    const samples = [];
     for (let i = 0; i < 48; i++) {
       await chestPage.screenshot({ path: `shots/chest-frames/f${String(i).padStart(3, "0")}.png` });
-      const readAtMs = Date.now() - tOpen;
-      const panelVisible = await chestPage.evaluate(
-        () => window.__game.scene.getScene("ui")?.chestGroup?.visible === true,
-      );
-      if (!panelVisibleMs && panelVisible) panelVisibleMs = readAtMs;
-      // Während des Rollens: jeder Slot zeigt einen vollständigen Rollnamen (ggf. 2 Zeilen).
-      const namesComplete = await rollNamesComplete(chestPage);
-      samples.push({ atMs: readAtMs, panelVisible, namesComplete });
-      if (!rollCaptured && namesComplete) rollCaptured = true;
       // Evolutions-Slot fertig ausgerollt: Panel mit Icon/Name/EVOLUTION schießen.
       if (!evoCaptured && (await evolutionSlotReady(chestPage))) {
         await chestPage.waitForTimeout(280); // Settle-Tween (220 ms) abwarten.
@@ -493,17 +531,19 @@ try {
       }
       await chestPage.waitForTimeout(90);
     }
-    const okSamples = samples.filter((s) => s.namesComplete).map((s) => s.atMs);
-    const gaps = samples.slice(1).map((s, i) => s.atMs - samples[i].atMs);
+    const rollResult = await rollStable;
+    const rollCaptured = rollResult.ok;
+    const t = await chestPage.evaluate(() => ({
+      openedAt: window.__m10ChestOpenedAt ?? null,
+      panelVisibleAt: window.__m10PanelVisibleAt ?? null,
+      stableAt: window.__m10RollStableAt ?? null,
+    }));
+    const rel = (v) => (v != null && t.openedAt != null ? Math.round(v - t.openedAt) : null);
     chestTiming = {
-      panelVisibleMs,
-      firstReadMs: samples[0]?.atMs ?? null,
-      rollNamesReadyMs: okSamples[0] ?? null,
-      lastReadMs: samples.at(-1)?.atMs ?? null,
-      okSampleCount: okSamples.length,
-      sampleCount: samples.length,
-      medianSampleGapMs: gaps.length ? gaps.sort((a, b) => a - b)[Math.floor(gaps.length / 2)] : null,
-      samples,
+      panelVisibleMs: rel(t.panelVisibleAt),
+      rollNamesReadyMs: rel(t.stableAt),
+      waitMs: rollResult.ok ? rollResult.stableMs : null,
+      waitTimeoutMs: 15_000,
     };
     if (!evoCaptured) {
       results.push({ id: "chest-evolution-shot", damage: null, owned: false, enemies: 0, kills: 0, fps: 0, ok: false });
