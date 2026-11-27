@@ -1,0 +1,60 @@
+{
+  "milestone": "m10-chest-lock-touch",
+  "baseSha": "b212e1c",
+  "passed": false,
+  "checks": [
+    {
+      "name": "C1 Joystick-Drift: Touchstart bei offener Truhe + Drag bewegt nicht",
+      "ok": true,
+      "detail": "movedPx=0 stick=false chestBleibtOffen=true xEnd=2048"
+    },
+    {
+      "name": "C2 Drift beim Oeffnen: gehaltener Joystick stoppt beim Truhe-Oeffnen sofort",
+      "ok": true,
+      "detail": "driftPx=0 afterOpenDriftPx=0 stick=false xVor=2051"
+    },
+    {
+      "name": "C3 Kleben nach Dismiss: gehaltener Finger startet nach Truhe-Uebernahme keinen Joystick",
+      "ok": true,
+      "detail": "movedPx=0 stick=false chestZu=true"
+    },
+    {
+      "name": "C4 Dash-Swipe: schneller Swipe bei offener Truhe bewegt nicht",
+      "ok": true,
+      "detail": "movedPx=0 stick=false chestWaehrendSwipe=true x0=2051"
+    },
+    {
+      "name": "C5 Langzeit-Drift: 60 Frames Move-Versuche bei offener Truhe bewegen nicht",
+      "ok": false,
+      "detail": "movedPx=1.5 stick=true frames=60 stickAbFrame=0 chest=false paused=false id=1 verlauf=cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 cSp1 evlog=pointerdown() touchstart(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) pointerup() touchend(1) finishChest() pointerdown() touchstart(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1) touchmove(1)"
+    },
+    {
+      "name": "C6 Pause-Tap: Tap auf Pause-Position bei offener Truhe pausiert nicht",
+      "ok": false,
+      "detail": "pausedLeak=true movedPx=0 stick=false chestNachTap=false pausedVerlauf=11110000000000"
+    },
+    {
+      "name": "C7 Kein Kleben + neue Geste: alter Finger bleibt tot, neuer Touchstart bewegt",
+      "ok": true,
+      "detail": "movedOldPx=0 movedNewPx=24.8 stickNeu=true"
+    }
+  ],
+  "negative": [
+    {
+      "name": "N1 normaler Drag bewegt den Spieler",
+      "ok": true,
+      "detail": "movedPx=22.3"
+    },
+    {
+      "name": "N2 Pause-Tap im Run pausiert",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "N3 nach Resume bewegt der Joystick wieder",
+      "ok": false,
+      "detail": "movedPx=0"
+    }
+  ],
+  "jsErrors": []
+}
