@@ -320,7 +320,9 @@ describe("Ergebnis-Schadenstabelle", () => {
   it("filtert 0/ungueltig, sortiert absteigend und begrenzt", () => {
     const table = damageTable({ ember: 120, flail: 900, frost: 0, thorn: 45, phoenix: 3000 }, 3);
     expect(table).toHaveLength(3);
-    expect(table.map((e) => e.id)).toEqual(["phoenix", "flail", "ember"]);
+    // M10: Evolution ersetzt den Basis-Slot, Ember-Schaden gehoert zu Phoenix.
+    expect(table.map((e) => e.id)).toEqual(["phoenix", "flail", "thorn"]);
+    expect(table[0].damage).toBe(3120);
     expect(table[0].name).toBe("Phönixschwarm");
     expect(table[0].isEvolution).toBe(true);
     expect(table[1].isEvolution).toBe(false);

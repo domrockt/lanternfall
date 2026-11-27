@@ -2984,27 +2984,38 @@
       "id": 2078,
       "title": "m10-results-attribution: Beleg-Lauf 15 min autoPlay + JSON/Screenshots vorher",
       "description": "15-min-autoPlay-Run (timeScale 30, god) mit Debug-Hook: HUD-Gesamtschaden, Summe der Balken, Delta % nach shots/m10-results-attribution.json; Ist-Screenshots shots/m10-results-attribution-before.png bei 1920x1080 und 640x360. Abnahme: JSON vorhanden, deltaPct berechnet, Screenshots zeigen den Ist-Ergebnis-Screen, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T03:13:53Z",
           "by": "build",
           "text": "todo → doing: Supervisor: Zwischenstand zuerst committen, dann Beleg-Lauf fertigstellen."
+        },
+        {
+          "at": "2026-11-27T03:28:27Z",
+          "by": "build",
+          "text": "doing → review: Beleg-Lauf 78cdf03: 15 Spielminuten AutoPlay (timeScale 30, god, 6 Waffen/6 Passives + Truhen), 52 Samples, total=179925 bars=179925 delta=0%, 0 JS-Fehler. Ist-Screenshots 1920x1080/640x360 im Commit."
         }
       ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T03:13:53Z"
+      "updated": "2026-11-27T03:28:27Z"
     },
     {
       "id": 2079,
       "title": "m10-results-attribution: Logik damageTable + largest-remainder Rundung",
       "description": "damageTable filtert/sortiert deterministisch; Rundung so, dass Summe der Bars = gerundetem Gesamtschaden. tests/results.test.ts mit 0/1/vielen Waffen und Evolutions-Slot-Ersetzung. Abnahme: npx vitest run tests/results.test.ts gruen, Summenabweichung = 0, Sortierung absteigend.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:28:27Z",
+          "by": "build",
+          "text": "todo → doing: Rundung largest-remainder + Evolutions-Slot-Ersetzung, Test tests/results.test.ts."
+        }
+      ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T02:57:04Z"
+      "updated": "2026-11-27T03:28:27Z"
     },
     {
       "id": 2080,
