@@ -4392,39 +4392,49 @@
       "id": 3058,
       "title": "m10-damage-batch K1 Baseline: 500 Gegner + 6 Waffen Lv8",
       "description": "Owner engine-dev, Kontrolle perf-check + reviewer. scripts/m10-damage-batch.mjs misst aktive Textobjekte, setText/s, ms/Frame bei 500 Gegnern, 6 Waffen Lv8, Seed 1, autoPlay, god, 10 s. Abnahme: shots/m10-damage-batch-before.json im Commit, Zahlen im JSON.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T16:01:07Z",
           "by": "build",
           "text": "todo → review: Messskript + Beleg before.json/png; K1-Commits 10d2c63, b19ec4a; build+tests gruen"
+        },
+        {
+          "at": "2026-11-27T16:23:06Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS; Commits 10d2c63 b19ec4a; build+tests gruen"
         }
       ],
       "created": "2026-11-27T12:34:06Z",
-      "updated": "2026-11-27T16:01:07Z"
+      "updated": "2026-11-27T16:23:06Z"
     },
     {
       "id": 3059,
       "title": "m10-damage-batch K2 Fix: Label-Memo + Gruppierung + View-Cap",
       "description": "Owner engine-dev, Kontrolle perf-check + reviewer. src/systems/DamageNumbers.ts + src/logic/damage-numbers.ts: setText nur bei Wert-/Krit-Aenderung, Aggregat pro Gegner-Gruppe, harte Obergrenze 10 Views ab DAMAGE_AGGREGATE_MIN_ENEMIES; CombatSystem/UI/Run NICHT anfassen. Abnahme: tsc gruen, gezielte Tests gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T16:01:07Z",
           "by": "build",
           "text": "todo → review: Label-Memo, Zonen-Aggregation (9 Zonen), View-Cap 10 + enforceViewCap; Commit cdfe56d; tsc 0, 367 Tests gruen"
+        },
+        {
+          "at": "2026-11-27T16:23:06Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS; Commits cdfe56d c2c6b5b; tsc 0, 370 Tests gruen"
         }
       ],
       "created": "2026-11-27T12:34:06Z",
-      "updated": "2026-11-27T16:01:07Z"
+      "updated": "2026-11-27T16:23:06Z"
     },
     {
       "id": 3060,
       "title": "m10-damage-batch K3 Test: Batch-Logik",
       "description": "Owner gameplay-dev, Kontrolle test-auditor. tests/damage-number-batch.test.ts: Summe Anzeige = Trefferliste (<=1%), keine Doppel-Labels je Gegner, Cap 10 greift, kein setText ohne Wertaenderung (Spy), 0 NaN/negativ. Abnahme: npx vitest run tests/damage-number-batch.test.ts gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -4436,16 +4446,21 @@
           "at": "2026-11-27T16:01:07Z",
           "by": "build",
           "text": "doing → review: tests/damage-number-batch.test.ts 12/12; Commits 520ae82, a27047c"
+        },
+        {
+          "at": "2026-11-27T16:23:06Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS; Commits 520ae82 8e512e1; 15/15 Tests"
         }
       ],
       "created": "2026-11-27T12:34:06Z",
-      "updated": "2026-11-27T16:01:07Z"
+      "updated": "2026-11-27T16:23:06Z"
     },
     {
       "id": 3061,
       "title": "m10-damage-batch K4 Nachher-Messung + HUD-Abgleich",
       "description": "Owner engine-dev, Kontrolle perf-check + reviewer. Gleiches Skript wie K1 mit tag=after, plus HUD-Gesamtschaden vs Balkensumme <=1%. Ziel: aktive Views <=10 bei >=120 Gegnern, setText/s -50%, ms/Frame nicht schlechter. Abnahme: shots/m10-damage-batch-after.json + Vergleichs-PNG im Commit, docs/lanes/m10-damage-batch.md.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
@@ -4457,10 +4472,15 @@
           "at": "2026-11-27T16:01:07Z",
           "by": "build",
           "text": "doing → review: before-old vs after-fair: setText/s -16,6 %, ms/Frame -13,3 %, FPS 51,7->59,7, HUD-Abgleich 0 %; Ziel -50 % setText NICHT erreicht, ehrlich dokumentiert; Commit 614ce6a"
+        },
+        {
+          "at": "2026-11-27T16:23:06Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS; Commit 614ce6a; setText/s -16,6 %, ms/Frame -13,3 %, HUD 0 %; Ziel -50 % offen dokumentiert"
         }
       ],
       "created": "2026-11-27T12:34:06Z",
-      "updated": "2026-11-27T16:01:07Z"
+      "updated": "2026-11-27T16:23:06Z"
     }
   ]
 }
