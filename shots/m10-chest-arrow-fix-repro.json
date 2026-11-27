@@ -1,0 +1,1337 @@
+{
+  "schema": "m10-chest-arrow-fix-repro/v2",
+  "generatedAt": "2026-11-27T23:06:10.080Z",
+  "toleranceDeg": 5,
+  "marginPx": 24,
+  "extraQuery": "",
+  "formats": [
+    {
+      "label": "640x360@2",
+      "dpr": 2,
+      "header": {
+        "scaleW": 640,
+        "scaleH": 360,
+        "canvasW": 640,
+        "canvasH": 360,
+        "camW": 640,
+        "camH": 360,
+        "zoom": 1,
+        "rbScale": 1
+      },
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -820,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 29.36,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 51,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 0,
+                "y": 0,
+                "rotDeg": 0,
+                "expAngleDeg": 180,
+                "rAngleDeg": -150.6,
+                "liveAngleDeg": 180,
+                "liveVisible": true,
+                "liveX": 24,
+                "liveY": 180,
+                "aErr": 29.36,
+                "posErr": 181.6,
+                "edgeOk": false,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 51,
+                "wx": 680,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2880,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 100,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 145,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 180,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 179,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 320,
+                "y": 24,
+                "rotDeg": -90,
+                "expAngleDeg": 90,
+                "rAngleDeg": -90,
+                "liveAngleDeg": 90,
+                "liveVisible": true,
+                "liveX": 320,
+                "liveY": 336,
+                "aErr": 180,
+                "posErr": 312,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 179,
+                "wx": 680,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -820,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 215,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2880,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 94.58,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 250,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 151,
+                "y": 24,
+                "rotDeg": -137.2,
+                "expAngleDeg": -42.7,
+                "rAngleDeg": -137.3,
+                "liveAngleDeg": -42.7,
+                "liveVisible": true,
+                "liveX": 489,
+                "liveY": 24,
+                "aErr": 94.58,
+                "posErr": 338,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 250,
+                "wx": 740,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -820,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 282,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2880,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 320,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12,
+          "raf": {
+            "ok": true,
+            "visibleSamples": 20,
+            "maxAngleDeg": 0,
+            "diag": []
+          }
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 7,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 900,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 820,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 740,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 660,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 620,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 580,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 540,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 380,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 340,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 260,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            }
+          ]
+        }
+      ],
+      "ok": true
+    },
+    {
+      "label": "640x360@3",
+      "dpr": 3,
+      "header": {
+        "scaleW": 640,
+        "scaleH": 360,
+        "canvasW": 640,
+        "canvasH": 360,
+        "camW": 640,
+        "camH": 360,
+        "zoom": 1,
+        "rbScale": 1
+      },
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -820,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 29.36,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 51,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 0,
+                "y": 0,
+                "rotDeg": 0,
+                "expAngleDeg": 180,
+                "rAngleDeg": -150.6,
+                "liveAngleDeg": 180,
+                "liveVisible": true,
+                "liveX": 24,
+                "liveY": 180,
+                "aErr": 29.36,
+                "posErr": 181.6,
+                "edgeOk": false,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 51,
+                "wx": 680,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2880,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 100,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 90,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 144,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 616,
+                "y": 180,
+                "rotDeg": 0,
+                "expAngleDeg": -90,
+                "rAngleDeg": 0,
+                "liveAngleDeg": -90,
+                "liveVisible": true,
+                "liveX": 320,
+                "liveY": 24,
+                "aErr": 90,
+                "posErr": 334.6,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 144,
+                "wx": 680,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 180,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 182,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 320,
+                "y": 24,
+                "rotDeg": -90,
+                "expAngleDeg": 90,
+                "rAngleDeg": -90,
+                "liveAngleDeg": 90,
+                "liveVisible": true,
+                "liveX": 320,
+                "liveY": 336,
+                "aErr": 180,
+                "posErr": 312,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 182,
+                "wx": 680,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -820,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 132.71,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 217,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 320,
+                "y": 336,
+                "rotDeg": 90,
+                "expAngleDeg": -137.3,
+                "rAngleDeg": 90,
+                "liveAngleDeg": -137.3,
+                "liveVisible": true,
+                "liveX": 151,
+                "liveY": 24,
+                "aErr": 132.71,
+                "posErr": 354.8,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 217,
+                "wx": 680,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2880,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 94.58,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 252,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 151,
+                "y": 24,
+                "rotDeg": -137.2,
+                "expAngleDeg": -42.7,
+                "rAngleDeg": -137.3,
+                "liveAngleDeg": -42.7,
+                "liveVisible": true,
+                "liveX": 489,
+                "liveY": 24,
+                "aErr": 94.58,
+                "posErr": 338,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 252,
+                "wx": 740,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -820,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 283,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2880,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 318,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12,
+          "raf": {
+            "ok": true,
+            "visibleSamples": 18,
+            "maxAngleDeg": 0,
+            "diag": []
+          }
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 8,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 900,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 860,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 780,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 740,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 620,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 580,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 540,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 420,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 380,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 340,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 260,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            }
+          ]
+        }
+      ],
+      "ok": true
+    },
+    {
+      "label": "780x360@3",
+      "dpr": 3,
+      "header": {
+        "scaleW": 780,
+        "scaleH": 360,
+        "canvasW": 780,
+        "canvasH": 360,
+        "camW": 780,
+        "camH": 360,
+        "zoom": 1,
+        "rbScale": 1
+      },
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -890,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 24.78,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 51,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 0,
+                "y": 0,
+                "rotDeg": 0,
+                "expAngleDeg": 180,
+                "rAngleDeg": -155.2,
+                "liveAngleDeg": 180,
+                "liveVisible": true,
+                "liveX": 24,
+                "liveY": 180,
+                "aErr": 24.78,
+                "posErr": 181.6,
+                "edgeOk": false,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 51,
+                "wx": 610,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2950,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 180,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 99,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 24,
+                "y": 180,
+                "rotDeg": -180,
+                "expAngleDeg": 0,
+                "rAngleDeg": 180,
+                "liveAngleDeg": 0,
+                "liveVisible": true,
+                "liveX": 756,
+                "liveY": 180,
+                "aErr": 180,
+                "posErr": 732,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 99,
+                "wx": 670,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 90,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 143,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 756,
+                "y": 180,
+                "rotDeg": 0,
+                "expAngleDeg": -90,
+                "rAngleDeg": 0,
+                "liveAngleDeg": -90,
+                "liveVisible": true,
+                "liveX": 390,
+                "liveY": 24,
+                "aErr": 90,
+                "posErr": 397.9,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 143,
+                "wx": 610,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 180,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 180,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 390,
+                "y": 24,
+                "rotDeg": -90,
+                "expAngleDeg": 90,
+                "rAngleDeg": -90,
+                "liveAngleDeg": 90,
+                "liveVisible": true,
+                "liveX": 390,
+                "liveY": 336,
+                "aErr": 180,
+                "posErr": 312,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 180,
+                "wx": 610,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -890,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 131.63,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 213,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 390,
+                "y": 336,
+                "rotDeg": 90,
+                "expAngleDeg": -138.4,
+                "rAngleDeg": 90,
+                "liveAngleDeg": -138.4,
+                "liveVisible": true,
+                "liveX": 214.5,
+                "liveY": 24,
+                "aErr": 131.63,
+                "posErr": 358,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 213,
+                "wx": 610,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2950,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.19,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 248,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -890,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.03,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 283,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2950,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 96.65,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 316,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 215,
+                "y": 336,
+                "rotDeg": 138.3,
+                "expAngleDeg": 41.6,
+                "rAngleDeg": 138.3,
+                "liveAngleDeg": 41.6,
+                "liveVisible": true,
+                "liveX": 565.5,
+                "liveY": 336,
+                "aErr": 96.65,
+                "posErr": 350.5,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 316,
+                "wx": 670,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12,
+          "raf": {
+            "ok": true,
+            "visibleSamples": 17,
+            "maxAngleDeg": 0,
+            "diag": []
+          }
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 8,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1080,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1040,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 960,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 920,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 840,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 800,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 760,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 720,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 640,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 600,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 520,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 480,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 440,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 360,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            }
+          ]
+        }
+      ],
+      "ok": true
+    }
+  ],
+  "verdict": {
+    "allCasesOk": true,
+    "jsErrors": 0,
+    "passed": true
+  },
+  "errors": []
+}

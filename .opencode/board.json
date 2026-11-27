@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6282,
+  "next": 6362,
   "cards": [
     {
       "id": 1,
@@ -6107,10 +6107,16 @@
       "id": 5378,
       "title": "m10-reacceptance-c-Folge: Chest-Arrow 640×360 Re-Lauf FAIL auf PIN 43fd9eb",
       "description": "Abnahme-Befund (NICHT von der Abnahme gefixt): Re-Lauf von scripts/m10-chest-arrow.mjs auf PIN 43fd9eb (iGPU) failt 5/10 Cases bei 640×360 (top/bottom/tl/br: visibleAtSpawn=false, Winkelfehler 90–180°, Positionsfehler 312–355 px; disappear: Pfeil bleibt sichtbar obwohl Truhe im View). 780×360 alle ok. Gegenbefund: Lane-nachher-Lauf 17:52Z (shots/m10-chest-arrow-after.json, SwiftShader-Ära, vor iGPU 19:13Z) war PASS auf beiden Formaten; Unit-Tests tests/chest-arrow.test.ts auf PIN grün. Zu klären im Folge-Job: (a) Renderer-/Timing-Sensitivität des Probe-Harness (iGPU vs SwiftShader, Sampling), (b) echte Regression durch einen der 19 Drain-Merges — Verdächtige: m10-view-width-cap (interne Breite 640), m10-ground-props-batch (Batch-Container-Layer). Beleg: shots/qa-reaccc-chest-arrow.json im Lane-Branch m10-reacceptance-c.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T22:59:22Z",
+          "by": "build",
+          "text": "backlog → doing: Lane m10-chest-arrow-fix uebernimmt: 4 Sub-Karten K1-K4 angelegt, K1 (Repro) laeuft."
+        }
+      ],
       "created": "2026-11-27T20:48:48Z",
-      "updated": "2026-11-27T20:48:48Z"
+      "updated": "2026-11-27T22:59:22Z"
     },
     {
       "id": 5418,
@@ -7319,6 +7325,42 @@
       "notes": [],
       "created": "2026-11-27T22:42:19Z",
       "updated": "2026-11-27T22:42:19Z"
+    },
+    {
+      "id": 6358,
+      "title": "m10-chest-arrow-fix K1: Repro-Lauf 640x360 + 780x360@3, alle 10 Faelle protokollieren",
+      "description": "Owner gameplay-dev. scripts/m10-chest-arrow-repro.mjs (Basis m10-chest-arrow.mjs) mit erweiterter Diagnostik: pro Sample Kamera-Rohdaten (scrollX/Y, worldView, width/height, zoom), __rbDbg (RENDER_SCALE), Canvas-Buffer, Live-Gegenrechnung computeArrowLayout, 3 Richtungs-Darstellungen (erwarteter Winkel, arrow.rotation, gerenderter Winkel). Vorher-JSON shots/m10-chest-arrow-fix-repro.json committen. AK: JSON mit 10 Cases je Format vorhanden, FAIL-Faelle mit Kameraposition belegt.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:59:22Z",
+      "updated": "2026-11-27T22:59:22Z"
+    },
+    {
+      "id": 6359,
+      "title": "m10-chest-arrow-fix K2: Ursache belegen (Datei/Zeile)",
+      "description": "Owner gameplay-dev. Ursache aus Repro-Daten festhalten: fixe View-Annahme vs. echte Kamera (Muster m10-chest-arrow-onscreen), Pfeil-Clamping am Viewport-Rand. AK: Befund mit Datei+Zeile in docs/lanes/m10-chest-arrow-fix.md, Beleg aus repro-JSON.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:59:22Z",
+      "updated": "2026-11-27T22:59:22Z"
+    },
+    {
+      "id": 6360,
+      "title": "m10-chest-arrow-fix K3: Fix in src/systems/ChestSystem.ts",
+      "description": "Owner gameplay-dev. Pfeilposition/-winkel aus echter Kamera-Transform ableiten, 0 px ausserhalb des Viewports, Optik unveraendert (Truhen-Inszenierung m10-chest-reveal unangetastet, nur Pfeilpfad). AK: tsc + gezielte Tests gruen, Repro-Lauf 10/10 PASS in beiden Formaten.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:59:22Z",
+      "updated": "2026-11-27T22:59:22Z"
+    },
+    {
+      "id": 6361,
+      "title": "m10-chest-arrow-fix K4: Regressionstest + Nachher + Abschluss",
+      "description": "Owner gameplay-dev. tests/chest-arrow-fix.test.ts: Viewport-Klemm-Invariante (Pfeil vollstaendig im Viewport, 0 px ausserhalb) fuer Extrem-Kamerapositionen in beiden Formaten (640x360, 780x360), Testzahl +>=2. Nachher-JSON + Screenshots shots/m10-chest-arrow-fix-*, npm run build + npm test, reviewer, docs/lanes/m10-chest-arrow-fix.md, .lane-done. AK: ein Commit mit allen Belegen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:59:22Z",
+      "updated": "2026-11-27T22:59:22Z"
     }
   ]
 }
