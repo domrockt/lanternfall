@@ -37,12 +37,12 @@ absichtlich blockierten Szene verwechselt wird.
 |---|---|---|---|---|---|---|
 | iPhone 14 quer, **vorher** | 12 | 0,85 | 1,5 | 1 | 1 | 1 / 1 |
 | Pixel 7 quer, **vorher** | 12 | 0,70 | 1,4 | 1 | 1 | 1 / 1 |
-| iPhone 14 quer, **nachher** | 12 | 0,80 | 1,6 | 1 | 1 | 1 / 1 |
-| Pixel 7 quer, **nachher** | 12 | 0,65 | 3,4 | 1 | 1 | 1 / 1 |
-| **Gesamt nachher** | **24** | **0,70** | **1,6** | **1** | **1** | **1 / 1** |
+| iPhone 14 quer, **nachher** | 12 | 0,70 | 2,1 | 1 | 1 | 1 / 1 |
+| Pixel 7 quer, **nachher** | 12 | 0,80 | 2,3 | 1 | 1 | 1 / 1 |
+| **Gesamt nachher** | **24** | **0,70** | **2,1** | **1** | **1** | **1 / 1** |
 
 **Bewertung.** Median und p95 liegen weit unter dem Kriterium (Median 1 Frame statt ≤ 2,
-p95 1 Frame statt ≤ 3; ms-Werte 0,65–3,4 ms statt 33 ms). Das Ist war schon vor jedem Eingriff
+p95 1 Frame statt ≤ 3; ms-Werte 0,70–2,3 ms statt 33 ms). Das Ist war schon vor jedem Eingriff
 innerhalb des Kriteriums; die Kette `TouchControls → TouchState → InputState → Run.movePlayer`
 hat **kein** zusätzliches Frame. Daher wurde in #2119 kein Snapshot-Puffer umgebaut, sondern nur
 die Deadzone-Hysterese ergänzt. 24/24 Trials zeigten Bewegung, 0 verworfene Trials, 0 JS-Fehler
@@ -63,6 +63,9 @@ Lösung in `src/input/InputState.ts`:
   stetig (kein Sprung).
 - `InputState` merkt sich `touchEngaged` über Frames; `reset()` und ein inaktiver Snapshot
   (Loslassen, Pause, Level-up, Truhe) setzen die Hysterese zurück.
+- Ein uncommitteter Versuch aus Versuch 1, im Band eine remappte Magnitude auszugeben, wurde
+  verworfen: er machte 2 Hysterese-Tests rot und hätte bei Ruhe-Rauschen wieder Drift erzeugt.
+  Das Band bleibt exakt 0.
 - Priorität unverändert `MOVE_SOURCE_PRIORITY = ["touch","gamepad","keyboard"]`; gibt die
   Hysterese 0 aus, fällt die Bewegung wie bisher auf Gamepad/Tastatur zurück.
 
@@ -87,8 +90,9 @@ Tests decken ab:
   → **40/40 grün** (3 Dateien).
 - Voll: `npm test` → **235/235 grün** (18 Dateien).
 - `npm run build` → **grün** (tsc + vite, ~0,9 s).
-- Messung: `flock /home/ai/games/.lf-perf.lock node ~/tmp/m10-touch-latency/measure.mjs`
-  (siehe Skript-Kopie unten) → `passed: true`, 0 JS-Fehler.
+- Messung: `BASE_SHA=$(git rev-parse HEAD) flock /home/ai/games/.lf-perf.lock
+  node docs/lanes/m10-touch-latency-measure.mjs` → `passed: true`, 24/24 bewegt, 0 JS-Fehler
+  (Nachher-Lauf `2026-11-27T04:36:52Z`, baseSha `1517ab4`).
 - Input-Regression: `node scripts/verify-input.mjs` → **PASS 28/28 Checks, 0 JS-Fehler**
   (Touch-Menüs/Run/Pause/Level-up/Truhe/Results, Gamepad Hotplug + Sperren, Tastatur ESC).
 
@@ -113,6 +117,6 @@ Eingabelogik geändert. Hysterese verhindert Zittern bei Ruhe ohne die M8-Priori
 
 - iOS-Safari auf echtem Gerät nicht gemessen (nur Chromium-Emulation mit echten CDP-Touch-Events);
   der Code-Pfad ist identisch, die DOM-Zustellung kann dort um wenige ms abweichen.
-- Pixel-7-ms-p95 im Nachher-Lauf 3,4 ms (ein Ausreißer) — weiterhin weit unter 33 ms und 1 Frame.
+- ms-p95 im finalen Nachher-Lauf 2,1 ms (iPhone) / 2,3 ms (Pixel 7) — weit unter 33 ms, Frames-p95 1.
 - Die Messung zeigt nur Geste → Sim-Frame, nicht zusätzliche Display-Latenz des Geräts.
 - `.lane-done` wird gemäß Merge-Regel vom Merge-Job entfernt; Messwerte stehen hier und im JSON.

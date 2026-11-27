@@ -1,0 +1,10 @@
+M10-touch-latency — Touch-Steuerung ohne spürbare Verzögerung: PASS
+Karten #2118 (Messung), #2119 (Deadzone-Hysterese), #2120 (Loslassen), #2121 (Doku + Beleg) erledigt.
+Messung (Playwright/CDP-Touch, iPhone 14 quer + Pixel 7 quer, je 12 Trials):
+  vorher:  Median 1 Frame (iPhone 0,85 ms / Pixel 0,70 ms), p95 1 Frame (1,5 / 1,4 ms)
+  nachher: Median 1 Frame (0,70 ms), p95 1 Frame (2,1 ms); Loslassen 1 Frame, 24/24 bewegt
+Kriterium: Median <= 2 Frames (33 ms), p95 <= 3 Frames, Loslassen <= 1 Frame — erfüllt.
+Hysterese: Enter 0.12 / Release 0.09, Band exakt 0 (kein Zittern), Priorität touch>gamepad>keyboard unverändert.
+Tests: gezielt 40/40, gesamt 235/235 grün; npm run build grün; verify-input 28/28, 0 JS-Fehler in beiden Profilen.
+Nur Eingabelogik (src/input/InputState.ts, tests/input-latency.test.ts), keine Gameplay-Änderung. GAME.md unangetastet.
+Offen: iOS-Safari auf Realgerät nicht gemessen (nur Chromium-Emulation), Display-Latenz des Geräts nicht enthalten.
