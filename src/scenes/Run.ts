@@ -452,6 +452,8 @@ export class Run extends Phaser.Scene {
         this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
         getAudio().play(killed ? "kill" : "hit");
         if (enemy.boss && !killed) this.bossHitFeedback();
+        // M10: Evolutions-Signatur am getroffenen Gegner (rein visuell, Throttle im FxSystem).
+        this.combat.fx.spawnEvolution(weaponId, killed ? "death" : "hit", enemy.x, enemy.y);
       },
       onHeal: (amount) => {
         this.hp = Math.min(this.maxHp, this.hp + amount);

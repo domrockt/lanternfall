@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2862,
+  "next": 2867,
   "cards": [
     {
       "id": 1,
@@ -16,7 +16,7 @@
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-25T00:03:38Z"
+      "updated": "2026-11-27T11:15:15Z"
     },
     {
       "id": 2,
@@ -32,7 +32,7 @@
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-25T00:03:38Z"
+      "updated": "2026-11-27T11:15:15Z"
     },
     {
       "id": 3,
@@ -48,7 +48,7 @@
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-25T00:03:38Z"
+      "updated": "2026-11-27T11:15:15Z"
     },
     {
       "id": 4,
@@ -64,7 +64,7 @@
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-25T00:03:38Z"
+      "updated": "2026-11-27T11:15:15Z"
     },
     {
       "id": 5,
@@ -80,7 +80,7 @@
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-25T00:03:38Z"
+      "updated": "2026-11-27T11:15:15Z"
     },
     {
       "id": 6,
@@ -165,7 +165,7 @@
         }
       ],
       "created": "2026-11-24T23:44:35Z",
-      "updated": "2026-11-25T00:24:40Z"
+      "updated": "2026-11-27T11:15:15Z"
     },
     {
       "id": 11,
@@ -4189,6 +4189,111 @@
       "notes": [],
       "created": "2026-11-27T10:55:17Z",
       "updated": "2026-11-27T10:55:17Z"
+    },
+    {
+      "id": 2862,
+      "title": "m10-fx-evolution K1 Ist-Aufnahme",
+      "description": "Lane #2038. Vorher-Belege: je Evolution ein ~2-s-GIF bei 300+ Gegnern (shots/m10-fx-evolution-before-*.gif), FX-Key/Farb-Inventar in docs/lanes/m10-fx-evolution.md, Beleg dass Treffer/Tod heute je Evolution identisch sind. Abnahme: 6 GIFs vorhanden, alle Frame-Samples >=300 Gegner, Inventar-Tabelle + Pixel/Kanal-Beleg im Doc. Beleg: Commit 1fd6869.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T11:15:15Z",
+          "by": "build",
+          "text": "lane #2038 aus m10-fx-evolution gemerged"
+        },
+        {
+          "at": "2026-11-27T11:16:55Z",
+          "by": "build",
+          "text": "lane #2038: aus Branch m10-fx-evolution in main gemerged (Evolutions-FX, Art-Director PASS 4/5)"
+        }
+      ],
+      "created": "2026-11-27T11:15:15Z",
+      "updated": "2026-11-27T11:16:55Z"
+    },
+    {
+      "id": 2863,
+      "title": "m10-fx-evolution K2 Signatur-Katalog",
+      "description": "Lane #2039. Pro Evolution eindeutige Kombination Form+Palette-Index+Lifetime in gen-fx.ts, Texturen fx_evo_hit_<id>/fx_evo_death_<id>. Abnahme: tests/fx-evolution.test.ts beweist 6 paarweise verschiedene Signaturen, FX_FRAME_COUNTS kompatibel. Beleg: Commit 26b0950.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T11:15:15Z",
+          "by": "build",
+          "text": "lane #2041 aus m10-fx-evolution gemerged"
+        },
+        {
+          "at": "2026-11-27T11:16:55Z",
+          "by": "build",
+          "text": "lane #2039: aus Branch m10-fx-evolution in main gemerged (Evolutions-FX, Art-Director PASS 4/5)"
+        }
+      ],
+      "created": "2026-11-27T11:15:15Z",
+      "updated": "2026-11-27T11:16:55Z"
+    },
+    {
+      "id": 2864,
+      "title": "m10-fx-evolution K3 Treffer+Tod je Evolution",
+      "description": "Lane #2040. Trefferfunke und Todes-Puff je Evolution im Spiel sichtbar (FxSystem-API + Run-onHit), LOD minimal (Alpha 0,5/NORMAL) erhaelt Unterscheidbarkeit. Abnahme: tsc gruen, LOD-Beleg im Doc, GIF/Screenshot mit lebenden Gegnern zeigt Signatur. Belege: Commits 4401188/231d2de.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T11:15:15Z",
+          "by": "build",
+          "text": "lane #? aus m10-fx-evolution gemerged"
+        },
+        {
+          "at": "2026-11-27T11:16:55Z",
+          "by": "build",
+          "text": "lane #2040: aus Branch m10-fx-evolution in main gemerged (Evolutions-FX, Art-Director PASS 4/5)"
+        }
+      ],
+      "created": "2026-11-27T11:15:15Z",
+      "updated": "2026-11-27T11:16:55Z"
+    },
+    {
+      "id": 2865,
+      "title": "m10-fx-evolution K4 Messung Nachher",
+      "description": "Lane #2041. 6 Nachher-GIFs + eingefrorener Chaos-Frame Minute 25. Near-White im AoE-Crop <=4,16 % (A7), Pixel-Diff der Signaturen > Schwelle. Abnahme: shots/m10-fx-evolution-after-*.gif/.png + JSON mit Messwerten, 0 JS-Fehler. Ergebnis: Chaos m25 0,87 % Near-White, Diff min 510/1030 px. Beleg: Commit 255839a.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T11:15:15Z",
+          "by": "build",
+          "text": "lane #? aus m10-fx-evolution gemerged"
+        },
+        {
+          "at": "2026-11-27T11:16:55Z",
+          "by": "build",
+          "text": "lane #2041: aus Branch m10-fx-evolution in main gemerged (Evolutions-FX, Art-Director PASS 4/5)"
+        }
+      ],
+      "created": "2026-11-27T11:15:15Z",
+      "updated": "2026-11-27T11:16:55Z"
+    },
+    {
+      "id": 2866,
+      "title": "m10-fx-evolution K5 Doku + lane-done",
+      "description": "Lane #2042. docs/lanes/m10-fx-evolution.md mit art-director-Urteil je Evolution (PASS/FAIL + Note) und Gesamtnote >=4/5; offene Punkte ehrlich. Abnahme: build + alle Tests gruen (inkl. tests/fx-evolution.test.ts), 6 Vorher-/Nachher-GIFs, Near-White <=4,16 %, art-director >=4/5. Ergebnis: art-director PASS 4/5 (6/6), 231 Tests gruen. Beleg: Commit ebc8dad.",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T11:15:15Z",
+          "by": "build",
+          "text": "lane #? aus m10-fx-evolution gemerged"
+        },
+        {
+          "at": "2026-11-27T11:16:55Z",
+          "by": "build",
+          "text": "lane #2042: aus Branch m10-fx-evolution in main gemerged (Evolutions-FX, Art-Director PASS 4/5)"
+        }
+      ],
+      "created": "2026-11-27T11:15:15Z",
+      "updated": "2026-11-27T11:16:55Z"
     }
   ]
 }

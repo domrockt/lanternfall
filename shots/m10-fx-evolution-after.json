@@ -1,0 +1,1100 @@
+{
+  "meta": {
+    "phase": "after",
+    "crop": {
+      "x": 360,
+      "y": 160,
+      "width": 240,
+      "height": 220
+    },
+    "frames": 24,
+    "frameMs": 80,
+    "nearWhiteDef": "r>=235 && g>=150 && b>=150"
+  },
+  "evolutions": {
+    "flail": {
+      "evoId": "wrath_pendulum",
+      "gif": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-flail.gif",
+      "still": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-flail.png",
+      "nearWhitePct": 5.05,
+      "peakFrame": 8,
+      "peakCrop": "/home/ai/tmp/m10-fx-evolution/frames-after-flail-556518/c008.png",
+      "frames": [
+        {
+          "i": 0,
+          "enemies": 415,
+          "kills": 569,
+          "time": 1.4,
+          "nearWhitePct": 1.65
+        },
+        {
+          "i": 1,
+          "enemies": 521,
+          "kills": 622,
+          "time": 1.8,
+          "nearWhitePct": 1.87
+        },
+        {
+          "i": 2,
+          "enemies": 521,
+          "kills": 846,
+          "time": 2,
+          "nearWhitePct": 1.2
+        },
+        {
+          "i": 3,
+          "enemies": 522,
+          "kills": 984,
+          "time": 2.3,
+          "nearWhitePct": 3.64
+        },
+        {
+          "i": 4,
+          "enemies": 522,
+          "kills": 984,
+          "time": 2.6,
+          "nearWhitePct": 2.35
+        },
+        {
+          "i": 5,
+          "enemies": 522,
+          "kills": 1315,
+          "time": 3,
+          "nearWhitePct": 2.6
+        },
+        {
+          "i": 6,
+          "enemies": 522,
+          "kills": 1315,
+          "time": 3.3,
+          "nearWhitePct": 3.35
+        },
+        {
+          "i": 7,
+          "enemies": 439,
+          "kills": 1705,
+          "time": 3.6,
+          "nearWhitePct": 2.71
+        },
+        {
+          "i": 8,
+          "enemies": 522,
+          "kills": 1725,
+          "time": 3.9,
+          "nearWhitePct": 5.05
+        },
+        {
+          "i": 9,
+          "enemies": 467,
+          "kills": 2025,
+          "time": 4.2,
+          "nearWhitePct": 1.01
+        },
+        {
+          "i": 10,
+          "enemies": 521,
+          "kills": 2103,
+          "time": 4.5,
+          "nearWhitePct": 2.7
+        },
+        {
+          "i": 11,
+          "enemies": 521,
+          "kills": 2103,
+          "time": 4.7,
+          "nearWhitePct": 2.44
+        },
+        {
+          "i": 12,
+          "enemies": 441,
+          "kills": 2519,
+          "time": 5.1,
+          "nearWhitePct": 1.88
+        },
+        {
+          "i": 13,
+          "enemies": 521,
+          "kills": 2519,
+          "time": 5.4,
+          "nearWhitePct": 1.24
+        },
+        {
+          "i": 14,
+          "enemies": 452,
+          "kills": 2871,
+          "time": 5.7,
+          "nearWhitePct": 2.1
+        },
+        {
+          "i": 15,
+          "enemies": 522,
+          "kills": 2925,
+          "time": 6,
+          "nearWhitePct": 3.2
+        },
+        {
+          "i": 16,
+          "enemies": 521,
+          "kills": 3151,
+          "time": 6.3,
+          "nearWhitePct": 1.96
+        },
+        {
+          "i": 17,
+          "enemies": 522,
+          "kills": 3321,
+          "time": 6.5,
+          "nearWhitePct": 2.7
+        },
+        {
+          "i": 18,
+          "enemies": 522,
+          "kills": 3365,
+          "time": 6.8,
+          "nearWhitePct": 1.62
+        },
+        {
+          "i": 19,
+          "enemies": 464,
+          "kills": 3703,
+          "time": 7.2,
+          "nearWhitePct": 0.95
+        },
+        {
+          "i": 20,
+          "enemies": 522,
+          "kills": 3729,
+          "time": 7.5,
+          "nearWhitePct": 0.3
+        },
+        {
+          "i": 21,
+          "enemies": 522,
+          "kills": 3960,
+          "time": 7.8,
+          "nearWhitePct": 0.72
+        },
+        {
+          "i": 22,
+          "enemies": 521,
+          "kills": 4088,
+          "time": 8.1,
+          "nearWhitePct": 1.75
+        },
+        {
+          "i": 23,
+          "enemies": 520,
+          "kills": 4089,
+          "time": 8.3,
+          "nearWhitePct": 1.45
+        }
+      ]
+    },
+    "storm": {
+      "evoId": "thunder_seal",
+      "gif": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-storm.gif",
+      "still": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-storm.png",
+      "nearWhitePct": 6.26,
+      "peakFrame": 9,
+      "peakCrop": "/home/ai/tmp/m10-fx-evolution/frames-after-storm-556518/c009.png",
+      "frames": [
+        {
+          "i": 0,
+          "enemies": 521,
+          "kills": 26,
+          "time": 1.4,
+          "nearWhitePct": 2.54
+        },
+        {
+          "i": 1,
+          "enemies": 521,
+          "kills": 26,
+          "time": 1.7,
+          "nearWhitePct": 1.09
+        },
+        {
+          "i": 2,
+          "enemies": 520,
+          "kills": 27,
+          "time": 1.9,
+          "nearWhitePct": 1.03
+        },
+        {
+          "i": 3,
+          "enemies": 520,
+          "kills": 27,
+          "time": 2.2,
+          "nearWhitePct": 0.84
+        },
+        {
+          "i": 4,
+          "enemies": 520,
+          "kills": 27,
+          "time": 2.5,
+          "nearWhitePct": 0.89
+        },
+        {
+          "i": 5,
+          "enemies": 521,
+          "kills": 51,
+          "time": 2.7,
+          "nearWhitePct": 1.61
+        },
+        {
+          "i": 6,
+          "enemies": 520,
+          "kills": 52,
+          "time": 3,
+          "nearWhitePct": 1.87
+        },
+        {
+          "i": 7,
+          "enemies": 520,
+          "kills": 52,
+          "time": 3.3,
+          "nearWhitePct": 2.15
+        },
+        {
+          "i": 8,
+          "enemies": 520,
+          "kills": 52,
+          "time": 3.5,
+          "nearWhitePct": 2.41
+        },
+        {
+          "i": 9,
+          "enemies": 522,
+          "kills": 53,
+          "time": 3.8,
+          "nearWhitePct": 6.26
+        },
+        {
+          "i": 10,
+          "enemies": 522,
+          "kills": 77,
+          "time": 4,
+          "nearWhitePct": 1.78
+        },
+        {
+          "i": 11,
+          "enemies": 522,
+          "kills": 77,
+          "time": 4.3,
+          "nearWhitePct": 1.94
+        },
+        {
+          "i": 12,
+          "enemies": 522,
+          "kills": 77,
+          "time": 4.5,
+          "nearWhitePct": 1.79
+        },
+        {
+          "i": 13,
+          "enemies": 521,
+          "kills": 78,
+          "time": 4.8,
+          "nearWhitePct": 1.49
+        },
+        {
+          "i": 14,
+          "enemies": 521,
+          "kills": 78,
+          "time": 5.1,
+          "nearWhitePct": 1.18
+        },
+        {
+          "i": 15,
+          "enemies": 521,
+          "kills": 102,
+          "time": 5.4,
+          "nearWhitePct": 0.88
+        },
+        {
+          "i": 16,
+          "enemies": 521,
+          "kills": 102,
+          "time": 5.7,
+          "nearWhitePct": 0.71
+        },
+        {
+          "i": 17,
+          "enemies": 521,
+          "kills": 102,
+          "time": 6,
+          "nearWhitePct": 0.46
+        },
+        {
+          "i": 18,
+          "enemies": 521,
+          "kills": 102,
+          "time": 6.2,
+          "nearWhitePct": 1.02
+        },
+        {
+          "i": 19,
+          "enemies": 521,
+          "kills": 102,
+          "time": 6.5,
+          "nearWhitePct": 1.34
+        },
+        {
+          "i": 20,
+          "enemies": 521,
+          "kills": 126,
+          "time": 6.8,
+          "nearWhitePct": 0.48
+        },
+        {
+          "i": 21,
+          "enemies": 521,
+          "kills": 126,
+          "time": 7.1,
+          "nearWhitePct": 0.75
+        },
+        {
+          "i": 22,
+          "enemies": 521,
+          "kills": 126,
+          "time": 7.4,
+          "nearWhitePct": 1.19
+        },
+        {
+          "i": 23,
+          "enemies": 521,
+          "kills": 126,
+          "time": 7.7,
+          "nearWhitePct": 0.98
+        }
+      ]
+    },
+    "ember": {
+      "evoId": "phoenix",
+      "gif": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-ember.gif",
+      "still": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-ember.png",
+      "nearWhitePct": 1.57,
+      "peakFrame": 6,
+      "peakCrop": "/home/ai/tmp/m10-fx-evolution/frames-after-ember-556518/c006.png",
+      "frames": [
+        {
+          "i": 0,
+          "enemies": 521,
+          "kills": 146,
+          "time": 1.4,
+          "nearWhitePct": 0.82
+        },
+        {
+          "i": 1,
+          "enemies": 521,
+          "kills": 253,
+          "time": 1.7,
+          "nearWhitePct": 1.23
+        },
+        {
+          "i": 2,
+          "enemies": 521,
+          "kills": 320,
+          "time": 1.9,
+          "nearWhitePct": 1.38
+        },
+        {
+          "i": 3,
+          "enemies": 521,
+          "kills": 400,
+          "time": 2.3,
+          "nearWhitePct": 0.9
+        },
+        {
+          "i": 4,
+          "enemies": 522,
+          "kills": 458,
+          "time": 2.5,
+          "nearWhitePct": 1.31
+        },
+        {
+          "i": 5,
+          "enemies": 521,
+          "kills": 498,
+          "time": 2.8,
+          "nearWhitePct": 0.97
+        },
+        {
+          "i": 6,
+          "enemies": 521,
+          "kills": 557,
+          "time": 3.1,
+          "nearWhitePct": 1.57
+        },
+        {
+          "i": 7,
+          "enemies": 521,
+          "kills": 653,
+          "time": 3.4,
+          "nearWhitePct": 1.22
+        },
+        {
+          "i": 8,
+          "enemies": 522,
+          "kills": 735,
+          "time": 3.7,
+          "nearWhitePct": 0.81
+        },
+        {
+          "i": 9,
+          "enemies": 522,
+          "kills": 774,
+          "time": 4,
+          "nearWhitePct": 1.08
+        },
+        {
+          "i": 10,
+          "enemies": 521,
+          "kills": 821,
+          "time": 4.3,
+          "nearWhitePct": 0.66
+        },
+        {
+          "i": 11,
+          "enemies": 521,
+          "kills": 858,
+          "time": 4.6,
+          "nearWhitePct": 0.83
+        },
+        {
+          "i": 12,
+          "enemies": 521,
+          "kills": 915,
+          "time": 4.8,
+          "nearWhitePct": 1.07
+        },
+        {
+          "i": 13,
+          "enemies": 521,
+          "kills": 952,
+          "time": 5.1,
+          "nearWhitePct": 0.72
+        },
+        {
+          "i": 14,
+          "enemies": 522,
+          "kills": 1007,
+          "time": 5.3,
+          "nearWhitePct": 0.62
+        },
+        {
+          "i": 15,
+          "enemies": 521,
+          "kills": 1025,
+          "time": 5.6,
+          "nearWhitePct": 1.35
+        },
+        {
+          "i": 16,
+          "enemies": 521,
+          "kills": 1082,
+          "time": 5.9,
+          "nearWhitePct": 1.26
+        },
+        {
+          "i": 17,
+          "enemies": 521,
+          "kills": 1118,
+          "time": 6.1,
+          "nearWhitePct": 0.45
+        },
+        {
+          "i": 18,
+          "enemies": 521,
+          "kills": 1175,
+          "time": 6.4,
+          "nearWhitePct": 0.32
+        },
+        {
+          "i": 19,
+          "enemies": 522,
+          "kills": 1230,
+          "time": 6.7,
+          "nearWhitePct": 0.21
+        },
+        {
+          "i": 20,
+          "enemies": 522,
+          "kills": 1253,
+          "time": 7,
+          "nearWhitePct": 0.13
+        },
+        {
+          "i": 21,
+          "enemies": 521,
+          "kills": 1294,
+          "time": 7.2,
+          "nearWhitePct": 0.48
+        },
+        {
+          "i": 22,
+          "enemies": 521,
+          "kills": 1333,
+          "time": 7.5,
+          "nearWhitePct": 0.81
+        },
+        {
+          "i": 23,
+          "enemies": 521,
+          "kills": 1364,
+          "time": 7.8,
+          "nearWhitePct": 0.7
+        }
+      ]
+    },
+    "frost": {
+      "evoId": "eternal_winter",
+      "gif": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-frost.gif",
+      "still": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-frost.png",
+      "nearWhitePct": 1.19,
+      "peakFrame": 2,
+      "peakCrop": "/home/ai/tmp/m10-fx-evolution/frames-after-frost-556518/c002.png",
+      "frames": [
+        {
+          "i": 0,
+          "enemies": 521,
+          "kills": 352,
+          "time": 1.4,
+          "nearWhitePct": 0.86
+        },
+        {
+          "i": 1,
+          "enemies": 521,
+          "kills": 352,
+          "time": 1.7,
+          "nearWhitePct": 1.01
+        },
+        {
+          "i": 2,
+          "enemies": 522,
+          "kills": 467,
+          "time": 2,
+          "nearWhitePct": 1.19
+        },
+        {
+          "i": 3,
+          "enemies": 521,
+          "kills": 600,
+          "time": 2.3,
+          "nearWhitePct": 0.83
+        },
+        {
+          "i": 4,
+          "enemies": 521,
+          "kills": 600,
+          "time": 2.5,
+          "nearWhitePct": 0.5
+        },
+        {
+          "i": 5,
+          "enemies": 521,
+          "kills": 692,
+          "time": 2.8,
+          "nearWhitePct": 0.69
+        },
+        {
+          "i": 6,
+          "enemies": 520,
+          "kills": 753,
+          "time": 3.1,
+          "nearWhitePct": 1
+        },
+        {
+          "i": 7,
+          "enemies": 521,
+          "kills": 777,
+          "time": 3.4,
+          "nearWhitePct": 0.37
+        },
+        {
+          "i": 8,
+          "enemies": 521,
+          "kills": 851,
+          "time": 3.7,
+          "nearWhitePct": 0.35
+        },
+        {
+          "i": 9,
+          "enemies": 521,
+          "kills": 895,
+          "time": 4,
+          "nearWhitePct": 0.3
+        },
+        {
+          "i": 10,
+          "enemies": 521,
+          "kills": 947,
+          "time": 4.3,
+          "nearWhitePct": 0.18
+        },
+        {
+          "i": 11,
+          "enemies": 521,
+          "kills": 947,
+          "time": 4.6,
+          "nearWhitePct": 0.37
+        },
+        {
+          "i": 12,
+          "enemies": 521,
+          "kills": 1023,
+          "time": 4.9,
+          "nearWhitePct": 0.23
+        },
+        {
+          "i": 13,
+          "enemies": 521,
+          "kills": 1062,
+          "time": 5.2,
+          "nearWhitePct": 0.24
+        },
+        {
+          "i": 14,
+          "enemies": 522,
+          "kills": 1064,
+          "time": 5.4,
+          "nearWhitePct": 0.47
+        },
+        {
+          "i": 15,
+          "enemies": 520,
+          "kills": 1106,
+          "time": 5.7,
+          "nearWhitePct": 0.72
+        },
+        {
+          "i": 16,
+          "enemies": 521,
+          "kills": 1145,
+          "time": 6,
+          "nearWhitePct": 1.05
+        },
+        {
+          "i": 17,
+          "enemies": 522,
+          "kills": 1175,
+          "time": 6.3,
+          "nearWhitePct": 0.86
+        },
+        {
+          "i": 18,
+          "enemies": 521,
+          "kills": 1203,
+          "time": 6.5,
+          "nearWhitePct": 0.78
+        },
+        {
+          "i": 19,
+          "enemies": 521,
+          "kills": 1237,
+          "time": 6.8,
+          "nearWhitePct": 0.66
+        },
+        {
+          "i": 20,
+          "enemies": 521,
+          "kills": 1237,
+          "time": 7.1,
+          "nearWhitePct": 0.64
+        },
+        {
+          "i": 21,
+          "enemies": 522,
+          "kills": 1265,
+          "time": 7.4,
+          "nearWhitePct": 0.92
+        },
+        {
+          "i": 22,
+          "enemies": 521,
+          "kills": 1312,
+          "time": 7.7,
+          "nearWhitePct": 0.79
+        },
+        {
+          "i": 23,
+          "enemies": 521,
+          "kills": 1341,
+          "time": 8,
+          "nearWhitePct": 0.73
+        }
+      ]
+    },
+    "thorn": {
+      "evoId": "thorn_storm",
+      "gif": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-thorn.gif",
+      "still": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-thorn.png",
+      "nearWhitePct": 4.23,
+      "peakFrame": 18,
+      "peakCrop": "/home/ai/tmp/m10-fx-evolution/frames-after-thorn-556518/c018.png",
+      "frames": [
+        {
+          "i": 0,
+          "enemies": 498,
+          "kills": 485,
+          "time": 1.4,
+          "nearWhitePct": 2.23
+        },
+        {
+          "i": 1,
+          "enemies": 521,
+          "kills": 708,
+          "time": 1.7,
+          "nearWhitePct": 0.89
+        },
+        {
+          "i": 2,
+          "enemies": 521,
+          "kills": 935,
+          "time": 2.1,
+          "nearWhitePct": 3.07
+        },
+        {
+          "i": 3,
+          "enemies": 521,
+          "kills": 1100,
+          "time": 2.4,
+          "nearWhitePct": 2.24
+        },
+        {
+          "i": 4,
+          "enemies": 482,
+          "kills": 1442,
+          "time": 2.7,
+          "nearWhitePct": 3.41
+        },
+        {
+          "i": 5,
+          "enemies": 521,
+          "kills": 1548,
+          "time": 3,
+          "nearWhitePct": 2.36
+        },
+        {
+          "i": 6,
+          "enemies": 475,
+          "kills": 1890,
+          "time": 3.3,
+          "nearWhitePct": 4.02
+        },
+        {
+          "i": 7,
+          "enemies": 521,
+          "kills": 2004,
+          "time": 3.7,
+          "nearWhitePct": 3.94
+        },
+        {
+          "i": 8,
+          "enemies": 491,
+          "kills": 2338,
+          "time": 4.1,
+          "nearWhitePct": 3.17
+        },
+        {
+          "i": 9,
+          "enemies": 502,
+          "kills": 2446,
+          "time": 4.4,
+          "nearWhitePct": 3.29
+        },
+        {
+          "i": 10,
+          "enemies": 509,
+          "kills": 2722,
+          "time": 4.7,
+          "nearWhitePct": 2.91
+        },
+        {
+          "i": 11,
+          "enemies": 522,
+          "kills": 2805,
+          "time": 5,
+          "nearWhitePct": 2.34
+        },
+        {
+          "i": 12,
+          "enemies": 499,
+          "kills": 3128,
+          "time": 5.3,
+          "nearWhitePct": 1.89
+        },
+        {
+          "i": 13,
+          "enemies": 522,
+          "kills": 3224,
+          "time": 5.6,
+          "nearWhitePct": 2.39
+        },
+        {
+          "i": 14,
+          "enemies": 505,
+          "kills": 3524,
+          "time": 5.9,
+          "nearWhitePct": 2.82
+        },
+        {
+          "i": 15,
+          "enemies": 521,
+          "kills": 3597,
+          "time": 6.2,
+          "nearWhitePct": 1.73
+        },
+        {
+          "i": 16,
+          "enemies": 494,
+          "kills": 3915,
+          "time": 6.5,
+          "nearWhitePct": 2.85
+        },
+        {
+          "i": 17,
+          "enemies": 521,
+          "kills": 3984,
+          "time": 6.8,
+          "nearWhitePct": 2.21
+        },
+        {
+          "i": 18,
+          "enemies": 493,
+          "kills": 4323,
+          "time": 7.1,
+          "nearWhitePct": 4.23
+        },
+        {
+          "i": 19,
+          "enemies": 521,
+          "kills": 4384,
+          "time": 7.4,
+          "nearWhitePct": 1.94
+        },
+        {
+          "i": 20,
+          "enemies": 485,
+          "kills": 4711,
+          "time": 7.7,
+          "nearWhitePct": 3.34
+        },
+        {
+          "i": 21,
+          "enemies": 510,
+          "kills": 4800,
+          "time": 8,
+          "nearWhitePct": 1.2
+        },
+        {
+          "i": 22,
+          "enemies": 482,
+          "kills": 5140,
+          "time": 8.3,
+          "nearWhitePct": 2.88
+        },
+        {
+          "i": 23,
+          "enemies": 522,
+          "kills": 5223,
+          "time": 8.6,
+          "nearWhitePct": 1.55
+        }
+      ]
+    },
+    "lantern": {
+      "evoId": "soul_beacon",
+      "gif": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-lantern.gif",
+      "still": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-after-lantern.png",
+      "nearWhitePct": 3.78,
+      "peakFrame": 21,
+      "peakCrop": "/home/ai/tmp/m10-fx-evolution/frames-after-lantern-556518/c021.png",
+      "frames": [
+        {
+          "i": 0,
+          "enemies": 521,
+          "kills": 268,
+          "time": 1.4,
+          "nearWhitePct": 2.36
+        },
+        {
+          "i": 1,
+          "enemies": 522,
+          "kills": 323,
+          "time": 1.7,
+          "nearWhitePct": 2.22
+        },
+        {
+          "i": 2,
+          "enemies": 522,
+          "kills": 374,
+          "time": 1.9,
+          "nearWhitePct": 1.88
+        },
+        {
+          "i": 3,
+          "enemies": 521,
+          "kills": 435,
+          "time": 2.2,
+          "nearWhitePct": 2.74
+        },
+        {
+          "i": 4,
+          "enemies": 521,
+          "kills": 481,
+          "time": 2.5,
+          "nearWhitePct": 2.52
+        },
+        {
+          "i": 5,
+          "enemies": 521,
+          "kills": 526,
+          "time": 2.8,
+          "nearWhitePct": 2.86
+        },
+        {
+          "i": 6,
+          "enemies": 521,
+          "kills": 573,
+          "time": 3.1,
+          "nearWhitePct": 2.74
+        },
+        {
+          "i": 7,
+          "enemies": 522,
+          "kills": 631,
+          "time": 3.4,
+          "nearWhitePct": 1.59
+        },
+        {
+          "i": 8,
+          "enemies": 521,
+          "kills": 671,
+          "time": 3.6,
+          "nearWhitePct": 1.32
+        },
+        {
+          "i": 9,
+          "enemies": 515,
+          "kills": 722,
+          "time": 3.9,
+          "nearWhitePct": 1.61
+        },
+        {
+          "i": 10,
+          "enemies": 521,
+          "kills": 762,
+          "time": 4.2,
+          "nearWhitePct": 2.34
+        },
+        {
+          "i": 11,
+          "enemies": 521,
+          "kills": 806,
+          "time": 4.5,
+          "nearWhitePct": 1.72
+        },
+        {
+          "i": 12,
+          "enemies": 522,
+          "kills": 848,
+          "time": 4.7,
+          "nearWhitePct": 1.63
+        },
+        {
+          "i": 13,
+          "enemies": 521,
+          "kills": 888,
+          "time": 5,
+          "nearWhitePct": 1.63
+        },
+        {
+          "i": 14,
+          "enemies": 521,
+          "kills": 917,
+          "time": 5.3,
+          "nearWhitePct": 1.58
+        },
+        {
+          "i": 15,
+          "enemies": 521,
+          "kills": 953,
+          "time": 5.6,
+          "nearWhitePct": 1.95
+        },
+        {
+          "i": 16,
+          "enemies": 521,
+          "kills": 999,
+          "time": 5.9,
+          "nearWhitePct": 2.01
+        },
+        {
+          "i": 17,
+          "enemies": 521,
+          "kills": 1052,
+          "time": 6.2,
+          "nearWhitePct": 1.89
+        },
+        {
+          "i": 18,
+          "enemies": 521,
+          "kills": 1103,
+          "time": 6.5,
+          "nearWhitePct": 2.27
+        },
+        {
+          "i": 19,
+          "enemies": 521,
+          "kills": 1157,
+          "time": 6.8,
+          "nearWhitePct": 3.3
+        },
+        {
+          "i": 20,
+          "enemies": 521,
+          "kills": 1204,
+          "time": 7.1,
+          "nearWhitePct": 3.2
+        },
+        {
+          "i": 21,
+          "enemies": 521,
+          "kills": 1269,
+          "time": 7.3,
+          "nearWhitePct": 3.78
+        },
+        {
+          "i": 22,
+          "enemies": 521,
+          "kills": 1315,
+          "time": 7.6,
+          "nearWhitePct": 3.26
+        },
+        {
+          "i": 23,
+          "enemies": 522,
+          "kills": 1373,
+          "time": 7.9,
+          "nearWhitePct": 2.86
+        }
+      ]
+    }
+  },
+  "textures": {
+    "fx_evo_hit_wrath_pendulum": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_hit_wrath_pendulum.png",
+    "fx_evo_death_wrath_pendulum": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_death_wrath_pendulum.png",
+    "fx_evo_hit_thunder_seal": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_hit_thunder_seal.png",
+    "fx_evo_death_thunder_seal": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_death_thunder_seal.png",
+    "fx_evo_hit_phoenix": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_hit_phoenix.png",
+    "fx_evo_death_phoenix": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_death_phoenix.png",
+    "fx_evo_hit_eternal_winter": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_hit_eternal_winter.png",
+    "fx_evo_death_eternal_winter": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_death_eternal_winter.png",
+    "fx_evo_hit_thorn_storm": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_hit_thorn_storm.png",
+    "fx_evo_death_thorn_storm": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_death_thorn_storm.png",
+    "fx_evo_hit_soul_beacon": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_hit_soul_beacon.png",
+    "fx_evo_death_soul_beacon": "/home/ai/tmp/m10-fx-evolution/signatures/fx_evo_death_soul_beacon.png"
+  },
+  "chaos": {},
+  "errors": []
+}

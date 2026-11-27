@@ -5,7 +5,7 @@
  * Jeder Effekt hat: hellen Kern (13/12), Glow-Halo, Farbrampe und deutliche
  * Masse. Die Frames werden als eigene Texturen `key`, `key_2`, … registriert.
  */
-import Phaser from "phaser";
+import type Phaser from "phaser";
 import { PAL } from "../palette";
 
 interface FxDef {
@@ -408,6 +408,300 @@ function orbSoulFrame(stage: number): string[] {
   return out;
 }
 
+// ── Evolutions-Signaturen (M10) ────────────────────────────────
+// Jede Evolution bekommt eine eigene Treffer-/Todes-Signatur aus Form + Palette +
+// Lifetime, damit die 6 Evolutions-Waffen bereits am getroffenen Gegner erkennbar
+// sind. Rein visuell: die Tabelle ist reine Daten und wird von Tests auf paarweise
+// Eindeutigkeit geprueft; Kollisionen (gleiche Form UND gleicher Hauptindex UND
+// gleiche Hit-Lifetime) sind damit testbar.
+
+export type EvoSignatureShape = "ring" | "beam" | "splitter" | "cloud";
+
+export interface EvoSignature {
+  /** Evolutions-ID (== Waffen-ID im Slot, z. B. "phoenix"). */
+  evolution: string;
+  /** Basiswaffe, aus der die Evolution entsteht. */
+  baseWeapon: string;
+  shape: EvoSignatureShape;
+  /** [Hauptfarbe, Sekundaerfarbe, Kernfarbe] als Palettenindizes. */
+  palette: readonly [number, number, number];
+  /** Lebensdauer des Trefferfunken in s (Timing-Signatur). */
+  hitLifetime: number;
+  /** Lebensdauer des Todes-Puffs in s (Timing-Signatur). */
+  deathLifetime: number;
+  hitCount: number;
+  deathCount: number;
+}
+
+export const SIGNATURE_FRAME_COUNT = 4;
+
+export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
+  // Glutfunke + Arkanes Buch: heisser Splitter-Regen, kurz und hell.
+  phoenix: {
+    evolution: "phoenix", baseWeapon: "ember", shape: "splitter",
+    palette: [20, 18, 19], hitLifetime: 0.16, deathLifetime: 0.62,
+    hitCount: 6, deathCount: 14,
+  },
+  // Kettenflegel + Eisenherz: goldener Ring-Schlag, sehr kurz.
+  wrath_pendulum: {
+    evolution: "wrath_pendulum", baseWeapon: "flail", shape: "ring",
+    palette: [21, 20, 16], hitLifetime: 0.12, deathLifetime: 0.30,
+    hitCount: 4, deathCount: 8,
+  },
+  // Frostnova + Sanduhr: kalte Nebelwolke, langsam ausklingend.
+  eternal_winter: {
+    evolution: "eternal_winter", baseWeapon: "frost", shape: "cloud",
+    palette: [9, 6, 11], hitLifetime: 0.22, deathLifetime: 0.75,
+    hitCount: 5, deathCount: 10,
+  },
+  // Dornensalve + Windstiefel: gruener Splitter-Kranz, mittleres Timing.
+  thorn_storm: {
+    evolution: "thorn_storm", baseWeapon: "thorn", shape: "splitter",
+    palette: [30, 31, 20], hitLifetime: 0.18, deathLifetime: 0.42,
+    hitCount: 5, deathCount: 11,
+  },
+  // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
+  thunder_seal: {
+    evolution: "thunder_seal", baseWeapon: "storm", shape: "beam",
+    palette: [12, 9, 7], hitLifetime: 0.10, deathLifetime: 0.24,
+    hitCount: 3, deathCount: 7,
+  },
+  // Geisterlaterne + Magnetamulett: helle Seelenwolke, langes Nachgluehen.
+  soul_beacon: {
+    evolution: "soul_beacon", baseWeapon: "lantern", shape: "cloud",
+    palette: [11, 8, 5], hitLifetime: 0.26, deathLifetime: 0.55,
+    hitCount: 4, deathCount: 9,
+  },
+};
+
+export const EVOLUTION_SIGNATURE_IDS = Object.keys(EVOLUTION_SIGNATURES);
+
+export function evolutionSignature(evolution: string): EvoSignature | undefined {
+  return EVOLUTION_SIGNATURES[evolution];
+}
+
+/** Texture-Key der Treffer-/Todes-Signatur (Framecount bleibt konstant 4). */
+export function signatureTextureKey(evolution: string, kind: "hit" | "death"): string {
+  return `fx_evo_${kind}_${evolution}`;
+}
+
+/**
+ * LOD-Ansicht einer Signatur: Palette-Index bleibt IMMER erhalten, nur Alpha und
+ * Blend werden gedaempft. Die Untergrenze liegt bei 0,85 (art-director-Abnahme
+ * M10): die Signaturen bleiben auch bei 300+ Gegnern klar sichtbar, statt im
+ * Chaos auf 0,5 zu verblassen.
+ */
+export function lodSignatureView(
+  sig: EvoSignature,
+  level: "full" | "reduced" | "minimal",
+): { shape: EvoSignatureShape; paletteIndex: number; alpha: number; blend: "ADD" | "NORMAL" } {
+  const alpha = level === "full" ? 1 : level === "reduced" ? 0.92 : 0.85;
+  return {
+    shape: sig.shape,
+    paletteIndex: sig.palette[0],
+    alpha,
+    blend: level === "minimal" ? "NORMAL" : "ADD",
+  };
+}
+
+/** Kollision = gleiche Form, gleicher Haupt-Palettenindex und gleiches Hit-Timing. */
+export function signaturesCollide(a: EvoSignature, b: EvoSignature): boolean {
+  return a.shape === b.shape && a.palette[0] === b.palette[0] && a.hitLifetime === b.hitLifetime;
+}
+
+function putPixel(rows: string[][], x: number, y: number, idx: number): void {
+  const iy = Math.round(y);
+  const ix = Math.round(x);
+  if (iy < 0 || ix < 0 || iy >= rows.length || ix >= rows[iy].length) return;
+  const i = Math.max(0, Math.min(31, idx));
+  // Zeichenformat: 0-9 = Index 0-9, a-v = Index 10-31.
+  rows[iy][ix] = i < 10 ? String.fromCharCode(48 + i) : String.fromCharCode(97 + i - 10);
+}
+
+/** Palettenindex als Pixel-Zeichen: 0-9 = Index 0-9, a-v = Index 10-31. */
+function charOf(idx: number): string {
+  const i = Math.max(0, Math.min(31, Math.round(idx)));
+  return i < 10 ? String.fromCharCode(48 + i) : String.fromCharCode(97 + i - 10);
+}
+
+/** 1-px-Kontur in ink (0) plus helle Lichtkante oben-links (boneLight, 11). */
+function outlineAndRim(rows: string[][]): string[] {
+  const size = rows.length;
+  const snapshot = rows.map((r) => r.slice());
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      if (snapshot[y][x] !== ".") continue;
+      let touches = false;
+      for (let dy = -1; dy <= 1 && !touches; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
+          if (snapshot[ny][nx] !== ".") { touches = true; break; }
+        }
+      }
+      if (touches) rows[y][x] = charOf(0);
+    }
+  }
+  // Lichtkante: obere/links angrenzende Farbpixel einer Kontur aufhellen.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const ch = rows[y][x];
+      if (ch === "." || ch === charOf(0)) continue;
+      const aboveInk = y === 0 || rows[y - 1][x] === charOf(0);
+      const leftInk = x === 0 || rows[y][x - 1] === charOf(0);
+      if (aboveInk && leftInk) rows[y][x] = charOf(11);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Form-Frame einer Signatur: 4 Frames (klein → gross / ausklingend). */
+export function signatureFrame(
+  shape: EvoSignatureShape,
+  palette: readonly [number, number, number],
+  stage: number,
+  kind: "hit" | "death" = "hit",
+): string[] {
+  const size = 32;
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  const spread = death ? 1.4 : 1.0;
+  // Form-Variante je Haupt-Palettenindex: verhindert, dass zwei Evolutionen mit
+  // gleicher Grundform exakt dieselben Pixel erzeugen (siehe tests/fx-evolution).
+  const variant = palette[0] % 7;
+
+  if (shape === "ring") {
+    // Geschlossener 2-px-Zackenring: amber aussen, lantern innen, ink-Kontur.
+    const r = Math.min(13.2, (5.2 + t * 6.6) * spread);
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x - c, y - c);
+      const a = Math.atan2(y - c, x - c);
+      const jag = Math.sin(a * 8 + variant * 0.4) * 1.15
+        + Math.sin(a * 16 + stage * 1.7) * (death ? 0.85 : 0.35);
+      const edge = d - (r + jag);
+      if (edge >= -1.8 && edge < 0) putPixel(rows, x, y, palette[0]);
+      else if (edge >= 0 && edge <= 1.8) putPixel(rows, x, y, palette[1]);
+      else if (edge > 1.8 && edge <= 2.6) putPixel(rows, x, y, palette[2]);
+    }
+    return outlineAndRim(rows);
+  }
+
+  if (shape === "beam") {
+    // 2-3 px breiter Zickzack: candleWhite-Kern, fogBlue/paleMist-Rand, ink-Kontur.
+    const h = (death ? 28 : 20) + stage * 2;
+    const beams = death ? 3 : 1;
+    for (let b = 0; b < beams; b++) {
+      const off = b === 0 ? 0 : b === 1 ? -3 : 3;
+      for (let i = -h / 2; i <= h / 2; i++) {
+        const y = Math.round(c + i);
+        const wob = Math.round(Math.sin(i * 0.85 + variant + b * 1.3) * (death ? 2.4 : 1.7));
+        const x = Math.round(c + off + wob);
+        putPixel(rows, x, y, palette[0]);
+        putPixel(rows, x - 1, y, palette[1]);
+        putPixel(rows, x + 1, y, palette[1]);
+      }
+      if (b === 0) {
+        for (let k = 1; k <= 5; k++) {
+          putPixel(rows, c + 4 + k, c + k * 0.7, palette[1]);
+          putPixel(rows, c - 5 - k, c - k * 0.7, palette[1]);
+        }
+      }
+    }
+    return outlineAndRim(rows);
+  }
+
+  if (shape === "splitter") {
+    const shards = death ? 6 : 4;
+    const base = death ? 5.5 : 6.5;
+    const len = 4 + t * 4.5;
+    for (let i = 0; i < shards; i++) {
+      const a = variant * 0.37 + (i / shards) * Math.PI * 2 + stage * 0.13;
+      const rr = base * spread;
+      const cx = c + Math.cos(a) * rr;
+      const cy = c + Math.sin(a) * rr;
+      // Laenglicher Diamant entlang der Radialachse, mit hellem Kern.
+      for (let k = -len; k <= len; k++) {
+        const w = Math.max(0, 2.6 - Math.abs(k) * 0.55);
+        for (let s = -w; s <= w; s += 1) {
+          const px = cx + Math.cos(a) * k - Math.sin(a) * s;
+          const py = cy + Math.sin(a) * k + Math.cos(a) * s;
+          const idx = Math.abs(k) < 1.2 && Math.abs(s) < 1.2 ? palette[2]
+            : Math.abs(k) > len - 1.5 ? palette[1] : palette[0];
+          putPixel(rows, px, py, idx);
+        }
+      }
+    }
+    if (!death) putPixel(rows, c, c, palette[2]);
+    return outlineAndRim(rows);
+  }
+
+  // cloud: zwei klar verschiedene Silhouetten — asymmetrische Eiswolke oder aufsteigender Wisp.
+  if (palette[0] === 9) {
+    // Ewiger Winter: asymmetrische Eiswolke, paleMist-Kern + fogBlue-Aussenband.
+    const blobs: Array<[number, number, number]> = [
+      [-4, -2, 4.4], [3.5, -3, 3.8], [5, 2.5, 4.2], [-2, 4, 3.9], [0, 0, 4.8],
+    ];
+    for (const [bx, by, br] of blobs) {
+      const r = br * (death ? 1.45 : 1) * (1 + t * 0.35);
+      for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+        const d = Math.hypot(x - (c + bx * spread), y - (c + by * spread));
+        if (d > r) continue;
+        const idx = d < r * 0.5 ? palette[0] : d < r * 0.85 ? palette[1] : palette[2];
+        putPixel(rows, x, y, idx);
+      }
+    }
+    // Drei Eis-Splitter am Rand, damit die Wolke nicht amorph bleibt.
+    for (let i = 0; i < 3; i++) {
+      const a = -0.6 + i * 1.1 + variant * 0.2;
+      for (let k = 0; k < 5; k++) putPixel(rows, c + Math.cos(a) * (8 + k), c + Math.sin(a) * (7 + k), palette[1]);
+    }
+    return outlineAndRim(rows);
+  }
+
+  // Seelenleuchtfeuer: aufsteigender Wisp (schmaler Kern, breiter Saum, Schweif).
+  const wisps = death ? 3 : 1;
+  for (let w = 0; w < wisps; w++) {
+    const offX = w === 0 ? 0 : w === 1 ? -5 : 5;
+    const offY = w === 0 ? 0 : w === 1 ? 3 : -2;
+    const top = 10 + t * 4;
+    for (let yy = -top; yy <= 8; yy++) {
+      const y = c + yy + offY;
+      const taper = 1 - Math.max(0, yy + top * 0.2) / (top * 1.2);
+      const half = Math.max(0.6, 4.2 * taper + (death ? 1.2 : 0));
+      const sway = Math.sin(yy * 0.35 + stage * 0.9 + variant + w) * 1.7;
+      for (let xx = -half; xx <= half; xx += 0.75) {
+        const x = c + offX + sway + xx;
+        const idx = Math.abs(xx) < half * 0.42 ? palette[0]
+          : Math.abs(xx) < half * 0.78 ? palette[1] : palette[2];
+        putPixel(rows, x, y, idx);
+      }
+    }
+    // Zwei kleine seitliche Flammenarmen.
+    for (let k = 0; k < 4; k++) {
+      putPixel(rows, c + offX - 4 - k * 0.6, c + offY + 3 - k, palette[1]);
+      putPixel(rows, c + offX + 4 + k * 0.6, c + offY + 2 + k * 0.4, palette[1]);
+    }
+  }
+  return outlineAndRim(rows);
+}
+
+/** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
+function addEvolutionSignatures(scene: Phaser.Scene): void {
+  for (const id of EVOLUTION_SIGNATURE_IDS) {
+    const sig = EVOLUTION_SIGNATURES[id];
+    for (const kind of ["hit", "death"] as const) {
+      const def: FxDef = {
+        w: 32,
+        h: 32,
+        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
+      };
+      addFrames(scene, signatureTextureKey(id, kind), def);
+    }
+  }
+}
+
 export function createFxTextures(scene: Phaser.Scene): void {
   // Glut: weiß → gelb → orange → rot → dunkelrot
   addFrames(scene, "fx_fire", {
@@ -449,6 +743,8 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "orb_soul", { w: 15, h: 22, frames: [0, 1, 2].map(orbSoulFrame) });
   // Kalter Halo fuer Seelen (blau-grau statt warmem Amber-Ring).
   addFrames(scene, "fx_halo_cold", { w: 24, h: 24, frames: [0, 1].map(coldHaloFrame) });
+  // M10: eigene Treffer-/Todes-Signatur je Evolution (Form + Palette + Timing).
+  addEvolutionSignatures(scene);
 }
 
 /** Alle Frame-Keys eines Effekts (für FxSystem-Animationen). */
@@ -461,4 +757,8 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_seal: 5, fx_thorn: 3, fx_orb: 4, fx_pillar: 5, fx_shock: 6,
   fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4,
   fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2,
+  ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
+    [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],
+    [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
+  ])),
 };
