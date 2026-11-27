@@ -86,14 +86,36 @@ export class SpatialHash<T extends PointLike> {
     const maxCx = Math.floor((x + radius) * this.inv);
     const minCy = Math.floor((y - radius) * this.inv);
     const maxCy = Math.floor((y + radius) * this.inv);
+    const dim = this.dim;
+    const ixMin = minCx - this.minCell;
+    const ixMax = maxCx - this.minCell;
+    const iyMin = minCy - this.minCell;
+    const iyMax = maxCy - this.minCell;
+    if (ixMin >= 0 && ixMax < dim && iyMin >= 0 && iyMax < dim) {
+      // Fast-Path (M10-Budget): Query liegt komplett im flachen Grid — keine
+      // Bounds-/Overflow-Pruefung pro Zelle, Zeilenbasis einmal berechnet.
+      // Deckt den Normalfall (Welt 0..4096) ab; der Query ist der zweit-
+      // heisseste Separations-Pfad nach dem Paar-Check.
+      const grid = this.grid;
+      for (let ix = ixMin; ix <= ixMax; ix++) {
+        const row = ix * dim;
+        for (let iy = iyMin; iy <= iyMax; iy++) {
+          const bucket = grid[row + iy];
+          if (bucket !== undefined) {
+            for (let i = 0; i < bucket.length; i++) out.push(bucket[i]);
+          }
+        }
+      }
+      return out;
+    }
     for (let cx = minCx; cx <= maxCx; cx++) {
       const ix = cx - this.minCell;
-      const xIn = ix >= 0 && ix < this.dim;
+      const xIn = ix >= 0 && ix < dim;
       for (let cy = minCy; cy <= maxCy; cy++) {
         const iy = cy - this.minCell;
         let bucket: T[] | undefined;
-        if (xIn && iy >= 0 && iy < this.dim) {
-          bucket = this.grid[ix * this.dim + iy];
+        if (xIn && iy >= 0 && iy < dim) {
+          bucket = this.grid[ix * dim + iy];
         } else {
           bucket = this.overflow.get(this.key(cx, cy));
         }
@@ -116,14 +138,37 @@ export class SpatialHash<T extends PointLike> {
     const maxCx = Math.floor((x + radius) * this.inv);
     const minCy = Math.floor((y - radius) * this.inv);
     const maxCy = Math.floor((y + radius) * this.inv);
+    const dim = this.dim;
+    const ixMin = minCx - this.minCell;
+    const ixMax = maxCx - this.minCell;
+    const iyMin = minCy - this.minCell;
+    const iyMax = maxCy - this.minCell;
+    if (ixMin >= 0 && ixMax < dim && iyMin >= 0 && iyMax < dim) {
+      // Fast-Path wie queryCircle: nur Nachbarzellen, keine Overflow-Checks.
+      const grid = this.grid;
+      for (let ix = ixMin; ix <= ixMax; ix++) {
+        const row = ix * dim;
+        for (let iy = iyMin; iy <= iyMax; iy++) {
+          const bucket = grid[row + iy];
+          if (bucket === undefined) continue;
+          for (let i = 0; i < bucket.length; i++) {
+            const item = bucket[i];
+            const dx = item.x - x;
+            const dy = item.y - y;
+            if (dx * dx + dy * dy <= r2) out.push(item);
+          }
+        }
+      }
+      return out;
+    }
     for (let cx = minCx; cx <= maxCx; cx++) {
       const ix = cx - this.minCell;
-      const xIn = ix >= 0 && ix < this.dim;
+      const xIn = ix >= 0 && ix < dim;
       for (let cy = minCy; cy <= maxCy; cy++) {
         const iy = cy - this.minCell;
         let bucket: T[] | undefined;
-        if (xIn && iy >= 0 && iy < this.dim) {
-          bucket = this.grid[ix * this.dim + iy];
+        if (xIn && iy >= 0 && iy < dim) {
+          bucket = this.grid[ix * dim + iy];
         } else {
           bucket = this.overflow.get(this.key(cx, cy));
         }

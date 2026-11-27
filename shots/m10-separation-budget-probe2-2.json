@@ -1,0 +1,289 @@
+{
+  "tag": "probe2-2",
+  "timestamp": "2026-11-27T19:12:37.231Z",
+  "scenario": {
+    "enemies": 500,
+    "seed": 20261127,
+    "warmupFrames": 180,
+    "measuredFrames": 600,
+    "cellSize": 32,
+    "queryRadiusPx": 460,
+    "mix": [
+      {
+        "id": "bog_rat",
+        "radius": 6,
+        "count": 90
+      },
+      {
+        "id": "wisp",
+        "radius": 6,
+        "count": 70
+      },
+      {
+        "id": "bogzombie",
+        "radius": 8,
+        "count": 60
+      },
+      {
+        "id": "crow",
+        "radius": 5,
+        "count": 70
+      },
+      {
+        "id": "skeleton",
+        "radius": 7,
+        "count": 60
+      },
+      {
+        "id": "bat",
+        "radius": 5,
+        "count": 60
+      },
+      {
+        "id": "ghoul",
+        "radius": 8,
+        "count": 40
+      },
+      {
+        "id": "spider",
+        "radius": 6,
+        "count": 50
+      }
+    ],
+    "note": "reiner Node-Bench ohne Browser — kein flock noetig. Strecke A = produktiver Run.ts-Pfad, Strecke B = Budget-Resolver (resolveCrowdSeparation) pro Frame inkl. SpatialHash-Rebuild."
+  },
+  "paths": {
+    "production": {
+      "name": "production",
+      "msPerFrame": {
+        "rebuild": {
+          "mean": 0.013,
+          "median": 0.0122,
+          "p95": 0.0184,
+          "max": 0.1261
+        },
+        "separation": {
+          "mean": 0.2893,
+          "median": 0.2726,
+          "p95": 0.4023,
+          "max": 3.1008
+        },
+        "total": {
+          "mean": 0.3023,
+          "median": 0.2862,
+          "p95": 0.4171,
+          "max": 3.1122
+        }
+      },
+      "quality": {
+        "minPairDistanceStart": 1.326,
+        "minPairDistanceFinal": 0.427,
+        "minPairDistanceOverall": 0.132,
+        "series": [
+          {
+            "frame": 180,
+            "minDist": 1.33
+          },
+          {
+            "frame": 210,
+            "minDist": 1.65
+          },
+          {
+            "frame": 240,
+            "minDist": 1.76
+          },
+          {
+            "frame": 270,
+            "minDist": 1.62
+          },
+          {
+            "frame": 300,
+            "minDist": 0.66
+          },
+          {
+            "frame": 330,
+            "minDist": 1.06
+          },
+          {
+            "frame": 360,
+            "minDist": 0.13
+          },
+          {
+            "frame": 390,
+            "minDist": 0.44
+          },
+          {
+            "frame": 420,
+            "minDist": 1.7
+          },
+          {
+            "frame": 450,
+            "minDist": 1.32
+          },
+          {
+            "frame": 480,
+            "minDist": 0.61
+          },
+          {
+            "frame": 510,
+            "minDist": 0.34
+          },
+          {
+            "frame": 540,
+            "minDist": 0.58
+          },
+          {
+            "frame": 570,
+            "minDist": 1.72
+          },
+          {
+            "frame": 600,
+            "minDist": 2.66
+          },
+          {
+            "frame": 630,
+            "minDist": 0.85
+          },
+          {
+            "frame": 660,
+            "minDist": 1.55
+          },
+          {
+            "frame": 690,
+            "minDist": 1.31
+          },
+          {
+            "frame": 720,
+            "minDist": 1.71
+          },
+          {
+            "frame": 750,
+            "minDist": 1.35
+          }
+        ]
+      },
+      "work": {
+        "candidatesPerFrameMean": 16369.7,
+        "pairChecksPerFrameMean": 15869.7,
+        "hitsPerFrameMean": 1760.2,
+        "maxCandidatesPerFrame": 17611
+      }
+    },
+    "budgetResolver": {
+      "name": "budget-resolver",
+      "msPerFrame": {
+        "rebuild": {
+          "mean": 0,
+          "median": 0,
+          "p95": 0,
+          "max": 0
+        },
+        "separation": {
+          "mean": 1.6353,
+          "median": 1.6314,
+          "p95": 2.0394,
+          "max": 7.0708
+        },
+        "total": {
+          "mean": 1.6353,
+          "median": 1.6314,
+          "p95": 2.0394,
+          "max": 7.0708
+        }
+      },
+      "quality": {
+        "minPairDistanceStart": 8.355,
+        "minPairDistanceFinal": 8.347,
+        "minPairDistanceOverall": 7.775,
+        "series": [
+          {
+            "frame": 180,
+            "minDist": 8.35
+          },
+          {
+            "frame": 210,
+            "minDist": 8.32
+          },
+          {
+            "frame": 240,
+            "minDist": 8.24
+          },
+          {
+            "frame": 270,
+            "minDist": 8.13
+          },
+          {
+            "frame": 300,
+            "minDist": 8.01
+          },
+          {
+            "frame": 330,
+            "minDist": 8.06
+          },
+          {
+            "frame": 360,
+            "minDist": 8.06
+          },
+          {
+            "frame": 390,
+            "minDist": 8.11
+          },
+          {
+            "frame": 420,
+            "minDist": 8.16
+          },
+          {
+            "frame": 450,
+            "minDist": 8.18
+          },
+          {
+            "frame": 480,
+            "minDist": 8.16
+          },
+          {
+            "frame": 510,
+            "minDist": 8.12
+          },
+          {
+            "frame": 540,
+            "minDist": 8.18
+          },
+          {
+            "frame": 570,
+            "minDist": 8.32
+          },
+          {
+            "frame": 600,
+            "minDist": 8.4
+          },
+          {
+            "frame": 630,
+            "minDist": 8.43
+          },
+          {
+            "frame": 660,
+            "minDist": 8.41
+          },
+          {
+            "frame": 690,
+            "minDist": 8.4
+          },
+          {
+            "frame": 720,
+            "minDist": 8.39
+          },
+          {
+            "frame": 750,
+            "minDist": 8.37
+          }
+        ]
+      },
+      "work": {
+        "candidatesPerFrameMean": 22983.1,
+        "pairChecksPerFrameMean": 22983.1,
+        "hitsPerFrameMean": 0,
+        "maxCandidatesPerFrame": 23843
+      }
+    }
+  }
+}

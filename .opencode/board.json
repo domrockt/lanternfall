@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4559,
+  "next": 4622,
   "cards": [
     {
       "id": 1,
@@ -5519,6 +5519,63 @@
       "notes": [],
       "created": "2026-11-27T18:57:19Z",
       "updated": "2026-11-27T18:57:19Z"
+    },
+    {
+      "id": 4618,
+      "title": "m10-separation-budget #1 Vorher-Messung: ms/Frame Separation+Hash bei 500 Gegnern",
+      "description": "AC: scripts/m10-separation-budget.mjs misst deterministisch (mulberry32, Minute-25-Chaos, 500 gedraengte Gegner) ms/Frame fuer Hash-Rebuild + Separations-Pfad sowie min-Paarabstand als Trennqualitaet; Ergebnis in shots/m10-separation-budget-before.json, ein Commit.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T19:03:40Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-separation-budget: Messskript schreiben + Before-Lauf"
+        },
+        {
+          "at": "2026-11-27T19:13:30Z",
+          "by": "build",
+          "text": "Supervisor-Hinweis bestätigt: Karte 1 war mit Commit 119bf65 bereits geliefert (Skript + Before-JSON). Keine weiteren Skript-Änderungen; A/B-Stecke --src dient nur dem fairen Vorher/Nachher-Vergleich von #4619."
+        }
+      ],
+      "created": "2026-11-27T19:03:38Z",
+      "updated": "2026-11-27T19:13:30Z"
+    },
+    {
+      "id": 4619,
+      "title": "m10-separation-budget #2 Budget-Fix separation.ts + SpatialHash.ts",
+      "description": "AC: Hot-Path (queryCircle/separationPush/insert) messbar verbilligt (Ziel -30% ms/Frame im Bench), Trennqualitaet (min-Paarabstand) >= Vorher, tests/separation-crowd.test.ts bleibt gruen; nur eigene Dateien, kein Run.ts.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T19:06:59Z",
+          "by": "build",
+          "text": "todo → doing: Optimierung queryCircle (Fast-Path ohne Overflow-Checks) + separationPush (massOf/isFinite inline, Clamps via Ternary)"
+        }
+      ],
+      "created": "2026-11-27T19:03:38Z",
+      "updated": "2026-11-27T19:06:59Z"
+    },
+    {
+      "id": 4620,
+      "title": "m10-separation-budget #3 Test tests/separation-budget.test.ts",
+      "description": "AC: deterministisch (mulberry32) - Trennung haelt min-Abstand nach N Frames, Budget-Pfad aktiv und begrenzt Nachbarn/Arbeit je Gegner; npx vitest run tests/separation-budget.test.ts gruen.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T19:03:38Z",
+      "updated": "2026-11-27T19:03:38Z"
+    },
+    {
+      "id": 4621,
+      "title": "m10-separation-budget #4 Nachher-Messung + Doku",
+      "description": "AC: shots/m10-separation-budget-after.json mit Vorher/Nachher-Vergleich, docs/lanes/m10-separation-budget.md mit Zahlen + offene Punkte; Abnahme: -30% ms/Frame ODER fullrun-fpsMin +5, min-Paarabstand >= Vorher.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T19:03:38Z",
+      "updated": "2026-11-27T19:03:38Z"
     }
   ]
 }
