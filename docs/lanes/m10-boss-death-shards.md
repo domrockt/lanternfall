@@ -122,9 +122,22 @@ Belege (Worktree + `~/tmp/m10-boss-death-shards/`, Commit gemeinsam mit dem
 Fix): `shots/m10-boss-shards-after-640x3601.png`, `-780x3603.png`,
 `-after.json`. Im 780er-Nachher-Shot sind einzelne Splitter und der hellere
 Kern der Explosion unterscheidbar (Vorher: homogener Schlamm-Blob).
-art-director-Sichtprüfung: läuft / Ergebnis siehe Board-Notiz zu #5921.
+art-director-Sichtprüfung (Vision, 2026-11-27): **PASS, Note 4** (Grenze 3).
+Geprüft: beide Views Vorher/Nachher, Crops/Zooms 2x/4x nearest in
+`~/tmp/m10-boss-death-shards/` (`crop-after-780-2x.png`, `zoom-after-640-core-4x.png` …).
 
-Offen für K4: art-director-PASS dokumentieren, Nachher-Belege zusammen mit
-K2/K3 committen (sobald die Area frei ist), dann `npm run build` + Tests im
-Merge-Kontext erneut.
+- Vorher Note 2 (nicht abnahmefähig): kein heller Kern erkennbar, Explosion
+  „ausgewaschen in den Untergrund" — genau der beanstandete Defekt.
+- Nachher Note 4: klarer warmer Kern mit dunklem Ring (fx_boss_core alphaFrom
+  0,7–0,95), dunkle Struktur/Silhouette bleibt lesbar, kein Weiß-Blowout,
+  klare Abgrenzung Kern ↔ Boss-Masse. Passung zum FX-Vokabular ok, keine
+  neuen Artefakte.
+- Nachbesser-Vorschlag (nicht blockierend, spätere Karte): fx_death_bone-
+  Splitter im Horde-Kontext stärker absetzen (dunkler Rim/Tint bzw. alpha
+  0,63→0,75) und fx_fire im 780er-View an den 640er-Wert angleichen
+  (0,24–0,45 vs. 0,40–0,45) — vom Fix bewusst nicht angefasst (kein Boss-Key).
+
+Offen für K4: ~~art-director-PASS dokumentieren~~ (PASS Note 4, s. o.);
+Nachher-Belege zusammen mit K2/K3 committen (sobald die Area frei ist), dann
+`npm run build` + Tests im Merge-Kontext erneut.
 
