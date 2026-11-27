@@ -9,5 +9,8 @@ Gegnerschüsse fair und lesbar; kein Rebalancing, CombatSystem.ts/Run.ts unverä
   vorher 640×360 500 Schuss/0 Offscreen-Treffer, 780×360 503 Schuss/2 Offscreen-Treffer;
   nachher 640×360 501 Schuss/0 offscreenFired/0 Offscreen-Treffer/windupOk 501/501 (100 %),
   780×360 500 Schuss/0 offscreenFired/0 Offscreen-Treffer/windupOk 500/500.
-- Tests: tests/enemy-shots-fair.test.ts 12/12; npm run build grün; npm test 236/236; Capture 500 Gegner, 0 JS-Fehler.
+- Tests: tests/enemy-shots-fair.test.ts 14/14; npm run build grün; npm test 238/238;
+  Dichte-Capture 500 Gegner, 0 JS-Fehler.
+- Review: test-auditor PASS, Reviewer PASS mit Auflagen (Blocker Temp-Datei entfernt,
+  Telegraph-Cap bricht ab statt stumm zu feuern, Debug-Hook-Cleanup).
 - Belege: shots/m10-enemy-shots-{before,after}.json, -optics.png, -density.gif, -contrast.json.
