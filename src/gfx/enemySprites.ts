@@ -216,6 +216,9 @@ function nearestPaletteIndex([r, g, b]: readonly number[]): number {
 export function enemyFrameGrids(index: number): Grid[] {
   const base = enemySpriteFrames(index);
   const variant = enemyVariantFrames(index);
+  // Guard: GEN_ENEMIES liefert heute 4 Frames je Typ. Ohne Guard würde ein
+  // künftiger 2-Frame-Eintrag hier undefined in gridToCanvas schieben.
+  if (base.length < 4 || variant.length < 4) return base;
   return [base[0], base[1], variant[2], variant[3]];
 }
 

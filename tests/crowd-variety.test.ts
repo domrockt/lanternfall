@@ -109,7 +109,7 @@ describe("crowd-variety: zweite Variante je Gegnertyp", () => {
   });
 
   it("Frame-Keys und Grids sind deterministisch (zweier Aufrufe identisch)", () => {
-    for (const index of [0, 7, 15, 29]) {
+    for (const index of ENEMY_LIST.keys()) {
       expect(enemyVariantColor(index)).toBe(enemyVariantColor(index));
       expect(enemyFrameGrids(index)).toEqual(enemyFrameGrids(index));
       expect(enemyVariantFrames(index)).toEqual(enemyVariantFrames(index));
