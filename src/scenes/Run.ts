@@ -9,7 +9,7 @@ import {
 } from "../config";
 import { ENEMIES } from "../data/enemies";
 import { BOSSES } from "../data/bosses";
-import { SeededRng } from "../logic/rng";
+import { SeededRng, hasFlag } from "../logic/rng";
 import { directionToPlayer, separationPush } from "../logic/separation";
 import {
   aggregateMods, effectiveMoveSpeed, effectivePickupRadius,
@@ -19,7 +19,7 @@ import { applyXp, xpProgress, xpToNext, type XpState } from "../logic/xp";
 import { damageAfterArmor, timeScaleClamped } from "../logic/combat";
 import type { Offer } from "../logic/levelup";
 import { GroundRenderer } from "../gfx/GroundRenderer";
-import { SPRITE_FRAMES } from "../gfx/textures";
+import { framesForDef, runFrameIndex } from "../logic/enemy-frames";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DEPTH } from "../gfx/depth";
 import { PLAYER_FRAMES, type WalkDir } from "../gfx/chars";
@@ -324,7 +324,25 @@ export class Run extends Phaser.Scene {
     this.scene.launch("ui");
     this.registry.set("lf-elapsed", 0);
     getAudio().setMusic("run");
+    // M10 frame-cadence: Sicht-Beleg (GIF/Log) liest die tatsaechlich am
+    // Sprite stehenden Gegner-Frames; nur mit ?debug=1, Muster wie __lfEnemyShots.
+    if (hasFlag("debug")) {
+      (globalThis as unknown as Record<string, unknown>).__lfEnemyFrames = () =>
+        this.enemies.active
+          .filter((e) => e.alive && Math.abs(e.x - this.posX) < 260 && Math.abs(e.y - this.posY) < 220)
+          .slice(0, 12)
+          .map((e) => {
+            const cam = this.cameras.main;
+            return {
+              id: e.def.id,
+              frame: currentFrame(e.sprite),
+              sx: Math.round(e.x - cam.scrollX),
+              sy: Math.round(e.y - cam.scrollY),
+            };
+          });
+    }
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      delete (globalThis as unknown as Record<string, undefined>).__lfEnemyFrames;
       this.scale.off(Phaser.Scale.Events.RESIZE, this.onViewResize, this);
       this.inputState.reset();
       resetTouchSnapshot();
@@ -1123,11 +1141,14 @@ export class Run extends Phaser.Scene {
       // bei 500+ Einheiten spürbar Frame-Zeit.
       if (e.elite || e.boss) e.aura.setPosition(Math.round(e.x), Math.round(e.y));
       e.sprite.setPosition(Math.round(e.x), Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2));
-      const frames = SPRITE_FRAMES[e.def.spriteKey];
+      const frames = framesForDef(e.def);
       if (frames) {
         // Bosse: Wind-up-Frame während des Telegraphen, sonst Ruhe/Atmen.
         const windup = e.boss && e.telegraph > 0 && frames.length >= 3 ? frames[2] : null;
-        const frame = windup ?? frames[Math.floor(t * 6 + e.phase) % Math.min(2, frames.length)];
+        // M10 frame-cadence: 6 fps zyklisch ueber ALLE Frames (vorher
+        // `% Math.min(2, frames.length)` — F2/F3 der 4-Frame-Sprites wurden
+        // nie gezeigt). Auswahl als reine Funktion in src/logic/enemy-frames.ts.
+        const frame = windup ?? frames[runFrameIndex(frames.length, t, e.phase)];
         if (currentFrame(e.sprite) !== frame) applyTexture(e.sprite, frame);
       }
       // M9 art-polish: Elites bekommen ein enges 1-px-Konturlicht in Amber
