@@ -6343,37 +6343,61 @@
       "id": 5578,
       "title": "m10-hud-wide-anchor: K1 Probe-Skript scripts/m10-hud-anchor.mjs",
       "description": "Messskript fuer 4 Formate (640x360-ref, 780x360@3, 1280x720, 1920x1080): Bounding-Boxen der HUD-Elemente per SetName-Instrumentierung, JSON in shots/. AK: Skript laeuft, JSON pro Format mit Bloecken + Verletzungen.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:11:27Z",
+          "by": "build",
+          "text": "todo → done: lane #5258, Merge 39dca82"
+        }
+      ],
       "created": "2026-11-27T21:11:08Z",
-      "updated": "2026-11-27T21:11:08Z"
+      "updated": "2026-11-27T21:11:27Z"
     },
     {
       "id": 5579,
       "title": "m10-hud-wide-anchor: K2 Ist-Baseline + Screenshots",
       "description": "Lauf mit --tag baseline: shots/m10-hud-anchor-baseline-*.png + JSON; Kollisions-/Rand-Verletzungen je Format gezaehlt und in docs/lanes/m10-hud-wide-anchor.md dokumentiert. AK: baseline-JSON + PNGs committed, Verletzungszahl notiert.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:11:40Z",
+          "by": "build",
+          "text": "lane #5259, Merge 39dca82 (Abnahme folgt im board_move)"
+        }
+      ],
       "created": "2026-11-27T21:11:08Z",
-      "updated": "2026-11-27T21:11:08Z"
+      "updated": "2026-11-27T21:11:40Z"
     },
     {
       "id": 5580,
       "title": "m10-hud-wide-anchor: K3 Anker in UI.ts fixen (Anker+Margin)",
       "description": "Ankerpunkte in src/scenes/UI.ts auf Anker+Margin statt fixer Koordinaten; tests/hud-anchor.test.ts prueft Anker-Boxen gegen Safe-Area je Format; AE gegen 640x360-Referenz = 0. AK: tsc + npm test gruen, Test deckt 4 Formate ab.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:11:40Z",
+          "by": "build",
+          "text": "lane #5260, Merge 39dca82 (Abnahme folgt im board_move)"
+        }
+      ],
       "created": "2026-11-27T21:11:08Z",
-      "updated": "2026-11-27T21:11:08Z"
+      "updated": "2026-11-27T21:11:40Z"
     },
     {
       "id": 5581,
       "title": "m10-hud-wide-anchor: K4 Nachher-Messung + Vision-Pruefung",
       "description": "Lauf mit --tag after: 0 Verletzungen in 4 Formaten; Screenshots per Vision geprueft; Pixelgenauigkeit (ganzzahlige Spielpixel) belegt; Lane-Doku final. AK: after-JSON 0 Verletzungen, Vision-Urteil notiert, .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:11:27Z",
+          "by": "build",
+          "text": "todo → done: lane #5261, Merge 39dca82"
+        }
+      ],
       "created": "2026-11-27T21:11:08Z",
-      "updated": "2026-11-27T21:11:08Z"
+      "updated": "2026-11-27T21:11:27Z"
     }
   ]
 }
