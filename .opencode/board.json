@@ -5317,37 +5317,81 @@
       "id": 4398,
       "title": "m10-endgame-fps K1: Baseline 640x360 + Attribution",
       "description": "3x Burst + 3x Minute-25 unter flock, Roh-JSON shots/m10-endgame-fps-baseline.json, ms/Frame-Attribution in docs/lanes/m10-endgame-fps.md. Abnahme: Kommandos + 3 Laeufe je Messung, Attribution belegt.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:36:38Z",
+          "by": "build",
+          "text": "lane #2598"
+        },
+        {
+          "at": "2026-11-27T18:36:48Z",
+          "by": "build",
+          "text": "review → done: lane #2598, Merge c0a2f73, build rc=0, 499/499 Tests"
+        }
+      ],
       "created": "2026-11-27T18:36:21Z",
-      "updated": "2026-11-27T18:36:21Z"
+      "updated": "2026-11-27T18:36:48Z"
     },
     {
       "id": 4399,
       "title": "m10-endgame-fps K2: Frame-Budget-Regler (pure) + Tests",
       "description": "src/logic/scaling.ts: stepFrameBudget senkt Ziel >19,2 ms/1 s um max 10%/s bis 320, erholt <15 ms mit Hysterese; Default 780@500 unveraendert. tests/endgame-budget.test.ts deterministisch gruen. Abnahme: tsc+build gruen, Testreihen belegen Senkung/Erholung/Default.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:36:38Z",
+          "by": "build",
+          "text": "lane #2599"
+        },
+        {
+          "at": "2026-11-27T18:36:48Z",
+          "by": "build",
+          "text": "review → done: lane #2599, Merge c0a2f73, build rc=0, 499/499 Tests"
+        }
+      ],
       "created": "2026-11-27T18:36:21Z",
-      "updated": "2026-11-27T18:36:21Z"
+      "updated": "2026-11-27T18:36:48Z"
     },
     {
       "id": 4400,
       "title": "m10-endgame-fps K3: Spawner nutzt Regler, 30 Typen unveraendert",
       "description": "Spawner.ts koppelt cap an Regler ohne Tier-Mix/Spezialwellen zu aendern; enemy-coverage vorher/nachher 30/30 in shots/. Abnahme: Coverage JSON, tsc+Tests gruen.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:36:38Z",
+          "by": "build",
+          "text": "lane #2600"
+        },
+        {
+          "at": "2026-11-27T18:36:48Z",
+          "by": "build",
+          "text": "review → done: lane #2600, Merge c0a2f73, build rc=0, 499/499 Tests"
+        }
+      ],
       "created": "2026-11-27T18:36:21Z",
-      "updated": "2026-11-27T18:36:21Z"
+      "updated": "2026-11-27T18:36:48Z"
     },
     {
       "id": 4401,
       "title": "m10-endgame-fps K4: Nachmessen + Abnahme + .lane-done",
       "description": "3x Minute-25 + 3x Burst unter flock, Vorher/Nachher-Tabelle, Chaos-PNG, JSON nach shots/, Testzahl+tsc. Abnahme: 2/3 M25 >=55 und keiner <52 ODER >=8 FPS belegt; Coverage 30/30.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:36:38Z",
+          "by": "build",
+          "text": "lane #2601"
+        },
+        {
+          "at": "2026-11-27T18:36:48Z",
+          "by": "build",
+          "text": "review → done: lane #2601, Merge c0a2f73, build rc=0, 499/499 Tests"
+        }
+      ],
       "created": "2026-11-27T18:36:21Z",
-      "updated": "2026-11-27T18:36:21Z"
+      "updated": "2026-11-27T18:36:48Z"
     }
   ]
 }
