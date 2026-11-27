@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5762,
+  "next": 5842,
   "cards": [
     {
       "id": 1,
@@ -6671,6 +6671,48 @@
       ],
       "created": "2026-11-27T21:40:37Z",
       "updated": "2026-11-27T21:40:42Z"
+    },
+    {
+      "id": 5838,
+      "title": "m10-hero-contrast K1: Vorher-Belege + Kontrast-Metrik",
+      "description": "scripts/m10-hero-contrast.mjs rendert CharSelect-Portraets (Mira+Kael) und Kael im 300+-Gegner-Chaos-Frame; schreibt shots/m10-hero-contrast-before.png, -before-charselect.png, -before-portraits.png (6x nearest) und -before.json (Kontrast-Metrik Spieler-Flaeche vs. umliegende Gegner). Abnahme: Skript laeuft mit Timeout, JSON enthaelt Metrik + Gegnerzahl + 0 JS-Fehler, Commit enthaelt alle Belege.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T21:46:01Z",
+          "by": "build",
+          "text": "todo → doing: Start: Mess-Skript scripts/m10-hero-contrast.mjs schreiben und before-Belege erzeugen."
+        }
+      ],
+      "created": "2026-11-27T21:45:59Z",
+      "updated": "2026-11-27T21:46:01Z"
+    },
+    {
+      "id": 5839,
+      "title": "m10-hero-contrast K2: Portraets ueberarbeiten (Kael=Moench, Mira feiner)",
+      "description": "scripts/art/gen_chars.py: _bust_base/portrait so ueberarbeiten, dass Kael klar als Moench lesbar ist (Kapuze/Gewand/Laterne-Silhouette statt Kopf ueber Zackenkasten) und Mira verfeinert wird. gen-chars.ts NUR durch Pipeline-Regeneration (python3 scripts/art/gen_chars.py). Abnahme: art-director-Urteil >= 4/5 fuer beide Portraets, Beleg -after-portraits.png im Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:45:59Z",
+      "updated": "2026-11-27T21:45:59Z"
+    },
+    {
+      "id": 5840,
+      "title": "m10-hero-contrast K3: Spieler-Kontur/Licht-Akzent gegen Gegnergrau",
+      "description": "Kael/Mira-Sprites (gen_chars.py) + ggf. Texture-Seite (chars.ts): helle Kontur/Laternen-Akzent, der Kael zwischen 300+ grauen Gegnern sofort identifizierbar macht. Regel: eine Pixelgroesse, binaeres Alpha, nur Palettenfarben, Gegner werden NICHT umgefaerbt. Abnahme: Chaos-Nachher-Shot + Metrik deutlich besser als before; sichtbar im -after.png.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:45:59Z",
+      "updated": "2026-11-27T21:45:59Z"
+    },
+    {
+      "id": 5841,
+      "title": "m10-hero-contrast K4: Tests + Nachher-Belege + Doku + lane-done",
+      "description": "tests/hero-contrast.test.ts: beide Charaktere, 4 Richtungen, 0 Off-Palette-Pixel, Kontur-Metrik >= Schwellwert. Nachher-Shots neu erzeugen, docs/lanes/m10-hero-contrast.md schreiben, .lane-done anlegen. Abnahme: npx vitest run tests/hero-contrast.test.ts + npx tsc --noEmit + npm run build gruen; alles committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T21:45:59Z",
+      "updated": "2026-11-27T21:45:59Z"
     }
   ]
 }
