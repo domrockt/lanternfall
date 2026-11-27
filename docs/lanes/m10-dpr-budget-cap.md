@@ -23,24 +23,36 @@ Hysterese-Timer, Totzone, dpr-/Groessen-Cap). Kein Einbau in dieser Karte.
 
 Beleg: `npx vitest run tests/scale-budget.test.ts` -> 13/13 passed.
 
-## #3579 Einbau (WIP, Commit 327eb83)
+## #3579 Einbau (Commit 327eb83)
 
-`src/config.ts` verdrahtet den Regler im Canvas-Setup: FPS-EWMA aus
-`game.loop.actualFps`, Hysterese 45 FPS/2 s senken, 57 FPS/4 s heben, Buffer
-via `canvas.width/height` + `renderer.resize`, CSS bleibt pixelated und
-geraetepixelgenau. `?rbscale=0..3` als Mess-Override. `main.ts`/`view.ts`
+`src/config.ts` verdrahtet den Regler im Canvas-Setup: FPS-EWMA + Hysterese
+45 FPS/2 s senken, 57 FPS/4 s heben, Buffer via `canvas.width/height` +
+`renderer.resize`, CSS bleibt pixelated und geraetepixelgenau.
+`?rbscale=0..3` als Mess-Override. `main.ts`/`view.ts` unveraendert.
+
+FPS-Signal: Der erste Entwurf nutzte `game.loop.actualFps` (Phaser TimeStep).
+Phaser smootht diesen Wert pro Sekunde mit `0,25 * framesThisSecond +
+0,75 * actualFps` (TimeStep.js:645) — Konvergenz nach einer Lastaenderung
+dauert ~15 s. Der Regler haengt dann in der Totzone (45-57 FPS) und bleibt bei
+Teiler 1 (~45 FPS < Ziel 50). Fix in #3580: eigener schneller EWMA aus den
+rAF-Deltas (0,9/0,1 pro Frame, Konvergenz ~0,5 s), Hysterese-Konstanten
 unveraendert.
 
-Offener Punkt: Im Messlauf (shots/m10-dpr-budget.json, Versuch 1) blieb der
-Buffer bei 780x360 — Regler hat nicht gegriffen. Ursache wird in #3580 belegt
-und behoben, danach #3579 abgenommen.
+## #3580 Messung (in Arbeit)
 
-## #3580 Messung (offen)
+`scripts/m10-dpr-budget.mjs`, M25-Last 780x360 dpr3, 3 Laeufe nachher +
+Vorher-Referenz (?rbscale=0), FPS und effektive Renderbreite in
+`shots/m10-dpr-budget.json`. Ziel min >= 50 FPS, 640x360@1 ohne Regression
+>= 50.
 
-`scripts/m10-eta-budget.mjs` -> `scripts/m10-dpr-budget.mjs`, M25-Last
-780x360 dpr3, 3 Laeufe nachher + Vorher-Referenz (?rbscale=0), FPS und
-effektive Renderbreite in `shots/m10-dpr-budget.json`. Ziel min >= 50 FPS,
-640x360@1 ohne Regression >= 50.
+Befund Trajektorien-Probe (~/tmp/m10-dpr-budget-cap/probe2.mjs, M25-Last,
+300 Gegner gehalten, 25 s, Samples alle 500 ms):
+
+- Teiler 1: FPS 44,9, belowMs laeuft auf; bei 2000 ms -> Teiler 2 (Buffer
+  390x180) bei t≈15,4 s.
+- Teiler 2: FPS erholt sich (EWMA 45,9 -> 59,0), Regler haelt Stufe 2.
+- Ursache Versuch-1-FAIL (46/42,8 FPS, Buffer 780x360): `loop.actualFps`-Glattung
+  zu traege -> Totzone -> nie gesenkt. Fix: schneller EWMA (siehe #3579).
 
 ## #3581 Pixel-Perfect-Beleg (offen)
 

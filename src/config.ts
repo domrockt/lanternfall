@@ -57,7 +57,6 @@ function forcedRenderScale(): number | null {
 
 type BudgetGame = {
   canvas: HTMLCanvasElement;
-  loop: { actualFps: number };
   scale: { width: number; height: number; on: (ev: string, cb: () => void) => void };
   renderer: { resize: (w: number, h: number) => void; type: number };
 };
@@ -74,6 +73,11 @@ function installRenderBudget(): void {
   let state: RenderScaleState = { scale: RENDER_SCALE_MIN, belowMs: 0, aboveMs: 0 };
   let applied = -1;
   let lastNow = 0;
+  // Eigener FPS-EWMA aus den rAF-Deltas. Phaser loop.actualFps ist pro Sekunde
+  // mit 0,25/0,75 geglaettet und braucht ~15 s, um sich an eine Lastaenderung
+  // anzunehmen — der Regler haengt dann in der Totzone (45-57 FPS) und bleibt
+  // bei Teiler 1 (~45 FPS < Ziel 50). Beleg: Probe unter M25-Last, 2026-11-27.
+  let fpsEwma = 0;
 
   const apply = (game: BudgetGame, scale: number): void => {
     const size = renderBufferSize(game.scale.width, game.scale.height, scale);
@@ -99,12 +103,15 @@ function installRenderBudget(): void {
     if (!game || !game.scale || !game.renderer) return;
     const dt = lastNow > 0 ? Math.min(250, now - lastNow) : 0;
     lastNow = now;
+    if (dt > 0 && dt < 250) {
+      const instant = 1000 / dt;
+      fpsEwma = fpsEwma === 0 ? instant : fpsEwma * 0.9 + (instant * 0.1);
+    }
 
     if (forced !== null) {
       apply(game, forced);
       return;
     }
-    const fpsEwma = Number(game.loop.actualFps);
     const cap = chooseRenderScale(
       window.devicePixelRatio || 1,
       game.scale.width,
