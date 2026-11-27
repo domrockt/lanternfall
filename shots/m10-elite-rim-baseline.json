@@ -1,0 +1,452 @@
+{
+  "mode": "baseline",
+  "runs": {
+    "640": {
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "dpr": 1,
+      "live": {
+        "enemies": 347,
+        "elites": 20
+      },
+      "jsErrors": []
+    },
+    "780": {
+      "viewport": {
+        "width": 780,
+        "height": 360
+      },
+      "dpr": 3,
+      "live": {
+        "enemies": 347,
+        "elites": 20
+      },
+      "jsErrors": []
+    }
+  },
+  "rimPerType": [
+    {
+      "id": "bog_rat",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 142,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "wisp",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 126,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "mudling",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 175,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "crow",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 157,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "bogzombie",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 167,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "toad",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 169,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "skeleton",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 199,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "bat",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 182,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "ghoul",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 205,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "witchling",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 196,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "slime",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 174,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "scarecrow",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 256,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "wolf",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 256,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "banshee",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 264,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "golem",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 305,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "spider",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 214,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "cultist",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 246,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "bomber",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 214,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "knight",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 325,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "harpy",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 362,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "lich",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 381,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "wraith",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 296,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "treant",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 465,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "imp",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 338,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "horror",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 356,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "centipede",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 345,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "gargoyle",
+      "frames": 4,
+      "base": [
+        0.5,
+        0.4624,
+        0.4624,
+        0.5
+      ],
+      "baseBoundaryPx": 346,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "reaper_bat",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 400,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "abom",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 428,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    },
+    {
+      "id": "voidcaller",
+      "frames": 4,
+      "base": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "baseBoundaryPx": 379,
+      "rimFrameExists": false,
+      "rim": null,
+      "rimBoundaryPx": 0
+    }
+  ],
+  "jsErrors": []
+}
