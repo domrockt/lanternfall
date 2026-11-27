@@ -4430,10 +4430,15 @@
           "at": "2026-11-27T13:40:08Z",
           "by": "build",
           "text": "doing → review: Fix+Test Commit 01cd89c, tsc+build+363 Tests gruen"
+        },
+        {
+          "at": "2026-11-27T14:28:30Z",
+          "by": "build",
+          "text": "review → review: Commit 01cd89c: harter 120er-Deckel (setCap klemmt LOD full/reduced), verlustfreies Merging in drop() und Alters-Recycling, Magnet skaliert mit Gem-Zahl, stats.spawnedXp/grantedXp. tsc+build+363 Tests gruen."
         }
       ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:40:08Z"
+      "updated": "2026-11-27T14:28:30Z"
     },
     {
       "id": 3480,
@@ -4446,26 +4451,36 @@
           "at": "2026-11-27T13:40:08Z",
           "by": "build",
           "text": "todo → review: Testfile Commit c75a67c, 16/16 gezielte Tests gruen"
+        },
+        {
+          "at": "2026-11-27T14:28:30Z",
+          "by": "build",
+          "text": "review → review: Commit c75a67c: tests/gem-draw-cap.test.ts, 10 Tests (XP-Bilanz exakt, deterministisch, monoton, NaN-frei, kein Tween pro Gem, Magnet-Skalierung). 16/16 gezielte Tests gruen."
         }
       ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:40:08Z"
+      "updated": "2026-11-27T14:28:30Z"
     },
     {
       "id": 3481,
       "title": "m10-gem-drawcap #4 Nachher-Messung + Doku + lane-done",
       "description": "Nachher-Messung wie K1: aktive Gem-Sprites <=120 bei 500 kills, ms/Frame <= vorher, XP im Korridor (<=1 %). Beleg shots/m10-gem-drawcap-after.json + Vergleichs-PNG, docs/lanes/m10-gem-drawcap.md, .lane-done. Abnahme: npm test + npm run build gruen, Vorher/Nachher-JSON vorhanden.",
-      "column": "doing",
+      "column": "review",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-27T13:40:08Z",
           "by": "build",
           "text": "todo → doing: Nachher-Messung, Lane-Doku und .lane-done"
+        },
+        {
+          "at": "2026-11-27T14:28:30Z",
+          "by": "build",
+          "text": "doing → review: Commit f5e085e: after-JSON/PNG, docs/lanes/m10-gig-gem-drawcap.md, .lane-done. Peak 120 Gems <=120, ms/Frame 16,67 (vorher 16,64), xpLoss 0, 0 JS-Fehler."
         }
       ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:40:08Z"
+      "updated": "2026-11-27T14:28:30Z"
     }
   ]
 }
