@@ -5028,7 +5028,7 @@
       "title": "m10-atlas-pack K4 Doku + Abschluss",
       "description": "docs/lanes/m10-atlas-pack.md mit Zahlen vorher/nachher, offene Punkte; .lane-done anlegen. Akzeptanz: Doku mit Belegpfaden committed.",
       "id": 4001,
-      "column": "review",
+      "column": "done",
       "assignee": "m10-atlas-pack",
       "notes": [
         {
@@ -5045,10 +5045,15 @@
           "at": "2026-11-27T20:14:11Z",
           "by": "build",
           "text": "doing → review: doing → review: Doku final (Commit 5c57547), Lane-Karten K1-K3 erledigt; Abschluss nach Kontrolleur-Prüfung."
+        },
+        {
+          "at": "2026-11-27T20:45:59Z",
+          "by": "build",
+          "text": "review → done: review → done: Doku final + .lane-done (Commit ec58a5d), Abnahme-Auditor PASS; Lane abgeschlossen."
         }
       ],
       "created": "2026-11-27T18:02:30Z",
-      "updated": "2026-11-27T20:14:11Z"
+      "updated": "2026-11-27T20:45:59Z"
     }
   ]
 }
