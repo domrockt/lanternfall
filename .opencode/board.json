@@ -1855,10 +1855,15 @@
           "at": "2026-11-27T02:48:46Z",
           "by": "build",
           "text": "doing → done: Abnahme 2026-11-27 (#300, Commit 6ae54fa): Tier-4-Kontaktboegen tier4-1/2 (4 Frames/Zeile, 6x) gesichtet; Masse 307 Gegner, 0 JS-Fehler, 57,9 FPS; Elite-Aura unveraendert; frames-check 30/30 eindeutig, 0 Off-Palette; art-director PASS 4,5."
+        },
+        {
+          "at": "2026-11-27T03:02:10Z",
+          "by": "build",
+          "text": "SHA-Korrektur nach Commit-Amend: finaler #300-Commit = 44a8fca (nicht 6ae54fa)."
         }
       ],
       "created": "2026-11-26T12:07:53Z",
-      "updated": "2026-11-27T02:48:46Z"
+      "updated": "2026-11-27T03:02:10Z"
     },
     {
       "id": 301,
@@ -1871,10 +1876,15 @@
           "at": "2026-11-27T02:59:12Z",
           "by": "build",
           "text": "todo → done: Abnahme (#301, Commit a77a708): Einzelurteile #298-#300 PASS, art-director-Note 4,5; 30 Keys x 4 Frames, 0 Off-Palette, Masse 307, Walk-GIF 24 Frames, perf 60,2/56,4 FPS, build gruen, 175 Tests gruen (Branch; main nach Merge 192). .lane-done committet."
+        },
+        {
+          "at": "2026-11-27T03:02:10Z",
+          "by": "build",
+          "text": "SHA-Korrektur nach Commit-Amend: finaler #301-Commit = 3f6a6b8 (nicht a77a708); .lane-done darin."
         }
       ],
       "created": "2026-11-26T12:07:53Z",
-      "updated": "2026-11-27T02:59:12Z"
+      "updated": "2026-11-27T03:02:10Z"
     }
   ]
 }
