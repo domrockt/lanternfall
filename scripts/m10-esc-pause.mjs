@@ -1,16 +1,14 @@
 #!/usr/bin/env node
-// Lane m10-esc-pause-fix, Karte #1 (Repro): verify-input 27/28-FAIL
-// "Tastatur: ESC setzt fort" reproduzieren und den Ist-Zustand belegen.
+// Lane m10-esc-pause-fix: verify-input-Keyboard-Pfad (ESC -> Pause -> ESC ->
+// fortsetzen) mit Instrumentierung:
+//  - run.togglePause/resumeRun-Aufrufe (Zeit, Zustand davor/danach),
+//  - DOM-Keydowns (key, repeat, isTrusted),
+//  - 20-ms-Zustands-Poll von run.paused um den Grundpfad.
 //
-// Faehrt denselben Keyboard-Pfad wie scripts/verify-input.mjs (runKeyboardSuite)
-// und instrumentiert dabei:
-//  - run.togglePause/resumeRun-Aufrufe (Zeit + Zustand beim Aufruf),
-//  - DOM-Keydowns (key, repeat, isTrusted, Zeitstempel),
-//  - 20-ms-Zustands-Poll von run.paused um jeden ESC-Press.
-//
-// Belege: shots/m10-esc-pause-before.json (Ist-Zustand), -after.json nach dem Fix.
-// Ohne Spielcode-Aenderung; laeuft ohne flock (keine FPS-Messung).
-import { mkdirSync, writeFileSync, existsSync, statSync } from "node:fs";
+// Belege: shots/m10-esc-pause-before.json (Ist-Zustand, FAIL)
+//         shots/m10-esc-pause-after.json  (nach dem Fix)
+// Ohne flock (keine FPS-Messung).
+import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
 
 const outName = process.argv[2] ?? "before"; // before | after
@@ -44,33 +42,28 @@ await page.keyboard.press("Enter");
 await waitForScene(page, "run");
 await page.waitForTimeout(350);
 
-// Instrumentierung: togglePause-/resumeRun-Protokoll + DOM-Keydown-Log + 20-ms-Poll.
-// Das ist der Ist-Zustands-Beleg: wie oft toggelt ein einziger ESC-Press?
+// Instrumentierung: togglePause-/resumeRun-Protokoll (Zustand davor/danach)
+// + DOM-Keydown-Log + 20-ms-Poll.
 await page.evaluate(() => {
   const run = window.__game.scene.getScene("run");
-  window.__escProbe = { calls: [], keydowns: [], polls: [], pollTimer: null, polling: false, onKeyCalls: [] };
-  const ui = window.__game.scene.getScene("ui");
-  const origOnKey = ui.onKey.bind(ui);
-  ui.onKey = (ev) => {
-    window.__escProbe.onKeyCalls.push({
-      at: performance.now(), paused: run.paused, repeat: ev.repeat,
-      uiId: ui.scene.key + "#" + (ui.sys.settings.status ?? ""),
-    });
-    return origOnKey(ev);
-  };
+  window.__escProbe = { calls: [], keydowns: [], polls: [], pollTimer: null, polling: false };
   for (const fn of ["togglePause", "resumeRun", "giveUp"]) {
     const orig = run[fn].bind(run);
     run[fn] = (...args) => {
+      const before = run.paused;
+      const we = window.event;
       window.__escProbe.calls.push({
         fn, at: performance.now(),
-        paused: run.paused, levelUpOpen: run.levelUpOpen, chestOpen: run.chestOpen, finished: run.finished,
-        stack: new Error().stack?.split("\n").slice(1, 5).join(" <- "),
+        pausedBefore: before,
+        evTime: we ? we.timeStamp : null, evType: we ? we.type : null,
       });
-      return orig(...args);
+      const out = orig(...args);
+      window.__escProbe.calls[window.__escProbe.calls.length - 1].pausedAfter = run.paused;
+      return out;
     };
   }
   window.addEventListener("keydown", (e) => {
-    window.__escProbe.keydowns.push({ key: e.key, repeat: e.repeat, trusted: e.isTrusted, at: performance.now() });
+    window.__escProbe.keydowns.push({ key: e.key, repeat: e.repeat, trusted: e.isTrusted, ts: e.timeStamp });
   });
   window.__escProbe.startPoll = () => {
     if (window.__escProbe.polling) return;
@@ -94,6 +87,18 @@ await page.keyboard.up("ArrowRight");
 await page.waitForTimeout(120);
 
 const state = () => page.evaluate(() => window.__lf.state().paused);
+/** Pause-Zustand zuverlaessig auf `target` bringen (max. 3 ESC-Presses). */
+const setPaused = async (target) => {
+  for (let i = 0; i < 3; i++) {
+    if ((await state()) === target) return true;
+    await page.keyboard.press("Escape");
+    const ok = await page.waitForFunction(
+      (t) => window.__lf.state().paused === t, target, { timeout: 4000 },
+    ).then(() => true).catch(() => false);
+    if (ok) return true;
+  }
+  return (await state()) === target;
+};
 
 // ── A) Grundpfad aus verify-input: ESC pausiert, ESC setzt fort ────────────
 await page.evaluate(() => window.__escProbe.startPoll());
@@ -111,38 +116,27 @@ const resumedOk = await page.waitForFunction(
 await page.evaluate(() => window.__escProbe.stopPoll());
 const probe = await page.evaluate(() => ({
   calls: window.__escProbe.calls, keydowns: window.__escProbe.keydowns, polls: window.__escProbe.polls,
-  onKeyCalls: window.__escProbe.onKeyCalls,
-  activeScenes: window.__game.scene.getScenes(true).map((s) => s.scene.key),
-  allScenes: window.__game.scene.scenes.map((s) => s.scene.key),
-  uiKeydownListeners: window.__game.scene.getScene("ui").input.keyboard.listenerCount("keydown"),
-  globalKeydownListeners: typeof window.__game.input.keyboard.listenerCount === "function"
-    ? window.__game.input.keyboard.listenerCount("keydown")
-    : "n/a",
 }));
 check("ESC setzt fort", resumedOk, `resumed=${resumedOk} (Probe im JSON-Feld "probe")`);
 result.probe = probe;
-result.kbDiag = await page.evaluate(() => {
-  const kb = window.__game.scene.getScene("ui").input.keyboard;
-  return {
-    pluginEmitListenerCount: kb.listenerCount("keydown"),
-    sceneStatus: window.__game.scene.getScene("ui").sys.settings.status,
-    sceneActive: window.__game.scene.isActive("ui"),
-  };
-});
 
-// ── B) Robustheit: 10x ESC-Wechsel (Key-Repeat/Doppel-Trigger-Falle) ────────
+// ── B) Robustheit: 10x ESC-Wechsel (Doppel-Trigger-Falle) ──────────────────
+if (!(await setPaused(false))) check("B: Normalisierung auf fortgesetzt", false);
+const pressLog = [];
 let alternating = true;
-let expected = await state();
 for (let i = 0; i < 10; i++) {
+  const before = await state();
   await page.keyboard.press("Escape");
   await page.waitForTimeout(140);
-  const now = await state();
-  if (now !== expected) { alternating = false; break; }
-  expected = !expected;
+  const after = await state();
+  pressLog.push({ i, before, after, toggled: before !== after });
+  if (before === after) { alternating = false; break; }
 }
-check("10x ESC wechselt abwechselnd (kein Doppel-Trigger)", alternating, `zuletzt paused=${await state()}`);
+check("10x ESC wechselt abwechselnd (kein Doppel-Trigger)", alternating, JSON.stringify(pressLog));
+result.pressLog = pressLog;
 
 // ── C) Key-Repeat: ESC halten darf nicht doppelt togglen ────────────────────
+if (!(await setPaused(false))) check("C: Normalisierung auf fortgesetzt", false);
 const before = await state();
 await page.keyboard.down("Escape");
 await page.waitForTimeout(700); // laenger als OS-Repeat-Delay
@@ -152,12 +146,9 @@ await page.waitForTimeout(140);
 const afterHold = await state();
 check("ESC halten togglet exakt einmal", before !== afterHold && duringHold === afterHold,
   `vor=${before} beimHalten=${duringHold} nach=${afterHold}`);
-await page.keyboard.press("Escape"); // Ausgangszustand wiederherstellen
-await page.waitForTimeout(140);
 
 // ── D) Untermenue: O oeffnet Optionen, ESC verlaesst sie, Pause bleibt ─────
-await page.keyboard.press("Escape"); // pausieren
-await page.waitForFunction(() => window.__lf.state().paused === true, undefined, { timeout: 4000 }).catch(() => {});
+if (!(await setPaused(true))) check("D: Normalisierung auf pausiert", false);
 await page.keyboard.press("o");
 await page.waitForTimeout(200);
 const optionsOpen = await page.evaluate(() => window.__game.scene.getScene("ui").options.visible);
@@ -169,26 +160,23 @@ const afterSubEsc = await page.evaluate(() => ({
 }));
 check("ESC im Untermenue verlaesst es, Pause bleibt", optionsOpen === true && afterSubEsc.paused === true && afterSubEsc.optionsVisible === false,
   JSON.stringify({ optionsOpen, ...afterSubEsc }));
-await page.keyboard.press("Escape"); // wieder fortsetzen
-await page.waitForTimeout(200);
+await setPaused(false);
 
-// ── E) Touch/Gamepad-Resumepfade unveraendert (Kernzustandspruefung) ───────
-// Touch-Pause ueber den Pause-Knopf (wie verify-input, Pixel-7-Profil-Mapping
-// gespiegelt): Pause-Knopf oben rechts.
-const touch = await page.evaluate(() => {
-  const view = { w: window.__game.scale.width, h: window.__game.scale.height };
-  return { x: view.w - 10 - 15, y: 10 + 9 };
-});
+// ── E) Touch-Resumepfade unveraendert (game coords -> client korrekt mappen) ─
+const view = await page.evaluate(() => ({ w: window.__game.scale.width, h: window.__game.scale.height }));
 const box = await page.locator("canvas").boundingBox();
-const sx = box.x + (touch.x / 960) * box.width;
-const sy = box.y + (touch.y / 540) * box.height;
-await page.touchscreen.tap(sx, sy);
+const toClient = (x, y) => ({
+  x: box.x + (x / view.w) * box.width,
+  y: box.y + (y / view.h) * box.height,
+});
+// Pause-Knopf oben rechts (wie verify-input).
+const knob = toClient(view.w - 10 - 15, 10 + 9);
+await page.touchscreen.tap(knob.x, knob.y);
 const touchPaused = await page.waitForFunction(
   () => window.__lf.state().paused === true, undefined, { timeout: 4000 },
 ).then(() => true).catch(() => false);
 check("Touch: Pause-Knopf pausiert (Pfad unveraendert)", touchPaused);
-// Fortsetzen per FORTSETZEN-Knopf (Pause-Menue, Fokus liegt dort).
-await page.evaluate(() => { window.__lf.autoPlay; /* noop, nur Klarheit */ });
+// Fortsetzen per FORTSETZEN-Knopf (Pause-Menue).
 const resumeBtn = await page.evaluate(() => {
   const ui = window.__game.scene.getScene("ui");
   const btn = ui.pauseButtons?.[0];
@@ -197,9 +185,8 @@ const resumeBtn = await page.evaluate(() => {
   return { x: r.centerX, y: r.centerY };
 });
 if (resumeBtn) {
-  const rx = box.x + (resumeBtn.x / 960) * box.width;
-  const ry = box.y + (resumeBtn.y / 540) * box.height;
-  await page.touchscreen.tap(rx, ry);
+  const rp = toClient(resumeBtn.x, resumeBtn.y);
+  await page.touchscreen.tap(rp.x, rp.y);
   const touchResumed = await page.waitForFunction(
     () => window.__lf.state().paused === false, undefined, { timeout: 4000 },
   ).then(() => true).catch(() => false);
