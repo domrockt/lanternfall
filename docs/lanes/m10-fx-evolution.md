@@ -192,16 +192,14 @@ wäre eine eigene Karte „Kontur/Glow der Hit-Signaturen +10 %“ sinnvoll.
 
 - Per-Evolution-Peak Near-White kann lokal über 4,16 % liegen, weil die
   Basiswaffen-Effekte (z. B. Dornen-Ring, Phönix-Feuer) viel Fläche belegen.
-  Die abgenommene A7-Messung ist der Chaos-Frame Minute 25 (0,52 %). Eine
+  Die abgenommene A7-Messung ist der Chaos-Frame Minute 25 (0,87 %). Eine
   globale Dämpfung der Basis-Effekte wäre eine eigene, breitere Karte.
 - `shots/m10-fx-evolution-after.json` verweist bei den Textur-Dumps auf
   `/home/ai/tmp/...`; die geprüfte, committete Zusammenfassung ist
   `shots/m10-fx-evolution-signature-sheet.png` und `-signature-diff.json`.
-- **K5-Abnahme offen (art-director FAIL 2/5):** Die Messwerte sind grün, aber die
-  Lesbarkeit im Chaos nicht. Der Scheduler bekommt kein `.lane-done`. Nächste Karte:
-  Signaturen nach Kontraktor-Liste oben neu backen (32×32, Skala 3,2–4,8, Alpha ≥0,85,
-  Kontur), dann erneut 6 GIFs + Chaos-Frame aufnehmen und art-director wiederholen.
+- **Restkontrast (kein Abnahme-Blocker):** Gewittersiegel und Phönix haben im
+  jeweils ähnlich gefärbten Gegnerumfeld (weiße Gegnerkörper bzw. orange XP-Gems)
+  nur mittleren Kontrast; bei Bedarf eigene Karte „Kontrast/Glow der Hit-Signaturen“.
 - Die Nachher-Stills (`-after-*.png`) sind der Peak-Near-White-Frame, nicht zwingend
-  der Moment der Signatur; die Signatur ist in den GIFs nur in 2–3 Frames sichtbar
-  (z. B. Zornpendel-Ring in `after-flail.gif` Frame 3). Beim Nachziehen Peak-Frame
-  auf Signatur-Sichtbarkeit statt nur Near-White wählen.
+  der Moment der Signatur; die Signatur ist in den GIFs in den ersten 2–4 Frames
+  gut sichtbar (z. B. Zornpendel-Ring in `after-flail.gif` Frame 2–3).
