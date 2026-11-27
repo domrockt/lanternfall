@@ -3690,11 +3690,17 @@
       "id": 2480,
       "title": "m10-palette-guard-03 Regressionsprobe (Negativtest)",
       "description": "Mini-Grid mit 1 absichtlich falschem Farbwert macht den Guard rot (Selbsttest), damit er nicht stillschweigend leer laeuft. Abnahme: Negativprobe im Testfile belegt rot; Laufzeit < 2 s gemessen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-guard",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T06:51:14Z",
+          "by": "build",
+          "text": "todo → doing: Negativprobe + Laufzeit-Assert im Testfile"
+        }
+      ],
       "created": "2026-11-27T06:29:53Z",
-      "updated": "2026-11-27T06:29:53Z"
+      "updated": "2026-11-27T06:51:14Z"
     },
     {
       "id": 2481,

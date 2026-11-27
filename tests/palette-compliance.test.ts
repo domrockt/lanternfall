@@ -123,4 +123,29 @@ describe("M10 palette-guard: Pixel-Compliance", () => {
     expect(s.opaque).toBeGreaterThan(200000);
     expect(s.transparentPct).toBeGreaterThan(0);
   });
+
+  // Karte 3: Regressionsprobe. Der Guard darf nicht stillschweigend leer laufen.
+  it("Negativprobe: 1 absichtlich falscher Farbwert macht den Guard rot", () => {
+    // 'z' ist kein Palettenzeichen (nur 0-9, a-v). Das Grid muss auffallen.
+    const bad = analyzeGrid("negativ-probe", "tests/palette-compliance.test.ts", ["0z0"], 3, 1, PAL);
+    expect(bad.offPalette).toBe(1);
+    expect(bad.violations[0]).toMatchObject({ x: 1, y: 0, index: 1, char: "z", reason: "off-palette" });
+    expect(summarize([bad]).offPalette).toBe(1);
+
+    // Auch ein numerischer Index ausserhalb 0..31 ist ein Verstoss.
+    const badNum = analyzePixelGrid("negativ-index", "tests/palette-compliance.test.ts", [[32, 0, PAL.length]], PAL);
+    expect(badNum.offPalette).toBe(2);
+
+    // Und der echte Guard-Assert waere rot, nicht still gruen.
+    expect(() => expectPaletteClean([bad]), "Guard muss bei Off-Palette werfen").toThrow(/off-palette|Palette/);
+  });
+
+  it("Laufzeit der Compliance-Pruefung < 2 s", () => {
+    const t0 = performance.now();
+    const assets = [...staticAssets(), ...numericAssets(), ...fxAssets()];
+    expectPaletteClean(assets);
+    const ms = performance.now() - t0;
+    expect(ms, `Guard-Laufzeit ${ms.toFixed(1)} ms`).toBeLessThan(2000);
+    console.log(`[palette-guard] ${assets.length} Grids/Frames geprueft in ${ms.toFixed(1)} ms`);
+  });
 });
