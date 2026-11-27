@@ -121,14 +121,18 @@ describe("M10-Draw-Cap: Magnet skaliert mit Gem-Zahl", () => {
   it("nutzt die Gem-Zahl im update() (voller Magnet bei vollem Feld)", () => {
     const ps = new PickupSystem(sceneWithoutTweens);
     ps.setCap(MAX_VISIBLE_GEMS);
-    fill(ps, MAX_VISIBLE_GEMS + 20);
-    const expected = PickupSystem.magnetRadiusFor(40, ps.gems.length);
-    expect(expected).toBeGreaterThan(PickupSystem.magnetRadiusFor(40, 0));
+    // Halb gefüllt lassen, damit der neue Drop nicht sofort verschmolzen wird.
+    fill(ps, MAX_VISIBLE_GEMS / 2);
+    const count = ps.gems.length + 1;
+    const expected = PickupSystem.magnetRadiusFor(40, count);
+    const base = PickupSystem.magnetRadiusFor(40, 0);
+    expect(expected).toBeGreaterThan(base);
     // Kristall genau auf dem erweiterten Radius wird angezogen.
     ps.drop(500 + expected, 500, "small", rng);
     ps.update(1 / 60, 500, 500, 40, noop);
     const dropped = ps.gems[ps.gems.length - 1];
-    expect(dropped.x).toBeLessThan(500 + expected);
+    expect(ps.gems.length).toBe(count);
+    expect(500 + expected - dropped.x).toBeGreaterThan(0.01);
   });
 });
 
