@@ -5957,10 +5957,16 @@
       "id": 5259,
       "title": "m10-hud-wide-anchor: K2 Ist-Baseline + Screenshots",
       "description": "Lauf mit --tag baseline: shots/m10-hud-anchor-baseline-*.png + JSON; Kollisions-/Rand-Verletzungen je Format gezaehlt und in docs/lanes/m10-hud-wide-anchor.md dokumentiert. AK: baseline-JSON + PNGs committed, Verletzungszahl notiert.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T20:38:11Z",
+          "by": "build",
+          "text": "todo → doing: K2: Baseline gelaufen, 64 Verletzungen (alle icons-bg x=0), Belege werden committet"
+        }
+      ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:26:51Z"
+      "updated": "2026-11-27T20:38:11Z"
     },
     {
       "id": 5260,

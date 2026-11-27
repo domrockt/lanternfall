@@ -46,7 +46,25 @@ zaehlt Rand-/Kollisions-/View-Verletzungen und schreibt
 
 ## Ergebnisse
 
-(tbd je Karte)
+### K2 — Ist-Baseline (`--tag baseline`, 2026-11-27)
+
+Belege: `shots/m10-hud-anchor-baseline.json`, `shots/m10-hud-anchor-baseline-<format>-<zustand>.png`
+(4 Formate x hud/banner/levelup/chest).
+
+| Format | View | Verletzungen | Befund |
+|---|---|---|---|
+| 640x360-ref | 640x360 (n=3) | 16 | icons-bg x=0 (Rand) + 3 Kollisionen mit HP-Zeile |
+| 780x360@3 | 780x360 (n=3) | 16 | identisch |
+| 1280x720 | 640x360 (n=2) | 16 | identisch |
+| 1920x1080 | 640x360 (n=3) | 16 | identisch |
+
+- **64 Verletzungen gesamt, alle eine Ursache:** `hud-icons-bg` (Waffen-Icon-Hintergrund)
+  liegt fix bei `x=0, Breite 8+n*18` statt am Icon-Cluster verankert → Rand-Verletzung
+  links (x=0 < 5) und Kollision mit HP-Zeile (`hud-hp-bg/-label/-fill`), sichtbar im
+  Shot `baseline-780x360@3-hud.png` (dunkler Streifen unter der HP-Leiste).
+- **AE gegen 640x360-Referenz = 0** (1280x720 und 1920x1080 liefern identische Boxen).
+- Alle gemessenen Boxen ganzzahlig (Pixelgenauigkeit ok), 0 JS-Fehler.
+- Level-Up-Dialog, Banner und Truhen-Hinweis: keine Rand-/Kollisions-/View-Verletzungen.
 
 ## Offene Punkte
 
