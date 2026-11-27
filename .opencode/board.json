@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2500,
+  "next": 2642,
   "cards": [
     {
       "id": 1,
@@ -3747,6 +3747,70 @@
       ],
       "created": "2026-11-27T08:13:06Z",
       "updated": "2026-11-27T08:19:41Z"
+    },
+    {
+      "id": 2638,
+      "title": "m10-palette-guard-01 Messskript palette-check.mjs",
+      "description": "Lane m10-palette-guard, lane #2478. scripts/art/palette-check.mjs laedt via Vite-SSR alle Sprite-/FX-Grids, zaehlt je Grid Pixel, Off-Palette, Alpha-Verstoesse, Farbanzahl, Transparenz-Anteil und schreibt shots/m10-palette-baseline.json. Abnahme: Skript rc=0, Baseline-JSON im Commit, Off-Palette-Zahl belegt. Erledigt in Lane-Commit cbe5d20 (320 Grids, 0 off-palette, 0 alpha, 432418 px).",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T08:42:34Z",
+          "by": "build",
+          "text": "lane #2478 (aus Lane m10-palette-guard): Messskript + Baseline, 320 Grids/432418 px, 0 off-palette, 0 alpha; Lane-Commit cbe5d20."
+        }
+      ],
+      "created": "2026-11-27T08:36:27Z",
+      "updated": "2026-11-27T08:42:34Z"
+    },
+    {
+      "id": 2639,
+      "title": "m10-palette-guard-02 Vitest-Guard tests/palette-compliance.test.ts",
+      "description": "Lane m10-palette-guard, lane #2479. tests/palette-compliance.test.ts prueft dieselben Invarianten (nur Palettenindizes 0..31 oder transparent) ueber alle Grids mit klarer Fehlermeldung. Abnahme: npx vitest run tests/palette-compliance.test.ts gruen. Erledigt in Lane-Commit a12da71 (458 Grids/Frames, 0 off-palette, npm test 289/289).",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T08:42:34Z",
+          "by": "build",
+          "text": "lane #2479 (aus Lane m10-palette-guard): Vitest-Guard, 458 Grids/Frames, 0 off-palette; npm test 289/289 gruen; Lane-Commit a12da71."
+        }
+      ],
+      "created": "2026-11-27T08:36:27Z",
+      "updated": "2026-11-27T08:42:34Z"
+    },
+    {
+      "id": 2640,
+      "title": "m10-palette-guard-03 Regressionsprobe (Negativtest)",
+      "description": "Lane m10-palette-guard, lane #2480. Mini-Grid mit 1 absichtlich falschem Farbwert macht den Guard rot (Selbsttest). Abnahme: Negativprobe belegt rot; Laufzeit < 2 s. Erledigt in Lane-Commit 0a26e18 (Guard wirft bei 'z' im Grid, Laufzeit 25 ms).",
+      "column": "done",
+      "assignee": "gameplay-guard",
+      "notes": [
+        {
+          "at": "2026-11-27T08:42:34Z",
+          "by": "build",
+          "text": "lane #2480 (aus Lane m10-palette-guard): Negativprobe rot belegt, Laufzeit 25 ms (<2 s); Lane-Commit 0a26e18."
+        }
+      ],
+      "created": "2026-11-27T08:36:27Z",
+      "updated": "2026-11-27T08:42:34Z"
+    },
+    {
+      "id": 2641,
+      "title": "m10-palette-guard-04 Doku + Abnahme",
+      "description": "Lane m10-palette-guard, lane #2481. docs/lanes/m10-palette-guard.md mit Baseline-Zahlen, Ausnahmeliste, Laufzeit, Befehl; npm test gruen mit Testzahl vorher/nachher; npm run build gruen; Belege im Commit. Abnahme: alle Punkte belegt. Erledigt in Lane-Commit 554f121 (291/291 Tests, build gruen).",
+      "column": "done",
+      "assignee": "tech-lead",
+      "notes": [
+        {
+          "at": "2026-11-27T08:42:34Z",
+          "by": "build",
+          "text": "lane #2481 (aus Lane m10-palette-guard): Doku + Abnahme, npm test 291/291, build gruen; Lane-Commit 554f121."
+        }
+      ],
+      "created": "2026-11-27T08:36:27Z",
+      "updated": "2026-11-27T08:42:34Z"
     }
   ]
 }
