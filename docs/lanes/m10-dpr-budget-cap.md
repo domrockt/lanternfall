@@ -71,7 +71,12 @@ Neuer vollstaendiger Lauf ist unter flock in der Warteschlange eingereiht.
   minEnemies 1200 — selbst das reicht auf dieser Maschine nicht unter
   die 45-FPS-Schwelle; Regler-Greifen unter Dauerlast bleibt durch die
   Probes belegt (Teiler 2, Buffer 390x180, FPS-Erholung 44,9 -> 59).
-  Nachgelegt: Stress 3000 in shots/m10-dpr-budget-stress3000.json.
+  Nachgelegt: Stress 3000 in shots/m10-dpr-budget-stress3000.json —
+  57,2 FPS bei Teiler 1 (minEnemies 3000, 0 JS-Fehler): selbst 3000
+  Gegner (10x M25-Ziel) reichen auf dieser Maschine nicht unter die
+  45-FPS-Schwelle. Regler-Senken unter Last ist damit nur synthetisch
+  (?rbscale=2 / Probes mit simuliertem FPS-Einbruch) belegbar; die
+  Hysterese-Mathematik ist in tests/scale-budget.test.ts abgedeckt.
 
 `scripts/m10-dpr-budget.mjs`, M25-Last 780x360 dpr3, 3 Laeufe nachher +
 Vorher-Referenz (?rbscale=0), FPS und effektive Renderbreite in
