@@ -1,9 +1,30 @@
 import Phaser from "phaser";
 import { DEPTH } from "../gfx/depth";
-import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey } from "../gfx/gen-fx";
+import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 
-interface FxRuntime {
+/** M10: aktueller dpr (Geraetepixel/Spielpixel); node-Tests ohne window -> 1. */
+function currentDpr(): number {
+  return typeof window !== "undefined" && window.devicePixelRatio ? window.devicePixelRatio : 1;
+}
+
+/** M10: Ein Glow-Budget pro Szene — FX- und Partikel-Pool teilen sich den
+ *  Deckel, damit die Summe aller additiven Sprites begrenzt bleibt. */
+const glowBudgets = new WeakMap<Phaser.Scene, GlowBudget>();
+function glowBudgetFor(scene: Phaser.Scene): GlowBudget {
+  let budget = glowBudgets.get(scene);
+  if (!budget) {
+    budget = new GlowBudget(glowCapFor("full"));
+    glowBudgets.set(scene, budget);
+    // M10 (Review K2/S1): Szenen-Shutdown ohne combat.clear() wuerde Slots der
+    // alten Run ewig belegen — Budget beim Shutdown freigeben, nicht leaken.
+    scene.events?.once?.(Phaser.Scenes.Events.SHUTDOWN, () => budget?.reset());
+  }
+  return budget;
+}
+
+/** Laufzeitdatensatz eines Effekt-Sprites (public fuer Tests). */
+export interface FxRuntime {
   sprite: Phaser.GameObjects.Image;
   x: number;
   y: number;
@@ -25,6 +46,8 @@ interface FxRuntime {
   additive: boolean;
   /** M10: Evolutions-Signaturen bleiben auch im Minimal-LOD voll sichtbar. */
   alphaScaleExempt: boolean;
+  /** M10: Sprite belegt gerade einen Glow-Slot (ADD-Blend) des Overdraw-Deckels. */
+  glow: boolean;
 }
 
 export interface FxOptions {
@@ -70,6 +93,8 @@ export class FxSystem {
   trailsEnabled = true;
   /** M6-Endgame-Dämpfung: Alpha-Faktor für alle neuen Effekte (1 = unverändert). */
   alphaScale = 1;
+  /** M10-Attribution: kompletter FX-Pool abschaltbar (nur Messung, kein Spielpfad). */
+  enabled = true;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -83,19 +108,36 @@ export class FxSystem {
     if (next === this.alphaScale) return;
     const ratio = next / this.alphaScale;
     this.alphaScale = next;
+    const budget = glowBudgetFor(this.scene);
     for (const fx of this.active) {
       if (fx.alphaScaleExempt) continue;
       fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
       fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
-      fx.sprite.setBlendMode(fx.additive && next >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      const blendAdd = fx.additive && next >= 0.7;
+      // M10 (Review K2/K1): Re-Promotion braucht einen echten Glow-Slot —
+      // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
+      // weil frueher per NORMAL-Fallback abgewiesene Sprites ohne Slot-Request
+      // wieder auf ADD gestellt wuerden. Ohne freien Slot bleibt NORMAL.
+      if (blendAdd && !fx.glow) fx.glow = budget.request();
+      fx.sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
+      if (!blendAdd && fx.glow) {
+        budget.release();
+        fx.glow = false;
+      }
     }
   }
 
   setMaxActive(max: number): void {
     this.maxActive = Math.max(24, Math.floor(max));
+    // M10: LOD-Stufe aus dem Effekt-Cap ableiten (lod.ts wird nur gelesen) und
+    // den geteilten Glow-Deckel anpassen: 180 = full, 90 = reduced, 60 = minimal.
+    const level: FxLodLevel = this.maxActive <= 60 ? "minimal" : this.maxActive <= 90 ? "reduced" : "full";
+    glowBudgetFor(this.scene).setCap(glowCapFor(level));
   }
 
   spawn(opts: FxOptions): FxRuntime | null {
+    if (!this.enabled) return null;
     if (this.active.length >= this.maxActive) return null;
     const fx = this.free.pop() ?? this.createRuntime();
     fx.x = opts.x;
@@ -112,7 +154,10 @@ export class FxSystem {
     const additive = opts.additive !== false;
     const scaleFactor = opts.alphaScaleExempt ? 1 : this.alphaScale;
     const extra = additive ? scaleFactor : 1;
-    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra;
+    // M10: dpr-Skalierung — bei dpr > 2 kostet jedes additive Sprite die volle
+    // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher auf 0,6.
+    const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
+    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra * dprAlpha;
     fx.alphaScaleExempt = opts.alphaScaleExempt === true;
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
@@ -127,10 +172,15 @@ export class FxSystem {
     sprite.setAlpha(fx.alphaFrom);
     sprite.setRotation(fx.rotation);
     sprite.setDepth(opts.depth ?? DEPTH.fxLow);
-    fx.additive = opts.additive !== false;
+    fx.additive = additive;
     // Minimal-LOD: grosse additive Flächen auf NORMAL legen, sonst bleibt der
     // Kern trotz Alpha-Dämpfung weiß (additive Sprites stacken auf 255).
-    sprite.setBlendMode(fx.additive && this.alphaScale >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+    // M10: Deckel — nur Sprites mit echtem ADD-Blend belegen einen Glow-Slot;
+    // ueber dem Deckel faellt das Sprite auf NORMAL zurueck (Form bleibt).
+    const blendAdd = fx.additive && this.alphaScale >= 0.7;
+    const budget = glowBudgetFor(this.scene);
+    fx.glow = blendAdd ? budget.request() : false;
+    sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     if (opts.tint !== undefined) sprite.setTint(opts.tint);
     else sprite.clearTint();
     sprite.setVisible(true).setActive(true);
@@ -325,6 +375,11 @@ export class FxSystem {
         fx.active = false;
         fx.sprite.setVisible(false).setActive(false);
         fx.sprite.clearTint();
+        // M10: Glow-Slot freigeben, damit neue additive Sprites den Deckel nutzen.
+        if (fx.glow) {
+          glowBudgetFor(this.scene).release();
+          fx.glow = false;
+        }
         this.active.splice(i, 1);
         this.free.push(fx);
         continue;
@@ -358,7 +413,7 @@ export class FxSystem {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
-      frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false,
+      frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
     };
   }
 
@@ -366,6 +421,10 @@ export class FxSystem {
     for (const fx of this.active) {
       fx.active = false;
       fx.sprite.setVisible(false).setActive(false);
+      if (fx.glow) {
+        glowBudgetFor(this.scene).release();
+        fx.glow = false;
+      }
       this.free.push(fx);
     }
     this.active.length = 0;
@@ -391,6 +450,8 @@ export class ParticleSystem {
   private maxActive = 360;
   /** M6-Endgame-Dämpfung: Alpha-Faktor für neue Partikel (1 = unverändert). */
   alphaScale = 1;
+  /** M10-Attribution: kompletter Partikel-Pool abschaltbar (nur Messung). */
+  enabled = true;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -401,18 +462,32 @@ export class ParticleSystem {
     if (next === this.alphaScale) return;
     const ratio = next / this.alphaScale;
     this.alphaScale = next;
+    const budget = glowBudgetFor(this.scene);
     for (const p of this.active) {
       p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
-      p.sprite.setBlendMode(p.additive && next >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      const blendAdd = p.additive && next >= 0.7;
+      // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
+      if (blendAdd && !p.glow) p.glow = budget.request();
+      p.sprite.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
+      if (!blendAdd && p.glow) {
+        budget.release();
+        p.glow = false;
+      }
     }
   }
 
   setMaxActive(max: number): void {
     this.maxActive = Math.max(40, Math.floor(max));
+    // M10: LOD-Stufe aus dem Partikel-Cap ableiten (lod.ts wird nur gelesen):
+    // 280 = full, 140 = reduced, 100 = minimal.
+    const level: FxLodLevel = this.maxActive <= 100 ? "minimal" : this.maxActive <= 140 ? "reduced" : "full";
+    glowBudgetFor(this.scene).setCap(glowCapFor(level));
   }
 
   spawn(opts: FxOptions): FxRuntime | null {
+    if (!this.enabled) return null;
     if (this.active.length >= this.maxActive) return null;
     const p = this.free.pop() ?? this.createRuntime();
     p.x = opts.x;
@@ -426,7 +501,10 @@ export class ParticleSystem {
     p.aspect = opts.aspect ?? 1;
     const additive = opts.additive !== false;
     const extra = additive ? this.alphaScale : 1;
-    p.alphaFrom = (opts.alphaFrom ?? 0.95) * this.alphaScale * extra;
+    // M10: dpr-Skalierung — bei dpr > 2 kostet jedes additive Sprite die volle
+    // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher auf 0,6.
+    const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
+    p.alphaFrom = (opts.alphaFrom ?? 0.95) * this.alphaScale * extra * dprAlpha;
     p.alphaTo = opts.alphaTo ?? 0;
     p.rotation = opts.rotation ?? 0;
     p.spin = opts.spin ?? 0;
@@ -440,8 +518,12 @@ export class ParticleSystem {
     s.setAlpha(p.alphaFrom);
     s.setRotation(p.rotation);
     s.setDepth(opts.depth ?? DEPTH.fxLow);
-    p.additive = opts.additive !== false;
-    s.setBlendMode(p.additive && this.alphaScale >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+    p.additive = additive;
+    // M10: Deckel — geteilt mit FxSystem, nur echte ADD-Sprites belegen Slots.
+    const blendAdd = p.additive && this.alphaScale >= 0.7;
+    const budget = glowBudgetFor(this.scene);
+    p.glow = blendAdd ? budget.request() : false;
+    s.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     if (opts.tint !== undefined) s.setTint(opts.tint);
     else s.clearTint();
     s.setVisible(true).setActive(true);
@@ -498,6 +580,11 @@ export class ParticleSystem {
         p.active = false;
         p.sprite.setVisible(false).setActive(false);
         p.sprite.clearTint();
+        // M10: Glow-Slot freigeben, damit neue additive Sprites den Deckel nutzen.
+        if (p.glow) {
+          glowBudgetFor(this.scene).release();
+          p.glow = false;
+        }
         this.active.splice(i, 1);
         this.free.push(p);
         continue;
@@ -532,7 +619,7 @@ export class ParticleSystem {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
-      frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false,
+      frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
     };
   }
 
@@ -540,6 +627,10 @@ export class ParticleSystem {
     for (const p of this.active) {
       p.active = false;
       p.sprite.setVisible(false).setActive(false);
+      if (p.glow) {
+        glowBudgetFor(this.scene).release();
+        p.glow = false;
+      }
       this.free.push(p);
     }
     this.active.length = 0;

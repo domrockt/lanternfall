@@ -762,3 +762,63 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
   ])),
 };
+
+// ── M10-Overdraw-Deckel fuer additive FX ────────────────────────────────────
+// Attribution (shots/m10-fx-overdraw-attribution.json): FX sind bei M25-780@3
+// ~2,4 ms/frame; der dominante Rest ist Fill-Rate. Additive Glow-Sprites
+// stacken pro Pixel auf 255 und sind bei dpr 3 (2340x1080 = 2,5 Mio px) der
+// teuerste FX-Anteil. Der Deckel begrenzt GLOWS (gleichzeitig aktive additive
+// Sprites), nicht Partikel; alles andere bleibt unveraendert.
+
+export type FxLodLevel = "full" | "reduced" | "minimal";
+
+/** Alpha-Faktor fuer additive FX je Geraetepixel-Verhaeltnis (dpr).
+ *  dpr > 2 (z. B. 780x360@3): 0,6 — bei 2,5 Mio Device-Pixeln kostet jedes
+ *  additive Sprite die volle Flaeche; 0,8 fuer dpr > 1,5, sonst 1. */
+export function fxAlphaForDpr(dpr: number): number {
+  if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? 0.6 : 1;
+  const d = dpr > 0 ? dpr : 1;
+  if (d > 2) return 0.6;
+  if (d > 1.5) return 0.8;
+  return 1;
+}
+
+/** Max. gleichzeitig aktive additive Glow-Sprites je LOD-Stufe (lod.ts). */
+export function glowCapFor(level: FxLodLevel): number {
+  return level === "minimal" ? 24 : level === "reduced" ? 40 : 72;
+}
+
+/** Zaehlt aktive additive Glows und vergibt Slots unter einem harten Deckel.
+ *  request() = true heisst ADD-Blend erlaubt; false faellt auf NORMAL zurueck
+ *  (Form/Farbe bleiben, nur der Stack-Anteil entfaellt). Keine Tweens. */
+export class GlowBudget {
+  cap: number;
+  private used = 0;
+
+  constructor(cap: number) {
+    this.cap = Math.max(0, Math.floor(cap));
+  }
+
+  setCap(cap: number): void {
+    this.cap = Math.max(0, Math.floor(cap));
+  }
+
+  /** Slot anfordern. Invariante: current() ueberschreitet nie cap(). */
+  request(): boolean {
+    if (this.used >= this.cap) return false;
+    this.used++;
+    return true;
+  }
+
+  release(): void {
+    if (this.used > 0) this.used--;
+  }
+
+  reset(): void {
+    this.used = 0;
+  }
+
+  get current(): number {
+    return this.used;
+  }
+}
