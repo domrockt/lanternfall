@@ -1,0 +1,23 @@
+Lane m10-vfx-restore — VFX-Daempfung stufenweise zuruecknehmen (A7-Restmangel). ABGESCHLOSSEN.
+
+Ergebnis: Gewaehlte Stufe = 1 — fxAlpha 0,5 -> 0,65 im minimal-LOD, umgesetzt als
+Run.ts-Hebel (Run.setFxRestore/FX_RESTORE_ALPHA; wirkt auf FX-/Partikel-Pool via public
+setAlphaScale + Laternenlicht, additiv bleibt NORMAL unter der 0,7-Schwelle).
+Die eigentliche Konstante (logic/lod.ts, fxAlphaFor) und der Glow-Hebel (gen-fx.ts/
+FxSystem.ts, dpr-Glow-Alpha 0,6) sind fremd geclaimed — Anfragen stehen in
+/home/ai/games/.dispatch/requests.md (Stufe 2 Glows +0,1 muss nach Uebernahme gegen
+das Near-White-Gate gemessen werden).
+
+Messwerte (M25-Chaos-Frame, ~300 Gegner + Boss -> minimal-LOD, seed 77, A7-Methode,
+FPS-Laeufe unter flock, Renderer: ANGLE Intel Mesa RPL-S iGPU):
+- Near-White A7 (Crop/full): Baseline 0,5 -> 1,57/0,61 % (640) und 3,43/0,74 % (780@3);
+  Stufe 1 0,65 -> 2,99 % (640, K2-Lauf) bzw. 3,98/2,06 % (45-s-Lauf K3, beide Profile
+  minimal) — alle ≤ 4,16 %-Grenze.
+- FPS 60,0/60,0 (>= 50), Draw-Calls/Frame 16/16 = Baseline (≤ +10 %), 0 JS-Fehler.
+- tests/vfx-restore.test.ts (9 Tests) prueft die gewaehlte Stufe gegen die Messgrenzen;
+  tsc + npm test 596/596 gruen.
+- art-director: PASS, 4/5 (640 und 780@3) — Effekte praesent/rasterhart, keine
+  Ueberstrahlung; AE-Diff nur im Lichtkreis. Optionale Glow-Core-Polish als Backlog-Karte.
+
+Belege: shots/m10-vfx-restore-baseline.json (+2 PNGs), -stage1.json (+4 PNGs),
+-stage1-long.json (+4 PNGs), docs/lanes/m10-vfx-restore.md. Karten #5298-#5301.
