@@ -1,0 +1,9 @@
+Lane m10-perf-rootcause: A/B-Messung der FPS-Regression (nur messen, kein Tuning) — fertig.
+Baseline perf.mjs 640x360/dpr1: Burst 60,1 FPS, Minute 25 56,4 FPS (fa-01-Wert 46,3 nicht reproduziert).
+fullrun: fpsMin 42,8 (<55), Sieg/Dawn, Heap +8,5 %, 0 JS-Fehler (fa-01-Richtung bestätigt).
+A/B-Matrix 6/6 Läufe belegt: a 60,1/60,0 · b 60,1/60,0 (Projektile neutral) · c 54,5/50,0 (780) ·
+d 50,7/47,2 (1080/860 intern) · e 50,2/47,2 (Particles reduziert, neutral) · f 60,1/60,0 (UI/PostFX aus, +18,5 %).
+Urteil: keine Einzelursache >=20 % belegt; Verdacht Render-/Fill-Kosten (Renderbreite, Vignette/Licht/DamageNumbers).
+Fix-Empfehlung als Folgekarte: interne Renderbreite <=640 + Hochskalieren, UI/PostFX im Endgame drosseln.
+Belege: shots/m10-perf-rootcause-{baseline,fullrun,a,b,c,d,e,f}.json; Doku: docs/lanes/m10-perf-rootcause.md.
+Abnahme: PASS (6/6 Läufe mit Zahl, Tabelle, ein Mess-Commit, keine Änderung außerhalb der area).
