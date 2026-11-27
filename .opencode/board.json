@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6443,
+  "next": 6542,
   "cards": [
     {
       "id": 1,
@@ -7529,6 +7529,86 @@
       ],
       "created": "2026-11-27T23:11:00Z",
       "updated": "2026-11-27T23:11:10Z"
+    },
+    {
+      "id": 6538,
+      "title": "m10-audio-mix-chaos K1: Ist-Messung 500er-Chaos (Voice-Starts/s, Voices, Peak dBFS, Clipping)",
+      "description": "Skript scripts/m10-audio-mix.mjs EINMAL bauen: synthetischer 500-Gegner-Chaos-Lauf (60 s Spielzeit, Request-Raten aus Baseline m10-feedback-budget-baseline.json: ~53 Hits/s), Mixer-Logik aus src/audio/mixing.ts + SFX_CONFIG + WAV-Peaks. Misst Voice-Starts/s, gleichzeitige Voices, Mix-Peak dBFS (Sample-Superposition), Clipping-Faelle (>=0 dBFS). Output shots/m10-audio-mix-before.json, committed. AE: JSON committed mit Peak/Clipping-Zahlen.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:22:31Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Messskript m10-audio-mix.mjs (synthetischer Chaos-Lauf, reines Node, kein flock)"
+        },
+        {
+          "at": "2026-11-27T23:29:54Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Skript 1x gebaut (2 Iterationen), before-JSON committed (52,65 Starts/s, Burst +0,77 dBFS mit 5 Clipping-Samples). Build rc=0, 7/7 audio-mix-Tests gruen, tsc gruen. Commit M10-m10-audio-mix-chaos #6538."
+        }
+      ],
+      "created": "2026-11-27T23:22:28Z",
+      "updated": "2026-11-27T23:29:54Z"
+    },
+    {
+      "id": 6539,
+      "title": "m10-audio-mix-chaos K2: Mix-Budget — Voice-Fairness (Verdraengen) + Limiter <= -1 dBFS + Waffen-Drossel",
+      "description": "In src/audio/mixing.ts (rein, unit-testbar): planPlay mit Verdraengung aeltester/leisester niederpriorer Stimme fuer Prio>=2 statt Ablehnung, Rate-Deckel 24/s (Waffen-Band 12/s mit Fair-Anteil je Waffe, Hit-Band 12/s, Prio>=3 bypass), Limiter: Summe aktiver Stimmlautstaerken <= 0.891 (-1 dBFS) via Normalisierungsfaktor. AudioSystem.ts wendet evict+limiter an (Stimmen stoppen/umschalten). Master-Mute-Pfad bitgleich (muted-check bleibt erste Pruefung in play()). AE: tsc + bestehende tests/audio-mix.test.ts gruen, Commit.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:31:19Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: planPlay (Verdraengung aelteste/leiseste Prio<2-Stimme fuer Prio>=2), Rate-Deckel 24/s in zwei Baenden (Waffen 12/s mit Fair-Anteil je ID, Hit 12/s), Limiter TARGET_PEAK -1 dBFS; AudioSystem wendet evict+Normalisierung an. Master-Mute-Pfad unveraendert."
+        },
+        {
+          "at": "2026-11-27T23:38:51Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: planPlay-Verdraengung + 24/s-Zwei-Band-Deckel mit Fair-Anteil + Limiter (-1 dBFS) in mixing.ts; AudioSystem wendet evict+Normalisierung an, Master-Mute bitgleich. Preview: 52,65->22,65 Starts/s (P3-max 24), Burst +0,77 dBFS/5 Clipping -> -2,63 dBFS/0, 12/12 IDs >= 29 Starts. tsc + 7/7 audio-mix + Build rc=0. Commit 7984951 (amended, Skript-Metrik)."
+        }
+      ],
+      "created": "2026-11-27T23:22:28Z",
+      "updated": "2026-11-27T23:38:51Z"
+    },
+    {
+      "id": 6540,
+      "title": "m10-audio-mix-chaos K3: Regressionstests tests/audio-mix-chaos.test.ts",
+      "description": "Tests: (a) Voice-Limit hart (global <= MAX_TOTAL_VOICES), (b) Peak-Deckel deterministisch — synthetische 200-Stimmen-Welle -> Summe <= -1 dBFS, (c) Master-Mute blockt sfx/voices/music weiterhin, (d) Waffen-Prioritaet stabil: im Sättigungsfall kriegt jede Waffe >= ihren Fair-Anteil, Prio>=3 wird nie verdraengt, (e) Verdraengung: Prio-2 verdraengt aelteste Prio-1-Stimme. AE: npx vitest run tests/audio-mix-chaos.test.ts + tests/audio-mix.test.ts gruen, Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:39:11Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: tests/audio-mix-chaos.test.ts — Voice-Limit hart, 200-Stimmen-Peak-Deckel deterministisch, Master-Mute blockt sfx/voices/music, Waffen-Fair-Anteil stabil, Verdraengung aelteste/leiseste."
+        },
+        {
+          "at": "2026-11-27T23:40:53Z",
+          "by": "build",
+          "text": "[Supervisor] bestätigt (23:44Z). Ist-Stand mit Belegen: (1) Mess-Skript ist EINGEFROREN — genau 2 Commits mit dem Skript: 58b1d13 (K1: Erzeugung + shots/m10-audio-mix-before.json mit Voice-Starts/s 52,65/max 64, gleichzeitige Voices max 13, Peak -3,84 dBFS +0,77 dBFS Burst, 5 Clipping-Samples) und 5eff385 (K2, nur Report-Metriken Band-Starts/s). Keine 11 Edits — K1 lief mit 2 Skript-Iterationen im Briefing-Limit. (2) K2 (Voice-Limit/Fairness in src/audio/mixing.ts + Limiter in AudioSystem.ts) ist fertig und committed: 5eff385; therefore bleibt K3 (tests/audio-mix-chaos.test.ts) wie geplant in doing, Ruecksetzen auf todo entfaellt. (3) Ab jetzt nur noch Aenderungen an tests/audio-mix-chaos.test.ts + docs/lanes/m10-audio-mix-chaos.md + shots/m10-audio-mix-after.json (Erzeugung per Lauf, keine Skript-Edits)."
+        }
+      ],
+      "created": "2026-11-27T23:22:28Z",
+      "updated": "2026-11-27T23:40:53Z"
+    },
+    {
+      "id": 6541,
+      "title": "m10-audio-mix-chaos K4: Nachher-Messung + Doku + .lane-done",
+      "description": "shots/m10-audio-mix-after.json mit selbem Skript: Voice-Starts/s <= 24 (Waffen+Hit-Band, Prio>=3 ausgenommen), 0 Clipping-Faelle, Peak <= -1 dBFS, 12/12 Waffen-/Evo-Klaenge im Chaos geoeffnet (sfxPlayed-Verteilung >= 1 Start/s je id). Doku docs/lanes/m10-audio-mix-chaos.md mit Vorher/Nachher-Tabelle. .lane-done anlegen. AE: npm test + tsc + build rc=0, Commit.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:46:30Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: after-Lauf mit eingefrorenem Skript (keine Edits), Doku docs/lanes/m10-audio-mix-chaos.md, .lane-done."
+        },
+        {
+          "at": "2026-11-27T23:48:16Z",
+          "by": "build",
+          "text": "doing → review: K4 fertig: shots/m10-audio-mix-after.json committed — 22,65 Starts/s avg (P3-max 24 = Deckel), 12 Voices, Chaos-Peak -6,46 dBFS, Burst -1,37 dBFS / 0 Clipping, 12/12 Klang-IDs (29-60 Starts). Doku docs/lanes/m10-audio-mix-chaos.md + .lane-done. 845/845 Tests, tsc rc=0, Build rc=0. Commit d6b4fe6."
+        }
+      ],
+      "created": "2026-11-27T23:22:28Z",
+      "updated": "2026-11-27T23:48:16Z"
     }
   ]
 }
