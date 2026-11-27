@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5022,
+  "next": 5099,
   "cards": [
     {
       "id": 1,
@@ -5738,6 +5738,16 @@
       "notes": [],
       "created": "2026-11-27T20:00:48Z",
       "updated": "2026-11-27T20:00:54Z"
+    },
+    {
+      "id": 5098,
+      "title": "m10-flock-sweep-2: bare-flock-Reste ground-cost + kopierbare Anleitungen auf flock -w",
+      "description": "Folge-Karte zu m10-flock-sweep (dort Claim-Konflikt, jetzt frei). scripts/m10-ground-cost.mjs Z.328+467 echte Spawns auf `flock -w 520/300`, Kommentar Z.10 auf Muster mit Timeout-Meldung; m10-fx-overdraw.mjs Z.4, m10-ui-cost.mjs Z.15, m10-heap-margin.mjs Z.7-8 kopierbare Anleitungen auf `flock -w <N>` (heap-margin: Heap-Szenario bleibt absichtlich OHNE Lock). Abnahme: Vorher/Nachher-Grep in docs/lanes/m10-flock-sweep-2.md (vorher 18 Treffer auf 9055126), Negativtest belegte Sperre + flock -w 1 -> rc=1 nach ~1 s mit Meldung, node --check gruen fuer alle 4 Dateien.",
+      "column": "doing",
+      "assignee": "m10-flock-sweep-2",
+      "notes": [],
+      "created": "2026-11-27T20:06:29Z",
+      "updated": "2026-11-27T20:06:29Z"
     }
   ]
 }

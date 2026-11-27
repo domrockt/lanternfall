@@ -7,7 +7,12 @@
 // Attribution: on-hidden = Draw-/Renderpfad, hidden-frozen = Update-Pfad.
 // Der Update-Pfad wird zusaetzlich direkt um `ground.update()` gemessen.
 // 3 Laeufe x 3 rotierte Messfenster je Bedingung gegen Waerme-/Last-Bias.
-// Laeuft unter flock.
+// Laeuft unter `flock -w` (Wartezeit-Limit = erwartete Laufzeit + 120 s Puffer):
+//   flock -w 300 /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs
+//   flock -w 520 /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs --instrument
+// Bei Lock-Timeout (rc != 0): Skriptname + "Sperre /home/ai/games/.lf-perf.lock belegt
+// — spaeter erneut versuchen" ausgeben und Exitcode weiterreichen — kein stiller
+// Abbruch, kein unbegrenztes Warten.
 import { writeFileSync, mkdirSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 
@@ -325,7 +330,7 @@ if (INSTRUMENT) {
     const drawPayload = {
       card: "m10-ground-cost/2-instrumentierung",
       measuredAt: new Date().toISOString(),
-      command: "flock /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs --instrument",
+      command: "flock -w 520 /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs --instrument",
       viewport: VIEWPORT,
       counts,
       breakdown,
@@ -464,7 +469,7 @@ const summary = {
 const payload = {
   card: "m10-ground-cost/1-messung",
   measuredAt: new Date().toISOString(),
-  command: "flock /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs",
+  command: "flock -w 300 /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs",
   summary,
   runs,
   jsErrors: errors,

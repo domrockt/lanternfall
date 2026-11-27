@@ -1,0 +1,5 @@
+2026-11-27T20:07:29Z
+instrument rc=1
+m10-ground-cost: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen
+wrapper rc=1
+check rc=1 nach 1.00s
