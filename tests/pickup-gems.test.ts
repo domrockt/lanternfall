@@ -80,8 +80,9 @@ describe("M10 Magnet-Semantik", () => {
   it("zieht ab exakt dem Radius, aber nicht ausserhalb", () => {
     const ps = new PickupSystem(scene);
     const radius = 40;
-    const magnet = PickupSystem.magnetRadiusFor(radius);
-    expect(magnet).toBeCloseTo(40 * MAGNET_RADIUS_FACTOR);
+    // M10-Draw-Cap: der Radius skaliert mit der Gem-Zahl (hier 2 Gems).
+    const magnet = PickupSystem.magnetRadiusFor(radius, 2);
+    expect(magnet).toBeGreaterThan(40 * MAGNET_RADIUS_FACTOR);
     ps.drop(500 + magnet, 500, "small", rng); // genau auf dem Radius
     ps.drop(500 + magnet + 0.5, 500, "small", rng); // knapp ausserhalb
     ps.update(1 / 60, 500, 500, radius, noop);
