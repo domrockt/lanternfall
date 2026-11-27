@@ -4454,25 +4454,36 @@
       "id": 3499,
       "title": "m10-perf-fix-ambient-batching #2 Fix: Ambient-Layer + ambientBudgetFor(lod)",
       "description": "Glühwürmchen/Nebel in gebatchte Container (ADD/NORMAL) + Dichte/Update-Rate per ambientBudgetFor(lod) begrenzen; Patch-Vorlage auf HEAD portieren, Run.ts/UI.ts/textures.ts NICHT editieren. Abnahme: npx tsc --noEmit grün, gezielte Vitest-Tests grün, Draw-Call-/Blend-Zähler gesenkt (Begründung im Test), ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T15:05:43Z",
+          "by": "build",
+          "text": "todo → review: todo → review: Fix commit 176c0c4. Ambient in feste Container (ADD/NORMAL), ambientBudgetFor 24/3@60 → 0/1@30 (>=250) → 0/1@15 (>=360), Dichte-Prop-LOD. Run.ts/UI.ts/textures.ts nicht angefasst (kein Claim-Konflikt). tsc+build grün, tests/ambient-batching.test.ts 5/5, npm test 360/360 grün."
+        }
+      ],
       "created": "2026-11-27T13:20:30Z",
-      "updated": "2026-11-27T13:20:30Z"
+      "updated": "2026-11-27T15:05:43Z"
     },
     {
       "id": 3500,
       "title": "m10-ambient-batching #3 Nachher-Messung + Abnahme + Doku + .lane-done",
       "description": "6 Läufe -> shots/m10-ambient-after-*.json; Abnahme 640 M25-Median >=55 und Burst >=55, 780 M25 mit Zahl; Vor/Nach-Tabelle docs/lanes/m10-ambient-batching.md; Screenshots vorher/nachher; npm run build + npm test grün; .lane-done committet.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T13:38:51Z",
           "by": "build",
           "text": "todo → doing: Nachher-Messung 6 Läufe + Optik-Beleg + .lane-done."
+        },
+        {
+          "at": "2026-11-27T15:05:43Z",
+          "by": "build",
+          "text": "doing → review: doing → review: Nachher-6-Läufe unter flock, Median 640 M25 56,3 (>=55 PASS), Burst 60,1 (PASS); 780@dpr3 M25 44,8 → fill-rate-Grenze mit Zahl dokumentiert. Vor/Nach-Tabelle docs/lanes/m10-ambient-batching.md, Belege shots/m10-ambient-*, 0 JS-Fehler, build+test grün, .lane-done in Commit 6ca654d. Offen: art-director-Sichtprüfung."
         }
       ],
       "created": "2026-11-27T13:20:30Z",
-      "updated": "2026-11-27T13:38:51Z"
+      "updated": "2026-11-27T15:05:43Z"
     }
   ]
 }
