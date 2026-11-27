@@ -2984,11 +2984,22 @@
       "id": 2118,
       "title": "m10-touch-latency #1 Messung Touch→Bewegung (iPhone14/Pixel7 quer)",
       "description": "Scripted Touch-Sweep (Pointer down→move→up) in iPhone-14-quer- und Pixel-7-quer-Profil, pro Ereignis Frame-Zeitstempel; Latenz Median/p95 in shots/m10-touch-latency.json; Ist-Werte in docs/lanes/m10-touch-latency.md. Abnahme: JSON mit 2 Profilen + Median/p95, 0 JS-Fehler.",
-      "column": "todo",
+      "column": "review",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:17:07Z",
+          "by": "build",
+          "text": "todo → doing: Messung läuft: iPhone14/Pixel7 quer, scripted Touch-Sweep"
+        },
+        {
+          "at": "2026-11-27T03:26:39Z",
+          "by": "build",
+          "text": "doing → review: PASS: iPhone14 quer median 0.85ms/1 Frame p95 1.5ms/1 Frame; Pixel7 quer median 0.70ms/1 Frame p95 1.4ms/1 Frame; 24/24 Trials bewegt, Loslassen 1 Frame, 0 JS-Fehler. Belege shots/m10-touch-latency*.json/png/gif, Commit f8b57c5"
+        }
+      ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T02:39:33Z"
+      "updated": "2026-11-27T03:26:39Z"
     },
     {
       "id": 2119,

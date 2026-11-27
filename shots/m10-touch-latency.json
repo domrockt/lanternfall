@@ -1,19 +1,23 @@
 {
   "milestone": "M10-touch-latency",
-  "baseSha": null,
-  "generatedAt": "2026-11-27T02:53:32.863Z",
-  "criterion": "Median <= 2 Frames (33 ms), p95 <= 3 Frames",
+  "baseSha": "21fdd0f86d58cdac57490e682966b6d0c04489c1",
+  "generatedAt": "2026-11-27T03:15:50.420Z",
+  "criterion": "Median <= 2 Frames (33 ms), p95 <= 3 Frames; Loslassen <= 1 Frame",
   "passed": true,
   "overall": {
     "latencyMs": {
-      "median": 0.75,
-      "p95": 1.7
+      "median": 0.8,
+      "p95": 1.4
     },
     "latencyFrames": {
-      "median": 2,
-      "p95": 2
+      "median": 1,
+      "p95": 1
     },
-    "moved": 22
+    "releaseFrames": {
+      "median": 1,
+      "p95": 1
+    },
+    "moved": 24
   },
   "profiles": [
     {
@@ -26,20 +30,20 @@
       "trials": 12,
       "moved": 12,
       "latencyMs": {
-        "median": 0.7,
-        "p95": 1.7,
+        "median": 0.85,
+        "p95": 1.5,
         "min": 0.5,
-        "max": 1.7
+        "max": 1.5
       },
       "latencyFrames": {
-        "median": 2,
-        "p95": 2
+        "median": 1,
+        "p95": 1
       },
       "releaseFrames": {
-        "median": 0.2,
-        "p95": 0.28
+        "median": 1,
+        "p95": 1
       },
-      "frameMs": 16.4,
+      "frameMs": 16.5,
       "perTrial": [
         {
           "i": 0,
@@ -47,13 +51,13 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 1.7000000029802322,
-          "latencyFrames": 2,
-          "releaseMs": 3.100000001490116,
-          "releaseFrames": 0.18902439035193808,
-          "moved": true,
-          "frameMs": 16.4,
-          "paused": false
+          "latencyMs": 1.5,
+          "latencyFrames": 1,
+          "releaseMs": 1.1,
+          "releaseFrames": 1,
+          "frameMs": 16.5,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 1,
@@ -61,13 +65,13 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.5,
+          "latencyMs": 1,
           "latencyFrames": 1,
-          "releaseMs": 3.1999999955296516,
-          "releaseFrames": 0.192771084050747,
-          "moved": true,
-          "frameMs": 16.6,
-          "paused": false
+          "releaseMs": 0.7,
+          "releaseFrames": 1,
+          "frameMs": 19.15,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 2,
@@ -75,13 +79,13 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 1.3000000044703484,
+          "latencyMs": 0.9,
           "latencyFrames": 1,
-          "releaseMs": 2.899999998509884,
-          "releaseFrames": 0.17365269452929732,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": true
+          "releaseMs": 1.5,
+          "releaseFrames": 1,
+          "frameMs": 19.9,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 3,
@@ -89,13 +93,13 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.6000000014901161,
-          "latencyFrames": 2,
-          "releaseMs": 4.5999999940395355,
-          "releaseFrames": 0.2762762759430162,
-          "moved": true,
-          "frameMs": 16.65,
-          "paused": false
+          "latencyMs": 0.8,
+          "latencyFrames": 1,
+          "releaseMs": 0.9,
+          "releaseFrames": 1,
+          "frameMs": 16.6,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 4,
@@ -103,13 +107,13 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 0.7000000029802322,
-          "latencyFrames": 2,
-          "releaseMs": 4,
-          "releaseFrames": 0.23952095809451837,
-          "moved": true,
+          "latencyMs": 0.5,
+          "latencyFrames": 1,
+          "releaseMs": 1.9,
+          "releaseFrames": 1,
           "frameMs": 16.7,
-          "paused": false
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 5,
@@ -117,13 +121,13 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.5,
-          "latencyFrames": 2,
-          "releaseMs": 3.2000000029802322,
-          "releaseFrames": 0.19161676669681593,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": false
+          "latencyMs": 0.9,
+          "latencyFrames": 1,
+          "releaseMs": 4.8,
+          "releaseFrames": 1,
+          "frameMs": 16.6,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 6,
@@ -131,13 +135,13 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.7000000029802322,
-          "latencyFrames": 2,
-          "releaseMs": 3.7000000029802322,
-          "releaseFrames": 0.2215568864653095,
-          "moved": true,
+          "latencyMs": 1,
+          "latencyFrames": 1,
+          "releaseMs": 4,
+          "releaseFrames": 1,
           "frameMs": 16.7,
-          "paused": false
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 7,
@@ -145,13 +149,13 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.7999999970197678,
-          "latencyFrames": 2,
-          "releaseMs": 2.7000000029802322,
-          "releaseFrames": 0.16265060257457012,
-          "moved": true,
+          "latencyMs": 0.8,
+          "latencyFrames": 1,
+          "releaseMs": 4.9,
+          "releaseFrames": 1,
           "frameMs": 16.6,
-          "paused": false
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 8,
@@ -159,13 +163,13 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 0.6000000014901161,
-          "latencyFrames": 2,
-          "releaseMs": 3.899999998509884,
-          "releaseFrames": 0.2335329341050214,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": false
+          "latencyMs": 0.5,
+          "latencyFrames": 1,
+          "releaseMs": 4.9,
+          "releaseFrames": 1,
+          "frameMs": 16.65,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 9,
@@ -173,13 +177,13 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.6000000014901161,
-          "latencyFrames": 2,
-          "releaseMs": 3.399999998509884,
-          "releaseFrames": 0.20481927700028188,
-          "moved": true,
-          "frameMs": 16.6,
-          "paused": false
+          "latencyMs": 0.9,
+          "latencyFrames": 1,
+          "releaseMs": 4.7,
+          "releaseFrames": 1,
+          "frameMs": 16.7,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 10,
@@ -187,13 +191,13 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.7999999970197678,
-          "latencyFrames": 2,
-          "releaseMs": 2,
-          "releaseFrames": 0.12012012013087045,
-          "moved": true,
-          "frameMs": 16.65,
-          "paused": false
+          "latencyMs": 0.5,
+          "latencyFrames": 1,
+          "releaseMs": 2.9,
+          "releaseFrames": 1,
+          "frameMs": 16.6,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 11,
@@ -201,13 +205,13 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.8000000044703484,
-          "latencyFrames": 2,
-          "releaseMs": 3.899999998509884,
-          "releaseFrames": 0.23493975892528893,
-          "moved": true,
-          "frameMs": 16.6,
-          "paused": false
+          "latencyMs": 0.7,
+          "latencyFrames": 1,
+          "releaseMs": 4.6,
+          "releaseFrames": 1,
+          "frameMs": 16.7,
+          "paused": false,
+          "movedX": 0
         }
       ]
     },
@@ -219,22 +223,22 @@
       },
       "dpr": 2.625,
       "trials": 12,
-      "moved": 10,
+      "moved": 12,
       "latencyMs": {
-        "median": 0.85,
-        "p95": 3.3,
+        "median": 0.7,
+        "p95": 1.4,
         "min": 0.5,
-        "max": 3.3
+        "max": 1.4
       },
       "latencyFrames": {
-        "median": 2,
-        "p95": 2
+        "median": 1,
+        "p95": 1
       },
       "releaseFrames": {
-        "median": 0.17,
-        "p95": 0.25
+        "median": 1,
+        "p95": 1
       },
-      "frameMs": 16.7,
+      "frameMs": 16.5,
       "perTrial": [
         {
           "i": 0,
@@ -242,13 +246,13 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 3.2999999970197678,
-          "latencyFrames": 2,
-          "releaseMs": 1.2999999970197678,
-          "releaseFrames": 0.07784431118489663,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": false
+          "latencyMs": 1.4,
+          "latencyFrames": 1,
+          "releaseMs": 3.7,
+          "releaseFrames": 1,
+          "frameMs": 16.5,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 1,
@@ -256,13 +260,13 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.8999999985098839,
-          "latencyFrames": 2,
-          "releaseMs": 0,
-          "releaseFrames": 0,
-          "moved": true,
-          "frameMs": 16.65,
-          "paused": true
+          "latencyMs": 0.5,
+          "latencyFrames": 1,
+          "releaseMs": 3.4,
+          "releaseFrames": 1,
+          "frameMs": 16.6,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 2,
@@ -270,13 +274,13 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 1.3999999985098839,
-          "latencyFrames": 2,
-          "releaseMs": 2.899999998509884,
-          "releaseFrames": 0.1736526944905604,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": false
+          "latencyMs": 0.7,
+          "latencyFrames": 1,
+          "releaseMs": 2.8,
+          "releaseFrames": 1,
+          "frameMs": 16.6,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 3,
@@ -284,13 +288,13 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.5,
-          "latencyFrames": 2,
-          "releaseMs": 2.600000001490116,
-          "releaseFrames": 0.15662650609980266,
-          "moved": true,
+          "latencyMs": 0.9,
+          "latencyFrames": 1,
+          "releaseMs": 4.2,
+          "releaseFrames": 1,
           "frameMs": 16.6,
-          "paused": false
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 4,
@@ -298,13 +302,13 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": null,
-          "latencyFrames": null,
-          "releaseMs": 0,
-          "releaseFrames": 0,
-          "moved": false,
+          "latencyMs": 0.7,
+          "latencyFrames": 1,
+          "releaseMs": 2.2,
+          "releaseFrames": 1,
           "frameMs": 16.7,
-          "paused": true
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 5,
@@ -312,13 +316,13 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.7999999970197678,
-          "latencyFrames": 2,
-          "releaseMs": 2.899999998509884,
-          "releaseFrames": 0.17365269452929732,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": false
+          "latencyMs": 0.6,
+          "latencyFrames": 1,
+          "releaseMs": 4.7,
+          "releaseFrames": 1,
+          "frameMs": 16.65,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 6,
@@ -326,13 +330,13 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": 0.7000000029802322,
-          "latencyFrames": 2,
-          "releaseMs": 4.0999999940395355,
-          "releaseFrames": 0.24550898174473332,
-          "moved": true,
+          "latencyMs": 0.8,
+          "latencyFrames": 1,
+          "releaseMs": 3,
+          "releaseFrames": 1,
           "frameMs": 16.7,
-          "paused": false
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 7,
@@ -340,13 +344,13 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.8999999985098839,
-          "latencyFrames": 2,
-          "releaseMs": 3.399999998509884,
-          "releaseFrames": 0.20420420408729442,
-          "moved": true,
-          "frameMs": 16.65,
-          "paused": false
+          "latencyMs": 0.6,
+          "latencyFrames": 1,
+          "releaseMs": 2.1,
+          "releaseFrames": 1,
+          "frameMs": 16.6,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 8,
@@ -354,13 +358,13 @@
             "dx": 1,
             "dy": 0
           },
-          "latencyMs": 0.7000000029802322,
-          "latencyFrames": 2,
-          "releaseMs": 3.399999998509884,
-          "releaseFrames": 0.20359281429111212,
-          "moved": true,
+          "latencyMs": 0.8,
+          "latencyFrames": 1,
+          "releaseMs": 3.5,
+          "releaseFrames": 1,
           "frameMs": 16.7,
-          "paused": false
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 9,
@@ -368,13 +372,13 @@
             "dx": -1,
             "dy": 0
           },
-          "latencyMs": null,
-          "latencyFrames": null,
-          "releaseMs": 0,
-          "releaseFrames": 0,
-          "moved": false,
+          "latencyMs": 0.7,
+          "latencyFrames": 1,
+          "releaseMs": 4.3,
+          "releaseFrames": 1,
           "frameMs": 16.7,
-          "paused": true
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 10,
@@ -382,13 +386,13 @@
             "dx": 0,
             "dy": 1
           },
-          "latencyMs": 0.8999999985098839,
-          "latencyFrames": 2,
-          "releaseMs": 2.6999999955296516,
-          "releaseFrames": 0.16363636336543344,
-          "moved": true,
-          "frameMs": 16.5,
-          "paused": false
+          "latencyMs": 0.5,
+          "latencyFrames": 1,
+          "releaseMs": 4.3,
+          "releaseFrames": 1,
+          "frameMs": 16.7,
+          "paused": false,
+          "movedX": 0
         },
         {
           "i": 11,
@@ -396,13 +400,13 @@
             "dx": 0,
             "dy": -1
           },
-          "latencyMs": 0.6000000014901161,
-          "latencyFrames": 2,
-          "releaseMs": 3,
-          "releaseFrames": 0.17964071861096148,
-          "moved": true,
-          "frameMs": 16.7,
-          "paused": false
+          "latencyMs": 0.8,
+          "latencyFrames": 1,
+          "releaseMs": 2,
+          "releaseFrames": 1,
+          "frameMs": 16.65,
+          "paused": false,
+          "movedX": 0
         }
       ]
     }
