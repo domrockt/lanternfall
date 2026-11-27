@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1659,
+  "next": 1820,
   "cards": [
     {
       "id": 1,
@@ -2684,6 +2684,24 @@
       ],
       "created": "2026-11-26T23:53:27Z",
       "updated": "2026-11-26T23:53:35Z"
+    },
+    {
+      "id": 1818,
+      "title": "m10-acceptance-sync-01 ACCEPTANCE.md Zahlen/Belege auf Ist-Stand",
+      "description": "147→204 (14 Testdateien), A5-Widerspruch Level 47 widerlegt vs. 6/6 Korridor 25–40 bleibt sichtbar, dirty=1 board.json notiert, Quellen je Zeile. Abnahme: grep '147 Tests' leer, npm test 204/204, git diff main -- ACCEPTANCE.md nur Zahlen/Belege. Commit 757ab43.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T00:58:11Z",
+      "updated": "2026-11-27T00:58:11Z"
+    },
+    {
+      "id": 1819,
+      "title": "m10-acceptance-sync-02 Lane-Doku Diff-Liste alte→neue Zahl + Beleg",
+      "description": "docs/lanes/m10-acceptance-sync.md mit Tabelle alt/neu/Beleg pro Stelle, inkl. bewusst nicht geänderter Punkte. Abnahme: Datei vorhanden, jede geänderte ACCEPTANCE-Zeile mit Belegquelle (shots/m10-balance-*, npm test). Commit 40f2f0c.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T00:58:11Z",
+      "updated": "2026-11-27T00:58:11Z"
     }
   ]
 }
