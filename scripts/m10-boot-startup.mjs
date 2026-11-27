@@ -58,7 +58,7 @@ try {
     }
     await context.close();
 
-    results.push({ run: i + 1, titleMs: Math.round(probe.ms), textures: probe.textures, atlas: probe.atlas });
+    results.push({ run: i + 1, titleMs: Math.round(probe.ms), textures: probe.textures, atlas: probe.atlas, bootTimings: probe.bootTimings });
     jsErrors = jsErrors.concat(errors);
     console.log(`[m10-boot-startup] Lauf ${i + 1}: ${Math.round(probe.ms)} ms, Texturen: ${probe.textures}, Atlas: ${probe.atlas}, Fehler: ${errors.length}`);
   }
