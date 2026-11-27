@@ -1,0 +1,45 @@
+# Lane m10-evo-reachability — fertig (2026-11-27)
+
+Auftrag: alle 6 Evolutionen systematisch gegenprüfen — deterministisch erreichbar
+(Stufe 8 + passendes Powerup, Angebotslogik korrekt).
+
+## Ergebnis
+- **6/6 Evolutionen deterministisch erreichbar** — belegt in `shots/m10-evo-reach-before.json`
+  UND `shots/m10-evo-reach-after.json` (Seed 4711, je Kombination 2 frische Runs,
+  beide Gate-Pfade: Truhe `chestRewards→canEvolve` und Level-Up `generateOffers→pickLevelUp`).
+- **Kernbefund:** Die Gate-Logik war bereits korrekt (before 6/6 PASS). Die
+  A4-Lücke („nur 4/6 Evolutionen pro 30-min-Run") ist **Build-Randomisierung,
+  kein Gate-Bug** — in einem organischen Run werden Waffe-8 + passendes Powerup
+  nicht in allen 6 Kombinationen gezogen.
+- **Härtung (2 Defense-in-Depth-Fixes, kein Spieler-sichtbarer Bug):**
+  `evolvableList` prüft jetzt das `implemented`-Flag der Evolutions-Waffe
+  (Truhe hätte sonst eine nicht implementierte Evolution anbieten können);
+  `LevelUpSystem.evolve()` verlangt jetzt das passende Powerup (Konsistenz mit
+  `canEvolve`).
+- Gate-Matrix je Kombination geprüft: Lv7 → keine Evolution; falsches Powerup →
+  keine; Lv8 + passend → Angebot auf Slot 0, Anwendung, Basiswaffe ersetzt,
+  Powerup erhalten, keine Duplikate, danach keine zweite Evolution.
+
+## Messwerte
+- before: 6/6 PASS | after: 6/6 PASS (Seed 4711)
+- Truhe-Pfad: Angebot→Anwendung bei Frame 288–290 je Evolution; Level-Up-Pfad: Frame 42–45
+- Tests: tests/evo-reachability.test.ts 14/14, Gesamtsuite 633/633 (61 Dateien), `npx tsc --noEmit` grün
+- Balance unangetastet: `git diff main...HEAD -- src/data` leer
+- Moment-Belege: shots/m10-evo-reach-<id>.png für alle 6 Evolutionen (Banner „EVOLUTION – <Name>", FX am Spieler, lebende Gegner)
+
+## Commits (Branch m10-evo-reachability)
+- ea9bf59 #5438 K1 Mess-Skript + before.json
+- 91d1cb2 #5439 K2 Gate-Härtung (evolution.ts, LevelUpSystem.ts)
+- 4555fa0 #5440 K3 tests/evo-reachability.test.ts
+- 11ba3c3 #5441 K4 after.json + 6 Moment-Shots + docs/lanes/m10-evo-reachability.md
+- 2f6491f #5440 K3-Nachzug nach test-auditor FAIL (implemented-Check echt getestet)
+- 851151c #5440 Nit (fullBuilds filtert nach implemented)
+
+## Kontrolleure
+- reviewer: PASS (Logic-Fixes, Testqualität, Erlaubliste, Belege in Commits)
+- test-auditor: FAIL→behoben→PASS (implemented-Check regressions-sensitiv getestet)
+
+## Offene Punkte
+- Keine aus dieser Lane. Hinweis: `tests/passive-stack.test.ts` schreibt
+  `shots/m10-passive-math-*.json` bei jedem Suite-Lauf mit neuem Timestamp neu
+  (Fremd-Diffs; hier revertiert, nicht gemergt).

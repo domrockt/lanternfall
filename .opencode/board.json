@@ -6107,7 +6107,7 @@
       "id": 5438,
       "title": "m10-evo-reachability K1: Ist-Analyse + Mess-Skript m10-evo-reach.mjs (6 Kombis, Seed fest, before.json)",
       "description": "Bedingungen je Evolution aus src/data/evolutions.ts + src/logic/evolution.ts extrahieren. scripts/m10-evo-reach.mjs spielt deterministisch (Seed fest) alle 6 Waffe+Powerup-Kombis im echten Spiel (Playwright, debug-API) durch und schreibt shots/m10-evo-reach-before.json (erreicht ja/nein, Level, Trigger-Frame). Abnahme: before.json existiert mit 6 Eintraegen und Aussage je Pfad (Truhe + Level-Up).",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -6124,16 +6124,26 @@
           "at": "2026-11-27T21:02:36Z",
           "by": "build",
           "text": "doing → review: Commit ea9bf59: Skript + before.json (6/6 PASS). Kontrolleure stehen noch aus."
+        },
+        {
+          "at": "2026-11-27T21:10:20Z",
+          "by": "build",
+          "text": "Kontrolleur reviewer: PASS — Skript + before.json (6/6 PASS) geprueft, Gate-Matrix korrekt, Belege in den Commits."
+        },
+        {
+          "at": "2026-11-27T21:10:34Z",
+          "by": "build",
+          "text": "review → done: lane #5438, Kontrolleure PASS. Commit ea9bf59. Befund: Gate-Logik korrekt, before 6/6 — A4-Luecke = Build-Randomisierung, kein Gate-Bug."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:02:36Z"
+      "updated": "2026-11-27T21:10:34Z"
     },
     {
       "id": 5439,
       "title": "m10-evo-reachability K2: Gate-Bugs fixen (Angebot nur Lv8+Powerup, keine Doppel-Evo, kein Powerup-Verlust)",
       "description": "Falls before.json Gate-Fehler zeigt: Fixes NUR in src/logic/evolution.ts, src/logic/levelup.ts, src/systems/LevelUpSystem.ts. Angebot nur bei Basiswaffe Lv8 + passendem Powerup, keine Doppel-Evolution, Powerup bleibt erhalten. Abnahme: npx tsc --noEmit gruen, gezielte Tests gruen, Commits je Teilkarte.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -6150,16 +6160,26 @@
           "at": "2026-11-27T21:03:08Z",
           "by": "build",
           "text": "doing → review: Commit 91d1cb2: 2 Haertungen in evolution.ts + LevelUpSystem.ts, tsc gruen, bestehende tests/evolution.test.ts 11/11 gruen. Kein Spieler-sichtbarer Gate-Bug vorhanden (before 6/6)."
+        },
+        {
+          "at": "2026-11-27T21:10:14Z",
+          "by": "build",
+          "text": "Commit 91d1cb2: 2 Haertungen in evolution.ts + LevelUpSystem.ts, tsc gruen, tests/evolution.test.ts 11/11 gruen. Kontrolleure: reviewer PASS (kein Verhaltensbruch auf legalen Pfaden, Defense-in-Depth); test-auditor bestätigt evolve()-Gate-Abdeckung. Nit 2 (applyChestReward ignoriert evolve()-Return) bewusst nicht umgesetzt: Pfad heute unerreichbar (canEvolve-Gate davor), kein Produktionscode-Log."
+        },
+        {
+          "at": "2026-11-27T21:10:34Z",
+          "by": "build",
+          "text": "review → done: lane #5439, reviewer PASS. Commit 91d1cb2. Zwei Defense-in-Depth-Haertungen, kein Verhaltenbruch auf legalen Pfaden."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:03:08Z"
+      "updated": "2026-11-27T21:10:34Z"
     },
     {
       "id": 5440,
       "title": "m10-evo-reachability K3: tests/evo-reachability.test.ts (6/6 erreichbar + Negativ-/Grenzfaelle)",
       "description": "Neue Testdatei: 6/6 Evolutionen erreichbar, nicht erreichbar ohne passendes Powerup, Angebotsliste ohne Duplikate, Grenzfaelle (Lv7 vs 8, falsches Powerup, zweites Powerup). Abnahme: npx vitest run tests/evo-reachability.test.ts + npx tsc --noEmit gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -6171,26 +6191,51 @@
           "at": "2026-11-27T21:04:34Z",
           "by": "build",
           "text": "doing → review: Commit 4555fa0: 12 Tests in tests/evo-reachability.test.ts (6/6 je Pfad, Lv7-vs-8, fehlendes/falsches/zweites Powerup, Doppel-Sperre, evolve()-Gate). npx tsc --noEmit gruen, volle Suite 61 Dateien / 631 Tests gruen. Hinweis: ein Test der passive-math-Lane schreibt shots/m10-passive-math-*.json mit neuem Timestamp neu — bei Volllaufen der Suite entstehen Fremd-Diffs (hier revertet, nicht gemergt)."
+        },
+        {
+          "at": "2026-11-27T21:10:17Z",
+          "by": "build",
+          "text": "Kontrolleur-Runde 1: reviewer PASS; test-auditor FAIL (implemented-Check nur implizit getestet) → behoben mit 2f6491f (Fake-Evolution 'test_evo' wird von allen 6 Pfaden ausgelassen + evolve()-Ablehnung, 14 Tests) und Nit 851151c (fullBuilds filtert nach implemented). Re-Verifikation läuft."
+        },
+        {
+          "at": "2026-11-27T21:10:34Z",
+          "by": "build",
+          "text": "review → done: lane #5440, test-auditor PASS nach Nachzug (FAIL-Runde 1 behoben). Commits 4555fa0, 2f6491f, 851151c. 14 Tests regressions-sensitiv, Suite 633/633 gruen."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:04:34Z"
+      "updated": "2026-11-27T21:10:34Z"
     },
     {
       "id": 5441,
       "title": "m10-evo-reachability K4: Nachher-Messung 6/6 + Moment-Shots je Evolution + Lane-Doku",
       "description": "m10-evo-reach.mjs nachher: shots/m10-evo-reach-after.json mit 6/6 PASS + je Evolution ein Moment-Screenshot shots/m10-evo-reach-<id>.png. Doku docs/lanes/m10-evo-reachability.md mit Zahlen. Abnahme: 6/6 belegt, Tests + tsc gruen, XP/Level-Kurven unveraendert (git diff pruefen).",
-      "column": "doing",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T21:04:48Z",
           "by": "build",
           "text": "todo → doing: Nachher-Lauf + Moment-Shots je Evolution (mit lebenden Gegnern, FX sichtbar) + docs/lanes/m10-evo-reachability.md + .lane-done."
+        },
+        {
+          "at": "2026-11-27T21:07:53Z",
+          "by": "build",
+          "text": "doing → review: Commit 11ba3c3: after.json 6/6 PASS (Seed 4711), 6 Moment-Shots shots/m10-evo-reach-<id>.png (Banner+FX+Gegner, 3 stichprobenartig angesehen), Doku docs/lanes/m10-evo-reachability.md. npm run build + 631/631 Tests gruen, src/data (XP/Level-Kurven) unveraendert."
+        },
+        {
+          "at": "2026-11-27T21:10:21Z",
+          "by": "build",
+          "text": "Kontrolleur reviewer: PASS — after.json 6/6, Moment-Shots + Doku geprueft, src/data unveraendert, Belege committet."
+        },
+        {
+          "at": "2026-11-27T21:10:34Z",
+          "by": "build",
+          "text": "review → done: lane #5441, reviewer PASS. Commit 11ba3c3. after 6/6 + 6 Moment-Shots + Doku, src/data unveraendert."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:04:48Z"
+      "updated": "2026-11-27T21:10:34Z"
     }
   ]
 }
