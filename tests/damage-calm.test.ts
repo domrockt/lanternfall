@@ -222,12 +222,15 @@ describe("M10 Damage-Calm: Ersetzungs-Reihenfolge und Grenzfälle", () => {
     );
     const plan = planLabels(candidates, []);
     expect(plan.visible.length).toBeLessThanOrEqual(MAX_VISIBLE_LABELS);
-    // Alles Nicht-Gewaehlte ist entweder gefaltet (Summe erhaelt) oder wartet.
+    // Kein Verlust: jeder Nicht-Gewaehlte ist entweder in einen gewaehlten
+    // Eintrag seiner Zone gefaltet oder wartet (Zone ohne Ziel) im Entry.
     const chosen = new Set(plan.visible);
+    const selectedZones = new Set(candidates.filter((c) => chosen.has(c.key)).map((c) => c.zone));
     for (const c of candidates) {
       if (chosen.has(c.key)) continue;
-      const folded = plan.foldedInto.some(([from]) => from === c.key);
-      expect(folded || true).toBe(true); // kein Verlust: Falten oder Warteschlange
+      if (selectedZones.has(c.zone)) {
+        expect(plan.foldedInto.some(([from]) => from === c.key)).toBe(true);
+      }
     }
   });
 

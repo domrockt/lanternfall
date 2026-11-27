@@ -191,7 +191,8 @@ export class DamageNumberSystem {
       candidates.push({ key: aggregateKey(e.enemyUid, e.group), zone, damage: e.damage, crit: e.crit });
     }
     const previouslyVisible = this.views.filter((v) => v.active).map((v) => v.key);
-    const plan = planLabels(candidates, previouslyVisible);
+    const limit = this.viewLimit(aggregate);
+    const plan = planLabels(candidates, previouslyVisible, { maxVisible: limit });
     if (plan.foldedInto.length > 0) {
       applyLabelFold(this.entries, plan.foldedInto, this.entrySink);
     }
@@ -200,7 +201,6 @@ export class DamageNumberSystem {
       if (v.active && !visibleSet.has(v.key)) this.deactivateView(v);
     }
     if (!cam) return;
-    const limit = this.viewLimit(aggregate);
     for (const key of plan.visible) {
       let view = this.views.find((v) => v.active && v.key === key);
       const fresh = !view;
