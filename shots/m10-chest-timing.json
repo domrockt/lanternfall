@@ -1,0 +1,101 @@
+{
+  "schema": "m10-chest-timing/v1",
+  "generatedAt": "2026-11-27T03:58:16.151Z",
+  "runSeed": 101,
+  "timeScale": 30,
+  "elapsedSeconds": 1827.2,
+  "wallMs": 91477,
+  "bosses": [
+    {
+      "index": 0,
+      "name": "Moorkönigin",
+      "expectedSecond": 300,
+      "bossSpawnAt": 300,
+      "bossDeathAt": 326.996,
+      "chestAt": 326.996,
+      "chestCount": 1,
+      "deltaToBossDeath": 0,
+      "deltaToSchedule": 26.996,
+      "ok": true
+    },
+    {
+      "index": 1,
+      "name": "Knochenfürst",
+      "expectedSecond": 600,
+      "bossSpawnAt": 600,
+      "bossDeathAt": 629.728,
+      "chestAt": 629.728,
+      "chestCount": 1,
+      "deltaToBossDeath": 0,
+      "deltaToSchedule": 29.728,
+      "ok": true
+    },
+    {
+      "index": 2,
+      "name": "Der Fahle Hirte",
+      "expectedSecond": 900,
+      "bossSpawnAt": 900,
+      "bossDeathAt": 925.009,
+      "chestAt": 925.009,
+      "chestCount": 1,
+      "deltaToBossDeath": 0,
+      "deltaToSchedule": 25.009,
+      "ok": true
+    },
+    {
+      "index": 3,
+      "name": "Glockenturm-Golem",
+      "expectedSecond": 1200,
+      "bossSpawnAt": 1200,
+      "bossDeathAt": 1230.594,
+      "chestAt": 1230.594,
+      "chestCount": 1,
+      "deltaToBossDeath": 0,
+      "deltaToSchedule": 30.594,
+      "ok": true
+    },
+    {
+      "index": 4,
+      "name": "Hexenzirkel",
+      "expectedSecond": 1500,
+      "bossSpawnAt": 1500,
+      "bossDeathAt": 1536.077,
+      "chestAt": 1536.077,
+      "chestCount": 1,
+      "deltaToBossDeath": 0,
+      "deltaToSchedule": 36.077,
+      "ok": true
+    },
+    {
+      "index": 5,
+      "name": "Der Hohle König",
+      "expectedSecond": 1800,
+      "bossSpawnAt": 1800,
+      "bossDeathAt": 1826.215,
+      "chestAt": 1826.215,
+      "chestCount": 1,
+      "deltaToBossDeath": 0,
+      "deltaToSchedule": 26.215,
+      "ok": true
+    }
+  ],
+  "totals": {
+    "bossesDefeated": 6,
+    "chestsDropped": 6,
+    "chestSpawnsRecorded": 6,
+    "expectedChests": 6,
+    "missingChests": 0,
+    "doubleSpawns": 0
+  },
+  "verdict": {
+    "sixBossesReached": true,
+    "sixOfSixWithinHalfSecond": true,
+    "exactlyOneChestPerBoss": true,
+    "noDoubleSpawn": true,
+    "noMissingChest": true,
+    "jsErrors": 0,
+    "passed": true
+  },
+  "errors": [],
+  "finalState": null
+}
