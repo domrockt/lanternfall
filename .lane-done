@@ -1,0 +1,24 @@
+# Lane m10-ground-props-batch — fertig (2026-11-27)
+
+Props/Ripples des GroundRenderers zeichnen jetzt aus festen Batch-Container-Layern
+(je Prop-Textur ein Paar hinter/vor dem Spieler, plus Schatten-/Glow-/Ripple-Layer);
+updatePropsDepth aendert nur noch Container-Mitgliedschaft bei Seitenwechsel statt
+~800 setDepth/Frame. Helfer phaserfrei in src/gfx/propLayers.ts, Test
+tests/ground-props-batch.test.ts fixiert Layer-/Batch-Zahl. Keine Aenderungen an
+Run.ts/textures.ts/lod.ts/scale.ts/config.ts.
+
+Messwerte (Minute 25, skipTo(1490), 10-s-Fenster, 300 Gegner; Median aus 3 After-Laeufen):
+- 640x360@1:  49,3 -> 48,5 FPS | Draw-Call-Kandidaten 925 -> 75  (-92 %)
+- 780x360@3:  39,0 -> 40,3 FPS | Draw-Call-Kandidaten 1139 -> 85 (-93 %)
+- Render-Pfad (Attribution, 3 Laeufe): 5,11 -> 4,09 ms/Frame; Ground gesamt ~5,1 ms.
+- npm test 438/438 gruen, npm run build gruen, 0 JS-Fehler in allen Messlaeufen.
+
+Bilanz: Draw-Call-Kriterium (< 300) PASS mit 75/85; FPS-Ziele (640 >= 58,
+780 >= 46,5) NICHT erreicht, ehrlich in docs/lanes/m10-ground-props.md dokumentiert.
+Befund: Renderpfad ist submit-limitiert (~900 Quads/Frame), nicht draw-call-limitiert;
+vsync-Quantisierung verschluckt 1-ms-Gewinne; Chunk-Composite bereits mit AE 0 widerlegt.
+Folgekarte-Vorschlag (Lead): Prop-Quad-Zahl senken (weniger/gebakene Props, aggressiveres
+Dichte-LOD), nicht weitere Batch-Arbeit.
+
+Commits: ef6c1f8 (Vorher + Skript), 8bb0f93 (Fix + Test), 840a3b0 (Doku-WIP),
+6230fbd (After-Messung + Doku). Belege: shots/m10-ground-props-*.{json,png}.
