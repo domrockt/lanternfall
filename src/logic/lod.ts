@@ -50,8 +50,34 @@ export function ambientBatchCount(budget: AmbientBudget): number {
   return (budget.fog > 0 ? 1 : 0) + (budget.glow > 0 ? 1 : 0);
 }
 
-export function lodFor(enemies: number, pressure = false): LodState {
+/**
+ * M10-Prop-Dichte-LOD: gestufte Ausblendung von Prop-Quads bei Gegnerdichte
+ * (Lane m10-prop-density-lod). Der Ground-Renderpfad ist submit-limitiert
+ * (~900 sichtbare Prop-Quads bei M25), nicht draw-call-limitiert — weniger
+ * Quads ist der einzige Hebel, der die Submit-Kosten wirklich senkt.
+ * Schwellwerte an der realen Endgame-Dichte: Messbedingung "300 Gegner"
+ * (Top-up auf 300, seed 7, M25) hält nur ~175-236 lebende Gegner durch
+ * (Waffen töten schneller als der Top-up nachlegt) — das alte DENSE_HIDE_PROPS
+ * ab 250 griff darum kaum. N1 = kleine Deko aus, N2 = nur Landmarken bleiben.
+ *
+ * Hysterese (Hebel 3): Die Gegnerzahl oszilliert im Endgame stark (Wellen
+ * sterben, Top-up legt nach). Verschärfung des LOD greift darum erst, wenn
+ * die strengere Stufe PROP_LOD_HOLD_MS lang anhaltend gilt; Entspannung ist
+ * sofort. Sonst flackern Props im Sekundentakt.
+ */
+export const PROP_DENSITY_N1 = 150;
+export const PROP_DENSITY_N2 = 200;
+export const PROP_LOD_HOLD_MS = 2000;
+
+/** Hoechster sichtbarer Prop-Tier bei dieser Gegnerzahl (2 = alles sichtbar). */
+export function propDensityMaxTier(enemies: number): 0 | 1 | 2 {
   const n = Math.max(0, Math.floor(enemies));
+  if (n >= PROP_DENSITY_N2) return 0;
+  if (n >= PROP_DENSITY_N1) return 1;
+  return 2;
+}
+
+export function lodFor(enemies: number, pressure = false): LodState {  const n = Math.max(0, Math.floor(enemies));
   // Endboss-Kampf: auch bei (kurzzeitig) wenigen Gegnern viele Evolutions-VFX,
   // Projektile und Warnflaechen. Eine Stufe hoeher halten die 55 FPS.
   const boost = pressure ? 1 : 0;

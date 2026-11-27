@@ -5827,10 +5827,16 @@
       "id": 5179,
       "title": "m10-prop-density-lod #2 Dichte-LOD-Stufen (lod.ts/propLayers.ts/GroundRenderer.ts) + Test",
       "description": "Gestuftes Prop-Dichte-LOD: propTierFor (0 Landmarke/1 gross/2 Deko) in propLayers.ts, propDensityMaxTier(N1=250 -> max Tier 1, N2=300 -> max Tier 0) in lod.ts, Umsetzung in GroundRenderer.updateAmbient inkl. Schatten-Kopplung; tests/prop-density-lod.test.ts. AK: Test gruen; Nachher-Messung: sichtbare Props @300 Gegner < 360 (-60% gegen ~900), Draw-Call-Kandidaten < 300.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T20:31:36Z",
+          "by": "build",
+          "text": "backlog → doing: Hebel 1 (N1=250/N2=300, Tier-System propTierFor/propDensityMaxTier, Schatten gekoppelt, neue Chunks erben Tier): implementiert, tsc+Tests gruen, Messung after lief — aber N2=300 im Messfenster praktisch nie erreicht (reale Dichte avg ~210) -> Quads nur ~660-700. Hebel 2 (N1=150/N2=200) implementiert, Messlauf after2 laeuft."
+        }
+      ],
       "created": "2026-11-27T20:19:48Z",
-      "updated": "2026-11-27T20:19:48Z"
+      "updated": "2026-11-27T20:31:36Z"
     },
     {
       "id": 5180,

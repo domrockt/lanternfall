@@ -3,8 +3,8 @@ import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
-import { ambientBudgetFor } from "../logic/lod";
-import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor } from "./propLayers";
+import { ambientBudgetFor, propDensityMaxTier, PROP_LOD_HOLD_MS } from "../logic/lod";
+import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
 import { PAL } from "../palette";
 
 interface Ripple {
@@ -68,14 +68,11 @@ interface FogBank {
 }
 
 /**
- * Kleine Dekor-Props, die im dichten Endgame viele eigene Draw-Calls kosten
- * (jede Textur = ein Batch-Bruch). Sie werden ab 250 Gegnern ausgeblendet;
- * große Strukturen (Bäume, Ruinen, Laternen) bleiben stehen.
+ * Kleine Dekor-Props kosteten im dichten Endgame viele eigene Draw-Calls.
+ * Seit m10-prop-density-lod steuert das gestufte Dichte-LOD
+ * (propTierFor/propDensityMaxTier, Schwellwerte N1=250/N2=300 in logic/lod.ts)
+ * ueber Prop-Tiers (0 Landmarke, 1 gross, 2 Deko); dieses Set ist ersetzt.
  */
-const DENSE_HIDE_PROPS = new Set([
-  "prop_boulder", "prop_stump", "prop_bones", "prop_reeds",
-  "prop_lilypad", "prop_mushroom_ring", "prop_cross",
-]);
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
 const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {
@@ -156,7 +153,10 @@ export class GroundRenderer {
   private glowLayer?: Phaser.GameObjects.Container;
   private fogLayer?: Phaser.GameObjects.Container;
   private ambientLastTick = Number.NEGATIVE_INFINITY;
-  private propLodDense = false;
+  /** Aktuell hoechster sichtbarer Prop-Tier (Dichte-LOD, 2 = alles sichtbar). */
+  private propLodMaxTier: 0 | 1 | 2 = 2;
+  /** Hysterese: Kandidat + Zeitpunkt, seit dem die strengere Stufe gilt. */
+  private propLodPending: { tier: 0 | 1 | 2; since: number } | null = null;
   /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
   private readonly propLayers = new Map<string, PropLayers>();
   private shadowLayer?: Phaser.GameObjects.Container;
@@ -431,18 +431,27 @@ export class GroundRenderer {
     if (timeMs - this.ambientLastTick < stepMs) return;
     this.ambientLastTick = timeMs;
 
-    // Dichte-LOD für kleine Dekor-Props: weniger Textur-/Blend-Wechsel im Chaos,
-    // große Strukturen bleiben als Orientierung sichtbar.
-    const dense = enemies >= 250;
-    if (dense || this.propLodDense) {
-      for (const entry of this.chunks.values()) {
-        for (const p of entry.props) {
-          if (!DENSE_HIDE_PROPS.has(p.texture?.key)) continue;
-          p.setVisible(!dense);
+    // Dichte-LOD für Props: gestufte Tiers (N1 = Deko aus, N2 = nur Laternen/
+    // Baeume). Hysterese: Verschärfung erst nach PROP_LOD_HOLD_MS anhaltend,
+    // Entspannung sofort — sonst flackern Props bei Wellen-Oszillation.
+    const candidate = propDensityMaxTier(enemies);
+    if (candidate !== this.propLodMaxTier) {
+      if (candidate > this.propLodMaxTier) {
+        this.propLodMaxTier = candidate;
+        this.propLodPending = null;
+        this.applyPropTier(candidate);
+      } else if (this.propLodPending?.tier === candidate) {
+        if (timeMs - this.propLodPending.since >= PROP_LOD_HOLD_MS) {
+          this.propLodMaxTier = candidate;
+          this.propLodPending = null;
+          this.applyPropTier(candidate);
         }
+      } else {
+        this.propLodPending = { tier: candidate, since: timeMs };
       }
+    } else {
+      this.propLodPending = null;
     }
-    this.propLodDense = dense;
 
     const t = timeMs * 0.001;
     for (let i = 0; i < this.fireflies.length; i++) {
@@ -476,8 +485,21 @@ export class GroundRenderer {
     return terrainKindAt(worldX, worldY, this.seed, WORLD_SIZE);
   }
 
-  /** Schickt faellige Chunk-Jobs an den Worker, naechstgelegene zuerst. */
-  private dispatch(centerX: number, centerY: number): void {
+  /** Dichte-LOD: Sichtbarkeit aller Props/Schatten/Glows nach Prop-Tier setzen
+   *  (nur bei Stufenwechsel aufgerufen). Glows haengen an Laternen (Tier 0)
+   *  und bleiben sichtbar; Schatten folgen ihrem Prop. */
+  private applyPropTier(maxTier: 0 | 1 | 2): void {
+    for (const entry of this.chunks.values()) {
+      for (const p of entry.props) {
+        const tier = p.getData("glow")
+          ? 0
+          : propTierFor(p.getData("isShadow") ? (p.getData("ownerKey") as string | undefined) : p.texture?.key);
+        p.setVisible(tier <= maxTier);
+      }
+    }
+  }
+
+  /** Schickt faellige Chunk-Jobs an den Worker, naechstgelegene zuerst. */  private dispatch(centerX: number, centerY: number): void {
     if (!this.worker) return;
     // Robustheit: eine verlorene Worker-Antwort wuerde sonst beide Slots
     // dauerhaft blockieren. Nach 2 s ohne Antwort auf Sync-Fallback wechseln.
@@ -586,13 +608,15 @@ export class GroundRenderer {
     img.setFlipX(flip);
     img.setData("footY", wy);
     // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
+    let shadow: Phaser.GameObjects.Image | undefined;
     if (this.scene.textures.exists("shadow")) {
       const sw = Math.max(0.7, Math.min(4, img.width / 16));
-      const shadow = this.scene.add.image(wx, wy - 1, "shadow")
+      shadow = this.scene.add.image(wx, wy - 1, "shadow")
         .setOrigin(0.5, 0.5)
         .setScale(sw, 0.85)
         .setAlpha(0.62);
       shadow.setData("isShadow", true);
+      shadow.setData("ownerKey", key); // Dichte-LOD: Schatten folgt seinem Prop
       this.shadowLayer!.add(shadow); // feste Tiefe: alle Schatten = 1 Batch
       props.push(shadow);
     }
@@ -602,6 +626,12 @@ export class GroundRenderer {
     this.propLayerFor(key).behind.add(img);
     img.setData("batchSide", "behind");
     props.push(img);
+    // Dichte-LOD: neu gebaute Chunks erben sofort den aktuellen Tier-Zustand
+    // (Sonst waeren waehrend dichter Phase kurzzeitig alle Props sichtbar).
+    if (propTierFor(key) > this.propLodMaxTier) {
+      img.setVisible(false);
+      shadow?.setVisible(false);
+    }
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
     if (key === "prop_post" && this.scene.textures.exists("light_radius")) {
       const glow = this.scene.add.image(wx, wy - 20, "light_radius")
