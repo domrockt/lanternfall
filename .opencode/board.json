@@ -6176,16 +6176,21 @@
       "id": 5499,
       "title": "m10-font-glyph-pack K2: Doku + Vor/Nach-Shots (AE=0)",
       "description": "Deterministische Glyph-Szene (HUD-Strings + Damage-Text via PixelText, mehrere Farben) vor (addCanvas) und nach (packCanvasTexture) rendern: shots/m10-font-glyph-before.png / -after.png, Vergleich mit ImageMagick compare -metric AE -> AE=0 belegt; dazu shots/m10-font-glyph-*.json mit Texturzahlen (glyph_-Keys, baked_page_). Doku docs/lanes/m10-font-glyph-pack.md mit Texturwechsel-Zahlen (~250 Glyph-Einzeltexturen -> Atlas-Seiten). Abnahmekriterium: AE=0 belegt, Doku vorhanden, Belege im Karten-Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:06:23Z",
           "by": "build",
           "text": "todo → doing: K2 gestartet: font.ts exposure __lfFont (eigene Datei), Shot-Skript ~/tmp/m10-font-glyph-pack/font-shots.mjs, before-State via temporaerer addCanvas-Ruecksetzarbeit in font.ts (nicht committet)."
+        },
+        {
+          "at": "2026-11-27T21:10:18Z",
+          "by": "build",
+          "text": "doing → done: K2 abgeschlossen, Commit 1679cd7. Belege: shots/m10-font-glyph-before/-after.png pixelidentisch (compare -metric AE=0, Kontrollprobe 0), JSONs jsErrors=[], before 131 Einzel-Glyph-Texturen vs after 43 Keys als Frames auf geteilter 512x512-Seite (1 GL-Textur), WebGL; Doku docs/lanes/m10-font-glyph-pack.md mit Texturwechsel-Zahlen und Methode. Kontrolleure: commit-gate PASS (Auflage beachtet: passive-math-Shots nicht gestaget, Test-Neben effekt restauriert); 62/62 Suiten 633/633 Tests, tsc rc=0."
         }
       ],
       "created": "2026-11-27T21:04:25Z",
-      "updated": "2026-11-27T21:06:23Z"
+      "updated": "2026-11-27T21:10:18Z"
     }
   ]
 }
