@@ -1,0 +1,11 @@
+Lane m10-chaos-silhouettes: Chaos-Horde lesbar (ACCEPTANCE A10)
+
+- K1 Ist-Messung: Chaos-Frame 25:55, 352→612 Gegner, Kontrast-JSON vorher (Rim 42,9 %, Top 33,1 %, Randkontrast 57,5 L).
+- K2 Silhouetten: 1-px Tinte-Kontur (PAL 0) + 1-px Lichtkante oben, per-Archetyp-Töne; Größen/Frame-Zahl unverändert (sizeDiff 0).
+- K3 Elite: deterministischer Amber-Marker (PAL 20, Alpha 0,92, 1 px, radiusabhängige Skalierung), nur Elite, kein Flackern; `setTintFill` statt `setTint`.
+- K4 Test: `tests/enemy-silhouette.test.ts` 6/6 grün; 30/30 Archetypen in ≥2 Shape-Dimensionen unterscheidbar, Kantenkontrast > 40, Elite ≠ Normal, deterministisch.
+- K5 Belege: `shots/m10-chaos-silhouettes-chaos.png` 1920×1080 (612 Gegner, 2 Elite, 0 JS-Fehler), `…-crop.png` 900×900, `…-elite-vs-normal.png`, `…-before.json`/`…-after.json`.
+- Nachher-Mittel (`after.json`, 13:52): Rim-Light 80,3 %, Top-Light 91,8 %, Randkontrast dunkel 96,3 L, unter Schwelle dunkel 21,7 % (vorher 42,9 / 33,1 / 57,5 / 59,9).
+- FPS Minute 25 (flock): 60,1 FPS, 601 Frames/10 s, min. 462 Gegner, worstFrame 16,8 ms, 0 JS-Fehler → PASS ≥55.
+- Regression: `npm run build` grün, `npm test` 307/307 grün; keine Gameplay-/Balance-/Sprite-Größen-Änderung.
+- OFFEN: art-director Runde 3 = FAIL 3/5 (roter Boss-Ring im Kern-Crop, Elite-Rim im 612er-Frame nicht eindeutig, after.png älter als after.json). Karte #2522 blocked; A10 nicht erfüllt.
