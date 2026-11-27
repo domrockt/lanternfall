@@ -179,7 +179,7 @@
     {
       "name": "Touch-Minute iPhone: Run aktiv >= 50 Sim-Sekunden",
       "ok": true,
-      "detail": "scene=run sim=58s levelTaps=3"
+      "detail": "scene=run sim=57s levelTaps=5"
     },
     {
       "name": "Hochkant: Dreh-Overlay + Pause",
