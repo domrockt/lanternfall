@@ -168,76 +168,94 @@ console.log(JSON.stringify(result.bosses.map((b) => ({
 })), null, 1));
 console.log(`sheet: shots/m10-boss-idle-anim-${TAG}-640.png ${info.W}x${info.H}`);
 
-// Optional: Idle-Zyklus als 2-Frame-GIF (nur wenn argv[3] === "gif")
-if (process.argv[3] === "gif") {
-  const palIdx = [...new Set(bosses.flatMap((b) => b.frames.slice(0, 2).flat().join("").split("")))]
-    .filter((c) => c !== ".").map((c) => parseInt(c, 36)).sort((a, b) => a - b);
-  const palCount = Math.max(4, 1 << Math.ceil(Math.log2(palIdx.length + 1)));
-  const W = Math.max(...bosses.map((b) => b.frames[0][0].length)) + 4;
-  const H = Math.max(...bosses.map((b) => b.frames[0].length)) + 4;
-  const cols = 3, rows = Math.ceil(bosses.length / cols);
-  const CW = W, CH = H, GW = CW * cols, GH = CH * rows;
-  // GIF mit 2 Bildern, delay 40 cs (400 ms)
-  const globalPal = Buffer.alloc(palCount * 3);
-  globalPal[0] = 0x10; globalPal[1] = 0x17; globalPal[2] = 0x24; // Hintergrund night
-  palIdx.forEach((pi, i) => { const c = PAL[pi]; globalPal.set(c, (i + 1) * 3); });
-  const transparentIdx = 0; // Index 0 = Hintergrund (hier opak genutzt) — stattdessen opak
-  const gce = (delay) => Buffer.from([0x21, 0xf9, 0x04, 0x00, delay & 0xff, (delay >> 8) & 0xff, 0x00, 0x00]);
-  const imgDesc = () => {
-    const d = Buffer.alloc(10);
-    d.writeUInt16LE(0, 0); d.writeUInt16LE(0, 2); d.writeUInt16LE(GW, 4); d.writeUInt16LE(GH, 6);
-    return Buffer.concat([Buffer.from([0x2c]), d, Buffer.from([0x00])]);
-  };
-  // LZW-Encoder (min code size 8)
-  function lzw(indices) {
-    const minCode = 8, clear = 1 << minCode, end = clear + 1;
-    let dict = new Map(), next = end + 1, size = minCode + 1;
-    const out = []; let cur = 0, curBits = 0;
-    const emit = (code) => { cur |= code << curBits; curBits += size; while (curBits >= 8) { out.push(cur & 0xff); cur >>= 8; curBits -= 8; } };
-    emit(clear);
-    let w = "";
-    for (const k of indices) {
-      const c = String.fromCharCode(k);
-      const wk = w + c;
-      if (dict.has(wk)) w = wk;
-      else {
-        emit(w.length === 1 ? w.charCodeAt(0) : dict.get(w));
-        if (next < 4096) { dict.set(wk, next); if (next === (1 << size) && size < 12) size++; next++; }
-        else { emit(clear); dict.clear(); next = end + 1; size = minCode + 1; }
-        w = c;
+// ── gen-Modus: F1 (Atmen) + F2 (Telegraph-Zucken) aus F0 erzeugen ─────────
+// argv[2] === "gen": argv[3] = KommAListe der Boss-IDs (ohne "boss_"-Praefix).
+// F1: Squash — Oberkoerper (bis 65 % der Silhouettenhoehe) 1 px nach unten,
+//     Fuesse bleiben fix (<= 1 px Versatz, ganzzahlig, Palette unveraendert).
+// F2: Zucken — ganzes Sprite 1 px nach oben (Telegraph-Vorlauf; im Spiel
+//     zusaetzlich rot getoent, siehe Run.ts telegraph-Tint).
+if (TAG === "gen") {
+  const targets = (process.argv[3] ?? "").split(",").filter(Boolean);
+  const lines = src.split("\n");
+  let cur = null, frameIdx = -1, block = null, f0Rows = null, changed = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const bm = lines[i].match(/^  boss_(\w+): \{ w: \d+, h: \d+, frames: \[$/);
+    if (bm) { cur = targets.includes(bm[1]) ? bm[1] : null; frameIdx = -1; f0Rows = null; continue; }
+    if (!cur) continue;
+    if (lines[i] === "    [") { frameIdx++; block = { start: i, rows: [] }; continue; }
+    if (/^    \],?$/.test(lines[i]) && block) {
+      if (frameIdx > 0) {
+        const old = f0Rows;
+        const hgt = old.length, wid = old[0].length;
+        const top = old.findIndex((r) => /[^.]/.test(r));
+        let bottom = hgt - 1; while (!/[^.]/.test(old[bottom])) bottom--;
+        const emptyRow = ".".repeat(wid);
+        let out;
+        if (frameIdx === 1) {
+          // Squash: content bis split 1 px runter, Reihe top wird leer.
+          const split = top + Math.round((bottom - top) * 0.65);
+          out = [...old];
+          out[top] = emptyRow;
+          for (let y = top + 1; y <= split; y++) out[y] = old[y - 1];
+        } else {
+          // Zucken: ganzes Frame 1 px hoch.
+          out = [...old.slice(1), emptyRow];
+        }
+        const gen = out.map((r, y) => `      "${r}"${y < out.length - 1 ? "," : ""}`);
+        lines.splice(block.start + 1, gen.length, ...gen);
+        changed++;
+        block = null;
+      } else {
+        f0Rows = block.rows;
+        block = null;
       }
+      continue;
     }
-    if (w) emit(w.length === 1 ? w.charCodeAt(0) : dict.get(w));
-    emit(end);
-    if (curBits > 0) out.push(cur & 0xff);
-    return Buffer.from(out);
+    if (block) block.rows.push(lines[i].trim().replace(/^"/, "").replace(/",?$/, ""));
   }
-  const framesData = [0, 1].map((fi) => {
-    const idx = new Uint8Array(GW * GH);
+  writeFileSync("src/gfx/gen-bosses.ts", lines.join("\n"));
+  console.log(`gen: ${changed} Frames neu (Ziele: ${targets.join(", ")})`);
+  process.exit(0);
+}
+
+// Optional: Idle-Zyklus als 2-Frame-GIF (nur wenn argv[3] === "gif")
+// Optional: Idle-Zyklus als 2-Frame-GIF (nur wenn argv[3] === "gif").
+// Frames werden als PNG gerendert (gleicher Encoder wie Kontaktbogen) und
+// mit ffmpeg zum GIF verbunden (2.5 fps = 400 ms pro Frame, Endlosschleife).
+if (process.argv[3] === "gif") {
+  const { spawnSync } = await import("node:child_process");
+  const { mkdtempSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "bossidle-"));
+  const W = Math.max(...bosses.map((b) => b.frames[0][0].length)) + 8;
+  const H = Math.max(...bosses.map((b) => b.frames[0].length)) + 8;
+  const cols = 3;
+  const rowsG = Math.ceil(bosses.length / cols);
+  const GW = W * cols, GH = H * rowsG;
+  for (let fi = 0; fi < 2; fi++) {
+    const px = Buffer.alloc(GW * GH * 4);
+    const put = (x, y, c) => {
+      if (x < 0 || y < 0 || x >= GW || y >= GH) return;
+      const o = (y * GW + x) * 4; px[o] = c[0]; px[o + 1] = c[1]; px[o + 2] = c[2]; px[o + 3] = 255;
+    };
+    for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) put(x, y, PAL[2]);
     bosses.forEach((b, bi) => {
       const f = b.frames[fi % b.frames.length];
-      const ox = (bi % cols) * CW + 2, oy = Math.floor(bi / cols) * CH + 2;
+      const ox = (bi % cols) * W + 4, oy = Math.floor(bi / cols) * H + 4;
       for (let y = 0; y < f.length; y++) for (let x = 0; x < f[y].length; x++) {
         const ch = f[y][x];
-        if (ch === ".") { idx[(oy + y) * GW + ox + x] = 0; continue; }
-        idx[(oy + y) * GW + ox + x] = 1 + palIdx.indexOf(parseInt(ch, 36));
+        if (ch === ".") continue;
+        const c = PAL[parseInt(ch, 36)];
+        for (let sy = 0; sy < 2; sy++) for (let sx = 0; sx < 2; sx++)
+          put(ox + x * 2 + sx, oy + y * 2 + sy, c);
       }
     });
-    const data = lzw([...idx]);
-    const blocks = [];
-    for (let i = 0; i < data.length; i += 255) {
-      const sl = data.subarray(i, Math.min(i + 255, data.length));
-      blocks.push(Buffer.from([sl.length]), sl);
-    }
-    return Buffer.concat([gce(40), imgDesc(), Buffer.from([0x08]), ...blocks, Buffer.from([0x00])]);
-  });
-  const header = Buffer.concat([
-    Buffer.from("GIF89a"),
-    (() => { const d = Buffer.alloc(7); d.writeUInt16LE(GW, 0); d.writeUInt16LE(GH, 2); d[4] = 0xf7; d[5] = 0; d[6] = 0; return d; })(),
-    globalPal,
-    Buffer.from([0x21, 0xff, 0x0b, ..."NETSCAPE2.0".length === 11 ? "NETSCAPE2.0" : ""])
-      .length && Buffer.concat([Buffer.from([0x21, 0xff, 0x0b]), Buffer.from("NETSCAPE2.0"), Buffer.from([0x03, 0x01, 0x00, 0x00, 0x00])]),
-  ]);
-  writeFileSync(`shots/m10-boss-idle-anim-idle.gif`, Buffer.concat([header, ...framesData, Buffer.from([0x3b])]));
-  console.log("gif: shots/m10-boss-idle-anim-idle.gif");
+    savePng(join(dir, `f${fi}.png`), GW, GH, px);
+  }
+  const r = spawnSync("ffmpeg", ["-y", "-loglevel", "error", "-framerate", "2.5",
+    "-i", join(dir, "f%d.png"), "-loop", "0",
+    "shots/m10-boss-idle-anim-idle.gif"], { stdio: "inherit" });
+  if (r.status !== 0) throw new Error("ffmpeg GIF-Fehler");
+  console.log("gif: shots/m10-boss-idle-anim-idle.gif (2 Frames, 400 ms, 2x)");
 }
