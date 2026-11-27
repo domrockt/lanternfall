@@ -1,0 +1,18 @@
+m10-perf-fix-ambient-batching Lane abgeschlossen (Versuch 2).
+
+Fix #3499 (Commit 176c0c4): Glühwürmchen/Nebel in feste Phaser-Container
+(ADD-Glow/NORMAL-Fog) gebatcht; ambientBudgetFor(enemies) drosselt Dichte
+und Update-Rate (24/3 @60Hz -> 0/1 @30Hz ab 250 -> 0/1 @15Hz ab 360).
+Dichte LOD blendet ab 250 Gegnern kleine Dekor-Props aus. Run.ts/UI.ts/
+textures.ts unangetastet, kein Claim-Konflikt.
+
+Messung 640x360 dpr1, Median aus 3 Läufen unter flock:
+  Burst 60,1 (>=55 PASS), Minute 25 56,3 (vorher 54,0; >=55 PASS).
+780x360 dpr3, Median: Minute 25 44,8 (vorher 45,1) -> kein Gewinn,
+  fill-rate-Grenze mit Zahl dokumentiert (Ziel >=50 nicht erreicht).
+
+Vorher/Nachher-Belege: shots/m10-ambient-*-{640,780}-*.json (6+6),
+Optik: shots/m10-ambient-640-before/after/lowdensity.png, 0 JS-Fehler.
+Build + npm test grün (34 Dateien, 360 Tests). Doku:
+docs/lanes/m10-ambient-batching.md.
+Offen: optische Abnahme durch art-director steht aus (Board #3500).

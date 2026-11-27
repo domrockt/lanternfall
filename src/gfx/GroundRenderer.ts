@@ -3,6 +3,7 @@ import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
+import { ambientBudgetFor } from "../logic/lod";
 import { PAL } from "../palette";
 
 interface Ripple {
@@ -64,6 +65,16 @@ interface FogBank {
   baseY: number;
   phase: number;
 }
+
+/**
+ * Kleine Dekor-Props, die im dichten Endgame viele eigene Draw-Calls kosten
+ * (jede Textur = ein Batch-Bruch). Sie werden ab 250 Gegnern ausgeblendet;
+ * große Strukturen (Bäume, Ruinen, Laternen) bleiben stehen.
+ */
+const DENSE_HIDE_PROPS = new Set([
+  "prop_boulder", "prop_stump", "prop_bones", "prop_reeds",
+  "prop_lilypad", "prop_mushroom_ring", "prop_cross",
+]);
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
 const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {
@@ -133,6 +144,11 @@ export class GroundRenderer {
   private fireflies: Firefly[] = [];
   private fogBanks: FogBank[] = [];
   private ambientReady = false;
+  /** Feste Ambient-Layer: ADD-Glow und NORMAL-Nebel bleiben zusammen, kein Depth-Interleave. */
+  private glowLayer?: Phaser.GameObjects.Container;
+  private fogLayer?: Phaser.GameObjects.Container;
+  private ambientLastTick = Number.NEGATIVE_INFINITY;
+  private propLodDense = false;
   /** Debug-Zaehler fuer die M10-Messung; null = aus (kein Produktions-Overhead). */
   private counters: GroundDebugStats | null = null;
 
@@ -320,13 +336,18 @@ export class GroundRenderer {
       }
     }
 
+    // Ein Layer je Blend-Modus, feste Tiefen unter allen Props/Laternen-Glows.
+    // Damit stehen alle ADD-Glows und alle NORMAL-Nebel zusammen im Batch und
+    // werden nicht pro Bild zwischen andere Tiefen sortiert.
+    this.glowLayer = this.scene.add.container(0, 0).setDepth(-89.8);
+    this.fogLayer = this.scene.add.container(0, 0).setDepth(-89.9).setScrollFactor(0);
     for (let i = 0; i < 24; i++) {
       const img = this.scene.add.image(0, 0, "m9_ambient_glow")
         .setBlendMode(Phaser.BlendModes.ADD)
         .setTint(PAL[21])
-        .setDepth(-89.6)
         .setAlpha(0);
       img.setScale(0.7 + tileHash(i, 3, this.seed + 601) * 0.9);
+      this.glowLayer.add(img);
       this.fireflies.push({
         img,
         baseX: tileHash(i, 7, this.seed + 603),
@@ -337,11 +358,10 @@ export class GroundRenderer {
     }
     for (let i = 0; i < 3; i++) {
       const img = this.scene.add.image(0, 0, "m9_ambient_fog")
-        .setScrollFactor(0)
         .setTint(PAL[6])
-        .setDepth(-89.85)
         .setAlpha(0);
       img.setScale(2.2 + i * 0.55);
+      this.fogLayer.add(img);
       this.fogBanks.push({
         img,
         baseX: 0.2 + i * 0.3,
@@ -351,10 +371,33 @@ export class GroundRenderer {
     }
   }
 
-  /** Ambient je Frame: Glühwürmchen umisen, Nebel drif (bildschirmverankert). */
+  /** Ambient: Glühwürmchen umisen, Nebel drift, Zahl an Gegnerlast gekoppelt. */
   private updateAmbient(camera: Phaser.Cameras.Scene2D.Camera, timeMs: number): void {
+    const enemies = (this.scene as unknown as { enemies?: { count?: number } }).enemies?.count ?? 0;
+    const budget = ambientBudgetFor(enemies);
+    const stepMs = 1000 / budget.updateHz;
+    if (timeMs - this.ambientLastTick < stepMs) return;
+    this.ambientLastTick = timeMs;
+
+    // Dichte-LOD für kleine Dekor-Props: weniger Textur-/Blend-Wechsel im Chaos,
+    // große Strukturen bleiben als Orientierung sichtbar.
+    const dense = enemies >= 250;
+    if (dense || this.propLodDense) {
+      for (const entry of this.chunks.values()) {
+        for (const p of entry.props) {
+          if (!DENSE_HIDE_PROPS.has(p.texture?.key)) continue;
+          p.setVisible(!dense);
+        }
+      }
+    }
+    this.propLodDense = dense;
+
     const t = timeMs * 0.001;
-    for (const f of this.fireflies) {
+    for (let i = 0; i < this.fireflies.length; i++) {
+      const f = this.fireflies[i];
+      const visible = i < budget.glow;
+      f.img.setVisible(visible);
+      if (!visible) continue;
       const x = camera.scrollX + f.baseX * camera.width
         + Math.sin(t * f.speed * 0.55 + f.phase) * 14;
       const y = camera.scrollY + f.baseY * camera.height
@@ -363,7 +406,11 @@ export class GroundRenderer {
       const pulse = 0.5 + 0.5 * Math.sin(t * 1.6 + f.phase * 3);
       f.img.setAlpha(0.16 + pulse * 0.34);
     }
-    for (const b of this.fogBanks) {
+    for (let i = 0; i < this.fogBanks.length; i++) {
+      const b = this.fogBanks[i];
+      const visible = i < budget.fog;
+      b.img.setVisible(visible);
+      if (!visible) continue;
       b.img.setPosition(
         Math.round(b.baseX * camera.width + Math.sin(t * 0.055 + b.phase) * 46),
         Math.round(b.baseY * camera.height + Math.cos(t * 0.04 + b.phase) * 8),
@@ -617,8 +664,10 @@ export class GroundRenderer {
     }
     this.chunks.clear();
     this.ripples.length = 0;
-    for (const f of this.fireflies) f.img.destroy();
-    for (const b of this.fogBanks) b.img.destroy();
+    this.glowLayer?.destroy(true);
+    this.fogLayer?.destroy(true);
+    this.glowLayer = undefined;
+    this.fogLayer = undefined;
     this.fireflies.length = 0;
     this.fogBanks.length = 0;
   }
