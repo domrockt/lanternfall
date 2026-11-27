@@ -34,6 +34,15 @@ export interface AiState {
   attacks: number;
   /** Laufende Eigenzeit für Weben/Lunzen/Flankieren (s). */
   phase: number;
+  /** Staffelung: Frames bis zum nächsten vollen KI-Step (nur fern vom Spieler). */
+  aiStepIn?: number;
+  /** Letzte volle Entscheidung: Richtung (normalisiert) für Skip-Frames. */
+  aiMoveX?: number;
+  aiMoveY?: number;
+  /** Letzte volle Entscheidung: Geschwindigkeits-Multiplikator für Skip-Frames. */
+  aiSpeedMul?: number;
+  /** Wiederverwendetes Ergebnis-Objekt für Skip-Frames (keine Allokation im Hot-Path). */
+  aiSkip?: AiStep;
 }
 
 export interface AiParams {
@@ -70,6 +79,43 @@ export const MAX_SPLIT_DEPTH = 2;
 export function shouldSplit(splitDepth: number): boolean {
   return splitDepth < MAX_SPLIT_DEPTH;
 }
+
+/**
+ * Staffelung der KI-Updates ("AI Budget"): Gegner nahe am Spieler steppen jeden
+ * Frame, fernere Gegner nur alle N Frames und liefern dazwischen ihr letztes
+ * Ergebnis erneut (Richtung/Multiplikator — Bewegung läuft ununterbrochen weiter).
+ * Zeit-Timer (timer/cooldown/phase) laufen realzeitlich weiter, damit Entscheidungs-
+ * kadenz nicht vom Intervall abhängt. Die Phase wird über die Gegner-UID verteilt,
+ * damit nicht alle fernen Gegner im selben Frame einen vollen Step machen.
+ */
+export interface AiStaggerConfig {
+  /** false = altes Jeden-Frame-Verhalten (Notbremse/A-B-Test). */
+  enabled: boolean;
+  /** Bis zu dieser Distanz (px) wird jeder Frame voll gesteppt. */
+  nearDistance: number;
+  /** Bis zu dieser Distanz gilt midInterval, darüber farInterval (px). */
+  midDistance: number;
+  /** Voller Step alle N Frames im Mittelring (240–420 px). */
+  midInterval: number;
+  /** Voller Step alle N Frames im Fernring (> 420 px, meist außerhalb des Views). */
+  farInterval: number;
+}
+
+export const AI_STAGGER: AiStaggerConfig = {
+  enabled: true,
+  // Spielkritische Distanzen liegen alle unter ~240 px (Ranged-Schuss < 240,
+  // Charger-Windup-Trigger < 230, Summoner-Band ≤ 204, Orbit ≤ 92): Nahbereich
+  // = alles, was im selben Frame reagieren muss.
+  nearDistance: 240,
+  // 640x360-View: halbe Bildschirmdiagonale ~367 px — der Mittelring deckt den
+  // sichtbaren Bereich ab, der Fernring ist Spawn-Wolke/LOD.
+  midDistance: 420,
+  midInterval: 4,
+  farInterval: 6,
+};
+
+/** Gemeinsames leeres actions-Array für Skip-Frames (gefroren — keine Aktionen). */
+const EMPTY_AI_ACTIONS: AiAction[] = Object.freeze([]) as unknown as AiAction[];
 
 /**
  * Archetyp-Parameter. Bewusst als reine Zahlen: keine Objekt-Allokation pro
@@ -309,21 +355,72 @@ export function stepEnemyAi(
   // eine Objektkopie pro Gegner und Frame; der Hot-Path allokoiert nur das
   // `actions`-Array, das die Aufrufer-Signatur verlangt.
   const state: AiState = previous;
-  const actions: AiAction[] = [];
-  const profile = aiProfileFor(params.archetype, params.tier);
   const dx = params.playerX - params.x;
   const dy = params.playerY - params.y;
-  const dist = Math.hypot(dx, dy);
+  const dist2 = dx * dx + dy * dy;
+
+  // Zeit-Timer laufen realzeitlich weiter — auch auf Skip-Frames — damit
+  // Cooldowns und Windup-Dauern nicht vom Staffelungsintervall abhängen.
+  // Die Exploder-Zündschnur gehört dazu: sie brennt in Sekunden, nicht in
+  // Steps (sonst dehnt sich die Zündung, wenn der Spieler entwischt).
+  state.timer = Math.max(0, state.timer - dt);
+  state.cooldown = Math.max(0, state.cooldown - dt);
+  state.phase = (state.phase ?? 0) + dt;
+  if (state.fuse > 0) state.fuse = Math.max(0, state.fuse - dt);
+
+  // Staffelungs-Intervall nach Distanz (quadratisch verglichen, kein hypot).
+  const interval = !AI_STAGGER.enabled
+    || dist2 < AI_STAGGER.nearDistance * AI_STAGGER.nearDistance
+    ? 1
+    : dist2 < AI_STAGGER.midDistance * AI_STAGGER.midDistance
+      ? AI_STAGGER.midInterval
+      : AI_STAGGER.farInterval;
+
+  if (interval > 1) {
+    if (state.aiStepIn === undefined) {
+      // Erste ferne Entscheidung: voller Step, danach Phase über die UID
+      // verteilen (nicht alle fernen Gegner full-steppen im selben Frame).
+      state.aiStepIn = uid % interval;
+    } else if (state.aiStepIn > 0) {
+      state.aiStepIn -= 1;
+      const cachedX = state.aiMoveX;
+      const cachedY = state.aiMoveY;
+      if (cachedX !== undefined && cachedY !== undefined) {
+        // Skip-Frame: letztes Entscheidungsergebnis erneut liefern (Bewegung
+        // läuft weiter), aber KEINE Aktionen wiederholen und keinen RNG ziehen.
+        const skip = (state.aiSkip ??= {
+          moveX: 0,
+          moveY: 0,
+          speedMul: 1,
+          state,
+          actions: EMPTY_AI_ACTIONS,
+        });
+        skip.moveX = cachedX;
+        skip.moveY = cachedY;
+        skip.speedMul = state.aiSpeedMul ?? 1;
+        skip.state = state;
+        return skip;
+      }
+      state.aiStepIn = interval - 1; // ohne Cache (Fremd-State): voller Step
+    } else {
+      state.aiStepIn = interval - 1; // fällig: voller Step unten
+    }
+  } else {
+    // Nah: jeden Frame voll. Marker neutralisieren, damit der erste ferne
+    // Frame wieder voll steppt statt ein altes Ergebnis zu wiederholen.
+    state.aiStepIn = 0;
+  }
+
+  // Voller Step: Profil + Richtung + archetypspezifische Entscheidung.
+  const actions: AiAction[] = [];
+  const profile = aiProfileFor(params.archetype, params.tier);
+  const dist = Math.sqrt(dist2);
   const inv = dist > 0.0001 ? 1 / dist : 0;
   const toX = dist > 0.0001 ? dx * inv : Math.cos(uid * 2.399963);
   const toY = dist > 0.0001 ? dy * inv : Math.sin(uid * 2.399963);
   let moveX = toX;
   let moveY = toY;
   let speedMul = 1;
-
-  state.timer = Math.max(0, state.timer - dt);
-  state.cooldown = Math.max(0, state.cooldown - dt);
-  state.phase = (state.phase ?? 0) + dt;
 
   switch (params.archetype) {
     case "swarm": {
@@ -441,14 +538,15 @@ export function stepEnemyAi(
     }
     case "exploder": {
       if (state.fuse > 0) {
-        // Zündschnur: kaum Bewegung, Warnfläche wird von der Szene gezeichnet.
-        state.fuse -= dt;
+        // Zündschnur brennt (realzeitlich dekrementiert, siehe oben): kaum
+        // Bewegung, Warnfläche wird von der Szene gezeichnet.
         speedMul = 0.18;
-        if (state.fuse <= 0) {
-          state.mode = "approach";
-          actions.push({ type: "explode", radius: 36 + params.tier * 6 });
-          state.attacks += 1;
-        }
+      } else if (state.mode === "fuse") {
+        // Schnur ist gerade abgebrannt → Explosion (auf dem nächsten vollen
+        // Step, wenn der Spieler im Skip-Fenster entwischt ist).
+        state.mode = "approach";
+        actions.push({ type: "explode", radius: 36 + params.tier * 6 });
+        state.attacks += 1;
       } else if (dist < profile.fuseRange) {
         state.fuse = profile.fuseTime;
         state.mode = "fuse";
@@ -539,6 +637,11 @@ export function stepEnemyAi(
   }
   state.aimX = toX;
   state.aimY = toY;
+  // Entscheidung für künftige Skip-Frames cachen (auch bei Nah-Gegnern, falls
+  // sie später ferne werden — dann startet dort kein Step mit leerem Cache).
+  state.aiMoveX = moveX;
+  state.aiMoveY = moveY;
+  state.aiSpeedMul = speedMul;
   return { moveX, moveY, speedMul, state, actions };
 }
 
