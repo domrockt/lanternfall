@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4738,
+  "next": 4739,
   "cards": [
     {
       "id": 1,
@@ -4831,10 +4831,25 @@
           "at": "2026-11-27T19:58:22Z",
           "by": "build",
           "text": "WIP-Commit e6434d2: Lauf 2 läuft (22 min, Chrome-Profil aktiv, Log leer weil JSON erst am Laufende geschrieben wird). Start bei loadavg 4.5, gleiche Flags wie Lauf 1. Nächster Schritt: Auswertung JSON + Minuten-Shots nach Laufende."
+        },
+        {
+          "at": "2026-11-27T20:13:19Z",
+          "by": "build",
+          "text": "K4 abgeschlossen, Commit 2e02d81 (#3961): Lauf 2 FPS PASS 57.4/60.5, Sieg dawn 30.4 Sim-Min, 6/6 Bosse ±0s, 6 Truhen, 0 Crashes/JS-Fehler; Heap-Gate 16% knapp FAIL als Jitter dokumentiert (Lauf 1: 8.9% PASS, perf-heap-Korroboration 0%/-1%, Log ~/tmp/m10-realtime-stability-k4-heap-corroboration.log). Abnahme-Blocker Renderer-Abbruch mit 2 vollständigen Läufen behoben. reviewer + acceptance-auditor laufen."
         }
       ],
       "created": "2026-11-27T17:46:15Z",
-      "updated": "2026-11-27T19:58:22Z"
+      "updated": "2026-11-27T20:13:19Z"
+    },
+    {
+      "id": 4738,
+      "title": "m10-realtime-stability K5 TDZ-Fix im crash-Handler (reviewer-Befund)",
+      "description": "reviewer-PASS-Befund (sollte): scripts/realtime-run.mjs:59 liest runState?.time, das erst in Zeile 76 deklariert wird (TDZ). Stürzt die Seite während der Awaits zwischen Handler-Registrierung und Deklaration, wirft der Handler und der Harness stirbt beleglos. Fix: Deklaration 'let runState = null' vor die Handler-Registrierung ziehen. Abnahmekriterium: npx tsc --noEmit rc=0, Commit nennt die Karte, keine Änderung an src/**.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T20:15:54Z",
+      "updated": "2026-11-27T20:15:54Z"
     }
   ]
 }

@@ -57,6 +57,10 @@ const crashes = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 page.on("crash", () => crashes.push({ at: new Date().toISOString(), simSecond: runState?.time ?? null }));
+// runState muss VOR den Handler-Registrierungen deklariert sein: crasht die Seite
+// waehrend der Awaits unten (newCDPSession/HeapProfiler.enable), wuerde der
+// crash-Handler sonst in der TDZ werfen und den Harness beleglos sterben lassen.
+let runState = null;
 // Screenshot-Fehler (z. B. Ziel kurz weg) toeten den Lauf nicht mehr; sie werden
 // protokolliert. Screenshot-Bursts gelten als plausible Crash-Ursache (fa2-04).
 let shotFailures = 0;
@@ -73,7 +77,6 @@ const safeShot = async (path) => {
 
 const cdp = await page.context().newCDPSession(page);
 await cdp.send("HeapProfiler.enable");
-let runState = null;
 // Eine einzelne GC-Messung streut um 1-3 MB. Dreimal sammeln und den
 // kleinsten JS-Retained-Wert nehmen: das ist der tatsaechlich gehaltene Heap.
 const heapOnce = async () => {
