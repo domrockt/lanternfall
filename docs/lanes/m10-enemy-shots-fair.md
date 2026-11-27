@@ -122,6 +122,19 @@ Temporäre Analyse-Ordner (`.arts/`) wurden vor Abschluss entfernt und nach
 `~/tmp/m10-enemy-shots-fair/` ausgelagert (nicht Deliverable); keine Fremddateien
 außerhalb `src/systems/EnemyProjectiles.ts`, `src/logic/bosses.ts`, Tests, Docs, Shots.
 
+## Review (Versuch 3)
+
+- test-auditor: **PASS** — 12→14 Tests, echte Pool-Pfad-Asserts (0,29/0,35-s-Grenzen,
+  Schützentod, View-Wegfall, Offscreen-Verwurf), keine skip/only.
+- Reviewer: **PASS mit Auflagen** — Blocker `shots/tmp_density.rgb` (Temp-Datei) entfernt;
+  umgesetzt: Telegraph-Pool-Cap bricht den Schuss jetzt ab (`cancelledNoTelegraph`) statt
+  nach der Vorwarnung stumm zu feuern, `clear()` räumt den Debug-Hook `__lfEnemyShots` ab
+  (kein Pool-Leak), Kommentar zu spit-Füllung/Lichtkante korrigiert.
+- Bekannte Grenze (dokumentiert, nicht behoben): `shooterAliveNear` prüft nur, ob IRGENDEIN
+  lebender Gegner im 40-px-Radius um den Ursprung steht — kein echter Schützenbezug. Eine
+  Shooter-Referenz in `PendingShot` würde die `spawn()`-Aufrufer (`Run.ts`, `BossSystem.ts`)
+  anfassen und ist außerhalb des Disponent-Bereichs dieser Lane.
+
 ## Offene Punkte
 
 - Stand Iteration 1: kein Innenpixel mehr unter WCAG-`minInner` 2,04 auf den fünf
