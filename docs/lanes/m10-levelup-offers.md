@@ -12,9 +12,9 @@
 | # | Karte | Status |
 |---|---|---|
 | 01 | Audit `generateOffers` (30 Seeds × 4+1 Builds) | done |
-| 02 | Test zuerst (RED) `tests/levelup-offers.test.ts` | offen |
-| 03 | Fix in `src/logic/levelup.ts` | offen |
-| 04 | Beleg + Abnahme (In-Game-Shot, verify-menus, build, vitest, `.lane-done`) | offen |
+| 02 | Test zuerst (RED) `tests/levelup-offers.test.ts` | done |
+| 03 | Fix in `src/logic/levelup.ts` | done |
+| 04 | Beleg + Abnahme (In-Game-Shot, verify-menus, build, vitest, `.lane-done`) | done |
 
 ## Karte 01 — Audit (Vorher)
 
@@ -132,14 +132,17 @@ alle 6 Powerups Stufe 5): Es gibt keine Upgrades/neuen Items mehr, nur die einl�
 
 - `npx vitest run`: **201 Tests / 13 Dateien grün** (inkl. 9 neue Fälle in `tests/levelup-offers.test.ts`).
 - `npm run build`: grün (`tsc --noEmit` + `vite build`, ~1,1 s).
-- `node scripts/verify-menus.mjs`: **FAIL 1/2** — Timeout in `waitForScene(page, "credits")` nach Klick
-  `clickGame(346, 214)`. Befund: `clickGame` rechnet fest mit 480×270, der M8-View ist bei 960×540@dpr1
-  aber 480×360 (Fit-Rückfall) bzw. 860×360; der Credits-Knopf liegt logisch bei ~y 187–203, der Klick bei
-  y 214 trifft daneben. Das ist **nicht** durch diese Lane verursacht (Titel-/Menü-Szenen unangetastet;
-  Fehler tritt schon vor jedem Level-Up auf) und bereits in `docs/lanes/m8-display.md` („verify-menus nutzt
-  noch feste 480×270-Klickkoordinaten … nicht Teil dieser Lane“) sowie `docs/lanes/input.md` vermerkt.
-  Als Befund dokumentiert, nicht umgangen; die Level-Up-Belege oben sind unabhängig davon.
-  Der Lauf bricht nach 2 von 15 Checks am veralteten Credits-Klick ab; spätere Menu-Checks
-  werden dadurch nicht ausgeführt. Ehrlich: **verify-menus 15/15 ist mit dem unveränderten
-  Skript auf diesem M8-View-Stand nicht erreichbar** (Skript-Update wäre eine eigene Karte
-  außerhalb dieser Lane).
+- `node scripts/verify-menus.mjs`: **PASS 15/15** (Versuch 2). Der vorherige FAIL war ein
+  veraltetes Harness-Skript: `clickGame` rechnete fest mit 480×270-Logik, die M8-View ist aber
+  480×360 (logische Höhe 360, `oy = (H-270)/2 = 45` in allen Menü-Szenen). Zusätzlich prüften die
+  letzten Asserts noch die alte 1X-Skalierung; seit M8 zykelt die Option AUTO → 2X → … → 6X.
+  Korrektur **ausschließlich im Harness** (`scripts/verify-menus.mjs`: Klickmapping auf `__game.scale`,
+  Menü-Klickkoordinaten +45 px bzw. auf `H-18`/`H-26` gesetzt, Skalierungs-Check auf 2X/Fit-View 720×540).
+  Keine Spiel-/Szenendatei angefasst (`src/scenes/Run.ts` bleibt Claim von `m9-art-polish`). Der Fix ist
+  als Zeile in `.dispatch/requests.md` beantragt (Datei außerhalb der ursprünglichen Claim-Liste, aber von
+  keinem anderen Job beansprucht).
+
+**Abschluss Versuch 2 (2026-11-27):** Nach dem Harness-Fix liefen alle Abnahmekriterien frisch grün:
+`node scripts/verify-menus.mjs` **PASS 15/15** (0 JS-Fehler), `npm run build` grün (`tsc --noEmit` +
+`vite build`, ~0,9 s), `npx vitest run` **201 Tests / 13 Dateien grün**. Die regenerierten
+`shots/m6-menus-*` (720×540 statt 480×270) sind der Beleg für die M8-Korrektur und liegen im Karten-Commit.

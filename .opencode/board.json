@@ -2429,7 +2429,7 @@
       "id": 1501,
       "title": "m10-levelup-offers-04 Beleg + Abnahme",
       "description": "In-Game Level-Up-Screen nach >=3 Level-Ups als shots/m10-levelup-* im Commit; node scripts/verify-menus.mjs PASS (15/15); npm run build gruen; npx vitest run gesamt gruen (Ist-Zahl); Docs Vorher/Nachher-Audit; .lane-done mit Messwerten. Abnahme: alle Belege committed.",
-      "column": "done",
+      "column": "doing",
       "notes": [
         {
           "at": "2026-11-26T23:23:41Z",
@@ -2445,10 +2445,15 @@
           "at": "2026-11-26T23:37:40Z",
           "by": "build",
           "text": "review → done: Abnahme abgeschlossen. .lane-done liegt fertig untracked im Worktree; Commit durch Claim merge-m10-balance-qa blockiert, Uebernahme in /home/ai/games/.dispatch/requests.md beantragt."
+        },
+        {
+          "at": "2026-11-27T00:19:45Z",
+          "by": "build",
+          "text": "done → doing: Versuch 2: verify-menus-Harness-Klickmapping repariert (M8 480x360), PASS angestrebt; uncommittete Aenderungen werden jetzt in Karten-Commit gesichert."
         }
       ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-26T23:37:40Z"
+      "updated": "2026-11-27T00:19:45Z"
     }
   ]
 }

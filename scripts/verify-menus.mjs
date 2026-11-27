@@ -32,9 +32,12 @@ const snap = async (name) => {
   await page.screenshot({ path });
   shots.push(path);
 };
+// M8-View ist dynamisch (logische Hoehe 360, Breite 480..860), nicht 480x270.
+// Koordinaten werden aus der echten Spielflaeche (__game.scale) auf den Canvas gemappt.
 const clickGame = async (x, y) => {
   const box = await page.locator("canvas").boundingBox();
-  await page.mouse.click(box.x + (x / 480) * box.width, box.y + (y / 270) * box.height);
+  const view = await page.evaluate(() => ({ w: window.__game.scale.width, h: window.__game.scale.height }));
+  await page.mouse.click(box.x + (x / view.w) * box.width, box.y + (y / view.h) * box.height);
   await page.waitForTimeout(220);
 };
 const state = () => page.evaluate(() => window.__lf.state());
@@ -55,29 +58,29 @@ try {
   await snap("title");
 
   // Optionen per Maus öffnen; Werte per Tastatur ändern.
-  await clickGame(240, 214);
+  await clickGame(240, 259);
   await page.waitForTimeout(200);
   await snap("options");
   await page.keyboard.press("Escape");
   await page.waitForTimeout(150);
 
   // Credits per Maus öffnen und zurück.
-  await clickGame(346, 214);
+  await clickGame(346, 259);
   await waitForScene(page, "credits");
   await page.waitForTimeout(250);
   await snap("credits");
-  await clickGame(240, 224);
+  await clickGame(240, 334);
   await waitForScene(page, "title");
 
   // Charakterwahl: Kael per Maus wählen, dann START-Knopf.
-  await clickGame(136, 214);
+  await clickGame(136, 259);
   await waitForScene(page, "charselect");
   await page.waitForTimeout(300);
-  await clickGame(352, 140);
+  await clickGame(352, 185);
   await snap("charselect");
   const selectState = await state();
   check("charselect erreichbar", selectState.scene === "charselect", selectState.scene);
-  await clickGame(280, 252);
+  await clickGame(280, 342);
   await waitForScene(page, "run");
   await page.waitForTimeout(500);
   check("run erreicht", (await state()).scene === "run");
@@ -98,7 +101,7 @@ try {
   await snap("pause");
 
   // Pause-Optionen per Maus öffnen/schließen.
-  await clickGame(240, 201);
+  await clickGame(240, 246);
   await page.waitForTimeout(200);
   await snap("options-pause");
   await page.keyboard.press("Escape");
@@ -111,7 +114,7 @@ try {
   );
 
   // Kur, Schaden sammeln, wieder pausieren und aufgeben.
-  await clickGame(108, 201);
+  await clickGame(108, 246);
   await page.waitForTimeout(200);
   await page.evaluate(() => window.__lf.spawnEnemy("bog_rat", 30));
   await page.waitForTimeout(1800);
@@ -130,7 +133,7 @@ try {
   await snap("results-defeat");
 
   // Neue Runde per Maus, dann Debug-Sieg -> Sieg-Ergebnis.
-  await clickGame(146, 232);
+  await clickGame(146, 334);
   await waitForScene(page, "run");
   await page.waitForTimeout(400);
   await page.evaluate(() => {
@@ -150,7 +153,7 @@ try {
   check("Sieg-Ergebnis erreichbar", (await state()).scene === "results");
 
   // Zurück zum Titel und Meta-Anzeige prüfen.
-  await clickGame(316, 232);
+  await clickGame(316, 334);
   await waitForScene(page, "title");
   await page.waitForTimeout(350);
   await snap("title-meta");
@@ -159,28 +162,28 @@ try {
   check("Meta: Kael-Sieg gespeichert", meta.kael.victories >= 1, String(meta.kael.victories));
 
   // Optionen ändern (Maus), Screenshot, dann Reload-Persistenz.
-  await clickGame(240, 214);
+  await clickGame(240, 259);
   await page.waitForTimeout(200);
   await snap("options-open-final");
-  await clickGame(414, 87);   // Musik +10%
-  await clickGame(345, 127);  // Screen-Shake umschalten
-  await clickGame(345, 147);  // Damage-Numbers umschalten
-  await clickGame(414, 187);  // Skalierung AUTO -> 1X (Zeile 6 nach MASTER MUTE)
+  await clickGame(414, 132);  // Musik +10% (Wert-Zone Zeile 1)
+  await clickGame(345, 172);  // Screen-Shake umschalten (Zeile 3)
+  await clickGame(345, 192);  // Damage-Numbers umschalten (Zeile 4)
+  await clickGame(414, 232);  // Skalierung AUTO -> 2X (Zeile 6 nach MASTER MUTE)
   await page.waitForTimeout(250);
   const canvasBox = await page.locator("canvas").boundingBox();
   const cx = canvasBox.x + canvasBox.width / 2;
   const cy = canvasBox.y + canvasBox.height / 2;
   check(
-    "1X-Skalierung exakt zentriert",
+    "Skalierung 2X gestellt, Fit-View zentriert",
     Math.abs(cx - 480) <= 2 && Math.abs(cy - 270) <= 2
-      && canvasBox.width === 480 && canvasBox.height === 270,
+      && canvasBox.width === 720 && canvasBox.height === 540,
     `center ${cx}/${cy}, ${canvasBox.width}x${canvasBox.height}`,
   );
   await snap("options-changed");
   const beforeReload = await options();
   check("Optionen: Musik erhöht", beforeReload.music > DEFAULT_MUSIC, String(beforeReload.music));
   check("Optionen: Damage-Numbers aus", beforeReload.damageNumbers === false);
-  check("Optionen: Skalierung 1", beforeReload.scale === 1, String(beforeReload.scale));
+  check("Optionen: Skalierung 2X", beforeReload.scale === 2, String(beforeReload.scale));
 
   await page.reload();
   await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });

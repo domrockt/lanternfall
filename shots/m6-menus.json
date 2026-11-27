@@ -53,9 +53,9 @@
       "detail": "2"
     },
     {
-      "name": "1X-Skalierung exakt zentriert",
+      "name": "Skalierung 2X gestellt, Fit-View zentriert",
       "ok": true,
-      "detail": "center 480/270, 480x270"
+      "detail": "center 480/270, 720x540"
     },
     {
       "name": "Optionen: Musik erhöht",
@@ -67,14 +67,14 @@
       "ok": true
     },
     {
-      "name": "Optionen: Skalierung 1",
+      "name": "Optionen: Skalierung 2X",
       "ok": true,
-      "detail": "1"
+      "detail": "2"
     },
     {
       "name": "Optionen überleben Reload",
       "ok": true,
-      "detail": "{\"music\":0.7,\"sfx\":0.8,\"shake\":false,\"damageNumbers\":false,\"muted\":false,\"scale\":1}"
+      "detail": "{\"music\":0.7,\"sfx\":0.8,\"shake\":false,\"damageNumbers\":false,\"muted\":false,\"scale\":2}"
     },
     {
       "name": "alle Screenshots vorhanden",
@@ -93,7 +93,7 @@
     "shake": false,
     "damageNumbers": false,
     "muted": false,
-    "scale": 1
+    "scale": 2
   },
   "optionsAfterReload": {
     "music": 0.7,
@@ -101,7 +101,7 @@
     "shake": false,
     "damageNumbers": false,
     "muted": false,
-    "scale": 1
+    "scale": 2
   },
   "meta": {
     "mira": {
