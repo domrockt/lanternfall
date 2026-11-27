@@ -86,6 +86,30 @@ export class UI extends Phaser.Scene {
   private pad = new InputState();
   private touch?: TouchControls;
 
+  /**
+   * M10-ui-text-cost: Dirty-Gates. refreshHud/refreshBoss laufen 60x/s; die
+   * meisten Werte aendern sich nicht. Nur bei echter Aenderung wird Text
+   * gesetzt bzw. neu berechnet.
+   */
+  private hudCache = {
+    level: "",
+    timer: "",
+    kills: "",
+    xpRatio: NaN,
+    hpRatio: NaN,
+    hpColor: -1,
+    buildSig: "",
+    iconKeys: [] as string[],
+    hintLines: [] as string[],
+  };
+  private bossCache = {
+    hidden: true,
+    name: "",
+    phase: "",
+    ratio: NaN,
+    color: -1,
+  };
+
   constructor() { super("ui"); }
 
   /** M8: Bei View-Wechsel (Resize/Rotation) wird die UI neu aufgebaut. */
@@ -99,6 +123,13 @@ export class UI extends Phaser.Scene {
     // Nach scene.restart() ist das Overlay neu/unsichtbar; der alte Merker
     // wuerde sonst ein erneutes refreshPause() verhindern (Softlock).
     this.lastPauseShown = false;
+    // M10-ui-text-cost: neue GameObjects -> Dirty-Caches zuruecksetzen, sonst
+    // bleiben frisch erzeugte Texte/Balken auf ihrem Default (leer/1.0).
+    this.hudCache = {
+      level: "", timer: "", kills: "", xpRatio: NaN, hpRatio: NaN, hpColor: -1,
+      buildSig: "", iconKeys: [], hintLines: [],
+    };
+    this.bossCache = { hidden: true, name: "", phase: "", ratio: NaN, color: -1 };
     this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
 
     // HUD-Leiste oben (volle aktuelle View-Breite).
@@ -649,46 +680,100 @@ export class UI extends Phaser.Scene {
 
   private refreshBoss(boss: import("./Run").HudState["boss"]): void {
     if (!boss) {
-      this.bossGroup.setVisible(false);
+      if (!this.bossCache.hidden) {
+        this.bossGroup.setVisible(false);
+        this.bossCache.hidden = true;
+      }
       return;
     }
-    this.bossGroup.setVisible(true);
-    this.bossName.setText(boss.name.toUpperCase());
-    this.bossPhaseText.setText(boss.phase > 1 ? `PHASE ${boss.phase}` : "");
-    this.bossBarFill.setScale(Math.max(0.001, boss.ratio), 1);
-    this.bossBarFill.setFillStyle(PAL[boss.color] ?? PAL[C.crimson]);
+    if (this.bossCache.hidden) {
+      this.bossGroup.setVisible(true);
+      this.bossCache.hidden = false;
+    }
+    const name = boss.name.toUpperCase();
+    if (name !== this.bossCache.name) {
+      this.bossName.setText(name);
+      this.bossCache.name = name;
+    }
+    const phase = boss.phase > 1 ? `PHASE ${boss.phase}` : "";
+    if (phase !== this.bossCache.phase) {
+      this.bossPhaseText.setText(phase);
+      this.bossCache.phase = phase;
+    }
+    const ratio = Math.max(0.001, boss.ratio);
+    if (ratio !== this.bossCache.ratio) {
+      this.bossBarFill.setScale(ratio, 1);
+      this.bossCache.ratio = ratio;
+    }
+    const color = boss.color;
+    if (color !== this.bossCache.color) {
+      this.bossBarFill.setFillStyle(PAL[color] ?? PAL[C.crimson]);
+      this.bossCache.color = color;
+    }
   }
 
   private refreshHud(s: HudState): void {
-    this.levelText.setText(`LV ${s.level}`);
+    const level = `LV ${s.level}`;
+    if (level !== this.hudCache.level) {
+      this.levelText.setText(level);
+      this.hudCache.level = level;
+    }
     const total = Math.max(0, Math.floor(s.time));
-    this.timerText.setText(`${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`);
-    this.killsText.setText(`KILL ${s.kills}`);
-    this.xpFill.setScale(Math.max(0.001, s.xpRatio), 1);
+    const timer = `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+    if (timer !== this.hudCache.timer) {
+      this.timerText.setText(timer);
+      this.hudCache.timer = timer;
+    }
+    const kills = `KILL ${s.kills}`;
+    if (kills !== this.hudCache.kills) {
+      this.killsText.setText(kills);
+      this.hudCache.kills = kills;
+    }
+    const xpRatio = Math.max(0.001, s.xpRatio);
+    if (xpRatio !== this.hudCache.xpRatio) {
+      this.xpFill.setScale(xpRatio, 1);
+      this.hudCache.xpRatio = xpRatio;
+    }
     const hpRatio = Math.max(0, Math.min(1, s.hp / Math.max(1, s.maxHp)));
-    this.hpFill.setScale(Math.max(0.001, hpRatio), 1);
-    this.hpFill.setFillStyle(hpRatio < 0.3 ? PAL[C.hotRed] : hpRatio < 0.6 ? PAL[C.amber] : PAL[C.crimson]);
+    const hpColor = hpRatio < 0.3 ? C.hotRed : hpRatio < 0.6 ? C.amber : C.crimson;
+    if (hpRatio !== this.hudCache.hpRatio) {
+      this.hpFill.setScale(Math.max(0.001, hpRatio), 1);
+      this.hudCache.hpRatio = hpRatio;
+    }
+    if (hpColor !== this.hudCache.hpColor) {
+      this.hpFill.setFillStyle(PAL[hpColor]);
+      this.hudCache.hpColor = hpColor;
+    }
 
-    const keys = [
-      ...s.weapons.map((w) => iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id)),
-      ...s.passives.map((p) => iconTextureKey("passive", p.id)),
-    ].slice(0, this.hudIcons.length);
-    this.hudIcons.forEach((img, i) => {
-      const key = keys[i];
-      if (!key) { img.setVisible(false); return; }
-      if (img.texture.key !== key) img.setTexture(key);
-      img.setVisible(true);
-    });
-    const width = keys.length === 0 ? 0 : 8 + keys.length * 18;
-    this.hudIconBg.setSize(width, 19).setVisible(keys.length > 0);
+    // Icons und Evolutionspfad haengen nur an Waffen/Powerups (ID + Stufe).
+    // Signatur statt evolutionReadyList jeden Frame neu auszuwerten.
+    const buildSig = s.weapons.map((w) => `${w.id}:${w.level}`).join(",")
+      + "|" + s.passives.map((p) => `${p.id}:${p.level}`).join(",");
+    if (buildSig !== this.hudCache.buildSig) {
+      this.hudCache.buildSig = buildSig;
+      const keys = [
+        ...s.weapons.map((w) => iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id)),
+        ...s.passives.map((p) => iconTextureKey("passive", p.id)),
+      ].slice(0, this.hudIcons.length);
+      this.hudCache.iconKeys = keys;
+      this.hudIcons.forEach((img, i) => {
+        const key = keys[i];
+        if (!key) { img.setVisible(false); return; }
+        if (img.texture.key !== key) img.setTexture(key);
+        img.setVisible(true);
+      });
+      const width = keys.length === 0 ? 0 : 8 + keys.length * 18;
+      this.hudIconBg.setSize(width, 19).setVisible(keys.length > 0);
 
-    // M10: Evolutionspfad im HUD sichtbar machen (max. 2 Zeilen).
-    const ready = evolutionReadyList(s.weapons, s.passives);
-    const hintLines = ready.length === 0 ? [] : hudEvolutionHint(ready);
-    this.hudEvoHint.forEach((t, i) => {
-      t.setText(hintLines[i] ?? "");
-      t.setVisible(Boolean(hintLines[i]));
-    });
+      // M10: Evolutionspfad im HUD sichtbar machen (max. 2 Zeilen).
+      const ready = evolutionReadyList(s.weapons, s.passives);
+      const hintLines = ready.length === 0 ? [] : hudEvolutionHint(ready);
+      this.hudCache.hintLines = hintLines;
+      this.hudEvoHint.forEach((t, i) => {
+        t.setText(hintLines[i] ?? "");
+        t.setVisible(Boolean(hintLines[i]));
+      });
+    }
   }
 
   private onPauseChanged(): void {

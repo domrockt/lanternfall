@@ -6,11 +6,26 @@ export const GLYPH_W = 5;
 export const GLYPH_H = 7;
 export const GLYPH_ADVANCE = 6;
 
+/**
+ * M10-ui-text-cost: reine Zähler für das Messskript `scripts/m10-ui-cost.mjs`.
+ * Kein Verhalten, keine Ausgabe; im Browser unter `window.__lfText` lesbar.
+ */
+export const textStats = {
+  setTextCalls: 0,
+  setTextureCalls: 0,
+  ensureGlyphCalls: 0,
+};
+
+if (typeof window !== "undefined") {
+  (window as unknown as { __lfText: typeof textStats }).__lfText = textStats;
+}
+
 function glyphKey(color: number, ch: string): string {
   return `glyph_${color}_${ch.charCodeAt(0)}`;
 }
 
 function ensureGlyph(scene: Phaser.Scene, color: number, ch: string): void {
+  textStats.ensureGlyphCalls++;
   // Großbuchstaben bevorzugen, damit Kleinbuchstaben in Beschreibungen nicht als
   // gemischte Glyphenhöhen zwischen Versalien erscheinen. Umlaute/ß bleiben exakt.
   const upper = ch.toUpperCase();
@@ -41,6 +56,12 @@ export class PixelText extends Phaser.GameObjects.Container {
   private value = "";
   private colorIndex = 13;
   private align: TextAlign = "left";
+  /** M10-ui-text-cost: zuletzt pro Glyph gesetzter Texture-Key (Cache). */
+  private glyphKeys: string[] = [];
+  /** M10-ui-text-cost: Farbe, mit der zuletzt gerendert wurde (Cache-Invalidierung). */
+  private renderedColor = -1;
+  private layoutLength = -1;
+  private layoutAlign: TextAlign | null = null;
 
   constructor(
     scene: Phaser.Scene,
@@ -65,31 +86,53 @@ export class PixelText extends Phaser.GameObjects.Container {
   }
 
   setAlign(a: TextAlign): this {
+    if (a === this.align) return this;
     this.align = a;
     this.layout();
+    this.layoutAlign = a;
     return this;
   }
 
   setText(value: string | number): this {
-    this.value = String(value);
-    const chars = this.value.split("");
+    textStats.setTextCalls++;
+    const next = String(value);
+    // M10-ui-text-cost: identischer Text (und identische Farbe) ist reine
+    // Frame-Arbeit ohne Bildgewinn -> sofort zurueck, kein Zerlegen/Layout/Textur.
+    if (next === this.value && this.colorIndex === this.renderedColor) return this;
+    this.value = next;
+    const chars = next.split("");
     while (this.glyphs.length < chars.length) {
       const img = this.scene.add.image(0, 0, glyphKey(this.colorIndex, " ")).setOrigin(0, 0);
       this.add(img);
       this.glyphs.push(img);
+      this.glyphKeys.push("");
     }
     for (let i = 0; i < this.glyphs.length; i++) {
       const img = this.glyphs[i];
       if (i < chars.length && chars[i] !== " ") {
         const ch = chars[i];
         ensureGlyph(this.scene, this.colorIndex, ch);
-        img.setTexture(glyphKey(this.colorIndex, ch));
+        const key = glyphKey(this.colorIndex, ch);
+        // M10-ui-text-cost: setTexture nur, wenn dieser Glyph den Key wechselt.
+        if (this.glyphKeys[i] !== key) {
+          textStats.setTextureCalls++;
+          img.setTexture(key);
+          this.glyphKeys[i] = key;
+        }
         img.setVisible(true);
       } else {
+        // Cache leeren, damit ein spaeter wieder sichtbares Zeichen neu setzt.
+        this.glyphKeys[i] = "";
         img.setVisible(false);
       }
     }
-    this.layout();
+    // M10-ui-text-cost: Positionen haengen nur an Laenge und Align.
+    if (next.length !== this.layoutLength || this.align !== this.layoutAlign) {
+      this.layout();
+      this.layoutLength = next.length;
+      this.layoutAlign = this.align;
+    }
+    this.renderedColor = this.colorIndex;
     return this;
   }
 
