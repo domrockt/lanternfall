@@ -62,6 +62,36 @@ Robustheits-Lauf `MENUS_VIEWPORT=1280x720` (View 640x360, vorher FAIL-Repro):
 **PASS 15/15**, 0 JS-Fehler, Skalierungs-Check „center 640/360, 1280x720“. Logs:
 `~/tmp/m10-verify-menus-view/k2-after-try2.log` und `k2-after-640.log`.
 
-## K3 — Nachweis (offen)
+## K3 — Nachweis (2026-11-27)
 
-## K4 — Fazit (offen)
+- `node scripts/verify-menus.mjs` (Viewport 960x540 → logischer Fit-View **480x360**):
+  **PASS 15/15 Checks**, rc=0, **0 JS-Fehler**. Log: `shots/m10-verify-menus-after.log`.
+- Sichtbeleg: `shots/m10-verify-menus-title-480x360.png` — Titel-Szene im Fit-View 480x360
+  (LANTERNFALL-Logo, Bestwerte, START/OPTIONEN/CREDITS), Vision geprüft.
+- Ergebnis-JSON: `shots/m10-verify-menus.json` (milestone `m10-verify-menus-view`).
+- Robustheit über Views (K2, hier zusammengefasst): 960x540 → 480x360 PASS 15/15;
+  1280x720 → 640x360 PASS 15/15 (vorher der FAIL-Repro aus K1).
+
+## K4 — Fazit (2026-11-27)
+
+**Vorher/Nachher:**
+
+| Messung | Vorher | Nachher |
+|---|---|---|
+| verify-menus @ 960x540 (Fit 480x360) | PASS 15/15 — aber nur Zufallstreffer der 480x270-Legacy-Koordinaten (oy=45) | **PASS 15/15**, rc=0, 0 JS-Fehler |
+| verify-menus @ 1280x720 (View 640x360) | **FAIL**: Klick (240,259) trifft START statt OPTIONEN; 7 Klickpositionen daneben (siehe K1) | **PASS 15/15** (`MENUS_VIEWPORT=1280x720`), 0 JS-Fehler |
+| Klick-Ziele | 14 feste Pixelkoordinaten, eingefrorenes 480x270-Layout | zur Laufzeit aus der aktiven Szene gelesen (PixelText + Weltposition) |
+| Skalierungs-Check | fest 720x540/center 480,270 | aus Viewport berechnet (computeView-Regel) |
+
+**Umfang:** ausschließlich `scripts/verify-menus.mjs` + `docs/lanes/m10-verify-menus-view.md`
++ `shots/m10-verify-menus-*`. Keine Änderung an `src/**`, Spiel-/Szenendateien unberührt.
+
+**Offene Punkte / ehrlich:**
+- Der erste verify-Lauf dieser Lane brach mit „Target page, context or browser has been closed“
+  ab (Playwright-Flake unter Host-Last, kein Inhaltsfehler). Der Harness hat keinen Retry;
+  bei Wiederholung einfach erneut laufen lassen.
+- Klick über Text-Ursprung statt Rechteck-Mitte: bei nicht-zentrierten Labels (z. B.
+  „START: KETTENFLEGEL“) liegt der Klick am linken Rand des Texts — für alle genutzten
+  Ziele (Buttons/Panels/Pfeile) sicher innerhalb des klickbaren Elements.
+- Header-Kommentar/Snap-Namen der Legacy-`m6-menus-*`-Belege bleiben unangetastet im Repo;
+  der Harness schreibt sie nicht mehr (kein Konflikt mit der m6-menus-Lane-Historie).
