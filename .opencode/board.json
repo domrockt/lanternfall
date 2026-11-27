@@ -3026,7 +3026,7 @@
       "id": 2100,
       "title": "m10-gem-magnet #3 Magnet-Semantik: Anziehung exakt ab Radius, Ankunft <=0,4 s + Grenzfall-Tests",
       "description": "Anziehung beginnt genau am definierten Magnetradius, Geschwindigkeit so, dass Kristall in <=0,4 s ankommt. Tests: Radius 0, mehrere Kristalle gleichzeitig. Abnahme: Test gruen, Messung im Baseline-JSON.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3043,10 +3043,15 @@
           "at": "2026-11-27T03:35:26Z",
           "by": "build",
           "text": "todo → review: commit accf051: magnet.json PASS, after.json maxOver=0"
+        },
+        {
+          "at": "2026-11-27T05:24:35Z",
+          "by": "build",
+          "text": "review → done: Magnet-Semantik PASS: Anziehung exakt am Radius (48,400 px), Ankunft 340,7 ms/21 Frames <=0,4 s, 5 Kristalle gleichzeitig; Grenzfall-Tests 8/8. Beleg shots/m10-gem-magnet-magnet.json, Commit accf051."
         }
       ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T03:35:26Z"
+      "updated": "2026-11-27T05:24:35Z"
     },
     {
       "id": 2101,
