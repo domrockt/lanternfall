@@ -5942,21 +5942,33 @@
       "id": 5238,
       "title": "m10-elite-rim #1 Baseline: Elite-Sichtbarkeit im Schwarm",
       "description": "lane m10-elite-rim: Ist-Zustand vor Rim-Light. Skript scripts/m10-elite-rim.mjs mode=baseline misst Amber-Rim-Pixel-Anteil je Elite-Typ (30 Typen, aus GEN_ENEMIES-Masken) nach shots/m10-elite-rim-baseline.json; Schwarm-Screenshots 640x360 und 780x360@dpr3 mit sichtbaren Elites (spawnEnemy via __game-Szene, elite=true) als shots/m10-elite-rim-baseline-640.png/-780.png. Abnahme: JSON mit 30 Eintraegen existiert, beide PNGs vorhanden und zeigen den Schwarm ohne JS-Fehler. Commit enthaelt shots+Skript.",
-      "column": "todo",
+      "column": "review",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:40:00Z",
+          "by": "coder",
+          "text": "#5238: Baseline fertig, Commit siehe git log (shots+JSON+Skript). #5239 Rim-Light im Sprite-Generator: doing."
+        }
+      ],
       "created": "2026-11-27T20:33:23Z",
-      "updated": "2026-11-27T20:33:23Z"
+      "updated": "2026-11-27T20:40:00Z"
     },
     {
       "id": 5239,
       "title": "m10-elite-rim #2 Rim-Light im Sprite-Generator",
       "description": "lane m10-elite-rim: In src/gfx/enemySprites.ts eliteRimGrid(): 1-px-Kante in Elite-Akzentfarbe (C.amber, Palette-getreu, binaeres Alpha) auf allen Randpixeln der geschärften Frame-0-Maske; genau 1 zusaetzlicher Rim-Frame je Typ (4 Laufrichtungen x Frames ohne Duplikate, da Vollumrandung richtungs-/frameunabhaengig). Base-Frames unveraendert. Abnahme: npx tsc --noEmit gruen; tests/elite-rim.test.ts prueft: Rim-Pixel an allen Randpixeln je Typ, Base-Frames ohne Rim-Aenderung, Framezahl unveraendert; vitest gruen. Commit mit Test.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:40:00Z",
+          "by": "coder",
+          "text": "#5238: Baseline fertig, Commit siehe git log (shots+JSON+Skript). #5239 Rim-Light im Sprite-Generator: doing."
+        }
+      ],
       "created": "2026-11-27T20:33:23Z",
-      "updated": "2026-11-27T20:33:23Z"
+      "updated": "2026-11-27T20:40:00Z"
     },
     {
       "id": 5240,
