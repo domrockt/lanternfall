@@ -2429,7 +2429,7 @@
       "id": 1501,
       "title": "m10-levelup-offers-04 Beleg + Abnahme",
       "description": "In-Game Level-Up-Screen nach >=3 Level-Ups als shots/m10-levelup-* im Commit; node scripts/verify-menus.mjs PASS (15/15); npm run build gruen; npx vitest run gesamt gruen (Ist-Zahl); Docs Vorher/Nachher-Audit; .lane-done mit Messwerten. Abnahme: alle Belege committed.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T23:23:41Z",
@@ -2450,10 +2450,20 @@
           "at": "2026-11-27T00:19:45Z",
           "by": "build",
           "text": "done → doing: Versuch 2: verify-menus-Harness-Klickmapping repariert (M8 480x360), PASS angestrebt; uncommittete Aenderungen werden jetzt in Karten-Commit gesichert."
+        },
+        {
+          "at": "2026-11-27T00:28:51Z",
+          "by": "build",
+          "text": "Versuch 2 PASS: verify-menus-Harness auf M8-480x360 gefixt (Klickmapping ueber __game.scale, Menue-Koordinaten +45 bzw. H-18/H-26, Skalierungs-Assert AUTO->2X/Fit 720x540). node scripts/verify-menus.mjs PASS 15/15, 0 JS-Fehler; npm run build gruen (~0,9 s); npx vitest run 201/201 (13 Dateien). Belege: shots/m10-levelup-evolution-offer.png, shots/m10-levelup-after-evolution.png, shots/m10-levelup-offers-audit-after.json, regenerierte shots/m6-menus-*. Commits 87b14c7 (WIP-Snapshot) + 09b59b55 (#1501, .lane-done)."
+        },
+        {
+          "at": "2026-11-27T00:28:51Z",
+          "by": "build",
+          "text": "doing → done: Abnahme Versuch 2 abgeschlossen: verify-menus 15/15 PASS, build+201 Tests gruen, .lane-done committet (09b9b55)."
         }
       ],
       "created": "2026-11-26T22:28:58Z",
-      "updated": "2026-11-27T00:19:45Z"
+      "updated": "2026-11-27T00:28:51Z"
     }
   ]
 }
