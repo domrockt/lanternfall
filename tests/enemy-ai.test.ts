@@ -286,11 +286,11 @@ describe("Enemy-KI Verhaltensmatrix (deterministisch)", () => {
     expect(matrixFor(101)).toEqual(rows101);
     expect(matrixFor(202)).toEqual(rows202);
 
-    // Alle Werte sind endlich (keine NaN durch degenerate Richtungen).
+    // Alle Messwerte sind endlich (keine NaN durch degenerate Richtungen).
     for (const r of [...rows101, ...rows202]) {
-      console.log("BAD:", r.id, Object.entries(r).filter(([, v]) => !Number.isFinite(Number(v))));
-      for (const value of Object.values(r)) {
-        expect(Number.isFinite(Number(value))).toBe(true);
+      for (const [key, value] of Object.entries(r)) {
+        if (key === "id" || key === "archetype") continue;
+        expect(Number.isFinite(Number(value)), `${r.id}.${key}`).toBe(true);
       }
     }
 
