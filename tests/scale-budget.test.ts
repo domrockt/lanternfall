@@ -73,14 +73,26 @@ describe("M10-dpr-budget-cap: stepRenderScale (Hysterese)", () => {
     expect(s.scale).toBe(1);
   });
 
-  it("totale Zone 45..57 FPS setzt beide Timer zurueck (kein Flackern)", () => {
+  it("totale Zone 45..57 FPS friert beide Timer ein (Fortschritt bleibt bei Last-Jitter)", () => {
     let s = S();
     s = stepRenderScale(s, 42, 1900, 2);
     expect(s.belowMs).toBe(1900);
     s = stepRenderScale(s, 50, 100, 2);
-    expect(s.belowMs).toBe(0);
+    expect(s.belowMs).toBe(1900);
     expect(s.aboveMs).toBe(0);
     expect(s.scale).toBe(1);
+  });
+
+  it("Last-Jitter um 45 FPS (42/50 abwechselnd) erreicht den 2-s-Timer und senkt", () => {
+    // Beleg 2026-11-27: unter Parallel-Last pendelt der EWMA 41,6-53 FPS.
+    // Mit Reset in der Totzone lief belowMs nie ueber ~500 ms (Regler blieb
+    // bei Teiler 1, ~40-44 FPS < Ziel 50). Mit Einfrieren addiert sich die
+    // unter-45-Zeit und der Regler greift.
+    let s = S();
+    for (let i = 0; i < 20; i++) {
+      s = stepRenderScale(s, i % 2 === 0 ? 42 : 50, 300, 2); // je 150 ms unter 45
+    }
+    expect(s.scale).toBe(2); // 10 x 300 ms = 3000 ms kumulativ unter 45 FPS
   });
 
   it("Grenzen: Teiler steigt nie ueber cap und faellt nie unter RENDER_SCALE_MIN", () => {

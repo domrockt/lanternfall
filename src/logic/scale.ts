@@ -65,7 +65,9 @@ export interface RenderScaleState {
 /**
  * Ein Regler-Schritt: unter 45 FPS fuer 2 s senken nicht moeglich -> Teiler
  * erhoehen (bis cap); ab 57 FPS fuer 4 s heben -> Teiler senken. Zwischen den
- * Schwellen (totale Zone) bleiben die Timer zurueckgesetzt, der Teiler haelt.
+ * Schwellen (totale Zone) bleiben beide Timer EINGEFROREN (Fortschritt bleibt):
+ * Bei Last-Jitter um 45 FPS wuerde ein Reset den 2-s-Timer nie voll laufen
+ * lassen (Probe 2026-11-27: FPS pendelt 41,6-53, Buffer blieb Teiler 1).
  */
 export function stepRenderScale(
   state: RenderScaleState,
@@ -92,10 +94,8 @@ export function stepRenderScale(
       belowMs = 0;
       aboveMs = 0;
     }
-  } else {
-    belowMs = 0;
-    aboveMs = 0;
   }
+  // Totzone: beide Timer einfrieren (kein Zweig greift).
   scale = Math.max(RENDER_SCALE_MIN, Math.min(upperCap, scale));
   return { scale, belowMs, aboveMs };
 }
