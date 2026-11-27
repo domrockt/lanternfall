@@ -1,0 +1,95 @@
+{
+  "targetFps": 50,
+  "viewport": {
+    "width": 780,
+    "height": 360
+  },
+  "dpr": 3,
+  "runs": [
+    {
+      "id": "before-rbscale0",
+      "mode": "before",
+      "fps": 28.9,
+      "frames": 290,
+      "worstFrameMs": 50.1,
+      "minEnemies": 18,
+      "time": 1500.5,
+      "kills": 22122,
+      "renderBuffer": [
+        780,
+        360
+      ],
+      "css": [
+        780,
+        360
+      ],
+      "dpr": 3,
+      "renderWidth": 780,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "id": "after-auto-1",
+      "mode": "after",
+      "fps": 28,
+      "frames": 281,
+      "worstFrameMs": 50.1,
+      "minEnemies": 20,
+      "time": 1501.1,
+      "kills": 20690,
+      "renderBuffer": [
+        780,
+        360
+      ],
+      "css": [
+        780,
+        360
+      ],
+      "dpr": 3,
+      "renderWidth": 780,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "id": "after-auto-2",
+      "mode": "after",
+      "fps": 37,
+      "frames": 371,
+      "worstFrameMs": 66.7,
+      "minEnemies": 20,
+      "time": 1500.4,
+      "kills": 20214,
+      "renderBuffer": [
+        780,
+        360
+      ],
+      "css": [
+        780,
+        360
+      ],
+      "dpr": 3,
+      "renderWidth": 780,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": false
+    }
+  ],
+  "summary": {
+    "beforeFps": 28.9,
+    "beforeRenderWidth": 780,
+    "afterFps": [
+      28,
+      37
+    ],
+    "afterRenderWidth": [
+      780,
+      780
+    ],
+    "afterMinFps": 28,
+    "afterPassedCount": 0,
+    "afterCount": 2,
+    "jsErrors": 0
+  }
+}
