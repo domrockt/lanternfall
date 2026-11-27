@@ -1,0 +1,188 @@
+{
+  "schema": "m10-chest-panel-ui/v1",
+  "tag": "after",
+  "generatedAt": "2026-11-27T23:29:57.169Z",
+  "seed": 101,
+  "gapMinPx": 4,
+  "note": "Nach Fix: Untertitel aus Titel-Baseline + GLYPH_H*Scale + Gap >= 4 px abgeleitet.",
+  "jsErrors": 0,
+  "formats": [
+    {
+      "label": "640",
+      "internal": "640x360@2",
+      "rewards": 3,
+      "boxes": {
+        "title": {
+          "text": "TRUHE GEÖFFNET",
+          "left": 238,
+          "right": 404,
+          "top": 83,
+          "bottom": 97
+        },
+        "subtitle": {
+          "text": "BELOHNUNGEN ROLLEN ...",
+          "left": 255,
+          "right": 386,
+          "top": 103,
+          "bottom": 110
+        },
+        "icon": {
+          "texture": "chest_open",
+          "left": 299.2,
+          "right": 340.8,
+          "top": 116.2,
+          "bottom": 157.8
+        },
+        "evoNames": [
+          {
+            "text": "SEELENLEU",
+            "left": 208,
+            "right": 261,
+            "top": 247,
+            "bottom": 254
+          },
+          {
+            "text": "CHTFEUER",
+            "left": 211,
+            "right": 258,
+            "top": 258,
+            "bottom": 265
+          },
+          {
+            "text": "EVOLUTION",
+            "left": 208,
+            "right": 261,
+            "top": 269,
+            "bottom": 276
+          },
+          {
+            "text": "WINDSTIEFEL",
+            "left": 288,
+            "right": 353,
+            "top": 247,
+            "bottom": 254
+          },
+          {
+            "text": "STUFE 1",
+            "left": 300,
+            "right": 341,
+            "top": 269,
+            "bottom": 276
+          },
+          {
+            "text": "GLUTFUNKE",
+            "left": 380,
+            "right": 433,
+            "top": 247,
+            "bottom": 254
+          },
+          {
+            "text": "STUFE 2",
+            "left": 386,
+            "right": 427,
+            "top": 269,
+            "bottom": 276
+          }
+        ]
+      },
+      "gaps": {
+        "titleToSubtitle": 6,
+        "subtitleToIcon": 6.2
+      },
+      "gapMin": 4,
+      "insidePanelViewport": true,
+      "overlaps": [],
+      "screenshot": "shots/m10-chest-panel-after-640.png",
+      "ok": true
+    },
+    {
+      "label": "780",
+      "internal": "780x360@3",
+      "rewards": 3,
+      "boxes": {
+        "title": {
+          "text": "TRUHE GEÖFFNET",
+          "left": 308,
+          "right": 474,
+          "top": 83,
+          "bottom": 97
+        },
+        "subtitle": {
+          "text": "BELOHNUNGEN ROLLEN ...",
+          "left": 325,
+          "right": 456,
+          "top": 103,
+          "bottom": 110
+        },
+        "icon": {
+          "texture": "chest_open",
+          "left": 369.2,
+          "right": 410.8,
+          "top": 116.2,
+          "bottom": 157.8
+        },
+        "evoNames": [
+          {
+            "text": "SEELENLEU",
+            "left": 278,
+            "right": 331,
+            "top": 247,
+            "bottom": 254
+          },
+          {
+            "text": "CHTFEUER",
+            "left": 281,
+            "right": 328,
+            "top": 258,
+            "bottom": 265
+          },
+          {
+            "text": "EVOLUTION",
+            "left": 278,
+            "right": 331,
+            "top": 269,
+            "bottom": 276
+          },
+          {
+            "text": "WINDSTIEFEL",
+            "left": 358,
+            "right": 423,
+            "top": 247,
+            "bottom": 254
+          },
+          {
+            "text": "STUFE 1",
+            "left": 370,
+            "right": 411,
+            "top": 269,
+            "bottom": 276
+          },
+          {
+            "text": "GLUTFUNKE",
+            "left": 450,
+            "right": 503,
+            "top": 247,
+            "bottom": 254
+          },
+          {
+            "text": "STUFE 2",
+            "left": 456,
+            "right": 497,
+            "top": 269,
+            "bottom": 276
+          }
+        ]
+      },
+      "gaps": {
+        "titleToSubtitle": 6,
+        "subtitleToIcon": 6.2
+      },
+      "gapMin": 4,
+      "insidePanelViewport": true,
+      "overlaps": [],
+      "screenshot": "shots/m10-chest-panel-after-780.png",
+      "ok": true
+    }
+  ],
+  "passed": true
+}
