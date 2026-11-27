@@ -11,6 +11,15 @@ export interface DamageEntry {
  * Schadenstabelle für den Ergebnis-Screen: nur Waffen mit Schaden > 0,
  * absteigend sortiert, begrenzt auf die verfügbaren Tabellenplätze.
  */
+/** Gesamtschaden aller Waffen (nur endliche, positive Werte), kaufmännisch gerundet. */
+export function damageTotal(damageByWeapon: Record<string, number>): number {
+  let sum = 0;
+  for (const value of Object.values(damageByWeapon)) {
+    if (Number.isFinite(value) && value > 0) sum += value;
+  }
+  return Math.round(sum);
+}
+
 /** Kompakte Schadenszahl: grosse Endgame-Werte sprengen sonst die Spalte. */
 export function formatDamageCompact(damage: number): string {
   const d = Math.max(0, Math.round(damage));

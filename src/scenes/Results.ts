@@ -3,7 +3,7 @@ import { C, PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { PixelText } from "../gfx/font";
 import { iconTextureKey } from "../gfx/icons";
-import { damageTable, formatDamageCompact } from "../logic/results";
+import { damageTable, damageTotal, formatDamageCompact } from "../logic/results";
 import { CHARACTERS } from "../data/characters";
 import type { CharacterId } from "../data/types";
 import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
@@ -31,6 +31,13 @@ export class Results extends Phaser.Scene {
   private pad = new InputState();
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
   private padArmed = false;
+  /** Messbeleg fuer den Abnahme-Lauf: HUD-Gesamtschaden vs. Summe der Balken. */
+  private proofData: Record<string, unknown> = {};
+
+  /** Abnahme-Hook: von scripts/m10-results-attribution.mjs gelesen. */
+  proof(): Record<string, unknown> {
+    return this.proofData;
+  }
 
   constructor() { super("results"); }
 
@@ -112,6 +119,19 @@ export class Results extends Phaser.Scene {
     // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons.
     new PixelText(this, cx - 20, 58 + oy, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
     const entries = damageTable(this.result.damageByWeapon);
+    const totalDamage = damageTotal(this.result.damageByWeapon);
+    const barsSum = entries.reduce((sum, entry) => sum + entry.damage, 0);
+    const deltaPct = totalDamage > 0 ? Math.abs(barsSum - totalDamage) / totalDamage * 100 : 0;
+    this.proofData = {
+      totalDamage,
+      barsSum,
+      deltaPct: Math.round(deltaPct * 10000) / 10000,
+      rowCount: entries.length,
+      rows: entries.map((entry) => ({
+        id: entry.id, name: entry.name, damage: entry.damage, isEvolution: entry.isEvolution,
+      })),
+    };
+    this.registry.set("lf-results-proof", this.proofData);
     if (entries.length === 0) {
       new PixelText(this, cx - 20, 80 + oy, "KEINE TREFFER", C.fog).setDepth(2);
     }

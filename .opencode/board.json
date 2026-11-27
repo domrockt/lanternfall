@@ -2984,11 +2984,17 @@
       "id": 2078,
       "title": "m10-results-attribution: Beleg-Lauf 15 min autoPlay + JSON/Screenshots vorher",
       "description": "15-min-autoPlay-Run (timeScale 30, god) mit Debug-Hook: HUD-Gesamtschaden, Summe der Balken, Delta % nach shots/m10-results-attribution.json; Ist-Screenshots shots/m10-results-attribution-before.png bei 1920x1080 und 640x360. Abnahme: JSON vorhanden, deltaPct berechnet, Screenshots zeigen den Ist-Ergebnis-Screen, 0 JS-Fehler.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:13:53Z",
+          "by": "build",
+          "text": "todo → doing: Supervisor: Zwischenstand zuerst committen, dann Beleg-Lauf fertigstellen."
+        }
+      ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T02:57:04Z"
+      "updated": "2026-11-27T03:13:53Z"
     },
     {
       "id": 2079,
