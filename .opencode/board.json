@@ -7188,25 +7188,36 @@
       "id": 6198,
       "title": "m10-hero-portraits K1: Ist festhalten (Vorher-Belege + JSON)",
       "description": "Vorher-Belege EINMAL: shots/m10-hero-portraits-before-portrait-{mira,kael}.png (4x nearest, aus gen_chars.build()), Auswahl-Szene shots/m10-hero-portraits-before-select.png + shots/m10-hero-portraits-before.json (Canvas-Größe 48x48, genutzte Pixel-Fläche/BBox je Porträt). Kein Skript-Tuning-Loop. Abnahme: Belege existieren, JSON enthält BBox+Fläche.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T22:31:40Z",
           "by": "build",
           "text": "todo → doing: Vorher-Belege + JSON (Portraets + Auswahl-Szene) werden aufgenommen."
+        },
+        {
+          "at": "2026-11-27T22:32:44Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Belege in Commit 867cb3b: 4x-Portraets bestätigen Befund (Kael=Kopf über Kasten, Mira grob), select.png ohne JS-Fehler. Beleg: shots/m10-hero-portraits-before-*."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:31:40Z"
+      "updated": "2026-11-27T22:32:44Z"
     },
     {
       "id": 6199,
       "title": "m10-hero-portraits K2: Portraits neu zeichnen (Kael=Mönch, Mira=Jägerin)",
       "description": "Beide 48x48-Porträts in scripts/art/gen_chars.py neu: Kael eindeutig Mönch (Kutte, Gurt, Tonsure), Mira Jägerin/Bogenschützin. Silhouette zuerst, nur Palette src/palette.ts, Ausgabe-Pixelgröße exakt 48x48 (kein Mixel). Danach gen-chars.ts regenerieren. Abnahme: Silhouetten klar lesbar, tsc rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T22:32:44Z",
+          "by": "build",
+          "text": "todo → doing: Beide Porträts in gen_chars.py neu zeichnen (Silhouette zuerst)."
+        }
+      ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:31:08Z"
+      "updated": "2026-11-27T22:32:44Z"
     },
     {
       "id": 6200,
