@@ -1,0 +1,31 @@
+# Lane m10-fx-add-cap — DONE (2026-11-27)
+
+Bedarfsmeldung m10-android-perf A4 umgesetzt: ADD-Partikel (Glows) klein halten
+und über bestehende LOD-Caps zählen. Nur src/systems/FxSystem.ts geändert
+(lod.ts/gen-fx.ts nur importiert), kein Gameplay-/Balance-Eingriff.
+
+Karten (je ein Commit, Präfix M10-m10-fx-add-cap:):
+- K1 #4818 f976136 Messbasis scripts/m10-fx-add-cap.mjs + shots/m10-fx-add-cap-baseline.json
+- K2 #4819 696c712 Alpha-Boden 0,04 + Flächen-Deckel 9216 dev-px (dpr>1,5) + glowCap/glowUsed + setEnemyLoad
+- K3 #4820 6e5d206 tests/fx-add-cap.test.ts (23 Tests)
+- K4 #4821 Nachher-Messung + docs/lanes/m10-fx-add-cap.md + Belege
+
+Messwerte (500-Gegner-Frame, Minute 25, 780x360@3, Seed 1, autoPlay/god):
+- fx-Pool ADD-Overdraw: 216.668 → 22.941 Device-Px (−89,4 %; Ziel −30 %)
+- fx+Partikel (A4-ADD-Klasse): 217.688 → 23.367 (−89,3 %)
+- Summe aller sichtbaren ADD: 435.785 → 246.146 (−43,5 %; „sonstige“ in fremden
+  Dateien unverändert ±2 %)
+- ADD-Anzahl ≤ LOD-Cap: glowUsed 34 ≤ cap 40 (im after-JSON); max. fx-ADD-Sprite
+  492 → 95 dev-px (≤ 96er-Deckel)
+- npm run build grün, npm test 544/544 (52 Dateien), 0 JS-Fehler in Messläufen
+- Sichtbeleg shots/m10-fx-add-cap-m25-780.png (eingefrorener 500er-Chaos-Frame)
+
+Wichtige Befunde:
+- 520 gepoolte elite_aura-Sprites sind unsichtbar (visible=false) — das Android-
+  Audit („559 ADD“) hatte sie mitgezählt; echte ADD-Bestand ~60 Sprites.
+- Dominante Kosten: ausgebrannte Glows (alpha 0,014 bei 492 px) und übergroße
+  Halos — Anzahl war nie das Problem.
+- Offen (Folgelane): „sonstige“ ADD-Klasse (~218k dev-px: Laternen-Lichtfläche
+  Run.ts, Lantern-Orbs CombatSystem.ts, Laternen-Glow GroundRenderer.ts,
+  ProjectilePool) liegt außerhalb des Claims; Helfer glowAreaCapForDpr/
+  clampGlowScreenArea sind exportiert und wiederverwendbar.
