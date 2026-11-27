@@ -6,20 +6,64 @@
     "enemies": 528,
     "enemyShots": 63,
     "chestsOnField": 1,
-    "playerScreen": { "x": 320, "y": 180 },
-    "chestScreen": { "x": 272, "y": 212 },
-    "playerContrast": { "min": 40, "max": 255, "mean": 142, "std": 48 },
+    "playerScreen": {
+      "x": 320,
+      "y": 180
+    },
+    "chestScreen": {
+      "x": 272,
+      "y": 212
+    },
+    "playerContrast": {
+      "min": 40,
+      "max": 255,
+      "mean": 142,
+      "std": 48
+    },
     "playerCenterWhitePct": 6.6,
-    "chestContrast": { "min": 20, "max": 255, "mean": 119, "std": 54 },
-    "hudContrast": { "min": 2, "max": 248, "mean": 49, "std": 52 },
+    "chestContrast": {
+      "min": 20,
+      "max": 255,
+      "mean": 119,
+      "std": 54
+    },
+    "hudContrast": {
+      "min": 2,
+      "max": 248,
+      "mean": 49,
+      "std": 52
+    },
     "whiteShotClusters": 46,
     "whiteShotTop": [
-      { "core": 207, "ring": 65, "contrast": 142 },
-      { "core": 220, "ring": 79, "contrast": 141 },
-      { "core": 223, "ring": 88, "contrast": 135 },
-      { "core": 208, "ring": 73, "contrast": 135 },
-      { "core": 254, "ring": 123, "contrast": 131 }
-    ]
+      {
+        "core": 207,
+        "ring": 65,
+        "contrast": 142
+      },
+      {
+        "core": 220,
+        "ring": 79,
+        "contrast": 141
+      },
+      {
+        "core": 223,
+        "ring": 88,
+        "contrast": 135
+      },
+      {
+        "core": 208,
+        "ring": 73,
+        "contrast": 135
+      },
+      {
+        "core": 254,
+        "ring": 123,
+        "contrast": 131
+      }
+    ],
+    "whitePctWindow": "56x56 um playerScreen, Schwelle RGB>=250",
+    "enemiesNote": "aus Screenshot-Lauf shots-meta; Messlauf m10-chaos-qa.json summary.enemiesMax=552",
+    "shotContrastNote": "Top-5-Kerne im 240x180-Fenster, kein echter Min je Projektil"
   },
   {
     "profile": "640",
@@ -28,20 +72,64 @@
     "enemies": 575,
     "enemyShots": 108,
     "chestsOnField": 1,
-    "playerScreen": { "x": 320, "y": 180 },
-    "chestScreen": { "x": 272, "y": 212 },
-    "playerContrast": { "min": 40, "max": 255, "mean": 128, "std": 40 },
+    "playerScreen": {
+      "x": 320,
+      "y": 180
+    },
+    "chestScreen": {
+      "x": 272,
+      "y": 212
+    },
+    "playerContrast": {
+      "min": 40,
+      "max": 255,
+      "mean": 128,
+      "std": 40
+    },
     "playerCenterWhitePct": 2.6,
-    "chestContrast": { "min": 20, "max": 254, "mean": 108, "std": 43 },
-    "hudContrast": { "min": 2, "max": 248, "mean": 50, "std": 53 },
+    "chestContrast": {
+      "min": 20,
+      "max": 254,
+      "mean": 108,
+      "std": 43
+    },
+    "hudContrast": {
+      "min": 2,
+      "max": 248,
+      "mean": 50,
+      "std": 53
+    },
     "whiteShotClusters": 27,
     "whiteShotTop": [
-      { "core": 252, "ring": 73, "contrast": 179 },
-      { "core": 253, "ring": 81, "contrast": 172 },
-      { "core": 253, "ring": 93, "contrast": 160 },
-      { "core": 238, "ring": 88, "contrast": 150 },
-      { "core": 238, "ring": 88, "contrast": 150 }
-    ]
+      {
+        "core": 252,
+        "ring": 73,
+        "contrast": 179
+      },
+      {
+        "core": 253,
+        "ring": 81,
+        "contrast": 172
+      },
+      {
+        "core": 253,
+        "ring": 93,
+        "contrast": 160
+      },
+      {
+        "core": 238,
+        "ring": 88,
+        "contrast": 150
+      },
+      {
+        "core": 238,
+        "ring": 88,
+        "contrast": 150
+      }
+    ],
+    "whitePctWindow": "56x56 um playerScreen, Schwelle RGB>=250",
+    "enemiesNote": "aus Screenshot-Lauf shots-meta; Messlauf m10-chaos-qa.json summary.enemiesMax=552",
+    "shotContrastNote": "Top-5-Kerne im 240x180-Fenster, kein echter Min je Projektil"
   },
   {
     "profile": "640",
@@ -50,20 +138,64 @@
     "enemies": 583,
     "enemyShots": 116,
     "chestsOnField": 2,
-    "playerScreen": { "x": 320, "y": 180 },
-    "chestScreen": { "x": 272, "y": 212 },
-    "playerContrast": { "min": 40, "max": 255, "mean": 130, "std": 52 },
+    "playerScreen": {
+      "x": 320,
+      "y": 180
+    },
+    "chestScreen": {
+      "x": 272,
+      "y": 212
+    },
+    "playerContrast": {
+      "min": 40,
+      "max": 255,
+      "mean": 130,
+      "std": 52
+    },
     "playerCenterWhitePct": 3.7,
-    "chestContrast": { "min": 23, "max": 253, "mean": 114, "std": 45 },
-    "hudContrast": { "min": 6, "max": 248, "mean": 47, "std": 49 },
+    "chestContrast": {
+      "min": 23,
+      "max": 253,
+      "mean": 114,
+      "std": 45
+    },
+    "hudContrast": {
+      "min": 6,
+      "max": 248,
+      "mean": 47,
+      "std": 49
+    },
     "whiteShotClusters": 37,
     "whiteShotTop": [
-      { "core": 253, "ring": 72, "contrast": 181 },
-      { "core": 250, "ring": 75, "contrast": 175 },
-      { "core": 238, "ring": 88, "contrast": 150 },
-      { "core": 220, "ring": 74, "contrast": 146 },
-      { "core": 230, "ring": 91, "contrast": 139 }
-    ]
+      {
+        "core": 253,
+        "ring": 72,
+        "contrast": 181
+      },
+      {
+        "core": 250,
+        "ring": 75,
+        "contrast": 175
+      },
+      {
+        "core": 238,
+        "ring": 88,
+        "contrast": 150
+      },
+      {
+        "core": 220,
+        "ring": 74,
+        "contrast": 146
+      },
+      {
+        "core": 230,
+        "ring": 91,
+        "contrast": 139
+      }
+    ],
+    "whitePctWindow": "56x56 um playerScreen, Schwelle RGB>=250",
+    "enemiesNote": "aus Screenshot-Lauf shots-meta; Messlauf m10-chaos-qa.json summary.enemiesMax=552",
+    "shotContrastNote": "Top-5-Kerne im 240x180-Fenster, kein echter Min je Projektil"
   },
   {
     "profile": "780",
@@ -72,20 +204,64 @@
     "enemies": 574,
     "enemyShots": 56,
     "chestsOnField": 1,
-    "playerScreen": { "x": 242, "y": 180 },
-    "chestScreen": { "x": 244, "y": 239 },
-    "playerContrast": { "min": 36, "max": 241, "mean": 124, "std": 41 },
-    "playerCenterWhitePct": 1.1,
-    "chestContrast": { "min": 18, "max": 229, "mean": 116, "std": 39 },
-    "hudContrast": { "min": 6, "max": 248, "mean": 40, "std": 42 },
+    "playerScreen": {
+      "x": 242,
+      "y": 180
+    },
+    "chestScreen": {
+      "x": 244,
+      "y": 239
+    },
+    "playerContrast": {
+      "min": 36,
+      "max": 241,
+      "mean": 124,
+      "std": 41
+    },
+    "playerCenterWhitePct": 0.0,
+    "chestContrast": {
+      "min": 18,
+      "max": 229,
+      "mean": 116,
+      "std": 39
+    },
+    "hudContrast": {
+      "min": 6,
+      "max": 248,
+      "mean": 40,
+      "std": 42
+    },
     "whiteShotClusters": 7,
     "whiteShotTop": [
-      { "core": 240, "ring": 137, "contrast": 103 },
-      { "core": 239, "ring": 140, "contrast": 99 },
-      { "core": 239, "ring": 143, "contrast": 96 },
-      { "core": 204, "ring": 124, "contrast": 80 },
-      { "core": 206, "ring": 126, "contrast": 80 }
-    ]
+      {
+        "core": 240,
+        "ring": 137,
+        "contrast": 103
+      },
+      {
+        "core": 239,
+        "ring": 140,
+        "contrast": 99
+      },
+      {
+        "core": 239,
+        "ring": 143,
+        "contrast": 96
+      },
+      {
+        "core": 204,
+        "ring": 124,
+        "contrast": 80
+      },
+      {
+        "core": 206,
+        "ring": 126,
+        "contrast": 80
+      }
+    ],
+    "whitePctWindow": "56x56 um playerScreen, Schwelle RGB>=250",
+    "enemiesNote": "aus Screenshot-Lauf shots-meta; Messlauf m10-chaos-qa.json summary.enemiesMax=552",
+    "shotContrastNote": "Top-5-Kerne im 240x180-Fenster, kein echter Min je Projektil"
   },
   {
     "profile": "780",
@@ -94,20 +270,64 @@
     "enemies": 580,
     "enemyShots": 72,
     "chestsOnField": 2,
-    "playerScreen": { "x": 242, "y": 180 },
-    "chestScreen": { "x": 244, "y": 239 },
-    "playerContrast": { "min": 37, "max": 241, "mean": 116, "std": 35 },
-    "playerCenterWhitePct": 1.0,
-    "chestContrast": { "min": 21, "max": 236, "mean": 110, "std": 47 },
-    "hudContrast": { "min": 6, "max": 248, "mean": 43, "std": 44 },
+    "playerScreen": {
+      "x": 242,
+      "y": 180
+    },
+    "chestScreen": {
+      "x": 244,
+      "y": 239
+    },
+    "playerContrast": {
+      "min": 37,
+      "max": 241,
+      "mean": 116,
+      "std": 35
+    },
+    "playerCenterWhitePct": 0.0,
+    "chestContrast": {
+      "min": 21,
+      "max": 236,
+      "mean": 110,
+      "std": 47
+    },
+    "hudContrast": {
+      "min": 6,
+      "max": 248,
+      "mean": 43,
+      "std": 44
+    },
     "whiteShotClusters": 5,
     "whiteShotTop": [
-      { "core": 246, "ring": 115, "contrast": 131 },
-      { "core": 218, "ring": 120, "contrast": 98 },
-      { "core": 210, "ring": 123, "contrast": 87 },
-      { "core": 213, "ring": 131, "contrast": 82 },
-      { "core": 204, "ring": 159, "contrast": 45 }
-    ]
+      {
+        "core": 246,
+        "ring": 115,
+        "contrast": 131
+      },
+      {
+        "core": 218,
+        "ring": 120,
+        "contrast": 98
+      },
+      {
+        "core": 210,
+        "ring": 123,
+        "contrast": 87
+      },
+      {
+        "core": 213,
+        "ring": 131,
+        "contrast": 82
+      },
+      {
+        "core": 204,
+        "ring": 159,
+        "contrast": 45
+      }
+    ],
+    "whitePctWindow": "56x56 um playerScreen, Schwelle RGB>=250",
+    "enemiesNote": "aus Screenshot-Lauf shots-meta; Messlauf m10-chaos-qa.json summary.enemiesMax=552",
+    "shotContrastNote": "Top-5-Kerne im 240x180-Fenster, kein echter Min je Projektil"
   },
   {
     "profile": "780",
@@ -116,19 +336,63 @@
     "enemies": 575,
     "enemyShots": 79,
     "chestsOnField": 2,
-    "playerScreen": { "x": 242, "y": 180 },
-    "chestScreen": { "x": 244, "y": 239 },
-    "playerContrast": { "min": 36, "max": 241, "mean": 116, "std": 39 },
-    "playerCenterWhitePct": 2.2,
-    "chestContrast": { "min": 21, "max": 227, "mean": 115, "std": 37 },
-    "hudContrast": { "min": 2, "max": 248, "mean": 37, "std": 39 },
+    "playerScreen": {
+      "x": 242,
+      "y": 180
+    },
+    "chestScreen": {
+      "x": 244,
+      "y": 239
+    },
+    "playerContrast": {
+      "min": 36,
+      "max": 241,
+      "mean": 116,
+      "std": 39
+    },
+    "playerCenterWhitePct": 0.0,
+    "chestContrast": {
+      "min": 21,
+      "max": 227,
+      "mean": 115,
+      "std": 37
+    },
+    "hudContrast": {
+      "min": 2,
+      "max": 248,
+      "mean": 37,
+      "std": 39
+    },
     "whiteShotClusters": 8,
     "whiteShotTop": [
-      { "core": 240, "ring": 113, "contrast": 127 },
-      { "core": 238, "ring": 131, "contrast": 107 },
-      { "core": 216, "ring": 111, "contrast": 105 },
-      { "core": 215, "ring": 110, "contrast": 105 },
-      { "core": 195, "ring": 98, "contrast": 97 }
-    ]
+      {
+        "core": 240,
+        "ring": 113,
+        "contrast": 127
+      },
+      {
+        "core": 238,
+        "ring": 131,
+        "contrast": 107
+      },
+      {
+        "core": 216,
+        "ring": 111,
+        "contrast": 105
+      },
+      {
+        "core": 215,
+        "ring": 110,
+        "contrast": 105
+      },
+      {
+        "core": 195,
+        "ring": 98,
+        "contrast": 97
+      }
+    ],
+    "whitePctWindow": "56x56 um playerScreen, Schwelle RGB>=250",
+    "enemiesNote": "aus Screenshot-Lauf shots-meta; Messlauf m10-chaos-qa.json summary.enemiesMax=552",
+    "shotContrastNote": "Top-5-Kerne im 240x180-Fenster, kein echter Min je Projektil"
   }
 ]
