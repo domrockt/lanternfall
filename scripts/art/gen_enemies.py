@@ -332,9 +332,13 @@ def skeleton(f: int) -> Grid:
     g.rect(cx - 5, 11 - bob, 2, 4, b)  # Arme
     g.rect(cx + 4, 10 - bob, 2, 5, b)
     g.put(cx + 5, 14 - bob, 11)
-    lstep, rstep = [(0, 1), (1, 0), (0, 2), (1, 2)][f % 4]
-    g.rect(cx - 3, 16 - lstep, 2, 3, b)        # Beine
-    g.rect(cx + 2, 16 - rstep, 2, 3, b)
+    # Beine 2-px-Schritt: hueftnah und Fusspunkt wandern gegenlaeufig,
+    # damit die 4 Laufphasen nicht nur als 1-px-Wippen lesen.
+    lshift, rshift = [(0, 1), (1, 0), (2, 1), (0, 2)][f % 4]
+    g.rect(cx - 3 + lshift, 15, 2, 3, b)       # Beine
+    g.rect(cx + 2 - rshift, 16, 2, 3, b)
+    g.put(cx - 4 + lshift, 17, 10)             # Fusspunkt
+    g.put(cx + 3 - rshift, 18, 10)
     g.rect(cx - 4, 15, 2, 3, 10)       # Lendenknochen statt Rot
     g.rect(cx + 3, 15, 2, 3, 10)
     g.put(cx - 2, 12 - bob, 11)
@@ -396,9 +400,11 @@ def ghoul(f: int) -> Grid:
     g.put(6, cy + 7, 11)
     g.rect(13, cy + 1, 2, 4, b)
     g.put(14, cy + 5, 11)
-    lstep, rstep = [(0, 1), (1, 0), (0, 2), (1, 2)][f % 4]
-    g.rect(6, 16 - lstep, 2, 3, b)             # Beine
-    g.rect(10, 16 - rstep, 2, 3, b)
+    # Beine 2-px-Schritt (gegenlaeufige Huefte/Fusspunkte), sichtbarer als Bob.
+    lshift, rshift = [(0, 2), (2, 0), (1, 3), (3, 1)][f % 4]
+    g.rect(6 + lshift, 15, 2, 3, b)            # Beine
+    g.rect(10 - (rshift % 2), 16 - (rshift // 2), 2, 3, b)
+    g.put(6 + lshift, 17, 10)
     g.put(7, cy + 2, 28)
     return finish(g, [(13, 5 - bob, 11), (14, 5 - bob, 11)])
 
@@ -630,15 +636,17 @@ def spider(f: int) -> Grid:
     cy = 14 - bob
     # Acht Beine zuerst (hinter dem Körper), 2-px-Segmente mit Knick.
     lift = [0, 1, 2, 3][f % 4]
+    # Laengere, gespreizte Beine mit 2-px-Knien: die acht Beine bleiben
+    # auch in der 24-px-Silhouette zaehlbar (kein Zwei-Lappen-Blob).
     legs = [
-        (7, cy - 1, 4, cy - 4 + lift, 1, cy + 1),
-        (7, cy, 3, cy - 1, 1, cy + 3),
-        (7, cy + 1, 4, cy + 2, 2, cy + 5),
-        (8, cy + 2, 5, cy + 4, 4, cy + 6),
-        (18, cy - 1, 20, cy - 4 + (3 - lift), 22, cy + 1),
-        (18, cy, 21, cy - 1, 22, cy + 3),
-        (17, cy + 1, 20, cy + 2, 21, cy + 5),
-        (16, cy + 2, 19, cy + 4, 20, cy + 6),
+        (7, cy - 1, 3, cy - 6 + lift, 1, cy - 1),
+        (7, cy, 2, cy - 3, 0, cy + 2),
+        (7, cy + 1, 3, cy + 2, 1, cy + 6),
+        (8, cy + 2, 4, cy + 5, 4, cy + 8),
+        (18, cy - 1, 21, cy - 6 + (3 - lift), 23, cy - 1),
+        (18, cy, 22, cy - 3, 23, cy + 2),
+        (17, cy + 1, 21, cy + 2, 22, cy + 6),
+        (16, cy + 2, 20, cy + 5, 20, cy + 8),
     ]
     for bx, by, ex, ey, fx, fy in legs:
         g.line(bx, by, ex, ey, 8, 2)
@@ -729,10 +737,10 @@ def bomber(f: int) -> Grid:
     g.rect(10, cy + 5, 2, 1, 20)
     g.rect(13, cy + 5, 2, 1, 20)
     g.rect(11, cy + 8, 3, 1, 2)
-    # Fusssoh am Stiel.
-    off = [0, 1, 2, 2][f % 4]
-    g.rect(9, cy + 8 - off, 2, 2, 8)
-    g.rect(13, cy + 8 - (2 - off), 2, 2, 8)
+    # Fusssohlen: 4 klar verschiedene Schrittphasen (0..3 px, gegenlaeufig).
+    off = [0, 1, 2, 3][f % 4]
+    g.rect(9 + (off % 2), cy + 8 - off, 2, 2, 8)
+    g.rect(13 - (off % 2), cy + 8 - (3 - off), 2, 2, 8)
     return finish(g, [(10, cy + 5, 20), (11, cy + 5, 20),
                       (13, cy + 5, 20), (14, cy + 5, 20), (16, cy - 11 - spark, 13)])
 
@@ -1108,6 +1116,13 @@ def reaper_bat(f: int) -> Grid:
     g.ellipse(16, cy - 5, 3, 3, b)
     g.rect(12, cy - 8, 2, 3, b)
     g.rect(19, cy - 8, 2, 3, b)
+    # Lichtkante oben-links (8/11) gegen schwarzes Moor, Schatten unten-rechts (3).
+    g.vline(13, cy - 7, cy + 4, 8)
+    g.hline(13, 17, cy - 8, 8)
+    g.put(14, cy - 8, 11)
+    g.put(13, cy - 6, 11)
+    g.vline(19, cy - 1, cy + 6, d)
+    g.hline(13, 19, cy + 7, d)
     g.rect(14, cy - 6, 2, 2, 2)
     g.rect(18, cy - 6, 2, 2, 2)
     g.rect(15, cy - 3, 1, 1, 11)
