@@ -1,7 +1,7 @@
 {
   "schema": "m10-chest-panel-ui/v1",
   "tag": "after",
-  "generatedAt": "2026-11-27T23:29:57.169Z",
+  "generatedAt": "2026-11-27T23:35:25.951Z",
   "seed": 101,
   "gapMinPx": 4,
   "note": "Nach Fix: Untertitel aus Titel-Baseline + GLYPH_H*Scale + Gap >= 4 px abgeleitet.",
