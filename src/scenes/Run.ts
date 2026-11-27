@@ -44,7 +44,7 @@ import { EVOLUTIONS } from "../data/evolutions";
 import type { RunResult } from "./Results";
 import { lodFor, fxAlphaFor, type LodState } from "../logic/lod";
 import { shouldAggregateDamage } from "../logic/damage-numbers";
-import { shakeFor, hitStopFor } from "../logic/feedback";
+import { shakeFor, hitStopFor, mergeHitStop, clampKnockbackSpeed, MAX_HITSTOP_SECONDS } from "../logic/feedback";
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
 import { getAudio } from "../audio/AudioSystem";
@@ -371,6 +371,13 @@ export class Run extends Phaser.Scene {
     }
     if (this.paused) return;
 
+    // Feedback-Debounce laeuft in Echtzeit (nicht in Sim-Zeit): bei timeScale 30
+    // wuerde ein 1,2-s-Boss-Cooldown sonst alle 40 ms Wandzeit erneut feuern und
+    // Shake/Hit-Stop dauerhaft neu starten (Rumble/Dauerfreeze).
+    if (this.bossFeedbackCooldown > 0) this.bossFeedbackCooldown = Math.max(0, this.bossFeedbackCooldown - realDt);
+    // Harte Obergrenze: kein aufaddierter/verlaengerter Stop ueber das Budget hinaus.
+    this.hitStop = Math.min(this.hitStop, MAX_HITSTOP_SECONDS);
+
     // Evolution-Zeitlupe (0,35–0,5 s) läuft in Echtzeit aus.
     if (this.slowmoRemaining > 0) {
       this.slowmoRemaining = Math.max(0, this.slowmoRemaining - realDt);
@@ -427,7 +434,6 @@ export class Run extends Phaser.Scene {
     if (!this.dawn) this.trySpawnScheduledBosses();
 
     if (this.invuln > 0) this.invuln -= dt;
-    if (this.bossFeedbackCooldown > 0) this.bossFeedbackCooldown = Math.max(0, this.bossFeedbackCooldown - dt);
     if (this.agg.regen > 0 && this.hp < this.maxHp) {
       this.hp = Math.min(this.maxHp, this.hp + this.agg.regen * dt);
     }
@@ -512,7 +518,7 @@ export class Run extends Phaser.Scene {
   private bossHitFeedback(): void {
     if (this.bossFeedbackCooldown > 0) return;
     this.bossFeedbackCooldown = 1.2;
-    this.hitStop = Math.max(this.hitStop, hitStopFor("bossHit"));
+    this.hitStop = mergeHitStop(this.hitStop, hitStopFor("bossHit"));
     const shake = shakeFor("bossHit", getSettings().shake);
     if (shake.durationMs > 0) this.cameras.main.shake(shake.durationMs, shake.intensity);
   }
@@ -841,6 +847,11 @@ export class Run extends Phaser.Scene {
       const decay = Math.max(0, 1 - 7 * dt);
       e.vx *= decay;
       e.vy *= decay;
+      // Mehrere Treffer im selben Substep duerfen sich nicht zu einem Sprung
+      // addieren: Rueckstoss bleibt sichtbar, aber unter der Hoechstgeschwindigkeit.
+      const kb = clampKnockbackSpeed(e.vx, e.vy);
+      e.vx = kb.vx;
+      e.vy = kb.vy;
       const terrain = this.terrainFactorAt(e.x, e.y);
       const speed = e.speed * statusMul * ai.speedMul * terrain;
       e.x += (mx * speed + e.vx + sx * speed * 1.2) * dt;
@@ -915,7 +926,7 @@ export class Run extends Phaser.Scene {
         this.chestsDropped += 1;
         const bossShake = shakeFor("bossDeath", getSettings().shake);
         if (bossShake.durationMs > 0) this.cameras.main.shake(bossShake.durationMs, bossShake.intensity);
-        this.hitStop = Math.max(this.hitStop, hitStopFor("bossDeath"));
+        this.hitStop = mergeHitStop(this.hitStop, hitStopFor("bossDeath"));
         this.playBossDeathFx(e.x, e.y, e.bossIndex);
         getAudio().play("bossDeath");
         if (e.bossIndex !== 5) getAudio().setMusic("run");
