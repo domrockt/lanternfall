@@ -60,7 +60,28 @@ Belege: `shots/m10-gem-drawcap-after.json` (Felder `peakGems`, `peakTweens`, `ms
 
 ### b) menu-touch-targets — Probe 36/36
 
-Offen.
+Probe auf PIN **erneut ausgeführt** (Lane-Skript `scripts/verify-menu-touch.mjs`,
+Merge `f359f79` von 16:37:00Z): synthetische Touch-Taps über Titel → Options →
+CharSelect → Run/Pause → Options → Results → Titel auf beiden Handy-Profilen
+(640x360@3, 780x360@3), `hasTouch`/`isMobile`.
+
+| Kennzahl | Soll | Ist (PIN) | Urteil |
+|---|---|---|---|
+| Checks gesamt | 36/36 | **36/36 PASS**, Exit-Code 0 | **PASS** |
+| Optionen-Taps treffen Werte (musik/sfx/shake/schadenszahlen/stumm/skala) | je Zeile korrekt | OK in beiden Profilen | PASS |
+| Pfeil-Randtreffer (16 px neben Glyph) / Zeilenlabel-Tap | senken/erhöhen | OK (0,7→0,6 / 0,6→0,7) | PASS |
+| START/CharSelect/Results-Randtreffer, Pause-Options | navigieren | OK | PASS |
+| Options nach Skalenwechsel offen (je Profil) | offen | OK | PASS |
+| JS-Fehler | 0 | 0 | PASS |
+
+Laufdetails: gestartet 18:21Z, ausgeführt nach Freigabe des Perf-Locks
+(Vorher: 30-min-Echtzeitlauf einer anderen Lane hielt `flock`), beendet 18:5xZ,
+`probe rc=0`.
+
+Belege: `shots/qa-reaccb-menu-touch-after.json` (36/36; Struktur wie
+`shots/m10-menu-touch-after.json` vom Merge).
+
+**Urteil K2b: PASS.**
 
 ### c) feedback-budget — Peaks verifizieren
 
