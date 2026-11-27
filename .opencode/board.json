@@ -2754,16 +2754,21 @@
       "id": 1702,
       "title": "m10-perf-500 #K5 Nachher-Beleg + lane-done",
       "description": "3x perf burst, FPS min >=55, Hot-Path ms/Frame <= Baseline; shots/m10-perf-500-after.json, build+test gruen, Doku + .lane-done. Abnahme: alles getrackt, Commit #K5.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T01:43:11Z",
           "by": "build",
           "text": "→ review: Commit 9bf1a34 (#K5): 3x Burst 60,1 FPS, minEnemies je 500, Hot-Path 0,28 -> 0,23 ms/Frame (-18%), build+210 Tests gruen. .lane-done wegen Claim merge-m9-art-polish noch untracked (Request in requests.md)."
+        },
+        {
+          "at": "2026-11-27T01:52:35Z",
+          "by": "build",
+          "text": "review → done: Abnahme PASS 2026-11-27: 3x perf burst 60,1 FPS (minEnemies 500 je Lauf), Hot-Path 0,28 -> 0,23 ms/Frame (-18%), Aequivalenz-Test tests/spatial-hash.test.ts gruen, build rc=0, 210/210 Tests. .lane-done in 4b65db0 getrackt (Claim merge-m10-levelup-offers war inzwischen frei). Belege shots/m10-perf-500-after.json + docs/lanes/m10-perf-500.md."
         }
       ],
       "created": "2026-11-27T00:08:18Z",
-      "updated": "2026-11-27T01:43:11Z"
+      "updated": "2026-11-27T01:52:35Z"
     }
   ]
 }
