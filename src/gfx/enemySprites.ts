@@ -1,7 +1,7 @@
 import Phaser from "phaser";
-import { PAL } from "../palette";
+import { C, PAL } from "../palette";
 import { ENEMIES, ENEMY_LIST } from "../data/enemies";
-import type { Archetype, EnemyId } from "../data/types";
+import type { Archetype, EnemyDef, EnemyId } from "../data/types";
 import { BOSSES } from "../data/bosses";
 import { GEN_BOSSES } from "./gen-bosses";
 import { GEN_ENEMIES } from "./gen-enemies";
@@ -126,6 +126,83 @@ export function enemySpriteFrames(index: number): Grid[] {
   const gen = GEN_ENEMIES[def.spriteKey];
   return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), def.color, def.id));
 }
+
+/* ── Elite-Rim-Light (A10-Restpunkt "Chaos-Rim-Light fuer Elites") ──
+ *
+ * Elites tragen eine 1-px-Kante in der Elite-Akzentfarbe (Amber, PAL 20),
+ * die in den Sprite selbst gebrannt ist — nicht wie die Aura dahinter
+ * skaliert wurde. Dadurch ist die Kante exakt 1 px breit, folgt der
+ * Silhouette (auch bei Ueberlappungen im 500er-Schwarm) und bleibt
+ * richtungs- und frameunabhaengig: Vollumrandung → keine Laufrichtungs-
+ * oder Frame-Duplikate noetig. Binaeres Alpha: nur gefuellte Pixel
+ * bekommen die Akzentfarbe, es wird nichts expandiert oder gedithert.
+ */
+
+/** Palettenindex der Elite-Akzentfarbe (identisch zur Elite-Aura, C.amber). */
+export const ELITE_RIM_COLOR = C.amber;
+
+/** 1-px-Kante: alle Randpixel der Maske werden zur Akzentfarbe. */
+export function eliteRimGrid(src: Grid): Grid {
+  const g = src.map((row) => row.slice());
+  const h = g.length;
+  const w = g[0]?.length ?? 0;
+  const filled = (x: number, y: number): boolean =>
+    x >= 0 && x < w && y >= 0 && y < h && g[y][x] !== null;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (g[y][x] === null) continue;
+      const boundary = !filled(x - 1, y) || !filled(x + 1, y) || !filled(x, y - 1) || !filled(x, y + 1);
+      if (boundary) g[y][x] = ELITE_RIM_COLOR;
+    }
+  }
+  return g;
+}
+
+/**
+ * Der eine Elite-Rim-Frame je Typ: Rim-Variante der Ruhepose (Frame 0).
+ * Als einziges zusaetzliches Frame im Bestand vorgehalten; die Vollumrandung
+ * macht ihn fuer alle 4 Laufrichtungen und Frames gueltig (keine Duplikate).
+ */
+export function eliteRimFrame(index: number): Grid {
+  return eliteRimGrid(enemySpriteFrames(index)[0]);
+}
+
+/** Textur-Key des Elite-Rim-Frames ("<spriteKey>_rim"). */
+export function eliteRimFrameKey(index: number): string {
+  return `${ENEMY_LIST[index].spriteKey}_rim`;
+}
+
+/** Lauf-ID des Elite-Rim-Framesets ("<id>_rim") fuer framesForDef/SPRITE_FRAMES. */
+export type EliteFrameId = `${EnemyId}_rim`;
+
+const ELITE_RIM_SUFFIX = "_rim";
+
+export function eliteFrameId(id: EnemyId): EliteFrameId {
+  return `${id}${ELITE_RIM_SUFFIX}`;
+}
+
+/**
+ * Elite-Lauf-Def: gleiche Werte, aber die ID zeigt auf das Rim-Frameset.
+ * Run.ts animiert ueber framesForDef(e.def) → SPRITE_FRAMES[def.id]; mit der
+ * Rim-ID zeigt der zyklische Frame-Abruf fuer Elites stabil auf den einen
+ * Rim-Frame, ohne dass Run.ts ihn pro Frame ueberschreibt.
+ */
+export function eliteRimDef(def: EnemyDef): EnemyDef {
+  return { ...def, id: eliteFrameId(def.id) as unknown as EnemyId };
+}
+
+/** Basis-Def zu einer Rim-Def (fuer Nicht-Elite-Spawns, z. B. Splitter-Kinder). */
+export function baseEnemyDef(def: EnemyDef): EnemyDef | undefined {
+  const id = def.id as string;
+  if (!id.endsWith(ELITE_RIM_SUFFIX)) return undefined;
+  const baseId = id.slice(0, id.length - ELITE_RIM_SUFFIX.length) as EnemyId;
+  return ENEMIES[baseId] ?? undefined;
+}
+
+/** Rim-Frame-Keys je Elite-Lauf-ID ("<id>_rim" → ["enemy_<id>_rim"]). */
+export const ELITE_RIM_FRAMES: Record<EliteFrameId, string[]> = Object.fromEntries(
+  ENEMY_LIST.map((def, index) => [eliteFrameId(def.id), [eliteRimFrameKey(index)]]),
+) as Record<EliteFrameId, string[]>;
 
 /** Textur-Keys aller generierten Frames (Basis + _2.._4). */
 export function enemyFrameKeys(index: number): string[] {
@@ -615,7 +692,8 @@ function gridToCanvas(g: Grid): HTMLCanvasElement {
   return canvas;
 }
 
-/** Erzeugt für alle 30 Gegner zwei Textur-Frames (vorhandene bleiben erhalten). */
+/** Erzeugt für alle 30 Gegner die Textur-Frames + den einen Elite-Rim-Frame
+ *  (vorhandene bleiben erhalten). */
 export function createEnemyTextures(scene: Phaser.Scene): void {
   ENEMY_LIST.forEach((def, index) => {
     const frames = enemySpriteFrames(index);
@@ -624,6 +702,10 @@ export function createEnemyTextures(scene: Phaser.Scene): void {
       if (scene.textures.exists(keys[i])) return;
       scene.textures.addCanvas(keys[i], gridToCanvas(grid));
     });
+    const rimKey = eliteRimFrameKey(index);
+    if (!scene.textures.exists(rimKey)) {
+      scene.textures.addCanvas(rimKey, gridToCanvas(eliteRimFrame(index)));
+    }
   });
 }
 
@@ -648,10 +730,15 @@ export function createBossTextures(scene: Phaser.Scene): void {
   });
 }
 
-/** Alle Frame-Keys für den Pool (statisch, ohne Browser-Canvas). */
-export const ALL_ENEMY_FRAMES: Record<EnemyId, string[]> = Object.fromEntries(
-  ENEMY_LIST.map((def, index) => [def.id, enemyFrameKeys(index)]),
-) as Record<EnemyId, string[]>;
+/** Alle Frame-Keys fuer den Pool (statisch, ohne Browser-Canvas), inkl. der
+ *  Elite-Rim-Framesets ("<id>_rim") — der Spread in textures.ts macht sie
+ *  damit automatisch atlas- und framesForDef-faehig. */
+type EnemyFrameKey = EnemyId | EliteFrameId;
+
+export const ALL_ENEMY_FRAMES: Record<EnemyFrameKey, string[]> = Object.fromEntries([
+  ...ENEMY_LIST.map((def, index) => [def.id, enemyFrameKeys(index)]),
+  ...ENEMY_LIST.map((def, index) => [eliteFrameId(def.id), [eliteRimFrameKey(index)]]),
+]) as Record<EnemyFrameKey, string[]>;
 
 export const ALL_BOSS_FRAMES: Record<string, string[]> = Object.fromEntries(
   BOSSES.map((boss, index) => [boss.id, bossFrameKeys(index)]),
