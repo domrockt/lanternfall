@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5162,
+  "next": 5302,
   "cards": [
     {
       "id": 1,
@@ -5972,6 +5972,48 @@
         }
       ],
       "created": "2026-11-27T13:30:00Z"
+    },
+    {
+      "id": 5298,
+      "title": "m10-vfx-restore K1: Baseline M25-Frame 640+780@3 (Near-White, fxAlpha, Draw-Calls, FPS)",
+      "description": "Owner @vfx-artist. Skript scripts/m10-vfx-restore.mjs: M25-Szenario (skipTo 1400, 300 Gegner, 6 Waffen Lv8+Evos), Frame pausiert, Vorher(fxDamping an)/Vorher(aus). Misst Near-White A7 (Crop + Fullframe), fxAlpha-Setup, Renderer-String, Draw-Calls/Frame, FPS 45 s. Belege: shots/m10-vfx-restore-baseline-{640,780}.{json,png}. Abnahme: JSON+PNG committet, Werte in docs/lanes/m10-vfx-restore.md.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T20:31:38Z",
+          "by": "build",
+          "text": "todo → doing: Start: scripts/m10-vfx-restore.mjs (M25-Frame, Near-White A7, Draw-Calls, FPS, Renderer-String)"
+        }
+      ],
+      "created": "2026-11-27T20:30:10Z",
+      "updated": "2026-11-27T20:31:38Z"
+    },
+    {
+      "id": 5299,
+      "title": "m10-vfx-restore K2: Stufe 1 fxAlpha 0,5->0,65 (Run.ts-Teil), Near-White <= 4,16 %",
+      "description": "Owner @vfx-artist. Run.ts: FX_RESTORE-Alpha 0,65 im minimal-LOD (fx/particles.setAlphaScale + Licht 0,85*a + Debug-Report). Near-White-Gate: <=4,16 %, sonst Rueckgaengig. lod.ts ist fremd geclaimed (m10-prop-density-lod) -> Bedarf in /home/ai/games/.dispatch/requests.md eintragen. Test tests/vfx-restore.test.ts gegen gemessene Grenzen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T20:30:10Z",
+      "updated": "2026-11-27T20:30:10Z"
+    },
+    {
+      "id": 5300,
+      "title": "m10-vfx-restore K3: Stufe 2 Glows +0,1 + Nachmessen (Draw-Calls <= Baseline+10 %, FPS >= 50)",
+      "description": "Owner @vfx-artist. Glow-Alpha sitzt in gen-fx.ts/FxSystem.ts (Claim m10-boss-fx-contrast) -> Anfrage, soweit moeglich Run.ts-Teil. Messung mit flock: Draw-Calls/Frame <= Baseline+10 %, M25 >= 50 FPS bei 640 und 780@3 (iGPU-Renderer-String im JSON). Belege shots/m10-vfx-restore-stage*.{json,png}.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T20:30:10Z",
+      "updated": "2026-11-27T20:30:10Z"
+    },
+    {
+      "id": 5301,
+      "title": "m10-vfx-restore K4: art-director Vorher/Nachher + Lane-Abschluss (.lane-done)",
+      "description": "Owner @tech-lead. art-director urteilt ueber Vorher/Nachher-Frames (Ziel Effekte wieder praesent, >=4/5). Ergebnis + gewaehlte Stufe in docs/lanes/m10-vfx-restore.md, .lane-done committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T20:30:10Z",
+      "updated": "2026-11-27T20:30:10Z"
     }
   ]
 }
