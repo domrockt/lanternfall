@@ -97,7 +97,7 @@ try {
   samples = await page.evaluate(() => window.__lfSpawnSamples ?? []);
 } finally {
   await browser.close().catch(() => {});
-  await server.stop().catch(() => {});
+  server.stop();
 }
 
 // ── Auswertung ────────────────────────────────────────────────────────
