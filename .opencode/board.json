@@ -3759,10 +3759,21 @@
       "id": 2542,
       "title": "m10-boss-onscreen #K5 Belege + Doku",
       "description": "6 Spawn-Shots 1920x1080 + 6 bei 640x360, Nachher-JSON, art-director PASS (Boss-Inszenierung >=4/5), npm run build+test grün, .lane-done. Abnahme: 0 verdeckte Pixel/0 Banner-Overlap 6/6 x 2 Views, 12 Shots, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T08:58:48Z",
+          "by": "build",
+          "text": "todo → doing: Belege 12 Shots + after-JSON liegen vor, art-director laeuft"
+        },
+        {
+          "at": "2026-11-27T08:59:06Z",
+          "by": "build",
+          "text": "doing → doing: K5 Start: Nachher-JSON + 12 Shots vorhanden (untracked), art-director-Pruefung + build/test, dann Doku/.lane-done/Commit."
+        }
+      ],
       "created": "2026-11-27T07:49:28Z",
-      "updated": "2026-11-27T07:49:28Z"
+      "updated": "2026-11-27T08:59:06Z"
     }
   ]
 }

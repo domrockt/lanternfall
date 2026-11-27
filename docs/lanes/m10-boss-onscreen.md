@@ -35,17 +35,56 @@ Die Banner-Ueberlappung ist viewport-unabhaengig (gleiche logische Geometrie).
 
 ## #K2 Spawn-Komposition (nachher)
 
-_folgt mit K2/K5_
+`src/systems/BossSystem.ts`: Die Komposition richtet sich jetzt nach der echten
+Sprite-Frame-Hoehe (`BOSS_SPRITE_SIZE` 56/64/72/80/96/96), nicht nach einem
+pauschalen Mittelpunkt. `composedBossCenterY` spiegelt den nach oben zeigenden
+Ring-Winkel nach unten und schiebt die Vertikale nur so weit wie noetig auf
+`max(hpBar.bottom, banner.bottom) + 6 px`. X bleibt erhalten; HP, Tempo und
+Angriffswerte sind unveraendert.
+
+Quelle: `shots/m10-boss-onscreen-after.json` (Worst Case je Boss/View).
+
+| View | Boss | Sprite-Rect (x,y,w,h) | HP-Leiste (x,y,w,h) | Banner (x,y,w,h) | Boss.top - hpBar.bottom | HP-Overlap px (%) | Banner-Overlap px (%) |
+|---|---|---|---|---|---|---|---|
+| 1920x1080 | #0 moor_queen | 150,127,56,56 | 202,40,236,12 | 170,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #1 bone_lord | 146,123,64,64 | 202,40,236,12 | 170,68,300,48 | +71.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #2 pale_shepherd | 141,131,72,72 | 202,40,236,12 | 170,68,300,48 | +79.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #3 bell_golem | 137,127,80,80 | 202,40,236,12 | 170,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #4 coven | 416,132,96,96 | 202,40,236,12 | 170,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #5 hollow_king | 416,132,96,96 | 202,40,236,12 | 170,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #0 moor_queen | 70,127,56,56 | 122,40,236,12 | 90,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #1 bone_lord | 66,123,64,64 | 122,40,236,12 | 90,68,300,48 | +71.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #2 pale_shepherd | 61,131,72,72 | 122,40,236,12 | 90,68,300,48 | +79.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #3 bell_golem | 57,127,80,80 | 122,40,236,12 | 90,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #4 coven | 336,132,96,96 | 122,40,236,12 | 90,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #5 hollow_king | 336,132,96,96 | 122,40,236,12 | 90,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
+
+Nachher: 0 px HP-Ueberlappung und 0 px Banner-Ueberlappung bei 6/6 Bossen und
+beiden Views; kleinster Abstand Boss.top zu hpBar.bottom = 71 px.
 
 ## #K3 Banner/Intro
 
-_folgt mit K3_
+`src/scenes/Run.ts`: `showBossBannerWhenVisible` emittiert `bossSpawn` erst,
+wenn das Boss-Frame nach Kamera-Zoom/Shake vollstaendig unter HP-Leiste und
+Banner steht (`rect.y >= hpBar.bottom + 6 && !rectsOverlap(rect, banner)`).
+Ist der Boss nicht sichtbar, wird das Banner ausgelassen statt es darueber zu
+legen. Die Banner-Dauer in der UI-Szene (2400 ms) ist unveraendert, ebenso
+AutoPlay- und God-Pfad.
 
 ## #K4 Test
 
-`tests/boss-spawn-composition.test.ts`: fuer alle 6 Bosse bei 640x360 und 480x360
-gilt `boss.top >= hpBar.bottom + 6` und `banner ∩ boss = ∅` (deterministisch).
+`tests/boss-spawn-composition.test.ts` (13 Tests): fuer alle 6 Bosse bei
+640x360 und 480x360 gilt ueber 72 deterministische Ring-Winkel
+`boss.top >= hpBar.bottom + 6` und `banner ∩ boss = ∅`.
+`npx vitest run tests/boss-spawn-composition.test.ts` = 13/13 PASS.
 
 ## #K5 Belege
 
-_folgt mit K5: Nachher-JSON, 12 Spawn-Screenshots, art-director-Urteil._
+- Nachher-JSON: `shots/m10-boss-onscreen-after.json` (12 Messzeilen)
+- Vorher-JSON: `shots/m10-boss-onscreen-before.json` (12 Messzeilen)
+- 12 Spawn-Screenshots: `shots/m10-boss-onscreen-shots/1920x1080-<boss>.png` und
+  `shots/m10-boss-onscreen-shots/640x360-<boss>.png` (Moorkoenigin, Knochenfuerst,
+  Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler Koenig)
+- `npm run build` gruen, `npm test` 314/314 gruen (27 Dateien)
+- art-director-Urteil: PASS, Boss-Inszenierung 4/5 (Details im Lane-Bericht)
+
