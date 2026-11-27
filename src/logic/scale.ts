@@ -100,6 +100,20 @@ export function stepRenderScale(
   return { scale, belowMs, aboveMs };
 }
 
+/**
+ * URL-Override fuer Messungen parsen: fehlender Parameter -> null (Regler
+ * aktiv), 0 -> aus (Voller Renderbuffer), 1..3 -> fester Teiler. Achtung:
+ * Number(null) ist 0 — deshalb wird der Parameter explizit auf null geprueft.
+ */
+export function parseRenderScaleOverride(raw: string | null): number | null {
+  if (raw === null || raw === "") return null;
+  const value = Number(raw);
+  if (!Number.isFinite(value)) return null;
+  const rounded = Math.round(value);
+  if (rounded >= RENDER_SCALE_MIN && rounded <= RENDER_SCALE_MAX) return rounded;
+  return rounded === 0 ? 0 : null;
+}
+
 /** Ganzzahlige Canvas-Skalierung: nie weiche Bruchteile, nie < 1. */
 export function integerScale(
   innerWidth: number,

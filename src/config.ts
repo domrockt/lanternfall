@@ -14,7 +14,14 @@ export function setGameView(width: number, height: number, scale: number): void 
   GAME_SCALE = Math.max(0.1, scale);
 }
 
-import { RENDER_SCALE_MAX, RENDER_SCALE_MIN, chooseRenderScale, stepRenderScale, type RenderScaleState } from "./logic/scale";
+import {
+  RENDER_SCALE_MAX,
+  RENDER_SCALE_MIN,
+  chooseRenderScale,
+  parseRenderScaleOverride,
+  stepRenderScale,
+  type RenderScaleState,
+} from "./logic/scale";
 
 /**
  * M10-dpr-budget-cap: adaptiver Render-Massstab. RENDER_SCALE ist der
@@ -45,10 +52,7 @@ const RENDER_BUDGET_MS = 1000 / 60;
 /** URL-Override fuer Messungen: ?rbscale=0 (aus) oder ?rbscale=1..3 (fest). */
 function forcedRenderScale(): number | null {
   if (typeof window === "undefined" || !window.location) return null;
-  const raw = Number(new URLSearchParams(window.location.search).get("rbscale"));
-  if (!Number.isFinite(raw)) return null;
-  const value = Math.round(raw);
-  return value >= RENDER_SCALE_MIN && value <= RENDER_SCALE_MAX ? value : value === 0 ? 0 : null;
+  return parseRenderScaleOverride(new URLSearchParams(window.location.search).get("rbscale"));
 }
 
 type BudgetGame = {
@@ -73,6 +77,12 @@ function installRenderBudget(): void {
 
   const apply = (game: BudgetGame, scale: number): void => {
     const size = renderBufferSize(game.scale.width, game.scale.height, scale);
+    const dbg = ((window as unknown as { __rbDbg?: Record<string, unknown> }).__rbDbg ??= {});
+    dbg.calls = (Number(dbg.calls) || 0) + 1;
+    dbg.scale = scale;
+    dbg.sw = game.scale.width;
+    dbg.sh = game.scale.height;
+    dbg.size = size;
     // Soll/Ist every frame: Boot/applyView/Scale-Manager koennen den Buffer
     // jederzeit zuruecksetzen; dann sofort wieder anlegen.
     if (game.canvas.width === size.width && game.canvas.height === size.height && applied === scale) return;
@@ -104,6 +114,8 @@ function installRenderBudget(): void {
     );
     state = stepRenderScale(state, fpsEwma, dt, cap);
     apply(game, state.scale);
+    const d2 = (window as unknown as { __rbDbg?: Record<string, unknown> }).__rbDbg;
+    if (d2) { d2.fps = fpsEwma; d2.cap = cap; d2.afterW = game.canvas.width; d2.state = state; }
   };
 
   const wait = (): void => {

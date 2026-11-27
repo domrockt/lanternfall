@@ -4499,17 +4499,22 @@
       "id": 3578,
       "title": "m10-dpr-budget-cap #1 Regler als reine Funktion",
       "description": "chooseRenderScale/maxRenderScale/stepRenderScale in src/logic/scale.ts, RENDER_SCALE_MIN=1/MAX=3, Hysterese 45 FPS/2 s senken, 57 FPS/4 s heben. Abnahme: tests/scale-budget.test.ts gruen (Hysterese, Grenzen, Ganzzahligkeit), npm run build rc=0. Owner engine-dev, Kontrolleur test-auditor.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T17:36:27Z",
           "by": "build",
           "text": "Supervisor-Direktive geprueft: chooseRenderScale/maxRenderScale/stepRenderScale + RENDER_SCALE_MIN=1/MAX=3 stehen in src/logic/scale.ts (Commit a5eb341), kein Einbau in config.ts in dieser Karte. Beleg: npx vitest run tests/scale-budget.test.ts -> 13/13 passed (100ms)."
+        },
+        {
+          "at": "2026-11-27T17:40:59Z",
+          "by": "build",
+          "text": "doing → review: Commit b2f1d2e (nennt #3578); Logik a5eb341, 13/13 Tests gruen. Kontrolle: reviewer + commit-gate."
         }
       ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T17:36:27Z"
+      "updated": "2026-11-27T17:40:59Z"
     },
     {
       "id": 3579,
