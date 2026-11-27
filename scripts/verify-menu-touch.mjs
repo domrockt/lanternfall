@@ -135,18 +135,29 @@ const centre = (p) => ({
   oy: Math.round((p.height - 270) / 2),
 });
 
+function layoutOf(view) {
+  const W = view.w;
+  const H = view.h;
+  const cx = Math.round(W / 2);
+  const oy = Math.round((H - 270) / 2);
+  const rowW = Math.min(520, W - 40);
+  return {
+    W, H, cx, oy, rowW,
+    arrowL: cx + rowW / 2 - 12 - 100, // valueX - 100
+    labelX: cx - rowW / 2 + 12,
+  };
+}
+
 for (const profile of PROFILES) {
   const { context, page, errors } = await newPage(profile);
-  const { cx, oy } = centre(profile);
-  const W = profile.width;
-  const H = profile.height;
-  const rowW = Math.min(520, W - 40);
-  const arrowL = cx + rowW / 2 - 12 - 100; // valueX - 100
-  const labelX = cx - rowW / 2 + 12;
+  let view;
+  let W, H, cx, oy, rowW, arrowL, labelX;
 
   // Journeys + Bounds je Szene einsammeln.
   await boot(page);
-  boundsByProfile[profile.name] = { view: await viewOf(page), title: await collectBounds(page) };
+  view = await viewOf(page);
+  ({ W, H, cx, oy, rowW, arrowL, labelX } = layoutOf(view));
+  boundsByProfile[profile.name] = { view, title: await collectBounds(page) };
 
   await tapGame(page, cx, 214 + oy); // OPTIONEN
   addCheck(profile, "Titel -> Options per Tap", await optionsOpen(page, "title"));
@@ -166,6 +177,13 @@ for (const profile of PROFILES) {
       `${JSON.stringify(before)} -> ${JSON.stringify(after)}`,
     );
   }
+  // Die Skalierungszeile hat die View veraendert: Layout neu lesen, bevor die
+  // Pfeil-/Label-/ZURUECK-Proben auf festen Zeilenkoordinaten laufen.
+  await page.evaluate(() => window.__lf.setOption("scale", 0));
+  await page.waitForTimeout(250);
+  view = await viewOf(page);
+  ({ W, H, cx, oy, rowW, arrowL, labelX } = layoutOf(view));
+
   // Pfeil-Randprobe in Options: 16 px neben dem "<"-Glyph tippen.
   const beforeMusic = await optionState(page);
   await tapGame(page, arrowL + 16, 84 + oy + 2);
@@ -192,6 +210,8 @@ for (const profile of PROFILES) {
   await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
   await waitForScene(page, "title");
   await page.waitForTimeout(250);
+  view = await viewOf(page);
+  ({ W, H, cx, oy, rowW, arrowL, labelX } = layoutOf(view));
   await tapGame(page, cx - 104, 214 + oy + 16); // START, sichtbar 22 hoch
   addCheck(profile, "START-Knopf Randtreffer (Offset 16)", await page.evaluate(
     () => window.__lf.state().scene === "charselect",
