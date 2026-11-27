@@ -6193,11 +6193,17 @@
       "id": 5538,
       "title": "m10-ember-trail-glow: Ember-Schweif vermessen + daempfen (Near-White <= 2 %, Footprint <= 60 px)",
       "description": "Restpunkt aus m10-ember-readability: fx_fire-Trail am Ember-Projektil separat als Glow-Footprint messen (shots/m10-ember-trail-before.json + 1x/4x-PNG), dann Schweif daempfen (dedizierte Trail-Textur, Alpha), Nachher-Messung (-after.json) + 640x360-Chaos-Screenshot (>=500 Gegner, 4 Ember-Projektile, 0 JS-Fehler). Tests tests/ember-trail.test.ts gruen, Doku docs/lanes/m10-ember-trail.md mit Vorher/Nachher.",
-      "column": "doing",
+      "column": "review",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:25:54Z",
+          "by": "build",
+          "text": "doing → review: K1 Vorher (2f8fc3e): fx_fire-Trail Footprint 75 px > 60 -> FAIL, Near-White 0 % (NORMAL-Blend + Orange-Tint, nicht additiv). K2 Fix (c6685e6): fx_ember_trail 7x7 + Alpha 0,4 -> Footprint 24 px, Near-White 0 %; projectile_ember unveraendert. Tests 7/7 + 635/635, tsc + Build gruen. Kontrolleure: reviewer PASS, vfx-check PASS (Hinweise umgesetzt: Doku-Korrekturen, Koordinaten-Sync via timeScale-0-Freeze + viewcap-Belege). Belege: shots/m10-ember-trail-before/-after (+1x/4x), -after-chaos-640.png, Doku docs/lanes/m10-ember-trail.md."
+        }
+      ],
       "created": "2026-11-27T21:04:12Z",
-      "updated": "2026-11-27T21:04:12Z"
+      "updated": "2026-11-27T21:25:54Z"
     }
   ]
 }
