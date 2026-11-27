@@ -4029,17 +4029,22 @@
       "id": 2720,
       "title": "m10-android-perf #3 Befunde/Fix-Empfehlungen + Lane-Abschluss",
       "description": "Fremde Befunde (Atlas/Overlays/Effekte) NICHT selbst fixen: je Befund konkrete Empfehlung mit Datei/Wirkung in Lane-Doku und .dispatch/requests.md; APK-Debug-Variante als Bitte an Vera. Abnahme: Audit-Tabelle, 60-FPS-Grenze aktiv, kein Desktop-perf-Rueckschritt (flock), .lane-done.",
-      "column": "doing",
+      "column": "review",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-27T11:15:28Z",
           "by": "build",
           "text": "todo → doing: Start K3: Desktop-perf-Regression (flock), Fix-Empfehlungen fuer Atlas/Overlays/Effekte in Lane-Doku + requests.md, APK-Debug-Bitte an Vera, .lane-done."
+        },
+        {
+          "at": "2026-11-27T11:30:55Z",
+          "by": "build",
+          "text": "doing → review: Commit 613d57d: K3 Lane-Doku mit 6 Fix-Empfehlungen (Atlas-Pack A1/A2, Overlay A3, FX A4, Startzeit A5, 2048-Grenze A6) + requests.md-Eintraege inkl. APK-Debug-Bitte an Vera; Desktop-perf flock Burst 60,1 / Minute25 60,0 FPS, 0 JS-Fehler; .lane-done committed."
         }
       ],
       "created": "2026-11-27T09:52:32Z",
-      "updated": "2026-11-27T11:15:28Z"
+      "updated": "2026-11-27T11:30:55Z"
     }
   ]
 }
