@@ -1,0 +1,27 @@
+# Lane m10-heap-sawtooth — Fertig (2026-11-27)
+
+Ziel: Nachabnahme-C-Folge-Job — Heap-Tor Minute 1→29 (GC-Sägezahn) im
+30-min-Lauf zuverlässig ≤ +12 %, Allokations-Spikes senken.
+
+Ergebnis:
+- Vorher-Messung (30-min-Sim, timeScale 30, AutoPlay+God, seed 99):
+  shots/m10-heap-sawtooth-before.json — Gate −4,6 % (Zufalls-Pass), Amplitude
+  bis 11,3 MB, Top-Alloc-Sites = Phaser-Objekt-Churn.
+- Ursachen-Befund (widerlegt Briefing-Hypothese): Pool.ts/EnemyPool.ts sind
+  churn-frei (0 neue GameObjects im Endgame-Fenster). 16 392 neue Images/Fenster
+  stammen aus fremden Dateien: CombatSystem.fireFlail 5 297, Run.spawnSplash
+  4 126, GroundRenderer.placeProps 2 852, CombatSystem.addBurn 2 844.
+  Fix-Empfehlungen je Datei:Zeile in docs/lanes/m10-heap-sawtooth.md.
+- Fix (nur Area): EnemyPool.compact in-place statt splice (kein Array pro
+  Todesfall, Reihenfolge bitgleich erhalten), Rim-Def-/Marker-Spec-Cache je
+  Elite-Spawn. Tests tests/heap-sawtooth.test.ts (4) — 787/787 grün, build grün.
+- Nachher: shots/m10-heap-sawtooth-after.json — Gate +5,2 % ≤ +12 % PASS,
+  0 JS-Fehler; Amplitude pro Kill −16 % (0,77→0,65 MB/Kill). Absolut nicht
+  gesenkt: Nachher-Lauf +45 % Kills (Lauf-Streuung 30×-Sim, dokumentiert);
+  dominanter Rest-Churn liegt außerhalb der Area → Folge-Job nötig, um das
+  Tor GARANTIERT zu halten (CombatSystem/Run/GroundRenderer Sprite-Reuse).
+
+Commits: 94fbbaf (K1), 086af3c (K2), 22d3c2a (K3), f94c385 (K4).
+Reviewer: PASS (Hinweise eingearbeitet: fremde JSONs revertet, Churn-Rohdaten
+geslimmt 2,4 MB→11 KB je Datei).
+Board: #6178–#6181 done. Kein flock-Pflichtlauf (Heap/Tests lastunabhängig).
