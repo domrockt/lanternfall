@@ -81,3 +81,26 @@ höchster Block-Share):
 Tier-Enden: Tier 0 = 300 s, Tier 1 = 600 s, Tier 2 = 900 s, Tier 3 = 1200 s,
 Tier 4 = 1800 s. Alle First-Spawns liegen im jeweiligen Tier-Fenster; die
 spätesten sind `cultist` (617 s, Tier 2), `abom` (1210 s) und `gargoyle` (1204 s, Tier 4).
+
+## K3 — Lücken schliessen (#1740)
+
+**Ergebnis: keine Änderung an den Tier-Mischungen nötig — die Invarianten sind
+bereits erfüllt.** Die Karte verlangt als Abnahme genau diese Bedingungen; sie
+sind messbar grün, also wird keine Balance ohne Befund verändert.
+
+Geprüft gegen `src/data/waves.ts` (die Mischungen liegen dort, nicht in
+`src/logic/waves.ts`; `src/data/waves.ts` ist zudem nicht im Datei-Claim dieser
+Lane, daher bewusst unangetastet):
+
+| Invariante | Ist-Stand |
+|---|---|
+| jede der 30 IDs in mindestens einer Tier-Mix mit Gewicht > 0 | **30/30** (keine fehlende ID) |
+| jede ID im Mix ihrer eigenen Zeitstufe | **30/30** |
+| Tier-Mix normalisiert (Summe > 0, alle Gewichte > 0) | 5/5 (Summen 13, 12, 11, 11, 11) |
+| höchster Basis-Gewichtsanteil einer Tier-Mix | 30.8 % (bog_rat in Tier 0) |
+| kein ID-Share > 35 % je 5-min-Block (Sim, beide Seeds) | **0 Verstöße**, Maximum 32.7 % |
+| First-Spawn vor Tier-Ende (Sim, beide Seeds) | **30/30 je Seed** |
+
+Damit ist die von #1739 belegte Lückenliste leer und K3 hat nichts zu schliessen.
+Die 30/30-Abdeckung wird in K4 als Regressions-Test festgeschrieben, damit
+spätere Balance-Änderungen die Abdeckung nicht unbemerkt verlieren.
