@@ -4510,21 +4510,33 @@
    "id": 3618,
    "title": "m10-hazard-warn-fairness #1 K1 Audit: alle HazardSystem-Aufrufe + Warnzeiten/Optik",
    "description": "Grep aller spawnCircle/spawnBeam-Aufrufer (BossSystem, Run) + Tabelle Angriff/warn/Rim-Optik in docs/lanes/m10-hazard-warn-fairness.md. Abnahme: Tabelle vollstaendig (18 Boss-Angriffe + exploder), Unter-0.45s-Faelle markiert.",
-   "column": "todo",
+   "column": "review",
    "assignee": "lead",
-   "notes": [],
+   "notes": [
+    {
+     "at": "2026-11-27T16:01:31Z",
+     "by": "lead",
+     "text": "todo → review: Audit-Tabelle (18 Boss-Angriffe + exploder 0.16s FAIL) in docs/lanes/m10-hazard-warn-fairness.md, Commit 9afbbb2"
+    }
+   ],
    "created": "2026-11-27T15:56:37Z",
-   "updated": "2026-11-27T15:56:37Z"
+   "updated": "2026-11-27T16:01:31Z"
   },
   {
    "id": 3619,
    "title": "m10-hazard-warn-fairness #2 K2 Mess-Harness m10-hazard-fairness.mjs + Baseline",
    "description": "scripts/m10-hazard-fairness.mjs: 500 Gegner + alle Hazard-Klassen @640x360; misst effektive Warnzeit, Warnring-Kontrast (Pixel-Sampling) und Bot-Trefferquote. Baseline shots/m10-hazard-baseline.json. Abnahme: JSON existiert, Zahlen plausibel, 0 JS-Fehler.",
-   "column": "todo",
+   "column": "doing",
    "assignee": "lead",
-   "notes": [],
+   "notes": [
+    {
+     "at": "2026-11-27T16:01:31Z",
+     "by": "lead",
+     "text": "todo → doing: Harness-Bau gestartet"
+    }
+   ],
    "created": "2026-11-27T15:56:37Z",
-   "updated": "2026-11-27T15:56:37Z"
+   "updated": "2026-11-27T16:01:31Z"
   },
   {
    "id": 3620,

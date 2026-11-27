@@ -75,7 +75,25 @@ Werten aus K1 in der Szene ausgeführt und gemessen:
 - **Bot-Trefferquote**: AutoPlay-Bot, Hazard spawnt auf Spielerposition, HP-Delta bis
   Warnphase-Ende = Treffer; 10 Trials pro Hazard-Klasse.
 
-Baseline: `shots/m10-hazard-baseline.json` (siehe Abschnitt K4 für Vorher/Nachher).
+Baseline: `shots/m10-hazard-baseline.json`, Warnframe mit 500-Gegner-Schwarm:
+`shots/m10-hazard-baseline-warnframe.png` (+2x).
+
+### Baseline-Zahlen (27.11., View 640x360, Schwarm 500, seed 1)
+
+- **Mindest-Warnzeit**: Minimum 0.160 s (**exploder**, FAIL < 0.45 s); alle 18 Boss-Klassen
+  0.60–1.20 s (OK, unverändert durch den Aufrufer).
+- **Warnring-Kontrast** (Michelson, Ring-Annulus vs. Hintergrund, Minimum über 3 Puls-Phasen):
+  19/19 Klassen zwischen **-0.103 und +0.042** — der gestrichelte Warnring liest sich im
+  Schwarm kaum (teils dunkler als die Nachbarfläche). Schwächste Klassen: thorn_ring (-0.103),
+  scythe_sweep (-0.103), jump_slam (-0.099), stomp (-0.070), teleport (-0.076).
+- **Bot-Trefferquote** (8 Trials, Hazard spawnt auf Spielerposition): Boss-Flächenschaden
+  8/8 Treffer (jump_slam, poison_puddles, scythe_sweep, stomp, stone_rain, fire_cross,
+  thorn_ring, thorn_burst), exploder 3/8. Der Bot schafft es bei 500 Gegnern nicht mehr
+  rechtzeitig aus der Fläche, wenn die Warnzeit kurz ist bzw. der Schwarm die Flucht
+  blockiert; die 3/8 beim Exploder erklären sich vermutlich aus I-Frame-Überständen der
+  vorherigen Trials (0.8 s PLAYER_INVULN), nicht aus echtem Ausweichen (13 px möglicher
+  Ausweichweg in 0.16 s bei Radius 48).
+
 
 ## K3 — Fix (`src/systems/Hazards.ts`)
 
