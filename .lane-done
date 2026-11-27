@@ -1,0 +1,15 @@
+# M10-fx-evolution — fertig (2026-11-27)
+
+6 Evolutions-Waffen haben je eine eigene Treffer-/Todes-Signatur (Form + Palette + Lifetime).
+Rein visuell: keine Gameplay-/Hitbox-/Schadens-/Balance-Änderung; Sprite-/Atlas-Keys unverändert.
+
+Messwerte:
+- Signaturen: 6/6 paarweise verschieden (Form+Palette+Lifetime), tests/fx-evolution.test.ts 7/7 grün.
+- Pixel-Diff der 12 Laufzeit-Texturen: min. 510 px (Hit) / 1030 px (Death), Schwelle 20 → PASS.
+- LOD: Palettenindex 6/6 identisch bei full/reduced/minimal, Alpha-Untergrenze 0,85.
+- Chaos-Frame Minute 25 (429 Gegner, LOD minimal): Near-White im AoE-Crop 0,87 % ≤ 4,16 % PASS.
+- 6 Vorher-/Nachher-GIFs in shots/ (24 Frames à 80 ms, je 415–522 lebende Gegner), 0 JS-Fehler.
+- build RC 0, tsc --noEmit 0, alle 231 Tests grün.
+- art-director-Urteil: je Evolution PASS (4/5, 4/5, 4/5, 4,5/5, 4,5/5, 4/5), Gesamtnote 4/5.
+- Offene Restpunkte (kein Blocker): mittlerer Kontrast bei Gewittersiegel/Phönix im gleichfarbigen Umfeld;
+  siehe docs/lanes/m10-fx-evolution.md.
