@@ -19,6 +19,24 @@ interface ChunkEntry {
   ripples: Ripple[];
 }
 
+/** Debug-Zaehler (nur aktiv, wenn ein Messskript sie einschaltet). */
+export interface GroundDebugStats {
+  updateCalls: number;
+  chunkBuilds: number;
+  chunkRebuilds: number;
+  workerPosted: number;
+  workerReceived: number;
+  readyInstalled: number;
+  propDepthSets: number;
+  rippleTextureSets: number;
+  sumVisibleChunks: number;
+  sumVisibleProps: number;
+  sumVisibleRipples: number;
+  sumVisibleAmbient: number;
+  sumVisiblePropTextures: number;
+  loadedChunks: number;
+}
+
 interface ChunkJob {
   cx: number;
   cy: number;
@@ -48,8 +66,7 @@ interface FogBank {
 }
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
-const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {
-  grove: [
+const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {  grove: [
     ["prop_tree_a", 0, 4],
     ["prop_stump", -19, 10],
     ["prop_bones", 20, 11],
@@ -115,6 +132,8 @@ export class GroundRenderer {
   private fireflies: Firefly[] = [];
   private fogBanks: FogBank[] = [];
   private ambientReady = false;
+  /** Debug-Zaehler fuer die M10-Messung; null = aus (kein Produktions-Overhead). */
+  private counters: GroundDebugStats | null = null;
 
   constructor(scene: Phaser.Scene, seed: number) {
     this.scene = scene;
@@ -126,6 +145,7 @@ export class GroundRenderer {
           const { cx, cy, bitmap } = event.data;
           const key = `${cx},${cy}`;
           this.inflight.delete(key);
+          if (this.counters) this.counters.workerReceived++;
           if (!bitmap) {
             this.useSyncFallback();
             return;
@@ -211,7 +231,36 @@ export class GroundRenderer {
       if (!onScreen) continue;
       const frame = Math.floor((timeMs + r.phase) / 620) % 2;
       applyTexture(r.img, frame === 0 ? "water_ripple_0" : "water_ripple_1");
+      if (this.counters) this.counters.rippleTextureSets++;
       r.img.x = r.x + frame;
+    }
+    if (this.counters) {
+      const c = this.counters;
+      c.updateCalls++;
+      let chunks = 0;
+      let props = 0;
+      let ripples = 0;
+      const tex = new Set<string>();
+      for (const entry of this.chunks.values()) {
+        if (entry.image.visible) chunks++;
+        for (const p of entry.props) {
+          if (p.visible) {
+            props++;
+            const k = p.frame?.name ?? p.texture.key;
+            if (!tex.has(k)) tex.add(k);
+          }
+        }
+      }
+      for (const r of this.ripples) if (r.img.visible) ripples++;
+      let ambient = 0;
+      for (const f of this.fireflies) if (f.img.visible) ambient++;
+      for (const b of this.fogBanks) if (b.img.visible) ambient++;
+      c.sumVisibleChunks += chunks;
+      c.sumVisibleProps += props;
+      c.sumVisibleRipples += ripples;
+      c.sumVisibleAmbient += ambient;
+      c.sumVisiblePropTextures += tex.size;
+      c.loadedChunks = this.chunks.size;
     }
     this.lastCx = minCx;
     this.lastCy = minCy;
@@ -226,12 +275,14 @@ export class GroundRenderer {
     for (const entry of this.chunks.values()) {
       for (const p of entry.props) {
         if (p.getData("isShadow")) {
+          if (this.counters) this.counters.propDepthSets++;
           p.setDepth(11.15);
           continue;
         }
         const footY = p.getData("footY") as number | undefined;
         if (footY === undefined) continue;
         const glow = p.getData("glow") ? 0.06 : 0;
+        if (this.counters) this.counters.propDepthSets++;
         p.setDepth(footY < py ? 11.6 + glow : 12.4 + glow);
       }
     }
@@ -348,6 +399,7 @@ export class GroundRenderer {
     while (this.queue.length > 0 && this.inflight.size < 2) {
       const job = this.queue.shift()!;
       this.inflight.set(job.key, Date.now());
+      if (this.counters) this.counters.workerPosted++;
       this.worker.postMessage({ cx: job.cx, cy: job.cy, seed: this.seed });
     }
   }
@@ -361,6 +413,7 @@ export class GroundRenderer {
       return da - db;
     });
     const job = this.ready.shift()!;
+    if (this.counters) this.counters.readyInstalled++;
     const textureKey = `chunk_${job.key.replace(",", "_")}`;
     const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE);
     if (!texture) {
@@ -397,9 +450,11 @@ export class GroundRenderer {
   /** Bild + Requisiten/Wellen fuer einen fertig gemalten Chunk anlegen. */
   private buildChunk(cx: number, cy: number, key: string, textureKey: string): void {
     if (this.chunks.has(key)) {
+      if (this.counters) this.counters.chunkRebuilds++;
       this.scene.textures.remove(textureKey);
       return;
     }
+    if (this.counters) this.counters.chunkBuilds++;
     const image = this.scene.add.image(cx * CHUNK_SIZE, cy * CHUNK_SIZE, textureKey)
       .setOrigin(0, 0)
       .setDepth(-100);
@@ -565,6 +620,31 @@ export class GroundRenderer {
     for (const b of this.fogBanks) b.img.destroy();
     this.fireflies.length = 0;
     this.fogBanks.length = 0;
+  }
+
+  /** Debug/Messung: Zaehler einschalten (nur fuer Messlaeufe, kein Spielverhalten). */
+  debugEnableCounters(): void {
+    this.counters = {
+      updateCalls: 0,
+      chunkBuilds: 0,
+      chunkRebuilds: 0,
+      workerPosted: 0,
+      workerReceived: 0,
+      readyInstalled: 0,
+      propDepthSets: 0,
+      rippleTextureSets: 0,
+      sumVisibleChunks: 0,
+      sumVisibleProps: 0,
+      sumVisibleRipples: 0,
+      sumVisibleAmbient: 0,
+      sumVisiblePropTextures: 0,
+      loadedChunks: this.chunks.size,
+    };
+  }
+
+  /** Debug/Messung: Zaehlerstand kopieren. */
+  debugStats(): GroundDebugStats | null {
+    return this.counters ? { ...this.counters } : null;
   }
 
   get lastMinChunk(): { x: number; y: number } {
