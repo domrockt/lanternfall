@@ -4467,36 +4467,57 @@
           "at": "2026-11-27T14:23:22Z",
           "by": "build",
           "text": "doing → review: Commit 7576db7: view.ts Crowd-Klemme 640 + Hysterese 300/260, main.ts-Poll 500ms, tests/view-width 4/4 + view 9/9 grün, build rc=0. Kontrolle: reviewer."
+        },
+        {
+          "at": "2026-11-27T16:27:22Z",
+          "by": "build",
+          "text": "review → review: Reviewer PASS (Urteil im Board-Verlauf): Hysterese/Klemme korrekt, Scope sauber, verbotene Dateien unberuehrt. Nonblocking-Tests nachgezogen (Commit 6a4ea56): SKALIERUNG-Override+crowd -> 640, viewKey-Rueckkehr nach Release. view-width 5/5, Gesamt 359+1 gruen. Offen: perf-check/reviewer-Gesamt-Abnahme der Lane."
         }
       ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T14:23:22Z"
+      "updated": "2026-11-27T16:27:22Z"
     },
     {
       "id": 3460,
       "title": "m10-view-width-cap K2: Nachher-Messung 6 Läufe + fullrun",
       "description": "Nach Fix: 3x 640x360-dpr1 und 3x 780x360-dpr3 unter flock mit scripts/m10-view-width.mjs (cap an), JSON shots/m10-view-width-after-*.json; genau EIN npm run fullrun unter flock → shots/m10-view-width-fullrun.json. Abnahme: 640-Minute25-Median >=55, 780 nicht schlechter als Vorher (54,5), fullrun fpsMin >=55 oder Ursache dokumentiert, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-test",
       "notes": [
         {
           "at": "2026-11-27T14:22:48Z",
           "by": "build",
           "text": "todo → doing: Start: A/B Nachher-Messung 3x 640 + 3x 780 + 1 fullrun"
+        },
+        {
+          "at": "2026-11-27T16:03:50Z",
+          "by": "build",
+          "text": "doing → review: Commit e5f7f21 + eda9f4a: 6/6 Nachher-Perf + 1 fullrun unter flock. 640 M25-Median 55,2 (>=55 PASS), 780 M25 49,7 vs Vorher 31,9 (+56%, nicht schlechter PASS), Burst-A/B 780 57,7 vs 53,4 (+8%), 1080 intern 640: 58,6 vs 50,7 (+15,6%). Fullrun fpsMin 39,4 <55: Ursache dokumentiert (960x540 -> intern 480, Klemme greift nicht; Folgekarte UI/PostFX). 0 JS-Fehler, 13/13 Tests. Kontrolle: perf-check."
+        },
+        {
+          "at": "2026-11-27T16:25:13Z",
+          "by": "build",
+          "text": "review → review: Reviewer PASS (Commit 71e3cf3, Fixes eingearbeitet): Hysterese/Klemme korrekt, Tests 359/359 grün, tsc+build rc=0, Scope eingehalten (keine verbotenen Dateien), Doku-Zahlen an JSON angeglichen, veraltetes after-perf-* als Historie markiert. non-blocking: main.ts-Poll leakt setInterval (billig), fehlender setting+crowd-Test. Hinweis fürs Merge: m3-fullrun-Shots wurden überschrieben (geteilter Beleg), eigener Beleg liegt unter shots/m10-view-width-fullrun.json. perf-check-Abnahme läuft noch offen."
         }
       ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T14:22:48Z"
+      "updated": "2026-11-27T16:25:13Z"
     },
     {
       "id": 3461,
       "title": "m10-view-cap K3: Sicht-Belege + Abnahme + .lane-done",
       "description": "Screenshots 640/780/1080 nach Fix (shots/m10-view-width-*.png), art-director-Urteil 'keine Unschärfe/falschen Pixelkanten' PASS>=4/5 in docs/lanes/m10-view-width-cap.md; npm test + npm run build grün; .lane-done mit Messwerten committen. Abnahme: PNGs im Commit, Urteil zitiert, build rc=0, .lane-done 5-10 Zeilen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "playtester",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T16:06:49Z",
+          "by": "build",
+          "text": "todo → doing: Start: Sicht-Belege 640/780/1080 vorhanden (Commit eda9f4a), art-director + reviewer laufen parallel. Danach Doku-Abschnitt 4 finalisieren + .lane-done."
+        }
+      ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T13:24:43Z"
+      "updated": "2026-11-27T16:06:49Z"
     }
   ]
 }
