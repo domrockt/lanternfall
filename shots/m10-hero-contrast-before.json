@@ -1,0 +1,40 @@
+{
+  "tag": "before",
+  "character": "kael",
+  "enemiesTarget": 320,
+  "enemiesSpawned": 320,
+  "enemiesAlive": 320,
+  "simMinute": 0,
+  "metric": {
+    "boxN": 2401,
+    "ringN": 74224,
+    "rareColorsInRing": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      15,
+      16,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      28,
+      30,
+      31
+    ],
+    "heroRarity": 2.0683,
+    "lumPlayer": 183,
+    "lumSurround": 130.9,
+    "lumDelta": 52.1,
+    "warmSharePlayer": 0.217,
+    "warmShareSurround": 0.1201,
+    "scale": 1.5
+  },
+  "jsErrors": []
+}
