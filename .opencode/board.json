@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5523,
+  "next": 5528,
   "cards": [
     {
       "id": 1,
@@ -6263,6 +6263,81 @@
       ],
       "created": "2026-11-27T21:01:11Z",
       "updated": "2026-11-27T21:01:28Z"
+    },
+    {
+      "id": 5523,
+      "title": "m10-ai-budget K1: Messbasis stepEnemyAi (500 Gegner)",
+      "description": "scripts/m10-ai-budget.mjs: deterministischer 500-Gegner-Frame, ms/Frame gesamt + je Archetyp (Median ueber 3 Passes), JSON nach shots/m10-ai-budget-baseline.json. AK: JSON existiert, Zahlen plausibel, Commit enthaelt Beleg.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:05:59Z",
+          "by": "build",
+          "text": "lane #4838, Merge 6e7af23"
+        }
+      ],
+      "created": "2026-11-27T21:05:56Z",
+      "updated": "2026-11-27T21:05:59Z"
+    },
+    {
+      "id": 5524,
+      "title": "m10-ai-budget K2: Gestaffelte AI-Updates in src/logic/enemy-ai.ts",
+      "description": "AiState bekommt aiStepIn/aiLast; dist-basierte Intervalle (nahe <220 px jeder Frame, mid/far Intervall 3/5), Phase ueber UID verteilt, AI_STAGGER konfigurierbar, Skip-Pfad allokationsfrei. AK: npx tsc --noEmit gruen, bestehende tests/enemy-ai.test.ts laeuft, Run.ts unangetastet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:05:59Z",
+          "by": "build",
+          "text": "lane #4839, Merge 6e7af23"
+        }
+      ],
+      "created": "2026-11-27T21:05:56Z",
+      "updated": "2026-11-27T21:05:59Z"
+    },
+    {
+      "id": 5525,
+      "title": "m10-ai-budget K3: Verhaltens-Tests tests/enemy-ai-budget.test.ts",
+      "description": "Spieler-nahe Gegner steppen jeden Frame (identisch zu Intervall 1), Cluster-Metriken mit Staggering innerhalb Toleranz (kein Cluster bricht), Skip-Mechanik geprueft. AK: npx vitest run tests/enemy-ai-budget.test.ts tests/enemy-ai.test.ts gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:05:59Z",
+          "by": "build",
+          "text": "lane #4840, Merge 6e7af23"
+        }
+      ],
+      "created": "2026-11-27T21:05:56Z",
+      "updated": "2026-11-27T21:05:59Z"
+    },
+    {
+      "id": 5526,
+      "title": "m10-ai-budget K4: Nachher-Messung + Doku docs/lanes/m10-ai-budget.md",
+      "description": "Vorher/Nachher ms/Frame (shots/m10-ai-budget-baseline.json vs -after.json), Ziel -25% bei 500 Gegnern, Doku mit Konfiguration + Restrisiken. AK: stepEnemyAi -25% ms/Frame in JSON belegt, build+test gruen, .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:05:59Z",
+          "by": "build",
+          "text": "lane #4841, Merge 6e7af23"
+        }
+      ],
+      "created": "2026-11-27T21:05:56Z",
+      "updated": "2026-11-27T21:05:59Z"
+    },
+    {
+      "id": 5527,
+      "title": "m10-ai-budget K5: Review-Fix (Recycle-Reset, Realzeit-Fuse, Nahring 240)",
+      "description": "Reviewer-FAIL-Befunde: 1) resetAiState leckt aiStepIn/aiMoveX/Y/aiSpeedMul -> Recycle erbt fremde Richtung (Fix in src/logic/ai-state.ts, unclaimed, requests.md-Eintrag). 2) Exploder-Fuse brennt nur im vollen Step -> Dehnung im Fernring (realzeitliches Dekrement). 3) nearDistance 220->240 (Charger-Trigger 230, Ranged-Schuss 240). Neue Tests: Recycle, Ring-Wechsel, Fuse. AK: 21/21 gruen, tsc gruen, Bench >= -25% (after-JSON frisch), commit #<karte>.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:05:59Z",
+          "by": "build",
+          "text": "lane #4842, Merge 6e7af23"
+        }
+      ],
+      "created": "2026-11-27T21:05:56Z",
+      "updated": "2026-11-27T21:05:59Z"
     }
   ]
 }
