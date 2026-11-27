@@ -2292,17 +2292,27 @@
       "id": 1379,
       "title": "m9-art-polish-02 Elite-Rim-Light im Chaos (art-02)",
       "description": "Elites bei Minute 25/300+ Gegnern mit engem 1-px-Rim in Palettenfarbe statt diffuse ADD-Aura. Abnahme: shots/art-polish-elites-chaos.png, vfx:read Near-White <= 4,16 %, vfx-check PASS.",
-      "column": "doing",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-26T23:02:12Z",
           "by": "build",
           "text": "todo → doing: Start art-02: Elite-Aura von weisser ADD-Ring-Aura auf 1-px-Amber-Silhouetten-Rim umgestellt; Near-White nachher 4,14 % (Ziel <=4,16)."
+        },
+        {
+          "at": "2026-11-26T23:50:07Z",
+          "by": "build",
+          "text": "doing → review: Commit 3b68621: amber 1-px-Silhouetten-Rim (Palette 20) statt weisser ADD-Aura; Near-White 4,14 % <= 4,16 %; vfx-check PASS."
+        },
+        {
+          "at": "2026-11-27T00:04:45Z",
+          "by": "build",
+          "text": "review → done: Abnahme (Versuch 3): amber 1-px-Silhouetten-Rim (PAL[20], Blend NORMAL), Near-White im AoE-Crop 2186/52800 = 4,14 % <= 4,16 %, Elite-Chaos-Shot 399 Gegner/64 Elites bei t=1500. vfx-check PASS. build gruen, 192 Tests gruen."
         }
       ],
       "created": "2026-11-26T21:33:06Z",
-      "updated": "2026-11-26T23:02:12Z"
+      "updated": "2026-11-27T00:04:45Z"
     },
     {
       "id": 1380,
