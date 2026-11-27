@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2458,
+  "next": 2462,
   "cards": [
     {
       "id": 1,
@@ -3648,6 +3648,70 @@
       "notes": [],
       "created": "2026-11-27T05:57:17Z",
       "updated": "2026-11-27T05:57:17Z"
+    },
+    {
+      "id": 2458,
+      "title": "m10-results-attribution: Beleg-Lauf 15 min autoPlay + JSON/Screenshots vorher",
+      "description": "15-min-autoPlay-Run (timeScale 30, god) mit Debug-Hook: HUD-Gesamtschaden, Summe der Balken, Delta % nach shots/m10-results-attribution.json; Ist-Screenshots shots/m10-results-attribution-before.png bei 1920x1080 und 640x360. Abnahme: JSON vorhanden, deltaPct berechnet, Screenshots zeigen den Ist-Ergebnis-Screen, 0 JS-Fehler. (lane #2078)",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T06:11:37Z",
+          "by": "build",
+          "text": "lane #2078 (m10-results-attribution): aus Lane uebernommen, Beleg-Lauf 78cdf03 15 Spielmin, total=179925 bars=179925 delta=0%, 0 JS-Fehler."
+        }
+      ],
+      "created": "2026-11-27T06:11:04Z",
+      "updated": "2026-11-27T06:11:37Z"
+    },
+    {
+      "id": 2459,
+      "title": "m10-results-attribution: Logik damageTable + largest-remainder Rundung",
+      "description": "damageTable filtert/sortiert deterministisch; Rundung so, dass Summe der Bars = gerundetem Gesamtschaden. tests/results.test.ts mit 0/1/vielen Waffen und Evolutions-Slot-Ersetzung. Abnahme: npx vitest run tests/results.test.ts gruen, Summenabweichung = 0, Sortierung absteigend. (lane #2079)",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T06:11:37Z",
+          "by": "build",
+          "text": "lane #2079 (m10-results-attribution): largest-remainder Rundung + Evolutions-Slot-Ersetzung, tests/results.test.ts 10/10 (ba3f04a)."
+        }
+      ],
+      "created": "2026-11-27T06:11:04Z",
+      "updated": "2026-11-27T06:11:37Z"
+    },
+    {
+      "id": 2460,
+      "title": "m10-results-attribution: Layout Namensumbruch + Overlap 0",
+      "description": "slotNameLines fuer 12 Waffennamen (max 2 Zeilen, vollstaendig) und Balkenbreite bei 640x360/1920x1080; messbare Ueberlappung Text vs Trennlinie/Banner = 0, Screenshot je Aufloesung. Abnahme: tests/results.test.ts prueft 0 Overlaps, shots/m10-results-attribution-{1920x1080,640x360}.png zeigen alle 12 Namen. (lane #2080)",
+      "column": "review",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T06:11:37Z",
+          "by": "build",
+          "text": "lane #2080 (m10-results-attribution): slotNameLines max 2 Zeilen, overlaps 0 bei 640/1920 (eab1d1a); ux-check PASS bei 55bf9c4."
+        }
+      ],
+      "created": "2026-11-27T06:11:04Z",
+      "updated": "2026-11-27T06:11:37Z"
+    },
+    {
+      "id": 2461,
+      "title": "m10-results-attribution: Doku + .lane-done",
+      "description": "docs/lanes/m10-results-attribution.md mit Abweichung vorher/nachher, Messwerten und ux-check-Urteil; .lane-done mit 5-10 Zeilen Zusammenfassung + Messwerten. Abnahme: npm run build + alle Tests gruen, ux-check PASS, docs + .lane-done committet. (lane #2081)",
+      "column": "review",
+      "assignee": "tech-lead",
+      "notes": [
+        {
+          "at": "2026-11-27T06:11:37Z",
+          "by": "build",
+          "text": "lane #2081 (m10-results-attribution): docs/lane + .lane-done (ec2e476), .lane-done nach Merge entfernt."
+        }
+      ],
+      "created": "2026-11-27T06:11:04Z",
+      "updated": "2026-11-27T06:11:37Z"
     }
   ]
 }
