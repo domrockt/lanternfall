@@ -53,4 +53,15 @@ describe("M10-Crowd: Renderbreite bei hoher Gegnerlast deckeln", () => {
     expect(shouldCapForCrowd(Number.NaN, false)).toBe(false);
     expect(shouldCapForCrowd(Number.NaN, true)).toBe(false);
   });
+
+  it("Klemme gilt auch bei festem SKALIERUNG-Override; nach dem Loesen kehrt der viewKey zurueck", () => {
+    const capped = computeView({ width: 780, height: 360, dpr: 3, setting: 6, crowd: true });
+    expect(capped.width).toBe(CROWD_WIDTH);
+    expect(isIntegerPixelPerfect(capped)).toBe(true);
+
+    const normal = view(780, 360, 3);
+    const released = computeView({ width: 780, height: 360, dpr: 3, setting: 6, crowd: false });
+    expect(released.width).toBe(normal.width);
+    expect(viewKey(released)).toBe(viewKey(normal));
+  });
 });
