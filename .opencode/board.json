@@ -4526,13 +4526,18 @@
    "id": 3619,
    "title": "m10-hazard-warn-fairness #2 K2 Mess-Harness m10-hazard-fairness.mjs + Baseline",
    "description": "scripts/m10-hazard-fairness.mjs: 500 Gegner + alle Hazard-Klassen @640x360; misst effektive Warnzeit, Warnring-Kontrast (Pixel-Sampling) und Bot-Trefferquote. Baseline shots/m10-hazard-baseline.json. Abnahme: JSON existiert, Zahlen plausibel, 0 JS-Fehler.",
-   "column": "doing",
+   "column": "review",
    "assignee": "lead",
    "notes": [
     {
      "at": "2026-11-27T16:01:31Z",
      "by": "lead",
      "text": "todo → doing: Harness-Bau gestartet"
+    },
+    {
+     "at": "2026-11-27T16:40:27Z",
+     "by": "lead",
+     "text": "todo → review: Harness + Baseline shots/m10-hazard-baseline.json (minWarn 0.16s exploder, Kontrast ~0, Trefferquote 8/8), Commit siehe #3619"
     }
    ],
    "created": "2026-11-27T15:56:37Z",
@@ -4542,9 +4547,15 @@
    "id": 3620,
    "title": "m10-hazard-warn-fairness #3 K3 Fix Hazards.ts: Mindest-Warnzeit + Rim-Sichtbarkeit",
    "description": "Nur src/systems/Hazards.ts: MIN_WARN-Konstante (0.45s) via exportierter Helfer, Rim-Puls-Alpha im Schwarm sichtbar. >=4 neue Tests in tests/hazard-fairness.test.ts gruen. Abnahme: npx vitest run tests/hazard-fairness.test.ts gruen, tsc clean.",
-   "column": "todo",
+   "column": "doing",
    "assignee": "lead",
-   "notes": [],
+   "notes": [
+    {
+     "at": "2026-11-27T16:40:27Z",
+     "by": "lead",
+     "text": "todo → doing: K3 Fix gestartet"
+    }
+   ],
    "created": "2026-11-27T15:56:37Z",
    "updated": "2026-11-27T15:56:37Z"
   },
