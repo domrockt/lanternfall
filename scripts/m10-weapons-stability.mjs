@@ -101,6 +101,7 @@ try {
       sampleCount: timing?.sampleCount ?? null,
       okSampleCount: timing?.okSampleCount ?? null,
       medianSampleGapMs: timing?.medianSampleGapMs ?? null,
+      waitMs: timing?.waitMs ?? null,
       samples: timing?.samples ?? null,
       stderrTail: err.trim().split("\n").slice(-3).join("\n"),
     });
