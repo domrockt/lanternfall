@@ -18,31 +18,45 @@ EYE = 13
 TIER_ACCENT = [31, 11, 20, 26, 13]
 TIER_SIZE = [16, 20, 24, 28, 32]
 
-# Rampen: (Schatten, Basis, Licht)
-R = {
-    "ember": (14, 16, 17),
-    "marsh": (28, 30, 31),
-    "mossD": (28, 29, 30),
-    "fog": (4, 7, 8),
-    "night": (2, 4, 6),
-    "slate": (2, 4, 6),
-    "blood": (23, 24, 25),
-    "crim": (23, 25, 26),
-    "bone": (5, 10, 11),
-    "fogBlue": (3, 5, 9),
-    "steel": (4, 5, 8),
-    "stone": (5, 7, 9),
-    "mist": (5, 8, 11),
-    "pale": (6, 9, 11),
-    "gold": (16, 20, 21),
-    "flame": (15, 18, 19),
-    "flameHi": (17, 19, 22),
-    "flesh": (23, 26, 27),
-    "void": (3, 5, 8),
-    "fur": (4, 8, 11),
-    "wood": (14, 16, 17),
-    "lantern": (17, 20, 22),
+# Farb-Familien je Biom-Thema (K2, 27.11.). Jede Familie ist eine Liste von
+# 5 Rampen (Schatten, Basis, Licht), Index = Tier: der Tier-Fortschritt laesst
+# Saettigung und Helligkeit ansteigen. Die Silhouetten/Shading-Struktur bleibt
+# unveraendert — es aendern sich nur die Rampen-Indizes.
+#   glut    = Hoehle/Glut (warmes Braun-Orange)
+#   moor    = Moor (Gruen)
+#   knochen = Friedhof (helles Knochen-Weiss)
+#   blut    = Kult/Blut (Rot)
+#   gold    = Laterne/Stroh (Gold-Amber)
+#   nacht   = Wald/Nacht (Blaugrau — dunkle Mitglieder der Masse)
+FAMILIES = {
+    "glut": [(14, 16, 17), (15, 16, 17), (15, 17, 18), (16, 17, 18), (16, 18, 19)],
+    "moor": [(28, 30, 31), (28, 30, 31), (28, 30, 31), (29, 30, 31), (29, 30, 31)],
+    "knochen": [(8, 10, 11), (10, 11, 12), (10, 11, 12), (10, 11, 12), (10, 11, 12)],
+    "blut": [(23, 24, 25), (24, 25, 26), (24, 25, 26), (24, 25, 26), (24, 26, 27)],
+    "gold": [(16, 20, 21), (17, 20, 21), (18, 20, 21), (18, 20, 21), (19, 21, 22)],
+    "nacht": [(3, 5, 7), (3, 5, 7), (4, 6, 8), (4, 6, 8), (5, 7, 9)],
 }
+
+ENEMY_FAMILY = {
+    "bog_rat": "glut", "wisp": "gold", "mudling": "moor", "crow": "nacht",
+    "bogzombie": "moor", "toad": "moor",
+    "skeleton": "knochen", "bat": "blut", "ghoul": "moor", "witchling": "blut",
+    "slime": "moor", "scarecrow": "gold",
+    "wolf": "nacht", "banshee": "knochen", "golem": "glut", "spider": "nacht",
+    "cultist": "blut", "bomber": "glut",
+    "knight": "nacht", "harpy": "knochen", "lich": "knochen", "wraith": "nacht",
+    "treant": "glut", "imp": "glut",
+    "horror": "blut", "centipede": "knochen", "gargoyle": "nacht",
+    "reaper_bat": "nacht", "abom": "blut", "voidcaller": "nacht",
+}
+
+# In build() je Gegner gesetzt; die Zeichenfunktionen lesen ihre Rampe darueber.
+_CURRENT = "bog_rat"
+
+
+def R2() -> tuple[int, int, int]:
+    """Rampe (Schatten, Basis, Licht) des aktuellen Gegners nach Familien-Tier."""
+    return FAMILIES[ENEMY_FAMILY[_CURRENT]][TIER[_CURRENT]]
 
 
 def finish(g: Grid, details: list[tuple[int, int, int]] | None = None,
@@ -109,7 +123,7 @@ def eye_pair(g: Grid, cx: int, y: int, gap: int, accent: int, socket: bool = Tru
 # ── Stufe 0 (16 px) ─────────────────────────────────────────────────────────
 def bog_rat(f: int) -> Grid:
     g = Grid(16, 16)
-    d, b, l = R["ember"]
+    d, b, l = R2()
     bob = [0, 1, 2, 1][f % 4]
     cy = 10 - bob
     # Schwanz: 3-px-Kurve nach hinten oben, leichte Sway-Phase.
@@ -145,21 +159,22 @@ def wisp(f: int) -> Grid:
     flick = [0, 1, 0, -1][f % 4]
     cy = 10 - bob
     # Irrlicht: Tropfenform (breite Basis, schmaler Hals, Flammenspitze).
-    g.ellipse(8, cy, 4, 4, 5)
-    g.rect(6, cy - 6, 4, 3, 5)
-    g.rect(7 + flick, cy - 8, 2, 4, 5)
+    # K2: Familie gold — Laternen-Geist in Amber (16/20/21 + Glut 22).
+    g.ellipse(8, cy, 4, 4, 20)
+    g.rect(6, cy - 6, 4, 3, 20)
+    g.rect(7 + flick, cy - 8, 2, 4, 20)
     if flick:
-        g.put(7 + flick, cy - 9, 9)
+        g.put(7 + flick, cy - 9, 21)
     # Lichtkante oben-links in 2-px-Blöcken.
-    g.rect(4, cy - 3, 2, 3, 9)
-    g.rect(5, cy - 6, 2, 2, 9)
-    g.rect(7, cy - 8, 1, 3, 9)
-    g.rect(4, cy, 2, 2, 9)
+    g.rect(4, cy - 3, 2, 3, 21)
+    g.rect(5, cy - 6, 2, 2, 21)
+    g.rect(7, cy - 8, 1, 3, 21)
+    g.rect(4, cy, 2, 2, 21)
     # Schatten unten-rechts.
-    g.rect(10, cy + 1, 2, 3, 3)
-    g.rect(8, cy + 3, 3, 1, 3)
+    g.rect(10, cy + 1, 2, 3, 16)
+    g.rect(8, cy + 3, 3, 1, 16)
     # Glutkern.
-    g.rect(7, cy - 4, 3, 2, 11)
+    g.rect(7, cy - 4, 3, 2, 22)
     g.put(8, cy - 3, 13)
     # Augen: 2x2 Höhle + 2x1 Tier-Akzent 31.
     g.rect(5, cy - 2, 2, 2, 2)
@@ -167,22 +182,22 @@ def wisp(f: int) -> Grid:
     g.rect(5, cy - 2, 2, 1, 31)
     g.rect(9, cy - 2, 2, 1, 31)
     # Schweif: gestaffelte 2-px-Bahnen statt Einzelpixel.
-    g.rect(6, cy + 4, 3, 1, 7)
-    g.rect(7, cy + 5, 2, 2, 5)
-    g.put(7, cy + 7, 3)
-    g.rect(9, cy + 4, 2, 1, 7)
+    g.rect(6, cy + 4, 3, 1, 17)
+    g.rect(7, cy + 5, 2, 2, 20)
+    g.put(7, cy + 7, 16)
+    g.rect(9, cy + 4, 2, 1, 17)
     return finish(g, [(5, cy - 2, 31), (6, cy - 2, 31),
                       (9, cy - 2, 31), (10, cy - 2, 31)], shade=False)
 
 
 def mudling(f: int) -> Grid:
     g = Grid(16, 16)
-    d, b, l = 29, 30, 31
+    d, b, l = R2()
     bob = [0, 1, 2, 1][f % 4]
     wob = [0, 1, 0, -1][f % 4]
     cy = 10 - bob
     g.rect(3, cy + 4, 10, 1, d)
-    g.rect(2, cy + 3, 12, 1, 29)
+    g.rect(2, cy + 3, 12, 1, d)
     g.ellipse(8, cy, 5, 4, b)
     g.rect(3, cy - 6, 2, 4, b)
     g.rect(11, cy - 6, 2, 4, b)
@@ -209,7 +224,7 @@ def mudling(f: int) -> Grid:
 
 def crow(f: int) -> Grid:
     g = Grid(16, 16)
-    d, b, l = R["mist"]
+    d, b, l = R2()   # nacht: Blaugrau (3/5/7)
     bob = [0, 1, 2, 1][f % 4]
     cy = 9 - bob
     # Rumpf + Kopf im Profil nach rechts.
@@ -226,27 +241,27 @@ def crow(f: int) -> Grid:
         g.rect(3, cy + 1, 4, 2, d)
         g.put(2, cy + 2, 5)
     elif phase == 2:
-        g.rect(3, cy + 1, 5, 2, 8)
-        g.rect(1, cy + 3, 4, 2, 8)
-        g.put(1, cy + 5, 9)
+        g.rect(3, cy + 1, 5, 2, 4)
+        g.rect(1, cy + 3, 4, 2, 4)
+        g.put(1, cy + 5, 7)
     else:
-        g.rect(3, cy - 5, 5, 2, 8)
-        g.rect(1, cy - 3, 4, 2, 8)
+        g.rect(3, cy - 5, 5, 2, 4)
+        g.rect(1, cy - 3, 4, 2, 4)
         g.rect(2, cy - 1, 3, 2, d)
-        g.put(1, cy - 4, 9)
-    g.rect(1, cy + 1 + (1 if f % 4 == 3 else 0), 3, 2, 8)          # Schwanz
+        g.put(1, cy - 4, 7)
+    g.rect(1, cy + 1 + (1 if f % 4 == 3 else 0), 3, 2, 4)          # Schwanz
     # Beine 2 px + Füße.
     g.rect(7, cy + 3, 2, 2, 16)
     g.rect(9, cy + 3, 2, 2, 16)
     g.rect(6, cy + 5, 3, 1, 20)
     g.rect(9, cy + 5, 3, 1, 20)
     return finish(g, [(10, cy - 2, 31), (11, cy - 2, 31), (13, cy - 2, 20)],
-                  dark_edge=9)
+                  dark_edge=7)
 
 
 def bogzombie(f: int) -> Grid:
     g = Grid(16, 16)
-    d, b, l = R["marsh"]
+    d, b, l = R2()   # moor
     bob = [0, 1, 2, 1][f % 4]
     sway = [0, 1, 0, -1][f % 4]
     # Kopf + Hals, ausgefranste Robe. Kopf-Grundton 30, Licht 31 nur als
@@ -287,11 +302,11 @@ def bogzombie(f: int) -> Grid:
 
 def toad(f: int) -> Grid:
     g = Grid(16, 16)
-    d, b, l = R["mossD"]
+    d, b, l = R2()   # moor
     hop = [0, 1, 3, 1][f % 4]
     cy = 11 - hop
     g.ellipse(8, cy, 6, 3, b)          # Körper
-    g.ellipse(8, cy - 1, 5, 3, l)
+    g.ellipse(8, cy - 1, 5, 3, b)      # K2: Bauch in Basis 30 (31 liest sich auf hellem Moor als Boden)
     g.put(2, cy + 1, 28)
     g.put(4, cy + 2, 28)
     g.put(11, cy + 1, 28)
@@ -313,7 +328,7 @@ def toad(f: int) -> Grid:
 # ── Stufe 1 (20 px) ─────────────────────────────────────────────────────────
 def skeleton(f: int) -> Grid:
     g = Grid(20, 20)
-    d, b, l = R["bone"]
+    d, b, l = R2()   # knochen
     bob = [0, 1, 2, 1][f % 4]
     cx = 10
     g.ellipse(cx, 5 - bob, 4, 4, b)    # Schädel
@@ -347,18 +362,18 @@ def skeleton(f: int) -> Grid:
 
 def bat(f: int) -> Grid:
     g = Grid(20, 20)
-    d, b, l = R["crim"]
+    d, b, l = R2()   # blut, Tier 1 (24/25/26)
     bob = [0, 1, 2, 1][f % 4]
     cy = 11 - bob
     ws = [1, 0, -2, -1][f % 4]            # vier Flügelschlag-Stufen
     # Membranflügel als geschlossene 4x3-Loben in zwei Rottönen.
-    g.ellipse(5, cy - 2 + ws, 4, 3, 23)
-    g.ellipse(15, cy - 2 + ws, 4, 3, 23)
-    g.ellipse(5, cy - 3 + ws, 3, 2, 24)
-    g.ellipse(15, cy - 3 + ws, 3, 2, 24)
+    g.ellipse(5, cy - 2 + ws, 4, 3, 25)
+    g.ellipse(15, cy - 2 + ws, 4, 3, 25)
+    g.ellipse(5, cy - 3 + ws, 3, 2, 26)
+    g.ellipse(15, cy - 3 + ws, 3, 2, 26)
     # Flügelknochen als 2-px-Bahnen nach außen.
-    g.rect(1, cy - 3 + ws, 3, 2, 25)
-    g.rect(16, cy - 3 + ws, 3, 2, 25)
+    g.rect(1, cy - 3 + ws, 3, 2, 27)
+    g.rect(16, cy - 3 + ws, 3, 2, 27)
     # Körper + Kopf.
     g.ellipse(10, cy, 2, 4, b)
     g.ellipse(10, cy - 5, 2, 2, b)
@@ -371,14 +386,14 @@ def bat(f: int) -> Grid:
     g.rect(11, cy - 5, 2, 1, 11)
     g.rect(9, cy - 2, 1, 1, 12)            # Fangzähne
     g.rect(11, cy - 2, 1, 1, 12)
-    g.rect(9, cy + 3, 1, 2, 24)            # Beine
-    g.rect(10, cy + 3, 1, 2, 24)
+    g.rect(9, cy + 3, 1, 2, 26)            # Beine
+    g.rect(10, cy + 3, 1, 2, 26)
     return finish(g, [(8, cy - 5, 11), (11, cy - 5, 11)], shade=False)
 
 
 def ghoul(f: int) -> Grid:
     g = Grid(20, 20)
-    d, b, l = R["mossD"]
+    d, b, l = R2()   # moor, Tier 1 (28/30/31)
     bob = [0, 1, 2, 1][f % 4]
     lunge = [0, 1, 2, 1][f % 4]
     cy = 12 - bob
@@ -411,13 +426,13 @@ def ghoul(f: int) -> Grid:
 
 def witchling(f: int) -> Grid:
     g = Grid(20, 20)
-    d, b, l = R["crim"]
+    d, b, l = R2()   # blut, Tier 1 (24/25/26)
     bob = [0, 1, 2, 1][f % 4]
     sway = [0, 1, 0, -1][f % 4]
     # Robe: Trapez mit 3 Tonbändern und ausgefranstem Saum.
     for i, w in enumerate((9, 10, 11, 12, 13)):
         g.rect(10 - w // 2 + (sway if i > 2 else 0), 11 + i - bob, w, 1,
-               25 if i < 2 else b)
+               26 if i < 2 else b)
     g.rect(4 + sway, 15 - bob, 2, 2, d)
     g.rect(8 + sway, 15 - bob, 2, 1, d)
     g.rect(14 + sway, 15 - bob, 2, 2, d)
@@ -431,10 +446,10 @@ def witchling(f: int) -> Grid:
     g.rect(8, 8 - bob, 2, 2, 2)
     g.rect(11, 8 - bob, 2, 2, 2)
     # Hexenhut: breite Krempe + spitzer Kegel.
-    g.rect(3, 6 - bob, 14, 2, 23)
-    g.rect(3, 6 - bob, 14, 1, 24)
+    g.rect(3, 6 - bob, 14, 2, 24)
+    g.rect(3, 6 - bob, 14, 1, 25)
     for i, w in enumerate((7, 6, 5, 4, 3, 2)):
-        g.rect(10 - w // 2, 5 - i - bob, w, 1, 25 if i < 2 else 24)
+        g.rect(10 - w // 2, 5 - i - bob, w, 1, 26 if i < 2 else 25)
     g.rect(9, 7 - bob, 2, 1, 20)         # Hutband
     # Besen diagonal, 2 px, Borsten unten-links.
     g.line(15, 6 - bob, 11, 14 - bob, 16, 2)
@@ -449,12 +464,12 @@ def witchling(f: int) -> Grid:
 
 def slime(f: int) -> Grid:
     g = Grid(20, 20)
-    d, b, l = 8, 9, 10
+    d, b, l = R2()   # moor: Moorschleim gruening (28/30/31), vorher neutral-grau
     bob = [0, 1, 2, 1][f % 4]
     cy = 12 - bob
     g.rect(8, cy - 6, 2, 3, l)
     g.put(8, cy - 6, 11)
-    g.put(9, cy - 6, 10)
+    g.put(9, cy - 6, l)
     g.rect(5, cy - 4, 2, 2, b)
     g.rect(13, cy - 4, 2, 2, b)
     g.ellipse(10, cy, 7, 4, b)
@@ -482,14 +497,14 @@ def slime(f: int) -> Grid:
 
 def scarecrow(f: int) -> Grid:
     g = Grid(20, 20)
-    d, b, l = R["gold"]
+    d, b, l = R2()   # gold, Tier 1 (17/20/21)
     bob = [0, 1, 2, 1][f % 4]
     sway = [0, 1, 0, -1][f % 4]
     # Kreuzpfahl, 2 px.
-    g.rect(9, 8, 2, 12, 14)
-    g.rect(9, 8, 1, 12, 15)
-    g.rect(2, 11 - bob, 16, 2, 16)      # Querbalken
-    g.rect(2, 11 - bob, 16, 1, 17)
+    g.rect(9, 8, 2, 12, 16)
+    g.rect(9, 8, 1, 12, 17)
+    g.rect(2, 11 - bob, 16, 2, 17)      # Querbalken
+    g.rect(2, 11 - bob, 16, 1, 21)
     # Stroh an den Enden (2-px-Büschel).
     g.rect(1, 10 - bob, 2, 1, 21)
     g.rect(1, 13 - bob, 2, 1, 20)
@@ -498,30 +513,30 @@ def scarecrow(f: int) -> Grid:
     # Sackkörper mit Flicken.
     g.rect(5 + sway, 12 - bob, 10, 6, 20)
     g.rect(5 + sway, 12 - bob, 2, 6, 21)
-    g.rect(13 + sway, 13 - bob, 2, 5, 16)
-    g.rect(6 + sway, 17 - bob, 2, 1, 16)
-    g.rect(11 + sway, 15 - bob, 3, 1, 16)
+    g.rect(13 + sway, 13 - bob, 2, 5, 17)
+    g.rect(6 + sway, 17 - bob, 2, 1, 17)
+    g.rect(11 + sway, 15 - bob, 3, 1, 17)
     # Kopf (Sack) + Hut.
     g.ellipse(10, 8 - bob, 4, 3, 20)
     g.ellipse(10, 7 - bob, 3, 2, 21)
-    g.rect(3, 5 - bob, 14, 2, 14)       # Krempe
-    g.rect(3, 5 - bob, 14, 1, 15)
-    g.rect(7, 2 - bob, 6, 3, 16)        # Hutkegel
-    g.rect(7, 2 - bob, 6, 1, 17)
+    g.rect(3, 5 - bob, 14, 2, 16)       # Krempe
+    g.rect(3, 5 - bob, 14, 1, 17)
+    g.rect(7, 2 - bob, 6, 3, 17)        # Hutkegel
+    g.rect(7, 2 - bob, 6, 1, 21)
     # Genähtes Gesicht: 2x2-Knopfaugen in 11 auf 2-Sockel, Kreuzmund.
     g.rect(7, 7 - bob, 2, 2, 2)
     g.rect(11, 7 - bob, 2, 2, 2)
     g.rect(8, 10 - bob, 4, 1, 2)
     g.put(9, 9 - bob, 2)
     g.put(11, 9 - bob, 2)
-    g.rect(3, 10 - bob, 2, 1, 15)       # Stroh unter Ärmeln
-    g.rect(15, 12 - bob, 2, 1, 15)
+    g.rect(3, 10 - bob, 2, 1, 16)       # Stroh unter Ärmeln
+    g.rect(15, 12 - bob, 2, 1, 16)
     return finish(g, [(7, 7 - bob, 11), (8, 7 - bob, 11), (7, 8 - bob, 11), (8, 8 - bob, 11), (11, 7 - bob, 11), (12, 7 - bob, 11), (11, 8 - bob, 11), (12, 8 - bob, 11)])
 
 # ── Stufe 2 (24 px, 4 Frames) ───────────────────────────────────────────────
 def wolf(f: int) -> Grid:
     g = Grid(24, 24)
-    d, b, l = R["fur"]
+    d, b, l = R2()   # nacht, Tier 2 (4/6/8)
     bob = [0, 1, 2, 1][f % 4]
     cy = 15 - bob
     # Rumpf mit 3 Fellstufen (Schatten unten, Lichtrücken oben-links).
@@ -541,7 +556,7 @@ def wolf(f: int) -> Grid:
     # Schwanz 2 px breit, buschig.
     g.line(4, cy - 1, 1, cy - 4, d, 2)
     g.rect(2, cy - 5, 2, 2, l)
-    g.rect(6, cy + 1, 3, 1, 5)             # Bauchfell
+    g.rect(6, cy + 1, 3, 1, 3)             # Bauchfell
     # Vier deutlich verschiedene Laufposen (Trab/Galopp).
     a, c = [(0, 2), (1, 1), (2, 0), (1, 2)][f % 4]
     for x, o in ((5, a), (8, c), (13, c), (16, a)):
@@ -552,22 +567,22 @@ def wolf(f: int) -> Grid:
 
 def banshee(f: int) -> Grid:
     g = Grid(24, 24)
-    d, b, l = R["pale"]
+    d, b, l = R2()   # knochen, Tier 2 (9/10/11)
     bob = [0, 1, 2, 1][f % 4]
     top = 5 - bob
     # Zerfledderte Robe, unten in Fetzen.
     sway = [0, 1, 0, -1][f % 4]
     for i, w in enumerate((6, 8, 10, 11, 12, 12, 11)):
-        g.rect(12 - w // 2 + (sway if i > 3 else 0), top + 7 + i, w, 1, 8)
-    g.rect(5 + sway, 19, 3, 1, 9)
-    g.rect(10 + sway, 19, 2, 2, 9)
-    g.rect(16 + sway, 18, 2, 2, 9)
-    g.rect(7, top + 6, 10, 1, 9)
+        g.rect(12 - w // 2 + (sway if i > 3 else 0), top + 7 + i, w, 1, 9)
+    g.rect(5 + sway, 19, 3, 1, 10)
+    g.rect(10 + sway, 19, 2, 2, 10)
+    g.rect(16 + sway, 18, 2, 2, 10)
+    g.rect(7, top + 6, 10, 1, 10)
     # Kopf mit langem Haar.
-    g.ellipse(12, top + 3, 4, 4, 9)
-    g.rect(7, top + 2, 2, 7, 4)         # Haar
-    g.rect(15, top + 1, 2, 7, 4)
-    g.rect(8, top, 8, 1, 4)
+    g.ellipse(12, top + 3, 4, 4, 10)
+    g.rect(7, top + 2, 2, 7, 6)         # Haar
+    g.rect(15, top + 1, 2, 7, 6)
+    g.rect(8, top, 8, 1, 6)
     g.rect(9, top + 3, 2, 2, 2)         # Augenhöhlen
     g.rect(13, top + 3, 2, 2, 2)
     g.rect(9, top + 3, 2, 1, 20)        # Tier-Akzent (Stufe 2)
@@ -576,8 +591,8 @@ def banshee(f: int) -> Grid:
     g.rect(8, top + 7, 1, 2, 20)        # Traene
     g.rect(15, top + 6, 1, 3, 20)
     # Arme mit Krallen.
-    g.line(7, top + 7, 3 - sway, top + 10, 9, 2)
-    g.line(17, top + 7, 21 + sway, top + 9, 9, 2)
+    g.line(7, top + 7, 3 - sway, top + 10, 10, 2)
+    g.line(17, top + 7, 21 + sway, top + 9, 10, 2)
     g.put(2 - sway, top + 11, 11)
     g.put(4 - sway, top + 11, 11)
     g.put(22 + sway, top + 10, 11)
@@ -587,42 +602,42 @@ def banshee(f: int) -> Grid:
 
 def golem(f: int) -> Grid:
     g = Grid(24, 24)
-    d, b, l = R["ember"]
+    d, b, l = R2()   # glut, Tier 2 (15/17/18)
     bob = [0, 1, 2, 1][f % 4]
     # Füße + Beine (breite Torfstempel).
-    g.rect(5, 20, 5, 3, 15)
-    g.rect(14, 20, 5, 3, 15)
-    g.rect(5, 22, 5, 1, 14)
-    g.rect(14, 22, 5, 1, 14)
-    g.rect(6, 16 - bob, 4, 5, 16)
-    g.rect(14, 16 - bob, 4, 5, 16)
+    g.rect(5, 20, 5, 3, 16)
+    g.rect(14, 20, 5, 3, 16)
+    g.rect(5, 22, 5, 1, 15)
+    g.rect(14, 22, 5, 1, 15)
+    g.rect(6, 16 - bob, 4, 5, 17)
+    g.rect(14, 16 - bob, 4, 5, 17)
     # Rumpf mit Lichtkante und Schattenseite.
-    g.rect(7, 10 - bob, 10, 7, 15)
-    g.rect(7, 10 - bob, 2, 7, 16)
-    g.rect(15, 10 - bob, 2, 7, 14)
-    g.rect(8, 10 - bob, 8, 1, 17)
+    g.rect(7, 10 - bob, 10, 7, 16)
+    g.rect(7, 10 - bob, 2, 7, 17)
+    g.rect(15, 10 - bob, 2, 7, 15)
+    g.rect(8, 10 - bob, 8, 1, 18)
     # Schulterblöcke breiter als der Rumpf.
-    g.rect(2, 9 - bob, 5, 4, 16)
-    g.rect(2, 9 - bob, 5, 1, 17)
-    g.rect(17, 9 - bob, 5, 4, 16)
-    g.rect(17, 9 - bob, 5, 1, 17)
+    g.rect(2, 9 - bob, 5, 4, 17)
+    g.rect(2, 9 - bob, 5, 1, 18)
+    g.rect(17, 9 - bob, 5, 4, 17)
+    g.rect(17, 9 - bob, 5, 1, 18)
     # Arme 3 px + große Fäuste, Frame-Wechsel.
     off = [0, 2, 1, 1][f % 4]
-    g.rect(2, 12 - bob + off, 3, 5, 15)
-    g.rect(1, 17 - bob + off, 4, 4, 16)
-    g.rect(1, 17 - bob + off, 4, 1, 17)
-    g.rect(19, 12 - bob + (2 - off), 3, 5, 15)
-    g.rect(19, 17 - bob + (2 - off), 4, 4, 16)
+    g.rect(2, 12 - bob + off, 3, 5, 16)
+    g.rect(1, 17 - bob + off, 4, 4, 17)
+    g.rect(1, 17 - bob + off, 4, 1, 18)
+    g.rect(19, 12 - bob + (2 - off), 3, 5, 16)
+    g.rect(19, 17 - bob + (2 - off), 4, 4, 17)
     # Kopf rund auf kurzem Hals.
-    g.rect(10, 8 - bob, 4, 2, 16)
-    g.ellipse(12, 6 - bob, 4, 3, 16)
-    g.rect(8, 4 - bob, 8, 4, 16)
-    g.rect(8, 4 - bob, 8, 1, 17)
-    g.rect(8, 7 - bob, 8, 1, 14)
+    g.rect(10, 8 - bob, 4, 2, 17)
+    g.ellipse(12, 6 - bob, 4, 3, 17)
+    g.rect(8, 4 - bob, 8, 4, 17)
+    g.rect(8, 4 - bob, 8, 1, 18)
+    g.rect(8, 7 - bob, 8, 1, 15)
     # Glutaugen + Mundschlitz.
     g.rect(9, 5 - bob, 2, 2, 2)
     g.rect(13, 5 - bob, 2, 2, 2)
-    g.rect(9, 8 - bob, 6, 1, 14)
+    g.rect(9, 8 - bob, 6, 1, 15)
     # Moos auf Schultern und Kopf.
     g.rect(2, 8 - bob, 4, 2, 30)
     g.rect(17, 9 - bob, 3, 2, 29)
@@ -631,7 +646,7 @@ def golem(f: int) -> Grid:
 
 def spider(f: int) -> Grid:
     g = Grid(24, 24)
-    d, b, l = R["slate"]
+    d, b, l = R2()   # nacht, Tier 2 (4/6/8)
     bob = [0, 1, 2, 1][f % 4]
     cy = 14 - bob
     # Acht Beine zuerst (hinter dem Körper), 2-px-Segmente mit Knick.
@@ -649,10 +664,10 @@ def spider(f: int) -> Grid:
         (16, cy + 2, 20, cy + 5, 20, cy + 8),
     ]
     for bx, by, ex, ey, fx, fy in legs:
-        g.line(bx, by, ex, ey, 8, 2)
-        g.line(ex, ey, fx, fy, 8, 2)
-        g.rect(ex, ey, 2, 2, 9)
-        g.put(fx, fy + 1, 9)
+        g.line(bx, by, ex, ey, 6, 2)
+        g.line(ex, ey, fx, fy, 6, 2)
+        g.rect(ex, ey, 2, 2, 7)
+        g.put(fx, fy + 1, 7)
     # Hinterleib groß hinten rechts, Kopf vorn links.
     g.ellipse(16, cy + 1, 5, 4, b)
     g.ellipse(15, cy, 4, 3, l)
@@ -663,14 +678,14 @@ def spider(f: int) -> Grid:
     # Vier Augen 2x2-Höhlen mit Akzent 20, Beißzangen.
     g.rect(6, cy - 1, 2, 2, 2)
     g.rect(10, cy - 1, 2, 2, 2)
-    g.rect(5, cy + 1, 2, 1, 5)
-    g.rect(10, cy + 1, 2, 1, 5)
+    g.rect(5, cy + 1, 2, 1, 4)
+    g.rect(10, cy + 1, 2, 1, 4)
     return finish(g, [(6, cy - 1, 20), (7, cy - 1, 20), (10, cy - 1, 20), (11, cy - 1, 20)],
-                  dark_edge=8)
+                  dark_edge=6)
 
 def cultist(f: int) -> Grid:
     g = Grid(24, 24)
-    d, b, l = R["blood"]
+    d, b, l = R2()   # blut, Tier 2 (24/25/26)
     bob = [0, 1, 2, 1][f % 4]
     # Robe mit per-Frame schwingendem Saum.
     sway = [0, 1, 0, -1][f % 4]
@@ -679,7 +694,7 @@ def cultist(f: int) -> Grid:
     g.rect(5 + sway, 18, 2, 2, d)
     g.rect(11 + sway, 18, 2, 1, d)
     g.rect(16 + sway, 18, 3, 1, d)
-    g.rect(6, 14 - bob, 12, 1, 25)      # Gürtel
+    g.rect(6, 14 - bob, 12, 1, 26)      # Gürtel
     g.rect(9, 14 - bob, 3, 1, 20)       # Schnalle
     # Kapuze + warmes Gesicht (Haut-Rampe 16 / 27 / 21).
     g.ellipse(12, 9 - bob, 4, 5, b)
@@ -712,22 +727,22 @@ def cultist(f: int) -> Grid:
 
 def bomber(f: int) -> Grid:
     g = Grid(24, 24)
-    d, b, l = R["steel"]
+    d, b, l = R2()   # glut: Kappe Flamme, Stiel warm statt Stahl-Grau
     bob = [0, 1, 2, 1][f % 4]
     cy = 14 - bob
     # Pilzkappe in Flammenrampe: breite Kuppe, helle Oberkante, Spelzt.
     g.ellipse(12, cy - 2, 7, 4, 18)
     g.rect(5, cy + 1, 15, 2, 18)
-    g.rect(6, cy + 3, 13, 1, 15)
+    g.rect(6, cy + 3, 13, 1, 16)
     g.rect(7, cy - 5, 10, 1, 19)
     for sx in (5, 10, 15):
         g.rect(sx, cy - 3, 2, 2, 22)
     # Stiel mit Licht Licht und Augen.
-    g.rect(9, cy + 2, 6, 7, 10)
-    g.rect(9, cy + 2, 2, 7, 11)
-    g.rect(13, cy + 2, 2, 7, 8)
+    g.rect(9, cy + 2, 6, 7, 16)
+    g.rect(9, cy + 2, 2, 7, 17)
+    g.rect(13, cy + 2, 2, 7, 15)
     # Zuendschnur aus der Kappe, Funken in vier Stufen.
-    g.line(12, cy - 6, 16, cy - 9, 10, 2)
+    g.line(12, cy - 6, 16, cy - 9, 17, 2)
     spark = [0, 1, 2, 1][f % 4]
     g.rect(15, cy - 10 - spark, 2, 2, 22)
     g.put(16, cy - 11 - spark, 13)
@@ -739,50 +754,50 @@ def bomber(f: int) -> Grid:
     g.rect(11, cy + 8, 3, 1, 2)
     # Fusssohlen: 4 klar verschiedene Schrittphasen (0..3 px, gegenlaeufig).
     off = [0, 1, 2, 3][f % 4]
-    g.rect(9 + (off % 2), cy + 8 - off, 2, 2, 8)
-    g.rect(13 - (off % 2), cy + 8 - (3 - off), 2, 2, 8)
+    g.rect(9 + (off % 2), cy + 8 - off, 2, 2, 15)
+    g.rect(13 - (off % 2), cy + 8 - (3 - off), 2, 2, 15)
     return finish(g, [(10, cy + 5, 20), (11, cy + 5, 20),
                       (13, cy + 5, 20), (14, cy + 5, 20), (16, cy - 11 - spark, 13)])
 
 def knight(f: int) -> Grid:
     g = Grid(28, 28)
-    d, b, l = R["mist"]
+    d, b, l = R2()   # nacht-Stahl, Tier 3 (4/6/8)
     bob = [0, 1, 2, 1][f % 4]
     off = [0, 2, 1, 1][f % 4]
     # Beine mit vier Ständen.
     g.rect(9, 20 + off, 4, 5, d)
     g.rect(15, 20 + (2 - off), 4, 5, d)
-    g.rect(8, 24 + off, 5, 2, 4)
-    g.rect(15, 24 + (2 - off), 5, 2, 4)
+    g.rect(8, 24 + off, 5, 2, 3)
+    g.rect(15, 24 + (2 - off), 5, 2, 3)
     # Torso 12x11 mit Lichtkante links, Schatten rechts.
     g.rect(8, 10 - bob, 12, 11, b)
     g.rect(8, 10 - bob, 3, 11, l)
     g.rect(17, 10 - bob, 3, 11, d)
-    g.rect(9, 14 - bob, 10, 1, 7)
+    g.rect(9, 14 - bob, 10, 1, 5)
     g.rect(13, 16 - bob, 2, 2, 26)
     g.rect(9, 19 - bob, 10, 1, 4)
     # Schultern.
-    g.ellipse(7, 11 - bob, 3, 2, 7)
-    g.ellipse(21, 11 - bob, 3, 2, 7)
+    g.ellipse(7, 11 - bob, 3, 2, 5)
+    g.ellipse(21, 11 - bob, 3, 2, 5)
     g.rect(5, 11 - bob, 2, 1, 11)
     g.rect(21, 11 - bob, 2, 1, 11)
     # Helm 10x7, Visier, roter Federbusch.
-    g.rect(9, 3 - bob, 10, 7, 7)
-    g.rect(9, 3 - bob, 10, 1, 9)
-    g.rect(9, 4 - bob, 2, 6, 5)
+    g.rect(9, 3 - bob, 10, 7, 5)
+    g.rect(9, 3 - bob, 10, 1, 8)
+    g.rect(9, 4 - bob, 2, 6, 3)
     g.rect(12, 6 - bob, 5, 2, 2)        # Visierhöhle
     g.rect(13, 8 - bob, 2, 1, 4)
     g.rect(12, 0 - bob, 4, 3, 26)
     g.rect(12, 0 - bob, 2, 1, 25)
     g.rect(16, 1 - bob, 2, 1, 23)
     # Schild links, Schwert rechts in der Faust.
-    g.rect(1, 12 - bob, 5, 8, 7)
-    g.rect(1, 12 - bob, 5, 1, 9)
-    g.rect(2, 13 - bob, 3, 6, 5)
+    g.rect(1, 12 - bob, 5, 8, 5)
+    g.rect(1, 12 - bob, 5, 1, 8)
+    g.rect(2, 13 - bob, 3, 6, 3)
     g.rect(3, 15 - bob, 1, 2, 26)
-    g.rect(22, 12 - bob, 2, 8, 5)
-    g.rect(24, 10 - bob, 2, 13, 8)
-    g.rect(24, 10 - bob, 1, 13, 9)
+    g.rect(22, 12 - bob, 2, 8, 3)
+    g.rect(24, 10 - bob, 2, 13, 4)
+    g.rect(24, 10 - bob, 1, 13, 8)
     g.rect(23, 19 - bob, 4, 2, 20)
     g.rect(23, 21 - bob, 4, 2, 16)
     return finish(g, [(13, 6 - bob, 26), (14, 6 - bob, 26)])
@@ -790,7 +805,7 @@ def knight(f: int) -> Grid:
 
 def harpy(f: int) -> Grid:
     g = Grid(28, 28)
-    d, b, l = R["bone"]
+    d, b, l = R2()   # knochen, Tier 3 (9/11/12)
     bob = [0, 1, 2, 1][f % 4]
     cy = 14 - bob
     # Flügel weit gespreizt (Federfinger).
@@ -836,28 +851,28 @@ def harpy(f: int) -> Grid:
 
 def lich(f: int) -> Grid:
     g = Grid(28, 28)
-    d, b, l = R["bone"]
+    d, b, l = R2()   # knochen-Schaedel + Nacht-Robe (unveraendert)
     bob = [0, 1, 2, 1][f % 4]
     # Robe: dunkles Nachtblau mit 2-px-Falten (kein roter Balken).
     sway = [0, 1, 0, -1][f % 4]
     for i, w in enumerate((10, 11, 12, 13, 14, 15, 16)):
         y = 13 + i - bob
-        g.rect(13 - w // 2 + (sway if i > 2 else 0), y, w, 1, 3 if i % 4 else 4)
+        g.rect(13 - w // 2 + (sway if i > 2 else 0), y, w, 1, 4 if i % 4 else 5)
     for lx in (8, 16):
         g.rect(lx + sway, 16 - bob, 2, 9, 2)
     g.rect(6, 12 - bob, 15, 2, 2)      # Schultern
     g.rect(7, 12 - bob, 5, 1, 4)
     # Schädel 8x8 mit 2x2-Augen auf Socket.
-    g.ellipse(13, 8 - bob, 5, 4, 10)
-    g.rect(9, 11 - bob, 9, 2, 10)
-    g.rect(9, 13 - bob, 9, 1, 9)
+    g.ellipse(13, 8 - bob, 5, 4, 11)
+    g.rect(9, 11 - bob, 9, 2, 11)
+    g.rect(9, 13 - bob, 9, 1, 10)
     g.rect(9, 7 - bob, 2, 2, 2)
     g.rect(16, 7 - bob, 2, 2, 2)
     g.rect(9, 7 - bob, 2, 1, 26)       # Tier-Akzent Rot
     g.rect(16, 7 - bob, 2, 1, 26)
     g.rect(13, 9 - bob, 2, 2, 2)       # Nasenhöhle
     for x in (10, 12, 14, 16):         # Zähne 1-px-Reihe im Kiefer
-        g.put(x, 12 - bob, 8)
+        g.put(x, 12 - bob, 9)
     # Krone aus Gold, aufgesetzt (2 px tief, Nieten 2x2).
     g.rect(8, 2 - bob, 11, 2, 20)
     g.rect(8, 2 - bob, 11, 1, 21)
@@ -916,23 +931,23 @@ def wraith(f: int) -> Grid:
 
 def treant(f: int) -> Grid:
     g = Grid(28, 28)
-    d, b, l = 14, 16, 17
+    d, b, l = R2()   # glut-Wood, Tier 3 (16/17/18)
     bob = [0, 1, 2, 1][f % 4]
     step = [0, 1, 0, -1][f % 4]
-    g.line(10, 25, 4 + step, 27, 14, 2)
-    g.line(11, 25, 9 + step, 27, 15, 2)
-    g.line(18, 25, 23 - step, 27, 14, 2)
-    g.line(16, 25, 18 - step, 27, 15, 2)
-    g.rect(10, 10 - bob, 8, 16, 16)
-    g.rect(10, 10 - bob, 2, 16, 14)
-    g.rect(16, 10 - bob, 2, 16, 15)
-    g.rect(12, 14 - bob, 2, 8, 14)
-    g.rect(12, 14 - bob, 1, 4, 15)
-    g.rect(4, 8 - bob, 6, 2, 16)
-    g.rect(2, 6 - bob, 4, 2, 15)
-    g.rect(2, 9 - bob, 3, 2, 14)
-    g.rect(18, 11 - bob, 7, 2, 16)
-    g.rect(23, 8 - bob, 3, 2, 15)
+    g.line(10, 25, 4 + step, 27, 16, 2)
+    g.line(11, 25, 9 + step, 27, 17, 2)
+    g.line(18, 25, 23 - step, 27, 16, 2)
+    g.line(16, 25, 18 - step, 27, 17, 2)
+    g.rect(10, 10 - bob, 8, 16, 17)
+    g.rect(10, 10 - bob, 2, 16, 16)
+    g.rect(16, 10 - bob, 2, 16, 17)
+    g.rect(12, 14 - bob, 2, 8, 16)
+    g.rect(12, 14 - bob, 1, 4, 17)
+    g.rect(4, 8 - bob, 6, 2, 17)
+    g.rect(2, 6 - bob, 4, 2, 17)
+    g.rect(2, 9 - bob, 3, 2, 16)
+    g.rect(18, 11 - bob, 7, 2, 17)
+    g.rect(23, 8 - bob, 3, 2, 17)
     # Blattkronen: 2x2-Cluster, mindestens 2 px Innenabstand zur Canvas-Kante.
     g.rect(4, 3 - bob, 4, 2, 30)
     g.rect(2, 2 - bob, 3, 2, 31)
@@ -942,9 +957,9 @@ def treant(f: int) -> Grid:
     g.rect(23, 3 - bob, 3, 2, 31)
     g.rect(18, 6 - bob, 2, 2, 29)
     g.rect(24, 6 - bob, 2, 2, 28)
-    g.rect(11, 12 - bob, 7, 5, 14)
-    g.rect(12, 12 - bob, 3, 1, 16)
-    g.rect(16, 12 - bob, 2, 1, 16)
+    g.rect(11, 12 - bob, 7, 5, 16)
+    g.rect(12, 12 - bob, 3, 1, 17)
+    g.rect(16, 12 - bob, 2, 1, 17)
     g.rect(11, 13 - bob, 2, 2, 2)
     g.rect(16, 13 - bob, 2, 2, 2)
     g.rect(13, 16 - bob, 3, 2, INK)
@@ -954,18 +969,18 @@ def treant(f: int) -> Grid:
 
 def imp(f: int) -> Grid:
     g = Grid(28, 28)
-    d, b, l = R["ember"]
+    d, b, l = R2()   # glut, Tier 3 (16/17/18)
     bob = [0, 1, 2, 1][f % 4]
     cy = 14 - bob
     # Flügelchen.
     if f % 4 in (1, 2):
-        g.line(10, cy - 1, 3, cy - 5, 15, 2)
-        g.line(3, cy - 5, 6, cy + 2, 17)
-        g.line(18, cy - 1, 25, cy - 5, 15, 2)
-        g.line(25, cy - 5, 22, cy + 2, 17)
+        g.line(10, cy - 1, 3, cy - 5, 16, 2)
+        g.line(3, cy - 5, 6, cy + 2, 18)
+        g.line(18, cy - 1, 25, cy - 5, 16, 2)
+        g.line(25, cy - 5, 22, cy + 2, 18)
     else:
-        g.line(10, cy, 5, cy + 3, 15, 2)
-        g.line(18, cy, 23, cy + 3, 15, 2)
+        g.line(10, cy, 5, cy + 3, 16, 2)
+        g.line(18, cy, 23, cy + 3, 16, 2)
     g.ellipse(14, cy + 1, 4, 4, b)      # Körper
     g.ellipse(13, cy, 3, 3, l)
     g.put(12, cy - 2, 28)               # Glutadern
@@ -982,7 +997,7 @@ def imp(f: int) -> Grid:
     g.rect(13, cy - 2, 3, 1, INK)       # Grinsen
     g.put(13, cy - 1, 13)
     g.put(15, cy - 1, 13)
-    g.line(18, cy + 2, 21, cy + 5, 17, 1)  # Schwanz
+    g.line(18, cy + 2, 21, cy + 5, 18, 1)  # Schwanz
     g.put(22, cy + 5, 20)
     g.put(23, cy + 4, 22)
     g.rect(11, cy + 5, 2, 3, d)         # Beine
@@ -996,7 +1011,7 @@ def imp(f: int) -> Grid:
 # ── Stufe 4 (32 px, 4 Frames) ───────────────────────────────────────────────
 def horror(f: int) -> Grid:
     g = Grid(32, 32)
-    d, b, l = R["flesh"]
+    d, b, l = R2()   # blut/Fleisch, Tier 4 (24/26/27)
     bob = [0, 1, 2, 1][f % 4]
     cy = 15 - bob
     # Tentakel/Beine.
@@ -1027,7 +1042,7 @@ def horror(f: int) -> Grid:
 
 def centipede(f: int) -> Grid:
     g = Grid(32, 32)
-    d, b, l = R["bone"]
+    d, b, l = R2()   # knochen, Tier 4 (10/11/12)
     bob = [0, 1, 2, 1][f % 4]
     cy = 17 - bob
     # Segmentkette von links (Schwanz) nach rechts (Kopf).
@@ -1036,34 +1051,34 @@ def centipede(f: int) -> Grid:
         y = cy - (0 if (i + f) % 2 == 0 else 1)
         g.ellipse(x, y, 3, 3, b)
         g.ellipse(x, y - 1, 2, 2, l)
-        g.put(x - 1, y + 2, 10)
-        g.put(x + 1, y + 2, 10)
+        g.put(x - 1, y + 2, 11)
+        g.put(x + 1, y + 2, 11)
     # Kopf mit Mandibeln.
     g.ellipse(27, cy - 2, 4, 4, b)
     g.rect(25, cy - 4, 2, 2, 2)         # Augenhöhlen
     g.rect(28, cy - 4, 2, 2, 2)
     g.rect(25, cy - 4, 2, 1, 13)
     g.rect(28, cy - 4, 2, 1, 13)
-    g.put(30, cy - 2, 10)
-    g.put(31, cy - 1, 10)
-    g.put(31, cy, 10)
+    g.put(30, cy - 2, 11)
+    g.put(31, cy - 1, 11)
+    g.put(31, cy, 11)
     g.put(26, cy + 1, 24)               # Mund
     # Beinpaare, Frame-wechselnd.
     phase = [0, 1, 2, 0][f % 4]
     for i in range(6):
         x = 6 + i * 4
         swing = 1 if (i + phase) % 2 else 0
-        g.line(x - 1, cy + 2, x - 3 - swing, cy + 6, 10, 1)
-        g.line(x + 1, cy + 2, x + 3 - swing, cy + 6, 10, 1)
+        g.line(x - 1, cy + 2, x - 3 - swing, cy + 6, 11, 1)
+        g.line(x + 1, cy + 2, x + 3 - swing, cy + 6, 11, 1)
     # Hinterleibsschwanz.
-    g.line(3, cy - 1, 1, cy - 3, 10, 1)
+    g.line(3, cy - 1, 1, cy - 3, 11, 1)
     return finish(g, [(25, cy - 4, 13), (26, cy - 4, 13),
                       (28, cy - 4, 13), (29, cy - 4, 13)])
 
 
 def gargoyle(f: int) -> Grid:
     g = Grid(32, 32)
-    d, b, l = R["stone"]
+    d, b, l = R2()   # nacht-Stein, Tier 4 (5/7/9)
     bob = [0, 1, 2, 1][f % 4]
     cy = 17 - bob
     ws = -2 if f % 4 in (1, 2) else 1
@@ -1099,7 +1114,7 @@ def gargoyle(f: int) -> Grid:
 
 def reaper_bat(f: int) -> Grid:
     g = Grid(32, 32)
-    d, b, l = R["void"]
+    d, b, l = R2()   # nacht, Tier 4 (5/7/9)
     bob = [0, 1, 2, 1][f % 4]
     cy = 16 - bob
     ws = -2 if f % 4 in (1, 2) else 1
@@ -1107,18 +1122,18 @@ def reaper_bat(f: int) -> Grid:
     for side, sx in ((-1, 1), (1, -1)):
         for i in range(4):
             x = 16 + side * (5 + i * 2)
-            g.rect(min(x, x + sx * 4), cy - 8 + ws + i * 2, 4, 2, 5 if i % 2 else 6)
-        g.line(16 + side * 4, cy - 4 + ws, 16 + side * 13, cy - 12 + ws, 8, 2)
-        g.put(16 + side * 13, cy - 13 + ws, 6)
+            g.rect(min(x, x + sx * 4), cy - 8 + ws + i * 2, 4, 2, 7 if i % 2 else 8)
+        g.line(16 + side * 4, cy - 4 + ws, 16 + side * 13, cy - 12 + ws, 9, 2)
+        g.put(16 + side * 13, cy - 13 + ws, 8)
     # Körper + Kopf mit Ohren.
     g.ellipse(16, cy + 2, 3, 5, b)
     g.rect(14, cy - 2, 2, 4, d)
     g.ellipse(16, cy - 5, 3, 3, b)
     g.rect(12, cy - 8, 2, 3, b)
     g.rect(19, cy - 8, 2, 3, b)
-    # Lichtkante oben-links (8/11) gegen schwarzes Moor, Schatten unten-rechts (3).
-    g.vline(13, cy - 7, cy + 4, 8)
-    g.hline(13, 17, cy - 8, 8)
+    # Lichtkante oben-links (8/11) gegen schwarzes Moor, Schatten unten-rechts (5).
+    g.vline(13, cy - 7, cy + 4, 9)
+    g.hline(13, 17, cy - 8, 9)
     g.put(14, cy - 8, 11)
     g.put(13, cy - 6, 11)
     g.vline(19, cy - 1, cy + 6, d)
@@ -1129,8 +1144,8 @@ def reaper_bat(f: int) -> Grid:
     g.rect(17, cy - 3, 1, 1, 11)
     # Gegabelter Schwanz.
     g.rect(15, cy + 7, 2, 3, d)
-    g.rect(14, cy + 10, 2, 2, 5)
-    g.rect(17, cy + 10, 2, 2, 5)
+    g.rect(14, cy + 10, 2, 2, 7)
+    g.rect(17, cy + 10, 2, 2, 7)
     return finish(g, [(14, cy - 6, 13), (15, cy - 6, 13),
                       (18, cy - 6, 13), (19, cy - 6, 13)], shade=False)
 
@@ -1247,8 +1262,10 @@ def frames_for(eid: str) -> int:
 
 
 def build() -> dict[str, list[Grid]]:
+    global _CURRENT
     sprites: dict[str, list[Grid]] = {}
     for eid, fn in DRAW.items():
+        _CURRENT = eid
         size = TIER_SIZE[TIER[eid]]
         frames = [pad_grid(fn(i), size, size) for i in range(frames_for(eid))]
         sprites[f"enemy_{eid}"] = frames

@@ -35,6 +35,7 @@ const MIX = [
   ["toad", 20], ["skeleton", 40], ["bat", 50], ["ghoul", 30], ["witchling", 25],
   ["slime", 30], ["scarecrow", 10], ["wolf", 25], ["spider", 25], ["cultist", 15],
   ["golem", 10], ["bomber", 10], ["banshee", 10], ["knight", 5], ["wraith", 5],
+  ["horror", 8], ["abom", 5],
 ];
 
 // Die 30 Gegner-IDs (spriteKey = "enemy_<id>", Frame-Namen im Runtime-Atlas).
@@ -55,12 +56,19 @@ const FAMILY_SRC = `
     if (l < 0.055) return "kontur";
     const d = mx - mn;
     const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
-    if (s < 0.22) return l < 0.3 ? "dunkel-neutral" : (l > 0.62 ? "hell-neutral" : "mittel-neutral");
     let h = 0;
     if (mx === r) h = 60 * (((g - b) / d) % 6);
     else if (mx === g) h = 60 * ((b - r) / d + 2);
     else h = 60 * ((r - g) / d + 4);
     if (h < 0) h += 360;
+    // Die Palette hat kein gesaettigtes Blau (max. s ~0,33 bei nightMid,
+    // fogBlue 0,12): Blaue Hue mit abgesenkter Schwelle 0,12 klassifizieren,
+    // sonst wuerde der Nacht-Thema-Anteil als "neutral-grau" verschwinden.
+    const blueHue = h >= 200 && h < 340;
+    if (s < (blueHue ? 0.12 : 0.22)) {
+      return l < 0.3 ? "dunkel-neutral" : (l > 0.62 ? "hell-neutral" : "mittel-neutral");
+    }
+    if (blueHue) return "blau";
     if (h >= 340 || h < 14) return "blut-rot";
     if (h < 45) return "glut-braun";
     if (h < 70) return "gold";
