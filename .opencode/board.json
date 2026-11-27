@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4482,
+  "next": 4501,
   "cards": [
     {
       "id": 1,
@@ -5482,6 +5482,33 @@
       "notes": [],
       "created": "2026-11-27T18:47:17Z",
       "updated": "2026-11-27T18:47:17Z"
+    },
+    {
+      "id": 4498,
+      "title": "m10-verify-input-fix #1: F2-Befund belegen (Selektor, URI, Timestamp, Ursache)",
+      "description": "lane #4318, Merge f948503. Abnahme: shots/m10-verify-input-f2-before.json + .log belegen den F2-Selektor-FAIL aus m10-input-qa (tapText \"BRUDER KAEL\" nicht sichtbar) und benennen die Ursache. Kontrolleure: reviewer.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T18:52:08Z",
+      "updated": "2026-11-27T18:52:08Z"
+    },
+    {
+      "id": 4499,
+      "title": "m10-verify-input-fix #2: Harness-Härtung (Zustands-Waits, --tag Output)",
+      "description": "lane #4319, Merge f948503. Abnahme: nur scripts/verify-input.mjs geändert; feste Wartezeiten durch waitState-Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.*; verify-input 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T18:52:08Z",
+      "updated": "2026-11-27T18:52:08Z"
+    },
+    {
+      "id": 4500,
+      "title": "m10-verify-input-fix #3: Stabilität 3x + Lastlauf 28/28 PASS, Lane-Doku",
+      "description": "lane #4320, Merge f948503. Abnahme: verify-input 3x + 1x unter Last je 28/28 PASS, 0 JS-Fehler; Ergebnis in docs/lanes/m10-verify-input-fix.md; vitest grün. Kontrolleure: test-auditor + reviewer.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T18:52:08Z",
+      "updated": "2026-11-27T18:52:08Z"
     }
   ]
 }
