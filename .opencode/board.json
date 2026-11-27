@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6482,
+  "next": 6558,
   "cards": [
     {
       "id": 1,
@@ -7565,6 +7565,102 @@
       "notes": [],
       "created": "2026-11-27T23:17:19Z",
       "updated": "2026-11-27T23:17:19Z"
+    },
+    {
+      "id": 6482,
+      "title": "m10-boss-onscreen #K1 Ist-Geometrie",
+      "description": "Abnahme: Ist-Geometrie aller 6 Bosse je View gemessen (shots/m10-boss-onscreen-before.json), Befund dokumentiert.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T23:3xZ",
+          "by": "merge",
+          "text": "lane #2538, Merge 6fbb38d"
+        }
+      ],
+      "created": "2026-11-27T23:25:44Z",
+      "updated": "2026-11-27T23:25:44Z"
+    },
+    {
+      "id": 6483,
+      "title": "m10-boss-onscreen #K2 Spawn-Komposition",
+      "description": "Abnahme: composedBossCenterY nach echter Sprite-Frame-Hoehe, kein Boss hinter HP-Leiste/Banner (after.json).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T23:3xZ",
+          "by": "merge",
+          "text": "lane #2539, Merge 6fbb38d"
+        }
+      ],
+      "created": "2026-11-27T23:25:44Z",
+      "updated": "2026-11-27T23:25:44Z"
+    },
+    {
+      "id": 6484,
+      "title": "m10-boss-onscreen #K3 Banner/Intro",
+      "description": "Abnahme: Banner-Start an tatsaechliche Screen-Lage gekoppelt, Banner nie ueber Boss-Sprite.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T23:3xZ",
+          "by": "merge",
+          "text": "lane #2540, Merge 6fbb38d"
+        }
+      ],
+      "created": "2026-11-27T23:25:44Z",
+      "updated": "2026-11-27T23:25:44Z"
+    },
+    {
+      "id": 6485,
+      "title": "m10-boss-onscreen #K4 Test",
+      "description": "Abnahme: tests/boss-spawn-composition.test.ts deckt Komposition ab (Ring-Winkel je Boss/View).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T23:3xZ",
+          "by": "merge",
+          "text": "lane #2541, Merge 6fbb38d"
+        }
+      ],
+      "created": "2026-11-27T23:25:44Z",
+      "updated": "2026-11-27T23:25:44Z"
+    },
+    {
+      "id": 6486,
+      "title": "m10-boss-onscreen #K5 Belege + Doku",
+      "description": "Abnahme: Spawn-Screenshots 640x360/1920x1080 + docs/lanes/m10-boss-onscreen.md mit Mess tabellen.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T23:3xZ",
+          "by": "merge",
+          "text": "lane #2542, Merge 6fbb38d"
+        }
+      ],
+      "created": "2026-11-27T23:25:44Z",
+      "updated": "2026-11-27T23:25:44Z"
+    },
+    {
+      "id": 6487,
+      "title": "m10-boss-onscreen #K6 Intro-Zoom-Banner-Sichtbarkeit",
+      "description": "Abnahme: Zoom-Headroom-Komposition (Zoom 1.14 um Viewport-Mitte), 0 px HP-/Banner-Overlap, 25/25 Tests; Run-Guard-Patch im Merge nachgezogen (banner.bottom+6, 12 Retries).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T23:3xZ",
+          "by": "merge",
+          "text": "lane #2544 (+ #2543 doing-Variante), Merge 6fbb38d"
+        }
+      ],
+      "created": "2026-11-27T23:25:44Z",
+      "updated": "2026-11-27T23:25:44Z"
     }
   ]
 }
