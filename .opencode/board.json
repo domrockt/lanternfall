@@ -3553,10 +3553,16 @@
       "id": 2400,
       "title": "m10-heroes-pass K3: Lauf-/Bob-Zyklus",
       "description": "4 Frames je Richtung mit sichtbarer Gewichtsverlagerung (Bob 0/1/0/1 px dokumentiert), Kael schwerer/langsamer wirkend (tieferes Bob, breitere Standphase). GIF shots/m10-heroes-walk.gif + 1x-Standbild bei Minute 5 mit >=250 Gegnern shots/m10-heroes-ingame.png. Abnahme: GIF zeigt beide Helden-Laeufe, In-Game-Shot zeigt Held im Gedraenge, 0 JS-Fehler.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T08:15:26Z",
+          "by": "build",
+          "text": "todo → doing: K3: Bob-Sign 0/1/0/1 nach unten gefixt, Walk-GIF + In-Game-Shot (5:00, 286 Gegner) erzeugt; build+Tests laufen vor Commit."
+        }
+      ],
       "created": "2026-11-27T05:34:41Z",
-      "updated": "2026-11-27T05:34:41Z"
+      "updated": "2026-11-27T08:15:26Z"
     },
     {
       "id": 2401,
