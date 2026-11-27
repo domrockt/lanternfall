@@ -3511,17 +3511,22 @@
       "id": 2361,
       "title": "m10-separation-crowd #4 Nachmessen + Art-Urteil",
       "description": "Gleiches Probe-Skript wie #1: shots/m10-separation-after.json + -after.png bei 500 Gegnern. Ziel: Anteil <4px-Paare -50% vs Baseline, Gegner im 32px-Kreis <=40, FPS min >=55. Chaos-Frame von art-director bewerten (einzelne Gegnertypen rechts unterscheidbar JA/NEIN) in docs/lanes/m10-separation-crowd.md. Abnahme: JSON/PNG im Commit, Doku mit Vorher/Nachher-Tabelle + Urteil, .lane-done.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T06:26:28Z",
           "by": "build",
           "text": "todo → doing: Start: Probe --tag=after (flock), Vorher/Nachher-Vergleich, Art-Director-Urteil, Doku."
+        },
+        {
+          "at": "2026-11-27T07:39:18Z",
+          "by": "build",
+          "text": "doing → review: Commit b018f81: Probe --tag=after neu gemessen (closePairs 561→11, meanNearest 3,83→8,81px, within32px 280→38, FPS min 59,5, 0 JS-Fehler); art-director PASS 3,5/5 (4 Typen rechts trennbar, Bodenlücken). Doku docs/lanes/m10-separation-crowd.md."
         }
       ],
       "created": "2026-11-27T05:26:47Z",
-      "updated": "2026-11-27T06:26:28Z"
+      "updated": "2026-11-27T07:39:18Z"
     }
   ]
 }

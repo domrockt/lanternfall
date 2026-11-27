@@ -1,0 +1,30 @@
+# Lane m10-separation-crowd — DONE (2026-11-27)
+
+Ziel: Horden-Klumpen bei 500+ Gegnern auf Logikebene schließen, ohne Renderer-Änderung
+und ohne Run.ts/CombatSystem.ts/EnemyPool.ts anzufassen. API von separation.ts stabil.
+
+## Ergebnis (Probe scripts/m10-crowd-probe.mjs, 500 Gegner, 300 Frames, flock)
+| Metrik | Baseline | Nachher | Ziel | Status |
+|---|---|---|---|---|
+| Paare < 4 px | 561 | 11 | ≤ 280 (−50 %) | PASS (−98 %) |
+| closePairRatio | 0,45 % | 0,01 % | – | PASS |
+| mittlerer Nächster-Nachbar | 3,83 px | 8,81 px | größer | PASS |
+| Gegner im 32-px-Kreis | 280 | 38 | ≤ 40 | PASS |
+| FPS min / median | 59,5 / 59,9 | 59,5 / 59,9 | min ≥ 55 | PASS |
+| NaN/Infinity | 0 | 0 | 0 | PASS |
+| JS-Fehler | 0 | 0 | 0 | PASS |
+
+## Umsetzung
+- #2358 Baseline + Probe-Skript, Belege shots/m10-separation-before.{json,png} (20e6fa5).
+- #2359 Massengewichtung, deterministischer Golden-Angle-Fallback, resolveCrowdSeparation
+  mit Iterations-/Paar-Deckel, Grundverstärkung + Tangential-Scherung (d7749ee, Nachzug a731e33);
+  tests/separation-crowd.test.ts 13/13.
+- #2360 SpatialHash.queryNeighbors (Distanzfilter) + recommendedCellSize-Ableitung, 500 Queries
+  Median 0,872 ms, Treffer == Brute-Force auf 3 Seeds (8374539, 11b2d84).
+- #2361 Nachmessen + art-director-Urteil: PASS 3,5/5, 4 Typen rechts trennbar, Bodenlücken
+  sichtbar (b018f81), Belege shots/m10-separation-after.{json,png}.
+
+## Abnahme
+`npx tsc --noEmit` grün, `npm run build` rc=0, `npm test` 281/281 grün (vorher 268).
+Zusatz `flock … npm run perf`: rc=0, passed, 500er-Burst 59,4 FPS, Minute-25 56,1 FPS, 0 JS-Fehler.
+Offen (nicht diese Lane): Boss-/Elite-Lichthalo gegen Verdeckung, Gem-Depth, Konturabstand 2 px.
