@@ -3052,11 +3052,17 @@
       "id": 2081,
       "title": "m10-results-attribution: Doku + .lane-done",
       "description": "docs/lanes/m10-results-attribution.md mit Abweichung vorher/nachher, Messwerten und ux-check-Urteil; .lane-done mit 5-10 Zeilen Zusammenfassung + Messwerten. Abnahme: npm run build + alle Tests gruen, ux-check PASS, docs + .lane-done committet.",
-      "column": "todo",
+      "column": "review",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T06:06:43Z",
+          "by": "build",
+          "text": "todo → review: Commit ec2e476 (#2081): docs/lanes/m10-results-attribution.md mit Vorher/Nachher, Messwerten (total=176104 bars=176104 delta=0%, stress12 12 rows/0 overlaps, layout-check PASS) und ux-check PASS; .lane-done committet. build+238 Tests gruen."
+        }
+      ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T02:57:04Z"
+      "updated": "2026-11-27T06:06:43Z"
     }
   ]
 }
