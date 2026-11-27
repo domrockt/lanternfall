@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6005,
+  "next": 6008,
   "cards": [
     {
       "id": 1,
@@ -7025,6 +7025,36 @@
       ],
       "created": "2026-11-27T22:12:39Z",
       "updated": "2026-11-27T22:12:43Z"
+    },
+    {
+      "id": 6005,
+      "title": "m10-flock-timeout K1: ground-cost.mjs auf flock -w umstellen (lane #4538)",
+      "description": "scripts/m10-ground-cost.mjs: beide flock-Aufrufe/Command-Strings auf `flock -w <N>` (instrument -w 520, normal -w 300), Kommentar + Timeout-Meldung-Muster. AK: grep liefert nur -w-Zeilen, node --check rc=0. Lane #4538, gemerged in Merge de18b4f.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T22:16:30Z",
+      "updated": "2026-11-27T22:16:30Z"
+    },
+    {
+      "id": 6006,
+      "title": "m10-flock-timeout K2: fx-overdraw + ui-cost auf flock -w (lane #4539)",
+      "description": "scripts/m10-fx-overdraw.mjs + scripts/m10-ui-cost.mjs: Startanleitungen auf `flock -w 300` umstellen, Timeout-Meldung + Kommentare. AK: grep -w-Beleg, node --check rc=0. Lane #4539, gemerged in Merge de18b4f.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T22:16:30Z",
+      "updated": "2026-11-27T22:16:30Z"
+    },
+    {
+      "id": 6007,
+      "title": "m10-flock-timeout K3: Negativ-Test + Doku + Lane-Abschluss (lane #4540)",
+      "description": "Sperre halten, `flock -w 1` dagegen laufen lassen: bricht ~1 s mit rc!=0 ab, Meldung erscheint. Log docs/lanes/m10-flock-timeout.md mit grep-Beleg (3 Dateien nur -w), Exitcode, diff-Beleg. Lane #4540, gemerged in Merge de18b4f.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T22:16:30Z",
+      "updated": "2026-11-27T22:16:30Z"
     }
   ]
 }
