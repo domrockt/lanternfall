@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { PAL } from "../src/palette";
+import { setRenderScale } from "../src/config";
 import { deathFrameSets, isBossFxKey, BOSS_FX_BASES, FX_FRAME_COUNTS } from "../src/gfx/gen-fx";
 
 /**
@@ -234,6 +235,7 @@ function fakeScene(sprite: FakeSprite): Phaser.Scene {
 
 afterEach(() => {
   delete (globalThis as { window?: unknown }).window;
+  setRenderScale(1); // Reglerstufe zuruecksetzen (Live-Binding RENDER_SCALE, m10-perf-cap-rollback)
 });
 
 describe("Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme (Karte #5220)", () => {
@@ -289,7 +291,13 @@ describe("Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme (Karte #5220)", () => {
     // Daempfung quadratisch + dpr-Alpha (0,9*0,5*0,5*0,6) — bestehendes M6/M10-Verhalten, unveraendert.
     expect(runtime?.alphaScaleExempt).toBe(false);
     expect(runtime?.alphaFrom).toBeCloseTo(0.9 * 0.5 * 0.5 * 0.6, 10);
-    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3 (Deckel greift weiter).
-    expect(runtime?.scaleFrom).toBeCloseTo(3, 10);
+    // M10-perf-cap-rollback: der Flaechen-Deckel greift nur noch, wenn der
+    // DPR-Budget-Regler gesenkt hat (RENDER_SCALE > 1, Android-Sicherheitsnetz);
+    // auf iGPU (RENDER_SCALE 1) bleibt der Glow volllaufend.
+    expect(runtime?.scaleFrom).toBeCloseTo(6, 10);
+    setRenderScale(2); // Regler gesenkt -> Deckel greift beim naechsten Spawn
+    const capped = fx.spawn({ texture: "fx_halo", x: 0, y: 0, life: 1, scaleFrom: 6, scaleTo: 6 });
+    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3.
+    expect(capped?.scaleFrom).toBeCloseTo(3, 10);
   });
 });
