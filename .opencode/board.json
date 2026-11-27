@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2862,
+  "next": 2922,
   "cards": [
     {
       "id": 1,
@@ -4189,6 +4189,52 @@
       "notes": [],
       "created": "2026-11-27T10:55:17Z",
       "updated": "2026-11-27T10:55:17Z"
+    },
+    {
+      "id": 2918,
+      "title": "m10-passive-math #1 Ist-Matrix 6 Passives x Stufen 1..8",
+      "description": "tests/passive-stack.test.ts erzeugt fuer alle 6 Passives (boots/tome/heart/charm/whetstone/hourglass) die effektiven Werte je Stufe 1..8 ueber aggregateMods/effective*; schreibt shots/m10-passive-math-matrix.json mit Wert, erwartetem n-fachem Basisbonus, Abweichung, Cap-Check und NaN/Negativ-Check. Abnahme: Baseline-JSON + Testlauf-Ausgabe (auch rot) im Commit #1 belegt.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T11:35:54Z",
+          "by": "build",
+          "text": "todo → doing: Start: Ist-Matrix schreiben (Baseline vor Fix), JSON nach shots/, Baseline-Commit auch bei rot."
+        }
+      ],
+      "created": "2026-11-27T11:28:18Z",
+      "updated": "2026-11-27T11:35:54Z"
+    },
+    {
+      "id": 2919,
+      "title": "m10-passive-math #2 Fix Kumulation + Caps + 0/NaN-Schutz",
+      "description": "src/logic/stats.ts: aggregateMods ignoriert nicht-finite Werte, klemmt Aggregat auf harte Caps (moveSpeed 40%, cooldown 40%, damage 50%, pickupRadius 125%, area/duration 50%, maxHpFlat 100, regen 10); effective* zusaetzlich defensiv gegen NaN/negative Basis. Keine Balance-Neuerfindung, nur dokumentierte Semantik 'Stufe n = n-facher Basisbonus' + Obergrenzen. Abnahme: npx vitest run tests/passive-stack.test.ts gruen, Matrix 0 Abweichungen, 0 Cap-Verletzungen, 0 NaN/negativ.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T11:28:18Z",
+      "updated": "2026-11-27T11:28:18Z"
+    },
+    {
+      "id": 2920,
+      "title": "m10-passive-math #3 Grenz-Beleg Caps + 6/6-Kombination",
+      "description": "Test fuer harte Caps an den Grenzen (Stufe 5, ueberhoehte Duplikate, NaN/Infinity/negative Eingaben) und Kombination aller 6 Passives gleichzeitig auf Stufe 5: kein Wurf, keine negativen Cooldowns/Radien, alle Werte innerhalb Caps. Zahlen in shots/m10-passive-math-caps.json. Abnahme: Test gruen, JSON belegt 0 Verletzungen und 6/6 kombinierbar.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T11:28:18Z",
+      "updated": "2026-11-27T11:28:18Z"
+    },
+    {
+      "id": 2921,
+      "title": "m10-passive-math #4 Doku + .lane-done",
+      "description": "docs/lanes/m10-passive-math.md mit Vorher/Nachher-Tabelle (Baseline vs. Fix), Cap-Konstanten, offenen Punkten; .lane-done im Worktree-Wurzel mit 5-10 Zeilen Zusammenfassung + Messwerten anlegen und committen. Abnahme: Doku + .lane-done im Commit #4, git status sauber (keine Hilfsordner).",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T11:28:18Z",
+      "updated": "2026-11-27T11:28:18Z"
     }
   ]
 }
