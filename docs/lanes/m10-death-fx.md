@@ -64,12 +64,18 @@ sondern ist eine explizite, getestete Datenstruktur.
 `DeathFxSpec` trägt jetzt pro Klasse eigene, deterministische VFX-Werte
 (keine Zufallszahlen in der Spec, keine Gameplay-/Balance-Felder):
 
-| Klasse | Shard | Dust | Count | DustCount | Life | DustLife | Scale | Spread | Tint/DustTint | Additiv |
-|---|---|---|---|---|---|---|---|---|---|---|
-| crumble | fx_death_bone | fx_ash | 6 | 4 | 0,60 s | 0,45 s | 0,90→0,35 | 42 px/s | bone / mist | nein |
-| burst | fx_death_blob | fx_death_blob | 16 | 8 | 0,35 s | 0,28 s | 1,60→0,90 | 130 px/s | marshLight / mossDark | nein |
-| dissolve | fx_death_void | fx_dusk | 9 | 5 | 0,80 s | 0,90 s | 1,20→0,15 | 22 px/s | fogBlue / nightMid | ja |
-| sputter | fx_death_dust | fx_fire | 20 | 10 | 0,45 s | 0,55 s | 1,30→0,20 | 165 px/s | flame / emberOrange | ja |
+| Klasse | Shard | Dust | Count | DustCount | Life | DustLife | Scale | Rim (Scale/Tint) | Spread | Tint/DustTint | Additiv |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| crumble | fx_death_bone | fx_ash | 10 | 4 | 0,60 s | 0,45 s | 1,60→0,50 | fx_death_bone (1,15 / nightDeep) | 42 px/s | boneLight / mist | nein |
+| burst | fx_death_blob | fx_death_blob | 16 | 8 | 0,35 s | 0,28 s | 2,40→1,00 | fx_death_blob (1,14 / nightDeep) | 130 px/s | marshLight / mossDark | nein |
+| dissolve | fx_death_void | fx_dusk | 11 | 5 | 0,80 s | 0,90 s | 2,00→0,30 | fx_death_void (1,25 / nightDeep) | 22 px/s | fogBlue / nightMid | ja |
+| sputter | fx_death_dust | fx_fire | 20 | 10 | 0,45 s | 0,55 s | 2,20→0,30 | fx_death_dust (1,20 / nightDeep) | 165 px/s | flame / emberOrange | ja |
+
+Neu in #K5 (Art-Director-Befund Runde 1: „kein Rim/Kern"): jede Klasse
+zeichnet eine **dunkle Kontur** (`rim`, nightDeep, ~1,1–1,25× Scale) hinter
+die hellen Splitter; `burst`/`sputter` bekommen zusätzlich einen hellen Kern
+(`fx_star`/`fx_fire`). Die Skalen wurden angehoben (9-px-Texturen auf
+14–22 px), damit die Silhouetten im 300er-Gedränge lesbar sind.
 
 Boss-Variante (`deathFxFor(cls, true)`): eigene Kern-Textur `fx_boss_core`
 plus `fx_halo`-Staub, größerer Count (18–34), längere Lebensdauer (0,7–1,4 s)
@@ -79,13 +85,12 @@ Minimum 2,56× bei burst). Keine neuen Assets — nur vorhandene FX-Texturen.
 ## #K3 Umsetzung (`src/systems/CombatSystem.ts`, `killsFx`)
 
 `killsFx` liest `deathClassFor(archetype)` → `deathFxFor(cls, e.boss)` und
-übergibt **alle** Spec-Felder an die beiden `particles.burst`-Aufrufe
-(Shard/Dust, Count/DustCount, Life/DustLife, ScaleFrom/To, DustScale, Spread,
-Tint/DustTint, Additiv). Elite bleibt Zwischenstufe (×1,15 Scale, ×1,4 Count).
-Schaden/Hitboxen unverändert. Zusätzlich Nachzug aus der Sichtprüfung:
-Todes-Partikel liegen jetzt auf `DEPTH.enemyDeath` (11) statt `fxLow` (7) und
-sind damit im 300er-Gedränge **über** den Gegnern sichtbar (vorher verdeckt).
-Elite/Boss-Texturen unverändert.
+übergibt **alle** Spec-Felder an die Partikel-Aufrufe (Shard/Dust,
+Count/DustCount, Life/DustLife, ScaleFrom/To, DustScale, Spread, Tint/DustTint,
+Additiv) plus die Rim-Felder an einen zusätzlichen Kontur-Burst auf
+`DEPTH.enemyDeath - 0,5`. Elite bleibt Zwischenstufe (×1,15 Scale, ×1,4 Count).
+Schaden/Hitboxen unverändert. Todes-Partikel liegen auf `DEPTH.enemyDeath` (11)
+und sind damit im 300er-Gedränge **über** den Gegnern sichtbar.
 
 ## #K4 Test (`tests/death-fox.test.ts` → `tests/death-fx.test.ts`)
 
@@ -102,49 +107,50 @@ Elite/Boss-Texturen unverändert.
 `shots/m10-death-fox-frame.png` → **`shots/m10-death-fx-frame.png`** (960×540,
 Canvas 480×360 @1,5). 6×50 Bog-Ratten ringförmig gespawnt, danach je Klasse
 6 frische Gegner am Effektort getötet; Szene für den Shot eingefroren
-(`setTimeScale(0)`), Messung aus dem Partikel-Pool. Final: **308 lebende
-Gegner**, `jsErrors: []`, fps 60 im Lauf (48,9 im eingefrorenen Frame).
-Rohdaten: `shots/m10-death-fx-frame.json`.
+(`setTimeScale(0)`), Messung aus dem Partikel-Pool. Final: **309 lebende
+Gegner**, `jsErrors: []`, fps 59,9 im Lauf. Rohdaten:
+`shots/m10-death-fx-frame.json`.
 
 ### 4 Klassen-Crops (3× nearest, 160×133 → 480×399)
-| Klasse | Datei | Texturen | Partikel (6 Tode) | BBox im Bild (Spiel-px) | Fläche 50 ms |
+| Klasse | Datei | Texturen | Partikel (6 Tode @50 ms) | BBox im Bild (Spiel-px) | Fläche 50 ms |
 |---|---|---|---|---|---|
-| crumble | `shots/m10-death-fx-crumble.png` | fx_death_bone + fx_ash | 60 | 36×32 | 2 461 px² |
-| burst | `shots/m10-death-fx-burst.png` | fx_death_blob | 43 | 86×91 | 21 096 px² |
-| dissolve | `shots/m10-death-fx-dissolve.png` | fx_death_void + fx_dusk | 84 | 37×38 | 16 533 px² |
-| sputter | `shots/m10-death-fx-sputter.png` | fx_death_dust + fx_fire | 114 | 95×97 | 17 223 px² |
+| crumble | `shots/m10-death-fx-crumble.png` | fx_death_bone + fx_ash (+Rim fx_death_bone/nightDeep) | 108 | 22×22 | 17 234 px² |
+| burst | `shots/m10-death-fx-burst.png` | fx_death_blob + fx_star (+Rim fx_death_blob/nightDeep) | 140 | 41×40 | 44 255 px² |
+| dissolve | `shots/m10-death-fx-dissolve.png` | fx_death_void + fx_dusk (+Rim fx_death_void/nightDeep) | 120 | 25×25 | 40 928 px² |
+| sputter | `shots/m10-death-fx-sputter.png` | fx_death_dust + fx_fire (+Rim fx_death_dust/nightDeep) | 140 | 43×42 | 40 612 px² |
 
-Messung: Partikel-BBox aus `sprite.x/y ± displayWidth/Height` im Pool, Filter
-≤ 90 px um den Effektort (6 gleichzeitige Tode, ~50 ms nach Auslösen).
-Fläche = Summe `displayWidth × displayHeight` je Klasse. Die vier Klassen
-unterscheiden sich damit messbar in **Textur, Count, Lebensdauer, Scale,
-Streuung und Farbe** (≥ 3 Dimensionen, siehe #K4). Die Crops zeigen die
+Rohdaten: `shots/m10-death-fx-measure.json`; Messung nach `particles.clear()`
+je Klasse, 6 gleichzeitige Tode, 50 ms nach Auslösen. Fläche = Summe
+`displayWidth × displayHeight` aller Partikel ≤ 90 px um den Effektort.
+Die vier Klassen unterscheiden sich messbar in **Textur, Rim-Tint/Scale,
+Count, Größen-BBox (22–43 px), Fläche (17–44 k px²), Lebensdauer, Streuung,
+Tint und Blend-Modus** (≥ 3 Dimensionen, siehe #K4). Die Crops zeigen die
 Effekte über **lebenden** Gegnern.
 
-Ehrlicher Befund: `crumble` ist bewusst kleinteilig/kurz (36×32 px, 2 461 px²)
-und liegt im Gedränge eher als feine Knochenspur; `burst` ist mit 86×91 px am
-größten, aber grün-auf-grün kontrastarm — im 3×-Zoom als Blob-Wolke lesbar,
-bei 1× im Gedränge am schwächsten. `dissolve` (weißer Halo-Ring) und `sputter`
-(orange Funken/Asche) sind am klarsten lesbar.
+Ehrlicher Befund: `crumble` bleibt bewusst kleinteilig (22×22 px) und wirkt
+als feine Knochenspur; `dissolve` ist mit 25×25 px der kleinste Effekt, aber
+der weiße Halo-Ring ist der klarste Kontrast. `burst` (grüner Blob-Spray mit
+hellem Kern und dunkler Kontur) und `sputter` (orange Funken vor dunkler
+Asche-Kontur) sind am größten und im Gedränge am schnellsten erkennbar.
 
 ### Messung: Differenz je Klassenpaar (Spec-Dimensionen)
 `tests/death-fx.test.ts` prüft je Paar ≥ 3 unterscheidbare Dimensionen; aus den
-Specs gezählt (Count, DustCount, Life, DustLife, ScaleFrom/To, DustScale,
-Spread, Tint, DustTint, Shard, Dust, Additiv):
+Specs gezählt (Shard, Dust, Count, DustCount, Life, DustLife, ScaleFrom/To,
+DustScale, Rim, RimTint, RimScale, Spread, Tint, DustTint, Additiv):
 
 | Paar | unterscheidbare Dimensionen |
 |---|---|
-| crumble ↔ burst | 12 |
-| crumble ↔ dissolve | 13 |
-| crumble ↔ sputter | 13 |
-| burst ↔ dissolve | 13 |
-| burst ↔ sputter | 12 |
-| dissolve ↔ sputter | 12 |
+| crumble ↔ burst | 14 |
+| crumble ↔ dissolve | 15 |
+| crumble ↔ sputter | 15 |
+| burst ↔ dissolve | 15 |
+| burst ↔ sputter | 15 |
+| dissolve ↔ sputter | 15 |
 
-Boss vs. Nicht-Boss (Fläche = Scale-Ratio²): crumble 1,44/0,90 → **2,56×**,
-burst 2,56/1,60 → **2,56×**, dissolve 1,92/1,20 → **2,56×**, sputter
-2,08/1,30 → **2,56×**. Boss-Count 18–34 vs. 6–20, Life 1,1–1,4 s vs.
-0,35–0,8 s, eigene Textur `fx_boss_core`.
+Boss vs. Nicht-Boss (Fläche = Scale-Ratio²): crumble 2,88/1,60 → **3,24×**,
+burst 3,84/2,40 → **2,56×**, dissolve 3,20/2,00 → **2,56×**, sputter
+3,52/2,20 → **2,56×**. Boss-Count 18–34 vs. 10–20, Life 1,1–1,4 s vs.
+0,35–0,8 s, eigene Textur `fx_boss_core` + Rim.
 
 ### Art-Director-Urteil (einmalig, Runde 1)
 **FAIL — 2,3/5.** Begründung: Klassen nur über Farbe unterscheidbar, nicht über
