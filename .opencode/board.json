@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5803,
+  "next": 5807,
   "cards": [
     {
       "id": 1,
@@ -6716,6 +6716,66 @@
       "notes": [],
       "created": "2026-11-27T21:46:10Z",
       "updated": "2026-11-27T21:46:10Z"
+    },
+    {
+      "id": 5803,
+      "title": "m10-shot-path-budget K1: Bench scripts/m10-shot-path.mjs + Vorher-Messung",
+      "description": "Bench fuer Gegner-Schuss-Pfad (500 Gegner, 71 Schuetzen, Seed 20261127, echtes EnemyProjectiles.ts via Loader-Hook + Stubs + Mini-Tween-Manager). Vorher 0,047 ms/Frame. Abnahme: before.json committed, deterministisch.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:51:47Z",
+          "by": "build",
+          "text": "lane #5658, Merge 2f6ee9d"
+        }
+      ],
+      "created": "2026-11-27T21:51:44Z",
+      "updated": "2026-11-27T21:51:47Z"
+    },
+    {
+      "id": 5804,
+      "title": "m10-shot-path-budget K2: Fix Schuss-Pfad -36% ms/Frame, Verhalten bitgleich",
+      "description": "EnemyProjectiles.ts: setRotation/atan2 je Frame gestrichen, setScale(1) je Frame gestrichen, View-Probe statt Objekt-Allokation je Gate-Check, Trail-Pool mit 30-Hz-Fade. Nachher 0,030 ms/Frame (-36,2%), Fairness-Gates unangetastet. Abnahme: Bench-Zaehler bitgleich (369/186/173/0), tsc gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:51:47Z",
+          "by": "build",
+          "text": "lane #5659, Merge 2f6ee9d"
+        }
+      ],
+      "created": "2026-11-27T21:51:44Z",
+      "updated": "2026-11-27T21:51:47Z"
+    },
+    {
+      "id": 5805,
+      "title": "m10-shot-path-budget K3: tests/shot-path-budget.test.ts",
+      "description": "8 Tests: Gates (Windup >= 0,3 s), kein Verlust, 0 Offscreen-Treffer, Trail-Pool. Abnahme: npx vitest run tests/shot-path-budget.test.ts gruen, enemy-shots-fair 14/14.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:51:47Z",
+          "by": "build",
+          "text": "lane #5660, Merge 2f6ee9d"
+        }
+      ],
+      "created": "2026-11-27T21:51:44Z",
+      "updated": "2026-11-27T21:51:47Z"
+    },
+    {
+      "id": 5806,
+      "title": "m10-shot-path-budget K4: Nachher-Messung + Burst-Beleg + Doku + .lane-done",
+      "description": "In-game (flock): Burst 640x360 60,1 FPS @ 500 Gegnern (Ziel >= 55). Chaos-Screenshot shots/m10-shot-path-after.png (653 Gegner, 21 Schuesse, 0 Offscreen). Doku docs/lanes/m10-shot-path-budget.md. Offen: Trail-Fade 30 Hz visuell ok, 60 Hz per Konstante moeglich. Abnahme: .lane-done 4/4, Merge in main.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:51:47Z",
+          "by": "build",
+          "text": "lane #5661, Merge 2f6ee9d"
+        }
+      ],
+      "created": "2026-11-27T21:51:44Z",
+      "updated": "2026-11-27T21:51:47Z"
     }
   ]
 }
