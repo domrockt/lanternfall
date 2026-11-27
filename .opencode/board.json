@@ -5130,25 +5130,36 @@
       "id": 4319,
       "title": "m10-verify-input-fix #2: Harness-Härtung (Zustands-Waits, --tag Output)",
       "description": "Abnahme: nur scripts/verify-input.mjs geändert; fragile feste Wartezeiten durch Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.* (Default m8-input unverändert); verify-input läuft 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T18:24:02Z",
           "by": "build",
           "text": "todo → doing: Start: --tag-Output + Zustands-Waits statt fester Wartezeiten, nur scripts/verify-input.mjs."
+        },
+        {
+          "at": "2026-11-27T18:27:16Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig, Commit a2ff910: nur scripts/verify-input.mjs; --tag-Output (shots/m10-verify-input-<tag>.json+png, Default m8-input unveraendert), waitState-Zustands-Waits nach Pause/Truhe/FORTSETZEN/A-Bestaetigen; Validierung --tag k2: 28/28 PASS, 0 JS-Fehler; build rc=0, vitest 446/446."
         }
       ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:24:02Z"
+      "updated": "2026-11-27T18:27:16Z"
     },
     {
       "id": 4320,
       "title": "m10-verify-input-fix #3: Stabilität 3x + Lastlauf 28/28 PASS, Lane-Doku",
       "description": "Abnahme: verify-input 3x hintereinander + 1x unter paralleler Last (zwei Builds im Hintergrund), jedes Mal 28/28 PASS, 0 JS-Fehler; Belege shots/m10-verify-input-pass-{1,2,3}.json + Lastfall-JSON; Ergebnis in docs/lanes/m10-verify-input-fix.md; vitest grün. Kontrolleure: test-auditor + reviewer.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T18:27:25Z",
+          "by": "build",
+          "text": "todo → doing: Start: 3x verify-input --tag pass-1..3 + 1x Lastlauf (zwei Builds im Hintergrund), dann Lane-Doku."
+        }
+      ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:22:28Z"
+      "updated": "2026-11-27T18:27:25Z"
     }
   ]
 }
