@@ -4570,16 +4570,21 @@
       "id": 3641,
       "title": "m10-chest-arrow-onscreen K4: Nachmessung + Abschluss",
       "description": "shots/m10-chest-arrow-after.json + 2 Screenshots, npm test grün, docs/lanes/m10-chest-arrow.md, .lane-done. AK: alle Rand/Eckfälle <=5 Grad, Pfeil ab Spawn sichtbar, npm test rc=0.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:03:28Z",
           "by": "build",
           "text": "todo → doing: todo → doing: Nachmessung geprüft — shots/m10-chest-arrow-after.json 20/20 ok (max 0,19°), Screenshots gesichtet, npm test 360/360, tsc sauber."
+        },
+        {
+          "at": "2026-11-27T18:03:40Z",
+          "by": "build",
+          "text": "doing → done: doing → done: K4 abgenommen. Commit 846b59a nennt #3641. AK erfüllt: shots/m10-chest-arrow-after.json 20/20 Fälle ok (2 Views × 10: Rand + Ecken + Zoom + Eintritt), max Winkelabweichung 0,19° (Limit 5°), Pfeil in 100 % der Fälle ab Spawn sichtbar, edgeOk überall; Screenshots m10-chest-arrow-edge.png/-inside.png gesichtet; npm test 360/360 rc=0, tsc sauber; diff-Scope nur Lane-Claims."
         }
       ],
       "created": "2026-11-27T15:54:05Z",
-      "updated": "2026-11-27T18:03:28Z"
+      "updated": "2026-11-27T18:03:40Z"
     }
   ]
 }
