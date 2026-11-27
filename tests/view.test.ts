@@ -101,3 +101,49 @@ describe("M8 View: ganzzahlige Gerätepixel-Skalierung", () => {
     expect(v.dpr).toBeGreaterThanOrEqual(1);
   });
 });
+
+/**
+ * M10-view-fill-refit: Format-Matrix ueber alle 7 Geraeteformate der Abnahme
+ * (Beleg Laufzeit: shots/m10-viewrefit-before.json / -after.json). Invarianten
+ * je Format: Spielfeld deckt das Fenster exakt ab (kein Balken), kein Overflow
+ * (kein Crop), exakte Abbildung, Breite im Clamp.
+ */
+const REFIT_FORMATS: Array<[number, number, number, number]> = [
+  [640, 360, 1, 0],
+  [960, 540, 1, 0],
+  [1280, 720, 1, 0],
+  [1920, 1080, 1, 0],
+  [2560, 1440, 1, 0],
+  [3840, 2160, 1, 0],
+  [780, 360, 3, 3],
+];
+
+describe("M10-view-fill-refit: 7/7 Geraeteformate ohne Balken/Crop", () => {
+  for (const [w, h, dpr, setting] of REFIT_FORMATS) {
+    it(`${w}x${h}@${dpr}${setting ? ` SKALIERUNG=${setting}` : ""}: kein Balken, kein Crop, pixelperfekt`, () => {
+      const v = computeView({ width: w, height: h, dpr, setting });
+      // Kein Balken: Spielfeld deckt Fenster in Geraetepixeln exakt ab.
+      expect(v.width * v.scale).toBe(w * dpr);
+      expect(v.height * v.scale).toBe(h * dpr);
+      // Kein Crop: CSS-Canvas == Viewport (nicht groesser, an 0,0).
+      expect(v.cssWidth).toBeCloseTo(w, 6);
+      expect(v.cssHeight).toBeCloseTo(h, 6);
+      // Exakte Abbildung (Abnahme-Kriterium) + Clamp eingehalten.
+      expect(isIntegerPixelPerfect(v)).toBe(true);
+      expect(v.width).toBeGreaterThanOrEqual(MIN_WIDTH);
+      expect(v.width).toBeLessThanOrEqual(MAX_WIDTH);
+      expect(v.portrait).toBe(false);
+    });
+  }
+
+  it("640-Referenz unveraendert: 1280x720 bleibt 640x360 bei 2x", () => {
+    const v = computeView({ width: 1280, height: 720, dpr: 1 });
+    expect([v.width, v.height, v.scale, v.fit]).toEqual([640, 360, 2, false]);
+    expect(viewKey(v)).toBe("640x360:2:1280x720:0");
+  });
+
+  it("780-Referenz unveraendert: 780x360@dpr3 mit SKALIERUNG=3 bleibt 780x360@3", () => {
+    const v = computeView({ width: 780, height: 360, dpr: 3, setting: 3 });
+    expect([v.width, v.height, v.scale, v.fit]).toEqual([780, 360, 3, false]);
+  });
+});
