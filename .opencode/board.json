@@ -7400,36 +7400,60 @@
       "title": "m10-heap-sawtooth K1: Vorher-Messung per-Minute-Heap + GC-Spikes",
       "description": "30-min-Sim-Lauf (timeScale 30, AutoPlay, God, seed 99) via scripts/m10-heap-sawtooth.mjs: je Sim-Minute raw + GC-stabilisierter Heap, Major/Minor-GC-Spikes, Alloc-Sampling Minute 20-29. Ergebnis shots/m10-heap-sawtooth-before.json + Befund Top-Allokationsquellen Minute 20-29 in docs/lanes/m10-heap-sawtooth.md. AK: JSON committed, Top-Quellen benannt.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:02:46Z",
+          "by": "build",
+          "text": "done → done: lane #6178, Merge 65a1b74"
+        }
+      ],
       "created": "2026-11-27T23:02:29Z",
-      "updated": "2026-11-27T23:02:29Z"
+      "updated": "2026-11-27T23:02:46Z"
     },
     {
       "id": 6379,
       "title": "m10-heap-sawtooth K2: Ursache im Pool-Bereich (Zeilenbeleg)",
       "description": "Befund mit Zeilenbeleg in docs/lanes/m10-heap-sawtooth.md: welche Allokationen stammen aus Pool.ts/EnemyPool.ts, welche aus fremd-geclaimten Dateien (FxSystem/Run/DamageNumbers u.a.) mit Fix-Empfehlung fuer Folge-Job. AK: Befund committed, jede Quelle mit Datei+Zeile.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:02:46Z",
+          "by": "build",
+          "text": "done → done: lane #6179, Merge 65a1b74"
+        }
+      ],
       "created": "2026-11-27T23:02:29Z",
-      "updated": "2026-11-27T23:02:29Z"
+      "updated": "2026-11-27T23:02:46Z"
     },
     {
       "id": 6380,
       "title": "m10-heap-sawtooth K3: Fix Reuse/Pooling in Pool.ts/EnemyPool.ts + Tests",
       "description": "Reuse-Fix nur in Pool.ts/EnemyPool.ts (Area-Grenze beachten). tests/heap-sawtooth.test.ts: Reuse-Invariante (kein Allokationswachstum ueber N Sim-Frames bei Spawn-/Todeswellen), Testzahl +>=2. AK: tsc + vitest gruenn.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:02:46Z",
+          "by": "build",
+          "text": "done → done: lane #6180, Merge 65a1b74"
+        }
+      ],
       "created": "2026-11-27T23:02:29Z",
-      "updated": "2026-11-27T23:02:29Z"
+      "updated": "2026-11-27T23:02:46Z"
     },
     {
       "id": 6381,
       "title": "m10-heap-sawtooth K4: Nachher-Messung + Verhalten bitgleich + Abschluss",
       "description": "30-min-Sim-Lauf -> shots/m10-heap-sawtooth-after.json: deltaVsMinute1Pct <= +12 %, Saegezahn-Amplitude gesenkt vs. before. Kills/Gegner pro Minute +-0 (Verhalten bitgleich). npm run build + npm test gruen. Doku + .lane-done. AK: alle Gates belegt.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:02:46Z",
+          "by": "build",
+          "text": "done → done: lane #6181, Merge 65a1b74"
+        }
+      ],
       "created": "2026-11-27T23:02:29Z",
-      "updated": "2026-11-27T23:02:29Z"
+      "updated": "2026-11-27T23:02:46Z"
     }
   ]
 }
