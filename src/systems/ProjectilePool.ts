@@ -33,20 +33,6 @@ export interface ProjectileRuntime {
   explodeRadius: number;
 }
 
-/** Temporäre Profil-Instrumentierung (K2), wird nach der Messung entfernt (K3). */
-interface PoolProfile {
-  enabled: boolean;
-  spawnMs: number;
-  compactMs: number;
-  spawns: number;
-  compactions: number;
-  activeHighWater: number;
-}
-const poolProfile: PoolProfile = { enabled: false, spawnMs: 0, compactMs: 0, spawns: 0, compactions: 0, activeHighWater: 0 };
-if (typeof globalThis !== "undefined") {
-  (globalThis as unknown as { __lfProjectilePoolProfile?: PoolProfile }).__lfProjectilePoolProfile = poolProfile;
-}
-
 /** Projektil-Pool. Textur frei wählbar (M2 nutzt dieselbe Infrastruktur). */
 export class ProjectilePool {
   active: ProjectileRuntime[] = [];
@@ -64,7 +50,6 @@ export class ProjectilePool {
     trail?: string | null; trailFrames?: string[]; trailInterval?: number; blendAdd?: boolean; explodeRadius?: number;
     /** Darstellungsgröße (Hitbox bleibt radius). */ scale?: number;
   }): ProjectileRuntime {
-    const t0 = poolProfile.enabled ? performance.now() : 0;
     const p = this.free.pop() ?? this.createRuntime();
     p.x = opts.x;
     p.y = opts.y;
@@ -93,11 +78,6 @@ export class ProjectilePool {
     p.sprite.setRotation(Math.atan2(opts.vy, opts.vx));
     p.sprite.setScale(opts.scale ?? 1);
     this.active.push(p);
-    if (poolProfile.enabled) {
-      poolProfile.spawnMs += performance.now() - t0;
-      poolProfile.spawns += 1;
-      if (this.active.length > poolProfile.activeHighWater) poolProfile.activeHighWater = this.active.length;
-    }
     return p;
   }
 
@@ -119,7 +99,6 @@ export class ProjectilePool {
   }
 
   compact(): void {
-    const t0 = poolProfile.enabled ? performance.now() : 0;
     // Swap-Pop statt splice: Entfernen in O(1), keine Verschiebung des restlichen Arrays.
     let i = this.active.length - 1;
     while (i >= 0) {
@@ -131,10 +110,6 @@ export class ProjectilePool {
         this.free.push(p);
       }
       i -= 1;
-    }
-    if (poolProfile.enabled) {
-      poolProfile.compactMs += performance.now() - t0;
-      poolProfile.compactions += 1;
     }
   }
 

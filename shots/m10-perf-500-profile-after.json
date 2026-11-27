@@ -1,0 +1,41 @@
+{
+  "seconds": 8,
+  "fps": 60.1,
+  "frames": 481,
+  "msPerFrame": 16.64,
+  "worstFrameMs": 16.8,
+  "minEnemies": 500,
+  "avgEnemies": 500,
+  "hash": {
+    "queries": 226925,
+    "rebuilds": 0,
+    "queryMsPerFrame": 0.16,
+    "buildMsPerFrame": 0.07,
+    "queryShareOfFrame": 1,
+    "buildShareOfFrame": 0.4,
+    "cellsVisitedPerQuery": 0,
+    "itemsReturnedPerQuery": 0,
+    "callers": {
+      "Run.updateEnemies": {
+        "ms": 74.90000006556511,
+        "queries": 221946,
+        "msPerFrame": 0.16,
+        "avgUsPerQuery": 0.3
+      },
+      "CombatSystem.updateProjectiles": {
+        "ms": 2.5000000074505806,
+        "queries": 4979,
+        "msPerFrame": 0.01,
+        "avgUsPerQuery": 0.5
+      }
+    }
+  },
+  "projectilePool": {
+    "spawns": 166,
+    "compactions": 469,
+    "activeHighWater": 21,
+    "spawnMsPerFrame": 0,
+    "compactMsPerFrame": 0
+  },
+  "jsErrors": []
+}

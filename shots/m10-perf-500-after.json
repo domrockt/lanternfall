@@ -1,0 +1,154 @@
+{
+  "targetFps": 55,
+  "generatedAt": "2026-11-27T01:30:31.055Z",
+  "runs": [
+    {
+      "file": "/home/ai/tmp/m10-perf-500/after-1.json",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "dpr": 1,
+      "view": {
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          720,
+          540
+        ],
+        "dpr": 1
+      },
+      "burst": {
+        "fps": 60.1,
+        "frames": 601,
+        "elapsedMs": 10006,
+        "msPerFrame": 16.6,
+        "worstFrameMs": 16.8,
+        "minEnemies": 500,
+        "avgEnemies": 500,
+        "passed": true
+      },
+      "minute25": {
+        "fps": 54.9,
+        "frames": 550,
+        "elapsedMs": 10018,
+        "msPerFrame": 18.2,
+        "worstFrameMs": 33.4,
+        "minEnemies": 300,
+        "avgEnemies": 300,
+        "passed": false
+      },
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "file": "/home/ai/tmp/m10-perf-500/after-2.json",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "dpr": 1,
+      "view": {
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          720,
+          540
+        ],
+        "dpr": 1
+      },
+      "burst": {
+        "fps": 60.1,
+        "frames": 602,
+        "elapsedMs": 10019,
+        "msPerFrame": 16.6,
+        "worstFrameMs": 16.8,
+        "minEnemies": 500,
+        "avgEnemies": 500,
+        "passed": true
+      },
+      "minute25": {
+        "fps": 55.9,
+        "frames": 560,
+        "elapsedMs": 10013,
+        "msPerFrame": 17.9,
+        "worstFrameMs": 33.4,
+        "minEnemies": 300,
+        "avgEnemies": 300,
+        "passed": true
+      },
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "file": "/home/ai/tmp/m10-perf-500/after-3.json",
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "dpr": 1,
+      "view": {
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          720,
+          540
+        ],
+        "dpr": 1
+      },
+      "burst": {
+        "fps": 60.1,
+        "frames": 601,
+        "elapsedMs": 10004,
+        "msPerFrame": 16.6,
+        "worstFrameMs": 16.8,
+        "minEnemies": 500,
+        "avgEnemies": 500,
+        "passed": true
+      },
+      "minute25": {
+        "fps": 54.5,
+        "frames": 547,
+        "elapsedMs": 10034,
+        "msPerFrame": 18.3,
+        "worstFrameMs": 33.5,
+        "minEnemies": 300,
+        "avgEnemies": 300,
+        "passed": false
+      },
+      "jsErrors": [],
+      "passed": false
+    }
+  ],
+  "summary": {
+    "burst": {
+      "runs": 3,
+      "fpsMin": 60.1,
+      "fpsMedian": 60.1,
+      "fpsMax": 60.1,
+      "msPerFrameMin": 16.6,
+      "msPerFrameMedian": 16.6,
+      "msPerFrameMax": 16.6,
+      "minEnemiesMin": 500,
+      "allPassed": true
+    },
+    "minute25": {
+      "runs": 3,
+      "fpsMin": 54.5,
+      "fpsMedian": 54.9,
+      "fpsMax": 55.9,
+      "msPerFrameMin": 17.9,
+      "msPerFrameMedian": 18.2,
+      "msPerFrameMax": 18.3,
+      "minEnemiesMin": 300,
+      "allPassed": false
+    }
+  },
+  "jsErrors": []
+}

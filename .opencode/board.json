@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1659,
+  "next": 1703,
   "cards": [
     {
       "id": 1,
@@ -2684,6 +2684,86 @@
       ],
       "created": "2026-11-26T23:53:27Z",
       "updated": "2026-11-26T23:53:35Z"
+    },
+    {
+      "id": 1698,
+      "title": "m10-perf-500 #K1 Baseline 3x perf burst 500",
+      "description": "flock npm run perf 3x, FPS min/median + ms/Frame je Bucket in shots/m10-perf-500-baseline.json. Abnahme: Datei getrackt, Commit #K1.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T01:43:11Z",
+          "by": "build",
+          "text": "→ done: Commit 0cbfb9a (#K1): Baseline 3x Burst 60,1/53,9/59,1 FPS (min/median 53,9/59,1), ms/Frame 16,6-18,6, minEnemies 500; Beleg shots/m10-perf-500-baseline.json."
+        }
+      ],
+      "created": "2026-11-27T00:08:18Z",
+      "updated": "2026-11-27T01:43:11Z"
+    },
+    {
+      "id": 1699,
+      "title": "m10-perf-500 #K2 Profil Hot-Paths",
+      "description": "Anteil SpatialHash-Query/Build und Projektil-Kollision messen (CDP-Profil/Timer), Zahlen in docs/lanes/m10-perf-500.md. Abnahme: Doku + Commit #K2.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T00:18:04Z",
+          "by": "build",
+          "text": "todo → doing: Start: CDP-CPU-Profil im 500er-Burst."
+        },
+        {
+          "at": "2026-11-27T01:43:11Z",
+          "by": "build",
+          "text": "→ done: Commit 1f366b2 (#K2): Profil-Instrumentierung, Query 0,20 ms/Frame (1,2%), Build 0,08 ms (0,5%), Projektil-Query 0,01 ms; cellSize 32 optimal."
+        }
+      ],
+      "created": "2026-11-27T00:08:18Z",
+      "updated": "2026-11-27T01:43:11Z"
+    },
+    {
+      "id": 1700,
+      "title": "m10-perf-500 #K3 Optimierung SpatialHash/ProjectilePool",
+      "description": "Zellgroesse an Gegner-Radius, nur Nachbarzellen, keine Allokation pro Frame, Verhalten unveraendert. Abnahme: tsc + gezielte Tests gruen, Commit #K3.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T01:43:11Z",
+          "by": "build",
+          "text": "→ done: Commit 582a945 (#K3): flaches Zellarray/Bit-Key/inv, kein Alloc/Frame, ProjectilePool Swap-Pop; Hash 0,058 -> 0,041 ms/Frame (-29%)."
+        }
+      ],
+      "created": "2026-11-27T00:08:18Z",
+      "updated": "2026-11-27T01:43:11Z"
+    },
+    {
+      "id": 1701,
+      "title": "m10-perf-500 #K4 Aequivalenz-Test SpatialHash",
+      "description": "tests/spatial-hash.test.ts: Query == Brute-Force fuer 100 Zufallspunkte, Seeds 101/202; Separation gruen. Abnahme: neue Tests gruen, Commit #K4.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T01:43:11Z",
+          "by": "build",
+          "text": "→ done: Commit de01e7d (#K4): Query == Brute-Force, Seeds 101/202, 100 Punkte, 16/32/48 px, Overflow, Recycling; 49/49 gruen."
+        }
+      ],
+      "created": "2026-11-27T00:08:18Z",
+      "updated": "2026-11-27T01:43:11Z"
+    },
+    {
+      "id": 1702,
+      "title": "m10-perf-500 #K5 Nachher-Beleg + lane-done",
+      "description": "3x perf burst, FPS min >=55, Hot-Path ms/Frame <= Baseline; shots/m10-perf-500-after.json, build+test gruen, Doku + .lane-done. Abnahme: alles getrackt, Commit #K5.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T01:43:11Z",
+          "by": "build",
+          "text": "→ review: Commit 9bf1a34 (#K5): 3x Burst 60,1 FPS, minEnemies je 500, Hot-Path 0,28 -> 0,23 ms/Frame (-18%), build+210 Tests gruen. .lane-done wegen Claim merge-m9-art-polish noch untracked (Request in requests.md)."
+        }
+      ],
+      "created": "2026-11-27T00:08:18Z",
+      "updated": "2026-11-27T01:43:11Z"
     }
   ]
 }
