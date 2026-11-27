@@ -15,7 +15,7 @@ const ENEMIES = Number(argOf("enemies", "500")) || 500;
 // M10-perf-cap-rollback: --minute 25 = Skip in die Minute-25-Nachstellung
 // (skipTo, wie scripts/m10-fx-add-cap.mjs), Ziel-Gegnerzahl dann 300 (M25-Last).
 const MINUTE = Number(argOf("minute", "0")) || 0;
-const TAG = String(argOf("tag", "cap"));
+const TAG = String(argOf("tag", "m10-perf-cap-rollback"));
 const OUT = String(argOf("out", `shots/m10-view-width-${TAG}.json`));
 const SHOT = String(argOf("shot", `shots/m10-view-width-${TAG}.png`));
 const viewportArg = String(argOf("viewport", "780x360")).split("x").map(Number);

@@ -1,8 +1,5 @@
 # Lane m10-perf-cap-rollback — Perf-Deckel gegen SwiftShader-Zahlen zurückbauen (2026-11-27)
 
-Karten-Zuordnung: **A = #5778** (View-Width-Cap), **B = #5779** (ADD-Glow-Flächen-Deckel),
-**C = #5780** (DPR-Budget-Regler-Verifikation; Belege in den Commits zu A/B).
-
 Dom-Wunsch 21:15Z (Punkte 1–3): Die gegen SwiftShader-Messzahlen geplanten Perf-Deckel kosten jetzt
 Optik/Spielgefühl ohne Nutzen — die iGPU (Mesa Intel RPL-S) rendert seit 19:20Z. Diese Lane baut Teil A
 (View-Width-Cap, Merge `8834c19`) bedingt zurück und entschärft Teil B (ADD-Glow-Flächen-Deckel,
@@ -64,14 +61,19 @@ Der Cap brachte auf iGPU 0,0 FPS (beide Varianten vsync-60), kostete aber Optik:
 `glowAreaCapForRenderScale(renderScale)` — der Flächen-Deckel (96x96 dev-px) greift **nur noch, wenn
 der adaptive DPR-Budget-Regler tatsächlich gesenkt hat** (`RENDER_SCALE > 1`, Live-Binding aus
 `config.ts`, nur gelesen). Auf iGPU bleibt `RENDER_SCALE = 1` → kein Deckel, große Feuer-/Aura-Glows
-laufen wieder volllaufend. Android-Sicherheitsnetz bleibt bestehen: sobald der Regler unter Last senkt,
-kappt der Deckel die Flächen wieder.
+laufen wieder volllaufend. Android-Sicherheitsnetz bleibt bestehen: wenn der Regler gesenkt hat (RENDER_SCALE > 1), spawnen neue
+Glows flächengeklemmt (Bestand läuft ab, siehe Grenze unten).
 
 - **Alpha-Floor `ADD_GLOW_ALPHA_FLOOR = 0,04` bleibt unverändert** (von Dom behalten), ebenso die
   dpr-Alpha-Treppe (`fxAlphaForDpr`) und der geteilte Glow-Budget-Deckel (LOD-Caps 72/40/24).
 - `clampGlowScreenArea` (reine Funktion) unverändert; Tests `tests/fx-add-cap.test.ts` auf die neue
   Schaltstelle umgeschrieben (Deckel nur bei `setRenderScale(2)` + dpr 3; bei RENDER_SCALE 1 volllaufend
   auch bei dpr 3) — 45/45 mit fx-overdraw-Regression, Gesamtstand 683/683, `tsc` rc=0, Build rc=0.
+- **Grenze des Deckels (Reviewer-Befund, dokumentiert statt Re-Clamp):** die Flächen-Klemme greift beim
+  Spawn. Glows, die bei `RENDER_SCALE = 1` gespawnt wurden, bleiben nach einem Regler-Downshift (1→2)
+  groß, bis sie ablaufen (FX-Laufzeiten ~0,2–1,2 s — Übergangsfenster von Sekunden, nicht dauerhaft);
+  umgekehrt bleiben bei Stufe 2 gespawnte Glows klein, wenn der Regler auf 1 zurückhebt. Ein Re-Clamp
+  im Update wäre der sauberere Pfad — eigene Karte, falls Android-Messungen das fordern.
 
 ### Overdraw vorher/nachher (scripts/m10-fx-add-cap.mjs, 500er-Chaos-Frame, 780x360@3, iGPU)
 
@@ -91,6 +93,20 @@ JSONs: `shots/m10-perf-cap-rollback-fx-before.json` / `-fx-after.json` / `-fx-af
 Phönix-Blüte, Ring-Aura und Sonnen-Glow laufen volllaufend über die Terrainfläche — keine 96er-Kante mehr.
 Skript hierfür: `--viewport 960x540 --dpr 1 --shot`; neu geschlossen werden Level-up- **und** Truhen-Panels
 (`clearChests`, Taste A), damit der Beleg die Szene zeigt.
+
+## Offene Punkte (ehrlich)
+
+- `scripts/m10-ember-trail.mjs` (fremde Datei) setzt noch `&viewcap=off` in der URL — der Parameter
+  wird seit dem Rollback nicht mehr gelesen (harmlos, no-op). Bei Gelegenheit dort entfernen.
+- Die dunklen Ränder bei 960x540@1 sind M8-Fit-Fallback (siehe Teil A, Sichtprüfung) — falls Dom sie
+  dort nicht will, ist das eine eigene M8-Karte (Fit-Fallback z. B. auf 960 statt 480 hochziehen).
+- Die Mess-Screenshots der A/B-Läufe (cap-on/off) zeigen z. T. Level-up-/Truhen-Panels; die Overdraw- und
+  FPS-JSONs sind davon unberührt (Fenster-Messung vor dem Shot).
+
+## Karten-Zuordnung
+
+A = #5778 (Commit 0a6b2bf + 2dea49a + 955d05c), B = #5779 (Commit 4eedba2), C = #5780 (Commit ea27a0a).
+Belege alle in `shots/m10-perf-cap-rollback-*` (mit Renderer-String je JSON).
 
 ## Teil C — DPR-Budget-Regler: unverändert
 
