@@ -12,46 +12,45 @@
   "spit": {
    "w": 9,
    "h": 10,
-   "opaquePixels": 59,
-   "innerPixels": 40,
+   "opaquePixels": 57,
+   "innerPixels": 38,
    "colors": [
-    29,
-    30,
+    13,
     31
    ],
    "bg": {
     "nightDeep": {
-     "minInner": 1.53,
-     "meanInner": 3.43,
-     "max": 5.98,
+     "minInner": 5.98,
+     "meanInner": 10.5,
+     "max": 18.23,
      "bgColorHex": "0x0a0e16"
     },
     "night": {
-     "minInner": 1.42,
-     "meanInner": 3.19,
-     "max": 5.56,
+     "minInner": 5.56,
+     "meanInner": 9.75,
+     "max": 16.94,
      "bgColorHex": "0x101724"
     },
     "waterDeep": {
-     "minInner": 1.17,
-     "meanInner": 1.63,
-     "max": 2.81,
+     "minInner": 2.81,
+     "meanInner": 4.93,
+     "max": 8.57,
      "bgColorHex": "0x3a4a5c"
     },
     "waterMid": {
-     "minInner": 1.17,
-     "meanInner": 1.43,
-     "max": 2.04,
+     "minInner": 2.04,
+     "meanInner": 3.58,
+     "max": 6.22,
      "bgColorHex": "0x4e5f6e"
     },
     "grassMarsh": {
-     "minInner": 1.0,
-     "meanInner": 1.4,
-     "max": 2.39,
+     "minInner": 2.39,
+     "meanInner": 4.2,
+     "max": 7.29,
      "bgColorHex": "0x3d5a38"
     }
    },
-   "minInnerAllBg": 1.0
+   "minInnerAllBg": 2.04
   },
   "bone": {
    "w": 9,
@@ -100,46 +99,45 @@
   "shadow": {
    "w": 9,
    "h": 9,
-   "opaquePixels": 40,
-   "innerPixels": 18,
+   "opaquePixels": 36,
+   "innerPixels": 16,
    "colors": [
-    5,
-    8,
-    9
+    9,
+    13
    ],
    "bg": {
     "nightDeep": {
-     "minInner": 1.56,
-     "meanInner": 4.83,
-     "max": 7.12,
+     "minInner": 7.12,
+     "meanInner": 14.07,
+     "max": 18.23,
      "bgColorHex": "0x0a0e16"
     },
     "night": {
-     "minInner": 1.45,
-     "meanInner": 4.49,
-     "max": 6.62,
+     "minInner": 6.62,
+     "meanInner": 13.07,
+     "max": 16.94,
      "bgColorHex": "0x101724"
     },
     "waterDeep": {
-     "minInner": 1.36,
-     "meanInner": 2.48,
-     "max": 3.35,
+     "minInner": 3.35,
+     "meanInner": 6.61,
+     "max": 8.57,
      "bgColorHex": "0x3a4a5c"
     },
     "waterMid": {
-     "minInner": 1.52,
-     "meanInner": 2.09,
-     "max": 2.43,
+     "minInner": 2.43,
+     "meanInner": 4.8,
+     "max": 6.22,
      "bgColorHex": "0x4e5f6e"
     },
     "grassMarsh": {
-     "minInner": 1.6,
-     "meanInner": 2.26,
-     "max": 2.85,
+     "minInner": 2.85,
+     "meanInner": 5.63,
+     "max": 7.29,
      "bgColorHex": "0x3d5a38"
     }
    },
-   "minInnerAllBg": 1.36
+   "minInnerAllBg": 2.43
   },
   "fire": {
    "w": 9,
@@ -147,52 +145,51 @@
    "opaquePixels": 63,
    "innerPixels": 39,
    "colors": [
-    17,
     19,
     20,
     22
    ],
    "bg": {
     "nightDeep": {
-     "minInner": 3.37,
-     "meanInner": 8.87,
+     "minInner": 8.06,
+     "meanInner": 9.84,
      "max": 16.65,
      "bgColorHex": "0x0a0e16"
     },
     "night": {
-     "minInner": 3.13,
-     "meanInner": 8.25,
+     "minInner": 7.49,
+     "meanInner": 9.14,
      "max": 15.48,
      "bgColorHex": "0x101724"
     },
     "waterDeep": {
-     "minInner": 1.58,
-     "meanInner": 4.17,
+     "minInner": 3.79,
+     "meanInner": 4.62,
      "max": 7.83,
      "bgColorHex": "0x3a4a5c"
     },
     "waterMid": {
-     "minInner": 1.15,
-     "meanInner": 3.03,
+     "minInner": 2.75,
+     "meanInner": 3.36,
      "max": 5.68,
      "bgColorHex": "0x4e5f6e"
     },
     "grassMarsh": {
-     "minInner": 1.35,
-     "meanInner": 3.55,
+     "minInner": 3.22,
+     "meanInner": 3.93,
      "max": 6.66,
      "bgColorHex": "0x3d5a38"
     }
    },
-   "minInnerAllBg": 1.15
+   "minInnerAllBg": 2.75
   }
  },
  "shapeIoU": {
   "bone/fire": 0.26,
-  "bone/shadow": 0.37,
-  "bone/spit": 0.54,
-  "fire/shadow": 0.32,
-  "fire/spit": 0.47,
-  "shadow/spit": 0.62
+  "bone/shadow": 0.33,
+  "bone/spit": 0.56,
+  "fire/shadow": 0.34,
+  "fire/spit": 0.46,
+  "shadow/spit": 0.6
  }
 }

@@ -47,25 +47,34 @@ geändert (keine Kollisions-/Radius-Änderung):
 
 | Optik | Form | Kontur | Kern/Glanz | waterMid min/mean/max | nightDeep min/mean/max |
 |---|---|---|---|---|---|
-| spit | runde Giftkugel + 1-px Tropfen-Tail | ink 0 | 31 / 30 / 29 | 1,17 / 1,43 / 2,04 | 1,53 / 3,43 / 5,98 |
+| spit | runde Giftkugel + 1-px Tropfen-Tail | ink 0 | 13 außen oben-links, Füllung 31 | **2,04** / 3,58 / 6,22 | 5,98 / 10,50 / 18,23 |
 | bone | Knochenpaar 9×7, Highlight oben-links | ink 0 | 10 / 11 / 13 | 3,68 / 4,34 / 6,22 | 10,77 / 12,73 / 18,23 |
-| shadow | Halo-Ring mit C-Mund, 3 Stufen | ink 0 | 6 / 9 / 8 / 5 | 1,52 / 2,09 / 2,43 | 1,56 / 4,83 / 7,12 |
-| fire | elongierte Flamme 9×12 | ink 0 | 19 / 20 / 22 / 17 | 1,15 / 3,03 / 5,68 | 3,37 / 9,22 / 16,65 |
+| shadow | offener Halo mit C-Mund, 3 Stufen | ink 0 | 9 / 13, verbundener Bogen | **2,43** / 4,80 / 6,22 | 7,12 / 14,07 / 18,23 |
+| fire | elongierte Flamme 9×12 | ink 0 | 19 / 20 / 22 | **2,75** / 3,36 / 5,68 | 8,06 / 9,84 / 16,65 |
+
+Iteration 1 (2026-11-27, art-director-Befund): vorher waren spit (minInner 1,00 gegen
+Gras) und shadow (1,36 gegen waterDeep) praktisch Tarnung. Korrektur: spit-Füllung
+29/30 → 31 + 13-Rim, shadow 5/8 → 9 + 13-Rim, fire-Basis 17 → 19; kein Pixel mehr
+unter minInner 2,04 auf allen 5 Hintergründen. Zusätzlich Pixel-Grid: Schuss-Scale
+fest 1x (Puls nur über Alpha) und Telegraph 1x statt 0,34–0,62 (art-director-Befund 3).
 
 Kontrast = WCAG-Verhältnis (sRGB-Luminanz) je Nicht-Kontur-Pixel gegen den Hintergrund
 (`minInner` = schwächster, `meanInner` = Mittel, `max` = hellster Pixel),
-`shots/m10-enemy-shots-contrast.json` — Messung: **ein Lauf**, fester Satz Hintergründe
-(nightDeep/night/waterDeep/waterMid/grassMarsh), Stichprobe = alle opaken Nicht-Kontur-
-Pixel der 4 Texturen; keine weiteren Crops/Montagen. Ergebnis ehrlich: bone (mean 4,34–12,73)
-und fire (3,03–9,22) tragen über die Innenfüllung; shadow (2,09) knapp; **spit** liegt gegen
-waterMid/Gras bei mean 1,43/1,40 unter der Innenfüll-Schwelle 2,0. Dort tragen die
-1-px-Kontur (ink 0), der aufgehellte Rand (31) und die eindeutig andere Silhouette
-(Form-IoU max 0,62, spit/fire nur 0,47); das ist als offener Punkt dokumentiert,
-kein Rebalancing. Auf Gras (`grassMarsh`, Index 30) liegt bone bei 4,31, shadow/fire bei
-1,60/1,35. Form-IoU aller 6 Paare 0,26–0,62 (vorher spit/fire 0,86). Kontaktbogen
-`shots/m10-enemy-shots-optics.png` (480×120, 10× nearest), Dichte-Beleg
-`shots/m10-enemy-shots-density.png` (500 Gegner: 125 toad/witchling/lich/horror), 2-s-GIF
-`shots/m10-enemy-shots-density.gif` (24 Frames, 12 fps), 0 JS-Fehler.
+`shots/m10-enemy-shots-contrast.json` — Messung reproduzierbar mit
+`scripts/art/contrast-enemy-shots.py` (ein Lauf, fester Satz Hintergründe
+nightDeep/night/waterDeep/waterMid/grassMarsh, Stichprobe = alle opaken Nicht-Kontur-
+Pixel der 4 Texturen; keine weiteren Crops/Montagen). Nach Iteration 1 liegt
+**jede** Optik auf **allen** 5 Hintergründen bei minInner ≥ 2,04 (spit 2,04–5,98,
+bone 3,68–10,77, shadow 2,43–7,12, fire 2,75–8,06). Form-IoU aller 6 Paare
+0,26–0,60. Kontaktbogen `shots/m10-enemy-shots-optics.png` (480×120, 10× nearest),
+Dichte-Beleg `shots/m10-enemy-shots-density.png` (500 Gegner: 125
+toad/witchling/lich/horror), 2-s-GIF `shots/m10-enemy-shots-density.gif`
+(24 Frames, 12 fps), 0 JS-Fehler.
+
+**art-director-Urteil Iteration 0:** FAIL 3,0/5 (bone 4, fire 4, shadow 3, spit 2) —
+spit/schattentarnung, loses Nase-Pixel, nichtganzzahliger Puls-Scale, Dichte-Beleg
+nur auf Gras. Iteration 1 behebt alle vier Punkte (Farben, Nase entfernt, Puls 1x,
+Gegenmessung gegen Nacht/Wasser im JSON). Re-Urteil nach Commit siehe „Abnahme“.
 
 Mapping: ranged TI0 → spit, TI1 → bone, TI3 → shadow, TI4 (horror) → fire; damit
 kommen alle vier Optiken im Spiel vor.

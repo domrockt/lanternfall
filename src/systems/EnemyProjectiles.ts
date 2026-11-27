@@ -78,14 +78,15 @@ const HD_PREFIX = "enemy_shot_hd_";
 const HD_GRIDS: Record<string, string[]> = {
   // 3 Grüntöne (31 nur als 1-px Lichtkante oben-links) + 1-px Tropfen-Tail unten:
   // eigene Silhouette zu fire, unteres Randstück aufgehellt (kein 29 mehr an der Kante).
-  spit: ["...000...", "..0vv0...", ".0vvuuv0.", "0vuuuuuv0", "0uuuuuuu0", "0uuuuuuv0", ".0uuuuvv0", "..0uuuv0.", "...0u0...", "....t...."],
+  spit: ["...000...", "..0dd0...", ".0dvvvd0.", "0dvvvvvd0", "0dvvvvvd0", "0dvvvvvd0", ".0dvvvd0.", "..0dvd0..", "...0v0...", "....v...."],
   // 9x7 Knochenpaar, asymmetrischer 1-px-Lichtpunkt (13 nur oben-links), 3 Stufen.
   bone: [".00...00.", "0db0.0bb0", "0baa0bbb0", ".0baaab0.", "0baa0baa0", "0ba0.0ba0", ".00...00."],
   // Offener Halo (Lücke rechts) statt runder Kugel: Form-IoU < 0,7 zu spit.
-  // Unterer Bogen mit dritter Stufe (5 blueGrey); rechte Nase als sauberer C-Mund.
-  shadow: ["...000...", "..09990..", ".0990..90", "0990...90", "0550.....", "0550.....", ".0550....", "..08880..", "...000..."],
-  // Warme 3-Stufen-Flamme (19/20/22, Basis 17 emberOrange statt 16), kein Einzelpixel.
-  fire: ["....0....", "...0j0...", "...0j0...", "..0jk0...", "..0jk0...", ".0jkmmk0.", ".0jkmmk0.", "0jjkkkkj0", "0jjhhhkj0", ".0jhhhj0.", "..0jhhj0.", "...000..."],
+  // Alle Füllpixel 9/13 (paleMist/lanternWhite): kein blueGrey 5 mehr, das gegen
+  // waterDeep/FogBlue fast verschwand; rechte Nase als sauberer C-Mund.
+  shadow: ["...000...", "..0ddd0..", ".0dd0....", "0dd0.....", "0990.....", "0990.....", ".0990....", "..0ddd0..", "...000..."],
+  // Warme 3-Stufen-Flamme (19/20/22), kein 17 emberOrange mehr (zu nah an Gras-Luminanz).
+  fire: ["....0....", "...0j0...", "...0j0...", "..0jk0...", "..0jk0...", ".0jkmmk0.", ".0jkmmk0.", "0jjkkkkj0", "0jjjjjkj0", ".0jjjjj0.", "..0jjjj0.", "...000..."],
 };
 
 function addHdShotTexture(scene: Phaser.Scene, family: string, rows: readonly string[]): void {
@@ -301,7 +302,8 @@ export class EnemyProjectilePool {
       p.elapsed += dt;
       const t = Phaser.Math.Clamp(p.elapsed / p.duration, 0, 1);
       if (p.telegraph) {
-        p.telegraph.setScale(TELEGRAPH_SCALE_MIN + (TELEGRAPH_SCALE_MAX - TELEGRAPH_SCALE_MIN) * t);
+        // Pixel-Grid: Telegraph bleibt 1x (kein nichtganzzahliger Scale), pulsiert über Alpha.
+        p.telegraph.setScale(1);
         p.telegraph.setAlpha(TELEGRAPH_ALPHA_START - (TELEGRAPH_ALPHA_START - TELEGRAPH_ALPHA_END) * t);
       }
       if (p.elapsed < p.duration) continue;
@@ -337,9 +339,9 @@ export class EnemyProjectilePool {
       shot.y += shot.vy * dt;
       shot.sprite.setPosition(Math.round(shot.x), Math.round(shot.y));
       shot.sprite.setRotation(Math.atan2(shot.vy, shot.vx));
-      // Rand-Puls: Gegnerschüsse bleiben im VFX-Chaos erkennbar.
-      const pulse = 1 + Math.sin(shot.life * 18 + shot.radius) * 0.09;
-      shot.sprite.setScale(pulse);
+      // Puls über Alpha statt Scale: ganzzahliges 1x-Grid, 1-px-Kontur bleibt scharf.
+      shot.sprite.setScale(1);
+      shot.sprite.setAlpha(0.92 + Math.sin(shot.life * 18 + shot.radius) * 0.08);
       // Sichtbarer Trail (nicht additiv, damit Gegnerschüsse eigen bleiben).
       shot.trailTimer -= dt;
       if (shot.trailTimer <= 0) {
