@@ -92,6 +92,78 @@ ensureBuild();
 mkdirSync("shots", { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
+
+// ── Sim-Modus (--sim): 30-min-Lauf @timeScale 30, Truhen-Count 6/6 belegen ──
+if (process.argv.includes("--sim")) {
+  const TIME_SCALE = 30;
+  const WALL_TIMEOUT_MS = 300_000;
+  const browserSim = await chromium.launch({
+    args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"],
+  });
+  const page = await browserSim.newPage({ viewport: { width: 640, height: 360 }, deviceScaleFactor: 2 });
+  const simErrors = [];
+  page.on("pageerror", (e) => simErrors.push(String(e)));
+  page.on("console", (m) => { if (m.type() === "error") simErrors.push(m.text()); });
+  try {
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=101`);
+    await startRun(page);
+    await page.evaluate(() => {
+      window.__lf.god(true);
+      window.__lf.autoPlay(true);
+      window.__lf.setTimeScale(30);
+    });
+    const started = Date.now();
+    let last = null;
+    while (Date.now() - started < WALL_TIMEOUT_MS) {
+      await page.waitForTimeout(500);
+      last = await page.evaluate(() => {
+        const s = window.__lf.stats();
+        const run = window.__game.scene.getScene("run");
+        return {
+          scene: s.scene,
+          time: s.time,
+          bossesDefeated: s.bossesDefeated ?? 0,
+          chestsDropped: s.chestsDropped ?? 0,
+          spawnCount: run?.chests?.spawns?.length ?? 0,
+          dawn: s.dawn ?? false,
+        };
+      });
+      if (last.scene !== "run") break;
+      if ((last.dawn || last.time >= 1830) && last.bossesDefeated >= 6) {
+        await page.waitForTimeout(400);
+        break;
+      }
+    }
+    const finalState = (await page.evaluate(() => window.__lf.finalState?.() ?? null)) ?? null;
+    const renderer = await page.evaluate(() => window.__lf.rendererInfo());
+    const sim = {
+      lane: "m10-chest-reveal",
+      card: "K4 Truhen-Count 6/6 (30-min-Sim timeScale 30, seed 101)",
+      capturedAt: new Date().toISOString(),
+      timeScale: TIME_SCALE,
+      renderer: renderer.renderer ?? null,
+      simTime: last?.time ?? finalState?.time ?? 0,
+      bossesDefeated: last?.bossesDefeated ?? 0,
+      chestsDropped: last?.chestsDropped ?? 0,
+      chestSpawnsRecorded: last?.spawnCount ?? 0,
+      count66: (last?.bossesDefeated ?? 0) === 6 && (last?.chestsDropped ?? 0) === 6 && (last?.spawnCount ?? 0) === 6,
+      jsErrors: simErrors,
+      note: "Drop-/Spawn-Logik unveraendert (K2 beruehrt nur open()/update()/clear()); Beleg, dass die Inszenierung den Truhen-Count 6/6 nicht veraendert.",
+    };
+    writeFileSync("shots/m10-chest-reveal-sim.json", `${JSON.stringify(sim, null, 2)}\n`);
+    console.log(JSON.stringify(sim, null, 2));
+    if (simErrors.length > 0 || !sim.count66) process.exit(1);
+    await browserSim.close();
+    server.stop();
+    process.exit(0);
+  } catch (e) {
+    console.error(String(e));
+    await browserSim.close();
+    server.stop();
+    process.exit(1);
+  }
+}
+
 const browser = await chromium.launch({
   args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"],
 });
@@ -143,6 +215,22 @@ try {
     await page.waitForTimeout(1550); // Evo-Settle (1450 ms) vor dem Panel-Hide (2130 ms bei 1 Belohnung)
     await page.screenshot({ path: `shots/m10-chest-reveal-${OUT}-${fmt.label}-open-evo.png` });
     const evo = await page.evaluate(COLLECT);
+
+    // GIF der Öffnungs-Sequenz (nur 640er-Lauf, dritte Truhe): 30 Frames à 90 ms.
+    if (formats.length === 0) {
+      await page.waitForTimeout(1000); // Evo-Panel schließt
+      await page.evaluate(() => window.__lf.openChest());
+      const { rmSync } = await import("node:fs");
+      rmSync("/home/ai/tmp/m10-chest-reveal/gif", { recursive: true, force: true });
+      mkdirSync("/home/ai/tmp/m10-chest-reveal/gif", { recursive: true });
+      for (let i = 0; i < 30; i++) {
+        await page.screenshot({ path: `/home/ai/tmp/m10-chest-reveal/gif/f${String(i).padStart(2, "0")}.png` });
+        await page.waitForTimeout(90);
+      }
+      const frameFiles = [...Array(30).keys()].map((i) => `/home/ai/tmp/m10-chest-reveal/gif/f${String(i).padStart(2, "0")}.png`);
+      execFileSync("convert", ["-delay", "9", "-loop", "0", ...frameFiles,
+        "-resize", "50%", "-filter", "point", `shots/m10-chest-reveal-${OUT}-open.gif`], { stdio: "inherit" });
+    }
 
     const renderer = await page.evaluate(() => window.__lf.rendererInfo());
 

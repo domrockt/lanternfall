@@ -1,0 +1,14 @@
+{
+  "lane": "m10-chest-reveal",
+  "card": "K4 Truhen-Count 6/6 (30-min-Sim timeScale 30, seed 101)",
+  "capturedAt": "2026-11-27T22:39:49.204Z",
+  "timeScale": 30,
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "simTime": 1819.7,
+  "bossesDefeated": 6,
+  "chestsDropped": 6,
+  "chestSpawnsRecorded": 6,
+  "count66": true,
+  "jsErrors": [],
+  "note": "Drop-/Spawn-Logik unveraendert (K2 beruehrt nur open()/update()/clear()); Beleg, dass die Inszenierung den Truhen-Count 6/6 nicht veraendert."
+}

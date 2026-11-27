@@ -1,7 +1,7 @@
 {
   "lane": "m10-chest-reveal",
   "card": "K4 Nachher-Beleg",
-  "capturedAt": "2026-11-27T22:32:14.671Z",
+  "capturedAt": "2026-11-27T22:45:55.214Z",
   "seed": 101,
   "note": "Nachher-Stand: Inszenierte Öffnungs-Sequenz (Timeline aus ChestSystem), größerer Icon, stärkerer Strahl, Münzen+Funken; Untertitel mit hartem Abstand zu Titel und Icon (0 Überlappung).",
   "jsErrors": [],
@@ -58,10 +58,10 @@
             "texture": "chest_open",
             "text": null,
             "verdict": true,
-            "x": 299.2,
-            "y": 116.2,
-            "width": 41.6,
-            "height": 41.6
+            "x": 296,
+            "y": 115,
+            "width": 48,
+            "height": 48
           },
           {
             "name": "chest-title",
@@ -92,7 +92,7 @@
             "text": "",
             "verdict": true,
             "x": 320,
-            "y": 167,
+            "y": 169,
             "width": 0,
             "height": 7
           },
@@ -103,7 +103,7 @@
             "text": "",
             "verdict": true,
             "x": 320,
-            "y": 175,
+            "y": 177,
             "width": 0,
             "height": 7
           },
@@ -465,7 +465,7 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 256.3,
+            "x": 256.2,
             "y": 107.9,
             "width": 2.8,
             "height": 2.8
@@ -476,8 +476,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 354.9,
-            "y": 21.7,
+            "x": 355.1,
+            "y": 21.1,
             "width": 3,
             "height": 3
           },
@@ -487,8 +487,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 263.2,
-            "y": 73.9,
+            "x": 263.1,
+            "y": 73.8,
             "width": 2.8,
             "height": 2.8
           },
@@ -498,8 +498,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 406.7,
-            "y": 34.7,
+            "x": 407.3,
+            "y": 34,
             "width": 3.1,
             "height": 3.1
           },
@@ -509,8 +509,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 288.6,
-            "y": 42.7,
+            "x": 288.5,
+            "y": 42.4,
             "width": 2.9,
             "height": 2.9
           },
@@ -520,8 +520,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 452,
-            "y": 71.4,
+            "x": 453.1,
+            "y": 70.9,
             "width": 3.2,
             "height": 3.2
           },
@@ -531,10 +531,10 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 330.1,
-            "y": 23.9,
-            "width": 3,
-            "height": 3
+            "x": 330.2,
+            "y": 23.4,
+            "width": 2.9,
+            "height": 2.9
           },
           {
             "name": null,
@@ -542,7 +542,7 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 257.5,
+            "x": 257.4,
             "y": 91.1,
             "width": 2.8,
             "height": 2.8
@@ -553,8 +553,30 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 380.9,
-            "y": 25.2,
+            "x": 381.3,
+            "y": 24.5,
+            "width": 3,
+            "height": 3
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "text": null,
+            "verdict": false,
+            "x": 273.5,
+            "y": 57.1,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "text": null,
+            "verdict": false,
+            "x": 431.7,
+            "y": 49.6,
             "width": 3.1,
             "height": 3.1
           },
@@ -564,30 +586,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 273.6,
-            "y": 57.3,
-            "width": 2.9,
-            "height": 2.9
-          },
-          {
-            "name": null,
-            "type": "Image",
-            "texture": "fx_coin",
-            "text": null,
-            "verdict": false,
-            "x": 430.8,
-            "y": 50.2,
-            "width": 3.2,
-            "height": 3.2
-          },
-          {
-            "name": null,
-            "type": "Image",
-            "texture": "fx_coin",
-            "text": null,
-            "verdict": false,
-            "x": 307.7,
-            "y": 31.2,
+            "x": 307.6,
+            "y": 30.8,
             "width": 2.9,
             "height": 2.9
           }
@@ -634,10 +634,10 @@
             "texture": "chest_open",
             "text": null,
             "verdict": true,
-            "x": 299.2,
-            "y": 116.2,
-            "width": 41.6,
-            "height": 41.6
+            "x": 296,
+            "y": 115,
+            "width": 48,
+            "height": 48
           },
           {
             "name": "chest-title",
@@ -668,7 +668,7 @@
             "text": "",
             "verdict": true,
             "x": 320,
-            "y": 167,
+            "y": 169,
             "width": 0,
             "height": 7
           },
@@ -679,7 +679,7 @@
             "text": "",
             "verdict": true,
             "x": 320,
-            "y": 175,
+            "y": 177,
             "width": 0,
             "height": 7
           },
@@ -1078,10 +1078,10 @@
             "texture": "chest_open",
             "text": null,
             "verdict": true,
-            "x": 299.2,
-            "y": 116.2,
-            "width": 41.6,
-            "height": 41.6
+            "x": 296,
+            "y": 115,
+            "width": 48,
+            "height": 48
           },
           {
             "name": "chest-title",
@@ -1112,7 +1112,7 @@
             "text": "AUS GLUTFUNKE + ARKANES BUCH WIRD PHÖNIXSCHWARM.",
             "verdict": true,
             "x": 177,
-            "y": 167,
+            "y": 169,
             "width": 287,
             "height": 7
           },
@@ -1123,7 +1123,7 @@
             "text": "",
             "verdict": true,
             "x": 320,
-            "y": 175,
+            "y": 177,
             "width": 0,
             "height": 7
           },
@@ -1539,10 +1539,10 @@
             "texture": "chest_open",
             "text": null,
             "verdict": true,
-            "x": 369.2,
-            "y": 116.2,
-            "width": 41.6,
-            "height": 41.6
+            "x": 366,
+            "y": 115,
+            "width": 48,
+            "height": 48
           },
           {
             "name": "chest-title",
@@ -1573,7 +1573,7 @@
             "text": "",
             "verdict": true,
             "x": 390,
-            "y": 167,
+            "y": 169,
             "width": 0,
             "height": 7
           },
@@ -1584,7 +1584,7 @@
             "text": "",
             "verdict": true,
             "x": 390,
-            "y": 175,
+            "y": 177,
             "width": 0,
             "height": 7
           },
@@ -1625,11 +1625,11 @@
             "name": null,
             "type": "Container",
             "texture": null,
-            "text": "MAGNETAMULETT",
+            "text": "GLUTFUNKE",
             "verdict": true,
-            "x": 266,
+            "x": 278,
             "y": 247,
-            "width": 77,
+            "width": 53,
             "height": 7
           },
           {
@@ -1691,11 +1691,11 @@
             "name": null,
             "type": "Container",
             "texture": null,
-            "text": "MAGNETAMULETT",
+            "text": "GLUTFUNKE",
             "verdict": true,
-            "x": 352,
+            "x": 364,
             "y": 247,
-            "width": 77,
+            "width": 53,
             "height": 7
           },
           {
@@ -1757,11 +1757,11 @@
             "name": null,
             "type": "Container",
             "texture": null,
-            "text": "MAGNETAMULETT",
+            "text": "GLUTFUNKE",
             "verdict": true,
-            "x": 438,
+            "x": 450,
             "y": 247,
-            "width": 77,
+            "width": 53,
             "height": 7
           },
           {
@@ -1947,7 +1947,7 @@
             "text": null,
             "verdict": false,
             "x": 326.2,
-            "y": 107.8,
+            "y": 107.9,
             "width": 2.8,
             "height": 2.8
           },
@@ -1957,30 +1957,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 425.6,
-            "y": 19.7,
-            "width": 2.9,
-            "height": 2.9
-          },
-          {
-            "name": null,
-            "type": "Image",
-            "texture": "fx_coin",
-            "text": null,
-            "verdict": false,
-            "x": 333,
-            "y": 73.6,
-            "width": 2.8,
-            "height": 2.8
-          },
-          {
-            "name": null,
-            "type": "Image",
-            "texture": "fx_coin",
-            "text": null,
-            "verdict": false,
-            "x": 478.7,
-            "y": 32.4,
+            "x": 425.3,
+            "y": 20.6,
             "width": 3,
             "height": 3
           },
@@ -1990,8 +1968,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 358.3,
-            "y": 41.8,
+            "x": 333.1,
+            "y": 73.7,
             "width": 2.8,
             "height": 2.8
           },
@@ -2001,8 +1979,30 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 525.7,
-            "y": 69.6,
+            "x": 477.8,
+            "y": 33.4,
+            "width": 3,
+            "height": 3
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "text": null,
+            "verdict": false,
+            "x": 358.4,
+            "y": 42.2,
+            "width": 2.9,
+            "height": 2.9
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "text": null,
+            "verdict": false,
+            "x": 524,
+            "y": 70.4,
             "width": 3.1,
             "height": 3.1
           },
@@ -2012,8 +2012,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 400.3,
-            "y": 22.3,
+            "x": 400.2,
+            "y": 23,
             "width": 2.9,
             "height": 2.9
           },
@@ -2034,30 +2034,8 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 452.2,
-            "y": 23,
-            "width": 2.9,
-            "height": 2.9
-          },
-          {
-            "name": null,
-            "type": "Image",
-            "texture": "fx_coin",
-            "text": null,
-            "verdict": false,
-            "x": 343.3,
-            "y": 56.8,
-            "width": 2.8,
-            "height": 2.8
-          },
-          {
-            "name": null,
-            "type": "Image",
-            "texture": "fx_coin",
-            "text": null,
-            "verdict": false,
-            "x": 503.7,
-            "y": 48.1,
+            "x": 451.6,
+            "y": 23.9,
             "width": 3,
             "height": 3
           },
@@ -2067,10 +2045,32 @@
             "texture": "fx_coin",
             "text": null,
             "verdict": false,
-            "x": 377.6,
-            "y": 29.9,
+            "x": 343.5,
+            "y": 57,
             "width": 2.8,
             "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "text": null,
+            "verdict": false,
+            "x": 502.5,
+            "y": 49,
+            "width": 3.1,
+            "height": 3.1
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "text": null,
+            "verdict": false,
+            "x": 377.6,
+            "y": 30.5,
+            "width": 2.9,
+            "height": 2.9
           }
         ]
       },
@@ -2115,10 +2115,10 @@
             "texture": "chest_open",
             "text": null,
             "verdict": true,
-            "x": 369.2,
-            "y": 116.2,
-            "width": 41.6,
-            "height": 41.6
+            "x": 366,
+            "y": 115,
+            "width": 48,
+            "height": 48
           },
           {
             "name": "chest-title",
@@ -2149,7 +2149,7 @@
             "text": "",
             "verdict": true,
             "x": 390,
-            "y": 167,
+            "y": 169,
             "width": 0,
             "height": 7
           },
@@ -2160,7 +2160,7 @@
             "text": "",
             "verdict": true,
             "x": 390,
-            "y": 175,
+            "y": 177,
             "width": 0,
             "height": 7
           },
@@ -2559,10 +2559,10 @@
             "texture": "chest_open",
             "text": null,
             "verdict": true,
-            "x": 369.2,
-            "y": 116.2,
-            "width": 41.6,
-            "height": 41.6
+            "x": 366,
+            "y": 115,
+            "width": 48,
+            "height": 48
           },
           {
             "name": "chest-title",
@@ -2593,7 +2593,7 @@
             "text": "AUS GLUTFUNKE + ARKANES BUCH WIRD PHÖNIXSCHWARM.",
             "verdict": true,
             "x": 247,
-            "y": 167,
+            "y": 169,
             "width": 287,
             "height": 7
           },
@@ -2604,7 +2604,7 @@
             "text": "",
             "verdict": true,
             "x": 390,
-            "y": 175,
+            "y": 177,
             "width": 0,
             "height": 7
           },

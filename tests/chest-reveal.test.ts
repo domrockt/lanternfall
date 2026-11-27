@@ -8,6 +8,13 @@ import {
   revealOrder,
   type ChestReward,
 } from "../src/logic/evolution";
+import {
+  CHEST_OPENING_TTL_MS,
+  CHEST_OPEN_REVEAL_MS,
+  chestBurstSpec,
+  chestOpenTimeline,
+  chestPanelLayout,
+} from "../src/logic/chest-reveal";
 import { SeededRng } from "../src/logic/rng";
 import { slotNameLines } from "../src/logic/text";
 
@@ -91,5 +98,85 @@ describe("chestRewards: Rewards unverändert + Lesbarkeit aller Inhalte", () => 
       expect(chestRewardLabel({ kind: "weapon", level }).length).toBeLessThanOrEqual(9);
     }
     expect(chestRewardLabel({ kind: "evolution", level: 8 }).length).toBeLessThanOrEqual(9);
+  });
+});
+
+// ── K4: Sequenz-Reihenfolge deterministisch, Layout überlappungsfrei ────────
+
+describe("chestOpenTimeline", () => {
+  for (const n of [1, 3, 5] as const) {
+    it(`1/3/5 Belohnungen: Phasen Glow->Partikel->Reveal in fester Reihenfolge (n=${n})`, () => {
+      const steps = chestOpenTimeline(n);
+      // Aufsteigende Zeiten, deterministisch.
+      for (let i = 1; i < steps.length; i++) expect(steps[i].at).toBeGreaterThanOrEqual(steps[i - 1].at);
+      const names = steps.map((s) => s.step);
+      expect(names[0]).toBe("shine");
+      expect(names.indexOf("lid")).toBeLessThan(names.indexOf("beam"));
+      expect(names.indexOf("beam")).toBeLessThan(names.indexOf("burst"));
+      expect(names.indexOf("burst")).toBeLessThan(names.indexOf("reveal"));
+      const settles = steps.filter((s) => s.step === "revealSettle");
+      expect(settles.length).toBe(n);
+      expect(settles.map((s) => s.rewardIndex)).toEqual([...Array(n).keys()]);
+      const finish = steps[steps.length - 1];
+      expect(finish.step).toBe("finish");
+      expect(finish.at).toBeGreaterThanOrEqual(settles[settles.length - 1].at);
+      // Welt-Sequenz (TTL 1600 ms) räumt früher ab als das Panel (finish) —
+      // beides unabhängige Zeitleisten aus derselben Quelle.
+      expect(finish.at).toBeGreaterThan(CHEST_OPEN_REVEAL_MS);
+      // Deterministisch: zwei Aufrufe identisch.
+      expect(JSON.stringify(steps)).toBe(JSON.stringify(chestOpenTimeline(n)));
+    });
+  }
+
+  it("klemmt rewardCount auf 1..5", () => {
+    expect(chestOpenTimeline(0)[0].step).toBe("shine");
+    expect(chestOpenTimeline(-2).filter((s) => s.step === "revealSettle").length).toBe(1);
+    expect(chestOpenTimeline(9).filter((s) => s.step === "revealSettle").length).toBe(5);
+  });
+});
+
+describe("chestBurstSpec", () => {
+  it("16 Münzen + 8 Funken, deterministisch, Winkel im Fächer nach oben", () => {
+    const spec = chestBurstSpec();
+    expect(spec.filter((p) => p.kind === "coin").length).toBe(16);
+    expect(spec.filter((p) => p.kind === "spark").length).toBe(8);
+    for (const p of spec) {
+      expect(Number.isFinite(p.angle)).toBe(true);
+      expect(Number.isFinite(p.dist)).toBe(true);
+      expect(p.delayMs).toBeGreaterThanOrEqual(0);
+      expect(p.lifeMs).toBeGreaterThan(0);
+      expect(p.scale).toBeGreaterThan(0);
+    }
+    for (const p of spec.filter((q) => q.kind === "coin")) {
+      // Fächer um -90° (nach oben), ±1.1 rad.
+      expect(p.angle).toBeGreaterThanOrEqual(-Math.PI / 2 - 1.11);
+      expect(p.angle).toBeLessThanOrEqual(-Math.PI / 2 + 1.11);
+    }
+    expect(JSON.stringify(spec)).toBe(JSON.stringify(chestBurstSpec()));
+  });
+});
+
+describe("chestPanelLayout", () => {
+  const oy = Math.round((360 - 270) / 2);
+  const L = chestPanelLayout(oy);
+
+  it("Titel, Untertitel, Icon und Hinweise überlappen nicht (hart, beide Abstände ≥ 2 px)", () => {
+    // Glyph-Boxen: PixelText hat Top-Origin, Höhe = 7 px * Skalierung.
+    const titleBottom = L.titleY + 7 * 2;          // Titel Skalierung 2
+    const subtitleTop = L.subtitleY;
+    const subtitleBottom = L.subtitleY + 7;
+    const iconTop = L.iconY - 8 * L.iconScale;     // 16x16-Textur, zentriert
+    const iconBottom = L.iconY + 8 * L.iconScale;
+    const hint0Top = L.hintY[0];
+    expect(titleBottom, "Titel-Unterkante unter Untertitel-Oberkante").toBeLessThanOrEqual(subtitleTop - 2);
+    expect(subtitleBottom, "Untertitel-Unterkante unter Icon-Textur oben").toBeLessThanOrEqual(iconTop - 2);
+    expect(iconBottom, "Icon-Unterkante über Evo-Hinweis").toBeLessThanOrEqual(hint0Top - 2);
+    expect(L.hintY[1] + 7, "Hinweiszeile 2 über den Slots (Slot-Top 196+oy)").toBeLessThanOrEqual(196 + oy - 2);
+  });
+
+  it("Layout ist view-unabhängig identisch (640 und 780 haben dasselbe oy)", () => {
+    expect(chestPanelLayout(45)).toEqual(chestPanelLayout(45));
+    expect(chestPanelLayout(0).subtitleY).toBe(58);
+    expect(chestPanelLayout(0).iconScale).toBe(3); // ganzzahlig (Pixel-Grid)
   });
 });
