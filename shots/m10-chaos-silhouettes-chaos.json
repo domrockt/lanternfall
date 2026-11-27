@@ -1,13 +1,13 @@
 {
   "lane": "m10-chaos-silhouettes",
   "kind": "chaos-frame",
-  "generatedAt": "2026-11-27T12:32:21.160Z",
+  "generatedAt": "2026-11-27T14:28:35.113Z",
   "viewport": {
     "width": 1920,
     "height": 1080,
     "dpr": 1
   },
-  "time": 1555.3,
+  "time": 1555.4,
   "minute": 25.92,
   "enemies": 612,
   "elites": 2,
@@ -20,11 +20,11 @@
   "crop": {
     "eliteUid": 64,
     "eliteId": "reaper_bat",
-    "screenX": 1016,
-    "screenY": 636,
+    "screenX": 988,
+    "screenY": 620,
     "clip": {
-      "x": 866,
-      "y": 486,
+      "x": 838,
+      "y": 470,
       "width": 300,
       "height": 300
     },

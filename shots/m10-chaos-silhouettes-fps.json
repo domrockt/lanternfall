@@ -1,7 +1,7 @@
 {
   "lane": "m10-chaos-silhouettes",
   "kind": "fps-minute25",
-  "generatedAt": "2026-11-27T13:00:20.921Z",
+  "generatedAt": "2026-11-27T14:42:45.660Z",
   "viewport": {
     "width": 1920,
     "height": 1080,
@@ -18,14 +18,14 @@
   "minute25": {
     "fps": 60.1,
     "frames": 601,
-    "elapsedMs": 10003,
+    "elapsedMs": 10006,
     "worstFrameMs": 16.8,
-    "minEnemies": 458,
-    "avgEnemies": 472,
-    "time": 1585.6,
+    "minEnemies": 462,
+    "avgEnemies": 474,
+    "time": 1586.8,
     "enemies": 481,
     "elites": 9,
-    "elapsedGameSeconds": 1586,
+    "elapsedGameSeconds": 1587,
     "targetFps": 55,
     "passed": true
   },

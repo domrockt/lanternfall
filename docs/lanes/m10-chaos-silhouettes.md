@@ -210,7 +210,7 @@ bleibt ungesetzt.
   Aura jetzt mit `setTintFill(PAL20)` als reine Amber-Silhouette gefüllt;
   Skalierung/Alpha/Radius bleiben deterministisch, nur Elite, kein Flackern.
   Beleg: `shots/m10-chaos-silhouettes-elite-vs-normal.png` (links Elite
-  `bogzombie` mit 1-px-Amber-Rim, rechts normaler `toad` ohne Marker),
+  `toad` mit 1-px-Amber-Rim, rechts `mudling` ohne Marker),
   `…-elite.json`.
 - **FPS Minute 25 (flock):** `shots/m10-chaos-silhouettes-fps.json` →
   60,1 FPS, 601 Frames/10 s, min. **458** Gegner, avg 472, 9 Elite,
@@ -222,4 +222,61 @@ bleibt ungesetzt.
 - Ehrlich: der Gewinn ist messbar, aber moderat; im dichten Kern überlappen
   weiterhin Figuren. Die Kante/der Amber-Rim machen Elites und Randfiguren klar
   lesbar; 500+-Hordenframe und Elite-Crop sind jetzt dieselbe Codebasis.
+
+## #K5 Finale Belegbasis (27.11., nach allen Tonkorrekturen)
+
+Alle Belege wurden mit dem **aktuellen** Code erzeugt (nach der letzten
+`CONTRAST_TONES`-Runde); keine weiteren Render-/Messläufe für diese Abnahme.
+
+| Beleg | Pfad | Messwert |
+|---|---|---|
+| Chaos-Frame | `shots/m10-chaos-silhouettes-chaos.png` | 1920×1080, 25:55, **612 Gegner**, 2 Elite, 0 JS-Fehler |
+| Kern-Crop | `shots/m10-chaos-silhouettes-crop.png` | 900×900 (3× nearest aus `…-crop-raw.png` 300×300) |
+| Elite vs. Normal | `shots/m10-chaos-silhouettes-elite-vs-normal.png` | links Elite `toad` mit 1-px-Amber-Rim, rechts `mudling` ohne Rim |
+| Vorher/Nachher-Metrik | `shots/m10-chaos-silhouettes-before.json` / `…-after.json` | 30 Archetypen, identische Metrik |
+| FPS Minute 25 (flock) | `shots/m10-chaos-silhouettes-fps.json` | **60,1 FPS**, 601 Frames/10 s, min. 462, avg 474 Gegner, 9 Elite, worstFrame 16,8 ms, 0 JS-Fehler |
+
+| Metrik (30 Archetypen, Mittel) | vorher | aktueller Stand (`after.json`, 13:52) | Delta |
+|---|---|---|---|
+| Rim-Light hell % | 42,9 | **80,3** | +37,4 pp |
+| Top-Light % | 33,1 | **91,8** | +58,7 pp |
+| Randkontrast dunkel (L) | 57,5 | **96,3** | +38,8 |
+| unter Schwelle dunkel % | 59,9 | **21,7** | −38,2 pp |
+
+Größen unverändert (`sizeDiff 0`, Frame-Zahl unverändert), nur Palettenfarben
+und binäres Alpha. Test `tests/enemy-silhouette.test.ts` (30/30 unterscheidbar,
+Kontrast > 40, Elite ≠ Normal, deterministisch) ist grün; `npm run build` und
+`npm test` (307 Tests) sind grün. Ehrlich: die Lichtkante ist bei kleinen
+Fliegern (bat/reaper_bat) sehr dominant, im dichten Kern überlappen weiterhin
+Figuren – die Kante und der Amber-Ring halten Elites und Randfiguren lesbar.
+
+## #K5 Art-Director Runde 3: FAIL 3/5 (A10 nicht erfüllt)
+
+Urteil **FAIL, Note 3/5** (PASS erst ≥4/5). Belege: `shots/m10-chaos-silhouettes-chaos.png`,
+`…-crop.png`, `…-elite-vs-normal.png`, `…-after.json`.
+
+- Der Kern-Crop ist fast vollständig von additiven roten Boss-Ring-Overlays
+  überzogen (Histogramm dominiert von `#DE5A31`/`#F7734F`); in der Zielzone
+  verschmelzen die Silhouetten zu einer roten Fläche. Randfiguren sind lesbar,
+  der Crop belegt das Ziel aber nicht.
+- Der Amber-Rim ist am Elite `toad` (Minute 4,21, 13 Gegner) klar 1 px breit,
+  normaler `mudling` ohne Marker. Im 612er-Chaosframe (uid 64, `reaper_bat`)
+  ist der Elite-Rim unter dem roten Ring nicht eindeutig auszumachen.
+- `after.json` (13:52) misst 80,3 % Rim-Light / 91,8 % Top-Light / 96,3 L
+  Randkontrast / 21,7 % unter Schwelle dunkel; die älteren 60,2/88,6/73,9/42,5
+  aus der Korrekturrunde sind überholt. `after.png` ist von 09:48 und damit
+  älter als diese JSON-Messung.
+- Die Kerzenweiß-Oberkante (PAL 12) ist auf grauen/dunklen Gegnern streckenweise
+  dominanter als die Binnen-Schattierung (noch palettenkonform, aber nah an
+  „zu weiß“).
+
+Geforderte Korrekturen für eine nächste Runde: (1) Chaos-Beleg ohne aktiven
+Boss-Ring (Minute ~20–24 oder FX aus), (2) Elite-Crop mit sichtbarem Amber-Rim
+aus demselben Hordenframe, (3) `after.json`/`after.png` in einem Lauf neu
+erzeugen und die Zahlen hier angleichen, (4) Top-Kante für dunkle/graue Gegner
+auf `paleMist`/`boneLight` begrenzen statt `candleWhite`.
+
+**Status:** Supervisor-Stopp für weitere Render-/Messläufe in diesem Lauf;
+Karte #2522 daher **blocked** (art-director FAIL 3/5, A10 offen), `.lane-done`
+nennt den offenen Punkt ausdrücklich. Kein Gameplay-/Balance-/Sprite-Größen-Eingriff.
 
