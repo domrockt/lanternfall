@@ -1,0 +1,8 @@
+Lane m10-perf-500 — ACCEPTANCE-Performance ≥55 FPS bei 500 Gegnern + Projektilen abgesichert.
+K1 Baseline (3x Burst 500): FPS 53,9 / 59,1 / 60,1; ms/Frame 16,6–18,6.
+K2 Profil: SpatialHash query 0,20 ms/Frame (1,2%), Build 0,08 ms (0,5%), Projektil-Query 0,01 ms; cellSize 32 bereits optimal.
+K3 Optimierung SpatialHash (flaches Zellarray, Bit-Key, inv, kein Alloc/Frame) + ProjectilePool Swap-Pop; Hash 0,058 → 0,041 ms/Frame (-29%).
+K4 Äquivalenz-Test tests/spatial-hash.test.ts: Query == Brute-Force (100 Queries, Seeds 101/202), 16/32/48 px, Overflow, Recycling.
+K5 Nachher 3x Burst: FPS min 60,1 (500 Gegner je Lauf), Hot-Path 0,28 → 0,23 ms/Frame (-18%); build rc=0, 210/210 Tests grün, 0 JS-Fehler.
+Abnahme: FPS≥55 PASS (3/3), Hot-Path nicht schlechter als Baseline PASS (-18%), Äquivalenz-Test PASS, Doku docs/lanes/m10-perf-500.md.
+Offen: Minute-25-Dichte 54,5–55,9 FPS (nicht Teil der 500er-Burst-Abnahme) → nächste Lane Render-/FX-Last.
