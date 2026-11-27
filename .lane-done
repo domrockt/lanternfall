@@ -1,0 +1,29 @@
+# Lane m10-fx-overdraw-cap — fertig (2026-11-27)
+
+Overdraw-Deckel für additive FX: Attribution, Fix, Nachmessung, Lesbarkeit.
+
+- **K1 Attribution** (28de72d, perf-check PASS): M25-780@3, 3 Varianten je 3x10s
+  interleaved. FX-Anteil = (c)-(a) = **2,44 ms/Frame ≈ 9,4 %** → Overdraw-FX als
+  Hauptursache widerlegt. Beleg: shots/m10-fx-overdraw-attribution.json.
+- **K2 Fix** (d381bad + Review-Fix fdede49, reviewer PASS nach anfänglichem FAIL):
+  geteiltes Glow-Budget (FxSystem+ParticleSystem, full 72 / reduced 40 / minimal 24,
+  lod.ts nur gelesen), dpr-Alpha-Treppe 1/0,8/0,6, NORMAL-Fallback statt Spawn-Abbruch.
+  Review-Fix: Re-Promotion in setAlphaScale nur mit Glow-Slot (K1: Cap war via
+  LOD-Wechsel aushebelbar), Budget-Reset bei Szenen-Shutdown. 20 Tests in
+  tests/fx-overdraw.test.ts (4 Integrationstests diskriminieren alt/neu),
+  gesamt 375/375 grün, build rc=0.
+- **K3 Nachmessung** (cf94df7, perf-check PASS): M25 780x360@3 Ø **41,9 FPS**
+  (Ziel 50 → rot, aber **begründete Obergrenze ~43 FPS**: selbst FX=0 spart nur
+  2,4 ms — 50 FPS mit FX-Maßnahmen allein rechnerisch nicht erreichbar).
+  M25 640x360@1 Ø **51,8 FPS** ≥ 50 (Ø grün, 1-s-Bucket-Dips dokumentiert).
+  Beleg: shots/m10-fx-overdraw-after.json. Restliche Kosten: nicht-FX-Fill
+  (Gegner-/Boden-/Lichtflächen) — eigene Lane.
+- **K4 Lesbarkeit** (ec77507, art-director **4/5 PASS**):
+  shots/m10-fx-overdraw-m25-780.png (2340x1080 = 780x360@3, 341 Gegner, Boss),
+  Near-White **0,0869 %** ≤ 4,16 % (art-director: 0,019 % mit Kanal-AND).
+
+Offene Punkte (Folge-Lanes): 50 FPS @780@3 brauchen nicht-FX-Fill-Hebel;
+Glow-Budget-Telemetrie in den Mess-JSONs ist null (Budget hängt an Szene);
+XP-Kristall-LOD-Farbe könnte 1 Stufe heller; Ember-Funkenkern 1–2 px kleiner.
+
+Details: docs/lanes/m10-fx-overdraw-cap.md
