@@ -1,0 +1,30 @@
+{
+  "tag": "baseline",
+  "date": "2026-11-27T19:58:20.566Z",
+  "runs": 3,
+  "avgMs": 987,
+  "maxMs": 1225,
+  "minMs": 863,
+  "results": [
+    {
+      "run": 1,
+      "titleMs": 1225,
+      "textures": 498,
+      "atlas": true
+    },
+    {
+      "run": 2,
+      "titleMs": 863,
+      "textures": 498,
+      "atlas": true
+    },
+    {
+      "run": 3,
+      "titleMs": 873,
+      "textures": 498,
+      "atlas": true
+    }
+  ],
+  "texturesAtTitle": 498,
+  "jsErrors": []
+}
