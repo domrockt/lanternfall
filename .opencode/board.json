@@ -2793,7 +2793,7 @@
       "id": 1742,
       "title": "m10-enemy-coverage-05 In-Game-Beleg 30 min @30x",
       "description": "Headless 30 Sim-Minuten bei timeScale 30, Spawn-Zaehler ueber window.__lf (minimal spawnCounts in src/debug.ts, nur zaehlen). Abnahme: shots/m10-coverage-ingame.json 30/30 und >=30 gleichzeitig aktive Gegner, 0 JS-Fehler, npm run build + npm test gruen, docs vollstaendig, .lane-done.",
-      "column": "review",
+      "column": "done",
       "assignee": "playtester",
       "notes": [
         {
@@ -2820,10 +2820,15 @@
           "at": "2026-11-27T01:49:38Z",
           "by": "build",
           "text": "blocked → review: Commit b4d5884: erneuter In-Game-Lauf 1800.3 s, 30/30, 158 aktiv, 0 JS-Fehler, build 807ms + 208 Tests gruen. Inhalt PASS. Offen nur .lane-done: untracked im Worktree, Claim bei merge-m9-art-polish (main), Request in .dispatch/requests.md -> Merge-Job uebernimmt/committet die Datei."
+        },
+        {
+          "at": "2026-11-27T01:53:59Z",
+          "by": "build",
+          "text": "review → done: Lane-Abschluss PASS: In-Game b4d5884 (1800.3 s, 30/30, 158 aktiv, 0 JS-Fehler), build 807ms + 208 Tests gruen, .lane-done f2d099b von dieser Lane committet. Merge-Job: .lane-done gemaess Merge-Regel entfernen."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T01:49:38Z"
+      "updated": "2026-11-27T01:53:59Z"
     }
   ]
 }
