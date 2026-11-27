@@ -1,0 +1,16 @@
+# m10-android-perf — lane done (2026-11-27)
+
+Android/ARM-Audit fuer Lanternfall (Mali/Adreno, WebView), Pixel-7-Profil 915x412@dpr2, CPU-Throttle 4.
+
+Messwerte (headless Chromium/SwiftShader, Host-Streuung):
+- Canvas 860x360 logisch = GL-Attribut, CSS 1720x720 Geraetepixel -> rendert NICHT in Geraetepixeln.
+- 581 Texturen, groesste 1024x396 (`runtime_atlas`, 252 Frames), keine Textur > 2048 px; ~11 MiB RGBA.
+- Draw-Calls/Frame: Titel 288,9-364,7; Run mit 298 Gegnern 382,9-498,8 (p95 648).
+- Texturwechsel/Frame ≈ Draw-Calls (488/489) -> dringender Atlas-Pack-Befund (A1/A2 in Lane-Doku).
+- Vollbild-Overlays: nur `vignette` 100 %, NORMAL, Alpha 0,90; 0 preFX/postFX-Objekte; 559 kleine Alpha/ADD-Objekte.
+- Startzeit bis Titel 1,36-1,77 s (Desktop; ARM-Messung offen).
+- GL: WebGL1, MAX_TEXTURE_SIZE 8192, 8 Textureinheiten, 35 Extensions, mediump 10-Bit-Mantisse.
+- 60-FPS-Grenze aktiv (`fps.target/limit 60`), `powerPreference: high-performance` im Kontext-Attribut bestaetigt.
+- Desktop-Regression `npm run perf` (flock): Burst 500 Gegner 60,1 FPS / Minute 25 60,0 FPS, 0 JS-Fehler.
+- Build gruen, `npm test` 318 Tests gruen (29 Dateien).
+- Offen: echte Mali/Adreno-/WebView-Messung (APK-Debug-Bitte an Vera), Atlas-/Overlay-/FX-Fixes in fremden Dateien (requests.md).

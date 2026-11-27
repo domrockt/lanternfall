@@ -3987,37 +3987,59 @@
       "id": 2718,
       "title": "m10-android-perf #1 Audit-Skript android-audit.mjs",
       "description": "Playwright Pixel-7-Profil + CPU-Throttle 4: Draw-Calls/Frame, Texturwechsel, Texturen >2048 px, Vollbild-Overlays mit Alpha/ADD, preFX/postFX, Canvas vs. logisch, Startzeit bis Titel. Ergebnis-Tabelle in docs/lanes/m10-android-perf.md. Abnahme: Skript laeuft headless, JSON + Tabelle mit Messwerten, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T10:04:07Z",
           "by": "build",
           "text": "todo → doing: Start: Audit-Skript mit Pixel-7-Profil + CPU-Throttle 4."
+        },
+        {
+          "at": "2026-11-27T10:40:05Z",
+          "by": "build",
+          "text": "doing → review: Commit c9b5a85: Skript misst Pixel-7-Profil @ CPU-Throttle 4, 298 Gegner, Draw 488,6/Frame, Texturwechsel 488,3/Frame, 581 Texturen (max 1024 px, keine >2048), Canvas 860x360 logisch, 0 FX-Paesse, Start 1,356 s, 0 JS-Fehler. Tabelle in docs/lanes/m10-android-perf.md."
         }
       ],
       "created": "2026-11-27T09:52:32Z",
-      "updated": "2026-11-27T10:04:07Z"
+      "updated": "2026-11-27T10:40:05Z"
     },
     {
       "id": 2719,
       "title": "m10-android-perf #2 Mobile Konfiguration + Debug-Report",
       "description": "src/main.ts: fps target/limit 60, powerPreference high-performance, mediump wo erlaubt; src/debug.ts: WebGL-Kontext/Extensions/MAX_TEXTURE_SIZE im Debug-Report; Test tests/mobile-config.test.ts. Abnahme: npm run build + npm test gruen, 60-FPS-Grenze im Report aktiv.",
-      "column": "todo",
+      "column": "review",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T10:40:05Z",
+          "by": "build",
+          "text": "todo → doing: Start K2: fps.target/limit 60, powerPreference high-performance, WebGL-Debug-Report + Test."
+        },
+        {
+          "at": "2026-11-27T11:15:28Z",
+          "by": "build",
+          "text": "doing → review: Commit dc45b3f: fps.target/limit 60, powerPreference high-performance (Top-Level), rendererInfo() mit WebGL1/Extensions/MAX_TEXTURE_SIZE 8192/mediump 10 Bit/Texturinventar; tests/mobile-config.test.ts 8 Tests, npm test 318 gruen, build gruen, Audit passed true."
+        }
+      ],
       "created": "2026-11-27T09:52:32Z",
-      "updated": "2026-11-27T09:52:32Z"
+      "updated": "2026-11-27T11:15:28Z"
     },
     {
       "id": 2720,
       "title": "m10-android-perf #3 Befunde/Fix-Empfehlungen + Lane-Abschluss",
       "description": "Fremde Befunde (Atlas/Overlays/Effekte) NICHT selbst fixen: je Befund konkrete Empfehlung mit Datei/Wirkung in Lane-Doku und .dispatch/requests.md; APK-Debug-Variante als Bitte an Vera. Abnahme: Audit-Tabelle, 60-FPS-Grenze aktiv, kein Desktop-perf-Rueckschritt (flock), .lane-done.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T11:15:28Z",
+          "by": "build",
+          "text": "todo → doing: Start K3: Desktop-perf-Regression (flock), Fix-Empfehlungen fuer Atlas/Overlays/Effekte in Lane-Doku + requests.md, APK-Debug-Bitte an Vera, .lane-done."
+        }
+      ],
       "created": "2026-11-27T09:52:32Z",
-      "updated": "2026-11-27T09:52:32Z"
+      "updated": "2026-11-27T11:15:28Z"
     }
   ]
 }
