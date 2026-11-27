@@ -3737,16 +3737,21 @@
       "id": 2519,
       "title": "m10-chaos-silhouettes K2 Silhouetten schaerfen: 1-px Kontur + 1-px Lichtkante oben",
       "description": "In src/gfx/enemySprites.ts jeder Gegner-Silhouette eine 1-px dunkle Kontur (Palettenindex 0) und eine 1-px Lichtkante oben (Palettenfarbe, binaeres Alpha) geben. Sprite-Groessen und Frame-Zahl unveraendert, Palette-compliance. Abnahme: enemySpriteFrames liefert gleiche Dimensionen/Frame-Zahl, Kontur-/Rim-Metrik verbessert, tsc gruen, Commit mit #K2.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T07:51:46Z",
           "by": "build",
           "text": "todo → doing: start K2: 1-px Kontur + 1-px Lichtkante oben in enemySprites.ts"
+        },
+        {
+          "at": "2026-11-27T09:00:30Z",
+          "by": "build",
+          "text": "doing → review: K2 committed 49090e2 (#2519): 1-px Tinte-Kontur + 1-px Lichtkante oben, binäres Alpha, nur Palettenfarben; Größen/Frame-Zahl unverändert (sizeDiff 0, idMismatch 0 über 30 Archetypen). Metrik nachher: rimLight 44.9 % (+2.0 pp), topLight 37.1 % (+4.0 pp), Randkontrast dunkel 59.5 (+2.0), unter Schwelle dunkel 57.6 % (−2.3 pp). Belege after.json/after.png im Commit, tsc + 33 Tests grün."
         }
       ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T07:51:46Z"
+      "updated": "2026-11-27T09:00:30Z"
     },
     {
       "id": 2520,
