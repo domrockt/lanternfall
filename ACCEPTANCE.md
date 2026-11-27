@@ -302,3 +302,29 @@ Erzeuger: `scripts/qa-640-vfx.mjs`, `scripts/qa-640-sheets.py`; Karte #2499, Com
 
 Karten-Abschluss #2499: Belege oben sind auf `main` @ `217316d`/`17c9f25` erzeugt und
 per Vision geprüft; keine fehlenden Belege. Karte → done.
+
+## Nachabnahme B (27.11., PIN `49727faa`)
+
+Zweite unabhängige Re-Abnahme auf bei Job-Start gepinntem main-Commit
+`49727faa5ffb72652ec9278fde9d483842f7f77d` (2026-11-27T18:14:54Z), Worktree
+`m10-reacceptance-b`, Branch `m10-reacceptance-b`. Doku mit allen Befehls-Logs:
+`docs/qa/reacceptance-b-2026-11-27.md`. Die erste Nachabnahme endete 16:05Z;
+danach landeten 4 Fix-Merges (`50f45ec` gem-drawcap, `f359f79` menu-touch-targets,
+`7a53cd6` feedback-budget, `8c1b8d4` perf-fix-ambient-batching) ohne Abnahme-Beleg —
+diese Nachabnahme deckt genau diese ab.
+
+| Kriterium | Urteil | Beleg |
+|---|---|---|
+| `npm run build` rc=0 | **PASS** (823 ms, 18:20:46Z) | QA-Doku K1, `~/tmp/reaccb-k1-build.log` |
+| `npx tsc --noEmit` rc=0 | **PASS** | QA-Doku K1 |
+| `npm test` 0 fail | **PASS** (446/446, 42 Dateien, 2,61 s) | QA-Doku K1 |
+| `acceptance-count` 30/6/6/6/6/2 | **PASS** (`ok:true`) | QA-Doku K1 |
+| gem-drawcap: Draw-Cap wirksam | **PASS** (Peak-Gems 120 = Cap, kein Tween pro Gem, `xpLoss 0`, Tests 8/8) | `shots/m10-gem-drawcap-after.json`, QA-Doku K2a |
+| menu-touch-targets: Probe 36/36 | **PASS** (erneut auf PIN, rc=0, 0 JS-Fehler) | `shots/qa-reaccb-menu-touch-after.json`, QA-Doku K2b |
+| feedback-budget: Peaks | **PASS** (Shake 2,56 px, Hit-Stop-Peak 120 ms, aktive Stop-Frames 125→55, 0 JS-Fehler) | `shots/m10-feedback-budget-{baseline,after}.json`, QA-Doku K2c |
+| ambient-batching: Nachher-Zahlen | **PASS** (640/M25 Median 54,0→56,3 ≥ 55; 780/M25 44,8 = fill-rate-Grenze, kein Rückschritt) | `shots/m10-ambient-after-{640,780}-{1..3}.json`, QA-Doku K2d, Lane-Doc Abschnitte 3+4 |
+| 30-min-Echtzeitlauf (A4) | **offen/blocked (Runner-Limits, Vera)** — nicht erneut versucht, Übernahme aus erster Nachabnahme | `docs/qa/reacceptance-2026-11-27.md` |
+
+**Gesamturteil Nachabnahme B: PASS** (alle prüfbaren Kriterien auf PIN grün; einziger
+offener Punkt bleibt der 30-min-Echtzeitlauf sowie die bekannte fill-rate-Grenze
+780×360@3 in Minute 25 — beides nicht neu).
