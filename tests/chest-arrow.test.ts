@@ -111,12 +111,14 @@ describe("M10 chest-arrow: Randpfeil-Layout (computeChestArrow)", () => {
     expect(rp.y).toBeCloseTo(v.height - CHEST_ARROW_MARGIN, 0);
   });
 
-  // Re-Abnahme-Befund #5378: bei 640x360 failten top/bottom/tl/br mit
-  // visibleAtSpawn=false und Winkelfehlern 90-180 Grad. Ursache war ein
-  // Messartefakt (rAF-Sampling misst vor dem Phaser-Step -> stale Frames,
-  // shots/m10-chest-arrow-refit-raf-before.json), NICHT die Layout-Logik.
-  // Diese Tests kodieren die FAIL-Signaturen als Invariante: bei konsistenter
-  // worldView bleibt der Pfeil sichtbar, winkelrichtig und in der Margin-Box.
+  // Re-Abnahme-Befund #5378: bei 640x360 failten Rand-/Eckfaelle mit
+  // visibleAtSpawn=false und Winkelfehlern 90-180 Grad (raf-before: left 29.36°,
+  // right 180°, top 90°, bottom 180°, tr 94.58°; 780x360 zusaetzlich bl/br).
+  // Ursache war ein Messartefakt (rAF-Sampling misst vor dem Phaser-Step ->
+  // stale Frames, shots/m10-chest-arrow-refit-raf-before.json), NICHT die
+  // Layout-Logik. Diese Tests kodieren die FAIL-Signaturen als Invariante: bei
+  // konsistenter worldView bleibt der Pfeil sichtbar, winkelrichtig und in der
+  // Margin-Box.
   it("Befund #5378: top/bottom/tl/br bei 640x360, FAR 1500 — sichtbar, Winkel <= 5 Grad, Margin-Box", () => {
     const cases = [
       { id: "top", ox: 0, oy: -1 }, { id: "bottom", ox: 0, oy: 1 },

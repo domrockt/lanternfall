@@ -10,7 +10,7 @@ Positionsfehler 312–355 px, disappear: Pfeil bleibt sichtbar obwohl Truhe im V
 
 | Lauf | Sampling | 640×360 | 780×360 | Beleg |
 |---|---|---|---|---|
-| Vorher (altes Harness) | rAF-Tick | 4/10 FAIL (tr 96.65°, bl 179.92°, br 96.65°, disappear sichtbar) | — | `shots/m10-chest-arrow-refit-raf-before.json` |
+| Vorher (altes Harness) | rAF-Tick | 6/10 FAIL (left 29.36°, right/top/bottom 180/90/180°, tr 94.58°, disappear sichtbar) | 8/10 FAIL (zusätzlich bl 179.92°, br 96.65°) | `shots/m10-chest-arrow-refit-raf-before.json` |
 | Nachher (aktueller main f4c6acf) | POST_UPDATE | 10/10 PASS | 10/10 PASS | `shots/m10-chest-arrow-refit-before.json` |
 
 Nachher-Details: jsErrors 0, iGPU-Pflicht erfüllt — WebGL-Renderer-String im JSON:
