@@ -104,9 +104,9 @@ art-director ≥ 4/5.
 
 ## Offene Punkte
 
-- Der WCAG-`minInner`-Kontrast der dunklen Innenpixel ist bei spit/fire niedrig
-  (gegen Wasser 1,0–1,4; gegen Gras 1,0–1,2), bei bone/shadow hoch (≥ 2,9).
-  Die Lesbarkeit im Spiel tragen 1-px-Tint-Kontur + Silhouette; eine spätere
-  Konturaufhellung wäre eine eigene Karte (hier bewusst nur Optik, kein Blink).
+- Stand Iteration 1: kein Innenpixel mehr unter WCAG-`minInner` 2,04 auf den fünf
+  festen Hintergründen (vorher waren spit 1,00 und shadow 1,36 Tarnung). Die
+  Lesbarkeit im Spiel tragen zusätzlich 1-px-Tint-Kontur + Silhouette; eine
+  weitere Konturaufhellung wäre eine eigene Karte (hier bewusst nur Optik, kein Blink).
 - Viele Ranged-Gegner gleichzeitig erzeugen sehr viele Projektile (1359 in ~2 s bei
   500 Ranged); das ist Bestand, nicht Teil dieser Lane (kein Rebalancing).

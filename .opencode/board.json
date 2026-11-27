@@ -3203,10 +3203,15 @@
           "at": "2026-11-27T13:36:20Z",
           "by": "build",
           "text": "Iteration 1 committet 3ad43d7: spit/shadow/fire aufgehellt (minInner spit 1,00→2,04, shadow 1,36→2,43, fire 1,15→2,75; bone 3,68), Puls/Telegraph auf 1x (Alpha-Puls), Kontaktbogen+JSON reproduzierbar mit scripts/art/optics-enemy-shots.py und contrast-enemy-shots.py; Form-IoU 0,26–0,60. art-director-Re-Urteil läuft."
+        },
+        {
+          "at": "2026-11-27T14:32:49Z",
+          "by": "build",
+          "text": "Telegraph jetzt 1x (Alpha-Puls, keine nichtganzzahlige Scale), tote Scale-Konstanten entfernt; Commit ffda541. art-director-Re-Urteil laeuft (Screenshot Kontaktbogen + Dichte-GIF)."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T13:36:20Z"
+      "updated": "2026-11-27T14:32:49Z"
     },
     {
       "id": 2201,
