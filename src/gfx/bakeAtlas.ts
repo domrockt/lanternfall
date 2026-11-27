@@ -3,6 +3,7 @@ import {
   BAKED_GUTTER,
   BAKED_PAD,
   BAKED_PAGE_SIZE,
+  BAKED_INCREMENTAL_SIZE,
   ATLAS_KEY,
   packPages,
   shouldBakeKey,
@@ -43,9 +44,13 @@ const bakedPages: BakedPage[] = [];
 function ensurePagesValid(scene: Phaser.Scene): boolean {
   if (bakedPages.length > 0 && !scene.textures.exists(bakedPages[0].key)) {
     bakedPages.length = 0;
+    staticBaked = false;
   }
   return bakedPages.length === 0;
 }
+
+/** Das statische Backen laeuft einmal pro Spiel (Glyphen-Seiten zaehlen nicht). */
+let staticBaked = false;
 
 function addPage(scene: Phaser.Scene, size: number, height: number, incremental: boolean): BakedPage {
   const canvas = document.createElement("canvas");
@@ -76,7 +81,7 @@ function registerBaked(
   rect: { x: number; y: number; w: number; h: number },
   source: CanvasImageSource,
 ): void {
-  scene.textures.remove(key);
+  if (scene.textures.exists(key)) scene.textures.remove(key);
   const pageTex = scene.textures.get(page.key);
   const gl = pageTex.source[0]?.glTexture as unknown;
   if (!gl) {
@@ -105,19 +110,23 @@ export function packCanvasTexture(scene: Phaser.Scene, key: string, canvas: HTML
     return;
   }
   let page = bakedPages.find((p) => p.incremental);
-  if (!page) page = addPage(scene, BAKED_PAGE_SIZE, BAKED_PAGE_SIZE, true);
+  if (!page) page = addPage(scene, BAKED_INCREMENTAL_SIZE, BAKED_INCREMENTAL_SIZE, true);
   if (page.x + cellW > page.size) {
     page.x = 0;
     page.y += page.rowH + BAKED_GUTTER;
     page.rowH = 0;
   }
   if (page.y + cellH > page.size) {
-    page = addPage(scene, BAKED_PAGE_SIZE, BAKED_PAGE_SIZE, true);
+    page = addPage(scene, BAKED_INCREMENTAL_SIZE, BAKED_INCREMENTAL_SIZE, true);
   }
   const rect = { x: page.x + BAKED_PAD, y: page.y + BAKED_PAD, w: canvas.width, h: canvas.height };
   page.ctx.drawImage(canvas, rect.x, rect.y);
   page.x += cellW + BAKED_GUTTER;
   page.rowH = Math.max(page.rowH, cellH);
+  // WICHTIG: Canvas neu auf die GPU hochladen — die Seite wurde beim addCanvas
+  // hochgeladen; ohne Refresh waeren spaeter kommende Glyphen unsichtbar.
+  const pageTex = scene.textures.get(page.key) as Phaser.Textures.CanvasTexture | null;
+  if (pageTex && typeof pageTex.refresh === "function") pageTex.refresh();
   registerBaked(scene, key, page, rect, canvas);
 }
 
@@ -142,9 +151,10 @@ export function getBakeStats(): BakeStaticResult | null {
  */
 export function bakeStaticAtlas(scene: Phaser.Scene): BakeStaticResult {
   ensurePagesValid(scene);
-  if (bakedPages.length > 0) {
+  if (staticBaked) {
     return bakeStats ?? { pages: 0, frames: 0, overflow: [], keys: [] };
   }
+  staticBaked = true;
   const keys = scene.textures.getTextureKeys().filter(shouldBakeKey).sort();
   const sizes: { key: string; w: number; h: number }[] = [];
   const sources = new Map<string, CanvasImageSource>();
@@ -153,6 +163,8 @@ export function bakeStaticAtlas(scene: Phaser.Scene): BakeStaticResult {
     const frame = texture.get();
     const source = texture.getSourceImage() as CanvasImageSource | null;
     if (!source || !frame || frame.width <= 0 || frame.height <= 0) continue;
+    // drawImage benoetigt ein echtes Canvas/Bild; alles andere bleibt unangetastet.
+    if (!(source instanceof HTMLCanvasElement) && !(source instanceof HTMLImageElement)) continue;
     sources.set(key, source);
     sizes.push({ key, w: frame.width, h: frame.height });
   }

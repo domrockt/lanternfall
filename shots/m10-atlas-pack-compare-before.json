@@ -1,0 +1,18 @@
+{
+  "tool": "scripts/m10-atlas-pack.mjs --compare",
+  "generatedAt": "2026-11-27T18:54:22.235Z",
+  "image": "shots/m10-atlas-pack-compare-before.png",
+  "shown": 90,
+  "sequenceCount": 90,
+  "groups": {
+    "props": 13,
+    "icons": 18,
+    "player": 52,
+    "portraits": 2,
+    "glyphs": 101
+  },
+  "missing": [],
+  "bakedPages": [],
+  "rendererType": 2,
+  "jsErrors": []
+}

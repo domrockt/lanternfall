@@ -22,6 +22,9 @@ const argOf = (name, fallback) => {
 const OUT = String(argOf("out", "shots/m10-atlas-pack.json"));
 const CROWD_ENEMIES = Math.max(1, Number(argOf("crowd", "300")) || 300);
 const SECONDS = Math.max(3, Number(argOf("seconds", "10")) || 10);
+// --compare: kontrollierte statische Szene (Baked-Groups + Runtime-Atlas-Keys)
+// fuer den Vorher-/Nachher-Pixel-Diff. Kein Lauf, keine FPS.
+const COMPARE = argv.includes("--compare");
 
 const VIEWS = String(argOf("views", "640x360:1,780x360:3")).split(",").map((spec) => {
   const [wh, dpr] = spec.split(":");
@@ -158,6 +161,87 @@ const clearLevelUps = async () => {
 
 const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
+
+if (COMPARE) {
+  // Vergleichsszene: je 2 px versetzte Kacheln mit Keys aus allen gepackten
+  // Gruppen (props, icons, player, portraits, glyphs) + Runtime-Atlas-Heisskeys.
+  // Vorher/Nachher muessen pixelgleich sein (Optik unveraendert).
+  const page = await browser.newPage({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 });
+  page.on("pageerror", (e) => errors.push(String(e)));
+  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  const png = OUT.replace(/\.json$/, ".png");
+  try {
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
+    await page.waitForFunction(() => Boolean(window.__game), { timeout: 15000 });
+    await page.waitForFunction(() => window.__game.textures.exists("runtime_atlas"), { timeout: 15000 });
+    await page.waitForTimeout(500);
+    const info = await page.evaluate(() => {
+      const game = window.__game;
+      const tm = game.textures;
+      // Dynamische Key-Menge: gepackte Gruppen zuerst (props, icons, player,
+      // portraits, glyphs), dazu feste Runtime-Atlas-Heisskeys. Beide Builds
+      // erzeugen dieselben Texturen beim Boot -> gleiche Menge.
+      const groupKeys = tm.getTextureKeys().filter((k) => /^(prop_|icon_|player_|portrait_|glyph_)/.test(k)).sort();
+      const HOT = ["enemy_wolf", "gem_small", "fx_spark", "enemy_bat", "projectile_ember", "flail_ball",
+        "enemy_bog_rat", "gem_medium", "fx_fire", "enemy_wisp", "orb_lantern", "chain_link",
+        "boss_moor_queen", "fx_shock", "gem_large", "fx_halo", "puddle_poison", "chest_closed",
+        "enemy_skeleton", "light_radius", "shadow"];
+      const SEQUENCE = [...groupKeys, ...HOT.filter((k) => tm.exists(k))].slice(0, 90);
+      for (const key of ["title", "charselect", "run", "ui"]) {
+        if (game.scene.isActive(key)) game.scene.stop(key);
+      }
+      let shown = 0;
+      let missing = [];
+      game.scene.add("atlas_compare", {
+        key: "atlas_compare",
+        active: true,
+        create() {
+          this.cameras.main.setBackgroundColor("#14121c");
+          const cols = 8;
+          const cell = 56;
+          SEQUENCE.forEach((key, i) => {
+            const cx = 30 + (i % cols) * cell;
+            const cy = 28 + Math.floor(i / cols) * cell;
+            if (!tm.exists(key)) { missing.push(key); return; }
+            // Origin 0 an Integer-Position: so zeichnet auch PixelText (font.ts)
+            // Glyphen; vermeidet Halb-Pixel-Sampling im Vergleich.
+            this.add.image(cx, cy, key).setOrigin(0, 0);
+            shown++;
+          });
+        },
+      }, true);
+      const baked = tm.getTextureKeys().filter((k) => k.startsWith("baked_page_")).sort();
+      return {
+        shown,
+        sequenceCount: SEQUENCE.length,
+        groups: {
+          props: groupKeys.filter((k) => k.startsWith("prop_")).length,
+          icons: groupKeys.filter((k) => k.startsWith("icon_")).length,
+          player: groupKeys.filter((k) => k.startsWith("player_")).length,
+          portraits: groupKeys.filter((k) => k.startsWith("portrait_")).length,
+          glyphs: groupKeys.filter((k) => k.startsWith("glyph_")).length,
+        },
+        missing,
+        bakedPages: baked.map((k) => {
+          const t = tm.get(k);
+          return { key: k, width: t.width, height: t.height };
+        }),
+        rendererType: game.renderer.type,
+      };
+    });
+    await page.waitForTimeout(700);
+    await page.screenshot({ path: png });
+    const report = { tool: "scripts/m10-atlas-pack.mjs --compare", generatedAt: new Date().toISOString(), image: png, ...info, jsErrors: errors };
+    writeFileSync(OUT, JSON.stringify(report, null, 2));
+    console.log(`COMPARE ${info.shown}/${info.sequenceCount} Sprites, Gruppen: ${JSON.stringify(info.groups)}, bakedPages: ${JSON.stringify(info.bakedPages)}, Renderer: ${info.rendererType}`);
+    console.log("PNG " + png);
+  } finally {
+    await page.close();
+    await browser.close();
+    server.stop();
+  }
+  process.exit(errors.length ? 1 : 0);
+}
 
 let page;
 const result = { views: VIEWS.map((v) => v.tag), jsErrors: errors };

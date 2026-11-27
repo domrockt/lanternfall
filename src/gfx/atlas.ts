@@ -167,6 +167,12 @@ export function makeImage(scene: Phaser.Scene, x: number, y: number, key: string
 
 /** Maximale Kantenlaenge einer gebackenen Atlas-Seite (Dom: <= 2048 px). */
 export const BAKED_PAGE_SIZE = 2048;
+/**
+ * Kantenlaenge inkrementeller Seiten (Glyphen): kleiner, damit der Refresh
+ * (Neu-Upload bei jeder neuen Glyphe) billig bleibt. 512 px fassen ~2200
+ * 5x7-Glyphen — mehrere Seitenaequivalente der vorkommenden Glyphen.
+ */
+export const BAKED_INCREMENTAL_SIZE = 512;
 /** Mindestabstand zwischen zwei Zellen auf einer Seite. */
 export const BAKED_GUTTER = 2;
 /** Transparentes Padding um jede Zelle (1 px Rand gegen Bleeding). */
