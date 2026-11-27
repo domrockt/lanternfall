@@ -139,7 +139,9 @@ describe("EnemyPool: Reuse-Invariante bei Spawn-/Todeswellen (m10-heap-sawtooth)
     expect(b.hp).toBe(10);
     expect(b.damage).toBe(2);
 
-    // Marker-Spec: gleicher Radius → identische Aura-Parameter (Cache-Treffer),
+    // Marker-Spec: gleicher Radius → identische Aura-Parameter (Cache-Treffer;
+    // direkter Identitäts-Check nicht möglich, Spec ist privat — die resultierenden
+    // setScale-Argumente sind der beobachtbare Beleg),
     // anderer (gerundeter) Radius → andere Skalierung.
     const scaleA = ((b.aura as unknown as { calls: Record<string, unknown[][]> }).calls.setScale ?? []).at(-1);
     b.alive = false;

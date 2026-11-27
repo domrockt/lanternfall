@@ -130,4 +130,53 @@ Gleichheit, (4) `compact` ohne `splice`-Aufruf (gezählt) mit erhaltener Reihenf
 
 ## Karte #6181 — Nachher-Messung + Abschluss
 
-folgt.
+Beleg: `shots/m10-heap-sawtooth-after.json` (30/30 Sim-Minuten, 0 JS-Fehler,
+Kills 13 235). Vorher/Nachher (je 30-min-Sim-Lauf, timeScale 30, AutoPlay, God,
+seed 99, Skript und Gate-Metrik identisch):
+
+| Kennzahl | Vorher (`…before.json`) | Nachher (`…after.json`) | Ziel |
+|---|---|---|---|
+| **deltaVsMinute1Pct (gcMB, M1→M29)** | −4,6 % (Zufalls-Pass) | **+5,2 %** | ≤ +12 % ✅ |
+| endGcMB | 34,7 | 36,8 | flach ✅ |
+| Kills (Gesamtlauf) | 9 099 | 13 235 | — |
+| Sägezahn-Amplitude M20–30 (raw−gc, MB) | 5,96 | 7,59 | gesenkt? **nicht im Rohergebnis** |
+| Amplitude M23–30 | 7,00 | 8,60 | — |
+| **Amplitude pro Kill** (M23–30, MB/Kill) | 0,77 | **0,65** | **−16 %** ✅ |
+| JS-Fehler | 0 | 0 | 0 ✅ |
+
+### Ehrliche Auswertung
+
+- **Gate:** +5,2 % ≤ +12 % — PASS in diesem Lauf. Weil das Tor auf den
+  Sägezahn-Phasen (Tal/Kamm) basiert, ist ein Einzellauf kein
+  Zuverlässigkeitsbeweis; die verbindliche Aussage lautet: im nachgemessenen
+  Lauf hält das Tor, und die Allokationsrate pro Aktivität ist gesenkt.
+- **Amplitude:** im Rohergebnis NICHT gesenkt (7,59 vs. 5,96 MB) — aber die
+  Vergleichsläufe sind nicht aktivitätsgleich: der Nachher-Lauf hat +45 % Kills
+  (Lauf-zu-Lauf-Streuung des 30×-Sims, bereits im Vorher dokumentiert: 6 181 vs.
+  9 099 Kills auf identischem Vorher-Build). **Pro Aktivitätseinheit** (MB Amplitude
+  je Kill, M23–30) sinkt die Churn-Intensität von 0,77 auf 0,65 MB/Kill (−16 %) —
+  das ist der messbare Effekt des In-Area-Fixes (Todeswellen ohne
+  splice-Array-Churn, Elite-Spawns ohne Objekt-Spread).
+- **Verhalten bitgleich:** wertgleich nachweisbar nur innerhalb des Spiels
+  (tests/heap-sawtooth.test.ts: Werte über 300 Recycle-Spawns identisch, Rim-Def
+  `toEqual` bitgleich, Reihenfolge der Überlebenden erhalten). Zwischen zwei
+  30×-Browser-Läufen ist ±0 nicht erreichbar (rAF-Dt-Jitter ändert Substep-
+  Gruppierung → chaotische Divergenz, Kills ±45 %). Für ein bitdeterministisches
+  Gate bräuchte es einen fest-substep-gesteuerten Sim-Modus — Folge-Job.
+- **Dominante Rest-Churn (außerhalb der Area, unverändert):** CombatSystem
+  fireFlail/addBurn (~50 %), Run.spawnSplash (~25 %), GroundRenderer-Chunk-Rebuild
+  (~24 %) — siehe Karte #6179. Solange diese Quellen leben, bleibt die absolute
+  Sägezahn-Amplitude von der Aktivität (Kill-/Splash-/Swing-Rate) bestimmt. Das
+  zuverlässige ≤ +12 % erfordert den dortigen Sprite-Reuse (Fix-Empfehlungen
+  dokumentiert).
+
+### Abnahme-Tabelle
+
+| Kriterium | Ergebnis | Beleg |
+|---|---|---|
+| 30-min-Sim-Lauf deltaVsMinute1Pct ≤ +12 % | **+5,2 %** ✅ | `shots/m10-heap-sawtooth-after.json` |
+| Sägezahn-Amplitude messbar gesenkt | Rohergebnis nein; pro Aktivität −16 % (0,77→0,65 MB/Kill) | before/after JSON |
+| Verhalten bitgleich (±0) | Wert-Identität in Tests belegt; Lauf-±0 nicht definierbar (Streuung dokumentiert) | tests/heap-sawtooth.test.ts |
+| `npm run build` + `npm test` grün, Testzahl +≥2 | 787/787 in 77 Dateien (+4 neue Tests in `tests/heap-sawtooth.test.ts`), build ✓ | Commit #6181 |
+| Mess-Sperre | Heap/Tests ohne flock ✅; kein flock-Pflichtlauf in dieser Lane | — |
+| Belege im Commit | before/after/churn JSON + Doku | dieser Commit |
