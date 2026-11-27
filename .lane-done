@@ -1,0 +1,34 @@
+# Lane done: m10-ai-budget (2026-11-27)
+
+## Zusammenfassung
+Gegner-KI (`stepEnemyAi`, src/logic/enemy-ai.ts) staffelt volle KI-Steps nach
+Distanz zum Spieler statt jeden Frame für alle: nahe < 240 px jeder Frame,
+240–420 px alle 4 Frames, > 420 px alle 6 Frames (`AI_STAGGER`, konfigurierbar,
+`enabled: false` = altes Verhalten). Skip-Frames liefern das letzte Ergebnis
+erneut (keine Aktionen, kein RNG, allokationsfrei); Timer inkl. Exploder-Fuse
+laufen realzeitlich; Step-Phase über UID verteilt; Recycle-Reset neutralisiert
+den Stagger-State (Reviewer-Befund behoben). Run.ts wurde NICHT angefasst.
+
+## Messwerte (deterministisch, 500 Gegner, min über 11 Passes, Seed 20261127)
+- Baseline: 0.033 ms/Frame — shots/m10-ai-budget-baseline.json
+- Nachher:  0.023 ms/Frame — shots/m10-ai-budget-after.json
+- **stepEnemyAi −30,3 % ms/Frame (Ziel −25 %) ✓**
+- Je Archetyp: ~0.030–0.036 → ~0.021–0.025 ms/Frame, kein Typ teurer.
+
+## Abnahme
+- Verhaltens-Tests grün: tests/enemy-ai-budget.test.ts 11/11 (Nahbereich
+  bitidentisch zu Intervall 1 über alle 30 Typen, Cluster-Metriken in Toleranz,
+  Recycle/Ring-Wechsel/Fuse/Realzeit-Timer/UID-Phase).
+- Gesamte Suite 532/532 grün (52 Dateien), `npm run build` grün, tsc rc=0.
+- Belege committet: shots/m10-ai-budget-baseline.json, shots/m10-ai-budget-after.json.
+- Reviewer: PASS (Runde 2; Runde 1 FAIL wegen Recycle-Leck → K5 #4842).
+
+## Karten
+#4838 Messbasis, #4839 Staffelung, #4840 Tests, #4841 Messung+Doku,
+#4842 Review-Fix. Doku: docs/lanes/m10-ai-budget.md.
+
+## Hinweise für den Merge
+- `src/logic/ai-state.ts` war unclaimed — 5 Zeilen in resetAiState; Eintrag in
+  /home/ai/games/.dispatch/requests.md.
+- Offen für die Abnahme: realer fullrun-fpsMin-Gewinn hängt an der echten
+  Distanzverteilung der Endgame-Crowd (Bench-Ringe 50/30/20 abgeleitet).
