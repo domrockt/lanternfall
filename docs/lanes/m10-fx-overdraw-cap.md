@@ -54,6 +54,22 @@ N Glows gleichzeitig, incl. 10.000-Op-Fuzz), release/setCap/reset-Semantik,
 dpr-Treppe 1 / 0,8 / 0,6. Gesamtstand: **371/371 grün** (Basis 355),
 `tsc --noEmit` rc=0, `npm run build` rc=0.
 
+### Review-Nachschub (Reviewer FAIL → Fix, 2026-11-27)
+
+Reviewer-Befund K1 (berechtigt): `setAlphaScale` stellte beim Rückwechsel
+minimal → full **alle** additiven Sprites ohne Slot-Request wieder auf ADD —
+der Glow-Deckel war über einen regulären LOD-Pfad ausgehebelt (echte
+ADD-Sprite-Zahl bis maxActive möglich). Behoben in `src/systems/FxSystem.ts`
+(FxSystem + ParticleSystem): Re-Promotion nur mit erfolgreichem
+`budget.request()`, ohne freien Slot bleibt NORMAL; Blend folgt jetzt immer
+`fx.glow`. Zusätzlich Review S1: `glowBudgetFor` registriert beim ersten
+Zugriff `scene.events.once(SHUTDOWN, reset)` — Slots werden bei Szenen-Shutdown
+freigegeben statt in die nächste Run zu leaken. Neue Integrationstests
+(fake Sprites, Phaser gemockt wie in enemy-pool-reuse.test.ts): K1-Regression
+(Re-Promotion hält den Cap ein), geteiltes Budget FxSystem+ParticleSystem,
+Shutdown-Reset, Demotion gibt Slots frei. Gesamtstand: **375/375 grün**,
+`tsc --noEmit` rc=0, `npm run build` rc=0.
+
 ## Karte 3 — Abnahme-Messung (Commit <sha-K3>, #3560)
 
 M25, je 3 Läufe à 10 s unter `flock /home/ai/games/.lf-perf.lock`, nach dem Fix

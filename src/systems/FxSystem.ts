@@ -16,11 +16,15 @@ function glowBudgetFor(scene: Phaser.Scene): GlowBudget {
   if (!budget) {
     budget = new GlowBudget(glowCapFor("full"));
     glowBudgets.set(scene, budget);
+    // M10 (Review K2/S1): Szenen-Shutdown ohne combat.clear() wuerde Slots der
+    // alten Run ewig belegen — Budget beim Shutdown freigeben, nicht leaken.
+    scene.events?.once?.(Phaser.Scenes.Events.SHUTDOWN, () => budget?.reset());
   }
   return budget;
 }
 
-interface FxRuntime {
+/** Laufzeitdatensatz eines Effekt-Sprites (public fuer Tests). */
+export interface FxRuntime {
   sprite: Phaser.GameObjects.Image;
   x: number;
   y: number;
@@ -104,15 +108,21 @@ export class FxSystem {
     if (next === this.alphaScale) return;
     const ratio = next / this.alphaScale;
     this.alphaScale = next;
+    const budget = glowBudgetFor(this.scene);
     for (const fx of this.active) {
       if (fx.alphaScaleExempt) continue;
       fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
       fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
       const blendAdd = fx.additive && next >= 0.7;
-      fx.sprite.setBlendMode(blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      // M10 (Review K2/K1): Re-Promotion braucht einen echten Glow-Slot —
+      // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
+      // weil frueher per NORMAL-Fallback abgewiesene Sprites ohne Slot-Request
+      // wieder auf ADD gestellt wuerden. Ohne freien Slot bleibt NORMAL.
+      if (blendAdd && !fx.glow) fx.glow = budget.request();
+      fx.sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && fx.glow) {
-        glowBudgetFor(this.scene).release();
+        budget.release();
         fx.glow = false;
       }
     }
@@ -452,14 +462,17 @@ export class ParticleSystem {
     if (next === this.alphaScale) return;
     const ratio = next / this.alphaScale;
     this.alphaScale = next;
+    const budget = glowBudgetFor(this.scene);
     for (const p of this.active) {
       p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
       const blendAdd = p.additive && next >= 0.7;
-      p.sprite.setBlendMode(blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
+      if (blendAdd && !p.glow) p.glow = budget.request();
+      p.sprite.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && p.glow) {
-        glowBudgetFor(this.scene).release();
+        budget.release();
         p.glow = false;
       }
     }

@@ -150,3 +150,112 @@ describe("LOD-Anbindung (lod.ts wird nur gelesen)", () => {
     }
   });
 });
+
+/**
+ * M10 (Review K2): Integration der Verdrahtung FxSystem/ParticleSystem <->
+ * geteiltes GlowBudget. Fake-Sprites genuegen: setAlphaScale/Separation-Pfade
+ * rufen nur Blend/Alpha-Setter. Phaser selbst wird importiert (BlendModes).
+ */
+import { vi } from "vitest";
+// FxSystem importiert Phaser fuer BlendModes/Szene; im Node-Test neutral gemockt
+// (Muster wie tests/enemy-pool-reuse.test.ts).
+vi.mock("phaser", () => ({
+  default: { BlendModes: { ADD: 1, NORMAL: 0 }, Scenes: { Events: { SHUTDOWN: "shutdown" } } },
+}));
+import Phaser from "phaser";
+import { FxSystem, ParticleSystem, type FxRuntime } from "../src/systems/FxSystem";
+
+type BlendRec = { blend: number };
+function fakeFx(additive = true): { runtime: FxRuntime; rec: BlendRec } {
+  const rec: BlendRec = { blend: Phaser.BlendModes.NORMAL };
+  const sprite = {
+    alpha: 0.8,
+    setAlpha(a: number) { (this as { alpha: number }).alpha = a; },
+    setBlendMode(m: number) { rec.blend = m; },
+    setPosition() {}, setScale() {}, setRotation() {}, setDepth() {},
+    setVisible() {}, setActive() {}, setTint() {}, clearTint() {},
+  } as unknown as Phaser.GameObjects.Image;
+  const runtime = {
+    sprite, x: 0, y: 0, vx: 0, vy: 0, life: 1, maxLife: 1, scaleFrom: 1, scaleTo: 1,
+    aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0, frames: ["fx_spark"],
+    frameRate: 18, active: true, additive, alphaScaleExempt: false, glow: false,
+  } as unknown as FxRuntime;
+  return { runtime, rec };
+}
+
+function addFake(system: FxSystem | ParticleSystem, recs: BlendRec[], additive = true): void {
+  const { runtime, rec } = fakeFx(additive);
+  (system.active as FxRuntime[]).push(runtime);
+  recs.push(rec);
+}
+
+/** Demote -> Promote: erzwingt den K1-Pfad (LOD minimal -> full). */
+function cycle(system: FxSystem | ParticleSystem): void {
+  system.setAlphaScale(0.5);
+  system.setAlphaScale(1);
+}
+
+describe("Glow-Deckel-Verdrahtung (Review K2/K1)", () => {
+  it("K1-Regression: Re-Promotion setzt keinen Slot-freien Sprite auf ADD (Cap bleibt hart)", () => {
+    const scene = { events: { once: () => {} } } as unknown as Phaser.Scene;
+    const fx = new FxSystem(scene);
+    fx.setMaxActive(180); // full -> Cap 72
+    const recs: BlendRec[] = [];
+    for (let i = 0; i < 100; i++) addFake(fx, recs);
+    cycle(fx); // 0.5 demoted (nichts), 1.0 promoted: nur 72 duerfen ADD werden
+    const add = recs.filter((r) => r.blend === Phaser.BlendModes.ADD).length;
+    expect(add).toBe(glowCapFor("full"));
+    expect(add).toBeLessThan(100);
+  });
+
+  it("Budget wird geteilt: FxSystem + ParticleSystem zusammen ueberschreiten den Cap nie", () => {
+    const scene = { events: { once: () => {} } } as unknown as Phaser.Scene;
+    const fx = new FxSystem(scene);
+    const ps = new ParticleSystem(scene);
+    const fxRecs: BlendRec[] = [];
+    const psRecs: BlendRec[] = [];
+    for (let i = 0; i < 40; i++) addFake(fx, fxRecs);
+    for (let i = 0; i < 100; i++) addFake(ps, psRecs);
+    cycle(fx);
+    cycle(ps);
+    const addFx = fxRecs.filter((r) => r.blend === Phaser.BlendModes.ADD).length;
+    const addPs = psRecs.filter((r) => r.blend === Phaser.BlendModes.ADD).length;
+    expect(addFx).toBe(40);
+    expect(addFx + addPs).toBe(glowCapFor("full"));
+  });
+
+  it("S1: Szenen-Shutdown gibt belegte Slots frei (kein Leak in die naechste Run)", () => {
+    let shutdown: (() => void) | undefined;
+    const scene = {
+      events: { once: (_: string, cb: () => void) => { shutdown = cb; } },
+    } as unknown as Phaser.Scene;
+    const fx = new FxSystem(scene);
+    const recs: BlendRec[] = [];
+    for (let i = 0; i < 72; i++) addFake(fx, recs);
+    cycle(fx);
+    expect(recs.filter((r) => r.blend === Phaser.BlendModes.ADD).length).toBe(glowCapFor("full"));
+    // Run endet ohne combat.clear(): Sprites weg, Slots waeren verloren...
+    fx.active.length = 0;
+    shutdown?.();
+    // ...neue Run im selben Scene-Objekt bekommt den vollen Cap wieder:
+    const recs2: BlendRec[] = [];
+    for (let i = 0; i < 72; i++) addFake(fx, recs2);
+    cycle(fx);
+    expect(recs2.filter((r) => r.blend === Phaser.BlendModes.ADD).length).toBe(glowCapFor("full"));
+  });
+
+  it("Demotion gibt Slots frei: nach Rueckstufung sind neue ADD-Slots wieder verfuegbar", () => {
+    const scene = { events: { once: () => {} } } as unknown as Phaser.Scene;
+    const fx = new FxSystem(scene);
+    const recs: BlendRec[] = [];
+    for (let i = 0; i < 72; i++) addFake(fx, recs);
+    cycle(fx);
+    fx.setAlphaScale(0.5); // minimal: alle Glows demoted, alle Slots frei
+    const recs2: BlendRec[] = [];
+    for (let i = 0; i < 10; i++) addFake(fx, recs2);
+    fx.setAlphaScale(1); // alte 72 re-requesten zuerst, neue 10 konkurrieren
+    const addAll = [...recs, ...recs2].filter((r) => r.blend === Phaser.BlendModes.ADD).length;
+    expect(addAll).toBe(glowCapFor("full")); // Cap bleibt hart, keine Ueberhebung
+    expect(recs2.some((r) => r.blend === Phaser.BlendModes.NORMAL)).toBe(true);
+  });
+});
