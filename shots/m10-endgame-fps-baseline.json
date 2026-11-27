@@ -1,0 +1,190 @@
+{
+  "lane": "m10-endgame-fps",
+  "card": "K1 baseline",
+  "date": "2026-11-27",
+  "targetResolution": "640x360 logisch (interne Spielpixel)",
+  "resolutionFinding": "Bei --viewport 640x360 --dpr 1 rendert Phaser FIT intern 480x360 (computeView: maxFitN=1 -> fitView). Die fr\u00fcheren dpr1-L\u00e4ufe messen also 480 breit, nicht das 640er-Ziel. Mit --dpr 2 wird die View 640x360 (n=2, css 640x360) und entspricht dem ACCEPTANCE-Ziel.",
+  "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 2 --out shots/m10-endgame-fps-baseline-dpr2-run<N>.json",
+  "loadavgAtEachRunStart": [
+    "4.43 4.88 5.72",
+    "8.75 5.92 6.04",
+    "9.07 6.07 6.09"
+  ],
+  "generatedAt": "2026-11-27T11:48:21.480027+00:00",
+  "documentedAcceptanceBaseline": {
+    "minute25Fps": "37,8\u201341,4",
+    "burstFps": "46,3 / 46,6 / 49,3",
+    "source": "ACCEPTANCE.md / docs/qa/final-2026-11-27.md (unter hoher Parallel-Last)"
+  },
+  "runs": [
+    {
+      "run": 1,
+      "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 2 --out shots/m10-endgame-fps-baseline-dpr2-run1.json",
+      "view": {
+        "internal": [
+          640,
+          360
+        ],
+        "css": [
+          640,
+          360
+        ],
+        "dpr": 2
+      },
+      "burst": {
+        "fps": 59.2,
+        "frames": 593,
+        "elapsedMs": 10025,
+        "worstFrameMs": 33.4,
+        "minEnemies": 500,
+        "avgEnemies": 500,
+        "targetEnemies": 500,
+        "measuredFps": 55.8,
+        "level": 29,
+        "kills": 2613,
+        "passed": true
+      },
+      "minute25": {
+        "fps": 52,
+        "frames": 522,
+        "elapsedMs": 10030,
+        "worstFrameMs": 33.4,
+        "minEnemies": 300,
+        "avgEnemies": 300,
+        "targetEnemies": 300,
+        "measuredFps": 52.1,
+        "time": 1500,
+        "level": 48,
+        "kills": 21195,
+        "passed": false
+      },
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "run": 2,
+      "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 2 --out shots/m10-endgame-fps-baseline-dpr2-run2.json",
+      "view": {
+        "internal": [
+          640,
+          360
+        ],
+        "css": [
+          640,
+          360
+        ],
+        "dpr": 2
+      },
+      "burst": {
+        "fps": 60,
+        "frames": 601,
+        "elapsedMs": 10019,
+        "worstFrameMs": 33.3,
+        "minEnemies": 500,
+        "avgEnemies": 500,
+        "targetEnemies": 500,
+        "measuredFps": 58.8,
+        "level": 29,
+        "kills": 2366,
+        "passed": true
+      },
+      "minute25": {
+        "fps": 50.8,
+        "frames": 509,
+        "elapsedMs": 10026,
+        "worstFrameMs": 33.4,
+        "minEnemies": 300,
+        "avgEnemies": 300,
+        "targetEnemies": 300,
+        "measuredFps": 52.2,
+        "time": 1503.2,
+        "level": 51,
+        "kills": 25596,
+        "passed": false
+      },
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "run": 3,
+      "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 2 --out shots/m10-endgame-fps-baseline-dpr2-run3.json",
+      "view": {
+        "internal": [
+          640,
+          360
+        ],
+        "css": [
+          640,
+          360
+        ],
+        "dpr": 2
+      },
+      "burst": {
+        "fps": 60.1,
+        "frames": 602,
+        "elapsedMs": 10019,
+        "worstFrameMs": 16.8,
+        "minEnemies": 500,
+        "avgEnemies": 500,
+        "targetEnemies": 500,
+        "measuredFps": 56.4,
+        "level": 30,
+        "kills": 2425,
+        "passed": true
+      },
+      "minute25": {
+        "fps": 48.2,
+        "frames": 484,
+        "elapsedMs": 10034,
+        "worstFrameMs": 33.4,
+        "minEnemies": 300,
+        "avgEnemies": 300,
+        "targetEnemies": 300,
+        "measuredFps": 46,
+        "time": 1498.6,
+        "level": 46,
+        "kills": 17051,
+        "passed": false
+      },
+      "jsErrors": [],
+      "passed": false
+    }
+  ],
+  "summary": {
+    "burstFps": [
+      59.2,
+      60,
+      60.1
+    ],
+    "minute25Fps": [
+      52,
+      50.8,
+      48.2
+    ],
+    "burstPassCount": 3,
+    "minute25PassCount": 0,
+    "minute25Min": 48.2,
+    "jsErrors": 0
+  },
+  "attribution": {
+    "source": "shots/m10-endgame-fps-attribution.json (scripts/m10-endgame-fps.mjs, 3 L\u00e4ufe)",
+    "finding": "simulate/updateSumme 0,80-0,97 ms/Frame, combat.update 0,43-0,55 ms, ground.update 0,14-0,23 ms, spawner.update 0,008-0,011 ms; Rendering/Draw dominiert (~17-19 ms/Frame). Terrain und Spawner sind NICHT die hei\u00dfen Pfade."
+  },
+  "regulatorNote": "Bei interner Breite 640 ist maxActiveEnemies(1500)=360, der Regler-Boden 320 => floorRatio 0,889, Drosselung also grunds\u00e4tzlich m\u00f6glich. Der perf.mjs-Minute-25-Lauf h\u00e4lt seine 300 Gegner jedoch per __lf.spawnEnemy direkt und umgeht damit den Spawner-Cap; im Messlauf ist der Regler deshalb nicht wirksam. Ein Gewinn ist mit diesem Harness nicht belegbar (kein erfundener Gewinn).",
+  "invalidResolutionRuns": [
+    {
+      "note": "dpr1, intern 480x360 \u2014 nicht die 640er-Zielaufl\u00f6sung",
+      "burstFps": [
+        60.1,
+        60.1,
+        54.5
+      ],
+      "minute25Fps": [
+        55.2,
+        53.3,
+        52.4
+      ]
+    }
+  ],
+  "honestConclusion": "Bei wahrer interner Aufl\u00f6sung 640x360 ist der ACCEPTANCE-Punkt reproduzierbar rot: Minute-25 52/50.8/48.2 FPS gegen Ziel 55, keiner \u226555, Minimum 48.2 (<52). Burst (500 Gegner) ist mit 59-60 FPS gr\u00fcn. Die fr\u00fchere gr\u00fcne 480er-Messung war eine Aufl\u00f6sungs-Fehleinsch\u00e4tzung, kein Codegewinn."
+}

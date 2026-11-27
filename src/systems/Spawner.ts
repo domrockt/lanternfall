@@ -4,8 +4,9 @@ import type { EnemyDef, EnemyId, WaveDef } from "../data/types";
 import { WORLD_SIZE } from "../config";
 import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, streamSpawnOffsets } from "../logic/waves";
 import {
-  eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale, maxActiveEnemies,
-  pickRecycleIndex, recycleDistance, spawnRateFactor, spawnRingRadius,
+  createFrameBudget, eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale,
+  frameBudgetTarget, maxActiveEnemies, pickRecycleIndex, recycleDistance, spawnRateFactor,
+  spawnRingRadius, stepFrameBudget, type FrameBudgetState,
 } from "../logic/scaling";
 import type { Rng } from "../logic/rng";
 import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPool";
@@ -20,6 +21,11 @@ export class Spawner {
   /** Abnahme-Beleg: zaehlt jeden tatsaechlichen Spawn je Gegner-ID (nur zaehlen). */
   readonly spawnCounts: Partial<Record<EnemyId, number>> = {};
   private lastMinute = -1;
+  // M10: Frame-Budget-Regler. Greift nur bei anhaltender Ueberlast (>19,2 ms
+  // fuer >1 s) und senkt das aktive Ziel gedrosselt; sonst bleibt der
+  // bestehende maxActiveEnemies-Deckel unveraendert. Siehe logic/scaling.ts.
+  private frameBudget: FrameBudgetState;
+  private lastBudgetFrame = -1;
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
@@ -30,6 +36,7 @@ export class Spawner {
     this.pool = pool;
     this.rng = rng;
     this.camera = scene.cameras.main;
+    this.frameBudget = createFrameBudget(maxActiveEnemies(0, this.camera.width, this.camera.height));
     // window.__lf.state() liest den Zaehler ohne Phaser-Referenz aus der Registry.
     this.scene.registry.set("lf-spawner", this);
   }
@@ -50,7 +57,21 @@ export class Spawner {
 
     // Performance-Deckel: älteste/ferne Gegner recyceln statt beliebig zu wachsen.
     const cam = this.camera;
-    const cap = maxActiveEnemies(elapsedSeconds, cam.width, cam.height);
+    const baseCap = maxActiveEnemies(elapsedSeconds, cam.width, cam.height);
+    // M10: Regler einmal pro echtem Frame fuettern (nicht pro Simulations-Substep,
+    // sonst wuerde timeScale 30 dieselbe Frame-Zeit mehrfach zaehlen).
+    const frameId = this.scene.game.loop.frame;
+    if (frameId !== this.lastBudgetFrame) {
+      this.lastBudgetFrame = frameId;
+      this.frameBudget = stepFrameBudget(
+        this.frameBudget,
+        this.scene.game.loop.delta,
+        this.scene.game.loop.delta / 1000,
+        baseCap,
+      );
+    }
+    const cap = Math.min(baseCap, frameBudgetTarget(this.frameBudget));
+    this.scene.registry.set("lf-frame-budget", this.frameBudget);
     let over = this.pool.count - cap;
     const recycle = recycleDistance(cam.width, cam.height);
     while (over > 0) {
