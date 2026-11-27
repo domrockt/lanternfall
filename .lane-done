@@ -1,0 +1,21 @@
+Lane m10-art-contact — abgeschlossen (27.11.2026)
+
+Ziel: belastbare Art-Belege für alle 38 Charakter-Sprites (30 Gegner, 6 Bosse, Mira, Kael).
+Basis-SHA: f26dc4b (Worktree-Branch m10-art-contact, kein checkout/merge/push).
+
+Ergebnis:
+- 38/38 Sprites belegt: Inventar-JSON (Soll-Keys + Soll-Frames), 7 Kontaktbögen 1× und 7 Bögen 4×
+  auf nightDeep, jedes Sprite mit KEY + F<n> beschriftet und vollständig sichtbar.
+- Audit: 38 Zeilen, 154 Ist-Frames, Ist == Soll überall, 0 fehlende/überzählige Frames.
+- Off-Palette: 0 Pixel in allen Frames und in 14/14 Bögen (unabhängig mit lib.read_rgba_png geprüft).
+- Mängelliste (8 Einträge): Spider F0≡F2 (major), Spider F0→F1 nur 16 px = 2,8 % (major),
+  Spider-Beine 1 px + 7 orthogonale Einzelpixel (major), Generator-Drift Spider 239–242 px/Frame (major),
+  Pale-Shepherd-Klinge am Rand x=71/y=8–15 (minor), Wolf/Bomber F1≈F3 (minor), Bone-Lord F0≈F2 (minor).
+- art-director: Runde 1 FAIL (Note 3, fehlende Befunde) → Nachbesserung → Runde 2 PASS (Note 4).
+- Tests: npx vitest run → 192 Tests / 12 Dateien grün. Build: npm run build → rc=0.
+- In-Game-Shot shots/m10-art-contact-game.png: jsErrors [].
+- Feste Skripte nur in ~/tmp/m10-art-contact/ (audit.py byte-identisch reproduzierbar, framediff.py,
+  palcheck.py, validate_audit.py); nichts unter src/, scripts/, tests/ geändert.
+
+Commits: e31f06d (Inventar), 82690c9 (1×/4× + Audit), eadd116/16f6707 (Mängelliste/Tooling),
+88569f8 (#1058 Audit-JSON), e13acf9 (#1059 Mängelliste ergänzt), + dieser Abschluss-Commit.
