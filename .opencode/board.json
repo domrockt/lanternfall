@@ -5487,19 +5487,31 @@
       "id": 4518,
       "title": "m10-evo-signature-calls K1: Spawn-Aufruf im onHit verankern (tsc + Tests)",
       "description": "Aufruf combat.fx.spawnEvolution(weaponId, killed?'death':'hit', enemy.x, enemy.y) im onHit-Callback von src/scenes/Run.ts vorhanden/pruefen, npx tsc --noEmit + gezielte Tests gruen, WIP-Commit. AK: tsc 0 Fehler, keine Gameplay-Aenderung (diff nur Run.ts onHit).",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:54:00Z",
+          "by": "build",
+          "text": "doing → done: Spawn-Aufruf lag schon in main (fx-evolution-WIP 56da3a5, Run.ts:480) – verifiziert statt doppelt eingebaut: tsc rc=0, tests/fx-evolution+fx-overdraw 27/27. Commit 9c06483."
+        }
+      ],
       "created": "2026-11-27T18:53:52Z",
-      "updated": "2026-11-27T18:53:52Z"
+      "updated": "2026-11-27T18:54:00Z"
     },
     {
       "id": 4519,
       "title": "m10-evo-signature-calls K2: tests/evo-signature-calls.test.ts",
       "description": "Test: Spawn-Ereignis feuert bei Hit und bei Kill mit korrektem Typ + Position; bei Nicht-Evolutions-Waffen kein Spawn. AK: npx vitest run tests/evo-signature-calls.test.ts gruen, Commit mit Tests.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:55:52Z",
+          "by": "build",
+          "text": "backlog → done: tests/evo-signature-calls.test.ts 6/6 (Verdrahtung in Run.ts onHit, Hit/Death-Spawn Typ+Position, Nicht-Evo null, Cooldown), Suite 515/515, Build gruen. Commit 0cdfea7."
+        }
+      ],
       "created": "2026-11-27T18:53:52Z",
-      "updated": "2026-11-27T18:53:52Z"
+      "updated": "2026-11-27T18:55:52Z"
     },
     {
       "id": 4520,
