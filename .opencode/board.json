@@ -4464,9 +4464,11 @@
       "id": 3461,
       "title": "m10-view-cap K3: Sicht-Belege + Abnahme + .lane-done",
       "description": "Screenshots 640/780/1080 nach Fix (shots/m10-view-width-*.png), art-director-Urteil 'keine Unschärfe/falschen Pixelkanten' PASS>=4/5 in docs/lanes/m10-view-width-cap.md; npm test + npm run build grün; .lane-done mit Messwerten committen. Abnahme: PNGs im Commit, Urteil zitiert, build rc=0, .lane-done 5-10 Zeilen.",
-      "column": "blocked",
+      "column": "done",
       "assignee": "playtester",
-      "notes": "[object Object]\n[Supervisor 27.11.] Ergebnis: ein Abnahme-Check — fullrun fpsMin 39,4 < 55 (Ziel ≥55) → Kriterium NICHT erfüllt, Ursache dokumentiert (Fullrun intern 480, Klemme greift nicht; Folgekarte UI/PostFX). Sicht-Urteil 640/780/1080: PASS (keine Unschärfe/Pixelkanten). Nicht weiter getunt laut Supervisor; Reviewer PASS (Code), Tests 360 grün, build rc=0.\nart-director-Abnahme (27.11.): PASS, Note 5/5 — n×n-Grid messtechnisch bestätigt, Palette sauber, keine Unschärfe (3x nearest); Deckung mit JSON-Belegen after-burst-*.",
+      "notes": [
+        "blocked → done: fullrun fpsMin 39,4 < 55 lt. Briefing behandelt (Ursache dokumentiert: Fullrun intern 480 breit, Klemme greift nicht; Folgekarte #4138 im Backlog, nicht in dieser Lane tunen). Sicht-Belege art-director PASS 5/5, Reviewer PASS, Tests 360 grün, Build rc=0. Lane-Abschluss: .lane-done committet (09b8d1c)."
+      ],
       "created": "2026-11-27T13:24:43Z",
       "updated": "2026-11-27T16:06:49Z"
     },
