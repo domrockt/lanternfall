@@ -15,7 +15,10 @@
  * `<!-- BALANCE-TABLE:START -->` / `<!-- BALANCE-TABLE:END -->` in docs/lanes/balance.md.
  *
  * WICHTIG: Messläufe immer mit flock starten, z. B.
- *   flock /home/ai/games/.lf-perf.lock npm run balance
+ *   flock -w 420 /home/ai/games/.lf-perf.lock npm run balance
+ * (-w 420 = erwartete Laufzeit ~300 s + 120 s Puffer). Bei Lock-Timeout (rc != 0):
+ * "balance: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
+ * ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";

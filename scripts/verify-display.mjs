@@ -2,7 +2,10 @@
 // M8-Abnahme Display: 7 Geraete-Profile, Screenshots je Szene, Spielpixel=n*n
 // Geraetepixel, keine abgeschnittenen Texte, Touch-Minute auf iPhone-Profil.
 //
-//   flock /home/ai/games/.lf-perf.lock node scripts/verify-display.mjs
+//   flock -w 300 /home/ai/games/.lf-perf.lock node scripts/verify-display.mjs
+// (-w 300 = erwartete Laufzeit ~180 s + 120 s Puffer). Bei Lock-Timeout (rc != 0):
+// "verify-display: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
+// ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 //
 // Ausgabe: shots/m8-<profil>-<szene>.png + shots/m8-display.json; Exit 0 = PASS.
 import { mkdirSync, writeFileSync } from "node:fs";

@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 // Re-Abnahme Performance: kurzer, serialisierter Lauf ueber 640x360 und 780x360@3.
 // Misst pro Iteration Burst (500 Gegner) und Minute-25 getrennt, alles unter
-// flock /home/ai/games/.lf-perf.lock. Maximal 3 Iterationen (Default).
+// flock -w 420 /home/ai/games/.lf-perf.lock (erwartete Laufzeit ~300 s gemessen + 120 s Puffer).
+// Maximal 3 Iterationen (Default). Bei Lock-Timeout (rc != 0): "qa-reaccept-perf: Sperre
+// /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen" ausgeben und Exitcode
+// weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 

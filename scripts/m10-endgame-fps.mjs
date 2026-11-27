@@ -3,9 +3,11 @@
 // Ersetzt das defekte profile-minute25.mjs (Syntaxfehler) durch eine messbare,
 // reproduzierbare Bucket-Instrumentierung der Run-Systeme.
 //
-// Aufruf:
-//   flock /home/ai/games/.lf-perf.lock node scripts/m10-endgame-fps.mjs \
+// Aufruf (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer):
+//   flock -w 240 /home/ai/games/.lf-perf.lock node scripts/m10-endgame-fps.mjs \
 //     --viewport 640x360 --dpr 1 --runs 3 --out shots/m10-endgame-fps-attribution.json
+// Bei Lock-Timeout (rc != 0): "m10-endgame-fps: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
+// ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 

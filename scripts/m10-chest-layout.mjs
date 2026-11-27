@@ -2,7 +2,10 @@
 // M10 chest-timing lane, Karte #2160: Randpfeil-Winkel und Truhen-Panel-Layout
 // bei 640x360 (16:9), 780x360 (19.5:9) und 480x360 (4:3).
 // Pixel-Check: Kerzenweiße Namensglyphen im Screenshot vs. Panel-/Slot-Rand.
-// Start: flock /home/ai/games/.lf-perf.lock node scripts/m10-chest-layout.mjs
+// Start: flock -w 240 /home/ai/games/.lf-perf.lock node scripts/m10-chest-layout.mjs
+// (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer). Bei Lock-Timeout (rc != 0):
+// "m10-chest-layout: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
+// ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";

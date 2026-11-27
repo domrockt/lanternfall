@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 // M10 chest-timing lane: 30-minute run at timeScale 30, records each boss
 // spawn/death and every chest spawn. Writes shots/m10-chest-timing.json.
-// Start with: flock /home/ai/games/.lf-perf.lock node scripts/m10-chest-timing.mjs
+// Start with: flock -w 240 /home/ai/games/.lf-perf.lock node scripts/m10-chest-timing.mjs
+// (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer). Bei Lock-Timeout (rc != 0):
+// "m10-chest-timing: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
+// ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 
