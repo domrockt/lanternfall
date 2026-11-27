@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2874,
+  "next": 2875,
   "cards": [
     {
       "id": 1,
@@ -4387,6 +4387,16 @@
       ],
       "created": "2026-11-27T11:54:06Z",
       "updated": "2026-11-27T11:54:47Z"
+    },
+    {
+      "id": 2874,
+      "title": "m10-perf-rootcause: A/B-Messung FPS-Regression (6/6 Laeufe, Urteil Render-/Fill-Kosten)",
+      "description": "Lane m10-perf-rootcause (Branch m10-perf-rootcause, Merge-Commit folgt). A/B-Matrix 500 Gegner: a 640x360 60,1/60,0; b Waffen an 60,1/60,0 (Projektile neutral); c 780 54,5/50,0; d 1080/intern 860 50,7/47,2; e Particles reduziert 50,2/47,2; f UI/PostFX aus 60,1/60,0 (+18,5 %). Baseline perf.mjs 640: 60,1/56,4 (fa-01 46,3 nicht reproduziert); fullrun fpsMin 42,8 (<55), Sieg/Dawn, 0 JS-Fehler. Urteil: keine Einzelursache >=20 %, Verdacht Render-/Fill; Fix-Empfehlung als Folgekarte (Renderbreite <=640, UI/PostFX im Endgame drosseln). Belege shots/m10-perf-rootcause-*.json, Doku docs/lanes/m10-perf-rootcause.md. Abnahme: 6/6 Laeufe mit FPS-Zahl, Tabelle deckt JSON, 0 JS-Fehler; keine Aenderung ausserhalb scripts/m10-perf-rootcause.mjs + Doku + shots. Die Lane hatte keine eigene Board-Karte (Doku: 'kein Board'); diese Mess-Karte wurde beim Merge in main angelegt.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T12:13:24Z",
+      "updated": "2026-11-27T12:13:24Z"
     }
   ]
 }
