@@ -1,0 +1,8 @@
+Lane m10-evolution-hint: Evolutionspfad sichtbar (M10)
+- Ist-Beleg: 6/6 Evolutionen ohne Hinweis (12 Szenarien, 640x360 + 780x360), shots/m10-evolution-hint-before.json
+- Logik: evolutionReadyList(weapons, passives) in src/logic/evolution.ts, deterministisch + ohne Duplikate, 7 Tests
+- UI: Level-up-Zeile "EVOLUTION BEREIT: <NAME>", HUD-Zeile "EVOLUTION BEREIT", Truhensatz "AUS <BASIS> + <POWERUP> WIRD <EVOLUTION>."
+- Nachher: 6/6 mit Hinweis, max. 1 Zeile (Limit 2), 0 Ueberlappungen, Randabstand min. 42 px (Level-up) / 52 px (Truhe), Trennlinien-Abstand 49,5 px
+- Bedienung: Tastatur-Pick und Touch-Tap schliessen das Panel weiterhin (beide true); 0 JS-Fehler
+- Build gruen, 247 Tests / 20 Dateien gruen, tsc gruen; levelup-Angebotslogik, Daten/Balance und GAME.md unveraendert
+- Belege: shots/m10-evolution-hint-before-*.png|json, shots/m10-evolution-hint-after-*.png|json, docs/lanes/m10-evolution-hint.md

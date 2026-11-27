@@ -3324,27 +3324,38 @@
       "id": 2260,
       "title": "m10-evolution-hint #3 UI-Hinweis EVOLUTION BEREIT + Truhensatz",
       "description": "src/scenes/UI.ts: Badge/Zeile im Level-up-Panel und HUD, Text via slotNameLines/wrapText max. 2 Zeilen; Truhe erklaert in einem Satz, was evolviert; Hit-/Fokusflaechen unveraendert (Tastatur/Touch). Abnahme: 6/6 Evolutionen mit Hinweis in Shots, Pixel-Check Randabstand >=2 px und keine Ueberlappung mit Trennlinie in 640x360 + 780x360, 0 JS-Fehler, logic/levelup.ts unveraendert.",
-      "column": "doing",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-27T05:44:55Z",
           "by": "build",
           "text": "todo → doing: UI-Hinweis implementiert (WIP 2f...); Pixel-Check max. 2 Iterationen."
+        },
+        {
+          "at": "2026-11-27T06:04:46Z",
+          "by": "build",
+          "text": "doing → done: K3 committed 936318e: Panel-Zeile+HUD+Truthensatz, Pixel-Check 6/6, Rand 42/52 px, 0 Ueberlappung, Tastatur+Touch OK."
         }
       ],
       "created": "2026-11-27T05:05:32Z",
-      "updated": "2026-11-27T05:44:55Z"
+      "updated": "2026-11-27T06:04:46Z"
     },
     {
       "id": 2261,
       "title": "m10-evolution-hint #4 Doku + .lane-done",
       "description": "docs/lanes/m10-evolution-hint.md: Vorher/Nachher-Belege, 6/6 Hinweis, Pixel-Check-Messwerte, build+Tests; .lane-done mit Messwerten committen. Abnahme: Belege im Commit, build + alle Tests gruen, .lane-done vorhanden.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T06:04:46Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-27T05:05:32Z",
-      "updated": "2026-11-27T05:05:32Z"
+      "updated": "2026-11-27T06:04:46Z"
     }
   ]
 }

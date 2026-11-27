@@ -55,3 +55,37 @@ bedienbar per Tastatur und Touch. Pixel-Check: Randabstand ≥ 2 px, keine
 ## K4 — Doku + `.lane-done`
 
 Vorher/Nachher-Belege, 6/6 Evolutionen mit Hinweis, Messwerte in dieser Datei.
+
+## Ergebnis
+
+| Kriterium | Vorher | Nachher | Beleg |
+|---|---|---|---|
+| Evolutionen mit Hinweis | 0/6 | **6/6** | `shots/m10-evolution-hint-before.json` / `-after.json` |
+| Level-up-Panel-Hinweis | fehlt | `EVOLUTION BEREIT: <NAME>` | `-after-<evo>-levelup-<view>.png` |
+| HUD-Hinweis | fehlt | `EVOLUTION BEREIT` + Name | dieselben Shots (oben rechts) |
+| Truhen-Erklärung | fehlt | `AUS <BASIS> + <POWERUP> WIRD <EVOLUTION>.` | `-after-<evo>-chest-<view>.png` |
+| Zeilenlimit | – | max. **1** Zeile (Limit 2) | `maxHintLines` im JSON |
+| Randabstand Panel | – | min. **42 px** (Ziel ≥ 2) | `minLevelupMarginPx` |
+| Randabstand Truhe | – | min. **52 px** (Ziel ≥ 2) | `minChestMarginPx` |
+| Abstand Trennlinie | – | min. **49,5 px** | `minDividerGapPx` |
+| Überlappungen (640×360 + 780×360) | – | **0** | `overlapIssues: 0` |
+| Tastatur / Touch | – | beide OK | `keyboardPickOk`, `touchPickOk` |
+| JS-Fehler | – | **0** | `jsErrors: []` |
+
+**Build/Tests:** `npm run build` grün; `npm test` **247 Tests / 20 Dateien grün**
+(davon 7 neue in `tests/evolution-hint.test.ts`).
+`npx tsc --noEmit` grün.
+
+**Nicht geändert:** `src/logic/levelup.ts`-Angebotslogik, `src/data/*` (keine
+Daten-/Balanceänderung), GAME.md.
+
+**Offene Punkte (ehrlich):**
+- Der HUD-Hinweis sitzt rechts neben der Icon-Leiste (x=330) und zeigt bei
+  mehreren bereiten Evolutionen nur die erste; das Level-up-Panel nennt die
+  konkrete Evolution des Angebots. Für 6 gleichzeitig bereite Pfade steht dort
+  `EVOLUTION BEREIT (n)` + `U.A. <erste>`.
+- Der Pixel-Check misst Text-/Rahmen-Bounds aus der laufenden UI-Szene
+  (Playwright), nicht per OCR; die Shots sind zusätzlich gesichtet.
+- Keine Änderung an der Angebotslogik: der Hinweis beschreibt nur den Zustand,
+  er erzwingt keine zusätzliche Evolution im Level-up.
+
