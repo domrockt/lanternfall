@@ -317,6 +317,7 @@ const server = await startServer();
 const browser = await chromium.launch();
 const errors = [];
 const results = [];
+let chestTiming = null;
 
 async function newPage() {
   const page = await browser.newPage({ viewport: { width: 1440, height: 810 } });
@@ -464,15 +465,26 @@ try {
     await chestPage.evaluate(() => window.__lf.setTimeScale(1));
     await clearLevelUps(chestPage);
     await chestPage.evaluate(() => window.__lf.skipTo(1500));
+    // Instrumentierung (#K2): Zeit ab openChest für Panel-Sichtbarkeit und Check-Reads.
+    const tOpen = Date.now();
     await chestPage.evaluate(() => window.__lf.openChest());
     rmSync("shots/chest-frames", { recursive: true, force: true });
     mkdirSync("shots/chest-frames", { recursive: true });
     let evoCaptured = false;
     let rollCaptured = false;
+    let panelVisibleMs = null;
+    const samples = [];
     for (let i = 0; i < 48; i++) {
       await chestPage.screenshot({ path: `shots/chest-frames/f${String(i).padStart(3, "0")}.png` });
+      const readAtMs = Date.now() - tOpen;
+      const panelVisible = await chestPage.evaluate(
+        () => window.__game.scene.getScene("ui")?.chestGroup?.visible === true,
+      );
+      if (!panelVisibleMs && panelVisible) panelVisibleMs = readAtMs;
       // Während des Rollens: jeder Slot zeigt einen vollständigen Rollnamen (ggf. 2 Zeilen).
-      if (!rollCaptured && (await rollNamesComplete(chestPage))) rollCaptured = true;
+      const namesComplete = await rollNamesComplete(chestPage);
+      samples.push({ atMs: readAtMs, panelVisible, namesComplete });
+      if (!rollCaptured && namesComplete) rollCaptured = true;
       // Evolutions-Slot fertig ausgerollt: Panel mit Icon/Name/EVOLUTION schießen.
       if (!evoCaptured && (await evolutionSlotReady(chestPage))) {
         await chestPage.waitForTimeout(280); // Settle-Tween (220 ms) abwarten.
@@ -481,6 +493,18 @@ try {
       }
       await chestPage.waitForTimeout(90);
     }
+    const okSamples = samples.filter((s) => s.namesComplete).map((s) => s.atMs);
+    const gaps = samples.slice(1).map((s, i) => s.atMs - samples[i].atMs);
+    chestTiming = {
+      panelVisibleMs,
+      firstReadMs: samples[0]?.atMs ?? null,
+      rollNamesReadyMs: okSamples[0] ?? null,
+      lastReadMs: samples.at(-1)?.atMs ?? null,
+      okSampleCount: okSamples.length,
+      sampleCount: samples.length,
+      medianSampleGapMs: gaps.length ? gaps.sort((a, b) => a - b)[Math.floor(gaps.length / 2)] : null,
+      samples,
+    };
     if (!evoCaptured) {
       results.push({ id: "chest-evolution-shot", damage: null, owned: false, enemies: 0, kills: 0, fps: 0, ok: false });
       console.log("Evolution-Screenshot: Evolutions-Slot nie fertig ausgerollt -> FEHLER");
@@ -551,6 +575,7 @@ const summary = {
   phoenixBirds: results.find((r) => r.id === "phoenix-birds")?.owned ?? false,
   frostRingPixels: results.find((r) => r.id === "frost-ring-pixels")?.owned ?? false,
   rollNames: results.find((r) => r.id === "chest-roll-names")?.owned ?? false,
+  chestTiming,
   failed: failed.map((r) => r.id),
   jsErrors: errors,
   passed: failed.length === 0 && errors.length === 0,

@@ -96,7 +96,12 @@ try {
       exitCode: code,
       panelVisibleMs: timing?.panelVisibleMs ?? null,
       rollNamesReadyMs: timing?.rollNamesReadyMs ?? null,
-      checkReadMs: timing?.checkReadMs ?? null,
+      checkFirstReadMs: timing?.firstReadMs ?? null,
+      checkLastReadMs: timing?.lastReadMs ?? null,
+      sampleCount: timing?.sampleCount ?? null,
+      okSampleCount: timing?.okSampleCount ?? null,
+      medianSampleGapMs: timing?.medianSampleGapMs ?? null,
+      samples: timing?.samples ?? null,
       stderrTail: err.trim().split("\n").slice(-3).join("\n"),
     });
     const verdict = passed ? "PASS" : "FAIL";
