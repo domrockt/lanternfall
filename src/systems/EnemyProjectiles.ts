@@ -63,7 +63,6 @@ export interface EnemyShotStats {
   pending: number;
 }
 
-
 const TELEGRAPH_ALPHA_START = 0.55;
 const TELEGRAPH_ALPHA_END = 0.25;
 const TELEGRAPH_POOL_CAP = 96;
