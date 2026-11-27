@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3802,
+  "next": 3806,
   "cards": [
     {
       "id": 1,
@@ -4886,6 +4886,70 @@
       ],
       "created": "2026-11-27T17:37:58Z",
       "updated": "2026-11-27T17:38:33Z"
+    },
+    {
+      "id": 3802,
+      "title": "m10-damage-batch K1 Baseline: 500 Gegner + 6 Waffen Lv8",
+      "description": "Owner engine-dev, Kontrolle perf-check + reviewer. scripts/m10-damage-batch.mjs misst aktive Textobjekte, setText/s, ms/Frame bei 500 Gegnern, 6 Waffen Lv8, Seed 1, autoPlay, god, 10 s. Abnahme: shots/m10-damage-batch-before.json im Commit, Zahlen im JSON.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T17:53:20Z",
+          "by": "build",
+          "text": "lane #3058, Merge 2a03bdd m10-damage-batch"
+        }
+      ],
+      "created": "2026-11-27T17:53:08Z",
+      "updated": "2026-11-27T17:53:20Z"
+    },
+    {
+      "id": 3803,
+      "title": "m10-damage-batch K2 Fix: Label-Memo + Gruppierung + View-Cap",
+      "description": "Owner engine-dev, Kontrolle perf-check + reviewer. src/systems/DamageNumbers.ts + src/logic/damage-numbers.ts: setText nur bei Wert-/Krit-Aenderung, Aggregat pro Gegner-Gruppe, harte Obergrenze 10 Views ab DAMAGE_AGGREGATE_MIN_ENEMIES; CombatSystem/UI/Run NICHT anfassen. Abnahme: tsc gruen, gezielte Tests gruen.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T17:53:20Z",
+          "by": "build",
+          "text": "lane #3059, Merge 2a03bdd m10-damage-batch"
+        }
+      ],
+      "created": "2026-11-27T17:53:08Z",
+      "updated": "2026-11-27T17:53:20Z"
+    },
+    {
+      "id": 3804,
+      "title": "m10-damage-batch K3 Test: Batch-Logik",
+      "description": "Owner gameplay-dev, Kontrolle test-auditor. tests/damage-number-batch.test.ts: Summe Anzeige = Trefferliste (<=1%), keine Doppel-Labels je Gegner, Cap 10 greift, kein setText ohne Wertaenderung (Spy), 0 NaN/negativ. Abnahme: npx vitest run tests/damage-number-batch.test.ts gruen.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T17:53:20Z",
+          "by": "build",
+          "text": "lane #3060, Merge 2a03bdd m10-damage-batch"
+        }
+      ],
+      "created": "2026-11-27T17:53:08Z",
+      "updated": "2026-11-27T17:53:20Z"
+    },
+    {
+      "id": 3805,
+      "title": "m10-damage-batch K4 Nachher-Messung + HUD-Abgleich",
+      "description": "Owner engine-dev, Kontrolle perf-check + reviewer. Gleiches Skript wie K1 mit tag=after, plus HUD-Gesamtschaden vs Balkensumme <=1%. Ziel: aktive Views <=10 bei >=120 Gegnern, setText/s -50%, ms/Frame nicht schlechter. Abnahme: shots/m10-damage-batch-after.json + Vergleichs-PNG im Commit, docs/lanes/m10-damage-batch.md.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T17:53:20Z",
+          "by": "build",
+          "text": "lane #3061, Merge 2a03bdd m10-damage-batch"
+        }
+      ],
+      "created": "2026-11-27T17:53:08Z",
+      "updated": "2026-11-27T17:53:20Z"
     }
   ]
 }
