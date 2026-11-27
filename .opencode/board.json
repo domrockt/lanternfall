@@ -3059,37 +3059,71 @@
       "id": 2158,
       "title": "m10-chest-timing #1 Zeit-Beleg 30-min-Sim",
       "description": "Owner gameplay-dev, Kontrolle test-auditor. 30-min-Sim (timeScale 30) mit Debug-Hook: Spawn-Zeit je Boss vs Soll (300/600/900/1200/1500/1800), Anzahl Truhen, Doppel-Spawns. Abnahme: shots/m10-chest-timing.json existiert und nennt 6 Bosse, Truhenzahl je Boss, Deltas; keine Dops.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T03:55:49Z",
+          "by": "build",
+          "text": "todo → doing: 30-min-Sim-Skript geschrieben, WIP committet d10fff9"
+        },
+        {
+          "at": "2026-11-27T04:37:26Z",
+          "by": "build",
+          "text": "doing → review: Beleg: b0d9aae, shots/m10-chest-timing.json – 6/6 ±0,5 s (Δ0), 1 je Boss, 0 Doppel"
+        }
+      ],
       "created": "2026-11-27T03:24:54Z",
-      "updated": "2026-11-27T03:24:54Z"
+      "updated": "2026-11-27T04:37:26Z"
     },
     {
       "id": 2159,
       "title": "m10-chest-timing #2 Spawn-Robustheit + Tests",
       "description": "Owner gameplay-dev, Kontrolle test-auditor + reviewer. Truhe nur einmal je Boss, bleibt bei Pause/Level-up stehen, verschwindet nicht durch Recycling. Abnahme: tests/chest-timing.test.ts gruen, Off-by-one an Minutenraendern 299.99/300/300.01 geprueft, npx vitest run tests/chest-timing.test.ts PASS.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T03:55:49Z",
+          "by": "build",
+          "text": "todo → doing: tests/chest-timing.test.ts 6/6 gruen"
+        },
+        {
+          "at": "2026-11-27T04:37:26Z",
+          "by": "build",
+          "text": "doing → review: Beleg: 0bb14e7, tests/chest-timing.test.ts 6/6 grün (Minutenränder 299.99/300/300.01)"
+        }
+      ],
       "created": "2026-11-27T03:24:54Z",
-      "updated": "2026-11-27T03:24:54Z"
+      "updated": "2026-11-27T04:37:26Z"
     },
     {
       "id": 2160,
       "title": "m10-chest-timing #3 Pfeil + Panel-Layout",
       "description": "Owner ui-dev, Kontrolle ux-check + playtester. Pfeilrichtung bei 640x360 (16:9), 780x360 (19.5:9) und 4:3 korrekt (Winkelabweichung <=5 Grad), Namen via slotNameLines <=2 Zeilen, Pixel-Check Randabstand >=2 px. Abnahme: 3 Screenshots shots/m10-chest-arrow-*.png + Messwerte, 0 Textueberlappungen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T04:37:26Z",
+          "by": "build",
+          "text": "todo → review: Beleg: bb4b99f, Pfeil 0,00° in 16:9/19.5:9/4:3, Panel max 2 Zeilen, min Rand 31 px, 0 Overlaps"
+        }
+      ],
       "created": "2026-11-27T03:24:54Z",
-      "updated": "2026-11-27T03:24:54Z"
+      "updated": "2026-11-27T04:37:26Z"
     },
     {
       "id": 2161,
       "title": "m10-chest-timing #4 Doku + .lane-done",
       "description": "Owner coder, Kontrolle commit-gate. docs/lanes/m10-chest-timing.md mit Zeiten, Pfeilwinkeln, Layout-Urteil; npm run build + alle Tests gruen; .lane-done mit Messwerten. Abnahme: docs + .lane-done im selben Lane-Branch committet, Build/Test-Log zitiert.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T04:37:26Z",
+          "by": "build",
+          "text": "todo → done: Beleg: 842dd8a, docs/lanes/m10-chest-timing.md + .lane-done, Build grün, 230/230 Tests"
+        }
+      ],
       "created": "2026-11-27T03:24:54Z",
-      "updated": "2026-11-27T03:24:54Z"
+      "updated": "2026-11-27T04:37:26Z"
     }
   ]
 }
