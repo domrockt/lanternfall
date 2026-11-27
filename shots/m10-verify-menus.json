@@ -1,0 +1,133 @@
+{
+  "milestone": "m10-verify-menus-view",
+  "viewport": {
+    "width": 960,
+    "height": 540
+  },
+  "logicalView": {
+    "w": 480,
+    "h": 360
+  },
+  "shots": [
+    "shots/m10-verify-menus-title-480x360.png",
+    "shots/m10-verify-menus-title.png",
+    "shots/m10-verify-menus-options.png",
+    "shots/m10-verify-menus-credits.png",
+    "shots/m10-verify-menus-charselect.png",
+    "shots/m10-verify-menus-pause.png",
+    "shots/m10-verify-menus-options-pause.png",
+    "shots/m10-verify-menus-results-defeat.png",
+    "shots/m10-verify-menus-results-victory.png",
+    "shots/m10-verify-menus-title-meta.png",
+    "shots/m10-verify-menus-options-open-final.png",
+    "shots/m10-verify-menus-options-changed.png",
+    "shots/m10-verify-menus-options-reload-menu.png"
+  ],
+  "checks": [
+    {
+      "name": "charselect erreichbar",
+      "ok": true,
+      "detail": "charselect"
+    },
+    {
+      "name": "run erreicht",
+      "ok": true
+    },
+    {
+      "name": "Pause geöffnet",
+      "ok": true
+    },
+    {
+      "name": "ESC schliesst Pause-Optionen, Pause bleibt",
+      "ok": true,
+      "detail": "paused=true"
+    },
+    {
+      "name": "Aufgeben führt zu Results",
+      "ok": true,
+      "detail": "results"
+    },
+    {
+      "name": "Sieg-Ergebnis erreichbar",
+      "ok": true
+    },
+    {
+      "name": "Meta: Kael hat 2 Runs",
+      "ok": true,
+      "detail": "5"
+    },
+    {
+      "name": "Meta: Kael-Sieg gespeichert",
+      "ok": true,
+      "detail": "2"
+    },
+    {
+      "name": "Skalierung 2X gestellt, Fit-View zentriert",
+      "ok": true,
+      "detail": "center 480/270, 720x540 (erwartet 720x540)"
+    },
+    {
+      "name": "Optionen: Musik erhöht",
+      "ok": true,
+      "detail": "0.7"
+    },
+    {
+      "name": "Optionen: Damage-Numbers aus",
+      "ok": true
+    },
+    {
+      "name": "Optionen: Skalierung 2X",
+      "ok": true,
+      "detail": "2"
+    },
+    {
+      "name": "Optionen überleben Reload",
+      "ok": true,
+      "detail": "{\"music\":0.7,\"sfx\":0.8,\"shake\":false,\"damageNumbers\":false,\"muted\":false,\"scale\":2}"
+    },
+    {
+      "name": "alle Screenshots vorhanden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "optionsBeforeReload": {
+    "music": 0.7,
+    "sfx": 0.8,
+    "shake": false,
+    "damageNumbers": false,
+    "muted": false,
+    "scale": 2
+  },
+  "optionsAfterReload": {
+    "music": 0.7,
+    "sfx": 0.8,
+    "shake": false,
+    "damageNumbers": false,
+    "muted": false,
+    "scale": 2
+  },
+  "meta": {
+    "mira": {
+      "time": 754,
+      "kills": 456,
+      "level": 12,
+      "victories": 0,
+      "runs": 2
+    },
+    "kael": {
+      "time": 1700,
+      "kills": 301,
+      "level": 9,
+      "victories": 2,
+      "runs": 5
+    }
+  },
+  "jsErrors": [],
+  "passed": true
+}

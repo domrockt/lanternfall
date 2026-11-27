@@ -1,15 +1,28 @@
 #!/usr/bin/env node
-// M6-Lane "menus": Screenshots aller Menü-Szenen, Maus/Tastatur-Pfade,
+// Lane m10-verify-menus-view: Screenshots aller Menü-Szenen, Maus/Tastatur-Pfade,
 // Options-Persistenz über Reload, Meta-Bestwerte. Exit 0 nur wenn alles grün.
+//
+// M8/M10: Der View ist dynamisch (logische Höhe 360, Breite je Seitenverhältnis,
+// Fit-Rückfall 480x360). Dieser Harness klickt deshalb NICHT mehr auf feste
+// Pixelkoordinaten, sondern liest zur Laufzeit die sichtbaren PixelText-Objekte
+// der aktiven Szenen (Wert + Bounds) und klickt deren Rechteck-Zentren. Das
+// Klick-Mapping auf den Canvas läuft über __game.scale + canvas boundingBox.
+// Tastatur-Pfade bleiben als Kontrolle (ESC, Aufgeben, "o").
+// Viewport überschreibbar: MENUS_VIEWPORT=1280x720 node scripts/verify-menus.mjs
 import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
+
+const VIEWPORT = (() => {
+  const m = /^(\d+)x(\d+)$/.exec(process.env.MENUS_VIEWPORT ?? "");
+  return m ? { width: Number(m[1]), height: Number(m[2]) } : { width: 960, height: 540 };
+})();
 
 ensureBuild();
 mkdirSync("shots", { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+const page = await browser.newPage({ viewport: VIEWPORT });
 const errors = [];
 const DEFAULT_MUSIC = 0.55;
 page.on("pageerror", (e) => errors.push(String(e)));
@@ -28,18 +41,91 @@ await page.addInitScript(() => {
 
 const shots = [];
 const snap = async (name) => {
-  const path = `shots/m6-menus-${name}.png`;
+  const path = `shots/m10-verify-menus-${name}.png`;
   await page.screenshot({ path });
   shots.push(path);
 };
-// M8-View ist dynamisch (logische Hoehe 360, Breite 480..860), nicht 480x270.
-// Koordinaten werden aus der echten Spielflaeche (__game.scale) auf den Canvas gemappt.
-const clickGame = async (x, y) => {
-  const box = await page.locator("canvas").boundingBox();
-  const view = await page.evaluate(() => ({ w: window.__game.scale.width, h: window.__game.scale.height }));
-  await page.mouse.click(box.x + (x / view.w) * box.width, box.y + (y / view.h) * box.height);
+
+// --- Klick-Ziele aus der laufenden Szene lesen (kein festes 480x270-Layout) ---
+
+/** Alle sichtbaren Text-Objekte (PixelText.valueText) der aktiven Szenen mit Weltposition.
+ *
+ * Bewusst `getWorldTransformMatrix().transformPoint(0,0)` statt `getBounds()`:
+ * Container-Bounds sind bei PixelText unsauber (Glyph-Texturen verfälschen Höhe/Y),
+ * die Weltposition des Text-Ursprungs liegt bei allen Menü-Texten (zentriert oder
+ * als Zeilen-Label) sicher innerhalb des klickbaren Elements. */
+const readTargets = () => page.evaluate(() => {
+  const out = [];
+  const walk = (obj, parentVisible) => {
+    if (obj == null) return;
+    if (Array.isArray(obj)) { for (const c of obj) walk(c, parentVisible); return; }
+    const visible = parentVisible && obj.visible !== false;
+    if (obj.list) { for (const c of obj.list) walk(c, visible); }
+    if (visible && typeof obj.valueText === "string" && obj.valueText.length > 0) {
+      try {
+        const p = obj.getWorldTransformMatrix().transformPoint(0, 0);
+        out.push({ text: obj.valueText, cx: p.x, cy: p.y });
+      } catch { /* Transformation nicht verfügbar -> überspringen */ }
+    }
+  };
+  for (const s of window.__game.scene.scenes) {
+    if (!s.scene.isActive()) continue;
+    walk(s.children, true);
+  }
+  return out;
+});
+
+/** Wähle das beste Ziel: exakter Treffer > Präfix > enthält; kürzester Text gewinnt. */
+const pickTarget = (targets, needle) => {
+  const norm = (s) => s.toLowerCase();
+  const n = norm(needle);
+  const hits = targets.filter((t) => norm(t.text).includes(n));
+  if (hits.length === 0) return null;
+  const exact = hits.filter((t) => norm(t.text) === n);
+  const byPrefix = hits.filter((t) => norm(t.text).startsWith(n));
+  const pool = exact.length ? exact : (byPrefix.length ? byPrefix : hits);
+  return pool.reduce((a, b) => (b.text.length < a.text.length ? b : a));
+};
+
+const view = () => page.evaluate(() => ({ w: window.__game.scale.width, h: window.__game.scale.height }));
+const canvasBox = () => page.locator("canvas").boundingBox();
+
+/** Klickt auf den Center der Bounds eines zur Laufzeit gefundenen Text-Objekts. */
+const clickTarget = async (target) => {
+  const box = await canvasBox();
+  const v = await view();
+  await page.mouse.click(
+    box.x + (target.cx / v.w) * box.width,
+    box.y + (target.cy / v.h) * box.height,
+  );
   await page.waitForTimeout(220);
 };
+
+/** Klickt das Menü-Element mit diesem Label (aus der laufenden Szene, nicht fix). */
+const clickLabel = async (needle) => {
+  const target = pickTarget(await readTargets(), needle);
+  if (!target) throw new Error(`Klick-Ziel "${needle}" nicht in der aktiven Szene gefunden`);
+  await clickTarget(target);
+  return target;
+};
+
+/**
+ * Klickt den ">"-Pfeil einer Optionszeile: Zeile über ihr Label finden, dann der
+ * ">"-Text mit dem kleinsten y-Abstand. Funktioniert für jede View-Breite, weil
+ * Zeilen-/Pfeilpositionen aus der Szene kommen.
+ */
+const clickOptionArrow = async (rowLabel) => {
+  const targets = await readTargets();
+  const row = pickTarget(targets, rowLabel);
+  if (!row) throw new Error(`Optionszeile "${rowLabel}" nicht gefunden`);
+  const arrows = targets
+    .filter((t) => t.text === ">")
+    .sort((a, b) => Math.abs(a.cy - row.cy) - Math.abs(b.cy - row.cy));
+  if (arrows.length === 0) throw new Error(`Kein ">"-Pfeil für Zeile "${rowLabel}" gefunden`);
+  await clickTarget(arrows[0]);
+  return arrows[0];
+};
+
 const state = () => page.evaluate(() => window.__lf.state());
 const options = () => page.evaluate(() => window.__lf.options());
 
@@ -55,32 +141,34 @@ try {
   await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
   await waitForScene(page, "title");
   await page.waitForTimeout(500);
+  const v0 = await view();
+  if (v0.w === 480 && v0.h === 360) await snap("title-480x360"); // Sichtbeleg Fit-View
   await snap("title");
 
-  // Optionen per Maus öffnen; Werte per Tastatur ändern.
-  await clickGame(240, 259);
+  // Optionen per Maus öffnen (Ziel = Button-Label aus der Szene); Werte per Tastatur ändern.
+  await clickLabel("OPTIONEN");
   await page.waitForTimeout(200);
   await snap("options");
   await page.keyboard.press("Escape");
   await page.waitForTimeout(150);
 
   // Credits per Maus öffnen und zurück.
-  await clickGame(346, 259);
+  await clickLabel("CREDITS");
   await waitForScene(page, "credits");
   await page.waitForTimeout(250);
   await snap("credits");
-  await clickGame(240, 334);
+  await clickLabel("ZURÜCK");
   await waitForScene(page, "title");
 
-  // Charakterwahl: Kael per Maus wählen, dann START-Knopf.
-  await clickGame(136, 259);
+  // Charakterwahl: Kael per Maus wählen (Panel-Label), dann START-Knopf.
+  await clickLabel("START");
   await waitForScene(page, "charselect");
   await page.waitForTimeout(300);
-  await clickGame(352, 185);
+  await clickLabel("KAEL");
   await snap("charselect");
   const selectState = await state();
   check("charselect erreichbar", selectState.scene === "charselect", selectState.scene);
-  await clickGame(280, 342);
+  await clickLabel("START (ENTER)");
   await waitForScene(page, "run");
   await page.waitForTimeout(500);
   check("run erreicht", (await state()).scene === "run");
@@ -101,7 +189,7 @@ try {
   await snap("pause");
 
   // Pause-Optionen per Maus öffnen/schließen.
-  await clickGame(240, 246);
+  await clickLabel("OPTIONEN");
   await page.waitForTimeout(200);
   await snap("options-pause");
   await page.keyboard.press("Escape");
@@ -114,13 +202,13 @@ try {
   );
 
   // Kur, Schaden sammeln, wieder pausieren und aufgeben.
-  await clickGame(108, 246);
+  await clickLabel("FORTSETZEN");
   await page.waitForTimeout(200);
   await page.evaluate(() => window.__lf.spawnEnemy("bog_rat", 30));
   await page.waitForTimeout(1800);
   await page.keyboard.press("Escape");
   await page.waitForTimeout(300);
-  // Aufgeben per Tastatur (Fokus-Navigation der Pause-Knöpfe).
+  // Aufgeben per Tastatur (Fokus-Navigation der Pause-Knöpfe) – Kontrolle zum Maus-Pfad.
   await page.keyboard.press("ArrowRight");
   await page.waitForTimeout(70);
   await page.keyboard.press("ArrowRight");
@@ -133,7 +221,7 @@ try {
   await snap("results-defeat");
 
   // Neue Runde per Maus, dann Debug-Sieg -> Sieg-Ergebnis.
-  await clickGame(146, 334);
+  await clickLabel("NEUE RUNDE");
   await waitForScene(page, "run");
   await page.waitForTimeout(400);
   await page.evaluate(() => {
@@ -153,7 +241,7 @@ try {
   check("Sieg-Ergebnis erreichbar", (await state()).scene === "results");
 
   // Zurück zum Titel und Meta-Anzeige prüfen.
-  await clickGame(316, 334);
+  await clickLabel("TITEL");
   await waitForScene(page, "title");
   await page.waitForTimeout(350);
   await snap("title-meta");
@@ -162,22 +250,31 @@ try {
   check("Meta: Kael-Sieg gespeichert", meta.kael.victories >= 1, String(meta.kael.victories));
 
   // Optionen ändern (Maus), Screenshot, dann Reload-Persistenz.
-  await clickGame(240, 259);
+  await clickLabel("OPTIONEN");
   await page.waitForTimeout(200);
   await snap("options-open-final");
-  await clickGame(414, 132);  // Musik +10% (Wert-Zone Zeile 1)
-  await clickGame(345, 172);  // Screen-Shake umschalten (Zeile 3)
-  await clickGame(345, 192);  // Damage-Numbers umschalten (Zeile 4)
-  await clickGame(414, 232);  // Skalierung AUTO -> 2X (Zeile 6 nach MASTER MUTE)
+  await clickOptionArrow("MUSIK");          // +10 % (Schritt)
+  await clickOptionArrow("SCREEN-SHAKE");   // umschalten
+  await clickOptionArrow("DAMAGE-NUMBERS"); // umschalten
+  await clickOptionArrow("SKALIERUNG");     // AUTO -> 2X
   await page.waitForTimeout(250);
-  const canvasBox = await page.locator("canvas").boundingBox();
-  const cx = canvasBox.x + canvasBox.width / 2;
-  const cy = canvasBox.y + canvasBox.height / 2;
+  const box = await canvasBox();
+  const cx = box.x + box.width / 2;
+  const cy = box.y + box.height / 2;
+  // Erwartete Canvas-Größe aus dem Viewport rechnen (gleiche Regel wie computeView, dpr=1):
+  const nFit = Math.floor(Math.min(VIEWPORT.height / 360, VIEWPORT.width / 480));
+  const nEff = Math.max(1, Math.min(2, nFit));
+  const expectW = nFit < 2
+    ? Math.round(Math.min(VIEWPORT.width / 480, VIEWPORT.height / 360) * 480)
+    : Math.min(860, Math.max(480, Math.round(VIEWPORT.width / nEff))) * nEff;
+  const expectH = nFit < 2
+    ? Math.round(Math.min(VIEWPORT.width / 480, VIEWPORT.height / 360) * 360)
+    : 360 * nEff;
   check(
     "Skalierung 2X gestellt, Fit-View zentriert",
-    Math.abs(cx - 480) <= 2 && Math.abs(cy - 270) <= 2
-      && canvasBox.width === 720 && canvasBox.height === 540,
-    `center ${cx}/${cy}, ${canvasBox.width}x${canvasBox.height}`,
+    Math.abs(cx - VIEWPORT.width / 2) <= 2 && Math.abs(cy - VIEWPORT.height / 2) <= 2
+      && box.width === expectW && box.height === expectH,
+    `center ${cx}/${cy}, ${box.width}x${box.height} (erwartet ${expectW}x${expectH})`,
   );
   await snap("options-changed");
   const beforeReload = await options();
@@ -209,7 +306,9 @@ try {
   });
 
   result = {
-    milestone: "M6-menus",
+    milestone: "m10-verify-menus-view",
+    viewport: VIEWPORT,
+    logicalView: v0,
     shots,
     checks,
     optionsBeforeReload: beforeReload,
@@ -226,9 +325,9 @@ try {
   check("keine JS-Fehler", errors.length === 0, errors.join(" | "));
   const passed = checks.every((c) => c.ok);
   result = { ...result, passed, jsErrors: errors, checks, shots };
-  writeFileSync("shots/m6-menus.json", JSON.stringify(result, null, 2));
+  writeFileSync("shots/m10-verify-menus.json", JSON.stringify(result, null, 2));
   await browser.close();
   server.stop();
-  console.log(`\n${passed ? "M6-menus: PASS" : "M6-menus: FAIL"} (${checks.filter((c) => c.ok).length}/${checks.length} Checks)`);
+  console.log(`\n${passed ? "verify-menus: PASS" : "verify-menus: FAIL"} (${checks.filter((c) => c.ok).length}/${checks.length} Checks)`);
   process.exit(passed ? 0 : 1);
 }

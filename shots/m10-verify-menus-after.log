@@ -1,0 +1,17 @@
+OK   charselect erreichbar (charselect)
+OK   run erreicht
+OK   Pause geöffnet
+OK   ESC schliesst Pause-Optionen, Pause bleibt (paused=true)
+OK   Aufgeben führt zu Results (results)
+OK   Sieg-Ergebnis erreichbar
+OK   Meta: Kael hat 2 Runs (5)
+OK   Meta: Kael-Sieg gespeichert (2)
+OK   Skalierung 2X gestellt, Fit-View zentriert (center 480/270, 720x540 (erwartet 720x540))
+OK   Optionen: Musik erhöht (0.7)
+OK   Optionen: Damage-Numbers aus
+OK   Optionen: Skalierung 2X (2)
+OK   Optionen überleben Reload ({"music":0.7,"sfx":0.8,"shake":false,"damageNumbers":false,"muted":false,"scale":2})
+OK   alle Screenshots vorhanden
+OK   keine JS-Fehler
+
+verify-menus: PASS (15/15 Checks)
