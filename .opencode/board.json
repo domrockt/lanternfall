@@ -3007,10 +3007,15 @@
           "at": "2026-11-27T03:25:14Z",
           "by": "build",
           "text": "Doing: Merge-on-full + Alt-Recycling ohne XP-Verlust"
+        },
+        {
+          "at": "2026-11-27T03:34:38Z",
+          "by": "build",
+          "text": "Fix implementiert: mergeGemValues (XP-Summe erhalten), Cap hart, Alt-Recycling merged in Nachbarn. Unit-Tests 8/8, build gruen. Commit 59da2a3. Kritik: Cap+Magnet in einem Commit (Supervisor-Stopp)"
         }
       ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T03:25:14Z"
+      "updated": "2026-11-27T03:34:38Z"
     },
     {
       "id": 2100,
@@ -3023,10 +3028,15 @@
           "at": "2026-11-27T03:25:14Z",
           "by": "build",
           "text": "Doing: Magnet exakt am Radius, Ankunft <=0,4 s"
+        },
+        {
+          "at": "2026-11-27T03:34:38Z",
+          "by": "build",
+          "text": "Magnet: Anziehung exakt radius+1e-6, konstante Zielgeschwindigkeit radius/0.4s, Schritt auf dist geklemmt. In-Game: 5 Kristalle am Rand, Ankunft 340,7 ms / 21 Frames, Cap-Burst 500 Drops -> 24, XP 5004==5004"
         }
       ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T03:25:14Z"
+      "updated": "2026-11-27T03:34:38Z"
     },
     {
       "id": 2101,
