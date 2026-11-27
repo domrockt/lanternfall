@@ -22,7 +22,9 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
 
 ## K2 Harness-Robustheit — scripts/realtime-run.mjs
 - Eigener, lauf-spezifischer `--user-data-dir` unter `~/tmp/m10-realtime-stability/`
-  (kein Chromium-Default-Profil, keine Singleton-Locks).
+  (kein Chromium-Default-Profil, keine Singleton-Locks). Umsetzung über
+  `chromium.launchPersistentContext` — Playwright verwirft `--user-data-dir`
+  als Launch-Arg (Befund aus den entwerteten K1-Probes).
 - `page.on("crash")`-Handler + Screenshot-Aufrufe try/catch-sicher (`safeShot`);
   Screenshot-Fehler und Crashes werden protokolliert, töten den Lauf nicht.
 - Volllauf-Screenshots im 10-Minuten-Rhythmus statt 5 (weniger Burst-Druck,
@@ -31,7 +33,13 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
   letzter Run-State, Crash-Liste, Host-Last) — fa2-04 starb beleglos, das darf
   nicht wieder passieren.
 - Neuer `--prefix`-Parameter (M10-Lane-Belege als `shots/m10-realtime-*`).
-- Keine Änderung an `src/**`.
+- 5-s-Gnadenfenster am Truncation-Rand (K1-Nebenbefund: Boss-Spawn bei
+  Sekunde 300 wurde vom Break überholt).
+- Akzeptanz: 3-min-Lauf rc=0, passed=true, 0 JS-Fehler, 0 Screenshot-Fehler,
+  0 Crashes (`shots/m10-realtime-test-3min.json`, Log `~/tmp/m10-realtime-stability/k2-3min-test.log`).
+- Keine Änderung an `src/**`. Das K3-Probe-Skript lag bereits im K2-WIP-Commit
+  bei (Datei-Claim scripts/m10-realtime-probe.mjs istLane-eigen); K3-Commit
+  bringt den Probe-Lauf-Beleg.
 
 ## K3 Mini-Probe — scripts/m10-realtime-probe.mjs
 - Fährt die kritische Phase Minute 18–25 mit Zeitraffer 4x (~105 s Echtzeit),

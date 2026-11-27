@@ -1,0 +1,53 @@
+{
+  "mode": "partial-3min",
+  "minutes": 3,
+  "timeScale": 1,
+  "simMinutes": 3.1,
+  "elapsedRealSeconds": 188,
+  "truncated": true,
+  "completed": true,
+  "bosses": [],
+  "bossesDefeated": 0,
+  "chestsDropped": 0,
+  "evolutions": [],
+  "levels": 8,
+  "kills": 124,
+  "fps": {
+    "min": 54.7,
+    "median": 60.5,
+    "samples": 696,
+    "target": 55,
+    "passed": true
+  },
+  "heap": {
+    "startMB": 21.8,
+    "minute1MB": 31.5,
+    "minute29MB": null,
+    "endMB": 28.3,
+    "cdpUsedMB": {
+      "start": 10,
+      "minute1": 13.6,
+      "minute29": null,
+      "end": 12.6
+    },
+    "measured": true,
+    "deltaVsMinute1Pct": -10.2,
+    "targetPct": 15,
+    "gate": "informational-partial",
+    "passed": null
+  },
+  "screenshots": [
+    "shots/m10-realtime-test-end.png"
+  ],
+  "victory": false,
+  "resultReason": null,
+  "crashes": [],
+  "shotFailures": 0,
+  "host": {
+    "loadavg1": 9.77,
+    "freememMB": 69276,
+    "userDataDir": "/home/ai/tmp/m10-realtime-stability/chrome-18185-1795803045309"
+  },
+  "jsErrors": [],
+  "passed": true
+}
