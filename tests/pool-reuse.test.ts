@@ -121,7 +121,7 @@ describe("EnemyPool: KI-Zustand in-place zurücksetzen", () => {
     const rng = { next: () => 0.5 };
     const state: AiState = {
       mode: "charge", timer: 9, cooldown: 9, aimX: 0, aimY: 1,
-      orbitDir: 1, fuse: 3, blinks: 7, attacks: 11,
+      orbitDir: 1, fuse: 3, blinks: 7, attacks: 11, phase: 5,
     };
     const before = state;
     resetAiState(state, rng);
@@ -135,6 +135,7 @@ describe("EnemyPool: KI-Zustand in-place zurücksetzen", () => {
     expect(state.fuse).toBe(0);
     expect(state.blinks).toBe(0);
     expect(state.attacks).toBe(0);
+    expect(state.phase).toBe(0);
   });
 });
 
