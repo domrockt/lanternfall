@@ -1,0 +1,30 @@
+Lane m10-hero-contrast — Zusammenfassung (2026-11-27)
+
+Befund (Dom 21:45Z Punkt 5): Kael-Portraet las sich nicht als Moench (Kopf ueber
+Kettengewand-Kasten mit Zacken), Mira grob; im Lauf ging Kael (grau) zwischen grauen
+Gegnern unter.
+
+Umgesetzt (Commits, eine Karte je Commit):
+- cc024ad (#5838) Mess-Pipeline scripts/m10-hero-contrast.mjs + scripts/art/m10_hero_portraits.py;
+  Vorher-Belege: shots/m10-hero-contrast-before{,-charselect,-portrait-*}.png + -before.json
+  (320 Gegner um Kael, 0 JS-Fehler).
+- f387f41 (#5839+#5840 Code) gen_chars.py: Kael-Portraet neu (Kapuze/Kutte/Kettenbaender/
+  Stirnreif/grauer Bart 8-9-10/Haut-Rampe 16-27-21/Mund ohne INK/brennende Laterne), Mira
+  verfeinert; warm_rim(): 1-px-Glow-Kontur (22) oben-links auf beiden Spieler-Sprites;
+  gen-chars.ts nur regeneriert.
+- d5e02b6 (#5840 Belege) Chaos-Nachher + 4x-Zoom-Schnitte; Mess-Skript deterministisch
+  (alpha-Reset gegen God-Mode-I-Frames 0.55, centerOn gegen Kamera-Lerp).
+- 5f7db70 (#5841) tests/hero-contrast.test.ts (5 Tests) + docs/lanes/m10-hero-contrast.md.
+
+Messwerte:
+- Textur-Metrik warm-Akzent (nicht-grau, r-b>=40): Kael 0.192 -> 0.270; Mira 0.576 -> 0.584.
+- Chaos-Frame (320 Gegner): Rim-Pixel Spieler-Box 19 -> 37, warmShare 0.23 -> 0.27.
+- heroRarity bleibt ~2% (additiver Lichtkreis faerbt naechste Gegner warm) — in Doku ehrlich
+  dokumentiert; Aussagekraft liegt in Rim/warmShare + Bild.
+- Tests: hero-contrast 5/5, Suite 698/698, tsc + build gruen.
+- Abnahme art-director: Mira 4/5 PASS; Kael R1 3/5 FAIL -> 3 Fixe -> R2 4/5 PASS.
+- Restpoint: Gesichtsschatten im Kael-Portraet nach shade_edges auf 17/14 statt 16
+  (ART.md Regel 11 beim naechsten Anlass klaeren).
+
+Tabus eingehalten: Run.ts/UI.ts/CharSelect-Logik unangetastet; Gegner nicht umgefaerbt;
+nur Palettenfarben, binaere Alpha, eine Pixelgroesse.
