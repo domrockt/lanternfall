@@ -264,3 +264,146 @@ export function rollCrit(roll: number): boolean {
 export function critDamage(base: number): number {
   return Math.max(1, Math.round(base * 1.5));
 }
+
+/**
+ * M10-damage-calm: hartes Sichtbar-Cap für Damage-Labels, unabhängig vom Modus
+ * (auch im nicht-aggregierten Regime < 120 Gegner fluteten bis zu 24 kleine
+ * Einzelwerte den Bildschirm). Reine Anzeige-Planung — es werden keine
+ * Schadenswerte geändert und keine Balance berührt; gebündelte Einträge tragen
+ * die Summe ihrer Treffer weiter (Summen-Erhalt).
+ */
+
+/** Hartes globales Sichtbar-Cap (Krits + Normaltreffer) gleichzeitig sichtbar. */
+export const MAX_VISIBLE_LABELS = 12;
+
+/** Max. sichtbare Normaltreffer-Labels je Bildschirmzone (3×3-Raster). */
+export const MAX_NORMAL_PER_ZONE = 2;
+
+/** Staffelung: max. NEU aktivierte Labels je Frame (Krits ausgenommen). */
+export const LABEL_BURST_PER_FRAME = 3;
+
+/** Ein Kandidat für die Anzeige-Planung (abgeleitet aus einem AggregateEntry). */
+export interface LabelCandidate {
+  /** View-/Label-Key (Gegner-UID >= 0 oder negierte Zone < 0). */
+  key: number;
+  /** Bildschirmzone 1..9 (groupZoneFor); 0 = unbekannt (eigenes Budget). */
+  zone: number;
+  damage: number;
+  crit: boolean;
+}
+
+/** Ergebnis der Anzeige-Planung für einen Frame. */
+export interface LabelPlan {
+  /** Keys, die dieser Frame sichtbar sein dürfen (in Prioritätsreihenfolge). */
+  visible: number[];
+  /**
+   * Unterdückte Normaltreffer [fromKey, toKey]: deren Eintrag wird in den
+   * Zieleintrag derselben Zone gefaltet (Schaden/Hits/Crit-Flag), damit keine
+   * Summe verloren geht.
+   */
+  foldedInto: Array<[number, number]>;
+}
+
+interface PlanOptions {
+  maxVisible?: number;
+  maxNormalPerZone?: number;
+  burstPerFrame?: number;
+}
+
+/**
+ * Plant, welche Labels dieser Frame sichtbar sein dürfen:
+ * - Krits zuerst (groß + hervorgehoben), nur vom globalen Cap begrenzt — sie
+ *   unterliegen weder Zonen-Cap noch Burst-Staffelung.
+ * - Normaltreffer: je Zone max. `maxNormalPerZone`, global bis zum Rest-Budget,
+ *   neue Aktivierungen max. `burstPerFrame` je Frame (Staffelung bei Dichte).
+ * - Nicht gewählte Normaltreffer werden in den (nach Schaden größten)
+ *   gewählten Eintrag derselben Zone gefaltet; ohne Zieleintrag bleiben sie
+ *   in der Warteschlange und erscheinen in einem späteren Frame.
+ * Deterministisch: Sortierung nach Schaden absteigend, Gleichstand nach Key —
+ * niedrige/älteste Labels werden zuerst ersetzt.
+ */
+export function planLabels(
+  candidates: readonly LabelCandidate[],
+  previouslyVisible: readonly number[] = [],
+  opts?: PlanOptions,
+): LabelPlan {
+  const maxVisible = Math.max(1, Math.floor(opts?.maxVisible ?? MAX_VISIBLE_LABELS));
+  const maxNormalPerZone = Math.max(1, Math.floor(opts?.maxNormalPerZone ?? MAX_NORMAL_PER_ZONE));
+  const burstPerFrame = Math.max(0, Math.floor(opts?.burstPerFrame ?? LABEL_BURST_PER_FRAME));
+  const prev = new Set(previouslyVisible);
+
+  const crits: LabelCandidate[] = [];
+  const normals: LabelCandidate[] = [];
+  for (const c of candidates) (c.crit ? crits : normals).push(c);
+  const byDamage = (a: LabelCandidate, b: LabelCandidate) => (b.damage - a.damage) || (a.key - b.key);
+  crits.sort(byDamage);
+  normals.sort(byDamage);
+
+  const visible: number[] = [];
+  let budget = maxVisible;
+  // 1) Krits: immer zuerst, unabhängig von Zone/Staffelung.
+  for (const c of crits) {
+    if (budget <= 0) break;
+    visible.push(c.key);
+    budget -= 1;
+  }
+  // 2) Normaltreffer: Zonen-Cap + Rest-Budget + Burst-Staffelung.
+  const zoneCount = new Map<number, number>();
+  const selectedNormals: LabelCandidate[] = [];
+  let burst = burstPerFrame;
+  for (const c of normals) {
+    if (budget <= 0) break;
+    if ((zoneCount.get(c.zone) ?? 0) >= maxNormalPerZone) continue;
+    if (!prev.has(c.key)) {
+      if (burst <= 0) continue; // Staffelung: neuer Key erst im Folgeframe.
+      burst -= 1;
+    }
+    visible.push(c.key);
+    zoneCount.set(c.zone, (zoneCount.get(c.zone) ?? 0) + 1);
+    selectedNormals.push(c);
+    budget -= 1;
+  }
+  // 3) Unterdrückte Normaltreffer in den größten gewählten Eintrag derselben
+  //    Zone falten (Summen-Erhalt). Ohne Zieleintrag: später erneut versuchen.
+  const foldedInto: Array<[number, number]> = [];
+  const selectedByZone = new Map<number, number>();
+  for (const c of selectedNormals) {
+    if (!selectedByZone.has(c.zone)) selectedByZone.set(c.zone, c.key);
+  }
+  const chosen = new Set(visible);
+  for (const c of normals) {
+    if (chosen.has(c.key)) continue;
+    const target = selectedByZone.get(c.zone);
+    if (target === undefined) continue;
+    foldedInto.push([c.key, target]);
+  }
+  return { visible, foldedInto };
+}
+
+/**
+ * Wendet eine Fold-Liste auf die Einträge an: `fromKey` wird in `toKey`
+ * zusammengelegt (Schaden, Treffer, Crit-Flag, Zeitfenster) und entfernt.
+ * Summen-Erhalt: die Summe aller `damage` bleibt exakt erhalten. Mutiert die
+ * Liste (Swap-Remove) und gibt freigestellte Einträge an den Sink zurück.
+ */
+export function applyLabelFold(
+  entries: AggregateEntry[],
+  foldedInto: ReadonlyArray<readonly [number, number]>,
+  sink?: EntrySink,
+): void {
+  for (const [fromKey, toKey] of foldedInto) {
+    if (fromKey === toKey) continue;
+    const fromIdx = entries.findIndex((e) => entryMatchesKey(e, fromKey));
+    if (fromIdx < 0) continue;
+    const to = entries.find((e) => entryMatchesKey(e, toKey));
+    if (!to) continue;
+    const from = entries[fromIdx];
+    to.damage += from.damage;
+    to.hits += from.hits;
+    to.crit = to.crit || from.crit;
+    to.lastTime = Math.max(to.lastTime, from.lastTime);
+    entries[fromIdx] = entries[entries.length - 1];
+    entries.pop();
+    sink?.give(from);
+  }
+}
