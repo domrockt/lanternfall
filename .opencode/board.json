@@ -3717,25 +3717,36 @@
       "id": 2518,
       "title": "m10-chaos-silhouettes K1 Ist-Messung: Chaos-Frame Minute 25 + Kontrast-JSON vorher",
       "description": "Frame bei Minute 25 mit >=300 Gegnern einfrieren (AutoPlay, timeScale 30, god). Je Archetyp Kontrast der Silhouette gegen dunklen und hellen Untergrund messen (Luminanz-Differenz Randpixel, Anteil unter Schwelle 24), Elite-Anteil und Rim-Light-Breite erfassen. Abnahme: docs/lanes/m10-chaos-silhouettes.md Tabelle + shots/m10-chaos-silhouettes-before.json + before.png, Commit mit #K1.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T07:28:16Z",
           "by": "build",
           "text": "todo → doing: start: messe Ist-Kontrast der 30 Gegner-Silhouetten + Chaos-Frame Minute 25"
+        },
+        {
+          "at": "2026-11-27T07:51:46Z",
+          "by": "build",
+          "text": "doing → review: Commit c9790d7. Belege: shots/m10-chaos-silhouettes-before.png (25:07, 352 Gegner, 2 Elite, 0 JS-Fehler), before.json 30 Archetypen. Rim-Light vorher 42.9% hell, unter Schwelle dunkel 59.9%. Luecke: Boss-Banner verdeckt Kern."
         }
       ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T07:28:16Z"
+      "updated": "2026-11-27T07:51:46Z"
     },
     {
       "id": 2519,
       "title": "m10-chaos-silhouettes K2 Silhouetten schaerfen: 1-px Kontur + 1-px Lichtkante oben",
       "description": "In src/gfx/enemySprites.ts jeder Gegner-Silhouette eine 1-px dunkle Kontur (Palettenindex 0) und eine 1-px Lichtkante oben (Palettenfarbe, binaeres Alpha) geben. Sprite-Groessen und Frame-Zahl unveraendert, Palette-compliance. Abnahme: enemySpriteFrames liefert gleiche Dimensionen/Frame-Zahl, Kontur-/Rim-Metrik verbessert, tsc gruen, Commit mit #K2.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T07:51:46Z",
+          "by": "build",
+          "text": "todo → doing: start K2: 1-px Kontur + 1-px Lichtkante oben in enemySprites.ts"
+        }
+      ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T07:27:55Z"
+      "updated": "2026-11-27T07:51:46Z"
     },
     {
       "id": 2520,

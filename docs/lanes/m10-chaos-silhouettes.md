@@ -66,3 +66,28 @@ Bereich: `src/gfx/enemySprites.ts`, `src/systems/EnemyPool.ts`, `tests/enemy-sil
 **Mittel vorher:** Rim-Light 42.9 %, Top-Light 33.1 %, unter Schwelle dunkel 59.9 %,
 hell 17.4 %. Genau hier setzt K2 an: mehr helle Kante oben, damit auf dunklem Moor
 die Silhouette nicht in der Fläche verschwindet.
+
+## #K2 Silhouetten schärfen (nachher)
+
+`sharpenEnemyGrid()` in `src/gfx/enemySprites.ts`: Randpixel mit Luminanz < 70
+werden Tinte (PAL 0) → 1 px dunkle Kontur außen; pro Spalte wird direkt unter der
+oberen Kontur exakt 1 px auf einen hellen Palettenton der Gegnerfarbe gesetzt
+(Luminanz ≥ 85, Augen/Glow PAL 13 bleiben erhalten) → 1 px Lichtkante oben.
+Deterministisch, binäres Alpha, ausschließlich bestehende Palettenfarben.
+**Größenneutral belegt:** alle 30 Archetypen mit identischer `gridW/gridH/bboxW/bboxH`
+vor/nach (`sizeDiff 0`, `idMismatch 0`), Frame-Zahl unverändert (`GEN_ENEMIES`
+nicht angefasst).
+
+| Metrik (30 Archetypen, Mittel) | vorher | nachher | Delta |
+|---|---|---|---|
+| Rim-Light hell % | 42.9 | 44.9 | **+2.0 pp** |
+| Top-Light % | 33.1 | 37.1 | **+4.0 pp** |
+| Randkontrast dunkel (L) | 57.5 | 59.5 | **+2.0** |
+| unter Schwelle dunkel % | 59.9 | 57.6 | **−2.3 pp** |
+
+Beleg: `shots/m10-chaos-silhouettes-after.json` (30 Archetypen) und
+`shots/m10-chaos-silhouettes-after.png` (25:13, 358 Gegner, 3 Elite, 0 JS-Fehler).
+Ehrlich: der Gewinn ist messbar, aber moderat; die Kontur trennt überlappende
+Silhouetten, die Lichtkante ist auf dunklem Moor oben sichtbar. Im 1920×1080-Frame
+verdeckt das Boss-Banner weiterhin den Kern → für K5 wird ein Banner-freier Crop
+erzeugt. Offen: K3 Elite-Rim-Light, K4 Test, K5 Beleg/Doku/FPS.

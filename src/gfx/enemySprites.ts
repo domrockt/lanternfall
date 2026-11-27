@@ -27,11 +27,62 @@ export function gridFromRows(rows: readonly string[]): Grid {
   return g;
 }
 
-/** Generierte Frames eines Gegners (Index = Position in ENEMY_LIST). */
+/**
+ * Schärft eine generierte Gegner-Maske, ohne Rastergröße oder Frame-Zahl zu ändern:
+ * - Randpixel der Silhouette werden auf Palettenindex 0 (ink) normalisiert
+ *   → exakt 1 px dunkle Kontur außen (ART.md Regel 1).
+ * - In jeder Spalte wird direkt unter der oberen Kontur genau 1 px auf den
+ *   Lichtton der Gegnerfarbe gesetzt → 1 px Lichtkante oben (ART.md Regel 2).
+ * Beides ist deterministisch (keine Zufallswerte, kein Dithering) und hält
+ * binäres Alpha: nur gefüllte Pixel bekommen eine Palettenfarbe.
+ */
+export function sharpenEnemyGrid(src: Grid, color: number): Grid {
+  const g = src.map((row) => row.slice());
+  const h = g.length;
+  const w = g[0]?.length ?? 0;
+  const filled = (x: number, y: number): boolean =>
+    x >= 0 && x < w && y >= 0 && y < h && g[y][x] !== null;
+  const light = lightEdgeIndex(color);
+
+  // 1) 1-px-Kontur: dunkle Randpixel werden Tinte (0); helle Highlights an
+  //    Spitzen bleiben erhalten, damit die Lichtkante nicht überschrieben wird.
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = g[y][x];
+      if (c === null || c === 0) continue;
+      const boundary = !filled(x - 1, y) || !filled(x + 1, y) || !filled(x, y - 1) || !filled(x, y + 1);
+      if (boundary && luminance(c) < 70) g[y][x] = 0;
+    }
+  }
+
+  // 2) 1-px-Lichtkante oben-links: oberste/links Kontur überspringen, erstes
+  //    Innenpixel aufhellen (ART.md: Licht kommt von oben-links).
+  for (let x = 0; x < w; x++) {
+    let y = 0;
+    while (y < h && !filled(x, y)) y++;
+    if (y >= h) continue;
+    while (y < h && filled(x, y) && g[y][x] === 0) y++;
+    if (y >= h || !filled(x, y)) continue;
+    if (g[y][x] === 13) continue; // Augen/Glow nicht überschreiben
+    g[y][x] = light;
+  }
+  for (let y = 0; y < h; y++) {
+    let x = 0;
+    while (x < w && !filled(x, y)) x++;
+    if (x >= w) continue;
+    while (x < w && filled(x, y) && g[y][x] === 0) x++;
+    if (x >= w || !filled(x, y)) continue;
+    if (g[y][x] === 13) continue;
+    g[y][x] = light;
+  }
+  return g;
+}
+
+/** Generierte Frames eines Gegners (Index = Position in ENEMY_LIST), geschärft. */
 export function enemySpriteFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
   const gen = GEN_ENEMIES[def.spriteKey];
-  return gen.frames.map(gridFromRows);
+  return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), def.color));
 }
 
 /** Textur-Keys aller generierten Frames (Basis + _2.._4). */
@@ -67,6 +118,28 @@ function rect(g: Grid, x: number, y: number, w: number, h: number, c: number): v
 function luminance(i: number): number {
   const c = PAL[i];
   return 0.2126 * ((c >> 16) & 255) + 0.7152 * ((c >> 8) & 255) + 0.0722 * (c & 255);
+}
+
+/** Heller Lichtkanten-Ton zur Gegnerfarbe (nur Palette, Luminanz >= 85). */
+function lightEdgeIndex(base: number): number {
+  const c = PAL[base];
+  const target = [
+    Math.min(255, Math.round(((c >> 16) & 255) * 1.35)),
+    Math.min(255, Math.round(((c >> 8) & 255) * 1.35)),
+    Math.min(255, Math.round((c & 255) * 1.35)),
+  ];
+  let best = base;
+  let bestDist = Infinity;
+  for (let i = 1; i < PAL.length; i++) {
+    if (luminance(i) < 85) continue;
+    const p = PAL[i];
+    const dr = ((p >> 16) & 255) - target[0];
+    const dg = ((p >> 8) & 255) - target[1];
+    const db = (p & 255) - target[2];
+    const d = dr * dr + dg * dg + db * db;
+    if (d < bestDist) { bestDist = d; best = i; }
+  }
+  return best;
 }
 
 /** Nächster Palettenindex zu einer skalierte Grundfarbe (nur Palette!). */
