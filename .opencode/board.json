@@ -4450,11 +4450,17 @@
       "id": 3459,
       "title": "m10-view-width-cap K1: Crowd-Schalter in view.ts + Test",
       "description": "In src/logic/view.ts reine Funktion shouldCapForCrowd(activeEnemies, capped) mit Hysterese (>=300 klemmen, <260 lösen) und computeView(..., crowd) klemmen auf CROWD_WIDTH=640 bei unveränderter ganzzahliger n-Skalierung. tests/view-width.test.ts. Nur view.ts/test; main.ts nur 1 minimale Verdrahtung nach Dispatch-Request. Abnahme: npx vitest run tests/view-width.test.ts grün, npx tsc --noEmit grün, isIntegerPixelPerfect bleibt true bei crowd.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T13:46:41Z",
+          "by": "build",
+          "text": "todo → doing: Start: Crowd-Schalter in view.ts + Test + minimale main.ts-Verdrahtung"
+        }
+      ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T13:24:43Z"
+      "updated": "2026-11-27T13:46:41Z"
     },
     {
       "id": 3460,
