@@ -47,33 +47,23 @@ const ENEMY_IDS = [
   "horror", "centipede", "gargoyle", "reaper_bat", "abom", "voidcaller",
 ];
 
-// Hue/Sat/Lum-Familienklassifikation, im Page-Kontext ausgeführt.
+// Familienklassifikation ueber Palettenindex, im Page-Kontext ausgefuehrt.
+// Im Spiel gibt es nur Palettenfarben (palette.ts) — die Zuordnung ist damit
+// deterministisch und zwischen Mess-Skript und Test identisch:
+//   0 Kontur | 1-2 Nacht-Schwarz (innen/Kontur) | 3-7 Blaugrau/Nacht
+//   8-9 Dunst | 10-13 Knochen/Licht | 14-19 Glut/Flamme | 20-22 Gold
+//   23-27 Blut | 28-31 Gruen
 const FAMILY_SRC = `
-  function lfFamily(r0, g0, b0) {
-    const r = r0 / 255, g = g0 / 255, b = b0 / 255;
-    const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
-    const l = (mx + mn) / 2;
-    if (l < 0.055) return "kontur";
-    const d = mx - mn;
-    const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
-    let h = 0;
-    if (mx === r) h = 60 * (((g - b) / d) % 6);
-    else if (mx === g) h = 60 * ((b - r) / d + 2);
-    else h = 60 * ((r - g) / d + 4);
-    if (h < 0) h += 360;
-    // Die Palette hat kein gesaettigtes Blau (max. s ~0,33 bei nightMid,
-    // fogBlue 0,12): Blaue Hue mit abgesenkter Schwelle 0,12 klassifizieren,
-    // sonst wuerde der Nacht-Thema-Anteil als "neutral-grau" verschwinden.
-    const blueHue = h >= 200 && h < 340;
-    if (s < (blueHue ? 0.12 : 0.22)) {
-      return l < 0.3 ? "dunkel-neutral" : (l > 0.62 ? "hell-neutral" : "mittel-neutral");
+  const PAL32 = [0x06070c,0x0a0e16,0x101724,0x17202e,0x1e2a3a,0x2a3547,0x3a4a5c,0x4e5f6e,0x6b7c86,0x8fa0a6,0xb8c4c2,0xd9ddcd,0xf2edd8,0xfff8e6,0x2b1410,0x4d2214,0x7a331a,0xa84a21,0xcf6b26,0xef9130,0xffb84d,0xffd77a,0xffeeb0,0x3d1220,0x7a1f2e,0xb8303f,0xe4574d,0xff8a6b,0x16261e,0x22382a,0x3d5a38,0x6f9b58];
+  const INDEX_FAMILY = ["kontur","dunkel-neutral","dunkel-neutral","blau","blau","blau","blau","blau","mittel-neutral","mittel-neutral","hell-neutral","hell-neutral","hell-neutral","hell-neutral","glut-braun","glut-braun","glut-braun","glut-braun","glut-braun","glut-braun","gold","gold","gold","blut-rot","blut-rot","blut-rot","blut-rot","blut-rot","gruen","gruen","gruen","gruen"];
+  function lfFamily(r, g, b) {
+    let best = 0, bestD = Infinity;
+    for (let i = 0; i < PAL32.length; i++) {
+      const dr = r - ((PAL32[i] >> 16) & 255), dg = g - ((PAL32[i] >> 8) & 255), db = b - (PAL32[i] & 255);
+      const d = dr * dr + dg * dg + db * db;
+      if (d < bestD) { bestD = d; best = i; }
     }
-    if (blueHue) return "blau";
-    if (h >= 340 || h < 14) return "blut-rot";
-    if (h < 45) return "glut-braun";
-    if (h < 70) return "gold";
-    if (h < 200) return "gruen";
-    return "blau";
+    return INDEX_FAMILY[best];
   }
   function lfFramePixels(game, texKey, frameName) {
     const tex = game.textures.get(texKey);
@@ -256,9 +246,10 @@ try {
   }
   for (const f of Object.keys(weighted)) weighted[f] = Math.round((weighted[f] / wsum) * 1000) / 1000;
   const countedFamilies = Object.keys(weighted).filter((f) => weighted[f] >= 0.05).length;
-  // "Starke" Familien: farbig (nicht Neutral/Kontur) und mit >= 8 % Pixelanteil
-  // im Frame — nur diese lesen sich in der Masse wirklich unterscheidbar.
-  const NEUTRAL = new Set(["kontur", "dunkel-neutral", "mittel-neutral", "hell-neutral"]);
+  // "Starke" Familien: mit >= 8 % Pixelanteil im Frame — nur diese lesen sich
+  // in der Masse wirklich unterscheidbar. Kontur + dunkle/mittlere Neutraltoene
+  // zaehlen nicht; "hell-neutral" ist die Knochen/Licht-Familie und zaehlt mit.
+  const NEUTRAL = new Set(["kontur", "dunkel-neutral", "mittel-neutral"]);
   const strongFamiliesList = Object.keys(weighted)
     .filter((f) => !NEUTRAL.has(f) && weighted[f] >= 0.08)
     .sort((a, b) => weighted[b] - weighted[a]);

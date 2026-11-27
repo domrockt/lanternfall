@@ -1,6 +1,6 @@
 {
   "tag": "after",
-  "generatedAt": "2026-11-27T22:23:45.555Z",
+  "generatedAt": "2026-11-27T22:39:52.500Z",
   "seed": 1,
   "minute": 1490,
   "sheetKeys": [
@@ -35,7 +35,7 @@
     "enemy_abom",
     "enemy_voidcaller"
   ],
-  "aliveCount": 516,
+  "aliveCount": 517,
   "mixTypes": {
     "enemy_horror": 8,
     "enemy_reaper_bat": 1,
@@ -54,10 +54,10 @@
     "enemy_slime": 27,
     "enemy_scarecrow": 9,
     "enemy_wolf": 22,
-    "enemy_spider": 30,
+    "enemy_spider": 32,
     "enemy_cultist": 13,
     "enemy_golem": 9,
-    "enemy_bomber": 7,
+    "enemy_bomber": 6,
     "enemy_banshee": 9,
     "enemy_knight": 4,
     "enemy_wraith": 4,
@@ -65,7 +65,7 @@
   },
   "rendererName": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "rendererInfo": {
-    "generatedAt": "2026-11-27T22:23:41.986Z",
+    "generatedAt": "2026-11-27T22:39:48.871Z",
     "context": "webgl1",
     "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
     "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -176,9 +176,10 @@
       "w": 16,
       "h": 16,
       "n": 106,
-      "dominant": "glut-braun",
+      "dominant": "gold",
       "shares": {
-        "glut-braun": 0.726,
+        "gold": 0.377,
+        "hell-neutral": 0.349,
         "kontur": 0.274
       }
     },
@@ -201,9 +202,9 @@
       "dominant": "mittel-neutral",
       "shares": {
         "glut-braun": 0.009,
-        "gold": 0.189,
         "gruen": 0.018,
         "blau": 0.198,
+        "hell-neutral": 0.189,
         "mittel-neutral": 0.423,
         "kontur": 0.162
       }
@@ -214,8 +215,8 @@
       "n": 128,
       "dominant": "gruen",
       "shares": {
-        "gold": 0.031,
         "gruen": 0.648,
+        "hell-neutral": 0.031,
         "kontur": 0.32
       }
     },
@@ -235,11 +236,9 @@
       "w": 20,
       "h": 20,
       "n": 185,
-      "dominant": "kontur",
+      "dominant": "hell-neutral",
       "shares": {
-        "glut-braun": 0.146,
-        "gold": 0.227,
-        "hell-neutral": 0.238,
+        "hell-neutral": 0.611,
         "mittel-neutral": 0.146,
         "kontur": 0.243
       }
@@ -251,8 +250,7 @@
       "dominant": "blut-rot",
       "shares": {
         "blut-rot": 0.637,
-        "gold": 0.175,
-        "hell-neutral": 0.023,
+        "hell-neutral": 0.199,
         "mittel-neutral": 0.023,
         "kontur": 0.14
       }
@@ -263,10 +261,9 @@
       "n": 183,
       "dominant": "gruen",
       "shares": {
-        "gold": 0.005,
         "gruen": 0.552,
         "blau": 0.142,
-        "hell-neutral": 0.027,
+        "hell-neutral": 0.033,
         "mittel-neutral": 0.12,
         "kontur": 0.153
       }
@@ -278,7 +275,8 @@
       "dominant": "blut-rot",
       "shares": {
         "blut-rot": 0.49,
-        "glut-braun": 0.195,
+        "glut-braun": 0.133,
+        "gold": 0.062,
         "hell-neutral": 0.038,
         "mittel-neutral": 0.138,
         "kontur": 0.138
@@ -290,10 +288,9 @@
       "n": 180,
       "dominant": "gruen",
       "shares": {
-        "gold": 0.006,
         "gruen": 0.389,
         "blau": 0.15,
-        "hell-neutral": 0.05,
+        "hell-neutral": 0.056,
         "mittel-neutral": 0.278,
         "kontur": 0.128
       }
@@ -302,9 +299,10 @@
       "w": 20,
       "h": 20,
       "n": 250,
-      "dominant": "glut-braun",
+      "dominant": "gold",
       "shares": {
-        "glut-braun": 0.7,
+        "glut-braun": 0.312,
+        "gold": 0.388,
         "hell-neutral": 0.032,
         "mittel-neutral": 0.084,
         "kontur": 0.184
@@ -316,7 +314,7 @@
       "n": 251,
       "dominant": "blau",
       "shares": {
-        "glut-braun": 0.008,
+        "gold": 0.008,
         "blau": 0.414,
         "hell-neutral": 0.135,
         "mittel-neutral": 0.259,
@@ -329,10 +327,10 @@
       "n": 254,
       "dominant": "hell-neutral",
       "shares": {
-        "glut-braun": 0.035,
-        "gold": 0.016,
+        "glut-braun": 0.008,
+        "gold": 0.028,
         "blau": 0.047,
-        "hell-neutral": 0.386,
+        "hell-neutral": 0.402,
         "mittel-neutral": 0.358,
         "kontur": 0.157
       }
@@ -343,9 +341,10 @@
       "n": 393,
       "dominant": "glut-braun",
       "shares": {
-        "glut-braun": 0.514,
-        "gold": 0.102,
+        "glut-braun": 0.504,
+        "gold": 0.01,
         "gruen": 0.028,
+        "hell-neutral": 0.102,
         "mittel-neutral": 0.163,
         "kontur": 0.193
       }
@@ -356,7 +355,7 @@
       "n": 285,
       "dominant": "mittel-neutral",
       "shares": {
-        "glut-braun": 0.011,
+        "gold": 0.011,
         "blau": 0.284,
         "hell-neutral": 0.042,
         "mittel-neutral": 0.495,
@@ -370,9 +369,10 @@
       "dominant": "blut-rot",
       "shares": {
         "blut-rot": 0.394,
-        "glut-braun": 0.146,
+        "glut-braun": 0.042,
+        "gold": 0.099,
         "blau": 0.136,
-        "hell-neutral": 0.023,
+        "hell-neutral": 0.028,
         "mittel-neutral": 0.15,
         "kontur": 0.15
       }
@@ -383,8 +383,9 @@
       "n": 229,
       "dominant": "glut-braun",
       "shares": {
-        "glut-braun": 0.603,
-        "gold": 0.07,
+        "glut-braun": 0.55,
+        "gold": 0.118,
+        "hell-neutral": 0.004,
         "mittel-neutral": 0.188,
         "kontur": 0.14
       }
@@ -396,10 +397,10 @@
       "dominant": "mittel-neutral",
       "shares": {
         "blut-rot": 0.022,
-        "glut-braun": 0.026,
-        "gold": 0.004,
+        "glut-braun": 0.012,
+        "gold": 0.014,
         "blau": 0.183,
-        "hell-neutral": 0.059,
+        "hell-neutral": 0.063,
         "mittel-neutral": 0.524,
         "kontur": 0.183
       }
@@ -411,10 +412,10 @@
       "dominant": "hell-neutral",
       "shares": {
         "blut-rot": 0.015,
-        "glut-braun": 0.238,
-        "gold": 0.065,
+        "glut-braun": 0.031,
+        "gold": 0.019,
         "blau": 0.004,
-        "hell-neutral": 0.288,
+        "hell-neutral": 0.542,
         "mittel-neutral": 0.162,
         "kontur": 0.227
       }
@@ -426,10 +427,10 @@
       "dominant": "mittel-neutral",
       "shares": {
         "blut-rot": 0.026,
-        "glut-braun": 0.083,
-        "gold": 0.164,
+        "glut-braun": 0.035,
+        "gold": 0.046,
         "blau": 0.086,
-        "hell-neutral": 0.105,
+        "hell-neutral": 0.272,
         "mittel-neutral": 0.305,
         "kontur": 0.23
       }
@@ -441,10 +442,8 @@
       "dominant": "mittel-neutral",
       "shares": {
         "blut-rot": 0.012,
-        "glut-braun": 0.115,
-        "gold": 0.012,
         "blau": 0.187,
-        "hell-neutral": 0.097,
+        "hell-neutral": 0.224,
         "mittel-neutral": 0.436,
         "kontur": 0.14
       }
@@ -457,8 +456,8 @@
       "shares": {
         "blut-rot": 0.013,
         "glut-braun": 0.558,
-        "gold": 0.129,
         "gruen": 0.056,
+        "hell-neutral": 0.129,
         "kontur": 0.245
       }
     },
@@ -469,8 +468,9 @@
       "dominant": "glut-braun",
       "shares": {
         "blut-rot": 0.019,
-        "glut-braun": 0.56,
-        "gold": 0.169,
+        "glut-braun": 0.546,
+        "gold": 0.01,
+        "hell-neutral": 0.174,
         "kontur": 0.251
       }
     },
@@ -481,8 +481,7 @@
       "dominant": "blut-rot",
       "shares": {
         "blut-rot": 0.503,
-        "glut-braun": 0.088,
-        "hell-neutral": 0.028,
+        "hell-neutral": 0.116,
         "mittel-neutral": 0.201,
         "kontur": 0.18
       }
@@ -494,9 +493,7 @@
       "dominant": "hell-neutral",
       "shares": {
         "blut-rot": 0.003,
-        "glut-braun": 0.21,
-        "gold": 0.186,
-        "hell-neutral": 0.246,
+        "hell-neutral": 0.643,
         "mittel-neutral": 0.138,
         "kontur": 0.216
       }
@@ -507,9 +504,9 @@
       "n": 347,
       "dominant": "mittel-neutral",
       "shares": {
-        "glut-braun": 0.127,
+        "gold": 0.115,
         "blau": 0.144,
-        "hell-neutral": 0.121,
+        "hell-neutral": 0.133,
         "mittel-neutral": 0.458,
         "kontur": 0.15
       }
@@ -520,10 +517,8 @@
       "n": 336,
       "dominant": "mittel-neutral",
       "shares": {
-        "glut-braun": 0.012,
-        "gold": 0.161,
         "blau": 0.256,
-        "hell-neutral": 0.012,
+        "hell-neutral": 0.185,
         "mittel-neutral": 0.369,
         "kontur": 0.19
       }
@@ -535,8 +530,7 @@
       "dominant": "blut-rot",
       "shares": {
         "blut-rot": 0.406,
-        "glut-braun": 0.105,
-        "gold": 0.018,
+        "hell-neutral": 0.123,
         "mittel-neutral": 0.317,
         "kontur": 0.154
       }
@@ -545,33 +539,33 @@
       "w": 32,
       "h": 32,
       "n": 440,
-      "dominant": "gold",
+      "dominant": "hell-neutral",
       "shares": {
-        "glut-braun": 0.13,
-        "gold": 0.427,
+        "gold": 0.009,
         "blau": 0.039,
-        "hell-neutral": 0.018,
+        "hell-neutral": 0.566,
         "mittel-neutral": 0.223,
         "kontur": 0.164
       }
     }
   },
   "frameShares": {
-    "glut-braun": 0.201,
+    "glut-braun": 0.121,
     "kontur": 0.198,
+    "gold": 0.043,
+    "hell-neutral": 0.135,
     "gruen": 0.149,
     "blau": 0.09,
     "mittel-neutral": 0.164,
-    "gold": 0.055,
-    "hell-neutral": 0.042,
     "blut-rot": 0.1
   },
   "distinctFamilies": 8,
   "countedFamilies": 7,
-  "strongFamilies": 4,
+  "strongFamilies": 5,
   "strongFamiliesList": [
-    "glut-braun",
     "gruen",
+    "hell-neutral",
+    "glut-braun",
     "blut-rot",
     "blau"
   ],
