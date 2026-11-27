@@ -61,3 +61,26 @@ Der 780×360-Burst ist grenzwertig (min 54,7, 2/3 ≥ 55), Minute 25 bei 780 ble
 
 **Urteil fa2-02: TEILWEISE PASS** (Burst 640 PASS, M25 640 knapp PASS, Burst 780
 grenzwertig FAIL, M25 780 FAIL).
+
+## fa2-03 — 30-min-autoPlay fullrun (30×), Boss-/Truhen-Timing, Sieg, Heap
+
+`flock /home/ai/games/.lf-perf.lock node scripts/fullrun.mjs --viewport <WxH> --dpr <n>`,
+je View **einmal** (kein Wiederholungslauf). Host-loadavg bei Start: 7,46 (640×360 dpr1)
+bzw. 15,79 (780×360 dpr3).
+
+| View | Sim-Dauer | Bosse 300/600/900/1200/1500/1800 s | Truhen | Sieg | Kills / Level | Elites | Heap Δ (Min 1→29) | fpsMin (29:20–Sieg, 1×) | JS-Fehler |
+|---|---|---|---|---|---|---|---|---|---|
+| 640×360 dpr1 | 30,2 min | **6/6** (`defeated 6`, `flags` alle true) | **6** | `dawn` | 4.134 / 36 | 156 | 30,9 → 33,6 MB = **+8,7 % (≤15 %, PASS)** | **35,7 (<55 → FAIL)** | 0 |
+| 780×360 dpr3 | 30,2 min | **6/6 exakt** (300/600/900/1200/1500/1800 s) | **6** | `dawn` | 5.074 / 38 | 176 | 31,6 → 36,4 MB = **+15,2 % (>15 %, knapp FAIL)** | **34,8 (<55 → FAIL)** | 0 |
+
+Rohlog mit beiden Zusammenfassungen: `/tmp/lf-fa2/fa2-03-fullrun.log`.
+Vollständiges Ergebnis-JSON des letzten Laufs (780): `shots/m2…` → `shots/m3-fullrun.json`
+(inkl. aller 6 Boss-Spawnzeiten, `phasesSeen 5:1/5:2/5:3`, 6 Truhen, `dawn`).
+Minuten-Screenshots: `shots/m3-fullrun-minute25.png`, `shots/m3-fullrun-results.png`.
+
+**Befund:** Inhaltlich alles grün (alle 5-Minuten-Bosse mit Truhe, Endboss-Phasen,
+Sieg nach 30:00, 0 JS-Fehler). Performance im Endgame-Fenster bleibt **rot**:
+fpsMin 35,7 / 34,8 FPS gegen das 55-Ziel. Heap ist bei 640 grün (+8,7 %), bei 780
+marginal über dem Ziel (+15,2 %, 0,2 pp).
+
+**Urteil fa2-03: Inhalt PASS, Performance FAIL (Endgame-Fenster), Heap 1× PASS / 1× knapp FAIL.**
