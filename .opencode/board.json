@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6142,
+  "next": 6202,
   "cards": [
     {
       "id": 1,
@@ -7183,6 +7183,48 @@
       ],
       "created": "2026-11-27T22:25:45Z",
       "updated": "2026-11-27T22:25:53Z"
+    },
+    {
+      "id": 6198,
+      "title": "m10-hero-portraits K1: Ist festhalten (Vorher-Belege + JSON)",
+      "description": "Vorher-Belege EINMAL: shots/m10-hero-portraits-before-portrait-{mira,kael}.png (4x nearest, aus gen_chars.build()), Auswahl-Szene shots/m10-hero-portraits-before-select.png + shots/m10-hero-portraits-before.json (Canvas-Größe 48x48, genutzte Pixel-Fläche/BBox je Porträt). Kein Skript-Tuning-Loop. Abnahme: Belege existieren, JSON enthält BBox+Fläche.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T22:31:40Z",
+          "by": "build",
+          "text": "todo → doing: Vorher-Belege + JSON (Portraets + Auswahl-Szene) werden aufgenommen."
+        }
+      ],
+      "created": "2026-11-27T22:31:08Z",
+      "updated": "2026-11-27T22:31:40Z"
+    },
+    {
+      "id": 6199,
+      "title": "m10-hero-portraits K2: Portraits neu zeichnen (Kael=Mönch, Mira=Jägerin)",
+      "description": "Beide 48x48-Porträts in scripts/art/gen_chars.py neu: Kael eindeutig Mönch (Kutte, Gurt, Tonsure), Mira Jägerin/Bogenschützin. Silhouette zuerst, nur Palette src/palette.ts, Ausgabe-Pixelgröße exakt 48x48 (kein Mixel). Danach gen-chars.ts regenerieren. Abnahme: Silhouetten klar lesbar, tsc rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:31:08Z",
+      "updated": "2026-11-27T22:31:08Z"
+    },
+    {
+      "id": 6200,
+      "title": "m10-hero-portraits K3: Tests hero-portraits.test.ts",
+      "description": "tests/hero-portraits.test.ts: beide Porträt-Sprites in erwarteter Größe (48x48) vorhanden, nur Palettenfarben, Auswahl-Szene rendert beide ohne Fehltextur. Abnahme: npx vitest run tests/hero-portraits.test.ts rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:31:08Z",
+      "updated": "2026-11-27T22:31:08Z"
+    },
+    {
+      "id": 6201,
+      "title": "m10-hero-portraits K4: Nachher + art-director-Abnahme + Doku",
+      "description": "shots/m10-hero-portraits-after-*.png, art-director-Sichtprüfung (Vision) dokumentiert in docs/lanes/m10-hero-portraits.md, npm run build + Tests rc=0, lane-done. Abnahme: art-director PASS, Doku enthält Vorher/Nachher + Urteil.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:31:08Z",
+      "updated": "2026-11-27T22:31:08Z"
     }
   ]
 }
