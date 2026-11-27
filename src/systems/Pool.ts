@@ -1,18 +1,30 @@
-/** Generischer Object-Pool für Gegner, Projektile, Gems, Partikel. */
+/**
+ * Generischer Object-Pool für Gegner, Projektile, Gems, Partikel und
+ * Damage-Number-Einträge. Im Steady State wird kein Objekt neu angelegt:
+ * `obtain()` nimmt aus dem Free-Stack, `release()` legt nach Reset zurück.
+ * `trim()` begrenzt bewusst den Free-Stack (Retention nach Peak-Wellen).
+ */
 export class Pool<T> {
   private readonly free: T[] = [];
   private readonly activeSet = new Set<T>();
+  private createdCount = 0;
 
   constructor(
     private readonly factory: () => T,
     private readonly reset: (item: T) => void = () => {},
     preallocate = 0,
   ) {
-    for (let i = 0; i < preallocate; i++) this.free.push(factory());
+    for (let i = 0; i < preallocate; i++) this.free.push(this.grow());
+  }
+
+  private grow(): T {
+    const item = this.factory();
+    this.createdCount += 1;
+    return item;
   }
 
   obtain(): T {
-    const item = this.free.pop() ?? this.factory();
+    const item = this.free.pop() ?? this.grow();
     this.activeSet.add(item);
     return item;
   }
@@ -32,11 +44,28 @@ export class Pool<T> {
     return this.free.length;
   }
 
+  /** Wie oft die Factory insgesamt lief (Diagnose: Steady State = konstant). */
+  get createdTotal(): number {
+    return this.createdCount;
+  }
+
+  /** Gibt den aktiven Bestand zurück und leert ihn (Szenen-Ende/Reset). */
   releaseAll(): void {
     for (const item of this.activeSet) {
       this.reset(item);
       this.free.push(item);
     }
     this.activeSet.clear();
+  }
+
+  /**
+   * Kappt den Free-Stack auf `maxFree` Objekte. Der Rest wird vom GC
+   * eingesammelt, damit Peak-Wellen nicht dauerhaft Speicher halten.
+   */
+  trim(maxFree = 0): number {
+    const keep = Math.max(0, Math.floor(maxFree));
+    const removed = Math.max(0, this.free.length - keep);
+    if (removed > 0) this.free.length = keep;
+    return removed;
   }
 }

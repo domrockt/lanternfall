@@ -3,9 +3,11 @@ import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { DEPTH } from "../gfx/depth";
 import {
-  addDamage, expireDamage, damageLabel, shouldAggregateDamage, type AggregateEntry,
+  MAX_ENTRIES, ViewBudget, addDamage, expireDamage, damageLabel, resetAggregateEntry,
+  shouldAggregateDamage, type AggregateEntry, type EntrySink,
 } from "../logic/damage-numbers";
 import type { LodState } from "../logic/lod";
+import { Pool } from "./Pool";
 
 interface DamageView {
   text: PixelText;
@@ -27,6 +29,17 @@ export class DamageNumberSystem {
   private readonly entries: AggregateEntry[] = [];
   private readonly views: DamageView[] = [];
   private readonly maxViews = 24;
+  /** Reuse-Speicher für Aggregat-Einträge: kein Objekt pro Treffer im Steady State. */
+  private readonly entryPool = new Pool<AggregateEntry>(
+    () => ({ enemyUid: 0, damage: 0, crit: false, firstTime: 0, lastTime: 0, hits: 0 }),
+    resetAggregateEntry,
+    MAX_ENTRIES,
+  );
+  private readonly entrySink: EntrySink = {
+    take: () => this.entryPool.obtain(),
+    give: (e) => this.entryPool.release(e),
+  };
+  private readonly viewBudget = new ViewBudget();
   private clock = 0;
   private lod: LodState | null = null;
   private enabled = true;
@@ -81,10 +94,10 @@ export class DamageNumberSystem {
     }
     const aggregate = shouldAggregateDamage(this.lod?.enemies ?? 0, this.lod?.damageAggregate ?? false);
     if (!aggregate) {
-      addDamage(this.entries, { enemyUid: uid, damage, crit, time: this.clock });
+      addDamage(this.entries, { enemyUid: uid, damage, crit, time: this.clock }, undefined, this.entrySink);
     } else {
       // LOD: Fenster vergrößern, damit weniger Views entstehen.
-      addDamage(this.entries, { enemyUid: uid, damage, crit, time: this.clock }, 1.2);
+      addDamage(this.entries, { enemyUid: uid, damage, crit, time: this.clock }, 1.2, this.entrySink);
     }
     const entry = this.entries.find((e) => e.enemyUid === uid);
     if (!entry) return;
@@ -95,8 +108,7 @@ export class DamageNumberSystem {
       view = this.views.reduce((a, b) => (a.life < b.life ? a : b));
     }
     const limit = aggregate ? (this.lod?.level === "minimal" ? 6 : 10) : this.maxViews;
-    const activeCount = this.views.filter((v) => v.active).length;
-    if (!view.active && activeCount >= limit) return;
+    if (!view.active && !this.viewBudget.tryActivate(limit)) return;
     view.active = true;
     view.uid = uid;
     view.x = x;
@@ -114,12 +126,13 @@ export class DamageNumberSystem {
   update(dt: number, camera?: Phaser.Cameras.Scene2D.Camera): void {
     this.clock += dt;
     const aggregate = shouldAggregateDamage(this.lod?.enemies ?? 0, this.lod?.damageAggregate ?? false);
-    expireDamage(this.entries, this.clock, aggregate ? 1.3 : 1.1);
+    expireDamage(this.entries, this.clock, aggregate ? 1.3 : 1.1, this.entrySink);
     for (const v of this.views) {
       if (!v.active) continue;
       v.life -= dt;
       if (v.life <= 0) {
         v.active = false;
+        this.viewBudget.deactivate();
         v.text.setVisible(false);
         continue;
       }
@@ -138,7 +151,9 @@ export class DamageNumberSystem {
   }
 
   clear(): void {
+    for (const e of this.entries) this.entryPool.release(e);
     this.entries.length = 0;
+    this.viewBudget.reset();
     for (const v of this.views) {
       v.active = false;
       v.text.setVisible(false);
@@ -146,6 +161,6 @@ export class DamageNumberSystem {
   }
 
   get count(): number {
-    return this.views.filter((v) => v.active).length;
+    return this.viewBudget.count;
   }
 }

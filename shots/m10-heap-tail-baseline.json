@@ -1,0 +1,177 @@
+{
+  "tool": "scripts/perf-heap.mjs",
+  "mode": "cdp-heap-snapshot",
+  "generatedAt": "2026-11-27T03:15:17.958Z",
+  "args": {
+    "minutes": 30,
+    "seed": 99,
+    "runs": 1,
+    "timeScale": 30,
+    "baseline": 60
+  },
+  "runs": [
+    {
+      "run": 1,
+      "seed": 99,
+      "timeScale": 30,
+      "targetSimMinutes": 30,
+      "baselineAtSimSecond": 60,
+      "errors": [],
+      "simSecondsReached": 1806.9,
+      "simMinutesReached": 30.1,
+      "scene": "run",
+      "kills": 5169,
+      "level": 29,
+      "enemies": 87,
+      "heap": {
+        "start": {
+          "nodes": 333025,
+          "bytes": 31213629,
+          "mb": 29.8,
+          "jsHeapMB": 29
+        },
+        "end": {
+          "nodes": 400113,
+          "bytes": 32619650,
+          "mb": 31.1,
+          "jsHeapMB": 30.3
+        },
+        "deltaNodes": 67088,
+        "deltaBytes": 1406021,
+        "deltaPct": 4.5,
+        "jsHeapPct": 4.5,
+        "top5GrowthByCount": [
+          {
+            "constructor": "system / Context",
+            "type": "object",
+            "startCount": 1974,
+            "endCount": 8535,
+            "deltaCount": 6561,
+            "startBytes": 63568,
+            "endBytes": 220960,
+            "deltaBytes": 157392
+          },
+          {
+            "constructor": "i",
+            "type": "object",
+            "startCount": 10292,
+            "endCount": 14588,
+            "deltaCount": 4296,
+            "startBytes": 247008,
+            "endBytes": 350112,
+            "deltaBytes": 103104
+          },
+          {
+            "constructor": "0",
+            "type": "string",
+            "startCount": 7836,
+            "endCount": 12079,
+            "deltaCount": 4243,
+            "startBytes": 0,
+            "endBytes": 0,
+            "deltaBytes": 0
+          },
+          {
+            "constructor": "1",
+            "type": "string",
+            "startCount": 2679,
+            "endCount": 6144,
+            "deltaCount": 3465,
+            "startBytes": 0,
+            "endBytes": 0,
+            "deltaBytes": 0
+          },
+          {
+            "constructor": "a",
+            "type": "closure",
+            "startCount": 84,
+            "endCount": 3366,
+            "deltaCount": 3282,
+            "startBytes": 2408,
+            "endBytes": 94304,
+            "deltaBytes": 91896
+          }
+        ],
+        "top5GrowthByBytes": [
+          {
+            "constructor": "system / Context",
+            "type": "object",
+            "startCount": 1974,
+            "endCount": 8535,
+            "deltaCount": 6561,
+            "startBytes": 63568,
+            "endBytes": 220960,
+            "deltaBytes": 157392
+          },
+          {
+            "constructor": "i",
+            "type": "object",
+            "startCount": 10292,
+            "endCount": 14588,
+            "deltaCount": 4296,
+            "startBytes": 247008,
+            "endBytes": 350112,
+            "deltaBytes": 103104
+          },
+          {
+            "constructor": "a",
+            "type": "closure",
+            "startCount": 84,
+            "endCount": 3366,
+            "deltaCount": 3282,
+            "startBytes": 2408,
+            "endBytes": 94304,
+            "deltaBytes": 91896
+          },
+          {
+            "constructor": "Object",
+            "type": "object",
+            "startCount": 27837,
+            "endCount": 29171,
+            "deltaCount": 1334,
+            "startBytes": 1050904,
+            "endBytes": 1105796,
+            "deltaBytes": 54892
+          },
+          {
+            "constructor": "initialize",
+            "type": "object",
+            "startCount": 17310,
+            "endCount": 18442,
+            "deltaCount": 1132,
+            "startBytes": 852656,
+            "endBytes": 905548,
+            "deltaBytes": 52892
+          }
+        ]
+      },
+      "gc": {
+        "major": 32,
+        "minor": 9591,
+        "source": "cdp-trace:v8.gc",
+        "usedJSHeapStartMB": 16.1,
+        "usedJSHeapEndMB": 28.7
+      },
+      "fps": {
+        "min": 31.4,
+        "median": 56.4,
+        "samples": 168
+      },
+      "jsErrors": []
+    }
+  ],
+  "summary": {
+    "deltasPct": [
+      4.5
+    ],
+    "medianDeltaPct": 4.5,
+    "jsHeapDeltasPct": [
+      4.5
+    ],
+    "medianJsHeapDeltaPct": 4.5,
+    "spreadPp": null,
+    "spreadPct": null,
+    "spreadUnder10Pct": null,
+    "jsErrors": 0
+  }
+}

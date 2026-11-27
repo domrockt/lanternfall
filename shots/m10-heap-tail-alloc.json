@@ -1,0 +1,319 @@
+{
+  "tool": "alloc-profile.mjs",
+  "generatedAt": "2026-11-27T03:03:40.858Z",
+  "args": {
+    "minutes": 30,
+    "seed": 99
+  },
+  "simMinutesReached": 30.2,
+  "kills": 9076,
+  "enemies": 232,
+  "fps": 26.3,
+  "jsErrors": [],
+  "allocTop": [
+    {
+      "fn": "add",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "bytes": 1435240
+    },
+    {
+      "fn": "l",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "bytes": 755040
+    },
+    {
+      "fn": "t.onended",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 808,
+      "bytes": 708816
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "bytes": 590684
+    },
+    {
+      "fn": "set",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "bytes": 527976
+    },
+    {
+      "fn": "e.8357.e.exports",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "bytes": 393556
+    },
+    {
+      "fn": "A",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "bytes": 393468
+    },
+    {
+      "fn": "spawnSplash",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "bytes": 361964
+    },
+    {
+      "fn": "t",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 18,
+      "bytes": 311708
+    },
+    {
+      "fn": "(anonymous)",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 1,
+      "bytes": 197252
+    },
+    {
+      "fn": "initPipeline",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "bytes": 197076
+    },
+    {
+      "fn": "(anonymous)",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "bytes": 196696
+    },
+    {
+      "fn": "sortByDepth",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 18,
+      "bytes": 168668
+    },
+    {
+      "fn": "addProp",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "bytes": 164152
+    },
+    {
+      "fn": "spawn",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "bytes": 164000
+    },
+    {
+      "fn": "setAlpha",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "bytes": 131268
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 1,
+      "bytes": 131208
+    },
+    {
+      "fn": "get",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "bytes": 99712
+    },
+    {
+      "fn": "(BYTECODE_COMPILER)",
+      "url": "",
+      "line": 0,
+      "bytes": 98616
+    },
+    {
+      "fn": "setText",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "bytes": 98384
+    },
+    {
+      "fn": "initPostPipeline",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "bytes": 98356
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 18,
+      "bytes": 98348
+    },
+    {
+      "fn": "e.62329.e.exports",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "bytes": 98336
+    },
+    {
+      "fn": "e.onmessage",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "bytes": 70912
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "bytes": 65592
+    }
+  ],
+  "cpuTop": [
+    {
+      "fn": "(program)",
+      "url": "",
+      "line": 0,
+      "samples": 31578
+    },
+    {
+      "fn": "(idle)",
+      "url": "",
+      "line": 0,
+      "samples": 6128
+    },
+    {
+      "fn": "batchSprite",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 43,
+      "samples": 1056
+    },
+    {
+      "fn": "update",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 932
+    },
+    {
+      "fn": "updateEnemies",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 577
+    },
+    {
+      "fn": "step",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "samples": 438
+    },
+    {
+      "fn": "e.99517.e.exports",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "samples": 381
+    },
+    {
+      "fn": "(garbage collector)",
+      "url": "",
+      "line": 0,
+      "samples": 359
+    },
+    {
+      "fn": "e.19186.e.exports",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "samples": 354
+    },
+    {
+      "fn": "update",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "samples": 343
+    },
+    {
+      "fn": "render",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 1,
+      "samples": 336
+    },
+    {
+      "fn": "spawn",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 330
+    },
+    {
+      "fn": "queryCircle",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 325
+    },
+    {
+      "fn": "render",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 43,
+      "samples": 283
+    },
+    {
+      "fn": "updateProjectiles",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 283
+    },
+    {
+      "fn": "e.72905.e.exports",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 810,
+      "samples": 269
+    },
+    {
+      "fn": "removeFromDisplayList",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 18,
+      "samples": 266
+    },
+    {
+      "fn": "set",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "samples": 254
+    },
+    {
+      "fn": "step",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 1,
+      "samples": 190
+    },
+    {
+      "fn": "setTexture",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "samples": 179
+    },
+    {
+      "fn": "pr",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 174
+    },
+    {
+      "fn": "et",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 172
+    },
+    {
+      "fn": "ke",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 171
+    },
+    {
+      "fn": "setFrame",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 23,
+      "samples": 147
+    },
+    {
+      "fn": "setText",
+      "url": "assets/index-CTrozSZc.js",
+      "line": 812,
+      "samples": 143
+    }
+  ],
+  "allocSampleCount": 259,
+  "allocTotalBytes": 7557028
+}
