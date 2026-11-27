@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1659,
+  "next": 1743,
   "cards": [
     {
       "id": 1,
@@ -2684,6 +2684,116 @@
       ],
       "created": "2026-11-26T23:53:27Z",
       "updated": "2026-11-26T23:53:35Z"
+    },
+    {
+      "id": 1738,
+      "title": "m10-enemy-coverage-01 Messwerkzeug scripts/enemy-coverage.mjs",
+      "description": "Reine Simulation ueber waveForMinute/advanceSpawnBudget/pickEnemy (SeededRng Seeds 101+202), 30 Sim-Minuten in 1-s-Schritten. Abnahme: shots/m10-coverage-sim.json + stdout-Tabelle mit Spawns je ENEMY_ID, First-Spawn-Sekunde, Share je 5-min-Block.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:32:20Z",
+          "by": "build",
+          "text": "todo → doing: Sim-Skript geschrieben; 30/30 in Seeds 101+202 belegt"
+        },
+        {
+          "at": "2026-11-27T00:33:30Z",
+          "by": "build",
+          "text": "doing → review: Commit c3a2679. shots/m10-coverage-sim.json: 30/30 je Seed (101+202), 2524 Spawns, 0 fehlend, First-Spawn nie nach Tier-Ende, max Share 32.7% (<35%)."
+        }
+      ],
+      "created": "2026-11-27T00:20:39Z",
+      "updated": "2026-11-27T00:33:30Z"
+    },
+    {
+      "id": 1739,
+      "title": "m10-enemy-coverage-02 Ist-Stand belegen",
+      "description": "Lueckenliste in docs/lanes/m10-enemy-coverage.md aus dem Sim-JSON: IDs mit 0 Spawns, First-Spawn nach Tier-Ende, Share > 35%. Abnahme: dokumentierte Messung, keine Code-Aenderung.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:39:08Z",
+          "by": "build",
+          "text": "todo → doing: Messung aus Sim-JSON wird in docs/lanes/m10-enemy-coverage.md dokumentiert"
+        },
+        {
+          "at": "2026-11-27T00:39:53Z",
+          "by": "build",
+          "text": "doing → review: Commit 66875df. docs/lanes/m10-enemy-coverage.md: Lueckenliste leer, 30/30 je Seed, 0 IDs mit 0 Spawns, 0 First-Spawn nach Tier-Ende, max Share 32.7% < 35%."
+        }
+      ],
+      "created": "2026-11-27T00:20:39Z",
+      "updated": "2026-11-27T00:39:53Z"
+    },
+    {
+      "id": 1740,
+      "title": "m10-enemy-coverage-03 Luecken schliessen in src/data/waves.ts",
+      "description": "TIER_MIXES/specialForMinute: jede der 30 IDs in mind. einer Tier-Mix Gewicht > 0 und First-Spawn vor Tier-Ende; kein Typ > 35% Share je 5-min-Block. Keine HP/Damage/Speed-Skalierung aendern. Abnahme: neuer Sim-Lauf zeigt 30/30, 0 Luecken.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:43:26Z",
+          "by": "build",
+          "text": "todo → doing: Messung zeigt keine Luecken; pruefe Invarianten und dokumentiere, ob eine Mix-Aenderung noetig ist"
+        },
+        {
+          "at": "2026-11-27T00:46:34Z",
+          "by": "build",
+          "text": "doing → review: Commit b68f0c1. K3: Invarianten bereits erfuellt (30/30 IDs in Mixes, 5/5 normalisiert, 0 Share>35%, First-Spawn im Tier); keine Balance-Aenderung ohne Befund. Test folgt in #1741."
+        }
+      ],
+      "created": "2026-11-27T00:20:39Z",
+      "updated": "2026-11-27T00:46:34Z"
+    },
+    {
+      "id": 1741,
+      "title": "m10-enemy-coverage-04 Unit-Test wave-coverage.test.ts",
+      "description": "tests/wave-coverage.test.ts: (a) 30/30 IDs in Mixes, (b) jede Tier-Mix normalisiert, (c) deterministische 30-min-Simulation deckt 30/30, (d) kein ID-Share > 35%. Abnahme: npx vitest run tests/wave-coverage.test.ts gruen.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:54:58Z",
+          "by": "build",
+          "text": "todo → doing: simulateEnemyCoverage in src/logic/waves.ts extrahiert; Test mit 4 Assertions-Gruppen geschrieben"
+        },
+        {
+          "at": "2026-11-27T00:55:11Z",
+          "by": "build",
+          "text": "doing → review: Commit c27e950. npx vitest run tests/wave-coverage.test.ts: 4/4 gruen. (a) 30/30 IDs in Mixes+Eigentier, (b) 5/5 normalisiert Summe 100%, (c) Seeds 101/202 30/30 vor Tier-Ende, (d) kein Share >35%."
+        }
+      ],
+      "created": "2026-11-27T00:20:39Z",
+      "updated": "2026-11-27T00:55:11Z"
+    },
+    {
+      "id": 1742,
+      "title": "m10-enemy-coverage-05 In-Game-Beleg 30 min @30x",
+      "description": "Headless 30 Sim-Minuten bei timeScale 30, Spawn-Zaehler ueber window.__lf (minimal spawnCounts in src/debug.ts, nur zaehlen). Abnahme: shots/m10-coverage-ingame.json 30/30 und >=30 gleichzeitig aktive Gegner, 0 JS-Fehler, npm run build + npm test gruen, docs vollstaendig, .lane-done.",
+      "column": "doing",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-27T01:16:01Z",
+          "by": "build",
+          "text": "todo → doing: In-Game-Lauf 30 min @30x gestartet; Spawn-Zaehler via Spawner/debug ergaenzt"
+        },
+        {
+          "at": "2026-11-27T01:16:12Z",
+          "by": "build",
+          "text": "doing → review: Commit aa5ef5d. In-Game 1802.7 s sim / 97.9 s real, 30/30 Typen, min Spawn 10 (toad), 9403 Spawns, max 274 aktiv, 0 JS-Fehler, ok=true. Shot shots/m10-coverage-ingame-minute25.png."
+        },
+        {
+          "at": "2026-11-27T01:20:28Z",
+          "by": "build",
+          "text": "review → doing: Supervisor: Abschluss-Karte fuer Board-Sync + .lane-done. K1-K4 stehen mit Commits in review; keine offenen Edits ausser board.json."
+        }
+      ],
+      "created": "2026-11-27T00:20:39Z",
+      "updated": "2026-11-27T01:20:28Z"
     }
   ]
 }
