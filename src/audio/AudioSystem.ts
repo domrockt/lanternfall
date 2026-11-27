@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import { getSettings, setSettings } from "./settings";
 import {
-  canPlay, effectiveVolume, newMixerState, notePlayed, releaseVoice, PRIORITY,
+  canPlay, effectiveVolume, newMixerState, notePlayed, releaseVoice, planPlay,
+  activeVolumeSum, limiterGain, PRIORITY,
   EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
   type MixerState, type SoundRequest,
 } from "./mixing";
@@ -17,6 +18,10 @@ interface Voice {
   sound: Phaser.Sound.BaseSound;
   busy: boolean;
   token: number;
+  /** Aktuelle effektive Lautstärke (für Limiter-Rücknahme). */
+  vol: number;
+  /** Startzeitpunkt (Sekunden) — älteste Stimme wird verdrängt. */
+  startedAt: number;
 }
 
 export const MUSIC_KEYS = { run: "music_run", boss: "music_boss" } as const;
@@ -46,7 +51,7 @@ export class AudioSystem {
     this.mixer.now = (nowMs ?? performance.now()) / 1000;
   }
 
-  /** Spielt einen SFX mit Priorität/Cooldown/Stimmenlimit. */
+  /** Spielt einen SFX mit Priorität/Cooldown/Stimmenlimit, Fairness und Limiter. */
   play(id: SfxId): boolean {
     if (this.muted || this.failed) return false;
     const cfg = SFX_CONFIG[id];
@@ -57,15 +62,35 @@ export class AudioSystem {
       id, priority: cfg.priority, cooldown: cfg.cooldown,
       maxVoices: cfg.maxVoices, volume: cfg.volume,
     };
-    if (!canPlay(this.mixer, req)) return false;
+    // Fairness: Prio >= 2 verdrängt bei vollem Budget die älteste niederpriorere
+    // Stimme; Rate-Deckel (24/s) und Budget bleiben harte Grenzen.
+    const plan = planPlay(this.mixer, req);
+    if (!plan.allow) return false;
+    if (plan.evict) this.evictVoice(plan.evict.id);
     const voice = this.acquireVoice(id, cfg.maxVoices);
     if (!voice) return false;
     try {
       voice.busy = true;
       voice.token += 1;
       const token = voice.token;
-      (voice.sound as unknown as { setVolume(v: number): void }).setVolume(effectiveVolume(settings.sfx, req));
-      notePlayed(this.mixer, req);
+      let vol = effectiveVolume(settings.sfx, req);
+      // Limiter: Summe aller aktiven Stimmen <= -1 dBFS halten, indem alle
+      // aktiven Stimmen gleichmäßig zurückgenommen werden (nie stumm).
+      const scale = limiterGain(activeVolumeSum(this.mixer), vol);
+      if (scale < 1) {
+        for (const list of this.voicePool.values()) {
+          for (const v of list) {
+            if (!v.busy || v === voice) continue;
+            v.vol *= scale;
+            (v.sound as unknown as { setVolume(v: number): void }).setVolume(v.vol);
+          }
+        }
+        vol *= scale;
+      }
+      voice.vol = vol;
+      voice.startedAt = this.mixer.now;
+      (voice.sound as unknown as { setVolume(v: number): void }).setVolume(vol);
+      notePlayed(this.mixer, req, { volume: vol, scaleExisting: scale });
       const started = voice.sound.play();
       if (!started) {
         voice.busy = false;
@@ -90,6 +115,23 @@ export class AudioSystem {
     }
   }
 
+  /** Verdrängt die älteste laufende Stimme von `id` (Fairness, Prio >= 2). */
+  private evictVoice(id: string): void {
+    const list = this.voicePool.get(id);
+    if (!list) return;
+    let victim: Voice | null = null;
+    for (const v of list) {
+      if (v.busy && (victim === null || v.startedAt < victim.startedAt)) victim = v;
+    }
+    if (!victim) return;
+    victim.busy = false;
+    victim.token += 1; // ausstehende complete/stop-Listener ungültig machen
+    try {
+      victim.sound.stop();
+    } catch { /* Sound bereits vorbei */ }
+    releaseVoice(this.mixer, id);
+  }
+
   /** Freie Stimme aus dem Pool, bis maxVoices Instanzen je SFX angelegt sind. */
   private acquireVoice(id: SfxId, maxVoices: number): Voice | null {
     let list = this.voicePool.get(id);
@@ -100,7 +142,7 @@ export class AudioSystem {
     return acquireVoiceSlot(list, maxVoices, () => {
       try {
         const sound = this.game.sound.add(SFX_KEYS[id], { volume: 0 });
-        return { sound, busy: false, token: 0 };
+        return { sound, busy: false, token: 0, vol: 0, startedAt: 0 };
       } catch {
         return null;
       }

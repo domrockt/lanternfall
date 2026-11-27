@@ -120,10 +120,12 @@ const state = newMixerState();
 const mixBuf = new Float64Array(Math.ceil(SIM_SECONDS * SR));
 const endQueue = []; // { id, endAt, rec } sortiert nach endAt
 const startsPerSec = new Array(SIM_SECONDS).fill(0);
+const startsPerSecP3 = new Array(SIM_SECONDS).fill(0); // nur Prio < 3 (Waffen+Treffer-Band)
 const startsPerId = Object.fromEntries([...WEAPON_IDS, "hit", "kill", "xp"].map((id) => [id, 0]));
 let concurrentMax = 0;
 const concurrentSamples = [];
-let rejected = { cooldown: 0, voices: 0, budget: 0, rate: 0, evicted: 0 };
+let rejected = { cooldown: 0, voices: 0, budget: 0, rate: 0, rateFair: 0, priority: 0 };
+let rejectedTotal = 0;
 let playedTotal = 0;
 let evictTotal = 0;
 
@@ -146,15 +148,19 @@ function processRequest(id, t) {
   // 1) Mischer-Entscheidung (vorher: canPlay, nachher: planPlay mit Verdraengung).
   let allow;
   let evict = null;
+  let reason = null;
   if (planPlay) {
     const plan = planPlay(state, req);
     allow = plan.allow;
     evict = plan.evict ?? null;
+    reason = plan.reason ?? null;
   } else {
     allow = canPlay(state, req);
   }
   if (!allow) {
-    if ((state.voices[id] ?? 0) >= req.maxVoices) rejected.voices += 1;
+    rejectedTotal += 1;
+    if (reason && reason in rejected) rejected[reason] += 1;
+    else if ((state.voices[id] ?? 0) >= req.maxVoices) rejected.voices += 1;
     else if (state.lastPlayed[id] !== undefined && state.now - state.lastPlayed[id] < req.cooldown) rejected.cooldown += 1;
     else rejected.budget += 1;
     return;
@@ -180,7 +186,9 @@ function processRequest(id, t) {
   addVoiceSample(id, t, vol);
   playedTotal += 1;
   startsPerId[id] = (startsPerId[id] ?? 0) + 1;
-  startsPerSec[Math.min(SIM_SECONDS - 1, Math.floor(t))] += 1;
+  const sec = Math.min(SIM_SECONDS - 1, Math.floor(t));
+  startsPerSec[sec] += 1;
+  if (cfg.priority < 3) startsPerSecP3[sec] += 1;
 }
 
 const frames = Math.floor(SIM_SECONDS / DT);
@@ -288,6 +296,7 @@ for (let i = 0; i < totalSamples; i++) {
 }
 const peakDbfs = 20 * Math.log10(Math.max(peak, 1e-9));
 const startsSorted = [...startsPerSec].sort((a, b) => a - b);
+const startsP3Sorted = [...startsPerSecP3].sort((a, b) => a - b);
 const concurrentSorted = [...concurrentSamples].sort((a, b) => a - b);
 const idCounts = Object.entries(startsPerId).filter(([id]) => WEAPON_IDS.includes(id));
 const minIdStarts = Math.min(...idCounts.map(([, n]) => n));
@@ -305,10 +314,17 @@ const report = {
     perSecAvg: round(playedTotal / SIM_SECONDS),
     perSecP95: percentile(startsSorted, 95),
     perSecMax: startsSorted[startsSorted.length - 1],
+    // Band-Starts (Prio < 3): durch MAX_STARTS_PER_SECOND (24/s) gedeckelt.
+    perSecP3Avg: round(startsPerSecP3.reduce((a, b) => a + b, 0) / SIM_SECONDS),
+    perSecP3P95: percentile(startsP3Sorted, 95),
+    perSecP3Max: startsP3Sorted[startsP3Sorted.length - 1],
+    rateCapPerSec: mixing.MAX_STARTS_PER_SECOND ?? null,
     rejectedByCooldown: rejected.cooldown,
     rejectedByPerSoundVoices: rejected.voices,
     rejectedByBudget: rejected.budget,
     rejectedByRateCap: rejected.rate,
+    rejectedByRateFair: rejected.rateFair,
+    rejectedTotal,
     evictions: evictTotal,
   },
   concurrentVoices: {
@@ -346,7 +362,7 @@ writeFileSync(OUT, `${JSON.stringify(report, null, 2)}\n`);
 console.log(JSON.stringify({
   out: OUT, label: LABEL, mixerMode: report.mixerMode,
   voiceStartsPerSecAvg: report.voiceStarts.perSecAvg,
-  voiceStartsPerSecMax: report.voiceStarts.perSecMax,
+  voiceStartsPerSecP3Max: report.voiceStarts.perSecP3Max,
   concurrentVoicesMax: report.concurrentVoices.max,
   mixPeakDbfs: report.mixPeak.dbfs,
   clippingSamples: report.mixPeak.clippingSamples,
