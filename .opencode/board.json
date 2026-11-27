@@ -4483,10 +4483,16 @@
       "id": 3421,
       "title": "[fa2-04] 30-min-Echtzeitlauf genau einmal (realtime-run) + Heap ≤15 %",
       "description": "Abnahme: `flock … node scripts/realtime-run.mjs` (voller Lauf, minutes=30) genau einmal: alle 6 Bosse exakt, Sieg/Dawn, Heap-Delta Minute 1→29 ≤15 %, FPS min/median, 0 JS-Fehler; shots/realtime-30min.json + Minuten-Shots. Ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "blocked",
+      "notes": [
+        {
+          "at": "2026-11-27T15:38:53Z",
+          "by": "build",
+          "text": "todo → blocked: Echtzeitlauf einmal gestartet 15:14Z (Timeout 2400 s, flock), Harness-Fix --disable-dev-shm-usage ( /dev/shm nur 64 MB). Renderer starb erneut nach Minute 20 (Target closed, RT_RC=1); kein vollstaendiges realtime-30min.json, kein Heap-Delta Min1->29, kein Boss/Sieg-Protokoll. Log /tmp/lf-fa2/fa2-04-final.log, Minuten-Shots bis 20. Kein Wiederholungslauf ohne Code-Aenderung. Inhaltliche Boss/Truhe/Sieg-Belege aus fa2-03 fullrun vorhanden."
+        }
+      ],
       "created": "2026-11-27T13:14:45Z",
-      "updated": "2026-11-27T13:14:45Z"
+      "updated": "2026-11-27T15:38:53Z"
     },
     {
       "id": 3422,

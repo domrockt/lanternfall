@@ -31,7 +31,9 @@ ensureBuild();
 mkdirSync("shots", { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
-const browser = await chromium.launch({ args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"] });
+// --disable-dev-shm-usage: /dev/shm ist auf diesem Host nur 64 MB; ohne das Flag
+// stirbt der Renderer in langen 30-min-Laeufen ("Target closed") reproduzierbar ab.
+const browser = await chromium.launch({ args: ["--disable-dev-shm-usage", "--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"] });
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));

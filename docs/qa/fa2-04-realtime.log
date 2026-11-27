@@ -1,0 +1,11 @@
+2026-11-27T15:14:14Z
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+page.waitForTimeout: Target page, context or browser has been closed
+    at /home/ai/games/lanternfall/scripts/realtime-run.mjs:91:16
+
+Node.js v22.14.0
+RT_RC=1
+2026-11-27T15:35:03Z

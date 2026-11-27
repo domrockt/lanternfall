@@ -139,3 +139,23 @@ fpsMin 35,7 / 34,8 FPS gegen das 55-Ziel. Heap ist bei 640 grün (+8,7 %), bei 7
 marginal über dem Ziel (+15,2 %, 0,2 pp).
 
 **Urteil fa2-03: Inhalt PASS, Performance FAIL (Endgame-Fenster), Heap 1× PASS / 1× knapp FAIL.**
+
+## fa2-04 — 30-min-Echtzeitlauf (realtime-run), Heap ≤15 %
+
+`flock /home/ai/games/.lf-perf.lock node scripts/realtime-run.mjs --minutes 30`, festes
+Timeout 2400 s. Der Lauf wurde **einmal** gestartet (2026-11-27T15:14:14Z). Der Harness
+wurde vorher einmal robust gemacht (`--disable-dev-shm-usage`, weil `/dev/shm` auf diesem
+Host nur **64 MB** hat und die früheren Versuche nach ~7 min mit „Target closed" starben).
+
+- Verlauf: Minuten-Shots bis **Minute 20** geschrieben (`shots/realtime-minute-5/10/15/20.png`,
+  15:19–15:34Z), danach stirbt der Renderer erneut: `page.waitForTimeout: Target page,
+  context or browser has been closed` (15:35:03Z, `RT_RC=1`).
+- **Kein** vollständiges `realtime-30min.json`, kein Heap-Delta Minute 1→29, kein
+  Boss-/Sieg-Protokoll für den vollen Lauf. Log: `/tmp/lf-fa2/fa2-04-final.log`.
+- Ein zweiter 30-min-Lauf ohne weitere Code-Änderung ist laut Briefing nicht erlaubt.
+
+**Urteil fa2-04: BLOCKED.** Ursache ist ein Renderer-Abbruch im letzten Drittel des
+Echtzeitlaufs auf diesem Host (Speicher-/Shm-Druck bei hoher Last, loadavg >10 während
+des Laufs), nicht ein Spielfehler. Die inhaltlichen Boss-/Truhen-/Sieg-Belege liegen
+bereits aus dem 30×-fullrun vor (fa2-03). Für die Heap-Abnahme bleibt der Echtzeitlauf
+offen, bis ein stabiler Host/Lauf vorliegt.
