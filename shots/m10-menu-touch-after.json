@@ -1367,8 +1367,8 @@
     {
       "profile": "640x360@3",
       "name": "START-Knopf Randtreffer (Offset 16)",
-      "ok": true,
-      "detail": "charselect"
+      "ok": false,
+      "detail": "title"
     },
     {
       "profile": "640x360@3",
@@ -1504,7 +1504,7 @@
   "passed": false,
   "summary": {
     "checks": 34,
-    "passed": 25,
-    "hitRate": 73.5
+    "passed": 24,
+    "hitRate": 70.6
   }
 }
