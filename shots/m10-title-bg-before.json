@@ -1,0 +1,63 @@
+{
+  "phase": "before",
+  "results": [
+    {
+      "viewport": {
+        "name": "640",
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "state": {
+        "found": true,
+        "texW": 480,
+        "texH": 270,
+        "scaleX": 1.3333333333333333,
+        "scaleY": 1.3333333333333333,
+        "displayW": 640,
+        "displayH": 360,
+        "x": 0,
+        "y": 0,
+        "gameW": 640,
+        "gameH": 360,
+        "bufW": 640,
+        "bufH": 360,
+        "rbScale": 1,
+        "texelScaleX": 1.3333333333333333,
+        "texelScaleY": 1.3333333333333333,
+        "fractal": true
+      },
+      "jsErrors": [],
+      "verdict": "FAIL: fraktional (1.3333x1.3333)"
+    },
+    {
+      "viewport": {
+        "name": "780",
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "state": {
+        "found": true,
+        "texW": 480,
+        "texH": 270,
+        "scaleX": 1.625,
+        "scaleY": 1.3333333333333333,
+        "displayW": 780,
+        "displayH": 360,
+        "x": 0,
+        "y": 0,
+        "gameW": 780,
+        "gameH": 360,
+        "bufW": 780,
+        "bufH": 360,
+        "rbScale": 1,
+        "texelScaleX": 1.625,
+        "texelScaleY": 1.3333333333333333,
+        "fractal": true
+      },
+      "jsErrors": [],
+      "verdict": "FAIL: fraktional (1.6250x1.3333)"
+    }
+  ]
+}
