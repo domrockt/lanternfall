@@ -4,6 +4,35 @@ Stand: 2026-11-26. Alle Messungen headless Chromium auf dem gemergten `main`.
 Lange Läufe serialisiert über `flock /home/ai/games/.lf-perf.lock`
 (nicht parallel). Commit-Basis: siehe `git log` am Ende.
 
+## Gesamtabnahme 2026-11-27 (unabhängig, main @ `2204ddc`)
+
+Belege, Befehle und Zeitstempel: `docs/qa/final-2026-11-27.md`.
+Gemessen auf `main` @ **`2204ddc`** (2026-11-27 06:18:52 UTC), headless Chromium,
+lange Läufe unter `flock /home/ai/games/.lf-perf.lock`.
+
+| Punkt | Gemessen | Urteil |
+|---|---|---|
+| Build | `npm run build` rc=0 (876 ms, 06:27:05Z) | OK |
+| Tests | **301/301** in 26 Dateien, 0 fail (06:27:06Z) | OK (+47,5 % gegen 204; neue Lanes) |
+| Inhalte | `acceptance-count` **30/6/6/6/6/2** | OK |
+| verify:final | **7/7 PASS**, 0 JS-Fehler (06:29:48Z) | OK |
+| 30-min-autoPlay (fullrun) | 6/6 Bosse 300–1800 s, 6 Truhen, Sieg `dawn`, 0 JS-Fehler; **FPS-Min 37,9** (Lauf 1) / **40,2** (Lauf 2) | Sieg OK, **FPS FAIL (Ziel 55)** |
+| Burst 640×360 (3 Läufe, Min zählt) | **46,3 / 46,6 / 49,3 FPS** (500 Gegner min.) | **FAIL** |
+| Burst 780×360@3 (3 Läufe, Min zählt) | **55,9 / 56,1 / 57,8 FPS** | PASS |
+| Minute 25 640×360 | 37,8–41,4 FPS | **FAIL** (Ziel >=50) |
+| Minute 25 780×360@3 | 43,1–47,3 FPS | **FAIL** (Ziel >=50) |
+| Minute 25 960×540 (Referenz) | 50,7 FPS; Burst 60,1 FPS | knapp PASS / PASS |
+| Branch-Integrität (fa-00) | m8-display, m9-art-world, m9-art-enemies, m9-perf-heap, m9-art-heroes-bosses, m9-art-fx-ui: alle `--is-ancestor main` rc=0 | OK |
+
+**Abweichungen >= 5 % gegen die M6-Werte oben** (markiert, nicht überschrieben):
+Tests +47,5 % (204→301); Burst 640×60,7/59,3 → 46,3 (**−22…−24 %**); fullrun-FPS-Min
+55,8 → 37,9/40,2 (**−28…−32 %**); Minute-25 56,4/59,3 → 50,7 (−10…−14 %).
+
+**Ergebnis: nicht abgenommen.** Offener Blocker ist die Endgame-/640×360-Performance
+(2/2 fullrun und 3/3 640er Burst unter 55 FPS). Alle übrigen Abnahmepunkte sind grün;
+die Sicht-Belege (fa-02), Board-Hygiene (fa-03) und der APK-Stand (fa-04) werden im
+selben Lauf nachgetragen.
+
 ## A1 — Drei Merges in main (--no-ff)
 
 | Lane | Merge-Commit | Inhalt |
