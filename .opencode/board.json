@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5739,
+  "next": 5781,
   "cards": [
     {
       "id": 1,
@@ -6607,6 +6607,53 @@
       ],
       "created": "2026-11-27T21:34:42Z",
       "updated": "2026-11-27T21:40:00Z"
+    },
+    {
+      "id": 5778,
+      "title": "m10-perf-cap-rollback A: View-Width-Cap iGPU-A/B + bedingter Rückbau",
+      "description": "iGPU-Vorher-Messung scripts/m10-view-width.mjs (780x360 dpr3, M25, Renderer-String im JSON). Entscheidungsregel: M25 ohne Cap >= 55 FPS (Median 3) → Cap entfernen (view.ts/main.ts/tests/view-width.test.ts), sonst Cap bleibt. Sichtprüfung: keine schwarzen Balken bei 960x540 (Minute-20/-30-Nachstellung). Belege: Vorher/Nachher-JSON mit Renderer-String in shots/m10-perf-cap-rollback-*.",
+      "column": "doing",
+      "assignee": "@engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T21:42:23Z",
+          "by": "build",
+          "text": "todo → doing: Start: Messskripte um Renderer-String/M25 erweitern, danach iGPU A/B unter flock."
+        }
+      ],
+      "created": "2026-11-27T21:42:03Z",
+      "updated": "2026-11-27T21:42:23Z"
+    },
+    {
+      "id": 5779,
+      "title": "m10-perf-cap-rollback B: ADD-Glow-Flächen-Deckel entschärfen (Alpha-Floor bleibt)",
+      "description": "Alpha-Floor 0,04 BLEIBT. Flächen-Deckel entfällt bei dpr > 1,5 bzw. wird nur über den adaptiven Regler aktiviert (RENDER_SCALE > 1). Beleg: scripts/m10-fx-add-cap.mjs Overdraw vorher/nachher (Zahl in Doku) + Screenshot 960x540 (große Feuer-/Aura-Glows volllaufend). tests/fx-add-cap.test.ts anpassen.",
+      "column": "review",
+      "assignee": "@vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T21:53:47Z",
+          "by": "build",
+          "text": "todo → doing: Start: Overdraw-Vorher-Messung (Ist mit Flächen-Deckel), dann Regler-Gate (RENDER_SCALE > 1) statt dpr-Schwelle."
+        },
+        {
+          "at": "2026-11-27T22:01:04Z",
+          "by": "build",
+          "text": "doing → review: Deckel-Schaltstelle dpr->RENDER_SCALE>1 (config nur gelesen), Alpha-Floor bleibt; Overdraw 17k->129k dev-px (Optik zurueck), max Sprite 93->416; Sichtbeleg 960x540 ohne Overlay; tests 683/683, tsc rc=0, build rc=0. Commit #5779."
+        }
+      ],
+      "created": "2026-11-27T21:42:03Z",
+      "updated": "2026-11-27T22:01:04Z"
+    },
+    {
+      "id": 5780,
+      "title": "m10-perf-cap-rollback C: DPR-Budget-Regler unverändert (Verifikation + Doku)",
+      "description": "Teil C nicht anfassen: DPR-Budget-Regler (e85f890) und Canvas-Budget bleiben. Mit einer Zahl belegen, dass auf iGPU RENDER_SCALE = 1 bleibt (JSON-Feld renderScale aus Messlauf). Ergebnis in docs/lanes/m10-perf-cap-rollback.md.",
+      "column": "todo",
+      "assignee": "@engine-dev",
+      "notes": [],
+      "created": "2026-11-27T21:42:03Z",
+      "updated": "2026-11-27T21:42:03Z"
     }
   ]
 }
