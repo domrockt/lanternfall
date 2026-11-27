@@ -79,7 +79,13 @@ Gegenmessung gegen Nacht/Wasser im JSON). Re-Urteil nach Commit siehe „Abnahme
 Mapping: ranged TI0 → spit, TI1 → bone, TI3 → shadow, TI4 (horror) → fire; damit
 kommen alle vier Optiken im Spiel vor.
 
-**art-director-Urteil:** siehe Abschnitt „Abnahme“ (wird nach der Kontrolle ergänzt).
+**art-director-Urteil Iteration 1: PASS 4/5** (Ziel ≥ 4/5). Einzelnoten: spit 4, bone 4,
+shadow 4 (von 3,5 aufgewertet), fire 4. Belege: `shots/m10-enemy-shots-contrast.json`
+(minInner spit 2,04 / bone 3,68 / shadow 2,43 / fire 2,75 auf allen 5 Gründen; Form-IoU
+0,26–0,60) und `shots/m10-enemy-shots-density.gif` (24 Frames, lebende Gegner + fliegende
+Schüsse im selben Frame). Nicht blockierende Nachbesserungen notiert (shadow 3. Ton/kühler
+gegen bone, spit Tail-Spitze + 1 Corner, fire 2 Corner-Leaks, bone Knubbel an Schaftenden);
+Einschränkung: Dichte-Beleg zeigt Gras/Moor, Nacht/Wasser nur über Kontaktbogen + JSON.
 
 ## Karte 04 — Tests, Messwerte, Abnahme
 

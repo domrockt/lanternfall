@@ -3217,7 +3217,7 @@
       "id": 2201,
       "title": "m10-enemy-shots-fair-04 Tests + Doku + .lane-done",
       "description": "tests/enemy-shots-fair.test.ts (Wind-up-Dauer, Abbruch bei Tod, kein Offscreen-Spawn, Distinktheit der 4 Texture-Keys); Messwerte/Kontrast/art-director-Urteil in docs/lanes/m10-enemy-shots-fair.md; npm run build + alle Tests gruen; .lane-done mit Messwerten.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3229,10 +3229,15 @@
           "at": "2026-11-27T10:19:42Z",
           "by": "build",
           "text": "doing → todo: Supervisor: strikt sequenziell – erst #2200 abschließen, dann #2201 isoliert (nur tests/enemy-shots-fair.test.ts + Doku + .lane-done)."
+        },
+        {
+          "at": "2026-11-27T15:17:46Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 3: Build grün (236 Tests), 12 Fairness-Tests grün, frischer Dichte-Beleg 500 Gegner (0 JS-Fehler). Reviewer+test-auditor laufen; .lane-done folgt."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T10:19:42Z"
+      "updated": "2026-11-27T15:17:46Z"
     }
   ]
 }

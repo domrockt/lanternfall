@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:5628/?debug=1",
+  "url": "http://127.0.0.1:5587/?debug=1&seed=21",
   "scene": "run",
   "commands": [
     {
