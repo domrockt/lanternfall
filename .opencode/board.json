@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6482,
+  "next": 6602,
   "cards": [
     {
       "id": 1,
@@ -6107,10 +6107,16 @@
       "id": 5378,
       "title": "m10-reacceptance-c-Folge: Chest-Arrow 640×360 Re-Lauf FAIL auf PIN 43fd9eb",
       "description": "Abnahme-Befund (NICHT von der Abnahme gefixt): Re-Lauf von scripts/m10-chest-arrow.mjs auf PIN 43fd9eb (iGPU) failt 5/10 Cases bei 640×360 (top/bottom/tl/br: visibleAtSpawn=false, Winkelfehler 90–180°, Positionsfehler 312–355 px; disappear: Pfeil bleibt sichtbar obwohl Truhe im View). 780×360 alle ok. Gegenbefund: Lane-nachher-Lauf 17:52Z (shots/m10-chest-arrow-after.json, SwiftShader-Ära, vor iGPU 19:13Z) war PASS auf beiden Formaten; Unit-Tests tests/chest-arrow.test.ts auf PIN grün. Zu klären im Folge-Job: (a) Renderer-/Timing-Sensitivität des Probe-Harness (iGPU vs SwiftShader, Sampling), (b) echte Regression durch einen der 19 Drain-Merges — Verdächtige: m10-view-width-cap (interne Breite 640), m10-ground-props-batch (Batch-Container-Layer). Beleg: shots/qa-reaccc-chest-arrow.json im Lane-Branch m10-reacceptance-c.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:29:48Z",
+          "by": "build",
+          "text": "backlog → done: Erledigt durch Lane m10-chest-arrow-640-refit (Commits 144c2f1, bc3e8ac). Re-Lauf auf main f4c6acf mit POST_UPDATE-Sampling: 20/20 PASS (640x360 UND 780x360, je 10 Cases, jsErrors 0, iGPU 'ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S))' im JSON). Beleg: shots/m10-chest-arrow-refit-before.json, Vorher-Artefakt shots/m10-chest-arrow-refit-raf-before.json (rAF: tr/br 96.65°, bl 179.92°, disappear sichtbar obwohl inside). Ursache: Messartefakt — rAF-Sampling misst vor dem Phaser-Step und liefert stale Frames bei fps.limit-Skips; ChestSystem-Verhalten korrekt (Schwester-Lane m10-chest-arrow-fix: POST_UPDATE 30/30 PASS auch mit View-Width-Cap, Regressionstests chest-arrow-fix)."
+        }
+      ],
       "created": "2026-11-27T20:48:48Z",
-      "updated": "2026-11-27T20:48:48Z"
+      "updated": "2026-11-27T23:29:48Z"
     },
     {
       "id": 5418,
@@ -7565,6 +7571,70 @@
       "notes": [],
       "created": "2026-11-27T23:17:19Z",
       "updated": "2026-11-27T23:17:19Z"
+    },
+    {
+      "id": 6598,
+      "title": "m10-chest-arrow-640-refit A: Vorher-Messung altes rAF-Sampling + Sampling auf POST_UPDATE umstellen",
+      "description": "Karte #5378 Fix-Job Schritt 0. AK: (1) Altes Sampling einmal laufen lassen, JSON committet (Beleg des rAF-Artefakts). (2) scripts/m10-chest-arrow.mjs sampelt im POST_UPDATE der Run-Szene (Kriterien unveraendert), max. 2 Edit-Iterationen. Commit M10-m10-chest-arrow-640-refit.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:26:41Z",
+          "by": "build",
+          "text": "todo → doing: Start: Vorher-Lauf altes rAF-Sampling"
+        },
+        {
+          "at": "2026-11-27T23:28:37Z",
+          "by": "build",
+          "text": "doing → review: Commit 144c2f1: Vorher-JSON (rAF-Artefakt reproduziert: 4 Cases FAIL, Signaturen wie #5378) + Sampling-Umstellung. Ein Lauf, 1 Edit-Buendel."
+        },
+        {
+          "at": "2026-11-27T23:37:17Z",
+          "by": "build",
+          "text": "Korrektur zur Vorher-Zahl im Commit 144c2f1: 640x360 raf-before = 6/10 FAIL (nicht 4); siehe a9394ba."
+        }
+      ],
+      "created": "2026-11-27T23:26:37Z",
+      "updated": "2026-11-27T23:37:17Z"
+    },
+    {
+      "id": 6599,
+      "title": "m10-chest-arrow-640-refit B: Re-Lauf beider Formate auf aktuellem main -> shots/m10-chest-arrow-refit-before.json",
+      "description": "Schritt 1. AK: 640x360 UND 780x360 je 10 Cases, JSON mit WebGL-Renderer-String, ein Lauf committet. Fall A (10/10 PASS beide Formate): Ursache View-Width-Cap-Entfernung, Karte #5378 schliessen. Fall B: A/B engrenzen (ground-props-batch naechster Verdaechtiger).",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:29:48Z",
+          "by": "build",
+          "text": "todo → review: Commit bc3e8ac: refit-before.json 20/20 PASS (640+780, iGPU), Fall A."
+        }
+      ],
+      "created": "2026-11-27T23:26:37Z",
+      "updated": "2026-11-27T23:29:48Z"
+    },
+    {
+      "id": 6600,
+      "title": "m10-chest-arrow-640-refit C: Verdict + Karte #5378 mit Belegpfaden abschliessen",
+      "description": "Schritt 2. AK: Karte #5378 auf done mit Zahlen + Belegpfaden (refit-before.json, ggf. A/B-Probe), Notiz im Board. Bei Fall B stattdessen Fix-Karten ableiten.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:29:48Z",
+          "by": "build",
+          "text": "todo → doing: Verdict formulieren + #5378 schliessen."
+        }
+      ],
+      "created": "2026-11-27T23:26:37Z",
+      "updated": "2026-11-27T23:29:48Z"
+    },
+    {
+      "id": 6601,
+      "title": "m10-chest-arrow-640-refit D: Tests + Doku + .lane-done",
+      "description": "Schritt 3. AK: tests/chest-arrow.test.ts um Befund-Fall erweitert (gruen), docs/lanes/m10-chest-arrow-640-refit.md mit Vorher/Nachher + Ursache, npm test + tsc + build rc=0, .lane-done committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T23:26:37Z",
+      "updated": "2026-11-27T23:26:37Z"
     }
   ]
 }
