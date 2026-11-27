@@ -26,12 +26,12 @@ Skript außerhalb des Repos: `/home/ai/tmp/m10-fx-evolution/capture-before.mjs`.
 
 | Basiswaffe | Evolution | GIF-Frames | Gegner min–max | Peak Near-White (A7) |
 |---|---|---|---|---|
-| Kettenflegel | Zornpendel (`wrath_pendulum`) | 24 | 310–382 | 5,72 % |
-| Sturmrune | Gewittersiegel (`thunder_seal`) | 24 | 320–322 | 1,98 % |
-| Glutfunke | Phönixschwarm (`phoenix`) | 24 | 314–382 | 9,23 % |
-| Frostnova | Ewiger Winter (`eternal_winter`) | 24 | 280–382 | 3,96 % |
-| Dornensalve | Dornensturm (`thorn_storm`) | 24 | 292–381 | 2,79 % |
-| Geisterlaterne | Seelenleuchtfeuer (`soul_beacon`) | 24 | 316–382 | 7,09 % |
+| Kettenflegel | Zornpendel (`wrath_pendulum`) | 24 | 310–382 | 7,11 % |
+| Sturmrune | Gewittersiegel (`thunder_seal`) | 24 | 380–382 | 2,42 % |
+| Glutfunke | Phönixschwarm (`phoenix`) | 24 | 366–382 | 7,90 % |
+| Frostnova | Ewiger Winter (`eternal_winter`) | 24 | 379–382 | 4,49 % |
+| Dornensalve | Dornensturm (`thorn_storm`) | 24 | 348–381 | 6,00 % |
+| Geisterlaterne | Seelenleuchtfeuer (`soul_beacon`) | 24 | 374–382 | 6,07 % |
 
 0 JS-Fehler in allen sechs Läufen (`errors: []`).
 

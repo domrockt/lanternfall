@@ -2984,51 +2984,81 @@
       "id": 2038,
       "title": "m10-fx-evolution K1 Ist-Aufnahme",
       "description": "Vorher-Belege: je Evolution (Zornpendel/Gewittersiegel/Phönixschwarm/Ewiger Winter/Dornensturm/Seelenleuchtfeuer) ein ~2-s-GIF bei 300+ Gegnern (shots/m10-fx-evolution-before-*.gif), FX-Key/Farb-Inventar in docs/lanes/m10-fx-evolution.md, Beleg dass Treffer/Tod heute je Evolution identisch sind (fx_star+Palette17; deathFxFor nur Archetyp). Abnahme: 6 GIFs vorhanden, alle Frame-Samples >=300 Gegner, Inventar-Tabelle + Pixel/Kanal-Beleg im Doc.",
-      "column": "doing",
+      "column": "done",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:19:48Z",
+          "by": "build",
+          "text": "doing → done: K1 Ist-Aufnahme abgenommen: 6 Vorher-GIFs + FX-Inventar, identische fx_star+17-Signatur belegt; Commit 1fd6869."
+        }
+      ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T03:07:27Z"
+      "updated": "2026-11-27T05:19:48Z"
     },
     {
       "id": 2039,
       "title": "m10-fx-evolution K2 Signatur-Katalog",
       "description": "Pro Evolution eindeutige Kombination Form (ring/beam/splitter/cloud) + Palette-Index + Lifetime in gen-fx.ts als exportierte Tabelle; Texturen fx_evo_hit_<id>/fx_evo_death_<id> generiert. Abnahme: tests/fx-evolution.test.ts beweist 6 paarweise verschiedene Signaturen (Form+Index+Lifetime), FX_FRAME_COUNTS kompatibel.",
-      "column": "todo",
+      "column": "done",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:19:48Z",
+          "by": "build",
+          "text": "todo → done: K2 Signatur-Katalog abgenommen: 6 paarweise verschiedene Form+Palette+Lifetime, 12 Texturen, fx-evolution.test 6/6; Commit 26b0950."
+        }
+      ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T03:07:27Z"
+      "updated": "2026-11-27T05:19:48Z"
     },
     {
       "id": 2040,
       "title": "m10-fx-evolution K3 Treffer+Tod je Evolution",
       "description": "Trefferfunke und Todes-Puff je Evolution im Spiel sichtbar (FxSystem-API + Run-onHit-Integration, minimaler Fremd-Eingriff begründet). LOD-Pfad (minimal: Alpha 0,5/NORMAL) darf Unterscheidbarkeit nicht aufheben. Abnahme: tsc grün, LOD-Beleg im Doc, GIF/Screenshot mit lebenden Gegnern zeigt Signatur.",
-      "column": "todo",
+      "column": "review",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:19:48Z",
+          "by": "build",
+          "text": "todo → review: K3 umgesetzt: FxSystem.spawnEvolution + Run-onHit, LOD minimal Alpha 0,5/NORMAL mit Index-Erhalt, Form-Varianten je Hauptindex; Sheet + Tests 6/6, build+230 Tests gruen; Commit 4401188."
+        }
+      ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T03:07:27Z"
+      "updated": "2026-11-27T05:19:48Z"
     },
     {
       "id": 2041,
       "title": "m10-fx-evolution K4 Messung Nachher",
       "description": "6 Nachher-GIFs + eingefrorener Chaos-Frame Minute 25. Near-White im AoE-Crop <=4,16 % (ACCEPTANCE A7: r>=235,g,b>=150); Pixel-Diff der Signaturen > Schwelle (paarweise, Texturen und Runtime-Paletten). Abnahme: shots/m10-fx-evolution-after-*.gif/.png + JSON mit Messwerten, 0 JS-Fehler.",
-      "column": "todo",
+      "column": "review",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:19:48Z",
+          "by": "build",
+          "text": "todo → review: K4 Nachher: 6 GIFs (24 Frames, >=415 Gegner), Chaos m25 0,52 % Near-White, Pixel-Diff min 51 px, 0 JS-Fehler; Commit 255839a."
+        }
+      ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T03:07:27Z"
+      "updated": "2026-11-27T05:19:48Z"
     },
     {
       "id": 2042,
       "title": "m10-fx-evolution K5 Doku + lane-done",
       "description": "docs/lanes/m10-fx-evolution.md mit art-director-Urteil je Evolution (PASS/FAIL + Note) und Gesamtnote >=4/5 mit Begründung; offene Punkte ehrlich. .lane-done mit Messwerten. Abnahme: build+alle Tests grün (inkl. tests/fx-evolution.test.ts), 6 Vorher-/Nachher-GIFs in shots/, Near-White <=4,16 %, art-director >=4/5.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T06:02:27Z",
+          "by": "build",
+          "text": "todo → doing: K5 Doku + art-director-Abnahme laeuft; .lane-done nach Urteil."
+        }
+      ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T03:07:27Z"
+      "updated": "2026-11-27T06:02:27Z"
     }
   ]
 }
