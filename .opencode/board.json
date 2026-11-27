@@ -6772,10 +6772,15 @@
           "at": "2026-11-27T22:43:18Z",
           "by": "build",
           "text": "Versuch 5 (22:45Z): Stand unveraendert, lokal gruen (tsc rc=0, 11/11). Claim-Halter m10-fx-mixel-fix jetzt AKTIV (WIP 7a54a9e) — Bitte priorisiert Option (b) Merge-Karte mit Patch ~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch + tests/boss-death-shards.test.ts. claim-watch aut_21f23 aktiv bis 02:32Z."
+        },
+        {
+          "at": "2026-11-27T22:46:06Z",
+          "by": "build",
+          "text": "Forts. 22:47Z: weiterhin blocked auf FxSystem.ts-Claim (m10-fx-mixel-fix, aktiv, #6099 committed, noch #6100/#6101 offen). Lokal gruen (tsc rc=0, 11/11). Patch synchron (reverse-apply ok). claim-watch aut_21f23 uebernimmt K2-K4 automatisch bei Claim-Freigabe (bis 02:32Z)."
         }
       ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T22:43:18Z"
+      "updated": "2026-11-27T22:46:06Z"
     },
     {
       "id": 5920,
