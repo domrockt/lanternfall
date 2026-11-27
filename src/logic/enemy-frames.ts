@@ -19,13 +19,16 @@ export function framesForDef(def: EnemyDef): string[] | undefined {
   return SPRITE_FRAMES[def.id] ?? SPRITE_FRAMES[def.spriteKey];
 }
 
+/** Lauf-Frame-Rate in fps (vorher Magic Number in Run.ts). */
+export const RUN_FPS = 6;
+
 /**
- * Lauf-Frame-Index: 6 Frames/s, zyklisch ueber ALLE verfuegbaren Frames.
+ * Lauf-Frame-Index: RUN_FPS Frames/s, zyklisch ueber ALLE verfuegbaren Frames.
  * Vorher begrenzte Run.ts den Modulo hart auf 2 (`% Math.min(2, frames.length)`),
  * wodurch F2/F3 der generierten 4-Frame-Sprites nie gezeigt wurden.
  * Reine Funktion, von Run.ts und tests/enemy-run-frames.test.ts genutzt.
  */
 export function runFrameIndex(frameCount: number, t: number, phase: number): number {
   if (frameCount <= 0) return 0;
-  return Math.floor(t * 6 + phase) % frameCount;
+  return Math.floor(t * RUN_FPS + phase) % frameCount;
 }

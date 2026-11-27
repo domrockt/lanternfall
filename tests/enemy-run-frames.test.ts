@@ -38,7 +38,8 @@ describe("framesForDef", () => {
       const frames = framesForDef(def);
       expect(frames, `keine Frames fuer Boss ${boss.id}`).toBeDefined();
       expect(frames!.length, `${boss.id}: erwartet 3 Boss-Frames`).toBe(3);
-      expect(frames![2], `${boss.id}: Wind-up-Frame fehlt`).toBeTruthy();
+      // Wind-up-Key exakt pinnen: F2 ist der 3. generierte Boss-Frame.
+      expect(frames![2], `${boss.id}: Wind-up-Frame`).toBe(`boss_${boss.id}_3`);
     }
   });
 });

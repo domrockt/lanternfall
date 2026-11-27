@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // M10-enemy-frame-cadence: Sicht-Beleg — Lauf-Frame-Zyklus eines 4-Frame-Gegners.
 // GIF 640x360 (native Aufloesung) + Log der am Sprite stehenden Frame-Keys.
-// Beweisziel: Skeleton nutzt zyklisch F0..F3 (enemy_skeleton, _2, _3, _4) —
-// vor dem Fix wurden nur F0/F1 gezeigt bzw. fuer die meisten Gegner gar kein
-// Frame-Wechsel ausgeloest (SPRITE_FRAMES-Lookup nach falschem Key).
+// Beweisziel: Ritter (4-Frame-Typ) nutzt zyklisch F0..F3 (enemy_knight,
+// _2, _3, _4) — vor dem Fix wurden nur F0/F1 gezeigt bzw. fuer die meisten
+// Gegner gar kein Frame-Wechsel ausgeloest (SPRITE_FRAMES-Lookup nach
+// falschem Key).
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
@@ -39,8 +40,8 @@ try {
       if (!frames.some((e) => e.id === "knight")) window.__lf.spawnEnemy("knight", 1);
       return frames;
     });
-    const skel = sample.filter((e) => e.id === "knight").map((e) => `${e.frame}@${e.sx},${e.sy}`);
-    log.push({ shot: i, skeletonFrames: skel, onScreen: sample.length });
+    const kn = sample.filter((e) => e.id === "knight").map((e) => `${e.frame}@${e.sx},${e.sy}`);
+    log.push({ shot: i, knightFrames: kn, onScreen: sample.length });
     await page.screenshot({ path: `${frames}/f${String(i).padStart(3, "0")}.png` });
     await page.waitForTimeout(66);
   }
@@ -55,7 +56,7 @@ try {
 // PNG-Frames bleiben bewusst liegen (~/tmp/m10-enemy-frame-cadence/frames),
 // damit die Zoom-Montage daraus geschnitten werden kann.
 writeFileSync("shots/m10-enemy-frame-cadence-run.json",
-  JSON.stringify({ jsErrors: errors, samples: log }, null, 2));
+  `${JSON.stringify({ jsErrors: errors, samples: log }, null, 2)}\n`);
 
 // Zoom-Montage (4x, 400 % nearest): erster Treffer je Frame-Key, Crop um den
 // Ritter. Kalibrierung: die Hook-Position liest die Kamera zur Update-Zeit,
@@ -63,7 +64,7 @@ writeFileSync("shots/m10-enemy-frame-cadence-run.json",
 // an f20 des Laufs gemessen). Labels F0..F3 nach SPRITE_FRAMES-Reihenfolge.
 const seen = {};
 for (const s of log) {
-  for (const v of s.skeletonFrames) {
+  for (const v of s.knightFrames) {
     const [f, pos] = v.split("@");
     if (!seen[f]) seen[f] = { shot: s.shot, pos: pos.split(",").map(Number) };
   }
@@ -84,7 +85,7 @@ for (const [f, { shot, pos }] of Object.entries(seen)) {
 execFileSync("montage", [...crops, "-tile", "4x1", "-geometry", "+8+8",
   "-background", "black", "shots/m10-enemy-frame-cadence-frames.png"]);
 console.log("knight frame keys ueber die Zeit:");
-for (const s of log) console.log(`  f${s.shot}: [${s.skeletonFrames.join(", ") || "-"}] onScreen=${s.onScreen}`);
-const keys = new Set(log.flatMap((s) => s.skeletonFrames.map((v) => v.split("@")[0])));
+for (const s of log) console.log(`  f${s.shot}: [${s.knightFrames.join(", ") || "-"}] onScreen=${s.onScreen}`);
+const keys = new Set(log.flatMap((s) => s.knightFrames.map((v) => v.split("@")[0])));
 console.log(keys.size ? "distinct frames: " + [...keys].join(", ") : "KEINE SAMPLES");
 console.log(errors.length ? "JS ERRORS:\n" + errors.join("\n") : "no JS errors");
