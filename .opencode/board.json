@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2322,
+  "next": 2328,
   "cards": [
     {
       "id": 1,
@@ -3448,6 +3448,66 @@
       ],
       "created": "2026-11-27T05:02:26Z",
       "updated": "2026-11-27T05:03:18Z"
+    },
+    {
+      "id": 2322,
+      "title": "m10-heap-tail-01 Baseline messen: 3x 30-min Heap + Top-Alloc-Sites",
+      "description": "node scripts/perf-heat.mjs 3x 30 min (timeScale 30, Seed 99), CDP-Snapshot + Sampling-Profile der Top-Alloc-Sites; Rohdaten shots/m10-heap-tail-baseline.json. Abnahme: 3 Delta-Werte in %/MB, Top-5-Konstruktoren je Lauf, 0 JS-Fehler. (lane #2058)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T05:14:54Z",
+      "updated": "2026-11-27T05:14:54Z"
+    },
+    {
+      "id": 2323,
+      "title": "m10-heap-tail-02 Pool.ts: per-Frame-Allokationen/Retention entfernen",
+      "description": "src/systems/Pool.ts ohne per-Frame Arrays/Closures; Reuse-Test tests/pool-reuse.test.ts (Objektidentitaet bleibt, keine Neuanlage im Steady State). Abnahme: Test rot vor Fix, gruen danach, tsc gruen. (lane #2059)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T05:14:54Z",
+      "updated": "2026-11-27T05:14:54Z"
+    },
+    {
+      "id": 2324,
+      "title": "m10-heap-tail-03 EnemyPool/DamageNumbers: Reuse + Caps",
+      "description": "Damage-Number-Objekte und Elite-Felder wiederverwenden, Caps pruefen (24/10/6, Gegner-Cap 500); Unit-Test fuer Reuse + Cap. Abnahme: Test rot vor Fix, gruen danach. (lane #2060)",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:14:54Z",
+      "updated": "2026-11-27T05:14:54Z"
+    },
+    {
+      "id": 2325,
+      "title": "m10-heap-tail-04 Nachmessen: 2x 30-min Heap + perf (flock)",
+      "description": "2x 30-min-Lauf, Heap-Delta %/MB in shots/m10-heap-tail-after.json; flock /home/ai/games/.lf-perf.lock npm run perf (Burst >=55 FPS unveraendert). Abnahme: beide Nachlaeufe <=15 %, FPS >=55, 0 JS-Fehler. (lane #2061)",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T05:14:54Z",
+      "updated": "2026-11-27T05:14:54Z"
+    },
+    {
+      "id": 2326,
+      "title": "m10-heap-tail-05 Doku + .lane-done",
+      "description": "Ursache, Zahlen vorher/nachher, offene Restpunkte in docs/lanes/m10-heap-tail.md; .lane-done mit Messwerten. Abnahme: Baseline-/After-JSON im Commit, build+alle Tests gruen. (lane #2062)",
+      "column": "review",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T05:14:54Z",
+      "updated": "2026-11-27T05:14:54Z"
+    },
+    {
+      "id": 2327,
+      "title": "m10-heap-tail: Merge-Fix AiState.phase im Recycle-Reset",
+      "description": "resetAiState setzt phase=0; Test-Fixture tests/pool-reuse.test.ts mit phase-Feld. Abnahme: tsc gruen, pool-reuse+enemy-pool-reuse Tests gruen. (Merge m10-heap-tail, lane #2058-#2062)",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:17:10Z",
+      "updated": "2026-11-27T05:17:10Z"
     }
   ]
 }
