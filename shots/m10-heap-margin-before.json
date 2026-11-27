@@ -1,0 +1,150 @@
+{
+  "tool": "m10-heap-margin.mjs",
+  "generatedAt": "2026-11-27T19:03:28.601Z",
+  "args": {
+    "viewport": {
+      "width": 780,
+      "height": 360
+    },
+    "dpr": 3,
+    "seed": 99,
+    "fromMin": 20,
+    "toMin": 29,
+    "timeScale": 60
+  },
+  "heap": {
+    "fromMB": 31.2,
+    "toMB": 35.6,
+    "deltaMB": 4.4,
+    "deltaPct": 14.1,
+    "cdpFromMB": 14.3,
+    "cdpToMB": 15.2
+  },
+  "enemies": 49,
+  "kills": 5041,
+  "fpsMin": 19.4,
+  "fpsSamples": 25,
+  "jsErrors": [],
+  "allocTop": [
+    {
+      "fn": "set",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 347780
+    },
+    {
+      "fn": "e.55292.e.exports",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 810,
+      "bytes": 196744
+    },
+    {
+      "fn": "addProp",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 812,
+      "bytes": 164128
+    },
+    {
+      "fn": "(anonymous)",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 163928
+    },
+    {
+      "fn": "initPipeline",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 131340
+    },
+    {
+      "fn": "initPostPipeline",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 131144
+    },
+    {
+      "fn": "t.onended",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 808,
+      "bytes": 113372
+    },
+    {
+      "fn": "l",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 810,
+      "bytes": 65760
+    },
+    {
+      "fn": "setValue",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 1,
+      "bytes": 65600
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 1,
+      "bytes": 65596
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 18,
+      "bytes": 65560
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 810,
+      "bytes": 65552
+    },
+    {
+      "fn": "setOrigin",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 65544
+    },
+    {
+      "fn": "setTexture",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 65544
+    },
+    {
+      "fn": "sortByDepth",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 18,
+      "bytes": 49728
+    },
+    {
+      "fn": "loadIdentity",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 23,
+      "bytes": 43392
+    },
+    {
+      "fn": "addChildCallback",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 18,
+      "bytes": 35584
+    },
+    {
+      "fn": "get count",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 812,
+      "bytes": 35516
+    },
+    {
+      "fn": "e.50030.e.exports",
+      "url": "assets/index-BGDpJN2o.js",
+      "line": 38,
+      "bytes": 33152
+    },
+    {
+      "fn": "delete",
+      "url": "",
+      "line": 0,
+      "bytes": 32976
+    }
+  ]
+}
