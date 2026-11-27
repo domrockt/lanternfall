@@ -96,7 +96,20 @@ Belege (`shots/m10-dpr-budget-pixel*`):
 
 Bekannte Randaerfahrungen (offen, nicht blockierend fuer M25-Messung):
 
+- **Reviewer-PASS mit Auflagen** (Review ueber Diff 4b6adc0..HEAD, 14/14
+  Tests, tsc rc=0): Weitere `camera.width`-Leser, die bei Teiler >= 2 anders
+  rechnen als bei `GAME_WIDTH`: `BossSystem.ts:200` (Boss-HUD-Guard
+  `bossHudRects(this.camera.width)` — genau im M25-Szenario aktiv),
+  `GroundRenderer.ts:229/230` (On-Screen-Cull ohne Margin) und
+  `GroundRenderer.ts:358-369` (Sternenfeld/Floaters auf halber Spanne).
+  `Run.ts:555` nutzt korrekt `GAME_WIDTH`. -> Folge-Karte im Board
+  (m10-dpr-budget-cap #5), Lane-Doku-Zeile hier korrigiert.
 - HitStop-Dim haengt an `camera.width` (kuenstlicher Freeze-Zustand, nicht
   spielbar relevant).
 - Eingabemapping (Touch/Joystick/Klicks) bei gesenktem Massstab ungetestet —
-  Regler senkt nur unter Dauerlast; UX-Check als Folge-Karte empfohlen.
+  Regler senkt nur unter Dauerlast; UX-Check in derselben Folge-Karte.
+- Reviewer-Nits umgesetzt: tote Bindung `const forced = forcedRenderScale`
+  entfernt, `renderer.type` aus BudgetGame-Typ entfernt, Probe-Wegwerp-
+  Skripte `scripts/probe-budget*.mjs` geloescht (waren Claim-fremd),
+  Unit-Tests fuer `parseRenderScaleOverride` (inkl. `Number(null)`-Fall) und
+  `renderBufferSize` ergaenzt (21/21).

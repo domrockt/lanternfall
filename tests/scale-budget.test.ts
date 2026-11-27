@@ -126,3 +126,46 @@ describe("M10-dpr-budget-cap: stepRenderScale (Hysterese)", () => {
     expect(SCALE_HIGH_MS).toBe(4000);
   });
 });
+
+describe("M10-dpr-budget-cap: parseRenderScaleOverride", () => {
+  it("fehlender/leerer Parameter -> null (Regler aktiv)", () => {
+    expect(parseRenderScaleOverride(null)).toBeNull();
+    expect(parseRenderScaleOverride("")).toBeNull();
+  });
+
+  it("0 -> 0 (Regler aus, Voller Buffer) — Achtung Number(null) ist 0", () => {
+    expect(parseRenderScaleOverride("0")).toBe(0);
+  });
+
+  it("1..3 -> fester Teiler, ganzzahlig gerundet", () => {
+    expect(parseRenderScaleOverride("1")).toBe(1);
+    expect(parseRenderScaleOverride("2")).toBe(2);
+    expect(parseRenderScaleOverride("3")).toBe(3);
+    expect(parseRenderScaleOverride("2.6")).toBe(3);
+    expect(parseRenderScaleOverride("1.2")).toBe(1);
+  });
+
+  it("ausserhalb des Bereichs -> null (nicht clampsen, Messung soll auffallen)", () => {
+    expect(parseRenderScaleOverride("4")).toBeNull();
+    expect(parseRenderScaleOverride("-1")).toBeNull();
+    expect(parseRenderScaleOverride("bananenbrot")).toBeNull();
+  });
+});
+
+describe("M10-dpr-budget-cap: renderBufferSize", () => {
+  it("Stufe 1 = volle logische Groesse, Stufe 2/3 = ganzzahlige Teilung", () => {
+    expect(renderBufferSize(780, 360, 1)).toEqual({ width: 780, height: 360 });
+    expect(renderBufferSize(780, 360, 2)).toEqual({ width: 390, height: 180 });
+    expect(renderBufferSize(780, 360, 3)).toEqual({ width: 260, height: 120 });
+  });
+
+  it("klemmt auf [1, 3] und rundet (0/2.6/4)", () => {
+    expect(renderBufferSize(780, 360, 0)).toEqual({ width: 780, height: 360 });
+    expect(renderBufferSize(780, 360, 2.6)).toEqual({ width: 260, height: 120 });
+    expect(renderBufferSize(780, 360, 4)).toEqual({ width: 260, height: 120 });
+  });
+
+  it("nie kleiner als 1x1 (auch bei winzigen Views)", () => {
+    expect(renderBufferSize(1, 1, 3)).toEqual({ width: 1, height: 1 });
+  });
+});
