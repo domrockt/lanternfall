@@ -6966,10 +6966,16 @@
       "id": 6038,
       "title": "m10-view-fill-16x9: Ist-Messung Bildfüllung (4 Formate)",
       "description": "scripts/m10-view-fill.mjs rendert 640x360, 960x540, 1280x720, 2560x1440 (dpr 1) → shots/m10-view-fill-before-*.png + -before.json mit sichtbarer Spielfeld-Breite px, Balkenbreite px je Format + WebGL-Renderer-String. AK: Messung existiert, Werte belegen die Balken bei 960x540/1280x720, genau ein Messlauf (kein Tuning-Loop).",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:20:28Z",
+          "by": "build",
+          "text": "doing → review: Was: scripts/m10-view-fill.mjs + before-Shots/JSON (Commit f7f5319). Wie geprüft: 4 Formate gemessen, WebGL-Renderer 'Mesa Intel RPL-S' in jeder Messung, 0 JS-Fehler; Balken 640x360=80/80, 960x540=120/120 px belegt. Ein Messlauf, kein Tuning-Loop."
+        }
+      ],
       "created": "2026-11-27T22:12:33Z",
-      "updated": "2026-11-27T22:12:33Z"
+      "updated": "2026-11-27T22:20:28Z"
     },
     {
       "id": 6039,

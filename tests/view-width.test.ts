@@ -32,11 +32,12 @@ describe("M10-Crowd: Renderbreite bei hoher Gegnerlast deckeln", () => {
     expect(capped.cssWidth * capped.dpr).toBeCloseTo(capped.width * capped.scale, 5);
   });
 
-  it("schmale Views (intern <= 640) bleiben unveraendert", () => {
+  it("schmale Views (Fuell-Fit, intern 640) bleiben unter der Klemme unveraendert", () => {
     const small = view(640, 360, 1);
-    expect(small.width).toBe(480);
+    // M10-view-fill: 640x360 fuellt jetzt komplett (intern 640, statt 480+Balken).
+    expect(small.width).toBe(640);
     const capped = view(640, 360, 1, true);
-    expect(capped.width).toBe(480);
+    expect(capped.width).toBe(640);
     expect(capped.scale).toBe(small.scale);
     expect(capped.cssWidth).toBe(small.cssWidth);
   });

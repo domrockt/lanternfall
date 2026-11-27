@@ -61,10 +61,11 @@ describe("M8 View: ganzzahlige Gerätepixel-Skalierung", () => {
     expect(isIntegerPixelPerfect(v)).toBe(true);
   });
 
-  it("kleine Fenster (n < 2) nutzen den gebrochenen Fit-Rückfall", () => {
+  it("kleine Fenster (n < 2) nutzen den Fuell-Fit (M10-view-fill)", () => {
     const v = view(800, 450);
     expect(v.fit).toBe(true);
-    expect(v.width).toBe(MIN_WIDTH);
+    // 16:9-Fenster fuellen jetzt komplett: Breite 640 statt 4:3-Basis 480.
+    expect(v.width).toBe(640);
     expect(v.height).toBe(BASE_HEIGHT);
     expect(v.scale).toBeGreaterThan(1);
     expect(v.scale).toBeLessThan(2);
