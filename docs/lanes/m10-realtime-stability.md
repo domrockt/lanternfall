@@ -65,7 +65,10 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
   exakt, Sim unbeeinträchtigt.
 - Zweiter Lauf geplant, sobald loadavg < ~8 und flock frei (Abbruchkriterium des
   Briefings: Ursache dokumentieren, zweiter Lauf).
-- (Ergebnis des zweiten Laufs wird hier ergänzt)
+- **Lauf 2 (2026-11-27 19:36Z gestartet):** gleiche Flags wie Lauf 1 (`--prefix
+  m10-realtime`), Start bei loadavg 4.5 (Kriterium < 8 erfüllt), Lock frei.
+  WIP: läuft (Log `~/tmp/m10-realtime-stability-k4-run2.log`, Ergebnis-JSON erst
+  am Laufende). (Ergebnis wird hier ergänzt)
 
 ## Messwerte
 - (K4)
