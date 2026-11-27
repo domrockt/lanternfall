@@ -36,18 +36,22 @@ function differingDimensions(a: DeathFxSpec, b: DeathFxSpec): string[] {
 
 describe("Todes-VFX-Specs (#K4)", () => {
   it("jeder der 30 Archetypen mappt auf genau eine der 4 Klassen", () => {
-    const archetypes = [...new Set(Object.values(ENEMIES).map((e) => e.archetype))];
-    expect(archetypes.length).toBe(10);
-    for (const a of archetypes) {
-      const cls = deathClassFor(a);
-      expect(CLASSES).toContain(cls);
-      // Unbekannte Archetypen fallen bewusst auf dissolve zurück.
-      expect(deathClassFor("unbekannt")).toBe("dissolve");
+    // Alle 30 Gegner-Einträge einzeln prüfen, nicht nur die 10 Unique-Archetypen:
+    // ein fehlender/neuer Gegner muss den Test rot machen.
+    const entries = Object.entries(ENEMIES);
+    expect(entries.length).toBe(30);
+    for (const [id, e] of entries) {
+      const cls = deathClassFor(e.archetype);
+      expect(CLASSES, `${id} (${e.archetype})`).toContain(cls);
     }
-    // Alle 4 Klassen kommen unter den 30 Gegnern wirklich vor.
-    const used = new Set(Object.values(ENEMIES).map((e) => deathClassFor(e.archetype)));
-    expect(used.size).toBe(4);
-    expect(allDeathFx().map((s) => s.cls)).toEqual(CLASSES);
+    const archetypes = [...new Set(entries.map(([, e]) => e.archetype))];
+    expect(archetypes.length).toBe(10);
+    // Unbekannte Archetypen fallen bewusst auf dissolve zurück.
+    expect(deathClassFor("unbekannt")).toBe("dissolve");
+    // Alle 4 Klassen kommen unter den 30 Gegnern wirklich vor (echte Verteilung,
+    // nicht die tautologische Ableitung aus allDeathFx()).
+    const used = new Set(entries.map(([, e]) => deathClassFor(e.archetype)));
+    expect(used).toEqual(new Set(CLASSES));
   });
 
   it("alle 4 Klassen sind paarweise in >= 3 Dimensionen unterscheidbar", () => {
@@ -77,10 +81,11 @@ describe("Todes-VFX-Specs (#K4)", () => {
       // Fläche skaliert quadratisch mit scaleFrom: mindestens 2x.
       const areaRatio = (boss.scaleFrom / base.scaleFrom) ** 2;
       expect(areaRatio, `${cls}: ${areaRatio.toFixed(2)}x`).toBeGreaterThanOrEqual(2);
-      // Mehr Partikel, länger, weiter gestreut.
+      // Mehr Partikel, länger (Shard und Staub), weiter gestreut.
       expect(boss.count).toBeGreaterThan(base.count);
       expect(boss.dustCount).toBeGreaterThan(base.dustCount);
       expect(boss.life).toBeGreaterThan(base.life);
+      expect(boss.dustLife).toBeGreaterThan(base.dustLife);
       expect(boss.spread).toBeGreaterThan(base.spread);
     }
   });
