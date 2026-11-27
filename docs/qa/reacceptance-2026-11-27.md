@@ -159,3 +159,36 @@ Echtzeitlaufs auf diesem Host (Speicher-/Shm-Druck bei hoher Last, loadavg >10 w
 des Laufs), nicht ein Spielfehler. Die inhaltlichen Boss-/Truhen-/Sieg-Belege liegen
 bereits aus dem 30×-fullrun vor (fa2-03). Für die Heap-Abnahme bleibt der Echtzeitlauf
 offen, bis ein stabiler Host/Lauf vorliegt.
+
+## fa2-05 — Touch/Gamepad (verify-input) + Optik-Urteil
+
+### Eingabe: `node scripts/verify-input.mjs` (2026-11-27T13:43:05–13:44:54Z)
+
+**28/28 Checks PASS**, 0 JS-Fehler (`INPUT_RC=0`). Abgedeckt: Touch (Menüs bis in den
+Run, Joystick bewegt Spieler 2048→2135, Pause per zweitem Finger, Level-up/Truhe per
+Tipp, 1 Minute Spiel ohne Tastatur), Gamepad (Hotplug, D-Pad+A wählt Kael, Stick,
+Disconnect/Reconnect, Pause/Optionen-Fokus, Level-up/Truhe/Results), Tastatur (Bewegung,
+ESC pausiert/fortsetzt, Listener-Zählung 1), alle Shots >10 KB.
+Log: `shots/qa-reaccept-input-log.txt`, Shots `shots/m8-input-*.png` (13:43–13:44Z).
+
+**Urteil Eingabe: PASS.**
+
+### Optik: art-director-Urteil zu den aktuellen 640×360-Shots (2026-11-27T15:5xZ)
+
+Unabhängiges Urteil des art-director (Kontrolleur, keine Code-Änderung), alle 4 Shots
+4× nearest vergrößert geprüft. **GESAMT: FAIL (3,25/5)** — konkrete Mängel:
+
+| Shot | Note | Befunde |
+|---|---|---|
+| `shots/perf-500.png` | 4 (ok) | Spieler-Silhouette lesbar (1-px-Ink-Kontur, Laterne mit Glow-Kern), Gegner/Pickups farblich eindeutig, Burst-FX ohne Einzelpixel-Rauschen |
+| `shots/perf-minute25.png` | 3 (nachbessern) | Boss-Roben (rot) verschmelzen mit orangen Explosions-FX und Schadenszahlen; Announce-Panel halbtransparent, Münz-Pickup liegt auf „BOSS ERWACHT" |
+| `shots/m3-fullrun-minute25.png` | 4 (ok) | Announce-Panel solide, Boss-Gruppe trotz Feuer-/Laser-FX lesbar, HUD-Icons distinct |
+| `shots/m3-fullrun-results.png` | 2 (muss neu) | **Textüberlappung**: „SIEG…"/„SCHADEN PRO WAFFE"/„GESAMT: 3.7M" überlagern sich auf gebrochener Grundlinie; Wortumbruch „SEELENLEU/CHTFEUER" ohne Trennstrich; Tabelle zeigt 6 statt 12 Zeilen, untere Panelhälfte leer |
+
+Folgekarten (nicht Teil dieser Re-Abnahme-Messung, bitte backlog):
+Ergebnis-Screen-Layout (Überlappung/Umbruch/12 Zeilen) und Boss-FX-Kontrast
+(rote Gegner vs. orange FX, opakes Announce-Panel).
+
+**Urteil Optik: FAIL (3,25/5) — Mängel dokumentiert, Folgekarten nötig.**
+
+**Urteil fa2-05 gesamt: Eingabe PASS, Optik FAIL (ehrlich dokumentiert).**
