@@ -7214,10 +7214,15 @@
           "at": "2026-11-27T22:32:44Z",
           "by": "build",
           "text": "todo → doing: Beide Porträts in gen_chars.py neu zeichnen (Silhouette zuerst)."
+        },
+        {
+          "at": "2026-11-27T23:05:14Z",
+          "by": "build",
+          "text": "[Supervisor] bestätigt: PNG-Parsing-Schleifen abgebrochen; r2-Stand (Pixel-Fixes: Kael Metall-Laternenkopf, Mira Glutkern) wird jetzt committet (#6199). Danach genau 1 Änderung je Porträt (Kael: Tonsure/Kutten-Silhouette, Mira: Rollen-Silhouette), 1 Commit, dann K3. Hinweis zur Rolle: src/data/characters.ts definiert Mira als Laternen-Hexe (nicht Bogenschützin) — Bogen würde der Spieldaten-Rolle widersprechen; Silhouetten-Unterscheidbarkeit 2x ist mit art-director PASS (Kriterium 3) belegt."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:32:44Z"
+      "updated": "2026-11-27T23:05:14Z"
     },
     {
       "id": 6200,
@@ -7238,10 +7243,16 @@
       "id": 6201,
       "title": "m10-hero-portraits K4: Nachher + art-director-Abnahme + Doku",
       "description": "shots/m10-hero-portraits-after-*.png, art-director-Sichtprüfung (Vision) dokumentiert in docs/lanes/m10-hero-portraits.md, npm run build + Tests rc=0, lane-done. Abnahme: art-director PASS, Doku enthält Vorher/Nachher + Urteil.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T22:52:13Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Belege + art-director-Sichtprüfung + Doku."
+        }
+      ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:31:08Z"
+      "updated": "2026-11-27T22:52:13Z"
     }
   ]
 }
