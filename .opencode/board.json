@@ -3822,10 +3822,16 @@
       "id": 2544,
       "title": "m10-boss-onscreen #K6 Intro-Zoom-Banner-Sichtbarkeit",
       "description": "Review-Fix A10: Phaser-Zoom um Viewport-Mitte korrekt rechnen, Boss-Komposition mit Intro-Zoom 1,14 headroom, Banner nach Retries hart emittieren. Abnahme: 25/25 Tests, 12 Messzeilen 0 px Overlap, 12 frische Screenshots, build+test gruen, Commit #K6.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T12:14:35Z",
+          "by": "build",
+          "text": "doing → done: Commit cfe5781/6803c5a; Zoom-Headroom 1,14, 25/25 Tests, 0 px Overlap, art-director PASS 4/5. Run-Guard-Patch offen wegen Claim m10-feedback-budget."
+        }
+      ],
       "created": "2026-11-27T11:30:44Z",
-      "updated": "2026-11-27T11:30:44Z"
+      "updated": "2026-11-27T12:14:35Z"
     }
   ]
 }
