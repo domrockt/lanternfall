@@ -70,6 +70,59 @@ Ein globales Absenken der Gegnerzahl ist deshalb der einzige wirksame Hebel, abe
 30 Typen und die normale Dichte unverändert bleiben. Karten 2–3 bauen genau diesen
 Regler; die Detail-Buckets widerlegen Terrain/Spawner als Ursache.
 
+## K2 — Frame-Budget-Regler (pure)
+
+`src/logic/scaling.ts`: `createFrameBudget` / `stepFrameBudget` / `frameBudgetTarget`.
+Der Regler hält einen **Anteil** (`ratio`, 0..1) des aktuellen Deckels, nicht eine absolute
+Zahl: > 19,2 ms für > 1 s senkt `ratio` um max. 10 %/s, Untergrenze ist das Verhältnis
+`min(1, 320/ceiling)`; unter 15 ms erholt er sich mit 1-s-Hysterese bis `ratio = 1`.
+Damit bleibt ein wachsender Früh-Deckel (< 320) unangetastet und das Default-Ziel
+(780×360@3, 500) exakt 500. `tests/endgame-budget.test.ts` deckt Senkung, Boden 320,
+Erholung, Hysterese-Band 15–19,2 ms, Deckel-Absenkung und Lang-Frame-Clamping mit
+8 deterministischen Serien ab. Tests grün (`npx vitest run tests/endgame-budget.test.ts`: 8/8).
+
+## K3 — Spawner koppelt den Regler
+
+`src/systems/Spawner.ts`: `cap = min(maxActiveEnemies(...), frameBudgetTarget(...))`.
+Der Regler wird **einmal pro echtem Frame** gefüttert (`game.loop.frame`), nicht pro
+Sim-Substep, damit `timeScale` nicht mehrfach zählt. Tier-Mix, Spezialwellen, Elites und
+`waves.ts` sind unverändert.
+
+**Gegner-Abdeckung 30/30 unverändert:** `node scripts/enemy-coverage.mjs` vorher/nachher,
+Seeds 101/202: je `covered 30`, `missingUnion []`, `totalSpawns 2524` in beiden Läufen
+identisch (`shots/m10-endgame-fps-coverage-before.json`, `-after.json`).
+
+## K4 — Nachmessen + Abnahme
+
+Kommandos (je Lauf unter `flock /home/ai/games/.lf-perf.lock`:
+
+```bash
+flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs \
+  --viewport 640x360 --dpr 1 --out shots/m10-endgame-fps-final-r<N>.json   # 3×
+```
+
+| Lauf | Burst-FPS (500 Gegner) | Minute-25-FPS (300 Gegner + 6 Evolutionen) | loadavg (Start) |
+|---|---|---|---|
+| 1 | 60,1 | **56,6** PASS | 4,07 |
+| 2 | 60,1 | **55,7** PASS | 8,74 |
+| 3 | 60,1 | 53,3 (≥52, <55) | 9,43 |
+
+Vorher (K1, gleiche Host-Lage): Burst 60,1/60,1/60,1; Minute 25 56,7/55,1/53,8.
+Nachher: 56,6/55,7/53,3. **Kein belegbarer FPS-Gewinn** — die Differenz liegt im
+Host-Rauschen, nicht im Regler. Ursache, ehrlich: der Minute-25-Messlauf hält exakt
+300 Gegner; die Regler-Untergrenze 320 liegt darüber, also kann der Regler in diesem
+Szenario gar nicht eingreifen. Der Hebel wirkt nur, wenn die reale Dichte über 320
+liegt (z. B. natürlicher Endgame-Lauf mit > 400 aktiven Gegnern).
+
+**Abnahmekriterium:** 2 von 3 Minute-25-Läufen ≥ 55 FPS und kein Lauf < 52 → **erfüllt**
+(56,6 / 55,7 / 53,3), Burst 3× 60,1 ≥ 55, 0 JS-Fehler. Die in `ACCEPTANCE.md` notierte
+rote Baseline 37,8–41,4 entstand unter deutlich höherer Parallel-Last; bei loadavg 4–9
+ist der Punkt grün. Das ist lastabhängig, kein Codegewinn.
+
+`npx tsc --noEmit` grün, `npm run build` grün, `npm test` **309/309** grün.
+Chaos-Beleg: `shots/m10-endgame-fps-chaos.png` (640×360, Minute 24:50, lebende
+Horde + Frost-/Evolutions-VFX, Boss-Banner, 0 JS-Fehler).
+
 ## Offene Punkte
 
 - `profile-minute25.mjs` bleibt defekt (fremder Claim, nicht angefasst); Ersatz ist
