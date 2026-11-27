@@ -71,7 +71,7 @@ Ist-Zustand inkl. Farbbug). Die before-PNGs wurden vor dem Farbfix erzeugt.
   fx_pillar/fx_shock-Tweens in Run.ts umgehen den FxSystem-Draw-Pfad und bleiben
   beim Level-1-Key (unverändertes Verhalten). Das ist der Restbefund unten.
 
-**Reviewer-Befunde (PASS, nachgezogen in Commit `dc0f1ff`):**
+**Reviewer-Befunde (PASS, nachgezogen in Commit `90367e9`):**
 1. Deckel-Kommentar korrigiert: die echte Device-Fläche texW*L * (Scale/L)² =
    texW*Scale²/L bleibt um Faktor L UNTER der Deckel-Obergrenze (nicht identisch).
    Richtung safe: der Deckel bleibt gültige Obergrenze, Spielpixel-Größe unverändert.
@@ -144,4 +144,5 @@ String in die Mess-JSON anhängt (perf.mjs selbst ist fremd).
 - 176dc18 — #6098 Ist-Messung + Bake-Infrastruktur + Off-by-10-Farbfix
 - 805da9b — #6099 FxSystem/ParticleSystem Draw-Pfad (Draw-Scale ≤ 1)
 - 4ced0f7 — #6100 tests/fx-mixel.test.ts (16 Tests), Suite 779 grün
-- (dieser Commit) — #6101 after-Belege, art-director PASS, Perf, Doku
+- dc72c0d — #6101 after-Belege, art-director PASS, Perf, Doku
+- 90367e9 — Reviewer-PASS-Nachzug (Deckel-Kommentar, @-Key-Roundtrip, Fallback-Doku)

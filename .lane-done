@@ -1,0 +1,35 @@
+# Lane m10-fx-mixel-fix — FERTIG (2026-11-27)
+
+Mixel-Fix für große Feuer-/Aura-Effekte (Dom-Wunsch 21:15Z, Punkt 4a):
+fx_fire (14x14), fx_halo/fx_halo_cold (24x24), fx_shock (48x48) werden
+zusätzlich als Bake-Stufen w0*L x h0*L erzeugt (weicher 1-px-Glow, Level-1-Keys
+unverändert); FxSystem/ParticleSystem wählen die kleinste Stufe L >= gewünschter
+Scale und zeichnen mit Sprite-Scale = Scale/L <= 1 — ein Textur-Pixel deckt
+höchstens 1 Spielpixel ab.
+
+Messwerte:
+- BEFORE (shots/m10-fx-mixel-before*.json): worstBlockGamePx 4,6, 12/12
+  Showcase-Zeichnungen mit Scale > 1 (Mixel-Befund, 640x360 + 960x540).
+- AFTER (shots/m10-fx-mixel-after*.json): worstBlockGamePx 1, 0 Mixel-Effekte;
+  art-director-Sichtprüfung (Vision) PASS — keine Mixel-Blöcke, warme
+  Palette-Rampe, gleiche Effektgrößen.
+- Tests: tests/fx-mixel.test.ts 16 Guards; Suite 779 Tests grün,
+  npx tsc --noEmit rc=0, npm run build rc=0.
+- Perf M25 780x360@3 unter flock (shots/m10-fx-mixel-perf-m25.json):
+  burst 60,1 FPS @500 Gegner, minute25 60,0 FPS @300, passed=true,
+  Renderer ANGLE/Mesa Intel RPL-S (swiftShader=false).
+
+Nebenfix (dokumentiert in docs/lanes/m10-fx-mixel-fix.md): Off-by-10-Farbfix in
+blob/ring-Ramps (97+idx → charOf) — Lantern/Amber liefen in Crimson-Bänder.
+
+Restbefund: direkte makeImage-Halos in CombatSystem (~364, ~817) und
+fx_pillar/fx_shock-Tweens in Run.ts umgehen FxSystem.spawn und zeichnen weiter
+Level-1-Keys (fremde Dateien, Anfrage in .dispatch/requests.md). Ein Alt-Test
+(tests/fx-add-cap.test.ts, 1 Sprite-Scale-Assertion) angepasst, begründet in
+der Lane-Doku.
+
+Commits: 176dc18 (#6098), 805da9b (#6099), 4ced0f7 (#6100), dc72c0d (#6101),
+90367e9 (Reviewer-PASS-Nachzug: Deckel-Kommentar, @-Key-Roundtrip, Fallback-Doku).
+
+Reviewer (Code-Review e15e391..dc72c0d): PASS — 0 kritische Befunde, 3
+Sollte-Punkte nachgezogen (90367e9).
