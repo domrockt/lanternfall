@@ -1,0 +1,18 @@
+# Lane m10-view-width-cap — done (27.11., Versuch 2)
+
+Fix: interne logische Renderbreite bei hoher Gegnerlast auf ≤ 640 geklemmt
+(`CROWD_WIDTH=640`, Schwelle 300 aktiv / 260 Release, Hysterese, ganzzahlige Skalierung erhalten)
+— `src/logic/view.ts` + Poll in `src/main.ts`, Tests `tests/view-width.test.ts` (5/5).
+
+Messwerte (Belege unter `shots/m10-view-width-*`, Doku `docs/lanes/m10-view-width-cap.md`):
+- Burst A/B 780×360 @3: 53,4 → 57,7 FPS (+8 %); 1080×360 intern 640 statt 860: +15,6 %.
+- Minute-25-Median: 640×360 55,2 (Ziel ≥ 55: PASS); 780×360 49,7 vs 31,9 vorher (+56 %, PASS).
+- Fullrun fpsMin **39,4 < 55: Kriterium NICHT erfüllt** — Ursache dokumentiert: Fullrun läuft bei
+  960×540 @1 intern 480 breit (Fit-Fallback), die 640-Klemme greift dort nicht; größter verbleibender
+  Posten UI/PostFX (+18,5 %). Folgekarte #4138 im Backlog (laut Briefing nicht in dieser Lane tunen).
+- Sicht-Abnahme art-director PASS 5/5 (keine Unschärfe/falsche Pixelkanten 640/780/1080),
+  Reviewer PASS; `npm test` 34 Dateien/360 Tests grün, `npm run build` rc=0.
+
+Karten: #3458–#3460 done, #3461 abgeschlossen (blocked→done, Kriterium lt. Briefing behandelt:
+Ergebnis + Ursache dokumentiert, nicht weiter getunt). Offener Punkt: fullrun fpsMin ≥ 55 nur über
+UI/PostFX-Drosselung (#4138) erreichbar.
