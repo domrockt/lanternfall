@@ -21,6 +21,7 @@
 import { execSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
+import { evaluateHeapGate } from "./m10-heap-budget-gate.mjs";
 
 const argv = process.argv.slice(2);
 const strArg = (name, fallback) => {
@@ -28,6 +29,8 @@ const strArg = (name, fallback) => {
   return i >= 0 && argv[i + 1] ? argv[i + 1] : fallback;
 };
 const numArg = (name, fallback) => {
+  const inline = argv.find((a) => a.startsWith(`--${name}=`));
+  if (inline) return Number(inline.slice(name.length + 3));
   const i = argv.indexOf(`--${name}`);
   return i >= 0 && argv[i + 1] ? Number(argv[i + 1]) : fallback;
 };
@@ -35,8 +38,6 @@ const numArg = (name, fallback) => {
 const MINUTES = Math.max(1, Math.min(30, Math.floor(numArg("minutes", 30))));
 const OUT = strArg("out", "shots/m10-heap-budget-before.json");
 const POLL_MS = 500;
-const GATE_PCT = 15; // HARD: endMB - Minute 1 <= +15 %
-const SOFT_PCT = 25; // SOFT: Peak je 5-min-Fenster <= Minute 1 + 25 %
 const RUN_SECONDS = MINUTES * 60;
 
 const gitSha = (() => {
@@ -113,7 +114,9 @@ let victory = false;
 let resultReason = null;
 let simSeconds = 0;
 let truncated = false;
+let fatal = null;            // Browser-/Renderer-Tod o. ae.: partielles JSON schreiben
 let minute1 = null;          // Post-GC bei Sim-Minute 1 (Tor-Referenz)
+let endMB = null;
 const timeline = [];         // { minute, jsMB } Post-GC je Sim-Minute
 const minutePeaks = [];      // { minute, peakMB } roher Peak (ohne GC)
 let curPeak = 0;
@@ -122,6 +125,7 @@ const fpsSamples = [];
 
 const round1 = (x) => Math.round(x * 10) / 10;
 
+try {
 while (Date.now() - started < (RUN_SECONDS + 300) * 1000) {
   await page.waitForTimeout(POLL_MS);
   const s = await page.evaluate(() => {
@@ -170,44 +174,28 @@ minutePeaks.push({ minute: curMinute, peakMB: round1(curPeak) });
 
 // endMB: nach erzwungenem GC im Run-Ende (Results-Szene bei vollem Lauf,
 // sonst letzter Run-Zustand). Scene-Teardown + GC = Leak-Signalgeber.
-const endMB = await heapGC();
+try {
+  endMB = await heapGC();
+} catch (e) {
+  fatal = fatal ?? String(e);
+}
+} catch (e) {
+  // Renderer-/Browser-Tod: partielles JSON mit Belegen schreiben (wie
+  // realtime-run.mjs), kein belegloser Absturz.
+  fatal = String(e);
+  try { endMB = await heapGC(); } catch { endMB = null; }
+}
 
 const fpsSorted = [...fpsSamples].sort((a, b) => a - b);
 const fps = fpsSorted.length
   ? { min: round1(fpsSorted[0]), median: round1(fpsSorted[Math.floor(fpsSorted.length / 2)]), samples: fpsSorted.length }
   : { min: null, median: null, samples: 0 };
 
-// Weicher Beobachtungswert: Peak je 5-min-Fenster.
-const windowPeaks = [];
-for (let w = 0; w * 5 < MINUTES; w++) {
-  const inWin = minutePeaks.filter((p) => p.minute >= w * 5 && p.minute < (w + 1) * 5);
-  windowPeaks.push({
-    window: w, fromMin: w * 5, toMin: (w + 1) * 5,
-    peakMB: inWin.length ? round1(Math.max(...inWin.map((p) => p.peakMB))) : null,
-  });
-}
-
-const gate = {
-  definition: "HARD: endMB(nach erzwungenem GC, Run-Ende) - Minute 1 <= +15 % | SOFT (Beobachtung): max Peak je 5-min-Fenster <= Minute 1 + 25 %",
-  minute1MB: minute1,
-  endMB,
-  endDeltaMB: minute1 != null ? round1(endMB - minute1) : null,
-  endDeltaPct: minute1 != null && minute1 > 0 ? round1(((endMB - minute1) / minute1) * 1000) / 10 : null,
-  gatePct: GATE_PCT,
-  softPct: SOFT_PCT,
-  maxWindowPeakMB: round1(Math.max(...windowPeaks.map((w) => w.peakMB ?? 0))),
-  maxWindowPeakPct: minute1 != null && minute1 > 0
-    ? round1(((Math.max(...windowPeaks.map((w) => w.peakMB ?? 0)) - minute1) / minute1) * 1000) / 10
-    : null,
-};
-gate.hardPass = gate.endDeltaPct != null ? gate.endDeltaPct <= GATE_PCT : false;
-gate.softPass = gate.maxWindowPeakPct != null ? gate.maxWindowPeakPct <= SOFT_PCT : false;
-gate.verdict = gate.hardPass ? "PASS" : "FAIL";
-gate.softVerdict = gate.softPass ? "PASS (Beobachtung)" : "FAIL (Beobachtung)";
-
-// Fall-A/B-Hinweis fuer Karte #6239:
-gate.fallA = gate.hardPass;
-gate.fallB = !gate.hardPass;
+// Tor (reine Definition in m10-heap-budget-gate.mjs, getestet in
+// tests/heap-budget.test.ts): HARD endMB - Minute 1 <= +15 %,
+// SOFT (Beobachtung) max Peak je 5-min-Fenster <= Minute 1 + 25 %.
+const gate = evaluateHeapGate({ minute1MB: minute1, endMB, minutePeaks });
+gate.fatal = fatal;
 
 const out = {
   script: "scripts/m10-heap-budget.mjs",
@@ -224,13 +212,15 @@ const out = {
   minute1MB: minute1,
   timeline,
   minutePeaks,
-  windowPeaks,
+  windowPeaks: gate.windowPeaks,
   fps,
   errors,
   crashes,
   gate,
+  fatal,
 };
 writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
+if (fatal) console.log(`FATAL (partielles JSON geschrieben): ${fatal}`);
 console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${GATE_PCT} %), soft=${gate.softVerdict} (maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${renderer.renderer}, errors=${errors.length}, victory=${victory}`);
 await browser.close();
 process.exit(0);
