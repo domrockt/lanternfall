@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 // Re-Abnahme Performance: kurzer, serialisierter Lauf ueber 640x360 und 780x360@3.
 // Misst pro Iteration Burst (500 Gegner) und Minute-25 getrennt, alles unter
-// flock /home/ai/games/.lf-perf.lock. Maximal 3 Iterationen (Default).
+// flock -w 420 /home/ai/games/.lf-perf.lock (erwartete Laufzeit ~300 s gemessen + 120 s Puffer).
+// Maximal 3 Iterationen (Default). Bei Lock-Timeout (rc != 0): "qa-reaccept-perf: Sperre
+// /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen" ausgeben und Exitcode
+// weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 import { spawnSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const argv = process.argv.slice(2);
 const argOf = (name, fallback) => {
@@ -26,9 +29,14 @@ for (let i = 0; i < RUNS; i++) {
     const started = Date.now();
     // perf.mjs endet mit rc=1, wenn sein kombiniertes 55-Ziel verfehlt wird
     // (hier ist Minute 25 bewusst nur >=50). Der Exitcode ist daher kein Fehler.
+    // -w 420 = erwartete Laufzeit ~300 s (gemessen) + 120 s Puffer. Bei Lock-Timeout
+    // (flock -w endet rc=1): Meldung + Exitcode weiterreichen — kein stiller Abbruch.
+    // Node-Timeout 720 s = 420 s Lock-Wartezeit + 300 s Messlauf.
     const run = spawnSync(
       "flock",
       [
+        "-w",
+        "420",
         "/home/ai/games/.lf-perf.lock",
         "node",
         "scripts/perf.mjs",
@@ -39,9 +47,17 @@ for (let i = 0; i < RUNS; i++) {
         "--out",
         file,
       ],
-      { stdio: "pipe", timeout: 300_000, encoding: "utf8" },
+      { stdio: "pipe", timeout: 720_000, encoding: "utf8" },
     );
     if (run.error) throw run.error;
+    // Lock-Timeout (flock -w bricht rc=1 ab, ohne das JSON zu schreiben) von einem
+    // legitimen perf.mjs rc=1 (55-Ziel verfehlt, JSON WURDE geschrieben) trennen.
+    if (run.status !== 0 && !existsSync(file)) {
+      console.error(
+        "qa-reaccept-perf: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen",
+      );
+      process.exit(run.status);
+    }
     const j = JSON.parse(readFileSync(file, "utf8"));
     const row = {
       iteration: i + 1,
