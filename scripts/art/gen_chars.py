@@ -28,9 +28,11 @@ BELT, BELT_D = 16, 14
 GOLD, GOLD_L = 20, 21
 GLOW, GLOW_H = 22, 13
 IRON, IRON_D, IRON_L = 5, 4, 7
+STEEL_L = 6
+RUST, RUST_D, RUST_L = 17, 15, 18
 CHAIN, CHAIN_L = 4, 6
 ROBE, ROBE_D, ROBE_L = 3, 2, 4
-SCARF = 26
+SCARF = 20
 EYE = 1
 BONE = 11
 
@@ -66,13 +68,17 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     bw = 2 if side else 0           # Profil schmaler
 
     body_y = 16 + bob - recoil
-    # ── Rock/Cloak ──
-    rock_w = [14 - bw, 15 - bw, 16 - bw, 18 - bw, 20 - bw, 21 - bw, 21 - bw]
+    # ── Rock/Cloak: schmaler Umhang (Mira-Silhouette), Saum mit Goldborte ──
+    rock_w = [12 - bw, 13 - bw, 14 - bw, 15 - bw, 16 - bw, 17 - bw, 17 - bw]
     hem = 26 + bob - recoil
     for i, w in enumerate(rock_w):
         g.rect(cx + ox - w // 2, 22 + bob - recoil + i, w, 1, CLOTH if i < 5 else CLOTH_S)
     g.rect(cx + ox - (8 - bw), hem, 17 - bw, 1, CLOTH_S)
-    for fold in (-5, -2, 2, 5):
+    # Goldene Saumborte: nur 9 px in der Mitte, damit der Akzent sitzt.
+    g.rect(cx + ox - 4, hem, 9, 1, GOLD)
+    g.put(cx + ox - 4, hem, GOLD_L)
+    g.put(cx + ox + 4, hem, GOLD_L)
+    for fold in (-4, -1, 1, 4):
         if side and fold < 0:
             continue
         g.vline(cx + ox + fold, 24 + bob - recoil, hem - 1, CLOTH_S)
@@ -288,7 +294,7 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
 
     body_y = 16 + bob - recoil
     # ── Gewand-Silhouette: breite Schulter, Taille, ausgestellter Saum ──
-    widths = [19, 19, 15, 15, 15, 15, 16, 16, 17, 17, 19, 19]
+    widths = [23, 23, 17, 16, 16, 16, 17, 17, 18, 18, 20, 20]
     for i, w in enumerate(widths):
         w -= bw
         y = body_y + i
@@ -297,14 +303,14 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.put(x, y, ROBE_L)
         g.put(x + w - 1, y, ROBE_D)
 
-    # ── Schwere Stiefel ──
-    lift_l = 2 if (not idle and step == 1) else 0
-    lift_r = 2 if (not idle and step == 3) else 0
+    # ── Schwere Stiefel: kurze, stampfende Schritte (Kael wirkt schwerer) ──
+    lift_l = 1 if (not idle and step == 1) else 0
+    lift_r = 1 if (not idle and step == 3) else 0
     if side:
-        fwd_arr  = [2, 1, -2, -1]
-        back_arr = [-2, -1, 2, 1]
-        lift_f_arr = [0, 2, 0, 0]
-        lift_b_arr = [0, 0, 0, 2]
+        fwd_arr  = [1, 0, -2, -1]
+        back_arr = [-1, 0, 2, 1]
+        lift_f_arr = [0, 1, 0, 0]
+        lift_b_arr = [0, 0, 0, 1]
         fwd, back = fwd_arr[step], back_arr[step]
         lift_f, lift_b = lift_f_arr[step], lift_b_arr[step]
         fx = cx + 3 + fwd
@@ -323,20 +329,48 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
             g.rect(lx + 2, ly, 2, 1, BELT)
 
     # ── Kettengewand: drei klare Eisenbaender (je 2 px, 1 px Robe dazwischen) ──
-    def band(y: int, w: int, gold: bool = False):
+    def band(y: int, w: int, rust: bool = False):
         x = cx + ox - w // 2
         g.rect(x, y, w, 2, IRON_D)
         g.rect(x, y, w, 1, IRON)
         g.rect(x, y, 3, 1, IRON_L)
-        if gold:
-            g.rect(cx + ox - 1, y, 2, 2, GOLD)
-            g.put(cx + ox - 1, y, GOLD_L)
+        if rust:
+            g.rect(cx + ox - 1, y, 2, 2, RUST)
+            g.put(cx + ox - 1, y, RUST_L)
 
-    band(body_y + 1, 19 - bw)           # Schulterband
-    band(body_y + 4, 15 - bw, True)     # Brustband mit Schloss
-    band(body_y + 8, 17 - bw)           # Saumband
+    # ── Zweihandaxt auf dem Ruecken: breites Blatt ragt ueber die Schulter,
+    #     Stahl-Klinge + Rost-Schaft. Wird vor dem Gewand gezeichnet, damit
+    #     der Schaft hinter den Schulterplatten verschwindet.
+    if side:
+        blade = {5: (3, 7), 6: (2, 9), 7: (1, 9), 8: (2, 9), 9: (4, 7)}
+        for y, (x0, x1) in blade.items():
+            g.rect(x0, y, x1 - x0, 1, IRON)
+        g.rect(2, 6, 2, 1, IRON_L)
+        g.vline(1, 7, 8, IRON_L)
+        g.vline(8, 6, 8, STEEL_L)          # Schneide glitzert rechts
+        g.put(8, 5, STEEL_L)
+        g.rect(6, 8, 2, 2, RUST)           # Rost-Socket
+        g.put(6, 8, RUST_L)
+        g.rect(6, 10, 2, 14, BOOT_D)       # Schaft
+        g.vline(6, 10, 23, BOOT)
+    else:
+        blade = {5: (26, 30), 6: (24, 31), 7: (23, 31), 8: (24, 31), 9: (26, 30)}
+        for y, (x0, x1) in blade.items():
+            g.rect(x0, y, x1 - x0, 1, IRON)
+        g.rect(24, 6, 2, 1, IRON_L)
+        g.put(25, 5, IRON_L)
+        g.vline(30, 6, 9, STEEL_L)         # Schneide aussen
+        g.put(30, 5, STEEL_L)
+        g.rect(25, 8, 2, 2, RUST)          # Rost-Socket
+        g.put(25, 8, RUST_L)
+        g.rect(28, 10, 2, 13, BOOT_D)      # Schaft
+        g.vline(28, 10, 22, BOOT)
 
-    # ── Schulterplatten (abgerundet, breite Silhouette, 2x2-Niete) ──
+    band(body_y + 1, 21 - bw)           # Schulterband
+    band(body_y + 4, 17 - bw, True)     # Brustband mit Rostschloss
+    band(body_y + 8, 19 - bw)           # Saumband
+
+    # ── Schulterplatten (abgerundet, sehr breite Silhouette, Rost-Niete) ──
     def pauldron(x0: int, y0: int, w: int):
         g.rect(x0 + 1, y0, w - 2, 1, IRON)
         g.rect(x0, y0 + 1, w, 2, IRON)
@@ -345,34 +379,14 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.rect(x0, y0 + 1, 1, 2, IRON_D)
         g.rect(x0 + w - 1, y0 + 1, 1, 2, IRON_D)
         g.rect(x0 + 1, y0, w - 3, 1, IRON_L)
-        g.rect(x0 + w // 2 - 1, y0 + 1, 2, 2, GOLD)
-        g.put(x0 + w // 2 - 1, y0 + 1, GOLD_L)
+        g.rect(x0 + w // 2 - 1, y0 + 1, 2, 2, RUST)
+        g.put(x0 + w // 2 - 1, y0 + 1, RUST_L)
 
     if side:
-        pauldron(cx + ox + 7, body_y, 6)
+        pauldron(cx + ox + 6, body_y, 8)
     else:
-        pauldron(3, body_y, 8)
-        pauldron(21, body_y, 8)
-
-    # ── Zweihandaxt auf dem Ruecken: K Kael sofort als Schwergepanzerten
-    #     lesbar (langer Schaft, breiter A, Goldniete).
-    if side:
-        hx = cx - 9
-        g.rect(hx, body_y + 1, 2, 12, BOOT_D)
-        g.rect(hx, body_y + 1, 1, 11, BOOT)
-        g.rect(hx - 2, body_y - 2, 6, 3, IRON_D)
-        g.rect(hx - 1, body_y - 2, 4, 2, IRON)
-        g.put(hx - 1, body_y - 2, IRON_L)
-        g.put(hx + 2, body_y, GOLD)
-    else:
-        hx = cx + 9
-        g.rect(hx, body_y + 1, 2, 12, BOOT_D)
-        g.rect(hx, body_y + 1, 1, 11, BOOT)
-        g.rect(hx - 2, body_y - 2, 6, 3, IRON_D)
-        g.rect(hx - 1, body_y - 2, 4, 2, IRON)
-        g.put(hx - 1, body_y - 2, IRON_L)
-        g.put(hx + 2, body_y, GOLD)
-        g.put(hx + 2, body_y - 2, GOLD_L)
+        pauldron(1, body_y, 9)
+        pauldron(22, body_y, 9)
 
     # ── Arme (gewickelte Faeuste, Handschuh-Rampe 8/10/11) ──
     swing = 0 if idle else [1, 0, -1, 0][frame]
@@ -418,8 +432,8 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.rect(hcx - 4, hy - 3, 9, 2, IRON_D)
         g.rect(hcx - 4, hy - 3, 9, 1, IRON)
         g.rect(hcx - 4, hy - 3, 3, 1, IRON_L)
-        g.rect(hcx + 2, hy - 3, 2, 2, GOLD)
-        g.put(hcx + 2, hy - 3, GOLD_L)
+        g.rect(hcx + 2, hy - 3, 2, 2, RUST)
+        g.put(hcx + 2, hy - 3, RUST_L)
         # Nase als Silhouette
         g.rect(hcx + 4, hy, 2, 1, SKIN)
         g.rect(hcx + 4, hy + 1, 2, 1, SKIN_D)
@@ -435,12 +449,12 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
         g.rect(hcx - 3, hy - 5, 4, 1, HAIR)
         g.ellipse(hcx, hy, 5, 4, SKIN)
         g.rect(hcx - 4, hy + 2, 9, 3, SKIN)           # breite Kiefer
-        # Eisenreif (2 px), 2x2-Goldniete mittig.
+        # Eisenreif (2 px), 2x2-Rostniete mittig.
         g.rect(hcx - 5, hy - 3, 11, 2, IRON_D)
         g.rect(hcx - 5, hy - 3, 11, 1, IRON)
         g.rect(hcx - 5, hy - 3, 4, 1, IRON_L)
-        g.rect(hcx - 1, hy - 3, 2, 2, GOLD)
-        g.put(hcx - 1, hy - 3, GOLD_L)
+        g.rect(hcx - 1, hy - 3, 2, 2, RUST)
+        g.put(hcx - 1, hy - 3, RUST_L)
         # Wangen-Schatten (2 px Gruppen).
         g.rect(hcx - 5, hy + 1, 2, 1, SKIN_D)
         g.rect(hcx + 4, hy + 1, 2, 1, SKIN_D)
@@ -568,8 +582,8 @@ def portrait(kind: str) -> Grid:
             g.put(sx + 13, 32, None)
             g.put(sx, 37, None)
             g.put(sx + 13, 37, None)
-            g.rect(sx + 3, 34, 2, 2, GOLD)
-            g.rect(sx + 9, 34, 2, 2, GOLD)
+            g.rect(sx + 3, 34, 2, 2, RUST)
+            g.rect(sx + 9, 34, 2, 2, RUST)
         # Kahl rasierter Schädel: Haut-Rampe mit Schattenkante, kein Weißblock.
         g.rect(14, 14, 21, 3, SKIN)
         g.rect(15, 14, 8, 1, SKIN_L)   # Licht nur links, keine helle Stirnbinde
@@ -596,10 +610,10 @@ def portrait(kind: str) -> Grid:
         g.rect(22, 34, 2, 1, 25)
         g.rect(25, 34, 3, 1, 25)
         g.rect(20, 35, 3, 1, 23)
-        # Gebetskette, 2-px-Perlen.
+        # Gebetskette, 2-px-Rostperlen.
         for x in range(13, 35, 4):
-            g.rect(x, 36, 2, 2, GOLD)
-            g.put(x, 36, GOLD_L)
+            g.rect(x, 36, 2, 2, RUST)
+            g.put(x, 36, RUST_L)
 
     g = shade_edges(g, band=2)
     # Gesichtsdetails nach dem Shading scharf setzen (keine Glow-Flächen).
