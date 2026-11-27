@@ -59,6 +59,8 @@ Offener Restpunkt aus ACCEPTANCE („keine Automatik für Todes-VFX") ist damit
 adressiert: die Spec wird nicht mehr implizit aus zwei Texturen abgeleitet,
 sondern ist eine explizite, getestete Datenstruktur.
 
+Beleg-Commit: `23f3c4a` (#K1, Board-Karte #1778).
+
 ## #K2 Spec schärfen (`src/logic/death.ts`)
 
 `DeathFxSpec` trägt jetzt pro Klasse eigene, deterministische VFX-Werte
@@ -81,6 +83,8 @@ Boss-Variante (`deathFxFor(cls, true)`): eigene Kern-Textur `fx_boss_core`
 plus `fx_halo`-Staub, größerer Count (18–34), längere Lebensdauer (0,7–1,4 s)
 und ≥ 2× Fläche gegenüber der Nicht-Boss-Klasse (Scale-Ratio quadratisch;
 Minimum 2,56× bei burst). Keine neuen Assets — nur vorhandene FX-Texturen.
+
+Beleg-Commit: `b631b71` (#K2, Board-Karte #1779).
 
 ## #K3 Umsetzung (`src/systems/CombatSystem.ts`, `killsFx`)
 
