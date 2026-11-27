@@ -358,9 +358,14 @@ export function auditTable(report) {
 export function makeReport(raw) {
   const textureSummary = summarizeTextures(raw.textures);
   const isAdditiveOrTranslucent = (o) => o.blendMode !== 0 || o.alpha < 0.999;
-  const overlays = raw.overlays
-    .map((o) => ({ ...o, ...classifyOverlay({ ...o, canvasWidth: raw.canvas.logicalWidth, canvasHeight: raw.canvas.logicalHeight }) }))
-    .filter(Boolean);
+  const overlays = raw.overlays.flatMap((o) => {
+    const classified = classifyOverlay({
+      ...o,
+      canvasWidth: raw.canvas.logicalWidth,
+      canvasHeight: raw.canvas.logicalHeight,
+    });
+    return classified ? [{ ...o, ...classified }] : [];
+  }).sort((a, b) => b.coverage - a.coverage);
   const overlayAll = raw.overlays.filter(isAdditiveOrTranslucent);
   const drawStats = stats(raw.sampleDraws);
   const switchStats = stats(raw.sampleSwitches);
@@ -517,6 +522,7 @@ async function main() {
     }
     await page.evaluate(() => window.__lf.spawnEnemy("bog_rat", 300));
     await page.waitForTimeout(1000);
+    const enemiesNow = await page.evaluate(() => window.__lf.stats().enemies);
     const runMeasurement = await measureWindow(page, 5, "run-300");
 
     const raw = await page.evaluate(collectPageAudit);
@@ -534,7 +540,7 @@ async function main() {
       },
       titleFrames: titleMeasurement.frames,
       titleFps: titleMeasurement.fps,
-      runEnemies: 300,
+      runEnemies: enemiesNow,
       runFrames: runMeasurement.frames,
       runFps: runMeasurement.fps,
       runSampleDraws: (await page.evaluate(() => window.__lfAudit.sampleDraws.slice(-300))),
