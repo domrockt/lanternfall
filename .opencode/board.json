@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5480,
+  "next": 5539,
   "cards": [
     {
       "id": 1,
@@ -6188,6 +6188,16 @@
       ],
       "created": "2026-11-27T20:55:59Z",
       "updated": "2026-11-27T20:56:24Z"
+    },
+    {
+      "id": 5538,
+      "title": "m10-ember-trail-glow: Ember-Schweif vermessen + daempfen (Near-White <= 2 %, Footprint <= 60 px)",
+      "description": "Restpunkt aus m10-ember-readability: fx_fire-Trail am Ember-Projektil separat als Glow-Footprint messen (shots/m10-ember-trail-before.json + 1x/4x-PNG), dann Schweif daempfen (dedizierte Trail-Textur, Alpha), Nachher-Messung (-after.json) + 640x360-Chaos-Screenshot (>=500 Gegner, 4 Ember-Projektile, 0 JS-Fehler). Tests tests/ember-trail.test.ts gruen, Doku docs/lanes/m10-ember-trail.md mit Vorher/Nachher.",
+      "column": "doing",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T21:04:12Z",
+      "updated": "2026-11-27T21:04:12Z"
     }
   ]
 }
