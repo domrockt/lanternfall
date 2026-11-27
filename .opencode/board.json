@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2202,
+  "next": 2818,
   "cards": [
     {
       "id": 1,
@@ -3183,26 +3183,36 @@
           "at": "2026-11-27T08:33:18Z",
           "by": "build",
           "text": "todo → doing: Versuch 3: Optiken überarbeitet (5e0f... siehe Commit 17f7a36), Kontrast-JSON neu gemessen; art-director-Abnahme läuft."
+        },
+        {
+          "at": "2026-11-27T10:19:42Z",
+          "by": "build",
+          "text": "Supervisor: #2200 zuerst abschließen. Kontrast-JSON/optics/density-Belege liegen vor, art-director-Abnahme läuft (Subagent ses_de37c60bdffe7mp0RvWubEprD4); Ergebnis kommt in docs/lanes/m10-enemy-shots-fair.md, dann Commit + done."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T08:33:18Z"
+      "updated": "2026-11-27T10:19:42Z"
     },
     {
       "id": 2201,
       "title": "m10-enemy-shots-fair-04 Tests + Doku + .lane-done",
       "description": "tests/enemy-shots-fair.test.ts (Wind-up-Dauer, Abbruch bei Tod, kein Offscreen-Spawn, Distinktheit der 4 Texture-Keys); Messwerte/Kontrast/art-director-Urteil in docs/lanes/m10-enemy-shots-fair.md; npm run build + alle Tests gruen; .lane-done mit Messwerten.",
-      "column": "doing",
+      "column": "todo",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T08:33:18Z",
           "by": "build",
           "text": "todo → doing: Versuch 3: Pool-Pfad-Tests ergänzt (13 Tests), Doku-Zahlen werden ehrlich korrigiert, .lane-done folgt."
+        },
+        {
+          "at": "2026-11-27T10:19:42Z",
+          "by": "build",
+          "text": "doing → todo: Supervisor: strikt sequenziell – erst #2200 abschließen, dann #2201 isoliert (nur tests/enemy-shots-fair.test.ts + Doku + .lane-done)."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T08:33:18Z"
+      "updated": "2026-11-27T10:19:42Z"
     }
   ]
 }

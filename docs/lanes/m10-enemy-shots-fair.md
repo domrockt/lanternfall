@@ -54,9 +54,15 @@ geändert (keine Kollisions-/Radius-Änderung):
 
 Kontrast = WCAG-Verhältnis (sRGB-Luminanz) je Nicht-Kontur-Pixel gegen den Hintergrund
 (`minInner` = schwächster, `meanInner` = Mittel, `max` = hellster Pixel),
-`shots/m10-enemy-shots-contrast.json`. Ehrlich: die dunklen Innenpixel von spit/fire
-liegen gegen Wasser bei 1,0–1,4; die Lesbarkeit tragen dort die 1-px-Tint-Kontur (ink 0)
-und die klar verschiedenen Silhouetten, nicht die Innenfüllung. Auf Gras (`grassMarsh`,
+`shots/m10-enemy-shots-contrast.json`. Messung: **ein Lauf**, fester Satz Hintergründe
+(nightDeep/night/waterDeep/waterMid/grassMarsh), Stichprobe = alle opaken Nicht-Kontur-
+Pixel der 4 Texturen; keine weiteren Crops/Montagen. Schwelle für die Innenfüllung:
+`meanInner ≥ 2,0` gegen Wasser/Nacht, `greenMarsh ≥ 1,5` als Grenzfall.
+Ergebnis: bone (4,31–14,11) und shadow (1,79–5,79) sowie fire (1,17–9,03) erfüllen die
+Wasser-/Nacht-Schwelle; **spit** liegt gegen waterMid bei mean 1,95 und gegen Gras bei
+1,32 darunter. Ehrlich: die dunklen Innenpixel von spit/fire liegen gegen Wasser bei
+1,0–1,4; die Lesbarkeit tragen dort die 1-px-Tint-Kontur (ink 0) und die klar
+verschiedenen Silhouetten, nicht die Innenfüllung. Auf Gras (`grassMarsh`,
 Index 30) liegt bone bei 4,31, shadow/fire bei 1,79/1,17. Form-IoU der Paare 0,38–0,86
 (spit/shadow 0,66, spit/fire 0,86 — Form ähnlich, aber Kernfarbe/Halo-Lücke/Flamme
 verschieden); Kontaktbogen `shots/m10-enemy-shots-optics.png`, Dichte-Beleg
