@@ -1,0 +1,349 @@
+{
+  "suite": "fx-add-cap",
+  "when": "2026-11-27T19:48:27.660Z",
+  "viewport": {
+    "width": 780,
+    "height": 360,
+    "dpr": 3
+  },
+  "scenario": {
+    "seed": 1,
+    "minute": 25,
+    "god": true,
+    "autoPlay": true,
+    "targetEnemies": 500
+  },
+  "samplesTaken": 12,
+  "samplesFilled": 12,
+  "summary": {
+    "enemies": 500,
+    "lodLevel": "reduced",
+    "glowBudget": null,
+    "fx": {
+      "addCount": 17.1,
+      "overdrawDevPx": 216668,
+      "overdrawScreenPercent": 77.2,
+      "maxWDev": 492,
+      "maxHDev": 492
+    },
+    "particles": {
+      "addCount": 12.1,
+      "overdrawDevPx": 1020,
+      "overdrawScreenPercent": 0.4,
+      "maxWDev": 19,
+      "maxHDev": 19
+    },
+    "other": {
+      "addCount": 30.3,
+      "overdrawDevPx": 218097,
+      "overdrawScreenPercent": 77.7
+    },
+    "all": {
+      "addCount": 59.5,
+      "alphaLt1OrAdd": 205.2,
+      "overdrawDevPx": 435785
+    }
+  },
+  "perSample": [
+    {
+      "enemies": 500,
+      "fxAdd": 4,
+      "fxOverdraw": 232173,
+      "particleAdd": 23,
+      "particleOverdraw": 1568,
+      "otherAdd": 37,
+      "otherOverdraw": 240991,
+      "allAdd": 64,
+      "allAlphaLt1OrAdd": 173
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 12,
+      "fxOverdraw": 37961,
+      "particleAdd": 12,
+      "particleOverdraw": 1395,
+      "otherAdd": 37,
+      "otherOverdraw": 184200,
+      "allAdd": 61,
+      "allAlphaLt1OrAdd": 154
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 6,
+      "fxOverdraw": 33431,
+      "particleAdd": 0,
+      "particleOverdraw": 0,
+      "otherAdd": 37,
+      "otherOverdraw": 184445,
+      "allAdd": 43,
+      "allAlphaLt1OrAdd": 174
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 21,
+      "fxOverdraw": 290494,
+      "particleAdd": 15,
+      "particleOverdraw": 1963,
+      "otherAdd": 32,
+      "otherOverdraw": 247147,
+      "allAdd": 68,
+      "allAlphaLt1OrAdd": 237
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 32,
+      "fxOverdraw": 77255,
+      "particleAdd": 6,
+      "particleOverdraw": 104,
+      "otherAdd": 32,
+      "otherOverdraw": 247265,
+      "allAdd": 70,
+      "allAlphaLt1OrAdd": 247
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 26,
+      "fxOverdraw": 62037,
+      "particleAdd": 1,
+      "particleOverdraw": 25,
+      "otherAdd": 27,
+      "otherOverdraw": 217881,
+      "allAdd": 54,
+      "allAlphaLt1OrAdd": 214
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 9,
+      "fxOverdraw": 257427,
+      "particleAdd": 8,
+      "particleOverdraw": 179,
+      "otherAdd": 27,
+      "otherOverdraw": 217748,
+      "allAdd": 44,
+      "allAlphaLt1OrAdd": 198
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 19,
+      "fxOverdraw": 321847,
+      "particleAdd": 16,
+      "particleOverdraw": 1402,
+      "otherAdd": 27,
+      "otherOverdraw": 214992,
+      "allAdd": 62,
+      "allAlphaLt1OrAdd": 213
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 19,
+      "fxOverdraw": 321847,
+      "particleAdd": 16,
+      "particleOverdraw": 1402,
+      "otherAdd": 27,
+      "otherOverdraw": 215861,
+      "allAdd": 62,
+      "allAlphaLt1OrAdd": 213
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 19,
+      "fxOverdraw": 321847,
+      "particleAdd": 16,
+      "particleOverdraw": 1402,
+      "otherAdd": 27,
+      "otherOverdraw": 215940,
+      "allAdd": 62,
+      "allAlphaLt1OrAdd": 213
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 19,
+      "fxOverdraw": 321847,
+      "particleAdd": 16,
+      "particleOverdraw": 1402,
+      "otherAdd": 27,
+      "otherOverdraw": 215703,
+      "allAdd": 62,
+      "allAlphaLt1OrAdd": 213
+    },
+    {
+      "enemies": 500,
+      "fxAdd": 19,
+      "fxOverdraw": 321847,
+      "particleAdd": 16,
+      "particleOverdraw": 1402,
+      "otherAdd": 27,
+      "otherOverdraw": 214992,
+      "allAdd": 62,
+      "allAlphaLt1OrAdd": 213
+    }
+  ],
+  "topOverdraw": [
+    {
+      "cls": "fx",
+      "texture": "fx_halo",
+      "frame": "",
+      "depth": null,
+      "wDev": 492,
+      "hDev": 492,
+      "overdrawDev": 242064,
+      "alpha": 0.014,
+      "glow": true
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 20,
+      "wDev": 266,
+      "hDev": 266,
+      "overdrawDev": 70756,
+      "alpha": 0.612,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "runtime_atlas",
+      "frame": "fx_halo",
+      "depth": 6,
+      "wDev": 250,
+      "hDev": 250,
+      "overdrawDev": 62500,
+      "alpha": 0.375,
+      "glow": false
+    },
+    {
+      "cls": "fx",
+      "texture": "fx_shock",
+      "frame": "",
+      "depth": null,
+      "wDev": 138,
+      "hDev": 138,
+      "overdrawDev": 19044,
+      "alpha": 0.039,
+      "glow": true
+    },
+    {
+      "cls": "fx",
+      "texture": "fx_halo",
+      "frame": "",
+      "depth": null,
+      "wDev": 134,
+      "hDev": 134,
+      "overdrawDev": 17956,
+      "alpha": 0.043,
+      "glow": true
+    },
+    {
+      "cls": "fx",
+      "texture": "fx_shock",
+      "frame": "",
+      "depth": null,
+      "wDev": 129,
+      "hDev": 129,
+      "overdrawDev": 16641,
+      "alpha": 0.096,
+      "glow": true
+    },
+    {
+      "cls": "fx",
+      "texture": "fx_shock",
+      "frame": "",
+      "depth": null,
+      "wDev": 110,
+      "hDev": 110,
+      "overdrawDev": 12100,
+      "alpha": 0.21,
+      "glow": true
+    },
+    {
+      "cls": "fx",
+      "texture": "ring_burst",
+      "frame": "",
+      "depth": null,
+      "wDev": 85,
+      "hDev": 85,
+      "overdrawDev": 7225,
+      "alpha": 0.102,
+      "glow": true
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    },
+    {
+      "cls": "other",
+      "texture": "light_radius",
+      "frame": "__BASE",
+      "depth": 12,
+      "wDev": 81,
+      "hDev": 81,
+      "overdrawDev": 6561,
+      "alpha": 0.22,
+      "glow": false
+    }
+  ],
+  "jsErrors": []
+}
