@@ -12,7 +12,8 @@ export type AiMode =
   | "recover"
   | "orbit"
   | "fade"
-  | "fuse";
+  | "fuse"
+  | "retreat";
 
 export interface AiState {
   mode: AiMode;
@@ -292,13 +293,6 @@ export function summonMinionId(tier: number): EnemyId {
   return "reaper_bat";
 }
 
-function normalize(x: number, y: number, fallbackUid = 1): { x: number; y: number } {
-  const len = Math.hypot(x, y);
-  if (len > 0.0001) return { x: x / len, y: y / len };
-  const a = fallbackUid * 2.399963;
-  return { x: Math.cos(a), y: Math.sin(a) };
-}
-
 /**
  * Ein reiner Zustandsautomat pro Archetyp. Liefert Bewegungsrichtung plus
  * ausgelöste Aktionen; die Szene kümmert sich um Sprites/Projektile.
@@ -353,11 +347,23 @@ export function stepEnemyAi(
       break;
     }
     case "ranged": {
-      // Abstandsband: zu nah → zurück, zu weit → ran, dazwischen seitlich.
-      if (dist < profile.band - profile.bandIn) {
+      // Abstandsband mit Hysterese: zu nah → zurück, zu weit → ran, dazwischen
+      // seitlich kreuzen. Die Hysterese verhindert Richtungs-Flattern an der
+      // Bandkante (wichtig für lesbares Kiten im Rudel).
+      const inner = profile.band - profile.bandIn;
+      const outer = profile.band + profile.bandOut;
+      // Hysterese: einmal begonnenes Zurückweichen hält bis inner+12, ein
+      // begonnener Vorlauf bis outer-12 — kein Flattern an der Bandkante.
+      if (dist < inner) state.mode = "retreat";
+      else if (dist > outer) state.mode = "approach";
+      else if (state.mode === "retreat" && dist < inner + 12) state.mode = "retreat";
+      else if (state.mode === "approach" && dist > outer - 12) state.mode = "approach";
+      else state.mode = "orbit";
+
+      if (state.mode === "retreat") {
         moveX = -toX + toY * profile.strafe * state.orbitDir;
         moveY = -toY - toX * profile.strafe * state.orbitDir;
-      } else if (dist > profile.band + profile.bandOut) {
+      } else if (state.mode === "approach") {
         moveX = toX;
         moveY = toY;
       } else {
@@ -390,9 +396,13 @@ export function stepEnemyAi(
         // Während des Anlaufs stehen bleiben und weiter zielen.
         speedMul = 0.12;
         if (state.timer <= 0) {
-          const aim = normalize(params.playerX - params.x, params.playerY - params.y, uid);
-          state.aimX = aim.x;
-          state.aimY = aim.y;
+          const ax = params.playerX - params.x;
+          const ay = params.playerY - params.y;
+          const al = Math.hypot(ax, ay);
+          if (al > 0.0001) {
+            state.aimX = ax / al;
+            state.aimY = ay / al;
+          }
           state.mode = "charge";
           state.timer = profile.chargeDuration;
           actions.push({ type: "charge", duration: state.timer });
@@ -486,16 +496,22 @@ export function stepEnemyAi(
       break;
     }
     case "summoner": {
-      // Weites Abstandsband; ruft nach Cooldown passende Minions.
-      if (dist < profile.band - profile.bandIn) {
+      // Weites Abstandsband mit Hysterese; ruft nach Cooldown passende Minions.
+      const inner = profile.band - profile.bandIn;
+      const outer = profile.band + profile.bandOut;
+      if (state.mode === "retreat") {
         moveX = -toX;
         moveY = -toY;
-      } else if (dist > profile.band + profile.bandOut) {
+        if (dist > inner + 12) state.mode = "orbit";
+      } else if (state.mode === "approach") {
         moveX = toX;
         moveY = toY;
+        if (dist < outer - 12) state.mode = "orbit";
       } else {
         moveX = -toY * state.orbitDir * profile.strafe;
         moveY = toX * state.orbitDir * profile.strafe;
+        if (dist < inner) state.mode = "retreat";
+        else if (dist > outer) state.mode = "approach";
       }
       if (state.cooldown <= 0) {
         actions.push({
@@ -511,10 +527,19 @@ export function stepEnemyAi(
     }
   }
 
-  const m = normalize(moveX, moveY, uid);
+  // Normalisierung inline: kein temporäres Objekt im Hot-Path.
+  const mlen = Math.hypot(moveX, moveY);
+  if (mlen > 0.0001) {
+    moveX /= mlen;
+    moveY /= mlen;
+  } else {
+    const a = uid * 2.399963;
+    moveX = Math.cos(a);
+    moveY = Math.sin(a);
+  }
   state.aimX = toX;
   state.aimY = toY;
-  return { moveX: m.x, moveY: m.y, speedMul, state, actions };
+  return { moveX, moveY, speedMul, state, actions };
 }
 
 /** Nur für Tests/Debug: alle Archetypen als Liste. */

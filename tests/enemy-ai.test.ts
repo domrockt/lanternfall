@@ -15,12 +15,12 @@ import type { EnemyDef } from "../src/data/types";
 /**
  * Deterministische Verhaltensmatrix ohne Renderer.
  *
- * Simuliert `stepEnemyAi` je Gegnertyp 60 s bei festem dt (1/60 s) mit einem
- * Stub-RNG (Seeds 101/202). Der Spieler steht still im Ursprung; der Gegner
- * startet 210 px entfernt. Die Simulation wendet nur die von der KI gelieferte
- * Wunschrichtung/-geschwindigkeit an — exakt das, was `Run.ts` tut — und misst
- * daraus Archetyp-Signaturen (Abstand, Vorwärtsanteil, Richtungswechsel,
- * Telegraph, Events). Keine Sprites, keine Kamera, keine Zeitabhängigkeit.
+ * Simuliert `stepEnemyAi` je Gegnertyp 2 × 60 s bei festem dt (1/60 s) mit
+ * Stub-RNG (Seeds 101/202). Zwei Startszenarien decken Annäherung UND
+ * Bedrängung ab: Start 210 px (Anlauf) und Start 55 px (Druck/Rückzug).
+ * Der Spieler steht im Ursprung. Die Simulation wendet nur die von der KI
+ * gelieferte Wunschrichtung/-geschwindigkeit an — exakt das, was `Run.ts` tut —
+ * und misst daraus Archetyp-Signaturen. Keine Sprites, keine Kamera, kein Frame.
  */
 
 const DT = 1 / 60;
@@ -28,7 +28,8 @@ const SECONDS = 60;
 const WARMUP_SECONDS = 5;
 const PLAYER_X = 0;
 const PLAYER_Y = 0;
-const START_DIST = 210;
+const START_FAR = 210;
+const START_NEAR = 55;
 /** Kontaktabstand: darunter wird die Bewegung geklemmt (wie Kollision im Run). */
 const CONTACT = 10;
 /** Splitter-Kinder starten in der Matrix wieder in diesem Ring. */
@@ -39,17 +40,19 @@ export interface MatrixMetrics {
   id: string;
   archetype: string;
   tier: number;
-  /** Arithmetischer Mittelwert des Abstands zum Spieler (px). */
+  /** Arithmetischer Mittelwert des Abstands zum Spieler (px, beide Starts). */
   meanDist: number;
-  /** Standardabweichung des Abstands (px). */
+  /** Standardabweichung des Abstands (px, beide Starts). */
   distStd: number;
   /** Anteil der Schritte mit Bewegung zum Spieler (dot > 0.3). */
   forwardShare: number;
   /** Anteil der Schritte mit Bewegung vom Spieler weg (dot < -0.3). */
   retreatShare: number;
-  /** Richtungswechsel pro Sekunde (> 14° zwischen zwei Schritten). */
+  /** Scharfe Richtungswechsel pro Sekunde (Heading-Delta > 0.5 rad). */
   turnRate: number;
-  /** Anteil der Zeit mit aktivem Telegraph (windup/charge-Dauer). */
+  /** Mittlere Heading-Änderung in Grad/s (Kursänderung, auch sanft). */
+  headingRate: number;
+  /** Anteil der Zeit mit aktivem Telegraph (windup/charge/fuse). */
   telegraphShare: number;
   /** Anteil der Schritte mit Sprint-Multiplikator > 1.5. */
   burstShare: number;
@@ -66,7 +69,6 @@ export interface MatrixMetrics {
 
 interface SimOutput {
   metrics: MatrixMetrics;
-  /** Alle ausgegebenen Aktionen (für Assertions/Diagnose). */
   actions: AiAction[];
 }
 
@@ -75,12 +77,17 @@ function stubRng(seed: number): AiRng {
   return { next };
 }
 
-function simulate(def: EnemyDef, seed: number): SimOutput {
+function simulate(def: EnemyDef, seed: number, startDist: number, chase: boolean): SimOutput {
   const rng = stubRng(seed);
   let state: AiState = newAiState(rng);
-  let x = START_DIST;
+  let x = startDist;
   let y = 0;
   let splitDepth = 0;
+  // Druck-Szenario: der Spieler läuft dem Gegner nach (18 px/s), damit
+  // Distanzhalter ihr Rückzugsverhalten tatsächlich zeigen können.
+  let playerX = PLAYER_X;
+  let playerY = PLAYER_Y;
+  const PLAYER_CHASE_SPEED = 18;
 
   let distSum = 0;
   let distSqSum = 0;
@@ -88,8 +95,9 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
   let forwardSteps = 0;
   let retreatSteps = 0;
   let turnCount = 0;
+  let headingTurn = 0;
   let stepCount = 0;
-  let telegraphTime = 0;
+  let telegraphSteps = 0;
   let burstSteps = 0;
   let speedMulSum = 0;
   let contactSteps = 0;
@@ -99,26 +107,33 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
   let explodeEvents = 0;
   let shootEvents = 0;
 
-  let prevMx = 0;
-  let prevMy = 0;
+  let prevHeading: number | null = null;
   const actions: AiAction[] = [];
 
   const steps = Math.round(SECONDS / DT);
   const warmupSteps = Math.round(WARMUP_SECONDS / DT);
 
   for (let i = 0; i < steps; i++) {
-    const dx = PLAYER_X - x;
-    const dy = PLAYER_Y - y;
+    if (chase) {
+      const pdx = x - playerX;
+      const pdy = y - playerY;
+      const pdist = Math.hypot(pdx, pdy);
+      if (pdist > 0.0001) {
+        playerX += (pdx / pdist) * PLAYER_CHASE_SPEED * DT;
+        playerY += (pdy / pdist) * PLAYER_CHASE_SPEED * DT;
+      }
+    }
+    const dx = playerX - x;
+    const dy = playerY - y;
     const dist = Math.hypot(dx, dy);
-    const inv = dist > 0.0001 ? 1 / dist : 0;
 
     const params: AiParams = {
       archetype: def.archetype,
       tier: def.tier,
       x,
       y,
-      playerX: PLAYER_X,
-      playerY: PLAYER_Y,
+      playerX,
+      playerY,
       speed: def.speed,
     };
 
@@ -129,7 +144,7 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
       switch (action.type) {
         case "windup":
         case "charge":
-          telegraphTime += action.duration;
+          telegraphSteps += Math.round(action.duration / DT);
           break;
         case "summon":
           summonEvents += 1;
@@ -144,8 +159,6 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
           break;
         case "explode":
           explodeEvents += 1;
-          // Im Spiel stirbt der Exploder; für die Matrix wird er neu gesetzt,
-          // damit die 60-s-Messung nicht nach dem ersten Treffer endet.
           {
             const a = rng.next() * Math.PI * 2;
             x = Math.cos(a) * EXPLODE_RESPAWN;
@@ -155,27 +168,29 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
       }
     }
 
+    const beforeX = x;
+    const beforeY = y;
     // Bewegung anwenden (nur Richtung × Basisgeschwindigkeit × speedMul × dt).
     const speed = def.speed * step.speedMul;
     x += step.moveX * speed * DT;
     y += step.moveY * speed * DT;
 
     // Kontakt klemmen: kein Durchlaufen des Spielers, keine Nullrichtung.
-    const afterDx = PLAYER_X - x;
-    const afterDy = PLAYER_Y - y;
+    const afterDx = playerX - x;
+    const afterDy = playerY - y;
     const afterDist = Math.hypot(afterDx, afterDy);
     if (afterDist < CONTACT) {
       if (afterDist > 0.0001) {
-        x = PLAYER_X - (afterDx / afterDist) * CONTACT;
-        y = PLAYER_Y - (afterDy / afterDist) * CONTACT;
+        x = playerX - (afterDx / afterDist) * CONTACT;
+        y = playerY - (afterDy / afterDist) * CONTACT;
       } else {
         x = CONTACT;
         y = 0;
       }
     }
-    const newDist = Math.hypot(PLAYER_X - x, PLAYER_Y - y);
-    const ndx = PLAYER_X - x;
-    const ndy = PLAYER_Y - y;
+    const newDist = Math.hypot(playerX - x, playerY - y);
+    const ndx = playerX - x;
+    const ndy = playerY - y;
     const nlen = Math.hypot(ndx, ndy) || 1;
     const dot = step.moveX * (ndx / nlen) + step.moveY * (ndy / nlen);
 
@@ -199,12 +214,21 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
       if (dot < -0.3) retreatSteps += 1;
       if (step.speedMul > 1.5) burstSteps += 1;
       if (newDist <= CONTACT + 0.5) contactSteps += 1;
-      if (prevMx !== 0 || prevMy !== 0) {
-        const angle = Math.acos(Math.max(-1, Math.min(1, step.moveX * prevMx + step.moveY * prevMy)));
-        if (angle > 0.25) turnCount += 1;
+      if (state.fuse > 0) telegraphSteps += 1;
+
+      const movedX = x - beforeX;
+      const movedY = y - beforeY;
+      if (Math.hypot(movedX, movedY) > 0.01) {
+        const heading = Math.atan2(movedY, movedX);
+        if (prevHeading !== null) {
+          let delta = heading - prevHeading;
+          if (delta > Math.PI) delta -= Math.PI * 2;
+          if (delta < -Math.PI) delta += Math.PI * 2;
+          headingTurn += Math.abs(delta);
+          if (Math.abs(delta) > 0.5) turnCount += 1;
+        }
+        prevHeading = heading;
       }
-      prevMx = step.moveX;
-      prevMy = step.moveY;
     }
   }
 
@@ -220,7 +244,8 @@ function simulate(def: EnemyDef, seed: number): SimOutput {
       forwardShare: round(forwardSteps / Math.max(1, stepCount), 3),
       retreatShare: round(retreatSteps / Math.max(1, stepCount), 3),
       turnRate: round(turnCount / SECONDS, 2),
-      telegraphShare: round(telegraphTime / SECONDS, 3),
+      headingRate: round((headingTurn * 180) / Math.PI / SECONDS, 1),
+      telegraphShare: round(telegraphSteps / Math.round(SECONDS / DT), 3),
       burstShare: round(burstSteps / Math.max(1, stepCount), 3),
       meanSpeedMul: round(speedMulSum / Math.max(1, stepCount), 2),
       contactShare: round(contactSteps / Math.max(1, stepCount), 3),
@@ -239,13 +264,40 @@ function round(n: number, digits: number): number {
   return Math.round(n * f) / f;
 }
 
-function matrixFor(seed: number): MatrixMetrics[] {
-  return ENEMY_LIST.map((def) => simulate(def, seed).metrics);
+/**
+ * Beide Startszenarien je Seed. Distanz-/Bewegungs-Metriken stammen aus dem
+ * Anlauf-Szenario (210 px, statischer Spieler) und bleiben so mit #K1
+ * vergleichbar; der Rückzugsanteil kommt aus dem Druck-Szenario (55 px,
+ * nachlaufender Spieler), weil Distanzhalter sonst nie zurückweichen müssen.
+ * Events werden über beide Szenarien summiert.
+ */
+function simulateCombined(def: EnemyDef, seed: number): MatrixMetrics {
+  const far = simulate(def, seed, START_FAR, false).metrics;
+  const near = simulate(def, seed, START_NEAR, true).metrics;
+  return {
+    id: def.id,
+    archetype: def.archetype,
+    tier: def.tier,
+    meanDist: far.meanDist,
+    distStd: far.distStd,
+    forwardShare: far.forwardShare,
+    retreatShare: near.retreatShare,
+    turnRate: far.turnRate,
+    headingRate: far.headingRate,
+    telegraphShare: far.telegraphShare,
+    burstShare: far.burstShare,
+    meanSpeedMul: far.meanSpeedMul,
+    contactShare: far.contactShare,
+    splitEvents: far.splitEvents + near.splitEvents,
+    summonEvents: far.summonEvents + near.summonEvents,
+    blinkEvents: far.blinkEvents + near.blinkEvents,
+    explodeEvents: far.explodeEvents + near.explodeEvents,
+    shootEvents: far.shootEvents + near.shootEvents,
+  };
 }
 
-function meanMetric(rows: MatrixMetrics[], key: keyof MatrixMetrics): number {
-  const values = rows.map((r) => Number(r[key]));
-  return round(values.reduce((a, b) => a + b, 0) / values.length, 2);
+function matrixFor(seed: number): MatrixMetrics[] {
+  return ENEMY_LIST.map((def) => simulateCombined(def, seed));
 }
 
 function markdownTable(rowsBySeed: Record<number, MatrixMetrics[]>): string {
@@ -253,10 +305,14 @@ function markdownTable(rowsBySeed: Record<number, MatrixMetrics[]>): string {
   const first = rowsBySeed[seeds[0]];
   const header = [
     "Gegner", "Archetyp", "Tier",
-    ...seeds.flatMap((s) => [`ØDist ${s}`, `Vorw ${s}`, `Dreh/s ${s}`, `Tel ${s}`, `Burst ${s}`]),
+    ...seeds.flatMap((s) => [
+      `ØDist ${s}`, `σDist ${s}`, `Vorw ${s}`, `Rück ${s}`,
+      `Dreh/s ${s}`, `Lenk°/s ${s}`, `Tel ${s}`, `Burst ${s}`, `Kontakt ${s}`,
+    ]),
     ...seeds.map((s) => `Split ${s}`),
     ...seeds.map((s) => `Summon ${s}`),
     ...seeds.map((s) => `Blink ${s}`),
+    ...seeds.map((s) => `Explode ${s}`),
     ...seeds.map((s) => `Shoot ${s}`),
   ];
   const lines = [`| ${header.join(" | ")} |`, `|${header.map(() => "---").join("|")}|`];
@@ -264,21 +320,28 @@ function markdownTable(rowsBySeed: Record<number, MatrixMetrics[]>): string {
     const cells = [first[i].id, first[i].archetype, String(first[i].tier)];
     for (const s of seeds) {
       const r = rowsBySeed[s][i];
-      cells.push(String(r.meanDist), String(r.forwardShare), String(r.turnRate), String(r.telegraphShare), String(r.burstShare));
+      cells.push(
+        String(r.meanDist), String(r.distStd), String(r.forwardShare), String(r.retreatShare),
+        String(r.turnRate), String(r.headingRate), String(r.telegraphShare),
+        String(r.burstShare), String(r.contactShare),
+      );
     }
     for (const s of seeds) cells.push(String(rowsBySeed[s][i].splitEvents));
     for (const s of seeds) cells.push(String(rowsBySeed[s][i].summonEvents));
     for (const s of seeds) cells.push(String(rowsBySeed[s][i].blinkEvents));
+    for (const s of seeds) cells.push(String(rowsBySeed[s][i].explodeEvents));
     for (const s of seeds) cells.push(String(rowsBySeed[s][i].shootEvents));
     lines.push(`| ${cells.join(" | ")} |`);
   }
   return lines.join("\n");
 }
 
+const rows101 = matrixFor(101);
+const rows202 = matrixFor(202);
+
 describe("Enemy-KI Verhaltensmatrix (deterministisch)", () => {
-  it("simuliert 60 s je Gegnertyp mit Seeds 101 und 202", () => {
-    const rows101 = matrixFor(101);
-    const rows202 = matrixFor(202);
+
+  it("simuliert je Gegnertyp 2 × 60 s mit Seeds 101 und 202", () => {
     expect(rows101).toHaveLength(ENEMY_LIST.length);
     expect(rows202).toHaveLength(ENEMY_LIST.length);
 
@@ -294,16 +357,132 @@ describe("Enemy-KI Verhaltensmatrix (deterministisch)", () => {
       }
     }
 
-    // Maschinenlesbarer Beleg (wird in shots/ committet): eine Zeile pro Seed.
+    // Maschinenlesbarer Beleg (wird in shots/ committet).
     console.log("MATRIX-JSON:" + JSON.stringify({
       seeds: [101, 202],
       seconds: SECONDS,
+      startDistances: [START_FAR, START_NEAR],
       dt: DT,
       rows: { "101": rows101, "202": rows202 },
     }));
 
     const table = markdownTable({ 101: rows101, "202": rows202 });
     console.log(`\n<!-- ENEMY-AI-MATRIX\n${table}\n-->\n`);
-    console.log("MATRIX-ARCHETYPEN:", meanMetric(rows101, "meanDist"));
+  });
+});
+
+/** Nachschlagen der Matrixzeile per Gegner-ID (deterministisch, Seed 101). */
+function rowOf(id: string, rows: MatrixMetrics[]): MatrixMetrics {
+  const row = rows.find((r) => r.id === id);
+  if (!row) throw new Error(`Matrixzeile für ${id} fehlt`);
+  return row;
+}
+
+/** Archetyp-Cluster: messbare Signatur, unabhängig von Sprite/Sichtbarkeit. */
+export const CLUSTERS = {
+  /** Nahkämpfer: rennen auf den Spieler zu, kaum Ausweichen. */
+  assault: ["swarm", "chaser", "tank"],
+  /** Stürmer: Sprint-Fenster + Telegraph. */
+  charger: ["charger"],
+  /** Distanzhalter: Abstandsband und Rückzug unter Druck. */
+  kite: ["ranged"],
+  /** Rufer: bleibt weit hinten, ruft Events. */
+  summoner: ["summoner"],
+  /** Flanker: kreist mit hoher Kursänderung in fester Bahn. */
+  flanker: ["orbiter"],
+  /** Spezialisten: zählen eigene Ereignisse (Split/Blink/Explode). */
+  specialist: ["splitter", "exploder", "phaser"],
+} as const;
+
+describe("Verhaltenscluster (mindestens 4 klar verschieden)", () => {
+  it("assault: hoher Vorwärtsanteil, Chaser/Tank ohne Kursflattern", () => {
+    for (const r of rows101.filter((x) => x.archetype === "swarm")) {
+      expect(r.forwardShare, `${r.id} vorwärts`).toBeGreaterThan(0.75);
+      // Schwarm webt sichtbar: deutlich mehr Kursänderung als gerade Verfolger.
+      expect(r.headingRate, `${r.id} Weben`).toBeGreaterThan(60);
+      expect(r.turnRate, `${r.id} Weben`).toBeGreaterThan(0.3);
+    }
+    for (const r of rows101.filter((x) => x.archetype === "chaser" || x.archetype === "tank")) {
+      expect(r.forwardShare, `${r.id} vorwärts`).toBeGreaterThan(0.9);
+      expect(r.headingRate, `${r.id} gerade`).toBeLessThan(20);
+    }
+    // Tank ist die langsamste Walze (Stemm-Phase), Chaser stoßen vor.
+    const meanSpeed = (archetype: string) =>
+      rows101.filter((r) => r.archetype === archetype).reduce((a, r) => a + r.meanSpeedMul, 0) /
+      rows101.filter((r) => r.archetype === archetype).length;
+    expect(meanSpeed("tank")).toBeLessThan(meanSpeed("chaser"));
+    expect(rowOf("treant", rows101).meanSpeedMul).toBeLessThan(0.9);
+    expect(rowOf("skeleton", rows101).burstShare).toBeGreaterThan(0.05);
+  });
+
+  it("charger: Sprint-Anteil und Telegraph vorhanden", () => {
+    for (const r of rows101.filter((x) => x.archetype === "charger")) {
+      expect(r.burstShare, `${r.id} Sprint`).toBeGreaterThan(0.05);
+      expect(r.telegraphShare, `${r.id} Telegraph`).toBeGreaterThan(0.08);
+    }
+    expect(rowOf("centipede", rows101).burstShare).toBeGreaterThan(rowOf("ghoul", rows101).burstShare);
+  });
+
+  it("kite: Ranged hält Abstand und zieht sich unter Druck zurück", () => {
+    for (const r of rows101.filter((x) => x.archetype === "ranged")) {
+      expect(r.meanDist, `${r.id} Abstand`).toBeGreaterThan(80);
+      expect(r.retreatShare, `${r.id} Rückzug`).toBeGreaterThan(0.03);
+      expect(r.shootEvents, `${r.id} Schüsse`).toBeGreaterThan(8);
+      expect(r.headingRate, `${r.id} Kurs`).toBeLessThan(60);
+    }
+    // Höhere Ranged-Tiere halten größeren Abstand als toad.
+    expect(rowOf("horror", rows101).meanDist).toBeGreaterThan(rowOf("toad", rows101).meanDist);
+  });
+
+  it("summoner: bleibt weit hinten und ruft Minions", () => {
+    for (const r of rows101.filter((x) => x.archetype === "summoner")) {
+      expect(r.meanDist, `${r.id} Abstand`).toBeGreaterThan(120);
+      expect(r.summonEvents, `${r.id} Rufe`).toBeGreaterThan(5);
+      expect(r.forwardShare, `${r.id} Vorwärts`).toBeLessThan(0.6);
+    }
+    // Höherer Summoner ruft häufiger.
+    expect(rowOf("voidcaller", rows101).summonEvents).toBeGreaterThan(rowOf("cultist", rows101).summonEvents);
+  });
+
+  it("flanker: umkreist mit hoher Kursänderung in fester Bahn", () => {
+    for (const r of rows101.filter((x) => x.archetype === "orbiter")) {
+      expect(r.headingRate, `${r.id} Kurs`).toBeGreaterThan(30);
+      expect(r.distStd, `${r.id} Streuung`).toBeLessThan(30);
+      expect(r.meanDist, `${r.id} Bahnradius`).toBeGreaterThan(60);
+      expect(r.meanDist, `${r.id} Bahnradius`).toBeLessThan(115);
+    }
+  });
+
+  it("specialist: Split-, Blink- und Explode-Events sind messbar", () => {
+    expect(rowOf("mudling", rows101).splitEvents).toBeGreaterThan(0);
+    expect(rowOf("slime", rows101).splitEvents).toBeGreaterThan(0);
+    expect(rowOf("abom", rows101).splitEvents).toBeGreaterThan(0);
+    expect(rowOf("banshee", rows101).blinkEvents).toBeGreaterThanOrEqual(4);
+    expect(rowOf("wraith", rows101).blinkEvents).toBeGreaterThanOrEqual(4);
+    expect(rowOf("bomber", rows101).explodeEvents).toBeGreaterThan(4);
+    expect(rowOf("imp", rows101).explodeEvents).toBeGreaterThan(4);
+    // Alle anderen Archetypen haben keine Split-/Summon-/Blink-/Explode-Events.
+    for (const r of rows101.filter((x) => x.archetype === "chaser" || x.archetype === "tank")) {
+      expect(r.splitEvents + r.summonEvents + r.blinkEvents + r.explodeEvents, `${r.id} fremde Events`).toBe(0);
+    }
+  });
+
+  it("die Cluster-Kriterien sind trennscharf (Flanker vs. Kiter)", () => {
+    // Flanker und Kiter teilen sich hohe Distanz, trennen sich aber über die
+    // Kursänderung (Orbiter kreist stark, Ranged kreuzt nur leicht) und über
+    // den Rückzug (nur Ranged weicht unter Druck aktiv aus).
+    for (const r of rows101.filter((x) => x.archetype === "orbiter")) {
+      expect(r.headingRate, `${r.id} Umkreisung`).toBeGreaterThan(30);
+    }
+    for (const r of rows101.filter((x) => x.archetype === "ranged")) {
+      expect(r.retreatShare, `${r.id} Rückzug`).toBeGreaterThan(0.03);
+      expect(r.headingRate, `${r.id} Kreuzen`).toBeLessThan(60);
+    }
+    // Nahkampf-Cluster (assault + charger + splitter) liegt unter 60 px
+    // Ø-Abstand, Kiter/Summoner/Flanker darüber — messbar getrennt.
+    const melee = rows101.filter((r) => ["swarm", "chaser", "tank", "charger", "splitter"].includes(r.archetype));
+    const rangedGroups = rows101.filter((r) => ["ranged", "summoner", "orbiter"].includes(r.archetype));
+    for (const r of melee) expect(r.meanDist, `${r.id} nah`).toBeLessThan(60);
+    for (const r of rangedGroups) expect(r.meanDist, `${r.id} fern`).toBeGreaterThan(60);
   });
 });
