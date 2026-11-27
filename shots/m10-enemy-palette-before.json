@@ -1,0 +1,570 @@
+{
+  "tag": "before",
+  "generatedAt": "2026-11-27T22:04:45.184Z",
+  "seed": 1,
+  "minute": 1490,
+  "sheetKeys": [
+    "enemy_bog_rat",
+    "enemy_wisp",
+    "enemy_mudling",
+    "enemy_crow",
+    "enemy_bogzombie",
+    "enemy_toad",
+    "enemy_skeleton",
+    "enemy_bat",
+    "enemy_ghoul",
+    "enemy_witchling",
+    "enemy_slime",
+    "enemy_scarecrow",
+    "enemy_wolf",
+    "enemy_banshee",
+    "enemy_golem",
+    "enemy_spider",
+    "enemy_cultist",
+    "enemy_bomber",
+    "enemy_knight",
+    "enemy_harpy",
+    "enemy_lich",
+    "enemy_wraith",
+    "enemy_treant",
+    "enemy_imp",
+    "enemy_horror",
+    "enemy_centipede",
+    "enemy_gargoyle",
+    "enemy_reaper_bat",
+    "enemy_abom",
+    "enemy_voidcaller"
+  ],
+  "aliveCount": 517,
+  "mixTypes": {
+    "enemy_horror": 1,
+    "enemy_reaper_bat": 1,
+    "enemy_gargoyle": 2,
+    "enemy_centipede": 6,
+    "enemy_bog_rat": 64,
+    "enemy_wisp": 36,
+    "enemy_mudling": 36,
+    "enemy_crow": 45,
+    "enemy_bogzombie": 36,
+    "enemy_toad": 18,
+    "enemy_skeleton": 36,
+    "enemy_bat": 45,
+    "enemy_ghoul": 27,
+    "enemy_witchling": 23,
+    "enemy_slime": 27,
+    "enemy_scarecrow": 9,
+    "enemy_wolf": 23,
+    "enemy_spider": 33,
+    "enemy_cultist": 14,
+    "enemy_golem": 9,
+    "enemy_bomber": 7,
+    "enemy_banshee": 9,
+    "enemy_knight": 5,
+    "enemy_wraith": 5
+  },
+  "rendererName": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "rendererInfo": {
+    "generatedAt": "2026-11-27T22:04:41.642Z",
+    "context": "webgl1",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+    "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "maxTextureSize": 16384,
+    "maxTextureImageUnits": 32,
+    "extensions": [
+      "ANGLE_instanced_arrays",
+      "EXT_blend_minmax",
+      "EXT_clip_control",
+      "EXT_color_buffer_half_float",
+      "EXT_depth_clamp",
+      "EXT_disjoint_timer_query",
+      "EXT_float_blend",
+      "EXT_frag_depth",
+      "EXT_polygon_offset_clamp",
+      "EXT_texture_compression_bptc",
+      "EXT_texture_compression_rgtc",
+      "EXT_texture_filter_anisotropic",
+      "EXT_texture_mirror_clamp_to_edge",
+      "EXT_sRGB",
+      "KHR_parallel_shader_compile",
+      "OES_element_index_uint",
+      "OES_fbo_render_mipmap",
+      "OES_standard_derivatives",
+      "OES_texture_float",
+      "OES_texture_float_linear",
+      "OES_texture_half_float",
+      "OES_texture_half_float_linear",
+      "OES_vertex_array_object",
+      "WEBGL_blend_func_extended",
+      "WEBGL_color_buffer_float",
+      "WEBGL_compressed_texture_astc",
+      "WEBGL_compressed_texture_etc",
+      "WEBGL_compressed_texture_etc1",
+      "WEBGL_compressed_texture_s3tc",
+      "WEBGL_compressed_texture_s3tc_srgb",
+      "WEBGL_debug_renderer_info",
+      "WEBGL_debug_shaders",
+      "WEBGL_depth_texture",
+      "WEBGL_draw_buffers",
+      "WEBGL_lose_context",
+      "WEBGL_multi_draw"
+    ],
+    "contextAttributes": {
+      "alpha": false,
+      "antialias": false,
+      "depth": true,
+      "desynchronized": false,
+      "failIfMajorPerformanceCaveat": false,
+      "powerPreference": "high-performance",
+      "premultipliedAlpha": true,
+      "preserveDrawingBuffer": false,
+      "stencil": true,
+      "xrCompatible": false
+    },
+    "precision": {
+      "fragmentHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "fragmentMediump": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "vertexHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      }
+    },
+    "fps": {
+      "target": 60,
+      "limit": 60,
+      "cappedAt60": true
+    },
+    "powerPreference": "high-performance",
+    "canvas": {
+      "attrWidth": 480,
+      "attrHeight": 360,
+      "logicalWidth": 480,
+      "logicalHeight": 360,
+      "rendersDevicePixels": false
+    },
+    "textures": {
+      "count": 0,
+      "pixels": 0,
+      "approxBytes": 0,
+      "maxEdge": 0,
+      "oversized": []
+    }
+  },
+  "perType": {
+    "enemy_bog_rat": {
+      "w": 16,
+      "h": 16,
+      "n": 90,
+      "dominant": "glut-braun",
+      "shares": {
+        "glut-braun": 0.711,
+        "kontur": 0.289
+      }
+    },
+    "enemy_wisp": {
+      "w": 16,
+      "h": 16,
+      "n": 106,
+      "dominant": "glut-braun",
+      "shares": {
+        "glut-braun": 0.726,
+        "kontur": 0.274
+      }
+    },
+    "enemy_mudling": {
+      "w": 16,
+      "h": 16,
+      "n": 156,
+      "dominant": "gruen",
+      "shares": {
+        "gruen": 0.494,
+        "mittel-neutral": 0.34,
+        "kontur": 0.167
+      }
+    },
+    "enemy_crow": {
+      "w": 16,
+      "h": 16,
+      "n": 111,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "glut-braun": 0.009,
+        "gold": 0.189,
+        "gruen": 0.018,
+        "hell-neutral": 0.036,
+        "mittel-neutral": 0.586,
+        "kontur": 0.162
+      }
+    },
+    "enemy_bogzombie": {
+      "w": 16,
+      "h": 16,
+      "n": 128,
+      "dominant": "gruen",
+      "shares": {
+        "gold": 0.031,
+        "gruen": 0.648,
+        "kontur": 0.32
+      }
+    },
+    "enemy_toad": {
+      "w": 16,
+      "h": 16,
+      "n": 137,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "gruen": 0.387,
+        "mittel-neutral": 0.474,
+        "kontur": 0.139
+      }
+    },
+    "enemy_skeleton": {
+      "w": 20,
+      "h": 20,
+      "n": 185,
+      "dominant": "hell-neutral",
+      "shares": {
+        "glut-braun": 0.146,
+        "gold": 0.022,
+        "hell-neutral": 0.438,
+        "mittel-neutral": 0.151,
+        "kontur": 0.243
+      }
+    },
+    "enemy_bat": {
+      "w": 20,
+      "h": 20,
+      "n": 171,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.246,
+        "gold": 0.175,
+        "hell-neutral": 0.023,
+        "mittel-neutral": 0.409,
+        "kontur": 0.146
+      }
+    },
+    "enemy_ghoul": {
+      "w": 20,
+      "h": 20,
+      "n": 183,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "gold": 0.005,
+        "gruen": 0.35,
+        "hell-neutral": 0.027,
+        "mittel-neutral": 0.464,
+        "kontur": 0.153
+      }
+    },
+    "enemy_witchling": {
+      "w": 20,
+      "h": 20,
+      "n": 210,
+      "dominant": "blut-rot",
+      "shares": {
+        "blut-rot": 0.443,
+        "glut-braun": 0.195,
+        "hell-neutral": 0.038,
+        "mittel-neutral": 0.186,
+        "kontur": 0.138
+      }
+    },
+    "enemy_slime": {
+      "w": 20,
+      "h": 20,
+      "n": 180,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "gold": 0.006,
+        "blau": 0.1,
+        "hell-neutral": 0.206,
+        "mittel-neutral": 0.561,
+        "kontur": 0.128
+      }
+    },
+    "enemy_scarecrow": {
+      "w": 20,
+      "h": 20,
+      "n": 250,
+      "dominant": "glut-braun",
+      "shares": {
+        "glut-braun": 0.596,
+        "hell-neutral": 0.032,
+        "mittel-neutral": 0.184,
+        "kontur": 0.188
+      }
+    },
+    "enemy_wolf": {
+      "w": 24,
+      "h": 24,
+      "n": 251,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "glut-braun": 0.008,
+        "hell-neutral": 0.171,
+        "mittel-neutral": 0.637,
+        "kontur": 0.183
+      }
+    },
+    "enemy_banshee": {
+      "w": 24,
+      "h": 24,
+      "n": 254,
+      "dominant": "hell-neutral",
+      "shares": {
+        "glut-braun": 0.035,
+        "gold": 0.008,
+        "blau": 0.15,
+        "hell-neutral": 0.354,
+        "mittel-neutral": 0.295,
+        "kontur": 0.157
+      }
+    },
+    "enemy_golem": {
+      "w": 24,
+      "h": 24,
+      "n": 393,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "glut-braun": 0.305,
+        "gold": 0.102,
+        "gruen": 0.028,
+        "mittel-neutral": 0.372,
+        "kontur": 0.193
+      }
+    },
+    "enemy_spider": {
+      "w": 24,
+      "h": 24,
+      "n": 285,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "glut-braun": 0.011,
+        "blau": 0.123,
+        "hell-neutral": 0.182,
+        "mittel-neutral": 0.523,
+        "kontur": 0.161
+      }
+    },
+    "enemy_cultist": {
+      "w": 24,
+      "h": 24,
+      "n": 213,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.329,
+        "glut-braun": 0.146,
+        "hell-neutral": 0.023,
+        "mittel-neutral": 0.352,
+        "kontur": 0.15
+      }
+    },
+    "enemy_bomber": {
+      "w": 24,
+      "h": 24,
+      "n": 229,
+      "dominant": "glut-braun",
+      "shares": {
+        "glut-braun": 0.48,
+        "gold": 0.096,
+        "hell-neutral": 0.096,
+        "mittel-neutral": 0.192,
+        "kontur": 0.135
+      }
+    },
+    "enemy_knight": {
+      "w": 28,
+      "h": 28,
+      "n": 508,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.022,
+        "glut-braun": 0.026,
+        "gold": 0.031,
+        "blau": 0.049,
+        "hell-neutral": 0.116,
+        "mittel-neutral": 0.575,
+        "kontur": 0.181
+      }
+    },
+    "enemy_harpy": {
+      "w": 28,
+      "h": 28,
+      "n": 260,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.015,
+        "glut-braun": 0.215,
+        "gold": 0.027,
+        "blau": 0.004,
+        "hell-neutral": 0.196,
+        "mittel-neutral": 0.308,
+        "kontur": 0.235
+      }
+    },
+    "enemy_lich": {
+      "w": 28,
+      "h": 28,
+      "n": 456,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.026,
+        "glut-braun": 0.083,
+        "gold": 0.136,
+        "blau": 0.022,
+        "hell-neutral": 0.129,
+        "mittel-neutral": 0.373,
+        "kontur": 0.23
+      }
+    },
+    "enemy_wraith": {
+      "w": 28,
+      "h": 28,
+      "n": 321,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.012,
+        "glut-braun": 0.115,
+        "gold": 0.012,
+        "blau": 0.034,
+        "hell-neutral": 0.097,
+        "mittel-neutral": 0.589,
+        "kontur": 0.14
+      }
+    },
+    "enemy_treant": {
+      "w": 28,
+      "h": 28,
+      "n": 396,
+      "dominant": "glut-braun",
+      "shares": {
+        "blut-rot": 0.013,
+        "glut-braun": 0.543,
+        "gold": 0.129,
+        "gruen": 0.056,
+        "kontur": 0.26
+      }
+    },
+    "enemy_imp": {
+      "w": 28,
+      "h": 28,
+      "n": 207,
+      "dominant": "glut-braun",
+      "shares": {
+        "blut-rot": 0.019,
+        "glut-braun": 0.56,
+        "gold": 0.169,
+        "kontur": 0.251
+      }
+    },
+    "enemy_horror": {
+      "w": 32,
+      "h": 32,
+      "n": 388,
+      "dominant": "blut-rot",
+      "shares": {
+        "blut-rot": 0.503,
+        "glut-braun": 0.088,
+        "hell-neutral": 0.028,
+        "mittel-neutral": 0.201,
+        "kontur": 0.18
+      }
+    },
+    "enemy_centipede": {
+      "w": 32,
+      "h": 32,
+      "n": 333,
+      "dominant": "hell-neutral",
+      "shares": {
+        "blut-rot": 0.003,
+        "glut-braun": 0.138,
+        "gold": 0.072,
+        "hell-neutral": 0.384,
+        "mittel-neutral": 0.186,
+        "kontur": 0.216
+      }
+    },
+    "enemy_gargoyle": {
+      "w": 32,
+      "h": 32,
+      "n": 347,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "glut-braun": 0.127,
+        "blau": 0.035,
+        "hell-neutral": 0.121,
+        "mittel-neutral": 0.568,
+        "kontur": 0.15
+      }
+    },
+    "enemy_reaper_bat": {
+      "w": 32,
+      "h": 32,
+      "n": 336,
+      "dominant": "mittel-neutral",
+      "shares": {
+        "glut-braun": 0.012,
+        "gold": 0.161,
+        "blau": 0.06,
+        "hell-neutral": 0.012,
+        "mittel-neutral": 0.565,
+        "kontur": 0.19
+      }
+    },
+    "enemy_abom": {
+      "w": 32,
+      "h": 32,
+      "n": 495,
+      "dominant": "blut-rot",
+      "shares": {
+        "blut-rot": 0.406,
+        "glut-braun": 0.105,
+        "gold": 0.018,
+        "mittel-neutral": 0.317,
+        "kontur": 0.154
+      }
+    },
+    "enemy_voidcaller": {
+      "w": 32,
+      "h": 32,
+      "n": 440,
+      "dominant": "gold",
+      "shares": {
+        "glut-braun": 0.13,
+        "gold": 0.427,
+        "hell-neutral": 0.018,
+        "mittel-neutral": 0.261,
+        "kontur": 0.164
+      }
+    }
+  },
+  "frameShares": {
+    "glut-braun": 0.195,
+    "kontur": 0.199,
+    "gruen": 0.118,
+    "mittel-neutral": 0.3,
+    "gold": 0.042,
+    "hell-neutral": 0.079,
+    "blut-rot": 0.052,
+    "blau": 0.015
+  },
+  "distinctFamilies": 8,
+  "countedFamilies": 6,
+  "strongFamilies": 2,
+  "strongFamiliesList": [
+    "glut-braun",
+    "gruen"
+  ],
+  "jsErrors": []
+}
