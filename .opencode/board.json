@@ -2705,11 +2705,17 @@
       "id": 1679,
       "title": "m10-atlas-gaps #K2 Ist-Stand dokumentieren",
       "description": "Fehlende Keys, zu kleine Gutter, Bleed-Fälle aus Audit-JSON in docs/lanes/m10-atlas-gaps.md listen. Abnahme: Doku nennt konkrete Zahlen/Frames und ist committet.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T00:47:31Z",
+          "by": "build",
+          "text": "todo → doing: #K2 Ist-Stand wird in docs/lanes/m10-atlas-gaps.md geschrieben."
+        }
+      ],
       "created": "2026-11-27T00:39:12Z",
-      "updated": "2026-11-27T00:39:12Z"
+      "updated": "2026-11-27T00:47:31Z"
     },
     {
       "id": 1680,
