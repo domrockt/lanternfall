@@ -1,0 +1,461 @@
+{
+  "schema": "m10-chest-arrow/v1",
+  "sampling": "POST_UPDATE",
+  "generatedAt": "2026-11-27T23:29:03.437Z",
+  "toleranceDeg": 5,
+  "marginPx": 24,
+  "formats": [
+    {
+      "label": "640x360",
+      "internal": "640x360",
+      "webglRenderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "toleranceDeg": 5,
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -820,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2880,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -820,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2880,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -820,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2880,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 6,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 900,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 860,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 820,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 780,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 740,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 660,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 620,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 580,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 540,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 500,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 420,
+              "cw": 640
+            }
+          ]
+        }
+      ],
+      "ok": true
+    },
+    {
+      "label": "780x360",
+      "internal": "780x360",
+      "webglRenderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "toleranceDeg": 5,
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -890,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2950,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -890,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2950,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -890,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2950,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 6,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1080,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1040,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1000,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 960,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 920,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 880,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 840,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 800,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 760,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 720,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 680,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 640,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 600,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 560,
+              "cw": 780
+            }
+          ]
+        }
+      ],
+      "ok": true
+    }
+  ],
+  "insideShot": {
+    "chestX": 1600,
+    "chestY": 1000,
+    "spriteVisible": true,
+    "depth": 7,
+    "arrowVisible": {
+      "arrow": false,
+      "inView": true
+    }
+  },
+  "verdict": {
+    "allCasesOk": true,
+    "jsErrors": 0,
+    "passed": true
+  },
+  "errors": []
+}
