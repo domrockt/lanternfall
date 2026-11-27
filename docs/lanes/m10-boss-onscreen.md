@@ -3,7 +3,9 @@
 Ziel: Kein Boss spawnt hinter HP-Leiste/Banner; das Intro-Banner liegt nie ueber
 dem Boss-Sprite. Nur Komposition/Zeichnung, keine HP-, Tempo- oder Angriffswerte.
 
-Messaufbau: headless Playwright, `scripts/harness.mjs`; pro Boss 72 deterministische
+Messaufbau: headless Playwright, `scripts/harness.mjs`; Messskript
+`~/tmp/m10-boss-onscreen/measure-boss.mjs` (ein Lauf, festes Timeout, Log
+`~/tmp/m10-boss-onscreen/k5.log`, `errors=0`); pro Boss 72 deterministische
 Ring-Winkel (5°-Schritte) je View, direkt nach `spawnBoss` gemessen (Run pausiert,
 Kamera-Zoom auf 1). Logische View 640x360 (Viewport 1920x1080, Skalierung 3) und
 480x360 (Viewport 640x360, Fit-Skalierung 1). Sprite-Rect ist das volle Frame-Rechteck
@@ -86,5 +88,23 @@ AutoPlay- und God-Pfad.
   `shots/m10-boss-onscreen-shots/640x360-<boss>.png` (Moorkoenigin, Knochenfuerst,
   Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler Koenig)
 - `npm run build` gruen, `npm test` 314/314 gruen (27 Dateien)
-- art-director-Urteil: PASS, Boss-Inszenierung 4/5 (Details im Lane-Bericht)
+- art-director-Urteil: **PASS** (ACCEPTANCE A10), Boss-Inszenierung **4/5**.
+  Alle 12 Faelle: `boss.top - hpBar.bottom` min. 71 px, Banner-Overlap 0 px².
+  Gegenprobe vorher: 39–1239 px² Banner-Overlap, bannerGap -1 bis -21.
+  Nicht AC-blockierende Nachbesserungen (offen, eigene Karte in spaeterer Lane):
+  `pale_shepherd` Baum-Prop vor dem Boss, `bell_golem` grau-auf-grau,
+  `moor_queen` Gruen-auf-Gruen (Silhouette/Kontur).
+
+## Messungen Performance/Balance (unveraendert, kein Render-/Wertepfad angefasst)
+
+- `git diff` dieser Lane enthaelt **keine** Datei aus `src/data/`, `src/logic/`,
+  `src/gfx/` oder `src/systems/FxSystem.ts`; nur Komposition in
+  `BossSystem.ts`/`Run.ts` + Test/Doku/Belege.
+- `flock /home/ai/games/.lf-perf.lock npm run perf`: Burst 500 Gegner
+  **59,0 FPS** PASS, 0 JS-Fehler. Minute 25 = **50,8 FPS** (< 55) – bekannter
+  offener Punkt #1000 („perf-780-01 Minute 25 FPS“), nicht durch diese Lane
+  verursacht.
+- `npm run balance`: Survival 30,7 min, 4 Evolutionen, Boss-Dauern im Korridor;
+  `levelInCorridor` false (bekannte Balance-Baustelle, von Tariq zu bewerten).
+  Keine Balance-Datei in dieser Lane geaendert.
 
