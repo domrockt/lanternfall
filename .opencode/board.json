@@ -6093,10 +6093,15 @@
           "at": "2026-11-27T20:37:11Z",
           "by": "build",
           "text": "lane #4658, Merge e85f890 (Folge-Karte, offen -> backlog)"
+        },
+        {
+          "at": "2026-11-27T20:40:31Z",
+          "by": "build",
+          "text": "WIP gesichert: im Lane-Worktree lagen uncommittete Aenderungen zu #4658 (BossSystem.ts, GroundRenderer.ts, tests/scale-budget.test.ts + Pixel-Proof-Belege). Patches: zz/m10-dpr-budget-cap-4658-wip-full.patch (alles), -bosssystem-tests.patch (applyt sauber auf main, geprueft), -groundrenderer.patch (kollidiert mit GroundRenderer-Aenderungen anderer Lane, Rebase noetig). Branch m10-dpr-budget-cap bleibt bei c7ccd70, Merge e85f890."
         }
       ],
       "created": "2026-11-27T20:37:07Z",
-      "updated": "2026-11-27T20:37:11Z"
+      "updated": "2026-11-27T20:40:31Z"
     }
   ]
 }
