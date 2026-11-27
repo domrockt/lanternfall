@@ -62,6 +62,38 @@ Der 780×360-Burst ist grenzwertig (min 54,7, 2/3 ≥ 55), Minute 25 bei 780 ble
 **Urteil fa2-02: TEILWEISE PASS** (Burst 640 PASS, M25 640 knapp PASS, Burst 780
 grenzwertig FAIL, M25 780 FAIL).
 
+### fa2-02b — Bestätigungslauf mit einem kurzen Skript (max. 3 Iterationen, Supervisor-Vorgabe)
+
+`node scripts/qa-qa-reaccept-perf.mjs` (Datei: `scripts/qa-reaccept-perf.mjs`) startet je
+Iteration zuerst 640×360 dpr1, dann 780×360 dpr3, jeweils über `scripts/perf.mjs` unter
+`flock /home/ams…` → `/home/ai/games/.lf-perf.lock`, und protokolliert **Burst-FPS** und
+**Minute-25-FPS getrennt**. loadavg Start 9,61/11,90/10,75. Laufzeit 14:47:50–14:52:38Z.
+
+| Iteration | View | Burst FPS (500 Gegner) | Burst worst | Minute-25 FPS (300) | M25 worst | JS-Fehler |
+|---|---|---|---|---|---|---|
+| 1 | 640×360@1 | 60,1 | 16,8 ms | **55,4** | 33,4 ms | 0 |
+| 1 | 780×360@3 | 55,7 | 33,4 ms | 42,9 | 33,5 ms | 0 |
+| 2 | 640×360@1 | 60,1 | 16,8 ms | 53,0 | 33,5 ms | 0 |
+| 2 | 780×360@3 | 55,9 | 33,5 ms | 43,4 | 33,4 ms | 0 |
+| 3 | 640×360@1 | 60,1 | 16,8 ms | 51,0 | 33,4 ms | 0 |
+| 3 | 780×360@3 | **56,4** | 33,4 ms | **41,3** | 33,4 ms | 0 |
+| **min** | 640×360@1 | **60,1 ≥55 PASS** | | **51,0 ≥50 PASS (knapp)** | | 0 |
+| **min** | 780×360@3 | **55,7 ≥55 PASS** | | **41,3 <50 FAIL** | | 0 |
+
+Rohdaten: `shots/qa-reaccept-iter{1,2,3}-{640x360@1,780x360@3}.json`,
+`shots/qa-reaccept-perf-summary.json`, Log `/tmp/lf-fa2/fa2-02b-perf.log`.
+
+**Klarer Engpass belegt:** Der 500er-Burst ist in beiden Views grün (min 60,1 bzw. 55,7).
+Der Einbruch sitzt ausschließlich in **Minute 25 bei 780×360 dpr3** (41,3–43,4 FPS, 3/3 < 50)
+sowie im **fullrun-Endgame-Fenster** (35,7/34,8, siehe fa2-03), das bei 1× mit >400 Gegnern,
+Boss und Gems rendert. Sim/Projektile sind laut `m10-perf-rootcause` nicht treibend; die
+Kosten sind Render-/Fill-Rate (breite Canvas-Ausgabe + additive FX/UI-Overlays). Der Fix
+liegt in den nicht gemergten Lanes `m10-endgame-fps`/`m10-perf-recovery` bzw. der neuen
+Lane `m10-fx-overdraw-cap`. #3419 wird daher **blocked** (Abnahmekriterium M25 ≥50 bei
+780 nicht erfüllt, kein Fix in main).
+
+**Urteil fa2-02b: 640 PASS, 780-Minute-25 FAIL → Blockergrund für #3419.**
+
 ## fa2-03 — 30-min-autoPlay fullrun (30×), Boss-/Truhen-Timing, Sieg, Heap
 
 `flock /home/ai/games/.lf-perf.lock node scripts/fullrun.mjs --viewport <WxH> --dpr <n>`,

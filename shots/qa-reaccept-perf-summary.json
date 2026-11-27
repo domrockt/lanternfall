@@ -1,0 +1,101 @@
+{
+  "runs": 3,
+  "views": [
+    "640x360@1",
+    "780x360@3"
+  ],
+  "iterations": [
+    {
+      "iteration": 1,
+      "view": "640x360@1",
+      "burstFps": 60.1,
+      "burstWorstMs": 16.8,
+      "burstMinEnemies": 500,
+      "minute25Fps": 55.4,
+      "minute25WorstMs": 33.4,
+      "minute25MinEnemies": 300,
+      "jsErrors": 0,
+      "wallSeconds": 115
+    },
+    {
+      "iteration": 1,
+      "view": "780x360@3",
+      "burstFps": 55.7,
+      "burstWorstMs": 33.4,
+      "burstMinEnemies": 500,
+      "minute25Fps": 42.9,
+      "minute25WorstMs": 33.5,
+      "minute25MinEnemies": 300,
+      "jsErrors": 0,
+      "wallSeconds": 42
+    },
+    {
+      "iteration": 2,
+      "view": "640x360@1",
+      "burstFps": 60.1,
+      "burstWorstMs": 16.8,
+      "burstMinEnemies": 500,
+      "minute25Fps": 53,
+      "minute25WorstMs": 33.5,
+      "minute25MinEnemies": 300,
+      "jsErrors": 0,
+      "wallSeconds": 29
+    },
+    {
+      "iteration": 2,
+      "view": "780x360@3",
+      "burstFps": 55.9,
+      "burstWorstMs": 33.5,
+      "burstMinEnemies": 500,
+      "minute25Fps": 43.4,
+      "minute25WorstMs": 33.4,
+      "minute25MinEnemies": 300,
+      "jsErrors": 0,
+      "wallSeconds": 43
+    },
+    {
+      "iteration": 3,
+      "view": "640x360@1",
+      "burstFps": 60.1,
+      "burstWorstMs": 16.8,
+      "burstMinEnemies": 500,
+      "minute25Fps": 51,
+      "minute25WorstMs": 33.4,
+      "minute25MinEnemies": 300,
+      "jsErrors": 0,
+      "wallSeconds": 29
+    },
+    {
+      "iteration": 3,
+      "view": "780x360@3",
+      "burstFps": 56.4,
+      "burstWorstMs": 33.4,
+      "burstMinEnemies": 500,
+      "minute25Fps": 41.3,
+      "minute25WorstMs": 33.4,
+      "minute25MinEnemies": 300,
+      "jsErrors": 0,
+      "wallSeconds": 30
+    }
+  ],
+  "summary": {
+    "640x360@1": {
+      "burstFpsMin": 60.1,
+      "minute25FpsMin": 51,
+      "jsErrors": 0,
+      "burstTarget": 55,
+      "minute25Target": 50,
+      "burstPass": true,
+      "minute25Pass": true
+    },
+    "780x360@3": {
+      "burstFpsMin": 55.7,
+      "minute25FpsMin": 41.3,
+      "jsErrors": 0,
+      "burstTarget": 55,
+      "minute25Target": 50,
+      "burstPass": true,
+      "minute25Pass": false
+    }
+  }
+}
