@@ -1,0 +1,110 @@
+{
+  "milestone": "M3",
+  "viewport": {
+    "width": 960,
+    "height": 540
+  },
+  "dpr": 1,
+  "simMinutes": 30.2,
+  "pollSamples": 206,
+  "bosses": {
+    "expectedSeconds": [
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800
+    ],
+    "spawned": [
+      {
+        "name": "Moorkönigin",
+        "index": 0,
+        "expectedSecond": 300,
+        "actualSecond": 300
+      },
+      {
+        "name": "Knochenfürst",
+        "index": 1,
+        "expectedSecond": 600,
+        "actualSecond": 600
+      },
+      {
+        "name": "Der Fahle Hirte",
+        "index": 2,
+        "expectedSecond": 900,
+        "actualSecond": 900
+      },
+      {
+        "name": "Glockenturm-Golem",
+        "index": 3,
+        "expectedSecond": 1200,
+        "actualSecond": 1200
+      },
+      {
+        "name": "Hexenzirkel",
+        "index": 4,
+        "expectedSecond": 1500,
+        "actualSecond": 1500
+      },
+      {
+        "name": "Der Hohle König",
+        "index": 5,
+        "expectedSecond": 1800,
+        "actualSecond": 1800
+      }
+    ],
+    "flags": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "defeated": 6,
+    "finalBossDefeated": true,
+    "phasesSeen": [
+      "0:1",
+      "2:1",
+      "3:1",
+      "4:1",
+      "5:1",
+      "5:2",
+      "5:3"
+    ]
+  },
+  "chestsDropped": 6,
+  "elitesSpawned": 171,
+  "enemiesAtEnd": 0,
+  "kills": 4217,
+  "level": 37,
+  "dawn": true,
+  "victory": true,
+  "resultReason": "dawn",
+  "fpsMin": 42.1,
+  "fpsWindow": "ab Sim-Zeit 29:20 bei 1x (volle Dichte + Endboss)",
+  "heap": {
+    "startMB": 22.1,
+    "minute1MB": 29.6,
+    "minute29MB": 32.7,
+    "endMB": 23.9,
+    "cdpUsedMB": {
+      "start": 10.5,
+      "minute1": 12.9,
+      "minute29": 15.7,
+      "end": 12.1
+    },
+    "measured": true,
+    "deltaVsMinute1Pct": 10.5,
+    "targetPct": 15,
+    "passed": true
+  },
+  "fps": {
+    "min": 42.1,
+    "target": 55,
+    "passed": false
+  },
+  "jsErrors": [],
+  "passed": false
+}

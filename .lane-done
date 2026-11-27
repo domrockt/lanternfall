@@ -1,0 +1,14 @@
+M10-ui-text-cost: UI-/Textkosten im Endgame gesenkt (Hebel gemessen, nicht geraten).
+Fix: PixelText.setText Early-Return bei identischem Wert+Farbe, Glyph-Texture-Key-Cache,
+Layout nur bei Laenge/Align-Aenderung; UI.refreshHud/refreshBoss mit Dirty-Gates (Strings,
+Icon-Key-Liste, evolutionReadyList ueber Build-Signatur, Boss-Werte).
+Standing HUD (500 Gegner eingefroren): setText/s 299,9 -> 0 (-100 %), setTexture/s 1019,8 -> 0 (-100 %),
+UI-Update 0,110 -> 0,061 ms/Frame (-44,5 %); 780x360@3 analog 0,105 -> 0,057 (-45,7 %).
+Laufend (500 Gegner): 640x360 setTexture/s 2370,5 -> 257,0 (-89,2 %), UI 0,163 -> 0,077 (-52,8 %);
+780x360@3 setTexture/s 2250,9 -> 224,6 (-90,0 %), UI 0,164 -> 0,080 (-51,2 %).
+Pixel-Diff HUD-Crop vorher/nachher: AE=0 (640x360 und 780x360@3).
+fullrun 30 min @30x (fpsMin): vorher 42,0, nachher 41,1/42,1 -> neutral (Ziel "nicht schlechter"
+im Rauschen erfuellt, Bonus >=55 nicht erreicht; Endgame-FPS bleibt Render-/PostFX-Thema).
+Tests: npm test 361/361 gruen (34 Dateien), npx tsc --noEmit und npm run build gruen.
+Belege: shots/m10-ui-text-cost-before.json, -after.json, -fullrun-*.json, -hud-diff.png;
+Doku: docs/lanes/m10-ui-text-cost.md. Run.ts und gesperrte Dateien unveraendert, kein Board/push.
