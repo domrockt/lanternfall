@@ -5625,9 +5625,15 @@
       "title": "m10-flock-sweep: bare-flock Reste auf flock -w umstellen",
       "description": "Alle flock-Spawns (Kommentare + command-Arrays) in den 8 claimed Dateien auf 'flock -w <N> <lock>' umgestellt (N = Laufzeit + 120 s); qa-reaccept-perf -w 420 + Node-Timeout 720 s + existsSync-Gate (legitimer perf rc=1 nicht als Lock-Timeout); endgame-fps Summary -w 240. AK: grep zeigt keinen bare-flock-Spawn, Negativtest belegt rc=1 bei belegter Sperre, build + 515 Tests grün, Reviewer PASS (R2).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T19:50:48Z",
+          "by": "build",
+          "text": "done → done: lane #4758, Merge 9055126"
+        }
+      ],
       "created": "2026-11-27T19:50:39Z",
-      "updated": "2026-11-27T19:50:39Z"
+      "updated": "2026-11-27T19:50:48Z"
     }
   ]
 }
