@@ -1,0 +1,84 @@
+{
+  "tag": "after",
+  "date": "2026-11-27T20:16:15.282Z",
+  "runs": 3,
+  "avgMs": 497,
+  "maxMs": 697,
+  "minMs": 393,
+  "results": [
+    {
+      "run": 1,
+      "titleMs": 697,
+      "pollMs": 1223,
+      "textures": 498,
+      "atlas": true,
+      "bootTimings": {
+        "preloadStart": 388.29999999701977,
+        "preloadDone": 428.69999998807907,
+        "createStart": 484.19999998807907,
+        "titleTextureCount": 13,
+        "titleTexturesDone": 620.7999999970198,
+        "audioDone": 620.8999999910593,
+        "titleStart": 621.0999999940395,
+        "titleRendered": 696.8999999910593,
+        "warmStart": 697.1999999880791,
+        "warmTexturesDone": 1198.699999988079,
+        "warmDone": 1221.5999999940395
+      },
+      "afterWarmup": {
+        "textures": 498,
+        "atlas": true
+      }
+    },
+    {
+      "run": 2,
+      "titleMs": 393,
+      "pollMs": 855,
+      "textures": 498,
+      "atlas": true,
+      "bootTimings": {
+        "preloadStart": 166.70000000298023,
+        "preloadDone": 176.20000000298023,
+        "createStart": 217.8999999910593,
+        "titleTextureCount": 13,
+        "titleTexturesDone": 318.59999999403954,
+        "audioDone": 318.70000000298023,
+        "titleStart": 318.8999999910593,
+        "titleRendered": 393,
+        "warmStart": 393.3999999910593,
+        "warmTexturesDone": 842.5999999940395,
+        "warmDone": 852.8999999910593
+      },
+      "afterWarmup": {
+        "textures": 498,
+        "atlas": true
+      }
+    },
+    {
+      "run": 3,
+      "titleMs": 400,
+      "pollMs": 847,
+      "textures": 498,
+      "atlas": true,
+      "bootTimings": {
+        "preloadStart": 187.70000000298023,
+        "preloadDone": 196.5,
+        "createStart": 231,
+        "titleTextureCount": 13,
+        "titleTexturesDone": 325.29999999701977,
+        "audioDone": 325.40000000596046,
+        "titleStart": 325.5,
+        "titleRendered": 400.29999999701977,
+        "warmStart": 400.79999999701977,
+        "warmTexturesDone": 835.9000000059605,
+        "warmDone": 845.2999999970198
+      },
+      "afterWarmup": {
+        "textures": 498,
+        "atlas": true
+      }
+    }
+  ],
+  "texturesAtTitle": 498,
+  "jsErrors": []
+}
