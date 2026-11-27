@@ -115,3 +115,82 @@ export function bossHpColorIndex(ratio: number): number {
 export function bossAtSecond(index: number): number {
   return BOSSES[index]?.atSecond ?? bossSpawnSecond(index);
 }
+
+// ---------------------------------------------------------------------------
+// Gegnerschuss-Fairness (M10-enemy-shots-fair)
+// Reine Helfer, bewusst in dieser Datei (Claim der Lane), damit
+// EnemyProjectiles.ts sie nutzen kann und die Regeln unit-testbar bleiben.
+// ---------------------------------------------------------------------------
+
+/** Jeder ranged-/summoner-Schuss zeigt vor dem Abflug mindestens 0,3 s Vorwarnung. */
+export const ENEMY_SHOT_WINDUP_SECONDS = 0.36;
+export const ENEMY_SHOT_WINDUP_MIN_SECONDS = 0.3;
+
+/** Ein Schuss darf nur entstehen, wenn der Schütze lebt und im View liegt. */
+export interface ShotLaunchGate {
+  shooterAlive: boolean;
+  originInView: boolean;
+  windupElapsed: number;
+  windupSeconds: number;
+}
+
+export function canLaunchShot(gate: ShotLaunchGate): boolean {
+  return (
+    gate.shooterAlive &&
+    gate.originInView &&
+    gate.windupSeconds >= ENEMY_SHOT_WINDUP_MIN_SECONDS &&
+    gate.windupElapsed >= gate.windupSeconds
+  );
+}
+
+/** Punkt-in-Rechteck-Test für das sichtbare Welt-Rechteck (Kamera-View). */
+export function isPointInView(
+  x: number,
+  y: number,
+  view: { x: number; y: number; width: number; height: number },
+  margin = 0,
+): boolean {
+  return (
+    x >= view.x - margin &&
+    y >= view.y - margin &&
+    x <= view.x + view.width + margin &&
+    y <= view.y + view.height + margin
+  );
+}
+
+/** Die vier Schuss-Optiken laut Briefing, je mit eigener Form/Farbe. */
+export interface EnemyShotVisual {
+  key: string;
+  family: "spit" | "bone" | "shadow" | "fire";
+  shape: "round" | "bone" | "halo" | "flame";
+  /** Palettenindizes: helle Kontur, Kern, Glanz (Distinktheit belegbar). */
+  rim: number;
+  core: number;
+  spark: number;
+}
+
+export const ENEMY_SHOT_VISUALS: Record<string, EnemyShotVisual> = {
+  enemy_shot_spit: { key: "enemy_shot_spit", family: "spit", shape: "round", rim: 31, core: 17, spark: 21 },
+  enemy_shot_bone: { key: "enemy_shot_bone", family: "bone", shape: "bone", rim: 11, core: 10, spark: 12 },
+  enemy_shot_shadow: { key: "enemy_shot_shadow", family: "shadow", shape: "halo", rim: 6, core: 26, spark: 13 },
+  enemy_shot_fire: { key: "enemy_shot_fire", family: "fire", shape: "flame", rim: 19, core: 18, spark: 12 },
+};
+
+/** Textur-Key je Archetyp/Tier; liefert genau eine der vier Optiken. */
+export function shotTextureKeyFor(archetype: string, tier: number): string {
+  if (archetype === "summoner") return "enemy_shot_shadow";
+  if (archetype === "ranged") {
+    if (tier >= 3) return "enemy_shot_shadow";
+    return tier >= 1 ? "enemy_shot_bone" : "enemy_shot_spit";
+  }
+  return tier >= 2 ? "enemy_shot_fire" : "enemy_shot_spit";
+}
+
+/** Distinktheits-Maß: 4 Keys, 4 Formen, paarweise verschiedene Kernfarben. */
+export function shotVisualsDistinct(): boolean {
+  const list = Object.values(ENEMY_SHOT_VISUALS);
+  const keys = new Set(list.map((v) => v.key));
+  const shapes = new Set(list.map((v) => v.shape));
+  const cores = new Set(list.map((v) => v.core));
+  return keys.size === 4 && shapes.size === 4 && cores.size === 4;
+}

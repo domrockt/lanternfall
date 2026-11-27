@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2142,
+  "next": 2202,
   "cards": [
     {
       "id": 1,
@@ -3139,6 +3139,46 @@
       "notes": [],
       "created": "2026-11-27T03:37:18Z",
       "updated": "2026-11-27T03:37:18Z"
+    },
+    {
+      "id": 2198,
+      "title": "m10-enemy-shots-fair-01 Ist-Beleg: 30-min-Sim, Schuss-/Treffer-Zaehler, Offscreen-Anteil",
+      "description": "30-min-Sim (timeScale 30) mit Debug-Hook zaehlt abgefeuerte Gegnerschüsse, Spielertreffer, Offscreen-Schuetzen bei 640x360 und 780x360. Abgabe: shots/m10-enemy-shots-before.json + 1 Frame-Screenshot bei ~500 Gegnern; Zwischenstand committen.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T04:04:48Z",
+      "updated": "2026-11-27T04:04:48Z"
+    },
+    {
+      "id": 2199,
+      "title": "m10-enemy-shots-fair-02 Fairness: Wind-up >=0,3 s am Schuetzen + Offscreen-Sperre",
+      "description": "In EnemyProjectiles (lokal) Telegraph >= 0,3 s vor Schuss, Abbruch bei Tod/Recycling, kein Spielertreffer durch Offscreen-Schuss; Kollisionsradius unveraendert. Abgabe: Code + Tests RED->GREEN.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T04:04:48Z",
+      "updated": "2026-11-27T04:04:48Z"
+    },
+    {
+      "id": 2200,
+      "title": "m10-enemy-shots-fair-03 Lesbarkeit: Kontrast der 4 Schuss-Optiken + art-director >=4/5",
+      "description": "Kontrastzahl der Texturen spit/bone/shadow/fire gegen Nacht-/Wasserhintergrund messen, bei Bedarf nur Schuss-Texturen in EnemyProjectiles.ts anpassen; 2-s-GIF bei voller Dichte; art-director-Urteil >=4/5 in Lane-Doku.",
+      "column": "todo",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-27T04:04:48Z",
+      "updated": "2026-11-27T04:04:48Z"
+    },
+    {
+      "id": 2201,
+      "title": "m10-enemy-shots-fair-04 Tests + Doku + .lane-done",
+      "description": "tests/enemy-shots-fair.test.ts (Wind-up-Dauer, Abbruch bei Tod, kein Offscreen-Spawn, Distinktheit der 4 Texture-Keys); Messwerte/Kontrast/art-director-Urteil in docs/lanes/m10-enemy-shots-fair.md; npm run build + alle Tests gruen; .lane-done mit Messwerten.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T04:04:48Z",
+      "updated": "2026-11-27T04:04:48Z"
     }
   ]
 }
