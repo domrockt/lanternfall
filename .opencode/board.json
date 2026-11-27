@@ -5937,6 +5937,41 @@
       ],
       "created": "2026-11-27T11:28:18Z",
       "updated": "2026-11-27T20:17:44Z"
+    },
+    {
+      "id": 2679,
+      "title": "m10-perf-recovery: Profil + Bisect + Ursache (Mess-Karte, kein Fix)",
+      "description": "Profil 60 s Burst 500 und Minute-25-Endgame bei 640x360 via CDs Profiler; Top-10 Self-Time und Draw-Calls/Blend-Wechsel/Texture-Binds in docs/lanes/m10-perf-recovery.md. Bisect 0b42ffe..HEAD: Burst im ganzen Range gruen (59-60), Minute-25-Ursache c0f56d5 (#280 Ambient Gluehwuermchen+Nebel) mit FPS-Delta ~-8,6 belegt. Abnahme: Zahlen + Logpfad im Doc, Ursache benannt; kein Code-Fix in dieser Karte.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T13:30:00Z",
+          "by": "build",
+          "text": "Merge Lane m10-perf-recovery: als #2679 neu angelegt (lane #2679), Merge 552189c. Belege b700e4e/e6b572b: Top-10 Self-Time + 88 Draw-Calls/82 Blend-Wechsel; first bad c0f56d5 (#280 Ambient), minute25 51,4 statt 60,0 (Delta ~-8,6)."
+        },
+        {
+          "at": "2026-11-27T13:30:00Z",
+          "by": "build",
+          "text": "review → done: merged 552189c (Lane in main, merge-base ancestor rc=0), build gruen, 587/587 Tests."
+        }
+      ],
+      "created": "2026-11-27T13:30:00Z"
+    },
+    {
+      "id": 2678,
+      "title": "m10-perf-fix-ambient-batching @engine-dev",
+      "description": "Fix der in m10-perf-recovery belegten Regression aus c0f56d5 (#280 Ambient Gluehwürmchen+Nebel): 24 ADD-Glow + 3 NORMAL-Nebel-Sprites brechen im Endgame das Batching (88 Draw-Calls/Frame, 82 Blend-Wechsel bei Minute 25; minute25 51,4 statt 60 FPS). Abnahme: npm run perf Burst >=55 bei 640 und 780, Minute-25 >=55, fullrun fpsMin >=55 beide Formate, build+Tests gruen, tests/perf-budget.test.ts als Regressionsschutz (Draws/Frame + sichtbare Images unter Budget), art-director-Sichtpruefung (Ambient nicht sichtbar entfernt). Dateien: src/gfx/GroundRenderer.ts, ggf. src/logic/lod.ts, tests/perf-budget.test.ts.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T13:30:00Z",
+          "by": "build",
+          "text": "Merge Lane m10-perf-recovery: als #2678 neu angelegt (lane #2678). Fix-Entwurf (Ambient-Layer + ambientBudgetFor-LOD) liegt als Patch unter ~/tmp/m10-perf-recovery/ambient-lod-fix.patch; braucht Freigabe von src/gfx/GroundRenderer.ts (Claim m10-ground-cost) und eine eigene engine-dev-Karte."
+        }
+      ],
+      "created": "2026-11-27T13:30:00Z"
     }
   ]
 }
