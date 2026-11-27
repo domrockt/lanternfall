@@ -28,6 +28,17 @@ const argOf = (name, fallback) => {
 const TAG = String(argOf("tag", "baseline"));
 const OUT_JSON = `shots/m10-boss-fx-contrast-${TAG}.json`;
 const OUT_PNG_PREFIX = `shots/m10-boss-fx-contrast-${TAG}`;
+// M10 #5221 (art-director-FAIL-Behandlung): optionaler Freeze-Versatz nach
+// FX-Start. 0 = alter Stand (FX-Fruehphase, mit Baseline/after vergleichbar).
+// afterpeak (350 ms) zeigt fx_boss_core in der Mitte (Scale ~1,3) ZUSAMMEN mit
+// denselben Messwerten — die Zahlen sind nur innerhalb desselben Delays
+// vergleichbar und werden in der Lane-Doku getrennt ausgewiesen.
+const FX_DELAY_MS = Number(argOf("fx-delay-ms", "0")) || 0;
+// M10 #5221 (art-director-FAIL-Behandlung): mode=death toetet den Boss sofort
+// nach dem Spawn (hp=0) und misst/captured den Boss-Tod-FX — dort ist der
+// fx_boss_core NICHT vom Boss-Sprite verdeckt (Intro-FX liegt unter dem Sprite,
+// DEPTH.fxLow) und mit Scale 1,6-3,6 sichtbar. Intro bleibt der Default.
+const MODE = String(argOf("mode", "intro"));
 
 // Horde >= 200 Gegner: Mischung mehrerer Stufen/Silhouetten, gespawnt um den Spieler.
 const HORDE = [
@@ -197,12 +208,22 @@ try {
         if (alive < total) window.__lf.spawnEnemy("bog_rat", total - alive);
       }, HORDE_TOTAL);
 
-      // Boss + Intro-FX ausloesen, im FX-Peak einfrieren und screenshoten.
-      await page.evaluate((b) => { window.__lf.spawnBoss(b); }, boss);
+      // Boss + FX ausloesen, im FX-Peak einfrieren und screenshoten.
+      if (MODE === "death") {
+        await page.evaluate((b) => {
+          const run = window.__game.scene.getScene("run");
+          window.__lf.spawnBoss(b);
+          const boss = run.enemies.active.find((e) => e.boss);
+          if (boss) boss.hp = 0; // -> collectKills: playBossDeathFx am Boss-Standort
+        }, boss);
+      } else {
+        await page.evaluate((b) => { window.__lf.spawnBoss(b); }, boss);
+      }
       await page.waitForFunction(() => {
         const run = window.__game.scene.getScene("run");
         return run.combat.fx.active.some((f) => f.active && f.frames[0].startsWith("fx_boss_core"));
       }, { timeout: 5000 });
+      if (FX_DELAY_MS > 0) await page.waitForTimeout(FX_DELAY_MS);
 
       const info = await page.evaluate(() => {
         const run = window.__game.scene.getScene("run");
@@ -242,7 +263,10 @@ try {
         const s = cropStats(img, cx + ox * devPerGame, cy + oy * devPerGame, halfBg, "bg");
         if (s) bgSpreads.push(s);
       }
-      if (!bossCrop || bgSpreads.length < 3) throw new Error(`Crops ungueltig (${view.name}, Boss ${boss})`);
+      // afterpeak (Vision-Capture): Boss-Crop muss gueltig sein; Hintergrund-
+      // Median mit >= 2 gueltigen Crops (bei FX-Delay ragen ±170-y-Crops ins
+      // Letterbox — Zahlen dieses Tags nicht mit baseline/after vergleichen).
+      if (!bossCrop || bgSpreads.length < 2) throw new Error(`Crops ungueltig (${view.name}, Boss ${boss})`);
       bgSpreads.sort((a, b) => a.spread - b.spread);
       const mid = Math.floor(bgSpreads.length / 2);
       const bgSpreadMedian = bgSpreads.length % 2
