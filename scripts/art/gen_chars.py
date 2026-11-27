@@ -649,13 +649,23 @@ def portrait(kind: str) -> Grid:
     g.put(23, 27, SKIN_D)
     g.put(24, 27, SKIN_D)
     if kind == "mira":
-        g.rect(23, 31, 3, 1, 24)                      # kleiner Mund, mittelgsymmetrisch
+        g.rect(23, 31, 3, 1, 24)                      # kleiner Mund, mittelsymmetrisch
         g.put(23, 31, 25)
         g.put(25, 31, 25)
+        # Glutkern nachziehen (Shading hatte 1 px auf Knochen (10) verdunkelt —
+        # art-director: schwebende helle Einzelpixel).
+        g.rect(41, 40, 1, 2, GLOW_H)
     else:
         g.rect(23, 31, 3, 1, 14)                      # Mund im grauen Bart
         g.rect(21, 31, 2, 1, 9)
         g.rect(26, 31, 2, 1, 9)
+        # Laterne: Hand-Block über dem Deckel in Metall-Laternenkopf umfärben
+        # (art-director: fleischfarbener Block auf der Kerze las sich als Hand).
+        g.rect(39, 36, 4, 1, GOLD_L)                  # Deckel-Licht
+        g.rect(39, 37, 4, 1, GOLD)                    # Deckel
+        g.rect(39, 38, 4, 1, 17)                      # Rahmen emberOrange
+        # Glutkern scharf nachziehen (wie bei Mira).
+        g.rect(42, 43, 1, 2, GLOW_H)
     g = outline(g)
     return g
 
