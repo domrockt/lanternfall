@@ -70,13 +70,63 @@ Zähl-Probe je Textur-Key folgt in Karte #6179.
   ist daher nicht belastbar; die Amplituden-Kurve (rawCurve/perMinute) ist die
   primäre Sägezahn-Metrik.
 
-## Karte #6179 — Ursache im Pool-Bereich (Befund)
+## Karte #6179 — Ursache im Pool-Bereich (Befund mit Zeilenbeleg)
 
-folgt.
+**Befund: Die Hypothese „Reuse-Lücken in `Pool.ts`/`EnemyPool.ts`" ist durch die
+Messung WIDERLEGT.** Churn-Zahlprobe (`~/tmp/m10-heap-sawtooth/churn-probe.mjs`,
+Werkzeug; Beleg `shots/m10-heap-sawtooth-churn-befund.json`): im Endgame-Fenster
+(Sim-Minute 24→29, AutoPlay+God, timeScale 30, seed 99) entstehen **16 392 neue
+Images über `scene.add.image` — davon 0 über Pool.ts/EnemyPool.ts**. Im Fenster
+wird kein einziger Gegner-Sprite neu erzeugt (EnemyPool-Reuse greift seit
+m10-heap-tail), `Pool<T>` (DamageNumbers-Einträge) wächst nicht.
+
+Top-Allokationsquellen Minute 24–29 (Zähler je Aufrufer, 5 Sim-Minuten):
+
+| Aufrufer | Datei:Zeile | neue Images/Fenster | Charakter |
+|---|---|---|---|
+| `CombatSystem.fireFlail` | `src/systems/CombatSystem.ts:355-374` | **5 297** | je Swing 10 neue Images (`flail_ball` + 8× `chain_link` + `fx_halo`) via `makeImage` → `scene.add.image`, Destroy nach 0,24–0,32 s |
+| `Run.spawnSplash` | `src/scenes/Run.ts:663-674` | **4 126** | je Splash 3 Images + 3 Tweens, Destroy nach ~0,3 s |
+| `GroundRenderer.placeProps` | `src/gfx/GroundRenderer.ts:634-683` | **2 852** | Props je Chunk-Rebuild (`buildChunk` Zeile 557, `addProp` Zeile 585) |
+| `CombatSystem.addBurn` | `src/systems/CombatSystem.ts:1117-1130` | **2 844** | je Brandfläche ein neues `fx_fire`-Image (Cap 10, Destroy nach life) |
+| `GroundRenderer.buildChunk/placeWaterDetails` | `src/gfx/GroundRenderer.ts:557-572` | ~1 060 | Wasser-Deko je Chunk-Rebuild |
+| Rest (impactFx, spawnBeam, flushLabels …) | — | ~150 | DamageNumbers/FX-Rest, bereits gedeckelt |
+
+Alle belegten Quellen liegen **außerhalb der Lane-Area** (Pool.ts/EnemyPool.ts).
+In-Area-Restposten (Karte #6180 gefixt):
+
+1. `EnemyPool.compact` nutzte `this.active.splice(i, 1)` (vorher Zeile 266) —
+   `splice` alloziert **pro Todesfall** ein Ergebnis-Array; in Todeswellen
+   (hunderte Tode/Frame in Minute 23–27) reiner Objekt-Churn.
+2. `EnemyPool.spawn` rief `eliteRimDef(def)` (`src/gfx/enemySprites.ts:190`,
+   `{...def, id}` → neues Objekt) und `eliteMarkerSpec(radius)` je Elite-Spawn auf.
+
+### Fix-Empfehlungen für Folge-Jobs (fremde Dateien, hier NICHT angefasst)
+
+- **Größter Einzelposten:** `fireFlail`-Swing-Objekte (Ball/Kette/Halo) als
+  fester Sprite-Satz je Waffe wiederverwenden (10 Images pro Waffe statt 10 pro
+  Swing) — `src/systems/CombatSystem.ts:355`. Erwarteter Gewinn ~32 % des
+  Endgame-Churn. (Schon in m10-heap-margin empfohlen, unverändert aktuell.)
+- `addBurn`: Brandflächen-Sprite in einen kleinen Pool (Cap 10) legen —
+  `src/systems/CombatSystem.ts:1117`, ~17 %.
+- `spawnSplash`: 3 Drop-Images poolen statt `makeImage` + Tween + destroy —
+  `src/scenes/Run.ts:663`, ~25 %. **Run.ts ist fremd-geclaimed.**
+- GroundRenderer: Props/Wasser-Deko sind an Chunk-Texturen gebunden; Reuse nur
+  über Chunk-Recycling (Chunk-Key → Image-Set) — `src/gfx/GroundRenderer.ts:557`.
 
 ## Karte #6180 — Fix + Regressionsschutz
 
-folgt.
+Fix nur in `src/systems/EnemyPool.ts` (Pool.ts ist bereits churn-frei:
+`obtain`/`release`/`trim` arbeiten ohne Allokation — kein Eingriff nötig):
+
+- `compact()`: in-place Verschieben + `length--` statt `splice` — Reihenfolge
+  der Überlebenden bleibt exakt erhalten (bitgleich), kein Array pro Tod.
+- `rimDefCache`/`markerSpecCache` (Map je Basis-ID bzw. gerundetem Radius):
+  Elite-Spawns lesen gecachte Objekte statt pro Spawn neu zu spreaden.
+
+Tests `tests/heap-sawtooth.test.ts` (4): (1) keine Sprites/Images nach Aufwärmen
+über 3 Wellen à 120, (2) 30 Sim-Frames Kill-Wellen — 300 Spawns auf 10 Runtimes/
+KI-Zustände, Werte bitgleich, (3) Rim-Def-/Marker-Spec-Objekt-Identität + Wert-
+Gleichheit, (4) `compact` ohne `splice`-Aufruf (gezählt) mit erhaltener Reihenfolge.
 
 ## Karte #6181 — Nachher-Messung + Abschluss
 
