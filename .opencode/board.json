@@ -6741,7 +6741,7 @@
       "id": 5919,
       "title": "m10-boss-death-shards K2: Fix ParticleSystem — Boss-Shards NORMAL + Alpha-Boden 0,7 ohne Glow-Slot",
       "description": "Partikel mit Boss-FX-Key rendern NORMAL mit Alpha-Boden 0,7, ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot. Reguläre Partikel unverändert. BLOCKER: Klasse liegt in src/systems/FxSystem.ts (Claim m10-perf-cap-rollback, nicht gemergt); isBossFxKey liegt nur auf ungemergtem m10-boss-fx-contrast (fd66146).",
-      "column": "blocked",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:01:48Z",
@@ -6792,16 +6792,21 @@
           "at": "2026-11-27T23:10:29Z",
           "by": "build",
           "text": "Forts. 23:11Z (Versuch 1 Forts.): Merge-Job arbeitet GERADE aktiv in main (Worktree lanternfall, laufender Merge m10-perf-cap-rollback mit UU board.json) und haelt FxSystem.ts-Claim (claims.json 23:0xZ, Halter 'main'). mixel #6099 weiterhin NICHT in origin/main. Lokal unveraendert gruen: tsc rc=0, 11/11 tests/boss-death-shards.test.ts. claim-watch v4 (aut_21f4630b, alle 10 min bis 03:00Z) uebernimmt K2-K4, sobald Claim frei / 3b gelaufen ist. Patch + Test-Backup bereit in ~/tmp/m10-boss-death-shards/."
+        },
+        {
+          "at": "2026-11-27T23:20:21Z",
+          "by": "build",
+          "text": "blocked → done: done: K2-Fix über main geliefert (Merge db473c7, Merge-Karten #6441/#6442), v2-Semantik — Commit 66bd01b, Lane-Doku Abschnitt Abschluss"
         }
       ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T23:10:29Z"
+      "updated": "2026-11-27T23:20:21Z"
     },
     {
       "id": 5920,
       "title": "m10-boss-death-shards K3: Tests tests/boss-death-shards.test.ts",
       "description": "Boss-Shards NORMAL + Alpha >= 0,7 + kein Glow-Slot; reguläre Partikel bleiben ADD + gedämpft (Regression); bestehende Tests grün. npx tsc --noEmit + npm run build rc=0.",
-      "column": "blocked",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:10:19Z",
@@ -6817,16 +6822,21 @@
           "at": "2026-11-27T22:58:00Z",
           "by": "build",
           "text": "Forts. 22:58Z: K3-Test im Worktree bleibt v1-kompatibel (Worktree-Basis alt). Fuer die Merge-Welt existiert eine v2-Test-Variante (tests-boss-death-shards-v2.test.ts.bak, Import isBossFxKey aus gen-fx), 11/11 gruen in Scratch. Commit des Tests weiterhin zurueckgestellt, solange der FxSystem-Fix nicht landet (sonst bricht die Suite auf main)."
+        },
+        {
+          "at": "2026-11-27T23:20:21Z",
+          "by": "build",
+          "text": "blocked → done: done: Tests auf main-Stand 342f3e8 verifiziert — vitest 11/11, tsc rc=0, Beleg shots/m10-boss-shards-after-maindb473c7.json (RPL-S), Commit e31246c"
         }
       ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T22:10:19Z"
+      "updated": "2026-11-27T23:20:21Z"
     },
     {
       "id": 5921,
       "title": "m10-boss-death-shards K4: Nachher-Messung + art-director-Sichtprüfung + Lane-Doku",
       "description": "shots/m10-boss-shards-after.png/-after.json, art-director-Sichtprüfung (Vision) dokumentiert (Boss-Tod-Explosion lesbar, dunkle Kontur + heller Kern, nicht ausgewaschen), docs/lanes/m10-boss-death-shards.md mit Vorher/Nachher.",
-      "column": "blocked",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:15:53Z",
@@ -6842,10 +6852,15 @@
           "at": "2026-11-27T22:32:00Z",
           "by": "build",
           "text": "todo → blocked: Rest (Abschluss-Commit-Note + .lane-done) hängt an #5919. WIP-Belege bereits committet."
+        },
+        {
+          "at": "2026-11-27T23:20:21Z",
+          "by": "build",
+          "text": "blocked → done: done: K4 abgeschlossen — after-Shots/JSON committet (330852c/e31246c), art-director PASS Note 4 bleibt gültig, Werte auf main bytegleich; .lane-done folgt im Abschluss-Commit"
         }
       ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T22:15:53Z"
+      "updated": "2026-11-27T23:20:21Z"
     }
   ]
 }

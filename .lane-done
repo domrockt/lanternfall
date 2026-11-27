@@ -1,0 +1,33 @@
+Lane m10-boss-death-shards — abgeschlossen 2026-11-27T23:2xZ (Versuch 3, Fortsetzung)
+
+Ziel: Boss-Tod-Shard-Partikel (fx_boss_core) nicht mehr auswaschen — analog #5220
+NORMAL-Rendering, Alpha-Boden 0,7, keine fxAlpha-/dpr-Dämpfung, kein Glow-Slot.
+
+Ergebnis: K2 (Fix) + K3 (Test) wurden über main geliefert, nicht über den Lane-Branch:
+Merge `db473c7` (m10-perf-cap-rollback-Merge, Merge-Karten #6441/#6442 auf main-Board)
+enthält den Fix in src/systems/FxSystem.ts (Partikel-Pfad) in der v2-Semantik:
+Boss-Erkennung via `isBossFxKey` aus src/gfx/gen-fx.ts (eine Wahrheit, Commit fd66146),
+Boden `BOSS_FX_ALPHA_FLOOR = 0.7`, Boss-Partikel NORMAL, ohne Glow-Slot; reguläre
+Partikel unverändert (ADD + Dämpfung). Der v1-Worktree-Patch (lokale Key-Liste) wurde
+verworfen — main ist kanonisch, ein Doppel-Commit hätte Merge-Konflikte erzeugt.
+
+Verifikation (main-Stand 342f3e8):
+- vitest tests/boss-death-shards.test.ts: 11/11 grün (Re-Run 23:19Z im main-Checkout)
+- npx tsc --noEmit: rc=0
+- Nachmessung scripts/m10-boss-shards.mjs --tag=after auf main-Code:
+  fx_boss_core blend NORMAL 29/29, glow 0, alphaFrom 0,7–0,95 (vor 0,252–0,684),
+  jsErrors 0, Renderer "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+  (kein SwiftShader). Beleg: shots/m10-boss-shards-after-maindb473c7.json
+- K4: after-Shots + JSON committet (330852c), art-director-Sichtprüfung PASS Note 4
+  (heller Kern sichtbar, dunkle Kontur lesbar, nicht ausgewaschen) bleibt gültig —
+  Werte auf main bytegleich im Aussagewert.
+
+Karten: #5918 done, #5919 done, #5920 done, #5921 done (je ein Commit pro Karte:
+66bd01b #5919, e31246c #5920, Abschluss-Commit #5921). claim-watch-Automation
+aut_21f4630b gelöscht (Blocker gelöst).
+
+Offene Folgepunkte (backlog, nicht blockierend):
+- fx_death_bone-Splitter im Horde-Kontext stärker absetzen (dunkler Rim/Tint bzw. alpha 0,63→0,75)
+- fx_fire im 780er-View an den 640er-Wert angleichen (0,24–0,45 vs. 0,40–0,45)
+
+Doku: docs/lanes/m10-boss-death-shards.md (Abschnitt „Abschluss 2026-11-27 23:2xZ").
