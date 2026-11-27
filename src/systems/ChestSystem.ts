@@ -15,8 +15,17 @@ export interface ChestRuntime {
  * Truhen-Drop mit Glanz-Animation und Bildschirmrand-Pfeil, solange die Truhe
  * außerhalb des Kamerabereichs liegt.
  */
+export interface ChestSpawnRecord {
+  x: number;
+  y: number;
+  /** Run-Zeit (Sekunden) zum Spawn-Zeitpunkt, aus `lf-elapsed`. */
+  at: number;
+}
+
 export class ChestSystem {
   readonly chests: ChestRuntime[] = [];
+  /** M10-Timing-Beleg: jede Spawn-Zeit wird mitgeschrieben (nur Diagnose). */
+  readonly spawns: ChestSpawnRecord[] = [];
   private readonly scene: Phaser.Scene;
   private readonly arrow: Phaser.GameObjects.Image;
 
@@ -32,6 +41,8 @@ export class ChestSystem {
   }
 
   spawn(x: number, y: number): ChestRuntime {
+    const at = Number(this.scene.registry.get("lf-elapsed") ?? 0);
+    this.spawns.push({ x: Math.round(x), y: Math.round(y), at: Math.round(at * 1000) / 1000 });
     const sprite = makeImage(this.scene, Math.round(x), Math.round(y), "chest_closed")
       .setDepth(7)
       .setScale(1);
@@ -113,6 +124,7 @@ export class ChestSystem {
       chest.glow.destroy();
     }
     this.chests.length = 0;
+    this.spawns.length = 0;
     this.arrow.setVisible(false);
   }
 
