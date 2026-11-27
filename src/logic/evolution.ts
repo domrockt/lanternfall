@@ -1,5 +1,6 @@
 import { EVOLUTIONS } from "../data/evolutions";
 import { EVOLUTION_WEAPONS } from "../data/evolution-weapons";
+import { weaponDef } from "../data/weaponIds";
 import type { EvolutionDef, PassiveId, WeaponId } from "../data/types";
 import { generateOffers, type Offer, type OwnedItem } from "./levelup";
 import type { Rng } from "./rng";
@@ -43,6 +44,11 @@ export function evolvableList(
   for (const evo of EVOLUTIONS) {
     if (!evo.implemented) continue;
     if (weapons.some((w) => w.id === evo.id)) continue;
+    // M10-reachability: nur implementierte Evolutions-Waffen anbieten — sonst
+    // offeriert die Truhe eine Evolution, die applyChestReward/addWeapon
+    // anschliessend mit Fehler ablehnen muesste (gleiche Regel wie
+    // eligibleEvolutions in levelup.ts).
+    if (!weaponDef(evo.id)?.implemented) continue;
     const base = weapons.find((w) => w.id === evo.baseWeapon);
     if (!base || base.level < 8) continue;
     if ((passiveLevels.get(evo.passive) ?? 0) < 1) continue;
