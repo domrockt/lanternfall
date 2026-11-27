@@ -1,0 +1,732 @@
+{
+  "generatedAt": "2026-11-27T07:26:37.887Z",
+  "lane": "m10-boss-onscreen",
+  "note": "Sprite-Rect = volles Frame-Rechteck inkl. transparenter Rand (konservativ). Screen-Koordinaten, viewport-unabhaengig logisch.",
+  "viewports": [
+    "1920x1080",
+    "640x360"
+  ],
+  "entries": [
+    {
+      "viewport": "1920x1080",
+      "bossIndex": 0,
+      "bossId": "moor_queen",
+      "view": {
+        "width": 640,
+        "height": 360,
+        "cssW": 1920,
+        "cssH": 1080,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 56,
+        "frameH": 56,
+        "displayW": 56,
+        "displayH": 56
+      },
+      "bossWorld": {
+        "x": 1955.7034022213188,
+        "y": 2158.5320679191354
+      },
+      "cam": {
+        "scrollX": 1728,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 200,
+        "y": 263,
+        "w": 56,
+        "h": 56
+      },
+      "hpRect": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 170,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 54,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 56,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 211
+    },
+    {
+      "viewport": "1920x1080",
+      "bossIndex": 1,
+      "bossId": "bone_lord",
+      "view": {
+        "width": 640,
+        "height": 360,
+        "cssW": 1920,
+        "cssH": 1080,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 64,
+        "frameH": 64,
+        "displayW": 64,
+        "displayH": 64
+      },
+      "bossWorld": {
+        "x": 2133.3817626069163,
+        "y": 2163.9566928389054
+      },
+      "cam": {
+        "scrollX": 1728,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 373,
+        "y": 264,
+        "w": 64,
+        "h": 64
+      },
+      "hpRect": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 170,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 64,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 64,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 212
+    },
+    {
+      "viewport": "1920x1080",
+      "bossIndex": 2,
+      "bossId": "pale_shepherd",
+      "view": {
+        "width": 640,
+        "height": 360,
+        "cssW": 1920,
+        "cssH": 1080,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 72,
+        "frameH": 72,
+        "displayW": 72,
+        "displayH": 72
+      },
+      "bossWorld": {
+        "x": 1932.0913420611366,
+        "y": 2133.44696024325
+      },
+      "cam": {
+        "scrollX": 1728,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 168,
+        "y": 229,
+        "w": 72,
+        "h": 72
+      },
+      "hpRect": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 170,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 38,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 70,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 177
+    },
+    {
+      "viewport": "1920x1080",
+      "bossIndex": 3,
+      "bossId": "bell_golem",
+      "view": {
+        "width": 640,
+        "height": 360,
+        "cssW": 1920,
+        "cssH": 1080,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 80,
+        "frameH": 80,
+        "displayW": 80,
+        "displayH": 80
+      },
+      "bossWorld": {
+        "x": 2191.999898562491,
+        "y": 2047.8290789881517
+      },
+      "cam": {
+        "scrollX": 1728,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 424,
+        "y": 140,
+        "w": 80,
+        "h": 80
+      },
+      "hpRect": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 170,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 14,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 46,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 88
+    },
+    {
+      "viewport": "1920x1080",
+      "bossIndex": 4,
+      "bossId": "coven",
+      "view": {
+        "width": 640,
+        "height": 360,
+        "cssW": 1920,
+        "cssH": 1080,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 96,
+        "frameH": 96,
+        "displayW": 96,
+        "displayH": 96
+      },
+      "bossWorld": {
+        "x": 2122.219082448637,
+        "y": 2171.3998695318696
+      },
+      "cam": {
+        "scrollX": 1728,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 346,
+        "y": 255,
+        "w": 96,
+        "h": 96
+      },
+      "hpRect": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 170,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 92,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 96,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 203
+    },
+    {
+      "viewport": "1920x1080",
+      "bossIndex": 5,
+      "bossId": "hollow_king",
+      "view": {
+        "width": 640,
+        "height": 360,
+        "cssW": 1920,
+        "cssH": 1080,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 96,
+        "frameH": 96,
+        "displayW": 96,
+        "displayH": 96
+      },
+      "bossWorld": {
+        "x": 2188.08532640147,
+        "y": 2081.3481832637644
+      },
+      "cam": {
+        "scrollX": 1728,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 412,
+        "y": 165,
+        "w": 96,
+        "h": 96
+      },
+      "hpRect": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 170,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 26,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 58,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 113
+    },
+    {
+      "viewport": "640x360",
+      "bossIndex": 0,
+      "bossId": "moor_queen",
+      "view": {
+        "width": 480,
+        "height": 360,
+        "cssW": 640,
+        "cssH": 360,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 56,
+        "frameH": 56,
+        "displayW": 56,
+        "displayH": 56
+      },
+      "bossWorld": {
+        "x": 1955.7034022213188,
+        "y": 2158.5320679191354
+      },
+      "cam": {
+        "scrollX": 1808,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 120,
+        "y": 263,
+        "w": 56,
+        "h": 56
+      },
+      "hpRect": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 90,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 54,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 56,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 211
+    },
+    {
+      "viewport": "640x360",
+      "bossIndex": 1,
+      "bossId": "bone_lord",
+      "view": {
+        "width": 480,
+        "height": 360,
+        "cssW": 640,
+        "cssH": 360,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 64,
+        "frameH": 64,
+        "displayW": 64,
+        "displayH": 64
+      },
+      "bossWorld": {
+        "x": 2133.3817626069163,
+        "y": 2163.9566928389054
+      },
+      "cam": {
+        "scrollX": 1808,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 293,
+        "y": 264,
+        "w": 64,
+        "h": 64
+      },
+      "hpRect": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 90,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 64,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 64,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 212
+    },
+    {
+      "viewport": "640x360",
+      "bossIndex": 2,
+      "bossId": "pale_shepherd",
+      "view": {
+        "width": 480,
+        "height": 360,
+        "cssW": 640,
+        "cssH": 360,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 72,
+        "frameH": 72,
+        "displayW": 72,
+        "displayH": 72
+      },
+      "bossWorld": {
+        "x": 1932.0913420611366,
+        "y": 2133.44696024325
+      },
+      "cam": {
+        "scrollX": 1808,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 88,
+        "y": 229,
+        "w": 72,
+        "h": 72
+      },
+      "hpRect": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 90,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 38,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 70,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 177
+    },
+    {
+      "viewport": "640x360",
+      "bossIndex": 3,
+      "bossId": "bell_golem",
+      "view": {
+        "width": 480,
+        "height": 360,
+        "cssW": 640,
+        "cssH": 360,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 80,
+        "frameH": 80,
+        "displayW": 80,
+        "displayH": 80
+      },
+      "bossWorld": {
+        "x": 2191.999898562491,
+        "y": 2047.8290789881517
+      },
+      "cam": {
+        "scrollX": 1808,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 344,
+        "y": 140,
+        "w": 80,
+        "h": 80
+      },
+      "hpRect": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 90,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 14,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 46,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 88
+    },
+    {
+      "viewport": "640x360",
+      "bossIndex": 4,
+      "bossId": "coven",
+      "view": {
+        "width": 480,
+        "height": 360,
+        "cssW": 640,
+        "cssH": 360,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 96,
+        "frameH": 96,
+        "displayW": 96,
+        "displayH": 96
+      },
+      "bossWorld": {
+        "x": 2122.219082448637,
+        "y": 2171.3998695318696
+      },
+      "cam": {
+        "scrollX": 1808,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 266,
+        "y": 255,
+        "w": 96,
+        "h": 96
+      },
+      "hpRect": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 90,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 92,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 96,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 203
+    },
+    {
+      "viewport": "640x360",
+      "bossIndex": 5,
+      "bossId": "hollow_king",
+      "view": {
+        "width": 480,
+        "height": 360,
+        "cssW": 640,
+        "cssH": 360,
+        "zoom": 1
+      },
+      "sprite": {
+        "key": "runtime_atlas",
+        "frameW": 96,
+        "frameH": 96,
+        "displayW": 96,
+        "displayH": 96
+      },
+      "bossWorld": {
+        "x": 2188.08532640147,
+        "y": 2081.3481832637644
+      },
+      "cam": {
+        "scrollX": 1808,
+        "scrollY": 1868,
+        "zoom": 1
+      },
+      "bossRect": {
+        "x": 332,
+        "y": 165,
+        "w": 96,
+        "h": 96
+      },
+      "hpRect": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "bannerRect": {
+        "x": 90,
+        "y": 62,
+        "w": 300,
+        "h": 48
+      },
+      "bannerVisible": false,
+      "overlapHp": {
+        "w": 26,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "overlapBanner": {
+        "w": 58,
+        "h": 0,
+        "area": 0,
+        "percent": 0
+      },
+      "bossTopBelowHp": 113
+    }
+  ],
+  "errors": []
+}
