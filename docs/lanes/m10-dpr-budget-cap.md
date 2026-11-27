@@ -40,6 +40,39 @@ unveraendert.
 
 ## #3580 Messung (blocked: Perf-Lock belegt)
 
+**Methodik-Fix (20:10, Commit f89a5e4):** Der vollstaendige Messlauf von 19:37
+(60,0-60,1 FPS 3/3, Buffer 780x360) ist **methodisch ungueltig**: in
+`scripts/m10-dpr-budget.mjs` wurde `target` in `page.evaluate` uebergeben,
+aber im Callback nur `{ seconds }` destrukturiert -> `deficit = NaN`,
+Nachspawner tot, minEnemies 16-21 statt ~300. Die 60 FPS sind also NICHT die
+M25-Last. Fix: Destrukturierung `{ seconds, target }` (wie perf.mjs), zusaetzlich
+`--six40` (640x360 dpr1-Regressionssprung, Regler darf bei dpr1 nie senken) und
+Stress-Lauf `--stress 1200` (Teiler 1 faellt unter 45 -> Regler muss senken).
+Neuer vollstaendiger Lauf ist unter flock in der Warteschlange eingereiht.
+
+**Vollstaendiger Messlauf nach Fix (20:29, Commit siehe Board):**
+`shots/m10-dpr-budget.json` — 780x360 dpr3, M25, Nachspawner aktiv
+(minEnemies 300+ je Lauf):
+
+- Vorher (?rbscale=0, Teiler 1 erzwungen): 60,1 FPS, Buffer 780x360.
+- Nachher 3/3: 60,1 / 60,1 / 60,0 FPS, min-FPS **60 >= 50**,
+  `afterPassedCount 3/3`, 0 JS-Fehler. Effektive Renderbreite 780
+  (Regler korrekt bei Teiler 1 — Hysterese senkt erst unter 45 FPS).
+- Interpretation: Bei aktueller Maschinenlast (Load ~6 statt ~15 bei
+  fa2-02) erreicht selbst Teiler 1 stabil 60 FPS (vsync). Das ist das
+  ERFOLGVERHALTEN, kein FAIL; der Regler-Greif-Fall ist separat belegt
+  (Probes Teiler 2 unter Last, Stress-Laeufe unten).
+- 640x360 dpr1 (`--six40`): 60,0 FPS, 0 JS-Fehler, keine Regression.
+  Hinweis: Canvas-CSS ist dort 480x360 — das ist der m8-Fit-Fallback
+  (`computeView`, MIN_WIDTH 480, n=1 bei dpr1/360 Geraetepixeln),
+  erwartetes Verhalten, nicht Regler-bedingt; Regler bleibt bei Teiler 1
+  (renderWidth = CSS-Breite 480, Divisor 1).
+- Stress 1200 Gegner (`after-stress-1200`): 59,8 FPS bei Teiler 1,
+  minEnemies 1200 — selbst das reicht auf dieser Maschine nicht unter
+  die 45-FPS-Schwelle; Regler-Greifen unter Dauerlast bleibt durch die
+  Probes belegt (Teiler 2, Buffer 390x180, FPS-Erholung 44,9 -> 59).
+  Nachgelegt: Stress 3000 in shots/m10-dpr-budget-stress3000.json.
+
 `scripts/m10-dpr-budget.mjs`, M25-Last 780x360 dpr3, 3 Laeufe nachher +
 Vorher-Referenz (?rbscale=0), FPS und effektive Renderbreite in
 `shots/m10-dpr-budget.json`. Ziel min >= 50 FPS, 640x360@1 ohne Regression

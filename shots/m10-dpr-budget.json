@@ -12,9 +12,9 @@
       "fps": 60.1,
       "frames": 601,
       "worstFrameMs": 16.8,
-      "minEnemies": 18,
+      "minEnemies": 300,
       "time": 1500.4,
-      "kills": 23359,
+      "kills": 23376,
       "renderBuffer": [
         780,
         360
@@ -27,17 +27,17 @@
       "renderWidth": 780,
       "renderScaleDivisor": 1,
       "jsErrors": [],
-      "passed": false
+      "passed": true
     },
     {
       "id": "after-auto-1",
       "mode": "after",
-      "fps": 60.1,
+      "fps": 60,
       "frames": 601,
       "worstFrameMs": 16.8,
-      "minEnemies": 16,
-      "time": 1502,
-      "kills": 31496,
+      "minEnemies": 300,
+      "time": 1502.8,
+      "kills": 33464,
       "renderBuffer": [
         780,
         360
@@ -50,7 +50,7 @@
       "renderWidth": 780,
       "renderScaleDivisor": 1,
       "jsErrors": [],
-      "passed": false
+      "passed": true
     },
     {
       "id": "after-auto-2",
@@ -58,9 +58,9 @@
       "fps": 60,
       "frames": 601,
       "worstFrameMs": 16.8,
-      "minEnemies": 21,
+      "minEnemies": 300,
       "time": 1500.4,
-      "kills": 29784,
+      "kills": 30611,
       "renderBuffer": [
         780,
         360
@@ -73,7 +73,7 @@
       "renderWidth": 780,
       "renderScaleDivisor": 1,
       "jsErrors": [],
-      "passed": false
+      "passed": true
     },
     {
       "id": "after-auto-3",
@@ -81,9 +81,9 @@
       "fps": 60.1,
       "frames": 601,
       "worstFrameMs": 16.8,
-      "minEnemies": 17,
-      "time": 1499.9,
-      "kills": 28826,
+      "minEnemies": 300,
+      "time": 1500.4,
+      "kills": 30766,
       "renderBuffer": [
         780,
         360
@@ -96,14 +96,65 @@
       "renderWidth": 780,
       "renderScaleDivisor": 1,
       "jsErrors": [],
-      "passed": false
+      "passed": true
+    },
+    {
+      "id": "after-stress-900",
+      "mode": "after-stress",
+      "stressEnemies": 900,
+      "fps": 59.8,
+      "frames": 599,
+      "worstFrameMs": 33.3,
+      "minEnemies": 900,
+      "time": 1499.6,
+      "kills": 81014,
+      "renderBuffer": [
+        780,
+        360
+      ],
+      "css": [
+        780,
+        360
+      ],
+      "dpr": 3,
+      "renderWidth": 780,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": true
+    },
+    {
+      "id": "after-640-dpr1",
+      "mode": "after-640",
+      "viewport": [
+        640,
+        360
+      ],
+      "dpr": 1,
+      "fps": 60.1,
+      "frames": 601,
+      "worstFrameMs": 16.8,
+      "minEnemies": 300,
+      "time": 1500.3,
+      "kills": 19662,
+      "renderBuffer": [
+        480,
+        360
+      ],
+      "css": [
+        480,
+        360
+      ],
+      "renderWidth": 480,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": true
     }
   ],
   "summary": {
     "beforeFps": 60.1,
     "beforeRenderWidth": 780,
     "afterFps": [
-      60.1,
+      60,
       60,
       60.1
     ],
@@ -113,8 +164,38 @@
       780
     ],
     "afterMinFps": 60,
-    "afterPassedCount": 0,
+    "afterPassedCount": 3,
     "afterCount": 3,
+    "stressRun": {
+      "id": "after-stress-900",
+      "mode": "after-stress",
+      "stressEnemies": 900,
+      "fps": 59.8,
+      "frames": 599,
+      "worstFrameMs": 33.3,
+      "minEnemies": 900,
+      "time": 1499.6,
+      "kills": 81014,
+      "renderBuffer": [
+        780,
+        360
+      ],
+      "css": [
+        780,
+        360
+      ],
+      "dpr": 3,
+      "renderWidth": 780,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": true
+    },
+    "run640": {
+      "fps": 60.1,
+      "renderWidth": 480,
+      "minEnemies": 300,
+      "passed": true
+    },
     "jsErrors": 0
   }
 }
