@@ -4455,27 +4455,38 @@
       "id": 3459,
       "title": "m10-view-width-cap K1: Crowd-Schalter in view.ts + Test",
       "description": "In src/logic/view.ts reine Funktion shouldCapForCrowd(activeEnemies, capped) mit Hysterese (>=300 klemmen, <260 lösen) und computeView(..., crowd) klemmen auf CROWD_WIDTH=640 bei unveränderter ganzzahliger n-Skalierung. tests/view-width.test.ts. Nur view.ts/test; main.ts nur 1 minimale Verdrahtung nach Dispatch-Request. Abnahme: npx vitest run tests/view-width.test.ts grün, npx tsc --noEmit grün, isIntegerPixelPerfect bleibt true bei crowd.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T13:46:41Z",
           "by": "build",
           "text": "todo → doing: Start: Crowd-Schalter in view.ts + Test + minimale main.ts-Verdrahtung"
+        },
+        {
+          "at": "2026-11-27T14:23:22Z",
+          "by": "build",
+          "text": "doing → review: Commit 7576db7: view.ts Crowd-Klemme 640 + Hysterese 300/260, main.ts-Poll 500ms, tests/view-width 4/4 + view 9/9 grün, build rc=0. Kontrolle: reviewer."
         }
       ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T13:46:41Z"
+      "updated": "2026-11-27T14:23:22Z"
     },
     {
       "id": 3460,
       "title": "m10-view-width-cap K2: Nachher-Messung 6 Läufe + fullrun",
       "description": "Nach Fix: 3x 640x360-dpr1 und 3x 780x360-dpr3 unter flock mit scripts/m10-view-width.mjs (cap an), JSON shots/m10-view-width-after-*.json; genau EIN npm run fullrun unter flock → shots/m10-view-width-fullrun.json. Abnahme: 640-Minute25-Median >=55, 780 nicht schlechter als Vorher (54,5), fullrun fpsMin >=55 oder Ursache dokumentiert, 0 JS-Fehler.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-test",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T14:22:48Z",
+          "by": "build",
+          "text": "todo → doing: Start: A/B Nachher-Messung 3x 640 + 3x 780 + 1 fullrun"
+        }
+      ],
       "created": "2026-11-27T13:24:43Z",
-      "updated": "2026-11-27T13:24:43Z"
+      "updated": "2026-11-27T14:22:48Z"
     },
     {
       "id": 3461,
