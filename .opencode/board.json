@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6665,
+  "next": 6670,
   "cards": [
     {
       "id": 1,
@@ -7830,6 +7830,53 @@
       ],
       "created": "2026-11-27T23:41:33Z",
       "updated": "2026-11-27T23:42:28Z"
+    },
+    {
+      "id": 6666,
+      "title": "m10-shot-clarity #1: Vorher-Messung Chaos 300/500 (scripts/m10-shot-clarity.mjs)",
+      "column": "review",
+      "description": "Skript zaehlt Schuesse je Typ, misst Kontrast/Near-White-Anteil der Schuss-Pixel in Chaos-Szenen (300/500 Gegner), schreibt shots/m10-shot-clarity-before-{300,500}.png + -before.json. Abnahme: JSON mit Schusszahlen je Typ + Near-White-% committed, Screenshots zeigen Chaos mit Schüssen.",
+      "notes": [
+        {
+          "at": "2026-11-27T23:53:01.317Z",
+          "by": "lead",
+          "text": "Start: Mess-Skript scripts/m10-shot-clarity.mjs (Chaos 300/500, Schüsse je Typ, Near-White/Kontrast, Screenshots)."
+        },
+        {
+          "at": "2026-11-27T23:56:50.393Z",
+          "by": "lead",
+          "text": "Vorher-Messung committed: worst-scene Near-White(A7) der Schuss-Pixel 24,9 % (Grenze 4,16 %) -> FAIL wie erwartet. Schuesse je Typ belegt (300er: spit 80/bone 15/shadow 11/fire 15; 500er: 92/14/31/30). Texturen: spit 24,56 % A7-near-white, shadow 27,78 %, fire 6,35 %, bone 2,04 %; Spieler-Ember teilt amber(20)+lanternWhite(13) mit Gegnertypen. Belege: shots/m10-shot-clarity-before-{300,500}.png + -before.json."
+        }
+      ],
+      "created": "2026-11-27T23:52:56.879Z",
+      "updated": "2026-11-27T23:56:50.393Z"
+    },
+    {
+      "id": 6667,
+      "title": "m10-shot-clarity #2: Optik-Fix shotTextureFor/HD-Grids (Kontur, Palette-Farben, Groessenstaffel)",
+      "column": "todo",
+      "description": "HD_GRIDS in src/systems/EnemyProjectiles.ts: je Familie eigene Palette-Farben (keine Kollision mit Spieler-Ember), dunkle Kontur, monotone Groessenstaffel spit<bone<shadow<fire, kein Near-White. Treffer-/Update-Pfad bitgleich. Abnahme: npx tsc --noEmit gruen, enemy-shots-fair.test.ts unangetastet gruen.",
+      "notes": [],
+      "created": "2026-11-27T23:52:56.879Z",
+      "updated": "2026-11-27T23:52:56.879Z"
+    },
+    {
+      "id": 6668,
+      "title": "m10-shot-clarity #3: tests/shot-clarity.test.ts",
+      "column": "todo",
+      "description": "Texturen je Typ pixel-differenzierbar, Palette-konform, binaeres Alpha, Treffer-Pfad-Statistik bitgleich zur Vorher-Messung. Abnahme: npx vitest run tests/shot-clarity.test.ts gruen.",
+      "notes": [],
+      "created": "2026-11-27T23:52:56.879Z",
+      "updated": "2026-11-27T23:52:56.879Z"
+    },
+    {
+      "id": 6669,
+      "title": "m10-shot-clarity #4: Nachher-Messung + art-director",
+      "column": "todo",
+      "description": "After-Lauf scripts/m10-shot-clarity.mjs --tag=after, shots/m10-shot-clarity-after-{300,500}.png + -after.json; Near-White <= 4,16 % (A7), art-director >= 4/5. Abnahme: JSON committed, art-director-Urteil in Lane-Doku.",
+      "notes": [],
+      "created": "2026-11-27T23:52:56.879Z",
+      "updated": "2026-11-27T23:52:56.879Z"
     }
   ]
 }
