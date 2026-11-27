@@ -9,7 +9,7 @@ import {
 } from "../config";
 import { ENEMIES } from "../data/enemies";
 import { BOSSES } from "../data/bosses";
-import { SeededRng } from "../logic/rng";
+import { SeededRng, hasFlag } from "../logic/rng";
 import { directionToPlayer, separationPush } from "../logic/separation";
 import {
   aggregateMods, effectiveMoveSpeed, effectivePickupRadius,
@@ -324,7 +324,25 @@ export class Run extends Phaser.Scene {
     this.scene.launch("ui");
     this.registry.set("lf-elapsed", 0);
     getAudio().setMusic("run");
+    // M10 frame-cadence: Sicht-Beleg (GIF/Log) liest die tatsaechlich am
+    // Sprite stehenden Gegner-Frames; nur mit ?debug=1, Muster wie __lfEnemyShots.
+    if (hasFlag("debug")) {
+      (globalThis as unknown as Record<string, unknown>).__lfEnemyFrames = () =>
+        this.enemies.active
+          .filter((e) => e.alive && Math.abs(e.x - this.posX) < 260 && Math.abs(e.y - this.posY) < 220)
+          .slice(0, 12)
+          .map((e) => {
+            const cam = this.cameras.main;
+            return {
+              id: e.def.id,
+              frame: currentFrame(e.sprite),
+              sx: Math.round(e.x - cam.scrollX),
+              sy: Math.round(e.y - cam.scrollY),
+            };
+          });
+    }
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      delete (globalThis as unknown as Record<string, undefined>).__lfEnemyFrames;
       this.scale.off(Phaser.Scale.Events.RESIZE, this.onViewResize, this);
       this.inputState.reset();
       resetTouchSnapshot();
