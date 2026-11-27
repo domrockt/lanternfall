@@ -1,0 +1,227 @@
+{
+  "mode": "after",
+  "capturedAt": "2026-11-27T21:45:43.127Z",
+  "jsErrors": [],
+  "formats": [
+    {
+      "label": "640",
+      "viewport": {
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "logical": {
+        "w": 480,
+        "h": 360
+      },
+      "zoom": 1,
+      "hpBar": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "banner": {
+        "x": 90,
+        "y": 58,
+        "w": 300,
+        "h": 48
+      },
+      "bannerAlpha": 1,
+      "bannerVisible": true,
+      "bannerTitle": "DER HOHE KÖNIG",
+      "bannerSub": "3 PHASEN - SIEG BEI SEINEM TOD",
+      "bannerTextRect": {
+        "x": 198.5,
+        "y": 74,
+        "w": 83,
+        "h": 7
+      },
+      "damageCount": 3,
+      "damageTexts": [
+        {
+          "text": "66",
+          "rect": {
+            "x": 300.5,
+            "y": 167,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "10",
+          "rect": {
+            "x": 180.5,
+            "y": 270,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "22",
+          "rect": {
+            "x": 236.5,
+            "y": 101,
+            "w": 11,
+            "h": 7
+          }
+        }
+      ],
+      "overlapCount": 1,
+      "overlapTexts": [
+        "22"
+      ],
+      "overlapWithTitle": false,
+      "bannerVisibleAfterTimer": false,
+      "bannerAlphaAfterTimer": 0,
+      "screenshot": "shots/m10-boss-banner-after-640.png"
+    },
+    {
+      "label": "960x540",
+      "viewport": {
+        "width": 960,
+        "height": 540,
+        "dpr": 1
+      },
+      "logical": {
+        "w": 480,
+        "h": 360
+      },
+      "zoom": 1,
+      "hpBar": {
+        "x": 122,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "banner": {
+        "x": 90,
+        "y": 58,
+        "w": 300,
+        "h": 48
+      },
+      "bannerAlpha": 1,
+      "bannerVisible": true,
+      "bannerTitle": "DER HOHE KÖNIG",
+      "bannerSub": "3 PHASEN - SIEG BEI SEINEM TOD",
+      "bannerTextRect": {
+        "x": 198.5,
+        "y": 74,
+        "w": 83,
+        "h": 7
+      },
+      "damageCount": 3,
+      "damageTexts": [
+        {
+          "text": "66",
+          "rect": {
+            "x": 300.5,
+            "y": 167,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "10",
+          "rect": {
+            "x": 180.5,
+            "y": 270,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "22",
+          "rect": {
+            "x": 236.5,
+            "y": 99,
+            "w": 11,
+            "h": 7
+          }
+        }
+      ],
+      "overlapCount": 1,
+      "overlapTexts": [
+        "22"
+      ],
+      "overlapWithTitle": false,
+      "bannerVisibleAfterTimer": false,
+      "bannerAlphaAfterTimer": 0,
+      "screenshot": "shots/m10-boss-banner-after-960x540.png"
+    },
+    {
+      "label": "1280x720",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1
+      },
+      "logical": {
+        "w": 640,
+        "h": 360
+      },
+      "zoom": 1,
+      "hpBar": {
+        "x": 202,
+        "y": 40,
+        "w": 236,
+        "h": 12
+      },
+      "banner": {
+        "x": 170,
+        "y": 58,
+        "w": 300,
+        "h": 48
+      },
+      "bannerAlpha": 1,
+      "bannerVisible": true,
+      "bannerTitle": "DER HOHE KÖNIG",
+      "bannerSub": "3 PHASEN - SIEG BEI SEINEM TOD",
+      "bannerTextRect": {
+        "x": 278.5,
+        "y": 74,
+        "w": 83,
+        "h": 7
+      },
+      "damageCount": 3,
+      "damageTexts": [
+        {
+          "text": "66",
+          "rect": {
+            "x": 380.5,
+            "y": 167,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "10",
+          "rect": {
+            "x": 260.5,
+            "y": 270,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "22",
+          "rect": {
+            "x": 316.5,
+            "y": 99,
+            "w": 11,
+            "h": 7
+          }
+        }
+      ],
+      "overlapCount": 1,
+      "overlapTexts": [
+        "22"
+      ],
+      "overlapWithTitle": false,
+      "bannerVisibleAfterTimer": false,
+      "bannerAlphaAfterTimer": 0,
+      "screenshot": "shots/m10-boss-banner-after-1280x720.png"
+    }
+  ],
+  "totalOverlaps": 3
+}

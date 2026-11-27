@@ -25,14 +25,50 @@ in allen 3 Formaten (`bannerVisibleAfterTimer: false`), 0 JS-Fehler.
 Banner-y ist aktuell eine freie Konstante (Nineslice Mitte y=92 → Rect 68..116),
 nicht an die HP-Leisten-Kette gekoppelt; safeTop = max(52, 116) + 6 = 122.
 
-## K2 Fix (geplant, wird nach Umsetzung mit Messwerten gefüllt)
+## K2 Fix (nachher)
 
-- `src/systems/BossSystem.ts`: Banner-Rect an die Kette koppeln
-  (`banner.y = hpBar.y + hpBar.h + BOSS_HUD_CLEARANCE`) — Rect-Kette statt freie Mitte.
-- `src/scenes/UI.ts`: Banner-Objekte aus `bossHudRects(GAME_WIDTH).banner`
-  positionieren; Fade-In kürzen.
+- `src/systems/BossSystem.ts`: `bossHudRects()` koppelt das Banner-Rect an die
+  Kette: `banner.y = hpBar.y + hpBar.h + BOSS_HUD_CLEARANCE` (= 58) — Rect-Kette
+  statt freie Mitte. safeTop folgt automatisch (= 112), ebenso Spawn-Komposition
+  (`composedBossCenterY`) und Banner-Guard; `BOSS_SAFE_TOP` ist jetzt abgeleitet
+  (40 + 12 + 48 + 2*6 = 112) statt hardcoded 122.
+- `src/scenes/UI.ts`: Nineslice/Titel/Untertitel werden aus
+  `bossHudRects(GAME_WIDTH).banner` positioniert (Titel = banner.y + 16,
+  Sub = banner.y + 30, wie vorher relativ); Fade-In 240 → 120 ms, über die
+  exportierten Konstanten `BANNER_FADE_IN_MS/HOLD_MS/FADE_OUT_MS` (120/2400/380).
+  HP-Leisten-Stil und Boss-Spawn-Logik unangetastet.
 
-## K3 / K4
+Nachher-Messung (gleicher Staging-Lauf, `shots/m10-boss-banner-after.json`):
+Banner y=58..106 in allen 3 Formaten, Alpha 1 im Halt, Timer räumt auf
+(`bannerVisibleAfterTimer: false`), 0 JS-Fehler. Die künstlich an die
+View-Oberkante gestagte Zahl („22“, y≈99) liegt weiterhin geometrisch im
+Banner-Rect — sie ist aber NICHT mehr sichtbar kollidierend: das Banner liegt
+bei Alpha 1 über der Run-Szene und verdeckt sie; Boss-eigene Zahlen sind über
+die safeTop-Kette garantiert unter dem Banner (Unit-Tests, worst case 2592
+Overlap-Assertions grün). Sichtbare Kollision (Zahl über Boss-Name wie im
+Dom-Screenshot Minute 30) ist damit behoben; Zahlen hinter dem kurzen Fade-In
+(120 ms) sind der einzige Rest, dokumentiert als bekanntes Randverhalten.
 
-Tests `tests/boss-banner-layout.test.ts` und Nachher-Messung (`after`-Modus,
-art-director-Sichtprüfung) folgen mit den jeweiligen Karten.
+## K3 Tests
+
+`tests/boss-banner-layout.test.ts` — 27 Tests grün (Gesamtsuite 687/687,
+`npx tsc --noEmit` rc=0, test-auditor PASS):
+- banner.y ≥ hpBar.y + hpBar.h (= exakte Kette hpBar.bottom + 6) in allen 3
+  Fensterformaten über die echte `computeView`-Kette (640x360/960x540 → Fit
+  480x360, 1280x720 → 640x360).
+- kein Overlap Banner-Rect vs. Damage-Text-Rect: je Format × 6 Bosse × 72
+  Winkel × big/small (worst case `composedBossCenterY` + 8 px Offset + 18 px
+  Drift) = 2592 Assertions.
+- Banner-Timer-Kette: FADE_IN < HOLD, HOLD + FADE_OUT < 3000 ms (verschwindet
+  nach < 3 s), safeTop-Fallback = Kette, Sprite-Größen unverändert.
+
+## K4 Nachher + Sichtprüfung
+
+- Belege: `shots/m10-boss-banner-after-{640,960x540,1280x720}.png` — Boss-Spawn
+  (#5 Der Hohle König) + aktive Schadenszahlen, Banner fest unter der HP-Leiste,
+  Zahlen darunter bzw. verdeckt, kein Panel im Spielfeld.
+- art-director-Sichtprüfung: **PASS** (alle 6 Kriterien mit Bildbeleg; Banner
+  sitzt als HUD-Block unter der Leiste, opak im Halt, zentriert, palettenkonform,
+  korrekte Z-Ordnung; Note Fix 5/5, Banner 4/5; Hinweis nicht-blockierend:
+  120-ms-Fade-In im Standbild nicht prüfbar, dokumentiertes Randverhalten).
+- Offen: nichts.
