@@ -1,0 +1,38 @@
+# Lane m10-crowd-variety — abgeschlossen 2026-11-27
+
+Befund (Dom 21:45Z): Gegnermasse Minute 30 wirkt geklont. Fix: zweite
+Ton-Variante je Gegnertyp.
+
+## Ergebnis
+- src/gfx/enemySprites.ts: enemyVariantColor (Familien-Rampen-Stufe mit
+  größtem Luminanz-Abstand), enemyVariantFrames (deterministische 55-%-
+  Tonmischung auf nächste Palette-Stufe; Kontur 0, Augen/Glow 13, 1-px-
+  Lichtkante unangetastet → Silhouetten pixelidentisch), enemyFrameGrids
+  (Frames 0/1 Basis-Ton, 2/3 Varianten-Ton, Guard frames.length<4),
+  createEnemyTextures registriert die Varianten.
+- Instanz-Auswahl OHNE Eingriff in Run.ts/EnemyPool.ts (Tabus respektiert,
+  requests.md nicht nötig): bestehende 4 Frame-Keys + Spawn-Phasen-Streuung.
+- tests/crowd-variety.test.ts: 6 Tests (Varianten aus Familien-Rampe,
+  >=2 unterscheidbare Frames je Typ, Palette/binäres Alpha, Elite-Rim
+  unveraendert, Determinismus alle 30 Typen, Instanz-Streuung).
+
+## Messwerte (scripts/m10-crowd-variety.mjs, je 1 Lauf unter flock)
+- Vorher:  500 Gegner Minute 30, 32 Distinct-Keys (je Typ 4 Keys, aber 4
+  nahezu identische Posen desselben Tons = Klon-Wirkung), Burst 60 fps.
+- Nachher: 32 Distinct-Keys (Key-Satz-Vertrag unveraendert), Slots 2/3
+  Variantenton → 2 unterscheidbare Ton-Varianten je Typ im Frame,
+  Burst 60 fps (kein Rückgang), Renderer Mesa Intel RPL-S in beiden JSONs.
+- Belege: shots/m10-crowd-variety-before.json/png, -after.json/png,
+  -before-after.png (Side-by-side).
+
+## Kontrolleure
+- Reviewer: PASS (826/826 Tests, tsc sauber; Follow-up 3c63b0e).
+- art-director: PASS 4,4/5 (Abnahme >= 4/5); 26/30 Typen klar
+  unterscheidbar, 0 Silhouetten-/Paletten-/Kant-Verstöße.
+- Follow-up-Karte #6403 (backlog): skeleton/centipede/harpy Variantenton
+  kräftiger trennen (Lum-Distanz 26–30 vs. 40–90).
+
+## Commits
+e9b814c (Supervisor-Snapshot), 10ab95b #6399, 3b583db #6400, 2b9e118 #6398,
+382a72e #6401, 3c63b0e #6399-Follow-up, 05a7148 #6402. Doku:
+docs/lanes/m10-crowd-variety.md.

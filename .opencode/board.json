@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6403,
+  "next": 6404,
   "cards": [
     {
       "id": 1,
@@ -7399,7 +7399,7 @@
       "id": 6398,
       "title": "m10-crowd-variety #1: Vorher-Messung 500er-Frame (Distinct-Keys + Renderer)",
       "description": "Abnahme: scripts/m10-crowd-variety.mjs rendert 500-Gegner-Frame via Playwright (harness), zählt Distinct-Sprite-Texture-Keys je Typ, Renderer-String im JSON; shots/m10-crowd-variety-before.json+png committed. EINMAL messen, max. 2 Iterationen am Skript.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T23:01:51Z",
@@ -7410,16 +7410,21 @@
           "at": "2026-11-27T23:30:02Z",
           "by": "build",
           "text": "doing → review: Vorher-Messung committet (2b9e118): 500 Gegner Minute 30, 32 Distinct-Keys, je Typ 4 Keys — aber ueber 4 nahezu identische Posen desselben Tons (Klon-Wirkung pro Typ bestaetigt). Renderer Mesa Intel RPL-S, Burst 60 fps, 0 JS-Fehler. Belege: shots/m10-crowd-variety-before.json+png."
+        },
+        {
+          "at": "2026-11-27T23:43:48Z",
+          "by": "build",
+          "text": "review → done: lane #6398, Commit 2b9e118 — Vorher: 32 Keys/4 je Typ ueber identische Posen, Mesa RPL-S, 60 fps"
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:30:02Z"
+      "updated": "2026-11-27T23:43:48Z"
     },
     {
       "id": 6399,
       "title": "m10-crowd-variety #2: zweite Grid-Variante je Gegnertyp in enemySprites.ts",
       "description": "Abnahme: pro Gegnertyp >= 2 unterscheidbare Varianten (Detail-Variante/gespiegelter Frame im selben Palette-Raster, Silhouette-Klasse unverändert), Texturen in createEnemyTextures registriert, Keys via enemySprites.ts geliefert. Keine Tabu-Dateien.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T23:20:29Z",
@@ -7435,16 +7440,21 @@
           "at": "2026-11-27T23:37:00Z",
           "by": "build",
           "text": "Reviewer-PASS (826/826 Tests, Silhouetten/Palette/Elite-Rim/Randfaelle/substanzielle Tests bestätigt). Anmerkungen 2+5 umgesetzt: Guard in enemyFrameGrids + Determinismus-Test alle 30 Typen (Commit 3c63b0e). Anm. 1 (Pro-Instanz-Tonwechsel ~333ms) in Doku ehrlich beschrieben, GIF-Beleg in #6402. Anm. 3/4/6 kosmetisch an art-director."
+        },
+        {
+          "at": "2026-11-27T23:43:48Z",
+          "by": "build",
+          "text": "review → done: lane #6399, Commits 10ab95b + 3c63b0e — Variante + Reviewer-PASS-Follow-up"
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:37:00Z"
+      "updated": "2026-11-27T23:43:48Z"
     },
     {
       "id": 6400,
       "title": "m10-crowd-variety #3: Instanz-Auswahl Variante/Spiegelung ohne Run.ts/EnemyPool",
       "description": "Abnahme: Frame-Auswahl liefert pro Instanz unterschiedliche Keys über bestehende Arrays (SPRITE_FRAMES/ALL_ENEMY_FRAMES aus enemySprites.ts). EnemyPool.ts/Run.ts unangetastet; falls doch nötig: 1-Zeilen-Meldung in /home/ai/games/.dispatch/requests.md + Karte blocked-Notiz.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T23:21:30Z",
@@ -7455,16 +7465,21 @@
           "at": "2026-11-27T23:21:54Z",
           "by": "build",
           "text": "doing → review: Auswahl via bestehende Keys belegt: framesForDef→SPRITE_FRAMES[def.id] (4 Slots, Phasen-Streuung via Spawner.spawnAt rng), Elite-Rim-Frameset unberuehrt. Tabu-Dateien unangetastet, requests.md nicht noetig. Commit 3b583db."
+        },
+        {
+          "at": "2026-11-27T23:43:48Z",
+          "by": "build",
+          "text": "review → done: lane #6400, Commit 3b583db — Auswahl via bestehende Keys, keine Tabu-Eingriffe"
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:21:54Z"
+      "updated": "2026-11-27T23:43:48Z"
     },
     {
       "id": 6401,
       "title": "m10-crowd-variety #4: tests/crowd-variety.test.ts",
       "description": "Abnahme: >= 2 Varianten je Typ, Palette + binäres Alpha (0 Off-Palette-Pixel), Elite-Rim-Frames unveraendert (elite-rim-Test gruen), Frame-Keys deterministisch. npx tsc --noEmit + vitest gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T23:23:45Z",
@@ -7475,19 +7490,39 @@
           "at": "2026-11-27T23:30:02Z",
           "by": "build",
           "text": "doing → review: 6/6 Tests + tsc gruene Belege; fremde Tests (enemy-palette, elite-rim, enemy-run-frames, atlas) unveraendert gruen. Instanz-Streuungs-Test kodiert Abnahme '>=2 Keys je Typ im Frame'. Commit 382a72e."
+        },
+        {
+          "at": "2026-11-27T23:43:48Z",
+          "by": "build",
+          "text": "review → done: lane #6401, Commit 382a72e — 6 Tests inkl. Instanz-Streuung"
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:30:02Z"
+      "updated": "2026-11-27T23:43:48Z"
     },
     {
       "id": 6402,
       "title": "m10-crowd-variety #5: Nachher-Messung + art-director-Sichtprüfung",
       "description": "Abnahme: Distinct-Keys im 500er-Frame >= 2 je Typ (vorher 1), shots/m10-crowd-variety-after-*, Vorher/Nachher nebeneinander, art-director-Urteil >= 4/5, Burst-FPS vorher/nachher im selben Lauf unter flock, docs/lanes/m10-crowd-variety.md aktualisiert.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:43:48Z",
+          "by": "build",
+          "text": "todo → done: lane #6402, Commit 05a7148 — Nachher + Reviewer PASS (826/826), art-director PASS 4,4/5 (>=4/5 Abnahme); Follow-up #6403 backlog"
+        }
+      ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:01:48Z"
+      "updated": "2026-11-27T23:43:48Z"
+    },
+    {
+      "id": 6403,
+      "title": "m10-crowd-variety Follow-up: Variantenton skeleton/centipede/harpy kräftiger trennen",
+      "description": "art-director-Abnahme 4,4/5 (PASS), nicht blockierend: die Varianten von skeleton (Lum-Distanz 29,9), centipede (25,9), harpy (28,6) sind Weiß-auf-Weiß-Rampenstufen und im 1x-Chaos grenzwertig. Vorschlag: Variantenton dieser 3 Typen Richtung dunklere Palette-Stufe (z. B. 24/15) statt nur Rampenstufe ↑, Ziel Lum-Distanz >= 40 wie bei den 26 guten Typen. Erzeugung in enemyVariantColor/enemyVariantFrames (src/gfx/enemySprites.ts), tests/crowd-variety.test.ts um Mindest-Lum-Distanz je Typ erweitern.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T23:43:42Z",
+      "updated": "2026-11-27T23:43:42Z"
     }
   ]
 }
