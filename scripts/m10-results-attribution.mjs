@@ -32,6 +32,7 @@ const browser = await chromium.launch({
 const errors = [];
 const samples = [];
 let proof = null;
+let stressProof = null;
 
 try {
   const page = await browser.newPage({ viewport: VIEWPORTS[0] });
@@ -113,6 +114,25 @@ try {
     const suffix = TAG ? `-${TAG}` : "";
     await page.screenshot({ path: `shots/m10-results-attribution${suffix}-${vp.label}.png` });
   }
+
+  // Layout-Stress: alle 12 moeglichen Waffennamen in einer Ergebnistabelle.
+  const stressPage = await browser.newPage({ viewport: VIEWPORTS[0] });
+  stressPage.on("pageerror", (e) => errors.push(String(e)));
+  stressPage.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  await stressPage.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=99&stress12=1`);
+  await startRun(stressPage);
+  await stressPage.evaluate(() => window.__lf.finishRun("dawn"));
+  await stressPage.waitForFunction(() => window.__lf.state().scene === "results", { timeout: 8000 });
+  await stressPage.waitForTimeout(350);
+  stressProof = await stressPage.evaluate(() => {
+    const sc = window.__game.scene.getScene("results");
+    return { ...(sc.proof()) };
+  });
+  for (const vp of VIEWPORTS) {
+    await stressPage.setViewportSize({ width: vp.width, height: vp.height });
+    await stressPage.waitForTimeout(700);
+    await stressPage.screenshot({ path: `shots/m10-results-attribution-stress12-${vp.label}.png` });
+  }
 } finally {
   const report = {
     generated: new Date().toISOString(),
@@ -120,12 +140,13 @@ try {
     timeScale: 30,
     samples,
     proof,
+    stressProof,
     errors,
     jsErrors: errors.length,
   };
   writeFileSync("shots/m10-results-attribution.json", JSON.stringify(report, null, 2));
   await browser.close();
   server.stop();
-  console.log(`samples=${samples.length} jsErrors=${errors.length} total=${proof?.totalDamage} bars=${proof?.barsSum} delta=${proof?.deltaPct}%`);
+  console.log(`samples=${samples.length} jsErrors=${errors.length} total=${proof?.totalDamage} bars=${proof?.barsSum} delta=${proof?.deltaPct}% overlaps=${proof?.overlaps} stressRows=${stressProof?.rowCount} stressOverlaps=${stressProof?.overlaps}`);
   if (errors.length > 0) process.exit(1);
 }

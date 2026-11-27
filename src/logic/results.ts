@@ -153,12 +153,12 @@ export function layoutResultRows(
   const nameX = cx + 6;
   const barX = cx + 104;
   const barW = 70;
-  const valueRightX = cx + 204;
+  const valueRightX = cx + 214;
   const nameMaxWidth = barX - nameX - 4;
   const nameMaxChars = Math.max(1, Math.floor((nameMaxWidth + 1) / 6));
   const maxDamage = entries.reduce((m, e) => Math.max(m, e.damage), 1);
 
-  let y = (options.rowsTop ?? 64) + oy;
+  let y = (options.rowsTop ?? 70) + oy;
   const rows: ResultLayoutRow[] = entries.map((entry) => {
     const lines = slotNameLines(entry.name.toUpperCase(), nameMaxChars);
     const nameRects = lines.map((line, i) => ({
@@ -191,8 +191,10 @@ export function layoutResultRows(
 
   const headerText = "SCHADEN PRO WAFFE";
   const totalText = `GESAMT: ${formatDamageCompact(options.totalDamage ?? sumRounded(entries))}`;
-  const header: Rect = { x: cx - 20, y: 46 + oy, w: headerText.length * 6 - 1, h: 7 };
-  const totalLabel: Rect = { x: cx - 20, y: 56 + oy, w: totalText.length * 6 - 1, h: 7 };
+  // Untertitel ("NIEDERLAGE"/"SIEG") endet bei 42+oy+7 = 49+oy: Header erst
+  // darunter, sonst ueberdrucken sich beide Texte in der Bildmitte.
+  const header: Rect = { x: cx - 20, y: 52 + oy, w: headerText.length * 6 - 1, h: 7 };
+  const totalLabel: Rect = { x: cx - 20, y: 60 + oy, w: totalText.length * 6 - 1, h: 7 };
   const divider: Rect = { x: cx - 35, y: 107 + oy, w: 2, h: 140 };
   const banner: Rect = { x: cx - 200, y: 187 + oy, w: 164, h: 17 };
 

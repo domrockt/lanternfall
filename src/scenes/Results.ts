@@ -3,7 +3,8 @@ import { C, PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { PixelText } from "../gfx/font";
 import { iconTextureKey } from "../gfx/icons";
-import { damageTotal, formatDamageCompact, resultsLayout } from "../logic/results";
+import { damageTotal, formatDamageCompact, layoutResultRows, resultsLayout, stressEntries } from "../logic/results";
+import { hasFlag } from "../logic/rng";
 import { CHARACTERS } from "../data/characters";
 import type { CharacterId } from "../data/types";
 import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
@@ -118,9 +119,15 @@ export class Results extends Phaser.Scene {
 
     // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons. Positionen kommen
     // aus resultsLayout(), damit Tests und Screen exakt dieselben Rechtecke pruefen.
-    const layout = resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 64 });
+    // ?debug=1&stress12 = Layout-Stressbeleg mit allen 12 moeglichen Waffennamen.
+    const stress = this.result.debug === true && hasFlag("stress12");
+    const layout = stress
+      ? layoutResultRows(stressEntries(), { width: W, oy, rowsTop: 70 })
+      : resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 70 });
+    const totalDamage = stress
+      ? layout.rows.reduce((sum, row) => sum + row.damage, 0)
+      : damageTotal(this.result.damageByWeapon);
     new PixelText(this, layout.header.x, layout.header.y, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
-    const totalDamage = damageTotal(this.result.damageByWeapon);
     new PixelText(this, layout.totalLabel.x, layout.totalLabel.y,
       `GESAMT: ${formatDamageCompact(totalDamage)}`, C.candleWhite).setDepth(2);
     if (layout.rows.length === 0) {

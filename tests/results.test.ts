@@ -112,6 +112,15 @@ describe("M10 Results: Layout Namensumbruch und Ueberlappung", () => {
     }
   });
 
+  it("Header liegt unter dem Szenen-Untertitel und 12 Zeilen bleiben im Panel", () => {
+    const layout = layoutResultRows(stressEntries(), { width: 640, oy: 45, rowsTop: 70 });
+    // Untertitel "SIEDERLAGE"/"SIEG" steht bei y 42+oy und ist 7 px hoch.
+    expect(layout.header.y).toBeGreaterThanOrEqual(49 + 45);
+    expect(layout.totalLabel.y).toBeGreaterThanOrEqual(layout.header.y + 7);
+    const last = layout.rows[layout.rows.length - 1];
+    expect(last.icon.y + last.icon.h).toBeLessThanOrEqual(11 + 45 + 250);
+  });
+
   it("Banner, Trennlinie und Gesamt-Label kollidieren mit keinem Text", () => {
     const layout = resultsLayout({ ember: 900, flail: 500, frost: 300 }, { width: 640, oy: 45 });
     expect(layout.overlaps).toEqual([]);
