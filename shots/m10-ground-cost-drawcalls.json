@@ -1,0 +1,64 @@
+{
+  "card": "m10-ground-cost/2-instrumentierung",
+  "measuredAt": "2026-11-27T09:49:43.984Z",
+  "command": "flock /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs --instrument",
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "counts": {
+    "seconds": 5,
+    "updateFrames": 75,
+    "updateCallsPerFrame": 1,
+    "chunkBuildsTotal": 1,
+    "chunkRebuildsPerFrame": 0,
+    "chunkBuildsPerFrame": 0.01,
+    "workerPostedTotal": 3,
+    "workerReceivedTotal": 3,
+    "workerMessagesPerFrame": 0.08,
+    "readyInstalledTotal": 0.01,
+    "propDepthSetsPerFrame": 789.83,
+    "rippleTextureSetsPerFrame": 33.4,
+    "visibleChunksPerFrame": 20.03,
+    "visiblePropsPerFrame": 789.83,
+    "visibleRipplesPerFrame": 33.4,
+    "visibleAmbientPerFrame": 27,
+    "distinctVisiblePropTexturesPerFrame": 1,
+    "loadedChunks": 21,
+    "drawCallCandidatesPerFrame": 870
+  },
+  "breakdown": {
+    "on": {
+      "fps": 46.2,
+      "meanFrameMs": 26.38
+    },
+    "chunks": {
+      "fps": 59.3,
+      "meanFrameMs": 19.49
+    },
+    "props": {
+      "fps": 53.1,
+      "meanFrameMs": 24.27
+    },
+    "ripples": {
+      "fps": 47.2,
+      "meanFrameMs": 26.7
+    },
+    "ambient": {
+      "fps": 43.9,
+      "meanFrameMs": 23.15
+    },
+    "all": {
+      "fps": 60.2,
+      "meanFrameMs": 17.64
+    },
+    "renderCost": {
+      "propsMs": 2.11,
+      "chunksMs": 6.89,
+      "ripplesMs": -0.32,
+      "ambientMs": 8.74
+    }
+  },
+  "jsErrors": [],
+  "passed": true
+}
