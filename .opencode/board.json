@@ -7414,34 +7414,56 @@
       "id": 6399,
       "title": "m10-crowd-variety #2: zweite Grid-Variante je Gegnertyp in enemySprites.ts",
       "description": "Abnahme: pro Gegnertyp >= 2 unterscheidbare Varianten (Detail-Variante/gespiegelter Frame im selben Palette-Raster, Silhouette-Klasse unverändert), Texturen in createEnemyTextures registriert, Keys via enemySprites.ts geliefert. Keine Tabu-Dateien.",
-      "column": "todo",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T23:20:29Z",
           "by": "build",
           "text": "[Supervisor]-Checkpoint bestätigt. Stand: enemyVariantColor/enemyVariantFrames (Tonmischung statt color-Param — CONTRAST_TONES-Typen wären sonst identisch geblieben), enemyFrameGrids, createEnemyTextures-Verdrahtung, tests/crowd-variety.test.ts; tsc + 29 fremde Tests grün, eigener Test 4/5 (voidcaller-Assertion, Fix läuft)."
+        },
+        {
+          "at": "2026-11-27T23:21:30Z",
+          "by": "build",
+          "text": "todo → review: Variante: enemyVariantColor (Familien-Rampe, max Luminanz-Abstand), enemyVariantFrames (55%-Tonmischung auf nächste Palette-Stufe; Kontur 0/Augen 13/Lichtkante unangetastet). Pruefung: npx tsc --noEmit gruen, 34/34 Tests (crowd-variety 5, enemy-palette 6, elite-rim, enemy-run-frames, atlas). Commit 10ab95b."
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:20:29Z"
+      "updated": "2026-11-27T23:21:30Z"
     },
     {
       "id": 6400,
       "title": "m10-crowd-variety #3: Instanz-Auswahl Variante/Spiegelung ohne Run.ts/EnemyPool",
       "description": "Abnahme: Frame-Auswahl liefert pro Instanz unterschiedliche Keys über bestehende Arrays (SPRITE_FRAMES/ALL_ENEMY_FRAMES aus enemySprites.ts). EnemyPool.ts/Run.ts unangetastet; falls doch nötig: 1-Zeilen-Meldung in /home/ai/games/.dispatch/requests.md + Karte blocked-Notiz.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:21:30Z",
+          "by": "build",
+          "text": "todo → doing: Instanz-Auswahl: kein EnemyPool/Run-Eingriff noetig — Auswahl laeuft ueber bestehende Keys (framesForDef→SPRITE_FRAMES[def.id], Lauf-Phase streut Instanzen ueber Basis 0/1 + Variante 2/3). Doku-Festschreibung folgt als Commit."
+        },
+        {
+          "at": "2026-11-27T23:21:54Z",
+          "by": "build",
+          "text": "doing → review: Auswahl via bestehende Keys belegt: framesForDef→SPRITE_FRAMES[def.id] (4 Slots, Phasen-Streuung via Spawner.spawnAt rng), Elite-Rim-Frameset unberuehrt. Tabu-Dateien unangetastet, requests.md nicht noetig. Commit 3b583db."
+        }
+      ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:01:48Z"
+      "updated": "2026-11-27T23:21:54Z"
     },
     {
       "id": 6401,
       "title": "m10-crowd-variety #4: tests/crowd-variety.test.ts",
       "description": "Abnahme: >= 2 Varianten je Typ, Palette + binäres Alpha (0 Off-Palette-Pixel), Elite-Rim-Frames unveraendert (elite-rim-Test gruen), Frame-Keys deterministisch. npx tsc --noEmit + vitest gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:23:45Z",
+          "by": "build",
+          "text": "todo → doing: Test-Erweiterung vorbereitet: Instanz-Streuung als Unit-Test (200 Phasen, fester t → >= 2 Keys je Typ, Basis- UND Varianten-Ton sichtbar). Testlauf wartet auf die Vorher-Messung: src/gfx/enemySprites.ts ist bis zum Messlauf bewusst auf dem Vorher-Stand (1a2966c), damit der 500er-Frame den alten Zustand misst; Restore + Testlauf + Commit danach."
+        }
+      ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:01:48Z"
+      "updated": "2026-11-27T23:23:45Z"
     },
     {
       "id": 6402,
