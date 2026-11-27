@@ -9,12 +9,12 @@
     {
       "id": "before-rbscale0",
       "mode": "before",
-      "fps": 28.9,
-      "frames": 290,
-      "worstFrameMs": 50.1,
-      "minEnemies": 18,
-      "time": 1500.5,
-      "kills": 22122,
+      "fps": 47,
+      "frames": 471,
+      "worstFrameMs": 33.5,
+      "minEnemies": 16,
+      "time": 1499.7,
+      "kills": 18637,
       "renderBuffer": [
         780,
         360
@@ -32,12 +32,12 @@
     {
       "id": "after-auto-1",
       "mode": "after",
-      "fps": 28,
-      "frames": 281,
-      "worstFrameMs": 50.1,
-      "minEnemies": 20,
-      "time": 1501.1,
-      "kills": 20690,
+      "fps": 46,
+      "frames": 461,
+      "worstFrameMs": 33.5,
+      "minEnemies": 17,
+      "time": 1503.5,
+      "kills": 34428,
       "renderBuffer": [
         780,
         360
@@ -55,12 +55,12 @@
     {
       "id": "after-auto-2",
       "mode": "after",
-      "fps": 37,
-      "frames": 371,
-      "worstFrameMs": 66.7,
-      "minEnemies": 20,
-      "time": 1500.4,
-      "kills": 20214,
+      "fps": 42.8,
+      "frames": 430,
+      "worstFrameMs": 33.5,
+      "minEnemies": 16,
+      "time": 1499.3,
+      "kills": 24434,
       "renderBuffer": [
         780,
         360
@@ -77,17 +77,17 @@
     }
   ],
   "summary": {
-    "beforeFps": 28.9,
+    "beforeFps": 47,
     "beforeRenderWidth": 780,
     "afterFps": [
-      28,
-      37
+      46,
+      42.8
     ],
     "afterRenderWidth": [
       780,
       780
     ],
-    "afterMinFps": 28,
+    "afterMinFps": 42.8,
     "afterPassedCount": 0,
     "afterCount": 2,
     "jsErrors": 0
