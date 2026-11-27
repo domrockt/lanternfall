@@ -1,6 +1,6 @@
 {
   "tag": "after",
-  "generated": "2026-11-27T18:25:41.618Z",
+  "generated": "2026-11-27T18:44:01.586Z",
   "results": [
     {
       "view": "640x360",
@@ -318,10 +318,10 @@
         {
           "kind": "pixeltext",
           "depth": 2,
-          "text": "NEUER BESTWERT",
-          "x": 81,
+          "text": "NEUER BESTWERT: ZEIT,..",
+          "x": 54,
           "y": 241,
-          "w": 83,
+          "w": 137,
           "h": 7
         },
         {
@@ -1018,10 +1018,10 @@
         {
           "kind": "pixeltext",
           "depth": 2,
-          "text": "NEUER BESTWERT",
-          "x": 81,
+          "text": "NEUER BESTWERT: ZEIT,..",
+          "x": 54,
           "y": 241,
-          "w": 83,
+          "w": 137,
           "h": 7
         },
         {
@@ -1718,10 +1718,10 @@
         {
           "kind": "pixeltext",
           "depth": 2,
-          "text": "NEUER BESTWERT",
-          "x": 231,
+          "text": "NEUER BESTWERT: ZEIT,..",
+          "x": 204,
           "y": 241,
-          "w": 83,
+          "w": 137,
           "h": 7
         },
         {
@@ -2418,10 +2418,10 @@
         {
           "kind": "pixeltext",
           "depth": 2,
-          "text": "NEUER BESTWERT",
-          "x": 231,
+          "text": "NEUER BESTWERT: ZEIT,..",
+          "x": 204,
           "y": 241,
-          "w": 83,
+          "w": 137,
           "h": 7
         },
         {
