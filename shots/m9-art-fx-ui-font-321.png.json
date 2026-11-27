@@ -1,0 +1,22 @@
+{
+  "url": "http://127.0.0.1:5451/?debug=1&seed=7",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "giveXp",
+      "args": [
+        120
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bog_rat",
+        24
+      ]
+    }
+  ],
+  "out": "shots/m9-art-fx-ui-font-321.png",
+  "gif": null,
+  "jsErrors": []
+}

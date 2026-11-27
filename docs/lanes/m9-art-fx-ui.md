@@ -39,3 +39,115 @@ Offene Punkte (nicht in #318 untersucht, gehen in Karten #319-#322):
 ## Karten
 #318 Belege/Maengelliste, #319 Titel, #320 Icons, #321 Font/UI-Rahmen, #322 FX-Belege
 und Abschluss.
+
+## #319 Titelbild
+- Vorher: `shots/m9-art-fx-ui-title-before-2x.png`
+- Nachher: `shots/m9-art-fx-ui-title-after-2x.png` (frisch aus dem Build, 2x nearest).
+- Korrektur: ferne Huegel als dunkle Silhouette (Palette 2) mit 1-px-Nebelkante (5)
+  auf dem Nachthimmel (4); Mond-Halo bleibt als harte, unterbrochene Pixelringe.
+- Kriterien: 1 harte Pixelringe PASS, 2 klare Horizontkante PASS, 3 kein dunkler
+  Mond-Rand PASS.
+- art-director-Urteil (#319): **4,2/5**. Alle drei Kriterien klar erfuellt; Abzug nur
+  fuer den noch leicht weichen Kern-Glow und die etwas zu regelmaessige Kreisform der
+  aeusseren Ringe. 0 JS-Fehler im Shot-Lauf.
+- Offener Punkt: Ringform/Kern-Glow beim Gesamturteil in #322 erneut pruefen.
+- art-director-Urteil (#319, Runde 3): **4,5/5 PASS**; harte Pixelringe, klare
+  Horizontkante und kein dunkler Mond-Rand erfuellt. Nur Hinweis: aeusserer Ring
+  minimal unregelmaessig (keine blockierende Korrektur).
+
+## #320 Icons
+- Vorher: `shots/m9-art-fx-ui-icons-before-4x.png` (18 Icons, 4x nearest)
+- Nachher: `shots/m9-art-fx-ui-icons-after-4x.png` (aus dem aktuellen Build, 4x nearest)
+- Korrektur: alle 18 Icons laufen durch dieselbe Pipeline `outline(g, diagonal=True)`;
+  die 1-px-Ink-Kontur schliesst jetzt auch Diagonalluecken (einheitliche Aussenkontur).
+  Lichtkante oben-links und Schatten unten-rechts stammen aus `shade_edges` (band=1).
+- Pruefung: 16x16-Raster, 18 Keys, nur Palettenindizes, kein Duplikat
+  (`validateIcons` in `src/gfx/icons.ts`, laeuft in `createIconTextures`).
+  Evolutionen (letzte 6) sind groesser/heller als die Basis-Waffen (erste 6).
+- Runde 2 (#320, Commit nennt #320): Vorher/Nachher `shots/m9-art-fx-ui-icons-before-4x.png`
+  gegen `shots/m9-art-fx-ui-icons-after-4x.png`. Pipeline neu: alte Ink-Rahmen werden
+  entfernt, Materialfarben auf Rampe-Basis normalisiert, dann `shade_edges` (Licht
+  oben-links, Schatten unten-rechts) und eine exakt 1-px-Aussenkontur. Evolutionen
+  laufen eine Rampe heller (`EVO_BOOST`), Basiswaffen bleiben dunkler.
+  Beleg: 18/18 Icons 16x16, nur Palettenindizes, Kontur durchgehend 1 px (Diagonale
+  geschlossen). Restpunkte: ember/lantern teilen noch eine aehnliche Grundmaske
+  (Silhouetten unterschiedlich genug fuer 16 px, aber nicht maximal distinkt);
+  hourglass/thunder_seal bleiben als Form-/Farbkontrast getrennt, IoU nicht erneut
+  gemessen.
+- art-director-Urteil (#320, Runde 2): **4,5/5 PASS**. Kontur durchgehend Ink,
+  Lichtkante oben-links bei allen 18, Evolutionen massiver/heller als Basen.
+  Hinweis: zwei Evo-Silhouetten koennten noch klarer sein (spaetere Politur).
+- art-director-Urteil (#320, Runde 1): **2,5/5 FAIL**. Befunde: (1) 5/18 Icons haben 2-3 px
+  dicke Ink-Rahmen statt 1 px (ember, frost, lantern, tome, hourglass); (2) 4 Icons
+  beleuchten von rechts/unten (flail, hourglass, eternal_winter, whetstone);
+  (3) wrath_pendulum und thorn_storm sind dunkler/flacher als ihre Basen;
+  (4) ember/lantern teilen ~95 % der Maske, hourglass/thunder_seal ~87 % — teils nur
+  Farbunterschied, keine eigene Silhouette. Naechste Runde: Ink exakt 1 px, Licht
+  oben-links, Evos auf 4-5 Tiers aufhellen.
+- 0 JS-Fehler im Kontaktbogen-Lauf.
+
+## #321 Font und UI-Rahmen
+- Vorher: `shots/m9-art-fx-ui-frame-321.png` (Truhen-Panel vor Ecknieten-Fix im Snapshot)
+- Nachher: `shots/m9-art-fx-ui-frame-321-2x.png` (9-Slice-Rahmen, 4 Goldnieten 3x3 mit
+  Glanz 22 oben-links / Schatten 0 unten-rechts, Ink-Aussenecken)
+- Font-Beleg: `shots/m9-art-fx-ui-font-321-2x.png` — Level-up-Panel mit "STUFE 7 -
+  WÄHLE EINE BELOHNUNG"; Umlaute Ä/Ö/Ü/ß kommen aus `src/gfx/glyphs.ts` und werden
+  im Font ueber `toUpperCase` als Versalien genutzt, Wortabstaende 6 px.
+- Pruefung: Umlaute lesbar, keine zusammengeklebten Woerter, Eckenkontrast hoeher.
+- art-director-Urteil (#321): **2,7/5 FAIL**. Befunde: (1) Umlaut-Akzente falsch
+  gebaut — Ä hat einen versetzten Strich ohne 1-px-Luft (klebt optisch ans Folgzeichen),
+  Ö hat asymmetrische Punkte + abgeloestes Pixel; in der kleinen Schrift fehlen Ü-Punkte
+  komplett ("UBERNEHMEN"). (2) 9-Slice: obere Kante flach/ohne Aufhellung, Ecken wirken
+  heller unten-rechts (Lichtlogik widerspruechlich), Ecknieten zu kontrastarm. (3) Im
+  Truhen-Panel laufen die 5 Belohnungskarten ~30 px ueber die Seitenkante hinaus.
+  Wortabstaende/Laufweite selbst sind PASS.
+- 0 JS-Fehler in beiden Shot-Laeufen.
+
+## #321 Font und UI-Rahmen (Runde 2)
+- Vorher: `shots/m9-art-fx-ui-font-321.png`, `shots/m9-art-fx-ui-frame-321.png`
+- Nachher: `shots/m9-art-fx-ui-font-321b-2x.png`, `shots/m9-art-fx-ui-frame-321b-2x.png`
+  (2x nearest, frische Build-Aufnahmen, 0 JS-Fehler).
+- Umlaute: Ä/Ö/Ü nutzen jetzt zwei 2-px-Punkte mit 1-px-Luft (`11011`), Versalien um
+  eine Zeile komprimiert; im Level-up-Panel ist "STUFE 14 - WÄHLE EINE BELOHNUNG"
+  sauber lesbar, im Truhen-Panel "TIPPE ODER A = ÜBERNEHMEN" mit sichtbaren Ü-Punkten.
+- 9-Slice: obere und linke Aussenkante 2 px aufgehellt (7/6), unten-rechts dunkel (2/0);
+  Ecknieten folgen der globalen Lichtrichtung oben-links (oben 22/21, unten 20/18,
+  unten-rechts kein 22).
+- Truhen-Panel: Belohnungskarten-Abstand von 104 auf 86 px reduziert; 5 Karten à 96 px
+  liegen jetzt vollstaendig im 452-px-Rahmen (linker Rand 20, rechter Rand 460, Rahmen
+  14..466) - kein Overhang mehr.
+- Pruefung: Wortabstaende (6 px) unveraendert PASS; Umlaute alle vorhanden;
+  `npx vitest run` 175 Tests gruen, `npm run build` gruen.
+- art-director-Urteil (#321, Runde 2): **4,5/5 PASS**. Ä als zwei getrennte Punkte
+  mit 1-px-Luft, Ö/Ü ebenso, Wortabstaende klar; 9-Slice oben-links heller,
+  unten-rechts dunkler; Belohnungskarte liegt bündig innen, kein Overhang.
+  Nicht blockierender Hinweis: Mid-Roll-Standbilder zeigen noch Platzhalternamen;
+  die finalen PNGs wurden nach dem Ausrollen neu aufgenommen.
+
+## #322 FX-Belege und Abschluss
+- Treffer-Funken: `fx_spark` von 3x3 auf 5x5 vergroessert (heller Kern 12, Glutarme 21/22)
+  in `src/gfx/textures.ts`; wirkt in allen Waffen-/Hazard-Treffern.
+- XP-Kristalle: `shots/m9-art-fx-ui-xp-322.png` (+ `.gif`), Zeit
+  eingefroren direkt nach dem Drop, alle drei Kristallgroessen + lebende Gegner im Bild.
+- Truhen-Oeffnung Welt-FX: `shots/m9-art-fx-ui-chest-open-322.png` (0,5 s nach
+  Ausloesung: gluehender Lichtstrahl, offene Truhe, lebende Skelette im Bild).
+- Truhen-Panel: `shots/m9-art-fx-ui-chest-322.png` (+ `.gif`, 23 Frames),
+  Belohnung nach dem Ausrollen aufgenommen, Karten vollstaendig im Rahmen.
+- Treffer-Funken-Beleg: `shots/m9-art-fx-ui-spark-322.png`.
+- 0 JS-Fehler in allen Shot-Laeufen (spark/xp/chest/open).
+- `npm run build` gruen, `npx vitest run` **175 Tests gruen** (10 Dateien).
+- Aufraeumen: getrackte Temp-Belege `.arts/` (12 png, .arts/iconan-Skripte) entfernt —
+  keine Deliverables; `shots/zz-icons-*.png` und `zz/` geloescht.
+
+## Gesamturteil (art-director, Runde 3)
+- Titel **4,5/5** (harte Pixelringe, klare Horizontkante, kein dunkler Mond-Rand;
+  Hinweis: aeusserer Ring minimal unregelmaessig).
+- Icons **4,5/5** (18/18 exakt 1-px-Ink, Licht oben-links, Evos deutlich kraeftiger;
+  Hinweis: zwei Evo-Silhouetten koennten noch klarer sein).
+- Font/UI **4,5/5** (Umlaute mit Luft, 9-Slice-Lichtlogik korrekt, kein Karten-Overhang).
+- FX **4,5/5** (Funken hart und palette-treu, XP-Kristalle + lebende Gegner,
+  Truhen-Glow als harte Pixelbaender).
+- **Gesamt: 4,5/5 PASS.** Keine blockierenden Restpunkte; die drei nicht blockierenden
+  Hinweise (Ringraster, zwei Evo-Silhouetten, Mid-Roll-Standbild) sind fuer spaetere
+  Politur notiert. Offen wegen Schrittlimit des Kontrolleurs: letzter Blick auf den
+  vollstaendigen XP-GIF-Kontaktbogen.

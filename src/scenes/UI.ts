@@ -423,7 +423,8 @@ export class UI extends Phaser.Scene {
     for (let i = 0; i < this.chestSlots.length; i++) {
       const slot = this.chestSlots[i];
       const reward = result.rewards[i];
-      const x = cx + (i - (n - 1) / 2) * 104;
+      // 5 Karten à 96 px muessen in den 452-px-Rahmen passen (#321: kein Overhang).
+      const x = cx + (i - (n - 1) / 2) * 86;
       slot.bg.setPosition(x, 196 + oy).setVisible(Boolean(reward));
       slot.slotBg.setPosition(x, 176 + oy).setVisible(Boolean(reward));
       slot.icon.setPosition(x, 176 + oy).setVisible(Boolean(reward)).setAlpha(1)

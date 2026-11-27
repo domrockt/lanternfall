@@ -79,25 +79,37 @@ def ui_frame() -> Grid:
     g = Grid(24, 24)
     g.rect(1, 1, 22, 22, 3)
     g.rect(2, 2, 20, 20, 2)
-    # Außenband aus Eisen mit Lichtkante oben-links.
-    g.rect(0, 0, 24, 2, 5)
+    # Außenband aus Eisen mit Lichtkante oben-links: obere und linke Kante
+    # bekommen eine 2-px-Aufhellung (7/6), unten-rechts bleibt dunkel (2/0).
+    g.rect(0, 0, 24, 2, 6)
     g.rect(0, 0, 24, 1, 7)
-    g.rect(0, 22, 24, 2, 5)
-    g.rect(0, 23, 24, 1, 2)
-    g.rect(0, 0, 2, 24, 5)
+    g.rect(0, 0, 2, 24, 6)
     g.rect(0, 0, 1, 24, 7)
-    g.rect(22, 0, 2, 24, 5)
-    g.rect(23, 0, 1, 24, 2)
+    g.rect(0, 22, 24, 2, 2)
+    g.rect(0, 23, 24, 1, 0)
+    g.rect(22, 0, 2, 24, 2)
+    g.rect(23, 0, 1, 24, 0)
     # Innenfase: 2 px dunkler + 1 px Licht.
     g.rect(2, 2, 20, 2, 4)
     g.rect(2, 2, 20, 1, 6)
     g.rect(2, 20, 20, 2, 4)
     g.rect(2, 2, 2, 20, 4)
     g.rect(20, 2, 2, 20, 2)
-    # Goldnieten 2x2 in allen vier Ecken.
-    for x, y in ((4, 4), (18, 4), (4, 18), (18, 18)):
-        g.rect(x, y, 2, 2, 20)
-        g.put(x, y, 21)
+    # Goldnieten 3x3 in allen vier Ecken: Glanz (22) oben-links, Schatten (0) unten-rechts.
+    # Hoeherer Eckenkontrast, damit der Rahmen nicht oben flach wirkt (#321).
+    for x, y in ((3, 3), (18, 3), (3, 18), (18, 18)):
+        # Globale Lichtrichtung oben-links: obere Nieter glänzen oben, untere
+        # liegen im Schatten. Unten-rechts nie 22, sonst kippt die Lichtlogik (#321).
+        top = y < 12
+        left = x < 12
+        g.rect(x, y, 3, 3, 20 if top else 17)
+        g.put(x, y, 22 if top else 20)
+        g.put(x + 1, y, 21 if top else 18)
+        g.put(x, y + 1, 21 if left else 18)
+        g.put(x + 2, y + 2, 0)
+    # Aussenecken hart mit Ink absetzen.
+    for x, y in ((0, 0), (23, 0), (0, 23), (23, 23)):
+        g.put(x, y, 0)
     return outline(g)
 
 
