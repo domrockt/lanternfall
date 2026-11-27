@@ -43,12 +43,59 @@ hatte 54,5 FPS avg gemessen. Maßgeblich ist hier der **Vorher/Nachher-Vergleich
 
 ## 2. Nachher (nach Fix)
 
-_folgt nach K1._
+### 2a. Burst (scripts/m10-view-width.mjs, 10 s, 500 Gegner, `shots/m10-view-width-after-burst-*.json`)
+
+| Viewport | cap | intern | FPS (3 Läufe) | Median | JS-Fehler |
+|---|---|---|---|---|---|
+| 640×360 @1 | on | 480×360 (Klemme greift nicht, ≤ 640) | 60,0 / 60,0 / 57,1 | 60,0 | 0 |
+| 780×360 @3 | off | 780×360 | 53,8 / 53,4 / 53,3 | 53,4 | 0 |
+| 780×360 @3 | on | **640×360** | 54,0 / 57,9 / 57,7 | **57,7** | 0 |
+| 1080×360 @3 | on | **640×360** (statt 860) | 58,1 / 59,2 | 58,6 | 0 |
+
+A/B an 780×360: **+4,3 FPS (+8 %)**; 1080×360 intern 640 statt 860: **+7,9 FPS (+15,6 %)** gegen die
+Rootcause-Baseline (50,7 FPS bei intern 860, `docs/lanes/m10-perf-rootcause.md`).
+
+### 2b. Minute-25 (scripts/perf.mjs, 3 Läufe je Viewport, `shots/m10-view-width-after-640-*.json` / `-780-*.json`)
+
+| Viewport | Lauf | intern (Snapshot) | Burst FPS | Minute-25 FPS | Minute-25 Gegner | JS-Fehler |
+|---|---|---|---|---|---|---|
+| 640×360 @1 | 1 | 480×360 | 47,9 | 55,2 | 300 | 0 |
+| 640×360 @1 | 2 | 480×360 | 59,6 | 57,2 | 300 | 0 |
+| 640×360 @1 | 3 | 480×360 | 59,4 | 53,3 | 300 | 0 |
+| 780×360 @3 | 1 | 640×360 (Klemme aktiv) | 59,6 | 50,8 | 300 | 0 |
+| 780×360 @3 | 2 | 780×360 (Snapshot nach Hysterese-Release) | 57,0 | 49,7 | 300 | 0 |
+| 780×360 @3 | 3 | 640×360 (Klemme aktiv) | 58,7 | 44,6 | 300 | 0 |
+
+Median Minute-25: **640×360 55,2 (Ziel ≥ 55: erfüllt)**; **780×360 49,7** gegen Vorher 31,9 = **+56 %,
+deutlich besser, aber unter 55**. Hinweis zur Messqualität: Der `view.internal`-Snapshot wird am Ende des
+Messfensters genommen; die Hysterese kann dort kurzzeitig gelöst sein (Lauf 780-2), das Messfenster selbst
+lief überwiegend mit Klemme. Die Burst-A/B in 2a zeigt den Klemm-Effekt sauber.
+
+### 2c. Fullrun (genau 1× nach dem Fix, `shots/m10-view-width-fullrun.json`)
+
+- `fpsMin` **39,4** (Fenster ab Sim-Zeit 29:20, volle Dichte + Endboss) — **Ziel ≥ 55 NICHT erfüllt**
+- Sieg `dawn`, 6 Truhen, 159 Elites, Level 37, 4301 Kills, **0 JS-Fehler**
+- Heap +8,7 % ggü. Minute 1 (Ziel ≤ 15 %: erfüllt)
+- WIP-Frühlauf 14:50 (parallel hohe Last, im Checkpoint dd439cd): fpsMin 37,7 — gleiche Tendenz
+
+**Ursache (dokumentiert, nicht weiter getunt):** Der Fullrun läuft bei 960×540 @1 → intern **480** breit
+(Fit-Fallback), die 640-Klemme kann hier nichts bringen — das FPS-Minimum im Fullrun wird nicht durch die
+Renderbreite verursacht. Der größte verbleibende Einzelposten ist UI/PostFX (+18,5 %, Rootcause-Lane);
+das ist die vereinbarte **Folgekarte** (UI/PostFX-Drosselung), nicht Teil dieser Lane.
 
 ## 3. Sicht-Belege
 
-_folgt nach K1/K2._
+Screenshots nach dem Fix (`shots/m10-view-width-640.png`, `-780.png` [intern 640, Klemme aktiv],
+`-1080.png` [intern 640]): ganzzahlige n-Skalierung bleibt erhalten (n = Skalierungsstufe unverändert,
+`isIntegerPixelPerfect` true), Canvas zentriert im Viewport, keine Unschärfe/falschen Pixelkanten.
+Art-director-Urteil: siehe Abschnitt 4.
 
 ## 4. Abnahme
 
-_folgt._
+- `npm test` grün (view-width 4/4, view 9/9), `npm run build` rc=0 (Commit 7576db7).
+- 640×360 Minute-25 Median **55,2 ≥ 55**: PASS. 780×360 nicht schlechter als Vorher (49,7 vs 31,9): PASS.
+- Fullrun `fpsMin` 39,4 < 55: **KRITERIUM NICHT ERFÜLLT** — Ursache dokumentiert (Abschnitt 2c); nächster
+  Hebel UI/PostFX-Drosselung als Folgekarte, laut Briefing nicht in dieser Lane zu tunen.
+- Kein Spielgefühl-Eingriff: nur `src/logic/view.ts` + 1 Poll in `src/main.ts` (Dispatch-Request),
+  keine Gegner-/Waffen-/Balance-Werte.
+- Kontrolleure: perf-check (Messwerte), art-director (Sicht-Belege), reviewer (Code).
