@@ -38,6 +38,26 @@ menu-touch, feedback-budget, ui-text-cost u. a. zusätzliche Tests gemergt.)
 
 Offen.
 
+### a) gem-drawcap — Draw-Cap wirksam
+
+Geprüft gegen PIN (Merge `50f45ec` von 16:23:06Z) über **Unit-Tests + Mess-JSON**,
+keine neue Chaos-Messung nötig (Belegdeckung durch `shots/m10-gem-drawcap-after.json`
+vom Lane-Endstand, Seed 1, 500 Gegner):
+
+| Kennzahl | Messwert (after-JSON) | Soll | Urteil |
+|---|---:|---|---|
+| Peak aktive Gem-Sprites | **120** | ≤ 120 (harter Cap `MAX_VISIBLE_GEMS`) | **PASS** (an der Grenze, Deckel wirksam) |
+| Peak Tweens (ganze Szene) | 35 | kein Tween pro Gem (sonst ~120+) | PASS |
+| ms/Frame (10 s, 1×) | 16,67 | nicht schlechter als vorher 16,64 | PASS (≈ Noise) |
+| XP-Bilanz (`endState`) | spawned 9.520 = granted 9.328 + im Feld 192, **xpLoss 0** | 0 % Verlust | PASS |
+| JS-Fehler | 0 | 0 | PASS |
+| Unit-Tests `tests/gem-draw-cap.test.ts` | **8/8 grün** (`npx vitest run`, 152 ms) | Deckel/XP-Bilanz/NaN/Magnet fixiert | PASS |
+
+Belege: `shots/m10-gem-drawcap-after.json` (Felder `peakGems`, `peakTweens`, `msPerFrame`,
+`endState.xpLoss`), Testlauf auf PIN 2026-11-27T18:21Z.
+
+**Urteil K2a: PASS.**
+
 ### b) menu-touch-targets — Probe 36/36
 
 Offen.
