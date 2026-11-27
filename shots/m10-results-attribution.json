@@ -1,0 +1,2433 @@
+{
+  "generated": "2026-11-27T05:46:09.962Z",
+  "minutes": 15,
+  "timeScale": 30,
+  "samples": [
+    {
+      "time": 14.5,
+      "kills": 11,
+      "weapons": [
+        {
+          "id": "ember",
+          "level": 8
+        },
+        {
+          "id": "flail",
+          "level": 8
+        },
+        {
+          "id": "frost",
+          "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 562,
+        "thorn": 42,
+        "ember": 84
+      }
+    },
+    {
+      "time": 30.4,
+      "kills": 29,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 1274,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 252
+      }
+    },
+    {
+      "time": 49.6,
+      "kills": 36,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "storm",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 1837,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 252
+      }
+    },
+    {
+      "time": 68.8,
+      "kills": 50,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "lantern",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 563,
+        "thorn_storm": 78
+      }
+    },
+    {
+      "time": 86.1,
+      "kills": 58,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 843,
+        "thorn_storm": 156,
+        "eternal_winter": 23
+      }
+    },
+    {
+      "time": 104.3,
+      "kills": 72,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 1380,
+        "thorn_storm": 312,
+        "eternal_winter": 23
+      }
+    },
+    {
+      "time": 126.7,
+      "kills": 82,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 1750,
+        "thorn_storm": 312,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 144.6,
+      "kills": 97,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 2399,
+        "thorn_storm": 312,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 164.1,
+      "kills": 107,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 2773,
+        "thorn_storm": 468,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 183.6,
+      "kills": 141,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 3903,
+        "thorn_storm": 819,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 201.6,
+      "kills": 152,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 4380,
+        "thorn_storm": 897,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 219.5,
+      "kills": 162,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 4877,
+        "thorn_storm": 897,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 235.7,
+      "kills": 177,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 5416,
+        "thorn_storm": 1092,
+        "eternal_winter": 23,
+        "wrath_pendulum": 198
+      }
+    },
+    {
+      "time": 252.5,
+      "kills": 203,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 6280,
+        "thorn_storm": 1404,
+        "eternal_winter": 23,
+        "wrath_pendulum": 396
+      }
+    },
+    {
+      "time": 270.5,
+      "kills": 214,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 6663,
+        "thorn_storm": 1638,
+        "eternal_winter": 23,
+        "wrath_pendulum": 396
+      }
+    },
+    {
+      "time": 288.5,
+      "kills": 226,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 7196,
+        "thorn_storm": 1716,
+        "eternal_winter": 23,
+        "wrath_pendulum": 396
+      }
+    },
+    {
+      "time": 304.6,
+      "kills": 261,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 9148,
+        "thorn_storm": 3549,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 321,
+      "kills": 290,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 10860,
+        "thorn_storm": 3978,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 338.7,
+      "kills": 309,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 13144,
+        "thorn_storm": 4407,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 353.7,
+      "kills": 332,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 15258,
+        "thorn_storm": 4875,
+        "eternal_winter": 289,
+        "wrath_pendulum": 891,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 372.5,
+      "kills": 382,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 17635,
+        "thorn_storm": 5850,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1436,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 389.2,
+      "kills": 412,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 20073,
+        "thorn_storm": 6045,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1436,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 406.6,
+      "kills": 436,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 21639,
+        "thorn_storm": 6435,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1436,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 423.1,
+      "kills": 485,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 24428,
+        "thorn_storm": 7917,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1634,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 438.1,
+      "kills": 521,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 26597,
+        "thorn_storm": 8931,
+        "eternal_winter": 532,
+        "wrath_pendulum": 1634,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 454.2,
+      "kills": 542,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 27869,
+        "thorn_storm": 9243,
+        "eternal_winter": 654,
+        "wrath_pendulum": 1634,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 472.5,
+      "kills": 575,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 30292,
+        "thorn_storm": 9672,
+        "eternal_winter": 654,
+        "wrath_pendulum": 1832,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 489.3,
+      "kills": 602,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 31888,
+        "thorn_storm": 10842,
+        "eternal_winter": 897,
+        "wrath_pendulum": 2179,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 504.3,
+      "kills": 627,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 34228,
+        "thorn_storm": 11154,
+        "eternal_winter": 897,
+        "wrath_pendulum": 2179,
+        "lantern": 99,
+        "thunder_seal": 900
+      }
+    },
+    {
+      "time": 520.8,
+      "kills": 648,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 36483,
+        "thorn_storm": 11739,
+        "eternal_winter": 920,
+        "wrath_pendulum": 2476,
+        "lantern": 99,
+        "thunder_seal": 1050
+      }
+    },
+    {
+      "time": 543.3,
+      "kills": 679,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 38939,
+        "thorn_storm": 12714,
+        "eternal_winter": 920,
+        "wrath_pendulum": 2476,
+        "lantern": 99,
+        "thunder_seal": 1050
+      }
+    },
+    {
+      "time": 561.1,
+      "kills": 701,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 40632,
+        "thorn_storm": 13416,
+        "eternal_winter": 920,
+        "wrath_pendulum": 2922,
+        "lantern": 132,
+        "thunder_seal": 1050
+      }
+    },
+    {
+      "time": 580.5,
+      "kills": 741,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 43602,
+        "thorn_storm": 14196,
+        "eternal_winter": 943,
+        "wrath_pendulum": 3021,
+        "lantern": 132,
+        "thunder_seal": 1050
+      }
+    },
+    {
+      "time": 598.8,
+      "kills": 777,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 46707,
+        "thorn_storm": 14820,
+        "eternal_winter": 1024,
+        "wrath_pendulum": 3120,
+        "lantern": 132,
+        "thunder_seal": 1050
+      }
+    },
+    {
+      "time": 619.1,
+      "kills": 830,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 53724,
+        "thorn_storm": 19032,
+        "eternal_winter": 2186,
+        "wrath_pendulum": 6983,
+        "lantern": 330,
+        "thunder_seal": 4530,
+        "soul_beacon": 348
+      }
+    },
+    {
+      "time": 637,
+      "kills": 847,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 54795,
+        "thorn_storm": 19656,
+        "eternal_winter": 2354,
+        "wrath_pendulum": 7181,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 348
+      }
+    },
+    {
+      "time": 656.4,
+      "kills": 866,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 56677,
+        "thorn_storm": 20124,
+        "eternal_winter": 2539,
+        "wrath_pendulum": 8171,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 435
+      }
+    },
+    {
+      "time": 674.4,
+      "kills": 895,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 61844,
+        "thorn_storm": 21294,
+        "eternal_winter": 2539,
+        "wrath_pendulum": 8567,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 522
+      }
+    },
+    {
+      "time": 695.3,
+      "kills": 917,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 66913,
+        "thorn_storm": 22152,
+        "eternal_winter": 2701,
+        "wrath_pendulum": 8864,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 522
+      }
+    },
+    {
+      "time": 710.4,
+      "kills": 936,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 69306,
+        "thorn_storm": 23205,
+        "eternal_winter": 2724,
+        "wrath_pendulum": 9310,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
+      }
+    },
+    {
+      "time": 727.7,
+      "kills": 961,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 72109,
+        "thorn_storm": 24570,
+        "eternal_winter": 2950,
+        "wrath_pendulum": 9954,
+        "lantern": 363,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
+      }
+    },
+    {
+      "time": 742.7,
+      "kills": 980,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 75569,
+        "thorn_storm": 25038,
+        "eternal_winter": 2950,
+        "wrath_pendulum": 10152,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
+      }
+    },
+    {
+      "time": 760.7,
+      "kills": 1000,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 77730,
+        "thorn_storm": 26052,
+        "eternal_winter": 2996,
+        "wrath_pendulum": 10350,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
+      }
+    },
+    {
+      "time": 778.7,
+      "kills": 1021,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 79956,
+        "thorn_storm": 26676,
+        "eternal_winter": 3239,
+        "wrath_pendulum": 10548,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
+      }
+    },
+    {
+      "time": 796.7,
+      "kills": 1058,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 83416,
+        "thorn_storm": 29601,
+        "eternal_winter": 3627,
+        "wrath_pendulum": 10845,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 609
+      }
+    },
+    {
+      "time": 811.7,
+      "kills": 1079,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 87247,
+        "thorn_storm": 30537,
+        "eternal_winter": 3731,
+        "wrath_pendulum": 11241,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 696
+      }
+    },
+    {
+      "time": 829.2,
+      "kills": 1100,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 89521,
+        "thorn_storm": 31122,
+        "eternal_winter": 3812,
+        "wrath_pendulum": 11637,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 696
+      }
+    },
+    {
+      "time": 845.6,
+      "kills": 1129,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 95102,
+        "thorn_storm": 32643,
+        "eternal_winter": 3835,
+        "wrath_pendulum": 11934,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 696
+      }
+    },
+    {
+      "time": 861.4,
+      "kills": 1150,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 98213,
+        "thorn_storm": 33345,
+        "eternal_winter": 3916,
+        "wrath_pendulum": 12132,
+        "lantern": 413,
+        "thunder_seal": 4680,
+        "soul_beacon": 783
+      }
+    },
+    {
+      "time": 879.2,
+      "kills": 1179,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 103690,
+        "thorn_storm": 33735,
+        "eternal_winter": 4020,
+        "wrath_pendulum": 12578,
+        "lantern": 413,
+        "thunder_seal": 4830,
+        "soul_beacon": 783
+      }
+    },
+    {
+      "time": 897.2,
+      "kills": 1206,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 109740,
+        "thorn_storm": 34827,
+        "eternal_winter": 4159,
+        "wrath_pendulum": 12974,
+        "lantern": 446,
+        "thunder_seal": 5430,
+        "soul_beacon": 783
+      }
+    }
+  ],
+  "proof": {
+    "totalDamage": 176104,
+    "barsSum": 176104,
+    "deltaPct": 0,
+    "rowCount": 6,
+    "overlaps": 0,
+    "overlapList": [],
+    "rows": [
+      {
+        "id": "phoenix",
+        "name": "Phönixschwarm",
+        "damage": 111870,
+        "isEvolution": true,
+        "lines": [
+          "PHÖNIXSCHWARM"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 111,
+            "w": 77,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "thorn_storm",
+        "name": "Dornensturm",
+        "damage": 36429,
+        "isEvolution": true,
+        "lines": [
+          "DORNENSTURM"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 127,
+            "w": 65,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "wrath_pendulum",
+        "name": "Zornpendel",
+        "damage": 13420,
+        "isEvolution": true,
+        "lines": [
+          "ZORNPENDEL"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 143,
+            "w": 59,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "thunder_seal",
+        "name": "Gewittersiegel",
+        "damage": 8580,
+        "isEvolution": true,
+        "lines": [
+          "GEWITTERSIEGEL"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 159,
+            "w": 83,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "eternal_winter",
+        "name": "Ewiger Winter",
+        "damage": 4390,
+        "isEvolution": true,
+        "lines": [
+          "EWIGER WINTER"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 175,
+            "w": 77,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "soul_beacon",
+        "name": "Seelenleuchtfeuer",
+        "damage": 1415,
+        "isEvolution": true,
+        "lines": [
+          "SEELENLEU",
+          "CHTFEUER"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 191,
+            "w": 53,
+            "h": 7
+          },
+          {
+            "x": 326,
+            "y": 199,
+            "w": 47,
+            "h": 7
+          }
+        ]
+      }
+    ],
+    "result": {
+      "reason": "giveup",
+      "elapsed": 901.6633616663956,
+      "kills": 1214,
+      "level": 22,
+      "character": "mira",
+      "damageByWeapon": {
+        "storm": 2250,
+        "thorn": 42,
+        "ember": 84,
+        "phoenix": 111786,
+        "thorn_storm": 36387,
+        "eternal_winter": 4390,
+        "wrath_pendulum": 13420,
+        "lantern": 545,
+        "thunder_seal": 6330,
+        "soul_beacon": 870
+      },
+      "god": true,
+      "seed": 99,
+      "debug": true
+    }
+  },
+  "stressProof": {
+    "totalDamage": 2214000,
+    "barsSum": 2214000,
+    "deltaPct": 0,
+    "rowCount": 12,
+    "overlaps": 0,
+    "overlapList": [],
+    "rows": [
+      {
+        "id": "ember",
+        "name": "Glutfunke",
+        "damage": 300000,
+        "isEvolution": false,
+        "lines": [
+          "GLUTFUNKE"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 111,
+            "w": 53,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "phoenix",
+        "name": "Phönixschwarm",
+        "damage": 279000,
+        "isEvolution": true,
+        "lines": [
+          "PHÖNIXSCHWARM"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 127,
+            "w": 77,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "flail",
+        "name": "Kettenflegel",
+        "damage": 258000,
+        "isEvolution": false,
+        "lines": [
+          "KETTENFLEGEL"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 143,
+            "w": 71,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "wrath_pendulum",
+        "name": "Zornpendel",
+        "damage": 237000,
+        "isEvolution": true,
+        "lines": [
+          "ZORNPENDEL"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 159,
+            "w": 59,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "frost",
+        "name": "Frostnova",
+        "damage": 216000,
+        "isEvolution": false,
+        "lines": [
+          "FROSTNOVA"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 175,
+            "w": 53,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "eternal_winter",
+        "name": "Ewiger Winter",
+        "damage": 195000,
+        "isEvolution": true,
+        "lines": [
+          "EWIGER WINTER"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 191,
+            "w": 77,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "thorn",
+        "name": "Dornensalve",
+        "damage": 174000,
+        "isEvolution": false,
+        "lines": [
+          "DORNENSALVE"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 207,
+            "w": 65,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "thorn_storm",
+        "name": "Dornensturm",
+        "damage": 153000,
+        "isEvolution": true,
+        "lines": [
+          "DORNENSTURM"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 223,
+            "w": 65,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "storm",
+        "name": "Sturmrune",
+        "damage": 132000,
+        "isEvolution": false,
+        "lines": [
+          "STURMRUNE"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 239,
+            "w": 53,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "thunder_seal",
+        "name": "Gewittersiegel",
+        "damage": 111000,
+        "isEvolution": true,
+        "lines": [
+          "GEWITTERSIEGEL"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 255,
+            "w": 83,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "lantern",
+        "name": "Geisterlaterne",
+        "damage": 90000,
+        "isEvolution": false,
+        "lines": [
+          "GEISTERLATERNE"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 271,
+            "w": 83,
+            "h": 7
+          }
+        ]
+      },
+      {
+        "id": "soul_beacon",
+        "name": "Seelenleuchtfeuer",
+        "damage": 69000,
+        "isEvolution": true,
+        "lines": [
+          "SEELENLEU",
+          "CHTFEUER"
+        ],
+        "nameRects": [
+          {
+            "x": 326,
+            "y": 287,
+            "w": 53,
+            "h": 7
+          },
+          {
+            "x": 326,
+            "y": 295,
+            "w": 47,
+            "h": 7
+          }
+        ]
+      }
+    ]
+  },
+  "errors": [],
+  "jsErrors": 0
+}

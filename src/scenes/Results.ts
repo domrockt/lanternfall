@@ -3,7 +3,8 @@ import { C, PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { PixelText } from "../gfx/font";
 import { iconTextureKey } from "../gfx/icons";
-import { damageTable, formatDamageCompact } from "../logic/results";
+import { damageTotal, formatDamageCompact, layoutResultRows, resultsLayout, stressEntries } from "../logic/results";
+import { hasFlag } from "../logic/rng";
 import { CHARACTERS } from "../data/characters";
 import type { CharacterId } from "../data/types";
 import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
@@ -31,6 +32,13 @@ export class Results extends Phaser.Scene {
   private pad = new InputState();
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
   private padArmed = false;
+  /** Messbeleg fuer den Abnahme-Lauf: HUD-Gesamtschaden vs. Summe der Balken. */
+  private proofData: Record<string, unknown> = {};
+
+  /** Abnahme-Hook: von scripts/m10-results-attribution.mjs gelesen. */
+  proof(): Record<string, unknown> {
+    return this.proofData;
+  }
 
   constructor() { super("results"); }
 
@@ -58,7 +66,7 @@ export class Results extends Phaser.Scene {
       () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
     this.add.image(cx, H / 2, "vignette").setDepth(-1).setDisplaySize(W, H);
-    this.add.rectangle(cx, 134 + oy, 440, 240, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
+    this.add.rectangle(cx, 136 + oy, 440, 250, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
 
     const victory = this.result.reason === "dawn";
     const giveUp = this.result.reason === "giveup";
@@ -109,31 +117,55 @@ export class Results extends Phaser.Scene {
       .setStrokeStyle(1, bannerColor).setDepth(1);
     new PixelText(this, cx - 118, 196 + oy, bannerText.slice(0, 26), bannerColor, "center").setDepth(2);
 
-    // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons.
-    new PixelText(this, cx - 20, 58 + oy, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
-    const entries = damageTable(this.result.damageByWeapon);
-    if (entries.length === 0) {
+    // Rechte Spalte: sortierte Schadensbalken mit Waffen-Icons. Positionen kommen
+    // aus resultsLayout(), damit Tests und Screen exakt dieselben Rechtecke pruefen.
+    // ?debug=1&stress12 = Layout-Stressbeleg mit allen 12 moeglichen Waffennamen.
+    const stress = this.result.debug === true && hasFlag("stress12");
+    const layout = stress
+      ? layoutResultRows(stressEntries(), { width: W, oy, rowsTop: 66 })
+      : resultsLayout(this.result.damageByWeapon, { width: W, oy, rowsTop: 66 });
+    const totalDamage = stress
+      ? layout.rows.reduce((sum, row) => sum + row.damage, 0)
+      : damageTotal(this.result.damageByWeapon);
+    new PixelText(this, layout.header.x, layout.header.y, "SCHADEN PRO WAFFE", C.lantern).setDepth(2);
+    new PixelText(this, layout.totalLabel.x, layout.totalLabel.y,
+      `GESAMT: ${formatDamageCompact(totalDamage)}`, C.candleWhite).setDepth(2);
+    if (layout.rows.length === 0) {
       new PixelText(this, cx - 20, 80 + oy, "KEINE TREFFER", C.fog).setDepth(2);
     }
-    const maxDamage = entries.reduce((m, e) => Math.max(m, e.damage), 1);
-    const rowsTop = 74 + oy;
-    const rowStep = 10;
-    entries.forEach((entry, i) => {
-      const y = rowsTop + i * rowStep;
-      const key = iconTextureKey(entry.isEvolution ? "evolution" : "weapon", entry.id);
+    layout.rows.forEach((row) => {
+      const key = iconTextureKey(row.isEvolution ? "evolution" : "weapon", row.id);
       if (this.textures.exists(key)) {
-        this.add.image(cx - 12, y + 3, key).setDepth(2);
+        this.add.image(row.icon.x + row.icon.w / 2, row.icon.y + row.icon.h / 2, key).setDepth(2);
       }
-      const name = entry.name.toUpperCase();
-      new PixelText(this, cx - 2, y, name, C.bone).setDepth(2);
-      const barX = cx + 100;
-      const barMax = 70;
-      const width = Math.max(2, Math.round((entry.damage / maxDamage) * barMax));
-      this.add.rectangle(barX, y + 3, barMax, 5, PAL[C.nightMid], 0.9).setOrigin(0, 0.5).setDepth(1);
-      this.add.rectangle(barX, y + 3, width, 5, PAL[entry.isEvolution ? C.paleMist : C.lantern], 0.95)
+      row.lines.forEach((line, i) => {
+        const rect = row.nameRects[i];
+        new PixelText(this, rect.x, rect.y, line, C.bone).setDepth(2);
+      });
+      const bar = row.barBg;
+      this.add.rectangle(bar.x, bar.y + bar.h / 2, bar.w, bar.h, PAL[C.nightMid], 0.9)
         .setOrigin(0, 0.5).setDepth(1);
-      new PixelText(this, cx + 206, y, formatDamageCompact(entry.damage), C.candleWhite, "right").setDepth(2);
+      const fill = row.barFill;
+      this.add.rectangle(fill.x, fill.y + fill.h / 2, fill.w, fill.h,
+        PAL[row.isEvolution ? C.paleMist : C.lantern], 0.95).setOrigin(0, 0.5).setDepth(1);
+      new PixelText(this, row.valueRect.x, row.valueRect.y, row.valueText, C.candleWhite).setDepth(2);
     });
+
+    const barsSum = layout.rows.reduce((sum, row) => sum + row.damage, 0);
+    const deltaPct = totalDamage > 0 ? Math.abs(barsSum - totalDamage) / totalDamage * 100 : 0;
+    this.proofData = {
+      totalDamage,
+      barsSum,
+      deltaPct: Math.round(deltaPct * 10000) / 10000,
+      rowCount: layout.rows.length,
+      overlaps: layout.overlaps.length,
+      overlapList: layout.overlaps,
+      rows: layout.rows.map((row) => ({
+        id: row.id, name: row.name, damage: row.damage, isEvolution: row.isEvolution,
+        lines: row.lines, nameRects: row.nameRects,
+      })),
+    };
+    this.registry.set("lf-results-proof", this.proofData);
 
     this.buttons.push(createMenuButton(
       this, cx - 94, H - 26, 136, "NEUE RUNDE", () => this.newRun(), { height: 20, depth: 4 },
