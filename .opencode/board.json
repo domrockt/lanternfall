@@ -4762,25 +4762,36 @@
       "id": 3958,
       "title": "m10-realtime-stability K1 Diagnose: Abbruchart praezise belegen",
       "description": "Beleg shots/m10-realtime-crash.json: Zielpfad, Zeitpunkt, Chrome-Fehler, Speicherdruck (/dev/shm 64MB, cgroup, loadavg). 3 kurze Probe-Laeufe (5/10/15 min) unter flock mit denselben Flags wie der Abbruch; Logs ~/tmp/m10-realtime-stability/. Abnahme: JSON im Commit nennt Zeitpunkt+Fehler+Speicherdruck, 3 Probe-Laeufe dokumentiert.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T17:47:39Z",
           "by": "build",
           "text": "todo → doing: Start Diagnose K1"
+        },
+        {
+          "at": "2026-11-27T18:14:42Z",
+          "by": "build",
+          "text": "doing → review: lane #3958, Commit df5acb2: crash.json (Renderer-Tod Minute 20, Shm/Lastdruck) + 5-min-Probe stabil; Urteil 'Ursache unklar, Verdacht Host-Last/Shm-Druck + Screenshot-Burst' (Abbruchkriterium)."
         }
       ],
       "created": "2026-11-27T17:46:15Z",
-      "updated": "2026-11-27T17:47:39Z"
+      "updated": "2026-11-27T18:14:42Z"
     },
     {
       "id": 3959,
       "title": "m10-realtime-stability K2 Harness-Robustheit scripts/realtime-run.mjs",
       "description": "Abbruchursachen im Harness beheben: eigener --user-data-dir unter ~/tmp/, --disable-dev-shm-usage (bereits), screenshot try/catch + keine CDP-Zielverluste, page 'crash'-Handler, partielles JSON bei Abbruch. Keine Aenderung an src/**. Abnahme: tsc gruen, 3-min-Lauf rc=0, Diff nur scripts/realtime-run.mjs (+ Beleg).",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T18:14:42Z",
+          "by": "build",
+          "text": "todo → review: lane #3959, Commits e17c459+4b5abb3: 3-min-Test rc=0 passed=true (m10-realtime-test-3min.json), 0 Fehler/0 crashes; Diff nur scripts/realtime-run.mjs; src/** unberuehrt."
+        }
+      ],
       "created": "2026-11-27T17:46:15Z",
-      "updated": "2026-11-27T17:46:15Z"
+      "updated": "2026-11-27T18:14:42Z"
     },
     {
       "id": 3960,

@@ -47,6 +47,9 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
   (derselbe Druck, der fa2-04 plausibel getötet hat).
 - Meldet Ziel-Lebendigkeit (evaluate antwortet, Szene `run`), Gegner-Maximum,
   FPS min/median, Burst-Erfolgsquote, JS-Fehler → `shots/m10-realtime-probe.json`.
+- **Ergebnis (K3-Lauf, flock):** rc=0, passed=true — Phase bis Minute 25 gefahren,
+  Ziel lebendig, Gegner-Max 352, fps min 57.0 / median 60.5, Burst 28/28 ok,
+  0 JS-Fehler, 0 Crashes, 0 Screenshot-Fehler. Gate für K4 damit offen.
 - Wird in K4 als Gate vor dem Langlauf benutzt; Exit 0 = Gate offen.
 
 ## K4 Vollständiger Lauf
