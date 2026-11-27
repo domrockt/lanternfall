@@ -3787,10 +3787,16 @@
       "id": 2522,
       "title": "m10-chaos-silhouettes K5 Beleg + Doku: Chaos-Frame 1920x1080 + Crop, Nachher-JSON, FPS Minute 25 >=55, art-director PASS >=4/5, .lane-done",
       "description": "Nachher-Beleg mit denselben Metriken, 1920x1080 Chaos-Frame + Crop, FPS-Minute-25 mit flock gemessen >=55, art-director-Urteil PASS Note >=4/5, npm run build + npm test gruen, docs/lanes/m10-chaos-silhouettes.md aktualisiert, .lane-done. Abnahme: alle Belege im Commit mit #K5, git status sauber.",
-      "column": "todo",
-      "notes": [],
+      "column": "blocked",
+      "notes": [
+        {
+          "at": "2026-11-27T10:50:16Z",
+          "by": "build",
+          "text": "todo → blocked: BLOCKED: art-director FAIL 3/5 (>=4/5 nötig). 57.6% Randpixel unter Kontrastschwelle; treant 82.3%/26.5, golem 77.4%/28.5, bog_rat 70.7%/32.8; Elite-Amber im Feuer/Boss-Banner nicht sichtbar; after.png falscher Frame (26:19 leer vs JSON 25:13/358). Korrekturen in docs/lanes/m10-chaos-silhouettes.md notiert. Supervisor-Stopp vor weiterer Pixel-Analyse. Kein .lane-done."
+        }
+      ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T07:27:55Z"
+      "updated": "2026-11-27T10:50:16Z"
     }
   ]
 }

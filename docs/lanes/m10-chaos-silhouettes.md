@@ -102,7 +102,33 @@ In `src/systems/EnemyPool.ts`:
   `shots/m10-chaos-silhouettes-fps.json`.
 - `npm run build` + `npm test` grün (306 Tests). Ehrlich: der Silhouetten-Gewinn ist
   messbar, aber moderat; im dichten Kern bleiben Überschneidungen, lesbar sind vor allem
-  die Randfiguren und die Lichtkante oben. .lane-done gesetzt.
+  die Randfiguren und die Lichtkante oben.
+
+## #K5 Abnahme: art-director FAIL 3/5 (blockiert)
+
+Das art-director-Urteil fiel **FAIL, Note 3/5** (nötig ≥4/5). Begründung:
+- Grundsilhouetten (Ritter, Krabbler, Irrlicht, Imp, Totem), 1-px-Tinte-Kontur,
+  3 Schattierungsstufen, Palette und Spritegrößen sind ok.
+- Aber 57,6 % der Randpixel bleiben unter dem Kontrastschwellwert zum dunklen Moor;
+  die Problemfälle besserten sich kaum: treant 82,3 % unter Schwelle / Edge 26,5;
+  golem 77,4 % / 28,5; bog_rat 70,7 % / 32,8; crow unverändert 67,6 % / 47,7.
+- Kein Elite mit Amber-Rim ist in einem Beleg eindeutig sichtbar (8 Elite im Chaos-Frame,
+  aber unter Boss-Banner und rotem Feuer-VFX; Amber 20 geht dort farblich unter).
+- `after.png` (26:19, fast leeres Feld) ist kein Hordenframe und passt nicht zu den
+  JSON-Zahlen (25:13, 358 Gegner) – Vorher/Nachher ist nicht dieselbe Szene.
+
+Konkrete geforderte Korrekturen (nächste Runde, nicht mehr in diesem Lauf):
+- `treant`: obere Stamm-/Kronenkante auf PAL 11/12, Rindenmittelton PAL 16/17 → Edge >40.
+- `golem`/`bog_rat`: Mittelton auf PAL 7/8, Kontur vollständig PAL 0 → Rim >50 %, unter Schwelle <45 %.
+- `wisp`/`imp`/`crow`: Lichtkante über den gesamten oberen Bogen statt nur erstes Innenpixel;
+  `wisp` zusätzlich linke/untere Innenseite abdunkeln.
+- Elite: zusätzlich 1 px `lanternWhite` (13) außen oder deterministischer 3-px-Amber-Diamant
+  über dem Kopf; Beleg-Crop Elite vs. Normalo auf dunklem Grund.
+- Belege: `after.png` durch 500+-Hordenframe derselben Zeit/Elite-Zahl wie die JSONs ersetzen,
+  Chaos-Frame ohne Boss-Banner über dem Kern.
+
+Status: Karte #2522 auf `blocked` (art-director FAIL 3/5, Supervisor-Stopp vor weiterer
+Pixel-Analyse). `.lane-done` wird bewusst **nicht** gesetzt, bis A10 mit PASS ≥4/5 belegt ist.
 
 ## #K2 Silhouetten schärfen (nachher)
 
