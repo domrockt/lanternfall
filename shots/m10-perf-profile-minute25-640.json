@@ -1,0 +1,261 @@
+{
+  "generatedAt": "2026-11-27T09:51:39.161Z",
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "seconds": 60,
+  "run": {
+    "fps": 52.3,
+    "frames": 3137,
+    "elapsedMs": 60021,
+    "target": 300,
+    "minEnemies": 16,
+    "avgEnemies": 157,
+    "finalEnemies": 300
+  },
+  "draw": {
+    "frames": 3513,
+    "drawsMedian": 88,
+    "drawsMean": 86.5,
+    "drawsP95": 131,
+    "drawsMax": 175,
+    "blendsMedian": 82,
+    "programsMedian": 0,
+    "texturesMedian": 106,
+    "totalDraws": 303780
+  },
+  "objects": {
+    "displayList": 3313,
+    "total": 3418,
+    "visible": 2067,
+    "counts": {
+      "Image": 2871,
+      "Sprite": 520,
+      "Container": 25,
+      "Rectangle": 2
+    },
+    "graphics": 0,
+    "images": 2871,
+    "sprites": 520,
+    "lod": {
+      "enemies": 164,
+      "fxCap": 180,
+      "particleCap": 280,
+      "trails": true,
+      "damageAggregate": false,
+      "gemCap": 180,
+      "level": "full"
+    },
+    "stats": {
+      "scene": "run",
+      "time": 1546.8,
+      "level": 78,
+      "kills": 171108,
+      "enemies": 151,
+      "hp": 350,
+      "maxHp": 350,
+      "fps": 51.8,
+      "weapons": [
+        {
+          "id": "phoenix",
+          "level": 8
+        },
+        {
+          "id": "wrath_pendulum",
+          "level": 8
+        },
+        {
+          "id": "eternal_winter",
+          "level": 8
+        },
+        {
+          "id": "thorn_storm",
+          "level": 8
+        },
+        {
+          "id": "thunder_seal",
+          "level": 8
+        },
+        {
+          "id": "soul_beacon",
+          "level": 8
+        }
+      ],
+      "passives": [
+        {
+          "id": "heart",
+          "level": 5
+        },
+        {
+          "id": "boots",
+          "level": 5
+        },
+        {
+          "id": "tome",
+          "level": 5
+        },
+        {
+          "id": "charm",
+          "level": 5
+        },
+        {
+          "id": "whetstone",
+          "level": 5
+        },
+        {
+          "id": "hourglass",
+          "level": 5
+        }
+      ],
+      "bossesDefeated": 5,
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 1490
+        },
+        {
+          "index": 1,
+          "at": 1490
+        },
+        {
+          "index": 2,
+          "at": 1490
+        },
+        {
+          "index": 3,
+          "at": 1490
+        },
+        {
+          "index": 4,
+          "at": 1500
+        }
+      ],
+      "bossFlags": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "boss": null,
+      "chestsDropped": 5,
+      "dawn": false,
+      "lod": {
+        "enemies": 164,
+        "fxCap": 180,
+        "particleCap": 280,
+        "trails": true,
+        "damageAggregate": false,
+        "gemCap": 180,
+        "level": "full"
+      },
+      "damageAggregate": true,
+      "fxAlpha": 1,
+      "paused": false,
+      "levelUpOpen": false,
+      "chestOpen": false,
+      "autoPlay": true,
+      "god": true,
+      "character": "mira",
+      "spawnCounts": {
+        "bog_rat": 170891,
+        "wisp": 50,
+        "bogzombie": 50,
+        "gargoyle": 22,
+        "voidcaller": 10,
+        "centipede": 19,
+        "horror": 14,
+        "abom": 18,
+        "reaper_bat": 168,
+        "wolf": 4,
+        "skeleton": 8
+      }
+    }
+  },
+  "cpu": {
+    "totalMs": 60194,
+    "idlePercent": 1.8,
+    "gcPercent": 0.2,
+    "top": [
+      {
+        "fn": "(program) @ :-1",
+        "selfMs": 50351.6,
+        "percent": 83.6
+      },
+      {
+        "fn": "batchSprite @ assets/index-BgjQ-gPR.js:42",
+        "selfMs": 1329.8,
+        "percent": 2.2
+      },
+      {
+        "fn": "e.99517.e.exports @ assets/index-BgjQ-gPR.js:22",
+        "selfMs": 486.9,
+        "percent": 0.8
+      },
+      {
+        "fn": "update @ assets/index-BgjQ-gPR.js:811",
+        "selfMs": 459.3,
+        "percent": 0.8
+      },
+      {
+        "fn": "e.19186.e.exports @ assets/index-BgjQ-gPR.js:809",
+        "selfMs": 366.1,
+        "percent": 0.6
+      },
+      {
+        "fn": "render @ assets/index-BgjQ-gPR.js:42",
+        "selfMs": 330.8,
+        "percent": 0.5
+      },
+      {
+        "fn": "render @ assets/index-BgjQ-gPR.js:0",
+        "selfMs": 327.9,
+        "percent": 0.5
+      },
+      {
+        "fn": "updatePropsDepth @ assets/index-BgjQ-gPR.js:811",
+        "selfMs": 198.1,
+        "percent": 0.3
+      },
+      {
+        "fn": "bufferSubData @ :-1",
+        "selfMs": 192.7,
+        "percent": 0.3
+      },
+      {
+        "fn": "set @ assets/index-BgjQ-gPR.js:22",
+        "selfMs": 192.5,
+        "percent": 0.3
+      },
+      {
+        "fn": "batchQuad @ assets/index-BgjQ-gPR.js:42",
+        "selfMs": 189.4,
+        "percent": 0.3
+      },
+      {
+        "fn": "updateEnemies @ assets/index-BgjQ-gPR.js:811",
+        "selfMs": 173.7,
+        "percent": 0.3
+      },
+      {
+        "fn": "spawn @ assets/index-BgjQ-gPR.js:811",
+        "selfMs": 159.8,
+        "percent": 0.3
+      },
+      {
+        "fn": "step @ assets/index-BgjQ-gPR.js:0",
+        "selfMs": 132.1,
+        "percent": 0.2
+      },
+      {
+        "fn": "shards @ assets/index-BgjQ-gPR.js:811",
+        "selfMs": 126.1,
+        "percent": 0.2
+      }
+    ]
+  },
+  "jsErrors": [],
+  "passed": false
+}
