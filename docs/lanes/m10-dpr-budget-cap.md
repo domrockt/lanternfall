@@ -38,21 +38,31 @@ Teiler 1 (~45 FPS < Ziel 50). Fix in #3580: eigener schneller EWMA aus den
 rAF-Deltas (0,9/0,1 pro Frame, Konvergenz ~0,5 s), Hysterese-Konstanten
 unveraendert.
 
-## #3580 Messung (in Arbeit)
+## #3580 Messung (blocked: Perf-Lock belegt)
 
 `scripts/m10-dpr-budget.mjs`, M25-Last 780x360 dpr3, 3 Laeufe nachher +
 Vorher-Referenz (?rbscale=0), FPS und effektive Renderbreite in
 `shots/m10-dpr-budget.json`. Ziel min >= 50 FPS, 640x360@1 ohne Regression
 >= 50.
 
-Befund Trajektorien-Probe (~/tmp/m10-dpr-budget-cap/probe2.mjs, M25-Last,
-300 Gegner gehalten, 25 s, Samples alle 500 ms):
+Messversuche 2026-11-27 (alle unter flock /home/ai/games/.lf-perf.lock):
 
-- Teiler 1: FPS 44,9, belowMs laeuft auf; bei 2000 ms -> Teiler 2 (Buffer
-  390x180) bei t≈15,4 s.
-- Teiler 2: FPS erholt sich (EWMA 45,9 -> 59,0), Regler haelt Stufe 2.
-- Ursache Versuch-1-FAIL (46/42,8 FPS, Buffer 780x360): `loop.actualFps`-Glattung
-  zu traege -> Totzone -> nie gesenkt. Fix: schneller EWMA (siehe #3579).
+- Versuch 1 (vor EWMA-/Freeze-Fix): 46 / 42,8 / 42,8 FPS, Buffer 780x360 in
+  3/3 -> FAIL, Ursache siehe #3579 (actualFps-Glaettung) + Totzone-Reset.
+- Versuch 2 (nach EWMA-Fix, vor Freeze-Fix): 39,2-43,3 FPS, Buffer 780x360
+  in 3/3 -> FAIL, Ursache Totzone-Reset bei Last-Jitter (siehe oben).
+- Versuch 3 (nach Freeze-Fix, 18:22 Uhr): flock -w 60 -> rc=1 nach 60 s.
+  Inhaber der Sperre: PID 29053 `realtime-run.mjs --minutes 30` (fremde Lane,
+  Laufzeit ~30 min), Warteschlange mit 4 weiteren flock-Aufrufen inkl. Lane-Probe.
+  Vorheriger unendlicher flock-Aufruf wurde abgebrochen. Zwei vergebliche
+  Lock-Versuche -> Karte blocked nach Supervisor-Vorgabe.
+- Systemlast beim Versuch 2: Load ~15 (Parallel-Lanes), Chromium ~800 % CPU
+  fremder Lane -> FPS-Zahlen auch ohne LockKonflikt lastverrauscht.
+
+Nachholen: sobald die Sperre frei ist (realtime-run beendet), Versuch 3 mit
+`flock -w 60 ... node scripts/m10-dpr-budget.mjs --after-runs 3` nachziehen
+und diese Notiz ergaenzen. Regler-Verhalten ist unabhaengig durch Probes
+belegt: Teiler 2 wird unter Last erreicht (Buffer 390x180, FPS-Erholung).
 
 ## #3581 Pixel-Perfect-Beleg (offen)
 
