@@ -91,6 +91,10 @@ try {
       const side = i % 2 === 0 ? 1 : -1;
       e.x = px + side * (10 + ((i * 37) % 190));
       e.y = py + (((i * 53) % 220) - 110);
+      // Unsterblich: konstante 500er-Last ueber das ganze Messfenster.
+      e.hp = 1e9;
+      e.maxHp = 1e9;
+      e.damage = 0;
       i += 1;
     }
   }, { enemies: ENEMIES, weapons: WEAPONS });
