@@ -59,15 +59,15 @@ Resolver-Deckel (Iterationen/Paar-Budget) greift deterministisch.
 Test: 3 Seeds × 200 Queries Trefferzahl identisch zu Brute-Force; **500 Query-Zyklen Median 0,872 ms**
 (< 5 ms auf dem Testrechner, `npx vitest run tests/separation-crowd.test.ts --reporter=verbose`).
 
-## Karte #2361 — Nachmessen (Commit folgt)
+## Karte #2361 — Nachmessen (Belege in diesem Commit)
 
 Gleiches Probe-Skript wie #2358, `flock /home/ai/games/.lf-perf.lock … node scripts/m10-crowd-probe.mjs --tag=after`.
 
 | Metrik (500 Gegner, 300 Frames) | Baseline | Nachher | Ziel | Status |
 |---|---|---|---|---|
-| Paare < 4 px (`closePairs`) | 561 | **23** | −50 % (≤ 280) | **−95,9 %, PASS** |
-| `closePairRatio` | 0,45 % | **0,02 %** | – | PASS |
-| Mittlerer Nächster-Nachbar-Abstand | 3,83 px | **8,65 px** | größer | PASS |
+| Paare < 4 px (`closePairs`) | 561 | **11** | −50 % (≤ 280) | **−98,0 %, PASS** |
+| `closePairRatio` | 0,45 % | **0,01 %** | – | PASS |
+| Mittlerer Nächster-Nachbar-Abstand | 3,83 px | **8,81 px** | größer | PASS |
 | Gegner im 32-px-Kreis um den Spieler | 280 | **38** | ≤ 40 | **PASS** |
 | FPS min / median | 59,5 / 59,9 | **59,5 / 59,9** | min ≥ 55 | **PASS** |
 | NaN/Infinity-Positionen | 0 | 0 | 0 | PASS |
@@ -80,26 +80,30 @@ Belege: `shots/m10-separation-after.json`, `shots/m10-separation-after.png`.
 
 ## Art-Director-Urteil (A10-Restpunkt)
 
-**Punkt 1 (einzelne Gegnertypen rechts unterscheidbar): PASS / JA.**
-Auf der AFTER-Rechten sind mindestens 4 Typen an Form + Farbe trennbar: weiße Rippen-/Knochen-
-Silhouette (Skelett), dunkelblaue Flügel-Silhouette (Crow/Bat), rote Kreuz-/Blütenform
-(Cultist/Witchling), brauner schwerer Körper (Abom/Treant). Zwischen den Umrissen liegen sichtbare
-Moorboden-Lücken von 2–6 px mit lesbarer 1-px-Kontur und Lichtkante oben-links. Im BEFORE ist genau
-dieser Bereich eine rot/weiße Wand ohne Bodenlücken (Note 2 → AFTER Note 4).
+**PASS — Note-Bereich 3,5/5** (art-director, Chaos-Frame `shots/m10-separation-after.png` 3x nearest,
+rechte Hordenseite x≈1200–1450 / y≈350–800).
 
-**Punkt 2 (weniger Klumpen): JA.** `closePairs` 561 → 23 (−96 %), `meanNearestNeighbor` 3,83 → 8,65 px,
-`enemiesWithin32px` 280 → 38; sichtbar breiterer, ringförmiger Hordensaum mit durchgehenden
-Bodenfenstern an der rechten Flanke.
+- **Mindestens 4 Gegnertypen rechts an Form + Farbe trennbar: JA.** Weiße/hellgraue Skelett-Sprites
+  (hoch, schmal), rote kurzbeinige Adepten, blaugraue Panzer-/Ritter-Sprites und braun-orange
+  Kolosse (breite Silhouette) sind klar unterscheidbar; die goldgelben Punkte sind Loot-Kristalle.
+- **Bodenlücken statt Wand: JA.** Durchgehende grüne Bodenlücken zwischen den Clustern, 1-px-Konturen
+  und Lichtkante oben-links bleiben lesbar. Im BEFORE verschmilzt genau diese Flanke zu einer
+  rot/weißen Wand ohne Grund darunter.
+- **Besser als BEFORE: JA.** Vorher geschlossener Kreisblock, jetzt aufgelockerte Ring-/Schwarm-
+  formation mit sichtbaren Lücken auch im Kern links des Bosses.
+- Abzug auf 3,5: der dichteste Kern unter der Boss-Leiste verschwimmt noch teilweise, und
+  Loot-Kristalle liegen visuell über Gegnern — kein FAIL, da alle vier Typen und Bodenkonturen
+  auf der geforderten rechten Seite nachweisbar sind.
 
-**Punkt 3 — offene Grafik-Nachbesserungen (nicht Teil dieser Logik-Lane):**
+**Offene Grafik-Nachbesserungen (nicht Teil dieser Logik-Lane):**
 1. Boss-Silhouette (Moorkönigin) liegt im Chaos ~50 % von Gegnern verdeckt → Boss/Elite mit
    1-px-Lichthalo bzw. hellem Bodenring über die Horde legen und 2-px-Separationspuffer für Bosse.
 2. Konturen zweier Einheiten < 1 px verschmelzen zu einer Doppelkante → Mindest-Konturabstand
    2 px statt nur Mittelwert.
-3. Cultist (Rot) und Abom (Braun) haben fast denselben Helligkeitswert → Wertdifferenz erhöhen.
+3. Loot-Kristalle werden über Gegnern gezeichnet → Depth der Gems prüfen.
 
-Diese drei Punkte sind Renderer-/Art-/Balance-Themen und bewusst **nicht** in dieser Lane
-(keine Renderer-Änderung); sie gehören in eine Folgekarte der Engine-/VFX-Lane.
+Diese Punkte sind Renderer-/Art-Themen und bewusst **nicht** in dieser Lane (keine Renderer-Änderung);
+sie gehören in eine Folgekarte der Engine-/VFX-Lane.
 
 
 ## Testzahlen
