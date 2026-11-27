@@ -51,12 +51,17 @@ export class TouchControls {
 
   private readonly onTouchStart = (ev: TouchEvent): void => {
     if (!this.enabled || this.destroyed || this.identifier !== null) return;
+    // M10-chest-lock-touch: Gate EINMALIG vor der Touch-Auswahl pruefen. Mitten in
+    // der Schleife zu pruefen war toluerant gegen Gate-Wechsel waehrend derselben
+    // Geste; jetzt gilt: Gate zu bei Touchstart => Geste wird komplett verworfen
+    // (auch wenn z. B. die Truhe noch im selben Event geschlossen wird).
+    if (!this.opts.canMove()) return;
     const width = this.scene.scale.width;
     let picked: Touch | null = null;
     let pos: { x: number; y: number } | null = null;
     for (let i = 0; i < ev.changedTouches.length; i++) {
       const t = ev.changedTouches.item(i);
-      if (!t || !this.opts.canMove()) return;
+      if (!t) return;
       const p = this.toScene(t.clientX, t.clientY);
       if (p.x < width * 0.5) {
         picked = t;
@@ -79,6 +84,16 @@ export class TouchControls {
 
   private readonly onTouchMove = (ev: TouchEvent): void => {
     if (!this.enabled || this.destroyed || this.identifier === null) return;
+    // M10-chest-lock-touch: Gate auch beim Move schliessen. Oeffnet sich das
+    // Panel (Truhe/Pause/Level-up) waehrend einer gehaltenen Geste, wird die
+    // Geste sofort verworfen - bevor update() das naechste UI-Frame sieht.
+    // Ohne diesen Check schreibt der Move noch Bewegung in den Snapshot und der
+    // Run liest im selben Frame bis zu einen Frame Drift.
+    if (!this.opts.canMove()) {
+      this.discardGesture();
+      ev.preventDefault();
+      return;
+    }
     const touch = this.findTouch(ev.touches, this.identifier);
     if (!touch) return;
 
@@ -178,6 +193,18 @@ export class TouchControls {
       const current = getTouchSnapshot();
       setTouchSnapshot({ active: false, x: 0, y: 0, pause: current.pause });
     }
+  }
+
+  /**
+   * M10-chest-lock-touch: laufende Geste verwerfen (Panel oeffnete statt kleben):
+   * Joystick-Identitaet loeschen, Stick verbergen, Bewegung nullen. Ein noch
+   * laufender Pause-Puls bleibt erhalten (derselbe Vertrag wie in update()).
+   */
+  private discardGesture(): void {
+    this.identifier = null;
+    this.hideStick();
+    const current = getTouchSnapshot();
+    setTouchSnapshot({ active: false, x: 0, y: 0, pause: current.pause });
   }
 
   /** Steigende Flanke eines Pause-Tipps (nur einmal lesbar, Puls ca. 120 ms). */
