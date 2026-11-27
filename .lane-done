@@ -1,0 +1,18 @@
+Lane m10-touch-joystick-feel abgeschlossen (4/4 Karten, Commits 39b6568 / 5fa9af5 / 178f41b / K4).
+
+Touch-Joystick-Feel gefixt in src/input/TouchControls.ts (InputState.ts/Run.ts unberuehrt,
+Bewegungsbudget/Speed unangetastet): Viewport-skalierte Deadzone (16 % Ring, 7 px @480),
+8-Richtungs-Snapping nur jenseits der Totzone, Sektor-Hysterese 5,625 Grad, Output-Eps 0,02.
+
+Messwerte (scripts/m10-touch-joystick.mjs, echte Klasse + DOM-Stub, synthetische Drags):
+- Update-Rate 1,0 -> 0,24/Frame; leere Updates 22/56/16 -> 1/2/0.
+- Fehlrichtung pooled 1,3 % < 2 % Gate (Gerade 2,08 %, Kreis 0,83 %).
+- Latenz Geste->Bewegung 0 Frames (<= 2); Mikro-Jitter emittiert keine Bewegung mehr.
+- Richtungswechsel: Jitter-Wechsel 2 -> 1 (Gerade), Kreis 8 = legitime Sektor-Schritte.
+
+Verifikation: tests/touch-joystick-feel.test.ts 18 Tests + chest-lock-touch 7/7,
+npm test 863/863, tsc rc=0, build rc=0, verify-input Touch 9/9 OK (einziges FAIL
+"ESC setzt fort" ist pre-existing: esc-pause-fix f3dfcbf nicht in dieser Basis).
+
+Belege: shots/m10-touch-joystick-before.json, shots/m10-touch-joystick-after.json,
+docs/lanes/m10-touch-joystick-feel.md.

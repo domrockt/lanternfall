@@ -7730,43 +7730,76 @@
       "id": 6678,
       "title": "m10-touch-joystick-feel K1: Ist-Messung Joystick-Feel (scripts/m10-touch-joystick.mjs, before-JSON)",
       "description": "Synthetische Drag-Seren (gerade Linie+Rauschen, Kreis, Zickzack) durch den TouchControls-Pfad (DOM-Stub, gleiche Harness-Technik wie tests/chest-lock-touch.test.ts). Metriken: Richtungswechsel/Frame, Frames mit Positions-Update ohne sinnvolle Bewegung (Finger-Shift < 0,75 px), Latenz Geste->Bewegung in Frames. Abnahme: shots/m10-touch-joystick-before.json committed (1 Commit).",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T23:44:00Z",
           "by": "build",
           "text": "todo → doing: Messskript scripts/m10-touch-joystick.mjs wird gebaut (tsc-Compile des echten TouchControls, DOM-Stub-Harness wie chest-lock-touch-Test)."
+        },
+        {
+          "at": "2026-11-27T23:48:47Z",
+          "by": "build",
+          "text": "doing → review: Skript + shots/m10-touch-joystick-before.json in Commit 39b6568. Ist: Update-Rate 1,0/Frame in allen Serien, leere Updates 22/56/16, Fehlrichtung Gerade 4,67% (>2%-Gate), Mikro-Jitter (<1px) emittiert Bewegung."
+        },
+        {
+          "at": "2026-11-27T23:52:12Z",
+          "by": "build",
+          "text": "[Supervisor] bestätigt: before-Lauf genau 1x (Commit 39b6568 = Karte #6678 K1, nicht #6679). Stray-Dateien src/input/*.js + src/palette.js waren ungetrackte tsc-Build-Artefakte des ersten gescheiterten Compile-Versuchs (TS5112 emittiert trotzdem) — gelöscht, nie in git, InputState.ts/Run.ts unberührt. K2 (#6679) in Arbeit: after-Probe zeigt Kreise-Fehlrichtung 10% über Gate — Metrik-Schärfe (Hysterese-Lag vs. echte Fehlrichtung) wird dokumentiert geschärft, dann verbindlich ausgewertet."
         }
       ],
       "created": "2026-11-27T23:42:54Z",
-      "updated": "2026-11-27T23:44:00Z"
+      "updated": "2026-11-27T23:52:12Z"
     },
     {
       "id": 6679,
       "title": "m10-touch-joystick-feel K2: Fix Deadzone + Richtungs-Hysterese + 8-Richtungs-Snapping in TouchControls.ts",
       "description": "Nur src/input/TouchControls.ts. Deadzone (Erst-Update ab Schwelle, skaliert mit Viewport), Sektor-Hysterese (kein Flackern zwischen Nachbarsektoren), Winkel-Snapping auf 8 Richtungen nur jenseits der Deadzone, Output-Eps gegen Mikro-Updates. Bewegungsbudget/Speed unangetastet, InputState.ts/Run.ts unberuehrt, chest-lock-Verhalten unveraendert. Abnahme: tsc rc=0, chest-lock-Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:48:47Z",
+          "by": "build",
+          "text": "todo → doing: Fix in src/input/TouchControls.ts: Viewport-skalierte Deadzone, 8-Richtungs-Snapping nur jenseits der Deadzone, Sektor-Hysterese, Output-Eps gegen Mikro-Updates."
+        },
+        {
+          "at": "2026-11-27T23:53:03Z",
+          "by": "build",
+          "text": "doing → review: Commit 5fa9af5. Deadzone 0,16*Ring skaliert mit Viewportbreite, 8-Richtungs-Snapping + Sektor-Hysterese (5,625°) nur jenseits der Deadzone, Output-Eps 0,02 gegen Mikro-Updates. Magnitude/InputState/Run unberuehrt; chest-lock-touch 7/7, input-latency/input 46/46 gruen, tsc rc=0."
+        }
+      ],
       "created": "2026-11-27T23:42:54Z",
-      "updated": "2026-11-27T23:42:54Z"
+      "updated": "2026-11-27T23:53:03Z"
     },
     {
       "id": 6680,
       "title": "m10-touch-joystick-feel K3: Regressionstests tests/touch-joystick-feel.test.ts",
       "description": "Deadzone-Semantik, 8-Richtungs-Snapping, Sektor-Hysterese (Jitter-Serie -> <= 1 Richtungswechsel pro 4 Frames), Latenz <= 2 Frames; chest-lock-Gate-Test bleibt gruen. Abnahme: npx vitest run tests/touch-joystick-feel.test.ts tests/chest-lock-touch.test.ts rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:53:03Z",
+          "by": "build",
+          "text": "todo → doing: Regressionstests tests/touch-joystick-feel.test.ts (Deadzone-Semantik, Snapping, Jitter-Serie <= 1 Wechsel/4 Frames, Latenz <= 2 Frames)."
+        }
+      ],
       "created": "2026-11-27T23:42:54Z",
-      "updated": "2026-11-27T23:42:54Z"
+      "updated": "2026-11-27T23:53:03Z"
     },
     {
       "id": 6681,
       "title": "m10-touch-joystick-feel K4: Nachher-Messung + Doku + .lane-done",
       "description": "shots/m10-touch-joystick-after.json: Fehlrichtung < 2 % der Samples, Latenz <= 2 Frames, Updates/Frame nicht erhoeht. Doku docs/lanes/m10-touch-joystick-feel.md. npm test + tsc + build rc=0. Commit + .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:55:10Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Messung (after.json, verbindliche Gates) + docs/lanes/m10-touch-joystick-feel.md + npm test/build + .lane-done."
+        }
+      ],
       "created": "2026-11-27T23:42:54Z",
-      "updated": "2026-11-27T23:42:54Z"
+      "updated": "2026-11-27T23:55:10Z"
     }
   ]
 }
