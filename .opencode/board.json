@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3424,
+  "next": 3602,
   "cards": [
     {
       "id": 1,
@@ -4505,6 +4505,46 @@
       "notes": [],
       "created": "2026-11-27T13:14:45Z",
       "updated": "2026-11-27T13:14:45Z"
+    },
+    {
+      "id": 3598,
+      "title": "m10-verify-menus-view K1: Ist-Messung reproduzieren",
+      "description": "node scripts/verify-menus.mjs laufen lassen, Log nach shots/m10-verify-menus-before.log, jeden FAIL mit Klickkoordinate + erwartetem Element notieren. Abnahme: Before-Log im Commit, FAIL-Liste mit Koordinaten.",
+      "column": "doing",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T15:34:58Z",
+      "updated": "2026-11-27T15:34:58Z"
+    },
+    {
+      "id": 3599,
+      "title": "m10-verify-menus-view K2: Klick-/Hit-Mapping entkoppeln",
+      "description": "Statt fester 480x270-Pixelkoordinaten Ziel-Rechtecke aus DOM/Game-Canvas zur Laufzeit lesen (Canvas-Bounds + integerScale) und daraus klicken. Tastatur-Pfad bleibt Kontrolle. Keine src/**-Aenderung. Abnahme: Harness nutzt Laufzeit-Rechtecke, tsc/build gruen, verify-menus gruen.",
+      "column": "todo",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T15:34:58Z",
+      "updated": "2026-11-27T15:34:58Z"
+    },
+    {
+      "id": 3600,
+      "title": "m10-verify-menus-view K3: Nachweis 15/15 + Titel-Screenshot 480x360",
+      "description": "node scripts/verify-menus.mjs gruen 15/15, Log shots/m10-verify-menus-after.log, Screenshot shots/m10-verify-menus-title-480x360.png. Abnahme: rc=0, 15/15 PASS, 0 JS-Fehler, PNG zeigt Titel @480x360.",
+      "column": "todo",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T15:34:58Z",
+      "updated": "2026-11-27T15:34:58Z"
+    },
+    {
+      "id": 3601,
+      "title": "m10-verify-menus-view K4: Doku + .lane-done",
+      "description": "docs/lanes/m10-verify-menus-view.md mit Vorher/Nachher-Zahlen, .lane-done mit Messwerten. Abnahme: Doku committet, .lane-done im Worktree-Root, build+tests gruen.",
+      "column": "todo",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T15:34:58Z",
+      "updated": "2026-11-27T15:34:58Z"
     }
   ]
 }
