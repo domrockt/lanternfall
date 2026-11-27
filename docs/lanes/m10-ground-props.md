@@ -47,7 +47,44 @@ gruen, `npm run build` gruen, `npx tsc --noEmit` gruen.
 
 ## Ergebnis (Nachher, Median aus 3 Laeufen)
 
-<!-- AFTER-TABLE -->
+`shots/m10-ground-props-after-{640,780}-{1..3}.json` + `-summary.json` + PNGs
+(Commit siehe unten; gleiche Bedingungen wie Vorher):
+
+| Kondition | FPS Median | FPS Min | Median Frame | Draw-Call-Kandidaten/Frame | Blend-Wechsel | Props sichtbar | Prop-Layer/Batches |
+|---|---|---|---|---|---|---|---|
+| 640x360 @dpr1 | 48,5 (vorher 49,3) | 41,9 | 16,7 ms | **75** (vorher 925) | 5 | ~806 | 30 Layer / 26 Prop-Batches |
+| 780x360 @dpr3 | 40,3 (vorher 39,0) | 37,4 | 16,8 ms | **85** (vorher 1139) | 5 | ~1102 | 30 Layer / 26 Prop-Batches |
+
+Render-Pfad-Attribution (m10-ground-cost.mjs, 640, 3 Laeufe,
+`shots/m10-ground-props-attribution-after.json`): on 46,3 FPS / hidden 56,1 /
+frozen 59,6 -> **Render-Pfad 4,09 ms/Frame (vorher 5,11, −1,02 ms)**,
+Update-Pfad 1,21 ms (direkt 0,30), Ground gesamt 5,10 ms.
+
+## Abnahme-Bilanz (ehrlich)
+
+| Kriterium | Ziel | Ist | |
+|---|---|---|---|
+| Draw-Call-Kandidaten/Frame | < 300 | 75 (640) / 85 (780), −92 % / −93 % | **PASS** |
+| `npm test` | 0 fail | 438/438, 0 JS-Fehler in allen Messlaeufen | **PASS** |
+| 640/M25 FPS-Median | >= 58 oder >= 2 ms Render-Gewinn | 48,5 (±0,8 gegen Vorher); Render-Gewinn 1,02 ms | **FAIL** |
+| 780@dpr3 FPS-Median | >= 46,5 | 40,3 (+1,3) | **FAIL** |
+
+**Interpretation:** Der Renderpfad ist auf diesem Host nicht draw-call-limitiert,
+sondern submit-limitiert: ~900 sichtbare Props werden weiterhin als ~900 einzelne
+Quads durch den Batcher gereicht (CPU-Kosten pro Quad unveraendert); die
+Draw-Call-Zahl selbst ist mit Batching auf ~50 gesunken. FPS ist zusaetzlich
+durch vsync-Quantisierung unscharf (Median 16,7 ms / p95 33,4 ms in ALLEN
+Bedingungen inkl. ground-hidden) — ein 1-ms-Gewinn verschiebt keinen
+vsync-Schwellwert und zeigt sich darum nicht im FPS-Median. Das deckt sich mit
+m10-ground-cost (Chunk-Composite, AE 0): auch das Wegfallen ALLER Prop-Objekte
+brachte dort keinen FPS-Gewinn.
+
+**Entscheidung:** Behalten, nicht verworfen — das Draw-Call-Kriterium (< 300) ist
+explizites Abnahmekriterium und wird mit 75/85 klar erfuellt, ohne FPS-/Render-
+Regression; Layer-Struktur ist durch Tests fixiert. Die FPS-Ziele bleiben offen
+und sind vermutlich nur mit weniger Quads zu erreichen (weniger/gebakene Props,
+aggressiveres Dichte-LOD) — das ist eine eigene Karte fuer den Lead; die
+Composite-Alternative ist mit AE 0 bereits belegt widerlegt.
 
 ## Verworfene Alternativen
 
