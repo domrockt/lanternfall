@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2462,
+  "next": 2523,
   "cards": [
     {
       "id": 1,
@@ -3712,6 +3712,57 @@
       ],
       "created": "2026-11-27T06:11:04Z",
       "updated": "2026-11-27T06:11:37Z"
+    },
+    {
+      "id": 2518,
+      "title": "m10-chaos-silhouettes K1 Ist-Messung: Chaos-Frame Minute 25 + Kontrast-JSON vorher",
+      "description": "Frame bei Minute 25 mit >=300 Gegnern einfrieren (AutoPlay, timeScale 30, god). Je Archetyp Kontrast der Silhouette gegen dunklen und hellen Untergrund messen (Luminanz-Differenz Randpixel, Anteil unter Schwelle 24), Elite-Anteil und Rim-Light-Breite erfassen. Abnahme: docs/lanes/m10-chaos-silhouettes.md Tabelle + shots/m10-chaos-silhouettes-before.json + before.png, Commit mit #K1.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T07:28:16Z",
+          "by": "build",
+          "text": "todo → doing: start: messe Ist-Kontrast der 30 Gegner-Silhouetten + Chaos-Frame Minute 25"
+        }
+      ],
+      "created": "2026-11-27T07:27:55Z",
+      "updated": "2026-11-27T07:28:16Z"
+    },
+    {
+      "id": 2519,
+      "title": "m10-chaos-silhouettes K2 Silhouetten schaerfen: 1-px Kontur + 1-px Lichtkante oben",
+      "description": "In src/gfx/enemySprites.ts jeder Gegner-Silhouette eine 1-px dunkle Kontur (Palettenindex 0) und eine 1-px Lichtkante oben (Palettenfarbe, binaeres Alpha) geben. Sprite-Groessen und Frame-Zahl unveraendert, Palette-compliance. Abnahme: enemySpriteFrames liefert gleiche Dimensionen/Frame-Zahl, Kontur-/Rim-Metrik verbessert, tsc gruen, Commit mit #K2.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T07:27:55Z",
+      "updated": "2026-11-27T07:27:55Z"
+    },
+    {
+      "id": 2520,
+      "title": "m10-chaos-silhouettes K3 Elite-Rim-Light: klar unterscheidbar, deterministisch, kein Flackern",
+      "description": "In src/systems/EnemyPool.ts Elite-Marker (Aura) nur fuer Elite, konstante Breite/Alpha/Farbe pro Frame, kein Flackern, nicht fuer Bosse/Normalos. Abnahme: Elite-Spec weicht messbar von Normal-Spec ab, Aura nur elite, Alpha/Scale deterministisch aus Radius, Commit mit #K3.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T07:27:55Z",
+      "updated": "2026-11-27T07:27:55Z"
+    },
+    {
+      "id": 2521,
+      "title": "m10-chaos-silhouettes K4 Test tests/enemy-silhouette.test.ts",
+      "description": "Alle 30 Archetypen haben unterscheidbare Shape-Signatur (>=2 Dimensionen Breite/Hoehe/Fuellgrad/Kantenprofil), Kontrast > Schwelle, Elite-Spec != Normal-Spec, deterministisch (2 Laeufe gleiche Werte). Abnahme: npx vitest run tests/enemy-silhouette.test.ts gruen, Commit mit #K4.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T07:27:55Z",
+      "updated": "2026-11-27T07:27:55Z"
+    },
+    {
+      "id": 2522,
+      "title": "m10-chaos-silhouettes K5 Beleg + Doku: Chaos-Frame 1920x1080 + Crop, Nachher-JSON, FPS Minute 25 >=55, art-director PASS >=4/5, .lane-done",
+      "description": "Nachher-Beleg mit denselben Metriken, 1920x1080 Chaos-Frame + Crop, FPS-Minute-25 mit flock gemessen >=55, art-director-Urteil PASS Note >=4/5, npm run build + npm test gruen, docs/lanes/m10-chaos-silhouettes.md aktualisiert, .lane-done. Abnahme: alle Belege im Commit mit #K5, git status sauber.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T07:27:55Z",
+      "updated": "2026-11-27T07:27:55Z"
     }
   ]
 }
