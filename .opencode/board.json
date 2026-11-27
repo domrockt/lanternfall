@@ -7227,6 +7227,11 @@
      "at": "2026-11-27T22:44:26Z",
      "by": "lead",
      "text": "Supervisor: nur #6238 in doing; Skript-WIP committed; Smoke-Abbruch (Target closed) wird mit Fatal-Handling (partielles JSON) untersucht."
+    },
+    {
+     "at": "2026-11-27T22:58:03Z",
+     "by": "lead",
+     "text": "Mess-Skript committed (798e0f2, 20d5616), Smoke 3 min valide (RPL-S iGPU, endMB nach GC, truncated exakt). 30-min-Ist-Lauf laeuft im Hintergrund -> shots/m10-heap-budget-before.json. Tor-Modul + 8/8 Tests (#6240-Vorlauf) committed."
     }
    ],
    "created": "2026-11-27T22:36:37Z",

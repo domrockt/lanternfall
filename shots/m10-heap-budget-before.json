@@ -1,0 +1,379 @@
+{
+  "script": "scripts/m10-heap-budget.mjs",
+  "lane": "m10-heap-budget",
+  "gitSha": "20d5616",
+  "startedAt": "2026-11-27T22:57:46.729Z",
+  "endedAt": "2026-11-27T23:28:17.959Z",
+  "minutes": 30,
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)"
+  },
+  "victory": false,
+  "resultReason": null,
+  "truncated": true,
+  "simSeconds": 1800.6,
+  "minute1MB": 32.6,
+  "timeline": [
+    {
+      "minute": 1,
+      "jsMB": 32.6
+    },
+    {
+      "minute": 2,
+      "jsMB": 30
+    },
+    {
+      "minute": 3,
+      "jsMB": 30.1
+    },
+    {
+      "minute": 4,
+      "jsMB": 32.6
+    },
+    {
+      "minute": 5,
+      "jsMB": 30.2
+    },
+    {
+      "minute": 6,
+      "jsMB": 31.2
+    },
+    {
+      "minute": 7,
+      "jsMB": 31.3
+    },
+    {
+      "minute": 8,
+      "jsMB": 32.5
+    },
+    {
+      "minute": 9,
+      "jsMB": 32.9
+    },
+    {
+      "minute": 10,
+      "jsMB": 33.9
+    },
+    {
+      "minute": 11,
+      "jsMB": 35.8
+    },
+    {
+      "minute": 12,
+      "jsMB": 33.9
+    },
+    {
+      "minute": 13,
+      "jsMB": 36.1
+    },
+    {
+      "minute": 14,
+      "jsMB": 31.9
+    },
+    {
+      "minute": 15,
+      "jsMB": 37.6
+    },
+    {
+      "minute": 16,
+      "jsMB": 34.8
+    },
+    {
+      "minute": 17,
+      "jsMB": 38
+    },
+    {
+      "minute": 18,
+      "jsMB": 36.3
+    },
+    {
+      "minute": 19,
+      "jsMB": 38.2
+    },
+    {
+      "minute": 20,
+      "jsMB": 38.1
+    },
+    {
+      "minute": 21,
+      "jsMB": 37.1
+    },
+    {
+      "minute": 22,
+      "jsMB": 38.5
+    },
+    {
+      "minute": 23,
+      "jsMB": 37.5
+    },
+    {
+      "minute": 24,
+      "jsMB": 37.7
+    },
+    {
+      "minute": 25,
+      "jsMB": 38
+    },
+    {
+      "minute": 26,
+      "jsMB": 39.6
+    },
+    {
+      "minute": 27,
+      "jsMB": 39.7
+    },
+    {
+      "minute": 28,
+      "jsMB": 38.4
+    },
+    {
+      "minute": 29,
+      "jsMB": 38.7
+    },
+    {
+      "minute": 30,
+      "jsMB": 40.1
+    }
+  ],
+  "minutePeaks": [
+    {
+      "minute": 0,
+      "peakMB": 48.1
+    },
+    {
+      "minute": 1,
+      "peakMB": 44.6
+    },
+    {
+      "minute": 2,
+      "peakMB": 37.1
+    },
+    {
+      "minute": 3,
+      "peakMB": 36.1
+    },
+    {
+      "minute": 4,
+      "peakMB": 38
+    },
+    {
+      "minute": 5,
+      "peakMB": 36.9
+    },
+    {
+      "minute": 6,
+      "peakMB": 36.4
+    },
+    {
+      "minute": 7,
+      "peakMB": 36.9
+    },
+    {
+      "minute": 8,
+      "peakMB": 39.3
+    },
+    {
+      "minute": 9,
+      "peakMB": 43.1
+    },
+    {
+      "minute": 10,
+      "peakMB": 47
+    },
+    {
+      "minute": 11,
+      "peakMB": 46.4
+    },
+    {
+      "minute": 12,
+      "peakMB": 44.9
+    },
+    {
+      "minute": 13,
+      "peakMB": 44.4
+    },
+    {
+      "minute": 14,
+      "peakMB": 44.4
+    },
+    {
+      "minute": 15,
+      "peakMB": 46.9
+    },
+    {
+      "minute": 16,
+      "peakMB": 48.8
+    },
+    {
+      "minute": 17,
+      "peakMB": 46.6
+    },
+    {
+      "minute": 18,
+      "peakMB": 46.8
+    },
+    {
+      "minute": 19,
+      "peakMB": 48
+    },
+    {
+      "minute": 20,
+      "peakMB": 48
+    },
+    {
+      "minute": 21,
+      "peakMB": 47
+    },
+    {
+      "minute": 22,
+      "peakMB": 48.2
+    },
+    {
+      "minute": 23,
+      "peakMB": 47.9
+    },
+    {
+      "minute": 24,
+      "peakMB": 47.4
+    },
+    {
+      "minute": 25,
+      "peakMB": 49.7
+    },
+    {
+      "minute": 26,
+      "peakMB": 46.7
+    },
+    {
+      "minute": 27,
+      "peakMB": 50.3
+    },
+    {
+      "minute": 28,
+      "peakMB": 50.4
+    },
+    {
+      "minute": 29,
+      "peakMB": 51.3
+    },
+    {
+      "minute": 30,
+      "peakMB": 42.8
+    }
+  ],
+  "windowPeaks": [
+    {
+      "window": 0,
+      "fromMin": 0,
+      "toMin": 5,
+      "peakMB": 48.1
+    },
+    {
+      "window": 1,
+      "fromMin": 5,
+      "toMin": 10,
+      "peakMB": 43.1
+    },
+    {
+      "window": 2,
+      "fromMin": 10,
+      "toMin": 15,
+      "peakMB": 47
+    },
+    {
+      "window": 3,
+      "fromMin": 15,
+      "toMin": 20,
+      "peakMB": 48.8
+    },
+    {
+      "window": 4,
+      "fromMin": 20,
+      "toMin": 25,
+      "peakMB": 48.2
+    },
+    {
+      "window": 5,
+      "fromMin": 25,
+      "toMin": 30,
+      "peakMB": 51.3
+    },
+    {
+      "window": 6,
+      "fromMin": 30,
+      "toMin": 35,
+      "peakMB": 42.8
+    }
+  ],
+  "fps": {
+    "min": 59.7,
+    "median": 60.5,
+    "samples": 3597
+  },
+  "errors": [],
+  "crashes": [],
+  "gate": {
+    "definition": "HARD: endMB(nach erzwungenem GC, Run-Ende) - Minute 1 <= +15 % | SOFT (Beobachtung): max Peak je 5-min-Fenster <= Minute 1 + 25 %",
+    "minute1MB": 32.6,
+    "endMB": 40.1,
+    "endDeltaMB": 7.5,
+    "endDeltaPct": 23,
+    "gatePct": 15,
+    "softPct": 25,
+    "windowPeaks": [
+      {
+        "window": 0,
+        "fromMin": 0,
+        "toMin": 5,
+        "peakMB": 48.1
+      },
+      {
+        "window": 1,
+        "fromMin": 5,
+        "toMin": 10,
+        "peakMB": 43.1
+      },
+      {
+        "window": 2,
+        "fromMin": 10,
+        "toMin": 15,
+        "peakMB": 47
+      },
+      {
+        "window": 3,
+        "fromMin": 15,
+        "toMin": 20,
+        "peakMB": 48.8
+      },
+      {
+        "window": 4,
+        "fromMin": 20,
+        "toMin": 25,
+        "peakMB": 48.2
+      },
+      {
+        "window": 5,
+        "fromMin": 25,
+        "toMin": 30,
+        "peakMB": 51.3
+      },
+      {
+        "window": 6,
+        "fromMin": 30,
+        "toMin": 35,
+        "peakMB": 42.8
+      }
+    ],
+    "maxWindowPeakMB": 51.3,
+    "maxWindowPeakPct": 57.4,
+    "hardPass": false,
+    "softPass": false,
+    "verdict": "FAIL",
+    "softVerdict": "FAIL (Beobachtung)",
+    "fallA": false,
+    "fallB": true,
+    "fatal": null
+  },
+  "fatal": null
+}
