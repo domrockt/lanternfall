@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1659,
+  "next": 1683,
   "cards": [
     {
       "id": 1,
@@ -2684,6 +2684,62 @@
       ],
       "created": "2026-11-26T23:53:27Z",
       "updated": "2026-11-26T23:53:35Z"
+    },
+    {
+      "id": 1678,
+      "title": "m10-atlas-gaps #K1 Audit-Werkzeug",
+      "description": "scripts/art/atlas-audit.mjs: prüft Coverage aller erwarteten Frame-Keys, Zellabstand >=2px, Bleed im 2px-Ring; schreibt shots/m10-atlas-audit.json. Abnahme: Skript läuft, JSON existiert, Commit enthält Skript+JSON.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:40:10Z",
+          "by": "build",
+          "text": "todo → doing: #K1 Audit-Skript fertig, Audit-Lauf dokumentiert Ist-Stand."
+        }
+      ],
+      "created": "2026-11-27T00:39:12Z",
+      "updated": "2026-11-27T00:40:10Z"
+    },
+    {
+      "id": 1679,
+      "title": "m10-atlas-gaps #K2 Ist-Stand dokumentieren",
+      "description": "Fehlende Keys, zu kleine Gutter, Bleed-Fälle aus Audit-JSON in docs/lanes/m10-atlas-gaps.md listen. Abnahme: Doku nennt konkrete Zahlen/Frames und ist committet.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T00:39:12Z",
+      "updated": "2026-11-27T00:39:12Z"
+    },
+    {
+      "id": 1680,
+      "title": "m10-atlas-gaps #K3 Fix Atlas",
+      "description": "src/gfx/atlas.ts/textures.ts: fehlende heisse Klassen aufnehmen, Gutter 2px horizontal+vertikal, 1px transparentes Padding pro Zelle; Atlas-Key/API unverändert. Abnahme: Audit 100% Coverage, 0 Gutter-Verstöße, 0 Bleed.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T00:39:12Z",
+      "updated": "2026-11-27T00:40:10Z"
+    },
+    {
+      "id": 1681,
+      "title": "m10-atlas-gaps #K4 Test",
+      "description": "tests/atlas.test.ts: Coverage 100%, Gutter>=2px, keine Bleed-Fälle, deterministische Atlas-Grösse. Abnahme: npx vitest run tests/atlas.test.ts grün.",
+      "column": "todo",
+      "assignee": "test-auditor",
+      "notes": [],
+      "created": "2026-11-27T00:39:12Z",
+      "updated": "2026-11-27T00:39:12Z"
+    },
+    {
+      "id": 1682,
+      "title": "m10-atlas-gaps #K5 Beleg+Abschluss",
+      "description": "Vorher/Nachher-Screenshot desselben Frames, Pixel-Diff=0; Draw-Call/Batch-Zahl dokumentiert; build+test grün; .lane-done. Abnahme: shots/m10-atlas-before.png/-after.png, Diff 0, .lane-done getrackt.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T00:39:12Z",
+      "updated": "2026-11-27T00:39:12Z"
     }
   ]
 }
