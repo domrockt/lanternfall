@@ -218,9 +218,10 @@ export function expireDamage(
 }
 
 /**
- * View-/Label-Key für einen Treffer: ohne Gruppe die Gegner-UID, mit Gruppe
- * ein negativer Zonen-Key (Gruppen sind >= 1). So kollidiert eine Zone nie mit
- * einer UID und Eintrag/View lassen sich ohne zusätzliche Map finden.
+ * View-/Label-Key für einen Treffer: ohne Gruppe die Gegner-UID (Invariante:
+ * UIDs sind >= 0), mit Gruppe ein negativer Zonen-Key (Gruppen sind >= 1). So
+ * kollidiert eine Zone nie mit einer UID und Eintrag/View lassen sich ohne
+ * zusätzliche Map finden.
  */
 export function aggregateKey(enemyUid: number, group?: number): number {
   const g = group ?? 0;

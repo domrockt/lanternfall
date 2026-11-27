@@ -2,8 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   AGGREGATE_WINDOW, DAMAGE_AGGREGATE_MIN_ENEMIES, GROUP_COLUMNS, GROUP_ROWS,
   MAX_ENTRIES, MAX_VIEWS_AGGREGATE, LabelMemo, ViewBudget,
-  addDamage, aggregateKey, damageLabel, entryMatchesKey, expireDamage, groupZoneFor, shouldAggregateDamage,
-  type AggregateEntry,
+  addDamage, aggregateKey, damageLabel, entryMatchesKey, expireDamage, groupZoneFor,
+  resetAggregateEntry, shouldAggregateDamage,
+  type AggregateEntry, type EntrySink,
 } from "../src/logic/damage-numbers";
 
 function fresh(): AggregateEntry[] {
@@ -149,5 +150,52 @@ describe("M10 Damage-Batch: Caps, Label-Memo, Robustheit", () => {
     expect(entryMatchesKey(byUid, -3)).toBe(false);
     expect(entryMatchesKey(byGroup, -3)).toBe(true);
     expect(entryMatchesKey(byGroup, 99)).toBe(false);
+  });
+
+  it("resetAggregateEntry entfernt M10-Zusatzfelder (kein Erben beim Recycle)", () => {
+    const e: AggregateEntry = { enemyUid: 9, group: 4, damage: 30, crit: true, firstTime: 1, lastTime: 2, hits: 3, x: 5, y: 6, label: "30!" };
+    resetAggregateEntry(e);
+    expect(e.enemyUid).toBe(0);
+    expect(e.damage).toBe(0);
+    expect(e.crit).toBe(false);
+    expect(e.hits).toBe(0);
+    expect(e.group).toBeUndefined();
+    expect(e.x).toBeUndefined();
+    expect(e.y).toBeUndefined();
+    expect(e.label).toBeUndefined();
+  });
+
+  it("addDamage verdraengt via Sink bei MAX_ENTRIES und recycelt das Objekt", () => {
+    const entries: AggregateEntry[] = [];
+    const recycled: AggregateEntry[] = [];
+    const sink: EntrySink = {
+      take: () => ({ enemyUid: 0, damage: 0, crit: false, firstTime: 0, lastTime: 0, hits: 0 }),
+      // Wie Pool.release: Rueckgabe vor Reuse vollstaendig zuruecksetzen.
+      give: (e) => { resetAggregateEntry(e); recycled.push(e); },
+    };
+    for (let i = 0; i < MAX_ENTRIES + 5; i++) {
+      // window 0.01: jeder Treffer ein eigener Eintrag, damit Verdraengung greift.
+      addDamage(entries, { enemyUid: 2000 + i, damage: 1, crit: false, time: i * 0.1 }, 0.01, sink);
+    }
+    expect(entries.length).toBe(MAX_ENTRIES);
+    expect(recycled.length).toBe(5);
+    // Recycelte Eintraege tragen keine alten Felder mehr.
+    for (const e of recycled) {
+      expect(e.group).toBeUndefined();
+      expect(e.label).toBeUndefined();
+    }
+  });
+
+  it("addDamage summiert im Fenster und aktualisiert Position auf den letzten Treffer", () => {
+    const entries = fresh();
+    addDamage(entries, { enemyUid: 11, group: 2, damage: 4, crit: false, time: 1, x: 10, y: 20 });
+    addDamage(entries, { enemyUid: 12, group: 2, damage: 6, crit: false, time: 1.2, x: 30, y: 40 });
+    expect(entries).toHaveLength(1);
+    expect(entries[0].damage).toBe(10);
+    expect(entries[0].hits).toBe(2);
+    expect(entries[0].x).toBe(30);
+    expect(entries[0].y).toBe(40);
+    // Identitaet des gruppierten Eintrags bleibt beim ersten Gegner der Zone.
+    expect(entries[0].enemyUid).toBe(11);
   });
 });
