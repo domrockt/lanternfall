@@ -7,7 +7,6 @@ import { getSettings } from "../audio/settings";
 import {
   OPTION_ROWS, optionValueLabel, stepOption,
 } from "../audio/options";
-import { createHitZone } from "./menu";
 import type { ActionState } from "../input/InputState";
 
 interface RowView {
@@ -41,7 +40,6 @@ export class OptionsMenu {
     const valueX = rowLeft + rowW - 12;
     const arrowL = valueX - 100;
     const arrowR = rowLeft + rowW - 4;
-    const valueZoneX = valueX - 47;
     this.container = scene.add.container(0, 0).setDepth(depth).setVisible(false);
     // Klick-Blocker: verhindert, dass Mausklicks durch das Menü darunterliegende
     // Knöpfe (Titel/Pause) auslösen.
@@ -56,9 +54,13 @@ export class OptionsMenu {
     this.container.add(new PixelText(scene, cx, 42 + oy, "OPTIONEN", C.lantern, "center").setScale(2));
     this.container.add(new PixelText(scene, cx, 62 + oy, "PFEILE ODER MAUS - ENTER/ESC", C.fog, "center"));
 
+    // M10: Jede Zeile hat EINE zusammenhaengende Trefferflaeche ueber die volle
+    // Zeilenbreite und die ganze Zeilenhoehe (20 px Pitch). Die Flaechen beruehren
+    // sich, ueberlappen aber nicht - so trifft ein Tap nie die Nachbarzeile.
+    const ROW_PITCH = 20;
     for (let i = 0; i < OPTION_ROWS.length; i++) {
       const y = 84 + oy + i * 20;
-      const rowZone = scene.add.rectangle(cx, y + 3, rowW, 16, PAL[C.nightMid], 0)
+      const rowZone = scene.add.rectangle(cx, y + 3, rowW, ROW_PITCH, PAL[C.nightMid], 0)
         .setOrigin(0.5);
       // Hintergrundfläche als sichtbarer Fokus-Streifen.
       const outline = scene.add.rectangle(cx, y + 3, rowW, 16, PAL[C.ink], 0)
@@ -68,29 +70,18 @@ export class OptionsMenu {
       this.container.add([rowZone, outline, label, value]);
       rowZone.setInteractive({ useHandCursor: true });
       rowZone.on("pointerover", () => { this.selected = i; this.refresh(); });
+      rowZone.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+        this.selected = i;
+        this.refresh();
+        if (i >= OPTION_ROWS.length - 1) { this.close(); return; }
+        // Tap auf dem "<"-Glyph senkt, alles andere erhoeht/umschaltet.
+        const delta = Math.abs(pointer.x - arrowL) <= 22 ? -1 : 1;
+        this.apply(i, delta);
+      });
       this.interactives.push(rowZone);
-
-      const hit = (dx: number, delta: number): void => {
-        const zone = createHitZone(scene, this.container, dx, y + 3, 24, 18, () => {
-          this.selected = i;
-          this.apply(i, delta);
-        });
-        this.interactives.push(zone);
-      };
       if (i < OPTION_ROWS.length - 1) {
-        hit(arrowL, -1);
-        hit(arrowR, 1);
         this.container.add(new PixelText(scene, arrowL, y, "<", C.lantern, "center"));
         this.container.add(new PixelText(scene, arrowR, y, ">", C.lantern, "center"));
-        // Klick auf den Wert: bei Schaltern umschalten, sonst erhöhen.
-        const valueZone = createHitZone(scene, this.container, valueZoneX, y + 3, 72, 18, () => {
-          this.selected = i;
-          this.apply(i, 1);
-        });
-        this.interactives.push(valueZone);
-      } else {
-        const backZone = createHitZone(scene, this.container, cx, y + 3, rowW, 18, () => this.close());
-        this.interactives.push(backZone);
       }
       this.rows.push({ label, value, outline });
     }
