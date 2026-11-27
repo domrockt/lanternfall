@@ -6165,17 +6165,22 @@
       "id": 5461,
       "title": "m10-projectile-cull #4: Nachher-Messung + Lane-Doku",
       "description": "AC: shots/m10-projectile-cull-after.json (+ Chaos-Screenshot) mit gleichem Skript/Harness; Ziel Projektill-Update-ms/Frame −25 % bei identischen Treffer-/Schaden-Summen; docs/lanes/m10-projectile-cull.md mit Vorher/Nachher-Tabelle; .lane-done.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-projectile-cull",
       "notes": [
         {
           "at": "2026-11-27T22:00:28Z",
           "by": "build",
           "text": "todo → doing: Nachher-Lauf läuft (Vorher/Nachher in einem Batch, A2==A-Wächter); danach Doku docs/lanes/m10-projectile-cull.md + .lane-done."
+        },
+        {
+          "at": "2026-11-27T22:16:24Z",
+          "by": "build",
+          "text": "doing → review: Nachher-Messung committed (#5461): Paar-Harness mit bitidentischen Summen (Treffer 7925, Schaden 456311, Kills 830); lebende Projektile -26 %, offscreen >96px -68 %, >256px = 0. Ziel Update-ms -25 % ehrlich als nicht auflösbar dokumentiert (~0,02 ms Rauschen). docs/lanes/m10-projectile-cull.md + .lane-done gesetzt."
         }
       ],
       "created": "2026-11-27T20:53:54Z",
-      "updated": "2026-11-27T22:00:28Z"
+      "updated": "2026-11-27T22:16:24Z"
     }
   ]
 }
