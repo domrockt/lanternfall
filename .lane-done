@@ -1,0 +1,33 @@
+# Lane m10-verify-input-fix — fertig (2026-11-27)
+
+Ziel erreicht: `scripts/verify-input.mjs` läuft stabil 28/28 PASS, der F2-Restpunkt aus
+`m10-input-qa` ist geschlossen. Keine Spielcode-Änderung (`src/**` unangetastet).
+
+## Ergebnis
+- **F2-Befund (K1, c8df1ef):** gemeldeter Selektor-FAIL `tapText: "BRUDER KAEL" nicht sichtbar`
+  war ein veralteter Selektor — CharSelect rendert `"Bruder Kael"` als PixelText-Wert.
+  Grundfix war bereits Commit `9f298f3` (Lane m10-input-fix, inkl. tapText-auf-Eltern-Container,
+  das 480x270-Muster der verify-menus-Korrektur `de22ecb`). Repro: alter Selektor in keiner
+  Szene sichtbar, neuer sichtbar, 0 JS-Fehler → `shots/m10-verify-input-f2-before.{json,log}`.
+- **Harness-Härtung (K2, a2ff910):** `--tag <name>` schreibt Belege nach
+  `shots/m10-verify-input-<tag>.*` (überschreibt keine geschützten `shots/m8-*` mehr);
+  `waitState`-Zustands-Waits statt fester Wartezeiten nach Pause/FORTSETZEN/Truhe-Tipps.
+- **Stabilität (K3, 8889666):** 3x hintereinander + 1x unter paralleler Last
+  (zwei Build-Loops im Hintergrund) **je 28/28 PASS, 0 JS-Fehler** →
+  `shots/m10-verify-input-pass-{1,2,3}.json`, `shots/m10-verify-input-load.json`.
+
+## Messwerte
+- Lastlauf-Szenario: 2 parallele Build-Loops (`npm run build`, `npx vite build`, je 40x)
+  während des gesamten verify-Laufs — deutlich härter als „zwei Builds“.
+- 2 ehrliche FAIL-Zyklen im Lastlauf, beide behoben und in der Doku dokumentiert:
+  1) verlorener FORTSETZEN-Tipp unter Last → begrenzter 2. Versuch (27/28),
+  2) echter Harness-Bug: `page.waitForFunction(fn, {timeout})` übergab Options als
+     `arg` (Default 30 s galt statt 8 s) → Konflation an 7 Stellen behoben, Boot-Waits
+     explizit 45 s (`k3-load-retry1.log`: Timeout 30000ms in runGamepadSuite).
+- `npm run build` rc=0; `npx vitest run` 446/446 grün (42 Dateien).
+- Kontrolleur: reviewer PASS (Lane-Scope, ehrliche Checks, Belege gegen JSON geprüft).
+
+## Dateien
+- `scripts/verify-input.mjs` (nur Harness), `docs/lanes/m10-verify-input-fix.md`,
+  `shots/m10-verify-input-*`. GAME.md/ACCEPTANCE.md/`shots/m8-*` unangetastet.
+- Doku für den Merge in GAME.md: `docs/lanes/m10-verify-input-fix.md`.
