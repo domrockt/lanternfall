@@ -99,12 +99,17 @@ export class ProjectilePool {
   }
 
   compact(): void {
-    for (let i = this.active.length - 1; i >= 0; i--) {
+    // Swap-Pop statt splice: Entfernen in O(1), keine Verschiebung des restlichen Arrays.
+    let i = this.active.length - 1;
+    while (i >= 0) {
       const p = this.active[i];
-      if (p.active) continue;
-      p.sprite.setVisible(false).setActive(false);
-      this.active.splice(i, 1);
-      this.free.push(p);
+      if (!p.active) {
+        p.sprite.setVisible(false).setActive(false);
+        const last = this.active.pop()!;
+        if (i < this.active.length) this.active[i] = last;
+        this.free.push(p);
+      }
+      i -= 1;
     }
   }
 

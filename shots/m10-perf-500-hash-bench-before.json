@@ -1,0 +1,43 @@
+{
+  "frames": 300,
+  "enemies": 500,
+  "results": [
+    {
+      "cellSize": 16,
+      "msPerFrame": 0.134,
+      "candidatesPerFrame": 4150,
+      "candidatesPerQuery": 8.3
+    },
+    {
+      "cellSize": 20,
+      "msPerFrame": 0.088,
+      "candidatesPerFrame": 4605,
+      "candidatesPerQuery": 9.21
+    },
+    {
+      "cellSize": 24,
+      "msPerFrame": 0.074,
+      "candidatesPerFrame": 5338,
+      "candidatesPerQuery": 10.68
+    },
+    {
+      "cellSize": 32,
+      "msPerFrame": 0.058,
+      "candidatesPerFrame": 6640,
+      "candidatesPerQuery": 13.28
+    },
+    {
+      "cellSize": 40,
+      "msPerFrame": 0.06,
+      "candidatesPerFrame": 7874,
+      "candidatesPerQuery": 15.75
+    },
+    {
+      "cellSize": 48,
+      "msPerFrame": 0.061,
+      "candidatesPerFrame": 9838,
+      "candidatesPerQuery": 19.68
+    }
+  ],
+  "jsErrors": []
+}
