@@ -4474,10 +4474,16 @@
       "id": 3420,
       "title": "[fa2-03] 30-min-autoPlay fullrun (30×) + Boss/Truhe/Sieg + Heap",
       "description": "Abnahme: `flock … npm run fullrun` genau einmal: 6/6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Sieg dawn, 0 JS-Fehler, fpsMin und Heap-Delta dokumentiert. Beleg shots/m3-fullrun.json + docs/qa. Ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T16:04:26Z",
+          "by": "build",
+          "text": "todo → review: Nachtrag: Arbeit liegt in Commit e62114c (13:41Z): fullrun 30x 640/780, 6/6 Bosse 300-1800s mit je 1 Truhe, Sieg dawn, 0 JS-Fehler; fpsMin 35,7/34,8 <55 FAIL; Heap +8,7% PASS / +15,2% knapp FAIL. Belege shots/qa-reaccept-fullrun-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-03."
+        }
+      ],
       "created": "2026-11-27T13:14:45Z",
-      "updated": "2026-11-27T13:14:45Z"
+      "updated": "2026-11-27T16:04:26Z"
     },
     {
       "id": 3421,
@@ -4513,10 +4519,16 @@
       "id": 3423,
       "title": "[fa2-06] Re-Abnahme-Doku docs/qa + ACCEPTANCE.md aktualisieren",
       "description": "Abnahme: docs/qa/reacceptance-2026-11-27.md mit allen Messwerten/Befehlen/Zeitstempeln, ACCEPTANCE.md-Kopf auf Ist-Stand (Commit, Zahlen), ehrliches Urteil (abgenommen / blocked). Ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T16:04:04Z",
+          "by": "build",
+          "text": "todo → review: docs/qa/reacceptance-2026-11-27.md vollstaendig (fa2-01..fa2-06 mit Befehlen/Zeitstempeln/Urteilen), ACCEPTANCE.md Endurteil Versuch 3: NICHT ABGENOMMEN. Blocker: 780-M25 41,3-46,4 <50, fullrun-fpsMin 35,7/34,8 <55, art-director FAIL 3,25/5, Echtzeitlauf blocked. Folgekarten #3424/#3425 im backlog. Commit 6a18d07."
+        }
+      ],
       "created": "2026-11-27T13:14:45Z",
-      "updated": "2026-11-27T13:14:45Z"
+      "updated": "2026-11-27T16:04:04Z"
     },
     {
       "id": 3424,
