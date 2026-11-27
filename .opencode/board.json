@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2000,
+  "next": 2063,
   "cards": [
     {
       "id": 1,
@@ -2979,6 +2979,62 @@
       ],
       "created": "2026-11-27T02:15:57Z",
       "updated": "2026-11-27T02:16:03Z"
+    },
+    {
+      "id": 2058,
+      "title": "m10-heap-tail-01 Baseline messen: 3x 30-min Heap + Top-Alloc-Sites",
+      "description": "node scripts/perf-heat.mjs 3x 30 min (timeScale 30, Seed 99), CDP-Snapshot + Sampling-Profile der Top-Alloc-Sites; Rohdaten shots/m10-heap-tail-baseline.json + ~/tmp/m10-heap-tail/. Abnahme: 3 Delta-Werte in %/MB, Top-5-Konstruktoren je Lauf, 0 JS-Fehler.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T02:33:08Z",
+          "by": "build",
+          "text": "todo → doing: Start: Baseline 3x30min + Raw-Snapshots + Alloc-Sampling"
+        }
+      ],
+      "created": "2026-11-27T02:32:10Z",
+      "updated": "2026-11-27T02:33:08Z"
+    },
+    {
+      "id": 2059,
+      "title": "m10-heap-tail-02 Pool.ts: per-Frame-Allokationen/Retention entfernen",
+      "description": "src/systems/Pool.ts ohne per-Frame Arrays/Closures; Reuse-Test tests/pool-reuse.test.ts (Objektidentitaet bleibt, keine Neuanlage im Steady State). Abnahme: Test rot vor Fix, gruen danach, tsc gruen.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T02:32:10Z",
+      "updated": "2026-11-27T02:32:10Z"
+    },
+    {
+      "id": 2060,
+      "title": "m10-heap-tail-03 EnemyPool/DamageNumbers: Reuse + Caps",
+      "description": "Damage-Number-Objekte und Elite-Felder wiederverwenden, Caps pruefen (24/10/6, Gegner-Cap 500); Unit-Test fuer Reuse + Cap. Abnahme: Test rot vor Fix, gruen danach.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T02:32:10Z",
+      "updated": "2026-11-27T02:32:10Z"
+    },
+    {
+      "id": 2061,
+      "title": "m10-heap-tail-04 Nachmessen: 2x 30-min Heap + perf (flock)",
+      "description": "2x 30-min-Lauf, Heap-Delta %/MB in shots/m10-heap-tail-after.json; flock /home/ai/games/.lf-perf.lock npm run perf (Burst >=55 FPS unveraendert). Abnahme: beide Nachlaeufe <=15 %, FPS >=55, 0 JS-Fehler.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T02:32:10Z",
+      "updated": "2026-11-27T02:32:10Z"
+    },
+    {
+      "id": 2062,
+      "title": "m10-heap-tail-05 Doku + .lane-done",
+      "description": "Ursache, Zahlen vorher/nachher, offene Restpunkte in docs/lanes/m10-heart-tail.md (Briefing-Pfad) bzw. docs/lanes/m10-heap-tail.md; .lane-done mit Messwerten committen. Abnahme: Baseline-/After-JSON im Commit, build+alle Tests gruen.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T02:32:10Z",
+      "updated": "2026-11-27T02:32:10Z"
     }
   ]
 }
