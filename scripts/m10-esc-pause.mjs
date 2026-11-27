@@ -44,18 +44,9 @@ await page.keyboard.press("Enter");
 await waitForScene(page, "run");
 await page.waitForTimeout(350);
 
-// Instrumentierung: togglePause/resumeRun-Protokoll + DOM-Keydown-Log + 20-ms-Poll.
+// Instrumentierung: togglePause-/resumeRun-Protokoll + DOM-Keydown-Log + 20-ms-Poll.
+// Das ist der Ist-Zustands-Beleg: wie oft toggelt ein einziger ESC-Press?
 await page.evaluate(() => {
-  // KeyboardPlugin-Bindungs-Log: on/off/once auf dem InputManager-EventEmitter.
-  const ev = window.__game.input.events;
-  const rec = (window.__kbLog = []);
-  const wrap = (orig, op) => (e, fn, ctx) => {
-    if (e === "process") rec.push({ op, ctx: ctx?.constructor?.name ?? "n/a", id: ctx ? (ctx.__id ??= rec.length) : null });
-    return orig(e, fn, ctx);
-  };
-  ev.on = wrap(ev.on.bind(ev), "on");
-  ev.once = wrap(ev.once.bind(ev), "once");
-  ev.off = wrap(ev.off.bind(ev), "off");
   const run = window.__game.scene.getScene("run");
   window.__escProbe = { calls: [], keydowns: [], polls: [], pollTimer: null, polling: false, onKeyCalls: [] };
   const ui = window.__game.scene.getScene("ui");
@@ -132,36 +123,12 @@ check("ESC setzt fort", resumedOk, `resumed=${resumedOk} (Probe im JSON-Feld "pr
 result.probe = probe;
 result.kbDiag = await page.evaluate(() => {
   const kb = window.__game.scene.getScene("ui").input.keyboard;
-  const mgr = kb.sceneInputPlugin.manager.events;
-  const evt = mgr._events?.process;
-  const fns = Array.isArray(evt) ? evt.map((f) => f) : evt ? [evt] : [];
-  const calls = (window.__procCalls = []);
-  window.__procCalls.length = 0;
-  fns.forEach((f, i) => {
-    if (f.__wrapped) return;
-    const orig = f;
-    const w = function (...a) { calls.push({ i, at: performance.now() }); return orig.apply(this, a); };
-    w.__wrapped = true;
-    // Im Array ersetzen (EventEmitter-Interna): gleiche Reihenfolge, gleicher Kontext.
-    if (Array.isArray(evt)) evt[i] = w; else mgr._events.process = w;
-  });
   return {
-    uiPluginProcessListeners: mgr.listenerCount("process"),
     pluginEmitListenerCount: kb.listenerCount("keydown"),
     sceneStatus: window.__game.scene.getScene("ui").sys.settings.status,
     sceneActive: window.__game.scene.isActive("ui"),
-    kbLog: window.__kbLog ?? [],
-    eventKeys: Object.keys(mgr._events ?? {}),
-    processType: Array.isArray(evt) ? "array:" + evt.length : typeof evt,
   };
 });
-// Zweiter ESC: nun zaehlen wir die process-Listener-Aufrufe pro Keydown.
-await page.evaluate(() => window.__escProbe.keydowns.splice(0));
-await page.keyboard.press("Escape");
-await page.waitForTimeout(250);
-result.procCalls = await page.evaluate(() => window.__procCalls.slice());
-result.keydownsAfter = await page.evaluate(() => window.__escProbe.keydowns.slice());
-result.pausedAfter = await page.evaluate(() => window.__lf.state().paused);
 
 // ── B) Robustheit: 10x ESC-Wechsel (Key-Repeat/Doppel-Trigger-Falle) ────────
 let alternating = true;

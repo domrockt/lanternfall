@@ -1,0 +1,1365 @@
+{
+  "name": "m10-esc-pause-before",
+  "generatedAt": "2026-11-27T22:16:00.619Z",
+  "checks": [
+    {
+      "name": "ESC pausiert",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ESC setzt fort",
+      "ok": false,
+      "detail": "resumed=false (Probe im JSON-Feld \"probe\")"
+    },
+    {
+      "name": "10x ESC wechselt abwechselnd (kein Doppel-Trigger)",
+      "ok": false,
+      "detail": "zuletzt paused=false"
+    },
+    {
+      "name": "ESC halten togglet exakt einmal",
+      "ok": true,
+      "detail": "vor=false beimHalten=true nach=true"
+    },
+    {
+      "name": "ESC im Untermenue verlaesst es, Pause bleibt",
+      "ok": true,
+      "detail": "{\"optionsOpen\":true,\"paused\":true,\"optionsVisible\":false}"
+    },
+    {
+      "name": "Touch: Pause-Knopf pausiert (Pfad unveraendert)",
+      "ok": false,
+      "detail": null
+    },
+    {
+      "name": "Touch: FORTSETZEN setzt fort (Pfad unveraendert)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "probe": {
+    "calls": [
+      {
+        "fn": "togglePause",
+        "at": 3471.5999999940395,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:19:16) <-     at lc.onKey (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:11:12) <-     at initialize.<anonymous> (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3476,
+        "paused": true,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:19:16) <-     at lc.onKey (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:11:12) <-     at initialize.<anonymous> (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3476,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:19:16) <-     at lc.onKey (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:11:12) <-     at initialize.<anonymous> (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3476.5,
+        "paused": true,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:19:16) <-     at lc.onKey (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:11:12) <-     at initialize.<anonymous> (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:661518)"
+      },
+      {
+        "fn": "togglePause",
+        "at": 3476.5,
+        "paused": false,
+        "levelUpOpen": false,
+        "chestOpen": false,
+        "finished": false,
+        "stack": "    at run.<computed> [as togglePause] (eval at evaluate (:313:29), <anonymous>:19:16) <-     at lc.onKey (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:679601) <-     at ui.onKey (eval at evaluate (:313:29), <anonymous>:11:12) <-     at initialize.<anonymous> (http://127.0.0.1:5466/assets/index-BWU4wb5L.js:812:661518)"
+      }
+    ],
+    "keydowns": [
+      {
+        "key": "Escape",
+        "repeat": false,
+        "trusted": true,
+        "at": 3476.2999999970198
+      }
+    ],
+    "polls": [
+      {
+        "at": 3491.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 3510.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3530.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3550.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3571,
+        "paused": true
+      },
+      {
+        "at": 3591,
+        "paused": true
+      },
+      {
+        "at": 3613.2000000029802,
+        "paused": true
+      },
+      {
+        "at": 3631,
+        "paused": true
+      },
+      {
+        "at": 3651,
+        "paused": true
+      },
+      {
+        "at": 3671.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 3691,
+        "paused": true
+      },
+      {
+        "at": 3712.2999999970198,
+        "paused": true
+      },
+      {
+        "at": 3731,
+        "paused": true
+      },
+      {
+        "at": 3751,
+        "paused": true
+      },
+      {
+        "at": 3770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3791,
+        "paused": true
+      },
+      {
+        "at": 3811,
+        "paused": true
+      },
+      {
+        "at": 3831,
+        "paused": true
+      },
+      {
+        "at": 3850.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3871,
+        "paused": true
+      },
+      {
+        "at": 3891,
+        "paused": true
+      },
+      {
+        "at": 3910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3931,
+        "paused": true
+      },
+      {
+        "at": 3951,
+        "paused": true
+      },
+      {
+        "at": 3970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 3990.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4010.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4030.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4051,
+        "paused": true
+      },
+      {
+        "at": 4071,
+        "paused": true
+      },
+      {
+        "at": 4091,
+        "paused": true
+      },
+      {
+        "at": 4110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4131,
+        "paused": true
+      },
+      {
+        "at": 4151,
+        "paused": true
+      },
+      {
+        "at": 4171,
+        "paused": true
+      },
+      {
+        "at": 4191,
+        "paused": true
+      },
+      {
+        "at": 4211,
+        "paused": true
+      },
+      {
+        "at": 4230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4251,
+        "paused": true
+      },
+      {
+        "at": 4271,
+        "paused": true
+      },
+      {
+        "at": 4291,
+        "paused": true
+      },
+      {
+        "at": 4311,
+        "paused": true
+      },
+      {
+        "at": 4330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4350.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4370.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4390.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4412.79999999702,
+        "paused": true
+      },
+      {
+        "at": 4431,
+        "paused": true
+      },
+      {
+        "at": 4450.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4471,
+        "paused": true
+      },
+      {
+        "at": 4491,
+        "paused": true
+      },
+      {
+        "at": 4511,
+        "paused": true
+      },
+      {
+        "at": 4531,
+        "paused": true
+      },
+      {
+        "at": 4551,
+        "paused": true
+      },
+      {
+        "at": 4571,
+        "paused": true
+      },
+      {
+        "at": 4591,
+        "paused": true
+      },
+      {
+        "at": 4611,
+        "paused": true
+      },
+      {
+        "at": 4631,
+        "paused": true
+      },
+      {
+        "at": 4651,
+        "paused": true
+      },
+      {
+        "at": 4671,
+        "paused": true
+      },
+      {
+        "at": 4691,
+        "paused": true
+      },
+      {
+        "at": 4710.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4750.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4771,
+        "paused": true
+      },
+      {
+        "at": 4791,
+        "paused": true
+      },
+      {
+        "at": 4813,
+        "paused": true
+      },
+      {
+        "at": 4830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4851,
+        "paused": true
+      },
+      {
+        "at": 4870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4890.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4911,
+        "paused": true
+      },
+      {
+        "at": 4931,
+        "paused": true
+      },
+      {
+        "at": 4951,
+        "paused": true
+      },
+      {
+        "at": 4970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 4991,
+        "paused": true
+      },
+      {
+        "at": 5012.70000000298,
+        "paused": true
+      },
+      {
+        "at": 5031,
+        "paused": true
+      },
+      {
+        "at": 5050.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5071,
+        "paused": true
+      },
+      {
+        "at": 5090.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5110.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5150.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5191,
+        "paused": true
+      },
+      {
+        "at": 5212.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5250.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5270.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5291,
+        "paused": true
+      },
+      {
+        "at": 5312.79999999702,
+        "paused": true
+      },
+      {
+        "at": 5330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5351,
+        "paused": true
+      },
+      {
+        "at": 5371,
+        "paused": true
+      },
+      {
+        "at": 5391,
+        "paused": true
+      },
+      {
+        "at": 5412.5999999940395,
+        "paused": true
+      },
+      {
+        "at": 5430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5451,
+        "paused": true
+      },
+      {
+        "at": 5471,
+        "paused": true
+      },
+      {
+        "at": 5490.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5512.70000000298,
+        "paused": true
+      },
+      {
+        "at": 5530.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5551,
+        "paused": true
+      },
+      {
+        "at": 5571,
+        "paused": true
+      },
+      {
+        "at": 5591,
+        "paused": true
+      },
+      {
+        "at": 5610.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5631,
+        "paused": true
+      },
+      {
+        "at": 5651,
+        "paused": true
+      },
+      {
+        "at": 5671,
+        "paused": true
+      },
+      {
+        "at": 5691,
+        "paused": true
+      },
+      {
+        "at": 5712.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 5730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5751,
+        "paused": true
+      },
+      {
+        "at": 5771,
+        "paused": true
+      },
+      {
+        "at": 5791,
+        "paused": true
+      },
+      {
+        "at": 5810.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5831,
+        "paused": true
+      },
+      {
+        "at": 5850.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5891,
+        "paused": true
+      },
+      {
+        "at": 5912.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 5931,
+        "paused": true
+      },
+      {
+        "at": 5951,
+        "paused": true
+      },
+      {
+        "at": 5970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 5991,
+        "paused": true
+      },
+      {
+        "at": 6010.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6030.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6050.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6071,
+        "paused": true
+      },
+      {
+        "at": 6091,
+        "paused": true
+      },
+      {
+        "at": 6111.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 6130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6150.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6191,
+        "paused": true
+      },
+      {
+        "at": 6210.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6251,
+        "paused": true
+      },
+      {
+        "at": 6270.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6291,
+        "paused": true
+      },
+      {
+        "at": 6312.5,
+        "paused": true
+      },
+      {
+        "at": 6330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6350.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6370.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6390.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6411.79999999702,
+        "paused": true
+      },
+      {
+        "at": 6431,
+        "paused": true
+      },
+      {
+        "at": 6450.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6471,
+        "paused": true
+      },
+      {
+        "at": 6490.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6511.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6530.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6551.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 6571.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 6591,
+        "paused": true
+      },
+      {
+        "at": 6610.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6631,
+        "paused": true
+      },
+      {
+        "at": 6650.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6670.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6690.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6711.5999999940395,
+        "paused": true
+      },
+      {
+        "at": 6730.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6750.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6770.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6791,
+        "paused": true
+      },
+      {
+        "at": 6812.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6851,
+        "paused": true
+      },
+      {
+        "at": 6871,
+        "paused": true
+      },
+      {
+        "at": 6890.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6910.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6931,
+        "paused": true
+      },
+      {
+        "at": 6951,
+        "paused": true
+      },
+      {
+        "at": 6970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 6991,
+        "paused": true
+      },
+      {
+        "at": 7012.5999999940395,
+        "paused": true
+      },
+      {
+        "at": 7031,
+        "paused": true
+      },
+      {
+        "at": 7051,
+        "paused": true
+      },
+      {
+        "at": 7070.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7091,
+        "paused": true
+      },
+      {
+        "at": 7112.5,
+        "paused": true
+      },
+      {
+        "at": 7130.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7151,
+        "paused": true
+      },
+      {
+        "at": 7170.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7191,
+        "paused": true
+      },
+      {
+        "at": 7212.5999999940395,
+        "paused": true
+      },
+      {
+        "at": 7230.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7250.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7271,
+        "paused": true
+      },
+      {
+        "at": 7291,
+        "paused": true
+      },
+      {
+        "at": 7312.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7330.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7350.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7371,
+        "paused": true
+      },
+      {
+        "at": 7390.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7412.70000000298,
+        "paused": true
+      },
+      {
+        "at": 7430.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7450.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7470.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7491,
+        "paused": true
+      },
+      {
+        "at": 7512.70000000298,
+        "paused": true
+      },
+      {
+        "at": 7531,
+        "paused": true
+      },
+      {
+        "at": 7551,
+        "paused": true
+      },
+      {
+        "at": 7571,
+        "paused": true
+      },
+      {
+        "at": 7591,
+        "paused": true
+      },
+      {
+        "at": 7612.5,
+        "paused": true
+      },
+      {
+        "at": 7631,
+        "paused": true
+      },
+      {
+        "at": 7651,
+        "paused": true
+      },
+      {
+        "at": 7671,
+        "paused": true
+      },
+      {
+        "at": 7691,
+        "paused": true
+      },
+      {
+        "at": 7712.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 7731,
+        "paused": true
+      },
+      {
+        "at": 7751,
+        "paused": true
+      },
+      {
+        "at": 7771.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 7791,
+        "paused": true
+      },
+      {
+        "at": 7812.5,
+        "paused": true
+      },
+      {
+        "at": 7830.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7850.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7870.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7890.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7912.79999999702,
+        "paused": true
+      },
+      {
+        "at": 7931,
+        "paused": true
+      },
+      {
+        "at": 7950.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7970.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 7991,
+        "paused": true
+      },
+      {
+        "at": 8012.70000000298,
+        "paused": true
+      },
+      {
+        "at": 8030.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8050.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8070.9000000059605,
+        "paused": true
+      },
+      {
+        "at": 8091,
+        "paused": true
+      },
+      {
+        "at": 8112.4000000059605,
+        "paused": true
+      },
+      {
+        "at": 8131,
+        "paused": true
+      },
+      {
+        "at": 8151.0999999940395,
+        "paused": true
+      },
+      {
+        "at": 8171,
+        "paused": true
+      },
+      {
+        "at": 8191,
+        "paused": true
+      },
+      {
+        "at": 8212.59999999404,
+        "paused": true
+      },
+      {
+        "at": 8230.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8250.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8270.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8291,
+        "paused": true
+      },
+      {
+        "at": 8311,
+        "paused": true
+      },
+      {
+        "at": 8330.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8350.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8371,
+        "paused": true
+      },
+      {
+        "at": 8391,
+        "paused": true
+      },
+      {
+        "at": 8412.40000000596,
+        "paused": true
+      },
+      {
+        "at": 8430.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8451,
+        "paused": true
+      },
+      {
+        "at": 8470.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8490.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8512.40000000596,
+        "paused": true
+      },
+      {
+        "at": 8530.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8550.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8571,
+        "paused": true
+      },
+      {
+        "at": 8590.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8611.20000000298,
+        "paused": true
+      },
+      {
+        "at": 8630.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8650.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8671,
+        "paused": true
+      },
+      {
+        "at": 8690.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8712.79999999702,
+        "paused": true
+      },
+      {
+        "at": 8731,
+        "paused": true
+      },
+      {
+        "at": 8751,
+        "paused": true
+      },
+      {
+        "at": 8770.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8791,
+        "paused": true
+      },
+      {
+        "at": 8811.70000000298,
+        "paused": true
+      },
+      {
+        "at": 8830.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8850.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8871,
+        "paused": true
+      },
+      {
+        "at": 8891,
+        "paused": true
+      },
+      {
+        "at": 8912.70000000298,
+        "paused": true
+      },
+      {
+        "at": 8931.09999999404,
+        "paused": true
+      },
+      {
+        "at": 8950.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8970.90000000596,
+        "paused": true
+      },
+      {
+        "at": 8990.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9011,
+        "paused": true
+      },
+      {
+        "at": 9031,
+        "paused": true
+      },
+      {
+        "at": 9051,
+        "paused": true
+      },
+      {
+        "at": 9071,
+        "paused": true
+      },
+      {
+        "at": 9090.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9111.70000000298,
+        "paused": true
+      },
+      {
+        "at": 9131,
+        "paused": true
+      },
+      {
+        "at": 9150.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9171,
+        "paused": true
+      },
+      {
+        "at": 9190.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9211.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9231,
+        "paused": true
+      },
+      {
+        "at": 9251,
+        "paused": true
+      },
+      {
+        "at": 9271,
+        "paused": true
+      },
+      {
+        "at": 9291,
+        "paused": true
+      },
+      {
+        "at": 9312.59999999404,
+        "paused": true
+      },
+      {
+        "at": 9330.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9350.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9370.90000000596,
+        "paused": true
+      },
+      {
+        "at": 9391,
+        "paused": true
+      },
+      {
+        "at": 9412.40000000596,
+        "paused": true
+      },
+      {
+        "at": 9431,
+        "paused": true
+      },
+      {
+        "at": 9451,
+        "paused": true
+      },
+      {
+        "at": 9470.90000000596,
+        "paused": true
+      }
+    ],
+    "onKeyCalls": [
+      {
+        "at": 2497.2000000029802,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3471.5999999940395,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3476,
+        "paused": true,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3476,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3476.5,
+        "paused": true,
+        "repeat": false,
+        "uiId": "ui#5"
+      },
+      {
+        "at": 3476.5,
+        "paused": false,
+        "repeat": false,
+        "uiId": "ui#5"
+      }
+    ],
+    "activeScenes": [
+      "run",
+      "ui"
+    ],
+    "allScenes": [
+      "boot",
+      "title",
+      "charselect",
+      "run",
+      "ui",
+      "results",
+      "credits"
+    ],
+    "uiKeydownListeners": 1,
+    "globalKeydownListeners": "n/a"
+  },
+  "kbDiag": {
+    "pluginEmitListenerCount": 1,
+    "sceneStatus": 5,
+    "sceneActive": true
+  },
+  "passed": false,
+  "jsErrors": []
+}
