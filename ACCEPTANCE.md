@@ -258,3 +258,6 @@ ganzzahlige Spielpixel, keine abgeschnittenen UI-Teile):
 
 Restpunkt: Ember-Projektil im Halo teils überstrahlt (bekannter VFX-Restpunkt, kein Blocker).
 Erzeuger: `scripts/qa-640-vfx.mjs`, `scripts/qa-640-sheets.py`; Karte #2499, Commit folgt.
+
+Karten-Abschluss #2499: Belege oben sind auf `main` @ `217316d`/`17c9f25` erzeugt und
+per Vision geprüft; keine fehlenden Belege. Karte → done.
