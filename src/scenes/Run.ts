@@ -32,7 +32,9 @@ import { LevelUpSystem, type OwnedWeapon } from "../systems/LevelUpSystem";
 import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
 import { EnemyProjectilePool, enemyShotHitFx, shotTextureFor } from "../systems/EnemyProjectiles";
 import { HazardSystem } from "../systems/Hazards";
-import { BossSystem, type BossInfo } from "../systems/BossSystem";
+import {
+  BossSystem, bossHudRects, bossSpriteScreenRect, rectsOverlap, type BossInfo,
+} from "../systems/BossSystem";
 import { shouldSplit, stepEnemyAi, type AiAction } from "../logic/enemy-ai";
 import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished, weaponRangeFactor } from "../logic/scaling";
 import { botDirection, chooseBestOffer, type BotPoint, type BotThreat } from "../logic/autoplay";
@@ -529,7 +531,35 @@ export class Run extends Phaser.Scene {
     this.playBossIntroFx(b.x, b.y, index);
     getAudio().play("bossWarn");
     getAudio().setMusic("boss");
-    this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: b.maxHp });
+    this.showBossBannerWhenVisible(index, b);
+  }
+
+  /**
+   * M10 A10: Das Intro-Banner (UI-Szene, feste Position y=68..116) darf erst
+   * erscheinen, wenn das Boss-Frame vollstaendig unter HP-Leiste und Banner
+   * steht. Der Spawn selbst ist bereits komponiert; dieser Guard prueft die
+   * tatsaechliche Screen-Lage (Kamera-Zoom/Shake) und verschiebt den
+   * Banner-Start nur minimal. Ist der Boss nicht sichtbar, wird das Banner
+   * ausgelassen statt es ueber ihn zu legen. Die Banner-Dauer bleibt in der
+   * UI unveraendert (AutoPlay/God-Pfad unberuehrt).
+   */
+  private showBossBannerWhenVisible(index: number, boss: EnemyRuntime): void {
+    const tryShow = (attempt: number): void => {
+      if (!boss.alive || this.finished || this.dawn) return;
+      const cam = this.cameras.main;
+      const rect = bossSpriteScreenRect(
+        boss.x, boss.y, index, cam.scrollX, cam.scrollY, cam.zoom,
+      );
+      const { hpBar, banner } = bossHudRects(GAME_WIDTH);
+      const clear = rect.y >= hpBar.y + hpBar.h + 6 && !rectsOverlap(rect, banner);
+      if (clear) {
+        this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: boss.maxHp });
+        return;
+      }
+      if (attempt >= 10) return;
+      this.time.delayedCall(80, () => tryShow(attempt + 1));
+    };
+    tryShow(0);
   }
 
   /** Treffer am Spieler zentral (Kontakt, Projektile, Flächen); respektiert God/Invuln. */

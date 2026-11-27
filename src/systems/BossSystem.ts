@@ -38,14 +38,79 @@ export interface BossInfo {
 const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 
 /**
- * M9 art-polish: Boss-Auftritt darf nicht hinter HUD/Banner liegen.
- * Die Boss-HP-Leiste endet auf y=52, das Warn-Banner belegt y=68..116
- * (640x360-Referenz). Ein Boss-Sprite ist 40 px hoch, also muss sein
- * Mittelpunkt mindestens 136 px unter dem View-Top liegen; damit steht
- * er eine volle Figurenhoehe unter der Leiste und unterhalb des Banners.
- * Reine Kompositionsregel, keine Gameplay-/Balance-Aenderung.
+ * M10 A10: Boss-Auftritt darf nicht hinter HP-Leiste oder Intro-Banner liegen.
+ * Die Sprite-Frames sind 56/64/72/80/96/96 px gross (Trefferflaeche bleibt
+ * BOSS_RADIUS). Gezeichnet wird das volle Frame-Rechteck; die Komposition
+ * richtet deshalb die tatsaechliche Frame-Hoehe aus, nicht den Mittelpunkt.
  */
-export const BOSS_SAFE_TOP = 136;
+export const BOSS_SPRITE_SIZE = [56, 64, 72, 80, 96, 96];
+/** Mindestabstand zwischen Boss-Sprite-Oberkante und HUD-/Banner-Unterkante. */
+export const BOSS_HUD_CLEARANCE = 6;
+/** Fallback, falls ein Aufrufer keinen Boss-Index kennt. */
+export const BOSS_SAFE_TOP = 122;
+
+export interface Rect { x: number; y: number; w: number; h: number }
+
+/**
+ * HP-Leiste und Intro-Banner der UI-Szene als logische Screen-Rechtecke.
+ * Werte spiegeln src/scenes/UI.ts: Leiste zentriert auf y=46 (12 px hoch,
+ * max. 236 px breit), Banner-Nineslice 300x48 zentriert auf y=92.
+ */
+export function bossHudRects(viewWidth: number): { hpBar: Rect; banner: Rect } {
+  const barW = Math.min(236, Math.max(1, viewWidth - 48));
+  return {
+    hpBar: { x: viewWidth / 2 - barW / 2, y: 40, w: barW, h: 12 },
+    banner: { x: viewWidth / 2 - 150, y: 68, w: 300, h: 48 },
+  };
+}
+
+export function rectsOverlap(a: Rect, b: Rect): boolean {
+  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+}
+
+/** Volles Sprite-Frame-Rechteck (Origin 0.5) in Screen-Koordinaten. */
+export function bossSpriteRect(centerX: number, centerY: number, index: number): Rect {
+  const size = BOSS_SPRITE_SIZE[index] ?? 96;
+  return { x: centerX - size / 2, y: centerY - size / 2, w: size, h: size };
+}
+
+/**
+ * Reine Kompositionsregel: liefert den Screen-Mittelpunkt-Y, bei dem das
+ * Boss-Frame vollstaendig unter HP-Leiste UND Banner steht (>= 6 px Luft).
+ * Der urspruengliche Ring-Winkel bleibt so weit wie moeglich erhalten; nur
+ * wenn er nach oben zeigt, wird die Vertikale gespiegelt, und nur wenn das
+ * nicht reicht, hart auf die sichere Oberkante gesetzt. Keine Balance-Werte.
+ */
+export function composedBossCenterY(
+  desiredScreenY: number,
+  playerScreenY: number,
+  index: number,
+  viewWidth: number,
+  viewHeight: number,
+): number {
+  const size = BOSS_SPRITE_SIZE[index] ?? 96;
+  const { hpBar, banner } = bossHudRects(viewWidth);
+  const safeTop = Math.max(hpBar.y + hpBar.h, banner.y + banner.h) + BOSS_HUD_CLEARANCE;
+  let y = desiredScreenY;
+  if (y - size / 2 < safeTop) y = playerScreenY + Math.abs(desiredScreenY - playerScreenY);
+  if (y - size / 2 < safeTop) y = safeTop + size / 2;
+  const maxY = viewHeight - size / 2 - 8;
+  if (y > maxY) y = maxY;
+  return y;
+}
+
+/** Screen-Rechteck des Boss-Sprites inkl. Kamera-Zoom (fuer Banner-Guard). */
+export function bossSpriteScreenRect(
+  x: number, y: number, index: number, scrollX: number, scrollY: number, zoom: number,
+): Rect {
+  const r = bossSpriteRect(0, 0, index);
+  return {
+    x: (x - r.w / 2 - scrollX) * zoom,
+    y: (y - r.h / 2 - scrollY) * zoom,
+    w: r.w * zoom,
+    h: r.h * zoom,
+  };
+}
 // Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
 // Grundtempo und Kontaktschaden stehen in src/data/bosses.ts; das Tempo bleibt
 // unter 90 % des Spielertempos, Gefahr kommt über Mechaniken statt Verfolgung.
@@ -106,17 +171,20 @@ export class BossSystem {
     // M8: Sichtbar im View, aber nicht auf dem Spieler; Abstand skaliert mit der View-Hoehe.
     const distance = bossSpawnDistance(this.camera.width, this.camera.height);
     const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * distance, 30, 4096 - 30);
-    let y = playerY + Math.sin(angle) * distance;
-    // M9: Spawn-Komposition. Liegt der Boss im View zu weit oben (hinter
-    // HP-Leiste/Banner), wird die Vertikale nach unten gespiegelt; der
-    // Abstand zum Spieler bleibt dabei erhalten. Reicht das nicht (Kamera
-    // am Welt-Rand), wird hart auf die sichere Oberkante gesetzt.
+    const desiredY = playerY + Math.sin(angle) * distance;
+    // M10 A10: Spawn-Komposition. Das volle Sprite-Frame (inkl. transparenter
+    // Rand) muss unter HP-Leiste und Banner stehen. Nur der nach oben zeigende
+    // Ring-Winkel wird gespiegelt; wenn auch das nicht reicht, wird die
+    // Vertikale minimal auf die sichere Oberkante geschoben. X bleibt erhalten.
     const camTop = this.camera.scrollY;
-    if (y - camTop < BOSS_SAFE_TOP) {
-      y = playerY + Math.abs(Math.sin(angle)) * distance;
-    }
-    if (y - camTop < BOSS_SAFE_TOP) y = camTop + BOSS_SAFE_TOP;
-    y = Phaser.Math.Clamp(y, 30, 4096 - 30);
+    const composedScreenY = composedBossCenterY(
+      desiredY - camTop,
+      playerY - camTop,
+      index,
+      this.camera.width,
+      this.camera.height,
+    );
+    let y = Phaser.Math.Clamp(camTop + composedScreenY, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
       bossIndex: index,
       radius: def.radius,
@@ -127,6 +195,20 @@ export class BossSystem {
     enemy.bossPhase = 1;
     enemy.sprite.setDepth(9);
     enemy.aura.setVisible(false);
+    // Nachjustieren auf die tatsaechliche Frame-Hoehe (Atlas-Frame), falls die
+    // Konstante vom geladenen Sprite abweicht. Haelt die 6-px-Luft exakt ein.
+    const { hpBar, banner } = bossHudRects(this.camera.width);
+    const safeTop = Math.max(hpBar.y + hpBar.h, banner.y + banner.h) + BOSS_HUD_CLEARANCE;
+    const actual = bossSpriteScreenRect(
+      enemy.x, enemy.y, index, this.camera.scrollX, this.camera.scrollY, this.camera.zoom,
+    );
+    if (actual.y < safeTop) {
+      const shift = (safeTop - actual.y) / Math.max(0.01, this.camera.zoom);
+      y = Phaser.Math.Clamp(enemy.y + shift, 30, 4096 - 30);
+      enemy.y = y;
+      enemy.sprite.setPosition(Math.round(enemy.x), Math.round(y));
+      enemy.aura.setPosition(Math.round(enemy.x), Math.round(y));
+    }
     this.bosses.push({ enemy, uid: enemy.uid, timer: 1.2, pending: [], phase: 1 });
     this.scene.events.emit("bossWarn", { index, name: boss.name });
     this.camera.shake(260, 0.004);
