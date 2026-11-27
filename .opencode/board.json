@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5358,
+  "next": 5363,
   "cards": [
     {
       "id": 1,
@@ -6017,6 +6017,86 @@
       ],
       "created": "2026-11-27T20:32:18Z",
       "updated": "2026-11-27T20:32:21Z"
+    },
+    {
+      "id": 5358,
+      "title": "m10-dpr-budget-cap #1 Regler als reine Funktion",
+      "description": "lane #3578: chooseRenderScale/maxRenderScale/stepRenderScale in src/logic/scale.ts, RENDER_SCALE_MIN=1/MAX=3, Hysterese 45 FPS/2 s senken, 57 FPS/4 s heben. Abnahme: tests/scale-budget.test.ts gruen (Hysterese, Grenzen, Ganzzahligkeit). Owner engine-dev, Kontrolle reviewer + commit-gate. Reviewer-PASS (21/21 Tests).",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T20:37:11Z",
+          "by": "build",
+          "text": "lane #3578, Merge e85f890"
+        }
+      ],
+      "created": "2026-11-27T20:37:07Z",
+      "updated": "2026-11-27T20:37:11Z"
+    },
+    {
+      "id": 5359,
+      "title": "m10-dpr-budget-cap #2 Einbau Canvas-Budget",
+      "description": "lane #3579: src/config.ts/Canvas-Setup nutzt den Regler: interner Renderbuffer = logisch/Teiler, CSS unveraendert (pixelated Upscale), Hysterese im Lauf, nie <1, immer ganzzahlig. Abnahme: 640x360@1 bleibt Vollqualitaet. Reviewer-PASS (Kamera-Enforcement restauriert).",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T20:37:11Z",
+          "by": "build",
+          "text": "lane #3579, Merge e85f890"
+        }
+      ],
+      "created": "2026-11-27T20:37:07Z",
+      "updated": "2026-11-27T20:37:11Z"
+    },
+    {
+      "id": 5360,
+      "title": "m10-dpr-budget-cap #3 Messung M25 780@3",
+      "description": "lane #3580: scripts/m10-dpr-budget.mjs unter flock, 780x360 dpr3, M25 Vorher/Nachher + effektive Renderbreite in shots/m10-dpr-budget.json. Messung ERFOLG: M25 780@3 60 FPS in 3/3 (>=50 PASS), Stress 3000 57,2 FPS, 640x360@1 60 FPS ohne Regression, jsErrors 0. Reviewer-PASS.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T20:37:11Z",
+          "by": "build",
+          "text": "lane #3580, Merge e85f890"
+        }
+      ],
+      "created": "2026-11-27T20:37:07Z",
+      "updated": "2026-11-27T20:37:11Z"
+    },
+    {
+      "id": 5361,
+      "title": "m10-dpr-budget-cap #4 Pixel-Perfect-Beleg",
+      "description": "lane #3581: Screenshot bei gesenktem Massstab, 1:1-Pixelvergleich statischer Szene, shots/m10-dpr-budget-pixel.png + JSON (uniformAE 0/2527200, Layout identisch zur Vollstufe); Kamera-Projektions-Fix (Zoom 1/Teiler) noetig und geliefert. art-director/Reviewer-PASS.",
+      "column": "done",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-27T20:37:11Z",
+          "by": "build",
+          "text": "lane #3581, Merge e85f890"
+        }
+      ],
+      "created": "2026-11-27T20:37:07Z",
+      "updated": "2026-11-27T20:37:11Z"
+    },
+    {
+      "id": 5362,
+      "title": "m10-dpr-budget-cap #5 camera.width-Leser + Input bei gesenktem Massstab (Folge)",
+      "description": "lane #4658 (auf der Lane doing, nicht Teil des Lane-Abschlusses): Bei Teiler 2 (rbscale=2, 780x360 dpr3) Boss-Spawn-Guard (BossSystem.ts:200 bossHudRects(camera.width) -> GAME_WIDTH), Ground-Cull (GroundRenderer.ts:229/230, Margin deckt Teiler 2/3) und Input bei gesenktem Massstab pruefen/fixen. Offen, deshalb backlog.",
+      "column": "backlog",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T20:37:11Z",
+          "by": "build",
+          "text": "lane #4658, Merge e85f890 (Folge-Karte, offen -> backlog)"
+        }
+      ],
+      "created": "2026-11-27T20:37:07Z",
+      "updated": "2026-11-27T20:37:11Z"
     }
   ]
 }
