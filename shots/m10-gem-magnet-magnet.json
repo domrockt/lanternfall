@@ -1,0 +1,49 @@
+{
+  "lane": "m10-gem-magnet",
+  "tag": "magnet",
+  "createdAt": "2026-11-27T03:33:58.665Z",
+  "viewport": "960x540@1",
+  "seed": 7,
+  "result": {
+    "pickupRadius": 22,
+    "magnetRadius": 48.400000000000006,
+    "startDistances": [
+      48.40000000000009,
+      48.40000000000009,
+      48.40000000000009,
+      48.40000000000009,
+      48.399999999999686
+    ],
+    "firstStepDistances": [
+      44.37190999999984,
+      44.37190999999984,
+      44.37191000000007,
+      44.37191000000007,
+      44.37190999999946
+    ],
+    "attractedAtBoundary": true,
+    "collectedAll": true,
+    "arrivalMsAtBoundary": 340.7,
+    "frames": 21,
+    "collectedXpDelta": 10,
+    "burst": {
+      "cap": 24,
+      "count": 24,
+      "xpBefore": 0,
+      "incomingXp": 5004,
+      "xpAfter": 5004,
+      "rejected": 0
+    },
+    "capRestored": 180
+  },
+  "errors": [],
+  "pass": {
+    "attractedAtBoundary": true,
+    "arrivalUnder400ms": true,
+    "multipleSimultaneous": true,
+    "capHeldOnBurst": true,
+    "xpPreservedOnBurst": true,
+    "noJsErrors": true
+  },
+  "passAll": true
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2328,
+  "next": 2333,
   "cards": [
     {
       "id": 1,
@@ -3508,6 +3508,86 @@
       "notes": [],
       "created": "2026-11-27T05:17:10Z",
       "updated": "2026-11-27T05:17:10Z"
+    },
+    {
+      "id": 2328,
+      "title": "m10-gem-magnet #1 Ist-Messung: 10-min-autoPlay, Minuten-Samples, Baseline-JSON + Vorher-Shot",
+      "description": "Debug-Hook (gem-Metriken) + Messskript; shots/m10-gem-magnet-baseline.json mit aktiven Kristallen vs. Cap, Pickup-Distanzen, Recycling-Verlusten; shots/m10-gem-magnet-before.png (Minute 12). Abnahme: JSON existiert, Cap-Ueberschreitung je Sample ausgewiesen, 0 JS-Fehler.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T05:40:25Z",
+          "by": "build",
+          "text": "lane #2098 (aus Lane m10-gem-magnet): Ist-Messung PASS – 12 Minuten-Samples @30x, maxOver=0, rejected=0, 0 JS-Fehler; Baseline-JSON + Ist-Shot Minute 12. Commits 4611bc6/37a3812."
+        }
+      ],
+      "created": "2026-11-27T05:39:36Z",
+      "updated": "2026-11-27T05:40:25Z"
+    },
+    {
+      "id": 2329,
+      "title": "m10-gem-magnet #2 Cap-Haertung: hart einhalten + aelteste zuerst verschmelzen, XP erhalten + Unit-Test",
+      "description": "PickupSystem: Cap nie ueberschreiten (auch Boss-/Elite-Bursts), bei vollem Cap aelteste Kristalle verschmelzen statt verwerfen, XP-Summe vor/nach identisch. Unit-Test tests/pickup-gems.test.ts. Abnahme: Test gruen, Cap-Ueberschreitung 0.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T05:40:25Z",
+          "by": "build",
+          "text": "lane #2099 (aus Lane m10-gem-magnet): Cap-Haertung PASS – mergeGemValues erhaelt XP-Summe exakt, Cap bei Burst 500->24 eingehalten, rejected=0; 8/8 Tests gruen. Commit 59da2a3."
+        }
+      ],
+      "created": "2026-11-27T05:39:36Z",
+      "updated": "2026-11-27T05:40:25Z"
+    },
+    {
+      "id": 2330,
+      "title": "m10-gem-magnet #3 Magnet-Semantik: Anziehung exakt ab Radius, Ankunft <=0,4 s + Grenzfall-Tests",
+      "description": "Anziehung beginnt genau am definierten Magnetradius, Geschwindigkeit so, dass Kristall in <=0,4 s ankommt. Tests: Radius 0, mehrere Kristalle gleichzeitig. Abnahme: Test gruen, Messung im Baseline-JSON.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T05:40:25Z",
+          "by": "build",
+          "text": "lane #2100 (aus Lane m10-gem-magnet): Magnet-Semantik PASS – Anziehung exakt am Radius 48,400 px, Ankunft 340,7 ms/21 Frames <=0,4 s, 5 Kristalle gleichzeitig; Grenzfall-Tests 8/8. Beleg shots/m10-gem-magnet-magnet.json, Commit accf051."
+        }
+      ],
+      "created": "2026-11-27T05:39:36Z",
+      "updated": "2026-11-27T05:40:25Z"
+    },
+    {
+      "id": 2331,
+      "title": "m10-gem-magnet #4 Lesbarkeit: 3 Groessen farblich von Gegnern/Effekten unterscheidbar, 4x-Zoom im Chaos",
+      "description": "Pixel-Diff der Kristallfarben gegen Gegnerpalette > Schwelle, 1-px-Kontur, 4x-Nearest-Zoom-Shot mit 300+ Gegnern; Near-White-Anteil im Frame <=4,16 %. Abnahme: Lesbarkeits-Urteil PASS im Lane-Doc.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T05:40:25Z",
+          "by": "build",
+          "text": "lane #2101 (aus Lane m10-gem-magnet): Lesbarkeit PASS – RGB-Abstand 3 Groessen >=131,9; 1-px-Kontur; 319 Gegner + 24 Kristalle im Chaos-Shot; Near-White 0,3% <=4,16%. Commits ef5d88e + e7019fa."
+        }
+      ],
+      "created": "2026-11-27T05:39:36Z",
+      "updated": "2026-11-27T05:40:25Z"
+    },
+    {
+      "id": 2332,
+      "title": "m10-gem-magnet #5 Doku + .lane-done: Zahlen vorher/nachher, offene Punkte",
+      "description": "docs/lanes/m10-gem-magnet.md mit Messwerten vor/nach, Belegen, offenen Punkten; .lane-done mit Zusammenfassung. Abnahme: build+alle Tests gruen, 0 JS-Fehler, .lane-done committet.",
+      "column": "done",
+      "assignee": "tech-lead",
+      "notes": [
+        {
+          "at": "2026-11-27T05:40:25Z",
+          "by": "build",
+          "text": "lane #2102 (aus Lane m10-gem-magnet): Doku docs/lanes/m10-gem-magnet.md + .lane-done; build gruen, 232/232 Tests, 0 JS-Fehler. Commit 7a07cab."
+        }
+      ],
+      "created": "2026-11-27T05:39:36Z",
+      "updated": "2026-11-27T05:40:25Z"
     }
   ]
 }
