@@ -166,15 +166,16 @@ export function compositeNormal(srcRgba, w, h, { alpha, tint, bg }) {
   let n = 0;
   for (let i = 0; i < w * h; i++) {
     const a = srcRgba[i * 4 + 3] / 255;
-    out[i * 4 + 3] = 255;
     if (a === 0) {
       out[i * 4] = bg[0]; out[i * 4 + 1] = bg[1]; out[i * 4 + 2] = bg[2];
+      out[i * 4 + 3] = 0;
       continue;
     }
     const eff = a * alpha;
     for (let c = 0; c < 3; c++) {
       out[i * 4 + c] = Math.round(srcRgba[i * 4 + c] * (tint[c] / 255) * eff + bg[c] * (1 - eff));
     }
+    out[i * 4 + 3] = 255;
     footprint[i] = 1;
     n++;
   }
@@ -229,7 +230,10 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 
 let chaos = null;
 try {
-  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=77`);
+  // rbscale=1 + viewcap=off: Render-Massstab und Crowd-View-Cap ausheben, damit
+  // der Chaos-PNG das Spiel voll 640x360 fuellt (der Cap rendert sonst 480x360
+  // zentriert) und screenX/Y = (Welt - Kamera-Scroll) exakt stimmen.
+  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=77&rbscale=1&viewcap=off`);
   await page.waitForFunction(() => Boolean(window.__game && window.__lf), { timeout: 15000 });
   await page.waitForFunction(() => window.__game.textures.exists("projectile_ember"), { timeout: 15000 });
 
@@ -442,6 +446,12 @@ try {
       lf.autoPlay(false);
       lf.setSuppressLevelUps(true);
       lf.setFxDamping(false);
+      // Sichtbeleg: das Endgame-LOD schaltet trails bei >= 500 Gegnern ab
+      // (lodFor: trails nur im Level "full"). Der Schweif soll aber gezeigt
+      // werden, also trailsEnabled dauerhaft auf true pinnen (nur im
+      // Messlauf — update() setzt es sonst jedes Frame zurueck).
+      const fxSys = run.combat.fx;
+      Object.defineProperty(fxSys, "trailsEnabled", { get: () => true, set: () => {}, configurable: true });
       lf.addWeapon("ember", 8); // Stufe 8 = 4 Funken je Schuss
       // Nur Ember: Natur-Spawns aus, Bestand rein per spawnEnemy.
       window.__game.registry.set("lf-density", 0);
@@ -454,8 +464,10 @@ try {
         lf.spawnEnemy(id, count);
         const fresh = run.enemies.active.filter((e) => e.alive).slice(before);
         for (const e of fresh) {
+          // Ring 160-320 px: genug Ziele im Bild, aber nicht so dicht am Spieler,
+          // dass die Projektile instant 3 Treffer (pierce) abbekommen.
           const a = rand() * Math.PI * 2;
-          const r = Math.sqrt(rand()) * 120;
+          const r = 160 + Math.sqrt(rand()) * 160;
           e.x = 2048 + Math.cos(a) * r;
           e.y = 2048 + Math.sin(a) * r;
           e.vx = 0; e.vy = 0;
@@ -465,22 +477,29 @@ try {
       }
       return run.enemies.active.filter((e) => e.alive).length;
     });
-    // Auf >= 4 Ember-Projektile im Flug warten (Schuss-Cooldown 0,5 s).
+    // Auf >= 4 Ember-Projektile im Flug warten (Schuss-Cooldown 0,5 s), dann
+    // die Szene EINFRIEREN (timeScale 0) — PNG und Koordinaten/Metriken sind
+    // damit exakt synchron (Kamera-Lerp wuerde sonst zwischen screenshot()
+    // und evaluate() verschieben; Restpunkt aus m10-ember-readability).
     await page.waitForFunction(() => {
       const run = window.__game?.scene?.getScene?.("run");
       return Boolean(run?.combat?.projectiles?.active?.filter?.((p) => p.active && p.weaponId === "ember").length >= 4);
-    }, { timeout: 10000 });
-    await page.waitForTimeout(200); // Schweif sichtbar (t = 0,2 s, Szene laeuft)
+    }, { timeout: 10000, polling: 16 });
+    await page.evaluate(() => window.__lf.setTimeScale(0));
+    await page.waitForTimeout(100); // Renderer-Frame mit eingefrorener Szene abwarten
     await page.screenshot({ path: chaosPng });
     const chaosMetrics = await page.evaluate(() => {
       const run = window.__game.scene.getScene("run");
       const cam = run.cameras.main;
+      const rect = window.__game.canvas.getBoundingClientRect();
       const enemies = run.enemies.active.filter((e) => e.alive).length;
       const projs = run.combat.projectiles.active
         .filter((p) => p.active && p.weaponId === "ember")
         .map((p) => ({
           x: Math.round(p.x), y: Math.round(p.y),
-          screenX: Math.round(p.x - cam.scrollX), screenY: Math.round(p.y - cam.scrollY),
+          // Viewport-Koordinaten = Canvas-Offset + Kamera-Koordinaten (rbscale=1).
+          screenX: Math.round(p.x - cam.scrollX + rect.left),
+          screenY: Math.round(p.y - cam.scrollY + rect.top),
           dist: Math.round(Math.hypot(p.x - run.player.x, p.y - run.player.y)),
           trailTexture: p.trail,
         }));
@@ -499,6 +518,7 @@ try {
       lane: "m10-ember-trail",
       generatedAt: new Date().toISOString(),
       screenshot: chaosPng,
+      sceneFrozen: true, // timeScale 0 beim Shot -> PNG + Koordinaten exakt synchron
       ...chaosMetrics,
       acceptance: { enemiesMin: 500, projectilesMin: 4, jsErrorsMax: 0 },
       jsErrors: errors,

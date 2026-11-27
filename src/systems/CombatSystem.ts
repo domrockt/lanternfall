@@ -282,8 +282,10 @@ export class CombatSystem {
         texture: "projectile_ember",
         radius: this.effRadius(4, ctx.agg),
         target: target ?? null,
-        trail: "fx_fire",
-        trailFrames: fxFrames("fx_fire", 6),
+        // M10-Restpunkt ember-readability: eigener Schweif statt fx_fire —
+        // 7x7 (Footprint 37 px statt 75), statisch (keine 6er-Frame-Anim).
+        trail: "fx_ember_trail",
+        trailFrames: [],
         trailInterval: 0.05,
       });
       // Mündungsglut: eigener Klecks mit Tintenkontur, gedaempft additiv.
@@ -905,12 +907,16 @@ export class CombatSystem {
           // Feuervogel-Trail bleibt warm und additiv, auch wenn das Projektil selbst
           // mit Normal-Blend (klare Flügel/Kontur) gerendert wird.
           const phoenixTrail = p.weaponId === "phoenix";
+          // M10-Restpunkt ember-readability: Ember-Schweif gedämpft (alphaFrom
+          // 0,4 statt 0,45) — NORMAL-Blend + Orange-Tint bleiben, der kleinere
+          // fx_ember_trail-Puff haelt Footprint <= 60 px und Near-White bei 0 %.
+          const emberTrail = p.weaponId === "ember";
           this.fx.spawn({
             texture: p.trail,
             frames: p.trailFrames.length > 0 ? p.trailFrames : undefined,
             x: p.x, y: p.y, life: 0.22,
             scaleFrom: p.sprite.scaleX * 0.8, scaleTo: 0.15,
-            alphaFrom: 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
+            alphaFrom: emberTrail ? 0.4 : 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
             tint: p.blendAdd || phoenixTrail ? undefined : PAL[C.emberOrange],
           });
         }

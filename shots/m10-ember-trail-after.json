@@ -1,0 +1,127 @@
+{
+  "lane": "m10-ember-trail",
+  "generatedAt": "2026-11-27T21:24:45.920Z",
+  "gitHead": "2f8fc3e",
+  "mode": "after",
+  "source": "Phaser texture manager (dist build), echte Spieltexturen; Render-Simulation NORMAL-Blend + Tint",
+  "trailParams": {
+    "mode": "after",
+    "texture": "fx_ember_trail",
+    "frames": 1,
+    "alphaFrom": 0.4,
+    "alphaTo": 0,
+    "additive": false,
+    "tint": [
+      168,
+      74,
+      33
+    ],
+    "life": 0.22,
+    "trailInterval": 0.05,
+    "scaleFrom": 0.8,
+    "scaleTo": 0.15,
+    "tintName": "emberOrange (0xa84a21)",
+    "bg": "nightDeep (#0a0e16, Palette 1)",
+    "maxAliveStack": 5
+  },
+  "definitions": {
+    "nearWhiteA7": "r,g,b >= 150 und r >= 235 (ACCEPTANCE A7)",
+    "nearWhiteMinRgb200": "min(R,G,B) >= 200 (m10-vfx-evo)",
+    "footprint": "Pixel des gerenderten Schweifs, die gegenueber nightDeep veraendert sind",
+    "prozentBasis": "Footprint-Pixel ( gerenderter Schweif ); *PctOfFrame auf Frame-Flaeche"
+  },
+  "target": {
+    "nearWhitePctMax": 2,
+    "footprintPxMax": 60
+  },
+  "perPuff": [
+    {
+      "frame": "fx_ember_trail",
+      "renderScale": 0.8,
+      "alpha": 0.4,
+      "footprintPixels": 24,
+      "nearWhiteA7Pct": 0,
+      "nearWhiteMinRgb200Pct": 0,
+      "offPaletteRendered": 24
+    }
+  ],
+  "stack": {
+    "puffs": [
+      {
+        "age": 0.2,
+        "frame": "fx_ember_trail",
+        "alpha": 0.036,
+        "scale": 0.209,
+        "footprintPixels": 0
+      },
+      {
+        "age": 0.15,
+        "frame": "fx_ember_trail",
+        "alpha": 0.127,
+        "scale": 0.357,
+        "footprintPixels": 3
+      },
+      {
+        "age": 0.1,
+        "frame": "fx_ember_trail",
+        "alpha": 0.218,
+        "scale": 0.505,
+        "footprintPixels": 11
+      },
+      {
+        "age": 0.05,
+        "frame": "fx_ember_trail",
+        "alpha": 0.309,
+        "scale": 0.652,
+        "footprintPixels": 17
+      },
+      {
+        "age": 0,
+        "frame": "fx_ember_trail",
+        "alpha": 0.4,
+        "scale": 0.8,
+        "footprintPixels": 24
+      }
+    ],
+    "footprintPixels": 24,
+    "nearWhiteA7Pct": 0,
+    "nearWhiteMinRgb200Pct": 0
+  },
+  "worst": {
+    "nearWhiteA7Pct": 0,
+    "nearWhiteMinRgb200Pct": 0,
+    "footprintPuffMax": 24,
+    "footprintStack": 24
+  },
+  "projectileContext": {
+    "w": 7,
+    "h": 7,
+    "opaque": 31,
+    "nearWhiteA7Pct": 3.23,
+    "nearWhiteMinRgb200Pct": 3.23,
+    "offPalette": 0,
+    "binaryAlpha": true
+  },
+  "sourceTextures": {
+    "fx_ember_trail": {
+      "w": 7,
+      "h": 7,
+      "opaque": 37,
+      "offPalette": 0,
+      "binaryAlpha": true,
+      "nearWhiteA7Pct": 0,
+      "nearWhiteMinRgb200Pct": 0
+    },
+    "projectile_ember": {
+      "w": 7,
+      "h": 7,
+      "opaque": 31,
+      "offPalette": 0,
+      "binaryAlpha": true,
+      "nearWhiteA7Pct": 3.23,
+      "nearWhiteMinRgb200Pct": 3.23
+    }
+  },
+  "verdict": "PASS",
+  "jsErrors": []
+}

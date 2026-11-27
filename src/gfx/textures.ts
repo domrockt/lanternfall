@@ -301,6 +301,23 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "..000..",
     ],
   },
+  /** M10-Restpunkt ember-readability: eigener Ember-Schweif statt fx_fire (14x14,
+   *  Footprint 75 px, Near-White-Quelle). 7x7, Footprint 37 px, Ramp bis amber
+   *  (kein lanternWhite/glow -> 0 % Near-White auch bei 5fach-Stack), Ink-Rim
+   *  haelt den Puff auf dunklem Grund sichtbar. Wird NORMAL-Blend mit
+   *  Ember-Orange-Tint + alphaFrom 0,4 gerendert (siehe CombatSystem). */
+  fx_ember_trail: {
+    w: 7, h: 7,
+    rows: [
+      "..000..",
+      ".0ggg0.",
+      "0ggigg0",
+      "0gikig0",
+      "0ggigg0",
+      ".0ggg0.",
+      "..000..",
+    ],
+  },
   projectile_thorn: {
     w: 7, h: 7,
     // Dornenstern mit warmer Glutrampe + Laternen-Spitze; Kontur haelt ihn auf Gras.
