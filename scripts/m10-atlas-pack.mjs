@@ -174,8 +174,11 @@ try {
   });
   await page.waitForTimeout(500);
   await clearLevelUps();
+  console.error("[m10-atlas-pack] crowd: textures …");
   result.textures = await textureInfo();
+  console.error("[m10-atlas-pack] crowd: measure …");
   result.crowd = await measure(CROWD_ENEMIES, SECONDS);
+  console.error("[m10-atlas-pack] crowd fertig", result.crowd.fps);
   const crowdState = await page.evaluate(() => window.__lf.stats());
   result.crowd.enemies = crowdState.enemies;
   result.crowd.level = crowdState.level;
@@ -204,6 +207,7 @@ try {
     }, { evolutions: EVOLUTIONS, passives: PASSIVES });
     await page.waitForTimeout(6000);
     await clearLevelUps();
+    console.error("[m10-atlas-pack] m25", v.tag, "measure …");
     const natural = await page.evaluate(() => window.__lf.stats());
     const m = await measure(Math.max(300, natural.enemies), SECONDS);
     const state = await page.evaluate(() => window.__lf.stats());
