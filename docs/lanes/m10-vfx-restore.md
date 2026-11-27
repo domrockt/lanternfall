@@ -69,6 +69,28 @@ pausierten Frame wie der Damped-Frame (sameDensity true):
 - `tests/vfx-restore.test.ts` prueft die gewaehlte Stufe gegen die Messgrenzen
   (Near-White ≤ 4,16 %, FPS ≥ 50, Draw-Calls ≤ Baseline + 10 %, Verdrahtung in Run.ts).
 
+## K3 — Stufe 2 (Glows +0,1) claim-blockiert; Nachmessen Stufe 1 (45 s, flock)
+
+- **Glow-Hebel blockiert:** Die additive Glow-dpr-Alpha (`fxAlphaForDpr`, dpr≥3: 0,6) und
+  der Glow-Alpha-Pfad liegen in `src/gfx/gen-fx.ts` + `src/systems/FxSystem.ts`
+  (Claim `m10-boss-fx-contrast`). Run.ts hat keinen Hebel darauf (setAlphaScale wirkt
+  nicht selectively auf Glows; ≥0,7 wuerde zusaetzlich den Blend-Modus umschalten).
+  -> Anfrage in `/home/ai/games/.dispatch/requests.md`; **gewaehlte Stufe der Lane = 1**.
+- **Nachmessen mit Stufe 1 aktiv** (`shots/m10-vfx-restore-stage1-long.json`, 45 s,
+  `flock /home/ai/games/.lf-perf.lock`, beide Profile diesmal im minimal-LOD):
+
+| Profil | lod | fxAlpha | Near-White A7 Crop (0,5 -> 0,65) | FPS | Draw-Calls/Frame (Median) |
+|---|---|---|---|---|---|
+| 640x360@1 | minimal | 0,5 -> 0,65 | 3,00 % -> **3,98 %** ≤ 4,16 % | **60,0** ≥ 50 | 16 → 16 ≤ Baseline+10 % |
+| 780x360@3 | minimal | 0,5 -> 0,65 | 1,78 % -> **2,06 %** ≤ 4,16 % | **60,0** ≥ 50 | 16 → 16 ≤ Baseline+10 % |
+
+- Renderer-String (iGPU-Pfad, im JSON): `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S),
+  OpenGL ES 3.2)`. 0 JS-Fehler. FPS ist vsync-geklemmt (60); Ziel ≥ 50 erfuellt.
+- Beobachtung: Near-White bei 640 liegt mit 3,98 % nah an der 4,16 %-Grenze — die
+  Streuung zwischen Laeufen (2,99 % im K2-Lauf) ist real. Stufe 2 (Glows +0,1) wuerde
+  den Near-White-Anteil weiter anheben und muss deshalb (wie beantragt) gegen dieses
+  Gate gemessen werden, bevor sie uebernommen wird.
+
 ## Offene Punkte
 
 - `fxAlphaFor` (0,5/0,72) liegt in `src/logic/lod.ts` — **fremd geclaimed**
