@@ -24,10 +24,13 @@
 
 | Zeit (UTC) | Befehl | Ergebnis | Urteil |
 |---|---|---|---|
-| — | `npm run build` | — | — |
-| — | `npx tsc --noEmit` | — | — |
-| — | `npm test` | — | — |
-| — | `node scripts/acceptance-count.mjs` | — | — |
+| 2026-11-27T18:20:46Z | `npm run build` | rc=0, `✓ built in 823ms`, bekannte Chunk-Warnung >500 kB (Log `~/tmp/reaccb-k1-build.log`) | **PASS** |
+| 2026-11-27T18:20:35Z | `npx tsc --noEmit` | rc=0, keine Fehler | **PASS** |
+| 2026-11-27T18:20:39Z | `npm test` (vitest run) | **446 Tests in 42 Dateien, 0 fail**, 2,61 s | **PASS** |
+| 2026-11-27T18:20:38Z | `node scripts/acceptance-count.mjs` | `ok:true`, **30/6/6/6/6/2** (Soll = Ist) | **PASS** |
+
+**Urteil K1: PASS.** (Erste Nachabnahme fa2-01: 355 Tests/33 Dateien — seitdem gem-drawcap,
+menu-touch, feedback-budget, ui-text-cost u. a. zusätzliche Tests gemergt.)
 
 ## K2 — Die 4 Merge-Fixes gegen PIN
 
