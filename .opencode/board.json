@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5762,
+  "next": 5862,
   "cards": [
     {
       "id": 1,
@@ -6671,6 +6671,52 @@
       ],
       "created": "2026-11-27T21:40:37Z",
       "updated": "2026-11-27T21:40:42Z"
+    },
+    {
+      "id": 5858,
+      "title": "m10-damage-calm K1: Vorher-Beleg Chaos-Frame (Labels + Ueberlappungen)",
+      "description": "Skript scripts/m10-damage-calm.mjs: Minute-25-Frame mit 300+ Gegnern rendern, sichtbare Damage-Labels + Ueberlappungen zaehlen. Output shots/m10-damage-calm-before.png + -before.json. AK: JSON enthaelt visibleLabels/overlap-Zahlen, PNG zeigt Chaos-Frame.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T21:44:58Z",
+          "by": "build",
+          "text": "todo → doing: Start: Mess-Skript scripts/m10-damage-calm.mjs schreiben"
+        }
+      ],
+      "created": "2026-11-27T21:44:56Z",
+      "updated": "2026-11-27T21:44:58Z"
+    },
+    {
+      "id": 5859,
+      "title": "m10-damage-calm K2: Logik Drossel/Cap (damage-numbers.ts)",
+      "description": "src/logic/damage-numbers.ts: hartes Sichtbar-Cap pro Zone/Frame, Drosselung je Labeldichte, Krits gross+hervorgehoben, Normaltreffer klein/gebuendelt, Summen-Erhalt garantiert (reine Funktionen + Konstanten). AK: Summe dargestellter Schaden == gemeldete Summe (<=1 % Abweichung), keine Balance-Aenderung.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T21:44:56Z",
+      "updated": "2026-11-27T21:44:56Z"
+    },
+    {
+      "id": 5860,
+      "title": "m10-damage-calm K3: System-Umsetzung Anzeige-Cap (DamageNumbers.ts)",
+      "description": "src/systems/DamageNumbers.ts: Anzeige-Cap umsetzen, aelteste/niedrigste Labels zuerst ersetzen, kein Tween-Neustart je Treffer. AK: sichtbare Labels im Chaos-Frame <= Cap, Krits bleiben gross.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T21:44:56Z",
+      "updated": "2026-11-27T21:44:56Z"
+    },
+    {
+      "id": 5861,
+      "title": "m10-damage-calm K4: Tests + Nachher-Shots + Doku",
+      "description": "tests/damage-calm.test.ts: Cap haelt, Summe <=1 % Abweichung gegen ungedrosselte Referenz, Krit-Staffelung, Grenzfaelle 0/1/Cap+1. Nachher-Shots shots/m10-damage-calm-after.*, Doku docs/lanes/m10-damage-calm.md. AK: tsc + vitest gruen, Nachher visibleLabels <= Cap.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T21:44:56Z",
+      "updated": "2026-11-27T21:44:56Z"
     }
   ]
 }
