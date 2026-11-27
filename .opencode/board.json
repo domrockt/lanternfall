@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1665,
+  "next": 1668,
   "cards": [
     {
       "id": 1,
@@ -2755,6 +2755,54 @@
       "notes": [],
       "created": "2026-11-27T01:27:06Z",
       "updated": "2026-11-27T01:27:06Z"
+    },
+    {
+      "id": 1665,
+      "title": "m9-art-polish-01 Boss-Inszenierung (art-01)",
+      "description": "Knochenfuerst spawnt nicht mehr hinter HP-Leiste/Banner: Spawnpunkt mind. 40 px unter der Boss-HP-Leiste und ausserhalb des Banner-Bereichs, gleiche Kameraposition vorher/nachher. Abnahme: shots/art-director PASS, build+Tests gruen, 0 JS-Fehler. (lane #1378)",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T01:39:34Z",
+          "by": "build",
+          "text": "Lane-Merge m9-art-polish: lane #1378. BOSS_SAFE_TOP=136, Spawn unter HP-Leiste/Banner, 6 Bosse screenY 153-193; art-director PASS."
+        }
+      ],
+      "created": "2026-11-27T01:39:13Z",
+      "updated": "2026-11-27T01:39:34Z"
+    },
+    {
+      "id": 1666,
+      "title": "m9-art-polish-02 Elite-Rim-Light im Chaos (art-02)",
+      "description": "Elites bei Minute 25/300+ Gegnern mit engem 1-px-Rim in Palettenfarbe statt diffuse ADD-Aura. Abnahme: shots/art-polish-elites-chaos.png, vfx:read Near-White <= 4,16 %, vfx-check PASS. (lane #1379)",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T01:39:34Z",
+          "by": "build",
+          "text": "Lane-Merge m9-art-polish: lane #1379. Amber 1-px-Silhouetten-Rim statt weisser ADD-Aura; Near-White 4,14 % <= 4,16 %; vfx-check PASS."
+        }
+      ],
+      "created": "2026-11-27T01:39:13Z",
+      "updated": "2026-11-27T01:39:34Z"
+    },
+    {
+      "id": 1667,
+      "title": "m9-polish-03 HUD-/Level-up-Anker pruefen (art-03)",
+      "description": "Bei 640x360 (16:9) und 780x360 (19.5:9) sicherstellen, dass Boss-Leiste, Banner und Level-up-Karte nicht ueberlappen; ein Shot je Auflaesung. Wenn sauber: Karte mit Beleg auf done, keine Aenderung. (lane #1380)",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T01:39:34Z",
+          "by": "build",
+          "text": "Lane-Merge m9-art-polish: lane #1380. HUD-Worst-Case 16:9/19.5:9 ohne Ueberlappung; ux-check PASS, keine Aenderung."
+        }
+      ],
+      "created": "2026-11-27T01:39:13Z",
+      "updated": "2026-11-27T01:39:34Z"
     }
   ]
 }
