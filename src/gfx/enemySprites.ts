@@ -27,11 +27,104 @@ export function gridFromRows(rows: readonly string[]): Grid {
   return g;
 }
 
-/** Generierte Frames eines Gegners (Index = Position in ENEMY_LIST). */
+/**
+ * Schärft eine generierte Gegner-Maske, ohne Rastergröße oder Frame-Zahl zu ändern:
+ * - Randpixel der Silhouette werden auf Palettenindex 0 (ink) normalisiert
+ *   → exakt 1 px dunkle Kontur außen (ART.md Regel 1).
+ * - In jeder Spalte wird direkt unter der oberen Kontur genau 1 px auf den
+ *   Lichtton der Gegnerfarbe gesetzt → 1 px Lichtkante oben (ART.md Regel 2).
+ * Beides ist deterministisch (keine Zufallswerte, kein Dithering) und hält
+ * binäres Alpha: nur gefüllte Pixel bekommen eine Palettenfarbe.
+ */
+/** Per-Archetyp-Tonkorrekturen (art-director-Runde 27.11.). Nur Palettenindizes. */
+interface ContrastTones {
+  /** Lichtkante über den gesamten oberen Bogen. */
+  top: number;
+  /** Aufhellung dunkler Mitteltöne (Rim-Kontrast gegen dunklen Moorboden). */
+  mid: number;
+  /** Schwelle, unter der ein Mitteltone-Pixel aufgehellt wird. */
+  midLimit: number;
+}
+
+const CONTRAST_TONES: Record<string, ContrastTones> = {
+  treant: { top: 12, mid: 17, midLimit: 62 },
+  golem: { top: 12, mid: 8, midLimit: 62 },
+  bog_rat: { top: 12, mid: 8, midLimit: 62 },
+  // art-director-Runde 2: dunkle Flieger/Geister mit zu wenig Rim-Kontrast
+  // bekommen ebenfalls eine helle Oberkante und aufgehellte Mitteltöne.
+  bat: { top: 12, mid: 8, midLimit: 70 },
+  reaper_bat: { top: 12, mid: 8, midLimit: 70 },
+  lich: { top: 12, mid: 9, midLimit: 70 },
+  imp: { top: 12, mid: 17, midLimit: 70 },
+  wisp: { top: 12, mid: 13, midLimit: 70 },
+  crow: { top: 12, mid: 8, midLimit: 70 },
+  voidcaller: { top: 13, mid: 12, midLimit: 75 },
+};
+
+export function sharpenEnemyGrid(src: Grid, color: number, id = ""): Grid {
+  const g = src.map((row) => row.slice());
+  const h = g.length;
+  const w = g[0]?.length ?? 0;
+  const filled = (x: number, y: number): boolean =>
+    x >= 0 && x < w && y >= 0 && y < h && g[y][x] !== null;
+  // Ohne Spezialfall bleibt die Lichtkante farbabhängig; sehr dunkle
+  // Mitteltöne (< 52) werden zusätzlich auf PAL 8 (mist) angehoben, damit
+  // die Silhouette auf dunklem Moor nicht in der Fläche verschwindet.
+  const tones = CONTRAST_TONES[id] ?? { top: lightEdgeIndex(color), mid: 8, midLimit: 52 };
+  const light = tones.top;
+
+  // 1) 1-px-Kontur: dunkle Randpixel werden Tinte (0); helle Highlights an
+  //    Spitzen bleiben erhalten, damit die Lichtkante nicht überschrieben wird.
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = g[y][x];
+      if (c === null || c === 0) continue;
+      const boundary = !filled(x - 1, y) || !filled(x + 1, y) || !filled(x, y - 1) || !filled(x, y + 1);
+      if (boundary && luminance(c) < 70) g[y][x] = 0;
+    }
+  }
+
+  // 2) 1-px-Lichtkante über den gesamten oberen Bogen: das oberste Pixel jeder
+  //    Spalte (obere Kontur) wird zum Lichttone; damit ist die Silhouette auf
+  //    dunklem Moor auch dort lesbar, wo sie sich mit anderen überlappt.
+  for (let x = 0; x < w; x++) {
+    let y = 0;
+    while (y < h && !filled(x, y)) y++;
+    if (y >= h) continue;
+    const topColor = g[y][x];
+    if (topColor === 13) continue; // Augen/Glow nicht überschreiben
+    g[y][x] = light;
+  }
+  for (let y = 0; y < h; y++) {
+    let x = 0;
+    while (x < w && !filled(x, y)) x++;
+    if (x >= w) continue;
+    if (g[y][x] === 13) continue;
+    g[y][x] = light;
+  }
+
+  // 3) Dunkle Mitteltöne aufhellen, nur bei den vom art-director benannten
+  //    Problemfällen. Die Kontur (PAL 0) und Augen/Glow bleiben unangetastet.
+  if (tones) {
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const c = g[y][x];
+        if (c === null || c === 0 || c === 13) continue;
+        const boundary = !filled(x - 1, y) || !filled(x + 1, y) || !filled(x, y - 1) || !filled(x, y + 1);
+        if (boundary) continue;
+        if (luminance(c) < tones.midLimit) g[y][x] = tones.mid;
+      }
+    }
+  }
+  return g;
+}
+
+
+/** Generierte Frames eines Gegners (Index = Position in ENEMY_LIST), geschärft. */
 export function enemySpriteFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
   const gen = GEN_ENEMIES[def.spriteKey];
-  return gen.frames.map(gridFromRows);
+  return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), def.color, def.id));
 }
 
 /** Textur-Keys aller generierten Frames (Basis + _2.._4). */
@@ -67,6 +160,28 @@ function rect(g: Grid, x: number, y: number, w: number, h: number, c: number): v
 function luminance(i: number): number {
   const c = PAL[i];
   return 0.2126 * ((c >> 16) & 255) + 0.7152 * ((c >> 8) & 255) + 0.0722 * (c & 255);
+}
+
+/** Heller Lichtkanten-Ton zur Gegnerfarbe (nur Palette, Luminanz >= 85). */
+function lightEdgeIndex(base: number): number {
+  const c = PAL[base];
+  const target = [
+    Math.min(255, Math.round(((c >> 16) & 255) * 1.35)),
+    Math.min(255, Math.round(((c >> 8) & 255) * 1.35)),
+    Math.min(255, Math.round((c & 255) * 1.35)),
+  ];
+  let best = base;
+  let bestDist = Infinity;
+  for (let i = 1; i < PAL.length; i++) {
+    if (luminance(i) < 85) continue;
+    const p = PAL[i];
+    const dr = ((p >> 16) & 255) - target[0];
+    const dg = ((p >> 8) & 255) - target[1];
+    const db = (p & 255) - target[2];
+    const d = dr * dr + dg * dg + db * db;
+    if (d < bestDist) { bestDist = d; best = i; }
+  }
+  return best;
 }
 
 /** Nächster Palettenindex zu einer skalierte Grundfarbe (nur Palette!). */

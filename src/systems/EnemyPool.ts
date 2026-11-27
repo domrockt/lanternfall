@@ -5,6 +5,51 @@ import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
 import { ensureAiState } from "../logic/ai-state";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
+import { C, PAL } from "../palette";
+
+/**
+ * Deterministische Elite-Marker-Spezifikation (K3).
+ *
+ * Elite tragen einen exakt 1 px breiten Amber-Rim-Light (Palette 20), der als
+ * leicht größere Kopie der Silhouette hinter dem Sprite liegt. Die Werte hängen
+ * ausschließlich vom Gegnerradius ab – kein Zufall, keine Zeitabhängigkeit,
+ * deshalb flackert der Marker nicht. Normale Gegner haben keinen Marker
+ * (Alpha 0, keine Pixelbreite), Bosse behalten ihre eigene Inszenierung.
+ */
+export interface EliteMarkerSpec {
+  /** Palettenindex der Rim-Light-Farbe (nur Palette). */
+  color: number;
+  /** Konstante Deckkraft des Markers. */
+  alpha: number;
+  /** Breite des Rim-Lights in Spielpixeln. */
+  rimPx: number;
+  /** Skalierungsfaktor der Aura-Kopie relativ zum Sprite. */
+  scale: number;
+}
+
+export const ELITE_MARKER_COLOR = C.amber;
+export const NORMAL_MARKER_SPEC: Readonly<EliteMarkerSpec> = Object.freeze({
+  color: -1,
+  alpha: 0,
+  rimPx: 0,
+  scale: 1,
+});
+
+export function eliteMarkerTint(): number {
+  return PAL[ELITE_MARKER_COLOR];
+}
+
+export function eliteMarkerSpec(radius: number): EliteMarkerSpec {
+  const r = Math.max(4, Math.round(Number.isFinite(radius) ? radius : 4));
+  // 1 Spielpixel Rand: Aura = Sprite + 2 Quellpixel in jeder Achse.
+  const srcPx = r * 2;
+  return {
+    color: ELITE_MARKER_COLOR,
+    alpha: 0.92,
+    rimPx: 1,
+    scale: 1 + 2 / srcPx,
+  };
+}
 
 export interface EnemySpawnOptions {
   elite?: boolean;
@@ -143,10 +188,22 @@ export class EnemyPool {
     enemy.sprite.clearTint();
     enemy.sprite.setDepth(enemy.boss ? DEPTH.boss : DEPTH.enemy);
     enemy.sprite.setPosition(Math.round(x), Math.round(y));
-    enemy.aura.setVisible(enemy.elite || enemy.boss);
+    // Nur Elite tragen den Marker; Spezifikation ist deterministisch aus dem
+    // Radius abgeleitet (K3). Normale Gegner und Bosse bleiben markerlos.
+    if (enemy.elite) {
+      const spec = eliteMarkerSpec(enemy.radius);
+      enemy.aura.setBlendMode(Phaser.BlendModes.NORMAL);
+      enemy.aura.setTint(eliteMarkerTint());
+      enemy.aura.setAlpha(spec.alpha);
+      const sx = Number.isFinite(enemy.sprite.scaleX) && enemy.sprite.scaleX > 0 ? enemy.sprite.scaleX : 1;
+      const sy = Number.isFinite(enemy.sprite.scaleY) && enemy.sprite.scaleY > 0 ? enemy.sprite.scaleY : 1;
+      enemy.aura.setScale(sx * spec.scale, sy * spec.scale);
+      enemy.aura.setVisible(true);
+    } else {
+      enemy.aura.setVisible(false);
+      enemy.aura.setAlpha(0);
+    }
     enemy.aura.setPosition(Math.round(x), Math.round(y));
-    enemy.aura.setAlpha(enemy.elite ? 0.42 : 0.0);
-    enemy.aura.setScale(enemy.elite ? 0.9 + enemy.radius / 32 : 1.2);
     this.active.push(enemy);
     return enemy;
   }

@@ -1137,7 +1137,10 @@ export class Run extends Phaser.Scene {
       // exakt 1 Spielpixel breit. Kein Near-White, Lesbarkeit bleibt.
       if (e.elite) {
         e.aura.setBlendMode(Phaser.BlendModes.NORMAL);
-        e.aura.setTint(PAL[C.amber]);
+        // setTintFill statt setTint: die Aura wird als reine Amber-Silhouette
+        // gefuellt, statt die Gegnerfarbe zu multiplizieren (sonst verschwindet
+        // der Rand bei dunklen Sprites). Deterministisch, nur Elite.
+        e.aura.setTintFill(PAL[C.amber]);
         e.aura.setAlpha(0.92);
         const frame = currentFrame(e.sprite);
         if (currentFrame(e.aura) !== frame) applyTexture(e.aura, frame);
