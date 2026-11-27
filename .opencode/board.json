@@ -3005,7 +3005,7 @@
       "id": 2099,
       "title": "m10-gem-magnet #2 Cap-Haertung: hart einhalten + aelteste zuerst verschmelzen, XP erhalten + Unit-Test",
       "description": "PickupSystem: Cap nie ueberschreiten (auch Boss-/Elite-Bursts), bei vollem Cap aelteste Kristalle verschmelzen statt verwerfen, XP-Summe vor/nach identisch. Unit-Test tests/pickup-gems.test.ts. Abnahme: Test gruen, Cap-Ueberschreitung 0.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3017,10 +3017,15 @@
           "at": "2026-11-27T03:34:38Z",
           "by": "build",
           "text": "Fix implementiert: mergeGemValues (XP-Summe erhalten), Cap hart, Alt-Recycling merged in Nachbarn. Unit-Tests 8/8, build gruen. Commit 59da2a3. Kritik: Cap+Magnet in einem Commit (Supervisor-Stopp)"
+        },
+        {
+          "at": "2026-11-27T05:25:47Z",
+          "by": "build",
+          "text": "todo → done: Cap-Haertung PASS: mergeGemValues erhaelt XP-Summe exakt, Cap bei Burst 500->24 eingehalten, rejected=0; 8/8 Tests gruen. Commit 59da2a3."
         }
       ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T03:34:38Z"
+      "updated": "2026-11-27T05:25:47Z"
     },
     {
       "id": 2100,
