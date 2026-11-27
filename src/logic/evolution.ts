@@ -99,7 +99,7 @@ export function chestRewards(
   }
 
   const remaining = Math.max(0, count - rewards.length);
-  const offers: Offer[] = generateOffers(offerWeapons, passives, rng, remaining);
+  const offers: Offer[] = generateOffers(offerWeapons, passives, rng, remaining, false);
   for (const o of offers) {
     rewards.push({
       kind: o.kind,

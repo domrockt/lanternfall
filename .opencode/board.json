@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1668,
+  "next": 1672,
   "cards": [
     {
       "id": 1,
@@ -2803,6 +2803,46 @@
       ],
       "created": "2026-11-27T01:39:13Z",
       "updated": "2026-11-27T01:39:34Z"
+    },
+    {
+      "id": 1668,
+      "title": "M10-levelup-offers-01 Audit generateOffers (30 Seeds x 5 Builds)",
+      "description": "generateOffers-Audit: 30 Seeds x 5 Build-Zustaende, JSON shots/m10-levelup-offers-audit.json, Befund docs/lanes/m10-levelup-offers.md. Abnahme: JSON + Doku belegt (150 Aufrufe, 0 Duplikate, 60x fehlende Evolution vor Fix). Quelle: Lane m10-levelup-offers, lane #1498.",
+      "column": "review",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-27T01:53:16Z",
+      "updated": "2026-11-27T01:53:16Z"
+    },
+    {
+      "id": 1669,
+      "title": "M10-levelup-offers-02 Tests zuerst (RED)",
+      "description": "tests/levelup-offers.test.ts: genau 3 Angebote, keine doppelten IDs, kein Upgrade nicht besessener Waffen, Evolution nur Stufe 8 + Powerup >=1, max 1 Evolution. Abnahme: RED-Log + Testdatei mit Faellen. Quelle: Lane m10-levelup-offers, lane #1499.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T01:53:16Z",
+      "updated": "2026-11-27T01:53:16Z"
+    },
+    {
+      "id": 1670,
+      "title": "M10-levelup-offers-03 Fix in levelup.ts (Evolution im Level-Up)",
+      "description": "Kleinste Aenderung src/logic/levelup.ts + chest-Opt-out in evolution.ts: Evolution nur Basiswaffe Stufe 8 + passendes Powerup >=1, max 1, keine Duplikate, 3 Angebote bei ausreichendem Pool. Abnahme: tsc gruen, Tests gruen, Audit-after 0 fehlende Evolutionen. Quelle: Lane m10-levelup-offers, lane #1500.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T01:53:16Z",
+      "updated": "2026-11-27T01:53:16Z"
+    },
+    {
+      "id": 1671,
+      "title": "M10-levelup-offers-04 Beleg + Abnahme (verify-menus 15/15)",
+      "description": "In-Game-Shots m10-levelup-evolution-offer/-after-evolution, Audits before/after, verify-menus PASS 15/15 (Harness-Klickmapping M8-480x360 gefixt), build gruen, vitest 201/201. Abnahme: alle Belege committed, 0 JS-Fehler. Quelle: Lane m10-levelup-offers, lane #1501.",
+      "column": "review",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T01:53:16Z",
+      "updated": "2026-11-27T01:53:16Z"
     }
   ]
 }

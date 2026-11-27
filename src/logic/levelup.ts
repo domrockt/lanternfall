@@ -2,7 +2,7 @@ import { PASSIVES } from "../data/passives";
 import { WEAPONS } from "../data/weapons";
 import { EVOLUTIONS } from "../data/evolutions";
 import { weaponDef } from "../data/weaponIds";
-import type { PassiveId, WeaponId } from "../data/types";
+import type { EvolutionDef, PassiveId, WeaponId } from "../data/types";
 import { MAX_PASSIVE_SLOTS, MAX_WEAPON_SLOTS } from "../config";
 import type { Rng } from "./rng";
 
@@ -28,17 +28,43 @@ interface Candidate extends Offer {
 }
 
 /**
+ * Einlösbare Evolutionen: Basiswaffe Stufe 8, passendes Powerup ≥ 1,
+ * Evolution noch nicht im Slot, Evolution implementiert.
+ * Gleiche Regeln wie `evolvableList` in `evolution.ts` (dort ohne Zyklus-Import).
+ */
+function eligibleEvolutions(
+  weapons: readonly OwnedItem[],
+  passives: readonly OwnedItem[],
+): EvolutionDef[] {
+  const passiveLevels = new Map(passives.map((p) => [p.id, p.level]));
+  const out: EvolutionDef[] = [];
+  for (const evo of EVOLUTIONS) {
+    if (!evo.implemented) continue;
+    if (weapons.some((w) => w.id === evo.id)) continue;
+    const base = weapons.find((w) => w.id === evo.baseWeapon);
+    if (!base || base.level < 8) continue;
+    if ((passiveLevels.get(evo.passive) ?? 0) < 1) continue;
+    if (!weaponDef(evo.id)?.implemented) continue;
+    out.push(evo);
+  }
+  return out;
+}
+
+/**
  * Reine Angebots-Logik:
  * - maximal 6 Waffen + 6 Powerups,
  * - neue Items nur, wenn ein Slot frei ist,
  * - bereits maxed Items werden nie angeboten (Waffe 8, Powerup 5),
- * - bis zu 3 verschiedene Optionen.
+ * - bis zu 3 verschiedene Optionen,
+ * - höchstens eine Evolution, nur bei erfüllter Voraussetzung.
+ * `includeEvolutions=false` für Truhen: die Truhe vergibt ihre Evolution selbst.
  */
 export function generateOffers(
   weapons: readonly OwnedItem[],
   passives: readonly OwnedItem[],
   rng: Rng,
   count = 3,
+  includeEvolutions = true,
 ): Offer[] {
   const candidates: Candidate[] = [];
   const weaponIds = new Set(weapons.map((w) => w.id));
@@ -90,8 +116,23 @@ export function generateOffers(
     }
   }
 
-  // Gewichtetes Ziehen ohne Wiederholung.
+  // Evolution hat Vorrang: höchstens eine, und nur wenn die Voraussetzungen
+  // erfüllt sind. Sie läuft als Waffe (kind "weapon", Evolutions-ID), damit
+  // `applyOffer` sie über `addWeapon` in den Basiswaffen-Slot legt.
   const picked: Offer[] = [];
+  if (count > 0 && includeEvolutions) {
+    const evo = eligibleEvolutions(weapons, passives)[0];
+    if (evo) {
+      const def = weaponDef(evo.id);
+      picked.push({
+        kind: "weapon", id: evo.id, name: evo.name,
+        description: evo.effect, level: def?.maxLevel ?? 8,
+        isNew: true, iconColor: evo.iconColor,
+      });
+    }
+  }
+
+  // Gewichtetes Ziehen ohne Wiederholung.
   const pool = candidates.slice();
   while (picked.length < count && pool.length > 0) {
     const total = pool.reduce((s, c) => s + c.weight, 0);
