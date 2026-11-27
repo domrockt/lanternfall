@@ -16,6 +16,13 @@ export function resetAiState(state: AiState, rng: AiRng): void {
   state.blinks = 0;
   state.attacks = 0;
   state.phase = 0;
+  // Stagger-State neutralisieren: ein recycelter Gegner darf weder die
+  // Step-Phase noch die Cache-Richtung/-Geschwindigkeit des Vorgängers erben
+  // (sonst bewegt er sich bis zum ersten vollen Step fremd — Review-Befund).
+  state.aiStepIn = undefined;
+  state.aiMoveX = undefined;
+  state.aiMoveY = undefined;
+  state.aiSpeedMul = undefined;
 }
 
 /** Recycelt einen vorhandenen KI-Zustand oder legt beim ersten Spawn einen an. */

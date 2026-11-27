@@ -14,14 +14,15 @@ Neu entscheidet die Distanz zum Spieler, wie oft ein **voller** KI-Step
 
 | Ring | Distanz | Voller Step |
 |---|---|---|
-| Nah (Combat) | < 220 px | jeder Frame |
-| Mittel (View) | 220–420 px | alle 4 Frames |
+| Nah (Combat) | < 240 px | jeder Frame |
+| Mittel (View) | 240–420 px | alle 4 Frames |
 | Fern (Spawn-Wolke/LOD) | > 420 px | alle 6 Frames |
 
 Die Schwellen folgen den Archetyp-Geometrien: alle spielkritischen Bänder liegen
-unter ~210 px (Ranged-Band ≤ 166, Summoner-Band ≤ 204, Orbit-Radius ≤ 92,
-Blink-Ring ≤ 77) — im Nahbereich ändert sich nichts. Die halbe Bildschirmdiagonale
-des 640×360-Views beträgt ~367 px, der Mittelring deckt also alles Sichtbare ab.
+unter ~240 px (Ranged-Schuss < 240, Charger-Windup-Trigger < 230, Summoner-Band
+≤ 204, Orbit-Radius ≤ 92, Blink-Ring ≤ 77) — im Nahbereich ändert sich nichts.
+Die halbe Bildschirmdiagonale des 640×360-Views beträgt ~367 px, der Mittelring
+deckt also alles Sichtbare ab.
 
 **Zwischen vollen Steps** liefert `stepEnemyAi` das letzte Entscheidungsergebnis
 erneut (`AiState.aiMoveX/aiMoveY/aiSpeedMul`, wiederverwendetes Objekt
@@ -29,14 +30,19 @@ erneut (`AiState.aiMoveX/aiMoveY/aiSpeedMul`, wiederverwendetes Objekt
 der letzten Richtung weiter, es gibt **keine wiederholten Aktionen und keine
 RNG-Züge** in Skip-Frames.
 
-**Timer laufen realzeitlich weiter** (`timer`, `cooldown`, `phase` werden auch in
-Skip-Frames dekrementiert) — Entscheidungs-Kadenz hängt nicht vom Intervall:
-Cooldowns, Windup-Dauern und Summon-Rufe behalten ihre Sekunden-Werte, sie
-feuern halt auf dem nächsten vollen Step (≤ Intervall−1 Frames Verzug).
+**Timer laufen realzeitlich weiter** (`timer`, `cooldown`, `phase` — und die
+Exploder-Zündschnur `fuse` — werden auch in Skip-Frames dekrementiert) —
+Entscheidungs-Kadenz hängt nicht vom Intervall: Cooldowns, Windup-Dauern und
+Summon-Rufe behalten ihre Sekunden-Werte, sie feuern halt auf dem nächsten
+vollen Step (≤ Intervall−1 Frames Verzug).
 
 **Phase über UID verteilt:** der erste ferne Step setzt `aiStepIn = uid % interval`,
 damit nicht alle fernen Gegner im selben Frame einen vollen Step machen
 (keine Frame-Spikes).
+
+**Recycle:** `resetAiState` (EnemyPool-Recycle, `src/logic/ai-state.ts`)
+neutralisiert die Stagger-Felder — ein recycelter Gegner erbt weder Step-Phase
+noch Cache-Richtung des Vorgängers (Reviewer-Befund, mit Test gesichert).
 
 ## Konfiguration
 
@@ -45,7 +51,7 @@ damit nicht alle fernen Gegner im selben Frame einen vollen Step machen
 ```ts
 export const AI_STAGGER: AiStaggerConfig = {
   enabled: true,      // false = altes Jeden-Frame-Verhalten (Notbremse/A-B-Test)
-  nearDistance: 220,  // px, jeder Frame
+  nearDistance: 240,  // px, jeder Frame
   midDistance: 420,   // px, darüber Fernring
   midInterval: 4,     // voller Step alle 4 Frames im Mittelring
   farInterval: 6,     // voller Step alle 6 Frames im Fernring
@@ -63,8 +69,8 @@ Distanzringe wie Endgame-Crowd: 50 % nah (40–220 px), 30 % mittel (220–420),
 | stepEnemyAi @ 500 Gegner | ms/Frame |
 |---|---|
 | Baseline (vorher) | 0.033 |
-| Nachher (Staffelung 1/4/6) | **0.024** |
-| **Ersparnis** | **−27,3 %** (Ziel −25 %) |
+| Nachher (Staffelung 1/4/6) | **0.023** |
+| **Ersparnis** | **−30,3 %** (Ziel −25 %) |
 
 Je Archetyp (reine 500er-Blöcke, ms/Frame): alle Typen von ~0.030–0.036 (vorher)
 auf ~0.021–0.025 (nachher) — kein Archetyp wurde teurer.
@@ -81,6 +87,12 @@ auf ~0.021–0.025 (nachher) — kein Archetyp wurde teurer.
   je Archetyp ≥ 75 % der Referenz, Distanz-/Kurs-Metriken in Toleranz.
 - **Skip-Mechanik:** Skip-Frames ziehen keinen RNG, liefern gefroren-leere
   Aktionen und dieselbe Richtung; fern Gegner steppen ≤ ⌈frames/farInterval⌉+2 mal.
+- **Recycle:** `resetAiState` löscht aiStepIn/aiMoveX/aiMoveY/aiSpeedMul — der
+  erste Step nach dem Recycle ist ein voller Step (kein geerbter Cache).
+- **Ring-Wechsel:** fern → nah liefert sofort wieder einen vollen Step mit
+  frischem actions-Array; der Nahring neutralisiert den Step-Marker.
+- **Realzeit-Fuse:** die Exploder-Zündschnur brennt sekundengenau weiter, auch
+  wenn der Spieler in den Fernring entwischt (Explosion ≤ 2 s nach Zündung).
 - **Realzeit-Timer:** Phaser blinkt im Fernring mit ≥ 75 % der Referenz-Kadenz.
 - **UID-Phase:** `aiStepIn` unterscheidet sich per UID (kein synchroner Step).
 

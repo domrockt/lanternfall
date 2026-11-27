@@ -1,6 +1,6 @@
 {
   "tag": "after",
-  "date": "2026-11-27T19:57:56.039Z",
+  "date": "2026-11-27T20:06:07.280Z",
   "config": {
     "enemies": 500,
     "framesPerPass": 300,
@@ -27,31 +27,31 @@
     }
   },
   "results": {
-    "totalMsPerFrame": 0.024,
+    "totalMsPerFrame": 0.023,
     "passMsPerFrame": [
-      0.024,
-      0.024,
-      0.024,
-      0.024,
-      0.024,
+      0.023,
+      0.023,
       0.024,
       0.024,
       0.024,
       0.025,
-      0.026,
-      0.11
+      0.025,
+      0.025,
+      0.025,
+      0.025,
+      0.112
     ],
     "perArchetypePureMsPerFrame": {
-      "chaser": 0.022,
+      "chaser": 0.023,
       "swarm": 0.024,
-      "tank": 0.021,
-      "ranged": 0.022,
-      "charger": 0.022,
-      "splitter": 0.023,
-      "exploder": 0.022,
-      "phaser": 0.026,
-      "orbiter": 0.023,
-      "summoner": 0.024
+      "tank": 0.022,
+      "ranged": 0.021,
+      "charger": 0.021,
+      "splitter": 0.022,
+      "exploder": 0.021,
+      "phaser": 0.024,
+      "orbiter": 0.022,
+      "summoner": 0.023
     }
   }
 }

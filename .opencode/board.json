@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4842,
+  "next": 4843,
   "cards": [
     {
       "id": 1,
@@ -5677,6 +5677,15 @@
           "text": "doing → review: review: Commit 01a9331 — -27.3% ms/Frame (0.033->0.024), Doku + after-JSON; Suite 529/529, build gruen."
         }
       ],
+      "labels": []
+    },
+    {
+      "id": 4842,
+      "title": "m10-ai-budget K5: Review-Fix (Recycle-Reset, Realzeit-Fuse, Nahring 240)",
+      "description": "Reviewer-FAIL-Befunde: 1) resetAiState leckt aiStepIn/aiMoveX/Y/aiSpeedMul -> Recycle erbt fremde Richtung (Fix in src/logic/ai-state.ts, unclaimed, requests.md-Eintrag). 2) Exploder-Fuse brennt nur im vollen Step -> Dehnung im Fernring (realzeitliches Dekrement). 3) nearDistance 220->240 (Charger-Trigger 230, Ranged-Schuss 240). Neue Tests: Recycle, Ring-Wechsel, Fuse. AK: 21/21 gruen, tsc gruen, Bench >= -25% (after-JSON frisch), commit #<karte>.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [],
       "labels": []
     }
   ]

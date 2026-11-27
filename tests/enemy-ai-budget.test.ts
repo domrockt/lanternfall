@@ -8,6 +8,7 @@ import {
   type AiRng,
   type AiState,
 } from "../src/logic/enemy-ai";
+import { resetAiState } from "../src/logic/ai-state";
 import { ENEMY_LIST } from "../src/data/enemies";
 import type { EnemyDef } from "../src/data/types";
 
@@ -391,5 +392,85 @@ describe("AI-Budget: Skip-Mechanik", () => {
     expect(a).not.toBe(b);
     expect(b).not.toBe(c);
     expect(a).toBe(1 % AI_STAGGER.farInterval);
+  });
+});
+
+describe("AI-Budget: Recycle und Ring-Wechsel", () => {
+  const chaserParams = (x: number, uid: number): AiParams => ({
+    archetype: "chaser",
+    tier: 1,
+    x,
+    y: 0,
+    playerX: 0,
+    playerY: 0,
+    speed: 70,
+  });
+
+  it("resetAiState (EnemyPool-Recycle) neutralisiert Stagger-State — kein Erben der Vorrichtung", () => {
+    AI_STAGGER.enabled = true;
+    const rng = rngFor(17);
+    const state = newAiState(rng);
+    // Fern-Gegner: erster Step setzt Phase + Cache des "Vorgängers".
+    stepEnemyAi(state, chaserParams(600, 3), DT, rng, 3);
+    expect(state.aiStepIn).toBeDefined();
+    expect(state.aiMoveX).toBeDefined();
+    // Recycle wie EnemyPool.ensureAiState:
+    resetAiState(state, rng);
+    expect(state.aiStepIn).toBeUndefined();
+    expect(state.aiMoveX).toBeUndefined();
+    expect(state.aiMoveY).toBeUndefined();
+    expect(state.aiSpeedMul).toBeUndefined();
+    // Der erste Step nach dem Recycle ist ein voller Step mit frischer
+    // Richtung (kein Skip mit geerbtem Cache): aiStepIn wird neu aus der
+    // UID verteilt und der Step liefert ein frisches actions-Array.
+    const step = stepEnemyAi(state, chaserParams(600, 3), DT, rng, 3);
+    expect(step.actions).not.toBe(state.aiSkip?.actions);
+    expect(state.aiMoveX).toBeCloseTo(step.moveX, 6);
+  });
+
+  it("Ring-Wechsel fern → nah: sofortiger voller Step mit frischem actions-Array", () => {
+    AI_STAGGER.enabled = true;
+    const rng = rngFor(23);
+    const state = newAiState(rng);
+    stepEnemyAi(state, chaserParams(600, 4), DT, rng, 4); // fern: voller Step
+    const skip = stepEnemyAi(state, chaserParams(600, 4), DT, rng, 4);
+    expect(skip.actions).toHaveLength(0); // Skip-Frame
+    // Gegner wird nah versetzt (wie nach Annäherung): voller Step, frisches
+    // actions-Array (identitätsmäßig nicht das gefrorene Skip-Array).
+    const near = stepEnemyAi(state, chaserParams(100, 4), DT, rng, 4);
+    expect(near.actions).not.toBe(skip.actions); // frisches Array, kein Frozen-Empty
+    expect(state.aiStepIn).toBe(0); // Nahring neutralisiert den Marker
+  });
+
+  it("Exploder-Fuse brennt realzeitlich: Explosion trotz Flucht in den Fernring rechtzeitig", () => {
+    AI_STAGGER.enabled = true;
+    const rng = rngFor(29);
+    const state = newAiState(rng);
+    let x = 20;
+    let y = 0;
+    let explodedAt: number | null = null;
+    for (let f = 0; f < Math.round(3 / DT); f++) {
+      if (f > 0) {
+        // Spieler flieht direkt nach der Zündung in den Fernring (600 px).
+        x = 600;
+        y = 0;
+      }
+      const step = stepEnemyAi(state, {
+        archetype: "exploder",
+        tier: 1,
+        x,
+        y,
+        playerX: 0,
+        playerY: 0,
+        speed: 70,
+      }, DT, rng, 1);
+      for (const a of step.actions) {
+        if (a.type === "explode" && explodedAt === null) explodedAt = f * DT;
+      }
+      if (explodedAt !== null) break;
+    }
+    // fuseTime ≤ 0.95 s; trotz Fernring-Intervall ≤ 6 Frames Verzug:
+    expect(explodedAt).not.toBeNull();
+    expect(explodedAt!, `Explosion nach ${explodedAt}s`).toBeLessThanOrEqual(2.0);
   });
 });

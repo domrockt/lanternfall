@@ -95,7 +95,7 @@ export interface AiStaggerConfig {
   nearDistance: number;
   /** Bis zu dieser Distanz gilt midInterval, darüber farInterval (px). */
   midDistance: number;
-  /** Voller Step alle N Frames im Mittelring (220–420 px). */
+  /** Voller Step alle N Frames im Mittelring (240–420 px). */
   midInterval: number;
   /** Voller Step alle N Frames im Fernring (> 420 px, meist außerhalb des Views). */
   farInterval: number;
@@ -103,9 +103,10 @@ export interface AiStaggerConfig {
 
 export const AI_STAGGER: AiStaggerConfig = {
   enabled: true,
-  // Spielkritische Distanzen liegen alle unter ~210 px (Ranged-Band ≤ 166,
-  // Summoner-Band ≤ 204, Orbit-Radius ≤ 92, Blink-Ring ≤ 77): Nahbereich = combat.
-  nearDistance: 220,
+  // Spielkritische Distanzen liegen alle unter ~240 px (Ranged-Schuss < 240,
+  // Charger-Windup-Trigger < 230, Summoner-Band ≤ 204, Orbit ≤ 92): Nahbereich
+  // = alles, was im selben Frame reagieren muss.
+  nearDistance: 240,
   // 640x360-View: halbe Bildschirmdiagonale ~367 px — der Mittelring deckt den
   // sichtbaren Bereich ab, der Fernring ist Spawn-Wolke/LOD.
   midDistance: 420,
@@ -360,9 +361,12 @@ export function stepEnemyAi(
 
   // Zeit-Timer laufen realzeitlich weiter — auch auf Skip-Frames — damit
   // Cooldowns und Windup-Dauern nicht vom Staffelungsintervall abhängen.
+  // Die Exploder-Zündschnur gehört dazu: sie brennt in Sekunden, nicht in
+  // Steps (sonst dehnt sich die Zündung, wenn der Spieler entwischt).
   state.timer = Math.max(0, state.timer - dt);
   state.cooldown = Math.max(0, state.cooldown - dt);
   state.phase = (state.phase ?? 0) + dt;
+  if (state.fuse > 0) state.fuse = Math.max(0, state.fuse - dt);
 
   // Staffelungs-Intervall nach Distanz (quadratisch verglichen, kein hypot).
   const interval = !AI_STAGGER.enabled
@@ -534,14 +538,15 @@ export function stepEnemyAi(
     }
     case "exploder": {
       if (state.fuse > 0) {
-        // Zündschnur: kaum Bewegung, Warnfläche wird von der Szene gezeichnet.
-        state.fuse -= dt;
+        // Zündschnur brennt (realzeitlich dekrementiert, siehe oben): kaum
+        // Bewegung, Warnfläche wird von der Szene gezeichnet.
         speedMul = 0.18;
-        if (state.fuse <= 0) {
-          state.mode = "approach";
-          actions.push({ type: "explode", radius: 36 + params.tier * 6 });
-          state.attacks += 1;
-        }
+      } else if (state.mode === "fuse") {
+        // Schnur ist gerade abgebrannt → Explosion (auf dem nächsten vollen
+        // Step, wenn der Spieler im Skip-Fenster entwischt ist).
+        state.mode = "approach";
+        actions.push({ type: "explode", radius: 36 + params.tier * 6 });
+        state.attacks += 1;
       } else if (dist < profile.fuseRange) {
         state.fuse = profile.fuseTime;
         state.mode = "fuse";
