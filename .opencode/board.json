@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1659,
+  "next": 1783,
   "cards": [
     {
       "id": 1,
@@ -2684,6 +2684,56 @@
       ],
       "created": "2026-11-26T23:53:27Z",
       "updated": "2026-11-26T23:53:35Z"
+    },
+    {
+      "id": 1778,
+      "title": "m10-death-fx K1 Ist-Stand: effektive DeathFxSpecs erheben",
+      "description": "Alle 30 Archetypen + Boss: effektive DeathFxSpec (Shard/Dust/Count/Additive) erheben, Tabelle in docs/lanes/m10-death-fx.md; belegen wie viele visuell unterscheidbare Klassen heute ankommen. Abnahme: Tabelle mit 30 Archetypen und Anzahl distinkter Klassen belegt. Commit.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T00:36:15Z",
+      "updated": "2026-11-27T00:36:15Z"
+    },
+    {
+      "id": 1779,
+      "title": "m10-death-fx K2 Spec schärfen in src/logic/death.ts",
+      "description": "Pro Klasse eigene deterministische Werte für Count, Größe (scale), Dauer, Farbe/Tint, Textur und Streuung; Boss skaliert >=2x Fläche + eigene Textur. Keine Gameplay-/Balance-Werte. Abnahme: DeathFxSpec trägt diese Felder, tsc grün. Commit.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T00:36:15Z",
+      "updated": "2026-11-27T00:36:15Z"
+    },
+    {
+      "id": 1780,
+      "title": "m10-death-fx K3 Umsetzung in CombatSystem.killsFx",
+      "description": "Tod nutzt die Spec vollständig (vorhandene FX-Texturen, keine neuen Assets); keine Änderung an Schaden/Hitboxen. Abnahme: killsFx übergibt alle Spec-Felder an Partikel/FX, tsc grün. Commit.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T00:36:15Z",
+      "updated": "2026-11-27T00:36:15Z"
+    },
+    {
+      "id": 1781,
+      "title": "m10-death-fx K4 Test tests/death-fx.test.ts",
+      "description": "Alle 4 Klassen unterscheidbar in >=3 Dimensionen; jeder Archetyp mappt auf eine der 4 Klassen; Boss-Spec != Nicht-Boss-Spec; deterministisch (2 Läufe gleiche Werte). Abnahme: npx vitest run tests/death-fx.test.ts grün. Commit.",
+      "column": "todo",
+      "assignee": "test-auditor",
+      "notes": [],
+      "created": "2026-11-27T00:36:15Z",
+      "updated": "2026-11-27T00:36:15Z"
+    },
+    {
+      "id": 1782,
+      "title": "m10-death-fx K5 Beleg + Doku",
+      "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Grössenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test grün; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test grün, .lane-done tracked. Commit.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T00:36:15Z",
+      "updated": "2026-11-27T00:36:15Z"
     }
   ]
 }
