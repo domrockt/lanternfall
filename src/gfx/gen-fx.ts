@@ -501,6 +501,12 @@ function voidDeathFrame(stage: number): string[] {
  * fx_boss_core (Boss-Tod-Stufe): 3-Stufen-Kern (lanternWhite → glow → amber,
  * kollabiert), zwei expandierende Zackenringe, 8 radiale Splitter und harte
  * ink-Kontur + Lichtkante — klar getrennt vom 9x9-Klassen-Shard (Blob).
+ *
+ * M10-Lesbarkeit (Karte #5219, Blocker "Boss-FX-Kontrast", Technik wie der
+ * Ember-Fix #2879): der Kern ist ein kleiner lanternWhite-Fleck statt eines
+ * Weiss-Blobs; eine geschlossene 1-px-Tintenkontur um den Glutkern plus eine
+ * um +1/+1 versetzte Offset-Outline trennen den Boss-Effekt auch ueber heller
+ * Horde. Nur Palettenfarben, binaeres Alpha.
  */
 function bossCoreFrame(stage: number): string[] {
   const size = 32;
@@ -519,14 +525,33 @@ function bossCoreFrame(stage: number): string[] {
     for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
       if (d >= rCore) continue;
-      if (d < rCore * 0.45) put(x, y, 13);
-      else if (d < rCore * 0.75) put(x, y, 22);
+      if (d < rCore * 0.22) put(x, y, 13);
+      else if (d < rCore * 0.62) put(x, y, 22);
       else put(x, y, 20);
     }
   }
-  // Zwei expandierende Zackenringe (Flamme aussen, Glut innen).
+  // M10 #5219: Kontur VOR den Ringen zeichnen (ueberschreiben sonst die Tinte).
+  // Geschlossene 1-px-Tintenkontur unmittelbar ausserhalb des Kerns.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x - c, y - c);
+      if (d >= rCore && d < rCore + 1.2) put(x, y, 0);
+    }
+  }
+  // Offset-Outline: Kernsilhouette um +1/+1 versetzt, wo noch frei — liest sich
+  // als harte Schattenkante und haelt den Kern auch ueber heller Horde getrennt.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      if (g[y][x] !== ".") continue;
+      const d = Math.hypot(x - 1 - c, y - 1 - c);
+      if (d < rCore + 1.2) put(x, y, 0);
+    }
+  }
+  // Zwei expandierende Zackenringe (Flamme aussen, Glut innen). M10 #5219:
+  // Radius an die neue Kontur angepasst — mit Jag (±1,1) und Band (±1,6) muss
+  // der innere Rand ausserhalb der Tinte bleiben (rCore + 3,4 - 1,1 - 0,9 >= rCore + 1,2).
   for (let ring = 0; ring < 2; ring++) {
-    const rr = 7 + ring * 4.5 + t * (7 - ring * 2);
+    const rr = rCore + 3.4 + ring * 4.5 + t * (7 - ring * 2);
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
         const dx = x - c;
@@ -542,9 +567,11 @@ function bossCoreFrame(stage: number): string[] {
     }
   }
   // Acht radiale Splitter (Diamanten), fliegen mit der Stufe nach aussen.
+  // M10 #5219: Splitter starten ausserhalb und werden an der Kontur geclippt,
+  // damit sie Kern-Kontur/Offset-Outline nicht uebermalen.
   for (let i = 0; i < 8; i++) {
     const a = (i * Math.PI) / 4 + 0.39;
-    const dist = 5 + t * 9.5;
+    const dist = rCore + 4.2 + t * 8.5;
     const px = c + Math.cos(a) * dist;
     const py = c + Math.sin(a) * dist;
     const len = 2.4 + (i % 2);
@@ -553,11 +580,16 @@ function bossCoreFrame(stage: number): string[] {
       for (let s = -w; s <= w; s += 0.5) {
         const x = px + Math.cos(a) * k - Math.sin(a) * s;
         const y = py + Math.sin(a) * k + Math.cos(a) * s;
+        if (Math.hypot(x - c, y - c) < rCore + 1.4) continue;
         put(x, y, Math.abs(k) < 0.8 ? 19 : 20);
       }
     }
   }
-  return outlineAndRim(g);
+  const rows = outlineAndRim(g);
+  // M10 #5219: Die Lichtkante von oben-links wird im Boss-Frame auf Laterne (21)
+  // gemappt statt Knochenhell (11) — 11 ist near-white und ließ den Kern
+  // ausbrennen; die Lichtkante selbst bleibt erhalten.
+  return rows.map((r) => r.replace(/b/g, charOf(21)));
 }
 
 function thornFrame(stage: number): string[] {
@@ -1004,6 +1036,27 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
   ])),
 };
+
+/**
+ * M10-Lesbarkeit (Karten #5219/#5220, Blocker "Boss-FX-Kontrast"): Boss-spezifische
+ * Effekt-Basen. Nur Keys, die ausschliesslich von Boss-Pfaden gespawnt werden
+ * (fx_boss_core: Boss-Auftritt/-Tod); geteilte Keys (fx_shock, fx_halo) bleiben
+ * normale FX. Das FxSystem nutzt den Schluessel fuer Mindest-Alpha-Boden und
+ * LOD-Ausnahmen — ohne Anfassung von Run.ts/BossSystem.
+ */
+export const BOSS_FX_BASES: readonly string[] = ["fx_boss_core"];
+
+const bossFxKeySet = new Set<string>(BOSS_FX_BASES);
+
+/** true, wenn Basis- oder Frame-Key ein Boss-spezifischer Effekt ist. */
+export function isBossFxKey(key: string | undefined | null): boolean {
+  if (!key) return false;
+  if (bossFxKeySet.has(key)) return true;
+  for (const base of bossFxKeySet) {
+    if (key.startsWith(`${base}_`)) return true;
+  }
+  return false;
+}
 
 // ── M10-Overdraw-Deckel fuer additive FX ────────────────────────────────────
 // Attribution (shots/m10-fx-overdraw-attribution.json): FX sind bei M25-780@3

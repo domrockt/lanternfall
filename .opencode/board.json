@@ -5942,27 +5942,38 @@
       "id": 5218,
       "title": "m10-boss-fx-contrast #1: Ist-Zustand — Baseline-Shots + Kontrast-JSON (6 Bosse x 640/780)",
       "description": "Abnahmekriterium: scripts/m10-boss-fx-contrast.mjs erzeugt für alle 6 Bosse bei 640x360 und 780x360@3 je einen Screenshot im Horde-Kontext (>= 200 Gegner) mit aktivem Boss-FX (fx_boss_core/fx_shock) sowie shots/m10-boss-fx-contrast-baseline.json mit Luminanz-Spread (p95-p05) Boss-Effekt-Crop vs. Hintergrund-Crop + Near-White-% je Boss. Owner: vfx-artist, Kontrolleur: vfx-check.",
-      "column": "doing",
+      "column": "review",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T20:28:40Z",
           "by": "build",
           "text": "todo → doing: m10-boss-fx-contrast: Mess-Skript + Baseline-Lauf (6 Bosse x 640/780 im Horde-Kontext)"
+        },
+        {
+          "at": "2026-11-27T20:45:10Z",
+          "by": "build",
+          "text": "doing → review: m10-boss-fx-contrast: Mess-Skript + Baseline 12/12 Runs (284 Gegner, 0 JS-Fehler), JSON+PNG in Commit 8cfc901. Offener Punkt: Freeze in FX-Fruehphase (konservativ, konsistent fuer Vorher/Nachher)."
         }
       ],
       "created": "2026-11-27T20:24:07Z",
-      "updated": "2026-11-27T20:28:40Z"
+      "updated": "2026-11-27T20:45:10Z"
     },
     {
       "id": 5219,
       "title": "m10-boss-fx-contrast #2: Hebel 1 gen-fx.ts — dunkle Kern-Kontur + Offset-Outline für Boss-FX",
       "description": "Abnahmekriterium: bossCoreFrame (fx_boss_core) bekommt geschlossene 1-px-Tintenkontur um den Glutkern + 1-px versetzte Offset-Outline (Technik wie Ember-Fix #2879), nur Palettenfarben, binäres Alpha; Unit-Test in tests/boss-fx-contrast.test.ts prüft Kontur-Regel (Kontrast Kern vs. Kontur >= 5:1, Near-White <= 4,16 % im Frame). Normale FX-Keys unverändert. Owner: vfx-artist, Kontrolleure: vfx-check + test-auditor.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:45:10Z",
+          "by": "build",
+          "text": "todo → doing: m10-boss-fx-contrast: Hebel 1 - bossCoreFrame mit Tintenkontur + Offset-Outline"
+        }
+      ],
       "created": "2026-11-27T20:24:07Z",
-      "updated": "2026-11-27T20:24:07Z"
+      "updated": "2026-11-27T20:45:10Z"
     },
     {
       "id": 5220,
