@@ -1,0 +1,103 @@
+# Nachabnahme C — 2026-11-27 (3. Re-Abnahme: Drain-Welle)
+
+> ## PIN (gesperrter Prüfstand)
+> **PIN = `43fd9eb7ef8ddb8a03fa26b66c62acd31a907dea`**
+> (`git rev-parse main` am 2026-11-27T20:29:24Z — main-HEAD „Board: Lane-Karten #2679 #2678
+> …“). Alle Prüfungen laufen auf diesem Commit (Worktree
+> `/home/ai/games/lf-lanes/m10-reacceptance-c`, Branch `m10-reacceptance-c`).
+> Diese Lane hat main **nicht** verändert (keine Commits, keine Merges, kein Spielcode/Tests).
+>
+> Auftrag: Nachabnahme 3 nach der Merge-Drain-Welle. Das Briefing nannte 11 Lane-Merges
+> ohne Abnahme-Beleg (Nachtrag 20:04Z: + m10-separation-budget = 12); zum Startzeitpunkt
+> (PIN 43fd9eb) waren es **19** — der Drain lief nach Briefing-Erstellung weiter. Alle 19
+> sind in `docs/lanes/m10-reacceptance-c.md` (Zuordnungstabelle) einem Kriterium/Beleg
+> zugeordnet, damit kein Fix ohne Beleg bleibt.
+>
+> **Renderer-Pflicht (Wunsch Dom 19:20Z):** Jeder FPS-Beleg nennt den WebGL-Renderer-String.
+> Belege mit SwiftShader sind ungültig und werden nur als Vorher-Vergleich geführt
+> (iGPU aktiv seit 19:13Z).
+
+## K1 — Basis auf PIN (tsc, Tests, Inhalte, Build)
+
+| Zeit (UTC) | Befehl | Ergebnis | Urteil |
+|---|---|---|---|
+| 2026-11-27T20:32Z | `npx tsc --noEmit` | rc=0, keine Fehler | **PASS** |
+| 2026-11-27T20:33Z | `npm test` (vitest run) | **587 Tests in 58 Dateien, 0 fail**, 1,82 s | **PASS** |
+| 2026-11-27T20:32Z | `node scripts/acceptance-count.mjs` | `ok:true`, **30/6/6/6/6/2** (Soll = Ist) | **PASS** |
+| 2026-11-27T20:34Z | `npm run build` | rc=0, `✓ built in 413ms`, bekannte Chunk-Warnung >500 kB | **PASS** |
+
+**Urteil K1: PASS** (gegenüber Nachabnahme B: 446→587 Tests, 42→58 Dateien — 19 Lane-Merges
+brachten u. a. death-frames, fx-add-cap, evo-signature-calls, passive-stack,
+separation-budget, view-width, chest-arrow, enemy-run-frames Tests mit).
+
+## K2 — Renderer-Probe (iGPU-Nachweis)
+
+`shots/qa-reaccc-renderer.json` (2026-11-27T20:34:59Z, frisch auf PIN):
+
+| Feld | Wert |
+|---|---|
+| renderer | **„ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)“** |
+| vendor | „Google Inc. (Intel)“ |
+| powerPreference | high-performance |
+| fps | target 60, cappedAt60 (erwartetes 60-FPS-Cap) |
+
+**Urteil K2: PASS** — exakt der erwartete iGPU-String. Kein Beleg dieser Nachabnahme
+nutzt SwiftShader.
+
+## K3 — verify:final
+
+| Zeit (UTC) | Befehl | Ergebnis | Urteil |
+|---|---|---|---|
+| 20:35–20:45Z | `node scripts/verify-final.mjs` | **7/7 PASS**, rc=0, 0 JS-Fehler | **PASS** |
+
+Belege: `shots/qa-reaccc-final-verify.json`, `shots/qa-reaccc-final-options-mute.png`,
+`shots/qa-reaccc-final-results-victory.png`.
+
+## K4 — verify-input (Touch/Gamepad/Tastatur)
+
+Erster Lauf (20:41Z, parallel zur Probe-Kette auf demselben Host): **27/28**,
+FAIL „Tastatur: ESC setzt fort“ (`{"paused":true,"keys":["Escape"],"listeners":1,
+"optionsVisible":false}`), rc=1 — Beleg `shots/qa-reaccc-verify-input.json` (Lauf 1).
+
+**Re-Run (20:52Z) ohne parallele GPU-Last:** erneut **27/28**, derselbe Check FAIL mit
+dieselben Details (`paused:true, keys:["Escape"], listeners:1, optionsVisible:false`) —
+Beleg `shots/qa-reaccc-verify-input-run2.json`. Der Befund ist damit **stabil
+reproduzierbar** und kein Last-Artefakt: ESC beendet den Pause-Zustand auf dem PIN nicht.
+
+| Zeit (UTC) | Befehl | Ergebnis | Urteil |
+|---|---|---|---|
+| 20:41Z | `node scripts/verify-input.mjs --tag qa-reaccc` | **27/28**, 1 FAIL (Tastatur: ESC setzt fort) | **FAIL** |
+| 20:52Z | `node scripts/verify-input.mjs --tag qa-reaccc2` (Re-Run, ruhiger Host) | **27/28**, derselbe FAIL | **FAIL (reproduziert)** |
+
+**Urteil K4: FAIL** — Abnahme misst, sie repariert nicht: Der Befund geht als Folge-Karte
+(`m10-reacceptance-c-Folge: verify-input FAIL „Tastatur: ESC setzt fort“`, Board backlog)
+an den Lead. Letzter bekannter 28/28-Stand war die erste Nachabnahme (13:43Z, main
+@ `38c21c4`); alle 19 Merges des Drains liegen danach. Kriterium „verify-input 28/28“
+auf dem PIN: **nicht erfüllt (27/28, 1 stabiler FAIL)**.
+
+## K5 — Visuelle Belege der geänderten Bereiche (Neuläufe auf PIN)
+
+| Bereich | Skript | Belege |
+|---|---|---|
+| Hazard-Warnung (Fairness, MIN_WARN_S 0,45) | `scripts/m10-hazard-fairness.mjs` | `shots/qa-reaccc-hazard-fairness.json` + `-warnframe.png` |
+| Results-Screen (Overlap, 640 + 780@3, stress12) | `scripts/m10-results-overlap.mjs --tag qa-reaccc` | `shots/qa-reaccc-results-overlap-*.png` + `.json` |
+| Chest-Arrow (Randpfeil ab Spawn) | `scripts/m10-chest-arrow.mjs --out shots/qa-reaccc-chest-arrow.json --shots` | `shots/qa-reaccc-chest-arrow.json` + `-edge/-inside.png` |
+| Android-Audit-Zahlen | `scripts/android-audit.mjs` | `shots/qa-reaccc-android-audit.json`, Log `~/tmp/m10-reacceptance-c/android-audit.txt` |
+| Renderer | Probe | `shots/qa-reaccc-renderer.json` |
+| Passive-Math | Zieldatei auf PIN | `shots/m10-passive-math-caps.json` (22 checks, 0 violations) + `tests/passive-stack.test.ts` grün |
+| Boss-Onscreen | Zieldateien auf PIN | `shots/m10-boss-onscreen-after.json` + 12 Spawn-Shots `shots/m10-boss-onscreen-shots/` |
+| Enemy-Frame-Cadence / Death-Frames / FX-ADD / Evo-Signatur / View-Width / Separation / Heap-Margin | Unit-Zielläufe | 72/72 grün (`tests/{enemy-run-frames,death-frames,fx-add-cap,evo-signature-calls,view-width,separation-budget,passive-stack,chest-arrow,heap-margin}.test.ts`-Batch) |
+
+## K6 — FPS-Gates (iGPU, unter flock /home/ai/games/.lf-perf.lock)
+
+(Läufe folgen.)
+
+## K7 — 30-min-Echtzeitlauf (A4)
+
+Der iGPU-Beleg von m10-realtime-stability (Lauf 1: 18:20–18:50Z) liegt **vor** 19:13Z und
+trägt keinen Renderer-String → keine Übernahme. Neuer 30-min-Lauf auf iGPU in dieser Lane:
+(siehe unten)
+
+## Gesamturteil
+
+(folgt)
