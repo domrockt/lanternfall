@@ -1,0 +1,77 @@
+{
+  "url": "http://127.0.0.1:5635/?debug=1&seed=21",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "setSuppressLevelUps",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "horror",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "centipede",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "gargoyle",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "reaper_bat",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "abom",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "voidcaller",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "knight",
+        14
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "spider",
+        14
+      ]
+    }
+  ],
+  "out": "shots/m9-art-enemies-04-walk.png",
+  "gif": "shots/m9-art-enemies-04-walk.gif",
+  "jsErrors": []
+}
