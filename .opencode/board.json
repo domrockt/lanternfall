@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4182,
+  "next": 4219,
   "cards": [
     {
       "id": 1,
@@ -5010,6 +5010,27 @@
       ],
       "created": "2026-11-27T18:05:08Z",
       "updated": "2026-11-27T18:05:19Z"
+    },
+    {
+      "id": 4218,
+      "title": "m10-ground-props-batch: Props/Ripples in feste Batch-Layer (Vorher/After/Doku)",
+      "description": "Abnahmekriterium: 640/M25 Median >= 58 FPS oder >= 2 ms/Frame Render-Gewinn; 780@3 >= 46,5; Draw-Call-Kandidaten < 300/Frame; npm test gruen; Vorher-/Nachher-JSONs (Median aus 3 Laeufen) committet.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T18:19:30Z",
+          "by": "build",
+          "text": "[Supervisor] bestaetigt: Ursache war Test-Setup (Phaser-Import braucht window, kein jsdom) -> Helfer phaserfrei nach src/gfx/propLayers.ts gezogen; tsc + vitest 4/4 gruen. Vorher-Messung committet (ef6c1f8: 640 49,3 FPS/925 Kandidaten; 780 39,0/1139), Fix committet (8bb0f93). Nachher-Messung (3 Laeufe) laeuft unter flock."
+        },
+        {
+          "at": "2026-11-27T18:56:49Z",
+          "by": "build",
+          "text": "doing → review: Fix+Messung+Doku committet (8bb0f93, 840a3b0, 6230fbd). PASS: Draw-Call-Kandidaten 925->75 (640) / 1139->85 (780@dpr3), <300; npm test 438/438, Build gruen, 0 JS-Fehler. FAIL (ehrlich dokumentiert): 640/M25 48,5 vs Ziel 58, 780@3 40,3 vs 46,5; Render-Pfad 5,11->4,09 ms (<2 ms). Befund: submit-limitiert (~900 Quads), vsync-Quantisierung; Composite bereits mit AE 0 widerlegt. FPS-Ziele = Folgekarte fuer Lead. Gesehen: after-PNGs (640/780, je 3) zeigen Szene mit Props/Ripples, keine JS-Fehler."
+        }
+      ],
+      "created": "2026-11-27T18:19:26Z",
+      "updated": "2026-11-27T18:56:49Z"
     }
   ]
 }
