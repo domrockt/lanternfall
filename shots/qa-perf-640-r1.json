@@ -1,0 +1,48 @@
+{
+  "targetFps": 55,
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "dpr": 1,
+  "view": {
+    "internal": [
+      480,
+      360
+    ],
+    "css": [
+      480,
+      360
+    ],
+    "dpr": 1
+  },
+  "burst": {
+    "fps": 49.3,
+    "frames": 494,
+    "elapsedMs": 10011,
+    "worstFrameMs": 50,
+    "minEnemies": 500,
+    "avgEnemies": 500,
+    "targetEnemies": 500,
+    "measuredFps": 48.4,
+    "level": 29,
+    "kills": 2421,
+    "passed": false
+  },
+  "minute25": {
+    "fps": 41.4,
+    "frames": 415,
+    "elapsedMs": 10031,
+    "worstFrameMs": 50,
+    "minEnemies": 300,
+    "avgEnemies": 300,
+    "targetEnemies": 300,
+    "measuredFps": 40.9,
+    "time": 1500.1,
+    "level": 46,
+    "kills": 16545,
+    "passed": false
+  },
+  "jsErrors": [],
+  "passed": false
+}

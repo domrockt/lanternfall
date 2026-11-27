@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2462,
+  "next": 2499,
   "cards": [
     {
       "id": 1,
@@ -3712,6 +3712,21 @@
       ],
       "created": "2026-11-27T06:11:04Z",
       "updated": "2026-11-27T06:11:37Z"
+    },
+    {
+      "id": 2498,
+      "title": "[fa-01] Gesamtlauf M8-display+M9: build, Tests, Count, 30-min-Sieg, perf 640/780",
+      "description": "Beleg-Dokument docs/qa/final-2026-11-27.md auf main@<SHA>: npm run build grün; npm test mit Testzahl und 0 fail; acceptance-count 30/6/6/6/6/2; verify:final 7/7 ohne JS-Fehler; 30-min-autoPlay (fullrun) mit 6 Bossen 300–1800 s, 6 Truhen, >=1 Evolution, Sieg, 0 JS-Fehler; perf 640x360 und 780x360 je >=3 Burst-Läufe (Min-Wert zählt) und Minute-25. Abnahme: jede Zeile mit Befehl, Zahl, Zeitstempel, Urteil; Abweichung >=5 % gegen ACCEPTANCE.md markiert; ein <55-FPS-Befund wird blocked mit Messwerten, nicht wegdiskutiert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T06:57:46Z",
+          "by": "build",
+          "text": "todo → doing: 2026-11-27T06:50Z: Build grün (2204ddc), 301 Tests 0 fail, counts 30/6/6/6/6/2, verify:final 7/7, fullrun 2x fpsMin 37,9/40,2 (<55), perf 640 Burst 46,3–49,3 (<55), 780 Burst 55,9–57,8 (PASS). 640/780 Minute-25 37,8–47,3. Ergebnis wird blocked mit Belegen."
+        }
+      ],
+      "created": "2026-11-27T06:57:26Z",
+      "updated": "2026-11-27T06:57:46Z"
     }
   ]
 }
