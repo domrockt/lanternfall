@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import type Phaser from "phaser";
 import {
   BAKED_GUTTER,
   BAKED_PAD,
@@ -89,10 +89,19 @@ function registerBaked(
     scene.textures.addCanvas(key, source as HTMLCanvasElement);
     return;
   }
-  const tex = new Phaser.Textures.Texture(scene.textures, key, gl as never, page.canvas.width, page.canvas.height);
+  // TextureManager.create(key, gl, pageWidth, pageHeight) entspricht exakt dem
+  // frueheren `new Phaser.Textures.Texture(...)` + manuellem list-Eintrag — mit
+  // EXPLIZITEN Seitenmassen statt der Wrapper-Masse (addGLTexture liest die aus
+  // dem GL-Wrapper, was an Glyphkanten 1px-UV-Abweichungen verursachte). Damit
+  // bleibt die Datei frei von Phaser-Wert-Importen: Tests, die nur charIndex/
+  // SPRITE_GRIDS aus textures.ts ziehen, laden kein window mehr (Node-Tests).
+  const tex = scene.textures.create(key, gl as never, page.canvas.width, page.canvas.height);
+  if (!tex) {
+    scene.textures.addCanvas(key, source as HTMLCanvasElement);
+    return;
+  }
   tex.remove("__BASE");
   tex.add("__BASE", 0, rect.x, rect.y, rect.w, rect.h);
-  (scene.textures as unknown as { list: Record<string, Phaser.Textures.Texture> }).list[key] = tex;
 }
 
 /**
