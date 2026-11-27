@@ -57,6 +57,8 @@ export interface EnemyShotStats {
   /** Vorwarnung abgebrochen: Schütze tot/recycelt bzw. Ursprung aus dem View. */
   cancelledShooterDeath: number;
   cancelledOffscreen: number;
+  /** Verworfen, weil kein Telegraph-Sprite mehr frei war (Pool-Cap) — nie stumm feuern. */
+  cancelledNoTelegraph: number;
   /** Schüsse mit Vorwarnung >= 0,3 s. */
   windupOk: number;
   active: number;
@@ -74,8 +76,8 @@ const TELEGRAPH_POOL_CAP = 96;
  */
 const HD_PREFIX = "enemy_shot_hd_";
 const HD_GRIDS: Record<string, string[]> = {
-  // 3 Grüntöne (31 nur als 1-px Lichtkante oben-links) + 1-px Tropfen-Tail unten:
-  // eigene Silhouette zu fire, unteres Randstück aufgehellt (kein 29 mehr an der Kante).
+  // 3 Grüntöne: 31 (v) ist die Füllung, 13 (d) die 1-px-Lichtkante; + 1-px Tropfen-Tail
+  // unten: eigene Silhouette zu fire, unteres Randstück aufgehellt (kein 29 mehr an der Kante).
   spit: ["...000...", "..0dd0...", ".0dvvvd0.", "0dvvvvvd0", "0dvvvvvd0", "0dvvvvvd0", ".0dvvvd0.", "..0dvd0..", "...0v0...", "....v...."],
   // 9x7 Knochenpaar, asymmetrischer 1-px-Lichtpunkt (13 nur oben-links), 3 Stufen.
   bone: [".00...00.", "0db0.0bb0", "0baa0bbb0", ".0baaab0.", "0baa0baa0", "0ba0.0ba0", ".00...00."],
@@ -134,6 +136,7 @@ export class EnemyProjectilePool {
   private readonly telegraphFree: Phaser.GameObjects.Image[] = [];
   private readonly scene: Phaser.Scene;
   private readonly stats: EnemyShotStats;
+  private readonly debugHook = () => this.snapshot();
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -141,12 +144,12 @@ export class EnemyProjectilePool {
     this.stats = {
       attempted: 0, fired: 0, hits: 0,
       offscreenAttempts: 0, offscreenFired: 0, offscreenHits: 0,
-      cancelledShooterDeath: 0, cancelledOffscreen: 0,
+      cancelledShooterDeath: 0, cancelledOffscreen: 0, cancelledNoTelegraph: 0,
       windupOk: 0, active: 0, pending: 0,
     };
-    // Debug-Hook für Sim-/Abnahme-Skripte (Run.ts bleibt unangetastet).
-    (globalThis as unknown as Record<string, unknown>).__lfEnemyShots =
-      () => this.snapshot();
+    // Debug-Hook für Sim-/Abnahme-Skripte (Run.ts bleibt unangetastet);
+    // clear() räumt ihn wieder ab, damit kein Pool-Referenz leakt.
+    (globalThis as unknown as Record<string, unknown>).__lfEnemyShots = this.debugHook;
   }
 
   statSnapshot(): EnemyShotStats {
@@ -176,12 +179,15 @@ export class EnemyProjectilePool {
       return null;
     }
     const telegraph = this.acquireTelegraph(texture);
-    if (telegraph) {
-      telegraph.setPosition(Math.round(opts.x), Math.round(opts.y));
-      telegraph.setScale(1);
-      telegraph.setAlpha(TELEGRAPH_ALPHA_START);
-      telegraph.setVisible(true).setActive(true);
+    if (!telegraph) {
+      // Pool-Cap erreicht: lieber verwerfen als nach der Vorwarnung stumm zu feuern.
+      this.stats.cancelledNoTelegraph += 1;
+      return null;
     }
+    telegraph.setPosition(Math.round(opts.x), Math.round(opts.y));
+    telegraph.setScale(1);
+    telegraph.setAlpha(TELEGRAPH_ALPHA_START);
+    telegraph.setVisible(true).setActive(true);
     this.pending.push({
       x: opts.x,
       y: opts.y,
@@ -375,6 +381,9 @@ export class EnemyProjectilePool {
       this.free.push(shot);
     }
     this.active.length = 0;
+    // Debug-Hook nur abbauen, wenn er noch diesem Pool gehört (kein Leak).
+    const g = globalThis as unknown as Record<string, unknown>;
+    if (g.__lfEnemyShots === this.debugHook) delete g.__lfEnemyShots;
   }
 
   get count(): number {

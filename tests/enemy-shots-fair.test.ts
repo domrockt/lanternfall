@@ -217,3 +217,37 @@ describe("M10 Gegnerschüsse fair — Pool-Pfad (spawn/update)", () => {
     expect(stats.fired).toBe(0);
   });
 });
+
+describe("M10 Gegnerschüsse fair — Telegraph-Pool + Aufräumen", () => {
+  it("verwirft Schüsse, wenn der Telegraph-Pool erschöpft ist (nie stumm feuern)", () => {
+    const scene = fakeScene();
+    const pool = new EnemyProjectilePool(scene);
+    scene.enemies.active = [{ x: 320, y: 180, alive: true }];
+    for (let i = 0; i < 96; i++) {
+      pool.spawn({ x: 20 + (i % 300), y: 20 + ((i * 7) % 300), vx: 10, vy: 0, damage: 1, texture: "enemy_shot_spit" });
+    }
+    expect(pool.statSnapshot().pending).toBe(96);
+    const extra = pool.spawn({ x: 330, y: 190, vx: 10, vy: 0, damage: 1, texture: "enemy_shot_spit" });
+    expect(extra).toBeNull();
+    const stats = pool.statSnapshot();
+    expect(stats.cancelledNoTelegraph).toBe(1);
+    expect(stats.fired).toBe(0);
+    // Schützen an allen Ursprüngen lebend halten, dann laufen alle 96 nach der Vorwarnung los.
+    scene.enemies.active = Array.from({ length: 96 }, (_, i) => ({
+      x: 20 + (i % 300), y: 20 + ((i * 7) % 300), alive: true,
+    }));
+    pool.update(0.4, 0, 0, noopHit);
+    expect(pool.statSnapshot().fired).toBe(96);
+  });
+
+  it("clear() räumt pending, Telegraphs und den Debug-Hook ab", () => {
+    const scene = fakeScene();
+    const pool = new EnemyProjectilePool(scene);
+    scene.enemies.active = [{ x: 120, y: 60, alive: true }];
+    pool.spawn({ x: 120, y: 60, vx: 100, vy: 0, damage: 3, texture: "enemy_shot_bone" });
+    expect(pool.statSnapshot().pending).toBe(1);
+    pool.clear();
+    expect(pool.statSnapshot().pending).toBe(0);
+    expect((globalThis as unknown as Record<string, unknown>).__lfEnemyShots).toBeUndefined();
+  });
+});
