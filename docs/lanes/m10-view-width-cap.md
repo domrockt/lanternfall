@@ -33,12 +33,13 @@ kopiert nach `shots/m10-view-width-before-*.json`; 3 Läufe je Viewport.
 | 640×360 @1 | 1 | 480×360 | 59,9 | 500 | 54,7 | 300 | 0 |
 | 640×360 @1 | 2 | 480×360 | 60,1 | 500 | 51,8 | 300 | 0 |
 | 640×360 @1 | 3 | 480×360 | 59,8 | 500 | 55,4 | 300 | 0 |
-| 780×360 @3 | 1 | – | – | – | – | – | – |
-| 780×360 @3 | 2 | – | – | – | – | – | – |
-| 780×360 @3 | 3 | – | – | – | – | – | – |
+| 780×360 @3 | 1 | 780×360 | 55,9 | 500 | 44,7 | 300 | 0 |
+| 780×360 @3 | 2 | 780×360 | 47,5 | 500 | 30,2 | 300 | 0 |
+| 780×360 @3 | 3 | 780×360 | 36,9 | 500 | 31,9 | 300 | 0 |
 
-Median Minute-25 bei 640×360@1: **54,7 FPS** (Ziel ≥ 55). Baseline-Reproduktion der Rootcause
-(56,4 FPS im Rootcause-Lauf) ist damit auf diesem Rechner etwas langsamer, aber in derselben Größenordnung.
+Median Minute-25 bei 640×360@1: **54,7 FPS** (Ziel ≥ 55). Median Minute-25 bei 780×360@3: **31,9 FPS**.
+Die drei 780-Läufe streuen stark (44,7 / 30,2 / 31,9) — parallele Lanes und CPU-Last; die Rootcause-Lane
+hatte 54,5 FPS avg gemessen. Maßgeblich ist hier der **Vorher/Nachher-Vergleich desselben Rechners**.
 
 ## 2. Nachher (nach Fix)
 
