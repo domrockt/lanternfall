@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-11-27T19:03:43.245Z",
+  "scale": 4,
+  "frames": {
+    "fx_death_bone": {
+      "file": "shots/m10-death-frames-bone.png",
+      "short": "bone",
+      "w": 9,
+      "h": 9,
+      "frames": 4
+    },
+    "fx_death_blob": {
+      "file": "shots/m10-death-frames-blob.png",
+      "short": "blob",
+      "w": 9,
+      "h": 9,
+      "frames": 4
+    },
+    "fx_death_void": {
+      "file": "shots/m10-death-frames-void.png",
+      "short": "void",
+      "w": 9,
+      "h": 9,
+      "frames": 4
+    },
+    "fx_death_dust": {
+      "file": "shots/m10-death-frames-dust.png",
+      "short": "dust",
+      "w": 9,
+      "h": 9,
+      "frames": 4
+    },
+    "fx_death_fire": {
+      "file": "shots/m10-death-frames-fire.png",
+      "short": "fire",
+      "w": 9,
+      "h": 9,
+      "frames": 4
+    },
+    "fx_boss_core": {
+      "file": "shots/m10-death-frames-boss.png",
+      "short": "boss",
+      "w": 32,
+      "h": 32,
+      "frames": 6
+    }
+  },
+  "chaos": null,
+  "note": "Frame-Quelle: deathFrameSets() in src/gfx/gen-fx.ts (Single Source of Truth)."
+}

@@ -46,6 +46,30 @@ function charCode(ch: string): number {
   return Math.max(0, Math.min(31, code));
 }
 
+/** Ein Frame-Set: Groesse + Frames als Zeichen-Zeilen ("." = transparent). */
+export interface FxFrameSet {
+  w: number;
+  h: number;
+  frames: string[][];
+}
+
+/**
+ * Alle Todes-/Boss-Frames als exportierbare Sets — Single Source of Truth fuer
+ * createFxTextures (Texturen), tests/death-frames.test.ts (Guards) und
+ * scripts/m10-death-frames.mjs (Kontakt-Boegen). Keine Sichtbelegung im Spiel.
+ */
+export function deathFrameSets(): Record<string, FxFrameSet> {
+  return {
+    fx_death_bone: { w: 9, h: 9, frames: [0, 1, 2, 3].map(boneDeathFrame) },
+    fx_death_blob: { w: 9, h: 9, frames: [0, 1, 2, 3].map(blobDeathFrame) },
+    fx_death_void: { w: 9, h: 9, frames: [0, 1, 2, 3].map(voidDeathFrame) },
+    fx_death_dust: { w: 9, h: 9, frames: [0, 1, 2, 3].map(dustDeathFrame) },
+    fx_death_fire: { w: 9, h: 9, frames: [0, 1, 2, 3].map(fireDeathFrame) },
+    // Boss-Tod-Stufe: 32x32 mit 3-Stufen-Kern, Kontur, Ringen und Splittern.
+    fx_boss_core: { w: 32, h: 32, frames: [0, 1, 2, 3, 4, 5].map(bossCoreFrame) },
+  };
+}
+
 function addFrames(scene: Phaser.Scene, base: string, def: FxDef): void {
   def.frames.forEach((rows, i) => addFrame(scene, i === 0 ? base : `${base}_${i + 1}`, rows, def.w, def.h));
 }
@@ -277,38 +301,263 @@ function shockFrame(stage: number, size = 48): string[] {
   return out;
 }
 
-/** Kleine Shard-Motive für Todes-Effekte (4 Klassen). */
-const DEATH_MOTIFS: Record<string, { ramp: number[]; glyph: string; shape: "bone" | "blob" | "void" | "dust" }> = {
-  bone: { ramp: [10, 11, 7], glyph: "K", shape: "bone" },
-  blob: { ramp: [30, 31, 29], glyph: "o", shape: "blob" },
-  void: { ramp: [5, 6, 8], glyph: "V", shape: "void" },
-  dust: { ramp: [8, 9, 7], glyph: "D", shape: "dust" },
-};
+// ---------------------------------------------------------------------------
+// M10-death-fx-frames: Todes-Frames mit eigenen Silhouetten (Art-Befund Runde 2,
+// FAIL 2,5/5: alle Klassen wirkten als "expandierender Ring"). Jede Klasse hat
+// jetzt eine eigene Formensprache, deterministisch (kein Math.random):
+// - blob: dunkler Koerper + harter nightDeep-Rim + grosser weisser Kern + Tropfen
+// - bone: 2-3 echte Knochenformen (Schaft + Endknubbel), zerfallen nach unten
+// - dust: Ascheflakes (unregelmaessige Flocken, schraeg aufstiebend)
+// - fire: Flammenzungen mit abloesenden Spitzen + wenigen Glimmresten
+// - void: aufsteigende Schwaden-Saeulen (statt Ring)
+// ---------------------------------------------------------------------------
 
-function deathFrame(shape: "bone" | "blob" | "void" | "dust", stage: number): string[] {
-  const w = 9;
-  const h = 9;
-  const out: string[] = [];
-  const ramp = DEATH_MOTIFS[shape].ramp;
-  for (let y = 0; y < h; y++) {
-    let row = "";
-    for (let x = 0; x < w; x++) {
-      const dx = x - 4;
-      const dy = y - 4;
+const DEATH_GRID = 9;
+
+function deathGrid(): string[][] {
+  return Array.from({ length: DEATH_GRID }, () => Array(DEATH_GRID).fill("."));
+}
+
+function deathPx(g: string[][], x: number, y: number, ch: string): void {
+  const xi = Math.round(x);
+  const yi = Math.round(y);
+  if (xi < 0 || yi < 0 || xi >= DEATH_GRID || yi >= DEATH_GRID) return;
+  g[yi][xi] = ch;
+}
+
+function deathRows(g: string[][]): string[] {
+  return g.map((r) => r.join(""));
+}
+
+/** fx_death_blob (burst): dunkler Koerper, nightDeep-Rim, weisser Kern, Tropfen. */
+function blobDeathFrame(stage: number): string[] {
+  const g = deathGrid();
+  const cx = 4;
+  const cy = 4;
+  // Koerper quillt (0), reisst auf (1-2), restet als Klumpen (3).
+  // Spaete Stufen mit groesserem Rest (Art-Director Runde 3: dunkle Splitter
+  // verschwinden sonst auf Nachtgrund fast komplett).
+  const radius = [3.8, 3.4, 2.6, 1.8][stage];
+  for (let y = 0; y < DEATH_GRID; y++) {
+    for (let x = 0; x < DEATH_GRID; x++) {
+      const dx = x - cx;
+      const dy = y - cy;
       const d = Math.hypot(dx, dy);
-      const spread = 1 + stage * 1.1;
-      let on = false;
-      if (shape === "bone") on = Math.abs(dx) <= 1 && Math.abs(dy) < spread || stage > 1 && d < spread && (x + y + stage) % 3 === 0;
-      if (shape === "blob") on = d < spread && (x * 3 + y * 5 + stage) % 4 !== 0;
-      if (shape === "void") on = Math.abs(d - stage * 1.2) < 1.4 || stage === 0 && d < 2;
-      if (shape === "dust") on = d < spread && (x + y * 2 + stage * 3) % 2 === 0;
-      if (!on) row += ".";
-      else if (d < 1.5) row += "d";
-      else row += String.fromCharCode(97 + ramp[Math.min(ramp.length - 1, Math.floor(d / 4 * ramp.length))]);
+      const a = Math.atan2(dy, dx);
+      // Unregelmaessige, deterministische Silhouette (kein glatter Kreis-Ring).
+      const edge = radius + Math.sin(a * 5 + 1.1) * 0.45 + Math.sin(a * 9 - 0.6) * 0.25;
+      if (d > edge) continue;
+      if (d > edge - 1.0) { deathPx(g, x, y, charOf(1)); continue; } // harter nightDeep-Rim
+      if (d < 1.3) { deathPx(g, x, y, charOf(13)); continue; } // weisser Kern
+      if (d < 1.9) { deathPx(g, x, y, charOf(12)); continue; } // candleWhite-Uebergang
+      deathPx(g, x, y, (x * 7 + y * 13 + stage * 3) % 9 === 0 ? charOf(31) : charOf(30));
     }
-    out.push(row);
   }
-  return out;
+  // Grosse Tropfen: 4 feste Winkel, fliegen mit der Stufe nach aussen
+  // (2px-Kopf + Schweif + nightDeep-Rim davor).
+  const angles = [0.35, 1.95, 3.6, 5.2];
+  for (const ang of angles) {
+    const r = Math.min(4, 3.5 + stage * 0.55);
+    const ax = Math.cos(ang);
+    const ay = Math.sin(ang);
+    const px = cx + ax * r;
+    const py = cy + ay * r;
+    deathPx(g, px, py, charOf(31)); // Tropfkopf
+    deathPx(g, px - ay * 0.9, py + ax * 0.9, charOf(30)); // Kopf-Flanke
+    deathPx(g, px - ax, py - ay, charOf(30)); // Schweif
+    deathPx(g, px + ax, py + ay, charOf(1)); // Rim vor dem Kopf
+    // Glanzpunkt auf dem Kopf (lesbar auch auf Nachtgrund).
+    deathPx(g, px - ay * 0.9, py + ax * 0.9 - 1, charOf(12));
+  }
+  return deathRows(g);
+}
+
+/** fx_death_bone (crumble): 2-3 handgesetzte Knochenformen, Zerfall nach unten. */
+function boneDeathFrame(stage: number): string[] {
+  // Schaft = bone (a), Endknubbel = boneLight (b). Stufen: intakt → auseinander
+  // → gebrochen → Truemmer/Staub.
+  const frames: string[][][] = [
+    [[
+      ".........",
+      ".b.....b.",
+      ".baaaaab.",
+      ".b.....b.",
+      ".........",
+      "b.b...b.b",
+      ".a....a..",
+      ".a....a..",
+      "b.b...b.b",
+    ]],
+    [[
+      ".........",
+      "......a..",
+      "b......b.",
+      "baaaaab..",
+      "b......b.",
+      ".........",
+      "b.b...b.b",
+      ".a....a..",
+      ".a....a..",
+    ]],
+    [[
+      ".........",
+      ".........",
+      "b......b.",
+      "baaa..ab.",
+      "b......b.",
+      ".........",
+      "b.b......",
+      ".a....b.b",
+      ".a.....a.",
+    ]],
+    [[
+      ".........",
+      "....b....",
+      "..b.b....",
+      "..bab....",
+      ".........",
+      "......b.b",
+      ".a.....a.",
+      ".b.......",
+      ".........",
+    ]],
+  ];
+  return frames[Math.min(stage, 3)][0];
+}
+
+/** fx_death_dust (sputter-Staub): Ascheflakes — schraege Wind-Streifen, kein Ring. */
+function dustDeathFrame(stage: number): string[] {
+  const g = deathGrid();
+  // Zwei schraeg aufstiebende Streifen, mit der Stufe hoeher/duenner werdend.
+  for (let i = 0; i < 5; i++) {
+    const x = 1 + i + stage * 0.5;
+    const y = 7 - i - stage * 0.5;
+    if ((i + stage) % 4 !== 3) deathPx(g, x, y, charOf(9));
+    if ((i + stage) % 3 !== 2) deathPx(g, x + 1, y, charOf(8));
+    if ((i + stage * 2) % 4 === 0) deathPx(g, x, y - 1, charOf(15)); // Glimmrest
+  }
+  // Einzeln verwehende Flocken abseits der Streifen.
+  deathPx(g, 6.8, 1.6 + stage * 0.6, charOf(8));
+  deathPx(g, 0.9, 3.9 + stage * 0.8, charOf(9));
+  if (stage < 3) deathPx(g, 4.2, 2.4 + stage, charOf(8));
+  return deathRows(g);
+}
+
+/** fx_death_fire (sputter-Shard): Flammenzungen + abloesende Funken + Glimmreste. */
+function fireDeathFrame(stage: number): string[] {
+  const g = deathGrid();
+  // [x, hoehe, phase] — Zungen wachsen nach oben, Spitzen brechen heraus.
+  const tongues: Array<[number, number, number]> = [
+    [2.4, 4.2, 0], [4.5, 5.6, 1], [6.6, 3.8, 2],
+  ];
+  for (const [tx, hgt, ph] of tongues) {
+    const h = hgt + stage * 1.2;
+    const sway = Math.sin(ph * 2.1 + stage) * 0.7;
+    for (let yy = 0; yy <= h; yy += 0.5) {
+      const y = 8 - yy;
+      if (y < 0) break;
+      const taper = Math.max(0, 1 - yy / h);
+      const half = 0.4 + taper * 0.9;
+      const x = tx + sway * (yy / h);
+      const idx = yy < h * 0.3 ? 19 : yy < h * 0.7 ? 18 : 20; // heisser Kern, amber Spitze
+      for (let xx = -half; xx <= half; xx += 0.5) deathPx(g, x + xx, y, charOf(idx));
+    }
+    // Losgeloeste Zungen-Spitze als Funke (ab Stufe 2).
+    if (stage >= 2) deathPx(g, tx + sway, 8 - h - 1.4, charOf(20));
+  }
+  // Asche/Glimm im Sog der Zungen (dunkel, sparsam) — eigener Kontrast.
+  deathPx(g, 1.2, 6.5 - stage * 0.5, charOf(15));
+  deathPx(g, 7.8, 5.5 - stage * 0.7, charOf(8));
+  if (stage >= 1) deathPx(g, 3.4, 2.2 - stage * 0.4, charOf(16));
+  return deathRows(g);
+}
+
+/** fx_death_void (dissolve): ein geschwungener aufsteigender Schwaden + Nebenwisp. */
+function voidDeathFrame(stage: number): string[] {
+  const g = deathGrid();
+  // Haupt-Schwaden: unten breit, oben schmal, schwankt; loest sich in Punkten auf.
+  const top = 0.8 + stage * 1.6;
+  for (let y = 7.4; y >= top; y -= 0.5) {
+    const sway = Math.sin(y * 0.75 + stage * 1.1) * 0.8;
+    const frac = (7.4 - y) / Math.max(0.5, 7.4 - top);
+    const w = Math.max(0.45, 0.55 + frac * 0.9 - stage * 0.08);
+    for (let xx = -w; xx <= w; xx += 0.5) {
+      const x = 3.6 + sway + xx;
+      // Runde 3: Flaeche heller (fog statt fogBlue), Kern breiter — lesbar auf Nachtgrund.
+      deathPx(g, x, y, Math.abs(xx) < w * 0.5 ? charOf(9) : charOf(7));
+    }
+  }
+  // Abgeloeste Schwadenpunkte ueber der Spitze.
+  deathPx(g, 3.6 + Math.sin(stage * 1.3), top - 0.9, charOf(9));
+  if (stage >= 1) deathPx(g, 4.4, top - 0.2, charOf(7));
+  // Kleiner Nebenwisp rechts, folgt mit Versatz.
+  for (let y = 5.2 - stage * 0.7; y <= 6.8; y += 0.5) {
+    deathPx(g, 6.3 + Math.sin(y * 0.9 + stage), y, charOf(7));
+  }
+  return deathRows(g);
+}
+
+/**
+ * fx_boss_core (Boss-Tod-Stufe): 3-Stufen-Kern (lanternWhite → glow → amber,
+ * kollabiert), zwei expandierende Zackenringe, 8 radiale Splitter und harte
+ * ink-Kontur + Lichtkante — klar getrennt vom 9x9-Klassen-Shard (Blob).
+ */
+function bossCoreFrame(stage: number): string[] {
+  const size = 32;
+  const g: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const put = (x: number, y: number, idx: number): void => {
+    const xi = Math.round(x);
+    const yi = Math.round(y);
+    if (xi < 0 || yi < 0 || xi >= size || yi >= size) return;
+    g[yi][xi] = charOf(idx);
+  };
+  const c = (size - 1) / 2;
+  const t = stage / 5;
+  // 3-Stufen-Kern, schrumpft mit der Stufe (Kern kollabiert).
+  const rCore = [5.6, 5.0, 4.2, 3.4, 2.6, 1.8][stage];
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x - c, y - c);
+      if (d >= rCore) continue;
+      if (d < rCore * 0.45) put(x, y, 13);
+      else if (d < rCore * 0.75) put(x, y, 22);
+      else put(x, y, 20);
+    }
+  }
+  // Zwei expandierende Zackenringe (Flamme aussen, Glut innen).
+  for (let ring = 0; ring < 2; ring++) {
+    const rr = 7 + ring * 4.5 + t * (7 - ring * 2);
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const dx = x - c;
+        const dy = y - c;
+        const d = Math.hypot(dx, dy);
+        if (Math.abs(d - rr) > 2.2) continue;
+        const a = Math.atan2(dy, dx);
+        const jag = Math.sin(a * 7 + ring * 2.4 + stage) * 1.1;
+        const band = Math.abs(d - (rr + jag));
+        if (band < 0.9) put(x, y, ring === 0 ? 18 : 16);
+        else if (band < 1.6) put(x, y, ring === 0 ? 17 : 15);
+      }
+    }
+  }
+  // Acht radiale Splitter (Diamanten), fliegen mit der Stufe nach aussen.
+  for (let i = 0; i < 8; i++) {
+    const a = (i * Math.PI) / 4 + 0.39;
+    const dist = 5 + t * 9.5;
+    const px = c + Math.cos(a) * dist;
+    const py = c + Math.sin(a) * dist;
+    const len = 2.4 + (i % 2);
+    for (let k = -len; k <= len; k += 0.5) {
+      const w = Math.max(0, 1.3 - Math.abs(k) * 0.6);
+      for (let s = -w; s <= w; s += 0.5) {
+        const x = px + Math.cos(a) * k - Math.sin(a) * s;
+        const y = py + Math.sin(a) * k + Math.cos(a) * s;
+        put(x, y, Math.abs(k) < 0.8 ? 19 : 20);
+      }
+    }
+  }
+  return outlineAndRim(g);
 }
 
 function thornFrame(stage: number): string[] {
@@ -726,15 +975,8 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_orb", { w: 11, h: 11, frames: [0, 1, 2, 3].map(orbFrame) });
   addFrames(scene, "fx_pillar", { w: 26, h: 72, frames: [0, 1, 2, 3, 4].map((i) => pillarFrame(i)) });
   addFrames(scene, "fx_shock", { w: 48, h: 48, frames: [0, 1, 2, 3, 4, 5].map((i) => shockFrame(i)) });
-  addFrames(scene, "fx_death_bone", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("bone", i)) });
-  addFrames(scene, "fx_death_blob", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("blob", i)) });
-  addFrames(scene, "fx_death_void", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("void", i)) });
-  addFrames(scene, "fx_death_dust", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("dust", i)) });
-  // Boss-Kern: große Glut mit Knochenring (Intro/Tod)
-  addFrames(scene, "fx_boss_core", {
-    w: 32, h: 32,
-    frames: [0, 1, 2, 3, 4, 5].map((i) => blob(32, 32, [19, 18, 17, 16, 15], { core: 0.14 + i * 0.03, seed: i * 2.1 })),
-  });
+  // Todes-/Boss-Frames: eine Quelle fuer Texturen, Tests und Beleg-Skripte.
+  for (const [key, def] of Object.entries(deathFrameSets())) addFrames(scene, key, def);
   // Dunkler Rauchring für Zerfall
   addFrames(scene, "fx_dusk", { w: 20, h: 20, frames: [0, 1, 2].map((i) => ring(20, 20, [5, 4, 3], 0.55 - i * 0.1, i)) });
   // Staub/Asche für Tod-Klassen (klein, normal blend)
@@ -755,7 +997,7 @@ export function fxFrames(base: string, count: number): string[] {
 export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_fire: 6, fx_star: 3, fx_halo: 2, fx_ice: 4, fx_smear: 5, fx_bolt: 6,
   fx_seal: 5, fx_thorn: 3, fx_orb: 4, fx_pillar: 5, fx_shock: 6,
-  fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4,
+  fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4, fx_death_fire: 4,
   fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2,
   ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
     [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],

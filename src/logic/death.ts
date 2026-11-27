@@ -101,14 +101,15 @@ const BASE: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     spread: 22, tint: C.fogBlue, dustTint: C.nightMid,
     additive: true,
   },
-  // Feuer/Asche stiebt schnell und weit, heiß und additiv. Dunkle Asche-
-  // Kontur trennt die Funken von orangen Gegnern und Glut-Decals.
+  // Feuer/Asche stiebt schnell und weit, heiß und additiv. Shard = echte
+  // Flammenzungen (fx_death_fire), Staub = Ascheflakes (fx_death_dust).
+  // Dunkle Kontur (Rim) trennt die Funken von orangen Gegnern und Glut-Decals.
   sputter: {
-    shard: "fx_death_dust", dust: "fx_fire",
+    shard: "fx_death_fire", dust: "fx_death_dust",
     count: 20, dustCount: 10,
     life: 0.45, dustLife: 0.55,
     scaleFrom: 2.2, scaleTo: 0.3, dustScale: 1.1,
-    rim: "fx_death_dust", rimTint: C.nightDeep, rimScale: 1.12,
+    rim: "fx_death_fire", rimTint: C.nightDeep, rimScale: 1.12,
     spread: 165, tint: C.amber, dustTint: C.flameBright,
     additive: true,
   },
