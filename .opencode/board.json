@@ -3026,17 +3026,22 @@
       "id": 2080,
       "title": "m10-results-attribution: Layout Namensumbruch + Overlap 0",
       "description": "slotNameLines fuer 12 Waffennamen (max 2 Zeilen, vollstaendig) und Balkenbreite bei 640x360/1920x1080; messbare Ueberlappung Text vs Trennlinie/Banner = 0, Screenshot je Aufloesung. Abnahme: tests/results.test.ts prueft 0 Overlaps, shots/m10-results-attribution-{1920x1080,640x360}.png zeigen alle 12 Namen.",
-      "column": "doing",
+      "column": "review",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-27T03:40:02Z",
           "by": "build",
           "text": "todo → doing: Namensumbruch slotNameLines (max 2 Zeilen) + Layout-Overlap 0 + Screenshots 1920/640."
+        },
+        {
+          "at": "2026-11-27T04:55:28Z",
+          "by": "build",
+          "text": "doing → review: Commit eab1d1a (#2080): slotNameLines max 2 Zeilen, Header unter Untertitel (52+oy), Rows ab 70+oy, Wertspalte cx+214. layout-check.mjs PASS 1 Lauf: 12 rows, maxLines 2, fullNames true, overlaps 0 bei 640x360 und 1920x1080. Beleg shots/m10-results-attribution.json total=184959 bars=184959 delta=0% (15 Spielmin), stressProof 0 overlaps, 0 JS-Fehler. build+238 Tests gruen."
         }
       ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T03:40:02Z"
+      "updated": "2026-11-27T04:55:28Z"
     },
     {
       "id": 2081,
