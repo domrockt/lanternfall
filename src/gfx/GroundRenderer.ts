@@ -66,7 +66,8 @@ interface FogBank {
 }
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
-const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {  grove: [
+const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {
+  grove: [
     ["prop_tree_a", 0, 4],
     ["prop_stump", -19, 10],
     ["prop_bones", 20, 11],

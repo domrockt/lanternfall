@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2875,
+  "next": 2877,
   "cards": [
     {
       "id": 1,
@@ -4397,6 +4397,38 @@
       "notes": [],
       "created": "2026-11-27T12:13:24Z",
       "updated": "2026-11-27T12:13:24Z"
+    },
+    {
+      "id": 2875,
+      "title": "m10-ground-cost #3 Fix: gecachte Chunk-Textur + needsChunkRedraw",
+      "description": "GroundRenderer zeichnet sichtbare Terrain-Chunks in EINE gecachte Canvas-Textur, Redraw nur bei Dirty-Chunk/Nahtwechsel; reiner Helfer needsChunkRedraw in src/gfx/GroundRenderer.ts, Unit-Test tests/ground-cost.test.ts; Pixelgleichheit AE=0, Nachmessung FPS-Min >= +4 vs Baseline 44,7 (sonst als nicht wirksam verwerfen). Owner engine-dev, Kontrolle perf-check + reviewer.",
+      "column": "done",
+      "assignee": "build",
+      "notes": [
+        {
+          "at": "2026-11-27T12:26:59Z",
+          "by": "build",
+          "text": "Aus Lane m10-ground-cost uebernommen (lane #2618, ID kollidierte). Fix verworfen: Composite pixelgleich (AE 0), aber 46,7 statt 48,8 FPS -> fill-rate-bound; Code zurueckgerollt (Commit 8562ea9). Belege shots/m10-ground-cost-*."
+        }
+      ],
+      "created": "2026-11-27T12:26:27Z",
+      "updated": "2026-11-27T12:26:59Z"
+    },
+    {
+      "id": 2876,
+      "title": "m10-ground-cost #4 Doku + Abnahme: Befund fill-rate-bound, AE 0, .lane-done",
+      "description": "docs/lanes/m10-ground-cost.md mit Baseline-/After-JSON, Befehlszeile, ms/Frame, Pixel-Diff AE=0 und ehrlichem Verdikt (Fix verworfen, kein +4 FPS); .lane-done mit Messwerten. Abnahme: build+Tests gruen, Belege committed.",
+      "column": "done",
+      "assignee": "build",
+      "notes": [
+        {
+          "at": "2026-11-27T12:26:59Z",
+          "by": "build",
+          "text": "Aus Lane m10-ground-cost uebernommen (lane #2619, ID kollidierte). Doku docs/lanes/m10-ground-cost.md + Belege committed; .lane-done-Marker nach Merge aus main entfernt."
+        }
+      ],
+      "created": "2026-11-27T12:26:27Z",
+      "updated": "2026-11-27T12:26:59Z"
     }
   ]
 }
