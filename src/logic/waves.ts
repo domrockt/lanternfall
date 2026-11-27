@@ -1,6 +1,6 @@
 import type { EnemyId } from "../data/types";
 import { waveForMinute } from "../data/waves";
-import type { Rng } from "./rng";
+import { SeededRng, type Rng } from "./rng";
 
 /** Gewichtete Gegnerwahl aus der Minuten-Mischung. */
 export function pickEnemy(mix: Partial<Record<EnemyId, number>>, rng: Rng): EnemyId | null {
@@ -64,6 +64,93 @@ export function streamSpawnOffsets(count: number, radius: number, angle: number)
 /** Elite-Paketgröße (steigt leicht mit der Minute). */
 export function elitePackCount(minute: number): number {
   return Math.min(5, 2 + Math.floor(minute / 8));
+}
+
+export interface CoverageSimResult {
+  seed: number;
+  seconds: number;
+  totalSpawns: number;
+  /** Spawns je Gegner-ID. */
+  spawns: Record<EnemyId, number>;
+  /** Erste Spawn-Sekunde je Gegner-ID (null = nie gespawnt). */
+  firstSpawn: Record<EnemyId, number | null>;
+  /** Spawns je 5-min-Block (Index 0..5). */
+  blockTotals: number[];
+  /** Prozentualer Anteil je Gegner-ID und 5-min-Block. */
+  blockShares: Record<EnemyId, number>[];
+}
+
+/**
+ * Reine 30-min-Simulation der Director-Semantik aus `Spawner.update()`:
+ * Spawnrate pro Sekunde über `advanceSpawnBudget`, gewichtete Wahl über
+ * `pickEnemy`, Spezialwelle und Elite-Paket am Minutengrenzpunkt.
+ *
+ * Kein Phaser, kein Rendering — damit die Abnahme die echte Abdeckung
+ * (jeder der 30 Typen spawnt) deterministisch und ohne Browser belegen kann.
+ */
+export function simulateEnemyCoverage(
+  seed: number,
+  seconds = 30 * 60,
+  ids: readonly EnemyId[],
+  rateFactor = 1,
+): CoverageSimResult {
+  const rng = new SeededRng(seed);
+  const spawns = Object.fromEntries(ids.map((id) => [id, 0])) as Record<EnemyId, number>;
+  const firstSpawn = Object.fromEntries(ids.map((id) => [id, null])) as Record<EnemyId, number | null>;
+  const blockCounts = Array.from({ length: Math.ceil(seconds / 300) }, () =>
+    Object.fromEntries(ids.map((id) => [id, 0])) as Record<EnemyId, number>);
+  const blockTotals = Array(blockCounts.length).fill(0) as number[];
+  let budget = 0;
+  let lastMinute = -1;
+
+  const record = (id: EnemyId, second: number): void => {
+    spawns[id] += 1;
+    if (firstSpawn[id] === null) firstSpawn[id] = second;
+    const block = Math.min(blockCounts.length - 1, Math.floor(second / 300));
+    blockCounts[block][id] += 1;
+    blockTotals[block] += 1;
+  };
+
+  for (let second = 0; second < seconds; second++) {
+    const minute = Math.min(29, Math.floor(second / 60));
+    const wave = waveForMinute(minute);
+    if (minute !== lastMinute) {
+      lastMinute = minute;
+      if (wave.special === "ring" || wave.special === "stream") {
+        const count = wave.special === "ring"
+          ? 6 + Math.floor(wave.minute / 6)
+          : 6 + Math.floor(wave.minute / 5);
+        for (let i = 0; i < count; i++) {
+          const id = pickEnemy(wave.mix, rng);
+          if (id) record(id, second);
+        }
+      }
+      if (wave.elitePack) {
+        const count = elitePackCount(wave.minute);
+        for (let i = 0; i < count; i++) {
+          const id = pickEnemy(wave.mix, rng);
+          if (id) record(id, second);
+        }
+      }
+    }
+    const scaled = advanceSpawnBudget(budget, wave.spawnRate * rateFactor, 1);
+    budget = scaled.budget;
+    for (let i = 0; i < scaled.count; i++) {
+      const id = pickEnemy(wave.mix, rng);
+      if (!id) throw new Error(`pickEnemy lieferte null (Minute ${minute})`);
+      record(id, second);
+    }
+  }
+
+  const blockShares = blockCounts.map((counts, i) => {
+    const total = blockTotals[i];
+    return Object.fromEntries(ids.map((id) => [
+      id,
+      total === 0 ? 0 : Math.round((counts[id] / total) * 1000) / 10,
+    ])) as Record<EnemyId, number>;
+  });
+
+  return { seed, seconds, totalSpawns: blockTotals.reduce((a, b) => a + b, 0), spawns, firstSpawn, blockTotals, blockShares };
 }
 
 /**

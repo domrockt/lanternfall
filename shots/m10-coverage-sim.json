@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T00:28:08.859Z",
+  "generatedAt": "2026-11-27T00:53:59.394Z",
   "method": "pure simulation: waveForMinute + advanceSpawnBudget + pickEnemy, 1-s steps, specials/elite at minute boundaries",
   "seeds": [
     101,
