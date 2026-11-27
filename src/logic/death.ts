@@ -74,7 +74,7 @@ const BASE: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     count: 10, dustCount: 4,
     life: 0.6, dustLife: 0.45,
     scaleFrom: 1.6, scaleTo: 0.5, dustScale: 0.8,
-    rim: "fx_death_bone", rimTint: C.nightDeep, rimScale: 1.15,
+    rim: "fx_death_bone", rimTint: C.nightDeep, rimScale: 1.05,
     spread: 42, tint: C.boneLight, dustTint: C.mist,
     additive: false,
   },
@@ -109,7 +109,7 @@ const BASE: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     life: 0.45, dustLife: 0.55,
     scaleFrom: 2.2, scaleTo: 0.3, dustScale: 1.1,
     rim: "fx_death_dust", rimTint: C.nightDeep, rimScale: 1.12,
-    spread: 165, tint: C.flame, dustTint: C.emberOrange,
+    spread: 165, tint: C.amber, dustTint: C.flameBright,
     additive: true,
   },
 };

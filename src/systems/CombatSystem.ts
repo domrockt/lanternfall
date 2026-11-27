@@ -1003,8 +1003,9 @@ export class CombatSystem {
       life: spec.life * 1.05,
       scaleFrom: spec.scaleFrom * spec.rimScale * eliteScale,
       scaleTo: spec.scaleTo * 1.15,
-      alphaFrom: 0.55, alphaTo: 0,
-      vx: spec.spread * 0.3,
+      // Art R2: Rim als duenner Saum, nicht als Mittelklecks.
+      alphaFrom: 0.35, alphaTo: 0,
+      vx: spec.spread * 0.6,
       additive: false,
       tint: PAL[spec.rimTint],
       // 10.5: über Boss-Sprite (10), aber unter dem hellen Haupt-Burst (11).
@@ -1018,7 +1019,7 @@ export class CombatSystem {
       life: spec.life,
       scaleFrom: spec.scaleFrom * eliteScale,
       scaleTo: spec.scaleTo,
-      alphaFrom: 0.95, alphaTo: 0,
+      alphaFrom: cls === "dissolve" ? 0.65 : 0.95, alphaTo: 0,
       vx: spec.spread,
       additive: spec.additive,
       tint: PAL[spec.tint],
@@ -1037,16 +1038,59 @@ export class CombatSystem {
       depth: DEPTH.enemyDeath,
     });
     // Lesbarer Kern: heller Mittelpunkt, der die Silhouette verankert.
-    const core = cls === "burst" ? "fx_star" : cls === "sputter" ? "fx_fire" : "";
+    // Art R2: Kern deutlich groesser und als letzter Burst (Depth 11.2).
+    const core = cls === "burst" ? "fx_star" : cls === "sputter" ? "fx_star" : "";
+    if (cls === "burst") {
+      // Dunkle Tropfen-Ring aussen statt Mittelklecks: 8 nightDeep-Chunks
+      // auf Radius 12 px, danach der helle Blob-Spray.
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        this.particles.spawn({
+          texture: spec.rim, frames: rimFrames,
+          x: e.x + Math.cos(a) * 12, y: e.y + Math.sin(a) * 12,
+          vx: Math.cos(a) * 40, vy: Math.sin(a) * 40,
+          life: spec.life, scaleFrom: spec.scaleFrom * 0.85, scaleTo: spec.scaleTo,
+          alphaFrom: 0.5, alphaTo: 0, additive: false,
+          tint: PAL[C.nightDeep], depth: DEPTH.enemyDeath - 0.5,
+        });
+      }
+    }
+    if (cls === "crumble") {
+      // 4 lange, schmale Knochensplitter fallen nach unten (kein Zahnrad-Ring).
+      for (let i = 0; i < 4; i++) {
+        const dir = i % 2 === 0 ? -1 : 1;
+        this.particles.spawn({
+          texture: spec.shard, frames: shardFrames,
+          x: e.x + dir * (3 + i * 2), y: e.y,
+          vx: dir * (36 + i * 9), vy: 55 + i * 12,
+          life: spec.life * 1.15, scaleFrom: 1.1 + i * 0.12, scaleTo: 0.2,
+          aspect: 0.42, alphaFrom: 0.95, alphaTo: 0, additive: false,
+          tint: PAL[C.boneLight], depth: DEPTH.enemyDeath,
+        });
+      }
+    }
+    if (cls === "sputter") {
+      // 6 senkrechte Flammenzungen (non-uniform aspect) statt duenner Punkte.
+      for (let i = 0; i < 6; i++) {
+        this.particles.spawn({
+          texture: "fx_death_dust", frames: dustFrames,
+          x: e.x + (i - 2.5) * 4, y: e.y + 2,
+          vx: (i - 2.5) * 26, vy: -28 - i * 6,
+          life: spec.life * 1.2, scaleFrom: 1.5, scaleTo: 0.2,
+          aspect: 0.4, alphaFrom: 0.95, alphaTo: 0, additive: true,
+          tint: PAL[C.flameBright], depth: DEPTH.enemyDeath,
+        });
+      }
+    }
     if (core) {
       this.particles.burst(core, e.x, e.y, 1, {
-        life: spec.life * 0.6,
-        scaleFrom: spec.scaleFrom * 0.55,
-        scaleTo: 0.15,
+        life: spec.life * 0.7,
+        scaleFrom: spec.scaleFrom * 1.2,
+        scaleTo: 0.2,
         alphaFrom: 1, alphaTo: 0,
         additive: true,
         tint: PAL[cls === "burst" ? C.lanternWhite : C.flameBright],
-        depth: DEPTH.enemyDeath,
+        depth: DEPTH.enemyDeath + 0.2,
       });
     }
     if (cls === "dissolve" || e.boss) {
