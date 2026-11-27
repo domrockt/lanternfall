@@ -145,3 +145,80 @@ export function dawnFinished(timerSeconds: number): boolean {
 
 /** Endboss startet bei 30:00, der Run endet erst mit seinem Tod (Sieg). */
 export const FINAL_BOSS_AT = 30 * 60;
+
+/**
+ * M10: Frame-Budget-Regler gegen den Endgame-FPS-Einbruch. Reine Funktion,
+ * deterministisch ohne Renderer/Zeitquelle — der Aufrufer liefert die gemessene
+ * Frame-Zeit. Ziel ist **nicht** ein globaler Gegner-Deckel: der Regler greift
+ * nur, wenn die Frame-Zeit laenger als 1 s ueber 19,2 ms (16,6 ms + 15 %) liegt,
+ * senkt dann das aktive Gegner-Ziel um hoechstens 10 %/s bis zur Untergrenze
+ * 320 und erholt sich bei < 15 ms mit 1-s-Hysterese wieder bis zum ursprueng-
+ * lichen Ziel. Ohne Ueberlast bleibt das Default-Ziel unveraendert.
+ */
+export interface FrameBudgetState {
+  enabled: boolean;
+  /** Aktuelles, evtl. abgesenktes Ziel (float; Aufrufer rundet). */
+  cap: number;
+  /** Unabgesenktes Ziel (aus maxActiveEnemies bzw. Mess-Soll). */
+  ceiling: number;
+  /** Sekunden durchgehend ueber der Hoch-Schwelle. */
+  overSeconds: number;
+  /** Sekunden durchgehend unter der Tief-Schwelle. */
+  underSeconds: number;
+}
+
+export const FRAME_BUDGET_HIGH_MS = 19.2;
+export const FRAME_BUDGET_LOW_MS = 15;
+export const FRAME_BUDGET_MIN_ACTIVE = 320;
+export const FRAME_BUDGET_DROP_FRACTION_PER_S = 0.10;
+export const FRAME_BUDGET_RECOVER_FRACTION_PER_S = 0.05;
+export const FRAME_BUDGET_HOLD_SECONDS = 1;
+
+export function createFrameBudget(ceiling: number, enabled = true): FrameBudgetState {
+  const c = Math.max(1, Math.round(ceiling));
+  return { enabled, cap: c, ceiling: c, overSeconds: 0, underSeconds: 0 };
+}
+
+/**
+ * Ein Messschritt (z. B. ein echtes Frame). `frameMs` ist die gemessene
+ * Frame-Zeit, `dtSeconds` die reale Dauer dieses Frames. Zwischen 15 und
+ * 19,2 ms passiert nichts (Hysterese-Band); Timer werden nur ausserhalb
+ * fortgeschrieben.
+ */
+export function stepFrameBudget(
+  state: FrameBudgetState,
+  frameMs: number,
+  dtSeconds: number,
+  ceiling?: number,
+): FrameBudgetState {
+  if (!state.enabled) return state;
+  const ceil = Math.max(1, Math.round(ceiling ?? state.ceiling));
+  const floor = Math.min(FRAME_BUDGET_MIN_ACTIVE, ceil);
+  // Aussergewoehnlich lange Frames (Tab-Wechsel, GC) nicht unbegrenzt zaehlen.
+  const dt = Math.max(0, Math.min(0.1, dtSeconds));
+  let cap = Math.min(state.cap, ceil);
+  let over = state.overSeconds;
+  let under = state.underSeconds;
+
+  if (frameMs > FRAME_BUDGET_HIGH_MS) {
+    under = 0;
+    over += dt;
+    if (over > FRAME_BUDGET_HOLD_SECONDS) {
+      cap = Math.max(floor, cap - cap * FRAME_BUDGET_DROP_FRACTION_PER_S * dt);
+    }
+  } else if (frameMs < FRAME_BUDGET_LOW_MS) {
+    over = 0;
+    under += dt;
+    if (under > FRAME_BUDGET_HOLD_SECONDS) {
+      cap = Math.min(ceil, cap + ceil * FRAME_BUDGET_RECOVER_FRACTION_PER_S * dt);
+    }
+  }
+  // Zwischenband (15..19,2 ms): Timer einfrieren, kein Eingriff.
+
+  return { enabled: state.enabled, cap, ceiling: ceil, overSeconds: over, underSeconds: under };
+}
+
+/** Aufrufer-Helfer: ganzzahliges aktives Gegner-Ziel aus dem Regler. */
+export function frameBudgetTarget(state: FrameBudgetState): number {
+  return Math.max(1, Math.round(state.cap));
+}
