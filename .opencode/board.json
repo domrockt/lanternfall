@@ -3176,7 +3176,7 @@
       "id": 2200,
       "title": "m10-enemy-shots-fair-03 Lesbarkeit: Kontrast der 4 Schuss-Optiken + art-director >=4/5",
       "description": "Kontrastzahl der Texturen spit/bone/shadow/fire gegen Nacht-/Wasserhintergrund messen, bei Bedarf nur Schuss-Texturen in EnemyProjectiles.ts anpassen; 2-s-GIF bei voller Dichte; art-director-Urteil >=4/5 in Lane-Doku.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
@@ -3213,16 +3213,21 @@
           "at": "2026-11-27T15:29:20Z",
           "by": "build",
           "text": "doing → review: Abnahme in ce670bf: art-director PASS 4/5, Kontrast minInner >=2,04, Dichte-Beleg 500 Gegner. Reviewer-OK ausstehend."
+        },
+        {
+          "at": "2026-11-27T16:08:52Z",
+          "by": "build",
+          "text": "review → done: lane #2200: art-director PASS 4/5 (ce670bf), Reviewer-Blocker behoben + Telegraph-Cap-Fix (3e01b49, 14 Tests). Belege shots/m10-enemy-shots-*."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T15:29:20Z"
+      "updated": "2026-11-27T16:08:52Z"
     },
     {
       "id": 2201,
       "title": "m10-enemy-shots-fair-04 Tests + Doku + .lane-done",
       "description": "tests/enemy-shots-fair.test.ts (Wind-up-Dauer, Abbruch bei Tod, kein Offscreen-Spawn, Distinktheit der 4 Texture-Keys); Messwerte/Kontrast/art-director-Urteil in docs/lanes/m10-enemy-shots-fair.md; npm run build + alle Tests gruen; .lane-done mit Messwerten.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3244,10 +3249,15 @@
           "at": "2026-11-27T15:29:20Z",
           "by": "build",
           "text": "doing → review: Implementiert in 48c5004: 12 Fairness-Tests, npm run build rc=0, npm test 236/236, Dichte-Capture 500 Gegner 0 JS-Fehler, .lane-done; art-director PASS 4/5. test-auditor/reviewer laufen."
+        },
+        {
+          "at": "2026-11-27T16:08:53Z",
+          "by": "build",
+          "text": "review → done: lane #2201: Tests 14/14, npm test 238/238, build rc=0, Dichte-Capture 0 JS-Fehler, test-auditor+reviewer PASS, .lane-done (48c5004, 7428280)."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T15:29:20Z"
+      "updated": "2026-11-27T16:08:53Z"
     }
   ]
 }
