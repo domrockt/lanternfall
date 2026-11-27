@@ -1,0 +1,57 @@
+{
+  "tag": "after",
+  "date": "2026-11-27T19:57:56.039Z",
+  "config": {
+    "enemies": 500,
+    "framesPerPass": 300,
+    "passes": 11,
+    "warmupFrames": 60,
+    "dt": 0.016666666666666666,
+    "seed": 20261127,
+    "distanceRings": {
+      "near": "40-220 px (50%)",
+      "mid": "220-420 px (30%)",
+      "far": "420-700 px (20%)"
+    },
+    "archetypeWeights": {
+      "swarm": 0.3,
+      "chaser": 0.22,
+      "tank": 0.08,
+      "ranged": 0.1,
+      "charger": 0.07,
+      "splitter": 0.07,
+      "exploder": 0.05,
+      "phaser": 0.04,
+      "orbiter": 0.04,
+      "summoner": 0.03
+    }
+  },
+  "results": {
+    "totalMsPerFrame": 0.024,
+    "passMsPerFrame": [
+      0.024,
+      0.024,
+      0.024,
+      0.024,
+      0.024,
+      0.024,
+      0.024,
+      0.024,
+      0.025,
+      0.026,
+      0.11
+    ],
+    "perArchetypePureMsPerFrame": {
+      "chaser": 0.022,
+      "swarm": 0.024,
+      "tank": 0.021,
+      "ranged": 0.022,
+      "charger": 0.022,
+      "splitter": 0.023,
+      "exploder": 0.022,
+      "phaser": 0.026,
+      "orbiter": 0.023,
+      "summoner": 0.024
+    }
+  }
+}

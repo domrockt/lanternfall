@@ -109,8 +109,8 @@ export const AI_STAGGER: AiStaggerConfig = {
   // 640x360-View: halbe Bildschirmdiagonale ~367 px — der Mittelring deckt den
   // sichtbaren Bereich ab, der Fernring ist Spawn-Wolke/LOD.
   midDistance: 420,
-  midInterval: 3,
-  farInterval: 5,
+  midInterval: 4,
+  farInterval: 6,
 };
 
 /** Gemeinsames leeres actions-Array für Skip-Frames (gefroren — keine Aktionen). */
