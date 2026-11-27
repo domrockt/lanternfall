@@ -84,7 +84,8 @@ plus `fx_halo`-Staub, größerer Count (18–34), längere Lebensdauer (0,7–1,
 und ≥ 2× Fläche gegenüber der Nicht-Boss-Klasse (Scale-Ratio quadratisch;
 Minimum 2,56× bei burst). Keine neuen Assets — nur vorhandene FX-Texturen.
 
-Beleg-Commit: `b631b71` (#K2, Board-Karte #1779).
+Beleg-Commit: `b631b71` (#K2, Board-Karte #1779). Rim-/Kontur-Felder
+(`rim`, `rimTint`, `rimScale`) kamen in #K5/#1782 dazu.
 
 ## #K3 Umsetzung (`src/systems/CombatSystem.ts`, `killsFx`)
 
