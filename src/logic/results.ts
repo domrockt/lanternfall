@@ -191,10 +191,12 @@ export function layoutResultRows(
 
   const headerText = "SCHADEN PRO WAFFE";
   const totalText = `GESAMT: ${formatDamageCompact(options.totalDamage ?? sumRounded(entries))}`;
-  // Untertitel ("NIEDERLAGE"/"SIEG") endet bei 42+oy+7 = 49+oy: Header erst
-  // darunter, sonst ueberdrucken sich beide Texte in der Bildmitte.
+  // Kopfblock mit gleichmaessigen Abstaenden: Untertitel endet bei 47+oy
+  // (Szene: Untertitel top 40+oy), Header 50..57+oy, Total 9px ueber den
+  // Zeilen (rowsTop 68 -> 59..66+oy, rowsTop 66 -> 57..64+oy), Zeilen ab
+  // rowsTop+oy. So bleibt der Block dpi-/view-unabhaengig kollisionsfrei.
   const header: Rect = { x: cx - 20, y: 50 + oy, w: headerText.length * 6 - 1, h: 7 };
-  const totalLabel: Rect = { x: cx - 20, y: 58 + oy, w: totalText.length * 6 - 1, h: 7 };
+  const totalLabel: Rect = { x: cx - 20, y: (options.rowsTop ?? 66) - 9 + oy, w: totalText.length * 6 - 1, h: 7 };
   const divider: Rect = { x: cx - 35, y: 107 + oy, w: 2, h: 140 };
   const banner: Rect = { x: cx - 200, y: 187 + oy, w: 164, h: 17 };
 
