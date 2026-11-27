@@ -130,6 +130,17 @@ export class EnemyPool {
   private readonly free: EnemyRuntime[] = [];
   private readonly scene: Phaser.Scene;
   private nextUid = 1;
+  /**
+   * M10-heap-sawtooth: Cache fuer Elite-Rim-Defs (eliteRimDef spreadet sonst
+   * pro Elite-Spawn ein neues Objekt). Schluessel ist die Basis-ID; die Defs
+   * kommen statisch aus der ENEMIES-Tabelle, daher ist ID → Werte eindeutig.
+   */
+  private readonly rimDefCache = new Map<string, EnemyDef>();
+  /**
+   * M10-heap-sawtooth: Cache fuer Elite-Marker-Specs je gerundetem Radius
+   * (eliteMarkerSpec baut sonst pro Elite-Spawn ein neues Objekt).
+   */
+  private readonly markerSpecCache = new Map<number, EliteMarkerSpec>();
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -191,7 +202,7 @@ export class EnemyPool {
     if (enemy.elite) {
       const rimFrames = ELITE_RIM_FRAMES[eliteFrameId(def.id)];
       if (rimFrames) {
-        enemy.def = eliteRimDef(def);
+        enemy.def = this.rimDefFor(def);
         applyTexture(enemy.sprite, rimFrames[0]);
       }
     } else {
@@ -209,7 +220,7 @@ export class EnemyPool {
     // Nur Elite tragen den Marker; Spezifikation ist deterministisch aus dem
     // Radius abgeleitet (K3). Normale Gegner und Bosse bleiben markerlos.
     if (enemy.elite) {
-      const spec = eliteMarkerSpec(enemy.radius);
+      const spec = this.markerSpecFor(enemy.radius);
       enemy.aura.setBlendMode(Phaser.BlendModes.NORMAL);
       enemy.aura.setTint(eliteMarkerTint());
       enemy.aura.setAlpha(spec.alpha);
@@ -236,6 +247,28 @@ export class EnemyPool {
     }
   }
 
+  /** Rim-Def gecacht (kein `{...def}`-Objekt pro Elite-Spawn). */
+  private rimDefFor(def: EnemyDef): EnemyDef {
+    const key = def.id as string;
+    let rim = this.rimDefCache.get(key);
+    if (!rim) {
+      rim = eliteRimDef(def);
+      this.rimDefCache.set(key, rim);
+    }
+    return rim;
+  }
+
+  /** Marker-Spec gecacht; Spec haengt nur vom gerundeten Radius ab. */
+  private markerSpecFor(radius: number): EliteMarkerSpec {
+    const key = Math.max(4, Math.round(Number.isFinite(radius) ? radius : 4));
+    let spec = this.markerSpecCache.get(key);
+    if (!spec) {
+      spec = eliteMarkerSpec(radius);
+      this.markerSpecCache.set(key, spec);
+    }
+    return spec;
+  }
+
   private createRuntime(): EnemyRuntime {
     const sprite = this.scene.add.sprite(0, 0, "enemy_bog_rat").setOrigin(0.5, 0.5).setDepth(DEPTH.enemy);
     // Starttextur spaeter per applyTexture (Atlas-Frame) setzen.
@@ -253,7 +286,11 @@ export class EnemyPool {
     };
   }
 
-  /** Entfernt tote Gegner (Swap-Remove, O(n)). */
+  /**
+   * Entfernt tote Gegner (in-place, Reihenfolge erhaltend).
+   * M10-heap-sawtooth: `splice` alloziert pro Tod ein Ergebnis-Array (Churn in
+   * Todeswellen) — stattdessen in-place nach vorne schieben und Länge kappen.
+   */
   compact(onDeath?: (e: EnemyRuntime) => void): void {
     for (let i = this.active.length - 1; i >= 0; i--) {
       const e = this.active[i];
@@ -263,7 +300,8 @@ export class EnemyPool {
       e.sprite.setActive(false);
       e.sprite.clearTint();
       e.aura.setVisible(false);
-      this.active.splice(i, 1);
+      for (let j = i; j < this.active.length - 1; j++) this.active[j] = this.active[j + 1];
+      this.active.length--;
       this.free.push(e);
     }
   }
