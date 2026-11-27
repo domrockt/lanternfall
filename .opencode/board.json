@@ -4976,7 +4976,7 @@
       "title": "m10-atlas-pack K2 Packer mehrseitig + Coverage",
       "description": "atlas.ts: Atlas-Seiten <=2048px (Shelf), alle heissen Canvas-Texturen (inkl. glyphs/icons/ui/props nach Messung) gepackt, Frames per Name, Umleitung ueber Namens-Map; Unit-Test tests/atlas-pack.test.ts (0 Überlappung, <=2048, Determinismus). Akzeptanz: vitest grün, tsc grün.",
       "id": 3999,
-      "column": "review",
+      "column": "done",
       "assignee": "m10-atlas-pack",
       "notes": [
         {
@@ -4988,9 +4988,14 @@
           "at": "2026-11-27T18:45:12Z",
           "by": "build",
           "text": "doing → review: review: K2 abgeschlossen. Code-Commits: c55e141 (Supervisor-Snapshot, 6 Dateien) + 91f84e3 (#3999). Belege: tests/atlas-pack.test.ts 9/9 + tests/atlas.test.ts 7/7 grün, npx tsc --noEmit grün, npm run build rc=0. packPages (pure, deterministisch, Shelf, Seiten <=2048, 2px Gutter, 1px Padding) in atlas.ts; bakeAtlas.ts registriert Keys über geteilte WebGLTextureWrapper → Aufrufer unverändert; font.ts 2 Zeilen begründet (requests.md, Commit 5040fc4). Smoke (kein flock, kein Beleg): Draw-Calls Median 54→31, p95 73→37."
+        },
+        {
+          "at": "2026-11-27T19:53:13Z",
+          "by": "build",
+          "text": "review → done: review → done: Reviewer-PASS (tests/atlas-pack.test.ts + atlas.test.ts 16/16, tsc rc=0, gen-fx.ts unangetastet; 2 nicht-blockierende Hinweise in Lane-Doku)"
         }
       ],
-      "updated": "2026-11-27T18:45:12Z",
+      "updated": "2026-11-27T19:53:13Z",
       "created": "2026-11-27T18:02:30Z"
     },
     {
