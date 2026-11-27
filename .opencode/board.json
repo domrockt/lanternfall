@@ -5002,26 +5002,38 @@
       "title": "m10-atlas-pack K3 Messen nachher",
       "description": "3 Läufe je Format (flock) + Draw-Calls bei 300 Gegnern -> shots/m10-atlas-pack-after*.json + Vergleichsbild vorher/nachher (pixelgleich). Akzeptanz: Draw-Calls<60, M25 780 >=50 FPS Median, Optik-Diff 0.",
       "id": 4000,
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-atlas-pack",
       "notes": [
         {
           "at": "2026-11-27T19:53:20Z",
           "by": "build",
           "text": "todo → doing: todo → doing: Compare-Belege fertig (AE=0, baked_pages 512x512 + 2048x94, missing=[]); Nachher-Messung (3 Laeufe) wartet im Hintergrund auf flock /home/ai/games/.lf-perf.lock (gehalten von m10-realtime, timeout 2600s)"
+        },
+        {
+          "at": "2026-11-27T20:13:51Z",
+          "by": "build",
+          "text": "doing → review: doing → review: Messung abgeschlossen (Commit 9a39e4d). Crowd DC Median 54<60 ✅, M25 780 60 FPS >=50 ✅, 640 60 FPS ✅, Optik AE=0 ✅, tsc+401 Tests+Build grün. Supervisor-Ack: K3 nicht blocked — Lock war vom eigenen Messlauf gehalten, Läufe 1-3 fertig."
         }
       ],
       "created": "2026-11-27T18:02:30Z",
-      "updated": "2026-11-27T19:53:20Z"
+      "updated": "2026-11-27T20:13:51Z"
     },
     {
       "title": "m10-atlas-pack K4 Doku + Abschluss",
       "description": "docs/lanes/m10-atlas-pack.md mit Zahlen vorher/nachher, offene Punkte; .lane-done anlegen. Akzeptanz: Doku mit Belegpfaden committed.",
       "id": 4001,
-      "column": "todo",
+      "column": "review",
       "assignee": "m10-atlas-pack",
-      "notes": [],
-      "created": "2026-11-27T18:02:30Z"
+      "notes": [
+        {
+          "at": "2026-11-27T20:13:51Z",
+          "by": "build",
+          "text": "todo → review: doing → review: Doku final (Commit 5c57547), alle Lane-Karten committet; Abschluss nach Kontrolleur-Prüfung."
+        }
+      ],
+      "created": "2026-11-27T18:02:30Z",
+      "updated": "2026-11-27T20:13:51Z"
     }
   ]
 }
