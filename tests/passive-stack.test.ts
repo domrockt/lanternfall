@@ -10,6 +10,7 @@ import {
   effectiveMoveSpeed,
   effectivePickupRadius,
   effectiveRadius,
+  STAT_CAPS,
 } from "../src/logic/stats";
 import type { PassiveId } from "../src/data/types";
 
@@ -23,20 +24,13 @@ import type { PassiveId } from "../src/data/types";
  *  - Abklingzeit: hoechstens -40 % (tome Stufe 5), nie unter 20 % der Basis
  *  - Schaden: hoechstens +50 % (whetstone Stufe 5)
  *  - Aufsammelradius: hoechstens +125 % (charm Stufe 5)
- *  - Flaeche/Dauer: hoechstens +50 % (hourglass Stufe 5)
- *  - Max-HP flach: hoechstens +100 (heart Stufe 5), Regen hoechstens +10/s
+ *  - Flaeche/Dauer: Sanity-Cap +200 % (hourglass Stufe 5 liefert +50 %)
+ *  - Max-HP flach: Sanity-Cap +500 (heart Stufe 5 liefert +100), Regen-Cap 50/s
+ * Quelle der Caps: STAT_CAPS in src/logic/stats.ts.
  */
 
-const CAPS = {
-  moveSpeedPct: 40,
-  cooldownPct: 40,
-  damagePct: 50,
-  pickupRadiusPct: 125,
-  areaPct: 50,
-  durationPct: 50,
-  maxHpFlat: 100,
-  regen: 10,
-} as const;
+const CAPS = STAT_CAPS;
+
 
 const BASE_MOVE = 100;
 const BASE_COOLDOWN = 1;
@@ -103,6 +97,7 @@ for (const passive of Object.keys(PASSIVES) as PassiveId[]) {
       case "heart":
         record(passive, level, "maxHpFlat", agg.maxHpFlat, 20 * effLevel, CAPS.maxHpFlat, CAPS.maxHpFlat);
         record(passive, level, "regen", agg.regen, 0.3 * effLevel, CAPS.regen, CAPS.regen);
+
         break;
       case "charm":
         record(passive, level, "pickupRadius", effectivePickupRadius(BASE_PICKUP, agg), BASE_PICKUP * (1 + (25 * effLevel) / 100), CAPS.pickupRadiusPct, BASE_PICKUP * (1 + CAPS.pickupRadiusPct / 100));

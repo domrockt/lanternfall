@@ -4194,17 +4194,22 @@
       "id": 2918,
       "title": "m10-passive-math #1 Ist-Matrix 6 Passives x Stufen 1..8",
       "description": "tests/passive-stack.test.ts erzeugt fuer alle 6 Passives (boots/tome/heart/charm/whetstone/hourglass) die effektiven Werte je Stufe 1..8 ueber aggregateMods/effective*; schreibt shots/m10-passive-math-matrix.json mit Wert, erwartetem n-fachem Basisbonus, Abweichung, Cap-Check und NaN/Negativ-Check. Abnahme: Baseline-JSON + Testlauf-Ausgabe (auch rot) im Commit #1 belegt.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T11:35:54Z",
           "by": "build",
           "text": "todo → doing: Start: Ist-Matrix schreiben (Baseline vor Fix), JSON nach shots/, Baseline-Commit auch bei rot."
+        },
+        {
+          "at": "2026-11-27T11:48:52Z",
+          "by": "build",
+          "text": "doing → review: Commit 3a5dc99. Baseline-Beleg: 64 Matrixzeilen, 0 Abweichungen/0 Cap-Verletzungen im Normalpfad (Stufen 1-5 + Clamp 6-8); rot bei Doppelzaehlung (boots 5 doppelt = 80%/180 Tempo > 140) und NaN/Infinity/negativ. JSON shots/m10-passive-math-matrix.json committed."
         }
       ],
       "created": "2026-11-27T11:28:18Z",
-      "updated": "2026-11-27T11:35:54Z"
+      "updated": "2026-11-27T11:48:52Z"
     },
     {
       "id": 2919,

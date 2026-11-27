@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T11:39:19.222Z",
+  "generatedAt": "2026-11-27T11:52:39.747Z",
   "passiveMaxLevel": {
     "boots": 5,
     "tome": 5,
@@ -11,12 +11,15 @@
   "caps": {
     "moveSpeedPct": 40,
     "cooldownPct": 40,
-    "damagePct": 50,
+    "maxHpFlat": 500,
+    "maxHpPct": 200,
+    "regen": 50,
+    "xpPct": 200,
     "pickupRadiusPct": 125,
-    "areaPct": 50,
-    "durationPct": 50,
-    "maxHpFlat": 100,
-    "regen": 10
+    "damagePct": 50,
+    "areaPct": 200,
+    "durationPct": 200,
+    "armorFlat": 50
   },
   "levelsTested": "1..8",
   "rows": 64,
@@ -47,10 +50,10 @@
     "withinCaps": true
   },
   "adversarial": {
-    "duplicateBootsMoveSpeed": 180,
-    "duplicateBootsWithinCap": false,
-    "nanDamage": null,
-    "infinityPickup": null,
-    "negativeCooldown": -500
+    "duplicateBootsMoveSpeed": 140,
+    "duplicateBootsWithinCap": true,
+    "nanDamage": 0,
+    "infinityPickup": 0,
+    "negativeCooldown": 0
   }
 }
