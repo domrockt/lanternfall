@@ -7399,16 +7399,21 @@
       "id": 6398,
       "title": "m10-crowd-variety #1: Vorher-Messung 500er-Frame (Distinct-Keys + Renderer)",
       "description": "Abnahme: scripts/m10-crowd-variety.mjs rendert 500-Gegner-Frame via Playwright (harness), zählt Distinct-Sprite-Texture-Keys je Typ, Renderer-String im JSON; shots/m10-crowd-variety-before.json+png committed. EINMAL messen, max. 2 Iterationen am Skript.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T23:01:51Z",
           "by": "build",
           "text": "todo → doing: m10-crowd-variety: Mess-Skript bauen, einmal laufen lassen, Belege committen"
+        },
+        {
+          "at": "2026-11-27T23:30:02Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Messung committet (2b9e118): 500 Gegner Minute 30, 32 Distinct-Keys, je Typ 4 Keys — aber ueber 4 nahezu identische Posen desselben Tons (Klon-Wirkung pro Typ bestaetigt). Renderer Mesa Intel RPL-S, Burst 60 fps, 0 JS-Fehler. Belege: shots/m10-crowd-variety-before.json+png."
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:01:51Z"
+      "updated": "2026-11-27T23:30:02Z"
     },
     {
       "id": 6399,
@@ -7425,10 +7430,15 @@
           "at": "2026-11-27T23:21:30Z",
           "by": "build",
           "text": "todo → review: Variante: enemyVariantColor (Familien-Rampe, max Luminanz-Abstand), enemyVariantFrames (55%-Tonmischung auf nächste Palette-Stufe; Kontur 0/Augen 13/Lichtkante unangetastet). Pruefung: npx tsc --noEmit gruen, 34/34 Tests (crowd-variety 5, enemy-palette 6, elite-rim, enemy-run-frames, atlas). Commit 10ab95b."
+        },
+        {
+          "at": "2026-11-27T23:37:00Z",
+          "by": "build",
+          "text": "Reviewer-PASS (826/826 Tests, Silhouetten/Palette/Elite-Rim/Randfaelle/substanzielle Tests bestätigt). Anmerkungen 2+5 umgesetzt: Guard in enemyFrameGrids + Determinismus-Test alle 30 Typen (Commit 3c63b0e). Anm. 1 (Pro-Instanz-Tonwechsel ~333ms) in Doku ehrlich beschrieben, GIF-Beleg in #6402. Anm. 3/4/6 kosmetisch an art-director."
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:21:30Z"
+      "updated": "2026-11-27T23:37:00Z"
     },
     {
       "id": 6400,
@@ -7454,16 +7464,21 @@
       "id": 6401,
       "title": "m10-crowd-variety #4: tests/crowd-variety.test.ts",
       "description": "Abnahme: >= 2 Varianten je Typ, Palette + binäres Alpha (0 Off-Palette-Pixel), Elite-Rim-Frames unveraendert (elite-rim-Test gruen), Frame-Keys deterministisch. npx tsc --noEmit + vitest gruen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T23:23:45Z",
           "by": "build",
           "text": "todo → doing: Test-Erweiterung vorbereitet: Instanz-Streuung als Unit-Test (200 Phasen, fester t → >= 2 Keys je Typ, Basis- UND Varianten-Ton sichtbar). Testlauf wartet auf die Vorher-Messung: src/gfx/enemySprites.ts ist bis zum Messlauf bewusst auf dem Vorher-Stand (1a2966c), damit der 500er-Frame den alten Zustand misst; Restore + Testlauf + Commit danach."
+        },
+        {
+          "at": "2026-11-27T23:30:02Z",
+          "by": "build",
+          "text": "doing → review: 6/6 Tests + tsc gruene Belege; fremde Tests (enemy-palette, elite-rim, enemy-run-frames, atlas) unveraendert gruen. Instanz-Streuungs-Test kodiert Abnahme '>=2 Keys je Typ im Frame'. Commit 382a72e."
         }
       ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:23:45Z"
+      "updated": "2026-11-27T23:30:02Z"
     },
     {
       "id": 6402,
