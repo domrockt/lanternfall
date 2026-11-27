@@ -81,12 +81,33 @@ auf dem PIN: **nicht erfüllt (27/28, 1 stabiler FAIL)**.
 |---|---|---|
 | Hazard-Warnung (Fairness, MIN_WARN_S 0,45) | `scripts/m10-hazard-fairness.mjs` | `shots/qa-reaccc-hazard-fairness.json` + `-warnframe.png` |
 | Results-Screen (Overlap, 640 + 780@3, stress12) | `scripts/m10-results-overlap.mjs --tag qa-reaccc` | `shots/qa-reaccc-results-overlap-*.png` + `.json` |
-| Chest-Arrow (Randpfeil ab Spawn) | `scripts/m10-chest-arrow.mjs --out shots/qa-reaccc-chest-arrow.json --shots` | `shots/qa-reaccc-chest-arrow.json` + `-edge/-inside.png` |
+| Chest-Arrow (Randpfeil ab Spawn) | `scripts/m10-chest-arrow.mjs --out shots/qa-reaccc-chest-arrow.json --shots` | `shots/qa-reaccc-chest-arrow.json` + `-edge/-inside.png` — **Befund siehe K5b** |
 | Android-Audit-Zahlen | `scripts/android-audit.mjs` | `shots/qa-reaccc-android-audit.json`, Log `~/tmp/m10-reacceptance-c/android-audit.txt` |
 | Renderer | Probe | `shots/qa-reaccc-renderer.json` |
 | Passive-Math | Zieldatei auf PIN | `shots/m10-passive-math-caps.json` (22 checks, 0 violations) + `tests/passive-stack.test.ts` grün |
 | Boss-Onscreen | Zieldateien auf PIN | `shots/m10-boss-onscreen-after.json` + 12 Spawn-Shots `shots/m10-boss-onscreen-shots/` |
 | Enemy-Frame-Cadence / Death-Frames / FX-ADD / Evo-Signatur / View-Width / Separation / Heap-Margin | Unit-Zielläufe | 72/72 grün (`tests/{enemy-run-frames,death-frames,fx-add-cap,evo-signature-calls,view-width,separation-budget,passive-stack,chest-arrow,heap-margin}.test.ts`-Batch) |
+
+## K5b — Chest-Arrow Re-Lauf auf PIN: Abweichung gegen den Lane-Nachher-Lauf
+
+Neu auf PIN (20:47Z, iGPU, `shots/qa-reaccc-chest-arrow.json`, verdict `passed:false`,
+0 JS-Fehler):
+
+| Format | Lane nachher (17:52Z, Beleg `shots/m10-chest-arrow-after.json`) | Re-Lauf auf PIN | Urteil |
+|---|---|---|---|
+| 780×360 | alle 10 Cases ok | alle 10 Cases ok | PASS |
+| 640×360 | alle 10 Cases ok | **5/10 FAIL**: `top`, `bottom`, `tl`, `br` (`visibleAtSpawn:false`, Winkelfehler 90–180°, Positionsfehler 312–355 px) und `disappear` (Pfeil bleibt sichtbar, während Truhe im View ist) | **FAIL** |
+
+Einordnung (Abnahme misst, sie repariert nicht):
+- Unit-Tests `tests/chest-arrow.test.ts` sind auf dem PIN grün (im 72er-Ziellauf).
+- Der Lane-Nachher-Lauf (17:52Z) lief **vor** 19:13Z → SwiftShader-Ära; der Re-Lauf
+  läuft auf iGPU. Ein Renderer-/Timing-Einfluss auf die Screen-Projektion/Sampling
+  des Probe-Harness ist nicht ausgeschlossen und im Folge-Job zu klären.
+- Zwischen 17:52Z und PIN liegen 19 Merges; Regressionsverdächtige für 640×360:
+  v. a. `m10-view-width-cap` (interne Breite 640) und `m10-ground-props-batch`
+  (Batch-Container-Layer). Vom Folge-Job zu lokalisieren.
+- Folge-Karte: `m10-reacceptance-c-Folge: Chest-Arrow 640×360 Re-Lauf FAIL auf PIN`
+  (wird vom Lead zusammen mit dem verify-input-Befund dispositioniert).
 
 ## K6 — FPS-Gates (iGPU, unter flock /home/ai/games/.lf-perf.lock)
 
