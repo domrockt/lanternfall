@@ -53,12 +53,31 @@ try {
       atlas: window.__game ? window.__game.textures.exists("runtime_atlas") : false,
       bootTimings: window.__bootTimings ?? null,
     }));
+    // Metrik "Titel sichtbar": erster gerendertes Titel-Frame (titleRendered aus
+    // window.__bootTimings). Der State-Poll allein ist im Nachher-Lauf verfaelscht,
+    // weil der Warmup-Makrotask den naechsten rAF-Poll verzögert.
+    const titleMs = Math.round(probe.bootTimings?.titleRendered ?? probe.ms);
     if (i === 0 && shotOut) {
       await page.screenshot({ path: shotOut });
     }
+    // Warmup-Probe: Nach kurzer Frist müssen alle Texturen + Atlas vollständig sein.
+    await page.waitForTimeout(800);
+    const settled = await page.evaluate(() => ({
+      textures: window.__game ? window.__game.textures.getTextureKeys().length : -1,
+      atlas: window.__game ? window.__game.textures.exists("runtime_atlas") : false,
+      bootTimings: window.__bootTimings ?? null,
+    }));
     await context.close();
 
-    results.push({ run: i + 1, titleMs: Math.round(probe.ms), textures: probe.textures, atlas: probe.atlas, bootTimings: probe.bootTimings });
+    results.push({
+      run: i + 1, titleMs, pollMs: Math.round(probe.ms), textures: probe.textures, atlas: probe.atlas,
+      bootTimings: probe.bootTimings,
+      afterWarmup: { textures: settled.textures, atlas: settled.atlas },
+    });
+    if (probe.bootTimings?.warmStart !== undefined
+      && (settled.atlas !== true || settled.bootTimings?.warmDone === undefined)) {
+      errors.push(`warmup unvollständig: atlas=${settled.atlas}, warmDone=${settled.bootTimings?.warmDone}`);
+    }
     jsErrors = jsErrors.concat(errors);
     console.log(`[m10-boot-startup] Lauf ${i + 1}: ${Math.round(probe.ms)} ms, Texturen: ${probe.textures}, Atlas: ${probe.atlas}, Fehler: ${errors.length}`);
   }

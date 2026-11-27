@@ -1,28 +1,46 @@
 {
   "tag": "baseline",
-  "date": "2026-11-27T19:58:20.566Z",
+  "date": "2026-11-27T20:14:41.116Z",
   "runs": 3,
-  "avgMs": 987,
-  "maxMs": 1225,
-  "minMs": 863,
+  "avgMs": 1025,
+  "maxMs": 1263,
+  "minMs": 869,
   "results": [
     {
       "run": 1,
-      "titleMs": 1225,
+      "titleMs": 1263,
+      "pollMs": 1263,
       "textures": 498,
-      "atlas": true
+      "atlas": true,
+      "bootTimings": null,
+      "afterWarmup": {
+        "textures": 498,
+        "atlas": true
+      }
     },
     {
       "run": 2,
-      "titleMs": 863,
+      "titleMs": 869,
+      "pollMs": 869,
       "textures": 498,
-      "atlas": true
+      "atlas": true,
+      "bootTimings": null,
+      "afterWarmup": {
+        "textures": 498,
+        "atlas": true
+      }
     },
     {
       "run": 3,
-      "titleMs": 873,
+      "titleMs": 943,
+      "pollMs": 943,
       "textures": 498,
-      "atlas": true
+      "atlas": true,
+      "bootTimings": null,
+      "afterWarmup": {
+        "textures": 498,
+        "atlas": true
+      }
     }
   ],
   "texturesAtTitle": 498,
