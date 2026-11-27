@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4602,
+  "next": 4718,
   "cards": [
     {
       "id": 1,
@@ -5574,16 +5574,26 @@
       "id": 4601,
       "title": "m10-heap-margin: Nachher-Messung + Doku + Fullrun-Beleg",
       "description": "shots/m10-heap-margin-after.json + docs/lanes/m10-heap-margin.md mit Vorher/Nachher und benanntem Hebel; finaler Fullrun 780x360@3 unter flock (Heap <= 12 %, fpsMin nicht schlechter als Vorher 34,8). Abnahme: After-JSON deltaPct <= 12, Doku mit Zahlen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T19:08:46Z",
           "by": "build",
           "text": "todo → doing: After-Messung + Fullrun 780 unter flock + Doku laufen."
+        },
+        {
+          "at": "2026-11-27T19:37:35Z",
+          "by": "build",
+          "text": "doing → review: Nachher-Messung +2,8% (<=12%), fpsMin 20,3 (Vorher 19,4), 0 JS-Fehler; Doku docs/lanes/m10-heap-margin.md mit Hebel (ProjectilePool.trailFrames in-place) + Fix-Empfehlungen für Allokatoren außerhalb der Area; tsc + tests/heap-margin.test.ts 8/8 grün. Belege shots/m10-heap-margin-{before,after,churn-probe}.json (Vorher/WIP-Commits 24c2174/920594f/67ccdb9), Doku-Commit 3d9e7fe."
+        },
+        {
+          "at": "2026-11-27T19:38:44Z",
+          "by": "build",
+          "text": "review → done: reviewer PASS (ses_de17c78c6ffeNYqJqvM3k5hX49): Zahlen JSON<->Doku konsistent (14,1% -> 2,8%, fpsMin 19,4 -> 20,3), Fix-Diff nur ProjectilePool.ts, tsc rc=0, tests 8/8, Scope sauber, Merge freigegeben. Lane-Ende: .lane-done in Commit e000787."
         }
       ],
       "created": "2026-11-27T19:02:39Z",
-      "updated": "2026-11-27T19:08:46Z"
+      "updated": "2026-11-27T19:38:44Z"
     }
   ]
 }
