@@ -3533,16 +3533,21 @@
       "id": 2399,
       "title": "m10-heroes-pass K2: Silhouette + Akzentfarbe",
       "description": "Mira: Laternen-Gold-Akzent, schmaler Umhang. Kael: Rost/Stahl, breitere Schultern, Axt-Silhouette lesbar. Aenderung in scripts/art/gen_chars.py, src/gfx/gen-chars.ts neu generiert. Neue tests/char-frames.test.ts: 2 Helden x 4 Richtungen x 4 Frames vorhanden, Frame-Groesse konstant, Frames je Richtung paarweise verschieden, alle Pixel in Palette, Alpha nur 0/255. Abnahme: vitest gruen, tsc gruen, Kontaktbogen 4x im Commit.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T06:53:01Z",
           "by": "build",
           "text": "todo → doing: K2 Silhouette+Akzent: Axt-Blatt einschneidig aussen, Kael Rost statt Gold, Mira schmaler Umhang + Goldborte."
+        },
+        {
+          "at": "2026-11-27T07:07:18Z",
+          "by": "build",
+          "text": "doing → review: K2 committed ebe2bc1: Axt-Blatt einschneidig aussen (Stahlschneide x30, Rost-Socket/Schaft), Kael ohne Gold (Rost 17/18), Mira Umhang 12-17 px + Goldsaum; tests/char-frames.test.ts 5/5; build+273 Tests gruen. Belege shots/m10-heroes-k2-4x.png/.json."
         }
       ],
       "created": "2026-11-27T05:34:41Z",
-      "updated": "2026-11-27T06:53:01Z"
+      "updated": "2026-11-27T07:07:18Z"
     },
     {
       "id": 2400,

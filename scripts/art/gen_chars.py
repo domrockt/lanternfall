@@ -59,9 +59,9 @@ def mira_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     side = direction == "side"
     up = direction == "up"
     step = 0 if idle else [0, 1, 2, 3][frame]
-    bob = 0 if idle else [0, -1, 0, -1][frame]
+    bob = 0 if idle else [0, 1, 0, 1][frame]
     if idle and frame == 1:
-        bob = -1
+        bob = 1
     recoil = 3 if hit else 0
     cx = 16
     ox = 1 if side else 0           # Profil leicht nach vorn versetzt
@@ -284,9 +284,9 @@ def kael_pose(direction: str, frame: int = 0, idle: bool = False, hit: bool = Fa
     side = direction == "side"
     up = direction == "up"
     step = 0 if idle else [0, 1, 2, 3][frame]
-    bob = 0 if idle else [0, -1, 0, -1][frame]
+    bob = 0 if idle else [0, 1, 0, 1][frame]
     if idle and frame == 1:
-        bob = -1
+        bob = 1
     recoil = 3 if hit else 0
     cx = 16
     ox = 1 if side else 0
