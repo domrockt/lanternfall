@@ -4194,7 +4194,7 @@
       "id": 2918,
       "title": "m10-passive-math #1 Ist-Matrix 6 Passives x Stufen 1..8",
       "description": "tests/passive-stack.test.ts erzeugt fuer alle 6 Passives (boots/tome/heart/charm/whetstone/hourglass) die effektiven Werte je Stufe 1..8 ueber aggregateMods/effective*; schreibt shots/m10-passive-math-matrix.json mit Wert, erwartetem n-fachem Basisbonus, Abweichung, Cap-Check und NaN/Negativ-Check. Abnahme: Baseline-JSON + Testlauf-Ausgabe (auch rot) im Commit #1 belegt.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -4206,20 +4206,31 @@
           "at": "2026-11-27T11:48:52Z",
           "by": "build",
           "text": "doing → review: Commit 3a5dc99. Baseline-Beleg: 64 Matrixzeilen, 0 Abweichungen/0 Cap-Verletzungen im Normalpfad (Stufen 1-5 + Clamp 6-8); rot bei Doppelzaehlung (boots 5 doppelt = 80%/180 Tempo > 140) und NaN/Infinity/negativ. JSON shots/m10-passive-math-matrix.json committed."
+        },
+        {
+          "at": "2026-11-27T11:55:23Z",
+          "by": "build",
+          "text": "review → done: Commit 3a5dc99, Baseline im Karten-Commit. Abnahme: Matrix-JSON 64 Zeilen; Normalpfad 0 Abweichungen, adversariale Duplikate/NaN offen -> #2919."
         }
       ],
       "created": "2026-11-27T11:28:18Z",
-      "updated": "2026-11-27T11:48:52Z"
+      "updated": "2026-11-27T11:55:23Z"
     },
     {
       "id": 2919,
       "title": "m10-passive-math #2 Fix Kumulation + Caps + 0/NaN-Schutz",
       "description": "src/logic/stats.ts: aggregateMods ignoriert nicht-finite Werte, klemmt Aggregat auf harte Caps (moveSpeed 40%, cooldown 40%, damage 50%, pickupRadius 125%, area/duration 50%, maxHpFlat 100, regen 10); effective* zusaetzlich defensiv gegen NaN/negative Basis. Keine Balance-Neuerfindung, nur dokumentierte Semantik 'Stufe n = n-facher Basisbonus' + Obergrenzen. Abnahme: npx vitest run tests/passive-stack.test.ts gruen, Matrix 0 Abweichungen, 0 Cap-Verletzungen, 0 NaN/negativ.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T11:55:23Z",
+          "by": "build",
+          "text": "todo → review: Commit dee98ba. types: baseline pure n-fach exakt; aggregateMods sanitisiert+gekappt; 0 Abweichungen, 0 Cap-Verletzungen, 0 NaN/negativ; npm test 340/340, tsc 0."
+        }
+      ],
       "created": "2026-11-27T11:28:18Z",
-      "updated": "2026-11-27T11:28:18Z"
+      "updated": "2026-11-27T11:55:23Z"
     },
     {
       "id": 2920,

@@ -222,3 +222,171 @@ describe("Passive-Matrix: Stufe n = n-facher Basisbonus, innerhalb der Caps", ()
     expect(adversarial.negativeCooldown).toBeGreaterThanOrEqual(0);
   });
 });
+
+// ---------------------------------------------------------------------------
+// #2920 Grenz-Beleg: Caps an den Grenzen (Stufe 5, Stufe 8 geclampt,
+// mehrfach angewendete Mods) und Kombination aller 6 Passives gleichzeitig.
+// ---------------------------------------------------------------------------
+
+interface CapCheck {
+  scenario: string;
+  stat: string;
+  value: number;
+  cap: number;
+  direction: "max" | "min";
+  withinCap: boolean;
+  finiteNonNegative: boolean;
+}
+
+const boundary: CapCheck[] = [];
+
+function check(
+  scenario: string,
+  stat: string,
+  value: number,
+  cap: number,
+  direction: "max" | "min" = "max",
+): void {
+  const withinCap =
+    direction === "max" ? value <= cap + 1e-9 : value >= cap - 1e-9;
+  boundary.push({
+    scenario,
+    stat,
+    value,
+    cap,
+    direction,
+    withinCap,
+    finiteNonNegative: Number.isFinite(value) && value >= 0,
+  });
+}
+
+const boots5 = aggregateMods([PASSIVES.boots.levels[4].mods]);
+const boots5x2 = aggregateMods([PASSIVES.boots.levels[4].mods, PASSIVES.boots.levels[4].mods]);
+const boots5x3 = aggregateMods([
+  PASSIVES.boots.levels[4].mods,
+  PASSIVES.boots.levels[4].mods,
+  PASSIVES.boots.levels[4].mods,
+]);
+const boots8 = aggregateMods([PASSIVES.boots.levels[clampedLevel("boots", 8) - 1].mods]);
+check("boots Stufe 5 einzeln", "moveSpeed", effectiveMoveSpeed(BASE_MOVE, boots5), BASE_MOVE * (1 + CAPS.moveSpeedPct / 100));
+check("boots Stufe 5 doppelt", "moveSpeed", effectiveMoveSpeed(BASE_MOVE, boots5x2), BASE_MOVE * (1 + CAPS.moveSpeedPct / 100));
+check("boots Stufe 5 dreifach", "moveSpeed", effectiveMoveSpeed(BASE_MOVE, boots5x3), BASE_MOVE * (1 + CAPS.moveSpeedPct / 100));
+check("boots Stufe 8 (Level-Clamp)", "moveSpeed", effectiveMoveSpeed(BASE_MOVE, boots8), BASE_MOVE * (1 + CAPS.moveSpeedPct / 100));
+
+const tome5 = aggregateMods([PASSIVES.tome.levels[4].mods]);
+const tome5x2 = aggregateMods([PASSIVES.tome.levels[4].mods, PASSIVES.tome.levels[4].mods]);
+check("tome Stufe 5 einzeln", "cooldown", effectiveCooldown(BASE_COOLDOWN, tome5), BASE_COOLDOWN * (1 - CAPS.cooldownPct / 100), "min");
+check("tome Stufe 5 doppelt", "cooldown", effectiveCooldown(BASE_COOLDOWN, tome5x2), BASE_COOLDOWN * (1 - CAPS.cooldownPct / 100), "min");
+
+const whet5 = aggregateMods([PASSIVES.whetstone.levels[4].mods]);
+const whet5x2 = aggregateMods([PASSIVES.whetstone.levels[4].mods, PASSIVES.whetstone.levels[4].mods]);
+check("whetstone Stufe 5 einzeln", "damage", effectiveDamage(BASE_DAMAGE, whet5), Math.round(BASE_DAMAGE * (1 + CAPS.damagePct / 100)));
+check("whetstone Stufe 5 doppelt", "damage", effectiveDamage(BASE_DAMAGE, whet5x2), Math.round(BASE_DAMAGE * (1 + CAPS.damagePct / 100)));
+
+const charm5 = aggregateMods([PASSIVES.charm.levels[4].mods]);
+const charm5x2 = aggregateMods([PASSIVES.charm.levels[4].mods, PASSIVES.charm.levels[4].mods]);
+check("charm Stufe 5 einzeln", "pickupRadius", effectivePickupRadius(BASE_PICKUP, charm5), BASE_PICKUP * (1 + CAPS.pickupRadiusPct / 100));
+check("charm Stufe 5 doppelt", "pickupRadius", effectivePickupRadius(BASE_PICKUP, charm5x2), BASE_PICKUP * (1 + CAPS.pickupRadiusPct / 100));
+
+const heart5 = aggregateMods([PASSIVES.heart.levels[4].mods]);
+const heart5x2 = aggregateMods([PASSIVES.heart.levels[4].mods, PASSIVES.heart.levels[4].mods]);
+check("heart Stufe 5 einzeln", "maxHpFlat", heart5.maxHpFlat, CAPS.maxHpFlat);
+check("heart Stufe 5 doppelt", "maxHpFlat", heart5x2.maxHpFlat, CAPS.maxHpFlat);
+check("heart Stufe 5 einzeln", "regen", heart5.regen, CAPS.regen);
+
+const hour5 = aggregateMods([PASSIVES.hourglass.levels[4].mods]);
+const hour5x2 = aggregateMods([PASSIVES.hourglass.levels[4].mods, PASSIVES.hourglass.levels[4].mods]);
+check("hourglass Stufe 5 einzeln", "radius", effectiveRadius(BASE_RADIUS, hour5), BASE_RADIUS * (1 + CAPS.areaPct / 100));
+check("hourglass Stufe 5 doppelt", "radius", effectiveRadius(BASE_RADIUS, hour5x2), BASE_RADIUS * (1 + CAPS.areaPct / 100));
+check("hourglass Stufe 5 einzeln", "duration", effectiveDuration(BASE_DURATION, hour5), BASE_DURATION * (1 + CAPS.durationPct / 100));
+
+if (comboAgg) {
+  check("Kombination 6/6 Stufe 5", "moveSpeed", effectiveMoveSpeed(BASE_MOVE, comboAgg), BASE_MOVE * (1 + CAPS.moveSpeedPct / 100));
+  check("Kombination 6/6 Stufe 5", "cooldown", effectiveCooldown(BASE_COOLDOWN, comboAgg), BASE_COOLDOWN * (1 - CAPS.cooldownPct / 100), "min");
+  check("Kombination 6/6 Stufe 5", "damage", effectiveDamage(BASE_DAMAGE, comboAgg), Math.round(BASE_DAMAGE * (1 + CAPS.damagePct / 100)));
+  check("Kombination 6/6 Stufe 5", "pickupRadius", effectivePickupRadius(BASE_PICKUP, comboAgg), BASE_PICKUP * (1 + CAPS.pickupRadiusPct / 100));
+  check("Kombination 6/6 Stufe 5", "radius", effectiveRadius(BASE_RADIUS, comboAgg), BASE_RADIUS * (1 + CAPS.areaPct / 100));
+  check("Kombination 6/6 Stufe 5", "duration", effectiveDuration(BASE_DURATION, comboAgg), BASE_DURATION * (1 + CAPS.durationPct / 100));
+}
+
+const junkAgg = aggregateMods([
+  { damagePct: Number.NaN },
+  { cooldownPct: Number.POSITIVE_INFINITY },
+  { pickupRadiusPct: Number.NEGATIVE_INFINITY },
+  { moveSpeedPct: -999 },
+  { maxHpFlat: Number.NaN },
+  { regen: Number.NEGATIVE_INFINITY },
+  { areaPct: -50 },
+  { durationPct: Number.NaN },
+]);
+const junk = {
+  mods: junkAgg,
+  moveSpeed: effectiveMoveSpeed(BASE_MOVE, junkAgg),
+  cooldown: effectiveCooldown(BASE_COOLDOWN, junkAgg),
+  damage: effectiveDamage(BASE_DAMAGE, junkAgg),
+  pickupRadius: effectivePickupRadius(BASE_PICKUP, junkAgg),
+  radius: effectiveRadius(BASE_RADIUS, junkAgg),
+  duration: effectiveDuration(BASE_DURATION, junkAgg),
+};
+const junkValues = Object.values(junk).filter((v) => typeof v === "number") as number[];
+const junkInvalid = junkValues.filter((v) => !Number.isFinite(v) || v < 0);
+
+const boundaryViolations = boundary.filter((c) => !c.withinCap || !c.finiteNonNegative);
+
+const capsSummary = {
+  generatedAt: new Date().toISOString(),
+  caps: CAPS,
+  checks: boundary.length,
+  violations: boundaryViolations.length,
+  boundary,
+  combo: {
+    combined: combo.combined,
+    threw: comboError !== null,
+    error: comboError,
+    allSixAtMax: (Object.keys(PASSIVES) as PassiveId[]).every((id) => modsFor(id, PASSIVES[id].maxLevel) !== undefined),
+    withinCaps: combo.combined && (combo as { withinCaps?: boolean }).withinCaps === true,
+    mods: comboAgg,
+  },
+  junk: {
+    mods: junkAgg,
+    effective: junk,
+    invalidValues: junkInvalid.length,
+  },
+};
+
+writeFileSync(
+  "shots/m10-passive-math-caps.json",
+  JSON.stringify(capsSummary, null, 2) + "\n",
+);
+
+describe("Grenz-Beleg: Caps und 6/6-Kombination", () => {
+  it("kein Grenzfall verlaesst Cap oder erzeugt NaN/negativ", () => {
+    expect(boundary.length).toBeGreaterThanOrEqual(15);
+    expect(boundaryViolations).toEqual([]);
+  });
+
+  it("Doppelzaehlung derselben Passiv-Stufe bleibt am Cap", () => {
+    expect(boots5x2.moveSpeedPct).toBe(CAPS.moveSpeedPct);
+    expect(boots5x3.moveSpeedPct).toBe(CAPS.moveSpeedPct);
+    expect(tome5x2.cooldownPct).toBe(CAPS.cooldownPct);
+    expect(whet5x2.damagePct).toBe(CAPS.damagePct);
+    expect(charm5x2.pickupRadiusPct).toBe(CAPS.pickupRadiusPct);
+  });
+
+  it("alle 6 Passives gleichzeitig auf Stufe 5: kombinierbar, kein Wurf", () => {
+    expect(comboError).toBeNull();
+    expect(combo.combined).toBe(true);
+    expect(capsSummary.combo.allSixAtMax).toBe(true);
+    expect(capsSummary.combo.withinCaps).toBe(true);
+  });
+
+  it("Muell-Eingaben (NaN/Infinity/negativ) werden zu finiten, nicht-negativen Werten", () => {
+    expect(junkInvalid).toEqual([]);
+    expect(junk.moveSpeed).toBeGreaterThanOrEqual(10);
+    expect(junk.cooldown).toBeGreaterThanOrEqual(0.2);
+    expect(junk.damage).toBeGreaterThanOrEqual(1);
+    expect(junk.pickupRadius).toBeGreaterThanOrEqual(0);
+    expect(junk.radius).toBeGreaterThanOrEqual(0);
+    expect(junk.duration).toBeGreaterThanOrEqual(0);
+  });
+});
