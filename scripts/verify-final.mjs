@@ -46,7 +46,14 @@ try {
   await page.waitForFunction(() => window.__lf.state().scene === "results", { timeout: 5000 });
   await page.keyboard.press("2"); // TITEL
   await page.waitForFunction(() => window.__lf.state().scene === "title", { timeout: 5000 });
+  // Title-create() registriert den keydown-Handler; ohne kurze Siedelzeit geht
+  // das erste "O" sonst verloren (Flake 27.11., 2/2 Laeufe FAIL visible=false).
+  await page.waitForTimeout(400);
   await page.keyboard.press("KeyO");
+  await page.waitForFunction(() => {
+    const sc = window.__game.scene.getScene("title");
+    return sc.options?.container?.visible === true;
+  }, { timeout: 2000 });
   await page.waitForTimeout(300);
   await page.screenshot({ path: "shots/final-options-mute.png" });
   const muteRow = await page.evaluate(() => {

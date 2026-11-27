@@ -2336,10 +2336,15 @@
           "at": "2026-11-26T22:23:53Z",
           "by": "build",
           "text": "doing → review: Commit 6887705: Audit-JSON 12 Keys, 6 fehlende Evolution-Stinger, 24 identische Signaturen. Kontrolle audio-check offen."
+        },
+        {
+          "at": "2026-11-27T00:37:16Z",
+          "by": "build",
+          "text": "Audit-Beleg (shots/m10-audio-distinct-audit.json) mit finalem Fix neu erzeugt: 12 Keys, min Distanz 0,125. Kontrolle audio-check offen."
         }
       ],
       "created": "2026-11-26T22:09:35Z",
-      "updated": "2026-11-26T22:23:53Z"
+      "updated": "2026-11-27T00:37:16Z"
     },
     {
       "id": 1459,
@@ -2357,36 +2362,67 @@
           "at": "2026-11-26T22:37:51Z",
           "by": "build",
           "text": "doing → review: Commit b6113e0: Test zuerst, rot belegt (2/7: phoenix 0,26s statt >=0,6s; ember/frost Distanz 0,019). Gruen nach Fix #1460."
+        },
+        {
+          "at": "2026-11-27T00:37:16Z",
+          "by": "build",
+          "text": "tests/audio-mix.test.ts final 7/7 grün; Rot-Beleg in b6113e0 dokumentiert (2/7). Kontrolle test-auditor/audio-check offen."
         }
       ],
       "created": "2026-11-26T22:09:35Z",
-      "updated": "2026-11-26T22:37:51Z"
+      "updated": "2026-11-27T00:37:16Z"
     },
     {
       "id": 1460,
       "title": "m10-audio-distinct #3 Fix: 6 Evolutions-Klänge eigenständig",
       "description": "In scripts/gen_sfx.py die 6 Evolutions-Keys als eigenständige Klänge neu erzeugen (Treffer <0,4 s, Evolution-Stinger 0,6-1,0 s mit Aufwärts-Glissando, eigene Wellenform-Kombination je Key); AudioSystem-Mapping/Cooldowns ergänzen ohne Umbenennen; Master-Mute-Pfad unverändert. Abnahme: tests/audio-mix.test.ts grün, WAV-Signaturen paarweise verschieden, Commit nennt #<karte>.",
-      "column": "doing",
+      "column": "review",
       "assignee": "audio-designer",
       "notes": [
         {
           "at": "2026-11-26T22:37:51Z",
           "by": "build",
           "text": "todo → doing: Start: gen_sfx 6 Bases + 6 Evolutions-Stinger neu, Distanzen >=0,12, AudioSystem-Cooldowns."
+        },
+        {
+          "at": "2026-11-27T00:37:16Z",
+          "by": "build",
+          "text": "Commit 2b18b37 (#1460): 12 Klänge neu, alle 66 Paare >=0,12 Band-Distanz (min 0,125 frost/eternal_winter), Evolution-Stinger 0,70-0,90 s rising, Cooldown 0,85-1,0 s/maxVoices 1. Test audio-mix 7/7 grün. Kontrolle audio-check offen."
+        },
+        {
+          "at": "2026-11-27T00:39:11Z",
+          "by": "build",
+          "text": "doing → review: Fix + Test-Grün belegt, Kontrolle audio-check offen."
         }
       ],
       "created": "2026-11-26T22:09:35Z",
-      "updated": "2026-11-26T22:37:51Z"
+      "updated": "2026-11-27T00:39:11Z"
     },
     {
       "id": 1461,
       "title": "m10-audio-distinct #4 Beleg + Abnahme",
       "description": "node scripts/verify-final.mjs (Master-Mute 7/7) und node scripts/verify-weapons.mjs (12/12) ohne flock; WAV-/Spektral-Belege der 12 Klänge nach shots/m10-audio-*; npm run build + npx vitest run gesamt grün mit Ist-Zahl; docs/lanes/m10-audio-distinct.md mit Key-/Klang-Tabelle; .lane-done mit Messwerten committen. Abnahme: alle Belege im Commit, Zahlen in Doku, Commit nennt #<karte>.",
-      "column": "todo",
+      "column": "review",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T00:10:33Z",
+          "by": "build",
+          "text": "todo → doing: Start Abnahme: verify-final 7/7 (2. Lauf), verify-weapons 12/12, build, vitest 199, Belege+Doku+.lane-done."
+        },
+        {
+          "at": "2026-11-27T00:37:16Z",
+          "by": "build",
+          "text": "Commit 05428a5 (#1461) + Nachtrag: verify-final 7/7 PASS (400-ms-Siedelzeit macht Options-Check deterministisch), verify-weapons 12/12 PASS 0 JS-Fehler, build grün, vitest 199/199. Belege shots/m10-audio-distinct-audit.json, -spectra.png, -spectra-12.png; Doku+ .lane-done mit Messwerten."
+        },
+        {
+          "at": "2026-11-27T00:39:11Z",
+          "by": "build",
+          "text": "doing → review: Abnahme-Belege final, Kontrolle audio-check offen."
+        }
+      ],
       "created": "2026-11-26T22:09:35Z",
-      "updated": "2026-11-26T22:09:35Z"
+      "updated": "2026-11-27T00:39:11Z"
     }
   ]
 }
