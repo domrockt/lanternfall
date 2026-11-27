@@ -1,0 +1,50 @@
+{
+  "tag": "after-fair",
+  "generatedAt": "2026-11-27T15:35:15.269Z",
+  "seed": 1,
+  "enemiesTarget": 500,
+  "weapons": [
+    "ember",
+    "flail",
+    "frost",
+    "thorn",
+    "storm",
+    "lantern"
+  ],
+  "seconds": 10,
+  "frames": 597,
+  "elapsedMs": 10005,
+  "fps": 59.7,
+  "worstFrameMs": 50,
+  "medianFrameMs": 16.76,
+  "maxActiveViews": 6,
+  "maxVisibleViews": 6,
+  "avgActiveViews": 5.97,
+  "setTextCalls": 241,
+  "setTextPerSecond": 24.1,
+  "reportCalls": 5847,
+  "reportPerSecond": 584.4,
+  "reportedDamage": 233485,
+  "respawned": 0,
+  "enemiesEnd": 500,
+  "msPerFrame": 16.76,
+  "hook": {
+    "views": 24,
+    "maxViews": 24
+  },
+  "hud": {
+    "hudTotal": 253307,
+    "rawTotal": 253307,
+    "barsSum": 253307,
+    "deltaPct": 0,
+    "weapons": {
+      "frost": 29189,
+      "storm": 11505,
+      "flail": 155574,
+      "lantern": 30943,
+      "ember": 9744,
+      "thorn": 16352
+    }
+  },
+  "jsErrors": []
+}

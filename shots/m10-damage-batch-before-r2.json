@@ -1,0 +1,50 @@
+{
+  "tag": "before-r2",
+  "generatedAt": "2026-11-27T16:43:14.902Z",
+  "seed": 1,
+  "enemiesTarget": 500,
+  "weapons": [
+    "ember",
+    "flail",
+    "frost",
+    "thorn",
+    "storm",
+    "lantern"
+  ],
+  "seconds": 10,
+  "frames": 601,
+  "elapsedMs": 10006,
+  "fps": 60.1,
+  "worstFrameMs": 16.8,
+  "medianFrameMs": 16.65,
+  "maxActiveViews": 6,
+  "maxVisibleViews": 6,
+  "avgActiveViews": 5.97,
+  "setTextCalls": 246,
+  "setTextPerSecond": 24.6,
+  "reportCalls": 5673,
+  "reportPerSecond": 567,
+  "reportedDamage": 226737,
+  "respawned": 0,
+  "enemiesEnd": 500,
+  "msPerFrame": 16.65,
+  "hook": {
+    "views": 24,
+    "maxViews": 24
+  },
+  "hud": {
+    "hudTotal": 247283,
+    "rawTotal": 247283,
+    "barsSum": 247283,
+    "deltaPct": 0,
+    "weapons": {
+      "frost": 28436,
+      "storm": 11606,
+      "flail": 151713,
+      "lantern": 29194,
+      "ember": 9730,
+      "thorn": 16604
+    }
+  },
+  "jsErrors": []
+}
