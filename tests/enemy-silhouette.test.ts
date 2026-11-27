@@ -105,6 +105,31 @@ function edgeContrast(grid: Grid): { maxDark: number; meanLight: number } {
   return { maxDark, meanLight: n === 0 ? 0 : sumLight / n };
 }
 
+/** Rim-Band-Metrik (Randpixel + 1 px innen) gegen dunklen Moorboden PAL 28. */
+function rimStats(grid: Grid): { lightPct: number; belowPct: number } {
+  const dark = luminance(28);
+  const h = grid.length;
+  const w = grid[0]?.length ?? 0;
+  const filled = (x: number, y: number): boolean =>
+    x >= 0 && x < w && y >= 0 && y < h && grid[y][x] !== null;
+  let light = 0;
+  let below = 0;
+  let n = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (grid[y][x] === null) continue;
+      const boundary = !filled(x - 1, y) || !filled(x + 1, y) || !filled(x, y - 1) || !filled(x, y + 1);
+      const near = !boundary && (filled(x - 1, y) || filled(x + 1, y) || filled(x, y - 1) || filled(x, y + 1));
+      if (!boundary && !near) continue;
+      n++;
+      const lum = luminance(grid[y][x] as number);
+      if (lum >= 70) light++;
+      if (Math.abs(lum - dark) < 40) below++;
+    }
+  }
+  return { lightPct: (100 * light) / (n || 1), belowPct: (100 * below) / (n || 1) };
+}
+
 describe("30 Gegner-Archetypen: Silhouetten im Chaos unterscheidbar", () => {
   it("hat 30 Archetypen als Testbasis", () => {
     expect(ENEMY_LIST).toHaveLength(30);
@@ -147,5 +172,25 @@ describe("30 Gegner-Archetypen: Silhouetten im Chaos unterscheidbar", () => {
   it("ist deterministisch: zwei Läufe liefern identische Signaturen", () => {
     const run = () => ENEMY_LIST.map((_def, i) => shapeSignature(enemySpriteFrames(i)[0]));
     expect(run()).toEqual(run());
+  });
+
+  it("art-director-Problemfälle 27.11.: treant/golem/bog_rat/wisp/imp/crow lesbar", () => {
+    const find = (id: string) => rimStats(enemySpriteFrames(ENEMY_LIST.findIndex((e) => e.id === id))[0]);
+    // treant: obere Kante hell (12) + Mitteltöne (17) → mittlerer Randkontrast > 40.
+    expect(edgeContrast(enemySpriteFrames(ENEMY_LIST.findIndex((e) => e.id === "treant"))[0]).maxDark).toBeGreaterThan(40);
+    // golem/bog_rat: Mitteltöne 7/8, Kontur PAL 0 → Rim > 50 % hell, < 45 % unter Schwelle.
+    for (const id of ["golem", "bog_rat"]) {
+      const r = find(id);
+      expect(r.lightPct, id).toBeGreaterThan(50);
+      expect(r.belowPct, id).toBeLessThan(45);
+    }
+    // wisp/imp/crow: Lichtkante über den gesamten oberen Bogen.
+    for (const id of ["wisp", "imp", "crow"]) {
+      expect(find(id).lightPct, id).toBeGreaterThan(40);
+    }
+    // Gesamtmittel: unter der Kontrastschwelle < 45 %.
+    const all = ENEMY_LIST.map((_d, i) => rimStats(enemySpriteFrames(i)[0]));
+    const below = all.reduce((a, r) => a + r.belowPct, 0) / all.length;
+    expect(below).toBeLessThan(45);
   });
 });

@@ -36,13 +36,30 @@ export function gridFromRows(rows: readonly string[]): Grid {
  * Beides ist deterministisch (keine Zufallswerte, kein Dithering) und hält
  * binäres Alpha: nur gefüllte Pixel bekommen eine Palettenfarbe.
  */
-export function sharpenEnemyGrid(src: Grid, color: number): Grid {
+/** Per-Archetyp-Tonkorrekturen (art-director-Runde 27.11.). Nur Palettenindizes. */
+interface ContrastTones {
+  /** Lichtkante über den gesamten oberen Bogen. */
+  top: number;
+  /** Aufhellung dunkler Mitteltöne (Rim-Kontrast gegen dunklen Moorboden). */
+  mid: number;
+  /** Schwelle, unter der ein Mitteltone-Pixel aufgehellt wird. */
+  midLimit: number;
+}
+
+const CONTRAST_TONES: Record<string, ContrastTones> = {
+  treant: { top: 12, mid: 17, midLimit: 62 },
+  golem: { top: 12, mid: 8, midLimit: 62 },
+  bog_rat: { top: 12, mid: 8, midLimit: 62 },
+};
+
+export function sharpenEnemyGrid(src: Grid, color: number, id = ""): Grid {
   const g = src.map((row) => row.slice());
   const h = g.length;
   const w = g[0]?.length ?? 0;
   const filled = (x: number, y: number): boolean =>
     x >= 0 && x < w && y >= 0 && y < h && g[y][x] !== null;
-  const light = lightEdgeIndex(color);
+  const tones = CONTRAST_TONES[id];
+  const light = tones?.top ?? lightEdgeIndex(color);
 
   // 1) 1-px-Kontur: dunkle Randpixel werden Tinte (0); helle Highlights an
   //    Spitzen bleiben erhalten, damit die Lichtkante nicht überschrieben wird.
@@ -55,34 +72,47 @@ export function sharpenEnemyGrid(src: Grid, color: number): Grid {
     }
   }
 
-  // 2) 1-px-Lichtkante oben-links: oberste/links Kontur überspringen, erstes
-  //    Innenpixel aufhellen (ART.md: Licht kommt von oben-links).
+  // 2) 1-px-Lichtkante über den gesamten oberen Bogen: das oberste Pixel jeder
+  //    Spalte (obere Kontur) wird zum Lichttone; damit ist die Silhouette auf
+  //    dunklem Moor auch dort lesbar, wo sie sich mit anderen überlappt.
   for (let x = 0; x < w; x++) {
     let y = 0;
     while (y < h && !filled(x, y)) y++;
     if (y >= h) continue;
-    while (y < h && filled(x, y) && g[y][x] === 0) y++;
-    if (y >= h || !filled(x, y)) continue;
-    if (g[y][x] === 13) continue; // Augen/Glow nicht überschreiben
+    const topColor = g[y][x];
+    if (topColor === 13) continue; // Augen/Glow nicht überschreiben
     g[y][x] = light;
   }
   for (let y = 0; y < h; y++) {
     let x = 0;
     while (x < w && !filled(x, y)) x++;
     if (x >= w) continue;
-    while (x < w && filled(x, y) && g[y][x] === 0) x++;
-    if (x >= w || !filled(x, y)) continue;
     if (g[y][x] === 13) continue;
     g[y][x] = light;
   }
+
+  // 3) Dunkle Mitteltöne aufhellen, nur bei den vom art-director benannten
+  //    Problemfällen. Die Kontur (PAL 0) und Augen/Glow bleiben unangetastet.
+  if (tones) {
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const c = g[y][x];
+        if (c === null || c === 0 || c === 13) continue;
+        const boundary = !filled(x - 1, y) || !filled(x + 1, y) || !filled(x, y - 1) || !filled(x, y + 1);
+        if (boundary) continue;
+        if (luminance(c) < tones.midLimit) g[y][x] = tones.mid;
+      }
+    }
+  }
   return g;
 }
+
 
 /** Generierte Frames eines Gegners (Index = Position in ENEMY_LIST), geschärft. */
 export function enemySpriteFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
   const gen = GEN_ENEMIES[def.spriteKey];
-  return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), def.color));
+  return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), def.color, def.id));
 }
 
 /** Textur-Keys aller generierten Frames (Basis + _2.._4). */

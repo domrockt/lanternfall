@@ -154,3 +154,43 @@ Ehrlich: der Gewinn ist messbar, aber moderat; die Kontur trennt überlappende
 Silhouetten, die Lichtkante ist auf dunklem Moor oben sichtbar. Im 1920×1080-Frame
 verdeckt das Boss-Banner weiterhin den Kern → für K5 wird ein Banner-freier Crop
 erzeugt. Offen: K3 Elite-Rim-Light, K4 Test, K5 Beleg/Doku/FPS.
+
+## #K5 Korrekturrunde 27.11. (art-director FAIL 3/5)
+
+Der art-director verlangte konkrete Nachbesserungen. In `sharpenEnemyGrid()`
+(`src/gfx/enemySprites.ts`) umgesetzt:
+
+- **Lichtkante über den gesamten oberen Bogen:** das oberste Pixel jeder Spalte
+  (obere Kontur) wird zum Lichttone; vorher wurde nur das erste Innenpixel unter
+  der oberen Kontur aufgehellt. Damit leuchten auch die abfallenden Flanken der
+  runden Silhouetten (wisp/imp/crow).
+- **Per-Archetyp-Tonkorrekturen** (`CONTRAST_TONES`, nur Palettenindizes):
+  - `treant`: obere Kante PAL 12 (candleWhite), Mitteltöne < 62 → PAL 17
+    (emberOrange). Mittlerer Randkontrast dunkel: 26.5 → **68.1**.
+  - `golem`: obere Kante PAL 12, Mitteltöne < 62 → PAL 8 (mist).
+  - `bog_rat`: obere Kante PAL 12, Mitteltöne < 62 → PAL 8 (mist).
+- Kontur bleibt vollständig PAL 0, Augen/Glow (PAL 13) unangetastet, binäres
+  Alpha, Sprite-Größen und Frame-Zahl unverändert (reine Umfärbung).
+
+Offline aus den in-game Textur-Masken gerechnet (identische Metrik wie K1,
+kein Live-Frame, kein FPS-Lauf):
+
+| Metrik (30 Archetypen, Mittel) | vorher | nach K2 | nach Korrektur |
+|---|---|---|---|
+| Rim-Light hell % | 42.9 | 44.9 | **60.2** |
+| Top-Light % | 33.1 | 37.1 | **88.6** |
+| Randkontrast dunkel (L) | 57.5 | 59.5 | **73.9** |
+| unter Schwelle dunkel % | 59.9 | 57.6 | **42.5** |
+
+Problemfälle einzeln: treant Randkontrast 68.1 / unter Schwelle 33.3 %;
+golem 67.7 % hell / 32.3 % unter Schwelle; bog_rat 72.2 % / 27.8 %;
+wisp Top-Light 71.4 % (vorher 19 %); imp 64.3 % (33.3 %); crow 100 % (45.2 %).
+`tests/enemy-silhouette.test.ts` prüft diese Fälle jetzt als Regression (6/6 grün).
+
+**Offen / blockiert:** Die Beleg-PNGs (`after.png`, `chaos.png`, `crop.png`) und
+`after.json` stammen noch vom Stand vor dieser Umfärbung und müssen nach Freigabe
+der Mess-Sperre mit 500+-Gegner-Hordenframe (gleiche Zeit/Elite-Zahl wie JSON,
+ohne Boss-Banner über dem Kern) neu erzeugt werden. Ein Elite-vs-Normalo-Crop auf
+dunklem Grund fehlt weiterhin. art-director-Re-Abnahme steht aus; `.lane-done`
+bleibt ungesetzt.
+
