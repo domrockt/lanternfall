@@ -11,9 +11,10 @@
 // 6 Waffen Lv8, Seed 1, timeScale 1. Zusaetzlich ein eingefrorenes,
 // deterministisches HUD ("stehendes HUD") fuer die Vorher/Nachher-Bildprobe.
 //
-// Beispiel:
-//   flock /home/ai/games/.lf-perf.lock timeout 180 node scripts/m10-ui-cost.mjs \
-//     --tag before --out shots/m10-ui-text-cost-before.json
+// Beispiel (-w 300 = timeout 180 + 120 s Puffer; bei rc != 0 Meldung + Exitcode weiterreichen):
+//   flock -w 300 /home/ai/games/.lf-perf.lock timeout 180 node scripts/m10-ui-cost.mjs \
+//     --tag before --out shots/m10-ui-text-cost-before.json \
+//     || { echo "m10-ui-cost: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"; exit $?; }
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 

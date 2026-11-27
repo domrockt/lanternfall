@@ -4,8 +4,12 @@
 // Misst Heap-Wachstum (JS-Heap nach erzwungenem Voll-GC) ueber das
 // Endgame-Fenster plus Sampling-Heap-Profil der Top-Alloc-Sites.
 // Aufruf: node scripts/m10-heap-margin.mjs --out=shots/m10-heap-margin-before.json
-// Heap-Szenario: OHNE flock (lastunabhaengig). Nur echte fullrun-FPS-Messungen
-// laufen unter flock /home/ai/games/.lf-perf.lock.
+// Heap-Szenario: OHNE flock (lastunabhaengig, WHY: Heap-Messung ist lastunabhaengig).
+// Nur echte fullrun-FPS-Messungen laufen unter `flock -w`:
+//   flock -w 300 /home/ai/games/.lf-perf.lock npm run fullrun
+// (-w 300 = 30-Min-Sim @ timeScale 30 ~ 60-120 s real + Build/Boot ~120 s Puffer;
+// bei Lock-Timeout rc != 0: Meldung "Sperre /home/ai/games/.lf-perf.lock belegt —
+// spaeter erneut versuchen" + Exitcode weiterreichen — kein stiller Abbruch.)
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 
