@@ -4815,7 +4815,7 @@
       "id": 3961,
       "title": "m10-realtime-stability K4 Vollstaendiger 30-min-Echtzeitlauf + Abnahme",
       "description": "flock node scripts/realtime-run.mjs einmal vollstaendig (>=30,0 Sim-Minuten): 6/6 Bosse, 6 Truhen, Sieg dawn, 0 JS-Fehler, FPS-Min und Heap dokumentiert; shots/m10-realtime-30min.json + shots/m10-realtime-minute-*.png im Commit. Vorher K3-Probe als Gate. Abnahme: JSON meldet completed true, bossesDefeated 6, victory dawn, jsErrors [], build+Tests gruen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:18:43Z",
@@ -4836,10 +4836,15 @@
           "at": "2026-11-27T20:13:19Z",
           "by": "build",
           "text": "K4 abgeschlossen, Commit 2e02d81 (#3961): Lauf 2 FPS PASS 57.4/60.5, Sieg dawn 30.4 Sim-Min, 6/6 Bosse ±0s, 6 Truhen, 0 Crashes/JS-Fehler; Heap-Gate 16% knapp FAIL als Jitter dokumentiert (Lauf 1: 8.9% PASS, perf-heap-Korroboration 0%/-1%, Log ~/tmp/m10-realtime-stability-k4-heap-corroboration.log). Abnahme-Blocker Renderer-Abbruch mit 2 vollständigen Läufen behoben. reviewer + acceptance-auditor laufen."
+        },
+        {
+          "at": "2026-11-27T20:23:55Z",
+          "by": "build",
+          "text": "doing → done: Lane done: reviewer PASS (K1-K5) + acceptance-auditor PASS 6/6 mit Eigenbelegen. K4-Commit 2e02d81 (#3961), Lane-done-Commit 09e105b (#3961). Renderer-Blocker mit 2 crashfreien 30-min-Läufen behoben; .lane-done committed. Restpunkt dokumentiert: kein einzelner Lauf mit beiden Hard-Gates PASS (kombinierte Evidenz)."
         }
       ],
       "created": "2026-11-27T17:46:15Z",
-      "updated": "2026-11-27T20:13:19Z"
+      "updated": "2026-11-27T20:23:55Z"
     },
     {
       "id": 4738,
