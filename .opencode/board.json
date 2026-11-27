@@ -2773,7 +2773,7 @@
       "id": 1742,
       "title": "m10-enemy-coverage-05 In-Game-Beleg 30 min @30x",
       "description": "Headless 30 Sim-Minuten bei timeScale 30, Spawn-Zaehler ueber window.__lf (minimal spawnCounts in src/debug.ts, nur zaehlen). Abnahme: shots/m10-coverage-ingame.json 30/30 und >=30 gleichzeitig aktive Gegner, 0 JS-Fehler, npm run build + npm test gruen, docs vollstaendig, .lane-done.",
-      "column": "doing",
+      "column": "blocked",
       "assignee": "playtester",
       "notes": [
         {
@@ -2790,10 +2790,15 @@
           "at": "2026-11-27T01:20:28Z",
           "by": "build",
           "text": "review → doing: Supervisor: Abschluss-Karte fuer Board-Sync + .lane-done. K1-K4 stehen mit Commits in review; keine offenen Edits ausser board.json."
+        },
+        {
+          "at": "2026-11-27T01:28:18Z",
+          "by": "build",
+          "text": "doing → blocked: K5-Inhalt PASS (aa5ef5d: 30/30, 274 aktiv, 0 JS-Fehler). Nur .lane-done-Commit blockiert: Disponent-Claim merge-m10-art-contact (main). Request in .dispatch/requests.md; Datei liegt untracked im Worktree fuer Merge-Job. Board-Sync in 2af7312."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T01:20:28Z"
+      "updated": "2026-11-27T01:28:18Z"
     }
   ]
 }
