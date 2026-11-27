@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:5622/?debug=1",
+  "url": "/??debug=1&seed=1",
   "scene": "run",
   "commands": [
     {
@@ -12,6 +12,12 @@
       "call": "autoPlay",
       "args": [
         true
+      ]
+    },
+    {
+      "call": "setTimeScale",
+      "args": [
+        1
       ]
     },
     {
@@ -29,6 +35,11 @@
     }
   ],
   "out": "shots/m10-ambient-640-after.png",
-  "gif": null,
+  "stats": {
+    "enemies": 526,
+    "fps": 58.5,
+    "level": 1,
+    "kills": 3
+  },
   "jsErrors": []
 }
