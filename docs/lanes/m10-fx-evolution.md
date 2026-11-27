@@ -72,21 +72,24 @@ Crop **240×220 bei +360+160** im 960×540-Screenshot; Near-White = `r ≥ 235` 
 
 `EVOLUTION_SIGNATURES` in `src/gfx/gen-fx.ts` ist die einzige Quelle; je Evolution sind Form, drei Palettenindizes und
 Hit-/Death-Lifetime festgelegt. Die 12 Texturen heißen
-`fx_evo_hit_<id>` / `fx_evo_death_<id>` (je 4 Frames, 17×17), `FX_FRAME_COUNTS`
-bleibt für alle bestehenden Keys unverändert.
+`fx_evo_hit_<id>` / `fx_evo_death_<id>` (je 4 Frames, **32×32**), `FX_FRAME_COUNTS`
+bleibt für alle bestehenden Keys unverändert. Jede Textur trägt eine 1-px-`ink`-
+Kontur (Index 0) und eine `boneLight`-Lichtkante (Index 11) oben-links; dadurch
+stehen die Signaturen auch auf Moosgrund und vor Gegnern.
 
 | Evolution | Form | Palette [Haupt, Sekundär, Kern] | Hit-Lifetime | Death-Lifetime | Look |
 |---|---|---|---|---|---|
-| Zornpendel `wrath_pendulum` | ring | 21 lantern, 20 amber, 16 emberBrown | 0,12 s | 0,30 s | goldener Ring-Schlag |
-| Gewittersiegel `thunder_seal` | beam | 12 candleWhite, 9 paleMist, 7 fog | 0,10 s | 0,24 s | weiß-blauer Zickzack-Beam |
-| Phönixschwarm `phoenix` | splitter | 20 amber, 18 flame, 17 emberOrange | 0,16 s | 0,62 s | heißer Splitter-Regen |
-| Ewiger Winter `eternal_winter` | cloud | 9 paleMist, 6 fogBlue, 11 boneLight | 0,22 s | 0,75 s | kalte Nebelwolke |
-| Dornensturm `thorn_storm` | splitter | 30 marsh, 31 marshLight, 29 mossDark | 0,18 s | 0,42 s | grüner Dornenkranz |
-| Seelenleuchtfeuer `soul_beacon` | cloud | 11 boneLight, 8 mist, 5 blueGrey | 0,26 s | 0,55 s | warme Seelenwolke |
+| Zornpendel `wrath_pendulum` | ring | 21 lantern, 20 amber, 16 emberBrown | 0,12 s | 0,30 s | geschlossener 2-px-Zackenring, amber außen/lantern innen |
+| Gewittersiegel `thunder_seal` | beam | 12 candleWhite, 9 paleMist, 7 fog | 0,10 s | 0,24 s | 2–3 px Zickzack, candleWhite-Kern + paleMist-Rand, Seitenast |
+| Phönixschwarm `phoenix` | splitter | 20 amber, 18 flame, 19 flameBright | 0,16 s | 0,62 s | 4–6 heiße Splinter ≥8 px Abstand, flameBright-Kern |
+| Ewiger Winter `eternal_winter` | cloud | 9 paleMist, 6 fogBlue, 11 boneLight | 0,22 s | 0,75 s | asymmetrische Eiswolke, paleMist-Kern + fogBlue-Band + 3 Eissplitter |
+| Dornensturm `thorn_storm` | splitter | 30 marsh, 31 marshLight, 20 amber | 0,18 s | 0,42 s | grüner Dornenkranz, marshLight-Spitzen + amber-Highlight |
+| Seelenleuchtfeuer `soul_beacon` | cloud | 11 boneLight, 8 mist, 5 blueGrey | 0,26 s | 0,55 s | aufsteigender Wisp mit Schweif statt amorpher Wolke |
 
 Die Form selbst variiert zusätzlich über den Haupt-Palettenindex (Ring-Zacken,
-Beam-Phase, Splitter-Rotation, Cloud-Wobble), damit auch zwei Evolutionen mit
-derselben Grundform nicht pixelgleich sind.
+Beam-Phase, Splitter-Rotation, Wisp-Schwung), damit auch zwei Evolutionen mit
+derselben Grundform nicht pixelgleich sind. Hit und Death nutzen bewusst
+verschiedene Stadien: Death ist größer, offener und stärker zerstreut.
 
 ## K3 — Treffer + Tod je Evolution (LOD-sicher)
 
@@ -96,12 +99,14 @@ derselben Grundform nicht pixelgleich sind.
 - `Run.ts` ruft die Signatur am getroffenen Gegner auf (`onHit`), rein visuell:
   keine Hitbox-, Schadens-, Tempo- oder Balance-Änderung.
 - Lesbarkeit im Schwarm: Depth `enemyDeath` (11, **über** den Gegnern mit Depth 9),
-  Startskala 2,0 (Hit) bzw. 2,4 (Death), Wachstum auf 2,8/3,4; damit steht die
-  Signatur sichtbar über der Gegnermasse statt darunter.
-- LOD: `lodSignatureView(..., "minimal")` liefert **Alpha 0,5 und NORMAL-Blend**,
-  der Palettenindex bleibt erhalten. Im `spawnEvolution`-Pfad wird der Blend
-  auf NORMAL gesetzt und die Start-Alpha so gewählt, dass die effektive Alpha
-  auch bei `alphaScale = 0,5` nicht unter 0,5 fällt.
+  Startskala **3,2 (Hit) / 4,0 (Death)**, Wachstum auf 3,6/4,6 plus langsamer
+  Rotation je Form; damit steht die Signatur sichtbar über der Gegnermasse statt
+  darunter und ist bei 32×32 auch im 1x-Canvas (480×270) lesbar.
+- LOD: `lodSignatureView(..., "minimal")` liefert **Alpha 0,85 und NORMAL-Blend**,
+  der Palettenindex bleibt erhalten. Im `spawnEvolution`-Pfad sind die
+  Signatur-Sprites von der Endgame-Alpha-Dämpfung ausgenommen
+  (`alphaScaleExempt`), sodass die effektive Alpha auch bei `alphaScale = 0,5`
+  nicht unter 0,85 fällt (Test: `tests/fx-evolution.test.ts`).
 - Sichtbeleg aller 12 Laufzeit-Texturen: `shots/m10-fx-evolution-signature-sheet.png`
   (obere Reihe Death, untere Hit; alphabetisch eternal_winter, phoenix,
   soul_beacon, thorn_storm, thunder_seal, wrath_pendulum).
@@ -117,22 +122,22 @@ derselben Grundform nicht pixelgleich sind.
 ## K4 — Messung Nachher (Commit mit den Belegen)
 
 - 6 Nachher-GIFs und Peak-Stills: `shots/m10-fx-evolution-after-*.gif/.png`.
-  Je Lauf genau eine Evolution, 24 Frames à 80 ms, Gegner pro Frame ≥ 415
-  (Minimum über alle Läufe: 415; die meisten Frames 520+).
+  Je Lauf genau eine Evolution, 24 Frames à 80 ms, Gegner pro Frame ≥ 413
+  (Minimum über alle Läufe: 413; die meisten Frames 520+).
 - Chaos-Frame Minute 25: `shots/m10-fx-evolution-chaos-m25.png`,
   gewählt aus 12 Kandidaten (Minimum statt Peak, damit kein Ausreißer):
-  `nearWhitePct = 0,52 %` im AoE-Crop 240×220 @ +360+160
+  `nearWhitePct = 0,87 %` im AoE-Crop 240×220 @ +360+160
   (Definition `r ≥ 235 && g,b ≥ 150`) → **≤ 4,16 % PASS**
-  (`shots/m10-fx-evolution-chaos.json`).
+  (`shots/m10-fx-evolution-chaos.json`, 429 lebende Gegner, LOD minimal).
 - Per-Evolution-Peak Near-White (nur informativ, gleicher Crop):
-  Zornpendel 4,95 %, Gewittersiegel 2,44 %, Phönix 1,94 %, Ewiger Winter 1,11 %,
-  Dornensturm 4,85 %, Seelenleuchtfeuer 3,36 %. Diese Werte werden von den
+  Zornpendel 4,41 %, Gewittersiegel 4,66 %, Phönix 2,16 %, Ewiger Winter 0,95 %,
+  Dornensturm 4,52 %, Seelenleuchtfeuer 2,92 %. Diese Werte werden von den
   bestehenden Basiswaffen-Effekten dominiert (Ring/Feuer/Sturm), nicht von den
-  neuen 17×17-Signaturen; die A7-Messung ist der Chaos-Frame oben.
-- Pixel-Diff der Signaturen: `shots/m10-fx-evolution-signature-diff.json`,
-  paarweise über die 12 Laufzeit-Texturen; **min. 51 unterschiedliche Pixel**
-  (Paar phoenix-thorn_storm), Schwelle 20 → PASS. Keine zwei Signaturen sind
-  identisch.
+  neuen 32×32-Signaturen; die A7-Messung ist der Chaos-Frame oben.
+- Pixel-Diff der Signaturen: `shots/m10-fx-evolution-signature-diff.json`, paarweise über die 12
+  Laufzeit-Texturen; **min. 510 Pixel (Hit)** bzw. **min. 1030 Pixel (Death)**
+  (Paar phoenix-thorn_storm bzw. phoenix-wrath_pendulum), Schwelle 20 → PASS.
+  Keine zwei Signaturen sind identisch.
 - 0 JS-Fehler in allen sechs Nachher-Läufen und im Chaos-Lauf.
 
 ## K5 — Abnahme-Messwerte + Art-Director-Urteil
@@ -141,18 +146,18 @@ derselben Grundform nicht pixelgleich sind.
 
 | Kriterium | Ziel | Ist | Beleg |
 |---|---|---|---|
-| Near-White im AoE-Crop (Chaos Minute 25) | ≤ 4,16 % | **0,52 %** | `shots/m10-fx-evolution-chaos.json` |
-| Signaturen paarweise verschieden | > 20 Pixel Diff | **min. 51 px** (Paar phoenix–thorn_storm) | `shots/m10-fx-evolution-signature-diff.json` |
-| LOD behält Palettenindex | Index identisch bei full/reduced/minimal | **6/6 identisch** | `tests/fx-evolution.test.ts` |
+| Near-White im AoE-Crop (Chaos Minute 25) | ≤ 4,16 % | **0,87 %** (429 Gegner, LOD minimal) | `shots/m10-fx-evolution-chaos.json` |
+| Signaturen paarweise verschieden | > 20 Pixel Diff | **min. 510 px (Hit), 1030 px (Death)** | `shots/m10-fx-evolution-signature-diff.json` |
+| LOD behält Palettenindex | Index identisch bei full/reduced/minimal, Alpha ≥ 0,85 | **6/6 identisch, minimal 0,85** | `tests/fx-evolution.test.ts` |
 | 6 Signaturen (Form+Palette+Lifetime) | paarweise verschieden | **6/6 verschieden** | `EVOLUTION_SIGNATURES`, `tests/fx-evolution.test.ts` |
-| Build + alle Tests | grün | **build RC 0, 18 Dateien / 230 Tests grün, `tsc --noEmit` 0** | `~/tmp/m10-fx-evolution-k5-build.log`, `-k5-test.log` |
+| Build + alle Tests | grün | **build RC 0, 18 Dateien / 231 Tests grün, `tsc --noEmit` 0** | `~/tmp/m10-fx-evolution-k5-build.log`, `-k5-test.log` |
 | JS-Fehler in den 6 Nachher-Läufen | 0 | **0** | `-after.json` → `errors: []` |
 
-Per-Evolution-Peak Near-White (informativ, gleicher Crop): Zornpendel 4,95 %,
-Gewittersiegel 2,44 %, Phönix 1,94 %, Ewiger Winter 1,11 %, Dornensturm 4,85 %,
-Seelenleuchtfeuer 3,36 %. Diese Peaks entstehen durch die Basiswaffen-Effekte
-(Ring/Feuer/Sturm), nicht durch die 17×17-Signaturen; die abgenommene A7-Zahl ist
-der Chaos-Frame Minute 25 (0,52 %).
+Per-Evolution-Peak Near-White (informativ, gleicher Crop): Zornpendel 4,41 %,
+Gewittersiegel 4,66 %, Phönix 2,16 %, Ewiger Winter 0,95 %, Dornensturm 4,52 %,
+Seelenleuchtfeuer 2,92 %. Diese Peaks entstehen durch die Basiswaffen-Effekte
+(Ring/Feuer/Sturm), nicht durch die 32×32-Signaturen; die abgenommene A7-Zahl ist
+der Chaos-Frame Minute 25 (0,87 %).
 
 ### Art-Director-Urteil (je Evolution PASS/FAIL + Note)
 
