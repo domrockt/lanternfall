@@ -16,7 +16,7 @@ Reihenfolge linear im Log. Konflikte in `package.json`, `src/scenes/Run.ts`
 und `src/main.ts` wurden mit beiden Absichten aufgelöst (beide Scripts, robuste
 Bot-Scratch-Arrays + Balance-Threat, Worker-Skalierung + Skalierungsoption).
 Nach jedem Merge: `npm run build` (`tsc`) grün und Tests grün — Lead-Nachmessung:
-**126** nach m6-balance, **135** nach m6-robust, **144** nach m6-menus; aktuell **147**. Kein Konflikt-Rest (`git status` sauber, `tsc` grün).
+**126** nach m6-balance, **135** nach m6-robust, **144** nach m6-menus; aktuell **204** (14 Testdateien; Beleg: `npm test`-Lauf 2026-11-26 23:58Z auf `4c04404`; Lane-Nachlauf auf `bb4214a`: 14/14 Dateien, 204/204 grün). Kein Konflikt-Rest (`git status`: dirty=1, ausschließlich `.opencode/board.json` — Live-Sync des Board-Servers, erwartet; `tsc` grün).
 `.opencode/board.json` blieb die main-Version; Lane-Karten #56–#72 nachgetragen.
 
 ## A2 — GAME.md "Definition of Done"
@@ -26,7 +26,7 @@ Nach jedem Merge: `npm run build` (`tsc`) grün und Tests grün — Lead-Nachmes
 | Alle Listen vollständig umgesetzt | `node scripts/acceptance-count.mjs` → 30/6/6/6/6/2 (siehe A3) | OK |
 | 30-min-Run per autoPlay + setTimeScale(30) ohne Crash/JS-Fehler; alle 6 Bosse, Truhen, ≥1 Evolution | `shots/m3-fullrun.json` (30,1 min, 6 Bosse 300–1800 s, 6 Truhen, Sieg, 0 JS-Fehler); voller Echtzeit-Lauf siehe A4 | OK |
 | Performance-Ziel ≥ 55 FPS mit 500 Gegnern + Projektilen | `shots/perf-m3.json` → Burst **59,3 FPS** (Lead-Nachmessung; Team-Finallauf 60,7) | OK |
-| Tests grün | `npm test` → 147 Tests grün | OK |
+| Tests grün | `npm test` → **204/204** in 14 Testdateien grün (Beleg: `npm test`-Lauf 2026-11-26 23:58Z auf `4c04404`; Lane-Nachlauf `bb4214a`: 14/14 Dateien, 204/204) | OK |
 | Screenshots aller Gegner/Bosse/Waffen geprüft | `shots/m4-enemy-*.png` (30), `shots/m4-boss-*.png` (6), `shots/m5-vfx-*.gif` (12 Waffen-/Evolutions-GIFs, alle 12 Waffen), per Vision geprüft; Kontaktbögen in `shots/` | OK |
 
 ## A3 — Inhaltszählung automatisch aus `src/data`
@@ -63,9 +63,9 @@ in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
 | perf Minute 25 (300 + 6 Evolutionen) | **57,9 FPS** (Team), Lead-Nachmessung **56,4 FPS** | `shots/perf-m3.json` |
 | fullrun FPS-Minimum (29:20–Sieg, 1×) | **55,8** (Ziel ≥ 55) in beiden Läufen | `shots/m3-fullrun.json` |
 | fullrun Gesamt | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler | `shots/m3-fullrun.json` |
-| balance Hauptläufe | 6 Läufe, 5/6 im Korridor; Team: Kael/101 Level 47; Lead-Nachlauf: Kael/202 Tod 15,6 min, 0 Evos | `shots/balance-main.json` |
-| balance Boss-Dauern | 23–54 s (Ziel 20–60 s) | `shots/balance-main.json` |
-| Tests | 147 grün | `npm test` |
+| balance Hauptläufe | A5-Befund „Kael/Seed 101 Level 47“ ist **widerlegt**: 8 Repro-Läufe → Level 28 bei Kael/101 (Ursache: Gem-Sammelquote 28,4 % bei M8-Dichte); nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: **6/6 im Korridor Level 25–40**, kein Tod vor Minute 15; **formale Kriteriumsänderung offen (Frage an Dom 23:35)** | `shots/m10-balance-kael-repro.json`, `shots/m10-balance-kael-xp-budget.json`, `shots/m10-balance-kael-final.json` |
+| balance Boss-Dauern | 23–51 s (Ziel 20–60 s) im Nachlauf `6/6`; alter A5-Wert 23–54 s | `shots/m10-balance-kael-final.json`, `shots/balance-main.json` |
+| Tests | **204/204** grün in 14 Testdateien (Beleg: `npm test`-Lauf 2026-11-26 23:58Z auf `4c04404`; Lane-Nachlauf `bb4214a`) | `npm test` |
 
 **Heap (kein A5-Kriterium, offener Punkt):** Team-Finallauf +22,2 % (25,7 → 31,4 MB),
 Lead-Nachlauf +18,7 % (25,7 → 30,5 MB), beide über dem 15-%-Ziel; CDP-Diagnose flach,
@@ -143,7 +143,7 @@ Branches `m6-balance`, `m6-robust`, `m6-menus` sowie `m8-input` bleiben erhalten
 
 ## A12 — Build/Tests/Board/GAME.md
 
-`npm run build` grün, `npm test` **147 Tests grün** auf dem finalen Stand.
+`npm run build` grün, `npm test` **204/204 Tests grün in 14 Testdateien** auf dem finalen Stand (`4c04404`; Lane-Nachlauf `bb4214a`).
 Board: Lane-Karten #56–#72 done, Nacharbeiten #73–#78/#80–#82 done; #15 wird mit diesem Commit abgeschlossen.
 Ausnahme: #79 bleibt `blocked` (Trailer-Segment 7 zweimal 120-s-Timeout);
 die Deliverables wurden über #82 erledigt, deshalb ist A6/A12 inhaltlich grün.
@@ -154,7 +154,7 @@ Nachträge, Restmängel).
 
 ## Offene Punkte / Restmängel
 
-- Balance: Kael/Seed 101 erreicht Level 47 (Ziel 25–40); AutoPlay streut.
+- Balance: Kael/Seed 101 Level 47 ist **widerlegt** (8 Repro-Läufe: Level 28; Ursache Gem-Sammelquote 28,4 % bei M8-Dichte, `shots/m10-balance-kael-repro.json`/`-xp-budget.json`); Ist nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: **6/6 im Korridor 25–40** (Level 27–30, Boss 20–60 s, kein Tod vor Minute 15, `shots/m10-balance-kael-final.json`); formale Kriteriumsänderung offen (Frage an Dom 23:35).
 - Boss-Inszenierung: Knochenfürst spawnt am oberen Rand hinter der HP-Leiste
   (art-director-Restpunkt; keine Abnahme-Blockade).
 - fullrun-Heap in diesem Lauf +18,7 % (25,7 → 30,5 MB) über dem 15-%-Ziel;
@@ -175,7 +175,7 @@ Nachträge, Restmängel).
 Belege und Befehle: `docs/qa/2026-11-26.md`. Zwei belegte Zahlenabweichungen
 gegenüber den M6-Werten oben (>= 5 %):
 
-- **Tests:** `npm test` → **175** grün statt 147 (**+19,0 %**). Ursache: die M8-input-Lane
+- **Tests:** `npm test` → **175** grün statt 147 (**+19,0 %**; Stand `7a522a4`; späterer Stand `4c04404`: 204/204, +38,8 % gegenüber 147). Ursache: die M8-input-Lane
   (#83–#87) hat reine Eingabelogik-Tests ergänzt; keine roten Tests.
 - **perf Minute 25:** **59,3 FPS** (gemessen, roh 58,9) statt 56,4 (**+5,1 %**, positiv,
   Host-Streuung). Burst unverändert **59,3 FPS** (roh 59,9). `verify:final` **7/7 PASS**,
