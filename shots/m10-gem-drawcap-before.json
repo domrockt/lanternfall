@@ -1,0 +1,366 @@
+{
+  "lane": "m10-gem-drawcap",
+  "tag": "before",
+  "createdAt": "2026-11-27T13:55:47.926Z",
+  "seed": 1,
+  "viewport": "960x540@1",
+  "timeScale": 1,
+  "targetEnemies": 500,
+  "seconds": 10,
+  "frames": 601,
+  "elapsedMs": 10004,
+  "msPerFrame": 16.64,
+  "worstFrameMs": 16.8,
+  "peakGems": 90,
+  "peakTweens": 38,
+  "peakDrawObjects": 2994,
+  "samples": [
+    {
+      "atMs": 4,
+      "enemies": 397,
+      "kills": 103,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 62,
+        "medium": 20,
+        "large": 8
+      },
+      "gemXp": 388,
+      "tweens": 0,
+      "drawObjects": 2052,
+      "fps": 57
+    },
+    {
+      "atMs": 504,
+      "enemies": 500,
+      "kills": 103,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 62,
+        "medium": 20,
+        "large": 8
+      },
+      "gemXp": 388,
+      "tweens": 0,
+      "drawObjects": 2052,
+      "fps": 57
+    },
+    {
+      "atMs": 1021,
+      "enemies": 500,
+      "kills": 130,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 58,
+        "medium": 22,
+        "large": 10
+      },
+      "gemXp": 428,
+      "tweens": 1,
+      "drawObjects": 2099,
+      "fps": 58
+    },
+    {
+      "atMs": 1537,
+      "enemies": 500,
+      "kills": 150,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 55,
+        "medium": 24,
+        "large": 11
+      },
+      "gemXp": 452,
+      "tweens": 2,
+      "drawObjects": 2145,
+      "fps": 58
+    },
+    {
+      "atMs": 2037,
+      "enemies": 500,
+      "kills": 150,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 55,
+        "medium": 24,
+        "large": 11
+      },
+      "gemXp": 452,
+      "tweens": 1,
+      "drawObjects": 2144,
+      "fps": 58.5
+    },
+    {
+      "atMs": 2537,
+      "enemies": 500,
+      "kills": 206,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 45,
+        "medium": 33,
+        "large": 12
+      },
+      "gemXp": 504,
+      "tweens": 2,
+      "drawObjects": 2260,
+      "fps": 58.5
+    },
+    {
+      "atMs": 3054,
+      "enemies": 500,
+      "kills": 240,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 36,
+        "medium": 40,
+        "large": 14
+      },
+      "gemXp": 564,
+      "tweens": 32,
+      "drawObjects": 2419,
+      "fps": 58.9
+    },
+    {
+      "atMs": 3570,
+      "enemies": 500,
+      "kills": 278,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 30,
+        "medium": 44,
+        "large": 16
+      },
+      "gemXp": 612,
+      "tweens": 2,
+      "drawObjects": 2523,
+      "fps": 58.9
+    },
+    {
+      "atMs": 4070,
+      "enemies": 500,
+      "kills": 326,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 26,
+        "medium": 44,
+        "large": 20
+      },
+      "gemXp": 676,
+      "tweens": 2,
+      "drawObjects": 2743,
+      "fps": 59.4
+    },
+    {
+      "atMs": 4571,
+      "enemies": 500,
+      "kills": 397,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 22,
+        "medium": 45,
+        "large": 23
+      },
+      "gemXp": 728,
+      "tweens": 17,
+      "drawObjects": 2760,
+      "fps": 59.4
+    },
+    {
+      "atMs": 5087,
+      "enemies": 500,
+      "kills": 609,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 13,
+        "medium": 48,
+        "large": 29
+      },
+      "gemXp": 836,
+      "tweens": 16,
+      "drawObjects": 2985,
+      "fps": 59.8
+    },
+    {
+      "atMs": 5587,
+      "enemies": 500,
+      "kills": 609,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 13,
+        "medium": 48,
+        "large": 29
+      },
+      "gemXp": 836,
+      "tweens": 1,
+      "drawObjects": 2970,
+      "fps": 59.8
+    },
+    {
+      "atMs": 6087,
+      "enemies": 500,
+      "kills": 695,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 12,
+        "medium": 43,
+        "large": 35
+      },
+      "gemXp": 912,
+      "tweens": 1,
+      "drawObjects": 2970,
+      "fps": 60.1
+    },
+    {
+      "atMs": 6587,
+      "enemies": 500,
+      "kills": 773,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 8,
+        "medium": 43,
+        "large": 39
+      },
+      "gemXp": 976,
+      "tweens": 2,
+      "drawObjects": 2971,
+      "fps": 60.1
+    },
+    {
+      "atMs": 7104,
+      "enemies": 500,
+      "kills": 888,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 3,
+        "medium": 40,
+        "large": 47
+      },
+      "gemXp": 1092,
+      "tweens": 2,
+      "drawObjects": 2971,
+      "fps": 60.3
+    },
+    {
+      "atMs": 7604,
+      "enemies": 442,
+      "kills": 1165,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 2,
+        "medium": 33,
+        "large": 55
+      },
+      "gemXp": 1192,
+      "tweens": 24,
+      "drawObjects": 2994,
+      "fps": 60.3
+    },
+    {
+      "atMs": 8120,
+      "enemies": 500,
+      "kills": 1275,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 2,
+        "medium": 29,
+        "large": 59
+      },
+      "gemXp": 1240,
+      "tweens": 2,
+      "drawObjects": 2962,
+      "fps": 60.5
+    },
+    {
+      "atMs": 8637,
+      "enemies": 500,
+      "kills": 1432,
+      "gems": 89,
+      "visibleGems": 89,
+      "gemSizes": {
+        "small": 1,
+        "medium": 30,
+        "large": 58
+      },
+      "gemXp": 1226,
+      "tweens": 2,
+      "drawObjects": 2965,
+      "fps": 60.5
+    },
+    {
+      "atMs": 9137,
+      "enemies": 500,
+      "kills": 1835,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 2,
+        "medium": 28,
+        "large": 60
+      },
+      "gemXp": 1252,
+      "tweens": 2,
+      "drawObjects": 2975,
+      "fps": 60.6
+    },
+    {
+      "atMs": 9637,
+      "enemies": 500,
+      "kills": 2152,
+      "gems": 90,
+      "visibleGems": 90,
+      "gemSizes": {
+        "small": 0,
+        "medium": 24,
+        "large": 66
+      },
+      "gemXp": 1332,
+      "tweens": 2,
+      "drawObjects": 2975,
+      "fps": 60.6
+    }
+  ],
+  "stats": {
+    "dropped": 2152,
+    "added": 101,
+    "rejected": 0,
+    "expired": 0,
+    "mergedGems": 2051,
+    "mergedXp": 7002,
+    "collected": 11,
+    "collectedXp": 174
+  },
+  "cap": 90,
+  "final": {
+    "enemies": 500,
+    "kills": 2152,
+    "level": 28,
+    "fps": 60.5
+  },
+  "endState": {
+    "kills": 2630,
+    "enemies": 22,
+    "level": 29,
+    "shotGems": 179,
+    "shotVisibleGems": 179,
+    "shotTweens": 10
+  },
+  "jsErrors": [],
+  "passed": true
+}

@@ -19,8 +19,17 @@ interface GemRuntime {
  *  bei 30x-Läufen mit zehntausenden Kills. Darüber werden neue Drops verworfen. */
 const MAX_GEMS_DEFAULT = 180;
 
+/** M10-Draw-Cap: harte Obergrenze sichtbarer Kristalle, unabhängig von der
+ *  LOD-Stufe. Mehr als 120 Gems bringen im Chaos keinen Lesbarkeitsgewinn,
+ *  kosten aber je ein Draw-Objekt. Überschuss wird verlustfrei verschmolzen. */
+export const MAX_VISIBLE_GEMS = 120;
+
 /** Magnetradius als Vielfaches des Pickup-Radius (M10-Messung: siehe Lane-Doku). */
 export const MAGNET_RADIUS_FACTOR = 2.2;
+
+/** M10: Zusätzlicher Magnet-Aufschlag bei vollem Feld (0..+50 %), damit
+ *  dicht liegende Kristalle trotz Deckel zuverlässig eingesammelt werden. */
+export const MAGNET_COUNT_SCALE = 0.5;
 
 /** M10-Messwerte: von der Abnahme über `scene.pickups.stats` gelesen. */
 export interface PickupStats {
@@ -39,6 +48,10 @@ export interface PickupStats {
   mergedGems: number;
   /** M10: bei der Verschmelzung direkt gutgeschriebene Rest-XP. */
   mergedXp: number;
+  /** M10-Draw-Cap: jemals als Drop erzeugte XP (Kontrolle der XP-Erhaltung). */
+  spawnedXp: number;
+  /** M10-Draw-Cap: tatsächlich an den Spieler gutgeschriebene XP. */
+  grantedXp: number;
 }
 
 /** Ergebnis einer Verschmelzung: kanonische Größe + Rest-XP. */
@@ -68,14 +81,14 @@ export class PickupSystem {
   /** Abnahme-Messwerte (nur zählen, keine Spielwirkung). */
   readonly stats: PickupStats = {
     dropped: 0, added: 0, rejected: 0, expired: 0, mergedGems: 0, mergedXp: 0,
-    collected: 0, collectedXp: 0,
+    collected: 0, collectedXp: 0, spawnedXp: 0, grantedXp: 0,
   };
   /** Bei vollem Cap gutgeschriebene Rest-XP, die im nächsten update() ankommt. */
   private pendingXp = 0;
   /** Letzter an update() übergebener Pickup-Radius (Abnahme-Messung). */
   lastPickupRadius = 0;
   private readonly free: GemRuntime[] = [];
-  private maxGems = MAX_GEMS_DEFAULT;
+  private maxGems = Math.min(MAX_GEMS_DEFAULT, MAX_VISIBLE_GEMS);
   /** LOD: Kristalle abdunkeln, damit Gegner-Silhouetten lesbar bleiben. */
   private dim = false;
   private readonly scene: Phaser.Scene;
@@ -87,6 +100,8 @@ export class PickupSystem {
   drop(x: number, y: number, size: GemSize, rng: { next(): number }): void {
     this.stats.dropped += 1;
     const meta = GEMS[size];
+    // Jeder Drop erzeugt XP, die irgendwo im Feld oder beim Spieler landen muss.
+    this.stats.spawnedXp += meta.value;
     if (this.gems.length >= this.maxGems) {
       // M10: Statt den Drop zu verwerfen (XP-Verlust), wird der älteste
       // Kristall mit dem neuen Drop verschmolzen. Die XP-Summe bleibt gleich;
@@ -128,9 +143,12 @@ export class PickupSystem {
     this.gems.push(gem);
   }
 
-  /** Magnetradius für einen Pickup-Radius (Anziehungsbeginn exakt hier). */
-  static magnetRadiusFor(pickupRadius: number): number {
-    return Math.max(0, pickupRadius) * MAGNET_RADIUS_FACTOR;
+  /** Magnetradius für einen Pickup-Radius (Anziehungsbeginn exakt hier).
+   *  M10-Draw-Cap: Bei vollem Feld wächst der Radius mit der Gem-Zahl
+   *  (bis +50 %), damit der Deckel die Sammelrate nicht ausbremst. */
+  static magnetRadiusFor(pickupRadius: number, gemCount = 0): number {
+    const filled = Math.min(MAX_VISIBLE_GEMS, Math.max(0, gemCount)) / MAX_VISIBLE_GEMS;
+    return Math.max(0, pickupRadius) * MAGNET_RADIUS_FACTOR * (1 + filled * MAGNET_COUNT_SCALE);
   }
 
   /** Größe gewichtet würfeln. */
@@ -163,10 +181,11 @@ export class PickupSystem {
     onCollect: (value: number, size: GemSize) => void,
     view?: { x0: number; y0: number; x1: number; y1: number },
   ): void {
-    const magnetRadius = PickupSystem.magnetRadiusFor(pickupRadius);
+    const magnetRadius = PickupSystem.magnetRadiusFor(pickupRadius, this.gems.length);
     this.lastPickupRadius = pickupRadius;
     if (this.pendingXp > 0) {
       // Rest-XP aus einer Verschmelzung sofort zuschreiben (kein Verlust).
+      this.stats.grantedXp += this.pendingXp;
       onCollect(this.pendingXp, "small");
       this.pendingXp = 0;
     }
@@ -232,6 +251,7 @@ export class PickupSystem {
       if (dist < 10) {
         this.stats.collected += 1;
         this.stats.collectedXp += g.value;
+        this.stats.grantedXp += g.value;
         onCollect(g.value, g.size);
         g.active = false;
         g.sprite.setVisible(false).setActive(false);
@@ -247,7 +267,9 @@ export class PickupSystem {
    * Danach ist `count <= cap` garantiert.
    */
   setCap(cap: number): void {
-    this.maxGems = Math.max(24, Math.floor(cap));
+    // M10-Draw-Cap: nie über die harte Sichtbarkeitsgrenze hinaus, auch wenn
+    // die LOD-Stufe (full) mehr erlauben würde.
+    this.maxGems = Math.max(24, Math.min(MAX_VISIBLE_GEMS, Math.floor(cap)));
     this.dim = this.maxGems <= 120;
     while (this.gems.length > this.maxGems) {
       const oldest = this.gems.shift();
