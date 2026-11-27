@@ -1,0 +1,29 @@
+# Lane m10-death-fx-frames — fertig (2026-11-27)
+
+Fix-Job: belegter art-director FAIL 2,5/5 an den Todes-VFX geschlossen (alle 4
+Todesklassen wirkten als derselbe „expandierender Ring"). Neue, unterscheidbare
+Death-Frames in src/gfx/gen-fx.ts, Frame-Keys in src/logic/death.ts umgestellt.
+Keine Gameplay-/Balance-Werte geändert; CombatSystem.ts/FxSystem.ts unberührt.
+
+- K1 #4418 (8a25bf8): deathFrameSets()-Export + Vorher-Belege (4x-Sheets, Chaos 359 Gegner/0 JS-Fehler)
+- K2 #4419 (d12d99d): 5 Silhouetten-Generatoren + fx_death_fire neu + fx_boss_core 32x32
+  (3-Stufen-Kern + ink-Kontur + 2 Zackenringe + 8 Splitter); sputter → fx_death_fire/fx_death_dust
+- K3 #4420 (5524b7b): tests/death-frames.test.ts 5 Guards (Keys, keine Duplikate,
+  binäres Alpha, 0 Off-Palette-Pixel, Boss vs. Blob: Kontur 189-289 px vs. 0, ≥9 Stufen, Masken-Diff min 0,146)
+- K4 #4421 (3516f7c): Nachher-Sheets 4x, Chaos-Shot (356 Gegner/508 Kills/0 JS-Fehler),
+  4 Klassen-GIFs + Mosaiken, Doku docs/lanes/m10-death-fx-frames.md
+- Polish-Nachtrag (#4419): 3 Nachbesserungen aus Runde 3 (blob-Spästufen+Glanz,
+  void-Helligkeit, bone-Finalframe) — Delta-Check art-director
+
+Messwerte:
+- art-director Runde 3: PASS 4,0/5; Delta-Check nach Polish: PASS 4,2/5 (Ziel >= 4/5 erfüllt)
+  Einzelnoten: blob 4, dust 4, fire 4,5, bone 4, void 4, boss 4,5
+- tsc --noEmit grün, npm run build grün, npm test 496/496 grün (47 Dateien)
+- Chaos-Beleg: 356 Gegner lebend, 508 Kills, 0 JS-Fehler (alle 4 Todesklassen sichtbar)
+- Tests: 10/10 death-frames + death-fx Guards grün
+
+Offene Punkte (Folge-Karten, nicht blockierend):
+- burst/dissolve/sputter sind additive:true — dunkle Rim-/Körper-Pixel wirken im Spiel
+  schwächer; prüfen ob Rim-Sprites non-additiv gezeichnet werden können (Wertänderung
+  in death.ts/FxSystem → war ausserhalb dieses Auftrags).
+- Sputter-Lesbarkeit im Chaos bei starker Waffen-Überlagerung (ember Lv8).
