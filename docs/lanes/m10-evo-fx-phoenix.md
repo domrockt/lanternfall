@@ -86,6 +86,10 @@ Sichtprüfung: art-director-Urteil unten; 0 JS-Fehler im Probe-Lauf.
 
 ## Offene Punkte
 
+- **art-director-Sichtprüfung: PASS (4.5/5, kein Asset < 4)** — Feuer-Treppe, Mixel-Freiheit
+  und Gegner-Lesbarkeit bestätigt (Belege a640/a960 vs. b640/b960, Paletten-Histogramme).
+  Optionale Nachbesserungen (nicht blockierend): sigdeath mehr EmberOrange(17)/EmberBrown(16)
+  an den Blattspitzen für konsequente Treppe nach dunkel; Vogel-Kopf-Akzentpixel auf 1x prüfen.
 - Vogel-Lesbarkeit bei 1x im schnellen Flug: 3 synchrone Frames lesen sich als Flattern;
   falls art-director mehr will → asynchroner Schlag pro Vogel (Projektil-Zustand nötig,
   ProjectilePool ist fremd) oder 4. Frame.

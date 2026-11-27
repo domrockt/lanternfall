@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6443,
+  "next": 6502,
   "cards": [
     {
       "id": 1,
@@ -7529,6 +7529,70 @@
       ],
       "created": "2026-11-27T23:11:00Z",
       "updated": "2026-11-27T23:11:10Z"
+    },
+    {
+      "id": 6498,
+      "title": "m10-evo-fx-phoenix #1: Ist-Beleg Phönixschwarm (Skript + before.png/json)",
+      "description": "Skript scripts/m10-evo-fx-phoenix.mjs stellt Evolution-Szene nach (10–30 lebende Gegner, je 640 und 960x540) → shots/m10-evo-fx-phoenix-before.png + -before.json (Textur-Pixelgröße, Draw-Scale, Farb-Stufen, WebGL-Renderer). EINMAL messen, committen.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:19:24Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-evo-fx-phoenix gestartet: Mess-Skript + Vorher-Beleg."
+        },
+        {
+          "at": "2026-11-27T23:25:49Z",
+          "by": "build",
+          "text": "doing → review: Skript scripts/m10-evo-fx-phoenix.mjs (1 Edit-Iteration + 2 Bugfixes evaluate-Kontext/Atlas-Key/stop). Belege shots/m10-evo-fx-phoenix-before-{json,-640.png,-960.png,-swarm}: iGPU ANGLE Mesa RPL-S, 0 JS-Fehler. Befunde: projectile_phoenix 13x9 mit 19/51 Ink-Pixeln (schwarzer Rand), Draw-Scales fx_fire_4 (Burn) 2.38x, fx_halo 2.47x, fx_shock 1.29x, fx_evo_death_phoenix 4.03x (>1 = Mixel). Commit 97eec10."
+        }
+      ],
+      "created": "2026-11-27T23:18:43Z",
+      "updated": "2026-11-27T23:25:49Z"
+    },
+    {
+      "id": 6499,
+      "title": "m10-evo-fx-phoenix #2: Fix Feuer-Textur Zielgröße + Farbtreppe + Anim-Frames",
+      "description": "gen-fx.ts: projectil_phoenix ohne Ink-Rand, Kern hellgelb→orange→dunkelrot, 2-3 Flatter-Frames; Explosion/Burn in Zielgröße (kein Draw-Scale >1), Anticipation ≤0,3 s → Impact → Ausklang; Parameter in data/evolution-weapons.ts. Abnahme: tsc + Build + Test grün, Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:33:18Z",
+          "by": "build",
+          "text": "todo → doing: Fix-Umsetzung: phoenix-FX-Texturen in Zielgröße (Bird 3 Frames, Launch, Boom 64x64, Burn 64x64, Signatur 128x128 ohne Ink-Rand), PHOENIX_FX-Parameter in data, Draw-Scale 1."
+        },
+        {
+          "at": "2026-11-27T23:41:24Z",
+          "by": "build",
+          "text": "[Supervisor] bestätigt: Preview-Loop beendet (Design final, 3 Revisionen, Skript liegt nur in ~/tmp, kein Repo-Artefakt). Karte 1 war bereits committet (97eec10). Karte 2 läuft: Port der Texturen in gen-fx.ts ist drin, jetzt Registrierung + FxSystem/CombatSystem."
+        }
+      ],
+      "created": "2026-11-27T23:18:43Z",
+      "updated": "2026-11-27T23:41:24Z"
+    },
+    {
+      "id": 6500,
+      "title": "m10-evo-fx-phoenix #3: Tests tests/evo-fx-phoenix.test.ts",
+      "description": "Effekt-Texturgröße = Sprite-Pixelgröße, kein Scale >1, Farb-Stufen ohne Grau/Schwarz-Rand; bestehende Evolution-Tests bleiben grün.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T23:46:31Z",
+          "by": "build",
+          "text": "todo → review: tests/evo-fx-phoenix.test.ts (8 Guards) + Commit 45e9067: Zielgrößen, Draw-Scale-1-Guard, Farb-Treppe ohne Ink/Grau, Launch<=0,3s, Flatter-Frames. Suite 842/842, tsc rc=0, Build rc=0."
+        }
+      ],
+      "created": "2026-11-27T23:18:43Z",
+      "updated": "2026-11-27T23:46:31Z"
+    },
+    {
+      "id": 6501,
+      "title": "m10-evo-fx-phoenix #4: Nachher-Beleg + art-director + Lane-Doku (Vorlage)",
+      "description": "shots/m10-evo-fx-phoenix-after.png + -after.json, art-director-Sichtprüfung (Vision) PASS dokumentiert, docs/lanes/m10-evo-fx-phoenix.md als Vorlage für die 4 Folge-Evo-Jobs, .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T23:18:43Z",
+      "updated": "2026-11-27T23:18:43Z"
     }
   ]
 }

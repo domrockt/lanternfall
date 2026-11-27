@@ -1,0 +1,26 @@
+# Lane m10-evo-fx-phoenix — FERTIG (2026-11-27)
+
+Phönixschwarm-FX neu nach Dom-Wunsch 21:45Z Punkt 1; erste der 5 Evo-Effekt-Lanes,
+Doku = Vorlage für Ewiger Winter / Seelenleuchtfeuer / Zornpendel / Gewittersiegel.
+
+Regeln gesetzt: eine Pixelgröße für alles (Textur in Zielgröße, Draw-Scale 1, nie >1x
+hochskalieren), klare Feuer-Farbtreppe ohne Ink/Grau, Aufbau ≤0,3 s → Impact → Ausklang,
+Schwarm-Bewegung über 3 Flatter-Frames.
+
+Messwerte (Vorher → Nachher, beide iGPU „ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S))",
+0 JS-Fehler, je 640x360@2x + 960x540@1.5x):
+- projectile_phoenix: 13x9 mit 19/51 Ink-Pixeln → 15x11 mit 0 Ink-Pixeln (Pal 13/16–22)
+- fx_evo_death_phoenix: 32x32 @ Draw-Scale 4.03x → 128x128 @ Scale 1
+- Burn fx_fire @ 2.38x → fx_burn_phoenix 64x64 @ 1; fx_halo @ 2.47x und fx_shock @ 1.29x
+  im Phönix-Frame entfallen (Boom 64x64 @ 1)
+- Alle live gemessenen phoenix-Scales ≤ 1 (max 0.93)
+- Tests: tests/evo-fx-phoenix.test.ts 8 Guards; Suite 842/842 grün, tsc rc=0, Build rc=0
+- art-director: PASS 4.5/5 (Feuer-Treppe, kein Mixel, Lesbarkeit; 2 optionale Nachbesserungen)
+
+Commits: 97eec10 (#6498 Ist-Beleg), 61083b0 (#6499 Fix), 45e9067 (#6500 Tests),
+74c7e91 (#6501 Nachher + Doku). Belege: shots/m10-evo-fx-phoenix-{before,after}{.json,-640.png,-960.png,-640-swarm.png,-960-swarm.png}.
+Vorlage/Checkliste: docs/lanes/m10-evo-fx-phoenix.md.
+
+Offen (nicht blockierend): generische Mixel-Bake-Lane m10-fx-mixel-fix (eigener Branch)
+berührt FxSystem.spawnEvolution — möglicher Merge-Konflikt an den drawScale-Zeilen;
+Fremd-Datei tests/evo-signature-calls.test.ts 1 Assertion (Alt-Scale → drawScale-Fallback).
