@@ -42,8 +42,12 @@ Churn, nicht Retention — `sortByDepth`/`addProp` (Phaser-DisplayList/Terrain),
 - `EnemyPool.spawn`: KI-Zustand wird per `resetAiState` in-place zurückgesetzt
   statt `newAiState` (kein Objekt pro Spawn); ein `DEFAULT_AI_RNG` ersetzt die
   RNG-Closure pro Spawn.
-- Tests `tests/pool-reuse.test.ts`: 8/8 (Pool-Identität, Steady-State ohne
-  Neuanlage, trim, Release-Fremdobjekt, Damage-Reuse, Cap, KI-Reset in-place).
+- Tests `tests/pool-reuse.test.ts`: 14/14 (Pool-Identität, Steady-State ohne
+  Neuanlage, trim, Release-Fremdobjekt, Damage-Reuse, Cap, Eviction nach
+  `lastTime` inkl. `sink.give`, Multi-Expire, `resetAggregateEntry`,
+  `ViewBudget`-Limit/Deactivate/Reset, `ensureAiState`-Identität).
+- `tests/enemy-pool-reuse.test.ts`: EnemyPool spawn/despawn/compact/spawn
+  behält `ai`- und `aiRng`-Identität (uid 1→2), Elite-Felder werden zurückgesetzt.
 
 ## Karte #2061 — Nachmessen (2 × 30 min + perf)
 
@@ -88,7 +92,7 @@ Array mehr pro Treffer, und der Pool kappt Retention per `trim()`.
 | Baseline dokumentiert | +10,7 / −22,0 / +4,6 %, Einzellauf +4,5 % | `shots/m10-heap-tail-baseline-3runs.json`, `-baseline.json` |
 | 0 JS-Fehler | 0 in allen Baseline-/After-Läufen | JSON `jsErrors: []` |
 | `npm run build` | gruen | `npm run build` (Commit f3151f8) |
-| alle Tests | **232/232** (18 Dateien) | `npm test` |
+| alle Tests | **239/239** (19 Dateien) | `npm test` (Commit 4081504) |
 | Burst ≥ 55 FPS unverändert | **60,1 FPS**, 500 Gegner, worstFrame 16,8 ms | `shots/m10-heap-tail-perf.json` |
 | Belege im Commit | Baseline-/After-/Perf-JSON + Doku | dieser Commit |
 
