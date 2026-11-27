@@ -163,5 +163,8 @@ writeFileSync(OUT, JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result.summary));
 await browser.close();
 server.stop();
-const six40Ok = !run640 || (run640.fps >= TARGET_FPS && run640.renderWidth === 640);
+// 640x360 dpr1: M8-Fit-Rueckfall -> Canvas CSS 480x360 (computeView,
+// MIN_WIDTH 480, by design). Keine Regression heisst: volle FPS und der
+// native Fit-Buffer (Regler bleibt bei Teiler 1, dprCap bei dpr1 = 1).
+const six40Ok = !run640 || (run640.fps >= TARGET_FPS && run640.renderWidth === 480);
 process.exit(result.summary.afterMinFps >= TARGET_FPS && six40Ok && result.summary.jsErrors === 0 ? 0 : 1);
