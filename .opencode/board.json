@@ -4553,26 +4553,36 @@
           "at": "2026-11-27T18:40:35Z",
           "by": "build",
           "text": "doing → blocked: m10-dpr-budget-cap #3: Perf-Lock durch fremden 30-min realtime-run (PID 29053) belegt; flock -w 60 rc=1 (2. vergeblicher Versuch, erster blockierender Aufruf abgebrochen). Regler-Fixes (EWMA + Totzone-Freeze) sind committet und durch Probes belegt; Messlauf wird nachgeholt, sobald die Sperre frei ist. Belege in docs/lanes/m10-dpr-budget-cap.md, Commit 2001d57."
+        },
+        {
+          "at": "2026-11-27T19:10:32Z",
+          "by": "build",
+          "text": "m10-dpr-budget-cap #3: Versuch 4 (19:35, nach Kamera-Fix) ebenfalls am Lock gescheitert - jetzt haelt ein ZWEITER 30-min realtime-run (PID 119292) die Sperre, atlas-pack + fullrun warten; Load 17,7. 4 Versuche dokumentiert (docs/lanes/m10-dpr-budget-cap.md). Regler + Kamera-Projektion sind durch Probes/Matrix belegt funktionsfaehig; ausstehend ist nur der belegende 3/3-Messlauf. Auto-Retry alle 30 min (expiert ~3 h)."
         }
       ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T18:40:35Z"
+      "updated": "2026-11-27T19:10:32Z"
     },
     {
       "id": 3581,
       "title": "m10-dpr-budget-cap #4 Pixel-Perfect-Beleg",
       "description": "Screenshot bei gesenktem Massstab, 1:1-Pixelvergleich einer statischen Szene (keine weichen Kanten), shots/m10-dpr-budget-pixel.png + Pixel-Metrik JSON. Owner playtester, Kontrolleur art-director.",
-      "column": "doing",
+      "column": "review",
       "assignee": "playtester",
       "notes": [
         {
           "at": "2026-11-27T18:40:35Z",
           "by": "build",
           "text": "backlog → doing: m10-dpr-budget-cap #4 Pixel-Perfect-Beleg gestartet: statische Szene bei ?rbscale=2 (Buffer 390x180, CSS 780x360, dpr3), 1:1-Pixelvergleich ohne weiche Kanten. Kein Messlauf/noch flock noetig."
+        },
+        {
+          "at": "2026-11-27T19:09:02Z",
+          "by": "build",
+          "text": "doing → review: m10-dpr-budget-cap #4: Kamera-Projektions-Fix noetig geworden (gesenkter Buffer war Zoom-Crop, Spieler off-screen) - Zoom 1/Teiler + Viewport W/s x H/s + Midpoint je Kamera, Sieger aus 6er-Matrix. Belege: uniformAE 0/2527200 (keine weichen Kanten), Layout identisch zur Vollstufe, shots/m10-dpr-budget-pixel* + JSON. Commits 48925da + Doku-Commit. Offen vermerkt: hitStop-Dim (artificial), Eingabe-Mapping bei gesenktem Massstab (Folge-Karte)."
         }
       ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T18:40:35Z"
+      "updated": "2026-11-27T19:09:02Z"
     }
   ]
 }

@@ -8,8 +8,10 @@ import {
   SCALE_LOW_MS,
   chooseRenderScale,
   maxRenderScale,
+  parseRenderScaleOverride,
   stepRenderScale,
 } from "../src/logic/scale";
+import { renderBufferSize } from "../src/config";
 
 const BUDGET = 1000 / 60; // 16,67 ms -> 60 FPS Ziel
 

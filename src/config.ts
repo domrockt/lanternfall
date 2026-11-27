@@ -78,7 +78,7 @@ type BudgetCamera = {
 type BudgetGame = {
   canvas: HTMLCanvasElement;
   scale: { width: number; height: number; on: (ev: string, cb: () => void) => void };
-  renderer: { resize: (w: number, h: number) => void; type: number };
+  renderer: { resize: (w: number, h: number) => void };
   scene?: {
     scenes?: {
       cameras?: { cameras?: BudgetCamera[]; list?: BudgetCamera[]; main?: BudgetCamera };
@@ -138,7 +138,6 @@ function enforceCameraProjection(game: BudgetGame, scale: number): void {
  */
 function installRenderBudget(): void {
   if (typeof window === "undefined" || typeof document === "undefined") return;
-  const forced = forcedRenderScale; // pro Frame: Runtime-Override (__rbOverride) kann sich aendern
   let state: RenderScaleState = { scale: RENDER_SCALE_MIN, belowMs: 0, aboveMs: 0 };
   let applied = -1;
   let lastNow = 0;
