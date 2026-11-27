@@ -3068,11 +3068,17 @@
       "id": 2102,
       "title": "m10-gem-magnet #5 Doku + .lane-done: Zahlen vorher/nachher, offene Punkte",
       "description": "docs/lanes/m10-gem-magnet.md mit Messwerten vor/nach, Belegen, offenen Punkten; .lane-done mit Zusammenfassung. Abnahme: build+alle Tests gruen, 0 JS-Fehler, .lane-done committet.",
-      "column": "todo",
+      "column": "done",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:23:47Z",
+          "by": "build",
+          "text": "todo → done: Doku docs/lanes/m10-gem-magnet.md + .lane-done; build gruen, 232/232 Tests, 0 JS-Fehler. Commit 7a07cab."
+        }
+      ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T02:45:53Z"
+      "updated": "2026-11-27T05:23:47Z"
     }
   ]
 }
