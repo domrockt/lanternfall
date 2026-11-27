@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2333,
+  "next": 2440,
   "cards": [
     {
       "id": 1,
@@ -3588,6 +3588,26 @@
       ],
       "created": "2026-11-27T05:39:36Z",
       "updated": "2026-11-27T05:40:25Z"
+    },
+    {
+      "id": 2438,
+      "title": "m10-heap-tail-followup-01 Pool.trim verdrahten oder Doku korrigieren",
+      "description": "Reviewer-Befund: Pool.trim() ist toter Code (kein Aufrufer), docs/lanes/m10-heap-tail.md behauptet aber 'der Pool kappt Retention per trim()'. Abnahme: entweder trim() an EnemyPool/Run-Shutdown verdrahten + Test, oder Doku ehrlich auf 'API vorhanden, aktuell nicht verdrahtet' korrigieren. Owner engine-dev, Kontrolle reviewer.",
+      "column": "backlog",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T05:53:36Z",
+      "updated": "2026-11-27T05:53:36Z"
+    },
+    {
+      "id": 2439,
+      "title": "m10-heap-tail-followup-02 CombatSystem.clear() ruft damageNumbers.clear()",
+      "description": "Reviewer-Sollte: CombatSystem.clear() (src/systems/CombatSystem.ts) raeumt damageNumbers nicht auf; Run-Shutdown laesst entries/viewBudget stehen (count falsch bei Reset). Datei ist m10-death-fx-Claim. Abnahme: damageNumbers.clear() in CombatSystem.clear(), Test/Verify, reviewer PASS. Owner gameplay-dev.",
+      "column": "backlog",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T05:53:36Z",
+      "updated": "2026-11-27T05:53:36Z"
     }
   ]
 }
