@@ -1,0 +1,83 @@
+# Lane m10-enemy-coverage — echte Gegner-Abdeckung im 30-min-Run
+
+Stand: 2026-11-27. Worktree `/home/ai/games/lf-lanes/m10-enemy-coverage`, Branch `m10-enemy-coverage`.
+Basis-SHA beim Start: `bb4214a` (main-HEAD nach Merge der Lane `m10-input-fix`).
+
+Ziel: Alle 30 Gegnertypen aus `src/data/enemies.ts` müssen im echten 30-min-Run
+**tatsächlich spawnen** — belegt durch Simulation und In-Game-Lauf, nicht nur durch
+die Datenliste. `scripts/acceptance-count.mjs` zählt bisher nur die Datentabelle (30/30 Daten).
+
+Vorgehen in Karten:
+
+- **#1738 / K1** — Sim-Messwerkzeug `scripts/m10-coverage-sim.json` (unten: `shots/m10-coverage-sim.json`).
+- **#1739 / K2** — Ist-Stand belegen: Lückenliste, First-Spawn, Share je 5-min-Block.
+- **#1740 / K3** — Lücken schliessen in der Tier-Mischung.
+- **#1741 / K4** — Unit-Test `tests/wave-coverage.test.ts`.
+- **#1742 / K5** — In-Game-Beleg 30 Sim-Minuten @ timeScale 30.
+
+## K1 — Messwerkzeug `scripts/enemy-coverage.mjs` (#1738)
+
+Reine Simulation (kein Browser, kein Phaser) über die echten Director-Funktionen:
+
+- `waveForMinute(minute)` aus `src/data/waves.ts` (Mix + Spawnrate),
+- `advanceSpawnBudget(budget, rate * spawnRateFactor(640,360), 1)` aus `src/logic/waves.ts`,
+- `pickEnemy(mix, rng)` aus `src/logic/waves.ts`,
+- Spezialwellen (`ring`/`stream`) und Elite-Pakete am Minutengrenzpunkt, wie in
+  `Spawner.update()` (`6 + floor(minute/6)` bzw. `6 + floor(minute/5)`, `elitePackCount`).
+
+30 Sim-Minuten in 1-s-Schritten, Seeds **101** und **202**. Ausgabe:
+`shots/m10-coverage-sim.json` plus stdout-Tabelle mit Spawns je `ENEMY_ID`,
+First-Spawn-Sekunde und Share je 5-min-Block.
+
+Aufruf: `node scripts/enemy-coverage.mjs`.
+
+## K2 — Ist-Stand: Lückenliste (#1739)
+
+Messung aus `shots/m10-coverage-sim.json` (beide Seeds, je 30 min, 2524 Spawns):
+
+| Kriterium | Seed 101 | Seed 202 |
+|---|---|---|
+| Typen mit ≥ 1 Spawn | **30/30** | **30/30** |
+| IDs mit 0 Spawns | keine | keine |
+| First-Spawn nach Tier-Ende | keine | keine |
+| Typ mit Share > 35 % je 5-min-Block | keiner (max 32.7 %) | keiner (max 28.3 %) |
+
+Damit ist die **Lückenliste leer**. Detaillierte Tabelle (Spawns, First-Spawn,
+höchster Block-Share):
+
+| id | Spawns S101 | Spawns S202 | First S101 | First S202 | max Share (Block, Seed) |
+|---|---:|---:|---:|---:|---|
+| bog_rat | 55 | 47 | 2s | 2s | 32.7 % (B0, 101) |
+| wisp | 36 | 36 | 13s | 10s | 21.4 % (B0, 101) |
+| mudling | 10 | 12 | 36s | 69s | 7.1 % (B0, 202) |
+| crow | 24 | 20 | 5s | 55s | 14.3 % (B0, 101) |
+| bogzombie | 34 | 34 | 7s | 31s | 20.2 % (B0, 101) |
+| toad | 9 | 19 | 21s | 5s | 11.3 % (B0, 202) |
+| skeleton | 68 | 79 | 300s | 300s | 28.3 % (B1, 202) |
+| bat | 80 | 55 | 300s | 304s | 28.7 % (B1, 101) |
+| ghoul | 55 | 43 | 300s | 303s | 19.7 % (B1, 101) |
+| witchling | 22 | 32 | 300s | 300s | 11.5 % (B1, 202) |
+| slime | 34 | 47 | 306s | 300s | 16.8 % (B1, 202) |
+| scarecrow | 20 | 23 | 310s | 300s | 8.2 % (B1, 202) |
+| wolf | 66 | 66 | 600s | 600s | 17.5 % (B2, 101) |
+| banshee | 76 | 70 | 600s | 600s | 20.2 % (B2, 101) |
+| golem | 29 | 44 | 600s | 604s | 11.7 % (B2, 202) |
+| spider | 100 | 97 | 600s | 600s | 26.5 % (B2, 101) |
+| cultist | 44 | 42 | 617s | 600s | 11.7 % (B2, 101) |
+| bomber | 62 | 58 | 600s | 600s | 16.4 % (B2, 101) |
+| knight | 84 | 97 | 900s | 900s | 20.6 % (B3, 202) |
+| harpy | 84 | 67 | 900s | 900s | 17.8 % (B3, 101) |
+| lich | 84 | 90 | 900s | 902s | 19.1 % (B3, 202) |
+| wraith | 94 | 92 | 900s | 900s | 19.9 % (B3, 101) |
+| treant | 38 | 51 | 903s | 900s | 10.8 % (B3, 202) |
+| imp | 88 | 75 | 900s | 900s | 18.6 % (B3, 101) |
+| horror | 205 | 228 | 1200s | 1200s | 20.7 % (B4, 202) |
+| centipede | 223 | 244 | 1200s | 1200s | 20.3 % (B4, 202) |
+| gargoyle | 251 | 247 | 1200s | 1204s | 23.1 % (B5, 202) |
+| reaper_bat | 338 | 327 | 1200s | 1200s | 29.0 % (B4, 101) |
+| abom | 102 | 95 | 1210s | 1207s | 8.5 % (B4, 101) |
+| voidcaller | 109 | 87 | 1200s | 1200s | 10.1 % (B5, 101) |
+
+Tier-Enden: Tier 0 = 300 s, Tier 1 = 600 s, Tier 2 = 900 s, Tier 3 = 1200 s,
+Tier 4 = 1800 s. Alle First-Spawns liegen im jeweiligen Tier-Fenster; die
+spätesten sind `cultist` (617 s, Tier 2), `abom` (1210 s) und `gargoyle` (1204 s, Tier 4).
