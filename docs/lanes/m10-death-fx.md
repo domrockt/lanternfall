@@ -130,10 +130,11 @@ je Klasse, 6 gleichzeitige Tode, 50 ms nach Auslösen. Fläche = Summe
 Die vier Klassen unterscheiden sich messbar in **Textur, Rim-Tint/Scale,
 Count, Größen-BBox (26–45 px), Fläche (17,5–47,6 k px²), Lebensdauer, Streuung,
 Tint und Blend-Modus** (≥ 3 Dimensionen, siehe #K4). Die Crops zeigen die
-Effekte über **lebenden** Gegnern. Messung Runde 2 (nach Art-Fix, Grau-Sheet
-`~/tmp/m10-death-fx/gray-sheet.png` als Lesbarkeitsprobe): alle vier
-Silhouetten bleiben auch ohne Grün-Kontext an der Form unterscheidbar
-(Knochenspur, Tropfen-Ring, Halo-Ring, Flammenzungen).
+Effekte über **lebenden** Gegnern. Messung Runde 2 (nach Art-Fix, Grau-Probe
+über die `shots/m10-death-fx-*-gray.png`): alle vier Silhouetten bleiben auch
+ohne Grün-Kontext an der Form unterscheidbar (Knochenspur, Tropfen-Ring,
+Halo-Ring, Flammenzungen) — die Form selbst ist aber noch zu generisch
+(Art-Director Runde 2, siehe unten).
 
 Ehrlicher Befund: `crumble` bleibt bewusst kleinteilig (27×22 px) und wirkt
 als feine Knochenspur; `dissolve` ist mit 26×27 px der kleinste Effekt, aber
@@ -160,26 +161,40 @@ burst 3,84/2,40 → **2,56×**, dissolve 3,20/2,00 → **2,56×**, sputter
 3,52/2,20 → **2,56×**. Boss-Count 18–34 vs. 10–20, Life 1,1–1,4 s vs.
 0,35–0,8 s, eigene Textur `fx_boss_core` + Rim.
 
-### Art-Director-Urteil (einmalig, Runde 1)
-**FAIL — 2,3/5.** Begründung: Klassen nur über Farbe unterscheidbar, nicht über
-Silhouette; drei von vier Effekten ohne lesbaren Kern/Kontur. Einzelnoten:
-crumble 2,0/5 (1–2-px-Sprengsel, kein Rim), burst 1,5/5 (grün-auf-grün, weiche
-Ränder), dissolve 2,5/5 (weicher Halo/Alpha-Blur, generischer Trefferblitz),
-sputter 2,0/5 (Orange wie Gegner, unscharfer Glow). Im 308-Gegner-Frame geht
-jeder Effekt im Chaos unter; nur der weiße Dissolve-Blitz poppt. Frame-Style
-(Props, Gegner, Palette) ist ok.
+### Art-Director-Urteile
 
-**Abbruch statt Iteration:** Die geforderten Korrekturen (harte Bänder,
-dunkelblaue Rims, klarere Tropfen-/Asche-Silhouetten) brauchen neue/überarbeitete
-Frames in `src/gfx/gen-fx.ts` — dieser Bereich ist an eine andere Lane vergeben
-und in dieser Lane nicht schreibbar. Deshalb #1782 **blocked**: Doku/Crops/
-Messung liegen vor, das Art-Urteil ≥ 4/5 ist mit den vorhandenen Texturen nicht
-erreichbar. Follow-up: gfx-Nachzug (Death-Motifs mit Rim/Kern) als eigene Karte.
+**Runde 1 — FAIL 2,3/5.** Klassen nur über Farbe unterscheidbar, nicht über
+Silhouette; drei von vier Effekten ohne lesbaren Kern/Kontur. Einzelnoten:
+crumble 2,0/5, burst 1,5/5 (grün-auf-grün), dissolve 2,5/5 (weicher Halo),
+sputter 2,0/5 (Orange wie Gegner).
+
+**Runde 2 (nach #K5-Fix: Rim/Kontur, größere Skalen, Grau-Gegenprobe) —
+FAIL 2,5/5.** Einzelnoten: crumble 3,0/5 (klarster Effekt, aber Chunks sind
+identische Rechtecke → „Scherbenring", kein Knochen; Rim zu transparent),
+burst 1,5/5 (weiterhin grün-auf-grün, im 309-Gegner-Frame kaum zu finden),
+dissolve 2,5/5 (Ring statt aufsteigender Schwaden, warmer Beige-Halo statt
+`fogBlue`, Form/Größe kollidieren mit crumble), sputter 2,5/5 (hohle Balken/
+flache Rechtecke wirken wie Konfetti, keine Flammenzungen/Ascheflakes),
+Boss-Tod 3,0/5 (Flächenstufe ≥2× klar erfüllt: BBox 112×110, 214 155 px²;
+Kern aber Flat-Fill ohne 3 Stufen/Kontur, keine Ringe/Splitter).
+
+**Kernbefund:** Die Specs sind mit 15 unterscheidbaren Dimensionen und
+Determinismus sauber (Test-Auditor PASS), aber **im Bild** bleiben im
+Wesentlichen Farbe + Größe übrig; alle vier Formen sind „expandierender Ring".
+Damit ist die Abnahme „bei 300+ Gegnern sichtbar unterscheidbar" noch nicht
+erfüllt. Die vom Art-Director geforderten Korrekturen (Knochen-/Tropfen-/
+Flammen-Silhouetten, harte 1-px-`nightDeep`-Konturen, 3-Stufen-Kerne, Boss-Ringe)
+brauchen neu gezeichnete Frames in `src/gfx/gen-fx.ts`.
+
+**#1782 blocked:** Doku/Crops/Messung liegen vor (Commits `b55465c`/`42377d2`),
+das Urteil ≥ 4/5 ist mit den vorhandenen FX-Texturen nicht erreichbar.
+`src/gfx/**` ist fremder Claim → Request in `/home/ai/games/.dispatch/requests.md`
+und Follow-up-Karte für den gfx-Nachzug. K1–K4 sind erledigt (Test-Auditor PASS).
 
 ### Boss-Tod
 Eigene Stufe über `fx_boss_core` + `fx_halo`, ≥ 2,56× Fläche, 18–34 Partikel
 und 0,7–1,4 s Lebensdauer; per Test #K4 belegt. Zusätzlich als Crop belegt:
-`shots/m10-death-fx-boss.png` (3× nearest). Messung
+`shots/m10-death-fx-boss.png` (2× nearest). Messung
 50 ms nach dem Tod eines Moor-Bosses: **33 Partikel, BBox 112×110 px,
 Fläche 214 155 px²**, Texturen `fx_boss_core`/`fx_halo`; Rohdaten
 `shots/m10-death-fx-boss.json`. Damit liegt der Boss-Tod sichtbar eine Stufe
