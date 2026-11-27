@@ -1,0 +1,6 @@
+m10-death-fx — Todes-VFX im Massenkampf
+Karten: K1 Ist-Stand (23f3c4a), K2 Spec (b631b71), K3 Umsetzung (0d405c8/a44a97e), K4 Test (f944652/d0bc96c + Fix 6648dad, Test-Auditor PASS). K5 Belege+Doku (b55465c/42377d2/8ae7492) BLOCKED: art-director FAIL 2,5/5 (R1 2,3/5).
+Spec: 4 Klassen mit eigenen Count/Life/Scale/Spread/Tint/Rim-Textur, Boss fx_boss_core >=2,56x Flaeche; Test tests/death-fx.test.ts 5/5.
+Belege: 309 lebende Gegner im Frame (shots/m10-death-fx-frame.png, jsErrors []), 4 Klassen-Crops 2x nearest, Messung R2 BBox 26-45 px / Flaeche 17,5-47,6k px2, Boss 112x110 px / 214 155 px2.
+Gruen: npm run build rc=0, npm test 209/209 in 15 Dateien, tsc rc=0.
+Offen: Silhouetten im Bild noch zu generisch (alle "expandierender Ring"); harte nightDeep-Rims, 3-Stufen-Kerne und echte Knochen-/Flammen-/Tropfenformen brauchen neue Frames in src/gfx/gen-fx.ts (fremder Claim). Request in /home/ai/games/.dispatch/requests.md, Follow-up #2418.
