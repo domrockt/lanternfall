@@ -33,7 +33,7 @@ import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
 import { EnemyProjectilePool, enemyShotHitFx, shotTextureFor } from "../systems/EnemyProjectiles";
 import { HazardSystem } from "../systems/Hazards";
 import {
-  BossSystem, bossHudRects, bossSpriteScreenRect, rectsOverlap, type BossInfo,
+  BossSystem, BOSS_HUD_CLEARANCE, bossHudRects, bossSpriteScreenRect, rectsOverlap, type BossInfo,
 } from "../systems/BossSystem";
 import { shouldSplit, stepEnemyAi, type AiAction } from "../logic/enemy-ai";
 import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished, weaponRangeFactor } from "../logic/scaling";
@@ -613,14 +613,19 @@ export class Run extends Phaser.Scene {
       const cam = this.cameras.main;
       const rect = bossSpriteScreenRect(
         boss.x, boss.y, index, cam.scrollX, cam.scrollY, cam.zoom,
+        GAME_WIDTH, GAME_HEIGHT,
       );
-      const { hpBar, banner } = bossHudRects(GAME_WIDTH);
-      const clear = rect.y >= hpBar.y + hpBar.h + 6 && !rectsOverlap(rect, banner);
+      // Merge K6: Guard prueft gegen banner.bottom + 6 (starkere Bedingung,
+      // da das Banner fest unter der HP-Leiste haengt) — der Intro-Zoom-Puls
+      // (1.14) hebt die Sprite-Oberkante im Screen-Raum, die Komposition in
+      // BossSystem haelt sie trotzdem frei; der Guard ist zweite Sicherung.
+      const { banner } = bossHudRects(GAME_WIDTH);
+      const clear = rect.y >= banner.y + banner.h + BOSS_HUD_CLEARANCE && !rectsOverlap(rect, banner);
       if (clear) {
         this.events.emit("bossSpawn", { index, name: BOSSES[index].name, hp: boss.maxHp });
         return;
       }
-      if (attempt >= 10) return;
+      if (attempt >= 12) return;
       this.time.delayedCall(80, () => tryShow(attempt + 1));
     };
     tryShow(0);
