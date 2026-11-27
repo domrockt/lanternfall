@@ -1,0 +1,23 @@
+# Lane m10-elite-rim — FERTIG (2026-11-27)
+
+A10-Restpunkt "Chaos-Rim-Light fuer Elites" geschlossen: Elite-Gegner tragen eine
+gebrannte 1-px-Kante in Elite-Akzentfarbe (C.amber, PAL 20, binaeres Alpha) und sind
+im 300–500er-Schwarm sofort erkennbar. Kein Spawn-/Balance-Eingriff, Run.ts/textures.ts/
+atlas.ts unveraendert (Rim-Keys fliessen via ALL_ENEMY_FRAMES-Spread in SPRITE_FRAMES +
+Atlas).
+
+- #5238 Baseline: Amber-Rim-Anteil an Randpixeln 29/30 Typen 0 % (nur gargoyle 0.5 via
+  lightEdgeIndex); Schwarm-Shots 640x360 + 780x360@3 (20 Elites / 347 Gegner, 0 JS-Fehler).
+- #5239 Rim im Sprite-Generator: eliteRimGrid(), genau 1 zusaetzlicher Rim-Frame je Typ
+  ('<spriteKey>_rim'), Vollumrandung = richtungs-/frameunabhaengig (keine Duplikate).
+- #5240 EnemyPool: Elite-Spawn setzt Rim-Def ('<id>_rim') + vorgerendertes Rim-Frame;
+  framesForDef stabil (kein Flackern, 0 zusaetzliche Texture-Swaps); Splitter-Kinder
+  restaurieren Basis-Def; Pool-Reuse unveraendert.
+- #5241 Abnahme: 30/30 Typen Rim-Share 1.0; Contact-Sheet 1x/4x per Vision;
+  art-director PASS 4/5 (Ziel >= 4); reviewer PASS; npm test 598 gruen, tsc+build gruen.
+- FPS (flock): Burst 500 Gegner 60.0 FPS (worst 16.8 ms), Minute-25 60.5 FPS, 0 JS-Fehler
+  — keine Verschlechterung (Baseline docs/lanes/m10-perf-500.md Burst-Median 59.1).
+- Belege: shots/m10-elite-rim-{baseline,after}*.{png,json} (im Commit), Doku
+  docs/lanes/m10-elite-rim.md.
+- Follow-up (#5242, backlog): art-director-Makro "Elites statisch in Frame 0" → Rim in
+  alle Lauf-Frames backen; reviewer-Befund spawnCounts fuer Elite-Splitter-Kinder.
