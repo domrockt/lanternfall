@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4482,
+  "next": 4541,
   "cards": [
     {
       "id": 1,
@@ -5482,6 +5482,61 @@
       "notes": [],
       "created": "2026-11-27T18:47:17Z",
       "updated": "2026-11-27T18:47:17Z"
+    },
+    {
+      "id": 4538,
+      "title": "m10-flock-timeout K1: ground-cost.mjs auf flock -w umstellen",
+      "description": "scripts/m10-ground-cost.mjs: beide flock-Aufrufe/Command-Strings auf `flock -w <N>` (instrument -w 520, normal -w 300), Kommentar + Timeout-Meldung-Muster. AK: grep liefert nur -w-Zeilen, node --check rc=0, Commit `M10-m10-flock-timeout: #K1 ...`.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T18:52:28Z",
+          "by": "build",
+          "text": "todo → doing: Karte 1 gestartet: ground-cost.mjs auf flock -w (520 instrument / 300 normal)"
+        },
+        {
+          "at": "2026-11-27T18:52:49Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: 2 command-Strings + Kommentar auf flock -w 520/300, node --check rc=0, Commit 6226510. Beleg: grep nur noch -w-Zeilen."
+        }
+      ],
+      "created": "2026-11-27T18:52:26Z",
+      "updated": "2026-11-27T18:52:49Z"
+    },
+    {
+      "id": 4539,
+      "title": "m10-flock-timeout K2: fx-overdraw + ui-cost auf flock -w",
+      "description": "scripts/m10-fx-overdraw.mjs + scripts/m10-ui-cost.mjs: Startanleitungen auf `flock -w 300` umstellen, Timeout-Meldung + Kommentare. AK: grep -w-Beleg, node --check rc=0, Commit.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T18:52:49Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: fx-overdraw.mjs + ui-cost.mjs Startanleitungen auf -w 300"
+        },
+        {
+          "at": "2026-11-27T18:53:07Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: beide Dateien Startanleitung auf flock -w 300 + Meldungsmuster, node --check rc=0, Commit 462802a."
+        }
+      ],
+      "created": "2026-11-27T18:52:26Z",
+      "updated": "2026-11-27T18:53:07Z"
+    },
+    {
+      "id": 4540,
+      "title": "m10-flock-timeout K3: Negativ-Test + Doku + Lane-Abschluss",
+      "description": "Sperre halten, `flock -w 1` dagegen laufen lassen: bricht ~1 s mit rc!=0 ab, Meldung erscheint. Log docs/lanes/m10-flock-timeout.md mit grep-Beleg (3 Dateien nur -w), Exitcode, diff-Beleg. .lane-done + Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T18:53:07Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: Negativ-Test + docs/lanes/m10-flock-timeout.md + .lane-done"
+        }
+      ],
+      "created": "2026-11-27T18:52:26Z",
+      "updated": "2026-11-27T18:53:07Z"
     }
   ]
 }

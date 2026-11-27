@@ -1,0 +1,21 @@
+# Lane m10-flock-timeout — fertig (2026-11-27)
+
+Alle gemeinsamen flock-Aufrufe/Startanleitungen in scripts/m10-ground-cost.mjs,
+scripts/m10-fx-overdraw.mjs und scripts/m10-ui-cost.mjs nutzen jetzt `flock -w <N>`:
+instrument -w 520 (Lauf ~400 s + 120 s), Normal-Läufe -w 300 (~180 s + 120 s). Bei
+Lock-Timeout (rc != 0): Skriptname + "Sperre /home/ai/games/.lf-perf.lock belegt —
+spaeter erneut versuchen" + Exitcode weiterreichen; kein stiller Abbruch, kein
+unbegrenztes Warten.
+
+Belege (Details: docs/lanes/m10-flock-timeout.md):
+- grep 'flock /home' über die 3 Dateien = 0 Treffer; alle 6 flock-Zeilen haben -w.
+- Negativ-Test: Sperre gehalten, `flock -w 1 ... node --check` brach nach 1,00 s
+  mit rc=1 ab und gab die Meldung aus; positive Kontrolle freie Sperre rc=0 nach 0,02 s.
+- Live-Bug-Reproduktion: bare flock auf .lf-perf.lock hing >120 s (rc=143, gekillt),
+  während `flock -w 1` im selben Zustand nach 1,00 s abbrach.
+- node --check rc=0 (3/3), npm run build rc=0, npm test rc=0.
+- git diff nur Lock-Wrapper/Meldung/Kommentare (Commits 6226510, 462802a + K3-Commit).
+
+Keine Änderung an Messlogik, Ausgabeformat oder Messwerten. Ausgenommen laut Briefing:
+scripts/m10-dpr-budget.mjs und scripts/realtime-run.mjs. Offener Punkt: package.json-
+Scripts/andere m10-Skripte mit bare flock brauchen eine Folge-Karte (kein Datei-Claim).
