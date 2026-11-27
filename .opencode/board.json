@@ -2715,27 +2715,38 @@
       "id": 1679,
       "title": "m10-atlas-gaps #K2 Ist-Stand dokumentieren",
       "description": "Fehlende Keys, zu kleine Gutter, Bleed-Fälle aus Audit-JSON in docs/lanes/m10-atlas-gaps.md listen. Abnahme: Doku nennt konkrete Zahlen/Frames und ist committet.",
-      "column": "doing",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T00:47:31Z",
           "by": "build",
           "text": "todo → doing: #K2 Ist-Stand wird in docs/lanes/m10-atlas-gaps.md geschrieben."
+        },
+        {
+          "at": "2026-11-27T02:37:03Z",
+          "by": "build",
+          "text": "doing → done: done: Commit 0b4fc02 (#1679) belegt Ist-Stand-Doku; 224/224 erwartete Keys, 3 heisse Keys fehlten, Gutter 0/358, 131 Bleed."
         }
       ],
       "created": "2026-11-27T00:39:12Z",
-      "updated": "2026-11-27T00:47:31Z"
+      "updated": "2026-11-27T02:37:03Z"
     },
     {
       "id": 1680,
       "title": "m10-atlas-gaps #K3 Fix Atlas",
       "description": "src/gfx/atlas.ts/textures.ts: fehlende heisse Klassen aufnehmen, Gutter 2px horizontal+vertikal, 1px transparentes Padding pro Zelle; Atlas-Key/API unverändert. Abnahme: Audit 100% Coverage, 0 Gutter-Verstöße, 0 Bleed.",
-      "column": "todo",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T02:37:03Z",
+          "by": "build",
+          "text": "todo → done: done: Commit 32b0053 (#1680) belegt Fix 815df54 + Reviewer PASS; 227/227, Gutter min 4px, 0 Bleed."
+        }
+      ],
       "created": "2026-11-27T00:39:12Z",
-      "updated": "2026-11-27T00:40:10Z"
+      "updated": "2026-11-27T02:37:03Z"
     },
     {
       "id": 1681,
