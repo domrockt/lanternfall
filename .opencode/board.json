@@ -5463,10 +5463,16 @@
       "id": 4480,
       "title": "m10-chest-arrow-onscreen K3: Fix + Unit-Tests",
       "description": "Fix in src/systems/ChestSystem.ts (einzige Code-Datei): Randprojektion entlang Zentrum→Truhe, Kamera-Zoom berücksichtigen; tests/chest-arrow.test.ts >=3 Tests grün. AK: npx vitest run tests/chest-arrow.test.ts grün, tsc sauber.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:47:26Z",
+          "by": "build",
+          "text": "review → done: lane #3640, Merge a70dcb1 (m10-chest-arrow-onscreen; Lane-Karten #3638-#3641 als #4478-#4481 neu angelegt, lane #<alt>). Ancestry geprueft: git merge-base --is-ancestor m10-chest-arrow-onscreen main rc=0; build + npm test 509/509 gruen"
+        }
+      ],
       "created": "2026-11-27T18:47:17Z",
-      "updated": "2026-11-27T18:47:17Z"
+      "updated": "2026-11-27T18:47:26Z"
     },
     {
       "id": 4481,
