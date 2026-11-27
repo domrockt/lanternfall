@@ -1,0 +1,18 @@
+# m10-acceptance-sync — Lane abgeschlossen
+
+Ziel: ACCEPTANCE.md auf belegten Ist-Stand (nur Doku, kein Spielcode, keine Kriterienänderung).
+
+Commits:
+1. 757ab43 ACCEPTANCE.md Zahlen/Belege auf Ist-Stand (147→204, A5-Widerspruch Level 47 vs. Korridor 25–40)
+2. 40f2f0c Lane-Doku Diff-Liste alte→neue Zahl + Beleg
+(+ Meta  c631cd4 Board-Karten #1818/#1819 auf done)
+
+Messwerte/Belege:
+- npm test (Lane-Nachlauf, 2026-11-27): Test Files 14 passed (14) / Tests 204 passed (204).
+- grep "147 Tests" ACCEPTANCE.md: kein Treffer.
+- git diff main -- ACCEPTANCE.md: 8 Zeilen alt→neu, ausschließlich Zahlen/Belege.
+- A5: "Kael/Seed 101 Level 47" widerlegt (8 Repro-Läufe, Level 28); Ist 6/6 im Korridor 25–40,
+  Boss 23–51 s, kein Tod vor Minute 15 (shots/m10-balance-kael-final.json); formale
+  Kriteriumsänderung offen (Frage an Dom 23:35) — nicht selbst geändert.
+- Belege getrackt: shots/m10-balance-kael-{repro,xp-budget,final}.json, shots/m10-balance-main-summary.json.
+- Working tree: dirty=1, ausschließlich .opencode/board.json (Live-Sync Board-Server, erwartet).
