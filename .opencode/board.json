@@ -4955,9 +4955,15 @@
       "title": "m10-atlas-pack K1 Messen vorher",
       "description": "scripts/m10-atlas-pack.mjs: Draw-Calls/Frame (WebGL-Hook), Texturanzahl, FPS bei 300 Gegnern + M25 bei 640x360@1 und 780x360@3 -> shots/m10-atlas-pack-before.json (flock). Akzeptanz: JSON mit allen Messgroessen committed.",
       "id": 3998,
-      "column": "todo",
+      "column": "review",
       "assignee": "m10-atlas-pack",
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-11-27T18:20:00Z",
+          "by": "m10-atlas-pack",
+          "text": "todo → review: Baseline gemessen (shots/m10-atlas-pack-before.json): 597 Texturen, Draw-Calls/Frame Median 54 / p95 73 bei 300 Gegnern, FPS 38.5; M25 640x360@1: 34.5 FPS, 780x360@3: 35.6 FPS. Nicht-atlaste Heisse: prop (13 Tex/397 Sprites), glyph (~250 Tex, HUD+Damage), icon (18), chunk (20, dynamisch), player-Frames (52). Commit 7fb966a."
+        }
+      ]
     },
     {
       "title": "m10-atlas-pack K2 Packer mehrseitig + Coverage",
