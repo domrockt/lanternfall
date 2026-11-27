@@ -1,0 +1,496 @@
+{
+  "lane": "m10-endgame-fps",
+  "card": "K1 baseline",
+  "date": "2026-11-27",
+  "viewport": "640x360",
+  "dpr": 1,
+  "internalCanvas": "480x360 (Phaser FIT 4:3)",
+  "commands": {
+    "burst": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 1 --out shots/m10-endgame-fps-baseline-r<N>.json",
+    "minute25": "flock /home/ai/games/.lf-perf.lock node scripts/m10-endgame-fps.mjs --viewport 640x360 --dpr 1 --runs 3 --out shots/m10-endgame-fps-attribution.json",
+    "note": "profile-minute25.mjs ist syntaktisch defekt (Unexpected token ? in Zeile 74); scripts/m10-endgame-fps.mjs ersetzt es messbar. Kein Quellcode geaendert."
+  },
+  "documentedAcceptanceBaseline": {
+    "minute25Fps": "37,8–41,4",
+    "burstFps": "46,3 / 46,6 / 49,3",
+    "source": "ACCEPTANCE.md / docs/qa/final-2026-11-27.md"
+  },
+  "burstRuns": [
+    {
+      "run": 1,
+      "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 1 --out shots/m10-endgame-fps-baseline-r1.json",
+      "burstFps": 60.1,
+      "burstFrames": 601,
+      "burstMinEnemies": 500,
+      "burstWorstFrameMs": 16.8,
+      "burstMeasuredFps": 58,
+      "minute25Fps": 56.7,
+      "minute25Frames": 568,
+      "minute25MinEnemies": 300,
+      "minute25WorstFrameMs": 33.4,
+      "minute25MeasuredFps": 56.4,
+      "jsErrors": 0,
+      "passed": true
+    },
+    {
+      "run": 2,
+      "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 1 --out shots/m10-endgame-fps-baseline-r2.json",
+      "burstFps": 60.1,
+      "burstFrames": 601,
+      "burstMinEnemies": 500,
+      "burstWorstFrameMs": 16.8,
+      "burstMeasuredFps": 58.2,
+      "minute25Fps": 55.1,
+      "minute25Frames": 551,
+      "minute25MinEnemies": 300,
+      "minute25WorstFrameMs": 33.5,
+      "minute25MeasuredFps": 53.2,
+      "jsErrors": 0,
+      "passed": true
+    },
+    {
+      "run": 3,
+      "command": "flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --viewport 640x360 --dpr 1 --out shots/m10-endgame-fps-baseline-r3.json",
+      "burstFps": 60.1,
+      "burstFrames": 601,
+      "burstMinEnemies": 500,
+      "burstWorstFrameMs": 16.8,
+      "burstMeasuredFps": 59.2,
+      "minute25Fps": 53.8,
+      "minute25Frames": 539,
+      "minute25MinEnemies": 300,
+      "minute25WorstFrameMs": 33.4,
+      "minute25MeasuredFps": 51.5,
+      "jsErrors": 0,
+      "passed": false
+    }
+  ],
+  "attribution": [
+    {
+      "label": "minute25-1",
+      "fps": 53.5,
+      "frames": 322,
+      "elapsedMs": 6015,
+      "worstFrameMs": 33.4,
+      "minEnemies": 300,
+      "avgEnemies": 300,
+      "levelUpOpen": false,
+      "lod": "full",
+      "buckets": {
+        "ground.update": {
+          "calls": 224,
+          "totalMs": 46.2,
+          "msPerFrame": 0.143,
+          "msPerCall": 0.206
+        },
+        "updateVisuals": {
+          "calls": 259,
+          "totalMs": 15.5,
+          "msPerFrame": 0.048,
+          "msPerCall": 0.06
+        },
+        "updateEnemies": {
+          "calls": 224,
+          "totalMs": 41.2,
+          "msPerFrame": 0.128,
+          "msPerCall": 0.184
+        },
+        "movePlayer": {
+          "calls": 224,
+          "totalMs": 15.3,
+          "msPerFrame": 0.048,
+          "msPerCall": 0.068
+        },
+        "spawner.update": {
+          "calls": 224,
+          "totalMs": 2.8,
+          "msPerFrame": 0.009,
+          "msPerCall": 0.012
+        },
+        "combat.update": {
+          "calls": 224,
+          "totalMs": 139,
+          "msPerFrame": 0.432,
+          "msPerCall": 0.621
+        },
+        "combat.fx.update": {
+          "calls": 259,
+          "totalMs": 10,
+          "msPerFrame": 0.031,
+          "msPerCall": 0.039
+        },
+        "combat.particles.update": {
+          "calls": 259,
+          "totalMs": 12,
+          "msPerFrame": 0.037,
+          "msPerCall": 0.046
+        },
+        "damageNumbers.update": {
+          "calls": 259,
+          "totalMs": 1.1,
+          "msPerFrame": 0.003,
+          "msPerCall": 0.004
+        },
+        "pickups.update": {
+          "calls": 224,
+          "totalMs": 8.2,
+          "msPerFrame": 0.025,
+          "msPerCall": 0.037
+        },
+        "enemyShots.update": {
+          "calls": 224,
+          "totalMs": 7.6,
+          "msPerFrame": 0.024,
+          "msPerCall": 0.034
+        },
+        "hazards.update": {
+          "calls": 224,
+          "totalMs": 1.5,
+          "msPerFrame": 0.005,
+          "msPerCall": 0.007
+        },
+        "bosses.update": {
+          "calls": 224,
+          "totalMs": 1.3,
+          "msPerFrame": 0.004,
+          "msPerCall": 0.006
+        },
+        "chests.update": {
+          "calls": 259,
+          "totalMs": 2.3,
+          "msPerFrame": 0.007,
+          "msPerCall": 0.009
+        },
+        "collectKills": {
+          "calls": 224,
+          "totalMs": 11.2,
+          "msPerFrame": 0.035,
+          "msPerCall": 0.05
+        },
+        "touchDamage": {
+          "calls": 224,
+          "totalMs": 0.4,
+          "msPerFrame": 0.001,
+          "msPerCall": 0.002
+        },
+        "simulate": {
+          "calls": 224,
+          "totalMs": 258.3,
+          "msPerFrame": 0.802,
+          "msPerCall": 1.153
+        }
+      },
+      "jsErrors": [],
+      "loadAvgBefore": "5.33 10.54 13.54",
+      "loadAvgAfter": "7.23 10.72 13.55",
+      "view": {
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          480,
+          360
+        ],
+        "dpr": 1
+      }
+    },
+    {
+      "label": "minute25-2",
+      "fps": 55,
+      "frames": 331,
+      "elapsedMs": 6016,
+      "worstFrameMs": 33.4,
+      "minEnemies": 300,
+      "avgEnemies": 300,
+      "levelUpOpen": false,
+      "lod": "reduced",
+      "buckets": {
+        "ground.update": {
+          "calls": 294,
+          "totalMs": 77.4,
+          "msPerFrame": 0.234,
+          "msPerCall": 0.263
+        },
+        "updateVisuals": {
+          "calls": 332,
+          "totalMs": 21,
+          "msPerFrame": 0.063,
+          "msPerCall": 0.063
+        },
+        "updateEnemies": {
+          "calls": 294,
+          "totalMs": 45.4,
+          "msPerFrame": 0.137,
+          "msPerCall": 0.154
+        },
+        "movePlayer": {
+          "calls": 294,
+          "totalMs": 20.8,
+          "msPerFrame": 0.063,
+          "msPerCall": 0.071
+        },
+        "spawner.update": {
+          "calls": 294,
+          "totalMs": 3.8,
+          "msPerFrame": 0.011,
+          "msPerCall": 0.013
+        },
+        "combat.update": {
+          "calls": 294,
+          "totalMs": 183.4,
+          "msPerFrame": 0.554,
+          "msPerCall": 0.624
+        },
+        "combat.fx.update": {
+          "calls": 332,
+          "totalMs": 9.7,
+          "msPerFrame": 0.029,
+          "msPerCall": 0.029
+        },
+        "combat.particles.update": {
+          "calls": 332,
+          "totalMs": 15.3,
+          "msPerFrame": 0.046,
+          "msPerCall": 0.046
+        },
+        "damageNumbers.update": {
+          "calls": 332,
+          "totalMs": 1.7,
+          "msPerFrame": 0.005,
+          "msPerCall": 0.005
+        },
+        "pickups.update": {
+          "calls": 294,
+          "totalMs": 10,
+          "msPerFrame": 0.03,
+          "msPerCall": 0.034
+        },
+        "enemyShots.update": {
+          "calls": 294,
+          "totalMs": 8.2,
+          "msPerFrame": 0.025,
+          "msPerCall": 0.028
+        },
+        "hazards.update": {
+          "calls": 294,
+          "totalMs": 0.9,
+          "msPerFrame": 0.003,
+          "msPerCall": 0.003
+        },
+        "bosses.update": {
+          "calls": 294,
+          "totalMs": 1.3,
+          "msPerFrame": 0.004,
+          "msPerCall": 0.004
+        },
+        "chests.update": {
+          "calls": 332,
+          "totalMs": 2.4,
+          "msPerFrame": 0.007,
+          "msPerCall": 0.007
+        },
+        "collectKills": {
+          "calls": 294,
+          "totalMs": 12.4,
+          "msPerFrame": 0.037,
+          "msPerCall": 0.042
+        },
+        "touchDamage": {
+          "calls": 294,
+          "totalMs": 1.3,
+          "msPerFrame": 0.004,
+          "msPerCall": 0.004
+        },
+        "simulate": {
+          "calls": 294,
+          "totalMs": 321.6,
+          "msPerFrame": 0.972,
+          "msPerCall": 1.094
+        }
+      },
+      "jsErrors": [],
+      "loadAvgBefore": "7.23 10.72 13.55",
+      "loadAvgAfter": "10.27 11.22 13.67",
+      "view": {
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          480,
+          360
+        ],
+        "dpr": 1
+      }
+    },
+    {
+      "label": "minute25-3",
+      "fps": 53.4,
+      "frames": 321,
+      "elapsedMs": 6008,
+      "worstFrameMs": 33.4,
+      "minEnemies": 300,
+      "avgEnemies": 300,
+      "levelUpOpen": false,
+      "lod": "full",
+      "buckets": {
+        "ground.update": {
+          "calls": 236,
+          "totalMs": 56.7,
+          "msPerFrame": 0.177,
+          "msPerCall": 0.24
+        },
+        "updateVisuals": {
+          "calls": 271,
+          "totalMs": 19.5,
+          "msPerFrame": 0.061,
+          "msPerCall": 0.072
+        },
+        "updateEnemies": {
+          "calls": 236,
+          "totalMs": 41.4,
+          "msPerFrame": 0.129,
+          "msPerCall": 0.175
+        },
+        "movePlayer": {
+          "calls": 236,
+          "totalMs": 16.8,
+          "msPerFrame": 0.052,
+          "msPerCall": 0.071
+        },
+        "spawner.update": {
+          "calls": 236,
+          "totalMs": 2.6,
+          "msPerFrame": 0.008,
+          "msPerCall": 0.011
+        },
+        "combat.update": {
+          "calls": 236,
+          "totalMs": 136.3,
+          "msPerFrame": 0.425,
+          "msPerCall": 0.578
+        },
+        "combat.fx.update": {
+          "calls": 271,
+          "totalMs": 10.1,
+          "msPerFrame": 0.031,
+          "msPerCall": 0.037
+        },
+        "combat.particles.update": {
+          "calls": 271,
+          "totalMs": 12.6,
+          "msPerFrame": 0.039,
+          "msPerCall": 0.046
+        },
+        "damageNumbers.update": {
+          "calls": 271,
+          "totalMs": 1.5,
+          "msPerFrame": 0.005,
+          "msPerCall": 0.006
+        },
+        "pickups.update": {
+          "calls": 236,
+          "totalMs": 8.7,
+          "msPerFrame": 0.027,
+          "msPerCall": 0.037
+        },
+        "enemyShots.update": {
+          "calls": 236,
+          "totalMs": 7.9,
+          "msPerFrame": 0.025,
+          "msPerCall": 0.033
+        },
+        "hazards.update": {
+          "calls": 236,
+          "totalMs": 1.2,
+          "msPerFrame": 0.004,
+          "msPerCall": 0.005
+        },
+        "bosses.update": {
+          "calls": 236,
+          "totalMs": 1.2,
+          "msPerFrame": 0.004,
+          "msPerCall": 0.005
+        },
+        "chests.update": {
+          "calls": 271,
+          "totalMs": 1.8,
+          "msPerFrame": 0.006,
+          "msPerCall": 0.007
+        },
+        "collectKills": {
+          "calls": 236,
+          "totalMs": 10.2,
+          "msPerFrame": 0.032,
+          "msPerCall": 0.043
+        },
+        "touchDamage": {
+          "calls": 236,
+          "totalMs": 0.6,
+          "msPerFrame": 0.002,
+          "msPerCall": 0.003
+        },
+        "simulate": {
+          "calls": 236,
+          "totalMs": 256,
+          "msPerFrame": 0.798,
+          "msPerCall": 1.085
+        }
+      },
+      "jsErrors": [],
+      "loadAvgBefore": "10.27 11.22 13.67",
+      "loadAvgAfter": "9.62 11.05 13.59",
+      "view": {
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          480,
+          360
+        ],
+        "dpr": 1
+      }
+    }
+  ],
+  "aggregate": {
+    "burstMin": 60.1,
+    "burstMedian": 60.1,
+    "minute25Min": 53.4,
+    "minute25Max": 55,
+    "jsErrors": 0
+  },
+  "attributionSummary": {
+    "simulateMsPerFrame": [
+      0.802,
+      0.972,
+      0.798
+    ],
+    "combatUpdateMsPerFrame": [
+      0.432,
+      0.554,
+      0.425
+    ],
+    "groundUpdateMsPerFrame": [
+      0.143,
+      0.234,
+      0.177
+    ],
+    "updateEnemiesMsPerFrame": [
+      0.128,
+      0.137,
+      0.129
+    ],
+    "spawnerMsPerFrame": [
+      0.009,
+      0.011,
+      0.008
+    ],
+    "updateVisualsMsPerFrame": [
+      0.048,
+      0.063,
+      0.061
+    ]
+  }
+}
