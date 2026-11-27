@@ -3345,17 +3345,22 @@
       "id": 2261,
       "title": "m10-evolution-hint #4 Doku + .lane-done",
       "description": "docs/lanes/m10-evolution-hint.md: Vorher/Nachher-Belege, 6/6 Hinweis, Pixel-Check-Messwerte, build+Tests; .lane-done mit Messwerten committen. Abnahme: Belege im Commit, build + alle Tests gruen, .lane-done vorhanden.",
-      "column": "doing",
+      "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-27T06:04:46Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-27T06:09:01Z",
+          "by": "build",
+          "text": "doing → done: K4 committed a9dc142: Doku mit Vorher/Nachher, Messwerte (6/6, Rand 42/52 px, 0 Ueberlappung), build+247 Tests gruen; .lane-done im Worktree."
         }
       ],
       "created": "2026-11-27T05:05:32Z",
-      "updated": "2026-11-27T06:04:46Z"
+      "updated": "2026-11-27T06:09:01Z"
     }
   ]
 }
