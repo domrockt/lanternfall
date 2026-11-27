@@ -6159,27 +6159,38 @@
       "id": 5440,
       "title": "m10-evo-reachability K3: tests/evo-reachability.test.ts (6/6 erreichbar + Negativ-/Grenzfaelle)",
       "description": "Neue Testdatei: 6/6 Evolutionen erreichbar, nicht erreichbar ohne passendes Powerup, Angebotsliste ohne Duplikate, Grenzfaelle (Lv7 vs 8, falsches Powerup, zweites Powerup). Abnahme: npx vitest run tests/evo-reachability.test.ts + npx tsc --noEmit gruen.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T21:03:13Z",
           "by": "build",
           "text": "todo → doing: Testdatei in Arbeit: 6/6 erreichbar je Pfad (Truhe chestRewards + Level-Up generateOffers), Negativfaelle (Lv7, falsches Powerup, fehlendes Powerup), Duplikat-Freiheit, evolve()-Haertung aus K2."
+        },
+        {
+          "at": "2026-11-27T21:04:34Z",
+          "by": "build",
+          "text": "doing → review: Commit 4555fa0: 12 Tests in tests/evo-reachability.test.ts (6/6 je Pfad, Lv7-vs-8, fehlendes/falsches/zweites Powerup, Doppel-Sperre, evolve()-Gate). npx tsc --noEmit gruen, volle Suite 61 Dateien / 631 Tests gruen. Hinweis: ein Test der passive-math-Lane schreibt shots/m10-passive-math-*.json mit neuem Timestamp neu — bei Volllaufen der Suite entstehen Fremd-Diffs (hier revertet, nicht gemergt)."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:03:13Z"
+      "updated": "2026-11-27T21:04:34Z"
     },
     {
       "id": 5441,
       "title": "m10-evo-reachability K4: Nachher-Messung 6/6 + Moment-Shots je Evolution + Lane-Doku",
       "description": "m10-evo-reach.mjs nachher: shots/m10-evo-reach-after.json mit 6/6 PASS + je Evolution ein Moment-Screenshot shots/m10-evo-reach-<id>.png. Doku docs/lanes/m10-evo-reachability.md mit Zahlen. Abnahme: 6/6 belegt, Tests + tsc gruen, XP/Level-Kurven unveraendert (git diff pruefen).",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:04:48Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Lauf + Moment-Shots je Evolution (mit lebenden Gegnern, FX sichtbar) + docs/lanes/m10-evo-reachability.md + .lane-done."
+        }
+      ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T20:53:05Z"
+      "updated": "2026-11-27T21:04:48Z"
     }
   ]
 }

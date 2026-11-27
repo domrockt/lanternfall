@@ -30,6 +30,7 @@ const EVOLUTIONS = [
 ];
 const SEED = Number(process.env.EVO_SEED ?? 4711);
 const PHASE = process.argv.includes("--after") ? "after" : "before";
+const SHOTS = process.argv.includes("--shots");
 const OUT = `shots/m10-evo-reach-${PHASE}.json`;
 const CHEST_TIMEOUT_MS = 15000;
 
@@ -257,6 +258,38 @@ for (let i = 0; i < EVOLUTIONS.length; i++) {
   writeFileSync(OUT, JSON.stringify({ phase: PHASE, seed: SEED, generatedAt: new Date().toISOString(), results }, null, 2));
 }
 
+if (SHOTS) {
+  // Moment-Screenshots je Evolution: Evolution ueber die echte Truhe ausloesen,
+  // lebende Gegner um den Spieler, Shot waehrend des Evolutions-MOMENTS
+  // (Schockring/Zeitlupe, ~0,4 s nach applyChestReward).
+  for (const evo of EVOLUTIONS) {
+    const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+    try {
+      await startFreshRun(page);
+      await page.evaluate(({ base, passive }) => {
+        globalThis.__lf.spawnEnemy("bog_rat", 6);
+        globalThis.__lf.spawnEnemy("bat", 5);
+        globalThis.__lf.spawnEnemy("skeleton", 3);
+        globalThis.__lf.addWeapon(base, 8);
+        globalThis.__lf.addPassive(passive, 1);
+        globalThis.__lf.openChest();
+      }, { base: evo.baseWeapon, passive: evo.passive });
+      const chest = await readRunState(page);
+      if (!chest.chest.rewards.some((r) => r.kind === "evolution" && r.id === evo.id)) {
+        throw new Error(`${evo.id}: Truhe enthaelt die Evolution nicht`);
+      }
+      await waitChestClosed(page); // applyChestReward + playEvolutionFx
+      await page.waitForTimeout(400); // Schockring/Zeitlupe im Moment
+      await page.screenshot({ path: `shots/m10-evo-reach-${evo.id}.png` });
+      console.log(`Shot: shots/m10-evo-reach-${evo.id}.png`);
+    } catch (e) {
+      console.error(`Shot ${evo.id} fehlgeschlagen: ${String(e).slice(0, 200)}`);
+      process.exitCode = 1;
+    } finally {
+      await page.close();
+    }
+  }
+}
 await browser.close();
 await server.stop();
 
