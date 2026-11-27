@@ -4,6 +4,7 @@ import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
 import { ambientBudgetFor } from "../logic/lod";
+import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor } from "./propLayers";
 import { PAL } from "../palette";
 
 interface Ripple {
@@ -115,13 +116,20 @@ const CLUSTER_PROPS: Record<string, Array<[string, number, number]>> = {
   ],
 };
 
-const PROP_KEYS = new Set([
-  "prop_tree_a", "prop_tree_b", "prop_stump", "prop_boulder", "prop_grave",
-  "prop_cross", "prop_ruin", "prop_column", "prop_post", "prop_mushroom_ring",
-  "prop_bones", "prop_reeds", "prop_lilypad",
-]);
+// Prop-Batching-Helfer (feste Layer-Tiefen, Seitenwahl, Batch-Zaehlung, Prop-Keys) —
+// rein und phaserfrei in propLayers.ts, damit Vitest sie ohne jsdom pruefen kann.
+export { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, visibleBatchCount } from "./propLayers";
+export type { PropSide } from "./propLayers";
 
-/** Prozedurale Moor-Karte: 16-px-Chunks, Autotiling, Requisiten-Cluster. */
+/** Ein Container-Paar (hinter/vor dem Spieler) fuer eine Textur oder Glows. */
+interface PropLayers {
+  behind: Phaser.GameObjects.Container;
+  front: Phaser.GameObjects.Container;
+}
+
+/**
+ * Prozedurale Moor-Karte: 16-px-Chunks, Autotiling, Requisiten-Cluster.
+ */
 export class GroundRenderer {
   private readonly chunks = new Map<string, ChunkEntry>();
   private readonly scene: Phaser.Scene;
@@ -149,6 +157,11 @@ export class GroundRenderer {
   private fogLayer?: Phaser.GameObjects.Container;
   private ambientLastTick = Number.NEGATIVE_INFINITY;
   private propLodDense = false;
+  /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
+  private readonly propLayers = new Map<string, PropLayers>();
+  private shadowLayer?: Phaser.GameObjects.Container;
+  private rippleLayer?: Phaser.GameObjects.Container;
+  private glowLayers?: PropLayers;
   /** Debug-Zaehler fuer die M10-Messung; null = aus (kein Produktions-Overhead). */
   private counters: GroundDebugStats | null = null;
 
@@ -285,22 +298,61 @@ export class GroundRenderer {
     this.updateAmbient(camera, timeMs);
   }
 
+  /** Layer-Paar fuer eine Prop-Textur, lazy angelegt (feste Tiefen, nie umsortiert). */
+  private propLayerFor(key: string): PropLayers {
+    let layers = this.propLayers.get(key);
+    if (!layers) {
+      this.ensureBatchLayers();
+      layers = {
+        behind: this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.propBehind),
+        front: this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.propFront),
+      };
+      this.propLayers.set(key, layers);
+    }
+    return layers;
+  }
+
+  /** Feste Grund-Layer (Schatten, Ripples, Glows) einmalig anlegen. */
+  private ensureBatchLayers(): void {
+    if (this.shadowLayer) return;
+    this.shadowLayer = this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.shadow);
+    this.rippleLayer = this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.ripple);
+    this.glowLayers = {
+      behind: this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.glowBehind),
+      front: this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.glowFront),
+    };
+  }
+
+  /** Ziel-Container-Paar eines Props (Glow, sonst Textur-Layer); null = fest gelistet. */
+  private propTargetLayers(p: Phaser.GameObjects.Image): PropLayers | null {
+    if (p.getData("isShadow")) return null; // Schatten bleiben fest im Schatten-Layer
+    if (p.getData("glow")) return this.glowLayers ?? null;
+    const key = p.texture?.key;
+    return (key && this.propLayers.get(key)) || null;
+  }
+
+  /**
+   * Props auf hinter/vor dem Spieler verteilen. Kosten nur noch bei Seitenwechsel
+   * (Container-Mitgliedschaft aendern) statt setDepth auf alle Props pro Frame —
+   * vorher hat jeder der ~800 setDepth-Aufrufe die gesamte Szenenliste neu sortiert.
+   */
   private updatePropsDepth(): void {
     const player = (this.scene as unknown as { player?: Phaser.GameObjects.Container }).player;
     const py = player?.y;
     if (py === undefined) return;
     for (const entry of this.chunks.values()) {
       for (const p of entry.props) {
-        if (p.getData("isShadow")) {
-          if (this.counters) this.counters.propDepthSets++;
-          p.setDepth(11.15);
-          continue;
-        }
+        const layers = this.propTargetLayers(p);
+        if (!layers) continue;
         const footY = p.getData("footY") as number | undefined;
         if (footY === undefined) continue;
-        const glow = p.getData("glow") ? 0.06 : 0;
+        const side = propSideFor(footY, py);
+        if (p.getData("batchSide") === side) continue;
+        const target = side === "front" ? layers.front : layers.behind;
+        if (p.parentContainer && p.parentContainer !== target) p.parentContainer.remove(p);
+        target.add(p);
+        p.setData("batchSide", side);
         if (this.counters) this.counters.propDepthSets++;
-        p.setDepth(footY < py ? 11.6 + glow : 12.4 + glow);
       }
     }
   }
@@ -503,6 +555,7 @@ export class GroundRenderer {
       return;
     }
     if (this.counters) this.counters.chunkBuilds++;
+    this.ensureBatchLayers();
     const image = this.scene.add.image(cx * CHUNK_SIZE, cy * CHUNK_SIZE, textureKey)
       .setOrigin(0, 0)
       .setDepth(-100);
@@ -528,6 +581,7 @@ export class GroundRenderer {
     tinted = false, flip = false,
   ): void {
     if (!PROP_KEYS.has(key) || !this.scene.textures.exists(key)) return;
+    this.ensureBatchLayers();
     const img = this.scene.add.image(wx, wy, key).setOrigin(0.5, 1);
     img.setFlipX(flip);
     img.setData("footY", wy);
@@ -537,22 +591,27 @@ export class GroundRenderer {
       const shadow = this.scene.add.image(wx, wy - 1, "shadow")
         .setOrigin(0.5, 0.5)
         .setScale(sw, 0.85)
-        .setAlpha(0.62)
-        .setDepth(-90.5 + Math.min(0.85, wy * 0.00002));
+        .setAlpha(0.62);
       shadow.setData("isShadow", true);
+      this.shadowLayer!.add(shadow); // feste Tiefe: alle Schatten = 1 Batch
       props.push(shadow);
     }
     if (tinted) img.setAlpha(0.92);
+    // Startseite "hinter dem Spieler"; updatePropsDepth() sortiert um, sobald
+    // der Spieler existiert (nur bei Seitenwechsel, nicht mehr pro Frame).
+    this.propLayerFor(key).behind.add(img);
+    img.setData("batchSide", "behind");
     props.push(img);
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
     if (key === "prop_post" && this.scene.textures.exists("light_radius")) {
       const glow = this.scene.add.image(wx, wy - 20, "light_radius")
         .setBlendMode(Phaser.BlendModes.ADD)
         .setScale(0.42)
-        .setAlpha(0.22)
-        .setDepth(-89.5);
+        .setAlpha(0.22);
       glow.setData("footY", wy);
       glow.setData("glow", true);
+      this.glowLayers!.behind.add(glow);
+      glow.setData("batchSide", "behind");
       props.push(glow);
     }
   }
@@ -632,7 +691,7 @@ export class GroundRenderer {
             this.addProp("prop_lilypad", wx, wy, props);
           } else if (r > 0.48) {
             const img = this.scene.add.image(wx, wy, "water_ripple_0").setOrigin(0.5, 0.5);
-            img.setDepth(-92);
+            this.rippleLayer!.add(img); // feste Tiefe: alle Ripples in einem Layer
             const ripple: Ripple = { img, phase: Math.floor(tileHash(tx + 3, ty + 5, this.seed + 517) * 620), x: wx, y: wy };
             ripples.push(ripple);
             this.ripples.push(ripple);
@@ -668,6 +727,18 @@ export class GroundRenderer {
     this.fogLayer?.destroy(true);
     this.glowLayer = undefined;
     this.fogLayer = undefined;
+    for (const layers of this.propLayers.values()) {
+      layers.behind.destroy(true);
+      layers.front.destroy(true);
+    }
+    this.propLayers.clear();
+    this.shadowLayer?.destroy(true);
+    this.rippleLayer?.destroy(true);
+    this.glowLayers?.behind.destroy(true);
+    this.glowLayers?.front.destroy(true);
+    this.shadowLayer = undefined;
+    this.rippleLayer = undefined;
+    this.glowLayers = undefined;
     this.fireflies.length = 0;
     this.fogBanks.length = 0;
   }
@@ -689,6 +760,40 @@ export class GroundRenderer {
       sumVisibleAmbient: 0,
       sumVisiblePropTextures: 0,
       loadedChunks: this.chunks.size,
+    };
+  }
+
+  /** Debug/Messung: Batch-Layer- und Batches-Zahl (Layer mit sichtbarem Kind). */
+  debugBatchStats(): {
+    layerCount: number;
+    propBatches: number;
+    shadowBatches: number;
+    glowBatches: number;
+    rippleBatches: number;
+    visibleProps: number;
+    visibleRipples: number;
+  } {
+    const lit = (c?: Phaser.GameObjects.Container) => {
+      if (!c) return 0;
+      for (const child of c.list) if ((child as Phaser.GameObjects.Image).visible) return 1;
+      return 0;
+    };
+    let propBatches = 0;
+    for (const layers of this.propLayers.values()) {
+      propBatches += lit(layers.behind) + lit(layers.front);
+    }
+    let visibleProps = 0;
+    for (const entry of this.chunks.values()) {
+      for (const p of entry.props) if (p.visible) visibleProps++;
+    }
+    return {
+      layerCount: batchLayerCount(this.propLayers.size),
+      propBatches,
+      shadowBatches: lit(this.shadowLayer),
+      glowBatches: lit(this.glowLayers?.behind) + lit(this.glowLayers?.front),
+      rippleBatches: lit(this.rippleLayer),
+      visibleProps,
+      visibleRipples: this.ripples.filter((r) => r.img.visible).length,
     };
   }
 
