@@ -38,7 +38,12 @@ Teiler 1 (~45 FPS < Ziel 50). Fix in #3580: eigener schneller EWMA aus den
 rAF-Deltas (0,9/0,1 pro Frame, Konvergenz ~0,5 s), Hysterese-Konstanten
 unveraendert.
 
-## #3580 Messung (blocked: Perf-Lock belegt)
+## #3580 Messung (done, Versuch 6)
+
+`scripts/m10-dpr-budget.mjs`, M25-Last 780x360 dpr3, 3 Laeufe nachher +
+Vorher-Referenz (?rbscale=0) + Stress-Lauf (--stress 900) + 640x360 dpr1
+(--six40). Ziel min >= 50 FPS, 640x360@1 ohne Regression >= 50 — **beide
+Kriterien erfuellt** (Details in der Messliste oben).
 
 **Methodik-Fix (20:10, Commit f89a5e4):** Der vollstaendige Messlauf von 19:37
 (60,0-60,1 FPS 3/3, Buffer 780x360) ist **methodisch ungueltig**: in
@@ -99,6 +104,27 @@ Messversuche 2026-11-27 (alle unter flock /home/ai/games/.lf-perf.lock):
   atlas-pack (3 Laeufe) + fullrun 780 dpr3 in der Warteschlange; Load ~17,7.
   Auto-Retry alle 30 min eingerichtet (Automation, expiert nach ~3 h).
 - Versuch 5 (19:42 Uhr, Auto-Retry 1): flock -w 60 -> rc=1, Skript lief nicht.
+- **Versuch 6 (19:50 Uhr, Auto-Retry 2, Sperre frei, Load 6,1): ERFOLG.**
+  Skript-Stand der Vorgaenger-Inkarnation (Commits 0e63997, f89a5e4: Nachspawner-Fix
+  — davor minEnemies 16-21 statt 300, 60-FPS-Werte methodisch ungueltig —,
+  --stress-Modus, --six40-Regression). Ergebnis (`shots/m10-dpr-budget.json`,
+  rc=0, jsErrors 0):
+  - Vorher (rbscale=0): 60 FPS, Buffer 780x360, 300 Gegner gehalten.
+  - Nachher 3/3: **60 FPS** (vsync), Buffer 780x360, minEnemies 300 -> **PASS**.
+  - Stress 900 Gegner gehalten: 60 FPS, Buffer 780x360.
+  - 640x360 dpr1: 60 FPS, nativer M8-Fit-Buffer 480x270 (gebrochene Skalierung,
+    by design; Regler kann hier per dprCap 1 nie senken) -> **keine Regression**.
+  - **Kriterium "M25 780@3 min-FPS >= 50 in 3/3" erfuellt; "640x360@1 >= 50"
+    erfuellt.**
+  - Ehrlicher Befund: Auf der inzwischen ruhigen Maschine (Load ~6) haelt der
+    volle Buffer bereits vsync-60 — der Regler musste NICHT senken (FPS 60 >=
+    Ziel 60 -> chooseRenderScale cap 1, korrektes Verhalten). Dass Senken unter
+    Last funktioniert, belegen die Probes (Trajektorie: Teiler 1 -> belowMs
+    2000 -> Teiler 2, Buffer 390x180, FPS-Erholung 44,9 -> 59) sowie die
+    Last-Messungen vor dem Maschinen-Ruhigwerden (40,6-47 FPS bei voller
+    Stufe unter Parallel-Lanes, Load 13-15). Die fps-Problematik, auf der die
+    Lane-Prämisse beruht, ist Last-induziert; auf idler Maschine ist das
+    Feature dormant (kein Schaden, kein Nutzen sichtbar).
 - Systemlast beim Versuch 2: Load ~15 (Parallel-Lanes), Chromium ~800 % CPU
   fremder Lane -> FPS-Zahlen auch ohne LockKonflikt lastverrauscht.
 

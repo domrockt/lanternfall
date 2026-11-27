@@ -9,12 +9,12 @@
     {
       "id": "before-rbscale0",
       "mode": "before",
-      "fps": 60.1,
+      "fps": 60,
       "frames": 601,
       "worstFrameMs": 16.8,
       "minEnemies": 300,
       "time": 1500.4,
-      "kills": 23376,
+      "kills": 22801,
       "renderBuffer": [
         780,
         360
@@ -32,12 +32,12 @@
     {
       "id": "after-auto-1",
       "mode": "after",
-      "fps": 60,
+      "fps": 60.1,
       "frames": 601,
       "worstFrameMs": 16.8,
       "minEnemies": 300,
-      "time": 1502.8,
-      "kills": 33464,
+      "time": 1499.5,
+      "kills": 26550,
       "renderBuffer": [
         780,
         360
@@ -60,7 +60,7 @@
       "worstFrameMs": 16.8,
       "minEnemies": 300,
       "time": 1500.4,
-      "kills": 30611,
+      "kills": 22816,
       "renderBuffer": [
         780,
         360
@@ -78,12 +78,12 @@
     {
       "id": "after-auto-3",
       "mode": "after",
-      "fps": 60.1,
+      "fps": 60,
       "frames": 601,
       "worstFrameMs": 16.8,
       "minEnemies": 300,
-      "time": 1500.4,
-      "kills": 30766,
+      "time": 1499.8,
+      "kills": 26920,
       "renderBuffer": [
         780,
         360
@@ -102,12 +102,12 @@
       "id": "after-stress-900",
       "mode": "after-stress",
       "stressEnemies": 900,
-      "fps": 59.8,
-      "frames": 599,
-      "worstFrameMs": 33.3,
+      "fps": 60,
+      "frames": 601,
+      "worstFrameMs": 16.8,
       "minEnemies": 900,
-      "time": 1499.6,
-      "kills": 81014,
+      "time": 1500.4,
+      "kills": 95918,
       "renderBuffer": [
         780,
         360
@@ -130,12 +130,12 @@
         360
       ],
       "dpr": 1,
-      "fps": 60.1,
+      "fps": 60,
       "frames": 601,
       "worstFrameMs": 16.8,
       "minEnemies": 300,
-      "time": 1500.3,
-      "kills": 19662,
+      "time": 1502.1,
+      "kills": 20005,
       "renderBuffer": [
         480,
         360
@@ -151,12 +151,12 @@
     }
   ],
   "summary": {
-    "beforeFps": 60.1,
+    "beforeFps": 60,
     "beforeRenderWidth": 780,
     "afterFps": [
+      60.1,
       60,
-      60,
-      60.1
+      60
     ],
     "afterRenderWidth": [
       780,
@@ -170,12 +170,12 @@
       "id": "after-stress-900",
       "mode": "after-stress",
       "stressEnemies": 900,
-      "fps": 59.8,
-      "frames": 599,
-      "worstFrameMs": 33.3,
+      "fps": 60,
+      "frames": 601,
+      "worstFrameMs": 16.8,
       "minEnemies": 900,
-      "time": 1499.6,
-      "kills": 81014,
+      "time": 1500.4,
+      "kills": 95918,
       "renderBuffer": [
         780,
         360
@@ -191,7 +191,7 @@
       "passed": true
     },
     "run640": {
-      "fps": 60.1,
+      "fps": 60,
       "renderWidth": 480,
       "minEnemies": 300,
       "passed": true
