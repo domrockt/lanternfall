@@ -3278,7 +3278,7 @@
       "id": 2227,
       "title": "m10-enemy-ai #5 In-Game-Beleg",
       "description": "lane #1762: 5-min-Lauf @ timeScale 10 mit >=100 Gegnern, Screenshot shots/m10-enemy-ai-mass.png, FPS-Minimum >=55 (flock), npm run build grün, .lane-done. Abnahme: Shot zeigt >=100 Gegner, FPS-Beleg im Log, .lane-done committed.",
-      "column": "doing",
+      "column": "blocked",
       "assignee": "engine-dev",
       "notes": [
         {
@@ -3290,10 +3290,15 @@
           "at": "2026-11-27T04:21:18Z",
           "by": "merge",
           "text": "Merge Lane m10-enemy-ai: als #2227 neu angelegt (lane #1762)."
+        },
+        {
+          "at": "2026-11-27T05:44:55Z",
+          "by": "build",
+          "text": "doing → blocked: fremde Lane (m10-enemy-ai), 155 min ohne Update; nicht weiter bearbeiten."
         }
       ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T03:00:30Z"
+      "updated": "2026-11-27T05:44:55Z"
     },
     {
       "id": 2258,
@@ -3319,11 +3324,17 @@
       "id": 2260,
       "title": "m10-evolution-hint #3 UI-Hinweis EVOLUTION BEREIT + Truhensatz",
       "description": "src/scenes/UI.ts: Badge/Zeile im Level-up-Panel und HUD, Text via slotNameLines/wrapText max. 2 Zeilen; Truhe erklaert in einem Satz, was evolviert; Hit-/Fokusflaechen unveraendert (Tastatur/Touch). Abnahme: 6/6 Evolutionen mit Hinweis in Shots, Pixel-Check Randabstand >=2 px und keine Ueberlappung mit Trennlinie in 640x360 + 780x360, 0 JS-Fehler, logic/levelup.ts unveraendert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "ui-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T05:44:55Z",
+          "by": "build",
+          "text": "todo → doing: UI-Hinweis implementiert (WIP 2f...); Pixel-Check max. 2 Iterationen."
+        }
+      ],
       "created": "2026-11-27T05:05:32Z",
-      "updated": "2026-11-27T05:05:32Z"
+      "updated": "2026-11-27T05:44:55Z"
     },
     {
       "id": 2261,
