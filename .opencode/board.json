@@ -7208,7 +7208,7 @@
       "id": 6199,
       "title": "m10-hero-portraits K2: Portraits neu zeichnen (Kael=Mönch, Mira=Jägerin)",
       "description": "Beide 48x48-Porträts in scripts/art/gen_chars.py neu: Kael eindeutig Mönch (Kutte, Gurt, Tonsure), Mira Jägerin/Bogenschützin. Silhouette zuerst, nur Palette src/palette.ts, Ausgabe-Pixelgröße exakt 48x48 (kein Mixel). Danach gen-chars.ts regenerieren. Abnahme: Silhouetten klar lesbar, tsc rc=0.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T22:32:44Z",
@@ -7219,10 +7219,15 @@
           "at": "2026-11-27T23:05:14Z",
           "by": "build",
           "text": "[Supervisor] bestätigt: PNG-Parsing-Schleifen abgebrochen; r2-Stand (Pixel-Fixes: Kael Metall-Laternenkopf, Mira Glutkern) wird jetzt committet (#6199). Danach genau 1 Änderung je Porträt (Kael: Tonsure/Kutten-Silhouette, Mira: Rollen-Silhouette), 1 Commit, dann K3. Hinweis zur Rolle: src/data/characters.ts definiert Mira als Laternen-Hexe (nicht Bogenschützin) — Bogen würde der Spieldaten-Rolle widersprechen; Silhouetten-Unterscheidbarkeit 2x ist mit art-director PASS (Kriterium 3) belegt."
+        },
+        {
+          "at": "2026-11-27T23:07:13Z",
+          "by": "build",
+          "text": "doing → review: K2 abgeschlossen: r2 (f1d4943, art-director-Korrekturen + frische after-Belege), r3 (cbb99e5, Kael Tonsure-Kranz; Mira Brim revert) + m4-Ref-Shots (a3…). Silhouetten 2x unterscheidbar (art-director Kriterium 3 PASS Note 5), tsc rc=0, Tests grün. Mira bleibt Laternen-Hexe (Spieldaten), kein Bogen — begründet in docs/lanes/m10-hero-portraits.md."
         }
       ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T23:05:14Z"
+      "updated": "2026-11-27T23:07:13Z"
     },
     {
       "id": 6200,

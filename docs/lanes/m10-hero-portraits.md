@@ -70,7 +70,27 @@ jeden Charakter aus `CHARACTER_LIST` auf (keine Fehltextur). Stand nach K2:
 
 ### art-director-Urteil
 
-<!-- wird nach der Prüfung eingetragen -->
+**PASS** (Re-Check nach r2, alle 5 Kriterien mit Beleg):
+
+1. **Kael als Mönch — PASS:** spitze Kapuze, kahle Stirn über Stirnband, grauer
+   Bart, Strickgurt mit Knoten; Laterne mit Metall-Deckel (`#FFD77A/#A84A21`),
+   Glutkern `#FFEEB0/#FFF8E6`; FleshWarm nur im Gesicht (x15–33, y16–28), null
+   Fleischpixel an der Laterne. Beleg: `…after-portrait-kael-4x.png`.
+2. **Mira fein/rollenklar — PASS:** Hut + Goldband, rotes Haar, symmetrisches
+   Gesicht; helle Pixel ausschließlich im Laternenkern, keine isolierten
+   Streupixel (Isolations-Check leer). Beleg: `…after-portrait-mira-4x.png`.
+3. **Silhouetten 2x unterscheidbar — PASS:** Kael = schmales dunkles
+   Kapuzen-Dreieck ohne Krempe + Bart; Mira = roter Hut mit breiter Krempe
+   + Haar + Laterne.
+4. **Palette/Grid — PASS:** alle opaken Farben ⊆ `src/palette.ts` (Kael 21,
+   Mira 14 Farben), 0 opake #000000, 0 nicht-uniforme 4x-Blöcke (exaktes
+   nearest, keine Mixel).
+5. **Auswahl-Szene — PASS:** `after-select.png` md5 `73bef5cb…` ≠ before
+   `792240a0…` (echte Neuaufnahme nach frischem Build, 0 JS-Fehler); beide
+   Panels zeigen die neuen Porträts, keine Fehltexturen, kein Blur.
+
+Nicht-blockierende Restnotiz: Kaels Stirn-Kontur hat 2 kleine Noppen (reine
+Politur, ggf. eigene Karte).
 
 ## Offene Punkte
 
