@@ -114,6 +114,9 @@ Abnahmeziel, das die Android-Nachabnahme bisher blockierte (41–45 FPS).
   m10-font-glyph-pack geplant.
 - Key-basierte Textur-Zählung im Mess-Skript nach Packing irreführend (siehe oben) —
   GPU-Texturen wären der bessere Metrics-Wert (Vorschlag für Mess-Skript-Folgejob).
+- `textures.ts` hat formal weiter einen Phaser-Wert-Import (nutzt Phaser nur in
+  Typ-Positionen; esbuild eliminiert ihn, 4/4 Suiten grün — aber ein anderer Transform
+  könnte das erneut triggern; ggf. `import type` nachziehen).
 - ARM/Gerätemessung bleibt Eskalation an Vera (wie im Android-Audit notiert).
 
 **Reviewer-Hinweise (nicht blockierend, PASS #3998/#3999):** (1) Canvas-Renderer-Fallback in

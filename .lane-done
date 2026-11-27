@@ -1,0 +1,26 @@
+# Lane m10-atlas-pack – FERTIG (2026-11-27)
+
+Runtime-Atlas-Pack: massenhaft gezeichnete prozedurale Sprites (Props, Icons, Player,
+Portraits, Glyphen) werden nach der Erzeugung in Atlas-Seiten <= 2048 px gepackt;
+Keys bleiben erhalten (geteilter GL-Wrapper) → Aufrufer unverändert.
+
+## Messwerte (vorher → nachher, Median aus 3 Läufen unter flock)
+- Crowd 300 Gegner: Draw-Calls/Frame Median 54 → 54 (p95 73 → 94) — Ziel < 60 ✅
+  (Gegner liefen schon über runtime_atlas; Gewinn steckt in HUD/Glyphen/Props)
+- M25 640x360@1: 34.5 → **60.0 FPS** (nicht schlechter ✅)
+- M25 780x360@3: 35.6 → **60.0 FPS** (Ziel >= 50 ✅) — alle After-Läufe an vsYNC-Grenze
+- Optik: Pixel-Diff AE=0 (90-Sprite-Compare-Szene, vor/nach Baking, Beleg committed)
+- Tests: 40/40 Suiten, 438/438 grün; tsc rc=0; build rc=0; 0 JS-Fehler in allen Läufen
+
+## Abnahme
+- K1–K4 alle committet (7fb966a, 17b3549/b061c7e, 9a39e4d, 5c57547), Reviewer-PASS
+  für alle 4 Karten; Abnahme-Audit nach K5-Fix **PASS** (Re-Test ses_de14734f).
+- K5-Fix: bakeAtlas.ts Phaser-wertfrei (import type + TextureManager.create) —
+  4 Node-Test-Suiten (37 Tests) wiederhergestellt; Render alt-vs-neu AE=0.
+
+## Offene Punkte (in docs/lanes/m10-atlas-pack.md detailiert)
+- FX-Texturen (gen-fx.ts) bewusst nicht gepackt — Folgejob nach m20-fx-overdraw-cap-Merge.
+- font.ts-Änderung (2 Zeilen) außerhalb Lane-Fläche, begründet in .dispatch/requests.md.
+- Key-Zählung im Mess-Skript nach Packing irreführend (GPU-Texturen wären besser).
+- textures.ts: Phaser-Wert-Import nur typpositionell genutzt (esbuild eliminiert es).
+- ARM/Gerätemessung bleibt Eskalation an Vera.
