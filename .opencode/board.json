@@ -3016,39 +3016,49 @@
       "id": 2040,
       "title": "m10-fx-evolution K3 Treffer+Tod je Evolution",
       "description": "Trefferfunke und Todes-Puff je Evolution im Spiel sichtbar (FxSystem-API + Run-onHit-Integration, minimaler Fremd-Eingriff begründet). LOD-Pfad (minimal: Alpha 0,5/NORMAL) darf Unterscheidbarkeit nicht aufheben. Abnahme: tsc grün, LOD-Beleg im Doc, GIF/Screenshot mit lebenden Gegnern zeigt Signatur.",
-      "column": "review",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T05:19:48Z",
           "by": "build",
           "text": "todo → review: K3 umgesetzt: FxSystem.spawnEvolution + Run-onHit, LOD minimal Alpha 0,5/NORMAL mit Index-Erhalt, Form-Varianten je Hauptindex; Sheet + Tests 6/6, build+230 Tests gruen; Commit 4401188."
+        },
+        {
+          "at": "2026-11-27T10:51:31Z",
+          "by": "build",
+          "text": "review → done: K3 angenommen: Signaturen im 32x32-Stand in allen 6 After-GIFs ueber 415-522 Gegnern sichtbar, LOD-Index erhalten. Abnahme durch K5 (231d2de)."
         }
       ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T05:19:48Z"
+      "updated": "2026-11-27T10:51:31Z"
     },
     {
       "id": 2041,
       "title": "m10-fx-evolution K4 Messung Nachher",
       "description": "6 Nachher-GIFs + eingefrorener Chaos-Frame Minute 25. Near-White im AoE-Crop <=4,16 % (ACCEPTANCE A7: r>=235,g,b>=150); Pixel-Diff der Signaturen > Schwelle (paarweise, Texturen und Runtime-Paletten). Abnahme: shots/m10-fx-evolution-after-*.gif/.png + JSON mit Messwerten, 0 JS-Fehler.",
-      "column": "review",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T05:19:48Z",
           "by": "build",
           "text": "todo → review: K4 Nachher: 6 GIFs (24 Frames, >=415 Gegner), Chaos m25 0,52 % Near-White, Pixel-Diff min 51 px, 0 JS-Fehler; Commit 255839a."
+        },
+        {
+          "at": "2026-11-27T10:51:31Z",
+          "by": "build",
+          "text": "review → done: K4 angenommen: Chaos m25 0,87 % Near-White, Signatur-Diff 510/1030 px, 6 GIFs + JSON, 0 JS-Fehler. Abnahme durch K5 (231d2de)."
         }
       ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T05:19:48Z"
+      "updated": "2026-11-27T10:51:31Z"
     },
     {
       "id": 2042,
       "title": "m10-fx-evolution K5 Doku + lane-done",
       "description": "docs/lanes/m10-fx-evolution.md mit art-director-Urteil je Evolution (PASS/FAIL + Note) und Gesamtnote >=4/5 mit Begründung; offene Punkte ehrlich. .lane-done mit Messwerten. Abnahme: build+alle Tests grün (inkl. tests/fx-evolution.test.ts), 6 Vorher-/Nachher-GIFs in shots/, Near-White <=4,16 %, art-director >=4/5.",
-      "column": "doing",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -3070,10 +3080,15 @@
           "at": "2026-11-27T08:29:45Z",
           "by": "build",
           "text": "blocked → doing: Zwischenstand 9128822; K5-Signaturen-Fix aktiv, Build+Tests gruen."
+        },
+        {
+          "at": "2026-11-27T10:51:31Z",
+          "by": "build",
+          "text": "doing → done: K5 abgeschlossen: art-director PASS 4/5 (6/6 Evolutionen PASS), Near-White 0,87 % <=4,16 %, Diff min 510/1030 px, LOD-Index 6/6, build RC0 + 231 Tests gruen, 0 JS-Fehler, 6 Vor/Nachher-GIFs. .lane-done committet 231d2de."
         }
       ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T08:29:45Z"
+      "updated": "2026-11-27T10:51:31Z"
     }
   ]
 }
