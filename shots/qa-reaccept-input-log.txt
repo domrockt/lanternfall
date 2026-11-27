@@ -1,0 +1,33 @@
+2026-11-27T13:43:05Z
+OK   index.html: touch-action none + kein Textselect
+OK   Touch: Menues per Tippen bis in den Run
+OK   Touch-Joystick bewegt den Spieler (x 2048 -> 2135)
+OK   Touch: Pause per zweitem Finger bei aktivem Joystick
+OK   Touch: FORTSETZEN per Tippen
+OK   Touch: Level-up-Karten per Tippen gewaehlt (loadoutChanged=true)
+OK   Touch: Truhe per Tippen uebernommen
+OK   Touch: eine Minute Spiel ohne Tastatur/Gamepad (scene=run, sim=65.3s, levelTaps=0)
+OK   Touch: Results/Titel per Tippen
+OK   Gamepad Hotplug: A startet Charakterwahl
+OK   Gamepad: D-Pad + A waehlt Kael und startet (kael)
+OK   Gamepad: linker Stick bewegt den Spieler (x 2048 -> 2109)
+OK   Gamepad: getrenntes Pad bewegt nicht (x 2109 -> 2109)
+OK   Gamepad: Reconnect bewegt wieder (x 2128 -> 2168)
+OK   Gamepad: Start pausiert
+OK   Gamepad: A oeffnet Optionen, Fokus sichtbar, Pause bleibt
+OK   Gamepad: Start im Optionsmenue hebt Pause nicht auf
+OK   Gamepad: B schliesst Optionen, Pause bleibt
+OK   Gamepad: B setzt Pause fort
+OK   Gamepad: A bestaetigt Fokus (Fortsetzen)
+OK   Gamepad: Level-up per A (loadoutChanged=true)
+OK   Gamepad: Truhe per A uebernommen
+OK   Gamepad: Results per D-Pad+A verlaesst zum Titel
+OK   Tastatur: Pfeil rechts bewegt den Spieler unveraendert (x 2048 -> 2101)
+OK   Tastatur: ESC pausiert ({"paused":true,"levelUp":false,"chest":false,"keys":["Escape"],"listeners":1,"optionsVisible":false,"runPausedBefore":true})
+OK   Tastatur: ESC setzt fort ({"paused":false,"keys":["Escape"],"listeners":1,"optionsVisible":false})
+OK   alle Shots vorhanden (>10KB)
+OK   keine JS-Fehler
+
+M8-input: PASS (28/28 Checks)
+INPUT_RC=0
+2026-11-27T13:44:54Z

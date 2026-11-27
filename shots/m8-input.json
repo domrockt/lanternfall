@@ -13,7 +13,7 @@
     {
       "name": "Touch-Joystick bewegt den Spieler",
       "ok": true,
-      "detail": "x 2048 -> 2109"
+      "detail": "x 2048 -> 2135"
     },
     {
       "name": "Touch: Pause per zweitem Finger bei aktivem Joystick",
@@ -35,7 +35,7 @@
     {
       "name": "Touch: eine Minute Spiel ohne Tastatur/Gamepad",
       "ok": true,
-      "detail": "scene=run, sim=63.1s, levelTaps=1"
+      "detail": "scene=run, sim=65.3s, levelTaps=0"
     },
     {
       "name": "Touch: Results/Titel per Tippen",
@@ -58,12 +58,12 @@
     {
       "name": "Gamepad: getrenntes Pad bewegt nicht",
       "ok": true,
-      "detail": "x 2110 -> 2110"
+      "detail": "x 2109 -> 2109"
     },
     {
       "name": "Gamepad: Reconnect bewegt wieder",
       "ok": true,
-      "detail": "x 2129 -> 2169"
+      "detail": "x 2128 -> 2168"
     },
     {
       "name": "Gamepad: Start pausiert",
