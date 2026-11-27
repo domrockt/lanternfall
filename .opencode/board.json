@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6443,
+  "next": 6523,
   "cards": [
     {
       "id": 1,
@@ -7529,6 +7529,96 @@
       ],
       "created": "2026-11-27T23:11:00Z",
       "updated": "2026-11-27T23:11:10Z"
+    },
+    {
+      "id": 6518,
+      "title": "m10-boss-idle-anim #1: Ist-Aufnahme Boss-Frames",
+      "description": "Skript scripts/m10-boss-idle-anim.mjs rendert alle 6 Bosse 1x und 4x, zaehlt Frames/Duplikate/Pixel-Diffs je Boss → shots/m10-boss-idle-anim-before.json + shots/m10-boss-idle-anim-before-640.png. Abnahme: JSON+PNG committed, Werte belegen Ist-Zustand.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:19:41Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet: Mess-Skript gebaut, Baseline-Aufnahme laeuft"
+        },
+        {
+          "at": "2026-11-27T23:23:16Z",
+          "by": "build",
+          "text": "doing → review: Ist-Aufnahme committed 7727a71: JSON+PNG, 6 Bosse je 3 Frames, 0 Duplikate, Idle-Shift -2/-3px, F0-F2-Diffs 110/472 px (bone_lord/hollow_king fast Standbild). Beleg: shots/m10-boss-idle-anim-before-{json,png}"
+        },
+        {
+          "at": "2026-11-27T23:50:01Z",
+          "by": "build",
+          "text": "review → done: Commit 7727a71. Ist-Aufnahme: 6 Bosse je 3 Frames, 0 Duplikate, aber Idle-Versatz -2/-3 px (<=1px-Regel verletzt), bone_lord F0-F2-Diff 110 px (Fast-Standbild). Belege before.json + before-640.png (Layout-Korrektur folgte in 1237d3c)"
+        }
+      ],
+      "created": "2026-11-27T23:19:39Z",
+      "updated": "2026-11-27T23:50:01Z"
+    },
+    {
+      "id": 6519,
+      "title": "m10-boss-idle-anim #2: Idle-+Telegraph-Frames Bosse 1-3",
+      "description": "moor_queen, bone_lord, pale_shepherd in src/gfx/gen-bosses.ts: 2-Frame-Idle (Atmung, <=1 px ganzzahliger Versatz) + 1-Frame-Telegraph. Palette unveraendert, 3 Frames je Boss (Budget neutral). Abnahme: 4x-Kontaktbogen committed, Palette-Guard-Tests gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:50:01Z",
+          "by": "build",
+          "text": "todo → done: Commit 30ddad3. art-director PASS (4/5 je Boss): Atmung sichtbar, Fuesse fix, Palette byte-identisch, keine Wackel-Artefakte"
+        }
+      ],
+      "created": "2026-11-27T23:19:39Z",
+      "updated": "2026-11-27T23:50:01Z"
+    },
+    {
+      "id": 6520,
+      "title": "m10-boss-idle-anim #3: Idle-+Telegraph-Frames Bosse 4-6",
+      "description": "bell_golem, coven, hollow_king wie #2. Abnahme: 4x-Kontaktbogen committed, Palette-Guard-Tests gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:33:41Z",
+          "by": "build",
+          "text": "todo → doing: Frames 4-6 erzeugt (bell_golem/coven/hollow_king), tsc+Tests gruen, art-director laeuft"
+        },
+        {
+          "at": "2026-11-27T23:50:01Z",
+          "by": "build",
+          "text": "doing → done: Commit 1237d3c. art-director PASS (4-5/5): Squash 65%, Fuesse fix, F2 Lift bit-identisch, Palette/Grid ok. Enthält Beleg-Korrektur: Kontaktbogen F0|F1|F2 nebeneinander (vorher übereinander/overlay-Bug)"
+        }
+      ],
+      "created": "2026-11-27T23:19:39Z",
+      "updated": "2026-11-27T23:50:01Z"
+    },
+    {
+      "id": 6521,
+      "title": "m10-boss-idle-anim #4: Regressionstest Boss-Idle-Anim",
+      "description": "tests/boss-idle-anim.test.ts: 6/6 Bosse >= 2 Idle-Frames, 0 Frame-Duplikate, Palette-Compliance, Frame-Budget neutral (3 Frames je Boss). Abnahme: npm test + tsc gruen, Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:50:01Z",
+          "by": "build",
+          "text": "todo → done: Commit f9c4a4d. 9 Tests grün: 6/6 Bosse >= 2 Idle-Frames, 0 Duplikate, Diffs > 100 px, Versatz <= 1 px, Palette 0-31, Budget 3 Frames/Boss"
+        }
+      ],
+      "created": "2026-11-27T23:19:39Z",
+      "updated": "2026-11-27T23:50:01Z"
+    },
+    {
+      "id": 6522,
+      "title": "m10-boss-idle-anim #5: Nachher-Belege + Doku + lane-done",
+      "description": "After-Kontaktbogen shots/m10-boss-idle-anim-after-640.png, Idle-Zyklus-GIF shots/m10-boss-idle-anim-idle.gif, art-director >= 4/5, Burst >= 55 FPS (flock perf), docs/lanes/m10-boss-idle-anim.md, .lane-done. Abnahme: alle Belege committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T23:50:01Z",
+          "by": "build",
+          "text": "todo → done: Commit d3215ad. After-Bogen + Idle-GIF + Doku; art-director gesamt PASS; Burst 60.2 FPS (flock perf) >= 55; npm test 843/843, tsc rc=0, build rc=0; .lane-done liegt vor"
+        }
+      ],
+      "created": "2026-11-27T23:19:39Z",
+      "updated": "2026-11-27T23:50:01Z"
     }
   ]
 }
