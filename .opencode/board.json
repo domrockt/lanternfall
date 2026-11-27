@@ -7188,7 +7188,7 @@
       "id": 6178,
       "title": "m10-heap-sawtooth K1: Vorher-Messung per-Minute-Heap + GC-Spikes",
       "description": "30-min-Sim-Lauf (timeScale 30, AutoPlay, God, seed 99) via scripts/m10-heap-sawtooth.mjs: je Sim-Minute raw + GC-stabilisierter Heap, Major/Minor-GC-Spikes, Alloc-Sampling Minute 20-29. Ergebnis shots/m10-heap-sawtooth-before.json + Befund Top-Allokationsquellen Minute 20-29 in docs/lanes/m10-heap-sawtooth.md. AK: JSON committed, Top-Quellen benannt.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:33:15Z",
@@ -7199,10 +7199,15 @@
           "at": "2026-11-27T22:40:33Z",
           "by": "build",
           "text": "doing → review: K1 committed 94fbbaf: before.json (30/30 min, deltaVsMinute1Pct=-4,6 % Zufalls-Pass, Amplitude M25 11,3 MB), Top-Alloc-Sites + Grenzen doku."
+        },
+        {
+          "at": "2026-11-27T22:58:16Z",
+          "by": "build",
+          "text": "review → done: lane #6178, Commit 94fbbaf"
         }
       ],
       "created": "2026-11-27T22:33:06Z",
-      "updated": "2026-11-27T22:40:33Z"
+      "updated": "2026-11-27T22:58:16Z"
     },
     {
       "id": 6179,
