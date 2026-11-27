@@ -1,0 +1,31 @@
+# Lane m10-separation-budget — Abschluss (2026-11-27)
+
+Karten #4618–#4621 geliefert (Commits 119bf65, a6cfb81, f42a4ef, 0411418, e119131).
+Reviewer PASS (ses_de1737e6bffeXwT0Jl5Yq1s7H5), Commit-Gate PASS (ses_de1725efeffeM6M5fRITz537aB).
+Build + Tests grün: 51 Dateien / 526 Tests, `npx tsc --noEmit` ok.
+
+## Ergebnis
+
+1. **#4618 Vorher:** Node-Bench des Run.ts-Separations-Pfads (500 Gegner, Minute-25-Mischung,
+   mulberry32): 1,88/1,72/1,67 ms Separation pro Frame, 16,3k Kandidaten/15,8k Paare.
+2. **#4619 Budget-Fix** in src/logic/separation.ts + src/systems/SpatialHash.ts (Run.ts-Signaturen
+   unverändert): inline massOf/separationWeight, Ring-Pool für Push-Rückgaben (allokationsfrei,
+   Vertrag „nur unmittelbar verbrauchen"), queryCircle/queryNeighbors-Fast-Path mit indizierten
+   Writes, Nachbar-Deckel maxNeighborsPerEnemy (Default 32) im Budget-Resolver.
+3. **#4620 Test:** tests/separation-budget.test.ts — Deckel aktiv + Arbeit je Gegner begrenzt,
+   Paar-Budget bricht mit budgetExhausted, min-Paarabstand steigt dauerhaft, Determinismus,
+   Pool-Vertrag, Fast-Path ≡ Brute-Force inkl. Overflow-Rand.
+4. **#4621 Nachher + Doku:** fairer Ein-Prozess-A/B (frame-verschränkt, Reihenfolge alternierend,
+   shots/m10-separation-budget-fairab-1..3.json): Produktion **0,33 ms vor/nachher (≈ 0 %)**,
+   **Trajektorie bitidentisch** (min-Paarabstand 0,222 = 0,222, 15979,6 Paare/Frame).
+
+## Wichtigster Befund
+
+Die ACCEPTANCE-Baseline „Separation 1,88 ms/Frame" war ein **Harness-Artefakt** (Top-Level-Loop
+→ OSR statt TurboFan). Real kostet der Pfad ~0,33 ms/Frame ≈ 2 % des Framebudgets; −30 % oder
++5 fpsMin sind über diese Lane ehrlicherweise **nicht erreichbar**. Empfehlung: ACCEPTANCE-Blocker
+fpsMin 34,8–35,7 < 55 neu attribuieren (Render-/Fill-Kosten, konsistent mit m10-perf-rootcause) —
+Einzelheiten + offene Punkte in docs/lanes/m10-separation-budget.md.
+
+Trennqualität: gehalten (bitidentisch, kein Verschmelzen; tests/separation-crowd.test.ts grün).
+Keine Änderungen an src/scenes/Run.ts oder Spawner/Waves.
