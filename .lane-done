@@ -1,0 +1,9 @@
+Lane m10-perf-recovery — Versuch 2 (Mess-Karte #2679, Scope: Profil + Bisect + Ursache, kein Fix)
+
+- Profil 60 s @640x360 (Burst + Minute 25): FPS 59,9 Burst / 52,3 Minute 25; Draw-Calls 16 vs 88 Median, Blend-Wechsel 82/Frame, 2871 Images, 0 Graphics, GC 0,2 %, CPU-Idle 1,8 % → CPU-/Batch-bound, nicht Heap/GPU.
+- Top-10 Self-Time in docs/lanes/m10-perf-recovery.md (Platz 1 batchSprite 1329,8 ms = 2,2 %).
+- Bisect 0b42ffe..HEAD (Log ~/tmp/m10-perf-recovery/bisect-minute25-20261127-101238): Burst im gesamten Range 58,5–60,1 FPS grün; first bad 946f7f6 ohne src-Diff → Ursache c0f56d5 (#280 Ambient Glühwürmchen+Nebel), minute25 51,4 vs 60,0 (Delta ≈ −8,6).
+- HEAD-Baseline 0036129: 640 Burst 59,1 PASS / Minute-25 53,0 FAIL; 780×360@3 Minute-25 46,1 fill-rate-bound.
+- Kein Code-Fix in dieser Lane (Supervisor-Scope); ein getesteter Entwurf (Ambient-Layer + ambientBudgetFor-LOD, 640 Minute-25 einmal 58,0) wurde zurückgenommen und liegt als Patch in ~/tmp/m10-perf-recovery/ambient-lod-fix.patch.
+- Folgekarte #2678 m10-perf-fix-ambient-batching ist blocked: braucht Freigabe von src/gfx/GroundRenderer.ts (Claim m10-ground-cost) und eine engine-dev-Karte.
+- Build grün (1,02 s), Tests 305/305 grün (27 Dateien), keine JS-Fehler in den Messläufen.
