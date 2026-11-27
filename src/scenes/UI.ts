@@ -351,6 +351,9 @@ export class UI extends Phaser.Scene {
 
   private showBanner(title: string, sub: string, color: number): void {
     this.bannerTimer?.remove(false);
+    // Laufenden Fade-Out killen: sonst konkurrieren zwei Alpha-Tweens und das
+    // Banner bleibt halbtransparent haengen (Dom 4b: "halbtransparent").
+    this.tweens.killTweensOf(this.bannerGroup);
     this.bannerText.setColorIndex(color).setText(title);
     this.bannerSub.setText(sub);
     this.bannerGroup.setVisible(true).setAlpha(0).setY(-6);

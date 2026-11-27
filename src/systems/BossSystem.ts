@@ -46,9 +46,6 @@ const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 export const BOSS_SPRITE_SIZE = [56, 64, 72, 80, 96, 96];
 /** Mindestabstand zwischen Boss-Sprite-Oberkante und HUD-/Banner-Unterkante. */
 export const BOSS_HUD_CLEARANCE = 6;
-/** Fallback, falls ein Aufrufer keinen Boss-Index kennt (safeTop der Kette). */
-export const BOSS_SAFE_TOP = 40 + 12 + BOSS_HUD_CLEARANCE + 48 + BOSS_HUD_CLEARANCE;
-
 export interface Rect { x: number; y: number; w: number; h: number }
 
 /**
@@ -66,6 +63,13 @@ export function bossHudRects(viewWidth: number): { hpBar: Rect; banner: Rect } {
     banner: { x: viewWidth / 2 - 150, y: hpBar.y + hpBar.h + BOSS_HUD_CLEARANCE, w: 300, h: 48 },
   };
 }
+
+/** Fallback, falls ein Aufrufer keinen Boss-Index kennt: safeTop direkt aus
+ *  der Rect-Kette abgeleitet (Banner-Unterkante + Luft), kein Literal. */
+export const BOSS_SAFE_TOP = (() => {
+  const { banner } = bossHudRects(640);
+  return banner.y + banner.h + BOSS_HUD_CLEARANCE;
+})();
 
 export function rectsOverlap(a: Rect, b: Rect): boolean {
   return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
