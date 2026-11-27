@@ -132,6 +132,11 @@ export function chooseBestOffer(offers: readonly Offer[], build?: BuildContext):
  * AutoPlay-Bot: kitet Gegnerdichte, meidet Projektile und Warnflächen,
  * sammelt XP-Kristalle und meidet Weltgrenzen. Reine Vektor-Summe.
  */
+// K3 Grenzband-Faktor: d² > rr²·GUARD gilt als sicher ausser Reichweite
+// (1e-7 relative Marge, ~5 Größenordnungen über dem Rundungsrauschen von
+// dx²+dy² und hypot). Im Band entscheidet weiterhin hypot exakt wie vorher.
+const GUARD = 1.0000001;
+
 export function botDirection(input: BotInput): { x: number; y: number } {
   const px = input.playerX;
   const py = input.playerY;
@@ -144,9 +149,8 @@ export function botDirection(input: BotInput): { x: number; y: number } {
 
   // K3 Hot-Path: kein Repel-Closure (Allokation pro Call), und fjerne
   // Bedrohungen werden per Quadrat-Distanz ausgeschieden, bevor hypot läuft.
-  // Grenzband (d² <= rr² * (1+1e-7)): dort entscheidet weiterhin hypot —
-  // die Beiträge bleiben damit bitidentisch zur alten Logik.
-  const GUARD = 1.0000001;
+  // Grenzband: dort entscheidet weiterhin hypot — die Beiträge bleiben
+  // bitidentisch zur alten Logik (siehe GUARD-Kommentar oben).
 
   // Gegner (lead 0).
   const enemies = input.enemies;

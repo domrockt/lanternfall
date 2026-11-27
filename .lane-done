@@ -1,0 +1,21 @@
+m10-autoplay-budget — Lane abgeschlossen (2026-11-27)
+
+AutoPlay-Budget: botDirection/offerScore in src/logic/autoplay.ts optimiert,
+Entscheidungen bitidentisch zum Vorher-Stand (git cf85540^) belegt.
+
+Zahlen (scripts/m10-autoplay-budget.mjs, 500 Gegner + 48 Projektile + 8 Warnflächen,
+Seed 20261127, min über 11 Passes à 300 Frames):
+- botDirection: 0,0229 -> 0,0039 ms/Frame = -83 % (Median 0,0296 -> 0,0059)
+- chooseBestOffer (3 Offers): 0,0010 -> 0,0002 ms/Call
+- Entscheidungs-Hashes bitidentisch: dir 0x64ae4b74, offer 0x2a4f29a5
+- Belege: shots/m10-autoplay-before.json, shots/m10-autoplay-after.json
+
+Änderungen: offerScore ohne Per-Call-Allokationen (Modul-Level Set/Map-Lookups);
+botDirection ohne Repel-Closure, Quadrat-Distanz-Early-out vor hypot mit exaktem
+Grenzband (Beiträge in Reichweite bitidentisch). Run.ts/SpatialHash.ts/enemy-ai.ts
+nicht angefasst. Tests: tests/autoplay-budget.test.ts 9/9 grün (48 Seed-Szenen +
+600 offerScore-Fälle + 200 chooseBestOffer-Entscheidungen bitidentisch, Grenzfälle
+0/1 Gegner, kein NaN). tsc + build grün. Doku: docs/lanes/m10-autoplay-budget.md.
+
+Karten: #5718 (Messbasis), #5719 (offerScore), #5720 (botDirection),
+#5721 (Tests), #5722 (Nachher + Doku) — je ein Commit.
