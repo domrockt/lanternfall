@@ -1,0 +1,23 @@
+# Lane m10-font-glyph-pack — done (2026-11-27, Versuch 2)
+
+Ziel: Glyph-Einzeltexturen (Hauptquelle von HUD-/Damage-Text-Texturwechseln)
+in den Baked-Atlas packen + Nachweise.
+
+- K1 (#5498, Commit 9000a09): `ensureGlyph` nutzt `packCanvasTexture` — bereits
+  durch Merge 5fa1c87 (m10-atlas-pack Font-Integration) auf dem Branch; diese
+  Lane liefert die Test-Suite tests/font-glyph-pack.test.ts (5 Tests):
+  Atlas-Registrierung auf geteilter Seite, keine Einzel-Canvas-Texturen,
+  bit-identische Glyph-Geometrie, Key-Schema/API stabil. test-auditor PASS.
+- K2 (#5499, Commit 1679cd7): Vor/Nach-Shots deterministisch (statische
+  font_compare-Szene, 14 PixelText-Zeilen HUD+Damage-Text, WebGL, 0 JS-Fehler):
+  shots/m10-font-glyph-before/-after.png pixelidentisch, compare -metric AE=0.
+  Texturwechsel-Zahlen: vor 131 einzelne Glyph-GL-Texturen → nach alle
+  glyph_-Keys als __BASE-Frames auf einer geteilten 512x512-Incremental-Seite
+  (1 GL-Textur pro Seite, bakeAtlas registerBaked). Doku:
+  docs/lanes/m10-font-glyph-pack.md. commit-gate PASS.
+- Qualität: 62/62 Suiten, 633/633 Tests, npx tsc --noEmit rc=0,
+  npm run build rc=0.
+- Kleine Ergänzung font.ts: window.__lfFont = { PixelText } (Dateiende,
+  Browser-only) für Shot-/Mess-Skripte.
+- Offene Punkte: keine. Shot-Skript liegt wegen Disponent-Claims unter
+  ~/tmp/m10-font-glyph-pack/ (Methode in der Doku beschrieben).
