@@ -175,3 +175,31 @@ Geprüft: beide Views Vorher/Nachher, Crops/Zooms 2x/4x nearest in
   Horde-Kontext stärker absetzen (dunkler Rim/Tint bzw. alpha 0,63→0,75);
   fx_fire im 780er-View an den 640er-Wert angleichen (0,24–0,45 vs. 0,40–0,45).
 
+
+## Abschluss 2026-11-27 23:2xZ — Blocker gelöst, Lane abgeschlossen
+
+- **K2 (Fix) + K3 (Test) sind über main geliefert**, nicht über den Lane-Branch:
+  Nach Bedarfsmeldung hat der Merge-Job den Boss-Partikel-Fix gemeinsam mit
+  m10-perf-cap-rollback gemergt (**Merge `db473c7`**, Merge-Karten #6441/#6442
+  auf main-Board, beide done). Die gemergte Form ist die v2-Semantik: Boss-
+  Erkennung über `isBossFxKey` aus `src/gfx/gen-fx.ts` (eine Wahrheit, keine
+  lokale Key-Kopie), Boden `BOSS_FX_ALPHA_FLOOR = 0.7`, Boss-Partikel NORMAL,
+  ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot, auch `setAlphaScale` lässt sie
+  unangetastet. m10-fx-mixel-fix (#6099) ist NICHT Teil des Merges.
+- **Lokale Aufräumung:** der Worktree-Patch auf `FxSystem.ts` (v1-Form mit
+  lokaler Key-Liste) und der v1-Test wurden verworfen — die main-Version ist
+  kanonisch; ein Doppel-Commit hätte Merge-Konflikte erzeugt.
+- **Verifikation auf exakt main-Stand (`342f3e8`**, detached Check-Worktree):
+  `npx vitest run tests/boss-death-shards.test.ts` → **11/11 grün**;
+  `npx tsc --noEmit` → rc=0; Nachmessung `scripts/m10-boss-shards.mjs
+  --tag=after` auf main-Code → **fx_boss_core: blend NORMAL 29/29, glow 0,
+  alphaFrom 0,7–0,95 (vorher 0,252–0,684), jsErrors 0**, Renderer
+  „ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)" — identisch
+  zu den committeten Werten. Beleg: `shots/m10-boss-shards-after-maindb473c7.json`.
+- **K4:** after-Shots + JSON mit Renderer-String committet (`330852c`);
+  art-director-Sichtprüfung **PASS Note 4** (heller Kern sichtbar, dunkle
+  Kontur lesbar, nicht ausgewaschen) bleibt gültig — Messwerte auf main
+  bytegleich im Aussagewert.
+- Offene Folgepunkte (backlog, nicht blockierend, unverändert): fx_death_bone-
+  Splitter im Horde-Kontext stärker absetzen; fx_fire im 780er-View an den
+  640er-Wert angleichen.
