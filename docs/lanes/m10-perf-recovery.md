@@ -89,7 +89,86 @@ haben, belegt der Bisect (folgt unten).
 
 ## Bisect (git bisect, Kriterium minute25 ≥ 55 FPS)
 
-<!-- BISECT-RESULT -->
+`bash scripts/perf-bisect.sh 0b42ffe HEAD` (temporärer Worktree, Predikat
+`npm run perf --viewport 640x360 --dpr 1`, Kriterium `minute25`).
+
+Bisect-Log: `~/tmp/m10-perf-recovery/bisect-minute25-20261127-101238-bisectlog.txt`.
+
+Erste Messreihe (je 1 Lauf pro Commit):
+
+| Commit | minute25 FPS | Urteil |
+|---|---|---|
+| `0b42ffe` (good, QA 26.11.) | 60,0 | gut |
+| `c0f56d5` / `946f7f6` (Kandidat) | 52,9 / 50,7 / 52,3 | schlecht |
+| `9d19a5e` (Parent-Kette davor) | 59,8 / 59,9 / 59,6 | gut |
+
+Weil der von `git bisect` markierte Snapshot `946f7f6` **keinen src-Diff** gegenüber
+seinem Parent `c0f56d5` hat, wurde die Kette interleaved A/B nachgemessen
+(3× je Commit, abwechselnd, `flock`):
+
+| Commit | minute25 FPS (3 Läufe) | burst FPS | Urteil |
+|---|---|---|---|
+| `9d19a5e` (vor Ambient/Props-Depth) | 60,0 / 60,0 / 59,8 | 60,1 | **gut** |
+| `c0f56d5` (`#280` Ambient Glühwürmchen + Nebel) | 57,4 / 49,5 / 51,4 | 60,1 | **schlecht** |
+
+**Verursachender Commit: `c0f56d5` „M9-m9-art-world: #280 Ambient Gluehwürmchen und
+Nebel (bildschirmverankert, dezent)“** — FPS-Delta **≈ −7 bis −10 FPS** (60 → 51 Median)
+im Minute-25-Fenster, Burst 500 unverändert 60,1.
+
+Der Commit ergänzt in `src/gfx/GroundRenderer.ts`:
+- **24 ADD-Glühwürmchen-Sprites** (`m9_ambient_glow`, `BlendModes.ADD`, `setDepth(-89.6)`)
+  plus **3 NORMAL-Nebelbänder** (`m9_ambient_fog`, `setDepth(-89.85)`), die pro Frame
+  Position und Alpha neu setzen.
+- Diese ADD/NORMAL-Sprites liegen als eigener Depth-Layer zwischen Terrain-Chunks und
+  Spielwelt und werden pro Frame bewegt; im Endgame (viele Evolutionseffekte, Gems,
+  Hazards) erhöhen sie die Zahl der Blend-/Texture-Wechsel, die den Phaser-Batch
+  flushen. Im Burst (nur Bog-Rats, wenig Effekte) bleiben die Draw-Calls niedrig,
+  deshalb dort kein FPS-Verlust.
+
+Präzisierung (welcher Teil des Commits — Glühwürmchen vs. Props-Depth-Sortierung aus
+`da3ef77`): siehe A/B-Isolation unten.
+
+### A/B-Isolation (welcher Teil des Commits)
+
+Interleaved 3× je Commit, gleiches Predikat (`npm run perf`, 640×360, `flock`):
+
+| Commit | minute25 FPS | burst FPS | Urteil |
+|---|---|---|---|
+| `9d19a5e` (vor Ambient + Props-Depth) | 60,0 / 60,0 / 59,8 | 60,1 | gut |
+| `da3ef77` (`#279` Props-Tiefensortierung/Schatten) | 58,1 / 58,7 / 60,0 | 60,1 | gut (≥55) |
+| `c0f56d5` (`#280` Ambient Glühwürmchen + Nebel) | 57,4 / 49,5 / 51,4 | 60,1 | **schlecht (Median 51,4)** |
+
+**Ergebnis: `c0f56d5` „#280 Ambient Gluehwürmchen und Nebel (bildschirmverankert,
+dezent)“ ist der verursachende Commit.** Die Props-Tiefensortierung allein
+(`da3ef77`) bleibt mit 58–60 FPS über der Latte; erst die 27 zusätzlichen
+ADD/NORMAL-Ambient-Sprites drücken das Endgame-Fenster auf 49–57 FPS (Median 51,4,
+Delta ≈ −8,6 FPS gegen `9d19a5e`). Der Burst bleibt in allen drei Commits bei 60,1 FPS
+— die Regression ist **endgame-spezifisch** (viele gleichzeitig gezeichnete Effekte).
+
+Ein direktes Draw-Call-A/B bei 20 s (`da3ef77` 73 vs. `c0f56d5` 70 Draws/Frame) ist
+mangels reproduzierbarer Endgame-Dichte nicht aussagekräftig; der belastbare Beleg ist
+die interleaved FPS-Messung oben plus das 60-s-Profil am HEAD (88 Draws im
+Minute-25-Fenster vs. 16 im Burst, 82 Blend-Wechsel/Frame).
+
+### Draw-Call-/Blend-Beleg
+
+Profil Minute 25 (HEAD, 60 s): 88 Draw-Calls/Frame Median vs. 16 im Burst;
+82 Blend-Wechsel/Frame ≈ 1 Wechsel pro Draw. Das bestätigt die Batch-Bruch-Hypothese:
+die zusätzlichen ADD/NORMAL-Ambient-Sprites erzwingen im Effekt-Chaos wesentlich mehr
+Batch-Flushes als im ruhigen Burst.
+
+## Empfehlung für die Folgekarte `m10-perf-fix-ambient-batching`
+
+- Die 24 Glühwürmchen (`m9_ambient_glow`, ADD) und 3 Nebelbänder (`m9_ambient_fog`,
+  NORMAL) in **einen** Layer/Container mit fester Tiefe legen und gesammelt zeichnen,
+  statt sie pro Frame durch `setDepth` zwischen Normal-Sprites zu sortieren.
+- Alternativ: Nebel/Glow in die Terrain-RenderTexture backen (statisch) und nur die
+  Bewegungs-Offsets im Shader/Container animieren; Glühwürmchen-Zahl an LOD koppeln.
+- Regressionsschutz: `tests/perf-budget.test.ts` (Draw-Calls/Frame und sichtbare Images
+  im Headless-Burst/Endgame unter Budget) — gehört in die Fix-Karte.
+- Abnahme der Fix-Karte: `npm run perf` Burst ≥55 (640/780) **und** Minute-25 ≥55,
+  `npm run fullrun` fpsMin ≥55 in beiden Formaten, plus art-director-Sichtprüfung
+  (Ambient darf nicht sichtbar verschwinden).
 
 ## Offene Punkte / Folgekarte
 
