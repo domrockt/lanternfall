@@ -6966,43 +6966,81 @@
       "id": 6038,
       "title": "m10-view-fill-16x9: Ist-Messung Bildfüllung (4 Formate)",
       "description": "scripts/m10-view-fill.mjs rendert 640x360, 960x540, 1280x720, 2560x1440 (dpr 1) → shots/m10-view-fill-before-*.png + -before.json mit sichtbarer Spielfeld-Breite px, Balkenbreite px je Format + WebGL-Renderer-String. AK: Messung existiert, Werte belegen die Balken bei 960x540/1280x720, genau ein Messlauf (kein Tuning-Loop).",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T22:20:28Z",
           "by": "build",
           "text": "doing → review: Was: scripts/m10-view-fill.mjs + before-Shots/JSON (Commit f7f5319). Wie geprüft: 4 Formate gemessen, WebGL-Renderer 'Mesa Intel RPL-S' in jeder Messung, 0 JS-Fehler; Balken 640x360=80/80, 960x540=120/120 px belegt. Ein Messlauf, kein Tuning-Loop."
+        },
+        {
+          "at": "2026-11-27T22:28:00Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS (ses_de0e210beffeL97nxvvNsHAnmE): Scope sauber, Belege belegt (before 80/80 + 120/120, Renderer Mesa Intel RPL-S, kein SwiftShader)."
         }
       ],
       "created": "2026-11-27T22:12:33Z",
-      "updated": "2026-11-27T22:20:28Z"
+      "updated": "2026-11-27T22:28:00Z"
     },
     {
       "id": 6039,
       "title": "m10-view-fill-16x9: Fix View-Breite an Fenster koppeln",
       "description": "src/logic/view.ts + src/main.ts: Spielfeld füllt jedes 16:9-Fenster (View-Breite = Fenster-Breite, Höhe skaliert mit), Pixel-Grid ganzzahlig. HUD-Anker (BOSS_SAFE_TOP, hud-wide-anchor) bleiben intakt. AK: kein Balken in 640x360/960x540/1280x720/2560x1440 laut Messskript, npx tsc --noEmit grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:24:30Z",
+          "by": "build",
+          "text": "todo → review: Was: fillView in src/logic/view.ts (Commit 46a5922). Wie geprüft: tsc rc=0, 763/763 Tests gruen, build rc=0. Minimal-Fremdkontakt begruendet: assertions in tests/view.test.ts + tests/view-width.test.ts an neues Fill-Verhalten angepasst (480->640 im Fit-Pfad), vermerkt in Lane-Doku."
+        },
+        {
+          "at": "2026-11-27T22:28:00Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS: fillView nur im n<2-Zweig, Guards vorhanden, ganzzahliger Pfad/Crowd-Hysterese unveraendert; Fremd-Assertions minimal + begruendet."
+        }
+      ],
       "created": "2026-11-27T22:12:33Z",
-      "updated": "2026-11-27T22:12:33Z"
+      "updated": "2026-11-27T22:28:00Z"
     },
     {
       "id": 6040,
       "title": "m10-view-fill-16x9: Tests view-fill.test.ts",
       "description": "tests/view-fill.test.ts: für 4 Formate Spielfeld-Rect == Canvas-Rect (kein Balken), ganzzahlige Skalierung dokumentiert; bestehende view-width-/hud-Tests grün. AK: npx vitest run tests/view-fill.test.ts grün, npm test grün, npm run build rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:24:30Z",
+          "by": "build",
+          "text": "todo → review: Was: tests/view-fill.test.ts, 13 Tests (Commit 46a5922). Wie geprüft: 4 Formate Spielfeld-Rect==Canvas-Rect, Crowd-Cap-Randbedingung, Fit-Guard, tsc rc=0, npm test 763 gruen, build rc=0."
+        },
+        {
+          "at": "2026-11-27T22:28:00Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS: 61/61 in den 5 View-Testdateien, volles npm test 763/763 gruen; Spielfeld-Rect==Canvas-Rect fuer alle 4 Formate getestet."
+        }
+      ],
       "created": "2026-11-27T22:12:33Z",
-      "updated": "2026-11-27T22:12:33Z"
+      "updated": "2026-11-27T22:28:00Z"
     },
     {
       "id": 6041,
       "title": "m10-view-fill-16x9: Nachher-Messung + Lane-Doku",
       "description": "shots/m10-view-fill-after-*.png + -after.json, docs/lanes/m10-view-fill-16x9.md mit Vorher/Nachher-Tabelle je Format (Balkenbreite px). AK: kein schwarzer Rand sichtbar bei 960x540/1280x720/2560x1440 (Screenshot-Pfade in Doku), jede JSON trägt WebGL-Renderer-String.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:26:10Z",
+          "by": "build",
+          "text": "todo → review: Was: after-Shots/JSON + docs/lanes/m10-view-fill-16x9.md (Commit 26355f6). Wie geprüft: 4 Formate mit 0px Balken je Pixel-Scan + Canvas-Rect bei 0,0; Renderer Mesa Intel RPL-S; Sichtprobe after-960x540 (volles Feld, HUD durchgehend); Doku mit Vorher/Nachher-Tabelle."
+        },
+        {
+          "at": "2026-11-27T22:28:00Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS: after alle Formate bars=0/0 (fillsAll=true), 0 JS-Fehler, Renderer-String in beiden JSONs; Nit (2 statt 1 Assertion-Zeilen in view-width.test.ts) dokumentiert."
+        }
+      ],
       "created": "2026-11-27T22:12:33Z",
-      "updated": "2026-11-27T22:12:33Z"
+      "updated": "2026-11-27T22:28:00Z"
     }
   ]
 }
