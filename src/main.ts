@@ -38,6 +38,14 @@ const game = new Phaser.Game({
   pixelArt: true,
   roundPixels: true,
   antialias: false,
+  // M10 Android/ARM: harte 60-FPS-Grenze gegen 90/120-Hz-Hitze und Akku-Drosselung
+  // auf Mali/Adreno, plus GPU-Hint auf die tatsaechlich starke Einheit.
+  // Phaser 3.90 liest powerPreference als TOP-LEVEL-GameConfig (nicht unter render).
+  powerPreference: "high-performance",
+  fps: {
+    target: 60,
+    limit: 60,
+  },
   // M8-input: Gamepad-Plugin (Hotplug) + bis zu vier gleichzeitige Touch-Pointer
   // (Joystick + Tippen).
   input: {
