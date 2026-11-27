@@ -1,0 +1,37 @@
+{
+  "tag": "before",
+  "generatedAt": "2026-11-27T12:43:44.475Z",
+  "seed": 1,
+  "enemiesTarget": 500,
+  "weapons": [
+    "ember",
+    "flail",
+    "frost",
+    "thorn",
+    "storm",
+    "lantern"
+  ],
+  "seconds": 10,
+  "frames": 601,
+  "elapsedMs": 10004,
+  "fps": 60.1,
+  "worstFrameMs": 16.8,
+  "medianFrameMs": 16.65,
+  "maxActiveViews": 6,
+  "maxVisibleViews": 6,
+  "avgActiveViews": 5.97,
+  "setTextCalls": 245,
+  "setTextPerSecond": 24.5,
+  "reportCalls": 4685,
+  "reportPerSecond": 468.3,
+  "reportedDamage": 185355,
+  "respawned": 0,
+  "enemiesEnd": 500,
+  "msPerFrame": 16.65,
+  "hook": {
+    "views": 24,
+    "maxViews": 24
+  },
+  "hud": null,
+  "jsErrors": []
+}

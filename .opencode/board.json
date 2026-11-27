@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2874,
+  "next": 3062,
   "cards": [
     {
       "id": 1,
@@ -4387,6 +4387,46 @@
       ],
       "created": "2026-11-27T11:54:06Z",
       "updated": "2026-11-27T11:54:47Z"
+    },
+    {
+      "id": 3058,
+      "title": "m10-damage-batch K1 Baseline: 500 Gegner + 6 Waffen Lv8",
+      "description": "Owner engine-dev, Kontrolle perf-check + reviewer. scripts/m10-damage-batch.mjs misst aktive Textobjekte, setText/s, ms/Frame bei 500 Gegnern, 6 Waffen Lv8, Seed 1, autoPlay, god, 10 s. Abnahme: shots/m10-damage-batch-before.json im Commit, Zahlen im JSON.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T12:34:06Z",
+      "updated": "2026-11-27T12:34:06Z"
+    },
+    {
+      "id": 3059,
+      "title": "m10-damage-batch K2 Fix: Label-Memo + Gruppierung + View-Cap",
+      "description": "Owner engine-dev, Kontrolle perf-check + reviewer. src/systems/DamageNumbers.ts + src/logic/damage-numbers.ts: setText nur bei Wert-/Krit-Aenderung, Aggregat pro Gegner-Gruppe, harte Obergrenze 10 Views ab DAMAGE_AGGREGATE_MIN_ENEMIES; CombatSystem/UI/Run NICHT anfassen. Abnahme: tsc gruen, gezielte Tests gruen.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T12:34:06Z",
+      "updated": "2026-11-27T12:34:06Z"
+    },
+    {
+      "id": 3060,
+      "title": "m10-damage-batch K3 Test: Batch-Logik",
+      "description": "Owner gameplay-dev, Kontrolle test-auditor. tests/damage-number-batch.test.ts: Summe Anzeige = Trefferliste (<=1%), keine Doppel-Labels je Gegner, Cap 10 greift, kein setText ohne Wertaenderung (Spy), 0 NaN/negativ. Abnahme: npx vitest run tests/damage-number-batch.test.ts gruen.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T12:34:06Z",
+      "updated": "2026-11-27T12:34:06Z"
+    },
+    {
+      "id": 3061,
+      "title": "m10-damage-batch K4 Nachher-Messung + HUD-Abgleich",
+      "description": "Owner engine-dev, Kontrolle perf-check + reviewer. Gleiches Skript wie K1 mit tag=after, plus HUD-Gesamtschaden vs Balkensumme <=1%. Ziel: aktive Views <=10 bei >=120 Gegnern, setText/s -50%, ms/Frame nicht schlechter. Abnahme: shots/m10-damage-batch-after.json + Vergleichs-PNG im Commit, docs/lanes/m10-damage-batch.md.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T12:34:06Z",
+      "updated": "2026-11-27T12:34:06Z"
     }
   ]
 }
