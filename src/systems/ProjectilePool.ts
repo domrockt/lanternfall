@@ -206,6 +206,9 @@ export class ProjectilePool {
   /**
    * Cull-Kandidat für den Notfall-Pool-Diebstahl: weit offscreen, ohne
    * Live-Target, wegfliegend — compact() würde es sowieso freigeben.
+   * WICHTIG: ordnungserhaltende Entfernung (splice) — ein Swap-Pop würde die
+   * Aktivreihenfolge permutieren und damit die Reihenfolge der Treffer und
+   * der Crit-RNG-Streams ändern (Vorher/Nachher-Vergleich bricht).
    */
   private stealCullable(): ProjectileRuntime | null {
     const view = this.view();
@@ -225,9 +228,7 @@ export class ProjectilePool {
       }
     }
     if (!best || bestIdx < 0) return null;
-    // Swap-Pop aus active (O(1), Reihenfolge egal).
-    this.active[bestIdx] = this.active[this.active.length - 1];
-    this.active.pop();
+    this.active.splice(bestIdx, 1); // Reihenfolge der übrigen bleibt erhalten
     this.stats.culled += 1;
     return best;
   }
@@ -240,12 +241,16 @@ export class ProjectilePool {
   }
 
   compact(): void {
-    // Swap-Pop statt splice: Entfernen in O(1), keine Verschiebung des restlichen Arrays.
+    // M10-projectile-cull: ordnungserhaltende Kompaktion (Write-Index). Der
+    // alte Swap-Pop permutierte die Reihenfolge der Aktiven; da hitEnemy pro
+    // Treffer den Crit-RNG-Stream konsumiert, hätte jede Permutation die
+    // Treffer-/Schadens-Summen Vorher/Nachher verändert. So bleiben die
+    // relativen Positionen aller überlebenden Projektile erhalten.
     const view = this.cullEnabled() ? this.view() : null;
     const margin = view ? this.cullMargin(view) : 0;
     const hideMargin = ProjectilePool.HIDE_MARGIN;
-    let i = this.active.length - 1;
-    while (i >= 0) {
+    let w = 0;
+    for (let i = 0; i < this.active.length; i++) {
       const p = this.active[i];
       if (p.active && view) {
         const d = this.beyond(view, p);
@@ -270,11 +275,12 @@ export class ProjectilePool {
       }
       if (!p.active) {
         this.releaseRuntime(p);
-        const last = this.active.pop()!;
-        if (i < this.active.length) this.active[i] = last;
+      } else {
+        this.active[w] = p;
+        w += 1;
       }
-      i -= 1;
     }
+    this.active.length = w;
   }
 
   releaseAll(): void {
