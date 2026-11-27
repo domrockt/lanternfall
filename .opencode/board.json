@@ -3752,10 +3752,16 @@
       "id": 2619,
       "title": "m10-ground-cost #4 Doku + Abnahme: Befund fill-rate-bound, AE 0, .lane-done",
       "description": "docs/lanes/m10-ground-cost.md mit Baseline-/After-JSON, Befehlszeile, ms/Frame, Pixel-Diff AE=0 und ehrlichem Verdikt (Fix verworfen, kein +4 FPS); .lane-done mit Messwerten. Abnahme: build+Tests gruen, Belege committed.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T11:14:38Z",
+          "by": "build",
+          "text": "doing → done: K4 Doku + .lane-done: Baseline 5,11 ms/Frame, after 6,03 ms, AE 0, Fix verworfen; build + 301 Tests gruen. Commit 268716c."
+        }
+      ],
       "created": "2026-11-27T11:06:41Z",
-      "updated": "2026-11-27T11:06:41Z"
+      "updated": "2026-11-27T11:14:38Z"
     }
   ]
 }
