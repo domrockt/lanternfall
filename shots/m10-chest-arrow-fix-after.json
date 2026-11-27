@@ -1,0 +1,1121 @@
+{
+  "schema": "m10-chest-arrow-fix-repro/v2",
+  "generatedAt": "2026-11-27T23:13:06.393Z",
+  "toleranceDeg": 5,
+  "marginPx": 24,
+  "extraQuery": "",
+  "formats": [
+    {
+      "label": "640x360@2",
+      "dpr": 2,
+      "header": {
+        "scaleW": 640,
+        "scaleH": 360,
+        "canvasW": 640,
+        "canvasH": 360,
+        "camW": 640,
+        "camH": 360,
+        "zoom": 1,
+        "rbScale": 1
+      },
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -820,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 50,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2880,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 98,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 149,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 180,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 185,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 320,
+                "y": 24,
+                "rotDeg": -90,
+                "expAngleDeg": 90,
+                "rAngleDeg": -90,
+                "liveAngleDeg": 90,
+                "liveVisible": true,
+                "liveX": 320,
+                "liveY": 336,
+                "aErr": 180,
+                "posErr": 312,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 185,
+                "wx": 680,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -820,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 219,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2880,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 255,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -820,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 291,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2880,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 94.58,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 322,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 151,
+                "y": 336,
+                "rotDeg": 137.2,
+                "expAngleDeg": 42.7,
+                "rAngleDeg": 137.3,
+                "liveAngleDeg": 42.7,
+                "liveVisible": true,
+                "liveX": 489,
+                "liveY": 336,
+                "aErr": 94.58,
+                "posErr": 338,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 322,
+                "wx": 740,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12,
+          "raf": {
+            "ok": true,
+            "visibleSamples": 16,
+            "maxAngleDeg": 0,
+            "diag": []
+          }
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 7,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 900,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 860,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 780,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 740,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 660,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 620,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 580,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 540,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 500,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 420,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 380,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            }
+          ]
+        }
+      ],
+      "insideShot": {
+        "chestX": 1720,
+        "chestY": 1000,
+        "spriteVisible": true,
+        "arrowVisible": {
+          "arrow": false,
+          "inView": true
+        }
+      },
+      "ok": true
+    },
+    {
+      "label": "640x360@3",
+      "dpr": 3,
+      "header": {
+        "scaleW": 640,
+        "scaleH": 360,
+        "canvasW": 640,
+        "canvasH": 360,
+        "camW": 640,
+        "camH": 360,
+        "zoom": 1,
+        "rbScale": 1
+      },
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -820,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 50,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2880,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 98,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 141,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 175,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -820,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 211,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2880,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.08,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 246,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -820,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 180,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 279,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 489,
+                "y": 24,
+                "rotDeg": -42.8,
+                "expAngleDeg": 137.3,
+                "rAngleDeg": -42.7,
+                "liveAngleDeg": 137.3,
+                "liveVisible": true,
+                "liveX": 151,
+                "liveY": 336,
+                "aErr": 180,
+                "posErr": 460,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 279,
+                "wx": 680,
+                "wy": 940,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2880,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 94.58,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 317,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 151,
+                "y": 336,
+                "rotDeg": 137.2,
+                "expAngleDeg": 42.7,
+                "rAngleDeg": 137.3,
+                "liveAngleDeg": 42.7,
+                "liveVisible": true,
+                "liveX": 489,
+                "liveY": 336,
+                "aErr": 94.58,
+                "posErr": 338,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 640,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 317,
+                "wx": 740,
+                "wy": 880,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12,
+          "raf": {
+            "ok": true,
+            "visibleSamples": 15,
+            "maxAngleDeg": 0,
+            "diag": []
+          }
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 6,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 900,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 860,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 820,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 740,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 660,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 580,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 500,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 420,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 340,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 260,
+              "cw": 640,
+              "zoom": 1,
+              "rb": 1
+            }
+          ]
+        }
+      ],
+      "ok": true
+    },
+    {
+      "label": "780x360@3",
+      "dpr": 3,
+      "header": {
+        "scaleW": 780,
+        "scaleH": 360,
+        "canvasW": 780,
+        "canvasH": 360,
+        "camW": 780,
+        "camH": 360,
+        "zoom": 1,
+        "rbScale": 1
+      },
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -890,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 50,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2950,
+            "y": 1000
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 98,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 142,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 175,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -890,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": false,
+            "maxAngleDeg": 131.63,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 208,
+            "ok": false,
+            "diag": [
+              {
+                "visible": false,
+                "x": 390,
+                "y": 336,
+                "rotDeg": 90,
+                "expAngleDeg": -138.4,
+                "rAngleDeg": 90,
+                "liveAngleDeg": -138.4,
+                "liveVisible": true,
+                "liveX": 214.5,
+                "liveY": 24,
+                "aErr": 131.63,
+                "posErr": 358,
+                "edgeOk": true,
+                "zoom": 1,
+                "cw": 780,
+                "ch": 360,
+                "rb": 1,
+                "loopFrame": 208,
+                "wx": 610,
+                "wy": 820,
+                "px": null,
+                "py": null
+              }
+            ]
+          }
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2950,
+            "y": -620
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.19,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 242,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -890,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.03,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 278,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2950,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.5,
+          "edgeOk": true,
+          "ok": true,
+          "raf": {
+            "visibleAtSpawn": true,
+            "maxAngleDeg": 0.19,
+            "skippedFirstFrame": false,
+            "loopFrameFirst": 312,
+            "ok": true,
+            "diag": []
+          }
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12,
+          "raf": {
+            "ok": true,
+            "visibleSamples": 19,
+            "maxAngleDeg": 0,
+            "diag": []
+          }
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": true,
+          "insideSamples": 6,
+          "visibleWhileInside": 0,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1080,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1080,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1000,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 960,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 920,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 880,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 840,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 800,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 760,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 720,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 640,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 560,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 480,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 400,
+              "cw": 780,
+              "zoom": 1,
+              "rb": 1
+            }
+          ]
+        }
+      ],
+      "ok": true
+    }
+  ],
+  "verdict": {
+    "allCasesOk": true,
+    "jsErrors": 0,
+    "passed": true
+  },
+  "errors": []
+}

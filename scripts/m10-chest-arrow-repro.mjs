@@ -48,6 +48,8 @@ const outIdx = args.indexOf("--out");
 const outFile = outIdx >= 0 ? args[outIdx + 1] : "shots/m10-chest-arrow-fix-repro.json";
 const qIdx = args.indexOf("--query");
 const extraQuery = qIdx >= 0 ? args[qIdx + 1] : "";
+const withShots = args.includes("--shots");
+const shotPrefix = "shots/m10-chest-arrow-fix";
 
 // Frame-Sampling im Browser: post = POST_UPDATE (massgebend), raf = rAF-Tick
 // (Alt-Verhalten, nur Diagnose). rafSkip = rAF-Tick, in dem Phaser keinen
@@ -149,6 +151,11 @@ try {
         return { cx, cy, px: view.centerX - ox * 60, py: view.centerY - oy * 60 };
       }, { ...c, FAR });
       const { post, raf } = await page.evaluate(SAMPLER, 24);
+      // Beleg-Screenshot waehrend der Wirkung (Truhe off-screen, Pfeil am Rand),
+      // fuer den ersten Format-Lauf im Fall "right".
+      if (withShots && fmt.dpr === 2 && c.id === "right") {
+        await page.screenshot({ path: `${shotPrefix}-edge-${fmt.label.replace(/[^0-9x]/g, "")}.png` });
+      }
       const analyse = (samples) => {
         let maxAngle = 0, maxPosErr = 0, firstVisible = null, edgeOkAll = true;
         const diag = [];
@@ -300,7 +307,32 @@ try {
       frames: disappear.map((s) => ({ v: s.visible ? 1 : 0, i: s.inside ? 1 : 0, sx: Math.round(s.sx), cw: s.cw, zoom: s.zoom, rb: s.rb })),
     });
 
-    formats.push({ label: fmt.label, dpr: fmt.dpr, header, cases, ok: cases.every((c) => c.ok) });
+    const insideShot = withShots && fmt.dpr === 2
+      ? await page.evaluate(() => {
+          const run = window.__game.scene.getScene("run");
+          const cam = run.cameras.main;
+          cam.setZoom(1);
+          run.chests.clear();
+          const view = cam.worldView;
+          const cx = view.centerX + 80;
+          const cy = view.centerY;
+          run.teleport(cx - 40, cy);
+          const chest = run.chests.spawn(cx, cy);
+          return { chestX: cx, chestY: cy, spriteVisible: chest.sprite.visible };
+        })
+      : undefined;
+    if (withShots && fmt.dpr === 2) {
+      await page.waitForTimeout(150);
+      insideShot.arrowVisible = await page.evaluate(() => {
+        const run = window.__game.scene.getScene("run");
+        const chest = run.chests.chests[0];
+        const cam = run.cameras.main;
+        return { arrow: run.chests["arrow"].visible, inView: !!chest && chest.x > cam.worldView.x && chest.x < cam.worldView.x + cam.worldView.width };
+      });
+      await page.screenshot({ path: `${shotPrefix}-inside-${fmt.label.replace(/[^0-9x]/g, "")}.png` });
+    }
+
+    formats.push({ label: fmt.label, dpr: fmt.dpr, header, cases, insideShot, ok: cases.every((c) => c.ok) });
     await context.close();
   }
 } finally {
