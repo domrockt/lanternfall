@@ -77,9 +77,9 @@
     "large": 129.4
   },
   "enemiesAlive": 320,
-  "enemiesAliveAtShot": 320,
+  "enemiesAliveAtShot": 319,
   "jsErrors": [],
-  "nearWhitePct": 1.4,
+  "nearWhitePct": 0.3,
   "pass": {
     "threeSizesDistinct": true,
     "enemyDominantContrast": true,
@@ -88,5 +88,11 @@
     "nearWhiteUnder416": true,
     "noJsErrors": true
   },
-  "passAll": true
+  "passAll": true,
+  "shots": [
+    "shots/m10-gem-magnet-chaos.png",
+    "shots/m10-gem-magnet-chaos-4x.png",
+    "shots/m10-gem-magnet-chaos-4x-large.png"
+  ],
+  "note": "Nachbeleg 27.11.: Chaos-Shot neu aufgenommen (319 lebende Gegner, 24 Kristalle aller 3 Groessen, timeScale 0 eingefroren); Near-White aus dem echten Frame neu gemessen."
 }
