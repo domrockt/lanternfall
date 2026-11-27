@@ -44,3 +44,38 @@ Churn, nicht Retention — `sortByDepth`/`addProp` (Phaser-DisplayList/Terrain),
   RNG-Closure pro Spawn.
 - Tests `tests/pool-reuse.test.ts`: 8/8 (Pool-Identität, Steady-State ohne
   Neuanlage, trim, Release-Fremdobjekt, Damage-Reuse, Cap, KI-Reset in-place).
+
+## Karte #2061 — Nachmessen (2 × 30 min + perf)
+
+`node scripts/perf-heap.mjs --minutes=30 --runs=2 --out=shots/m10-heap-after.json`
+(ohne flock, Heap ist lastunabhängig; Seed 99, timeScale 30, Baseline Sim-Sekunde 60).
+
+| Nachlauf | Start | Ende | Delta MB | Delta % | JS-Heap % | Kills | Gegner Ende | JS-Fehler |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 30,4 MB | 32,5 MB | +2,1 MB | **+6,8 %** | +7,1 % | 4546 | 108 | 0 |
+| 2 | 30,0 MB | 31,5 MB | +1,5 MB | **+4,9 %** | +2,3 % | 10661 | 247 | 0 |
+
+Beide Nachläufe liegen mit **+6,8 % / +4,9 %** klar unter dem Ziel 15 %
+(Streuung 1,9 Prozentpunkte, `summary.spreadUnder10Pct = true`).
+Beleg: `shots/m10-heap-tail-after.json`.
+
+`flock /home/ai/games/.lf-perf.lock npm run perf`: **Burst 60,1 FPS**
+(500 Gegner, worstFrame 16,8 ms) — unverändert ≥55, 0 JS-Fehler.
+Minute 25: 50,2 FPS (300 Gegner); dieser Wert war schon vor der Lane flaky
+(Historie `shots/perf-m3.json`: 50,2–54,7 FPS; Host-Last der Parallel-Lanes),
+Burst ist das im Briefing geforderte Gate. Beleg: `shots/m10-heap-tail-perf.json`.
+
+### Ursache (gemessen)
+
+Die +18,7/+22,2 % aus ACCEPTANCE sind **kein Retained-JS-Objekt-Leak**:
+Nach erzwungenem Voll-GC ist der Snapshot-Heap in allen Läufen flach
+(+10,7/−22,0/+4,6/+4,5 % Baseline; +6,8/+4,9 % nach den Fixes). Top-Alloc-Sites
+sind Churn aus Phaser-DisplayList-Sortierung/Terrain-Props, WebAudio-`onended`-
+Handlern und `PixelText.setText`; keiner wächst monoton mit der Spielzeit.
+Die frühere Zahl entstand aus roher `performance.memory` ohne stabilisierte
+GC-Wiederholung (Arbeits-Set der jeweiligen Welle, Peak bis ~79 MB bei ~31 MB
+nach GC).
+
+Kleinste wirksame Änderung: Aggregat-Einträge und KI-Zustand werden recycelt
+(Pool/Cap 48 bzw. `resetAiState` in-place), die View-Zählung allokiert kein
+Array mehr pro Treffer, und der Pool kappt Retention per `trim()`.
