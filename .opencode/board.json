@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2738,
+  "next": 2742,
   "cards": [
     {
       "id": 1,
@@ -4014,6 +4014,46 @@
       "notes": [],
       "created": "2026-11-27T09:25:03Z",
       "updated": "2026-11-27T09:25:03Z"
+    },
+    {
+      "id": 2738,
+      "title": "m10-heroes-pass K1: Baseline-Kontaktbogen + Kennzahlen",
+      "description": "lane #2398: Kontaktbogen 1x/4x beider Helden + Kennzahlen in shots/m10-heroes-before.json (Diff >=35 %, 0 Duplikate, 0 Off-Palette, Alpha nur 0/255). Abnahme: 3 Dateien im Commit, alle 48 Paare + Summen im JSON. Belege: 752d9c5 (Diff min 48,5 %, mean 56,2 %).",
+      "column": "review",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-27T09:46:32Z",
+      "updated": "2026-11-27T09:46:32Z"
+    },
+    {
+      "id": 2739,
+      "title": "m10-heroes-pass K2: Silhouette + Akzentfarbe",
+      "description": "lane #2399: Mira Laternen-Gold-Akzent/schmaler Umhang, Kael Rost/Stahl/breite Schultern/einschneidige Axt; tests/char-frames.test.ts (2 Helden x 4 Richtungen x 4 Frames, Palette, Alpha 0/255). Abnahme: vitest+tsc gruen, Kontaktbogen 4x. Belege: ebe2bc1, 5/5 Tests, 273 Tests gruen.",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T09:46:32Z",
+      "updated": "2026-11-27T09:46:32Z"
+    },
+    {
+      "id": 2740,
+      "title": "m10-heroes-pass K3: Lauf-/Bob-Zyklus",
+      "description": "lane #2400: 4 Frames je Richtung mit Bob 0/1/0/1 px nach unten, Kael schwerer/langsamer (5-px-Stiefel, kleinere Schrittweite); GIF shots/m10-heroes-walk.gif + In-Game-Shot 5:00 mit >=250 Gegnern, 0 JS-Fehler. Abnahme: GIF zeigt beide Helden, Shot zeigt Held im Gedraenge. Belege: 065c232, Mira 286 / Kael 327 Gegner.",
+      "column": "review",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-27T09:46:32Z",
+      "updated": "2026-11-27T09:46:32Z"
+    },
+    {
+      "id": 2741,
+      "title": "m10-heroes-pass K4: Abnahme + Doku",
+      "description": "lane #2401: build+Tests gruen (Ist-Zahl in Notiz), Kontaktbogen after 1x/4x, shots/m10-heroes-after.json mit Kennzahlen, art-director-Urteil in docs/lanes/m10-heroes-pass.md. Abnahme: >=35 % Diff je Richtung, 0 Duplikate/Off-Palette, Alpha nur 0/255, art-director JA <=1 s im Chaos, .lane-done mit Messwerten (nicht nach main). Belege: 1e2c57c, Diff min 49,12 %, 4,5/5.",
+      "column": "review",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T09:46:32Z",
+      "updated": "2026-11-27T09:46:32Z"
     }
   ]
 }

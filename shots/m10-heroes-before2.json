@@ -1,0 +1,57 @@
+{
+  "lane": "m10-heroes-pass",
+  "tag": "before2",
+  "generated": "scripts/art/gen_chars.py",
+  "size": "32x32",
+  "chars": [
+    "mira",
+    "kael"
+  ],
+  "dirs": [
+    "down",
+    "up",
+    "side"
+  ],
+  "framesPerDir": 4,
+  "frameSizeConstant": true,
+  "frameSizeVariants": [
+    [
+      4,
+      32,
+      32
+    ]
+  ],
+  "pixelDiffMiraVsKaelPerDirFrame": {
+    "down": {
+      "0": 0.6416,
+      "1": 0.6348,
+      "2": 0.6367,
+      "3": 0.6328
+    },
+    "up": {
+      "0": 0.6494,
+      "1": 0.6426,
+      "2": 0.6445,
+      "3": 0.6406
+    },
+    "side": {
+      "0": 0.5439,
+      "1": 0.5479,
+      "2": 0.541,
+      "3": 0.5664
+    }
+  },
+  "pixelDiffMin": 0.541,
+  "pixelDiffMean": 0.6102,
+  "pixelDiffTarget": 0.35,
+  "pixelDiffPass": true,
+  "frameDuplicates": [],
+  "frameDuplicateCount": 0,
+  "offPalettePixels": 0,
+  "alphaNotBinary": 0,
+  "alphaValues": [
+    0,
+    255
+  ],
+  "pass": true
+}

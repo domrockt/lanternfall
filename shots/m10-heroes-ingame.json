@@ -1,0 +1,16 @@
+{
+  "lane": "m10-heroes-pass",
+  "card": "K3+K4",
+  "targetMinute": 5,
+  "targetEnemies": 250,
+  "stats": {
+    "time": 303.1,
+    "enemies": 328,
+    "level": 1,
+    "character": "mira",
+    "fps": 58.7,
+    "god": true
+  },
+  "pass": true,
+  "jsErrors": []
+}
