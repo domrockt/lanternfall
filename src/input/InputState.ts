@@ -57,6 +57,13 @@ export interface InputFrame {
 
 /** Touch-axis deadzone (12% of the stick radius). */
 export const TOUCH_DEADZONE = 0.12;
+/**
+ * M10-touch-latency: Hysterese-Ausgangsschwelle. Ein einmal aktiver Stick
+ * bleibt aktiv, bis der Rohvektor unter 75 % der Eingangsschwelle faellt.
+ * Zwischen Aus- und Eingangsschwelle wird exakt 0 ausgegeben, damit ein
+ * ruhender Finger am Totzonen-Rand kein Zittern erzeugt.
+ */
+export const TOUCH_RELEASE_DEADZONE = TOUCH_DEADZONE * 0.75;
 /** Gamepad stick deadzone (18%). */
 export const PAD_DEADZONE = 0.18;
 
@@ -65,6 +72,35 @@ export const MOVE_SOURCE_PRIORITY = ["touch", "gamepad", "keyboard"] as const;
 export type MoveSource = (typeof MOVE_SOURCE_PRIORITY)[number];
 
 const EPS = 1e-9;
+
+/**
+ * M10-touch-latency: Deadzone mit Hysterese.
+ *
+ * - `engaged === false`: Vektor wird erst oberhalb `TOUCH_DEADZONE` aktiv.
+ * - `engaged === true`: Vektor bleibt bis unter `TOUCH_RELEASE_DEADZONE` aktiv;
+ *   im Band dazwischen ist die Ausgabe exakt 0 (kein Zittern am Rand).
+ * - Die Magnitude wird immer relativ zur Eingangsschwelle neu abgebildet, so
+ *   dass der Übergang bei `TOUCH_DEADZONE` stetig bleibt.
+ */
+export function applyTouchDeadzoneHysteresis(
+  x: number,
+  y: number,
+  engaged: boolean,
+): { x: number; y: number; engaged: boolean } {
+  const dx = num(x);
+  const dy = num(y);
+  const len = Math.hypot(dx, dy);
+  if (!Number.isFinite(len) || len <= EPS) return { x: 0, y: 0, engaged: false };
+
+  if (len <= TOUCH_RELEASE_DEADZONE) return { x: 0, y: 0, engaged: false };
+  if (len <= TOUCH_DEADZONE) {
+    // Im Hysterese-Band: Zustand halten, aber keine Bewegung ausgeben.
+    return engaged ? { x: 0, y: 0, engaged: true } : { x: 0, y: 0, engaged: false };
+  }
+
+  const mag = clamp01((len - TOUCH_DEADZONE) / (1 - TOUCH_DEADZONE));
+  return { x: (dx / len) * mag, y: (dy / len) * mag, engaged: true };
+}
 
 /** Defensive number: NaN / non-finite collapse to 0. */
 function num(v: unknown): number {
@@ -172,11 +208,11 @@ function touchVector(t: TouchSnapshot | null | undefined): Vec2 {
  * The first source whose resulting vector has a non-zero length wins; vectors
  * are never mixed or added. Returns {0,0} when no source is active.
  */
-export function mergeSources(sources: InputSources): Vec2 {
+export function mergeSources(sources: InputSources, touchMoveOverride?: Vec2 | null): Vec2 {
   const src = sources ?? {};
   for (const source of MOVE_SOURCE_PRIORITY) {
     const vector = source === "touch"
-      ? touchVector(src.touch)
+      ? (touchMoveOverride ?? touchVector(src.touch))
       : source === "gamepad"
         ? gamepadVector(src.gamepad)
         : keyboardVector(src.keyboard);
@@ -265,9 +301,21 @@ export function mergeActions(...states: ActionState[]): ActionState {
  */
 export class InputState {
   private previous: ActionState = emptyActions();
+  /** M10-touch-latency: Hysterese-Gedächtnis des Touch-Sticks. */
+  private touchEngaged = false;
 
   update(sources: InputSources): InputFrame {
-    const move = mergeSources(sources ?? {});
+    const touch = sources?.touch;
+    let touchMove: Vec2 | null = null;
+    if (touch?.active === true) {
+      const h = applyTouchDeadzoneHysteresis(touch.x, touch.y, this.touchEngaged);
+      touchMove = { x: h.x, y: h.y };
+      this.touchEngaged = h.engaged;
+    } else {
+      this.touchEngaged = false;
+    }
+
+    const move = mergeSources(sources ?? {}, touchMove);
     const held = mergeActions(
       readKeyboardActions(sources?.keyboard),
       readTouchActions(sources?.touch),
@@ -290,5 +338,6 @@ export class InputState {
 
   reset(): void {
     this.previous = emptyActions();
+    this.touchEngaged = false;
   }
 }

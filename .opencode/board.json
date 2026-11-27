@@ -3005,11 +3005,22 @@
       "id": 2119,
       "title": "m10-touch-latency #2 Pfad straffen + Deadzone-Hysterese",
       "description": "Falls Ist-Latenz > 2 Frames: Snapshot-Übergabe ohne Zusatzframe straffen. Deadzone-Hysterese (Enter>Release) gegen Zittern bei Ruhe, Priorität touch>gamepad>keyboard unverändert. Abnahme: tests/input-latency.test.ts prüft Hysterese + 0-Vektor bei Ruhe, tsc/build grün.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:36:16Z",
+          "by": "build",
+          "text": "todo → doing: Deadzone-Hysterese in InputState implementiert (Enter 0.12 / Release 0.09, Band = 0), Tests grün"
+        },
+        {
+          "at": "2026-11-27T03:36:52Z",
+          "by": "build",
+          "text": "doing → review: PASS: applyTouchDeadzoneHysteresis (enter 0.12/release 0.09, Band gibt exakt 0 aus), keine Zittern bei Noise, Priorität unverändert; 37 Tests grün, tsc+build grün, Commit a776404"
+        }
+      ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T02:39:33Z"
+      "updated": "2026-11-27T03:36:52Z"
     },
     {
       "id": 2120,
