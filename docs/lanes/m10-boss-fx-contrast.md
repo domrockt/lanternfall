@@ -97,6 +97,10 @@ Ausnahmen, normale FX unverändert) + Kontaktbogen `shots/m10-boss-fx-contrast-f
 (heller Kern, geschlossene Tintenkontur, Offset-Outline, kollabierender Kern über 6 Frames).
 
 ### Offene Punkte (für den Merge / Folgekarten)
+- **Boss-Tod-Shards im ParticleSystem:** `fx_boss_core` wird beim Boss-Tod zusätzlich über
+  `ParticleSystem.burst`/`shards` (CombatSystem) verwendet — dort greifen die #5220-Ausnahmen NICHT
+  (Partikel-Pfad bleibt ADD + Dämpfung + Glow-Slot). CombatSystem.ts ist nicht in diesem Lane-Bereich;
+  als Folgekarte melden (Entweder Shard-Pfad ebenfalls ausnehmen oder dort eineNORMAL-Variante nutzen).
 - **Mess-Skript:** Freeze erst in die FX-Mitte (≈ 280 ms nach Spawn) legen und den Boss-Crop auf den
   sichtbaren FX zuschneiden (z. B. FX-Crop 24 px + Horde-Ring als Hintergrund) — erst dann ist die
   Kontrast-Kennzahl aussagefähig. Nicht in dieser Lane mehr geschehen (Metrik nach Supervisor-Vorgabe
@@ -108,5 +112,41 @@ Ausnahmen, normale FX unverändert) + Kontaktbogen `shots/m10-boss-fx-contrast-f
   kleinen Intro-FX im Freeze kritisch aus — der Befund trifft die Capture-Phase, nicht die Frame-Arbeit.
 
 ### art-director-Vision
-(folgt)
+
+**Runde 1 (über Baseline/after-Shots, Commit `5ce8964`): FAIL 3,5/5.**
+- Kontaktbogen (Note 4): Palettenrein, geschlossene 1-px-ink-Kontur, Offset-Outline und Kern-
+  Trennung pixelpermanent bestätigt (Kette Kern → Tinte → Transparent → Ring per Zeilenscan).
+  Abzug: Kollaps-Frames 4–5 wirken innen fast weiß; Ring-Highlights kaum top-lastig.
+- In-Game 640/780 (Note 3): „der FX ist im Freeze nicht identifizierbar" — definierende Merkmale
+  (ink-Kernring, Offset-Outline) in keinem Shot sichtbar. Befund trifft die Capture-Phase: der
+  Freeze passierte direkt nach FX-Start (Scale 0,6–0,8) und der Intro-FX liegt als DEPTH.fxLow
+  **hinter dem Spieler-/Boss-Sprite** und ist zentriert auf die Boss-Position — so ist er bei
+  jedem Timing ganz überdeckt. Ein Beleg, der das Geprüfte nicht zeigt, ist kein Beleg.
+
+**FAIL-Behandlung (Commits `7abc25c`):** Mess-Skript um `--fx-delay-ms` (Peak-Freeze) und
+`--mode=death` (Boss hp=0 → playBossDeathFx) erweitert. Im Boss-Tod ist der fx_boss_core frei
+(Boss-Sprite weg, Scale 1,6→3,6 = 51–115 px): neue Belege
+`shots/m10-boss-fx-contrast-afterdeath-crop-boss0..5-{6403601,7803603}.png` (96-Spielpx-Crops,
+4x nearest) + Vollbilder `afterdeath-boss*`. Sichtprüfung Lead: Boss 1 (Knochenfürst) zeigt die
+crimson Explosion mit dunkler Kontur und hellem Kern, klar von der Knochen-Horde und den orangen
+Waffen-FX getrennt. Limitationen: Boss 5 löst beim Tod die Morgendämmerung aus (Horde zerfällt —
+Shot zeigt den FX im Dämmerungs-Kontext); `afterdeath`/`afterpeak`-JSONs sind Vision-Captures und
+nicht mit baseline/after vergleichbar (anderes Freeze-Delay, Letterbox im Hintergrund-Median).
+
+**Runde 2 (über afterdeath-Captures, Commit `7abc25c`): PASS 4,0/5 — Blocker „Boss-FX-Kontrast" aufgehoben.**
+- Tod-Captures 640 (Note 4): FX in allen 6 Captures sichtbar; Boss 1/3 (crimson) „unmissverständlich",
+  Boss 0/2/4 lesbar (teils korrekt von Bäumen überdeckt — Depth-Layering, kein Verschwinden),
+  Boss 5 Amber-Burst im Dämmerungs-Kontext.
+- Tintenkette per Pixel-Dump bestätigt (FX-Rot → `#08080C` Tinte → Horde/Moor); Waffen-FX formfremd
+  (Rauten vs. Ring + Scorch) → unterscheidbar; Tint-Varianten je Boss-Index matchen Run.ts.
+- Tod-Captures 780 (Note 4): konsistent, Kern + Truhe + Glow-Ring deutlich.
+- Gesamteindruck (Note 4): 9 Schattierungsstufen, Palette strikt, Animations-Frames bauen aufeinander auf.
+- Runde-1-Punkt „Bloomrand #FFEEB0 → #FFD77A": kein Blocker (Licht-/Bloom-Effekt, stilistisch legitim),
+  als Polish ins backlog. Offener Punkt „Depth für Boss-Ereignis-FX" bleibt (bewertungsneutral).
+
+**Lane-Urteil:** Hebel 1 + 2 umgesetzt, unit-getestet, vision-geprüft (Runde 2 PASS 4,0). Die
+numerischen Crop-Kriterien des Kartenplans (+25 % Kontrast, Near-White ≤ 4,16 % im Crop) sind mit der
+fixierten Metrik NICHT belegbar (siehe Befund oben) — die Wirksamkeit ist stattdessen über Sprite-Tests
++ sichtbare In-Game-Tod-Captures belegt. Folgekarten: Depth für Boss-Ereignis-FX, ParticleSystem-Shard-Pfad
+ausnehmen, Bloomrand-Polish, Mess-Skript mit FX-Peak-Crop.
 

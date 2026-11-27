@@ -237,7 +237,7 @@ afterEach(() => {
 });
 
 describe("Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme (Karte #5220)", () => {
-  it("fx_boss_core: Alpha faellt nie unter 0,7 — auch bei Endgame-Daempfung + dpr 3", () => {
+  it("fx_boss_core: alphaFrom (Spawn-Alpha) faellt nie unter 0,7 — auch bei Endgame-Daempfung + dpr 3", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
     const sprite = fakeSprite();
     const fx = new FxSystem(fakeScene(sprite));

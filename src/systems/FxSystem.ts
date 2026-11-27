@@ -16,10 +16,11 @@ export const ADD_GLOW_ALPHA_FLOOR = 0.04;
 
 /**
  * M10 #5220 (Blocker "Boss-FX-Kontrast"): Mindest-Alpha-Boden fuer Boss-spezifische
- * Effekte (isBossFxKey, nur fx_boss_core). Boss-FX werden von fxAlpha-Daempfung,
- * dpr-Alpha und ADD-Glow-Deckel ausgenommen und rendern bewusst NORMAL — unter
- * ADD waere die dunkle Tintenkontur aus Karte #5219 unsichtbar (ADD kann nicht
- * abdunkeln). So bleiben Kern und Kontur auch bei 300+ Gegnern lesbar.
+ * Effekte (isBossFxKey, nur fx_boss_core). Beim Spawn wird alphaFrom auf >= 0,7
+ * geklemmt; Boss-FX sind von fxAlpha-Daempfung, dpr-Alpha und ADD-Glow-Deckel
+ * ausgenommen und rendern bewusst NORMAL — unter ADD waere die dunkle Tintenkontur
+ * aus Karte #5219 unsichtbar (ADD kann nicht abdunkeln). Der Lifetime-Fade
+ * (alphaTo) bleibt wie bei allen FX unveraendert.
  */
 export const BOSS_FX_ALPHA_FLOOR = 0.7;
 
