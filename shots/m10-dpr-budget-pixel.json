@@ -1,0 +1,38 @@
+{
+  "viewport": {
+    "width": 780,
+    "height": 360,
+    "dpr": 3
+  },
+  "frozen": {
+    "paused": true,
+    "levelUpOpen": false,
+    "time": 1.8,
+    "enemies": 69
+  },
+  "stateA_rbscale2": {
+    "buf": [
+      390,
+      180
+    ],
+    "scale": 2
+  },
+  "stateB_rbscale1": {
+    "buf": [
+      780,
+      360
+    ],
+    "scale": 1
+  },
+  "uniformAE": 0,
+  "uniformTotal": 2527200,
+  "baselineAE": 274,
+  "contentAE": 47623,
+  "contentTotal": 70200,
+  "structAE": 11893,
+  "structBaselineAE": 66,
+  "structTotal": 17550,
+  "contentVerdict": "DIFF > Baseline (+47349)",
+  "structVerdict": "DIFF (+11827)",
+  "jsErrors": []
+}

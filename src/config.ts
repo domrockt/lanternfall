@@ -50,16 +50,85 @@ export function renderBufferSize(
 /** Frame-Budget des Reglers (Ziel 60 FPS,deckungsgleich mit perf-Ziel). */
 const RENDER_BUDGET_MS = 1000 / 60;
 /** URL-Override fuer Messungen: ?rbscale=0 (aus) oder ?rbscale=1..3 (fest). */
+const QUERY_RENDER_SCALE =
+  typeof window !== "undefined" && window.location
+    ? parseRenderScaleOverride(new URLSearchParams(window.location.search).get("rbscale"))
+    : null;
+
+/**
+ * URL-Override (?rbscale) oder Runtime-Override (window.__rbOverride = 0..3,
+ * fuer Pixel-Vergleiche im pausierten Zustand). Letzteres gewinnt.
+ */
 function forcedRenderScale(): number | null {
-  if (typeof window === "undefined" || !window.location) return null;
-  return parseRenderScaleOverride(new URLSearchParams(window.location.search).get("rbscale"));
+  if (typeof window === "undefined") return null;
+  const runtime = (window as unknown as { __rbOverride?: number | null }).__rbOverride;
+  if (runtime !== undefined && runtime !== null) return parseRenderScaleOverride(String(runtime));
+  return QUERY_RENDER_SCALE;
 }
 
+type BudgetCamera = {
+  zoom: number;
+  width: number;
+  height: number;
+  scrollX: number;
+  scrollY: number;
+  setZoom: (z: number) => void;
+  setViewport: (x: number, y: number, w: number, h: number, center?: boolean) => void;
+};
 type BudgetGame = {
   canvas: HTMLCanvasElement;
   scale: { width: number; height: number; on: (ev: string, cb: () => void) => void };
   renderer: { resize: (w: number, h: number) => void; type: number };
+  scene?: {
+    scenes?: {
+      cameras?: { cameras?: BudgetCamera[]; list?: BudgetCamera[]; main?: BudgetCamera };
+    }[];
+  };
 };
+
+/** Reglerstufe hart klemmen (wie renderBufferSize). */
+function effScale(scale: number): number {
+  return Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(scale)));
+}
+
+/**
+ * Kamera-Projektion an den gesenkten Buffer anpassen: Zoom = 1/Teiler und
+ * Viewport = Game-Size/Teiler, Midpoint ueber die Aenderung gerettet. Phaser
+ * rendert Kamera-Viewports in Game-Size-Koordinaten 1:1 in den Canvas und
+ * clippt am Buffer — ohne Anpassung waere der gesenkte Buffer ein Zoom-Crop
+ * (Spieler off-screen; Beleg shots/m10-dpr-budget-pixel*: A entsprach dem
+ * B-Viertel mit AE 1464/70200). Mit Viewport W/s x H/s + Zoom 1/s rendert die
+ * Kamera die volle logische Szene (Welt UND UI) in den kleineren Buffer;
+ * das Display-Upscale bleibt ganzzahlig (pixelated). Empirie:
+ * scripts/m10-dpr-camera-matrix.mjs (6 Konfigs, Sieger z0.5_vp_half mit
+ * Midpoint-Erhaltung). Jeder Frame, weil Szenenwechsel/-restarts zuruecksetzen.
+ */
+function enforceCameraProjection(game: BudgetGame, scale: number): void {
+  const zoom = 1 / scale;
+  const vw = game.scale.width / scale;
+  const vh = game.scale.height / scale;
+  const scenes = game.scene?.scenes;
+  if (!scenes) return;
+  for (const scene of scenes) {
+    const mgr = scene.cameras as unknown as
+      { cameras?: BudgetCamera[]; list?: BudgetCamera[]; main?: BudgetCamera } | undefined;
+    if (!mgr) continue;
+    const cams = mgr.cameras ?? mgr.list ?? (mgr.main ? [mgr.main] : []);
+    for (const cam of cams) {
+      if (!cam) continue;
+      if (cam.width !== vw || cam.height !== vh) {
+        // Midpoint (Weltausschnitt-Zentrum) ueber die Aenderung retten;
+        // setViewport verschiebt sonst den Ausschnitt (Kamera-Matrix-Befund).
+        const midX = cam.scrollX + cam.width / 2;
+        const midY = cam.scrollY + cam.height / 2;
+        cam.setViewport(0, 0, vw, vh, false);
+        cam.scrollX = midX - vw / 2;
+        cam.scrollY = midY - vh / 2;
+      }
+      if (cam.zoom !== zoom) cam.setZoom(zoom);
+    }
+  }
+}
 
 /**
  * Laufzeit-Verdrahtung im Canvas-Setup (nur Browser; in Vitest/Node passiv):
@@ -69,7 +138,7 @@ type BudgetGame = {
  */
 function installRenderBudget(): void {
   if (typeof window === "undefined" || typeof document === "undefined") return;
-  const forced = forcedRenderScale();
+  const forced = forcedRenderScale; // pro Frame: Runtime-Override (__rbOverride) kann sich aendern
   let state: RenderScaleState = { scale: RENDER_SCALE_MIN, belowMs: 0, aboveMs: 0 };
   let applied = -1;
   let lastNow = 0;
@@ -108,8 +177,12 @@ function installRenderBudget(): void {
       fpsEwma = fpsEwma === 0 ? instant : fpsEwma * 0.9 + (instant * 0.1);
     }
 
+    const forced = forcedRenderScale();
     if (forced !== null) {
       apply(game, forced);
+      if (!(window as unknown as { __rbManual?: boolean }).__rbManual) {
+        enforceCameraProjection(game, effScale(forced));
+      }
       return;
     }
     const cap = chooseRenderScale(
@@ -121,6 +194,9 @@ function installRenderBudget(): void {
     );
     state = stepRenderScale(state, fpsEwma, dt, cap);
     apply(game, state.scale);
+    if (!(window as unknown as { __rbManual?: boolean }).__rbManual) {
+      enforceCameraProjection(game, state.scale);
+    }
     const d2 = (window as unknown as { __rbDbg?: Record<string, unknown> }).__rbDbg;
     if (d2) { d2.fps = fpsEwma; d2.cap = cap; d2.afterW = game.canvas.width; d2.state = state; }
   };

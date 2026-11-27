@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3582,
+  "next": 4058,
   "cards": [
     {
       "id": 1,
@@ -4520,37 +4520,59 @@
       "id": 3579,
       "title": "m10-dpr-budget-cap #2 Einbau Canvas-Budget",
       "description": "src/config.ts/Canvas-Setup nutzt den Regler: interner Renderbuffer = logisch/Teiler, CSS unveraendert (pixelated Upscale), Hysterese im Lauf, nie <1, immer ganzzahlig. main.ts/view.ts unveraendert. Abnahme: 640x360@1 bleibt >=50 FPS (kein Schrumpfen bei dpr1), tsc+build rc=0. Owner engine-dev, Kontrolleure perf-check + reviewer.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T16:26:42Z",
           "by": "build",
           "text": "backlog → doing: Einbau in src/config.ts laeuft; Sanity: Buffer 390x180 bei rbscale=2, CSS voll, Szene korrekt."
+        },
+        {
+          "at": "2026-11-27T18:13:36Z",
+          "by": "build",
+          "text": "doing → review: m10-dpr-budget-cap #2: Einbau 327eb83 + FPS-Signal-Fix 00781ed (eigener rAF-EWMA statt loop.actualFps, Begruendung in docs/lanes/m10-dpr-budget-cap.md). Geprueft: tsc --noEmit rc=0, scale-budget 13/13, build rc=0 (327eb83, 368 Tests), Sichtpruefung 780@3 Buffer 390x180."
         }
       ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T16:26:42Z"
+      "updated": "2026-11-27T18:13:36Z"
     },
     {
       "id": 3580,
       "title": "m10-dpr-budget-cap #3 Messung M25 780@3",
       "description": "scripts/m10-dpr-budget.mjs unter flock, 780x360 dpr3, M25 Vorher/Nachher + effektive Renderbreite in shots/m10-dpr-budget.json. Abnahme: min-FPS >= 50 (oder belegte Werte + Begruendung in der Lane-Notiz). Owner engine-dev, Kontrolleur perf-check.",
-      "column": "backlog",
+      "column": "blocked",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T18:05:41Z",
+          "by": "build",
+          "text": "backlog → doing: m10-dpr-budget-cap #3 Messung gestartet: Probe zeigt Regler arbeitet (Teiler 2, Buffer 390x180); offene Frage: unter M25-Last bleibt Nachher-Lauf bei Teiler 1 (FPS 46 > 45 Totzone). Trajektorien-Probe laeuft."
+        },
+        {
+          "at": "2026-11-27T18:40:35Z",
+          "by": "build",
+          "text": "doing → blocked: m10-dpr-budget-cap #3: Perf-Lock durch fremden 30-min realtime-run (PID 29053) belegt; flock -w 60 rc=1 (2. vergeblicher Versuch, erster blockierender Aufruf abgebrochen). Regler-Fixes (EWMA + Totzone-Freeze) sind committet und durch Probes belegt; Messlauf wird nachgeholt, sobald die Sperre frei ist. Belege in docs/lanes/m10-dpr-budget-cap.md, Commit 2001d57."
+        }
+      ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T16:17:00Z"
+      "updated": "2026-11-27T18:40:35Z"
     },
     {
       "id": 3581,
       "title": "m10-dpr-budget-cap #4 Pixel-Perfect-Beleg",
       "description": "Screenshot bei gesenktem Massstab, 1:1-Pixelvergleich einer statischen Szene (keine weichen Kanten), shots/m10-dpr-budget-pixel.png + Pixel-Metrik JSON. Owner playtester, Kontrolleur art-director.",
-      "column": "backlog",
+      "column": "doing",
       "assignee": "playtester",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T18:40:35Z",
+          "by": "build",
+          "text": "backlog → doing: m10-dpr-budget-cap #4 Pixel-Perfect-Beleg gestartet: statische Szene bei ?rbscale=2 (Buffer 390x180, CSS 780x360, dpr3), 1:1-Pixelvergleich ohne weiche Kanten. Kein Messlauf/noch flock noetig."
+        }
+      ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T16:17:00Z"
+      "updated": "2026-11-27T18:40:35Z"
     }
   ]
 }

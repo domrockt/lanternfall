@@ -9,12 +9,12 @@
     {
       "id": "before-rbscale0",
       "mode": "before",
-      "fps": 47,
-      "frames": 471,
+      "fps": 40.6,
+      "frames": 407,
       "worstFrameMs": 33.5,
-      "minEnemies": 16,
-      "time": 1499.7,
-      "kills": 18637,
+      "minEnemies": 18,
+      "time": 1503.5,
+      "kills": 34867,
       "renderBuffer": [
         780,
         360
@@ -32,12 +32,12 @@
     {
       "id": "after-auto-1",
       "mode": "after",
-      "fps": 46,
-      "frames": 461,
-      "worstFrameMs": 33.5,
-      "minEnemies": 17,
-      "time": 1503.5,
-      "kills": 34428,
+      "fps": 39.2,
+      "frames": 392,
+      "worstFrameMs": 66.7,
+      "minEnemies": 14,
+      "time": 1501.8,
+      "kills": 27604,
       "renderBuffer": [
         780,
         360
@@ -55,12 +55,35 @@
     {
       "id": "after-auto-2",
       "mode": "after",
-      "fps": 42.8,
-      "frames": 430,
+      "fps": 41.5,
+      "frames": 416,
+      "worstFrameMs": 33.4,
+      "minEnemies": 18,
+      "time": 1504.9,
+      "kills": 41922,
+      "renderBuffer": [
+        780,
+        360
+      ],
+      "css": [
+        780,
+        360
+      ],
+      "dpr": 3,
+      "renderWidth": 780,
+      "renderScaleDivisor": 1,
+      "jsErrors": [],
+      "passed": false
+    },
+    {
+      "id": "after-auto-3",
+      "mode": "after",
+      "fps": 43.3,
+      "frames": 434,
       "worstFrameMs": 33.5,
-      "minEnemies": 16,
-      "time": 1499.3,
-      "kills": 24434,
+      "minEnemies": 20,
+      "time": 1500.5,
+      "kills": 20981,
       "renderBuffer": [
         780,
         360
@@ -77,19 +100,21 @@
     }
   ],
   "summary": {
-    "beforeFps": 47,
+    "beforeFps": 40.6,
     "beforeRenderWidth": 780,
     "afterFps": [
-      46,
-      42.8
+      39.2,
+      41.5,
+      43.3
     ],
     "afterRenderWidth": [
       780,
+      780,
       780
     ],
-    "afterMinFps": 42.8,
+    "afterMinFps": 39.2,
     "afterPassedCount": 0,
-    "afterCount": 2,
+    "afterCount": 3,
     "jsErrors": 0
   }
 }
