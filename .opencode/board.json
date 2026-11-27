@@ -2752,7 +2752,7 @@
       "id": 1781,
       "title": "m10-death-fx K4 Test tests/death-fx.test.ts",
       "description": "Alle 4 Klassen unterscheidbar in >=3 Dimensionen; jeder Archetyp mappt auf eine der 4 Klassen; Boss-Spec != Nicht-Boss-Spec; deterministisch (2 Läufe gleiche Werte). Abnahme: npx vitest run tests/death-fx.test.ts grün. Commit.",
-      "column": "review",
+      "column": "done",
       "assignee": "test-auditor",
       "notes": [
         {
@@ -2774,10 +2774,15 @@
           "at": "2026-11-27T05:50:38Z",
           "by": "build",
           "text": "doing → review: K4 abgenommen: npx vitest run tests/death-fx.test.ts 5/5 gruen (Commit d0bc96c Rim-Spec; Test in f944652/d0bc96c). Owner test-auditor."
+        },
+        {
+          "at": "2026-11-27T06:25:34Z",
+          "by": "build",
+          "text": "review → done: K4 DONE: tests/death-fx.test.ts 5/5 gruen, alle 30 Gegner-Eintraege einzeln geprueft; Negativ-Probe (bog_rat entfernt) -> rot. Test-Auditor PASS, Commit 6648dad (#1781)."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T05:50:38Z"
+      "updated": "2026-11-27T06:25:34Z"
     },
     {
       "id": 1782,
