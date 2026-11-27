@@ -247,16 +247,6 @@ try {
     const runningText = await readCounters(page, "running");
     await clearLevelUps(page);
 
-    // 2) Stehendes HUD: deterministische Werte, Simulation eingefroren.
-    await freezeHud(page);
-    await clearLevelUps(page);
-    await settleFrames(page, 4);
-    await page.waitForTimeout(100);
-    const screenshot = await screenshotHud(page, `shots/m10-ui-text-cost-hud-${TAG}-${cfg.name.replace(/[^0-9a-z]/gi, "")}.png`);
-    await resetCounters(page);
-    await page.waitForTimeout(HUD_SECONDS * 1000);
-    const standing = await readCounters(page, "standingHud");
-
     const state = await page.evaluate(() => {
       const scale = window.__game.scale;
       const c = document.querySelector("canvas").getBoundingClientRect();
@@ -267,9 +257,38 @@ try {
         dpr: window.devicePixelRatio,
       };
     });
+    await page.close();
+
+    // 2) Stehendes HUD auf einem frischen Run: sofort eingefroren, keine
+    //    AutoPlay-Picks/Kaempfe -> Vorher/Nachher-HUD-Crop ist deterministisch.
+    const snapPage = await browser.newPage({
+      viewport: { width: cfg.width, height: cfg.height },
+      deviceScaleFactor: cfg.dpr,
+    });
+    snapPage.on("pageerror", (e) => errors.push(`${cfg.name} snapshot: ${String(e)}`));
+    snapPage.on("console", (m) => { if (m.type() === "error") errors.push(`${cfg.name} snapshot: ${m.text()}`); });
+    await snapPage.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
+    await startRun(snapPage);
+    await snapPage.evaluate((weapons) => {
+      const run = window.__lf;
+      run.setTimeScale(1);
+      for (const id of weapons) run.addWeapon(id, 8);
+    }, WEAPONS);
+    await freezeHud(snapPage);
+    await clearLevelUps(snapPage);
+    await settleFrames(snapPage, 6);
+    await snapPage.waitForTimeout(100);
+    const screenshot = await screenshotHud(
+      snapPage,
+      `shots/m10-ui-text-cost-hud-${TAG}-${cfg.name.replace(/[^0-9a-z]/gi, "")}.png`,
+    );
+    await installUiTimer(snapPage);
+    await resetCounters(snapPage);
+    await snapPage.waitForTimeout(HUD_SECONDS * 1000);
+    const standing = await readCounters(snapPage, "standingHud");
+    await snapPage.close();
 
     configs.push({ config: cfg, state, running, runningText, standingHud: standing, screenshot });
-    await page.close();
   }
   result = { tag: TAG, setup: { enemies: ENEMIES, weapons: WEAPONS, seed: 1, autoplay: true, seconds: SECONDS, hudSeconds: HUD_SECONDS }, configs, jsErrors: errors };
 } finally {
