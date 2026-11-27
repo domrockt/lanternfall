@@ -329,6 +329,7 @@ function collectPageAudit() {
     textureBinds: audit.textureBinds,
     textureSwitches: audit.textureSwitches,
     programs: audit.programs,
+    rendererInfo: window.__lf?.rendererInfo?.() ?? null,
     sampleDraws: audit.sampleDraws.slice(-1000),
     sampleSwitches: audit.sampleSwitches.slice(-1000),
   };
@@ -352,6 +353,8 @@ export function auditTable(report) {
   rows.push(`| Vollbild-Overlays Alpha/ADD | ${report.overlays?.count ?? 0} | ${report.overlays?.worst || "–"} |`);
   rows.push(`| preFX/postFX-Objekte | ${report.fx?.preFXObjects ?? 0} / ${report.fx?.postFXObjects ?? 0} | ${(report.fx?.preFXObjects ?? 0) + (report.fx?.postFXObjects ?? 0) ? "Befund: Shader-Pass pro Sprite" : "ok"} |`);
   rows.push(`| Startzeit bis Titel | ${report.boot?.timeToTitleMs ?? "–"} ms | ${report.boot?.startupRating ?? "–"} |`);
+  rows.push(`| 60-FPS-Grenze aktiv | ${report.fpsCapActive ? "ja" : "NEIN"} | fps target/limit = ${report.config?.fps?.target ?? "?"}/${report.config?.fps?.limit ?? "?"} |`);
+  rows.push(`| powerPreference | ${report.powerPreference ?? "–"} | WebGL-Kontext-Attribut |`);
   return rows.join("\n");
 }
 
@@ -408,11 +411,16 @@ export function makeReport(raw) {
     programs: raw.programs,
     textureBindsTotal: raw.textureBinds,
     textureSwitchesTotal: raw.textureSwitches,
+    config: raw.rendererInfo ?? null,
+    fpsCapActive: Boolean(raw.rendererInfo?.fps?.cappedAt60),
+    powerPreference: raw.rendererInfo?.powerPreference ?? "unbekannt",
     jsErrors: raw.jsErrors,
     passed:
       !raw.canvas.rendersDevicePixels &&
       raw.jsErrors.length === 0 &&
-      textureSummary.oversizedCount === 0,
+      textureSummary.oversizedCount === 0 &&
+      Boolean(raw.rendererInfo?.fps?.cappedAt60) &&
+      raw.rendererInfo?.powerPreference === "high-performance",
   };
 }
 
