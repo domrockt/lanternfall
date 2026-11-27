@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6323,
+  "next": 6403,
   "cards": [
     {
       "id": 1,
@@ -7394,6 +7394,57 @@
       ],
       "created": "2026-11-27T22:52:14Z",
       "updated": "2026-11-27T22:52:24Z"
+    },
+    {
+      "id": 6398,
+      "title": "m10-crowd-variety #1: Vorher-Messung 500er-Frame (Distinct-Keys + Renderer)",
+      "description": "Abnahme: scripts/m10-crowd-variety.mjs rendert 500-Gegner-Frame via Playwright (harness), zählt Distinct-Sprite-Texture-Keys je Typ, Renderer-String im JSON; shots/m10-crowd-variety-before.json+png committed. EINMAL messen, max. 2 Iterationen am Skript.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T23:01:51Z",
+          "by": "build",
+          "text": "todo → doing: m10-crowd-variety: Mess-Skript bauen, einmal laufen lassen, Belege committen"
+        }
+      ],
+      "created": "2026-11-27T23:01:48Z",
+      "updated": "2026-11-27T23:01:51Z"
+    },
+    {
+      "id": 6399,
+      "title": "m10-crowd-variety #2: zweite Grid-Variante je Gegnertyp in enemySprites.ts",
+      "description": "Abnahme: pro Gegnertyp >= 2 unterscheidbare Varianten (Detail-Variante/gespiegelter Frame im selben Palette-Raster, Silhouette-Klasse unverändert), Texturen in createEnemyTextures registriert, Keys via enemySprites.ts geliefert. Keine Tabu-Dateien.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T23:01:48Z",
+      "updated": "2026-11-27T23:01:48Z"
+    },
+    {
+      "id": 6400,
+      "title": "m10-crowd-variety #3: Instanz-Auswahl Variante/Spiegelung ohne Run.ts/EnemyPool",
+      "description": "Abnahme: Frame-Auswahl liefert pro Instanz unterschiedliche Keys über bestehende Arrays (SPRITE_FRAMES/ALL_ENEMY_FRAMES aus enemySprites.ts). EnemyPool.ts/Run.ts unangetastet; falls doch nötig: 1-Zeilen-Meldung in /home/ai/games/.dispatch/requests.md + Karte blocked-Notiz.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T23:01:48Z",
+      "updated": "2026-11-27T23:01:48Z"
+    },
+    {
+      "id": 6401,
+      "title": "m10-crowd-variety #4: tests/crowd-variety.test.ts",
+      "description": "Abnahme: >= 2 Varianten je Typ, Palette + binäres Alpha (0 Off-Palette-Pixel), Elite-Rim-Frames unveraendert (elite-rim-Test gruen), Frame-Keys deterministisch. npx tsc --noEmit + vitest gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T23:01:48Z",
+      "updated": "2026-11-27T23:01:48Z"
+    },
+    {
+      "id": 6402,
+      "title": "m10-crowd-variety #5: Nachher-Messung + art-director-Sichtprüfung",
+      "description": "Abnahme: Distinct-Keys im 500er-Frame >= 2 je Typ (vorher 1), shots/m10-crowd-variety-after-*, Vorher/Nachher nebeneinander, art-director-Urteil >= 4/5, Burst-FPS vorher/nachher im selben Lauf unter flock, docs/lanes/m10-crowd-variety.md aktualisiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T23:01:48Z",
+      "updated": "2026-11-27T23:01:48Z"
     }
   ]
 }
