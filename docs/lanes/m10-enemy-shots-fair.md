@@ -70,9 +70,9 @@ kommen alle vier Optiken im Spiel vor.
 
 ## Karte 04 — Tests, Messwerte, Abnahme
 
-`tests/enemy-shots-fair.test.ts` (13 Tests, grün):
-- Wind-up-Konstante ≥ 0,3 s,
-- jeder ranged-/summoner-Key liefert eine der vier Optiken,
+`tests/enemy-shots-fair.test.ts` (12 Tests, grün):
+- jeder ranged-/summoner-Schuss feuert im Pool erst nach ≥ 0,3 s Vorwarnung
+  (Laufzeitmessung über alle Schützen, keine Konstanten-Assertion),
 - Schuss erst nach Ablauf der Vorwarnung (`canLaunchShot`-Grenzfälle),
 - Abbruch bei Schützentod,
 - kein Spawn aus Offscreen-Position (Punkt-in-View),
@@ -91,7 +91,9 @@ art-director ≥ 4/5.
 
 ## Offene Punkte
 
-- Auf hellem Moorgras liegt der Kontrast von shadow/fire bei ~2,1 (unter 3:1). Im
-  Nacht-/Wasserhintergrund erfüllt; falls Gras-Dichte zunimmt, Kontur aufhellen.
+- Der WCAG-`minInner`-Kontrast der dunklen Innenpixel ist bei spit/fire niedrig
+  (gegen Wasser 1,0–1,4; gegen Gras 1,0–1,2), bei bone/shadow hoch (≥ 2,9).
+  Die Lesbarkeit im Spiel tragen 1-px-Tint-Kontur + Silhouette; eine spätere
+  Konturaufhellung wäre eine eigene Karte (hier bewusst nur Optik, kein Blink).
 - Viele Ranged-Gegner gleichzeitig erzeugen sehr viele Projektile (1359 in ~2 s bei
   500 Ranged); das ist Bestand, nicht Teil dieser Lane (kein Rebalancing).
