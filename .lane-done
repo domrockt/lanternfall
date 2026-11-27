@@ -1,0 +1,17 @@
+# Lane m10-text-wrap fertig (Branch m10-text-wrap)
+
+Fix des Restpunkts „Wortumbruch text.ts (fremd)" aus der Lane m10-results-overlap
+(K1: Banner mid-word abgeschnitten „NEUER BESTWERT: ZEIT, LEVE").
+
+- Neu `src/gfx/text.ts`: `fitBanner(text, maxChars)` — bricht an Leerzeichen,
+  nie mitten im Wort, Ellipsis `".."` am Ende (kein U+2026-Glyph in der Font).
+- `src/scenes/Results.ts`: Bestwert-Banner nutzt fitBanner(..., 26); alter
+  „ganz oder gar nicht"-Fallback entfernt (Labels bleiben sichtbar).
+- `tests/text-wrap.test.ts`: 6 Unit-Tests (alle 15 Label-Kombinationen ohne Teilwort).
+- Beleg: EIN Vorher- + EIN Nachher-Lauf scripts/m10-results-overlap.mjs
+  (12 Waffennamen, 640x360 + 780x360@3, Victory+Defeat):
+  before 0 Overlaps / 0 clipped, after 0 / 0 — 0 neue Overlaps, 0 JS-Fehler.
+  Banner nachher: „NEUER BESTWERT: ZEIT,.." in 4/4 Views, kein mid-word Cut.
+- Sichtcheck: shots/m10-text-wrap-banner-victory-640.png + -780.png.
+- Suite: 48 Dateien / 505 Tests grün, tsc --noEmit sauber.
+- Doku: docs/lanes/m10-text-wrap.md. GAME.md nicht geändert.
