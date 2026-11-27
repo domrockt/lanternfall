@@ -3047,11 +3047,17 @@
       "id": 2121,
       "title": "m10-touch-latency #4 Doku + .lane-done",
       "description": "docs/lanes/m10-touch-latency.md mit Latenz vorher/nachher (Median/p95), 0 JS-Fehler, Urteil; .lane-done mit Messwerten committen. Abnahme: build+test grün, JSON-Belege committed, 0 JS-Fehler in beiden Profilen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:58:53Z",
+          "by": "build",
+          "text": "todo → doing: Doku vorher/nachher + .lane-done; warte auf reviewer/test-auditor PASS vor Commit"
+        }
+      ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T02:39:33Z"
+      "updated": "2026-11-27T03:58:53Z"
     }
   ]
 }
