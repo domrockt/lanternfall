@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3858,
+  "next": 4078,
   "cards": [
     {
       "id": 1,
@@ -4523,7 +4523,7 @@
       "id": 3560,
       "title": "@engine-dev m10-fx-overdraw-cap K3: Abnahme-Messung M25 780@3 + 640@1 (3 Laeufe)",
       "description": "Abnahme: shots/m10-fx-overdraw-after.json, min-FPS >= 50 in 3/3 (oder begruendete Obergrenze), Vorher/Nachher-Tabelle in docs/lanes/m10-fx-overdraw-cap.md.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T16:17:07Z",
@@ -4534,25 +4534,40 @@
           "at": "2026-11-27T16:40:17Z",
           "by": "build",
           "text": "doing → review: Nachmessung abgeschlossen: M25 780x360@3 Ø 41,9 FPS (39,3/43,5/42,8) -> rot gegen 50, aber begründete Obergrenze: Attribution zeigt FX-Anteil nur 2,4 ms/frame (~9 %), selbst FX=0 läge bei ~40-43 FPS. M25 640x360@1 Ø 51,8 FPS grün. Belege shots/m10-fx-overdraw-after.json + Vorher/Nachher-Tabelle docs/lanes/m10-fx-overdraw-cap.md. Commit cf94df7 (#3560)."
+        },
+        {
+          "at": "2026-11-27T18:03:18.537668+00:00",
+          "by": "perf-check",
+          "text": "review → done: PASS. Kontrolleur perf-check: alle Tabellenwerte aus attribution.json/after.json nachgerechnet (fx-off 23,47 ms vs full 25,91 ms = 2,44 ms ≈ 9,4 %; after 41,9/51,8 FPS, 0 jsErrors), Skript misst echte RAF-FPS interleaved je 10 s, begründete Obergrenze trägt. Vorbehalte: Glow-Budget-Telemetrie null in JSONs (Folgekarte), Zyklus-Streuung ±4 FPS. Commit cf94df7 #3560."
         }
       ],
       "created": "2026-11-27T15:50:41Z",
-      "updated": "2026-11-27T16:40:17Z"
+      "updated": "2026-11-27T18:03:18.537668+00:00"
     },
     {
       "id": 3561,
       "title": "@engine-dev m10-fx-overdraw-cap K4: Lesbarkeit Screenshot M25 780x360",
       "description": "Abnahme: shots/m10-fx-overdraw-m25-780.png bei M25, art-director >= 4/5, Near-White <= 4,16 %.",
-      "column": "todo",
+      "column": "doing",
       "notes": [
         {
           "at": "2026-11-27T17:44:14Z",
           "by": "build",
           "text": "[Supervisor] K1/K2/K3 sind bereits committet (28de72d Attribution 3x10s x3 Varianten + JSON, d381bad Fix, cf94df7 Nachmessung); offen ist nur K4. Ich breche die Bildanalyse ab, erzeuge den 780x360@3-Chaosshot mit >=300 Gegnern und committe K4 sofort."
+        },
+        {
+          "at": "2026-11-27T18:00:45.263364+00:00",
+          "by": "build",
+          "text": "todo → doing: Screenshot liegt vor (2340x1080, WIP-Commit a7d327f), Near-White selbst verifiziert 0,0869 % <= 4,16 % PASS; art-director-Urteil laeuft."
+        },
+        {
+          "at": "2026-11-27T18:04:41.864213+00:00",
+          "by": "art-director",
+          "text": "Urteil 4/5 -> PASS: FX nicht ueberstrahlend (Note 5), Boss/HUD Note 5, Spieler Note 4, XP-Kristall-LOD Note 3 by-design. Near-White 0,0869 % (Lead) / 0,019 % (art-director, Kanal-AND) <= 4,16 %. Commit folgt (#3561)."
         }
       ],
       "created": "2026-11-27T15:50:41Z",
-      "updated": "2026-11-27T17:44:14Z"
+      "updated": "2026-11-27T18:04:41.864213+00:00"
     }
   ]
 }

@@ -90,8 +90,16 @@ nachgespawnt; Messzustand beim Shot: **341 lebende Gegner**, 79 Partikel, 37 FX
 (Glow-Budget 72, dpr-Alpha 0,6), Boss Glockenturm-Golem, 0 JS-Fehler.
 
 - Near-White (alle Kanäle ≥ 240): **0,087 %** (ImageMagick `-threshold 94%`,
-  exakt 0,000868946 der 2.527.200 Pixel) ≤ 4,16 % Grenze → **PASS**.
-- art-director-Urteil: siehe unten nach der Kontrolle (Ziel ≥ 4/5).
+  exakt 0,000868946 der 2.527.200 Pixel) ≤ 4,16 % Grenze → **PASS** (Lead-Messung,
+  2026-11-27 nachgerechnet: 0,0869 %). art-director misst mit strengerer
+  Kanal-AND-Methode 0,019 % (≈ 486 px) — beide weit unter der Grenze.
+- **art-director-Urteil: 4/5 → PASS** (2026-11-27): FX nicht überstrahlend (Note 5,
+  Ember-Burst transparent, Terrain durch Glow lesbar), Boss + HP-Banner Note 5,
+  HUD/Text bei dpr3 Note 5, Spieler Note 4 (weißer Funkenkern verdeckt im Peak
+  die Beine), Horde-Rand-Silhouetten Note 4 (brauner Teppich im Kern = bekanntes
+  Dichte-Problem aus GAME.md M5, nicht deckelbedingt), XP-Kristall-LOD Note 3
+  (by-design, nicht blockierend). Nicht-blockierende Nachbesserungen: Ember-Kern
+  1–2 px kleiner, XP-Kristall-LOD 1 Stufe heller — Grafik-Lane.
 - Vorbefund aus der 3x-nearest-Vergrößerung: Boss-Silhouette hat nur
   1-Tonnschritt-Kontrast zum dunklen Untergrund; Feuer-Cluster unten links hat
   unruhige Kanten — Grafik-Lane, nicht dieser Fix.
