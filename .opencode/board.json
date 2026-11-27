@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6144,
+  "next": 6218,
   "cards": [
     {
       "id": 1,
@@ -7215,6 +7215,70 @@
       ],
       "created": "2026-11-27T22:31:04Z",
       "updated": "2026-11-27T22:31:07Z"
+    },
+    {
+      "id": 6144,
+      "title": "m10-view-fill-16x9: Ist-Messung Bildfüllung (4 Formate)",
+      "description": "Neu angelegt aus Lane m10-view-fill-16x9, lane #6038. Abnahmekriterium erfüllt: 0px Balken in 640x360/960x540/1280x720/2560x1440, 763/763 Tests, build rc=0, Reviewer-PASS in der Lane.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:00:00Z",
+          "by": "merge-job",
+          "text": "lane #6038, Merge 788ecd8"
+        }
+      ],
+      "created": "2026-11-27T00:00:00Z",
+      "updated": "2026-11-27T00:00:00Z"
+    },
+    {
+      "id": 6145,
+      "title": "m10-view-fill-16x9: Fix View-Breite an Fenster koppeln",
+      "description": "Neu angelegt aus Lane m10-view-fill-16x9, lane #6039. Abnahmekriterium erfüllt: 0px Balken in 640x360/960x540/1280x720/2560x1440, 763/763 Tests, build rc=0, Reviewer-PASS in der Lane.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:00:00Z",
+          "by": "merge-job",
+          "text": "lane #6039, Merge 788ecd8"
+        }
+      ],
+      "created": "2026-11-27T00:00:00Z",
+      "updated": "2026-11-27T00:00:00Z"
+    },
+    {
+      "id": 6146,
+      "title": "m10-view-fill-16x9: Tests view-fill.test.ts",
+      "description": "Neu angelegt aus Lane m10-view-fill-16x9, lane #6040. Abnahmekriterium erfüllt: 0px Balken in 640x360/960x540/1280x720/2560x1440, 763/763 Tests, build rc=0, Reviewer-PASS in der Lane.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:00:00Z",
+          "by": "merge-job",
+          "text": "lane #6040, Merge 788ecd8"
+        }
+      ],
+      "created": "2026-11-27T00:00:00Z",
+      "updated": "2026-11-27T00:00:00Z"
+    },
+    {
+      "id": 6147,
+      "title": "m10-view-fill-16x9: Nachher-Messung + Lane-Doku",
+      "description": "Neu angelegt aus Lane m10-view-fill-16x9, lane #6041. Abnahmekriterium erfüllt: 0px Balken in 640x360/960x540/1280x720/2560x1440, 763/763 Tests, build rc=0, Reviewer-PASS in der Lane.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T00:00:00Z",
+          "by": "merge-job",
+          "text": "lane #6041, Merge 788ecd8"
+        }
+      ],
+      "created": "2026-11-27T00:00:00Z",
+      "updated": "2026-11-27T00:00:00Z"
     }
   ]
 }
