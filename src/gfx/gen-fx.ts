@@ -1034,21 +1034,30 @@ export function mixelTextureKey(base: string, level: number): string {
 }
 
 /** Basis-Key eines Mixel-Effekts, wenn der Frame-Key dazugehört (sonst null).
- *  Laengste Basen zuerst, damit fx_halo_cold nicht als fx_halo matcht. */
+ *  Laengste Basen zuerst, damit fx_halo_cold nicht als fx_halo matcht; bereits
+ *  umgeschriebene Stufen-Keys ("fx_halo@2_1") werden ueber das "@" erkannt. */
 export function mixelBaseFor(key: string): FxMixelBase | null {
+  const at = key.indexOf("@");
+  const plain = at >= 0 ? key.slice(0, at) : key;
   const bases = [...FX_MIXEL_BASES].sort((a, b) => b.length - a.length);
   for (const base of bases) {
-    if (key === base || key.startsWith(`${base}_`)) return base;
+    if (plain === base || plain.startsWith(`${base}_`)) return base;
   }
   return null;
 }
 
-/** Frame-Key in der Stufen-Variante (Level 1 = unverändert, nicht-Mixel = unverändert). */
+/** Frame-Key in der Stufen-Variante (Level 1 = unverändert, nicht-Mixel = unverändert).
+ *  Bereits auf eine Stufe umgeschriebene Keys werden auf die neue Stufe umgekeyt. */
 export function mixelFrameKey(key: string, level: number): string {
   if (level <= 1) return key;
   const base = mixelBaseFor(key);
   if (!base) return key;
-  return `${base}@${level}${key.slice(base.length)}`;
+  const at = key.indexOf("@");
+  if (at < 0) return `${base}@${level}${key.slice(base.length)}`;
+  // Stufen-Anteil hinter "@" verwerfen, Frame-Suffix (ab dem naechsten "_") halten.
+  const digits = /^\d+/.exec(key.slice(at + 1))?.[0] ?? "";
+  const suffix = key.slice(at + 1 + digits.length);
+  return `${base}@${level}${suffix}`;
 }
 
 /** Hoechste Bake-Stufe eines Basis-Keys (0, wenn kein Mixel-Effekt). */

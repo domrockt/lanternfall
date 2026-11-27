@@ -258,8 +258,9 @@ export class FxSystem {
       }
     }
     // Mixel-Fix: Bake-Stufe waehlen, BEVOR skaliert wird. Der Screengroessen-
-    // Deckel oben rechnet bewusst mit der Level-1-Textur und Spielpixel-Scale
-    // (Device-Flaeche = texW*Stufe * (Scale/Stufe)^2 ist identisch).
+    // Deckel oben rechnet bewusst mit der Level-1-Textur und Spielpixel-Scale;
+    // die echte Device-Flaeche ist texW*L * (Scale/L)^2 = texW*Scale^2/L und
+    // bleibt damit UNTER der Deckel-Obergrenze (Stufe L verkleinert um Faktor L).
     fx.mixelLevel = mixelLevelFor(fx.frames[0], Math.max(Math.abs(fx.scaleFrom), Math.abs(fx.scaleTo)));
     if (fx.mixelLevel > 1) {
       fx.frames = fx.frames.map((k) => mixelFrameKey(k, fx.mixelLevel));
@@ -668,8 +669,9 @@ export class ParticleSystem {
         p.scaleTo = clamped.scaleTo;
       }
     }
-    // Mixel-Fix: Bake-Stufe waehlen, dann mit Scale/Stufe (<= 1) zeichnen
-    // (Deckel oben rechnet mit Level-1-Dims und Spielpixel-Scale — identische Flaeche).
+    // Mixel-Fix: Bake-Stufe waehlen, dann mit Scale/Stufe (<= 1) zeichnen.
+    // Deckel oben: Level-1-Dims * Spielpixel-Scale = Deckel-Obergrenze; die
+    // echte Device-Flaeche texW*Scale^2/L bleibt um Faktor L darunter.
     p.mixelLevel = mixelLevelFor(p.frames[0], Math.max(Math.abs(p.scaleFrom), Math.abs(p.scaleTo)));
     if (p.mixelLevel > 1) {
       p.frames = p.frames.map((k) => mixelFrameKey(k, p.mixelLevel));

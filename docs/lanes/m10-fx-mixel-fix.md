@@ -71,6 +71,20 @@ Ist-Zustand inkl. Farbbug). Die before-PNGs wurden vor dem Farbfix erzeugt.
   fx_pillar/fx_shock-Tweens in Run.ts umgehen den FxSystem-Draw-Pfad und bleiben
   beim Level-1-Key (unverändertes Verhalten). Das ist der Restbefund unten.
 
+**Reviewer-Befunde (PASS, nachgezogen in Commit `dc0f1ff`):**
+1. Deckel-Kommentar korrigiert: die echte Device-Fläche texW*L * (Scale/L)² =
+   texW*Scale²/L bleibt um Faktor L UNTER der Deckel-Obergrenze (nicht identisch).
+   Richtung safe: der Deckel bleibt gültige Obergrenze, Spielpixel-Größe unverändert.
+2. **Scale > maxLevel fällt stumm auf den alten Mixel-Look zurück** (Draw-Scale
+   = Scale/maxLevel > 1, Verhalten = exakt der alte Zustand, nicht schlechter).
+   Betroffen wären nur Scales über den dokumentierten Caller-Grenzen (fx_halo
+   > 4,6, fx_shock > 3,3, fx_fire > 3, fx_halo_cold > 3). In den aktuellen
+   Calls (CombatSystem radius/12, radius/16, radius/30 etc.) ist das Radius-
+  ende auf diese Grenzen abgestimmt; falls künftig ein Caller größere Scales
+   nutzt, muss entweder maxLevel der Basis oder der Caller angepasst werden.
+3. `mixelBaseFor`/`mixelFrameKey` erkennen jetzt auch bereits umgeschriebene
+   Stufen-Keys ("fx_halo@2_1") — idempotenter Roundtrip, mit Tests gesichert.
+
 ## 3. Regressionstests (Karte #6100, Commit 4ced0f7)
 
 `tests/fx-mixel.test.ts` (16 Tests):

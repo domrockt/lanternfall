@@ -185,6 +185,16 @@ describe("Stufen-Keys", () => {
     expect(mixelFrameKey("fx_halo_cold_2", 2)).toBe("fx_halo_cold@2_2");
   });
 
+  it("bereits umgeschriebene Stufen-Keys werden erkannt und umgekeyt (idempotent)", () => {
+    expect(mixelBaseFor("fx_halo@2")).toBe("fx_halo");
+    expect(mixelBaseFor("fx_halo@2_1")).toBe("fx_halo");
+    expect(mixelBaseFor("fx_fire@3_5")).toBe("fx_fire");
+    expect(mixelFrameKey("fx_halo@2_1", 3)).toBe("fx_halo@3_1");
+    expect(mixelFrameKey("fx_halo@2", 5)).toBe("fx_halo@5");
+    // Stufe 1 auf einem Stufen-Key: zurueck zum Level-1-Frame-Name
+    expect(mixelFrameKey("fx_halo@2_1", 1)).toBe("fx_halo@2_1");
+  });
+
   it("Todes-Frame-Sets bleiben unveraendert (kein Uebergriff der Bake-Stufen)", () => {
     const sets = deathFrameSets();
     expect(sets.fx_death_bone.w).toBe(9);
