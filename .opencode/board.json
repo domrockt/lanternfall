@@ -1843,17 +1843,22 @@
       "id": 300,
       "title": "m9-art-enemies-03 Tier 4 + Elite-Lesbarkeit",
       "description": "Owner pixel-artist, Kontrolle art-director. 6 Gegner Stufe 4: horror, centipede, gargoyle, reaper_bat, abom, voidcaller. Abnahme: 4 Frames, klare Silhouetten, Lichtkante fuer dunkle Gegner, Elite-Aura unveraendert. Vorher/Nachher-Sheet shots/m9-art-enemies-03-*.png + In-Game-GIF. art-director PASS Note >=4.5. build + Tests gruen.",
-      "column": "doing",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-27T01:28:31Z",
           "by": "build",
           "text": "todo → doing: Start nach #299-Abnahme (7bffb5e): Tier-4-Sheets tier4-1/2 und 307er-Masse gesichtet, Elite-Rim sichtbar; art-director-Urteil laeuft."
+        },
+        {
+          "at": "2026-11-27T02:48:46Z",
+          "by": "build",
+          "text": "doing → done: Abnahme 2026-11-27 (#300, Commit 6ae54fa): Tier-4-Kontaktboegen tier4-1/2 (4 Frames/Zeile, 6x) gesichtet; Masse 307 Gegner, 0 JS-Fehler, 57,9 FPS; Elite-Aura unveraendert; frames-check 30/30 eindeutig, 0 Off-Palette; art-director PASS 4,5."
         }
       ],
       "created": "2026-11-26T12:07:53Z",
-      "updated": "2026-11-27T01:28:31Z"
+      "updated": "2026-11-27T02:48:46Z"
     },
     {
       "id": 301,

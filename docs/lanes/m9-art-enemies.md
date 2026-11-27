@@ -7,7 +7,7 @@ Bereich: src/gfx/gen-enemies.ts, src/gfx/enemySprites.ts; Generator scripts/art/
 
 - #298 Tier 0-1 (12 haeufige Gegner): 4 echte Lauf-Frames + Silhouetten. Stand: done.
 - #299 Tier 2-3: 4 Frames + Schattierung. Stand: done (Abnahme PASS, Note 4,5).
-- #300 Tier 4 + Elite: 4 Frames, Lichtkante. Stand: review.
+- #300 Tier 4 + Elite: 4 Frames, Lichtkante. Stand: done (Abnahme PASS, Note 4,5).
 - #301 Abnahme: 30er-Bogen, Masse 300+, GIF, perf, .lane-done. Stand: doing.
 
 ## #298 Ergebnis 0-1: Belege
@@ -76,6 +76,26 @@ src/scenes/Run.ts Zeile 1066 waehlt Gegner-Frames mit Math.min(2, frames.length)
   Schultern, Spinne 8 Beine, Kultist mit Messer, Bomber als Flammenpilz, Knight mit
   Schild/Visier, Harpy Fluegelphase, Lich mit Krone/Stab, Wraith mit Kette, Treant,
   Imp mit Fluegeln — alle unterscheidbar, 3-Ton-Schatten + 1-px-Kontur.
+
+## #300 Tier 4 + Elite-Lesbarkeit
+
+- 6 Tier-4-Gegner (horror, centipede, gargoyle, reaper_bat, abom, voidcaller) haben je
+  4 Lauf-Frames mit eigenen Phasen (Beine, Fluegel, Tentakel, Saum/Hub). Die Frames sind
+  in den Kontaktboegen `shots/m9-art-enemies-tier4-1.png`/`-2.png` sichtbar; Maschinenpruefung
+  (`~/tmp/m9-art-enemies-3/frames-check.py`): 30 Keys, je 4 Frames, F0 != F2 und F1 != F3,
+  0 Off-Palette, 30 eindeutige Silhouetten, Tier-Verteilung 6/6/6/6/6.
+- Kontaktboegen: `shots/m9-art-enemies-tier4-1.png` (horror, centipede, gargoyle) und
+  `shots/m9-art-enemies-tier4-2.png` (reaper_bat, abom, voidcaller), je 3 Gegner,
+  4 Frames pro Zeile, 6x, dunkler Moorgrund, Labels.
+- In-Game-Masse: `shots/m9-art-enemies-04-mass.png` zeigt 307 Gegner; 0 JS-Fehler,
+  57,9 FPS. Elite-Leuchtrand (additive Aura, Alpha 0,42) bleibt sichtbar und
+  ueberstrahlt die Masse nicht; dunkle Tier-4-Gegner (voidcaller, reaper_bat) tragen
+  eine helle Lichtkante oben-links. Zusaetzlich `04-mass-clean.png` ohne FX-Overlay.
+- Elite-Aura-Code in `src/systems/EnemyPool.ts` unveraendert; nur Frames in
+  `src/gfx/gen-enemies.ts` wurden angepasst. Keine Hitbox-/Balance-Aenderungen.
+- art-director-Urteil Tier 4 + Elite: **PASS, Note 4,5** (Silhouetten klar, in Masse
+  lesbar, Lichtkante wirksam; Abzug nur fuer sehr aehnliche Centipede-Frames).
+- Build gruen, Tests gruen (siehe #301 Gesamtabnahme).
 
 ## Run-Frame-Hinweis
 
