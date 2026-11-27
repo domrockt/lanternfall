@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi, afterEach } from "vitest";
 import { PAL } from "../src/palette";
 import { deathFrameSets, isBossFxKey, BOSS_FX_BASES, FX_FRAME_COUNTS } from "../src/gfx/gen-fx";
 
@@ -164,5 +164,132 @@ describe("isBossFxKey (Karten #5219/#5220)", () => {
     expect(isBossFxKey("fx_evo_hit_phoenix")).toBe(false);
     expect(isBossFxKey(undefined)).toBe(false);
     expect(isBossFxKey("")).toBe(false);
+  });
+});
+
+/**
+ * Karte #5220 — Verdrahtung im FxSystem: Mindest-Alpha-Boden + LOD-Ausnahmen.
+ * Phaser wird wie in tests/fx-add-cap.test.ts gemockt; Sprites sind Fakes.
+ */
+import Phaser from "phaser";
+import { FxSystem } from "../src/systems/FxSystem";
+import { BOSS_FX_ALPHA_FLOOR } from "../src/systems/FxSystem";
+
+vi.mock("phaser", () => ({
+  default: { BlendModes: { ADD: 1, NORMAL: 0 }, Scenes: { Events: { SHUTDOWN: "shutdown" } } },
+}));
+
+interface FakeSprite {
+  width: number;
+  height: number;
+  visible: boolean;
+  alpha: number;
+  blend: number;
+  frame: { name?: string };
+  texture: { key: string };
+  setAlpha(a: number): unknown;
+  setBlendMode(m: number): unknown;
+  setPosition(): unknown;
+  setScale(x: number, y: number): unknown;
+  setRotation(): unknown;
+  setDepth(): unknown;
+  setVisible(v: boolean): unknown;
+  setActive(v: boolean): unknown;
+  setTint(): unknown;
+  clearTint(): unknown;
+  setTexture(k: string): unknown;
+}
+
+function fakeSprite(w = 32, h = 32): FakeSprite {
+  const rec: FakeSprite = {
+    width: w,
+    height: h,
+    visible: false,
+    alpha: 1,
+    blend: Phaser.BlendModes.NORMAL,
+    frame: { name: "fx" },
+    texture: { key: "fx_halo" },
+    setAlpha(a: number) { rec.alpha = a; return rec; },
+    setBlendMode(m: number) { rec.blend = m; return rec; },
+    setPosition() { return rec; },
+    setScale() { return rec; },
+    setRotation() { return rec; },
+    setDepth() { return rec; },
+    setVisible(v: boolean) { rec.visible = v; return rec; },
+    setActive() { return rec; },
+    setTint() { return rec; },
+    clearTint() { return rec; },
+    setTexture() { return rec; },
+  };
+  return rec;
+}
+
+function fakeScene(sprite: FakeSprite): Phaser.Scene {
+  return {
+    events: { once: () => {} },
+    add: { image: () => sprite },
+    time: { now: 0 },
+  } as unknown as Phaser.Scene;
+}
+
+afterEach(() => {
+  delete (globalThis as { window?: unknown }).window;
+});
+
+describe("Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme (Karte #5220)", () => {
+  it("fx_boss_core: Alpha faellt nie unter 0,7 — auch bei Endgame-Daempfung + dpr 3", () => {
+    (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    const sprite = fakeSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    fx.setAlphaScale(0.5); // reduced-LOD-Daempfung aktiv
+    const runtime = fx.spawn({ texture: "fx_boss_core", x: 0, y: 0, life: 1, alphaFrom: 0.2 });
+    expect(runtime).not.toBeNull();
+    expect(runtime?.alphaScaleExempt).toBe(true);
+    expect(runtime?.alphaFrom).toBe(BOSS_FX_ALPHA_FLOOR);
+    expect(runtime?.alphaFrom).toBeGreaterThanOrEqual(0.7);
+    expect(sprite.alpha).toBe(BOSS_FX_ALPHA_FLOOR);
+  });
+
+  it("fx_boss_core: kein dpr-Alpha (0,72 bleibt 0,72, nicht 0,72*0,6)", () => {
+    (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    const sprite = fakeSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    const runtime = fx.spawn({ texture: "fx_boss_core", x: 0, y: 0, life: 1, alphaFrom: 0.72 });
+    expect(runtime?.alphaFrom).toBeCloseTo(0.72, 10);
+  });
+
+  it("fx_boss_core: rendern NORMAL und belegen keinen ADD-Glow-Slot", () => {
+    const sprite = fakeSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    const runtime = fx.spawn({ texture: "fx_boss_core", x: 0, y: 0, life: 1 });
+    expect(runtime?.additive).toBe(false);
+    expect(sprite.blend).toBe(Phaser.BlendModes.NORMAL);
+    expect(fx.glowUsed).toBe(0);
+    // Auch der Screengroessen-Deckel greift fuer Boss-FX nicht (NORMAL rendert eh nicht additiv).
+    (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    const big = fx.spawn({ texture: "fx_boss_core", x: 0, y: 0, life: 1, scaleFrom: 6, scaleTo: 6 });
+    expect(big?.scaleFrom).toBe(6);
+  });
+
+  it("fx_boss_core: setAlphaScale aendert laufende Boss-FX nicht (Ausnahme)", () => {
+    const sprite = fakeSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    const runtime = fx.spawn({ texture: "fx_boss_core", x: 0, y: 0, life: 1, alphaFrom: 0.9 });
+    fx.setAlphaScale(0.5);
+    expect(runtime?.alphaFrom).toBeCloseTo(0.9, 10);
+    expect(sprite.alpha).toBeCloseTo(0.9, 10);
+  });
+
+  it("normale FX unverändert: fx_halo wird weiter gedämpft, gecappt und belegt Slots", () => {
+    (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
+    const sprite = fakeSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    fx.setAlphaScale(0.5);
+    const runtime = fx.spawn({ texture: "fx_halo", x: 0, y: 0, life: 1, scaleFrom: 6, scaleTo: 6 });
+    // Daempfung quadratisch + dpr-Alpha (0,9*0,5*0,5*0,6) — bestehendes M6/M10-Verhalten, unveraendert.
+    expect(runtime?.alphaScaleExempt).toBe(false);
+    expect(runtime?.alphaFrom).toBeCloseTo(0.9 * 0.5 * 0.5 * 0.6, 10);
+    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3 (Deckel greift weiter).
+    expect(runtime?.scaleFrom).toBeCloseTo(3, 10);
   });
 });

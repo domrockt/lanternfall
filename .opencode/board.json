@@ -5979,11 +5979,17 @@
       "id": 5220,
       "title": "m10-boss-fx-contrast #3: Hebel 2 FxSystem.ts — Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme",
       "description": "Abnahmekriterium: Boss-FX (fx_boss_core via isBossFxKey) sind von fxAlpha-Dämpfung (alphaScaleExempt) und ADD-Flächendeckel ausgenommen und bekommen Alpha-Boden >= 0,7; normale FX unverändert (Regel-Test beider Richtungen). Neuer Test tests/boss-fx-contrast.test.ts deckt Mindest-Alpha-Boden + Ausnahmen ab; tsc + npm test grün. Owner: vfx-artist, Kontrolleure: test-auditor + reviewer.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:58:22Z",
+          "by": "build",
+          "text": "todo → doing: m10-boss-fx-contrast: Hebel 2 - Mindest-Alpha-Boden + LOD-Ausnahmen im FxSystem"
+        }
+      ],
       "created": "2026-11-27T20:24:07Z",
-      "updated": "2026-11-27T20:24:07Z"
+      "updated": "2026-11-27T20:58:22Z"
     },
     {
       "id": 5221,
