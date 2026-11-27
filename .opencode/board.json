@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2742,
+  "next": 2747,
   "cards": [
     {
       "id": 1,
@@ -4054,6 +4054,96 @@
       "notes": [],
       "created": "2026-11-27T09:46:32Z",
       "updated": "2026-11-27T09:46:32Z"
+    },
+    {
+      "id": 2742,
+      "title": "m10-boss-onscreen #K1 Ist-Geometrie",
+      "description": "Lane m10-boss-onscreen K1 (lane #2538). Fuer alle 6 Bosse bei 1920x1080 und 640x360 Sprite-Rect vs HP-Leisten-Rect und Banner-Rect headless messen; vorher-JSON shots/m10-boss-onscreen-before.json + Tabelle docs/lanes/m10-boss-onscreen.md. Abnahme: 12 Messzeilen, verdeckte Flaeche in px/% je Boss, Commit f9dce90.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T10:15:48Z",
+          "by": "build",
+          "text": "Merge af53db7: Lane-Karte #2542? nein: lane #2538 (m10-boss-onscreen K1), Beleg f9dce90. Note quelle: lane #2538."
+        },
+        {
+          "at": "2026-11-27T10:17:10Z",
+          "by": "build",
+          "text": "Korrektur: Quelle lane #2538 (nicht #2542). Merge af53db7, Beleg f9dce90."
+        }
+      ],
+      "created": "2026-11-27T10:14:41Z",
+      "updated": "2026-11-27T10:17:10Z"
+    },
+    {
+      "id": 2743,
+      "title": "m10-boss-onscreen #K2 Spawn-Komposition",
+      "description": "Lane m10-boss-onscreen K2 (lane #2539). BossSystem: Boss-Mittelpunkt so legen, dass Sprite-Rect vollstaendig unter HP-Leiste und Banner liegt (>=6 px Luft). Abnahme: composedBossCenterY, 0 px Overlap, Commit fa07e09.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T10:15:48Z",
+          "by": "build",
+          "text": "Merge af53db7: aus Lane-Karte #2539 (m10-boss-onsight K2), Commit fa07e09; lane #2539."
+        },
+        {
+          "at": "2026-11-27T10:17:10Z",
+          "by": "build",
+          "text": "Korrektur Schreibweise: m10-boss-onscreen K2, Quelle lane #2539, Commit fa07e09."
+        }
+      ],
+      "created": "2026-11-27T10:14:41Z",
+      "updated": "2026-11-27T10:17:10Z"
+    },
+    {
+      "id": 2744,
+      "title": "m10-boss-onscreen #K3 Banner/Intro",
+      "description": "Lane m10-boss-onscreen K3 (lane #2540). Run.ts: Intro-Banner erst zeigen, wenn Boss-Frame sichtbar und nicht ueberlappt; Banner-Dauer 2400 ms und AutoPlay/God unveraendert. Abnahme: Code-Diff + tsc gruen, Commit 5d9df73.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T10:15:48Z",
+          "by": "build",
+          "text": "Merge af53db7: aus Lane-Karte #2540 (K3 Banner/Intro), Commit 5d9df73; lane #2540."
+        }
+      ],
+      "created": "2026-11-27T10:14:41Z",
+      "updated": "2026-11-27T10:15:48Z"
+    },
+    {
+      "id": 2745,
+      "title": "m10-boss-onscreen #K4 Test",
+      "description": "Lane m10-boss-onscreen K4 (lane #2541). tests/boss-spawn-composition.test.ts: alle 6 Bosse bei 640x360 und 480x360: boss.top >= hpBar.bottom+6 und banner ∩ boss = ∅ ueber 72 Winkel. Abnahme: 13 Tests gruen, Commit 8d7344a.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T10:15:48Z",
+          "by": "build",
+          "text": "Merge af53db7: aus Lane-Karte #2541 (K4 Test 13/13), Commit 8d7344a; lane #2541."
+        }
+      ],
+      "created": "2026-11-27T10:14:41Z",
+      "updated": "2026-11-27T10:15:48Z"
+    },
+    {
+      "id": 2746,
+      "title": "m10-boss-onscreen #K5 Belege + Doku",
+      "description": "Lane m10-boss-onscreen K5 (lane #2542). 12 Spawn-Shots (6 Bosse x 2 Views), Nachher-JSON, art-director PASS 4/5, build+test gruen, .lane-done (nicht nach main). Abnahme: 0 px Overlap 6/6 x 2 Views, Commit 7fe7de0; Merge af53db7.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-27T10:15:48Z",
+          "by": "build",
+          "text": "Merge af53db7: aus Lane-Karte #2542 (K5 Belege/Doku), Commit 7fe7de0; lane #2542. .lane-done im Merge entfernt."
+        }
+      ],
+      "created": "2026-11-27T10:14:41Z",
+      "updated": "2026-11-27T10:15:48Z"
     }
   ]
 }
