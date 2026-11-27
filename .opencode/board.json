@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6338,
+  "next": 6458,
   "cards": [
     {
       "id": 1,
@@ -6787,10 +6787,15 @@
           "at": "2026-11-27T23:00:36Z",
           "by": "build",
           "text": "Versuch 2 (22:59Z): Lokal gruen (tsc rc=0, 11/11 boss-death-Shards-Tests), Fix im Worktree als v1-Patch auf Alt-Basis + v2-Patch auf Mixel-Stand (k2-fxsystem-fix-v2-on-mixel.patch, in Scratch verifiziert). Claim FxSystem.ts liegt weiter bei m10-fx-mixel-fix (Lane fertig, wartet auf Merge in main). claim-watch aut_21f3cfacc0 (Session-Retarget auf Versuch 2, alle 15 min) uebernimmt K2-K4, sobald Claim frei/Merge erledigt ist."
+        },
+        {
+          "at": "2026-11-27T23:10:29Z",
+          "by": "build",
+          "text": "Forts. 23:11Z (Versuch 1 Forts.): Merge-Job arbeitet GERADE aktiv in main (Worktree lanternfall, laufender Merge m10-perf-cap-rollback mit UU board.json) und haelt FxSystem.ts-Claim (claims.json 23:0xZ, Halter 'main'). mixel #6099 weiterhin NICHT in origin/main. Lokal unveraendert gruen: tsc rc=0, 11/11 tests/boss-death-shards.test.ts. claim-watch v4 (aut_21f4630b, alle 10 min bis 03:00Z) uebernimmt K2-K4, sobald Claim frei / 3b gelaufen ist. Patch + Test-Backup bereit in ~/tmp/m10-boss-death-shards/."
         }
       ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T23:00:36Z"
+      "updated": "2026-11-27T23:10:29Z"
     },
     {
       "id": 5920,
