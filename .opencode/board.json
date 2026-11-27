@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1663,
+  "next": 1665,
   "cards": [
     {
       "id": 1,
@@ -2724,6 +2724,37 @@
       "notes": [],
       "created": "2026-11-27T01:01:34Z",
       "updated": "2026-11-27T01:01:34Z"
+    },
+    {
+      "id": 1663,
+      "title": "m10-art-contact-01 Art-Belege 38 Sprites (1x/4x, Frame-Matrix, Audit)",
+      "description": "38 Charakter-Sprites: Inventar-JSON mit Soll-Frames; Kontaktoegen 1x und 4x auf dunklem Grund, jedes Sprite beschriftet; audit.json mit Ist/Soll-Frames und Off-Palette je Sprite. Abnahme: 38 Zeilen, 0 Off-Palette, 0 fehlende Frames oder dokumentierte Maengel; Belege in shots/m10-art-contact-*.png/json committet, Basis f26dc4b. (aus Lane m10-art-contact uebernommen, lane #1058)",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-27T01:27:06Z",
+          "by": "build",
+          "text": "lane #1058: Audit-JSON-Teil abgenommen (38 Zeilen, 154 Ist-Frames, Ist==Soll, 0 Off-Palette, Spider F0=F2 dokumentiert, festes Skript byte-identisch, Commit 88569f8); 4x/Frame-Matrix in Folgeskarte, art-director Runde 2 PASS Note 4. Merge main 9b80e68."
+        },
+        {
+          "at": "2026-11-27T01:27:06Z",
+          "by": "build",
+          "text": "review → done: lane #1058 → done: Audit-JSON abgenommen, Merge 9b80e68."
+        }
+      ],
+      "created": "2026-11-27T01:22:24Z",
+      "updated": "2026-11-27T01:27:06Z"
+    },
+    {
+      "id": 1664,
+      "title": "m10-art-contact-02 4x-Kontaktboegen + Frame-Matrix",
+      "description": "7 4x-Boegen (Gegner Tier 0-4, Bosse F0-F2, Helden) auf nightDeep, nearest-4x ohne Verzerrung, jedes Sprite mit KEY+F<n> beschriftet; Frame-Matrix je Sprite. Abnahme: shots/m10-art-contact-4x-*.png zeigen alle 38 Sprites sichtbar und beschriftet, 0 Off-Palette-Pixel in den Boegen (via lib.read_rgba_png gegen src/palette.ts), Belege im Commit. Basis f26dc4b. (aus Lane m10-art-contact uebernommen, lane #1059; art-director Runde 2 PASS Note 4, Commits e13acf9/c92ccca/5281d16)",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-27T01:27:06Z",
+      "updated": "2026-11-27T01:27:06Z"
     }
   ]
 }

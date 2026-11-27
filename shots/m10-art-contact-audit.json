@@ -1,0 +1,1905 @@
+{
+  "lane": "m10-art-contact",
+  "baseSha": "f26dc4b",
+  "generated": "2026-11-26",
+  "sprites": [
+    {
+      "kind": "enemy",
+      "id": "bog_rat",
+      "name": "Moorratte",
+      "spriteKey": "enemy_bog_rat",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 16,
+      "height": 16,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "91e651c335"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "e890e8778b"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "wisp",
+      "name": "Irrlicht",
+      "spriteKey": "enemy_wisp",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 16,
+      "height": 16,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0b800cff05"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0927b812cd"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "mudling",
+      "name": "Schlammling",
+      "spriteKey": "enemy_mudling",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 16,
+      "height": 16,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b31d82da03"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "2332c6015c"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "crow",
+      "name": "Aaskrähe",
+      "spriteKey": "enemy_crow",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 16,
+      "height": 16,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "236bba5456"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "1512b88dd0"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "bogzombie",
+      "name": "Moorleiche",
+      "spriteKey": "enemy_bogzombie",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 16,
+      "height": 16,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "da65d09335"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "6cf7d9e6f0"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "toad",
+      "name": "Giftkröte",
+      "spriteKey": "enemy_toad",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 16,
+      "height": 16,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "2dd7454502"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "e26268350e"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "skeleton",
+      "name": "Knochenwächter",
+      "spriteKey": "enemy_skeleton",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 20,
+      "height": 20,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "8e04c63b64"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "6b4d26d322"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "bat",
+      "name": "Blutfledermaus",
+      "spriteKey": "enemy_bat",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 20,
+      "height": 20,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "9cd9ce2d53"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "10a7b3b951"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "ghoul",
+      "name": "Ghul",
+      "spriteKey": "enemy_ghoul",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 20,
+      "height": 20,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "848e40c0bf"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "2e43135291"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "witchling",
+      "name": "Hexenlehrling",
+      "spriteKey": "enemy_witchling",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 20,
+      "height": 20,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "250ddd289c"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "aefa076815"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "slime",
+      "name": "Moorschleim",
+      "spriteKey": "enemy_slime",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 20,
+      "height": 20,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "e38d170090"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "537641f889"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "scarecrow",
+      "name": "Strohmann",
+      "spriteKey": "enemy_scarecrow",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 2,
+      "sollFrames": 2,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 20,
+      "height": 20,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "23e4d38607"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "9392a82750"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "wolf",
+      "name": "Schattenwolf",
+      "spriteKey": "enemy_wolf",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 24,
+      "height": 24,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "1e824681eb"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "7d5bfb0e86"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "a770d76bdc"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c041e7f7dd"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "banshee",
+      "name": "Klageweib",
+      "spriteKey": "enemy_banshee",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 24,
+      "height": 24,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "50994dac30"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "1896ea3096"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "5e9d3bc95b"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b81eaae9cb"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "golem",
+      "name": "Torfgolem",
+      "spriteKey": "enemy_golem",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 24,
+      "height": 24,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "4b39e4626f"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "cf82d10ff3"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "d13d2502a0"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c81731fb8d"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "spider",
+      "name": "Grabspinne",
+      "spriteKey": "enemy_spider",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 24,
+      "height": 24,
+      "duplicateFramePairs": [
+        [
+          0,
+          2
+        ]
+      ],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "8b6744e6c6"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "643daba502"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "8b6744e6c6"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "30483198f5"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "cultist",
+      "name": "Kultist",
+      "spriteKey": "enemy_cultist",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 24,
+      "height": 24,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "ce25de9905"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "7c4b596b62"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "ec7b27423d"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b8bc0295ec"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "bomber",
+      "name": "Pilzbomber",
+      "spriteKey": "enemy_bomber",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 24,
+      "height": 24,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b5a926a688"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "5ca19256f9"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "004cfaf796"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c4d3087ddc"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "knight",
+      "name": "Verfluchter Ritter",
+      "spriteKey": "enemy_knight",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 28,
+      "height": 28,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "574005275a"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "a194de7331"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0592cdee13"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "11061c3eec"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "harpy",
+      "name": "Moorharpyie",
+      "spriteKey": "enemy_harpy",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 28,
+      "height": 28,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "180200aff5"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "5559352318"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b69789674d"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0e2c7039ac"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "lich",
+      "name": "Kleiner Lich",
+      "spriteKey": "enemy_lich",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 28,
+      "height": 28,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "527ddc59d6"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "06f0ed521d"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "a59691a2b9"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "8f8e6cfea5"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "wraith",
+      "name": "Wiedergänger",
+      "spriteKey": "enemy_wraith",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 28,
+      "height": 28,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "04cdaa2466"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0eba456f13"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c42b862644"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "f7079d83be"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "treant",
+      "name": "Faulbaum",
+      "spriteKey": "enemy_treant",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 28,
+      "height": 28,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b30241c446"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "fff13572e0"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c0f0d9737d"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "65871af975"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "imp",
+      "name": "Glutimp",
+      "spriteKey": "enemy_imp",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 28,
+      "height": 28,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "1c4b17fedf"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "13d2cf0b51"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "2e44b9e793"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "7fff6a1145"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "horror",
+      "name": "Augenhorror",
+      "spriteKey": "enemy_horror",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 32,
+      "height": 32,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c1aae256a2"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "fba3a0ba37"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "8b21a04fd4"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "81d7401f31"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "centipede",
+      "name": "Knochenläufer",
+      "spriteKey": "enemy_centipede",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 32,
+      "height": 32,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c518911618"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "344b37c471"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0aae53fa9c"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "8485f55e31"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "gargoyle",
+      "name": "Wasserspeier",
+      "spriteKey": "enemy_gargoyle",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 32,
+      "height": 32,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "5d72b324d6"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "71e664d9c7"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "edef0e96f2"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "7d1a48c72c"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "reaper_bat",
+      "name": "Nachtsense",
+      "spriteKey": "enemy_reaper_bat",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 32,
+      "height": 32,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "f14ab6cd7d"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0db5259004"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "1c0349ce98"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "9e378e2f22"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "abom",
+      "name": "Fleischkoloss",
+      "spriteKey": "enemy_abom",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 32,
+      "height": 32,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "29d29f9a95"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "467898bb3d"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "32fcd28ffe"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "d3476e422b"
+        }
+      ]
+    },
+    {
+      "kind": "enemy",
+      "id": "voidcaller",
+      "name": "Leerenrufer",
+      "spriteKey": "enemy_voidcaller",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 4,
+      "sollFrames": 4,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 32,
+      "height": 32,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "d08dbbd946"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0cee50e5d7"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "19284cf2b4"
+        },
+        {
+          "frame": 3,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0e898b4fc4"
+        }
+      ]
+    },
+    {
+      "kind": "boss",
+      "id": "moor_queen",
+      "name": "Moorkönigin",
+      "spriteKey": "boss_moor_queen",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 3,
+      "sollFrames": 3,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 56,
+      "height": 56,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "e5af3e449d"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "d667ac22e9"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c108fbb02b"
+        }
+      ]
+    },
+    {
+      "kind": "boss",
+      "id": "bone_lord",
+      "name": "Knochenfürst",
+      "spriteKey": "boss_bone_lord",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 3,
+      "sollFrames": 3,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 64,
+      "height": 64,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "4352b3ff2c"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "bd2668e7a8"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "b24a981ec1"
+        }
+      ]
+    },
+    {
+      "kind": "boss",
+      "id": "pale_shepherd",
+      "name": "Der Fahle Hirte",
+      "spriteKey": "boss_pale_shepherd",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 3,
+      "sollFrames": 3,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 72,
+      "height": 72,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "90acd895d8"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "68b7b97901"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "c14157790c"
+        }
+      ]
+    },
+    {
+      "kind": "boss",
+      "id": "bell_golem",
+      "name": "Glockenturm-Golem",
+      "spriteKey": "boss_bell_golem",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 3,
+      "sollFrames": 3,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 80,
+      "height": 80,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "5361fb2f94"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "489cc0c209"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "bef9ff6533"
+        }
+      ]
+    },
+    {
+      "kind": "boss",
+      "id": "coven",
+      "name": "Hexenzirkel",
+      "spriteKey": "boss_coven",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 3,
+      "sollFrames": 3,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 96,
+      "height": 96,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "9a441edaa4"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "eaf173f0c7"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "96784a0365"
+        }
+      ]
+    },
+    {
+      "kind": "boss",
+      "id": "hollow_king",
+      "name": "Der Hohle König",
+      "spriteKey": "boss_hollow_king",
+      "source": "src/gfx/gen-*.ts",
+      "istFrames": 3,
+      "sollFrames": 3,
+      "missingFrames": 0,
+      "extraFrames": 0,
+      "width": 96,
+      "height": 96,
+      "duplicateFramePairs": [],
+      "offPaletteTotal": 0,
+      "frames": [
+        {
+          "frame": 0,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0affca61aa"
+        },
+        {
+          "frame": 1,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "0cd3d296ac"
+        },
+        {
+          "frame": 2,
+          "offPalettePixels": 0,
+          "offPaletteCoords": [],
+          "badRowWidths": 0,
+          "hash": "1661937c2f"
+        }
+      ]
+    },
+    {
+      "kind": "hero",
+      "id": "mira",
+      "name": "Mira Ashwick",
+      "spriteKey": "player_mira",
+      "source": "src/gfx/gen-*.ts",
+      "animations": {
+        "player_mira_down": {
+          "istFrames": 4,
+          "sollFrames": 4,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "6cadf583cb"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "d0f585f094"
+            },
+            {
+              "frame": 2,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "6caa1524f3"
+            },
+            {
+              "frame": 3,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "84b43b9b0d"
+            }
+          ]
+        },
+        "player_mira_up": {
+          "istFrames": 4,
+          "sollFrames": 4,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "3d59c102b3"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "c1fba9d844"
+            },
+            {
+              "frame": 2,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "0f49d5d189"
+            },
+            {
+              "frame": 3,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "93c9d8df24"
+            }
+          ]
+        },
+        "player_mira_side": {
+          "istFrames": 4,
+          "sollFrames": 4,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "92fbe112fc"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "afde6c3b76"
+            },
+            {
+              "frame": 2,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "ccf17fc60f"
+            },
+            {
+              "frame": 3,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "513c887aec"
+            }
+          ]
+        },
+        "player_mira_down_idle": {
+          "istFrames": 2,
+          "sollFrames": 2,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "6cadf583cb"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "2875c1cc24"
+            }
+          ]
+        },
+        "player_mira_up_idle": {
+          "istFrames": 2,
+          "sollFrames": 2,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "3d59c102b3"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "a85b9ca3c8"
+            }
+          ]
+        },
+        "player_mira_side_idle": {
+          "istFrames": 2,
+          "sollFrames": 2,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "d605ca2755"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "a66827a667"
+            }
+          ]
+        },
+        "player_mira_hit": {
+          "istFrames": 1,
+          "sollFrames": 1,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "0a2ac99520"
+            }
+          ]
+        },
+        "portrait_mira": {
+          "istFrames": 1,
+          "sollFrames": 1,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "3ebc666186"
+            }
+          ]
+        }
+      },
+      "istFrames": 20,
+      "sollFrames": 20,
+      "missingFrames": 0,
+      "width": 32,
+      "height": 32,
+      "offPaletteTotal": 0,
+      "duplicateFramePairs": []
+    },
+    {
+      "kind": "hero",
+      "id": "kael",
+      "name": "Bruder Kael",
+      "spriteKey": "player_kael",
+      "source": "src/gfx/gen-*.ts",
+      "animations": {
+        "player_kael_down": {
+          "istFrames": 4,
+          "sollFrames": 4,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "e6deefc92f"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "378d6e1f19"
+            },
+            {
+              "frame": 2,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "edeb46bd5f"
+            },
+            {
+              "frame": 3,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "0c692b5139"
+            }
+          ]
+        },
+        "player_kael_up": {
+          "istFrames": 4,
+          "sollFrames": 4,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "796a7420b9"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "78889456d0"
+            },
+            {
+              "frame": 2,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "4cfcc13208"
+            },
+            {
+              "frame": 3,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "b9b93669c1"
+            }
+          ]
+        },
+        "player_kael_side": {
+          "istFrames": 4,
+          "sollFrames": 4,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "d527f85241"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "fc7b3a1f28"
+            },
+            {
+              "frame": 2,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "7982771d17"
+            },
+            {
+              "frame": 3,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "7c02854f6a"
+            }
+          ]
+        },
+        "player_kael_down_idle": {
+          "istFrames": 2,
+          "sollFrames": 2,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "e6deefc92f"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "e2c1c204a7"
+            }
+          ]
+        },
+        "player_kael_up_idle": {
+          "istFrames": 2,
+          "sollFrames": 2,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "796a7420b9"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "6120e9c53e"
+            }
+          ]
+        },
+        "player_kael_side_idle": {
+          "istFrames": 2,
+          "sollFrames": 2,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "99550af6a5"
+            },
+            {
+              "frame": 1,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "511e0961ab"
+            }
+          ]
+        },
+        "player_kael_hit": {
+          "istFrames": 1,
+          "sollFrames": 1,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "fc7915e5d7"
+            }
+          ]
+        },
+        "portrait_kael": {
+          "istFrames": 1,
+          "sollFrames": 1,
+          "missingFrames": 0,
+          "duplicateFramePairs": [],
+          "frames": [
+            {
+              "frame": 0,
+              "offPalettePixels": 0,
+              "offPaletteCoords": [],
+              "badRowWidths": 0,
+              "hash": "8ab434b3fd"
+            }
+          ]
+        }
+      },
+      "istFrames": 20,
+      "sollFrames": 20,
+      "missingFrames": 0,
+      "width": 32,
+      "height": 32,
+      "offPaletteTotal": 0,
+      "duplicateFramePairs": []
+    }
+  ],
+  "summary": {
+    "sprites": 38,
+    "missingFramesTotal": 0,
+    "offPaletteTotal": 0,
+    "duplicatePairsTotal": 1,
+    "issues": [
+      "enemy_spider: identische Frames [[0, 2]]"
+    ],
+    "sheets1x": [
+      "m10-art-contact-1x-enemies-tier0.png",
+      "m10-art-contact-1x-enemies-tier1.png",
+      "m10-art-contact-1x-enemies-tier2.png",
+      "m10-art-contact-1x-enemies-tier3.png",
+      "m10-art-contact-1x-enemies-tier4.png",
+      "m10-art-contact-1x-bosses.png",
+      "m10-art-contact-1x-heroes.png"
+    ],
+    "sheets4x": [
+      "m10-art-contact-4x-enemies-tier0.png",
+      "m10-art-contact-4x-enemies-tier1.png",
+      "m10-art-contact-4x-enemies-tier2.png",
+      "m10-art-contact-4x-enemies-tier3.png",
+      "m10-art-contact-4x-enemies-tier4.png",
+      "m10-art-contact-4x-bosses.png",
+      "m10-art-contact-4x-heroes.png"
+    ],
+    "sheetOffPalette": {
+      "m10-art-contact-1x-enemies-tier0.png": 0,
+      "m10-art-contact-1x-enemies-tier1.png": 0,
+      "m10-art-contact-1x-enemies-tier2.png": 0,
+      "m10-art-contact-1x-enemies-tier3.png": 0,
+      "m10-art-contact-1x-enemies-tier4.png": 0,
+      "m10-art-contact-1x-bosses.png": 0,
+      "m10-art-contact-1x-heroes.png": 0,
+      "m10-art-contact-4x-enemies-tier0.png": 0,
+      "m10-art-contact-4x-enemies-tier1.png": 0,
+      "m10-art-contact-4x-enemies-tier2.png": 0,
+      "m10-art-contact-4x-enemies-tier3.png": 0,
+      "m10-art-contact-4x-enemies-tier4.png": 0,
+      "m10-art-contact-4x-bosses.png": 0,
+      "m10-art-contact-4x-heroes.png": 0
+    }
+  }
+}
