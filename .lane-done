@@ -4,7 +4,7 @@ Ziel: Boss spawnt nicht hinter HP-Leiste/Banner; Intro-Banner nie ueber Boss-Rec
 #K2 BossSystem: Komposition nach echter Sprite-Frame-Hoehe (56/64/72/80/96/96), min. 6 px unter HUD/Banner.
 #K3 Run: bossSpawn-Banner erst, wenn Boss-Rect frei ist; Banner-Dauer 2400 ms unveraendert, AutoPlay/God unberuehrt.
 #K4 tests/boss-spawn-composition.test.ts: deterministisch 6 Bosse x 2 Views x 72 Winkel.
-#K6 Review-Fix: Zoom um Viewport-Mitte (midPoint), Intro-Zoom 1,14 im Kompositions-Headroom, Banner-Fallback nach 12 Retries; 25/25 Kompositionstests.
+#K6 Review-Fix: Zoom um Viewport-Mitte (midPoint) + Intro-Zoom 1,14 im Kompositions-Headroom; 25/25 Kompositionstests. Run-Guard-Patch offen (Claim m10-feedback-budget), A10 ohne ihn erfuellt.
 #K5 nachher (realer Intro-Zoom 1,07–1,14): 12 Messzeilen, HP-Overlap 0 px, Banner-Overlap 0 px, min. boss.top-hpBar.bottom = 71,3 px, min. bannerGap = 7,3 px.
 12 frische Spawn-Screenshots shots/m10-boss-onscreen-shots/, art-director PASS, Boss-Inszenierung 4/5.
 npm run build gruen; npm test 326/326 gruen. Keine HP-, Tempo- oder Angriffswerte geaendert.

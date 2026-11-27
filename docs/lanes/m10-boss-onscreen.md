@@ -112,10 +112,13 @@ Fix:
   Screen-Clamp mehr; der Ring-Abstand zum Spieler bleibt erhalten.
 - `bossSpriteScreenRect(..., viewWidth, viewHeight)` rechnet den Zoom um die
   Viewport-Mitte (`midPoint`) statt um `scrollX/Y` – so wie Phaser es rendert.
-- `Run.ts`-Guard prueft gegen `banner.bottom + 6` (Banner liegt unter der HP-Leiste)
-  und emittiert nach 12 Retries (Zoom-Puls vorbei) das Banner trotzdem, da die
-  Komposition die Ueberlappung bereits ausschliesst. Banner-Dauer 2400 ms,
-  AutoPlay/God unveraendert.
+- `Run.ts`-Guard-Patch (prueft gegen `banner.bottom + 6`, Fallback nach 12
+  Retries) ist vorbereitet, aber wegen des fremden Claims `m10-feedback-budget`
+  auf `src/scenes/Run.ts` noch nicht committet (Diff unter
+  `~/tmp/m10-boss-onscreen/run-guard-patch.diff`). A10 ist bereits ohne diesen
+  Patch erfuellt: die Boss-Komposition haelt die Oberkante auch bei Zoom 1,14
+  ueber `banner.bottom + 6`; der alte Guard kann das Banner dadurch nicht mehr
+  ueber den Boss legen. Banner-Dauer 2400 ms, AutoPlay/God unveraendert.
 
 Neue Belege (`shots/m10-boss-onscreen-after.json`, 12 Messzeilen, je Boss 72
 Winkel bei realem Intro-Zoom 1,07–1,14): **0 px HP-/Banner-Overlap**, kleinster
