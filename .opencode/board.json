@@ -2710,7 +2710,7 @@
       "id": 1779,
       "title": "m10-death-fx K2 Spec schärfen in src/logic/death.ts",
       "description": "Pro Klasse eigene deterministische Werte für Count, Größe (scale), Dauer, Farbe/Tint, Textur und Streuung; Boss skaliert >=2x Fläche + eigene Textur. Keine Gameplay-/Balance-Werte. Abnahme: DeathFxSpec trägt diese Felder, tsc grün. Commit.",
-      "column": "todo",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -2727,10 +2727,15 @@
           "at": "2026-11-27T03:27:36Z",
           "by": "build",
           "text": "#K2 erledigt: Commit b631b71. Spec-Felder + Boss fx_boss_core, 2,56x Flaeche."
+        },
+        {
+          "at": "2026-11-27T06:47:47Z",
+          "by": "build",
+          "text": "todo → done: K2 DONE: Spec-Felder + Boss fx_boss_core (>=2,56x Flaeche), Commit b631b71; Board-Nachzug."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T03:27:36Z"
+      "updated": "2026-11-27T06:47:47Z"
     },
     {
       "id": 1780,
