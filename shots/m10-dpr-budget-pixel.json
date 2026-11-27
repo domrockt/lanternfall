@@ -5,7 +5,7 @@
     "dpr": 3
   },
   "frozen": {
-    "paused": true,
+    "hitStop": true,
     "levelUpOpen": false,
     "time": 1.8,
     "enemies": 69
@@ -26,13 +26,13 @@
   },
   "uniformAE": 0,
   "uniformTotal": 2527200,
-  "baselineAE": 274,
-  "contentAE": 47623,
+  "baselineAE": 722,
+  "contentAE": 68761,
   "contentTotal": 70200,
-  "structAE": 11893,
-  "structBaselineAE": 66,
+  "structAE": 17151,
+  "structBaselineAE": 171,
   "structTotal": 17550,
-  "contentVerdict": "DIFF > Baseline (+47349)",
-  "structVerdict": "DIFF (+11827)",
+  "contentVerdict": "DIFF > Baseline (+68039)",
+  "structVerdict": "DIFF (+16980)",
   "jsErrors": []
 }

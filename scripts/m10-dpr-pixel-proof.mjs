@@ -35,15 +35,15 @@ await page.evaluate(() => {
   window.__lf.spawnEnemy("bogzombie", 20);
 });
 await page.waitForTimeout(2500); // Waffen/Projektile/XP verteilen
-// Panels schliessen UND einfrieren in EINEM evaluate: der Sim advancing nur
-// zwischen Frames, dazwischen kann kein neues Panel aufgehen.
+// Szene einfrieren OHNE Pause-Menue: hitStop haelt die Welt an (update()
+// verzweigt vor Sim/VFX-Updates zurück), das UI zeigt kein Overlay.
 // setTimeScale(0) ist ein No-op (timeScaleClamped clampet auf min 1,
-// src/logic/combat.ts) — deshalb run.paused direkt am Szene-Feld.
+// src/logic/combat.ts) — deshalb der direkte Weg ueber das Szene-Feld.
 const frozen = await page.evaluate(() => {
   const run = window.__game.scene.getScene("run");
   for (let i = 0; i < 30 && window.__lf.stats().levelUpOpen; i++) window.__lf.pickLevelUp(0);
-  run.paused = true;
-  return { paused: run.paused, levelUpOpen: window.__lf.stats().levelUpOpen, time: window.__lf.stats().time, enemies: window.__lf.stats().enemies };
+  run.hitStop = 1e9;
+  return { hitStop: run.hitStop > 0, levelUpOpen: window.__lf.stats().levelUpOpen, time: window.__lf.stats().time, enemies: window.__lf.stats().enemies };
 });
 await page.waitForTimeout(300);
 
