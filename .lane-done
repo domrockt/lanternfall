@@ -1,0 +1,39 @@
+# Lane m10-results-overlap — fertig (2026-11-27)
+
+Ziel: Abnahme-Blocker „Results-Screen-Overlap" (art-director FAIL 3,25/5,
+Nachabnahme Versuch 3) lösen — 0 Überlappungen bei 640×360 UND 780×360@3,
+art-director ≥ 4/5, Inhalt unverändert.
+
+## Ergebnis
+
+- **art-director: PASS 4,4/5** (Schwelle ≥ 4/5 erfüllt) auf allen 4 After-Shots.
+- **Overlap-Messung 4/4 Fälle (640×360 + 780×360@3 × Victory + Defeat):
+  0 überlappende Elemente, 0 Clipping, 0 JS-Fehler** (shots/m10-results-overlap-after.json).
+- Inhalt unverändert: gleiche Daten, gleiche Sortierung, 12 Namen vollständig.
+- Suite 407 Tests / 37 Dateien grün, `npm run build` rc=0.
+
+## Kernbefunde
+
+1. Die reine Layout-Funktion war bereits kollisionsfrei — der sichtbare FAIL
+   kam von: Portrait 14 px aus dem Panel-Rahmen (`cx-186`, Kante `cx-234` vs.
+   Rahmen `cx-220`), 1 px-gequetschte Grundlinien (Untertitel/Header/Total/Zeilen),
+   Banner-Text mid-word geschnitten („… ZEIT, LEVE").
+2. 640×360@1 ist Fit-Rückfall: logische View 480×360, Canvas zentriert. Die
+   Messung/Sichtprüfung muss die Canvas-Breite (480) nutzen, nicht die Fensterbreite.
+
+## Commits (eine Karte = ein Commit)
+
+- 9ce6fd7 #4118 K1 Messskript + Before-Belege (Befund-Zahlen s. oben)
+- fdd3f58 #4119 K2 Total-Label aus rowsTop abgeleitet (Kopfblock ≥2 px)
+- c60a249 #4120 K3 Portrait/Labels/Untertitel/rowsTop/Banner-Fallback + After-Belege
+- d3e0121 #4121 K4 tests/results-overlap.test.ts (9 Assertions, Mutation-Check),
+  Doku docs/lanes/m10-results-overlap.md, art-director-Urteil
+
+## Restpunkte
+
+- #4122 (backlog): Luftpuffer Ergebnisse-Screen (letzte Zeile ~2 px, Titel→Untertitel
+  im Defeat ~2 px) — nicht blockierend.
+- Wortumbruch ohne Trennstrich („SEELENLEU/CHTFEUER"): `slotNameLines` in
+  `src/logic/text.ts` ist fremd beansprucht (Disponent) — Folgekarte nötig.
+- Fuß-Hinweistext liegt in der unsichtbaren 44 px Touch-Zone der Knöpfe
+  (Input-Thema aus m10-menu-touch-targets, nicht visuell).
