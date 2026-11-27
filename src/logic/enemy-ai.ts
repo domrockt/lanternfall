@@ -12,7 +12,8 @@ export type AiMode =
   | "recover"
   | "orbit"
   | "fade"
-  | "fuse";
+  | "fuse"
+  | "retreat";
 
 export interface AiState {
   mode: AiMode;
@@ -31,6 +32,8 @@ export interface AiState {
   blinks: number;
   /** Anzahl ausgelöster Spezialangriffe. */
   attacks: number;
+  /** Laufende Eigenzeit für Weben/Lunzen/Flankieren (s). */
+  phase: number;
 }
 
 export interface AiParams {
@@ -68,6 +71,205 @@ export function shouldSplit(splitDepth: number): boolean {
   return splitDepth < MAX_SPLIT_DEPTH;
 }
 
+/**
+ * Archetyp-Parameter. Bewusst als reine Zahlen: keine Objekt-Allokation pro
+ * Frame — `aiProfileFor` liefert eine vorab gebaute Referenz aus der Tabelle.
+ */
+export interface AiProfile {
+  /** Bevorzugter Abstand zum Spieler (0 = kein Abstandsband). */
+  band: number;
+  /** Toleranz innerhalb/außerhalb des Bands (px). */
+  bandIn: number;
+  bandOut: number;
+  /** Tangential-Anteil beim Kreuzen im Band. */
+  strafe: number;
+  /** Seitliches Weben für Schwarm-Gegner. */
+  weaveAmp: number;
+  weaveFreq: number;
+  /** Flankier-Radius und Winkelgeschwindigkeits-Faktor. */
+  orbitRadius: number;
+  orbitSpeed: number;
+  /** Chaser-Lunze: Zyklusdauer (s) und Sprint-Fenster (s). */
+  lungePeriod: number;
+  lungeWindow: number;
+  lungeBoost: number;
+  /** Charger-Werte. */
+  chargeWindup: number;
+  chargeDuration: number;
+  chargeSpeed: number;
+  chargeRecover: number;
+  chargeCooldown: number;
+  /** Splitter-Schwelle (px), ab der er zum Kontakt ansetzt. */
+  splitThreshold: number;
+  /** Exploder-Zündschnur (s) und Zündabstand (px). */
+  fuseTime: number;
+  fuseRange: number;
+  /** Phaser-Blink-Cooldown und -Radius. */
+  blinkCooldown: number;
+  blinkRadius: number;
+  /** Summoner-Ruf-Cooldown (s) und Anzahl Minions. */
+  summonCooldown: number;
+  summonCount: number;
+}
+
+const MAX_TIER = 5;
+
+function tierClamp(tier: number): number {
+  return Math.min(MAX_TIER, Math.max(0, Math.floor(tier)));
+}
+
+function buildProfile(archetype: Archetype, tier: number): AiProfile {
+  const t = tierClamp(tier);
+  switch (archetype) {
+    case "swarm":
+      // Schwarm: schnelle Annäherung, aber breites seitliches Weben.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0.34 + t * 0.05, weaveFreq: 1.9 + t * 0.28,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "chaser":
+      // Verfolger: direkte Linie mit rhythmischem Vorstoß.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 1.5 - t * 0.12, lungeWindow: 0.24, lungeBoost: 1.55 + t * 0.03,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "tank":
+      // Walze: langsam, stur geradeaus, bremst periodisch zum "Stemmen".
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 3.4 + t * 0.1, lungeWindow: 0.7, lungeBoost: 0.55 - t * 0.02,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "ranged":
+      // Schütze: hält ein Tier-abhängiges Band und kreuzt seitlich.
+      return {
+        band: 96 + t * 8, bandIn: 24 + t * 2, bandOut: 26,
+        strafe: 0.55 + t * 0.12,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 2.8 - t * 0.12, summonCount: 0,
+      };
+    case "charger":
+      // Stürmer: kürzere Anlaufzeit, härterer Sprint pro Tier.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: Math.max(0.38, 0.68 - t * 0.05),
+        chargeDuration: 0.4 + t * 0.02,
+        chargeSpeed: 3.1 + t * 0.12,
+        chargeRecover: Math.max(0.3, 0.78 - t * 0.07),
+        chargeCooldown: Math.max(1.4, 2.3 - t * 0.12),
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "splitter":
+      // Teilender: drängt in Schüben heran; je Tier später und langsamer.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 1.7 + t * 0.14, lungeWindow: 0.4, lungeBoost: 1.15 + t * 0.04,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 50 + t * 6,
+        fuseTime: 0.3, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "exploder":
+      // Zünder: rennt heran, zündet mit Tier-abhängiger Schnur.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0,
+        fuseTime: Math.max(0.5, 0.95 - t * 0.09),
+        fuseRange: 30 + t * 4,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "phaser":
+      // Phaser: teleportiert wiederholt in den Ring um den Spieler.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: Math.max(1.1, 2.7 - t * 0.14),
+        blinkRadius: 62 + t * 3,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "orbiter":
+      // Flanker: kreist in fester Bahn, wechselt die Umlaufrichtung.
+      return {
+        band: 0, bandIn: 0, bandOut: 0, strafe: 0,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 72 + t * 4,
+        orbitSpeed: 1.08 + t * 0.03,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: 0, summonCount: 0,
+      };
+    case "summoner":
+      // Rufer: bleibt weit hinten, kreist langsam und ruft Minions.
+      return {
+        band: 150 + t * 4, bandIn: 26, bandOut: 34,
+        strafe: 0.35,
+        weaveAmp: 0, weaveFreq: 0,
+        orbitRadius: 0, orbitSpeed: 0,
+        lungePeriod: 0, lungeWindow: 0, lungeBoost: 0,
+        chargeWindup: 0, chargeDuration: 0, chargeSpeed: 0, chargeRecover: 0, chargeCooldown: 0,
+        splitThreshold: 0, fuseTime: 0, fuseRange: 0,
+        blinkCooldown: 0, blinkRadius: 0,
+        summonCooldown: Math.max(2.6, 5.2 - t * 0.42),
+        summonCount: t >= 4 ? 3 : 2,
+      };
+  }
+}
+
+/** Vorab gebaute Profile: (Archetyp, Tier 0–5) → unveränderliche Referenz. */
+const PROFILE_TABLE: Record<Archetype, AiProfile[]> = {
+  swarm: [], chaser: [], tank: [], ranged: [], charger: [],
+  splitter: [], exploder: [], phaser: [], orbiter: [], summoner: [],
+};
+for (const archetype of Object.keys(PROFILE_TABLE) as Archetype[]) {
+  for (let t = 0; t <= MAX_TIER; t++) PROFILE_TABLE[archetype].push(buildProfile(archetype, t));
+}
+
+/** Reine Parameter-Abfrage ohne Allokation (Hot-Path-tauglich). */
+export function aiProfileFor(archetype: Archetype, tier: number): AiProfile {
+  return PROFILE_TABLE[archetype][tierClamp(tier)];
+}
+
 export function newAiState(rng: AiRng): AiState {
   return {
     mode: "approach",
@@ -79,6 +281,7 @@ export function newAiState(rng: AiRng): AiState {
     fuse: 0,
     blinks: 0,
     attacks: 0,
+    phase: 0,
   };
 }
 
@@ -88,13 +291,6 @@ export function summonMinionId(tier: number): EnemyId {
   if (tier <= 1) return "bat";
   if (tier <= 2) return "spider";
   return "reaper_bat";
-}
-
-function normalize(x: number, y: number, fallbackUid = 1): { x: number; y: number } {
-  const len = Math.hypot(x, y);
-  if (len > 0.0001) return { x: x / len, y: y / len };
-  const a = fallbackUid * 2.399963;
-  return { x: Math.cos(a), y: Math.sin(a) };
 }
 
 /**
@@ -109,169 +305,240 @@ export function stepEnemyAi(
   rng: AiRng,
   uid = 1,
 ): AiStep {
-  const state: AiState = { ...previous };
+  // In-place: Run.ts ersetzt den State sowieso (`e.ai = ai.state`). Das spart
+  // eine Objektkopie pro Gegner und Frame; der Hot-Path allokoiert nur das
+  // `actions`-Array, das die Aufrufer-Signatur verlangt.
+  const state: AiState = previous;
   const actions: AiAction[] = [];
+  const profile = aiProfileFor(params.archetype, params.tier);
   const dx = params.playerX - params.x;
   const dy = params.playerY - params.y;
   const dist = Math.hypot(dx, dy);
-  const toPlayer = normalize(dx, dy, uid);
-  let moveX = toPlayer.x;
-  let moveY = toPlayer.y;
+  const inv = dist > 0.0001 ? 1 / dist : 0;
+  const toX = dist > 0.0001 ? dx * inv : Math.cos(uid * 2.399963);
+  const toY = dist > 0.0001 ? dy * inv : Math.sin(uid * 2.399963);
+  let moveX = toX;
+  let moveY = toY;
   let speedMul = 1;
 
   state.timer = Math.max(0, state.timer - dt);
   state.cooldown = Math.max(0, state.cooldown - dt);
+  state.phase = (state.phase ?? 0) + dt;
 
   switch (params.archetype) {
     case "swarm": {
-      speedMul = 1.08;
+      // Schwarmwolke: Annäherung mit breitem Sinus-Weben quer zur Achse.
+      const wob = Math.sin(state.phase * profile.weaveFreq + uid * 0.73) * profile.weaveAmp;
+      moveX = toX - toY * wob;
+      moveY = toY + toX * wob;
+      speedMul = 1.06;
       break;
     }
     case "tank": {
-      speedMul = 0.92;
+      // Stur geradeaus; periodisches Stemmen macht ihn langsam und lesbar.
+      const cycle = state.phase % profile.lungePeriod;
+      speedMul = cycle < profile.lungeWindow ? profile.lungeBoost : 0.98;
       break;
     }
     case "chaser": {
-      speedMul = 1;
+      // Direkte Verfolgung mit rhythmischem Vorstoß.
+      const cycle = state.phase % profile.lungePeriod;
+      speedMul = cycle < profile.lungeWindow ? profile.lungeBoost : 1;
       break;
     }
     case "ranged": {
-      // Abstand halten: zu nah → zurück, zu weit → ran, dazwischen seitlich kreuzen.
-      const preferred = 108 + params.tier * 6;
-      if (dist < preferred - 22) {
-        moveX = -toPlayer.x;
-        moveY = -toPlayer.y;
-      } else if (dist > preferred + 28) {
-        moveX = toPlayer.x;
-        moveY = toPlayer.y;
+      // Abstandsband mit Hysterese: zu nah → zurück, zu weit → ran, dazwischen
+      // seitlich kreuzen. Die Hysterese verhindert Richtungs-Flattern an der
+      // Bandkante (wichtig für lesbares Kiten im Rudel).
+      const inner = profile.band - profile.bandIn;
+      const outer = profile.band + profile.bandOut;
+      // Hysterese: einmal begonnenes Zurückweichen hält bis inner+12, ein
+      // begonnener Vorlauf bis outer-12 — kein Flattern an der Bandkante.
+      if (dist < inner) state.mode = "retreat";
+      else if (dist > outer) state.mode = "approach";
+      else if (state.mode === "retreat" && dist < inner + 12) state.mode = "retreat";
+      else if (state.mode === "approach" && dist > outer - 12) state.mode = "approach";
+      else state.mode = "orbit";
+
+      if (state.mode === "retreat") {
+        moveX = -toX + toY * profile.strafe * state.orbitDir;
+        moveY = -toY - toX * profile.strafe * state.orbitDir;
+      } else if (state.mode === "approach") {
+        moveX = toX;
+        moveY = toY;
       } else {
-        moveX = -toPlayer.y * state.orbitDir;
-        moveY = toPlayer.x * state.orbitDir;
+        moveX = -toY * state.orbitDir;
+        moveY = toX * state.orbitDir;
       }
-      if (state.cooldown <= 0 && dist < 230) {
+      if (state.cooldown <= 0 && dist < 240) {
         const shotSpeed = 92 + params.tier * 10;
         actions.push({
           type: "shoot",
-          vx: toPlayer.x * shotSpeed,
-          vy: toPlayer.y * shotSpeed,
+          vx: toX * shotSpeed,
+          vy: toY * shotSpeed,
           speed: shotSpeed,
         });
-        state.cooldown = Math.max(1.1, 2.4 - params.tier * 0.18);
+        state.cooldown = Math.max(1.1, 2.8 - params.tier * 0.12);
         state.attacks += 1;
       }
       break;
     }
     case "charger": {
       if (state.mode === "approach") {
-        if (state.timer <= 0 && dist < 220) {
+        if (state.timer <= 0 && dist < 230) {
           state.mode = "windup";
-          state.timer = 0.58;
-          state.aimX = toPlayer.x;
-          state.aimY = toPlayer.y;
+          state.timer = profile.chargeWindup;
+          state.aimX = toX;
+          state.aimY = toY;
           actions.push({ type: "windup", duration: state.timer });
         }
       } else if (state.mode === "windup") {
         // Während des Anlaufs stehen bleiben und weiter zielen.
         speedMul = 0.12;
         if (state.timer <= 0) {
-          const aim = normalize(params.playerX - params.x, params.playerY - params.y, uid);
-          state.aimX = aim.x;
-          state.aimY = aim.y;
+          const ax = params.playerX - params.x;
+          const ay = params.playerY - params.y;
+          const al = Math.hypot(ax, ay);
+          if (al > 0.0001) {
+            state.aimX = ax / al;
+            state.aimY = ay / al;
+          }
           state.mode = "charge";
-          state.timer = 0.42;
+          state.timer = profile.chargeDuration;
           actions.push({ type: "charge", duration: state.timer });
         }
       } else if (state.mode === "charge") {
         moveX = state.aimX;
         moveY = state.aimY;
-        speedMul = 3.2;
+        speedMul = profile.chargeSpeed;
         if (state.timer <= 0) {
           state.mode = "recover";
-          state.timer = 0.75;
+          state.timer = profile.chargeRecover;
         }
       } else if (state.mode === "recover") {
-        speedMul = 0.35;
+        speedMul = 0.32;
         if (state.timer <= 0) {
           state.mode = "approach";
-          state.timer = 1.7 + rng.next() * 0.8;
+          state.timer = profile.chargeCooldown;
         }
       }
       break;
     }
     case "splitter": {
-      speedMul = 0.95;
+      // Schubweise Annäherung; kurz vor dem Kontakt "reift" er (Split-Schwelle).
+      const cycle = state.phase % profile.lungePeriod;
+      if (dist <= profile.splitThreshold && cycle >= profile.fuseTime) {
+        speedMul = 0.25;
+        state.mode = "fuse";
+      } else if (cycle < profile.lungeWindow) {
+        speedMul = profile.lungeBoost;
+        state.mode = "approach";
+      } else {
+        speedMul = 0.62;
+        state.mode = "approach";
+      }
       break;
     }
     case "exploder": {
       if (state.fuse > 0) {
         // Zündschnur: kaum Bewegung, Warnfläche wird von der Szene gezeichnet.
         state.fuse -= dt;
-        speedMul = 0.2;
+        speedMul = 0.18;
         if (state.fuse <= 0) {
           state.mode = "approach";
           actions.push({ type: "explode", radius: 36 + params.tier * 6 });
           state.attacks += 1;
         }
-      } else if (dist < 34) {
-        state.fuse = 0.85;
+      } else if (dist < profile.fuseRange) {
+        state.fuse = profile.fuseTime;
         state.mode = "fuse";
-        speedMul = 0.2;
+        speedMul = 0.18;
+      } else {
+        speedMul = 1.18;
       }
       break;
     }
     case "phaser": {
-      if (state.cooldown <= 0 && dist > 55) {
-        // Blinzelt hinter/neben den Spieler (60–78 px entfernt), nie auf ihn.
+      if (state.cooldown <= 0) {
+        // Blinzelt in den Ring um den Spieler (nie auf ihn), dann wieder ran.
         const angle = rng.next() * Math.PI * 2;
-        const radius = 60 + rng.next() * 18;
+        const radius = profile.blinkRadius + rng.next() * 14;
         actions.push({
           type: "blink",
           x: params.playerX + Math.cos(angle) * radius,
           y: params.playerY + Math.sin(angle) * radius,
         });
         state.blinks += 1;
-        state.cooldown = Math.max(1.6, 3.2 - params.tier * 0.2);
+        state.cooldown = profile.blinkCooldown + rng.next() * 0.4;
         state.mode = "fade";
         state.timer = 0.18;
+        speedMul = 0.7;
+      } else {
+        speedMul = 0.92;
+        if (state.timer <= 0) state.mode = "approach";
       }
-      speedMul = 0.9;
       break;
     }
     case "orbiter": {
-      // Tangential um den Spieler, langsam nach innen spiralend.
-      const desired = 88 - params.tier * 3;
-      const radial = dist > desired ? 0.35 : -0.25;
-      moveX = -toPlayer.y * state.orbitDir + toPlayer.x * radial;
-      moveY = toPlayer.x * state.orbitDir + toPlayer.y * radial;
-      const n = normalize(moveX, moveY, uid);
-      moveX = n.x;
-      moveY = n.y;
-      speedMul = 0.95;
+      // Flankier-Bahn: fester Radius, tangential, Richtungswechsel per Timer.
+      if (state.timer <= 0) {
+        state.orbitDir = -state.orbitDir;
+        state.timer = 4.2 + rng.next() * 1.8;
+      }
+      const radial = dist > profile.orbitRadius + 6
+        ? 0.32
+        : dist < profile.orbitRadius - 6
+          ? -0.22
+          : Math.sin(state.phase * 0.9) * 0.14;
+      moveX = -toY * state.orbitDir + toX * radial;
+      moveY = toX * state.orbitDir + toY * radial;
+      speedMul = profile.orbitSpeed;
       break;
     }
     case "summoner": {
-      const preferred = 136;
-      if (dist < preferred - 26) {
-        moveX = -toPlayer.x;
-        moveY = -toPlayer.y;
-      } else if (dist > preferred + 30) {
-        moveX = toPlayer.x;
-        moveY = toPlayer.y;
+      // Weites Abstandsband mit Hysterese; ruft nach Cooldown passende Minions.
+      const inner = profile.band - profile.bandIn;
+      const outer = profile.band + profile.bandOut;
+      if (state.mode === "retreat") {
+        moveX = -toX;
+        moveY = -toY;
+        if (dist > inner + 12) state.mode = "orbit";
+      } else if (state.mode === "approach") {
+        moveX = toX;
+        moveY = toY;
+        if (dist < outer - 12) state.mode = "orbit";
       } else {
-        moveX = -toPlayer.y * state.orbitDir * 0.6;
-        moveY = toPlayer.x * state.orbitDir * 0.6;
+        moveX = -toY * state.orbitDir * profile.strafe;
+        moveY = toX * state.orbitDir * profile.strafe;
+        if (dist < inner) state.mode = "retreat";
+        else if (dist > outer) state.mode = "approach";
       }
       if (state.cooldown <= 0) {
-        actions.push({ type: "summon", minion: summonMinionId(params.tier), count: 2 });
-        state.cooldown = Math.max(3.2, 5.2 - params.tier * 0.35);
+        actions.push({
+          type: "summon",
+          minion: summonMinionId(params.tier),
+          count: profile.summonCount,
+        });
+        state.cooldown = profile.summonCooldown;
         state.attacks += 1;
       }
+      speedMul = 0.88;
       break;
     }
   }
 
-  state.aimX = toPlayer.x;
-  state.aimY = toPlayer.y;
+  // Normalisierung inline: kein temporäres Objekt im Hot-Path.
+  const mlen = Math.hypot(moveX, moveY);
+  if (mlen > 0.0001) {
+    moveX /= mlen;
+    moveY /= mlen;
+  } else {
+    const a = uid * 2.399963;
+    moveX = Math.cos(a);
+    moveY = Math.sin(a);
+  }
+  state.aimX = toX;
+  state.aimY = toY;
   return { moveX, moveY, speedMul, state, actions };
 }
 
