@@ -102,4 +102,11 @@ Art-director-Urteil: siehe Abschnitt 4.
   Hebel UI/PostFX-Drosselung als Folgekarte, laut Briefing nicht in dieser Lane zu tunen.
 - Kein Spielgefühl-Eingriff: nur `src/logic/view.ts` + 1 Poll in `src/main.ts` (Dispatch-Request),
   keine Gegner-/Waffen-/Balance-Werte.
-- Kontrolleure: perf-check (Messwerte), art-director (Sicht-Belege), reviewer (Code).
+- Kontrolleure: reviewer **PASS** (27.11.: Klemme/Hysterese mit Belegen view.ts:19-27/109, Tests deckend 5/5
+  + `npm test` 34 Dateien/360 Tests grün, main.ts-Poll minimal, keine Fremd-Dateien, keine Temp-Reste).
+- Sicht-Beleg (einmaliges Urteil, 3x nearest vergrößert): **PASS** — keine Unschärfe/keine falschen Pixelkanten
+  bei 640/780/1080; ganzzahlige Skalierung erhalten, Canvas zentriert, HUD lesbar.
+- **Abschluss-Check (Supervisor, 27.11.):** fullrun `fpsMin` 39,4 < 55 → Abnahmekriterium **NICHT erfüllt**.
+  Ergebnis + Ursache stehen in Abschnitt 2c (Fullrun läuft intern 480 breit, die 640-Klemme greift dort nicht;
+  größter verbleibender Posten UI/PostFX +18,5 %). Karte #3461 wird **blocked** gesetzt, nicht weiter getunt;
+  Folgekarte UI/PostFX-Drosselung im Backlog.
