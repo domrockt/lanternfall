@@ -1,0 +1,4120 @@
+{
+  "generatedAt": "2026-11-27T20:41:12.752Z",
+  "profile": {
+    "name": "pixel7",
+    "width": 915,
+    "height": 412,
+    "dpr": 2,
+    "isMobile": true,
+    "hasTouch": true,
+    "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+  },
+  "cpuThrottle": 4,
+  "boot": {
+    "timeToTitleMs": 2227,
+    "texturesAtTitle": 498,
+    "framesSampled": 578,
+    "startupRating": "grenzwertig"
+  },
+  "gl": {
+    "present": true,
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+    "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+    "maxTextureSize": 16384,
+    "maxTextureImageUnits": 32,
+    "extensionCount": 36,
+    "extensions": [
+      "ANGLE_instanced_arrays",
+      "EXT_blend_minmax",
+      "EXT_clip_control",
+      "EXT_color_buffer_half_float",
+      "EXT_depth_clamp",
+      "EXT_disjoint_timer_query",
+      "EXT_float_blend",
+      "EXT_frag_depth",
+      "EXT_polygon_offset_clamp",
+      "EXT_texture_compression_bptc",
+      "EXT_texture_compression_rgtc",
+      "EXT_texture_filter_anisotropic",
+      "EXT_texture_mirror_clamp_to_edge",
+      "EXT_sRGB",
+      "KHR_parallel_shader_compile",
+      "OES_element_index_uint",
+      "OES_fbo_render_mipmap",
+      "OES_standard_derivatives",
+      "OES_texture_float",
+      "OES_texture_float_linear",
+      "OES_texture_half_float",
+      "OES_texture_half_float_linear",
+      "OES_vertex_array_object",
+      "WEBGL_blend_func_extended",
+      "WEBGL_color_buffer_float",
+      "WEBGL_compressed_texture_astc",
+      "WEBGL_compressed_texture_etc",
+      "WEBGL_compressed_texture_etc1",
+      "WEBGL_compressed_texture_s3tc",
+      "WEBGL_compressed_texture_s3tc_srgb",
+      "WEBGL_debug_renderer_info",
+      "WEBGL_debug_shaders",
+      "WEBGL_depth_texture",
+      "WEBGL_draw_buffers",
+      "WEBGL_lose_context",
+      "WEBGL_multi_draw"
+    ],
+    "contextAttributes": {
+      "alpha": false,
+      "antialias": false,
+      "depth": true,
+      "desynchronized": false,
+      "failIfMajorPerformanceCaveat": false,
+      "powerPreference": "high-performance",
+      "premultipliedAlpha": true,
+      "preserveDrawingBuffer": false,
+      "stencil": true,
+      "xrCompatible": false
+    },
+    "precision": {
+      "fragmentHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "fragmentMediump": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "vertexHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      }
+    }
+  },
+  "canvas": {
+    "attrWidth": 860,
+    "attrHeight": 360,
+    "logicalWidth": 860,
+    "logicalHeight": 360,
+    "cssWidth": 860,
+    "cssHeight": 360,
+    "deviceWidth": 1720,
+    "deviceHeight": 720,
+    "dpr": 2,
+    "rendersDevicePixels": false
+  },
+  "textureSummary": {
+    "count": 642,
+    "pixels": 2950704,
+    "approxBytes": 11802816,
+    "maxEdge": 1024,
+    "oversized": [],
+    "oversizedCount": 0
+  },
+  "textures": [
+    {
+      "key": "glyph_8_76",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_65",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_68",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_69",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_77",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_79",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_82",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_46",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "player_mira",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_idle_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_idle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_down_idle_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_idle_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_idle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_up_idle_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_idle_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_idle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_side_idle_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_mira_hit",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "portrait_mira",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "player_kael",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_idle_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_idle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_down_idle_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_idle_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_idle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_up_idle_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_idle_0",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_idle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_side_idle_1",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "player_kael_hit",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "portrait_kael",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bog_rat",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bog_rat2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wisp",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wisp2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bogzombie",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bogzombie2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "gem_small",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "gem_medium",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "gem_large",
+      "width": 11,
+      "height": 11,
+      "frames": 1
+    },
+    {
+      "key": "projectile_ember",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "fx_ember_muzzle",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "projectile_thorn",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "flail_ball",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "chain_link",
+      "width": 2,
+      "height": 8,
+      "frames": 1
+    },
+    {
+      "key": "fx_coin",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "fx_spark",
+      "width": 5,
+      "height": 5,
+      "frames": 1
+    },
+    {
+      "key": "orb_lantern",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "projectile_phoenix",
+      "width": 13,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "projectile_ice",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "chest_closed",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "chest_open",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "lantern_small",
+      "width": 7,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bog_rat_2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bog_rat_3",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bog_rat_4",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wisp_2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wisp_3",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wisp_4",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_mudling",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_mudling_2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_mudling_3",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_mudling_4",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_crow",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_crow_2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_crow_3",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_crow_4",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bogzombie_2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bogzombie_3",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bogzombie_4",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_toad",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_toad_2",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_toad_3",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_toad_4",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "enemy_skeleton",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_skeleton_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_skeleton_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_skeleton_4",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bat",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bat_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bat_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bat_4",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_ghoul",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_ghoul_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_ghoul_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_ghoul_4",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_witchling",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_witchling_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_witchling_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_witchling_4",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_slime",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_slime_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_slime_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_slime_4",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_scarecrow",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_scarecrow_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_scarecrow_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_scarecrow_4",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wolf",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wolf_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wolf_3",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wolf_4",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_banshee",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_banshee_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_banshee_3",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_banshee_4",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_golem",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_golem_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_golem_3",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_golem_4",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_spider",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_spider_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_spider_3",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_spider_4",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_cultist",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_cultist_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_cultist_3",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_cultist_4",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bomber",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bomber_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bomber_3",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_bomber_4",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "enemy_knight",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_knight_2",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_knight_3",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_knight_4",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_harpy",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_harpy_2",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_harpy_3",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_harpy_4",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_lich",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_lich_2",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_lich_3",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_lich_4",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wraith",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wraith_2",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wraith_3",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_wraith_4",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_treant",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_treant_2",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_treant_3",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_treant_4",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_imp",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_imp_2",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_imp_3",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_imp_4",
+      "width": 28,
+      "height": 28,
+      "frames": 1
+    },
+    {
+      "key": "enemy_horror",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_horror_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_horror_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_horror_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_centipede",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_centipede_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_centipede_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_centipede_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_gargoyle",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_gargoyle_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_gargoyle_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_gargoyle_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_reaper_bat",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_reaper_bat_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_reaper_bat_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_reaper_bat_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_abom",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_abom_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_abom_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_abom_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_voidcaller",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_voidcaller_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_voidcaller_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "enemy_voidcaller_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "boss_moor_queen",
+      "width": 56,
+      "height": 56,
+      "frames": 1
+    },
+    {
+      "key": "boss_moor_queen_2",
+      "width": 56,
+      "height": 56,
+      "frames": 1
+    },
+    {
+      "key": "boss_moor_queen_3",
+      "width": 56,
+      "height": 56,
+      "frames": 1
+    },
+    {
+      "key": "boss_bone_lord",
+      "width": 64,
+      "height": 64,
+      "frames": 1
+    },
+    {
+      "key": "boss_bone_lord_2",
+      "width": 64,
+      "height": 64,
+      "frames": 1
+    },
+    {
+      "key": "boss_bone_lord_3",
+      "width": 64,
+      "height": 64,
+      "frames": 1
+    },
+    {
+      "key": "boss_pale_shepherd",
+      "width": 72,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "boss_pale_shepherd_2",
+      "width": 72,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "boss_pale_shepherd_3",
+      "width": 72,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "boss_bell_golem",
+      "width": 80,
+      "height": 80,
+      "frames": 1
+    },
+    {
+      "key": "boss_bell_golem_2",
+      "width": 80,
+      "height": 80,
+      "frames": 1
+    },
+    {
+      "key": "boss_bell_golem_3",
+      "width": 80,
+      "height": 80,
+      "frames": 1
+    },
+    {
+      "key": "boss_coven",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "boss_coven_2",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "boss_coven_3",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "boss_hollow_king",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "boss_hollow_king_2",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "boss_hollow_king_3",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "title_background",
+      "width": 480,
+      "height": 270,
+      "frames": 1
+    },
+    {
+      "key": "title_logo",
+      "width": 96,
+      "height": 56,
+      "frames": 1
+    },
+    {
+      "key": "ui_frame",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "prop_tree_a",
+      "width": 34,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "prop_tree_b",
+      "width": 40,
+      "height": 56,
+      "frames": 1
+    },
+    {
+      "key": "prop_stump",
+      "width": 22,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "prop_boulder",
+      "width": 26,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "prop_grave",
+      "width": 18,
+      "height": 22,
+      "frames": 1
+    },
+    {
+      "key": "prop_cross",
+      "width": 16,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "prop_ruin",
+      "width": 52,
+      "height": 30,
+      "frames": 1
+    },
+    {
+      "key": "prop_column",
+      "width": 18,
+      "height": 38,
+      "frames": 1
+    },
+    {
+      "key": "prop_post",
+      "width": 20,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "prop_mushroom_ring",
+      "width": 30,
+      "height": 18,
+      "frames": 1
+    },
+    {
+      "key": "prop_bones",
+      "width": 23,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "prop_reeds",
+      "width": 18,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "prop_lilypad",
+      "width": 15,
+      "height": 10,
+      "frames": 1
+    },
+    {
+      "key": "water_ripple_0",
+      "width": 21,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "water_ripple_1",
+      "width": 21,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "light_radius",
+      "width": 192,
+      "height": 192,
+      "frames": 1
+    },
+    {
+      "key": "vignette",
+      "width": 860,
+      "height": 360,
+      "frames": 1
+    },
+    {
+      "key": "shadow",
+      "width": 14,
+      "height": 6,
+      "frames": 1
+    },
+    {
+      "key": "fx_fire",
+      "width": 14,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "fx_fire_2",
+      "width": 14,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "fx_fire_3",
+      "width": 14,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "fx_fire_4",
+      "width": 14,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "fx_fire_5",
+      "width": 14,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "fx_fire_6",
+      "width": 14,
+      "height": 14,
+      "frames": 1
+    },
+    {
+      "key": "fx_star",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_star_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_star_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_halo",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "fx_halo_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "fx_ice",
+      "width": 15,
+      "height": 21,
+      "frames": 1
+    },
+    {
+      "key": "fx_ice_2",
+      "width": 15,
+      "height": 21,
+      "frames": 1
+    },
+    {
+      "key": "fx_ice_3",
+      "width": 15,
+      "height": 21,
+      "frames": 1
+    },
+    {
+      "key": "fx_ice_4",
+      "width": 15,
+      "height": 21,
+      "frames": 1
+    },
+    {
+      "key": "fx_smear",
+      "width": 44,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_smear_2",
+      "width": 44,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_smear_3",
+      "width": 44,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_smear_4",
+      "width": 44,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_smear_5",
+      "width": 44,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_bolt",
+      "width": 12,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_bolt_2",
+      "width": 12,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_bolt_3",
+      "width": 12,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_bolt_4",
+      "width": 12,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_bolt_5",
+      "width": 12,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_bolt_6",
+      "width": 12,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "fx_seal",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_seal_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_seal_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_seal_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_seal_5",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_thorn",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_thorn_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_thorn_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_orb",
+      "width": 11,
+      "height": 11,
+      "frames": 1
+    },
+    {
+      "key": "fx_orb_2",
+      "width": 11,
+      "height": 11,
+      "frames": 1
+    },
+    {
+      "key": "fx_orb_3",
+      "width": 11,
+      "height": 11,
+      "frames": 1
+    },
+    {
+      "key": "fx_orb_4",
+      "width": 11,
+      "height": 11,
+      "frames": 1
+    },
+    {
+      "key": "fx_pillar",
+      "width": 26,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "fx_pillar_2",
+      "width": 26,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "fx_pillar_3",
+      "width": 26,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "fx_pillar_4",
+      "width": 26,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "fx_pillar_5",
+      "width": 26,
+      "height": 72,
+      "frames": 1
+    },
+    {
+      "key": "fx_shock",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "fx_shock_2",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "fx_shock_3",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "fx_shock_4",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "fx_shock_5",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "fx_shock_6",
+      "width": 48,
+      "height": 48,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_bone",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_bone_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_bone_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_bone_4",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_blob",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_blob_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_blob_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_blob_4",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_void",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_void_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_void_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_void_4",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_dust",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_dust_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_dust_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_dust_4",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_fire",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_fire_2",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_fire_3",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_death_fire_4",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "fx_boss_core",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_boss_core_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_boss_core_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_boss_core_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_boss_core_5",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_boss_core_6",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_dusk",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "fx_dusk_2",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "fx_dusk_3",
+      "width": 20,
+      "height": 20,
+      "frames": 1
+    },
+    {
+      "key": "fx_ash",
+      "width": 5,
+      "height": 5,
+      "frames": 1
+    },
+    {
+      "key": "fx_ash_2",
+      "width": 5,
+      "height": 5,
+      "frames": 1
+    },
+    {
+      "key": "orb_soul",
+      "width": 15,
+      "height": 22,
+      "frames": 1
+    },
+    {
+      "key": "orb_soul_2",
+      "width": 15,
+      "height": 22,
+      "frames": 1
+    },
+    {
+      "key": "orb_soul_3",
+      "width": 15,
+      "height": 22,
+      "frames": 1
+    },
+    {
+      "key": "fx_halo_cold",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "fx_halo_cold_2",
+      "width": 24,
+      "height": 24,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_phoenix",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_phoenix_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_phoenix_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_phoenix_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_phoenix",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_phoenix_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_phoenix_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_phoenix_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_eternal_winter",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_eternal_winter_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_eternal_winter_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_eternal_winter_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thorn_storm",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thorn_storm_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thorn_storm_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thorn_storm_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thunder_seal",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thunder_seal_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thunder_seal_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_thunder_seal_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_soul_beacon",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_soul_beacon_2",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_soul_beacon_3",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "fx_evo_death_soul_beacon_4",
+      "width": 32,
+      "height": 32,
+      "frames": 1
+    },
+    {
+      "key": "ring_frost",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "ring_burst",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "ring_seal",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "ring_soul",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_spit",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_bone",
+      "width": 9,
+      "height": 5,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_fire",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_shadow",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_thorn",
+      "width": 7,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "elite_aura",
+      "width": 96,
+      "height": 96,
+      "frames": 1
+    },
+    {
+      "key": "telegraph_disc",
+      "width": 64,
+      "height": 64,
+      "frames": 1
+    },
+    {
+      "key": "puddle_poison",
+      "width": 40,
+      "height": 40,
+      "frames": 1
+    },
+    {
+      "key": "telegraph_beam",
+      "width": 8,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_weapon_ember",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_weapon_flail",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_weapon_frost",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_weapon_thorn",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_weapon_storm",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_weapon_lantern",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_passive_boots",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_passive_tome",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_passive_heart",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_passive_charm",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_passive_whetstone",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_passive_hourglass",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_evo_phoenix",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_evo_wrath_pendulum",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_evo_eternal_winter",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_evo_thorn_storm",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_evo_thunder_seal",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "icon_evo_soul_beacon",
+      "width": 16,
+      "height": 16,
+      "frames": 1
+    },
+    {
+      "key": "runtime_atlas",
+      "width": 1024,
+      "height": 459,
+      "frames": 305
+    },
+    {
+      "key": "glyph_21_76",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_65",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_78",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_84",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_69",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_82",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_70",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_68",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_73",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_69",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_76",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_84",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_90",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_65",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_82",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_78",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_51",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_48",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_73",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_78",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_85",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_84",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_66",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_83",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_90",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_71",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_66",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_83",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_87",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_77",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_79",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_67",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_72",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_75",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_85",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_70",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_83",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_80",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_86",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_66",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_87",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_65",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_83",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_68",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_47",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_80",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_70",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_69",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_73",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_76",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_66",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_71",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_78",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_45",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_85",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_82",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_84",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_79",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_77",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_67",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_72",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_43",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_196",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_61",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_79",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_80",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_73",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_60",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_62",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_80",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_70",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_67",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_72",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_62",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_77",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_85",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_75",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_53",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_37",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_88",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_56",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_48",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_56",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_48",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_37",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_45",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_65",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_78",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_71",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_85",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_84",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_79",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_220",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_196",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_72",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_68",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_67",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_49",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_183",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_77",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_105",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_114",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_97",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_115",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_104",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_119",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_99",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_107",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_76",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_65",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_84",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_69",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_82",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_78",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_45",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_72",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_88",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_50",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_53",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_54",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_49",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_43",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_49",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_37",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_196",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_87",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_75",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_58",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_75",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_66",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_117",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_100",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_101",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_75",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_108",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_73",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_83",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_77",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_214",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_67",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_51",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_57",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_50",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_88",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_45",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_47",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_53",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_40",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_41",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_40",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_41",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "m9_ambient_glow",
+      "width": 11,
+      "height": 11,
+      "frames": 1
+    },
+    {
+      "key": "m9_ambient_fog",
+      "width": 128,
+      "height": 64,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_hd_spit",
+      "width": 9,
+      "height": 10,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_hd_bone",
+      "width": 9,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_hd_shadow",
+      "width": 9,
+      "height": 9,
+      "frames": 1
+    },
+    {
+      "key": "enemy_shot_hd_fire",
+      "width": 9,
+      "height": 12,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_86",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_49",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_58",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_50",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_51",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_51",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_44",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_90",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_61",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_81",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_71",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_214",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_7_220",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_49",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "chunk_7_7",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_7_8",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_8_7",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_8_8",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_6_7",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_6_8",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_7_6",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_7_9",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_8_6",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_8_9",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_9_7",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_9_8",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_6_6",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_6_9",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_9_6",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_50",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "chunk_9_9",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_5_7",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_5_8",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_10_7",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_10_8",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_5_6",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_5_9",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_10_6",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "chunk_10_9",
+      "width": 256,
+      "height": 256,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_51",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_48",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_21_52",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_10_52",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_71",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_76",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_70",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_69",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_85",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_70",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_50",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_99",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_104",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_97",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_100",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_101",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_110",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_87",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_73",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_68",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_83",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_20_49",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_56",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_119",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_103",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_117",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_115",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_116",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_109",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_112",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_111",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_114",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_102",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_82",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_67",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_12_72",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_98",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_107",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_108",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_105",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    },
+    {
+      "key": "glyph_8_122",
+      "width": 5,
+      "height": 7,
+      "frames": 1
+    }
+  ],
+  "overlays": {
+    "count": 533,
+    "fullscreen": [
+      {
+        "scene": "run",
+        "type": "Image",
+        "name": "vignette",
+        "bounds": {
+          "width": 860,
+          "height": 360
+        },
+        "alpha": 0.9,
+        "blendMode": 0,
+        "coverage": 1,
+        "blend": "NORMAL",
+        "additive": false,
+        "translucent": true,
+        "severity": "niedrig"
+      }
+    ],
+    "worst": "niedrig: run/vignette (100 % Flaeche, NORMAL, Alpha 0.9)"
+  },
+  "fx": {
+    "preFXObjects": 0,
+    "postFXObjects": 0,
+    "details": []
+  },
+  "title": {
+    "frames": 181,
+    "fps": 60.2,
+    "drawsPerFrame": 115.9,
+    "drawsP95": 229,
+    "drawsMax": 248,
+    "switchesPerFrame": 119.5,
+    "switchesMax": 1588
+  },
+  "run": {
+    "enemies": 298,
+    "frames": 299,
+    "fps": 59.7,
+    "drawsPerFrame": 129.5,
+    "drawsP95": 229,
+    "drawsMax": 230,
+    "switchesPerFrame": 128.2,
+    "switchesMax": 374
+  },
+  "programs": 31,
+  "textureBindsTotal": 69229,
+  "textureSwitchesTotal": 68966,
+  "config": {
+    "generatedAt": "2026-11-27T20:41:01.104Z",
+    "context": "webgl1",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+    "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "maxTextureSize": 16384,
+    "maxTextureImageUnits": 32,
+    "extensions": [
+      "ANGLE_instanced_arrays",
+      "EXT_blend_minmax",
+      "EXT_clip_control",
+      "EXT_color_buffer_half_float",
+      "EXT_depth_clamp",
+      "EXT_disjoint_timer_query",
+      "EXT_float_blend",
+      "EXT_frag_depth",
+      "EXT_polygon_offset_clamp",
+      "EXT_texture_compression_bptc",
+      "EXT_texture_compression_rgtc",
+      "EXT_texture_filter_anisotropic",
+      "EXT_texture_mirror_clamp_to_edge",
+      "EXT_sRGB",
+      "KHR_parallel_shader_compile",
+      "OES_element_index_uint",
+      "OES_fbo_render_mipmap",
+      "OES_standard_derivatives",
+      "OES_texture_float",
+      "OES_texture_float_linear",
+      "OES_texture_half_float",
+      "OES_texture_half_float_linear",
+      "OES_vertex_array_object",
+      "WEBGL_blend_func_extended",
+      "WEBGL_color_buffer_float",
+      "WEBGL_compressed_texture_astc",
+      "WEBGL_compressed_texture_etc",
+      "WEBGL_compressed_texture_etc1",
+      "WEBGL_compressed_texture_s3tc",
+      "WEBGL_compressed_texture_s3tc_srgb",
+      "WEBGL_debug_renderer_info",
+      "WEBGL_debug_shaders",
+      "WEBGL_depth_texture",
+      "WEBGL_draw_buffers",
+      "WEBGL_lose_context",
+      "WEBGL_multi_draw"
+    ],
+    "contextAttributes": {
+      "alpha": false,
+      "antialias": false,
+      "depth": true,
+      "desynchronized": false,
+      "failIfMajorPerformanceCaveat": false,
+      "powerPreference": "high-performance",
+      "premultipliedAlpha": true,
+      "preserveDrawingBuffer": false,
+      "stencil": true,
+      "xrCompatible": false
+    },
+    "precision": {
+      "fragmentHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "fragmentMediump": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "vertexHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      }
+    },
+    "fps": {
+      "target": 60,
+      "limit": 60,
+      "cappedAt60": true
+    },
+    "powerPreference": "high-performance",
+    "canvas": {
+      "attrWidth": 860,
+      "attrHeight": 360,
+      "logicalWidth": 860,
+      "logicalHeight": 360,
+      "rendersDevicePixels": false
+    },
+    "textures": {
+      "count": 0,
+      "pixels": 0,
+      "approxBytes": 0,
+      "maxEdge": 0,
+      "oversized": []
+    }
+  },
+  "fpsCapActive": true,
+  "powerPreference": "high-performance",
+  "jsErrors": [],
+  "passed": true
+}
