@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3818,
+  "next": 4039,
   "cards": [
     {
       "id": 1,
@@ -4510,23 +4510,28 @@
       "id": 3618,
       "title": "m10-hazard-warn-fairness #1 K1 Audit: alle HazardSystem-Aufrufe + Warnzeiten/Optik",
       "description": "Grep aller spawnCircle/spawnBeam-Aufrufer (BossSystem, Run) + Tabelle Angriff/warn/Rim-Optik in docs/lanes/m10-hazard-warn-fairness.md. Abnahme: Tabelle vollstaendig (18 Boss-Angriffe + exploder), Unter-0.45s-Faelle markiert.",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-27T16:01:31Z",
           "by": "lead",
           "text": "todo → review: Audit-Tabelle (18 Boss-Angriffe + exploder 0.16s FAIL) in docs/lanes/m10-hazard-warn-fairness.md, Commit 9afbbb2"
+        },
+        {
+          "at": "2026-11-27T18:15:01Z",
+          "by": "build",
+          "text": "review → done: review → done: Commit 9afbbb2 (K1 Audit, 18 Boss-Angriffe + exploder 0.16s FAIL). reviewer PASS: Diff-Umfang + Doku geprüft."
         }
       ],
       "created": "2026-11-27T15:56:37Z",
-      "updated": "2026-11-27T16:01:31Z"
+      "updated": "2026-11-27T18:15:01Z"
     },
     {
       "id": 3619,
       "title": "m10-hazard-warn-fairness #2 K2 Mess-Harness m10-hazard-fairness.mjs + Baseline",
       "description": "scripts/m10-hazard-fairness.mjs: 500 Gegner + alle Hazard-Klassen @640x360; misst effektive Warnzeit, Warnring-Kontrast (Pixel-Sampling) und Bot-Trefferquote. Baseline shots/m10-hazard-baseline.json. Abnahme: JSON existiert, Zahlen plausibel, 0 JS-Fehler.",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
       "notes": [
         {
@@ -4538,16 +4543,21 @@
           "at": "2026-11-27T16:40:27Z",
           "by": "lead",
           "text": "todo → review: Harness + Baseline shots/m10-hazard-baseline.json (minWarn 0.16s exploder, Kontrast ~0, Trefferquote 8/8), Commit siehe #3619"
+        },
+        {
+          "at": "2026-11-27T18:15:01Z",
+          "by": "build",
+          "text": "review → done: review → done: Commit 12ceaee (K2 Harness + Baseline shots/m10-hazard-baseline.json). reviewer PASS."
         }
       ],
       "created": "2026-11-27T15:56:37Z",
-      "updated": "2026-11-27T16:01:31Z"
+      "updated": "2026-11-27T18:15:01Z"
     },
     {
       "id": 3620,
       "title": "m10-hazard-warn-fairness #3 K3 Fix Hazards.ts: Mindest-Warnzeit + Rim-Sichtbarkeit",
       "description": "Nur src/systems/Hazards.ts: MIN_WARN-Konstante (0.45s) via exportierter Helfer, Rim-Puls-Alpha im Schwarm sichtbar. >=4 neue Tests in tests/hazard-fairness.test.ts gruen. Abnahme: npx vitest run tests/hazard-fairness.test.ts gruen, tsc clean.",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
       "notes": [
         {
@@ -4564,20 +4574,40 @@
           "at": "2026-11-27T17:44:22Z",
           "by": "build",
           "text": "[Supervisor] Folge: K3-Fix umgesetzt + 8 Tests gruen, isoliert verifiziert; Commit d962006. Kein Full-Build in dieser Karte."
+        },
+        {
+          "at": "2026-11-27T18:15:01Z",
+          "by": "build",
+          "text": "review → done: review → done: Fix in WIP 10af221/68509cf + Doku d962006 (MIN_WARN_S=0.45, MIN_RIM_ALPHA 0.30, rimPulseAlpha). test-auditor PASS: 8/8 hazard-fairness-Tests, Verdrahtung spawnCircle L94 + spawnBeam L146; reviewer PASS."
         }
       ],
       "created": "2026-11-27T15:56:37Z",
-      "updated": "2026-11-27T17:44:22Z"
+      "updated": "2026-11-27T18:15:01Z"
     },
     {
       "id": 3621,
       "title": "m10-hazard-warn-fairness #4 K4 Nachmessung + Doku + lane-done",
       "description": "Gleicher Harness -> shots/m10-hazard-after.json, Vorher/Nachher-Tabelle in docs/lanes/m10-hazard-warn-fairness.md, npm test rc=0, Commit, .lane-done. Abnahme: mind. 1 messbarer Gewinn (Warnzeit-Min oder Kontrast/Trefferquote), diff-stat nur erlaubte Dateien.",
-      "column": "todo",
+      "column": "done",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T18:15:01Z",
+          "by": "build",
+          "text": "todo → done: review → done: Commit 21d1ddc (K4 Nachmessung shots/m10-hazard-after.json: Warnzeit-Min 0.16→0.45s, classesUnderMinWarn [], |Kontrast| 14/19 besser, +7.5% Mittel; hitRate gesättigt ehrlich dokumentiert). Kontrolleure: test-auditor PASS, reviewer PASS (2 Nits gefixt), commit-gate PASS (363/363 Tests). .lane-done committed."
+        }
+      ],
       "created": "2026-11-27T15:56:37Z",
-      "updated": "2026-11-27T15:56:37Z"
+      "updated": "2026-11-27T18:15:01Z"
+    },
+    {
+      "id": 4038,
+      "title": "@vfx-artist m10-hazard-warn-fairness Folge: Warn-Disc-Kontur im Schwarm lesbar machen",
+      "description": "Aus Lane m10-hazard-warn-fairness (#3621, docs/lanes/m10-hazard-warn-fairness.md): Warn-Disc (telegraph_disc, NORMAL-Blend, Alpha 0.9) liest sich bei 500 Gegnern weiterhin nur mäßig (|Michelson| ~0.03-0.12, Messung shots/m10-hazard-baseline/after.json). Hebel: helle Konturfarbe/1-px-Outline statt dunkler Fläche, Messung mit scripts/m10-hazard-fairness.mjs (|Kontrast| je Klasse vor/nach). Abnahme: |Ring-Kontrast| Mittelwert messbar über 0.0514 (Ist 27.11.) improvements oder art/vfx-check PASS, Tests grün, Belege shots/m10-hazard-*. Ownership vfx-artist, Kontrolle vfx-check + reviewer.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T18:15:10Z",
+      "updated": "2026-11-27T18:15:10Z"
     }
   ]
 }
