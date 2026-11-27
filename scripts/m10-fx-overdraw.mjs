@@ -141,7 +141,14 @@ async function runInterleaved({ width, height, dpr, seconds }) {
         const applied = await page.evaluate(({ variant, originalCap }) => {
           const run = window.__game.scene.getScene("run");
           const combat = run.combat;
+          const w = window;
           // Jede Variante startet von "voll".
+          if (w.__lfOrigFxSpawn) {
+            combat.fx.spawn = w.__lfOrigFxSpawn;
+            combat.particles.spawn = w.__lfOrigParticleSpawn;
+            w.__lfOrigFxSpawn = null;
+            w.__lfOrigParticleSpawn = null;
+          }
           combat.fx.enabled = true;
           combat.particles.enabled = true;
           combat.particles.setMaxActive(originalCap);
@@ -156,8 +163,13 @@ async function runInterleaved({ width, height, dpr, seconds }) {
             glowCap: budget?.cap ?? null,
           };
           if (variant === "fx-off") {
-            combat.fx.enabled = false;
-            combat.particles.enabled = false;
+            // Kein Quellcode-Schalter in Karte 1: Spawns direkt am Pool abschalten.
+            if (!w.__lfOrigFxSpawn) {
+              w.__lfOrigFxSpawn = combat.fx.spawn;
+              w.__lfOrigParticleSpawn = combat.particles.spawn;
+            }
+            combat.fx.spawn = () => null;
+            combat.particles.spawn = () => null;
             combat.fx.active.length = 0;
             combat.particles.active.length = 0;
           } else if (variant === "particle-25") {
@@ -274,26 +286,28 @@ try {
   const runs = [];
   if (SUITE === "attribution") {
     const variants = ["fx-off", "particle-25", "full"];
-    for (let r = 0; r < RUNS; r++) {
-      for (const variant of variants) {
-        const m = await runOnce({ width: 780, height: 360, dpr: 3, variant });
-        runs.push({ run: r + 1, variant, ...m, msPerFrame: msPerFrame(m.fps) });
-        console.log(`[attribution] run ${r + 1} ${variant}: ${m.fps} fps, min ${m.fpsMin}, ${msPerFrame(m.fps)} ms/frame`);
-      }
-    }
+    const inter = await runInterleaved({ width: 780, height: 360, dpr: 3, seconds: SECONDS });
+    for (const row of inter.rows) runs.push({ design: "interleaved", ...row, msPerFrame: msPerFrame(row.fps) });
     const summary = {};
     for (const variant of variants) {
       const rows = runs.filter((x) => x.variant === variant);
       const avg = (k) => rows.reduce((a, b) => a + (b[k] ?? 0), 0) / rows.length;
+      const med = (k) => {
+        const v = rows.map((b) => b[k]).sort((a, b) => a - b);
+        return v[Math.floor(v.length / 2)];
+      };
       summary[variant] = {
         fps: Math.round(avg("fps") * 10) / 10,
+        fpsMedian: Math.round(med("fps") * 10) / 10,
         fpsMin: Math.min(...rows.map((x) => x.fpsMin ?? 999)),
         msPerFrame: msPerFrame(avg("fps")),
-        particles: Math.round(avg("state") ? rows.reduce((a, b) => a + b.state.particles, 0) / rows.length : 0),
+        particles: Math.round(rows.reduce((a, b) => a + b.state.particles, 0) / rows.length),
+        fx: Math.round(rows.reduce((a, b) => a + b.state.fx, 0) / rows.length),
       };
     }
     result = {
       suite: "attribution",
+      design: "interleaved (eine M25-Session, 3 Zyklen, rotierende Reihenfolge)",
       viewport: { width: 780, height: 360, dpr: 3 },
       seconds: SECONDS,
       runsPerVariant: RUNS,
@@ -301,9 +315,10 @@ try {
       // FX-Anteil in ms/Frame: (c) voll minus (a) FX komplett aus.
       fxDeltaMsPerFrame: Math.round((summary.full.msPerFrame - summary["fx-off"].msPerFrame) * 100) / 100,
       particleDeltaMsPerFrame: Math.round((summary.full.msPerFrame - summary["particle-25"].msPerFrame) * 100) / 100,
+      fxRevenuePercent: Math.round(((summary.full.msPerFrame - summary["fx-off"].msPerFrame) / summary.full.msPerFrame) * 1000) / 10,
       targetFps: 50,
       runs,
-      jsErrors: runs.flatMap((r) => r.jsErrors),
+      jsErrors: inter.errors,
     };
   } else {
     const configs = [
