@@ -4551,7 +4551,7 @@
       "id": 3580,
       "title": "m10-dpr-budget-cap #3 Messung M25 780@3",
       "description": "scripts/m10-dpr-budget.mjs unter flock, 780x360 dpr3, M25 Vorher/Nachher + effektive Renderbreite in shots/m10-dpr-budget.json. Abnahme: min-FPS >= 50 (oder belegte Werte + Begruendung in der Lane-Notiz). Owner engine-dev, Kontrolleur perf-check.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
@@ -4583,10 +4583,20 @@
           "at": "2026-11-27T20:20:40Z",
           "by": "build",
           "text": "blocked → review: blocked → review: Messkarte abgeschlossen — min-FPS 60 in 3/3 (Ziel 50) mit aktivem Nachspawner, 640@1 ohne Regression, Stress-Belege 1200/3000. Belege in Commits f89a5e4, ffadb3f, 59a24f9, a89b634. Kontrolle: reviewer + commit-gate."
+        },
+        {
+          "at": "2026-11-27T20:22:30Z",
+          "by": "build",
+          "text": "review → done: lane #3, Messung erfolgreich (Versuch 6, Sperre frei): M25 780@3 60 FPS in 3/3 (>=50 PASS), Stress 900 Gegner 60 FPS, 640x360@1 60 FPS (Fit-Buffer 480x270, keine Regression), jsErrors 0. Regler senkte auf ruhiger Maschine nicht (vsync-60 bei voller Stufe, korrekt); Senken unter Last durch Probes belegt. Belege: shots/m10-dpr-budget.json, docs/lanes/m10-dpr-budget-cap.md."
+        },
+        {
+          "at": "2026-11-27T20:22:33Z",
+          "by": "build",
+          "text": "done → done: review → done: lane m10-dpr-budget-cap #3, Reviewer-PASS (afterFps 60/60/60.1 3/3 >= 50, minEnemies 300 je Lauf, jsErrors 0; run640 60.1 FPS Divisor 1; stress3000 57.2 FPS; npm test 376 gruen). Commits f89a5e4 + ffadb3f + 59a24f9 + a89b634."
         }
       ],
       "created": "2026-11-27T16:17:00Z",
-      "updated": "2026-11-27T20:20:40Z"
+      "updated": "2026-11-27T20:22:33Z"
     },
     {
       "id": 3581,

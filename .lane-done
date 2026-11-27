@@ -1,0 +1,31 @@
+# Lane m10-dpr-budget-cap — done (2026-11-27)
+
+Ziel: adaptiver, ganzzahliger Render-Teiler (1..3) gegen den Fill-Rate-
+Engpass bei 780x360 dpr3, Ziel >= 50 FPS in Minute 25.
+
+Ergebnis:
+- #1 Regler als reine Funktion (src/logic/scale.ts): chooseRenderScale/
+  stepRenderScale/maxRenderScale, Hysterese 45 FPS/2 s senken, 57 FPS/4 s
+  heben, Totzone friert Timer (Last-Jitter-fest), Buffer >= 320x180.
+- #2 Einbau (src/config.ts): eigener rAF-FPS-EWMA (0,9/0,1) statt Phaser
+  loop.actualFps (zu traege, ~15 s Konvergenz), Kamera-Projektions-Enforcement
+  (Zoom 1/Teiler + Viewport W/s x H/s + Midpoint-Erhaltung, je Frame) — ohne
+  das war der gesenkte Buffer ein Zoom-Crop (Spieler off-screen).
+- #3 Messung (shots/m10-dpr-budget.json, Versuch 6): M25 780@3 **60 FPS in
+  3/3** (>= 50 PASS), Stress 900 Gegner 60 FPS, 640x360@1 60 FPS mit nativem
+  M8-Fit-Buffer 480x270 (>= 50, keine Regression), jsErrors 0.
+- #4 Pixel-Perfect-Beleg (shots/m10-dpr-budget-pixel*): uniformAE 0/2 527 200
+  (hartes nearest-6x-Upscale, keine weichen Kanten), Layout identisch zur
+  Vollstufe; Empirie-Sieger aus 6er-Kamera-Matrix.
+
+Ehrlicher Befund: Auf der ruhigen Maschine haelt der volle Buffer bereits
+vsync-60 — der Regler musste nicht senken (dormant, kein Schaden). Senken
+unter Last ist durch Probes belegt (Teiler 1 -> 2, FPS-Erholung 44,9 -> 59);
+die Lane-Prämisse (42-46 FPS) war Parallel-Lane-Last (Load 13-15).
+
+Review: PASS (keine kritischen Befunde); Auflagen umgesetzt (Probe-Skripte
+geloescht, Override-/Buffer-Tests 21/21 in tests/scale-budget.test.ts).
+Offen (Folge-Karte #4658, backlog): camera.width-Leser (BossSystem:200,
+GroundRenderer:229/358) + Input-Mapping-Check bei gesenktem Massstab.
+
+Build rc=0, 376/376 Tests gruen. Details: docs/lanes/m10-dpr-budget-cap.md
