@@ -1,0 +1,2038 @@
+{
+  "lane": "m10-chest-reveal",
+  "card": "K1 Vorher-Beleg",
+  "capturedAt": "2026-11-27T22:00:48.498Z",
+  "seed": 101,
+  "note": "Vorher-Stand: Truhen-Panel klein/nüchtern; Untertitel (y=99) sitzt direkt über dem Truhen-Icon (Bounds-Messung unten), Lichtstrahl und Münzen minimal. Rewards/Timings unangetastet.",
+  "jsErrors": [],
+  "formats": [
+    {
+      "label": "640x360",
+      "viewport": {
+        "width": 640,
+        "height": 360,
+        "dpr": 2
+      },
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "groundBounds": {
+        "panel": null
+      },
+      "openMidBounds": {
+        "panel": [
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 640,
+            "height": 360
+          },
+          {
+            "name": null,
+            "type": "NineSlice",
+            "texture": "ui_frame",
+            "x": 94,
+            "y": 63,
+            "width": 452,
+            "height": 244
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "light_radius",
+            "x": 209.6,
+            "y": 4.6,
+            "width": 220.8,
+            "height": 220.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "chest_open",
+            "x": 302.4,
+            "y": 111.4,
+            "width": 35.2,
+            "height": 35.2
+          },
+          {
+            "name": "chest-title",
+            "type": "Container",
+            "texture": null,
+            "x": 238,
+            "y": 83,
+            "width": 166,
+            "height": 64
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 255,
+            "y": 99,
+            "width": 140,
+            "height": 32
+          },
+          {
+            "name": "chest-hint-0",
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 153,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-hint-1",
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 161,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 186,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 212,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_tome",
+            "x": 214.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 208,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 234,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 234,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 272,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 298,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 300.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 294,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 358,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 384,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_charm",
+            "x": 386.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 380,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 406,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 406,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 444,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 470,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 472.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 490,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 492,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 492,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 530,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 556,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 558.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 576,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 578,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 578,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-foot",
+            "type": "Container",
+            "texture": null,
+            "x": 246,
+            "y": 346,
+            "width": 149,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Zone",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 640,
+            "height": 360
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 256.3,
+            "y": 107.9,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 354.9,
+            "y": 21.7,
+            "width": 3,
+            "height": 3
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 263.2,
+            "y": 73.9,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 406.7,
+            "y": 34.7,
+            "width": 3.1,
+            "height": 3.1
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 288.6,
+            "y": 42.7,
+            "width": 2.9,
+            "height": 2.9
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 452,
+            "y": 71.4,
+            "width": 3.2,
+            "height": 3.2
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 330.1,
+            "y": 23.9,
+            "width": 3,
+            "height": 3
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 257.5,
+            "y": 91.1,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 380.9,
+            "y": 25.2,
+            "width": 3.1,
+            "height": 3.1
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 273.6,
+            "y": 57.3,
+            "width": 2.9,
+            "height": 2.9
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 430.8,
+            "y": 50.2,
+            "width": 3.2,
+            "height": 3.2
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 307.7,
+            "y": 31.2,
+            "width": 2.9,
+            "height": 2.9
+          }
+        ]
+      },
+      "openSettledBounds": {
+        "panel": [
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 640,
+            "height": 360
+          },
+          {
+            "name": null,
+            "type": "NineSlice",
+            "texture": "ui_frame",
+            "x": 94,
+            "y": 63,
+            "width": 452,
+            "height": 244
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "light_radius",
+            "x": 209.6,
+            "y": 4.6,
+            "width": 220.8,
+            "height": 220.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "chest_open",
+            "x": 302.4,
+            "y": 111.4,
+            "width": 35.2,
+            "height": 35.2
+          },
+          {
+            "name": "chest-title",
+            "type": "Container",
+            "texture": null,
+            "x": 238,
+            "y": 83,
+            "width": 166,
+            "height": 64
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 255,
+            "y": 99,
+            "width": 140,
+            "height": 32
+          },
+          {
+            "name": "chest-hint-0",
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 153,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-hint-1",
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 161,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 186,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 212,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_tome",
+            "x": 214.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 199,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 234,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 214,
+            "y": 269,
+            "width": 62,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 272,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 298,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 300.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 294,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 320,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 300,
+            "y": 269,
+            "width": 62,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 358,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 384,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_charm",
+            "x": 386.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 368,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 406,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 386,
+            "y": 269,
+            "width": 62,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 444,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 470,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 472.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 490,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 492,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 492,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 530,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 556,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 558.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 576,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 578,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 578,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-foot",
+            "type": "Container",
+            "texture": null,
+            "x": 246,
+            "y": 346,
+            "width": 149,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Zone",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 640,
+            "height": 360
+          }
+        ]
+      },
+      "overlaps": {
+        "openMid": [
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:chest_open#3",
+            "area": 1239
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "chest-title",
+            "area": 10624
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_tome#10",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_weapon_ember#16",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_charm#22",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#40",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#41",
+            "area": 9
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#42",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#43",
+            "area": 9.6
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#44",
+            "area": 8.4
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#46",
+            "area": 9
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#47",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#48",
+            "area": 9.6
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#49",
+            "area": 8.4
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#51",
+            "area": 8.4
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "chest-title",
+            "area": 1239
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "Container:#5",
+            "area": 689.9
+          },
+          {
+            "a": "chest-title",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "chest-title",
+            "b": "Image:fx_coin#40",
+            "area": 7.8
+          },
+          {
+            "a": "chest-title",
+            "b": "Image:fx_coin#47",
+            "area": 7.8
+          },
+          {
+            "a": "Container:#5",
+            "b": "Image:fx_coin#40",
+            "area": 7.8
+          }
+        ],
+        "openSettled": [
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:chest_open#3",
+            "area": 1239
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "chest-title",
+            "area": 10624
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_tome#10",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_weapon_ember#16",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_charm#22",
+            "area": 906.2
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "chest-title",
+            "area": 1239
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "Container:#5",
+            "area": 689.9
+          },
+          {
+            "a": "chest-title",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "Container:#17",
+            "b": "Container:#23",
+            "area": 21
+          }
+        ]
+      }
+    },
+    {
+      "label": "780x360@3",
+      "viewport": {
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "groundBounds": {
+        "panel": null
+      },
+      "openMidBounds": {
+        "panel": [
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 780,
+            "height": 360
+          },
+          {
+            "name": null,
+            "type": "NineSlice",
+            "texture": "ui_frame",
+            "x": 164,
+            "y": 63,
+            "width": 452,
+            "height": 244
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "light_radius",
+            "x": 279.6,
+            "y": 4.6,
+            "width": 220.8,
+            "height": 220.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "chest_open",
+            "x": 372.4,
+            "y": 111.4,
+            "width": 35.2,
+            "height": 35.2
+          },
+          {
+            "name": "chest-title",
+            "type": "Container",
+            "texture": null,
+            "x": 308,
+            "y": 83,
+            "width": 166,
+            "height": 64
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 325,
+            "y": 99,
+            "width": 140,
+            "height": 32
+          },
+          {
+            "name": "chest-hint-0",
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 153,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-hint-1",
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 161,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 256,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 282,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_tome",
+            "x": 284.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 278,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 304,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 304,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 342,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 368,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 370.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 364,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 428,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 454,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_charm",
+            "x": 456.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 450,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 476,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 476,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 514,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 540,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 542.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 560,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 562,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 562,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 600,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 626,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 628.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 646,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 648,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 648,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-foot",
+            "type": "Container",
+            "texture": null,
+            "x": 316,
+            "y": 346,
+            "width": 149,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Zone",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 780,
+            "height": 360
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 326.2,
+            "y": 107.9,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 425.1,
+            "y": 21.1,
+            "width": 3,
+            "height": 3
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 333.1,
+            "y": 73.8,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 477.3,
+            "y": 34,
+            "width": 3.1,
+            "height": 3.1
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 358.5,
+            "y": 42.4,
+            "width": 2.9,
+            "height": 2.9
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 523.1,
+            "y": 70.9,
+            "width": 3.2,
+            "height": 3.2
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 400.2,
+            "y": 23.4,
+            "width": 2.9,
+            "height": 2.9
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 327.4,
+            "y": 91.1,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 451.3,
+            "y": 24.5,
+            "width": 3,
+            "height": 3
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 343.5,
+            "y": 57.1,
+            "width": 2.8,
+            "height": 2.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 501.7,
+            "y": 49.6,
+            "width": 3.1,
+            "height": 3.1
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "fx_coin",
+            "x": 377.6,
+            "y": 30.8,
+            "width": 2.9,
+            "height": 2.9
+          }
+        ]
+      },
+      "openSettledBounds": {
+        "panel": [
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 780,
+            "height": 360
+          },
+          {
+            "name": null,
+            "type": "NineSlice",
+            "texture": "ui_frame",
+            "x": 164,
+            "y": 63,
+            "width": 452,
+            "height": 244
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "light_radius",
+            "x": 279.6,
+            "y": 4.6,
+            "width": 220.8,
+            "height": 220.8
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "chest_open",
+            "x": 372.4,
+            "y": 111.4,
+            "width": 35.2,
+            "height": 35.2
+          },
+          {
+            "name": "chest-title",
+            "type": "Container",
+            "texture": null,
+            "x": 308,
+            "y": 83,
+            "width": 166,
+            "height": 64
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 325,
+            "y": 99,
+            "width": 140,
+            "height": 32
+          },
+          {
+            "name": "chest-hint-0",
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 153,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-hint-1",
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 161,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 256,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 282,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_tome",
+            "x": 284.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 269,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 304,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 284,
+            "y": 269,
+            "width": 62,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 342,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 368,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 370.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 364,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 390,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 370,
+            "y": 269,
+            "width": 62,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 428,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 454,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_passive_charm",
+            "x": 456.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 438,
+            "y": 247,
+            "width": 77,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 476,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 456,
+            "y": 269,
+            "width": 62,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 514,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 540,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 542.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 560,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 562,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 562,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 600,
+            "y": 195,
+            "width": 96,
+            "height": 92
+          },
+          {
+            "name": null,
+            "type": "Rectangle",
+            "texture": null,
+            "x": 626,
+            "y": 199,
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": null,
+            "type": "Image",
+            "texture": "icon_weapon_ember",
+            "x": 628.8,
+            "y": 201.8,
+            "width": 38.4,
+            "height": 38.4
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 646,
+            "y": 247,
+            "width": 5,
+            "height": 7
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 648,
+            "y": 258,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": null,
+            "type": "Container",
+            "texture": null,
+            "x": 648,
+            "y": 269,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "name": "chest-foot",
+            "type": "Container",
+            "texture": null,
+            "x": 316,
+            "y": 346,
+            "width": 149,
+            "height": 32
+          },
+          {
+            "name": null,
+            "type": "Zone",
+            "texture": null,
+            "x": 0,
+            "y": 0,
+            "width": 780,
+            "height": 360
+          }
+        ]
+      },
+      "overlaps": {
+        "openMid": [
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:chest_open#3",
+            "area": 1239
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "chest-title",
+            "area": 10624
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_tome#10",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_weapon_ember#16",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_charm#22",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#40",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#41",
+            "area": 9
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#42",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#43",
+            "area": 9.6
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#44",
+            "area": 8.4
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#46",
+            "area": 8.4
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#47",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#48",
+            "area": 9
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#49",
+            "area": 7.8
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:fx_coin#51",
+            "area": 8.4
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "chest-title",
+            "area": 1239
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "Container:#5",
+            "area": 689.9
+          },
+          {
+            "a": "chest-title",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "chest-title",
+            "b": "Image:fx_coin#40",
+            "area": 7.8
+          },
+          {
+            "a": "chest-title",
+            "b": "Image:fx_coin#47",
+            "area": 7.8
+          },
+          {
+            "a": "Container:#5",
+            "b": "Image:fx_coin#40",
+            "area": 7.8
+          }
+        ],
+        "openSettled": [
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:chest_open#3",
+            "area": 1239
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "chest-title",
+            "area": 10624
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_tome#10",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_weapon_ember#16",
+            "area": 906.2
+          },
+          {
+            "a": "Image:light_radius#2",
+            "b": "Image:icon_passive_charm#22",
+            "area": 906.2
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "chest-title",
+            "area": 1239
+          },
+          {
+            "a": "Image:chest_open#3",
+            "b": "Container:#5",
+            "area": 689.9
+          },
+          {
+            "a": "chest-title",
+            "b": "Container:#5",
+            "area": 4480
+          },
+          {
+            "a": "Container:#17",
+            "b": "Container:#23",
+            "area": 21
+          }
+        ]
+      }
+    }
+  ]
+}
