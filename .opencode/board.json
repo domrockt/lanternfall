@@ -4299,27 +4299,38 @@
       "id": 2978,
       "title": "m10-feedback-budget #1 Ist-Messung: Chaos-Probe 500 Gegner, Baseline-JSON",
       "description": "scripts/m10-feedback-probe.mjs startet Run, Minute 25, 500 Gegner, timeScale 30, loggt je Frame Treffer/Shake-Peak/Hit-Stop/Frame-Dauer und schreibt shots/m10-feedback-budget-baseline.json. Abnahme: JSON vorhanden, Shake-Peak/Hit-Stop/Trefferzahl enthalten. Keine Spielaenderung.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T12:06:42Z",
           "by": "build",
           "text": "todo → doing: Start: Probe schreiben, Baseline-Lauf 8s Chaos."
+        },
+        {
+          "at": "2026-11-27T12:12:05Z",
+          "by": "build",
+          "text": "doing → review: Commit e919603. Probe scripts/m10-feedback-probe.mjs, Baseline shots/m10-feedback-budget-baseline.json: 393 Frames, 10431 Treffer (max 720/Frame), Shake-Peak 2.56 px (Request 4.8 px), Hit-Stop-Peak 120 ms, 18 Stutter >33 ms (p99 38.9, max 48; Ursache: 500-Gegner-Sim @30x, nicht Feedback). 0 JS-Fehler."
         }
       ],
       "created": "2026-11-27T12:06:27Z",
-      "updated": "2026-11-27T12:06:42Z"
+      "updated": "2026-11-27T12:12:05Z"
     },
     {
       "id": 2979,
       "title": "m10-feedback-budget #2 Fix: Shake/Stop/knockback deckeln in feedback.ts + Run.ts",
       "description": "src/logic/feedback.ts: MAX_HITSTOP_SECONDS, mergeHitStop (nie additiv/refresh), mergeShake (max statt Summe, Dauer <= MAX), knockbackFor-Cap + clampKnockbackSpeed. Run.ts: mergeHitStop an beiden Aufrufen, Knockback-Vektor je Substep klemmen, Boss-Feedback-Cooldown mit realDt. Keine Schadens-/Gegnerzahl-Aenderung. Abnahme: tsc gruen, Diff nur feedback.ts/Run.ts.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T12:16:59Z",
+          "by": "build",
+          "text": "todo → doing: Start: feedback.ts Budget-Funktionen + Run.ts Aufrufstellen/Knockback-Clamp."
+        }
+      ],
       "created": "2026-11-27T12:06:27Z",
-      "updated": "2026-11-27T12:06:27Z"
+      "updated": "2026-11-27T12:16:59Z"
     },
     {
       "id": 2980,
