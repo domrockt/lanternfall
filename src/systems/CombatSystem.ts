@@ -1006,6 +1006,8 @@ export class CombatSystem {
       vx: spec.spread,
       additive: spec.additive,
       tint: PAL[spec.tint],
+      // enemyDeath (11) liegt über Gegnern (9): im 300er-Gedränge sonst unsichtbar.
+      depth: DEPTH.enemyDeath,
     });
     this.particles.burst(spec.dust, e.x, e.y, dustCount, {
       frames: dustFrames,
@@ -1016,6 +1018,7 @@ export class CombatSystem {
       vx: spec.spread * 0.6,
       additive: spec.additive,
       tint: PAL[spec.dustTint],
+      depth: DEPTH.enemyDeath,
     });
     if (cls === "dissolve" || e.boss) {
       this.fx.spawnAnim("fx_halo", e.x, e.y, {
