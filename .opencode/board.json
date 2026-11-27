@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2619,
+  "next": 2620,
   "cards": [
     {
       "id": 1,
@@ -3737,10 +3737,25 @@
       "id": 2618,
       "title": "m10-ground-cost #3 Fix: gecachte Chunk-Textur + needsChunkRedraw",
       "description": "GroundRenderer zeichnet sichtbare Terrain-Chunks in EINE gecachte Canvas-Textur, Redraw nur bei Dirty-Chunk/Nahtwechsel; reiner Helfer needsChunkRedraw in src/gfx/GroundRenderer.ts, Unit-Test tests/ground-cost.test.ts; Pixelgleichheit AE=0, Nachmessung FPS-Min >= +4 vs Baseline 44,7 (sonst als nicht wirksam verwerfen). Owner engine-dev, Kontrolle perf-check + reviewer.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T11:14:15Z",
+          "by": "build",
+          "text": "doing → done: K3 Fix verworfen: Composite pixelgleich (AE 0), aber 46,7 statt 48,8 FPS; fill-rate-bound. Commits c8b1f45 (K1), de41a33 (K2), 8562ea9 (K3 revert)."
+        }
+      ],
+      "created": "2026-11-27T10:39:17Z",
+      "updated": "2026-11-27T11:14:15Z"
+    },
+    {
+      "id": 2619,
+      "title": "m10-ground-cost #4 Doku + Abnahme: Befund fill-rate-bound, AE 0, .lane-done",
+      "description": "docs/lanes/m10-ground-cost.md mit Baseline-/After-JSON, Befehlszeile, ms/Frame, Pixel-Diff AE=0 und ehrlichem Verdikt (Fix verworfen, kein +4 FPS); .lane-done mit Messwerten. Abnahme: build+Tests gruen, Belege committed.",
       "column": "doing",
       "notes": [],
-      "created": "2026-11-27T10:39:17Z",
-      "updated": "2026-11-27T10:39:17Z"
+      "created": "2026-11-27T11:06:41Z",
+      "updated": "2026-11-27T11:06:41Z"
     }
   ]
 }
