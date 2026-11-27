@@ -2,6 +2,57 @@ import Phaser from "phaser";
 import { DEPTH } from "../gfx/depth";
 import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
+import { ambientBudgetFor, lodFor } from "../logic/lod";
+
+/**
+ * M10-A4 (Bedarfsmeldung m10-android-perf, 2026-11-27): ADD-Glows klein halten.
+ * Messbasis shots/m10-fx-add-cap-baseline.json (500-Gegner-Frame, 780x360@3):
+ * der fx-Pool bringt ~217k Device-Pixel ADD-Overdraw (77 % Bildflaeche) bei nur
+ * ~17 Sprites — groszuegige Halo-Groessen plus ausgebrannte Glows (alpha 0,014)
+ * kosten volle Fuellrate ohne Sichtbarkeit. Zwei Deckel, beide rein visuell:
+ */
+/** ADD-Glows unter diesem Alpha sind unsichtbar, aber voll rasterisiert -> frueh freigeben. */
+export const ADD_GLOW_ALPHA_FLOOR = 0.04;
+/** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow bei dpr > 1,5 (96x96 @dpr3). */
+export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
+
+/** Flaeche-Deckel je dpr: ab dpr > 1,5 aktiv (Mobil-Views 780x360@2/@3), Desktop unveraendert. */
+export function glowAreaCapForDpr(dpr: number): number {
+  if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+  const d = dpr > 0 ? dpr : 1;
+  return d > 1.5 ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+}
+
+export interface GlowScaleClamp {
+  scaleFrom: number;
+  scaleTo: number;
+  capped: boolean;
+}
+
+/**
+ * Skaliert einen ADD-Glow so, dass seine Device-Pixel-Flaeche <= capArea bleibt.
+ * texW/texH in Device-Pixel, aspect = scaleX/scaleY-Faktor. Flaeche, nicht Kante:
+ * duenne Beams (Blitz/Kette) bleiben lang, nur die Flaeche wird begrenzt.
+ * Rein funktional und deterministisch (unit-getestet in tests/fx-add-cap.test.ts).
+ */
+export function clampGlowScreenArea(
+  texW: number,
+  texH: number,
+  scaleFrom: number,
+  scaleTo: number,
+  aspect: number,
+  capArea: number,
+): GlowScaleClamp {
+  if (!(capArea > 0) || !Number.isFinite(capArea)) return { scaleFrom, scaleTo, capped: false };
+  const w = Math.max(0, texW) * Math.abs(aspect || 1);
+  const h = Math.max(0, texH);
+  if (!(w > 0) || !(h > 0)) return { scaleFrom, scaleTo, capped: false };
+  const worst = Math.max(Math.abs(scaleFrom), Math.abs(scaleTo));
+  const area = w * h * worst * worst;
+  if (area <= capArea) return { scaleFrom, scaleTo, capped: false };
+  const f = Math.sqrt(capArea / area);
+  return { scaleFrom: scaleFrom * f, scaleTo: scaleTo * f, capped: true };
+}
 
 /** M10: aktueller dpr (Geraetepixel/Spielpixel); node-Tests ohne window -> 1. */
 function currentDpr(): number {
@@ -168,6 +219,18 @@ export class FxSystem {
     const sprite = fx.sprite;
     applyTexture(sprite, fx.frames[0]);
     sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
+    // M10-A4: additive Glows auf Screengroesse cappen (dpr-abhaengig, siehe oben).
+    if (additive) {
+      const clamped = clampGlowScreenArea(
+        sprite.width || 0, sprite.height || 0,
+        fx.scaleFrom, fx.scaleTo, fx.aspect,
+        glowAreaCapForDpr(currentDpr()),
+      );
+      if (clamped.capped) {
+        fx.scaleFrom = clamped.scaleFrom;
+        fx.scaleTo = clamped.scaleTo;
+      }
+    }
     sprite.setScale(fx.scaleFrom * fx.aspect, fx.scaleFrom);
     sprite.setAlpha(fx.alphaFrom);
     sprite.setRotation(fx.rotation);
@@ -393,7 +456,20 @@ export class FxSystem {
       if (frame && currentFrame(fx.sprite) !== frame) applyTexture(fx.sprite, frame);
       fx.sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
       fx.sprite.setScale(scale * fx.aspect, scale);
-      fx.sprite.setAlpha(Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t));
+      const alpha = Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t);
+      // M10-A4: ausgebrannte ADD-Glows (alpha <= 4 %) kosten volle Fuellrate,
+      // sind aber nicht mehr sichtbar -> frueh freigeben statt ausschleichen.
+      if (fx.glow && alpha <= ADD_GLOW_ALPHA_FLOOR) {
+        fx.active = false;
+        fx.sprite.setVisible(false).setActive(false);
+        fx.sprite.clearTint();
+        glowBudgetFor(this.scene).release();
+        fx.glow = false;
+        this.active.splice(i, 1);
+        this.free.push(fx);
+        continue;
+      }
+      fx.sprite.setAlpha(alpha);
       fx.sprite.setRotation(fx.rotation);
     }
   }
@@ -434,6 +510,31 @@ export class FxSystem {
 
   get count(): number {
     return this.active.length;
+  }
+
+  /** M10-A4: aktueller Glow-Deckel/Beleg (Messung + Abnahme, geteilt je Szene). */
+  get glowCap(): number {
+    return glowBudgetFor(this.scene).cap;
+  }
+
+  get glowUsed(): number {
+    return glowBudgetFor(this.scene).current;
+  }
+
+  /**
+   * M10-A4: Gegnerlast an den Pool melden und die Glow-Slots an den LOD-Cap
+   * koppeln (lod.ts wird nur gelesen). Run.applyLod -> CombatSystem.setLod ->
+   * setMaxActive treibt denselben Deckel bereits jeden Frame; diese Methode
+   * macht die Kopplung explizit: ab 250 Gegnern schaltet ambientBudgetFor die
+   * Ambient-Glows ganz ab (glow 0) — dann greift fuer FX-Glows der minimale
+   * Deckel, sonst glowCapFor der lodFor-Stufe.
+   */
+  setEnemyLoad(enemies: number): void {
+    const level = lodFor(enemies).level;
+    const ambient = ambientBudgetFor(enemies);
+    const cap = ambient.glow === 0 ? glowCapFor("minimal") : glowCapFor(level);
+    const budget = glowBudgetFor(this.scene);
+    if (cap < budget.cap) budget.setCap(cap);
   }
 
   /** Aktive Frame-Key-Liste (Debug/Abnahme). */
@@ -514,6 +615,18 @@ export class ParticleSystem {
     const s = p.sprite;
     applyTexture(s, p.frames[0]);
     s.setPosition(Math.round(p.x), Math.round(p.y));
+    // M10-A4: additive Glows auf Screengroesse cappen (dpr-abhaengig, siehe oben).
+    if (additive) {
+      const clamped = clampGlowScreenArea(
+        s.width || 0, s.height || 0,
+        p.scaleFrom, p.scaleTo, p.aspect,
+        glowAreaCapForDpr(currentDpr()),
+      );
+      if (clamped.capped) {
+        p.scaleFrom = clamped.scaleFrom;
+        p.scaleTo = clamped.scaleTo;
+      }
+    }
     s.setScale(p.scaleFrom * p.aspect, p.scaleFrom);
     s.setAlpha(p.alphaFrom);
     s.setRotation(p.rotation);
@@ -600,7 +713,19 @@ export class ParticleSystem {
       if (frame && currentFrame(p.sprite) !== frame) applyTexture(p.sprite, frame);
       p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
       p.sprite.setScale(scale * p.aspect, scale);
-      p.sprite.setAlpha(Math.max(0, p.alphaFrom + (p.alphaTo - p.alphaFrom) * t));
+      const alpha = Math.max(0, p.alphaFrom + (p.alphaTo - p.alphaFrom) * t);
+      // M10-A4: ausgebrannte ADD-Glows frueh freigeben (Fuellrate ohne Sichtbarkeit).
+      if (p.glow && alpha <= ADD_GLOW_ALPHA_FLOOR) {
+        p.active = false;
+        p.sprite.setVisible(false).setActive(false);
+        p.sprite.clearTint();
+        glowBudgetFor(this.scene).release();
+        p.glow = false;
+        this.active.splice(i, 1);
+        this.free.push(p);
+        continue;
+      }
+      p.sprite.setAlpha(alpha);
       p.sprite.setRotation(p.rotation);
     }
   }
@@ -638,5 +763,23 @@ export class ParticleSystem {
 
   get count(): number {
     return this.active.length;
+  }
+
+  /** M10-A4: aktueller Glow-Deckel/Beleg (Messung + Abnahme, geteilt je Szene). */
+  get glowCap(): number {
+    return glowBudgetFor(this.scene).cap;
+  }
+
+  get glowUsed(): number {
+    return glowBudgetFor(this.scene).current;
+  }
+
+  /** M10-A4: Gegnerlast melden — Deckel wie FxSystem.setEnemyLoad (lod.ts nur gelesen). */
+  setEnemyLoad(enemies: number): void {
+    const level = lodFor(enemies).level;
+    const ambient = ambientBudgetFor(enemies);
+    const cap = ambient.glow === 0 ? glowCapFor("minimal") : glowCapFor(level);
+    const budget = glowBudgetFor(this.scene);
+    if (cap < budget.cap) budget.setCap(cap);
   }
 }
