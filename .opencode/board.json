@@ -5110,7 +5110,7 @@
       "id": 4318,
       "title": "m10-verify-input-fix #1: F2-Befund belegen (Selektor, URI, Timestamp, Ursache)",
       "description": "Abnahme: shots/m10-verify-input-f2-before.json + .log belegen den F2-Selektor-FAIL aus m10-input-qa (tapText \"BRUDER KAEL\" nicht sichtbar) und benennen die Ursache; Statement, ob der FAIL am aktuellen HEAD noch auftritt. Kontrolleure: reviewer.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:23:24Z",
@@ -5121,16 +5121,21 @@
           "at": "2026-11-27T18:23:47Z",
           "by": "build",
           "text": "doing → review: K1 fertig, Commits c8df1ef (Belege) + d71234f (Board): shots/m10-verify-input-f2-before.json+log – alter Selektor 'BRUDER KAEL' sichtbar=false, 'Bruder Kael' sichtbar=true, 0 JS-Fehler; Ursache = veralteter Selektor, gefixt in 9f298f3 (m10-input-fix); build rc=0, vitest 446/446."
+        },
+        {
+          "at": "2026-11-27T18:47:39Z",
+          "by": "build",
+          "text": "review → done: Lane-Review PASS (ses_de1ab418). Commit c8df1ef + d71234f: F2-Befund belegt – 'BRUDER KAEL' existiert nicht, 'Bruder Kael' sichtbar; Ursache veralteter Selektor, Grundfix 9f298f3 (m10-input-fix); Belege shots/m10-verify-input-f2-before.{json,log}."
         }
       ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:23:47Z"
+      "updated": "2026-11-27T18:47:39Z"
     },
     {
       "id": 4319,
       "title": "m10-verify-input-fix #2: Harness-Härtung (Zustands-Waits, --tag Output)",
       "description": "Abnahme: nur scripts/verify-input.mjs geändert; fragile feste Wartezeiten durch Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.* (Default m8-input unverändert); verify-input läuft 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:24:02Z",
@@ -5141,25 +5146,35 @@
           "at": "2026-11-27T18:27:16Z",
           "by": "build",
           "text": "doing → review: K2 fertig, Commit a2ff910: nur scripts/verify-input.mjs; --tag-Output (shots/m10-verify-input-<tag>.json+png, Default m8-input unveraendert), waitState-Zustands-Waits nach Pause/Truhe/FORTSETZEN/A-Bestaetigen; Validierung --tag k2: 28/28 PASS, 0 JS-Fehler; build rc=0, vitest 446/446."
+        },
+        {
+          "at": "2026-11-27T18:47:39Z",
+          "by": "build",
+          "text": "review → done: Lane-Review PASS (ses_de1ab418). Commit a2ff910: --tag-Output + waitState-Zustands-Waits; Validation 28/28 PASS (shots/m10-verify-input-k2.json)."
         }
       ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:27:16Z"
+      "updated": "2026-11-27T18:47:39Z"
     },
     {
       "id": 4320,
       "title": "m10-verify-input-fix #3: Stabilität 3x + Lastlauf 28/28 PASS, Lane-Doku",
       "description": "Abnahme: verify-input 3x hintereinander + 1x unter paralleler Last (zwei Builds im Hintergrund), jedes Mal 28/28 PASS, 0 JS-Fehler; Belege shots/m10-verify-input-pass-{1,2,3}.json + Lastfall-JSON; Ergebnis in docs/lanes/m10-verify-input-fix.md; vitest grün. Kontrolleure: test-auditor + reviewer.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:27:25Z",
           "by": "build",
           "text": "todo → doing: Start: 3x verify-input --tag pass-1..3 + 1x Lastlauf (zwei Builds im Hintergrund), dann Lane-Doku."
+        },
+        {
+          "at": "2026-11-27T18:47:39Z",
+          "by": "build",
+          "text": "doing → done: Lane-Review PASS (ses_de1ab418). Commit 8889666: 3x PASS + Lastlauf je 28/28 PASS, 0 JS-Fehler (pass-{1,2,3}, load); Zyklus-Fixes FORTSETZEN-Retry + waitForFunction arg/options-Konflation; Doku docs/lanes/m10-verify-input-fix.md; vitest 446/446."
         }
       ],
       "created": "2026-11-27T18:22:28Z",
-      "updated": "2026-11-27T18:27:25Z"
+      "updated": "2026-11-27T18:47:39Z"
     }
   ]
 }
