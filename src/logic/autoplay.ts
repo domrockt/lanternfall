@@ -39,6 +39,12 @@ const PASSIVE_PRIORITY: Record<string, number> = {
   heart: 34, boots: 30, tome: 28, charm: 22, whetstone: 20, hourglass: 18,
 };
 
+// Modul-Level-Lookups (K2): keine Map/filter/some/find-Allokationen pro Call.
+const EVOLUTION_IDS: ReadonlySet<string> = new Set(EVOLUTIONS.map((e) => e.id));
+const EVO_BY_BASE: ReadonlyMap<string, (typeof EVOLUTIONS)[number]> = new Map(
+  EVOLUTIONS.map((e) => [e.baseWeapon, e]),
+);
+
 /** Aktueller Build des Bots (für Evolutions-Fokus und Slot-Begrenzung). */
 export interface BuildContext {
   weapons: readonly { id: string; level: number }[];
@@ -57,19 +63,29 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
   const id = String(offer.id);
   const weapons = build?.weapons ?? [];
   const passives = build?.passives ?? [];
-  const passiveLevel = new Map(passives.map((p) => [p.id, p.level]));
-  // Fokus = Startwaffe (bleibt stabil); nur wenn sie evolviert/maxed ist, zählt
-  // die höchste andere Basiswaffe. So erreicht genau ein Slot Stufe 8.
-  const baseOwned = weapons.filter((w) => w.id in WEAPON_PRIORITY && !EVOLUTIONS.some((e) => e.id === w.id));
-  let focus: { id: string; level: number } | null = null;
-  const start = build?.startingWeapon ? baseOwned.find((w) => w.id === build.startingWeapon) : undefined;
-  if (start) focus = { id: start.id, level: start.level };
-  else {
-    for (const w of baseOwned) {
-      if (!focus || w.level > focus.level) focus = { id: w.id, level: w.level };
+  // Passives: letzter Treffer gewinnt (Map-Semantik), ohne Map-Allokation.
+  let ownedPassiveLevel = 0;
+  let hasOwnedPassive = false;
+  for (let i = passives.length - 1; i >= 0; i--) {
+    if (passives[i]!.id === id) {
+      ownedPassiveLevel = passives[i]!.level;
+      hasOwnedPassive = true;
+      break;
     }
   }
-  const evo = focus ? EVOLUTIONS.find((e) => e.baseWeapon === focus!.id) : undefined;
+  // Fokus = Startwaffe (bleibt stabil); nur wenn sie evolviert/maxed ist, zählt
+  // die höchste andere Basiswaffe. So erreicht genau ein Slot Stufe 8.
+  let focus: { id: string; level: number } | null = null;
+  for (let i = 0; i < weapons.length; i++) {
+    const w = weapons[i]!;
+    if (!(w.id in WEAPON_PRIORITY) || EVOLUTION_IDS.has(w.id)) continue;
+    if (build?.startingWeapon && w.id === build.startingWeapon) {
+      focus = { id: w.id, level: w.level };
+      break;
+    }
+    if (!focus || w.level > focus.level) focus = { id: w.id, level: w.level };
+  }
+  const evo = focus ? EVO_BY_BASE.get(focus.id) : undefined;
 
   if (offer.kind === "weapon") {
     // Auch das letzte Fokus-Upgrade (7→8) muss Vorrang vor Passiven haben,
@@ -85,7 +101,7 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
     return 450 + (WEAPON_PRIORITY[id] ?? 0) + offer.level * 4;
   }
 
-  const level = passiveLevel.get(id) ?? 0;
+  const level = hasOwnedPassive ? ownedPassiveLevel : 0;
   // Evolutions-Passive zuerst; für Kael (Flegel + Herz) ist Heart gleichzeitig
   // Überlebens-Passive und wird deshalb höher gewichtet als bei Mira.
   if (evo && evo.passive === id) {
