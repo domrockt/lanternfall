@@ -1,0 +1,40 @@
+{
+  "hit": {
+    "phoenix-wrath_pendulum": 69,
+    "phoenix-eternal_winter": 24,
+    "phoenix-thorn_storm": 17,
+    "phoenix-thunder_seal": 27,
+    "phoenix-soul_beacon": 24,
+    "wrath_pendulum-eternal_winter": 73,
+    "wrath_pendulum-thorn_storm": 69,
+    "wrath_pendulum-thunder_seal": 73,
+    "wrath_pendulum-soul_beacon": 73,
+    "eternal_winter-thorn_storm": 24,
+    "eternal_winter-thunder_seal": 21,
+    "eternal_winter-soul_beacon": 16,
+    "thorn_storm-thunder_seal": 27,
+    "thorn_storm-soul_beacon": 24,
+    "thunder_seal-soul_beacon": 22,
+    "minDiff": 16,
+    "minPair": "eternal_winter-soul_beacon"
+  },
+  "death": {
+    "phoenix-wrath_pendulum": 69,
+    "phoenix-eternal_winter": 24,
+    "phoenix-thorn_storm": 17,
+    "phoenix-thunder_seal": 27,
+    "phoenix-soul_beacon": 24,
+    "wrath_pendulum-eternal_winter": 73,
+    "wrath_pendulum-thorn_storm": 69,
+    "wrath_pendulum-thunder_seal": 73,
+    "wrath_pendulum-soul_beacon": 73,
+    "eternal_winter-thorn_storm": 24,
+    "eternal_winter-thunder_seal": 21,
+    "eternal_winter-soul_beacon": 16,
+    "thorn_storm-thunder_seal": 27,
+    "thorn_storm-soul_beacon": 24,
+    "thunder_seal-soul_beacon": 22,
+    "minDiff": 16,
+    "minPair": "eternal_winter-soul_beacon"
+  }
+}

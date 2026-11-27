@@ -1,0 +1,136 @@
+{
+  "chosen": {
+    "i": 8,
+    "enemies": 499,
+    "lodLevel": "minimal",
+    "time": 1503.6,
+    "kills": 3848,
+    "nearWhitePct": 0.52,
+    "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-8.png",
+    "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-8.png"
+  },
+  "candidates": [
+    {
+      "i": 0,
+      "enemies": 232,
+      "lodLevel": "reduced",
+      "time": 1500.8,
+      "kills": 263,
+      "nearWhitePct": 1.06,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-0.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-0.png"
+    },
+    {
+      "i": 1,
+      "enemies": 361,
+      "lodLevel": "minimal",
+      "time": 1501.1,
+      "kills": 614,
+      "nearWhitePct": 1,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-1.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-1.png"
+    },
+    {
+      "i": 2,
+      "enemies": 711,
+      "lodLevel": "minimal",
+      "time": 1501.4,
+      "kills": 744,
+      "nearWhitePct": 3.18,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-2.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-2.png"
+    },
+    {
+      "i": 3,
+      "enemies": 471,
+      "lodLevel": "minimal",
+      "time": 1501.8,
+      "kills": 1464,
+      "nearWhitePct": 3.14,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-3.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-3.png"
+    },
+    {
+      "i": 4,
+      "enemies": 452,
+      "lodLevel": "minimal",
+      "time": 1502.2,
+      "kills": 1975,
+      "nearWhitePct": 0.88,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-4.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-4.png"
+    },
+    {
+      "i": 5,
+      "enemies": 517,
+      "lodLevel": "minimal",
+      "time": 1502.6,
+      "kills": 2390,
+      "nearWhitePct": 0.95,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-5.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-5.png"
+    },
+    {
+      "i": 6,
+      "enemies": 448,
+      "lodLevel": "minimal",
+      "time": 1503,
+      "kills": 2939,
+      "nearWhitePct": 1.38,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-6.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-6.png"
+    },
+    {
+      "i": 7,
+      "enemies": 538,
+      "lodLevel": "minimal",
+      "time": 1503.3,
+      "kills": 3329,
+      "nearWhitePct": 4.09,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-7.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-7.png"
+    },
+    {
+      "i": 8,
+      "enemies": 499,
+      "lodLevel": "minimal",
+      "time": 1503.6,
+      "kills": 3848,
+      "nearWhitePct": 0.52,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-8.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-8.png"
+    },
+    {
+      "i": 9,
+      "enemies": 738,
+      "lodLevel": "minimal",
+      "time": 1503.8,
+      "kills": 4089,
+      "nearWhitePct": 1.09,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-9.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-9.png"
+    },
+    {
+      "i": 10,
+      "enemies": 636,
+      "lodLevel": "minimal",
+      "time": 1504.2,
+      "kills": 4671,
+      "nearWhitePct": 1.53,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-10.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-10.png"
+    },
+    {
+      "i": 11,
+      "enemies": 575,
+      "lodLevel": "minimal",
+      "time": 1504.6,
+      "kills": 5212,
+      "nearWhitePct": 5,
+      "full": "/home/ai/tmp/m10-fx-evolution/chaos-candidate-11.png",
+      "cropPath": "/home/ai/tmp/m10-fx-evolution/chaos-crop-11.png"
+    }
+  ],
+  "frozen": "/home/ai/games/lf-lanes/m10-fx-evolution/shots/m10-fx-evolution-chaos-m25.png",
+  "errors": []
+}

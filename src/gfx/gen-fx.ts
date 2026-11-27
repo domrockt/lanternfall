@@ -439,19 +439,19 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
   // Glutfunke + Arkanes Buch: heisser Splitter-Regen, kurz und hell.
   phoenix: {
     evolution: "phoenix", baseWeapon: "ember", shape: "splitter",
-    palette: [20, 18, 13], hitLifetime: 0.16, deathLifetime: 0.62,
+    palette: [20, 18, 19], hitLifetime: 0.16, deathLifetime: 0.62,
     hitCount: 6, deathCount: 14,
   },
   // Kettenflegel + Eisenherz: goldener Ring-Schlag, sehr kurz.
   wrath_pendulum: {
     evolution: "wrath_pendulum", baseWeapon: "flail", shape: "ring",
-    palette: [21, 20, 10], hitLifetime: 0.12, deathLifetime: 0.30,
+    palette: [21, 20, 11], hitLifetime: 0.12, deathLifetime: 0.30,
     hitCount: 4, deathCount: 8,
   },
   // Frostnova + Sanduhr: kalte Nebelwolke, langsam ausklingend.
   eternal_winter: {
     evolution: "eternal_winter", baseWeapon: "frost", shape: "cloud",
-    palette: [9, 6, 12], hitLifetime: 0.22, deathLifetime: 0.75,
+    palette: [9, 6, 11], hitLifetime: 0.22, deathLifetime: 0.75,
     hitCount: 5, deathCount: 10,
   },
   // Dornensalve + Windstiefel: gruener Splitter-Kranz, mittleres Timing.
@@ -463,13 +463,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
   // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
   thunder_seal: {
     evolution: "thunder_seal", baseWeapon: "storm", shape: "beam",
-    palette: [13, 20, 12], hitLifetime: 0.10, deathLifetime: 0.24,
+    palette: [19, 20, 21], hitLifetime: 0.10, deathLifetime: 0.24,
     hitCount: 3, deathCount: 7,
   },
   // Geisterlaterne + Magnetamulett: helle Seelenwolke, langes Nachgluehen.
   soul_beacon: {
     evolution: "soul_beacon", baseWeapon: "lantern", shape: "cloud",
-    palette: [12, 8, 5], hitLifetime: 0.26, deathLifetime: 0.55,
+    palette: [11, 8, 5], hitLifetime: 0.26, deathLifetime: 0.55,
     hitCount: 4, deathCount: 9,
   },
 };

@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { DEPTH } from "../gfx/depth";
-import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
+import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 
 interface FxRuntime {
@@ -167,6 +167,48 @@ export class FxSystem {
     }
   }
 
+  /**
+   * M10: Treffer-/Todes-Signatur einer Evolution. Form, Palette und Lifetime kommen
+   * aus `EVOLUTION_SIGNATURES`; die Textur ist bereits in Palettenfarben gebacken.
+   * LOD-Garantie: Alpha faellt nie unter 0,5, Blend bleibt NORMAL — die Form und
+   * der Haupt-Palettenindex bleiben damit auch bei 300+ Gegnern unterscheidbar.
+   * Cooldown pro Evolution+Art verhindert Sprite-Flut in AoE-Kills.
+   */
+  spawnEvolution(
+    evolution: string,
+    kind: "hit" | "death",
+    x: number,
+    y: number,
+    opts: Partial<FxOptions> = {},
+  ): FxRuntime | null {
+    const sig = EVOLUTION_SIGNATURES[evolution];
+    if (!sig) return null;
+    const key = `${evolution}:${kind}`;
+    const now = this.scene.time.now;
+    const baseLife = kind === "hit" ? sig.hitLifetime : sig.deathLifetime;
+    const last = this.signatureLast.get(key) ?? -1e9;
+    if (now - last < baseLife * 450) return null;
+    this.signatureLast.set(key, now);
+    const texture = signatureTextureKey(evolution, kind);
+    const alphaFloor = Math.min(1, 0.95 / this.alphaScale);
+    return this.spawn({
+      ...(opts as FxOptions),
+      texture,
+      frames: opts.frames ?? fxFrames(texture, SIGNATURE_FRAME_COUNT),
+      x,
+      y,
+      life: opts.life ?? baseLife,
+      scaleFrom: opts.scaleFrom ?? (kind === "hit" ? 0.8 : 1.05),
+      scaleTo: opts.scaleTo ?? (kind === "hit" ? 1.45 : 2.2),
+      alphaFrom: opts.alphaFrom ?? alphaFloor,
+      alphaTo: 0,
+      additive: false,
+      depth: DEPTH.fxLow,
+    });
+  }
+
+  private signatureLast = new Map<string, number>();
+
   /** Deterministischer LCG statt Math.random (reproduzierbare VFX-Screenshots). */
   private seq = 0x9e3779b9;
   private rand(): number {
@@ -316,6 +358,7 @@ export class FxSystem {
     }
     this.active.length = 0;
     this.seq = 0x9e3779b9;
+    this.signatureLast.clear();
   }
 
   get count(): number {
