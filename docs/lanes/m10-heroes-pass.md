@@ -69,10 +69,27 @@ Messung: `python3 ~/tmp/m10-heroes-pass/measure_heroes.py after` (liest
 - `shots/m10-heroes-ingame.png` / `.json` (Mira, 5:00, 286 Gegner)
 - `shots/m10-heroes-ingame-kael.png` / `.json` (Kael, 5:00, 327 Gegner, 0 JS-Fehler)
 
+## Abnahme
+
+- `npm run build`: **rc=0**, grün (807 ms, `vite build`).
+- `npm test`: **rc=0**, **273/273 Tests** in 24 Dateien grün.
+- Akzeptanz: Pixel-Differenz min 49,12 % (Ziel ≥ 35 %), 0 Frame-Duplikate,
+  0 Off-Palette-Pixel, Alpha nur 0/255.
+
 ## Art-Director-Abnahme
 
-**Verdict:** folgt nach Kontrolleur-Lauf (beide Helden in ≤ 1 s unterscheidbar,
-Noten je Kriterium).
+**Urteil: JA — beide Helden sind bei 1× Kamera im Gedränge in ≤ 1 s
+unterscheidbar.** Gesamt **4,5/5**.
+
+| Kriterium | Note | Befund |
+|---|---|---|
+| Silhouette | 5/5 | Mira: breite Hutkrempe + schmaler Umhang; Kael: breite Schulterplatten + Axt-Blatt außen. Kein Verwechseln im 1×-Bogen. |
+| Akzentfarbe | 5/5 | Mira Laternen-Gold (Hutborte, Saum, Laterne); Kael Rost/Stahl ohne Gold. Farbidentität auch im Rost-Rudel lesbar. |
+| Lauf-/Bob-Zyklus | 4/5 | 0 Duplikate, Bob exakt 0/1/0/1 px je Richtung; Kael schwerer (5-px-Stiefel, kleinerer Schritt, 1-px-Lift). 1-px-Hub am 1×-Gegnerbild dezent, im 8×-Lauf klar. |
+| Palette/Lesbarkeit im Gedränge | 4/5 | `shots/m10-heroes-ingame.png` (Mira, 5:00, 286 Gegner) und `shots/m10-heroes-ingame-kael.png` (Kael, 5:00, 327 Gegner): Held jeweils mittig, warme Laterne vs. dunkle Stahl-Silhouette sofort auffindbar. 0 JS-Fehler. |
+
+Geprüfte Belege: `m10-heroes-after-1x.png`, `-after-4x.png`,
+`m10-heroes-walk.gif`, `-walk-{down,side,up}-8x.png`, beide In-Game-Shots.
 
 ## Offene Punkte
 

@@ -53,5 +53,23 @@
     0,
     255
   ],
-  "pass": true
+  "pass": true,
+  "summaryFour": {
+    "pixelDiffMiraVsKaelMinPerDir": {
+      "down": 0.6191,
+      "up": 0.627,
+      "side": 0.4912
+    },
+    "pixelDiffMinOverall": 0.4912,
+    "pixelDiffMean": 0.5874,
+    "frameDuplicateCount": 0,
+    "offPalettePixels": 0,
+    "alphaNotBinary": 0,
+    "alphaValues": [
+      0,
+      255
+    ],
+    "frameSizeConstant": true,
+    "pass": true
+  }
 }

@@ -1,0 +1,14 @@
+# Lane m10-heroes-pass — done
+
+Ziel erreicht: Mira Ashwick und Bruder Kael sind bei 1× Kamera und 300+ Gegnern
+in ≤ 1 s unterscheidbar (art-director: JA, 4,5/5).
+
+- Mira: Laternen-Gold-Akzent, schmaler Umhang mit Goldsaum; Kael: Rost/Stahl,
+  breite Schultern, einschneidige Axt-Silhouette außen. Kein Gold mehr bei Kael.
+- Lauf-/Bob-Zyklus: 4 Frames je Richtung, Bob 0/1/0/1 px nach unten; Kael
+  schwerer/langsamer (5-px-Stiefel, kleinere Schrittweite, 1-px-Lift).
+- Kennzahlen after: Pixel-Differenz Mira↔Kael min 49,12 % (Ziel ≥35 %), mean
+  58,74 %; 0 Frame-Duplikate; 0 Off-Palette-Pixel; Alpha nur 0/255.
+- Tests: npm run build rc=0; npm test 273/273 grün (24 Dateien).
+- In-Game-Belege: Mira 5:00 mit 286 Gegnern, Kael 5:00 mit 327 Gegnern, je 0 JS-Fehler.
+- K2 ebe2bc1, K3 065c232, K4 dieser Commit. K1-Baseline 752d9c5.
