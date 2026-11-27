@@ -1,0 +1,32 @@
+Lane m10-ember-trail-glow — Ember-Schweif vermessen und gedämpft (Karte #5538, DONE)
+
+Restpunkt aus m10-ember-readability: der fx_fire-Trail am Ember-Projektil war nie
+separat als Glow-Footprint gemessen. Alle 4 Briefing-Punkte erfüllt und committet:
+
+1. Vorher-Messung (Commit 2f8fc3e): fx_fire-Trail (NORMAL-Blend + emberOrange-Tint,
+   alphaFrom 0,45 — NICHT additiv, der 0,75-Hinweis in der Vorgänger-Doku war veraltet):
+   Near-White 0 %, aber Glow-Footprint 73–75 px > 60 px → VERDICT FAIL.
+   Belege: shots/m10-ember-trail-before.json + -before-1x.png + -before-4x.png.
+2. Fix (Commit c6685e6): neue statische Textur fx_ember_trail (7×7, Rampe endet bei
+   amber 0xffb84d, kein lanternWhite/glow) in src/gfx/textures.ts; CombatSystem.ts
+   nutzt sie für den Ember-Trail mit alphaFrom 0,4. Keine Gameplay-Werte, kein
+   FPS-Tuning. phoenix/thorn/ice unberührt.
+3. Nachher-Messung: Footprint 24 px (≤ 60 ✅), Near-White 0 % (≤ 2 % ✅), 0 Off-Palette,
+   projectile_ember unverändert (31 opake px, 3,23 % Near-White wie zuvor) → VERDICT PASS.
+   Belege: shots/m10-ember-trail-after.json + -after-1x/4x.png.
+   Chaos-Beleg: shots/m10-ember-trail-after-chaos-640.png (640×360, 700 Gegner,
+   4 Ember-Projektile, Screenkoordinaten exakt synchron zum PNG, 0 JS-Fehler) +
+   shots/m10-ember-trail-after-chaos.json. Sichtprüfung (2x nearest): Trails dezent,
+   Ember-Kerne klar lesbar, kein Near-White-Glühen.
+4. Tests tests/ember-trail.test.ts (7/7): Near-White ≤ 2 % (A7 + minRGB200), Alpha nur
+   0/255, 0 Off-Palette, Footprint ≤ 60, 5-Puff-Worst-Case-Stack, Kontrast ≥ 5:1,
+   projectile_ember-Regression. Gesamtsuite 635/635 grün (62 Dateien),
+   npx tsc --noEmit grün, npm run build grün.
+
+Abnahme: Reviewer-Subagent PASS (Scope, Zielwerte, Doku, Tests belegt);
+Karte #5538 → done. Doku mit Vorher/Nachher im selben Dokument:
+docs/lanes/m10-ember-trail.md. Nicht blockierende Nits dort notiert.
+
+Hinweis für später: Endgame-LOD schaltet Trails bei ≥ 500 Gegnern ab (lodFor) —
+im Chaos-Screenshot dafür nur für den Beleg gepinnt (nur Messlauf, kein Spielpfad).
+Falls der 24-px-Schweif spielerisch zu dezent wirkt: neue Grafik-Karte, kein Revert.
