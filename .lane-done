@@ -1,0 +1,73 @@
+# Lane m10-damage-calm — Schadenszahlen-Flut (2026-11-27)
+
+Ziel: Bei Massen standen Dutzende kleiner Schadenszahlen ("26/30") übereinander.
+Zusammenfassen/Drosseln, nur Krits groß. Keine Balance-Änderung, keine Schadenswerte.
+
+## Karten (Commits)
+
+- #5858 (588b948) Vorher-Beleg: `scripts/m10-damage-calm.mjs` + 3 Before-JSON/PNG
+- #5859 (92930f5) Logik: `planLabels`/`applyLabelFold` in src/logic/damage-numbers.ts
+- #5860 (2784354) System: report() ohne View-Zugriff, `applyDisplayPlan` je Frame
+- #5861 (094b5d5) Tests (15/15) + Nachher-Belege + Doku
+
+## Befund (Vorher)
+
+- Minute 25 (340 Gegner, Aggregat-Modus): bereits ruhig — max 6 Labels (Zonen-Bündelung
+  aus m10-damage-batch).
+- **Die Flut lebt unterhalb der 120er-Aggregat-Schwelle** (LOD "full", pro Gegner ein
+  Label): 115 Gegner dicht um den Spieler → **24 sichtbare Labels dauerhaft**,
+  48 Einträge (MAX_ENTRIES), kleine Einzelwerte "26/30" an engen Positionen.
+- Zusätzlich: jeder Treffer startete den Label-Tween neu (view.life=0.8, Position
+  auf letzten Treffer) → Labels zittern bei anhaltendem Feuer.
+
+## Fix
+
+- Logik (reine Funktionen): hartes Sichtbar-Cap `MAX_VISIBLE_LABELS=12`,
+  Zonen-Cap `MAX_NORMAL_PER_ZONE=2` (3×3-Raster), Burst-Staffelung
+  `LABEL_BURST_PER_FRAME=3` neue Labels je Frame (Krits ausgenommen).
+  Krits priorisiert (groß, amber, Scale 1.6, "!"), Normaltreffer klein/weiß,
+  Großtreffer (hits>3 && damage>20) lantern-gelb. Unterdrückte Normaltreffer
+  werden in den größten Eintrag derselben Zone **gefaltet — Summen-Erhalt exakt**.
+- System: `report()` meldet nur (kein Tween-Neustart je Treffer), `update()`
+  plant die Anzeige einmal pro Frame (Cap je Zone/Frame), älteste/niedrigste
+  Labels zuerst ersetzt (Sortierung Schaden absteigend, Gleichstand nach Key).
+
+## Messwerte (vorher → nachher, gleiche Setups, Probe 6 s, Seed 1)
+
+| Setup | max sichtbare Labels | avg | Überlappungen |
+|---|---|---|---|
+| Minute 25, 340 Gegner (Aggregat) | 6 → 6 | 5.39 → 5.63 | 0 → 0 |
+| Minute 8, 110 verteilt | 4 → 5 | 3.34 → 3.98 | 0 → 0 |
+| Minute 2:30, 115 dicht (Flut-Regime) | **24 → 12** | 23.62 → 10.7 | 0 → 0 |
+
+- Summen-Erhalt: Sim 10 s @ 60 fps gegen ungedrosselte Referenz: Abweichung des
+  dargestellten Summen-Zeitintegrals **0.00 %** (Grenze ≤ 1 %); Faltungs-Invariante
+  `Summe(entries)` bleibt exakt.
+- Belege: `shots/m10-damage-calm-{before,after}{,-sub,-tight}.*` (+ after-k3-tight).
+
+## Qualität
+
+- `npx tsc --noEmit` grün; `npm run build` grün; Tests 708/708 (69 Dateien) grün.
+- Neue Tests: tests/damage-calm.test.ts (15): Cap/Zonen/Burst, Krit-Priorisierung,
+  Summen-Erhalt (exakt + ≤1 %-Referenz-Sim), Grenzfälle 0/1/Cap+1, Ersetzungs-Reihenfolge.
+- Tabus (Run.ts, CombatSystem.ts, feedback.ts) nicht angefasst. GAME.md nicht geändert.
+
+## Kontrolleure
+
+- art-director: **PASS (4/5)** — Krit-vs-Normal unterscheidbar, Chaos-Ruhe erfüllt
+  (after-tight 4/5, Minute 25 5/5, Palette korrekt). Optional: dedizierter "!"-Pixel-Beleg,
+  Frame mit Krit + lantern-Großtreffer gleichzeitig.
+- reviewer: **PASS** — Tabus/Secrets/Temp sauber, ViewBudget paarweise, Double-Update
+  entkräftet (Run.ts:410 nur im Hit-Stop-Zweig mit Return), Tests decken Kriterien ab.
+  2 Findings gefixt (b0b04e6): planLabels mit effektivem viewLimit, Tautologie im
+  Cap+1-Test ersetzt. Nit 4 (Faltung verliert Gegner-Attribution im Nicht-Aggregat)
+  ist bewusster Trade-off zugunsten Summen-Erhalt/Lesbarkeit.
+
+## Offene Punkte
+
+- `damageNumbers.update()` wird sowohl aus CombatSystem.update (ctx.dt) als auch aus
+  Run.ts:410 (realDt) aufgerufen — doppelt pro Frame. Vorher schon so (Labels altern
+  schneller); mit Burst-Staffelung laufen dadurch bis zu 6 statt 3 neue Labels/Frame auf.
+  Fix gehört in Run.ts/CombatSystem.ts (Tabu dieser Lane) → Folgekarte empfohlen.
+- reports/s im Probe-Setup niedrig (~120–800/s) gegenüber dem alten damage-batch-Lauf
+  (6786/s); das Sichtbar-Cap greift dichteunabhängig (hartes Frame-Cap).
