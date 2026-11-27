@@ -6475,9 +6475,15 @@
       "description": "Suite belegt: Glyph-Keys als Frames auf EINER geteilten Atlas-Seite (addCanvas nur fuer Seite), pro Glyphe KEINE neue Canvas-Textur (Wiederverwendung), Glyph-Geometrie bit-identisch zur alten addCanvas-Erzeugung, Key-Schema glyph_<color>_<charCode> + GLYPH_W/H/ADVANCE + PixelText-API unveraendert. Abnahmekriterium: npx vitest run tests/font-glyph-pack.test.ts gruen (5/5) + npx tsc --noEmit rc=0. Hinweis: Briefing-K1 (font.ts ensureGlyph -> packCanvasTexture) ist bereits durch Merge 5fa1c87 (m10-atlas-pack Font-Integration) auf dem Branch; Verifikation erfolgt ueber diese Suite.",
       "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:19:39Z",
+          "by": "build",
+          "text": "done → done: lane #5498, Merge 6d24e69"
+        }
+      ],
       "created": "2026-11-27T21:19:27Z",
-      "updated": "2026-11-27T21:19:27Z"
+      "updated": "2026-11-27T21:19:39Z"
     },
     {
       "id": 5619,
@@ -6485,9 +6491,15 @@
       "description": "Deterministische Glyph-Szene (HUD-Strings + Damage-Text via PixelText, mehrere Farben) vor (addCanvas) und nach (packCanvasTexture) rendern: shots/m10-font-glyph-before.png / -after.png, Vergleich mit ImageMagick compare -metric AE -> AE=0 belegt; dazu shots/m10-font-glyph-*.json mit Texturzahlen (glyph_-Keys, baked_page_). Doku docs/lanes/m10-font-glyph-pack.md mit Texturwechsel-Zahlen (~250 Glyph-Einzeltexturen -> Atlas-Seiten). Abnahmekriterium: AE=0 belegt, Doku vorhanden, Belege im Karten-Commit.",
       "column": "done",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:19:39Z",
+          "by": "build",
+          "text": "done → done: lane #5499, Merge 6d24e69"
+        }
+      ],
       "created": "2026-11-27T21:19:27Z",
-      "updated": "2026-11-27T21:19:27Z"
+      "updated": "2026-11-27T21:19:39Z"
     }
   ]
 }
