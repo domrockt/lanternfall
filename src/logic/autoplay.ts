@@ -138,27 +138,74 @@ export function botDirection(input: BotInput): { x: number; y: number } {
   let x = 0;
   let y = 0;
 
-  const repel = (t: BotThreat, range: number, weight: number, lead = 0): void => {
-    const tx = t.x + (t.vx ?? 0) * lead;
-    const ty = t.y + (t.vy ?? 0) * lead;
-    const dx = px - tx;
-    const dy = py - ty;
-    const d = Math.hypot(dx, dy);
-    const radius = t.radius ?? 6;
-    if (d > range + radius) return;
-    const falloff = Math.max(0.12, 1 - d / (range + radius));
-    const nx = d > 0.001 ? dx / d : 1;
-    const ny = d > 0.001 ? dy / d : 0;
-    x += nx * falloff * weight;
-    y += ny * falloff * weight;
-  };
-
   // Nahkampf-Builds müssen in Waffenreichweite bleiben, Fernkampf kitet breiter.
   const enemyRange = input.melee ? 92 : 118;
   const enemyWeight = input.melee ? 0.85 : 1.0;
-  for (const e of input.enemies) repel(e, enemyRange, (e.threat ?? 1.0) * enemyWeight);
-  for (const p of input.projectiles) repel(p, 96, p.threat ?? 2.3, 0.28);
-  for (const h of input.hazards) repel(h, 42, h.threat ?? 3.0);
+
+  // K3 Hot-Path: kein Repel-Closure (Allokation pro Call), und fjerne
+  // Bedrohungen werden per Quadrat-Distanz ausgeschieden, bevor hypot läuft.
+  // Grenzband (d² <= rr² * (1+1e-7)): dort entscheidet weiterhin hypot —
+  // die Beiträge bleiben damit bitidentisch zur alten Logik.
+  const GUARD = 1.0000001;
+
+  // Gegner (lead 0).
+  const enemies = input.enemies;
+  for (let i = 0; i < enemies.length; i++) {
+    const t = enemies[i]!;
+    const dx = px - t.x;
+    const dy = py - t.y;
+    const rr = enemyRange + (t.radius ?? 6);
+    const d2 = dx * dx + dy * dy;
+    if (d2 > rr * rr * GUARD) continue;
+    const d = Math.hypot(dx, dy);
+    if (d > rr) continue;
+    const falloff = Math.max(0.12, 1 - d / rr);
+    const nx = d > 0.001 ? dx / d : 1;
+    const ny = d > 0.001 ? dy / d : 0;
+    const weight = (t.threat ?? 1.0) * enemyWeight;
+    x += nx * falloff * weight;
+    y += ny * falloff * weight;
+  }
+
+  // Projektile (lead 0.28, Basisgewicht 2.3).
+  const projectiles = input.projectiles;
+  for (let i = 0; i < projectiles.length; i++) {
+    const t = projectiles[i]!;
+    const tx = t.x + (t.vx ?? 0) * 0.28;
+    const ty = t.y + (t.vy ?? 0) * 0.28;
+    const dx = px - tx;
+    const dy = py - ty;
+    const rr = 96 + (t.radius ?? 6);
+    const d2 = dx * dx + dy * dy;
+    if (d2 > rr * rr * GUARD) continue;
+    const d = Math.hypot(dx, dy);
+    if (d > rr) continue;
+    const falloff = Math.max(0.12, 1 - d / rr);
+    const nx = d > 0.001 ? dx / d : 1;
+    const ny = d > 0.001 ? dy / d : 0;
+    const weight = t.threat ?? 2.3;
+    x += nx * falloff * weight;
+    y += ny * falloff * weight;
+  }
+
+  // Warnflächen (lead 0, Basisgewicht 3.0).
+  const hazards = input.hazards;
+  for (let i = 0; i < hazards.length; i++) {
+    const t = hazards[i]!;
+    const dx = px - t.x;
+    const dy = py - t.y;
+    const rr = 42 + (t.radius ?? 6);
+    const d2 = dx * dx + dy * dy;
+    if (d2 > rr * rr * GUARD) continue;
+    const d = Math.hypot(dx, dy);
+    if (d > rr) continue;
+    const falloff = Math.max(0.12, 1 - d / rr);
+    const nx = d > 0.001 ? dx / d : 1;
+    const ny = d > 0.001 ? dy / d : 0;
+    const weight = t.threat ?? 3.0;
+    x += nx * falloff * weight;
+    y += ny * falloff * weight;
+  }
 
   // Akt anlaufen: Ein aktiver Boss darf nicht am Spawn-Ring stehen bleiben,
   // sonst farmt der Bot Trash und der Bosskamptankt minutenlang (535-s-Ausreißer).
