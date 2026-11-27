@@ -1,0 +1,7 @@
+Lane m9-art-polish abgeschlossen (Versuch 3, 2026-11-27).
+- #1378 art-01 Boss-Inszenierung: BOSS_SAFE_TOP=136, Spawn unter HP-Leiste/Banner, alle 6 Bosse screenY 153-193 (vorher min 37); art-director PASS.
+- #1379 art-02 Elite-Rim-Light: amber 1-px-Silhouetten-Rim (PAL[20], NORMAL) statt weisser ADD-Aura; Near-White AoE-Crop 4,14 % <= 4,16 %; vfx-check PASS.
+- #1380 art-03 HUD-Anker: 16:9 (640x360) und 19.5:9 (780x360) mit Boss+Banner+Level-up geprueft, keine Ueberlappung; ux-check PASS, keine Aenderung.
+- Belege: shots/art-polish-boss-before/-after (2x), art-polish-elites-before/-after/-chaos (2x), art-polish-hud-16/-195, shots/perf-m3.json, shots/final-vfx-readability.json.
+- build gruen (892 ms), npm test 192/192 gruen. Perf: Burst 60,1 FPS, Minute 25 56,1 FPS (>=55), jsErrors [].
+- Keine Gameplay-/Balance-Aenderungen, GAME.md unberuehrt. Temp-Skript scripts/tmp-art-polish.mjs entfernt.

@@ -103,7 +103,12 @@ Urteil: siehe Kontrolle unten (ux-check).
   Fremdlast (Load 15-18) ergaben 49-54 / 28-35 FPS und wurden verworfen.
 
 ## Offene Punkte
-- Perf-Messung muss ohne Fremdlast (Load Average < 5) wiederholt werden;
-  Laeufe bei Load 15-18 ergaben Burst 49-54 FPS und Minute 25 35 FPS und sind
-  als Messartefakt zu werten (flock schuetzt nur gegen andere Perf-Laeufe,
-  nicht gegen Test-/Build-Last anderer Lanes).
+- Keine. Die Perf-Wiederholung ohne Fremdlast ist erfolgt: Burst 60,1 FPS,
+  Minute 25 56,1 FPS (Load Average 4,4, Beleg `shots/perf-m3.json`). Fruehere
+  Laeufe bei Load 15-18 (49-54 / 35 FPS) sind als Messartefakt verworfen;
+  flock schuetzt nur gegen andere Perf-Laeufe, nicht gegen Build-/Test-Last
+  fremder Lanes.
+
+## Temp-Dateien
+- `scripts/tmp-art-polish.mjs` war nur das Beleg-Erzeugungsskript und ist vor
+  dem Lane-Abschluss entfernt (keine Deliverables aus `scripts/tmp*`).
