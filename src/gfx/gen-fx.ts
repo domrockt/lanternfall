@@ -46,6 +46,32 @@ function charCode(ch: string): number {
   return Math.max(0, Math.min(31, code));
 }
 
+/** Ein Frame-Set: Groesse + Frames als Zeichen-Zeilen ("." = transparent). */
+export interface FxFrameSet {
+  w: number;
+  h: number;
+  frames: string[][];
+}
+
+/**
+ * Alle Todes-/Boss-Frames als exportierbare Sets — Single Source of Truth fuer
+ * createFxTextures (Texturen), tests/death-frames.test.ts (Guards) und
+ * scripts/m10-death-frames.mjs (Kontakt-Boegen). Keine Sichtbelegung im Spiel.
+ */
+export function deathFrameSets(): Record<string, FxFrameSet> {
+  return {
+    fx_death_bone: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("bone", i)) },
+    fx_death_blob: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("blob", i)) },
+    fx_death_void: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("void", i)) },
+    fx_death_dust: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("dust", i)) },
+    // Boss-Kern: große Glut mit Knochenring (Intro/Tod)
+    fx_boss_core: {
+      w: 32, h: 32,
+      frames: [0, 1, 2, 3, 4, 5].map((i) => blob(32, 32, [19, 18, 17, 16, 15], { core: 0.14 + i * 0.03, seed: i * 2.1 })),
+    },
+  };
+}
+
 function addFrames(scene: Phaser.Scene, base: string, def: FxDef): void {
   def.frames.forEach((rows, i) => addFrame(scene, i === 0 ? base : `${base}_${i + 1}`, rows, def.w, def.h));
 }
@@ -726,15 +752,8 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_orb", { w: 11, h: 11, frames: [0, 1, 2, 3].map(orbFrame) });
   addFrames(scene, "fx_pillar", { w: 26, h: 72, frames: [0, 1, 2, 3, 4].map((i) => pillarFrame(i)) });
   addFrames(scene, "fx_shock", { w: 48, h: 48, frames: [0, 1, 2, 3, 4, 5].map((i) => shockFrame(i)) });
-  addFrames(scene, "fx_death_bone", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("bone", i)) });
-  addFrames(scene, "fx_death_blob", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("blob", i)) });
-  addFrames(scene, "fx_death_void", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("void", i)) });
-  addFrames(scene, "fx_death_dust", { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => deathFrame("dust", i)) });
-  // Boss-Kern: große Glut mit Knochenring (Intro/Tod)
-  addFrames(scene, "fx_boss_core", {
-    w: 32, h: 32,
-    frames: [0, 1, 2, 3, 4, 5].map((i) => blob(32, 32, [19, 18, 17, 16, 15], { core: 0.14 + i * 0.03, seed: i * 2.1 })),
-  });
+  // Todes-/Boss-Frames: eine Quelle fuer Texturen, Tests und Beleg-Skripte.
+  for (const [key, def] of Object.entries(deathFrameSets())) addFrames(scene, key, def);
   // Dunkler Rauchring für Zerfall
   addFrames(scene, "fx_dusk", { w: 20, h: 20, frames: [0, 1, 2].map((i) => ring(20, 20, [5, 4, 3], 0.55 - i * 0.1, i)) });
   // Staub/Asche für Tod-Klassen (klein, normal blend)
