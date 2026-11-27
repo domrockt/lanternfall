@@ -6107,7 +6107,7 @@
       "id": 5438,
       "title": "m10-evo-reachability K1: Ist-Analyse + Mess-Skript m10-evo-reach.mjs (6 Kombis, Seed fest, before.json)",
       "description": "Bedingungen je Evolution aus src/data/evolutions.ts + src/logic/evolution.ts extrahieren. scripts/m10-evo-reach.mjs spielt deterministisch (Seed fest) alle 6 Waffe+Powerup-Kombis im echten Spiel (Playwright, debug-API) durch und schreibt shots/m10-evo-reach-before.json (erreicht ja/nein, Level, Trigger-Frame). Abnahme: before.json existiert mit 6 Eintraegen und Aussage je Pfad (Truhe + Level-Up).",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -6119,20 +6119,36 @@
           "at": "2026-11-27T21:02:31Z",
           "by": "build",
           "text": "K1 fertig: scripts/m10-evo-reach.mjs (Seed 4711, beide Gate-Pfade Truhe+Level-Up, Gate-Matrix Lv7/falsches Powerup/positiv/Doppel-Sperre). Befund before: 6/6 PASS — Gate-Logik korrekt, A4-Luecke (4/6 pro 30-min-Run) = Build-Randomisierung, kein Gate-Bug. Beleg: shots/m10-evo-reach-before.json"
+        },
+        {
+          "at": "2026-11-27T21:02:36Z",
+          "by": "build",
+          "text": "doing → review: Commit ea9bf59: Skript + before.json (6/6 PASS). Kontrolleure stehen noch aus."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:02:31Z"
+      "updated": "2026-11-27T21:02:36Z"
     },
     {
       "id": 5439,
       "title": "m10-evo-reachability K2: Gate-Bugs fixen (Angebot nur Lv8+Powerup, keine Doppel-Evo, kein Powerup-Verlust)",
       "description": "Falls before.json Gate-Fehler zeigt: Fixes NUR in src/logic/evolution.ts, src/logic/levelup.ts, src/systems/LevelUpSystem.ts. Angebot nur bei Basiswaffe Lv8 + passendem Powerup, keine Doppel-Evolution, Powerup bleibt erhalten. Abnahme: npx tsc --noEmit gruen, gezielte Tests gruen, Commits je Teilkarte.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:02:43Z",
+          "by": "build",
+          "text": "todo → doing: Befund K1: kein Spieler-sichtbarer Gate-Bug (before 6/6). K2 = Haertung zweier latenter Inkonsistenzen: (1) evolvableList (evolution.ts) prueft weaponDef(evo.id).implemented nicht — Truhe koennte eine nicht implementierte Evolution anbieten, addPassword... addWeapon wirft dann; (2) LevelUpSystem.evolve() prueft das Powerup nicht (Truhe garantiert es heute, aber evolve() ist der oeffentliche Gate)."
+        },
+        {
+          "at": "2026-11-27T21:02:47Z",
+          "by": "build",
+          "text": "Befund K1: kein Spieler-sichtbarer Gate-Bug (before 6/6). K2 = Haertung zweier latenter Inkonsistenzen: (1) evolvableList in evolution.ts prueft weaponDef(evo.id).implemented nicht — die Truhe koennte eine nicht implementierte Evolution anbieten, applyChestReward/addWeapon wuerde dann werfen; (2) LevelUpSystem.evolve() prueft das Powerup nicht (Truhe garantiert es heute, aber evolve() ist der oeffentliche Gate)."
+        }
+      ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T20:53:05Z"
+      "updated": "2026-11-27T21:02:47Z"
     },
     {
       "id": 5440,

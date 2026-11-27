@@ -71,6 +71,9 @@ export class LevelUpSystem {
     if (!evo) return false;
     const base = this.weapons.find((w) => w.id === evo.baseWeapon);
     if (!base || base.level < 8) return false;
+    // M10-reachability: auch dieser Gate verlangt das passende Powerup
+    // (Konsistenz mit canEvolve/evolvableList) — keine Evolution ohne Powerup.
+    if (!this.passives.some((p) => p.id === evo.passive)) return false;
     const def = weaponDef(evo.id);
     if (!def?.implemented) return false;
     base.id = evo.id;
