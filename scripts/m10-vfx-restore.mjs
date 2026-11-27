@@ -192,18 +192,18 @@ try {
       await page.evaluate(() => window.__lf.pickLevelUp(0));
     }
 
-    // M25-Zielstellung des Briefs: 300 Gegner + lebender Boss (Bosskampf Minute 25).
-    // Der Bossdruck zwingt lodFor() in "minimal" — genau dort greift die 0,5-Daempfung.
-    await page.evaluate(() => window.__lf.spawnBoss(4));
-    await page.evaluate(async (target) => {
-      for (let i = 0; i < 25; i++) {
-        const active = window.__lf.stats().enemies;
-        if (active >= target) break;
-        window.__lf.spawnEnemy("bog_rat", target - active);
-        await new Promise((r) => setTimeout(r, 250));
-      }
+    // M25-Zielstellung: Freeze-Frame mit ~300 Gegnern + lebender Boss.
+    // Bossdruck zwingt lodFor() in "minimal" — genau dort greift die 0,5-Daempfung.
+    // EIN Burst-Spawn wie im A7-Frame (final-vfx-readability.mjs, dort 460 -> 429):
+    // bis zum Einfrieren sterben ~1/3, deshalb auf ~450 ueberschiessen.
+    await page.evaluate((target) => {
+      const overshoot = target + 150;
+      const active = window.__lf.stats().enemies;
+      const fill = Math.max(0, overshoot - active);
+      if (fill > 0) window.__lf.spawnEnemy("bog_rat", fill);
+      window.__lf.spawnBoss(4);
     }, TARGET);
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(320);
 
     // Pool-Effekte mitten in der Horde (wie A7-Frame, echte FxSystem-Sprites).
     await page.evaluate(() => {
