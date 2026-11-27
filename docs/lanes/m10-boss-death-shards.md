@@ -71,14 +71,60 @@ Konsequenz (Lanemuster wie m10-vfx-restore): Anfrage in
 die Area-Freigabe bzw. den Merge von `m10-perf-cap-rollback` +
 `m10-boss-fx-contrast`; bis dahin kein Arbeiten am Rand des Area.
 
-## Fix-Entwurf (K2, sobald Area frei ist)
+## K2/K3 — umgesetzt im Worktree, Commit durch Area-Claim blockiert
 
-Analog #5220 (FxSystem-Pfad, `69f2e94`): in `ParticleSystem.spawn` bei
-Boss-FX-Keys (`isBossFxKey(opts.texture) || isBossFxKey(opts.frames?.[0])`,
-Basis `BOSS_FX_BASES = ["fx_boss_core"]`)
-- `additive` erzwingen → false (NORMAL-Blend, dunkle Kontur bleibt sichtbar),
-- fxAlpha-/dpr-Dämpfung ausnehmen (alphaScaleExempt-Verhalten, Faktor 1),
-- Alpha-Boden `alphaFrom = max(alphaFrom, 0,7)`,
-- keinen Glow-Slot belegen (`p.glow = false` ohne `budget.request()`),
-- Screengrößen-Cap (clampGlowScreenArea) nicht auf Boss-Partikel anwenden.
-Reguläre Partikel unverändert (Regression in K3).
+**Stand 2026-11-27 (dieser Worktree):** Fix ist implementiert, getestet und
+gemessen — der Commit von `src/systems/FxSystem.ts` wird aber vom
+pre-commit-Hook (claimcheck) blockiert, bis der Disponent die Datei freigibt
+(Anfrage in `/home/ai/games/.dispatch/requests.md`, siehe Abschnitt oben).
+
+Umsetzung (Patch: `~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch`,
+81 Zeilen; zusätzlich uncommittet im Worktree):
+
+- `ParticleSystem.spawn`: Boss-Keys (`isBossParticleFxKey(opts.texture) ||
+  isBossParticleFxKey(opts.frames[0])`, Basis `["fx_boss_core"]`) werden
+  non-additiv gespawnt (NORMAL-Blend), mit `scaleFactor = 1` (keine
+  fxAlpha-Dämpfung, kein alphaScale² wie beim ADD-Pfad), ohne dpr-Alpha,
+  mit Alpha-Boden `BOSS_PARTICLE_ALPHA_FLOOR = 0,7` und ohne Glow-Slot
+  (`blendAdd` schließt Boss-Keys explizit aus; der Screengrößen-Cap greift
+  nur für additive Sprites).
+- `ParticleSystem.setAlphaScale`: Boss-Partikel werden im Dämpfungs-Loop
+  übersprungen (LOD-Wechsel mitten im Boss-Tod verschiebt sie nicht mehr).
+- SYNC-HINWEIS im Code: `BOSS_FX_BASES`/`isBossFxKey` liegen seit fd66146 in
+  `src/gfx/gen-fx.ts`; bis zum Merge wird die Key-Liste lokal gehalten, beim
+  Merge durch den Import ersetzen.
+
+**Merge-Karte (für den Disponenten/Merge-Job):** Patch anwenden (oder
+FxSystem.ts-Claim freigeben und die Karten K2–K4 als Lane-Commit bringen),
+dann gen-fx-Import ersetzen, K3-Tests grün, K4-Belege committen.
+
+Tests: `tests/boss-death-shards.test.ts` — 11 Tests, alle grün:
+Boss-Kern/Rim NORMAL + Alpha ≥ 0,7 trotz alphaScale 0,72; additiver Spec-Fall
+(dissolve/sputter) → NORMAL statt ADD; kein Glow-Slot (Deckel bleibt frei);
+setAlphaScale verschiebt Boss-Partikel nicht; Regression: fx_fire bleibt ADD +
+Glow-Slot + Dämpfung (0,5184 @dpr1 = Ist-Messung), fx_death_bone weiter
+dämpfbar, Glow-Deckel zählt reguläre FX weiter, FxSystem unberührt.
+`npx tsc --noEmit` rc=0, `npm test` 713/713 grün, `npm run build` rc=0.
+
+## K4 — Nachher-Messung (Fix im Worktree aktiv)
+
+`node scripts/m10-boss-shards.mjs --tag=after` (gleicher Harness, 283 Gegner,
+alphaScale 0,72, Renderer RPL-S, jsErrors 0):
+
+| Partikel-Key | Vorher alphaFrom | Nachher alphaFrom | Vorher Blend/Glow | Nachher Blend/Glow |
+|---|---|---|---|---|
+| `fx_boss_core` | 0,252–0,684 | **0,700–0,950** | NORMAL / 0 | NORMAL / 0 |
+| `fx_halo` (Staub, kein Boss-Key) | 0,288 | 0,288 (unverändert) | NORMAL / 0 | NORMAL / 0 |
+| `fx_death_bone` | 0,720 | 0,720 (unverändert) | NORMAL / 0 | NORMAL / 0 |
+| `fx_fire` | 0,518 / 0,311 (@3) | 0,518 / 0,311 (unverändert) | ADD / 30 | ADD / 30 |
+
+Belege (Worktree + `~/tmp/m10-boss-death-shards/`, Commit gemeinsam mit dem
+Fix): `shots/m10-boss-shards-after-640x3601.png`, `-780x3603.png`,
+`-after.json`. Im 780er-Nachher-Shot sind einzelne Splitter und der hellere
+Kern der Explosion unterscheidbar (Vorher: homogener Schlamm-Blob).
+art-director-Sichtprüfung: läuft / Ergebnis siehe Board-Notiz zu #5921.
+
+Offen für K4: art-director-PASS dokumentieren, Nachher-Belege zusammen mit
+K2/K3 committen (sobald die Area frei ist), dann `npm run build` + Tests im
+Merge-Kontext erneut.
+

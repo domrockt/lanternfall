@@ -35,8 +35,9 @@ const OUT_PNG_PREFIX = `shots/m10-boss-shards-${TAG}`;
 // Life 0,9 s) ist noch voll da — beides im selben Bild.
 const SHARD_DELAY_MS = 120;
 
-// Horde >= 200 Gegner: reduziert-LOD -> fxAlpha-Daempfung aktiv (der beanstandete
-// Pfad). Mischung mehrerer Stufen/Silhouetten wie in m10-boss-fx-contrast.
+// Horde 270 + Top-up auf HORDE_TOTAL (gemessen: 283 lebend — der Frame-Budget-
+// Regler frisst einen Teil, daher oben auffuellen): reduced-LOD, aktive
+// fxAlpha-Daempfung. Mischung mehrerer Stufen/Silhouetten wie in m10-boss-fx-contrast.
 const HORDE = [
   ["bog_rat", 60], ["wisp", 40], ["bogzombie", 30], ["crow", 30],
   ["skeleton", 25], ["bat", 25], ["ghoul", 30], ["spider", 30],

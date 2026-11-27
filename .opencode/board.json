@@ -6721,28 +6721,51 @@
       "id": 5918,
       "title": "m10-boss-death-shards K1: Ist-Stand messen (Boss-Tod-Shards ADD+gedämpft?)",
       "description": "Skript scripts/m10-boss-shards.mjs stellt Boss-Tod nach (spawnBoss, hp=0, playBossDeathFx-Kette), Views 640x360@1 + 780x360@3, je Screenshot + JSON mit Rendermode/Alpha/Glow-Slot der Shard-Partikel + WebGL-Renderer-String. Belege shots/m10-boss-shards-before.png/-before.json. EINMAL messen, committen.",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:01:48Z",
+          "by": "build",
+          "text": "doing → review: K1: scripts/m10-boss-shards.mjs stellt Boss-Tod nach (beide Pfade: collectKills->playBossDeathFx + hitEnemy->killsFx), 640x360@1 + 780x360@3, Horde 283, reduced-LOD alphaScale 0,72. Belege: shots/m10-boss-shards-before-640x3601.png, -780x3603.png, -before.json (Renderer RPL-S, jsErrors 0). Befund: fx_fire ADD+30/40 Glow-Slots alphaFrom 0,311 (@3); fx_boss_core-Rim alphaFrom bis 0,252. Commit vorbereitet."
+        }
+      ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T21:54:05Z"
+      "updated": "2026-11-27T22:01:48Z"
     },
     {
       "id": 5919,
       "title": "m10-boss-death-shards K2: Fix ParticleSystem — Boss-Shards NORMAL + Alpha-Boden 0,7 ohne Glow-Slot",
-      "description": "Partikel mit Boss-FX-Key (isBossFxKey/BOSS_FX_BASES, analog #5220 im FxSystem) rendern NORMAL mit Alpha-Boden 0,7, ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot. Reguläre Partikel unverändert. BLOCKER: Klasse liegt in src/systems/FxSystem.ts (Claim m10-perf-cap-rollback, nicht gemergt); isBossFxKey liegt nur auf ungemergtem m10-boss-fx-contrast (fd66146).",
-      "column": "todo",
-      "notes": [],
+      "description": "Partikel mit Boss-FX-Key rendern NORMAL mit Alpha-Boden 0,7, ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot. Reguläre Partikel unverändert. BLOCKER: Klasse liegt in src/systems/FxSystem.ts (Claim m10-perf-cap-rollback, nicht gemergt); isBossFxKey liegt nur auf ungemergtem m10-boss-fx-contrast (fd66146).",
+      "column": "blocked",
+      "notes": [
+        {
+          "at": "2026-11-27T22:01:48Z",
+          "by": "build",
+          "text": "todo → blocked: Area-Blocker: ParticleSystem-Klasse liegt in src/systems/FxSystem.ts (Claim m10-perf-cap-rollback, Lane fertig aber ungemergt; Briefing-Pfad src/systems/ParticleSystem.ts existiert nicht). isBossFxKey liegt nur auf ungemergtem m10-boss-fx-contrast (fd66146). Anfrage in .dispatch/requests.md gestellt; Fix-Entwurf in docs/lanes/m10-boss-death-shards.md. Kein Arbeiten am Rand des Area."
+        },
+        {
+          "at": "2026-11-27T22:10:19Z",
+          "by": "build",
+          "text": "K2 UMGESETZT im Worktree (uncommittet): Fix analog #5220 + lokale Key-Liste mit SYNC-Hinweis; Patch ~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch. Verifiziert: tsc rc=0, npm test 713/713, build rc=0, Nachher-Messung fx_boss_core alphaFrom 0,7-0,95 (vor 0,252-0,684). Commit wartet auf Area-Freigabe (requests.md). Merge-Karte beschrieben in docs/lanes/m10-boss-death-shards.md."
+        }
+      ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T21:54:05Z"
+      "updated": "2026-11-27T22:10:19Z"
     },
     {
       "id": 5920,
       "title": "m10-boss-death-shards K3: Tests tests/boss-death-shards.test.ts",
       "description": "Boss-Shards NORMAL + Alpha >= 0,7 + kein Glow-Slot; reguläre Partikel bleiben ADD + gedämpft (Regression); bestehende Tests grün. npx tsc --noEmit + npm run build rc=0.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T22:10:19Z",
+          "by": "build",
+          "text": "K3 UMGESETZT im Worktree (uncommittet, mit K2-Patch): tests/boss-death-shards.test.ts, 11 Tests grün (Boss NORMAL + Boden 0,7 + kein Glow-Slot; Regression fx_fire ADD+gedämpft, FxSystem unberührt). Commit gemeinsam mit K2."
+        }
+      ],
       "created": "2026-11-27T21:54:05Z",
-      "updated": "2026-11-27T21:54:05Z"
+      "updated": "2026-11-27T22:10:19Z"
     },
     {
       "id": 5921,
