@@ -1,6 +1,10 @@
 {
   "version": 1,
+<<<<<<< HEAD
   "next": 8882,
+=======
+  "next": 4878,
+>>>>>>> 1bdb87e (M10-m10-evo-signature-calls: Board-Counter reserialize (next 4878) – Lane #4518-#4520 done, kein Rest)
   "cards": [
     {
       "id": 1,
