@@ -83,16 +83,18 @@ unabhängiger. M25-640x360@1 bleibt mit Ø ≥ 51 FPS über Ziel.
 
 ## Karte 4 — Lesbarkeit (Commit <sha-K4>, #3561)
 
-- `shots/m10-fx-overdraw-m25-780.png` — M25-Chaos bei 780x360@3 mit Deckel,
-  Gegner lebend (aufgenommen nach der 10-s-Messung, Ziel ≥ 300 Gegner).
-- Near-White (Pixel ≥ 240/240/240): **0,30 %** ≤ 4,16 % Grenze → PASS.
-- art-director-Urteil: **PASS, 4,3/5** (Grenze ≥ 4/5) — Lesbarkeit
-  Gegner/Spieler/Projektile 4/5, Glow-Überstrahlung 5/5 (keine ausgebrannten
-  Flächen, Damage-Numbers überall lesbar, kein HUD-Bluten), Effekt-Wirkung 4/5
-  (Burst strukturiert, keine Kernverluste). Beurteilt anhand der 3x-nearest-
-  vergrößerten Kopie. Optionale, nicht blockierende Nachbesserungen notiert:
-  Boss-Silhouette 1-Tonnschritt-Kontrast zum dunklen Untergrund; Feuer-Cluster
-  unten links Kanten aufräumen — gehört in eine Grafik-Lane, nicht in diesen Fix.
+Beleg neu erzeugt (der vorherige WIP-Shot war nur 640x360): `shots/m10-fx-overdraw-m25-780.png`
+ist **2340x1080 Device-Pixel** = View 780x360 @ dpr3. Aufbau: `?debug=1&seed=1`,
+Run bis 1490 s, Zeit eingefroren, dann robuste Gegner (knight/treant/golem/abom/horror)
+nachgespawnt; Messzustand beim Shot: **341 lebende Gegner**, 79 Partikel, 37 FX
+(Glow-Budget 72, dpr-Alpha 0,6), Boss Glockenturm-Golem, 0 JS-Fehler.
+
+- Near-White (alle Kanäle ≥ 240): **0,087 %** (ImageMagick `-threshold 94%`,
+  exakt 0,000868946 der 2.527.200 Pixel) ≤ 4,16 % Grenze → **PASS**.
+- art-director-Urteil: siehe unten nach der Kontrolle (Ziel ≥ 4/5).
+- Vorbefund aus der 3x-nearest-Vergrößerung: Boss-Silhouette hat nur
+  1-Tonnschritt-Kontrast zum dunklen Untergrund; Feuer-Cluster unten links hat
+  unruhige Kanten — Grafik-Lane, nicht dieser Fix.
 
 ## Offene Punkte
 
