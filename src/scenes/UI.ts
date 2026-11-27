@@ -26,6 +26,60 @@ interface CardView {
   desc: PixelText[];
 }
 
+/**
+ * M10-hud-wide-anchor: HUD-Anker-Konstanten (Spielpixel), abgeleitet aus der
+ * gemessenen 640x360-Referenz (shots/m10-hud-anchor-baseline.json).
+ * Safe-Area-Rand: links/rechts 5 px, oben 1 px, unten 7 px. Die Icon-Reihe
+ * sitzt 11 px rechts der HP-Leiste; der Evo-Hinweis 13 px hinter der vollen
+ * Icon-Reihe. Referenzpfad 640x360 bleibt pixelidentisch (AE = 0), ausser dem
+ * hierdurch verankerten Icon-Hintergrund (Basis-Fix, siehe Lane-Doku).
+ */
+export const HUD_MARGIN_X = 5;
+export const HUD_TOP_Y = 1;
+export const HUD_HP_X = HUD_MARGIN_X;
+export const HUD_HP_W = 106;
+export const HUD_ICONS_X = HUD_HP_X + HUD_HP_W + 11; // 122
+export const HUD_ICON_PITCH = 17;
+export const HUD_MAX_ICONS = 12;
+/** 13 px hinter dem Ende der vollen Icon-Reihe (Referenz: x=330). */
+export const HUD_EVO_HINT_X = HUD_ICONS_X + (HUD_MAX_ICONS - 1) * HUD_ICON_PITCH + 8 + 13; // 330
+
+export interface AnchorBox { x: number; y: number; w: number; h: number }
+
+export interface HudAnchorInput {
+  /** Textbreiten worst case in Zeichen (Glyph = 6 px). */
+  levelChars?: number;
+  timerChars?: number;
+  killChars?: number;
+  evoHintChars?: number;
+  iconCount?: number;
+}
+
+/**
+ * M10-hud-wide-anchor: reine Anker-Geometrie des HUD-Topstreifens (keine
+ * Phaser-Abhaengigkeit, in tests/hud-anchor.test.ts gegen den Safe-Area-Rand
+ * je Format geprueft). Alle Werte ganzzahlige Spielpixel.
+ */
+export function hudAnchorBoxes(width: number, height: number, input: HudAnchorInput = {}):
+  Record<string, AnchorBox> {
+  const levelChars = input.levelChars ?? 5;   // "LV 40"
+  const timerChars = input.timerChars ?? 5;   // "00:00"
+  const killChars = input.killChars ?? 10;    // "KILL 99999"
+  const evoHintChars = input.evoHintChars ?? 20; // "EVOLUTION BEREIT (2)"
+  const iconCount = Math.max(0, Math.min(HUD_MAX_ICONS, input.iconCount ?? HUD_MAX_ICONS));
+  const glyph = (chars: number): number => chars * 6;
+  return {
+    level: { x: HUD_MARGIN_X, y: HUD_TOP_Y, w: glyph(levelChars), h: 7 },
+    timer: { x: Math.round(width / 2 - glyph(timerChars) / 2), y: HUD_TOP_Y, w: glyph(timerChars), h: 7 },
+    kills: { x: width - HUD_MARGIN_X - glyph(killChars), y: HUD_TOP_Y, w: glyph(killChars), h: 7 },
+    hp: { x: HUD_HP_X, y: 15, w: HUD_HP_W, h: 9 },
+    xp: { x: HUD_HP_X, y: 8, w: width - 2 * HUD_MARGIN_X, h: 4 },
+    "iconrow-bg": { x: HUD_ICONS_X - 8, y: 13, w: iconCount === 0 ? 0 : 8 + iconCount * HUD_ICON_PITCH, h: 19 },
+    icons: { x: HUD_ICONS_X, y: 15, w: iconCount === 0 ? 0 : (iconCount - 1) * HUD_ICON_PITCH + 16, h: 16 },
+    "evo-hint": { x: HUD_EVO_HINT_X, y: 15, w: glyph(evoHintChars), h: 15 },
+  };
+}
+
 /** Parallele UI-Szene: HUD, Level-up-Dialog, Pause/Build. */
 export class UI extends Phaser.Scene {
   private run!: Run;
@@ -136,14 +190,14 @@ export class UI extends Phaser.Scene {
     this.add.rectangle(0, 0, GAME_WIDTH, 12, PAL[C.nightDeep], 0.82).setOrigin(0, 0).setDepth(10);
     // Texte auf y=1 (7 px hoch) und Depth 13: der XP-Balken darf keine
     // Glyphenzeile mehr ueberdecken (sonst wird aus "02:02" optisch "07:07").
-    this.levelText = new PixelText(this, 5, 1, "LV 1", C.lantern).setDepth(13).setName("hud-level");
-    this.timerText = new PixelText(this, GAME_WIDTH / 2, 1, "00:00", C.candleWhite, "center").setDepth(13).setName("hud-timer");
-    this.killsText = new PixelText(this, GAME_WIDTH - 5, 1, "KILL 0", C.bone, "right").setDepth(13).setName("hud-kills");
-    this.xpBg = this.add.rectangle(5, 8, GAME_WIDTH - 10, 4, PAL[C.ink]).setOrigin(0, 0)
+    this.levelText = new PixelText(this, HUD_MARGIN_X, HUD_TOP_Y, "LV 1", C.lantern).setDepth(13).setName("hud-level");
+    this.timerText = new PixelText(this, GAME_WIDTH / 2, HUD_TOP_Y, "00:00", C.candleWhite, "center").setDepth(13).setName("hud-timer");
+    this.killsText = new PixelText(this, GAME_WIDTH - HUD_MARGIN_X, HUD_TOP_Y, "KILL 0", C.bone, "right").setDepth(13).setName("hud-kills");
+    this.xpBg = this.add.rectangle(HUD_HP_X, 8, GAME_WIDTH - 2 * HUD_MARGIN_X, 4, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11).setName("hud-xp-bg");
-    this.xpFill = this.add.rectangle(6, 9, GAME_WIDTH - 12, 2, PAL[C.amber]).setOrigin(0, 0).setDepth(12).setName("hud-xp-fill");
+    this.xpFill = this.add.rectangle(HUD_HP_X + 1, 9, GAME_WIDTH - 2 * HUD_MARGIN_X - 2, 2, PAL[C.amber]).setOrigin(0, 0).setDepth(12).setName("hud-xp-fill");
     // Spieler-HP oben links, fester Rahmen + 4-px-Füllung.
-    this.hpBg = this.add.rectangle(5, 15, 106, 9, PAL[C.ink]).setOrigin(0, 0)
+    this.hpBg = this.add.rectangle(HUD_HP_X, 15, HUD_HP_W, 9, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11).setName("hud-hp-bg");
     this.hpLabel = new PixelText(this, 9, 16, "HP", C.bone).setDepth(12).setName("hud-hp-label");
     this.hpFill = this.add.rectangle(25, 17, 82, 4, PAL[C.crimson]).setOrigin(0, 0).setDepth(12).setName("hud-hp-fill");
@@ -203,11 +257,11 @@ export class UI extends Phaser.Scene {
   }
 
   private createHudIcons(): void {
-    this.hudIconBg = this.add.rectangle(0, 13, 4, 19, PAL[C.nightDeep], 0.6)
+    this.hudIconBg = this.add.rectangle(HUD_ICONS_X - 8, 13, 4, 19, PAL[C.nightDeep], 0.6)
       .setOrigin(0, 0).setDepth(10).setVisible(false).setName("hud-icons-bg");
     this.hudIcons = [];
-    for (let i = 0; i < 12; i++) {
-      const img = this.add.image(122 + i * 17, 15, "icon_weapon_ember")
+    for (let i = 0; i < HUD_MAX_ICONS; i++) {
+      const img = this.add.image(HUD_ICONS_X + i * HUD_ICON_PITCH, 15, "icon_weapon_ember")
         .setOrigin(0, 0).setDepth(11).setVisible(false).setName(`hud-icon-${i}`);
       this.hudIcons.push(img);
     }
@@ -218,7 +272,7 @@ export class UI extends Phaser.Scene {
    * Bewusst ohne Grafik-Rahmen, damit keine Hit-/Fokusfläche verändert wird.
    */
   private createHudEvoHint(): void {
-    this.hudEvoHint = [0, 1].map((i) => new PixelText(this, 330, 15 + i * 8, "", C.lantern)
+    this.hudEvoHint = [0, 1].map((i) => new PixelText(this, HUD_EVO_HINT_X, 15 + i * 8, "", C.lantern)
       .setDepth(12).setVisible(false).setName(`hud-evo-hint-${i}`));
   }
 
@@ -763,7 +817,7 @@ export class UI extends Phaser.Scene {
         if (img.texture.key !== key) img.setTexture(key);
         img.setVisible(true);
       });
-      const width = keys.length === 0 ? 0 : 8 + keys.length * 18;
+      const width = keys.length === 0 ? 0 : 8 + keys.length * HUD_ICON_PITCH;
       this.hudIconBg.setSize(width, 19).setVisible(keys.length > 0);
 
       // M10: Evolutionspfad im HUD sichtbar machen (max. 2 Zeilen).

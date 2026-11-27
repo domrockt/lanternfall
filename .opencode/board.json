@@ -5957,25 +5957,36 @@
       "id": 5259,
       "title": "m10-hud-wide-anchor: K2 Ist-Baseline + Screenshots",
       "description": "Lauf mit --tag baseline: shots/m10-hud-anchor-baseline-*.png + JSON; Kollisions-/Rand-Verletzungen je Format gezaehlt und in docs/lanes/m10-hud-wide-anchor.md dokumentiert. AK: baseline-JSON + PNGs committed, Verletzungszahl notiert.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T20:38:11Z",
           "by": "build",
           "text": "todo → doing: K2: Baseline gelaufen, 64 Verletzungen (alle icons-bg x=0), Belege werden committet"
+        },
+        {
+          "at": "2026-11-27T20:38:18Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: baseline-JSON + 16 PNGs committed (598823a); Befund icons-bg dokumentiert"
         }
       ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:38:11Z"
+      "updated": "2026-11-27T20:38:18Z"
     },
     {
       "id": 5260,
       "title": "m10-hud-wide-anchor: K3 Anker in UI.ts fixen (Anker+Margin)",
       "description": "Ankerpunkte in src/scenes/UI.ts auf Anker+Margin statt fixer Koordinaten; tests/hud-anchor.test.ts prueft Anker-Boxen gegen Safe-Area je Format; AE gegen 640x360-Referenz = 0. AK: tsc + npm test gruen, Test deckt 4 Formate ab.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T20:38:18Z",
+          "by": "build",
+          "text": "todo → doing: K3: Fix icons-bg-Anker aus Baseline-JSON abgeleitet (Ankerpunkt + Margin), Test hud-anchor.test.ts"
+        }
+      ],
       "created": "2026-11-27T20:26:51Z",
-      "updated": "2026-11-27T20:26:51Z"
+      "updated": "2026-11-27T20:38:18Z"
     },
     {
       "id": 5261,
