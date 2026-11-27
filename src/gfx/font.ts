@@ -6,11 +6,26 @@ export const GLYPH_W = 5;
 export const GLYPH_H = 7;
 export const GLYPH_ADVANCE = 6;
 
+/**
+ * M10-ui-text-cost: reine Zähler für das Messskript `scripts/m10-ui-cost.mjs`.
+ * Kein Verhalten, keine Ausgabe; im Browser unter `window.__lfText` lesbar.
+ */
+export const textStats = {
+  setTextCalls: 0,
+  setTextureCalls: 0,
+  ensureGlyphCalls: 0,
+};
+
+if (typeof window !== "undefined") {
+  (window as unknown as { __lfText: typeof textStats }).__lfText = textStats;
+}
+
 function glyphKey(color: number, ch: string): string {
   return `glyph_${color}_${ch.charCodeAt(0)}`;
 }
 
 function ensureGlyph(scene: Phaser.Scene, color: number, ch: string): void {
+  textStats.ensureGlyphCalls++;
   // Großbuchstaben bevorzugen, damit Kleinbuchstaben in Beschreibungen nicht als
   // gemischte Glyphenhöhen zwischen Versalien erscheinen. Umlaute/ß bleiben exakt.
   const upper = ch.toUpperCase();
@@ -71,6 +86,7 @@ export class PixelText extends Phaser.GameObjects.Container {
   }
 
   setText(value: string | number): this {
+    textStats.setTextCalls++;
     this.value = String(value);
     const chars = this.value.split("");
     while (this.glyphs.length < chars.length) {
@@ -83,6 +99,7 @@ export class PixelText extends Phaser.GameObjects.Container {
       if (i < chars.length && chars[i] !== " ") {
         const ch = chars[i];
         ensureGlyph(this.scene, this.colorIndex, ch);
+        textStats.setTextureCalls++;
         img.setTexture(glyphKey(this.colorIndex, ch));
         img.setVisible(true);
       } else {

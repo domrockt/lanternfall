@@ -1,0 +1,165 @@
+{
+  "tag": "before",
+  "setup": {
+    "enemies": 500,
+    "weapons": [
+      "ember",
+      "flail",
+      "frost",
+      "thorn",
+      "storm",
+      "lantern"
+    ],
+    "seed": 1,
+    "autoplay": true,
+    "seconds": 10,
+    "hudSeconds": 4
+  },
+  "configs": [
+    {
+      "config": {
+        "name": "640x360@1",
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "state": {
+        "enemies": 402,
+        "internal": [
+          480,
+          360
+        ],
+        "css": [
+          480,
+          360
+        ],
+        "dpr": 1
+      },
+      "running": {
+        "fps": 60.1,
+        "fpsMin": 60,
+        "fpsBuckets": [
+          60.9,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60
+        ],
+        "frames": 601,
+        "elapsedMs": 10002,
+        "worstFrameMs": 16.8,
+        "targetEnemies": 500
+      },
+      "runningText": {
+        "label": "running",
+        "elapsedMs": 10018,
+        "uiFrames": 601,
+        "setText": 3537,
+        "setTexture": 26912,
+        "ensureGlyph": 26912,
+        "setTextPerSec": 353.1,
+        "setTexturePerSec": 2686.4,
+        "ensureGlyphPerSec": 2686.4,
+        "uiMsPerFrame": 0.169,
+        "uiMsTotal": 101.7
+      },
+      "standingHud": {
+        "label": "standingHud",
+        "elapsedMs": 4004,
+        "uiFrames": 240,
+        "setText": 1200,
+        "setTexture": 4080,
+        "ensureGlyph": 4080,
+        "setTextPerSec": 299.7,
+        "setTexturePerSec": 1019,
+        "ensureGlyphPerSec": 1019,
+        "uiMsPerFrame": 0.098,
+        "uiMsTotal": 23.6
+      },
+      "screenshot": {
+        "path": "shots/m10-ui-text-cost-hud-before-640x3601.png",
+        "clip": {
+          "width": 480,
+          "height": 30
+        }
+      }
+    },
+    {
+      "config": {
+        "name": "780x360@3",
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "state": {
+        "enemies": 362,
+        "internal": [
+          780,
+          360
+        ],
+        "css": [
+          780,
+          360
+        ],
+        "dpr": 3
+      },
+      "running": {
+        "fps": 54.5,
+        "fpsMin": 50.2,
+        "fpsBuckets": [
+          61,
+          60,
+          55,
+          54.1,
+          54.1,
+          50.2,
+          54.1,
+          52,
+          53.1
+        ],
+        "frames": 546,
+        "elapsedMs": 10018,
+        "worstFrameMs": 33.5,
+        "targetEnemies": 500
+      },
+      "runningText": {
+        "label": "running",
+        "elapsedMs": 10059,
+        "uiFrames": 547,
+        "setText": 3247,
+        "setTexture": 15281,
+        "ensureGlyph": 15281,
+        "setTextPerSec": 322.8,
+        "setTexturePerSec": 1519.1,
+        "ensureGlyphPerSec": 1519.1,
+        "uiMsPerFrame": 0.144,
+        "uiMsTotal": 79
+      },
+      "standingHud": {
+        "label": "standingHud",
+        "elapsedMs": 4009,
+        "uiFrames": 211,
+        "setText": 1055,
+        "setTexture": 3587,
+        "ensureGlyph": 3587,
+        "setTextPerSec": 263.1,
+        "setTexturePerSec": 894.7,
+        "ensureGlyphPerSec": 894.7,
+        "uiMsPerFrame": 0.116,
+        "uiMsTotal": 24.4
+      },
+      "screenshot": {
+        "path": "shots/m10-ui-text-cost-hud-before-780x3603.png",
+        "clip": {
+          "width": 780,
+          "height": 30
+        }
+      }
+    }
+  ],
+  "jsErrors": []
+}
