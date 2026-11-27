@@ -89,6 +89,9 @@ Neuer Audit-Lauf (`shots/m10-atlas-audit.json`):
 Coverage/API: `ATLAS_KEY` bleibt `runtime_atlas`; `atlasTextureKey`,
 `applyTexture`, `currentFrame`, `makeImage` unverändert.
 
+Beleg für #1680: Fix in Commit 815df54, Reviewer-Urteil PASS (Gutter effektiv
+4 px h+v, Padding exklusiv je Zelle, 0 Bleed, API und 52 Aufrufstellen korrekt).
+
 ## Belege (#K5)
 
 Kontrollierte Render-Szene `scripts/art/atlas-evidence.mjs`: 47 Sprites,
