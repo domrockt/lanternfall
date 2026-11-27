@@ -6133,7 +6133,7 @@
       "id": 5439,
       "title": "m10-evo-reachability K2: Gate-Bugs fixen (Angebot nur Lv8+Powerup, keine Doppel-Evo, kein Powerup-Verlust)",
       "description": "Falls before.json Gate-Fehler zeigt: Fixes NUR in src/logic/evolution.ts, src/logic/levelup.ts, src/systems/LevelUpSystem.ts. Angebot nur bei Basiswaffe Lv8 + passendem Powerup, keine Doppel-Evolution, Powerup bleibt erhalten. Abnahme: npx tsc --noEmit gruen, gezielte Tests gruen, Commits je Teilkarte.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -6145,20 +6145,31 @@
           "at": "2026-11-27T21:02:47Z",
           "by": "build",
           "text": "Befund K1: kein Spieler-sichtbarer Gate-Bug (before 6/6). K2 = Haertung zweier latenter Inkonsistenzen: (1) evolvableList in evolution.ts prueft weaponDef(evo.id).implemented nicht — die Truhe koennte eine nicht implementierte Evolution anbieten, applyChestReward/addWeapon wuerde dann werfen; (2) LevelUpSystem.evolve() prueft das Powerup nicht (Truhe garantiert es heute, aber evolve() ist der oeffentliche Gate)."
+        },
+        {
+          "at": "2026-11-27T21:03:08Z",
+          "by": "build",
+          "text": "doing → review: Commit 91d1cb2: 2 Haertungen in evolution.ts + LevelUpSystem.ts, tsc gruen, bestehende tests/evolution.test.ts 11/11 gruen. Kein Spieler-sichtbarer Gate-Bug vorhanden (before 6/6)."
         }
       ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T21:02:47Z"
+      "updated": "2026-11-27T21:03:08Z"
     },
     {
       "id": 5440,
       "title": "m10-evo-reachability K3: tests/evo-reachability.test.ts (6/6 erreichbar + Negativ-/Grenzfaelle)",
       "description": "Neue Testdatei: 6/6 Evolutionen erreichbar, nicht erreichbar ohne passendes Powerup, Angebotsliste ohne Duplikate, Grenzfaelle (Lv7 vs 8, falsches Powerup, zweites Powerup). Abnahme: npx vitest run tests/evo-reachability.test.ts + npx tsc --noEmit gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:03:13Z",
+          "by": "build",
+          "text": "todo → doing: Testdatei in Arbeit: 6/6 erreichbar je Pfad (Truhe chestRewards + Level-Up generateOffers), Negativfaelle (Lv7, falsches Powerup, fehlendes Powerup), Duplikat-Freiheit, evolve()-Haertung aus K2."
+        }
+      ],
       "created": "2026-11-27T20:53:05Z",
-      "updated": "2026-11-27T20:53:05Z"
+      "updated": "2026-11-27T21:03:13Z"
     },
     {
       "id": 5441,
