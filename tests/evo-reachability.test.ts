@@ -12,7 +12,7 @@ const p = (id: string, level: number): OwnedItem => ({ id, level });
 const rng = () => new SeededRng(4711);
 
 /** Alle 6 Kombinationen Basiswaffe (Stufe 8) + passendes Powerup. */
-const fullBuilds = EVOLUTIONS.map((evo) => ({
+const fullBuilds = EVOLUTIONS.filter((e) => e.implemented).map((evo) => ({
   evo,
   weapons: [w(evo.baseWeapon, 8)] as OwnedItem[],
   passives: [p(evo.passive, 1)] as OwnedItem[],
