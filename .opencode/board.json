@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5062,
+  "next": 5063,
   "cards": [
     {
       "id": 1,
@@ -5798,6 +5798,21 @@
       ],
       "created": "2026-11-27T20:06:15Z",
       "updated": "2026-11-27T20:06:20Z"
+    },
+    {
+      "id": 5062,
+      "title": "m10-ground-props-batch: Props/Ripples in feste Batch-Layer (Vorher/After/Doku)",
+      "description": "Aus Lane m10-ground-props-batch übernommen (lane #4218, ID kollidierte). Props/Ripples in feste Batch-Container-Layer (je Textur hinter/vor Spieler + Schatten/Glow/Ripples), Seitenwechsel statt pro-Frame-setDepth; Helfer phaserfrei in propLayers.ts. Vorher/After: Draw-Call-Kandidaten 925→75 (640) / 1139→85 (780@dpr3) <300 PASS; FPS-Ziele 58/46,5 nicht erreicht (48,5/40,3), Befund submit-limitiert. Abnahme: Merge 90e0c4d in main, npm test 578/578 + Build grün, .lane-done nicht übernommen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:12:14Z",
+          "by": "build",
+          "text": "review → done: lane #4218, Merge 90e0c4d — rc=0 (merge-base ancestor), Lane-Review-PASS: Draw-Call-Kandidaten 925→75 / 1139→85 (<300), npm test auf main nach Merge 578/578 + Build grün"
+        }
+      ],
+      "created": "2026-11-27T20:12:05Z",
+      "updated": "2026-11-27T20:12:14Z"
     }
   ]
 }
