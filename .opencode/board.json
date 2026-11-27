@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 1659,
+  "next": 1663,
   "cards": [
     {
       "id": 1,
@@ -2684,6 +2684,46 @@
       ],
       "created": "2026-11-26T23:53:27Z",
       "updated": "2026-11-26T23:53:35Z"
+    },
+    {
+      "id": 1659,
+      "title": "m10-audio-distinct #1 Audit + Hörprobe",
+      "description": "Mapping SFX-Key -> Waffe/Evolution aus src/audio/AudioSystem.ts und scripts/gen_sfx.py als shots/m10-audio-distinct-audit.json (Welle, Dauer, Hüllkurve je Key); Lücken benennen. Abnahme: JSON im Commit, mind. 12 Keys + Lückenliste.\n\nlane #1458: Audit-JSON 12 Keys, 6 fehlende Evolution-Stinger, 24 identische Signaturen; final neu erzeugt: 12 Keys, min Distanz 0,125 (6887705, Beleg 56a6539).",
+      "column": "review",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T01:01:34Z",
+      "updated": "2026-11-27T01:01:34Z"
+    },
+    {
+      "id": 1660,
+      "title": "m10-audio-distinct #2 Test zuerst: tests/audio-mix.test.ts",
+      "description": "Vitest: 12 Waffen-/Evolutions-Keys existieren, paarweise unterschiedliche Wellenform-Signatur (aus WAV), Mixer respektiert MAX_TOTAL_VOICES und PRIORITY, Lautstärken in [0,1], Mute blockt alle Requests. Abnahme: Test rot vor Fix, grün danach.\n\nlane #1459: Test zuerst, rot belegt 2/7 (b6113e0), final 7/7 grün (56a6539).",
+      "column": "review",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T01:01:34Z",
+      "updated": "2026-11-27T01:01:34Z"
+    },
+    {
+      "id": 1661,
+      "title": "m10-audio-distinct #3 Fix: 6 Evolutions-Klänge eigenständig",
+      "description": "In scripts/gen_sfx.py die 6 Evolutions-Keys eigenständig neu erzeugen (Treffer <0,4 s, Evolution-Stinger 0,6-1,0 s mit Aufwärts-Glissando, eigene Wellenform-Kombination je Key); AudioSystem-Mapping/Cooldowns ergänzen ohne Umbenennen; Master-Mute unverändert. Abnahme: tests/audio-mix.test.ts grün, WAV-Signaturen paarweise verschieden.\n\nlane #1460: 12 Klänge neu, alle 66 Paare >=0,12 (min 0,125 frost/eternal_winter), Stinger 0,70-0,90 s rising (2b18b37).",
+      "column": "review",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T01:01:34Z",
+      "updated": "2026-11-27T01:01:34Z"
+    },
+    {
+      "id": 1662,
+      "title": "m10-audio-distinct #4 Beleg + Abnahme",
+      "description": "node scripts/verify-final.mjs (Master-Mute 7/7) und node scripts/verify-weapons.mjs (12/12) ohne flock; WAV-/Spektral-Belege nach shots/m10-audio-*; npm run build + vitest gesamt grün mit Ist-Zahl; docs/lanes/m10-audio-distinct.md mit Key-/Klang-Tabelle. Abnahme: alle Belege im Commit.\n\nlane #1461: verify-final 7/7, verify-weapons 12/12, build grün, vitest 199/199; shots/m10-audio-distinct-audit.json, -spectra.png, -spectra-12.png (05428a5, 56a6539).",
+      "column": "review",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T01:01:34Z",
+      "updated": "2026-11-27T01:01:34Z"
     }
   ]
 }
