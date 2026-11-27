@@ -320,6 +320,9 @@ describe("Determinismus", () => {
       return (fx.active as FxRuntime[]).map((f) => Math.round(f.scaleFrom * 1e6));
     };
     expect(run()).toEqual(run());
+  });
+
+  it("Alpha-Boden ist dokumentiert auf 4 % (Abnahme-Vorgabe A4)", () => {
     expect(ADD_GLOW_ALPHA_FLOOR).toBe(0.04);
   });
 });

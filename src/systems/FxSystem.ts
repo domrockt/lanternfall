@@ -15,12 +15,14 @@ import { ambientBudgetFor, lodFor } from "../logic/lod";
 export const ADD_GLOW_ALPHA_FLOOR = 0.04;
 /** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow bei dpr > 1,5 (96x96 @dpr3). */
 export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
+/** dpr-Schwelle, ab der der Flaechen-Deckel greift (Mobil-Views @2/@3; Desktop unveraendert). */
+export const ADD_GLOW_DPR_THRESHOLD = 1.5;
 
 /** Flaeche-Deckel je dpr: ab dpr > 1,5 aktiv (Mobil-Views 780x360@2/@3), Desktop unveraendert. */
 export function glowAreaCapForDpr(dpr: number): number {
   if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
   const d = dpr > 0 ? dpr : 1;
-  return d > 1.5 ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+  return d > ADD_GLOW_DPR_THRESHOLD ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
 }
 
 export interface GlowScaleClamp {
@@ -459,6 +461,8 @@ export class FxSystem {
       const alpha = Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t);
       // M10-A4: ausgebrannte ADD-Glows (alpha <= 4 %) kosten volle Fuellrate,
       // sind aber nicht mehr sichtbar -> frueh freigeben statt ausschleichen.
+      // Achtung bei kuenftigen Fade-in-Glows (alphaFrom klein): der Boden
+      // cuellt sie sofort — Fade-in dann ueber alphaTo/-From >= Floor bauen.
       if (fx.glow && alpha <= ADD_GLOW_ALPHA_FLOOR) {
         fx.active = false;
         fx.sprite.setVisible(false).setActive(false);
@@ -524,10 +528,13 @@ export class FxSystem {
   /**
    * M10-A4: Gegnerlast an den Pool melden und die Glow-Slots an den LOD-Cap
    * koppeln (lod.ts wird nur gelesen). Run.applyLod -> CombatSystem.setLod ->
-   * setMaxActive treibt denselben Deckel bereits jeden Frame; diese Methode
-   * macht die Kopplung explizit: ab 250 Gegnern schaltet ambientBudgetFor die
-   * Ambient-Glows ganz ab (glow 0) — dann greift fuer FX-Glows der minimale
-   * Deckel, sonst glowCapFor der lodFor-Stufe.
+   * setMaxActive treibt denselben Deckel bereits bei jedem LOD-Wechsel; diese
+   * Methode macht die Kopplung explizit: ab 250 Gegnern schaltet
+   * ambientBudgetFor die Ambient-Glows ganz ab (glow 0) — dann greift fuer
+   * FX-Glows der minimale Deckel, sonst glowCapFor der lodFor-Stufe.
+   * Drosselt monoton (hebt nie wieder an) — aktuell ohne produktiven Aufrufer;
+   * falls verdrahtet, muss der Aufrufer die Last jeden Frame melden, sonst
+   * bleibt der Minimal-Deckel nach einer schweren Welle haengen.
    */
   setEnemyLoad(enemies: number): void {
     const level = lodFor(enemies).level;
@@ -774,7 +781,8 @@ export class ParticleSystem {
     return glowBudgetFor(this.scene).current;
   }
 
-  /** M10-A4: Gegnerlast melden — Deckel wie FxSystem.setEnemyLoad (lod.ts nur gelesen). */
+  /** M10-A4: Gegnerlast melden — Deckel wie FxSystem.setEnemyLoad (lod.ts nur gelesen,
+   *  monoton, aktuell ohne produktiven Aufrufer). */
   setEnemyLoad(enemies: number): void {
     const level = lodFor(enemies).level;
     const ambient = ambientBudgetFor(enemies);
