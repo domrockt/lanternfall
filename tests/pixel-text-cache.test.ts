@@ -36,6 +36,12 @@ function makeScene() {
     textures: {
       exists: vi.fn((key: string) => textures.has(key)),
       addCanvas: vi.fn((key: string) => { textures.add(key); }),
+      // m10-atlas-pack: Glyphen werden in Baked-Atlas-Seiten gepackt
+      // (packCanvasTexture). Ohne glTexture (Node-Test) greift der
+      // Canvas-Fallback in registerBaked -> addCanvas(key, canvas).
+      get: vi.fn((_key: string) => ({ source: [] as unknown[] })),
+      create: vi.fn(),
+      remove: vi.fn(),
     },
     add: {
       existing: vi.fn(),
@@ -68,10 +74,17 @@ const delta = (a: ReturnType<typeof counters>, b: ReturnType<typeof counters>) =
 
 beforeEach(() => {
   vi.stubGlobal("document", {
+    // m10-atlas-pack: Glyphen-Canvas wird per drawImage in eine Atlas-Seite
+    // kopiert (bakeAtlas.ts), daher muss der Canvas-Stub drawImage kennen.
     createElement: () => ({
       width: 0,
       height: 0,
-      getContext: () => ({ fillStyle: "", fillRect: vi.fn() }),
+      getContext: () => ({
+        fillStyle: "",
+        fillRect: vi.fn(),
+        drawImage: vi.fn(),
+        imageSmoothingEnabled: false,
+      }),
     }),
   });
 });
