@@ -64,7 +64,35 @@ Nachholen: sobald die Sperre frei ist (realtime-run beendet), Versuch 3 mit
 und diese Notiz ergaenzen. Regler-Verhalten ist unabhaengig durch Probes
 belegt: Teiler 2 wird unter Last erreicht (Buffer 390x180, FPS-Erholung).
 
-## #3581 Pixel-Perfect-Beleg (offen)
+## #3581 Pixel-Perfect-Beleg (Commit 48925da)
 
-Statische Szene bei gesenktem Massstab, 1:1-Pixelvergleich ohne weiche
-Kanten -> `shots/m10-dpr-budget-pixel.png`.
+`scripts/m10-dpr-pixel-proof.mjs`: statische Szene (hitStop-Freeze, kein
+Overlay) bei 780x360 dpr3, Stufe 2 (Buffer 390x180) vs. Stufe 1
+(`window.__rbOverride = 1`, gleiche Szene).
+
+**Kritischer Befund dabei**: Der gesenkte Buffer war ohne weitere Massnahmen
+ein **Zoom-Crop** des obersten linken Quadranten (Spieler off-screen; Beleg:
+Stufe-2-Shot entsprach dem B-Viertel mit AE 1464/70200). Commit 327eb83s
+"Sichtpruefung Szene voll" war falsch.
+
+**Fix in `src/config.ts`** (`enforceCameraProjection`, laeuft je Frame):
+je Kamera `Zoom = 1/Teiler` + `Viewport = W/s x H/s` + Midpoint-Erhaltung
+ueber die Aenderung. Sieger-Konfig empirisch aus 6er-(Zoom x Viewport)-Matrix
+(`scripts/m10-dpr-camera-matrix.mjs`); ohne Midpoint-Erhaltung verspringen
+UI-Panel/HUD (setViewport aendert den Kamera-Ausschnitt).
+
+Belege (`shots/m10-dpr-budget-pixel*`):
+
+- `uniformAE = 0` ueber 2 527 200 Geraete-Pixel: jedes 6x6-Block ist eine
+  Farbe -> hartes nearest-neighbor Upscale, keine weichen Kanten.
+- Layout identisch zur Vollstufe (Panel zentriert, HUD Ecken, Spieler
+  Mitte); Rest-AE ist Text-/Detail-Resampling — der beabsichtigte
+  Kompromiss des halben Rasters.
+- `overview`/`full-overview` = verkleinerte Sichten, `zoom` = 4x-Crop.
+
+Bekannte Randaerfahrungen (offen, nicht blockierend fuer M25-Messung):
+
+- HitStop-Dim haengt an `camera.width` (kuenstlicher Freeze-Zustand, nicht
+  spielbar relevant).
+- Eingabemapping (Touch/Joystick/Klicks) bei gesenktem Massstab ungetestet —
+  Regler senkt nur unter Dauerlast; UX-Check als Folge-Karte empfohlen.
