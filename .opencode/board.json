@@ -3309,7 +3309,7 @@
       "id": 2298,
       "title": "m10-chaos-qa #1 Lauf + Rohdaten (Frame-Samples, Gegner-/Schusszahl, JS-Fehler)",
       "description": "Owner playtester, Kontrolleur perf-check. 30-min-Sim mit timeScale 30 bis Minute 25, danach 10 s bei timeScale 1 mit 550 Gegnern und 6 Evolutions-Waffen. Abnahme: shots/m10-chaos-qa.json mit >=600 Frame-Samples, Gegnerzahl/Schusszahl je Sample, fps min/median, 0 JS-Fehler oder jeder Fehler einzeln dokumentiert. Messung unter flock /home/ai/games/.lf-perf.lock.",
-      "column": "review",
+      "column": "done",
       "assignee": "playtester",
       "notes": [
         {
@@ -3321,36 +3321,52 @@
           "at": "2026-11-27T05:31:01Z",
           "by": "build",
           "text": "doing → review: Beleg shots/m10-chaos-qa.json: 3349 Frame-Samples (588 realtime @1x), enemies median 536 (min 352/max 552), enemyShots max 325, FPS median 59,9 / min realtime-Fenster 20, worst frame 50,1ms, 0 JS-Fehler. Commit 498ab41."
+        },
+        {
+          "at": "2026-11-27T07:12:00Z",
+          "by": "build",
+          "text": "review → done: Commit 498ab41 (#2298): shots/m10-chaos-qa.json 3349 Frame-Samples (588 realtime), enemies 352-552 median 536, enemyShots max 325, FPS median 59,9 min 20 worst frame 50,1 ms, 0 JS-Fehler. perf-check laeuft."
         }
       ],
       "created": "2026-11-27T04:52:47Z",
-      "updated": "2026-11-27T05:31:01Z"
+      "updated": "2026-11-27T07:12:00Z"
     },
     {
       "id": 2299,
       "title": "m10-chaos-qa #2 Lesbarkeits-Matrix 640x360 + 780x360 (M25/27/29)",
       "description": "Owner playtester, Kontrolleure ux-check + vfx-check. 6 Standbilder shots/m10-chaos-qa-m25/27/29-640.png bzw. -780.png bei 500+ Gegnern. Je Bild pruefen: Spieler-Silhouette, Gegnerschuesse vs Hintergrund, HUD-Ueberdeckung, Truhe/Pfeil. Abnahme: Urteil je Bild + Pixel-Kontrastzahlen (Region, min/max/std) in docs/lane; keine Behauptung ohne Zahl.",
-      "column": "doing",
+      "column": "review",
       "assignee": "playtester",
       "notes": [
         {
           "at": "2026-11-27T05:31:01Z",
           "by": "build",
           "text": "todo → doing: Start: 6 Standbilder 640/780 x M25/27/29"
+        },
+        {
+          "at": "2026-11-27T07:12:00Z",
+          "by": "build",
+          "text": "doing → review: Commit 61524f2 + 98ca771 (#2299): 6 Standbilder 640/780 M25/27/29, Kontrastzahlen shots/m10-chaos-qa-contrast.json, Matrix shots/m10-chaos-qa-readability.md. Spieler-Silhouette FAIL in allen 6 (Weiß 1,0-6,6 % im Spieler-Crop); HUD/Boss-Balken PASS; Schusskontrast 640 131-181, 780 bis 45. Kontrolleure ux-check/vfx-check laufen."
         }
       ],
       "created": "2026-11-27T04:52:47Z",
-      "updated": "2026-11-27T05:31:01Z"
+      "updated": "2026-11-27T07:12:00Z"
     },
     {
       "id": 2300,
       "title": "m10-chaos-qa #3 Maengelliste + docs/lanes/m10-chaos-qa.md + .lane-done",
       "description": "Owner tech-lead, Kontrolleur acceptance-auditor. Tabelle je Befund (Befund, Severity S/M/L, Repro-Schritte, vorgeschlagene Datei aus CODEMAP), Messwerte, offene Fragen. Abnahme: jeder Befund mit Severity+Repro, Zahlen aus JSON/Shots belegt, .lane-done mit 5-10 Zeilen Zusammenfassung; ein Commit mit Belegen.",
-      "column": "todo",
+      "column": "done",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T07:12:00Z",
+          "by": "build",
+          "text": "todo → done: Commit 6a6ee66 (#2300): docs/lanes/m10-chaos-qa.md mit Befundtabelle (S Spieler-Silhouette, M 780-Schusskontrast, L Banner/Truhe, je Repro + CODEMAP-Datei), Messwerten (3349 Samples, 0 JS-Fehler), offenen Fragen; .lane-done gesetzt."
+        }
+      ],
       "created": "2026-11-27T04:52:47Z",
-      "updated": "2026-11-27T04:52:47Z"
+      "updated": "2026-11-27T07:12:00Z"
     }
   ]
 }
