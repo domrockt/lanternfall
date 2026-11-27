@@ -1,0 +1,17 @@
+# Lane m10-heap-margin — fertig (2026-11-27)
+
+Ziel: Heap-Wachstum 780-Pfad (780x360@3, Endgame-Szenario Minute 20-29) von +14,1 % (knapp FAIL
+bei Ziel <=15 %) auf <= 12 % senken, ohne fullrun-fpsMin zu verschlechtern; nur
+Allokationsverhalten ändern.
+
+Ergebnis:
+- Vorher: 31,2 -> 35,6 MB = +14,1 %, fpsMin 19,4 (shots/m10-heap-margin-before.json)
+- Nachher: 35,2 -> 36,2 MB = +2,8 %, fpsMin 20,3, 0 JS-Fehler (shots/m10-heap-margin-after.json)
+- Hebel: ProjectilePool.trailFrames wird in place befüllt statt neuem Array je Spawn
+  (src/systems/ProjectilePool.ts, Commit 920594f); Pool-Reuse per tests/heap-margin.test.ts
+  leak-frei belegt (8/8 grün, Commit da2bd4d)
+- Verbleibende Top-Allokatoren liegen außerhalb der Area; Fix-Empfehlungen (Datei + Hebel +
+  erwarteter Gewinn) in docs/lanes/m10-heap-margin.md: CombatSystem chain_link 9968 + FX
+  6422/1246/1869, EnemyProjectiles-Trails 2348, GroundRenderer Prop-Shadows 2339 je Fenster
+- Abnahme: tsc grün, Tests 8/8, fpsMin 20,3 >= 19,4; reviewer PASS (ses_de17c78c6ffeNYqJqvM3k5hX49)
+- Karten: #4598/#4599/#4600 done, #4601 review->done. Doku: docs/lanes/m10-heap-margin.md
