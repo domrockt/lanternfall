@@ -198,12 +198,12 @@ export class FxSystem {
       x,
       y,
       life: opts.life ?? baseLife,
-      scaleFrom: opts.scaleFrom ?? (kind === "hit" ? 0.8 : 1.05),
-      scaleTo: opts.scaleTo ?? (kind === "hit" ? 1.45 : 2.2),
+      scaleFrom: opts.scaleFrom ?? (kind === "hit" ? 2.0 : 2.4),
+      scaleTo: opts.scaleTo ?? (kind === "hit" ? 2.8 : 3.4),
       alphaFrom: opts.alphaFrom ?? alphaFloor,
       alphaTo: 0,
       additive: false,
-      depth: DEPTH.fxLow,
+      depth: DEPTH.enemyDeath,
     });
   }
 

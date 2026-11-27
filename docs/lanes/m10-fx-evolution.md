@@ -95,6 +95,9 @@ derselben Grundform nicht pixelgleich sind.
   `Lifetime × 450 ms` je Evolution+Art (keine Sprite-Flut bei AoE-Kills).
 - `Run.ts` ruft die Signatur am getroffenen Gegner auf (`onHit`), rein visuell:
   keine Hitbox-, Schadens-, Tempo- oder Balance-Änderung.
+- Lesbarkeit im Schwarm: Depth `enemyDeath` (11, **über** den Gegnern mit Depth 9),
+  Startskala 2,0 (Hit) bzw. 2,4 (Death), Wachstum auf 2,8/3,4; damit steht die
+  Signatur sichtbar über der Gegnermasse statt darunter.
 - LOD: `lodSignatureView(..., "minimal")` liefert **Alpha 0,5 und NORMAL-Blend**,
   der Palettenindex bleibt erhalten. Im `spawnEvolution`-Pfad wird der Blend
   auf NORMAL gesetzt und die Start-Alpha so gewählt, dass die effektive Alpha
@@ -104,6 +107,10 @@ derselben Grundform nicht pixelgleich sind.
   soul_beacon, thorn_storm, thunder_seal, wrath_pendulum).
 - In-Game-Belege: `shots/m10-fx-evolution-after-<flail|storm|ember|frost|thorn|lantern>.gif`
   (24 Frames, ~2 s, jeweils 400–520 lebende Gegner).
+- Zusätzlicher In-Game-Beleg mit **300 lebenden Gegnern** und allen 6 Signaturen
+  gleichzeitig (pausierter Run): `shots/m10-fx-evolution-signature-ingame.png`
+  und `...-ingame-zoom.png`. Gold-Ring (Zornpendel) ist im Zoom klar über dem
+  Schwarm sichtbar; die übrigen Formen/Farben stehen an den Grid-Positionen.
 - Tests: `tests/fx-evolution.test.ts` 6/6, inkl. paarweise verschiedener
   Form+Index+Lifetime und LOD-Index-Erhalt.
 
@@ -118,8 +125,8 @@ derselben Grundform nicht pixelgleich sind.
   (Definition `r ≥ 235 && g,b ≥ 150`) → **≤ 4,16 % PASS**
   (`shots/m10-fx-evolution-chaos.json`).
 - Per-Evolution-Peak Near-White (nur informativ, gleicher Crop):
-  Zornpendel 6,05 %, Gewittersiegel 2,42 %, Phönix 2,51 %, Ewiger Winter 1,11 %,
-  Dornensturm 5,33 %, Seelenleuchtfeuer 3,64 %. Diese Werte werden von den
+  Zornpendel 4,95 %, Gewittersiegel 2,44 %, Phönix 1,94 %, Ewiger Winter 1,11 %,
+  Dornensturm 4,85 %, Seelenleuchtfeuer 3,36 %. Diese Werte werden von den
   bestehenden Basiswaffen-Effekten dominiert (Ring/Feuer/Sturm), nicht von den
   neuen 17×17-Signaturen; die A7-Messung ist der Chaos-Frame oben.
 - Pixel-Diff der Signaturen: `shots/m10-fx-evolution-signature-diff.json`,
