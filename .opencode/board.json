@@ -4186,27 +4186,38 @@
       "id": 2880,
       "title": "m10-ember-readability #3 Beleg-Test + Chaos-Screenshot",
       "description": "tests/ember-readability.test.ts: (a) alle Ember-Frame-Pixel Palettenfarben Alpha 0/255, (b) Kern-vs-Halo-Kontrast ueber Schwelle, (c) Near-White <=4,16 %. In-Game 640x360 mit 500+ Gegnern + Ember im Flug shots/m10-ember-readability-chaos-640.png, art-director/vision-Urteil >=4/5 in Lane-Doku. Abnahme: vitest gruen, PNG committed, Urteil dokumentiert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T11:50:33Z",
           "by": "build",
           "text": "todo → doing: Start K3: tests/ember-readability.test.ts + 640x360-Chaos-Shot mit 500+ Gegnern und Ember im Flug."
+        },
+        {
+          "at": "2026-11-27T13:13:57Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig: Belege 2397d97+38184b4 (640x360, 560 Gegner, 4 Ember im Flug, 0 JS-Fehler), vitest 9/9, Doku mit art-director PASS 4/5 (a6a9cac)."
         }
       ],
       "created": "2026-11-27T11:08:28Z",
-      "updated": "2026-11-27T11:50:33Z"
+      "updated": "2026-11-27T13:13:57Z"
     },
     {
       "id": 2881,
       "title": "m10-ember-readability #4 Doku + .lane-done",
       "description": "docs/lanes/m10-ember-readability.md mit Vorher/Nachher-Zahlen, art-director-Urteil, offenen Restpunkten; .lane-done mit Messwerten. Abnahme: build+Tests gruen, Doku + .lane-done committed.",
-      "column": "todo",
+      "column": "review",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T13:13:57Z",
+          "by": "build",
+          "text": "todo → review: K4 fertig: docs/lanes/m10-ember-readability.md (a6a9cac), .lane-done mit Messwerten (1fbdd47), build+337 Tests gruen. Lane abgeschlossen."
+        }
+      ],
       "created": "2026-11-27T11:08:28Z",
-      "updated": "2026-11-27T11:08:28Z"
+      "updated": "2026-11-27T13:13:57Z"
     }
   ]
 }
