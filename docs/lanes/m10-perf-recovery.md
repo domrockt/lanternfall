@@ -94,6 +94,11 @@ Draw-Calls/Frame stehen oben; Ursache ist mit `c0f56d5` **belegt** (Median 51,4
 statt 60,0 FPS im Minute-25-Fenster, Burst unverändert). Kein Code-Fix in dieser
 Mess-Karte; Folgekarte ist `#2678 m10-perf-fix-ambient-batching`.
 
+Scope-Hinweis: Ein zwischenzeitlicher Ambient-/LOD-Code-Fix (Snapshot `13a679d`)
+wurde auf Supervisor-Anweisung **zurückgenommen** — diese Karte bleibt Mess-Karte
+(Profil + Bisect + Ursache), der Fix gehört in `#2678 m10-perf-fix-ambient-batching`.
+Die Messartefakte (`shots/m10-perf-profile*`, `shots/perf-m3*.json`) bleiben.
+
 Sicht-Belege (`#2499`): profile done — die Belege lagen bereits als eigene Karte
 vor und sind in `caea6b6`/`3ea51b7` committet (verify-display 38/38, 30 Gegner/
 6 Bosse/12 VFX-GIFs bei 640×360).

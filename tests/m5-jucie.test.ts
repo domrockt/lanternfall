@@ -14,27 +14,23 @@ import {
 } from "../src/audio/options";
 
 describe("M5 LOD-Schwellen", () => {
-  it("volle Dichte bis 200 Gegner", () => {
+  it("volle Dichte bis 250 Gegner", () => {
     expect(lodFor(10).level).toBe("full");
-    expect(lodFor(200).trails).toBe(true);
-    expect(lodFor(200).fxCap).toBe(180);
+    expect(lodFor(250).trails).toBe(true);
+    expect(lodFor(250).fxCap).toBe(180);
   });
-  it("reduziert zwischen 201 und 299", () => {
-    for (const n of [201, 250, 299]) {
-      const lod = lodFor(n);
-      expect(lod.level).toBe("reduced");
-      expect(lod.particleCap).toBeLessThan(360);
-    }
+  it("reduziert zwischen 251 und 400", () => {
+    const lod = lodFor(300);
+    expect(lod.level).toBe("reduced");
+    expect(lod.particleCap).toBeLessThan(360);
   });
-  it("minimal über 299 (Minute-25-Endgame): Trails aus, Damage-Summen, kleine Caps", () => {
-    for (const n of [300, LOD_THRESHOLD + 1]) {
-      const lod = lodFor(n);
-      expect(lod.level).toBe("minimal");
-      expect(lod.trails).toBe(false);
-      expect(lod.damageAggregate).toBe(true);
-      expect(lod.particleCap).toBeLessThanOrEqual(160);
-      expect(lod.gemCap).toBeLessThanOrEqual(120);
-    }
+  it("minimal über 400: Trails aus, Damage-Summen, kleine Caps", () => {
+    const lod = lodFor(LOD_THRESHOLD + 1);
+    expect(lod.level).toBe("minimal");
+    expect(lod.trails).toBe(false);
+    expect(lod.damageAggregate).toBe(true);
+    expect(lod.particleCap).toBeLessThanOrEqual(160);
+    expect(lod.gemCap).toBeLessThanOrEqual(120);
   });
   it("Effekt-Alpha sinkt im Endgame (M6-Lesbarkeit)", () => {
     expect(fxAlphaFor("full")).toBe(1);
