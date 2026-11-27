@@ -54,8 +54,8 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-crumble.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-crumble.png",
       "spawned": 6,
-      "particleActive": 132,
-      "nearby": 132,
+      "particleActive": 128,
+      "nearby": 128,
       "textures": [
         "fx_death_bone",
         "fx_ash"
@@ -83,15 +83,15 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-burst.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-burst.png",
       "spawned": 6,
-      "particleActive": 106,
-      "nearby": 105,
+      "particleActive": 107,
+      "nearby": 102,
       "textures": [
         "fx_death_blob",
         "fx_star"
       ],
       "bboxGamePx": {
-        "w": 103,
-        "h": 87
+        "w": 105,
+        "h": 89
       },
       "frames": [
         4,
@@ -141,8 +141,8 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-sputter.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-sputter.png",
       "spawned": 6,
-      "particleActive": 114,
-      "nearby": 114,
+      "particleActive": 103,
+      "nearby": 103,
       "textures": [
         "fx_death_dust",
         "fx_fire",

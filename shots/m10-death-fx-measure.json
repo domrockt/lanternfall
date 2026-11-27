@@ -2,11 +2,11 @@
   {
     "cls": "crumble",
     "enemy": "wisp",
-    "particles": 108,
-    "areaGamePx2": 16536,
+    "particles": 132,
+    "areaGamePx2": 17472,
     "bboxGamePx": {
-      "w": 23,
-      "h": 23
+      "w": 27,
+      "h": 22
     },
     "textures": [
       "fx_death_bone",
@@ -25,10 +25,10 @@
     "cls": "burst",
     "enemy": "bog_rat",
     "particles": 140,
-    "areaGamePx2": 44252,
+    "areaGamePx2": 47604,
     "bboxGamePx": {
-      "w": 41,
-      "h": 40
+      "w": 45,
+      "h": 45
     },
     "textures": [
       "fx_death_blob",
@@ -49,10 +49,10 @@
     "cls": "dissolve",
     "enemy": "banshee",
     "particles": 120,
-    "areaGamePx2": 40929,
+    "areaGamePx2": 39450,
     "bboxGamePx": {
-      "w": 25,
-      "h": 25
+      "w": 26,
+      "h": 27
     },
     "textures": [
       "fx_death_void",
@@ -72,19 +72,19 @@
     "cls": "sputter",
     "enemy": "toad",
     "particles": 140,
-    "areaGamePx2": 43572,
+    "areaGamePx2": 40852,
     "bboxGamePx": {
-      "w": 38,
+      "w": 37,
       "h": 37
     },
     "textures": [
       "fx_death_dust",
-      "fx_fire"
+      "fx_fire",
+      "fx_star"
     ],
     "tints": [
       "#0a0e16",
-      "#cf6b26",
-      "#a84a21",
+      "#ffb84d",
       "#ef9130"
     ],
     "additive": [
