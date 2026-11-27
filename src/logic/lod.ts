@@ -13,9 +13,12 @@ export interface LodState {
   level: "full" | "reduced" | "minimal";
 }
 
-/** M6: Effekt-Alpha je LOD-Stufe (Endgame lesbar halten). */
+/** M6: Effekt-Alpha je LOD-Stufe (Endgame lesbar halten).
+ * M10-vfx-restore Stufe 1 (Lane m10-lod-min-restore): minimal 0,5 → 0,65
+ * (A7-Restmangel "verwaschen"; Near-White-Gate ≤ 4,16 %, siehe docs/lanes/
+ * m10-lod-min-restore.md). Kette bleibt monoton: 0,65 < 0,72 < 1. */
 export function fxAlphaFor(level: LodState["level"]): number {
-  return level === "minimal" ? 0.5 : level === "reduced" ? 0.72 : 1;
+  return level === "minimal" ? 0.65 : level === "reduced" ? 0.72 : 1;
 }
 
 export const LOD_THRESHOLD = 400;
