@@ -5,6 +5,8 @@
  *   n      = floor(geraeteHoehe_px / 360)   (n >= 2, sonst Fit-Rueckfall)
  *   Breite = clamp(round(geraeteBreite_px / n), 480, 860)
  * Jeder Spielpixel ist damit exakt n x n Geraetepixel (devicePixelRatio enthalten).
+ * M10-view-fill: Im Fit-Rueckfall (n < 2) fuellt das Spielfeld das Fenster
+ * komplett (fillView) statt auf der 4:3-Basis 480x360 Balken zu lassen.
  * Reine Funktionen ohne DOM/Phaser, in Vitest testbar.
  */
 export const BASE_HEIGHT = 360;
@@ -87,6 +89,45 @@ function fitView(deviceWidth: number, deviceHeight: number, dpr: number, portrai
 }
 
 /**
+ * M10-view-fill: Fit-Rueckfall, der das Fenster VOLL ausfuellt (Hoehe skaliert
+ * mit, kein 4:3-Balken mehr). scale = deviceHeight/BASE_HEIGHT exakt; Breite =
+ * deviceWidth/scale, damit das Spielfeld bis an beide Raender reicht.
+ * Jedes 16:9-Fenster ergibt dadurch exakt 640 px interne Breite:
+ *   width = deviceWidth / (deviceHeight/360) = 16/9 * 360 = 640.
+ * Skalierung ist ganzzahlig, wenn die Fensterhoehe ein 360er-Vielfaches ist
+ * (640x360 -> 1x, 1280x720 -> 2x), sonst gebrochen (960x540 -> 1.5x) und
+ * dokumentiert; roundPixels bleibt aktiv, die Kamera bleibt subpixelfrei.
+ * Fiele die Fuell-Breite unter MIN_WIDTH (sehr schmales Fenster), Rueckfall
+ * auf die alte 4:3-Fit-View statt Canvas-Overflow. hardMax (MAX_WIDTH bzw.
+ * CROWD_WIDTH) bleibt Obergrenze: dokumentierte Randbedingung — Ultrawide-
+ * Fenster und Fenster unter aktiver Crowd-Klemme koennen wieder Balken zeigen.
+ */
+function fillView(
+  deviceWidth: number,
+  deviceHeight: number,
+  dpr: number,
+  hardMax: number,
+  portrait: boolean,
+): ViewSpec {
+  const scale = Math.max(0.1, deviceHeight / BASE_HEIGHT);
+  const fillWidth = Math.floor(deviceWidth / scale);
+  if (fillWidth < MIN_WIDTH) return fitView(deviceWidth, deviceHeight, dpr, portrait);
+  const width = clamp(fillWidth, MIN_WIDTH, hardMax);
+  return {
+    width,
+    height: BASE_HEIGHT,
+    scale,
+    cssWidth: Math.max(1, Math.round((width * scale / dpr) * 1000) / 1000),
+    cssHeight: Math.max(1, Math.round((BASE_HEIGHT * scale / dpr) * 1000) / 1000),
+    fit: true,
+    portrait,
+    deviceWidth,
+    deviceHeight,
+    dpr,
+  };
+}
+
+/**
  * Berechnet die View aus CSS-Viewport + devicePixelRatio.
  * Hochkant liefert eine stehende Fit-View (die Szene pausiert und zeigt den
  * Dreh-Hinweis); landschaftlich gilt die ganzzahlige n-Skalierung.
@@ -101,12 +142,12 @@ export function computeView(input: DeviceInput): ViewSpec {
   if (portrait) return fitView(deviceWidth, deviceHeight, dpr, true);
 
   // Maximale ganzzahlige Stufe, bei der die Mindestbreite noch passt.
+  const hardMax = input.crowd ? CROWD_WIDTH : MAX_WIDTH;
   const maxFitN = Math.floor(Math.min(deviceHeight / BASE_HEIGHT, deviceWidth / MIN_WIDTH));
   const requested = Number.isFinite(input.setting) ? Math.max(0, Math.round(input.setting as number)) : 0;
   const n = requested > 0 ? Math.min(requested, maxFitN) : maxFitN;
-  if (n < 2) return fitView(deviceWidth, deviceHeight, dpr, false);
+  if (n < 2) return fillView(deviceWidth, deviceHeight, dpr, hardMax, false);
 
-  const hardMax = input.crowd ? CROWD_WIDTH : MAX_WIDTH;
   const width = Math.min(
     hardMax,
     Math.max(MIN_WIDTH, Math.round(deviceWidth / n)),

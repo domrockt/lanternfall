@@ -1,0 +1,140 @@
+{
+  "tag": "before",
+  "measuredAt": "2026-11-27T22:19:54.999Z",
+  "formats": [
+    {
+      "format": "640x360",
+      "dpr": 1,
+      "devicePx": [
+        640,
+        360
+      ],
+      "canvasRectCss": [
+        80,
+        0,
+        480,
+        360
+      ],
+      "internal": [
+        480,
+        360
+      ],
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-view-fill-before-640x360.png",
+      "barsPx": {
+        "left": 80,
+        "right": 80,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 80,
+        "y": 0,
+        "width": 480,
+        "height": 360
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "960x540",
+      "dpr": 1,
+      "devicePx": [
+        960,
+        540
+      ],
+      "canvasRectCss": [
+        120,
+        0,
+        720,
+        540
+      ],
+      "internal": [
+        480,
+        360
+      ],
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-view-fill-before-960x540.png",
+      "barsPx": {
+        "left": 120,
+        "right": 120,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 120,
+        "y": 0,
+        "width": 720,
+        "height": 540
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "1280x720",
+      "dpr": 1,
+      "devicePx": [
+        1280,
+        720
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-view-fill-before-1280x720.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "2560x1440",
+      "dpr": 1,
+      "devicePx": [
+        2560,
+        1440
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        2560,
+        1440
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-view-fill-before-2560x1440.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 2560,
+        "height": 1440
+      },
+      "jsErrors": []
+    }
+  ],
+  "fillsAll": false,
+  "jsErrors": 0
+}
