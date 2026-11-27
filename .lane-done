@@ -1,0 +1,27 @@
+Lane m10-damage-batch — abgeschlossen (2026-11-27, Versuch 3)
+
+Ziel: Kosten der Damage-Numbers im 500-Gegner-Chaos senken, ohne Schadenszahlen
+oder Lesbarkeit zu veraendern.
+
+Ergebnis:
+- K2-Fix in src/systems/DamageNumbers.ts + src/logic/damage-numbers.ts:
+  Label-Memo (setText nur bei Textaenderung), Flush einmal pro Frame,
+  Aggregation pro Bildschirmzone (3x3 Zonen), hartes View-Cap 10
+  (MAX_VIEWS_AGGREGATE + enforceViewCap beim Moduswechsel).
+- K3: tests/damage-number-batch.test.ts 15/15 (Summe <=1 %, Dedupe, Cap,
+  LabelMemo-Spy, NaN-Guard, Pool-Recycle/Reset, Zonen-Merge).
+- K4 (10 s, 500 Gegner, 6 Waffen Lv8, Seed 1): setText/s 28,9 -> 24,1
+  (-16,6 %), ms/Frame 19,33 -> 16,76 (-13,3 %), FPS 51,7 -> 59,7,
+  max aktive Views 6 (Cap 10), HUD-Summe vs. Balkensumme 0 % Abweichung,
+  0 JS-Fehler. Belege: shots/m10-damage-batch-before-old.json,
+  after-fair.json, compare.png.
+- Ziel "setText/s -50 %" NICHT erreicht, ehrlich dokumentiert in
+  docs/lanes/m10-damage-batch.md (Label aendert sich im Chaos fast bei jedem
+  Treffer; Hauptgewinn = Batching von setColorIndex/setText je Report).
+  Folge-Hebel dort notiert (30-Hz-Drossel, Glyph-Umfaerben im PixelText).
+
+Reviewer: PASS. Geschuetzte Dateien (CombatSystem/Run/UI) unberuehrt.
+Vorfaelle: ueberlebender Versuch-1-Prozess + paralleler Versuch-2-Agent im
+Worktree verfaelschten Messwerte; gestoppt, Quellstand repariert (a27047c),
+verwirrende Zwischen-JSONs entfernt. Messungen liefen ohne flock (Lock durch
+30-min-realtime-Lauf einer Nachbarlane belegt) -> als Trend lesen.

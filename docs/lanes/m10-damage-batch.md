@@ -9,8 +9,8 @@ Lv8, Seed 1, autoPlay + god, 10 s (`scripts/m10-damage-batch.mjs`).
 | Karte | Commit | Inhalt |
 |---|---|---|
 | K1 Baseline | `10d2c63`, `b19ec4a` | Messskript + Beleg `shots/m10-damage-batch-before.json/png`; Skript haertet Gegner unsterblich (konstante 500er-Last) |
-| K2 Fix | `cdfe56d` | `src/systems/DamageNumbers.ts`, `src/logic/damage-numbers.ts`: Label-Memo (setText nur bei Textaenderung), Flush einmal pro Frame, Aggregation pro Bildschirmzone (9 Zonen, `groupZoneFor`), hartes View-Cap 10 (`MAX_VIEWS_AGGREGATE` + `enforceViewCap`) |
-| K3 Test | `520ae82` | `tests/damage-number-batch.test.ts` 12/12: Summenabgleich <=1 %, keine Doppel-Labels, Cap, LabelMemo-Spy, 0 NaN/negativ, Zonen-Keys |
+| K2 Fix | `cdfe56d`, `c2c6b5b` | `src/systems/DamageNumbers.ts`, `src/logic/damage-numbers.ts`: Label-Memo (setText nur bei Textaenderung), Flush einmal pro Frame, Aggregation pro Bildschirmzone (9 Zonen, `groupZoneFor`), hartes View-Cap 10 (`MAX_VIEWS_AGGREGATE` + `enforceViewCap`) |
+| K3 Test | `520ae82`, `8e512e1` | `tests/damage-number-batch.test.ts` 15/15: Summenabgleich <=1 %, keine Doppel-Labels, Cap, LabelMemo-Spy, 0 NaN/negativ, Zonen-Keys, Pool-Recycle/Reset, Zonen-Merge |
 | K4 Messung | siehe unten | Vorher/Nachher + HUD-Abgleich + Vergleichs-PNG |
 
 ## Messwerte (10 s, Seed 1, 500 Gegner, 6 Waffen Lv8)
@@ -73,6 +73,14 @@ Vorher = alte Implementierung (`git 10d2c63`-Stand, temporaer gebaut,
   K1-Beleg `before.json/png` wiederhergestellt). Verwirrende Zwischen-JSONs
   (`after`, `after2`, `before-clean`, `after-clean`, `before-fair`) im K4-Commit
   entfernt.
+
+## Review
+
+Reviewer-Urteil: **PASS** (2026-11-27). Geschuetzte Dateien (`CombatSystem.ts`,
+`Run.ts`, `UI.ts`) laut `git diff 10d2c63..HEAD` unberuehrt; tsc + Tests gruen.
+Umgesetzt: toter `dirty`-State entfernt (`c2c6b5b`), Pool-Recycle-/Zonen-Merge-
+Tests + `aggregateKey`-Invariante dokumentiert (`8e512e1`), verwirrende
+Zwischen-JSONs aus `shots/` entfernt.
 
 ## Offene Punkte / Folge-Karten
 
