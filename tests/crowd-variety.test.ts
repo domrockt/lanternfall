@@ -22,6 +22,7 @@ import {
   type Grid,
 } from "../src/gfx/enemySprites";
 import { PAL } from "../src/palette";
+import { runFrameIndex } from "../src/logic/enemy-frames";
 
 function luminance(i: number): number {
   const c = PAL[i];
@@ -112,6 +113,27 @@ describe("crowd-variety: zweite Variante je Gegnertyp", () => {
       expect(enemyVariantColor(index)).toBe(enemyVariantColor(index));
       expect(enemyFrameGrids(index)).toEqual(enemyFrameGrids(index));
       expect(enemyVariantFrames(index)).toEqual(enemyVariantFrames(index));
+    }
+  });
+
+  it("Instanz-Streuung: 200 Phasen zeigen im Frame >= 2 Keys je Typ (Basis UND Variante)", () => {
+    // Wie im Spiel: framesForDef liefert 4 Keys, runFrameIndex wählt mit
+    // zufälliger Spawn-Phase (Spawner.spawnAt: rng.next() * 2π). Ein 500er-
+    // Frame streut die Instanzen über alle 4 Slots — hier als reine Funktion
+    // mit festen Phasen nachgebildet (kein Phaser nötig).
+    const t = 42.37; // fester Zeitpunkt
+    for (const [index, def] of ENEMY_LIST.entries()) {
+      const frames = enemyFrameKeys(index);
+      const shown = new Set<string>();
+      for (let i = 0; i < 200; i++) {
+        const phase = (i / 200) * Math.PI * 2;
+        shown.add(frames[runFrameIndex(frames.length, t, phase)]);
+      }
+      // Abnahme: >= 2 unterscheidbare Texture-Keys je Typ im Frame.
+      expect(shown.size, `${def.id}: Key-Vielfalt im Frame`).toBeGreaterThanOrEqual(2);
+      // Basis-Ton (Slots 0/1) und Varianten-Ton (Slots 2/3) beide sichtbar.
+      expect(shown.has(frames[0]) || shown.has(frames[1]), `${def.id}: Basis-Ton sichtbar`).toBe(true);
+      expect(shown.has(frames[2]) || shown.has(frames[3]), `${def.id}: Varianten-Ton sichtbar`).toBe(true);
     }
   });
 });
