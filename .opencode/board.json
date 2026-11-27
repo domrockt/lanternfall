@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2444,
+  "next": 2482,
   "cards": [
     {
       "id": 1,
@@ -3648,6 +3648,52 @@
       "notes": [],
       "created": "2026-11-27T05:57:17Z",
       "updated": "2026-11-27T05:57:17Z"
+    },
+    {
+      "id": 2478,
+      "title": "m10-palette-guard-01 Messskript palette-check.mjs",
+      "description": "scripts/art/palette-check.mjs laedt via Vite-SSR alle Sprite-/FX-Grids, zaehlt je Grid Pixel, Off-Palette, Alpha-Verstoesse, Farbanzahl, Transparenz-Anteil und schreibt shots/m10-palette-guard-baseline.json + druckt Top-10 mit Datei/Grid. Abnahme: Skript rc=0, Baseline-JSON im Commit, Off-Palette-Zahl belegt.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T06:31:35Z",
+          "by": "build",
+          "text": "todo → doing: Messskript + Baseline erstellt; 320 Grids, 0 Off-Palette"
+        }
+      ],
+      "created": "2026-11-27T06:29:53Z",
+      "updated": "2026-11-27T06:31:35Z"
+    },
+    {
+      "id": 2479,
+      "title": "m10-palette-guard-02 Vitest-Guard tests/palette-compliance.test.ts",
+      "description": "tests/palette-compliance.test.ts prueft dieselben Invarianten (nur Palettenindizes 0..31 oder transparent, keine Off-Palette-Farbe) ueber alle Grids mit klarer Fehlermeldung (Datei, Grid, Pixelindex, Farbe); gruen auf Ist-Stand, Ausnahmen nur dokumentiert. Abnahme: npx vitest run tests/palette-compliance.test.ts gruen.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T06:29:53Z",
+      "updated": "2026-11-27T06:29:53Z"
+    },
+    {
+      "id": 2480,
+      "title": "m10-palette-guard-03 Regressionsprobe (Negativtest)",
+      "description": "Mini-Grid mit 1 absichtlich falschem Farbwert macht den Guard rot (Selbsttest), damit er nicht stillschweigend leer laeuft. Abnahme: Negativprobe im Testfile belegt rot; Laufzeit < 2 s gemessen.",
+      "column": "todo",
+      "assignee": "gameplay-guard",
+      "notes": [],
+      "created": "2026-11-27T06:29:53Z",
+      "updated": "2026-11-27T06:29:53Z"
+    },
+    {
+      "id": 2481,
+      "title": "m10-palette-guard-04 Doku + Abnahme",
+      "description": "docs/lanes/m10-palette-guard.md mit Baseline-Zahlen, Ausnahmeliste, Laufzeit, Befehl; npm test gruen mit Testzahl vorher/nachher; npm run build gruen; Belege im Commit; .lane-done mit Messwerten. Abnahme: alle Punkte belegt, reviewer PASS.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T06:29:53Z",
+      "updated": "2026-11-27T06:29:53Z"
     }
   ]
 }
