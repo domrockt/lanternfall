@@ -167,3 +167,81 @@ describe("Separation: Mengen-Resolver mit Deckel", () => {
     expect(separationCellSize(1000)).toBe(64);
   });
 });
+
+describe("SpatialHash: Nachbar-Query fuer 500 Gegner", () => {
+  interface Item {
+    x: number;
+    y: number;
+    radius: number;
+    id: number;
+  }
+
+  function makeWorld(seed: number): Item[] {
+    const rand = rng(seed);
+    const items: Item[] = [];
+    for (let i = 0; i < 500; i++) {
+      // Dichte Horde um die Bildmitte plus Randstreuer, wie im echten Chaos.
+      const dense = rand() < 0.8;
+      const a = rand() * Math.PI * 2;
+      const r = Math.sqrt(rand()) * (dense ? 150 : 1200);
+      items.push({
+        x: 2048 + Math.cos(a) * r,
+        y: 2048 + Math.sin(a) * r,
+        radius: 4 + rand() * 6,
+        id: i,
+      });
+    }
+    return items;
+  }
+
+  function bruteForce(items: Item[], x: number, y: number, radius: number): Set<Item> {
+    const found = new Set<Item>();
+    const r2 = radius * radius;
+    for (const item of items) {
+      const dx = item.x - x;
+      const dy = item.y - y;
+      if (dx * dx + dy * dy <= r2) found.add(item);
+    }
+    return found;
+  }
+
+  it("Trefferzahl identisch zu Brute-Force auf 3 Seeds", () => {
+    for (const seed of [11, 22, 33]) {
+      const items = makeWorld(seed);
+      const random = rng(seed + 1000);
+      const maxRadius = Math.max(...items.map((it) => it.radius));
+      const hash = new SpatialHash<Item>(SpatialHash.recommendedCellSize(maxRadius + 10));
+      hash.rebuild(items);
+      for (let q = 0; q < 200; q++) {
+        const cx = items[Math.floor(random() * items.length)];
+        const radius = cx.radius + 10 + random() * 20;
+        const got = new Set(hash.queryNeighbors(cx.x, cx.y, radius));
+        const want = bruteForce(items, cx.x, cx.y, radius);
+        expect(got.size).toBe(want.size);
+        for (const w of want) expect(got.has(w)).toBe(true);
+      }
+    }
+  });
+
+  it("500 Query-Zyklen unter 5 ms (Median aus 3 Laeufen)", () => {
+    const items = makeWorld(7);
+    const random = rng(7007);
+    const maxRadius = Math.max(...items.map((it) => it.radius));
+    const hash = new SpatialHash<Item>(SpatialHash.recommendedCellSize(maxRadius + 10));
+    hash.rebuild(items);
+    const out: Item[] = [];
+    const samples: number[] = [];
+    for (let run = 0; run < 3; run++) {
+      const start = performance.now();
+      for (let q = 0; q < 500; q++) {
+        const cx = items[Math.floor(random() * items.length)];
+        hash.queryNeighbors(cx.x, cx.y, cx.radius + 10, out);
+      }
+      samples.push(performance.now() - start);
+    }
+    samples.sort((a, b) => a - b);
+    const median = samples[1];
+    console.log(`[m10-separation-crowd] 500 Query-Zyklen Median: ${median.toFixed(3)} ms`);
+    expect(median).toBeLessThan(5);
+  });
+});
