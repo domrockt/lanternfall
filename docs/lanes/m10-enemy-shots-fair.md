@@ -45,17 +45,20 @@ Zusätzlich 13 bzw. 7 Schüsse durch Schützentod abgebrochen. 0 JS-Fehler. Comm
 Jede der 4 Optiken hat eine eigene Silhouette und 1-px-Kontur, nur die Optik wurde
 geändert (keine Kollisions-/Radius-Änderung):
 
-| Optik | Form | Kontur | Kern/Glanz | minInner gegen waterMid | minInner gegen nightDeep |
+| Optik | Form | Kontur | Kern/Glanz | waterMid min/mean/max | nightDeep min/mean/max |
 |---|---|---|---|---|---|
-| spit | runde Giftkugel (Kreuz-Kern) | ink 0 | 31 / 20 | 3,83 | 5,98 |
-| bone | Knochenpaar | ink 0 | 11 / 10 / 13 | 6,90 | 10,77 |
-| shadow | Halo-Ring mit Lücke | ink 0 | 9 / 26 / 13 | 3,40 | 5,31 |
-| fire | Flamme mit Schweif | ink 0 | 19 / 18 / 12 | 3,41 | 5,32 |
+| spit | runde Giftkugel (Kreuz-Kern) | ink 0 | 31 / 20 | 1,02 / 1,95 / 3,83 | 1,53 / 3,04 / 5,98 |
+| bone | Knochenpaar | ink 0 | 11 / 10 / 13 | 6,90 / 9,03 / 11,67 | 10,77 / 14,11 / 18,23 |
+| shadow | Halo-Ring mit Lücke | ink 0 | 9 / 26 / 13 | 2,86 / 3,71 / 4,56 | 4,46 / — / — |
+| fire | Flamme mit Schweif | ink 0 | 19 / 18 / 12 | 1,36 / 5,78 / 10,66 | 2,13 / — / — |
 
-Kontrast = WCAG-Verhältnis (sRGB-Luminanz) des schwächsten Nicht-Kontur-Pixels gegen
-den Hintergrund, `shots/m10-enemy-shots-contrast.json`. Auf Gras (`grassMarsh`, Index 30)
-liegen shadow/fire bei 2,12/2,13; im Nacht-/Wasserkontext (Ziel des Briefings) ≥ 3,4.
-Form-IoU der Paare 0,44–0,95 (spit/shadow ähnlich rund, aber Kernfarbe/Halo-Lücke
+Kontrast = WCAG-Verhältnis (sRGB-Luminanz) je Nicht-Kontur-Pixel gegen den Hintergrund
+(`minInner` = schwächster, `meanInner` = Mittel, `max` = hellster Pixel),
+`shots/m10-enemy-shots-contrast.json`. Ehrlich: die dunklen Innenpixel von spit/fire
+liegen gegen Wasser bei 1,0–1,4; die Lesbarkeit tragen dort die 1-px-Tint-Kontur (ink 0)
+und die klar verschiedenen Silhouetten, nicht die Innenfüllung. Auf Gras (`grassMarsh`,
+Index 30) liegt bone bei 4,31, shadow/fire bei 1,79/1,17. Form-IoU der Paare 0,38–0,86
+(spit/shadow 0,66, spit/fire 0,86 — Form ähnlich, aber Kernfarbe/Halo-Lücke/Flamme
 verschieden); Kontaktbogen `shots/m10-enemy-shots-optics.png`, Dichte-Beleg
 `shots/m10-enemy-shots-density.png` (500 Gegner, 63 Schüsse aktiv), 2-s-GIF
 `shots/m10-enemy-shots-density.gif` (24 Frames, 12 fps), 0 JS-Fehler.
@@ -67,13 +70,20 @@ kommen alle vier Optiken im Spiel vor.
 
 ## Karte 04 — Tests, Messwerte, Abnahme
 
-`tests/enemy-shots-fair.test.ts` (8 Tests, grün):
+`tests/enemy-shots-fair.test.ts` (13 Tests, grün):
 - Wind-up-Konstante ≥ 0,3 s,
-- Schuss erst nach Ablauf der Vorwarnung,
+- jeder ranged-/summoner-Key liefert eine der vier Optiken,
+- Schuss erst nach Ablauf der Vorwarnung (`canLaunchShot`-Grenzfälle),
 - Abbruch bei Schützentod,
 - kein Spawn aus Offscreen-Position (Punkt-in-View),
 - 4 paarweise verschiedene Texture-Keys und 4 eigene Formen/Kernfarben,
-- alle 30 Gegner mappen auf eine der 4 Optiken.
+- alle 30 Gegner (Anzahl geprüft) mappen auf eine der 4 Optiken,
+- Pool-Pfad mit Phaser-/Atlas-Stubs: `spawn()` verwirft Offscreen-Ursprünge
+  (`attempted` 1, `offscreenAttempts` 1, `cancelledOffscreen` 1, `fired` 0, `pending` 0),
+  `update()` feuert nicht vor 0,36 s und danach genau einmal (`windupOk` 1),
+  bricht bei Schützentod (`cancelledShooterDeath` 1) und bei aus dem View
+  gewandertem Ursprung (`cancelledOffscreen` 1) ab, `offscreenHits` bleibt 0.
+  Die Test-Stubs liegen nur im Test (keine Phaser-Abhängigkeit der Logik).
 
 Abnahme: Offscreen-Treffer 0 bei ≥ 200 gezählten Schüssen (500/501 im JSON),
 Wind-up 100 % ≥ 0,3 s, `npm run build` + alle Tests grün, 0 JS-Fehler,

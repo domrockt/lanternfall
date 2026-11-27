@@ -3176,21 +3176,33 @@
       "id": 2200,
       "title": "m10-enemy-shots-fair-03 Lesbarkeit: Kontrast der 4 Schuss-Optiken + art-director >=4/5",
       "description": "Kontrastzahl der Texturen spit/bone/shadow/fire gegen Nacht-/Wasserhintergrund messen, bei Bedarf nur Schuss-Texturen in EnemyProjectiles.ts anpassen; 2-s-GIF bei voller Dichte; art-director-Urteil >=4/5 in Lane-Doku.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T08:33:18Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 3: Optiken überarbeitet (5e0f... siehe Commit 17f7a36), Kontrast-JSON neu gemessen; art-director-Abnahme läuft."
+        }
+      ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T04:04:48Z"
+      "updated": "2026-11-27T08:33:18Z"
     },
     {
       "id": 2201,
       "title": "m10-enemy-shots-fair-04 Tests + Doku + .lane-done",
       "description": "tests/enemy-shots-fair.test.ts (Wind-up-Dauer, Abbruch bei Tod, kein Offscreen-Spawn, Distinktheit der 4 Texture-Keys); Messwerte/Kontrast/art-director-Urteil in docs/lanes/m10-enemy-shots-fair.md; npm run build + alle Tests gruen; .lane-done mit Messwerten.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T08:33:18Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 3: Pool-Pfad-Tests ergänzt (13 Tests), Doku-Zahlen werden ehrlich korrigiert, .lane-done folgt."
+        }
+      ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T04:04:48Z"
+      "updated": "2026-11-27T08:33:18Z"
     }
   ]
 }
