@@ -3821,21 +3821,33 @@
       "id": 2678,
       "title": "m10-perf-fix-ambient-batching @engine-dev",
       "description": "Fix der in m10-perf-recovery belegten Regression aus c0f56d5 (#280 Ambient Gluehwürmchen+Nebel): 24 ADD-Glow + 3 NORMAL-Nebel-Sprites brechen im Endgame das Batching (88 Draw-Calls/Frame, 82 Blend-Wechsel bei Minute 25; minute25 51,4 statt 60 FPS). Abnahme: npm run perf Burst >=55 bei 640 und 780, Minute-25 >=55, fullrun fpsMin >=55 beide Formate, build+Tests gruen, tests/perf-budget.test.ts als Regressionsschutz (Draws/Frame + sichtbare Images unter Budget), art-director-Sichtpruefung (Ambient nicht sichtbar entfernt). Dateien: src/gfx/GroundRenderer.ts, ggf. src/logic/lod.ts, tests/perf-budget.test.ts.",
-      "column": "todo",
+      "column": "blocked",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T12:49:06Z",
+          "by": "build",
+          "text": "todo → blocked: Scope dieser Lane ist nur Profil+Bisect (Supervisor 11:35/12:36), kein Code-Fix. Ursache c0f56d5 belegt. Fix-Entwurf (Ambient-Layer + ambientBudgetFor-LOD) liegt als Patch unter ~/tmp/m10-perf-recovery/ambient-lod-fix.patch; Umsetzung braucht Freigabe von src/gfx/GroundRenderer.ts (Claim m10-ground-cost) und eine eigene engine-dev-Karte."
+        }
+      ],
       "created": "2026-11-27T11:01:47Z",
-      "updated": "2026-11-27T11:01:47Z"
+      "updated": "2026-11-27T12:49:06Z"
     },
     {
       "id": 2679,
       "title": "m10-perf-recovery: Profil + Bisect + Ursache (Mess-Karte, kein Fix)",
       "description": "Profil 60 s Burst 500 und Minute-25-Endgame bei 640x360 via CDs Profiler; Top-10 Self-Time und Draw-Calls/Blend-Wechsel/Texture-Binds in docs/lanes/m10-perf-recovery.md. Bisect 0b42ffe..HEAD: Burst im ganzen Range gruen (59-60), Minute-25-Ursache c0f56d5 (#280 Ambient Gluehwuermchen+Nebel) mit FPS-Delta ~-8,6 belegt. Abnahme: Zahlen + Logpfad im Doc, Ursache benannt; kein Code-Fix in dieser Karte.",
-      "column": "doing",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T12:49:06Z",
+          "by": "build",
+          "text": "doing → done: Profil + Bisect abgeschlossen (b700e4e/e6b572b): Top-10 Self-Time + 88 Draw-Calls/82 Blend-Wechsel in docs/lanes/m10-perf-recovery.md. Bisect 0b42ffe..HEAD: Burst im Range 58,5-60,1 grün; first bad 946f7f6 ohne src-Diff → c0f56d5 (#280 Ambient) mit minute25 51,4 statt 60,0 (Delta ~-8,6). Kein Code-Fix in dieser Mess-Karte; Fix als #2678."
+        }
+      ],
       "created": "2026-11-27T12:42:07Z",
-      "updated": "2026-11-27T12:42:07Z"
+      "updated": "2026-11-27T12:49:06Z"
     }
   ]
 }
