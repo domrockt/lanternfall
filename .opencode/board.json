@@ -7731,63 +7731,105 @@
       "title": "m10-chest-arrow-fix K1: Repro-Lauf 640x360 + 780x360@3, alle 10 Faelle protokollieren",
       "description": "Vorher-Belege: POST_UPDATE-Sampling 30/30 PASS, altes rAF-Sampling 13/30 FAIL als Sampling-Artefakt belegt.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #6358, Merge 5890199"
+        }
+      ],
       "created": "2026-11-27T23:41:10Z",
-      "updated": "2026-11-27T23:41:10Z"
+      "updated": "2026-11-27T23:42:28Z"
     },
     {
       "id": 6659,
       "title": "m10-chest-arrow-fix K2: Ursache belegen (Datei/Zeile)",
       "description": "Ursache dokumentiert: rAF-Sampling misst vor dem Phaser-Step; ChestSystem korrekt inkl. Zoom 0.5/1.14.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #6359, Merge 5890199"
+        }
+      ],
       "created": "2026-11-27T23:41:10Z",
-      "updated": "2026-11-27T23:41:10Z"
+      "updated": "2026-11-27T23:42:28Z"
     },
     {
       "id": 6660,
       "title": "m10-chest-arrow-fix K3: Regressionstests + Nachher-Beleg + Lane-Abschluss",
       "description": "tests/chest-arrow-fix.test.ts (4), Re-Lauf 30/30 PASS, Doku docs/lanes/m10-chest-arrow-fix.md, Reviewer PASS.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #6361, Merge 5890199"
+        }
+      ],
       "created": "2026-11-27T23:41:10Z",
-      "updated": "2026-11-27T23:41:10Z"
+      "updated": "2026-11-27T23:42:28Z"
     },
     {
       "id": 6661,
       "title": "m10-esc-pause-fix #1: Repro ESC-Resume-Regression",
       "description": "Repro belegt: ESC-Resume schaltet bei schnellem Pressen nicht mehr um (gerade Zahl togglePause-Aufrufe pro Press).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #5898, Merge f3dfcbf"
+        }
+      ],
       "created": "2026-11-27T23:41:33Z",
-      "updated": "2026-11-27T23:41:33Z"
+      "updated": "2026-11-27T23:42:28Z"
     },
     {
       "id": 6662,
       "title": "m10-esc-pause-fix #2: Ursache fixen (ESC-Resume)",
       "description": "escToggleAllowed() in InputState.ts + togglePause-Dedup in Run.ts — ein physischer Press togglet genau einmal.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #5899, Merge f3dfcbf"
+        }
+      ],
       "created": "2026-11-27T23:41:33Z",
-      "updated": "2026-11-27T23:41:33Z"
+      "updated": "2026-11-27T23:42:28Z"
     },
     {
       "id": 6663,
       "title": "m10-esc-pause-fix #3: Tests tests/esc-pause.test.ts",
       "description": "10 Tests fuer escToggleAllowed (Grundpfad, Doppel-Dispatch, keyup-Replay, OS-Key-Repeat, Queue-Replay, Touch/Gamepad, fremde DOM-Events, Submenue).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #5900, Merge f3dfcbf"
+        }
+      ],
       "created": "2026-11-27T23:41:33Z",
-      "updated": "2026-11-27T23:41:33Z"
+      "updated": "2026-11-27T23:42:28Z"
     },
     {
       "id": 6664,
       "title": "m10-esc-pause-fix #4: verify-input 28/28 2x + Doku",
       "description": "verify-input 28/28 PASS zweimal, 0 JS-Fehler, Ganzsuite 712/712; Doku docs/lanes/m10-esc-pause-fix.md; Reviewer PASS.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:42:28Z",
+          "by": "build",
+          "text": "lane #5901, Merge f3dfcbf"
+        }
+      ],
       "created": "2026-11-27T23:41:33Z",
-      "updated": "2026-11-27T23:41:33Z"
+      "updated": "2026-11-27T23:42:28Z"
     }
   ]
 }
