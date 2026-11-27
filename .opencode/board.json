@@ -4826,10 +4826,15 @@
           "at": "2026-11-27T19:36:04Z",
           "by": "build",
           "text": "K4 Lauf 2 gestartet (2026-11-27 ~19:36Z) bei loadavg 4.5, flock frei, gleiche Flags wie Lauf 1 (--prefix m10-realtime, Log ~/tmp/m10-realtime-stability-k4-run2.log). Lauf 1: Sieg dawn 30.5 Sim-Min, 6/6 Bosse, 6 Truhen, Heap 8.9% PASS, 0 Crashes/JS-Fehler – nur FPS-Gate FAIL durch Host-Last. Ziel Lauf 2: FPS-Gate bei ruhigem Host."
+        },
+        {
+          "at": "2026-11-27T19:58:22Z",
+          "by": "build",
+          "text": "WIP-Commit e6434d2: Lauf 2 läuft (22 min, Chrome-Profil aktiv, Log leer weil JSON erst am Laufende geschrieben wird). Start bei loadavg 4.5, gleiche Flags wie Lauf 1. Nächster Schritt: Auswertung JSON + Minuten-Shots nach Laufende."
         }
       ],
       "created": "2026-11-27T17:46:15Z",
-      "updated": "2026-11-27T19:36:04Z"
+      "updated": "2026-11-27T19:58:22Z"
     }
   ]
 }

@@ -2,8 +2,8 @@
   "mode": "full-30min",
   "minutes": 30,
   "timeScale": 1,
-  "simMinutes": 30.5,
-  "elapsedRealSeconds": 1875,
+  "simMinutes": 30.4,
+  "elapsedRealSeconds": 1859,
   "truncated": false,
   "completed": true,
   "bosses": [
@@ -54,34 +54,35 @@
   "chestsDropped": 6,
   "evolutions": [
     "phoenix",
-    "thorn_storm",
-    "thunder_seal"
+    "wrath_pendulum",
+    "eternal_winter",
+    "soul_beacon"
   ],
-  "levels": 39,
-  "kills": 6791,
+  "levels": 44,
+  "kills": 11565,
   "fps": {
-    "min": 12.6,
-    "median": 48,
-    "samples": 7043,
+    "min": 57.4,
+    "median": 60.5,
+    "samples": 7329,
     "target": 55,
-    "passed": false
+    "passed": true
   },
   "heap": {
     "startMB": 21.8,
-    "minute1MB": 31.6,
-    "minute29MB": 34.4,
-    "endMB": 27,
+    "minute1MB": 30.6,
+    "minute29MB": 35.5,
+    "endMB": 27.3,
     "cdpUsedMB": {
-      "start": 10,
+      "start": 9.8,
       "minute1": 13.1,
-      "minute29": 17.2,
-      "end": 15.1
+      "minute29": 18,
+      "end": 15.4
     },
     "measured": true,
-    "deltaVsMinute1Pct": 8.9,
+    "deltaVsMinute1Pct": 16,
     "targetPct": 15,
     "gate": "hard",
-    "passed": true
+    "passed": false
   },
   "screenshots": [
     "shots/m10-realtime-minute-10.png",
@@ -93,9 +94,9 @@
   "crashes": [],
   "shotFailures": 0,
   "host": {
-    "loadavg1": 14.95,
-    "freememMB": 68737,
-    "userDataDir": "/home/ai/tmp/m10-realtime-stability/chrome-29054-1795803525669"
+    "loadavg1": 7.08,
+    "freememMB": 68542,
+    "userDataDir": "/home/ai/tmp/m10-realtime-stability/chrome-5527-1795808233310"
   },
   "jsErrors": [],
   "passed": false

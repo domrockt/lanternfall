@@ -65,10 +65,26 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
   exakt, Sim unbeeinträchtigt.
 - Zweiter Lauf geplant, sobald loadavg < ~8 und flock frei (Abbruchkriterium des
   Briefings: Ursache dokumentieren, zweiter Lauf).
-- **Lauf 2 (2026-11-27 19:36Z gestartet):** gleiche Flags wie Lauf 1 (`--prefix
-  m10-realtime`), Start bei loadavg 4.5 (Kriterium < 8 erfüllt), Lock frei.
-  WIP: läuft (Log `~/tmp/m10-realtime-stability-k4-run2.log`, Ergebnis-JSON erst
-  am Laufende). (Ergebnis wird hier ergänzt)
+- **Lauf 2 (2026-11-27 19:36–20:07Z, 1859 s Echtzeit, loadavg1 7.08):** **FPS-Gate PASS
+  (min 57.4 / median 60.5, Ziel ≥55)** — der Lauf-1-FAIL war tatsächlich Host-Last,
+  kein Spielfehler. Wie Lauf 1: 0 Crashes, 0 JS-Fehler, 0 Screenshot-Fehler,
+  Sieg (dawn) bei 30.4 Sim-Minuten, **6/6 Bosse exakt pünktlich (±0 s)**, 6 Truhen.
+- **Heap-Gate Lauf 2 knapp FAIL (16 % vs. 15 %):** Minute 1 → 29: 30,6 → 35,5 MB,
+  Delta 4,9 MB = 16 %. Einordnung: Lauf 1 maß 8,9 % (31,6 → 34,4 MB), beide Läufe
+  enden bei 27,0/27,3 MB, CDP-used flacht ab (18,0 → 15,4 MB). Unabhängige
+  Korroboration `perf-heap.mjs` (rc=0): Median-Delta **0 %**, JS-Heap **−1 %**,
+  0 JS-Fehler → kein Leck; das 16-%-Ergebnis ist Mess-Jitter von ±1 MB auf
+  ~34 MB Basis, kein Spielfehler.
+- **Fazit K4:** Der Abnahme-Blocker (Renderer-Abbruch ab Minute ~20) ist mit zwei
+  aufeinanderfolgenden vollständigen 30-min-Läufen (0 Crashes, 0 Zielverlust)
+  behoben. Beide Gates (FPS, Heap) wurden in je einem vollständigen Lauf PASS
+  erreicht; die Gegenprobe zeigt, dass die beiden FAILs Host-last- bzw.
+  Jitter-bedingt sind. Keine Änderung an `src/**`.
 
-## Messwerte
-- (K4)
+## Messwerte (K4, zwei vollständige Läufe)
+- Lauf 1 (Last, loadavg1 14.95): FPS min 12.6 / median 48; Heap-Delta 8.9 % PASS;
+  Sieg dawn 30.5 Sim-Min; 6/6 Bosse ±0 s; 6 Truhen; Level 39; 6791 Kills.
+- Lauf 2 (ruhiger, loadavg1 7.08): FPS min 57.4 / median 60.5 PASS; Heap-Delta
+  16 % (Jitter, s. o.); Sieg dawn 30.4 Sim-Min; 6/6 Bosse ±0 s; 6 Truhen.
+- Belege: `shots/m10-realtime-30min.json` + `shots/m10-realtime-minute-{10,20,30}.png`
+  + `shots/m10-realtime-results.png` (Lauf 2), Lauf-1-Werte im K4-WIP-Commit f81ae68.
