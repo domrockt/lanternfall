@@ -1,0 +1,11 @@
+Lane m10-enemy-coverage (M10) — abgeschlossen, Versuch 2.
+Ziel: alle 30 Gegnertypen spawnen im echten 30-min-Run, belegt statt nur Datenliste.
+#1738 Messwerkzeug scripts/enemy-coverage.mjs: Sim 30/30, Seeds 101+202, 2524 Spawns.
+#1739 Ist-Stand: Lueckenliste leer, kein First-Spawn nach Tier-Ende, max Share 32.7 %.
+#1740 K3: Invarianten bereits erfuellt (30/30 in Mixes, 5/5 normalisiert, 0 Share >35 %); keine Mix-Aenderung noetig.
+#1741 tests/wave-coverage.test.ts: 4/4 gruen (30/30 Mixes, normalisiert, Sim-Abdeckung, Share <=35 %).
+#1742 In-Game 30 min @ timeScale 30 (headless 640x360, seed 101, god+autoPlay):
+  1800.3 s sim / 91.4 s real, 30/30 Typen, missing [], 5380 Spawns, max 158 aktive Gegner, 0 JS-Fehler, ok=true.
+Verifikation Versuch 2: npm run build gruen (807 ms), npm test 15 Dateien / 208 Tests gruen.
+Belege: shots/m10-coverage-sim.json, shots/m10-coverage-ingame.json, shots/m10-coverage-ingame-minute25.png.
+Offene Punkte: keine.
