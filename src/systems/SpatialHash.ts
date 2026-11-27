@@ -93,19 +93,22 @@ export class SpatialHash<T extends PointLike> {
     const iyMax = maxCy - this.minCell;
     if (ixMin >= 0 && ixMax < dim && iyMin >= 0 && iyMax < dim) {
       // Fast-Path (M10-Budget): Query liegt komplett im flachen Grid — keine
-      // Bounds-/Overflow-Pruefung pro Zelle, Zeilenbasis einmal berechnet.
+      // Bounds-/Overflow-Pruefung pro Zelle, Zeilenbasis einmal berechnet,
+      // indizierte Writes statt out.push (kein Length-Re-Read je Treffer).
       // Deckt den Normalfall (Welt 0..4096) ab; der Query ist der zweit-
       // heisseste Separations-Pfad nach dem Paar-Check.
       const grid = this.grid;
+      let n = 0;
       for (let ix = ixMin; ix <= ixMax; ix++) {
         const row = ix * dim;
         for (let iy = iyMin; iy <= iyMax; iy++) {
           const bucket = grid[row + iy];
           if (bucket !== undefined) {
-            for (let i = 0; i < bucket.length; i++) out.push(bucket[i]);
+            for (let i = 0; i < bucket.length; i++) out[n++] = bucket[i];
           }
         }
       }
+      out.length = n;
       return out;
     }
     for (let cx = minCx; cx <= maxCx; cx++) {

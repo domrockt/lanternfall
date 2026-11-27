@@ -285,11 +285,113 @@ const result = {
     measuredFrames: FRAMES,
     cellSize: 32,
     queryRadiusPx: QUERY_RADIUS,
+    src: SRC,
     mix: MIX.map(([id, radius, count]) => ({ id, radius, count })),
     note: "reiner Node-Bench ohne Browser — kein flock noetig. Strecke A = produktiver Run.ts-Pfad, Strecke B = Budget-Resolver (resolveCrowdSeparation) pro Frame inkl. SpatialHash-Rebuild.",
   },
   paths: { production: laneA, budgetResolver: laneB },
 };
+
+// ── Fair-A/B: zwei SRC-Stände im EINEN Prozess, frame-verschränkt ─────
+// Drift (Last/Thermal anderer Lanes) trifft beide Varianten im selben Frame;
+// die Reihenfolge alterniert pro Frame. Misst nur die Produktions-Strecke.
+if (argOf("abSrc", "")) {
+  const SRC_BEFORE = String(argOf("abSrc", ""));
+  const bundleBefore = await rolldown({ input: resolve(SRC_BEFORE, "logic/separation.ts") });
+  const bundleBeforeSep = join(tmpdir(), "m10-separation-budget", `sep-ab-${TAG}-before.mjs`);
+  await bundleBefore.write({ file: bundleBeforeSep, format: "esm" });
+  await bundleBefore.close();
+  const bundleBeforeHash = await rolldown({ input: resolve(SRC_BEFORE, "systems/SpatialHash.ts") });
+  const bundleBeforeHashOut = join(tmpdir(), "m10-separation-budget", `hash-ab-${TAG}-before.mjs`);
+  await bundleBeforeHash.write({ file: bundleBeforeHashOut, format: "esm" });
+  await bundleBeforeHash.close();
+  const { separationPush: pushBefore } = await import(bundleBeforeSep);
+  const { SpatialHash: HashBefore } = await import(bundleBeforeHashOut);
+
+  const makeStep = (push, Hash) => {
+    const hash = new Hash(32);
+    const scratchLocal = [];
+    return (enemies) => {
+      const t0 = performance.now();
+      hash.clear();
+      for (let i = 0; i < enemies.length; i++) {
+        const e = enemies[i];
+        if (e.alive) hash.insert(e);
+      }
+      let pairs = 0;
+      for (let i = 0; i < enemies.length; i++) {
+        const e = enemies[i];
+        const c = chase(e);
+        let sx = 0;
+        let sy = 0;
+        if (c.ddx * c.ddx + c.ddy * c.ddy < QUERY_RADIUS * QUERY_RADIUS) {
+          hash.queryCircle(e.x, e.y, e.radius + 10, scratchLocal);
+          for (let k = 0; k < scratchLocal.length; k++) {
+            const n = scratchLocal[k];
+            if (n === e || !n.alive) continue;
+            pairs++;
+            const p = push(e.x, e.y, e.radius, n.x, n.y, n.radius, e.uid);
+            if (p) {
+              sx += p.x;
+              sy += p.y;
+            }
+          }
+        }
+        e.x += (c.mx + sx * e.speed * 1.2) * DT;
+        e.y += (c.my + sy * e.speed * 1.2) * DT;
+        clampWorld(e);
+      }
+      const t1 = performance.now();
+      return { ms: t1 - t0, pairs };
+    };
+  };
+
+  const stepBefore = makeStep(pushBefore, HashBefore);
+  const stepAfter = makeStep(separationPush, SpatialHash);
+  const enemiesBefore = makeScene();
+  const enemiesAfter = makeScene();
+  const msBefore = [];
+  const msAfter = [];
+  let pairsBefore = 0;
+  let pairsAfter = 0;
+  let minBefore = Infinity;
+  let minAfter = Infinity;
+  for (let f = 0; f < WARMUP + FRAMES; f++) {
+    // Reihenfolge pro Frame alternieren → Reihenfolgeneffekte heben sich auf.
+    const beforeFirst = f % 2 === 0;
+    let b;
+    let a;
+    if (beforeFirst) {
+      b = stepBefore(enemiesBefore).ms;
+      a = stepAfter(enemiesAfter).ms;
+    } else {
+      a = stepAfter(enemiesAfter).ms;
+      b = stepBefore(enemiesBefore).ms;
+    }
+    if (f >= WARMUP) {
+      msBefore.push(b);
+      msAfter.push(a);
+    }
+    if (f % SAMPLE_EVERY === 0 && f >= WARMUP) {
+      minBefore = Math.min(minBefore, minPairDistance(enemiesBefore));
+      minAfter = Math.min(minAfter, minPairDistance(enemiesAfter));
+    }
+    if (f === WARMUP + FRAMES - 1) {
+      pairsBefore = stepBefore(enemiesBefore).pairs;
+      pairsAfter = stepAfter(enemiesAfter).pairs;
+    }
+  }
+  const after = stats(msAfter);
+  const before = stats(msBefore);
+  const ab = {
+    before: { src: SRC_BEFORE, msPerFrame: before, minPairDistance: +minBefore.toFixed(3) },
+    after: { src: SRC, msPerFrame: after, minPairDistance: +minAfter.toFixed(3) },
+    deltaPctMean: +(((after.mean - before.mean) / before.mean) * 100).toFixed(1),
+    deltaPctMedian: +(((after.median - before.median) / before.median) * 100).toFixed(1),
+  };
+  result.fairAB = ab;
+  console.log(`# fairAB: before ${before.mean} ms (median ${before.median}) vs after ${after.mean} ms (median ${after.median}) → ${ab.deltaPctMean}% mean / ${ab.deltaPctMedian}% median; min-Paarabstand ${ab.before.minPairDistance} vs ${ab.after.minPairDistance}`);
+}
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify(result, null, 2) + "\n");

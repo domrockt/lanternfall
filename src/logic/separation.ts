@@ -57,6 +57,36 @@ export function directionToPlayer(dx: number, dy: number, uid: number): Vec2 {
   return fallbackDir(uid);
 }
 
+/* ── Push-Ergebnis-Pool (M10-Budget) ──────────────────────────── */
+
+/**
+ * separationPush läuft im Minute-25-Chaos ~16k mal pro Frame; ~1.8k Treffer
+ * allozieren sonst je ein Objekt (≈110k Objekte/s → Minor-GC-Spikes, sichtbar
+ * als max/p95 in shots/m10-separation-budget-*.json). Der Ring-Pool macht den
+ * Pfad im Satten allokationsfrei.
+ *
+ * Vertrag: Das Ergebnis ist NUR unmittelbar zu verbrauchen (in eine Summe
+ * aufnehmen — genau so nutzen es Run.ts und resolveCrowdSeparation). Nach bis
+ * zu 16 weiteren separationPush-Aufrufen wird dasselbe Objekt überschrieben.
+ */
+const PUSH_POOL: Vec2[] = [];
+const PUSH_POOL_SIZE = 16;
+let pushPoolCursor = 0;
+
+function pooledVec2(x: number, y: number): Vec2 {
+  const i = pushPoolCursor;
+  pushPoolCursor = (i + 1) % PUSH_POOL_SIZE;
+  let v = PUSH_POOL[i];
+  if (v === undefined) {
+    v = { x, y };
+    PUSH_POOL[i] = v;
+  } else {
+    v.x = x;
+    v.y = y;
+  }
+  return v;
+}
+
 /**
  * Push-Vektor, der `self` von `other` wegschiebt (null, wenn weit genug weg).
  * Bei (nahezu) identischer Position wird die UID-Richtung genutzt.
@@ -66,6 +96,7 @@ export function directionToPlayer(dx: number, dy: number, uid: number): Vec2 {
  * der heißeste Pfad im Spiel (15k+ Aufrufe/Frame im Minute-25-Chaos), jede
  * Hilfsfunktion/Standardsicherung kostet messbar. Semantik identisch:
  * nicht endliche Radien fallen auf die Masse 1 (Kein NaN/Infinity).
+ * Rückgabe aus dem Ring-Pool (siehe PUSH_POOL): nur unmittelbar verbrauchen.
  */
 export function separationPush(
   selfX: number,
@@ -92,7 +123,7 @@ export function separationPush(
   else if (weight < 0.25) weight = 0.25;
   if (d2 < 1e-8) {
     const dir = fallbackDir(uid);
-    return { x: dir.x * weight, y: dir.y * weight };
+    return pooledVec2(dir.x * weight, dir.y * weight);
   }
   const d = Math.sqrt(d2);
   const ratio = (minDist - d) / minDist;
@@ -103,7 +134,7 @@ export function separationPush(
   const ux = dx / d;
   const uy = dy / d;
   const swirl = ratio * (uid % 2 === 0 ? 1 : -1);
-  return { x: ux * radial - uy * swirl, y: uy * radial + ux * swirl };
+  return pooledVec2(ux * radial - uy * swirl, uy * radial + ux * swirl);
 }
 
 /* ── Mengen-Resolver mit Iterations- und Paar-Deckel (M10) ────── */
