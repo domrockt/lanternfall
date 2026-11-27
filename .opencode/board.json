@@ -3193,10 +3193,15 @@
           "at": "2026-11-27T11:12:08Z",
           "by": "build",
           "text": "Kontrast-Einmallauf (kein Crop-Loop) in docs/lanes/m10-enemy-enemy-shots-fair.md dokumentiert und als WIP abf8868 committet; art-director-Urteil ausstehend."
+        },
+        {
+          "at": "2026-11-27T12:07:05Z",
+          "by": "build",
+          "text": "Zwischenstand ac0ba1f committet: 4 Optiken je einmal angepasst (spit Tail, bone 9x7, shadow 3. Stufe+C-Mund, fire elongiert), Kontrast-Einmallauf shots/m10-enemy-shots-contrast.json, Form-IoU 0,26-0,62. art-director-Re-Urteil laeuft; danach best-effort-Abschluss."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T11:12:08Z"
+      "updated": "2026-11-27T12:07:05Z"
     },
     {
       "id": 2201,
