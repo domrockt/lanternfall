@@ -2691,9 +2691,15 @@
       "description": "Alle 30 Archetypen + Boss: effektive DeathFxSpec (Shard/Dust/Count/Additive) erheben, Tabelle in docs/lanes/m10-death-fx.md; belegen wie viele visuell unterscheidbare Klassen heute ankommen. Abnahme: Tabelle mit 30 Archetypen und Anzahl distinkter Klassen belegt. Commit.",
       "column": "todo",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:27:36Z",
+          "by": "build",
+          "text": "#K1 erledigt: Commit 23f3c4a (Message nennt #K1, Board-ID nicht im Commit; Lane-Mapping). Tabelle 30 Archetypen, 4 Klassen im Kampfpfad."
+        }
+      ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T00:36:15Z"
+      "updated": "2026-11-27T03:27:36Z"
     },
     {
       "id": 1779,
@@ -2711,10 +2717,15 @@
           "at": "2026-11-27T01:11:22Z",
           "by": "build",
           "text": "doing → todo: Zwischenschritt für Review-Move."
+        },
+        {
+          "at": "2026-11-27T03:27:36Z",
+          "by": "build",
+          "text": "#K2 erledigt: Commit b631b71. Spec-Felder + Boss fx_boss_core, 2,56x Flaeche."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T01:11:22Z"
+      "updated": "2026-11-27T03:27:36Z"
     },
     {
       "id": 1780,
@@ -2727,10 +2738,15 @@
           "at": "2026-11-27T01:11:22Z",
           "by": "build",
           "text": "todo → review: Commit 0d405c8: killsFx nutzt alle Spec-Felder; keine Schadens-/Hitbox-Änderung."
+        },
+        {
+          "at": "2026-11-27T03:27:36Z",
+          "by": "build",
+          "text": "#K3 erledigt: Commit 0d405c8, Depth-Nachzug in a44a97e. killsFx nutzt alle Spec-Felder."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T01:11:22Z"
+      "updated": "2026-11-27T03:27:36Z"
     },
     {
       "id": 1781,
@@ -2743,26 +2759,36 @@
           "at": "2026-11-27T01:15:22Z",
           "by": "build",
           "text": "todo → review: Commit f944652: 5 Tests grün; Probe-Test entfernt."
+        },
+        {
+          "at": "2026-11-27T03:27:36Z",
+          "by": "build",
+          "text": "#K4 erledigt: Commit f944652. tests/death-fx.test.ts 5/5, gesamt 209 gruen."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T01:15:22Z"
+      "updated": "2026-11-27T03:27:36Z"
     },
     {
       "id": 1782,
       "title": "m10-death-fx K5 Beleg + Doku",
       "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Grössenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test grün; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test grün, .lane-done tracked. Commit.",
-      "column": "doing",
+      "column": "blocked",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T01:54:23Z",
           "by": "build",
           "text": "todo → doing: K5 Beleg+Doku: 300-Gegner-Frame + 4 Klassen-Crops, Messung, art-director-Urteil."
+        },
+        {
+          "at": "2026-11-27T03:26:08Z",
+          "by": "build",
+          "text": "doing → blocked: K5 Belege/Doku liegen vor (4 Crops, 308-Gegner-Frame, Messung). art-director FAIL 2,3/5: fehlende Silhouette/Rim. Fix braucht src/gfx/gen-fx.ts (fremder Claim) -> blocked, Follow-up gfx-Karte."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T01:54:23Z"
+      "updated": "2026-11-27T03:26:08Z"
     }
   ]
 }

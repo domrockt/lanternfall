@@ -13,75 +13,152 @@
     "worldW": 480,
     "worldH": 360
   },
-  "cropCenter": {
-    "x": 255,
-    "y": 135
-  },
-  "classes": [
+  "spots": [
     {
       "cls": "crumble",
       "id": "wisp",
-      "dx": -150,
-      "dy": -90,
-      "spawned": 4,
-      "shot": "/home/ai/tmp/m10-death-fx/raw-crumble.png",
-      "enemiesAlive": 304,
-      "particleActive": 40,
-      "particleTextures": [
-        "fx_death_bone",
-        "fx_ash"
-      ],
-      "fps": 57.3
+      "dx": -120,
+      "dy": -70
     },
     {
       "cls": "burst",
       "id": "bog_rat",
-      "dx": -150,
-      "dy": -90,
-      "spawned": 4,
-      "shot": "/home/ai/tmp/m10-death-fx/raw-burst.png",
-      "enemiesAlive": 307,
-      "particleActive": 87,
-      "particleTextures": [
-        "fx_death_blob"
-      ],
-      "fps": 58.2
+      "dx": 120,
+      "dy": -70
     },
     {
       "cls": "dissolve",
       "id": "banshee",
-      "dx": -150,
-      "dy": -90,
-      "spawned": 4,
-      "shot": "/home/ai/tmp/m10-death-fx/raw-dissolve.png",
-      "enemiesAlive": 310,
-      "particleActive": 56,
-      "particleTextures": [
-        "fx_death_void",
-        "fx_dusk"
-      ],
-      "fps": 58.9
+      "dx": -120,
+      "dy": 70
     },
     {
       "cls": "sputter",
       "id": "toad",
-      "dx": -150,
-      "dy": -90,
-      "spawned": 4,
-      "shot": "/home/ai/tmp/m10-death-fx/raw-sputter.png",
-      "enemiesAlive": 313,
-      "particleActive": 122,
-      "particleTextures": [
-        "fx_death_dust",
-        "fx_fire",
-        "fx_star"
+      "dx": 120,
+      "dy": 70
+    }
+  ],
+  "classes": [
+    {
+      "cls": "crumble",
+      "id": "wisp",
+      "dx": -120,
+      "dy": -70,
+      "clip": {
+        "x": 180,
+        "y": 65,
+        "width": 240,
+        "height": 200
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-crumble.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-crumble.png",
+      "spawned": 6,
+      "particleActive": 60,
+      "nearby": 60,
+      "textures": [
+        "fx_death_bone",
+        "fx_ash"
       ],
-      "fps": 59.4
+      "bboxGamePx": {
+        "w": 36,
+        "h": 32
+      },
+      "frames": [
+        4,
+        2
+      ]
+    },
+    {
+      "cls": "burst",
+      "id": "bog_rat",
+      "dx": 120,
+      "dy": -70,
+      "clip": {
+        "x": 540,
+        "y": 65,
+        "width": 240,
+        "height": 200
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-burst.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-burst.png",
+      "spawned": 6,
+      "particleActive": 43,
+      "nearby": 43,
+      "textures": [
+        "fx_death_blob"
+      ],
+      "bboxGamePx": {
+        "w": 86,
+        "h": 91
+      },
+      "frames": [
+        4
+      ]
+    },
+    {
+      "cls": "dissolve",
+      "id": "banshee",
+      "dx": -120,
+      "dy": 70,
+      "clip": {
+        "x": 180,
+        "y": 275,
+        "width": 240,
+        "height": 200
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-dissolve.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-dissolve.png",
+      "spawned": 6,
+      "particleActive": 84,
+      "nearby": 84,
+      "textures": [
+        "fx_death_void",
+        "fx_dusk"
+      ],
+      "bboxGamePx": {
+        "w": 37,
+        "h": 38
+      },
+      "frames": [
+        4,
+        3
+      ]
+    },
+    {
+      "cls": "sputter",
+      "id": "toad",
+      "dx": 120,
+      "dy": 70,
+      "clip": {
+        "x": 540,
+        "y": 275,
+        "width": 240,
+        "height": 200
+      },
+      "pre": "/home/ai/tmp/m10-death-fx/pre-sputter.png",
+      "post": "/home/ai/tmp/m10-death-fx/raw-sputter.png",
+      "spawned": 6,
+      "particleActive": 116,
+      "nearby": 114,
+      "textures": [
+        "fx_death_dust",
+        "fx_fire"
+      ],
+      "bboxGamePx": {
+        "w": 95,
+        "h": 97
+      },
+      "frames": [
+        4,
+        6
+      ]
     }
   ],
   "final": {
-    "enemies": 313,
-    "scene": "run"
+    "enemies": 307,
+    "scene": "run",
+    "fps": 48.9
   },
   "jsErrors": []
 }
