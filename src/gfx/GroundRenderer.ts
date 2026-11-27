@@ -3,7 +3,7 @@ import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
-import { ambientBudgetFor, propDensityMaxTier, PROP_LOD_HOLD_MS } from "../logic/lod";
+import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
 import { PAL } from "../palette";
 
@@ -155,8 +155,6 @@ export class GroundRenderer {
   private ambientLastTick = Number.NEGATIVE_INFINITY;
   /** Aktuell hoechster sichtbarer Prop-Tier (Dichte-LOD, 2 = alles sichtbar). */
   private propLodMaxTier: 0 | 1 | 2 = 2;
-  /** Hysterese: Kandidat + Zeitpunkt, seit dem die strengere Stufe gilt. */
-  private propLodPending: { tier: 0 | 1 | 2; since: number } | null = null;
   /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
   private readonly propLayers = new Map<string, PropLayers>();
   private shadowLayer?: Phaser.GameObjects.Container;
@@ -431,26 +429,12 @@ export class GroundRenderer {
     if (timeMs - this.ambientLastTick < stepMs) return;
     this.ambientLastTick = timeMs;
 
-    // Dichte-LOD für Props: gestufte Tiers (N1 = Deko aus, N2 = nur Laternen/
-    // Baeume). Hysterese: Verschärfung erst nach PROP_LOD_HOLD_MS anhaltend,
-    // Entspannung sofort — sonst flackern Props bei Wellen-Oszillation.
-    const candidate = propDensityMaxTier(enemies);
-    if (candidate !== this.propLodMaxTier) {
-      if (candidate > this.propLodMaxTier) {
-        this.propLodMaxTier = candidate;
-        this.propLodPending = null;
-        this.applyPropTier(candidate);
-      } else if (this.propLodPending?.tier === candidate) {
-        if (timeMs - this.propLodPending.since >= PROP_LOD_HOLD_MS) {
-          this.propLodMaxTier = candidate;
-          this.propLodPending = null;
-          this.applyPropTier(candidate);
-        }
-      } else {
-        this.propLodPending = { tier: candidate, since: timeMs };
-      }
-    } else {
-      this.propLodPending = null;
+    // Dichte-LOD für Props: gestufte Tiers (N1 = Deko aus, N2 = nur Laternen).
+    // Nur bei Stufenwechsel anwenden; neue Chunks filtern sich in addProp() selbst.
+    const maxTier = propDensityMaxTier(enemies);
+    if (maxTier !== this.propLodMaxTier) {
+      this.applyPropTier(maxTier);
+      this.propLodMaxTier = maxTier;
     }
 
     const t = timeMs * 0.001;

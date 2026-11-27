@@ -60,14 +60,15 @@ export function ambientBatchCount(budget: AmbientBudget): number {
  * (Waffen töten schneller als der Top-up nachlegt) — das alte DENSE_HIDE_PROPS
  * ab 250 griff darum kaum. N1 = kleine Deko aus, N2 = nur Landmarken bleiben.
  *
- * Hysterese (Hebel 3): Die Gegnerzahl oszilliert im Endgame stark (Wellen
- * sterben, Top-up legt nach). Verschärfung des LOD greift darum erst, wenn
- * die strengere Stufe PROP_LOD_HOLD_MS lang anhaltend gilt; Entspannung ist
- * sofort. Sonst flackern Props im Sekundentakt.
+ * Bekannter Rest (Befund, siehe docs/lanes/m10-prop-density-lod.md): Die
+ * Gegnerzahl oszilliert im Endgame stark (16..300); momentbasierte Schwellen
+ * flackern dadurch im Sekundentakt. Eine Hysterese mit sofortiger Entspannung
+ * hebt das LOD praktisch ganz auf (Hebel 3, gemessen); der korrekte Fix wäre
+ * eine geglättete Dichte (EMA) als Entscheidungsgrundlage — nächster Hebel
+ * für den Lead, hier nicht mehr getan (Abbruchkriterium: 3 Hebel).
  */
 export const PROP_DENSITY_N1 = 150;
 export const PROP_DENSITY_N2 = 200;
-export const PROP_LOD_HOLD_MS = 2000;
 
 /** Hoechster sichtbarer Prop-Tier bei dieser Gegnerzahl (2 = alles sichtbar). */
 export function propDensityMaxTier(enemies: number): 0 | 1 | 2 {

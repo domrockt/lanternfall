@@ -22,26 +22,26 @@ describe("prop-density-lod (m10-prop-density-lod)", () => {
     for (const key of PROP_KEYS) expect([0, 1, 2]).toContain(propTierFor(key));
   });
 
-  it("kleine Deko ist Tier 2 und verschwindet zunaechst (N1), Laternen+Baeume bleiben bis N2", () => {
+  it("kleine Deko ist Tier 2 und verschwindet zunaechst (N1), grosse Strukturen + Laternen bleiben bis N2", () => {
     expect(propTierFor("prop_reeds")).toBe(2);
     expect(propTierFor("prop_lilypad")).toBe(2);
     expect(propTierFor("prop_bones")).toBe(2);
     expect(propTierFor("prop_stump")).toBe(2);
-    expect(propTierFor("prop_tree_a")).toBe(0);
-    expect(propTierFor("prop_tree_b")).toBe(0);
+    expect(propTierFor("prop_tree_a")).toBe(1);
+    expect(propTierFor("prop_tree_b")).toBe(1);
     expect(propTierFor("prop_post")).toBe(0);
 
     expect(visibleKeys(PROP_DENSITY_N1 - 1)).toContain("prop_reeds");
     expect(visibleKeys(PROP_DENSITY_N1 + 10)).not.toContain("prop_reeds");
     expect(visibleKeys(PROP_DENSITY_N1 + 10)).toContain("prop_grave");
     expect(visibleKeys(PROP_DENSITY_N2 + 10)).not.toContain("prop_grave");
-    expect(visibleKeys(PROP_DENSITY_N2 + 10)).toContain("prop_tree_a");
+    expect(visibleKeys(PROP_DENSITY_N2 + 10)).not.toContain("prop_tree_a");
     expect(visibleKeys(PROP_DENSITY_N2 + 10)).toContain("prop_post");
   });
 
-  it("Abnahme-Ziel: ab N2 bleiben nur Landmarken (Laternen + Baeume)", () => {
+  it("Abnahme-Ziel: ab N2 bleiben nur Landmarken (Laternen)", () => {
     const visible = visibleKeys(PROP_DENSITY_N2);
-    expect(visible.sort()).toEqual(["prop_post", "prop_tree_a", "prop_tree_b"]);
+    expect(visible).toEqual(["prop_post"]);
     // leere Layer kosten nichts (Batch-Zaehlung unveraendert nutzbar)
     expect(visibleBatchCount([0, 0, 3, 0])).toBe(1);
   });

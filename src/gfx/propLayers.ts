@@ -19,8 +19,8 @@ export const PROP_KEYS = new Set([
  */
 export const PROP_TIERS: Record<string, 0 | 1 | 2> = {
   prop_post: 0,
-  prop_tree_a: 0,
-  prop_tree_b: 0,
+  prop_tree_a: 1,
+  prop_tree_b: 1,
   prop_ruin: 1,
   prop_column: 1,
   prop_grave: 1,
