@@ -6114,10 +6114,15 @@
           "at": "2026-11-27T20:56:00Z",
           "by": "build",
           "text": "todo → doing: Start: Mess-Skript schreiben (fullrun-Setup, je Frame Spawn-Anzahl + ms), Baseline vor Fix."
+        },
+        {
+          "at": "2026-11-27T21:20:50Z",
+          "by": "build",
+          "text": "Supervisor-Hinweis befolgt: keine Full-Suite-Läufe mehr in der Karte (ein letzter npm test lief 616/616 grün in 1,7 s, kein Hänger); ab jetzt nur npx vitest run <Zieldateien> + tsc. Vorher-Messung läuft unter flock mit timeout 360."
         }
       ],
       "created": "2026-11-27T20:55:57Z",
-      "updated": "2026-11-27T20:56:00Z"
+      "updated": "2026-11-27T21:20:50Z"
     },
     {
       "id": 5399,
