@@ -1,0 +1,27 @@
+# Lane m10-evo-signature-calls — done (2026-11-27)
+
+Ziel: Spawn-Aufruf der 6 Evolutions-Signaturen im `onHit`-Callback von `src/scenes/Run.ts`
+verankern (Bedarfsmeldung der Lane `m10-fx-evolution`).
+
+Ergebnis:
+- Der Aufruf `combat.fx.spawnEvolution(weaponId, killed ? "death" : "hit", enemy.x, enemy.y);`
+  lag bereits in `main` (fx-evolution-WIP 56da3a5, **Run.ts:480**); diese Lane hat ihn
+  verifiziert statt doppelt einzubauen. Keine Gameplay-/Schadensänderung
+  (`git diff main...HEAD -- src/` = 0 Zeilen).
+- Neue Tests `tests/evo-signature-calls.test.ts` (6/6): Verdrahtung in Run.ts (genau 1
+  Aufruf, nach Damage-/Audio-Pfad), Hit-/Death-Spawn mit korrektem Typ/Textur/Position
+  (Pixel-Grid-Rundung), Nicht-Evolutions-Waffen spawnen nichts, Cooldown pro
+  Evolution+Art, alle 6 Evolutionen feuern Hit+Death. Suite 515/515, Build grün.
+- In-Game-Belege: `scripts/m10-evo-signature-shots.mjs` (Phoenix Lvl 8 + 16 Gegner),
+  Screenshots im Moment der aktiven Signatur (live über `FxSystem.keys` gelesen):
+  `shots/m10-evo-signature-hit.png`, `shots/m10-evo-signature-death.png`,
+  `shots/m10-evo-signature-evidence.json` (fx_evo_hit/death_phoenix beobachtet,
+  **0 JS-Fehler**).
+- Doku: `docs/lanes/m10-evo-signature-calls.md` (mit Zeilenangabe Run.ts:480).
+- Kontrolle: Reviewer-PASS (Belege: tsc 0 Fehler, vitest 6/6 + 515/515, Board-Diff
+  = genau die 3 Karten #4518–#4520).
+
+Commits: 9c06483 (#4518), 0cdfea7 (#4519), d099f19 (#4520).
+Nit (nicht blockierend, aus fx-evolution-Lane): FxSystem.ts:245 nutzt Magic Number
+`baseLife * 450` als Cooldown — Konstante + Kommentar könnte die fx-evolution-Lane
+nachholen.

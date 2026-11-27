@@ -5517,10 +5517,21 @@
       "id": 4520,
       "title": "m10-evo-signature-calls K3: In-Game-Beleg + Doku",
       "description": "Evolutions-Waffe im Spiel ausloesen, Screenshots shots/m10-evo-signature-hit.png + shots/m10-evo-signature-death.png mit sichtbarer Signatur, 0 JS-Fehler; Doku docs/lanes/m10-evo-signature-calls.md mit Zeilenangabe der Run.ts-Aenderung. AK: Belege committed, Doku enthaelt Zeilennummer.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T18:59:51Z",
+          "by": "build",
+          "text": "backlog → review: Belege committed (d099f19): shots/m10-evo-signature-hit.png + -death.png (Signaturen sichtbar, Death 3x-zoom geprueft), evidence.json mit fx_evo_hit/death_phoenix, 0 JS-Fehler; Doku mit Zeilenangabe Run.ts:480."
+        },
+        {
+          "at": "2026-11-27T19:01:15Z",
+          "by": "build",
+          "text": "review → done: Reviewer-PASS (ses_de19f07a): git diff main...HEAD -- src/ = 0 Zeilen (Aufruf lag in main, verifiziert statt doppelt eingebaut), Run.ts:480 korrekt nach Damage/Audio-Pfad, tests 6/6, Belege konsistent (evidence.json errors: []), Palette/Grid ok. Commit d099f19."
+        }
+      ],
       "created": "2026-11-27T18:53:52Z",
-      "updated": "2026-11-27T18:53:52Z"
+      "updated": "2026-11-27T19:01:15Z"
     }
   ]
 }
