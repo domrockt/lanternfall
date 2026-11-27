@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2523,
+  "next": 2898,
   "cards": [
     {
       "id": 1,
@@ -3757,16 +3757,26 @@
       "id": 2520,
       "title": "m10-chaos-silhouettes K3 Elite-Rim-Light: klar unterscheidbar, deterministisch, kein Flackern",
       "description": "In src/systems/EnemyPool.ts Elite-Marker (Aura) nur fuer Elite, konstante Breite/Alpha/Farbe pro Frame, kein Flackern, nicht fuer Bosse/Normalos. Abnahme: Elite-Spec weicht messbar von Normal-Spec ab, Aura nur elite, Alpha/Scale deterministisch aus Radius, Commit mit #K3.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T09:37:52Z",
           "by": "build",
           "text": "todo → doing: Start K3: deterministische Elite-Marker-Spec in EnemyPool (Amber-Rim 1px, Alpha 0.92, Scale aus Radius), nur Elite."
+        },
+        {
+          "at": "2026-11-27T11:16:03Z",
+          "by": "build",
+          "text": "doing → review: K3 committed 0c8b3a6: deterministische Elite-Spec in EnemyPool.ts (Amber PAL20, rimPx 1, alpha 0.92, scale 1+2/(2r) nur fuer Elite; Bosse/Normalos ohne Marker). Beleg: tests/enemy-silhouette.test.ts (Elite != Normal, deterministisch)."
+        },
+        {
+          "at": "2026-11-27T11:16:03Z",
+          "by": "build",
+          "text": "Supervisor-Auftrag 27.11.: K3 mit vorhandenen Belegen abschliessen, kein weiterer Messlauf."
         }
       ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T09:37:52Z"
+      "updated": "2026-11-27T11:16:03Z"
     },
     {
       "id": 2521,
