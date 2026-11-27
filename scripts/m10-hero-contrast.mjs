@@ -147,11 +147,25 @@ try {
       const tick = () => { seen++; if (seen >= 30) resolve(); else requestAnimationFrame(tick); };
       requestAnimationFrame(tick);
     });
+    // God-Mode-Ifs machen den Spieler halbtransparent (alpha 0.55) — fuer den
+    // Kontrast-Frame wieder voll sichtbar machen. Kamera deterministisch auf
+    // den Spieler zentrieren (Follow-Lerp wuerde zwischen Sampling und Shot
+    // weiterziehen), damit die Metrik-Mitte exakt stimmt.
+    run.invuln = 0;
+    run.hitFlash = 0;
+    run.playerBody.setAlpha(1);
+    run.cameras.main.stopFollow();
+    run.cameras.main.centerOn(run.player.x, run.player.y);
     return {
       spawned,
       alive: run.enemies.active.filter((e) => e.alive).length,
       playerX: run.player.x,
       playerY: run.player.y,
+      camScrollX: run.cameras.main.scrollX,
+      camScrollY: run.cameras.main.scrollY,
+      camWidth: run.cameras.main.width,
+      camHeight: run.cameras.main.height,
+      bodyAlpha: run.playerBody.alpha,
       char: window.__lf.state().character,
     };
   }, { mix: MIX, target: TARGET, seedSrc: SEED_FN, skip: SKIP_SECONDS });
@@ -201,7 +215,17 @@ try {
         let ringLum = 0;
         let boxWarm = 0;
         let ringWarm = 0;
+        let boxRim = 0;
         const warm = new Set([16, 17, 18, 19, 20, 21, 22, 26, 27]);
+        // Luminanz-P99: die hellsten Pixel der Spieler-Box (Glow-Kontur)
+        // gegen die hellsten Pixel des Gegner-Rings.
+        const lumsBox = [];
+        const lumsRing = [];
+        const p99 = (arr) => {
+          if (!arr.length) return 0;
+          arr.sort((a, b) => a - b);
+          return Math.round(arr[Math.min(arr.length - 1, Math.floor(arr.length * 0.99))] * 10) / 10;
+        };
         for (let y = 0; y < h; y++) {
           for (let x = 0; x < w; x++) {
             const o = (y * w + x) * 4;
@@ -210,6 +234,10 @@ try {
             const b = data[o + 2];
             const a = data[o + 3];
             if (a < 128) continue;
+            // Warme Laterne-Pixel (Palettenfamilie amber 20 / lantern 21 /
+            // glow 22): der helle Spieler-Konturakzent.
+            const isRim = r >= 230 && g >= 170 && b <= 190 && (r - b) >= 60;
+            const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
             const c = cls(r, g, b);
             const dx = x - cxp;
             const dy = y - cyp;
@@ -219,12 +247,15 @@ try {
             if (inBox) {
               boxN++;
               counts[c]++;
-              boxLum += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+              boxLum += lum;
+              lumsBox.push(lum);
               if (warm.has(c)) boxWarm++;
+              if (isRim) boxRim++;
             } else if (inRing) {
               ringN++;
               counts[c]++;
-              ringLum += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+              ringLum += lum;
+              lumsRing.push(lum);
               if (warm.has(c)) ringWarm++;
             }
           }
@@ -241,6 +272,11 @@ try {
           ringN,
           rareColorsInRing: rareIdx,
           heroRarity: boxN > 0 ? Math.round((rareShareBox / boxN) * 10000) / 10000 : 0,
+          rimPixelsBox: boxRim,
+          rimSharePlayer: boxN > 0 ? Math.round((boxRim / boxN) * 10000) / 10000 : 0,
+          lumP99Player: p99(lumsBox),
+          lumP99Surround: p99(lumsRing),
+          lumP99Delta: Math.round((p99(lumsBox) - p99(lumsRing)) * 10) / 10,
           lumPlayer: boxN > 0 ? Math.round((boxLum / boxN) * 10) / 10 : 0,
           lumSurround: ringN > 0 ? Math.round((ringLum / ringN) * 10) / 10 : 0,
           lumDelta: Math.round(((boxLum / Math.max(1, boxN)) - (ringLum / Math.max(1, ringN))) * 10) / 10,
@@ -257,7 +293,7 @@ try {
     pal: PAL_HEX,
     cx: Math.round(rect.x + rect.w / 2),
     cy: Math.round(rect.y + rect.h / 2),
-    scale: rect.w / 480,
+    scale: rect.w / prep.camWidth,
   });
 
   // Portraet-Belege kommen aus der Asset-Pipeline (scripts/art/m10_hero_portraits.py),
@@ -267,6 +303,12 @@ try {
   const out = {
     tag: TAG,
     character: prep.char,
+    playerDebug: {
+      x: prep.playerX, y: prep.playerY,
+      camScrollX: prep.camScrollX, camScrollY: prep.camScrollY,
+      camWidth: prep.camWidth,
+      bodyTexture: prep.bodyTexture, bodyVisible: prep.bodyVisible, bodyAlpha: prep.bodyAlpha,
+    },
     enemiesTarget: TARGET,
     enemiesSpawned: prep.spawned,
     enemiesAlive: prep.alive,
