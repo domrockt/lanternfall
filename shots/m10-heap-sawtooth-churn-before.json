@@ -1,0 +1,551 @@
+{
+ "tool": "churn-probe",
+ "window": "simMinute24to29",
+ "seed": 99,
+ "timeScale": 30,
+ "kills": 8967,
+ "enemies": 215,
+ "totalNewGameObjects": 16392,
+ "distinctKeys": 5550,
+ "jsErrors": [],
+ "allCounts": [
+  {
+   "key": "image:10",
+   "count": 45
+  },
+  {
+   "key": "image:648",
+   "count": 40
+  },
+  {
+   "key": "image:664",
+   "count": 35
+  },
+  {
+   "key": "image:792",
+   "count": 28
+  },
+  {
+   "key": "image:808",
+   "count": 27
+  },
+  {
+   "key": "image:824",
+   "count": 26
+  },
+  {
+   "key": "image:680",
+   "count": 26
+  },
+  {
+   "key": "image:88",
+   "count": 26
+  },
+  {
+   "key": "image:830",
+   "count": 24
+  },
+  {
+   "key": "image:328",
+   "count": 24
+  },
+  {
+   "key": "image:698",
+   "count": 23
+  },
+  {
+   "key": "image:632",
+   "count": 22
+  },
+  {
+   "key": "image:817",
+   "count": 21
+  },
+  {
+   "key": "image:810",
+   "count": 20
+  },
+  {
+   "key": "image:827",
+   "count": 20
+  },
+  {
+   "key": "image:833",
+   "count": 20
+  },
+  {
+   "key": "image:814",
+   "count": 20
+  },
+  {
+   "key": "image:984",
+   "count": 20
+  },
+  {
+   "key": "image:840",
+   "count": 19
+  },
+  {
+   "key": "image:712",
+   "count": 19
+  },
+  {
+   "key": "image:832",
+   "count": 19
+  },
+  {
+   "key": "image:835",
+   "count": 19
+  },
+  {
+   "key": "image:1000",
+   "count": 19
+  },
+  {
+   "key": "image:104",
+   "count": 19
+  },
+  {
+   "key": "image:768",
+   "count": 18
+  },
+  {
+   "key": "image:776",
+   "count": 18
+  },
+  {
+   "key": "image:760",
+   "count": 18
+  },
+  {
+   "key": "image:820",
+   "count": 18
+  },
+  {
+   "key": "image:813",
+   "count": 18
+  },
+  {
+   "key": "image:675",
+   "count": 18
+  },
+  {
+   "key": "image:682",
+   "count": 17
+  },
+  {
+   "key": "image:1151",
+   "count": 17
+  },
+  {
+   "key": "image:838",
+   "count": 17
+  },
+  {
+   "key": "image:819",
+   "count": 17
+  },
+  {
+   "key": "image:822",
+   "count": 17
+  },
+  {
+   "key": "image:803",
+   "count": 17
+  },
+  {
+   "key": "image:0",
+   "count": 17
+  },
+  {
+   "key": "image:672",
+   "count": 17
+  },
+  {
+   "key": "image:13",
+   "count": 17
+  },
+  {
+   "key": "image:512",
+   "count": 16
+  },
+  {
+   "key": "image:744",
+   "count": 16
+  },
+  {
+   "key": "image:1154",
+   "count": 16
+  },
+  {
+   "key": "image:836",
+   "count": 16
+  },
+  {
+   "key": "image:829",
+   "count": 16
+  },
+  {
+   "key": "image:828",
+   "count": 16
+  },
+  {
+   "key": "image:344",
+   "count": 16
+  },
+  {
+   "key": "image:816",
+   "count": 16
+  },
+  {
+   "key": "image:798",
+   "count": 16
+  },
+  {
+   "key": "image:678",
+   "count": 16
+  },
+  {
+   "key": "image:1157",
+   "count": 15
+  },
+  {
+   "key": "image:666",
+   "count": 15
+  },
+  {
+   "key": "image:616",
+   "count": 15
+  },
+  {
+   "key": "image:831",
+   "count": 15
+  },
+  {
+   "key": "image:825",
+   "count": 15
+  },
+  {
+   "key": "image:806",
+   "count": 15
+  },
+  {
+   "key": "image:696",
+   "count": 15
+  },
+  {
+   "key": "image:841",
+   "count": 15
+  },
+  {
+   "key": "image:646",
+   "count": 15
+  },
+  {
+   "key": "image:7",
+   "count": 15
+  },
+  {
+   "key": "image:1048",
+   "count": 15
+  },
+  {
+   "key": "image:730",
+   "count": 14
+  },
+  {
+   "key": "image:602",
+   "count": 14
+  },
+  {
+   "key": "image:839",
+   "count": 14
+  },
+  {
+   "key": "image:472",
+   "count": 14
+  },
+  {
+   "key": "image:823",
+   "count": 14
+  },
+  {
+   "key": "image:795",
+   "count": 14
+  },
+  {
+   "key": "image:782",
+   "count": 14
+  },
+  {
+   "key": "image:811",
+   "count": 14
+  },
+  {
+   "key": "image:715.6216975242509",
+   "count": 14
+  },
+  {
+   "key": "image:654",
+   "count": 14
+  },
+  {
+   "key": "image:643",
+   "count": 14
+  },
+  {
+   "key": "image:1160",
+   "count": 13
+  },
+  {
+   "key": "image:842",
+   "count": 13
+  },
+  {
+   "key": "image:834",
+   "count": 13
+  },
+  {
+   "key": "image:826",
+   "count": 13
+  },
+  {
+   "key": "image:724",
+   "count": 13
+  },
+  {
+   "key": "image:779",
+   "count": 13
+  },
+  {
+   "key": "image:740",
+   "count": 13
+  },
+  {
+   "key": "image:818",
+   "count": 13
+  },
+  {
+   "key": "image:685",
+   "count": 13
+  },
+  {
+   "key": "image:681",
+   "count": 13
+  },
+  {
+   "key": "image:800",
+   "count": 13
+  },
+  {
+   "key": "image:697",
+   "count": 13
+  },
+  {
+   "key": "image:8",
+   "count": 13
+  },
+  {
+   "key": "image:40",
+   "count": 13
+  },
+  {
+   "key": "image:168",
+   "count": 13
+  },
+  {
+   "key": "image:837",
+   "count": 13
+  },
+  {
+   "key": "image:640",
+   "count": 13
+  },
+  {
+   "key": "image:1194",
+   "count": 13
+  },
+  {
+   "key": "image:1280",
+   "count": 12
+  },
+  {
+   "key": "image:1192",
+   "count": 12
+  },
+  {
+   "key": "image:584",
+   "count": 12
+  },
+  {
+   "key": "image:1164",
+   "count": 12
+  },
+  {
+   "key": "image:797",
+   "count": 12
+  },
+  {
+   "key": "image:256",
+   "count": 12
+  },
+  {
+   "key": "image:757",
+   "count": 12
+  },
+  {
+   "key": "image:807",
+   "count": 12
+  },
+  {
+   "key": "image:718",
+   "count": 12
+  },
+  {
+   "key": "image:721",
+   "count": 12
+  },
+  {
+   "key": "image:809",
+   "count": 12
+  }
+ ],
+ "stacksTop15": [
+  {
+   "key": "image:10",
+   "stack": [
+    "at Y (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:220459)",
+    "at qo.fireFlail (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:569845)",
+    "at qo.updateWeapons (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:567678)",
+    "at qo.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:566487)"
+   ]
+  },
+  {
+   "key": "image:648",
+   "stack": [
+    "at ta.addProp (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:517360)",
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519214)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)"
+   ]
+  },
+  {
+   "key": "image:664",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:792",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:808",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:824",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:680",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:88",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:830",
+   "stack": [
+    "at Y (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:220459)",
+    "at e.spawnSplash (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:632721)",
+    "at e.maybeSplash (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:632494)",
+    "at e.simulate (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:629884)"
+   ]
+  },
+  {
+   "key": "image:328",
+   "stack": [
+    "at ta.addProp (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:517360)",
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519214)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)"
+   ]
+  },
+  {
+   "key": "image:698",
+   "stack": [
+    "at ta.addProp (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:517360)",
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519524)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)"
+   ]
+  },
+  {
+   "key": "image:632",
+   "stack": [
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519280)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)",
+    "at ta.update (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:510180)"
+   ]
+  },
+  {
+   "key": "image:817",
+   "stack": [
+    "at Y (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:220459)",
+    "at e.spawnSplash (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:632721)",
+    "at e.maybeSplash (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:632653)",
+    "at e.simulate (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:629884)"
+   ]
+  },
+  {
+   "key": "image:810",
+   "stack": [
+    "at ta.addProp (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:517360)",
+    "at ta.placeWaterDetails (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:519524)",
+    "at ta.buildChunk (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516982)",
+    "at ta.finalizeReady (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:516332)"
+   ]
+  },
+  {
+   "key": "image:827",
+   "stack": [
+    "at Y (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:220459)",
+    "at e.spawnSplash (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:632721)",
+    "at e.maybeSplash (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:632494)",
+    "at e.simulate (http://127.0.0.1:5717/assets/index-BQ2P7rBa.js:812:629884)"
+   ]
+  }
+ ],
+ "note": "geslimmt (Rohdaten): Stacks nur fuer Top-15; vollstaendige Stacks nur im urspruenglichen Lauf; allCounts auf Top-100 gekappt (Rest summiert <5 %)"
+}
