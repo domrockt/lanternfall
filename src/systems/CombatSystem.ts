@@ -11,6 +11,7 @@ import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
+import { PHOENIX_FX } from "../data/evolution-weapons";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -337,8 +338,10 @@ export class CombatSystem {
         explodeRadius: this.effRadius(34, ctx.agg),
       });
     }
-    this.fx.spawnAnim("fx_fire", ctx.playerX, ctx.playerY, {
-      life: 0.30, scaleFrom: 1.4, scaleTo: 0.3, alphaFrom: 1, alphaTo: 0, additive: true,
+    // M10-evo-fx-phoenix: Aufbau (Anticipation) ≤ 0,3 s in Zielgröße (14x14,
+    // Draw-Scale 1) statt fx_fire @1,4x — klarer Startpunkt des Schwarm-Aufbaus.
+    this.fx.spawnAnim(PHOENIX_FX.launchTexture, ctx.playerX, ctx.playerY, {
+      life: PHOENIX_FX.launchLife, scaleFrom: 1, scaleTo: 1, alphaFrom: 1, alphaTo: 0, additive: true,
     });
   }
 
@@ -900,6 +903,14 @@ export class CombatSystem {
       p.y += p.vy * ctx.dt;
       p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
       p.sprite.setRotation(Math.atan2(p.vy, p.vx));
+      // M10-evo-fx-phoenix: Schwarm-Bewegung über 3 Flatter-Frames (15x11,
+      // Zielgröße, Draw-Scale 1). Synchroner Schlag — der Schwarm liest sich
+      // als Vogelgruppe, kein per-Projektil-Zustand nötig.
+      if (p.weaponId === "phoenix") {
+        const flap = Math.floor(this.clock / PHOENIX_FX.birdFrameInterval) % PHOENIX_FX.birdFrames.length;
+        const key = PHOENIX_FX.birdFrames[flap];
+        if (currentFrame(p.sprite) !== key) applyTexture(p.sprite, key);
+      }
       if (p.trail && this.fx.trailsEnabled) {
         p.trailTimer -= ctx.dt;
         if (p.trailTimer <= 0) {
@@ -953,14 +964,24 @@ export class CombatSystem {
   }
 
   private explode(ctx: CombatContext, x: number, y: number, radius: number, damage: number, weaponId: string): void {
-    this.fx.spawnAnim("fx_shock", x, y, {
-      life: 0.34, scaleFrom: radius / 30, scaleTo: radius / 22,
-      alphaFrom: 0.75, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
-    });
-    this.fx.spawnAnim("fx_halo", x, y, {
-      life: 0.26, scaleFrom: radius / 16, scaleTo: radius / 11,
-      alphaFrom: 0.6, alphaTo: 0, additive: true, tint: PAL[C.amber],
-    });
+    // M10-evo-fx-phoenix: Impact in Zielgröße (fx_boom_phoenix 64x64 ≈ Radius 34,
+    // Draw-Scale 1, 4 Frames Aufbau→Ausklang) statt fx_shock @1,13-1,55x +
+    // fx_halo @2,1-3,1x. Andere Waffen behalten die alte Optik.
+    if (weaponId === "phoenix") {
+      this.fx.spawnAnim(PHOENIX_FX.boomTexture, x, y, {
+        life: PHOENIX_FX.boomLife, scaleFrom: 1, scaleTo: 1,
+        alphaFrom: 0.95, alphaTo: 0, additive: true,
+      });
+    } else {
+      this.fx.spawnAnim("fx_shock", x, y, {
+        life: 0.34, scaleFrom: radius / 30, scaleTo: radius / 22,
+        alphaFrom: 0.75, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
+      });
+      this.fx.spawnAnim("fx_halo", x, y, {
+        life: 0.26, scaleFrom: radius / 16, scaleTo: radius / 11,
+        alphaFrom: 0.6, alphaTo: 0, additive: true, tint: PAL[C.amber],
+      });
+    }
     this.fx.burst("fx_fire", x, y, 6, { life: 0.28, additive: true, scaleTo: 0.2 });
     if (weaponId === "phoenix") this.addBurn(x, y, radius, 3.2, 18, weaponId);
     for (const e of ctx.enemies) {
@@ -1120,9 +1141,12 @@ export class CombatSystem {
       const old = this.burns.shift();
       old?.sprite.destroy();
     }
-    const sprite = makeImage(this.scene, x, y, "fx_fire")
-      .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.5)
-      .setScale((r / 22) * 1.4, (r / 22) * 1.0);
+    // M10-evo-fx-phoenix: Brandfleck in Zielgröße (fx_burn_phoenix 64x64,
+    // Draw-Scale 1) statt fx_fire 14x14 @2,2x — Ausklang ohne Mixel.
+    const phoenix = weaponId === "phoenix";
+    const sprite = makeImage(this.scene, x, y, phoenix ? PHOENIX_FX.burnTexture : "fx_fire")
+      .setDepth(DEPTH.decal).setBlendMode(Phaser.BlendModes.NORMAL).setAlpha(0.55)
+      .setScale(phoenix ? 1 : (r / 22) * 1.4, phoenix ? 1 : (r / 22) * 1.0);
     this.burns.push({ x, y, r, life, tick: 0, dps, weaponId, sprite });
   }
 
@@ -1133,9 +1157,19 @@ export class CombatSystem {
       b.tick -= ctx.dt;
       const burnAlpha = (this.lod.level === "minimal" ? 0.26 : 0.46) * this.fxAlpha;
       b.sprite.setAlpha(Math.max(0, Math.min(burnAlpha, b.life * 0.6)) * (0.8 + Math.sin(this.clock * 9) * 0.2));
-      const burnFrames = fxFrames("fx_fire", 6);
-      const bf = burnFrames[Math.floor(this.clock * 8 + b.x) % 6];
-      if (currentFrame(b.sprite) !== bf) applyTexture(b.sprite, bf);
+      // M10-evo-fx-phoenix: Phönix-Brandfleck flackert über 3 eigene Frames,
+      // Ausklang = Frame-Fortschritt + Alpha-Fade über die Lebenszeit.
+      if (b.weaponId === "phoenix") {
+        const age = PHOENIX_FX.burnLife - b.life;
+        const bf = PHOENIX_FX.burnTextureFrames > 0
+          ? fxFrames(PHOENIX_FX.burnTexture, PHOENIX_FX.burnTextureFrames)[Math.floor(age / PHOENIX_FX.burnFrameInterval) % PHOENIX_FX.burnTextureFrames]
+          : PHOENIX_FX.burnTexture;
+        if (currentFrame(b.sprite) !== bf) applyTexture(b.sprite, bf);
+      } else {
+        const burnFrames = fxFrames("fx_fire", 6);
+        const bf = burnFrames[Math.floor(this.clock * 8 + b.x) % 6];
+        if (currentFrame(b.sprite) !== bf) applyTexture(b.sprite, bf);
+      }
       if (b.life <= 0) {
         b.sprite.destroy();
         this.burns.splice(i, 1);

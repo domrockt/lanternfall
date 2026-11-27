@@ -712,6 +712,12 @@ export interface EvoSignature {
   deathLifetime: number;
   hitCount: number;
   deathCount: number;
+  /**
+   * M10-evo-fx-phoenix: gesetzt, wenn die Signatur-Textur bereits in Zielgröße
+   * gebacken wird (Phönix 128x128) und mit Draw-Scale 1 gezeichnet wird —
+   * Mixel-Regel „nie > 1x hochskalieren". Folge-Evo-Jobs ziehen nach.
+   */
+  drawScale?: readonly [number, number];
 }
 
 export const SIGNATURE_FRAME_COUNT = 4;
@@ -722,6 +728,8 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     evolution: "phoenix", baseWeapon: "ember", shape: "splitter",
     palette: [20, 18, 19], hitLifetime: 0.16, deathLifetime: 0.62,
     hitCount: 6, deathCount: 14,
+    // Zielgröße 128 gebacken (phoenixSignatureFrame), Draw-Scale 1 statt 32x32 @ 4,0-4,6.
+    drawScale: [1, 1],
   },
   // Kettenflegel + Eisenherz: goldener Ring-Schlag, sehr kurz.
   wrath_pendulum: {
@@ -968,15 +976,206 @@ export function signatureFrame(
   return outlineAndRim(rows);
 }
 
+// ── Phönixschwarm-FX (M10-evo-fx-phoenix) ──────────────────────
+// Vorlage für alle Evolutions-Effekt-Jobs: EINE Pixelgröße für alles — jede
+// Textur wird direkt in ihrer Zielgröße gebacken und mit Draw-Scale 1 gezeichnet
+// (nie > 1x hochskalieren). Klare Feuer-Farbtreppe Kern Glow(22)/Lantern(21) →
+// Amber(20)/FlameBright(19) → Flame(18)/EmberOrange(17) → EmberBrown(16); keine
+// Ink-Ränder (0), Konturen nur als warme Dunkelstufe (16/17). Aufbau ≤ 0,3 s
+// (Launch) → klarer Impact (Boom) → kurzer Ausklang (Brandfleck).
+
+/** Kleinste Rampe (Grenze, Index), deren Grenze d noch einhält. */
+function rampAt(d: number, ramp: readonly (readonly [number, number])[]): number {
+  for (const [limit, idx] of ramp) if (d <= limit) return idx;
+  return ramp[ramp.length - 1][1];
+}
+
+/** Feuervogel (fliegt +x, Rotation übernimmt der Sprite): Flügelraute + Rumpfträne, 3 Schlag-Phasen. */
+export function phoenixBirdFrame(flap: number, w = 15, h = 11): string[] {
+  const rows: string[][] = Array.from({ length: h }, () => Array(w).fill("."));
+  const cy = (h - 1) / 2;
+  // Flügelraute: Mittelpunkt wandert mit der Schlagphase, rx/ry variieren.
+  const wx = [4.0, 4.5, 5.0][flap];
+  const ry = [4.2, 3.2, 2.4][flap];
+  const rx = [3.2, 4.2, 5.0][flap];
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < 9; x++) {
+      const d = Math.hypot((x - wx) / rx, (y - cy) / ry);
+      if (d <= 1) {
+        putPixel(rows, x, y, d < 0.45 ? 21 : d < 0.8 ? 20 : 19);
+      }
+    }
+  }
+  // Rumpf: Träne von (6,cy) bis Kopf (14,cy), Kern Glow.
+  for (let px = 5; px < 15; px++) {
+    const t = (px - 5) / 9;
+    const r = 0.6 + 1.7 * Math.sin(Math.PI * Math.min(1, 0.15 + 0.85 * t)) * (1 - t * 0.55);
+    for (let pyf = -4; pyf <= 4; pyf++) {
+      const d = Math.abs(pyf * 0.5);
+      if (d <= r) putPixel(rows, px, cy + pyf * 0.5, d < 0.5 ? 22 : d < r - 0.4 ? 21 : 20);
+    }
+    putPixel(rows, px, cy + r + 0.2, 16); // Bauchkante: warme Dunkelstufe statt Ink
+  }
+  // Kopf-Haube + Schnabel-Glutkern.
+  putPixel(rows, 13, cy - 1.5, 21);
+  putPixel(rows, 13.5, cy - 2.5, 20);
+  putPixel(rows, 14, cy - 3.5, 19);
+  putPixel(rows, 14, cy, 13);
+  // Schwanzflammen links.
+  const tail = [2.0, 2.6, 3.4][flap];
+  for (let k = 0; k < Math.ceil(tail * 2); k++) {
+    const kk = k / 2;
+    putPixel(rows, 1.5 - kk, cy + Math.sin(kk * 1.4 + flap) * 0.8, kk < 1 ? 18 : 17);
+    putPixel(rows, 1.5 - kk, cy + 0.9 + Math.sin(kk * 1.4 + flap) * 0.8, 16);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Abschuss-Puff (Anticipation ≤ 0,3 s): kleine aufsteigende Glutwolke, 14x14, 3 Frames. */
+export function phoenixLaunchFrame(stage: number, w = 14, h = 14): string[] {
+  const rows: string[][] = Array.from({ length: h }, () => Array(w).fill("."));
+  const cx = (w - 1) / 2;
+  const cy = (h - 1) / 2 + stage * 0.8;
+  const t = stage / 3;
+  const r = 2.6 + t * 2.2;
+  const ramp: readonly (readonly [number, number])[] = [
+    [r * 0.28, 22], [r * 0.5, 21], [r * 0.72, 20], [r * 0.9, 19], [r, 18],
+  ];
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const d = Math.hypot((x - cx) / 0.8, (y - cy) * (y < cy ? 1.35 : 1.0));
+      if (d <= r) putPixel(rows, x, y, rampAt(d, ramp));
+    }
+  }
+  // Aufsteigende Funken.
+  for (let k = 0; k < 3; k++) putPixel(rows, cx - 2 + k * 2, cy - r - 1 - k, k === 0 ? 20 : 19);
+  return rows.map((r2) => r2.join(""));
+}
+
+/** Impact-Explosion in Zielgröße (64x64 ≈ Explode-Radius 34): Feuerkranz mit Zungen, 4 Frames. */
+export function phoenixBoomFrame(stage: number, w = 64, h = 64): string[] {
+  const rows: string[][] = Array.from({ length: h }, () => Array(w).fill("."));
+  const c = (w - 1) / 2;
+  const t = stage / 3;
+  const ring = 8 + t * 20;
+  const ramp: readonly (readonly [number, number])[] = [
+    [ring * 0.3, 22], [ring * 0.52, 21], [ring * 0.72, 20], [ring * 0.9, 19], [ring, 18],
+  ];
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const dx = x - c;
+      const dy = y - c;
+      const d = Math.hypot(dx, dy);
+      const a = Math.atan2(dy, dx);
+      const jag = Math.sin(a * 7 + stage * 1.9) * 2.2 + Math.sin(a * 13 - stage) * 1.1;
+      const edge = d - (ring + jag);
+      if (edge <= 0) putPixel(rows, x, y, rampAt(d, ramp));
+      else if (edge <= 1.1) putPixel(rows, x, y, 17); // warme Außenstufe, kein Ink
+    }
+  }
+  // Zungen nach außen.
+  for (let z = 0; z < 8; z++) {
+    const a = (z / 8) * Math.PI * 2 + stage * 0.4;
+    const tongue = Math.ceil(3 + t * 4);
+    for (let k = 0; k < tongue; k++) {
+      putPixel(rows, c + Math.cos(a) * (ring + 1 + k), c + Math.sin(a) * (ring + 1 + k), k < 2 ? 19 : 17);
+    }
+  }
+  // Spät: verbrannte Glutflecken statt weiter wachsender Radius.
+  if (stage >= 2) {
+    for (let z = 0; z < 14; z++) {
+      const a = z * 2.399;
+      const rr = ring * (0.3 + (z % 5) * 0.12);
+      putPixel(rows, c + Math.cos(a) * rr, c + Math.sin(a) * rr, 16);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Brandfleck (Ausklang): dunkelrote Glutfläche mit Körnern, 64x64, 3 Frames, verblasst über die Lebenszeit. */
+export function phoenixBurnFrame(stage: number, w = 64, h = 64): string[] {
+  const rows: string[][] = Array.from({ length: h }, () => Array(w).fill("."));
+  const c = (w - 1) / 2;
+  const fade = 1 - stage / 3;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const d = Math.hypot(x - c, y - c);
+      const n = Math.sin(x * 0.9 + y * 0.4) * Math.cos(y * 0.8 - x * 0.3);
+      const r = 30 * (0.75 + 0.25 * n) * (0.55 + 0.45 * fade);
+      if (d <= r) {
+        putPixel(rows, x, y, d < r * 0.3 ? 18 : d < r * 0.55 ? 17 : d < r * 0.8 ? 16 : 15);
+      } else if (d <= r + 1.2 && (x * 7 + y * 13) % 3 === 0) {
+        putPixel(rows, x, y, 14); // verstreute Glutkörner
+      }
+    }
+  }
+  // Aufflackernde Glutkerne.
+  for (let z = 0; z < 6; z++) {
+    const a = z * 1.05 + stage;
+    const rr = 10 + ((z * 3) % 14);
+    putPixel(rows, c + Math.cos(a) * rr, c + Math.sin(a) * rr, stage === 0 ? 19 : 17);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Treffer-/Todes-Signatur in Zielgröße (128x128, Draw-Scale 1): fette Flammen-Scherben ohne Ink-Rand. */
+export function phoenixSignatureFrame(kind: "hit" | "death", stage: number, size = 128): string[] {
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  const spread = death ? 1.4 : 1.0;
+  const variant = 20 % 7; // phoenix palette[0] = amber
+  const shards = death ? 6 : 4;
+  const base = death ? 22 : 26;
+  const ln = 16 + t * 18;
+  for (let i = 0; i < shards; i++) {
+    const a = variant * 0.37 + (i / shards) * Math.PI * 2 + stage * 0.13;
+    const rr = base * spread;
+    const cx = c + Math.cos(a) * rr;
+    const cy = c + Math.sin(a) * rr;
+    for (let k = -Math.ceil(ln); k <= Math.ceil(ln); k++) {
+      const ak = Math.abs(k);
+      // Flamme: an der Basis breit, zur Spitze geflammt (Taper).
+      const wdt = Math.max(0, 11.5 * (1 - ak / ln) ** 0.8);
+      for (let s = -Math.ceil(wdt); s <= Math.ceil(wdt); s++) {
+        const px = cx + Math.cos(a) * k - Math.sin(a) * s;
+        const py = cy + Math.sin(a) * k + Math.cos(a) * s;
+        const aS = Math.abs(s);
+        const rel = ak / ln;
+        const idx = rel < 0.22 && aS < wdt * 0.5 ? 22
+          : rel < 0.5 && aS < wdt * 0.75 ? 21
+          : rel < 0.75 ? 20
+          : rel < 0.92 ? 19
+          : 18;
+        putPixel(rows, px, py, idx);
+      }
+    }
+  }
+  // Zentraler Glutkern.
+  const coreR = death ? 6 : 5;
+  for (let dy = -coreR; dy <= coreR; dy++) {
+    for (let dx = -coreR; dx <= coreR; dx++) {
+      const d = Math.hypot(dx, dy);
+      if (d <= coreR) putPixel(rows, c + dx, c + dy, d < coreR * 0.45 ? 22 : d < coreR * 0.75 ? 21 : 20);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
 /** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
 function addEvolutionSignatures(scene: Phaser.Scene): void {
   for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
     for (const kind of ["hit", "death"] as const) {
+      // M10-evo-fx-phoenix: Phönix signatur in Zielgröße 128 (Draw-Scale 1) statt
+      // 32x32 hochskaliert — Vorlage für die Folge-Evo-Jobs.
+      const size = sig.drawScale ? 128 : 32;
       const def: FxDef = {
-        w: 32,
-        h: 32,
-        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
+        w: size,
+        h: size,
+        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) =>
+          sig.drawScale ? phoenixSignatureFrame(kind, i) : signatureFrame(sig.shape, sig.palette, i, kind)),
       };
       addFrames(scene, signatureTextureKey(id, kind), def);
     }
@@ -1017,6 +1216,11 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "orb_soul", { w: 15, h: 22, frames: [0, 1, 2].map(orbSoulFrame) });
   // Kalter Halo fuer Seelen (blau-grau statt warmem Amber-Ring).
   addFrames(scene, "fx_halo_cold", { w: 24, h: 24, frames: [0, 1].map(coldHaloFrame) });
+  // M10-evo-fx-phoenix: Phönixschwarm in Zielgrößen (alle Draw-Scale 1).
+  addFrames(scene, "projectile_phoenix", { w: 15, h: 11, frames: [0, 1, 2].map((i) => phoenixBirdFrame(i)) });
+  addFrames(scene, "fx_phoenix_launch", { w: 14, h: 14, frames: [0, 1, 2].map((i) => phoenixLaunchFrame(i)) });
+  addFrames(scene, "fx_boom_phoenix", { w: 64, h: 64, frames: [0, 1, 2, 3].map((i) => phoenixBoomFrame(i)) });
+  addFrames(scene, "fx_burn_phoenix", { w: 64, h: 64, frames: [0, 1, 2].map((i) => phoenixBurnFrame(i)) });
   // M10: eigene Treffer-/Todes-Signatur je Evolution (Form + Palette + Timing).
   addEvolutionSignatures(scene);
 }
@@ -1031,6 +1235,7 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_seal: 5, fx_thorn: 3, fx_orb: 4, fx_pillar: 5, fx_shock: 6,
   fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4, fx_death_fire: 4,
   fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2,
+  fx_phoenix_launch: 3, fx_boom_phoenix: 4, fx_burn_phoenix: 3,
   ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
     [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
