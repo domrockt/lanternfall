@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 // M10-FX-Overdraw: Attribution (FX aus / Partikel-Cap 25 % / voll) und
 // Abnahme-Nachmessung bei Minute 25 im 780x360@3-View (2340x1080 = 2,5 Mio px).
-// Start IMMER unter `flock /home/ai/games/.lf-perf.lock`.
+// Start IMMER unter `flock -w 300 /home/ai/games/.lf-perf.lock`
+// (-w 300 = erwartete Laufzeit ~180 s + 120 s Puffer). Bei Lock-Timeout (rc != 0):
+//   echo "m10-fx-overdraw: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
+// und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 //
 // Attribution (3 Varianten x 3 Laeufe, je 10 s, 780x360@3):
 //   node scripts/m10-fx-overdraw.mjs --suite attribution
