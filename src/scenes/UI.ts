@@ -16,6 +16,15 @@ import { InputState, type ActionState } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { TouchControls } from "../input/TouchControls";
 import type { HudState, Run } from "./Run";
+import { bossHudRects } from "../systems/BossSystem";
+
+/**
+ * Banner-Timing (Dom 4b): kurz einblenden, 2,4 s halten, ausblenden
+ * (bannerTimer). Die Messskripte/Tests prüfen die Kette über diese Konstanten.
+ */
+export const BANNER_FADE_IN_MS = 120;
+export const BANNER_HOLD_MS = 2400;
+export const BANNER_FADE_OUT_MS = 380;
 
 interface CardView {
   bg: Phaser.GameObjects.Rectangle;
@@ -303,10 +312,15 @@ export class UI extends Phaser.Scene {
     this.bossGroup.add([this.bossBarBg, this.bossBarShadow, this.bossBarFill, ...segs,
       this.bossName, this.bossPhaseText]);
 
+    // Banner fest unter der HP-Leiste: Position/Größe kommen aus der
+    // bossHudRects-Kette (Dom 4b), damit UI-Rect und safeTop-Kette immer
+    // dasselbe Rect sehen — kein freier Mittelwert mehr.
+    const bannerRect = bossHudRects(GAME_WIDTH).banner;
     this.bannerGroup = this.add.container(0, 0).setDepth(95).setVisible(false).setAlpha(0);
-    const bg = this.add.nineslice(cx, 92, "ui_frame", undefined, 300, 48, 8, 8, 8, 8).setName("hud-banner-bg");
-    this.bannerText = new PixelText(this, cx, 84, "", C.lantern, "center").setScale(1).setName("hud-banner-title");
-    this.bannerSub = new PixelText(this, cx, 98, "", C.bone, "center").setName("hud-banner-sub");
+    const bg = this.add.nineslice(cx, bannerRect.y + bannerRect.h / 2, "ui_frame", undefined,
+      bannerRect.w, bannerRect.h, 8, 8, 8, 8).setName("hud-banner-bg");
+    this.bannerText = new PixelText(this, cx, bannerRect.y + 16, "", C.lantern, "center").setScale(1).setName("hud-banner-title");
+    this.bannerSub = new PixelText(this, cx, bannerRect.y + 30, "", C.bone, "center").setName("hud-banner-sub");
     this.bannerGroup.add([bg, this.bannerText, this.bannerSub]);
   }
 
@@ -337,13 +351,18 @@ export class UI extends Phaser.Scene {
 
   private showBanner(title: string, sub: string, color: number): void {
     this.bannerTimer?.remove(false);
+    // Laufenden Fade-Out killen: sonst konkurrieren zwei Alpha-Tweens und das
+    // Banner bleibt halbtransparent haengen (Dom 4b: "halbtransparent").
+    this.tweens.killTweensOf(this.bannerGroup);
     this.bannerText.setColorIndex(color).setText(title);
     this.bannerSub.setText(sub);
     this.bannerGroup.setVisible(true).setAlpha(0).setY(-6);
-    this.tweens.add({ targets: this.bannerGroup, alpha: 1, y: 0, duration: 240, ease: "Quad.Out" });
-    this.bannerTimer = this.time.delayedCall(2400, () => {
+    // Kurzer Fade-In (120 ms): das Banner ist nur minimal halbtransparent,
+    // damit es nicht als durchsichtiges Panel im Spielfeld wirkt (Dom 4b).
+    this.tweens.add({ targets: this.bannerGroup, alpha: 1, y: 0, duration: BANNER_FADE_IN_MS, ease: "Quad.Out" });
+    this.bannerTimer = this.time.delayedCall(BANNER_HOLD_MS, () => {
       this.tweens.add({
-        targets: this.bannerGroup, alpha: 0, y: -6, duration: 380,
+        targets: this.bannerGroup, alpha: 0, y: -6, duration: BANNER_FADE_OUT_MS,
         onComplete: () => this.bannerGroup.setVisible(false),
       });
     });

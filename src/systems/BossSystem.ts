@@ -46,23 +46,30 @@ const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 export const BOSS_SPRITE_SIZE = [56, 64, 72, 80, 96, 96];
 /** Mindestabstand zwischen Boss-Sprite-Oberkante und HUD-/Banner-Unterkante. */
 export const BOSS_HUD_CLEARANCE = 6;
-/** Fallback, falls ein Aufrufer keinen Boss-Index kennt. */
-export const BOSS_SAFE_TOP = 122;
-
 export interface Rect { x: number; y: number; w: number; h: number }
 
 /**
  * HP-Leiste und Intro-Banner der UI-Szene als logische Screen-Rechtecke.
  * Werte spiegeln src/scenes/UI.ts: Leiste zentriert auf y=46 (12 px hoch,
- * max. 236 px breit), Banner-Nineslice 300x48 zentriert auf y=92.
+ * max. 236 px breit). Das Banner (Nineslice 300x48) haengt in der Rect-Kette
+ * FEST unter der HP-Leiste (y = hpBar-Bottom + BOSS_HUD_CLEARANCE) — kein
+ * freier Mittelwert mehr (Dom 4b: Banner lag sonst mitten im Spielfeld).
  */
 export function bossHudRects(viewWidth: number): { hpBar: Rect; banner: Rect } {
   const barW = Math.min(236, Math.max(1, viewWidth - 48));
+  const hpBar: Rect = { x: viewWidth / 2 - barW / 2, y: 40, w: barW, h: 12 };
   return {
-    hpBar: { x: viewWidth / 2 - barW / 2, y: 40, w: barW, h: 12 },
-    banner: { x: viewWidth / 2 - 150, y: 68, w: 300, h: 48 },
+    hpBar,
+    banner: { x: viewWidth / 2 - 150, y: hpBar.y + hpBar.h + BOSS_HUD_CLEARANCE, w: 300, h: 48 },
   };
 }
+
+/** Fallback, falls ein Aufrufer keinen Boss-Index kennt: safeTop direkt aus
+ *  der Rect-Kette abgeleitet (Banner-Unterkante + Luft), kein Literal. */
+export const BOSS_SAFE_TOP = (() => {
+  const { banner } = bossHudRects(640);
+  return banner.y + banner.h + BOSS_HUD_CLEARANCE;
+})();
 
 export function rectsOverlap(a: Rect, b: Rect): boolean {
   return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
