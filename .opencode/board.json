@@ -3058,17 +3058,22 @@
       "id": 2062,
       "title": "m10-heap-tail-05 Doku + .lane-done",
       "description": "Ursache, Zahlen vorher/nachher, offene Restpunkte in docs/lanes/m10-heart-tail.md (Briefing-Pfad) bzw. docs/lanes/m10-heap-tail.md; .lane-done mit Messwerten committen. Abnahme: Baseline-/After-JSON im Commit, build+alle Tests gruen.",
-      "column": "doing",
+      "column": "review",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-27T04:17:57.304Z",
           "by": "build",
           "text": "Start: Doku-Abschluss + .lane-done"
+        },
+        {
+          "at": "2026-11-27T04:28:30Z",
+          "by": "build",
+          "text": "doing → review: COMMIT da63a8a (#2062): Doku + .lane-done, Heap +6,8/+4,9 % <=15 %, Burst 60,1 FPS, 232 Tests gruen; wartet auf Merge nach main"
         }
       ],
       "created": "2026-11-27T02:32:10Z",
-      "updated": "2026-11-27T04:17:57.304Z"
+      "updated": "2026-11-27T04:28:30Z"
     }
   ]
 }
