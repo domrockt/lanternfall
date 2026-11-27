@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5378,
+  "next": 5462,
   "cards": [
     {
       "id": 1,
@@ -6102,6 +6102,52 @@
       ],
       "created": "2026-11-27T20:37:07Z",
       "updated": "2026-11-27T20:40:31Z"
+    },
+    {
+      "id": 5458,
+      "title": "m10-projectile-cull #1: Vorher-Messung Projektil-Budget",
+      "description": "AC: scripts/m10-projectile-cull.mjs misst im deterministischen Endgame-Harness (500+ Gegner, 6 Waffen, seed=1) lebende Projektile, Offscreen-Anteil bei mehreren Margins, ms/Frame für Projektill-Update (wrap combat.updateProjectiles) + combat.update + FPS und Treffer-/Schaden-Summen (wrap hitEnemy) und schreibt shots/m10-projectile-cull-before.json. flock nur für FPS-Anteil.",
+      "column": "doing",
+      "assignee": "m10-projectile-cull",
+      "notes": [
+        {
+          "at": "2026-11-27T20:53:56Z",
+          "by": "build",
+          "text": "todo → doing: Mess-Skript scripts/m10-projectile-cull.mjs wird geschrieben (wrap updateProjectiles/hitEnemy, Offscreen-Zählung über worldView-Margins)."
+        }
+      ],
+      "created": "2026-11-27T20:53:54Z",
+      "updated": "2026-11-27T20:53:56Z"
+    },
+    {
+      "id": 5459,
+      "title": "m10-projectile-cull #2: Offscreen-Recycle + Update-Skip im ProjectilePool",
+      "description": "AC: Logik NUR in src/systems/ProjectilePool.ts (+ src/systems/Pool.ts falls nötig): Recycle von Projektilen weit außerhalb worldView+Margin ohne live Target (kein Boss-/Chested-Pfad betroffen), Sprite-Sichtbarkeitsskip für weit offscreen mit live Target, Reuse-/Recycle-Statistik, kein neues Allozieren bei knappem Pool wo vermeidbar. CombatSystem.ts unberührt. npx tsc --noEmit grün.",
+      "column": "todo",
+      "assignee": "m10-projectile-cull",
+      "notes": [],
+      "created": "2026-11-27T20:53:54Z",
+      "updated": "2026-11-27T20:53:54Z"
+    },
+    {
+      "id": 5460,
+      "title": "m10-projectile-cull #3: tests/projectile-cull.test.ts",
+      "description": "AC: Unit-Tests für Offscreen-Recycle (erfasst), Onscreen-Projektile unverletzt, Grenzfälle 0/1/Cap+1 Projektile, kein Pool-Exhaust (Reuse-Statistik), Treffer-Summe Vorher/Nachher im deterministischen Harness identisch. npx vitest run tests/projectile-cull.test.ts grün.",
+      "column": "todo",
+      "assignee": "m10-projectile-cull",
+      "notes": [],
+      "created": "2026-11-27T20:53:54Z",
+      "updated": "2026-11-27T20:53:54Z"
+    },
+    {
+      "id": 5461,
+      "title": "m10-projectile-cull #4: Nachher-Messung + Lane-Doku",
+      "description": "AC: shots/m10-projectile-cull-after.json (+ Chaos-Screenshot) mit gleichem Skript/Harness; Ziel Projektill-Update-ms/Frame −25 % bei identischen Treffer-/Schaden-Summen; docs/lanes/m10-projectile-cull.md mit Vorher/Nachher-Tabelle; .lane-done.",
+      "column": "todo",
+      "assignee": "m10-projectile-cull",
+      "notes": [],
+      "created": "2026-11-27T20:53:54Z",
+      "updated": "2026-11-27T20:53:54Z"
     }
   ]
 }
