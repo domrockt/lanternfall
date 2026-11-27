@@ -1,0 +1,1282 @@
+{
+  "640x360@2": {
+    "profile": "640x360@2",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "dpr": 1,
+    "screens": {
+      "title": {
+        "scenes": {
+          "title": {
+            "objectCount": 440,
+            "mixel": [
+              {
+                "texKey": "title_background",
+                "frameName": "__BASE",
+                "type": "Image",
+                "scaleX": 1.333,
+                "scaleY": 1.333,
+                "frameW": 480,
+                "frameH": 270,
+                "displayW": 640,
+                "displayH": 360,
+                "blendMode": 0
+              }
+            ],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 640,
+          "internalHeight": 360,
+          "canvasCssWidth": 1280,
+          "canvasCssHeight": 720,
+          "dpr": 1,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "options": {
+        "scenes": {
+          "title": {
+            "objectCount": 440,
+            "mixel": [
+              {
+                "texKey": "title_background",
+                "frameName": "__BASE",
+                "type": "Image",
+                "scaleX": 1.333,
+                "scaleY": 1.333,
+                "frameW": 480,
+                "frameH": 270,
+                "displayW": 640,
+                "displayH": 360,
+                "blendMode": 0
+              }
+            ],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 640,
+          "internalHeight": 360,
+          "canvasCssWidth": 1280,
+          "canvasCssHeight": 720,
+          "dpr": 1,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "charselect": {
+        "scenes": {
+          "charselect": {
+            "objectCount": 301,
+            "mixel": [],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 640,
+          "internalHeight": 360,
+          "canvasCssWidth": 1280,
+          "canvasCssHeight": 720,
+          "dpr": 1,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "pause": {
+        "scenes": {
+          "ui": {
+            "objectCount": 645,
+            "mixel": [
+              {
+                "texKey": "chest_closed",
+                "frameName": "__BASE",
+                "type": "Image",
+                "scaleX": 2.4,
+                "scaleY": 2.4,
+                "frameW": 16,
+                "frameH": 16,
+                "displayW": 38.4,
+                "displayH": 38.4,
+                "blendMode": 0
+              }
+            ],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 640,
+          "internalHeight": 360,
+          "canvasCssWidth": 1280,
+          "canvasCssHeight": 720,
+          "dpr": 1,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "results": {
+        "scenes": {
+          "results": {
+            "objectCount": 322,
+            "mixel": [],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 640,
+          "internalHeight": 360,
+          "canvasCssWidth": 1280,
+          "canvasCssHeight": 720,
+          "dpr": 1,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      }
+    },
+    "iconContrast": {
+      "title": {
+        "count": 0,
+        "icons": []
+      },
+      "options": {
+        "count": 0,
+        "icons": []
+      },
+      "charselect": {
+        "count": 0,
+        "icons": []
+      },
+      "pause": {
+        "count": 24,
+        "icons": [
+          {
+            "texKey": "icon_weapon_ember",
+            "frameName": "__BASE",
+            "x": 122,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#080b0f",
+            "bodyContrast": 3.44,
+            "minContrast": 1.14,
+            "maxContrast": 14.32,
+            "darkestIconColor": "#2b1410",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_flail",
+            "frameName": "__BASE",
+            "x": 139,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090b10",
+            "bodyContrast": 4.55,
+            "minContrast": 1.02,
+            "maxContrast": 7.26,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_frost",
+            "frameName": "__BASE",
+            "x": 156,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090b10",
+            "bodyContrast": 4.55,
+            "minContrast": 1.1,
+            "maxContrast": 18.58,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_thorn",
+            "frameName": "__BASE",
+            "x": 173,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090c10",
+            "bodyContrast": 6.07,
+            "minContrast": 1.24,
+            "maxContrast": 14.16,
+            "darkestIconColor": "#16261e",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_storm",
+            "frameName": "__BASE",
+            "x": 190,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0a0d11",
+            "bodyContrast": 10.86,
+            "minContrast": 3.4,
+            "maxContrast": 18.38,
+            "darkestIconColor": "#a84a21",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_lantern",
+            "frameName": "__BASE",
+            "x": 207,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0b0d11",
+            "bodyContrast": 11.31,
+            "minContrast": 1.08,
+            "maxContrast": 18.36,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_boots",
+            "frameName": "__BASE",
+            "x": 224,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090c10",
+            "bodyContrast": 1.59,
+            "minContrast": 1.01,
+            "maxContrast": 14.16,
+            "darkestIconColor": "#0a0e16",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_tome",
+            "frameName": "__BASE",
+            "x": 241,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090c10",
+            "bodyContrast": 2.16,
+            "minContrast": 1.09,
+            "maxContrast": 18.5,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_heart",
+            "frameName": "__BASE",
+            "x": 258,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0b0e11",
+            "bodyContrast": 1.2,
+            "minContrast": 1.12,
+            "maxContrast": 16.48,
+            "darkestIconColor": "#2b1410",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_charm",
+            "frameName": "__BASE",
+            "x": 275,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0b0e11",
+            "bodyContrast": 1.57,
+            "minContrast": 1,
+            "maxContrast": 14.06,
+            "darkestIconColor": "#0a0e16",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_whetstone",
+            "frameName": "__BASE",
+            "x": 292,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0b0e11",
+            "bodyContrast": 7.14,
+            "minContrast": 1,
+            "maxContrast": 18.27,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_hourglass",
+            "frameName": "__BASE",
+            "x": 309,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0b0e11",
+            "bodyContrast": 11.26,
+            "minContrast": 2.13,
+            "maxContrast": 14.06,
+            "darkestIconColor": "#7a331a",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_ember",
+            "frameName": "__BASE",
+            "x": 144,
+            "y": 117,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 3.13,
+            "minContrast": 1.03,
+            "maxContrast": 13.04,
+            "darkestIconColor": "#2b1410",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_flail",
+            "frameName": "__BASE",
+            "x": 144,
+            "y": 132,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 4.15,
+            "minContrast": 1.08,
+            "maxContrast": 6.62,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_frost",
+            "frameName": "__BASE",
+            "x": 144,
+            "y": 147,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 4.15,
+            "minContrast": 1,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_thorn",
+            "frameName": "__BASE",
+            "x": 144,
+            "y": 162,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 5.56,
+            "minContrast": 1.14,
+            "maxContrast": 12.97,
+            "darkestIconColor": "#16261e",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_storm",
+            "frameName": "__BASE",
+            "x": 144,
+            "y": 177,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 10.01,
+            "minContrast": 3.13,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#a84a21",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_lantern",
+            "frameName": "__BASE",
+            "x": 144,
+            "y": 192,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 10.44,
+            "minContrast": 1,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_boots",
+            "frameName": "__BASE",
+            "x": 294,
+            "y": 117,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.45,
+            "minContrast": 1,
+            "maxContrast": 12.97,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_tome",
+            "frameName": "__BASE",
+            "x": 294,
+            "y": 132,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.98,
+            "minContrast": 1,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_heart",
+            "frameName": "__BASE",
+            "x": 294,
+            "y": 147,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.12,
+            "minContrast": 1.03,
+            "maxContrast": 15.28,
+            "darkestIconColor": "#2b1410",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_charm",
+            "frameName": "__BASE",
+            "x": 294,
+            "y": 162,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.45,
+            "minContrast": 1,
+            "maxContrast": 13.04,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_whetstone",
+            "frameName": "__BASE",
+            "x": 294,
+            "y": 177,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 6.62,
+            "minContrast": 1.03,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#2b1410",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_hourglass",
+            "frameName": "__BASE",
+            "x": 294,
+            "y": 192,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 10.44,
+            "minContrast": 1.98,
+            "maxContrast": 13.04,
+            "darkestIconColor": "#7a331a",
+            "pass": true
+          }
+        ]
+      },
+      "results": {
+        "count": 6,
+        "icons": [
+          {
+            "texKey": "icon_weapon_flail",
+            "frameName": "__BASE",
+            "x": 300,
+            "y": 112,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 4.16,
+            "minContrast": 1.07,
+            "maxContrast": 6.64,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_evo_phoenix",
+            "frameName": "__BASE",
+            "x": 300,
+            "y": 128,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 10.47,
+            "minContrast": 1.33,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#4d2214",
+            "pass": true
+          },
+          {
+            "texKey": "icon_evo_eternal_winter",
+            "frameName": "__BASE",
+            "x": 300,
+            "y": 144,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 13,
+            "minContrast": 1.98,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#3a4a5c",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_lantern",
+            "frameName": "__BASE",
+            "x": 300,
+            "y": 160,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 10.47,
+            "minContrast": 1,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_thorn",
+            "frameName": "__BASE",
+            "x": 300,
+            "y": 176,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 5.57,
+            "minContrast": 1.14,
+            "maxContrast": 13,
+            "darkestIconColor": "#16261e",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_storm",
+            "frameName": "__BASE",
+            "x": 300,
+            "y": 192,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 10.04,
+            "minContrast": 3.14,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#a84a21",
+            "pass": true
+          }
+        ]
+      }
+    },
+    "view": {
+      "internalWidth": 640,
+      "internalHeight": 360,
+      "canvasCssWidth": 1280,
+      "canvasCssHeight": 720,
+      "dpr": 1,
+      "roundPixels": true
+    },
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "totals": {
+      "title": {
+        "mixel": 1,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 0,
+        "iconContrastFails": 0
+      },
+      "options": {
+        "mixel": 1,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 0,
+        "iconContrastFails": 0
+      },
+      "charselect": {
+        "mixel": 0,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 0,
+        "iconContrastFails": 0
+      },
+      "pause": {
+        "mixel": 1,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 24,
+        "iconContrastFails": 8
+      },
+      "results": {
+        "mixel": 0,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 6,
+        "iconContrastFails": 0
+      }
+    },
+    "jsErrors": []
+  },
+  "780x360@3": {
+    "profile": "780x360@3",
+    "viewport": {
+      "width": 780,
+      "height": 360
+    },
+    "dpr": 3,
+    "screens": {
+      "title": {
+        "scenes": {
+          "title": {
+            "objectCount": 440,
+            "mixel": [
+              {
+                "texKey": "title_background",
+                "frameName": "__BASE",
+                "type": "Image",
+                "scaleX": 1.625,
+                "scaleY": 1.333,
+                "frameW": 480,
+                "frameH": 270,
+                "displayW": 780,
+                "displayH": 360,
+                "blendMode": 0
+              }
+            ],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 780,
+          "internalHeight": 360,
+          "canvasCssWidth": 780,
+          "canvasCssHeight": 360,
+          "dpr": 3,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "options": {
+        "scenes": {
+          "title": {
+            "objectCount": 440,
+            "mixel": [
+              {
+                "texKey": "title_background",
+                "frameName": "__BASE",
+                "type": "Image",
+                "scaleX": 1.625,
+                "scaleY": 1.333,
+                "frameW": 480,
+                "frameH": 270,
+                "displayW": 780,
+                "displayH": 360,
+                "blendMode": 0
+              }
+            ],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 780,
+          "internalHeight": 360,
+          "canvasCssWidth": 780,
+          "canvasCssHeight": 360,
+          "dpr": 3,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "charselect": {
+        "scenes": {
+          "charselect": {
+            "objectCount": 301,
+            "mixel": [],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 780,
+          "internalHeight": 360,
+          "canvasCssWidth": 780,
+          "canvasCssHeight": 360,
+          "dpr": 3,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "pause": {
+        "scenes": {
+          "ui": {
+            "objectCount": 645,
+            "mixel": [
+              {
+                "texKey": "chest_closed",
+                "frameName": "__BASE",
+                "type": "Image",
+                "scaleX": 2.4,
+                "scaleY": 2.4,
+                "frameW": 16,
+                "frameH": 16,
+                "displayW": 38.4,
+                "displayH": 38.4,
+                "blendMode": 0
+              }
+            ],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 780,
+          "internalHeight": 360,
+          "canvasCssWidth": 780,
+          "canvasCssHeight": 360,
+          "dpr": 3,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      },
+      "results": {
+        "scenes": {
+          "results": {
+            "objectCount": 316,
+            "mixel": [],
+            "subpixel": [],
+            "textureIssues": []
+          }
+        },
+        "view": {
+          "internalWidth": 780,
+          "internalHeight": 360,
+          "canvasCssWidth": 780,
+          "canvasCssHeight": 360,
+          "dpr": 3,
+          "roundPixels": true
+        },
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)"
+      }
+    },
+    "iconContrast": {
+      "title": {
+        "count": 0,
+        "icons": []
+      },
+      "options": {
+        "count": 0,
+        "icons": []
+      },
+      "charselect": {
+        "count": 0,
+        "icons": []
+      },
+      "pause": {
+        "count": 24,
+        "icons": [
+          {
+            "texKey": "icon_weapon_ember",
+            "frameName": "__BASE",
+            "x": 122,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#070a0e",
+            "bodyContrast": 3.46,
+            "minContrast": 1.14,
+            "maxContrast": 14.41,
+            "darkestIconColor": "#2b1410",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_flail",
+            "frameName": "__BASE",
+            "x": 139,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#080a0e",
+            "bodyContrast": 4.58,
+            "minContrast": 1.03,
+            "maxContrast": 7.31,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_frost",
+            "frameName": "__BASE",
+            "x": 156,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#080a0f",
+            "bodyContrast": 4.58,
+            "minContrast": 1.1,
+            "maxContrast": 18.69,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_thorn",
+            "frameName": "__BASE",
+            "x": 173,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#080a0e",
+            "bodyContrast": 6.14,
+            "minContrast": 1.25,
+            "maxContrast": 14.31,
+            "darkestIconColor": "#16261e",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_storm",
+            "frameName": "__BASE",
+            "x": 190,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#080b0e",
+            "bodyContrast": 11,
+            "minContrast": 3.44,
+            "maxContrast": 18.62,
+            "darkestIconColor": "#a84a21",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_lantern",
+            "frameName": "__BASE",
+            "x": 207,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090b0f",
+            "bodyContrast": 11.45,
+            "minContrast": 1.1,
+            "maxContrast": 18.59,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_boots",
+            "frameName": "__BASE",
+            "x": 224,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090b10",
+            "bodyContrast": 1.59,
+            "minContrast": 1.02,
+            "maxContrast": 14.22,
+            "darkestIconColor": "#0a0e16",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_tome",
+            "frameName": "__BASE",
+            "x": 241,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090c10",
+            "bodyContrast": 2.16,
+            "minContrast": 1.09,
+            "maxContrast": 18.5,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_heart",
+            "frameName": "__BASE",
+            "x": 258,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0a0d11",
+            "bodyContrast": 1.21,
+            "minContrast": 1.12,
+            "maxContrast": 16.58,
+            "darkestIconColor": "#2b1410",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_charm",
+            "frameName": "__BASE",
+            "x": 275,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0b0e11",
+            "bodyContrast": 1.57,
+            "minContrast": 1,
+            "maxContrast": 14.06,
+            "darkestIconColor": "#0a0e16",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_whetstone",
+            "frameName": "__BASE",
+            "x": 292,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090c10",
+            "bodyContrast": 7.23,
+            "minContrast": 1.01,
+            "maxContrast": 18.5,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_hourglass",
+            "frameName": "__BASE",
+            "x": 309,
+            "y": 15,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#090c10",
+            "bodyContrast": 11.4,
+            "minContrast": 2.16,
+            "maxContrast": 14.23,
+            "darkestIconColor": "#7a331a",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_ember",
+            "frameName": "__BASE",
+            "x": 214,
+            "y": 117,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 3.13,
+            "minContrast": 1.03,
+            "maxContrast": 13.04,
+            "darkestIconColor": "#2b1410",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_flail",
+            "frameName": "__BASE",
+            "x": 214,
+            "y": 132,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 4.15,
+            "minContrast": 1.08,
+            "maxContrast": 6.62,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_frost",
+            "frameName": "__BASE",
+            "x": 214,
+            "y": 147,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 4.15,
+            "minContrast": 1,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_thorn",
+            "frameName": "__BASE",
+            "x": 214,
+            "y": 162,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 5.56,
+            "minContrast": 1.14,
+            "maxContrast": 12.97,
+            "darkestIconColor": "#16261e",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_storm",
+            "frameName": "__BASE",
+            "x": 214,
+            "y": 177,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 10.01,
+            "minContrast": 3.13,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#a84a21",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_lantern",
+            "frameName": "__BASE",
+            "x": 214,
+            "y": 192,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 10.44,
+            "minContrast": 1,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_boots",
+            "frameName": "__BASE",
+            "x": 364,
+            "y": 117,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.45,
+            "minContrast": 1,
+            "maxContrast": 12.97,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_tome",
+            "frameName": "__BASE",
+            "x": 364,
+            "y": 132,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.98,
+            "minContrast": 1,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_heart",
+            "frameName": "__BASE",
+            "x": 364,
+            "y": 147,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.12,
+            "minContrast": 1.03,
+            "maxContrast": 15.28,
+            "darkestIconColor": "#2b1410",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_charm",
+            "frameName": "__BASE",
+            "x": 364,
+            "y": 162,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 1.45,
+            "minContrast": 1,
+            "maxContrast": 13.04,
+            "darkestIconColor": "#101724",
+            "pass": false
+          },
+          {
+            "texKey": "icon_passive_whetstone",
+            "frameName": "__BASE",
+            "x": 364,
+            "y": 177,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 6.62,
+            "minContrast": 1.03,
+            "maxContrast": 16.94,
+            "darkestIconColor": "#2b1410",
+            "pass": true
+          },
+          {
+            "texKey": "icon_passive_hourglass",
+            "frameName": "__BASE",
+            "x": 364,
+            "y": 192,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#101724",
+            "bodyContrast": 10.44,
+            "minContrast": 1.98,
+            "maxContrast": 13.04,
+            "darkestIconColor": "#7a331a",
+            "pass": true
+          }
+        ]
+      },
+      "results": {
+        "count": 6,
+        "icons": [
+          {
+            "texKey": "icon_evo_phoenix",
+            "frameName": "__BASE",
+            "x": 370,
+            "y": 112,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 10.47,
+            "minContrast": 1.33,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#4d2214",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_flail",
+            "frameName": "__BASE",
+            "x": 370,
+            "y": 128,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 4.16,
+            "minContrast": 1.07,
+            "maxContrast": 6.64,
+            "darkestIconColor": "#0a0e16",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_thorn",
+            "frameName": "__BASE",
+            "x": 370,
+            "y": 144,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 5.57,
+            "minContrast": 1.14,
+            "maxContrast": 13,
+            "darkestIconColor": "#16261e",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_lantern",
+            "frameName": "__BASE",
+            "x": 370,
+            "y": 160,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 10.47,
+            "minContrast": 1,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_frost",
+            "frameName": "__BASE",
+            "x": 370,
+            "y": 176,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 4.16,
+            "minContrast": 1,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#101724",
+            "pass": true
+          },
+          {
+            "texKey": "icon_weapon_storm",
+            "frameName": "__BASE",
+            "x": 370,
+            "y": 192,
+            "w": 16,
+            "h": 16,
+            "backdrop": "#0f1723",
+            "bodyContrast": 10.04,
+            "minContrast": 3.14,
+            "maxContrast": 16.98,
+            "darkestIconColor": "#a84a21",
+            "pass": true
+          }
+        ]
+      }
+    },
+    "view": {
+      "internalWidth": 780,
+      "internalHeight": 360,
+      "canvasCssWidth": 780,
+      "canvasCssHeight": 360,
+      "dpr": 3,
+      "roundPixels": true
+    },
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "totals": {
+      "title": {
+        "mixel": 1,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 0,
+        "iconContrastFails": 0
+      },
+      "options": {
+        "mixel": 1,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 0,
+        "iconContrastFails": 0
+      },
+      "charselect": {
+        "mixel": 0,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 0,
+        "iconContrastFails": 0
+      },
+      "pause": {
+        "mixel": 1,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 24,
+        "iconContrastFails": 8
+      },
+      "results": {
+        "mixel": 0,
+        "subpixel": 0,
+        "offPalette": 0,
+        "softAlpha": 0,
+        "icons": 6,
+        "iconContrastFails": 0
+      }
+    },
+    "jsErrors": []
+  }
+}
