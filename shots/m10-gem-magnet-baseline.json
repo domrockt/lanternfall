@@ -1,0 +1,379 @@
+{
+  "lane": "m10-gem-magnet",
+  "tag": "baseline",
+  "createdAt": "2026-11-27T02:56:05.478Z",
+  "viewport": "960x540@1",
+  "seed": 99,
+  "timeScale": 30,
+  "minutes": 12,
+  "samples": [
+    {
+      "minute": 1,
+      "time": 64.9,
+      "level": 3,
+      "kills": 39,
+      "enemies": 0,
+      "gems": 36,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 204,
+      "sizes": {
+        "small": 21,
+        "medium": 9,
+        "large": 6
+      },
+      "distMin": 418.9,
+      "distMedian": 1141.2,
+      "distP90": 1732.7,
+      "distMax": 2086.8,
+      "magnetRadius": 201.3,
+      "inMagnet": 0,
+      "stats": {
+        "dropped": 39,
+        "added": 39,
+        "rejected": 0,
+        "expired": 0,
+        "collected": 3,
+        "collectedXp": 22
+      }
+    },
+    {
+      "minute": 2,
+      "time": 123.2,
+      "level": 3,
+      "kills": 61,
+      "enemies": 1,
+      "gems": 43,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 190,
+      "sizes": {
+        "small": 29,
+        "medium": 10,
+        "large": 4
+      },
+      "distMin": 246.9,
+      "distMedian": 1227.2,
+      "distP90": 2055.9,
+      "distMax": 2220.8,
+      "magnetRadius": 201.3,
+      "inMagnet": 0,
+      "stats": {
+        "dropped": 61,
+        "added": 61,
+        "rejected": 0,
+        "expired": 15,
+        "collected": 3,
+        "collectedXp": 22
+      }
+    },
+    {
+      "minute": 3,
+      "time": 181.3,
+      "level": 4,
+      "kills": 106,
+      "enemies": 0,
+      "gems": 55,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 182,
+      "sizes": {
+        "small": 43,
+        "medium": 10,
+        "large": 2
+      },
+      "distMin": 129.4,
+      "distMedian": 267.4,
+      "distP90": 391.4,
+      "distMax": 627.5,
+      "magnetRadius": 201.3,
+      "inMagnet": 3,
+      "stats": {
+        "dropped": 106,
+        "added": 106,
+        "rejected": 0,
+        "expired": 46,
+        "collected": 5,
+        "collectedXp": 30
+      }
+    },
+    {
+      "minute": 4,
+      "time": 240.7,
+      "level": 10,
+      "kills": 161,
+      "enemies": 7,
+      "gems": 43,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 154,
+      "sizes": {
+        "small": 32,
+        "medium": 9,
+        "large": 2
+      },
+      "distMin": 28.8,
+      "distMedian": 438.4,
+      "distP90": 538.2,
+      "distMax": 661.4,
+      "magnetRadius": 201.3,
+      "inMagnet": 3,
+      "stats": {
+        "dropped": 167,
+        "added": 167,
+        "rejected": 0,
+        "expired": 47,
+        "collected": 77,
+        "collectedXp": 362
+      }
+    },
+    {
+      "minute": 5,
+      "time": 300,
+      "level": 11,
+      "kills": 207,
+      "enemies": 1,
+      "gems": 67,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 266,
+      "sizes": {
+        "small": 46,
+        "medium": 17,
+        "large": 4
+      },
+      "distMin": 247.5,
+      "distMedian": 423.7,
+      "distP90": 468.8,
+      "distMax": 516.9,
+      "magnetRadius": 201.3,
+      "inMagnet": 0,
+      "stats": {
+        "dropped": 215,
+        "added": 215,
+        "rejected": 0,
+        "expired": 60,
+        "collected": 88,
+        "collectedXp": 428
+      }
+    },
+    {
+      "minute": 6,
+      "time": 365,
+      "level": 13,
+      "kills": 331,
+      "enemies": 1,
+      "gems": 81,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 314,
+      "sizes": {
+        "small": 55,
+        "medium": 22,
+        "large": 4
+      },
+      "distMin": 20.9,
+      "distMedian": 363.9,
+      "distP90": 515.2,
+      "distMax": 551.7,
+      "magnetRadius": 201.3,
+      "inMagnet": 24,
+      "stats": {
+        "dropped": 339,
+        "added": 339,
+        "rejected": 0,
+        "expired": 107,
+        "collected": 151,
+        "collectedXp": 698
+      }
+    },
+    {
+      "minute": 7,
+      "time": 422.5,
+      "level": 15,
+      "kills": 399,
+      "enemies": 2,
+      "gems": 65,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 282,
+      "sizes": {
+        "small": 45,
+        "medium": 14,
+        "large": 6
+      },
+      "distMin": 58.5,
+      "distMedian": 410.1,
+      "distP90": 491.4,
+      "distMax": 675.1,
+      "magnetRadius": 201.3,
+      "inMagnet": 10,
+      "stats": {
+        "dropped": 411,
+        "added": 411,
+        "rejected": 0,
+        "expired": 109,
+        "collected": 237,
+        "collectedXp": 1034
+      }
+    },
+    {
+      "minute": 8,
+      "time": 481.4,
+      "level": 16,
+      "kills": 509,
+      "enemies": 0,
+      "gems": 69,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 342,
+      "sizes": {
+        "small": 39,
+        "medium": 23,
+        "large": 7
+      },
+      "distMin": 4.5,
+      "distMedian": 531.2,
+      "distP90": 640.7,
+      "distMax": 716.8,
+      "magnetRadius": 201.3,
+      "inMagnet": 2,
+      "stats": {
+        "dropped": 523,
+        "added": 523,
+        "rejected": 0,
+        "expired": 118,
+        "collected": 336,
+        "collectedXp": 1488
+      }
+    },
+    {
+      "minute": 9,
+      "time": 545.3,
+      "level": 17,
+      "kills": 648,
+      "enemies": 1,
+      "gems": 147,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 622,
+      "sizes": {
+        "small": 104,
+        "medium": 30,
+        "large": 13
+      },
+      "distMin": 2.4,
+      "distMedian": 373.6,
+      "distP90": 452.4,
+      "distMax": 476.8,
+      "magnetRadius": 201.3,
+      "inMagnet": 22,
+      "stats": {
+        "dropped": 666,
+        "added": 666,
+        "rejected": 0,
+        "expired": 159,
+        "collected": 360,
+        "collectedXp": 1588
+      }
+    },
+    {
+      "minute": 10,
+      "time": 601,
+      "level": 19,
+      "kills": 745,
+      "enemies": 4,
+      "gems": 61,
+      "cap": 140,
+      "over": 0,
+      "gemXp": 366,
+      "sizes": {
+        "small": 36,
+        "medium": 13,
+        "large": 12
+      },
+      "distMin": 11.7,
+      "distMedian": 396.9,
+      "distP90": 577.4,
+      "distMax": 631.3,
+      "magnetRadius": 201.3,
+      "inMagnet": 10,
+      "stats": {
+        "dropped": 773,
+        "added": 773,
+        "rejected": 0,
+        "expired": 173,
+        "collected": 539,
+        "collectedXp": 2406
+      }
+    },
+    {
+      "minute": 11,
+      "time": 665.2,
+      "level": 21,
+      "kills": 824,
+      "enemies": 1,
+      "gems": 39,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 218,
+      "sizes": {
+        "small": 22,
+        "medium": 11,
+        "large": 6
+      },
+      "distMin": 225.2,
+      "distMedian": 386.4,
+      "distP90": 593.1,
+      "distMax": 626.9,
+      "magnetRadius": 201.3,
+      "inMagnet": 0,
+      "stats": {
+        "dropped": 858,
+        "added": 858,
+        "rejected": 0,
+        "expired": 195,
+        "collected": 624,
+        "collectedXp": 2908
+      }
+    },
+    {
+      "minute": 12,
+      "time": 723.3,
+      "level": 21,
+      "kills": 889,
+      "enemies": 1,
+      "gems": 31,
+      "cap": 180,
+      "over": 0,
+      "gemXp": 214,
+      "sizes": {
+        "small": 14,
+        "medium": 10,
+        "large": 7
+      },
+      "distMin": 240,
+      "distMedian": 359.3,
+      "distP90": 564.4,
+      "distMax": 641.8,
+      "magnetRadius": 201.3,
+      "inMagnet": 0,
+      "stats": {
+        "dropped": 927,
+        "added": 927,
+        "rejected": 0,
+        "expired": 222,
+        "collected": 674,
+        "collectedXp": 3128
+      }
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "maxOver": 0,
+    "samples": 12,
+    "rejectedTotal": 0,
+    "expiredTotal": 222,
+    "collectedTotal": 674
+  }
+}

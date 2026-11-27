@@ -19,9 +19,33 @@ interface GemRuntime {
  *  bei 30x-Läufen mit zehntausenden Kills. Darüber werden neue Drops verworfen. */
 const MAX_GEMS_DEFAULT = 180;
 
+/** Magnetradius als Vielfaches des Pickup-Radius (M10-Messung: siehe Lane-Doku). */
+export const MAGNET_RADIUS_FACTOR = 2.2;
+
+/** M10-Messwerte: von der Abnahme über `scene.pickups.stats` gelesen. */
+export interface PickupStats {
+  /** drop()-Aufrufe insgesamt (inkl. verworfener). */
+  dropped: number;
+  /** tatsächlich als Kristall angelegte Drops. */
+  added: number;
+  /** wegen vollem Cap verworfene Drops (XP-Verlust vor der Cap-Härtung). */
+  rejected: number;
+  /** per Alter (90 s) recycelte Kristalle (XP-Verlust). */
+  expired: number;
+  /** eingesammelte Kristalle + summierte XP. */
+  collected: number;
+  collectedXp: number;
+}
+
 /** XP-Kristalle (3 Größen) + Aufsammelradius/Magnet. */
 export class PickupSystem {
   gems: GemRuntime[] = [];
+  /** Abnahme-Messwerte (nur zählen, keine Spielwirkung). */
+  readonly stats: PickupStats = {
+    dropped: 0, added: 0, rejected: 0, expired: 0, collected: 0, collectedXp: 0,
+  };
+  /** Letzter an update() übergebener Pickup-Radius (Abnahme-Messung). */
+  lastPickupRadius = 0;
   private readonly free: GemRuntime[] = [];
   private maxGems = MAX_GEMS_DEFAULT;
   /** LOD: Kristalle abdunkeln, damit Gegner-Silhouetten lesbar bleiben. */
@@ -33,7 +57,12 @@ export class PickupSystem {
   }
 
   drop(x: number, y: number, size: GemSize, rng: { next(): number }): void {
-    if (this.gems.length >= this.maxGems) return;
+    this.stats.dropped += 1;
+    if (this.gems.length >= this.maxGems) {
+      this.stats.rejected += 1;
+      return;
+    }
+    this.stats.added += 1;
     const gem = this.free.pop() ?? this.createRuntime();
     const meta = GEMS[size];
     gem.size = size;
@@ -49,6 +78,11 @@ export class PickupSystem {
     gem.sprite.setAlpha(this.dim ? 0.55 : 0.9);
     gem.sprite.setPosition(Math.round(x), Math.round(y));
     this.gems.push(gem);
+  }
+
+  /** Magnetradius für einen Pickup-Radius (Anziehungsbeginn exakt hier). */
+  static magnetRadiusFor(pickupRadius: number): number {
+    return Math.max(0, pickupRadius) * MAGNET_RADIUS_FACTOR;
   }
 
   /** Größe gewichtet würfeln. */
@@ -81,11 +115,13 @@ export class PickupSystem {
     onCollect: (value: number, size: GemSize) => void,
     view?: { x0: number; y0: number; x1: number; y1: number },
   ): void {
-    const magnetRadius = pickupRadius * 2.2;
+    const magnetRadius = PickupSystem.magnetRadiusFor(pickupRadius);
+    this.lastPickupRadius = pickupRadius;
     for (let i = this.gems.length - 1; i >= 0; i--) {
       const g = this.gems[i];
       g.age += dt;
       if (!g.active || g.age > 90) {
+        if (g.active) this.stats.expired += 1;
         g.sprite.setVisible(false).setActive(false);
         this.gems.splice(i, 1);
         this.free.push(g);
@@ -113,6 +149,8 @@ export class PickupSystem {
         if (g.sprite.visible !== show) g.sprite.setVisible(show);
       }
       if (dist < 10) {
+        this.stats.collected += 1;
+        this.stats.collectedXp += g.value;
         onCollect(g.value, g.size);
         g.active = false;
         g.sprite.setVisible(false).setActive(false);
@@ -137,6 +175,11 @@ export class PickupSystem {
 
   get count(): number {
     return this.gems.length;
+  }
+
+  /** Aktuell wirksame Obergrenze (Abnahme-Messung). */
+  get cap(): number {
+    return this.maxGems;
   }
 
   releaseAll(): void {
