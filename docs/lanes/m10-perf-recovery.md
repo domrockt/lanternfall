@@ -87,6 +87,13 @@ Damit ist die im Auftrag genannte Hebel-Richtung bestätigt: **Blend-Modi werden
 Endgame abwechselnd gezeichnet und brechen das Batching.** Welche Commits das eingeführt
 haben, belegt der Bisect (folgt unten).
 
+## Status (Supervisor 2026-11-27 ~11:35)
+
+Profil + Bisect sind abgeschlossen (Zeitbox eingehalten). Top-10 Self-Time und
+Draw-Calls/Frame stehen oben; Ursache ist mit `c0f56d5` **belegt** (Median 51,4
+statt 60,0 FPS im Minute-25-Fenster, Burst unverändert). Kein Code-Fix in dieser
+Mess-Karte; Folgekarte ist `#2678 m10-perf-fix-ambient-batching`.
+
 ## Bisect (git bisect, Kriterium minute25 ≥ 55 FPS)
 
 `bash scripts/perf-bisect.sh 0b42ffe HEAD` (temporärer Worktree, Predikat
