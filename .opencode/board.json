@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "next": 5582,
+  "next": 5598,
   "cards": [
     {
       "id": 1,
       "title": "M1-01 Fundament: Palette 32, Config 480x270, Szenen-Skelett",
-      "description": "src/palette.ts neu (32 Farben dokumentiert), main.ts 480x270, Boot/Title/CharSelect/Run/UI/Results Grundgerüst.",
+      "description": "src/palette.ts neu (32 Farben dokumentiert), main.ts 480x270, Boot/Title/CharSelect/Run/UI/Results Grundger\u00fcst.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: Palette 32 Farben, 480x270, Szenen Boot/Title/CharSelect/Run+UI/Results; Sichtprüfung ok"
+          "text": "todo \u2192 done: Palette 32 Farben, 480x270, Szenen Boot/Title/CharSelect/Run+UI/Results; Sichtpr\u00fcfung ok"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -28,7 +28,7 @@
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: Alle Datentabellen typisiert: 6 Waffen x8, 6 Passives x5, 6 Evo, 30 Gegner, 6 Bosse, 30 Wellen; data.test.ts grün"
+          "text": "todo \u2192 done: Alle Datentabellen typisiert: 6 Waffen x8, 6 Passives x5, 6 Evo, 30 Gegner, 6 Bosse, 30 Wellen; data.test.ts gr\u00fcn"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -44,7 +44,7 @@
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: rng/stats/xp/levelup/waves/combat + 29 Tests grün (Slots 6+6, keine maxed)"
+          "text": "todo \u2192 done: rng/stats/xp/levelup/waves/combat + 29 Tests gr\u00fcn (Slots 6+6, keine maxed)"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -60,7 +60,7 @@
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: Pools, SpatialHash, Separation, chaser/swarm, bog_rat/wisp/bogzombie; Chunk-Karte 4096px, I-Frames"
+          "text": "todo \u2192 done: Pools, SpatialHash, Separation, chaser/swarm, bog_rat/wisp/bogzombie; Chunk-Karte 4096px, I-Frames"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -69,14 +69,14 @@
     {
       "id": 5,
       "title": "M1-05 Ember-Waffe + Projektil-Framework",
-      "description": "Glutfunke Stufe 1-8, Cooldown, Zielsuche, Projektil-Pool, Durchschlag, Schaden, Rückstoß.",
+      "description": "Glutfunke Stufe 1-8, Cooldown, Zielsuche, Projektil-Pool, Durchschlag, Schaden, R\u00fccksto\u00df.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: ember St.1-8, Projektil-Pool, Homing, Durchschlag, Rückstoß; DPS-Tracking"
+          "text": "todo \u2192 done: ember St.1-8, Projektil-Pool, Homing, Durchschlag, R\u00fccksto\u00df; DPS-Tracking"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -85,14 +85,14 @@
     {
       "id": 6,
       "title": "M1-06 XP-Kristalle, Pickup, Level-up-Dialog",
-      "description": "3 Gem-Größen, Magnetradius, 3 Angebote, Tastatur 1-3 / Pfeile+Enter, Pause.",
+      "description": "3 Gem-Gr\u00f6\u00dfen, Magnetradius, 3 Angebote, Tastatur 1-3 / Pfeile+Enter, Pause.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: 3 Gems, Magnet, Level-up-Pause mit 3 Angeboten, Tasten 1-3/Pfeile+Enter; verify: Level 4 erreicht"
+          "text": "todo \u2192 done: 3 Gems, Magnet, Level-up-Pause mit 3 Angeboten, Tasten 1-3/Pfeile+Enter; verify: Level 4 erreicht"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -101,14 +101,14 @@
     {
       "id": 7,
       "title": "M1-07 Wellen-Director + Spawn-Ring",
-      "description": "Spawnrate/Mix aus waves.ts pro Minute, Spawns außerhalb des Bildschirms, Spezialwellen-Hook.",
+      "description": "Spawnrate/Mix aus waves.ts pro Minute, Spawns au\u00dferhalb des Bildschirms, Spezialwellen-Hook.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: waves-Director pro Minute, Spawn-Ring außerhalb des Screens; verify 66 s Spielzeit"
+          "text": "todo \u2192 done: waves-Director pro Minute, Spawn-Ring au\u00dferhalb des Screens; verify 66 s Spielzeit"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -117,14 +117,14 @@
     {
       "id": 8,
       "title": "M1-08 Debug-API window.__lf komplett",
-      "description": "state, setTimeScale, skipTo, god, giveXp, addWeapon, addPassive, spawnEnemy, spawnBoss, openChest, pickLevelUp, autoPlay; klare Fehler für M4+.",
+      "description": "state, setTimeScale, skipTo, god, giveXp, addWeapon, addPassive, spawnEnemy, spawnBoss, openChest, pickLevelUp, autoPlay; klare Fehler f\u00fcr M4+.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: window.__lf komplett, Cheats nur ?debug=1, M4/M5-Funktionen werfen klare Fehler"
+          "text": "todo \u2192 done: window.__lf komplett, Cheats nur ?debug=1, M4/M5-Funktionen werfen klare Fehler"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -140,7 +140,7 @@
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → done: perf: 60,1 FPS bei 497 Gegnern; verify: alle Checks grün, 0 JS-Fehler, shots/m1-*.png"
+          "text": "todo \u2192 done: perf: 60,1 FPS bei 497 Gegnern; verify: alle Checks gr\u00fcn, 0 JS-Fehler, shots/m1-*.png"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -148,20 +148,20 @@
     },
     {
       "id": 10,
-      "title": "M1-10 HUD-Politur, Sichtprüfung, GAME.md Status, Commit",
-      "description": "HUD lesbar, Palette/Schärfe per Vision prüfen, GAME.md Status + Messwerte, build+test grün, Commit.",
+      "title": "M1-10 HUD-Politur, Sichtpr\u00fcfung, GAME.md Status, Commit",
+      "description": "HUD lesbar, Palette/Sch\u00e4rfe per Vision pr\u00fcfen, GAME.md Status + Messwerte, build+test gr\u00fcn, Commit.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T00:03:38Z",
           "by": "build",
-          "text": "todo → review: build+test grün, perf/verify grün, Sichtprüfung ok, GAME.md Status ergänzt; Reviewer läuft noch"
+          "text": "todo \u2192 review: build+test gr\u00fcn, perf/verify gr\u00fcn, Sichtpr\u00fcfung ok, GAME.md Status erg\u00e4nzt; Reviewer l\u00e4uft noch"
         },
         {
           "at": "2026-11-25T00:24:40Z",
           "by": "build",
-          "text": "review → done: build+test (31) grün, verify passed, perf 60 FPS/497 Gegner, 0 JS-Fehler; Reviewer-OK nach Fixrunde (Passive-Kumulierung, Substepping, UID-Pooling, Spawn-Rand, Integer-Scale); committed"
+          "text": "review \u2192 done: build+test (31) gr\u00fcn, verify passed, perf 60 FPS/497 Gegner, 0 JS-Fehler; Reviewer-OK nach Fixrunde (Passive-Kumulierung, Substepping, UID-Pooling, Spawn-Rand, Integer-Scale); committed"
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -193,7 +193,7 @@
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "backlog → done: Epic M3 durch #29-#34 abgeschlossen: 30 Gegner, Director, 6 Bosse, Dawn, Abnahme."
+          "text": "backlog \u2192 done: Epic M3 durch #29-#34 abgeschlossen: 30 Gegner, Director, 6 Bosse, Dawn, Abnahme."
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -214,7 +214,7 @@
         {
           "at": "2026-11-26T10:36:38Z",
           "by": "build",
-          "text": "backlog → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+          "text": "backlog \u2192 done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -223,7 +223,7 @@
     {
       "id": 14,
       "title": "Epic M5: Endboss 30:00, Sieg/Niederlage, Meta (Gold/Shop)",
-      "description": "Hohler König 3 Phasen, Morgendämmerung-Sieg, Results-Ausbau, evtl. Meta-Progression.",
+      "description": "Hohler K\u00f6nig 3 Phasen, Morgend\u00e4mmerung-Sieg, Results-Ausbau, evtl. Meta-Progression.",
       "column": "done",
       "assignee": "coder",
       "notes": [
@@ -235,7 +235,7 @@
         {
           "at": "2026-11-26T10:36:38Z",
           "by": "build",
-          "text": "backlog → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+          "text": "backlog \u2192 done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
         }
       ],
       "created": "2026-11-24T23:44:35Z",
@@ -243,35 +243,35 @@
     },
     {
       "id": 15,
-      "title": "Epic M6: Sound, Politur, Performance, Vollständige Abnahme",
-      "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets geprüft, Performance.",
+      "title": "Epic M6: Sound, Politur, Performance, Vollst\u00e4ndige Abnahme",
+      "description": "8-Bit-SFX/Musik, Partikel/Damage-Numbers/Hit-Stop, 30-min-Run ohne Fehler, alle Assets gepr\u00fcft, Performance.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-26T07:50:44Z",
           "by": "build",
-          "text": "backlog → done: M6 komplett: Lanes gemergt, Nachträge #73-#82, A10 4/5, ACCEPTANCE.md; #79 blocked, Deliverables via #82."
+          "text": "backlog \u2192 done: M6 komplett: Lanes gemergt, Nachtr\u00e4ge #73-#82, A10 4/5, ACCEPTANCE.md; #79 blocked, Deliverables via #82."
         },
         {
           "at": "2026-11-26T08:04:16Z",
           "by": "build",
-          "text": "done → doing: Gesamtabnahme-Nachlauf: DoD-Zeilen alseln mit acceptance-auditor abhaken; aktuelle perf/fullrun-Belege 59,7/57,2 bzw. FPS-min 55,8 (Heap 18,7%)."
+          "text": "done \u2192 doing: Gesamtabnahme-Nachlauf: DoD-Zeilen alseln mit acceptance-auditor abhaken; aktuelle perf/fullrun-Belege 59,7/57,2 bzw. FPS-min 55,8 (Heap 18,7%)."
         },
         {
           "at": "2026-11-26T08:25:50Z",
           "by": "build",
-          "text": "doing → done: Abnahme-Nachlauf abgeschlossen. acceptance-auditor A1-A12: A5 nach Zahlenkorrektur PASS, Gesamt PASS. DoD abgehakt: Merges A1, DoD A2, Zaehlung A3, realtime-Sieg A4, Messungen A5 (perf 59,7/57,2, fullrun 55,8, Heap 18,7% als Restmangel), Trailer A6, VFX/Mute A7, Art A8, Results A9, Endnote 4/5 A10, Worktrees A11 (input/m8-input NICHT angetastet), build+147 Tests A12. #79 blocked, Deliverables via #82."
+          "text": "doing \u2192 done: Abnahme-Nachlauf abgeschlossen. acceptance-auditor A1-A12: A5 nach Zahlenkorrektur PASS, Gesamt PASS. DoD abgehakt: Merges A1, DoD A2, Zaehlung A3, realtime-Sieg A4, Messungen A5 (perf 59,7/57,2, fullrun 55,8, Heap 18,7% als Restmangel), Trailer A6, VFX/Mute A7, Art A8, Results A9, Endnote 4/5 A10, Worktrees A11 (input/m8-input NICHT angetastet), build+147 Tests A12. #79 blocked, Deliverables via #82."
         },
         {
           "at": "2026-11-26T08:33:59Z",
           "by": "build",
-          "text": "done → doing: Sichtbar fuer Supervisor-Durchlauf; dirty-Stand 37 (extern neu erzeugte Verify-Shots), wird jetzt thematisch committed."
+          "text": "done \u2192 doing: Sichtbar fuer Supervisor-Durchlauf; dirty-Stand 37 (extern neu erzeugte Verify-Shots), wird jetzt thematisch committed."
         },
         {
           "at": "2026-11-26T08:39:09Z",
           "by": "build",
-          "text": "doing → done: Dirty-Stand 37 thematisch committed (shots/ + board), offene Nachträge #73/#74/#76 re-verifiziert und done; dirty=0. Externe m8-input-Lane schreibt zeitweise in main-shots, nicht angetastet."
+          "text": "doing \u2192 done: Dirty-Stand 37 thematisch committed (shots/ + board), offene Nachtr\u00e4ge #73/#74/#76 re-verifiziert und done; dirty=0. Externe m8-input-Lane schreibt zeitweise in main-shots, nicht angetastet."
         },
         "Lead-Abnahme 2026-11-26: A1-A12 belegt, Restmaengel dokumentiert (Heap-Gate, Boss-Spawn, AutoPlay-Streuung, #79 blocked/#82 Ersatz)."
       ],
@@ -280,8 +280,8 @@
     },
     {
       "id": 16,
-      "title": "M1-Nachzug: Runtime-Tests (Substep/Pause, UID-Pooling, Spawn außerhalb View)",
-      "description": "Unit-/Integrationstests für: Teilschritt-Abbruch bei Level-up, Projektile mit Spawn-UID über Pool-Recycling, Ring-/spawnOne-Spawns außerhalb camera.worldView, Integer-Scaling. Danach verify-Wall-Clock-Abhängigkeit entschärfen.",
+      "title": "M1-Nachzug: Runtime-Tests (Substep/Pause, UID-Pooling, Spawn au\u00dferhalb View)",
+      "description": "Unit-/Integrationstests f\u00fcr: Teilschritt-Abbruch bei Level-up, Projektile mit Spawn-UID \u00fcber Pool-Recycling, Ring-/spawnOne-Spawns au\u00dferhalb camera.worldView, Integer-Scaling. Danach verify-Wall-Clock-Abh\u00e4ngigkeit entsch\u00e4rfen.",
       "column": "done",
       "assignee": "coder",
       "notes": [
@@ -293,7 +293,7 @@
         {
           "at": "2026-11-26T10:36:38Z",
           "by": "build",
-          "text": "backlog → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+          "text": "backlog \u2192 done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
         }
       ],
       "created": "2026-11-25T00:24:40Z",
@@ -301,8 +301,8 @@
     },
     {
       "id": 17,
-      "title": "M1-Fix: Separation bei Deckung + Pause-Spalte bündig",
-      "description": "Deterministischer UID-Fallback (goldener Winkel) in src/logic/separation.ts, 4 Unit-Tests, scripts/separation-check.mjs (minDist 1,68 px, 0 Overlaps). Pause zeigt STUFE rechtsbündig. build/test/perf/verify grün.",
+      "title": "M1-Fix: Separation bei Deckung + Pause-Spalte b\u00fcndig",
+      "description": "Deterministischer UID-Fallback (goldener Winkel) in src/logic/separation.ts, 4 Unit-Tests, scripts/separation-check.mjs (minDist 1,68 px, 0 Overlaps). Pause zeigt STUFE rechtsb\u00fcndig. build/test/perf/verify gr\u00fcn.",
       "column": "done",
       "assignee": "coder",
       "notes": [],
@@ -318,17 +318,17 @@
         {
           "at": "2026-11-25T00:39:44Z",
           "by": "build",
-          "text": "todo → doing: Start: Framework erweitern"
+          "text": "todo \u2192 doing: Start: Framework erweitern"
         },
         {
           "at": "2026-11-25T00:43:44Z",
           "by": "build",
-          "text": "doing → review: Alle 5 Basen spielbar, 8 Stufen, Schaden>0 (flail 1840, frost 216, thorn 336, storm 4158, lantern), 0 JS-Fehler. Screenshots geprueft; Rand: Hit-Partikel reduziert, Storm/Orbs sichtbarer. Commit aa5a289."
+          "text": "doing \u2192 review: Alle 5 Basen spielbar, 8 Stufen, Schaden>0 (flail 1840, frost 216, thorn 336, storm 4158, lantern), 0 JS-Fehler. Screenshots geprueft; Rand: Hit-Partikel reduziert, Storm/Orbs sichtbarer. Commit aa5a289."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK (2. Runde). 6 Basen mit 8 Stufen + VFX, verify 12/12, Schaden 1400-7100."
+          "text": "review \u2192 done: Reviewer-OK (2. Runde). 6 Basen mit 8 Stufen + VFX, verify 12/12, Schaden 1400-7100."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -343,17 +343,17 @@
         {
           "at": "2026-11-25T00:43:44Z",
           "by": "build",
-          "text": "todo → doing: Tests fuer alle 6 Passives"
+          "text": "todo \u2192 doing: Tests fuer alle 6 Passives"
         },
         {
           "at": "2026-11-25T00:43:57Z",
           "by": "build",
-          "text": "doing → review: 42 Tests gruen; je Passive alle Stufen 1-5 gegen effective*-Funktionen geprueft. Commit 4ae078c."
+          "text": "doing \u2192 review: 42 Tests gruen; je Passive alle Stufen 1-5 gegen effective*-Funktionen geprueft. Commit 4ae078c."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. Powerups 1-5 statsgetestet, 56 Tests gruen."
+          "text": "review \u2192 done: Reviewer-OK. Powerups 1-5 statsgetestet, 56 Tests gruen."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -368,17 +368,17 @@
         {
           "at": "2026-11-25T00:43:57Z",
           "by": "build",
-          "text": "todo → doing: canEvolve/chestRewards + Evolutionswaffen"
+          "text": "todo \u2192 doing: canEvolve/chestRewards + Evolutionswaffen"
         },
         {
           "at": "2026-11-25T00:46:33Z",
           "by": "build",
-          "text": "doing → review: canEvolve/chestRewards pur + 12 neue Tests (53 gesamt). Alle 6 Evolutionen mit eigenen Effekten, Schaden>0 (Wrath-Bug gefixt: Schaden lief unter flail statt wrath_pendulum). Commit 106a4f1."
+          "text": "doing \u2192 review: canEvolve/chestRewards pur + 12 neue Tests (53 gesamt). Alle 6 Evolutionen mit eigenen Effekten, Schaden>0 (Wrath-Bug gefixt: Schaden lief unter flail statt wrath_pendulum). Commit 106a4f1."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. canEvolve/chestRewards getestet, Evolutions-State-Leak gefixt (ba4676d) und im verify-Skript abgesichert."
+          "text": "review \u2192 done: Reviewer-OK. canEvolve/chestRewards getestet, Evolutions-State-Leak gefixt (ba4676d) und im verify-Skript abgesichert."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -386,24 +386,24 @@
     },
     {
       "id": 21,
-      "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, Öffnungs-Sequenz, Platzhalter-Boss",
+      "title": "M2-04 Truhe: Sprite, Drop, Glanz, Randpfeil, \u00d6ffnungs-Sequenz, Platzhalter-Boss",
       "description": "openChest/spawnBoss(0), 1/3/5 Belohnungen, Evolution Vorrang, GIF.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:46:33Z",
           "by": "build",
-          "text": "todo → doing: Chest-System + Sequenz + Boss-Platzhalter"
+          "text": "todo \u2192 doing: Chest-System + Sequenz + Boss-Platzhalter"
         },
         {
           "at": "2026-11-25T00:49:57Z",
           "by": "build",
-          "text": "doing → review: Truhe droppt (Boss-Platzhalter), Glanz, Randpfeil sichtbar/getestet, Sequenz pausiert Run, 5 Slots rollen, Evolution Vorrang. openChest -> phoenix im Slot. GIF shots/m2-chest.gif. 0 JS-Fehler. Commit 58645ec."
+          "text": "doing \u2192 review: Truhe droppt (Boss-Platzhalter), Glanz, Randpfeil sichtbar/getestet, Sequenz pausiert Run, 5 Slots rollen, Evolution Vorrang. openChest -> phoenix im Slot. GIF shots/m2-chest.gif. 0 JS-Fehler. Commit 58645ec."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. Truhe/Sequenz/GIF, Evolution via Truhe; Roll-/Hide-Timer gefixt."
+          "text": "review \u2192 done: Reviewer-OK. Truhe/Sequenz/GIF, Evolution via Truhe; Roll-/Hide-Timer gefixt."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -418,17 +418,17 @@
         {
           "at": "2026-11-25T00:49:57Z",
           "by": "build",
-          "text": "todo → doing: Icons + HUD/Pause + Umlaute"
+          "text": "todo \u2192 doing: Icons + HUD/Pause + Umlaute"
         },
         {
           "at": "2026-11-25T00:54:21Z",
           "by": "build",
-          "text": "doing → review: 18 Icons 16x16 (Kontur, Palette, Distinktheit validiert), Kontaktbogen geprueft; in Level-up-Karten, HUD-Leiste, Pause (2 Spalten) und Truhen-Slots. Font rendert ÄÖÜäöüß, Texte auf Umlaute umgestellt. 54 Tests, Build gruen. Commit 5e24cb4."
+          "text": "doing \u2192 review: 18 Icons 16x16 (Kontur, Palette, Distinktheit validiert), Kontaktbogen geprueft; in Level-up-Karten, HUD-Leiste, Pause (2 Spalten) und Truhen-Slots. Font rendert \u00c4\u00d6\u00dc\u00e4\u00f6\u00fc\u00df, Texte auf Umlaute umgestellt. 54 Tests, Build gruen. Commit 5e24cb4."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. 18 Icons, HUD/Pause/Levelup/Truhe, echte Umlaute; Font jetzt konsistent versal."
+          "text": "review \u2192 done: Reviewer-OK. 18 Icons, HUD/Pause/Levelup/Truhe, echte Umlaute; Font jetzt konsistent versal."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -437,23 +437,23 @@
     {
       "id": 23,
       "title": "M2-06 Gras-Kacheln beruhigen + gezielte Dekor-Kacheln",
-      "description": "Weniger Pixelrauschen, ruhige Flächen, gruppierte Deko.",
+      "description": "Weniger Pixelrauschen, ruhige Fl\u00e4chen, gruppierte Deko.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:54:21Z",
           "by": "build",
-          "text": "todo → doing: Gras beruhigen + Deko gruppiert"
+          "text": "todo \u2192 doing: Gras beruhigen + Deko gruppiert"
         },
         {
           "at": "2026-11-25T00:56:28Z",
           "by": "build",
-          "text": "doing → review: Gras ohne Pixelrauschen, Bueschel in 2x2-Bloecken, Deko gruppiert; Screenshots vor/nach Laufen geprueft, 0 JS-Fehler. 54 Tests. Commit 2afd7f5."
+          "text": "doing \u2192 review: Gras ohne Pixelrauschen, Bueschel in 2x2-Bloecken, Deko gruppiert; Screenshots vor/nach Laufen geprueft, 0 JS-Fehler. 54 Tests. Commit 2afd7f5."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. Gras ruhig, gruppierte Bueschel, Screenshots geprueft."
+          "text": "review \u2192 done: Reviewer-OK. Gras ruhig, gruppierte Bueschel, Screenshots geprueft."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -468,12 +468,12 @@
         {
           "at": "2026-11-25T00:56:28Z",
           "by": "build",
-          "text": "todo → review: 3-spaltige Schadenstabelle mit Icons, filtert 0, sortiert, max 12; reine damageTable + 2 Tests (56 gesamt). Ergebnisse per skipTo(1800) geprueft. Commit 77f..."
+          "text": "todo \u2192 review: 3-spaltige Schadenstabelle mit Icons, filtert 0, sortiert, max 12; reine damageTable + 2 Tests (56 gesamt). Ergebnisse per skipTo(1800) geprueft. Commit 77f..."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. 3-spaltige Schadenstabelle mit Icons, reine damageTable + Tests."
+          "text": "review \u2192 done: Reviewer-OK. 3-spaltige Schadenstabelle mit Icons, reine damageTable + Tests."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -482,23 +482,23 @@
     {
       "id": 25,
       "title": "M2-08 Abnahme: verify-weapons.mjs, 12 Screenshots, GIF, perf 500+6 Waffen",
-      "description": "Vision-Prüfung aller Shots, Mängel beheben, Messwerte.",
+      "description": "Vision-Pr\u00fcfung aller Shots, M\u00e4ngel beheben, Messwerte.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T00:56:28Z",
           "by": "build",
-          "text": "todo → doing: verify-weapons 12 Shots, GIF, perf 500+6"
+          "text": "todo \u2192 doing: verify-weapons 12 Shots, GIF, perf 500+6"
         },
         {
           "at": "2026-11-25T01:06:21Z",
           "by": "build",
-          "text": "doing → review: verify-weapons.mjs: 12/12 Waffen Stufe 8, Schaden 1400-9090, 0 JS-Fehler; alle 12 Shots gesichtet. Truhe->Phoenix Evolution bewiesen; GIF 48 Frames 480x270. perf: 56.9 FPS, min 505/avg 575 Gegner, 6 Waffen Stufe 8 (Fx-Cap 360). Bolt-Checkerboard gefixt. Commit e5..."
+          "text": "doing \u2192 review: verify-weapons.mjs: 12/12 Waffen Stufe 8, Schaden 1400-9090, 0 JS-Fehler; alle 12 Shots gesichtet. Truhe->Phoenix Evolution bewiesen; GIF 48 Frames 480x270. perf: 56.9 FPS, min 505/avg 575 Gegner, 6 Waffen Stufe 8 (Fx-Cap 360). Bolt-Checkerboard gefixt. Commit e5..."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. verify-weapons 12/12 + evolution-state, GIF, perf 580 Gegner bei 56.6-58.6 FPS, 0 JS-Fehler, alle Shots gesichtet."
+          "text": "review \u2192 done: Reviewer-OK. verify-weapons 12/12 + evolution-state, GIF, perf 580 Gegner bei 56.6-58.6 FPS, 0 JS-Fehler, alle Shots gesichtet."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -507,23 +507,23 @@
     {
       "id": 26,
       "title": "M2-09 GAME.md-Status M2 + Abschlussbericht",
-      "description": "Build/Tests grün, offene Punkte ehrlich.",
+      "description": "Build/Tests gr\u00fcn, offene Punkte ehrlich.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T01:06:21Z",
           "by": "build",
-          "text": "todo → doing: GAME.md M2-Status"
+          "text": "todo \u2192 doing: GAME.md M2-Status"
         },
         {
           "at": "2026-11-25T01:08:59Z",
           "by": "build",
-          "text": "doing → review: GAME.md Status M2 mit Messwerten (56 Tests, 12/12 Waffen 1400-9090 Schaden, 56.9 FPS bei 505/575 Gegnern) und ehrlichen Luecken (Bso-Platzhalter, 3/30 Gegner, Sound/Meta offen). Commit 2415a5e."
+          "text": "doing \u2192 review: GAME.md Status M2 mit Messwerten (56 Tests, 12/12 Waffen 1400-9090 Schaden, 56.9 FPS bei 505/575 Gegnern) und ehrlichen Luecken (Bso-Platzhalter, 3/30 Gegner, Sound/Meta offen). Commit 2415a5e."
         },
         {
           "at": "2026-11-25T01:21:43Z",
           "by": "build",
-          "text": "review → done: Reviewer-OK. GAME.md Status M2 mit Messwerten und ehrlichen Luecken."
+          "text": "review \u2192 done: Reviewer-OK. GAME.md Status M2 mit Messwerten und ehrlichen Luecken."
         }
       ],
       "created": "2026-11-25T00:39:13Z",
@@ -539,12 +539,12 @@
         {
           "at": "2026-11-25T02:23:28Z",
           "by": "build",
-          "text": "doing → review: Umgesetzt: verify-weapons pollt aktive FX-/Projektil-/Orb-/Swing-Keys, pausiert Run fuer Peak-Shots, Timeout=FAIL; Evolutions-Shot per UI-State (EVOLUTION-Slot fertig, Tween abgewartet); Slot-Namen 2-zeilig via slotNameLines (verlustfrei, Tests fuer >22 Zeichen/Mehrwort); m2-chest-longname.png zeigt SEELENLEUCHTFEUER vollstaendig; GIF-Frame mit allen 5 Settle-Namen gesichtet. build grün, 60 Tests, verify passed (failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit 673365b."
+          "text": "doing \u2192 review: Umgesetzt: verify-weapons pollt aktive FX-/Projektil-/Orb-/Swing-Keys, pausiert Run fuer Peak-Shots, Timeout=FAIL; Evolutions-Shot per UI-State (EVOLUTION-Slot fertig, Tween abgewartet); Slot-Namen 2-zeilig via slotNameLines (verlustfrei, Tests fuer >22 Zeichen/Mehrwort); m2-chest-longname.png zeigt SEELENLEUCHTFEUER vollstaendig; GIF-Frame mit allen 5 Settle-Namen gesichtet. build gr\u00fcn, 60 Tests, verify passed (failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit 673365b."
         },
         {
           "at": "2026-11-25T02:32:12Z",
           "by": "build",
-          "text": "review → done: Reviewer 2. Runde: keine Blocker. Findings gefixt: summary zaehlt nur die 12 Waffen-IDs (longName jetzt eigenes Feld), Orb-Poll nur sichtbare Orbs, shotAtSwing mit Level-up-Check + try/finally, evolutionSlotReady prueft chestGroup.visible. Abschluss: build gruen, 60 Tests, verify passed (weapons:12, evolved:true, longName:true, failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit f69ff81."
+          "text": "review \u2192 done: Reviewer 2. Runde: keine Blocker. Findings gefixt: summary zaehlt nur die 12 Waffen-IDs (longName jetzt eigenes Feld), Orb-Poll nur sichtbare Orbs, shotAtSwing mit Level-up-Check + try/finally, evolutionSlotReady prueft chestGroup.visible. Abschluss: build gruen, 60 Tests, verify passed (weapons:12, evolved:true, longName:true, failed:[], jsErrors:[]), perf 56,2 FPS bei 580 Gegnern. Commit f69ff81."
         }
       ],
       "created": "2026-11-25T01:38:42Z",
@@ -560,12 +560,12 @@
         {
           "at": "2026-11-25T03:09:37Z",
           "by": "build",
-          "text": "doing → review: Umgesetzt: projectile_phoenix 13x9 mit Fluegeln/Koerper/Schwanz/Auge, 1px Kontur, warme 5-Stufen-Palette; Projektil auf Normal-Blend, Trail bleibt additiv/warm (Hitbox/Schaden unveraendert). frost/eternal_winter/phoenix Delay 0; shotAtFrost misst Ring-Radius aus FX-Scale und Pixel-Assert zaehlt helle Ring-Pixel im Band (274-282). shotAtPhoenix pollt >=2 Voegel 18-90px, Assert. Roll-Callback nutzt slotNameLines, Roll-Frame-Assert. GIF neu. build gruen, 61 Tests, verify passed (failed:[], jsErrors:[], phoenixBirds/frostRingPixels/rollNames true), perf 57,0 FPS bei 580."
+          "text": "doing \u2192 review: Umgesetzt: projectile_phoenix 13x9 mit Fluegeln/Koerper/Schwanz/Auge, 1px Kontur, warme 5-Stufen-Palette; Projektil auf Normal-Blend, Trail bleibt additiv/warm (Hitbox/Schaden unveraendert). frost/eternal_winter/phoenix Delay 0; shotAtFrost misst Ring-Radius aus FX-Scale und Pixel-Assert zaehlt helle Ring-Pixel im Band (274-282). shotAtPhoenix pollt >=2 Voegel 18-90px, Assert. Roll-Callback nutzt slotNameLines, Roll-Frame-Assert. GIF neu. build gruen, 61 Tests, verify passed (failed:[], jsErrors:[], phoenixBirds/frostRingPixels/rollNames true), perf 57,0 FPS bei 580."
         },
         {
           "at": "2026-11-25T03:09:43Z",
           "by": "build",
-          "text": "review → done: Reviewer: keine Blocker. Empfehlungen umgesetzt: Frost-Assert nutzt gemessenen FX-Radius statt fixem Band, Groessencheck des raw-Buffers; Roll-Frame-Assert (vollstaendige Namen waehrend Rollen); Grid-Palettentest. Final: build gruen, 61 Tests, verify passed (weapons:12, phoenixBirds:true, frostRingPixels:true, rollNames:true, evolved:true, longName:true, failed:[], jsErrors:[]), perf 57,0 FPS bei 580 Gegnern. Commit 137fb18."
+          "text": "review \u2192 done: Reviewer: keine Blocker. Empfehlungen umgesetzt: Frost-Assert nutzt gemessenen FX-Radius statt fixem Band, Groessencheck des raw-Buffers; Roll-Frame-Assert (vollstaendige Namen waehrend Rollen); Grid-Palettentest. Final: build gruen, 61 Tests, verify passed (weapons:12, phoenixBirds:true, frostRingPixels:true, rollNames:true, evolved:true, longName:true, failed:[], jsErrors:[]), perf 57,0 FPS bei 580 Gegnern. Commit 137fb18."
         }
       ],
       "created": "2026-11-25T02:51:35Z",
@@ -574,24 +574,24 @@
     {
       "id": 29,
       "title": "M3-01 Archetypen-Logik + Skalierungs-/Wellen-/Boss-/Terrain-Helfer + Tests",
-      "description": "Reine Module: enemy-ai (10 Archetypen-State-Machines), scaling (HP/Schaden/Tempo-Kurven), waves special/elite/cap, terrain (Wasser 40%), bosses (Phasen/Schedules), autoplay (Ziel-/Dodge-Priorität). Vitest.",
+      "description": "Reine Module: enemy-ai (10 Archetypen-State-Machines), scaling (HP/Schaden/Tempo-Kurven), waves special/elite/cap, terrain (Wasser 40%), bosses (Phasen/Schedules), autoplay (Ziel-/Dodge-Priorit\u00e4t). Vitest.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T04:00:25Z",
           "by": "build",
-          "text": "todo → doing: Implementiere reine Logikmodule + Tests"
+          "text": "todo \u2192 doing: Implementiere reine Logikmodule + Tests"
         },
         {
           "at": "2026-11-25T05:20:43Z",
           "by": "build",
-          "text": "doing → review: M3-01 Logikmodule + 22 Tests implementiert (bereits in d9bf8cb); Build/Test gruen."
+          "text": "doing \u2192 review: M3-01 Logikmodule + 22 Tests implementiert (bereits in d9bf8cb); Build/Test gruen."
         },
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "review → done: M3-01 Logikmodule + Tests: 24 M3-Tests (85 gesamt) gruen, Reviewer-OK."
+          "text": "review \u2192 done: M3-01 Logikmodule + Tests: 24 M3-Tests (85 gesamt) gruen, Reviewer-OK."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
@@ -599,7 +599,7 @@
     },
     {
       "id": 30,
-      "title": "M3-02 Alle 30 Gegner spielbar + Platzhalter-Sprites + Gegner-Projektile + Warnflächen",
+      "title": "M3-02 Alle 30 Gegner spielbar + Platzhalter-Sprites + Gegner-Projektile + Warnfl\u00e4chen",
       "description": "30 eindeutige Silhouetten/Farben, 2 Frames, Hit-Flash, Tod-Partikel. EnemyProjectilePool (klar getrennt vom Spielerfeuer), Telegraph/Warnmarker.",
       "column": "done",
       "assignee": "coder",
@@ -607,12 +607,12 @@
         {
           "at": "2026-11-25T05:20:43Z",
           "by": "build",
-          "text": "todo → review: 30 Gegner live, KI-Zustaende, Projektile/Warnflaechen; verify-enemies 30/30 OK, 0 JS-Fehler."
+          "text": "todo \u2192 review: 30 Gegner live, KI-Zustaende, Projektile/Warnflaechen; verify-enemies 30/30 OK, 0 JS-Fehler."
         },
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "review → done: 30/30 Gegner verifiziert (verify-enemies, Bewegung+Effekte, 0 JS-Fehler); Splitter max. 2 Generationen getestet."
+          "text": "review \u2192 done: 30/30 Gegner verifiziert (verify-enemies, Bewegung+Effekte, 0 JS-Fehler); Splitter max. 2 Generationen getestet."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
@@ -621,19 +621,19 @@
     {
       "id": 31,
       "title": "M3-03 Wellen-Director 00-30, Spezialwellen, Elite, Gegner-Cap/Recycling",
-      "description": "Ring-Einkesselung, Schwarm-Ströme, Elite mit Leuchtrand + großer XP-Kristall, max. aktive Gegner, älteste/ferne recyceln.",
+      "description": "Ring-Einkesselung, Schwarm-Str\u00f6me, Elite mit Leuchtrand + gro\u00dfer XP-Kristall, max. aktive Gegner, \u00e4lteste/ferne recyceln.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T05:20:43Z",
           "by": "build",
-          "text": "todo → review: Director 0-30 mit Ring/Stream/Elite/Cap/Recycling; fullrun 700 Elites, Dichte bis 500."
+          "text": "todo \u2192 review: Director 0-30 mit Ring/Stream/Elite/Cap/Recycling; fullrun 700 Elites, Dichte bis 500."
         },
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "review → done: Director 0-30, Spezial-/Elite-Wellen, Cap 500 inkl. Boss/Elite-Recycling-Ausschluss; fullrun 694 Elites."
+          "text": "review \u2192 done: Director 0-30, Spezial-/Elite-Wellen, Cap 500 inkl. Boss/Elite-Recycling-Ausschluss; fullrun 694 Elites."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
@@ -641,20 +641,20 @@
     },
     {
       "id": 32,
-      "title": "M3-04 6 Bosse mit Mechaniken, HP-Leiste, Warn-Banner, Truhe; Endboss 3 Phasen + Morgendämmerung",
-      "description": "Moorkönigin, Knochenfürst, Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler König. Telegraphing, Boss-HP-Bar, Banner, Chest-Drop, Sieg-Sequenz + Ergebnis Überlebt.",
+      "title": "M3-04 6 Bosse mit Mechaniken, HP-Leiste, Warn-Banner, Truhe; Endboss 3 Phasen + Morgend\u00e4mmerung",
+      "description": "Moork\u00f6nigin, Knochenf\u00fcrst, Fahler Hirte, Glockenturm-Golem, Hexenzirkel, Hohler K\u00f6nig. Telegraphing, Boss-HP-Bar, Banner, Chest-Drop, Sieg-Sequenz + Ergebnis \u00dcberlebt.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T05:20:43Z",
           "by": "build",
-          "text": "todo → review: 6 Bosse + HP-Leiste/Banner/Truhen; verify-bosses 6/6 OK, Endboss 3 Phasen, Dawn-Sieg im fullrun."
+          "text": "todo \u2192 review: 6 Bosse + HP-Leiste/Banner/Truhen; verify-bosses 6/6 OK, Endboss 3 Phasen, Dawn-Sieg im fullrun."
         },
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "review → done: 6/6 Bosse verifiziert (verify-bosses, Truhen, Endboss-Phasen 1/2/3, Boss-JSON); Dawn-Sieg im fullrun."
+          "text": "review \u2192 done: 6/6 Bosse verifiziert (verify-bosses, Truhen, Endboss-Phasen 1/2/3, Boss-JSON); Dawn-Sieg im fullrun."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
@@ -663,19 +663,19 @@
     {
       "id": 33,
       "title": "M3-05 Moorwasser-Slow + ganzzahlige Skalierung <960px + autoPlay-Bot",
-      "description": "Wasser verlangsamt Spieler+Gegner 40% mit Spritzern; 1x-Rand bei kleinen Fenstern, Glyphen sichtbar; Bot kitet, meidet Projektile/Warnflächen, sammelt XP, wählt Level-ups nach Priorität.",
+      "description": "Wasser verlangsamt Spieler+Gegner 40% mit Spritzern; 1x-Rand bei kleinen Fenstern, Glyphen sichtbar; Bot kitet, meidet Projektile/Warnfl\u00e4chen, sammelt XP, w\u00e4hlt Level-ups nach Priorit\u00e4t.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-25T05:20:43Z",
           "by": "build",
-          "text": "todo → review: Wasser-Slow + 1x-Rand <960 (800er Screenshot) + Bot-Prioritaeten; Regressionen gruen."
+          "text": "todo \u2192 review: Wasser-Slow + 1x-Rand <960 (800er Screenshot) + Bot-Prioritaeten; Regressionen gruen."
         },
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "review → done: Wasser-Slow getestet, 1x-Rand bei 800px gesichtet, Bot-Prioritaeten; Reviewer-OK."
+          "text": "review \u2192 done: Wasser-Slow getestet, 1x-Rand bei 800px gesichtet, Bot-Prioritaeten; Reviewer-OK."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
@@ -691,12 +691,12 @@
         {
           "at": "2026-11-25T05:20:43Z",
           "by": "build",
-          "text": "todo → review: verify-enemies/bosses/fullrun/perf + GAME.md Status M3 mit JSON; Messwerte dokumentiert."
+          "text": "todo \u2192 review: verify-enemies/bosses/fullrun/perf + GAME.md Status M3 mit JSON; Messwerte dokumentiert."
         },
         {
           "at": "2026-11-25T05:38:53Z",
           "by": "build",
-          "text": "review → done: verify-enemies/bosses/fullrun/perf + GAME.md M3-Status mit JSON; Build/85 Tests gruen, Reviewer-OK nach 2 Fixrunden."
+          "text": "review \u2192 done: verify-enemies/bosses/fullrun/perf + GAME.md M3-Status mit JSON; Build/85 Tests gruen, Reviewer-OK nach 2 Fixrunden."
         }
       ],
       "created": "2026-11-25T03:58:41Z",
@@ -705,18 +705,18 @@
     {
       "id": 35,
       "title": "M4-01 ART.md + Art-Pipeline (lib.py, gen.py, contact.py) + 3 Referenz-Assets",
-      "description": "Stil-Leitfaden mit Rampen, Kontur, Proportionen, Licht, Animationslängen. Python-Pipeline (pure-python PNG), Asset-Server-Client, Kontaktbogen-Tool. Referenzen: Mira, Irrlicht, Laternenpfahl; art-director-Noten dokumentiert.",
+      "description": "Stil-Leitfaden mit Rampen, Kontur, Proportionen, Licht, Animationsl\u00e4ngen. Python-Pipeline (pure-python PNG), Asset-Server-Client, Kontaktbogen-Tool. Referenzen: Mira, Irrlicht, Laternenpfahl; art-director-Noten dokumentiert.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T09:02:25Z",
           "by": "build",
-          "text": "todo → doing: Art-Pipeline + ART.md fertig, Referenz-Assets erzeugt."
+          "text": "todo \u2192 doing: Art-Pipeline + ART.md fertig, Referenz-Assets erzeugt."
         },
         {
           "at": "2026-11-25T10:40:25Z",
           "by": "build",
-          "text": "doing → done: M4-01 war faktisch fertig (ART.md, lib.py, gen.py, contact.py, Referenzen); Board-Nachlauf."
+          "text": "doing \u2192 done: M4-01 war faktisch fertig (ART.md, lib.py, gen.py, contact.py, Referenzen); Board-Nachlauf."
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -731,12 +731,12 @@
         {
           "at": "2026-11-25T09:02:34Z",
           "by": "build",
-          "text": "todo → doing: Laufzyklus mit echter Beinphase + Arm/Laterne-Schwung geprueft."
+          "text": "todo \u2192 doing: Laufzyklus mit echter Beinphase + Arm/Laterne-Schwung geprueft."
         },
         {
           "at": "2026-11-25T10:38:36Z",
           "by": "coder",
-          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+          "text": "doing \u2192 done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -751,12 +751,12 @@
         {
           "at": "2026-11-25T09:02:47Z",
           "by": "build",
-          "text": "todo → doing: 30 Gegner-Silhouetten ueberarbeitet (mudling/slime/abom/treant/wraith/voidcaller)."
+          "text": "todo \u2192 doing: 30 Gegner-Silhouetten ueberarbeitet (mudling/slime/abom/treant/wraith/voidcaller)."
         },
         {
           "at": "2026-11-25T10:38:36Z",
           "by": "coder",
-          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+          "text": "doing \u2192 done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -771,12 +771,12 @@
         {
           "at": "2026-11-25T09:02:53Z",
           "by": "build",
-          "text": "todo → doing: Pale-Shepherd-Falten + Wind-up und Boss-Skalierung geprueft."
+          "text": "todo \u2192 doing: Pale-Shepherd-Falten + Wind-up und Boss-Skalierung geprueft."
         },
         {
           "at": "2026-11-25T10:38:36Z",
           "by": "coder",
-          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+          "text": "doing \u2192 done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -791,12 +791,12 @@
         {
           "at": "2026-11-25T09:03:03Z",
           "by": "build",
-          "text": "todo → doing: Pixel-Terrain neu: ruhige Grasflaechen, Weg heller, weiches Ufer, Dekor-Cluster."
+          "text": "todo \u2192 doing: Pixel-Terrain neu: ruhige Grasflaechen, Weg heller, weiches Ufer, Dekor-Cluster."
         },
         {
           "at": "2026-11-25T10:38:36Z",
           "by": "coder",
-          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+          "text": "doing \u2192 done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -811,12 +811,12 @@
         {
           "at": "2026-11-25T09:03:14Z",
           "by": "build",
-          "text": "todo → doing: FX-Ringe/Zickzack/Coin, Icons und 9-Slice-UI geprueft."
+          "text": "todo \u2192 doing: FX-Ringe/Zickzack/Coin, Icons und 9-Slice-UI geprueft."
         },
         {
           "at": "2026-11-25T10:38:36Z",
           "by": "coder",
-          "text": "doing → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+          "text": "doing \u2192 done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -831,7 +831,7 @@
         {
           "at": "2026-11-25T10:38:36Z",
           "by": "coder",
-          "text": "todo → done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
+          "text": "todo \u2192 done: M4-Arbeit war fertig, aber uncommitted; in 0c90771 gesichert, build+85 Tests gruen"
         }
       ],
       "created": "2026-11-25T06:40:27Z",
@@ -847,17 +847,17 @@
         {
           "at": "2026-11-25T10:40:25Z",
           "by": "build",
-          "text": "todo → doing: Start: Terrain-Rewrite mit Autotiling + organischen Noise-Regionen + Requisiten"
+          "text": "todo \u2192 doing: Start: Terrain-Rewrite mit Autotiling + organischen Noise-Regionen + Requisiten"
         },
         {
           "at": "2026-11-25T18:48:59Z",
           "by": "build",
-          "text": "doing → review: M4b-01 umgesetzt: Blob-47-Masken normalisiert, Weg ±2 px mit Aufbruch + 2×2-Kies, Wasserufer/Schaum, Ripples 52 %, Props mit 28/29-Schatten; Chunk-Naht-Blocker gefixt. Belege: shots/m4b-sheet-tiles.png (6×3x), m4b-water.gif (Diff 348–1168), m4b-sheet-props.png. Build/98 Tests/verify:terrain grün. Commit cabc33f."
+          "text": "doing \u2192 review: M4b-01 umgesetzt: Blob-47-Masken normalisiert, Weg \u00b12 px mit Aufbruch + 2\u00d72-Kies, Wasserufer/Schaum, Ripples 52 %, Props mit 28/29-Schatten; Chunk-Naht-Blocker gefixt. Belege: shots/m4b-sheet-tiles.png (6\u00d73x), m4b-water.gif (Diff 348\u20131168), m4b-sheet-props.png. Build/98 Tests/verify:terrain gr\u00fcn. Commit cabc33f."
         },
         {
           "at": "2026-11-25T19:20:37Z",
           "by": "coder",
-          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-01), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+          "text": "review \u2192 done: Lead-Abnahme OK \u2014 Art-Director Runde 6 alle 5 Punkte >=4 (M4b-01), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
         }
       ],
       "created": "2026-11-25T10:40:23Z",
@@ -873,12 +873,12 @@
         {
           "at": "2026-11-25T18:49:06Z",
           "by": "build",
-          "text": "todo → review: M4b-02 umgesetzt: breite Schultern, Kapuze/Tonsur, 3 Kettenbänder, 2 Akzente; Portrait-Lichtkante 8 px, Augensockel 27. Belege: shots/m4b-sheet-chars.png, m4b-kael-dark-6x.png. Commit ade7628."
+          "text": "todo \u2192 review: M4b-02 umgesetzt: breite Schultern, Kapuze/Tonsur, 3 Kettenb\u00e4nder, 2 Akzente; Portrait-Lichtkante 8 px, Augensockel 27. Belege: shots/m4b-sheet-chars.png, m4b-kael-dark-6x.png. Commit ade7628."
         },
         {
           "at": "2026-11-25T19:20:37Z",
           "by": "coder",
-          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-02), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+          "text": "review \u2192 done: Lead-Abnahme OK \u2014 Art-Director Runde 6 alle 5 Punkte >=4 (M4b-02), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
         }
       ],
       "created": "2026-11-25T10:40:23Z",
@@ -894,12 +894,12 @@
         {
           "at": "2026-11-25T18:49:06Z",
           "by": "build",
-          "text": "todo → review: M4b-03 umgesetzt: Rampe 16/27/21, 21 nur isolierte 1-px-Lichtkante, shade_edges hellt 21 nicht zu 22 auf, 0 benachbarte 21-Pixel. Beleg: shots/m4b-sheet-skin.png. Commit 196cb17."
+          "text": "todo \u2192 review: M4b-03 umgesetzt: Rampe 16/27/21, 21 nur isolierte 1-px-Lichtkante, shade_edges hellt 21 nicht zu 22 auf, 0 benachbarte 21-Pixel. Beleg: shots/m4b-sheet-skin.png. Commit 196cb17."
         },
         {
           "at": "2026-11-25T19:20:37Z",
           "by": "coder",
-          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-03), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+          "text": "review \u2192 done: Lead-Abnahme OK \u2014 Art-Director Runde 6 alle 5 Punkte >=4 (M4b-03), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
         }
       ],
       "created": "2026-11-25T10:40:23Z",
@@ -915,12 +915,12 @@
         {
           "at": "2026-11-25T18:49:06Z",
           "by": "build",
-          "text": "todo → review: M4b-04 umgesetzt: 6 Bosse F0/F1/F2 messbar, Fahler Hirte + Hohler König neu. Belege: shots/m4b-sheet-bosses.png (4x), f0f1-6x. Commit d80bac4."
+          "text": "todo \u2192 review: M4b-04 umgesetzt: 6 Bosse F0/F1/F2 messbar, Fahler Hirte + Hohler K\u00f6nig neu. Belege: shots/m4b-sheet-bosses.png (4x), f0f1-6x. Commit d80bac4."
         },
         {
           "at": "2026-11-25T19:20:37Z",
           "by": "coder",
-          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-04), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+          "text": "review \u2192 done: Lead-Abnahme OK \u2014 Art-Director Runde 6 alle 5 Punkte >=4 (M4b-04), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
         }
       ],
       "created": "2026-11-25T10:40:23Z",
@@ -936,12 +936,12 @@
         {
           "at": "2026-11-25T18:49:06Z",
           "by": "build",
-          "text": "todo → review: M4b-05 umgesetzt: 30/30 auf Nightdeep lesbar, Lichtkante für dunkle Gegner, 0 Off-Palette/0 Einzelpixel. Belege: shots/m4b-sheet-enemies-dark.png, m4b-dark-*-f0-dark.png. Commit d0f9df1."
+          "text": "todo \u2192 review: M4b-05 umgesetzt: 30/30 auf Nightdeep lesbar, Lichtkante f\u00fcr dunkle Gegner, 0 Off-Palette/0 Einzelpixel. Belege: shots/m4b-sheet-enemies-dark.png, m4b-dark-*-f0-dark.png. Commit d0f9df1."
         },
         {
           "at": "2026-11-25T19:20:37Z",
           "by": "coder",
-          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-05), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+          "text": "review \u2192 done: Lead-Abnahme OK \u2014 Art-Director Runde 6 alle 5 Punkte >=4 (M4b-05), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
         }
       ],
       "created": "2026-11-25T10:40:23Z",
@@ -957,12 +957,12 @@
         {
           "at": "2026-11-25T18:49:06Z",
           "by": "build",
-          "text": "todo → review: M4b-06 umgesetzt: frische In-Game-Shots (Minute 2/12/22, Boss, Roster, Level-up, Truhe), perf 55.6/56.7 FPS, Art-Review Runde 5 alle 5 Punkte ≥4. Belege: shots/m4b-art-review.md, m4b-run-minute*.png, GAME.md. Commit 578dac3."
+          "text": "todo \u2192 review: M4b-06 umgesetzt: frische In-Game-Shots (Minute 2/12/22, Boss, Roster, Level-up, Truhe), perf 55.6/56.7 FPS, Art-Review Runde 5 alle 5 Punkte \u22654. Belege: shots/m4b-art-review.md, m4b-run-minute*.png, GAME.md. Commit 578dac3."
         },
         {
           "at": "2026-11-25T19:20:37Z",
           "by": "coder",
-          "text": "review → done: Lead-Abnahme OK — Art-Director Runde 6 alle 5 Punkte >=4 (M4b-06), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
+          "text": "review \u2192 done: Lead-Abnahme OK \u2014 Art-Director Runde 6 alle 5 Punkte >=4 (M4b-06), build+99 Tests gruen, verify:terrain/enemies/bosses passed, perf 57,8/58,6 FPS. Belege: shots/m4b-*.png, m4b-water.gif (36 Frames), shots/m4b-art-review.md, GAME.md Status M4b."
         }
       ],
       "created": "2026-11-25T10:40:23Z",
@@ -977,12 +977,12 @@
         {
           "at": "2026-11-25T19:49:28Z",
           "by": "build",
-          "text": "todo → doing: gen-fx Frames, ParticleSystem, Depth-Ordnung, LOD/Damage/Mixing-Grundlagen + Tests"
+          "text": "todo \u2192 doing: gen-fx Frames, ParticleSystem, Depth-Ordnung, LOD/Damage/Mixing-Grundlagen + Tests"
         },
         {
           "at": "2026-11-25T22:49:17Z",
           "by": "coder",
-          "text": "done: VFX-Fundament committed 212d352 (Lead-Nachprüfung: gen-fx 18 Motive, Pool/LOD live)"
+          "text": "done: VFX-Fundament committed 212d352 (Lead-Nachpr\u00fcfung: gen-fx 18 Motive, Pool/LOD live)"
         }
       ],
       "created": "2026-11-25T19:46:37Z",
@@ -997,7 +997,7 @@
         {
           "at": "2026-11-25T19:54:00Z",
           "by": "build",
-          "text": "todo → doing: 12 Waffen-VFX mit Frame-Animationen umgesetzt"
+          "text": "todo \u2192 doing: 12 Waffen-VFX mit Frame-Animationen umgesetzt"
         },
         {
           "at": "2026-11-25T22:49:17Z",
@@ -1011,13 +1011,13 @@
     {
       "id": 50,
       "title": "M5-03 Treffer-Feedback",
-      "description": "Hit-Flash, Rückstoß nach Masse, Damage-Numbers (Pool, Krit, Summen), Tod-Effekte 4 Klassen, Screen-Shake-Dosierung, Hit-Stop Bosse. Tests. Commit.",
+      "description": "Hit-Flash, R\u00fccksto\u00df nach Masse, Damage-Numbers (Pool, Krit, Summen), Tod-Effekte 4 Klassen, Screen-Shake-Dosierung, Hit-Stop Bosse. Tests. Commit.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T19:55:35Z",
           "by": "build",
-          "text": "todo → doing: DamageNumbers, Tod-Klassen, Masse-Knockback, Shake/Hit-Stop integriert"
+          "text": "todo \u2192 doing: DamageNumbers, Tod-Klassen, Masse-Knockback, Shake/Hit-Stop integriert"
         },
         {
           "at": "2026-11-25T22:49:17Z",
@@ -1031,13 +1031,13 @@
     {
       "id": 51,
       "title": "M5-04 Ereignis-Inszenierung",
-      "description": "Level-up Lichtsäule, Evolution mit Zeitlupe, Truhe, Boss-Auftritt, Boss-Tod in Stufen, Morgendämmerung. Commit.",
+      "description": "Level-up Lichts\u00e4ule, Evolution mit Zeitlupe, Truhe, Boss-Auftritt, Boss-Tod in Stufen, Morgend\u00e4mmerung. Commit.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-25T19:57:40Z",
           "by": "build",
-          "text": "todo → doing: Event-Sequenzen: Level-up, Evolution-Zeitlupe, Truhe, Boss-Intro Zoom, Boss-Tod Stufen, Dawn"
+          "text": "todo \u2192 doing: Event-Sequenzen: Level-up, Evolution-Zeitlupe, Truhe, Boss-Intro Zoom, Boss-Tod Stufen, Dawn"
         },
         {
           "at": "2026-11-25T22:49:17Z",
@@ -1051,7 +1051,7 @@
     {
       "id": 52,
       "title": "M5-05 Lesbarkeit + LOD",
-      "description": "Before/After shots m12/m25, Projektile/Warnflächen Kontur+Randpuls+Depth, LOD >400 Gegner, XP-Kristalle. Tests. Commit.",
+      "description": "Before/After shots m12/m25, Projektile/Warnfl\u00e4chen Kontur+Randpuls+Depth, LOD >400 Gegner, XP-Kristalle. Tests. Commit.",
       "column": "done",
       "notes": [
         {
@@ -1072,7 +1072,7 @@
         {
           "at": "2026-11-25T20:01:55Z",
           "by": "build",
-          "text": "todo → doing: gen_sfx.py, WAVs, AudioSystem, Mixing, Musik-Loops integriert"
+          "text": "todo \u2192 doing: gen_sfx.py, WAVs, AudioSystem, Mixing, Musik-Loops integriert"
         },
         {
           "at": "2026-11-25T22:49:17Z",
@@ -1092,7 +1092,7 @@
         {
           "at": "2026-11-25T22:49:17Z",
           "by": "coder",
-          "text": "done: Optionen committed cccc4ff (Lead: Musik/SFX/Shake geändert + localStorage-Persistenz ok)"
+          "text": "done: Optionen committed cccc4ff (Lead: Musik/SFX/Shake ge\u00e4ndert + localStorage-Persistenz ok)"
         }
       ],
       "created": "2026-11-25T19:46:37Z",
@@ -1107,7 +1107,7 @@
         {
           "at": "2026-11-25T21:22:40Z",
           "by": "build",
-          "text": "todo → doing: verify-vfx 18/18 grün, Regressionsmessungen laufen, Art-Review R3 läuft"
+          "text": "todo \u2192 doing: verify-vfx 18/18 gr\u00fcn, Regressionsmessungen laufen, Art-Review R3 l\u00e4uft"
         },
         {
           "at": "2026-11-25T22:49:17Z",
@@ -1298,22 +1298,22 @@
         {
           "at": "2026-11-26T07:03:30Z",
           "by": "build",
-          "text": "todo → review: vfx-check PASS (4/5): Near-White AoE -55..-66%, gleicher Frame, GIF. Commits c2213f2/bab9e3b."
+          "text": "todo \u2192 review: vfx-check PASS (4/5): Near-White AoE -55..-66%, gleicher Frame, GIF. Commits c2213f2/bab9e3b."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: vfx-check PASS 4/5 (Near-White AoE -55..-66%, gleicher Frame)."
+          "text": "review \u2192 done: vfx-check PASS 4/5 (Near-White AoE -55..-66%, gleicher Frame)."
         },
         {
           "at": "2026-11-26T08:34:14Z",
           "by": "build",
-          "text": "done → doing: Re-Verifikation auf finalem Build: Vorher/Nachher-Paar + GIF neu messen."
+          "text": "done \u2192 doing: Re-Verifikation auf finalem Build: Vorher/Nachher-Paar + GIF neu messen."
         },
         {
           "at": "2026-11-26T08:35:32Z",
           "by": "build",
-          "text": "doing → done: Re-Verifikation PASS: gleicher Frame 468 Gegner, fxAlpha 1 vs 0,5, AE 209052, GIF 10 Frames."
+          "text": "doing \u2192 done: Re-Verifikation PASS: gleicher Frame 468 Gegner, fxAlpha 1 vs 0,5, AE 209052, GIF 10 Frames."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1329,22 +1329,22 @@
         {
           "at": "2026-11-26T07:03:30Z",
           "by": "build",
-          "text": "todo → review: ux-check PASS Master-Mute; Runtime 110/129 aggregation, Reload. Commits 40e1f72/59edcaa."
+          "text": "todo \u2192 review: ux-check PASS Master-Mute; Runtime 110/129 aggregation, Reload. Commits 40e1f72/59edcaa."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: Runtime-Checks PASS: Aggregation 110 aus/129 an, Mute blockt SFX, Reload persistiert."
+          "text": "review \u2192 done: Runtime-Checks PASS: Aggregation 110 aus/129 an, Mute blockt SFX, Reload persistiert."
         },
         {
           "at": "2026-11-26T08:35:37Z",
           "by": "build",
-          "text": "done → doing: Re-Verifikation Damage-Aggregation ab 120 + Master-Mute auf finalem Build."
+          "text": "done \u2192 doing: Re-Verifikation Damage-Aggregation ab 120 + Master-Mute auf finalem Build."
         },
         {
           "at": "2026-11-26T08:35:58Z",
           "by": "build",
-          "text": "doing → done: Re-Verifikation PASS 7/7 auf finalem Build."
+          "text": "doing \u2192 done: Re-Verifikation PASS 7/7 auf finalem Build."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1360,12 +1360,12 @@
         {
           "at": "2026-11-26T07:03:30Z",
           "by": "build",
-          "text": "todo → review: art-director PASS 4/5 (Wasser 4, Spinne 4, Hollow King 4). Commit 579575c."
+          "text": "todo \u2192 review: art-director PASS 4/5 (Wasser 4, Spinne 4, Hollow King 4). Commit 579575c."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: art-director PASS 4/5 fuer Wasser/Spinne/Hollow King."
+          "text": "review \u2192 done: art-director PASS 4/5 fuer Wasser/Spinne/Hollow King."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1381,22 +1381,22 @@
         {
           "at": "2026-11-26T07:49:07Z",
           "by": "build",
-          "text": "todo → review: ux-check PASS: God-Zeile endet 4px links der Linie, Namen vol bis x339, Balken ab 340, K/M-Werte rechts,bundig. Commit b4... (final)."
+          "text": "todo \u2192 review: ux-check PASS: God-Zeile endet 4px links der Linie, Namen vol bis x339, Balken ab 340, K/M-Werte rechts,bundig. Commit b4... (final)."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: ux-check PASS final (God-Zeile 4px links, Namen bis x339, Balken ab 340, K/M-Werte)."
+          "text": "review \u2192 done: ux-check PASS final (God-Zeile 4px links, Namen bis x339, Balken ab 340, K/M-Werte)."
         },
         {
           "at": "2026-11-26T08:35:58Z",
           "by": "build",
-          "text": "done → doing: Re-Verifikation Ergebnis Layout/Stresswert auf finalem Build (Screenshot aus verify-final)."
+          "text": "done \u2192 doing: Re-Verifikation Ergebnis Layout/Stresswert auf finalem Build (Screenshot aus verify-final)."
         },
         {
           "at": "2026-11-26T08:39:04Z",
           "by": "build",
-          "text": "doing → done: Re-Verifikation ab-Screen PASS (Screenshot 2.7M/514.8K, voller Name, God-Zeile links)."
+          "text": "doing \u2192 done: Re-Verifikation ab-Screen PASS (Screenshot 2.7M/514.8K, voller Name, God-Zeile links)."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1412,12 +1412,12 @@
         {
           "at": "2026-11-26T07:49:07Z",
           "by": "build",
-          "text": "todo → review: GAME.md M6-Stand + ACCEPTANCE A1-A12 (bis auf Endnote-Wortlaut),计数 script. Commits 62a586f/.."
+          "text": "todo \u2192 review: GAME.md M6-Stand + ACCEPTANCE A1-A12 (bis auf Endnote-Wortlaut),\u8ba1\u6570 script. Commits 62a586f/.."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: GAME.md M6 + ACCEPTANCE A1-A12 (A10 4/5) + Zaehl-Skript."
+          "text": "review \u2192 done: GAME.md M6 + ACCEPTANCE A1-A12 (A10 4/5) + Zaehl-Skript."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1433,12 +1433,12 @@
         {
           "at": "2026-11-26T07:49:07Z",
           "by": "build",
-          "text": "todo → review: Realtime 30min: 30,4 sim-min, 6 Bosse exakt, Sieg/Dawn, FPS-min 57,2, 0 JS; Heap +15,8% (Gate 0,8pp verfehlt, dokumentiert). perf 60,1/57,5; fullrun fps55,8; balance 5/6ت."
+          "text": "todo \u2192 review: Realtime 30min: 30,4 sim-min, 6 Bosse exakt, Sieg/Dawn, FPS-min 57,2, 0 JS; Heap +15,8% (Gate 0,8pp verfehlt, dokumentiert). perf 60,1/57,5; fullrun fps55,8; balance 5/6\u062a."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: perf 60,1/57,5; fullrun fps-min 55,8; balance 5/6; realtime Sieg 30:00, FPS 57,2, 0 JS; Heap +15,8% dokumentiert."
+          "text": "review \u2192 done: perf 60,1/57,5; fullrun fps-min 55,8; balance 5/6; realtime Sieg 30:00, FPS 57,2, 0 JS; Heap +15,8% dokumentiert."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1454,12 +1454,12 @@
         {
           "at": "2026-11-26T07:03:26Z",
           "by": "build",
-          "text": "todo → doing: Trailer-Skript + 6 Uebersichts-Shots; Lauf nach Realtime (CPU/GPU frei)."
+          "text": "todo \u2192 doing: Trailer-Skript + 6 Uebersichts-Shots; Lauf nach Realtime (CPU/GPU frei)."
         },
         {
           "at": "2026-11-26T07:40:53Z",
           "by": "build",
-          "text": "doing → blocked: 2x Timeout (120s) bei Segment 7 Endboss; Segmente 1-5,8 committed, Segment 6 lief durch aber 0 Frames (Capture-Fenster ab Seitenstart statt ab Setup). Rest gesichert; Nachzuegler in #82."
+          "text": "doing \u2192 blocked: 2x Timeout (120s) bei Segment 7 Endboss; Segmente 1-5,8 committed, Segment 6 lief durch aber 0 Frames (Capture-Fenster ab Seitenstart statt ab Setup). Rest gesichert; Nachzuegler in #82."
         },
         {
           "at": "2026-11-26T10:36:33Z",
@@ -1469,7 +1469,7 @@
         {
           "at": "2026-11-26T10:36:38Z",
           "by": "build",
-          "text": "blocked → done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
+          "text": "blocked \u2192 done: QA-Nachabnahme 2026-11-26, Commit ae544bb (#93)."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1485,12 +1485,12 @@
         {
           "at": "2026-11-26T07:49:07Z",
           "by": "build",
-          "text": "todo → doing: Endnote, Worktrees entfernt (A11 erledigt), Abschluss-Commit."
+          "text": "todo \u2192 doing: Endnote, Worktrees entfernt (A11 erledigt), Abschluss-Commit."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "doing → done: A10 Endnote 4/5, Worktrees entfernt (A11), build+147 Tests gruen, Abschluss-Commit."
+          "text": "doing \u2192 done: A10 Endnote 4/5, Worktrees entfernt (A11), build+147 Tests gruen, Abschluss-Commit."
         }
       ],
       "created": "2026-11-26T06:02:51Z",
@@ -1506,17 +1506,17 @@
         {
           "at": "2026-11-26T06:08:37Z",
           "by": "build",
-          "text": "doing → doing: Supervisor: aktuellen Shot-Stand vor weiterer Iteration committen. Max. 2 weitere Laeufe."
+          "text": "doing \u2192 doing: Supervisor: aktuellen Shot-Stand vor weiterer Iteration committen. Max. 2 weitere Laeufe."
         },
         {
           "at": "2026-11-26T07:03:30Z",
           "by": "build",
-          "text": "doing → review: 2 Iterationen; art-director PASS fuer A8. Commits 8ea3f92/7fa994d."
+          "text": "doing \u2192 review: 2 Iterationen; art-director PASS fuer A8. Commits 8ea3f92/7fa994d."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: Art-Beleg-Skript, art-director PASS A8."
+          "text": "review \u2192 done: Art-Beleg-Skript, art-director PASS A8."
         }
       ],
       "created": "2026-11-26T06:08:37Z",
@@ -1532,12 +1532,12 @@
         {
           "at": "2026-11-26T07:49:07Z",
           "by": "build",
-          "text": "doing → review: Segmente 6+7 nachgeholt (Capture-Fenster-Fix, Segment 7 im 2. Versuch 141,6s), GIF 35,6s/285 Frames + 6 overview shots. Commit serie."
+          "text": "doing \u2192 review: Segmente 6+7 nachgeholt (Capture-Fenster-Fix, Segment 7 im 2. Versuch 141,6s), GIF 35,6s/285 Frames + 6 overview shots. Commit serie."
         },
         {
           "at": "2026-11-26T07:50:21Z",
           "by": "build",
-          "text": "review → done: Trailer 8 Segmente 35,6s + 6 overview shots, Segmente 6+7 nachgeholt."
+          "text": "review \u2192 done: Trailer 8 Segmente 35,6s + 6 overview shots, Segmente 6+7 nachgeholt."
         }
       ],
       "created": "2026-11-26T07:40:53Z",
@@ -1606,7 +1606,7 @@
         {
           "at": "2026-11-26T10:11:15Z",
           "by": "build",
-          "text": "review → done: Merge-Abnahme: verify-input PASS 28/28 (nach #87-Fix), 0 JS-Fehler; build gruen, Tests 175/175; Belege shots/m8-input.*, docs/lanes/input.md."
+          "text": "review \u2192 done: Merge-Abnahme: verify-input PASS 28/28 (nach #87-Fix), 0 JS-Fehler; build gruen, Tests 175/175; Belege shots/m8-input.*, docs/lanes/input.md."
         }
       ],
       "created": "2026-11-26T10:01:34Z",
@@ -1622,17 +1622,17 @@
         {
           "at": "2026-11-26T10:10:53Z",
           "by": "build",
-          "text": "todo → doing: Reproduziert: ESC direkt nach ArrowRight-Keyup wird verschluckt; 120 ms Frame-Luecke behebt es (PASS 28/28)."
+          "text": "todo \u2192 doing: Reproduziert: ESC direkt nach ArrowRight-Keyup wird verschluckt; 120 ms Frame-Luecke behebt es (PASS 28/28)."
         },
         {
           "at": "2026-11-26T10:11:12Z",
           "by": "build",
-          "text": "doing → review: Fix in scripts/verify-input.mjs (Commit 68a3e74): Frame-Luecke nach ArrowRight-Keyup. verify-input PASS 28/28, 0 JS-Fehler."
+          "text": "doing \u2192 review: Fix in scripts/verify-input.mjs (Commit 68a3e74): Frame-Luecke nach ArrowRight-Keyup. verify-input PASS 28/28, 0 JS-Fehler."
         },
         {
           "at": "2026-11-26T10:11:12Z",
           "by": "build",
-          "text": "review → done: Abnahme: Commit 68a3e74 (#87), verify-input PASS 28/28, build+Tests gruen."
+          "text": "review \u2192 done: Abnahme: Commit 68a3e74 (#87), verify-input PASS 28/28, build+Tests gruen."
         }
       ],
       "created": "2026-11-26T10:10:53Z",
@@ -1712,12 +1712,12 @@
         {
           "at": "2026-11-26T10:36:17Z",
           "by": "build",
-          "text": "todo → doing: Start: .lane-done bereits in f954226 entfernt; check-ux-Shots pruefen"
+          "text": "todo \u2192 doing: Start: .lane-done bereits in f954226 entfernt; check-ux-Shots pruefen"
         },
         {
           "at": "2026-11-26T10:36:25Z",
           "by": "build",
-          "text": "doing → done: Commit 9444da7 (#92). Beleg: .lane-done weder getrackt noch im Worktree (f954226); 29 check-ux-Shots aus 62a586f in docs/qa/2026-11-26.md referenziert."
+          "text": "doing \u2192 done: Commit 9444da7 (#92). Beleg: .lane-done weder getrackt noch im Worktree (f954226); 29 check-ux-Shots aus 62a586f in docs/qa/2026-11-26.md referenziert."
         }
       ],
       "created": "2026-11-26T10:36:13Z",
@@ -1733,7 +1733,7 @@
         {
           "at": "2026-11-26T10:36:39Z",
           "by": "build",
-          "text": "todo → done: Commit efedb65 (#93). board_list: done 91, backlog 0, blocked 0 (vorher 87/3/1)."
+          "text": "todo \u2192 done: Commit efedb65 (#93). board_list: done 91, backlog 0, blocked 0 (vorher 87/3/1)."
         }
       ],
       "created": "2026-11-26T10:36:13Z",
@@ -1749,12 +1749,12 @@
         {
           "at": "2026-11-26T10:36:44Z",
           "by": "build",
-          "text": "todo → doing: Start: unabhaengiger verify-input-Lauf auf main"
+          "text": "todo \u2192 doing: Start: unabhaengiger verify-input-Lauf auf main"
         },
         {
           "at": "2026-11-26T10:43:41Z",
           "by": "build",
-          "text": "doing → done: Commit e4332a7 (#94). verify-input EXIT 0, 28/28 PASS, 0 JS-Fehler, ESC-Checks gruen."
+          "text": "doing \u2192 done: Commit e4332a7 (#94). verify-input EXIT 0, 28/28 PASS, 0 JS-Fehler, ESC-Checks gruen."
         }
       ],
       "created": "2026-11-26T10:36:13Z",
@@ -1770,12 +1770,12 @@
         {
           "at": "2026-11-26T10:43:44Z",
           "by": "build",
-          "text": "todo → doing: Start: build/test/count, dann verify:final und perf (flock)"
+          "text": "todo \u2192 doing: Start: build/test/count, dann verify:final und perf (flock)"
         },
         {
           "at": "2026-11-26T10:52:33Z",
           "by": "build",
-          "text": "doing → done: Commit 0b42ffe (#95). build gruen, 175 Tests (+19% markiert), count 30/6/6/6/6/2, verify:final 7/7, perf 59,3/59,3 FPS."
+          "text": "doing \u2192 done: Commit 0b42ffe (#95). build gruen, 175 Tests (+19% markiert), count 30/6/6/6/6/2, verify:final 7/7, perf 59,3/59,3 FPS."
         }
       ],
       "created": "2026-11-26T10:36:13Z",
@@ -1791,7 +1791,7 @@
         {
           "at": "2026-11-26T10:52:38Z",
           "by": "build",
-          "text": "todo → done: Commit be29136 (#96). APK 09:00:08, GH-Asset 09:00:17, sha256 identisch, 112 min hinter HEAD 0b42ffe."
+          "text": "todo \u2192 done: Commit be29136 (#96). APK 09:00:08, GH-Asset 09:00:17, sha256 identisch, 112 min hinter HEAD 0b42ffe."
         }
       ],
       "created": "2026-11-26T10:36:13Z",
@@ -1806,7 +1806,7 @@
         {
           "at": "2026-11-26T15:26:57Z",
           "by": "build",
-          "text": "doing → done: Abgeschlossen: Belege + Maengelliste liegen bereits bereits"
+          "text": "doing \u2192 done: Abgeschlossen: Belege + Maengelliste liegen bereits bereits"
         },
         {
           "at": "2026-11-26T15:27:07Z",
@@ -1826,12 +1826,12 @@
         {
           "at": "2026-11-26T14:13:38Z",
           "by": "build",
-          "text": "backlog → doing: Mond-Halo harte Pixelringe + Sterngruppen + Horizontkante; Generator regenerationiert. Build 175 Tests gruen. art-director-Urteil laeuft."
+          "text": "backlog \u2192 doing: Mond-Halo harte Pixelringe + Sterngruppen + Horizontkante; Generator regenerationiert. Build 175 Tests gruen. art-director-Urteil laeuft."
         },
         {
           "at": "2026-11-26T17:40:28Z",
           "by": "build",
-          "text": "doing → review: Commit 9d3244a (#319): Halo-Ringe 30/35/40 px, Generator regeneriert, Vorher/Nachher 1x/2x + Mond-Vergleich 3x, 0 JS-Fehler; build+192 Tests gruen. Lead-Sicht: PASS 4,5/5. art-director-Abnahme laeuft (Modell-Retry)."
+          "text": "doing \u2192 review: Commit 9d3244a (#319): Halo-Ringe 30/35/40 px, Generator regeneriert, Vorher/Nachher 1x/2x + Mond-Vergleich 3x, 0 JS-Fehler; build+192 Tests gruen. Lead-Sicht: PASS 4,5/5. art-director-Abnahme laeuft (Modell-Retry)."
         }
       ],
       "created": "2026-11-26T12:22:29Z",
@@ -1905,7 +1905,7 @@
         {
           "at": "2026-11-26T15:27:28Z",
           "by": "build",
-          "text": "doing → todo: WIP-Limit (Supervisor): bisarkt bis #319 abgeschlossen ist; Arbeit/Belege aus Lane m9-art-world bereits gemergt."
+          "text": "doing \u2192 todo: WIP-Limit (Supervisor): bisarkt bis #319 abgeschlossen ist; Arbeit/Belege aus Lane m9-art-world bereits gemergt."
         },
         {
           "at": "2026-11-26T15:27:31Z",
@@ -1941,7 +1941,7 @@
         {
           "at": "2026-11-26T15:27:28Z",
           "by": "build",
-          "text": "doing → todo: WIP-Limit (Supervisor): geparkt bis #319 abgeschlossen ist; Arbeit/Belege aus Lane m9-art-world bereits gemergt."
+          "text": "doing \u2192 todo: WIP-Limit (Supervisor): geparkt bis #319 abgeschlossen ist; Arbeit/Belege aus Lane m9-art-world bereits gemergt."
         },
         {
           "at": "2026-11-26T15:27:31Z",
@@ -2002,12 +2002,12 @@
         {
           "at": "2026-11-26T18:24:14Z",
           "by": "build",
-          "text": "Abnahme: Doku in docs/lanes/m8-display.md ergaenzt — perf 780x360@dpr3: Burst 59,1 FPS PASS / Minute 25 40,2 FPS FAIL (Ziel 55), fullrun-Beleg shots/m3-fullrun-m8-780.json (Sieg/Dawn, fpsMin 29,5 unter Last), verify-display 38/38 PASS, 0 JS-Fehler. FPS-Luecke als offener Punkt an #638/#1000 uebergeben. lane #97"
+          "text": "Abnahme: Doku in docs/lanes/m8-display.md ergaenzt \u2014 perf 780x360@dpr3: Burst 59,1 FPS PASS / Minute 25 40,2 FPS FAIL (Ziel 55), fullrun-Beleg shots/m3-fullrun-m8-780.json (Sieg/Dawn, fpsMin 29,5 unter Last), verify-display 38/38 PASS, 0 JS-Fehler. FPS-Luecke als offener Punkt an #638/#1000 uebergeben. lane #97"
         },
         {
           "at": "2026-11-26T18:25:08Z",
           "by": "build",
-          "text": "doing → done: Doku + Messwerte belegt (3d4fb0d); Perf-Fix bleibt #638."
+          "text": "doing \u2192 done: Doku + Messwerte belegt (3d4fb0d); Perf-Fix bleibt #638."
         }
       ],
       "created": "2026-11-26T18:20:54Z",
@@ -2042,14 +2042,14 @@
     {
       "id": 1001,
       "title": "m9-art hero/bosses-00 Vorher-Belege + Kontaktbogen-Skript (lane #218)",
-      "description": "Kontaktbögen 2x für Mira, Kael und die 6 Bosse sowie Vorher-Shots (Gewühl, Boss-Auftritt). Abnahme: shots/m9-art-heroes-bosses-before-*.png existieren, scripts/art/m9-sheet.py läuft, tsc grün.",
+      "description": "Kontaktb\u00f6gen 2x f\u00fcr Mira, Kael und die 6 Bosse sowie Vorher-Shots (Gew\u00fchl, Boss-Auftritt). Abnahme: shots/m9-art-heroes-bosses-before-*.png existieren, scripts/art/m9-sheet.py l\u00e4uft, tsc gr\u00fcn.",
       "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T19:05:51Z",
           "by": "build",
-          "text": "Merge aus Lane m9-art-heroes-bosses, lane #218 (done). Belege: 5 before-Shots + json, scripts/art/m9-sheet.py Exit 0 (Heldenbogen 2110px), tsc grün. Commits f8f8931 + 9a11605."
+          "text": "Merge aus Lane m9-art-heroes-bosses, lane #218 (done). Belege: 5 before-Shots + json, scripts/art/m9-sheet.py Exit 0 (Heldenbogen 2110px), tsc gr\u00fcn. Commits f8f8931 + 9a11605."
         }
       ],
       "created": "2026-11-26T18:56:30Z",
@@ -2058,14 +2058,14 @@
     {
       "id": 1002,
       "title": "m9-art hero/bosses-01 Helden Mira und Kael (lane #598)",
-      "description": "Owner pixel-artist, Kontrolle art-director. Mira klare Silhouette + warmes Laternenlicht, Kael breite Panzer-Schultern. Kontaktbogen 2x vorher/nachher, PASS ≥4,5. Abnahme: shots/m9-art-heroes-bosses-01-heroes.png, 01-crowd.png, 01-crowd-kael.png, 0 JS-Fehler.",
+      "description": "Owner pixel-artist, Kontrolle art-director. Mira klare Silhouette + warmes Laternenlicht, Kael breite Panzer-Schultern. Kontaktbogen 2x vorher/nachher, PASS \u22654,5. Abnahme: shots/m9-art-heroes-bosses-01-heroes.png, 01-crowd.png, 01-crowd-kael.png, 0 JS-Fehler.",
       "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T19:05:51Z",
           "by": "build",
-          "text": "Merge aus Lane m9-art-heroes-bosses, lane #598 (done). Urteil PASS 4,5/5: Mira (Krempe, Goldborte, Laternenlicht) und Kael (Silberplatten, Zweihandaxt) im Gewühl lesbar. Belege 01-heroes, 01-crowd, 01-crowd-kael; Commits 9e544d7, 7046e89."
+          "text": "Merge aus Lane m9-art-heroes-bosses, lane #598 (done). Urteil PASS 4,5/5: Mira (Krempe, Goldborte, Laternenlicht) und Kael (Silberplatten, Zweihandaxt) im Gew\u00fchl lesbar. Belege 01-heroes, 01-crowd, 01-crowd-kael; Commits 9e544d7, 7046e89."
         }
       ],
       "created": "2026-11-26T18:56:30Z",
@@ -2074,14 +2074,14 @@
     {
       "id": 1003,
       "title": "m9-art hero/bosses-02 Bosse: 6 eigene Silhouetten (lane #599)",
-      "description": "Owner pixel-artist, Kontrolle art-director. Sechs eigene, deutlich größere Silhouetten und Auftritts-/Phasen-Look. Kontaktbogen 2x vorher/nachher, PASS ≥4,5. Abnahme: shots/m9-art-heroes-bosses-02-bosses.png, 02-boss0.png (Schockwelle), 02-boss5.png.",
+      "description": "Owner pixel-artist, Kontrolle art-director. Sechs eigene, deutlich gr\u00f6\u00dfere Silhouetten und Auftritts-/Phasen-Look. Kontaktbogen 2x vorher/nachher, PASS \u22654,5. Abnahme: shots/m9-art-heroes-bosses-02-bosses.png, 02-boss0.png (Schockwelle), 02-boss5.png.",
       "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
           "at": "2026-11-26T19:05:51Z",
           "by": "build",
-          "text": "Merge aus Lane m9-art-heroes-bosses, lane #599 (done). Urteil PASS 4,5/5: 6 eigene, größere Silhouetten; F0→F1→F2 zeigt Atem/Wind-up. Belege 02-bosses, 02-boss0, 02-boss5/b; Commits 049d2a3, fcba7ce."
+          "text": "Merge aus Lane m9-art-heroes-bosses, lane #599 (done). Urteil PASS 4,5/5: 6 eigene, gr\u00f6\u00dfere Silhouetten; F0\u2192F1\u2192F2 zeigt Atem/Wind-up. Belege 02-bosses, 02-boss0, 02-boss5/b; Commits 049d2a3, fcba7ce."
         }
       ],
       "created": "2026-11-26T18:56:30Z",
@@ -2090,7 +2090,7 @@
     {
       "id": 1004,
       "title": "m9-art hero/bosses-03 Boss-Tod zur Truhe (lane #600)",
-      "description": "Owner pixel-artist, Kontrolle art-director. Beleg: GIF der Boss-Tod-Sequenz aus dem Spiel mit lebenden Gegnern, Truhe sichtbar; PASS ≥4,5. Keine Gameplay-/Hitbox-Änderung. Abnahme: shots/m9-art-heroes-bosses-03-death.gif (40 Frames), 0 JS-Fehler.",
+      "description": "Owner pixel-artist, Kontrolle art-director. Beleg: GIF der Boss-Tod-Sequenz aus dem Spiel mit lebenden Gegnern, Truhe sichtbar; PASS \u22654,5. Keine Gameplay-/Hitbox-\u00c4nderung. Abnahme: shots/m9-art-heroes-bosses-03-death.gif (40 Frames), 0 JS-Fehler.",
       "column": "done",
       "assignee": "pixel-artist",
       "notes": [
@@ -2106,14 +2106,14 @@
     {
       "id": 1005,
       "title": "m9-art hero/bosses-04 Abnahme (lane #601)",
-      "description": "Owner lead. Abnahme: After-Shots, art-director ≥4,5, build/test grün, 0 JS, perf ≥55 FPS, .lane-done. Ergebnis: build grün, 175/175 Tests (Lane-Stand), perf 60,1 FPS Burst / 59,9 FPS Minute 25, Gesamturteil 4,6/5 PASS.",
+      "description": "Owner lead. Abnahme: After-Shots, art-director \u22654,5, build/test gr\u00fcn, 0 JS, perf \u226555 FPS, .lane-done. Ergebnis: build gr\u00fcn, 175/175 Tests (Lane-Stand), perf 60,1 FPS Burst / 59,9 FPS Minute 25, Gesamturteil 4,6/5 PASS.",
       "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-26T19:05:51Z",
           "by": "build",
-          "text": "Merge aus Lane m9-art-heroes-bosses, lane #601 (done). Abnahme erfüllt: build grün, 175/175 Tests (Lane-Stand), perf 60,1 FPS Burst / 59,9 FPS Minute 25, 0 JS-Fehler, Gesamturteil 4,6/5 PASS; .lane-done in Commit 6cd6c74 (Marker nicht nach main übernommen)."
+          "text": "Merge aus Lane m9-art-heroes-bosses, lane #601 (done). Abnahme erf\u00fcllt: build gr\u00fcn, 175/175 Tests (Lane-Stand), perf 60,1 FPS Burst / 59,9 FPS Minute 25, 0 JS-Fehler, Gesamturteil 4,6/5 PASS; .lane-done in Commit 6cd6c74 (Marker nicht nach main \u00fcbernommen)."
         }
       ],
       "created": "2026-11-26T18:56:30Z",
@@ -2161,7 +2161,7 @@
         {
           "at": "2026-11-26T19:18:45Z",
           "by": "build",
-          "text": "lane #100: Delta 7,4/20,0 % (Median), Kriterium 10 % verfehlt — Befund, kein Fix"
+          "text": "lane #100: Delta 7,4/20,0 % (Median), Kriterium 10 % verfehlt \u2014 Befund, kein Fix"
         }
       ],
       "created": "2026-11-26T19:18:14Z",
@@ -2180,7 +2180,7 @@
     {
       "id": 1010,
       "title": "m10-heap-qa-02 Drei Heap-Varianten Basis/Chaos/Burst",
-      "description": "Basis 1→29 (−0,2 %), Chaos-Minute 25 (−8,2 %), 500-Burst (+1,1 %), alle ≤15 %, 0 JS-Fehler. Belege shots/m10-heap-{basis,chaos,burst}.json. (lane #2)",
+      "description": "Basis 1\u219229 (\u22120,2 %), Chaos-Minute 25 (\u22128,2 %), 500-Burst (+1,1 %), alle \u226415 %, 0 JS-Fehler. Belege shots/m10-heap-{basis,chaos,burst}.json. (lane #2)",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [],
@@ -2190,7 +2190,7 @@
     {
       "id": 1011,
       "title": "m10-heap-qa-03 Gate-Report Heap-Nachmessung",
-      "description": "Verdikt Gate GRUEN bei Basis-SHA f26dc4b: Snapshot nach Voll-GC flach, roher usedJSHeapSize Peak 79–82 MB ist GC-/Host-Streuung, kein JS-Leak. tsc OK, Vitest 192/192. docs/lanes/m10-heap-qa.md. (lane #3)",
+      "description": "Verdikt Gate GRUEN bei Basis-SHA f26dc4b: Snapshot nach Voll-GC flach, roher usedJSHeapSize Peak 79\u201382 MB ist GC-/Host-Streuung, kein JS-Leak. tsc OK, Vitest 192/192. docs/lanes/m10-heap-qa.md. (lane #3)",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [],
@@ -2240,7 +2240,7 @@
     {
       "id": 1016,
       "title": "m10-display-qa-01 Basis: build + verify-display 38/38 PASS",
-      "description": "Build grün, verify-display alle 38 Checks PASS, 0 JS-Fehler, Belege shots/m10-display-* (lane #1101). Abnahme: 38/38 PASS belegt.",
+      "description": "Build gr\u00fcn, verify-display alle 38 Checks PASS, 0 JS-Fehler, Belege shots/m10-display-* (lane #1101). Abnahme: 38/38 PASS belegt.",
       "column": "done",
       "assignee": "playtester",
       "notes": [
@@ -2272,7 +2272,7 @@
     {
       "id": 1018,
       "title": "m10-display-qa-03 Safe-Area/HUD + FPS Minute 25",
-      "description": "iPhone14+Pixel7 Notch/Rundung prüfen, FPS Minute 25 messen (lane #1103). Ergebnis: iphone14 Safe-Area FAIL, FPS 39,5 (Ziel 55).",
+      "description": "iPhone14+Pixel7 Notch/Rundung pr\u00fcfen, FPS Minute 25 messen (lane #1103). Ergebnis: iphone14 Safe-Area FAIL, FPS 39,5 (Ziel 55).",
       "column": "done",
       "assignee": "ui-dev",
       "notes": [
@@ -2288,7 +2288,7 @@
     {
       "id": 1019,
       "title": "m10-display-qa-04 Report: 6/7 PASS, iphone14 FAIL, #638 offen",
-      "description": "docs/lanes/m10-display-qa.md mit PASS/FAIL je Profil, Repro, FPS-Zahl, Empfehlung (lane #1104). Abnahme: Build+Tests grün, Report vollständig.",
+      "description": "docs/lanes/m10-display-qa.md mit PASS/FAIL je Profil, Repro, FPS-Zahl, Empfehlung (lane #1104). Abnahme: Build+Tests gr\u00fcn, Report vollst\u00e4ndig.",
       "column": "done",
       "assignee": "playtester",
       "notes": [
@@ -2336,14 +2336,14 @@
     {
       "id": 1022,
       "title": "m10-qa-numbers-02 Abgleich ACCEPTANCE-Zahlen vs. JSON-Belege",
-      "description": "Tests 175, FPS Minute 25 59,3, Heap +18,7/+15,8, Inhalt 30/6/6/6/6/2 gegen Belege prüfen; Abweichung >=5% mit Quelle belegen. Abnahme: acceptance-count ok:true 30/6/6/6/6/2, vitest 192 Tests grün (12 Dateien), Abgleich in shots/m10-qa-numbers-comparison.json.",
+      "description": "Tests 175, FPS Minute 25 59,3, Heap +18,7/+15,8, Inhalt 30/6/6/6/6/2 gegen Belege pr\u00fcfen; Abweichung >=5% mit Quelle belegen. Abnahme: acceptance-count ok:true 30/6/6/6/6/2, vitest 192 Tests gr\u00fcn (12 Dateien), Abgleich in shots/m10-qa-numbers-comparison.json.",
       "column": "done",
       "assignee": "balance-designer",
       "notes": [
         {
           "at": "2026-11-26T21:22:00Z",
           "by": "build",
-          "text": "lane #2 (Commit 03e6637): Abgleich 192 Tests grün (12 Dateien, +17), acceptance-count 30/6/6/6/6/2 ok:true, Vergleich in shots/m10-qa-numbers-comparison.json."
+          "text": "lane #2 (Commit 03e6637): Abgleich 192 Tests gr\u00fcn (12 Dateien, +17), acceptance-count 30/6/6/6/6/2 ok:true, Vergleich in shots/m10-qa-numbers-comparison.json."
         }
       ],
       "created": "2026-11-26T21:21:02Z",
@@ -2352,14 +2352,14 @@
     {
       "id": 1023,
       "title": "m10-qa-numbers-03 Report: konsolidierte Zahlenliste + offene Punkte",
-      "description": "docs/lanes/m10-qa-numbers.md mit konsolidierter Tabelle und offenen Widersprüchen für m9-final-acceptance (Minute-25-FPS 54,7, Testzahl 192, A7-VFX a9148d1, Balance 5/6/Level 47). Abnahme: Report enthält alle Behauptungen des Briefings mit Status gleich/erklärt/offen.",
+      "description": "docs/lanes/m10-qa-numbers.md mit konsolidierter Tabelle und offenen Widerspr\u00fcchen f\u00fcr m9-final-acceptance (Minute-25-FPS 54,7, Testzahl 192, A7-VFX a9148d1, Balance 5/6/Level 47). Abnahme: Report enth\u00e4lt alle Behauptungen des Briefings mit Status gleich/erkl\u00e4rt/offen.",
       "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-26T21:22:00Z",
           "by": "build",
-          "text": "lane #3 (Commit 6f69488): Report docs/lanes/m10-qa-numbers.md; offen für m9-final-acceptance: Minute-25-FPS 54,7, Testzahl 192, A7-VFX a9148d1, Balance 5/6/Level 47."
+          "text": "lane #3 (Commit 6f69488): Report docs/lanes/m10-qa-numbers.md; offen f\u00fcr m9-final-acceptance: Minute-25-FPS 54,7, Testzahl 192, A7-VFX a9148d1, Balance 5/6/Level 47."
         }
       ],
       "created": "2026-11-26T21:21:02Z",
@@ -2516,7 +2516,7 @@
         {
           "at": "2026-11-26T23:03:07Z",
           "by": "build",
-          "text": "lane #1478 — Commit 7f894fc: Audit aller 18 Boss-Angriffe, 3 FAIL <600ms, Beleg shots/m10-hazard-telegraph-audit.json + docs/lanes/m10-hazard-telegraph.md."
+          "text": "lane #1478 \u2014 Commit 7f894fc: Audit aller 18 Boss-Angriffe, 3 FAIL <600ms, Beleg shots/m10-hazard-telegraph-audit.json + docs/lanes/m10-hazard-telegraph.md."
         }
       ],
       "created": "2026-11-26T23:02:00Z",
@@ -2532,7 +2532,7 @@
         {
           "at": "2026-11-26T23:03:07Z",
           "by": "build",
-          "text": "lane #1479 — Commit 49fadca: Test zuerst tests/hazard-telegraph.test.ts, RED 1 failed/5 passed (3 Warnzeiten <600ms)."
+          "text": "lane #1479 \u2014 Commit 49fadca: Test zuerst tests/hazard-telegraph.test.ts, RED 1 failed/5 passed (3 Warnzeiten <600ms)."
         }
       ],
       "created": "2026-11-26T23:02:00Z",
@@ -2548,7 +2548,7 @@
         {
           "at": "2026-11-26T23:03:07Z",
           "by": "build",
-          "text": "lane #1480 — Commit 73e7822: 3 Warnzeiten (550/350/500) auf 600ms, interval/damage/Boss-HP unveraendert, Test 6/6 gruen."
+          "text": "lane #1480 \u2014 Commit 73e7822: 3 Warnzeiten (550/350/500) auf 600ms, interval/damage/Boss-HP unveraendert, Test 6/6 gruen."
         }
       ],
       "created": "2026-11-26T23:02:00Z",
@@ -2564,7 +2564,7 @@
         {
           "at": "2026-11-26T23:03:07Z",
           "by": "build",
-          "text": "lane #1481 — Commits fabf5ad + fdf0518: 6 Warnphasen-Shots, npm run build gruen, npx vitest 198/198, verify-bosses 5/6 (hollow_king Truhe pre-existing)."
+          "text": "lane #1481 \u2014 Commits fabf5ad + fdf0518: 6 Warnphasen-Shots, npm run build gruen, npx vitest 198/198, verify-bosses 5/6 (hollow_king Truhe pre-existing)."
         }
       ],
       "created": "2026-11-26T23:02:00Z",
@@ -2580,7 +2580,7 @@
         {
           "at": "2026-11-26T23:28:47Z",
           "by": "build",
-          "text": "lane #1438 — Merge m10-balance-kael: Repro shots/m10-balance-kael-repro.json, Kael/101 L28 statt A5-L47, 7/8 Korridor, Kael/505 Tod 15,3 min."
+          "text": "lane #1438 \u2014 Merge m10-balance-kael: Repro shots/m10-balance-kael-repro.json, Kael/101 L28 statt A5-L47, 7/8 Korridor, Kael/505 Tod 15,3 min."
         }
       ],
       "created": "2026-11-26T23:27:50Z",
@@ -2596,7 +2596,7 @@
         {
           "at": "2026-11-26T23:28:47Z",
           "by": "build",
-          "text": "lane #1439 — Merge m10-balance-kael: Diagnose shots/m10-balance-kael-xp-budget.json, Sammelquote 20-43 % bei Dichte, Kill-Potenzial 39k ueber Level-40-Schwelle."
+          "text": "lane #1439 \u2014 Merge m10-balance-kael: Diagnose shots/m10-balance-kael-xp-budget.json, Sammelquote 20-43 % bei Dichte, Kill-Potenzial 39k ueber Level-40-Schwelle."
         }
       ],
       "created": "2026-11-26T23:27:50Z",
@@ -2612,7 +2612,7 @@
         {
           "at": "2026-11-26T23:28:47Z",
           "by": "build",
-          "text": "lane #1440 — Merge m10-balance-kael: Fix 7629b2f, xp.ts ab Level 26 steiler, Level 1-25 bitgleich, tests/balance-curve.test.ts 5 Tests."
+          "text": "lane #1440 \u2014 Merge m10-balance-kael: Fix 7629b2f, xp.ts ab Level 26 steiler, Level 1-25 bitgleich, tests/balance-curve.test.ts 5 Tests."
         }
       ],
       "created": "2026-11-26T23:27:50Z",
@@ -2628,7 +2628,7 @@
         {
           "at": "2026-11-26T23:28:47Z",
           "by": "build",
-          "text": "lane #1441 — Merge m10-balance-kael: keine Skalierungsaenderung noetig, 6/6 Korridor, scaling.ts/waves.ts unveraendert."
+          "text": "lane #1441 \u2014 Merge m10-balance-kael: keine Skalierungsaenderung noetig, 6/6 Korridor, scaling.ts/waves.ts unveraendert."
         }
       ],
       "created": "2026-11-26T23:27:50Z",
@@ -2644,7 +2644,7 @@
         {
           "at": "2026-11-26T23:28:47Z",
           "by": "build",
-          "text": "lane #1442 — Merge m10-balance-kael: Nachlauf 6/6 Korridor, Level 27-30, Boss 23-51 s, kein Tod <15 min, 197 Tests gruen."
+          "text": "lane #1442 \u2014 Merge m10-balance-kael: Nachlauf 6/6 Korridor, Level 27-30, Boss 23-51 s, kein Tod <15 min, 197 Tests gruen."
         }
       ],
       "created": "2026-11-26T23:27:50Z",
@@ -2660,7 +2660,7 @@
         {
           "at": "2026-11-26T23:44:38Z",
           "by": "build",
-          "text": "lane #1 — Basis f26dc4b: 6 Laeufe (mira/kael x 101/202/404), 0 JS-Fehler, je >=1 Evolution; Belege shots/m10-balance-main-*.mruns/summary."
+          "text": "lane #1 \u2014 Basis f26dc4b: 6 Laeufe (mira/kael x 101/202/404), 0 JS-Fehler, je >=1 Evolution; Belege shots/m10-balance-main-*.mruns/summary."
         }
       ],
       "created": "2026-11-26T23:44:12Z",
@@ -2676,7 +2676,7 @@
         {
           "at": "2026-11-26T23:44:38Z",
           "by": "build",
-          "text": "lane #2 — Korridor-Quote 6/6, Level 26-36 (min/median/max 26/27/36), Endzeit 20,7/26,0/30,8 min, Boss 30/30 in 20-60 s."
+          "text": "lane #2 \u2014 Korridor-Quote 6/6, Level 26-36 (min/median/max 26/27/36), Endzeit 20,7/26,0/30,8 min, Boss 30/30 in 20-60 s."
         }
       ],
       "created": "2026-11-26T23:44:12Z",
@@ -2692,7 +2692,7 @@
         {
           "at": "2026-11-26T23:44:38Z",
           "by": "build",
-          "text": "lane #3 — L47 auf f26dc4b nicht reproduzierbar (Kael/101 = L29); effektive XP/Kill 2,99 vs 0,82-1,05, XP-Kurve/Gems/spawnRate/TIER_MIXES per diff ausgeschlossen, Geometrie nur Mitursache."
+          "text": "lane #3 \u2014 L47 auf f26dc4b nicht reproduzierbar (Kael/101 = L29); effektive XP/Kill 2,99 vs 0,82-1,05, XP-Kurve/Gems/spawnRate/TIER_MIXES per diff ausgeschlossen, Geometrie nur Mitursache."
         }
       ],
       "created": "2026-11-26T23:44:12Z",
@@ -2708,7 +2708,7 @@
         {
           "at": "2026-11-26T23:44:38Z",
           "by": "build",
-          "text": "lane #4 — Report docs/lanes/m10-balance-qa.md + Empfehlung (Viewport 640x360, 10 Laeufe, xpToNext stueckweise); Build rc=0, 192 Tests gruen."
+          "text": "lane #4 \u2014 Report docs/lanes/m10-balance-qa.md + Empfehlung (Viewport 640x360, 10 Laeufe, xpToNext stueckweise); Build rc=0, 192 Tests gruen."
         }
       ],
       "created": "2026-11-26T23:44:12Z",
@@ -2732,8 +2732,8 @@
     },
     {
       "id": 1659,
-      "title": "m10-audio-distinct #1 Audit + Hörprobe",
-      "description": "Mapping SFX-Key -> Waffe/Evolution aus src/audio/AudioSystem.ts und scripts/gen_sfx.py als shots/m10-audio-distinct-audit.json (Welle, Dauer, Hüllkurve je Key); Lücken benennen. Abnahme: JSON im Commit, mind. 12 Keys + Lückenliste.\n\nlane #1458: Audit-JSON 12 Keys, 6 fehlende Evolution-Stinger, 24 identische Signaturen; final neu erzeugt: 12 Keys, min Distanz 0,125 (6887705, Beleg 56a6539).",
+      "title": "m10-audio-distinct #1 Audit + H\u00f6rprobe",
+      "description": "Mapping SFX-Key -> Waffe/Evolution aus src/audio/AudioSystem.ts und scripts/gen_sfx.py als shots/m10-audio-distinct-audit.json (Welle, Dauer, H\u00fcllkurve je Key); L\u00fccken benennen. Abnahme: JSON im Commit, mind. 12 Keys + L\u00fcckenliste.\n\nlane #1458: Audit-JSON 12 Keys, 6 fehlende Evolution-Stinger, 24 identische Signaturen; final neu erzeugt: 12 Keys, min Distanz 0,125 (6887705, Beleg 56a6539).",
       "column": "review",
       "assignee": "audio-designer",
       "notes": [],
@@ -2743,7 +2743,7 @@
     {
       "id": 1660,
       "title": "m10-audio-distinct #2 Test zuerst: tests/audio-mix.test.ts",
-      "description": "Vitest: 12 Waffen-/Evolutions-Keys existieren, paarweise unterschiedliche Wellenform-Signatur (aus WAV), Mixer respektiert MAX_TOTAL_VOICES und PRIORITY, Lautstärken in [0,1], Mute blockt alle Requests. Abnahme: Test rot vor Fix, grün danach.\n\nlane #1459: Test zuerst, rot belegt 2/7 (b6113e0), final 7/7 grün (56a6539).",
+      "description": "Vitest: 12 Waffen-/Evolutions-Keys existieren, paarweise unterschiedliche Wellenform-Signatur (aus WAV), Mixer respektiert MAX_TOTAL_VOICES und PRIORITY, Lautst\u00e4rken in [0,1], Mute blockt alle Requests. Abnahme: Test rot vor Fix, gr\u00fcn danach.\n\nlane #1459: Test zuerst, rot belegt 2/7 (b6113e0), final 7/7 gr\u00fcn (56a6539).",
       "column": "review",
       "assignee": "audio-designer",
       "notes": [],
@@ -2752,8 +2752,8 @@
     },
     {
       "id": 1661,
-      "title": "m10-audio-distinct #3 Fix: 6 Evolutions-Klänge eigenständig",
-      "description": "In scripts/gen_sfx.py die 6 Evolutions-Keys eigenständig neu erzeugen (Treffer <0,4 s, Evolution-Stinger 0,6-1,0 s mit Aufwärts-Glissando, eigene Wellenform-Kombination je Key); AudioSystem-Mapping/Cooldowns ergänzen ohne Umbenennen; Master-Mute unverändert. Abnahme: tests/audio-mix.test.ts grün, WAV-Signaturen paarweise verschieden.\n\nlane #1460: 12 Klänge neu, alle 66 Paare >=0,12 (min 0,125 frost/eternal_winter), Stinger 0,70-0,90 s rising (2b18b37).",
+      "title": "m10-audio-distinct #3 Fix: 6 Evolutions-Kl\u00e4nge eigenst\u00e4ndig",
+      "description": "In scripts/gen_sfx.py die 6 Evolutions-Keys eigenst\u00e4ndig neu erzeugen (Treffer <0,4 s, Evolution-Stinger 0,6-1,0 s mit Aufw\u00e4rts-Glissando, eigene Wellenform-Kombination je Key); AudioSystem-Mapping/Cooldowns erg\u00e4nzen ohne Umbenennen; Master-Mute unver\u00e4ndert. Abnahme: tests/audio-mix.test.ts gr\u00fcn, WAV-Signaturen paarweise verschieden.\n\nlane #1460: 12 Kl\u00e4nge neu, alle 66 Paare >=0,12 (min 0,125 frost/eternal_winter), Stinger 0,70-0,90 s rising (2b18b37).",
       "column": "review",
       "assignee": "audio-designer",
       "notes": [],
@@ -2763,7 +2763,7 @@
     {
       "id": 1662,
       "title": "m10-audio-distinct #4 Beleg + Abnahme",
-      "description": "node scripts/verify-final.mjs (Master-Mute 7/7) und node scripts/verify-weapons.mjs (12/12) ohne flock; WAV-/Spektral-Belege nach shots/m10-audio-*; npm run build + vitest gesamt grün mit Ist-Zahl; docs/lanes/m10-audio-distinct.md mit Key-/Klang-Tabelle. Abnahme: alle Belege im Commit.\n\nlane #1461: verify-final 7/7, verify-weapons 12/12, build grün, vitest 199/199; shots/m10-audio-distinct-audit.json, -spectra.png, -spectra-12.png (05428a5, 56a6539).",
+      "description": "node scripts/verify-final.mjs (Master-Mute 7/7) und node scripts/verify-weapons.mjs (12/12) ohne flock; WAV-/Spektral-Belege nach shots/m10-audio-*; npm run build + vitest gesamt gr\u00fcn mit Ist-Zahl; docs/lanes/m10-audio-distinct.md mit Key-/Klang-Tabelle. Abnahme: alle Belege im Commit.\n\nlane #1461: verify-final 7/7, verify-weapons 12/12, build gr\u00fcn, vitest 199/199; shots/m10-audio-distinct-audit.json, -spectra.png, -spectra-12.png (05428a5, 56a6539).",
       "column": "review",
       "assignee": "audio-designer",
       "notes": [],
@@ -2785,7 +2785,7 @@
         {
           "at": "2026-11-27T01:27:06Z",
           "by": "build",
-          "text": "review → done: lane #1058 → done: Audit-JSON abgenommen, Merge 9b80e68."
+          "text": "review \u2192 done: lane #1058 \u2192 done: Audit-JSON abgenommen, Merge 9b80e68."
         }
       ],
       "created": "2026-11-27T01:22:24Z",
@@ -2859,7 +2859,7 @@
         {
           "at": "2026-11-27T01:58:39Z",
           "by": "build",
-          "text": "review → done: lane #1498: Merge aus m10-levelup-offers; Audit-JSON+Doku, 150 Aufrufe, 0 Duplikate, 60x fehlende Evolution vor Fix."
+          "text": "review \u2192 done: lane #1498: Merge aus m10-levelup-offers; Audit-JSON+Doku, 150 Aufrufe, 0 Duplikate, 60x fehlende Evolution vor Fix."
         }
       ],
       "created": "2026-11-27T01:53:16Z",
@@ -2875,7 +2875,7 @@
         {
           "at": "2026-11-27T01:58:39Z",
           "by": "build",
-          "text": "review → done: lane #1499: tests/levelup-offers.test.ts 9 Faelle, RED 4 failed/5 passed vor Fix."
+          "text": "review \u2192 done: lane #1499: tests/levelup-offers.test.ts 9 Faelle, RED 4 failed/5 passed vor Fix."
         }
       ],
       "created": "2026-11-27T01:53:16Z",
@@ -2891,7 +2891,7 @@
         {
           "at": "2026-11-27T01:58:39Z",
           "by": "build",
-          "text": "review → done: lane #1500: Evolution im Level-Up max 1, nur Basiswaffe Stufe8 + Powerup>=1; Audit-after 0 fehlend, 60 Evo."
+          "text": "review \u2192 done: lane #1500: Evolution im Level-Up max 1, nur Basiswaffe Stufe8 + Powerup>=1; Audit-after 0 fehlend, 60 Evo."
         }
       ],
       "created": "2026-11-27T01:53:16Z",
@@ -2907,7 +2907,7 @@
         {
           "at": "2026-11-27T01:58:39Z",
           "by": "build",
-          "text": "review → done: lane #1501: In-Game-Shots evolution-offer/after, verify-menus 15/15 PASS, build gruen, 220 Tests gruen."
+          "text": "review \u2192 done: lane #1501: In-Game-Shots evolution-offer/after, verify-menus 15/15 PASS, build gruen, 220 Tests gruen."
         }
       ],
       "created": "2026-11-27T01:53:16Z",
@@ -2996,14 +2996,14 @@
     {
       "id": 1998,
       "title": "m10-acceptance-sync-01 ACCEPTANCE.md Zahlen/Belege auf Ist-Stand",
-      "description": "147→204 (14 Testdateien), A5-Widerspruch Level 47 widerlegt vs. 6/6 Korridor 25–40 bleibt sichtbar, dirty=1 board.json notiert, Quellen je Zeile. Abnahme: grep '147 Tests' leer, npm test 204/204, git diff main -- ACCEPTANCE.md nur Zahlen/Belege. Commit 757ab43.",
+      "description": "147\u2192204 (14 Testdateien), A5-Widerspruch Level 47 widerlegt vs. 6/6 Korridor 25\u201340 bleibt sichtbar, dirty=1 board.json notiert, Quellen je Zeile. Abnahme: grep '147 Tests' leer, npm test 204/204, git diff main -- ACCEPTANCE.md nur Zahlen/Belege. Commit 757ab43.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-27T02:16:03Z",
           "by": "build",
-          "text": "lane #1818 – Merge m10-acceptance-sync, ACCEPTANCE.md Ist-Stand"
+          "text": "lane #1818 \u2013 Merge m10-acceptance-sync, ACCEPTANCE.md Ist-Stand"
         }
       ],
       "created": "2026-11-27T02:15:57Z",
@@ -3011,15 +3011,15 @@
     },
     {
       "id": 1999,
-      "title": "m10-acceptance-sync-02 Lane-Doku Diff-Liste alte→neue Zahl + Beleg",
-      "description": "docs/lanes/m10-acceptance-sync.md mit Tabelle alt/neu/Beleg pro Stelle, inkl. bewusst nicht geänderter Punkte. Abnahme: Datei vorhanden, jede geänderte ACCEPTANCE-Zeile mit Belegquelle (shots/m10-balance-*, npm test). Commit 40f2f0c.",
+      "title": "m10-acceptance-sync-02 Lane-Doku Diff-Liste alte\u2192neue Zahl + Beleg",
+      "description": "docs/lanes/m10-acceptance-sync.md mit Tabelle alt/neu/Beleg pro Stelle, inkl. bewusst nicht ge\u00e4nderter Punkte. Abnahme: Datei vorhanden, jede ge\u00e4nderte ACCEPTANCE-Zeile mit Belegquelle (shots/m10-balance-*, npm test). Commit 40f2f0c.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-27T02:16:03Z",
           "by": "build",
-          "text": "lane #1819 – Merge m10-acceptance-sync, Lane-Doku Diff-Liste"
+          "text": "lane #1819 \u2013 Merge m10-acceptance-sync, Lane-Doku Diff-Liste"
         }
       ],
       "created": "2026-11-27T02:15:57Z",
@@ -3192,15 +3192,15 @@
     },
     {
       "id": 2223,
-      "title": "m10-enemy-ai #1 Matrix-Gerüst",
-      "description": "lane #1758: tests/enemy-ai.test.ts: 30 Gegnertypen x Seeds 101/202, 60 s stepEnemyAi-Simulation, Metriken Ø-Abstand, Vorwärtsanteil, Richtungswechsel/s, Split/Summon/Blink/Shoot, Telegraph-Anteil. Tabelle in docs/lanes/m10-enemy-ai.md; Ist-Stand dokumentiert. Abnahme: Test grün (nur Ist-Stand), Tabelle 30 Zeilen, Doku-Abschnitt vorhanden.",
+      "title": "m10-enemy-ai #1 Matrix-Ger\u00fcst",
+      "description": "lane #1758: tests/enemy-ai.test.ts: 30 Gegnertypen x Seeds 101/202, 60 s stepEnemyAi-Simulation, Metriken \u00d8-Abstand, Vorw\u00e4rtsanteil, Richtungswechsel/s, Split/Summon/Blink/Shoot, Telegraph-Anteil. Tabelle in docs/lanes/m10-enemy-ai.md; Ist-Stand dokumentiert. Abnahme: Test gr\u00fcn (nur Ist-Stand), Tabelle 30 Zeilen, Doku-Abschnitt vorhanden.",
       "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T01:35:59Z",
           "by": "build",
-          "text": "doing → review: K1 committed e2649b5: Matrix-Gerüst, 30 Zeilen x Seeds 101/202, Test grün. Beleg shots/m10-enemy-ai-matrix.json."
+          "text": "doing \u2192 review: K1 committed e2649b5: Matrix-Ger\u00fcst, 30 Zeilen x Seeds 101/202, Test gr\u00fcn. Beleg shots/m10-enemy-ai-matrix.json."
         },
         {
           "at": "2026-11-27T04:21:18Z",
@@ -3213,7 +3213,7 @@
     },
     {
       "id": 2224,
-      "title": "m10-enemy-ai #2 Lückenliste",
+      "title": "m10-enemy-ai #2 L\u00fcckenliste",
       "description": "lane #1759: Archetypen ohne messbare Eigenheit benennen (z. B. swarm/chaser/tank identisch, splitter ohne Event-Signatur). Soll-Signatur je Archetyp in docs/lanes/m10-enemy-ai.md festschreiben. Abnahme: je Archetyp Soll-Ziel + Ist-Abweichung als Tabelle dokumentiert.",
       "column": "review",
       "assignee": "tech-lead",
@@ -3221,7 +3221,7 @@
         {
           "at": "2026-11-27T01:35:59Z",
           "by": "build",
-          "text": "todo → review: K2 committed c1dedbb: Lückenliste + Soll-Signaturen je Archetyp."
+          "text": "todo \u2192 review: K2 committed c1dedbb: L\u00fcckenliste + Soll-Signaturen je Archetyp."
         },
         {
           "at": "2026-11-27T04:21:18Z",
@@ -3234,20 +3234,20 @@
     },
     {
       "id": 2225,
-      "title": "m10-enemy-ai #3 Logik schärfen",
-      "description": "lane #1760: src/logic/enemy-ai.ts: pro Archetyp eigene Parameter/Branches (Abstandsband, Flankier-Winkel, Split-Schwelle, Summon-Cooldown), deterministisch, keine temporären Allokationen im Hot-Path. Signatur stepEnemyAi/AiAction unverändert kompatibel. Abnahme: bestehende Tests grün, tsc grün.",
+      "title": "m10-enemy-ai #3 Logik sch\u00e4rfen",
+      "description": "lane #1760: src/logic/enemy-ai.ts: pro Archetyp eigene Parameter/Branches (Abstandsband, Flankier-Winkel, Split-Schwelle, Summon-Cooldown), deterministisch, keine tempor\u00e4ren Allokationen im Hot-Path. Signatur stepEnemyAi/AiAction unver\u00e4ndert kompatibel. Abnahme: bestehende Tests gr\u00fcn, tsc gr\u00fcn.",
       "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T01:34:57Z",
           "by": "build",
-          "text": "todo → doing: K3: eigene Parameter/Branches je Archetyp in enemy-ai.ts."
+          "text": "todo \u2192 doing: K3: eigene Parameter/Branches je Archetyp in enemy-ai.ts."
         },
         {
           "at": "2026-11-27T01:35:59Z",
           "by": "build",
-          "text": "doing → review: K3 committed b1da9d7: 10 Archetyp-Profile (Abstandsband, Weben, Lunze, Flankier-Radius, Split-Schwelle, Fuse, Blink-Cooldown); Signatur unverändert; build+tests grün."
+          "text": "doing \u2192 review: K3 committed b1da9d7: 10 Archetyp-Profile (Abstandsband, Weben, Lunze, Flankier-Radius, Split-Schwelle, Fuse, Blink-Cooldown); Signatur unver\u00e4ndert; build+tests gr\u00fcn."
         },
         {
           "at": "2026-11-27T04:21:18Z",
@@ -3261,7 +3261,7 @@
     {
       "id": 2226,
       "title": "m10-enemy-ai #4 Matrix nachher",
-      "description": "lane #1761: Alle 30 Gegnertypen erfüllen ihre Soll-Signatur; mindestens 4 klar verschiedene Verhaltenscluster; Test-Assertions je Cluster. Abnahme: npx vitest run tests/enemy-ai.test.ts grün, Matrix-Tabelle nachher in Doku, Cluster-Belege im Test.",
+      "description": "lane #1761: Alle 30 Gegnertypen erf\u00fcllen ihre Soll-Signatur; mindestens 4 klar verschiedene Verhaltenscluster; Test-Assertions je Cluster. Abnahme: npx vitest run tests/enemy-ai.test.ts gr\u00fcn, Matrix-Tabelle nachher in Doku, Cluster-Belege im Test.",
       "column": "todo",
       "assignee": "gameplay-dev",
       "notes": [
@@ -3273,7 +3273,7 @@
         {
           "at": "2026-11-27T04:35:25Z",
           "by": "build",
-          "text": "Merge m10-enemy-ai: Matrix-nachher-Arbeit liegt in der Lane (39e0d69), aber kein Commit nennt #2226 – bleibt todo/review-Kandidat bis ein Commit #2226 nennt."
+          "text": "Merge m10-enemy-ai: Matrix-nachher-Arbeit liegt in der Lane (39e0d69), aber kein Commit nennt #2226 \u2013 bleibt todo/review-Kandidat bis ein Commit #2226 nennt."
         }
       ],
       "created": "2026-11-27T00:55:35Z",
@@ -3282,14 +3282,14 @@
     {
       "id": 2227,
       "title": "m10-enemy-ai #5 In-Game-Beleg",
-      "description": "lane #1762: 5-min-Lauf @ timeScale 10 mit >=100 Gegnern, Screenshot shots/m10-enemy-ai-mass.png, FPS-Minimum >=55 (flock), npm run build grün, .lane-done. Abnahme: Shot zeigt >=100 Gegner, FPS-Beleg im Log, .lane-done committed.",
+      "description": "lane #1762: 5-min-Lauf @ timeScale 10 mit >=100 Gegnern, Screenshot shots/m10-enemy-ai-mass.png, FPS-Minimum >=55 (flock), npm run build gr\u00fcn, .lane-done. Abnahme: Shot zeigt >=100 Gegner, FPS-Beleg im Log, .lane-done committed.",
       "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T03:00:30Z",
           "by": "build",
-          "text": "todo → doing: K5 gestartet: 5-min-Lauf @ timeScale 10, Massen-Shot mit 187 Gegnern erzeugt; FPS-Messung wird nach Ende paralleler Kontrolleure ohne Fremdlast wiederholt."
+          "text": "todo \u2192 doing: K5 gestartet: 5-min-Lauf @ timeScale 10, Massen-Shot mit 187 Gegnern erzeugt; FPS-Messung wird nach Ende paralleler Kontrolleure ohne Fremdlast wiederholt."
         },
         {
           "at": "2026-11-27T04:21:18Z",
@@ -3299,7 +3299,7 @@
         {
           "at": "2026-11-27T04:34:48Z",
           "by": "build",
-          "text": "doing → review: Merge m10-enemy-ai: In-Game-Beleg vorhanden (732678c, nachgemessen 972c3bc: 169 Gegner, FPS-Min 59,3, 0 JS-Fehler) – wartet auf Kontrolleur-PASS."
+          "text": "doing \u2192 review: Merge m10-enemy-ai: In-Game-Beleg vorhanden (732678c, nachgemessen 972c3bc: 169 Gegner, FPS-Min 59,3, 0 JS-Fehler) \u2013 wartet auf Kontrolleur-PASS."
         },
         {
           "at": "2026-11-27T11:01:34Z",
@@ -3313,14 +3313,14 @@
     {
       "id": 2238,
       "title": "m10-atlas-gaps #K1 Audit-Werkzeug",
-      "description": "scripts/art/atlas-audit.mjs: prüft Coverage aller erwarteten Frame-Keys, Zellabstand >=2px, Bleed im 2px-Ring; schreibt shots/m10-atlas-audit.json. Abnahme: Skript läuft, JSON existiert, Commit enthält Skript+JSON.",
+      "description": "scripts/art/atlas-audit.mjs: pr\u00fcft Coverage aller erwarteten Frame-Keys, Zellabstand >=2px, Bleed im 2px-Ring; schreibt shots/m10-atlas-audit.json. Abnahme: Skript l\u00e4uft, JSON existiert, Commit enth\u00e4lt Skript+JSON.",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T04:45:35Z",
           "by": "build",
-          "text": "lane #1678 (#K1) — Audit-Skript 3 Pflichtprüfungen, Lauf RC=0, 227/227 Coverage, Gutter min 4px, 0 Bleed; Commit 3160d25."
+          "text": "lane #1678 (#K1) \u2014 Audit-Skript 3 Pflichtpr\u00fcfungen, Lauf RC=0, 227/227 Coverage, Gutter min 4px, 0 Bleed; Commit 3160d25."
         }
       ],
       "created": "2026-11-27T04:44:57Z",
@@ -3329,14 +3329,14 @@
     {
       "id": 2239,
       "title": "m10-atlas-gaps #K2 Ist-Stand dokumentieren",
-      "description": "Fehlende Keys, zu kleine Gutter, Bleed-Fälle aus Audit-JSON in docs/lanes/m10-atlas-gaps.md listen. Abnahme: Doku nennt konkrete Zahlen/Frames und ist committet.",
+      "description": "Fehlende Keys, zu kleine Gutter, Bleed-F\u00e4lle aus Audit-JSON in docs/lanes/m10-atlas-gaps.md listen. Abnahme: Doku nennt konkrete Zahlen/Frames und ist committet.",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T04:45:35Z",
           "by": "build",
-          "text": "lane #1679 (#K2) — Ist-Stand dokumentiert: 224/224, 3 heisse Keys fehlten, Gutter 0/358, 131 Bleed; Commit 0b4fc02."
+          "text": "lane #1679 (#K2) \u2014 Ist-Stand dokumentiert: 224/224, 3 heisse Keys fehlten, Gutter 0/358, 131 Bleed; Commit 0b4fc02."
         }
       ],
       "created": "2026-11-27T04:44:57Z",
@@ -3345,14 +3345,14 @@
     {
       "id": 2240,
       "title": "m10-atlas-gaps #K3 Fix Atlas",
-      "description": "src/gfx/atlas.ts: fehlende heisse Klassen aufnehmen, Gutter 2px horizontal+vertikal, 1px transparentes Padding pro Zelle; Atlas-Key/API unverändert. Abnahme: Audit 100% Coverage, 0 Gutter-Verstöße, 0 Bleed.",
+      "description": "src/gfx/atlas.ts: fehlende heisse Klassen aufnehmen, Gutter 2px horizontal+vertikal, 1px transparentes Padding pro Zelle; Atlas-Key/API unver\u00e4ndert. Abnahme: Audit 100% Coverage, 0 Gutter-Verst\u00f6\u00dfe, 0 Bleed.",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T04:45:35Z",
           "by": "build",
-          "text": "lane #1680 (#K3) — Fix 815df54: 227/227, 2px Gutter h+v + 1px Padding, 0 Bleed, API unverändert; Reviewer PASS, Commit 32b0053."
+          "text": "lane #1680 (#K3) \u2014 Fix 815df54: 227/227, 2px Gutter h+v + 1px Padding, 0 Bleed, API unver\u00e4ndert; Reviewer PASS, Commit 32b0053."
         }
       ],
       "created": "2026-11-27T04:44:57Z",
@@ -3361,14 +3361,14 @@
     {
       "id": 2241,
       "title": "m10-atlas-gaps #K4 Test",
-      "description": "tests/atlas.test.ts: Coverage 100%, Gutter>=2px, keine Bleed-Fälle, deterministische Atlas-Grösse. Abnahme: npx vitest run tests/atlas.test.ts grün.",
+      "description": "tests/atlas.test.ts: Coverage 100%, Gutter>=2px, keine Bleed-F\u00e4lle, deterministische Atlas-Gr\u00f6sse. Abnahme: npx vitest run tests/atlas.test.ts gr\u00fcn.",
       "column": "done",
       "assignee": "test-auditor",
       "notes": [
         {
           "at": "2026-11-27T04:45:35Z",
           "by": "build",
-          "text": "lane #1681 (#K4) — tests/atlas.test.ts 7/7 grün, 227/227 gepinnt, Gutter/Bleed/Determinismus; Commit e26ed6e."
+          "text": "lane #1681 (#K4) \u2014 tests/atlas.test.ts 7/7 gr\u00fcn, 227/227 gepinnt, Gutter/Bleed/Determinismus; Commit e26ed6e."
         }
       ],
       "created": "2026-11-27T04:44:57Z",
@@ -3377,14 +3377,14 @@
     {
       "id": 2242,
       "title": "m10-atlas-gaps #K5 Beleg+Abschluss",
-      "description": "Vorher/Nachher-Screenshot desselben Frames, Pixel-Diff=0; Draw-Call/Batch-Zahl dokumentiert; build+test grün. Abnahme: shots/m10-atlas-before.png/-after.png, Diff 0.",
+      "description": "Vorher/Nachher-Screenshot desselben Frames, Pixel-Diff=0; Draw-Call/Batch-Zahl dokumentiert; build+test gr\u00fcn. Abnahme: shots/m10-atlas-before.png/-after.png, Diff 0.",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T04:45:35Z",
           "by": "build",
-          "text": "lane #1682 (#K5) — Belege: before/after Pixel-Diff AE=0, Draw-Calls 2.0→1.0/Frame, 0 JS-Fehler; Commits 4c0b423/7a07c0a."
+          "text": "lane #1682 (#K5) \u2014 Belege: before/after Pixel-Diff AE=0, Draw-Calls 2.0\u21921.0/Frame, 0 JS-Fehler; Commits 4c0b423/7a07c0a."
         }
       ],
       "created": "2026-11-27T04:44:57Z",
@@ -3400,7 +3400,7 @@
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
-          "text": "Merge m10-chest-timing, lane #2158: Beleg b0d9aae, shots/m10-chest-timing.json – 6/6 ±0,5 s (Δ0), 1 Truhe je Boss, 0 Doppel-Spawns."
+          "text": "Merge m10-chest-timing, lane #2158: Beleg b0d9aae, shots/m10-chest-timing.json \u2013 6/6 \u00b10,5 s (\u03940), 1 Truhe je Boss, 0 Doppel-Spawns."
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3416,7 +3416,7 @@
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
-          "text": "Merge m10-chest-timing, lane #2159: Beleg 0bb14e7, tests/chest-timing.test.ts 6/6 grün (Minutenränder 299.99/300/300.01)."
+          "text": "Merge m10-chest-timing, lane #2159: Beleg 0bb14e7, tests/chest-timing.test.ts 6/6 gr\u00fcn (Minutenr\u00e4nder 299.99/300/300.01)."
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3432,7 +3432,7 @@
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
-          "text": "Merge m10-chest-timing, lane #2160: Beleg bb4b99f, Pfeil 0,00° in 16:9/19.5:9/4:3, Panel max 2 Zeilen, min Rand 31 px, 0 Overlaps."
+          "text": "Merge m10-chest-timing, lane #2160: Beleg bb4b99f, Pfeil 0,00\u00b0 in 16:9/19.5:9/4:3, Panel max 2 Zeilen, min Rand 31 px, 0 Overlaps."
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3448,7 +3448,7 @@
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
-          "text": "Merge m10-chest-timing, lane #2161: Beleg 842dd8a, docs/lanes/m10-chest-timing.md; .lane-done-Marker nach Merge entfernt (gehört nicht nach main)."
+          "text": "Merge m10-chest-timing, lane #2161: Beleg 842dd8a, docs/lanes/m10-chest-timing.md; .lane-done-Marker nach Merge entfernt (geh\u00f6rt nicht nach main)."
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3524,7 +3524,7 @@
         {
           "at": "2026-11-27T05:40:25Z",
           "by": "build",
-          "text": "lane #2098 (aus Lane m10-gem-magnet): Ist-Messung PASS – 12 Minuten-Samples @30x, maxOver=0, rejected=0, 0 JS-Fehler; Baseline-JSON + Ist-Shot Minute 12. Commits 4611bc6/37a3812."
+          "text": "lane #2098 (aus Lane m10-gem-magnet): Ist-Messung PASS \u2013 12 Minuten-Samples @30x, maxOver=0, rejected=0, 0 JS-Fehler; Baseline-JSON + Ist-Shot Minute 12. Commits 4611bc6/37a3812."
         }
       ],
       "created": "2026-11-27T05:39:36Z",
@@ -3540,7 +3540,7 @@
         {
           "at": "2026-11-27T05:40:25Z",
           "by": "build",
-          "text": "lane #2099 (aus Lane m10-gem-magnet): Cap-Haertung PASS – mergeGemValues erhaelt XP-Summe exakt, Cap bei Burst 500->24 eingehalten, rejected=0; 8/8 Tests gruen. Commit 59da2a3."
+          "text": "lane #2099 (aus Lane m10-gem-magnet): Cap-Haertung PASS \u2013 mergeGemValues erhaelt XP-Summe exakt, Cap bei Burst 500->24 eingehalten, rejected=0; 8/8 Tests gruen. Commit 59da2a3."
         }
       ],
       "created": "2026-11-27T05:39:36Z",
@@ -3556,7 +3556,7 @@
         {
           "at": "2026-11-27T05:40:25Z",
           "by": "build",
-          "text": "lane #2100 (aus Lane m10-gem-magnet): Magnet-Semantik PASS – Anziehung exakt am Radius 48,400 px, Ankunft 340,7 ms/21 Frames <=0,4 s, 5 Kristalle gleichzeitig; Grenzfall-Tests 8/8. Beleg shots/m10-gem-magnet-magnet.json, Commit accf051."
+          "text": "lane #2100 (aus Lane m10-gem-magnet): Magnet-Semantik PASS \u2013 Anziehung exakt am Radius 48,400 px, Ankunft 340,7 ms/21 Frames <=0,4 s, 5 Kristalle gleichzeitig; Grenzfall-Tests 8/8. Beleg shots/m10-gem-magnet-magnet.json, Commit accf051."
         }
       ],
       "created": "2026-11-27T05:39:36Z",
@@ -3572,7 +3572,7 @@
         {
           "at": "2026-11-27T05:40:25Z",
           "by": "build",
-          "text": "lane #2101 (aus Lane m10-gem-magnet): Lesbarkeit PASS – RGB-Abstand 3 Groessen >=131,9; 1-px-Kontur; 319 Gegner + 24 Kristalle im Chaos-Shot; Near-White 0,3% <=4,16%. Commits ef5d88e + e7019fa."
+          "text": "lane #2101 (aus Lane m10-gem-magnet): Lesbarkeit PASS \u2013 RGB-Abstand 3 Groessen >=131,9; 1-px-Kontur; 319 Gegner + 24 Kristalle im Chaos-Shot; Near-White 0,3% <=4,16%. Commits ef5d88e + e7019fa."
         }
       ],
       "created": "2026-11-27T05:39:36Z",
@@ -3616,8 +3616,8 @@
     },
     {
       "id": 2440,
-      "title": "m10-touch-latency #1 Messung Touch→Bewegung (iPhone14/Pixel7 quer)",
-      "description": "Scripted Touch-Sweep (Pointer down→move→up) in iPhone-14-quer- und Pixel-7-quer-Profil, pro Ereignis Frame-Zeitstempel; Latenz Median/p95 in shots/m10-touch-latency.json; Ist-Werte in docs/lanes/m10-touch-latency.md. Abnahme: JSON mit 2 Profilen + Median/p95, 0 JS-Fehler. (lane #2118)",
+      "title": "m10-touch-latency #1 Messung Touch\u2192Bewegung (iPhone14/Pixel7 quer)",
+      "description": "Scripted Touch-Sweep (Pointer down\u2192move\u2192up) in iPhone-14-quer- und Pixel-7-quer-Profil, pro Ereignis Frame-Zeitstempel; Latenz Median/p95 in shots/m10-touch-latency.json; Ist-Werte in docs/lanes/m10-touch-latency.md. Abnahme: JSON mit 2 Profilen + Median/p95, 0 JS-Fehler. (lane #2118)",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [],
@@ -3627,7 +3627,7 @@
     {
       "id": 2441,
       "title": "m10-touch-latency #2 Pfad straffen + Deadzone-Hysterese",
-      "description": "Snapshot-Übergabe ohne Zusatzframe; Deadzone-Hysterese (Enter 0.12 / Release 0.09) gegen Zittern, Priorität touch>gamepad>keyboard unverändert. Abnahme: tests/input-latency.test.ts prüft Hysterese + 0-Vektor bei Ruhe, tsc/build grün. (lane #2119)",
+      "description": "Snapshot-\u00dcbergabe ohne Zusatzframe; Deadzone-Hysterese (Enter 0.12 / Release 0.09) gegen Zittern, Priorit\u00e4t touch>gamepad>keyboard unver\u00e4ndert. Abnahme: tests/input-latency.test.ts pr\u00fcft Hysterese + 0-Vektor bei Ruhe, tsc/build gr\u00fcn. (lane #2119)",
       "column": "done",
       "assignee": "gameplay-dev",
       "notes": [],
@@ -3636,8 +3636,8 @@
     },
     {
       "id": 2442,
-      "title": "m10-touch-latency #3 Loslassen: pointerup → Achse 0 im nächsten Frame",
-      "description": "Nach touchend/pointerup ist move im nächsten Frame (0,0); Pause/Level-up/Truhe blockieren Gesten weiterhin. Abnahme: Test in tests/input-latency.test.ts + tests/input.test.ts grün, Beleg-Screenshot. (lane #2120)",
+      "title": "m10-touch-latency #3 Loslassen: pointerup \u2192 Achse 0 im n\u00e4chsten Frame",
+      "description": "Nach touchend/pointerup ist move im n\u00e4chsten Frame (0,0); Pause/Level-up/Truhe blockieren Gesten weiterhin. Abnahme: Test in tests/input-latency.test.ts + tests/input.test.ts gr\u00fcn, Beleg-Screenshot. (lane #2120)",
       "column": "done",
       "assignee": "gameplay-dev",
       "notes": [],
@@ -3647,7 +3647,7 @@
     {
       "id": 2443,
       "title": "m10-touch-latency #4 Doku + .lane-done",
-      "description": "docs/lanes/m10-touch-latency.md mit Latenz vorher/nachher (Median/p95), 0 JS-Fehler, Urteil. Abnahme: build+test grün, JSON-Belege committed, 0 JS-Fehler in beiden Profilen. (lane #2121)",
+      "description": "docs/lanes/m10-touch-latency.md mit Latenz vorher/nachher (Median/p95), 0 JS-Fehler, Urteil. Abnahme: build+test gr\u00fcn, JSON-Belege committed, 0 JS-Fehler in beiden Profilen. (lane #2121)",
       "column": "done",
       "assignee": "coder",
       "notes": [],
@@ -3721,23 +3721,23 @@
     {
       "id": 2498,
       "title": "[fa-01] Gesamtlauf M8-display+M9: build, Tests, Count, 30-min-Sieg, perf 640/780",
-      "description": "Beleg-Dokument docs/qa/final-2026-11-27.md auf main@<SHA>: npm run build grün; npm test mit Testzahl und 0 fail; acceptance-count 30/6/6/6/6/2; verify:final 7/7 ohne JS-Fehler; 30-min-autoPlay (fullrun) mit 6 Bossen 300–1800 s, 6 Truhen, >=1 Evolution, Sieg, 0 JS-Fehler; perf 640x360 und 780x360 je >=3 Burst-Läufe (Min-Wert zählt) und Minute-25. Abnahme: jede Zeile mit Befehl, Zahl, Zeitstempel, Urteil; Abweichung >=5 % gegen ACCEPTANCE.md markiert; ein <55-FPS-Befund wird blocked mit Messwerten, nicht wegdiskutiert.",
+      "description": "Beleg-Dokument docs/qa/final-2026-11-27.md auf main@<SHA>: npm run build gr\u00fcn; npm test mit Testzahl und 0 fail; acceptance-count 30/6/6/6/6/2; verify:final 7/7 ohne JS-Fehler; 30-min-autoPlay (fullrun) mit 6 Bossen 300\u20131800 s, 6 Truhen, >=1 Evolution, Sieg, 0 JS-Fehler; perf 640x360 und 780x360 je >=3 Burst-L\u00e4ufe (Min-Wert z\u00e4hlt) und Minute-25. Abnahme: jede Zeile mit Befehl, Zahl, Zeitstempel, Urteil; Abweichung >=5 % gegen ACCEPTANCE.md markiert; ein <55-FPS-Befund wird blocked mit Messwerten, nicht wegdiskutiert.",
       "column": "blocked",
       "notes": [
         {
           "at": "2026-11-27T06:57:46Z",
           "by": "build",
-          "text": "todo → doing: 2026-11-27T06:50Z: Build grün (2204ddc), 301 Tests 0 fail, counts 30/6/6/6/6/2, verify:final 7/7, fullrun 2x fpsMin 37,9/40,2 (<55), perf 640 Burst 46,3–49,3 (<55), 780 Burst 55,9–57,8 (PASS). 640/780 Minute-25 37,8–47,3. Ergebnis wird blocked mit Belegen."
+          "text": "todo \u2192 doing: 2026-11-27T06:50Z: Build gr\u00fcn (2204ddc), 301 Tests 0 fail, counts 30/6/6/6/6/2, verify:final 7/7, fullrun 2x fpsMin 37,9/40,2 (<55), perf 640 Burst 46,3\u201349,3 (<55), 780 Burst 55,9\u201357,8 (PASS). 640/780 Minute-25 37,8\u201347,3. Ergebnis wird blocked mit Belegen."
         },
         {
           "at": "2026-11-27T07:16:44Z",
           "by": "build",
-          "text": "doing → blocked: 2026-11-27T07:12Z @2204ddc: Build rc=0; 301 Tests/26 Dateien, 0 fail; acceptance-count 30/6/6/6/6/2; verify:final 7/7, 0 JS. fullrun 2x: 6/6 Bosse 300–1800 s, 6 Truhen, Sieg dawn, 0 JS, aber fpsMin 37,9 / 40,2 (<55). perf 640x360 3x: Burst 49,3/46,6/46,3 (Min 46,3 <55), Minute 25 41,4/39,3/37,8. perf 780x360@3 3x: Burst 57,8/55,9/56,1 PASS, Minute 25 47,3/43,1/44,2 (<50). 960x540 Referenz: Burst 60,1. Belege docs/qa/final-2026-11-27.md + shots/qa-perf-*.json. Wiederholung nach Supervisor-Regel abgebrochen. Ursache offen (View/Fit-Pfad vs. m10-Lanes, Host-Last ~5)."
+          "text": "doing \u2192 blocked: 2026-11-27T07:12Z @2204ddc: Build rc=0; 301 Tests/26 Dateien, 0 fail; acceptance-count 30/6/6/6/6/2; verify:final 7/7, 0 JS. fullrun 2x: 6/6 Bosse 300\u20131800 s, 6 Truhen, Sieg dawn, 0 JS, aber fpsMin 37,9 / 40,2 (<55). perf 640x360 3x: Burst 49,3/46,6/46,3 (Min 46,3 <55), Minute 25 41,4/39,3/37,8. perf 780x360@3 3x: Burst 57,8/55,9/56,1 PASS, Minute 25 47,3/43,1/44,2 (<50). 960x540 Referenz: Burst 60,1. Belege docs/qa/final-2026-11-27.md + shots/qa-perf-*.json. Wiederholung nach Supervisor-Regel abgebrochen. Ursache offen (View/Fit-Pfad vs. m10-Lanes, Host-Last ~5)."
         },
         {
           "at": "2026-11-27T09:31:32Z",
           "by": "build",
-          "text": "Versuch 2: Re-Messung @1242759 (09:18–09:22Z): Burst640 51,7/43,8/47,8 (Min 43,8), M25 40,8/39,9/43,1; fullrun 1 Lauf 31,3 FPS-Min, Sieg/Dawn, Heap +0,3 %. FPS weiter FAIL; Fix-Lanes m10-endgame-fps/separation-crowd/ground-cost nicht in main."
+          "text": "Versuch 2: Re-Messung @1242759 (09:18\u201309:22Z): Burst640 51,7/43,8/47,8 (Min 43,8), M25 40,8/39,9/43,1; fullrun 1 Lauf 31,3 FPS-Min, Sieg/Dawn, Heap +0,3 %. FPS weiter FAIL; Fix-Lanes m10-endgame-fps/separation-crowd/ground-cost nicht in main."
         }
       ],
       "created": "2026-11-27T06:57:26Z",
@@ -3746,7 +3746,7 @@
     {
       "id": 2499,
       "title": "[fa-02] Sicht-Belege: Display-Profile + 30 Gegner/6 Bosse/12 VFX-GIFs bei 640x360",
-      "description": "Prüft shots/m8-*.png je Profil (1920x1080, 3840x2160, 2560x1440@1.5, 1366x768, iPhone 14 quer, Pixel 7 quer, iPad Pro quer): Spielpixel = ganzzahliges n×n, keine abgeschnittenen UI-Teile, Rand <=8 % (4:3 ausgenommen). Neue Kontaktbögen der 30 Gegner und 6 Bosse sowie 12 Waffen-/Evolutions-GIFs bei exakt 640x360 (shots/qa-enemy-*, qa-boss-*, qa-vfx-*). Abnahme: jedes Bild mit Vision geprüft (2–4x nearest), Urteil + Pfad notiert, 0 JS-Fehler im Touch-Lauf (verify-display).",
+      "description": "Pr\u00fcft shots/m8-*.png je Profil (1920x1080, 3840x2160, 2560x1440@1.5, 1366x768, iPhone 14 quer, Pixel 7 quer, iPad Pro quer): Spielpixel = ganzzahliges n\u00d7n, keine abgeschnittenen UI-Teile, Rand <=8 % (4:3 ausgenommen). Neue Kontaktb\u00f6gen der 30 Gegner und 6 Bosse sowie 12 Waffen-/Evolutions-GIFs bei exakt 640x360 (shots/qa-enemy-*, qa-boss-*, qa-vfx-*). Abnahme: jedes Bild mit Vision gepr\u00fcft (2\u20134x nearest), Urteil + Pfad notiert, 0 JS-Fehler im Touch-Lauf (verify-display).",
       "column": "done",
       "notes": [
         {
@@ -3757,12 +3757,12 @@
         {
           "at": "2026-11-27T09:31:32Z",
           "by": "build",
-          "text": "Abschluss a145678 (#2499): Display 38/38 PASS, 30 Gegner- + 6 Boss-Kontaktbogen, 12/12 VFX-GIFs @640x360 per Vision geprüft; ACCEPTANCE verlinkt. Keine Lücke."
+          "text": "Abschluss a145678 (#2499): Display 38/38 PASS, 30 Gegner- + 6 Boss-Kontaktbogen, 12/12 VFX-GIFs @640x360 per Vision gepr\u00fcft; ACCEPTANCE verlinkt. Keine L\u00fccke."
         },
         {
           "at": "2026-11-27T09:34:40Z",
           "by": "build",
-          "text": "doing → done: Sicht-Belege PASS, shots/qa-*-640*, ACCEPTANCE verlinkt; Commit a145678."
+          "text": "doing \u2192 done: Sicht-Belege PASS, shots/qa-*-640*, ACCEPTANCE verlinkt; Commit a145678."
         }
       ],
       "created": "2026-11-27T08:13:06Z",
@@ -3842,7 +3842,7 @@
         {
           "at": "2026-11-27T09:05:10Z",
           "by": "build",
-          "text": "lane #1778 · Commit 23f3c4a: Tabelle 30 Archetypen, 4 Klassen im Kampfpfad."
+          "text": "lane #1778 \u00b7 Commit 23f3c4a: Tabelle 30 Archetypen, 4 Klassen im Kampfpfad."
         }
       ],
       "created": "2026-11-27T09:04:13Z",
@@ -3850,15 +3850,15 @@
     },
     {
       "id": 2643,
-      "title": "m10-death-fx K2 Spec schärfen in src/logic/death.ts",
-      "description": "Pro Klasse eigene deterministische Werte für Count, Größe (scale), Dauer, Farbe/Tint, Textur und Streuung; Boss skaliert >=2x Fläche + eigene Textur. Keine Gameplay-/Balance-Werte. Abnahme: DeathFxSpec trägt diese Felder, tsc grün. Commit.",
+      "title": "m10-death-fx K2 Spec sch\u00e4rfen in src/logic/death.ts",
+      "description": "Pro Klasse eigene deterministische Werte f\u00fcr Count, Gr\u00f6\u00dfe (scale), Dauer, Farbe/Tint, Textur und Streuung; Boss skaliert >=2x Fl\u00e4che + eigene Textur. Keine Gameplay-/Balance-Werte. Abnahme: DeathFxSpec tr\u00e4gt diese Felder, tsc gr\u00fcn. Commit.",
       "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T09:05:10Z",
           "by": "build",
-          "text": "lane #1779 · Commit b631b71: Spec-Felder + Boss fx_boss_core, 2,56x Flaeche."
+          "text": "lane #1779 \u00b7 Commit b631b71: Spec-Felder + Boss fx_boss_core, 2,56x Flaeche."
         }
       ],
       "created": "2026-11-27T09:04:13Z",
@@ -3867,14 +3867,14 @@
     {
       "id": 2644,
       "title": "m10-death-fx K3 Umsetzung in CombatSystem.killsFx",
-      "description": "Tod nutzt die Spec vollständig (vorhandene FX-Texturen, keine neuen Assets); keine Änderung an Schaden/Hitboxen. Abnahme: killsFx übergibt alle Spec-Felder an Partikel/FX, tsc grün. Commit.",
+      "description": "Tod nutzt die Spec vollst\u00e4ndig (vorhandene FX-Texturen, keine neuen Assets); keine \u00c4nderung an Schaden/Hitboxen. Abnahme: killsFx \u00fcbergibt alle Spec-Felder an Partikel/FX, tsc gr\u00fcn. Commit.",
       "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T09:05:10Z",
           "by": "build",
-          "text": "lane #1780 · Commit 0d405c8: killsFx nutzt alle Spec-Felder; keine Schadens-/Hitbox-Aenderung."
+          "text": "lane #1780 \u00b7 Commit 0d405c8: killsFx nutzt alle Spec-Felder; keine Schadens-/Hitbox-Aenderung."
         }
       ],
       "created": "2026-11-27T09:04:13Z",
@@ -3883,14 +3883,14 @@
     {
       "id": 2645,
       "title": "m10-death-fx K4 Test tests/death-fx.test.ts",
-      "description": "Alle 4 Klassen unterscheidbar in >=3 Dimensionen; jeder Archetyp mappt auf eine der 4 Klassen; Boss-Spec != Nicht-Boss-Spec; deterministisch (2 Läufe gleiche Werte). Abnahme: npx vitest run tests/death-fx.test.ts grün. Commit.",
+      "description": "Alle 4 Klassen unterscheidbar in >=3 Dimensionen; jeder Archetyp mappt auf eine der 4 Klassen; Boss-Spec != Nicht-Boss-Spec; deterministisch (2 L\u00e4ufe gleiche Werte). Abnahme: npx vitest run tests/death-fx.test.ts gr\u00fcn. Commit.",
       "column": "done",
       "assignee": "test-auditor",
       "notes": [
         {
           "at": "2026-11-27T09:05:10Z",
           "by": "build",
-          "text": "lane #1781 · Commit f944652: 30 Archetypen einzeln, 5/5 gruen; test-auditor PASS."
+          "text": "lane #1781 \u00b7 Commit f944652: 30 Archetypen einzeln, 5/5 gruen; test-auditor PASS."
         }
       ],
       "created": "2026-11-27T09:04:13Z",
@@ -3899,14 +3899,14 @@
     {
       "id": 2646,
       "title": "m10-death-fx K5 Beleg + Doku",
-      "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Grössenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test grün; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test grün, .lane-done tracked. Commit.",
+      "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Gr\u00f6ssenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test gr\u00fcn; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test gr\u00fcn, .lane-done tracked. Commit.",
       "column": "blocked",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T09:05:10Z",
           "by": "build",
-          "text": "lane #1782 blocked · art-director FAIL 2,5/5 (Silhouetten brauchen gfx-Nachzug); Folge als #2647. Belege shots/m10-death-fx-*."
+          "text": "lane #1782 blocked \u00b7 art-director FAIL 2,5/5 (Silhouetten brauchen gfx-Nachzug); Folge als #2647. Belege shots/m10-death-fx-*."
         }
       ],
       "created": "2026-11-27T09:04:13Z",
@@ -3922,7 +3922,7 @@
         {
           "at": "2026-11-27T09:05:10Z",
           "by": "build",
-          "text": "lane #2418 (backlog) · Folge aus #1782: Death-Motifs mit Rim/Kern/Silhouette in src/gfx/gen-fx.ts."
+          "text": "lane #2418 (backlog) \u00b7 Folge aus #1782: Death-Motifs mit Rim/Kern/Silhouette in src/gfx/gen-fx.ts."
         }
       ],
       "created": "2026-11-27T09:04:13Z",
@@ -3943,7 +3943,7 @@
         {
           "at": "2026-11-27T09:34:40Z",
           "by": "build",
-          "text": "review → done: Beleg Commit 1fc71e8."
+          "text": "review \u2192 done: Beleg Commit 1fc71e8."
         }
       ],
       "created": "2026-11-27T09:17:15Z",
@@ -3959,12 +3959,12 @@
         {
           "at": "2026-11-27T09:34:40Z",
           "by": "build",
-          "text": "Erledigt: latest-build=Build 0c525c8 (08:00:04Z, sha256 f1631169…, 2481018 B), 44 min / 4 Commits hinter HEAD 217316d; Pfad ~/lf-apk/out veraltet. Commit 1242759 (#fa-04)."
+          "text": "Erledigt: latest-build=Build 0c525c8 (08:00:04Z, sha256 f1631169\u2026, 2481018 B), 44 min / 4 Commits hinter HEAD 217316d; Pfad ~/lf-apk/out veraltet. Commit 1242759 (#fa-04)."
         },
         {
           "at": "2026-11-27T09:34:40Z",
           "by": "build",
-          "text": "review → done: Beleg Commit 1242759."
+          "text": "review \u2192 done: Beleg Commit 1242759."
         }
       ],
       "created": "2026-11-27T09:17:15Z",
@@ -4121,7 +4121,7 @@
     {
       "id": 2745,
       "title": "m10-boss-onscreen #K4 Test",
-      "description": "Lane m10-boss-onscreen K4 (lane #2541). tests/boss-spawn-composition.test.ts: alle 6 Bosse bei 640x360 und 480x360: boss.top >= hpBar.bottom+6 und banner ∩ boss = ∅ ueber 72 Winkel. Abnahme: 13 Tests gruen, Commit 8d7344a.",
+      "description": "Lane m10-boss-onscreen K4 (lane #2541). tests/boss-spawn-composition.test.ts: alle 6 Bosse bei 640x360 und 480x360: boss.top >= hpBar.bottom+6 und banner \u2229 boss = \u2205 ueber 72 Winkel. Abnahme: 13 Tests gruen, Commit 8d7344a.",
       "column": "done",
       "assignee": "coder",
       "notes": [
@@ -4432,19 +4432,19 @@
     },
     {
       "id": 3418,
-      "title": "[fa2-01] Schnelle Checks: build, Tests, Inhaltszählung, verify:final",
+      "title": "[fa2-01] Schnelle Checks: build, Tests, Inhaltsz\u00e4hlung, verify:final",
       "description": "Abnahme: `npm run build` rc=0, `npm test` 0 fail (Zahl dokumentiert), `node scripts/acceptance-count.mjs` ok:true 30/6/6/6/6/2, `verify:final` 7/7, 0 JS-Fehler. Belege in docs/qa/reacceptance-2026-11-27.md. Ein Commit nur mit diesen Belegen.",
       "column": "review",
       "notes": [
         {
           "at": "2026-11-27T13:15:12Z",
           "by": "build",
-          "text": "todo → doing: Start: Build, Tests, Inhaltszählung, verify:final"
+          "text": "todo \u2192 doing: Start: Build, Tests, Inhaltsz\u00e4hlung, verify:final"
         },
         {
           "at": "2026-11-27T13:23:45Z",
           "by": "build",
-          "text": "doing → review: PASS: build rc=0, 355 Tests/33 Dateien 0 fail, Inhalte 30/6/6/6/6/2, verify:final 7/7, 0 JS-Fehler. Beleg docs/qa/reacceptance-2026-11-27.md + /tmp/lf-fa2/*.log. Commit 438c5f3."
+          "text": "doing \u2192 review: PASS: build rc=0, 355 Tests/33 Dateien 0 fail, Inhalte 30/6/6/6/6/2, verify:final 7/7, 0 JS-Fehler. Beleg docs/qa/reacceptance-2026-11-27.md + /tmp/lf-fa2/*.log. Commit 438c5f3."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4452,19 +4452,19 @@
     },
     {
       "id": 3419,
-      "title": "[fa2-02] Performance 640×360 + 780×360 (flock): Burst + Minute 25, je 3 Läufe",
-      "description": "Abnahme: 3 Läufe je View unter `flock /home/ai/games/.lf-perf.lock` mit scripts/perf.mjs; Burst (500 Gegner) min ≥55 und Minute-25 min ≥50, 0 JS-Fehler, loadavg notiert. Roh-JSON shots/qa-reaccept-*.json. Ergebnis in docs/qa/reacceptance-2026-11-27.md. Ein Commit.",
+      "title": "[fa2-02] Performance 640\u00d7360 + 780\u00d7360 (flock): Burst + Minute 25, je 3 L\u00e4ufe",
+      "description": "Abnahme: 3 L\u00e4ufe je View unter `flock /home/ai/games/.lf-perf.lock` mit scripts/perf.mjs; Burst (500 Gegner) min \u226555 und Minute-25 min \u226550, 0 JS-Fehler, loadavg notiert. Roh-JSON shots/qa-reaccept-*.json. Ergebnis in docs/qa/reacceptance-2026-11-27.md. Ein Commit.",
       "column": "blocked",
       "notes": [
         {
           "at": "2026-11-27T13:24:42Z",
           "by": "build",
-          "text": "todo → doing: Start: 3× perf 640×360 + 3× 780×360@3 unter flock"
+          "text": "todo \u2192 doing: Start: 3\u00d7 perf 640\u00d7360 + 3\u00d7 780\u00d7360@3 unter flock"
         },
         {
           "at": "2026-11-27T15:09:42Z",
           "by": "build",
-          "text": "doing → blocked: Bestätigungslauf 2026-11-27T15:02Z (1 Durchlauf, flock, Timeout 900s): 640x360 Burst 60,1 PASS / M25 53,7 PASS; 780x360@3 Burst 55,5 PASS / M25 44,9 <50 FAIL. loadavg 11,21, 0 JS-Fehler. Belege shots/qa-reaccept-final-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-02c, ACCEPTANCE.md Versuch 3. Blockergrund: 780-Endgame-Renderpfad, Fix-Lanes nicht in main."
+          "text": "doing \u2192 blocked: Best\u00e4tigungslauf 2026-11-27T15:02Z (1 Durchlauf, flock, Timeout 900s): 640x360 Burst 60,1 PASS / M25 53,7 PASS; 780x360@3 Burst 55,5 PASS / M25 44,9 <50 FAIL. loadavg 11,21, 0 JS-Fehler. Belege shots/qa-reaccept-final-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-02c, ACCEPTANCE.md Versuch 3. Blockergrund: 780-Endgame-Renderpfad, Fix-Lanes nicht in main."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4472,14 +4472,14 @@
     },
     {
       "id": 3420,
-      "title": "[fa2-03] 30-min-autoPlay fullrun (30×) + Boss/Truhe/Sieg + Heap",
-      "description": "Abnahme: `flock … npm run fullrun` genau einmal: 6/6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Sieg dawn, 0 JS-Fehler, fpsMin und Heap-Delta dokumentiert. Beleg shots/m3-fullrun.json + docs/qa. Ein Commit.",
+      "title": "[fa2-03] 30-min-autoPlay fullrun (30\u00d7) + Boss/Truhe/Sieg + Heap",
+      "description": "Abnahme: `flock \u2026 npm run fullrun` genau einmal: 6/6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Sieg dawn, 0 JS-Fehler, fpsMin und Heap-Delta dokumentiert. Beleg shots/m3-fullrun.json + docs/qa. Ein Commit.",
       "column": "review",
       "notes": [
         {
           "at": "2026-11-27T16:04:26Z",
           "by": "build",
-          "text": "todo → review: Nachtrag: Arbeit liegt in Commit e62114c (13:41Z): fullrun 30x 640/780, 6/6 Bosse 300-1800s mit je 1 Truhe, Sieg dawn, 0 JS-Fehler; fpsMin 35,7/34,8 <55 FAIL; Heap +8,7% PASS / +15,2% knapp FAIL. Belege shots/qa-reaccept-fullrun-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-03."
+          "text": "todo \u2192 review: Nachtrag: Arbeit liegt in Commit e62114c (13:41Z): fullrun 30x 640/780, 6/6 Bosse 300-1800s mit je 1 Truhe, Sieg dawn, 0 JS-Fehler; fpsMin 35,7/34,8 <55 FAIL; Heap +8,7% PASS / +15,2% knapp FAIL. Belege shots/qa-reaccept-fullrun-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-03."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4487,14 +4487,14 @@
     },
     {
       "id": 3421,
-      "title": "[fa2-04] 30-min-Echtzeitlauf genau einmal (realtime-run) + Heap ≤15 %",
-      "description": "Abnahme: `flock … node scripts/realtime-run.mjs` (voller Lauf, minutes=30) genau einmal: alle 6 Bosse exakt, Sieg/Dawn, Heap-Delta Minute 1→29 ≤15 %, FPS min/median, 0 JS-Fehler; shots/realtime-30min.json + Minuten-Shots. Ein Commit.",
+      "title": "[fa2-04] 30-min-Echtzeitlauf genau einmal (realtime-run) + Heap \u226415 %",
+      "description": "Abnahme: `flock \u2026 node scripts/realtime-run.mjs` (voller Lauf, minutes=30) genau einmal: alle 6 Bosse exakt, Sieg/Dawn, Heap-Delta Minute 1\u219229 \u226415 %, FPS min/median, 0 JS-Fehler; shots/realtime-30min.json + Minuten-Shots. Ein Commit.",
       "column": "blocked",
       "notes": [
         {
           "at": "2026-11-27T15:38:53Z",
           "by": "build",
-          "text": "todo → blocked: Echtzeitlauf einmal gestartet 15:14Z (Timeout 2400 s, flock), Harness-Fix --disable-dev-shm-usage ( /dev/shm nur 64 MB). Renderer starb erneut nach Minute 20 (Target closed, RT_RC=1); kein vollstaendiges realtime-30min.json, kein Heap-Delta Min1->29, kein Boss/Sieg-Protokoll. Log /tmp/lf-fa2/fa2-04-final.log, Minuten-Shots bis 20. Kein Wiederholungslauf ohne Code-Aenderung. Inhaltliche Boss/Truhe/Sieg-Belege aus fa2-03 fullrun vorhanden."
+          "text": "todo \u2192 blocked: Echtzeitlauf einmal gestartet 15:14Z (Timeout 2400 s, flock), Harness-Fix --disable-dev-shm-usage ( /dev/shm nur 64 MB). Renderer starb erneut nach Minute 20 (Target closed, RT_RC=1); kein vollstaendiges realtime-30min.json, kein Heap-Delta Min1->29, kein Boss/Sieg-Protokoll. Log /tmp/lf-fa2/fa2-04-final.log, Minuten-Shots bis 20. Kein Wiederholungslauf ohne Code-Aenderung. Inhaltliche Boss/Truhe/Sieg-Belege aus fa2-03 fullrun vorhanden."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4503,13 +4503,13 @@
     {
       "id": 3422,
       "title": "[fa2-05] Touch/Gamepad (verify-input) + Optik (art-director shots)",
-      "description": "Abnahme: `node scripts/verify-input.mjs` PASS (Zahl), 0 JS-Fehler; art-director-Urteil zu aktuellen 640×360-Shots (≥4/5 oder konkrete Mängel) in docs/qa. Ein Commit.",
+      "description": "Abnahme: `node scripts/verify-input.mjs` PASS (Zahl), 0 JS-Fehler; art-director-Urteil zu aktuellen 640\u00d7360-Shots (\u22654/5 oder konkrete M\u00e4ngel) in docs/qa. Ein Commit.",
       "column": "review",
       "notes": [
         {
           "at": "2026-11-27T15:59:26Z",
           "by": "build",
-          "text": "todo → review: verify-input 28/28 PASS, 0 JS-Fehler (13:43-13:44Z, Log shots/qa-reaccept-input-log.txt). art-director-Urteil: FAIL 3,25/5 mit konkreten Maengeln - results-Screen Textueberlappung SIEG/SCHADEN/GESAMT + Wortumbruch SEELENLEU/CHTFEUER + 6 statt 12 Zeilen (muss neu), perf-minute25 Boss-FX-Kontrast rot-auf-orange + halbtransparentes Announce-Panel (nachbessern), perf-500 und fullrun-minute25 ok (4/5). Beleg: docs/qa/reacceptance-2026-11-27.md fa2-05, Commit 38c21c4. Folgekarten empfohlen: Results-Layout, Boss-FX-Kontrast."
+          "text": "todo \u2192 review: verify-input 28/28 PASS, 0 JS-Fehler (13:43-13:44Z, Log shots/qa-reaccept-input-log.txt). art-director-Urteil: FAIL 3,25/5 mit konkreten Maengeln - results-Screen Textueberlappung SIEG/SCHADEN/GESAMT + Wortumbruch SEELENLEU/CHTFEUER + 6 statt 12 Zeilen (muss neu), perf-minute25 Boss-FX-Kontrast rot-auf-orange + halbtransparentes Announce-Panel (nachbessern), perf-500 und fullrun-minute25 ok (4/5). Beleg: docs/qa/reacceptance-2026-11-27.md fa2-05, Commit 38c21c4. Folgekarten empfohlen: Results-Layout, Boss-FX-Kontrast."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4524,7 +4524,7 @@
         {
           "at": "2026-11-27T16:04:04Z",
           "by": "build",
-          "text": "todo → review: docs/qa/reacceptance-2026-11-27.md vollstaendig (fa2-01..fa2-06 mit Befehlen/Zeitstempeln/Urteilen), ACCEPTANCE.md Endurteil Versuch 3: NICHT ABGENOMMEN. Blocker: 780-M25 41,3-46,4 <50, fullrun-fpsMin 35,7/34,8 <55, art-director FAIL 3,25/5, Echtzeitlauf blocked. Folgekarten #3424/#3425 im backlog. Commit 6a18d07."
+          "text": "todo \u2192 review: docs/qa/reacceptance-2026-11-27.md vollstaendig (fa2-01..fa2-06 mit Befehlen/Zeitstempeln/Urteilen), ACCEPTANCE.md Endurteil Versuch 3: NICHT ABGENOMMEN. Blocker: 780-M25 41,3-46,4 <50, fullrun-fpsMin 35,7/34,8 <55, art-director FAIL 3,25/5, Echtzeitlauf blocked. Folgekarten #3424/#3425 im backlog. Commit 6a18d07."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4532,8 +4532,8 @@
     },
     {
       "id": 3424,
-      "title": "@ui-dev m10-results-layout: Ergebnis-Screen Überlappung + Wortumbruch + 12 Zeilen",
-      "description": "Aus art-director-FAIL 3,25/5 (Re-Abnahme #3422): 'SIEG…'/'SCHADEN PRO WAFFE'/'GESAMT: 3.7M' überlagern sich auf gebrochener Grundlinie (shots/m3-fullrun-results.png, y≈235/255/270); 'SEELENLEUCHTFEUER' bricht ohne Trennstrich mitten im Wort; Tabelle zeigt 6 statt 12 Waffen-Zeilen, untere Panelhälfte leer. Abnahme: Neuer Shot ohne Überlappung, sauberer Umbruch/Trennstrich, 12 Zeilen sichtbar, art-director >=4/5, Tests grün.",
+      "title": "@ui-dev m10-results-layout: Ergebnis-Screen \u00dcberlappung + Wortumbruch + 12 Zeilen",
+      "description": "Aus art-director-FAIL 3,25/5 (Re-Abnahme #3422): 'SIEG\u2026'/'SCHADEN PRO WAFFE'/'GESAMT: 3.7M' \u00fcberlagern sich auf gebrochener Grundlinie (shots/m3-fullrun-results.png, y\u2248235/255/270); 'SEELENLEUCHTFEUER' bricht ohne Trennstrich mitten im Wort; Tabelle zeigt 6 statt 12 Waffen-Zeilen, untere Panelh\u00e4lfte leer. Abnahme: Neuer Shot ohne \u00dcberlappung, sauberer Umbruch/Trennstrich, 12 Zeilen sichtbar, art-director >=4/5, Tests gr\u00fcn.",
       "column": "backlog",
       "assignee": "ui-dev",
       "notes": [],
@@ -4543,7 +4543,7 @@
     {
       "id": 3425,
       "title": "@vfx-artist m10-boss-fx-contrast: rote Gegner vs. orange FX + opakes Announce-Panel",
-      "description": "Aus art-director-FAIL (Re-Abnahme #3422): Boss-Roben (rot) verschmelzen mit orangen Explosions-FX/Schadenszahlen (shots/perf-minute25.png); Announce-Panel halbtransparent, Pickup liegt auf 'BOSS ERWACHT'. Abnahme: dunklere Kontur/Ink-Rand um FX oder FX-Alpha gesenkt, Panel opak, Pickups unter Text ausgeblendet; Shot-Vergleich Vor/Nach, art-director >=4/5, Tests grün.",
+      "description": "Aus art-director-FAIL (Re-Abnahme #3422): Boss-Roben (rot) verschmelzen mit orangen Explosions-FX/Schadenszahlen (shots/perf-minute25.png); Announce-Panel halbtransparent, Pickup liegt auf 'BOSS ERWACHT'. Abnahme: dunklere Kontur/Ink-Rand um FX oder FX-Alpha gesenkt, Panel opak, Pickups unter Text ausgeblendet; Shot-Vergleich Vor/Nach, art-director >=4/5, Tests gr\u00fcn.",
       "column": "backlog",
       "assignee": "vfx-artist",
       "notes": [],
@@ -4560,7 +4560,7 @@
         {
           "at": "2026-11-27T16:14:23Z",
           "by": "build",
-          "text": "Merge b665994: lane #2198 aus m10-enemy-shots-fair in main übernommen"
+          "text": "Merge b665994: lane #2198 aus m10-enemy-shots-fair in main \u00fcbernommen"
         }
       ],
       "created": "2026-11-27T16:13:12Z",
@@ -4576,7 +4576,7 @@
         {
           "at": "2026-11-27T16:14:23Z",
           "by": "build",
-          "text": "Merge b665994: lane #2199 aus m10-enemy-shots-fair in main übernommen"
+          "text": "Merge b665994: lane #2199 aus m10-enemy-shots-fair in main \u00fcbernommen"
         }
       ],
       "created": "2026-11-27T16:13:12Z",
@@ -4592,7 +4592,7 @@
         {
           "at": "2026-11-27T16:14:23Z",
           "by": "build",
-          "text": "Merge b665994: lane #2200 aus m10-enemy-shots-fair in main übernommen"
+          "text": "Merge b665994: lane #2200 aus m10-enemy-shots-fair in main \u00fcbernommen"
         }
       ],
       "created": "2026-11-27T16:13:12Z",
@@ -4608,7 +4608,7 @@
         {
           "at": "2026-11-27T16:14:23Z",
           "by": "build",
-          "text": "Merge b665994: lane #2201 aus m10-enemy-shots-fair in main übernommen"
+          "text": "Merge b665994: lane #2201 aus m10-enemy-shots-fair in main \u00fcbernommen"
         }
       ],
       "created": "2026-11-27T16:13:12Z",
@@ -4693,7 +4693,7 @@
         {
           "at": "2026-11-27T16:48:51Z",
           "by": "build",
-          "text": "ux-check PASS: before.json 12/34 (35,3 %) belegt echte Lücken; Probe + bounds-JSON im Commit 3dafe2b/de579e0 (lane #3438)."
+          "text": "ux-check PASS: before.json 12/34 (35,3 %) belegt echte L\u00fccken; Probe + bounds-JSON im Commit 3dafe2b/de579e0 (lane #3438)."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
@@ -4714,7 +4714,7 @@
         {
           "at": "2026-11-27T16:48:51Z",
           "by": "build",
-          "text": "ux-check PASS + reviewer PASS: 124 Zonen geprüft, alle >=44 hoch, 0 außerhalb View; Optik unangetastet (Knopfzentren vor/nachher identisch). Commit 9a182f9 (lane #3439)."
+          "text": "ux-check PASS + reviewer PASS: 124 Zonen gepr\u00fcft, alle >=44 hoch, 0 au\u00dferhalb View; Optik unangetastet (Knopfzentren vor/nachher identisch). Commit 9a182f9 (lane #3439)."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
@@ -4735,7 +4735,7 @@
         {
           "at": "2026-11-27T16:48:52Z",
           "by": "build",
-          "text": "ux-check PASS + reviewer PASS: Zeilen lückenlos ohne Überlappung (kein Durchtippen), Tap setzt selected+Fokus+Wert; Live-Lauf 36/36. Commit cbe165d (lane #3440). Reviewer-Hinweise nicht-blockierend: createHitZone jetzt tot (Follow-up), ROW_PITCH-Literal in Loop."
+          "text": "ux-check PASS + reviewer PASS: Zeilen l\u00fcckenlos ohne \u00dcberlappung (kein Durchtippen), Tap setzt selected+Fokus+Wert; Live-Lauf 36/36. Commit cbe165d (lane #3440). Reviewer-Hinweise nicht-blockierend: createHitZone jetzt tot (Follow-up), ROW_PITCH-Literal in Loop."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
@@ -4756,7 +4756,7 @@
         {
           "at": "2026-11-27T16:48:52Z",
           "by": "build",
-          "text": "test-auditor PASS: 21/21 Tests mit echten Assertions (Mutationen würden rot gehen), tsc 0, npm test 376/376, kein Run-Coupling. Commit 97d0730 (lane #3441)."
+          "text": "test-auditor PASS: 21/21 Tests mit echten Assertions (Mutationen w\u00fcrden rot gehen), tsc 0, npm test 376/376, kein Run-Coupling. Commit 97d0730 (lane #3441)."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
@@ -4954,13 +4954,13 @@
     {
       "id": 4178,
       "title": "m10-verify-menus-view K1: Ist-Messung reproduzieren",
-      "description": "Lane-Karte, aus Lane-Board uebernommen. verify-menus klickt bei View 640x360 daneben – Ist-Messung mit before-Log und FAIL-Liste (Klickkoordinate -> erwartetes Element) belegt. Abnahme: before-Log + FAIL-Liste liegen unter shots/m10-verify-menus-before.log.",
+      "description": "Lane-Karte, aus Lane-Board uebernommen. verify-menus klickt bei View 640x360 daneben \u2013 Ist-Messung mit before-Log und FAIL-Liste (Klickkoordinate -> erwartetes Element) belegt. Abnahme: before-Log + FAIL-Liste liegen unter shots/m10-verify-menus-before.log.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:05:19Z",
           "by": "build",
-          "text": "review → done: lane #3598, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
+          "text": "review \u2192 done: lane #3598, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
         }
       ],
       "created": "2026-11-27T18:05:08Z",
@@ -4975,7 +4975,7 @@
         {
           "at": "2026-11-27T18:05:19Z",
           "by": "build",
-          "text": "review → done: lane #3599, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
+          "text": "review \u2192 done: lane #3599, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
         }
       ],
       "created": "2026-11-27T18:05:08Z",
@@ -4990,7 +4990,7 @@
         {
           "at": "2026-11-27T18:05:19Z",
           "by": "build",
-          "text": "review → done: lane #3600, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
+          "text": "review \u2192 done: lane #3600, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
         }
       ],
       "created": "2026-11-27T18:05:08Z",
@@ -5005,7 +5005,7 @@
         {
           "at": "2026-11-27T18:05:19Z",
           "by": "build",
-          "text": "review → done: lane #3601, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
+          "text": "review \u2192 done: lane #3601, Merge 1fd6c59 m10-verify-menus-view; Lane abgeschlossen (.lane-done, verify-menus PASS 15/15 @480x360)"
         }
       ],
       "created": "2026-11-27T18:05:08Z",
@@ -5100,7 +5100,7 @@
     {
       "id": 4242,
       "title": "m10-chaos-silhouettes K5 Beleg + Doku + FPS + art-director PASS (lane #2522)",
-      "description": "Chaos-Frame 1920x1080 + Crop, after.json aus echtem Code (Rim 60.2 %, Top 88.6 %, Randkontrast 73.9, unter Schwelle 42.5 %), FPS Minute 25: 60.1 (flock), Doku docs/lanes/m10-chaos-silhouettes.md. OFFEN (A10): art-director Re-Abnahme FAIL 3/5 (n>=4/5 noetig) – Kern-Crop vom Boss-Ring ueberzogen, Elite-Rim im 612er-Frame nicht eindeutig; Lane setzte .lane-done mit A10 offen. Merge 645b81c.",
+      "description": "Chaos-Frame 1920x1080 + Crop, after.json aus echtem Code (Rim 60.2 %, Top 88.6 %, Randkontrast 73.9, unter Schwelle 42.5 %), FPS Minute 25: 60.1 (flock), Doku docs/lanes/m10-chaos-silhouettes.md. OFFEN (A10): art-director Re-Abnahme FAIL 3/5 (n>=4/5 noetig) \u2013 Kern-Crop vom Boss-Ring ueberzogen, Elite-Rim im 612er-Frame nicht eindeutig; Lane setzte .lane-done mit A10 offen. Merge 645b81c.",
       "column": "blocked",
       "notes": [],
       "created": "2026-11-27T18:14:41Z",
@@ -5237,14 +5237,14 @@
     {
       "id": 4378,
       "title": "m10-results-overlap K1: Repro + Messung (Overlap-JSON + Before-Shots 640/780)",
-      "description": "lane #4118: echtes Bounding-Box-Messskript (640x360 fit=480, 780x360@3, victory+defeat, stress12): 0 Rechteck-Überlappungen, aber Portrait ragt 14px aus Panel-Rahmen, 1px-Grundlinien, Banner-Text mid-word geschnitten. Commit 9ce6fd7.",
+      "description": "lane #4118: echtes Bounding-Box-Messskript (640x360 fit=480, 780x360@3, victory+defeat, stress12): 0 Rechteck-\u00dcberlappungen, aber Portrait ragt 14px aus Panel-Rahmen, 1px-Grundlinien, Banner-Text mid-word geschnitten. Commit 9ce6fd7.",
       "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-27T18:34:42Z",
           "by": "build",
-          "text": "lane #4118 (m10-results-overlap): übernommen aus Lane, Merge 6b39e10, Commit 9ce6fd7."
+          "text": "lane #4118 (m10-results-overlap): \u00fcbernommen aus Lane, Merge 6b39e10, Commit 9ce6fd7."
         }
       ],
       "created": "2026-11-27T18:34:36Z",
@@ -5252,15 +5252,15 @@
     },
     {
       "id": 4379,
-      "title": "m10-results-overlap K2: Logik-Fix layoutResultRows (Abstände, dpi-/view-unabhängig)",
-      "description": "lane #4119: Total-Label aus rowsTop abgeleitet (rowsTop-9+oy), Kopfblock ≥2px Abstand, 12 Zeilen ohne Clipping. results.test.ts 14/14, layout-check PASS (0 Overlaps, 640+1920). Commit fdd3f58.",
+      "title": "m10-results-overlap K2: Logik-Fix layoutResultRows (Abst\u00e4nde, dpi-/view-unabh\u00e4ngig)",
+      "description": "lane #4119: Total-Label aus rowsTop abgeleitet (rowsTop-9+oy), Kopfblock \u22652px Abstand, 12 Zeilen ohne Clipping. results.test.ts 14/14, layout-check PASS (0 Overlaps, 640+1920). Commit fdd3f58.",
       "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-27T18:34:42Z",
           "by": "build",
-          "text": "lane #4119 (m10-results-overlap): übernommen aus Lane, Merge 6b39e10, Commit fdd3f58."
+          "text": "lane #4119 (m10-results-overlap): \u00fcbernommen aus Lane, Merge 6b39e10, Commit fdd3f58."
         }
       ],
       "created": "2026-11-27T18:34:36Z",
@@ -5276,7 +5276,7 @@
         {
           "at": "2026-11-27T18:34:42Z",
           "by": "build",
-          "text": "lane #4120 (m10-results-overlap): übernommen aus Lane, Merge 6b39e10, Commit c60a249."
+          "text": "lane #4120 (m10-results-overlap): \u00fcbernommen aus Lane, Merge 6b39e10, Commit c60a249."
         }
       ],
       "created": "2026-11-27T18:34:36Z",
@@ -5292,7 +5292,7 @@
         {
           "at": "2026-11-27T18:34:42Z",
           "by": "build",
-          "text": "lane #4121 (m10-results-overlap): übernommen aus Lane, Merge 6b39e10, Commit d3e0121; .lane-done nach Merge entfernt."
+          "text": "lane #4121 (m10-results-overlap): \u00fcbernommen aus Lane, Merge 6b39e10, Commit d3e0121; .lane-done nach Merge entfernt."
         }
       ],
       "created": "2026-11-27T18:34:36Z",
@@ -5301,7 +5301,7 @@
     {
       "id": 4382,
       "title": "m10-results-overlap-followup: Luftpuffer Ergebnisse-Screen (Boden +2-3px, Titel->Untertitel)",
-      "description": "lane #4122: Restpunkte aus Lane m10-results-overlap – letzte Zeile ~2px Luft zum Panel-Boden, Titel→Untertitel im Defeat ~2px; nicht blockierend. Weiterer Restpunkt: Wortumbruch slotNameLines in src/logic/text.ts (fremd beansprucht).",
+      "description": "lane #4122: Restpunkte aus Lane m10-results-overlap \u2013 letzte Zeile ~2px Luft zum Panel-Boden, Titel\u2192Untertitel im Defeat ~2px; nicht blockierend. Weiterer Restpunkt: Wortumbruch slotNameLines in src/logic/text.ts (fremd beansprucht).",
       "column": "backlog",
       "notes": [
         {
@@ -5327,7 +5327,7 @@
         {
           "at": "2026-11-27T18:36:48Z",
           "by": "build",
-          "text": "review → done: lane #2598, Merge c0a2f73, build rc=0, 499/499 Tests"
+          "text": "review \u2192 done: lane #2598, Merge c0a2f73, build rc=0, 499/499 Tests"
         }
       ],
       "created": "2026-11-27T18:36:21Z",
@@ -5347,7 +5347,7 @@
         {
           "at": "2026-11-27T18:36:48Z",
           "by": "build",
-          "text": "review → done: lane #2599, Merge c0a2f73, build rc=0, 499/499 Tests"
+          "text": "review \u2192 done: lane #2599, Merge c0a2f73, build rc=0, 499/499 Tests"
         }
       ],
       "created": "2026-11-27T18:36:21Z",
@@ -5367,7 +5367,7 @@
         {
           "at": "2026-11-27T18:36:48Z",
           "by": "build",
-          "text": "review → done: lane #2600, Merge c0a2f73, build rc=0, 499/499 Tests"
+          "text": "review \u2192 done: lane #2600, Merge c0a2f73, build rc=0, 499/499 Tests"
         }
       ],
       "created": "2026-11-27T18:36:21Z",
@@ -5387,7 +5387,7 @@
         {
           "at": "2026-11-27T18:36:48Z",
           "by": "build",
-          "text": "review → done: lane #2601, Merge c0a2f73, build rc=0, 499/499 Tests"
+          "text": "review \u2192 done: lane #2601, Merge c0a2f73, build rc=0, 499/499 Tests"
         }
       ],
       "created": "2026-11-27T18:36:21Z",
@@ -5443,8 +5443,8 @@
     },
     {
       "id": 4478,
-      "title": "m10-chest-arrow-onscreen K1: Fehlerfälle Randpfeil",
-      "description": "ChestSystem.ts + Run.ts-Aufrufer lesen; Fehlerfälle auflisten: Winkel bei Kamera-Ecken, Randposition bei breitem View (780x360), Zoom-Puls, Verschwinden beim View-Eintritt. AK: Fehlerliste in docs/lanes/m10-chest-arrow.md.",
+      "title": "m10-chest-arrow-onscreen K1: Fehlerf\u00e4lle Randpfeil",
+      "description": "ChestSystem.ts + Run.ts-Aufrufer lesen; Fehlerf\u00e4lle auflisten: Winkel bei Kamera-Ecken, Randposition bei breitem View (780x360), Zoom-Puls, Verschwinden beim View-Eintritt. AK: Fehlerliste in docs/lanes/m10-chest-arrow.md.",
       "column": "done",
       "notes": [],
       "created": "2026-11-27T18:47:17Z",
@@ -5453,7 +5453,7 @@
     {
       "id": 4479,
       "title": "m10-chest-arrow-onscreen K2: Harness + Baseline",
-      "description": "scripts/m10-chest-arrow.mjs: Truhe an 4 Rand- + 4 Eckpositionen, pro Frame Winkel/Position/Sichtbarkeit messen; baseline JSON shots/m10-chest-arrow-baseline.json. AK: JSON vorhanden, Fehlfälle dokumentiert.",
+      "description": "scripts/m10-chest-arrow.mjs: Truhe an 4 Rand- + 4 Eckpositionen, pro Frame Winkel/Position/Sichtbarkeit messen; baseline JSON shots/m10-chest-arrow-baseline.json. AK: JSON vorhanden, Fehlf\u00e4lle dokumentiert.",
       "column": "done",
       "notes": [],
       "created": "2026-11-27T18:47:17Z",
@@ -5462,13 +5462,13 @@
     {
       "id": 4480,
       "title": "m10-chest-arrow-onscreen K3: Fix + Unit-Tests",
-      "description": "Fix in src/systems/ChestSystem.ts (einzige Code-Datei): Randprojektion entlang Zentrum→Truhe, Kamera-Zoom berücksichtigen; tests/chest-arrow.test.ts >=3 Tests grün. AK: npx vitest run tests/chest-arrow.test.ts grün, tsc sauber.",
+      "description": "Fix in src/systems/ChestSystem.ts (einzige Code-Datei): Randprojektion entlang Zentrum\u2192Truhe, Kamera-Zoom ber\u00fccksichtigen; tests/chest-arrow.test.ts >=3 Tests gr\u00fcn. AK: npx vitest run tests/chest-arrow.test.ts gr\u00fcn, tsc sauber.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:47:26Z",
           "by": "build",
-          "text": "review → done: lane #3640, Merge a70dcb1 (m10-chest-arrow-onscreen; Lane-Karten #3638-#3641 als #4478-#4481 neu angelegt, lane #<alt>). Ancestry geprueft: git merge-base --is-ancestor m10-chest-arrow-onscreen main rc=0; build + npm test 509/509 gruen"
+          "text": "review \u2192 done: lane #3640, Merge a70dcb1 (m10-chest-arrow-onscreen; Lane-Karten #3638-#3641 als #4478-#4481 neu angelegt, lane #<alt>). Ancestry geprueft: git merge-base --is-ancestor m10-chest-arrow-onscreen main rc=0; build + npm test 509/509 gruen"
         }
       ],
       "created": "2026-11-27T18:47:17Z",
@@ -5477,7 +5477,7 @@
     {
       "id": 4481,
       "title": "m10-chest-arrow-onscreen K4: Nachmessung + Abschluss",
-      "description": "shots/m10-chest-arrow-after.json + 2 Screenshots, npm test grün, docs/lanes/m10-chest-arrow.md, .lane-done. AK: alle Rand/Eckfälle <=5 Grad, Pfeil ab Spawn sichtbar, npm test rc=0.",
+      "description": "shots/m10-chest-arrow-after.json + 2 Screenshots, npm test gr\u00fcn, docs/lanes/m10-chest-arrow.md, .lane-done. AK: alle Rand/Eckf\u00e4lle <=5 Grad, Pfeil ab Spawn sichtbar, npm test rc=0.",
       "column": "done",
       "notes": [],
       "created": "2026-11-27T18:47:17Z",
@@ -5494,8 +5494,8 @@
     },
     {
       "id": 4499,
-      "title": "m10-verify-input-fix #2: Harness-Härtung (Zustands-Waits, --tag Output)",
-      "description": "lane #4319, Merge f948503. Abnahme: nur scripts/verify-input.mjs geändert; feste Wartezeiten durch waitState-Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.*; verify-input 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
+      "title": "m10-verify-input-fix #2: Harness-H\u00e4rtung (Zustands-Waits, --tag Output)",
+      "description": "lane #4319, Merge f948503. Abnahme: nur scripts/verify-input.mjs ge\u00e4ndert; feste Wartezeiten durch waitState-Zustands-Waits ersetzt; --tag schreibt Belege nach shots/m10-verify-input-<tag>.*; verify-input 28/28 PASS. Kontrolleure: reviewer + test-auditor.",
       "column": "done",
       "notes": [],
       "created": "2026-11-27T18:52:08Z",
@@ -5503,8 +5503,8 @@
     },
     {
       "id": 4500,
-      "title": "m10-verify-input-fix #3: Stabilität 3x + Lastlauf 28/28 PASS, Lane-Doku",
-      "description": "lane #4320, Merge f948503. Abnahme: verify-input 3x + 1x unter Last je 28/28 PASS, 0 JS-Fehler; Ergebnis in docs/lanes/m10-verify-input-fix.md; vitest grün. Kontrolleure: test-auditor + reviewer.",
+      "title": "m10-verify-input-fix #3: Stabilit\u00e4t 3x + Lastlauf 28/28 PASS, Lane-Doku",
+      "description": "lane #4320, Merge f948503. Abnahme: verify-input 3x + 1x unter Last je 28/28 PASS, 0 JS-Fehler; Ergebnis in docs/lanes/m10-verify-input-fix.md; vitest gr\u00fcn. Kontrolleure: test-auditor + reviewer.",
       "column": "done",
       "notes": [],
       "created": "2026-11-27T18:52:08Z",
@@ -5512,8 +5512,8 @@
     },
     {
       "id": 4558,
-      "title": "m10-text-wrap: Wortumbruch/Ellipsis für einzeilige Banner (PixelText) + Results-Banner",
-      "description": "fitBanner(text, maxChars) in src/gfx/text.ts bricht an Leerzeichen, nie mitten im Wort, Ellipsis '..' statt U+2026; Results.ts nutzt fitBanner(...,26); tests/text-wrap.test.ts (6 Tests, alle 15 Label-Kombis). Abnahme: build+Tests grün im Merge 49a026f, shots/m10-text-wrap-banner-*.png.",
+      "title": "m10-text-wrap: Wortumbruch/Ellipsis f\u00fcr einzeilige Banner (PixelText) + Results-Banner",
+      "description": "fitBanner(text, maxChars) in src/gfx/text.ts bricht an Leerzeichen, nie mitten im Wort, Ellipsis '..' statt U+2026; Results.ts nutzt fitBanner(...,26); tests/text-wrap.test.ts (6 Tests, alle 15 Label-Kombis). Abnahme: build+Tests gr\u00fcn im Merge 49a026f, shots/m10-text-wrap-banner-*.png.",
       "column": "done",
       "assignee": "coder",
       "notes": [],
@@ -5523,14 +5523,14 @@
     {
       "id": 4578,
       "title": "m10-reacceptance-b K0: PIN dokumentieren (lane #4278)",
-      "description": "git rev-parse main → PIN (Hash + Zeit) an Kopf von docs/qa/reacceptance-b-2026-11-27.md; alle Prüfungen auf PIN. Abnahme: PIN-Header committed, kein main-Schreibzugriff.",
+      "description": "git rev-parse main \u2192 PIN (Hash + Zeit) an Kopf von docs/qa/reacceptance-b-2026-11-27.md; alle Pr\u00fcfungen auf PIN. Abnahme: PIN-Header committed, kein main-Schreibzugriff.",
       "column": "done",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-27T19:02:28Z",
           "by": "build",
-          "text": "lane #4278, Merge 6772398: K0 PASS — PIN 49727faa (main @ 18:14:54Z) in docs/qa/reacceptance-b-2026-11-27.md, Commit d04b684."
+          "text": "lane #4278, Merge 6772398: K0 PASS \u2014 PIN 49727faa (main @ 18:14:54Z) in docs/qa/reacceptance-b-2026-11-27.md, Commit d04b684."
         }
       ],
       "created": "2026-11-27T19:02:22Z",
@@ -5539,14 +5539,14 @@
     {
       "id": 4579,
       "title": "m10-reacceptance-b K1: Basis auf PIN (lane #4279)",
-      "description": "npm run build rc=0; npx tsc --noEmit rc=0; npm test 0 fail; acceptance-count 30/6/6/6/6/2 — je Befehls-Log in der Doku. Abnahme: Zahlen + Zeit notiert.",
+      "description": "npm run build rc=0; npx tsc --noEmit rc=0; npm test 0 fail; acceptance-count 30/6/6/6/6/2 \u2014 je Befehls-Log in der Doku. Abnahme: Zahlen + Zeit notiert.",
       "column": "done",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-27T19:02:28Z",
           "by": "build",
-          "text": "lane #4279, Merge 6772398: K1 PASS — build rc=0 (823ms), tsc rc=0, npm test 446/446 (42 Dateien), acceptance-count 30/6/6/6/6/2 auf PIN 49727faa, Commit 1559a50."
+          "text": "lane #4279, Merge 6772398: K1 PASS \u2014 build rc=0 (823ms), tsc rc=0, npm test 446/446 (42 Dateien), acceptance-count 30/6/6/6/6/2 auf PIN 49727faa, Commit 1559a50."
         }
       ],
       "created": "2026-11-27T19:02:22Z",
@@ -5554,15 +5554,15 @@
     },
     {
       "id": 4580,
-      "title": "m10-reacceptance-b K2: 4 Merge-Fixes gegen PIN prüfen (lane #4280)",
-      "description": "a) gem-drawcap Draw-Cap wirksam (Test/JSON), b) menu-touch Probe 36/36 unter flock → shots/qa-reaccb-*, c) feedback-budget Peaks (2,56 px / 120 ms / 125→55) verifizieren, d) ambient after-Median-Tabelle + Abschnitte 3+4 in docs/lanes/m10-perf-fix-ambient-batching.md füllen. Abnahme: je a–d PASS/FAIL mit Belegpfad.",
+      "title": "m10-reacceptance-b K2: 4 Merge-Fixes gegen PIN pr\u00fcfen (lane #4280)",
+      "description": "a) gem-drawcap Draw-Cap wirksam (Test/JSON), b) menu-touch Probe 36/36 unter flock \u2192 shots/qa-reaccb-*, c) feedback-budget Peaks (2,56 px / 120 ms / 125\u219255) verifizieren, d) ambient after-Median-Tabelle + Abschnitte 3+4 in docs/lanes/m10-perf-fix-ambient-batching.md f\u00fcllen. Abnahme: je a\u2013d PASS/FAIL mit Belegpfad.",
       "column": "done",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-27T19:02:28Z",
           "by": "build",
-          "text": "lane #4280, Merge 6772398: K2 PASS — a) gem-drawcap (peakGems 120, xpLoss 0, 8/8), b) menu-touch 36/36 + shots/qa-reaccb-menu-touch-after.json (8ce619a), c) feedback 2,56px/120ms/125->55, d) ambient Median 56,3 + Lane-Doc 3+4 (983f58e)."
+          "text": "lane #4280, Merge 6772398: K2 PASS \u2014 a) gem-drawcap (peakGems 120, xpLoss 0, 8/8), b) menu-touch 36/36 + shots/qa-reaccb-menu-touch-after.json (8ce619a), c) feedback 2,56px/120ms/125->55, d) ambient Median 56,3 + Lane-Doc 3+4 (983f58e)."
         }
       ],
       "created": "2026-11-27T19:02:22Z",
@@ -5571,14 +5571,14 @@
     {
       "id": 4581,
       "title": "m10-reacceptance-b K3: ACCEPTANCE.md Nachabnahme B (lane #4281)",
-      "description": "Abschnitt „Nachabnahme B (27.11., PIN <hash>)“ je Kriterium PASS/FAIL + Belegpfad; 30-min-Echtzeitlauf als offen/blocked (Runner-Limits, Vera) übernehmen. Abnahme: Abschnitt steht, .lane-done.",
+      "description": "Abschnitt \u201eNachabnahme B (27.11., PIN <hash>)\u201c je Kriterium PASS/FAIL + Belegpfad; 30-min-Echtzeitlauf als offen/blocked (Runner-Limits, Vera) \u00fcbernehmen. Abnahme: Abschnitt steht, .lane-done.",
       "column": "done",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-27T19:02:28Z",
           "by": "build",
-          "text": "lane #4281, Merge 6772398: K3 PASS — ACCEPTANCE.md 'Nachabnahme B (27.11., PIN 49727faa)' 8 Kriterien PASS, Echtzeitlauf offen/blocked; Lane-Abschluss ff686bc."
+          "text": "lane #4281, Merge 6772398: K3 PASS \u2014 ACCEPTANCE.md 'Nachabnahme B (27.11., PIN 49727faa)' 8 Kriterien PASS, Echtzeitlauf offen/blocked; Lane-Abschluss ff686bc."
         }
       ],
       "created": "2026-11-27T19:02:22Z",
@@ -5623,13 +5623,13 @@
     {
       "id": 4898,
       "title": "m10-flock-sweep: bare-flock Reste auf flock -w umstellen",
-      "description": "Alle flock-Spawns (Kommentare + command-Arrays) in den 8 claimed Dateien auf 'flock -w <N> <lock>' umgestellt (N = Laufzeit + 120 s); qa-reaccept-perf -w 420 + Node-Timeout 720 s + existsSync-Gate (legitimer perf rc=1 nicht als Lock-Timeout); endgame-fps Summary -w 240. AK: grep zeigt keinen bare-flock-Spawn, Negativtest belegt rc=1 bei belegter Sperre, build + 515 Tests grün, Reviewer PASS (R2).",
+      "description": "Alle flock-Spawns (Kommentare + command-Arrays) in den 8 claimed Dateien auf 'flock -w <N> <lock>' umgestellt (N = Laufzeit + 120 s); qa-reaccept-perf -w 420 + Node-Timeout 720 s + existsSync-Gate (legitimer perf rc=1 nicht als Lock-Timeout); endgame-fps Summary -w 240. AK: grep zeigt keinen bare-flock-Spawn, Negativtest belegt rc=1 bei belegter Sperre, build + 515 Tests gr\u00fcn, Reviewer PASS (R2).",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T19:50:48Z",
           "by": "build",
-          "text": "done → done: lane #4758, Merge 9055126"
+          "text": "done \u2192 done: lane #4758, Merge 9055126"
         }
       ],
       "created": "2026-11-27T19:50:39Z",
@@ -5645,7 +5645,7 @@
         {
           "at": "2026-11-27T19:56:14Z",
           "by": "build",
-          "text": "done → done: lane #4618, Merge c96929d"
+          "text": "done \u2192 done: lane #4618, Merge c96929d"
         }
       ],
       "created": "2026-11-27T19:55:58Z",
@@ -5661,7 +5661,7 @@
         {
           "at": "2026-11-27T19:56:14Z",
           "by": "build",
-          "text": "done → done: lane #4619, Merge c96929d"
+          "text": "done \u2192 done: lane #4619, Merge c96929d"
         }
       ],
       "created": "2026-11-27T19:55:58Z",
@@ -5677,7 +5677,7 @@
         {
           "at": "2026-11-27T19:56:14Z",
           "by": "build",
-          "text": "done → done: lane #4620, Merge c96929d"
+          "text": "done \u2192 done: lane #4620, Merge c96929d"
         }
       ],
       "created": "2026-11-27T19:55:58Z",
@@ -5693,7 +5693,7 @@
         {
           "at": "2026-11-27T19:56:14Z",
           "by": "build",
-          "text": "done → done: lane #4621, Merge c96929d"
+          "text": "done \u2192 done: lane #4621, Merge c96929d"
         }
       ],
       "created": "2026-11-27T19:55:58Z",
@@ -5701,7 +5701,7 @@
     },
     {
       "id": 5018,
-      "title": "m10-view-width-cap K0: Baseline messen + Doku-Gerüst",
+      "title": "m10-view-width-cap K0: Baseline messen + Doku-Ger\u00fcst",
       "description": "lane #3458 (m10-view-width-cap), Merge 8834c19. Abnahme: siehe Lane-Karte #3458 und docs/lanes/m10-view-width-cap.md.",
       "column": "done",
       "assignee": "balance-designer",
@@ -5721,7 +5721,7 @@
     },
     {
       "id": 5020,
-      "title": "m10-view-width-cap K2: Nachher-Messung 6 Läufe + fullrun",
+      "title": "m10-view-width-cap K2: Nachher-Messung 6 L\u00e4ufe + fullrun",
       "description": "lane #3460 (m10-view-width-cap), Merge 8834c19. Abnahme: siehe Lane-Karte #3460 und docs/lanes/m10-view-width-cap.md.",
       "column": "done",
       "assignee": "balance-designer",
@@ -5748,7 +5748,7 @@
         {
           "at": "2026-11-27T20:06:20Z",
           "by": "build",
-          "text": "review → done: lane #4818, Merge 0ef46d6"
+          "text": "review \u2192 done: lane #4818, Merge 0ef46d6"
         }
       ],
       "created": "2026-11-27T20:06:15Z",
@@ -5763,7 +5763,7 @@
         {
           "at": "2026-11-27T20:06:20Z",
           "by": "build",
-          "text": "review → done: lane #4819, Merge 0ef46d6"
+          "text": "review \u2192 done: lane #4819, Merge 0ef46d6"
         }
       ],
       "created": "2026-11-27T20:06:15Z",
@@ -5778,7 +5778,7 @@
         {
           "at": "2026-11-27T20:06:20Z",
           "by": "build",
-          "text": "review → done: lane #4820, Merge 0ef46d6"
+          "text": "review \u2192 done: lane #4820, Merge 0ef46d6"
         }
       ],
       "created": "2026-11-27T20:06:15Z",
@@ -5793,7 +5793,7 @@
         {
           "at": "2026-11-27T20:06:20Z",
           "by": "build",
-          "text": "review → done: lane #4821, Merge 0ef46d6"
+          "text": "review \u2192 done: lane #4821, Merge 0ef46d6"
         }
       ],
       "created": "2026-11-27T20:06:15Z",
@@ -5802,13 +5802,13 @@
     {
       "id": 5062,
       "title": "m10-ground-props-batch: Props/Ripples in feste Batch-Layer (Vorher/After/Doku)",
-      "description": "Aus Lane m10-ground-props-batch übernommen (lane #4218, ID kollidierte). Props/Ripples in feste Batch-Container-Layer (je Textur hinter/vor Spieler + Schatten/Glow/Ripples), Seitenwechsel statt pro-Frame-setDepth; Helfer phaserfrei in propLayers.ts. Vorher/After: Draw-Call-Kandidaten 925→75 (640) / 1139→85 (780@dpr3) <300 PASS; FPS-Ziele 58/46,5 nicht erreicht (48,5/40,3), Befund submit-limitiert. Abnahme: Merge 90e0c4d in main, npm test 578/578 + Build grün, .lane-done nicht übernommen.",
+      "description": "Aus Lane m10-ground-props-batch \u00fcbernommen (lane #4218, ID kollidierte). Props/Ripples in feste Batch-Container-Layer (je Textur hinter/vor Spieler + Schatten/Glow/Ripples), Seitenwechsel statt pro-Frame-setDepth; Helfer phaserfrei in propLayers.ts. Vorher/After: Draw-Call-Kandidaten 925\u219275 (640) / 1139\u219285 (780@dpr3) <300 PASS; FPS-Ziele 58/46,5 nicht erreicht (48,5/40,3), Befund submit-limitiert. Abnahme: Merge 90e0c4d in main, npm test 578/578 + Build gr\u00fcn, .lane-done nicht \u00fcbernommen.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:12:14Z",
           "by": "build",
-          "text": "review → done: lane #4218, Merge 90e0c4d — rc=0 (merge-base ancestor), Lane-Review-PASS: Draw-Call-Kandidaten 925→75 / 1139→85 (<300), npm test auf main nach Merge 578/578 + Build grün"
+          "text": "review \u2192 done: lane #4218, Merge 90e0c4d \u2014 rc=0 (merge-base ancestor), Lane-Review-PASS: Draw-Call-Kandidaten 925\u219275 / 1139\u219285 (<300), npm test auf main nach Merge 578/578 + Build gr\u00fcn"
         }
       ],
       "created": "2026-11-27T20:12:05Z",
@@ -5824,22 +5824,22 @@
         {
           "at": "2026-11-27T11:35:54Z",
           "by": "build",
-          "text": "todo → doing: Start: Ist-Matrix schreiben (Baseline vor Fix), JSON nach shots/, Baseline-Commit auch bei rot."
+          "text": "todo \u2192 doing: Start: Ist-Matrix schreiben (Baseline vor Fix), JSON nach shots/, Baseline-Commit auch bei rot."
         },
         {
           "at": "2026-11-27T11:48:52Z",
           "by": "build",
-          "text": "doing → review: Commit 3a5dc99. Baseline-Beleg: 64 Matrixzeilen, 0 Abweichungen/0 Cap-Verletzungen im Normalpfad (Stufen 1-5 + Clamp 6-8); rot bei Doppelzaehlung (boots 5 doppelt = 80%/180 Tempo > 140) und NaN/Infinity/negativ. JSON shots/m10-passive-math-matrix.json committed."
+          "text": "doing \u2192 review: Commit 3a5dc99. Baseline-Beleg: 64 Matrixzeilen, 0 Abweichungen/0 Cap-Verletzungen im Normalpfad (Stufen 1-5 + Clamp 6-8); rot bei Doppelzaehlung (boots 5 doppelt = 80%/180 Tempo > 140) und NaN/Infinity/negativ. JSON shots/m10-passive-math-matrix.json committed."
         },
         {
           "at": "2026-11-27T11:55:23Z",
           "by": "build",
-          "text": "review → done: Commit 3a5dc99, Baseline im Karten-Commit. Abnahme: Matrix-JSON 64 Zeilen; Normalpfad 0 Abweichungen, adversariale Duplikate/NaN offen -> #2919."
+          "text": "review \u2192 done: Commit 3a5dc99, Baseline im Karten-Commit. Abnahme: Matrix-JSON 64 Zeilen; Normalpfad 0 Abweichungen, adversariale Duplikate/NaN offen -> #2919."
         },
         {
           "at": "2026-11-27T12:23:48Z",
           "by": "build",
-          "text": "done → done: Supervisor-Hinweis befolgt: Baseline #2918 ist committet (3a5dc99); Testmatrix nicht weiter editiert. Rot nur im Adversarial-Fall (Duplikat/NaN), Normalpfad 0 Abweichungen."
+          "text": "done \u2192 done: Supervisor-Hinweis befolgt: Baseline #2918 ist committet (3a5dc99); Testmatrix nicht weiter editiert. Rot nur im Adversarial-Fall (Duplikat/NaN), Normalpfad 0 Abweichungen."
         },
         {
           "at": "2026-11-27T20:16:48Z",
@@ -5849,7 +5849,7 @@
         {
           "at": "2026-11-27T20:17:44Z",
           "by": "build",
-          "text": "lane #2918, Merge d42d52f, review→done"
+          "text": "lane #2918, Merge d42d52f, review\u2192done"
         }
       ],
       "created": "2026-11-27T11:28:18Z",
@@ -5865,12 +5865,12 @@
         {
           "at": "2026-11-27T11:55:23Z",
           "by": "build",
-          "text": "todo → review: Commit dee98ba. types: baseline pure n-fach exakt; aggregateMods sanitisiert+gekappt; 0 Abweichungen, 0 Cap-Verletzungen, 0 NaN/negativ; npm test 340/340, tsc 0."
+          "text": "todo \u2192 review: Commit dee98ba. types: baseline pure n-fach exakt; aggregateMods sanitisiert+gekappt; 0 Abweichungen, 0 Cap-Verletzungen, 0 NaN/negativ; npm test 340/340, tsc 0."
         },
         {
           "at": "2026-11-27T12:23:48Z",
           "by": "build",
-          "text": "review → done: Commit dee98bb/dee98ba. Fix ausschliesslich in src/logic/stats.ts, Tests unveraendert. 5/5 + nach Grenzkarte 9/9 gruen, npm 344/344."
+          "text": "review \u2192 done: Commit dee98bb/dee98ba. Fix ausschliesslich in src/logic/stats.ts, Tests unveraendert. 5/5 + nach Grenzkarte 9/9 gruen, npm 344/344."
         },
         {
           "at": "2026-11-27T20:16:48Z",
@@ -5880,7 +5880,7 @@
         {
           "at": "2026-11-27T20:17:44Z",
           "by": "build",
-          "text": "lane #2919, Merge d42d52f, review→done"
+          "text": "lane #2919, Merge d42d52f, review\u2192done"
         }
       ],
       "created": "2026-11-27T11:28:18Z",
@@ -5896,7 +5896,7 @@
         {
           "at": "2026-11-27T12:23:48Z",
           "by": "build",
-          "text": "todo → done: Commit e2324f2. Grenz-Beleg 22 Checks, 0 Verletzungen, 6/6 kombinierbar."
+          "text": "todo \u2192 done: Commit e2324f2. Grenz-Beleg 22 Checks, 0 Verletzungen, 6/6 kombinierbar."
         },
         {
           "at": "2026-11-27T20:16:48Z",
@@ -5906,7 +5906,7 @@
         {
           "at": "2026-11-27T20:17:44Z",
           "by": "build",
-          "text": "lane #2920, Merge d42d52f, review→done"
+          "text": "lane #2920, Merge d42d52f, review\u2192done"
         }
       ],
       "created": "2026-11-27T11:28:18Z",
@@ -5922,7 +5922,7 @@
         {
           "at": "2026-11-27T12:23:48Z",
           "by": "build",
-          "text": "todo → done: Commit 2658a58. Doku + .lane-done committed; 344/344, build rc=0."
+          "text": "todo \u2192 done: Commit 2658a58. Doku + .lane-done committed; 344/344, build rc=0."
         },
         {
           "at": "2026-11-27T20:16:48Z",
@@ -5932,7 +5932,7 @@
         {
           "at": "2026-11-27T20:17:44Z",
           "by": "build",
-          "text": "lane #2921, Merge d42d52f, review→done"
+          "text": "lane #2921, Merge d42d52f, review\u2192done"
         }
       ],
       "created": "2026-11-27T11:28:18Z",
@@ -5953,7 +5953,7 @@
         {
           "at": "2026-11-27T13:30:00Z",
           "by": "build",
-          "text": "review → done: merged 552189c (Lane in main, merge-base ancestor rc=0), build gruen, 587/587 Tests."
+          "text": "review \u2192 done: merged 552189c (Lane in main, merge-base ancestor rc=0), build gruen, 587/587 Tests."
         }
       ],
       "created": "2026-11-27T13:30:00Z"
@@ -5961,7 +5961,7 @@
     {
       "id": 2678,
       "title": "m10-perf-fix-ambient-batching @engine-dev",
-      "description": "Fix der in m10-perf-recovery belegten Regression aus c0f56d5 (#280 Ambient Gluehwürmchen+Nebel): 24 ADD-Glow + 3 NORMAL-Nebel-Sprites brechen im Endgame das Batching (88 Draw-Calls/Frame, 82 Blend-Wechsel bei Minute 25; minute25 51,4 statt 60 FPS). Abnahme: npm run perf Burst >=55 bei 640 und 780, Minute-25 >=55, fullrun fpsMin >=55 beide Formate, build+Tests gruen, tests/perf-budget.test.ts als Regressionsschutz (Draws/Frame + sichtbare Images unter Budget), art-director-Sichtpruefung (Ambient nicht sichtbar entfernt). Dateien: src/gfx/GroundRenderer.ts, ggf. src/logic/lod.ts, tests/perf-budget.test.ts.",
+      "description": "Fix der in m10-perf-recovery belegten Regression aus c0f56d5 (#280 Ambient Gluehw\u00fcrmchen+Nebel): 24 ADD-Glow + 3 NORMAL-Nebel-Sprites brechen im Endgame das Batching (88 Draw-Calls/Frame, 82 Blend-Wechsel bei Minute 25; minute25 51,4 statt 60 FPS). Abnahme: npm run perf Burst >=55 bei 640 und 780, Minute-25 >=55, fullrun fpsMin >=55 beide Formate, build+Tests gruen, tests/perf-budget.test.ts als Regressionsschutz (Draws/Frame + sichtbare Images unter Budget), art-director-Sichtpruefung (Ambient nicht sichtbar entfernt). Dateien: src/gfx/GroundRenderer.ts, ggf. src/logic/lod.ts, tests/perf-budget.test.ts.",
       "column": "todo",
       "assignee": "engine-dev",
       "notes": [
@@ -5975,14 +5975,14 @@
     },
     {
       "id": 5338,
-      "title": "m10-boot-startup K1: Messbasis Startzeit bis Titel (3 Läufe + Texturen)",
-      "description": "scripts/m10-boot-startup.mjs: Zeit bis Titel-Szene sichtbar (3 Läufe, Mittelwert + max), Anzahl erzeugter Texturen bis dahin, JSON nach shots/m10-boot-startup-baseline.json. Kein flock (kein FPS-Langlauf). Abnahme: JSON existiert, 3 Läufe dokumentiert, Skript beendet sich sauber.",
+      "title": "m10-boot-startup K1: Messbasis Startzeit bis Titel (3 L\u00e4ufe + Texturen)",
+      "description": "scripts/m10-boot-startup.mjs: Zeit bis Titel-Szene sichtbar (3 L\u00e4ufe, Mittelwert + max), Anzahl erzeugter Texturen bis dahin, JSON nach shots/m10-boot-startup-baseline.json. Kein flock (kein FPS-Langlauf). Abnahme: JSON existiert, 3 L\u00e4ufe dokumentiert, Skript beendet sich sauber.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:32:21Z",
           "by": "build",
-          "text": "review → done: lane #4998, Merge 2f7473a"
+          "text": "review \u2192 done: lane #4998, Merge 2f7473a"
         }
       ],
       "created": "2026-11-27T20:32:18Z",
@@ -5990,14 +5990,14 @@
     },
     {
       "id": 5339,
-      "title": "m10-boot-startup K2: Boot-Pfad verkürzen – nicht-Titel-Texturen lazy/warm nach Titel",
-      "description": "Messung leiten (Textur-Generierung vs. Szene-Setup). Boot.ts: nur Titel-kritische Texturen vor scene.start('title'), Rest (Gegner/Boss/FX/UI) nach dem ersten Titel-Frame warm erzeugen, Atlas danach (Atlas-Key-Vertrag hält: heiße Klassen im Atlas). Keine fehlenden Texturen. Abnahme: tsc grün, Tests grün, keine JS-Fehler im Boot, Titel ohne fehlende Texturen.",
+      "title": "m10-boot-startup K2: Boot-Pfad verk\u00fcrzen \u2013 nicht-Titel-Texturen lazy/warm nach Titel",
+      "description": "Messung leiten (Textur-Generierung vs. Szene-Setup). Boot.ts: nur Titel-kritische Texturen vor scene.start('title'), Rest (Gegner/Boss/FX/UI) nach dem ersten Titel-Frame warm erzeugen, Atlas danach (Atlas-Key-Vertrag h\u00e4lt: hei\u00dfe Klassen im Atlas). Keine fehlenden Texturen. Abnahme: tsc gr\u00fcn, Tests gr\u00fcn, keine JS-Fehler im Boot, Titel ohne fehlende Texturen.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:32:21Z",
           "by": "build",
-          "text": "review → done: lane #4999, Merge 2f7473a"
+          "text": "review \u2192 done: lane #4999, Merge 2f7473a"
         }
       ],
       "created": "2026-11-27T20:32:18Z",
@@ -6006,13 +6006,13 @@
     {
       "id": 5340,
       "title": "m10-boot-startup K3: Nachher-Messung + Doku docs/lanes/m10-boot-startup.md",
-      "description": "Nachher-JSON (shots/m10-boot-startup-after.json) + Titel-Screenshot shots/m10-boot-startup-after.png, Doku mit Vorher/Nachher-Zahlen, Grenzen (Gerätemessung ARM bleibt Vera-Eskalation, offener Punkt). Abnahme: Ziel -25 % Startzeit ODER Beleg, dass der Pfad bereits minimal ist; Belege im Karten-Commit.",
+      "description": "Nachher-JSON (shots/m10-boot-startup-after.json) + Titel-Screenshot shots/m10-boot-startup-after.png, Doku mit Vorher/Nachher-Zahlen, Grenzen (Ger\u00e4temessung ARM bleibt Vera-Eskalation, offener Punkt). Abnahme: Ziel -25 % Startzeit ODER Beleg, dass der Pfad bereits minimal ist; Belege im Karten-Commit.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T20:32:21Z",
           "by": "build",
-          "text": "review → done: lane #5000, Merge 2f7473a"
+          "text": "review \u2192 done: lane #5000, Merge 2f7473a"
         }
       ],
       "created": "2026-11-27T20:32:18Z",
@@ -6105,8 +6105,8 @@
     },
     {
       "id": 5378,
-      "title": "m10-reacceptance-c-Folge: Chest-Arrow 640×360 Re-Lauf FAIL auf PIN 43fd9eb",
-      "description": "Abnahme-Befund (NICHT von der Abnahme gefixt): Re-Lauf von scripts/m10-chest-arrow.mjs auf PIN 43fd9eb (iGPU) failt 5/10 Cases bei 640×360 (top/bottom/tl/br: visibleAtSpawn=false, Winkelfehler 90–180°, Positionsfehler 312–355 px; disappear: Pfeil bleibt sichtbar obwohl Truhe im View). 780×360 alle ok. Gegenbefund: Lane-nachher-Lauf 17:52Z (shots/m10-chest-arrow-after.json, SwiftShader-Ära, vor iGPU 19:13Z) war PASS auf beiden Formaten; Unit-Tests tests/chest-arrow.test.ts auf PIN grün. Zu klären im Folge-Job: (a) Renderer-/Timing-Sensitivität des Probe-Harness (iGPU vs SwiftShader, Sampling), (b) echte Regression durch einen der 19 Drain-Merges — Verdächtige: m10-view-width-cap (interne Breite 640), m10-ground-props-batch (Batch-Container-Layer). Beleg: shots/qa-reaccc-chest-arrow.json im Lane-Branch m10-reacceptance-c.",
+      "title": "m10-reacceptance-c-Folge: Chest-Arrow 640\u00d7360 Re-Lauf FAIL auf PIN 43fd9eb",
+      "description": "Abnahme-Befund (NICHT von der Abnahme gefixt): Re-Lauf von scripts/m10-chest-arrow.mjs auf PIN 43fd9eb (iGPU) failt 5/10 Cases bei 640\u00d7360 (top/bottom/tl/br: visibleAtSpawn=false, Winkelfehler 90\u2013180\u00b0, Positionsfehler 312\u2013355 px; disappear: Pfeil bleibt sichtbar obwohl Truhe im View). 780\u00d7360 alle ok. Gegenbefund: Lane-nachher-Lauf 17:52Z (shots/m10-chest-arrow-after.json, SwiftShader-\u00c4ra, vor iGPU 19:13Z) war PASS auf beiden Formaten; Unit-Tests tests/chest-arrow.test.ts auf PIN gr\u00fcn. Zu kl\u00e4ren im Folge-Job: (a) Renderer-/Timing-Sensitivit\u00e4t des Probe-Harness (iGPU vs SwiftShader, Sampling), (b) echte Regression durch einen der 19 Drain-Merges \u2014 Verd\u00e4chtige: m10-view-width-cap (interne Breite 640), m10-ground-props-batch (Batch-Container-Layer). Beleg: shots/qa-reaccc-chest-arrow.json im Lane-Branch m10-reacceptance-c.",
       "column": "backlog",
       "notes": [],
       "created": "2026-11-27T20:48:48Z",
@@ -6157,7 +6157,7 @@
         {
           "at": "2026-11-27T20:54:08Z",
           "by": "build",
-          "text": "doing → done: Merge-Fix zu Merge 5fa1c87 (lane #3998-#4001, ancestor rc=0): Test-Stub drawImage+TextureManager ergaenzt, Assertions unveraendert; Commit 960b866; 61/61 Suiten 628/628 Tests, tsc/build rc=0"
+          "text": "doing \u2192 done: Merge-Fix zu Merge 5fa1c87 (lane #3998-#4001, ancestor rc=0): Test-Stub drawImage+TextureManager ergaenzt, Assertions unveraendert; Commit 960b866; 61/61 Suiten 628/628 Tests, tsc/build rc=0"
         }
       ],
       "created": "2026-11-27T20:53:25Z",
@@ -6165,7 +6165,7 @@
     },
     {
       "id": 5478,
-      "title": "m10-reacceptance-c: Nachabnahme 3 (Drain-Welle) auf PIN 43fd9eb — Kriterien-Tabelle + FPS-Gates",
+      "title": "m10-reacceptance-c: Nachabnahme 3 (Drain-Welle) auf PIN 43fd9eb \u2014 Kriterien-Tabelle + FPS-Gates",
       "description": "PIN 43fd9eb (20:29:24Z, Commit 43fd9eb7ef8ddb8a03fa26b66c62acd31a907dea), Worktree m10-reacceptance-c. Stand 20:55Z: K1 PASS (tsc rc=0, 587/587, count 30/6/6/6/6/2, build rc=0), K2 Renderer PASS (iGPU RPL-S, shots/qa-reaccc-renderer.json), K3 verify:final 7/7 PASS, K4 verify-input FAIL 27/28 (ESC setzt Pause nicht fort, 2 Laeufe stabil, Folge-Karte #5378), K5 Belege auf PIN (Hazard ok, Results-Overlap PASS, Passive-Math ok, Android-Audit ok, Chest-Arrow 640x360 5/10 FAIL -> Folge-Karte), K6 FPS-Gates + K7 30-min-Echtzeitlauf laufen unter flock (iGPU, Renderer-String je Beleg). Doku: docs/qa/reacceptance-c-2026-11-27.md, docs/lanes/m10-reacceptance-c.md (Zuordnungstabelle 19 Merges).",
       "column": "doing",
       "assignee": "m10-reacceptance-c",
@@ -6176,14 +6176,14 @@
     {
       "id": 5479,
       "title": "m10-flock-sweep-2: bare-flock-Reste ground-cost + kopierbare Anleitungen auf flock -w",
-      "description": "Folge-Karte zu m10-flock-sweep. scripts/m10-ground-cost.mjs echte Spawns auf `flock -w 520/300` (+ Kommentar-Muster mit Timeout-Meldung, Exitcode weiterreichen); m10-fx-overdraw.mjs Z.4, m10-ui-cost.mjs Z.15, m10-heap-margin.mjs Z.7-8 kopierbare Anleitungen auf `flock -w <N>` (Heap-Szenario bleibt absichtlich OHNE Lock). Abnahme: Vorher/Nachher-Grep in docs/lanes/m10-flock-sweep-2.md, Negativtest (Sperre + flock -w 1 → rc=1 nach ~1 s mit Meldung, shots/m10-flock-sweep-2-negativtest.log), node --check 4/4, build+tests grün.",
+      "description": "Folge-Karte zu m10-flock-sweep. scripts/m10-ground-cost.mjs echte Spawns auf `flock -w 520/300` (+ Kommentar-Muster mit Timeout-Meldung, Exitcode weiterreichen); m10-fx-overdraw.mjs Z.4, m10-ui-cost.mjs Z.15, m10-heap-margin.mjs Z.7-8 kopierbare Anleitungen auf `flock -w <N>` (Heap-Szenario bleibt absichtlich OHNE Lock). Abnahme: Vorher/Nachher-Grep in docs/lanes/m10-flock-sweep-2.md, Negativtest (Sperre + flock -w 1 \u2192 rc=1 nach ~1 s mit Meldung, shots/m10-flock-sweep-2-negativtest.log), node --check 4/4, build+tests gr\u00fcn.",
       "column": "done",
       "assignee": "m10-flock-sweep-2",
       "notes": [
         {
           "at": "2026-11-27T20:56:24Z",
           "by": "build",
-          "text": "review → done: lane #5098, Merge bd24ed9 — git merge-base --is-ancestor m10-flock-sweep-2 main rc=0; Merge-Commit bd24ed9 (Parents 4f3565e + 064b5bf); .lane-done aus Merge entfernt"
+          "text": "review \u2192 done: lane #5098, Merge bd24ed9 \u2014 git merge-base --is-ancestor m10-flock-sweep-2 main rc=0; Merge-Commit bd24ed9 (Parents 4f3565e + 064b5bf); .lane-done aus Merge entfernt"
         }
       ],
       "created": "2026-11-27T20:55:59Z",
@@ -6192,13 +6192,13 @@
     {
       "id": 5518,
       "title": "m10-realtime-stability K1 Diagnose: Abbruchart praezise belegen",
-      "description": "lane #3958, Merge edc3093 — Beleg shots/m10-realtime-crash.json: Zielpfad, Zeitpunkt, Chrome-Fehler, Speicherdruck; 3 Probe-Laeufe (5/10/15 min) unter flock.",
+      "description": "lane #3958, Merge edc3093 \u2014 Beleg shots/m10-realtime-crash.json: Zielpfad, Zeitpunkt, Chrome-Fehler, Speicherdruck; 3 Probe-Laeufe (5/10/15 min) unter flock.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:01:28Z",
           "by": "build",
-          "text": "done → done: lane #3958, Merge edc3093"
+          "text": "done \u2192 done: lane #3958, Merge edc3093"
         }
       ],
       "created": "2026-11-27T21:01:11Z",
@@ -6207,7 +6207,7 @@
     {
       "id": 5519,
       "title": "m10-realtime-stability K2 Harness-Robustheit scripts/realtime-run.mjs",
-      "description": "lane #3959, Merge edc3093 — Abbruchursachen im Harness behoben: eigener --user-data-dir, --disable-dev-shm-usage, screenshot try/catch, page 'crash'-Handler.",
+      "description": "lane #3959, Merge edc3093 \u2014 Abbruchursachen im Harness behoben: eigener --user-data-dir, --disable-dev-shm-usage, screenshot try/catch, page 'crash'-Handler.",
       "column": "done",
       "notes": [
         {
@@ -6222,7 +6222,7 @@
     {
       "id": 5520,
       "title": "m10-realtime-stability K3 Mini-Probe scripts/m10-realtime-probe.mjs (kritische Phase 18-25)",
-      "description": "lane #3960, Merge edc3093 — Probe-Skript fuer kritische Phase Minute 18-25 (500+ Gegner, Screenshot-Burst) mit Ziel-Lebendigkeitsreport.",
+      "description": "lane #3960, Merge edc3093 \u2014 Probe-Skript fuer kritische Phase Minute 18-25 (500+ Gegner, Screenshot-Burst) mit Ziel-Lebendigkeitsreport.",
       "column": "done",
       "notes": [
         {
@@ -6237,7 +6237,7 @@
     {
       "id": 5521,
       "title": "m10-realtime-stability K4 Vollstaendiger 30-min-Echtzeitlauf + Abnahme",
-      "description": "lane #3961, Merge edc3093 — flock node scripts/realtime-run.mjs einmal vollstaendig: 6/6 Bosse ±0 s, 6 Truhen, Sieg dawn, 0 Crashes/JS-Fehler; FPS-Gate PASS (min 57.4), Heap-Gate-Lauefe dokumentiert.",
+      "description": "lane #3961, Merge edc3093 \u2014 flock node scripts/realtime-run.mjs einmal vollstaendig: 6/6 Bosse \u00b10 s, 6 Truhen, Sieg dawn, 0 Crashes/JS-Fehler; FPS-Gate PASS (min 57.4), Heap-Gate-Lauefe dokumentiert.",
       "column": "done",
       "notes": [
         {
@@ -6252,13 +6252,13 @@
     {
       "id": 5522,
       "title": "m10-realtime-stability K5 TDZ-Fix im crash-Handler (reviewer-Befund)",
-      "description": "lane #4738, Merge edc3093 (08491a7) — 'let runState = null' vor die Handler-Registrierung gezogen; TDZ im crash-Handler behoben, tsc rc=0.",
+      "description": "lane #4738, Merge edc3093 (08491a7) \u2014 'let runState = null' vor die Handler-Registrierung gezogen; TDZ im crash-Handler behoben, tsc rc=0.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:01:28Z",
           "by": "build",
-          "text": "done → done: lane #4738, Merge edc3093"
+          "text": "done \u2192 done: lane #4738, Merge edc3093"
         }
       ],
       "created": "2026-11-27T21:01:11Z",
@@ -6348,7 +6348,7 @@
         {
           "at": "2026-11-27T21:11:27Z",
           "by": "build",
-          "text": "todo → done: lane #5258, Merge 39dca82"
+          "text": "todo \u2192 done: lane #5258, Merge 39dca82"
         }
       ],
       "created": "2026-11-27T21:11:08Z",
@@ -6368,7 +6368,7 @@
         {
           "at": "2026-11-27T21:11:49Z",
           "by": "build",
-          "text": "todo → done: lane #5259, Merge 39dca82"
+          "text": "todo \u2192 done: lane #5259, Merge 39dca82"
         }
       ],
       "created": "2026-11-27T21:11:08Z",
@@ -6388,7 +6388,7 @@
         {
           "at": "2026-11-27T21:11:49Z",
           "by": "build",
-          "text": "todo → done: lane #5260, Merge 39dca82"
+          "text": "todo \u2192 done: lane #5260, Merge 39dca82"
         }
       ],
       "created": "2026-11-27T21:11:08Z",
@@ -6403,7 +6403,7 @@
         {
           "at": "2026-11-27T21:11:27Z",
           "by": "build",
-          "text": "todo → done: lane #5261, Merge 39dca82"
+          "text": "todo \u2192 done: lane #5261, Merge 39dca82"
         }
       ],
       "created": "2026-11-27T21:11:08Z",
