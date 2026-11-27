@@ -4,6 +4,9 @@ import { ownsPropBlock } from "../logic/autotile";
 import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
 import { PAL } from "../palette";
+import { needsChunkRedraw, type ChunkRedrawState } from "./groundRedraw";
+
+export { needsChunkRedraw, type ChunkRedrawState } from "./groundRedraw";
 
 interface Ripple {
   img: Phaser.GameObjects.Image;
@@ -34,6 +37,8 @@ export interface GroundDebugStats {
   sumVisibleRipples: number;
   sumVisibleAmbient: number;
   sumVisiblePropTextures: number;
+  compositeRedraws: number;
+  compositeChunksDrawn: number;
   loadedChunks: number;
 }
 
@@ -135,6 +140,15 @@ export class GroundRenderer {
   /** Debug-Zaehler fuer die M10-Messung; null = aus (kein Produktions-Overhead). */
   private counters: GroundDebugStats | null = null;
 
+  /** Gecachte Terrain-Textur: alle sichtbaren Chunks in EINEM Bild. */
+  private composite: Phaser.GameObjects.Image | null = null;
+  private compositeTextureKey = "m10_ground_composite";
+  private compositeState: ChunkRedrawState | null = null;
+  /** Zaehlt Chunk-Aufbau/-Freigabe: invalidiert den Cache (Dirty-Chunk). */
+  private chunkVersion = 0;
+  /** Debug-Schalter: false = alter Pfad mit einem Bild je Chunk (Pixel-Vergleich). */
+  private cullingEnabled = true;
+
   constructor(scene: Phaser.Scene, seed: number) {
     this.scene = scene;
     this.seed = seed;
@@ -219,8 +233,11 @@ export class GroundRenderer {
         }
         this.scene.textures.remove(entry.key);
         this.chunks.delete(key);
+        this.chunkVersion++;
       }
     }
+
+    this.refreshComposite(minCx, maxCx, minCy, maxCy);
 
     // Leichte Wellen-Animation: zwei Frames, 1-px-Drift, nur sichtbare Ripples.
     this.rippleTick = timeMs;
@@ -458,12 +475,16 @@ export class GroundRenderer {
     const image = this.scene.add.image(cx * CHUNK_SIZE, cy * CHUNK_SIZE, textureKey)
       .setOrigin(0, 0)
       .setDepth(-100);
+    // Der sichtbare Terrain-Pfad ist die gecachte Composite-Textur; die
+    // Einzelbilder bleiben nur als Texturquelle/Requisiten-Eigentuemer bestehen.
+    if (this.cullingEnabled) image.setVisible(false);
 
     const props: Phaser.GameObjects.Image[] = [];
     const ripples: Ripple[] = [];
     this.placeProps(cx, cy, props);
     this.placeWaterDetails(cx, cy, props, ripples);
     this.chunks.set(key, { image, key: textureKey, props, ripples });
+    this.chunkVersion++;
   }
 
   private kindsAround(wx: number, wy: number, radius: number): boolean {
@@ -601,7 +622,81 @@ export class GroundRenderer {
     return this.chunks.size;
   }
 
+  /**
+   * Zeichnet alle Chunks im aktuellen Kamera-Ausschnitt (inkl. 1 Chunk Rand)
+   * in eine einzige Canvas-Textur. Laeuft nur bei Nahtwechsel oder Dirty-Chunk;
+   * in stabilen Frames kostet das Terrain dadurch einen statt ~20 Draw-Calls.
+   */
+  private refreshComposite(minCx: number, maxCx: number, minCy: number, maxCy: number): void {
+    if (!this.cullingEnabled) return;
+    const next: ChunkRedrawState = {
+      minCx, maxCx, minCy, maxCy,
+      version: this.chunkVersion,
+    };
+    if (this.composite && !needsChunkRedraw(this.compositeState, next)) return;
+
+    const w = (maxCx - minCx + 1) * CHUNK_SIZE;
+    const h = (maxCy - minCy + 1) * CHUNK_SIZE;
+    if (this.composite) this.composite.destroy();
+    if (this.scene.textures.exists(this.compositeTextureKey)) {
+      this.scene.textures.remove(this.compositeTextureKey);
+    }
+    const texture = this.scene.textures.createCanvas(this.compositeTextureKey, w, h);
+    if (!texture) return; // Kein Canvas (Speicherlimit): alter Pfad bleibt aktiv.
+    const ctx = texture.getContext();
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, w, h);
+    let drawn = 0;
+    for (let cx = minCx; cx <= maxCx; cx++) {
+      for (let cy = minCy; cy <= maxCy; cy++) {
+        const entry = this.chunks.get(`${cx},${cy}`);
+        if (!entry) continue;
+        const source = this.scene.textures.get(entry.key).getSourceImage();
+        ctx.drawImage(source as CanvasImageSource, (cx - minCx) * CHUNK_SIZE, (cy - minCy) * CHUNK_SIZE);
+        drawn++;
+      }
+    }
+    texture.refresh();
+    if (drawn === 0) {
+      this.composite = null;
+      this.compositeState = null;
+      this.scene.textures.remove(this.compositeTextureKey);
+      return;
+    }
+    this.composite = this.scene.add.image(minCx * CHUNK_SIZE, minCy * CHUNK_SIZE, this.compositeTextureKey)
+      .setOrigin(0, 0)
+      .setDepth(-100);
+    this.compositeState = next;
+    if (this.counters) this.counters.chunkRebuilds++;
+  }
+
+  /**
+   * Debug/Abnahme: false = alter Pfad mit einem Bild je Chunk (Pixel-Vergleich
+   * Composite vs. Einzelchunks), true = gecachte Composite-Textur.
+   */
+  debugSetCulling(enabled: boolean): void {
+    this.cullingEnabled = enabled;
+    if (!enabled) {
+      this.composite?.destroy();
+      this.composite = null;
+      this.compositeState = null;
+      if (this.scene.textures.exists(this.compositeTextureKey)) {
+        this.scene.textures.remove(this.compositeTextureKey);
+      }
+      for (const entry of this.chunks.values()) entry.image.setVisible(true);
+      return;
+    }
+    for (const entry of this.chunks.values()) entry.image.setVisible(false);
+    this.compositeState = null; // naechstes update() zeichnet neu
+  }
+
   destroy(): void {
+    this.composite?.destroy();
+    this.composite = null;
+    this.compositeState = null;
+    if (this.scene.textures.exists(this.compositeTextureKey)) {
+      this.scene.textures.remove(this.compositeTextureKey);
+    }
     this.worker?.terminate();
     this.worker = null;
     while (this.ready.length > 0) this.ready.pop()?.bitmap.close();
