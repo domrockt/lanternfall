@@ -38,6 +38,8 @@ import { ENEMY_LIST } from "../src/data/enemies";
 import { PAL } from "../src/palette";
 import type { Grid } from "../src/gfx/enemySprites";
 
+const { EnemyPool } = await import("../src/systems/EnemyPool");
+
 const AMBER_HEX = PAL[ELITE_RIM_COLOR];
 
 function isBoundary(g: Grid, x: number, y: number): boolean {
@@ -148,5 +150,56 @@ describe("Elite-Rim: Sprite-Generator (enemySprites.ts)", () => {
   it("Elite-Akzentfarbe ist Amber (PAL 20) und hex 0xffb84d", () => {
     expect(ELITE_RIM_COLOR).toBe(20);
     expect(AMBER_HEX).toBe(0xffb84d);
+  });
+});
+
+describe("Elite-Rim: EnemyPool wirksam machen", () => {
+  const fakeScene = () => {
+    const makeSprite = () => {
+      const o: Record<string, unknown> = {};
+      for (const k of [
+        "setScale", "setVisible", "setActive", "setAlpha", "clearTint", "setDepth",
+        "setPosition", "setOrigin", "setBlendMode", "setTexture", "setTint",
+      ]) o[k] = () => o;
+      return o;
+    };
+    return { add: { sprite: makeSprite, image: makeSprite } };
+  };
+
+  it("Elite-Spawn nutzt Rim-Def + Rim-Frame; Nicht-Elite bleibt Basis", () => {
+    applied.length = 0;
+    const pool = new EnemyPool(fakeScene() as never);
+    const def = ENEMY_LIST[0]; // bog_rat
+    const elite = pool.spawn(def, 10, 10, 1, 1, 0, { elite: true });
+    expect(elite.elite).toBe(true);
+    expect(elite.def.id).toBe(`${def.id}_rim`);
+    expect(applied.some((a) => a.key === `enemy_${def.id}_rim`)).toBe(true);
+
+    const normal = pool.spawn(def, 20, 20);
+    expect(normal.def.id).toBe(def.id);
+    expect(applied.filter((a) => a.key === `enemy_${def.id}_rim`).length).toBe(1);
+  });
+
+  it("Nicht-Elite-Spawn mit geerbter Rim-Def (Splitter-Kinder) restauriert Basis", () => {
+    applied.length = 0;
+    const pool = new EnemyPool(fakeScene() as never);
+    const def = ENEMY_LIST[0];
+    const rimDef = eliteRimDef(def);
+    const child = pool.spawn(rimDef, 5, 5); // kein elite-Flag
+    expect(child.def.id).toBe(def.id);
+    expect(child.elite).toBe(false);
+  });
+
+  it("Elite-Spawn und Reuse: ai/RNG-Identitaet bleibt (Pool-Reuse unveraendert)", () => {
+    const pool = new EnemyPool(fakeScene() as never);
+    const def = ENEMY_LIST[0];
+    const a = pool.spawn(def, 10, 10, 1, 1, 0, { elite: true });
+    const aiA = a.ai;
+    a.alive = false;
+    pool.compact();
+    const b = pool.spawn(def, 30, 30);
+    expect(b.ai).toBe(aiA);
+    expect(b.elite).toBe(false);
+    expect(b.def.id).toBe(def.id);
   });
 });

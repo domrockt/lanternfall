@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import type { EnemyDef } from "../data/types";
 import { SPRITE_FRAMES } from "../gfx/textures";
+import { baseEnemyDef, eliteFrameId, ELITE_RIM_FRAMES, eliteRimDef } from "../gfx/enemySprites";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
 import { ensureAiState } from "../logic/ai-state";
 import { DEPTH } from "../gfx/depth";
@@ -182,6 +183,23 @@ export class EnemyPool {
     enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
     const frames = SPRITE_FRAMES[def.spriteKey];
     applyTexture(enemy.sprite, frames ? frames[0] : def.spriteKey);
+    // Elite-Rim-Light (A10): das vorgerenderte Rim-Frame (einziges zusaetzliches
+    // Frame im Bestand, keine Laufzeit-Erzeugung) wird beim Elite-Spawn gesetzt.
+    // Die Rim-Def ("<id>_rim") haelt den Frame auch gegenueber dem zyklischen
+    // Lauf-Frame-Abruf in Run.ts stabil (framesForDef → SPRITE_FRAMES[def.id]).
+    // Pool-Reuse unveraendert: dieselbe Sprite-/Aura-Instanz wird genutzt.
+    if (enemy.elite) {
+      const rimFrames = ELITE_RIM_FRAMES[eliteFrameId(def.id)];
+      if (rimFrames) {
+        enemy.def = eliteRimDef(def);
+        applyTexture(enemy.sprite, rimFrames[0]);
+      }
+    } else {
+      // Splitter-Kinder erben die Def des Parents; ein Nicht-Elite-Spawn mit
+      // Rim-Def restauriert die Basis-Def (kein Rim fuer Nicht-Elites).
+      const base = baseEnemyDef(def);
+      if (base) enemy.def = base;
+    }
     enemy.sprite.setVisible(true);
     enemy.sprite.setActive(true);
     enemy.sprite.setAlpha(1);
