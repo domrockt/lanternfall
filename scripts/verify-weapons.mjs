@@ -9,6 +9,8 @@ const WEAPONS = ["ember", "flail", "frost", "thorn", "storm", "lantern"];
 const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const ALL = [...WEAPONS, ...EVOLUTIONS];
 const WAIT_MS = 5000;
+// Lane m10-weapons-stable: nur die Truhen-Sektion prüfen (schnelle Flake-Reproduktion).
+const CHEST_ONLY = process.env.M10_CHEST_ONLY === "1";
 
 /** Erwartete VFX-Texturen je Waffe, abgeleitet aus CombatSystem. */
 const VFX_KEYS = {
@@ -332,7 +334,7 @@ async function clearLevelUps(page) {
 }
 
 try {
-  for (const id of ALL) {
+  if (!CHEST_ONLY) for (const id of ALL) {
     const page = await newPage();
     try {
       await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=21`);
@@ -408,6 +410,7 @@ try {
   }
 
   // Regression: Evolution ersetzt die Basiswaffe, deren Runtime-State (Orbs) muss enden.
+  if (!CHEST_ONLY) {
   const evoPage = await newPage();
   try {
     await evoPage.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=31`);
@@ -442,6 +445,7 @@ try {
     console.log(`Evolution-State: Laterne ${lanternBefore} -> ${lanternAfter}, Seele ${soulDamage}, Slot ${!hasBase && hasEvolved ? "nur Evolution" : "FEHLER"}: ${evoOk ? "OK" : "FEHLER"}`);
   } finally {
     await evoPage.close();
+  }
   }
 
   // Truhen-Sequenz als GIF + Evolution via Truhe beweisen.
@@ -499,6 +503,7 @@ try {
   }
 
   // Langname vollständig im Slot: Laterne -> Seelenleuchtfeuer (17 Zeichen, 2 Zeilen).
+  if (!CHEST_ONLY) {
   const longNamePage = await newPage();
   try {
     await longNamePage.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=33`);
@@ -529,10 +534,12 @@ try {
   } finally {
     await longNamePage.close();
   }
+  }
 } finally {
   await browser.close();
   server.stop();
 }
+
 
 const failed = results.filter((r) => !r.ok);
 const WEAPON_IDS = new Set(Object.keys(VFX_KEYS));

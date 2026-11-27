@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2499,
+  "next": 2563,
   "cards": [
     {
       "id": 1,
@@ -3727,6 +3727,56 @@
       ],
       "created": "2026-11-27T06:57:26Z",
       "updated": "2026-11-27T06:57:46Z"
+    },
+    {
+      "id": 2558,
+      "title": "m10-weapons-stable #K1 Flake reproduzieren",
+      "description": "verify-weapons 12x serialisiert unter CPU-Last; chest-roll-names PASS/FAIL + Zeiten als shots/m10-weapons-stability.json. Abnahme: >=1 FAIL belegt, JSON+Runner committet.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T07:27:02Z",
+      "updated": "2026-11-27T07:27:02Z"
+    },
+    {
+      "id": 2559,
+      "title": "m10-weapons-stable #K2 Ursache belegen",
+      "description": "Instrumentieren: Panel sichtbar / Namen fertig / Check liest, Delta dokumentieren. Abnahme: Zahlen im JSON, Ursache (fester Timeout statt Zustandspruefung) belegt, Commit.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T07:27:02Z",
+      "updated": "2026-11-27T07:27:02Z"
+    },
+    {
+      "id": 2560,
+      "title": "m10-weapons-stable #K3 Umbau waitForFunction",
+      "description": "chest-roll-names wartet per waitForFunction auf Panel sichtbar + Namen gesetzt + 2 Frames stabil, kein sleep, Timeout 15s mit Fehlermeldung. Abnahme: Assertions unveraendert, Commit.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T07:27:02Z",
+      "updated": "2026-11-27T07:27:02Z"
+    },
+    {
+      "id": 2561,
+      "title": "m10-weapons-stable #K4 12-Lauf-Beleg",
+      "description": "12/12 PASS unter Last wie K1; Median/p95 Wartezeit in docs/lanes/m10-weapons-stability.md; Empfehlung anderes Verify-Skript. Abnahme: 12/12 PASS JSON+Doku, Commit.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T07:27:02Z",
+      "updated": "2026-11-27T07:27:02Z"
+    },
+    {
+      "id": 2562,
+      "title": "m10-weapons-stable #K5 Abschluss",
+      "description": "npm run build + npm test gruen, .lane-done mit Flake-Rate vorher/nachher, Commit. Abnahme: build/test gruen, .lane-done getrackt.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T07:27:02Z",
+      "updated": "2026-11-27T07:27:02Z"
     }
   ]
 }
