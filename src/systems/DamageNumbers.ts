@@ -4,7 +4,8 @@ import { PixelText } from "../gfx/font";
 import {
   MAX_ENTRIES, MAX_VIEWS_AGGREGATE, ViewBudget, LabelMemo, addDamage, expireDamage, damageLabel,
   aggregateKey, entryMatchesKey, groupZoneFor, resetAggregateEntry, shouldAggregateDamage,
-  type AggregateEntry, type EntrySink,
+  planLabels, applyLabelFold, MAX_VISIBLE_LABELS,
+  type AggregateEntry, type EntrySink, type LabelCandidate,
 } from "../logic/damage-numbers";
 import type { LodState } from "../logic/lod";
 import { Pool } from "./Pool";
@@ -27,12 +28,18 @@ interface DamageView {
 }
 
 /**
- * Gepoolte Damage-Numbers: max. 24 (Aggregat: 10) gleichzeitig, pro Gegner wird
- * innerhalb des Aggregat-Fensters summiert. Nutzt den Bitmap-Font.
+ * Gepoolte Damage-Numbers: Anzeige ueber planLabels gedeckelt (max.
+ * MAX_VISIBLE_LABELS=12 sichtbar, je Bildschirmzone max. 2 Normaltreffer,
+ * max. 3 neue Labels je Frame), pro Gegner/Zone wird innerhalb des
+ * Aggregat-Fensters summiert. Nutzt den Bitmap-Font.
  *
  * M10-Batch: `setText` läuft höchstens einmal pro Frame und ausschließlich bei
  * echter Wert-/Krit-Änderung (LabelMemo). Vorher rief jeder einzelne Treffer
  * `setText` erneut auf, auch wenn sich der sichtbare Text nicht änderte.
+ *
+ * M10-damage-calm: report() meldet nur noch; die Anzeige wird einmal pro Frame
+ * geplant (Cap je Zone/Frame, Krits groß priorisiert, Summen-Erhalt durch
+ * Falten) — kein Tween-Neustart mehr je Treffer.
  */
 export class DamageNumberSystem {
   private readonly scene: Phaser.Scene;
@@ -101,7 +108,7 @@ export class DamageNumberSystem {
 
   /** Aktive View-Obergrenze: im Aggregat-Modus hart auf MAX_VIEWS_AGGREGATE. */
   private viewLimit(aggregate: boolean): number {
-    if (!aggregate) return this.maxViews;
+    if (!aggregate) return Math.min(this.maxViews, MAX_VISIBLE_LABELS);
     const lodLimit = this.lod?.level === "minimal" ? 6 : MAX_VIEWS_AGGREGATE;
     return Math.min(lodLimit, MAX_VIEWS_AGGREGATE);
   }
@@ -123,7 +130,20 @@ export class DamageNumberSystem {
     }
   }
 
-  /** Treffer melden; aggregiert Spam pro Gegner oder Bildschirmzone. */
+  /** Deaktiviert einen View sauber (Budget, Memo, Sichtbarkeit). */
+  private deactivateView(v: DamageView): void {
+    v.active = false;
+    this.viewBudget.deactivate();
+    this.labelMemo.forget(v.key);
+    v.text.setVisible(false);
+  }
+
+  /**
+   * Treffer melden; aggregiert Spam pro Gegner oder Bildschirmzone. M10-damage-calm:
+   * report() berührt KEINE Views mehr — die Anzeige plant einmal pro Frame in
+   * update(). Damit startet ein Treffer keinen Tween neu und die Anzeige-Caps
+   * (Zone/Frame) gelten pro Frame statt pro Treffer.
+   */
   report(uid: number, x: number, y: number, damage: number, crit: boolean): void {
     if (!this.enabled) return;
     if (!Number.isFinite(damage) || damage <= 0) return;
@@ -140,11 +160,9 @@ export class DamageNumberSystem {
     // Im Aggregat-Modus teilen sich alle Treffer einer Bildschirmzone einen
     // Eintrag/View. Der Schlüssel ist negativ, damit Zone 1 nicht mit der
     // Gegner-UID 1 kollidiert, wenn der Modus mitten im Lauf wechselt.
-    let key = uid;
     let group: number | undefined;
     if (aggregate && cam) {
       group = groupZoneFor(sx, sy, cam.width, cam.height);
-      key = aggregateKey(uid, group);
     }
     // LOD: groesseres Fenster, damit weniger Views entstehen.
     addDamage(
@@ -153,32 +171,62 @@ export class DamageNumberSystem {
       aggregate ? 1.2 : undefined,
       this.entrySink,
     );
-    const entry = this.entries.find((e) => entryMatchesKey(e, key));
-    if (!entry) return;
-    let view = this.views.find((v) => v.active && v.key === key);
-    if (!view) view = this.views.find((v) => !v.active);
-    if (!view) {
-      // Alle belegt: ältesten wiederverwenden (kein Draw-Call-Wachstum).
-      view = this.views.reduce((a, b) => (a.life < b.life ? a : b));
+  }
+
+  /**
+   * Einmal pro Frame: Anzeige-Plan (planLabels) anwenden — Cap je Zone/Frame,
+   * Krits zuerst groß, unterdrückte Normaltreffer in den Zieleintrag falten
+   * (Summen-Erhalt). Älteste/niedrigste Labels werden zuerst ersetzt (Sortierung
+   * in planLabels). Aktivierung setzt Tween/Position nur beim ersten Aufblitzen.
+   */
+  private applyDisplayPlan(aggregate: boolean, displayTime: number, camera?: Phaser.Cameras.Scene2D.Camera): void {
+    const cam = camera ?? this.scene.cameras?.main;
+    const candidates: LabelCandidate[] = [];
+    for (const e of this.entries) {
+      // Ohne Kamera keine Zone (0 = eigenes Budget) und keine Position: nur
+      // planen, wenn der Eintrag eine Position hat (immer der Fall, s. addDamage).
+      const zone = cam
+        ? groupZoneFor((e.x ?? 0) - cam.scrollX, (e.y ?? 0) - cam.scrollY, cam.width, cam.height)
+        : 0;
+      candidates.push({ key: aggregateKey(e.enemyUid, e.group), zone, damage: e.damage, crit: e.crit });
     }
+    const previouslyVisible = this.views.filter((v) => v.active).map((v) => v.key);
+    const plan = planLabels(candidates, previouslyVisible);
+    if (plan.foldedInto.length > 0) {
+      applyLabelFold(this.entries, plan.foldedInto, this.entrySink);
+    }
+    const visibleSet = new Set(plan.visible);
+    for (const v of this.views) {
+      if (v.active && !visibleSet.has(v.key)) this.deactivateView(v);
+    }
+    if (!cam) return;
     const limit = this.viewLimit(aggregate);
-    if (!view.active && !this.viewBudget.tryActivate(limit)) return;
-    view.active = true;
-    if (view.key !== key) {
-      // Recycelter View für einen neuen Gegner/eine neue Zone: Label-Memo neu.
-      this.labelMemo.forget(view.key);
-      view.key = key;
+    for (const key of plan.visible) {
+      let view = this.views.find((v) => v.active && v.key === key);
+      const fresh = !view;
+      if (!view) view = this.views.find((v) => !v.active);
+      if (!view) continue; // Slots belegt — durch die Caps praktisch ausgeschlossen.
+      const entry = this.entries.find((e) => entryMatchesKey(e, key));
+      if (!entry) continue;
+      if (fresh) {
+        if (!this.viewBudget.tryActivate(limit)) continue;
+        view.active = true;
+        // Tween/Position nur beim (Erst-)Aufblitzen setzen — kein Neustart je Treffer.
+        view.key = key;
+        this.labelMemo.forget(key);
+        view.x = entry.x ?? 0;
+        view.y = (entry.y ?? 0) - 8;
+        view.life = displayTime;
+        view.maxLife = displayTime;
+        view.text.setPosition(Math.round(entry.x ?? 0), Math.round(view.y));
+        view.text.setAlpha(1).setVisible(true);
+      }
+      // Groesse/Farbe je Frame aus dem (ggf. gefalteten) Eintrag ableiten:
+      // Krit bleibt gross + hervorgehoben, Normaltreffer klein.
+      view.big = entry.crit || (entry.hits > 3 && entry.damage > 20);
+      view.color = entry.crit ? C.amber : view.big ? C.lantern : C.candleWhite;
+      view.scale = view.big ? 1.6 : 1;
     }
-    view.x = x;
-    view.y = y - 8;
-    view.life = 0.8;
-    view.maxLife = 0.8;
-    view.big = crit || (entry.hits > 3 && entry.damage > 20);
-    view.color = crit ? C.amber : view.big ? C.lantern : C.candleWhite;
-    view.scale = view.big ? 1.6 : 1;
-    // Position/Alpha duerfen sofort folgen, der teure Text erst im Flush.
-    view.text.setPosition(Math.round(x), Math.round(view.y));
-    view.text.setAlpha(1).setVisible(true);
   }
 
   /** Einmal pro Frame: nur geänderte Labels neu setzen (LabelMemo). */
@@ -211,8 +259,10 @@ export class DamageNumberSystem {
   update(dt: number, camera?: Phaser.Cameras.Scene2D.Camera): void {
     this.clock += dt;
     const aggregate = shouldAggregateDamage(this.lod?.enemies ?? 0, this.lod?.damageAggregate ?? false);
-    expireDamage(this.entries, this.clock, aggregate ? 1.3 : 1.1, this.entrySink);
+    const displayTime = aggregate ? 1.3 : 1.1;
+    expireDamage(this.entries, this.clock, displayTime, this.entrySink);
     if (aggregate) this.enforceViewCap(this.viewLimit(true));
+    this.applyDisplayPlan(aggregate, displayTime, camera);
     this.flushLabels();
     for (const v of this.views) {
       if (!v.active) continue;
