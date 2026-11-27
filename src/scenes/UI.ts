@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
-import { PixelText } from "../gfx/font";
+import { GLYPH_ADVANCE, GLYPH_H, PixelText } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { weaponDef, isEvolutionWeapon } from "../data/weaponIds";
 import { iconKeyForOffer, iconTextureKey } from "../gfx/icons";
@@ -86,6 +86,60 @@ export function hudAnchorBoxes(width: number, height: number, input: HudAnchorIn
     "iconrow-bg": { x: HUD_ICONS_X - 8, y: 13, w: iconCount === 0 ? 0 : 8 + iconCount * HUD_ICON_PITCH, h: 19 },
     icons: { x: HUD_ICONS_X, y: 15, w: iconCount === 0 ? 0 : (iconCount - 1) * HUD_ICON_PITCH + 16, h: 16 },
     "evo-hint": { x: HUD_EVO_HINT_X, y: 15, w: glyph(evoHintChars), h: 15 },
+  };
+}
+
+/**
+ * m10-chest-panel-ui: Truhen-Panel-Anker (Spielpixel, Panel-Band 270 px hoch,
+ * oy = vertikaler Band-Offset). Der Untertitel haengt an der Titel-Unterkante
+ * (GLYPH_H * CHEST_TITLE_SCALE + Gap), nicht an einem Aufloesungs-Hartwert:
+ * der alte Hartwert 54+oy lieferte nur 2 px Gap zur Titel-Unterkante
+ * (shots/m10-chest-panel-before.json). Icon-/Hint-Werte sind die verifizierten
+ * Werte aus der Inszenierung m10-chest-reveal (applyPanelFix) -> nach dem
+ * Merge idempotent (dieselben Zahlen, kein visueller Sprung).
+ */
+export const CHEST_PANEL_BAND_H = 270;
+export const CHEST_TITLE_Y = 38;
+export const CHEST_TITLE_SCALE = 2;
+export const CHEST_SUBTITLE_GAP_PX = 6;
+export const CHEST_ICON_Y = 92;
+export const CHEST_ICON_SCALE = 2.6;
+export const CHEST_ICON_TEX = 16;
+export const CHEST_HINT_Y = 122;
+export const CHEST_HINT_PITCH = 8;
+export const CHEST_FRAME_W = 452;
+export const CHEST_FRAME_H = 244;
+export const CHEST_FRAME_CY = 140;
+/** Abnahmekriterium: Untertitel-Oberkante >= Titel-Unterkante + 4 px. */
+export const CHEST_SUBTITLE_MIN_GAP_PX = 4;
+export const CHEST_TITLE_TEXT = "TRUHE GEÖFFNET";
+export const CHEST_SUBTITLE_TEXT = "BELOHNUNGEN ROLLEN ...";
+
+/**
+ * m10-chest-panel-ui: reine Panel-Box-Mathematik des offenen Truhen-Panels
+ * (keine Phaser-Abhaengigkeit, in tests/chest-panel-ui.test.ts gegen
+ * Ueberlappung/Panel-Grenzen je Viewport-Profil geprueft).
+ */
+export function chestPanelBoxes(width: number, height: number): Record<string, AnchorBox> {
+  const oy = Math.round((height - CHEST_PANEL_BAND_H) / 2);
+  const cx = width / 2;
+  const frameW = Math.min(CHEST_FRAME_W, width - 24);
+  const glyphW = (chars: number, scale: number) => (chars * GLYPH_ADVANCE - 1) * scale;
+  const titleW = glyphW(CHEST_TITLE_TEXT.length, CHEST_TITLE_SCALE);
+  const subtitleW = glyphW(CHEST_SUBTITLE_TEXT.length, 1);
+  const titleTop = CHEST_TITLE_Y + oy;
+  const titleH = GLYPH_H * CHEST_TITLE_SCALE;
+  const iconHalf = (CHEST_ICON_TEX * CHEST_ICON_SCALE) / 2;
+  const hintW = frameW - 20;
+  const box = (x: number, y: number, w: number, h: number): AnchorBox =>
+    ({ x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) });
+  return {
+    frame: box(cx - frameW / 2, CHEST_FRAME_CY + oy - CHEST_FRAME_H / 2, frameW, CHEST_FRAME_H),
+    title: box(cx - titleW / 2, titleTop, titleW, titleH),
+    subtitle: box(cx - subtitleW / 2, titleTop + titleH + CHEST_SUBTITLE_GAP_PX, subtitleW, GLYPH_H),
+    icon: box(cx - iconHalf, CHEST_ICON_Y + oy - iconHalf, iconHalf * 2, iconHalf * 2),
+    "hint-0": box(cx - hintW / 2, CHEST_HINT_Y + oy, hintW, GLYPH_H),
+    "hint-1": box(cx - hintW / 2, CHEST_HINT_Y + CHEST_HINT_PITCH + oy, hintW, GLYPH_H),
   };
 }
 
@@ -493,7 +547,7 @@ export class UI extends Phaser.Scene {
     this.chestGroup = this.add.container(0, 0).setDepth(130).setVisible(false).setName("chest-group");
     const dim = this.add.rectangle(0, 0, W, H, PAL[C.ink], 0.9).setOrigin(0, 0);
     this.chestGroup.add(dim);
-    const frame = this.add.nineslice(cx, 140 + oy, "ui_frame", undefined, Math.min(452, W - 24), 244, 8, 8, 8, 8);
+    const frame = this.add.nineslice(cx, CHEST_FRAME_CY + oy, "ui_frame", undefined, Math.min(CHEST_FRAME_W, W - 24), CHEST_FRAME_H, 8, 8, 8, 8);
     this.chestGroup.add(frame);
     this.chestBeam = this.add.image(cx, 70 + oy, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD)
@@ -501,14 +555,24 @@ export class UI extends Phaser.Scene {
       .setScale(0.25)
       .setAlpha(0);
     this.chestGroup.add(this.chestBeam);
-    this.chestSprite = this.add.image(cx, 84 + oy, "chest_closed").setScale(2.4);
+    // m10-chest-panel-ui: Panel-Layout-Werte wie in der verifizierten Inszenierung
+    // m10-chest-reveal (applyPanelFix): Untertitel 58+oy, Icon 92+oy @2.6,
+    // Evo-Hinweise 122/130+oy. applyPanelFix (ChestSystem) setzt nach dem Merge
+    // dieselben Werte -> idempotent, kein visueller Sprung.
+    this.chestSprite = this.add.image(cx, CHEST_ICON_Y + oy, "chest_closed").setScale(CHEST_ICON_SCALE);
     this.chestGroup.add(this.chestSprite);
     this.chestTitle = new PixelText(this, cx, 38 + oy, "TRUHE GEÖFFNET", C.lantern, "center").setScale(2).setName("chest-title");
     this.chestGroup.add(this.chestTitle);
-    this.chestGroup.add(new PixelText(this, cx, 54 + oy, "BELOHNUNGEN ROLLEN ...", C.mist, "center"));
+    // m10-chest-panel-ui: Untertitel aus der Titel-Unterkante ableiten (Glyph-Höhe
+    // x Scale + fester Gap >= 4 px) statt Hartwert 54+oy — der saß nur 2 px unter
+    // der Titel-Unterkante (shots/m10-chest-panel-before.json). Anker ist die
+    // Panel-relative Titel-Position, gilt daher in jedem Viewport unverändert.
+    const chestTitleBottom = CHEST_TITLE_Y + oy + GLYPH_H * this.chestTitle.scale;
+    this.chestGroup.add(new PixelText(this, cx, chestTitleBottom + CHEST_SUBTITLE_GAP_PX, "BELOHNUNGEN ROLLEN ...", C.mist, "center")
+      .setName("chest-subtitle"));
     const chestFrameW = Math.min(452, W - 24);
     this.chestHintChars = Math.max(24, Math.floor((chestFrameW - 20) / 6));
-    this.chestHint = [0, 1].map((i) => new PixelText(this, cx, 108 + i * 8 + oy, "", C.lantern, "center")
+    this.chestHint = [0, 1].map((i) => new PixelText(this, cx, CHEST_HINT_Y + i * CHEST_HINT_PITCH + oy, "", C.lantern, "center")
       .setVisible(false).setName(`chest-hint-${i}`));
     this.chestGroup.add(this.chestHint);
     this.chestSlots = [];
@@ -557,11 +621,14 @@ export class UI extends Phaser.Scene {
       t.setText(sentence[i] ?? "");
       t.setVisible(Boolean(sentence[i]));
     });
-    this.chestSprite.setTexture("chest_closed").setScale(2.2).setAlpha(1);
+    this.chestSprite.setTexture("chest_closed").setScale(CHEST_ICON_SCALE).setAlpha(1);
     this.chestBeam.setAlpha(0).setScale(0.25);
     const n = result.rewards.length;
     const cx = GAME_WIDTH / 2;
     const oy = Math.round((GAME_HEIGHT - 270) / 2);
+    // m10-chest-panel-ui: Panel-Icon jedes Öffnen auf den verifizierten Anker
+    // (CHEST_ICON_Y+oy) zurücksetzen — Sprite-Position/-Skalierung sind Laufzeit-Zustand.
+    this.chestSprite.setPosition(cx, CHEST_ICON_Y + oy);
     for (let i = 0; i < this.chestSlots.length; i++) {
       const slot = this.chestSlots[i];
       const reward = result.rewards[i];
