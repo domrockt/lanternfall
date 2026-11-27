@@ -71,6 +71,15 @@ Basis: `main` @ `78cca7e` (2026-11-27 12:28:03Z), headless Chromium, Lange Läuf
 geworden (Burst 46,3 → 60,1). Offen bleibt der **780×360-dpr3-Endgame-Pfad** (Minute 25
 und fullrun-fpsMin < Ziel) sowie der noch nicht vollständig gelaufene Echtzeit-Test.
 Weitere Belege und das Endurteil folgen in `docs/qa/reacceptance-2026-11-27.md`.
+
+### Endurteil Versuch 3 (16:00Z, `main` @ `38c21c4`)
+
+**Nicht abgenommen.** Neu gegen die Endabnahme: 640×360 grün (Burst 60,1, M25 ≥50,9),
+verify-input 28/28 PASS, fullrun inhaltlich sauber (6/6 Bosse + Truhen, Sieg `dawn`,
+0 JS-Fehler). Verbleibende Blocker: Minute-25 780×360@3 (41,3–46,4 < 50),
+fullrun-fpsMin 35,7/34,8 < 55, art-director FAIL 3,25/5 (Results-Screen-Overlap,
+Boss-FX-Kontrast), Echtzeitlauf/Heap-Nachweis blocked (Renderer-Abbruch nach Minute 20).
+Vollständige Tabelle, Befehle und Zeitstempel: `docs/qa/reacceptance-2026-11-27.md`.
 Die Fix-Lanes `m10-endgame-fps` (Baseline 3× Burst 60,1; M25 56,7/55,1/53,8),
 `m10-separation-crowd`, `m10-ground-cost` sind **noch nicht in main**; nach Merge neu messen.
 Historisch benannte Punkte (Stand Versuch 2): Heap +12,2 % (kein Leak, #1008;

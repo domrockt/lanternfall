@@ -192,3 +192,34 @@ Ergebnis-Screen-Layout (Überlappung/Umbruch/12 Zeilen) und Boss-FX-Kontrast
 **Urteil Optik: FAIL (3,25/5) — Mängel dokumentiert, Folgekarten nötig.**
 
 **Urteil fa2-05 gesamt: Eingabe PASS, Optik FAIL (ehrlich dokumentiert).**
+
+## fa2-06 — Endurteil der Nachabnahme
+
+Stand: 2026-11-27T16:00Z, `main` @ `38c21c4`. Alle Messungen dieses Dokuments
+(13:15–15:35Z) liefen auf dem Performance-Fix-Stand von `main` @ `78cca7e`
+(+ WIP-Checkpoint), headless Chromium, lange Läufe unter `flock`.
+
+| Abnahme-Zeile | Ergebnis | Urteil |
+|---|---|---|
+| fa2-01 Build/Tests/Inhalte/verify:final | build rc=0, 355 Tests 0 fail, 30/6/6/6/6/2, 7/7 | **PASS** |
+| fa2-02 Perf Burst + Minute 25 | 640: Burst 59,9–60,1, M25 50,9–55,4 → grün; 780: Burst 54,7–56,4 grenzwertig, M25 41,3–46,4 | **FAIL** (780 M25 <50, reproduzierbar in 4 Läufen) |
+| fa2-03 fullrun 30× | 6/6 Bosse + 6 Truhen + Sieg dawn + 0 JS-Fehler je View; fpsMin 35,7/34,8; Heap +8,7 %/+15,2 % | Inhalt **PASS**, FPS **FAIL**, Heap 1× PASS / 1× knapp FAIL |
+| fa2-04 Echtzeitlauf 30 min | Renderer-Abbruch nach Minute 20 („Target closed"), kein volles JSON | **BLOCKED** (Host-Laufstabilität, nicht Spiel) |
+| fa2-05 Touch/Gamepad + Optik | verify-input **28/28 PASS**, 0 JS-Fehler; art-director **FAIL 3,25/5** (Results-Overlap, Boss-FX-Kontrast) | Eingabe **PASS**, Optik **FAIL** |
+
+**Ergebnis der Nachabnahme 2026-11-27 (Versuch 3): NICHT ABGENOMMEN.**
+
+Der Performance-Fix hat den **640×360-Pfad** repariert (Burst 46,3 → 60,1 FPS,
+Minute-25 ≥50,9): dieser Blocker aus der Endabnahme ist **gelöst**. Verbleibende
+Blocker, alle mit Beleg in diesem Dokument:
+
+1. **Minute 25 bei 780×360 dpr3**: 41,3–46,4 FPS gegen Ziel ≥50 (4 Messläufe).
+2. **fullrun-fpsMin Endgame-Fenster** (beide Views): 35,7 / 34,8 gegen Ziel 55.
+3. **Optik**: Ergebnis-Screen-Layout (Textüberlappung, Wortumbruch, 6 statt 12
+   Tabellenzeilen) und Boss-FX-Kontrast (rot auf orange) — art-director FAIL 3,25/5.
+4. **Echtzeitlauf/Heap-Nachweis**: blocked durch Host-Laufstabilität (Renderer-Abbruch
+   nach Minute 20 trotz `--disable-dev-shm-usage`).
+
+Offene Folgekarten: Results-Screen-Layout, Boss-FX-Kontrast (aus fa2-05),
+780-Endgame-FPS (Lanes `m10-endgame-fps`/`m10-perf-recovery`/`m10-fx-overdraw-cap`
+nicht in main), stabiler Echtzeitlauf.

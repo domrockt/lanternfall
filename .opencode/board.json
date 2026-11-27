@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3424,
+  "next": 3426,
   "cards": [
     {
       "id": 1,
@@ -4498,10 +4498,16 @@
       "id": 3422,
       "title": "[fa2-05] Touch/Gamepad (verify-input) + Optik (art-director shots)",
       "description": "Abnahme: `node scripts/verify-input.mjs` PASS (Zahl), 0 JS-Fehler; art-director-Urteil zu aktuellen 640×360-Shots (≥4/5 oder konkrete Mängel) in docs/qa. Ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T15:59:26Z",
+          "by": "build",
+          "text": "todo → review: verify-input 28/28 PASS, 0 JS-Fehler (13:43-13:44Z, Log shots/qa-reaccept-input-log.txt). art-director-Urteil: FAIL 3,25/5 mit konkreten Maengeln - results-Screen Textueberlappung SIEG/SCHADEN/GESAMT + Wortumbruch SEELENLEU/CHTFEUER + 6 statt 12 Zeilen (muss neu), perf-minute25 Boss-FX-Kontrast rot-auf-orange + halbtransparentes Announce-Panel (nachbessern), perf-500 und fullrun-minute25 ok (4/5). Beleg: docs/qa/reacceptance-2026-11-27.md fa2-05, Commit 38c21c4. Folgekarten empfohlen: Results-Layout, Boss-FX-Kontrast."
+        }
+      ],
       "created": "2026-11-27T13:14:45Z",
-      "updated": "2026-11-27T13:14:45Z"
+      "updated": "2026-11-27T15:59:26Z"
     },
     {
       "id": 3423,
@@ -4511,6 +4517,26 @@
       "notes": [],
       "created": "2026-11-27T13:14:45Z",
       "updated": "2026-11-27T13:14:45Z"
+    },
+    {
+      "id": 3424,
+      "title": "@ui-dev m10-results-layout: Ergebnis-Screen Überlappung + Wortumbruch + 12 Zeilen",
+      "description": "Aus art-director-FAIL 3,25/5 (Re-Abnahme #3422): 'SIEG…'/'SCHADEN PRO WAFFE'/'GESAMT: 3.7M' überlagern sich auf gebrochener Grundlinie (shots/m3-fullrun-results.png, y≈235/255/270); 'SEELENLEUCHTFEUER' bricht ohne Trennstrich mitten im Wort; Tabelle zeigt 6 statt 12 Waffen-Zeilen, untere Panelhälfte leer. Abnahme: Neuer Shot ohne Überlappung, sauberer Umbruch/Trennstrich, 12 Zeilen sichtbar, art-director >=4/5, Tests grün.",
+      "column": "backlog",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-27T16:03:33Z",
+      "updated": "2026-11-27T16:03:33Z"
+    },
+    {
+      "id": 3425,
+      "title": "@vfx-artist m10-boss-fx-contrast: rote Gegner vs. orange FX + opakes Announce-Panel",
+      "description": "Aus art-director-FAIL (Re-Abnahme #3422): Boss-Roben (rot) verschmelzen mit orangen Explosions-FX/Schadenszahlen (shots/perf-minute25.png); Announce-Panel halbtransparent, Pickup liegt auf 'BOSS ERWACHT'. Abnahme: dunklere Kontur/Ink-Rand um FX oder FX-Alpha gesenkt, Panel opak, Pickups unter Text ausgeblendet; Shot-Vergleich Vor/Nach, art-director >=4/5, Tests grün.",
+      "column": "backlog",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T16:03:33Z",
+      "updated": "2026-11-27T16:03:33Z"
     }
   ]
 }
