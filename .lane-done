@@ -1,0 +1,16 @@
+Lane m10-heap-tail — offener ACCEPTANCE-Punkt geschlossen (2026-11-27)
+
+Ziel: Heap-Wachstum im 30-min-Lauf <= 15 % (vorher +18,7 % / +22,2 %).
+Ursache (gemessen, CDP-Heap-Snapshot + Alloc-Sampling): kein Retained-Leak,
+sondern Churn/Arbeits-Set ohne stabilisierte GC-Wiederholung. Nach Voll-GC
+ist der Retained-Heap flach.
+
+Kleinste wirksame Änderung: DamageNumber-Aggregate in Pool/Cap 48 recycelt,
+activeViews inkrementell (kein Array pro Treffer), EnemyPool KI-Reset
+in-place (resetAiState), Pool.trim() gegen Retention. Tests 8/8.
+
+Nachlauf 2 x 30 min: +6,8 % (30,4->32,5 MB) und +4,9 % (30,0->31,5 MB).
+Burst 60,1 FPS (500 Gegner), 0 JS-Fehler. Build + 232 Tests gruen.
+Belege: shots/m10-heap-tail-after.json, -baseline-3runs.json, -baseline.json,
+-m10-heap-tail-perf.json. Restpunkte: Minute-25-FPS host-lastabhaengig
+(50,2-54,7 FPS in Historie); Messwerkzeug-Angleichung perf-heap vs fullrun offen.

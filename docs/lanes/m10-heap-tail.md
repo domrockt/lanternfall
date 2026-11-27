@@ -1,6 +1,6 @@
 # Lane m10-heap-tail — Heap-Wachstum 30-min-Lauf ≤ 15 %
 
-Stand: 2026-11-27. Worktree `/home/ai/lf-lanes/m10-heap-tail`, Branch `m10-heap-tail`.
+Stand: 2026-11-27. Worktree `/home/ai/games/lf-lanes/m10-heap-tail`, Branch `m10-heap-tail`.
 Ziel (offener ACCEPTANCE-Punkt): Heap-Wachstum im 30-min-Lauf **≤ 15 %**
 (belegt 25,7 → 30,5 MB = +18,7 %, Team-Finallauf 25,7 → 31,4 MB = +22,2 %).
 Kein Fullrun/Flock für die Heap-Baseline (Heap ist lastunabhängig).
@@ -79,3 +79,29 @@ nach GC).
 Kleinste wirksame Änderung: Aggregat-Einträge und KI-Zustand werden recycelt
 (Pool/Cap 48 bzw. `resetAiState` in-place), die View-Zählung allokiert kein
 Array mehr pro Treffer, und der Pool kappt Retention per `trim()`.
+
+## Abnahme (Karte #2062)
+
+| Kriterium | Ergebnis | Beleg |
+|---|---|---|
+| Heap-Wachstum ≤ 15 % in beiden Nachläufen | **+6,8 %** (30,4→32,5 MB) und **+4,9 %** (30,0→31,5 MB) | `shots/m10-heap-tail-after.json` |
+| Baseline dokumentiert | +10,7 / −22,0 / +4,6 %, Einzellauf +4,5 % | `shots/m10-heap-tail-baseline-3runs.json`, `-baseline.json` |
+| 0 JS-Fehler | 0 in allen Baseline-/After-Läufen | JSON `jsErrors: []` |
+| `npm run build` | gruen | `npm run build` (Commit f3151f8) |
+| alle Tests | **232/232** (18 Dateien) | `npm test` |
+| Burst ≥ 55 FPS unverändert | **60,1 FPS**, 500 Gegner, worstFrame 16,8 ms | `shots/m10-heap-tail-perf.json` |
+| Belege im Commit | Baseline-/After-/Perf-JSON + Doku | dieser Commit |
+
+### Offene Restpunkte
+
+- Minute-25-FPS ist host-lastabhängig flaky (50,2–54,7 FPS in der Historie;
+  Burst stabil 60,1). Kein Regressionsbeleg gegen Baseline, aber das
+  Minute-25-Gate (≥55) bleibt bei hoher Parallel-Last offen.
+- Die rohe `performance.memory` (ohne GC-Minimum) bleibt als Arbeits-Set
+  streuend; für Abnahmen gilt der Retained-Heap nach Voll-GC.
+- `scripts/perf-heap.mjs` nutzt eine GC-Wiederholung; `fullrun.mjs` nutzt das
+  Minimum aus drei GCs. Eine Angleichung wäre sinnvoll, ist aber nicht Teil
+  dieser Lane (Messwerkzeug unverändert).
+
+Hinweis: Das Briefing nennt `docs/lanes/m10-heart-tail.md` (Tippfehler);
+die Lane-Doku liegt bewusst unter `docs/lanes/m10-heap-tail.md`.
