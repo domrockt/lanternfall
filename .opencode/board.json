@@ -5352,19 +5352,31 @@
       "id": 4420,
       "title": "m10-death-fx-frames K3: tests/death-frames.test.ts",
       "description": "Tests: 5 Frame-Keys existieren, keine Duplikat-Frames, binaeres Alpha (nur 0/255), 0 Off-Palette-Pixel, Boss-Stufe messbar != Blob. Abnahme: npx vitest run tests/death-frames.test.ts gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T18:52:50Z",
+          "by": "build",
+          "text": "todo → review: Commit 5524b7b: tests/death-frames.test.ts 5/5 gruen (Keys, Duplikate, Alpha, Palette, Boss-vs-Blob: ink-Kontur 189-289 px vs 0, >=9 Stufen vs 4-5, Masken-Diff min 0.146 > 0.12). Skript-Fix (Sheet-BG nightMid) im selben Commit."
+        }
+      ],
       "created": "2026-11-27T18:38:18Z",
-      "updated": "2026-11-27T18:38:18Z"
+      "updated": "2026-11-27T18:52:50Z"
     },
     {
       "id": 4421,
       "title": "m10-death-fx-frames K4: Nachher-Belege + Chaos + Doku + art-director",
       "description": "scripts/m10-death-frames.mjs erzeugt 4x-Zoom-PNGs aller neuen Frames + In-Game-Chaos-Shot (>=300 Gegner, alle 4 Todesklassen), 0 JS-Fehler; docs/lanes/m10-death-fx-frames.md mit art-director-Urteil >= 4/5. Abnahme: PNGs + Doku committed.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T18:52:50Z",
+          "by": "build",
+          "text": "todo → doing: Start: Nachher-Sheets + Chaos-Shot + Doku + art-director"
+        }
+      ],
       "created": "2026-11-27T18:38:18Z",
-      "updated": "2026-11-27T18:38:18Z"
+      "updated": "2026-11-27T18:52:50Z"
     }
   ]
 }

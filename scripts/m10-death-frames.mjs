@@ -195,8 +195,9 @@ if (doChaos) {
       lf.spawnEnemy("toad", 40); // ranged -> sputter
       lf.spawnEnemy("bomber", 30); // exploder -> sputter
     });
-    // 1.5 s Kampf: Waffen toeten, Death-FX laufen 0.3-0.9 s → im Bild sichtbar.
-    await page.waitForTimeout(1500);
+    // 1.0 s Kampf: Waffen toeten, Death-FX laufen 0.3-0.9 s → im Bild sichtbar,
+    // aber >= 300 Gegner bleiben lebend (Abnahme-Kriterium).
+    await page.waitForTimeout(1000);
     await page.screenshot({ path: `${prefix}-chaos.png` });
     const state = await page.evaluate(() => ({ ...window.__lf.state(), spawnCounts: window.__lf.state().spawnCounts }));
     chaos = { file: `${prefix}-chaos.png`, state, jsErrors: errors };

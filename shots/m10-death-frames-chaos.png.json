@@ -1,0 +1,132 @@
+{
+  "url": "http://127.0.0.1:5707/?debug=1",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "setSuppressLevelUps",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "setFxDamping",
+      "args": [
+        false
+      ]
+    },
+    {
+      "call": "addWeapon",
+      "args": [
+        "ember",
+        8
+      ]
+    },
+    {
+      "call": "addWeapon",
+      "args": [
+        "frost",
+        8
+      ]
+    },
+    {
+      "call": "addWeapon",
+      "args": [
+        "flail",
+        8
+      ]
+    },
+    {
+      "call": "addWeapon",
+      "args": [
+        "storm",
+        8
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bogzombie",
+        80
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "skeleton",
+        60
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bog_rat",
+        220
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "crow",
+        100
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "mudling",
+        40
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "banshee",
+        50
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "harpy",
+        50
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "cultist",
+        20
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "ghoul",
+        50
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "toad",
+        40
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bomber",
+        30
+      ]
+    }
+  ],
+  "out": "shots/m10-death-frames-chaos.png",
+  "gif": "shots/m10-death-frames-chaos.gif",
+  "jsErrors": []
+}
