@@ -133,10 +133,18 @@ const textureInfo = () =>
     const atlas = window.__game.textures.exists("runtime_atlas")
       ? { key: "runtime_atlas", frames: Object.keys(window.__game.textures.get("runtime_atlas").frames).length }
       : null;
+    const bakedPages = window.__game.textures.getTextureKeys()
+      .filter((k) => k.startsWith("baked_page_"))
+      .sort()
+      .map((k) => {
+        const t = window.__game.textures.get(k);
+        return { key: k, width: t.width, height: t.height };
+      });
     return {
       totalTextures: keys.length,
       groups,
       atlas,
+      bakedPages,
       nonAtlasSample: keys.filter((k) => k !== "runtime_atlas").length,
     };
   });
