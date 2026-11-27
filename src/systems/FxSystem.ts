@@ -23,6 +23,8 @@ interface FxRuntime {
   frameRate: number;
   active: boolean;
   additive: boolean;
+  /** M10: Evolutions-Signaturen bleiben auch im Minimal-LOD voll sichtbar. */
+  alphaScaleExempt: boolean;
 }
 
 export interface FxOptions {
@@ -47,6 +49,8 @@ export interface FxOptions {
   frames?: string[];
   /** Frames pro Sekunde der Animation (Default 18). */
   frameRate?: number;
+  /** M10: von der Endgame-Alpha-Dämpfung ausnehmen (Evolutions-Signaturen). */
+  alphaScaleExempt?: boolean;
 }
 
 /**
@@ -80,6 +84,7 @@ export class FxSystem {
     const ratio = next / this.alphaScale;
     this.alphaScale = next;
     for (const fx of this.active) {
+      if (fx.alphaScaleExempt) continue;
       fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
       fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
       fx.sprite.setBlendMode(fx.additive && next >= 0.7 ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
@@ -105,8 +110,10 @@ export class FxSystem {
     // Additive Glows stacken auf 255: im Endgame deshalb quadratisch dämpfen,
     // sonst bleibt der weiße Kern trotz Alpha-Faktor stehen.
     const additive = opts.additive !== false;
-    const extra = additive ? this.alphaScale : 1;
-    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * this.alphaScale * extra;
+    const scaleFactor = opts.alphaScaleExempt ? 1 : this.alphaScale;
+    const extra = additive ? scaleFactor : 1;
+    fx.alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra;
+    fx.alphaScaleExempt = opts.alphaScaleExempt === true;
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
     fx.spin = opts.spin ?? 0;
@@ -190,7 +197,9 @@ export class FxSystem {
     if (now - last < baseLife * 450) return null;
     this.signatureLast.set(key, now);
     const texture = signatureTextureKey(evolution, kind);
-    const alphaFloor = Math.min(1, 0.95 / this.alphaScale);
+    // M10-Abnahme: 32x32-Texturen, Hit 3,2–3,6 / Death 4,0–4,6, volle Alpha
+    // auch im Minimal-LOD (alphaScaleExempt, Untergrenze effektiv 0,95).
+    const spin = sig.shape === "splitter" ? (kind === "hit" ? 2.2 : 1.4) : sig.shape === "cloud" ? 0.7 : 0;
     return this.spawn({
       ...(opts as FxOptions),
       texture,
@@ -198,12 +207,15 @@ export class FxSystem {
       x,
       y,
       life: opts.life ?? baseLife,
-      scaleFrom: opts.scaleFrom ?? (kind === "hit" ? 2.0 : 2.4),
-      scaleTo: opts.scaleTo ?? (kind === "hit" ? 2.8 : 3.4),
-      alphaFrom: opts.alphaFrom ?? alphaFloor,
+      scaleFrom: opts.scaleFrom ?? (kind === "hit" ? 3.2 : 4.0),
+      scaleTo: opts.scaleTo ?? (kind === "hit" ? 3.6 : 4.6),
+      alphaFrom: opts.alphaFrom ?? 0.95,
       alphaTo: 0,
       additive: false,
       depth: DEPTH.enemyDeath,
+      spin: opts.spin ?? spin,
+      rotation: opts.rotation ?? (sig.palette[0] % 7) * 0.42,
+      alphaScaleExempt: true,
     });
   }
 
@@ -346,7 +358,7 @@ export class FxSystem {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
-      frames: ["fx_spark"], frameRate: 18, active: false, additive: true,
+      frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false,
     };
   }
 
@@ -520,7 +532,7 @@ export class ParticleSystem {
     return {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
-      frames: ["fx_spark"], frameRate: 18, active: false, additive: true,
+      frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false,
     };
   }
 

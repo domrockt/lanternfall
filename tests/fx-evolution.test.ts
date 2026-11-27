@@ -16,7 +16,7 @@ import {
 const ALL: EvoSignature[] = EVOLUTION_SIGNATURE_IDS.map((id) => EVOLUTION_SIGNATURES[id]);
 
 function frameGrid(sig: EvoSignature, kind: "hit" | "death", stage: number): string[] {
-  return signatureFrame(sig.shape, sig.palette, stage);
+  return signatureFrame(sig.shape, sig.palette, stage, kind);
 }
 
 function inkCount(rows: string[]): number {
@@ -79,10 +79,11 @@ describe("M10 Evolutions-Signaturen", () => {
         expect(views[i].paletteIndex).toBe(ALL[i].palette[0]);
         expect(views[i].shape).toBe(ALL[i].shape);
       }
-      // Unter minimal: Alpha 0,5 und NORMAL-Blend wie im ACCEPTANCE-A7-Pfad.
+      // Unter minimal: Alpha-Untergrenze 0,85 und NORMAL-Blend (M10-Abnahme:
+      // die Signatur darf im Chaos nicht auf 0,5 verblassen).
       if (level === "minimal") {
         for (const v of views) {
-          expect(v.alpha).toBe(0.5);
+          expect(v.alpha).toBeGreaterThanOrEqual(0.85);
           expect(v.blend).toBe("NORMAL");
         }
       }
@@ -114,11 +115,13 @@ describe("M10 Evolutions-Signaturen", () => {
       for (const kind of ["hit", "death"] as const) {
         for (let stage = 0; stage < SIGNATURE_FRAME_COUNT; stage++) {
           const rows = frameGrid(s, kind, stage);
-          expect(rows).toHaveLength(17);
-          expect(rows.every((r) => r.length === 17)).toBe(true);
-          expect(inkCount(rows)).toBeGreaterThan(12);
+          expect(rows).toHaveLength(32);
+          expect(rows.every((r) => r.length === 32)).toBe(true);
+          expect(inkCount(rows)).toBeGreaterThan(40);
           // Nur Palettenzeichen (a-v bzw. 0-9), keine Off-Palette-Glyphen.
           expect(rows.join("")).toMatch(/^[.0-9a-v]+$/);
+          // 1-px-ink-Kontur vorhanden (Index 0 = "0").
+          expect(rows.join("")).toContain("0");
         }
       }
     }
@@ -134,7 +137,18 @@ describe("M10 Evolutions-Signaturen", () => {
       ch >= "0" && ch <= "9" ? ch.charCodeAt(0) - 48 : ch.charCodeAt(0) - 97 + 10;
     for (const s of ALL) {
       const chars = new Set([...frameGrid(s, "hit", 0).join("")].filter((c) => c !== ".").map(decode));
-      for (const idx of chars) expect(s.palette as readonly number[]).toContain(idx);
+      // Strukturfarben: ink (0) als Kontur, boneLight (11) als Lichtkante.
+      const allowed = new Set<number>([0, 11, ...s.palette]);
+      for (const idx of chars) expect(allowed.has(idx), `${s.evolution}: Index ${idx}`).toBe(true);
+    }
+  });
+
+  it("Hit- und Todes-Signatur derselben Evolution unterscheiden sich sichtbar", () => {
+    for (const s of ALL) {
+      const hit = frameGrid(s, "hit", 2);
+      const death = frameGrid(s, "death", 2);
+      expect(diffPixels(hit, death), `${s.evolution}: Hit und Death identisch`).toBeGreaterThan(40);
+      expect(inkCount(death), `${s.evolution}: Death nicht offener/groesser`).toBeGreaterThanOrEqual(inkCount(hit));
     }
   });
 });
