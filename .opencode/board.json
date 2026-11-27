@@ -6676,25 +6676,36 @@
       "id": 5838,
       "title": "m10-hero-contrast K1: Vorher-Belege + Kontrast-Metrik",
       "description": "scripts/m10-hero-contrast.mjs rendert CharSelect-Portraets (Mira+Kael) und Kael im 300+-Gegner-Chaos-Frame; schreibt shots/m10-hero-contrast-before.png, -before-charselect.png, -before-portraits.png (6x nearest) und -before.json (Kontrast-Metrik Spieler-Flaeche vs. umliegende Gegner). Abnahme: Skript laeuft mit Timeout, JSON enthaelt Metrik + Gegnerzahl + 0 JS-Fehler, Commit enthaelt alle Belege.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T21:46:01Z",
           "by": "build",
           "text": "todo → doing: Start: Mess-Skript scripts/m10-hero-contrast.mjs schreiben und before-Belege erzeugen."
+        },
+        {
+          "at": "2026-11-27T21:56:42Z",
+          "by": "build",
+          "text": "doing → review: Commit cc024ad (+Board d45c558): Mess-Skript scripts/m10-hero-contrast.mjs + scripts/art/m10_hero_portraits.py; Belege shots/m10-hero-contrast-before{,-charselect,-portrait-mira,-portrait-kael}.png + -before.json. Metrik: heroRarity 2.07%, lumDelta 52.1, 320 Gegner, 0 JS-Fehler."
         }
       ],
       "created": "2026-11-27T21:45:59Z",
-      "updated": "2026-11-27T21:46:01Z"
+      "updated": "2026-11-27T21:56:42Z"
     },
     {
       "id": 5839,
       "title": "m10-hero-contrast K2: Portraets ueberarbeiten (Kael=Moench, Mira feiner)",
       "description": "scripts/art/gen_chars.py: _bust_base/portrait so ueberarbeiten, dass Kael klar als Moench lesbar ist (Kapuze/Gewand/Laterne-Silhouette statt Kopf ueber Zackenkasten) und Mira verfeinert wird. gen-chars.ts NUR durch Pipeline-Regeneration (python3 scripts/art/gen_chars.py). Abnahme: art-director-Urteil >= 4/5 fuer beide Portraets, Beleg -after-portraits.png im Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T21:58:28Z",
+          "by": "build",
+          "text": "todo → doing: Start: gen_chars.py portrait() — Kael als Moench (Kapuze/Kutte/Laterne), Mira verfeinern; gen-chars.ts nur per Regeneration."
+        }
+      ],
       "created": "2026-11-27T21:45:59Z",
-      "updated": "2026-11-27T21:45:59Z"
+      "updated": "2026-11-27T21:58:28Z"
     },
     {
       "id": 5840,
