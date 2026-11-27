@@ -21,6 +21,37 @@ export interface HazardOptions {
   onTrigger?: () => void;
 }
 
+/**
+ * M10-Hazard-Fairness: Jede gefährliche Fläche warnt mindestens so lange, dass
+ * der Spieler bei 500-Gegner-Schwarm noch reagieren kann (Messung
+ * scripts/m10-hazard-fairness.mjs: Exploder lag bei 0.16 s → Trefferquote 100 %
+ * bei Ausweichversuch; Rim-Minimum 0.12 las im Schwarm kaum lesbar).
+ */
+/** Faire Mindest-Warnzeit (s); darunter ist kein echtes Ausweichen möglich. */
+export const MIN_WARN_S = 0.45;
+/** Minimum des Rim-Puls-Alphas; darunter verschwindet der Rand im Schwarm. */
+export const MIN_RIM_ALPHA = 0.3;
+
+/**
+ * Wirksame Vorwarnzeit: Werte unter der fairen Mindest-Warnzeit (und unsinnige
+ * Werte wie 0/NaN/negativ) werden auf ein faires Minimum angehoben, alles
+ * darüber bleibt exakt wie vom Aufrufer gewählt (keine künstlich längeren
+ * Boss-Warnungen). Reine Funktion, unit-getestet.
+ */
+export function effectiveWarn(warn: number | undefined, fallback: number): number {
+  const w = warn !== undefined && Number.isFinite(warn) ? warn : fallback;
+  return Math.max(MIN_WARN_S, w);
+}
+
+/**
+ * Rim-Puls-Alpha über der Warnphase: atmet zwischen MIN_RIM_ALPHA und
+ * MIN_RIM_ALPHA + 0.35, bleibt also auch im dichten Schwarm sichtbar.
+ * `elapsed` = seit Spawn vergangene Warnzeit (s). Reine Funktion.
+ */
+export function rimPulseAlpha(elapsed: number): number {
+  return MIN_RIM_ALPHA + Math.abs(Math.sin(elapsed * 10)) * 0.35;
+}
+
 interface HazardRuntime {
   kind: "circle" | "beam";
   x: number;
@@ -60,7 +91,7 @@ export class HazardSystem {
   }
 
   spawnCircle(x: number, y: number, opts: HazardOptions): HazardRuntime {
-    const warn = opts.warn ?? 0.7;
+    const warn = effectiveWarn(opts.warn, 0.7);
     const linger = opts.linger ?? 0;
     const warnSprite = makeImage(this.scene, Math.round(x), Math.round(y), "telegraph_disc")
       .setDepth(DEPTH.hazard)
@@ -73,7 +104,7 @@ export class HazardSystem {
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.hotRed])
       .setScale(Math.max(0.2, opts.radius / 30))
-      .setAlpha(0.25);
+      .setAlpha(rimPulseAlpha(0));
     const hazard: HazardRuntime = {
       kind: "circle", x, y, x2: x, y2: y, width: 0, radius: opts.radius,
       warn, warnMax: Math.max(0.01, warn), linger, lingerMax: Math.max(0.01, linger),
@@ -109,10 +140,10 @@ export class HazardSystem {
       .setTint(PAL[C.hotRed])
       .setRotation(angle + Math.PI / 2)
       .setScale(1.25, len / 16)
-      .setAlpha(0.18);
+      .setAlpha(rimPulseAlpha(0));
     const hazard: HazardRuntime = {
       kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,
-      radius: opts.radius, warn: opts.warn ?? 0.9, warnMax: Math.max(0.01, opts.warn ?? 0.9),
+      radius: opts.radius, warn: effectiveWarn(opts.warn, 0.9), warnMax: Math.max(0.01, effectiveWarn(opts.warn, 0.9)),
       linger: opts.linger ?? 0, lingerMax: Math.max(0.01, opts.linger ?? 0),
       tick: opts.tick ?? 0.5, tickTimer: 0, damage: opts.damage, triggered: false,
       active: true, warnSprite, rimSprite, source: opts.source ?? "beam", onTrigger: opts.onTrigger,
@@ -135,7 +166,7 @@ export class HazardSystem {
         const pulse = 0.55 + Math.sin((h.warnMax - h.warn) * 22) * 0.35;
         h.warnSprite?.setAlpha(pulse);
         // Rand-Puls-Skalierung: Warnung atmet sichtbar, bleibt aber unter Projektilen.
-        h.rimSprite?.setAlpha(0.12 + Math.abs(Math.sin((h.warnMax - h.warn) * 10)) * 0.35);
+        h.rimSprite?.setAlpha(rimPulseAlpha(h.warnMax - h.warn));
         if (h.warn > 0) continue;
         // Warnphase beendet → Treffer prüfen und Wirkphase starten.
         h.triggered = true;
