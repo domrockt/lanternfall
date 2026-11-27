@@ -1,5 +1,8 @@
 # Lane m10-perf-cap-rollback — Perf-Deckel gegen SwiftShader-Zahlen zurückbauen (2026-11-27)
 
+Karten-Zuordnung: **A = #5778** (View-Width-Cap), **B = #5779** (ADD-Glow-Flächen-Deckel),
+**C = #5780** (DPR-Budget-Regler-Verifikation; Belege in den Commits zu A/B).
+
 Dom-Wunsch 21:15Z (Punkte 1–3): Die gegen SwiftShader-Messzahlen geplanten Perf-Deckel kosten jetzt
 Optik/Spielgefühl ohne Nutzen — die iGPU (Mesa Intel RPL-S) rendert seit 19:20Z. Diese Lane baut Teil A
 (View-Width-Cap, Merge `8834c19`) bedingt zurück und entschärft Teil B (ADD-Glow-Flächen-Deckel,
