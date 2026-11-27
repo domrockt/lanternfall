@@ -10,7 +10,7 @@ import { knockbackVector } from "../logic/combat";
 import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
-import { fxFrames } from "../gfx/gen-fx";
+import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -986,26 +986,44 @@ export class CombatSystem {
   }
 
   private killsFx(e: EnemyRuntime): void {
-    const tint = PAL[e.def.color] ?? PAL[C.flame];
     const cls = deathClassFor(e.def.archetype);
     const spec = deathFxFor(cls, e.boss);
-    const count = e.boss ? spec.count : e.elite ? Math.round(spec.count * 1.4) : spec.count;
-    // Vier klar unterscheidbare Tod-Klassen: zerfallen / platzen / verpuffen / stieben.
-    // Shards behalten ihre Materialrampe (Knochen bleibt Knochen, Geist blau);
-    // nur die leichte Staubschicht nimmt die Gegnerfarbe an.
-    this.particles.shards(spec.shard, e.x, e.y, count, {
-      life: e.boss ? 0.75 : 0.5,
-      scaleFrom: e.boss ? 1.8 : e.elite ? 1.3 : 1.1,
+    // Elite sind etwas größer/partikelreicher, aber keine eigene Klasse.
+    const eliteScale = e.elite && !e.boss ? 1.15 : 1;
+    const count = e.elite && !e.boss ? Math.round(spec.count * 1.4) : spec.count;
+    const dustCount = e.elite && !e.boss ? Math.round(spec.dustCount * 1.4) : spec.dustCount;
+    const shardFrames = fxFrames(spec.shard, FX_FRAME_COUNTS[spec.shard] ?? 1);
+    const dustFrames = fxFrames(spec.dust, FX_FRAME_COUNTS[spec.dust] ?? 1);
+    // Vier klar unterscheidbare Tod-Klassen: Anzahl, Größe, Dauer, Streuung,
+    // Farbe und Textur kommen vollständig aus der deterministischen Spec.
+    // Bosse nutzen die skalierte Spec mit eigener Kern-Textur.
+    this.particles.burst(spec.shard, e.x, e.y, count, {
+      frames: shardFrames,
+      life: spec.life,
+      scaleFrom: spec.scaleFrom * eliteScale,
+      scaleTo: spec.scaleTo,
+      alphaFrom: 0.95, alphaTo: 0,
+      vx: spec.spread,
       additive: spec.additive,
+      tint: PAL[spec.tint],
     });
-    this.particles.shards(spec.dust, e.x, e.y, Math.max(3, Math.round(count / 2)), {
-      life: 0.5, scaleFrom: e.boss ? 1.5 : 0.9, additive: false, tint,
-      alphaFrom: 0.32, scaleTo: 0.2,
+    this.particles.burst(spec.dust, e.x, e.y, dustCount, {
+      frames: dustFrames,
+      life: spec.dustLife,
+      scaleFrom: spec.dustScale * eliteScale,
+      scaleTo: 0.2,
+      alphaFrom: 0.4, alphaTo: 0,
+      vx: spec.spread * 0.6,
+      additive: spec.additive,
+      tint: PAL[spec.dustTint],
     });
     if (cls === "dissolve" || e.boss) {
       this.fx.spawnAnim("fx_halo", e.x, e.y, {
-        life: 0.4, scaleFrom: 0.5, scaleTo: e.boss ? 2.4 : 1.1,
-        alphaFrom: 0.8, alphaTo: 0, additive: true, tint,
+        life: spec.life * 0.6,
+        scaleFrom: spec.scaleFrom * 0.5,
+        scaleTo: e.boss ? spec.scaleFrom * 1.6 : spec.scaleFrom,
+        alphaFrom: 0.8, alphaTo: 0, additive: true,
+        tint: PAL[spec.tint],
       });
     }
   }
