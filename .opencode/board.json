@@ -2689,17 +2689,22 @@
       "id": 1778,
       "title": "m10-death-fx K1 Ist-Stand: effektive DeathFxSpecs erheben",
       "description": "Alle 30 Archetypen + Boss: effektive DeathFxSpec (Shard/Dust/Count/Additive) erheben, Tabelle in docs/lanes/m10-death-fx.md; belegen wie viele visuell unterscheidbare Klassen heute ankommen. Abnahme: Tabelle mit 30 Archetypen und Anzahl distinkter Klassen belegt. Commit.",
-      "column": "todo",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T03:27:36Z",
           "by": "build",
           "text": "#K1 erledigt: Commit 23f3c4a (Message nennt #K1, Board-ID nicht im Commit; Lane-Mapping). Tabelle 30 Archetypen, 4 Klassen im Kampfpfad."
+        },
+        {
+          "at": "2026-11-27T06:47:33Z",
+          "by": "build",
+          "text": "todo → done: K1 DONE: Tabelle 30 Archetypen/4 Klassen, Commit 23f3c4a; nur Board-Nachzug."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T03:27:36Z"
+      "updated": "2026-11-27T06:47:33Z"
     },
     {
       "id": 1779,
