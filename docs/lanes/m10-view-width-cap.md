@@ -106,6 +106,9 @@ Art-director-Urteil: siehe Abschnitt 4.
   + `npm test` 34 Dateien/360 Tests grün, main.ts-Poll minimal, keine Fremd-Dateien, keine Temp-Reste).
 - Sicht-Beleg (einmaliges Urteil, 3x nearest vergrößert): **PASS** — keine Unschärfe/keine falschen Pixelkanten
   bei 640/780/1080; ganzzahlige Skalierung erhalten, Canvas zentriert, HUD lesbar.
+  art-director-Abnahme **PASS, Note 5/5** (27.11.): n×n-Pixel-Grid messtechnisch bestätigt
+  (780/1080 → Canvas 1920×1080 device px, Balken exakt symmetrisch (780−640)/2 bzw. (1080−640)/2),
+  Palette sauber, kein Schärfeunterschied 780 vs 1080 trotz größeren Viewports.
 - **Abschluss-Check (Supervisor, 27.11.):** fullrun `fpsMin` 39,4 < 55 → Abnahmekriterium **NICHT erfüllt**.
   Ergebnis + Ursache stehen in Abschnitt 2c (Fullrun läuft intern 480 breit, die 640-Klemme greift dort nicht;
   größter verbleibender Posten UI/PostFX +18,5 %). Karte #3461 wird **blocked** gesetzt, nicht weiter getunt;
