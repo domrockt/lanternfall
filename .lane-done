@@ -1,0 +1,16 @@
+# Lane m10-enemy-shots-fair — abgeschlossen (Versuch 3)
+
+Gegnerschüsse fair und lesbar; kein Rebalancing, CombatSystem.ts/Run.ts unverändert.
+- Fairness: Wind-up 0,36 s (>=0,3 s) mit Telegraph-Sprite am Schützen (1x, Alpha-Puls),
+  Abbruch bei Schützentod/Recycling/View-Verlust; Offscreen-Ursprünge werden verworfen.
+- Lesbarkeit: 4 Optiken spit/bone/shadow/fire mit eigener Silhouette + 1-px-Kontur;
+  art-director PASS 4/5 (je Optik 4); alle minInner >= 2,04 auf 5 Hintergründen, Form-IoU 0,26–0,60.
+- Messwerte (shots/m10-enemy-shots-before.json / -after.json):
+  vorher 640×360 500 Schuss/0 Offscreen-Treffer, 780×360 503 Schuss/2 Offscreen-Treffer;
+  nachher 640×360 501 Schuss/0 offscreenFired/0 Offscreen-Treffer/windupOk 501/501 (100 %),
+  780×360 500 Schuss/0 offscreenFired/0 Offscreen-Treffer/windupOk 500/500.
+- Tests: tests/enemy-shots-fair.test.ts 14/14; npm run build grün; npm test 238/238;
+  Dichte-Capture 500 Gegner, 0 JS-Fehler.
+- Review: test-auditor PASS, Reviewer PASS mit Auflagen (Blocker Temp-Datei entfernt,
+  Telegraph-Cap bricht ab statt stumm zu feuern, Debug-Hook-Cleanup).
+- Belege: shots/m10-enemy-shots-{before,after}.json, -optics.png, -density.gif, -contrast.json.

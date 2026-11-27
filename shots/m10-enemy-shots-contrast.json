@@ -1,0 +1,195 @@
+{
+ "note": "Pixel-Kontrast (WCAG-Verhaeltnis) der 4 Gegner-Schuss-Optiken; ein Lauf, feste Hintergruende (nightDeep=1, night=2, waterDeep=6, waterMid=7, grassMarsh=30). minInner/meanInner/max ueber alle opaken Nicht-Kontur-Pixel (Kontur = Index 0). shapeIoU = Ueberlappung der Silhouettenmasken (Kontur ausgeschlossen). Reproduzierbar mit scripts/art/contrast-enemy-shots.py.",
+ "geneatedBy": "scripts/art/contrast-enemy-shots.py",
+ "backgrounds": {
+  "nightDeep": 1,
+  "night": 2,
+  "waterDeep": 6,
+  "waterMid": 7,
+  "grassMarsh": 30
+ },
+ "shots": {
+  "spit": {
+   "w": 9,
+   "h": 10,
+   "opaquePixels": 57,
+   "innerPixels": 38,
+   "colors": [
+    13,
+    31
+   ],
+   "bg": {
+    "nightDeep": {
+     "minInner": 5.98,
+     "meanInner": 10.5,
+     "max": 18.23,
+     "bgColorHex": "0x0a0e16"
+    },
+    "night": {
+     "minInner": 5.56,
+     "meanInner": 9.75,
+     "max": 16.94,
+     "bgColorHex": "0x101724"
+    },
+    "waterDeep": {
+     "minInner": 2.81,
+     "meanInner": 4.93,
+     "max": 8.57,
+     "bgColorHex": "0x3a4a5c"
+    },
+    "waterMid": {
+     "minInner": 2.04,
+     "meanInner": 3.58,
+     "max": 6.22,
+     "bgColorHex": "0x4e5f6e"
+    },
+    "grassMarsh": {
+     "minInner": 2.39,
+     "meanInner": 4.2,
+     "max": 7.29,
+     "bgColorHex": "0x3d5a38"
+    }
+   },
+   "minInnerAllBg": 2.04
+  },
+  "bone": {
+   "w": 9,
+   "h": 7,
+   "opaquePixels": 49,
+   "innerPixels": 25,
+   "colors": [
+    10,
+    11,
+    13
+   ],
+   "bg": {
+    "nightDeep": {
+     "minInner": 10.77,
+     "meanInner": 12.73,
+     "max": 18.23,
+     "bgColorHex": "0x0a0e16"
+    },
+    "night": {
+     "minInner": 10.01,
+     "meanInner": 11.83,
+     "max": 16.94,
+     "bgColorHex": "0x101724"
+    },
+    "waterDeep": {
+     "minInner": 5.06,
+     "meanInner": 5.98,
+     "max": 8.57,
+     "bgColorHex": "0x3a4a5c"
+    },
+    "waterMid": {
+     "minInner": 3.68,
+     "meanInner": 4.34,
+     "max": 6.22,
+     "bgColorHex": "0x4e5f6e"
+    },
+    "grassMarsh": {
+     "minInner": 4.31,
+     "meanInner": 5.09,
+     "max": 7.29,
+     "bgColorHex": "0x3d5a38"
+    }
+   },
+   "minInnerAllBg": 3.68
+  },
+  "shadow": {
+   "w": 9,
+   "h": 9,
+   "opaquePixels": 36,
+   "innerPixels": 16,
+   "colors": [
+    9,
+    13
+   ],
+   "bg": {
+    "nightDeep": {
+     "minInner": 7.12,
+     "meanInner": 14.07,
+     "max": 18.23,
+     "bgColorHex": "0x0a0e16"
+    },
+    "night": {
+     "minInner": 6.62,
+     "meanInner": 13.07,
+     "max": 16.94,
+     "bgColorHex": "0x101724"
+    },
+    "waterDeep": {
+     "minInner": 3.35,
+     "meanInner": 6.61,
+     "max": 8.57,
+     "bgColorHex": "0x3a4a5c"
+    },
+    "waterMid": {
+     "minInner": 2.43,
+     "meanInner": 4.8,
+     "max": 6.22,
+     "bgColorHex": "0x4e5f6e"
+    },
+    "grassMarsh": {
+     "minInner": 2.85,
+     "meanInner": 5.63,
+     "max": 7.29,
+     "bgColorHex": "0x3d5a38"
+    }
+   },
+   "minInnerAllBg": 2.43
+  },
+  "fire": {
+   "w": 9,
+   "h": 12,
+   "opaquePixels": 63,
+   "innerPixels": 39,
+   "colors": [
+    19,
+    20,
+    22
+   ],
+   "bg": {
+    "nightDeep": {
+     "minInner": 8.06,
+     "meanInner": 9.84,
+     "max": 16.65,
+     "bgColorHex": "0x0a0e16"
+    },
+    "night": {
+     "minInner": 7.49,
+     "meanInner": 9.14,
+     "max": 15.48,
+     "bgColorHex": "0x101724"
+    },
+    "waterDeep": {
+     "minInner": 3.79,
+     "meanInner": 4.62,
+     "max": 7.83,
+     "bgColorHex": "0x3a4a5c"
+    },
+    "waterMid": {
+     "minInner": 2.75,
+     "meanInner": 3.36,
+     "max": 5.68,
+     "bgColorHex": "0x4e5f6e"
+    },
+    "grassMarsh": {
+     "minInner": 3.22,
+     "meanInner": 3.93,
+     "max": 6.66,
+     "bgColorHex": "0x3d5a38"
+    }
+   },
+   "minInnerAllBg": 2.75
+  }
+ },
+ "shapeIoU": {
+  "bone/fire": 0.26,
+  "bone/shadow": 0.33,
+  "bone/spit": 0.56,
+  "fire/shadow": 0.34,
+  "fire/spit": 0.46,
+  "shadow/spit": 0.6
+ }
+}
