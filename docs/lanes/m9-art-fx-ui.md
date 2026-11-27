@@ -51,6 +51,9 @@ und Abschluss.
   fuer den noch leicht weichen Kern-Glow und die etwas zu regelmaessige Kreisform der
   aeusseren Ringe. 0 JS-Fehler im Shot-Lauf.
 - Offener Punkt: Ringform/Kern-Glow beim Gesamturteil in #322 erneut pruefen.
+- art-director-Urteil (#319, Runde 3): **4,5/5 PASS**; harte Pixelringe, klare
+  Horizontkante und kein dunkler Mond-Rand erfuellt. Nur Hinweis: aeusserer Ring
+  minimal unregelmaessig (keine blockierende Korrektur).
 
 ## #320 Icons
 - Vorher: `shots/m9-art-fx-ui-icons-before-4x.png` (18 Icons, 4x nearest)
@@ -112,18 +115,36 @@ und Abschluss.
   14..466) - kein Overhang mehr.
 - Pruefung: Wortabstaende (6 px) unveraendert PASS; Umlaute alle vorhanden;
   `npx vitest run` 175 Tests gruen, `npm run build` gruen.
-- art-director-Urteil (#321): Runde 2 als Beleg an den Art-Director gegeben; das
-  Gesamturteil >= 4,5/5 wird in #322 dokumentiert.
+- art-director-Urteil (#321, Runde 2): **4,5/5 PASS**. Ä als zwei getrennte Punkte
+  mit 1-px-Luft, Ö/Ü ebenso, Wortabstaende klar; 9-Slice oben-links heller,
+  unten-rechts dunkler; Belohnungskarte liegt bündig innen, kein Overhang.
+  Nicht blockierender Hinweis: Mid-Roll-Standbilder zeigen noch Platzhalternamen;
+  die finalen PNGs wurden nach dem Ausrollen neu aufgenommen.
 
 ## #322 FX-Belege und Abschluss
 - Treffer-Funken: `fx_spark` von 3x3 auf 5x5 vergroessert (heller Kern 12, Glutarme 21/22)
   in `src/gfx/textures.ts`; wirkt in allen Waffen-/Hazard-Treffern.
 - XP-Kristalle: `shots/m9-art-fx-ui-xp-322.png` (+ `.gif`), Zeit
   eingefroren direkt nach dem Drop, alle drei Kristallgroessen + lebende Gegner im Bild.
-- Truhen-Oeffnung: `shots/m9-art-fx-ui-chest-322.png` (+ `.gif`, 16 Frames), Panel mit
-  offener, gluehender Truhe und Belohnung; Gegner wurden nachgespawnt.
-- 0 JS-Fehler in beiden Laeufen.
+- Truhen-Oeffnung Welt-FX: `shots/m9-art-fx-ui-chest-open-322.png` (0,5 s nach
+  Ausloesung: gluehender Lichtstrahl, offene Truhe, lebende Skelette im Bild).
+- Truhen-Panel: `shots/m9-art-fx-ui-chest-322.png` (+ `.gif`, 23 Frames),
+  Belohnung nach dem Ausrollen aufgenommen, Karten vollstaendig im Rahmen.
+- Treffer-Funken-Beleg: `shots/m9-art-fx-ui-spark-322.png`.
+- 0 JS-Fehler in allen Shot-Laeufen (spark/xp/chest/open).
 - `npm run build` gruen, `npx vitest run` **175 Tests gruen** (10 Dateien).
 - Aufraeumen: getrackte Temp-Belege `.arts/` (12 png, .arts/iconan-Skripte) entfernt —
   keine Deliverables; `shots/zz-icons-*.png` und `zz/` geloescht.
-- art-director-Gesamturteil (#322): ausstehend (Belege liegen bereit).
+
+## Gesamturteil (art-director, Runde 3)
+- Titel **4,5/5** (harte Pixelringe, klare Horizontkante, kein dunkler Mond-Rand;
+  Hinweis: aeusserer Ring minimal unregelmaessig).
+- Icons **4,5/5** (18/18 exakt 1-px-Ink, Licht oben-links, Evos deutlich kraeftiger;
+  Hinweis: zwei Evo-Silhouetten koennten noch klarer sein).
+- Font/UI **4,5/5** (Umlaute mit Luft, 9-Slice-Lichtlogik korrekt, kein Karten-Overhang).
+- FX **4,5/5** (Funken hart und palette-treu, XP-Kristalle + lebende Gegner,
+  Truhen-Glow als harte Pixelbaender).
+- **Gesamt: 4,5/5 PASS.** Keine blockierenden Restpunkte; die drei nicht blockierenden
+  Hinweise (Ringraster, zwei Evo-Silhouetten, Mid-Roll-Standbild) sind fuer spaetere
+  Politur notiert. Offen wegen Schrittlimit des Kontrolleurs: letzter Blick auf den
+  vollstaendigen XP-GIF-Kontaktbogen.
