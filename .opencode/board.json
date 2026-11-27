@@ -6358,31 +6358,41 @@
       "id": 5579,
       "title": "m10-hud-wide-anchor: K2 Ist-Baseline + Screenshots",
       "description": "Lauf mit --tag baseline: shots/m10-hud-anchor-baseline-*.png + JSON; Kollisions-/Rand-Verletzungen je Format gezaehlt und in docs/lanes/m10-hud-wide-anchor.md dokumentiert. AK: baseline-JSON + PNGs committed, Verletzungszahl notiert.",
-      "column": "todo",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:11:40Z",
           "by": "build",
           "text": "lane #5259, Merge 39dca82 (Abnahme folgt im board_move)"
+        },
+        {
+          "at": "2026-11-27T21:11:49Z",
+          "by": "build",
+          "text": "todo → done: lane #5259, Merge 39dca82"
         }
       ],
       "created": "2026-11-27T21:11:08Z",
-      "updated": "2026-11-27T21:11:40Z"
+      "updated": "2026-11-27T21:11:49Z"
     },
     {
       "id": 5580,
       "title": "m10-hud-wide-anchor: K3 Anker in UI.ts fixen (Anker+Margin)",
       "description": "Ankerpunkte in src/scenes/UI.ts auf Anker+Margin statt fixer Koordinaten; tests/hud-anchor.test.ts prueft Anker-Boxen gegen Safe-Area je Format; AE gegen 640x360-Referenz = 0. AK: tsc + npm test gruen, Test deckt 4 Formate ab.",
-      "column": "todo",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:11:40Z",
           "by": "build",
           "text": "lane #5260, Merge 39dca82 (Abnahme folgt im board_move)"
+        },
+        {
+          "at": "2026-11-27T21:11:49Z",
+          "by": "build",
+          "text": "todo → done: lane #5260, Merge 39dca82"
         }
       ],
       "created": "2026-11-27T21:11:08Z",
-      "updated": "2026-11-27T21:11:40Z"
+      "updated": "2026-11-27T21:11:49Z"
     },
     {
       "id": 5581,
