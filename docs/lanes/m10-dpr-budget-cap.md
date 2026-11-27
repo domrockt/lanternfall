@@ -60,6 +60,7 @@ Messversuche 2026-11-27 (alle unter flock /home/ai/games/.lf-perf.lock):
   PID 119292, ZWEITER 30-min `realtime-run.mjs` (flock -w 900), dahinter
   atlas-pack (3 Laeufe) + fullrun 780 dpr3 in der Warteschlange; Load ~17,7.
   Auto-Retry alle 30 min eingerichtet (Automation, expiert nach ~3 h).
+- Versuch 5 (19:42 Uhr, Auto-Retry 1): flock -w 60 -> rc=1, Skript lief nicht.
 - Systemlast beim Versuch 2: Load ~15 (Parallel-Lanes), Chromium ~800 % CPU
   fremder Lane -> FPS-Zahlen auch ohne LockKonflikt lastverrauscht.
 
