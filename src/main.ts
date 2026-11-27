@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH, setGameView } from "./config";
-import { computeView, shouldCapForCrowd, viewKey, type ViewSpec } from "./logic/view";
+import { computeView, viewKey, type ViewSpec } from "./logic/view";
 import { Boot } from "./scenes/Boot";
 import { Title } from "./scenes/Title";
 import { CharSelect } from "./scenes/CharSelect";
@@ -14,11 +14,9 @@ import { getSettings, onSettingsChanged } from "./audio/settings";
 /**
  * M8: View wird vor dem Spielstart aus dem Geraet berechnet. logische Hoehe 360,
  * Breite nach Seitenverhaeltnis; jeder Spielpixel = n x n Geraetepixel.
- * M10-Crowd: Bei hoher Gegnerlast (>=300 aktiv) wird die interne Breite auf
- * 640 geklemmt, damit der Endgame-Fill nicht die FPS frisst.
+ * M10-perf-cap-rollback: der M10-Crowd-Deckel ist rueckgebaut — iGPU haelt M25
+ * 780x360@3 ohne Deckel bei vsync-60 (Belege docs/lanes/m10-perf-cap-rollback.md).
  */
-let crowdCapped = false;
-const crowdDisabled = new URLSearchParams(window.location.search).get("viewcap") === "off";
 
 function measureView(): ViewSpec {
   const viewport = window.visualViewport;
@@ -30,7 +28,6 @@ function measureView(): ViewSpec {
     height,
     dpr: window.devicePixelRatio || 1,
     setting: getSettings().scale,
-    crowd: crowdCapped && !crowdDisabled,
   });
 }
 
@@ -167,23 +164,3 @@ function installLifecycle(): void {
 }
 
 installLifecycle();
-
-/**
- * M10-Crowd: waehrend eines Runs alle 500 ms pruefen, ob die interne Breite
- * geklemmt werden muss. Ein Wechsel loest genau ein applyView/resize aus.
- */
-setInterval(() => {
-  if (crowdDisabled || !game.isBooted || !game.scene.isActive("run")) return;
-  let enemies = 0;
-  try {
-    const run = game.scene.getScene("run") as Run;
-    enemies = Number(run.getQuickStats().enemies ?? 0);
-  } catch {
-    enemies = 0;
-  }
-  const next = shouldCapForCrowd(enemies, crowdCapped);
-  if (next !== crowdCapped) {
-    crowdCapped = next;
-    applyView(measureView());
-  }
-}, 500);

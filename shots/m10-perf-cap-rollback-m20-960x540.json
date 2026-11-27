@@ -1,0 +1,37 @@
+{
+  "suite": "view-width",
+  "when": "2026-11-27T21:48:55.072Z",
+  "minute": 20,
+  "gpu": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)"
+  },
+  "renderScale": 1,
+  "viewport": {
+    "width": 960,
+    "height": 540
+  },
+  "dpr": 1,
+  "view": {
+    "internal": [
+      480,
+      360
+    ],
+    "css": [
+      720,
+      540
+    ],
+    "dpr": 1
+  },
+  "measure": {
+    "fps": 60.1,
+    "frames": 481,
+    "elapsedMs": 8009,
+    "worstFrameMs": 16.8,
+    "avgEnemies": 300,
+    "minEnemies": 300,
+    "targetEnemies": 300
+  },
+  "jsErrors": [],
+  "passed": true
+}

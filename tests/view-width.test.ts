@@ -1,67 +1,50 @@
 import { describe, expect, it } from "vitest";
 import {
-  CROWD_ENEMY_THRESHOLD, CROWD_RELEASE_THRESHOLD, CROWD_WIDTH, MAX_WIDTH,
-  computeView, isIntegerPixelPerfect, shouldCapForCrowd, viewKey,
+  MAX_WIDTH, MIN_WIDTH,
+  computeView, isIntegerPixelPerfect, viewKey,
 } from "../src/logic/view";
 
-const view = (width: number, height: number, dpr = 1, crowd = false) =>
-  computeView({ width, height, dpr, crowd });
+/**
+ * M10-perf-cap-rollback (2026-11-27): der M10-Crowd-Deckel (interne Breite 640
+ * ab 300 Gegnern, Hysterese 260) ist rueckgebaut — auf iGPU (Mesa Intel RPL-S)
+ * haelt M25 780x360@3 mit UND ohne Deckel vsync-60 (Median 60,0 >= 55,
+ * shots/m10-perf-cap-rollback-m25-cap-{on,off}-*.json). Diese Tests sichern das
+ * M8-Verhalten ohne Deckel: 780 bleibt 780, 1080 wird nur durch MAX_WIDTH 860
+ * begrenzt, ganzzahlige n-Skalierung bleibt pixelgenau.
+ */
 
-describe("M10-Crowd: Renderbreite bei hoher Gegnerlast deckeln", () => {
-  it("780x360@3 bleibt ohne Last 780 breit, mit Last exakt 640 breit", () => {
-    const normal = view(780, 360, 3);
-    expect(normal.width).toBe(780);
-    expect(normal.scale).toBe(3);
+const view = (width: number, height: number, dpr = 1) => computeView({ width, height, dpr });
 
-    const capped = view(780, 360, 3, true);
-    expect(capped.width).toBe(CROWD_WIDTH);
-    expect(capped.height).toBe(360);
-    expect(capped.scale).toBe(3);
-    expect(capped.cssWidth).toBe(640);
-    expect(isIntegerPixelPerfect(capped)).toBe(true);
-    expect(capped.fit).toBe(false);
-    expect(viewKey(capped)).not.toBe(viewKey(normal));
+describe("M8-View ohne Crowd-Deckel (Rueckbau m10-perf-cap-rollback)", () => {
+  it("780x360@3 bleibt in jedem Fall 780 breit (keine Klemme mehr)", () => {
+    const spec = view(780, 360, 3);
+    expect(spec.width).toBe(780);
+    expect(spec.scale).toBe(3);
+    expect(spec.fit).toBe(false);
+    expect(isIntegerPixelPerfect(spec)).toBe(true);
+    expect(spec.cssWidth).toBe(780);
   });
 
-  it("1080x360@3 (intern 860) wird auf 640 geklemmt, pixelgenau", () => {
-    const normal = view(1080, 360, 3);
-    expect(normal.width).toBe(MAX_WIDTH);
-    const capped = view(1080, 360, 3, true);
-    expect(capped.width).toBe(CROWD_WIDTH); // 640
-    expect(isIntegerPixelPerfect(capped)).toBe(true);
-    expect(capped.cssWidth * capped.dpr).toBeCloseTo(capped.width * capped.scale, 5);
+  it("1080x360@3 wird nur durch MAX_WIDTH auf 860 begrenzt, pixelgenau", () => {
+    const spec = view(1080, 360, 3);
+    expect(spec.width).toBe(MAX_WIDTH);
+    expect(spec.scale).toBe(3);
+    expect(isIntegerPixelPerfect(spec)).toBe(true);
+    expect(spec.cssWidth * spec.dpr).toBeCloseTo(spec.width * spec.scale, 5);
   });
 
-  it("schmale Views (intern <= 640) bleiben unveraendert", () => {
+  it("schmale Views fallen auf den Fit-Rueckfall (intern 480 breit)", () => {
     const small = view(640, 360, 1);
-    expect(small.width).toBe(480);
-    const capped = view(640, 360, 1, true);
-    expect(capped.width).toBe(480);
-    expect(capped.scale).toBe(small.scale);
-    expect(capped.cssWidth).toBe(small.cssWidth);
+    expect(small.width).toBe(MIN_WIDTH);
+    expect(small.fit).toBe(true);
   });
 
-  it("Hysterese: klemmen ab 300, loesen erst unter 260", () => {
-    expect(CROWD_ENEMY_THRESHOLD).toBe(300);
-    expect(CROWD_RELEASE_THRESHOLD).toBe(260);
-    expect(shouldCapForCrowd(299, false)).toBe(false);
-    expect(shouldCapForCrowd(300, false)).toBe(true);
-    expect(shouldCapForCrowd(280, true)).toBe(true);
-    expect(shouldCapForCrowd(260, true)).toBe(true);
-    expect(shouldCapForCrowd(259, true)).toBe(false);
-    expect(shouldCapForCrowd(0, false)).toBe(false);
-    expect(shouldCapForCrowd(Number.NaN, false)).toBe(false);
-    expect(shouldCapForCrowd(Number.NaN, true)).toBe(false);
-  });
-
-  it("Klemme gilt auch bei festem SKALIERUNG-Override; nach dem Loesen kehrt der viewKey zurueck", () => {
-    const capped = computeView({ width: 780, height: 360, dpr: 3, setting: 6, crowd: true });
-    expect(capped.width).toBe(CROWD_WIDTH);
-    expect(isIntegerPixelPerfect(capped)).toBe(true);
-
-    const normal = view(780, 360, 3);
-    const released = computeView({ width: 780, height: 360, dpr: 3, setting: 6, crowd: false });
-    expect(released.width).toBe(normal.width);
-    expect(viewKey(released)).toBe(viewKey(normal));
+  it("SKALIERUNG-Override bleibt wirksam; gleiche Eingaben -> gleicher viewKey", () => {
+    const forced = computeView({ width: 780, height: 360, dpr: 3, setting: 6 });
+    expect(forced.width).toBe(780);
+    // maxFitN = floor(1080/360) = 3 begrenzt den Override auf die Stufe 3.
+    expect(forced.scale).toBe(3);
+    expect(isIntegerPixelPerfect(forced)).toBe(true);
+    expect(viewKey(forced)).toBe(viewKey(view(780, 360, 3)));
   });
 });
