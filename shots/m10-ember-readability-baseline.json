@@ -1,0 +1,972 @@
+{
+  "lane": "m10-ember-readability",
+  "generatedAt": "2026-11-27T11:35:37.180Z",
+  "gitHead": "2efe99f",
+  "source": "Phaser texture manager (dist build), echte Spieltexturen",
+  "definitions": {
+    "nearWhiteA7": "r,g,b >= 150 und r >= 235 (ACCEPTANCE A7 / final-vfx-readability)",
+    "nearWhiteMinRgb200": "min(R,G,B) >= 200 (m10-vfx-evo)",
+    "offPalette": "opake RGB-Pixel, die keiner der 32 Palettenfarben exakt entsprechen (nur Quelltexturen)",
+    "binaryAlpha": "alle Alpha-Werte sind 0 oder 255",
+    "prozentBasis": "opake Pixel (bei Glow: Footprint-Pixel); *PctOfFrame zusaetzlich auf Frame-Flaeche"
+  },
+  "target": {
+    "nearWhitePctMax": 4.16,
+    "offPaletteMax": 0,
+    "binaryAlpha": true
+  },
+  "glowKey": "fx_fire",
+  "projectile": {
+    "w": 7,
+    "h": 7,
+    "total": 49,
+    "measured": 49,
+    "opaque": 33,
+    "transparent": 16,
+    "semi": 0,
+    "offPalette": 0,
+    "nearWhiteA7": 3,
+    "nearWhiteA7Pct": 9.09,
+    "nearWhiteA7PctOfFrame": 6.12,
+    "nearWhiteMinRgb200": 3,
+    "nearWhiteMinRgb200Pct": 9.09,
+    "nearWhiteMinRgb200PctOfFrame": 6.12,
+    "paletteColors": [
+      {
+        "index": 0,
+        "hex": "#06070c",
+        "n": 15
+      },
+      {
+        "index": 17,
+        "hex": "#a84a21",
+        "n": 6
+      },
+      {
+        "index": 18,
+        "hex": "#cf6b26",
+        "n": 6
+      },
+      {
+        "index": 21,
+        "hex": "#ffd77a",
+        "n": 3
+      },
+      {
+        "index": 13,
+        "hex": "#fff8e6",
+        "n": 3
+      }
+    ],
+    "violations": [],
+    "binaryAlpha": true
+  },
+  "glow": {
+    "texture": "fx_fire",
+    "frame": 0,
+    "additiveAlpha": 0.95,
+    "background": "#0a0e16 (nightDeep)",
+    "footprintPixels": 113,
+    "w": 14,
+    "h": 14,
+    "total": 196,
+    "measured": 113,
+    "opaque": 113,
+    "transparent": 0,
+    "semi": 0,
+    "offPalette": 113,
+    "nearWhiteA7": 14,
+    "nearWhiteA7Pct": 12.39,
+    "nearWhiteA7PctOfFrame": 7.14,
+    "nearWhiteMinRgb200": 14,
+    "nearWhiteMinRgb200Pct": 12.39,
+    "nearWhiteMinRgb200PctOfFrame": 7.14,
+    "paletteColors": [],
+    "violations": [
+      {
+        "x": 5,
+        "y": 1,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 6,
+        "y": 1,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 7,
+        "y": 1,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 8,
+        "y": 1,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 9,
+        "y": 1,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 4,
+        "y": 2,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 5,
+        "y": 2,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 6,
+        "y": 2,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 7,
+        "y": 2,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 8,
+        "y": 2,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 9,
+        "y": 2,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 10,
+        "y": 2,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 4,
+        "y": 3,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 5,
+        "y": 3,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 6,
+        "y": 3,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 7,
+        "y": 3,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 8,
+        "y": 3,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 9,
+        "y": 3,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 10,
+        "y": 3,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 11,
+        "y": 3,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 2,
+        "y": 4,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 3,
+        "y": 4,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 4,
+        "y": 4,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 6,
+        "y": 4,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 7,
+        "y": 4,
+        "rgb": [
+          68,
+          100,
+          75
+        ],
+        "hex": "#44644b"
+      },
+      {
+        "x": 8,
+        "y": 4,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 9,
+        "y": 4,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 10,
+        "y": 4,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 11,
+        "y": 4,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 2,
+        "y": 5,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 3,
+        "y": 5,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 4,
+        "y": 5,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 5,
+        "y": 5,
+        "rgb": [
+          68,
+          100,
+          75
+        ],
+        "hex": "#44644b"
+      },
+      {
+        "x": 6,
+        "y": 5,
+        "rgb": [
+          240,
+          239,
+          227
+        ],
+        "hex": "#f0efe3"
+      },
+      {
+        "x": 7,
+        "y": 5,
+        "rgb": [
+          240,
+          239,
+          227
+        ],
+        "hex": "#f0efe3"
+      },
+      {
+        "x": 8,
+        "y": 5,
+        "rgb": [
+          68,
+          100,
+          75
+        ],
+        "hex": "#44644b"
+      },
+      {
+        "x": 9,
+        "y": 5,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 10,
+        "y": 5,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 11,
+        "y": 5,
+        "rgb": [
+          227,
+          97,
+          95
+        ],
+        "hex": "#e3615f"
+      },
+      {
+        "x": 1,
+        "y": 6,
+        "rgb": [
+          185,
+          60,
+          82
+        ],
+        "hex": "#b93c52"
+      },
+      {
+        "x": 2,
+        "y": 6,
+        "rgb": [
+          252,
+          145,
+          124
+        ],
+        "hex": "#fc917c"
+      },
+      {
+        "x": 3,
+        "y": 6,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 4,
+        "y": 6,
+        "rgb": [
+          31,
+          50,
+          51
+        ],
+        "hex": "#1f3233"
+      },
+      {
+        "x": 5,
+        "y": 6,
+        "rgb": [
+          240,
+          239,
+          227
+        ],
+        "hex": "#f0efe3"
+      },
+      {
+        "x": 6,
+        "y": 6,
+        "rgb": [
+          252,
+          250,
+          241
+        ],
+        "hex": "#fcfaf1"
+      },
+      {
+        "x": 7,
+        "y": 6,
+        "rgb": [
+          252,
+          250,
+          241
+        ],
+        "hex": "#fcfaf1"
+      },
+      {
+        "x": 8,
+        "y": 6,
+        "rgb": [
+          240,
+          239,
+          227
+        ],
+        "hex": "#f0efe3"
+      }
+    ],
+    "binaryAlpha": true
+  },
+  "textures": {
+    "projectile_ember": {
+      "w": 7,
+      "h": 7,
+      "total": 49,
+      "measured": 49,
+      "opaque": 33,
+      "transparent": 16,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 3,
+      "nearWhiteA7Pct": 9.09,
+      "nearWhiteA7PctOfFrame": 6.12,
+      "nearWhiteMinRgb200": 3,
+      "nearWhiteMinRgb200Pct": 9.09,
+      "nearWhiteMinRgb200PctOfFrame": 6.12,
+      "paletteColors": [
+        {
+          "index": 0,
+          "hex": "#06070c",
+          "n": 15
+        },
+        {
+          "index": 17,
+          "hex": "#a84a21",
+          "n": 6
+        },
+        {
+          "index": 18,
+          "hex": "#cf6b26",
+          "n": 6
+        },
+        {
+          "index": 21,
+          "hex": "#ffd77a",
+          "n": 3
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 3
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    },
+    "fx_fire": {
+      "w": 14,
+      "h": 14,
+      "total": 196,
+      "measured": 196,
+      "opaque": 113,
+      "transparent": 83,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 14,
+      "nearWhiteA7Pct": 12.39,
+      "nearWhiteA7PctOfFrame": 7.14,
+      "nearWhiteMinRgb200": 14,
+      "nearWhiteMinRgb200Pct": 12.39,
+      "nearWhiteMinRgb200PctOfFrame": 7.14,
+      "paletteColors": [
+        {
+          "index": 25,
+          "hex": "#b8303f",
+          "n": 30
+        },
+        {
+          "index": 26,
+          "hex": "#e4574d",
+          "n": 23
+        },
+        {
+          "index": 28,
+          "hex": "#16261e",
+          "n": 20
+        },
+        {
+          "index": 27,
+          "hex": "#ff8a6b",
+          "n": 19
+        },
+        {
+          "index": 12,
+          "hex": "#f2edd8",
+          "n": 10
+        },
+        {
+          "index": 30,
+          "hex": "#3d5a38",
+          "n": 7
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 4
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    },
+    "fx_fire_2": {
+      "w": 14,
+      "h": 14,
+      "total": 196,
+      "measured": 196,
+      "opaque": 113,
+      "transparent": 83,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 21,
+      "nearWhiteA7Pct": 18.58,
+      "nearWhiteA7PctOfFrame": 10.71,
+      "nearWhiteMinRgb200": 21,
+      "nearWhiteMinRgb200Pct": 18.58,
+      "nearWhiteMinRgb200PctOfFrame": 10.71,
+      "paletteColors": [
+        {
+          "index": 25,
+          "hex": "#b8303f",
+          "n": 25
+        },
+        {
+          "index": 26,
+          "hex": "#e4574d",
+          "n": 25
+        },
+        {
+          "index": 27,
+          "hex": "#ff8a6b",
+          "n": 24
+        },
+        {
+          "index": 12,
+          "hex": "#f2edd8",
+          "n": 14
+        },
+        {
+          "index": 28,
+          "hex": "#16261e",
+          "n": 13
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 7
+        },
+        {
+          "index": 30,
+          "hex": "#3d5a38",
+          "n": 5
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    },
+    "fx_fire_3": {
+      "w": 14,
+      "h": 14,
+      "total": 196,
+      "measured": 196,
+      "opaque": 110,
+      "transparent": 86,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 24,
+      "nearWhiteA7Pct": 21.82,
+      "nearWhiteA7PctOfFrame": 12.24,
+      "nearWhiteMinRgb200": 24,
+      "nearWhiteMinRgb200Pct": 21.82,
+      "nearWhiteMinRgb200PctOfFrame": 12.24,
+      "paletteColors": [
+        {
+          "index": 25,
+          "hex": "#b8303f",
+          "n": 23
+        },
+        {
+          "index": 26,
+          "hex": "#e4574d",
+          "n": 22
+        },
+        {
+          "index": 27,
+          "hex": "#ff8a6b",
+          "n": 22
+        },
+        {
+          "index": 28,
+          "hex": "#16261e",
+          "n": 14
+        },
+        {
+          "index": 12,
+          "hex": "#f2edd8",
+          "n": 14
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 10
+        },
+        {
+          "index": 30,
+          "hex": "#3d5a38",
+          "n": 5
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    },
+    "fx_fire_4": {
+      "w": 14,
+      "h": 14,
+      "total": 196,
+      "measured": 196,
+      "opaque": 117,
+      "transparent": 79,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 31,
+      "nearWhiteA7Pct": 26.5,
+      "nearWhiteA7PctOfFrame": 15.82,
+      "nearWhiteMinRgb200": 31,
+      "nearWhiteMinRgb200Pct": 26.5,
+      "nearWhiteMinRgb200PctOfFrame": 15.82,
+      "paletteColors": [
+        {
+          "index": 25,
+          "hex": "#b8303f",
+          "n": 30
+        },
+        {
+          "index": 26,
+          "hex": "#e4574d",
+          "n": 19
+        },
+        {
+          "index": 27,
+          "hex": "#ff8a6b",
+          "n": 19
+        },
+        {
+          "index": 12,
+          "hex": "#f2edd8",
+          "n": 19
+        },
+        {
+          "index": 28,
+          "hex": "#16261e",
+          "n": 13
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 12
+        },
+        {
+          "index": 30,
+          "hex": "#3d5a38",
+          "n": 5
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    },
+    "fx_fire_5": {
+      "w": 14,
+      "h": 14,
+      "total": 196,
+      "measured": 196,
+      "opaque": 114,
+      "transparent": 82,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 33,
+      "nearWhiteA7Pct": 28.95,
+      "nearWhiteA7PctOfFrame": 16.84,
+      "nearWhiteMinRgb200": 33,
+      "nearWhiteMinRgb200Pct": 28.95,
+      "nearWhiteMinRgb200PctOfFrame": 16.84,
+      "paletteColors": [
+        {
+          "index": 25,
+          "hex": "#b8303f",
+          "n": 26
+        },
+        {
+          "index": 26,
+          "hex": "#e4574d",
+          "n": 19
+        },
+        {
+          "index": 12,
+          "hex": "#f2edd8",
+          "n": 18
+        },
+        {
+          "index": 27,
+          "hex": "#ff8a6b",
+          "n": 16
+        },
+        {
+          "index": 28,
+          "hex": "#16261e",
+          "n": 15
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 15
+        },
+        {
+          "index": 30,
+          "hex": "#3d5a38",
+          "n": 5
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    },
+    "fx_fire_6": {
+      "w": 14,
+      "h": 14,
+      "total": 196,
+      "measured": 196,
+      "opaque": 111,
+      "transparent": 85,
+      "semi": 0,
+      "offPalette": 0,
+      "nearWhiteA7": 41,
+      "nearWhiteA7Pct": 36.94,
+      "nearWhiteA7PctOfFrame": 20.92,
+      "nearWhiteMinRgb200": 41,
+      "nearWhiteMinRgb200Pct": 36.94,
+      "nearWhiteMinRgb200PctOfFrame": 20.92,
+      "paletteColors": [
+        {
+          "index": 12,
+          "hex": "#f2edd8",
+          "n": 21
+        },
+        {
+          "index": 25,
+          "hex": "#b8303f",
+          "n": 20
+        },
+        {
+          "index": 13,
+          "hex": "#fff8e6",
+          "n": 20
+        },
+        {
+          "index": 26,
+          "hex": "#e4574d",
+          "n": 17
+        },
+        {
+          "index": 27,
+          "hex": "#ff8a6b",
+          "n": 17
+        },
+        {
+          "index": 28,
+          "hex": "#16261e",
+          "n": 15
+        },
+        {
+          "index": 30,
+          "hex": "#3d5a38",
+          "n": 1
+        }
+      ],
+      "violations": [],
+      "binaryAlpha": true
+    }
+  },
+  "totals": {
+    "offPalette": 0,
+    "semiAlpha": 0,
+    "binaryAlpha": true
+  },
+  "jsErrors": []
+}

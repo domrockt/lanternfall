@@ -22,7 +22,6 @@
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { PAL } from "../src/palette.ts";
 import { ensureBuild, loadPlaywright, startServer } from "./harness.mjs";
 
 // Live-Import von src/palette.ts funktioniert unter Node nur ueber den
@@ -96,13 +95,16 @@ export function analyzeRgba(rgba, w, h, footprint = null) {
     if (isNearWhiteMin(r, g, b)) nearMin++;
   }
   const pct = (n) => (opaque ? +((100 * n) / opaque).toFixed(2) : 0);
+  const pctTotal = (n) => (total ? +((100 * n) / total).toFixed(2) : 0);
   return {
     w, h, total, measured, opaque, transparent, semi,
     offPalette,
     nearWhiteA7: nearA7,
     nearWhiteA7Pct: pct(nearA7),
+    nearWhiteA7PctOfFrame: pctTotal(nearA7),
     nearWhiteMinRgb200: nearMin,
     nearWhiteMinRgb200Pct: pct(nearMin),
+    nearWhiteMinRgb200PctOfFrame: pctTotal(nearMin),
     paletteColors: [...colors.entries()].sort((a, b) => b[1] - a[1]).map(([i, n]) => ({ index: i, hex: `#${PALETTE_HEX[i].toString(16).padStart(6, "0")}`, n })),
     violations,
     binaryAlpha: semi === 0,
@@ -144,12 +146,11 @@ page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 try {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=77`);
   await page.waitForFunction(() => Boolean(window.__game && window.__lf), { timeout: 15000 });
+  await page.waitForFunction(() => window.__game.textures.exists("projectile_ember"), { timeout: 15000 });
 
-  // Welche Glow-Textur nutzt CombatSystem.fireEmber aktuell?
-  const glowKey = await page.evaluate(() => {
-    const src = String(window.__lf?.fireEmberSource ?? "");
-    return src.includes("fx_ember_muzzle") ? "fx_ember_muzzle" : "fx_fire";
-  });
+  // Nach dem Fix existiert eine eigene Muendungsglut mit dunkler Kontur;
+  // vor dem Fix ist der Ember-Glow die geteilte fx_fire-Textur.
+  const glowKey = await page.evaluate(() => (window.__game.textures.exists("fx_ember_muzzle") ? "fx_ember_muzzle" : "fx_fire"));
 
   const raw = await page.evaluate(({ glowKey }) => {
     const mgr = window.__game.textures;
@@ -199,9 +200,11 @@ try {
 
   const proj = textures["projectile_ember"];
   const totals = {
-    offPalette: Object.values(textures).reduce((n, t) => n + t.offPalette, 0) + (glow?.offPalette ?? 0),
-    semiAlpha: Object.values(textures).reduce((n, t) => n + t.semi, 0) + (glow?.semi ?? 0),
-    binaryAlpha: Object.values(textures).every((t) => t.binaryAlpha) && (glow?.binaryAlpha ?? true),
+    // Off-Palette wird nur auf den QUELLTEXTUREN gezaehlt: der additive
+    // Glow-Kleck entsteht per Definition aus Zwischenfarben ausserhalb der Palette.
+    offPalette: Object.values(textures).reduce((n, t) => n + t.offPalette, 0),
+    semiAlpha: Object.values(textures).reduce((n, t) => n + t.semi, 0),
+    binaryAlpha: Object.values(textures).every((t) => t.binaryAlpha),
   };
 
   const report = {
@@ -212,9 +215,9 @@ try {
     definitions: {
       nearWhiteA7: "r,g,b >= 150 und r >= 235 (ACCEPTANCE A7 / final-vfx-readability)",
       nearWhiteMinRgb200: "min(R,G,B) >= 200 (m10-vfx-evo)",
-      offPalette: "opake RGB-Pixel, die keiner der 32 Palettenfarben exakt entsprechen",
+      offPalette: "opake RGB-Pixel, die keiner der 32 Palettenfarben exakt entsprechen (nur Quelltexturen)",
       binaryAlpha: "alle Alpha-Werte sind 0 oder 255",
-      prozentBasis: "opake Pixel (bei Glow: Footprint-Pixel)",
+      prozentBasis: "opake Pixel (bei Glow: Footprint-Pixel); *PctOfFrame zusaetzlich auf Frame-Flaeche",
     },
     target: { nearWhitePctMax: 4.16, offPaletteMax: 0, binaryAlpha: true },
     glowKey: raw.glowKey,
@@ -226,7 +229,7 @@ try {
   };
 
   // Kontaktblatt 1x/4x aus den echten Frames.
-  const sheet = await page.evaluate(({ frames }) => {
+  const sheet = await page.evaluate((frames) => {
     const draw = (scale) => {
       const pad = 4;
       const labelH = 10;
@@ -261,10 +264,8 @@ try {
       });
       return c.toDataURL("image/png");
     };
-    const frames = [];
-    for (const [key, d] of Object.entries(window.__sheetFrames || {})) frames.push({ key, ...d });
     return { "1x": draw(1), "4x": draw(4) };
-  }, { frames: Object.entries(raw.textures).map(([key, d]) => ({ key, w: d.w, h: d.h, rgba: d.rgba })) });
+  }, Object.entries(raw.textures).map(([key, d]) => ({ key, w: d.w, h: d.h, rgba: d.rgba })));
 
   writeFileSync(outJson, JSON.stringify(report, null, 2));
   for (const [scale, dataUrl] of Object.entries(sheet)) {
@@ -272,7 +273,7 @@ try {
   }
 
   console.log(`[m10-ember-readability] ${outJson}`);
-  console.log(`projectile_ember: nearWhiteA7=${proj.nearWhiteA7Pct}% nearWhiteMin200=${proj.nearWhiteMinRgb200Pct}% offPalette=${proj.offPalette} binaryAlpha=${proj.binaryAlpha}`);
+  console.log(`projectile_ember: nearWhiteA7=${proj.nearWhiteA7Pct}% (frame ${proj.nearWhiteA7PctOfFrame}%) nearWhiteMin200=${proj.nearWhiteMinRgb200Pct}% (frame ${proj.nearWhiteMinRgb200PctOfFrame}%) offPalette=${proj.offPalette} binaryAlpha=${proj.binaryAlpha}`);
   if (glow) console.log(`glow(${glow.texture}): nearWhiteA7=${glow.nearWhiteA7Pct}% nearWhiteMin200=${glow.nearWhiteMinRgb200Pct}% offPalette=${glow.offPalette} footprint=${glow.footprintPixels}px`);
   console.log(`totals: offPalette=${totals.offPalette} semiAlpha=${totals.semiAlpha} binaryAlpha=${totals.binaryAlpha} jsErrors=${errors.length}`);
   const pass = proj.nearWhiteA7Pct <= 4.16 && proj.nearWhiteMinRgb200Pct <= 4.16 &&
