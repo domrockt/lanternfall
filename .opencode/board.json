@@ -6194,16 +6194,28 @@
       "title": "m10-realtime-stability K1 Diagnose: Abbruchart praezise belegen",
       "description": "lane #3958, Merge edc3093 — Beleg shots/m10-realtime-crash.json: Zielpfad, Zeitpunkt, Chrome-Fehler, Speicherdruck; 3 Probe-Laeufe (5/10/15 min) unter flock.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:01:28Z",
+          "by": "build",
+          "text": "done → done: lane #3958, Merge edc3093"
+        }
+      ],
       "created": "2026-11-27T21:01:11Z",
-      "updated": "2026-11-27T21:01:11Z"
+      "updated": "2026-11-27T21:01:28Z"
     },
     {
       "id": 5519,
       "title": "m10-realtime-stability K2 Harness-Robustheit scripts/realtime-run.mjs",
       "description": "lane #3959, Merge edc3093 — Abbruchursachen im Harness behoben: eigener --user-data-dir, --disable-dev-shm-usage, screenshot try/catch, page 'crash'-Handler.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:01:42Z",
+          "by": "merge",
+          "text": "lane #3959, Merge edc3093"
+        }
+      ],
       "created": "2026-11-27T21:01:11Z",
       "updated": "2026-11-27T21:01:11Z"
     },
@@ -6212,7 +6224,13 @@
       "title": "m10-realtime-stability K3 Mini-Probe scripts/m10-realtime-probe.mjs (kritische Phase 18-25)",
       "description": "lane #3960, Merge edc3093 — Probe-Skript fuer kritische Phase Minute 18-25 (500+ Gegner, Screenshot-Burst) mit Ziel-Lebendigkeitsreport.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:01:42Z",
+          "by": "merge",
+          "text": "lane #3960, Merge edc3093"
+        }
+      ],
       "created": "2026-11-27T21:01:11Z",
       "updated": "2026-11-27T21:01:11Z"
     },
@@ -6221,7 +6239,13 @@
       "title": "m10-realtime-stability K4 Vollstaendiger 30-min-Echtzeitlauf + Abnahme",
       "description": "lane #3961, Merge edc3093 — flock node scripts/realtime-run.mjs einmal vollstaendig: 6/6 Bosse ±0 s, 6 Truhen, Sieg dawn, 0 Crashes/JS-Fehler; FPS-Gate PASS (min 57.4), Heap-Gate-Lauefe dokumentiert.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:01:42Z",
+          "by": "merge",
+          "text": "lane #3961, Merge edc3093"
+        }
+      ],
       "created": "2026-11-27T21:01:11Z",
       "updated": "2026-11-27T21:01:11Z"
     },
@@ -6230,9 +6254,15 @@
       "title": "m10-realtime-stability K5 TDZ-Fix im crash-Handler (reviewer-Befund)",
       "description": "lane #4738, Merge edc3093 (08491a7) — 'let runState = null' vor die Handler-Registrierung gezogen; TDZ im crash-Handler behoben, tsc rc=0.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:01:28Z",
+          "by": "build",
+          "text": "done → done: lane #4738, Merge edc3093"
+        }
+      ],
       "created": "2026-11-27T21:01:11Z",
-      "updated": "2026-11-27T21:01:11Z"
+      "updated": "2026-11-27T21:01:28Z"
     }
   ]
 }
