@@ -3553,25 +3553,36 @@
       "id": 2400,
       "title": "m10-heroes-pass K3: Lauf-/Bob-Zyklus",
       "description": "4 Frames je Richtung mit sichtbarer Gewichtsverlagerung (Bob 0/1/0/1 px dokumentiert), Kael schwerer/langsamer wirkend (tieferes Bob, breitere Standphase). GIF shots/m10-heroes-walk.gif + 1x-Standbild bei Minute 5 mit >=250 Gegnern shots/m10-heroes-ingame.png. Abnahme: GIF zeigt beide Helden-Laeufe, In-Game-Shot zeigt Held im Gedraenge, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T08:15:26Z",
           "by": "build",
           "text": "todo → doing: K3: Bob-Sign 0/1/0/1 nach unten gefixt, Walk-GIF + In-Game-Shot (5:00, 286 Gegner) erzeugt; build+Tests laufen vor Commit."
+        },
+        {
+          "at": "2026-11-27T08:24:10Z",
+          "by": "build",
+          "text": "doing → review: K3 committed 065c232: Bob 0/1/0/1 px per Brim-Messung (down/side/up), Kael breitere Stiefel (5 px) + kleinere Schrittweite; GIF shots/m10-heroes-walk.gif zeigt beide Helden, In-Game shots/m10-heroes-ingame.png 5:00 mit 286 Gegnern, 0 JS-Fehler; build+273 Tests gruen."
         }
       ],
       "created": "2026-11-27T05:34:41Z",
-      "updated": "2026-11-27T08:15:26Z"
+      "updated": "2026-11-27T08:24:10Z"
     },
     {
       "id": 2401,
       "title": "m10-heroes-pass K4: Abnahme + Doku",
       "description": "npm run build + npm test gruen (Testzahl in Lane-Notiz), Kontaktbogen 1x/4x nachher, shots/m10-heroes-after.json mit denselben Kennzahlen, art-director-Urteil (beide Helden in <=1 s unterscheidbar, Note je Kriterium) in docs/lanes/m10-heroes-pass.md. Abnahme: >=35% Pixel-Differenz je Richtung, 0 Duplikate, 0 Off-Palette, Alpha nur 0/255, art-director JA fuer 1x-Unterscheidbarkeit im Chaos, .lane-done mit Messwerten.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T08:38:21Z",
+          "by": "build",
+          "text": "todo → doing: K4 Abnahme: after-Kontaktbogen + after.json erzeugt, art-director prueft; build+273 Tests bereits gruen."
+        }
+      ],
       "created": "2026-11-27T05:34:41Z",
-      "updated": "2026-11-27T05:34:41Z"
+      "updated": "2026-11-27T08:38:21Z"
     }
   ]
 }
