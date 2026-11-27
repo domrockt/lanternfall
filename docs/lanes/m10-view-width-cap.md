@@ -74,9 +74,13 @@ lief überwiegend mit Klemme. Die Burst-A/B in 2a zeigt den Klemm-Effekt sauber.
 ### 2c. Fullrun (genau 1× nach dem Fix, `shots/m10-view-width-fullrun.json`)
 
 - `fpsMin` **39,4** (Fenster ab Sim-Zeit 29:20, volle Dichte + Endboss) — **Ziel ≥ 55 NICHT erfüllt**
-- Sieg `dawn`, 6 Truhen, 159 Elites, Level 37, 4301 Kills, **0 JS-Fehler**
-- Heap +8,7 % ggü. Minute 1 (Ziel ≤ 15 %: erfüllt)
+- Sieg `dawn`, 6 Truhen, 157 Elites, Level 36, 4085 Kills, **0 JS-Fehler**
+- Heap +7,7 % ggü. Minute 1 (Ziel ≤ 15 %: erfüllt)
 - WIP-Frühlauf 14:50 (parallel hohe Last, im Checkpoint dd439cd): fpsMin 37,7 — gleiche Tendenz
+- **Autoritative Nachher-Reihe:** `shots/m10-view-width-after-640-*.json` / `-after-780-*.json` (M25) und
+  `-after-burst-*` (Burst, Kapitel 2a). Die früheren `-after-perf-*` / `-after-burst-perf-*` JSONs aus dem
+  WIP-Checkpoint (14:42–14:51) sind **veraltet** (dazwischen liefen andere Lanes mit voller Last, z. B.
+  minute25 25,8 bei sonst 55+) und nur als Roh-Historie im Branch — nicht für Urteile verwenden.
 
 **Ursache (dokumentiert, nicht weiter getunt):** Der Fullrun läuft bei 960×540 @1 → intern **480** breit
 (Fit-Fallback), die 640-Klemme kann hier nichts bringen — das FPS-Minimum im Fullrun wird nicht durch die
