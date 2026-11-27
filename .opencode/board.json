@@ -7223,10 +7223,16 @@
       "id": 6200,
       "title": "m10-hero-portraits K3: Tests hero-portraits.test.ts",
       "description": "tests/hero-portraits.test.ts: beide Porträt-Sprites in erwarteter Größe (48x48) vorhanden, nur Palettenfarben, Auswahl-Szene rendert beide ohne Fehltextur. Abnahme: npx vitest run tests/hero-portraits.test.ts rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:34:49Z",
+          "by": "build",
+          "text": "todo → review: Tests in Commit eb10d33: 3 Tests (48x48-Größe, Palette 0..31, CharSelect-Key löst für beide Charaktere auf). Beleg: npx tsc --noEmit rc=0, npx vitest run tests/hero-portraits.test.ts 3/3 grün."
+        }
+      ],
       "created": "2026-11-27T22:31:08Z",
-      "updated": "2026-11-27T22:31:08Z"
+      "updated": "2026-11-27T22:34:49Z"
     },
     {
       "id": 6201,
