@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2747,
+  "next": 2882,
   "cards": [
     {
       "id": 1,
@@ -4144,6 +4144,46 @@
       ],
       "created": "2026-11-27T10:14:41Z",
       "updated": "2026-11-27T10:15:48Z"
+    },
+    {
+      "id": 2878,
+      "title": "m10-ember-readability #1 Ist-Messung Ember-Projektil",
+      "description": "scripts/m10-ember-readability.mjs: 1x/4x-Kontaktblatt der echten projectile_ember-Frames (Ruhe/Flug) + fx_fire-Glow-Kleck, JSON mit Near-White-Anteil (minRGB>=200 und r,g,b>=150&r>=235), Alpha-Verteilung, Off-Palette-Pixeln. Baseline shots/m10-ember-readability-baseline.json im Commit. Abnahme: Baseline-JSON + Kontaktblatt committed, Ist-Near-White dokumentiert.",
+      "column": "doing",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T11:08:28Z",
+      "updated": "2026-11-27T11:08:28Z"
+    },
+    {
+      "id": 2879,
+      "title": "m10-ember-readability #2 Fix dark contour core",
+      "description": "Halo/Kleck anpassen: Ember-Kern behaelt dunkle 1-px-Kontur (Palette, binaeres Alpha), Glow-Alpha in CombatSystem.fireEmber gedaempft. Nur src/gfx/textures.ts Projektil-Grid und Glow-Alpha. Keine Aenderung an Schaden/Feuerrate/Radius. Abnahme: Near-White Ember-Projektil <=4,16 %, Off-Palette 0, Alpha nur 0/255.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T11:08:28Z",
+      "updated": "2026-11-27T11:08:28Z"
+    },
+    {
+      "id": 2880,
+      "title": "m10-ember-readability #3 Beleg-Test + Chaos-Screenshot",
+      "description": "tests/ember-readability.test.ts: (a) alle Ember-Frame-Pixel Palettenfarben Alpha 0/255, (b) Kern-vs-Halo-Kontrast ueber Schwelle, (c) Near-White <=4,16 %. In-Game 640x360 mit 500+ Gegnern + Ember im Flug shots/m10-ember-readability-chaos-640.png, art-director/vision-Urteil >=4/5 in Lane-Doku. Abnahme: vitest gruen, PNG committed, Urteil dokumentiert.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T11:08:28Z",
+      "updated": "2026-11-27T11:08:28Z"
+    },
+    {
+      "id": 2881,
+      "title": "m10-ember-readability #4 Doku + .lane-done",
+      "description": "docs/lanes/m10-ember-readability.md mit Vorher/Nachher-Zahlen, art-director-Urteil, offenen Restpunkten; .lane-done mit Messwerten. Abnahme: build+Tests gruen, Doku + .lane-done committed.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T11:08:28Z",
+      "updated": "2026-11-27T11:08:28Z"
     }
   ]
 }
