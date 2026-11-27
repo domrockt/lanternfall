@@ -1,6 +1,6 @@
 {
   "tag": "before",
-  "date": "2026-11-27T21:30:59.144Z",
+  "date": "2026-11-27T21:36:04.636Z",
   "config": {
     "enemies": 500,
     "shooters": 71,
@@ -15,17 +15,17 @@
     "fireIntervalFrames": "60-120, gestaffelt"
   },
   "results": {
-    "msPerFrame": 0.029,
+    "msPerFrame": 0.047,
     "passMsPerFrame": [
-      0.029,
-      0.03,
-      0.03,
-      0.034,
-      0.037,
-      0.041,
       0.047,
-      0.048,
-      0.064
+      0.052,
+      0.052,
+      0.053,
+      0.059,
+      0.065,
+      0.083,
+      0.083,
+      0.104
     ],
     "statsAfterProfileRun": {
       "attempted": 369,
@@ -42,11 +42,12 @@
       "pending": 10
     },
     "hitsInProfileRun": 0,
+    "tweenAddsPerFrame": 16.86,
     "stubCallsPerFrame": {
       "setPosition": 84.06,
       "setRotation": 83.59,
-      "setScale": 111.04,
-      "setAlpha": 110.58,
+      "setScale": 278.41,
+      "setAlpha": 277.95,
       "setVisible": 1.72,
       "setActive": 1.72,
       "setDepth": 17.79,

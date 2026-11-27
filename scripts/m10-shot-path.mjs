@@ -168,13 +168,41 @@ async function main() {
     }
   }
 
-  // View wie Burst-640: 640x360 um den Spieler.
+  // View wie Burst-640: 640x360 um den Spieler. Mini-Tween-Manager wie Phaser:
+  // tweens.add({targets, alpha, scale, duration, onComplete}) erfasst Startwerte
+  // und interpoliert linear je step(dt) — damit ist der Trail-Fade im Bench
+  // ueber beide Varianten hinweg ehrlich kostet (vorher: Tween-Manager,
+  // nachher: manuelles Fade im Pool).
+  const tweens = [];
   const scene = {
     cameras: { main: { worldView: { x: -320, y: -180, width: 640, height: 360 } } },
     enemies: { active: enemies },
-    tweens: { add: () => {} },
     textures: { exists: () => true, addCanvas: () => {} },
   };
+  scene.tweens = {
+    add(o) {
+      tweens.push({
+        img: o.targets, a0: o.targets.alpha, s0: o.targets.scale,
+        alpha: o.alpha, scale: o.scale, duration: o.duration, t: 0,
+        onComplete: o.onComplete,
+      });
+    },
+  };
+  let tweenAdds = 0;
+  scene.tweens.add = (o) => { tweenAdds += 1; tweens.push({ img: o.targets, a0: o.targets.alpha, s0: o.targets.scale, alpha: o.alpha, scale: o.scale, duration: o.duration, t: 0, onComplete: o.onComplete }); };
+  function stepTweens(dtMs) {
+    for (let i = tweens.length - 1; i >= 0; i--) {
+      const tw = tweens[i];
+      tw.t += dtMs;
+      const k = Math.min(1, tw.t / tw.duration);
+      tw.img.setAlpha(tw.a0 + (tw.alpha - tw.a0) * k);
+      tw.img.setScale(tw.s0 + (tw.scale - tw.s0) * k);
+      if (k >= 1) {
+        tweens.splice(i, 1);
+        if (tw.onComplete) tw.onComplete();
+      }
+    }
+  }
 
   const round = (n, d = 3) => Math.round(n * 10 ** d) / 10 ** d;
 
@@ -202,6 +230,7 @@ async function main() {
       }
     }
     pool.update(DT, 0, 0, onHit);
+    stepTweens(DT * 1000);
   }
 
   // ── Messung: PASSES Laeufe, Minimum zaehlt (Micro-Bench-Standard). ──
@@ -225,6 +254,7 @@ async function main() {
   const onHit = () => { hitsTotal += 1; };
   for (let f = 0; f < 120; f++) frame(pool, f, onHit);
   const stub = takeStubCounts();
+  tweenAdds = 0;
   for (let f = 0; f < profFrames; f++) frame(pool, 120 + f, onHit);
   const stubPerFrame = takeStubCounts();
   for (const k of Object.keys(stubPerFrame)) stubPerFrame[k] = round(stubPerFrame[k] / profFrames, 2);
@@ -252,6 +282,7 @@ async function main() {
       passMsPerFrame: passMs.map((m) => round(m)),
       statsAfterProfileRun: stats,
       hitsInProfileRun: hitsTotal,
+      tweenAddsPerFrame: round(tweenAdds / profFrames, 2),
       stubCallsPerFrame: stubPerFrame,
     },
   };
