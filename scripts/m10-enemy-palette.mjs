@@ -48,8 +48,9 @@ const ENEMY_IDS = [
 
 // Hue/Sat/Lum-Familienklassifikation, im Page-Kontext ausgeführt.
 const FAMILY_SRC = `
-  function lfFamily(r, g, b) {
-    const mx = Math.max(r, g, b) / 255, mn = Math.min(r, g, b) / 255;
+  function lfFamily(r0, g0, b0) {
+    const r = r0 / 255, g = g0 / 255, b = b0 / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
     const l = (mx + mn) / 2;
     if (l < 0.055) return "kontur";
     const d = mx - mn;
@@ -247,6 +248,13 @@ try {
   }
   for (const f of Object.keys(weighted)) weighted[f] = Math.round((weighted[f] / wsum) * 1000) / 1000;
   const countedFamilies = Object.keys(weighted).filter((f) => weighted[f] >= 0.05).length;
+  // "Starke" Familien: farbig (nicht Neutral/Kontur) und mit >= 8 % Pixelanteil
+  // im Frame — nur diese lesen sich in der Masse wirklich unterscheidbar.
+  const NEUTRAL = new Set(["kontur", "dunkel-neutral", "mittel-neutral", "hell-neutral"]);
+  const strongFamiliesList = Object.keys(weighted)
+    .filter((f) => !NEUTRAL.has(f) && weighted[f] >= 0.08)
+    .sort((a, b) => weighted[b] - weighted[a]);
+  const strongFamilies = strongFamiliesList.length;
 
   const stats = await page.evaluate(({ familySrc }) => {
     // eslint-disable-next-line no-eval
@@ -279,6 +287,8 @@ try {
     frameShares: weighted,
     distinctFamilies: Object.keys(weighted).length,
     countedFamilies,
+    strongFamilies,
+    strongFamiliesList,
     jsErrors: errors,
   };
 } finally {
@@ -292,6 +302,8 @@ console.log(JSON.stringify({
   aliveCount: result.aliveCount,
   distinctFamilies: result.distinctFamilies,
   countedFamilies: result.countedFamilies,
+  strongFamilies: result.strongFamilies,
+  strongFamiliesList: result.strongFamiliesList,
   frameShares: result.frameShares,
   rendererName: result.rendererName,
   jsErrors: result.jsErrors,
