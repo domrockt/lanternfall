@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6258,
+  "next": 6338,
   "cards": [
     {
       "id": 1,
@@ -6777,6 +6777,11 @@
           "at": "2026-11-27T22:46:06Z",
           "by": "build",
           "text": "Forts. 22:47Z: weiterhin blocked auf FxSystem.ts-Claim (m10-fx-mixel-fix, aktiv, #6099 committed, noch #6100/#6101 offen). Lokal gruen (tsc rc=0, 11/11). Patch synchron (reverse-apply ok). claim-watch aut_21f23 uebernimmt K2-K4 automatisch bei Claim-Freigabe (bis 02:32Z)."
+        },
+        {
+          "at": "2026-11-27T22:58:00Z",
+          "by": "build",
+          "text": "Forts. 22:58Z: v1-Patch passt NICHT mehr auf Mixel-Stand (#6099 hat dieselben spawn/setAlphaScale-Pfade umgeschrieben). NEU: k2-fxsystem-fix-v2-on-mixel.patch (71 Zeilen, basiert auf Mixel-Stand, isBossFxKey-Import aus gen-fx = SYNC-Schritt drin); verifiziert in Scratch-Kopie des Mixel-Worktrees: 11/11 Lane-Tests (v2-Variante) + 40/40 mixel/overdraw-Regression gruen. Bitte (b): Merge-Karte NACH m10-fx-mixel-fix-Merge mit v2-Patch + tests-boss-death-shards-v2.test.ts.bak. claim-watch aut_21f39a4f (neu, alle 15 min bis 02:32Z) unterscheidet v1-/v2-Weg je nach Merge-Status."
         }
       ],
       "created": "2026-11-27T21:54:05Z",
@@ -6797,6 +6802,11 @@
           "at": "2026-11-27T22:30:00Z",
           "by": "build",
           "text": "todo → blocked: haengt an #5919 (Test-Imports referenzieren BOSS_PARTICLE_ALPHA_FLOOR/isBossParticleFxKey aus FxSystem.ts — Commit erst nach K2, sonst brechen die Tests auf main). 11/11 grün im Worktree, Commit-Gate PASS (bedingt)."
+        },
+        {
+          "at": "2026-11-27T22:58:00Z",
+          "by": "build",
+          "text": "Forts. 22:58Z: K3-Test im Worktree bleibt v1-kompatibel (Worktree-Basis alt). Fuer die Merge-Welt existiert eine v2-Test-Variante (tests-boss-death-shards-v2.test.ts.bak, Import isBossFxKey aus gen-fx), 11/11 gruen in Scratch. Commit des Tests weiterhin zurueckgestellt, solange der FxSystem-Fix nicht landet (sonst bricht die Suite auf main)."
         }
       ],
       "created": "2026-11-27T21:54:05Z",

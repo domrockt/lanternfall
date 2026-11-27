@@ -148,9 +148,30 @@ Geprüft: beide Views Vorher/Nachher, Crops/Zooms 2x/4x nearest in
 - Ausstehend, sobald die Area frei ist (Reihenfolge): Commit #5919
   (FxSystem.ts-Fix), Commit #5920 (tests/boss-death-shards.test.ts), dann
   K4-Abschlussnote + `.lane-done`.
+
+## Update 2026-11-27 22:56Z — v2-Patch auf Mixel-Stand (wichtig für Merge)
+
+- **Der v1-Patch (`~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch`) passt
+  NICHT mehr** auf `m10-fx-mixel-fix`s `FxSystem.ts`: deren #6099 hat dieselben
+  spawn/setAlphaScale-Pfade umgeschrieben (`git apply --check` failt).
+- **NEU: `~/tmp/m10-boss-death-shards/k2-fxsystem-fix-v2-on-mixel.patch`**
+  (71 Zeilen) basiert AUF dem Mixel-Stand, gilt dort `git apply --check`
+  sauber und erledigt den geplanten SYNC-Schritt gleich mit: Boss-Erkennung
+  über `isBossFxKey` aus `gen-fx` (eine Wahrheit, keine lokale Kopie) +
+  `BOSS_PARTICLE_ALPHA_FLOOR = 0.7`. `fx_boss_core` hat keine Mixel-Bakes,
+  daher trifft `isBossFxKey(p.frames[0])` auch nach dem Mixel-Frame-Rewrite zu.
+- Verifiziert in einer Scratch-Kopie des Mixel-Worktrees (`~/tmp/m10-boss-death-shards/scratch/`):
+  11/11 `tests/boss-death-shards.test.ts` (v2-Variante: Key-Erkennung über
+  `isBossFxKey`, Boss-Frame-Keys wie `fx_boss_core_2` sind jetzt korrekt Boss-Keys)
+  + 40/40 mixel/overdraw-Regressionstests grün; `tsc` nur Lane-fremde Altfehler
+  (scratch-Kopie ohne `scripts/`/`shots/`).
+- Test-Variante für die Merge-Welt: `~/tmp/m10-boss-death-shards/tests-boss-death-shards-v2.test.ts.bak`
+  (v1-Test bleibt gültig, solange der Worktree auf dem alten Stand bleibt).
+- Bitte (b) an den Disponenten: Merge-Karte NACH dem m10-fx-mixel-fix-Merge mit
+  v2-Patch + v2-Test. claim-watch (aut_21f39a4f…, alle 15 min bis 02:32Z) prüft
+  Claim + Merge-Status und entscheidet zwischen v1- (Claim ohne Mixel-Merge)
+  und v2-Weg (Mixel in main).
 - Offene Folgepunkte (backlog, nicht blockierend): fx_death_bone-Splitter im
   Horde-Kontext stärker absetzen (dunkler Rim/Tint bzw. alpha 0,63→0,75);
   fx_fire im 780er-View an den 640er-Wert angleichen (0,24–0,45 vs. 0,40–0,45).
-- Merge-Hinweis: lokale Boss-Key-Liste beim Merge durch gen-fx-Import ersetzen
-  (s. o.).
 
