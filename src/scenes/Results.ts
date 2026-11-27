@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { PixelText } from "../gfx/font";
+import { fitBanner } from "../gfx/text";
 import { iconTextureKey } from "../gfx/icons";
 import { damageTotal, formatDamageCompact, layoutResultRows, resultsLayout, stressEntries } from "../logic/results";
 import { hasFlag } from "../logic/rng";
@@ -113,11 +114,10 @@ export class Results extends Phaser.Scene {
       if (recorded.records.level) labels.push("LEVEL");
       if (recorded.records.victory) labels.push("SIEG");
       if (labels.length > 0) {
-        // Ganz oder gar nicht: ein abgeschnittener Text ("... ZEIT, LEVE")
-        // ist schlimmer als das kurze Fallback. 26 Zeichen passen in die
-        // 164px-Box (27 Zeichen wären 161px + Rahmen).
-        const full = `NEUER BESTWERT: ${labels.join(", ")}`;
-        bannerText = labels.length > 2 || full.length > 26 ? "NEUER BESTWERT" : full;
+        // M10-text-wrap: an Wortgrenzen mit Ellipsis statt Fallback oder
+        // Wort-Schnitt. 26 Zeichen passen in die 164px-Box (27 Zeichen
+        // wären 161px + Rahmen).
+        bannerText = fitBanner(`NEUER BESTWERT: ${labels.join(", ")}`, 26);
         bannerColor = C.lantern;
       }
     }

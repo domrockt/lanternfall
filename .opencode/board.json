@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4402,
+  "next": 4459,
   "cards": [
     {
       "id": 1,
@@ -5392,6 +5392,16 @@
       ],
       "created": "2026-11-27T18:36:21Z",
       "updated": "2026-11-27T18:36:48Z"
+    },
+    {
+      "id": 4458,
+      "title": "m10-text-wrap: Wortumbruch/Ellipsis für einzeilige Banner (PixelText) + Results-Banner",
+      "description": "Fix aus Restpunkt 'Wortumbruch text.ts' der Lane m10-results-overlap (K1: 'NEUER BESTWERT: ZEIT, LEVE'). AK: (1) Kleine Funktion fitBanner in src/gfx/text.ts: bricht an Leerzeichen, nie mitten im Wort, Ellipsis am Ende; Unit-Test tests/text-wrap.test.ts. (2) Results-Banner nutzt sie. (3) Harness scripts/m10-results-overlap.mjs: EIN Vorher- + EIN Nachher-Lauf, kein mid-word Cut in 4/4 Views, 0 neue Overlaps vs. Vorher-JSON. (4) Suite grün + Sichtcheck shots/m10-text-wrap-*.",
+      "column": "doing",
+      "assignee": "@ui-dev",
+      "notes": [],
+      "created": "2026-11-27T18:42:51Z",
+      "updated": "2026-11-27T18:42:51Z"
     }
   ]
 }
