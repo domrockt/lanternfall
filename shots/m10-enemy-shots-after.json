@@ -2,61 +2,61 @@
   "milestone": "M10",
   "card": "m10-enemy-shots-fair-01",
   "phase": "after",
-  "generatedAt": "2026-11-27T05:15:36.960Z",
+  "generatedAt": "2026-11-27T06:39:14.961Z",
   "results": [
     {
       "viewport": "640x360",
       "stats": {
-        "attempted": 695,
-        "fired": 500,
-        "hits": 3,
-        "offscreenAttempts": 182,
+        "attempted": 663,
+        "fired": 501,
+        "hits": 4,
+        "offscreenAttempts": 144,
         "offscreenFired": 0,
         "offscreenHits": 0,
-        "cancelledShooterDeath": 9,
-        "cancelledOffscreen": 186,
-        "windupOk": 500,
-        "active": 8,
-        "pending": 0
+        "cancelledShooterDeath": 13,
+        "cancelledOffscreen": 148,
+        "windupOk": 501,
+        "active": 5,
+        "pending": 1
       },
       "state": {
-        "time": 1665.7,
-        "enemies": 54,
+        "time": 1564.7,
+        "enemies": 137,
         "scene": "run"
       },
-      "wallMs": 86041,
+      "wallMs": 82152,
       "finalState": {
-        "time": 1666.3,
-        "enemies": 549,
-        "fps": 46.5
+        "time": 1565.4,
+        "enemies": 620,
+        "fps": 33.6
       },
       "jsErrors": []
     },
     {
       "viewport": "780x360",
       "stats": {
-        "attempted": 644,
-        "fired": 501,
-        "hits": 0,
-        "offscreenAttempts": 126,
+        "attempted": 679,
+        "fired": 500,
+        "hits": 4,
+        "offscreenAttempts": 164,
         "offscreenFired": 0,
         "offscreenHits": 0,
-        "cancelledShooterDeath": 12,
-        "cancelledOffscreen": 131,
-        "windupOk": 501,
-        "active": 16,
-        "pending": 0
+        "cancelledShooterDeath": 7,
+        "cancelledOffscreen": 169,
+        "windupOk": 500,
+        "active": 7,
+        "pending": 3
       },
       "state": {
-        "time": 1181.1,
-        "enemies": 102,
+        "time": 1324.3,
+        "enemies": 73,
         "scene": "run"
       },
-      "wallMs": 59229,
+      "wallMs": 70008,
       "finalState": {
-        "time": 1181.7,
-        "enemies": 578,
-        "fps": 57.1
+        "time": 1324.8,
+        "enemies": 572,
+        "fps": 56.5
       },
       "jsErrors": []
     }
