@@ -69,5 +69,6 @@ lastabhängige FAILs auftreten.
 
 ## #K5 Abschluss
 
-`npm run build` und `npm test` grün; `.lane-done` mit Flake-Rate vorher/nachher und
-Messwerten wird als letzter Commit dieser Lane angelegt.
+`npm run build` und `npm test` grün: Build OK, 301/301 Tests in 26 Dateien.
+`.lane-done` mit Flake-Rate vorher/nachher (1/12 → 0/12) und Messwerten ist als
+letzter Commit dieser Lane angelegt.
