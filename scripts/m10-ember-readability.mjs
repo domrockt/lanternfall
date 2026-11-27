@@ -233,7 +233,7 @@ try {
     const draw = (scale) => {
       const pad = 4;
       const labelH = 10;
-      const cellW = Math.max(...frames.map((f) => f.w)) * scale + pad * 2;
+      const cellW = Math.max(...frames.map((f) => Math.max(f.w * scale, f.key.length * 4 + 4))) + pad * 2;
       const cellH = Math.max(...frames.map((f) => f.h)) * scale + pad * 2 + labelH;
       const cols = Math.min(4, frames.length);
       const rows = Math.ceil(frames.length / cols);

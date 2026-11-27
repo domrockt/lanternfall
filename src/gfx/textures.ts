@@ -274,14 +274,30 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   projectile_ember: {
     w: 7, h: 7,
     // Komet: Schweif oben-links, runder Glutkern unten-rechts (keine Kerbe).
+    // M10-Lesbarkeit: 1-px-Tintenkontur bleibt geschlossen; der Kern ist genau
+    // EIN lanternWhite-Pixel, umgeben von Amber/Laterne (kein Weiss-Blob, der
+    // im 500-Gegner-Halo ausbrennt).
     rows: [
       "...00..",
       "..0h00.",
       "..0hi0.",
-      ".0hild0",
-      "0hildi0",
-      ".0hild0",
+      ".0hik0.",
+      "0hilkd0",
+      ".0hik0.",
       "..0hi0.",
+    ],
+  },
+  /** M10: Muendungsglut mit dunkler Kontur + hellem 1-px-Kern statt fx_fire-Blob. */
+  fx_ember_muzzle: {
+    w: 7, h: 7,
+    rows: [
+      "..000..",
+      ".0kkk0.",
+      "0klllk0",
+      "0klllk0",
+      "0klllk0",
+      ".0kkk0.",
+      "..000..",
     ],
   },
   projectile_thorn: {
