@@ -6107,7 +6107,7 @@
       "id": 5398,
       "title": "m10-spawn-burst-budget K1: Vorher-Messung Spawn-Bursts (Frame-Spawns + ms-Spitzen)",
       "description": "AK: scripts/m10-spawn-burst.mjs laeuft headless (fullrun-Setup: god+autoplay, timeScale 30) und schreibt shots/m10-spawn-burst-before.json mit je Frame Spawn-Anzahl + Frame-ms; Top-5-Burst-Frames und deren ms-Spitzen benannt. Owner gameplay-dev, Kontrolleur reviewer.",
-      "column": "doing",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -6119,40 +6119,63 @@
           "at": "2026-11-27T21:20:50Z",
           "by": "build",
           "text": "Supervisor-Hinweis befolgt: keine Full-Suite-Läufe mehr in der Karte (ein letzter npm test lief 616/616 grün in 1,7 s, kein Hänger); ab jetzt nur npx vitest run <Zieldateien> + tsc. Vorher-Messung läuft unter flock mit timeout 360."
+        },
+        {
+          "at": "2026-11-27T21:35:58Z",
+          "by": "build",
+          "text": "doing → done: review → done: K1 Vorher-Messung rc=0, Commit 89ad5eb (#5398): shots/m10-spawn-burst-before.json — ungeglaetzter main-Stand der beiden Claim-Dateien (temporaerer Swap, in Doku transparent), headless fullrun-Setup unter flock. max 18 Spawns/Frame, 0 Frames >40, p99 16,8 ms. Kontrolleur reviewer PASS nach Behebung des Fremd-Datei-Befunds (passive-math-Shots wiederhergestellt)."
         }
       ],
       "created": "2026-11-27T20:55:57Z",
-      "updated": "2026-11-27T21:20:50Z"
+      "updated": "2026-11-27T21:35:58Z"
     },
     {
       "id": 5399,
       "title": "m10-spawn-burst-budget K2: Burst-Glaettung (Spawn-Budget je Frame + Warteschlange)",
       "description": "AK: reine Funktion in src/logic/waves.ts (SPAWN_FRAME_BUDGET=8, splitSpawnBurst), Einbau in src/systems/Spawner.ts (Allowance je echtem Frame, Verzoegerung via budget-Rueckgabe); Spezialwellen/Boss-Spawns unveraendert. npx tsc --noEmit gruen. Owner gameplay-dev, Kontrolleure reviewer + test-auditor.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:35:58Z",
+          "by": "build",
+          "text": "todo → done: review → done: Commit 826c395 (#5399) SPAWN_FRAME_BUDGET=8 + splitSpawnBurst (pure, logic/waves.ts) + Spawner-Einbau; Reviewer PASS (ses_de11c34a8ffeQCcY0Ue453ijU0), R-S1/R-S2 abgearbeitet; tsc rc=0."
+        }
+      ],
       "created": "2026-11-27T20:55:57Z",
-      "updated": "2026-11-27T20:55:57Z"
+      "updated": "2026-11-27T21:35:58Z"
     },
     {
       "id": 5400,
       "title": "m10-spawn-burst-budget K3: tests/spawn-burst.test.ts",
       "description": "AK: kein Frame > Budget-Spawns, Gesamtanzahl identisch (now+deferred=granted, 30-min-Sim mit/ohne Glaettung gleiche Summe), Boss-/Spezialwellen-Timing unberuehrt (Codepfad), Grenzfaelle 0/1/sehr viel + NaN. npx vitest run tests/spawn-burst.test.ts gruen. Owner gameplay-dev, Kontrolleure test-auditor + reviewer.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:35:58Z",
+          "by": "build",
+          "text": "todo → done: review → done: Commit 48ef32d (#5400) tests/spawn-burst.test.ts 10/10 inkl. Integrationstest (Spawner-Stub); vitest 10/10, npm test 618/618."
+        }
+      ],
       "created": "2026-11-27T20:55:57Z",
-      "updated": "2026-11-27T20:55:57Z"
+      "updated": "2026-11-27T21:35:58Z"
     },
     {
       "id": 5401,
       "title": "m10-spawn-burst-budget K4: Nachher-Messung + Doku + .lane-done",
       "description": "AK: shots/m10-spawn-burst-after.json; Ziel max Spawn-Frame-Zeit -30%, Spawn-Summe Abweichung 0; docs/lanes/m10-spawn-burst-budget.md mit Vorher/Nachher + offenen Punkten; build+Tests gruen; .lane-done. Owner gameplay-dev, Kontrolleure reviewer + commit-gate.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:35:58Z",
+          "by": "build",
+          "text": "todo → done: review → done: Commit accc498 (#5401) shots/m10-spawn-burst-after.json + docs/lanes/m10-spawn-burst-budget.md; Kontrolleur reviewer FAIL→behoben (fremde passive-math-Shots aus Status entfernt, nur generatedAt-Timestamp) → PASS-Kriterium erfuellt; build rc=0, 618/618 Tests; .lane-done folgt im Abschluss-Commit."
+        }
+      ],
       "created": "2026-11-27T20:55:57Z",
-      "updated": "2026-11-27T20:55:57Z"
+      "updated": "2026-11-27T21:35:58Z"
     }
   ]
 }
