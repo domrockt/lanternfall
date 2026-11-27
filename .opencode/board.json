@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2705,
+  "next": 2738,
   "cards": [
     {
       "id": 1,
@@ -3728,25 +3728,40 @@
           "at": "2026-11-27T07:16:44Z",
           "by": "build",
           "text": "doing → blocked: 2026-11-27T07:12Z @2204ddc: Build rc=0; 301 Tests/26 Dateien, 0 fail; acceptance-count 30/6/6/6/6/2; verify:final 7/7, 0 JS. fullrun 2x: 6/6 Bosse 300–1800 s, 6 Truhen, Sieg dawn, 0 JS, aber fpsMin 37,9 / 40,2 (<55). perf 640x360 3x: Burst 49,3/46,6/46,3 (Min 46,3 <55), Minute 25 41,4/39,3/37,8. perf 780x360@3 3x: Burst 57,8/55,9/56,1 PASS, Minute 25 47,3/43,1/44,2 (<50). 960x540 Referenz: Burst 60,1. Belege docs/qa/final-2026-11-27.md + shots/qa-perf-*.json. Wiederholung nach Supervisor-Regel abgebrochen. Ursache offen (View/Fit-Pfad vs. m10-Lanes, Host-Last ~5)."
+        },
+        {
+          "at": "2026-11-27T09:31:32Z",
+          "by": "build",
+          "text": "Versuch 2: Re-Messung @1242759 (09:18–09:22Z): Burst640 51,7/43,8/47,8 (Min 43,8), M25 40,8/39,9/43,1; fullrun 1 Lauf 31,3 FPS-Min, Sieg/Dawn, Heap +0,3 %. FPS weiter FAIL; Fix-Lanes m10-endgame-fps/separation-crowd/ground-cost nicht in main."
         }
       ],
       "created": "2026-11-27T06:57:26Z",
-      "updated": "2026-11-27T07:16:44Z"
+      "updated": "2026-11-27T09:31:32Z"
     },
     {
       "id": 2499,
       "title": "[fa-02] Sicht-Belege: Display-Profile + 30 Gegner/6 Bosse/12 VFX-GIFs bei 640x360",
       "description": "Prüft shots/m8-*.png je Profil (1920x1080, 3840x2160, 2560x1440@1.5, 1366x768, iPhone 14 quer, Pixel 7 quer, iPad Pro quer): Spielpixel = ganzzahliges n×n, keine abgeschnittenen UI-Teile, Rand <=8 % (4:3 ausgenommen). Neue Kontaktbögen der 30 Gegner und 6 Bosse sowie 12 Waffen-/Evolutions-GIFs bei exakt 640x360 (shots/qa-enemy-*, qa-boss-*, qa-vfx-*). Abnahme: jedes Bild mit Vision geprüft (2–4x nearest), Urteil + Pfad notiert, 0 JS-Fehler im Touch-Lauf (verify-display).",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T08:19:41Z",
           "by": "build",
           "text": "2026-11-27T08:0xZ @864c13b: verify-display 38/38 PASS, 0 JS; 7 Profil-Shots gesichtet (Rand <=8 %, iPad 4:3-Ausnahme); 30-Gegner-/6-Boss-Kontaktbogen 640x360 + 12/12 VFX-GIFs 640x360 (Assert 601-777 KiB, 20-30 Gegner, 0 JS). Belege: shots/qa-*-640*, docs/qa/final-2026-11-27.md#fa-02."
+        },
+        {
+          "at": "2026-11-27T09:31:32Z",
+          "by": "build",
+          "text": "Abschluss a145678 (#2499): Display 38/38 PASS, 30 Gegner- + 6 Boss-Kontaktbogen, 12/12 VFX-GIFs @640x360 per Vision geprüft; ACCEPTANCE verlinkt. Keine Lücke."
+        },
+        {
+          "at": "2026-11-27T09:34:40Z",
+          "by": "build",
+          "text": "doing → done: Sicht-Belege PASS, shots/qa-*-640*, ACCEPTANCE verlinkt; Commit a145678."
         }
       ],
       "created": "2026-11-27T08:13:06Z",
-      "updated": "2026-11-27T08:19:41Z"
+      "updated": "2026-11-27T09:34:40Z"
     },
     {
       "id": 2638,
@@ -3912,21 +3927,43 @@
       "id": 2698,
       "title": "[fa-03] Board + ACCEPTANCE: Hygiene und Kopf auf Ist-Stand",
       "description": "Abnahme: keine abgenommene Karte in backlog/blocked (#79/#82, #13/#14/#16 done), M8/M9-Karten done mit Commit-Bezug; ACCEPTANCE.md-Kopf mit Datum/Commit-SHA/neuen Zahlen/View-Groessen; offene Punkte ehrlich; GAME.md-Status aktualisiert. Beleg: Commit 1fc71e8 #fa-03.",
-      "column": "review",
+      "column": "done",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T09:34:40Z",
+          "by": "build",
+          "text": "Erledigt: Board-Hygiene PASS (#13/#14/#16/#79/#82 done, keine abgenommene Karte backlog/blocked), ACCEPTANCE-Kopf auf 217316d/305 Tests/30-6-6-6-6-2, GAME.md M9+M10. Commit 1fc71e8 (#fa-03)."
+        },
+        {
+          "at": "2026-11-27T09:34:40Z",
+          "by": "build",
+          "text": "review → done: Beleg Commit 1fc71e8."
+        }
+      ],
       "created": "2026-11-27T09:17:15Z",
-      "updated": "2026-11-27T09:17:15Z"
+      "updated": "2026-11-27T09:34:40Z"
     },
     {
       "id": 2699,
       "title": "[fa-04] APK-/Release-Stand gegen main-HEAD dokumentiert",
       "description": "Abnahme: mtime + Commit-SHA des APK und GitHub-Release latest-build (createdAt/size/sha256) gegen main-HEAD; Differenz in Minuten in docs/qa notiert; kein eigener Build/Publish. Beleg: Commit 1242759 #fa-04.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T09:34:40Z",
+          "by": "build",
+          "text": "Erledigt: latest-build=Build 0c525c8 (08:00:04Z, sha256 f1631169…, 2481018 B), 44 min / 4 Commits hinter HEAD 217316d; Pfad ~/lf-apk/out veraltet. Commit 1242759 (#fa-04)."
+        },
+        {
+          "at": "2026-11-27T09:34:40Z",
+          "by": "build",
+          "text": "review → done: Beleg Commit 1242759."
+        }
+      ],
       "created": "2026-11-27T09:17:15Z",
-      "updated": "2026-11-27T09:17:15Z"
+      "updated": "2026-11-27T09:34:40Z"
     },
     {
       "id": 2700,
