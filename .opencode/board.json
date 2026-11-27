@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6661,
+  "next": 6665,
   "cards": [
     {
       "id": 1,
@@ -7752,6 +7752,42 @@
       "notes": [],
       "created": "2026-11-27T23:41:10Z",
       "updated": "2026-11-27T23:41:10Z"
+    },
+    {
+      "id": 6661,
+      "title": "m10-esc-pause-fix #1: Repro ESC-Resume-Regression",
+      "description": "Repro belegt: ESC-Resume schaltet bei schnellem Pressen nicht mehr um (gerade Zahl togglePause-Aufrufe pro Press).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T23:41:33Z",
+      "updated": "2026-11-27T23:41:33Z"
+    },
+    {
+      "id": 6662,
+      "title": "m10-esc-pause-fix #2: Ursache fixen (ESC-Resume)",
+      "description": "escToggleAllowed() in InputState.ts + togglePause-Dedup in Run.ts — ein physischer Press togglet genau einmal.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T23:41:33Z",
+      "updated": "2026-11-27T23:41:33Z"
+    },
+    {
+      "id": 6663,
+      "title": "m10-esc-pause-fix #3: Tests tests/esc-pause.test.ts",
+      "description": "10 Tests fuer escToggleAllowed (Grundpfad, Doppel-Dispatch, keyup-Replay, OS-Key-Repeat, Queue-Replay, Touch/Gamepad, fremde DOM-Events, Submenue).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T23:41:33Z",
+      "updated": "2026-11-27T23:41:33Z"
+    },
+    {
+      "id": 6664,
+      "title": "m10-esc-pause-fix #4: verify-input 28/28 2x + Doku",
+      "description": "verify-input 28/28 PASS zweimal, 0 JS-Fehler, Ganzsuite 712/712; Doku docs/lanes/m10-esc-pause-fix.md; Reviewer PASS.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-27T23:41:33Z",
+      "updated": "2026-11-27T23:41:33Z"
     }
   ]
 }

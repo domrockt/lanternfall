@@ -48,7 +48,7 @@ import { shakeFor, hitStopFor, mergeHitStop, clampKnockbackSpeed, MAX_HITSTOP_SE
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
 import { getAudio } from "../audio/AudioSystem";
-import { InputState, type Vec2 } from "../input/InputState";
+import { escToggleAllowed, InputState, type Vec2 } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { getTouchSnapshot, resetTouchSnapshot } from "../input/TouchState";
 
@@ -94,6 +94,11 @@ export class Run extends Phaser.Scene {
   godMode = false;
   autoPlay = false;
   paused = false;
+  /**
+   * M10-esc-pause-fix: timeStamp des zuletzt akzeptierten ESC-Keydowns
+   * (Dedup pro physischem Press, siehe escToggleAllowed in InputState).
+   */
+  private lastEscToggleTs: number | null = null;
   /** Pause-Zustand vor dem Öffnen einer Truhe (Debug kann pausiert öffnen). */
   chestPausedBefore = false;
   levelUpOpen = false;
@@ -319,6 +324,7 @@ export class Run extends Phaser.Scene {
     this.input.keyboard!.removeAllListeners("keydown-ESC");
 
     this.inputState.reset();
+    this.lastEscToggleTs = null;
     this.moveInput = { x: 0, y: 0 };
     resetTouchSnapshot();
 
@@ -1302,6 +1308,20 @@ export class Run extends Phaser.Scene {
   /** ESC wird zentral in der UI-Szene verarbeitet (Optionsmenü hat Vorrang). */
   togglePause(): void {
     if (this.levelUpOpen || this.chestOpen || this.finished) return;
+    // M10-esc-pause-fix: ein physischer ESC-Press togglet genau einmal.
+    // Der UI-Handler wird pro Press mehrfach aufgerufen (Doppel-Dispatch
+    // desselben Keydowns im selben Game-Step + keyup-getriebene Queue-Replays,
+    // Beleg shots/m10-esc-pause-before*.json). window.event ist nur während
+    // des DOM-Dispatch gesetzt — genau dort liegen die Duplikat-Aufrufe.
+    // Touch-, Gamepad- und Portrait-Pfade rufen aus dem Frame-Update heraus auf
+    // (window.event = null) und bleiben unberührt.
+    const ev = (globalThis as unknown as { event?: KeyboardEvent }).event;
+    const decision = escToggleAllowed(
+      ev ? { key: ev.key, type: ev.type, timeStamp: ev.timeStamp, repeat: ev.repeat } : null,
+      this.lastEscToggleTs,
+    );
+    if (!decision.allowed) return;
+    this.lastEscToggleTs = decision.lastAcceptedTs;
     this.paused = !this.paused;
     this.events.emit("pauseChanged", this.paused);
   }

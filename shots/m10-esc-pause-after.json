@@ -1,0 +1,163 @@
+{
+  "name": "m10-esc-pause-after",
+  "generatedAt": "2026-11-27T22:48:53.697Z",
+  "checks": [
+    {
+      "name": "ESC pausiert",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "ESC setzt fort",
+      "ok": true,
+      "detail": "resumed=true (Probe im JSON-Feld \"probe\")"
+    },
+    {
+      "name": "10x ESC wechselt abwechselnd (kein Doppel-Trigger)",
+      "ok": true,
+      "detail": "[{\"i\":0,\"before\":false,\"after\":true,\"toggled\":true},{\"i\":1,\"before\":true,\"after\":false,\"toggled\":true},{\"i\":2,\"before\":false,\"after\":true,\"toggled\":true},{\"i\":3,\"before\":true,\"after\":false,\"toggled\":true},{\"i\":4,\"before\":false,\"after\":true,\"toggled\":true},{\"i\":5,\"before\":true,\"after\":false,\"toggled\":true},{\"i\":6,\"before\":false,\"after\":true,\"toggled\":true},{\"i\":7,\"before\":true,\"after\":false,\"toggled\":true},{\"i\":8,\"before\":false,\"after\":true,\"toggled\":true},{\"i\":9,\"before\":true,\"after\":false,\"toggled\":true}]"
+    },
+    {
+      "name": "ESC halten togglet exakt einmal",
+      "ok": true,
+      "detail": "vor=false beimHalten=true nach=true"
+    },
+    {
+      "name": "ESC im Untermenue verlaesst es, Pause bleibt",
+      "ok": true,
+      "detail": "{\"optionsOpen\":true,\"paused\":true,\"optionsVisible\":false}"
+    },
+    {
+      "name": "Touch: Pause-Knopf pausiert (Pfad unveraendert)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "Touch: FORTSETZEN setzt fort (Pfad unveraendert)",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "keine JS-Fehler",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "probe": {
+    "calls": [
+      {
+        "fn": "togglePause",
+        "at": 3094.0999999940395,
+        "pausedBefore": false,
+        "evTime": 3093.7999999970198,
+        "evType": "keydown",
+        "pausedAfter": true
+      },
+      {
+        "fn": "togglePause",
+        "at": 3099,
+        "pausedBefore": true,
+        "evTime": 3098.7999999970198,
+        "evType": "keydown",
+        "pausedAfter": false
+      },
+      {
+        "fn": "togglePause",
+        "at": 3099,
+        "pausedBefore": false,
+        "evTime": 3098.7999999970198,
+        "evType": "keydown",
+        "pausedAfter": false
+      },
+      {
+        "fn": "togglePause",
+        "at": 3099.2999999970198,
+        "pausedBefore": false,
+        "evTime": 3099.2999999970198,
+        "evType": "keyup",
+        "pausedAfter": false
+      },
+      {
+        "fn": "togglePause",
+        "at": 3099.2999999970198,
+        "pausedBefore": false,
+        "evTime": 3099.2999999970198,
+        "evType": "keyup",
+        "pausedAfter": false
+      }
+    ],
+    "keydowns": [
+      {
+        "key": "Escape",
+        "repeat": false,
+        "trusted": true,
+        "ts": 3098.7999999970198
+      }
+    ],
+    "polls": []
+  },
+  "pressLog": [
+    {
+      "i": 0,
+      "before": false,
+      "after": true,
+      "toggled": true
+    },
+    {
+      "i": 1,
+      "before": true,
+      "after": false,
+      "toggled": true
+    },
+    {
+      "i": 2,
+      "before": false,
+      "after": true,
+      "toggled": true
+    },
+    {
+      "i": 3,
+      "before": true,
+      "after": false,
+      "toggled": true
+    },
+    {
+      "i": 4,
+      "before": false,
+      "after": true,
+      "toggled": true
+    },
+    {
+      "i": 5,
+      "before": true,
+      "after": false,
+      "toggled": true
+    },
+    {
+      "i": 6,
+      "before": false,
+      "after": true,
+      "toggled": true
+    },
+    {
+      "i": 7,
+      "before": true,
+      "after": false,
+      "toggled": true
+    },
+    {
+      "i": 8,
+      "before": false,
+      "after": true,
+      "toggled": true
+    },
+    {
+      "i": 9,
+      "before": true,
+      "after": false,
+      "toggled": true
+    }
+  ],
+  "passed": true,
+  "jsErrors": []
+}

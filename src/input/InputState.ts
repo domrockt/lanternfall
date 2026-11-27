@@ -1,4 +1,37 @@
 /**
+ * M10-esc-pause-fix: Entscheidet, ob ein ESC-Toggle-Aufruf tatsaechlich togglen
+ * darf. Ein physischer ESC-Press (= genau ein DOM-Dispatch) darf genau einmal
+ * togglen. Beobachtete Pathologie (Beleg shots/m10-esc-pause-before*.json): der
+ * UI-Handler wird pro Press mehrfach aufgerufen — Doppel-Dispatch desselben
+ * Keydowns im selben Game-Step (Keyboard-Queue wird pro Step mehrfach
+ * abgearbeitet, Single-Slot-Dedupe greift nicht) und keyup-getriebene Replays.
+ * Deshalb:
+ *  - `ev === null` (kein DOM-Dispatch: Touch/Gamepad/Frame-Pfad) → immer togglen,
+ *  - keyup-Dispatches togglen nie,
+ *  - OS-Key-Repeat (repeat=true) togglet nicht,
+ *  - mehrfacher Dispatch desselben Keydowns (gleicher timeStamp) togglet einmal.
+ * Reine Funktion, unit-testbar (tests/esc-pause.test.ts).
+ */
+export interface EscToggleEvent {
+  key: string;
+  type: string;
+  timeStamp: number;
+  repeat: boolean;
+}
+
+export function escToggleAllowed(
+  ev: EscToggleEvent | null | undefined,
+  lastAcceptedTs: number | null,
+): { allowed: boolean; lastAcceptedTs: number | null } {
+  if (!ev || ev.key !== "Escape") return { allowed: true, lastAcceptedTs };
+  if (ev.type !== "keydown" || ev.repeat) return { allowed: false, lastAcceptedTs };
+  if (lastAcceptedTs !== null && ev.timeStamp === lastAcceptedTs) {
+    return { allowed: false, lastAcceptedTs };
+  }
+  return { allowed: true, lastAcceptedTs: ev.timeStamp };
+}
+
+/**
  * Pure input aggregation for M8-input.
  *
  * No Phaser / DOM imports, no side effects. Every frame the raw keyboard,
