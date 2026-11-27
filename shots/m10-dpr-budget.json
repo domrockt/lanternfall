@@ -9,12 +9,12 @@
     {
       "id": "before-rbscale0",
       "mode": "before",
-      "fps": 40.6,
-      "frames": 407,
-      "worstFrameMs": 33.5,
+      "fps": 60.1,
+      "frames": 601,
+      "worstFrameMs": 16.8,
       "minEnemies": 18,
-      "time": 1503.5,
-      "kills": 34867,
+      "time": 1500.4,
+      "kills": 23359,
       "renderBuffer": [
         780,
         360
@@ -32,12 +32,12 @@
     {
       "id": "after-auto-1",
       "mode": "after",
-      "fps": 39.2,
-      "frames": 392,
-      "worstFrameMs": 66.7,
-      "minEnemies": 14,
-      "time": 1501.8,
-      "kills": 27604,
+      "fps": 60.1,
+      "frames": 601,
+      "worstFrameMs": 16.8,
+      "minEnemies": 16,
+      "time": 1502,
+      "kills": 31496,
       "renderBuffer": [
         780,
         360
@@ -55,12 +55,12 @@
     {
       "id": "after-auto-2",
       "mode": "after",
-      "fps": 41.5,
-      "frames": 416,
-      "worstFrameMs": 33.4,
-      "minEnemies": 18,
-      "time": 1504.9,
-      "kills": 41922,
+      "fps": 60,
+      "frames": 601,
+      "worstFrameMs": 16.8,
+      "minEnemies": 21,
+      "time": 1500.4,
+      "kills": 29784,
       "renderBuffer": [
         780,
         360
@@ -78,12 +78,12 @@
     {
       "id": "after-auto-3",
       "mode": "after",
-      "fps": 43.3,
-      "frames": 434,
-      "worstFrameMs": 33.5,
-      "minEnemies": 20,
-      "time": 1500.5,
-      "kills": 20981,
+      "fps": 60.1,
+      "frames": 601,
+      "worstFrameMs": 16.8,
+      "minEnemies": 17,
+      "time": 1499.9,
+      "kills": 28826,
       "renderBuffer": [
         780,
         360
@@ -100,19 +100,19 @@
     }
   ],
   "summary": {
-    "beforeFps": 40.6,
+    "beforeFps": 60.1,
     "beforeRenderWidth": 780,
     "afterFps": [
-      39.2,
-      41.5,
-      43.3
+      60.1,
+      60,
+      60.1
     ],
     "afterRenderWidth": [
       780,
       780,
       780
     ],
-    "afterMinFps": 39.2,
+    "afterMinFps": 60,
     "afterPassedCount": 0,
     "afterCount": 3,
     "jsErrors": 0

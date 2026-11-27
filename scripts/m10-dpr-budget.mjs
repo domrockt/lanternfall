@@ -88,7 +88,9 @@ const measureMinute25 = async (mode) => {
           const active = window.__lf.stats().enemies;
           const deficit = 300 - active;
           if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
-          samples.push(active);
+          // Nach dem Nachspawnen sampeln (wie perf.mjs): Max-AoE toetet die
+          // 300 Gegner zwischen zwei Ticks, sonst misst man nur das Tal.
+          samples.push(window.__lf.stats().enemies);
         }
         if (now - start >= seconds * 1000) resolve();
         else requestAnimationFrame(tick);
