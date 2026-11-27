@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6001,
+  "next": 6042,
   "cards": [
     {
       "id": 1,
@@ -6961,6 +6961,42 @@
       ],
       "created": "2026-11-27T22:06:33Z",
       "updated": "2026-11-27T22:06:57Z"
+    },
+    {
+      "id": 6038,
+      "title": "m10-view-fill-16x9: Ist-Messung Bildfüllung (4 Formate)",
+      "description": "scripts/m10-view-fill.mjs rendert 640x360, 960x540, 1280x720, 2560x1440 (dpr 1) → shots/m10-view-fill-before-*.png + -before.json mit sichtbarer Spielfeld-Breite px, Balkenbreite px je Format + WebGL-Renderer-String. AK: Messung existiert, Werte belegen die Balken bei 960x540/1280x720, genau ein Messlauf (kein Tuning-Loop).",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-27T22:12:33Z",
+      "updated": "2026-11-27T22:12:33Z"
+    },
+    {
+      "id": 6039,
+      "title": "m10-view-fill-16x9: Fix View-Breite an Fenster koppeln",
+      "description": "src/logic/view.ts + src/main.ts: Spielfeld füllt jedes 16:9-Fenster (View-Breite = Fenster-Breite, Höhe skaliert mit), Pixel-Grid ganzzahlig. HUD-Anker (BOSS_SAFE_TOP, hud-wide-anchor) bleiben intakt. AK: kein Balken in 640x360/960x540/1280x720/2560x1440 laut Messskript, npx tsc --noEmit grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:12:33Z",
+      "updated": "2026-11-27T22:12:33Z"
+    },
+    {
+      "id": 6040,
+      "title": "m10-view-fill-16x9: Tests view-fill.test.ts",
+      "description": "tests/view-fill.test.ts: für 4 Formate Spielfeld-Rect == Canvas-Rect (kein Balken), ganzzahlige Skalierung dokumentiert; bestehende view-width-/hud-Tests grün. AK: npx vitest run tests/view-fill.test.ts grün, npm test grün, npm run build rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:12:33Z",
+      "updated": "2026-11-27T22:12:33Z"
+    },
+    {
+      "id": 6041,
+      "title": "m10-view-fill-16x9: Nachher-Messung + Lane-Doku",
+      "description": "shots/m10-view-fill-after-*.png + -after.json, docs/lanes/m10-view-fill-16x9.md mit Vorher/Nachher-Tabelle je Format (Balkenbreite px). AK: kein schwarzer Rand sichtbar bei 960x540/1280x720/2560x1440 (Screenshot-Pfade in Doku), jede JSON trägt WebGL-Renderer-String.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-27T22:12:33Z",
+      "updated": "2026-11-27T22:12:33Z"
     }
   ]
 }
