@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4582,
+  "next": 4759,
   "cards": [
     {
       "id": 1,
@@ -5583,6 +5583,22 @@
       ],
       "created": "2026-11-27T19:02:22Z",
       "updated": "2026-11-27T19:02:28Z"
+    },
+    {
+      "id": 4758,
+      "title": "m10-flock-sweep: bare-flock Reste auf flock -w umstellen",
+      "description": "Alle flock-Spawns (Kommentare + command-Arrays) in 8 claimed scripts/* auf `flock -w <N>` (N = erwartete Laufzeit + 120 s) umstellen, Meldungsmuster aus m10-flock-timeout uebernehmen. Abnahme: grep ohne -w = 0 Treffer, Negativ-Test je echtem Spawn (rc=1 nach ~1 s mit Meldung), node --check je Datei, build+test gruen, diff nur Lock-Wrapper.",
+      "column": "doing",
+      "assignee": "Lead",
+      "notes": [
+        {
+          "at": "2026-11-27T19:43:52Z",
+          "by": "build",
+          "text": "3 Commits: (1) 8 Dateien Kommentare auf flock -w (N=240-420 = Laufzeit+120s), (2) command-Arrays/Spawn-Handling (qa-reaccept -w 420 + Meldung/Exitcode + existsSync-Gate + Timeout 720s), (3) Review-FIX K1. Abnahme: grep ohne 'flock -w' = 1 struktureller Treffer (argv[0]-Literal, -w daneben), Negativtest rc=1 nach ~1s + Positivkontrolle 0.02s, node --check 8x OK, build+test 515 gruen, diff nur Lock-Wrapper. Re-Review laeuft."
+        }
+      ],
+      "created": "2026-11-27T19:37:28Z",
+      "updated": "2026-11-27T19:43:52Z"
     }
   ]
 }
