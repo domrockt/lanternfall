@@ -84,17 +84,13 @@ try {
     for (const [id, share] of mix) {
       window.__lf.spawnEnemy(id, Math.round(enemies * share));
     }
-    // Ueber die sichtbare Flaeche verteilen und unsterblich machen: die Messung
-    // soll 10 s lang konstant >=120 Gegner im Kampf sehen, nicht nach 2 s leer sein.
+    // Ueber die sichtbare Flaeche verteilen, damit sofort echter Kampf lastet.
     let i = 0;
     for (const e of run.enemies.active) {
       if (!e.alive) continue;
       const side = i % 2 === 0 ? 1 : -1;
-      e.x = px + side * (20 + ((i * 37) % 280));
-      e.y = py + (((i * 53) % 240) - 120);
-      e.hp = 1e9;
-      e.maxHp = 1e9;
-      e.damage = 0;
+      e.x = px + side * (10 + ((i * 37) % 190));
+      e.y = py + (((i * 53) % 220) - 110);
       i += 1;
     }
   }, { enemies: ENEMIES, weapons: WEAPONS });
@@ -133,7 +129,8 @@ try {
         sumActive += active;
         samples += 1;
         // Bestand auf Ziel halten: Gegner sterben im Chaos, sonst faellt die Last.
-        if (frames % 30 === 0) {
+        // Jeden Frame auffuellen, damit dauerhaft ~500 Gegner im Kampf stehen.
+        if (frames > 1) {
           const deficit = 500 - run.enemies.count;
           if (deficit > 0) {
             window.__lf.spawnEnemy("bog_rat", deficit);
