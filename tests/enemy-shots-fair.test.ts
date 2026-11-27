@@ -146,9 +146,6 @@ function fakeScene(view = { x: 0, y: 0, width: 640, height: 360 }) {
   return scene as unknown as import("phaser").Scene & {
     cameras: { main: { worldView: { x: number; y: number; width: number; height: number } } };
     enemies: { active: FakeEnemy[] };
-  } as unknown as import("phaser").Scene & {
-    cameras: { main: { worldView: Record<string, number> } };
-    enemies: { active: FakeEnemy[] };
   };
 }
 
@@ -201,7 +198,7 @@ describe("M10 Gegnerschüsse fair — Pool-Pfad (spawn/update)", () => {
     const pool = new EnemyProjectilePool(scene);
     pool.spawn({ x: 120, y: 60, vx: 100, vy: 0, damage: 3, texture: "enemy_shot_shadow" });
     scene.enemies.active = [{ x: 120, y: 60, alive: true }];
-    scene.cameras.main.worldView = { x: 500, y: 0, width: 640, height: 360 };
+    Object.assign(scene.cameras.main.worldView, { x: 500, y: 0, width: 640, height: 360 });
     pool.update(0.4, 0, 0, noopHit);
     const stats = pool.statSnapshot();
     expect(stats.fired).toBe(0);
