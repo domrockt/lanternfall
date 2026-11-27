@@ -222,6 +222,7 @@ export class Run extends Phaser.Scene {
     this.registry.set("lf-final-state", null);
     this.bossFlags = [false, false, false, false, false, false];
     this.lod = lodFor(0);
+    this.fxRestore = 0;
     this.hitStop = 0;
     this.bossFeedbackCooldown = 0;
     this.finished = false;
@@ -512,10 +513,44 @@ export class Run extends Phaser.Scene {
   /** M6: Endgame-Effekt-Dämpfung; Debug-Abnahme kann sie für Vorher-Shots aus. */
   private fxDampingEnabled = true;
 
+  /**
+   * M10-vfx-restore: Stufenweise Ruecknahme der A7-Daempfung (Lane m10-vfx-restore).
+   * Die Alpha-Konstanten (0,5/0,72) liegen in `logic/lod.ts` (fremd geclaimed:
+   * m10-prop-density-lod), die Glow-dpr-Alpha in `gfx/gen-fx.ts` (fremd geclaimed:
+   * m10-boss-fx-contrast). Die Stufe wirkt daher nur auf die Run.ts-eigenen Hebel:
+   * FX-/Partikel-Pool (public `setAlphaScale`) und das additive Laternenlicht.
+   * Stufe 1 = 0,65 im minimal-LOD (A7: 0,5) — bewusst unter der 0,7-Schwelle des
+   * FxSystem, damit additive Glows NORMAL bleiben (kein Batch-/Blend-Rueckschritt).
+   * Stufe 2 (Glows +0,1) braucht gen-fx.ts -> Anfrage in .dispatch/requests.md.
+   */
+  static readonly FX_RESTORE_ALPHA = 0.65;
+  private fxRestore = 0;
+
+  /** Abnahme/Mess-Skript: Ruecknahme-Stufe setzen (0 = A7-Daempfung, 1 = 0,65). */
+  setFxRestore(stage: number): void {
+    const next = Math.max(0, Math.min(1, Math.floor(stage)));
+    if (next === this.fxRestore) return;
+    this.fxRestore = next;
+    this.applyFxRestore();
+  }
+
+  /**
+   * Ruecknahme anwenden. Nur im minimal-LOD mit aktiver Daempfung; reduced/full
+   * behalten fxAlphaFor unverändert. Idempotent (setAlphaScale early-returnt bei
+   * gleichem Wert), darum darf applyLod sie jeden Frame aufrufen.
+   */
+  private applyFxRestore(): void {
+    const active = this.fxDampingEnabled && this.fxRestore > 0 && this.lod.level === "minimal";
+    const a = active ? Run.FX_RESTORE_ALPHA : this.fxDampingEnabled ? fxAlphaFor(this.lod.level) : 1;
+    this.combat?.fx.setAlphaScale(a);
+    this.combat?.particles.setAlphaScale(a);
+    this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? a : 1));
+  }
+
   setFxDamping(enabled: boolean): void {
     this.fxDampingEnabled = enabled;
     this.combat?.setFxDamping(enabled);
-    this.light?.setAlpha(0.85 * (enabled ? fxAlphaFor(this.lod.level) : 1));
+    this.applyFxRestore();
   }
 
   /** M5-LOD: Effekt-Caps/Trails/Damage-Summen an Gegnerlast anpassen. */
@@ -530,6 +565,9 @@ export class Run extends Phaser.Scene {
       // Gegnern und ist im Endgame ein Hauptteil der Überstrahlung.
       this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? fxAlphaFor(lod.level) : 1));
     }
+    // M10-vfx-restore: Ruecknahme-Stufe nach dem LOD-Update sicherstellen
+    // (idempotent; greift nur im minimal-LOD).
+    this.applyFxRestore();
   }
 
   /** Kurzer Boss-Treffer-Hit-Stop + dosierter Shake (max. ~6 px). */
@@ -1421,7 +1459,9 @@ export class Run extends Phaser.Scene {
       dawn: this.dawn,
       lod: this.lod,
       damageAggregate: shouldAggregateDamage(this.enemies?.count ?? 0, this.lod.damageAggregate),
-      fxAlpha: this.fxDampingEnabled ? fxAlphaFor(this.lod.level) : 1,
+      fxAlpha: this.fxDampingEnabled
+        ? (this.fxRestore > 0 && this.lod.level === "minimal" ? Run.FX_RESTORE_ALPHA : fxAlphaFor(this.lod.level))
+        : 1,
       paused: this.paused,
       levelUpOpen: this.levelUpOpen,
       chestOpen: this.chestOpen,

@@ -5992,10 +5992,21 @@
       "id": 5299,
       "title": "m10-vfx-restore K2: Stufe 1 fxAlpha 0,5->0,65 (Run.ts-Teil), Near-White <= 4,16 %",
       "description": "Owner @vfx-artist. Run.ts: FX_RESTORE-Alpha 0,65 im minimal-LOD (fx/particles.setAlphaScale + Licht 0,85*a + Debug-Report). Near-White-Gate: <=4,16 %, sonst Rueckgaengig. lod.ts ist fremd geclaimed (m10-prop-density-lod) -> Bedarf in /home/ai/games/.dispatch/requests.md eintragen. Test tests/vfx-restore.test.ts gegen gemessene Grenzen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T20:54:31Z",
+          "by": "build",
+          "text": "todo → doing: Run.ts: setFxRestore(1) + FX_RESTORE_ALPHA 0,65 (fx/particles.setAlphaScale + Licht), Anfragen für lod.ts + gen-fx.ts gestellt. Jetzt Messung Stage 1."
+        },
+        {
+          "at": "2026-11-27T21:01:42Z",
+          "by": "build",
+          "text": "[Supervisor] bestätigt: Stage-1-Messschleife abgebrochen; letzte Messung gilt als verbindlich, K2 wird jetzt mit dem vorliegenden Ergebnis abgeschlossen (0,65 committet oder auf 0,5 zurückgesetzt), danach direkt K3."
+        }
+      ],
       "created": "2026-11-27T20:30:10Z",
-      "updated": "2026-11-27T20:30:10Z"
+      "updated": "2026-11-27T21:01:42Z"
     },
     {
       "id": 5300,
