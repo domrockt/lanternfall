@@ -1,0 +1,411 @@
+{
+  "milestone": "M10-touch-latency",
+  "baseSha": null,
+  "generatedAt": "2026-11-27T02:53:32.863Z",
+  "criterion": "Median <= 2 Frames (33 ms), p95 <= 3 Frames",
+  "passed": true,
+  "overall": {
+    "latencyMs": {
+      "median": 0.75,
+      "p95": 1.7
+    },
+    "latencyFrames": {
+      "median": 2,
+      "p95": 2
+    },
+    "moved": 22
+  },
+  "profiles": [
+    {
+      "profile": "iphone14-landscape",
+      "viewport": {
+        "width": 664,
+        "height": 390
+      },
+      "dpr": 3,
+      "trials": 12,
+      "moved": 12,
+      "latencyMs": {
+        "median": 0.7,
+        "p95": 1.7,
+        "min": 0.5,
+        "max": 1.7
+      },
+      "latencyFrames": {
+        "median": 2,
+        "p95": 2
+      },
+      "releaseFrames": {
+        "median": 0.2,
+        "p95": 0.28
+      },
+      "frameMs": 16.4,
+      "perTrial": [
+        {
+          "i": 0,
+          "dir": {
+            "dx": 1,
+            "dy": 0
+          },
+          "latencyMs": 1.7000000029802322,
+          "latencyFrames": 2,
+          "releaseMs": 3.100000001490116,
+          "releaseFrames": 0.18902439035193808,
+          "moved": true,
+          "frameMs": 16.4,
+          "paused": false
+        },
+        {
+          "i": 1,
+          "dir": {
+            "dx": -1,
+            "dy": 0
+          },
+          "latencyMs": 0.5,
+          "latencyFrames": 1,
+          "releaseMs": 3.1999999955296516,
+          "releaseFrames": 0.192771084050747,
+          "moved": true,
+          "frameMs": 16.6,
+          "paused": false
+        },
+        {
+          "i": 2,
+          "dir": {
+            "dx": 0,
+            "dy": 1
+          },
+          "latencyMs": 1.3000000044703484,
+          "latencyFrames": 1,
+          "releaseMs": 2.899999998509884,
+          "releaseFrames": 0.17365269452929732,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": true
+        },
+        {
+          "i": 3,
+          "dir": {
+            "dx": 0,
+            "dy": -1
+          },
+          "latencyMs": 0.6000000014901161,
+          "latencyFrames": 2,
+          "releaseMs": 4.5999999940395355,
+          "releaseFrames": 0.2762762759430162,
+          "moved": true,
+          "frameMs": 16.65,
+          "paused": false
+        },
+        {
+          "i": 4,
+          "dir": {
+            "dx": 1,
+            "dy": 0
+          },
+          "latencyMs": 0.7000000029802322,
+          "latencyFrames": 2,
+          "releaseMs": 4,
+          "releaseFrames": 0.23952095809451837,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 5,
+          "dir": {
+            "dx": 0,
+            "dy": 1
+          },
+          "latencyMs": 0.5,
+          "latencyFrames": 2,
+          "releaseMs": 3.2000000029802322,
+          "releaseFrames": 0.19161676669681593,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 6,
+          "dir": {
+            "dx": -1,
+            "dy": 0
+          },
+          "latencyMs": 0.7000000029802322,
+          "latencyFrames": 2,
+          "releaseMs": 3.7000000029802322,
+          "releaseFrames": 0.2215568864653095,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 7,
+          "dir": {
+            "dx": 0,
+            "dy": -1
+          },
+          "latencyMs": 0.7999999970197678,
+          "latencyFrames": 2,
+          "releaseMs": 2.7000000029802322,
+          "releaseFrames": 0.16265060257457012,
+          "moved": true,
+          "frameMs": 16.6,
+          "paused": false
+        },
+        {
+          "i": 8,
+          "dir": {
+            "dx": 1,
+            "dy": 0
+          },
+          "latencyMs": 0.6000000014901161,
+          "latencyFrames": 2,
+          "releaseMs": 3.899999998509884,
+          "releaseFrames": 0.2335329341050214,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 9,
+          "dir": {
+            "dx": -1,
+            "dy": 0
+          },
+          "latencyMs": 0.6000000014901161,
+          "latencyFrames": 2,
+          "releaseMs": 3.399999998509884,
+          "releaseFrames": 0.20481927700028188,
+          "moved": true,
+          "frameMs": 16.6,
+          "paused": false
+        },
+        {
+          "i": 10,
+          "dir": {
+            "dx": 0,
+            "dy": 1
+          },
+          "latencyMs": 0.7999999970197678,
+          "latencyFrames": 2,
+          "releaseMs": 2,
+          "releaseFrames": 0.12012012013087045,
+          "moved": true,
+          "frameMs": 16.65,
+          "paused": false
+        },
+        {
+          "i": 11,
+          "dir": {
+            "dx": 0,
+            "dy": -1
+          },
+          "latencyMs": 0.8000000044703484,
+          "latencyFrames": 2,
+          "releaseMs": 3.899999998509884,
+          "releaseFrames": 0.23493975892528893,
+          "moved": true,
+          "frameMs": 16.6,
+          "paused": false
+        }
+      ]
+    },
+    {
+      "profile": "pixel7-landscape",
+      "viewport": {
+        "width": 839,
+        "height": 412
+      },
+      "dpr": 2.625,
+      "trials": 12,
+      "moved": 10,
+      "latencyMs": {
+        "median": 0.85,
+        "p95": 3.3,
+        "min": 0.5,
+        "max": 3.3
+      },
+      "latencyFrames": {
+        "median": 2,
+        "p95": 2
+      },
+      "releaseFrames": {
+        "median": 0.17,
+        "p95": 0.25
+      },
+      "frameMs": 16.7,
+      "perTrial": [
+        {
+          "i": 0,
+          "dir": {
+            "dx": 1,
+            "dy": 0
+          },
+          "latencyMs": 3.2999999970197678,
+          "latencyFrames": 2,
+          "releaseMs": 1.2999999970197678,
+          "releaseFrames": 0.07784431118489663,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 1,
+          "dir": {
+            "dx": -1,
+            "dy": 0
+          },
+          "latencyMs": 0.8999999985098839,
+          "latencyFrames": 2,
+          "releaseMs": 0,
+          "releaseFrames": 0,
+          "moved": true,
+          "frameMs": 16.65,
+          "paused": true
+        },
+        {
+          "i": 2,
+          "dir": {
+            "dx": 0,
+            "dy": 1
+          },
+          "latencyMs": 1.3999999985098839,
+          "latencyFrames": 2,
+          "releaseMs": 2.899999998509884,
+          "releaseFrames": 0.1736526944905604,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 3,
+          "dir": {
+            "dx": 0,
+            "dy": -1
+          },
+          "latencyMs": 0.5,
+          "latencyFrames": 2,
+          "releaseMs": 2.600000001490116,
+          "releaseFrames": 0.15662650609980266,
+          "moved": true,
+          "frameMs": 16.6,
+          "paused": false
+        },
+        {
+          "i": 4,
+          "dir": {
+            "dx": 1,
+            "dy": 0
+          },
+          "latencyMs": null,
+          "latencyFrames": null,
+          "releaseMs": 0,
+          "releaseFrames": 0,
+          "moved": false,
+          "frameMs": 16.7,
+          "paused": true
+        },
+        {
+          "i": 5,
+          "dir": {
+            "dx": 0,
+            "dy": 1
+          },
+          "latencyMs": 0.7999999970197678,
+          "latencyFrames": 2,
+          "releaseMs": 2.899999998509884,
+          "releaseFrames": 0.17365269452929732,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 6,
+          "dir": {
+            "dx": -1,
+            "dy": 0
+          },
+          "latencyMs": 0.7000000029802322,
+          "latencyFrames": 2,
+          "releaseMs": 4.0999999940395355,
+          "releaseFrames": 0.24550898174473332,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 7,
+          "dir": {
+            "dx": 0,
+            "dy": -1
+          },
+          "latencyMs": 0.8999999985098839,
+          "latencyFrames": 2,
+          "releaseMs": 3.399999998509884,
+          "releaseFrames": 0.20420420408729442,
+          "moved": true,
+          "frameMs": 16.65,
+          "paused": false
+        },
+        {
+          "i": 8,
+          "dir": {
+            "dx": 1,
+            "dy": 0
+          },
+          "latencyMs": 0.7000000029802322,
+          "latencyFrames": 2,
+          "releaseMs": 3.399999998509884,
+          "releaseFrames": 0.20359281429111212,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        },
+        {
+          "i": 9,
+          "dir": {
+            "dx": -1,
+            "dy": 0
+          },
+          "latencyMs": null,
+          "latencyFrames": null,
+          "releaseMs": 0,
+          "releaseFrames": 0,
+          "moved": false,
+          "frameMs": 16.7,
+          "paused": true
+        },
+        {
+          "i": 10,
+          "dir": {
+            "dx": 0,
+            "dy": 1
+          },
+          "latencyMs": 0.8999999985098839,
+          "latencyFrames": 2,
+          "releaseMs": 2.6999999955296516,
+          "releaseFrames": 0.16363636336543344,
+          "moved": true,
+          "frameMs": 16.5,
+          "paused": false
+        },
+        {
+          "i": 11,
+          "dir": {
+            "dx": 0,
+            "dy": -1
+          },
+          "latencyMs": 0.6000000014901161,
+          "latencyFrames": 2,
+          "releaseMs": 3,
+          "releaseFrames": 0.17964071861096148,
+          "moved": true,
+          "frameMs": 16.7,
+          "paused": false
+        }
+      ]
+    }
+  ],
+  "jsErrors": []
+}
