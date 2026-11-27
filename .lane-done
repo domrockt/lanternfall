@@ -1,0 +1,20 @@
+# Lane m10-chest-arrow-onscreen — Randpfeil zur Truhe: FERTIG (2026-11-27)
+
+Ziel: Beleg + Fix, dass der Bildschirmrand-Pfeil zur Truhe ab Spawn sichtbar ist, korrekt zeigt
+(alle Rand-/Eckfälle, 640×360 und 780×360) und beim View-Eintritt sauber verschwindet.
+
+Karten:
+- #K1/#3638 Fehlerfälle: Eck-Winkel falsch (einzelne Clamp-Achsen → bis ~17° Abweichung diagonal),
+  Kamera-Zoom-Puls (1.14) ignoriert → Pfeil verborgen, obwohl Truhe off-screen; Position zoom-radial verschoben.
+- #K2/#3639 Harness scripts/m10-chest-arrow.mjs + Baseline shots/m10-chest-arrow-baseline.json:
+  Ecken 14,99° (640) / 18,66° (780) daneben (bis 191,2 px Randfehler), Zoom-Fall 0/12 Frames sichtbar.
+- #K3/#3640 Fix computeChestArrow (reine Funktion, Strahlprojektion Mitte→Truhe, Zoom-Kompensation)
+  + tests/chest-arrow.test.ts 5/5 grün, tsc sauber (Commits 87491cd, 1629dee).
+- #K4/#3641 Nachmessung shots/m10-chest-arrow-after.json: 2 Views × 10 Fälle alle ok,
+  max Winkelabweichung 0,19° (Limit 5°), Pfeil in 100 % der Fälle ab Spawn sichtbar, Randposition ok.
+  Screenshots shots/m10-chest-arrow-edge.png (Pfeil am Rand, diagonal) und -inside.png (verschwindet
+  bei Truhe im View) gesichtet. npm test 360/360 grün (34 Dateien), tsc --noEmit sauber.
+
+Abnahme-Kriterien: erfüllt (>=3 Tests grün: 5; alle Randfälle <=5°: max 0,19°; sichtbar ab Spawn: ja;
+diff nur ChestSystem.ts, Test, Skript, docs/shots: ja). Kontrolleure: reviewer PASS (#3640).
+Doku: docs/lanes/m10-chest-arrow.md. 0 JS-Fehler im Harness.
