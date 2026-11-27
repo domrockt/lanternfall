@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3758,
+  "next": 3798,
   "cards": [
     {
       "id": 1,
@@ -4689,10 +4689,15 @@
           "at": "2026-11-27T16:38:46Z",
           "by": "build",
           "text": "lane #3438 (Merge m10-menu-touch-targets, Lane-Karte 1:1 uebernommen)"
+        },
+        {
+          "at": "2026-11-27T16:48:51Z",
+          "by": "build",
+          "text": "ux-check PASS: before.json 12/34 (35,3 %) belegt echte L\u00fccken; Probe + bounds-JSON im Commit 3dafe2b/de579e0 (lane #3438)."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
-      "updated": "2026-11-27T16:38:46Z"
+      "updated": "2026-11-27T16:48:51Z"
     },
     {
       "id": 3699,
@@ -4705,10 +4710,15 @@
           "at": "2026-11-27T16:38:46Z",
           "by": "build",
           "text": "lane #3439 (Merge m10-menu-touch-targets, Lane-Karte 1:1 uebernommen)"
+        },
+        {
+          "at": "2026-11-27T16:48:51Z",
+          "by": "build",
+          "text": "ux-check PASS + reviewer PASS: 124 Zonen gepr\u00fcft, alle >=44 hoch, 0 au\u00dferhalb View; Optik unangetastet (Knopfzentren vor/nachher identisch). Commit 9a182f9 (lane #3439)."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
-      "updated": "2026-11-27T16:38:46Z"
+      "updated": "2026-11-27T16:48:51Z"
     },
     {
       "id": 3700,
@@ -4721,10 +4731,15 @@
           "at": "2026-11-27T16:38:46Z",
           "by": "build",
           "text": "lane #3440 (Merge m10-menu-touch-targets, Lane-Karte 1:1 uebernommen)"
+        },
+        {
+          "at": "2026-11-27T16:48:52Z",
+          "by": "build",
+          "text": "ux-check PASS + reviewer PASS: Zeilen l\u00fcckenlos ohne \u00dcberlappung (kein Durchtippen), Tap setzt selected+Fokus+Wert; Live-Lauf 36/36. Commit cbe165d (lane #3440). Reviewer-Hinweise nicht-blockierend: createHitZone jetzt tot (Follow-up), ROW_PITCH-Literal in Loop."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
-      "updated": "2026-11-27T16:38:46Z"
+      "updated": "2026-11-27T16:48:52Z"
     },
     {
       "id": 3701,
@@ -4737,10 +4752,15 @@
           "at": "2026-11-27T16:38:46Z",
           "by": "build",
           "text": "lane #3441 (Merge m10-menu-touch-targets, Lane-Karte 1:1 uebernommen)"
+        },
+        {
+          "at": "2026-11-27T16:48:52Z",
+          "by": "build",
+          "text": "test-auditor PASS: 21/21 Tests mit echten Assertions (Mutationen w\u00fcrden rot gehen), tsc 0, npm test 376/376, kein Run-Coupling. Commit 97d0730 (lane #3441)."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
-      "updated": "2026-11-27T16:38:46Z"
+      "updated": "2026-11-27T16:48:52Z"
     },
     {
       "id": 3702,
@@ -4753,10 +4773,55 @@
           "at": "2026-11-27T16:38:46Z",
           "by": "build",
           "text": "lane #3442 (Merge m10-menu-touch-targets, Lane-Karte 1:1 uebernommen)"
+        },
+        {
+          "at": "2026-11-27T16:48:52Z",
+          "by": "build",
+          "text": "ux-check PASS + reviewer PASS: after.json 36/36 (Kern 34/34 vs vorher 12/34), 0 JS-Fehler; AE 3141/3501 < Animations-Rauschen 15876; docs + .lane-done committet. Commit 5ac3d51 (lane #3442). Merge f359f79."
         }
       ],
       "created": "2026-11-27T16:38:20Z",
-      "updated": "2026-11-27T16:38:46Z"
+      "updated": "2026-11-27T16:48:52Z"
+    },
+    {
+      "id": 3778,
+      "title": "m10-ember-readability #1 Ist-Messung Ember-Projektil",
+      "description": "scripts/m10-ember-readability.mjs: 1x/4x-Kontaktblatt der echten projectile_ember-Frames (Ruhe/Flug) + fx_fire-Glow-Kleck, JSON mit Near-White-Anteil. Abnahme: Messwerte in docs/lanes/m10-ember-readability.md. lane #2878",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T16:48:22Z",
+      "updated": "2026-11-27T16:48:22Z"
+    },
+    {
+      "id": 3779,
+      "title": "m10-ember-readability #2 Fix dark contour core",
+      "description": "Ember-Kern behaelt dunkle 1-px-Kontur (Palette, binaeres Alpha), Glow-Alpha in CombatSystem.fireEmber gedaempft. Nur src/gfx/textures.ts + CombatSystem.ts. Near-White 9,09% -> 3,23%, Glow 12,39% -> 0%. lane #2879",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T16:48:22Z",
+      "updated": "2026-11-27T16:48:22Z"
+    },
+    {
+      "id": 3780,
+      "title": "m10-ember-readability #3 Beleg-Test + Chaos-Screenshot",
+      "description": "tests/ember-readability.test.ts: (a) alle Ember-Frame-Pixel Palettenfarben Alpha 0/255, (b) Kern-vs-Halo-Kontrast ueber Schwelle, (c) Near-White <=4,1%. Chaos-Beleg 640x360 (560 Gegner, 4 Ember im Flug), Vitest 9/9. lane #2880",
+      "column": "done",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-27T16:48:22Z",
+      "updated": "2026-11-27T16:48:22Z"
+    },
+    {
+      "id": 3781,
+      "title": "m10-ember-readability #4 Doku + Lane-Abschluss",
+      "description": "docs/lanes/m10-ember-readability.md mit Vorher/Nachher-Zahlen, art-director-Urteil (PASS 4/5, Restpunkte chaos.json-Koordinaten), offenen Restpunkten. (.lane-done bewusst nicht nach main uebernommen.) lane #2881",
+      "column": "done",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T16:48:22Z",
+      "updated": "2026-11-27T16:48:22Z"
     }
   ]
 }
