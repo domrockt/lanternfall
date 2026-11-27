@@ -394,6 +394,41 @@ export const CLUSTERS = {
   specialist: ["splitter", "exploder", "phaser"],
 } as const;
 
+describe("Abdeckung der Verhaltensmatrix", () => {
+  it("30 Typen, 10 Archetypen, jeder Archetyp genau einem Cluster zugeordnet", () => {
+    expect(ENEMY_LIST.length).toBe(30);
+    expect(new Set(ENEMY_LIST.map((d) => d.id)).size).toBe(30);
+    const archetypes = [...new Set(ENEMY_LIST.map((d) => d.archetype))].sort();
+    expect(archetypes).toEqual([
+      "charger", "chaser", "exploder", "orbiter", "phaser",
+      "ranged", "splitter", "summoner", "swarm", "tank",
+    ]);
+    expect(rows101).toHaveLength(30);
+    // CLUSTERS muss jeden Archetyp genau einmal enthalten — sonst wäre die
+    // Cluster-Doku nicht durch die Matrix gedeckt.
+    const clustered = Object.values(CLUSTERS).flat().sort();
+    expect(clustered).toEqual(archetypes);
+    for (const [cluster, list] of Object.entries(CLUSTERS)) {
+      for (const archetype of list) {
+        expect(
+          rows101.some((r) => r.archetype === archetype),
+          `${cluster}: ${archetype} fehlt in der Matrix`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("Events entstehen nur beim zuständigen Archetyp", () => {
+    for (const r of rows101) {
+      expect(r.blinkEvents > 0, `${r.id}: Blink nur Phaser`).toBe(r.archetype === "phaser");
+      expect(r.summonEvents > 0, `${r.id}: Summon nur Summoner`).toBe(r.archetype === "summoner");
+      expect(r.explodeEvents > 0, `${r.id}: Explode nur Exploder`).toBe(r.archetype === "exploder");
+      expect(r.splitEvents > 0, `${r.id}: Split nur Splitter`).toBe(r.archetype === "splitter");
+      expect(r.shootEvents > 0, `${r.id}: Schuss nur Ranged`).toBe(r.archetype === "ranged");
+    }
+  });
+});
+
 describe("Verhaltenscluster (mindestens 4 klar verschieden)", () => {
   it("assault: hoher Vorwärtsanteil, Chaser/Tank ohne Kursflattern", () => {
     for (const r of rows101.filter((x) => x.archetype === "swarm")) {
@@ -454,16 +489,22 @@ describe("Verhaltenscluster (mindestens 4 klar verschieden)", () => {
   });
 
   it("specialist: Split-, Blink- und Explode-Events sind messbar", () => {
-    expect(rowOf("mudling", rows101).splitEvents).toBeGreaterThan(0);
-    expect(rowOf("slime", rows101).splitEvents).toBeGreaterThan(0);
-    expect(rowOf("abom", rows101).splitEvents).toBeGreaterThan(0);
-    expect(rowOf("banshee", rows101).blinkEvents).toBeGreaterThanOrEqual(4);
-    expect(rowOf("wraith", rows101).blinkEvents).toBeGreaterThanOrEqual(4);
-    expect(rowOf("bomber", rows101).explodeEvents).toBeGreaterThan(4);
-    expect(rowOf("imp", rows101).explodeEvents).toBeGreaterThan(4);
-    // Alle anderen Archetypen haben keine Split-/Summon-/Blink-/Explode-Events.
-    for (const r of rows101.filter((x) => x.archetype === "chaser" || x.archetype === "tank")) {
-      expect(r.splitEvents + r.summonEvents + r.blinkEvents + r.explodeEvents, `${r.id} fremde Events`).toBe(0);
+    // Untere Schwellen orientieren sich an der dokumentierten Matrix
+    // (4 Splits, 46–48 Blinks, 39–49 Explosionen), nicht nur an > 0.
+    for (const r of rows101.filter((x) => x.archetype === "splitter")) {
+      expect(r.splitEvents, `${r.id} Splits`).toBeGreaterThanOrEqual(2);
+      expect(r.splitEvents + r.summonEvents + r.blinkEvents + r.explodeEvents,
+        `${r.id} fremde Events`).toBe(r.splitEvents);
+    }
+    for (const r of rows101.filter((x) => x.archetype === "phaser")) {
+      expect(r.blinkEvents, `${r.id} Blinks`).toBeGreaterThanOrEqual(40);
+      expect(r.splitEvents + r.summonEvents + r.blinkEvents + r.explodeEvents,
+        `${r.id} fremde Events`).toBe(r.blinkEvents);
+    }
+    for (const r of rows101.filter((x) => x.archetype === "exploder")) {
+      expect(r.explodeEvents, `${r.id} Explosionen`).toBeGreaterThanOrEqual(20);
+      expect(r.splitEvents + r.summonEvents + r.blinkEvents + r.explodeEvents,
+        `${r.id} fremde Events`).toBe(r.explodeEvents);
     }
   });
 

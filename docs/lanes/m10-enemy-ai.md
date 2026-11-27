@@ -143,44 +143,49 @@ Normalisierung im Hot-Path ist inline (kein temporäres Vektor-Objekt).
 
 Gleiche Messmethode wie #K1, ergänzt um ein **Druck-Szenario** (Start 55 px,
 Spieler läuft mit 18 px/s nach), damit Distanzhalter Rückzug zeigen. Distanz-,
-Kurs- und Kontaktwerte stammen aus dem Anlauf-Szenario (210 px), der
-Rückzugsanteil aus dem Druck-Szenario; Events sind über beide summiert.
-Seeds 101 und 202 liefern exakt dieselbe Matrix (Determinismus-Assertion).
-Maschinenlesbarer Beleg: `shots/m10-enemy-ai-matrix.json` (alle 30 Typen, beide
-Seeds, alle Rohmetriken inkl. `shootEvents`).
+Kurs-, Kontakt- und Schusswerte stammen aus dem Anlauf-Szenario (210 px), der
+Rückzugsanteil aus dem Druck-Szenario; Events sind über beide Szenarien
+summiert. Jeder Seed ist für sich deterministisch (gleicher Seed ⇒ exakt
+gleiche Matrix, Test-Assertion); Seed 101 und 202 können einzelne Werte
+minimal verschieben, die Archetyp-Signaturen und Cluster bleiben identisch.
+Maschinenlesbarer Beleg: `shots/m10-enemy-ai-matrix.json` (alle 30 Typen,
+beide Seeds, alle Rohmetriken inkl. `retreatShare` und `shootEvents`).
 
-| Gegner | Archetyp | Tier | ØDist | σDist | Vorw | Dreh/s | Lenk°/s | Tel % | Split | Summon | Blink | Explode |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| bog_rat | swarm | 0 | 10.0 | 0.0 | 1.00 | 0.55 | 159.8 | 0 | 0 | 0 | 0 | 0 |
-| wisp | chaser | 0 | 10.0 | 0.0 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| mudling | splitter | 0 | 24.2 | 26.6 | 1.00 | 0.07 | 8.0 | 0 | 4 | 0 | 0 | 0 |
-| crow | swarm | 0 | 10.0 | 0.0 | 1.00 | 0.55 | 165.4 | 0 | 0 | 0 | 0 | 0 |
-| bogzombie | chaser | 0 | 10.6 | 4.4 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| toad | ranged | 0 | 110.9 | 0.6 | 0.00 | 0.00 | 10.4 | 0 | 0 | 0 | 0 | 0 |
-| skeleton | chaser | 1 | 10.0 | 0.0 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| bat | swarm | 1 | 10.0 | 0.0 | 1.00 | 0.63 | 189.0 | 0 | 0 | 0 | 0 | 0 |
-| ghoul | charger | 1 | 10.0 | 0.1 | 1.00 | 0.00 | 0.0 | 26 | 0 | 0 | 0 | 0 |
-| witchling | ranged | 1 | 119.1 | 0.8 | 0.00 | 0.00 | 11.5 | 0 | 0 | 0 | 0 | 0 |
-| slime | splitter | 1 | 31.0 | 31.2 | 1.00 | 0.07 | 8.0 | 0 | 4 | 0 | 0 | 0 |
-| scarecrow | tank | 1 | 18.4 | 24.7 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| wolf | charger | 2 | 10.0 | 0.0 | 1.00 | 0.00 | 0.0 | 27 | 0 | 0 | 0 | 0 |
-| banshee | phaser | 2 | 29.3 | 21.3 | 1.00 | 0.33 | 35.5 | 0 | 0 | 0 | 46 | 0 |
-| golem | tank | 2 | 22.4 | 31.1 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| spider | swarm | 2 | 10.0 | 0.0 | 1.00 | 0.72 | 212.4 | 0 | 0 | 0 | 0 | 0 |
-| cultist | summoner | 2 | 180.0 | 0.3 | 0.00 | 0.00 | 6.2 | 0 | 0 | 28 | 0 | 0 |
-| bomber | exploder | 2 | 86.9 | 44.9 | 1.00 | 0.27 | 31.4 | 22 | 0 | 0 | 0 | 39 |
-| knight | tank | 3 | 19.7 | 26.9 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| harpy | orbiter | 3 | 84.3 | 5.1 | 0.00 | 0.18 | 332.1 | 0 | 0 | 0 | 0 | 0 |
-| lich | ranged | 3 | 134.6 | 0.5 | 0.00 | 0.00 | 8.6 | 0 | 0 | 0 | 0 | 0 |
-| wraith | phaser | 3 | 34.7 | 22.2 | 1.00 | 0.35 | 36.3 | 0 | 0 | 0 | 48 | 0 |
-| treant | tank | 3 | 28.7 | 38.8 | 1.00 | 0.00 | 0.0 | 0 | 0 | 0 | 0 | 0 |
-| imp | exploder | 3 | 87.0 | 44.1 | 0.99 | 0.33 | 40.4 | 25 | 0 | 0 | 0 | 49 |
-| horror | ranged | 4 | 142.7 | 0.4 | 0.00 | 0.00 | 7.4 | 0 | 0 | 0 | 0 | 0 |
-| centipede | charger | 4 | 10.0 | 0.0 | 1.00 | 0.00 | 0.0 | 29 | 0 | 0 | 0 | 0 |
-| gargoyle | orbiter | 4 | 88.4 | 5.5 | 0.00 | 0.18 | 274.4 | 0 | 0 | 0 | 0 | 0 |
-| reaper_bat | swarm | 4 | 10.0 | 0.0 | 1.00 | 0.87 | 264.1 | 0 | 0 | 0 | 0 | 0 |
-| abom | splitter | 4 | 58.5 | 36.7 | 1.00 | 0.07 | 8.0 | 0 | 4 | 0 | 0 | 0 |
-| voidcaller | summoner | 4 | 187.9 | 0.2 | 0.00 | 0.00 | 4.4 | 0 | 0 | 34 | 0 | 0 |
+| Gegner | Archetyp | Tier | ØDist | σDist | Vorw | Rück | Dreh/s | Lenk°/s | Tel % | Burst % | Kontakt % | Shoot | Split | Summon | Blink | Explode |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| bog_rat | swarm | 0 | 10 | 0 | 1 | 0 | 0.55 | 159.8 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| wisp | chaser | 0 | 10 | 0 | 1 | 0 | 0 | 0 | 0 | 0.156 | 1 | 0 | 0 | 0 | 0 | 0 |
+| mudling | splitter | 0 | 24.2 | 26.6 | 1 | 0 | 0.07 | 8 | 0 | 0 | 0.675 | 0 | 4 | 0 | 0 | 0 |
+| crow | swarm | 0 | 10 | 0 | 1 | 0 | 0.55 | 165.4 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| bogzombie | chaser | 0 | 10.6 | 4.4 | 1 | 0 | 0 | 0 | 0 | 0.156 | 0.973 | 0 | 0 | 0 | 0 | 0 |
+| toad | ranged | 0 | 110.9 | 0.6 | 0 | 0.95 | 0 | 10.4 | 0 | 0 | 0 | 42 | 0 | 0 | 0 | 0 |
+| skeleton | chaser | 1 | 10 | 0 | 1 | 0 | 0 | 0 | 0 | 0.175 | 1 | 0 | 0 | 0 | 0 | 0 |
+| bat | swarm | 1 | 10 | 0 | 1 | 0 | 0.63 | 189 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| ghoul | charger | 1 | 10 | 0.1 | 1 | 0 | 0 | 0 | 0.263 | 0.11 | 0.999 | 0 | 0 | 0 | 0 | 0 |
+| witchling | ranged | 1 | 119.1 | 0.8 | 0 | 0.838 | 0 | 11.5 | 0 | 0 | 0 | 44 | 0 | 0 | 0 | 0 |
+| slime | splitter | 1 | 31 | 31.2 | 1 | 0 | 0.07 | 8 | 0 | 0 | 0.553 | 0 | 4 | 0 | 0 | 0 |
+| scarecrow | tank | 1 | 18.4 | 24.7 | 1 | 0 | 0 | 0 | 0 | 0 | 0.862 | 0 | 0 | 0 | 0 | 0 |
+| wolf | charger | 2 | 10 | 0 | 1 | 0 | 0 | 0 | 0.271 | 0.123 | 1 | 0 | 0 | 0 | 0 | 0 |
+| banshee | phaser | 2 | 29.3 | 21.3 | 0.996 | 0.003 | 0.33 | 35.5 | 0 | 0 | 0.403 | 0 | 0 | 0 | 46 | 0 |
+| golem | tank | 2 | 22.4 | 31.1 | 1 | 0 | 0 | 0 | 0 | 0 | 0.814 | 0 | 0 | 0 | 0 | 0 |
+| spider | swarm | 2 | 10 | 0 | 1 | 0 | 0.72 | 212.4 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| cultist | summoner | 2 | 180 | 0.3 | 0 | 0.911 | 0 | 6.2 | 0 | 0 | 0 | 0 | 0 | 28 | 0 | 0 |
+| bomber | exploder | 2 | 86.9 | 44.9 | 0.996 | 0.004 | 0.27 | 31.4 | 0.222 | 0 | 0 | 0 | 0 | 0 | 0 | 39 |
+| knight | tank | 3 | 19.7 | 26.9 | 1 | 0 | 0 | 0 | 0 | 0 | 0.848 | 0 | 0 | 0 | 0 | 0 |
+| harpy | orbiter | 3 | 84.3 | 5.1 | 0 | 0 | 0.18 | 332.1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| lich | ranged | 3 | 134.6 | 0.5 | 0 | 1 | 0 | 8.6 | 0 | 0 | 0 | 48 | 0 | 0 | 0 | 0 |
+| wraith | phaser | 3 | 34.7 | 22.2 | 0.996 | 0.003 | 0.35 | 36.3 | 0 | 0 | 0.269 | 0 | 0 | 0 | 48 | 0 |
+| treant | tank | 3 | 28.7 | 38.8 | 1 | 0 | 0 | 0 | 0 | 0 | 0.747 | 0 | 0 | 0 | 0 | 0 |
+| imp | exploder | 3 | 87 | 44.1 | 0.995 | 0.005 | 0.33 | 40.4 | 0.251 | 0 | 0 | 0 | 0 | 0 | 0 | 49 |
+| horror | ranged | 4 | 142.7 | 0.4 | 0 | 1 | 0 | 7.4 | 0 | 0 | 0 | 50 | 0 | 0 | 0 | 0 |
+| centipede | charger | 4 | 10 | 0 | 1 | 0 | 0 | 0 | 0.29 | 0.149 | 1 | 0 | 0 | 0 | 0 | 0 |
+| gargoyle | orbiter | 4 | 88.4 | 5.5 | 0 | 0.857 | 0.18 | 274.4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| reaper_bat | swarm | 4 | 10 | 0 | 1 | 0 | 0.87 | 264.1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| abom | splitter | 4 | 58.5 | 36.7 | 1 | 0 | 0.07 | 8 | 0 | 0 | 0.063 | 0 | 4 | 0 | 0 | 0 |
+| voidcaller | summoner | 4 | 187.9 | 0.2 | 0 | 1 | 0 | 4.4 | 0 | 0 | 0 | 0 | 0 | 34 | 0 | 0 |
+
+*Tabelle: Seed 101, 60 s, Starts 210/55 px. Seed 202 liegt in denselben
+Zielkorridoren; die vollständigen 202-Werte stehen im JSON-Beleg.*
 
 ### Verhaltenscluster (Test-Assertions in `tests/enemy-ai.test.ts`)
 

@@ -2689,31 +2689,54 @@
       "id": 1758,
       "title": "m10-enemy-ai #1 Matrix-Gerüst",
       "description": "tests/enemy-ai.test.ts: 30 Gegnertypen x Seeds 101/202, 60 s stepEnemyAi-Simulation, Metriken Ø-Abstand, Vorwärtsanteil, Richtungswechsel/s, Split/Summon/Blink/Shoot, Telegraph-Anteil. Tabelle in docs/lanes/m10-enemy-ai.md; Ist-Stand dokumentiert. Abnahme: Test grün (nur Ist-Stand), Tabelle 30 Zeilen, Doku-Abschnitt vorhanden.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T01:35:59Z",
+          "by": "build",
+          "text": "doing → review: K1 committed e2649b5: Matrix-Gerüst, 30 Zeilen x Seeds 101/202, Test grün. Beleg shots/m10-enemy-ai-matrix.json."
+        }
+      ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T00:55:35Z"
+      "updated": "2026-11-27T01:35:59Z"
     },
     {
       "id": 1759,
       "title": "m10-enemy-ai #2 Lückenliste",
       "description": "Archetypen ohne messbare Eigenheit benennen (z. B. swarm/chaser/tank identisch, splitter ohne Event-Signatur). Soll-Signatur je Archetyp in docs/lanes/m10-enemy-ai.md festschreiben. Abnahme: je Archetyp Soll-Ziel + Ist-Abweichung als Tabelle dokumentiert.",
-      "column": "todo",
+      "column": "review",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T01:35:59Z",
+          "by": "build",
+          "text": "todo → review: K2 committed c1dedbb: Lückenliste + Soll-Signaturen je Archetyp."
+        }
+      ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T00:55:35Z"
+      "updated": "2026-11-27T01:35:59Z"
     },
     {
       "id": 1760,
       "title": "m10-enemy-ai #3 Logik schärfen",
       "description": "src/logic/enemy-ai.ts: pro Archetyp eigene Parameter/Branches (Abstandsband, Flankier-Winkel, Split-Schwelle, Summon-Cooldown), deterministisch, keine temporären Allokationen im Hot-Path. Signatur stepEnemyAi/AiAction unverändert kompatibel. Abnahme: bestehende Tests grün, tsc grün.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T01:34:57Z",
+          "by": "build",
+          "text": "todo → doing: K3: eigene Parameter/Branches je Archetyp in enemy-ai.ts."
+        },
+        {
+          "at": "2026-11-27T01:35:59Z",
+          "by": "build",
+          "text": "doing → review: K3 committed b1da9d7: 10 Archetyp-Profile (Abstandsband, Weben, Lunze, Flankier-Radius, Split-Schwelle, Fuse, Blink-Cooldown); Signatur unverändert; build+tests grün."
+        }
+      ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T00:55:35Z"
+      "updated": "2026-11-27T01:35:59Z"
     },
     {
       "id": 1761,
@@ -2729,11 +2752,17 @@
       "id": 1762,
       "title": "m10-enemy-ai #5 In-Game-Beleg",
       "description": "5-min-Lauf @ timeScale 10 mit >=100 Gegnern, Screenshot shots/m10-enemy-ai-mass.png, FPS-Minimum >=55 (flock), npm run build grün, .lane-done. Abnahme: Shot zeigt >=100 Gegner, FPS-Beleg im Log, .lane-done committed.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:00:30Z",
+          "by": "build",
+          "text": "todo → doing: K5 gestartet: 5-min-Lauf @ timeScale 10, Massen-Shot mit 187 Gegnern erzeugt; FPS-Messung wird nach Ende paralleler Kontrolleure ohne Fremdlast wiederholt."
+        }
+      ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T00:55:35Z"
+      "updated": "2026-11-27T03:00:30Z"
     }
   ]
 }

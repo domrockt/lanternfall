@@ -1,0 +1,24 @@
+{
+  "card": "#K5",
+  "simSeconds": 306,
+  "timeScale": 10,
+  "elapsedRealSeconds": 39,
+  "fps": {
+    "minWindow": 50.6,
+    "minRawSample": 50.5,
+    "median": 55.4,
+    "samples": 162,
+    "windows": 34,
+    "target": 55,
+    "passed": false
+  },
+  "massShot": {
+    "path": "shots/m10-enemy-ai-mass.png",
+    "enemiesHud": 187,
+    "playerLevel": 13,
+    "kills": 304,
+    "passed": true
+  },
+  "jsErrors": [],
+  "passed": false
+}
