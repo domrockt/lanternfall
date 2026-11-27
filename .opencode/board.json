@@ -2984,7 +2984,7 @@
       "id": 2098,
       "title": "m10-gem-magnet #1 Ist-Messung: 10-min-autoPlay, Minuten-Samples, Baseline-JSON + Vorher-Shot",
       "description": "Debug-Hook (gem-Metriken) + Messskript; shots/m10-gem-magnet-baseline.json mit aktiven Kristallen vs. Cap, Pickup-Distanzen, Recycling-Verlusten; shots/m10-gem-magnet-before.png (Minute 12). Abnahme: JSON existiert, Cap-Ueberschreitung je Sample ausgewiesen, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -2996,10 +2996,15 @@
           "at": "2026-11-27T03:56:30Z",
           "by": "build",
           "text": "Supervisor-Timebox bestaetigt: baseline.json (12 Samples) + before.png liegen bereits committed in 4615bc6/4611bc6; maxOver=0, 222 Recycling-Verluste. Kein Re-Run noetig. Karte bleibt done."
+        },
+        {
+          "at": "2026-11-27T05:26:01Z",
+          "by": "build",
+          "text": "doing → done: Ist-Messung PASS: 12 Minuten-Samples @30x, maxOver=0 alle Samples, rejected=0, 0 JS-Fehler; Baseline-JSON + Ist-Shot Minute 12. Commits 4611bc6/37a3812."
         }
       ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T03:56:30Z"
+      "updated": "2026-11-27T05:26:01Z"
     },
     {
       "id": 2099,
