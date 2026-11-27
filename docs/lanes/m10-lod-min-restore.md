@@ -42,4 +42,21 @@ Lane **nicht** angefasst (Tabu-Datei, Claim anderswo).
 
 ## K2 — Test + Sichtprobe
 
-siehe unten (nach Ausführung ergänzt).
+- `tests/lod-min-restore.test.ts` (4 Tests): Stufenwerte 0,65/0,72/1, Tor
+  `fxAlphaFor("minimal") === 0.65` (identisch zu `Run.FX_RESTORE_ALPHA`),
+  Monotonie minimal < reduced < full, minimal-LOD-Zuordnung unverändert.
+  Zusammen mit m5-jucie + prop-density-lod: **35 Tests grün**, `npx tsc --noEmit` rc=0.
+- Sichtprobe `scripts/m10-vfx-restore.mjs --seconds 8 --prefix shots/m10-lod-min`
+  (flock, M25-Szenario: skipTo 1400, ~300 Gegner, 6 Waffen + 6 Evolutionen, Boss aktiv):
+  - JSON meldet nativ **fxAlpha = 0,65** (lod.ts, ohne Run.ts-Override, `--stage 0`),
+    lodLevel `minimal`, 0 JS-Fehler.
+  - Near-White A7 Crop: **640x360@1: 1,34 %**, **780x360@3: 1,94 %** — beide ≤ 4,16 %-Gate.
+    (Vergleich Lane m10-vfx-restore K3: 3,98 % / 2,06 % mit Override-Hebel — gleicher
+    Zielwert,.run-to-run-Schwankung im Szenario.)
+  - FPS 60,0 je Profil (Live-Lauf unter flock). Draw-Call-Zähler des Skripts meldete
+    `draws=0` (Wrapper-Hook griff in diesem Kurzlauf nicht) — für das Near-White-Gate
+    unerheblich, Stufe-2-Lane misst Draw-Calls gegen Baseline+10 %.
+- Belege: `shots/m10-lod-min-after-640x360.png`, `shots/m10-lod-min-after-780x360@3.png`
+  (Kopien der Damped-Frames = Ist-Zustand nach Fix), `shots/m10-lod-min.json`. Sichtprüfung
+  3x nearest: FX-Ringe/Funken lesbar, Gegner unterscheidbar, kein Weißauswasch.
+

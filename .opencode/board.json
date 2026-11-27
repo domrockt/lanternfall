@@ -7060,27 +7060,38 @@
       "id": 6118,
       "title": "m10-lod-min-restore #1: fxAlphaFor(minimal) 0,5→0,65 + Run.ts-Override-Befund",
       "description": "src/logic/lod.ts: fxAlphaFor('minimal') 0,5→0,65 (Bedarf m10-vfx-restore Stufe 1). Stufen-Kette minimal<reduced<voll bleibt monoton (0,65<0,72<1). Befund in docs/lanes/m10-lod-min-restore.md + Rückmeldung in /home/ai/games/.dispatch/requests.md, ob Run.setFxRestore(1)/FX_RESTORE_ALPHA entfallen kann (Run.ts NICHT anfassen). Abnahme: npx tsc --noEmit grün, gezielte lod-Tests grün, Commit 'M10-m10-lod-min-restore: #<Karte>'.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T22:23:29Z",
           "by": "build",
           "text": "todo → doing: Start: lod.ts 0,5→0,65 + Befund Run.ts-Override"
+        },
+        {
+          "at": "2026-11-27T22:25:23Z",
+          "by": "build",
+          "text": "doing → review: Commit 2940920: lod.ts 0,5→0,65, tsc rc=0, m5-jucie+prop-density-lod 31 Tests grün, Befund Override-Entfall (wertidentisch) in docs/lanes + requests.md. Kontrolle: test-auditor."
         }
       ],
       "created": "2026-11-27T22:23:14Z",
-      "updated": "2026-11-27T22:23:29Z"
+      "updated": "2026-11-27T22:25:23Z"
     },
     {
       "id": 6119,
       "title": "m10-lod-min-restore #2: Test + Sichtprobe Near-White ≤ 4,16 %",
       "description": "tests/lod-min-restore.test.ts: Stufenwerte (0,65/0,72/1), Monotonie, Tor fxAlphaFor('minimal')==0,65; bestehende lod-Tests bleiben grün. Sichtprobe scripts/m10-vfx-restore.mjs mit --prefix shots/m10-lod-min: after-PNG je Profil, Near-White A7 Crop ≤ 4,16 %. Abnahme: Tests+tsc grün, JSON+PNG im Commit, Commit 'M10-m10-lod-min-restore: #<Karte>'.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T22:25:30Z",
+          "by": "build",
+          "text": "todo → doing: Start: Test lod-min-restore + Sichtprobe Near-White"
+        }
+      ],
       "created": "2026-11-27T22:23:14Z",
-      "updated": "2026-11-27T22:23:14Z"
+      "updated": "2026-11-27T22:25:30Z"
     }
   ]
 }
