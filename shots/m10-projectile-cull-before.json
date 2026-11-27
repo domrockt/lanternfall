@@ -17,192 +17,202 @@
   "deterministicHarness": "scene.paused + run.simulate(1/60) in Chunks",
   "simSeconds": 30,
   "liveProjectiles": {
-    "avg": 11.7,
-    "max": 13
+    "avg": 29.5,
+    "max": 48
   },
   "withLiveTarget": {
-    "avg": 4.7
+    "avg": 8.3
   },
-  "enemiesAvg": 533,
-  "enemiesBeyondViewMax": 48,
-  "enemiesBeyondView64Max": 1,
+  "enemiesAvg": 303,
+  "enemiesBeyondViewMax": 134,
+  "enemiesBeyondView64Max": 54,
   "offscreenByMargin": {
     ">0px": {
-      "avg": 0,
-      "max": 0,
-      "pctOfLive": 0
+      "avg": 13.8,
+      "max": 44,
+      "pctOfLive": 46.9
     },
     ">48px": {
-      "avg": 0,
-      "max": 0,
-      "pctOfLive": 0
+      "avg": 9.5,
+      "max": 32,
+      "pctOfLive": 32.2
     },
     ">96px": {
-      "avg": 0,
-      "max": 0,
-      "pctOfLive": 0
+      "avg": 7,
+      "max": 25,
+      "pctOfLive": 23.7
     },
     ">192px": {
-      "avg": 0,
-      "max": 0,
-      "pctOfLive": 0
+      "avg": 4,
+      "max": 17,
+      "pctOfLive": 13.6
     }
   },
   "msPerFrame": {
-    "projectileUpdate": 0.022,
-    "combatUpdate": 0.223,
-    "rendererTotal": 0.955
+    "projectileUpdate": 0.025,
+    "combatUpdate": 0.142,
+    "rendererTotal": 0.686
   },
   "totals": {
-    "hits": 31663,
-    "projectileHits": 4818,
-    "hitDamage": 2065025,
-    "kills": 37,
-    "spawns": 1048,
-    "hitsBeyondView96": 0,
-    "hitsBeyondView192": 0
+    "hits": 10212,
+    "projectileHits": 3764,
+    "hitDamage": 596476,
+    "kills": 911,
+    "spawns": 926,
+    "hitsBeyondView96": 35,
+    "hitsBeyondView192": 0,
+    "projectileHitsBeyondMargin": {
+      "96": 26,
+      "128": 2,
+      "160": 0,
+      "192": 0,
+      "256": 0,
+      "288": 0,
+      "320": 0
+    },
+    "enemyMaxBeyondView": 217.4
   },
   "fpsReference": {
-    "fps": 60.7,
+    "fps": 52.4,
     "secondsReal": 4.002
   },
   "samples": [
     {
-      "enemies": 518,
-      "live": 12,
+      "enemies": 275,
+      "live": 21,
       "withTarget": 5,
       "off": [
-        0,
-        0,
-        0,
+        2,
+        2,
+        2,
         0
       ],
-      "enemiesBeyondView": 4,
-      "enemiesBeyondView64": 1,
+      "enemiesBeyondView": 134,
+      "enemiesBeyondView64": 54,
       "view": {
-        "x": 1808,
-        "y": 1868,
-        "w": 480,
-        "h": 360
-      },
-      "player": {
-        "x": 2048,
-        "y": 2048
-      }
-    },
-    {
-      "enemies": 524,
-      "live": 12,
-      "withTarget": 5,
-      "off": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "enemiesBeyondView": 48,
-      "enemiesBeyondView64": 0,
-      "view": {
-        "x": 1838,
-        "y": 1890,
+        "x": 1816,
+        "y": 1925,
         "w": 421,
         "h": 316
       },
       "player": {
-        "x": 2048,
-        "y": 2048
+        "x": 1962.7328199220312,
+        "y": 2134.4376649788337
       }
     },
     {
-      "enemies": 534,
-      "live": 13,
-      "withTarget": 6,
+      "enemies": 262,
+      "live": 27,
+      "withTarget": 12,
       "off": [
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1
       ],
-      "enemiesBeyondView": 4,
-      "enemiesBeyondView64": 0,
+      "enemiesBeyondView": 97,
+      "enemiesBeyondView64": 36,
       "view": {
-        "x": 1808,
-        "y": 1868,
-        "w": 480,
-        "h": 360
+        "x": 1792,
+        "y": 1945,
+        "w": 421,
+        "h": 316
       },
       "player": {
-        "x": 2048,
-        "y": 2048
+        "x": 1951.601251330646,
+        "y": 2155.876907795355
       }
     },
     {
-      "enemies": 534,
-      "live": 11,
+      "enemies": 270,
+      "live": 22,
       "withTarget": 4,
       "off": [
-        0,
-        0,
-        0,
-        0
+        3,
+        3,
+        3,
+        2
       ],
-      "enemiesBeyondView": 6,
-      "enemiesBeyondView64": 0,
+      "enemiesBeyondView": 97,
+      "enemiesBeyondView64": 23,
       "view": {
-        "x": 1808,
-        "y": 1868,
-        "w": 480,
-        "h": 360
+        "x": 1768,
+        "y": 1956,
+        "w": 421,
+        "h": 316
       },
       "player": {
-        "x": 2048,
-        "y": 2048
+        "x": 1915.1675893995762,
+        "y": 2127.299405175983
       }
     },
     {
-      "enemies": 541,
-      "live": 11,
-      "withTarget": 4,
+      "enemies": 317,
+      "live": 35,
+      "withTarget": 12,
       "off": [
-        0,
-        0,
-        0,
-        0
+        25,
+        13,
+        6,
+        3
       ],
-      "enemiesBeyondView": 1,
-      "enemiesBeyondView64": 0,
+      "enemiesBeyondView": 29,
+      "enemiesBeyondView64": 12,
       "view": {
-        "x": 1808,
-        "y": 1868,
+        "x": 1708,
+        "y": 1988,
         "w": 480,
         "h": 360
       },
       "player": {
-        "x": 2048,
-        "y": 2048
+        "x": 1871.0284934643175,
+        "y": 2405.7701315323234
       }
     },
     {
-      "enemies": 544,
-      "live": 11,
-      "withTarget": 4,
+      "enemies": 360,
+      "live": 24,
+      "withTarget": 7,
       "off": [
-        0,
-        0,
-        0,
-        0
+        8,
+        6,
+        5,
+        1
       ],
-      "enemiesBeyondView": 8,
-      "enemiesBeyondView64": 0,
+      "enemiesBeyondView": 24,
+      "enemiesBeyondView64": 10,
       "view": {
-        "x": 1808,
-        "y": 1868,
+        "x": 1640,
+        "y": 2032,
         "w": 480,
         "h": 360
       },
       "player": {
-        "x": 2048,
-        "y": 2048
+        "x": 1634.3099241732746,
+        "y": 2224.805860587741
+      }
+    },
+    {
+      "enemies": 332,
+      "live": 48,
+      "withTarget": 10,
+      "off": [
+        44,
+        32,
+        25,
+        17
+      ],
+      "enemiesBeyondView": 17,
+      "enemiesBeyondView64": 3,
+      "view": {
+        "x": 1576,
+        "y": 1986,
+        "w": 480,
+        "h": 360
+      },
+      "player": {
+        "x": 1732.4688160207638,
+        "y": 1950.4673812183569
       }
     }
   ]

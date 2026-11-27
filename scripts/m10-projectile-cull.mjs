@@ -30,9 +30,6 @@ const STEPS = Number(argOf("steps", "1800")) || 1800; // 30 s Sim bei 1/60
 const CHUNK = Number(argOf("chunk", "300")) || 300;   // 5 s Sim pro evaluate
 const OUT = String(argOf("out", "shots/m10-projectile-cull-before.json"));
 const TAG = String(argOf("tag", "before"));
-
-const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
-const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
 const MARGINS = [0, 48, 96, 192];
 
 ensureBuild();
@@ -51,69 +48,44 @@ const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: 1 })
 page.on("pageerror", (err) => console.error("[pageerror]", err.message));
 
 await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
-await startRun(page);
+// Run-Szene einfrieren, BEVOR ihr erstes Update läuft: nach create() ist der
+// Zustand rein konstruiert und damit deterministisch (keine RAF-Ticks davor).
+await page.waitForFunction(() => Boolean(window.__game?.scene?.getScene("run")));
 await page.evaluate(() => {
-  window.__lf.god(true);
-  // Spieler steht still: die Truppe konvergiert und bleibt dicht.
-  window.__lf.autoPlay(false);
-  window.__lf.setTimeScale(1);
-  for (const id of ["ember", "flail", "frost", "thorn", "storm", "lantern"]) window.__lf.addWeapon(id, 8);
-});
-await page.waitForTimeout(300);
-await page.evaluate((passives) => {
-  for (const id of passives) window.__lf.addPassive(id, 5);
-  window.__lf.skipTo(1490);
-  window.__lf.setTimeScale(1);
-}, PASSIVES);
-await page.waitForTimeout(2500);
-await page.evaluate(() => {
-  for (let i = 0; i < 40; i++) {
-    if (!(window.__lf?.stats().levelUpOpen)) break;
-    window.__lf.pickLevelUp(0);
-  }
-  window.__lf.setSuppressLevelUps(true);
-});
-
-// Stress-Truppe (Muster m10-crowd-probe): Natur-Spawns aus, Bestand leeren,
-// 500 unsterbliche Gegner als Truppe um den Spieler. Wichtig fuer die
-// Treffer-Identitaet: ALLE Gegner bleiben innerhalb des Views (Truppenradius
-// 120 < halbe View-Hoehe 180). Ein Projektil jenseits view+96px kann dann
-// geometrisch keinen Gegner mehr treffen (max. Treffer-Reichweite ~30 px).
-await page.evaluate(() => {
-  const r = window.__game.scene.getScene("run");
-  window.__game.registry.set("lf-density", 0);
-  r.registry.set("lf-density", 0);
-  for (const e of r.enemies.active) if (e.alive) { e.alive = false; e.sprite.setVisible(false).setActive(false); }
-});
-await page.waitForTimeout(250);
-await page.evaluate(() => {
-  const r = window.__game.scene.getScene("run");
-  const px = 2048;
-  const py = 2048;
-  window.__lf.teleport(px, py);
-  let seed = 20261127;
-  const rand = () => {
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  const run = window.__game.scene.getScene("run");
+  const orig = run.update.bind(run);
+  window.__m10freeze = { orig, armed: true };
+  run.update = (_t, _d) => {
+    if (window.__m10freeze.armed) return;
+    return orig(_t, _d);
   };
-  window.__lf.spawnEnemy("bog_rat", 250);
-  window.__lf.spawnEnemy("wisp", 125);
-  window.__lf.spawnEnemy("bogzombie", 125);
-  const fresh = r.enemies.active.filter((e) => e.alive);
-  for (const e of fresh) {
-    const a = rand() * Math.PI * 2;
-    const rad = Math.sqrt(rand()) * 120;
-    e.x = px + Math.cos(a) * rad;
-    e.y = py + Math.sin(a) * rad;
-    e.vx = 0;
-    e.vy = 0;
-    e.hp = 1e9;
-    e.maxHp = 1e9;
-    e.damage = 0;
-  }
+});
+await startRun(page);
+
+// Komplette Vorbereitung in EINEM evaluate: keine RAF-Sim-Ticks dazwischen.
+await page.evaluate(() => {
+  const r = window.__game.scene.getScene("run");
+  window.__lf.god(true);
+  // Autoplay: der Bot kite't durch die Menge — genau der Endgame-Fall, in dem
+  // Projektil-Ziele sterben und geradlinige Geschosse offscreen weiterfliegen.
+  window.__lf.autoPlay(true);
+  for (const id of ["ember", "flail", "frost", "thorn", "storm", "lantern"]) window.__lf.addWeapon(id, 8);
+  for (const id of ["heart", "boots", "tome", "charm", "whetstone", "hourglass"]) window.__lf.addPassive(id, 5);
+  window.__lf.skipTo(1490);
   window.__lf.setSuppressLevelUps(true);
+  window.__game.registry.set("lf-density", 16);
+  r.registry.set("lf-density", 16);
+  // Frame-Budget-Koppler an Echtzeit neutralisieren: loop.delta pinnen (Spawner
+  // frisst sonst reale Frame-Zeiten -> nicht reproduzierbar) und Regler auf ratio 1.
+  const loop = window.__game.loop;
+  Object.defineProperty(loop, "delta", {
+    configurable: true,
+    get: () => 1000 / 60,
+    set: () => {},
+  });
+  r.spawner.frameBudget = { enabled: true, ratio: 1, ceiling: 360, overSeconds: 0, underSeconds: 0 };
+  window.__m10freeze.armed = false; // Update-Patch aus, Szene bleibt via paused ruhig
+  r.paused = true;
 });
 
 // Instrumentierung + Ruhezustand des echten Loops.
@@ -124,6 +96,8 @@ await page.evaluate(() => {
     projMs: 0, projCalls: 0, combatMs: 0, combatCalls: 0, renderMs: 0, renderCalls: 0,
     hits: 0, projHits: 0, hitDamage: 0, kills: 0, spawns: 0,
     hitBeyond96: 0, hitBeyond192: 0, inProj: false,
+    projHitBeyond: { 96: 0, 128: 0, 160: 0, 192: 0, 256: 0, 288: 0, 320: 0 },
+    enemyMaxBeyond: 0,
   });
   const origProj = combat.updateProjectiles.bind(combat);
   combat.updateProjectiles = (ctx) => {
@@ -151,6 +125,11 @@ await page.evaluate(() => {
       || e.x > view.x + view.width + m || e.y > view.y + view.height + m;
     if (beyond(96)) w.hitBeyond96 += 1;
     if (beyond(192)) w.hitBeyond192 += 1;
+    if (w.inProj) {
+      // Welche Cull-Margins wären trefferneutral? Ein Projektil-Treffer jenseits
+      // der Margin wäre im Nachher-Lauf durch Recycling verloren.
+      for (const m of [96, 128, 160, 192, 256]) if (beyond(m)) w.projHitBeyond[m] += 1;
+    }
     const killed = origHit(e, damage, ctx, id);
     if (killed) w.kills += 1;
     return killed;
@@ -210,14 +189,15 @@ const sample = () => page.evaluate((margins) => {
   };
 }, MARGINS);
 
-// Warmup (5 s Sim), damit Einschwingvorgänge (Waffen-Cooldowns, Spawn-Ring) raus sind.
+// Warmup (10 s Sim) über feste Schritte: füllt die Menge Richtung Cap und
+// lässt Waffen-Einschwingvorgänge aus dem Vergleich fallen.
 await page.evaluate((step) => {
   const r = window.__game.scene.getScene("run");
-  for (let i = 0; i < 300; i++) {
+  for (let i = 0; i < 600; i++) {
     r.simulate(step);
     r.combat.fx.update(step);
     r.combat.particles.update(step);
-    r.updateVisuals(step);
+    if (i % 60 === 59) r.updateVisuals(step);
   }
 }, 1 / 60);
 await page.evaluate(() => {
@@ -231,8 +211,21 @@ const samples = [];
 for (let c = 0; c < STEPS / CHUNK; c++) {
   await page.evaluate(({ step, n }) => {
     const r = window.__game.scene.getScene("run");
+    const w = window.__m10proj;
     for (let i = 0; i < n; i++) {
       r.simulate(step);
+      // Maximale Gegner-Exkursion jenseits des Views (jeder Schritt) — Grundlage
+      // fuer die trefferneutrale Cull-Margin; rein lesend.
+      const view = r.cameras.main.worldView;
+      const act = r.enemies.active;
+      for (let k = 0; k < act.length; k++) {
+        const e = act[k];
+        if (!e.alive) continue;
+        const dx = Math.max(view.x - e.x, e.x - (view.x + view.width), 0);
+        const dy = Math.max(view.y - e.y, e.y - (view.y + view.height), 0);
+        const d = dx > dy ? dx : dy;
+        if (d > w.enemyMaxBeyond) w.enemyMaxBeyond = d;
+      }
       r.combat.fx.update(step);
       r.combat.particles.update(step);
     }
@@ -241,13 +234,16 @@ for (let c = 0; c < STEPS / CHUNK; c++) {
   samples.push(await sample());
 }
 
-// Kurze FPS-Referenz im echten Loop (flock-Pflicht liegt beim Aufrufer).
+// Kurze FPS-Referenz im echten Loop: loop.delta entpinnen (echte Frame-Zeiten),
+// Szene laufen lassen. Nur informativ; flock-Pflicht liegt beim Aufrufer.
 const fpsRef = await (async () => {
-  const { execFileSync } = await import("node:child_process");
-  try {
-    execFileSync("flock", ["-w", "120", "/home/ai/games/.lf-perf.lock", "node", "-e", "1"], { timeout: 130_000 });
-  } catch { /* Sperre belegt: FPS-Referenz entfaellt, Sim-Messung bleibt gueltig. */ }
-  await page.evaluate(() => { window.__game.scene.getScene("run").paused = false; });
+  await page.evaluate(() => {
+    const loop = window.__game.loop;
+    Object.defineProperty(loop, "delta", {
+      configurable: true, writable: true, value: 16.6666667,
+    });
+    window.__game.scene.getScene("run").paused = false;
+  });
   const t0 = Date.now();
   await page.waitForTimeout(4000);
   const fps = await page.evaluate(() => window.__lf.stats().fps);
@@ -263,6 +259,8 @@ const totals = await page.evaluate(() => {
     renderMs: w.renderMs, renderCalls: w.renderCalls,
     hits: w.hits, projHits: w.projHits, hitDamage: w.hitDamage, kills: w.kills,
     spawns: w.spawns, hitBeyond96: w.hitBeyond96, hitBeyond192: w.hitBeyond192,
+    projHitBeyond: w.projHitBeyond,
+    enemyMaxBeyond: Math.round(w.enemyMaxBeyond * 10) / 10,
     activeLen: pool.active.length,
   };
 });
@@ -296,6 +294,8 @@ const result = {
     hits: totals.hits, projectileHits: totals.projHits, hitDamage: totals.hitDamage,
     kills: totals.kills, spawns: totals.spawns,
     hitsBeyondView96: totals.hitBeyond96, hitsBeyondView192: totals.hitBeyond192,
+    projectileHitsBeyondMargin: totals.projHitBeyond,
+    enemyMaxBeyondView: totals.enemyMaxBeyond,
   },
   fpsReference: fpsRef,
   samples,
@@ -310,6 +310,7 @@ for (const [m, v] of Object.entries(result.offscreenByMargin)) {
 console.log(`  ms/Frame: projUpdate ${result.msPerFrame.projectileUpdate}, combat ${result.msPerFrame.combatUpdate}, render ${result.msPerFrame.rendererTotal}`);
 console.log(`  Treffer ${result.totals.hits} (davon Projektil ${result.totals.projectileHits}), Schaden ${result.totals.hitDamage}, Kills ${result.totals.kills}, Spawns ${result.totals.spawns}`);
 console.log(`  Treffer jenseits view+96px: ${result.totals.hitsBeyondView96}, view+192px: ${result.totals.hitsBeyondView192}`);
+console.log(`  Projektil-Treffer jenseits Margin: ${JSON.stringify(result.totals.projectileHitsBeyondMargin)}`);
 console.log(`  FPS-Referenz: ${result.fpsReference.fps}`);
 
 await browser.close();
