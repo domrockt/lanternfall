@@ -5317,7 +5317,7 @@
       "id": 4418,
       "title": "m10-death-fx-frames K1: Bestandsaufnahme + Vorher-Belege",
       "description": "Frame-Erzeugung in src/gfx/gen-fx.ts dokumentieren und als exportierbare Frame-Sets exponieren; Vorher-Screenshots shots/m10-death-frames-before-{blob,dust,fire,boss,bone}.png + before.json (4x-Zoom, aktueller Stand). Abnahme: Belege committed, Klassen-Zuordnung in src/logic/death.ts notiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:39:39Z",
@@ -5328,55 +5328,75 @@
           "at": "2026-11-27T18:41:33Z",
           "by": "build",
           "text": "doing → review: Commit 8a25bf8: deathFrameSets()-Export (Single Source of Truth) + scripts/m10-death-frames.mjs. Vorher-Belege: shots/m10-death-frames-before-{blob,dust,void,bone,boss}.png (4x) + before-chaos.png (359 Gegner, 543 Kills, 0 JS-Fehler) + before.json. Befund im Sheet sichtbar: alle Klassen 'expandierender Ring'. fx_death_fire hat keinen Vorher-Beleg (Key existiert vor K2 nicht)."
+        },
+        {
+          "at": "2026-11-27T19:05:37Z",
+          "by": "build",
+          "text": "review → done: lane #4418, Commit 8a25bf8: deathFrameSets-Export + Vorher-Belege (Sheets + Chaos 359 Gegner/0 JS-Fehler)."
         }
       ],
       "created": "2026-11-27T18:38:18Z",
-      "updated": "2026-11-27T18:41:33Z"
+      "updated": "2026-11-27T19:05:37Z"
     },
     {
       "id": 4419,
       "title": "m10-death-fx-frames K2: Neue Death-Frames zeichnen",
       "description": "fx_death_blob (dunkler Koerper, nightDeep-Rim, grosser weisser Kern, Tropfen), fx_death_dust + fx_death_fire (Flammenzungen/Ascheflakes, eigene Silhouetten), fx_boss_core (3-Stufen-Kern + Kontur + Ringe/Splitter), fx_death_bone (2-3 Knochenformen). death.ts nur Frame-Keys umstellen. Abnahme: tsc gruen, keine Gameplay-Werte geaendert.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:44:38Z",
           "by": "build",
           "text": "todo → doing: Start: 5 Silhouetten-Generatoren (blob/bone/dust/fire/void) + bossCoreFrame"
+        },
+        {
+          "at": "2026-11-27T19:05:37Z",
+          "by": "build",
+          "text": "doing → done: lane #4419, Commits d12d99d + ef36cc8 (Polish): 5 Silhouetten-Generatoren + fx_death_fire + boss_core 32x32; art-director Runde 3 PASS 4,0/5, Delta-Check PASS 4,2/5."
         }
       ],
       "created": "2026-11-27T18:38:18Z",
-      "updated": "2026-11-27T18:44:38Z"
+      "updated": "2026-11-27T19:05:37Z"
     },
     {
       "id": 4420,
       "title": "m10-death-fx-frames K3: tests/death-frames.test.ts",
       "description": "Tests: 5 Frame-Keys existieren, keine Duplikat-Frames, binaeres Alpha (nur 0/255), 0 Off-Palette-Pixel, Boss-Stufe messbar != Blob. Abnahme: npx vitest run tests/death-frames.test.ts gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:52:50Z",
           "by": "build",
           "text": "todo → review: Commit 5524b7b: tests/death-frames.test.ts 5/5 gruen (Keys, Duplikate, Alpha, Palette, Boss-vs-Blob: ink-Kontur 189-289 px vs 0, >=9 Stufen vs 4-5, Masken-Diff min 0.146 > 0.12). Skript-Fix (Sheet-BG nightMid) im selben Commit."
+        },
+        {
+          "at": "2026-11-27T19:05:37Z",
+          "by": "build",
+          "text": "review → done: lane #4420, Commit 5524b7b: tests/death-frames.test.ts 5/5 gruen (Keys, Duplikate, Alpha, Palette, Boss-vs-Blob messbar)."
         }
       ],
       "created": "2026-11-27T18:38:18Z",
-      "updated": "2026-11-27T18:52:50Z"
+      "updated": "2026-11-27T19:05:37Z"
     },
     {
       "id": 4421,
       "title": "m10-death-fx-frames K4: Nachher-Belege + Chaos + Doku + art-director",
       "description": "scripts/m10-death-frames.mjs erzeugt 4x-Zoom-PNGs aller neuen Frames + In-Game-Chaos-Shot (>=300 Gegner, alle 4 Todesklassen), 0 JS-Fehler; docs/lanes/m10-death-fx-frames.md mit art-director-Urteil >= 4/5. Abnahme: PNGs + Doku committed.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T18:52:50Z",
           "by": "build",
           "text": "todo → doing: Start: Nachher-Sheets + Chaos-Shot + Doku + art-director"
+        },
+        {
+          "at": "2026-11-27T19:05:37Z",
+          "by": "build",
+          "text": "doing → done: lane #4421, Commits 3516f7c + a2a4a15: Nachher-Sheets 4x, Chaos 356 Gegner/508 Kills/0 JS-Fehler, GIFs+Mosaiken, Doku mit Urteil PASS 4,2/5, .lane-done."
         }
       ],
       "created": "2026-11-27T18:38:18Z",
-      "updated": "2026-11-27T18:52:50Z"
+      "updated": "2026-11-27T19:05:37Z"
     }
   ]
 }
