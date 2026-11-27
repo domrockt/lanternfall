@@ -1,0 +1,10 @@
+m10-feedback-budget: Shake/Hit-Stop/Knockback im 500-Gegner-Chaos dosiert.
+Fix: mergeHitStop (kein Auffrischen/Addieren, <=120 ms), mergeShake (max statt Summe, <=6 px),
+knockbackFor/ clampKnockbackSpeed (<=160 px/s, <3 px/Frame), Boss-Feedback-Cooldown in Echtzeit.
+Baseline shots/m10-feedback-budget-baseline.json: 393 Frames, 10431 Treffer (max 720/Frame),
+Shake-Peak 2.56 px, Hit-Stop-Peak 120 ms, 125 Stop-Frames, 18 Stutter >33 ms.
+Nachher shots/m10-feedback-budget-after.json: 386 Frames, 12247 Treffer (max 783/Frame),
+Shake-Peak 2.56 px, Hit-Stop-Peak 120 ms, 55 Stop-Frames, 13 Stutter >33 ms (p99 38.8, max 48.8).
+Tests: tests/feedback-budget.test.ts 7/7, npm test 349/349 gruen, 0 JS-Fehler.
+Offen: Frame-Stutter >33 ms stammt aus der 500-Gegner-Sim @30x (AI/Separation), nicht aus dem Feedback.
+Keine Aenderung an Schaden, Gegnerzahlen oder Balance. Doku: docs/lanes/m10-feedback-budget.md

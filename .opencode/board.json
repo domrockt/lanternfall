@@ -4320,43 +4320,64 @@
       "id": 2979,
       "title": "m10-feedback-budget #2 Fix: Shake/Stop/knockback deckeln in feedback.ts + Run.ts",
       "description": "src/logic/feedback.ts: MAX_HITSTOP_SECONDS, mergeHitStop (nie additiv/refresh), mergeShake (max statt Summe, Dauer <= MAX), knockbackFor-Cap + clampKnockbackSpeed. Run.ts: mergeHitStop an beiden Aufrufen, Knockback-Vektor je Substep klemmen, Boss-Feedback-Cooldown mit realDt. Keine Schadens-/Gegnerzahl-Aenderung. Abnahme: tsc gruen, Diff nur feedback.ts/Run.ts.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T12:16:59Z",
           "by": "build",
           "text": "todo → doing: Start: feedback.ts Budget-Funktionen + Run.ts Aufrufstellen/Knockback-Clamp."
+        },
+        {
+          "at": "2026-11-27T12:30:44Z",
+          "by": "build",
+          "text": "doing → review: Commit 150cf0c. feedback.ts: MAX_HITSTOP_SECONDS=0.12, mergeHitStop (laufender Stop wird nicht verlaengert), mergeShake (max statt Summe, <=6 px/400 ms), MAX_KNOCKBACK_SPEED=160 + clampKnockbackSpeed. Run.ts: beide Hit-Stop-Aufrufe nutzen mergeHitStop, Boss-Feedback-Cooldown laeuft in realDt, Gegner-vx/vy je Substep geklemmt. After-Probe: Shake-Peak 2.56 px, Hit-Stop-Peak 120 ms, aktive Stop-Frames 125->55 bei mehr Treffern (12247)."
         }
       ],
       "created": "2026-11-27T12:06:27Z",
-      "updated": "2026-11-27T12:16:59Z"
+      "updated": "2026-11-27T12:30:44Z"
     },
     {
       "id": 2980,
       "title": "m10-feedback-budget #3 Beleg: tests/feedback-budget.test.ts + After-JSON",
       "description": "Test: (a) 1000 Treffer/Frame => Shake <=6 px, (b) Hit-Stop <=120 ms und nicht additiv (fold 1000 Requests), (c) Knockback <= Cap. Zweiter Probelauf schreibt shots/m10-feedback-budget-after.json. Abnahme: npx vitest run tests/feedback-budget.test.ts gruen, After-Peak <=6 px, Stop-Peak <=120 ms, Stutter-Zahl genannt.",
-      "column": "doing",
+      "column": "review",
       "assignee": "test-auditor",
       "notes": [
         {
           "at": "2026-11-27T12:29:20Z",
           "by": "build",
           "text": "todo → doing: Start: tests/feedback-budget.test.ts + After-Beleg committen."
+        },
+        {
+          "at": "2026-11-27T12:30:44Z",
+          "by": "build",
+          "text": "doing → review: Commit a6a730b. tests/feedback-budget.test.ts 7/7 gruen: 1000 Shake-Requests <=6 px, 1000 Hit-Stop-Requests nicht additiv (0.06 s), Stop wird nicht verlaengert, Knockback <=160 px/s (<3 px/Frame). shots/m10-feedback-budget-after.json: 386 Frames, 12247 Treffer (max 783/Frame), Shake 2.56 px, Stop-Peak 120 ms, 13 Stutter >33 ms (p99 38.8/max 48.8; Sim-Last 500 Gegner @30x, nicht Feedback). 0 JS-Fehler."
         }
       ],
       "created": "2026-11-27T12:06:27Z",
-      "updated": "2026-11-27T12:29:20Z"
+      "updated": "2026-11-27T12:30:44Z"
     },
     {
       "id": 2981,
       "title": "m10-feedback-budget #4 Doku docs/lanes/m10-feedback-budget.md + .lane-done",
       "description": "Vorher/Nachher-Tabelle (Shake-Peak, Hit-Stop-Peak, Stutter, Treffer), Urteil, offene Punkte. .lane-done mit Messwerten anlegen und committen. Abnahme: Doku nennt beide JSONs + Zahlen, .lane-done vorhanden, npm test ohne neue Rote.",
-      "column": "todo",
+      "column": "review",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T12:31:20Z",
+          "by": "build",
+          "text": "todo → doing: Start: Doku Vorher/Nachher + npm test + .lane-done."
+        },
+        {
+          "at": "2026-11-27T12:38:20Z",
+          "by": "build",
+          "text": "doing → review: Commit 9fc42a8. Doku docs/lanes/m10-feedback-budget.md mit Vorher/Nachher-Tabelle (Shake 2.56 px beide, Stop-Peak 120 ms, aktive Stop-Frames 125->55, Stutter 18->13) + Urteil; .lane-done mit Messwerten. npm run build gruen, npm test 349/349, 0 JS-Fehler."
+        }
+      ],
       "created": "2026-11-27T12:06:27Z",
-      "updated": "2026-11-27T12:06:27Z"
+      "updated": "2026-11-27T12:38:20Z"
     }
   ]
 }
