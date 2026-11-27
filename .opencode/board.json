@@ -3198,10 +3198,15 @@
           "at": "2026-11-27T12:07:05Z",
           "by": "build",
           "text": "Zwischenstand ac0ba1f committet: 4 Optiken je einmal angepasst (spit Tail, bone 9x7, shadow 3. Stufe+C-Mund, fire elongiert), Kontrast-Einmallauf shots/m10-enemy-shots-contrast.json, Form-IoU 0,26-0,62. art-director-Re-Urteil laeuft; danach best-effort-Abschluss."
+        },
+        {
+          "at": "2026-11-27T13:36:20Z",
+          "by": "build",
+          "text": "Iteration 1 committet 3ad43d7: spit/shadow/fire aufgehellt (minInner spit 1,00→2,04, shadow 1,36→2,43, fire 1,15→2,75; bone 3,68), Puls/Telegraph auf 1x (Alpha-Puls), Kontaktbogen+JSON reproduzierbar mit scripts/art/optics-enemy-shots.py und contrast-enemy-shots.py; Form-IoU 0,26–0,60. art-director-Re-Urteil läuft."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T12:07:05Z"
+      "updated": "2026-11-27T13:36:20Z"
     },
     {
       "id": 2201,

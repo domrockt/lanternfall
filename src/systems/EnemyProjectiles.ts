@@ -63,8 +63,7 @@ export interface EnemyShotStats {
   pending: number;
 }
 
-const TELEGRAPH_SCALE_MIN = 0.34;
-const TELEGRAPH_SCALE_MAX = 0.62;
+
 const TELEGRAPH_ALPHA_START = 0.55;
 const TELEGRAPH_ALPHA_END = 0.25;
 const TELEGRAPH_POOL_CAP = 96;
@@ -180,7 +179,7 @@ export class EnemyProjectilePool {
     const telegraph = this.acquireTelegraph(texture);
     if (telegraph) {
       telegraph.setPosition(Math.round(opts.x), Math.round(opts.y));
-      telegraph.setScale(TELEGRAPH_SCALE_MIN);
+      telegraph.setScale(1);
       telegraph.setAlpha(TELEGRAPH_ALPHA_START);
       telegraph.setVisible(true).setActive(true);
     }
