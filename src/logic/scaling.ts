@@ -157,8 +157,8 @@ export const FINAL_BOSS_AT = 30 * 60;
  */
 export interface FrameBudgetState {
   enabled: boolean;
-  /** Aktuelles, evtl. abgesenktes Ziel (float; Aufrufer rundet). */
-  cap: number;
+  /** Anteil des Deckels, den der Regler aktuell zulaesst (0..1). */
+  ratio: number;
   /** Unabgesenktes Ziel (aus maxActiveEnemies bzw. Mess-Soll). */
   ceiling: number;
   /** Sekunden durchgehend ueber der Hoch-Schwelle. */
@@ -175,15 +175,16 @@ export const FRAME_BUDGET_RECOVER_FRACTION_PER_S = 0.05;
 export const FRAME_BUDGET_HOLD_SECONDS = 1;
 
 export function createFrameBudget(ceiling: number, enabled = true): FrameBudgetState {
-  const c = Math.max(1, Math.round(ceiling));
-  return { enabled, cap: c, ceiling: c, overSeconds: 0, underSeconds: 0 };
+  return { enabled, ratio: 1, ceiling: Math.max(1, Math.round(ceiling)), overSeconds: 0, underSeconds: 0 };
 }
 
 /**
  * Ein Messschritt (z. B. ein echtes Frame). `frameMs` ist die gemessene
  * Frame-Zeit, `dtSeconds` die reale Dauer dieses Frames. Zwischen 15 und
  * 19,2 ms passiert nichts (Hysterese-Band); Timer werden nur ausserhalb
- * fortgeschrieben.
+ * fortgeschrieben. Die Untergrenze 320 wird als Verhaeltnis zum Deckel
+ * abgebildet, damit ein wachsender Frueh-Deckel (<320) den Regler nicht
+ * kuenstlich ausbremst.
  */
 export function stepFrameBudget(
   state: FrameBudgetState,
@@ -193,10 +194,10 @@ export function stepFrameBudget(
 ): FrameBudgetState {
   if (!state.enabled) return state;
   const ceil = Math.max(1, Math.round(ceiling ?? state.ceiling));
-  const floor = Math.min(FRAME_BUDGET_MIN_ACTIVE, ceil);
+  const floorRatio = Math.min(1, FRAME_BUDGET_MIN_ACTIVE / ceil);
   // Aussergewoehnlich lange Frames (Tab-Wechsel, GC) nicht unbegrenzt zaehlen.
   const dt = Math.max(0, Math.min(0.1, dtSeconds));
-  let cap = Math.min(state.cap, ceil);
+  let ratio = Math.max(floorRatio, Math.min(1, state.ratio));
   let over = state.overSeconds;
   let under = state.underSeconds;
 
@@ -204,21 +205,23 @@ export function stepFrameBudget(
     under = 0;
     over += dt;
     if (over > FRAME_BUDGET_HOLD_SECONDS) {
-      cap = Math.max(floor, cap - cap * FRAME_BUDGET_DROP_FRACTION_PER_S * dt);
+      ratio = Math.max(floorRatio, ratio - ratio * FRAME_BUDGET_DROP_FRACTION_PER_S * dt);
     }
   } else if (frameMs < FRAME_BUDGET_LOW_MS) {
     over = 0;
     under += dt;
     if (under > FRAME_BUDGET_HOLD_SECONDS) {
-      cap = Math.min(ceil, cap + ceil * FRAME_BUDGET_RECOVER_FRACTION_PER_S * dt);
+      ratio = Math.min(1, ratio + FRAME_BUDGET_RECOVER_FRACTION_PER_S * dt);
     }
   }
   // Zwischenband (15..19,2 ms): Timer einfrieren, kein Eingriff.
 
-  return { enabled: state.enabled, cap, ceiling: ceil, overSeconds: over, underSeconds: under };
+  return { enabled: state.enabled, ratio, ceiling: ceil, overSeconds: over, underSeconds: under };
 }
 
 /** Aufrufer-Helfer: ganzzahliges aktives Gegner-Ziel aus dem Regler. */
 export function frameBudgetTarget(state: FrameBudgetState): number {
-  return Math.max(1, Math.round(state.cap));
+  const ceil = Math.max(1, Math.round(state.ceiling));
+  const floor = Math.min(FRAME_BUDGET_MIN_ACTIVE, ceil);
+  return Math.max(floor, Math.min(ceil, Math.round(ceil * state.ratio)));
 }
