@@ -4963,7 +4963,8 @@
           "by": "m10-atlas-pack",
           "text": "todo → review: Baseline gemessen (shots/m10-atlas-pack-before.json): 597 Texturen, Draw-Calls/Frame Median 54 / p95 73 bei 300 Gegnern, FPS 38.5; M25 640x360@1: 34.5 FPS, 780x360@3: 35.6 FPS. Nicht-atlaste Heisse: prop (13 Tex/397 Sprites), glyph (~250 Tex, HUD+Damage), icon (18), chunk (20, dynamisch), player-Frames (52). Commit 7fb966a."
         }
-      ]
+      ],
+      "created": "2026-11-27T18:02:30Z"
     },
     {
       "title": "m10-atlas-pack K2 Packer mehrseitig + Coverage",
@@ -4978,7 +4979,8 @@
           "text": "todo → doing: doing (Supervisor): K2 Packer fertig entwickelt, grüne Tests (tests/atlas-pack.test.ts 9/9 + atlas.test.ts 7/7), tsc+build grün. Supervisor-Snapshot c55e141 enthält den Code. font.ts-Änderung (2 Zeilen, ensureGlyph → packCanvasTexture) ist außerhalb der Job-Fläche und in requests.md begründet. Als Nächstes: K2-Abschluss-Commit mit Begründung, dann K3 Messen nachher."
         }
       ],
-      "updated": "2026-11-27T18:43:36Z"
+      "updated": "2026-11-27T18:43:36Z",
+      "created": "2026-11-27T18:02:30Z"
     },
     {
       "title": "m10-atlas-pack K3 Messen nachher",
@@ -4986,7 +4988,8 @@
       "id": 4000,
       "column": "todo",
       "assignee": "m10-atlas-pack",
-      "notes": []
+      "notes": [],
+      "created": "2026-11-27T18:02:30Z"
     },
     {
       "title": "m10-atlas-pack K4 Doku + Abschluss",
@@ -4994,7 +4997,8 @@
       "id": 4001,
       "column": "todo",
       "assignee": "m10-atlas-pack",
-      "notes": []
+      "notes": [],
+      "created": "2026-11-27T18:02:30Z"
     }
   ]
 }
