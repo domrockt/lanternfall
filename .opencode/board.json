@@ -3347,10 +3347,15 @@
           "at": "2026-11-27T07:12:00Z",
           "by": "build",
           "text": "doing → review: Commit 61524f2 + 98ca771 (#2299): 6 Standbilder 640/780 M25/27/29, Kontrastzahlen shots/m10-chaos-qa-contrast.json, Matrix shots/m10-chaos-qa-readability.md. Spieler-Silhouette FAIL in allen 6 (Weiß 1,0-6,6 % im Spieler-Crop); HUD/Boss-Balken PASS; Schusskontrast 640 131-181, 780 bis 45. Kontrolleure ux-check/vfx-check laufen."
+        },
+        {
+          "at": "2026-11-27T07:53:42Z",
+          "by": "build",
+          "text": "vfx-check FAIL adressiert in Commit 01ad1ad: 780-Bloom als gold-orange korrigiert (max Luminanz 241, 0 px >=250), Schusskontrast nur Top-5 (echter Min offen), Gegnerzahl-Caveat (Shots 528-583 vs Messlauf max 552). Kernbefund S (Spieler-Silhouette) vom Kontrolleur bestaetigt."
         }
       ],
       "created": "2026-11-27T04:52:47Z",
-      "updated": "2026-11-27T07:12:00Z"
+      "updated": "2026-11-27T07:53:42Z"
     },
     {
       "id": 2300,

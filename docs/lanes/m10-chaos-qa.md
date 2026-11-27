@@ -11,22 +11,25 @@ Matrix `shots/m10-chaos-qa-readability.md`, Shot-Metadaten `shots/m10-chaos-qa-s
   Zeitlupe `timeScale 1`; Seed 99; 6 Evolutions-Waffen (phoenix, wrath_pendulum, eternal_winter,
   thorn_storm, thunder_seal, soul_beacon) und 6 Passives je Stufe 5.
 - Messung von FPS/Frame-Zeit unter `flock /home/ai/games/.lf-perf.lock` (Skript in `~/tmp/m10-chaos-qa/qa-run.mjs`).
-- Frame-Samples gesamt **3 349** (davon 588 realtime @1×), 0 JS-Fehler.
+- Frame-Samples gesamt **3 349** (2696 `sim30` + 653 `realtime1x`; das 10-s-Messfenster hat 588 Samples), 0 JS-Fehler.
 
 ## Messwerte (aus `shots/m10-chaos-qa.json`)
 
 | Größe | Wert |
 |---|---|
-| Frame-Samples gesamt | 3 349 (Sim 2 761 + Realtime 588) |
+| Frame-Samples gesamt | 3 349 (2696 `sim30` + 653 `realtime1x`; Messfenster 588) |
 | Realtime FPS min / median / max | 20 / **59,9** / 60,6 |
 | Realtime Frame-Zeit median / p95 / worst | 16,7 / 16,8 / **50,1 ms** |
 | Gegner min / median / max (Realtime-Fenster) | 352 / **536** / 552 |
 | Gegnerschüsse max | **325** |
 | JS-Fehler | **0** |
 
-Der einzelne FPS-Min von 20 fällt mit dem worst Frame von 50,1 ms zusammen; Median 59,9 und p95 16,8 ms
-zeigen keinen systematischen Einbruch. `sim`-Phase läuft konstruktionsbedingt bei ~40 FPS, weil `timeScale 30`
-pro Frame 30 Substeps rechnet — das ist keine Realtime-Aussage.
+Der einzelne FPS-Min von 20 fällt mit dem worst Frame von 50,1 ms am Übergang `timeScale 30 → 1` zusammen;
+Median 59,9 und p95 16,8 ms zeigen keinen systematischen Einbruch. Im eingeschwungenen 1×-Stress liegen die
+1-s-Fenster bei 56–60 FPS (Minimum 56 ≥ 55); 28 der 653 realtime-Frames (4,3 %) sind < 55, davon der Großteil
+im Übergang. `sim30` läuft konstruktionsbedingt bei ~40 FPS (30 Substeps/Frame), keine Realtime-Aussage.
+Hygiene: das erste Realtime-Sample hat `dt = −16,6` (bogus, Fenster-/Übergangszuordnung unsauber), der 1×-Kern
+ist aber belegt (`realtime.frames` 588 Samples, `t` −17…10016 ms ≈ 10,03 s).
 
 ## Lesbarkeit (6 Standbilder, 640×360 und 780×360 @dpr3)
 
