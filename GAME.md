@@ -425,7 +425,7 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 
 ## Status — M9 (Grafik) + M10 (QA-Härtung), 2026-11-27
 
-**Stand `main` @ `217316d`** (2026-11-27T08:44:29Z). Gesamtabnahme: `docs/qa/final-2026-2027?` →
+**Stand `main` @ `217316d`** (2026-11-27T08:44:29Z). Gesamtabnahme: `docs/qa/final-2026-11-27.md` →
 `docs/qa/final-2026-11-27.md`.
 
 - **Inhalte:** 30 Gegnertypen, 6 Waffen, 6 Powerups, 6 Evolutionen, 6 Bosse, 2 Charaktere
