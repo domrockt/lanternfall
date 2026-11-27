@@ -7086,7 +7086,7 @@
       "id": 6119,
       "title": "m10-lod-min-restore #2: Test + Sichtprobe Near-White ≤ 4,16 %",
       "description": "tests/lod-min-restore.test.ts: Stufenwerte (0,65/0,72/1), Monotonie, Tor fxAlphaFor('minimal')==0,65; bestehende lod-Tests bleiben grün. Sichtprobe scripts/m10-vfx-restore.mjs mit --prefix shots/m10-lod-min: after-PNG je Profil, Near-White A7 Crop ≤ 4,16 %. Abnahme: Tests+tsc grün, JSON+PNG im Commit, Commit 'M10-m10-lod-min-restore: #<Karte>'.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -7098,10 +7098,15 @@
           "at": "2026-11-27T22:28:28Z",
           "by": "build",
           "text": "doing → review: Commit 144e86d: tests/lod-min-restore.test.ts 4 Tests, Suite 767/767 grün, build rc=0; Sichtprobe Near-White 1,34 %/1,94 % ≤ 4,16 %, fxAlpha nativ 0,65. Kontrolle test-auditor läuft (ses_de0e09667ffe9bUDy6XCqku1CV)."
+        },
+        {
+          "at": "2026-11-27T22:28:54Z",
+          "by": "build",
+          "text": "review → done: test-auditor PASS: Commit 144e86d, 35/35+767/767 Tests grün, Tor-Test minimal==0,65, Near-White 1,34 %/1,94 % ≤ 4,16 %, PNGs im Commit getrackt, 60 FPS, 0 jsErrors. .lane-done committed (5040210)."
         }
       ],
       "created": "2026-11-27T22:23:14Z",
-      "updated": "2026-11-27T22:28:28Z"
+      "updated": "2026-11-27T22:28:54Z"
     }
   ]
 }
