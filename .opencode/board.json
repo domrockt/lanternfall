@@ -3300,10 +3300,15 @@
           "at": "2026-11-27T04:34:48Z",
           "by": "build",
           "text": "doing → review: Merge m10-enemy-ai: In-Game-Beleg vorhanden (732678c, nachgemessen 972c3bc: 169 Gegner, FPS-Min 59,3, 0 JS-Fehler) – wartet auf Kontrolleur-PASS."
+        },
+        {
+          "at": "2026-11-27T11:01:34Z",
+          "by": "build",
+          "text": "Hinweis aus Merge m10-evolution-hint: Lane-Board meldete diese Karte als blocked (fremde Lane m10-enemy-ai, 155 min ohne Update); in main bleibt sie review."
         }
       ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T04:34:48Z"
+      "updated": "2026-11-27T11:01:34Z"
     },
     {
       "id": 2238,
