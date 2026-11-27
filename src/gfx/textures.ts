@@ -8,6 +8,7 @@ import { GEN_TITLE } from "./gen-title";
 import { GEN_PROPS } from "./gen-props";
 import { ALL_BOSS_FRAMES, ALL_ENEMY_FRAMES, createBossTextures, createEnemyTextures } from "./enemySprites";
 import { createFxTextures } from "./gen-fx";
+import { bakeStaticAtlas } from "./bakeAtlas";
 
 /** Zeichen → Palettenindex: 0-9 = 0-9, a-z = 10-31, '.' = transparent. */
 export function charIndex(ch: string): number {
@@ -485,6 +486,11 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createEnemyProjectileTextures(scene);
   createTelegraphTextures(scene);
   createIconTextures(scene);
+  // K2 m10-atlas-pack: statische Klein-Texturen (Props, Icons, Player-/Portrait-
+  // Frames) nach dem Erzeugen in Atlas-Seiten <= 2048 px kopieren. Die Keys
+  // bleiben unveraendert (Re-Registrierung ueber geteilte GL-Textur), daher
+  // brauchen die Aufrufer (GroundRenderer, UI) keine Aenderung.
+  bakeStaticAtlas(scene);
 }
 
 /**

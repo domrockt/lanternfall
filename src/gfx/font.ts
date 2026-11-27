@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { PAL } from "../palette";
 import { GLYPHS } from "./glyphs";
+import { packCanvasTexture } from "./bakeAtlas";
 
 export const GLYPH_W = 5;
 export const GLYPH_H = 7;
@@ -42,7 +43,9 @@ function ensureGlyph(scene: Phaser.Scene, color: number, ch: string): void {
       if (rows[y][x] === "1") ctx.fillRect(x, y, 1, 1);
     }
   }
-  scene.textures.addCanvas(key, canvas);
+  // m10-atlas-pack K2: Glyphen landen im Baked-Atlas (alle Glyphen einer Seite
+  // teilen sich eine GL-Textur -> HUD-/Damage-Text batcht statt zu flushen).
+  packCanvasTexture(scene, key, canvas);
 }
 
 export type TextAlign = "left" | "center" | "right";
