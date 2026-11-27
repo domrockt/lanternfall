@@ -3782,16 +3782,26 @@
       "id": 2521,
       "title": "m10-chaos-silhouettes K4 Test tests/enemy-silhouette.test.ts",
       "description": "Alle 30 Archetypen haben unterscheidbare Shape-Signatur (>=2 Dimensionen Breite/Hoehe/Fuellgrad/Kantenprofil), Kontrast > Schwelle, Elite-Spec != Normal-Spec, deterministisch (2 Laeufe gleiche Werte). Abnahme: npx vitest run tests/enemy-silhouette.test.ts gruen, Commit mit #K4.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T09:43:42Z",
           "by": "build",
           "text": "todo → doing: Start K4: tests/enemy-silhouette.test.ts – 30 Archetypen, Shape-Signatur >=2 Dimensionen, Kantenkontrast >40, Elite != Normal, deterministisch."
+        },
+        {
+          "at": "2026-11-27T11:20:53Z",
+          "by": "build",
+          "text": "doing → review: K4 committed d5a4cf6: tests/enemy-silhouette.test.ts, isoliert 5/5 gruen (30 Archetypen, >=2 Shape-Dimensionen je Paar, Kantenkontrast >40, Elite != Normal, deterministisch)."
+        },
+        {
+          "at": "2026-11-27T11:20:53Z",
+          "by": "build",
+          "text": "Supervisor-Auftrag 27.11.: K4 isoliert ausgefuehrt, kein Full-Build."
         }
       ],
       "created": "2026-11-27T07:27:55Z",
-      "updated": "2026-11-27T09:43:42Z"
+      "updated": "2026-11-27T11:20:53Z"
     },
     {
       "id": 2522,
