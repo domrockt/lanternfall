@@ -161,12 +161,51 @@ export function enemyVariantColor(index: number): number {
   return shadeIndex(def.color, 1.25);
 }
 
-/** Die 4 Frames der Variante (gleiche Posen wie enemySpriteFrames, anderer Ton). */
+/** Die 4 Frames der Variante (gleiche Posen wie enemySpriteFrames, anderer Ton).
+ *
+ * Nicht über sharpenEnemyGrid(color) — der Farb-Parameter greift nur bei Typen
+ * ohne CONTRAST_TONES-Eintrag. Stattdessen werden nach dem Schärfen alle
+ * Körperpixel deterministisch Richtung Variantenton gemischt (55 % Varianten-
+ * farbe) und auf den nächsten Palette-Index gerundet. Unangetastet bleiben:
+ * Kontur (0), Augen/Glow (13) und die 1-px-Lichtkante (tones.top) — daraus
+ * folgt: gleiche Silhouette, binäres Alpha, nur Palettenfarben.
+ */
 export function enemyVariantFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
-  const gen = GEN_ENEMIES[def.spriteKey];
-  const color = enemyVariantColor(index);
-  return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), color, def.id));
+  const target = PAL[enemyVariantColor(index)];
+  const top = CONTRAST_TONES[def.id]?.top ?? lightEdgeIndex(def.color);
+  return enemySpriteFrames(index).map((g) => {
+    const out = g.map((row) => row.slice());
+    for (let y = 0; y < out.length; y++) {
+      for (let x = 0; x < out[0].length; x++) {
+        const c = out[y][x];
+        if (c === null || c === 0 || c === 13 || c === top) continue;
+        const p = PAL[c];
+        const mix = [
+          Math.round(((p >> 16) & 255) * 0.45 + ((target >> 16) & 255) * 0.55),
+          Math.round(((p >> 8) & 255) * 0.45 + ((target >> 8) & 255) * 0.55),
+          Math.round((p & 255) * 0.45 + (target & 255) * 0.55),
+        ];
+        out[y][x] = nearestPaletteIndex(mix);
+      }
+    }
+    return out;
+  });
+}
+
+/** Nächster Palette-Index zu einem RGB-Tripel (nur Palette, deterministisch). */
+function nearestPaletteIndex([r, g, b]: readonly number[]): number {
+  let best = 0;
+  let bestDist = Infinity;
+  for (let i = 0; i < PAL.length; i++) {
+    const p = PAL[i];
+    const dr = ((p >> 16) & 255) - r;
+    const dg = ((p >> 8) & 255) - g;
+    const db = (p & 255) - b;
+    const d = dr * dr + dg * dg + db * db;
+    if (d < bestDist) { bestDist = d; best = i; }
+  }
+  return best;
 }
 
 /**

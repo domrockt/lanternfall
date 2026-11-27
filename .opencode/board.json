@@ -7415,9 +7415,15 @@
       "title": "m10-crowd-variety #2: zweite Grid-Variante je Gegnertyp in enemySprites.ts",
       "description": "Abnahme: pro Gegnertyp >= 2 unterscheidbare Varianten (Detail-Variante/gespiegelter Frame im selben Palette-Raster, Silhouette-Klasse unverändert), Texturen in createEnemyTextures registriert, Keys via enemySprites.ts geliefert. Keine Tabu-Dateien.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T23:20:29Z",
+          "by": "build",
+          "text": "[Supervisor]-Checkpoint bestätigt. Stand: enemyVariantColor/enemyVariantFrames (Tonmischung statt color-Param — CONTRAST_TONES-Typen wären sonst identisch geblieben), enemyFrameGrids, createEnemyTextures-Verdrahtung, tests/crowd-variety.test.ts; tsc + 29 fremde Tests grün, eigener Test 4/5 (voidcaller-Assertion, Fix läuft)."
+        }
+      ],
       "created": "2026-11-27T23:01:48Z",
-      "updated": "2026-11-27T23:01:48Z"
+      "updated": "2026-11-27T23:20:29Z"
     },
     {
       "id": 6400,
