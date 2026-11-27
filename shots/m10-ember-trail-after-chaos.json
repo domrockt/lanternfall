@@ -1,0 +1,53 @@
+{
+  "lane": "m10-ember-trail",
+  "generatedAt": "2026-11-27T21:24:46.690Z",
+  "screenshot": "shots/m10-ember-trail-after-chaos-640.png",
+  "sceneFrozen": true,
+  "enemies": 700,
+  "projectiles": [
+    {
+      "x": 2092,
+      "y": 2083,
+      "screenX": 364,
+      "screenY": 215,
+      "dist": 56,
+      "trailTexture": "fx_ember_trail"
+    },
+    {
+      "x": 2009,
+      "y": 2008,
+      "screenX": 281,
+      "screenY": 140,
+      "dist": 56,
+      "trailTexture": "fx_ember_trail"
+    },
+    {
+      "x": 2104,
+      "y": 2055,
+      "screenX": 376,
+      "screenY": 187,
+      "dist": 56,
+      "trailTexture": "fx_ember_trail"
+    },
+    {
+      "x": 1997,
+      "y": 2024,
+      "screenX": 269,
+      "screenY": 156,
+      "dist": 56,
+      "trailTexture": "fx_ember_trail"
+    }
+  ],
+  "trailFxActive": 12,
+  "fxFireActive": 0,
+  "viewport": {
+    "w": 640,
+    "h": 360
+  },
+  "acceptance": {
+    "enemiesMin": 500,
+    "projectilesMin": 4,
+    "jsErrorsMax": 0
+  },
+  "jsErrors": []
+}
