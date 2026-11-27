@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3062,
+  "next": 3518,
   "cards": [
     {
       "id": 1,
@@ -4412,21 +4412,33 @@
       "id": 3060,
       "title": "m10-damage-batch K3 Test: Batch-Logik",
       "description": "Owner gameplay-dev, Kontrolle test-auditor. tests/damage-number-batch.test.ts: Summe Anzeige = Trefferliste (<=1%), keine Doppel-Labels je Gegner, Cap 10 greift, kein setText ohne Wertaenderung (Spy), 0 NaN/negativ. Abnahme: npx vitest run tests/damage-number-batch.test.ts gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T15:09:01Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 3: K3-Testdatei committet, jetzt isoliert verifizieren"
+        }
+      ],
       "created": "2026-11-27T12:34:06Z",
-      "updated": "2026-11-27T12:34:06Z"
+      "updated": "2026-11-27T15:09:01Z"
     },
     {
       "id": 3061,
       "title": "m10-damage-batch K4 Nachher-Messung + HUD-Abgleich",
       "description": "Owner engine-dev, Kontrolle perf-check + reviewer. Gleiches Skript wie K1 mit tag=after, plus HUD-Gesamtschaden vs Balkensumme <=1%. Ziel: aktive Views <=10 bei >=120 Gegnern, setText/s -50%, ms/Frame nicht schlechter. Abnahme: shots/m10-damage-batch-after.json + Vergleichs-PNG im Commit, docs/lanes/m10-damage-batch.md.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T15:09:01Z",
+          "by": "build",
+          "text": "todo → doing: Vorher/Nachher-Messung + HUD-Abgleich; Belege + Doku"
+        }
+      ],
       "created": "2026-11-27T12:34:06Z",
-      "updated": "2026-11-27T12:34:06Z"
+      "updated": "2026-11-27T15:09:01Z"
     }
   ]
 }

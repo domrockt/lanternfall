@@ -51,16 +51,17 @@ try {
   const hook = await page.evaluate(() => {
     const run = window.__game.scene.getScene("run");
     const sys = run.combat.damageNumbers;
-    const texts = new WeakSet(sys.views.map((v) => v.text));
-    const proto = Object.getPrototypeOf(sys.views[0].text);
     const counters = { setTextCalls: 0, reportCalls: 0, reportDamage: 0 };
-    const origSetText = proto.setText;
-    proto.setText = function (value) {
-      if (texts.has(this)) counters.setTextCalls += 1;
-      return origSetText.call(this, value);
-    };
+    // Pro Textobjekt eine eigene Methode: zaehlt jeden setText-Aufruf dieses
+    // Views zuverlaessig (auch den internen Redraw von setColorIndex).
+    for (const v of sys.views) {
+      const orig = v.text.setText;
+      v.text.setText = function (value) {
+        counters.setTextCalls += 1;
+        return orig.call(this, value);
+      };
+    }
     const origReport = sys.report.bind(sys);
-    sys.views.forEach((v) => { v.lastLabel = ""; });
     sys.report = function (uid, x, y, damage, crit) {
       counters.reportCalls += 1;
       counters.reportDamage += damage;
