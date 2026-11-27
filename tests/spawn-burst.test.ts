@@ -1,9 +1,17 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   advanceSpawnBudget,
   SPAWN_FRAME_BUDGET,
   splitSpawnBurst,
 } from "../src/logic/waves";
+
+// Integrationsteil (unten): Spawner nutzt Phaser nur für Math.Clamp — mock
+// muss top-level stehen (Hoisting), wirkt nur auf den Spawner-Import.
+vi.mock("phaser", () => ({
+  default: {
+    Math: { Clamp: (v: number, a: number, b: number) => Math.max(a, Math.min(b, v)) },
+  },
+}));
 
 /** Deterministisches Dt-Modell: 60 fps mit realistischen Frame-Hitches. */
 function dtModel(seed: number): number[] {
@@ -176,5 +184,72 @@ describe("Spawn-Summe mit und ohne Burst-Glättung (30-min-Simulation)", () => {
       }
     }
     expect(budget).toBeLessThan(1);
+  });
+});
+
+describe("Integration: Spawner.update materialisiert pro echtem Frame max. Budget", () => {
+  // Spawner nutzt Phaser nur für Math.Clamp (top-level vi.mock oben);
+  // Scene/Kamera/Pool/Rng werden durch Stubs ersetzt (Technik wie
+  // tests/enemy-pool-reuse.test.ts).
+  function makeSceneStub() {
+    const registryData = new Map<string, unknown>();
+    const camera = {
+      width: 640,
+      height: 360,
+      scrollX: 0,
+      scrollY: 0,
+      worldView: { x: 0, y: 0, right: 640, bottom: 360 },
+    };
+    return {
+      cameras: { main: camera },
+      registry: {
+        set: (k: string, v: unknown) => registryData.set(k, v),
+        get: (k: string) => registryData.get(k),
+      },
+      game: { loop: { frame: 1, delta: 16.7 } },
+    };
+  }
+
+  const POOL = { count: 0, active: [], spawn: () => ({}), despawn: () => {} };
+  const RNG = { next: () => 0.5, pick: <T,>(arr: T[]) => arr[0] };
+
+  it("mehrere Substeps im selben Frame teilen sich eine Allowance; neuer Frame setzt sie zurück", async () => {
+    const { Spawner } = await import("../src/systems/Spawner");
+    const scene = makeSceneStub();
+    const spawner = new Spawner(scene as never, POOL as never, RNG as never);
+    spawner.budget = 100; // großer Rückstau (z. B. nach Frame-Hitch)
+
+    scene.game.loop.frame = 1;
+    const first = spawner.update(0, 1 / 60, 300, 180);
+    const second = spawner.update(1 / 60, 1 / 60, 300, 180);
+    expect(first.length).toBe(SPAWN_FRAME_BUDGET);
+    expect(second.length).toBe(0); // Allowance für diesen Frame aufgebraucht
+
+    scene.game.loop.frame = 2;
+    const third = spawner.update(2 / 60, 1 / 60, 300, 180);
+    expect(third.length).toBe(SPAWN_FRAME_BUDGET);
+
+    // Erhalt: 100 Startbudget + zugesammelnde Rate = materialisiert + Rest.
+    const granted = 100 + 3 * (0.38 * (1 / 60));
+    expect(first.length + second.length + third.length + spawner.budget).toBeCloseTo(granted, 3);
+  });
+
+  it("verzögerte Spawns kommen vollständig nach (Summe über 12 Frames == Startbudget + Rate)", async () => {
+    const { Spawner } = await import("../src/systems/Spawner");
+    const scene = makeSceneStub();
+    const spawner = new Spawner(scene as never, POOL as never, RNG as never);
+    spawner.budget = 40;
+
+    let materialized = 0;
+    for (let frame = 1; frame <= 12; frame++) {
+      scene.game.loop.frame = frame;
+      materialized += spawner.update(frame / 60, 1 / 60, 300, 180).length;
+    }
+    // 40 Startbudget ist nach 5 Frames abgearbeitet; danach bleibt nur die
+    // minimale laufende Rate. Alles, was nicht materialisiert wurde, liegt
+    // als Rest < SPAWN_FRAME_BUDGET + Rate im Budget.
+    expect(materialized).toBeGreaterThanOrEqual(40);
+    expect(spawner.budget).toBeLessThan(SPAWN_FRAME_BUDGET + 1);
+    expect(materialized + spawner.budget).toBeCloseTo(40 + 12 * (0.38 / 60), 3);
   });
 });
