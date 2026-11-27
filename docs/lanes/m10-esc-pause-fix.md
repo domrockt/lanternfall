@@ -74,6 +74,9 @@ Dazu `npm run build` rc=0, Ganzsuite grün (siehe Commit-Notiz), tsc grün.
 - Die eigentliche Doppel-Abarbeitung der Keyboard-Queue liegt in Phaser
   (Single-Slot-Dedupe + Queue-Lebensdauer) — bewusst **nicht** angefasst
   (node_modules/Patch wäre Tabu-Bruch). Der Dedup in `Run.togglePause` ist
-  robust gegen alle beobachteten Duplikat-Muster; falls künftig Szenen-übergreifend
-  mehr Key-Handler doppel-feuern, wäre ein Blick auf Phaser 3.90
-  `KeyboardPlugin.update` (Dedupe) lohnend.
+  robust gegen alle beobachteten Duplikat-Muster (Reviewer-PASS 2026-11-27).
+  **Plan B, falls die Regression je zurückkommt:** Reviewer-Hinweis — der Guard
+  hängt an `window.event`-Semantik (nur während DOM-Dispatch gesetzt). Würden
+  Duplikat-Aufrufe künftig außerhalb eines Dispatches ankommen (Frame-Replay,
+  `window.event === null`), greife stattdessen ein frame-basierter
+  Suppression-Merker in `Run.togglePause`. Zuerst hier nachsehen.

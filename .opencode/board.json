@@ -6721,37 +6721,61 @@
       "id": 5898,
       "title": "m10-esc-pause-fix #1: Repro ESC-Resume-Regression",
       "description": "scripts/m10-esc-pause.mjs faehrt den verify-input-Keyboard-Pfad (ESC->Pause->ESC->fortsetzen) mit Instrumentierung (togglePause-Aufrufe, ev.repeat, levelUp/chest/finished, 20-ms-Poll) und schreibt den Ist-Zustand nach shots/m10-esc-pause-before.json. Abnahme: Skript laeuft, Beleg existiert und zeigt den FAIL reproduzierbar (oder widerlegt ihn).",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T22:49:14Z",
+          "by": "build",
+          "text": "todo → done: Karte 1: Repro + Belege committed (412c3ce), 2 Laeufe FAIL stabil. review->done nach Karten-Review im Batch."
+        }
+      ],
       "created": "2026-11-27T21:52:57Z",
-      "updated": "2026-11-27T21:52:57Z"
+      "updated": "2026-11-27T22:49:14Z"
     },
     {
       "id": 5899,
       "title": "m10-esc-pause-fix #2: Ursache fixen (ESC-Resume)",
       "description": "Fix in src/scenes/Run.ts / src/input/InputState.ts: Resume per ESC und per Optionsmenue-ZURUECK verlaesslich; kein Duplikat-Trigger durch Key-Repeat. Abnahme: Repro-Skript zeigt ESC pausiert+fortsetzen robust (10x Press-Test), Touch/Gamepad-Pfade unveraendert, npx tsc --noEmit gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:49:14Z",
+          "by": "build",
+          "text": "todo → review: Karte 2: Fix committed (7a9ca7a) – escToggleAllowed (InputState.ts) + togglePause-Dedup (Run.ts). Repro 8/8 PASS inkl. 10x-Wechsel, Hold, Untermenue, Touch-Pfade. tsc+build gruen."
+        }
+      ],
       "created": "2026-11-27T21:52:57Z",
-      "updated": "2026-11-27T21:52:57Z"
+      "updated": "2026-11-27T22:49:14Z"
     },
     {
       "id": 5900,
       "title": "m10-esc-pause-fix #3: Tests tests/esc-pause.test.ts",
       "description": "Unit-Tests: ESC pausiert, ESC setzt fort, ESC im Untermenue verlaesst es (ZURUECK-Pfad), Touch/Gamepad-Resumepfade unveraendert. Abnahme: npx vitest run tests/esc-pause.test.ts gruen, Ganzsuite gruen, tsc gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:58:16Z",
+          "by": "build",
+          "text": "todo → review: Karte 3: tests/esc-pause.test.ts committed (97896ec), 10/10 gruen + Ganzsuite 712/712."
+        }
+      ],
       "created": "2026-11-27T21:52:57Z",
-      "updated": "2026-11-27T21:52:57Z"
+      "updated": "2026-11-27T22:58:16Z"
     },
     {
       "id": 5901,
       "title": "m10-esc-pause-fix #4: verify-input 28/28 2x + Doku",
       "description": "verify-input 28/28 PASS zweimal hintereinander unter Last (Belege shots/m10-esc-pause-*), 0 JS-Fehler, build+tests gruen, Doku docs/lanes/m10-esc-pause-fix.md, .lane-done. Abnahme: beide JSON-Belege passed=true mit 28 Checks, Board/Doku aktualisiert.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:58:16Z",
+          "by": "build",
+          "text": "todo → review: Karte 4: verify-input 28/28 PASS zweimal hintereinander (shots/m10-esc-pause-verify-run1.json + -run2.json, 0 JS-Fehler, alle Shots je Lauf committed), Doku docs/lanes/m10-esc-pause-fix.md, build rc=0, tsc gruen (160b9e2 + c89b27c). .lane-done folgt nach Reviewer-OK."
+        }
+      ],
       "created": "2026-11-27T21:52:57Z",
-      "updated": "2026-11-27T21:52:57Z"
+      "updated": "2026-11-27T22:58:16Z"
     }
   ]
 }

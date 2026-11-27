@@ -1,0 +1,23 @@
+# Lane m10-esc-pause-fix — DONE (2026-11-27)
+
+verify-input-Regression „Tastatur: ESC setzt fort" (27/28 FAIL bei Nachabnahme C,
+PIN 43fd9eb, 2× stabil) geschlossen. verify-input jetzt **28/28 PASS zweimal
+hintereinander, 0 JS-Fehler**.
+
+- Ursache: ein ESC-Press (keydown+keyup im selben Game-Step) lässt die
+  Phaser-Keyboard-Queue mehrfach abarbeiten; der UI-Handler feuert 4× pro Press
+  (auch keyup-getrieben) → gerade Zahl togglePause-Aufrufe → netto kein Umschalten.
+  Beleg: shots/m10-esc-pause-before.json + -before-2.json (togglePause-Protokoll).
+- Fix (nur Run.ts/InputState.ts, Tabu eingehalten): reine Funktion
+  `escToggleAllowed()` in src/input/InputState.ts + Anwendung in
+  `Run.togglePause()` — ein physischer Press togglet genau einmal (keydown, kein
+  OS-Repeat, Dedup je event.timeStamp); Touch/Gamepad/Portrait-Pfade unberührt.
+- Nachweise: scripts/m10-esc-pause.mjs 8/8 PASS (shots/m10-esc-pause-after.json);
+  tests/esc-pause.test.ts 10/10; verify-input 28/28 ×2
+  (shots/m10-esc-pause-verify-run1.json + -run2.json, je alle Shots committed);
+  build rc=0; tsc grün; Ganzsuite 712/712 in 70 Dateien grün.
+- Reviewer: PASS (2026-11-27). Plan-B-Hinweis (frame-basierter Suppression-Merker,
+  falls Phaser-Replays je außerhalb des DOM-Dispatch auftreten) in
+  docs/lanes/m10-esc-pause-fix.md dokumentiert.
+- Commits: 412c3ce (#5898), 7a9ca7a (#5899), 97896ec (#5900), 160b9e2 + c89b27c
+  (#5901). Doku: docs/lanes/m10-esc-pause-fix.md (wird beim Merge in GAME.md übernommen).
