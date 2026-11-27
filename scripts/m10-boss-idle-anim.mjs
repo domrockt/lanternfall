@@ -66,13 +66,13 @@ function savePng(path, w, h, rgba) {
 
 // Hintergrund wie im Spiel (nachtMid 2), Zellen alternierend night 1.
 function renderSheet(scale, path) {
-  const cells = bosses.map((b) => b.frames.length);
-  const pad = 8 * scale, labelH = 10 * scale;
-  const cols = bosses.map((b) => b.frames.reduce((a, f) => Math.max(a, f[0].length), 0));
-  const rows = bosses.map((b) => b.frames.reduce((a, f) => Math.max(a, f.length), 0));
-  const cellW = Math.max(...cols) * scale + pad * 2;
-  const cellH = Math.max(...rows) * scale + pad * 2 + labelH;
-  const W = cellW, H = bosses.reduce((a, b) => a + cellH, 0);
+  const pad = 4 * scale, labelH = 10 * scale, headH = 10 * scale;
+  // Frames NEBENEINNAH: Breite = Kopf + je Frame (Breite+pad), nicht ueberlagert.
+  const bWidths = bosses.map((b) => Math.max(...b.frames.map((f) => f[0].length)) * scale);
+  const bHeights = bosses.map((b) => Math.max(...b.frames.map((f) => f.length)) * scale);
+  const rowW = bosses.map((b, i) => headH + b.frames.length * (bWidths[i] + pad) + pad);
+  const cellH = (i) => pad + headH + labelH + bHeights[i] + pad + labelH + pad;
+  const W = Math.max(...rowW), H = bosses.reduce((a, _, i) => a + cellH(i), 0);
   const px = Buffer.alloc(W * H * 4);
   const put = (x, y, c) => {
     if (x < 0 || y < 0 || x >= W || y >= H) return;
@@ -105,20 +105,23 @@ function renderSheet(scale, path) {
   };
   let y0 = 0;
   bosses.forEach((b, bi) => {
+    const ch_ = cellH(bi);
     const bgc = bi % 2 ? PAL[1] : PAL[2];
-    for (let y = y0; y < y0 + cellH; y++) for (let x = 0; x < W; x++) put(x, y, bgc);
+    for (let y = y0; y < y0 + ch_; y++) for (let x = 0; x < W; x++) put(x, y, bgc);
     drawText(`BOSS ${bi} F${b.frames.length}`, pad, y0 + pad, scale, PAL[21]);
     b.frames.forEach((f, fi) => {
-      const fx = pad, fy = y0 + pad + labelH;
+      const fx = pad + headH + fi * (bWidths[bi] + pad);
+      const fy = y0 + pad + headH;
       for (let y = 0; y < f.length; y++) for (let x = 0; x < f[y].length; x++) {
-        const ch = f[y][x];
-        if (ch === ".") continue;
-        const c = PAL[parseInt(ch, 36)];
+        const ch2 = f[y][x];
+        if (ch2 === ".") continue;
+        const c = PAL[parseInt(ch2, 36)];
         for (let sy = 0; sy < scale; sy++) for (let sx = 0; sx < scale; sx++)
           put(fx + x * scale + sx, fy + y * scale + sy, c);
       }
+      drawText(`F${fi}`, fx, y0 + pad + headH + bHeights[bi] + pad, scale, fi === 2 ? PAL[26] : PAL[10]);
     });
-    y0 += cellH;
+    y0 += ch_;
   });
   savePng(path, W, H, px);
   return { W, H };
