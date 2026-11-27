@@ -57,10 +57,46 @@ export function directionToPlayer(dx: number, dy: number, uid: number): Vec2 {
   return fallbackDir(uid);
 }
 
+/* ── Push-Ergebnis-Pool (M10-Budget) ──────────────────────────── */
+
+/**
+ * separationPush läuft im Minute-25-Chaos ~16k mal pro Frame; ~1.8k Treffer
+ * allozieren sonst je ein Objekt (≈110k Objekte/s → Minor-GC-Spikes, sichtbar
+ * als max/p95 in shots/m10-separation-budget-*.json). Der Ring-Pool macht den
+ * Pfad im Satten allokationsfrei.
+ *
+ * Vertrag: Das Ergebnis ist NUR unmittelbar zu verbrauchen (in eine Summe
+ * aufnehmen — genau so nutzen es Run.ts und resolveCrowdSeparation). Nach
+ * genau 16 weiteren separationPush-Aufrufen wird dasselbe Objekt überschrieben.
+ */
+const PUSH_POOL: Vec2[] = [];
+const PUSH_POOL_SIZE = 16;
+let pushPoolCursor = 0;
+
+function pooledVec2(x: number, y: number): Vec2 {
+  const i = pushPoolCursor;
+  pushPoolCursor = (i + 1) % PUSH_POOL_SIZE;
+  let v = PUSH_POOL[i];
+  if (v === undefined) {
+    v = { x, y };
+    PUSH_POOL[i] = v;
+  } else {
+    v.x = x;
+    v.y = y;
+  }
+  return v;
+}
+
 /**
  * Push-Vektor, der `self` von `other` wegschiebt (null, wenn weit genug weg).
  * Bei (nahezu) identischer Position wird die UID-Richtung genutzt.
  * Der Betrag ist mit dem Massenanteil `separationWeight` gewichtet.
+ *
+ * Budget (M10): massOf/separationWeight sind hier inline — der Paar-Check ist
+ * der heißeste Pfad im Spiel (15k+ Aufrufe/Frame im Minute-25-Chaos), jede
+ * Hilfsfunktion/Standardsicherung kostet messbar. Semantik identisch:
+ * nicht endliche Radien fallen auf die Masse 1 (Kein NaN/Infinity).
+ * Rückgabe aus dem Ring-Pool (siehe PUSH_POOL): nur unmittelbar verbrauchen.
  */
 export function separationPush(
   selfX: number,
@@ -73,13 +109,21 @@ export function separationPush(
 ): Vec2 | null {
   const dx = selfX - otherX;
   const dy = selfY - otherY;
-  const minDist = Math.max(1e-3, selfRadius + otherRadius);
+  const rr = selfRadius + otherRadius;
+  const minDist = rr > 1e-3 ? rr : 1e-3;
   const d2 = dx * dx + dy * dy;
   if (!(d2 < minDist * minDist)) return null;
-  const weight = separationWeight(selfRadius, otherRadius);
+  // massOf inline: Flaeche = r*r, mind. 1. NaN/Infinity/negativ -> Masse 1
+  // (genau wie Number.isFinite + Math.max(0, r) + Math.max(1, r*r) vorher).
+  const ms = selfRadius > 1 ? selfRadius * selfRadius : 1;
+  const mo = otherRadius > 1 ? otherRadius * otherRadius : 1;
+  // separationWeight inline: 2*mo/(ms+mo), geklemmt auf [0.25, 2].
+  let weight = (2 * mo) / (ms + mo);
+  if (weight > 2) weight = 2;
+  else if (weight < 0.25) weight = 0.25;
   if (d2 < 1e-8) {
     const dir = fallbackDir(uid);
-    return { x: dir.x * weight, y: dir.y * weight };
+    return pooledVec2(dir.x * weight, dir.y * weight);
   }
   const d = Math.sqrt(d2);
   const ratio = (minDist - d) / minDist;
@@ -89,8 +133,8 @@ export function separationPush(
   const radial = ratio * weight * 14.0;
   const ux = dx / d;
   const uy = dy / d;
-  const swirl = ratio * 1.0 * (uid % 2 === 0 ? 1 : -1);
-  return { x: ux * radial - uy * swirl, y: uy * radial + ux * swirl };
+  const swirl = ratio * (uid % 2 === 0 ? 1 : -1);
+  return pooledVec2(ux * radial - uy * swirl, uy * radial + ux * swirl);
 }
 
 /* ── Mengen-Resolver mit Iterations- und Paar-Deckel (M10) ────── */
@@ -109,6 +153,12 @@ export interface CrowdSeparationOptions {
   maxIterations?: number;
   /** Harte Obergrenze an Nachbarprüfungen pro Durchlauf (Default 400k). */
   maxPairChecks?: number;
+  /**
+   * Harte Obergrenze an Nachbarprüfungen JE Gegner und Durchlauf (Default 32).
+   * Im Minute-25-Chaos prüft ein Gegner im dichten Kern sonst 100+ Nachbarn;
+   * der Deckel begrenzt die Arbeit pro Gegner, ohne die Trennung zu heben.
+   */
+  maxNeighborsPerEnemy?: number;
   /** Korrekturanteil pro Durchlauf (Default 0.5). */
   strength?: number;
 }
@@ -118,6 +168,8 @@ export interface CrowdSeparationResult {
   pairChecks: number;
   /** true, wenn ein Durchlauf das Prüf-Budget erreicht hat (Deckel griff). */
   budgetExhausted: boolean;
+  /** true, wenn der Nachbar-Deckel pro Gegner mindestens einmal griff. */
+  neighborCapHit: boolean;
 }
 
 /**
@@ -144,6 +196,7 @@ export function resolveCrowdSeparation(
 ): CrowdSeparationResult {
   const maxIterations = Math.max(1, Math.min(8, Math.floor(options.maxIterations ?? 3)));
   const maxPairChecks = Math.max(1, Math.floor(options.maxPairChecks ?? 400_000));
+  const maxNeighbors = Math.max(1, Math.floor(options.maxNeighborsPerEnemy ?? 32));
   const strength = Math.max(0.05, Math.min(1, options.strength ?? 0.5));
 
   let maxRadius = 0;
@@ -158,6 +211,7 @@ export function resolveCrowdSeparation(
   let pairChecks = 0;
   let iterations = 0;
   let budgetExhausted = false;
+  let neighborCapHit = false;
 
   for (let it = 0; it < maxIterations; it++) {
     iterations++;
@@ -169,9 +223,11 @@ export function resolveCrowdSeparation(
       let sx = 0;
       let sy = 0;
       let hit = false;
+      let checked = 0;
       for (const other of scratch) {
         if (other === self || other.alive === false) continue;
         pairChecks++;
+        checked++;
         if (pairChecks > maxPairChecks) {
           exhausted = true;
           break;
@@ -185,6 +241,12 @@ export function resolveCrowdSeparation(
           sx += push.x;
           sy += push.y;
           hit = true;
+        }
+        if (checked >= maxNeighbors) {
+          // Nachbar-Deckel: Weitere Nachbarn in dieser Iteration ignorieren.
+          // Deterministisch, weil die Scratch-Reihenfolge deterministisch ist.
+          neighborCapHit = true;
+          break;
         }
       }
       if (hit) {
@@ -204,5 +266,5 @@ export function resolveCrowdSeparation(
     }
   }
 
-  return { iterations, pairChecks, budgetExhausted };
+  return { iterations, pairChecks, budgetExhausted, neighborCapHit };
 }

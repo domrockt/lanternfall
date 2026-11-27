@@ -1,0 +1,474 @@
+{
+  "tag": "fairab3",
+  "timestamp": "2026-11-27T19:44:30.691Z",
+  "scenario": {
+    "enemies": 500,
+    "seed": 20261127,
+    "warmupFrames": 180,
+    "measuredFrames": 1200,
+    "cellSize": 32,
+    "queryRadiusPx": 460,
+    "src": "src",
+    "mix": [
+      {
+        "id": "bog_rat",
+        "radius": 6,
+        "count": 90
+      },
+      {
+        "id": "wisp",
+        "radius": 6,
+        "count": 70
+      },
+      {
+        "id": "bogzombie",
+        "radius": 8,
+        "count": 60
+      },
+      {
+        "id": "crow",
+        "radius": 5,
+        "count": 70
+      },
+      {
+        "id": "skeleton",
+        "radius": 7,
+        "count": 60
+      },
+      {
+        "id": "bat",
+        "radius": 5,
+        "count": 60
+      },
+      {
+        "id": "ghoul",
+        "radius": 8,
+        "count": 40
+      },
+      {
+        "id": "spider",
+        "radius": 6,
+        "count": 50
+      }
+    ],
+    "note": "reiner Node-Bench ohne Browser — kein flock noetig. Strecke A = produktiver Run.ts-Pfad, Strecke B = Budget-Resolver (resolveCrowdSeparation) pro Frame inkl. SpatialHash-Rebuild."
+  },
+  "paths": {
+    "production": {
+      "name": "production",
+      "msPerFrame": {
+        "rebuild": {
+          "mean": 0.0079,
+          "median": 0.0071,
+          "p95": 0.0117,
+          "max": 0.075
+        },
+        "separation": {
+          "mean": 0.1994,
+          "median": 0.1898,
+          "p95": 0.2762,
+          "max": 0.4785
+        },
+        "total": {
+          "mean": 0.2073,
+          "median": 0.197,
+          "p95": 0.2863,
+          "max": 0.4903
+        }
+      },
+      "quality": {
+        "minPairDistanceStart": 1.487,
+        "minPairDistanceFinal": 0.635,
+        "minPairDistanceOverall": 0.222,
+        "series": [
+          {
+            "frame": 180,
+            "minDist": 1.49
+          },
+          {
+            "frame": 210,
+            "minDist": 1.93
+          },
+          {
+            "frame": 240,
+            "minDist": 0.63
+          },
+          {
+            "frame": 270,
+            "minDist": 1.2
+          },
+          {
+            "frame": 300,
+            "minDist": 0.61
+          },
+          {
+            "frame": 330,
+            "minDist": 0.76
+          },
+          {
+            "frame": 360,
+            "minDist": 2.09
+          },
+          {
+            "frame": 390,
+            "minDist": 0.51
+          },
+          {
+            "frame": 420,
+            "minDist": 1.08
+          },
+          {
+            "frame": 450,
+            "minDist": 0.9
+          },
+          {
+            "frame": 480,
+            "minDist": 0.36
+          },
+          {
+            "frame": 510,
+            "minDist": 1.34
+          },
+          {
+            "frame": 540,
+            "minDist": 1.45
+          },
+          {
+            "frame": 570,
+            "minDist": 0.72
+          },
+          {
+            "frame": 600,
+            "minDist": 0.26
+          },
+          {
+            "frame": 630,
+            "minDist": 0.6
+          },
+          {
+            "frame": 660,
+            "minDist": 1.02
+          },
+          {
+            "frame": 690,
+            "minDist": 0.58
+          },
+          {
+            "frame": 720,
+            "minDist": 0.44
+          },
+          {
+            "frame": 750,
+            "minDist": 1.28
+          },
+          {
+            "frame": 780,
+            "minDist": 1.05
+          },
+          {
+            "frame": 810,
+            "minDist": 0.56
+          },
+          {
+            "frame": 840,
+            "minDist": 1.82
+          },
+          {
+            "frame": 870,
+            "minDist": 1.61
+          },
+          {
+            "frame": 900,
+            "minDist": 0.42
+          },
+          {
+            "frame": 930,
+            "minDist": 0.25
+          },
+          {
+            "frame": 960,
+            "minDist": 0.72
+          },
+          {
+            "frame": 990,
+            "minDist": 0.72
+          },
+          {
+            "frame": 1020,
+            "minDist": 1.29
+          },
+          {
+            "frame": 1050,
+            "minDist": 0.92
+          },
+          {
+            "frame": 1080,
+            "minDist": 0.67
+          },
+          {
+            "frame": 1110,
+            "minDist": 0.86
+          },
+          {
+            "frame": 1140,
+            "minDist": 0.69
+          },
+          {
+            "frame": 1170,
+            "minDist": 0.51
+          },
+          {
+            "frame": 1200,
+            "minDist": 0.32
+          },
+          {
+            "frame": 1230,
+            "minDist": 0.57
+          },
+          {
+            "frame": 1260,
+            "minDist": 1.52
+          },
+          {
+            "frame": 1290,
+            "minDist": 1.17
+          },
+          {
+            "frame": 1320,
+            "minDist": 0.22
+          },
+          {
+            "frame": 1350,
+            "minDist": 1.47
+          }
+        ]
+      },
+      "work": {
+        "candidatesPerFrameMean": 16479.6,
+        "pairChecksPerFrameMean": 15979.6,
+        "hitsPerFrameMean": 1783.4,
+        "maxCandidatesPerFrame": 17396
+      }
+    },
+    "budgetResolver": {
+      "name": "budget-resolver",
+      "msPerFrame": {
+        "rebuild": {
+          "mean": 0,
+          "median": 0,
+          "p95": 0,
+          "max": 0
+        },
+        "separation": {
+          "mean": 1.3339,
+          "median": 1.1887,
+          "p95": 1.9244,
+          "max": 3.1094
+        },
+        "total": {
+          "mean": 1.3339,
+          "median": 1.1887,
+          "p95": 1.9244,
+          "max": 3.1094
+        }
+      },
+      "quality": {
+        "minPairDistanceStart": 8.355,
+        "minPairDistanceFinal": 7.973,
+        "minPairDistanceOverall": 7.775,
+        "series": [
+          {
+            "frame": 180,
+            "minDist": 8.35
+          },
+          {
+            "frame": 210,
+            "minDist": 8.32
+          },
+          {
+            "frame": 240,
+            "minDist": 8.24
+          },
+          {
+            "frame": 270,
+            "minDist": 8.13
+          },
+          {
+            "frame": 300,
+            "minDist": 8.01
+          },
+          {
+            "frame": 330,
+            "minDist": 8.06
+          },
+          {
+            "frame": 360,
+            "minDist": 8.06
+          },
+          {
+            "frame": 390,
+            "minDist": 8.11
+          },
+          {
+            "frame": 420,
+            "minDist": 8.16
+          },
+          {
+            "frame": 450,
+            "minDist": 8.18
+          },
+          {
+            "frame": 480,
+            "minDist": 8.16
+          },
+          {
+            "frame": 510,
+            "minDist": 8.12
+          },
+          {
+            "frame": 540,
+            "minDist": 8.18
+          },
+          {
+            "frame": 570,
+            "minDist": 8.32
+          },
+          {
+            "frame": 600,
+            "minDist": 8.4
+          },
+          {
+            "frame": 630,
+            "minDist": 8.43
+          },
+          {
+            "frame": 660,
+            "minDist": 8.41
+          },
+          {
+            "frame": 690,
+            "minDist": 8.4
+          },
+          {
+            "frame": 720,
+            "minDist": 8.39
+          },
+          {
+            "frame": 750,
+            "minDist": 8.37
+          },
+          {
+            "frame": 780,
+            "minDist": 8.35
+          },
+          {
+            "frame": 810,
+            "minDist": 8.31
+          },
+          {
+            "frame": 840,
+            "minDist": 8.27
+          },
+          {
+            "frame": 870,
+            "minDist": 8.22
+          },
+          {
+            "frame": 900,
+            "minDist": 8.16
+          },
+          {
+            "frame": 930,
+            "minDist": 8.11
+          },
+          {
+            "frame": 960,
+            "minDist": 8.07
+          },
+          {
+            "frame": 990,
+            "minDist": 8.04
+          },
+          {
+            "frame": 1020,
+            "minDist": 8.01
+          },
+          {
+            "frame": 1050,
+            "minDist": 8
+          },
+          {
+            "frame": 1080,
+            "minDist": 7.99
+          },
+          {
+            "frame": 1110,
+            "minDist": 7.98
+          },
+          {
+            "frame": 1140,
+            "minDist": 7.98
+          },
+          {
+            "frame": 1170,
+            "minDist": 7.98
+          },
+          {
+            "frame": 1200,
+            "minDist": 7.97
+          },
+          {
+            "frame": 1230,
+            "minDist": 7.97
+          },
+          {
+            "frame": 1260,
+            "minDist": 7.97
+          },
+          {
+            "frame": 1290,
+            "minDist": 7.97
+          },
+          {
+            "frame": 1320,
+            "minDist": 7.97
+          },
+          {
+            "frame": 1350,
+            "minDist": 7.97
+          }
+        ]
+      },
+      "work": {
+        "candidatesPerFrameMean": 23393.6,
+        "pairChecksPerFrameMean": 23393.6,
+        "hitsPerFrameMean": 0,
+        "maxCandidatesPerFrame": 23849
+      }
+    }
+  },
+  "fairAB": {
+    "before": {
+      "src": "/home/ai/tmp/m10-separation-budget/before-src",
+      "msPerFrame": {
+        "mean": 0.3437,
+        "median": 0.3265,
+        "p95": 0.473,
+        "max": 0.7641
+      },
+      "minPairDistance": 0.222
+    },
+    "after": {
+      "src": "src",
+      "msPerFrame": {
+        "mean": 0.3436,
+        "median": 0.3268,
+        "p95": 0.4713,
+        "max": 0.8346
+      },
+      "minPairDistance": 0.222
+    },
+    "deltaPctMean": 0,
+    "deltaPctMedian": 0.1
+  }
+}
