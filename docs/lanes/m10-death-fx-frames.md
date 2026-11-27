@@ -15,7 +15,8 @@ Frame-Keys in `src/logic/death.ts`. **Keine Gameplay-/Balance-Werte geändert**,
 | #4418 K1 | `8a25bf8` | `deathFrameSets()` als Single Source of Truth exportiert; Vorher-Belege |
 | #4419 K2 | `d12d99d` | 5 neue Silhouetten-Generatoren + `fx_death_fire` neu + `fx_boss_core` 32x32 |
 | #4420 K3 | `5524b7b` | `tests/death-frames.test.ts` (5 Guards) + Sheet-BG-Fix |
-| #4421 K4 | (dieser Commit) | Nachher-Belege, Chaos-Shot, Doku, art-director-Urteil |
+| #4421 K4 | `3516f7c` | Nachher-Belege, Chaos-Shot, Doku, art-director-Urteil (Runde 3: PASS 4,0/5) |
+| #4419 Nachtrag | (Polish) | 3 Nachbesserungen aus Runde 3; Delta-Check: PASS 4,2/5 |
 
 ## Frame-Spezifikation (umgesetzt in `src/gfx/gen-fx.ts`)
 
@@ -93,13 +94,19 @@ Chaos-Lesbarkeit: crumble/dissolve eindeutig, **keine Verwechslung mit Gegnern/
 Ground/XP-Gems**; Rest-Risiko ehrlich notiert: sputter-Tode lesen sich in-game
 (ember Lv8 überlagert) als gepunktete orange Streukreise, nicht als Zungenformation.
 
-### Nachbesserungen (nicht blockierend, als Nachtrag umgesetzt)
+### Nachbesserungen (nicht blockierend, als Nachtrag umgesetzt — Delta-Check: PASS 4,2/5)
 
-1. `blobDeathFrame` Frames 2-3: dunkle Splitter mit heller Kante/Kern-Rest aufwerten
-   (blend-seitige Fix-Option — Rim-Sprites non-additiv — wäre eine Wertänderung in
-   `death.ts` und ist damit ausserhalb dieses Auftrags; als Folge-Karte notiert).
-2. `voidDeathFrame`: Schwadenfläche um eine Stufe aufhellen (hellere Fläche + grösserer Kern).
-3. `boneDeathFrame` Frame 3: statt Einzelpixeln 1 kleiner Knochen + 2 Stücke + Lichtkante oben-links.
+1. `blobDeathFrame` Frames 2-3: grösserer Kern-Rest (radius [3.8, 3.4, 2.6, 1.8]) +
+   candleWhite-Glanzpunkt auf jedem Tropfkopf. **blob 3,5 → 4.**
+2. `voidDeathFrame`: Schwadenfläche fog (7) statt fogBlue (6), Kern breiter (w·0,5),
+   abgelöste Punkte heller. **void 3,5 → 4.**
+3. `boneDeathFrame` Frame 4: 1 kleiner Knochen (Knubbel + Schaft + Lichtkante) + 2 Stücke
+   statt 6 Einzelpixeln. **bone bleibt 4** (letzter Silhouetten-Mangel weg).
+
+**Delta-Urteil: „PASS — Gesamtnote steigt auf 4,2/5"** (fire 4,5 / dust 4,0 / boss 4,5
+unverändert, Sheets byte-identisch; 0 Off-Palette-Pixel bestätigt). Schnitt 25/6 ≈ 4,2.
+Blend-seitiger Rest (additiv tötet dunkle Rim-Pixel im Spiel) bleibt dokumentierter
+Vorbehalt, frame-seitig nicht mehr verschärfend.
 
 ## Offene Punkte
 

@@ -335,7 +335,9 @@ function blobDeathFrame(stage: number): string[] {
   const cx = 4;
   const cy = 4;
   // Koerper quillt (0), reisst auf (1-2), restet als Klumpen (3).
-  const radius = [3.8, 3.3, 2.3, 1.3][stage];
+  // Spaete Stufen mit groesserem Rest (Art-Director Runde 3: dunkle Splitter
+  // verschwinden sonst auf Nachtgrund fast komplett).
+  const radius = [3.8, 3.4, 2.6, 1.8][stage];
   for (let y = 0; y < DEATH_GRID; y++) {
     for (let x = 0; x < DEATH_GRID; x++) {
       const dx = x - cx;
@@ -364,6 +366,8 @@ function blobDeathFrame(stage: number): string[] {
     deathPx(g, px - ay * 0.9, py + ax * 0.9, charOf(30)); // Kopf-Flanke
     deathPx(g, px - ax, py - ay, charOf(30)); // Schweif
     deathPx(g, px + ax, py + ay, charOf(1)); // Rim vor dem Kopf
+    // Glanzpunkt auf dem Kopf (lesbar auch auf Nachtgrund).
+    deathPx(g, px - ay * 0.9, py + ax * 0.9 - 1, charOf(12));
   }
   return deathRows(g);
 }
@@ -408,14 +412,14 @@ function boneDeathFrame(stage: number): string[] {
     ]],
     [[
       ".........",
+      "....b....",
+      "..b.b....",
+      "..bab....",
       ".........",
-      "..b......",
-      "....a..b.",
-      ".a.......",
+      "......b.b",
+      ".a.....a.",
+      ".b.......",
       ".........",
-      "......a..",
-      ".b....b..",
-      "......b..",
     ]],
   ];
   return frames[Math.min(stage, 3)][0];
@@ -479,15 +483,16 @@ function voidDeathFrame(stage: number): string[] {
     const w = Math.max(0.45, 0.55 + frac * 0.9 - stage * 0.08);
     for (let xx = -w; xx <= w; xx += 0.5) {
       const x = 3.6 + sway + xx;
-      deathPx(g, x, y, Math.abs(xx) < w * 0.4 ? charOf(9) : charOf(6));
+      // Runde 3: Flaeche heller (fog statt fogBlue), Kern breiter — lesbar auf Nachtgrund.
+      deathPx(g, x, y, Math.abs(xx) < w * 0.5 ? charOf(9) : charOf(7));
     }
   }
   // Abgeloeste Schwadenpunkte ueber der Spitze.
-  deathPx(g, 3.6 + Math.sin(stage * 1.3), top - 0.9, charOf(8));
-  if (stage >= 1) deathPx(g, 4.4, top - 0.2, charOf(6));
+  deathPx(g, 3.6 + Math.sin(stage * 1.3), top - 0.9, charOf(9));
+  if (stage >= 1) deathPx(g, 4.4, top - 0.2, charOf(7));
   // Kleiner Nebenwisp rechts, folgt mit Versatz.
   for (let y = 5.2 - stage * 0.7; y <= 6.8; y += 0.5) {
-    deathPx(g, 6.3 + Math.sin(y * 0.9 + stage), y, charOf(6));
+    deathPx(g, 6.3 + Math.sin(y * 0.9 + stage), y, charOf(7));
   }
   return deathRows(g);
 }
