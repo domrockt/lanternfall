@@ -6,7 +6,7 @@
 // /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen" ausgeben und Exitcode
 // weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.
 import { spawnSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const argv = process.argv.slice(2);
 const argOf = (name, fallback) => {
@@ -50,7 +50,9 @@ for (let i = 0; i < RUNS; i++) {
       { stdio: "pipe", timeout: 720_000, encoding: "utf8" },
     );
     if (run.error) throw run.error;
-    if (run.status !== 0) {
+    // Lock-Timeout (flock -w bricht rc=1 ab, ohne das JSON zu schreiben) von einem
+    // legitimen perf.mjs rc=1 (55-Ziel verfehlt, JSON WURDE geschrieben) trennen.
+    if (run.status !== 0 && !existsSync(file)) {
       console.error(
         "qa-reaccept-perf: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen",
       );

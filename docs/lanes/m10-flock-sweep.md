@@ -18,11 +18,15 @@ erneut versuchen` + Exitcode weiterreichen).
 | scripts/verify-display.mjs | Kommentar Z.5-8 | 300 | 7 Geraete-Profile ~180 s |
 
 Zusatz (nur Lock-Wrapper-Logik, keine Messlogik):
-- `scripts/qa-reaccept-perf.mjs`: nach dem spawnSync jetzt `run.status !== 0` →
-  Meldung `qa-reaccept-perf: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut
-  versuchen` + `process.exit(run.status)` (vorher wuerde das fehlende JSON mit rohem
-  ENOENT crashen). Node-Timeout 300_000 → 720_000 (= 420 s Lock-Wartezeit + 300 s
-  Messlauf), damit `flock -w` nicht vom Node-Timeout gekillt wird, bevor es abbricht.
+- `scripts/qa-reaccept-perf.mjs`: nach dem spawnSync jetzt `run.status !== 0 && !existsSync(file)`
+  → Meldung `qa-reaccept-perf: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut
+  versuchen` + `process.exit(run.status)`. Das `!existsSync(file)` ist entscheidend:
+  `perf.mjs` endet LEGITIM mit rc=1, wenn sein 55-Ziel verfehlt wird (Minute 25 ist hier
+  bewusst nur >=50), und schreibt sein JSON VOR dem Exit (perf.mjs Z.18 writeFileSync,
+  Z.20 process.exit) — dieser Fall wird wie vorher toleriert und weitergelesen. Nur wenn
+  KEIN JSON existiert (flock -w bricht ab, bevor perf.mjs laeuft) → Lock-Timeout-Meldung
+  + Exitcode weiterreichen. Node-Timeout 300_000 → 720_000 (= 420 s Lock-Wartezeit +
+  300 s Messlauf), damit `flock -w` nicht vom Node-Timeout gekillt wird, bevor es abbricht.
 - `scripts/m10-endgame-fps.mjs` Z.228: recorded-command-String in der summary-JSON
   (wird kopiert, daher mit `-w 240`).
 
@@ -58,8 +62,12 @@ balance rc=1
 2b) Echter SpawnSync-Pfad (scripts/qa-reaccept-perf.mjs, gleiche Aufrufform
 `spawnSync("flock", ["-w", N, lock, ...])`) mit gehaltener Sperre, -w 1:
 `status=1` nach ~1 s; Positivkontrolle mit freier Sperre: `status=0` nach 0.02 s
-(Treiber: ~/tmp/m10-flock-sweep/negtest.mjs, rc=0). Der neue `run.status !== 0`-Zweig
-gibt die Meldung aus und reicht den Exitcode weiter (Z.51-56).
+(Treiber: ~/tmp/m10-flock-sweep/negtest.mjs, rc=0). Der neue Zweig
+`run.status !== 0 && !existsSync(file)` gibt die Meldung aus und reicht den
+Exitcode weiter (Z.53-59). Unterscheidung Lock-Timeout vs. legitimer perf rc=1:
+beim Timeout wird kein JSON geschrieben → existsSync false → Meldung+Exit;
+perf rc=1 schreibt sein JSON vorher → wird wie bisher weitergelesen (Review-Runde 1
+hat das als FAIL K1 bemaengelt, in Runde 2 gefixt).
 Hinweis: ein erster Testlauf mit `timeout 30` bestätigte das Warteverhalten —
 Sperre wurde nach ~4,7 s frei, der Messlauf startete korrekt und wurde nur vom
 aeusseren Test-Timeout gekillt (keine Restprozesse, fremde Lanes unberuehrt).
