@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:5596/?debug=1&seed=77",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "setSuppressLevelUps",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "setTimeScale",
+      "args": [
+        0.12
+      ]
+    },
+    {
+      "call": "addWeapon",
+      "args": [
+        "ember",
+        8
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "bog_rat",
+        520
+      ]
+    }
+  ],
+  "out": "shots/m10-ember-readability-chaos-640.png",
+  "gif": null,
+  "jsErrors": []
+}
