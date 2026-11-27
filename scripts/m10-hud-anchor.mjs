@@ -250,23 +250,33 @@ try {
       sc.bannerGroup.setVisible(false);
     });
 
-    // --- Zustand: Level-Up-Dialog ---
+    // --- Zustand: Level-Up-Dialog (echter Pfad: XP -> levelup-Event) ---
     await page.evaluate(() => window.__lf.giveXp(9999));
     await page.waitForTimeout(500);
     m = await measure(page);
     const cLevel = checkState(m.named, m.view);
     const shotLevel = `shots/m10-hud-anchor-${TAG}-${label}-levelup.png`;
     await page.screenshot({ path: shotLevel });
-
-    // --- Zustand: Truhe (Hinweis-Zeilen) ---
-    await page.evaluate(() => { try { window.__lf.pickLevelUp(0); } catch { /* evtl. schon zu */ } });
-    await page.waitForTimeout(300);
+    // Level-up-Kette schliessen (giveXp kann viele Levels hintereinander
+    // ausloesen), bevor die Truhe geoeffnet wird, damit sich die Fusszeilen
+    // nicht ueberlagern.
+    for (let k = 0; k < 40; k++) {
+      const open = await page.evaluate(() => {
+        const sc = window.__game.scene.getScene("ui");
+        if (!sc.levelGroup.visible) return false;
+        try { window.__lf.pickLevelUp(0); } catch { /* bereits zu */ }
+        return true;
+      });
+      if (!open) break;
+      await page.waitForTimeout(120);
+    }
     await page.evaluate(() => {
       const sc = window.__game.scene.getScene("ui");
       sc.onChestOpen({
         count: 5,
         rewards: [
-          { kind: "evolution", id: "phoenix", name: "Phönixschwarm", description: "Feuervögel", level: 8, isNew: true, iconColor: 18 },
+          { kind: "evolution", id: "phoenix", name: "Phönixschwarm", description: "Feuervögel", level: 8, isNew: true, iconColor: 18,
+            evolution: { id: "phoenix", name: "Phönixschwarm", description: "Glutfunke + Arkanes Buch", effect: "Feuervögel", baseWeapon: "ember", passive: "tome", implemented: true, iconColor: 18 } },
           { kind: "weapon", id: "flail", name: "Kettenflegel", description: "", level: 3, isNew: false, iconColor: 24 },
           { kind: "weapon", id: "frost", name: "Frostnova", description: "", level: 3, isNew: false, iconColor: 25 },
           { kind: "passive", id: "tome", name: "Arkanes Buch", description: "", level: 2, isNew: false, iconColor: 20 },

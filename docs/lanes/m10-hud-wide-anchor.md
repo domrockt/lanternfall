@@ -65,7 +65,49 @@ Belege: `shots/m10-hud-anchor-baseline.json`, `shots/m10-hud-anchor-baseline-<fo
 - **AE gegen 640x360-Referenz = 0** (1280x720 und 1920x1080 liefern identische Boxen).
 - Alle gemessenen Boxen ganzzahlig (Pixelgenauigkeit ok), 0 JS-Fehler.
 - Level-Up-Dialog, Banner und Truhen-Hinweis: keine Rand-/Kollisions-/View-Verletzungen.
+- Limitierung: die Truhen-Hinweis-Zeilen fehlen im Baseline-JSON (Fake-ChestReward ohne
+  `evolution`-Feld); im After-Lauf gemessen (x=177, y=153, w=287 bei 640, zentriert im Rahmen).
+
+### K3 — Fix (Commit 41e616b)
+
+Anker in `src/scenes/UI.ts` ueber Konstanten (Ankerpunkt + Margin statt fixer Koordinaten):
+`HUD_MARGIN_X=5`, `HUD_HP_X/HUD_HP_W`, `HUD_ICONS_X=122` (= HP-Ende 111 + 11 px),
+`HUD_ICON_PITCH=17`, `HUD_EVO_HINT_X=330` (= Ende der vollen Icon-Reihe 317 + 13 px).
+Reine Geometrie `hudAnchorBoxes()` wird von `tests/hud-anchor.test.ts` gegen den
+Safe-Area-Rand aller 4 Formate geprueft (7 Tests, inkl. Golden Values aus der Baseline).
+
+**Einzige Pixel-Aenderung bei 640x360 (beabsichtigter Basis-Fix):** `hud-icons-bg`
+`{x:0,w:224}` → `{x:114,w:212}`. Alle uebrigen Anker-Boxen vor/nachher identisch
+(Vergleich baseline-vs-after JSON, 640x360-ref: nur icons-bg aenderungen in
+hud/levelup/chest-Zustand).
+
+### K4 — Nachher (`--tag after`, 2026-11-27)
+
+Belege: `shots/m10-hud-anchor-after.json`, `shots/m10-hud-anchor-after-<format>-<zustand>.png`.
+
+| Format | View | Verletzungen | AE vs 640x360-Referenz |
+|---|---|---|---|
+| 640x360-ref | 640x360 | **0** | Referenz |
+| 780x360@3 | 780x360 | **0** | n/a (andere Breite) |
+| 1280x720 | 640x360 | **0** | **0** |
+| 1920x1080 | 640x360 | **0** | **0** |
+
+- RESULT PASS: violations=0, ae=0, errors=0 (alle 4 Formate, je hud/banner/levelup/chest).
+- Pixelgenauigkeit: alle gemessenen Boxen ganzzahlige Spielpixel (subpixel-Check im
+  Skript; Balkenfuellungen mit XP/HP-Ratio ausgenommen, kontinuierlich by design).
+- Vision-Pruefung (2x nearest vergrößert, `~/tmp/m10-hud-wide-anchor/`):
+  - `after-780x360@3-hud`: Icon-Hintergrund beginnt erst hinter der HP-Leiste (Fix sichtbar),
+    Evo-Hinweis lesbar, keine Kollision.
+  - `after-640x360-ref-banner`: Banner zentriert unter dem HUD-Streifen, kein Ueberlapp.
+  - `after-1920x1080-levelup`: 3 Karten im Rahmen, Evo-Zeile, Fusszeile, nichts abgeschnitten.
+  - `after-1280x720-chest`: Hinweis-Satz „AUS GLUTFUNKE + ARKANES BUCH WIRD PHÖNIXSCHWARM.“
+    im Rahmen, 5 Slots, keine ueberlagerten Fusszeilen mehr.
+- Reviewer-Review der Karten #5258–#5260: **PASS** (Diff-Pruefung UI.ts: nur Anker +
+  Instrumentierung; Test echte Spec; font.ts/Palette unberuehrt).
 
 ## Offene Punkte
 
-(tbd)
+- Text-Typo im Waffen-Data (nicht diese Lane): Kettenflegel-Beschreibung „STARKER
+  ROCKSTOB“ (vermutlich „RÜCKSTOSS“) — sichtbar im Level-up-Shot bei 780x360.
+- Die Truhen-Hinweis-Messung fehlt im Baseline-JSON (siehe K2-Limitierung); der
+  Anker ist im After-Lauf belegt und war vom Fix nicht betroffen (zentriert im Rahmen).
