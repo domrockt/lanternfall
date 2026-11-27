@@ -2689,7 +2689,7 @@
       "id": 1738,
       "title": "m10-enemy-coverage-01 Messwerkzeug scripts/enemy-coverage.mjs",
       "description": "Reine Simulation ueber waveForMinute/advanceSpawnBudget/pickEnemy (SeededRng Seeds 101+202), 30 Sim-Minuten in 1-s-Schritten. Abnahme: shots/m10-coverage-sim.json + stdout-Tabelle mit Spawns je ENEMY_ID, First-Spawn-Sekunde, Share je 5-min-Block.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -2701,16 +2701,21 @@
           "at": "2026-11-27T00:33:30Z",
           "by": "build",
           "text": "doing → review: Commit c3a2679. shots/m10-coverage-sim.json: 30/30 je Seed (101+202), 2524 Spawns, 0 fehlend, First-Spawn nie nach Tier-Ende, max Share 32.7% (<35%)."
+        },
+        {
+          "at": "2026-11-27T01:49:38Z",
+          "by": "build",
+          "text": "review → done: Commit c3a2679: Messwerkzeug scripts/enemy-coverage.mjs, Sim 30/30 (Seeds 101+202), shots/m10-coverage-sim.json. PASS."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T00:33:30Z"
+      "updated": "2026-11-27T01:49:38Z"
     },
     {
       "id": 1739,
       "title": "m10-enemy-coverage-02 Ist-Stand belegen",
       "description": "Lueckenliste in docs/lanes/m10-enemy-coverage.md aus dem Sim-JSON: IDs mit 0 Spawns, First-Spawn nach Tier-Ende, Share > 35%. Abnahme: dokumentierte Messung, keine Code-Aenderung.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -2722,16 +2727,21 @@
           "at": "2026-11-27T00:39:53Z",
           "by": "build",
           "text": "doing → review: Commit 66875df. docs/lanes/m10-enemy-coverage.md: Lueckenliste leer, 30/30 je Seed, 0 IDs mit 0 Spawns, 0 First-Spawn nach Tier-Ende, max Share 32.7% < 35%."
+        },
+        {
+          "at": "2026-11-27T01:49:38Z",
+          "by": "build",
+          "text": "review → done: Commit 66875df: Ist-Stand/Lueckenliste leer, 30/30 je Seed, max Share 32.7 %, Doku docs/lanes/m10-enemy-coverage.md. PASS."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T00:39:53Z"
+      "updated": "2026-11-27T01:49:38Z"
     },
     {
       "id": 1740,
       "title": "m10-enemy-coverage-03 Luecken schliessen in src/data/waves.ts",
       "description": "TIER_MIXES/specialForMinute: jede der 30 IDs in mind. einer Tier-Mix Gewicht > 0 und First-Spawn vor Tier-Ende; kein Typ > 35% Share je 5-min-Block. Keine HP/Damage/Speed-Skalierung aendern. Abnahme: neuer Sim-Lauf zeigt 30/30, 0 Luecken.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -2743,16 +2753,21 @@
           "at": "2026-11-27T00:46:34Z",
           "by": "build",
           "text": "doing → review: Commit b68f0c1. K3: Invarianten bereits erfuellt (30/30 IDs in Mixes, 5/5 normalisiert, 0 Share>35%, First-Spawn im Tier); keine Balance-Aenderung ohne Befund. Test folgt in #1741."
+        },
+        {
+          "at": "2026-11-27T01:49:38Z",
+          "by": "build",
+          "text": "review → done: Commit b68f0c1: Invarianten 30/30 Mixes, 5/5 normalisiert, 0 Share >35 %, First-Spawn im Tier; keine Mix-Aenderung noetig. PASS."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T00:46:34Z"
+      "updated": "2026-11-27T01:49:38Z"
     },
     {
       "id": 1741,
       "title": "m10-enemy-coverage-04 Unit-Test wave-coverage.test.ts",
       "description": "tests/wave-coverage.test.ts: (a) 30/30 IDs in Mixes, (b) jede Tier-Mix normalisiert, (c) deterministische 30-min-Simulation deckt 30/30, (d) kein ID-Share > 35%. Abnahme: npx vitest run tests/wave-coverage.test.ts gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -2764,16 +2779,21 @@
           "at": "2026-11-27T00:55:11Z",
           "by": "build",
           "text": "doing → review: Commit c27e950. npx vitest run tests/wave-coverage.test.ts: 4/4 gruen. (a) 30/30 IDs in Mixes+Eigentier, (b) 5/5 normalisiert Summe 100%, (c) Seeds 101/202 30/30 vor Tier-Ende, (d) kein Share >35%."
+        },
+        {
+          "at": "2026-11-27T01:49:38Z",
+          "by": "build",
+          "text": "review → done: Commit c27e950: tests/wave-coverage.test.ts 4/4 gruen (Mixes, normalisiert, Sim-Abdeckung, Share <=35 %). PASS."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T00:55:11Z"
+      "updated": "2026-11-27T01:49:38Z"
     },
     {
       "id": 1742,
       "title": "m10-enemy-coverage-05 In-Game-Beleg 30 min @30x",
       "description": "Headless 30 Sim-Minuten bei timeScale 30, Spawn-Zaehler ueber window.__lf (minimal spawnCounts in src/debug.ts, nur zaehlen). Abnahme: shots/m10-coverage-ingame.json 30/30 und >=30 gleichzeitig aktive Gegner, 0 JS-Fehler, npm run build + npm test gruen, docs vollstaendig, .lane-done.",
-      "column": "blocked",
+      "column": "review",
       "assignee": "playtester",
       "notes": [
         {
@@ -2795,10 +2815,15 @@
           "at": "2026-11-27T01:28:18Z",
           "by": "build",
           "text": "doing → blocked: K5-Inhalt PASS (aa5ef5d: 30/30, 274 aktiv, 0 JS-Fehler). Nur .lane-done-Commit blockiert: Disponent-Claim merge-m10-art-contact (main). Request in .dispatch/requests.md; Datei liegt untracked im Worktree fuer Merge-Job. Board-Sync in 2af7312."
+        },
+        {
+          "at": "2026-11-27T01:49:38Z",
+          "by": "build",
+          "text": "blocked → review: Commit b4d5884: erneuter In-Game-Lauf 1800.3 s, 30/30, 158 aktiv, 0 JS-Fehler, build 807ms + 208 Tests gruen. Inhalt PASS. Offen nur .lane-done: untracked im Worktree, Claim bei merge-m9-art-polish (main), Request in .dispatch/requests.md -> Merge-Job uebernimmt/committet die Datei."
         }
       ],
       "created": "2026-11-27T00:20:39Z",
-      "updated": "2026-11-27T01:28:18Z"
+      "updated": "2026-11-27T01:49:38Z"
     }
   ]
 }
