@@ -71,6 +71,11 @@ Robustheits-Lauf `MENUS_VIEWPORT=1280x720` (View 640x360, vorher FAIL-Repro):
 - Ergebnis-JSON: `shots/m10-verify-menus.json` (milestone `m10-verify-menus-view`).
 - Robustheit über Views (K2, hier zusammengefasst): 960x540 → 480x360 PASS 15/15;
   1280x720 → 640x360 PASS 15/15 (vorher der FAIL-Repro aus K1).
+- K3-Belege wurden nach Abschluss der K2-Umbauten mit dem committeten Harness erneut erzeugt
+  (`node scripts/verify-mmenus.mjs` einmal, danach `verify-menus.mjs`): Standardlauf 960x540
+  (logischer Fit-View 480x360) **PASS 15/15, rc=0**, Zusatzlauf `MENUS_VIEWPORT=480x360`
+  (echter 1x-View) ebenfalls **PASS 15/15, rc=0**. Alle `shots/m10-verify-menus-*` stammen aus
+  diesen Läufen; `title-480x360.png` wird vom Harness selbst im Fit-View gesetzt (Zeile 145).
 
 ## K4 — Fazit (2026-11-27)
 

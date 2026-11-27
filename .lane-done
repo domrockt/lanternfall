@@ -1,0 +1,14 @@
+Lane m10-verify-menus-view – abgeschlossen (2026-11-27)
+
+Ziel: verify-menus.mjs von der alten 480x270-View entkoppeln (M8-Basis 480x360).
+Umsetzung: Klickziele zur Laufzeit aus der Szene (PixelText-Weltposition),
+Mapping via __game.scale + canvas boundingBox; Tastatur-Fallback bleibt Kontrolle.
+Keine Aenderung an src/** (nur Harness + Doku + Belege).
+
+Belege:
+- before: shots/m10-verify-menus-before.log (640x360 FAIL-Repro, 7 Klickpositionen daneben)
+- after:  shots/m10-verify-menus-after.log  -> PASS 15/15, rc=0, 0 JS-Fehler
+- 640x360: PASS 15/15 (MENUS_VIEWPORT=1280x720), 0 JS-Fehler
+- 480x360: PASS 15/15, Sichtbeleg shots/m10-verify-menus-title-480x360.png
+- JSON: shots/m10-verify-menus.json; Regressionen: build rc=0, 355 Tests gruen.
+Karten: #3598 K1, #3599 K2, #3600 K3, #3601 K4.
