@@ -2741,27 +2741,38 @@
       "id": 1681,
       "title": "m10-atlas-gaps #K4 Test",
       "description": "tests/atlas.test.ts: Coverage 100%, Gutter>=2px, keine Bleed-Fälle, deterministische Atlas-Grösse. Abnahme: npx vitest run tests/atlas.test.ts grün.",
-      "column": "todo",
+      "column": "done",
       "assignee": "test-auditor",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T02:32:10Z",
+          "by": "build",
+          "text": "todo → done: test-auditor PASS nach Fix e26ed6e: 227/227 an 4 Stellen gepinnt, Gutter/Bleed/Determinismus ueber alle 227 realen Frames, 7/7 Tests + tsc gruen."
+        }
+      ],
       "created": "2026-11-27T00:39:12Z",
-      "updated": "2026-11-27T00:39:12Z"
+      "updated": "2026-11-27T02:32:10Z"
     },
     {
       "id": 1682,
       "title": "m10-atlas-gaps #K5 Beleg+Abschluss",
       "description": "Vorher/Nachher-Screenshot desselben Frames, Pixel-Diff=0; Draw-Call/Batch-Zahl dokumentiert; build+test grün; .lane-done. Abnahme: shots/m10-atlas-before.png/-after.png, Diff 0, .lane-done getrackt.",
-      "column": "todo",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T01:42:42Z",
           "by": "build",
           "text": "K5 committet 4c0b423: shots/m10-atlas-before.png + -after.png (Pixel-Diff AE=0), JSONs mit Draw-Calls 2.0 -> 1.0/Frame, docs aktualisiert, 211 Tests gruen. .lane-done fertig im Worktree, aber Claim bei merge-m9-art-polish (main) -> Request in .dispatch/requests.md, Merge-Job uebernimmt die Datei."
+        },
+        {
+          "at": "2026-11-27T02:20:40Z",
+          "by": "build",
+          "text": "todo → done: Belege 4c0b423: before/after PNG identisch (compare AE=0), Draw-Calls 2.0->1.0/Frame (72 Frames, WebGL), 0 JS-Fehler; .lane-done getrackt in 7a07c0a (Claim konnte committet werden)."
         }
       ],
       "created": "2026-11-27T00:39:12Z",
-      "updated": "2026-11-27T01:42:42Z"
+      "updated": "2026-11-27T02:20:40Z"
     }
   ]
 }
