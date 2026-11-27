@@ -7,6 +7,8 @@ import { iconKeyForOffer, iconTextureKey } from "../gfx/icons";
 import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
 import { slotNameLines } from "../logic/text";
+import { evolutionReadyList } from "../logic/evolution";
+import type { EvolutionDef } from "../data/types";
 import { chooseBestOffer } from "../logic/autoplay";
 import { OptionsMenu } from "../ui/options-menu";
 import { createMenuButton, type MenuButton } from "../ui/menu";
@@ -53,6 +55,12 @@ export class UI extends Phaser.Scene {
 
   private hudIconBg!: Phaser.GameObjects.Rectangle;
   private hudIcons: Phaser.GameObjects.Image[] = [];
+  /** M10: Sichtbarer Evolutionspfad im HUD (max. 2 Zeilen, leer = kein Pfad bereit). */
+  private hudEvoHint: PixelText[] = [];
+  private levelHint: PixelText[] = [];
+  private levelHintChars = 16;
+  private chestHint: PixelText[] = [];
+  private chestHintChars = 16;
 
   private chestGroup!: Phaser.GameObjects.Container;
   private chestSprite!: Phaser.GameObjects.Image;
@@ -109,6 +117,7 @@ export class UI extends Phaser.Scene {
     this.hpLabel = new PixelText(this, 9, 16, "HP", C.bone).setDepth(12);
     this.hpFill = this.add.rectangle(25, 17, 82, 4, PAL[C.crimson]).setOrigin(0, 0).setDepth(12);
     this.createHudIcons();
+    this.createHudEvoHint();
 
     this.createLevelUpUI();
     this.createPauseUI();
@@ -171,6 +180,15 @@ export class UI extends Phaser.Scene {
         .setOrigin(0, 0).setDepth(11).setVisible(false);
       this.hudIcons.push(img);
     }
+  }
+
+  /**
+   * M10: HUD-Zeile „EVOLUTION BEREIT“ rechts neben den Icons (ab x=330).
+   * Bewusst ohne Grafik-Rahmen, damit keine Hit-/Fokusfläche verändert wird.
+   */
+  private createHudEvoHint(): void {
+    this.hudEvoHint = [0, 1].map((i) => new PixelText(this, 330, 15 + i * 8, "", C.lantern)
+      .setDepth(12).setVisible(false));
   }
 
   private createBossUI(): void {
@@ -265,6 +283,11 @@ export class UI extends Phaser.Scene {
     this.levelSub = new PixelText(this, cx, 56 + oy, "", C.mist, "center");
     this.levelGroup.add(this.levelTitle);
     this.levelGroup.add(this.levelSub);
+    // M10: Evolutionspfad-Zeile zwischen Untertitel und Karten (max. 2 Zeilen).
+    this.levelHintChars = Math.max(20, Math.floor((frameW - 20) / 6));
+    this.levelHint = [0, 1].map((i) => new PixelText(this, cx, 66 + i * 8 + oy, "", C.lantern, "center")
+      .setVisible(false));
+    this.levelGroup.add(this.levelHint);
 
     this.cards = [];
     for (let i = 0; i < 3; i++) {
@@ -378,6 +401,11 @@ export class UI extends Phaser.Scene {
     this.chestTitle = new PixelText(this, cx, 38 + oy, "TRUHE GEÖFFNET", C.lantern, "center").setScale(2);
     this.chestGroup.add(this.chestTitle);
     this.chestGroup.add(new PixelText(this, cx, 54 + oy, "BELOHNUNGEN ROLLEN ...", C.mist, "center"));
+    const chestFrameW = Math.min(452, W - 24);
+    this.chestHintChars = Math.max(24, Math.floor((chestFrameW - 20) / 6));
+    this.chestHint = [0, 1].map((i) => new PixelText(this, cx, 108 + i * 8 + oy, "", C.lantern, "center")
+      .setVisible(false));
+    this.chestGroup.add(this.chestHint);
     this.chestSlots = [];
     for (let i = 0; i < 5; i++) {
       const x = cx + (i - 2) * 86;
@@ -415,6 +443,15 @@ export class UI extends Phaser.Scene {
     this.chestGroup.setVisible(true);
     this.chestSkip?.setInteractive();
     this.chestTitle.setText("TRUHE");
+    // M10: Die Truhe erklaert in einem Satz, was evolviert (nur bei Evo-Reward).
+    const evoReward = result.rewards[0]?.kind === "evolution" ? result.rewards[0].evolution : undefined;
+    const sentence = evoReward
+      ? evolutionSentence(evoReward, this.chestHintChars)
+      : [];
+    this.chestHint.forEach((t, i) => {
+      t.setText(sentence[i] ?? "");
+      t.setVisible(Boolean(sentence[i]));
+    });
     this.chestSprite.setTexture("chest_closed").setScale(2.2).setAlpha(1);
     this.chestBeam.setAlpha(0).setScale(0.25);
     const n = result.rewards.length;
@@ -491,6 +528,9 @@ export class UI extends Phaser.Scene {
     this.chestHideTimer = undefined;
     this.chestGroup.setVisible(false);
     this.chestSkip?.disableInteractive();
+    for (const t of this.chestHint) {
+      t.setText("").setVisible(false);
+    }
   }
 
   private spawnChestCoins(): void {
@@ -641,6 +681,14 @@ export class UI extends Phaser.Scene {
     });
     const width = keys.length === 0 ? 0 : 8 + keys.length * 18;
     this.hudIconBg.setSize(width, 19).setVisible(keys.length > 0);
+
+    // M10: Evolutionspfad im HUD sichtbar machen (max. 2 Zeilen).
+    const ready = evolutionReadyList(s.weapons, s.passives);
+    const hintLines = ready.length === 0 ? [] : hudEvolutionHint(ready);
+    this.hudEvoHint.forEach((t, i) => {
+      t.setText(hintLines[i] ?? "");
+      t.setVisible(Boolean(hintLines[i]));
+    });
   }
 
   private onPauseChanged(): void {
@@ -666,6 +714,13 @@ export class UI extends Phaser.Scene {
       return;
     }
     this.levelSub.setText(`STUFE ${level} - WÄHLE EINE BELOHNUNG`);
+    const s = this.run.getHudState();
+    const ready = evolutionReadyList(s.weapons, s.passives);
+    const hintLines = ready.length === 0 ? [] : levelUpEvolutionHint(ready, this.levelHintChars);
+    this.levelHint.forEach((t, i) => {
+      t.setText(hintLines[i] ?? "");
+      t.setVisible(Boolean(hintLines[i]));
+    });
     this.selected = Math.min(this.selected, offers.length - 1);
     offers.forEach((offer, i) => {
       const card = this.cards[i];
@@ -810,6 +865,26 @@ export class UI extends Phaser.Scene {
 
 function pickRollName(rewards: { name: string }[], tick = 0): string {
   return rewards[tick % Math.max(1, rewards.length)]?.name ?? "???";
+}
+
+/** M10: HUD-Zeile(n) fuer bereite Evolutionen (max. 2 Zeilen). */
+function hudEvolutionHint(ready: EvolutionDef[]): string[] {
+  if (ready.length === 1) return ["EVOLUTION BEREIT", ready[0].name.toUpperCase()];
+  return [`EVOLUTION BEREIT (${ready.length})`, `U.A. ${ready[0].name.toUpperCase()}`];
+}
+
+/** M10: Panel-Zeile(n) fuer bereite Evolutionen, verlustfrei auf max. 2 Zeilen. */
+function levelUpEvolutionHint(ready: EvolutionDef[], maxChars: number): string[] {
+  if (ready.length === 1) {
+    return slotNameLines(`EVOLUTION BEREIT: ${ready[0].name.toUpperCase()}`, maxChars);
+  }
+  return [`EVOLUTION BEREIT (${ready.length})`, `U.A. ${ready[0].name.toUpperCase()}`];
+}
+
+/** M10: Ein Satz, was evolviert: Basis + Powerup werden zur Evolution. */
+function evolutionSentence(evo: EvolutionDef, maxChars: number): string[] {
+  const sentence = `AUS ${evo.description.toUpperCase()} WIRD ${evo.name.toUpperCase()}.`;
+  return wrapText(sentence, maxChars).slice(0, 2);
 }
 
 function wrapText(text: string, maxChars: number): string[] {

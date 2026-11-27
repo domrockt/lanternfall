@@ -52,6 +52,27 @@ export function evolvableList(
 }
 
 /**
+ * M10: Alle Evolutionen, deren Pfad jetzt bereit ist (Waffe Stufe 8 + passendes
+ * Powerup ≥ 1). Nutzt dieselben Regeln wie `canEvolve`, liefert aber die volle
+ * Liste in deterministischer Tabellenreihenfolge und ohne Duplikate – für den
+ * sichtbaren Hinweis im Level-up-Panel, HUD und in der Truhe.
+ */
+export function evolutionReadyList(
+  weapons: readonly OwnedItem[],
+  passives: readonly OwnedItem[],
+): EvolutionDef[] {
+  const seen = new Set<string>();
+  const out: EvolutionDef[] = [];
+  for (const evo of evolvableList(weapons, passives)) {
+    if (seen.has(evo.id)) continue;
+    seen.add(evo.id);
+    out.push(evo);
+  }
+  return out;
+}
+
+
+/**
  * Anzahl der Truhen-Belohnungen. Die Chance auf 3/5 steigt mit der Run-Zeit.
  * Deterministisch über den übergebenen RNG (Tests reproduzierbar).
  */
