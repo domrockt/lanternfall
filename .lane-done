@@ -1,0 +1,11 @@
+# Lane board-hygiene-m9-world – abgeschlossen
+
+Ziel: Board gegen main abgleichen (Lane m9-art-world war vollstaendig in main enthalten).
+- #698 Terrain Tiles: done, erledigt in b59f9f3 (src/gfx/tiles.ts, shots/m9-art-world-01-*).
+- #699 Props-Tiefe/Schatten: done, erledigt in da3ef77 (src/gfx/GroundRenderer.ts footY/Depth/Schatten, shots/m2-props-depth).
+- #700 Gluehwurrmchen/Nebel: done, erledigt in c0f56d5 (ensureAmbient/updateAmbient, shots/ambient png+git).
+- #701 Abnahme: blocked – genau eine fehlende Pruefung: Grafik-Nachbesserung bis art-director >= 4,5/5,
+  Befund FAIL 2,3/5 dokumentiert in docs/lanes/m9-art-world.md.
+Belege: `git merge-base --is-ancestor m9-art-world main` rc=0, `git diff main...m9-art-world` leer.
+Verifikation: npm test 204/204 gruen, `npx tsc --noEmit` rc=0.
+Kein Spielcode geaendert, keine IDs neu vergeben.
