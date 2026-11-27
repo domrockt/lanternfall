@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2238,
+  "next": 2243,
   "cards": [
     {
       "id": 1,
@@ -3304,6 +3304,86 @@
       ],
       "created": "2026-11-27T00:55:35Z",
       "updated": "2026-11-27T04:34:48Z"
+    },
+    {
+      "id": 2238,
+      "title": "m10-atlas-gaps #K1 Audit-Werkzeug",
+      "description": "scripts/art/atlas-audit.mjs: prüft Coverage aller erwarteten Frame-Keys, Zellabstand >=2px, Bleed im 2px-Ring; schreibt shots/m10-atlas-audit.json. Abnahme: Skript läuft, JSON existiert, Commit enthält Skript+JSON.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T04:45:35Z",
+          "by": "build",
+          "text": "lane #1678 (#K1) — Audit-Skript 3 Pflichtprüfungen, Lauf RC=0, 227/227 Coverage, Gutter min 4px, 0 Bleed; Commit 3160d25."
+        }
+      ],
+      "created": "2026-11-27T04:44:57Z",
+      "updated": "2026-11-27T04:45:35Z"
+    },
+    {
+      "id": 2239,
+      "title": "m10-atlas-gaps #K2 Ist-Stand dokumentieren",
+      "description": "Fehlende Keys, zu kleine Gutter, Bleed-Fälle aus Audit-JSON in docs/lanes/m10-atlas-gaps.md listen. Abnahme: Doku nennt konkrete Zahlen/Frames und ist committet.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T04:45:35Z",
+          "by": "build",
+          "text": "lane #1679 (#K2) — Ist-Stand dokumentiert: 224/224, 3 heisse Keys fehlten, Gutter 0/358, 131 Bleed; Commit 0b4fc02."
+        }
+      ],
+      "created": "2026-11-27T04:44:57Z",
+      "updated": "2026-11-27T04:45:35Z"
+    },
+    {
+      "id": 2240,
+      "title": "m10-atlas-gaps #K3 Fix Atlas",
+      "description": "src/gfx/atlas.ts: fehlende heisse Klassen aufnehmen, Gutter 2px horizontal+vertikal, 1px transparentes Padding pro Zelle; Atlas-Key/API unverändert. Abnahme: Audit 100% Coverage, 0 Gutter-Verstöße, 0 Bleed.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T04:45:35Z",
+          "by": "build",
+          "text": "lane #1680 (#K3) — Fix 815df54: 227/227, 2px Gutter h+v + 1px Padding, 0 Bleed, API unverändert; Reviewer PASS, Commit 32b0053."
+        }
+      ],
+      "created": "2026-11-27T04:44:57Z",
+      "updated": "2026-11-27T04:45:35Z"
+    },
+    {
+      "id": 2241,
+      "title": "m10-atlas-gaps #K4 Test",
+      "description": "tests/atlas.test.ts: Coverage 100%, Gutter>=2px, keine Bleed-Fälle, deterministische Atlas-Grösse. Abnahme: npx vitest run tests/atlas.test.ts grün.",
+      "column": "done",
+      "assignee": "test-auditor",
+      "notes": [
+        {
+          "at": "2026-11-27T04:45:35Z",
+          "by": "build",
+          "text": "lane #1681 (#K4) — tests/atlas.test.ts 7/7 grün, 227/227 gepinnt, Gutter/Bleed/Determinismus; Commit e26ed6e."
+        }
+      ],
+      "created": "2026-11-27T04:44:57Z",
+      "updated": "2026-11-27T04:45:35Z"
+    },
+    {
+      "id": 2242,
+      "title": "m10-atlas-gaps #K5 Beleg+Abschluss",
+      "description": "Vorher/Nachher-Screenshot desselben Frames, Pixel-Diff=0; Draw-Call/Batch-Zahl dokumentiert; build+test grün. Abnahme: shots/m10-atlas-before.png/-after.png, Diff 0.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T04:45:35Z",
+          "by": "build",
+          "text": "lane #1682 (#K5) — Belege: before/after Pixel-Diff AE=0, Draw-Calls 2.0→1.0/Frame, 0 JS-Fehler; Commits 4c0b423/7a07c0a."
+        }
+      ],
+      "created": "2026-11-27T04:44:57Z",
+      "updated": "2026-11-27T04:45:35Z"
     }
   ]
 }

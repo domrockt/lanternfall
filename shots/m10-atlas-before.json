@@ -1,0 +1,227 @@
+{
+  "tool": "scripts/art/atlas-evidence.mjs",
+  "generatedAt": "2026-11-27T01:33:03.161Z",
+  "image": "shots/m10-atlas-before.png",
+  "atlasSize": {
+    "width": 1024,
+    "height": 343
+  },
+  "atlasFrames": 224,
+  "rendererType": 2,
+  "distinctTextures": 17,
+  "sequenceLength": 47,
+  "shown": [
+    {
+      "key": "enemy_wolf",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_43",
+      "path": "texture"
+    },
+    {
+      "key": "flail_ball",
+      "path": "texture"
+    },
+    {
+      "key": "enemy_bat",
+      "path": "atlas"
+    },
+    {
+      "key": "gem_small",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_45",
+      "path": "texture"
+    },
+    {
+      "key": "chain_link",
+      "path": "texture"
+    },
+    {
+      "key": "projectile_ember",
+      "path": "atlas"
+    },
+    {
+      "key": "fx_spark",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_47",
+      "path": "texture"
+    },
+    {
+      "key": "puddle_poison",
+      "path": "texture"
+    },
+    {
+      "key": "enemy_wisp",
+      "path": "atlas"
+    },
+    {
+      "key": "enemy_bat",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_61",
+      "path": "texture"
+    },
+    {
+      "key": "fx_fire",
+      "path": "atlas"
+    },
+    {
+      "key": "projectile_ember",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_65",
+      "path": "texture"
+    },
+    {
+      "key": "enemy_bog_rat",
+      "path": "atlas"
+    },
+    {
+      "key": "enemy_wisp",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_66",
+      "path": "texture"
+    },
+    {
+      "key": "gem_medium",
+      "path": "atlas"
+    },
+    {
+      "key": "fx_fire",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_67",
+      "path": "texture"
+    },
+    {
+      "key": "fx_star",
+      "path": "atlas"
+    },
+    {
+      "key": "enemy_bog_rat",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_68",
+      "path": "texture"
+    },
+    {
+      "key": "enemy_ghoul",
+      "path": "atlas"
+    },
+    {
+      "key": "gem_medium",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_69",
+      "path": "texture"
+    },
+    {
+      "key": "projectile_thorn",
+      "path": "atlas"
+    },
+    {
+      "key": "fx_star",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_70",
+      "path": "texture"
+    },
+    {
+      "key": "enemy_crow",
+      "path": "atlas"
+    },
+    {
+      "key": "enemy_ghoul",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_71",
+      "path": "texture"
+    },
+    {
+      "key": "fx_bolt",
+      "path": "atlas"
+    },
+    {
+      "key": "projectile_thorn",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_72",
+      "path": "texture"
+    },
+    {
+      "key": "enemy_wolf",
+      "path": "atlas"
+    },
+    {
+      "key": "enemy_crow",
+      "path": "atlas"
+    },
+    {
+      "key": "glyph_7_73",
+      "path": "texture"
+    },
+    {
+      "key": "gem_small",
+      "path": "atlas"
+    },
+    {
+      "key": "enemy_skeleton",
+      "path": "atlas"
+    },
+    {
+      "key": "gem_large",
+      "path": "atlas"
+    },
+    {
+      "key": "fx_halo",
+      "path": "atlas"
+    },
+    {
+      "key": "boss_moor_queen",
+      "path": "atlas"
+    },
+    {
+      "key": "fx_shock",
+      "path": "atlas"
+    }
+  ],
+  "nonAtlasShown": [
+    "glyph_7_43",
+    "flail_ball",
+    "glyph_7_45",
+    "chain_link",
+    "glyph_7_47",
+    "puddle_poison",
+    "glyph_7_61",
+    "glyph_7_65",
+    "glyph_7_66",
+    "glyph_7_67",
+    "glyph_7_68",
+    "glyph_7_69",
+    "glyph_7_70",
+    "glyph_7_71",
+    "glyph_7_72",
+    "glyph_7_73"
+  ],
+  "drawCalls": {
+    "draws": 144,
+    "frames": 72,
+    "drawsPerFrame": 2
+  },
+  "jsErrors": []
+}
