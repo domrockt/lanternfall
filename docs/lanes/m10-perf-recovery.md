@@ -94,6 +94,10 @@ Draw-Calls/Frame stehen oben; Ursache ist mit `c0f56d5` **belegt** (Median 51,4
 statt 60,0 FPS im Minute-25-Fenster, Burst unverändert). Kein Code-Fix in dieser
 Mess-Karte; Folgekarte ist `#2678 m10-perf-fix-ambient-batching`.
 
+Sicht-Belege (`#2499`): profile done — die Belege lagen bereits als eigene Karte
+vor und sind in `caea6b6`/`3ea51b7` committet (verify-display 38/38, 30 Gegner/
+6 Bosse/12 VFX-GIFs bei 640×360).
+
 ## Bisect (git bisect, Kriterium minute25 ≥ 55 FPS)
 
 `bash scripts/perf-bisect.sh 0b42ffe HEAD` (temporärer Worktree, Predikat
