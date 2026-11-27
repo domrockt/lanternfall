@@ -7,7 +7,7 @@
 // Attribution: on-hidden = Draw-/Renderpfad, hidden-frozen = Update-Pfad.
 // Der Update-Pfad wird zusaetzlich direkt um `ground.update()` gemessen.
 // 3 Laeufe x 3 rotierte Messfenster je Bedingung gegen Waerme-/Last-Bias.
-// Laeuft unter `flock -w` (Wartezeit-Limit = erwartete Laufzeit + 120 s Puffer):
+// Laeuft unter flock MIT Wartezeit-Limit (-w = erwartete Laufzeit + 120 s Puffer):
 //   flock -w 300 /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs
 //   flock -w 520 /home/ai/games/.lf-perf.lock node scripts/m10-ground-cost.mjs --instrument
 // Bei Lock-Timeout (rc != 0): Skriptname + "Sperre /home/ai/games/.lf-perf.lock belegt
