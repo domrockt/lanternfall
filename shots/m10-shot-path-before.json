@@ -1,0 +1,59 @@
+{
+  "tag": "before",
+  "date": "2026-11-27T21:36:04.636Z",
+  "config": {
+    "enemies": 500,
+    "shooters": 71,
+    "framesPerPass": 300,
+    "passes": 9,
+    "warmupFrames": 120,
+    "dt": 0.016666666666666666,
+    "seed": 20261127,
+    "view": "640x360 um Spieler (0,0)",
+    "shotSpeed": 120,
+    "shotLife": 3.2,
+    "fireIntervalFrames": "60-120, gestaffelt"
+  },
+  "results": {
+    "msPerFrame": 0.047,
+    "passMsPerFrame": [
+      0.047,
+      0.052,
+      0.052,
+      0.053,
+      0.059,
+      0.065,
+      0.083,
+      0.083,
+      0.104
+    ],
+    "statsAfterProfileRun": {
+      "attempted": 369,
+      "fired": 186,
+      "hits": 0,
+      "offscreenAttempts": 173,
+      "offscreenFired": 0,
+      "offscreenHits": 0,
+      "cancelledShooterDeath": 0,
+      "cancelledOffscreen": 173,
+      "cancelledNoTelegraph": 0,
+      "windupOk": 186,
+      "active": 89,
+      "pending": 10
+    },
+    "hitsInProfileRun": 0,
+    "tweenAddsPerFrame": 16.86,
+    "stubCallsPerFrame": {
+      "setPosition": 84.06,
+      "setRotation": 83.59,
+      "setScale": 278.41,
+      "setAlpha": 277.95,
+      "setVisible": 1.72,
+      "setActive": 1.72,
+      "setDepth": 17.79,
+      "setBlendMode": 0.93,
+      "makeImage": 16.89,
+      "applyTexture": 0.93
+    }
+  }
+}

@@ -43,6 +43,18 @@ interface PendingShot {
   telegraph: Phaser.GameObjects.Image | null;
 }
 
+/** Sichtbarer Trail: gepoolte Bilder mit manuellem linearem Fade (wie der
+ *  fruehere Tween: Alpha 0.25→0, Scale 0.7→0.2, 160 ms) — keine Allokationen
+ *  mehr im Hot Path (M10-shot-path-budget K2). */
+interface TrailFx {
+  img: Phaser.GameObjects.Image;
+  t: number;
+}
+const TRAIL_FADE_SECONDS = 0.16;
+/** Trail-Fade in Schritten von ~2 Frames (identische Kurve, halbe Setter-Rate). */
+const TRAIL_FADE_STEP_SECONDS = 1 / 30;
+const TRAIL_POOL_CAP = 320;
+
 export interface EnemyShotStats {
   /** spawn()-Aufrufe der KI/Bosse (inkl. verworfener Offscreen-Schüsse). */
   attempted: number;
@@ -132,8 +144,15 @@ function ensureHdShotTextures(scene: Phaser.Scene): void {
 export class EnemyProjectilePool {
   readonly active: EnemyShotRuntime[] = [];
   private readonly pending: PendingShot[] = [];
+  private readonly pendingFree: PendingShot[] = [];
   private readonly free: EnemyShotRuntime[] = [];
   private readonly telegraphFree: Phaser.GameObjects.Image[] = [];
+  private readonly trailPool: Phaser.GameObjects.Image[] = [];
+  private readonly trails: TrailFx[] = [];
+  private trailFadeAccum = 0;
+  /** View-Probe: einmal pro spawn()/update() aufgefuellt (keine Allokation je Gate-Check). */
+  private readonly viewProbe = { x: 0, y: 0, width: 0, height: 0 };
+  private viewValid = false;
   private readonly scene: Phaser.Scene;
   private readonly stats: EnemyShotStats;
   private readonly debugHook = () => this.snapshot();
@@ -168,6 +187,7 @@ export class EnemyProjectilePool {
     x: number; y: number; vx: number; vy: number; damage: number; radius?: number;
     texture: string; life?: number;
   }): EnemyShotRuntime | null {
+    this.refreshView();
     const texture = this.textureFor(opts.texture);
     this.stats.attempted += 1;
     const inView = this.isInView(opts.x, opts.y);
@@ -188,19 +208,19 @@ export class EnemyProjectilePool {
     telegraph.setScale(1);
     telegraph.setAlpha(TELEGRAPH_ALPHA_START);
     telegraph.setVisible(true).setActive(true);
-    this.pending.push({
-      x: opts.x,
-      y: opts.y,
-      vx: opts.vx,
-      vy: opts.vy,
-      damage: Math.max(1, Math.round(opts.damage)),
-      radius: opts.radius ?? 4,
-      life: opts.life ?? 3.2,
-      texture,
-      elapsed: 0,
-      duration: ENEMY_SHOT_WINDUP_SECONDS,
-      telegraph,
-    });
+    const p = this.pendingFree.pop() ?? ({} as PendingShot);
+    p.x = opts.x;
+    p.y = opts.y;
+    p.vx = opts.vx;
+    p.vy = opts.vy;
+    p.damage = Math.max(1, Math.round(opts.damage));
+    p.radius = opts.radius ?? 4;
+    p.life = opts.life ?? 3.2;
+    p.texture = texture;
+    p.elapsed = 0;
+    p.duration = ENEMY_SHOT_WINDUP_SECONDS;
+    p.telegraph = telegraph;
+    this.pending.push(p);
     return null;
   }
 
@@ -227,12 +247,23 @@ export class EnemyProjectilePool {
     return HD_PREFIX + family;
   }
 
-  private isInView(x: number, y: number): boolean {
+  /** View einmal pro spawn()/update() in die Probe kopieren; kein Objekt je Check. */
+  private refreshView(): void {
     const cam = this.scene.cameras?.main;
-    if (!cam) return true;
-    const view = cam.worldView;
-    if (!view || view.width <= 0 || view.height <= 0) return true;
-    return isPointInView(x, y, { x: view.x, y: view.y, width: view.width, height: view.height });
+    const view = cam?.worldView;
+    this.viewValid = !!view && view.width > 0 && view.height > 0;
+    if (this.viewValid) {
+      this.viewProbe.x = view.x;
+      this.viewProbe.y = view.y;
+      this.viewProbe.width = view.width;
+      this.viewProbe.height = view.height;
+    }
+  }
+
+  private isInView(x: number, y: number): boolean {
+    // Ohne Kamera/ungueltigem View (Tests, Headless) gilt alles als sichtbar.
+    if (!this.viewValid) return true;
+    return isPointInView(x, y, this.viewProbe);
   }
 
   /** Lebt der Schütze noch nahe dem Ursprung? Verhindert Geisterschüsse. */
@@ -241,7 +272,11 @@ export class EnemyProjectilePool {
     if (!enemies?.active) return true;
     for (const e of enemies.active) {
       if (!e.alive) continue;
-      if ((e.x - x) ** 2 + (e.y - y) ** 2 <= 40 * 40) return true;
+      const dx = e.x - x;
+      if (dx > 40 || dx < -40) continue;
+      const dy = e.y - y;
+      if (dy > 40 || dy < -40) continue;
+      if (dx * dx + dy * dy <= 40 * 40) return true;
     }
     return false;
   }
@@ -255,6 +290,7 @@ export class EnemyProjectilePool {
     // Vorwarnung zeigt die eigene Schuss-Silhouette (Familien bleiben unterscheidbar).
     applyTexture(img, texture);
     img.setDepth(DEPTH.hazard);
+    img.setScale(1);
     img.setBlendMode(Phaser.BlendModes.NORMAL);
     img.clearTint();
     return img;
@@ -300,14 +336,15 @@ export class EnemyProjectilePool {
     playerY: number,
     onPlayerHit: (damage: number, shot: EnemyShotRuntime) => void,
   ): void {
+    this.refreshView();
     // Vorwarnungen zuerst: Projektil entsteht erst am Ende der Wind-up-Zeit.
     for (let i = this.pending.length - 1; i >= 0; i--) {
       const p = this.pending[i];
       p.elapsed += dt;
-      const t = Phaser.Math.Clamp(p.elapsed / p.duration, 0, 1);
       if (p.telegraph) {
         // Pixel-Grid: Telegraph bleibt 1x (kein nichtganzzahliger Scale), pulsiert über Alpha.
-        p.telegraph.setScale(1);
+        // Scale ist konstant 1 (gesetzt beim Acquire) → kein setScale je Frame.
+        const t = p.elapsed >= p.duration ? 1 : p.elapsed / p.duration;
         p.telegraph.setAlpha(TELEGRAPH_ALPHA_START - (TELEGRAPH_ALPHA_START - TELEGRAPH_ALPHA_END) * t);
       }
       if (p.elapsed < p.duration) continue;
@@ -323,9 +360,11 @@ export class EnemyProjectilePool {
       if (!gate) {
         if (!originInView) this.stats.cancelledOffscreen += 1;
         else this.stats.cancelledShooterDeath += 1;
+        this.pendingFree.push(p);
         continue;
       }
       this.launch(p);
+      this.pendingFree.push(p);
     }
 
     for (let i = this.active.length - 1; i >= 0; i--) {
@@ -342,21 +381,15 @@ export class EnemyProjectilePool {
       shot.x += shot.vx * dt;
       shot.y += shot.vy * dt;
       shot.sprite.setPosition(Math.round(shot.x), Math.round(shot.y));
-      shot.sprite.setRotation(Math.atan2(shot.vy, shot.vx));
+      // Rotation/Scale bleiben konstant: v ist pro Schuss fix (Rotation beim
+      // Launch gesetzt), Scale 1x-Grid → nur Position + Alpha-Puls je Frame.
       // Puls über Alpha statt Scale: ganzzahliges 1x-Grid, 1-px-Kontur bleibt scharf.
-      shot.sprite.setScale(1);
       shot.sprite.setAlpha(0.92 + Math.sin(shot.life * 18 + shot.radius) * 0.08);
       // Sichtbarer Trail (nicht additiv, damit Gegnerschüsse eigen bleiben).
       shot.trailTimer -= dt;
       if (shot.trailTimer <= 0) {
         shot.trailTimer = 0.07;
-        const fx = makeImage(this.scene, shot.x, shot.y, shot.texture)
-          .setDepth(DEPTH.hazard)
-          .setAlpha(0.25)
-          .setScale(0.7);
-        this.scene.tweens.add({
-          targets: fx, alpha: 0, scale: 0.2, duration: 160, onComplete: () => fx.destroy(),
-        });
+        this.emitTrail(shot);
       }
       if ((shot.x - playerX) ** 2 + (shot.y - playerY) ** 2 < (shot.radius + 6) ** 2) {
         this.stats.hits += 1;
@@ -367,6 +400,44 @@ export class EnemyProjectilePool {
         this.active.splice(i, 1);
         this.free.push(shot);
       }
+    }
+
+    // Trail-Fade in ~30-Hz-Schritten (gleiche lineare Kurve wie der fruehere
+    // Tween, halbe Setter-Rate im Chaos).
+    this.trailFadeAccum += dt;
+    if (this.trailFadeAccum >= TRAIL_FADE_STEP_SECONDS) {
+      this.updateTrails(this.trailFadeAccum);
+      this.trailFadeAccum = 0;
+    }
+  }
+
+  /** Gepoolter Trail: gleiche lineare Kurve wie der fruehere Tween (0.25→0 / 0.7→0.2, 160 ms). */
+  private emitTrail(shot: EnemyShotRuntime): void {
+    const img = this.trailPool.pop()
+      ?? (this.trails.length < TRAIL_POOL_CAP ? makeImage(this.scene, shot.x, shot.y, shot.texture) : null);
+    if (!img) return;
+    applyTexture(img, shot.texture);
+    img.setDepth(DEPTH.hazard);
+    img.setPosition(shot.x, shot.y);
+    img.setScale(0.7);
+    img.setAlpha(0.25);
+    img.setVisible(true).setActive(true);
+    this.trails.push({ img, t: 0 });
+  }
+
+  private updateTrails(dt: number): void {
+    for (let i = this.trails.length - 1; i >= 0; i--) {
+      const fx = this.trails[i];
+      fx.t += dt;
+      const k = fx.t / TRAIL_FADE_SECONDS;
+      if (k >= 1) {
+        fx.img.setVisible(false).setActive(false);
+        this.trails.splice(i, 1);
+        this.trailPool.push(fx.img);
+        continue;
+      }
+      fx.img.setAlpha(0.25 * (1 - k));
+      fx.img.setScale(0.7 + (0.2 - 0.7) * k);
     }
   }
 
@@ -381,6 +452,11 @@ export class EnemyProjectilePool {
       this.free.push(shot);
     }
     this.active.length = 0;
+    for (const fx of this.trails) {
+      fx.img.setVisible(false).setActive(false);
+      this.trailPool.push(fx.img);
+    }
+    this.trails.length = 0;
     // Debug-Hook nur abbauen, wenn er noch diesem Pool gehört (kein Leak).
     const g = globalThis as unknown as Record<string, unknown>;
     if (g.__lfEnemyShots === this.debugHook) delete g.__lfEnemyShots;
