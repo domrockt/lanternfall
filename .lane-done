@@ -1,0 +1,9 @@
+# Lane m10-enemy-ai – fertig
+
+- 30 Gegnertypen in 10 Archetypen mit eigenen Profil-Parametern/Branches (swarm webt, chaser stößt vor, tank stemmt, ranged kitet, summoner ruft, orbiter flankiert, charger sprintet, splitter teilt, exploder zündet, phaser blinkt).
+- Deterministische Verhaltensmatrix (Seeds 101/202, 2 × 60 s, Stub-RNG, kein Renderer) in tests/enemy-ai.test.ts; Beleg shots/m10-enemy-ai-matrix.json.
+- 6 messbar getrennte Verhaltenscluster mit Test-Assertions; 30/10-Coverage explizit geprüft; 214 Tests grün, tsc/build rc=0.
+- K1–K4: Reviewer PASS, Test-Auditor PASS (Runde 2).
+- K5 In-Game: 5 Sim-Minuten @ timeScale 10, 305,8 s sim / 38 s real, FPS-Min 57,9 (Ziel ≥ 55), Median 60,5, 178 Gegner im Shot, 0 JS-Fehler.
+- Belege: shots/m10-enemy-ai-mass.png, shots/m10-enemy-ai-mass.json, docs/lanes/m10-enemy-ai.md.
+- Follow-ups dokumentiert: Charger-Zielrichtung sperren, Split-Action als echtes KI-Event, Telegraph-Nenner.

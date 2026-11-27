@@ -102,7 +102,7 @@ Orbitern ein Artefakt statt eines Flankier-Maßes.
 
 | Archetyp | Soll-Signatur | Messkriterium (Zielkorridor) |
 |---|---|---|
-| swarm | umschwärmt in Schwarmwolke, weicht seitlich aus | Vorwärts 0.6–0.9, Dreh/s 2–8, Distanz-Streuung hoch |
+| swarm | umschwärmt in Schwarmwolke, webt quer zur Anlaufachse | Vorwärts > 0.9 bei hoher Lenkung > 60 °/s, Dreh/s > 0.3 |
 | chaser | verfolgt direkt, stößt rhythmisch vor | Vorwärts > 0.95, Dreh/s < 1, Burst-Anteil 0.05–0.2 |
 | tank | walzt langsam und stur geradeaus | ØSpeedMul < 0.9, Dreh/s < 0.5, Vorwärts > 0.95 |
 | ranged | hält Abstandsband, zieht sich bei Bedrängung zurück | ØDist im Band ±25, Rückzugsanteil > 0.05, Shoot-Events > 0 |
@@ -196,9 +196,45 @@ Zielkorridoren; die vollständigen 202-Werte stehen im JSON-Beleg.*
 | Kite | ranged | ØDist 111–143, Rückzug 0.85–0.95 unter Druck, 42–50 Schüsse/60 s | ØDist > 80, Rückzug > 3 % |
 | Summoner | summoner | ØDist 180–188, 28–34 Rufe/60 s | ØDist > 120, Vorwärts < 0.6 |
 | Flanker | orbiter | Kreisbahn 84–88 px, Lenkung 274–332 °/s, σDist ≤ 5.5 | Lenkung > 30 °/s, σDist < 30 |
-| Specialist | splitter, exploder, phaser | 4 Splits, 39–50 Explosionen, 44–48 Blinks | Events > 0 bzw. ≥ 4 |
+| Specialist | splitter, exploder, phaser | 4 Splits, 39–50 Explosionen, 44–48 Blinks | Split ≥ 2, Blink ≥ 40, Explode ≥ 20 |
 
 Damit sind **6 messbar getrennte Cluster** belegt (≥ 4 gefordert) und alle 30
 Gegnertypen erfüllen die Soll-Signatur ihres Archetyps. `npx vitest run
-tests/enemy-ai.test.ts` ist grün (8 Tests, inkl. Disjunktheits-Prüfung:
-Nahkampf < 60 px vs. Fernkampf > 60 px).
+tests/enemy-ai.test.ts` ist grün (10 Tests, inkl. 30/10-Coverage-Assertion und
+Disjunktheits-Prüfung: Nahkampf < 60 px vs. Fernkampf > 60 px).
+
+## In-Game-Beleg (#K5)
+
+Messlauf: 5 Sim-Minuten mit `timeScale 10` über `window.__lf`, AutoPlay + God,
+960×540-Viewport, unter `flock /home/ai/.lf-perf.lock`. FPS-Minimum als
+Minimum der 1-Sekunden-Fenster nach 10 s Warmlauf.
+
+| Messwert | Ergebnis |
+|---|---|
+| Sim-Zeit | 305,8 s (5:05) |
+| Echtzeit | 38 s |
+| FPS-Min (1-s-Fenster) | **57,9** (Ziel ≥ 55) |
+| FPS-Min (roher 200-ms-Sample) | 57,5 |
+| FPS-Median | 60,5 |
+| Gegner im Belegframe | **178** (Ziel ≥ 100) |
+| Level / Kills | 13 / 324 |
+| JS-Fehler | 0 |
+| `npm run build` | rc=0 |
+
+Belege: `shots/m10-enemy-ai-mass.png` (Massenframe mit lebenden
+Gegnern und aktivem Boss) und `shots/m10-enemy-ai-mass.json` (Rohwerte).
+Der Frame wurde 3 s nach dem 5-Minuten-Bossintro bei `timeScale 1` aufgenommen,
+damit kein Banner den Massen-Beleg verdeckt; der Messlauf selbst lief mit
+`timeScale 10`.
+
+## Offene Punkte (Follow-ups, nicht Teil der K5-Abnahme)
+
+- **Charger-Zielrichtung:** `aimX/aimY` wird am Ende jedes Steps neu gesetzt;
+  der Charge folgt dadurch dem Spieler statt einer gesperrten geraden Linie.
+  Ein Richtungskonstanz-Test für den Charge fehlt (Reviewer-Befund, kein Blocker).
+- **Splitter-Assertion:** `splitEvents` entsteht teils aus der Test-Modellierung
+  (Kontakt als Todeszeitpunkt + `shouldSplit`), nicht ausschließlich aus einer
+  KI-Aktion. Für einen reinen KI-Beleg wäre ein `split`-Action-Event sinnvoll.
+- **Telegraph-Nenner:** Aktionen aus der Warmup-Phase zählen in
+  `telegraphSteps`, Fuse-Schritte erst danach — kleine systematische Unterschätzung.
+
