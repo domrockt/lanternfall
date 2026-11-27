@@ -1,4 +1,4 @@
-import type { AiRng, AiState } from "./enemy-ai";
+import { newAiState, type AiRng, type AiState } from "./enemy-ai";
 
 /**
  * Setzt einen vorhandenen KI-Zustand in-place zurück. EnemyPool recycelt
@@ -15,4 +15,13 @@ export function resetAiState(state: AiState, rng: AiRng): void {
   state.fuse = 0;
   state.blinks = 0;
   state.attacks = 0;
+}
+
+/** Recycelt einen vorhandenen KI-Zustand oder legt beim ersten Spawn einen an. */
+export function ensureAiState(previous: AiState | undefined, rng: AiRng): AiState {
+  if (previous) {
+    resetAiState(previous, rng);
+    return previous;
+  }
+  return newAiState(rng);
 }

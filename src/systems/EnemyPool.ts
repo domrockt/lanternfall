@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import type { EnemyDef } from "../data/types";
 import { SPRITE_FRAMES } from "../gfx/textures";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
-import { resetAiState } from "../logic/ai-state";
+import { ensureAiState } from "../logic/ai-state";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 
@@ -132,7 +132,7 @@ export class EnemyPool {
     enemy.tint = "none";
     enemy.alpha = 1;
     enemy.aiRng = rng ?? DEFAULT_AI_RNG;
-    resetAiState(enemy.ai, enemy.aiRng);
+    enemy.ai = ensureAiState(enemy.ai, enemy.aiRng);
     enemy.threat = enemy.boss ? 0.35 : def.archetype === "exploder" ? 1.8 : 1;
     enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
     const frames = SPRITE_FRAMES[def.spriteKey];

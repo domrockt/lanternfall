@@ -3,20 +3,11 @@ import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { DEPTH } from "../gfx/depth";
 import {
-  MAX_ENTRIES, addDamage, expireDamage, damageLabel, shouldAggregateDamage,
-  type AggregateEntry, type EntrySink,
+  MAX_ENTRIES, ViewBudget, addDamage, expireDamage, damageLabel, resetAggregateEntry,
+  shouldAggregateDamage, type AggregateEntry, type EntrySink,
 } from "../logic/damage-numbers";
 import type { LodState } from "../logic/lod";
 import { Pool } from "./Pool";
-
-function resetEntry(e: AggregateEntry): void {
-  e.enemyUid = 0;
-  e.damage = 0;
-  e.crit = false;
-  e.firstTime = 0;
-  e.lastTime = 0;
-  e.hits = 0;
-}
 
 interface DamageView {
   text: PixelText;
@@ -41,14 +32,14 @@ export class DamageNumberSystem {
   /** Reuse-Speicher für Aggregat-Einträge: kein Objekt pro Treffer im Steady State. */
   private readonly entryPool = new Pool<AggregateEntry>(
     () => ({ enemyUid: 0, damage: 0, crit: false, firstTime: 0, lastTime: 0, hits: 0 }),
-    resetEntry,
+    resetAggregateEntry,
     MAX_ENTRIES,
   );
   private readonly entrySink: EntrySink = {
     take: () => this.entryPool.obtain(),
     give: (e) => this.entryPool.release(e),
   };
-  private activeViews = 0;
+  private readonly viewBudget = new ViewBudget();
   private clock = 0;
   private lod: LodState | null = null;
   private enabled = true;
@@ -117,8 +108,7 @@ export class DamageNumberSystem {
       view = this.views.reduce((a, b) => (a.life < b.life ? a : b));
     }
     const limit = aggregate ? (this.lod?.level === "minimal" ? 6 : 10) : this.maxViews;
-    if (!view.active && this.activeViews >= limit) return;
-    if (!view.active) this.activeViews += 1;
+    if (!view.active && !this.viewBudget.tryActivate(limit)) return;
     view.active = true;
     view.uid = uid;
     view.x = x;
@@ -142,7 +132,7 @@ export class DamageNumberSystem {
       v.life -= dt;
       if (v.life <= 0) {
         v.active = false;
-        this.activeViews = Math.max(0, this.activeViews - 1);
+        this.viewBudget.deactivate();
         v.text.setVisible(false);
         continue;
       }
@@ -163,7 +153,7 @@ export class DamageNumberSystem {
   clear(): void {
     for (const e of this.entries) this.entryPool.release(e);
     this.entries.length = 0;
-    this.activeViews = 0;
+    this.viewBudget.reset();
     for (const v of this.views) {
       v.active = false;
       v.text.setVisible(false);
@@ -171,6 +161,6 @@ export class DamageNumberSystem {
   }
 
   get count(): number {
-    return this.activeViews;
+    return this.viewBudget.count;
   }
 }

@@ -20,6 +20,42 @@ export interface AggregateEntry {
 }
 
 export const AGGREGATE_WINDOW = 0.45;
+/** Setzt ein recyceltes Aggregat-Objekt vollständig zurück (keine Restfelder). */
+export function resetAggregateEntry(e: AggregateEntry): void {
+  e.enemyUid = 0;
+  e.damage = 0;
+  e.crit = false;
+  e.firstTime = 0;
+  e.lastTime = 0;
+  e.hits = 0;
+}
+
+/**
+ * Budget für gleichzeitig sichtbare Damage-Number-Views. Ersetzt das frühere
+ * `views.filter(...).length` pro Treffer (Allokation) durch einen Zähler.
+ */
+export class ViewBudget {
+  private active = 0;
+
+  tryActivate(limit: number): boolean {
+    if (this.active >= limit) return false;
+    this.active += 1;
+    return true;
+  }
+
+  deactivate(): void {
+    this.active = Math.max(0, this.active - 1);
+  }
+
+  reset(): void {
+    this.active = 0;
+  }
+
+  get count(): number {
+    return this.active;
+  }
+}
+
 
 /**
  * Ab dieser Gegnerzahl werden Damage-Numbers grundsätzlich zusammengefasst
