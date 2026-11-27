@@ -85,7 +85,7 @@ unabhängiges art-director-Review gegen `ART.md`.
 | 4 | `enemy_wolf` | F1 = F3 (fast) | F1 und F3 differieren nur 17 px (3,0 %); die „Gegenphase“ wirkt wie eine Kopie. F2/F3 sollten eine dritte Beinphase zeigen. | minor | `m9-art-world` (Gegneranimation) |
 | 5 | `enemy_bomber` | F1 = F3 (fast) | F1 und F3 differieren nur 16 px (2,8 %); Zünd-Docth-Flamme und Körper sind in beiden Frames nahezu gleich. | minor | `m9-art-world` (Gegneranimation) |
 | 6 | `boss_bone_lord` | F0 ≈ F2 | F2 (Wind-up) differiert nur 110 px (2,7 %) von F0 (Ruhe). Der Wind-up ist erst im Übergang F1→F2 (27 %) erkennbar; Arme/Waffe sollten in F2 deutlicher ausholen. | minor | `m9-art-world` (Boss-Animation) |
-| 7 | `enemy_spider` | F1 (auch F0–F3) | Beine sind 1 px breite, punktierte Diagonalketten (`4/0`-Wechsel); 7 Pixel ohne orthogonalen Nachbarn, z. B. (2,8)/(3,16)/(15,7)/(16,7). Verstößt gegen ART.md Regel 4 „jede Form mindestens 2×2 px, keine Einzelpixel“ (8-Nachbar-Selbstcheck tarnt das als „0 Einzelpixel“). Beine auf 2 px verbreitern bzw. Punktspitzen entfernen. | **major** | `m9-art-world` (Gegneranimation) |
+| 7 | `enemy_spider` | F1 (Muster in F0–F3) | Beine sind 1 px breite, punktierte Diagonalketten aus Palettenindex 4/0 (2-px-Segmente fehlen, obwohl der Python-Generator sie zeichnet). In F1 liegen **7 Pixel ohne orthogonalen Nachbarn** (Farbe 9/paleMist): (15,7)/(2,8)/(2,11)/(3,16)/(16,17)/(3,19)/(14,19). Verstößt gegen ART.md Regel 4 „jede Form mindestens 2×2 px, keine Einzelpixel“; der 8-Nachbar-Selbstcheck tarnt das als „0 Einzelpixel“. Beine auf 2 px verbreitern bzw. Punktspitzen entfernen. | **major** | `m9-art-world` (Gegneranimation) |
 | 8 | `enemy_spider` | alle Frames | **Generator-Drift:** Der Python-Generator `scripts/art/gen_enemies.py::spider` zeichnet 2-px-Beinsegmente, die exportierten TS-Grids in `src/gfx/gen-enemies.ts` (das Spiel-Asset) weichen je Frame um **239–242 px** ab (F0 239, F1 240, F2 242, F3 242). Der Tooling-Selbstcheck von `sheet-enemies-dark.py` prüft daher ein anderes Asset als das Spiel. Generator/Export synchronisieren und Selbstcheck gegen die TS-Grids laufen lassen. | **major** | `m9-art-world` (Pipeline/Animation) |
 
 Nicht als Mangel gewertet (geprüft, sauber):
@@ -157,4 +157,11 @@ Tooling-Selbstcheck misst die Python-Generatoren statt der TS-Spiel-Grids (Spide
 - Tooling-Abschnitt um die Einschränkung „Python- statt TS-Grids“ erweitert; Helden-Walk-Diff auf die gemessenen 32–43 % korrigiert.
 - Kein Sprite selbst geändert (Belege sind Diagnose-Material; Reparaturen gehören in die m9-art-* Karten).
 
-**Runde 2:** erneute, unabhängige art-director-Prüfung nach der Nachbesserung → Ergebnis siehe unten.
+**Runde 2 (27.11.): URTEIL: PASS — Note 4.**
+Alle vier Runde-1-Befunde sind korrekt eingearbeitet und belegt; die Bögen plus Audit zeigen die Mängel,
+die Mängelliste ist vollständig. Abgedeckt: Mangel 2 mit allen 16 Koordinaten (inkl. (2,11)/(3,11)),
+Mangel 3 x=71/y=8–15 mit Bodenkontakt als gewollt, Mangel 7 Spider-Beine/Regel 4, Mangel 8
+Generator-Drift 239–242 px/Frame samt Tooling-Einschränkung; Off-Palette 0 in 14/14 Bögen,
+38/38 beschriftet und sichtbar.
+Bewusst offen (gehört in die m9-art-* Karten, nicht in diese Diagnose-Lane): die eigentlichen
+Sprite-Reparaturen — Spider-Beine auf 2 px, Frame-Posen, Generator/Export-Sync.
