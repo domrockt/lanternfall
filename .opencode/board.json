@@ -5111,27 +5111,45 @@
       "title": "m10-enemy-frame-cadence #1: Frame-Auswahl alle Frames + SPRITE_FRAMES-Lookup fix",
       "description": "Abnahme: tests/enemy-run-frames.test.ts zeigt 4/4 genutzte Frames bei 4-Frame-Typen (alle 30 Gegner), 3 Frames + Wind-up bei 6 Bossen, 2-Frame-Typen nur F0/F1; tsc clean, 451/451 Tests, build rc=0.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T18:38:19Z",
+          "by": "build",
+          "text": "Commit 173c7ac: framesForDef/runFrameIndex in src/logic/enemy-frames.ts, Run.ts umgestellt; 451/451 Tests, build rc=0. Befund: Lookup-Fix war noetig (27/30 Gegner + Bosse hatten frames===undefined)."
+        }
+      ],
       "created": "2026-11-27T18:37:01Z",
-      "updated": "2026-11-27T18:37:01Z"
+      "updated": "2026-11-27T18:38:19Z"
     },
     {
       "id": 4299,
       "title": "m10-enemy-frame-cadence #2: Sicht-Beleg GIF + Frame-Log",
       "description": "Abnahme: shots/m10-enemy-frame-cadence-run.gif (640x360, Ritter 4-Frame-Typ), frames.png (F0..F3-Montage, 4 Posen), run.json (Log: alle 4 Frame-Keys am Sprite gemessen, keine JS-Fehler). Commit mit Belegen.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T18:38:19Z",
+          "by": "build",
+          "text": "Commit a60e2d7: GIF 640x360 + frames.png (F0..F3-Montage) + run.json (alle 4 Frame-Keys am Sprite geloggt, keine JS-Fehler), Belege im Commit."
+        }
+      ],
       "created": "2026-11-27T18:37:01Z",
-      "updated": "2026-11-27T18:37:01Z"
+      "updated": "2026-11-27T18:38:19Z"
     },
     {
       "id": 4300,
       "title": "m10-enemy-frame-cadence #3: Regression + Doku + .lane-done",
       "description": "Abnahme: npm test 451/451 gruen, npm run build rc=0, verify-enemies 30/30 PASS unveraendert; docs/lanes/m10-enemy-frame-cadence.md + .lane-done committed.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T18:38:19Z",
+          "by": "build",
+          "text": "Commit 07cdb25: verify-enemies 30/30 PASS unveraendert, docs/lanes/m10-enemy-frame-cadence.md + .lane-done committed. Lane fertig."
+        }
+      ],
       "created": "2026-11-27T18:37:01Z",
-      "updated": "2026-11-27T18:37:01Z"
+      "updated": "2026-11-27T18:38:19Z"
     }
   ]
 }
