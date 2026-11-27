@@ -1,0 +1,14 @@
+m10-gem-drawcap — XP-Kristalle im Chaos bezahlbar halten: fertig.
+
+Fix (src/systems/PickupSystem.ts): MAX_VISIBLE_GEMS=120 harter Deckel auch bei
+LOD full; drop() verschmilzt am Deckel den aeltesten Kristall verlustfrei,
+mergeGemValues() schreibt Rest-XP gut; Alters-Recycling merged in Nachbarn;
+magnetRadiusFor(radius, gemCount) skaliert bis +50 %; kein Tween pro Gem.
+Tests: tests/gem-draw-cap.test.ts, 16/16 gezielte Tests, npm test 363/363.
+Messung (Seed 1, god, autoPlay, 10 s, 500 Gegner, flock):
+  vorher:  peakGems 90 (alter LOD-Cap), 16,64 ms/Frame, 2152 Kills
+  nachher: peakGems 120 (harte Grenze), 16,67 ms/Frame, 1986 Kills
+XP-Erhaltung nachher exakt: spawnedXp 9520 = grantedXp 9328 + Feld 192 (0 %).
+Belege: shots/m10-gem-drawcap-before.json/png, -after.json/png.
+Doku: docs/lanes/m10-gem-drawcap.md. Keine JS-Fehler, build/tsc gruen.
+Offen: Kill-Differenz durch Magnet-Rueckkopplung auf den AutoPlay-Pfad.

@@ -4402,47 +4402,70 @@
       "id": 3478,
       "title": "m10-gem-drawcap #1 Baseline-Messung 500 Gegner",
       "description": "scripts/m10-gem-drawcap.mjs misst bei 500 Gegnern (Seed 1, autoPlay, god, 10 s) aktive Gem-Sprites, aktive Tweens, ms/Frame und gesammelte XP. Abnahme: shots/m10-gem-drawcap-before.json liegt vor und Script-Exit 0, keine JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T13:40:08Z",
+          "by": "build",
+          "text": "doing → review: Baseline Commit 1e52baf"
+        }
+      ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:13:48Z"
+      "updated": "2026-11-27T13:40:08Z"
     },
     {
       "id": 3479,
       "title": "m10-gem-drawcap #2 Fix PickupSystem: harter 120er-Deckel + Gem-Zahl-Magnet",
       "description": "Obergrenze sichtbarer Gems hart 120 (auch bei LOD full/reduced), Ueberschuss in naechsten freien Gem mergen (XP exakt erhalten), Magnetradius mit Gem-Zahl skalieren, pro Gem hoechstens ein Tween. Abnahme: npx tsc --noEmit gruen, bestehende pickup-gems-Tests gruen.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T13:38:40Z",
           "by": "build",
           "text": "todo → doing: Fix in src/systems/PickupSystem.ts: harter 120er-Deckel + Gem-Zahl-Magnet + XP-Erhaltungs-Statistik."
+        },
+        {
+          "at": "2026-11-27T13:40:08Z",
+          "by": "build",
+          "text": "doing → review: Fix+Test Commit 01cd89c, tsc+build+363 Tests gruen"
         }
       ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:38:40Z"
+      "updated": "2026-11-27T13:40:08Z"
     },
     {
       "id": 3480,
       "title": "m10-gem-drawcap #3 Test tests/gem-draw-cap.test.ts",
       "description": "XP-Summe vor/nach Cap identisch (<=1 %), kein Gem geht verloren, Groesse<->XP monoton, Cap greift deterministisch, keine NaN-Werte, drop() erzeugt keinen Tween pro Gem. Abnahme: npx vitest run tests/gem-draw-cap.test.ts gruen.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T13:40:08Z",
+          "by": "build",
+          "text": "todo → review: Testfile Commit c75a67c, 16/16 gezielte Tests gruen"
+        }
+      ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:13:48Z"
+      "updated": "2026-11-27T13:40:08Z"
     },
     {
       "id": 3481,
       "title": "m10-gem-drawcap #4 Nachher-Messung + Doku + lane-done",
       "description": "Nachher-Messung wie K1: aktive Gem-Sprites <=120 bei 500 kills, ms/Frame <= vorher, XP im Korridor (<=1 %). Beleg shots/m10-gem-drawcap-after.json + Vergleichs-PNG, docs/lanes/m10-gem-drawcap.md, .lane-done. Abnahme: npm test + npm run build gruen, Vorher/Nachher-JSON vorhanden.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T13:40:08Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Messung, Lane-Doku und .lane-done"
+        }
+      ],
       "created": "2026-11-27T13:13:48Z",
-      "updated": "2026-11-27T13:13:48Z"
+      "updated": "2026-11-27T13:40:08Z"
     }
   ]
 }

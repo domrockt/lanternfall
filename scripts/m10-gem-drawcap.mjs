@@ -141,12 +141,26 @@ try {
     };
   }, { target: TARGET, seconds: SECONDS });
 
+  // Vor dem Beleg-Screenshot Level-ups unterdrücken und die Zeit einfrieren,
+  // damit das Bild die Horde + Kristalle zeigt und nicht das Level-up-Panel.
+  await page.evaluate(() => window.__lf.setSuppressLevelUps(true));
   await clearLevelUps();
-  await page.waitForTimeout(300);
+  await page.evaluate(() => window.__lf.setTimeScale(0));
+  await page.waitForTimeout(400);
   await page.screenshot({ path: SHOT });
   const gemCaps = await page.evaluate(() => {
     const st = window.__lf.stats();
-    return { kills: st.kills, enemies: st.enemies, level: st.level };
+    const scene = window.__game.scene.getScene("run");
+    const p = scene.pickups;
+    return {
+      kills: st.kills, enemies: st.enemies, level: st.level,
+      shotGems: p.count, shotVisibleGems: p.gems.filter((g) => g.sprite.visible).length,
+      shotTweens: scene.tweens.getTweens().length,
+      spawnedXp: p.stats.spawnedXp,
+      grantedXp: p.stats.grantedXp,
+      fieldXp: p.totalXp,
+      xpLoss: p.stats.spawnedXp - p.stats.grantedXp - p.totalXp,
+    };
   });
 
   result = {
