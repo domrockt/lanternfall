@@ -86,7 +86,13 @@ unabhängiger. M25-640x360@1 bleibt mit Ø ≥ 51 FPS über Ziel.
 - `shots/m10-fx-overdraw-m25-780.png` — M25-Chaos bei 780x360@3 mit Deckel,
   Gegner lebend (aufgenommen nach der 10-s-Messung, Ziel ≥ 300 Gegner).
 - Near-White (Pixel ≥ 240/240/240): **0,30 %** ≤ 4,16 % Grenze → PASS.
-- art-director-Urteil: siehe unten (Nachtrag beim Commit).
+- art-director-Urteil: **PASS, 4,3/5** (Grenze ≥ 4/5) — Lesbarkeit
+  Gegner/Spieler/Projektile 4/5, Glow-Überstrahlung 5/5 (keine ausgebrannten
+  Flächen, Damage-Numbers überall lesbar, kein HUD-Bluten), Effekt-Wirkung 4/5
+  (Burst strukturiert, keine Kernverluste). Beurteilt anhand der 3x-nearest-
+  vergrößerten Kopie. Optionale, nicht blockierende Nachbesserungen notiert:
+  Boss-Silhouette 1-Tonnschritt-Kontrast zum dunklen Untergrund; Feuer-Cluster
+  unten links Kanten aufräumen — gehört in eine Grafik-Lane, nicht in diesen Fix.
 
 ## Offene Punkte
 
