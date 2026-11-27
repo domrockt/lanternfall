@@ -108,6 +108,20 @@ Abnahme: Offscreen-Treffer 0 bei ≥ 200 gezählten Schüssen (500/501 im JSON),
 Wind-up 100 % ≥ 0,3 s, `npm run build` + alle Tests grün, 0 JS-Fehler,
 art-director ≥ 4/5.
 
+Ergebnis (Versuch 3, 2026-11-27):
+- `npx vitest run tests/enemy-shots-fair.test.ts` → **12/12 grün**; `npm test` → **236/236 grün (18 Dateien)**.
+- `npm run build` → **rc=0** (Vite-Build grün).
+- Frische Dichte-Aufnahme (500 Gegner: 125 toad/witchling/lich/horror) →
+  `shots/m10-enemy-shots-density.png` + 2-s-GIF (24 Frames, 12 fps), **0 JS-Fehler**.
+- Messwerte unverändert aus `shots/m10-enemy-shots-after.json`:
+  640×360 501 Schuss, 0 Offscreen-Treffer, windupOk 501/501;
+  780×360 500 Schuss, 0 Offscreen-Treffer, windupOk 500/500.
+- art-director: **PASS 4/5** (Karte 03).
+
+Temporäre Analyse-Ordner (`.arts/`) wurden vor Abschluss entfernt und nach
+`~/tmp/m10-enemy-shots-fair/` ausgelagert (nicht Deliverable); keine Fremddateien
+außerhalb `src/systems/EnemyProjectiles.ts`, `src/logic/bosses.ts`, Tests, Docs, Shots.
+
 ## Offene Punkte
 
 - Stand Iteration 1: kein Innenpixel mehr unter WCAG-`minInner` 2,04 auf den fünf
