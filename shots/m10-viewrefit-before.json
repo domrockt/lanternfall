@@ -1,0 +1,289 @@
+{
+  "tag": "before",
+  "measuredAt": "2026-11-27T23:51:54.884Z",
+  "formats": [
+    {
+      "format": "640x360@1",
+      "setting": 0,
+      "devicePx": [
+        640,
+        360
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        640,
+        360
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "scaleObserved": 1,
+      "scaleInteger": true,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-640x360d1.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 360
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "960x540@1",
+      "setting": 0,
+      "devicePx": [
+        960,
+        540
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        960,
+        540
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "scaleObserved": 1.5,
+      "scaleInteger": false,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-960x540d1.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 960,
+        "height": 540
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "1280x720@1",
+      "setting": 0,
+      "devicePx": [
+        1280,
+        720
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "scaleObserved": 2,
+      "scaleInteger": true,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-1280x720d1.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "1920x1080@1",
+      "setting": 0,
+      "devicePx": [
+        1920,
+        1080
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "scaleObserved": 3,
+      "scaleInteger": true,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-1920x1080d1.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "2560x1440@1",
+      "setting": 0,
+      "devicePx": [
+        2560,
+        1440
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        2560,
+        1440
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "scaleObserved": 4,
+      "scaleInteger": true,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-2560x1440d1.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 2560,
+        "height": 1440
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "3840x2160@1",
+      "setting": 0,
+      "devicePx": [
+        3840,
+        2160
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        3840,
+        2160
+      ],
+      "internal": [
+        640,
+        360
+      ],
+      "scaleObserved": 6,
+      "scaleInteger": true,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-3840x2160d1.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 3840,
+        "height": 2160
+      },
+      "jsErrors": []
+    },
+    {
+      "format": "780x360@3",
+      "setting": 3,
+      "devicePx": [
+        2340,
+        1080
+      ],
+      "canvasRectCss": [
+        0,
+        0,
+        780,
+        360
+      ],
+      "internal": [
+        780,
+        360
+      ],
+      "scaleObserved": 3,
+      "scaleInteger": true,
+      "pixelExact": true,
+      "rectAtOrigin": true,
+      "noOverflow": true,
+      "barsZero": true,
+      "pass": true,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "shot": "shots/m10-viewrefit-before-780x360d3.png",
+      "barsPx": {
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "field": {
+        "x": 0,
+        "y": 0,
+        "width": 2340,
+        "height": 1080
+      },
+      "jsErrors": []
+    }
+  ],
+  "allPass": true,
+  "allInteger": false,
+  "jsErrors": 0
+}
