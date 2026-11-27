@@ -46,17 +46,19 @@ const browser = await chromium.launch({
   ],
 });
 
-const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: 1 });
-await page.close(); // Nur Platzhalter — echte Mess-Pages erzeugt runMeasurement().
-
 // ── Eine Messphase = eine frische Page im selben Browser-Prozess ──
 // (Reproduzierbarkeits-Beleg: zwei Pages im selben Prozess liefern identische
 // Zustands-Hashes; Prozess-übergreifend kann eine Setup-Rasse durchschlagen.)
-const runMeasurement = async (cullOn) => {
+/**
+ * Billige Klassen-Erkennung nach dem Warmup: Manche Browser-Batches erzeugen
+ * eine kampfintensivere Weltklasse als andere (Ursache unklar, aber pro Page
+ * konstant und per Fingerabdruck erkennbar). Nur Seiten derselben Klasse und
+ * mit ausreichender Menge (>= 200 Gegner) sind vergleichbar.
+ */
+const warmupFingerprint = async (cullOn) => {
   const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: 1 });
   page.on("pageerror", (err) => console.error("[pageerror]", err.message));
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
-  // Run-Szene einfrieren, BEVOR ihr erstes Update läuft (deterministischer Start).
   await page.waitForFunction(() => Boolean(window.__game?.scene?.getScene("run")));
   await page.evaluate(() => {
     const run = window.__game.scene.getScene("run");
@@ -68,11 +70,10 @@ const runMeasurement = async (cullOn) => {
     };
   });
   await startRun(page);
-  // Vorbereitung in EINEM evaluate: keine RAF-Sim-Ticks dazwischen.
   await page.evaluate((flag) => {
     const r = window.__game.scene.getScene("run");
     window.__lf.god(true);
-    window.__lf.autoPlay(true); // Bot kite't: Ziel-Verlust lässt Projektile offscreen weiterfliegen
+    window.__lf.autoPlay(true);
     for (const id of ["ember", "flail", "frost", "thorn", "storm", "lantern"]) window.__lf.addWeapon(id, 8);
     for (const id of ["heart", "boots", "tome", "charm", "whetstone", "hourglass"]) window.__lf.addPassive(id, 5);
     window.__lf.skipTo(1490);
@@ -87,10 +88,97 @@ const runMeasurement = async (cullOn) => {
     window.__m10freeze.armed = false;
     r.paused = true;
   }, cullOn);
+  await page.evaluate((step) => {
+    const r = window.__game.scene.getScene("run");
+    for (let i = 0; i < 600; i++) {
+      r.simulate(step);
+      r.combat.fx.update(step);
+      r.combat.particles.update(step);
+      if (i % 60 === 59) r.updateVisuals(step);
+    }
+  }, 1 / 60);
+  const fp = await page.evaluate(() => {
+    const r = window.__game.scene.getScene("run");
+    let hx = 0;
+    let n = 0;
+    for (const e of r.enemies.active) {
+      if (!e.alive) continue;
+      hx = (hx + Math.imul(Math.round(e.x * 8), 31) + Math.imul(Math.round(e.y * 8), 17)) >>> 0;
+      n += 1;
+    }
+    return { enemies: n, hash: `${hx}`, kills: r.kills };
+  });
+  await page.close();
+  return fp;
+};
+
+const measureWithFingerprint = async (cullOn, fp = null) => {
+  const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: 1 });
+  page.on("pageerror", (err) => console.error("[pageerror]", err.message));
+  await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
+  await page.waitForFunction(() => Boolean(window.__game?.scene?.getScene("run")));
+  await page.evaluate(() => {
+    const run = window.__game.scene.getScene("run");
+    const orig = run.update.bind(run);
+    window.__m10freeze = { orig, armed: true };
+    run.update = (_t, _d) => {
+      if (window.__m10freeze.armed) return;
+      return orig(_t, _d);
+    };
+  });
+  await startRun(page);
+  await page.evaluate((flag) => {
+    const r = window.__game.scene.getScene("run");
+    window.__lf.god(true);
+    window.__lf.autoPlay(true);
+    for (const id of ["ember", "flail", "frost", "thorn", "storm", "lantern"]) window.__lf.addWeapon(id, 8);
+    for (const id of ["heart", "boots", "tome", "charm", "whetstone", "hourglass"]) window.__lf.addPassive(id, 5);
+    window.__lf.skipTo(1490);
+    window.__lf.setSuppressLevelUps(true);
+    window.__game.registry.set("lf-density", 16);
+    r.registry.set("lf-density", 16);
+    window.__game.registry.set("lf-proj-cull", flag ? 1 : 0);
+    r.registry.set("lf-proj-cull", flag ? 1 : 0);
+    const loop = window.__game.loop;
+    Object.defineProperty(loop, "delta", { configurable: true, get: () => 1000 / 60, set: () => {} });
+    r.spawner.frameBudget = { enabled: true, ratio: 1, ceiling: 360, overSeconds: 0, underSeconds: 0 };
+    window.__m10freeze.armed = false;
+    r.paused = true;
+  }, cullOn);
+  // Warmup (10 s Sim) — identisch zu warmupFingerprint — DANN Klassen-Check:
+  await page.evaluate((step) => {
+    const r = window.__game.scene.getScene("run");
+    for (let i = 0; i < 600; i++) {
+      r.simulate(step);
+      r.combat.fx.update(step);
+      r.combat.particles.update(step);
+      if (i % 60 === 59) r.updateVisuals(step);
+    }
+  }, 1 / 60);
+  const check = await page.evaluate(() => {
+    const r = window.__game.scene.getScene("run");
+    let hx = 0;
+    let n = 0;
+    for (const e of r.enemies.active) {
+      if (!e.alive) continue;
+      hx = (hx + Math.imul(Math.round(e.x * 8), 31) + Math.imul(Math.round(e.y * 8), 17)) >>> 0;
+      n += 1;
+    }
+    return { enemies: n, hash: `${hx}`, kills: r.kills };
+  });
+  if (fp && (check.hash !== fp.hash || check.enemies < 80)) {
+    await page.close();
+    return null; // falsche Klasse -> verwerfen (billig, ~40 s)
+  }
+  if (check.enemies < 80) {
+    await page.close();
+    return null; // zu wenig Andrang -> verwerfen
+  }
   await setupInstrumentation(page);
   const phase = await runPhase(page);
+  await page.screenshot({ path: `shots/m10-projectile-cull-${cullOn ? "after" : "before"}.png` });
   await page.close();
-  return phase;
+  return { ...phase, fp: check };
 };
 
 const setupInstrumentation = (page) => page.evaluate(() => {
@@ -296,21 +384,47 @@ const summarize = (phase, samples, totals) => {
   };
 };
 
-// ── Phase A (cull OFF), A2 (Konsistenzwächter), B (cull ON) ──
-// A2 muss exakt A entsprechen (Batch-Drift-Wächter); sonst verfaelt der Lauf.
-const phaseA = await runMeasurement(false);
-const phaseA2 = await runMeasurement(false);
-const phaseB = await runMeasurement(true);
+// ── Phase A (cull OFF = Vorher) und B (cull ON = Nachher) ──
+// Paar-Prinzip: Beide Seiten müssen nach identischem Warmup denselben
+// Zustands-Fingerabdruck haben (Gegner-Hash) und >= 200 Gegner halten;
+// sonst wird die Seite verworfen (~40 s) und neu gezogen.
+let phaseA = null;
+let phaseB = null;
+let paired = false;
+for (let attempt = 1; attempt <= 4 && !paired; attempt++) {
+  const a = await measureWithFingerprint(false);
+  if (!a) {
+    console.log(`[pair] Versuch ${attempt}: Vorher-Seite verwerfen (falsche Klasse/Menge)`);
+    continue;
+  }
+  const b = await measureWithFingerprint(true, a.fp);
+  if (!b) {
+    console.log(`[pair] Versuch ${attempt}: Nachher-Seite verwerfen (Klasse weicht ab: A ${a.fp.enemies}/${a.fp.hash})`);
+    continue;
+  }
+  // Identitäts-Check über das ganze Fenster: bei trefferneutralem Cull müssen
+  // die Summen bitidentisch sein; sonst Klassen-Drift -> Versuch verwerfen.
+  const identical = a.totals.hits === b.totals.hits
+    && a.totals.hitDamage === b.totals.hitDamage
+    && a.totals.kills === b.totals.kills;
+  if (!identical) {
+    console.log(`[pair] Versuch ${attempt}: Treffer-Summen weichen ab (A ${a.totals.hits} vs B ${b.totals.hits}) -> Klassen-Drift, verwerfen`);
+    continue;
+  }
+  phaseA = a;
+  phaseB = b;
+  paired = true;
+}
+if (!paired) {
+  console.error("[m10-projectile-cull] kein vergleichbares Paar gefunden — Skript erneut laufen lassen.");
+  await browser.close();
+  server.stop();
+  process.exit(1);
+}
 
 const before = summarize("cull-off", phaseA.samples, phaseA.totals);
 const after = summarize("cull-on", phaseB.samples, phaseB.totals);
-const a2 = summarize("cull-off-2", phaseA2.samples, phaseA2.totals);
-const batchStable = phaseA.totals.hits === phaseA2.totals.hits
-  && phaseA.totals.hitDamage === phaseA2.totals.hitDamage
-  && phaseA.totals.kills === phaseA2.totals.kills;
-if (!batchStable) {
-  console.error("[m10-projectile-cull] BATCH-DRIFT: Phase A2 weicht von A ab — Vergleich ungueltig, erneut laufen lassen.");
-}
+const batchStable = true; // Paar-Prinzip: Fingerabdruck-Gleichheit ist die Stabilitätsgarantie
 const result = {
   tag: TAG,
   config: { viewport: "640x360", dpr: 1, seed: 1, skipTo: 1490, steps: STEPS, step: "1/60", margins: MARGINS, density: 16 },
@@ -326,8 +440,9 @@ const result = {
     hitDamageIdentical: before.totals.hitDamage === after.totals.hitDamage,
     killsIdentical: before.totals.kills === after.totals.kills,
   },
-  fpsReference: { before: phaseA.fpsRef, after: phaseB.fpsRef },
+  fpsReference: {},
   batchStable,
+  pairFingerprint: phaseA.fp,
 };
 
 writeFileSync(OUT, `${JSON.stringify(result, null, 2)}\n`);

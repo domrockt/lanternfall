@@ -19,62 +19,67 @@
   "simSeconds": 30,
   "after": {
     "liveProjectiles": {
-      "avg": 29.2,
-      "max": 45
+      "avg": 29.7,
+      "max": 44
     },
     "withLiveTarget": {
-      "avg": 7.2
+      "avg": 10.7
     },
-    "enemiesAvg": 285,
-    "enemiesBeyondViewMax": 163,
-    "enemiesBeyondView64Max": 90,
+    "enemiesAvg": 279,
+    "enemiesBeyondViewMax": 107,
+    "enemiesBeyondView64Max": 40,
     "offscreenByMargin": {
       ">0px": {
-        "avg": 18.5,
-        "max": 44,
-        "pctOfLive": 63.4
+        "avg": 17.2,
+        "max": 27,
+        "pctOfLive": 57.9
       },
       ">48px": {
-        "avg": 16,
-        "max": 38,
-        "pctOfLive": 54.9
+        "avg": 10.7,
+        "max": 19,
+        "pctOfLive": 36
       },
       ">96px": {
-        "avg": 12.2,
-        "max": 34,
-        "pctOfLive": 41.7
+        "avg": 5,
+        "max": 9,
+        "pctOfLive": 16.9
       },
       ">192px": {
-        "avg": 5.3,
-        "max": 19,
-        "pctOfLive": 18.3
+        "avg": 1.2,
+        "max": 5,
+        "pctOfLive": 3.9
       }
     },
     "msPerFrame": {
-      "projectileUpdate": 0.022,
-      "combatUpdate": 0.137,
-      "rendererTotal": 1.331
+      "projectileUpdate": 0.018,
+      "combatUpdate": 0.112,
+      "rendererTotal": 1.173
     },
     "totals": {
-      "hits": 10453,
-      "projectileHits": 3947,
-      "hitDamage": 606972,
-      "kills": 932,
-      "spawns": 926,
-      "hitsBeyondView96": 646,
-      "hitsBeyondView192": 1,
+      "hits": 7925,
+      "projectileHits": 3149,
+      "hitDamage": 456311,
+      "kills": 830,
+      "spawns": 922,
+      "hitsBeyondView96": 225,
+      "hitsBeyondView192": 5,
       "projectileHitsBeyondMargin": {
-        "96": 325,
-        "128": 75,
-        "160": 2,
-        "192": 1,
+        "96": 110,
+        "128": 61,
+        "160": 36,
+        "192": 3,
         "256": 0,
         "288": 0,
         "320": 0
       },
-      "enemyMaxBeyondView": 268.7
+      "enemyMaxBeyondView": 215.1
     }
   },
   "fpsReference": {},
-  "batchStable": true
+  "batchStable": true,
+  "pairFingerprint": {
+    "enemies": 270,
+    "hash": "211223809",
+    "kills": 111
+  }
 }

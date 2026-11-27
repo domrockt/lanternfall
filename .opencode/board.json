@@ -6149,21 +6149,33 @@
       "id": 5460,
       "title": "m10-projectile-cull #3: tests/projectile-cull.test.ts",
       "description": "AC: Unit-Tests für Offscreen-Recycle (erfasst), Onscreen-Projektile unverletzt, Grenzfälle 0/1/Cap+1 Projektile, kein Pool-Exhaust (Reuse-Statistik), Treffer-Summe Vorher/Nachher im deterministischen Harness identisch. npx vitest run tests/projectile-cull.test.ts grün.",
-      "column": "todo",
+      "column": "review",
       "assignee": "m10-projectile-cull",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T22:00:14Z",
+          "by": "build",
+          "text": "todo → review: Tests committed (#5460, 4f28427): 13 Fälle grün (Recycle erfasst, Onscreen unverletzt, 0/1/Cap+1, kein Pool-Exhaust, Trail-Wiederherstellung, Vorher-Flag, Swap-Pop). Volle Suite 632/632, tsc grün. Treffer-Identität Vorher/Nachher über Harness-Beleg in #5461. Hinweis: fremde passive-math-Shots im Worktree wurden gestasht (nicht Teil dieser Lane)."
+        }
+      ],
       "created": "2026-11-27T20:53:54Z",
-      "updated": "2026-11-27T20:53:54Z"
+      "updated": "2026-11-27T22:00:14Z"
     },
     {
       "id": 5461,
       "title": "m10-projectile-cull #4: Nachher-Messung + Lane-Doku",
       "description": "AC: shots/m10-projectile-cull-after.json (+ Chaos-Screenshot) mit gleichem Skript/Harness; Ziel Projektill-Update-ms/Frame −25 % bei identischen Treffer-/Schaden-Summen; docs/lanes/m10-projectile-cull.md mit Vorher/Nachher-Tabelle; .lane-done.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-projectile-cull",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T22:00:28Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Lauf läuft (Vorher/Nachher in einem Batch, A2==A-Wächter); danach Doku docs/lanes/m10-projectile-cull.md + .lane-done."
+        }
+      ],
       "created": "2026-11-27T20:53:54Z",
-      "updated": "2026-11-27T20:53:54Z"
+      "updated": "2026-11-27T22:00:28Z"
     }
   ]
 }

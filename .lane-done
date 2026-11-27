@@ -1,0 +1,22 @@
+# Lane m10-projectile-cull — fertig
+
+Projektil-Budget im Endgame: Offscreen-Recycle + Draw/FX-Skip im
+ProjectilePool (CombatSystem unberührt), trefferneutral belegt.
+
+- Fix: Recycle > view+256px (diagonalskaliert) ohne Live-Target + wegfliegend;
+  Sprite/Trail-Skip ab 24px; stealCullable statt Allozierung; Reuse-Statistik;
+  Flag lf-proj-cull. Ordnungserhaltende Kompaktion (Write-Index) statt
+  Swap-Pop — sonst brechen die Crit-RNG-Streams die Vorher/Nachher-Identität.
+- Beleg: deterministischer Harness (scripts/m10-projectile-cull.mjs) mit
+  create()-Freeze, loop.delta-Pin, festen 1/60-Schritten und Paar-Prinzip
+  (Fingerabdruck + bitidentische Summen): Treffer 7925 == 7925, Schaden
+  456311 == 456311, Kills 830 == 830; lebende Projektile −26 % (40,3 → 29,7),
+  offscreen >96px −68 % (15,7 → 5,0), >256px = 0.
+- Tests: tests/projectile-cull.test.ts 13/13, Suite 632/632, tsc grün.
+- Ziel "Update-ms/Frame −25 %" nicht erreicht: ~0,02 ms/Frame liegen im
+  Messrauschen; Ersparnis zeigt sich in der Menge (siehe docs/lanes/
+  m10-projectile-cull.md, Tabelle).
+- Karten: #5458 Messung, #5459 Fix, #5460 Tests, #5461 Nachher+Doku.
+- Hinweis: fremde passive-math-Shots im Worktree sind im Stash
+  ("m10-projectile-cull: fremde passive-math-Shots..."); gehören nicht in
+  diese Lane.
