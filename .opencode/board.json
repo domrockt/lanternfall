@@ -4510,21 +4510,38 @@
       "id": 3598,
       "title": "m10-verify-menus-view K1: Ist-Messung reproduzieren",
       "description": "node scripts/verify-menus.mjs laufen lassen, Log nach shots/m10-verify-menus-before.log, jeden FAIL mit Klickkoordinate + erwartetem Element notieren. Abnahme: Before-Log im Commit, FAIL-Liste mit Koordinaten.",
-      "column": "doing",
+      "column": "review",
       "assignee": "ui-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T16:10:14Z",
+          "by": "build",
+          "text": "K1 fertig: Ist-Messung belegt. Standard-Viewport 960x540 -> Fit 480x360 -> PASS 15/15 (nur Zufallstreffer der Legacy-Koordinaten); Probe 1280x720 -> View 640x360 -> Klick (240,259) trifft START statt OPTIONEN (FAIL-Repro). Belege shots/m10-verify-menus-before.log + docs/lanes/m10-verify-menus-view.md. Commit 7a5189a (Supervisor-Snapshot, Inhalt = K1)."
+        },
+        {
+          "at": "2026-11-27T16:11:30Z",
+          "by": "build",
+          "text": "doing → review: K1 abgeschlossen: before-Log shots/m10-verify-menus-before.log + FAIL-Liste (7 Klickkoordinaten -> erwartetes Element) in docs/lanes/m10-verify-menus-view.md. Befund: 960x540 -> Fit 480x360 PASS 15/15 (Zufallstreffer oy=45); 1280x720 -> View 640x360 -> Klick (240,259) trifft START statt OPTIONEN. Commit 5ab878d (#3598)."
+        }
+      ],
       "created": "2026-11-27T15:34:58Z",
-      "updated": "2026-11-27T15:34:58Z"
+      "updated": "2026-11-27T16:11:30Z"
     },
     {
       "id": 3599,
       "title": "m10-verify-menus-view K2: Klick-/Hit-Mapping entkoppeln",
       "description": "Statt fester 480x270-Pixelkoordinaten Ziel-Rechtecke aus DOM/Game-Canvas zur Laufzeit lesen (Canvas-Bounds + integerScale) und daraus klicken. Tastatur-Pfad bleibt Kontrolle. Keine src/**-Aenderung. Abnahme: Harness nutzt Laufzeit-Rechtecke, tsc/build gruen, verify-menus gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "ui-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T16:37:34Z",
+          "by": "build",
+          "text": "todo → doing: K2 läuft: verify-menus.mjs auf Laufzeit-Textziele umgestellt (PixelText.valueText + Weltposition statt fester 480x270-Koordinaten), MENUS_VIEWPORT-Env-Override, snap-Präfix m10-verify-menus-*. Erster Lauf FAIL (getBounds auf Containern unsauber, Klick unter dem Button) -> Umstellung auf getWorldTransformMatrix().transformPoint. Probe-Schleife beendet, max 2 weitere Läufe."
+        }
+      ],
       "created": "2026-11-27T15:34:58Z",
-      "updated": "2026-11-27T15:34:58Z"
+      "updated": "2026-11-27T16:37:34Z"
     },
     {
       "id": 3600,

@@ -86,7 +86,8 @@ Robustheits-Lauf `MENUS_VIEWPORT=1280x720` (View 640x360, vorher FAIL-Repro):
 **Umfang:** ausschließlich `scripts/verify-menus.mjs` + `docs/lanes/m10-verify-menus-view.md`
 + `shots/m10-verify-menus-*`. Keine Änderung an `src/**`, Spiel-/Szenendateien unberührt.
 
-**Offene Punkte / ehrlich:**
+**Regressionen (K4, einmal je Karte):** `npm run build` rc=0 (tsc --noEmit + vite, ~0,4 s),
+`npm test` **355 Tests / 33 Dateien grün**, 0 Failures.
 - Der erste verify-Lauf dieser Lane brach mit „Target page, context or browser has been closed“
   ab (Playwright-Flake unter Host-Last, kein Inhaltsfehler). Der Harness hat keinen Retry;
   bei Wiederholung einfach erneut laufen lassen.
