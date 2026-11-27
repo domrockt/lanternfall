@@ -1,0 +1,20 @@
+# Lane m10-chest-panel-ui — fertig (2026-11-27)
+
+Fix: Untertitel im Truhen-Panel hängt jetzt an der Titel-Unterkante als Anker
+(`GLYPH_H * chestTitle.scale + CHEST_SUBTITLE_GAP_PX` in src/scenes/UI.ts) statt am
+Hartwert 54+oy, der nur 2 px Gap ließ. Panel-Icon 92+oy @ 2.6 und Evo-Hint-Zeilen
+122/130+oy spiegeln die verifizierten Werte von m10-chest-reveal (applyPanelFix) —
+nach dem Merge beider Branches idempotent, kein visueller Sprung.
+
+Messwerte (scripts/m10-chest-panel.mjs, Glyph-Boxen, 1 Lauf je Tag):
+- 640x360: Gap Titel→Untertitel 2 px → 6 px, Untertitel→Icon 6.2 px, 0 Überlappungen
+- 780x360@3: Gap Titel→Untertitel 2 px → 6 px, Untertitel→Icon 6.2 px, 0 Überlappungen
+- Belege: shots/m10-chest-panel-before.json / -after.json (+PNGs), 0 JS-Fehler
+
+Abnahme: tests/chest-panel-ui.test.ts (18 Tests, 3 Viewport-Profile, Gap >= 4 px,
+0 Überlappungen, Panel-/Viewport-Grenzen) grün; npm test 855/855; npx tsc --noEmit
+grün; npm run build rc=0; art-director PASS 4/5 (Kosmetik-Ticket: Wortumbruch
+"SEELENLEU/CHTFEUER" ohne Trennstrich, separat melden). Tabus (ChestSystem.ts,
+src/logic/evolution.ts) nicht berührt. Doku: docs/lanes/m10-chest-panel-ui.md.
+
+Commits: d48a88b (#6578), 295ea32 (#6579), 5e8c645 (#6580), 954d4da (#6581).
