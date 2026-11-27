@@ -1,0 +1,32 @@
+Lane m10-reacceptance-c – DONE (2026-11-27, Nachabnahme 3 „Drain-Welle“)
+
+PIN: 43fd9eb7ef8ddb8a03fa26b66c62acd31a907dea (main @ 20:29:24Z). Keine Änderung an
+Spielcode oder Tests; nur ACCEPTANCE.md, docs/qa/reacceptance-c-2026-11-27.md,
+docs/lanes/m10-reacceptance-c.md, shots/qa-reaccc-* (ca. 40 Belegdateien).
+
+Gesamturteil: NICHT abgenommen — 2 Kriterien FAIL auf dem PIN:
+1. verify-input 27/28 — „Tastatur: ESC setzt fort“ (stabil reproduziert, 2 Läufe;
+   Regression gegen 28/28-Stand 13:43Z; Folge-Karte im Board-Backlog).
+2. Heap-Tor im 30-min-Echtzeitlauf +21 % > 15 % (hard gate; endMB 27,1 < Minute-1 31,9
+   → GC-Sägezahn, kein monotoner Leak; Folge-Job).
+
+PASS auf dem PIN (alles iGPU, Renderer „ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S),
+OpenGL ES 3.2)“ = shots/qa-reaccc-renderer.json; kein SwiftShader-Beleg):
+- tsc rc=0; npm test 587/587 (58 Dateien); acceptance-count 30/6/6/6/6/2; build rc=0.
+- verify:final 7/7.
+- Burst 640×360 min 60,0 FPS / Minute-25 min 60,0 (Ziele 55/50); 780×360@3 IST 60,0 ≥ 50
+  (4/4 Iterationen vsync-gecappt, 0 JS-Fehler).
+- 30-min-Echtzeitlauf (1854 s): FPS min 60,1 / Median 60,5, 0 Crashes/0 JS-Fehler;
+  Inhalt voll (Sieg dawn 30,3 Sim-Min, 6/6 Bosse 300–1800 s ±0 s, 6 Truhen,
+  3 Evolutionen, Level 38, 5687 Kills).
+- Separation: Blocker entkräftet (OSR-Harness-Artefakt, real ~2 % Framebudget, Fix in main).
+- 19/19 Drain-Merges (Briefing: 11 + separation = 12; Drain lief weiter) je einer
+  Kriteriumszeile/einem Beleg zugeordnet — Tabelle in docs/lanes/m10-reacceptance-c.md.
+
+Befunde (dokumentiert, nicht gefixt, Folge-Karten im Backlog):
+- Chest-Arrow 640×360 Re-Lauf 5/10 FAIL gegen PASS im SwiftShader-Ära-Lauf der Lane
+  (iGPU-Timing des Probe-Harness vs. echte Regression — zu lokalisieren).
+
+Karten: #5478 (Abnahme, → review), #5378 + Chest-Arrow-Folge (backlog).
+Doku: docs/qa/reacceptance-c-2026-11-27.md (K1–K7 + Gesamturteil),
+ACCEPTANCE.md Versuch (c) oben.
