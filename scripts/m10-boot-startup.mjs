@@ -95,7 +95,7 @@ const summary = {
   maxMs: Math.max(...times),
   minMs: Math.min(...times),
   results,
-  texturesAtTitle: results[0]?.textures ?? null,
+  texturesAtTitle: results[0]?.bootTimings?.titleTextureCount ?? results[0]?.textures ?? null,
   jsErrors,
 };
 writeFileSync(out, JSON.stringify(summary, null, 2) + "\n");

@@ -1,0 +1,22 @@
+Lane m10-boot-startup — Kaltstart bis Titel (Bedarf: m10-android-perf, 2026-11-27)
+
+Ergebnis: Startzeit bis zum ersten gerenderten Titel-Frame von avg 1025 ms /
+max 1263 ms auf avg 497 ms / max 697 ms gesenkt (−52 % / −45 %, je 3 Läufe,
+kalter Cache, Desktop-Playwright). Kritischer Pfad: 13 statt 498 Texturen.
+
+Umsetzung (src/scenes/Boot.ts): Boot.create erzeugt nur Titel-kritische Texturen
+(GEN_TITLE, ui_frame/title_logo, light_radius, vignette) und startet die Titel-Szene
+sofort; alle übrigen Texturen entstehen als Warmup hinter dem ersten gerenderten
+Titel-Frame (createAllTextures erneut — alle Creator idempotent), danach
+buildRuntimeAtlas (Atlas-Key-Vertrag hält: enemy_/boss_/gem_/fx_/... im Atlas).
+Messung: scripts/m10-boot-startup.mjs, Metrik titleRendered (State-Poll war durch den
+Warmup-Makrotask verfälscht). Belege: shots/m10-boot-startup-{baseline,after}.json,
+-after.png (Titel pixelidentisch zur Baseline bis auf Glow-Animationsphase),
+Doku: docs/lanes/m10-boot-startup.md.
+
+Offene Punkte:
+- ARM-Gerätemessung (< 5 s Ziel) bleibt Vera-Eskalation — alle Zahlen sind Desktop.
+- textures.ts-Export (2 Zeilen, createLightTexture/createVignetteTexture) beim
+  Disponenten angefragt (.dispatch/requests.md 20:06Z, Claim m10-atlas-pack);
+  bis dahin 1:1-Kopie in Boot.ts (idempotent, kein Konflikt mit dem Warmup).
+- Build + 534 Tests grün, 0 JS-Fehler in allen Messläufen.
