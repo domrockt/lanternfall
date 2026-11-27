@@ -4434,16 +4434,21 @@
       "id": 3418,
       "title": "[fa2-01] Schnelle Checks: build, Tests, Inhaltszählung, verify:final",
       "description": "Abnahme: `npm run build` rc=0, `npm test` 0 fail (Zahl dokumentiert), `node scripts/acceptance-count.mjs` ok:true 30/6/6/6/6/2, `verify:final` 7/7, 0 JS-Fehler. Belege in docs/qa/reacceptance-2026-11-27.md. Ein Commit nur mit diesen Belegen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T13:15:12Z",
           "by": "build",
           "text": "todo → doing: Start: Build, Tests, Inhaltszählung, verify:final"
+        },
+        {
+          "at": "2026-11-27T13:23:45Z",
+          "by": "build",
+          "text": "doing → review: PASS: build rc=0, 355 Tests/33 Dateien 0 fail, Inhalte 30/6/6/6/6/2, verify:final 7/7, 0 JS-Fehler. Beleg docs/qa/reacceptance-2026-11-27.md + /tmp/lf-fa2/*.log. Commit 438c5f3."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
-      "updated": "2026-11-27T13:15:12Z"
+      "updated": "2026-11-27T13:23:45Z"
     },
     {
       "id": 3419,
