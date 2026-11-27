@@ -4845,11 +4845,17 @@
       "id": 4738,
       "title": "m10-realtime-stability K5 TDZ-Fix im crash-Handler (reviewer-Befund)",
       "description": "reviewer-PASS-Befund (sollte): scripts/realtime-run.mjs:59 liest runState?.time, das erst in Zeile 76 deklariert wird (TDZ). Stürzt die Seite während der Awaits zwischen Handler-Registrierung und Deklaration, wirft der Handler und der Harness stirbt beleglos. Fix: Deklaration 'let runState = null' vor die Handler-Registrierung ziehen. Abnahmekriterium: npx tsc --noEmit rc=0, Commit nennt die Karte, keine Änderung an src/**.",
-      "column": "doing",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:16:16Z",
+          "by": "build",
+          "text": "doing → done: TDZ-Fix umgesetzt, Commit 08491a7 (#4738): Deklaration vor Handler-Registrierung + Begruessungskommentar; npx tsc --noEmit rc=0, node --check ok für beide Harness-Skripte, keine src/**-Änderung. reviewer-Befund ('sollte') damit erledigt."
+        }
+      ],
       "created": "2026-11-27T20:15:54Z",
-      "updated": "2026-11-27T20:15:54Z"
+      "updated": "2026-11-27T20:16:16Z"
     }
   ]
 }

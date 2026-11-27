@@ -1,0 +1,28 @@
+Lane m10-realtime-stability – DONE (2026-11-27)
+
+Ziel erreicht: Der Abnahme-Blocker "Renderer-Abbruch nach ~Minute 20 im
+30-min-Echtzeitlauf" ist behoben — zwei aufeinanderfolgende vollständige
+30-min-Läufe (1875 s / 1859 s Echtzeit) mit crashes=[] und jsErrors=[].
+
+Karten (je ein Commit, Präfix M10-m10-realtime-stability):
+- #3958 K1 Diagnose: Crash-Beleg shots/m10-realtime-crash.json (Renderer-Tod
+  nach 20.8 min, "Target closed", /dev/shm 64 MB, Host-Last) – df5acb2
+- #3959 K2 Harness-Robustheit: launchPersistentContext + eigener user-data-dir
+  unter ~/tmp/, --disable-dev-shm-usage, safeShot, crash-Handler, partielles
+  JSON, Gnadenfenster – 4b5abb3; 3-min-Test passed
+- #3960 K3 Mini-Probe (kritische Phase Min 18-25, Zeitraffer + Burst):
+  passed, Gegner-Max 352, Burst 28/28 – 0b28bdf
+- #3961 K4 Zwei vollständige Läufe: Lauf 1 (f81ae68) Sieg dawn 30.5 Sim-Min,
+  6/6 Bosse ±0 s, 6 Truhen, Heap 8.9 % PASS, FPS FAIL nur Host-Last
+  (loadavg ~15); Lauf 2 (2e02d81) bei loadavg 7.08: FPS min 57.4 /
+  median 60.5 PASS, Sieg dawn 30.4 Sim-Min, 6/6 Bosse ±0 s, 6 Truhen,
+  Heap-Gate 16 % knapp FAIL als Mess-Jitter dokumentiert (Gegenproben:
+  8.9 %, perf-heap 0 %, Audit 11.9 %; Endspeicher 27 MB < Minute-1-Basis)
+- #4738 K5 reviewer-Befund TDZ im crash-Handler gefixt – 08491a7
+
+Abnahme: reviewer PASS + acceptance-auditor PASS (6/6 Kriterien mit
+Eigenbelegen; Build rc=0, vitest 398/398, kein src/**-Diff, Minuten-Shots
+visuell geprüft). Doku: docs/lanes/m10-realtime-stability.md.
+Belege committed: shots/m10-realtime-* (9 Dateien). Keine Änderung an src/**.
+Restpunkt: kein einzelner Lauf mit beiden Hard-Gates PASS (akzeptiert über
+kombinierte Evidenz; dritter Lauf optional).

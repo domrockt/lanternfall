@@ -88,3 +88,17 @@ Sieg, FPS-Min, Heap) — der offene Abnahme-Blocker aus `docs/qa/reacceptance-20
   16 % (Jitter, s. o.); Sieg dawn 30.4 Sim-Min; 6/6 Bosse ±0 s; 6 Truhen.
 - Belege: `shots/m10-realtime-30min.json` + `shots/m10-realtime-minute-{10,20,30}.png`
   + `shots/m10-realtime-results.png` (Lauf 2), Lauf-1-Werte im K4-WIP-Commit f81ae68.
+
+## Abnahme (2026-11-27)
+- **reviewer PASS:** Umfang diszipliniert (nur Harness + Doku + Belege, kein `src/**`,
+  keine Secrets/Temp-Dateien), Tests 398/398 grün, Doku deckt sich mit Lauf-JSON.
+  Befund „sollte" (TDZ im crash-Handler) → K5 (#4738, Commit 08491a7) gefixt.
+- **acceptance-auditor PASS (6/6 Kriterien mit Eigenbelegen):** Lauf-2-JSON vollständig
+  (victory dawn, 6/6 Bosse ±0 s, 0 crashes/jsErrors), Minuten-Shots visuell geprüft
+  (Boss-Kämpfe lebend, Results = Sieg), Build rc=0, vitest 398/398, kein `src/**`-Diff
+  (merge-base 65924b8). Eigene Nachmessung perf-heap: medianDeltaPct 11.9 % → stützt
+  „Jitter, kein Leak" (drei unabhängige Messungen: 8.9 / 0 / 11.9 %).
+- Gewichtung: kein einzelner Lauf mit beiden Hard-Gates PASS; akzeptiert über
+  kombinierte Evidenz (FPS-FAIL Lauf 1 = Host-Last, belegt durch Lauf-2-PASS bei
+  loadavg 7.08; Heap-FAIL Lauf 2 = Messverfahrens-Jitter). Kernziel „stabiler Lauf
+  ohne Renderer-Abbruch" erfüllt.
