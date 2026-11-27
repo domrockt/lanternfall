@@ -1,0 +1,23 @@
+# Lane m10-chest-lock-touch — fertig (2026-11-27)
+
+Ziel: Bedarfsmeldung m10-input-qa (7/105 Touch-FAILs "Truhen-Sperre") umsetzen — Gate für alle
+Gestenquellen schließen, 7 FAIL-Konstellationen deterministisch nachstellen und grün machen.
+
+Ergebnis:
+- K1 Repro: scripts/m10-chest-lock.mjs — 7 Konstellationen (Joystick-Drift, Drift beim Öffnen,
+  Kleben nach Dismiss, Dash-Swipe, Langzeit-Drift, Pause-Tap, neues Gestenstart) + 3 Negativ-Checks,
+  CDP-Touch Pixel-7-Profil, frische Seite pro Case. Beleg: shots/m10-chest-lock-baseline.json.
+- K2 Fix: src/input/TouchControls.ts — Gate einmalig vor Touch-Auswahl; onTouchMove verwirft die
+  laufende Geste beim Panel-Öffnen (discardGesture) statt Drift-Fenster bis zum nächsten UI-Frame.
+  Schnittstelle unverändert. Commit cfa7a36.
+- K3 Tests: tests/chest-lock-touch.test.ts — 7 Konstellationen + 4 Negativ-Checks, 11/11 grün.
+- K4 Nachher: shots/m10-chest-lock-after.json passed:true (7/7 + 3/3), Shots c1/c2/c7 gesichtet
+  (Truhe offen ohne Joystick / neue Geste startet). docs/lanes/m10-chest-lock-touch.md.
+
+Wichtiger Befund: Die 7/105 FAILs beruhen auf Basis f26dc4b — VOR dem pointerup-Fix der Lane
+m10-input-fix. Auf dieser Basis sind alle 7 Konstellationen schon grün (Baseline-JSON passed:true).
+Die Lane hat zusätzlich die echte verbleibende Lücke (onTouchMove ohne canMove-Check → bis zu 1 Frame
+Drift beim Panel-Öffnen) geschlossen und per Unit-Test C2 gegen den alten Code abgesichert.
+
+Zahlen: npm test 545/545 (54 Dateien), npm run build grün, tsc rc=0, 0 JS-Fehler in beiden Messläufen.
+Offen: Neumessung der 105er-Matrix mit aktuellem Basis-SHA; echte Hardware ungetestet.
