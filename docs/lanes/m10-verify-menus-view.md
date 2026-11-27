@@ -34,13 +34,33 @@ Belege: `shots/m10-verify-menus-before.log`, `~/tmp/m10-verify-menus-view/k1-pro
 Damit ist die Menü-Abnahme an einen einzigen Viewport gebunden — genau der Befund des Briefings
 („Harness klickt daneben“), reproduzierbar, sobald der Abnahme-View breiter als Fit-480 ist.
 
-## K2 — Klick-/Hit-Mapping entkoppelt (geplant: Label-Rechtecke aus der laufenden Szene)
+## K2 — Klick-/Hit-Mapping entkoppelt (2026-11-27)
 
-Ansatz (nur Harness): zur Laufzeit alle sichtbaren `PixelText`-Objekte der aktiven Szenen
-lesen (`valueText` + `getBounds()`), das Ziel per Text-Match (exakt > includes, kürzester
-Treffer gewinnt) finden und auf den Center seiner Bounds klicken. Mapping Bounds → Canvas
-bleibt über `__game.scale` + `canvas.boundingBox()`. Tastatur-Pfade bleiben als Kontrolle.
-`MENUS_VIEWPORT=WxH` als Env-Override für Robustheits-Läufe. Keine Änderung an `src/**`.
+Umsetzung in `scripts/verify-menus.mjs` (Commit `69bd046` WIP + Final-Commit):
+
+- `readTargets()` liest zur Laufzeit alle sichtbaren `PixelText`-Objekte (`valueText`)
+  der aktiven Szenen. Bewusst **`getWorldTransformMatrix().transformPoint(0,0)`** statt
+  `getBounds()`: Container-Bounds sind bei PixelText unsauber (Glyph-Texturen verfälschen
+  Höhe/y — erster Lauf klickte 13 px unter den START-Knopf und FAILete mit Timeout),
+  der Text-Ursprung liegt bei allen Menü-Texten (zentriert oder Zeilen-Label) sicher
+  im klickbaren Element.
+- `clickLabel(needle)` wählt das Ziel nach Text-Match (exakt > Präfix > enthält,
+  kürzester Text gewinnt) und klickt seine Weltposition, gemappt über
+  `__game.scale` + `canvas.boundingBox()` — kein festes 480x270-Layout mehr.
+- `clickOptionArrow(rowLabel)` findet die Optionszeile über ihr Label und klickt den
+  ">"-Pfeil mit dem kleinsten y-Abstand (Zeilen-/Pfeilposition kommen aus der Szene).
+- Tastatur-Pfade bleiben als Kontrolle: ESC, Aufgeben (Pfeile+Enter), „o“ nach Reload.
+- `MENUS_VIEWPORT=1280x720` als Env-Override für Robustheits-Läufe; der Check
+  „Skalierung 2X“ rechnet die erwartete Canvas-Größe jetzt aus dem Viewport her
+  (gleiche Regel wie `computeView`, dpr=1) statt sie fest auf 720x540 zu codieren.
+- Snap-Präfix auf `shots/m10-verify-menus-*.png`, Ergebnis-JSON auf
+  `shots/m10-verify-menus.json` umgestellt; die Legacy-`m6-menus-*`-Belege werden
+  nicht mehr angetastet.
+
+**Messwerte:** Standard-Viewport 960x540 (Fit 480x360): **PASS 15/15**, 0 JS-Fehler.
+Robustheits-Lauf `MENUS_VIEWPORT=1280x720` (View 640x360, vorher FAIL-Repro):
+**PASS 15/15**, 0 JS-Fehler, Skalierungs-Check „center 640/360, 1280x720“. Logs:
+`~/tmp/m10-verify-menus-view/k2-after-try2.log` und `k2-after-640.log`.
 
 ## K3 — Nachweis (offen)
 
