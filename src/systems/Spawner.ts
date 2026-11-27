@@ -17,6 +17,8 @@ import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPoo
  */
 export class Spawner {
   budget = 0;
+  /** Abnahme-Beleg: zaehlt jeden tatsaechlichen Spawn je Gegner-ID (nur zaehlen). */
+  readonly spawnCounts: Partial<Record<EnemyId, number>> = {};
   private lastMinute = -1;
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
@@ -28,6 +30,8 @@ export class Spawner {
     this.pool = pool;
     this.rng = rng;
     this.camera = scene.cameras.main;
+    // window.__lf.state() liest den Zaehler ohne Phaser-Referenz aus der Registry.
+    this.scene.registry.set("lf-spawner", this);
   }
 
   currentWave(elapsedSeconds: number): WaveDef {
@@ -162,7 +166,7 @@ export class Spawner {
     const elapsedSec = this.elapsed();
     const hpScale = options.hpScale ?? this.hpScaleFor(elapsedSec);
     const damageScale = enemyDamageScale(elapsedSec);
-    return this.pool.spawn(
+    const runtime = this.pool.spawn(
       def,
       Phaser.Math.Clamp(x, 20, WORLD_SIZE - 20),
       Phaser.Math.Clamp(y, 20, WORLD_SIZE - 20),
@@ -172,6 +176,11 @@ export class Spawner {
       { speed: def.speed * enemySpeedScale(elapsedSec), ...options },
       this.rng,
     );
+    if (def.id in ENEMIES) {
+      const id = def.id as EnemyId;
+      this.spawnCounts[id] = (this.spawnCounts[id] ?? 0) + 1;
+    }
+    return runtime;
   }
 
   private elapsed(): number {

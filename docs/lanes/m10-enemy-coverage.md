@@ -104,3 +104,67 @@ Lane, daher bewusst unangetastet):
 Damit ist die von #1739 belegte Lückenliste leer und K3 hat nichts zu schliessen.
 Die 30/30-Abdeckung wird in K4 als Regressions-Test festgeschrieben, damit
 spätere Balance-Änderungen die Abdeckung nicht unbemerkt verlieren.
+
+## K4 — Unit-Test `tests/wave-coverage.test.ts` (#1741)
+
+Die Simulation aus K1 wurde als reine Funktion `simulateEnemyCoverage(seed, seconds, ids, rateFactor)`
+in `src/logic/waves.ts` extrahiert (kein Phaser, keine Zeitabhängigkeit) und wird von
+Skript und Test gemeinsam genutzt. Vier Assertions-Gruppen:
+
+- **(a)** 30/30 IDs stehen in mindestens einer Tier-Mix mit Gewicht > 0 **und** in der
+  Mischung ihrer eigenen Zeitstufe.
+- **(b)** jede der 5 Tier-Mixes ist normalisiert: nur bekannte IDs, alle Gewichte > 0,
+  Summe > 0, Share-Summe = 100 %.
+- **(c)** deterministische 30-min-Simulation (Seeds 101/202) deckt 30/30, jeder
+  First-Spawn liegt vor dem Tier-Ende.
+- **(d)** kein ID-Anteil > 35 % in einem 5-min-Block (beide Seeds).
+
+Beleg: `npx vitest run tests/wave-coverage.test.ts` → **4/4 Tests grün** (1 Datei, 148 ms).
+Der Test ist per CI/Vitest Teil von `npm test`.
+
+## K5 — In-Game-Beleg: 30 Sim-Minuten @ timeScale 30 (#1742)
+
+Headless-Chromium-Lauf über `scripts/enemy-coverage.mjs --ingame`:
+Viewport 640×360, `?debug=1&seed=101`, `god(true)` + `autoPlay(true)` + `setTimeScale(30)`,
+30 Sim-Minuten (Abbruch bei `state.time >= 1800`), Poll alle 250 ms.
+
+Der Spawn-Zähler wurde minimal ergänzt, ohne Spawning zu steuern:
+
+- `src/systems/Spawner.ts`: `spawnCounts` zählt in `spawnAt()` jeden tatsächlichen
+  Gegner-Spawn je `EnemyId` (Splitter-Kinder und Summoner-Minions inklusive;
+  Boss-Spawns laufen direkt über `pool.spawn` und werden nicht mitgezählt).
+- `src/debug.ts`: `window.__lf.state()` und `window.__lf.stats()` hängen `spawnCounts`
+  aus der Registry (`lf-spawner`) an. Keine Debug-Steuerung geändert.
+
+Messwerte (`shots/m10-coverage-ingame.json`):
+
+| Messwert | Wert |
+|---|---|
+| Sim-Zeit | **1802.7 s** (30:02.7) |
+| Echtzeit | 97.9 s |
+| abgedeckte Typen | **30/30**, `missing: []` |
+| minimale Spawns eines Typs | 10 (`toad`) |
+| maximale Spawns eines Typs | 6968 (`reaper_bat`, inkl. Voidcaller-Beschwörungen) |
+| insgesamt gezählte Spawns | 9403 |
+| **max. gleichzeitig aktive Gegner** | **274** |
+| JS-Fehler | **0** |
+| Gate | **PASS** (`ok: true`) |
+
+Beleg-Screenshot während des Laufs: `shots/m10-coverage-ingame-minute25.png`
+(Minute 25, lebende Gegner im Bild).
+
+Unterschied Sim vs. In-Game (2524 vs. 9403 Spawns): die reine Simulation zählt nur
+Director-Spawns; in-game zählen zusätzlich Splitter-Kinder (`mudling`/`slime`/`abom`)
+und Summoner-Minions (`cultist`/`voidcaller` → u. a. `reaper_bat`), die über
+denselben `spawnAt()`-Pfad entstehen. Für die Abdeckung ist das gewollt: auch diese
+Typen werden real gespawnt.
+
+## Abnahme-Status
+
+- Sim-JSON: **30/30** in beiden Seeds (101, 202) — `shots/m10-coverage-sim.json`.
+- In-Game-JSON: **30/30**, max. **274** aktive Gegner, 0 JS-Fehler — `shots/m10-coverage-ingame.json`.
+- `tests/wave-coverage.test.ts`: **4/4 grün**.
+- `npm run build`: grün (via Harness vor dem In-Game-Lauf, `✓ built in 902ms`).
+- `npm test`: **15 Dateien / 208 Tests grün**, keine neuen roten Tests.
+- Offene Punkte: keine. `src/data/waves.ts` blieb unverändert, weil die Invarianten
+  bereits erfüllt waren; die Abdeckung ist jetzt durch K4 gegen Regression gesichert.

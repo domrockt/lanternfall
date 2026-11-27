@@ -39,11 +39,19 @@ export function installDebugApi(game: Phaser.Game): void {
     return "boot";
   };
 
+  /** Abnahme-Beleg (nur zaehlen): tatsaechliche Spawns je Gegner-ID im Run. */
+  const spawnCounts = (): Record<string, number> => {
+    const spawner = game.registry.get("lf-spawner") as
+      | { spawnCounts?: Record<string, number> }
+      | undefined;
+    return spawner?.spawnCounts ? { ...spawner.spawnCounts } : {};
+  };
+
   const api = {
     /** Immer verfügbar. */
     state: () => {
       if (game.scene.isActive("run") || game.scene.isPaused("run")) {
-        return (game.scene.getScene("run") as Run).getDebugState();
+        return { ...(game.scene.getScene("run") as Run).getDebugState(), spawnCounts: spawnCounts() };
       }
       return {
         scene: activeScene(),
@@ -65,7 +73,7 @@ export function installDebugApi(game: Phaser.Game): void {
     /** Leichtgewichtiges Polling (ohne enemyList): FPS/Zeit/G GC-Druck. */
     stats: () => {
       if (game.scene.isActive("run") || game.scene.isPaused("run")) {
-        return (game.scene.getScene("run") as Run).getQuickStats();
+        return { ...(game.scene.getScene("run") as Run).getQuickStats(), spawnCounts: spawnCounts() };
       }
       return {
         scene: activeScene(),
