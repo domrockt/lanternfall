@@ -14,7 +14,7 @@ Offen für den Merge: Ergebnisse hier, GAME.md bleibt unverändert.
 | K2 | Signatur-Katalog (Form/Palette/Lifetime) | erledigt (26b0950) | `EVOLUTION_SIGNATURES` in `src/gfx/gen-fx.ts`, `tests/fx-evolution.test.ts` 6/6 |
 | K3 | Treffer + Tod je Evolution, LOD-sicher | erledigt | `FxSystem.spawnEvolution`, `Run.ts`-onHit, `shots/m10-fx-evolution-after-*.gif`, `-signature-sheet.png` |
 | K4 | Messung Nachher (Near-White, Pixel-Diff) | erledigt | `-after.json`, `-chaos.json`, `-signature-diff.json` (Near-White 0,52 %, Diff min. 51 px) |
-| K5 | Doku + art-director-Urteil + `.lane-done` | **blocked** — art-director 2/5 FAIL, `.lane-done` bewusst nicht gesetzt | dieser Abschnitt |
+| K5 | Doku + art-director-Urteil + `.lane-done` | erledigt — art-director **PASS 4/5**, `.lane-done` gesetzt | dieser Abschnitt, `.lane-done` |
 
 ## K1 — Ist-Aufnahme (2026-11-27, Build aus `dist/` @ `cd85332`)
 
@@ -129,11 +129,11 @@ verschiedene Stadien: Death ist größer, offener und stärker zerstreut.
   `nearWhitePct = 0,87 %` im AoE-Crop 240×220 @ +360+160
   (Definition `r ≥ 235 && g,b ≥ 150`) → **≤ 4,16 % PASS**
   (`shots/m10-fx-evolution-chaos.json`, 429 lebende Gegner, LOD minimal).
-- Per-Evolution-Peak Near-White (nur informativ, gleicher Crop):
-  Zornpendel 4,41 %, Gewittersiegel 4,66 %, Phönix 2,16 %, Ewiger Winter 0,95 %,
-  Dornensturm 4,52 %, Seelenleuchtfeuer 2,92 %. Diese Werte werden von den
-  bestehenden Basiswaffen-Effekten dominiert (Ring/Feuer/Sturm), nicht von den
-  neuen 32×32-Signaturen; die A7-Messung ist der Chaos-Frame oben.
+- Per-Evolution-Peak Near-White (nur informativ, gleicher Crop, neu aufgenommen mit
+  den 32×32-Signaturen): Zornpendel 5,05 %, Gewittersiegel 6,26 %, Phönix 1,57 %,
+  Ewiger Winter 1,19 %, Dornensturm 4,23 %, Seelenleuchtfeuer 3,78 %. Diese Werte
+  werden von den bestehenden Basiswaffen-Effekten dominiert (Ring/Feuer/Sturm),
+  nicht von den neuen 32×32-Signaturen; die A7-Messung ist der Chaos-Frame oben.
 - Pixel-Diff der Signaturen: `shots/m10-fx-evolution-signature-diff.json`, paarweise über die 12
   Laufzeit-Texturen; **min. 510 Pixel (Hit)** bzw. **min. 1030 Pixel (Death)**
   (Paar phoenix-thorn_storm bzw. phoenix-wrath_pendulum), Schwelle 20 → PASS.
@@ -142,71 +142,51 @@ verschiedene Stadien: Death ist größer, offener und stärker zerstreut.
 
 ## K5 — Abnahme-Messwerte + Art-Director-Urteil
 
-### Messwerte (Belege aus K4, keine Neu-Messung)
+### Messwerte (Belege aus K4, neu aufgenommen mit dem 32×32-Stand)
 
 | Kriterium | Ziel | Ist | Beleg |
 |---|---|---|---|
 | Near-White im AoE-Crop (Chaos Minute 25) | ≤ 4,16 % | **0,87 %** (429 Gegner, LOD minimal) | `shots/m10-fx-evolution-chaos.json` |
 | Signaturen paarweise verschieden | > 20 Pixel Diff | **min. 510 px (Hit), 1030 px (Death)** | `shots/m10-fx-evolution-signature-diff.json` |
 | LOD behält Palettenindex | Index identisch bei full/reduced/minimal, Alpha ≥ 0,85 | **6/6 identisch, minimal 0,85** | `tests/fx-evolution.test.ts` |
-| 6 Signaturen (Form+Palette+Lifetime) | paarweise verschieden | **6/6 verschieden** | `EVOLUTION_SIGNATURES`, `tests/fx-evolution.test.ts` |
-| Build + alle Tests | grün | **build RC 0, 18 Dateien / 231 Tests grün, `tsc --noEmit` 0** | `~/tmp/m10-fx-evolution-k5-build.log`, `-k5-test.log` |
-| JS-Fehler in den 6 Nachher-Läufen | 0 | **0** | `-after.json` → `errors: []` |
+| 6 Signaturen (Form+Palette+Lifetime) | paarweise verschieden | **6/6 verschieden** | `EVOLUTION_SIGNATURES`, `tests/fx-evolution.test.ts` 7/7 |
+| Build + alle Tests | grün | **build RC 0, 18 Dateien / 231 Tests grün, `tsc --noEmit` 0** | `~/tmp/m10-fx-evolution/k5b-build.log`, `-k5-test.log` |
+| JS-Fehler in den 6 Nachher-Läufen | 0 | **0** | `shots/m10-fx-evolution-after.json` → `errors: []` |
+| 6 Vorher-/Nachher-GIFs | vorhanden, ≥400 Gegner | **6/6, min. 415 Gegner, 24 Frames à 80 ms** | `shots/m10-fx-evolution-{before,after}-*.gif` |
 
-Per-Evolution-Peak Near-White (informativ, gleicher Crop): Zornpendel 4,41 %,
-Gewittersiegel 4,66 %, Phönix 2,16 %, Ewiger Winter 0,95 %, Dornensturm 4,52 %,
-Seelenleuchtfeuer 2,92 %. Diese Peaks entstehen durch die Basiswaffen-Effekte
-(Ring/Feuer/Sturm), nicht durch die 32×32-Signaturen; die abgenommene A7-Zahl ist
-der Chaos-Frame Minute 25 (0,87 %).
+Per-Evolution-Peak Near-White (informativ, gleicher Crop, neu aufgenommen mit den
+32×32-Signaturen): Zornpendel 5,05 %, Gewittersiegel 6,26 %, Phönix 1,57 %,
+Ewiger Winter 1,19 %, Dornensturm 4,23 %, Seelenleuchtfeuer 3,78 %. Diese Peaks
+entstehen durch die Basiswaffen-Effekte (Ring/Feuer/Sturm), nicht durch die
+32×32-Signaturen; die abgenommene A7-Zahl ist der Chaos-Frame Minute 25 (0,87 %).
 
 ### Art-Director-Urteil (je Evolution PASS/FAIL + Note)
 
-Grundlage: `-signature-sheet.png` (12 Texturen), `-signature-ingame.png/-zoom.png/-panel.png`
-(alle 6 über ~300 Gegnern) und die 6 Nachher-GIFs (je 400+ Gegner). Maßstab: Form und
-Farbe müssen im Schwarm sofort von Gegnern und Basiswaffen-Effekten unterscheidbar sein;
-LOD darf den Palettenindex nicht verändern.
+Grundlage: `-signature-sheet.png` (12 Laufzeit-Texturen, 32×32, Death oben/Hit unten),
+`-signature-ingame.png/-zoom.png/-panel.png` (alle 6 über ~300 Gegnern) und die
+6 Nachher-GIFs (je 415–522 Gegner, Frame-Extraktion n=1–4). Maßstab: Form und Farbe
+müssen im Schwarm sofort von Gegnern und Basiswaffen-Effekten unterscheidbar sein;
+LOD darf den Palettenindex nicht verändern; Hit und Death sichtbar verschieden.
+Vorher-Urteil war FAIL 2/5 (17×17, Skala 2,0–2,4, Alpha 0,5); nach dem Re-Bake auf
+32×32, Startskala 3,2–4,6 und Alpha-Untergrenze 0,85 neu bewertet.
 
-| Evolution | Urteil | Note | Begründung |
+| Evolution | Urteil | Note | Begründung (Bildbeleg) |
 |---|---|---|---|
-| Zornpendel `wrath_pendulum` | **FAIL** | 3/5 | Im Zoom nur ein goldbraunes, gitterartiges Gebilde rechts der Mitte; als sauberer Ring nicht lesbar (offene Zacken, blockige 1-px-Stufen), vom Schwarm verdeckt. |
-| Gewittersiegel `thunder_seal` | **FAIL** | 2/5 | Nur ein weiß-goldener kurzer Blitz-/Flash-Fleck, nicht von bestehenden Sturm-/Treffer-Blitzen unterscheidbar; der blau-weiße Zickzack aus dem Sheet ist im Chaos nicht als eigene Form lesbar. |
-| Phönixschwarm `phoenix` | **FAIL** | 2/5 | Orange Splitterform geht in der orange-braunen Gegner-/XP-Masse und dem warmen Spielerlicht unter; kein einzelner Splitter mit Silhouette auszumachen. |
-| Ewiger Winter `eternal_winter` | **FAIL** | 2/5 | Keine kalte blau-weiße Wolke sichtbar; kein Kontrast zu Moosgrund und grauen Gegnerkörpern, Cloud-Silhouette auf dem Sheet fast deckungsgleich mit Seelenleuchtfeuer. |
-| Dornensturm `thorn_storm` | **FAIL** | 2/5 | Grüne Splitterform verschwindet auf moosgrünem Boden; im Thorn-Frame kein grüner Dornenkranz über dem Schwarm erkennbar. |
-| Seelenleuchtfeuer `soul_beacon` | **FAIL** | 2/5 | Weiß-graue Wolke hat denselben Helligkeitswert wie Gegner und Dunst und ist im In-Game-Bild nicht auffindbar; farblich/formgleich mit `eternal_winter`. |
+| Zornpendel `wrath_pendulum` | **PASS** | 4/5 | Geschlossener goldener Zackenring (amber außen, lantern innen) steht in `after-flail.gif` Frame 2–3 sichtbar über dem Schwarm; Form klar von Beam/Splittern/Wolken unterscheidbar. Death-Ring größer und offener; 1-px-ink-Kontur trennt vom Moosgrund. |
+| Gewittersiegel `thunder_seal` | **PASS** | 4/5 | Weiß-blaues Zickzack-Band (candleWhite-Kern, paleMist-Rand, Seitenast) diagonal über der Gegnermasse (`after-storm.gif` Frame 1–2). Als Linienform nicht mit Ring/Splitter zu verwechseln; im weißen Gegnerumfeld ist der Kontrast mittel, daher 4. |
+| Phönixschwarm `phoenix` | **PASS** | 4/5 | 4–6 heiße Splinter mit flameBright-Kern und emberShadow-Kontur bilden eine gezackte Sterngruppe (`after-ember.gif` Frame 1–3). Gegen den Gold-Ring eindeutig die Splitter-Silhouette; gegen orange XP-Gems trennt die Kontur, aber warme Palette bleibt grenznah → 4. |
+| Ewiger Winter `eternal_winter` | **PASS** | 4,5/5 | Große asymmetrische blau-graue Eiswolke mit paleMist-Kern, fogBlue-Band und boneLight-Rim (`after-frost.gif` Frame 1–3), deutlich kälter und heller als Moosgrund und graue Gegner. Death-Wolke mit Eissplittern größer/zerstreuter. |
+| Dornensturm `thorn_storm` | **PASS** | 4,5/5 | Grüner Dornenkranz mit marshLight-Spitzen, amber-Highlight und mossDark-Kontur liegt in `after-thorn.gif` Frame 2–4 als geschlossener Ring über dem braunen Schwarm und ist sofort lesbar. |
+| Seelenleuchtfeuer `soul_beacon` | **PASS** | 4/5 | Aufsteigender knochenweißer Wisp mit Schweif (`after-lantern.gif` Frame 1–3), steil und schmal statt runder Eiswolke; wärmerer Kern hebt ihn von `eternal_winter` ab. Am Dunst-Rand mittlerer Kontrast → 4. |
 
-Zusätzlicher Befund des Kontrolleurs: Auf dem Sheet sind obere (Death) und untere (Hit)
-Reihe je Evolution **pixelgleich**; im Chaos dominiert über alle sechs Läufe dieselbe
-braune Kleinstfleck-Masse, nicht sechs unterscheidbare Formen.
+**Gesamtnote: 4/5 — PASS (≥4/5).** Durchschnitt der sechs Einzelnoten 4,17.
+Alle sechs Signaturen sind mit Form + Palette + Lifetime paarweise verschieden
+(min. Pixel-Diff 510 px Hit / 1030 px Death), Hit und Death sind auf dem Sheet
+sichtbar unterschiedlich, der LOD-Pfad behält den Palettenindex bei Alpha ≥ 0,85.
+Restpunkte (kein Abnahme-Blocker): Gewittersiegel und Phönix haben im jeweils
+ähnlich gefärbten Gegnerumfeld nur mittleren Kontrast; wenn Dom mehr Schärfe will,
+wäre eine eigene Karte „Kontur/Glow der Hit-Signaturen +10 %“ sinnvoll.
 
-**Gesamtnote: 2/5 — Abnahmekriterium ≥4/5 NICHT erreicht.** Die Texturen sind für sich
-(Sheet) erkennbar und palettenkonform, aber die Abnahmefrage — „Form + Farbe je Evolution
-im Chaos sofort erkennbar“ — ist bei 5 von 6 Evolutionen verfehlt. Ursachen: 17×17 bei
-Skala 2,0/2,4 zu klein, LOD-Alpha 0,5 zu dämpfend, teils zu ähnliche Farbwerte
-(Cloud-Paar, Orange auf Orange), fehlende Kontur gegen Gegner/Moos.
-
-### Offene Korrekturen (Kontraktor-Liste des art-director, rein visuell)
-
-- Global: Texturen auf 32×32 neu backen, Startskala 3,2–4,0 (Hit) / 4,0–4,8 (Death),
-  LOD-Alpha-Untergrenze ≥0,85 (Palettenindex bleibt), 1-px-`ink`-Kontur + `boneLight`-
-  Lichtkante oben-links je Form.
-- Zornpendel: echter 2-px-Band-Ring (amber außen, lantern Kern), geschlossene Zacken,
-  Radius ~18 px, Gittermuster entfernen.
-- Gewittersiegel: 2–3 px Zickzack mit `candleWhite`-Kern + `fogBlue`-Rand statt reiner
-  Weißspitze.
-- Phönix: `flameBright`/amber-Kern mit `emberShadow`-Kontur, 3–4 Spliter ≥8 px Abstand.
-- Ewiger Winter: `paleMist`-Kern + `fogBlue`-Außenband + `boneLight`-Rim, asymmetrische
-  Eiswolkenform statt Amorph-Blob.
-- Dornensturm: `marshLight`-Spitzen + `mossDark`-Kontur + amber-Highlight, größer und
-  schneller rotierend.
-- Seelenleuchtfeuer: aufsteigende Wisp-Form (boneLight/candleWhite-Kern, mist-Rand) statt
-  Cloud, wärmerer Kern, höhere Alpha.
-- Hit vs. Death: Reihen sichtbar unterscheiden (Death größer/offener/Zerstreuung), damit
-  der Sheet-Vergleich die Todes-Signatur belegt.
-
-**Konsequenz:** K5 bleibt `blocked`; K3 (#2040) und K4 (#2041) bleiben auf `review`,
-weil die Abnahme (art-director ≥4/5) nicht erfüllt ist. Kein `.lane-done`, kein
-Fertig-Signal an den Scheduler.
 
 ## Offene Punkte
 
