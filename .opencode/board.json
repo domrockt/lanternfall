@@ -3005,27 +3005,38 @@
       "id": 2079,
       "title": "m10-results-attribution: Logik damageTable + largest-remainder Rundung",
       "description": "damageTable filtert/sortiert deterministisch; Rundung so, dass Summe der Bars = gerundetem Gesamtschaden. tests/results.test.ts mit 0/1/vielen Waffen und Evolutions-Slot-Ersetzung. Abnahme: npx vitest run tests/results.test.ts gruen, Summenabweichung = 0, Sortierung absteigend.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T03:28:27Z",
           "by": "build",
           "text": "todo → doing: Rundung largest-remainder + Evolutions-Slot-Ersetzung, Test tests/results.test.ts."
+        },
+        {
+          "at": "2026-11-27T03:40:02Z",
+          "by": "build",
+          "text": "doing → review: ba3f04a: largest-remainder Rundung, Summe der Zeilen = gerundeter Gesamtschaden; Evolutionen ersetzen Basis-Slot (historischer Schaden geht in Evo-Zeile). tests/results.test.ts 10/10, logic.test.ts angepasst. build gruen."
         }
       ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T03:28:27Z"
+      "updated": "2026-11-27T03:40:02Z"
     },
     {
       "id": 2080,
       "title": "m10-results-attribution: Layout Namensumbruch + Overlap 0",
       "description": "slotNameLines fuer 12 Waffennamen (max 2 Zeilen, vollstaendig) und Balkenbreite bei 640x360/1920x1080; messbare Ueberlappung Text vs Trennlinie/Banner = 0, Screenshot je Aufloesung. Abnahme: tests/results.test.ts prueft 0 Overlaps, shots/m10-results-attribution-{1920x1080,640x360}.png zeigen alle 12 Namen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "ui-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:40:02Z",
+          "by": "build",
+          "text": "todo → doing: Namensumbruch slotNameLines (max 2 Zeilen) + Layout-Overlap 0 + Screenshots 1920/640."
+        }
+      ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T02:57:04Z"
+      "updated": "2026-11-27T03:40:02Z"
     },
     {
       "id": 2081,

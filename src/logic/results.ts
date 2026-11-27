@@ -1,5 +1,6 @@
 import { weaponDef, isEvolutionWeapon } from "../data/weaponIds";
 import { EVOLUTIONS } from "../data/evolutions";
+import { slotNameLines } from "./text";
 
 export interface DamageEntry {
   id: string;
@@ -85,4 +86,162 @@ export function damageTable(damageByWeapon: Record<string, number>, limit = 12):
       isEvolution: isEvolutionWeapon(id),
     }))
     .sort((a, b) => b.damage - a.damage || a.id.localeCompare(b.id));
+}
+
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface ResultLayoutRow {
+  id: string;
+  name: string;
+  damage: number;
+  isEvolution: boolean;
+  lines: string[];
+  y: number;
+  icon: Rect;
+  nameRects: Rect[];
+  barBg: Rect;
+  barFill: Rect;
+  valueText: string;
+  valueRect: Rect;
+}
+
+export interface ResultsLayoutOptions {
+  width?: number;
+  /** Vertikaler Offset der Szenen-Mitte (Results nutzt round((H-270)/2)). */
+  oy?: number;
+  rowsTop?: number;
+  limit?: number;
+  /** Bereits gerundeter Gesamtschaden fuer das "GESAMT:"-Label. */
+  totalDamage?: number;
+}
+
+export interface ResultsLayout {
+  rows: ResultLayoutRow[];
+  header: Rect;
+  totalLabel: Rect;
+  divider: Rect;
+  banner: Rect;
+  overlaps: string[];
+}
+
+function sumRounded(entries: DamageEntry[]): number {
+  return entries.reduce((sum, entry) => sum + entry.damage, 0);
+}
+
+function intersects(a: Rect, b: Rect): boolean {
+  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+}
+
+/**
+ * Layout des Ergebnis-Screens als reine Funktion, damit der echte Screen und
+ * die Tests dieselben Rechtecke sehen. Namen laufen ueber slotNameLines auf
+ * max. 2 Zeilen; Zeilen mit Umbruch bekommen mehr Hoehe. `overlaps` listet
+ * jede Ueberlappung (Text vs. Trennlinie/Banner/Balken/Zahlen) mit Namen.
+ */
+export function layoutResultRows(
+  entries: DamageEntry[],
+  options: ResultsLayoutOptions = {},
+): ResultsLayout {
+  const width = options.width ?? 640;
+  const oy = options.oy ?? 45;
+  const cx = width / 2;
+  const nameX = cx + 6;
+  const barX = cx + 104;
+  const barW = 70;
+  const valueRightX = cx + 204;
+  const nameMaxWidth = barX - nameX - 4;
+  const nameMaxChars = Math.max(1, Math.floor((nameMaxWidth + 1) / 6));
+  const maxDamage = entries.reduce((m, e) => Math.max(m, e.damage), 1);
+
+  let y = (options.rowsTop ?? 64) + oy;
+  const rows: ResultLayoutRow[] = entries.map((entry) => {
+    const lines = slotNameLines(entry.name.toUpperCase(), nameMaxChars);
+    const nameRects = lines.map((line, i) => ({
+      x: nameX, y: y + i * 8, w: Math.max(1, line.length * 6 - 1), h: 7,
+    }));
+    // 16-px-Zeilen passen zu den 16-px-Icons; zwei Textzeilen liegen bei +0/+8.
+    const rowHeight = 16;
+    const valueText = formatDamageCompact(entry.damage);
+    const valueRect = {
+      x: valueRightX - Math.max(0, valueText.length * 6 - 1),
+      y, w: Math.max(1, valueText.length * 6 - 1), h: 7,
+    };
+    const row: ResultLayoutRow = {
+      id: entry.id,
+      name: entry.name,
+      damage: entry.damage,
+      isEvolution: entry.isEvolution,
+      lines,
+      y,
+      icon: { x: cx - 20, y: y - 1, w: 16, h: 16 },
+      nameRects,
+      barBg: { x: barX, y: y + 3, w: barW, h: 5 },
+      barFill: { x: barX, y: y + 3, w: Math.max(2, Math.round(entry.damage / maxDamage * barW)), h: 5 },
+      valueText,
+      valueRect,
+    };
+    y += rowHeight;
+    return row;
+  });
+
+  const headerText = "SCHADEN PRO WAFFE";
+  const totalText = `GESAMT: ${formatDamageCompact(options.totalDamage ?? sumRounded(entries))}`;
+  const header: Rect = { x: cx - 20, y: 46 + oy, w: headerText.length * 6 - 1, h: 7 };
+  const totalLabel: Rect = { x: cx - 20, y: 56 + oy, w: totalText.length * 6 - 1, h: 7 };
+  const divider: Rect = { x: cx - 35, y: 107 + oy, w: 2, h: 140 };
+  const banner: Rect = { x: cx - 200, y: 187 + oy, w: 164, h: 17 };
+
+  const named: { label: string; rect: Rect }[] = [
+    { label: "header", rect: header },
+    { label: "total", rect: totalLabel },
+    { label: "divider", rect: divider },
+    { label: "banner", rect: banner },
+  ];
+  for (const row of rows) {
+    named.push({ label: `${row.id}:icon`, rect: row.icon });
+    row.nameRects.forEach((rect, i) => named.push({ label: `${row.id}:name${i}`, rect }));
+    named.push({ label: `${row.id}:bar`, rect: row.barBg });
+    named.push({ label: `${row.id}:value`, rect: row.valueRect });
+  }
+  const overlaps: string[] = [];
+  for (let i = 0; i < named.length; i++) {
+    for (let j = i + 1; j < named.length; j++) {
+      if (intersects(named[i].rect, named[j].rect)) {
+        overlaps.push(`${named[i].label}|${named[j].label}`);
+      }
+    }
+  }
+
+  return { rows, header, totalLabel, divider, banner, overlaps };
+}
+
+/** Komfort-Wrapper: Schadenstabelle + Layout in einem Schritt. */
+export function resultsLayout(
+  damageByWeapon: Record<string, number>,
+  options: ResultsLayoutOptions = {},
+): ResultsLayout {
+  const entries = damageTable(damageByWeapon, options.limit ?? 12);
+  return layoutResultRows(entries, {
+    ...options,
+    totalDamage: options.totalDamage ?? damageTotal(damageByWeapon),
+  });
+}
+
+/** Alle 12 moeglichen Waffennamen als Layout-Stresstabelle (Test/Beleg). */
+export function stressEntries(): DamageEntry[] {
+  const ids = [
+    "ember", "phoenix", "flail", "wrath_pendulum", "frost", "eternal_winter",
+    "thorn", "thorn_storm", "storm", "thunder_seal", "lantern", "soul_beacon",
+  ];
+  return ids.map((id, i) => ({
+    id,
+    name: weaponDef(id)?.name ?? id,
+    damage: 300000 - i * 21000,
+    isEvolution: isEvolutionWeapon(id),
+  }));
 }

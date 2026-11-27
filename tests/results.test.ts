@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { collapseEvolutionDamage, damageTable, damageTotal } from "../src/logic/results";
+import {
+  collapseEvolutionDamage, damageTable, damageTotal, layoutResultRows, resultsLayout, stressEntries,
+} from "../src/logic/results";
+import { slotNameLines } from "../src/logic/text";
 import { WEAPONS } from "../src/data/weapons";
 import { EVOLUTION_WEAPONS } from "../src/data/evolution-weapons";
 
@@ -78,5 +81,42 @@ describe("M10 Results: Evolutions-Slot-Ersetzung", () => {
     expect(rows).toHaveLength(6);
     expect(rows.every((e) => e.isEvolution)).toBe(true);
     expect(sum(rows.map((e) => e.damage))).toBe(damageTotal(input));
+  });
+});
+
+describe("M10 Results: Layout Namensumbruch und Ueberlappung", () => {
+  const names = stressEntries().map((entry) => entry.name.toUpperCase());
+
+  it("alle 12 Waffennamen vollstaendig auf max. 2 Zeilen", () => {
+    expect(names).toHaveLength(12);
+    for (const name of names) {
+      const lines = slotNameLines(name, 15);
+      expect(lines.length).toBeLessThanOrEqual(2);
+      expect(lines.join("")).toBe(name);
+      for (const line of lines) expect(line.length).toBeLessThanOrEqual(15);
+    }
+  });
+
+  it("12-Zeilen-Stresstabelle: 0 Ueberlappungen bei 640x360 und 1920x1080", () => {
+    const entries = stressEntries();
+    for (const width of [640, 1920]) {
+      const layout = layoutResultRows(entries, { width, oy: 45, rowsTop: 70 });
+      expect(layout.rows).toHaveLength(12);
+      expect(layout.overlaps).toEqual([]);
+      for (const row of layout.rows) {
+        expect(row.nameRects.length).toBeLessThanOrEqual(2);
+        for (const rect of row.nameRects) {
+          expect(rect.x + rect.w).toBeLessThanOrEqual(row.barBg.x);
+        }
+      }
+    }
+  });
+
+  it("Banner, Trennlinie und Gesamt-Label kollidieren mit keinem Text", () => {
+    const layout = resultsLayout({ ember: 900, flail: 500, frost: 300 }, { width: 640, oy: 45 });
+    expect(layout.overlaps).toEqual([]);
+    expect(layout.totalLabel.w).toBeGreaterThan(0);
+    expect(layout.banner.x + layout.banner.w).toBeLessThan(layout.divider.x);
+    expect(layout.totalLabel.x).toBeGreaterThan(layout.divider.x);
   });
 });
