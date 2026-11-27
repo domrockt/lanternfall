@@ -39,6 +39,12 @@ const PASSIVE_PRIORITY: Record<string, number> = {
   heart: 34, boots: 30, tome: 28, charm: 22, whetstone: 20, hourglass: 18,
 };
 
+// Modul-Level-Lookups (K2): keine Map/filter/some/find-Allokationen pro Call.
+const EVOLUTION_IDS: ReadonlySet<string> = new Set(EVOLUTIONS.map((e) => e.id));
+const EVO_BY_BASE: ReadonlyMap<string, (typeof EVOLUTIONS)[number]> = new Map(
+  EVOLUTIONS.map((e) => [e.baseWeapon, e]),
+);
+
 /** Aktueller Build des Bots (für Evolutions-Fokus und Slot-Begrenzung). */
 export interface BuildContext {
   weapons: readonly { id: string; level: number }[];
@@ -57,19 +63,29 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
   const id = String(offer.id);
   const weapons = build?.weapons ?? [];
   const passives = build?.passives ?? [];
-  const passiveLevel = new Map(passives.map((p) => [p.id, p.level]));
-  // Fokus = Startwaffe (bleibt stabil); nur wenn sie evolviert/maxed ist, zählt
-  // die höchste andere Basiswaffe. So erreicht genau ein Slot Stufe 8.
-  const baseOwned = weapons.filter((w) => w.id in WEAPON_PRIORITY && !EVOLUTIONS.some((e) => e.id === w.id));
-  let focus: { id: string; level: number } | null = null;
-  const start = build?.startingWeapon ? baseOwned.find((w) => w.id === build.startingWeapon) : undefined;
-  if (start) focus = { id: start.id, level: start.level };
-  else {
-    for (const w of baseOwned) {
-      if (!focus || w.level > focus.level) focus = { id: w.id, level: w.level };
+  // Passives: letzter Treffer gewinnt (Map-Semantik), ohne Map-Allokation.
+  let ownedPassiveLevel = 0;
+  let hasOwnedPassive = false;
+  for (let i = passives.length - 1; i >= 0; i--) {
+    if (passives[i]!.id === id) {
+      ownedPassiveLevel = passives[i]!.level;
+      hasOwnedPassive = true;
+      break;
     }
   }
-  const evo = focus ? EVOLUTIONS.find((e) => e.baseWeapon === focus!.id) : undefined;
+  // Fokus = Startwaffe (bleibt stabil); nur wenn sie evolviert/maxed ist, zählt
+  // die höchste andere Basiswaffe. So erreicht genau ein Slot Stufe 8.
+  let focus: { id: string; level: number } | null = null;
+  for (let i = 0; i < weapons.length; i++) {
+    const w = weapons[i]!;
+    if (!(w.id in WEAPON_PRIORITY) || EVOLUTION_IDS.has(w.id)) continue;
+    if (build?.startingWeapon && w.id === build.startingWeapon) {
+      focus = { id: w.id, level: w.level };
+      break;
+    }
+    if (!focus || w.level > focus.level) focus = { id: w.id, level: w.level };
+  }
+  const evo = focus ? EVO_BY_BASE.get(focus.id) : undefined;
 
   if (offer.kind === "weapon") {
     // Auch das letzte Fokus-Upgrade (7→8) muss Vorrang vor Passiven haben,
@@ -85,7 +101,7 @@ export function offerScore(offer: Offer, build?: BuildContext): number {
     return 450 + (WEAPON_PRIORITY[id] ?? 0) + offer.level * 4;
   }
 
-  const level = passiveLevel.get(id) ?? 0;
+  const level = hasOwnedPassive ? ownedPassiveLevel : 0;
   // Evolutions-Passive zuerst; für Kael (Flegel + Herz) ist Heart gleichzeitig
   // Überlebens-Passive und wird deshalb höher gewichtet als bei Mira.
   if (evo && evo.passive === id) {
@@ -116,33 +132,84 @@ export function chooseBestOffer(offers: readonly Offer[], build?: BuildContext):
  * AutoPlay-Bot: kitet Gegnerdichte, meidet Projektile und Warnflächen,
  * sammelt XP-Kristalle und meidet Weltgrenzen. Reine Vektor-Summe.
  */
+// K3 Grenzband-Faktor: d² > rr²·GUARD gilt als sicher ausser Reichweite
+// (1e-7 relative Marge, ~5 Größenordnungen über dem Rundungsrauschen von
+// dx²+dy² und hypot). Im Band entscheidet weiterhin hypot exakt wie vorher.
+const GUARD = 1.0000001;
+
 export function botDirection(input: BotInput): { x: number; y: number } {
   const px = input.playerX;
   const py = input.playerY;
   let x = 0;
   let y = 0;
 
-  const repel = (t: BotThreat, range: number, weight: number, lead = 0): void => {
-    const tx = t.x + (t.vx ?? 0) * lead;
-    const ty = t.y + (t.vy ?? 0) * lead;
-    const dx = px - tx;
-    const dy = py - ty;
-    const d = Math.hypot(dx, dy);
-    const radius = t.radius ?? 6;
-    if (d > range + radius) return;
-    const falloff = Math.max(0.12, 1 - d / (range + radius));
-    const nx = d > 0.001 ? dx / d : 1;
-    const ny = d > 0.001 ? dy / d : 0;
-    x += nx * falloff * weight;
-    y += ny * falloff * weight;
-  };
-
   // Nahkampf-Builds müssen in Waffenreichweite bleiben, Fernkampf kitet breiter.
   const enemyRange = input.melee ? 92 : 118;
   const enemyWeight = input.melee ? 0.85 : 1.0;
-  for (const e of input.enemies) repel(e, enemyRange, (e.threat ?? 1.0) * enemyWeight);
-  for (const p of input.projectiles) repel(p, 96, p.threat ?? 2.3, 0.28);
-  for (const h of input.hazards) repel(h, 42, h.threat ?? 3.0);
+
+  // K3 Hot-Path: kein Repel-Closure (Allokation pro Call), und fjerne
+  // Bedrohungen werden per Quadrat-Distanz ausgeschieden, bevor hypot läuft.
+  // Grenzband: dort entscheidet weiterhin hypot — die Beiträge bleiben
+  // bitidentisch zur alten Logik (siehe GUARD-Kommentar oben).
+
+  // Gegner (lead 0).
+  const enemies = input.enemies;
+  for (let i = 0; i < enemies.length; i++) {
+    const t = enemies[i]!;
+    const dx = px - t.x;
+    const dy = py - t.y;
+    const rr = enemyRange + (t.radius ?? 6);
+    const d2 = dx * dx + dy * dy;
+    if (d2 > rr * rr * GUARD) continue;
+    const d = Math.hypot(dx, dy);
+    if (d > rr) continue;
+    const falloff = Math.max(0.12, 1 - d / rr);
+    const nx = d > 0.001 ? dx / d : 1;
+    const ny = d > 0.001 ? dy / d : 0;
+    const weight = (t.threat ?? 1.0) * enemyWeight;
+    x += nx * falloff * weight;
+    y += ny * falloff * weight;
+  }
+
+  // Projektile (lead 0.28, Basisgewicht 2.3).
+  const projectiles = input.projectiles;
+  for (let i = 0; i < projectiles.length; i++) {
+    const t = projectiles[i]!;
+    const tx = t.x + (t.vx ?? 0) * 0.28;
+    const ty = t.y + (t.vy ?? 0) * 0.28;
+    const dx = px - tx;
+    const dy = py - ty;
+    const rr = 96 + (t.radius ?? 6);
+    const d2 = dx * dx + dy * dy;
+    if (d2 > rr * rr * GUARD) continue;
+    const d = Math.hypot(dx, dy);
+    if (d > rr) continue;
+    const falloff = Math.max(0.12, 1 - d / rr);
+    const nx = d > 0.001 ? dx / d : 1;
+    const ny = d > 0.001 ? dy / d : 0;
+    const weight = t.threat ?? 2.3;
+    x += nx * falloff * weight;
+    y += ny * falloff * weight;
+  }
+
+  // Warnflächen (lead 0, Basisgewicht 3.0).
+  const hazards = input.hazards;
+  for (let i = 0; i < hazards.length; i++) {
+    const t = hazards[i]!;
+    const dx = px - t.x;
+    const dy = py - t.y;
+    const rr = 42 + (t.radius ?? 6);
+    const d2 = dx * dx + dy * dy;
+    if (d2 > rr * rr * GUARD) continue;
+    const d = Math.hypot(dx, dy);
+    if (d > rr) continue;
+    const falloff = Math.max(0.12, 1 - d / rr);
+    const nx = d > 0.001 ? dx / d : 1;
+    const ny = d > 0.001 ? dy / d : 0;
+    const weight = t.threat ?? 3.0;
+    x += nx * falloff * weight;
+    y += ny * falloff * weight;
+  }
 
   // Akt anlaufen: Ein aktiver Boss darf nicht am Spawn-Ring stehen bleiben,
   // sonst farmt der Bot Trash und der Bosskamptankt minutenlang (535-s-Ausreißer).
