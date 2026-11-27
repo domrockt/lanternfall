@@ -36,15 +36,16 @@ describe("M10-view-fill: Spielfeld fuellt 16:9-Fenster ohne Balken", () => {
     });
   }
 
-  it("ganzzahlige Formate sind pixelperfekt, gebrochene Fit-Faelle nicht", () => {
+  it("ganzzahlige Formate sind pixelperfekt; Fill-Faelle bilden exakt ab (M10-view-fill-refit)", () => {
     expect(isIntegerPixelPerfect(computeView({ width: 1280, height: 720, dpr: 1 }))).toBe(true);
     expect(isIntegerPixelPerfect(computeView({ width: 2560, height: 1440, dpr: 1 }))).toBe(true);
-    // Fit-Faelle (n < 2) gelten weiterhin als nicht pixelperfekt — auch wenn
-    // die Skalierung zufaellig ganzzahlig ist (640x360 -> 1x) oder das CSS
-    // exakt aufgeht (960x540 -> 1.5x, 800x450 -> 1.25x): Spielpixel koennen
-    // ungleichmassig auf Geraetepixel fallen (roundPixels verhindert Blur).
-    expect(isIntegerPixelPerfect(computeView({ width: 640, height: 360, dpr: 1 }))).toBe(false);
-    expect(isIntegerPixelPerfect(computeView({ width: 960, height: 540, dpr: 1 }))).toBe(false);
+    // M10-view-fill-refit: isIntegerPixelPerfect prueft die exakte, gleich-
+    // maessige Abbildung (Canvas-Geraetepixel == intern x scale), nicht den
+    // Pfad. Fill-Views bilden exakt ab (Pixel-Scan: 0 Balken in 7 Formaten,
+    // shots/m10-viewrefit-before.json) — auch mit gebrochener, dokumentierter
+    // Stufe (960x540 -> 1.5x, 800x450 -> 1.25x).
+    expect(isIntegerPixelPerfect(computeView({ width: 640, height: 360, dpr: 1 }))).toBe(true);
+    expect(isIntegerPixelPerfect(computeView({ width: 960, height: 540, dpr: 1 }))).toBe(true);
   });
 
   it("sehr schmales Fenster faellt auf die 4:3-Fit-View zurueck (kein Overflow)", () => {

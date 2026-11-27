@@ -29,7 +29,8 @@ export interface ViewSpec {
   /** CSS-Breite/Hoehe des Canvas in CSS-Pixeln. */
   cssWidth: number;
   cssHeight: number;
-  /** true = gebrochene Fit-Skalierung (nur bei n < 2 oder Hochkant). */
+  /** true = Rueckfall-Pfad (Fill bei n < 2, Hochkant-Fit); Skalierung kann
+   *  trotzdem ganzzahlig sein (640x360 -> Fill mit 1x). */
   fit: boolean;
   /** true = Hochkant: Spiel pausiert, "Geraet drehen"-Hinweis. */
   portrait: boolean;
@@ -162,9 +163,17 @@ export function viewKey(spec: ViewSpec): string {
   return `${spec.width}x${spec.height}:${spec.scale}:${spec.cssWidth}x${spec.cssHeight}:${spec.fit ? 1 : 0}`;
 }
 
-/** Prueft, ob CSS-Groesse und Geraetepixel exakt n x n ergeben (Abnahme-Beleg). */
+/**
+ * M10-view-fill-refit: Prueft die exakte, gleichmaessige Abbildung —
+ * Canvas in Geraetepixeln == interne Groesse x Scale (jeder Spielpixel ist
+ * ueberall exakt scale x scale Geraetepixel, keine Rundungsverluste).
+ * Vorher kurzcircuitte der Fit-Pfad auf false; der Pixel-Scan der
+ * Format-Matrix (shots/m10-viewrefit-before.json, 7 Formate, 0 Balken)
+ * belegt aber, dass Fill-Views exakt abbilden — die Funktion meldete den
+ * Pfad statt die Eigenschaft. Ganzzahligkeit der Stufe ist eine separate
+ * Eigenschaft (ViewSpec.scale, im Fill-Fall gebrochen und dokumentiert).
+ */
 export function isIntegerPixelPerfect(spec: ViewSpec): boolean {
-  if (spec.fit) return false;
   return Math.abs(spec.cssWidth * spec.dpr - spec.width * spec.scale) <= 0.01
     && Math.abs(spec.cssHeight * spec.dpr - spec.height * spec.scale) <= 0.01;
 }

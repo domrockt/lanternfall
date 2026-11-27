@@ -71,7 +71,8 @@ describe("M8 View: ganzzahlige Gerätepixel-Skalierung", () => {
     expect(v.scale).toBeLessThan(2);
     expect(v.cssWidth).toBeLessThanOrEqual(800);
     expect(v.cssHeight).toBeLessThanOrEqual(450);
-    expect(isIntegerPixelPerfect(v)).toBe(false);
+    // M10-view-fill-refit: exakte Abbildung (800 == 640*1.25) statt Pfad-Kenner.
+    expect(isIntegerPixelPerfect(v)).toBe(true);
   });
 
   it("Option 2X-6X begrenzt auf die größte passende Stufe", () => {
