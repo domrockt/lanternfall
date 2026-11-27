@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2238,
+  "next": 2301,
   "cards": [
     {
       "id": 1,
@@ -3304,6 +3304,53 @@
       ],
       "created": "2026-11-27T00:55:35Z",
       "updated": "2026-11-27T04:34:48Z"
+    },
+    {
+      "id": 2298,
+      "title": "m10-chaos-qa #1 Lauf + Rohdaten (Frame-Samples, Gegner-/Schusszahl, JS-Fehler)",
+      "description": "Owner playtester, Kontrolleur perf-check. 30-min-Sim mit timeScale 30 bis Minute 25, danach 10 s bei timeScale 1 mit 550 Gegnern und 6 Evolutions-Waffen. Abnahme: shots/m10-chaos-qa.json mit >=600 Frame-Samples, Gegnerzahl/Schusszahl je Sample, fps min/median, 0 JS-Fehler oder jeder Fehler einzeln dokumentiert. Messung unter flock /home/ai/games/.lf-perf.lock.",
+      "column": "review",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-27T05:00:04Z",
+          "by": "build",
+          "text": "todo → doing: Start: Messskript in ~/tmp, Lauf 30x bis 25min + 10s 1x"
+        },
+        {
+          "at": "2026-11-27T05:31:01Z",
+          "by": "build",
+          "text": "doing → review: Beleg shots/m10-chaos-qa.json: 3349 Frame-Samples (588 realtime @1x), enemies median 536 (min 352/max 552), enemyShots max 325, FPS median 59,9 / min realtime-Fenster 20, worst frame 50,1ms, 0 JS-Fehler. Commit 498ab41."
+        }
+      ],
+      "created": "2026-11-27T04:52:47Z",
+      "updated": "2026-11-27T05:31:01Z"
+    },
+    {
+      "id": 2299,
+      "title": "m10-chaos-qa #2 Lesbarkeits-Matrix 640x360 + 780x360 (M25/27/29)",
+      "description": "Owner playtester, Kontrolleure ux-check + vfx-check. 6 Standbilder shots/m10-chaos-qa-m25/27/29-640.png bzw. -780.png bei 500+ Gegnern. Je Bild pruefen: Spieler-Silhouette, Gegnerschuesse vs Hintergrund, HUD-Ueberdeckung, Truhe/Pfeil. Abnahme: Urteil je Bild + Pixel-Kontrastzahlen (Region, min/max/std) in docs/lane; keine Behauptung ohne Zahl.",
+      "column": "doing",
+      "assignee": "playtester",
+      "notes": [
+        {
+          "at": "2026-11-27T05:31:01Z",
+          "by": "build",
+          "text": "todo → doing: Start: 6 Standbilder 640/780 x M25/27/29"
+        }
+      ],
+      "created": "2026-11-27T04:52:47Z",
+      "updated": "2026-11-27T05:31:01Z"
+    },
+    {
+      "id": 2300,
+      "title": "m10-chaos-qa #3 Maengelliste + docs/lanes/m10-chaos-qa.md + .lane-done",
+      "description": "Owner tech-lead, Kontrolleur acceptance-auditor. Tabelle je Befund (Befund, Severity S/M/L, Repro-Schritte, vorgeschlagene Datei aus CODEMAP), Messwerte, offene Fragen. Abnahme: jeder Befund mit Severity+Repro, Zahlen aus JSON/Shots belegt, .lane-done mit 5-10 Zeilen Zusammenfassung; ein Commit mit Belegen.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T04:52:47Z",
+      "updated": "2026-11-27T04:52:47Z"
     }
   ]
 }
