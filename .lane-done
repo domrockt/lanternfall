@@ -1,0 +1,9 @@
+M10-m10-passive-math — abgeschlossen 2026-11-27 (Lane-Branch m10-passive-math)
+Ziel: Die 6 Powerups sind fair, wenn Stufe n exakt den n-fachen Basisbonus liefert und harte Caps nie ueberschritten werden.
+#2918 Ist-Matrix: 6 Passives x Stufen 1..8 => 64 Zeilen; Normalpfad 0 Abweichungen / 0 Cap-Verletzungen; Baseline rot bei Duplikat (boots5 2x = 180 Tempo) und NaN/Infinity/negativ.
+#2919 Fix in src/logic/stats.ts: STAT_CAPS (move 40%, cooldown 40%, damage 50%, pickup 125%; Sanity area/duration 200%, maxHp 500/200%, regen 50) + STAT_FLOORS (Kael -5%/-25% erhalten); aggregateMods ignoriert nicht-finite Werte und klemmt, effective* defensiv.
+#2920 Grenz-Beleg: 22 Checks, 0 Verletzungen, 6/6 Passives gleichzeitig Stufe 5 kombinierbar, kein Wurf, 0 Muell-Werte.
+Tests: passive-stack 9/9 gruen; npm test 344/344 in 32 Dateien (0 fail); npx tsc --noEmit rc=0; npm run build rc=0 (812 ms).
+Belege im Commit: shots/m10-passive-math-matrix.json (0 Abweichungen, 0 Caps, 0 NaN/negativ) und shots/m10-passive-math-caps.json (22 Checks, 0 Verletzungen, combo withinCaps).
+Keine Balance-Neuerfindung: src/data/passives.ts unveraendert; nur Kumulations-/Cap-Haertung in stats.ts.
+Offen: combat.pickupBonus (Magnet-Pickup) wird nach effectivePickupRadius addiert und darf den Passiv-Cap bewusst ueberschreiten; absolute Feuerraten-Caps ueber alle Quellen sind nicht Teil dieses Auftrags.
