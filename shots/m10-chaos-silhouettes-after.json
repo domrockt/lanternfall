@@ -1,16 +1,16 @@
 {
   "lane": "m10-chaos-silhouettes",
   "kind": "after",
-  "generatedAt": "2026-11-27T08:36:14.537Z",
+  "generatedAt": "2026-11-27T09:48:28.331Z",
   "method": "Silhouetten-Rim-Band (Randpixel + 1px innen) aus den in-game Textur-Masken (GEN_ENEMIES), Luminanz gegen dunklen Moorboden PAL[28] und helles Moor PAL[31], Schwelle 40",
   "backgroundDark": 34.020799999999994,
   "backgroundLight": 140.8082,
   "threshold": 40,
   "chaos": {
-    "time": 1511,
-    "enemies": 358,
-    "elites": 3,
-    "eliteSharePct": 0.8,
+    "time": 1571.4,
+    "enemies": 496,
+    "elites": 10,
+    "eliteSharePct": 2,
     "eliteChanceMinute25Pct": 10,
     "rimLightWidthPx": 1,
     "jsErrors": []
@@ -87,7 +87,7 @@
     },
     {
       "id": "crow",
-      "name": "Aaskrähe",
+      "name": "Aaskr\u00e4he",
       "archetype": "swarm",
       "tier": 0,
       "spriteKey": "enemy_crow",
@@ -133,7 +133,7 @@
     },
     {
       "id": "toad",
-      "name": "Giftkröte",
+      "name": "Giftkr\u00f6te",
       "archetype": "ranged",
       "tier": 0,
       "spriteKey": "enemy_toad",
@@ -156,7 +156,7 @@
     },
     {
       "id": "skeleton",
-      "name": "Knochenwächter",
+      "name": "Knochenw\u00e4chter",
       "archetype": "chaser",
       "tier": 1,
       "spriteKey": "enemy_skeleton",
@@ -501,7 +501,7 @@
     },
     {
       "id": "wraith",
-      "name": "Wiedergänger",
+      "name": "Wiederg\u00e4nger",
       "archetype": "phaser",
       "tier": 3,
       "spriteKey": "enemy_wraith",
@@ -593,7 +593,7 @@
     },
     {
       "id": "centipede",
-      "name": "Knochenläufer",
+      "name": "Knochenl\u00e4ufer",
       "archetype": "charger",
       "tier": 4,
       "spriteKey": "enemy_centipede",
@@ -706,5 +706,39 @@
       "rimBelowThresholdDarkPct": 69.3,
       "rimBelowThresholdLightPct": 13.9
     }
-  ]
+  ],
+  "chaosFrame": {
+    "png": "shots/m10-chaos-silhouettes-chaos.png",
+    "crop": "shots/m10-chaos-silhouettes-crop.png",
+    "width": 1920,
+    "height": 1080,
+    "time": 1535,
+    "timeLabel": "25:35",
+    "enemies": 580,
+    "elites": 8,
+    "jsErrors": []
+  },
+  "fpsMinute25": {
+    "fps": 60.1,
+    "frames": 602,
+    "elapsedMs": 10017,
+    "worstFrameMs": 16.8,
+    "minEnemies": 552,
+    "avgEnemies": 578,
+    "time": 1587.3,
+    "enemies": 595,
+    "elites": 10,
+    "elapsedGameSeconds": 1587,
+    "targetFps": 55,
+    "passed": true
+  },
+  "eliteMarker": {
+    "colorIndex": 20,
+    "tint": 16758861,
+    "rimPx": 1,
+    "alpha": 0.92,
+    "scaleRadius8": 1.125,
+    "deterministic": true,
+    "onlyElite": true
+  }
 }

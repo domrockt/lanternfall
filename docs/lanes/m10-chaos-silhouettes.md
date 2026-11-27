@@ -67,6 +67,43 @@ Bereich: `src/gfx/enemySprites.ts`, `src/systems/EnemyPool.ts`, `tests/enemy-sil
 hell 17.4 %. Genau hier setzt K2 an: mehr helle Kante oben, damit auf dunklem Moor
 die Silhouette nicht in der Fläche verschwindet.
 
+## #K3 Elite-Rim-Light (deterministisch)
+
+In `src/systems/EnemyPool.ts`:
+- `eliteMarkerSpec(radius)` liefert `{ color: PAL20/Amber, alpha: 0.92, rimPx: 1, scale: 1 + 2/(2·radius) }`.
+  Alle Werte hängen nur vom Radius ab – kein Zufall, keine Zeitabhängigkeit, kein Flackern.
+- `NORMAL_MARKER_SPEC` = `{ color: -1, alpha: 0, rimPx: 0, scale: 1 }` → normale Gegner tragen keinen Marker.
+- `eliteMarkerTint()` liefert `0xffb84d` (Palette 20). Der Marker wird im Spawn nur für `elite` gesetzt;
+  Bosse behalten ihre eigene Inszenierung.
+- Beleg: `tests/enemy-silhouette.test.ts` prüft `Elite-Spec ≠ Normal-Spec` und Determinismus (2 Läufe gleich).
+
+## #K4 Test: 30 Archetypen unterscheidbar
+
+`npx vitest run tests/enemy-silhouette.test.ts` → **5/5 grün**:
+- 30 Archetypen als Basis.
+- Jedes Paar unterscheidet sich in **≥ 2 Shape-Dimensionen** (Breite, Höhe, Füllgrad,
+  Top-/Bottom-Kantenbreite, Randpixel-Anteil); Differenztoleranzen 1 px bzw. 0.02.
+- Kantenkontrast: maximale Luminanzdifferenz gegen dunklen Moorboden > 40 L bei allen 30;
+  mittlerer Kontrast gegen helles Moor > 40 L bei allen 30.
+- Elite-Spec weicht messbar von Normal ab (Alpha, Rim-Breite, Farbe).
+- Determinismus: zwei Läufe liefern identische Signaturen.
+
+## #K5 Beleg + Abnahme
+
+- Chaos-Frame **1920×1080** (25:35, **580 Gegner**, 8 Elite, 0 JS-Fehler):
+  `shots/m10-chaos-silhouettes-chaos.png`; 2×-Crop `shots/m10-chaos-silhouettes-crop.png`.
+  Der Crop zeigt Horrors (Augen), Ritter/Gargoyle (Flügel/Helm), Bomber, Vogelmenschen,
+  Treants und kleine swarm-Einheiten an ihrer Silhouette unterscheidbar.
+- Nachher-JSON mit denselben Metriken: `shots/m10-chaos-silhouettes-after.json`
+  (30 Archetypen, Mittel Rim-Light 44.9 %, Top-Light 37.1 %, unter Schwelle dunkel 57.6 %,
+  mittlerer Randkontrast dunkel 59.5). Zusätzlich `chaosFrame` und `eliteMarker` im JSON.
+- FPS Minute 25 mit `flock /home/ai/.lf-perf.lock`: **60.1 FPS** (602 Frames/10 s,
+  min. 552 Gegner, avg 578, 1920×1080@dpr1, worstFrame 16.8 ms, 0 JS-Fehler) →
+  `shots/m10-chaos-silhouettes-fps.json`.
+- `npm run build` + `npm test` grün (306 Tests). Ehrlich: der Silhouetten-Gewinn ist
+  messbar, aber moderat; im dichten Kern bleiben Überschneidungen, lesbar sind vor allem
+  die Randfiguren und die Lichtkante oben. .lane-done gesetzt.
+
 ## #K2 Silhouetten schärfen (nachher)
 
 `sharpenEnemyGrid()` in `src/gfx/enemySprites.ts`: Randpixel mit Luminanz < 70
