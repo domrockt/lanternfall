@@ -32,6 +32,7 @@ function fakeScene(opts: { cull?: number } = {}) {
   const registry = new Map<string, unknown>();
   if (opts.cull !== undefined) registry.set("lf-proj-cull", opts.cull);
   return {
+    registryMap: registry, // für Laufzeit-Toggle in Tests
     add: { image: () => ({}) },
     cameras: { main: { worldView: { ...VIEW } } },
     registry: { get: (key: string) => registry.get(key) },
@@ -209,7 +210,23 @@ describe("M10-projectile-cull: ProjectilePool", () => {
     expect(pool.stats.culled).toBe(0);
   });
 
-  it("Bereits inaktive Projektile werden weiterhin freigegeben (Swap-Pop unverletzt)", () => {
+  it("Flag zur Laufzeit 1->0: versteckte Sprites/Trails werden restauriert (Review-Fix)", () => {
+    const scene = fakeScene({ cull: 1 });
+    const pool = new ProjectilePool(scene as never);
+    const p = pool.spawn(spawnOpts({ trail: "fx_fire", target: fakeEnemy(5), vx: 300 }));
+    p.targetUid = 5;
+    p.x = VIEW.x + VIEW.width + 100;
+    p.y = 720;
+    pool.compact(); // Hide-/Trail-Skip aktiv
+    expect(p.sprite.visible).toBe(false);
+    expect(p.trail).toBeNull();
+    scene.registryMap.set("lf-proj-cull", 0);
+    pool.compact(); // Restore-Zweck: kein eingefrorener Unsichtbar-Zustand
+    expect(p.sprite.visible).toBe(true);
+    expect(p.trail).toBe("fx_fire");
+  });
+
+  it("Bereits inaktive Projektile werden weiterhin freigegeben (Kompaktion unverletzt)", () => {
     const pool = new ProjectilePool(fakeScene() as never);
     const a = pool.spawn(spawnOpts());
     const b = pool.spawn(spawnOpts({ x: 1200, y: 700 }));

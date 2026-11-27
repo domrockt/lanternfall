@@ -198,6 +198,8 @@ export class ProjectilePool {
 
   /** Distanz jenseits des View-Rechtecks (0 = innerhalb). */
   private beyond(view: { x: number; y: number; width: number; height: number }, p: ProjectileRuntime): number {
+    // Chebyshev-Distanz zum Rechteck: an den Ecken dadurch etwas konservativer
+    // (kleinerer Cull-Bereich) als eine euklidische Skalierung — bewusst so.
     const dx = Math.max(view.x - p.x, p.x - (view.x + view.width), 0);
     const dy = Math.max(view.y - p.y, p.y - (view.y + view.height), 0);
     return Math.max(dx, dy);
@@ -246,7 +248,8 @@ export class ProjectilePool {
     // Treffer den Crit-RNG-Stream konsumiert, hätte jede Permutation die
     // Treffer-/Schadens-Summen Vorher/Nachher verändert. So bleiben die
     // relativen Positionen aller überlebenden Projektile erhalten.
-    const view = this.cullEnabled() ? this.view() : null;
+    const view = this.view();
+    const cull = view !== null && this.cullEnabled();
     const margin = view ? this.cullMargin(view) : 0;
     const hideMargin = ProjectilePool.HIDE_MARGIN;
     let w = 0;
@@ -254,12 +257,12 @@ export class ProjectilePool {
       const p = this.active[i];
       if (p.active && view) {
         const d = this.beyond(view, p);
-        if (d > margin && !this.hasLiveTarget(p) && this.movingAway(p, view)) {
+        if (cull && d > margin && !this.hasLiveTarget(p) && this.movingAway(p, view)) {
           // Sofort frei: weit offscreen, ohne Ziel, wegfliegend — kann laut
           // Messung (#5458) keinen Treffer mehr erzielen.
           this.stats.culled += 1;
           p.active = false;
-        } else if (d > hideMargin) {
+        } else if (cull && d > hideMargin) {
           // Unsichtbar im Hyperraum: Sprite aus (Draw-Skip) und Trail abstellen
           // (offscreen Trail-Puffs kosten fx-Slots). Beim Zurückkommen ins Bild
           // wird beides wiederhergestellt — Treffer-/Bewegungsverhalten bleibt.
@@ -269,6 +272,9 @@ export class ProjectilePool {
             this.stats.trailSuppressed += 1;
           }
         } else {
+          // Restore-Zweig läuft auch bei cull=false: ein Umbau des Flags zur
+          // Laufzeit (lf-proj-cull 1 -> 0) darf versteckte Sprites/Trails
+          // nicht einfrieren (Review-Anmerkung 2026-11-27).
           if (!p.sprite.visible) p.sprite.setVisible(true).setActive(true);
           if (p.trail !== p.trailSetpoint) p.trail = p.trailSetpoint;
         }
