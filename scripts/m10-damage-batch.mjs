@@ -4,7 +4,7 @@
 // Erfasst aktive/visible Textobjekte, setText-Aufrufe/s, ms/Frame sowie
 // (nur --hud) HUD-Gesamtschaden gegen die Balkensumme der Ergebnis-Tabelle.
 //
-// FPS-/Echtzeitmessung nur mit flock starten (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer):
+// FPS-/Echtzeitmessung nur mit flock -w starten (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer):
 //   flock -w 240 /home/ai/games/.lf-perf.lock node scripts/m10-damage-batch.mjs --tag=before
 // Bei Lock-Timeout (rc != 0): "m10-damage-batch: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
 // ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.

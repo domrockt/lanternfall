@@ -224,7 +224,7 @@ try {
 }
 
 const summary = {
-  command: `flock /home/ai/games/.lf-perf.lock node scripts/m10-endgame-fps.mjs --viewport ${VIEWPORT.width}x${VIEWPORT.height} --dpr ${DPR} --runs ${RUNS} --out ${OUT}`,
+  command: `flock -w 240 /home/ai/games/.lf-perf.lock node scripts/m10-endgame-fps.mjs --viewport ${VIEWPORT.width}x${VIEWPORT.height} --dpr ${DPR} --runs ${RUNS} --out ${OUT}`,
   viewport: VIEWPORT,
   dpr: DPR,
   secondsPerRun: SECONDS,

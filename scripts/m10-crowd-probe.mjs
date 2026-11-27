@@ -5,7 +5,7 @@
 // FPS min/median. Schreibt shots/m10-separation-<tag>.json und
 // einen Chaos-Frame bei Minute 25 als shots/m10-separation-<tag>.png.
 //
-// FPS-Messung nur mit flock starten (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer):
+// FPS-Messung nur mit flock -w starten (-w 240 = erwartete Laufzeit ~120 s + 120 s Puffer):
 //   flock -w 240 /home/ai/games/.lf-perf.lock node scripts/m10-crowd-probe.mjs --tag=before
 // Bei Lock-Timeout (rc != 0): "m10-crowd-probe: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen"
 // ausgeben und Exitcode weiterreichen — kein stiller Abbruch, kein unbegrenztes Warten.

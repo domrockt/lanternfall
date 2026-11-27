@@ -29,9 +29,14 @@ for (let i = 0; i < RUNS; i++) {
     const started = Date.now();
     // perf.mjs endet mit rc=1, wenn sein kombiniertes 55-Ziel verfehlt wird
     // (hier ist Minute 25 bewusst nur >=50). Der Exitcode ist daher kein Fehler.
+    // -w 420 = erwartete Laufzeit ~300 s (gemessen) + 120 s Puffer. Bei Lock-Timeout
+    // (flock -w endet rc=1): Meldung + Exitcode weiterreichen — kein stiller Abbruch.
+    // Node-Timeout 720 s = 420 s Lock-Wartezeit + 300 s Messlauf.
     const run = spawnSync(
       "flock",
       [
+        "-w",
+        "420",
         "/home/ai/games/.lf-perf.lock",
         "node",
         "scripts/perf.mjs",
@@ -42,9 +47,15 @@ for (let i = 0; i < RUNS; i++) {
         "--out",
         file,
       ],
-      { stdio: "pipe", timeout: 300_000, encoding: "utf8" },
+      { stdio: "pipe", timeout: 720_000, encoding: "utf8" },
     );
     if (run.error) throw run.error;
+    if (run.status !== 0) {
+      console.error(
+        "qa-reaccept-perf: Sperre /home/ai/games/.lf-perf.lock belegt — spaeter erneut versuchen",
+      );
+      process.exit(run.status);
+    }
     const j = JSON.parse(readFileSync(file, "utf8"));
     const row = {
       iteration: i + 1,
