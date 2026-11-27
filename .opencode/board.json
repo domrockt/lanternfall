@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6008,
+  "next": 6012,
   "cards": [
     {
       "id": 1,
@@ -7055,6 +7055,70 @@
       "notes": [],
       "created": "2026-11-27T22:16:30Z",
       "updated": "2026-11-27T22:16:30Z"
+    },
+    {
+      "id": 6008,
+      "title": "m10-damage-calm K1: Vorher-Beleg Chaos-Frame (Labels + Ueberlappungen)",
+      "description": "Skript scripts/m10-damage-calm.mjs: Minute-25-Frame mit 300+ Gegnern rendern, sichtbare Damage-Labels + Ueberlappungen zaehlen. Output shots/m10-damage-calm-before.png + -before.json. AK: JSON enthaelt visibleLabels/overlap-Zahlen, PNG zeigt Chaos-Frame.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T22:22:33Z",
+          "by": "build",
+          "text": "lane #5858, Merge ea7e587 — Lane abgeschlossen: Vorher 24 -> Nachher 12 Labels im Flut-Regime, Summen-Erhalt exakt (<=1 %), tests/damage-calm.test.ts 15/15, Kontrolleure PASS (Lane-Commit 1b536a8)"
+        }
+      ],
+      "created": "2026-11-27T22:22:27Z",
+      "updated": "2026-11-27T22:22:33Z"
+    },
+    {
+      "id": 6009,
+      "title": "m10-damage-calm K2: Logik Drossel/Cap (damage-numbers.ts)",
+      "description": "src/logic/damage-numbers.ts: hartes Sichtbar-Cap pro Zone/Frame, Drosselung je Labeldichte, Krits gross+hervorgehoben, Normaltreffer klein/gebuendelt, Summen-Erhalt garantiert (reine Funktionen + Konstanten). AK: Summe dargestellter Schaden == gemeldete Summe (<=1 % Abweichung), keine Balance-Aenderung.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T22:22:33Z",
+          "by": "build",
+          "text": "lane #5859, Merge ea7e587 — Lane abgeschlossen: Vorher 24 -> Nachher 12 Labels im Flut-Regime, Summen-Erhalt exakt (<=1 %), tests/damage-calm.test.ts 15/15, Kontrolleure PASS (Lane-Commit 1b536a8)"
+        }
+      ],
+      "created": "2026-11-27T22:22:27Z",
+      "updated": "2026-11-27T22:22:33Z"
+    },
+    {
+      "id": 6010,
+      "title": "m10-damage-calm K3: System-Umsetzung Anzeige-Cap (DamageNumbers.ts)",
+      "description": "src/systems/DamageNumbers.ts: Anzeige-Cap umsetzen, aelteste/niedrigste Labels zuerst ersetzen, kein Tween-Neustart je Treffer. AK: sichtbare Labels im Chaos-Frame <= Cap, Krits bleiben gross.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T22:22:33Z",
+          "by": "build",
+          "text": "lane #5860, Merge ea7e587 — Lane abgeschlossen: Vorher 24 -> Nachher 12 Labels im Flut-Regime, Summen-Erhalt exakt (<=1 %), tests/damage-calm.test.ts 15/15, Kontrolleure PASS (Lane-Commit 1b536a8)"
+        }
+      ],
+      "created": "2026-11-27T22:22:27Z",
+      "updated": "2026-11-27T22:22:33Z"
+    },
+    {
+      "id": 6011,
+      "title": "m10-damage-calm K4: Tests + Nachher-Shots + Doku",
+      "description": "tests/damage-calm.test.ts: Cap haelt, Summe <=1 % Abweichung gegen ungedrosselte Referenz, Krit-Staffelung, Grenzfaelle 0/1/Cap+1. Nachher-Shots shots/m10-damage-calm-after.*, Doku docs/lanes/m10-damage-calm.md. AK: tsc + vitest gruen, Nachher visibleLabels <= Cap.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T22:22:33Z",
+          "by": "build",
+          "text": "lane #5861, Merge ea7e587 — Lane abgeschlossen: Vorher 24 -> Nachher 12 Labels im Flut-Regime, Summen-Erhalt exakt (<=1 %), tests/damage-calm.test.ts 15/15, Kontrolleure PASS (Lane-Commit 1b536a8)"
+        }
+      ],
+      "created": "2026-11-27T22:22:27Z",
+      "updated": "2026-11-27T22:22:33Z"
     }
   ]
 }
