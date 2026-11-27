@@ -3038,10 +3038,15 @@
           "at": "2026-11-27T04:55:28Z",
           "by": "build",
           "text": "doing → review: Commit eab1d1a (#2080): slotNameLines max 2 Zeilen, Header unter Untertitel (52+oy), Rows ab 70+oy, Wertspalte cx+214. layout-check.mjs PASS 1 Lauf: 12 rows, maxLines 2, fullNames true, overlaps 0 bei 640x360 und 1920x1080. Beleg shots/m10-results-attribution.json total=184959 bars=184959 delta=0% (15 Spielmin), stressProof 0 overlaps, 0 JS-Fehler. build+238 Tests gruen."
+        },
+        {
+          "at": "2026-11-27T06:02:58Z",
+          "by": "build",
+          "text": "ux-check Re-Check PASS bei 55bf9c4: Header unter Untertitel (y94/95), Panel-Unterkante 261 vs letzte Zeile 256, layout-check inkl. Panel-Grenze RESULT PASS overlaps=0; frische Screenshots 05:46 bei HEAD."
         }
       ],
       "created": "2026-11-27T02:57:04Z",
-      "updated": "2026-11-27T04:55:28Z"
+      "updated": "2026-11-27T06:02:58Z"
     },
     {
       "id": 2081,
