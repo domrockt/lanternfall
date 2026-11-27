@@ -1,5 +1,9 @@
+// @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs/path bereit.
 import { readFileSync } from "node:fs";
+// @ts-ignore
 import { resolve } from "node:path";
+
+declare const __dirname: string;
 import { describe, expect, it, vi } from "vitest";
 
 // AudioSystem imports Phaser nur für Typen/Sound-API; im Node-Test genügt ein Stub.
@@ -218,11 +222,12 @@ describe("M10 Audio-Distinct — Mixer und Mute", () => {
       },
     } as unknown as ConstructorParameters<typeof AudioSystem>[0];
     const audio = new AudioSystem(game);
-    for (const id of ALL_IDS) expect(audio.play(id), `unmuted ${id}`).toBe(true);
+    const play = audio.play.bind(audio) as (id: string) => boolean;
+    for (const id of ALL_IDS) expect(play(id), `unmuted ${id}`).toBe(true);
     expect(played).toHaveLength(12);
     audio.setMuted(true);
     for (const id of [...ALL_IDS, "hit", "levelup", "evolution"]) {
-      expect(audio.play(id), `muted ${id} darf nicht spielen`).toBe(false);
+      expect(play(id), `muted ${id} darf nicht spielen`).toBe(false);
     }
     expect(audio.debugState().muted).toBe(true);
     expect(played).toHaveLength(12);
