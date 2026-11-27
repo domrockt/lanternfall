@@ -100,7 +100,9 @@ function blob(w: number, h: number, ramp: number[], opts: { squash?: number; cor
       else if (d < core + 0.18) row += "c"; // candleWhite (12)
       else {
         const idx = Math.min(ramp.length - 1, Math.floor((d - core) / (1 - core) * ramp.length));
-        row += String.fromCharCode(97 + ramp[idx]);
+        // charOf (nicht 97+idx): Ramp-Indizes sind Palettenindizes, a-v = 10-31
+        // (Off-by-10-Fix — 97+idx verschob Lantern/Amber in die Crimson-Baender).
+        row += charOf(ramp[idx]);
       }
     }
     out.push(row);
@@ -129,7 +131,8 @@ function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1, den
       else if (d < edge + 0.10) row += "c";
       else {
         const idx = Math.min(ramp.length - 1, Math.floor((d - edge) / (1 - edge) * ramp.length));
-        row += String.fromCharCode(97 + ramp[idx]);
+        // charOf (Off-by-10-Fix, siehe blob).
+        row += charOf(ramp[idx]);
       }
     }
     out.push(row);
