@@ -1,6 +1,6 @@
 {
   "mode": "before",
-  "capturedAt": "2026-11-27T21:37:32.044Z",
+  "capturedAt": "2026-11-27T21:39:15.177Z",
   "jsErrors": [],
   "formats": [
     {
@@ -37,10 +37,40 @@
         "w": 83,
         "h": 7
       },
-      "damageCount": 0,
-      "damageTexts": [],
-      "overlapCount": 0,
-      "overlapTexts": [],
+      "damageCount": 3,
+      "damageTexts": [
+        {
+          "text": "66",
+          "rect": {
+            "x": 300.5,
+            "y": 167,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "10",
+          "rect": {
+            "x": 180.5,
+            "y": 270,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "22",
+          "rect": {
+            "x": 236.5,
+            "y": 99,
+            "w": 11,
+            "h": 7
+          }
+        }
+      ],
+      "overlapCount": 1,
+      "overlapTexts": [
+        "22"
+      ],
       "overlapWithTitle": false,
       "bannerVisibleAfterTimer": false,
       "bannerAlphaAfterTimer": 0,
@@ -80,10 +110,40 @@
         "w": 83,
         "h": 7
       },
-      "damageCount": 0,
-      "damageTexts": [],
-      "overlapCount": 0,
-      "overlapTexts": [],
+      "damageCount": 3,
+      "damageTexts": [
+        {
+          "text": "88",
+          "rect": {
+            "x": 171.2,
+            "y": 137,
+            "w": 17.6,
+            "h": 11.200000000000001
+          }
+        },
+        {
+          "text": "10",
+          "rect": {
+            "x": 180.5,
+            "y": 270,
+            "w": 11,
+            "h": 7
+          }
+        },
+        {
+          "text": "22",
+          "rect": {
+            "x": 236.5,
+            "y": 100,
+            "w": 11,
+            "h": 7
+          }
+        }
+      ],
+      "overlapCount": 1,
+      "overlapTexts": [
+        "22"
+      ],
       "overlapWithTitle": false,
       "bannerVisibleAfterTimer": false,
       "bannerAlphaAfterTimer": 0,
@@ -123,15 +183,36 @@
         "w": 83,
         "h": 7
       },
-      "damageCount": 0,
-      "damageTexts": [],
-      "overlapCount": 0,
-      "overlapTexts": [],
+      "damageCount": 2,
+      "damageTexts": [
+        {
+          "text": "76",
+          "rect": {
+            "x": 251.2,
+            "y": 136,
+            "w": 17.6,
+            "h": 11.200000000000001
+          }
+        },
+        {
+          "text": "22",
+          "rect": {
+            "x": 316.5,
+            "y": 99,
+            "w": 11,
+            "h": 7
+          }
+        }
+      ],
+      "overlapCount": 1,
+      "overlapTexts": [
+        "22"
+      ],
       "overlapWithTitle": false,
       "bannerVisibleAfterTimer": false,
       "bannerAlphaAfterTimer": 0,
       "screenshot": "shots/m10-boss-banner-before-1280x720.png"
     }
   ],
-  "totalOverlaps": 0
+  "totalOverlaps": 3
 }

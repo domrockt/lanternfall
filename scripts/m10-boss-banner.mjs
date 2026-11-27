@@ -66,21 +66,22 @@ try {
       const ys = enemies.slice(-30).map((e) => e.y - cam.scrollY);
       return ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : 120;
     });
-    // Ziel: Gegner-Screen-Y ~70 => Zahlen (y-8, drift -18) liegen im Banner-Band.
-    // Kamera lerpt und Gegner chase den Spieler -> bis zu 3 korrigierende Teleports.
-    for (let i = 0; i < 3; i++) {
-      const avgSy = await page.evaluate(() => {
+    // Ziel: obere Gegnergruppe bei Screen-Y ~80 => ihre Zahlen (y-8, drift -18)
+    // schneiden das Banner-Band 68..116. Perzentil statt Mittel, damit entfernte
+    // Gegner die Korrektur nicht verfaelschen. Kamera lerpt + Gegner chase ->
+    // bis zu 4 korrigierende Teleports.
+    for (let i = 0; i < 4; i++) {
+      const topQuartile = await page.evaluate(() => {
         const run = window.__game.scene.getScene("run");
         const cam = run.cameras.main;
-        const enemies = run.enemies?.active ?? [];
-        const ys = enemies.map((e) => e.y - cam.scrollY);
-        return ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : 70;
+        const ys = (run.enemies?.active ?? []).map((e) => e.y - cam.scrollY).sort((a, b) => a - b);
+        return ys.length ? ys[Math.floor(ys.length * 0.25)] : 80;
       });
-      if (Math.abs(avgSy - 70) < 12) break;
+      if (Math.abs(topQuartile - 80) < 10) break;
       await page.evaluate((delta) => {
         const run = window.__game.scene.getScene("run");
         run.teleport(run.player.x, run.player.y + delta);
-      }, avgSy - 70);
+      }, topQuartile - 80);
       await page.waitForTimeout(600);
     }
     await page.evaluate(() => window.__lf.setTimeScale(0.2));
