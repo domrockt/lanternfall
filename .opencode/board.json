@@ -4454,16 +4454,21 @@
       "id": 3419,
       "title": "[fa2-02] Performance 640×360 + 780×360 (flock): Burst + Minute 25, je 3 Läufe",
       "description": "Abnahme: 3 Läufe je View unter `flock /home/ai/games/.lf-perf.lock` mit scripts/perf.mjs; Burst (500 Gegner) min ≥55 und Minute-25 min ≥50, 0 JS-Fehler, loadavg notiert. Roh-JSON shots/qa-reaccept-*.json. Ergebnis in docs/qa/reacceptance-2026-11-27.md. Ein Commit.",
-      "column": "doing",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-27T13:24:42Z",
           "by": "build",
           "text": "todo → doing: Start: 3× perf 640×360 + 3× 780×360@3 unter flock"
+        },
+        {
+          "at": "2026-11-27T15:09:42Z",
+          "by": "build",
+          "text": "doing → blocked: Bestätigungslauf 2026-11-27T15:02Z (1 Durchlauf, flock, Timeout 900s): 640x360 Burst 60,1 PASS / M25 53,7 PASS; 780x360@3 Burst 55,5 PASS / M25 44,9 <50 FAIL. loadavg 11,21, 0 JS-Fehler. Belege shots/qa-reaccept-final-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-02c, ACCEPTANCE.md Versuch 3. Blockergrund: 780-Endgame-Renderpfad, Fix-Lanes nicht in main."
         }
       ],
       "created": "2026-11-27T13:14:45Z",
-      "updated": "2026-11-27T13:24:42Z"
+      "updated": "2026-11-27T15:09:42Z"
     },
     {
       "id": 3420,

@@ -45,6 +45,32 @@ Tests +47,5 % (204→301); Burst 640×60,7/59,3 → 46,3 (**−22…−24 %**); 
 | FPS | unverändert rot: 640er Burst 46,3 / fullrun-Min 37,9–40,2 / M25-780 43,1 | **FAIL** |
 
 **Ergebnis Versuch 2: nicht abgenommen**, einziger Blocker bleibt die FPS-Latte.
+
+### Versuch 3 — Nachabnahme nach Performance-Fix, laufend (2026-11-27T13:15Z–)
+
+Belege: `docs/qa/reacceptance-2026-11-27.md` (Karten #3418–#3423).
+Basis: `main` @ `78cca7e` (2026-11-27 12:28:03Z), headless Chromium, Lange Läufe unter
+`flock /home/ai/games/.lf-perf.lock`.
+
+| Punkt | Gemessen | Urteil |
+|---|---|---|
+| Build | `npm run build` rc=0, 862 ms (13:15Z) | OK |
+| Tests | **355/355** in 33 Dateien, 0 fail (13:15Z) | OK |
+| Inhalte | `acceptance-count` **30/6/6/6/6/2** | OK |
+| verify:final | **7/7 PASS**, 0 JS-Fehler (13:15Z) | OK |
+| verify-input (Touch/Gamepad/Tastatur) | **28/28 PASS**, 0 JS-Fehler (13:43Z) | OK |
+| Burst 640×360 | min **59,9–60,1 FPS** (6 Läufe) → ≥55 | PASS |
+| Minute 25 640×360 | min **50,9–55,4 FPS** → ≥50 | PASS (knapp) |
+| Burst 780×360@3 | min **54,7–56,4 FPS** → ≥55 | PASS (grenzwertig) |
+| Minute 25 780×360@3 | **41,3–46,4 FPS**, Bestätigungslauf 44,9 → ≥50 | **FAIL** |
+| fullrun 30 min (640×360) | 6/6 Bosse + 6 Truhen, Sieg dawn, 0 JS-Fehler; fpsMin **35,7**; Heap +8,7 % | Inhalt PASS, **FPS FAIL**, Heap PASS |
+| fullrun 30 min (780×360@3) | 6/6 Bosse + 6 Truhen, Sieg dawn, 0 JS-Fehler; fpsMin **34,8**; Heap +15,2 % | Inhalt PASS, **FPS FAIL**, Heap knapp FAIL |
+| 30-min-Echtzeitlauf | abgebrochen (Chromium Target closed nach ~7 min), WIP-Beleg gesichert | **offen/blocked** |
+
+**Zwischenstand Versuch 3: nicht abgenommen.** Der 640×360-Pfad ist durch den Fix grün
+geworden (Burst 46,3 → 60,1). Offen bleibt der **780×360-dpr3-Endgame-Pfad** (Minute 25
+und fullrun-fpsMin < Ziel) sowie der noch nicht vollständig gelaufene Echtzeit-Test.
+Weitere Belege und das Endurteil folgen in `docs/qa/reacceptance-2026-11-27.md`.
 Die Fix-Lanes `m10-endgame-fps` (Baseline 3× Burst 60,1; M25 56,7/55,1/53,8),
 `m10-separation-crowd`, `m10-ground-cost` sind **noch nicht in main**; nach Merge neu messen.
 Historisch benannte Punkte (Stand Versuch 2): Heap +12,2 % (kein Leak, #1008;

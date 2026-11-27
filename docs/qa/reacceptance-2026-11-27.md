@@ -94,6 +94,29 @@ Lane `m10-fx-overdraw-cap`. #3419 wird daher **blocked** (Abnahmekriterium M25 �
 
 **Urteil fa2-02b: 640 PASS, 780-Minute-25 FAIL → Blockergrund für #3419.**
 
+### fa2-02c — Bestätigungslauf nach Supervisor-Vorgabe (genau 1 Durchlauf, festes Timeout)
+
+Ein einzelner Durchlauf unter `flock /home/ai/games/.lf-perf.lock`, festes Timeout 900 s,
+**kein** Full-Build dazwischen: erst `node scripts/perf.mjs --viewport 640x360 --dpr 1`,
+dann `node scripts/perf.mjs --viewport 780x360 --dpr 3`. loadavg beim Start: **11,21**.
+Zeitstempel: 2026-11-27T15:02–15:03Z.
+
+| View | Burst FPS (500 Gegner) | Burst worst | Minute-25 FPS (300) | M25 worst | JS-Fehler | Ziel Burst ≥55 / M25 ≥50 |
+|---|---|---|---|---|---|---|
+| 640×360@1 | **60,1** | 16,8 ms | **53,7** | 33,4 ms | 0 | Burst PASS / M25 **PASS** |
+| 780×360@3 | **55,5** | 33,4 ms | **44,9** | 33,5 ms | 0 | Burst PASS / M25 **FAIL** |
+
+Roh-JSON: `shots/qa-reaccept-final-640.json`, `shots/qa-reaccept-final-780.json`.
+Logs: `/tmp/lf-fa2/fa2-02-final-640.log`, `fa2-02-final-780.log`.
+Screenshots aus dem Lauf: `shots/perf-500.png`, `shots/perf-minute25.png` (neu geschrieben).
+
+**Befund:** Der Befund aus fa2-02b bestätigt sich. 640×360 ist mit Burst 60,1 und
+Minute-25 53,7 **grün**. 780×360 dpr3 hat den Burst grün (55,5 ≥ 55), aber Minute 25
+bleibt mit **44,9 FPS** klar unter dem 50er-Ziel. Die Messung lieferte verwertbare FPS,
+der Engpass ist reproduzierbar der 780er-Endgame-Renderpfad. #3419 bleibt **blocked**
+(Abnahmekriterium Minute-25 780 ≥50 nicht erfüllt; Fix-Lanes `m10-endgame-fps` /
+`m10-perf-recovery` / `m10-fx-overdraw-cap` sind nicht in main).
+
 ## fa2-03 — 30-min-autoPlay fullrun (30×), Boss-/Truhen-Timing, Sieg, Heap
 
 `flock /home/ai/games/.lf-perf.lock node scripts/fullrun.mjs --viewport <WxH> --dpr <n>`,
