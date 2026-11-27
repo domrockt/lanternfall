@@ -14,7 +14,7 @@ Offen für den Merge: Ergebnisse hier, GAME.md bleibt unverändert.
 | K2 | Signatur-Katalog (Form/Palette/Lifetime) | erledigt (26b0950) | `EVOLUTION_SIGNATURES` in `src/gfx/gen-fx.ts`, `tests/fx-evolution.test.ts` 6/6 |
 | K3 | Treffer + Tod je Evolution, LOD-sicher | erledigt | `FxSystem.spawnEvolution`, `Run.ts`-onHit, `shots/m10-fx-evolution-after-*.gif`, `-signature-sheet.png` |
 | K4 | Messung Nachher (Near-White, Pixel-Diff) | erledigt | `-after.json`, `-chaos.json`, `-signature-diff.json` (Near-White 0,52 %, Diff min. 51 px) |
-| K5 | Doku + art-director-Urteil + `.lane-done` | in Arbeit | dieser Abschnitt + `.lane-done` |
+| K5 | Doku + art-director-Urteil + `.lane-done` | **blocked** — art-director 2/5 FAIL, `.lane-done` bewusst nicht gesetzt | dieser Abschnitt |
 
 ## K1 — Ist-Aufnahme (2026-11-27, Build aus `dist/` @ `cd85332`)
 
@@ -135,9 +135,73 @@ derselben Grundform nicht pixelgleich sind.
   identisch.
 - 0 JS-Fehler in allen sechs Nachher-Läufen und im Chaos-Lauf.
 
-## K5 — Art-Director-Urteil
+## K5 — Abnahme-Messwerte + Art-Director-Urteil
 
-_(wird nach der Abnahme hier eingetragen)_
+### Messwerte (Belege aus K4, keine Neu-Messung)
+
+| Kriterium | Ziel | Ist | Beleg |
+|---|---|---|---|
+| Near-White im AoE-Crop (Chaos Minute 25) | ≤ 4,16 % | **0,52 %** | `shots/m10-fx-evolution-chaos.json` |
+| Signaturen paarweise verschieden | > 20 Pixel Diff | **min. 51 px** (Paar phoenix–thorn_storm) | `shots/m10-fx-evolution-signature-diff.json` |
+| LOD behält Palettenindex | Index identisch bei full/reduced/minimal | **6/6 identisch** | `tests/fx-evolution.test.ts` |
+| 6 Signaturen (Form+Palette+Lifetime) | paarweise verschieden | **6/6 verschieden** | `EVOLUTION_SIGNATURES`, `tests/fx-evolution.test.ts` |
+| Build + alle Tests | grün | **build RC 0, 18 Dateien / 230 Tests grün, `tsc --noEmit` 0** | `~/tmp/m10-fx-evolution-k5-build.log`, `-k5-test.log` |
+| JS-Fehler in den 6 Nachher-Läufen | 0 | **0** | `-after.json` → `errors: []` |
+
+Per-Evolution-Peak Near-White (informativ, gleicher Crop): Zornpendel 4,95 %,
+Gewittersiegel 2,44 %, Phönix 1,94 %, Ewiger Winter 1,11 %, Dornensturm 4,85 %,
+Seelenleuchtfeuer 3,36 %. Diese Peaks entstehen durch die Basiswaffen-Effekte
+(Ring/Feuer/Sturm), nicht durch die 17×17-Signaturen; die abgenommene A7-Zahl ist
+der Chaos-Frame Minute 25 (0,52 %).
+
+### Art-Director-Urteil (je Evolution PASS/FAIL + Note)
+
+Grundlage: `-signature-sheet.png` (12 Texturen), `-signature-ingame.png/-zoom.png/-panel.png`
+(alle 6 über ~300 Gegnern) und die 6 Nachher-GIFs (je 400+ Gegner). Maßstab: Form und
+Farbe müssen im Schwarm sofort von Gegnern und Basiswaffen-Effekten unterscheidbar sein;
+LOD darf den Palettenindex nicht verändern.
+
+| Evolution | Urteil | Note | Begründung |
+|---|---|---|---|
+| Zornpendel `wrath_pendulum` | **FAIL** | 3/5 | Im Zoom nur ein goldbraunes, gitterartiges Gebilde rechts der Mitte; als sauberer Ring nicht lesbar (offene Zacken, blockige 1-px-Stufen), vom Schwarm verdeckt. |
+| Gewittersiegel `thunder_seal` | **FAIL** | 2/5 | Nur ein weiß-goldener kurzer Blitz-/Flash-Fleck, nicht von bestehenden Sturm-/Treffer-Blitzen unterscheidbar; der blau-weiße Zickzack aus dem Sheet ist im Chaos nicht als eigene Form lesbar. |
+| Phönixschwarm `phoenix` | **FAIL** | 2/5 | Orange Splitterform geht in der orange-braunen Gegner-/XP-Masse und dem warmen Spielerlicht unter; kein einzelner Splitter mit Silhouette auszumachen. |
+| Ewiger Winter `eternal_winter` | **FAIL** | 2/5 | Keine kalte blau-weiße Wolke sichtbar; kein Kontrast zu Moosgrund und grauen Gegnerkörpern, Cloud-Silhouette auf dem Sheet fast deckungsgleich mit Seelenleuchtfeuer. |
+| Dornensturm `thorn_storm` | **FAIL** | 2/5 | Grüne Splitterform verschwindet auf moosgrünem Boden; im Thorn-Frame kein grüner Dornenkranz über dem Schwarm erkennbar. |
+| Seelenleuchtfeuer `soul_beacon` | **FAIL** | 2/5 | Weiß-graue Wolke hat denselben Helligkeitswert wie Gegner und Dunst und ist im In-Game-Bild nicht auffindbar; farblich/formgleich mit `eternal_winter`. |
+
+Zusätzlicher Befund des Kontrolleurs: Auf dem Sheet sind obere (Death) und untere (Hit)
+Reihe je Evolution **pixelgleich**; im Chaos dominiert über alle sechs Läufe dieselbe
+braune Kleinstfleck-Masse, nicht sechs unterscheidbare Formen.
+
+**Gesamtnote: 2/5 — Abnahmekriterium ≥4/5 NICHT erreicht.** Die Texturen sind für sich
+(Sheet) erkennbar und palettenkonform, aber die Abnahmefrage — „Form + Farbe je Evolution
+im Chaos sofort erkennbar“ — ist bei 5 von 6 Evolutionen verfehlt. Ursachen: 17×17 bei
+Skala 2,0/2,4 zu klein, LOD-Alpha 0,5 zu dämpfend, teils zu ähnliche Farbwerte
+(Cloud-Paar, Orange auf Orange), fehlende Kontur gegen Gegner/Moos.
+
+### Offene Korrekturen (Kontraktor-Liste des art-director, rein visuell)
+
+- Global: Texturen auf 32×32 neu backen, Startskala 3,2–4,0 (Hit) / 4,0–4,8 (Death),
+  LOD-Alpha-Untergrenze ≥0,85 (Palettenindex bleibt), 1-px-`ink`-Kontur + `boneLight`-
+  Lichtkante oben-links je Form.
+- Zornpendel: echter 2-px-Band-Ring (amber außen, lantern Kern), geschlossene Zacken,
+  Radius ~18 px, Gittermuster entfernen.
+- Gewittersiegel: 2–3 px Zickzack mit `candleWhite`-Kern + `fogBlue`-Rand statt reiner
+  Weißspitze.
+- Phönix: `flameBright`/amber-Kern mit `emberShadow`-Kontur, 3–4 Spliter ≥8 px Abstand.
+- Ewiger Winter: `paleMist`-Kern + `fogBlue`-Außenband + `boneLight`-Rim, asymmetrische
+  Eiswolkenform statt Amorph-Blob.
+- Dornensturm: `marshLight`-Spitzen + `mossDark`-Kontur + amber-Highlight, größer und
+  schneller rotierend.
+- Seelenleuchtfeuer: aufsteigende Wisp-Form (boneLight/candleWhite-Kern, mist-Rand) statt
+  Cloud, wärmerer Kern, höhere Alpha.
+- Hit vs. Death: Reihen sichtbar unterscheiden (Death größer/offener/Zerstreuung), damit
+  der Sheet-Vergleich die Todes-Signatur belegt.
+
+**Konsequenz:** K5 bleibt `blocked`; K3 (#2040) und K4 (#2041) bleiben auf `review`,
+weil die Abnahme (art-director ≥4/5) nicht erfüllt ist. Kein `.lane-done`, kein
+Fertig-Signal an den Scheduler.
 
 ## Offene Punkte
 
@@ -148,3 +212,11 @@ _(wird nach der Abnahme hier eingetragen)_
 - `shots/m10-fx-evolution-after.json` verweist bei den Textur-Dumps auf
   `/home/ai/tmp/...`; die geprüfte, committete Zusammenfassung ist
   `shots/m10-fx-evolution-signature-sheet.png` und `-signature-diff.json`.
+- **K5-Abnahme offen (art-director FAIL 2/5):** Die Messwerte sind grün, aber die
+  Lesbarkeit im Chaos nicht. Der Scheduler bekommt kein `.lane-done`. Nächste Karte:
+  Signaturen nach Kontraktor-Liste oben neu backen (32×32, Skala 3,2–4,8, Alpha ≥0,85,
+  Kontur), dann erneut 6 GIFs + Chaos-Frame aufnehmen und art-director wiederholen.
+- Die Nachher-Stills (`-after-*.png`) sind der Peak-Near-White-Frame, nicht zwingend
+  der Moment der Signatur; die Signatur ist in den GIFs nur in 2–3 Frames sichtbar
+  (z. B. Zornpendel-Ring in `after-flail.gif` Frame 3). Beim Nachziehen Peak-Frame
+  auf Signatur-Sichtbarkeit statt nur Near-White wählen.

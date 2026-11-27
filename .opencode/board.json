@@ -3048,17 +3048,22 @@
       "id": 2042,
       "title": "m10-fx-evolution K5 Doku + lane-done",
       "description": "docs/lanes/m10-fx-evolution.md mit art-director-Urteil je Evolution (PASS/FAIL + Note) und Gesamtnote >=4/5 mit Begründung; offene Punkte ehrlich. .lane-done mit Messwerten. Abnahme: build+alle Tests grün (inkl. tests/fx-evolution.test.ts), 6 Vorher-/Nachher-GIFs in shots/, Near-White <=4,16 %, art-director >=4/5.",
-      "column": "doing",
+      "column": "blocked",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-27T06:02:27Z",
           "by": "build",
           "text": "todo → doing: K5 Doku + art-director-Abnahme laeuft; .lane-done nach Urteil."
+        },
+        {
+          "at": "2026-11-27T07:32:06Z",
+          "by": "build",
+          "text": "doing → blocked: K5 blocked: art-director Gesamtnote 2/5 (FAIL) — 5/6 Signaturen im 400+-Gegner-Chaos nicht lesbar (17x17, Skala 2.0-2.4, LOD-Alpha 0.5; Cloud-Paar eternal_winter/soul_beacon fast gleich). Messwerte PASS (Near-White 0,52 %, Diff min 51, LOD-Index 6/6, build+230 Tests gruen). Korrekturliste in docs/lanes/m10-fx-evolution.md. Kein .lane-done, #2040/#2041 bleiben review. Commit: K5 Doku."
         }
       ],
       "created": "2026-11-27T03:07:27Z",
-      "updated": "2026-11-27T06:02:27Z"
+      "updated": "2026-11-27T07:32:06Z"
     }
   ]
 }
