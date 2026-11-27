@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5063,
+  "next": 5181,
   "cards": [
     {
       "id": 1,
@@ -5813,6 +5813,33 @@
       ],
       "created": "2026-11-27T20:12:05Z",
       "updated": "2026-11-27T20:12:14Z"
+    },
+    {
+      "id": 5178,
+      "title": "m10-prop-density-lod #1 Messbasis: Skript p90+Praefix, Vorher-Lauf 3x",
+      "description": "Messskript um p90-Frametime, --out-Praefix (shots/m10-prop-density-*) und Prop-Zusammensetzung erweitern; Vorher-Lauf 3 Laeufe je 640/780 unter flock. AK: shots/m10-prop-density-before-*.json mit p90 + propComposition existieren, Vorher-Zahlen notiert.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-27T20:19:48Z",
+      "updated": "2026-11-27T20:19:48Z"
+    },
+    {
+      "id": 5179,
+      "title": "m10-prop-density-lod #2 Dichte-LOD-Stufen (lod.ts/propLayers.ts/GroundRenderer.ts) + Test",
+      "description": "Gestuftes Prop-Dichte-LOD: propTierFor (0 Landmarke/1 gross/2 Deko) in propLayers.ts, propDensityMaxTier(N1=250 -> max Tier 1, N2=300 -> max Tier 0) in lod.ts, Umsetzung in GroundRenderer.updateAmbient inkl. Schatten-Kopplung; tests/prop-density-lod.test.ts. AK: Test gruen; Nachher-Messung: sichtbare Props @300 Gegner < 360 (-60% gegen ~900), Draw-Call-Kandidaten < 300.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T20:19:48Z",
+      "updated": "2026-11-27T20:19:48Z"
+    },
+    {
+      "id": 5180,
+      "title": "m10-prop-density-lod #3 Abnahme: FPS/p90, Art-Sichtpruefung, Doku, lane-done",
+      "description": "Bilanz gegen Abnahmekriterien: FPS-Median 640 M25 >= 52 ODER p90-Frametime-Gewinn >= 2 ms (ehrlich berichten, was greift); art-director-Sichtpruefung 640+780 vor/nach (Note >= 4/5, keine Loecher); Doku docs/lanes/m10-prop-density-lod.md; max. 3 Hebel; danach .lane-done.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T20:19:48Z",
+      "updated": "2026-11-27T20:19:48Z"
     }
   ]
 }

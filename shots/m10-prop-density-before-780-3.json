@@ -1,0 +1,74 @@
+{
+  "card": "m10-ground-props-batch",
+  "tag": "before",
+  "condition": "780",
+  "viewport": {
+    "width": 780,
+    "height": 360
+  },
+  "dpr": 3,
+  "run": 3,
+  "windowSeconds": 10,
+  "targetEnemies": 300,
+  "measuredAt": "2026-11-27T20:26:28.291Z",
+  "command": "flock /home/ai/games/.lf-perf.lock node scripts/m10-ground-props.mjs --tag before --runs 3 --png",
+  "result": {
+    "frames": 601,
+    "elapsedMs": 10005,
+    "fps": 60.1,
+    "fpsMin": 60,
+    "medianFrameMs": 16.7,
+    "p90FrameMs": 16.7,
+    "p95FrameMs": 16.7,
+    "worstFrameMs": 16.8,
+    "drawCallCandidatesPerFrame": 82,
+    "candidatesBreakdown": {
+      "chunks": 30,
+      "props": 29,
+      "ripples": 1,
+      "ambient": 22
+    },
+    "visiblePropsPerFrame": 1044,
+    "visibleRipplesPerFrame": 47,
+    "distinctPropTexturesPerFrame": 1,
+    "chunkRebuildsPerFrame": 0,
+    "updateMsPerFrame": 1,
+    "batches": {
+      "layerCount": 30,
+      "propBatches": 26,
+      "shadowBatches": 1,
+      "glowBatches": 2,
+      "rippleBatches": 1,
+      "visibleProps": 1245,
+      "visibleRipples": 24
+    },
+    "avgEnemies": 242,
+    "minEnemies": 25,
+    "levelUpOpen": false,
+    "blend": {
+      "visibleRenderables": 1331,
+      "blendSwitches": 5
+    },
+    "propComposition": {
+      "total": 1245,
+      "counts": {
+        "shadow": 614,
+        "prop_post": 17,
+        "glow": 17,
+        "prop_grave": 53,
+        "prop_bones": 59,
+        "prop_cross": 15,
+        "prop_tree_a": 25,
+        "prop_stump": 86,
+        "prop_lilypad": 65,
+        "prop_reeds": 54,
+        "prop_tree_b": 34,
+        "prop_boulder": 139,
+        "prop_mushroom_ring": 19,
+        "prop_ruin": 24,
+        "prop_column": 24
+      }
+    }
+  },
+  "jsErrors": []
+}
