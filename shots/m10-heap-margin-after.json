@@ -1,0 +1,150 @@
+{
+  "tool": "m10-heap-margin.mjs",
+  "generatedAt": "2026-11-27T19:09:29.121Z",
+  "args": {
+    "viewport": {
+      "width": 780,
+      "height": 360
+    },
+    "dpr": 3,
+    "seed": 99,
+    "fromMin": 20,
+    "toMin": 29,
+    "timeScale": 60
+  },
+  "heap": {
+    "fromMB": 35.2,
+    "toMB": 36.2,
+    "deltaMB": 1,
+    "deltaPct": 2.8,
+    "cdpFromMB": 16,
+    "cdpToMB": 15.8
+  },
+  "enemies": 40,
+  "kills": 4782,
+  "fpsMin": 20.3,
+  "fpsSamples": 24,
+  "jsErrors": [],
+  "allocTop": [
+    {
+      "fn": "addProp",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 812,
+      "bytes": 393712
+    },
+    {
+      "fn": "set",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 23,
+      "bytes": 365552
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 18,
+      "bytes": 262260
+    },
+    {
+      "fn": "add",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 810,
+      "bytes": 230388
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 23,
+      "bytes": 196744
+    },
+    {
+      "fn": "t.onended",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 808,
+      "bytes": 107392
+    },
+    {
+      "fn": "l",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 810,
+      "bytes": 98520
+    },
+    {
+      "fn": "(anonymous)",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 23,
+      "bytes": 98376
+    },
+    {
+      "fn": "initPostPipeline",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 23,
+      "bytes": 98352
+    },
+    {
+      "fn": "setPosition",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 23,
+      "bytes": 98328
+    },
+    {
+      "fn": "spawn",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 812,
+      "bytes": 75392
+    },
+    {
+      "fn": "placeWaterDetails",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 812,
+      "bytes": 65664
+    },
+    {
+      "fn": "e.55292.e.exports",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 810,
+      "bytes": 65600
+    },
+    {
+      "fn": "e.8357.e.exports",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 810,
+      "bytes": 65588
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 1,
+      "bytes": 65576
+    },
+    {
+      "fn": "setValue",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 1,
+      "bytes": 65568
+    },
+    {
+      "fn": "e.50792.s.emit",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 1,
+      "bytes": 49728
+    },
+    {
+      "fn": "hypot",
+      "url": "",
+      "line": 0,
+      "bytes": 37920
+    },
+    {
+      "fn": "e.onmessage",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 812,
+      "bytes": 35264
+    },
+    {
+      "fn": "sortByDepth",
+      "url": "assets/index-CiHTx1kY.js",
+      "line": 18,
+      "bytes": 33600
+    }
+  ]
+}

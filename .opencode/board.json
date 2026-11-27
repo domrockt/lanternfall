@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 4559,
+  "next": 4602,
   "cards": [
     {
       "id": 1,
@@ -5519,6 +5519,71 @@
       "notes": [],
       "created": "2026-11-27T18:57:19Z",
       "updated": "2026-11-27T18:57:19Z"
+    },
+    {
+      "id": 4598,
+      "title": "m10-heap-margin: Vorher-Messung Endgame-Heap (780-Pfad)",
+      "description": "Skript scripts/m10-heap-margin.mjs stellt Minute-20-29-Endgame (500 Gegner + Projektile + Damage-Text, 780x360@3) nach und schreibt shots/m10-heap-margin-before.json. Abnahme: JSON existiert mit heap.deltaPct + allocTop.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T19:02:44Z",
+          "by": "build",
+          "text": "todo → doing: Skript geschrieben, Vorher-Lauf startet."
+        },
+        {
+          "at": "2026-11-27T19:08:46Z",
+          "by": "build",
+          "text": "doing → done: Commit 24c2174: before.json (+14,1 %) + churn-probe.json. Probe belegt: Top-Allokator ausserhalb der Area."
+        }
+      ],
+      "created": "2026-11-27T19:02:39Z",
+      "updated": "2026-11-27T19:08:46Z"
+    },
+    {
+      "id": 4599,
+      "title": "m10-heap-margin: Top-Allokator in Pool/ProjectilePool fixen",
+      "description": "Innerhalb der Area (Pool.ts, ProjectilePool.ts) Allokations-Churn beseitigen (z. B. trailFrames-Array pro Spawn). Keine Gameplay-/Balance-Werte. Abnahme: npx tsc --noEmit gruen, gezielte Tests gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T19:08:46Z",
+          "by": "build",
+          "text": "todo → done: Commit 920594f: trailFrames in place. tsc gruen."
+        }
+      ],
+      "created": "2026-11-27T19:02:39Z",
+      "updated": "2026-11-27T19:08:46Z"
+    },
+    {
+      "id": 4600,
+      "title": "m10-heap-margin: tests/heap-margin.test.ts Pool-Reuse",
+      "description": "Pool-Reuse leak-frei (aktive Objektzahl konstant ueber N Recycle-Zyklen), ProjectilePool gibt deterministisch frei, kein Wachstum ueber 1000 Spawn/Free-Zyklen (createdTotal konstant). Abnahme: npx vitest run tests/heap-margin.test.ts gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T19:08:46Z",
+          "by": "build",
+          "text": "todo → done: Commit da2bd4d: 8/8 Tests, Gesamt 523/523, Build rc=0."
+        }
+      ],
+      "created": "2026-11-27T19:02:39Z",
+      "updated": "2026-11-27T19:08:46Z"
+    },
+    {
+      "id": 4601,
+      "title": "m10-heap-margin: Nachher-Messung + Doku + Fullrun-Beleg",
+      "description": "shots/m10-heap-margin-after.json + docs/lanes/m10-heap-margin.md mit Vorher/Nachher und benanntem Hebel; finaler Fullrun 780x360@3 unter flock (Heap <= 12 %, fpsMin nicht schlechter als Vorher 34,8). Abnahme: After-JSON deltaPct <= 12, Doku mit Zahlen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T19:08:46Z",
+          "by": "build",
+          "text": "todo → doing: After-Messung + Fullrun 780 unter flock + Doku laufen."
+        }
+      ],
+      "created": "2026-11-27T19:02:39Z",
+      "updated": "2026-11-27T19:08:46Z"
     }
   ]
 }
