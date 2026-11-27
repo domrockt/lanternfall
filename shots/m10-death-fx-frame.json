@@ -54,15 +54,15 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-crumble.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-crumble.png",
       "spawned": 6,
-      "particleActive": 60,
-      "nearby": 60,
+      "particleActive": 108,
+      "nearby": 108,
       "textures": [
         "fx_death_bone",
         "fx_ash"
       ],
       "bboxGamePx": {
-        "w": 36,
-        "h": 32
+        "w": 35,
+        "h": 34
       },
       "frames": [
         4,
@@ -83,17 +83,19 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-burst.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-burst.png",
       "spawned": 6,
-      "particleActive": 43,
-      "nearby": 43,
+      "particleActive": 115,
+      "nearby": 110,
       "textures": [
-        "fx_death_blob"
+        "fx_death_blob",
+        "fx_star"
       ],
       "bboxGamePx": {
-        "w": 86,
-        "h": 91
+        "w": 107,
+        "h": 89
       },
       "frames": [
-        4
+        4,
+        1
       ]
     },
     {
@@ -110,15 +112,15 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-dissolve.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-dissolve.png",
       "spawned": 6,
-      "particleActive": 84,
-      "nearby": 84,
+      "particleActive": 120,
+      "nearby": 120,
       "textures": [
         "fx_death_void",
         "fx_dusk"
       ],
       "bboxGamePx": {
-        "w": 37,
-        "h": 38
+        "w": 33,
+        "h": 33
       },
       "frames": [
         4,
@@ -139,26 +141,27 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-sputter.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-sputter.png",
       "spawned": 6,
-      "particleActive": 116,
-      "nearby": 114,
+      "particleActive": 112,
+      "nearby": 111,
       "textures": [
         "fx_death_dust",
         "fx_fire"
       ],
       "bboxGamePx": {
-        "w": 95,
-        "h": 97
+        "w": 69,
+        "h": 69
       },
       "frames": [
         4,
-        6
+        6,
+        1
       ]
     }
   ],
   "final": {
-    "enemies": 307,
+    "enemies": 309,
     "scene": "run",
-    "fps": 48.9
+    "fps": 59.9
   },
   "jsErrors": []
 }

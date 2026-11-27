@@ -21,6 +21,9 @@ const DIMENSIONS = [
   "scaleFrom",
   "scaleTo",
   "dustScale",
+  "rim",
+  "rimTint",
+  "rimScale",
   "spread",
   "tint",
   "dustTint",
@@ -102,6 +105,10 @@ describe("Todes-VFX-Specs (#K4)", () => {
       expect(spec.dustLife).toBeGreaterThan(0);
       expect(spec.scaleFrom).toBeGreaterThan(spec.scaleTo);
       expect(spec.spread).toBeGreaterThan(0);
+      // Eigene Kontur-Textur + dunkler Rim fuer harte Silhouette.
+      expect(spec.rim).toBeTruthy();
+      expect(spec.rimScale).toBeGreaterThan(1);
+      expect(Number.isInteger(spec.rimTint)).toBe(true);
       expect(Number.isInteger(spec.tint)).toBe(true);
       expect(Number.isInteger(spec.dustTint)).toBe(true);
       // VFX-Spec trägt keine Schadens-/HP-/Hitbox-Felder.

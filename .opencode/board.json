@@ -2752,7 +2752,7 @@
       "id": 1781,
       "title": "m10-death-fx K4 Test tests/death-fx.test.ts",
       "description": "Alle 4 Klassen unterscheidbar in >=3 Dimensionen; jeder Archetyp mappt auf eine der 4 Klassen; Boss-Spec != Nicht-Boss-Spec; deterministisch (2 Läufe gleiche Werte). Abnahme: npx vitest run tests/death-fx.test.ts grün. Commit.",
-      "column": "review",
+      "column": "doing",
       "assignee": "test-auditor",
       "notes": [
         {
@@ -2764,16 +2764,21 @@
           "at": "2026-11-27T03:27:36Z",
           "by": "build",
           "text": "#K4 erledigt: Commit f944652. tests/death-fx.test.ts 5/5, gesamt 209 gruen."
+        },
+        {
+          "at": "2026-11-27T04:09:49Z",
+          "by": "build",
+          "text": "review → doing: Supervisor: Zwischenstand sichtbar machen; Test + Rim-Spec in Arbeit."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T03:27:36Z"
+      "updated": "2026-11-27T04:09:49Z"
     },
     {
       "id": 1782,
       "title": "m10-death-fx K5 Beleg + Doku",
       "description": "Eingefrorener Frame bei ~300 Gegnern, 4 Crops je Klasse als shots/m10-death-fx-<klasse>.png; Pixel-/Grössenmessung dokumentiert; art-director PASS + Note >=4/5; npm run build + npm test grün; .lane-done. Abnahme: 4 Crops + Urteil >=4/5 in docs/lanes/m10-death-fx.md, npm test grün, .lane-done tracked. Commit.",
-      "column": "blocked",
+      "column": "doing",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -2785,10 +2790,15 @@
           "at": "2026-11-27T03:26:08Z",
           "by": "build",
           "text": "doing → blocked: K5 Belege/Doku liegen vor (4 Crops, 308-Gegner-Frame, Messung). art-director FAIL 2,3/5: fehlende Silhouette/Rim. Fix braucht src/gfx/gen-fx.ts (fremder Claim) -> blocked, Follow-up gfx-Karte."
+        },
+        {
+          "at": "2026-11-27T04:09:49Z",
+          "by": "build",
+          "text": "blocked → doing: Supervisor: Zwischenstand committen; Rest = Pixel-/Groessenmessung + art-director-Urteil, dann .lane-done."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T03:26:08Z"
+      "updated": "2026-11-27T04:09:49Z"
     }
   ]
 }

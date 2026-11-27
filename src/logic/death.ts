@@ -50,6 +50,12 @@ export interface DeathFxSpec {
   scaleTo: number;
   /** Startgröße der Staub-Partikel. */
   dustScale: number;
+  /** Kontur-Textur hinter den Splittern (Rim/Silhouette gegen den Grund). */
+  rim: string;
+  /** Rim-Tint als Palettenindex (dunkel = harte Kante, hell = Leuchtkante). */
+  rimTint: number;
+  /** Rim-Skalierung relativ zu `scaleFrom` (> 1 = breiter als der Shard). */
+  rimScale: number;
   /** Radiale Streu-Geschwindigkeit in px/s (Basis für Splitter). */
   spread: number;
   /** Shard-Tint als Palettenindex. */
@@ -61,39 +67,48 @@ export interface DeathFxSpec {
 
 /** Werte je Nicht-Boss-Klasse. Count/Größe/Dauer/Streuung/Farbe differieren. */
 const BASE: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
-  // Knochen zerfallen langsam nach unten, kalt/entsättigt.
+  // Knochen zerfallen langsam nach unten, kalt/entsättigt. Dunkler Rim
+  // (nightDeep) trennt die hellen Splitter vom Moorgrün.
   crumble: {
     shard: "fx_death_bone", dust: "fx_ash",
-    count: 6, dustCount: 4,
+    count: 10, dustCount: 4,
     life: 0.6, dustLife: 0.45,
-    scaleFrom: 0.9, scaleTo: 0.35, dustScale: 0.8,
-    spread: 42, tint: C.bone, dustTint: C.mist,
+    scaleFrom: 1.6, scaleTo: 0.5, dustScale: 0.8,
+    rim: "fx_death_bone", rimTint: C.nightDeep, rimScale: 1.15,
+    spread: 42, tint: C.boneLight, dustTint: C.mist,
     additive: false,
   },
-  // Schleim platzt explosionsartig auseinander, groß und schnell.
+  // Schleim platzt explosionsartig auseinander, groß und schnell. Dunkler
+  // Rim hinter dem hellen Blob verhindert grün-auf-grün (Art-Befund Runde 1).
   burst: {
     shard: "fx_death_blob", dust: "fx_death_blob",
     count: 16, dustCount: 8,
-    life: 0.35, dustLife: 0.28,
-    scaleFrom: 1.6, scaleTo: 0.9, dustScale: 1.2,
-    spread: 130, tint: C.marshLight, dustTint: C.mossDark,
+    life: 0.35, dustTint: C.mossDark,
+    dustLife: 0.28,
+    scaleFrom: 2.4, scaleTo: 1.0, dustScale: 1.2,
+    rim: "fx_death_blob", rimTint: C.nightDeep, rimScale: 1.14,
+    spread: 130, tint: C.marshLight,
     additive: false,
   },
-  // Geist verpufft langsam nach oben und blendet additiv aus.
+  // Geist verpufft langsam nach oben und blendet additiv aus. Der dunkle
+  // Void-Rim gibt dem weichen Halo eine lesbare Kontur.
   dissolve: {
     shard: "fx_death_void", dust: "fx_dusk",
-    count: 9, dustCount: 5,
+    count: 11, dustCount: 5,
     life: 0.8, dustLife: 0.9,
-    scaleFrom: 1.2, scaleTo: 0.15, dustScale: 1.0,
+    scaleFrom: 2.0, scaleTo: 0.3, dustScale: 1.0,
+    rim: "fx_death_void", rimTint: C.nightDeep, rimScale: 1.25,
     spread: 22, tint: C.fogBlue, dustTint: C.nightMid,
     additive: true,
   },
-  // Feuer/Asche stiebt schnell und weit, heiß und additiv.
+  // Feuer/Asche stiebt schnell und weit, heiß und additiv. Dunkle Asche-
+  // Kontur trennt die Funken von orangen Gegnern und Glut-Decals.
   sputter: {
     shard: "fx_death_dust", dust: "fx_fire",
     count: 20, dustCount: 10,
     life: 0.45, dustLife: 0.55,
-    scaleFrom: 1.3, scaleTo: 0.2, dustScale: 1.1,
+    scaleFrom: 2.2, scaleTo: 0.3, dustScale: 1.1,
+    rim: "fx_death_dust", rimTint: C.nightDeep, rimScale: 1.12,
     spread: 165, tint: C.flame, dustTint: C.emberOrange,
     additive: true,
   },
@@ -109,7 +124,8 @@ const BOSS: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     shard: "fx_boss_core", dust: "fx_halo",
     count: 18, dustCount: 8,
     life: 1.1, dustLife: 0.75,
-    scaleFrom: 1.44, scaleTo: 0.5, dustScale: 1.2,
+    scaleFrom: 2.88, scaleTo: 0.8, dustScale: 1.2,
+    rim: "fx_boss_core", rimTint: C.nightDeep, rimScale: 1.2,
     spread: 70, tint: C.boneLight, dustTint: C.amber,
     additive: false,
   },
@@ -117,7 +133,8 @@ const BOSS: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     shard: "fx_boss_core", dust: "fx_halo",
     count: 30, dustCount: 14,
     life: 0.7, dustLife: 0.5,
-    scaleFrom: 2.56, scaleTo: 1.4, dustScale: 1.8,
+    scaleFrom: 3.84, scaleTo: 1.6, dustScale: 1.8,
+    rim: "fx_boss_core", rimTint: C.nightDeep, rimScale: 1.18,
     spread: 200, tint: C.marshLight, dustTint: C.glow,
     additive: false,
   },
@@ -125,7 +142,8 @@ const BOSS: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     shard: "fx_boss_core", dust: "fx_halo",
     count: 22, dustCount: 10,
     life: 1.4, dustLife: 1.3,
-    scaleFrom: 1.92, scaleTo: 0.3, dustScale: 1.5,
+    scaleFrom: 3.2, scaleTo: 0.5, dustScale: 1.5,
+    rim: "fx_boss_core", rimTint: C.nightDeep, rimScale: 1.25,
     spread: 45, tint: C.fogBlue, dustTint: C.lanternWhite,
     additive: true,
   },
@@ -133,7 +151,8 @@ const BOSS: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     shard: "fx_boss_core", dust: "fx_halo",
     count: 34, dustCount: 16,
     life: 0.9, dustLife: 0.8,
-    scaleFrom: 2.08, scaleTo: 0.35, dustScale: 1.7,
+    scaleFrom: 3.52, scaleTo: 0.6, dustScale: 1.7,
+    rim: "fx_boss_core", rimTint: C.nightDeep, rimScale: 1.2,
     spread: 240, tint: C.flame, dustTint: C.emberOrange,
     additive: true,
   },

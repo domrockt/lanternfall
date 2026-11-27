@@ -994,6 +994,22 @@ export class CombatSystem {
     const dustCount = e.elite && !e.boss ? Math.round(spec.dustCount * 1.4) : spec.dustCount;
     const shardFrames = fxFrames(spec.shard, FX_FRAME_COUNTS[spec.shard] ?? 1);
     const dustFrames = fxFrames(spec.dust, FX_FRAME_COUNTS[spec.dust] ?? 1);
+    // Kontur/Rim: dieselbe Shard-Textur minimal größer und dunkel (nightDeep)
+    // hinter den hellen Splittern. Ohne Rim gehen crumble/burst im Moorgrün
+    // unter (art-director Runde 1: "nur über Farbe unterscheidbar").
+    const rimFrames = fxFrames(spec.rim, FX_FRAME_COUNTS[spec.rim] ?? 1);
+    this.particles.burst(spec.rim, e.x, e.y, Math.max(3, Math.round(count * 0.4)), {
+      frames: rimFrames,
+      life: spec.life * 1.05,
+      scaleFrom: spec.scaleFrom * spec.rimScale * eliteScale,
+      scaleTo: spec.scaleTo * 1.15,
+      alphaFrom: 0.55, alphaTo: 0,
+      vx: spec.spread * 0.3,
+      additive: false,
+      tint: PAL[spec.rimTint],
+      // 10.5: über Boss-Sprite (10), aber unter dem hellen Haupt-Burst (11).
+      depth: DEPTH.enemyDeath - 0.5,
+    });
     // Vier klar unterscheidbare Tod-Klassen: Anzahl, Größe, Dauer, Streuung,
     // Farbe und Textur kommen vollständig aus der deterministischen Spec.
     // Bosse nutzen die skalierte Spec mit eigener Kern-Textur.
@@ -1020,6 +1036,19 @@ export class CombatSystem {
       tint: PAL[spec.dustTint],
       depth: DEPTH.enemyDeath,
     });
+    // Lesbarer Kern: heller Mittelpunkt, der die Silhouette verankert.
+    const core = cls === "burst" ? "fx_star" : cls === "sputter" ? "fx_fire" : "";
+    if (core) {
+      this.particles.burst(core, e.x, e.y, 1, {
+        life: spec.life * 0.6,
+        scaleFrom: spec.scaleFrom * 0.55,
+        scaleTo: 0.15,
+        alphaFrom: 1, alphaTo: 0,
+        additive: true,
+        tint: PAL[cls === "burst" ? C.lanternWhite : C.flameBright],
+        depth: DEPTH.enemyDeath,
+      });
+    }
     if (cls === "dissolve" || e.boss) {
       this.fx.spawnAnim("fx_halo", e.x, e.y, {
         life: spec.life * 0.6,
