@@ -61,6 +61,7 @@ try {
   await startRun(page);
 
   await page.evaluate(({ weapons, enemies, scale }) => {
+    const round = (n, digits = 1) => Math.round(n * 10 ** digits) / 10 ** digits;
     const run = window.__game.scene.getScene("run");
     const cam = run.cameras.main;
     window.__lf.god(true);
@@ -129,6 +130,12 @@ try {
   await page.waitForTimeout(WALL_MS);
 
   const raw = await page.evaluate(() => {
+    const round = (n, digits = 1) => Math.round(n * 10 ** digits) / 10 ** digits;
+    const percentile = (sorted, p) => {
+      if (sorted.length === 0) return 0;
+      const idx = Math.min(sorted.length - 1, Math.max(0, Math.floor((p / 100) * sorted.length)));
+      return sorted[idx];
+    };
     const p = window.__probe;
     const frames = p.frames;
     const dts = frames.map((f) => f.dt).sort((a, b) => a - b);
