@@ -2984,7 +2984,7 @@
       "id": 2118,
       "title": "m10-touch-latency #1 Messung Touch→Bewegung (iPhone14/Pixel7 quer)",
       "description": "Scripted Touch-Sweep (Pointer down→move→up) in iPhone-14-quer- und Pixel-7-quer-Profil, pro Ereignis Frame-Zeitstempel; Latenz Median/p95 in shots/m10-touch-latency.json; Ist-Werte in docs/lanes/m10-touch-latency.md. Abnahme: JSON mit 2 Profilen + Median/p95, 0 JS-Fehler.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
@@ -2996,16 +2996,21 @@
           "at": "2026-11-27T03:26:39Z",
           "by": "build",
           "text": "doing → review: PASS: iPhone14 quer median 0.85ms/1 Frame p95 1.5ms/1 Frame; Pixel7 quer median 0.70ms/1 Frame p95 1.4ms/1 Frame; 24/24 Trials bewegt, Loslassen 1 Frame, 0 JS-Fehler. Belege shots/m10-touch-latency*.json/png/gif, Commit f8b57c5"
+        },
+        {
+          "at": "2026-11-27T04:50:52Z",
+          "by": "build",
+          "text": "review → done: review→done: Messung iPhone14/Pixel7 quer, Median 1 Frame (0,70 ms), p95 1 Frame (2,1 ms), Loslassen 1 Frame, 0 JS-Fehler; Commit 48a16e9, Belege shots/m10-touch-latency.json+png/gif."
         }
       ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T03:26:39Z"
+      "updated": "2026-11-27T04:50:52Z"
     },
     {
       "id": 2119,
       "title": "m10-touch-latency #2 Pfad straffen + Deadzone-Hysterese",
       "description": "Falls Ist-Latenz > 2 Frames: Snapshot-Übergabe ohne Zusatzframe straffen. Deadzone-Hysterese (Enter>Release) gegen Zittern bei Ruhe, Priorität touch>gamepad>keyboard unverändert. Abnahme: tests/input-latency.test.ts prüft Hysterese + 0-Vektor bei Ruhe, tsc/build grün.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3017,16 +3022,21 @@
           "at": "2026-11-27T03:36:52Z",
           "by": "build",
           "text": "doing → review: PASS: applyTouchDeadzoneHysteresis (enter 0.12/release 0.09, Band gibt exakt 0 aus), keine Zittern bei Noise, Priorität unverändert; 37 Tests grün, tsc+build grün, Commit a776404"
+        },
+        {
+          "at": "2026-11-27T04:50:52Z",
+          "by": "build",
+          "text": "review → done: review→done: Hysterese Enter 0.12/Release 0.09, Band exakt 0 (kein Zittern), Priorität unverändert; Band-Remap-Versuch verworfen (2 Tests rot); Commit a3ebd2e, tests/input-latency.test.ts grün."
         }
       ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T03:36:52Z"
+      "updated": "2026-11-27T04:50:52Z"
     },
     {
       "id": 2120,
       "title": "m10-touch-latency #3 Loslassen: pointerup → Achse 0 im nächsten Frame",
       "description": "Nach touchend/pointerup ist move im nächsten Frame (0,0); Pause/Level-up/Truhe blockieren Gesten weiterhin. Abnahme: Test in tests/input-latency.test.ts + tests/input.test.ts grün, Beleg-Screenshot.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3038,26 +3048,36 @@
           "at": "2026-11-27T03:45:42Z",
           "by": "build",
           "text": "doing → review: PASS: 3 neue Tests (touchend→0 im selben update, Pause/Level-up/Truhe blockieren, reset Hysterese); 40 Tests grün; Nachher-Messung 24/24 bewegt, Release 1 Frame, 0 JS-Fehler; Commit 53f4241"
+        },
+        {
+          "at": "2026-11-27T04:50:52Z",
+          "by": "build",
+          "text": "review → done: review→done: touchend→Achse 0 im nächsten Frame, Pause/Level-up/Truhe blockieren weiterhin; Commit e33e07f, 3 neue Tests grün."
         }
       ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T03:45:42Z"
+      "updated": "2026-11-27T04:50:52Z"
     },
     {
       "id": 2121,
       "title": "m10-touch-latency #4 Doku + .lane-done",
       "description": "docs/lanes/m10-touch-latency.md mit Latenz vorher/nachher (Median/p95), 0 JS-Fehler, Urteil; .lane-done mit Messwerten committen. Abnahme: build+test grün, JSON-Belege committed, 0 JS-Fehler in beiden Profilen.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-27T03:58:53Z",
           "by": "build",
           "text": "todo → doing: Doku vorher/nachher + .lane-done; warte auf reviewer/test-auditor PASS vor Commit"
+        },
+        {
+          "at": "2026-11-27T04:50:52Z",
+          "by": "build",
+          "text": "doing → done: doing→done: docs/lane m10-touch-latency.md vorher/nachher + Urteil PASS, .lane-done; Commit e185176, build+235/235 Tests grün, verify-input 28/28."
         }
       ],
       "created": "2026-11-27T02:39:33Z",
-      "updated": "2026-11-27T03:58:53Z"
+      "updated": "2026-11-27T04:50:52Z"
     }
   ]
 }
