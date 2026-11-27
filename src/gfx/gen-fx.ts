@@ -439,13 +439,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
   // Glutfunke + Arkanes Buch: heisser Splitter-Regen, kurz und hell.
   phoenix: {
     evolution: "phoenix", baseWeapon: "ember", shape: "splitter",
-    palette: [20, 18, 19], hitLifetime: 0.16, deathLifetime: 0.62,
+    palette: [20, 18, 17], hitLifetime: 0.16, deathLifetime: 0.62,
     hitCount: 6, deathCount: 14,
   },
   // Kettenflegel + Eisenherz: goldener Ring-Schlag, sehr kurz.
   wrath_pendulum: {
     evolution: "wrath_pendulum", baseWeapon: "flail", shape: "ring",
-    palette: [21, 20, 11], hitLifetime: 0.12, deathLifetime: 0.30,
+    palette: [21, 20, 16], hitLifetime: 0.12, deathLifetime: 0.30,
     hitCount: 4, deathCount: 8,
   },
   // Frostnova + Sanduhr: kalte Nebelwolke, langsam ausklingend.
@@ -457,13 +457,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
   // Dornensalve + Windstiefel: gruener Splitter-Kranz, mittleres Timing.
   thorn_storm: {
     evolution: "thorn_storm", baseWeapon: "thorn", shape: "splitter",
-    palette: [18, 16, 17], hitLifetime: 0.18, deathLifetime: 0.42,
+    palette: [30, 31, 29], hitLifetime: 0.18, deathLifetime: 0.42,
     hitCount: 5, deathCount: 11,
   },
   // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
   thunder_seal: {
     evolution: "thunder_seal", baseWeapon: "storm", shape: "beam",
-    palette: [19, 20, 21], hitLifetime: 0.10, deathLifetime: 0.24,
+    palette: [12, 9, 7], hitLifetime: 0.10, deathLifetime: 0.24,
     hitCount: 3, deathCount: 7,
   },
   // Geisterlaterne + Magnetamulett: helle Seelenwolke, langes Nachgluehen.
@@ -523,12 +523,15 @@ export function signatureFrame(shape: EvoSignatureShape, palette: readonly [numb
   const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
   const c = (size - 1) / 2;
   const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  // Form-Variante je Haupt-Palettenindex: verhindert, dass zwei Evolutionen mit
+  // gleicher Grundform exakt dieselben Pixel erzeugen (siehe tests/fx-evolution).
+  const variant = palette[0] % 7;
   if (shape === "ring") {
     const r = 3.2 + t * 5.4;
     for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
       const a = Math.atan2(y - c, x - c);
-      const jag = Math.sin(a * 8) * 0.7;
+      const jag = Math.sin(a * (7 + variant) + variant * 0.35) * (0.55 + variant * 0.06);
       const edge = Math.abs(d - (r + jag));
       if (edge < 0.7) putPixel(rows, x, y, palette[2]);
       else if (edge < 1.6) putPixel(rows, x, y, palette[stage === 3 ? 1 : 0]);
@@ -539,12 +542,13 @@ export function signatureFrame(shape: EvoSignatureShape, palette: readonly [numb
     const h = 5 + stage * 3;
     for (let i = 0; i < h; i++) {
       const y = Math.round(c + i - h / 2);
-      putPixel(rows, c, y, palette[2]);
-      putPixel(rows, c - 1, y, palette[0]);
-      putPixel(rows, c + 1, y, palette[0]);
+      const wob = Math.round(Math.sin(i * 0.9 + variant) * (variant % 3 === 0 ? 0 : 1));
+      putPixel(rows, c + wob, y, palette[2]);
+      putPixel(rows, c - 1 + wob, y, palette[0]);
+      putPixel(rows, c + 1 + wob, y, palette[0]);
       if (i % 3 === 1) {
-        putPixel(rows, c - 2 - (stage % 2), y, palette[1]);
-        putPixel(rows, c + 2, y, palette[1]);
+        putPixel(rows, c - 2 - (stage % 2) + wob, y, palette[1]);
+        putPixel(rows, c + 2 + wob, y, palette[1]);
       }
     }
     return rows.map((r) => r.join(""));
@@ -552,7 +556,7 @@ export function signatureFrame(shape: EvoSignatureShape, palette: readonly [numb
   if (shape === "splitter") {
     const len = 3 + stage * 2.2;
     for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2;
+      const a = (i / 8) * Math.PI * 2 + variant * 0.19;
       for (let k = 2; k <= len; k++) {
         putPixel(rows, c + Math.cos(a) * k, c + Math.sin(a) * k, k > len - 1 ? palette[2] : palette[i % 2]);
       }
@@ -564,7 +568,7 @@ export function signatureFrame(shape: EvoSignatureShape, palette: readonly [numb
   const rad = 2.5 + t * 5.2;
   for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
     const dx = x - c, dy = y - c;
-    const wobble = Math.sin(x * 0.9 + y * 1.3 + stage) * 0.7;
+    const wobble = Math.sin(x * 0.9 + y * 1.3 + stage + variant * 1.1) * (0.55 + (variant % 3) * 0.18);
     const d = Math.hypot(dx, dy) + wobble;
     if (d > rad) continue;
     putPixel(rows, x, y, d < rad * 0.35 ? palette[2] : d < rad * 0.7 ? palette[1] : palette[0]);
