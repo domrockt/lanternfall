@@ -15,6 +15,7 @@ export function resetAiState(state: AiState, rng: AiRng): void {
   state.fuse = 0;
   state.blinks = 0;
   state.attacks = 0;
+  state.phase = 0;
 }
 
 /** Recycelt einen vorhandenen KI-Zustand oder legt beim ersten Spawn einen an. */
