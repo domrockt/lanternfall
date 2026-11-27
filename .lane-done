@@ -1,0 +1,24 @@
+# Lane m10-boss-banner-layout — DONE (2026-11-27)
+
+Dom-Wunsch 21:15Z Punkt 4b: Boss-Banner („EIN BOSS ERWACHT“) lag als Panel
+mitten im Spielfeld und kollidierte sichtbar mit Schadenszahlen.
+
+- Fix: Banner-Rect an die Kette gekoppelt — `bossHudRects()`: banner.y =
+  hpBar.bottom + BOSS_HUD_CLEARANCE = 58 (vorher freie Mitte, Rect 68..116).
+  UI.ts positioniert Nineslice/Titel/Sub aus diesem Rect; Fade-In 240→120 ms;
+  `killTweensOf` in showBanner (konkurrierende Alpha-Tweens waren Mitursache
+  des „halbtransparent“-Befunds); BOSS_SAFE_TOP abgeleitet (= 112).
+- Vorher (shots/m10-boss-banner-before-{640,960x540,1280x720}.png + .json):
+  je Format 1 geometrische Kollision Zahl↔Banner; Banner 300x48 bei y=68.
+- Nachher (shots/m10-boss-banner-after-*): Banner y=58..106 in allen 3 Formaten,
+  Alpha 1 im Halt, Timer räumt ab (< 3 s), 0 JS-Fehler; Zahl an der View-Oberkante
+  nur noch geometrisch hinter dem opaken Banner verdeckt (dokumentiert, kein
+  sichtbarer Befund mehr); Boss-Zahlen via safeTop-Kette garantiert darunter.
+- Tests: tests/boss-banner-layout.test.ts, 27 Tests (Kette in 640x360/960x540/
+  1280x720 via computeView, 2592 Overlap-Assertions, Timer-Kette) — Suite
+  687/687 grün, tsc rc=0, npm run build rc=0.
+- Kontrolleure: reviewer PASS (2 sollte umgesetzt, Nachtrag f7153f0),
+  test-auditor PASS, art-director PASS (6/6 Kriterien, Banner 4/5, Fix 5/5),
+  commit-gate PASS. Karten #5638–#5641 done.
+- Commits: 48a4bdc (K1), 1e638e2 + f7153f0 (K2), ad2d4fd (K3), c81c117 (K4).
+- Offen: nichts. GAME.md unberührt; Doku in docs/lanes/m10-boss-banner-layout.md.

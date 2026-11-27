@@ -6473,43 +6473,76 @@
       "id": 5638,
       "title": "m10-boss-banner-layout K1: Ist-Messung Boss-Banner vs. Damage-Numbers (3 Formate)",
       "description": "Skript scripts/m10-boss-banner.mjs: Boss-Spawn + aktive Schadenszahlen gleichzeitig ausloesen und Rects (Banner, HP-Leiste, Damage-Text) in 640x360-, 960x540- und 1280x720-Fenster messen. Belege: shots/m10-boss-banner-before-{640,960,1280}.png + shots/m10-boss-banner-before.json (ein Lauf, kein Mess-Loop). Abnahme: JSON enthaelt Rects+Alpha je Format, Screenshots zeigen das Problem (Banner im Spielfeld, Zahl ueber Boss-Name).",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T21:26:45Z",
           "by": "build",
           "text": "todo → doing: Start: Messskript schreiben, ein Lauf in 3 Formaten"
+        },
+        {
+          "at": "2026-11-27T21:41:26Z",
+          "by": "build",
+          "text": "doing → review: Ein Lauf, 3 Formate: Banner y=68..116 (alpha 1 im Halt), je Format 1 geometrische Kollision Zahl↔Banner ('22' bei y≈99), afterTimer=false, 0 JS-Fehler. Belege shots/m10-boss-banner-before-*, Commit 48a4bdc."
+        },
+        {
+          "at": "2026-11-27T21:51:48Z",
+          "by": "build",
+          "text": "review → done: lane #5638, Commit 48a4bdc — Ist-Messung 3 Formate, Belege shots/m10-boss-banner-before-*"
         }
       ],
       "created": "2026-11-27T21:26:42Z",
-      "updated": "2026-11-27T21:26:45Z"
+      "updated": "2026-11-27T21:51:48Z"
     },
     {
       "id": 5639,
       "title": "m10-boss-banner-layout K2: Fix — Banner fest unter HP-Leiste, Rect-Kette, kurzer Fade",
       "description": "src/scenes/UI.ts + src/systems/BossSystem.ts: Banner-Y aus bossHudRects-Kette (banner.y = hpBar.bottom + BOSS_HUD_CLEARANCE, keine freie Mitte 92), bannerGroup Folgetexte mitziehen; kurzer Fade-in/out ueber bannerTimer; safeTop-Kette prueft, dass Boss-Sprite + Damage-Rect unter dem Banner bleiben. Kein Anfassen von HP-Leisten-Stil oder Boss-Spawn-Logik jenseits des Rects. Abnahme: npx tsc --noEmit rc=0, gezielte Tests gruen, 1 Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:41:32Z",
+          "by": "build",
+          "text": "todo → doing: Start: Banner-Rect-Kette in BossSystem.bossHudRects + UI.ts-Positionierung, Fade-In verkürzen"
+        },
+        {
+          "at": "2026-11-27T21:51:48Z",
+          "by": "build",
+          "text": "doing → done: lane #5639, Commits 1e638e2 + f7153f0 (Nachtrag) — Rect-Kette banner.y=58, killTweensOf, reviewer PASS"
+        }
+      ],
       "created": "2026-11-27T21:26:42Z",
-      "updated": "2026-11-27T21:26:42Z"
+      "updated": "2026-11-27T21:51:48Z"
     },
     {
       "id": 5640,
       "title": "m10-boss-banner-layout K3: Tests tests/boss-banner-layout.test.ts",
       "description": "Vitest: banner.y >= hpBar.y + hpBar.h in allen 3 Formaten (640/960x540/1280x720-Fenster via computeView-Kette), kein Overlap Banner-Rect vs. Damage-Text-Rect (worst case composedBossCenterY + Float), Banner-Timer-Verhalten (Konstanten/Statuskette). Abnahme: npx vitest run tests/boss-banner-layout.test.ts gruen, npx tsc --noEmit rc=0, 1 Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:51:48Z",
+          "by": "build",
+          "text": "todo → done: lane #5640, Commit ad2d4fd — 27 Tests, test-auditor PASS, Suite 687 gruen"
+        }
+      ],
       "created": "2026-11-27T21:26:42Z",
-      "updated": "2026-11-27T21:26:42Z"
+      "updated": "2026-11-27T21:51:48Z"
     },
     {
       "id": 5641,
       "title": "m10-boss-banner-layout K4: Nachher-Shots + art-director + Lane-Doku",
       "description": "scripts/m10-boss-banner.mjs erneut (after-Modus): shots/m10-boss-banner-after-*.png/json; art-director-Sichtprüfung (kein Banner im Spielfeld, keine Kollision mit Schadenszahlen, Pfade im Bericht); docs/lanes/m10-boss-banner-layout.md mit Vorher/Nachher-Tabelle. Abnahme: Vision-Check PASS, npm run build rc=0, Belege im Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T21:51:48Z",
+          "by": "build",
+          "text": "todo → done: lane #5641, Commit c81c117 — after-Shots + Doku, art-director PASS (6/6 Kriterien)"
+        }
+      ],
       "created": "2026-11-27T21:26:42Z",
-      "updated": "2026-11-27T21:26:42Z"
+      "updated": "2026-11-27T21:51:48Z"
     }
   ]
 }
