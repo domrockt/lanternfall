@@ -37,6 +37,7 @@ const browser = await chromium.launch({
 });
 const errors = [];
 const formats = [];
+let insideShot = null;
 
 try {
   for (const fmt of FORMATS) {
@@ -219,13 +220,26 @@ try {
     });
 
     if (withShots) {
-      await page.evaluate(() => {
+      // "Truhe in View": Truhe sichtbar innerhalb des Views spawnen -> Pfeil muss aus sein.
+      insideShot = await page.evaluate(() => {
         const run = window.__game.scene.getScene("run");
+        const cam = run.cameras.main;
+        cam.setZoom(1);
         run.chests.clear();
-        const view = run.cameras.main.worldView;
-        run.chests.spawn(view.x + view.width + 260, view.centerY);
+        const view = cam.worldView;
+        const cx = view.centerX + 80;
+        const cy = view.centerY;
+        run.teleport(cx - 40, cy);
+        const chest = run.chests.spawn(cx, cy);
+        return { chestX: cx, chestY: cy, spriteVisible: chest.sprite.visible, depth: chest.sprite.depth };
       });
-      await page.waitForTimeout(120);
+      await page.waitForTimeout(150);
+      insideShot.arrowVisible = await page.evaluate(() => {
+        const run = window.__game.scene.getScene("run");
+        const chest = run.chests.chests[0];
+        const cam = run.cameras.main;
+        return { arrow: run.chests["arrow"].visible, inView: !!chest && chest.x > cam.worldView.x && chest.x < cam.worldView.x + cam.worldView.width };
+      });
       await page.screenshot({ path: "shots/m10-chest-arrow-inside.png" });
     }
 
@@ -249,6 +263,7 @@ const report = {
   toleranceDeg: TOLERANCE_DEG,
   marginPx: MARGIN,
   formats,
+  insideShot,
   verdict: {
     allCasesOk: formats.every((f) => f.ok),
     jsErrors: errors.length,

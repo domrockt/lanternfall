@@ -1,6 +1,6 @@
 {
   "schema": "m10-chest-arrow/v1",
-  "generatedAt": "2026-11-27T16:43:40.535Z",
+  "generatedAt": "2026-11-27T17:52:06.057Z",
   "toleranceDeg": 5,
   "marginPx": 24,
   "formats": [
@@ -439,6 +439,16 @@
       "ok": true
     }
   ],
+  "insideShot": {
+    "chestX": 1600,
+    "chestY": 1000,
+    "spriteVisible": true,
+    "depth": 7,
+    "arrowVisible": {
+      "arrow": false,
+      "inView": true
+    }
+  },
   "verdict": {
     "allCasesOk": true,
     "jsErrors": 0,

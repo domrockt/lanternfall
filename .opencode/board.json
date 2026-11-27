@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 3642,
+  "next": 3878,
   "cards": [
     {
       "id": 1,
@@ -4550,16 +4550,21 @@
       "id": 3640,
       "title": "m10-chest-arrow-onscreen K3: Fix + Unit-Tests",
       "description": "Fix in src/systems/ChestSystem.ts (einzige Code-Datei): Randprojektion entlang Zentrum→Truhe, Kamera-Zoom berücksichtigen; tests/chest-arrow.test.ts >=3 Tests grün. AK: npx vitest run tests/chest-arrow.test.ts grün, tsc sauber.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-27T16:31:44Z",
           "by": "build",
           "text": "todo → doing: Fix computeChestArrow + tests/chest-arrow.test.ts."
+        },
+        {
+          "at": "2026-11-27T17:40:27Z",
+          "by": "build",
+          "text": "doing → review: K3 grün: npx vitest run tests/chest-arrow.test.ts 5/5 PASS in 92 ms, npx tsc --noEmit sauber. Fix computeChestArrow (Strahl Mitte→Truhe, Zoom-Kompensation) + Tests in 87491cd, Abschluss-Commit 1629dee nennt #3640."
         }
       ],
       "created": "2026-11-27T15:54:05Z",
-      "updated": "2026-11-27T16:31:44Z"
+      "updated": "2026-11-27T17:40:27Z"
     },
     {
       "id": 3641,
