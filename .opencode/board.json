@@ -3513,25 +3513,36 @@
       "id": 2398,
       "title": "m10-heroes-pass K1: Baseline-Kontaktbogen + Kennzahlen",
       "description": "Kontaktbogen 1x und 4x aller 4 Richtungen x 4 Frames beider Helden (shots/m10-heroes-before-1x.png, -before-4x.png), Kennzahlen in shots/m10-heroes-before.json: Pixel-Differenz Mira<->Kael je Richtung/Frame (Ziel >=35%), Frame-Duplikate (Ziel 0), Off-Palette-Pixel (Ziel 0), Alpha-Werte != {0,255} (Ziel 0). Abnahme: 3 Dateien im Commit, JSON nennt alle 48 Paare + Summen. Owner pixel-artist, Kontrolle art-director.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T05:35:36Z",
           "by": "build",
           "text": "todo → doing: Start: Baseline aus aktuellem Generator-Stand."
+        },
+        {
+          "at": "2026-11-27T06:52:06Z",
+          "by": "build",
+          "text": "doing → done: K1 Baseline committed 752d9c5: shots/m10-heroes-before-1x.png, -before-4x.png, -before.json. Kennzahlen: Pixel-Diff Mira<->Kael min 48,5 % (Ziel >=35 %, PASS), mean 56,2 %; Frame-Duplikate 0; Off-Palette-Pixel 0; Alpha nur 0/255 (alphaNotBinary 0). Frame-Groesse konstant 32x32, 4 Frames x 3 Richtungen (links gespiegelt)."
         }
       ],
       "created": "2026-11-27T05:34:41Z",
-      "updated": "2026-11-27T05:35:36Z"
+      "updated": "2026-11-27T06:52:06Z"
     },
     {
       "id": 2399,
       "title": "m10-heroes-pass K2: Silhouette + Akzentfarbe",
       "description": "Mira: Laternen-Gold-Akzent, schmaler Umhang. Kael: Rost/Stahl, breitere Schultern, Axt-Silhouette lesbar. Aenderung in scripts/art/gen_chars.py, src/gfx/gen-chars.ts neu generiert. Neue tests/char-frames.test.ts: 2 Helden x 4 Richtungen x 4 Frames vorhanden, Frame-Groesse konstant, Frames je Richtung paarweise verschieden, alle Pixel in Palette, Alpha nur 0/255. Abnahme: vitest gruen, tsc gruen, Kontaktbogen 4x im Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T06:53:01Z",
+          "by": "build",
+          "text": "todo → doing: K2 Silhouette+Akzent: Axt-Blatt einschneidig aussen, Kael Rost statt Gold, Mira schmaler Umhang + Goldborte."
+        }
+      ],
       "created": "2026-11-27T05:34:41Z",
-      "updated": "2026-11-27T05:34:41Z"
+      "updated": "2026-11-27T06:53:01Z"
     },
     {
       "id": 2400,
