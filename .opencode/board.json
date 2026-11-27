@@ -2741,7 +2741,7 @@
       "id": 1780,
       "title": "m10-death-fx K3 Umsetzung in CombatSystem.killsFx",
       "description": "Tod nutzt die Spec vollständig (vorhandene FX-Texturen, keine neuen Assets); keine Änderung an Schaden/Hitboxen. Abnahme: killsFx übergibt alle Spec-Felder an Partikel/FX, tsc grün. Commit.",
-      "column": "review",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -2753,10 +2753,15 @@
           "at": "2026-11-27T03:27:36Z",
           "by": "build",
           "text": "#K3 erledigt: Commit 0d405c8, Depth-Nachzug in a44a97e. killsFx nutzt alle Spec-Felder."
+        },
+        {
+          "at": "2026-11-27T06:48:07Z",
+          "by": "build",
+          "text": "review → done: K3 DONE: killsFx nutzt alle Spec-/Rim-Felder, Depth 11/11.2, keine Schadens-/Hitbox-Aenderung. Commits 0d405c8/a44a97e/db1610c. Board-Nachzug nach Reviewer-Sicht."
         }
       ],
       "created": "2026-11-27T00:36:15Z",
-      "updated": "2026-11-27T03:27:36Z"
+      "updated": "2026-11-27T06:48:07Z"
     },
     {
       "id": 1781,
