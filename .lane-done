@@ -1,0 +1,24 @@
+# Lane m10-hazard-warn-fairness — fertig (27.11.2026)
+
+Ziel: Jeder gefährliche Angriff hat eine messbar faire Warnphase; Unter-Warnzeit-Fälle
+auf ein faires Minimum gehoben.
+
+Karten:
+- #3618 K1 Audit: alle HazardSystem-Aufrufer (18 Boss-Angriffe + exploder) mit
+  Warnzeit/Rim-Optik in docs/lanes/m10-hazard-warn-fairness.md. Einziger FAIL: Exploder 0.16 s.
+- #3619 K2 Harness scripts/m10-hazard-fairness.mjs (500 Gegner, 640x360, Pixel-Sampling
+  + Bot-Trefferquote); Baseline shots/m10-hazard-baseline.json.
+- #3620 K3 Fix src/systems/Hazards.ts: MIN_WARN_S=0.45 via effectiveWarn() in
+  spawnCircle+spawnBeam; MIN_RIM_ALPHA 0.12→0.30 via rimPulseAlpha() (0.30–0.65);
+  8 Unit-Tests tests/hazard-fairness.test.ts.
+- #3621 K4 Nachmessung shots/m10-hazard-after.json + Vorher/Nachher-Tabelle in der Doku.
+
+Messwerte (Baseline → After):
+- Mindest-Warnzeit: 0.160 → 0.450 s (classesUnderMinWarn [exploder] → []); 18 Boss-Angriffe unverändert.
+- Ring-Sichtbarkeit |Michelson|: 14/19 Klassen besser, Mittelwert 0.0478 → 0.0514 (+7.5 %).
+- Bot-Trefferquote im Harness gesättigt (8/8, Schwarm blockiert Flucht) — Metrik diskriminiert nicht.
+- Tests: 363/363 grün (34 Dateien), tsc clean, 0 JS-Fehler im Harness.
+
+Offen (Folge-Lane, nicht Teil dieses Claims): Warn-Disc liest sich im Schwarm weiterhin
+nur mäßig (|Kontrast| ~0.03–0.12) — helle Konturfarbe/Outline für den Disc wäre der
+nächste Art-/VFX-Hebel.

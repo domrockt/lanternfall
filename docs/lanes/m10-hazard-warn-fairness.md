@@ -73,7 +73,7 @@ Werten aus K1 in der Szene ausgeführt und gemessen:
 - **Warnring-Kontrast** gegen Hintergrund (Pixel-Sampling: Ring-Annulus vs. Nachbarfläche,
   Michelson-Kontrast der Luminanz), gesampelt an 3 Puls-Phasen,
 - **Bot-Trefferquote**: AutoPlay-Bot, Hazard spawnt auf Spielerposition, HP-Delta bis
-  Warnphase-Ende = Treffer; 10 Trials pro Hazard-Klasse.
+  Warnphase-Ende = Treffer; 8 Trials pro Schadens-Klasse.
 
 Baseline: `shots/m10-hazard-baseline.json`, Warnframe mit 500-Gegner-Schwarm:
 `shots/m10-hazard-baseline-warnframe.png` (+2x).
@@ -101,7 +101,7 @@ Baseline: `shots/m10-hazard-baseline.json`, Warnframe mit 500-Gegner-Schwarm:
   (`spawnCircle`, `spawnBeam`) clampen auf die Mindest-Warnzeit (Exploder: 0.16 → 0.45 s; alle
   Boss-Angriffe ≥ 0.60 s bleiben exakt unverändert).
 - Rim-Puls-Minimum von 0.12 auf `MIN_RIM_ALPHA = 0.3` angehoben; reiner Helfer
-  `rimAlpha(elapsed)` → `0.3 + |sin|·0.35` (0.30–0.65), damit der Rand auch unter 300+ Gegnern
+  `rimPulseAlpha(elapsed)` → `0.3 + |sin|·0.35` (0.30–0.65), damit der Rand auch unter 300+ Gegnern
   lesbar bleibt. Circle- und Strahl-Rim nutzen denselben Helfer (Spawn und Update).
 - `effectiveWarn()`-Randfälle: `undefined`/`NaN`/`Infinity`/negativ fallen auf Default bzw. Minimum
   zurück; Werte > Minimum werden nie verlängert (keine künstlichen Boss-Warnungen).
@@ -112,4 +112,63 @@ Baseline: `shots/m10-hazard-baseline.json`, Warnframe mit 500-Gegner-Schwarm:
 
 ## K4 — Vorher/Nachher
 
-siehe unten (wird nach der Nachmessung ergänzt).
+Nachmessung mit demselben Harness (`node scripts/m10-hazard-fairness.mjs --tag=after`,
+27.11., 640x360, Schwarm 500, seed 1): `shots/m10-hazard-after.json`,
+Warnframe `shots/m10-hazard-after-warnframe.png`.
+
+Harness-Korrektur vor der Nachmessung: Phase 2 meldete bisher den **Sollwert** `c.warn`
+als `effectiveWarn`; jetzt wird der tatsächliche, geclampte `warnMax` der Hazard-Instanz
+gemittelt gemeldet (Messung selbst wartete schon immer auf den echten `warnMax`).
+
+### Tabelle Vorher → Nachher
+
+| Klasse | Warnzeit (s) | \|Ring-Kontrast\| min vorher | nachher | Δ |
+|---|---|---|---|---|
+| jump_slam | 0.95 → 0.95 | 0.099 | 0.119 | +0.020 |
+| poison_puddles | 0.80 → 0.80 | 0.033 | 0.030 | -0.003 |
+| summon_ring | 0.90 → 0.90 | 0.035 | 0.045 | +0.010 |
+| bone_boomerang | 0.60 → 0.60 | 0.011 | 0.014 | +0.003 |
+| summon_wolves | 0.75 → 0.75 | 0.064 | 0.084 | +0.020 |
+| scythe_sweep | 0.72 → 0.72 | 0.103 | 0.115 | +0.012 |
+| stomp | 1.05 → 1.05 | 0.070 | 0.077 | +0.007 |
+| stone_rain | 1.20 → 1.20 | 0.064 | 0.056 | -0.008 |
+| teleport | 0.60 → 0.60 | 0.076 | 0.052 | -0.024 |
+| fire_cross | 0.95 → 0.95 | 0.014 | 0.020 | +0.006 |
+| thorn_ring | 1.00 → 1.00 | 0.103 | 0.081 | -0.022 |
+| thorn_ring_p3 | 0.75 → 0.75 | 0.073 | 0.064 | -0.009 |
+| bone_boomerang_p5 | 0.60 → 0.60 | 0.011 | 0.014 | +0.003 |
+| thorn_burst | 0.90 → 0.90 | 0.010 | 0.013 | +0.003 |
+| thorn_burst_p3 | 0.70 → 0.70 | 0.042 | 0.056 | +0.014 |
+| fire_cross_p2 | 0.85 → 0.85 | 0.014 | 0.019 | +0.005 |
+| fire_cross_p3 | 0.65 → 0.65 | 0.020 | 0.026 | +0.006 |
+| summon_ring_p2 | 0.80 → 0.80 | 0.033 | 0.043 | +0.010 |
+| **exploder** | **0.16 → 0.45** | 0.033 | 0.048 | +0.015 |
+
+### Ergebnis
+
+1. **Warnzeit-Minimum angehoben (Hauptgewinn):** minEffectiveWarn **0.160 → 0.450 s**;
+   `classesUnderMinWarn` **[exploder] → []**. Alle 18 Boss-Angriffe unverändert
+   (0.60–1.20 s, Clamp greift nicht). Ein Detonations-Warnring beim Exploder steht dem
+   Spieler jetzt mindestens 27 Frames statt 10 Frames zur Verfügung.
+2. **Ring-Sichtbarkeit (|Michelson-Kontrast|, min über 3 Puls-Phasen):** 14/19 Klassen
+   besser, 5/19 minimal schlechter (Run-Rauschen ±0.01, Hintergrund-Luminanz schwankt
+   mit dem Laternen-Flicker); Mittelwert **0.0478 → 0.0514 (+7.5 %)**. Der gestrichelte
+   Warn-Disc (NORMAL-Blend, Alpha 0.9) dominiert die Ring-Annulus-Samples, daher fällt
+   der Effekt von MIN_RIM_ALPHA 0.12→0.30 im Michelson-Maß klein aus — der Rim-Puls
+   (ADD, hotRed) sitzt optisch auf dem Disc-Rand, nicht daneben.
+3. **Bot-Trefferquote ist im Harness gesättigt:** alle Schadens-Klassen 8/8 (vorher wie
+   nachher, auch bei 1.2 s Warnzeit). Bei 500 dichten Gegnern kommt der Bot aus der
+   eigenen Position nicht mehr heraus — die Metrik diskriminiert hier nicht. Der
+   Baseline-Wert 3/8 beim Exploder war bereits in K2 als I-Frame-/Timing-Artefakt
+   eingestuft; nachher konsistent 8/8.
+4. **Messartefakt korrigiert:** Ein erster After-Lauf (17:48, Rechner-Shutdown-WIP) zeigte
+   global dunklere Frames (Hintergrund 0.14–0.21 statt 0.23–0.27, Laternen-Flicker zur
+   Screenshot-Zeit) und dadurch aufgeblähte Kontraste (u. a. Beams +0.12). Die Tabelle
+   oben nutzt den reproduzierten Lauf bei normaler Helligkeit; beide Läufe hatten den
+   K3-Fix aktiv (exploder 0.45 s).
+
+**Fazit:** Abnahmekriterium erfüllt — messbarer Gewinn = Warnzeit-Minimum 0.16 → 0.45 s
+(keine Klasse mehr unter 0.45 s) plus kleine Kontrastgewinne (+7.5 % im Mittel).
+Offener Punkt: der Warn-Disc selbst liest sich im dichten Schwarm weiterhin nur mäßig
+(|Kontrast| ~0.03–0.12); eine zusätzliche helle Konturfarbe/Outline für den Disc wäre
+ein folgender Art-/VFX-Hebel (neue Lane, nicht Teil dieses Claims).

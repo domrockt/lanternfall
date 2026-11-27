@@ -344,6 +344,7 @@ const hitResults = [];
 for (const c of CLASSES.filter((x) => x.hit)) {
   let hits = 0;
   const trials = TRIALS;
+  let warnMaxSum = 0;
   for (let t = 0; t < trials; t++) {
     const trial = await page.evaluate(async ({ c }) => {
       const run = window.__game.scene.getScene("run");
@@ -368,10 +369,13 @@ for (const c of CLASSES.filter((x) => x.hit)) {
       return { hp0, hp1: run.hp, warnMax, aliveHazards: run.hazards.active.length };
     }, { c });
     if (trial.hp1 < trial.hp0 - 1e-6) hits++;
+    warnMaxSum += trial.warnMax;
     // I-Frames (0.8 s) und Hazard-Nachlauf abwarten, bevor der nächste Trial startet.
     await page.waitForTimeout(Math.ceil((0.95 + c.linger) * 1000));
   }
-  hitResults.push({ id: c.id, kind: c.kind, effectiveWarn: c.warn, trials, hits, hitRate: hits / trials });
+  // Tatsaechliche (geclampte) Warnzeit mitteln - nicht den Sollwert c.warn melden.
+  const measuredWarn = warnMaxSum / trials;
+  hitResults.push({ id: c.id, kind: c.kind, requestedWarn: c.warn, effectiveWarn: measuredWarn, trials, hits, hitRate: hits / trials });
   console.log(`[hitrate] ${c.id}: ${hits}/${trials}`);
   await topUpCrowd();
 }
