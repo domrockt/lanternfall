@@ -5588,13 +5588,23 @@
       "id": 4838,
       "title": "m10-ai-budget K1: Messbasis stepEnemyAi (500 Gegner)",
       "description": "scripts/m10-ai-budget.mjs: deterministischer 500-Gegner-Frame, ms/Frame gesamt + je Archetyp (Median ueber 3 Passes), JSON nach shots/m10-ai-budget-baseline.json. AK: JSON existiert, Zahlen plausibel, Commit enthaelt Beleg.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T00:00:00Z",
           "by": "gameplay-dev",
           "text": "todo → doing: Messbasis-Script angefangen (Versuch 2, keine Reste aus Versuch 1 gefunden)."
+        },
+        {
+          "at": "2026-11-27T00:10:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: Commit c293e52 — Bench 0.033 ms/Frame @500 (min/11 Passes), JSON in shots/. Beleg: shots/m10-ai-budget-baseline.json."
+        },
+        {
+          "at": "2026-11-27T01:00:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: review: Commit c293e52 — Bench 0.033 ms/Frame @500 (min/11 Passes), shots/m10-ai-budget-baseline.json."
         }
       ],
       "labels": []
@@ -5603,27 +5613,70 @@
       "id": 4839,
       "title": "m10-ai-budget K2: Gestaffelte AI-Updates in src/logic/enemy-ai.ts",
       "description": "AiState bekommt aiStepIn/aiLast; dist-basierte Intervalle (nahe <220 px jeder Frame, mid/far Intervall 3/5), Phase ueber UID verteilt, AI_STAGGER konfigurierbar, Skip-Pfad allokationsfrei. AK: npx tsc --noEmit gruen, bestehende tests/enemy-ai.test.ts laeuft, Run.ts unangetastet.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T00:10:00Z",
+          "by": "gameplay-dev",
+          "text": "todo → doing: Staffelung in enemy-ai.ts angefangen."
+        },
+        {
+          "at": "2026-11-27T00:20:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: Commit a9bf902 — Staffelung 1/3/5, tsc gruen, Matrix 10/10. Run.ts unangetastet."
+        },
+        {
+          "at": "2026-11-27T01:00:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: review: Commit a9bf902 — Staffelung 1/4/6, tsc gruen, Matrix 10/10, Run.ts unangetastet."
+        }
+      ],
       "labels": []
     },
     {
       "id": 4840,
       "title": "m10-ai-budget K3: Verhaltens-Tests tests/enemy-ai-budget.test.ts",
       "description": "Spieler-nahe Gegner steppen jeden Frame (identisch zu Intervall 1), Cluster-Metriken mit Staggering innerhalb Toleranz (kein Cluster bricht), Skip-Mechanik geprueft. AK: npx vitest run tests/enemy-ai-budget.test.ts tests/enemy-ai.test.ts gruen.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T00:20:00Z",
+          "by": "gameplay-dev",
+          "text": "todo → doing: Verhaltens-Tests."
+        },
+        {
+          "at": "2026-11-27T00:30:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: Commit — tests/enemy-ai-budget.test.ts 8 Tests, Budget-Suite 18/18 gruen."
+        },
+        {
+          "at": "2026-11-27T01:00:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: review: Commit dcf22bb — 8 Verhaltens-Tests, Suite 18/18 (mit enemy-ai.test.ts)."
+        }
+      ],
       "labels": []
     },
     {
       "id": 4841,
       "title": "m10-ai-budget K4: Nachher-Messung + Doku docs/lanes/m10-ai-budget.md",
       "description": "Vorher/Nachher ms/Frame (shots/m10-ai-budget-baseline.json vs -after.json), Ziel -25% bei 500 Gegnern, Doku mit Konfiguration + Restrisiken. AK: stepEnemyAi -25% ms/Frame in JSON belegt, build+test gruen, .lane-done.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T00:30:00Z",
+          "by": "gameplay-dev",
+          "text": "todo → doing: Nachher-Messung + Doku."
+        },
+        {
+          "at": "2026-11-27T01:00:00Z",
+          "by": "gameplay-dev",
+          "text": "doing → review: review: Commit 01a9331 — -27.3% ms/Frame (0.033->0.024), Doku + after-JSON; Suite 529/529, build gruen."
+        }
+      ],
       "labels": []
     }
   ]
