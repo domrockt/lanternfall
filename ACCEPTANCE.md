@@ -47,7 +47,8 @@ Tests +47,5 % (204→301); Burst 640×60,7/59,3 → 46,3 (**−22…−24 %**); 
 **Ergebnis Versuch 2: nicht abgenommen**, einziger Blocker bleibt die FPS-Latte.
 Die Fix-Lanes `m10-endgame-fps` (Baseline 3× Burst 60,1; M25 56,7/55,1/53,8),
 `m10-separation-crowd`, `m10-ground-cost` sind **noch nicht in main**; nach Merge neu messen.
-Offene, ehrlich benannte Punkte: Heap +12,2 % (kein Leak, #1008), Art-Restpunkte
+Historisch benannte Punkte (Stand Versuch 2): Heap +12,2 % (kein Leak, #1008;
+nach `796fbaa` erledigt — siehe A5), Art-Restpunkte
 (Halo-Überstrahlung, #320–#322), nicht geprüft: echte Geräte. Details/Befehle:
 `docs/qa/final-2026-11-27.md`.
 
@@ -96,8 +97,10 @@ in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
   9.938 Kills, Level 49, 4 Evolutionen; **Sieg: `victory=true`, `resultReason=dawn`**
   (Morgendämmerung echt ausgelöst, kein Debug-Sprung).
 - FPS min **57,2** / Median 60,3 (7181 Samples); **0 JS-Fehler**.
-- Heap Minute 1 → 29: 27,9 → 32,3 MB **+15,8 %** (Ziel 15 %, 0,8 pp darüber;
-  nur dieser Gate macht `passed=false`; CDP-Diagnose 11,3 → 16,2 MB).
+- Heap Minute 1 → 29 (historisch, Lauf vor `796fbaa`): 27,9 → 32,3 MB **+15,8 %**
+  (Ziel 15 %, 0,8 pp darüber; nur dieser Gate machte `passed=false`; CDP-Diagnose 11,3 → 16,2 MB).
+- Nach `796fbaa`: 2×30 min **+6,8 %/+4,9 %** (≤15 %), Burst 60,1 FPS, 0 JS-Fehler,
+  Beleg `shots/m10-heap-tail-after.json` (Burst: `shots/m10-heap-tail-perf.json`).
 - Belege: `shots/realtime-30min.json`, `shots/realtime-results.png`,
   Minuten-Shots `shots/realtime-minute-5/10/15/20/25/30.png`.
 - GIF-Ausschnitt: `shots/final-trailer.gif` (Morgendämmerungs-Station A6).
@@ -114,9 +117,12 @@ in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
 | balance Boss-Dauern | 23–51 s (Ziel 20–60 s) im Nachlauf `6/6`; alter A5-Wert 23–54 s | `shots/m10-balance-kael-final.json`, `shots/balance-main.json` |
 | Tests | **204/204** grün in 14 Testdateien (Beleg: `npm test`-Lauf 2026-11-26 23:58Z auf `4c04404`; Lane-Nachlauf `bb4214a`) | `npm test` |
 
-**Heap (kein A5-Kriterium, offener Punkt):** Team-Finallauf +22,2 % (25,7 → 31,4 MB),
-Lead-Nachlauf +18,7 % (25,7 → 30,5 MB), beide über dem 15-%-Ziel; CDP-Diagnose flach,
-kein JS-Objekt-Leak (Host-Last/GC-Streuung).
+**Heap (kein A5-Kriterium): erledigt durch `796fbaa`/`f176f10`.** Historisch: Team-Finallauf
++22,2 % (25,7 → 31,4 MB), Lead-Nachlauf +18,7 % (25,7 → 30,5 MB), beide über dem 15-%-Ziel;
+CDP-Diagnose flach, kein JS-Objekt-Leak (Host-Last/GC-Streuung). Auf dem gemergten Stand:
+2×30 min **+6,8 %/+4,9 %** (≤15 %), Burst 60,1 FPS, 0 JS-Fehler, Beleg
+`shots/m10-heap-tail-after.json`. Das Gate bleibt grob, weil die Baseline über 3 Läufe
+`[10,7, −22, 4,6] %` streute (Spread 1464 %).
 
 ## A6 — Abschluss-Material
 
@@ -204,11 +210,11 @@ Nachträge, Restmängel).
 - Balance: Kael/Seed 101 Level 47 ist **widerlegt** (8 Repro-Läufe: Level 28; Ursache Gem-Sammelquote 28,4 % bei M8-Dichte, `shots/m10-balance-kael-repro.json`/`-xp-budget.json`); Ist nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: **6/6 im Korridor 25–40** (Level 27–30, Boss 20–60 s, kein Tod vor Minute 15, `shots/m10-balance-kael-final.json`); formale Kriteriumsänderung offen (Frage an Dom 23:35).
 - Boss-Inszenierung: Knochenfürst spawnt am oberen Rand hinter der HP-Leiste
   (art-director-Restpunkt; keine Abnahme-Blockade).
-- fullrun-Heap in diesem Lauf +18,7 % (25,7 → 30,5 MB) über dem 15-%-Ziel;
-  CDP-Diagnose 12,5 → 13,4 MB, kein JS-Objekt-Leak, Host-Last/GC-Streuung.
+- Heap: historisch fullrun +18,7 % (25,7 → 30,5 MB) und Realtime +15,8 % über dem
+  15-%-Ziel (CDP-Diagnose 12,5 → 13,4 MB, kein JS-Objekt-Leak, Host-Last/GC-Streuung);
+  **erledigt** durch `796fbaa`/`f176f10` — gemergter Stand 2×30 min **+6,8 %/+4,9 %**,
+  0 JS-Fehler (`shots/m10-heap-tail-after.json`).
 - VFX-Minimal-LOD ist bewusst stark gedämpft (Alpha 0,5/NORMAL); Glows flacher.
-- Realtime-Heap +15,8 % und fullrun-Heap +18,7 % über dem 15-%-Ziel
-  (nur Heap-Gate; Spiel, FPS und JS-Fehler sind grün).
 - Trailer-Segment 7 (Endboss) lief erst im 2. Versuch (141,6 s, Timeout 180 s);
   #79 ist deshalb blocked, die Belege kamen über #82.
 - Menüs ohne Gamepad, Meta ohne Gold/Shop.
