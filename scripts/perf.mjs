@@ -17,6 +17,7 @@ const viewportArg = String(argOf("viewport", "960x540")).split("x").map(Number);
 const VIEWPORT = { width: viewportArg[0] || 960, height: viewportArg[1] || 540 };
 const DPR = Number(argOf("dpr", "1")) || 1;
 const TAG = String(argOf("tag", ""));
+const OUT = String(argOf("out", `shots/perf-m3${TAG}.json`));
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -153,6 +154,6 @@ try {
   server.stop();
 }
 
-if (result) writeFileSync(`shots/perf-m3${TAG}.json`, JSON.stringify(result, null, 2));
+if (result) writeFileSync(OUT, JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result, null, 2));
 process.exit(result && result.passed ? 0 : 1);
