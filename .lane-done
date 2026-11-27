@@ -1,0 +1,10 @@
+Lane m10-levelup-offers — Level-Up-Angebote korrekt und vollständig (Versuch 2)
+4 Karten abgeschlossen und committet:
+01 Audit (d6eaba5): 150 Aufrufe (30 Seeds x 5 Builds), 0 Duplikate, 0 unowned upgrades, 0 Evolution-Angebote (60x fehlend).
+02 Tests zuerst (cffafa6): tests/levelup-offers.test.ts, RED 4 failed/5 passed vor Fix.
+03 Fix (2e113f9): Evolution im Level-Up, max 1, nur Basiswaffe Stufe 8 + passendes Powerup >=1; Truhen unveraendert.
+04 Beleg + Abnahme (23f4de4 + dieser Commit): In-Game-Shots m10-levelup-evolution-offer/-after-evolution.
+Messwerte (2026-11-27): verify-menus PASS 15/15 (0 JS-Fehler, Harness-Klickmapping auf M8-480x360 gefixt),
+build gruen, vitest 201 Tests / 13 Dateien gruen.
+Audit nachher: 0 fehlende Evolutionen, 60 Evo-Angebote/150 Aufrufe, 0 Aufrufe mit >1 Evolution.
+Offener Punkt: Fix an scripts/verify-menus.mjs per .dispatch/requests.md beantragt (Datei ausserhalb Claim-Liste).
