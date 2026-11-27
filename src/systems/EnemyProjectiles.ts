@@ -76,13 +76,16 @@ const TELEGRAPH_POOL_CAP = 96;
  */
 const HD_PREFIX = "enemy_shot_hd_";
 const HD_GRIDS: Record<string, string[]> = {
-  // 3 Grüntöne (31 nur als 1-px Lichtkante oben-links) → hebt sich vom Moorgras ab.
-  spit: ["...000...", "..0vv0...", ".0vvuuv0.", "0vuuuuuv0", "0uuuuuuu0", "0uuuuuut0", ".0uuuutt0", "..0uuut0.", "...000..."],
-  bone: ["..00000..", ".0bb0bb0.", "0dab0bad0", ".0bb0bb0.", "..00000.."],
+  // 3 Grüntöne (31 nur als 1-px Lichtkante oben-links) + 1-px Tropfen-Tail unten:
+  // eigene Silhouette zu fire, unteres Randstück aufgehellt (kein 29 mehr an der Kante).
+  spit: ["...000...", "..0vv0...", ".0vvuuv0.", "0vuuuuuv0", "0uuuuuuu0", "0uuuuuuv0", ".0uuuuvv0", "..0uuuv0.", "...0u0...", "....t...."],
+  // 9x7 Knochenpaar, asymmetrischer 1-px-Lichtpunkt (13 nur oben-links), 3 Stufen.
+  bone: [".00...00.", "0db0.0bb0", "0baa0bbb0", ".0baaab0.", "0baa0baa0", "0ba0.0ba0", ".00...00."],
   // Offener Halo (Lücke rechts) statt runder Kugel: Form-IoU < 0,7 zu spit.
-  shadow: ["...000...", "..09990..", ".0990.90.", "0990...90", "0880.....", "0880.....", ".0880....", "..08880..", "...000..."],
-  // Warme 3-Stufen-Flamme (19/20/22, Basis 16), kein unkonturierter Einzelpixel.
-  fire: ["....0....", "...0j0...", "..0jjk0..", ".0jkkkj0.", "0jkmmmkj0", "0jkkkkkj0", ".0jgggj0.", "..0jggj0.", "...000..."],
+  // Unterer Bogen mit dritter Stufe (5 blueGrey); rechte Nase als sauberer C-Mund.
+  shadow: ["...000...", "..09990..", ".0990..90", "0990...90", "0550.....", "0550.....", ".0550....", "..08880..", "...000..."],
+  // Warme 3-Stufen-Flamme (19/20/22, Basis 17 emberOrange statt 16), kein Einzelpixel.
+  fire: ["....0....", "...0j0...", "...0j0...", "..0jk0...", "..0jk0...", ".0jkmmk0.", ".0jkmmk0.", "0jjkkkkj0", "0jjhhhkj0", ".0jhhhj0.", "..0jhhj0.", "...000..."],
 };
 
 function addHdShotTexture(scene: Phaser.Scene, family: string, rows: readonly string[]): void {

@@ -1,0 +1,43 @@
+{
+  "url": "http://127.0.0.1:5628/?debug=1",
+  "scene": "run",
+  "commands": [
+    {
+      "call": "god",
+      "args": [
+        true
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "toad",
+        125
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "witchling",
+        125
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "lich",
+        125
+      ]
+    },
+    {
+      "call": "spawnEnemy",
+      "args": [
+        "horror",
+        125
+      ]
+    }
+  ],
+  "out": "shots/m10-enemy-shots-density.png",
+  "gif": "shots/m10-enemy-shots-density.gif",
+  "jsErrors": []
+}

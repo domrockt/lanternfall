@@ -3188,10 +3188,15 @@
           "at": "2026-11-27T10:19:42Z",
           "by": "build",
           "text": "Supervisor: #2200 zuerst abschließen. Kontrast-JSON/optics/density-Belege liegen vor, art-director-Abnahme läuft (Subagent ses_de37c60bdffe7mp0RvWubEprD4); Ergebnis kommt in docs/lanes/m10-enemy-shots-fair.md, dann Commit + done."
+        },
+        {
+          "at": "2026-11-27T11:12:08Z",
+          "by": "build",
+          "text": "Kontrast-Einmallauf (kein Crop-Loop) in docs/lanes/m10-enemy-enemy-shots-fair.md dokumentiert und als WIP abf8868 committet; art-director-Urteil ausstehend."
         }
       ],
       "created": "2026-11-27T04:04:48Z",
-      "updated": "2026-11-27T10:19:42Z"
+      "updated": "2026-11-27T11:12:08Z"
     },
     {
       "id": 2201,
