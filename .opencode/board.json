@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2648,
+  "next": 2700,
   "cards": [
     {
       "id": 1,
@@ -3907,6 +3907,26 @@
       ],
       "created": "2026-11-27T09:04:13Z",
       "updated": "2026-11-27T09:05:10Z"
+    },
+    {
+      "id": 2698,
+      "title": "[fa-03] Board + ACCEPTANCE: Hygiene und Kopf auf Ist-Stand",
+      "description": "Abnahme: keine abgenommene Karte in backlog/blocked (#79/#82, #13/#14/#16 done), M8/M9-Karten done mit Commit-Bezug; ACCEPTANCE.md-Kopf mit Datum/Commit-SHA/neuen Zahlen/View-Groessen; offene Punkte ehrlich; GAME.md-Status aktualisiert. Beleg: Commit 1fc71e8 #fa-03.",
+      "column": "review",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-27T09:17:15Z",
+      "updated": "2026-11-27T09:17:15Z"
+    },
+    {
+      "id": 2699,
+      "title": "[fa-04] APK-/Release-Stand gegen main-HEAD dokumentiert",
+      "description": "Abnahme: mtime + Commit-SHA des APK und GitHub-Release latest-build (createdAt/size/sha256) gegen main-HEAD; Differenz in Minuten in docs/qa notiert; kein eigener Build/Publish. Beleg: Commit 1242759 #fa-04.",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T09:17:15Z",
+      "updated": "2026-11-27T09:17:15Z"
     }
   ]
 }
