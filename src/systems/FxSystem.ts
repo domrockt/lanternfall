@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { DEPTH } from "../gfx/depth";
-import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, isBossFxKey, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
+import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, isBossFxKey, GlowBudget, mixelFrameKey, mixelLevelFor, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { ambientBudgetFor, lodFor } from "../logic/lod";
 import { RENDER_SCALE } from "../config";
@@ -119,6 +119,13 @@ export interface FxRuntime {
   alphaScaleExempt: boolean;
   /** M10: Sprite belegt gerade einen Glow-Slot (ADD-Blend) des Overdraw-Deckels. */
   glow: boolean;
+  /**
+   * Mixel-Fix (Dom 21:15Z): aktive Bake-Stufe der Effekt-Textur (1 = Level-1-
+   * Key). scaleFrom/scaleTo bleiben die gewuenschte Groesse in Spielpixeln;
+   * gezeichnet wird mit Scale/mixelLevel (<= 1), damit ein Textur-Pixel
+   * hoechstens 1 Spielpixel deckt (keine 6–8-px-Bloecke mehr).
+   */
+  mixelLevel: number;
 }
 
 export interface FxOptions {
@@ -258,7 +265,16 @@ export class FxSystem {
         fx.scaleTo = clamped.scaleTo;
       }
     }
-    sprite.setScale(fx.scaleFrom * fx.aspect, fx.scaleFrom);
+    // Mixel-Fix: Bake-Stufe waehlen, BEVOR skaliert wird. Der Screengroessen-
+    // Deckel oben rechnet bewusst mit der Level-1-Textur und Spielpixel-Scale;
+    // die echte Device-Flaeche ist texW*L * (Scale/L)^2 = texW*Scale^2/L und
+    // bleibt damit UNTER der Deckel-Obergrenze (Stufe L verkleinert um Faktor L).
+    fx.mixelLevel = mixelLevelFor(fx.frames[0], Math.max(Math.abs(fx.scaleFrom), Math.abs(fx.scaleTo)));
+    if (fx.mixelLevel > 1) {
+      fx.frames = fx.frames.map((k) => mixelFrameKey(k, fx.mixelLevel));
+      applyTexture(sprite, fx.frames[0]);
+    }
+    sprite.setScale((fx.scaleFrom * fx.aspect) / fx.mixelLevel, fx.scaleFrom / fx.mixelLevel);
     sprite.setAlpha(fx.alphaFrom);
     sprite.setRotation(fx.rotation);
     sprite.setDepth(opts.depth ?? DEPTH.fxLow);
@@ -482,7 +498,8 @@ export class FxSystem {
       const frame = fx.frames[Math.min(fx.frames.length - 1, Math.floor(t * fx.frames.length))];
       if (frame && currentFrame(fx.sprite) !== frame) applyTexture(fx.sprite, frame);
       fx.sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
-      fx.sprite.setScale(scale * fx.aspect, scale);
+      // Mixel-Fix: Draw-Scale = Spielpixel-Größe / Bake-Stufe (<= 1).
+      fx.sprite.setScale((scale * fx.aspect) / fx.mixelLevel, scale / fx.mixelLevel);
       const alpha = Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t);
       // M10-A4: ausgebrannte ADD-Glows (alpha <= 4 %) kosten volle Fuellrate,
       // sind aber nicht mehr sichtbar -> frueh freigeben statt ausschleichen.
@@ -519,6 +536,7 @@ export class FxSystem {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
       frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
+      mixelLevel: 1,
     };
   }
 
@@ -676,7 +694,15 @@ export class ParticleSystem {
         p.scaleTo = clamped.scaleTo;
       }
     }
-    s.setScale(p.scaleFrom * p.aspect, p.scaleFrom);
+    // Mixel-Fix: Bake-Stufe waehlen, dann mit Scale/Stufe (<= 1) zeichnen.
+    // Deckel oben: Level-1-Dims * Spielpixel-Scale = Deckel-Obergrenze; die
+    // echte Device-Flaeche texW*Scale^2/L bleibt um Faktor L darunter.
+    p.mixelLevel = mixelLevelFor(p.frames[0], Math.max(Math.abs(p.scaleFrom), Math.abs(p.scaleTo)));
+    if (p.mixelLevel > 1) {
+      p.frames = p.frames.map((k) => mixelFrameKey(k, p.mixelLevel));
+      applyTexture(s, p.frames[0]);
+    }
+    s.setScale((p.scaleFrom * p.aspect) / p.mixelLevel, p.scaleFrom / p.mixelLevel);
     s.setAlpha(p.alphaFrom);
     s.setRotation(p.rotation);
     s.setDepth(opts.depth ?? DEPTH.fxLow);
@@ -762,7 +788,8 @@ export class ParticleSystem {
       const frame = p.frames[Math.min(p.frames.length - 1, Math.floor(t * p.frames.length))];
       if (frame && currentFrame(p.sprite) !== frame) applyTexture(p.sprite, frame);
       p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
-      p.sprite.setScale(scale * p.aspect, scale);
+      // Mixel-Fix: Draw-Scale = Spielpixel-Größe / Bake-Stufe (<= 1).
+      p.sprite.setScale((scale * p.aspect) / p.mixelLevel, scale / p.mixelLevel);
       const alpha = Math.max(0, p.alphaFrom + (p.alphaTo - p.alphaFrom) * t);
       // M10-A4: ausgebrannte ADD-Glows frueh freigeben (Fuellrate ohne Sichtbarkeit).
       if (p.glow && alpha <= ADD_GLOW_ALPHA_FLOOR) {
@@ -795,6 +822,7 @@ export class ParticleSystem {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
       frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
+      mixelLevel: 1,
     };
   }
 
