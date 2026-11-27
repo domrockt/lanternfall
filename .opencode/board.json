@@ -6107,27 +6107,43 @@
       "id": 5458,
       "title": "m10-projectile-cull #1: Vorher-Messung Projektil-Budget",
       "description": "AC: scripts/m10-projectile-cull.mjs misst im deterministischen Endgame-Harness (500+ Gegner, 6 Waffen, seed=1) lebende Projektile, Offscreen-Anteil bei mehreren Margins, ms/Frame für Projektill-Update (wrap combat.updateProjectiles) + combat.update + FPS und Treffer-/Schaden-Summen (wrap hitEnemy) und schreibt shots/m10-projectile-cull-before.json. flock nur für FPS-Anteil.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-projectile-cull",
       "notes": [
         {
           "at": "2026-11-27T20:53:56Z",
           "by": "build",
           "text": "todo → doing: Mess-Skript scripts/m10-projectile-cull.mjs wird geschrieben (wrap updateProjectiles/hitEnemy, Offscreen-Zählung über worldView-Margins)."
+        },
+        {
+          "at": "2026-11-27T21:51:45Z",
+          "by": "build",
+          "text": "doing → review: Mess-Skript + before.json committed (M6-m10-projectile-cull #5458 + Cleanup). Vorher: live Ø 29.2 (max 45), off>96px Ø 12.2 (41.7 %), projUpdate 0.017 ms/Frame, 10453 Treffer/606972 Schaden/932 Kills. Determinismus-Harness mit Batch-Wächter verifiziert (A==A2==B bitidentisch). Trefferneutrale Cull-Margin 256px belegt (0 Projektil-Treffer jenseits 256; 96px würde 325 Treffer kosten)."
         }
       ],
       "created": "2026-11-27T20:53:54Z",
-      "updated": "2026-11-27T20:53:56Z"
+      "updated": "2026-11-27T21:51:45Z"
     },
     {
       "id": 5459,
       "title": "m10-projectile-cull #2: Offscreen-Recycle + Update-Skip im ProjectilePool",
       "description": "AC: Logik NUR in src/systems/ProjectilePool.ts (+ src/systems/Pool.ts falls nötig): Recycle von Projektilen weit außerhalb worldView+Margin ohne live Target (kein Boss-/Chested-Pfad betroffen), Sprite-Sichtbarkeitsskip für weit offscreen mit live Target, Reuse-/Recycle-Statistik, kein neues Allozieren bei knappem Pool wo vermeidbar. CombatSystem.ts unberührt. npx tsc --noEmit grün.",
-      "column": "todo",
+      "column": "review",
       "assignee": "m10-projectile-cull",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T21:53:08Z",
+          "by": "build",
+          "text": "todo → doing: Implementiere Offscreen-Recycle + Draw-Skip + Trail-Suppression + Reuse-Statistik in src/systems/ProjectilePool.ts. Margin ableitbar aus #5458: 256px (skaliert mit View-Diagonale) ist trefferneutral, nur ohne Live-Target und nur wegfliegend."
+        },
+        {
+          "at": "2026-11-27T21:55:58Z",
+          "by": "build",
+          "text": "doing → review: Fix committed (3abd3ab): Offscreen-Recycle (Margin 256, skaliert mit Diagonale, nur ohne Live-Target + wegfliegend), Sprite-/Trail-Skip ab 24px, stealCullable statt Allozierung, Reuse-Statistik, Flag lf-proj-cull. tsc + build + 36 Tests grün. Kontrolleure: reviewer + test-auditor an der Reihe."
+        }
+      ],
       "created": "2026-11-27T20:53:54Z",
-      "updated": "2026-11-27T20:53:54Z"
+      "updated": "2026-11-27T21:55:58Z"
     },
     {
       "id": 5460,
