@@ -1,6 +1,6 @@
 {
   "tag": "baseline",
-  "generatedAt": "2026-11-27T20:37:24.757Z",
+  "generatedAt": "2026-11-27T20:44:04.657Z",
   "hordeTarget": 270,
   "views": [
     "640x360@1",
@@ -12,8 +12,7 @@
       "view": "640x360@1",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core",
-        "fx_shock"
+        "fx_boss_core"
       ],
       "bossCrop": {
         "label": "boss",
@@ -22,21 +21,21 @@
         "halfDev": 32,
         "pixels": 4356,
         "lumP05": 0.0022,
-        "lumP95": 0.6892,
-        "lumMean": 0.1307,
-        "spread": 0.687,
-        "nearWhiteMin200Pct": 4.1322,
-        "nearWhiteA7Pct": 1.7447
+        "lumP95": 0.7358,
+        "lumMean": 0.1615,
+        "spread": 0.7336,
+        "nearWhiteMin200Pct": 6.1524,
+        "nearWhiteA7Pct": 3.3287
       },
       "bg": {
-        "spreadMedian": 0.0906,
+        "spreadMedian": 0.1152,
         "spreads": [
-          0.0388,
-          0.0906,
-          0.1321
+          0.0387,
+          0.1152,
+          0.1324
         ]
       },
-      "contrast": 7.5828,
+      "contrast": 6.3681,
       "png": "shots/m10-boss-fx-contrast-baseline-boss0-6403601.png"
     },
     {
@@ -54,17 +53,17 @@
         "pixels": 4356,
         "lumP05": 0.0022,
         "lumP95": 0.7503,
-        "lumMean": 0.1856,
+        "lumMean": 0.1891,
         "spread": 0.7482,
-        "nearWhiteMin200Pct": 7.9201,
-        "nearWhiteA7Pct": 2.3875
+        "nearWhiteMin200Pct": 7.8742,
+        "nearWhiteA7Pct": 2.4105
       },
       "bg": {
         "spreadMedian": 0.1053,
         "spreads": [
           0,
           0.1053,
-          0.321
+          0.3131
         ]
       },
       "contrast": 7.1054,
@@ -75,7 +74,8 @@
       "view": "640x360@1",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core"
+        "fx_boss_core",
+        "fx_shock"
       ],
       "bossCrop": {
         "label": "boss",
@@ -84,21 +84,21 @@
         "halfDev": 32,
         "pixels": 4290,
         "lumP05": 0.0022,
-        "lumP95": 0.7305,
-        "lumMean": 0.169,
-        "spread": 0.7283,
-        "nearWhiteMin200Pct": 5.9207,
-        "nearWhiteA7Pct": 2.9371
+        "lumP95": 0.7073,
+        "lumMean": 0.1575,
+        "spread": 0.7051,
+        "nearWhiteMin200Pct": 5.1049,
+        "nearWhiteA7Pct": 2.5874
       },
       "bg": {
-        "spreadMedian": 0.1128,
+        "spreadMedian": 0.0906,
         "spreads": [
-          0.0383,
-          0.1128,
-          0.1871
+          0.0382,
+          0.0906,
+          0.1904
         ]
       },
-      "contrast": 6.4566,
+      "contrast": 7.7826,
       "png": "shots/m10-boss-fx-contrast-baseline-boss2-6403601.png"
     },
     {
@@ -106,30 +106,31 @@
       "view": "640x360@1",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core"
+        "fx_boss_core",
+        "fx_shock"
       ],
       "bossCrop": {
         "label": "boss",
-        "cx": 180,
-        "cy": 215,
+        "cx": 348,
+        "cy": 312,
         "halfDev": 32,
-        "pixels": 4356,
+        "pixels": 4290,
         "lumP05": 0.0022,
-        "lumP95": 0.7314,
-        "lumMean": 0.1749,
-        "spread": 0.7292,
-        "nearWhiteMin200Pct": 6.6116,
-        "nearWhiteA7Pct": 2.0202
+        "lumP95": 0.7388,
+        "lumMean": 0.1773,
+        "spread": 0.7366,
+        "nearWhiteMin200Pct": 4.5688,
+        "nearWhiteA7Pct": 4.8951
       },
       "bg": {
-        "spreadMedian": 0.0875,
+        "spreadMedian": 0.0923,
         "spreads": [
-          0,
-          0.0875,
-          0.5846
+          0.0388,
+          0.0923,
+          0.1938
         ]
       },
-      "contrast": 8.3337,
+      "contrast": 7.9805,
       "png": "shots/m10-boss-fx-contrast-baseline-boss3-6403601.png"
     },
     {
@@ -147,20 +148,20 @@
         "pixels": 4356,
         "lumP05": 0.0022,
         "lumP95": 0.7503,
-        "lumMean": 0.1699,
+        "lumMean": 0.1739,
         "spread": 0.7482,
-        "nearWhiteMin200Pct": 7.8283,
+        "nearWhiteMin200Pct": 7.9201,
         "nearWhiteA7Pct": 2.3416
       },
       "bg": {
-        "spreadMedian": 0.1053,
+        "spreadMedian": 0.0875,
         "spreads": [
           0,
-          0.1053,
-          0.321
+          0.0875,
+          0.2882
         ]
       },
-      "contrast": 7.1054,
+      "contrast": 8.5509,
       "png": "shots/m10-boss-fx-contrast-baseline-boss4-6403601.png"
     },
     {
@@ -178,21 +179,21 @@
         "halfDev": 32,
         "pixels": 4290,
         "lumP05": 0.0022,
-        "lumP95": 0.7068,
-        "lumMean": 0.1319,
-        "spread": 0.7046,
-        "nearWhiteMin200Pct": 5.2448,
-        "nearWhiteA7Pct": 2.704
+        "lumP95": 0.7525,
+        "lumMean": 0.1486,
+        "spread": 0.7503,
+        "nearWhiteMin200Pct": 6.2704,
+        "nearWhiteA7Pct": 3.8928
       },
       "bg": {
         "spreadMedian": 0.1469,
         "spreads": [
-          0.0377,
+          0.0386,
           0.1469,
-          0.1979
+          0.1982
         ]
       },
-      "contrast": 4.7965,
+      "contrast": 5.1076,
       "png": "shots/m10-boss-fx-contrast-baseline-boss5-6403601.png"
     },
     {
@@ -200,30 +201,31 @@
       "view": "780x360@3",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core"
+        "fx_boss_core",
+        "fx_shock"
       ],
       "bossCrop": {
         "label": "boss",
-        "cx": 751,
-        "cy": 645,
+        "cx": 1253,
+        "cy": 964,
         "halfDev": 96,
         "pixels": 37636,
         "lumP05": 0.0022,
-        "lumP95": 0.7503,
-        "lumMean": 0.1696,
-        "spread": 0.7482,
-        "nearWhiteMin200Pct": 7.9392,
-        "nearWhiteA7Pct": 2.2957
+        "lumP95": 0.684,
+        "lumMean": 0.1341,
+        "spread": 0.6819,
+        "nearWhiteMin200Pct": 4.0493,
+        "nearWhiteA7Pct": 1.8413
       },
       "bg": {
-        "spreadMedian": 0.0545,
+        "spreadMedian": 0.09,
         "spreads": [
-          0.01,
-          0.0545,
-          0.3124
+          0.0382,
+          0.09,
+          0.1328
         ]
       },
-      "contrast": 13.7284,
+      "contrast": 7.5767,
       "png": "shots/m10-boss-fx-contrast-baseline-boss0-7803603.png"
     },
     {
@@ -231,7 +233,8 @@
       "view": "780x360@3",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core"
+        "fx_boss_core",
+        "fx_shock"
       ],
       "bossCrop": {
         "label": "boss",
@@ -240,21 +243,21 @@
         "halfDev": 96,
         "pixels": 37442,
         "lumP05": 0.0022,
-        "lumP95": 0.7215,
-        "lumMean": 0.1567,
-        "spread": 0.7193,
-        "nearWhiteMin200Pct": 5.5446,
-        "nearWhiteA7Pct": 2.1633
+        "lumP95": 0.7534,
+        "lumMean": 0.172,
+        "spread": 0.7512,
+        "nearWhiteMin200Pct": 6.5621,
+        "nearWhiteA7Pct": 3.7498
       },
       "bg": {
-        "spreadMedian": 0.1147,
+        "spreadMedian": 0.1346,
         "spreads": [
-          0.0376,
-          0.1147,
-          0.1782
+          0.0388,
+          0.1346,
+          0.172
         ]
       },
-      "contrast": 6.2711,
+      "contrast": 5.581,
       "png": "shots/m10-boss-fx-contrast-baseline-boss1-7803603.png"
     },
     {
@@ -262,8 +265,38 @@
       "view": "780x360@3",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core",
-        "fx_shock"
+        "fx_boss_core"
+      ],
+      "bossCrop": {
+        "label": "boss",
+        "cx": 1253,
+        "cy": 948,
+        "halfDev": 96,
+        "pixels": 37442,
+        "lumP05": 0.0022,
+        "lumP95": 0.7146,
+        "lumMean": 0.1648,
+        "spread": 0.7124,
+        "nearWhiteMin200Pct": 5.4484,
+        "nearWhiteA7Pct": 2.2114
+      },
+      "bg": {
+        "spreadMedian": 0.1114,
+        "spreads": [
+          0.0383,
+          0.1114,
+          0.1897
+        ]
+      },
+      "contrast": 6.395,
+      "png": "shots/m10-boss-fx-contrast-baseline-boss2-7803603.png"
+    },
+    {
+      "boss": 3,
+      "view": "780x360@3",
+      "enemies": 284,
+      "fxKeys": [
+        "fx_boss_core"
       ],
       "bossCrop": {
         "label": "boss",
@@ -272,53 +305,21 @@
         "halfDev": 96,
         "pixels": 37636,
         "lumP05": 0.0022,
-        "lumP95": 0.6975,
-        "lumMean": 0.169,
-        "spread": 0.6953,
-        "nearWhiteMin200Pct": 4.416,
-        "nearWhiteA7Pct": 1.4747
+        "lumP95": 0.7487,
+        "lumMean": 0.1936,
+        "spread": 0.7465,
+        "nearWhiteMin200Pct": 7.732,
+        "nearWhiteA7Pct": 2.3196
       },
       "bg": {
-        "spreadMedian": 0.1039,
+        "spreadMedian": 0.0545,
         "spreads": [
-          0.0002,
-          0.1039,
-          0.3634
+          0.01,
+          0.0545,
+          0.3164
         ]
       },
-      "contrast": 6.692,
-      "png": "shots/m10-boss-fx-contrast-baseline-boss2-7803603.png"
-    },
-    {
-      "boss": 3,
-      "view": "780x360@3",
-      "enemies": 284,
-      "fxKeys": [
-        "fx_boss_core",
-        "fx_shock"
-      ],
-      "bossCrop": {
-        "label": "boss",
-        "cx": 1253,
-        "cy": 936,
-        "halfDev": 96,
-        "pixels": 37442,
-        "lumP05": 0.0022,
-        "lumP95": 0.7463,
-        "lumMean": 0.1726,
-        "spread": 0.7441,
-        "nearWhiteMin200Pct": 4.495,
-        "nearWhiteA7Pct": 5.3603
-      },
-      "bg": {
-        "spreadMedian": 0.0923,
-        "spreads": [
-          0.0389,
-          0.0923,
-          0.1972
-        ]
-      },
-      "contrast": 8.0618,
+      "contrast": 13.6972,
       "png": "shots/m10-boss-fx-contrast-baseline-boss3-7803603.png"
     },
     {
@@ -336,21 +337,21 @@
         "halfDev": 96,
         "pixels": 37442,
         "lumP05": 0.0022,
-        "lumP95": 0.7119,
-        "lumMean": 0.1493,
-        "spread": 0.7098,
-        "nearWhiteMin200Pct": 5.809,
-        "nearWhiteA7Pct": 2.9726
+        "lumP95": 0.7314,
+        "lumMean": 0.151,
+        "spread": 0.7292,
+        "nearWhiteMin200Pct": 6.6022,
+        "nearWhiteA7Pct": 3.8139
       },
       "bg": {
         "spreadMedian": 0.1469,
         "spreads": [
-          0.0388,
+          0.0377,
           0.1469,
-          0.2083
+          0.2089
         ]
       },
-      "contrast": 4.8319,
+      "contrast": 4.9639,
       "png": "shots/m10-boss-fx-contrast-baseline-boss4-7803603.png"
     },
     {
@@ -358,8 +359,7 @@
       "view": "780x360@3",
       "enemies": 284,
       "fxKeys": [
-        "fx_boss_core",
-        "fx_shock"
+        "fx_boss_core"
       ],
       "bossCrop": {
         "label": "boss",
@@ -368,21 +368,21 @@
         "halfDev": 96,
         "pixels": 37442,
         "lumP05": 0.0022,
-        "lumP95": 0.7744,
-        "lumMean": 0.1596,
-        "spread": 0.7722,
-        "nearWhiteMin200Pct": 7.9243,
-        "nearWhiteA7Pct": 4.9036
+        "lumP95": 0.8001,
+        "lumMean": 0.1804,
+        "spread": 0.7979,
+        "nearWhiteMin200Pct": 9.2143,
+        "nearWhiteA7Pct": 5.2561
       },
       "bg": {
-        "spreadMedian": 0.1469,
+        "spreadMedian": 0.1838,
         "spreads": [
-          0.0388,
-          0.1469,
+          0.0386,
+          0.1838,
           0.2083
         ]
       },
-      "contrast": 5.2566,
+      "contrast": 4.3411,
       "png": "shots/m10-boss-fx-contrast-baseline-boss5-7803603.png"
     }
   ],

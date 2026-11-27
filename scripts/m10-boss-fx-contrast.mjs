@@ -201,14 +201,8 @@ try {
       await page.evaluate((b) => { window.__lf.spawnBoss(b); }, boss);
       await page.waitForFunction(() => {
         const run = window.__game.scene.getScene("run");
-        const fx = run.combat.fx.active.find((f) => f.active && f.frames[0].startsWith("fx_boss_core"));
-        if (!fx) return false;
-        // Kamera muss den FX schon im View haben (Follow-Lerp nach Teleport).
-        const wv = run.cameras.main.worldView;
-        return fx.x > wv.x + 40 && fx.x < wv.x + wv.width - 40 && fx.y > wv.y + 40 && fx.y < wv.y + wv.height - 40;
+        return run.combat.fx.active.some((f) => f.active && f.frames[0].startsWith("fx_boss_core"));
       }, { timeout: 5000 });
-      // In die FX-Mitte warten (Peak: Scale ~1,5-1,8, Alpha noch hoch), dann einfrieren.
-      await page.waitForTimeout(280);
 
       const info = await page.evaluate(() => {
         const run = window.__game.scene.getScene("run");
