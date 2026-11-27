@@ -12,7 +12,7 @@ vi.mock("../src/gfx/atlas", () => {
     const o: Record<string, unknown> = {};
     for (const k of [
       "setScale", "setVisible", "setActive", "setAlpha", "clearTint", "setDepth",
-      "setPosition", "setOrigin", "setBlendMode", "setTexture",
+      "setPosition", "setOrigin", "setBlendMode", "setTexture", "setTint",
     ]) o[k] = () => o;
     return o;
   };
@@ -36,7 +36,7 @@ function fakeScene() {
     const o: Record<string, unknown> = {};
     for (const k of [
       "setScale", "setVisible", "setActive", "setAlpha", "clearTint", "setDepth",
-      "setPosition", "setOrigin", "setBlendMode", "setTexture",
+      "setPosition", "setOrigin", "setBlendMode", "setTexture", "setTint",
     ]) o[k] = () => o;
     return o;
   };
