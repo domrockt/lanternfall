@@ -3269,16 +3269,21 @@
           "at": "2026-11-27T04:21:18Z",
           "by": "merge",
           "text": "Merge Lane m10-enemy-ai: als #2226 neu angelegt (lane #1761)."
+        },
+        {
+          "at": "2026-11-27T04:35:25Z",
+          "by": "build",
+          "text": "Merge m10-enemy-ai: Matrix-nachher-Arbeit liegt in der Lane (39e0d69), aber kein Commit nennt #2226 – bleibt todo/review-Kandidat bis ein Commit #2226 nennt."
         }
       ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T00:55:35Z"
+      "updated": "2026-11-27T04:35:25Z"
     },
     {
       "id": 2227,
       "title": "m10-enemy-ai #5 In-Game-Beleg",
       "description": "lane #1762: 5-min-Lauf @ timeScale 10 mit >=100 Gegnern, Screenshot shots/m10-enemy-ai-mass.png, FPS-Minimum >=55 (flock), npm run build grün, .lane-done. Abnahme: Shot zeigt >=100 Gegner, FPS-Beleg im Log, .lane-done committed.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
@@ -3290,10 +3295,15 @@
           "at": "2026-11-27T04:21:18Z",
           "by": "merge",
           "text": "Merge Lane m10-enemy-ai: als #2227 neu angelegt (lane #1762)."
+        },
+        {
+          "at": "2026-11-27T04:34:48Z",
+          "by": "build",
+          "text": "doing → review: Merge m10-enemy-ai: In-Game-Beleg vorhanden (732678c, nachgemessen 972c3bc: 169 Gegner, FPS-Min 59,3, 0 JS-Fehler) – wartet auf Kontrolleur-PASS."
         }
       ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T03:00:30Z"
+      "updated": "2026-11-27T04:34:48Z"
     }
   ]
 }
