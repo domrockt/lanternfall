@@ -44,8 +44,31 @@ plus `src/logic/lod.ts`.
 
 ## 3. Nachher-Messung
 
-(wird nach dem Fix ergänzt)
+Je 3 Läufe, 10-s-Fenster, gleiche Bedingungen wie Vorher (`scripts/m10-ambient-batching.mjs`,
+Fix-Commit `6ca654d`, auf PIN `49727faa` erneut verifiziert 2026-11-27, siehe
+`docs/qa/reacceptance-b-2026-11-27.md` K2d). Median (nicht bester Lauf):
+
+| Viewport / dpr | Lauf 1 Burst / M25 | Lauf 2 | Lauf 3 | **Median Burst** | **Median M25** |
+|---|---|---|---|---|---|
+| 640x360 @1 | 60,1 / 57,0 | 60,1 / 56,3 | 57,2 / 52,3 | **60,1** | **56,3** |
+| 780x360 @3 | 57,7 / 41,2 | 59,0 / 44,8 | 58,3 / 45,5 | **58,3** | **44,8** |
+
+Belege: `shots/m10-ambient-after-640-{1..3}.json`, `shots/m10-ambient-after-780-{1..3}.json`.
+0 JS-Fehler in allen 6 Läufen; 640 M25 Läufe 1–2 `passed:true`.
+
+**Befund:** 640x360 Minute 25 ist von Median **54,0 → 56,3** gestiegen und damit über dem
+Ziel 55 (PASS). 780x360@3 liegt mit 44,8 praktisch unverändert an der fill-rate-Grenze
+(vorher 45,1; intern rendert 780x360@3 mit voller 780er-Breite) — kein Rückschritt, aber
+der Fix adressiert primär die 640er-Schwelle. Burst in beiden Views ≥ 55 (Medians 60,1 / 58,3).
 
 ## 4. Abnahme
 
-(wird nach dem Fix ergänzt)
+- `npx tsc --noEmit` grün; `npm run build` grün; `npm test` grün (auf PIN `49727faa`:
+  446/446 in 42 Dateien, inkl. `tests/ambient-batching.test.ts`).
+- Ziel „640x360 Minute 25 ≥ 55“: **PASS** (Median 56,3, Belege
+  `shots/m10-ambient-after-640-{1..3}.json`).
+- 780x360@3 Minute 25: weiterhin an der fill-rate-Grenze (Median 44,8 < 55) — bekannter
+  offener Punkt, kein Bestandteil dieser Lane; keine Regression gegen Vorher (45,1).
+- Unit-Test fixiert Budget-Stufen und Batch-Zahl (`tests/ambient-batching.test.ts`).
+- Nachabnahme-Beleg: `docs/qa/reacceptance-b-2026-11-27.md`, Abschnitt K2d.
+
