@@ -39,7 +39,9 @@ export function advanceSpawnBudget(
  * `advanceSpawnBudget` einen großen Spawn-Rückstau aufbauen; ohne Deckel würde
  * der ganze Rückstau in einem Frame gespawnt (Bursts von 40+ Spawns) und die
  * Frame-Zeit-Spitze weiter verstärken. Verzögerte Spawns werden über das
- * Restbudget nachgeholt — Gesamtanzahl und Mischung bleiben unverändert.
+ * Restbudget nachgeholt — Gesamtanzahl bleibt exakt erhalten; die Mischung
+ * bleibt näherungsweise erhalten (kreuzt die Nachholphase eine Minuten-Grenze,
+ * werden verzögerte Spawns mit der Mischung des neuen Abschnitts neu gewählt).
  */
 export const SPAWN_FRAME_BUDGET = 8;
 

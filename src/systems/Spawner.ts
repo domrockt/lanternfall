@@ -29,7 +29,8 @@ export class Spawner {
   // M10: Spawn-Burst-Glaettung. Pro echtem Frame duerfen maximal
   // SPAWN_FRAME_BUDGET Director-Spawns materialisiert werden; ueberschuessige
   // Spawns kehren ins Restbudget zurueck und werden in spaeteren Frames
-  // nachgeholt (Summe/Mischung unveraendert). Siehe logic/waves.ts.
+  // nachgeholt (Summe exakt erhalten, Mischung naeherungsweise — siehe
+  // logic/waves.ts). Spezialwellen/Boss-Spawns laufen nicht durch den Deckel.
   private lastSpawnFrame = -1;
   private spawnAllowance = SPAWN_FRAME_BUDGET;
   private readonly pool: EnemyPool;
