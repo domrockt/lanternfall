@@ -1,0 +1,9 @@
+m10-atlas-gaps — Runtime-Atlas vollständig & pixelgenau (K1–K5 committet)
+
+- Audit: 227/227 erwartete Frame-Keys im Atlas = 100 % Coverage; 3 heisse Klassen (flail_ball, chain_link, puddle_poison) neu aufgenommen.
+- Gutter: min. 4 px (2 px Gutter horizontal+vertikal + 2×1 px transparentes Padding pro Zelle); 0 Verstösse (vorher 358).
+- Bleed: 0 Fälle im 2-px-Ring (vorher 131); 131 Frames mit opakem Randpixel sind durch das Padding abgesichert.
+- Atlas: runtime_atlas 1024×387, 227 Frames; Key/API unverändert; packAtlas deterministisch (2×/shuffled identisch).
+- Beleg: shots/m10-atlas-before.png vs. -after.png, Pixel-Diff AE=0 (RMSE 0); Draw-Calls/Frame 2.0 -> 1.0 (72 Frames, WebGL), 0 JS-Fehler.
+- Tests: npx vitest run tests/atlas.test.ts 7/7 grün; npm test 211/211 grün; npm run build rc=0.
+- Offene Punkte: keine.
