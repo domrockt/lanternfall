@@ -1,0 +1,9 @@
+Lane m9-art-enemies abgeschlossen (2026-11-27)
+30 Gegner: je 4 echte Lauf-Frames (F0!=F2, F1!=F3), 30/30 eindeutige Silhouetten, 0 Off-Palette.
+Tier 0-1 (#298), Tier 2-3 (#299), Tier 4 + Elite (#300) alle PASS, art-director-Note je 4,5/5.
+Belege: shots/m9-art-enemies-tier0-1..tier4-2.png, 04-contactsheet.png (30x4), 04-mass.png (307 Gegner),
+04-walk.gif (24 Frames, 0 JS-Fehler), 03-ing.png und 04-mass-clean.png.
+Perf (flock): PASS, Burst 60,2 FPS bei 500 Gegnern, Minute 25 56,4 FPS Mittel / 57,4 gemessen.
+Build gruen; Tests auf diesem Branch 175/175 gruen (main nach Merge: 192/17 Dateien erwartet).
+Grenze: Run.ts:1066 zeigt weiter nur F0/F1; 4-Frame-Anzeige repariert Parallel-Lane m9-art-polish.
+Keine Gameplay-/Balance-/Hitbox-/Atlas-Key-Aenderungen. Temp-Junk war bereits entfernt (grep leer).

@@ -1864,11 +1864,17 @@
       "id": 301,
       "title": "m9-art-enemies-04 Abnahme und Dokument",
       "description": "Owner tech-lead, Kontrolle playtester + reviewer. 30er-Kontaktbogen, In-Game-Masse mit 300+ Gegnern, Walk-GIF, 0 JS-Fehler, Gesamturteil art-director >=4.5, flock npm run perf >=55 FPS, build + Tests gruen, .lane-done committen.",
-      "column": "todo",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T02:59:12Z",
+          "by": "build",
+          "text": "todo → done: Abnahme (#301, Commit a77a708): Einzelurteile #298-#300 PASS, art-director-Note 4,5; 30 Keys x 4 Frames, 0 Off-Palette, Masse 307, Walk-GIF 24 Frames, perf 60,2/56,4 FPS, build gruen, 175 Tests gruen (Branch; main nach Merge 192). .lane-done committet."
+        }
+      ],
       "created": "2026-11-26T12:07:53Z",
-      "updated": "2026-11-26T12:07:53Z"
+      "updated": "2026-11-27T02:59:12Z"
     }
   ]
 }

@@ -8,7 +8,7 @@ Bereich: src/gfx/gen-enemies.ts, src/gfx/enemySprites.ts; Generator scripts/art/
 - #298 Tier 0-1 (12 haeufige Gegner): 4 echte Lauf-Frames + Silhouetten. Stand: done.
 - #299 Tier 2-3: 4 Frames + Schattierung. Stand: done (Abnahme PASS, Note 4,5).
 - #300 Tier 4 + Elite: 4 Frames, Lichtkante. Stand: done (Abnahme PASS, Note 4,5).
-- #301 Abnahme: 30er-Bogen, Masse 300+, GIF, perf, .lane-done. Stand: doing.
+- #301 Abnahme: 30er-Bogen, Masse 300+, GIF, perf, .lane-done. Stand: done.
 
 ## #298 Ergebnis 0-1: Belege
 
@@ -96,6 +96,31 @@ src/scenes/Run.ts Zeile 1066 waehlt Gegner-Frames mit Math.min(2, frames.length)
 - art-director-Urteil Tier 4 + Elite: **PASS, Note 4,5** (Silhouetten klar, in Masse
   lesbar, Lichtkante wirksam; Abzug nur fuer sehr aehnliche Centipede-Frames).
 - Build gruen, Tests gruen (siehe #301 Gesamtabnahme).
+
+## #301 Gesamtabnahme
+
+| Karte | Umfang | Urteil | Note |
+|---|---|---|---|
+| #298 | Tier 0-1, 12 Gegner, 4 Lauf-Frames | PASS | 4,5 |
+| #299 | Tier 2-3, 12 Gegner, 4 Lauf-Frames, Bomber neu | PASS | 4,5 |
+| #300 | Tier 4 + Elite, 6 Gegner, Lichtkante, Masse 307 | PASS | 4,5 |
+| #301 | Abnahme, Doku, Belege, .lane-done | PASS | 4,5 |
+
+- **Messzahlen:** 30 Gegner-Keys, je 4 Lauf-Frames (F0 != F2, F1 != F3), 30/30 eindeutige
+  Silhouetten (Masken-Hash), 0 Off-Palette-Pixel, Tier-Verteilung 6/6/6/6/6.
+  Quelle: `~/tmp/m9-art-enemies-3/frames-check.py` gegen `scripts/art/gen_enemies.py`.
+- **In-Game:** Masse `shots/m9-art-enemies-04-mass.png` = 307 Gegner, 0 JS-Fehler, 57,9 FPS;
+  Walk-GIF `shots/m9-art-enemies-04-walk.gif` = 24 Frames, 0 JS-Fehler, zeigt 8 Gegnertypen
+  in Bewegung. Kontaktbogen `shots/m9-art-enemies-04-contactsheet.png` (30 x 4 Frames).
+- **Performance (flock):** `npm run perf` PASS — Burst 60,2 FPS bei 500 Gegnern,
+  Minute 25: 56,4 FPS Mittel / 57,4 gemessen bei 300 Gegnern, 0 JS-Fehler.
+- **Build/Tests:** `npm run build` gruen; `npx vitest run` 175/175 gruen auf diesem
+  Lane-Branch (10 Testdateien). Nach dem Merge mit main sind dort 192 Tests (17 Dateien)
+  erwartet; die Lane hat keine Tests geloescht, sondern basiert auf einem aelteren main-Stand.
+- **Grenzen:** `src/scenes/Run.ts:1066` zeigt weiter nur F0/F1 (`Math.min(2, frames.length)`);
+  die 4-Frame-Anzeige wird von der Parallel-Lane `m9-art-polish` repariert. Diese Lane hat
+  Run.ts bewusst nicht angefasst. Elite-Aura-Code unveraendert, keine Hitbox-/Balance-Aenderungen.
+- **Gesamturteil art-director fuer den Gegner-Bereich: PASS, Note 4,5/5.**
 
 ## Run-Frame-Hinweis
 
