@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5338,
+  "next": 5341,
   "cards": [
     {
       "id": 1,
@@ -5972,6 +5972,51 @@
         }
       ],
       "created": "2026-11-27T13:30:00Z"
+    },
+    {
+      "id": 5338,
+      "title": "m10-boot-startup K1: Messbasis Startzeit bis Titel (3 Läufe + Texturen)",
+      "description": "scripts/m10-boot-startup.mjs: Zeit bis Titel-Szene sichtbar (3 Läufe, Mittelwert + max), Anzahl erzeugter Texturen bis dahin, JSON nach shots/m10-boot-startup-baseline.json. Kein flock (kein FPS-Langlauf). Abnahme: JSON existiert, 3 Läufe dokumentiert, Skript beendet sich sauber.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:32:21Z",
+          "by": "build",
+          "text": "review → done: lane #4998, Merge 2f7473a"
+        }
+      ],
+      "created": "2026-11-27T20:32:18Z",
+      "updated": "2026-11-27T20:32:21Z"
+    },
+    {
+      "id": 5339,
+      "title": "m10-boot-startup K2: Boot-Pfad verkürzen – nicht-Titel-Texturen lazy/warm nach Titel",
+      "description": "Messung leiten (Textur-Generierung vs. Szene-Setup). Boot.ts: nur Titel-kritische Texturen vor scene.start('title'), Rest (Gegner/Boss/FX/UI) nach dem ersten Titel-Frame warm erzeugen, Atlas danach (Atlas-Key-Vertrag hält: heiße Klassen im Atlas). Keine fehlenden Texturen. Abnahme: tsc grün, Tests grün, keine JS-Fehler im Boot, Titel ohne fehlende Texturen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:32:21Z",
+          "by": "build",
+          "text": "review → done: lane #4999, Merge 2f7473a"
+        }
+      ],
+      "created": "2026-11-27T20:32:18Z",
+      "updated": "2026-11-27T20:32:21Z"
+    },
+    {
+      "id": 5340,
+      "title": "m10-boot-startup K3: Nachher-Messung + Doku docs/lanes/m10-boot-startup.md",
+      "description": "Nachher-JSON (shots/m10-boot-startup-after.json) + Titel-Screenshot shots/m10-boot-startup-after.png, Doku mit Vorher/Nachher-Zahlen, Grenzen (Gerätemessung ARM bleibt Vera-Eskalation, offener Punkt). Abnahme: Ziel -25 % Startzeit ODER Beleg, dass der Pfad bereits minimal ist; Belege im Karten-Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-27T20:32:21Z",
+          "by": "build",
+          "text": "review → done: lane #5000, Merge 2f7473a"
+        }
+      ],
+      "created": "2026-11-27T20:32:18Z",
+      "updated": "2026-11-27T20:32:21Z"
     }
   ]
 }
