@@ -88,12 +88,16 @@ export function bossSpriteRect(centerX: number, centerY: number, index: number):
  * wenn er nach oben zeigt, wird die Vertikale gespiegelt, und nur wenn das
  * nicht reicht, hart auf die sichere Oberkante gesetzt. Keine Balance-Werte.
  */
+export const BOSS_INTRO_ZOOM = 1.14;
+
 export function composedBossCenterY(
   desiredScreenY: number,
   playerScreenY: number,
   index: number,
   viewWidth: number,
   viewHeight: number,
+  camTop = 0,
+  zoom = 1,
 ): number {
   const size = BOSS_SPRITE_SIZE[index] ?? 96;
   const { hpBar, banner } = bossHudRects(viewWidth);
@@ -101,22 +105,30 @@ export function composedBossCenterY(
   let y = desiredScreenY;
   if (y - size / 2 < safeTop) y = playerScreenY + Math.abs(desiredScreenY - playerScreenY);
   if (y - size / 2 < safeTop) y = safeTop + size / 2;
-  const maxY = viewHeight - size / 2 - 8;
-  if (y > maxY) y = maxY;
+  // Intro-Zoom-Puls (1.14) zoomt um die Viewport-Mitte. Die Oberkante wandert
+  // dadurch nach oben; hier gleich so komponieren, dass sie auch im gezoomten
+  // Screen-Raum unter HUD/Banner bleibt. Kein unteres Screen-Clamp: der
+  // Ring-Abstand zum Spieler wird nicht verkuerzt.
+  if (zoom > 1) {
+    const midY = camTop + viewHeight / 2;
+    const projectedTop = (camTop + y - midY) * zoom + viewHeight / 2 - size * zoom / 2;
+    if (projectedTop < safeTop) {
+      y = midY + (safeTop + size * zoom / 2 - viewHeight / 2) / zoom - camTop + 0.01;
+    }
+  }
   return y;
 }
 
-/** Screen-Rechteck des Boss-Sprites inkl. Kamera-Zoom (fuer Banner-Guard). */
+/** Screen-Rechteck des Boss-Sprites; Phaser zoomt um die Viewport-Mitte. */
 export function bossSpriteScreenRect(
-  x: number, y: number, index: number, scrollX: number, scrollY: number, zoom: number,
+  x: number, y: number, index: number,
+  scrollX: number, scrollY: number, zoom: number,
+  viewWidth = 640, viewHeight = 360,
 ): Rect {
   const r = bossSpriteRect(0, 0, index);
-  return {
-    x: (x - r.w / 2 - scrollX) * zoom,
-    y: (y - r.h / 2 - scrollY) * zoom,
-    w: r.w * zoom,
-    h: r.h * zoom,
-  };
+  const sx = (x - (scrollX + viewWidth / 2)) * zoom + viewWidth / 2;
+  const sy = (y - (scrollY + viewHeight / 2)) * zoom + viewHeight / 2;
+  return { x: sx - r.w * zoom / 2, y: sy - r.h * zoom / 2, w: r.w * zoom, h: r.h * zoom };
 }
 // Bosse müssen am Spieler bleiben, sonst kitet der AutoPlay-Bot sie endlos.
 // Grundtempo und Kontaktschaden stehen in src/data/bosses.ts; das Tempo bleibt
@@ -190,6 +202,8 @@ export class BossSystem {
       index,
       this.camera.width,
       this.camera.height,
+      camTop,
+      BOSS_INTRO_ZOOM,
     );
     let y = Phaser.Math.Clamp(camTop + composedScreenY, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
@@ -202,20 +216,6 @@ export class BossSystem {
     enemy.bossPhase = 1;
     enemy.sprite.setDepth(9);
     enemy.aura.setVisible(false);
-    // Nachjustieren auf die tatsaechliche Frame-Hoehe (Atlas-Frame), falls die
-    // Konstante vom geladenen Sprite abweicht. Haelt die 6-px-Luft exakt ein.
-    const { hpBar, banner } = bossHudRects(this.camera.width);
-    const safeTop = Math.max(hpBar.y + hpBar.h, banner.y + banner.h) + BOSS_HUD_CLEARANCE;
-    const actual = bossSpriteScreenRect(
-      enemy.x, enemy.y, index, this.camera.scrollX, this.camera.scrollY, this.camera.zoom,
-    );
-    if (actual.y < safeTop) {
-      const shift = (safeTop - actual.y) / Math.max(0.01, this.camera.zoom);
-      y = Phaser.Math.Clamp(enemy.y + shift, 30, 4096 - 30);
-      enemy.y = y;
-      enemy.sprite.setPosition(Math.round(enemy.x), Math.round(y));
-      enemy.aura.setPosition(Math.round(enemy.x), Math.round(y));
-    }
     this.bosses.push({ enemy, uid: enemy.uid, timer: 1.2, pending: [], phase: 1 });
     this.scene.events.emit("bossWarn", { index, name: boss.name });
     this.camera.shake(260, 0.004);
