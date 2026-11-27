@@ -10,11 +10,167 @@ import { getSettings, changeSetting } from "./audio/settings";
 import { readMeta, writeMeta, emptyMeta } from "./logic/meta";
 
 /**
+ * M10 Android/ARM: WebGL-Kontext, Extensions, MAX_TEXTURE_SIZE und Textur-Inventar
+ * fuer den Debug-Report. Reine Lesefunktion; keine Spielaenderung.
+ */
+export interface RendererInfo {
+  generatedAt: string;
+  context: "webgl2" | "webgl1" | "canvas" | "none";
+  version: string;
+  shadingLanguage: string;
+  renderer: string;
+  vendor: string;
+  maxTextureSize: number;
+  maxTextureImageUnits: number;
+  extensions: string[];
+  contextAttributes: Record<string, unknown>;
+  precision: {
+    fragmentHighp: PrecisionFormat | null;
+    fragmentMediump: PrecisionFormat | null;
+    vertexHighp: PrecisionFormat | null;
+  };
+  fps: { target: number; limit: number; cappedAt60: boolean };
+  powerPreference: string;
+  canvas: {
+    attrWidth: number;
+    attrHeight: number;
+    logicalWidth: number;
+    logicalHeight: number;
+    rendersDevicePixels: boolean;
+  };
+  textures: {
+    count: number;
+    pixels: number;
+    approxBytes: number;
+    maxEdge: number;
+    oversized: string[];
+  };
+}
+
+interface PrecisionFormat { rangeMin: number; rangeMax: number; precision: number }
+
+export function collectRendererInfo(game: Phaser.Game): RendererInfo {
+  const gl = (game.renderer as { gl?: WebGLRenderingContext } | null)?.gl ?? null;
+  let context: RendererInfo["context"] = "none";
+  if (game.renderer?.type === Phaser.CANVAS) context = "canvas";
+  else if (gl) {
+    context = typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext
+      ? "webgl2"
+      : "webgl1";
+  }
+
+  const extensions: string[] = [];
+  let version = "";
+  let shadingLanguage = "";
+  let renderer = "";
+  let vendor = "";
+  let maxTextureSize = 0;
+  let maxTextureImageUnits = 0;
+  let contextAttributes: Record<string, unknown> = {};
+  const precision: RendererInfo["precision"] = {
+    fragmentHighp: null,
+    fragmentMediump: null,
+    vertexHighp: null,
+  };
+  if (gl) {
+    version = String(gl.getParameter(gl.VERSION) ?? "");
+    shadingLanguage = String(gl.getParameter(gl.SHADING_LANGUAGE_VERSION) ?? "");
+    maxTextureSize = Number(gl.getParameter(gl.MAX_TEXTURE_SIZE) ?? 0);
+    maxTextureImageUnits = Number(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS) ?? 0);
+    contextAttributes = { ...(gl.getContextAttributes() ?? {}) };
+    try {
+      for (const ext of gl.getSupportedExtensions() ?? []) extensions.push(ext);
+    } catch { /* Kontext evtl. verloren */ }
+    const debugExt = gl.getExtension("WEBGL_debug_renderer_info");
+    if (debugExt) {
+      renderer = String(gl.getParameter(debugExt.UNMASKED_RENDERER_WEBGL) ?? "");
+      vendor = String(gl.getParameter(debugExt.UNMASKED_VENDOR_WEBGL) ?? "");
+    }
+    const readPrecision = (type: number, shader: number): PrecisionFormat | null => {
+      try {
+        const f = gl.getShaderPrecisionFormat(type, shader);
+        return f ? { rangeMin: f.rangeMin, rangeMax: f.rangeMax, precision: f.precision } : null;
+      } catch {
+        return null;
+      }
+    };
+    precision.fragmentHighp = readPrecision(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+    precision.fragmentMediump = readPrecision(gl.FRAGMENT_SHADER, gl.MEDIUM_FLOAT);
+    precision.vertexHighp = readPrecision(gl.VERTEX_SHADER, gl.HIGH_FLOAT);
+  }
+
+  let pixels = 0;
+  let maxEdge = 0;
+  const oversized: string[] = [];
+  let count = 0;
+  try {
+    for (const key of game.textures.getTextureKeys()) {
+      const tex = game.textures.get(key);
+      const source = tex?.getSourceImage?.();
+      const w = Number(source?.width ?? tex?.source?.[0]?.width ?? 0);
+      const h = Number(source?.height ?? tex?.source?.[0]?.height ?? 0);
+      if (w <= 0 || h <= 0) continue;
+      count++;
+      pixels += w * h;
+      maxEdge = Math.max(maxEdge, w, h);
+      // ARM-Risiko: manche Mali/Adreno zeigen > 2048 px schwarz oder gestaucht.
+      if (w > 2048 || h > 2048) oversized.push(`${key} (${w}x${h})`);
+    }
+  } catch { /* TextureManager noch nicht bereit */ }
+
+  const fpsTarget = Number(game.config.fps?.target ?? 0);
+  const fpsLimit = Number(game.config.fps?.limit ?? 0);
+  const configuredPower = String(
+    (game.config as unknown as { powerPreference?: string }).powerPreference ?? "default",
+  );
+
+  return {
+    generatedAt: new Date().toISOString(),
+    context,
+    version,
+    shadingLanguage,
+    renderer,
+    vendor,
+    maxTextureSize,
+    maxTextureImageUnits,
+    extensions,
+    contextAttributes,
+    precision,
+    fps: { target: fpsTarget, limit: fpsLimit, cappedAt60: fpsTarget === 60 && fpsLimit === 60 },
+    powerPreference: configuredPower,
+    canvas: {
+      attrWidth: game.canvas?.width ?? 0,
+      attrHeight: game.canvas?.height ?? 0,
+      logicalWidth: game.scale?.width ?? 0,
+      logicalHeight: game.scale?.height ?? 0,
+      rendersDevicePixels:
+        (game.canvas?.width ?? 0) !== (game.scale?.width ?? 0) ||
+        (game.canvas?.height ?? 0) !== (game.scale?.height ?? 0),
+    },
+    textures: {
+      count,
+      pixels,
+      approxBytes: pixels * 4,
+      maxEdge,
+      oversized,
+    },
+  };
+}
+
+/**
  * `window.__lf` laut GAME.md. Immer vorhanden; Cheats nur mit `?debug=1`.
  * Funktionen für spätere Meilensteine (Bosse/Truhen) werfen einen klaren Fehler.
  */
 export function installDebugApi(game: Phaser.Game): void {
   const debug = hasFlag("debug");
+
+  const publishRendererInfo = (): RendererInfo => {
+    const info = collectRendererInfo(game);
+    game.registry.set("lf-render-info", info);
+    return info;
+  };
+  if (game.isBooted) publishRendererInfo();
+  else game.events.once(Phaser.Core.Events.READY, publishRendererInfo);
 
   const runScene = (): Run => {
     if (game.scene.isActive("run") || game.scene.isPaused("run")) {
@@ -138,6 +294,12 @@ export function installDebugApi(game: Phaser.Game): void {
     setSuppressLevelUps: (value: boolean) => requireRun().debugSetSuppressLevelUps(Boolean(value)),
     /** M6-Abnahme: Endgame-Effekt-Dämpfung für Vorher/Nachher-Shots schalten. */
     setFxDamping: (value: boolean) => requireRun().setFxDamping(Boolean(value)),
+
+    /** M10 Android: WebGL-Kontext, Extensions, MAX_TEXTURE_SIZE, Textur-Inventar, 60-FPS-Cap. */
+    rendererInfo: (): RendererInfo => {
+      const cached = game.registry.get("lf-render-info") as RendererInfo | undefined;
+      return cached ?? publishRendererInfo();
+    },
 
     /** M5-Audio/Options (immer verfügbar, keine Cheats). */
     audio: () => getAudio().debugState(),

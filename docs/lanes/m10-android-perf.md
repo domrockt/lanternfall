@@ -70,3 +70,37 @@ Rohdaten: `shots/m10-android-audit.json`, Sichtbeleg `shots/m10-android-pixel7-r
   Füllraten sind nicht übertragbar, wohl aber Draw-Call-/Texturwechsel-Zahlen und Texturgrößen.
 - CPU-Throttle 4 simuliert ARM-Mittelklasse nur grob; JS-Startzeit und GC-Verhalten auf
   echtem Gerät bleiben offen (Thermik/WebView-Version).
+
+## K2 — Mobile Konfiguration und Debug-Report (`src/main.ts`, `src/debug.ts`)
+
+Umgesetzt in `src/main.ts`:
+
+- `fps: { target: 60, limit: 60 }` → Phaser-TimeStep begrenzt auf **60 FPS**; verhindert
+  unnötige 90/120-Hz-Frames auf Android (Wärme/Akku, thermische Drosselung).
+- `powerPreference: "high-performance"` als **Top-Level-GameConfig** (Phaser 3.90 liest den
+  Wert dort, nicht unter `render`).
+- Präzision: Phaser-Built-in-Shader (MultiPipeline/FX) sind bereits `mediump`; wir haben keine
+  eigenen Shader. Damit ist „mediump wo Phaser das erlaubt“ erfüllt, ohne Config-Hack.
+  Der Report loggt die tatsächlich verfügbaren `getShaderPrecisionFormat`-Werte.
+
+Debug-Report `window.__lf.rendererInfo()` (Snapshot zusätzlich in Registry `lf-render-info`
+beim `READY`-Event) enthält:
+
+| Feld | Messwert im Pixel-7-Lauf |
+|---|---|
+| `context` | `webgl1` (WebGL 1.0 / OpenGL ES 2.0, SwiftShader-Emulation) |
+| `version` / `shadingLanguage` | `WebGL 1.0 (OpenGL ES 2.0 Chromium)` / GLSL ES 1.0 |
+| `maxTextureSize` | **8192** |
+| `maxTextureImageUnits` | 8 |
+| `extensions` | 35 (u. a. `ANGLE_instanced_arrays`, `OES_element_index_uint`, `WEBGL_compressed_texture_etc/astc`) |
+| `contextAttributes.powerPreference` | **high-performance** (angefordert und vom Kontext übernommen) |
+| `precision.fragmentMediump` / `fragmentHighp` | 10 Bit / 23 Bit Mantisse (mediump reicht für Pixel-Art) |
+| `fps.target / limit / cappedAt60` | 60 / 60 / **true** |
+| `canvas` | 860×360 Attribut = logisch; `rendersDevicePixels: false` |
+| `textures` | 581, maxEdge 1024, `oversized: []` |
+
+Nachweis: `shots/m10-android-audit.json` (`fpsCapActive: true`, `passed: true`, 0 JS-Fehler),
+Titel FPS 60,1 @ Throttle 4, Run mit 298 Gegnern 31,8–45,8 FPS (Host-Streuung, Emulation).
+`tests/mobile-config.test.ts` prüft den statischen Config-Vertrag (fps 60/60,
+high-performance, MAX_TEXTURE_SIZE/Extensions im Report) und die Audit-Helfer (Texturen >2048,
+Vollbild-Alpha/ADD, Perzentile).

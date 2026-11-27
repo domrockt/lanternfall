@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T10:27:58.708Z",
+  "generatedAt": "2026-11-27T11:10:12.378Z",
   "profile": {
     "name": "pixel7",
     "width": 915,
@@ -11,10 +11,10 @@
   },
   "cpuThrottle": 4,
   "boot": {
-    "timeToTitleMs": 1356,
+    "timeToTitleMs": 1768,
     "texturesAtTitle": 445,
-    "framesSampled": 502,
-    "startupRating": "gut"
+    "framesSampled": 412,
+    "startupRating": "grenzwertig"
   },
   "gl": {
     "present": true,
@@ -68,7 +68,7 @@
       "depth": true,
       "desynchronized": false,
       "failIfMajorPerformanceCaveat": false,
-      "powerPreference": "default",
+      "powerPreference": "high-performance",
       "premultipliedAlpha": true,
       "preserveDrawingBuffer": false,
       "stencil": true,
@@ -3629,26 +3629,124 @@
   },
   "title": {
     "frames": 181,
-    "fps": 60.3,
-    "drawsPerFrame": 364.7,
+    "fps": 60.1,
+    "drawsPerFrame": 288.9,
     "drawsP95": 648,
     "drawsMax": 648,
-    "switchesPerFrame": 368.1,
+    "switchesPerFrame": 293.7,
     "switchesMax": 1385
   },
   "run": {
     "enemies": 298,
-    "frames": 230,
-    "fps": 45.8,
-    "drawsPerFrame": 488.6,
+    "frames": 159,
+    "fps": 31.8,
+    "drawsPerFrame": 382.9,
     "drawsP95": 648,
     "drawsMax": 648,
-    "switchesPerFrame": 488.3,
+    "switchesPerFrame": 385.1,
     "switchesMax": 784
   },
   "programs": 31,
-  "textureBindsTotal": 185346,
-  "textureSwitchesTotal": 185063,
+  "textureBindsTotal": 121547,
+  "textureSwitchesTotal": 121356,
+  "config": {
+    "generatedAt": "2026-11-27T11:10:00.800Z",
+    "context": "webgl1",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+    "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "maxTextureSize": 8192,
+    "maxTextureImageUnits": 32,
+    "extensions": [
+      "ANGLE_instanced_arrays",
+      "EXT_blend_minmax",
+      "EXT_clip_control",
+      "EXT_color_buffer_half_float",
+      "EXT_depth_clamp",
+      "EXT_float_blend",
+      "EXT_frag_depth",
+      "EXT_polygon_offset_clamp",
+      "EXT_shader_texture_lod",
+      "EXT_texture_compression_bptc",
+      "EXT_texture_compression_rgtc",
+      "EXT_texture_filter_anisotropic",
+      "EXT_texture_mirror_clamp_to_edge",
+      "EXT_sRGB",
+      "OES_element_index_uint",
+      "OES_fbo_render_mipmap",
+      "OES_standard_derivatives",
+      "OES_texture_float",
+      "OES_texture_float_linear",
+      "OES_texture_half_float",
+      "OES_texture_half_float_linear",
+      "OES_vertex_array_object",
+      "WEBGL_color_buffer_float",
+      "WEBGL_compressed_texture_astc",
+      "WEBGL_compressed_texture_etc",
+      "WEBGL_compressed_texture_etc1",
+      "WEBGL_compressed_texture_s3tc",
+      "WEBGL_compressed_texture_s3tc_srgb",
+      "WEBGL_debug_renderer_info",
+      "WEBGL_debug_shaders",
+      "WEBGL_depth_texture",
+      "WEBGL_draw_buffers",
+      "WEBGL_lose_context",
+      "WEBGL_multi_draw",
+      "WEBGL_polygon_mode"
+    ],
+    "contextAttributes": {
+      "alpha": false,
+      "antialias": false,
+      "depth": true,
+      "desynchronized": false,
+      "failIfMajorPerformanceCaveat": false,
+      "powerPreference": "high-performance",
+      "premultipliedAlpha": true,
+      "preserveDrawingBuffer": false,
+      "stencil": true,
+      "xrCompatible": false
+    },
+    "precision": {
+      "fragmentHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      },
+      "fragmentMediump": {
+        "rangeMin": 15,
+        "rangeMax": 15,
+        "precision": 10
+      },
+      "vertexHighp": {
+        "rangeMin": 127,
+        "rangeMax": 127,
+        "precision": 23
+      }
+    },
+    "fps": {
+      "target": 60,
+      "limit": 60,
+      "cappedAt60": true
+    },
+    "powerPreference": "high-performance",
+    "canvas": {
+      "attrWidth": 860,
+      "attrHeight": 360,
+      "logicalWidth": 860,
+      "logicalHeight": 360,
+      "rendersDevicePixels": false
+    },
+    "textures": {
+      "count": 0,
+      "pixels": 0,
+      "approxBytes": 0,
+      "maxEdge": 0,
+      "oversized": []
+    }
+  },
+  "fpsCapActive": true,
+  "powerPreference": "high-performance",
   "jsErrors": [],
   "passed": true
 }
