@@ -19,6 +19,7 @@ const argOf = (name, fallback) => {
 };
 const AFTER_RUNS = Math.max(1, Number(argOf("after-runs", "2")));
 const STRESS = Math.max(0, Number(argOf("stress", "0")));
+const SIX40 = process.argv.includes("--six40"); // 640x360 dpr1 Regressionssprung
 const OUT = String(argOf("out", "shots/m10-dpr-budget.json"));
 
 ensureBuild();
@@ -28,9 +29,9 @@ const browser = await chromium.launch({
   args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"],
 });
 
-const measureMinute25 = async (mode, stressEnemies = 0) => {
+const measureMinute25 = async (mode, stressEnemies = 0, viewport = VIEWPORT, dpr = DPR) => {
   const query = mode === "before" ? "?debug=1&seed=1&rbscale=0" : "?debug=1&seed=1";
-  const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: DPR });
+  const page = await browser.newPage({ viewport, deviceScaleFactor: dpr });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
@@ -71,7 +72,7 @@ const measureMinute25 = async (mode, stressEnemies = 0) => {
   }
   await page.waitForTimeout(400);
 
-  const result = await page.evaluate(async ({ seconds }) => {
+  const result = await page.evaluate(async ({ seconds, target }) => {
     const start = performance.now();
     let frames = 0, last = start, worst = 0, lastSpawn = start;
     const samples = [];
@@ -130,8 +131,14 @@ for (let i = 1; i <= AFTER_RUNS; i++) {
 if (STRESS > 0) {
   runs.push({ id: `after-stress-${STRESS}`, mode: "after-stress", stressEnemies: STRESS, ...(await measureMinute25("after", STRESS)) });
 }
+// 640x360@1 (dpr1): Regler darf hier nie senken (RENDER_SCALE_MIN=1) -> keine Regression >= 50 FPS.
+if (SIX40) {
+  const run640 = await measureMinute25("after", 0, { width: 640, height: 360 }, 1);
+  runs.push({ id: "after-640-dpr1", mode: "after-640", viewport: [640, 360], dpr: 1, ...run640 });
+}
 
 const after = runs.filter((r) => r.mode === "after");
+const run640 = runs.find((r) => r.mode === "after-640") ?? null;
 const result = {
   targetFps: TARGET_FPS,
   viewport: VIEWPORT,
@@ -146,6 +153,9 @@ const result = {
     afterPassedCount: after.filter((r) => r.passed).length,
     afterCount: after.length,
     stressRun: runs.find((r) => r.mode === "after-stress") ?? null,
+    run640: run640
+      ? { fps: run640.fps, renderWidth: run640.renderWidth, minEnemies: run640.minEnemies, passed: run640.passed }
+      : null,
     jsErrors: runs.reduce((n, r) => n + r.jsErrors.length, 0),
   },
 };
@@ -153,4 +163,5 @@ writeFileSync(OUT, JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result.summary));
 await browser.close();
 server.stop();
-process.exit(result.summary.afterMinFps >= TARGET_FPS && result.summary.jsErrors === 0 ? 0 : 1);
+const six40Ok = !run640 || (run640.fps >= TARGET_FPS && run640.renderWidth === 640);
+process.exit(result.summary.afterMinFps >= TARGET_FPS && six40Ok && result.summary.jsErrors === 0 ? 0 : 1);
