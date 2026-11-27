@@ -1,9 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, afterEach } from "vitest";
 import { SeededRng, type Rng } from "../src/logic/rng";
 import { canEvolve, chestRewards, evolvableList, evolutionReadyList } from "../src/logic/evolution";
 import { generateOffers } from "../src/logic/levelup";
 import { EVOLUTIONS } from "../src/data/evolutions";
 import { LevelUpSystem } from "../src/systems/LevelUpSystem";
+import type { EvolutionDef } from "../src/data/types";
 import type { OwnedItem } from "../src/logic/levelup";
 
 const w = (id: string, level: number): OwnedItem => ({ id, level });
@@ -128,6 +129,50 @@ describe("Evolution-Reachability: Gate-Negativfälle", () => {
       const offers = generateOffers([w(evo.baseWeapon, 8)], [p(extra, 5), p(evo.passive, 3)], rng(), 3, true);
       expect(offers.filter((o) => o.id === evo.id), evo.id).toHaveLength(1);
     }
+  });
+});
+
+describe("Evolution-Reachability: Gate-Härtung (K2)", () => {
+  // Nicht implementierte Evolutions-Waffe (kein weaponDef-Eintrag): darf von
+  // keinem Angebots-Pfad angeboten werden — sonst würde die Truhe eine
+  // Evolution anbieten, die applyChestReward/addWeapon ablehnen müsste.
+  const FAKE: EvolutionDef = {
+    id: "test_evo" as EvolutionDef["id"],
+    name: "Test-Evolution",
+    baseWeapon: "ember",
+    passive: "tome",
+    description: "Test",
+    effect: "Test",
+    implemented: true,
+    iconColor: 0,
+  };
+
+  afterEach(() => {
+    const idx = EVOLUTIONS.indexOf(FAKE);
+    if (idx >= 0) EVOLUTIONS.splice(idx, 1);
+  });
+
+  it("nicht implementierte Evolutions-Waffe wird von allen Pfaden ausgelassen", () => {
+    EVOLUTIONS.push(FAKE);
+    const weapons = [w("ember", 8)];
+    const passives = [p("tome", 1)];
+    expect(evolvableList(weapons, passives).some((e) => e.id === FAKE.id)).toBe(false);
+    expect(evolutionReadyList(weapons, passives).some((e) => e.id === FAKE.id)).toBe(false);
+    expect(canEvolve(weapons, passives)?.id).not.toBe(FAKE.id);
+    const offers = generateOffers(weapons, passives, rng(), 3, true);
+    expect(offers.some((o) => o.id === FAKE.id)).toBe(false);
+    const chest = chestRewards(weapons, passives, 600, rng());
+    expect(chest.rewards.some((r) => r.kind === "evolution" && r.id === FAKE.id)).toBe(false);
+    // Die reguläre Evolution (phoenix) bleibt davon unberührt:
+    expect(canEvolve(weapons, passives)?.id).toBe("phoenix");
+  });
+
+  it("nicht implementierte Evolutions-Waffe: evolve() lehnt ab", () => {
+    EVOLUTIONS.push(FAKE);
+    const sys = new LevelUpSystem("ember", 8);
+    sys.addPassive("tome", 1);
+    expect(sys.evolve(FAKE.id)).toBe(false);
+    expect(sys.weapons[0]?.id).toBe("ember");
   });
 });
 
