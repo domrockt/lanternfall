@@ -2689,17 +2689,27 @@
       "id": 1678,
       "title": "m10-atlas-gaps #K1 Audit-Werkzeug",
       "description": "scripts/art/atlas-audit.mjs: prüft Coverage aller erwarteten Frame-Keys, Zellabstand >=2px, Bleed im 2px-Ring; schreibt shots/m10-atlas-audit.json. Abnahme: Skript läuft, JSON existiert, Commit enthält Skript+JSON.",
-      "column": "doing",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T00:40:10Z",
           "by": "build",
           "text": "todo → doing: #K1 Audit-Skript fertig, Audit-Lauf dokumentiert Ist-Stand."
+        },
+        {
+          "at": "2026-11-27T01:51:39Z",
+          "by": "build",
+          "text": "done: Audit-Skript auf 3 Pflichtpruefungen reduziert, Lauf timeout 10m PASS (RC=0), shots/m10-atlas-audit.json 100% Coverage/0 Gutter-Verstoesse/0 Bleed, Commit 3160d25."
+        },
+        {
+          "at": "2026-11-27T01:51:39Z",
+          "by": "build",
+          "text": "doing → done: Commit 3160d25 (#1678/#K1): Audit 227/227, Gutter min 4px, 0 Bleed, JSON getrackt."
         }
       ],
       "created": "2026-11-27T00:39:12Z",
-      "updated": "2026-11-27T00:40:10Z"
+      "updated": "2026-11-27T01:51:39Z"
     },
     {
       "id": 1679,
