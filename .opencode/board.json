@@ -4969,9 +4969,16 @@
       "title": "m10-atlas-pack K2 Packer mehrseitig + Coverage",
       "description": "atlas.ts: Atlas-Seiten <=2048px (Shelf), alle heissen Canvas-Texturen (inkl. glyphs/icons/ui/props nach Messung) gepackt, Frames per Name, Umleitung ueber Namens-Map; Unit-Test tests/atlas-pack.test.ts (0 Überlappung, <=2048, Determinismus). Akzeptanz: vitest grün, tsc grün.",
       "id": 3999,
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-atlas-pack",
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-11-27T18:43:36Z",
+          "by": "build",
+          "text": "todo → doing: doing (Supervisor): K2 Packer fertig entwickelt, grüne Tests (tests/atlas-pack.test.ts 9/9 + atlas.test.ts 7/7), tsc+build grün. Supervisor-Snapshot c55e141 enthält den Code. font.ts-Änderung (2 Zeilen, ensureGlyph → packCanvasTexture) ist außerhalb der Job-Fläche und in requests.md begründet. Als Nächstes: K2-Abschluss-Commit mit Begründung, dann K3 Messen nachher."
+        }
+      ],
+      "updated": "2026-11-27T18:43:36Z"
     },
     {
       "title": "m10-atlas-pack K3 Messen nachher",
