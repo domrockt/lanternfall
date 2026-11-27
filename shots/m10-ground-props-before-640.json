@@ -1,0 +1,45 @@
+{
+  "card": "m10-ground-props-batch",
+  "tag": "before",
+  "condition": "640",
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "dpr": 1,
+  "run": 1,
+  "windowSeconds": 10,
+  "targetEnemies": 300,
+  "measuredAt": "2026-11-27T18:15:39.118Z",
+  "command": "flock /home/ai/games/.lf-perf.lock node scripts/m10-ground-props.mjs --tag before --runs 1",
+  "result": {
+    "frames": 493,
+    "elapsedMs": 10004,
+    "fps": 49.3,
+    "fpsMin": 40,
+    "medianFrameMs": 16.7,
+    "p95FrameMs": 33.4,
+    "worstFrameMs": 33.5,
+    "drawCallCandidatesPerFrame": 925,
+    "candidatesBreakdown": {
+      "chunks": 25,
+      "props": 845,
+      "ripples": 33,
+      "ambient": 23
+    },
+    "visiblePropsPerFrame": 845,
+    "visibleRipplesPerFrame": 33,
+    "distinctPropTexturesPerFrame": 1,
+    "chunkRebuildsPerFrame": 0,
+    "updateMsPerFrame": 1,
+    "batches": null,
+    "avgEnemies": 237,
+    "minEnemies": 13,
+    "levelUpOpen": false,
+    "blend": {
+      "visibleRenderables": 992,
+      "blendSwitches": 5
+    }
+  },
+  "jsErrors": []
+}
