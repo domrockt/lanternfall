@@ -11,6 +11,22 @@ export const BASE_HEIGHT = 360;
 export const MIN_WIDTH = 480;
 export const MAX_WIDTH = 860;
 
+/**
+ * M10-Crowd: bei hoher Gegnerlast intern nur noch 640 px breit rendern.
+ * Die ganzzahlige Stufe n bleibt erhalten (Pixel bleiben scharf), das Canvas
+ * wird entsprechend schmaler/zentriert. Hysterese verhindert Flattern an der
+ * Schwelle (einklemmen ab 300, loesen erst unter 260 aktiven Gegnern).
+ */
+export const CROWD_WIDTH = 640;
+export const CROWD_ENEMY_THRESHOLD = 300;
+export const CROWD_RELEASE_THRESHOLD = 260;
+
+/** Reine Schwellen-Logik: gewuenschter Crowd-Zustand nach aktiver Gegnerzahl. */
+export function shouldCapForCrowd(activeEnemies: number, currentlyCapped: boolean): boolean {
+  const count = Number.isFinite(activeEnemies) ? activeEnemies : 0;
+  return currentlyCapped ? count >= CROWD_RELEASE_THRESHOLD : count >= CROWD_ENEMY_THRESHOLD;
+}
+
 export interface ViewSpec {
   /** Logische Breite in Spielpixeln. */
   width: number;
@@ -39,6 +55,8 @@ export interface DeviceInput {
   dpr: number;
   /** Option "SKALIERUNG": 0 = AUTO, 2..6 = fest. */
   setting?: number;
+  /** true = hohe Gegnerlast: interne Breite auf CROWD_WIDTH deckeln. */
+  crowd?: boolean;
 }
 
 function finitePositive(value: number, fallback: number): number {
@@ -88,8 +106,9 @@ export function computeView(input: DeviceInput): ViewSpec {
   const n = requested > 0 ? Math.min(requested, maxFitN) : maxFitN;
   if (n < 2) return fitView(deviceWidth, deviceHeight, dpr, false);
 
+  const hardMax = input.crowd ? CROWD_WIDTH : MAX_WIDTH;
   const width = Math.min(
-    MAX_WIDTH,
+    hardMax,
     Math.max(MIN_WIDTH, Math.round(deviceWidth / n)),
     Math.floor(deviceWidth / n),
   );

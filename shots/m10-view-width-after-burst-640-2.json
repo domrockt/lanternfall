@@ -1,0 +1,30 @@
+{
+  "cap": "on",
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "dpr": 1,
+  "view": {
+    "internal": [
+      480,
+      360
+    ],
+    "css": [
+      480,
+      360
+    ],
+    "dpr": 1
+  },
+  "measure": {
+    "fps": 60,
+    "frames": 601,
+    "elapsedMs": 10011,
+    "worstFrameMs": 16.8,
+    "avgEnemies": 500,
+    "minEnemies": 500,
+    "targetEnemies": 500
+  },
+  "jsErrors": [],
+  "passed": true
+}
