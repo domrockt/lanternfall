@@ -173,12 +173,14 @@ describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
     const fx = new FxSystem(scene);
     const runtime = fx.spawn({ texture: "fx_halo", x: 0, y: 0, scaleFrom: 6, scaleTo: 6, life: 1 });
     expect(runtime).not.toBeNull();
-    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3
+    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3 (Spielpixel-Groesse)
     expect(runtime?.scaleFrom).toBeCloseTo(3, 10);
     expect(runtime?.scaleTo).toBeCloseTo(3, 10);
+    // Mixel-Fix (m10-fx-mixel-fix): fx_halo wird gebacken, Draw-Scale = Scale/Stufe.
+    // Stufe 3 (>= 3) -> Sprite-Scale 3/3 = 1 (Textur 72x72, gleiche Screengroesse).
     const last = sprite.scaleCalls[sprite.scaleCalls.length - 1];
-    expect(last[0]).toBeCloseTo(3, 10);
-    expect(last[1]).toBeCloseTo(3, 10);
+    expect(last[0]).toBeCloseTo(1, 10);
+    expect(last[1]).toBeCloseTo(1, 10);
   });
 
   it("dpr 1 (Desktop, kein window): unveraendert", () => {
