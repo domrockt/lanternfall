@@ -1,0 +1,286 @@
+{
+  "milestone": "M10",
+  "lane": "m10-evolution-hint",
+  "kind": "after",
+  "checkedAt": "2026-11-27T06:02:33.343Z",
+  "views": [
+    "640x360",
+    "780x360"
+  ],
+  "evolutionsChecked": 6,
+  "evolutionsWithHint": 6,
+  "scenarios": 12,
+  "maxHintLines": 1,
+  "minLevelupMarginPx": 42,
+  "minChestMarginPx": 52,
+  "minDividerGapPx": 49.5,
+  "overlapIssues": 0,
+  "keyboardPickOk": true,
+  "touchPickOk": true,
+  "rows": [
+    {
+      "evolution": "phoenix",
+      "name": "Phönixschwarm",
+      "view": "640x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-phoenix-levelup-640.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-phoenix-chest-640.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: PHÖNIXSCHWARM"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS GLUTFUNKE + ARKANES BUCH WIRD PHÖNIXSCHWARM.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 82,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "wrath_pendulum",
+      "name": "Zornpendel",
+      "view": "640x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-wrath_pendulum-levelup-640.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-wrath_pendulum-chest-640.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: ZORNPENDEL"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS KETTENFLEGEL + EISENHERZ WIRD ZORNPENDEL.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 90,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "eternal_winter",
+      "name": "Ewiger Winter",
+      "view": "640x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-eternal_winter-levelup-640.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-eternal_winter-chest-640.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: EWIGER WINTER"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS FROSTNOVA + SANDUHR WIRD EWIGER WINTER.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 90,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "thorn_storm",
+      "name": "Dornensturm",
+      "view": "640x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-thorn_storm-levelup-640.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-thorn_storm-chest-640.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: DORNENSTURM"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS DORNENSALVE + WINDSTIEFEL WIRD DORNENSTURM.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 85,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "thunder_seal",
+      "name": "Gewittersiegel",
+      "view": "640x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-thunder_seal-levelup-640.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-thunder_seal-chest-640.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: GEWITTERSIEGEL"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS STURMRUNE + WETZSTEIN WIRD GEWITTERSIEGEL.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 88,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "soul_beacon",
+      "name": "Seelenleuchtfeuer",
+      "view": "640x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-soul_beacon-levelup-640.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-soul_beacon-chest-640.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: SEELENLEUCHTFEUER"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS GEISTERLATERNE + MAGNETAMULETT WIRD SEELENLEUCHTFEUER.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 52,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "phoenix",
+      "name": "Phönixschwarm",
+      "view": "780x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-phoenix-levelup-780.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-phoenix-chest-780.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: PHÖNIXSCHWARM"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS GLUTFUNKE + ARKANES BUCH WIRD PHÖNIXSCHWARM.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 82,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "wrath_pendulum",
+      "name": "Zornpendel",
+      "view": "780x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-wrath_pendulum-levelup-780.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-wrath_pendulum-chest-780.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: ZORNPENDEL"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS KETTENFLEGEL + EISENHERZ WIRD ZORNPENDEL.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 90,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "eternal_winter",
+      "name": "Ewiger Winter",
+      "view": "780x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-eternal_winter-levelup-780.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-eternal_winter-chest-780.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: EWIGER WINTER"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS FROSTNOVA + SANDUHR WIRD EWIGER WINTER.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 90,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "thorn_storm",
+      "name": "Dornensturm",
+      "view": "780x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-thorn_storm-levelup-780.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-thorn_storm-chest-780.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: DORNENSTURM"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS DORNENSALVE + WINDSTIEFEL WIRD DORNENSTURM.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 85,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "thunder_seal",
+      "name": "Gewittersiegel",
+      "view": "780x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-thunder_seal-levelup-780.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-thunder_seal-chest-780.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: GEWITTERSIEGEL"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS STURMRUNE + WETZSTEIN WIRD GEWITTERSIEGEL.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 88,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    },
+    {
+      "evolution": "soul_beacon",
+      "name": "Seelenleuchtfeuer",
+      "view": "780x360",
+      "levelupScreenshot": "shots/m10-evolution-hint-after-soul_beacon-levelup-780.png",
+      "chestScreenshot": "shots/m10-evolution-hint-after-soul_beacon-chest-780.png",
+      "levelupHint": true,
+      "levelupHintLines": [
+        "EVOLUTION BEREIT: SEELENLEUCHTFEUER"
+      ],
+      "hintMarginOk": true,
+      "hintMarginMin": 42,
+      "hintNoDividerOverlap": true,
+      "hintDividerGap": 49.5,
+      "chestSentence": "AUS GEISTERLATERNE + MAGNETAMULETT WIRD SEELENLEUCHTFEUER.",
+      "chestSentenceOk": true,
+      "chestMarginOk": true,
+      "chestMarginMin": 52,
+      "chestNoDividerOverlap": true,
+      "keyboardPickOk": true
+    }
+  ],
+  "touchRows": [
+    {
+      "evolution": "phoenix",
+      "touchPickOk": true
+    },
+    {
+      "evolution": "eternal_winter",
+      "touchPickOk": true
+    }
+  ],
+  "jsErrors": [],
+  "passed": true
+}

@@ -285,7 +285,7 @@ export class UI extends Phaser.Scene {
     this.levelGroup.add(this.levelSub);
     // M10: Evolutionspfad-Zeile zwischen Untertitel und Karten (max. 2 Zeilen).
     this.levelHintChars = Math.max(20, Math.floor((frameW - 20) / 6));
-    this.levelHint = [0, 1].map((i) => new PixelText(this, cx, 66 + i * 8, "", C.lantern, "center")
+    this.levelHint = [0, 1].map((i) => new PixelText(this, cx, 66 + i * 8 + oy, "", C.lantern, "center")
       .setVisible(false));
     this.levelGroup.add(this.levelHint);
 

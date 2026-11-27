@@ -38,6 +38,20 @@ Badge/Zeile in `src/scenes/UI.ts` für Level-up-Karten und HUD; Text über
 bedienbar per Tastatur und Touch. Pixel-Check: Randabstand ≥ 2 px, keine
 Überlappung mit Trennlinie (beide View-Formate).
 
+**Nachher-Belege** (`shots/m10-evolution-hint-after.json`, 12 Szenarien):
+- `shots/m10-evolution-hint-after-<evo>-levelup-<view>.png` — Panel-Zeile
+  `EVOLUTION BEREIT: <NAME>` zwischen Untertitel und Karten.
+- `shots/m10-evolution-hint-after-<evo>-chest-<view>.png` — Truhen-Satz
+  `AUS <BASIS> + <POWERUP> WIRD <EVOLUTION>.`
+- **6/6 Evolutionen mit Hinweis**, `maxHintLines: 1` (Limit 2).
+- **0 Überlappungen mit Panelrand/Trennlinie**: kleinster Randabstand
+  Level-up **42 px**, Truhe **52 px**; kleinster Abstand zur Trennlinie
+  **49,5 px** (Ziel ≥ 2 px).
+- Tastatur (`pickLevelUp` via Taste 3) und Touch (Karte antippen) schließen
+  das Panel weiterhin; `keyboardPickOk: true`, `touchPickOk: true`.
+- 0 JS-Fehler.
+
+
 ## K4 — Doku + `.lane-done`
 
 Vorher/Nachher-Belege, 6/6 Evolutionen mit Hinweis, Messwerte in dieser Datei.
