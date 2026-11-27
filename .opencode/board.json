@@ -3002,9 +3002,15 @@
       "description": "PickupSystem: Cap nie ueberschreiten (auch Boss-/Elite-Bursts), bei vollem Cap aelteste Kristalle verschmelzen statt verwerfen, XP-Summe vor/nach identisch. Unit-Test tests/pickup-gems.test.ts. Abnahme: Test gruen, Cap-Ueberschreitung 0.",
       "column": "todo",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:25:14Z",
+          "by": "build",
+          "text": "Doing: Merge-on-full + Alt-Recycling ohne XP-Verlust"
+        }
+      ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T02:45:53Z"
+      "updated": "2026-11-27T03:25:14Z"
     },
     {
       "id": 2100,
@@ -3012,9 +3018,15 @@
       "description": "Anziehung beginnt genau am definierten Magnetradius, Geschwindigkeit so, dass Kristall in <=0,4 s ankommt. Tests: Radius 0, mehrere Kristalle gleichzeitig. Abnahme: Test gruen, Messung im Baseline-JSON.",
       "column": "todo",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T03:25:14Z",
+          "by": "build",
+          "text": "Doing: Magnet exakt am Radius, Ankunft <=0,4 s"
+        }
+      ],
       "created": "2026-11-27T02:45:53Z",
-      "updated": "2026-11-27T02:45:53Z"
+      "updated": "2026-11-27T03:25:14Z"
     },
     {
       "id": 2101,
