@@ -1,0 +1,10 @@
+Lane m9-art-fx-ui-2 abgeschlossen (Versuch 3).
+Karten #318-#322 alle done mit eigenem Commit; #318 Belege, #319 Titel, #320 Icons,
+#321 Font/UI-Rahmen, #322 FX-Belege + Abschluss.
+Belege je Karte in docs/lanes/m9-art-fx-ui.md (Vorher/Nachher-Pfade + Urteile).
+Titel: harte Pixelringe, klare Horizontkante, kein dunkler Mond-Rand (4,5/5).
+Icons: 18/18 exakt 1-px-Ink, Licht oben-links, Evolutionen eine Rampe heller (4,5/5).
+Font/UI: Ä/Ö/Ü mit 1-px-Luft, 9-Slice oben-links hell / unten-rechts dunkel, kein Karten-Overhang (4,5/5).
+FX: fx_spark 5x5, XP-Kristalle + Truhen-Oeffnung mit lebenden Gegnern (4,5/5).
+Gesamturteil art-director: 4,5/5 PASS.
+Build gruen, 175 Tests gruen, 0 JS-Fehler in allen Shot-Laeufen.

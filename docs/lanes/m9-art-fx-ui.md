@@ -74,6 +74,9 @@ und Abschluss.
   (Silhouetten unterschiedlich genug fuer 16 px, aber nicht maximal distinkt);
   hourglass/thunder_seal bleiben als Form-/Farbkontrast getrennt, IoU nicht erneut
   gemessen.
+- art-director-Urteil (#320, Runde 2): **4,5/5 PASS**. Kontur durchgehend Ink,
+  Lichtkante oben-links bei allen 18, Evolutionen massiver/heller als Basen.
+  Hinweis: zwei Evo-Silhouetten koennten noch klarer sein (spaetere Politur).
 - art-director-Urteil (#320, Runde 1): **2,5/5 FAIL**. Befunde: (1) 5/18 Icons haben 2-3 px
   dicke Ink-Rahmen statt 1 px (ember, frost, lantern, tome, hourglass); (2) 4 Icons
   beleuchten von rechts/unten (flail, hourglass, eternal_winter, whetstone);
