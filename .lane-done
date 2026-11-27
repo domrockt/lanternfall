@@ -1,9 +1,10 @@
-Lane m10-boss-onscreen (ACCEPTANCE A10) - Boss-Spawn hinter HP-Leiste/Banner behoben.
-Boss-Frame (56/64/72/80/96/96 px) wird per composedBossCenterY unter max(hpBar.bottom, banner.bottom)+6 px komponiert; Ring-Winkel gespiegelt, X/HP/Tempo unveraendert.
-Intro-Banner (Run.ts showBossBannerWhenVisible) erst nach Sichtbarkeits-Guard; Banner-Dauer 2400 ms unveraendert, AutoPlay/God unberuehrt.
-Vorher (shots/m10-boss-onscreen-before.json): Banner-Overlap 39-1239 px2 (1,24-13,44 %), bannerGap -1..-21 px.
-Nachher (shots/m10-boss-onscreen-after.json): 12/12 Faelle 0 px HP-Overlap, 0 px Banner-Overlap, boss.top-hpBottom min. 71 px.
-Tests: tests/boss-spawn-composition.test.ts 13/13 gruen, npm test 314/314 (27 Dateien), npm run build rc=0.
-Belege: 12 Spawn-Screenshots shots/m10-boss-onscreen-shots/, art-director PASS 4/5 (ACCEPTANCE A10 erfuellt).
-Perf: Burst 59,0 FPS PASS; Minute 25 50,8 FPS <55 = bekannter offener Punkt #1000, nicht Lane-Ursache. Keine src/data-/Balance-Datei geaendert.
-Offen (nicht AC-blockierend): pale_shepherd Baum-Prop vor Boss, bell_golem grau-auf-grau, moor_queen Gruen-auf-Gruen.
+Lane m10-boss-onscreen (ACCEPTANCE A10) — done, 2026-11-27
+Ziel: Boss spawnt nicht hinter HP-Leiste/Banner; Intro-Banner nie ueber Boss-Rect.
+#K1 vorher: 12 Messzeilen (6 Bosse x 1920x1080/640x360), Banner-Overlap 39–1239 px (1,24–13,44 %), HP-Overlap 0.
+#K2 BossSystem: Komposition nach echter Sprite-Frame-Hoehe (56/64/72/80/96/96), min. 6 px unter HUD/Banner.
+#K3 Run: bossSpawn-Banner erst, wenn Boss-Rect frei ist; Banner-Dauer 2400 ms unveraendert, AutoPlay/God unberuehrt.
+#K4 tests/boss-spawn-composition.test.ts: deterministisch 6 Bosse x 2 Views x 72 Winkel.
+#K6 Review-Fix: Zoom um Viewport-Mitte (midPoint), Intro-Zoom 1,14 im Kompositions-Headroom, Banner-Fallback nach 12 Retries; 25/25 Kompositionstests.
+#K5 nachher (realer Intro-Zoom 1,07–1,14): 12 Messzeilen, HP-Overlap 0 px, Banner-Overlap 0 px, min. boss.top-hpBar.bottom = 71,3 px, min. bannerGap = 7,3 px.
+12 frische Spawn-Screenshots shots/m10-boss-onscreen-shots/, art-director PASS, Boss-Inszenierung 4/5.
+npm run build gruen; npm test 326/326 gruen. Keine HP-, Tempo- oder Angriffswerte geaendert.

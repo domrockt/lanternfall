@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2543,
+  "next": 2545,
   "cards": [
     {
       "id": 1,
@@ -3802,6 +3802,30 @@
       ],
       "created": "2026-11-27T07:49:28Z",
       "updated": "2026-11-27T09:47:20Z"
+    },
+    {
+      "id": 2543,
+      "title": "m10-boss-onscreen #K6 Intro-Zoom-Banner-Sichtbarkeit",
+      "description": "Run.ts/BossSystem.ts: Boss-Komposition und Banner-Guard muessen den Intro-Zoom-Puls (1,14, Zoom um Viewport-Mitte) beruecksichtigen; Banner darf nach dem Retry-Fenster nicht still ausfallen und nie ueber dem Boss liegen. Abnahme: tests/boss-spawn-composition.test.ts prueft Zoom 1,14 bei 6 Bossen x 2 Views x 72 Winkeln x 3 Kamerahoehen (0/2000/3736) und 3 Spielerpositionen, gruen; tsc+build+alle Tests gruen; 0 px Banner-Overlap; Commit nennt #K6.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T11:07:23Z",
+          "by": "build",
+          "text": "todo → doing: Start Versuch 3: WIP-Zoom-Fix (BossSystem/Run/Test) fertigstellen, Belege erneuern, Build+Tests, Commit."
+        }
+      ],
+      "created": "2026-11-27T11:06:48Z",
+      "updated": "2026-11-27T11:07:23Z"
+    },
+    {
+      "id": 2544,
+      "title": "m10-boss-onscreen #K6 Intro-Zoom-Banner-Sichtbarkeit",
+      "description": "Review-Fix A10: Phaser-Zoom um Viewport-Mitte korrekt rechnen, Boss-Komposition mit Intro-Zoom 1,14 headroom, Banner nach Retries hart emittieren. Abnahme: 25/25 Tests, 12 Messzeilen 0 px Overlap, 12 frische Screenshots, build+test gruen, Commit #K6.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-27T11:30:44Z",
+      "updated": "2026-11-27T11:30:44Z"
     }
   ]
 }

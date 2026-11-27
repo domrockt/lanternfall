@@ -44,41 +44,44 @@ Ring-Winkel nach unten und schiebt die Vertikale nur so weit wie noetig auf
 `max(hpBar.bottom, banner.bottom) + 6 px`. X bleibt erhalten; HP, Tempo und
 Angriffswerte sind unveraendert.
 
-Quelle: `shots/m10-boss-onscreen-after.json` (Worst Case je Boss/View).
+Quelle: `shots/m10-boss-onscreen-after.json` — gemessen im realen Intro-Zustand (Kamera-Zoom 1,13–1,14, nicht auf 1 zurueckgesetzt).
 
 | View | Boss | Sprite-Rect (x,y,w,h) | HP-Leiste (x,y,w,h) | Banner (x,y,w,h) | Boss.top - hpBar.bottom | HP-Overlap px (%) | Banner-Overlap px (%) |
 |---|---|---|---|---|---|---|---|
-| 1920x1080 | #0 moor_queen | 150,127,56,56 | 202,40,236,12 | 170,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 1920x1080 | #1 bone_lord | 146,123,64,64 | 202,40,236,12 | 170,68,300,48 | +71.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 1920x1080 | #2 pale_shepherd | 141,131,72,72 | 202,40,236,12 | 170,68,300,48 | +79.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 1920x1080 | #3 bell_golem | 137,127,80,80 | 202,40,236,12 | 170,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 1920x1080 | #4 coven | 416,132,96,96 | 202,40,236,12 | 170,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 1920x1080 | #5 hollow_king | 416,132,96,96 | 202,40,236,12 | 170,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 640x360 | #0 moor_queen | 70,127,56,56 | 122,40,236,12 | 90,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 640x360 | #1 bone_lord | 66,123,64,64 | 122,40,236,12 | 90,68,300,48 | +71.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 640x360 | #2 pale_shepherd | 61,131,72,72 | 122,40,236,12 | 90,68,300,48 | +79.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 640x360 | #3 bell_golem | 57,127,80,80 | 122,40,236,12 | 90,68,300,48 | +75.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 640x360 | #4 coven | 336,132,96,96 | 122,40,236,12 | 90,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
-| 640x360 | #5 hollow_king | 336,132,96,96 | 122,40,236,12 | 90,68,300,48 | +80.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #0 moor_queen | 435,125,62,62 | 202,40,236,12 | 170,68,300,48 | +73.4 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #1 bone_lord | 141,126,70,70 | 202,40,236,12 | 170,68,300,48 | +73.8 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #2 pale_shepherd | 134,128,79,79 | 202,40,236,12 | 170,68,300,48 | +75.7 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #3 bell_golem | 427,123,90,90 | 202,40,236,12 | 170,68,300,48 | +71.3 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #4 coven | 418,125,109,109 | 202,40,236,12 | 170,68,300,48 | +73.3 px | 0 px (0.00%) | 0 px (0.00%) |
+| 1920x1080 | #5 hollow_king | 420,125,109,109 | 202,40,236,12 | 170,68,300,48 | +73.3 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #0 moor_queen | 357,124,63,63 | 122,40,236,12 | 90,68,300,48 | +72.3 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #1 bone_lord | 54,124,72,72 | 122,40,236,12 | 90,68,300,48 | +72.0 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #2 pale_shepherd | 49,126,81,81 | 122,40,236,12 | 90,68,300,48 | +74.1 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #3 bell_golem | 43,123,90,90 | 122,40,236,12 | 90,68,300,48 | +71.3 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #4 coven | 338,125,109,109 | 122,40,236,12 | 90,68,300,48 | +73.3 px | 0 px (0.00%) | 0 px (0.00%) |
+| 640x360 | #5 hollow_king | 339,125,109,109 | 122,40,236,12 | 90,68,300,48 | +73.3 px | 0 px (0.00%) | 0 px (0.00%) |
 
 Nachher: 0 px HP-Ueberlappung und 0 px Banner-Ueberlappung bei 6/6 Bossen und
-beiden Views; kleinster Abstand Boss.top zu hpBar.bottom = 71 px.
+beiden Views; kleinster Abstand Boss.top zu hpBar.bottom = 71,3 px und kleinster
+Abstand zur Banner-Unterkante = 7.3 px (>= 6 px Luft).
 
 ## #K3 Banner/Intro
 
 `src/scenes/Run.ts`: `showBossBannerWhenVisible` emittiert `bossSpawn` erst,
 wenn das Boss-Frame nach Kamera-Zoom/Shake vollstaendig unter HP-Leiste und
 Banner steht (`rect.y >= hpBar.bottom + 6 && !rectsOverlap(rect, banner)`).
-Ist der Boss nicht sichtbar, wird das Banner ausgelassen statt es darueber zu
-legen. Die Banner-Dauer in der UI-Szene (2400 ms) ist unveraendert, ebenso
+Nach 12 Retries (Zoom-Puls ~700 ms) wird das Banner hart emittiert statt still
+auszufallen; die Komposition haelt den Boss dann bereits sicher unter dem
+Banner. Die Banner-Dauer in der UI-Szene (2400 ms) ist unveraendert, ebenso
 AutoPlay- und God-Pfad.
 
 ## #K4 Test
 
-`tests/boss-spawn-composition.test.ts` (13 Tests): fuer alle 6 Bosse bei
+`tests/boss-spawn-composition.test.ts` (25 Tests): fuer alle 6 Bosse bei
 640x360 und 480x360 gilt ueber 72 deterministische Ring-Winkel
-`boss.top >= hpBar.bottom + 6` und `banner ∩ boss = ∅`.
-`npx vitest run tests/boss-spawn-composition.test.ts` = 13/13 PASS.
+`boss.top >= banner.bottom + 6` und `banner ∩ boss = ∅`; zusaetzlich mit
+realem Intro-Zoom 1,14 und Weltkanten (camTop 0/2000/3736, Spieler-Screen-Y
+30/180/300). `npx vitest run tests/boss-spawn-composition.test.ts` = 25/25 PASS.
 
 ## #K5 Belege
 
@@ -94,6 +97,33 @@ AutoPlay- und God-Pfad.
   Nicht AC-blockierende Nachbesserungen (offen, eigene Karte in spaeterer Lane):
   `pale_shepherd` Baum-Prop vor dem Boss, `bell_golem` grau-auf-grau,
   `moor_queen` Gruen-auf-Gruen (Silhouette/Kontur).
+
+## #K6 Intro-Zoom-Banner-Sichtbarkeit
+
+Nachbesserung aus der Abnahme: Der Boss-Intro-Puls zoomt die Kamera fuer ca. 700 ms
+auf 1,14 um die Viewport-Mitte. Dadurch wandert die Sprite-Oberkante im Screen-Raum
+nach oben, und der alte Banner-Guard (`rect.y >= hpBar.bottom + 6`) fiel nach dem
+Retry-Fenster still aus – der Boss-Auftritt blieb ohne Banner.
+
+Fix:
+- `composedBossCenterY(..., camTop, zoom)` projiziert die Oberkante in den
+  gezoomten Screen-Raum und komponiert den Boss gleich so, dass er auch bei
+  Zoom 1,14 unter `max(hpBar.bottom, banner.bottom) + 6 px` liegt. Kein unteres
+  Screen-Clamp mehr; der Ring-Abstand zum Spieler bleibt erhalten.
+- `bossSpriteScreenRect(..., viewWidth, viewHeight)` rechnet den Zoom um die
+  Viewport-Mitte (`midPoint`) statt um `scrollX/Y` – so wie Phaser es rendert.
+- `Run.ts`-Guard prueft gegen `banner.bottom + 6` (Banner liegt unter der HP-Leiste)
+  und emittiert nach 12 Retries (Zoom-Puls vorbei) das Banner trotzdem, da die
+  Komposition die Ueberlappung bereits ausschliesst. Banner-Dauer 2400 ms,
+  AutoPlay/God unveraendert.
+
+Neue Belege (`shots/m10-boss-onscreen-after.json`, 12 Messzeilen, je Boss 72
+Winkel bei realem Intro-Zoom 1,07–1,14): **0 px HP-/Banner-Overlap**, kleinster
+`bannerGap` 7,3 px, `bannerVisible` 72/72 je Boss/View. Neu aufgenommene
+12 Spawn-Screenshots in `shots/m10-boss-onscreen-shots/` zeigen HP-Leiste, Banner
+und Boss gleichzeitig ohne Ueberdeckung. `tests/boss-spawn-composition.test.ts`
+prueft zusaetzlich Zoom 1,14 ueber 3 Kamerahoehen (0/2000/3736) und 3
+Spielerpositionen: 25/25 Tests gruen.
 
 ## Messungen Performance/Balance (unveraendert, kein Render-/Wertepfad angefasst)
 
