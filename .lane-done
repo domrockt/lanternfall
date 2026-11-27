@@ -1,0 +1,9 @@
+Lane m10-gem-magnet abgeschlossen (Branch m10-gem-magnet, Basis cd85332b).
+
+- Cap hart: 12/12 Minuten-Samples maxOver=0, rejected=0 (Ist-Lauf 37a3812; vorher 4611bc6).
+- Verschmelzung ohne XP-Verlust: 8/8 Tests, Burst 500 Drops bei Cap 24 -> count 24, XP 5004==5004.
+- Magnet exakt am Radius: Startdistanz 48,400 px, Ankunft 340,7 ms (21 Frames) <= 0,4 s, 5 gleichzeitig.
+- Lesbarkeit PASS: 3 Groessen RGB-Abstand >=131,9, Kontur 1 px, 319 Gegner im Chaos, Near-White 0,3 % <= 4,16 %.
+- Build gruen, 232/232 Tests gruen, 0 JS-Fehler. Doku: docs/lanes/m10-gem-magnet.md.
+- Offen: large (#b8303f) teilt PAL 25 mit seltener Gegnerfarbe -> in M11 erneut pruefen.
+- Hinweis Merge: #2101 beruehrt src/gfx/textures.ts ausserhalb der Disponent-Zuteilung.
