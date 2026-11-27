@@ -55,7 +55,38 @@ Der Cap brachte auf iGPU 0,0 FPS (beide Varianten vsync-60), kostete aber Optik:
 
 ## Teil B — ADD-Glow-Flächen-Deckel entschärft (Alpha-Floor bleibt)
 
-(siehe Abschnitt unten — wird mit Karte B ergänzt)
+**Geändert in `src/systems/FxSystem.ts`:** Der dpr-basierte Aktivierungsschalter
+(`ADD_GLOW_DPR_THRESHOLD` 1,5 + `glowAreaCapForDpr`) ist ersetzt durch
+`glowAreaCapForRenderScale(renderScale)` — der Flächen-Deckel (96x96 dev-px) greift **nur noch, wenn
+der adaptive DPR-Budget-Regler tatsächlich gesenkt hat** (`RENDER_SCALE > 1`, Live-Binding aus
+`config.ts`, nur gelesen). Auf iGPU bleibt `RENDER_SCALE = 1` → kein Deckel, große Feuer-/Aura-Glows
+laufen wieder volllaufend. Android-Sicherheitsnetz bleibt bestehen: sobald der Regler unter Last senkt,
+kappt der Deckel die Flächen wieder.
+
+- **Alpha-Floor `ADD_GLOW_ALPHA_FLOOR = 0,04` bleibt unverändert** (von Dom behalten), ebenso die
+  dpr-Alpha-Treppe (`fxAlphaForDpr`) und der geteilte Glow-Budget-Deckel (LOD-Caps 72/40/24).
+- `clampGlowScreenArea` (reine Funktion) unverändert; Tests `tests/fx-add-cap.test.ts` auf die neue
+  Schaltstelle umgeschrieben (Deckel nur bei `setRenderScale(2)` + dpr 3; bei RENDER_SCALE 1 volllaufend
+  auch bei dpr 3) — 45/45 mit fx-overdraw-Regression, Gesamtstand 683/683, `tsc` rc=0, Build rc=0.
+
+### Overdraw vorher/nachher (scripts/m10-fx-add-cap.mjs, 500er-Chaos-Frame, 780x360@3, iGPU)
+
+| Messgröße | Vorher (Deckel aktiv) | Nachher (Deckel via Regler aus) | Delta |
+|---|---|---|---|
+| fx-Pool ADD-Overdraw | 17.025 dev-px | **128.592 dev-px** | +111.567 (**Optik zurück**: ~7,5x mehr Glow-Fläche) |
+| max. ADD-Sprite (fx) | 93 dev-px | **416 dev-px** | Deckel 96 → aufgehoben |
+| Glow-Budget (Anzahl) | 40/40 | 35/40 (Cap 40 unverändert) | Anzahl-Deckel wirkt weiter |
+| renderScale | 1 | 1 | Teil C: Regler bleibt bei 1 |
+
+JSONs: `shots/m10-perf-cap-rollback-fx-before.json` / `-fx-after.json` / `-fx-after-960.json`
+(jeweils mit `gpu.renderer` = Mesa Intel RPL-S).
+
+### Sichtbeleg
+
+`shots/m10-perf-cap-rollback-glows-960x540.png` (Minute ~25, 960x540@1, Overlay-frei nach Truhen-/Level-up-Close):
+Phönix-Blüte, Ring-Aura und Sonnen-Glow laufen volllaufend über die Terrainfläche — keine 96er-Kante mehr.
+Skript hierfür: `--viewport 960x540 --dpr 1 --shot`; neu geschlossen werden Level-up- **und** Truhen-Panels
+(`clearChests`, Taste A), damit der Beleg die Szene zeigt.
 
 ## Teil C — DPR-Budget-Regler: unverändert
 

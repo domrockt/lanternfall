@@ -3,6 +3,7 @@ import { DEPTH } from "../gfx/depth";
 import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, GlowBudget, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { ambientBudgetFor, lodFor } from "../logic/lod";
+import { RENDER_SCALE } from "../config";
 
 /**
  * M10-A4 (Bedarfsmeldung m10-android-perf, 2026-11-27): ADD-Glows klein halten.
@@ -13,16 +14,22 @@ import { ambientBudgetFor, lodFor } from "../logic/lod";
  */
 /** ADD-Glows unter diesem Alpha sind unsichtbar, aber voll rasterisiert -> frueh freigeben. */
 export const ADD_GLOW_ALPHA_FLOOR = 0.04;
-/** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow bei dpr > 1,5 (96x96 @dpr3). */
+/** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow, solange der Regler gesenkt hat (96x96 @dpr3). */
 export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
-/** dpr-Schwelle, ab der der Flaechen-Deckel greift (Mobil-Views @2/@3; Desktop unveraendert). */
-export const ADD_GLOW_DPR_THRESHOLD = 1.5;
 
-/** Flaeche-Deckel je dpr: ab dpr > 1,5 aktiv (Mobil-Views 780x360@2/@3), Desktop unveraendert. */
-export function glowAreaCapForDpr(dpr: number): number {
-  if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
-  const d = dpr > 0 ? dpr : 1;
-  return d > ADD_GLOW_DPR_THRESHOLD ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+/**
+ * M10-perf-cap-rollback (2026-11-27): der Flaechen-Deckel greift nur noch, wenn
+ * der adaptive DPR-Budget-Regler tatsaechlich gesenkt hat (RENDER_SCALE > 1,
+ * Android-Sicherheitsnetz). Auf iGPU/GPU bleibt RENDER_SCALE = 1 — grosse Feuer-/
+ * Aura-Glows laufen wieder volllaufend (Befund: Deckel kostete Optik ohne
+ * FPS-Nutzen, alle iGPU-Läufe vsync-60, siehe docs/lanes/m10-perf-cap-rollback.md).
+ * Rein funktional; Laufzeit nutzt das Live-Binding RENDER_SCALE aus config.ts.
+ */
+export function glowAreaCapForRenderScale(renderScale: number): number {
+  if (!Number.isFinite(renderScale)) {
+    return renderScale === Number.POSITIVE_INFINITY ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
+  }
+  return renderScale > 1 ? ADD_GLOW_MAX_SCREEN_AREA : Number.POSITIVE_INFINITY;
 }
 
 export interface GlowScaleClamp {
@@ -221,12 +228,13 @@ export class FxSystem {
     const sprite = fx.sprite;
     applyTexture(sprite, fx.frames[0]);
     sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
-    // M10-A4: additive Glows auf Screengroesse cappen (dpr-abhaengig, siehe oben).
+    // M10-A4: additive Glows auf Screengroesse cappen — nur wenn der DPR-Budget-
+    // Regler gesenkt hat (RENDER_SCALE > 1); auf iGPU unveraendert volllaufend.
     if (additive) {
       const clamped = clampGlowScreenArea(
         sprite.width || 0, sprite.height || 0,
         fx.scaleFrom, fx.scaleTo, fx.aspect,
-        glowAreaCapForDpr(currentDpr()),
+        glowAreaCapForRenderScale(RENDER_SCALE),
       );
       if (clamped.capped) {
         fx.scaleFrom = clamped.scaleFrom;
@@ -622,12 +630,13 @@ export class ParticleSystem {
     const s = p.sprite;
     applyTexture(s, p.frames[0]);
     s.setPosition(Math.round(p.x), Math.round(p.y));
-    // M10-A4: additive Glows auf Screengroesse cappen (dpr-abhaengig, siehe oben).
+    // M10-A4: additive Glows auf Screengroesse cappen — nur wenn der DPR-Budget-
+    // Regler gesenkt hat (RENDER_SCALE > 1); auf iGPU unveraendert volllaufend.
     if (additive) {
       const clamped = clampGlowScreenArea(
         s.width || 0, s.height || 0,
         p.scaleFrom, p.scaleTo, p.aspect,
-        glowAreaCapForDpr(currentDpr()),
+        glowAreaCapForRenderScale(RENDER_SCALE),
       );
       if (clamped.capped) {
         p.scaleFrom = clamped.scaleFrom;

@@ -23,7 +23,9 @@ const num = (name, fallback) => {
 const OUT = String(argOf("out", "shots/m10-fx-add-cap-baseline.json"));
 const TARGET_ENEMIES = Math.max(1, Math.floor(num("enemies", 500)));
 const SAMPLES = Math.max(1, Math.floor(num("samples", 12)));
-const VIEW = { width: 780, height: 360, dpr: 3 };
+const VIEWPORT_ARG = String(argOf("viewport", "780x360")).split("x").map(Number);
+const VIEW = { width: VIEWPORT_ARG[0] || 780, height: VIEWPORT_ARG[1] || 360, dpr: num("dpr", 3) };
+const SHOT = argOf("shot", null);
 
 const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
@@ -44,6 +46,15 @@ const clearLevelUps = async (page) => {
   for (let i = 0; i < 40; i++) {
     if (!(await page.evaluate(() => window.__lf?.stats().levelUpOpen))) break;
     await page.evaluate(() => window.__lf.pickLevelUp(0));
+  }
+};
+
+/** Truhen-Panel schliessen (pausiert den Run und verdeckt die Szene). */
+const clearChests = async (page) => {
+  for (let i = 0; i < 10; i++) {
+    if (!(await page.evaluate(() => window.__lf?.stats().chestOpen))) break;
+    await page.keyboard.press("a");
+    await page.waitForTimeout(350);
   }
 };
 
@@ -196,6 +207,7 @@ try {
     }, { evolutions: EVOLUTIONS, passives: PASSIVES });
     await page.waitForTimeout(6000);
     await clearLevelUps(page);
+    await clearChests(page);
 
     // Chaos-Frame herstellen: 500 Gegner halten (Worst-Case-Deckel), dann
     // SAMPLES Proben ueber ~2 s, damit Streuung sichtbar wird.
@@ -211,10 +223,33 @@ try {
     const max = (fn) => Math.round(Math.max(...use.map((s) => fn(s))) * 10) / 10;
     const sum = (fn) => Math.round(use.reduce((a, s) => a + fn(s), 0) / use.length);
 
+    // M10-perf-cap-rollback: Renderer-String (SwiftShader-Belege ungueltig) +
+    // Reglerstufe des DPR-Budget-Reglers (Teil C: bleibt 1 auf iGPU).
+    const gpu = await page.evaluate(() => {
+      const gl = window.__game?.renderer?.gl;
+      if (!gl) return { renderer: null, vendor: null };
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      return {
+        renderer: dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER)),
+        vendor: dbg ? String(gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL)) : String(gl.getParameter(gl.VENDOR)),
+      };
+    });
+    const renderScale = await page.evaluate(() => Number(window.__rbDbg?.scale ?? 1));
+
+    // Optionaler Sicht-Beleg (png): grosse Feuer-/Aura-Glows im Chaos-Frame.
+    if (SHOT) {
+      await clearLevelUps(page);
+      await clearChests(page);
+      await page.waitForTimeout(800);
+      await page.screenshot({ path: SHOT });
+    }
+
     result = {
       suite: "fx-add-cap",
       when: new Date().toISOString(),
       viewport: VIEW,
+      gpu,
+      renderScale,
       scenario: { seed: 1, minute: 25, god: true, autoPlay: true, targetEnemies: TARGET_ENEMIES },
       samplesTaken: samples.length,
       samplesFilled: filled.length,
