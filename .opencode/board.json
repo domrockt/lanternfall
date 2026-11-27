@@ -5743,11 +5743,17 @@
       "id": 5098,
       "title": "m10-flock-sweep-2: bare-flock-Reste ground-cost + kopierbare Anleitungen auf flock -w",
       "description": "Folge-Karte zu m10-flock-sweep (dort Claim-Konflikt, jetzt frei). scripts/m10-ground-cost.mjs Z.328+467 echte Spawns auf `flock -w 520/300`, Kommentar Z.10 auf Muster mit Timeout-Meldung; m10-fx-overdraw.mjs Z.4, m10-ui-cost.mjs Z.15, m10-heap-margin.mjs Z.7-8 kopierbare Anleitungen auf `flock -w <N>` (heap-margin: Heap-Szenario bleibt absichtlich OHNE Lock). Abnahme: Vorher/Nachher-Grep in docs/lanes/m10-flock-sweep-2.md (vorher 18 Treffer auf 9055126), Negativtest belegte Sperre + flock -w 1 -> rc=1 nach ~1 s mit Meldung, node --check gruen fuer alle 4 Dateien.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-flock-sweep-2",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-27T20:09:02Z",
+          "by": "build",
+          "text": "doing → review: ground-cost Z.333/Z.472 echte Spawns auf flock -w 520/-w 300 + Kommentar-Muster (Timeout-Meldung + Exitcode weiterreichen); fx-overdraw Z.4, ui-cost Z.15, heap-margin Z.7-12 Anleitungen auf flock -w 300 (Heap-Szenario bleibt absichtlich ohne Lock). Geprueft: Vorher-Grep 18 Treffer auf 9055126 (7 in Area-Dateien) -> nachher 0 unkommentierte Treffer in den 4 Dateien (nur heap-margin 'OHNE flock'-Begruendung bleibt, qa-reaccept-perf Split-Line-False-Positive unveraendert); Negativtest belegte Sperre + -w 1 -> rc=1 nach 1.00s MIT Meldung (shots/m10-flock-sweep-2-negativtest.log); node --check 4/4 OK; build rc=0, tests 550/550. Befund: 3 Dateien byte-identisch zu ungemergedem m10-flock-timeout (Merge loest automatisch auf). Doku: docs/lanes/m10-flock-sweep-2.md, Commit ebe3cb9."
+        }
+      ],
       "created": "2026-11-27T20:06:29Z",
-      "updated": "2026-11-27T20:06:29Z"
+      "updated": "2026-11-27T20:09:02Z"
     }
   ]
 }
