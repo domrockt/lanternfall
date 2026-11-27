@@ -230,3 +230,15 @@ gegenüber den M6-Werten oben (>= 5 %):
 
 Der übrige M6-Stand (A1–A12) bleibt unverändert gültig; die Board-Hygiene (#13/#14/#16/#79
 auf done) ist in `docs/qa/2026-11-26.md` belegt.
+
+## A13 — APK-/Release-Stand (fa-04)
+
+- GitHub-Release `latest-build`, Asset `lanternfall.apk`: `createdAt` **2026-11-27T08:00:17Z**,
+  2.481.018 B, `sha256:f1631169ac60503d53ab9bc3c350edd57ffbbd317519202256ba21f269f95cc9`.
+- Lokales Build `~/lanternfall-apk/dist/lanternfall-20261127-0800-0c525c8.apk`, mtime
+  **2026-11-27** → 2026-11-27T08:00:04Z, gleiche Größe und identische SHA256; gebaut aus
+  Commit **`0c525c8`** (2026-11-27T07:17:36Z).
+- main-HEAD beim Prüfen: **`217316d`** → `217316d` (08:44:29Z). APK ist **44 min älter** und
+  **4 Commits hinter** HEAD. Erwartet, da der stündliche Timer baut/publiziert; kein eigener
+  Build/Publish durch den Prüfer.
+- Der im Briefing genannte Pfad `~/lf-apk/out/lanternfall.apk` existiert nicht (veraltet).
