@@ -1,0 +1,54 @@
+{
+  "scene": "run",
+  "enemiesAlive": 300,
+  "enemiesTotal": 324,
+  "particleActive": 140,
+  "particleByTexture": {
+    "fx_death_bone": 36,
+    "fx_ash": 24,
+    "fx_death_blob": 80
+  },
+  "fps": 60,
+  "groups": null,
+  "info": {
+    "canvasW": 480,
+    "canvasH": 360,
+    "cssW": 720,
+    "cssH": 540,
+    "left": 120,
+    "top": 0,
+    "gw": 480,
+    "gh": 360,
+    "px": 2048,
+    "py": 2048,
+    "worldX": 1808,
+    "worldY": 1868,
+    "worldW": 480,
+    "worldH": 360
+  },
+  "groupCenters": [
+    {
+      "cls": "crumble",
+      "cx": 1858,
+      "cy": 1948
+    },
+    {
+      "cls": "burst",
+      "cx": 2238,
+      "cy": 1948
+    },
+    {
+      "cls": "dissolve",
+      "cx": 1858,
+      "cy": 2148
+    },
+    {
+      "cls": "sputter",
+      "cx": 2238,
+      "cy": 2148
+    }
+  ],
+  "jsErrors": [
+    "TypeError: t is not iterable"
+  ]
+}
