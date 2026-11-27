@@ -13,9 +13,9 @@ nicht für den Shard-Pfad).
 | # | Inhalt | Stand |
 |---|--------|-------|
 | K1 | Ist-Stand messen (`scripts/m10-boss-shards.mjs`) | **erledigt** (s. u.) |
-| K2 | Fix in ParticleSystem — Boss-FX-Keys NORMAL + Alpha-Boden 0,7, ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot | **blocked** (Area, s. u.) |
-| K3 | Tests `tests/boss-death-shards.test.ts` | offen (nach K2) |
-| K4 | Nachher-Messung + art-director-Sichtprüfung + diese Doku | offen (nach K2) |
+| K2 | Fix in ParticleSystem — Boss-FX-Keys NORMAL + Alpha-Boden 0,7, ohne fxAlpha-/dpr-Dämpfung, ohne Glow-Slot | **erledigt** (s. u.) |
+| K3 | Tests `tests/boss-death-shards.test.ts` | **erledigt** (s. u.) |
+| K4 | Nachher-Messung + art-director-Sichtprüfung + diese Doku | **erledigt** (s. u.) |
 
 ## K1 — Ist-Stand (Messung, EINMAL, kein Tuning-Loop)
 
@@ -55,31 +55,29 @@ Belege: `shots/m10-boss-shards-before-640x3601.png`,
 `shots/m10-boss-shards-before-780x3603.png` (Explosion mitten im Effekt,
 Kontur als brauner Schlamm-Blob kaum trennbar), `shots/m10-boss-shards-before.json`.
 
-## K2 — Blocker: Area (Disponent-Anfrage gestellt)
+## K2 — Blocker: Area (zwischenzeitlich entfallen)
 
 Der Briefing-Area nennt `src/systems/ParticleSystem.ts` — **diese Datei
 existiert nicht**: Die Klasse `ParticleSystem` liegt in
-`src/systems/FxSystem.ts` (Zeilen ab ~554). Diese Datei ist beim Disponenten
-an `m10-perf-cap-rollback` vergeben (claims.json), die Lane ist fertig
-(`.lane-done` vorhanden), aber noch nicht in main gemergt.
+`src/systems/FxSystem.ts` (Zeilen ab ~554). Diese Datei war beim Disponenten
+an `m10-perf-cap-rollback` vergeben. **Beide Blocker sind entfallen
+(2026-11-27, Versuch 2):** der Claim ist weg (claims.json enthält
+`FxSystem.ts` nicht mehr; Lane `m10-perf-cap-rollback` abgeschlossen,
+`145cd61`), und `fd66146` (`isBossFxKey` in `src/gfx/gen-fx.ts`) ist über den
+Merge `588b344` **bereits in main** — unsere Lane basiert nur noch auf einem
+älteren Base-Stand, deshalb bleibt die Key-Liste lokal (s. SYNC-HINWEIS).
 
-Zweite Abhängigkeit: `isBossFxKey`/`BOSS_FX_BASES` (Commit `fd66146`) liegen nur
-auf dem ebenfalls noch nicht gemergten Branch `m10-boss-fx-contrast`.
+## K2/K3 — umgesetzt im Worktree, Commit durch neuen Claim blockiert
 
-Konsequenz (Lanemuster wie m10-vfx-restore): Anfrage in
-`/home/ai/games/.dispatch/requests.md` gestellt. K2/K3/K4-Nachher warten auf
-die Area-Freigabe bzw. den Merge von `m10-perf-cap-rollback` +
-`m10-boss-fx-contrast`; bis dahin kein Arbeiten am Rand des Area.
-
-## K2/K3 — umgesetzt im Worktree, Commit durch Area-Claim blockiert
-
-**Stand 2026-11-27 (dieser Worktree):** Fix ist implementiert, getestet und
-gemessen — der Commit von `src/systems/FxSystem.ts` wird aber vom
-pre-commit-Hook (claimcheck) blockiert, bis der Disponent die Datei freigibt
-(Anfrage in `/home/ai/games/.dispatch/requests.md`, siehe Abschnitt oben).
-
-Umsetzung (Patch: `~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch`,
-81 Zeilen; zusätzlich uncommittet im Worktree):
+**Stand 2026-11-27, Versuch 2:** Fix und Tests sind implementiert, getestet
+(11/11 Lane-Tests, 713/713 Suite, tsc rc=0, build rc=0) und vom Reviewer
+geprüft (PASS) — der Commit von `src/systems/FxSystem.ts` ist aber erneut
+blockiert: der Disponent hat die Datei nach dem Wegfall von
+`m10-perf-cap-rollback` **neu** an `m10-fx-mixel-fix` vergeben (claims.json
+seit 22:19Z, zusammen mit `src/gfx/gen-fx.ts`). Anfrage zur Freigabe bzw.
+Merge-Übernahme ist in `/home/ai/games/.dispatch/requests.md` aktualisiert;
+aktuelle Fassung des Patches: `~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch`
+(83 Zeilen, applyt auf dem Lane-Branch).
 
 - `ParticleSystem.spawn`: Boss-Keys (`isBossParticleFxKey(opts.texture) ||
   isBossParticleFxKey(opts.frames[0])`, Basis `["fx_boss_core"]`) werden
@@ -94,9 +92,11 @@ Umsetzung (Patch: `~/tmp/m10-boss-death-shards/k2-fxsystem-fix.patch`,
   `src/gfx/gen-fx.ts`; bis zum Merge wird die Key-Liste lokal gehalten, beim
   Merge durch den Import ersetzen.
 
-**Merge-Karte (für den Disponenten/Merge-Job):** Patch anwenden (oder
-FxSystem.ts-Claim freigeben und die Karten K2–K4 als Lane-Commit bringen),
-dann gen-fx-Import ersetzen, K3-Tests grün, K4-Belege committen.
+**Merge-Hinweis (für den Merge-Job/Lead):** beim Merge dieser Lane in main die
+lokale Key-Liste (`BOSS_PARTICLE_FX_BASES`/`isBossParticleFxKey` in
+`FxSystem.ts`) durch den Import aus `src/gfx/gen-fx.ts` (`BOSS_FX_BASES`/
+`isBossFxKey`, fd66146, in main) ersetzen — ein Ort, eine Wahrheit. Danach
+K3-Tests erneut fahren.
 
 Tests: `tests/boss-death-shards.test.ts` — 11 Tests, alle grün:
 Boss-Kern/Rim NORMAL + Alpha ≥ 0,7 trotz alphaScale 0,72; additiver Spec-Fall
@@ -118,10 +118,9 @@ alphaScale 0,72, Renderer RPL-S, jsErrors 0):
 | `fx_death_bone` | 0,720 | 0,720 (unverändert) | NORMAL / 0 | NORMAL / 0 |
 | `fx_fire` | 0,518 / 0,311 (@3) | 0,518 / 0,311 (unverändert) | ADD / 30 | ADD / 30 |
 
-Belege (Worktree + `~/tmp/m10-boss-death-shards/`, Commit gemeinsam mit dem
-Fix): `shots/m10-boss-shards-after-640x3601.png`, `-780x3603.png`,
-`-after.json`. Im 780er-Nachher-Shot sind einzelne Splitter und der hellere
-Kern der Explosion unterscheidbar (Vorher: homogener Schlamm-Blob).
+Belege: `shots/m10-boss-shards-after-640x3601.png`, `-780x3603.png`,
+`-after.json` (im K4-Commit). Im 780er-Nachher-Shot sind einzelne Splitter und
+der hellere Kern der Explosion unterscheidbar (Vorher: homogener Schlamm-Blob).
 art-director-Sichtprüfung (Vision, 2026-11-27): **PASS, Note 4** (Grenze 3).
 Geprüft: beide Views Vorher/Nachher, Crops/Zooms 2x/4x nearest in
 `~/tmp/m10-boss-death-shards/` (`crop-after-780-2x.png`, `zoom-after-640-core-4x.png` …).
@@ -137,7 +136,21 @@ Geprüft: beide Views Vorher/Nachher, Crops/Zooms 2x/4x nearest in
   0,63→0,75) und fx_fire im 780er-View an den 640er-Wert angleichen
   (0,24–0,45 vs. 0,40–0,45) — vom Fix bewusst nicht angefasst (kein Boss-Key).
 
-Offen für K4: ~~art-director-PASS dokumentieren~~ (PASS Note 4, s. o.);
-Nachher-Belege zusammen mit K2/K3 committen (sobald die Area frei ist), dann
-`npm run build` + Tests im Merge-Kontext erneut.
+## Lane-Urteil / Abschluss
+
+- K1 erledigt + committet (`989d92c`); K2/K3 umgesetzt + Reviewer-PASS, aber
+  Commit von `src/systems/FxSystem.ts` durch Claim `m10-fx-mixel-fix` blockiert
+  (s. o.); K4-Messung + art-director-PASS fertig, Belege WIP-committet.
+- Abnahme-Kern: art-director-Sichtprüfung **PASS Note 4** (Vorher Note 2 =
+  Defekt bestätigt); Tests 713/713, `npx tsc --noEmit` rc=0,
+  `npm run build` rc=0, 0 jsErrors, Renderer-String in beiden Mess-JSONs
+  (RPL-S, kein SwiftShader).
+- Ausstehend, sobald die Area frei ist (Reihenfolge): Commit #5919
+  (FxSystem.ts-Fix), Commit #5920 (tests/boss-death-shards.test.ts), dann
+  K4-Abschlussnote + `.lane-done`.
+- Offene Folgepunkte (backlog, nicht blockierend): fx_death_bone-Splitter im
+  Horde-Kontext stärker absetzen (dunkler Rim/Tint bzw. alpha 0,63→0,75);
+  fx_fire im 780er-View an den 640er-Wert angleichen (0,24–0,45 vs. 0,40–0,45).
+- Merge-Hinweis: lokale Boss-Key-Liste beim Merge durch gen-fx-Import ersetzen
+  (s. o.).
 
