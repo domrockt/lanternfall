@@ -7060,19 +7060,31 @@
       "id": 6098,
       "title": "m10-fx-mixel-fix #1: Ist-Messung Mixel-Szene (before)",
       "description": "Skript scripts/m10-fx-mixel.mjs stellt die Mixel-Szene nach (fx_fire-Explosion Scale 1.4, fx_halo-Halo Scale 2.8/4.6, fx_shock Scale 3.3) in 640x360 und 960x540. Abnahme: shots/m10-fx-mixel-before-640.png, -960.png und shots/m10-fx-mixel-before.json existieren; JSON listet je Effekt Textur-px vs. Draw-Spielpixel (Blockgröße >= 2 px für Halo/Shock = Mixel-Befund). Einmal messen, max. 2 Iterationen am Skript.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-27T22:43:09Z",
+          "by": "general",
+          "text": "todo → review: Erledigt, Commit 176dc18: scripts/m10-fx-mixel.mjs + shots/m10-fx-mixel-before-{640,960}.png + before.json (worstBlockGamePx=4,6, 12 Effekte mit Scale>1 = Mixel-Befund); zusaetzlich Off-by-10-Farbfix in blob/ring-Ramps dokumentiert."
+        }
+      ],
       "created": "2026-11-27T22:32:56Z",
-      "updated": "2026-11-27T22:32:56Z"
+      "updated": "2026-11-27T22:43:09Z"
     },
     {
       "id": 6099,
       "title": "m10-fx-mixel-fix #2: Fix — Effekt-Texturen in Sprite-Pixelgröße backen, Draw-Scale <= 1",
       "description": "src/gfx/gen-fx.ts: fx_fire/fx_halo/fx_halo_cold/fx_shock werden zusätzlich in Bake-Stufen (w0*L x h0*L, L=2..max) mit weichem 1-px-Glow erzeugt; Level-1-Keys unverändert. src/systems/FxSystem.ts (+ParticleSystem im selben File): kleinste Stufe L >= gewünschter Scale wählen, Frames auf Level-Keys umschreiben, Sprite-Draw-Scale = Scale/L <= 1; runtime.scaleFrom bleibt Spielpixel-Größe. Abnahme: npx tsc --noEmit rc=0, gezielte vitest-Tests für neue Helper grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-27T22:43:09Z",
+          "by": "general",
+          "text": "todo → doing: Angefangen: gen-fx-Bake-Infrastruktur ist in #6098-Commit gelandet (Level-1-identisch); als naechstes FxSystem Draw-Pfad (Level-Auswahl, Draw-Scale <= 1)."
+        }
+      ],
       "created": "2026-11-27T22:32:56Z",
-      "updated": "2026-11-27T22:32:56Z"
+      "updated": "2026-11-27T22:43:09Z"
     },
     {
       "id": 6100,
