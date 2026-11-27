@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { ENEMIES, waveForMinute } from "../data";
 import type { EnemyDef, EnemyId, WaveDef } from "../data/types";
 import { WORLD_SIZE } from "../config";
-import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, streamSpawnOffsets } from "../logic/waves";
+import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, SPAWN_FRAME_BUDGET, splitSpawnBurst, streamSpawnOffsets } from "../logic/waves";
 import {
   createFrameBudget, eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale,
   frameBudgetTarget, maxActiveEnemies, pickRecycleIndex, recycleDistance, spawnRateFactor,
@@ -26,6 +26,12 @@ export class Spawner {
   // bestehende maxActiveEnemies-Deckel unveraendert. Siehe logic/scaling.ts.
   private frameBudget: FrameBudgetState;
   private lastBudgetFrame = -1;
+  // M10: Spawn-Burst-Glaettung. Pro echtem Frame duerfen maximal
+  // SPAWN_FRAME_BUDGET Director-Spawns materialisiert werden; ueberschuessige
+  // Spawns kehren ins Restbudget zurueck und werden in spaeteren Frames
+  // nachgeholt (Summe/Mischung unveraendert). Siehe logic/waves.ts.
+  private lastSpawnFrame = -1;
+  private spawnAllowance = SPAWN_FRAME_BUDGET;
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
@@ -93,7 +99,17 @@ export class Spawner {
     this.budget = scaled.budget;
     const room = Math.max(0, cap - this.pool.count);
     const toSpawn = Math.min(scaled.count, room);
-    for (let i = 0; i < toSpawn; i++) {
+    // M10: Burst-Glaettung — pro echtem Frame nur SPAWN_FRAME_BUDGET Spawns
+    // materialisieren, den Rest ins Restbudget zurueckstellen (Nachhol-Frames
+    // laufen mit normaler Rate; Spezialwellen/Boss-Spawns sind nicht betroffen).
+    if (frameId !== this.lastSpawnFrame) {
+      this.lastSpawnFrame = frameId;
+      this.spawnAllowance = SPAWN_FRAME_BUDGET;
+    }
+    const split = splitSpawnBurst(toSpawn, this.spawnAllowance);
+    this.spawnAllowance = split.allowanceLeft;
+    if (split.deferred > 0) this.budget += split.deferred;
+    for (let i = 0; i < split.now; i++) {
       const id = pickEnemy(wave.mix, this.rng);
       const def = id ? ENEMIES[id] : this.rng.pick(Object.values(ENEMIES));
       const elite = this.rng.next() < eliteChance(wave.minute);

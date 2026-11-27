@@ -33,6 +33,37 @@ export function advanceSpawnBudget(
   return { budget: total - count, count };
 }
 
+/**
+ * M10-Spawn-Burst-Glättung: maximale Anzahl Director-Spawns, die pro echtem
+ * Frame materialisiert wird. Ein Frame-Hitch (z. B. bei timeScale 30) lässt
+ * `advanceSpawnBudget` einen großen Spawn-Rückstau aufbauen; ohne Deckel würde
+ * der ganze Rückstau in einem Frame gespawnt (Bursts von 40+ Spawns) und die
+ * Frame-Zeit-Spitze weiter verstärken. Verzögerte Spawns werden über das
+ * Restbudget nachgeholt — Gesamtanzahl und Mischung bleiben unverändert.
+ */
+export const SPAWN_FRAME_BUDGET = 8;
+
+export interface SpawnBurstSplit {
+  /** Spawns, die dieser Frame materialisiert (≤ Allowance). */
+  now: number;
+  /** Spawns, die über das Restbudget in späteren Frames nachgeholt werden. */
+  deferred: number;
+  /** Verbleibende Allowance für den Rest des Frames. */
+  allowanceLeft: number;
+}
+
+/**
+ * Teilt die in einem Substep fälligen Spawns in „jetzt“ und „später“ auf.
+ * Reine Funktion: nie mehr als `allowance` Spawns pro Frame, Summe bleibt
+ * erhalten (`now + deferred === granted`), Grenz-/Müllwerte → 0.
+ */
+export function splitSpawnBurst(granted: number, allowance: number): SpawnBurstSplit {
+  const want = Number.isFinite(granted) ? Math.max(0, Math.floor(granted)) : 0;
+  const allow = Number.isFinite(allowance) ? Math.max(0, Math.floor(allowance)) : 0;
+  const now = Math.min(want, allow);
+  return { now, deferred: want - now, allowanceLeft: allow - now };
+}
+
 /** Ring-Positionen für Spezialwelle "Ring-Einkesselung". */
 export function ringSpawnOffsets(count: number, radius: number): { x: number; y: number }[] {
   const out: { x: number; y: number }[] = [];

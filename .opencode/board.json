@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5363,
+  "next": 5402,
   "cards": [
     {
       "id": 1,
@@ -6102,6 +6102,52 @@
       ],
       "created": "2026-11-27T20:37:07Z",
       "updated": "2026-11-27T20:40:31Z"
+    },
+    {
+      "id": 5398,
+      "title": "m10-spawn-burst-budget K1: Vorher-Messung Spawn-Bursts (Frame-Spawns + ms-Spitzen)",
+      "description": "AK: scripts/m10-spawn-burst.mjs laeuft headless (fullrun-Setup: god+autoplay, timeScale 30) und schreibt shots/m10-spawn-burst-before.json mit je Frame Spawn-Anzahl + Frame-ms; Top-5-Burst-Frames und deren ms-Spitzen benannt. Owner gameplay-dev, Kontrolleur reviewer.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-27T20:56:00Z",
+          "by": "build",
+          "text": "todo → doing: Start: Mess-Skript schreiben (fullrun-Setup, je Frame Spawn-Anzahl + ms), Baseline vor Fix."
+        }
+      ],
+      "created": "2026-11-27T20:55:57Z",
+      "updated": "2026-11-27T20:56:00Z"
+    },
+    {
+      "id": 5399,
+      "title": "m10-spawn-burst-budget K2: Burst-Glaettung (Spawn-Budget je Frame + Warteschlange)",
+      "description": "AK: reine Funktion in src/logic/waves.ts (SPAWN_FRAME_BUDGET=8, splitSpawnBurst), Einbau in src/systems/Spawner.ts (Allowance je echtem Frame, Verzoegerung via budget-Rueckgabe); Spezialwellen/Boss-Spawns unveraendert. npx tsc --noEmit gruen. Owner gameplay-dev, Kontrolleure reviewer + test-auditor.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T20:55:57Z",
+      "updated": "2026-11-27T20:55:57Z"
+    },
+    {
+      "id": 5400,
+      "title": "m10-spawn-burst-budget K3: tests/spawn-burst.test.ts",
+      "description": "AK: kein Frame > Budget-Spawns, Gesamtanzahl identisch (now+deferred=granted, 30-min-Sim mit/ohne Glaettung gleiche Summe), Boss-/Spezialwellen-Timing unberuehrt (Codepfad), Grenzfaelle 0/1/sehr viel + NaN. npx vitest run tests/spawn-burst.test.ts gruen. Owner gameplay-dev, Kontrolleure test-auditor + reviewer.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T20:55:57Z",
+      "updated": "2026-11-27T20:55:57Z"
+    },
+    {
+      "id": 5401,
+      "title": "m10-spawn-burst-budget K4: Nachher-Messung + Doku + .lane-done",
+      "description": "AK: shots/m10-spawn-burst-after.json; Ziel max Spawn-Frame-Zeit -30%, Spawn-Summe Abweichung 0; docs/lanes/m10-spawn-burst-budget.md mit Vorher/Nachher + offenen Punkten; build+Tests gruen; .lane-done. Owner gameplay-dev, Kontrolleure reviewer + commit-gate.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-27T20:55:57Z",
+      "updated": "2026-11-27T20:55:57Z"
     }
   ]
 }
