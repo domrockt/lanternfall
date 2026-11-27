@@ -5,10 +5,10 @@ Bereich: src/gfx/gen-enemies.ts, src/gfx/enemySprites.ts; Generator scripts/art/
 
 ## Karten
 
-- #298 Tier 0-1 (12 haeufige Gegner): 4 echte Lauf-Frames + Silhouetten. Stand: review.
-- #299 Tier 2-3: 4 Frames + Schattierung. Stand: todo.
-- #300 Tier 4 + Elite: 4 Frames, Lichtkante. Stand: todo.
-- #301 Abnahme: 30er-Bogen, Masse 300+, GIF, perf, .lane-done. Stand: todo.
+- #298 Tier 0-1 (12 haeufige Gegner): 4 echte Lauf-Frames + Silhouetten. Stand: done.
+- #299 Tier 2-3: 4 Frames + Schattierung. Stand: done (Abnahme PASS, Note 4,5).
+- #300 Tier 4 + Elite: 4 Frames, Lichtkante. Stand: review.
+- #301 Abnahme: 30er-Bogen, Masse 300+, GIF, perf, .lane-done. Stand: doing.
 
 ## #298 Ergebnis 0-1: Belege
 
@@ -65,11 +65,21 @@ src/scenes/Run.ts Zeile 1066 waehlt Gegner-Frames mit Math.min(2, frames.length)
   Wolf-Schwanz; 3-Ton-Sch + Kontur; Pilzbomber klar als Flammenpilz statt grauer Kugel).
 - npx tsc --noEmit gruen, npm run build gruen (2,6 s), npm test 175/175 gruen.
 
+### #299 Maschinenpruefung (2026-11-27)
+
+- Skript `~/tmp/m9-art-enemies-3/frames-check.py` (baut die 30 Sprites aus
+  `scripts/art/gen_enemies.py`): 30 Keys, je 4 Frames, F0 != F2 und F1 != F3,
+  0 Off-Palette-Pixel, 30/30 eindeutige Silhouetten (Masken-Hash), Tier 0-4 je 6 Gegner.
+- Kontaktboegen shots/m9-art-enemies-tier2-1.png (696x876), tier2-2.png (696x876),
+  tier3-1.png (792x948), tier3-2.png (792x948): je 3 Gegner, 4 Frames pro Zeile, 6x.
+- Sichtpruefung: Wolf mit Schwanz/Beinphase, Banshee mit Traenenstreifen, Golem breite
+  Schultern, Spinne 8 Beine, Kultist mit Messer, Bomber als Flammenpilz, Knight mit
+  Schild/Visier, Harpy Fluegelphase, Lich mit Krone/Stab, Wraith mit Kette, Treant,
+  Imp mit Fluegeln — alle unterscheidbar, 3-Ton-Schatten + 1-px-Kontur.
+
 ## Run-Frame-Hinweis
 
 In-Game zeigt src/scenes/Run.ts:1066 weiter mit `Math.min(2, frames.length)` nur F0/F1.
-Deshalb belegen die Kontaktboegen die 4 Lauf-Frames; ein Einzeiler-Antrag (2x) in
-/home/ai/games/.dispatch/requests.md an den Disponenten (Run.ts gehoert zur m8-display-Claim,
-die Lane darf fremde Dateก่อนArtist else nicht schreiben). Bis zur Antwort bleibt #301 offen.
-
- offen.
+Deshalb belegen die Kontaktboegen die 4 Lauf-Frames. Die 4-Frame-Anzeige wird parallel
+von der Lane `m9-art-polish` repariert (dort als Karte dokumentiert); diese Lane fasst
+Run.ts bewusst nicht an.
