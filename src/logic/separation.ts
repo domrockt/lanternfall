@@ -119,8 +119,7 @@ export interface CrowdSeparationResult {
  * bleibt der Aufwand linear zur Gegnerzahl mal konstanter Nachbarschaft.
  */
 export function separationCellSize(maxRadius: number): number {
-  const r = Number.isFinite(maxRadius) ? Math.max(4, maxRadius) : 16;
-  return Math.max(16, Math.min(64, Math.ceil(r * 2)));
+  return SpatialHash.recommendedCellSize(maxRadius);
 }
 
 /**
