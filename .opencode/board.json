@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 2679,
+  "next": 2680,
   "cards": [
     {
       "id": 1,
@@ -3826,6 +3826,16 @@
       "notes": [],
       "created": "2026-11-27T11:01:47Z",
       "updated": "2026-11-27T11:01:47Z"
+    },
+    {
+      "id": 2679,
+      "title": "m10-perf-recovery: Profil + Bisect + Ursache (Mess-Karte, kein Fix)",
+      "description": "Profil 60 s Burst 500 und Minute-25-Endgame bei 640x360 via CDs Profiler; Top-10 Self-Time und Draw-Calls/Blend-Wechsel/Texture-Binds in docs/lanes/m10-perf-recovery.md. Bisect 0b42ffe..HEAD: Burst im ganzen Range gruen (59-60), Minute-25-Ursache c0f56d5 (#280 Ambient Gluehwuermchen+Nebel) mit FPS-Delta ~-8,6 belegt. Abnahme: Zahlen + Logpfad im Doc, Ursache benannt; kein Code-Fix in dieser Karte.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-27T12:42:07Z",
+      "updated": "2026-11-27T12:42:07Z"
     }
   ]
 }
