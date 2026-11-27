@@ -98,6 +98,11 @@ Scope-Hinweis: Ein zwischenzeitlicher Ambient-/LOD-Code-Fix (Snapshot `13a679d`)
 wurde auf Supervisor-Anweisung **zurückgenommen** — diese Karte bleibt Mess-Karte
 (Profil + Bisect + Ursache), der Fix gehört in `#2678 m10-perf-fix-ambient-batching`.
 Die Messartefakte (`shots/m10-perf-profile*`, `shots/perf-m3*.json`) bleiben.
+Wichtig: `shots/perf-m3.json` und `shots/m10-perf-profile.json` vom 12:xx-Lauf
+entstanden **mit** diesem inzwischen zurückgenommenen Fix (640 Minute-25 einmal
+58,0 FPS) und sind kein HEAD-Beleg. Maßgeblich für HEAD ist der Baseline-Lauf
+`0036129` (Burst 59,1 PASS / Minute-25 53,0 FAIL); 780×360@3 bleibt mit
+46,1 FPS fill-rate-bound (<55) und ist nicht durch Ambient allein lösbar.
 
 Sicht-Belege (`#2499`): profile done — die Belege lagen bereits als eigene Karte
 vor und sind in `caea6b6`/`3ea51b7` committet (verify-display 38/38, 30 Gegner/
