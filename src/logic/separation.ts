@@ -66,8 +66,8 @@ export function directionToPlayer(dx: number, dy: number, uid: number): Vec2 {
  * Pfad im Satten allokationsfrei.
  *
  * Vertrag: Das Ergebnis ist NUR unmittelbar zu verbrauchen (in eine Summe
- * aufnehmen — genau so nutzen es Run.ts und resolveCrowdSeparation). Nach bis
- * zu 16 weiteren separationPush-Aufrufen wird dasselbe Objekt überschrieben.
+ * aufnehmen — genau so nutzen es Run.ts und resolveCrowdSeparation). Nach
+ * genau 16 weiteren separationPush-Aufrufen wird dasselbe Objekt überschrieben.
  */
 const PUSH_POOL: Vec2[] = [];
 const PUSH_POOL_SIZE = 16;

@@ -359,26 +359,27 @@ if (argOf("abSrc", "")) {
   for (let f = 0; f < WARMUP + FRAMES; f++) {
     // Reihenfolge pro Frame alternieren → Reihenfolgeneffekte heben sich auf.
     const beforeFirst = f % 2 === 0;
-    let b;
-    let a;
+    let mb;
+    let ma;
     if (beforeFirst) {
-      b = stepBefore(enemiesBefore).ms;
-      a = stepAfter(enemiesAfter).ms;
+      mb = stepBefore(enemiesBefore);
+      ma = stepAfter(enemiesAfter);
     } else {
-      a = stepAfter(enemiesAfter).ms;
-      b = stepBefore(enemiesBefore).ms;
+      ma = stepAfter(enemiesAfter);
+      mb = stepBefore(enemiesBefore);
     }
     if (f >= WARMUP) {
-      msBefore.push(b);
-      msAfter.push(a);
+      msBefore.push(mb.ms);
+      msAfter.push(ma.ms);
     }
     if (f % SAMPLE_EVERY === 0 && f >= WARMUP) {
       minBefore = Math.min(minBefore, minPairDistance(enemiesBefore));
       minAfter = Math.min(minAfter, minPairDistance(enemiesAfter));
     }
     if (f === WARMUP + FRAMES - 1) {
-      pairsBefore = stepBefore(enemiesBefore).pairs;
-      pairsAfter = stepAfter(enemiesAfter).pairs;
+      // Paare aus dem letzten gemessenen Frame — keine Extra-Steps.
+      pairsBefore = mb.pairs;
+      pairsAfter = ma.pairs;
     }
   }
   const after = stats(msAfter);
