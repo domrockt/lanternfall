@@ -1,0 +1,70 @@
+{
+  "schema": "m10-audio-mix-chaos/v1",
+  "label": "after",
+  "generatedAt": "2026-11-27T23:46:33.029Z",
+  "method": "synthetischer 500-Gegner-Chaos-Lauf (Minute 25): 60 s Spielzeit, 12 Waffen-/Evo-Klaenge im Dauerfeuer, 53 Hits/s, 15 Kills/s, 15 XP/s, Master-SFX 1; echte Mixer-Logik aus src/audio/mixing.ts + WAV-Superposition (22050 Hz)",
+  "sim": {
+    "seconds": 60,
+    "seed": 101,
+    "masterSfx": 1
+  },
+  "mixerMode": "fairness+limiter (planPlay/limiterGain)",
+  "voiceStarts": {
+    "total": 1359,
+    "perSecAvg": 22.65,
+    "perSecP95": 25,
+    "perSecMax": 25,
+    "perSecP3Avg": 22.55,
+    "perSecP3P95": 24,
+    "perSecP3Max": 24,
+    "rateCapPerSec": 24,
+    "rejectedByCooldown": 1060,
+    "rejectedByPerSoundVoices": 50,
+    "rejectedByBudget": 0,
+    "rejectedByRateCap": 1342,
+    "rejectedByRateFair": 4080,
+    "rejectedTotal": 6532,
+    "evictions": 1
+  },
+  "concurrentVoices": {
+    "max": 12,
+    "p95": 10,
+    "limit": 12
+  },
+  "mixPeak": {
+    "linear": 0.4755,
+    "dbfs": -6.46,
+    "targetDbfs": -1,
+    "clippingSamples": 0,
+    "clippingPctOfSamples": 0,
+    "clippingCases": 0
+  },
+  "burstWorstCase": {
+    "method": "alle 23 SFX mit maxVoices-Stimmen im selben Moment gestartet (gestaffelt um Cooldown)",
+    "voicesStarted": 21,
+    "linear": 0.8541,
+    "dbfs": -1.37,
+    "clippingSamples": 0,
+    "clippingCases": 0
+  },
+  "weaponAudibility": {
+    "perIdStarts": {
+      "ember": 60,
+      "flail": 56,
+      "frost": 54,
+      "thorn": 56,
+      "storm": 53,
+      "lantern": 51,
+      "phoenix": 29,
+      "wrath_pendulum": 33,
+      "eternal_winter": 58,
+      "thorn_storm": 33,
+      "thunder_seal": 30,
+      "soul_beacon": 58
+    },
+    "minStartsPerId": 29,
+    "audibleIds": 12,
+    "missingIds": []
+  },
+  "jsErrors": []
+}
