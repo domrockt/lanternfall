@@ -1,0 +1,88 @@
+{
+  "tag": "after",
+  "seed": "99",
+  "viewport": "960x540@1",
+  "realtimeSeconds": 80,
+  "framesRecorded": 3010,
+  "spawnFrames": 1782,
+  "totalSpawns": 4085,
+  "spawnStats": {
+    "maxSpawnsInFrame": 23,
+    "p95SpawnsInFrame": 6,
+    "burstFramesOver20": 2,
+    "burstFramesOver40": 0
+  },
+  "frameTimeMs": {
+    "max": 50,
+    "p50": 16.7,
+    "p95": 16.8,
+    "p99": 16.8,
+    "maxSpawnFrameRawMs": 16.7,
+    "avgSpawnFrameRawMs": 16.7
+  },
+  "top5BurstFrames": [
+    {
+      "frame": 3952,
+      "spawns": 23,
+      "rawDeltaMs": 16.7,
+      "elapsedSec": 1680.07
+    },
+    {
+      "frame": 3121,
+      "spawns": 20,
+      "rawDeltaMs": 16.7,
+      "elapsedSec": 1320.5
+    },
+    {
+      "frame": 3712,
+      "spawns": 19,
+      "rawDeltaMs": 16.7,
+      "elapsedSec": 1560.08
+    },
+    {
+      "frame": 1349,
+      "spawns": 16,
+      "rawDeltaMs": 16.8,
+      "elapsedSec": 600.01
+    },
+    {
+      "frame": 3780,
+      "spawns": 15,
+      "rawDeltaMs": 16.7,
+      "elapsedSec": 1594.08
+    }
+  ],
+  "top5SlowestFrames": [
+    {
+      "frame": 2637,
+      "spawns": 0,
+      "rawDeltaMs": 50,
+      "elapsedSec": 1131.92
+    },
+    {
+      "frame": 2622,
+      "spawns": 1,
+      "rawDeltaMs": 33.4,
+      "elapsedSec": 1123.67
+    },
+    {
+      "frame": 2634,
+      "spawns": 1,
+      "rawDeltaMs": 33.4,
+      "elapsedSec": 1130.17
+    },
+    {
+      "frame": 2641,
+      "spawns": 1,
+      "rawDeltaMs": 33.4,
+      "elapsedSec": 1134.82
+    },
+    {
+      "frame": 2639,
+      "spawns": 1,
+      "rawDeltaMs": 33.3,
+      "elapsedSec": 1133.27
+    }
+  ],
+  "jsErrors": []
+}
