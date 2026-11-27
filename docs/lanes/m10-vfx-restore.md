@@ -91,6 +91,27 @@ pausierten Frame wie der Damped-Frame (sameDensity true):
   den Near-White-Anteil weiter anheben und muss deshalb (wie beantragt) gegen dieses
   Gate gemessen werden, bevor sie uebernommen wird.
 
+## K4 — art-director-Urteil + gewaehlte Stufe
+
+**Gewaehlte Stufe: 1** (fxAlpha 0,65 im minimal-LOD, Run.ts-Hebel). Stufe 2 (Glows +0,1)
+ist claim-blockiert (gen-fx.ts/FxSystem.ts, Anfrage in `.dispatch/requests.md`) und muss
+nach Uebernahme gegen das Near-White-Gate (≤ 4,16 %; Stufe 1 liegt mit 3,98 % schon
+nah dran) neu gemessen werden.
+
+**art-director-Abnahme: PASS, Gesamtnote 4/5** (NACHHER 640x360 **4/5**, 780x360@3 **4/5**):
+
+- Identitaet belegt: AE-Diff sitzt ausschliesslich im Laternenlicht-Kreis
+  (640: 27,4 % der Pixel, 780@3: 22,1 %) — derselbe Freeze-Frame, Aenderung nur aus
+  fxAlpha 0,5→0,65.
+- Frage 1 (Effekte praesenter): ja, messbar (+2,8 % Mittelhelligkeit im Lichtkreis-Crop,
+  RMSE 1,12 %/0,97 %), im 4x-A/B satztere Ring-/Glow-Kanten; absolut "rasterhart, nicht
+  verwaschen".
+- Frage 2 (Ueberstrahlung): nein — eigene Near-White-Gegenprobe 0,61 % → 0,71 %
+  (Luminanz > 230, Fullframe), Gegner-Silhouetten und HUD voll lesbar.
+- Optionale Polish-Empfehlung (kein Abnahmekriterium): zentraler Glow-Halbton um die
+  Ringcluster leicht deckeln bzw. Aura 1 Palette-Stufe Richtung Amber — als Backlog-Karte
+  `m10-vfx-restore: Glow-Core-Polish` eingetragen.
+
 ## Offene Punkte
 
 - `fxAlphaFor` (0,5/0,72) liegt in `src/logic/lod.ts` — **fremd geclaimed**

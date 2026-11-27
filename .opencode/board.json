@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 5302,
+  "next": 5303,
   "cards": [
     {
       "id": 1,
@@ -6025,6 +6025,15 @@
       "notes": [],
       "created": "2026-11-27T20:30:10Z",
       "updated": "2026-11-27T20:30:10Z"
+    },
+    {
+      "id": 5302,
+      "title": "m10-vfx-restore: Glow-Core-Polish (Backlog, art-director-Empfehlung)",
+      "description": "Backlog aus K4-Abnahme (PASS 4/5): zentraler Glow-Halbton um die Effekt-Ringcluster (~3-4 px Radius) leicht deckeln oder Aura-Farbe 1 Palette-Stufe Richtung Amber, damit Feindkonturen im Kern des Laternenlicht-Kreises Kontrast zurueckbekommen. Hebel liegt in gen-fx.ts/FxSystem.ts (Claim m10-boss-fx-contrast, Anfrage in .dispatch/requests.md); Gate: Near-White A7 <= 4,16 % (Stufe 1 liegt bei 3,98 %).",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-27T21:35:22Z",
+      "updated": "2026-11-27T21:35:22Z"
     }
   ]
 }
