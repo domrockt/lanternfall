@@ -88,7 +88,7 @@ const BASE: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     scaleFrom: 2.4, scaleTo: 1.0, dustScale: 1.2,
     rim: "fx_death_blob", rimTint: C.nightDeep, rimScale: 1.14,
     spread: 130, tint: C.marshLight,
-    additive: false,
+    additive: true,
   },
   // Geist verpufft langsam nach oben und blendet additiv aus. Der dunkle
   // Void-Rim gibt dem weichen Halo eine lesbare Kontur.

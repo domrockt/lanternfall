@@ -61,8 +61,8 @@
         "fx_ash"
       ],
       "bboxGamePx": {
-        "w": 35,
-        "h": 34
+        "w": 36,
+        "h": 35
       },
       "frames": [
         4,
@@ -84,14 +84,14 @@
       "post": "/home/ai/tmp/m10-death-fx/raw-burst.png",
       "spawned": 6,
       "particleActive": 115,
-      "nearby": 110,
+      "nearby": 114,
       "textures": [
         "fx_death_blob",
         "fx_star"
       ],
       "bboxGamePx": {
-        "w": 107,
-        "h": 89
+        "w": 105,
+        "h": 87
       },
       "frames": [
         4,
@@ -141,8 +141,8 @@
       "pre": "/home/ai/tmp/m10-death-fx/pre-sputter.png",
       "post": "/home/ai/tmp/m10-death-fx/raw-sputter.png",
       "spawned": 6,
-      "particleActive": 112,
-      "nearby": 111,
+      "particleActive": 122,
+      "nearby": 122,
       "textures": [
         "fx_death_dust",
         "fx_fire"
@@ -161,7 +161,7 @@
   "final": {
     "enemies": 309,
     "scene": "run",
-    "fps": 59.9
+    "fps": 60.2
   },
   "jsErrors": []
 }

@@ -3,10 +3,10 @@
     "cls": "crumble",
     "enemy": "wisp",
     "particles": 108,
-    "areaGamePx2": 17234,
+    "areaGamePx2": 16536,
     "bboxGamePx": {
-      "w": 22,
-      "h": 22
+      "w": 23,
+      "h": 23
     },
     "textures": [
       "fx_death_bone",
@@ -25,7 +25,7 @@
     "cls": "burst",
     "enemy": "bog_rat",
     "particles": 140,
-    "areaGamePx2": 44255,
+    "areaGamePx2": 44252,
     "bboxGamePx": {
       "w": 41,
       "h": 40
@@ -49,7 +49,7 @@
     "cls": "dissolve",
     "enemy": "banshee",
     "particles": 120,
-    "areaGamePx2": 40928,
+    "areaGamePx2": 40929,
     "bboxGamePx": {
       "w": 25,
       "h": 25
@@ -72,10 +72,10 @@
     "cls": "sputter",
     "enemy": "toad",
     "particles": 140,
-    "areaGamePx2": 40612,
+    "areaGamePx2": 43572,
     "bboxGamePx": {
-      "w": 43,
-      "h": 42
+      "w": 38,
+      "h": 37
     },
     "textures": [
       "fx_death_dust",
