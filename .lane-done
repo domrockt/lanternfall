@@ -1,0 +1,26 @@
+# Lane m10-flock-sweep — bare-flock Reste auf `flock -w <N>` (2026-11-27)
+
+Alle flock-Spawns (Kommentare UND command-Arrays) in den 8 claimed Dateien auf
+`flock -w <N> <lock>` umgestellt, N = erwartete Laufzeit + 120 s
+(m10-endgame-fps 240, qa-reaccept-perf 420, m10-damage-batch 240, m10-crowd-probe 240,
+balance 420, m10-chest-timing 240, m10-chest-layout 240, verify-display 300).
+Meldungsmuster aus m10-flock-timeout uebernommen („Sperre /home/ai/games/.lf-perf.lock
+belegt — spaeter erneut versuchen" + Exitcode weiterreichen).
+
+- qa-reaccept-perf (einziger echter Spawn): `"-w","420"` im spawnSync-Array, Node-Timeout
+  300_000 → 720_000 (420 s Lock-Wartezeit + 300 s Messlauf), status-Zweig mit
+  `!existsSync(file)`-Gate — legitimer perf.mjs rc=1 (55-Ziel verfehlt, JSON geschrieben)
+  wird NICHT als Lock-Timeout behandelt (Review-FIX K1, Re-Review PASS).
+- m10-endgame-fps: recorded-command-String in summary-JSON auf `-w 240` (wird kopiert).
+
+Abnahme (Belege in docs/lanes/m10-flock-sweep.md):
+1. `grep -n 'flock' <8 Dateien> | grep -v 'flock -w'` → 1 struktureller Treffer
+   (argv[0]-Literal `"flock",` im spawnSync-Array; `-w` als argv[1] daneben) — kein bare Spawn mehr.
+2. Negativtest: Sperre gehalten + `flock -w 1` → rc=1 nach ~1 s (7 Kommando-Muster +
+   echter SpawnSync-Pfad, status=1); Positivkontrolle freie Sperre: rc=0 nach 0.02 s.
+3. node --check 8x OK; npm run build rc=0; npm test 50 Dateien / 515 Tests passed.
+4. git diff: nur Lock-Wrapper/Kommentare/Meldungen, keine Messlogik.
+
+Reviewer: Runde 1 FAIL (K1: perf rc=1 verwechselt), FIX b8a404f, Runde 2 PASS.
+NICHT angefasst (fremde Claims): m10-ground-cost/-fx-overdraw/-ui-cost, realtime-run,
+m10-dpr-budget, src/**. Keine offenen Punkte; Merge in main kann erfolgen.
