@@ -1,0 +1,103 @@
+{
+  "mode": "full-30min",
+  "minutes": 30,
+  "timeScale": 1,
+  "simMinutes": 30.4,
+  "elapsedRealSeconds": 1859,
+  "truncated": false,
+  "completed": true,
+  "bosses": [
+    {
+      "index": 0,
+      "name": "Moorkönigin",
+      "expectedSecond": 300,
+      "actualSecond": 300,
+      "ok": true
+    },
+    {
+      "index": 1,
+      "name": "Knochenfürst",
+      "expectedSecond": 600,
+      "actualSecond": 600,
+      "ok": true
+    },
+    {
+      "index": 2,
+      "name": "Der Fahle Hirte",
+      "expectedSecond": 900,
+      "actualSecond": 900,
+      "ok": true
+    },
+    {
+      "index": 3,
+      "name": "Glockenturm-Golem",
+      "expectedSecond": 1200,
+      "actualSecond": 1200,
+      "ok": true
+    },
+    {
+      "index": 4,
+      "name": "Hexenzirkel",
+      "expectedSecond": 1500,
+      "actualSecond": 1500,
+      "ok": true
+    },
+    {
+      "index": 5,
+      "name": "Der Hohle König",
+      "expectedSecond": 1800,
+      "actualSecond": 1800,
+      "ok": true
+    }
+  ],
+  "bossesDefeated": 6,
+  "chestsDropped": 6,
+  "evolutions": [
+    "phoenix",
+    "wrath_pendulum",
+    "eternal_winter",
+    "soul_beacon"
+  ],
+  "levels": 44,
+  "kills": 11565,
+  "fps": {
+    "min": 57.4,
+    "median": 60.5,
+    "samples": 7329,
+    "target": 55,
+    "passed": true
+  },
+  "heap": {
+    "startMB": 21.8,
+    "minute1MB": 30.6,
+    "minute29MB": 35.5,
+    "endMB": 27.3,
+    "cdpUsedMB": {
+      "start": 9.8,
+      "minute1": 13.1,
+      "minute29": 18,
+      "end": 15.4
+    },
+    "measured": true,
+    "deltaVsMinute1Pct": 16,
+    "targetPct": 15,
+    "gate": "hard",
+    "passed": false
+  },
+  "screenshots": [
+    "shots/m10-realtime-minute-10.png",
+    "shots/m10-realtime-minute-20.png",
+    "shots/m10-realtime-minute-30.png"
+  ],
+  "victory": true,
+  "resultReason": "dawn",
+  "crashes": [],
+  "shotFailures": 0,
+  "host": {
+    "loadavg1": 7.08,
+    "freememMB": 68542,
+    "userDataDir": "/home/ai/tmp/m10-realtime-stability/chrome-5527-1795808233310"
+  },
+  "jsErrors": [],
+  "passed": false
+}

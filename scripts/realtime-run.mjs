@@ -2,13 +2,14 @@
 // Realtime-Run: EIN kompletter Run in Echtzeit (timeScale 1), AutoPlay,
 // God-Mode nur gegen den Tod. Protokolliert Boss-Zeitpunkte (5/10/15/20/25/30
 // min ±2 s), Truhen, Evolutionen, FPS (min/median), Heap (Minute 1 vs. Ende),
-// JS-Fehler und alle 5 min einen Screenshot.
+// JS-Fehler und im Volllauf alle 10 min (Teil-Lauf: 5 min) einen Screenshot.
 //
 // Volle 30 Minuten sind ein langer Lauf; für Lane-/CI-Tests:
 //   node scripts/realtime-run.mjs --minutes 3
 //
 // Exit 0 nur, wenn alle Erwartungen für das gewählte Zeitfenster erfüllt sind.
 import { mkdirSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 
 const argv = process.argv.slice(2);
@@ -21,11 +22,24 @@ const argMinutes = (() => {
 const MINUTES = Number.isFinite(argMinutes) ? Math.max(1, Math.min(30, Math.floor(argMinutes))) : 30;
 const RUN_SECONDS = MINUTES * 60;
 const FULL_RUN = MINUTES >= 30;
+// Ausgabe-Praefix (M10-Lane committed Belege als shots/m10-realtime-*).
+const PREFIX = (() => {
+  const inline = argv.find((a) => a.startsWith("--prefix="));
+  if (inline) return inline.slice("--prefix=".length);
+  const i = argv.indexOf("--prefix");
+  return i >= 0 && argv[i + 1] ? argv[i + 1] : "realtime";
+})();
+// chrome-<pid>-<ts>: isoliertes Profil pro Lauf, damit kein persistenter
+// Profil-Lock den Renderer bei Wiederholungs-Laeufen belastet.
+const userDataDir = `${process.env.HOME}/tmp/m10-realtime-stability/chrome-${process.pid}-${Date.now()}`;
+mkdirSync(userDataDir, { recursive: true });
 const BOSS_SECONDS = [300, 600, 900, 1200, 1500, 1800];
 const BOSS_NAMES = ["Moorkönigin", "Knochenfürst", "Der Fahle Hirte", "Glockenturm-Golem", "Hexenzirkel", "Der Hohle König"];
 const EVOLUTION_IDS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const POLL_MS = 250;
-const SHOT_EVERY_SECONDS = 300;
+// Volllauf: 10-Minuten-Rhythmus (weniger Screenshot-Burst, plausible Crash-
+// Ursache in fa2-04); Teil-Lauf: 5 Minuten, damit kurze Laeufe Belege haben.
+const SHOT_EVERY_SECONDS = FULL_RUN ? 600 : 300;
 
 ensureBuild();
 mkdirSync("shots", { recursive: true });
@@ -33,11 +47,33 @@ const { chromium } = await loadPlaywright();
 const server = await startServer();
 // --disable-dev-shm-usage: /dev/shm ist auf diesem Host nur 64 MB; ohne das Flag
 // stirbt der Renderer in langen 30-min-Laeufen ("Target closed") reproduzierbar ab.
-const browser = await chromium.launch({ args: ["--disable-dev-shm-usage", "--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"] });
-const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+// --user-data-dir: eigener Profilordner unter ~/tmp/ (kein Default-Profil, keine
+// Singleton-Locks); der Pfad ist lauf-spezifisch und bleibt nach dem Lauf bestehen.
+const browser = await chromium.launchPersistentContext(userDataDir, { args: ["--disable-dev-shm-usage", "--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"], viewport: { width: 960, height: 540 } });
+// Persistent-Context legt eine Startseite an; sonst eine neue oeffnen.
+const page = browser.pages()[0] ?? await browser.newPage();
 const errors = [];
+const crashes = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+page.on("crash", () => crashes.push({ at: new Date().toISOString(), simSecond: runState?.time ?? null }));
+// runState muss VOR den Handler-Registrierungen deklariert sein: crasht die Seite
+// waehrend der Awaits unten (newCDPSession/HeapProfiler.enable), wuerde der
+// crash-Handler sonst in der TDZ werfen und den Harness beleglos sterben lassen.
+let runState = null;
+// Screenshot-Fehler (z. B. Ziel kurz weg) toeten den Lauf nicht mehr; sie werden
+// protokolliert. Screenshot-Bursts gelten als plausible Crash-Ursache (fa2-04).
+let shotFailures = 0;
+const safeShot = async (path) => {
+  try {
+    await page.screenshot({ path });
+    return true;
+  } catch (e) {
+    shotFailures++;
+    crashes.push({ at: new Date().toISOString(), kind: "screenshot-failed", path, error: String(e) });
+    return false;
+  }
+};
 
 const cdp = await page.context().newCDPSession(page);
 await cdp.send("HeapProfiler.enable");
@@ -62,6 +98,8 @@ const heapMB = async () => {
 };
 
 let result = null;
+let startedAtMs = Date.now();
+let fatal = null;
 try {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=99`);
   await startRun(page);
@@ -81,7 +119,6 @@ try {
   let chestsTracked = 0;
   let evolutionsSeen = new Set();
   let lastShotMinute = 0;
-  let runState = null;
   let victory = false;
   let resultReason = null;
   let truncated = false;
@@ -98,7 +135,7 @@ try {
         });
         victory = r.reason === "dawn";
         resultReason = r.reason;
-        await page.screenshot({ path: "shots/realtime-results.png" });
+        await safeShot(`shots/${PREFIX}-results.png`);
         break;
       }
       continue;
@@ -129,17 +166,21 @@ try {
     const minute = Math.floor(s.time / 60);
     if (minute >= SHOT_EVERY_SECONDS / 60 && minute > lastShotMinute && minute % (SHOT_EVERY_SECONDS / 60) === 0) {
       lastShotMinute = minute;
-      const path = `shots/realtime-minute-${minute}.png`;
-      await page.screenshot({ path });
+      const path = `shots/${PREFIX}-minute-${minute}.png`;
+      await safeShot(path);
       shots.push(path);
     }
     // Teil-Lauf endet am gewaehlten Zeitfenster; der volle Lauf laeuft bis
-    // zum Endboss-Tod + Morgendaemmerung + Results-Szene weiter.
+    // zum Endboss-Tod + Morgendaemmerung + Results-Szene weiter. Gnadenfenster
+    // 5 s: ein Boss-Spawn exakt an der Truncation-Grenze (K1-Nebenbefund,
+    // Moorkoenigin bei Sekunde 300) muss registriert werden.
     if (!FULL_RUN && s.time >= RUN_SECONDS) {
       truncated = true;
-      await page.screenshot({ path: "shots/realtime-end.png" });
-      shots.push("shots/realtime-end.png");
-      break;
+      if (s.time >= RUN_SECONDS + 5) {
+        await safeShot(`shots/${PREFIX}-end.png`);
+        shots.push(`shots/${PREFIX}-end.png`);
+        break;
+      }
     }
   }
 
@@ -225,12 +266,43 @@ try {
     screenshots: shots,
     victory,
     resultReason,
+    crashes,
+    shotFailures,
+    host: {
+      loadavg1: Math.round(os.loadavg()[0] * 100) / 100,
+      freememMB: Math.round(os.freemem() / 1048576),
+      userDataDir,
+    },
     jsErrors: errors,
     passed,
   };
   result = summary;
-  writeFileSync(`shots/realtime-${MINUTES}min.json`, JSON.stringify(summary, null, 2));
+  writeFileSync(`shots/${PREFIX}-${MINUTES}min.json`, JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
+} catch (e) {
+  // Renderer-/Browser-Tod oder anderer fataler Fehler: partielles JSON mit
+  // Diagnose schreiben (fa2-04 starb ohne jeden Beleg - das darf nicht
+  // wieder passieren). passed bleibt false.
+  fatal = String(e);
+  const partial = {
+    mode: FULL_RUN ? "full-30min" : `partial-${MINUTES}min`,
+    minutes: MINUTES,
+    crashed: true,
+    fatal,
+    crashes,
+    shotFailures,
+    lastRunState: runState,
+    wallSeconds: Math.round((Date.now() - startedAtMs) / 1000),
+    host: {
+      loadavg1: Math.round(os.loadavg()[0] * 100) / 100,
+      freememMB: Math.round(os.freemem() / 1048576),
+      userDataDir,
+    },
+    jsErrors: errors,
+    passed: false,
+  };
+  writeFileSync(`shots/${PREFIX}-${MINUTES}min.json`, JSON.stringify(partial, null, 2));
+  console.log(JSON.stringify(partial, null, 2));
 } finally {
   await page.close();
   await browser.close();
