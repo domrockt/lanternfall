@@ -41,14 +41,22 @@ View-Mitte zur Truhe mit dem Rand-Rechteck (margin 24) schneiden, Pfeil-Renderpo
 scrollFactor 0 zoom-kompensiert setzen. Ausgelagert als reine Funktion `computeChestArrow` in
 `ChestSystem.ts` (unit-testbar, Phaser-Szene bleibt dünn).
 
-## K2 — Harness + Baseline
+## K2 — Harness + Baseline (Messung bestätigt die Fehlerliste)
 
-Skript: `scripts/m10-chest-arrow.mjs` (`node scripts/m10-chest-arrow.mjs --out shots/m10-chest-arrow-baseline.json`).
-Truhe an 4 Rand- + 4 Eckpositionen (je View 640×360 und 780×360), plus Zoom-Fall (zoom 1.14, Truhe
-knapp außerhalb) und Eintritts-Fall (Spieler läuft Richtung Truhe bis sie im View ist).
+Skript: `scripts/m10-chest-arrow.mjs` (`node scripts/m10-chest-arrow.mjs --out
+shots/m10-chest-arrow-baseline.json`); Truhe an 4 Rand- + 4 Eckpositionen (je 640×360 und 780×360),
+Zoom-Fall (zoom 1.14, Truhe 10 px hinter dem *sichtbaren* Rand) und Eintritts-Fall; 24 Frames je Fall.
+0 JS-Fehler.
 
-Baseline-Ergebnis: siehe `shots/m10-chest-arrow-baseline.json` — Eckfälle und Zoom-Fall failen
-(Abweichung > 5° bzw. Pfeil verborgen), Randfälle und Eintritt sind grün.
+| Fall (640×360 / 780×360) | Ergebnis Baseline |
+|---|---|
+| Rand links/rechts/oben/unten | grün — Winkel 0°, Pfeil ab Spawn sichtbar |
+| 4 Ecken (Truhe 1500 px diagonal dahinter) | **FAIL — Winkel 14,99° (640) / 18,66° (780) daneben, Position bis 191,2 px vom Soll-Randpunkt** (Fehler 1) |
+| zoom 1.14, Truhe knapp außerhalb | **FAIL — 0/12 Frames sichtbar, obwohl die Truhe off-screen ist** (Fehler 2a) |
+| Eintritt in den View | grün — Pfeil verschwindet ≤ 1 Frame nach View-Eintritt (Phaser aktualisiert `worldView` im preRender, `update()` liest den Vorframe; bei smoother Kamera ≤ 2 px Lag — Messartefakt, kein Fix-Kandidat) |
+
+Fehler 2b (zoom-radiale Pfeilposition) behandelt der Fix mit, ist im Baseline-Set aber nicht
+separat sichtbar, weil der Pfeil im Zoom-Fall gar nicht erst erscheint.
 
 ## K3 — Fix + Unit-Tests
 
