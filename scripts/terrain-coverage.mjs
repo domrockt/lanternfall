@@ -31,19 +31,23 @@ export function playfieldTopPx(width, gameWidth = GAME_BASE_WIDTH) {
 
 // ---- Minimaler PNG-Decoder (8-bit RGB/RGBA, non-interlaced) ----
 // Muster aus scripts/m10-hazard-warn.mjs (repo-eigen, keine Abhängigkeit).
-export function decodePng(buf) {
-  const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  if (!buf.subarray(0, 8).equals(sig)) throw new Error("Kein PNG");
+// Nimmt Uint8Array (Buffer ist eine Unterklasse) — der Suite-Test baut seine
+// Fixtures mit dem Gegenstück-Encoder im Speicher.
+export function decodePng(bytes) {
+  const buf = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const sig = [137, 80, 78, 71, 13, 10, 26, 10];
+  for (let i = 0; i < 8; i++) if (buf[i] !== sig[i]) throw new Error("Kein PNG");
+  const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
   let off = 8;
   let width = 0, height = 0, bitDepth = 0, colorType = 0, interlace = 0;
   const idat = [];
   while (off < buf.length) {
-    const len = buf.readUInt32BE(off);
-    const type = buf.toString("ascii", off + 4, off + 8);
+    const len = view.getUint32(off);
+    const type = String.fromCharCode(buf[off + 4], buf[off + 5], buf[off + 6], buf[off + 7]);
     const data = buf.subarray(off + 8, off + 8 + len);
     if (type === "IHDR") {
-      width = data.readUInt32BE(0); height = data.readUInt32BE(4);
-      bitDepth = data[8]; colorType = data[9]; interlace = data[12];
+      width = view.getUint32(off + 8); height = view.getUint32(off + 12);
+      bitDepth = buf[off + 16]; colorType = buf[off + 17]; interlace = buf[off + 20];
     } else if (type === "IDAT") idat.push(data);
     else if (type === "IEND") break;
     off += 12 + len;
@@ -52,7 +56,12 @@ export function decodePng(buf) {
     throw new Error(`PNG nicht unterstuetzt: depth=${bitDepth} color=${colorType} interlace=${interlace}`);
   }
   const channels = colorType === 6 ? 4 : 3;
-  const raw = inflateSync(Buffer.concat(idat));
+  let idatLen = 0;
+  for (const d of idat) idatLen += d.length;
+  const idatAll = new Uint8Array(idatLen);
+  let io = 0;
+  for (const d of idat) { idatAll.set(d, io); io += d.length; }
+  const raw = inflateSync(idatAll);
   const stride = width * channels;
   const out = new Uint8Array(width * height * 4);
   let prev = new Uint8Array(stride);
