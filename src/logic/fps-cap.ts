@@ -60,6 +60,35 @@ export function stepFpsSetting(setting: number, delta: number): number {
   return cycle[next];
 }
 
+// ---------- M10-fps-pacing-fix: Late-Frame-Toleranz (Hebel 1) ----------
+
+/**
+ * Late-Frame-Schwelle in ms Wandzeit. Ein Frame darüber hat den Vsync-Takt
+ * (16,7 ms @ 60-Hz-Panel) bereits verpasst — sein Bild landet ohnehin erst
+ * im nächsten Vsync. Beleg janky-remeasure K2/K3 (Build 0ce7164a, Adreno 710,
+ * 60-Hz-Panel): bimodales 2-Vsync-Raster p50 16,7 / p95 33,4 ms, fpsAvg 50,1
+ * — Cap 60 vs. MAX ohne Differenz, also nicht die Cap-Logik, sondern das
+ * Pacing der Frame-Arbeit.
+ */
+export const LATE_FRAME_THRESHOLD_MS = 17;
+
+/**
+ * Max Sim-Substeps für einen Frame (Hebel 1, janky-remeasure K4-Empfehlung):
+ * „bei dt > 17 ms Sim-Substeps entlasten“. Ein Late-Frame führt maximal 1
+ * vollen SIM_MAX_STEP-Schritt aus; der Rest bleibt im Carry und wird vom
+ * nächsten (punktlichen) Frame ausgeführt. Die Schrittfolge (volle
+ * SIM_MAX_STEP-Einheiten in fester Reihenfolge) ist unverändert — nur die
+ * Wandzeit-Zuordnung verschiebt sich, Sim-Marken bleiben bitgleich.
+ * Ausnahme timeScale !== 1: Fast-Forward (verify/perf/Debug) duldet kein
+ * Ausdünnen — dort unverändert alle Substeps.
+ * Rein prüfbar (Vitest), kein Phaser-Bezug; normaler Frame = unbegrenzt
+ * (Verhalten wie vorher).
+ */
+export function maxSimStepsForFrame(realDtMs: number, timeScale = 1): number {
+  if (timeScale !== 1) return Number.POSITIVE_INFINITY;
+  return realDtMs > LATE_FRAME_THRESHOLD_MS ? 1 : Number.POSITIVE_INFINITY;
+}
+
 // ---------- Geräteknoten-Erkennung (analog m10-device-janky-node) ----------
 
 /**
