@@ -1,0 +1,19 @@
+# Lane m10-gem-rows-texture — done 2026-11-28
+
+Bedarfsmeldung m10-gem-value-reading (Versuch 2) umgesetzt: gem_small/gem_medium in
+src/gfx/textures.ts malen jetzt die Rampe Silber/Gold/Rubin.
+
+- K1 (#11128): Schnitt war NICHT in main — Lane hatte r3-Patch nur uncommitted (Claim-Blockade);
+  main hatte noch alten gem-magnet-Stand (small=Moor-Gruen ef5d88e3).
+- K2 (#11129, Commit 9884157b): r3-Patch exakt uebernommen (gem_small = bone PAL10/candleWhite 12/
+  1px lanternWhite 13 = Silber, gem_medium = Amber 20/21 + 3px lanternWhite-Sparkle = Gold),
+  gem-Blocks byte-identisch zum art-director-geprueften Stand (r2 4,5/5); 0 fx-Block-Aenderungen.
+- K3 (#11130, Commit a3ab9746): tests/gem-rows-texture.test.ts 10/10 (Rampenzahlen, binaeres Alpha,
+  Dimensionen 7x7/9x9/11x11 = Mixel-Regel, r1/r2-Regressions-Guards, Atlas-Pfad).
+- Messwerte: Vorher core small=#6f9b58 (Moor-Gruen), medium=#ffb84d ohne Sparkle;
+  Nachher small=#b8c4c2+#f2edd8+1px #fff8e6, medium=#ffb84d+3px #fff8e6, large=#b8303f Rubin
+  (unveraendert); offAlpha=0, 0 JS-Fehler. Belege: /home/ai/games/.evidence/m10-gem-rows-texture/
+  (chaos-{before,after,abnahme}-{960,640}.png + gem-rows-*.json, Skript scripts/m10-gem-rows.mjs).
+- Abnahme-Shots (git): shots/abnahme/m10-gem-rows-{960,640}.png, frischer Chaos-Lauf, gesichtet.
+- Suite 2042/2042 gruen, tsc gruen, build rc=0. Doku: docs/lanes/m10-gem-rows-texture.md.
+- Karten #11128-#11130 stehen auf review/done; Merge ueber die Merge-Pipeline.
