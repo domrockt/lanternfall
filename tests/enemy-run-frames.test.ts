@@ -57,8 +57,12 @@ describe("runFrameIndex (6 fps, zyklisch)", () => {
 
   it("bleibt bei 2-Frame-Typen auf F0/F1 (2/2), zeigt nie F2+", () => {
     // Die 3 Legacy-2-Frame-Eintraege bleiben in SPRITE_FRAMES (Keys unangetastet).
+    // m10-enemy-idle-anim-r2: die 30 Elite-Rim-Framesets sind jetzt ebenfalls
+    // 2-Frame-Sets (Idle/Bob statt Standbild) — 3 Legacy + 30 Rim = 33.
     const legacy2 = Object.entries(SPRITE_FRAMES).filter(([, f]) => f.length === 2);
-    expect(legacy2.length).toBe(3);
+    expect(legacy2.length).toBe(33);
+    const rimCount = legacy2.filter(([key]) => key.endsWith("_rim")).length;
+    expect(rimCount).toBe(30);
     for (const [key, frames] of legacy2) {
       const seen = new Set(cycleIndices(frames.length, 0));
       expect(seen, key).toEqual(new Set([0, 1]));

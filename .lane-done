@@ -1,0 +1,30 @@
+# Lane m10-enemy-idle-anim-r2 — done
+
+Ziel: kein Gegner wirkt mehr als Standbild. K1-Befund: alle 30 Klassen haben bereits
+4 Lauf-/Bob-Frames; die echte Luecke waren die 30 Elite-Rim-Framesets (genau 1 Frame).
+Umsetzung: 2-Frame-Elite-Rim-Idle (`<id>_rim` Ruhepose byteidentisch + `<id>_rim2`
+Bob-Pose, aus Basis-Frames abgeleitet, palettetreu, binaeres Alpha, Amber-Rand in
+beiden Posen, Tier-Faerbung/Silhouetten unberuehrt).
+
+Karten: #9835 K1 Ist-Analyse, #9836 K2 Rim-Pose, #9837 K3 Verifikation,
+#9838 K4 Regressionstest + Belege + Doku. Je ein Commit (Praefix
+M10-m10-enemy-idle-anim-r2), K4: 6eb5b8fb + Nit-Fix 80492c42.
+
+Abnahmewerte:
+- tests/enemy-idle.test.ts: 30 Basis- + 30 Rim-Framesets >= 2 Frames, 0 Duplikate,
+  0 Off-Palette, binaeres Alpha, Idle/Bob-Diff > 0, Amber-Rand in beiden Posen.
+- Full-Suite 1694/1694 gruen; npm run build rc=0; tsc --noEmit rc=0.
+- In-game-Beleg (deterministisch): 36/36 Samples mit Elites, Rim-IDs mudling_rim +
+  bog_rat_rim, 4 Screen-Slots zeigen _rim+_rim2 an identischer Position, 0 JS-Fehler.
+  JSON+GIF: ~/games/.evidence/m10-enemy-idle-anim-r2/; PNG: shots/abnahme/.
+- Burst 59,7 FPS @ 500 Gegnern (Vorher 60,0; Ziel >= 55) — flock
+  /home/ai/games/.lf-perf.lock, Logs ~/tmp/m10-enemy-idle-anim-r2-perf-{before,after}.log.
+- Kontrolleure: reviewer PASS (Nit gefixt), art-director PASS 4/5 (>= 4/5 gefordert).
+
+Fremd-Dateien (minimal, begruendet, beide in claims.json nicht geclaimed):
+src/debug.ts + src/scenes/Run.ts — elite-Parameter an Spawner.spawnEnemy
+durchgereicht (Antrag requests.md 08:1xZ blieb unbedient), je 2 Zeilen, Default
+elite=false, voll abwartskompatibel. Ausserdem je 1-2 Assertion-Zeilen in 4 Fremd-
+Tests, die den alten 1-Frame-Rim-Vertrag pinnen (siehe Lane-Doku).
+
+Doku: docs/lanes/m10-enemy-idle-anim-r2.md (wird beim Merge in GAME.md uebernommen).

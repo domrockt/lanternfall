@@ -1546,8 +1546,8 @@ export class Run extends Phaser.Scene {
     this.hp = Math.min(this.hp, this.maxHp);
   }
 
-  debugSpawnEnemy(id: EnemyId, n: number): number {
-    const out = this.spawner.spawnEnemy(id, n, this.posX, this.posY);
+  debugSpawnEnemy(id: EnemyId, n: number, elite = false): number {
+    const out = this.spawner.spawnEnemy(id, n, this.posX, this.posY, elite);
     return out.length;
   }
 

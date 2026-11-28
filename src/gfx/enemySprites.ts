@@ -414,22 +414,31 @@ export function eliteRimGrid(src: Grid): Grid {
 }
 
 /**
- * Der eine Elite-Rim-Frame je Typ: Rim-Variante der Ruhepose (Frame 0),
- * Koerper in der Tier-Faerbe-Klasse (eliteTierPixel, siehe oben), Randpixel
- * voll in der Elite-Akzentfarbe (Amber). Als einziges zusaetzliches Frame im
- * Bestand vorgehalten; die Vollumrandung macht ihn fuer alle 4 Laufrichtungen
- * und Frames gueltig (keine Duplikate).
+ * Elite-Rim-Frames je Typ: Rim-Varianten der Ruhepose (Frame 0) und der
+ * Bob-/Laufpose (Frame 1), Koerper in der Tier-Faerbe-Klasse
+ * (eliteTierPixel, siehe oben), Randpixel voll in der Elite-Akzentfarbe
+ * (Amber).
+ *
+ * m10-enemy-idle-anim-r2 (K1-Befund): das Rim-Frameset hatte genau 1 Frame —
+ * Elite-Gegner standen als Bild (auffaellig in Wellen-Luecken und beim
+ * Spawner-Nachruecken). Jetzt 2 Frames: Run.ts zyklisiert ueber das Frameset
+ * (runFrameIndex, 6 fps) und gibt Elites denselben Idle-/Bob-Rhythmus wie den
+ * Basis-Gegnern der Tiers 0-1. Unveraendert bleiben: Pose-0-Rim (bytegleich,
+ * alle elite-rim/elite-tier-Assertions auf Pose 0), Amber-Rand, Tier-Faerbung,
+ * Silhouetten (Rim der jeweiligen Basispose), binaeres Alpha, nur Paletten-
+ * indizes. Keine Duplikate: Basis-Frames 0/1 differieren je Klasse um
+ * 70-461 px (K1-Messung), daraus folgen zwei verschiedene Rim-Frames.
  */
-export function eliteRimFrame(index: number): Grid {
+export function eliteRimFrame(index: number, pose: 0 | 1 = 0): Grid {
   const def = ENEMY_LIST[index];
   const mix = eliteTierMixFor(def.id);
-  const body = enemySpriteFrames(index)[0].map((row) => row.map((p) => eliteTierPixel(p, def.tier, mix)));
+  const body = enemySpriteFrames(index)[pose].map((row) => row.map((p) => eliteTierPixel(p, def.tier, mix)));
   return eliteRimGrid(body);
 }
 
-/** Textur-Key des Elite-Rim-Frames ("<spriteKey>_rim"). */
-export function eliteRimFrameKey(index: number): string {
-  return `${ENEMY_LIST[index].spriteKey}_rim`;
+/** Textur-Keys der Elite-Rim-Frames ("<spriteKey>_rim", "<spriteKey>_rim2"). */
+export function eliteRimFrameKey(index: number, pose: 0 | 1 = 0): string {
+  return `${ENEMY_LIST[index].spriteKey}_rim${pose === 0 ? "" : "2"}`;
 }
 
 /** Lauf-ID des Elite-Rim-Framesets ("<id>_rim") fuer framesForDef/SPRITE_FRAMES. */
@@ -461,7 +470,7 @@ export function baseEnemyDef(def: EnemyDef): EnemyDef | undefined {
 
 /** Rim-Frame-Keys je Elite-Lauf-ID ("<id>_rim" → ["enemy_<id>_rim"]). */
 export const ELITE_RIM_FRAMES: Record<EliteFrameId, string[]> = Object.fromEntries(
-  ENEMY_LIST.map((def, index) => [eliteFrameId(def.id), [eliteRimFrameKey(index)]]),
+  ENEMY_LIST.map((def, index) => [eliteFrameId(def.id), [eliteRimFrameKey(index), eliteRimFrameKey(index, 1)]]),
 ) as Record<EliteFrameId, string[]>;
 
 /** Textur-Keys aller generierten Frames (Basis + _2.._4). */
@@ -961,9 +970,11 @@ export function createEnemyTextures(scene: Phaser.Scene): void {
       if (scene.textures.exists(keys[i])) return;
       scene.textures.addCanvas(keys[i], gridToCanvas(grid));
     });
-    const rimKey = eliteRimFrameKey(index);
-    if (!scene.textures.exists(rimKey)) {
-      scene.textures.addCanvas(rimKey, gridToCanvas(eliteRimFrame(index)));
+    for (const pose of [0, 1] as const) {
+      const rimKey = eliteRimFrameKey(index, pose);
+      if (!scene.textures.exists(rimKey)) {
+        scene.textures.addCanvas(rimKey, gridToCanvas(eliteRimFrame(index, pose)));
+      }
     }
   });
 }
@@ -996,7 +1007,7 @@ type EnemyFrameKey = EnemyId | EliteFrameId;
 
 export const ALL_ENEMY_FRAMES: Record<EnemyFrameKey, string[]> = Object.fromEntries([
   ...ENEMY_LIST.map((def, index) => [def.id, enemyFrameKeys(index)]),
-  ...ENEMY_LIST.map((def, index) => [eliteFrameId(def.id), [eliteRimFrameKey(index)]]),
+  ...ENEMY_LIST.map((def, index) => [eliteFrameId(def.id), [eliteRimFrameKey(index), eliteRimFrameKey(index, 1)]]),
 ]) as Record<EnemyFrameKey, string[]>;
 
 export const ALL_BOSS_FRAMES: Record<string, string[]> = Object.fromEntries(

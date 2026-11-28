@@ -265,10 +265,14 @@ export function installDebugApi(game: Phaser.Game): void {
       if (!(id in PASSIVES)) throw new Error(`window.__lf.addPassive: unbekanntes Powerup "${id}"`);
       run.debugAddPassive(id as PassiveId, finiteLevel("addPassive", level));
     },
-    spawnEnemy: (id: string, n = 1) => {
+    spawnEnemy: (id: string, n = 1, elite = false) => {
       const run = requireRun();
       if (!(id in ENEMIES)) throw new Error(`window.__lf.spawnEnemy: unbekannter Gegner "${id}"`);
-      return run.debugSpawnEnemy(id as EnemyId, Math.max(1, Math.floor(finiteNumber("spawnEnemy", n))));
+      return run.debugSpawnEnemy(
+        id as EnemyId,
+        Math.max(1, Math.floor(finiteNumber("spawnEnemy", n))),
+        Boolean(elite),
+      );
     },
     spawnBoss: (index: number) =>
       requireRun().debugSpawnBoss(finiteNumber("spawnBoss", index)),
