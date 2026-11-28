@@ -14,6 +14,7 @@
  */
 import { GAME_HEIGHT, GAME_WIDTH, setGameView } from "./config";
 import { computeView, snapCanvasRect, viewKey, type ViewSpec } from "./logic/view";
+import { applyFpsLimit, probeDeviceNode, resolveFpsLimit } from "./logic/fps-cap";
 import { getSettings, onSettingsChanged } from "./audio/settings";
 // Nur Typ-Import (wird zur Buildzeit entfernt, kein Runtime-Edge auf phaser).
 import type { Run } from "./scenes/Run";
@@ -156,7 +157,12 @@ function installLifecycle(ready: Game, Phaser: PhaserNS): void {
     applyView(measureView(), true);
     watchResolution();
   });
-  onSettingsChanged(() => scheduleView());
+  onSettingsChanged((opts) => {
+    scheduleView();
+    // M10-mobile-fps-cap: BILDRATE gilt sofort (Phaser dispatched in
+    // TimeStep.tick() dynamisch über hasFpsLimit — kein Neustart nötig).
+    if (game) applyFpsLimit(game.loop, resolveFpsLimit(opts.fps, probeDeviceNode()));
+  });
   applyView(initialView);
 }
 
@@ -209,13 +215,18 @@ async function boot(): Promise<void> {
       pixelArt: true,
       roundPixels: true,
       antialias: false,
-      // M10 Android/ARM: harte 60-FPS-Grenze gegen 90/120-Hz-Hitze und Akku-Drosselung
-      // auf Mali/Adreno, plus GPU-Hint auf die tatsaechlich starke Einheit.
+      // M10 Android/ARM: GPU-Hint auf die tatsaechlich starke Einheit.
       // Phaser 3.90 liest powerPreference als TOP-LEVEL-GameConfig (nicht unter render).
       powerPreference: "high-performance",
+      // M10-mobile-fps-cap: Frame-Cap nur am Geräteknoten hart auf 60 (Dom-Wunsch
+      // 28.11.: gleichmäßige 60 FPS wirken auf 120-Hz-Panels ruhiger als 100–120
+      // schwankend und sparen Akku/Thermik; gfxinfo janky-FAIL 13,44 %/13,90 %).
+      // Desktop ohne Limit — auf den 60-Hz-vsync-Messprofilen (perf/fullrun/iGPU)
+      // verhaltensgleich. Menü-Option „BILDRATE“ überschreibt (Persistenz wie
+      // bestehende Settings); Änderungen gelten sofort (onSettingsChanged unten).
       fps: {
         target: 60,
-        limit: 60,
+        limit: resolveFpsLimit(getSettings().fps, probeDeviceNode()) ?? 0,
       },
       // M8-input: Gamepad-Plugin (Hotplug) + bis zu vier gleichzeitige Touch-Pointer
       // (Joystick + Tippen).

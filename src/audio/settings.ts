@@ -4,6 +4,7 @@
  * interessierte Laufzeit-Hooks (z. B. CSS-Skalierung) gemeldet.
  */
 import { DEFAULT_OPTIONS, clampScale, clampVolume, loadOptions, saveOptions, setOption, type Options, type StorageLike } from "./options";
+import { clampFpsSetting } from "../logic/fps-cap";
 
 function storage(): StorageLike | null {
   try {
@@ -37,6 +38,7 @@ function normalizeOptions(next: Partial<Options>): Options {
     damageNumbers: bool(next.damageNumbers, DEFAULT_OPTIONS.damageNumbers),
     muted: bool(next.muted, DEFAULT_OPTIONS.muted),
     scale: clampScale(num(next.scale, DEFAULT_OPTIONS.scale)),
+    fps: clampFpsSetting(next.fps),
   };
 }
 

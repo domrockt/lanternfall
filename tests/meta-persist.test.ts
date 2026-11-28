@@ -93,8 +93,8 @@ describe("M10 Persistenz: recordRun-Monotonie und NaN-Guards", () => {
 });
 
 describe("M10 Persistenz: Options-Clamp, Reload-Zyklen, korrupte Payload", () => {
-  it("alle 7 OPTION_ROWS existieren und clampVolume/clampScale halten die Grenzen", () => {
-    expect(OPTION_ROWS).toHaveLength(7);
+  it("alle 8 OPTION_ROWS existieren und clampVolume/clampScale halten die Grenzen", () => {
+    expect(OPTION_ROWS).toHaveLength(8);
     expect(clampVolume(-0.5)).toBe(0);
     expect(clampVolume(1.7)).toBe(1);
     expect(clampVolume(Number.NaN)).toBe(0);
