@@ -16486,16 +16486,21 @@
       "id": 12013,
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
-      "column": "doing",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-28T13:34:06Z",
           "by": "build",
           "text": "Merge m10-device-janky-node liegt auf main (f0bc1de0, ancestor-rc=0). Guard-Test boot-light-textures auf gemergtem Stand geprüft: npx vitest run tests/boot-light-textures.test.ts -> 4/4 grün, keine Anpassung nötig. Full-Suite 2338/2338 grün."
+        },
+        {
+          "at": "2026-11-28T14:39:53Z",
+          "by": "build",
+          "text": "doing → blocked: fremd für m10-heap-gate-recovery-Lane: gehört zur m10-loading-screen-Lane (Merge-Fix boot-light-textures). Nach dortiger Notiz 13:34Z bereits auf gemergtem Stand geprüft (4/4 grün, Suite 2338/2338). Rücknahme entsprechend Supervisor-Anweisung; Disponent/Lane-Pipeline übernimmt."
         }
       ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T13:34:06Z"
+      "updated": "2026-11-28T14:39:53Z"
     },
     {
       "id": 12029,
@@ -17489,43 +17494,66 @@
       "id": 12547,
       "title": "m10-heap-gate-recovery K1: Remessung Heap-Tor auf aktuellem main",
       "description": "fullrun 30 min 960×540 via scripts/m10-heap-budget.mjs (nur ausführen, nicht ändern) auf HEAD nach hazard-tex-cap-Merge. 2 Läufe, unter flock /home/ai/games/.lf-perf.lock. Abnahme: JSON-Belege in ~/games/.evidence/m10-heap-gate-recovery/. Tor: retained endMB vs Minute1 ≤ +15 %.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T13:55:35Z",
           "by": "build",
           "text": "todo → doing: Remessung auf HEAD 445a930d (hazard-tex-cap gemergt). Messung läuft unter flock."
+        },
+        {
+          "at": "2026-11-28T15:51:17Z",
+          "by": "build",
+          "text": "doing → done: 2/2 fullrun-Läufe PASS: HARD je -25,2 % (endMB 48,5 vs Minute1 64,8 MB), SOFT robust +9,2/+9,9 %, Sieg, 0 Fehler, Mesa Intel RPL-S. Belege ~/games/.evidence/m10-heap-gate-recovery/, Commits 7a37d113/9e143784."
         }
       ],
       "created": "2026-11-28T13:55:33Z",
-      "updated": "2026-11-28T13:55:35Z"
+      "updated": "2026-11-28T15:51:17Z"
     },
     {
       "id": 12548,
       "title": "m10-heap-gate-recovery K2: Entscheidung Tor",
       "description": "Tor ≤ +15 % in 2 Läufen → Lane mit Doku-Abschluss beenden (.lane-done, Befund: hazard-tex-cap trägt das Tor). Weiter FAIL → K3-K4.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:51:17Z",
+          "by": "build",
+          "text": "todo → done: Tor ≤ +15 % in 2 Läufen erfüllt → Fix-Fall entfällt; hazard-tex-cap trägt das Tor. Doku docs/lanes/m10-heap-gate-recovery.md, Commit fff2f2c3 (.lane-done)."
+        }
+      ],
       "created": "2026-11-28T13:55:33Z",
-      "updated": "2026-11-28T13:55:33Z"
+      "updated": "2026-11-28T15:51:17Z"
     },
     {
       "id": 12549,
       "title": "m10-heap-gate-recovery K3: Heap-Retention-Fix in Pool/EnemyPool",
       "description": "Nur falls K2 FAIL: Heap-Sawtooth-Profil aus K1-JSON lesen, Wachstumsquelle gegen belegte Mechanismen (trim() 0 Aufrufstellen, Pool-Retention, EnemyPool-AiState-Recycle) abgleichen. Hebel nur in src/systems/Pool.ts / src/systems/EnemyPool.ts.",
-      "column": "todo",
-      "notes": [],
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T15:51:17Z",
+          "by": "build",
+          "text": "todo → backlog: entfällt: K2 PASS, kein Fix nötig. Hebel (trim() 0 Aufrufstellen, EnemyPool-Free-Liste) bleiben dokumentiert unter #2439."
+        }
+      ],
       "created": "2026-11-28T13:55:33Z",
-      "updated": "2026-11-28T13:55:33Z"
+      "updated": "2026-11-28T15:51:17Z"
     },
     {
       "id": 12550,
       "title": "m10-heap-gate-recovery K4: Nachher-Messung + Guard-Test",
       "description": "Nur falls K3: Remessung 2 × fullrun 960×540 → ≤ +15 %. Regressionstest tests/heap-gate-recovery.test.ts (deterministisch, ohne Phaser). Befund in docs/lanes/m10-heap-gate-recovery.md; ACCEPTANCE.md fremd-claimed — Vermerk in requests.md.",
-      "column": "todo",
-      "notes": [],
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T15:51:17Z",
+          "by": "build",
+          "text": "todo → backlog: entfällt: kein Hebel umgesetzt → kein Guard-Test-Objekt. Lane fertig (.lane-done, fff2f2c3)."
+        }
+      ],
       "created": "2026-11-28T13:55:33Z",
-      "updated": "2026-11-28T13:55:33Z"
+      "updated": "2026-11-28T15:51:17Z"
     }
   ]
 }
