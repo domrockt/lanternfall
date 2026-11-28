@@ -1,0 +1,37 @@
+# Lane m10-run-determinism — abgeschlossen (2026-11-28)
+
+Determinismus-Guard für die Abnahme-Maschinerie gebaut und Nichtdeterminismus
+BELEGT (kein Grünnachweis möglich).
+
+## Ergebnis
+
+- Guard: `scripts/m10-run-determinism.mjs` — 3 Seeds (101/202/404) × 2 identische
+  Browser-Läufe (autoPlay, god off, timeScale 30, mira, 120 Sim-s). Marken werden
+  exakt im `simulate()`-Hook gelesen (prototype-Patch, kein Polling):
+  elapsed/kills/level/xp/hp/enemies/px/py je ganzzahliger Sim-Sekunde + Events.
+  Belege: shots/m10-run-det-<seed>-r<rep>.json + shots/m10-run-det-verdict.json.
+- Befund: 3/3 Seeds DIVERGENT, `deterministic: false`. Erste Divergenz bereits
+  bei Sim-Sekunde 1 in elapsed/px; Kills/Level weichen ab Sim-s 36–86
+  (End-Kills: 101: 62/68, 202: 79/79, 404: 67/62). Details/Tabelle:
+  docs/lanes/m10-run-determinism.md.
+- Root Cause (Verdacht, belegt durch Divergenzmuster): src/scenes/Run.ts —
+  update() akkumuliert scaledDt = min(0.05, delta/1000) × timeScale und führt
+  Reste als variablen Partial-Schritt → Tick-Phasen sind frame-abhängig.
+  Hebel in fremder Datei (Lane-Grenze) → Bedarfsmeldung in
+  /home/ai/games/.dispatch/requests.md (2026-11-28T02:4xZ). Kein fremder Claim
+  angefasst, 0 Änderungen an src/**.
+- Test: tests/run-determinism.test.ts (5 Tests) verankert den belegten Befund
+  als Regressionsschranke — ein künftiger Determinismus-Fix lässt ihn mit Diff
+  an schlagen und erzwingt das Befund-Update.
+
+## Messwerte / Abnahme
+
+- `npx tsc --noEmit` grün; `npm run build` grün; `npm test` 114 Dateien /
+  1221 Tests grün (5 neu).
+- Marken-JSONs committed (7 Dateien); Abnahme „Guard-Test grün“ erfüllt auf
+  Lane-Stand, Bedarfsmeldung gestellt (Befund belegt).
+- Reviewer (Kontrolleur): PASS; zwei Soll-Punkte (Diff-Statistik reps-fähig,
+  pageErrors im Urteil) in K4 eingearbeitet.
+
+Karten: #7519 K1 (Guard+JSONs, 99b990c), #7520 K2 (Test, ac4ff4c),
+#7521 K3 (Befund+Bedarf, c001fb0), #7522 K4 (Abschluss, dieser Commit).

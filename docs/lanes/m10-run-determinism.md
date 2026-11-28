@@ -56,7 +56,29 @@ fester Quantisierung führen.
 
 ## Karten
 
-- K1 Guard-Skript + Marken-JSONs — Commit `M10-m10-run-determinism:`
-- K2 Guard-Test — Commit `M10-m10-run-determinism:`
-- K3 Befund + Bedarfsmeldung — Commit `M10-m10-run-determinism:`
-- K4 Abschluss — Commit `M10-m10-run-determinism:`
+- K1 Guard-Skript + Marken-JSONs — `99b990c` (#7519)
+- K2 Guard-Test — `ac4ff4c` (#7520)
+- K3 Befund + Bedarfsmeldung — `c001fb0` (#7521)
+- K4 Abschluss — Commit `M10-m10-run-determinism:` (#7522)
+
+## Lane-Abschluss (K4)
+
+- Build/Tests: `npx tsc --noEmit` grün, `npm run build` grün, `npm test`
+  114 Dateien / 1221 Tests grün (davon 5 neue in tests/run-determinism.test.ts).
+- Abnahme: Guard-Test grün auf Lane-Stand (main + 3 Commits), Marken-JSONs
+  committed (7 Dateien in shots/), **0 Änderungen an src/****, Bedarfsmeldung
+  gestellt (Befund war belegt, kein Grünnachweis möglich).
+- Keine eigenen Reste im Worktree (`git status --ignored` geprüft; nur
+  board.json, das bei main bleibt).
+
+## Review (Kontrolleur)
+
+- `reviewer` (Subagent): **PASS** — Scope sauber (10 Lane-Dateien, 0 × src/**,
+  keine Secrets/Temp-Reste), Skript-Logik und Test-Pfade verifiziert, selbst
+  `npx tsc --noEmit` (grün) und `npx vitest run tests/run-determinism.test.ts`
+  (5/5 grün) ausgeführt, Befunddaten gegen verdict.json/Rohdaten geprüft,
+  Fix-Erkennung bestätigt (ein echter Determinismus-Fix lässt den Guard
+  an schlagen → Befund-Update erzwungen).
+- Zwei Soll-Punkte aus dem Review noch in K4 eingearbeitet:
+  Diff-Statistik an `--reps` gekoppelt (statt hart `reps[1]`), `pageErrors`
+  fließen ins Urteil ein (`pageErrorCount` je Seed, >0 ⇒ nichtdeterministisch).

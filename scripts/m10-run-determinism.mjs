@@ -176,24 +176,33 @@ for (const seed of SEEDS) {
     reps.push(r);
   }
   const diffs = [];
+  const fields = {};
+  let divergingMarks = 0;
+  const n = Math.max(...reps.map((r) => r.marks.length));
   for (let rep = 1; rep < REPS; rep++) {
     const d = firstDiff(reps[0], reps[rep]);
-    if (d) diffs.push({ rep, ...d });
+    if (d && diffs.length === 0) diffs.push({ rep, ...d });
+    // Diff-Statistik ueber alle Rep-Paare gegen rep 0.
+    for (let i = 0; i < n; i++) {
+      const ma = reps[0].marks[i];
+      const mb = reps[rep].marks[i];
+      if (!ma || !mb) { divergingMarks += 1; continue; }
+      const df = Object.keys(ma).filter((k) => JSON.stringify(ma[k]) !== JSON.stringify(mb[k]));
+      if (df.length) { divergingMarks += 1; for (const f of df) fields[f] = (fields[f] ?? 0) + 1; }
+    }
   }
-  const identical = diffs.length === 0;
+  const pageErrorCount = reps.reduce((s, r) => s + r.pageErrors.length, 0);
+  const identical = diffs.length === 0 && pageErrorCount === 0;
   if (!identical) allIdentical = false;
-  // Diff-Statistik: welche Felder weichen in wie vielen Marken ab?
-  const fields = {};
-  const n = Math.max(reps[0].marks.length, reps[1].marks.length);
-  let divergingMarks = 0;
-  for (let i = 0; i < n; i++) {
-    const ma = reps[0].marks[i];
-    const mb = reps[1].marks[i];
-    if (!ma || !mb) { divergingMarks += 1; continue; }
-    const d = Object.keys(ma).filter((k) => JSON.stringify(ma[k]) !== JSON.stringify(mb[k]));
-    if (d.length) { divergingMarks += 1; for (const f of d) fields[f] = (fields[f] ?? 0) + 1; }
-  }
-  perSeed.push({ seed, identical, divergingMarks, totalMarks: n, divergingFields: fields, firstDiff: diffs[0] ?? null });
+  perSeed.push({
+    seed,
+    identical,
+    pageErrorCount,
+    divergingMarks: divergingMarks / Math.max(1, REPS - 1),
+    totalMarks: n,
+    divergingFields: fields,
+    firstDiff: diffs[0] ?? null,
+  });
   console.log(`[det] seed=${seed}: ${identical ? "IDENTISCH" : "DIVERGENT"}${diffs.length ? ` — erster Diff: ${JSON.stringify(diffs[0].where)} ${diffs[0].fields ? `Felder ${diffs[0].fields.join(",")}` : ""}` : ""}`);
 }
 
