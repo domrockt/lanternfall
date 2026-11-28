@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6778,
+  "next": 6782,
   "cards": [
     {
       "id": 1,
@@ -7870,6 +7870,46 @@
       "notes": "lane #6101",
       "created": "2026-11-27T23:54:04Z",
       "updated": "2026-11-27T23:54:04Z"
+    },
+    {
+      "id": 6778,
+      "title": "m10-audio-mix-chaos K1: Ist-Messung 500er-Chaos (Voice-Starts/s, Voices, Peak dBFS, Clipping)",
+      "description": "Skript scripts/m10-audio-mix.mjs: synthetischer 500-Gegner-Chaos-Lauf (60 s Spielzeit, Request-Raten aus Baseline ~53 Hits/s), Mixer-Logik aus src/audio/mixing.ts + SFX_CONFIG + WAV-Peaks. before-JSON: 52,65 Starts/s, Burst +0,77 dBFS mit 5 Clipping-Samples.",
+      "column": "done",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T23:59:59Z",
+      "updated": "2026-11-27T23:59:59Z"
+    },
+    {
+      "id": 6779,
+      "title": "m10-audio-mix-chaos K2: Mix-Budget — Voice-Fairness (Verdraengen) + Limiter <= -1 dBFS + Waffen-Drossel",
+      "description": "src/audio/mixing.ts (rein): planPlay mit Verdraengung aeltester/leisester niederpriorer Stimme fuer Prio>=2 statt Ablehnung, Rate-Deckel 24/s in zwei Baenden (Waffen 12/s mit Fair-Anteil je Waffe, Hit 12/s, Prio>=3 bypass), Limiter -1 dBFS auf der Summe; AudioSystem wendet Plan an.",
+      "column": "done",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T23:59:59Z",
+      "updated": "2026-11-27T23:59:59Z"
+    },
+    {
+      "id": 6780,
+      "title": "m10-audio-mix-chaos K3: Regressionstests tests/audio-mix-chaos.test.ts",
+      "description": "Tests: Voice-Limit hart (global <= MAX_TOTAL_VOICES), Peak-Deckel deterministisch (200-Stimmen-Welle -> Summe <= -1 dBFS), Master-Mute blockt sfx/voices/music, Waffen-Prioritaet im Saettigungsfall stabil. Review-Fix: toter canPlay-Import entfernt (reviewer PASS 27.11.).",
+      "column": "done",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T23:59:59Z",
+      "updated": "2026-11-27T23:59:59Z"
+    },
+    {
+      "id": 6781,
+      "title": "m10-audio-mix-chaos K4: Nachher-Messung + Doku + .lane-done",
+      "description": "after-JSON shots/m10-audio-mix-after.json mit eingefrorenem Skript: 22,65 Starts/s avg (P3-max 24 = Deckel), 12 Voices, Chaos-Peak -6,46 dBFS, 0 Clipping. Doku docs/lanes/m10-audio-mix-chaos.md. audio-check + reviewer PASS.",
+      "column": "done",
+      "assignee": "audio-designer",
+      "notes": [],
+      "created": "2026-11-27T23:59:59Z",
+      "updated": "2026-11-27T23:59:59Z"
     }
   ]
 }
