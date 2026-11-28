@@ -135,4 +135,18 @@ Adreno-710-Knoten bleibt der Geräteprobe in einem device-Job vorbehalten.
 ## Offene Punkte
 
 - Geräteprobe (janky am Adreno-710-Knoten) nachholen — Mess-Budget: der Lauf
-  (gfxinfo vor/nach 10-s-Fenster) gehört in einen device-Job mit Bridge-Zugang.
+  (gfxinfo vor/nach 10-s-Fenster) gehört in einen device-Job mit Build-Bezug
+  (siehe Abschnitt "Geräteprobe" — Bridge/CDP zur Lane-Laufzeit nicht nutzbar,
+  `[Supervisor]`-Steer: nicht weiter verfolgen).
+
+## Bilanz
+
+- Tier-Scheduling (Cap medium + Zeitbudget-Soll 16,7 ms) liegt jetzt **im
+  stepQuality selbst** (src/logic/quality.ts), nicht mehr nur im config-Wrapper;
+  desktop bitgleich (Referenz-Tests, qualityTier `high` in beiden Harness-Läufen).
+- Hysterese bei 120 Hz fixiert: 0 Flapping bei 109–112 FPS über 60 s (Guard-Test),
+  Totzone 60–100 FPS, Erholung erst ab 100 FPS am Stück; Haltezeiten unverändert
+  (3 s / 12 s).
+- config.ts und FxSystem.ts wurden NICHT angefasst (fremdbelegt).
+- Belege: `~/games/.evidence/m10-device-tier-schedule/{before,after}.json`
+  (Renderer-String je Beleg).

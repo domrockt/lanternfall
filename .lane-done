@@ -1,0 +1,26 @@
+# Lane m10-device-tier-schedule — abgeschlossen 2026-11-28
+
+Hebel A (Rest): Geräte-Tier-Scheduling im stepQuality selbst (src/logic/quality.ts),
+config.ts/FxSystem.ts unangetastet (fremdbelegt).
+
+- K1 (#12483, 6aaa79ba): Befund — Regler-Schwellen 45/57 FPS = 22,2/17,5 ms Frame-Zeit
+  liegen beide über der janky-Kante 16,6 ms → am 120-Hz-Gerät (Adreno 710, DPR 2,
+  8,33-ms-Deadline, 109–112 FPS) bleibt der Regler dauerhaft "high". Baseline
+  M25-Harness (780x360@3): p95 16,7 ms, janky 3,83 %.
+- K2 (#12484, e2c6f88b): classifyDeviceClass (Adreno-710-Renderer-String-Muster wie
+  config.isDeviceNode, kein Import wegen Zyklus), Cap medium inkl. Start-high-Klemme,
+  Zeitbudget-Soll 16,7 ms als Tier-Grenze, Laufzeit-Probe (WebGL UNMASKED_RENDERER)
+  ohne config-Edit. Desktop bitgleich (AE=0 per Referenz-Tests).
+- K3 (#12485, efee908e): Hysterese-Guard-Tests 14/14 — 60 s bei 109–112 FPS = 0
+  Stufenwechsel (kein Flapping high/medium), Totzone 60–100 FPS, Erholung erst ab
+  100 FPS am Stück.
+- K4 (#12486, 43c9a131): Nachher-Messung identisch zur Baseline an der VSync-Kante
+  (p95/p99/worst 16,7/16,8/16,8 ms, qualityTier high, 0 JS-Fehler, Renderer-String
+  Mesa Intel RPL-S in beiden Belegen) — Tor "p95 nicht schlechter als Vorher" PASS.
+  Geräteprobe nicht gefahren (CDP unten, dom_playing, kein Build-Bezug; Supervisor-
+  Steer: nicht weiter verfolgen) — Nachholpunkt device-Job, Erwartung: medium statt
+  high → p95 Richtung ≤ 16 ms → janky < 10 %.
+- K5 (#12487): docs/lanes/m10-device-tier-schedule.md, .lane-done.
+
+Qualität: npm run build grün, npm test 2375/2375 grün, tsc rc=0,
+tests/device-tier-schedule.test.ts 14/14. Belege: ~/games/.evidence/m10-device-tier-schedule/.
