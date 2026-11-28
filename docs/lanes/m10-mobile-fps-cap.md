@@ -181,6 +181,37 @@ Denominator-Version) + Akkutemperatur (33→35 °C in 10 min Baseline) treffen �
 Lagebericht zusätzlich als Eintrag in `/home/ai/games/.dispatch/requests.md` (Dom-Lagebild).
 Danach: `.lane-done` (Regeln siehe Briefing), Board #12250.
 
-## K4 — Empfehlung 60 vs. max
+## K4 — Empfehlung 60 vs. max — 28.11. — **Empfehlung: 60 (K2-Standard bleibt)**
 
-*(folgt im K4-Commit, #12250)*
+Basis: janky (60-Hz-Deadline, Histogramm) + Pacing (p95/p99) + Akkutemperatur/Arbeitsmenge —
+NICHT der FPS-Median und nicht der widersprüchliche Chrome-Janky-Counter (K3-Abschnitt).
+
+| Argument | 60 | max | zugunsten |
+|---|---|---|---|
+| Frames >60-Hz-Deadline (16,7 ms) | 21,54 % | 37,01 % | **60** (−15,5 Punkte) |
+| Pacing p99 | 5 ms | 8 ms | **60** |
+| Streuung saubere Fenster (σ) | 25,6 | 35,4 | **60** — aber eingeschränkt: beide Modi zeigen Einbrüche vor den Loop-Crashs der RangeError-Regression (K3), daher trägt dieses Argument nur teilweise |
+| WebGL-Draws/s (= Arbeit/Akku/Thermik) | 2 864 | 4 843 (−41 % bei 60) | **60** |
+| Akkutemperatur im A/A | +2,0 K | +1,0 K | unentschieden (max startete warm vom 60-Lauf; kurzfristig nicht verwertbar — die −41 % Renderarbeit sprechen mittel-/langfristig für 60) |
+| Chrome-Janky-Counter | 15,8 % | 0,26 % | (max) — aber metrisch nicht interpretierbar, siehe K3; nichtentscheidend |
+
+**Empfehlung: BILDRATE-Standard 60 am Gerät beibehalten** (K2-Verhalten). Die harten Belege
+(60-Hz-Deadline, Pacing, −41 % Renderarbeit, gleichmäßiges Bild) sprechen für 60; der einzige
+Pro-max-Punkt ist eine Metrik, deren Deadline-Modell unter Cap nicht interpretierbar ist.
+
+**Offene Punkte (Bedarfsmeldung in `.dispatch/requests.md`, 28.11. ~15:00Z):**
+
+1. **RangeError/Frozen-Loop-Regression auf dem K2-Build** (9 Loop-Crashes je 10-min-Lauf unter
+   Last, Old-Build sauber): Stack einfangen (`~/tmp/m10-fps-cap-stackprobe.mjs`, Dom war am
+   Gerät) und Ursache fixen — vermutlich fps-Config/TimeStep-Interaktion, src-Bereich fremd
+   beansprucht. Hohe Priorität: der Fehler invertiert Teile des K3-Gewinns.
+2. **K3-Tor janky <10 % bei Minute-25-Dichte nicht erreichbar** (frische Segmente bereits
+   6,5–19,2 %): Hebel ist Renderlast in der Stressszene (Gegnerzahl/Overdraw/DPR), nicht Frame-Cap.
+   Das Gerätetor sollte entweder mit realistischerer Szene oder gegen die 16,7-ms-Deadline bei
+   realer Spielerlast definiert werden — Entscheidung bei Dom/Lead.
+
+**Desktop-Tor-Anteil:** erledigt (K2) — Titel-Shots 960×540 vor/nach pixelgleich (0 Pixel >8
+außerhalb Mond-Glow): `shots/abnahme/m10-fps-cap-desktop-{vorher,nachher}.png`.
+
+**Suite:** npm test + tsc + build grün (Stand #12248, 2334 Tests; K3/K4 ändern keinen src-Code,
+nur Messskript + Doku). Reviewer-PASS siehe Board-Notiz #12249/#12250.

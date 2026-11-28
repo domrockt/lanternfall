@@ -1,0 +1,18 @@
+# Lane m10-mobile-fps-cap — fertig (28.11., Versuch 3)
+
+Dom-Wunsch: gleichmäßige 60 statt schwankender 100–120 auf dem Gerät (Adreno 710, 120 Hz).
+
+- K1 (#12247): Baseline Ist-Cap 120 — 100,4 FPS Median, Chrome-Janky 11,91 %, 33→35 °C (k1-baseline-device.json).
+- K2 (#12248): fps.limit 60 nur am Geräteknoten (src/logic/fps-cap.ts, pure) + Menü-Option BILDRATE
+  (AUTO/60/MAX, persistiert, live wirksam); Desktop bitgleich (Titel-Shots 0 Pixel Diff >8), Guard-Tests,
+  Reviewer-PASS (TimeStep sleep()/wake()-Rebind-Fix a04b6615).
+- K3 (#12249): verbindlich je 10 min am Gerät (je 60/60 Fenster, flock): Cap 60 → janky(>16,7 ms) 21,54 %,
+  p99 5 ms, 2864 WebGL-Draws/s; max → 37,01 %, p99 8 ms, 4843 Draws/s (Faktor 0,59, cappedAt60 true).
+  Tor <10 % ehrlich FAIL. Hauptursache: Regression auf K2-Build 700c815e — 9× RangeError
+  (Maximum call stack size exceeded) je Lauf, deckungsgleich mit 9 Frozen-Loop-Crashes (K1-Old-Build: 0).
+  Stack-Capture offen (Dom spielte am Gerät, 409-Regel); Probe ~/tmp/m10-fps-cap-stackprobe.mjs liegt bereit.
+  Zweitursache: Minute-25-Dichte zu schwer fürs Tor (frische Segmente schon 6,5–19,2 %).
+- K4 (#12250): Empfehlung 60 bleibt Standard am Gerät (Deadline −15,5 Punkte, p99 5 vs 8 ms,
+  −41 % Renderarbeit, Chrome-Janky-Counter als nicht interpretierbar verworfen). Bedarfe in .dispatch/requests.md.
+- Suite: tsc rc=0, 2334 Tests grün, build rc=0. Reviewer: FAIL R1 → korrigiert → PASS R2.
+- Doku: docs/lanes/m10-mobile-fps-cap.md (Abschnitte K1–K4). Board: #12247/#12248 done, #12249/#12250 done.
