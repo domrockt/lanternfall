@@ -1,0 +1,142 @@
+{
+  "lane": "m10-balance-endgame",
+  "phase": "after",
+  "generatedAt": "2026-11-28T03:29:06.465Z",
+  "parameters": {
+    "scale": 30,
+    "seeds": [
+      101,
+      7,
+      42
+    ],
+    "characters": [
+      "mira",
+      "kael"
+    ],
+    "viewport": [
+      960,
+      540
+    ],
+    "dpr": 1,
+    "autoPlay": true,
+    "god": false
+  },
+  "targetMetric": {
+    "windowMinutes": [
+      25,
+      40
+    ],
+    "spreadMaxMinutes": 4
+  },
+  "runs": [
+    {
+      "seed": 101,
+      "character": "mira",
+      "outcome": "dawn",
+      "endMinute": 30.39,
+      "endSecond": 1823.1,
+      "result": {
+        "reason": "dawn",
+        "level": 37,
+        "kills": 4055,
+        "god": false,
+        "character": "mira"
+      },
+      "pageErrors": [],
+      "wallSeconds": 92.9
+    },
+    {
+      "seed": 7,
+      "character": "mira",
+      "outcome": "dawn",
+      "endMinute": 30.46,
+      "endSecond": 1827.8,
+      "result": {
+        "reason": "dawn",
+        "level": 38,
+        "kills": 5647,
+        "god": false,
+        "character": "mira"
+      },
+      "pageErrors": [],
+      "wallSeconds": 90.6
+    },
+    {
+      "seed": 42,
+      "character": "mira",
+      "outcome": "dawn",
+      "endMinute": 30.32,
+      "endSecond": 1819,
+      "result": {
+        "reason": "dawn",
+        "level": 40,
+        "kills": 8301,
+        "god": false,
+        "character": "mira"
+      },
+      "pageErrors": [],
+      "wallSeconds": 91.5
+    },
+    {
+      "seed": 101,
+      "character": "kael",
+      "outcome": "dawn",
+      "endMinute": 30.6,
+      "endSecond": 1835.8,
+      "result": {
+        "reason": "dawn",
+        "level": 39,
+        "kills": 9591,
+        "god": false,
+        "character": "kael"
+      },
+      "pageErrors": [],
+      "wallSeconds": 91.7
+    },
+    {
+      "seed": 7,
+      "character": "kael",
+      "outcome": "dawn",
+      "endMinute": 30.49,
+      "endSecond": 1829.6,
+      "result": {
+        "reason": "dawn",
+        "level": 36,
+        "kills": 5887,
+        "god": false,
+        "character": "kael"
+      },
+      "pageErrors": [],
+      "wallSeconds": 91.2
+    },
+    {
+      "seed": 42,
+      "character": "kael",
+      "outcome": "dawn",
+      "endMinute": 30.53,
+      "endSecond": 1832,
+      "result": {
+        "reason": "dawn",
+        "level": 38,
+        "kills": 7269,
+        "god": false,
+        "character": "kael"
+      },
+      "pageErrors": [],
+      "wallSeconds": 91.4
+    }
+  ],
+  "endMinutes": [
+    30.39,
+    30.46,
+    30.32,
+    30.6,
+    30.49,
+    30.53
+  ],
+  "spread": 0.28,
+  "allInWindow": true,
+  "spreadOk": true,
+  "accepted": true,
+  "jsErrors": []
+}

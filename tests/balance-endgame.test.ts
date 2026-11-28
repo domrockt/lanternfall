@@ -10,7 +10,7 @@ import {
   enemyDamageScale,
   spawnRateFactor,
 } from "../src/logic/scaling";
-import { LATE_GAME_MINUTE, LATE_GAME_MIX, lateGameSpawnRate, WAVES, waveForMinute } from "../src/data/waves";
+import { LATE_GAME_MINUTE, LATE_GAME_MIX, lateGameSpawnRate, TIER_MIXES, WAVES, waveForMinute } from "../src/data/waves";
 import { ENEMIES } from "../src/data/enemies";
 import type { EnemyId } from "../src/data/types";
 
@@ -19,7 +19,7 @@ import type { EnemyId } from "../src/data/types";
  * Reine Funktionen, deterministisch — kein Phaser, keine Zeitquelle.
  *
  * Zielmetrik der Lane (siehe docs/lanes/m10-balance-endgame.md): Endzeit aller
- * AutoPlay-Läufe in [25, 40] min, Streuung ≤ 4 min. Hebel: ab Minute 20 wird
+ * AutoPlay-Läufe in [25, 40] min, Streuung ≤ 4 min. Hebel: ab Minute 18 wird
  * der aktive Gegner-Deckel auf LATE_GAME_ACTIVE_CAP gesenkt; alles davor bleibt
  * bitgleich zur M6/M8-Balance.
  */
@@ -98,7 +98,9 @@ describe("M10 Endgame-Balance: Minuten-Mischung 25–30", () => {
   it("Minute 0–24 bleibt unveraendert (TIER_MIXES + alte Rate)", () => {
     for (let minute = 0; minute < LATE_GAME_MINUTE; minute++) {
       const wave = waveForMinute(minute);
-      expect(wave.mix).toBe(WAVES[minute].mix);
+      const tier = Math.min(4, Math.floor(minute / 5));
+      // Echte Referenz: TIER_MIXES, nicht WAVES[minute].mix (tautologisch).
+      expect(wave.mix).toBe(TIER_MIXES[tier]);
       expect(wave.spawnRate, `Minute ${minute}`).toBeCloseTo(0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04, 10);
     }
   });

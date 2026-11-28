@@ -78,7 +78,7 @@ async function runOnce(seed, character) {
       });
       last = s;
       if (s.scene === "results") {
-        trace.outcome = s.reason === "dawn" ? "dawn" : "death";
+        trace.outcome = s.reason === "dawn" ? "dawn" : s.reason === "giveup" ? "giveup" : "death";
         trace.endSecond = Math.round(s.time * 10) / 10;
         trace.result = { reason: s.reason, level: s.level, kills: s.kills, god: s.god, character: s.character };
         break;
