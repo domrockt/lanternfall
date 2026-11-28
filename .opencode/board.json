@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9709,
+  "next": 9725,
   "cards": [
     {
       "id": 1,
@@ -11739,12 +11739,17 @@
       "id": 9196,
       "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
       "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T05:45:00Z",
           "by": "build",
           "text": "todo → doing: K4 startet: art-director-Urteil zu Prop-Vielfalt auf After-Shots, Lane-Doku, .lane-done."
+        },
+        {
+          "at": "2026-11-28T07:30:35+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9196, Merge branch m10-terrain-edge-crisp"
         }
       ],
       "created": "2026-11-28T05:39:50Z",
