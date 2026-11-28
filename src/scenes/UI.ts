@@ -1254,7 +1254,11 @@ export class UI extends Phaser.Scene {
     y = 76 + oy;
     for (const p of s.passives) {
       const def = PASSIVES[p.id as keyof typeof PASSIVES];
-      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.mist, 234, 386,
+      // m10-ui-pause-quality K2: C.mist (Index 8) erreicht auf dem Pause-Panel nur
+      // Kontrast 4.15 (Vorher-Scan m10-ui-pause-quality, beide Viewports) -> Build-Texte
+      // der Powerup-Spalte auf C.candleWhite (Index 12). Waffen-Spalte (C.bone, Index 10,
+      // Kontrast besteht) und Hinweiszeilen bleiben im gemeldeten Scope unangetastet.
+      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.candleWhite, 234, 386,
         iconTextureKey("passive", p.id));
       y += 15;
     }
