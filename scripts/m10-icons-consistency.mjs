@@ -304,7 +304,7 @@ function contactSheet(path, scale) {
   const order = Object.keys(GEN_ICONS).sort();
   const COLS = 6;
   const rows = Math.ceil(order.length / COLS);
-  const PAD = 4, LABEL_H = 6, CELL = 16 * scale;
+  const PAD = 4, LABEL_H = 5 * scale + 2, CELL = 16 * scale; // Labelhoehe = 5 Zeilen Font + Abstand (art-director K4)
   const w = COLS * (CELL + PAD) + PAD;
   const h = rows * (CELL + LABEL_H + PAD) + PAD + LABEL_H + 2;
   const BG = [0x17, 0x20, 0x2e]; // nightMid

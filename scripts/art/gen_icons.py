@@ -280,9 +280,10 @@ def special() -> dict[str, Grid]:
     g.rect(7, 13, 2, 1, 20)         # Beere Sued
     g.rect(2, 7, 4, 2, 31)          # West
     g.rect(2, 7, 1, 2, 31)
-    # Diagonal-Splitter (Sturm-Debris, 1 px)
-    for x, y, c in ((10, 6, 31), (11, 5, 31), (12, 4, 10), (11, 11, 31), (12, 12, 31)):
-        g.put(x, y, c)
+    # Sturm-Debris als 2x2-Knospen, damit sie auf dunklem Grund lesbar bleiben
+    # (art-director Nachbesserung K4: keine schwebenden Einzelpixel)
+    g.rect(12, 3, 2, 2, 10)         # Knochen-Splitter Nord-Ost
+    g.rect(11, 11, 2, 2, 31)        # Dorn-Knospe Sued-Ost
     out["evo_thorn_storm"] = outline(g, diagonal=True)
 
     # Sanduhr: durchgehende Silhouette — Rahmen (Deckel/Pfosten/Fuß) und Sand
