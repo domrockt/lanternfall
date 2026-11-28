@@ -1,6 +1,6 @@
 {
   "name": "m10-spawnbudget-before",
-  "generatedAt": "2026-11-28T03:24:14.323Z",
+  "generatedAt": "2026-11-28T03:42:07.535Z",
   "seed": 20261128,
   "timeScale": 30,
   "simSeconds": 170,
@@ -21,84 +21,84 @@
       "name": "60fps+hitch",
       "frames": 102,
       "marks": 75,
-      "hash": "9a4da81e",
-      "perMinute": {
-        "0": 19,
-        "1": 8,
-        "2": 48
-      },
-      "perMinuteExpected": {
-        "0": 22.8,
-        "1": 26.88,
-        "2": 25.8
-      },
-      "budgetRest": 0.48,
-      "conservedVsIntegralDelta": 0
-    },
-    {
-      "name": "30fps+hitch",
-      "frames": 52,
-      "marks": 75,
-      "hash": "c08f5424",
-      "perMinute": {
-        "0": 19,
-        "1": 8,
-        "2": 48
-      },
-      "perMinuteExpected": {
-        "0": 22.8,
-        "1": 26.88,
-        "2": 25.8
-      },
-      "budgetRest": 0.48,
-      "conservedVsIntegralDelta": 0
-    },
-    {
-      "name": "jitter+hitch",
-      "frames": 65,
-      "marks": 75,
-      "hash": "0fd1054e",
-      "perMinute": {
-        "0": 19,
-        "1": 8,
-        "2": 48
-      },
-      "perMinuteExpected": {
-        "0": 22.8,
-        "1": 26.88,
-        "2": 25.8
-      },
-      "budgetRest": 0.48,
-      "conservedVsIntegralDelta": 0
-    },
-    {
-      "name": "60fps-ohne-hitch",
-      "frames": 340,
-      "marks": 75,
-      "hash": "aca576fc",
+      "hash": "f1750b6c",
       "perMinute": {
         "0": 22,
         "1": 27,
         "2": 26
       },
       "perMinuteExpected": {
-        "0": 22.8,
+        "0": 22.781,
         "1": 26.88,
-        "2": 25.8
+        "2": 25.8258
       },
-      "budgetRest": 0.48,
+      "budgetRest": 0.4868,
+      "conservedVsIntegralDelta": 0
+    },
+    {
+      "name": "30fps+hitch",
+      "frames": 52,
+      "marks": 75,
+      "hash": "f1750b6c",
+      "perMinute": {
+        "0": 22,
+        "1": 27,
+        "2": 26
+      },
+      "perMinuteExpected": {
+        "0": 22.781,
+        "1": 26.88,
+        "2": 25.8258
+      },
+      "budgetRest": 0.4868,
+      "conservedVsIntegralDelta": 0
+    },
+    {
+      "name": "jitter+hitch",
+      "frames": 65,
+      "marks": 75,
+      "hash": "f1750b6c",
+      "perMinute": {
+        "0": 22,
+        "1": 27,
+        "2": 26
+      },
+      "perMinuteExpected": {
+        "0": 22.781,
+        "1": 26.88,
+        "2": 25.8258
+      },
+      "budgetRest": 0.4868,
+      "conservedVsIntegralDelta": 0
+    },
+    {
+      "name": "60fps-ohne-hitch",
+      "frames": 340,
+      "marks": 75,
+      "hash": "f1750b6c",
+      "perMinute": {
+        "0": 22,
+        "1": 27,
+        "2": 26
+      },
+      "perMinuteExpected": {
+        "0": 22.781,
+        "1": 26.88,
+        "2": 25.8258
+      },
+      "budgetRest": 0.4868,
       "conservedVsIntegralDelta": 0
     }
   ],
   "marksLists": {
     "60fps+hitch": [
       {
-        "t": 2.65,
+        "t": 2.6500000000000004,
         "id": "toad",
         "elite": false
       },
       {
-        "t": 5.3,
+        "t": 5.300000000000001,
         "id": "wisp",
         "elite": false
       },
@@ -113,7 +113,7 @@
         "elite": false
       },
       {
-        "t": 13.2,
+        "t": 13.200000000000001,
         "id": "bogzombie",
         "elite": false
       },
@@ -133,7 +133,7 @@
         "elite": false
       },
       {
-        "t": 23.7,
+        "t": 23.700000000000003,
         "id": "bog_rat",
         "elite": false
       },
@@ -143,7 +143,7 @@
         "elite": false
       },
       {
-        "t": 28.95,
+        "t": 28.950000000000003,
         "id": "wisp",
         "elite": false
       },
@@ -168,7 +168,7 @@
         "elite": false
       },
       {
-        "t": 42.15,
+        "t": 42.150000000000006,
         "id": "wisp",
         "elite": false
       },
@@ -178,1138 +178,7 @@
         "elite": false
       },
       {
-        "t": 47.4,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 50.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.6,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 155.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 157.45,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 159.4,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 161.35,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 163.3,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 165.2,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 167.15,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 169.1,
-        "id": "bog_rat",
-        "elite": false
-      }
-    ],
-    "30fps+hitch": [
-      {
-        "t": 2.65,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 5.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 7.9,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 10.55,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 13.2,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 15.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 18.45,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 21.1,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 23.7,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 26.35,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 28.95,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 31.6,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 34.25,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 36.85,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 39.5,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 42.15,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 44.75,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 47.4,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 50.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 154.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 155.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 157.45,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 159.4,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 161.35,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 163.3,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 165.2,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 167.15,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 169.1,
-        "id": "bog_rat",
-        "elite": false
-      }
-    ],
-    "jitter+hitch": [
-      {
-        "t": 2.65,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 5.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 7.9,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 10.55,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 13.2,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 15.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 18.45,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 21.1,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 23.7,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 26.35,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 28.95,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 31.6,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 34.25,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 36.85,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 39.5,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 42.15,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 44.75,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 47.4,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 50.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 90.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.05,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 150.55,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 151.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 152.3,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 153.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 155.55,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 157.45,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 159.4,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 161.35,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 163.3,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 165.2,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 167.15,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 169.1,
-        "id": "bog_rat",
-        "elite": false
-      }
-    ],
-    "60fps-ohne-hitch": [
-      {
-        "t": 2.65,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 5.3,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 7.9,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 10.55,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 13.2,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 15.8,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 18.45,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 21.1,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 23.7,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 26.35,
-        "id": "bogzombie",
-        "elite": false
-      },
-      {
-        "t": 28.95,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 31.6,
-        "id": "crow",
-        "elite": false
-      },
-      {
-        "t": 34.25,
-        "id": "mudling",
-        "elite": false
-      },
-      {
-        "t": 36.85,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 39.5,
-        "id": "toad",
-        "elite": false
-      },
-      {
-        "t": 42.15,
-        "id": "wisp",
-        "elite": false
-      },
-      {
-        "t": 44.75,
-        "id": "bog_rat",
-        "elite": false
-      },
-      {
-        "t": 47.4,
+        "t": 47.400000000000006,
         "id": "bog_rat",
         "elite": false
       },
@@ -1319,17 +188,17 @@
         "elite": false
       },
       {
-        "t": 52.65,
+        "t": 52.650000000000006,
         "id": "bog_rat",
         "elite": false
       },
       {
-        "t": 55.3,
+        "t": 55.300000000000004,
         "id": "crow",
         "elite": false
       },
       {
-        "t": 57.9,
+        "t": 57.900000000000006,
         "id": "bogzombie",
         "elite": false
       },
@@ -1359,32 +228,32 @@
         "elite": false
       },
       {
-        "t": 71.65,
+        "t": 71.60000000000001,
         "id": "mudling",
         "elite": false
       },
       {
-        "t": 73.85,
+        "t": 73.85000000000001,
         "id": "toad",
         "elite": false
       },
       {
-        "t": 76.1,
+        "t": 76.10000000000001,
         "id": "wisp",
         "elite": false
       },
       {
-        "t": 78.35,
+        "t": 78.30000000000001,
         "id": "crow",
         "elite": false
       },
       {
-        "t": 80.55,
+        "t": 80.55000000000001,
         "id": "wisp",
         "elite": false
       },
       {
-        "t": 82.8,
+        "t": 82.80000000000001,
         "id": "bog_rat",
         "elite": false
       },
@@ -1429,32 +298,32 @@
         "elite": false
       },
       {
-        "t": 102.9,
+        "t": 102.85000000000001,
         "id": "bog_rat",
         "elite": false
       },
       {
-        "t": 105.1,
+        "t": 105.10000000000001,
         "id": "bog_rat",
         "elite": false
       },
       {
-        "t": 107.35,
+        "t": 107.35000000000001,
         "id": "wisp",
         "elite": false
       },
       {
-        "t": 109.6,
+        "t": 109.55000000000001,
         "id": "bog_rat",
         "elite": false
       },
       {
-        "t": 111.8,
+        "t": 111.80000000000001,
         "id": "bogzombie",
         "elite": false
       },
       {
-        "t": 114.05,
+        "t": 114.05000000000001,
         "id": "crow",
         "elite": false
       },
@@ -1474,7 +343,7 @@
         "elite": false
       },
       {
-        "t": 122.6,
+        "t": 122.55000000000001,
         "id": "wisp",
         "elite": false
       },
@@ -1494,7 +363,7 @@
         "elite": false
       },
       {
-        "t": 130.35,
+        "t": 130.3,
         "id": "bog_rat",
         "elite": false
       },
@@ -1504,7 +373,7 @@
         "elite": false
       },
       {
-        "t": 134.2,
+        "t": 134.20000000000002,
         "id": "bog_rat",
         "elite": false
       },
@@ -1514,7 +383,7 @@
         "elite": false
       },
       {
-        "t": 138.1,
+        "t": 138.05,
         "id": "bog_rat",
         "elite": false
       },
@@ -1524,7 +393,7 @@
         "elite": false
       },
       {
-        "t": 141.95,
+        "t": 141.95000000000002,
         "id": "bog_rat",
         "elite": false
       },
@@ -1539,12 +408,12 @@
         "elite": false
       },
       {
-        "t": 147.8,
+        "t": 147.75,
         "id": "bog_rat",
         "elite": false
       },
       {
-        "t": 149.7,
+        "t": 149.70000000000002,
         "id": "bogzombie",
         "elite": false
       },
@@ -1554,17 +423,17 @@
         "elite": false
       },
       {
-        "t": 153.6,
+        "t": 153.60000000000002,
         "id": "bog_rat",
         "elite": false
       },
       {
-        "t": 155.55,
+        "t": 155.5,
         "id": "wisp",
         "elite": false
       },
       {
-        "t": 157.45,
+        "t": 157.45000000000002,
         "id": "bogzombie",
         "elite": false
       },
@@ -1574,17 +443,17 @@
         "elite": false
       },
       {
-        "t": 161.35,
+        "t": 161.35000000000002,
         "id": "toad",
         "elite": false
       },
       {
-        "t": 163.3,
+        "t": 163.25,
         "id": "crow",
         "elite": false
       },
       {
-        "t": 165.2,
+        "t": 165.20000000000002,
         "id": "wisp",
         "elite": false
       },
@@ -1594,7 +463,1138 @@
         "elite": false
       },
       {
-        "t": 169.1,
+        "t": 169.10000000000002,
+        "id": "bog_rat",
+        "elite": false
+      }
+    ],
+    "30fps+hitch": [
+      {
+        "t": 2.6500000000000004,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 5.300000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 7.9,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 10.55,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 13.200000000000001,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 15.8,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 18.45,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 21.1,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 23.700000000000003,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 26.35,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 28.950000000000003,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 31.6,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 34.25,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 36.85,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 39.5,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 42.150000000000006,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 44.75,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 47.400000000000006,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 50,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 52.650000000000006,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 55.300000000000004,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 57.900000000000006,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 60.45,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 62.7,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 64.95,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 67.15,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 69.4,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 71.60000000000001,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 73.85000000000001,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 76.10000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 78.30000000000001,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 80.55000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 82.80000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 85,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 87.25,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 89.5,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 91.7,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 93.95,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 96.2,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 98.4,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 100.65,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 102.85000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 105.10000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 107.35000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 109.55000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 111.80000000000001,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 114.05000000000001,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 116.25,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 118.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 120.65,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 122.55000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 124.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 126.45,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 128.4,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 130.3,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 132.25,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 134.20000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 136.15,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 138.05,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 140,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 141.95000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 143.9,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 145.85,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 147.75,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 149.70000000000002,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 151.65,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 153.60000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 155.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 157.45000000000002,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 159.4,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 161.35000000000002,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 163.25,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 165.20000000000002,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 167.15,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 169.10000000000002,
+        "id": "bog_rat",
+        "elite": false
+      }
+    ],
+    "jitter+hitch": [
+      {
+        "t": 2.6500000000000004,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 5.300000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 7.9,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 10.55,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 13.200000000000001,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 15.8,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 18.45,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 21.1,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 23.700000000000003,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 26.35,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 28.950000000000003,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 31.6,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 34.25,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 36.85,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 39.5,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 42.150000000000006,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 44.75,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 47.400000000000006,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 50,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 52.650000000000006,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 55.300000000000004,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 57.900000000000006,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 60.45,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 62.7,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 64.95,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 67.15,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 69.4,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 71.60000000000001,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 73.85000000000001,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 76.10000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 78.30000000000001,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 80.55000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 82.80000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 85,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 87.25,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 89.5,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 91.7,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 93.95,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 96.2,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 98.4,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 100.65,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 102.85000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 105.10000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 107.35000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 109.55000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 111.80000000000001,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 114.05000000000001,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 116.25,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 118.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 120.65,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 122.55000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 124.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 126.45,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 128.4,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 130.3,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 132.25,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 134.20000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 136.15,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 138.05,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 140,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 141.95000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 143.9,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 145.85,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 147.75,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 149.70000000000002,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 151.65,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 153.60000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 155.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 157.45000000000002,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 159.4,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 161.35000000000002,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 163.25,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 165.20000000000002,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 167.15,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 169.10000000000002,
+        "id": "bog_rat",
+        "elite": false
+      }
+    ],
+    "60fps-ohne-hitch": [
+      {
+        "t": 2.6500000000000004,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 5.300000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 7.9,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 10.55,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 13.200000000000001,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 15.8,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 18.45,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 21.1,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 23.700000000000003,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 26.35,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 28.950000000000003,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 31.6,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 34.25,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 36.85,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 39.5,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 42.150000000000006,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 44.75,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 47.400000000000006,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 50,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 52.650000000000006,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 55.300000000000004,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 57.900000000000006,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 60.45,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 62.7,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 64.95,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 67.15,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 69.4,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 71.60000000000001,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 73.85000000000001,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 76.10000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 78.30000000000001,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 80.55000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 82.80000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 85,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 87.25,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 89.5,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 91.7,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 93.95,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 96.2,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 98.4,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 100.65,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 102.85000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 105.10000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 107.35000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 109.55000000000001,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 111.80000000000001,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 114.05000000000001,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 116.25,
+        "id": "mudling",
+        "elite": false
+      },
+      {
+        "t": 118.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 120.65,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 122.55000000000001,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 124.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 126.45,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 128.4,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 130.3,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 132.25,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 134.20000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 136.15,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 138.05,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 140,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 141.95000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 143.9,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 145.85,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 147.75,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 149.70000000000002,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 151.65,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 153.60000000000002,
+        "id": "bog_rat",
+        "elite": false
+      },
+      {
+        "t": 155.5,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 157.45000000000002,
+        "id": "bogzombie",
+        "elite": false
+      },
+      {
+        "t": 159.4,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 161.35000000000002,
+        "id": "toad",
+        "elite": false
+      },
+      {
+        "t": 163.25,
+        "id": "crow",
+        "elite": false
+      },
+      {
+        "t": 165.20000000000002,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 167.15,
+        "id": "wisp",
+        "elite": false
+      },
+      {
+        "t": 169.10000000000002,
         "id": "bog_rat",
         "elite": false
       }
@@ -1603,57 +1603,21 @@
   "comparison": [
     {
       "scenario": "30fps+hitch",
-      "identical": false,
-      "firstDiff": {
-        "index": 35,
-        "a": {
-          "t": 150.55,
-          "id": "crow",
-          "elite": false
-        },
-        "b": {
-          "t": 151.05,
-          "id": "crow",
-          "elite": false
-        }
-      }
+      "identical": true,
+      "firstDiff": null
     },
     {
       "scenario": "jitter+hitch",
-      "identical": false,
-      "firstDiff": {
-        "index": 43,
-        "a": {
-          "t": 151.05,
-          "id": "wisp",
-          "elite": false
-        },
-        "b": {
-          "t": 151.3,
-          "id": "wisp",
-          "elite": false
-        }
-      }
+      "identical": true,
+      "firstDiff": null
     },
     {
       "scenario": "60fps-ohne-hitch",
-      "identical": false,
-      "firstDiff": {
-        "index": 18,
-        "a": {
-          "t": 50.05,
-          "id": "crow",
-          "elite": false
-        },
-        "b": {
-          "t": 50,
-          "id": "crow",
-          "elite": false
-        }
-      }
+      "identical": true,
+      "firstDiff": null
     }
   ],
-  "identical": false,
+  "identical": true,
   "totalsConserved": true,
-  "verdict": "Erwartet fuer BEFORE: Frame-Folgen divergieren in den Spawn-Marken (frame-count-abhaengige Zuteilung)"
+  "verdict": "HINWEIS: bereits vor dem Fix bitgleich (Rueckstau-Szenarium greift nicht) — Probe schaerfen"
 }

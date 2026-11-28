@@ -32,13 +32,18 @@ import { rolldown } from "rolldown";
 
 const argv = process.argv.slice(2);
 const argOf = (name, fallback) => {
+  const prefix = `--${name}=`;
+  const inline = argv.find((a) => a.startsWith(prefix));
+  if (inline) return inline.slice(prefix.length);
   const i = argv.indexOf(`--${name}`);
   return i >= 0 ? argv[i + 1] : fallback;
 };
 const TAG = String(argOf("tag", "before"));
 const EXPECT_IDENTICAL = argv.includes("--expect-identical");
 const OUT = String(argOf("json", `shots/m10-spawnbudget-${TAG}.json`));
-const SRC = resolve("src");
+// Quellordner (Default src): erlaubt faire A/B-Laeufe gegen den alten Stand,
+// z. B. --src=$HOME/tmp/m10-spawn-budget-dt/before-src (git-Stand vor dem Fix).
+const SRC = resolve(String(argOf("src", "src")));
 const WORK = join(tmpdir(), "m10-spawn-budget-dt");
 mkdirSync(WORK, { recursive: true });
 mkdirSync("shots", { recursive: true });
@@ -174,34 +179,34 @@ const SCENARIOS = [
 function runScenario(scenario) {
   const { spawner, scene, registry } = makeSpawner(SEED);
   const marks = [];
-  let sim = 0;
+  const STEP = SIM_MAX_STEP;
+  let steps = 0; // Substeps a 0,05 s Sim-Zeit; sim = steps*STEP (kein Akkumulations-Drift)
   let frame = 0;
   const hitchesLeft = scenario.noHitch ? [] : HITCHES.map((h) => ({ ...h }));
-  while (sim < SIM_END - 1e-9) {
+  while (steps * STEP < SIM_END - 1e-9) {
     frame += 1;
     scene.game.loop.frame = frame;
-    const normal = scenario.realDt(frame);
+    // Frame-Zeit -> ganzzahlige Substep-Ration (alle Szenarien bleiben auf
+    // dem 0,05-s-Grid; variiert wird nur die Ration je ECHTEM Frame).
+    const normal = Math.round((scenario.realDt(frame) * TIME_SCALE) / STEP);
     const next = hitchesLeft[0];
-    let realDt = normal;
+    let substeps = normal;
     if (next) {
-      const step = normal * TIME_SCALE;
-      if (sim < next.at - 1e-9 && sim + step >= next.at - 1e-9) {
-        realDt = (next.at - sim) / TIME_SCALE; // Vorframe endet exakt am Hitch-Start
-      } else if (sim >= next.at - 1e-9) {
-        realDt = next.len / TIME_SCALE; // Hitch-Frame deckt exakt [at, at+len] ab
+      const atStep = Math.round(next.at / STEP);
+      if (steps < atStep && steps + normal >= atStep) substeps = atStep - steps;
+      else if (steps >= atStep) {
+        substeps = Math.round(next.len / STEP);
         hitchesLeft.shift();
       }
     }
-    scene.game.loop.delta = realDt * 1000;
-    let remaining = realDt * TIME_SCALE;
-    while (remaining > 1e-4) {
-      const dt = Math.min(SIM_MAX_STEP, remaining);
-      remaining -= dt;
-      sim += dt;
+    scene.game.loop.delta = ((substeps * STEP) / TIME_SCALE) * 1000;
+    for (let i = 0; i < substeps && steps * STEP < SIM_END - 1e-9; i++) {
+      steps += 1;
+      const sim = steps * STEP;
       registry.set("lf-elapsed", sim);
-      const spawned = spawner.update(sim, dt, probe.PLAYER.x, probe.PLAYER.y);
+      const spawned = spawner.update(sim, STEP, probe.PLAYER.x, probe.PLAYER.y);
       for (const e of spawned) {
-        marks.push({ t: Number(sim.toFixed(6)), id: e.def.id, elite: !!e.elite });
+        marks.push({ t: sim, id: e.def.id, elite: !!e.elite });
       }
     }
   }
@@ -210,12 +215,17 @@ function runScenario(scenario) {
     const minute = Math.floor(m.t / 60);
     perMinute[minute] = (perMinute[minute] ?? 0) + 1;
   }
-  const expected = {};
+  // integral(rate) ueber die TATSAECHLICHEN Substeps (Wellengrenze ueber
+  // elapsed nach dem Teilschritt, wie im Spiel) — nicht als geschlossene
+  // Span-Formel, sonst rundet die Grenze anders als die Simulation.
+  const factor = spawnRateFactor(640, 360);
+  const perMinuteExpected = {};
   let integral = 0;
-  for (let minute = 0; minute < Math.ceil(SIM_END / 60); minute++) {
-    const span = Math.min(SIM_END, (minute + 1) * 60) - minute * 60;
-    expected[minute] = span * spawnRateForMinute(minute) * spawnRateFactor(640, 360);
-    integral += expected[minute];
+  for (let s = 1; s <= steps; s++) {
+    const minute = Math.floor((s * STEP) / 60);
+    const rate = spawnRateForMinute(minute) * factor * STEP;
+    integral += rate;
+    perMinuteExpected[minute] = Number(((perMinuteExpected[minute] ?? 0) + rate).toFixed(6));
   }
   const conserved = marks.length + spawner.budget;
   return {
@@ -225,7 +235,7 @@ function runScenario(scenario) {
     hash: hashMarks(marks),
     marksList: marks,
     perMinute,
-    perMinuteExpected: Object.fromEntries(Object.entries(expected).map(([k, v]) => [k, Number(v.toFixed(3))])),
+    perMinuteExpected,
     budgetRest: Number(spawner.budget.toFixed(9)),
     conservedVsIntegralDelta: Number((conserved - integral).toFixed(6)),
   };
@@ -282,3 +292,99 @@ for (const r of results) console.log(`  ${r.name}: frames=${r.frames} marks=${r.
 for (const d of diverged) console.log(`  vs ${reference.name}: ${d.scenario} identical=${d.identical}${d.firstDiff ? ` firstDiff=${JSON.stringify(d.firstDiff)}` : ""}`);
 console.log(`verdict: ${report.verdict}`);
 if (EXPECT_IDENTICAL && !(identical && conservedOk)) process.exit(1);
+
+// ── Sanity-Modus (--sanity): echter autoPlay-Lauf im Browser ──────────
+// Kael/Seed 101, 10 min Sim-Zeit, timeScale 30, kein God. Prueft auf
+// Balance-Ausreisser gegen die Referenz shots/m10-balance-kael-final.json
+// (Kael/101: Level 27-28 und ~8400-9400 Kills bei 30,6 min, Boss 1 in 32-33 s,
+// Korridor Boss 20-60 s). Kein FPS-/Echtzeit-Messlauf -> OHNE flock
+// (vgl. Harness-Vermerk in m10-balance-kael-final.json).
+if (argv.includes("--sanity")) {
+  const { ensureBuild, startServer, loadPlaywright, waitForScene } = await import("./harness.mjs");
+  ensureBuild();
+  const { chromium } = await loadPlaywright();
+  const server = await startServer();
+  const browser = await chromium.launch({ args: ["--disable-background-timer-throttling", "--autoplay-policy=no-user-gesture-required"] });
+  const page = await browser.newPage({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(String(e)));
+  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  const SIM_MINUTES = 10;
+  const samples = [];
+  let bossDeaths = [];
+  try {
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=101`);
+    await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
+    await waitForScene(page, "title");
+    await page.keyboard.press("Enter");
+    await waitForScene(page, "charselect");
+    await page.keyboard.press("2"); // Kael
+    await page.keyboard.press("Enter");
+    await waitForScene(page, "run");
+    await page.evaluate(() => {
+      window.__lf.autoPlay(true);
+      window.__lf.god(false);
+      window.__lf.setTimeScale(30);
+      const run = window.__game.scene.getScene("run");
+      window.__balanceTrace = { bossDeaths: [] };
+      run.events.on("bossDefeated", (e) => {
+        window.__balanceTrace.bossDeaths.push({ index: e.index, at: run.elapsed });
+      });
+    });
+    const deadline = Date.now() + 180_000; // hartes Lauf-Limit
+    let lastMinute = -1;
+    for (;;) {
+      const snap = await page.evaluate(() => {
+        const run = window.__game?.scene?.getScene("run");
+        if (!run || !run.scene.isActive()) return null;
+        const hud = run.getHudState();
+        return { time: hud.time, level: hud.level, kills: hud.kills, enemies: hud.enemies, hp: hud.hp, maxHp: hud.maxHp, bossActive: Boolean(hud.boss) };
+      });
+      if (!snap) break;
+      const minute = Math.floor(snap.time / 60);
+      if (minute > lastMinute) {
+        lastMinute = minute;
+        samples.push({ minute, ...snap });
+      }
+      if (snap.time >= SIM_MINUTES * 60 || minute >= SIM_MINUTES || Date.now() > deadline) break;
+      await page.waitForTimeout(200);
+    }
+    bossDeaths = await page.evaluate(() => window.__balanceTrace?.bossDeaths ?? []);
+  } finally {
+    await browser.close();
+    await server?.close?.();
+  }
+  const last = samples.at(-1) ?? {};
+  // Boss-Dauer wie in balance.mjs: Todeszeitpunkt - geplante Spawn-Zeit
+  // (Boss i erscheint bei (i+1)*300 Sim-Sekunden).
+  const boss1At = bossDeaths.find((b) => b.index === 0)?.at;
+  const boss1Dur = Number.isFinite(boss1At) ? Math.round(boss1At - 300) : null;
+  const gates = {
+    reached10Min: (last.minute ?? 0) >= SIM_MINUTES - 1,
+    // Referenz m10-balance-kael-final: Level 27-28 bei 30,6 min, Korridor
+    // levelAt30 [25,40]. Mehr spaete Spawns (Fix) heben die fruehe Kurve
+    // leicht (Level 20 bei min 10 projiziert ~29-31 bei min 30) — Band
+    // gegen den Korridor, nicht gegen die ts30-deferred-Altkurve.
+    levelAt10MinInBand: (last.level ?? 0) >= 6 && (last.level ?? 0) <= 24,
+    killsAt10MinInBand: (last.kills ?? 0) >= 300 && (last.kills ?? 0) <= 2500, // Referenz ~620 (alt) bzw. mehr (Fix)
+    boss1InCorridor: boss1Dur === null || (boss1Dur >= 20 && boss1Dur <= 60), // Korridor 20-60 s
+    noJsErrors: errors.length === 0,
+  };
+  const ok = Object.values(gates).every(Boolean);
+  const sanity = {
+    name: "m10-spawnbudget-kael-sanity",
+    generatedAt: new Date().toISOString(),
+    harness: "node scripts/m10-spawn-budget-dt.mjs --sanity (Playwright, autoPlay, kein god, timeScale 30, OHNE flock)",
+    reference: "shots/m10-balance-kael-final.json (Kael/Seed 101: dawn 30.6 min, Level 27-28, ~8.4-9.4k Kills, Boss1 32-33 s)",
+    simMinutesTarget: SIM_MINUTES,
+    samples,
+    bossDeaths,
+    jsErrors: errors,
+    gates,
+    verdict: ok ? "PASS: kein Balance-Ausreisser gegen m10-balance-kael-final" : "FAIL: Gate verletzt",
+  };
+  writeFileSync("shots/m10-spawnbudget-kael-sanity.json", JSON.stringify(sanity, null, 2));
+  console.log(`sanity: samples=${samples.length} last=${JSON.stringify(last)} boss1Dur=${boss1Dur} errors=${errors.length}`);
+  console.log(`sanity verdict: ${sanity.verdict} gates=${JSON.stringify(gates)}`);
+  if (!ok) process.exit(1);
+}

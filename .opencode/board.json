@@ -9794,37 +9794,54 @@
       "id": 7758,
       "title": "m10-spawn-budget-dt K1: Vorher-Messung Spawn-Marken (frame-abhängig)",
       "description": "Bedarfsmeldung m10-pause-freeze (#7505 in Bedarfsliste). Probe scripts/m10-spawn-budget-dt.mjs: headless Spawner (Phaser-Stub, Stub-Pool), 2+ Kontrollläufe gleicher Seed (mulberry32), timeScale 30, sim 170 s, Frame-Zeiten variieren (60fps/30fps/Jitter) bei aligned Substep-Grid + sim-alignierten Hitches (60 sim s). Akzeptanz VORHER festgelegt: gleicher Seed + gleiche Sim-Zeit -> identische Spawn-Marken (t/id/elite-Hash) unabhängig von der Frame-Folge; Gesamt-Spawn-Zahl je Welle bleibt ∫rate. Ergebnis nach shots/m10-spawnbudget-before.json + Commit.",
-      "column": "doing",
+      "column": "done",
       "assignee": "@gameplay-dev",
       "notes": [
         {
           "at": "2026-11-28T03:21:39Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Probe-Skript (rolldown + Phaser-Stub) bauen, Vorher-Messung nach shots/m10-spawnbudget-before.json."
+        },
+        {
+          "at": "2026-11-28T03:25:33Z",
+          "by": "build",
+          "text": "doing → done: K1 fertig, Commit 7453c1d: Probe + shots/m10-spawnbudget-before.json. Beleg: 4 Szenarien gleicher Seed/Sim-Zeit, Marken-Hashes divergieren (firstDiff t=150.55 vs 151.05), Gesamt-Spawn-Zahl konserviert."
         }
       ],
       "created": "2026-11-28T03:21:38Z",
-      "updated": "2026-11-28T03:21:39Z"
+      "updated": "2026-11-28T03:25:33Z"
     },
     {
       "id": 7759,
       "title": "m10-spawn-budget-dt K2: Fix dt-Akkumulator + tests/spawn-budget-dt.test.ts",
       "description": "src/systems/Spawner.ts: Spawn-Allowance von je-echtem-Frame (SPAWN_FRAME_BUDGET/Frame, lastSpawnFrame) auf dt-Akkumulator umstellen (budget += rate*dt bereits dt-basiert; Allowance += RATE*dt, ganzzahliger Abgriff, Rest-Carry, Deckel). Wellen-Zusammensetzung/Tier/Boss-Timing (waves.ts) unangetastet; EnemyPool unangetastet. tests/spawn-budget-dt.test.ts: Akkumulator, ganzzahliger Abgriff, Determinismus bei verschiedenen Frame-Folgen, Gesamt-Spawn-Zahl je Welle unverändert. Integrationstests in tests/spawn-burst.test.ts (fremd, minimal) an neue Semantik anpassen — Begruendung in docs/lanes. Commit nach gruenem tsc+test.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "@gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:25:33Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: dt-Akkumulator in Spawner.ts (Allowance += RATE*dt, ganzzahliger Abgriff, Deckel), tests/spawn-budget-dt.test.ts, Anpassung spawn-burst-Integrationstests (fremd, begruendet)."
+        }
+      ],
       "created": "2026-11-28T03:21:38Z",
-      "updated": "2026-11-28T03:21:38Z"
+      "updated": "2026-11-28T03:25:33Z"
     },
     {
       "id": 7760,
       "title": "m10-spawn-budget-dt K3: Nachher-Messung + Doku + .lane-done",
       "description": "Probe nachher -> shots/m10-spawnbudget-after.json (Marken bitgleich ueber alle Frame-Folgen). autoPlay-Sanity-Lauf Kael/Seed 101, 10 min sim, timeScale 30 (flock) ohne Balance-Ausreißer gg. shots/m10-balance-kael-final.json. npx tsc --noEmit, npm test, npm run build gruen. docs/lanes/m10-spawn-budget-dt.md mit before/after + exaktem Hebel + Restrisiken (Frame-Budget-Regler bleibt echtzeit-abhaengig, Run.ts-Substep-Phase = Folgelane). Commit + .lane-done.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "@tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:38:35Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: after-JSON liegt vor (PASS); autoPlay-Sanity-Lauf Kael/Seed 101 (flock), docs/lanes, .lane-done."
+        }
+      ],
       "created": "2026-11-28T03:21:38Z",
-      "updated": "2026-11-28T03:21:38Z"
+      "updated": "2026-11-28T03:38:35Z"
     }
   ]
 }
