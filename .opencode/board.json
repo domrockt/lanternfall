@@ -10472,25 +10472,36 @@
       "id": 8438,
       "title": "m10-props-variety K1: Vorher-Belege frueh/Chaos (1x+2x) + Wiederholungs-Befund",
       "description": "Skript scripts/m10-props-variety.mjs: Debug-Run (god/autoPlay), Screenshots frueh+Chaos je 1x und 2x (shots/m10-props-variety-before-*.png) + propComposition aus g.chunks; haeufigstes Prop-Anteil in % als Befund in docs/lanes/m10-props-variety.md. AK: 4 PNGs + JSON mit jsErrors=[] committet, Befund-Zahl dokumentiert.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T04:47:56Z",
           "by": "build",
           "text": "todo → doing: m10-props-variety: Karte uebernommen — Vorher-Messung startet (Mess-Skript einmal bauen, 1 Lauf, committen)."
+        },
+        {
+          "at": "2026-11-28T04:51:38Z",
+          "by": "build",
+          "text": "doing → review: m10-props-variety: Vorher-Belege (4 PNG + JSON, jsErrors=[]) + Befund committet (6edcc59): prop_boulder 22,6%/23,7% haeufigstes Prop, stump 15%, bones 12%. Messskript eingefroren (3 Kalibrierlaeufe: Boss-Banner bei 25:00 -> Chaos auf 21:30 verlegt)."
         }
       ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T04:47:56Z"
+      "updated": "2026-11-28T04:51:38Z"
     },
     {
       "id": 8439,
       "title": "m10-props-variety K2: Generator + 4-6 neue Prop-Varianten",
       "description": "scripts/art/gen_props.py: Varianten fuer boulder (Steine), bones (Knochen), reeds (Busch/Schilf), post (Lanternen-Reste), je palettentreu, gleiche Groesse/Klasse wie Basis. Regeneration von src/gfx/gen-props.ts + purem Varianten-Wahlhelper. Minimaler Wiring-Patch in GroundRenderer.addProp (3 Zeilen, Fremd-Datei, Begruendung in requests.md + Lane-Doku). AK: tsc gruen, Palette-Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T04:51:42Z",
+          "by": "build",
+          "text": "todo → doing: m10-props-variety: K2 startet — Varianten in gen_props.py (boulder x2, bones x2, reeds, post), palettentreu, Basis-Groessen."
+        }
+      ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T04:47:51Z"
+      "updated": "2026-11-28T04:51:42Z"
     },
     {
       "id": 8440,

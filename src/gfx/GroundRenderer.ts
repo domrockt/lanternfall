@@ -5,6 +5,7 @@ import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, 
 import { applyTexture } from "./atlas";
 import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
+import { propVariantKeyFor } from "./gen-props"; // m10-props-variety: Sprite-Varianten je Klasse
 import { PAL } from "../palette";
 
 /**
@@ -703,8 +704,13 @@ export class GroundRenderer {
     tinted = false, flip = false,
   ): void {
     if (!PROP_KEYS.has(key) || !this.scene.textures.exists(key)) return;
+    // m10-props-variety: Sprite-Variante der Klasse je Position (deterministisch
+    // ueber tileHash, Fallback auf die Basis-Textur). Platzierung, LOD-Tier und
+    // Schatten bleiben klassenbasiert; nur die Textur variiert.
+    const variantKey = propVariantKeyFor(key, tileHash(Math.round(wx), Math.round(wy), this.seed + 463));
+    const texKey = this.scene.textures.exists(variantKey) ? variantKey : key;
     this.ensureBatchLayers();
-    const img = this.scene.add.image(wx, wy, key).setOrigin(0.5, 1);
+    const img = this.scene.add.image(wx, wy, texKey).setOrigin(0.5, 1);
     img.setFlipX(flip);
     img.setData("footY", wy);
     // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
@@ -723,7 +729,7 @@ export class GroundRenderer {
     if (tinted) img.setAlpha(0.92);
     // Startseite "hinter dem Spieler"; updatePropsDepth() sortiert um, sobald
     // der Spieler existiert (nur bei Seitenwechsel, nicht mehr pro Frame).
-    this.propLayerFor(key).behind.add(img);
+    this.propLayerFor(texKey).behind.add(img);
     img.setData("batchSide", "behind");
     props.push(img);
     // Dichte-LOD: neu gebaute Chunks erben sofort den aktuellen Tier-Zustand
@@ -733,7 +739,8 @@ export class GroundRenderer {
       shadow?.setVisible(false);
     }
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
-    if (key === "prop_post" && this.scene.textures.exists("light_radius")) {
+    // Nur die intakte Laterne leuchtet — prop_post_b (abgebrochen) ist erloschen.
+    if (texKey === "prop_post" && this.scene.textures.exists("light_radius")) {
       const glow = this.scene.add.image(wx, wy - 20, "light_radius")
         .setBlendMode(Phaser.BlendModes.ADD)
         .setScale(0.42)
