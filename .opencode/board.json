@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11308,
+  "next": 11412,
   "cards": [
     {
       "id": 1,
@@ -15170,6 +15170,39 @@
       ],
       "created": "2026-11-28T10:42:57Z",
       "updated": "2026-11-28T10:48:25Z"
+    },
+    {
+      "id": 11409,
+      "title": "m10-v10-readiness K1: Checkliste docs/qa/v10-readiness-2026-11-28.md",
+      "description": "Abhakbare Endabnahme-Checkliste: alle Geraete-Tore (6 Evos >= 60 FPS Ziel 90, M25-Dichte >= 60, janky < 10 %, 10-min ohne Thermik, Text lesbar) + Endabnahme-Suite (tsc/build/npm test/verify:final/verify-input/acceptance-count/fullrun-Guard) je mit Belegspalte. Pruefbar: Datei existiert, jede Zeile hat Tor + Schwellwert + Belegspalte, Quellen ACCEPTANCE.md + docs/qa.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:05:29Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-v10-readiness: K1 angenommen (Checkliste v10-readiness)."
+        }
+      ],
+      "created": "2026-11-28T11:05:27Z",
+      "updated": "2026-11-28T11:05:29Z"
+    },
+    {
+      "id": 11410,
+      "title": "m10-v10-readiness K2: README.md (oeffentlich)",
+      "description": "Neue README.md: kurzes Spielprofil (Pixel-Autoscroller im Moor, 30-min-Run, 30 Gegner, 6 Waffen/6 Powerups/6 Evolutionen, 2 Helden, Bosse alle 5 min + Truhe), Build-/Test-Befehle, License/Assets-Hinweis. Keine kopierten Marken, keine internen Pfade/Secrets. Pruefbar: README.md existiert, enthaelt Profil+Build/Test-Befehle+License-Hinweis, Secret-Scan/Ignores respektiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:05:27Z",
+      "updated": "2026-11-28T11:05:27Z"
+    },
+    {
+      "id": 11411,
+      "title": "m10-v10-readiness K3: GAME.md v1.0-Status-Abschnitt",
+      "description": "GAME.md: Abschnitt 'v1.0-Status' ergaenzen (Datum, Blocker Android-Geraete-Tore). Bestehenden Inhalt NICHT umschreiben. Pruefbar: neuer Abschnitt vorhanden, Rest des GAME.md unveraendert (git diff zeigt nur Anhang).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:05:27Z",
+      "updated": "2026-11-28T11:05:27Z"
     }
   ]
 }
