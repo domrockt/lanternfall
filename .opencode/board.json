@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7683,
+  "next": 7742,
   "cards": [
     {
       "id": 1,
@@ -9789,6 +9789,48 @@
       ],
       "created": "2026-11-28T03:03:18Z",
       "updated": "2026-11-28T03:04:27Z"
+    },
+    {
+      "id": 7738,
+      "title": "m10-shot-budget-dt K1: Vorher-Messung (dt-Divergenz belegen)",
+      "description": "Probe scripts/m10-shot-budget-dt.mjs (--probe, node --experimental-strip-types, echter EnemyProjectilePool + Stubs): gleicher Seed, Versuche an 1/30-Raster, dt-Folgen 60 FPS vs 30 FPS -> Schuss-/Telegraph-Marken divergieren. Akzeptanz VORHER festgelegt (in Lane-Doc + Kartennotiz): gleicher Seed + gleiche Sim-Zeit -> identische Schuss-/Telegraph-Marken (Launch-Zeitpunkt + Ursprungs-Identität) unabhängig von der dt-Folge; Referenz 60 FPS dicht = #7491-Baseline. Beleg: shots/m10-shotbudget-dt-before.json committed.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:22:14Z",
+          "by": "build",
+          "text": "todo → doing: m10-shot-budget-dt K1 gestartet: Probe-Skript bauen, Vorher-JSON."
+        }
+      ],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:22:14Z"
+    },
+    {
+      "id": 7739,
+      "title": "m10-shot-budget-dt K2: Fix — Sim-Zeit-Budgetfenster statt Frame-Zuteilung",
+      "description": "src/systems/EnemyProjectiles.ts: dt-Akkumulator (simTime) + Budget-Fenster à 1/60 s SIM-Zeit; Fenster rotieren nur bei Versuchen im Fenster (Skip leerer Fenster); launchBudget gilt je Sim-Zeit-Fenster. Fairness-Invarianten aus #7491 unverändert (Telegraph-Cap, Budget-Rückgabe, Rotation gegen Starving); festes 1/60-dt => bitgleich zu #7491 (dichte Versuche je Frame). Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:22:11Z"
+    },
+    {
+      "id": 7740,
+      "title": "m10-shot-budget-dt K3: Test — Akkumulator + dt-Determinismus + Fairness unverändert",
+      "description": "tests/shot-budget-dt.test.ts neu: (a) Budget-Fenster an Sim-Zeit (mehrere Fenster je update, leere Fenster rotieren nicht), (b) gleiche Versuche an gleichen Sim-Zeiten bei dt 1/60 vs 1/30 -> identische Launch-Marken, (c) Rotation/Fairness wie #7491 (kein Starving, Budget-Rückgabe bei Telegraph-Mangel bleibt). npm test inkl. enemy-shots-fair.test.ts + shot-budget-cap.test.ts grün. Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:22:11Z"
+    },
+    {
+      "id": 7741,
+      "title": "m10-shot-budget-dt K4: Nachher-Messung + Lane-Doc + Abschluss",
+      "description": "Probe --tag=after --baseline=shots/m10-shotbudget-dt-before.json -> shots/m10-shotbudget-dt-after.json (deterministic=true, dense-60 bitgleich zur Before-Baseline). docs/lanes/m10-shot-budget-dt.md mit before/after + exaktem Hebel. tsc/npm test/npm run build grün. Commit + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:22:11Z"
     }
   ]
 }
