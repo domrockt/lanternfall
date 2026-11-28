@@ -1,0 +1,319 @@
+{
+  "tool": "alloc-profile.mjs",
+  "generatedAt": "2026-11-28T02:47:10.544Z",
+  "args": {
+    "minutes": 30,
+    "seed": 99
+  },
+  "simMinutesReached": 30,
+  "kills": 12886,
+  "enemies": 240,
+  "fps": 49.5,
+  "jsErrors": [],
+  "allocTop": [
+    {
+      "fn": "a",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 464736
+    },
+    {
+      "fn": "set",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 366148
+    },
+    {
+      "fn": "add",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 810,
+      "bytes": 329084
+    },
+    {
+      "fn": "addHandler",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 327828
+    },
+    {
+      "fn": "setAlpha",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 253408
+    },
+    {
+      "fn": "setValue",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 1,
+      "bytes": 229564
+    },
+    {
+      "fn": "spawn",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 229412
+    },
+    {
+      "fn": "setTexture",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 197120
+    },
+    {
+      "fn": "addProp",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 196800
+    },
+    {
+      "fn": "updateEnemies",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 163936
+    },
+    {
+      "fn": "get",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 134516
+    },
+    {
+      "fn": "(BYTECODE_COMPILER)",
+      "url": "",
+      "line": 0,
+      "bytes": 131436
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 1,
+      "bytes": 131168
+    },
+    {
+      "fn": "a",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 1,
+      "bytes": 131136
+    },
+    {
+      "fn": "e.50792.s.emit",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 1,
+      "bytes": 106080
+    },
+    {
+      "fn": "no",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 99688
+    },
+    {
+      "fn": "initialize",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 98448
+    },
+    {
+      "fn": "initPostPipeline",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "bytes": 98368
+    },
+    {
+      "fn": "setText",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 98352
+    },
+    {
+      "fn": "(anonymous)",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 98340
+    },
+    {
+      "fn": "hitEnemy",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 80736
+    },
+    {
+      "fn": "xn",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 73480
+    },
+    {
+      "fn": "Ua.e.onmessage",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 70272
+    },
+    {
+      "fn": "burst",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "bytes": 68096
+    },
+    {
+      "fn": "e.71146.e.exports",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 810,
+      "bytes": 67616
+    }
+  ],
+  "cpuTop": [
+    {
+      "fn": "(idle)",
+      "url": "",
+      "line": 0,
+      "samples": 25123
+    },
+    {
+      "fn": "update",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 1427
+    },
+    {
+      "fn": "updateEnemies",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 1184
+    },
+    {
+      "fn": "getImageData",
+      "url": "",
+      "line": 0,
+      "samples": 943
+    },
+    {
+      "fn": "(program)",
+      "url": "",
+      "line": 0,
+      "samples": 862
+    },
+    {
+      "fn": "batchSprite",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 43,
+      "samples": 848
+    },
+    {
+      "fn": "(garbage collector)",
+      "url": "",
+      "line": 0,
+      "samples": 683
+    },
+    {
+      "fn": "spawn",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 633
+    },
+    {
+      "fn": "queryCircle",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 582
+    },
+    {
+      "fn": "set",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "samples": 552
+    },
+    {
+      "fn": "render",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 43,
+      "samples": 508
+    },
+    {
+      "fn": "e.72249.e.exports",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "samples": 486
+    },
+    {
+      "fn": "no",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 450
+    },
+    {
+      "fn": "update",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 810,
+      "samples": 397
+    },
+    {
+      "fn": "updateOrbs",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 394
+    },
+    {
+      "fn": "e.19186.e.exports",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 810,
+      "samples": 393
+    },
+    {
+      "fn": "rn",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 377
+    },
+    {
+      "fn": "ze",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 307
+    },
+    {
+      "fn": "e.99517.e.exports",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 23,
+      "samples": 255
+    },
+    {
+      "fn": "render",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 1,
+      "samples": 253
+    },
+    {
+      "fn": "simulate",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 252
+    },
+    {
+      "fn": "_n",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 252
+    },
+    {
+      "fn": "Ca",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 250
+    },
+    {
+      "fn": "burst",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 243
+    },
+    {
+      "fn": "updateProjectiles",
+      "url": "assets/index-Cfy5lZ1b.js",
+      "line": 812,
+      "samples": 236
+    }
+  ],
+  "allocSampleCount": 169,
+  "allocTotalBytes": 4245768
+}

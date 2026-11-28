@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7528,
+  "next": 7532,
   "cards": [
     {
       "id": 1,
@@ -9532,6 +9532,42 @@
       "notes": [],
       "created": "2026-11-28T02:37:07Z",
       "updated": "2026-11-28T02:37:07Z"
+    },
+    {
+      "id": 7528,
+      "title": "m10-heap-pool-fix K1 Vorher-Messung (heapDeltaPct + Alloc-Profil)",
+      "description": "HeapDeltaPct-Baseline per scripts/perf-heap.mjs (30-min-Sim, timeScale 30, Seed 99, 2 Runs) -> shots/m10-heap-pool-fix-before.json; Alloc-Sites per scripts/heap-alloc-profile.mjs -> shots/m10-heap-pool-fix-before-alloc.json. Akzeptanzgrenze vor dem Fix festgelegt: heapDeltaPct (nachher) <= 15 %. Abnahme: JSONs committed, Top-Alloc-Sites identifiziert.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T02:41:48Z",
+      "updated": "2026-11-28T02:41:48Z"
+    },
+    {
+      "id": 7529,
+      "title": "m10-heap-pool-fix K2 Pool/EnemyPool Hot-Path-Allokationen",
+      "description": "src/systems/Pool.ts + src/systems/EnemyPool.ts: keine neuen Objekte/Arrays pro Spawn/Recycle im Hot Path (Runtime-Objekte wiederverwenden). tests/enemy-pool-reuse.test.ts erweitern. Abnahme: tsc gruen, Tests gruen, Commit.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T02:41:48Z",
+      "updated": "2026-11-28T02:41:48Z"
+    },
+    {
+      "id": 7530,
+      "title": "m10-heap-pool-fix K3 ProjectilePool Spawn-UID-Pfad",
+      "description": "src/systems/ProjectilePool.ts: Allokationen im Spawn-UID-Pfad einsparen. tests/heap-pool-fix.test.ts neu (deterministische Allokationszaehlung/Wiederverwendung). Abnahme: tsc gruen, Tests gruen, Commit.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T02:41:48Z",
+      "updated": "2026-11-28T02:41:48Z"
+    },
+    {
+      "id": 7531,
+      "title": "m10-heap-pool-fix K4 Nachher-Messung + Befund",
+      "description": "Gleiche Messung wie K1 -> shots/m10-heap-pool-fix-after.json; Befund + Hebel in docs/lanes/m10-heap-pool-fix.md. Abnahme: heapDeltaPct <= 15 % oder belegte Rest-Luecke + Hebel; Commit, .lane-done.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T02:41:48Z",
+      "updated": "2026-11-28T02:41:48Z"
     }
   ]
 }
