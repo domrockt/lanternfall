@@ -1,0 +1,18 @@
+Lane m10-ground-chunk-budget — Hebel B (2. Teil): GroundRenderer-Chunk-Tail glätten.
+K2-Fix (nur src/gfx/GroundRenderer.ts): Chunk-Canvas-Textur-Pool (Klassen 1/3 Stufen,
+Cap 6, kein createCanvas/textures.remove je Grenzüberfahrt) + Frame-Budget-Gate
+(chunkInstallGate: Budget 22 ms, max. 3 Defer-Frames, erzwingender Install = kein
+Chunk-Stillstand). Terrain-Ausgabe pixelidentisch; verify:terrain (Muster
+m10-terrain-hole-guard): 0 schwarze Regionen ≥ 300 px in 960x540/1280x720/1920x1080,
+Ratio 0,64 im Korridor.
+K1 Vorher (40 s M25-Harness, Mesa Intel RPL-S): p99 49,9 ms, worst 66,8, janky 5,11 %;
+Worst-Frames korrelieren mit Top-up+GC, NICHT mit Chunk-Installs (10/40 s, alle auf p50-Frames).
+K4 Nachher (gleicher Harness): p99 16,8 ms (< 20 Ziel), worst 16,8, janky 0 % — Einschränkung
+dokumentiert: 0 Chunk-Events im Nachher-Fenster (Bot-Pfad nicht dt-deterministisch).
+Tune-Suchlauf (scripts/tune-chunk-budget.mjs, Limit 12, p99+Pixel-Check) abgebrochen:
+flock /home/ai/games/.lf-perf.lock 2× dauerhaft belegt (m10-heap-budget, m10-v10-gate-guard);
+nach Supervisor-Abbruchkriterium nicht wiederholt, nach dem Merge nachholbar (ein Kommando).
+K3: 13 Guard-Tests (Pool + Gate inkl. Stillstands-Schutz-Fix); Suite 2358/2358 grün, tsc grün.
+Gerät-Nachmessung (p99 < 20 ms, janky-Delta) nach dem Merge via m10-v10-device-gfxinfo.mjs.
+Belege: ~/games/.evidence/m10-ground-chunk-budget/{before-local,after-local-r1}.json.
+Karten #12435–#12439; Commits 6c731c55, 97030f7f, f5d7fc69, da6199a5, 8529bf67.
