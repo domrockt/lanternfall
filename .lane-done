@@ -1,0 +1,24 @@
+# Lane m10-heap-softgate-fix — fertig (2026-11-28)
+
+Fix-Job F1 der Nachabnahme D (docs/lanes/m10-reacceptance-d.md): SOFT-Fenster-Peak-Signal des Heap-Gates
+false-failte auf reaccd (+41,5 % vs Minute 1) — rohe Peaks ohne erzwungenes GC bilden einen GC-Saegezahn ab.
+Spielgewinn 0, kein Spielcode, HARD-Tor bitgleich unangetastet.
+
+- K1 (#8458, 70ee431): Ist-Aufnahme auf shots/m10-reaccd-heap.json → shots/m10-heapsoft-before.json
+  (hardPass=true +10,7 %, softVerdict=FAIL +41,5 % — F1 reproduziert).
+- K2 (#8459, 6660b2e): robustes SOFT-Signal in scripts/m10-heap-budget-gate.mjs ergaenzt — je 5-min-Fenster
+  das MINIMUM (Floor ≈ Heapstand nach einer Collection), Referenz = Floor Fenster 0 (RAW-vs-RAW, Boot-Spike auf
+  Minute 0+1 fest); Begruendung mit F1-Verweis im Skript-Header. Rohe Beobachtungsfelder + HARD unveraendert.
+- K3 (#8460, a4df16d): tests/heap-softgate.test.ts, 18 Tests (HARD-Goldenwerte bitgleich, Saegezahn/Boot-Spike
+  kein FAIL, monoton steigend mild PASS/stark FAIL, echter Leak FAIL). d.mts-Typbegleiter minimal ergaenzt.
+- K4 (#8461, 8febeda): shots/m10-heapsoft-after.json + docs/lanes/m10-heap-softgate-fix.md.
+
+Messwerte auf identischen reaccd-Eingaben: HARD bitgleich PASS (endMB 60,8 MB = +10,7 % <= +15 %);
+robustes SOFT PASS (maxFloor 70,3 MB vs Floor Fenster 0 56,8 MB = +23,8 % <= +25 %) statt +41,5 % False-Fail;
+rohe Beobachtung unveraendert (77,7 MB / +41,5 %, FAIL als Beobachtung).
+
+Abnahme: npm run build gruen, npx vitest run 129 Dateien / 1387 Tests gruen, tsc --noEmit gruen,
+git diff nur in der zugewiesenen Area (+ minimal scripts/m10-heap-budget-gate.d.mts, begruendet in der Doku).
+
+Offen: scripts/m10-heap-budget.mjs (Zeile 224, fremde Area) druckt weiterhin das rohe softVerdict —
+Umstellung auf softFloorVerdict per /home/ai/games/.dispatch/requests.md angefragt.
