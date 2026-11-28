@@ -13753,10 +13753,16 @@
       "id": 10159,
       "title": "m10-prop-contact-shadow K3: Guard-Test tests/prop-shadow.test.ts",
       "description": "Guard-Test: jeder Prop-Key rendert Schatten-Daten (13 Klassen + Varianten auf Basis abgebildet), Schattenfarbe = Palette 0 (ink), Alpha > 0 und < opak (<= 0.35), elliptische Form (Mitte breiter als Rand), deterministisch bei wiederholtem Aufruf. Abnahme: npx vitest run tests/prop-shadow.test.ts gruen, npm test gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:33:55Z",
+          "by": "build",
+          "text": "todo → doing: Guard-Test"
+        }
+      ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:28:26Z"
+      "updated": "2026-11-28T08:33:55Z"
     },
     {
       "id": 10160,
