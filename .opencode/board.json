@@ -9099,34 +9099,51 @@
       "id": 7490,
       "title": "m10-shot-budget-cap #1 Vorher-Messung",
       "description": "Bench+Chaos-Ist: scripts/m10-shot-path.mjs (Schuss-Pfad ms/Frame, aktive Schuesse) + scripts/m10-shot-clarity.mjs (300/500 Chaos) -> shots/m10-shot-budget-cap-before.json (Projektil-Zeitscheibe, Draw-Calls/aktive Schuesse, FPS-Min Basis). Abnahme: JSON committed, Ist-Zahlen in Doku notiert.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T01:59:51Z",
           "by": "build",
           "text": "todo → doing: Vorher-Messung gestartet (Bench + Chaos-Ist)"
+        },
+        {
+          "at": "2026-11-28T02:08:43Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Messung committed (Bench 0.026 ms/Frame; Chaos 500er 240 gleichz., 300er 158; Burst 640/780x360@3 je 60 fpsMin; Fullrun 780x360@3 fpsMin 60.3, rot nur Heap-Gate). Akzeptanzgrenze vor Fix festgelegt: gleichzeitige Schuesse -20%."
         }
       ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T01:59:51Z"
+      "updated": "2026-11-28T02:08:43Z"
     },
     {
       "id": 7491,
       "title": "m10-shot-budget-cap #2 Cap + faire Zuteilung",
       "description": "EnemyProjectiles.ts: hartes Concurrent-Cap (active+pending <= CAP) + pro-Frame-Launch-Budget N mit Rotation ueber die Schuss-Anrufe (kein Starving), Ueberschuss verworfen (Cooldown bleibt, neuer Stat cancelledBudgetCap). Abnahme: bei Volllast active+pending <= Cap; Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T02:08:43Z",
+          "by": "build",
+          "text": "todo → review: Cap 160 + Frame-Budget 8 mit Rotation; statSnapshot bitgleich; 1159 Tests + Build gruen; Commit 04a8cf5. Fremd-Edit tests/enemy-shots-fair.test.ts per .dispatch/requests.md angefragt (Telegraph-Test Budget 200, Intention unveraendert)."
+        }
+      ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T01:59:50Z"
+      "updated": "2026-11-28T02:08:43Z"
     },
     {
       "id": 7492,
       "title": "m10-shot-budget-cap #3 Pool-Recycle belegen",
       "description": "Belegen, dass freie Projektile sofort recycelt werden, keine Allokation im Steady-State (EnemyProjectilePool free-Listen; ProjectilePool.ts nur lesen/pruefen). Abnahme: Test in tests/shot-budget-cap.test.ts zeigt Recycle ohne Leak.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:08:43Z",
+          "by": "build",
+          "text": "todo → doing: Pool-Recycle-Test (EnemyProjectilePool free/pendingFree/telegraph/trail, makeImage-Zaehler) + Pruefung ProjectilePool.ts"
+        }
+      ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T01:59:50Z"
+      "updated": "2026-11-28T02:08:43Z"
     },
     {
       "id": 7493,
