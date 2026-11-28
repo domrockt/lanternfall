@@ -31,7 +31,7 @@ export interface HazardOptions {
 /** Faire Mindest-Warnzeit (s); darunter ist kein echtes Ausweichen möglich. */
 export const MIN_WARN_S = 0.45;
 /** Minimum des Rim-Puls-Alphas; darunter verschwindet der Rand im Schwarm. */
-export const MIN_RIM_ALPHA = 0.3;
+export const MIN_RIM_ALPHA = 0.35;
 
 /**
  * Wirksame Vorwarnzeit: Werte unter der fairen Mindest-Warnzeit (und unsinnige
@@ -51,6 +51,17 @@ export function effectiveWarn(warn: number | undefined, fallback: number): numbe
  */
 export function rimPulseAlpha(elapsed: number): number {
   return MIN_RIM_ALPHA + Math.abs(Math.sin(elapsed * 10)) * 0.35;
+}
+
+/**
+ * Warnflaechen-Alpha ueber der Warnphase (M10-Hazard-Warn-Fix): atmet zwischen
+ * 0.65 und 0.95 — der Telegraph (Disc + Kontur) bleibt damit ueber die GANZE
+ * Warnphase sichtbar. Vorher pulsierte er 0.20–0.90 und versank im Puls-Tiefpunkt
+ * im Schwarm (Messung scripts/m10-hazard-warn.mjs: 8/19 Klassen unter dem
+ * Sichtbarkeits-Schwellwert, worst visibleFraction 29 %). Reine Funktion.
+ */
+export function warnDiscAlpha(elapsed: number): number {
+  return 0.8 + Math.sin(elapsed * 22) * 0.15;
 }
 
 interface HazardRuntime {
@@ -170,8 +181,7 @@ export class HazardSystem {
       if (!h.active) continue;
       if (h.warn > 0) {
         h.warn -= dt;
-        const pulse = 0.55 + Math.sin((h.warnMax - h.warn) * 22) * 0.35;
-        h.warnSprite?.setAlpha(pulse);
+        h.warnSprite?.setAlpha(warnDiscAlpha(h.warnMax - h.warn));
         // Rand-Puls-Skalierung: Warnung atmet sichtbar, bleibt aber unter Projektilen.
         h.rimSprite?.setAlpha(rimPulseAlpha(h.warnMax - h.warn));
         if (h.warn > 0) continue;
