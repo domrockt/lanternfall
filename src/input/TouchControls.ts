@@ -70,9 +70,10 @@ export function sectorWithHysteresis(angle: number, lastSector: number | null): 
   return nearest;
 }
 
-const PAUSE_W = 30;
-const PAUSE_H = 18;
-const PAUSE_MARGIN = 10;
+/** m10-hud-safearea: exportiert fuer tests/hud-safearea.test.ts (Pause-Anker). */
+export const PAUSE_W = 30;
+export const PAUSE_H = 18;
+export const PAUSE_MARGIN = 10;
 /** Puls-Länge des Pause-Tipps in ms. */
 const PAUSE_PULSE_MS = 120;
 

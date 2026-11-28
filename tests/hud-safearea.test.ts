@@ -7,6 +7,7 @@ vi.mock("phaser", () => {
   return { default: { Scene, GameObjects: { Container } } };
 });
 import { type AnchorBox, hudAnchorBoxes, HUD_MARGIN_X, HUD_TOP_Y } from "../src/scenes/UI";
+import { PAUSE_MARGIN, PAUSE_W } from "../src/input/TouchControls";
 import {
   insetsOverCanvas,
   insetsToGamePx,
@@ -146,7 +147,7 @@ describe("m10-hud-safearea: iphone14 (844x360, insets 47/47/21)", () => {
   it("Touch-Pause-Knopf (TouchControls-Formel) endet exakt an der Notch-Kante", () => {
     // Formel aus src/input/TouchControls.ts update():
     //   x = round(width - max(PAUSE_MARGIN, inset.right) - PAUSE_W)
-    const PAUSE_MARGIN = 10, PAUSE_W = 30;
+    // Konstanten werden exportiert und hier importiert (kein toter Kopie-Test).
     const x = Math.round(844 - Math.max(PAUSE_MARGIN, 47) - PAUSE_W);
     expect(x + PAUSE_W).toBeLessThanOrEqual(797);
     expect(x).toBe(767);

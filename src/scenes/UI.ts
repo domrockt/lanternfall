@@ -277,10 +277,12 @@ export class UI extends Phaser.Scene {
     // Safe-Area -> dort bitgleich). Canvas-CSS-Breite = Masseinheit; ohne
     // Notch bleiben alle Anker bitgleich zur 640x360-Referenz.
     const canvasRect = this.game.canvas?.getBoundingClientRect();
+    const screenW = (typeof window !== "undefined" ? window.innerWidth : 0) || GAME_WIDTH;
+    const screenH = (typeof window !== "undefined" ? window.innerHeight : 0) || GAME_HEIGHT;
     this.safeInset = insetsToGamePx(
       GAME_WIDTH,
       canvasRect?.width ?? GAME_WIDTH,
-      insetsOverCanvas(readDeviceSafeAreaInsets(), canvasRect, window.innerWidth, window.innerHeight),
+      insetsOverCanvas(readDeviceSafeAreaInsets(), canvasRect, screenW, screenH),
     );
     this.safeMargin = {
       left: hudSideMargin(HUD_MARGIN_X, this.safeInset.left, GAME_WIDTH),
