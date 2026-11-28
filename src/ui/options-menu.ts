@@ -8,6 +8,7 @@ import {
   OPTION_ROWS, optionValueLabel, stepOption,
 } from "../audio/options";
 import type { ActionState } from "../input/InputState";
+import { menuRepeatTick, type MenuRepeatState } from "./menu";
 
 interface RowView {
   label: PixelText;
@@ -44,6 +45,19 @@ export class OptionsMenu {
   private selected = 0;
   /** Zeigerposition beim Öffnen (Hover-Guard, hoverRowAllowed). */
   private openPointer: { x: number; y: number } | null = null;
+  /**
+   * M10-gamepad-menu-nav: Repeat-Kanäle für gehaltene Pad-Richtungen
+   * (Erstwiederholung ~200 ms, Folgerepeat ~100 ms, siehe menu.ts).
+   * Confirm ist bewusst KEIN Repeat-Kanal (Toggle-Zeilen sollen beim Halten
+   * nicht durchschalten) — nur Rising-Edge.
+   */
+  private readonly padRepeat: Record<"up" | "down" | "left" | "right", MenuRepeatState> = {
+    up: { held: false, fires: 0, lastFireMs: -1 },
+    down: { held: false, fires: 0, lastFireMs: -1 },
+    left: { held: false, fires: 0, lastFireMs: -1 },
+    right: { held: false, fires: 0, lastFireMs: -1 },
+  };
+  private prevConfirmHeld = false;
 
   constructor(scene: Phaser.Scene, depth: number, onClose: () => void) {
     this.scene = scene;
@@ -131,6 +145,7 @@ export class OptionsMenu {
     this.refresh();
     this.setInputEnabled(true);
     this.container.setVisible(true);
+    this.resetPadRepeat();
     // M10-options-focus: Zeigerposition beim Öffnen merken — stillstehender
     // Zeiger darf beim Erscheinen des Overlays keine Zeile anwählen.
     const p = this.scene.input.activePointer;
@@ -141,6 +156,7 @@ export class OptionsMenu {
     this.container.setVisible(false);
     this.setInputEnabled(false);
     this.openPointer = null;
+    this.resetPadRepeat();
     this.onClose();
   }
 
@@ -169,28 +185,49 @@ export class OptionsMenu {
     return true;
   }
 
-  /** M8-input: Gamepad-Navigation (A/B/D-Pad/Stick); true wenn verarbeitet. */
+  /** M8-input: Gamepad-Navigation (A/B/D-Pad/Stick); true wenn verarbeitet.
+   *  Edge-Aktionen (InputState) — delegiert an handlePadFrame. */
   handlePad(actions: ActionState): boolean {
+    return this.handlePadFrame(actions, performance.now());
+  }
+
+  /** Repeat-Zustände zurücksetzen (nach Schließen/Öffnen, kein Nachbrennen). */
+  private resetPadRepeat(): void {
+    for (const key of Object.keys(this.padRepeat) as Array<keyof typeof this.padRepeat>) {
+      this.padRepeat[key] = { held: false, fires: 0, lastFireMs: -1 };
+    }
+    this.prevConfirmHeld = false;
+  }
+
+  /**
+   * M10-gamepad-menu-nav: Pad-Frame mit GEHALTENEN Richtungen + Zeitstempel.
+   * Repeat-Debounce über menuRepeatTick (200/100 ms), Confirm/Back nur als
+   * Rising-Edge. Priorität back > up > down > left > right > confirm und
+   * Return nach der ersten Aktion → ein Pad-Frame löst maximal EINE Aktion
+   * aus (kein Doppel-Event). true, wenn das Menü sichtbar ist.
+   */
+  handlePadFrame(a: ActionState, nowMs: number): boolean {
     if (!this.visible) return false;
-    if (actions.back) { this.close(); return true; }
-    if (actions.up) {
-      this.selected = (this.selected + OPTION_ROWS.length - 1) % OPTION_ROWS.length;
-      this.refresh();
-      return true;
-    }
-    if (actions.down) {
-      this.selected = (this.selected + 1) % OPTION_ROWS.length;
-      this.refresh();
-      return true;
-    }
-    if (actions.left) { this.apply(this.selected, -1); return true; }
-    if (actions.right) { this.apply(this.selected, 1); return true; }
-    if (actions.confirm) {
+    const fire = (dir: keyof typeof this.padRepeat): boolean =>
+      menuRepeatTick(this.padRepeat[dir], a[dir] === true, nowMs);
+    if (a.back === true) { this.close(); return true; }
+    if (fire("up")) { this.moveRow(-1); return true; }
+    if (fire("down")) { this.moveRow(1); return true; }
+    if (fire("left")) { this.apply(this.selected, -1); return true; }
+    if (fire("right")) { this.apply(this.selected, 1); return true; }
+    const confirmEdge = a.confirm === true && !this.prevConfirmHeld;
+    this.prevConfirmHeld = a.confirm === true;
+    if (confirmEdge) {
       if (this.selected === OPTION_ROWS.length - 1) this.close();
       else this.apply(this.selected, 1);
-      return true;
     }
     return true;
+  }
+
+  private moveRow(delta: number): void {
+    const n = OPTION_ROWS.length;
+    this.selected = (this.selected + delta + n) % n;
+    this.refresh();
   }
 
   private apply(row: number, delta: number): void {
