@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7532,
+  "next": 7582,
   "cards": [
     {
       "id": 1,
@@ -9568,6 +9568,66 @@
       "notes": [],
       "created": "2026-11-28T02:42:01Z",
       "updated": "2026-11-28T02:42:01Z"
+    },
+    {
+      "id": 7578,
+      "title": "m10-options-touch-focus K1: Ist-Zustandsmatrix (5 Screens × Maus/Tastatur/Touch) als JSON + Screenshots, Renderer-Pflicht iGPU",
+      "description": "Skript scripts/m10-options-focus.mjs: Für Title, CharSelect, Credits, Results, Pause(+Options-Overlay) je Eingabeart (Maus-Hover, Tastatur-Fokus, Touch-Tap) den sichtbaren Fokus-/Pressed-Zustand aufnehmen (Outline sichtbar? Textfarbe? Pressed-Darker?). Belege: shots/m10-options-focus-before.json + Screenshots. Renderer-String muss iGPU zeigen. Abnahme: JSON ohne Lücken, Renderer=iGPU, Vorher-Zustand ist festgehalten.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:48:37Z",
+          "by": "build",
+          "text": "review → done: lane #7538, Merge 86b400f — K1 fertig, Commit 02c49fb; reviewer unauffällig (nur Skript + Belege)"
+        }
+      ],
+      "created": "2026-11-28T02:47:57Z",
+      "updated": "2026-11-28T02:48:37Z"
+    },
+    {
+      "id": 7579,
+      "title": "m10-options-touch-focus K2: Fixes menu.ts/options-menu.ts + tests/options-focus.test.ts (Zustandsmatrix als harte Assertions)",
+      "description": "Ziel: Fokus- und Pressed-Zustand in allen Menü-Screens konsistent (Lanternfarbe + 1-px-Rahmen, Pressed kurz dunkler), 7/7 Optionszeilen je Eingabeart anwählbar, sonst Optik AE=0. Test tests/options-focus.test.ts nagelt die Zustandsmatrix hart. Abnahme: Tests grün, menu-touch-targets-Tests bleiben grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:48:37Z",
+          "by": "build",
+          "text": "review → done: lane #7539, Merge 86b400f — K2 Commits 42ae58d + 4ca8273; reviewer-FAIL behoben (setEnabled-Reset, toter Handler entfernt), 1110/1110 grün"
+        }
+      ],
+      "created": "2026-11-28T02:47:57Z",
+      "updated": "2026-11-28T02:48:37Z"
+    },
+    {
+      "id": 7580,
+      "title": "m10-options-touch-focus K3: Skript-Lauf über alle Screens + art-director >= 4/5 (streng)",
+      "description": "Nachher-Lauf von scripts/m10-options-focus.mjs über alle 5 Screens × 3 Eingabearten: JSON + Screenshots zeigen konsistente Zustände. art-director prüft streng auf >= 4/5. Abnahme: JSON-Beleg nachher konsistent, art-director-Urteil >= 4/5, AE außerhalb der Fokus-Zustände.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:48:37Z",
+          "by": "build",
+          "text": "review → done: lane #7540, Merge 86b400f — K3 Commit 4ca8273; art-director PASS 4/5 (Idle AE=0, Pressed ~0.72 pixelmessbelegt)"
+        }
+      ],
+      "created": "2026-11-28T02:47:57Z",
+      "updated": "2026-11-28T02:48:37Z"
+    },
+    {
+      "id": 7581,
+      "title": "m10-options-touch-focus K4: docs/lanes/m10-options-touch-focus.md + .lane-done",
+      "description": "Lane-Doku: Ziel, Ist-Matrix vorher/nachher, Fixes, Belege, offene Punkte (Gamepad-Menü-Navigation: Produktentscheidung offen, Frage an Dom). .lane-done im Worktree committen. Abnahme: Doku vollständig, .lane-done vorhanden.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:48:37Z",
+          "by": "build",
+          "text": "review → done: lane #7541, Merge 86b400f — K4 Commit 10d0b6b; commit-gate PASS; .lane-done bleibt im Lane-Worktree, nicht nach main"
+        }
+      ],
+      "created": "2026-11-28T02:47:57Z",
+      "updated": "2026-11-28T02:48:37Z"
     }
   ]
 }
