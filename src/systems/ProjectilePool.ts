@@ -33,19 +33,22 @@ export interface SimViewRect {
   height: number;
 }
 
-/** Reine Anker-Funktion (testbar, keine Kamera/Phaser-Abhängigkeit). */
+/** Reine Anker-Funktion (testbar, keine Kamera/Phaser-Abhängigkeit).
+ *  Mit `out` allokationsfrei aufrufbar (Schreibziel wird in-place überschrieben,
+ *  Android-Regel „keine Allokationen im Frame“); ohne `out` frisches Objekt. */
 export function simAnchorView(
   scrollX: number,
   scrollY: number,
   cameraWidth: number,
   cameraHeight: number,
+  out?: SimViewRect,
 ): SimViewRect {
-  return {
-    x: scrollX + cameraWidth / 2 - GAME_WIDTH / 2,
-    y: scrollY + cameraHeight / 2 - GAME_HEIGHT / 2,
-    width: GAME_WIDTH,
-    height: GAME_HEIGHT,
-  };
+  const r = out ?? ({ x: 0, y: 0, width: 0, height: 0 } as SimViewRect);
+  r.x = scrollX + cameraWidth / 2 - GAME_WIDTH / 2;
+  r.y = scrollY + cameraHeight / 2 - GAME_HEIGHT / 2;
+  r.width = GAME_WIDTH;
+  r.height = GAME_HEIGHT;
+  return r;
 }
 
 
@@ -218,17 +221,13 @@ export class ProjectilePool {
    * KEIN Frame-Cache mehr: compact() läuft je SIM-Teilschritt, und ein
    * pro Render-Frame eingefrorener Anker wäre bei timeScale > 1 selbst
    * frame-abhängig (Rezept m10-boss-dur-determinism K2: der Beweis-Patch
-   * liest frisch je Aufruf). Der Anker ist billige Arithmetik (4 Adds),
-   * kein Alloziieren — viewScratch bleibt das einzige Objekt.
+   * liest frisch je Aufruf). Der Anker wird allokationsfrei direkt ins
+   * viewScratch geschrieben (Out-Param, Review m10-worldview-anchor-pools).
    */
   private view(): { x: number; y: number; width: number; height: number } | null {
     const cam = this.scene.cameras?.main;
     if (cam && cam.width > 0 && cam.height > 0) {
-      const a = simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height);
-      this.viewScratch.x = a.x;
-      this.viewScratch.y = a.y;
-      this.viewScratch.width = a.width;
-      this.viewScratch.height = a.height;
+      simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height, this.viewScratch);
       return this.viewScratch;
     }
     return null;

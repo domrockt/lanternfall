@@ -120,6 +120,15 @@ Bedarfs-Lane) wird dann mit allen drei Lesern am Anker erwartet.
 
 ## K5 — Doku + Abschluss (#12459)
 
+Review (Kontrolleur `reviewer`, 2026-11-28): **PASS** — Anker-Geometrie exakt Rezept,
+kein worldView-Codezugriff mehr in beiden Dateien, keine Import-Zyklen (madge),
+Live-Binding korrekt, Stubs gleichwertig (identische Rects), Suite grün.
+Befund „versteckte Allokation je Aufruf“ (frisches Objekt in `simAnchorView`
+widersprach dem Kein-Allokation-Claim, Android-Regel): behoben — `simAnchorView`
+nimmt optionalen Out-Param, `view()` schreibt allokationsfrei ins `viewScratch`,
+`refreshView()` direkt in `viewProbe`; Out-Param-Identität im Guard-Test
+(`worldview-anchor.test.ts`, „Out-Param: schreibt in-place“) gesichert.
+
 Offen: **Spawner-Leser (`Spawner.outsideView`, Z.330)** — Boss-Dauer-Determinismus
 komplett erst mit der Folgekarte nach m10-frame-tail-followup (Dora schneidet).
 Der Nachher-Beleg dieser Lane belegt die Schuss-Marken (culled/stolen/fired/hits);

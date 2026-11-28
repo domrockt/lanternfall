@@ -102,7 +102,7 @@ describe("ProjectilePool: m10-heap-pool-fix (K3)", () => {
     expect(again.hit.size).toBe(0); // und geleert (keine alten Treffer)
   });
 
-  it("view(): Werte frisch je Aufruf (m10-worldview-anchor-pools: kein Frame-Cache, der bei timeScale > 1 frame-abhängig friert), weiterhin 0 Objekt-Allokationen", () => {
+  it("view(): Werte frisch je Aufruf (m10-worldview-anchor-pools: kein Frame-Cache, der bei timeScale > 1 frame-abhängig friert); Allokationsfreiheit über viewScratch/Out-Param sichergestellt", () => {
     const ctx = countingScene();
     const pool = new ProjectilePool(ctx.scene as never);
 

@@ -1,0 +1,28 @@
+Lane m10-worldview-anchor-pools — abgeschlossen 2026-11-28.
+
+Bedarf: m10-boss-dur-determinism K2 — camera.worldView (nur in Camera.preRender
+gesetzt) wurde im SIM-Teilschritt-Loop gelesen → frame-abhängige Cull-/Sicht-
+Entscheidungen → RNG-Divergenz → stochastische Boss-Dauern.
+
+Erledigt:
+- simAnchorView (rein, src/systems/ProjectilePool.ts): Mitte = scroll + cameraWidth/2,
+  Weite/Höhe = logischer Screen GAME_WIDTH×GAME_HEIGHT (Rezept m10-boss-dur-determinism K2).
+- Beide Leser umgestellt: ProjectilePool.view() + EnemyProjectilePool.refreshView().
+- Zweite Leck-Schicht im eigenen Bereich geschlossen: Frame-Cache in view() frierte
+  den View pro Render-Frame (compact() läuft je Teilschritt) — Cache entfernt,
+  Anker frisch je Aufruf (0 Allokationen, viewScratch bleibt).
+- Guard-Tests tests/worldview-anchor.test.ts: Leck-Guard (worldView-Getter wirft),
+  Anker pure (Teiler 1 exakt worldView, Teiler 2 Mitte/Weite), Fairness-Gates folgen
+  Sim-Scroll. Suite: 213 Dateien / 2353 Tests grün, npm run build grün.
+
+Belege (~/games/.evidence/m10-worldview-anchor-pools/):
+- before: 3 Seeds × 2 Läufe divergieren, erste Divergenz exakt im culled-Zähler (s=42/52/50).
+- after (Fix, ohne Spawner): divergiert erst s=205/173 (frühe Cull-Lecks weg).
+- after-spawner-isolated (--patch-spawner=1, nur der FREMDE Leser zur Laufzeit gepatcht):
+  DETERMINISTISCH — 3 Seeds × 2 Läufe bitgleich. Renderer: Mesa Intel RPL-S (kein SwiftShader).
+
+Commits: 96fb61a2 (K1), 0eda7ebc (K2), d473685b (K3), 9d441187 (K4), K5 = dieser.
+
+Offen (Folgekarte, Dora schneidet nach m10-frame-tail-followup-Merge): dritter Leser
+Spawner.outsideView (src/systems/Spawner.ts:330). Boss-Dauer-Determinismus (A5-Korridor)
+komplett erst damit — End-to-End-Beweis über Boss-Dauern dann mit allen drei Lesern am Anker.

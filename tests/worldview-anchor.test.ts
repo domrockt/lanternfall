@@ -119,6 +119,17 @@ describe("simAnchorView (reine Anker-Funktion)", () => {
     expect(a.height).toBe(GAME_HEIGHT);
   });
 
+  it("Out-Param: schreibt in-place (identische Instanz zurück), kein Objekt je Aufruf", () => {
+    const scratch = { x: -1, y: -1, width: -1, height: -1 };
+    const r = simAnchorView(100, 200, 640, 360, scratch);
+    expect(r).toBe(scratch); // Identität erhalten — 0 Allokationen im Frame-Pfad
+    expect(r).toEqual({ x: 100, y: 200, width: GAME_WIDTH, height: GAME_HEIGHT });
+    // Zweiter Aufruf überschreibt in-place:
+    const r2 = simAnchorView(500, 600, 320, 180, scratch);
+    expect(r2).toBe(scratch);
+    expect(r2).toEqual({ x: 500 + 160 - GAME_WIDTH / 2, y: 600 + 90 - GAME_HEIGHT / 2, width: GAME_WIDTH, height: GAME_HEIGHT });
+  });
+
   it("Mitte folgt nur scroll + cameraWidth/2, auch wenn sich der logische Screen ändert (#4658)", () => {
     const before = simAnchorView(800, 400, 390, 180);
     try {

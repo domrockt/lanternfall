@@ -461,19 +461,14 @@ export class EnemyProjectilePool {
   /**
    * View einmal pro spawn()/update() in die Probe kopieren; kein Objekt je Check.
    * m10-worldview-anchor-pools: liest den deterministischen Sim-Anker
-   * (simAnchorView) statt camera.worldView — worldView wird nur im
-   * Render-Frame aktualisiert und ist im Teilschritt-Loop frame-abhängig
-   * (RNG-Divergenz, Bedarf m10-boss-dur-determinism K2).
+   * (simAnchorView, siehe ProjectilePool.ts) statt camera.worldView.
    */
   private refreshView(): void {
     const cam = this.scene.cameras?.main;
     this.viewValid = !!cam && cam.width > 0 && cam.height > 0;
     if (this.viewValid) {
-      const a = simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height);
-      this.viewProbe.x = a.x;
-      this.viewProbe.y = a.y;
-      this.viewProbe.width = a.width;
-      this.viewProbe.height = a.height;
+      // Anker allokationsfrei direkt in die Probe (Out-Param).
+      simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height, this.viewProbe);
     }
   }
 
