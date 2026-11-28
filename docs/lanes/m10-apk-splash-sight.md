@@ -29,3 +29,22 @@ Beleg: `~/games/.evidence/m10-apk-splash-sight/k1-apk-theme.json` (volle Kette).
   6. `0x7f020000` = drawable/ic = `ic.png` (192×192): **Laterne** auf dunklem Grund, zentriert.
 - Urteil K1: APK-Inhalt belegt statisch Theme #0a0d14 + zentrierte Laterne für das
   Starting-Window. Lebender Kaltstart-Beleg → K2.
+
+## K2 — Kaltstart-Beleg am Gerät — #12946 (Stand: WIP)
+
+Mess-Skript: `scripts/m10-apk-splash.mjs` (device-bridge `http://172.17.0.1:5181`:
+`POST /launch` = force-stop + Kaltstart, `POST /screenshot` = adb screencap 2560×1600;
+screenrecord liefert auf dem Redmi Pad nur Stümpfe → Screencaps).
+
+- 15:45Z Probe-Launch + 1 Screencap (Bridge legte das PNG nach
+  `~/games/.evidence/device/screen-20261128-154518.png`, archiviert nach
+  `~/games/.evidence/m10-apk-splash-sight/coldstart-run1/`): zeigt die WebView-Boot-Phase
+  „LADE MOOR …" — davon FARBMESSUNG (Pillow): Boot-BG `#0a0e16` (Ziel `#0a0d14`, ΔRGB ≤ 4/255,
+  sehr nah — vermutlich Display-/PNG-Pipeline), Letterbox-Balken oben/unten `#06070c`
+  (dunkler als der Boot-BG → sichtbarer Ton-Rand, Befund, Severity low), Text `#6b7c86`.
+- 15:50Z: Spieler-Sperre aktiv (`dom_playing=true`, `user_idle_s=25`) → alle 3 Starts des
+  ersten Skriptlaufs korrekt übersprungen (`coldstart-run1/manifest.json`). Kein Launch
+  gegen die Sperre.
+- Geplant: EIN verspäteter Retry (Briefing: „bei 409 später erneut versuchen, ein Versuch pro
+  Karte") als Automation `aut_222d6287c001NnxHGjSYpIN42s` um 16:01:30Z — prüft `/status` und
+  läuft nur, wenn die Sperre aufgehoben ist; sonst Befund notieren.
