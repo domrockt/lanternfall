@@ -168,6 +168,16 @@ describe("terrain-coverage: kein Pixel der Spielflaeche ohne Terrain", () => {
     expect(r.regions[0].area).toBe(1);
   });
 
+  it("Loch, das die HUD-Grenze schneidet, zaehlt nur den Spielfeld-Anteil", () => {
+    // y 28..48 bei topExclude 34: 6 HUD-Reihen unzaehlig, 15 Spielfeld-Reihen
+    // bleiben zusammenhaengend (4-Nachbarn) und bilden den Befund.
+    const straddle = paintRect(GOOD, 300, 28, 60, 21);
+    const r = checkScreenshot(straddle);
+    expect(r.ok).toBe(false);
+    expect(r.findings).toHaveLength(1);
+    expect(r.findings[0]).toMatchObject({ area: 15 * 60, minX: 300, minY: 34, maxX: 359, maxY: 48 });
+  });
+
   it("zwei getrennte Loecher erzeugen zwei Befunde (4-Nachbarn-Zusammenhang)", () => {
     let two = paintRect(GOOD, 60, 60, 30, 30);
     two = paintRect(two, 500, 100, 20, 20);

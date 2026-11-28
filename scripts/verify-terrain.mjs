@@ -239,6 +239,7 @@ try {
   const coverage = [];
   for (const size of SIZES) {
     const gpage = await browser.newPage({ viewport: size });
+    gpage.setDefaultTimeout(10000); // evaluate hängt nicht endlos (3-min-Budget)
     gpage.on("pageerror", (e) => errors.push(`[guard ${size.width}] ${e}`));
     gpage.on("console", (m) => { if (m.type() === "error") errors.push(`[guard ${size.width}] ${m.text()}`); });
     try {
