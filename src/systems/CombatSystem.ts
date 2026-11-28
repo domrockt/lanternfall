@@ -809,6 +809,35 @@ export class CombatSystem {
           rotation: a, additive: false, depth: DEPTH.fxLow,
         });
       }
+      // m10-evo-fx-form-polish (Argus 02:00Z, „Element auf einem Standbild ohne
+      // Beschriftung erkennbar"): gefrorene Gegner sichtbar machen — Eiskristall-
+      // Overlay (fx_ice in Sprite-Pixelgröße, Scale <= 1) über jedem Gegner mit
+      // Freeze-Timer; der blaue Tint liegt in Run.ts (freeze -> paleMist).
+      // Plus Bodenfrost: kalte, nicht-additive Flocken im Aura-Inneren.
+      let frozenShown = 0;
+      let frost = 0;
+      for (const e of ctx.enemies) {
+        if (frost < 8 && ((e.x - ctx.playerX) ** 2 + (e.y - ctx.playerY) ** 2) < radius * radius) {
+          frost++;
+          this.particles.spawn({
+            texture: "fx_ice", frames: fxFrames("fx_ice", 4),
+            x: e.x, y: e.y + 6,
+            vy: 3, life: 0.7, scaleFrom: 0.6, scaleTo: 0.3,
+            alphaFrom: 0.5, alphaTo: 0, additive: false,
+            rotation: (e.uid % 4) * 0.9, depth: DEPTH.fxLow,
+          });
+        }
+        if (e.alive && e.hp > 0 && e.freezeTimer > 0 && frozenShown < 12) {
+          frozenShown++;
+          this.particles.spawn({
+            texture: "fx_ice", frames: fxFrames("fx_ice", 4),
+            x: e.x, y: e.y - 2,
+            vy: -6, life: 0.5, scaleFrom: 0.75, scaleTo: 0.4,
+            alphaFrom: 0.9, alphaTo: 0, additive: false,
+            rotation: (e.uid % 3) * 1.1, depth: DEPTH.enemy + 0.5,
+          });
+        }
+      }
     }
     state.spikeTimer -= ctx.dt;
     // K2 (geparkter Winter-Diff): Windup-Anticipation — kalter Halo kurz vor dem

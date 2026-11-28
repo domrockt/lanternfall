@@ -3,7 +3,7 @@
   "evos": {
     "phoenix": {
       "renderer": {
-        "generatedAt": "2026-11-28T05:22:31.099Z",
+        "generatedAt": "2026-11-28T05:37:52.340Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -147,6 +147,17 @@
             }
           ]
         },
+        "fx_boom_phoenix_2": {
+          "maxScale": 1,
+          "samples": [
+            {
+              "sx": 1,
+              "sy": 1,
+              "w": 64,
+              "h": 64
+            }
+          ]
+        },
         "fx_boom_phoenix_3": {
           "maxScale": 1,
           "samples": [
@@ -167,23 +178,6 @@
               "sy": 1,
               "w": 64,
               "h": 64
-            },
-            {
-              "sx": 1,
-              "sy": 1,
-              "w": 64,
-              "h": 64
-            }
-          ]
-        },
-        "fx_evo_hit_phoenix": {
-          "maxScale": 1,
-          "samples": [
-            {
-              "sx": 1,
-              "sy": 1,
-              "w": 128,
-              "h": 128
             }
           ]
         },
@@ -328,10 +322,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 40,
-            "pal6": 374,
-            "pal11": 196,
-            "pal12": 202,
-            "pal13": 110
+            "pal6": 249,
+            "pal11": 255,
+            "pal12": 241,
+            "pal13": 137
           }
         },
         "fx_evo_hit_eternal_winter_2": {
@@ -342,10 +336,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 55,
-            "pal6": 494,
-            "pal11": 291,
-            "pal12": 248,
-            "pal13": 153
+            "pal6": 324,
+            "pal11": 375,
+            "pal12": 301,
+            "pal13": 186
           }
         },
         "fx_evo_hit_eternal_winter_3": {
@@ -356,10 +350,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 68,
-            "pal6": 614,
-            "pal12": 336,
-            "pal11": 366,
-            "pal13": 183
+            "pal6": 402,
+            "pal11": 475,
+            "pal12": 402,
+            "pal13": 220
           }
         },
         "fx_evo_hit_eternal_winter_4": {
@@ -370,10 +364,10 @@
           "edgePixels": 4,
           "hist": {
             "pal9": 63,
-            "pal6": 752,
-            "pal12": 412,
-            "pal11": 451,
-            "pal13": 240
+            "pal6": 484,
+            "pal11": 593,
+            "pal12": 496,
+            "pal13": 282
           }
         },
         "fx_evo_hit_thorn_storm": {
@@ -659,11 +653,11 @@
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal6": 821,
-            "pal12": 389,
-            "pal11": 441,
+            "pal6": 504,
+            "pal12": 484,
+            "pal11": 601,
             "pal9": 187,
-            "pal13": 218
+            "pal13": 280
           }
         },
         "fx_evo_death_eternal_winter_2": {
@@ -674,10 +668,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 233,
-            "pal6": 1109,
-            "pal12": 488,
-            "pal11": 595,
-            "pal13": 289
+            "pal6": 676,
+            "pal12": 581,
+            "pal11": 848,
+            "pal13": 376
           }
         },
         "fx_evo_death_eternal_winter_3": {
@@ -687,11 +681,11 @@
           "inkPixels": 0,
           "edgePixels": 15,
           "hist": {
-            "pal6": 1387,
+            "pal6": 835,
             "pal9": 236,
-            "pal12": 677,
-            "pal11": 772,
-            "pal13": 333
+            "pal12": 799,
+            "pal11": 1092,
+            "pal13": 443
           }
         },
         "fx_evo_death_eternal_winter_4": {
@@ -702,10 +696,10 @@
           "edgePixels": 27,
           "hist": {
             "pal9": 239,
-            "pal6": 1504,
-            "pal12": 828,
-            "pal11": 955,
-            "pal13": 431
+            "pal6": 888,
+            "pal12": 978,
+            "pal11": 1287,
+            "pal13": 565
           }
         },
         "fx_evo_death_thorn_storm": {
@@ -1128,43 +1122,46 @@
         "ring_frost": {
           "w": 96,
           "h": 96,
-          "opaque": 1661,
+          "opaque": 2445,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 29,
           "hist": {
-            "pal5": 260,
-            "pal13": 100,
-            "pal8": 516,
-            "pal9": 521,
-            "pal12": 264
+            "pal5": 277,
+            "pal13": 124,
+            "pal6": 732,
+            "pal8": 503,
+            "pal12": 288,
+            "pal9": 521
           }
         },
         "ring_frost@2": {
           "w": 192,
           "h": 192,
-          "opaque": 6601,
+          "opaque": 9771,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 6,
           "hist": {
-            "pal5": 1087,
-            "pal8": 2107,
-            "pal13": 308,
-            "pal9": 2079,
-            "pal12": 1020
+            "pal5": 1134,
+            "pal13": 344,
+            "pal6": 3068,
+            "pal12": 1056,
+            "pal8": 2090,
+            "pal9": 2079
           }
         },
         "ring_frost@3": {
           "w": 288,
           "h": 288,
-          "opaque": 14835,
+          "opaque": 21918,
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal5": 2437,
-            "pal13": 660,
-            "pal8": 4772,
-            "pal9": 4682,
-            "pal12": 2284
+            "pal5": 2536,
+            "pal13": 712,
+            "pal6": 6901,
+            "pal12": 2340,
+            "pal8": 4747,
+            "pal9": 4682
           }
         },
         "fx_thorn": {
@@ -1335,15 +1332,15 @@
       },
       "liveCounts": {
         "fx_burn_phoenix_2": 4,
-        "fx_boom_phoenix_3": 4,
-        "fx_evo_hit_phoenix": 1,
+        "fx_boom_phoenix_2": 1,
+        "fx_boom_phoenix_3": 3,
         "fx_evo_death_phoenix_2": 1
       },
       "shot": "shots/m10-evo-fx-form-polish-after-phoenix-640.png"
     },
     "wrath_pendulum": {
       "renderer": {
-        "generatedAt": "2026-11-28T05:22:33.944Z",
+        "generatedAt": "2026-11-28T05:37:55.339Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -1628,10 +1625,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 40,
-            "pal6": 374,
-            "pal11": 196,
-            "pal12": 202,
-            "pal13": 110
+            "pal6": 249,
+            "pal11": 255,
+            "pal12": 241,
+            "pal13": 137
           }
         },
         "fx_evo_hit_eternal_winter_2": {
@@ -1642,10 +1639,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 55,
-            "pal6": 494,
-            "pal11": 291,
-            "pal12": 248,
-            "pal13": 153
+            "pal6": 324,
+            "pal11": 375,
+            "pal12": 301,
+            "pal13": 186
           }
         },
         "fx_evo_hit_eternal_winter_3": {
@@ -1656,10 +1653,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 68,
-            "pal6": 614,
-            "pal12": 336,
-            "pal11": 366,
-            "pal13": 183
+            "pal6": 402,
+            "pal11": 475,
+            "pal12": 402,
+            "pal13": 220
           }
         },
         "fx_evo_hit_eternal_winter_4": {
@@ -1670,10 +1667,10 @@
           "edgePixels": 4,
           "hist": {
             "pal9": 63,
-            "pal6": 752,
-            "pal12": 412,
-            "pal11": 451,
-            "pal13": 240
+            "pal6": 484,
+            "pal11": 593,
+            "pal12": 496,
+            "pal13": 282
           }
         },
         "fx_evo_hit_thorn_storm": {
@@ -1959,11 +1956,11 @@
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal6": 821,
-            "pal12": 389,
-            "pal11": 441,
+            "pal6": 504,
+            "pal12": 484,
+            "pal11": 601,
             "pal9": 187,
-            "pal13": 218
+            "pal13": 280
           }
         },
         "fx_evo_death_eternal_winter_2": {
@@ -1974,10 +1971,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 233,
-            "pal6": 1109,
-            "pal12": 488,
-            "pal11": 595,
-            "pal13": 289
+            "pal6": 676,
+            "pal12": 581,
+            "pal11": 848,
+            "pal13": 376
           }
         },
         "fx_evo_death_eternal_winter_3": {
@@ -1987,11 +1984,11 @@
           "inkPixels": 0,
           "edgePixels": 15,
           "hist": {
-            "pal6": 1387,
+            "pal6": 835,
             "pal9": 236,
-            "pal12": 677,
-            "pal11": 772,
-            "pal13": 333
+            "pal12": 799,
+            "pal11": 1092,
+            "pal13": 443
           }
         },
         "fx_evo_death_eternal_winter_4": {
@@ -2002,10 +1999,10 @@
           "edgePixels": 27,
           "hist": {
             "pal9": 239,
-            "pal6": 1504,
-            "pal12": 828,
-            "pal11": 955,
-            "pal13": 431
+            "pal6": 888,
+            "pal12": 978,
+            "pal11": 1287,
+            "pal13": 565
           }
         },
         "fx_evo_death_thorn_storm": {
@@ -2428,43 +2425,46 @@
         "ring_frost": {
           "w": 96,
           "h": 96,
-          "opaque": 1661,
+          "opaque": 2445,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 29,
           "hist": {
-            "pal5": 260,
-            "pal13": 100,
-            "pal8": 516,
-            "pal9": 521,
-            "pal12": 264
+            "pal5": 277,
+            "pal13": 124,
+            "pal6": 732,
+            "pal8": 503,
+            "pal12": 288,
+            "pal9": 521
           }
         },
         "ring_frost@2": {
           "w": 192,
           "h": 192,
-          "opaque": 6601,
+          "opaque": 9771,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 6,
           "hist": {
-            "pal5": 1087,
-            "pal8": 2107,
-            "pal13": 308,
-            "pal9": 2079,
-            "pal12": 1020
+            "pal5": 1134,
+            "pal13": 344,
+            "pal6": 3068,
+            "pal12": 1056,
+            "pal8": 2090,
+            "pal9": 2079
           }
         },
         "ring_frost@3": {
           "w": 288,
           "h": 288,
-          "opaque": 14835,
+          "opaque": 21918,
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal5": 2437,
-            "pal13": 660,
-            "pal8": 4772,
-            "pal9": 4682,
-            "pal12": 2284
+            "pal5": 2536,
+            "pal13": 712,
+            "pal6": 6901,
+            "pal12": 2340,
+            "pal8": 4747,
+            "pal9": 4682
           }
         },
         "fx_thorn": {
@@ -2643,7 +2643,7 @@
     },
     "eternal_winter": {
       "renderer": {
-        "generatedAt": "2026-11-28T05:22:36.280Z",
+        "generatedAt": "2026-11-28T05:37:57.740Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -2816,7 +2816,7 @@
           ]
         },
         "fx_ice_3": {
-          "maxScale": 0.407,
+          "maxScale": 0.564,
           "samples": [
             {
               "sx": 0.407,
@@ -3137,10 +3137,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 40,
-            "pal6": 374,
-            "pal11": 196,
-            "pal12": 202,
-            "pal13": 110
+            "pal6": 249,
+            "pal11": 255,
+            "pal12": 241,
+            "pal13": 137
           }
         },
         "fx_evo_hit_eternal_winter_2": {
@@ -3151,10 +3151,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 55,
-            "pal6": 494,
-            "pal11": 291,
-            "pal12": 248,
-            "pal13": 153
+            "pal6": 324,
+            "pal11": 375,
+            "pal12": 301,
+            "pal13": 186
           }
         },
         "fx_evo_hit_eternal_winter_3": {
@@ -3165,10 +3165,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 68,
-            "pal6": 614,
-            "pal12": 336,
-            "pal11": 366,
-            "pal13": 183
+            "pal6": 402,
+            "pal11": 475,
+            "pal12": 402,
+            "pal13": 220
           }
         },
         "fx_evo_hit_eternal_winter_4": {
@@ -3179,10 +3179,10 @@
           "edgePixels": 4,
           "hist": {
             "pal9": 63,
-            "pal6": 752,
-            "pal12": 412,
-            "pal11": 451,
-            "pal13": 240
+            "pal6": 484,
+            "pal11": 593,
+            "pal12": 496,
+            "pal13": 282
           }
         },
         "fx_evo_hit_thorn_storm": {
@@ -3468,11 +3468,11 @@
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal6": 821,
-            "pal12": 389,
-            "pal11": 441,
+            "pal6": 504,
+            "pal12": 484,
+            "pal11": 601,
             "pal9": 187,
-            "pal13": 218
+            "pal13": 280
           }
         },
         "fx_evo_death_eternal_winter_2": {
@@ -3483,10 +3483,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 233,
-            "pal6": 1109,
-            "pal12": 488,
-            "pal11": 595,
-            "pal13": 289
+            "pal6": 676,
+            "pal12": 581,
+            "pal11": 848,
+            "pal13": 376
           }
         },
         "fx_evo_death_eternal_winter_3": {
@@ -3496,11 +3496,11 @@
           "inkPixels": 0,
           "edgePixels": 15,
           "hist": {
-            "pal6": 1387,
+            "pal6": 835,
             "pal9": 236,
-            "pal12": 677,
-            "pal11": 772,
-            "pal13": 333
+            "pal12": 799,
+            "pal11": 1092,
+            "pal13": 443
           }
         },
         "fx_evo_death_eternal_winter_4": {
@@ -3511,10 +3511,10 @@
           "edgePixels": 27,
           "hist": {
             "pal9": 239,
-            "pal6": 1504,
-            "pal12": 828,
-            "pal11": 955,
-            "pal13": 431
+            "pal6": 888,
+            "pal12": 978,
+            "pal11": 1287,
+            "pal13": 565
           }
         },
         "fx_evo_death_thorn_storm": {
@@ -3937,43 +3937,46 @@
         "ring_frost": {
           "w": 96,
           "h": 96,
-          "opaque": 1661,
+          "opaque": 2445,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 29,
           "hist": {
-            "pal5": 260,
-            "pal13": 100,
-            "pal8": 516,
-            "pal9": 521,
-            "pal12": 264
+            "pal5": 277,
+            "pal13": 124,
+            "pal6": 732,
+            "pal8": 503,
+            "pal12": 288,
+            "pal9": 521
           }
         },
         "ring_frost@2": {
           "w": 192,
           "h": 192,
-          "opaque": 6601,
+          "opaque": 9771,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 6,
           "hist": {
-            "pal5": 1087,
-            "pal8": 2107,
-            "pal13": 308,
-            "pal9": 2079,
-            "pal12": 1020
+            "pal5": 1134,
+            "pal13": 344,
+            "pal6": 3068,
+            "pal12": 1056,
+            "pal8": 2090,
+            "pal9": 2079
           }
         },
         "ring_frost@3": {
           "w": 288,
           "h": 288,
-          "opaque": 14835,
+          "opaque": 21918,
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal5": 2437,
-            "pal13": 660,
-            "pal8": 4772,
-            "pal9": 4682,
-            "pal12": 2284
+            "pal5": 2536,
+            "pal13": 712,
+            "pal6": 6901,
+            "pal12": 2340,
+            "pal8": 4747,
+            "pal9": 4682
           }
         },
         "fx_thorn": {
@@ -4143,8 +4146,8 @@
         }
       },
       "liveCounts": {
-        "fx_ice_2": 22,
-        "fx_ice_3": 14,
+        "fx_ice_2": 25,
+        "fx_ice_3": 16,
         "fx_ice_4": 14,
         "fx_shock_4": 1,
         "ring_frost@3": 1,
@@ -4155,7 +4158,7 @@
     },
     "thorn_storm": {
       "renderer": {
-        "generatedAt": "2026-11-28T05:22:38.670Z",
+        "generatedAt": "2026-11-28T05:38:00.166Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -4263,161 +4266,161 @@
       },
       "live": {
         "fx_thorn": {
-          "maxScale": 0.994,
+          "maxScale": 1.177,
           "samples": [
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             },
             {
-              "sx": 0.994,
-              "sy": 0.994,
-              "w": 9,
-              "h": 9
+              "sx": 1.177,
+              "sy": 1.177,
+              "w": 11,
+              "h": 11
             }
           ]
         },
         "fx_thorn_2": {
-          "maxScale": 1.719,
+          "maxScale": 1.627,
           "samples": [
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             },
             {
-              "sx": 0.628,
-              "sy": 0.628,
-              "w": 6,
-              "h": 6
+              "sx": 0.811,
+              "sy": 0.811,
+              "w": 7,
+              "h": 7
             }
           ]
         },
         "fx_thorn_3": {
-          "maxScale": 0.262,
+          "maxScale": 0.445,
           "samples": [
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             },
             {
-              "sx": 0.262,
-              "sy": 0.262,
-              "w": 2,
-              "h": 2
+              "sx": 0.445,
+              "sy": 0.445,
+              "w": 4,
+              "h": 4
             }
           ]
         },
@@ -4626,10 +4629,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 40,
-            "pal6": 374,
-            "pal11": 196,
-            "pal12": 202,
-            "pal13": 110
+            "pal6": 249,
+            "pal11": 255,
+            "pal12": 241,
+            "pal13": 137
           }
         },
         "fx_evo_hit_eternal_winter_2": {
@@ -4640,10 +4643,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 55,
-            "pal6": 494,
-            "pal11": 291,
-            "pal12": 248,
-            "pal13": 153
+            "pal6": 324,
+            "pal11": 375,
+            "pal12": 301,
+            "pal13": 186
           }
         },
         "fx_evo_hit_eternal_winter_3": {
@@ -4654,10 +4657,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 68,
-            "pal6": 614,
-            "pal12": 336,
-            "pal11": 366,
-            "pal13": 183
+            "pal6": 402,
+            "pal11": 475,
+            "pal12": 402,
+            "pal13": 220
           }
         },
         "fx_evo_hit_eternal_winter_4": {
@@ -4668,10 +4671,10 @@
           "edgePixels": 4,
           "hist": {
             "pal9": 63,
-            "pal6": 752,
-            "pal12": 412,
-            "pal11": 451,
-            "pal13": 240
+            "pal6": 484,
+            "pal11": 593,
+            "pal12": 496,
+            "pal13": 282
           }
         },
         "fx_evo_hit_thorn_storm": {
@@ -4957,11 +4960,11 @@
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal6": 821,
-            "pal12": 389,
-            "pal11": 441,
+            "pal6": 504,
+            "pal12": 484,
+            "pal11": 601,
             "pal9": 187,
-            "pal13": 218
+            "pal13": 280
           }
         },
         "fx_evo_death_eternal_winter_2": {
@@ -4972,10 +4975,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 233,
-            "pal6": 1109,
-            "pal12": 488,
-            "pal11": 595,
-            "pal13": 289
+            "pal6": 676,
+            "pal12": 581,
+            "pal11": 848,
+            "pal13": 376
           }
         },
         "fx_evo_death_eternal_winter_3": {
@@ -4985,11 +4988,11 @@
           "inkPixels": 0,
           "edgePixels": 15,
           "hist": {
-            "pal6": 1387,
+            "pal6": 835,
             "pal9": 236,
-            "pal12": 677,
-            "pal11": 772,
-            "pal13": 333
+            "pal12": 799,
+            "pal11": 1092,
+            "pal13": 443
           }
         },
         "fx_evo_death_eternal_winter_4": {
@@ -5000,10 +5003,10 @@
           "edgePixels": 27,
           "hist": {
             "pal9": 239,
-            "pal6": 1504,
-            "pal12": 828,
-            "pal11": 955,
-            "pal13": 431
+            "pal6": 888,
+            "pal12": 978,
+            "pal11": 1287,
+            "pal13": 565
           }
         },
         "fx_evo_death_thorn_storm": {
@@ -5426,43 +5429,46 @@
         "ring_frost": {
           "w": 96,
           "h": 96,
-          "opaque": 1661,
+          "opaque": 2445,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 29,
           "hist": {
-            "pal5": 260,
-            "pal13": 100,
-            "pal8": 516,
-            "pal9": 521,
-            "pal12": 264
+            "pal5": 277,
+            "pal13": 124,
+            "pal6": 732,
+            "pal8": 503,
+            "pal12": 288,
+            "pal9": 521
           }
         },
         "ring_frost@2": {
           "w": 192,
           "h": 192,
-          "opaque": 6601,
+          "opaque": 9771,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 6,
           "hist": {
-            "pal5": 1087,
-            "pal8": 2107,
-            "pal13": 308,
-            "pal9": 2079,
-            "pal12": 1020
+            "pal5": 1134,
+            "pal13": 344,
+            "pal6": 3068,
+            "pal12": 1056,
+            "pal8": 2090,
+            "pal9": 2079
           }
         },
         "ring_frost@3": {
           "w": 288,
           "h": 288,
-          "opaque": 14835,
+          "opaque": 21918,
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal5": 2437,
-            "pal13": 660,
-            "pal8": 4772,
-            "pal9": 4682,
-            "pal12": 2284
+            "pal5": 2536,
+            "pal13": 712,
+            "pal6": 6901,
+            "pal12": 2340,
+            "pal8": 4747,
+            "pal9": 4682
           }
         },
         "fx_thorn": {
@@ -5643,7 +5649,7 @@
     },
     "thunder_seal": {
       "renderer": {
-        "generatedAt": "2026-11-28T05:22:41.273Z",
+        "generatedAt": "2026-11-28T05:38:02.920Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -5883,20 +5889,20 @@
           "maxScale": 1.612,
           "samples": [
             {
-              "sx": 0.583,
-              "sy": 0.583,
-              "w": 7,
-              "h": 9
+              "sx": 0.658,
+              "sy": 0.658,
+              "w": 8,
+              "h": 11
             },
             {
-              "sx": 0.58,
-              "sy": 0.58,
-              "w": 7,
-              "h": 9
+              "sx": 0.695,
+              "sy": 0.695,
+              "w": 8,
+              "h": 11
             },
             {
-              "sx": 0.579,
-              "sy": 0.579,
+              "sx": 0.582,
+              "sy": 0.582,
               "w": 7,
               "h": 9
             },
@@ -6062,10 +6068,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 40,
-            "pal6": 374,
-            "pal11": 196,
-            "pal12": 202,
-            "pal13": 110
+            "pal6": 249,
+            "pal11": 255,
+            "pal12": 241,
+            "pal13": 137
           }
         },
         "fx_evo_hit_eternal_winter_2": {
@@ -6076,10 +6082,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 55,
-            "pal6": 494,
-            "pal11": 291,
-            "pal12": 248,
-            "pal13": 153
+            "pal6": 324,
+            "pal11": 375,
+            "pal12": 301,
+            "pal13": 186
           }
         },
         "fx_evo_hit_eternal_winter_3": {
@@ -6090,10 +6096,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 68,
-            "pal6": 614,
-            "pal12": 336,
-            "pal11": 366,
-            "pal13": 183
+            "pal6": 402,
+            "pal11": 475,
+            "pal12": 402,
+            "pal13": 220
           }
         },
         "fx_evo_hit_eternal_winter_4": {
@@ -6104,10 +6110,10 @@
           "edgePixels": 4,
           "hist": {
             "pal9": 63,
-            "pal6": 752,
-            "pal12": 412,
-            "pal11": 451,
-            "pal13": 240
+            "pal6": 484,
+            "pal11": 593,
+            "pal12": 496,
+            "pal13": 282
           }
         },
         "fx_evo_hit_thorn_storm": {
@@ -6393,11 +6399,11 @@
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal6": 821,
-            "pal12": 389,
-            "pal11": 441,
+            "pal6": 504,
+            "pal12": 484,
+            "pal11": 601,
             "pal9": 187,
-            "pal13": 218
+            "pal13": 280
           }
         },
         "fx_evo_death_eternal_winter_2": {
@@ -6408,10 +6414,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 233,
-            "pal6": 1109,
-            "pal12": 488,
-            "pal11": 595,
-            "pal13": 289
+            "pal6": 676,
+            "pal12": 581,
+            "pal11": 848,
+            "pal13": 376
           }
         },
         "fx_evo_death_eternal_winter_3": {
@@ -6421,11 +6427,11 @@
           "inkPixels": 0,
           "edgePixels": 15,
           "hist": {
-            "pal6": 1387,
+            "pal6": 835,
             "pal9": 236,
-            "pal12": 677,
-            "pal11": 772,
-            "pal13": 333
+            "pal12": 799,
+            "pal11": 1092,
+            "pal13": 443
           }
         },
         "fx_evo_death_eternal_winter_4": {
@@ -6436,10 +6442,10 @@
           "edgePixels": 27,
           "hist": {
             "pal9": 239,
-            "pal6": 1504,
-            "pal12": 828,
-            "pal11": 955,
-            "pal13": 431
+            "pal6": 888,
+            "pal12": 978,
+            "pal11": 1287,
+            "pal13": 565
           }
         },
         "fx_evo_death_thorn_storm": {
@@ -6862,43 +6868,46 @@
         "ring_frost": {
           "w": 96,
           "h": 96,
-          "opaque": 1661,
+          "opaque": 2445,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 29,
           "hist": {
-            "pal5": 260,
-            "pal13": 100,
-            "pal8": 516,
-            "pal9": 521,
-            "pal12": 264
+            "pal5": 277,
+            "pal13": 124,
+            "pal6": 732,
+            "pal8": 503,
+            "pal12": 288,
+            "pal9": 521
           }
         },
         "ring_frost@2": {
           "w": 192,
           "h": 192,
-          "opaque": 6601,
+          "opaque": 9771,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 6,
           "hist": {
-            "pal5": 1087,
-            "pal8": 2107,
-            "pal13": 308,
-            "pal9": 2079,
-            "pal12": 1020
+            "pal5": 1134,
+            "pal13": 344,
+            "pal6": 3068,
+            "pal12": 1056,
+            "pal8": 2090,
+            "pal9": 2079
           }
         },
         "ring_frost@3": {
           "w": 288,
           "h": 288,
-          "opaque": 14835,
+          "opaque": 21918,
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal5": 2437,
-            "pal13": 660,
-            "pal8": 4772,
-            "pal9": 4682,
-            "pal12": 2284
+            "pal5": 2536,
+            "pal13": 712,
+            "pal6": 6901,
+            "pal12": 2340,
+            "pal8": 4747,
+            "pal9": 4682
           }
         },
         "fx_thorn": {
@@ -7077,7 +7086,7 @@
     },
     "soul_beacon": {
       "renderer": {
-        "generatedAt": "2026-11-28T05:22:44.206Z",
+        "generatedAt": "2026-11-28T05:38:05.945Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -7409,10 +7418,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 40,
-            "pal6": 374,
-            "pal11": 196,
-            "pal12": 202,
-            "pal13": 110
+            "pal6": 249,
+            "pal11": 255,
+            "pal12": 241,
+            "pal13": 137
           }
         },
         "fx_evo_hit_eternal_winter_2": {
@@ -7423,10 +7432,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 55,
-            "pal6": 494,
-            "pal11": 291,
-            "pal12": 248,
-            "pal13": 153
+            "pal6": 324,
+            "pal11": 375,
+            "pal12": 301,
+            "pal13": 186
           }
         },
         "fx_evo_hit_eternal_winter_3": {
@@ -7437,10 +7446,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 68,
-            "pal6": 614,
-            "pal12": 336,
-            "pal11": 366,
-            "pal13": 183
+            "pal6": 402,
+            "pal11": 475,
+            "pal12": 402,
+            "pal13": 220
           }
         },
         "fx_evo_hit_eternal_winter_4": {
@@ -7451,10 +7460,10 @@
           "edgePixels": 4,
           "hist": {
             "pal9": 63,
-            "pal6": 752,
-            "pal12": 412,
-            "pal11": 451,
-            "pal13": 240
+            "pal6": 484,
+            "pal11": 593,
+            "pal12": 496,
+            "pal13": 282
           }
         },
         "fx_evo_hit_thorn_storm": {
@@ -7740,11 +7749,11 @@
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal6": 821,
-            "pal12": 389,
-            "pal11": 441,
+            "pal6": 504,
+            "pal12": 484,
+            "pal11": 601,
             "pal9": 187,
-            "pal13": 218
+            "pal13": 280
           }
         },
         "fx_evo_death_eternal_winter_2": {
@@ -7755,10 +7764,10 @@
           "edgePixels": 0,
           "hist": {
             "pal9": 233,
-            "pal6": 1109,
-            "pal12": 488,
-            "pal11": 595,
-            "pal13": 289
+            "pal6": 676,
+            "pal12": 581,
+            "pal11": 848,
+            "pal13": 376
           }
         },
         "fx_evo_death_eternal_winter_3": {
@@ -7768,11 +7777,11 @@
           "inkPixels": 0,
           "edgePixels": 15,
           "hist": {
-            "pal6": 1387,
+            "pal6": 835,
             "pal9": 236,
-            "pal12": 677,
-            "pal11": 772,
-            "pal13": 333
+            "pal12": 799,
+            "pal11": 1092,
+            "pal13": 443
           }
         },
         "fx_evo_death_eternal_winter_4": {
@@ -7783,10 +7792,10 @@
           "edgePixels": 27,
           "hist": {
             "pal9": 239,
-            "pal6": 1504,
-            "pal12": 828,
-            "pal11": 955,
-            "pal13": 431
+            "pal6": 888,
+            "pal12": 978,
+            "pal11": 1287,
+            "pal13": 565
           }
         },
         "fx_evo_death_thorn_storm": {
@@ -8209,43 +8218,46 @@
         "ring_frost": {
           "w": 96,
           "h": 96,
-          "opaque": 1661,
+          "opaque": 2445,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 29,
           "hist": {
-            "pal5": 260,
-            "pal13": 100,
-            "pal8": 516,
-            "pal9": 521,
-            "pal12": 264
+            "pal5": 277,
+            "pal13": 124,
+            "pal6": 732,
+            "pal8": 503,
+            "pal12": 288,
+            "pal9": 521
           }
         },
         "ring_frost@2": {
           "w": 192,
           "h": 192,
-          "opaque": 6601,
+          "opaque": 9771,
           "inkPixels": 0,
-          "edgePixels": 0,
+          "edgePixels": 6,
           "hist": {
-            "pal5": 1087,
-            "pal8": 2107,
-            "pal13": 308,
-            "pal9": 2079,
-            "pal12": 1020
+            "pal5": 1134,
+            "pal13": 344,
+            "pal6": 3068,
+            "pal12": 1056,
+            "pal8": 2090,
+            "pal9": 2079
           }
         },
         "ring_frost@3": {
           "w": 288,
           "h": 288,
-          "opaque": 14835,
+          "opaque": 21918,
           "inkPixels": 0,
           "edgePixels": 0,
           "hist": {
-            "pal5": 2437,
-            "pal13": 660,
-            "pal8": 4772,
-            "pal9": 4682,
-            "pal12": 2284
+            "pal5": 2536,
+            "pal13": 712,
+            "pal6": 6901,
+            "pal12": 2340,
+            "pal8": 4747,
+            "pal9": 4682
           }
         },
         "fx_thorn": {
