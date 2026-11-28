@@ -15797,7 +15797,7 @@
       "id": 11640,
       "title": "m10-verify-output-hygiene K3: Gegenprobe 3 Skript-Laeufe",
       "description": "Alle drei Skripte je 1x laufen lassen (verify-terrain mit Renderer-String-Pflicht im JSON). Abnahme: rc=0, 0 JS-Fehler, git status --short danach sauber (keine getrackten/ungewollten shots-Aenderungen), Outputs in ~/games/.evidence/verify-hygiene/, Terrain-JSON enthaelt Renderer-String (kein SwiftShader).",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15808,25 +15808,35 @@
           "at": "2026-11-28T11:38:35Z",
           "by": "build",
           "text": "todo → doing: K3 Gegenprobe gestartet"
+        },
+        {
+          "at": "2026-11-28T11:40:50Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig: 3 Laeufe rc=0, Renderer RPL-S im JSON, git status sauber, Commit 977e305b"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:38:35Z"
+      "updated": "2026-11-28T11:40:50Z"
     },
     {
       "id": 11641,
       "title": "m10-verify-output-hygiene K4: Doku + .lane-done",
       "description": "Lane-Doku docs/lanes/m10-verify-output-hygiene.md finalisieren (inkl. Hinweis, welche getrackten Fixtures bewusst bleiben und warum), .lane-done anlegen und committen. Abnahme: Doku committed, git status clean, .lane-done vorhanden.",
-      "column": "todo",
+      "column": "doing",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
           "by": "build",
           "text": "todo → todo: Lane gebucht (Briefing #11638-#11641)"
+        },
+        {
+          "at": "2026-11-28T11:40:50Z",
+          "by": "build",
+          "text": "todo → doing: K4 Abschluss gestartet"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:37:18Z"
+      "updated": "2026-11-28T11:40:50Z"
     }
   ]
 }

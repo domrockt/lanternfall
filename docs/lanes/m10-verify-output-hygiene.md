@@ -61,4 +61,26 @@ Belege in `~/games/.evidence/verify-hygiene/` (23 Dateien, timestamped; u. a.
 
 ## K4 — Doku + Abschluss (#11641)
 
-(d folgt)
+- Lane-Doku finalisiert (dieses Dokument); die Klassifikation der getrackten Fixtures steht in K1:
+  die drei Skripte schreiben **keine** getrackten Fixtures; bewusst getrackt und unangetastet
+  bleiben `shots/abnahme/m10-terrain-guard-{960,1280,1920}-end.png` (manuell platzierte
+  Abnahme-Kopien), `shots/m10-passive-math-{caps,matrix}.json` (fremder Owner) und
+  `shots/final-*.gif` (keine Skript-Outputs). Diese bleiben getrackt, weil sie Abnahme-Belege
+  in git sind — sie werden von den Skripten nicht berührt.
+- `.lane-done` im Worktree-Wurzelverzeichnis mit Zusammenfassung.
+
+## Ergebnis (Abnahmekriterien)
+
+- 3 Skript-Läufe rc=0, 0 JS-Fehler ✓
+- `git status --short` danach leer (außer lane-eigene Board-Buchung) ✓
+- Outputs in `~/games/.evidence/verify-hygiene/`, nichts mehr nach `shots/` ✓
+- Renderer-String-Pflicht erfüllt (RPL-S iGPU, kein SwiftShader) ✓
+- Fremde Skripte (`verify-input.mjs` etc.) und getrackte Fixtures unangetastet ✓
+
+Commits: #11638 ea367f54, #11639 241555b1, #11640 977e305b, #11641 a572df6a (Abschluss).
+
+## Bedarf gemeldet (1 Zeile, fremde Datei)
+
+`tests/passive-stack.test.ts` schreibt bei Modul-Load in die **getrackten** `shots/m10-passive-math-{caps,matrix}.json`
+(nur `generatedAt`-Churn) — jedes `npm test` macht den Worktree dirty. Gleiches E-4-Muster wie hier gefixt,
+aber Test-Datei eines fremden Owners (nicht Teil dieser Lane); Dateien im Worktree restored.

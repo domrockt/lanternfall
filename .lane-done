@@ -1,0 +1,16 @@
+Lane m10-verify-output-hygiene — abgeschlossen 2026-11-28 (Befund E-4, Nachabnahme E)
+
+K1 (#11638): Inventur der verify-Outputs. Alle Outputs der drei Skripte sind git-ignored
+(Kategorie b), keine getrackten Fixtures betroffen. Beleg: ~/games/.evidence/verify-hygiene/m10-verify-hygiene-before.json.
+K2 (#11639): verify-final.mjs, verify-menus.mjs, verify-terrain.mjs schreiben Neben-Outputs
+jetzt timestamped nach ~/games/.evidence/verify-hygiene/ (Override: --out <dir> oder
+LF_VERIFY_OUTPUT_DIR); verify-final-Default von .evidence/verify-final/ vereinheitlicht.
+Fremde verify-*/Skripte und getrackte Fixtures unangetastet.
+K3 (#11640): Gegenprobe — verify-menus 15/15 PASS, verify-terrain OK (Renderer
+"ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)", rendererValid=true),
+verify-final 7/7 PASS; alle rc=0, 0 JS-Fehler. git status --short nach den 3 Laeufen sauber
+(nur lane-eigene Board-Buchung); Belege (23 Dateien) in ~/games/.evidence/verify-hygiene/.
+K4 (#11641): Doku finalisiert (docs/lanes/m10-verify-output-hygiene.md), Reviewer PASS
+(197 Dateien / 2202 Tests passed, Scope sauber).
+
+Commits: ea367f54 (#11638), 241555b1 (#11639), 977e305b (#11640), dieser Commit (#11641).
