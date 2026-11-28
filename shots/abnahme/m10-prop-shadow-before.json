@@ -1,0 +1,116 @@
+{
+  "card": "m10-prop-contact-shadow",
+  "tag": "before",
+  "seed": "7",
+  "measuredAt": "2026-11-28T08:30:37.512Z",
+  "command": "node scripts/m10-prop-shadow.mjs --tag before",
+  "cluster": {
+    "count": 12,
+    "x": 2453.162018848583,
+    "y": 2096.5051191961393
+  },
+  "visiblePropsNearby": 704,
+  "probe640": {
+    "props": 527,
+    "visibleShadows": 527,
+    "withShadow": 0,
+    "withoutShadow": 527,
+    "missing": [
+      {
+        "key": "prop_post_b",
+        "x": 1897,
+        "y": 1892
+      },
+      {
+        "key": "prop_grave",
+        "x": 1877,
+        "y": 1895
+      },
+      {
+        "key": "prop_bones_b",
+        "x": 1912,
+        "y": 1896
+      },
+      {
+        "key": "prop_grave",
+        "x": 1882,
+        "y": 2006
+      },
+      {
+        "key": "prop_cross",
+        "x": 1906,
+        "y": 2004
+      },
+      {
+        "key": "prop_grave",
+        "x": 1919,
+        "y": 2010
+      },
+      {
+        "key": "prop_tree_a",
+        "x": 1888,
+        "y": 2046
+      },
+      {
+        "key": "prop_stump",
+        "x": 1907,
+        "y": 2052
+      }
+    ],
+    "texKeys": [
+      "shadow"
+    ]
+  },
+  "probe960": {
+    "props": 527,
+    "visibleShadows": 527,
+    "withShadow": 0,
+    "withoutShadow": 527,
+    "missing": [
+      {
+        "key": "prop_post_b",
+        "x": 1897,
+        "y": 1892
+      },
+      {
+        "key": "prop_grave",
+        "x": 1877,
+        "y": 1895
+      },
+      {
+        "key": "prop_bones_b",
+        "x": 1912,
+        "y": 1896
+      },
+      {
+        "key": "prop_grave",
+        "x": 1882,
+        "y": 2006
+      },
+      {
+        "key": "prop_cross",
+        "x": 1906,
+        "y": 2004
+      },
+      {
+        "key": "prop_grave",
+        "x": 1919,
+        "y": 2010
+      },
+      {
+        "key": "prop_tree_a",
+        "x": 1888,
+        "y": 2046
+      },
+      {
+        "key": "prop_stump",
+        "x": 1907,
+        "y": 2052
+      }
+    ],
+    "texKeys": [
+      "shadow"
+    ]
+  },
+  "jsErrors": []
+}
