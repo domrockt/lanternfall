@@ -585,10 +585,9 @@ export class GroundRenderer {
       const job = this.queue.shift()!;
       this.inflight.set(job.key, Date.now());
       if (this.counters) this.counters.workerPosted++;
-      // Wasser-Chunks mit allen Animationsstufen anfragen (Land = 1 Frame).
-      const frames = areaHasWater(job.cx * CHUNK_SIZE, job.cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE)
-        ? WATER_ANIM_STEPS : 1;
-      this.worker.postMessage({ cx: job.cx, cy: job.cy, seed: this.seed, frames });
+      // Der Worker entscheidet selbst (areaHasWater dort kostenfrei), ob er
+      // alle Animationsstufen malt — kein Main-Thread-Sampling im Dispatch.
+      this.worker.postMessage({ cx: job.cx, cy: job.cy, seed: this.seed });
     }
   }
 

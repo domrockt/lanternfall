@@ -1,5 +1,5 @@
 import { CHUNK_SIZE, WORLD_SIZE } from "../config";
-import { WATER_ANIM_STEPS, paintTerrain } from "./tiles";
+import { WATER_ANIM_STEPS, areaHasWater, paintTerrain } from "./tiles";
 
 /**
  * Mal-Arbeiter für Terrain-Chunks. Die per-Pixel-Klassifikation (Noise +
@@ -19,12 +19,16 @@ interface ChunkJob {
 
 self.onmessage = (event: MessageEvent<ChunkJob>) => {
   const { cx, cy, seed } = event.data;
-  const frames = Math.max(1, Math.min(WATER_ANIM_STEPS, event.data.frames ?? 1));
+  // Animationsstufen hier entscheiden (Worker-Thread, samplingkosten frei):
+  // Wasser-Chunks alle Stufen, Land-Chunks 1 Frame (Speicher).
+  const frames = areaHasWater(cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, seed, WORLD_SIZE)
+    ? WATER_ANIM_STEPS : 1;
   const bitmaps: ImageBitmap[] = [];
   for (let f = 0; f < frames; f++) {
     const canvas = new OffscreenCanvas(CHUNK_SIZE, CHUNK_SIZE);
     const ctx = canvas.getContext("2d");
     if (!ctx) {
+      for (const b of bitmaps) b.close();
       (self as unknown as Worker).postMessage({ cx, cy, bitmaps: null });
       return;
     }

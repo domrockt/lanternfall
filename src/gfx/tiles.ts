@@ -247,6 +247,9 @@ export function paintTerrain(
       data[o + 3] = 255;
     }
   }
+  // putImageData ignoriert die Canvas-Transform: der Sync-Fallback verschiebt
+  // fillRect per translate und die Basis per destY — beide Faktoren gehoeren
+  // zusammen (jeweils f * CHUNK_SIZE) und muessen synced bleiben.
   ctx.putImageData(img, 0, destY);
 
   // 3) Autotiling-Kanten. Reihenfolge: Weg-, Schlamm-, Grasinsel-Kanten,

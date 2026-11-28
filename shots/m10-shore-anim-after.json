@@ -25,9 +25,9 @@
   "frameDiff": {
     "frameSize": "640x360",
     "pairs": 17,
-    "changedPxAvg": 2502,
-    "changedPxMax": 3290,
-    "changedPercent": 1.09
+    "changedPxAvg": 2553,
+    "changedPxMax": 3283,
+    "changedPercent": 1.11
   },
   "errors": []
 }
