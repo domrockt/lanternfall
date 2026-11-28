@@ -137,16 +137,24 @@ dritte Seed stirbt knapp nach dem 20:00-Golem (Level 33 im Band, kein Tod < min 
   erzeugt aus dem K3-Gewinner-Beleg (`scripts/m10-mira-hp-check.mjs`, 3 mira-Seeds + kael/101,
   volle Läufe @ 30x); jsErrors nur als Zähler + Hinweis (GroundRenderer-Chunk-Spam, fremde
   Datei), Rohbeleg weiter in `games/.evidence/m10-mira-hp-balance-check/`.
-- Guard (4 Tests, schnell — lädt nur die Fixture, kein Echtzeitlauf):
+- Guard (5 Tests, schnell — lädt nur die Fixture bzw. prüft Daten, kein Echtzeitlauf):
   1. Provenienz: `miraHpStand 90`, Matrix 3×mira+kael/101, scale 30, 4/4 vollständige Läufe,
      Renderer nicht SwiftShader.
   2. mira streng: alle gemessenen Boss-Dauern 20–60 s (17/17), Endlevel 25–40, kein Tod < min 15,
      `miraViolations` leer.
   3. mira HP-90-Kante gepinnt: genau 2/3 Seeds dawn (Level im Band) — jede Abweichung =
      Rebaseline mit Begründung in dieser Doku, nie stillschweigend.
-  4. kael: dawn, Levelband, alle Dauern im Korridor + Nebenwirkungs-Protokoll (6 Checks gegen
-     die ältere HP-250-Referenz bleiben dokumentiert).
-- Suite: 227 Dateien / 2459 Tests grün; `npx tsc --noEmit` rc=0; `npm run build` rc=0.
+  4. **K3-Hebel direkt gepinnt** (Review-Fix): `WAVES[minute].mix` muss für Minute 20–24
+     `MID_GAME_MIX` sein (abom/voidcaller exakt 0,5, übrige Gewichte = TIER_MIXES[4]) und
+     außerhalb unverändert — ein stiller Revert des waves.ts-Hebels FAILt den Guard.
+  5. kael: dawn, Levelband, alle Dauern im Korridor + Nebenwirkungs-Protokoll: genau die
+     dokumentierten Bosse (Knochenfürst, Fahler Hirte, Hexenzirkel) dürfen außerhalb der
+     ±10-%-Toleranz gegen die ältere HP-250-Referenz liegen; jede andere Verteilung =
+     Rebaseline nötig.
+- Kontrolleure: reviewer PASS (Fix minimal, bitgleiche Fenster belegt, Mess-Setup korrekt),
+  test-auditor PASS (Gegenproben: manipulierte Fixture FAILet nachweislich). Review-Fix
+  nach reviewer-Befund: Suchskript an committeten Baum angepasst (war tot gegen mehrzeiliges
+  Ternary), Hebel-Pin + kael-Protokoll geschärft (Punkte oben).
 
 ## Lane-Abschluss
 

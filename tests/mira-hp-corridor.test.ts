@@ -1,6 +1,8 @@
 // @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { WAVES, MID_GAME_MIX, MID_GAME_MIX_MINUTE, MID_GAME_MIX_LAST_MINUTE, TIER_MIXES, LATE_GAME_MIX } from "../src/data/waves";
+import type { EnemyId } from "../src/data/types";
 
 /**
  * Lane m10-mira-hp-balance-check, K4 (#12908): Suite-Guard für den Dom-Balance-
@@ -117,6 +119,29 @@ describe("m10-mira-hp-corridor-guard: Dom-Korridor auf Mira-HP-90-Stand (Fixture
   );
 
   it(
+    "K3-Hebel ist gepinnt: WAVES nutzen MID_GAME_MIX genau in Minute 20–24 (Halbierung abom/voidcaller)",
+    () => {
+      // Ein stiller Revert des waves.ts-Hebels muss diesen Guard FAILen lassen
+      // (die Fixture allein sieht einen Revert nicht).
+      expect(MID_GAME_MIX.abom).toBe(0.5);
+      expect(MID_GAME_MIX.voidcaller).toBe(0.5);
+      // Sonstige Gewichte = TIER_MIXES[4] (reine Gewichts-Halbierung, keine Subtraktion).
+      const tier4 = TIER_MIXES[4];
+      for (const [id, weight] of Object.entries(MID_GAME_MIX)) {
+        expect(weight, `${id}`).toBe(id === "abom" || id === "voidcaller" ? 0.5 : tier4[id as EnemyId]);
+      }
+      for (const id of Object.keys(tier4) as EnemyId[]) expect(MID_GAME_MIX[id]).toBeDefined();
+      for (let minute = 0; minute < WAVES.length; minute++) {
+        const expected = minute >= MID_GAME_MIX_MINUTE && minute <= MID_GAME_MIX_LAST_MINUTE
+          ? MID_GAME_MIX
+          : minute >= 25 ? LATE_GAME_MIX : TIER_MIXES[Math.min(4, Math.floor(minute / 5))];
+        expect(WAVES[minute].mix, `Minute ${minute}`).toBe(expected);
+      }
+    },
+    GUARD_TIMEOUT,
+  );
+
+  it(
     "kael (unverändert, HP 130): dawn, Levelband, alle Dauern im Korridor",
     () => {
       expect(kaelRuns.length).toBe(1);
@@ -129,14 +154,16 @@ describe("m10-mira-hp-corridor-guard: Dom-Korridor auf Mira-HP-90-Stand (Fixture
         expect(b.durationSec, `${b.name} muss im Boss-Korridor liegen`).toBeGreaterThanOrEqual(f.corridor.bossDurationSec[0]);
         expect(b.durationSec, `${b.name} muss im Boss-Korridor liegen`).toBeLessThanOrEqual(f.corridor.bossDurationSec[1]);
       }
-      // Nebenwirkungs-Protokoll: gegen die AELTERE HP-250-Referenz dokumentierte
-      // Deltas (Perf-Merges-Drift, siehe kaelNote) dürfen nicht verschwinden,
-      // ohne dass eine Rebaseline sie erklaert.
+      // Nebenwirkungs-Protokoll: gegen die AELTERE HP-250-Referenz (13:52Z,
+      // aelterer Code-Stand) sind genau die dokumentierten Deltas ausserhalb
+      // der ±10-%-Toleranz (Knochenfürst, Fahler Hirte, Hexenzirkel — Drift aus
+      // den Perf-Merges, bestand schon in K1 OHNE Fix, siehe kaelNote). Eine
+      // ANDERE Verteilung heisst: Rebaseline mit Begruendung in der Lane-Doku.
       expect(f.kaelChecks.length).toBe(6);
-      for (const c of f.kaelChecks) {
-        expect(c.newSec, `${c.name}`).toBeGreaterThan(0);
-        expect(c.refSec, `${c.name}`).toBeGreaterThan(0);
-      }
+      expect(
+        f.kaelChecks.filter((c) => !c.inTolerance).map((c) => c.bossIndex).sort(),
+        "kael-Deltas >10 % muessen genau die dokumentierten Bosse sein",
+      ).toEqual([1, 2, 4]);
     },
     GUARD_TIMEOUT,
   );

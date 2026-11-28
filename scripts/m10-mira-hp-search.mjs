@@ -21,15 +21,25 @@ import { execFileSync } from "node:child_process";
 import { homedir, tmpdir } from "node:os";
 
 const WAVES = "src/data/waves.ts";
-const A_LINE = "mix: minute >= MID_GAME_MIX_MINUTE ? (late ? LATE_GAME_MIX : MID_GAME_MIX) : TIER_MIXES[tier],";
-const B_LINE = "mix: minute >= MID_GAME_MIX_MINUTE ? LATE_GAME_MIX : TIER_MIXES[tier],";
+// Stand nach K3-Gewinner D: mehrzeiliges mix-Ternary mit Fensterkonstanten.
+const A_OR_D_MIX = `    mix: minute >= MID_GAME_MIX_MINUTE && minute <= MID_GAME_MIX_LAST_MINUTE
+      ? MID_GAME_MIX
+      : late ? LATE_GAME_MIX : TIER_MIXES[tier],`;
+const B_MIX = `    mix: minute >= MID_GAME_MIX_MINUTE && minute <= MID_GAME_MIX_LAST_MINUTE
+      ? LATE_GAME_MIX
+      : late ? LATE_GAME_MIX : TIER_MIXES[tier],`;
 
 function setVariant(v) {
   let s = readFileSync(WAVES, "utf8");
-  const from = v === "A" ? B_LINE : A_LINE;
-  const to = v === "A" ? A_LINE : B_LINE;
-  if (!s.includes(from)) throw new Error(`waves.ts enthaelt weder A- noch B-Variante`);
-  writeFileSync(WAVES, s.replace(from, to));
+  if (v === "D") {
+    // Committeter Stand (K3-Gewinner) wiederherstellen.
+    if (s.includes(B_MIX)) writeFileSync(WAVES, s.replace(B_MIX, A_OR_D_MIX));
+    else if (!s.includes(A_OR_D_MIX)) throw new Error(`waves.ts enthaelt weder die D- noch die B-Variante`);
+    return;
+  }
+  if (v !== "B") throw new Error(`unbekannte Variante ${v}`);
+  if (!s.includes(A_OR_D_MIX)) throw new Error(`waves.ts enthaelt die D-Variante nicht (bereits B?)`);
+  writeFileSync(WAVES, s.replace(A_OR_D_MIX, B_MIX));
 }
 
 function latestEvidence() {
@@ -76,7 +86,10 @@ for (const variant of ["B"]) { // A ist bereits gemessen (K3-Lauf 15:50Z) — Li
   if (problems.length === 0) break;
 }
 
-// Bindende Wahl: Gewinner bleibt im Baum, sonst zurueck auf A (Commit-Stand).
-const winner = results.find((r) => r.problems.length === 0)?.variant ?? "A";
+// Bindende Wahl: Gewinner bleibt im Baum, sonst zurueck auf den committeten
+// Stand (Kandidat D, Commit 43d2769f). Kandidat A (ganz ohne Vervielfacher)
+// ist historisch — er waere heute ein wave-coverage-FAIL und wird nicht
+// wiederhergestellt.
+const winner = results.find((r) => r.problems.length === 0)?.variant ?? "D";
 setVariant(winner);
 console.log(JSON.stringify({ winner, results }, null, 2));
