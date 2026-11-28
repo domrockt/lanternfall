@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8885,
+  "next": 8977,
   "cards": [
     {
       "id": 1,
@@ -11516,6 +11516,16 @@
       "notes": [],
       "created": "2026-11-28T06:05:09Z",
       "updated": "2026-11-28T06:05:09Z"
+    },
+    {
+      "id": 8976,
+      "title": "m10-evo-fx-dornensturm Merge-Verifikation: Kontroll-Shots 960/1280/1920 (Start + 60 s, kein Schwarz im Spielfeld)",
+      "description": "Post-Merge-Kontrolle auf main nach Merge 063623a (paralleler Job): 6 Screenshots (960x540, 1280x720, 1920x1080, je Start + nach 60 s echtem Laufen mit auto-bestaetigten Level-Ups), Black-Pixel-Messung. Abnahmekriterium: keine schwarzen Terrain-Loecher; gemessene Schwarz-Pixel (0,25-0,30 %) nur HUD/Props, in Start-Shots identisch.",
+      "column": "doing",
+      "assignee": "merge-job",
+      "notes": [],
+      "created": "2026-11-28T06:10:09Z",
+      "updated": "2026-11-28T06:10:09Z"
     }
   ]
 }

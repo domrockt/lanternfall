@@ -129,3 +129,15 @@ Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)**, 0 JS-Fehler;
 - `shots/m10-passive-math-*.json` im Worktree modified (fremd, nicht angefasst).
 - Farb-Histogramm im JSON misst Frame 0; Frames 1–3 per Unit-Test gedeckt (Muster
   der Kette).
+
+## Merge-Verifikation (28.11.2026, #8976)
+
+Merge 063623a wurde von einem parallelen Merge-Job ausgefuehrt (Rebase auf main inkl.
+Revert 34e97d3; zweiter Job rebasste waehrend eines laufenden Merge-Jobs erneut und
+mergte, Lane-Worktree dabei entfernt — Duplikat-Ausfuehrung, kein Datenverlust, Lane-Karten
+#8877-#8881 done). Eigene Nachkontrolle auf main @ 8bef481: 6 Kontroll-Shots
+`shots/m10-evo-fx-dornensturm-rebase-{960,1280,1920}-{start,60s}.png` (Start + 60 s echtes
+Laufen, Level-Ups auto-bestaetigt) + `...-rebase-blackcheck.json`. Befund: Terrain
+vollstaendig intakt, keine schwarzen Terrain-Loecher; gemessene Schwarz-Pixel
+(0,25-0,30 %) liegen ausschliesslich in HUD-Leiste/Text und Props und sind in den
+Start-Shots identisch (statisch). Build + Suite auf main: 145 Dateien / 1522 Tests gruen.
