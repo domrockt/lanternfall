@@ -18439,7 +18439,7 @@
       "title": "m10-chest-reveal-staging K1: Erledigt-Prüfung auf main",
       "description": "Prüfen (git log + Messung), ob der UI-Teil (Untertitel 0-Überlappung, Panel-Strahl, Icon-Größe, Münzen/Funken) inzwischen über Merge auf main gelandet ist (Muster m10-acceptance-g-sync). AC: Befund in docs/lanes/m10-chest-reveal-staging.md mit Commit-Hashes + Mess-JSON; falls erledigt: .lane-done, keine src-Änderung.",
       "id": 13065,
-      "column": "review",
+      "column": "done",
       "labels": [],
       "assignee": "m10-chest-reveal-staging",
       "notes": [
@@ -18452,6 +18452,11 @@
           "at": "2026-11-28T16:12:04.000Z",
           "by": "m10-chest-reveal-staging",
           "text": "doing → review: K1 Befund — beide Punkte über Merge auf main (295ea32a Untertitel-Gap 6px, 2e30dc3a Icon-Stufe 3, a1de89f9 Inszenierung Strahl/Münzen/Funken). Frische Messung 0 px² Überlappung beide Viewports (~/games/.evidence/m10-chest-reveal-staging/m10-chest-reveal-staging-audit.json), 0 JS-Fehler, tsc rc=0, 46/46 Chest-Tests, 2494/2494 Suite, build rc=0. art-director Runde 1 FAIL (Münzen im Shot unsichtbar, Capture hinter Coin-Fade) → Capture 400 ms, Runde 2 PASS 4,5/5. Shots shots/abnahme/m10-chest-reveal-staging-*. Commit folgt (#13065)."
+        },
+        {
+          "at": "2026-11-28T16:12:43.000Z",
+          "by": "m10-chest-reveal-staging",
+          "text": "review → done: review → done: Commit 4623df3b (#13065), commit-gate PASS, art-director PASS 4,5/5, Suite 2494/2494 + build rc=0."
         }
       ]
     },
@@ -18459,28 +18464,46 @@
       "title": "m10-chest-reveal-staging K2: Untertitel-Fix UI.ts",
       "description": "Falls K1 negativ: Untertitel-Anker im Truhen-Panel (src/scenes/UI.ts) so versetzen, dass 0 px Überlappung in 640x360 und 780x360@3 gemessen wird; Mess-Skript scripts/m10-chest-reveal-staging.mjs. AC: Mess-JSON 0 Überlappungen beide Viewports, vor/nach Beleg.",
       "id": 13066,
-      "column": "todo",
+      "column": "done",
       "labels": [],
       "assignee": "m10-chest-reveal-staging",
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-11-28T16:12:43.000Z",
+          "by": "m10-chest-reveal-staging",
+          "text": "todo → done: entfällt (Befund #13065, Commit 4623df3b): Untertitel-Fix bereits über Merge 295ea32a auf main; 0-Überlappungs-Vertrag durch tests/chest-panel-ui.test.ts + frische Messung (0 px², beide Viewports) gedeckt. Keine src-Änderung."
+        }
+      ]
     },
     {
       "title": "m10-chest-reveal-staging K3: Inszenierung Öffnungs-Moment",
       "description": "Falls K1 negativ: Panel-Strahl, Icon-Größe, Münzen-/Funken-Partikel aus bestehendem FX-Vokabular schärfen (Palette-Guard, A7-Grenzen, keine neuen Farben). AC: Sichtprüfung art-director, Palette-Guard grün.",
       "id": 13067,
-      "column": "todo",
+      "column": "done",
       "labels": [],
       "assignee": "m10-chest-reveal-staging",
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-11-28T16:12:43.000Z",
+          "by": "m10-chest-reveal-staging",
+          "text": "todo → done: entfällt (Befund #13065, Commit 4623df3b): Inszenierung (Strahl/Icon/Münzen/Funken) bereits über a1de89f9 + 2e30dc3a auf main; art-director PASS 4,5/5 (Runde 2), Palette unverändert. Keine src-Änderung."
+        }
+      ]
     },
     {
       "title": "m10-chest-reveal-staging K4: Nachher + Guard",
       "description": "Regressionstest tests/chest-reveal-staging.test.ts (0-Überlappungs-Vertrag beider Viewports + Partikel-Draw-Vertrag, deterministisch); Vorher/Nachher-Shots; art-director-Urteil ≥ 4/5. AC: Suite grün inkl. neuem Test, Belege in ~/games/.evidence/m10-chest-reveal-staging/.",
       "id": 13068,
-      "column": "todo",
+      "column": "done",
       "labels": [],
       "assignee": "m10-chest-reveal-staging",
-      "notes": []
+      "notes": [
+        {
+          "at": "2026-11-28T16:12:43.000Z",
+          "by": "m10-chest-reveal-staging",
+          "text": "todo → done: entfällt als Code-Karte (Befund #13065, Commit 4623df3b): Regression-Guards liegen auf main (46 Chest-Tests), Vorher/Nachher-Belege in docs/lanes/m10-chest-reveal-staging.md + shots/abnahme/."
+        }
+      ]
     }
   ]
 }

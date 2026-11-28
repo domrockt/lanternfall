@@ -1,0 +1,29 @@
+Lane m10-chest-reveal-staging — abgeschlossen 2026-11-28.
+
+Befund (K1, Karte #13065): Beide von Dom geforderten Punkte (21:45Z, Punkt 6)
+sind bereits über Merges auf main gelandet — die Lane schließt mit
+Doku-Befund, keine src-Änderung (docs/lanes/m10-chest-reveal-staging.md):
+- Untertitel-Fix: 295ea32a (m10-chest-panel-ui #6579) — Anker an der
+  Titel-Unterkante, CHEST_SUBTITLE_GAP_PX=6, AC CHEST_SUBTITLE_MIN_GAP_PX=4.
+- Icon-Größe: 2e30dc3a (m10-chest-icon-crisp #7459) — ganzzahlige
+  Draw-Stufe CHEST_ICON_DRAW_SCALE=3.
+- Inszenierung: a1de89f9 (Merge m10-chest-reveal #5958–#5961) — Panel-Strahl
+  (light_radius alpha 0.9/scale 1.15), 12 Münzen fx_coin + Funken fx_spark
+  (ADD, amber), Reveal-Timeline aus src/logic/chest-reveal.ts.
+
+Messwerte (scripts/m10-chest-reveal-staging.mjs, Beleg
+~/games/.evidence/m10-chest-reveal-staging/m10-chest-reveal-staging-audit.json):
+0 px² Überlappung in 640x360@2 und 780x360@3 in allen 3 Phasen (mid/settled/
+evo); 12 fx_coin alpha 0.87–0.91 in der Roll-Phase (Capture 400 ms — der
+Tween blendet ab ~700 ms auf alpha 0 aus); 0 JS-Fehler; Renderer
+ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S)) — kein SwiftShader.
+
+Checks: tsc rc=0; 46/46 Chest-Tests (chest-panel-ui, chest-icon-crisp,
+chest-reveal); Full-Suite 2494/2494; build rc=0.
+art-director: Runde 1 FAIL (conditional, Münzen im 1000-ms-Shot unsichtbar),
+Ursache Capture-Zeitpunkt → Runde 2 PASS 4,5/5 (≥ 4/5).
+Abnahme-Bilder: shots/abnahme/m10-chest-reveal-staging-*.png (in git).
+
+Offene Klein-Punkte (kein FAIL, für spätere UI-Politur): Slot-Label
+„ARKANES BUCH“ mit 0 px Innenabstand am Slot-Rand (grenzwertig gequetscht);
+Roll-Phase-Shots dieser Szene künftig mit ≤ 500 ms Capture-Zeit.
