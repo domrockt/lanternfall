@@ -126,17 +126,43 @@ describe("Loading-Szenen-Verdrahtung (Quelltext-Check)", () => {
 });
 
 describe("Run-Start-Gate (m10-loading-screen K3, Quelltext-Check)", () => {
-  it("Run pausiert den Sim bis FADE_IN_COMPLETE (Gate, detstart unberuehrt)", () => {
+  it("Run friert den Sim bis FADE_IN_COMPLETE (Gate, detstart unberuehrt)", () => {
     expect(RUN_TS).toContain("Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE");
     expect(RUN_TS).toMatch(/startGate = true[\s\S]*?FADE_IN_COMPLETE/);
     expect(RUN_TS).toContain('if (!hasFlag("detstart"))');
   });
 
-  it("togglePause/resumeRun respektieren das Start-Gate (kein vorzeitiger Start)", () => {
-    const toggleBlock = RUN_TS.slice(RUN_TS.indexOf("togglePause(ev?: EscToggleEvent"));
-    const resumeBlock = RUN_TS.slice(RUN_TS.indexOf("resumeRun(): void"));
-    expect(toggleBlock.slice(0, 400)).toContain("if (this.startGate) return;");
-    expect(resumeBlock.slice(0, 400)).toContain("if (this.startGate) return;");
+  it("friert ueber freezeGate/early-return, NICHT ueber paused (kein Pause-UI-Blitz)", () => {
+    expect(RUN_TS).toContain("const frozen = this.paused || this.startGate;");
+    expect(RUN_TS).toContain("if (this.paused || this.startGate) return;");
+    // K3-Gate setzt bewusst kein paused (UI.ts blendet das Pause-Panel an paused).
+    const gateBlock = RUN_TS.slice(
+      RUN_TS.indexOf("Run-Start-Gate (siehe startGate)"),
+      RUN_TS.indexOf("this.time.paused = false;"),
+    );
+    expect(gateBlock).not.toContain("this.paused = true;");
+  });
+});
+
+describe("Warmup-Kopien: Key-Kontrakt gegen die Quellen (Reviewer-Finding 3)", () => {
+  const WARMUP_TS = readFileSync(new URL("../src/gfx/warmup.ts", import.meta.url), "utf8");
+  const EP_TS = readFileSync(new URL("../src/systems/EnemyProjectiles.ts", import.meta.url), "utf8");
+  const VIGN_TS = readFileSync(new URL("../src/gfx/vignette-bg.ts", import.meta.url), "utf8");
+
+  it("HD-Shot-Praefix in warmup.ts entspricht HD_PREFIX in EnemyProjectiles.ts", () => {
+    const m = EP_TS.match(/const HD_PREFIX = "([^"]+)"/);
+    expect(m).not.toBeNull();
+    expect(WARMUP_TS).toContain(`const prefix = "${m![1]}"`);
+    // HD_GRIDS wird direkt importiert (kein Doppel der Grids).
+    expect(WARMUP_TS).toContain('import { HD_GRIDS } from "../systems/EnemyProjectiles"');
+  });
+
+  it("Vignette-Kanten-Keys in warmup.ts entsprechen mk() in vignette-bg.ts", () => {
+    for (const suffix of ["col_l", "col_r", "row_t", "row_b", "px_tl", "px_tr", "px_bl", "px_br"]) {
+      expect(VIGN_TS).toContain("${key}_" + suffix);
+      expect(WARMUP_TS).toContain("${key}_" + suffix);
+    }
+    expect(VIGN_TS).toContain('key = "vignette"');
   });
 });
 

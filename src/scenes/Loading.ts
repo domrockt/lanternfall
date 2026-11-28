@@ -24,12 +24,18 @@ interface BootTimings {
   loadingStart?: number;
   loadingDone?: number;
   titleRendered?: number;
+  /** Kompatible Aliase zum alten Boot-Warmup (scripts/m10-boot-startup.mjs liest sie). */
+  warmStart?: number;
+  warmTexturesDone?: number;
+  warmDone?: number;
   tasks?: TaskTiming[];
 }
 
 function timings(): BootTimings {
   const w = window as unknown as { __bootTimings: BootTimings };
-  return (w.__bootTimings ??= { tasks: [] });
+  const t = (w.__bootTimings ??= { tasks: [] });
+  t.tasks ??= [];
+  return t;
 }
 
 const BAR_W = 120;
@@ -52,6 +58,11 @@ export class Loading extends Phaser.Scene {
   }
 
   create(data: LoadingData = {}): void {
+    // Szenen-Instanzen überleben Restarts — Zustand sauber zurücksetzen
+    // (Reviewer-Finding: sonst Soft-Lock bei Wiedereintritt).
+    this.idx = 0;
+    this.started = false;
+    this.glow = null;
     this.seed = data.seed ?? 0;
     this.debug = data.debug ?? false;
     timings().loadingStart = performance.now();
@@ -90,7 +101,12 @@ export class Loading extends Phaser.Scene {
     const task = this.tasks[this.idx];
     const t0 = performance.now();
     task.run(this);
-    timings().tasks?.push({ label: task.label, ms: performance.now() - t0 });
+    const t = timings();
+    t.tasks?.push({ label: task.label, ms: performance.now() - t0 });
+    // Kompatible Aliase zum alten Boot-Warmup (Messskript-Kontrakt):
+    if (this.idx === 0) t.warmStart = performance.now();
+    if (task.label === "derived-atlas") t.warmTexturesDone = performance.now();
+    if (task.label === "runtime-atlas") t.warmDone = performance.now();
     this.idx++;
 
     // Pulslicht hinter der Laterne, sobald light_radius existiert (title-textures-Chunk).
@@ -112,6 +128,10 @@ export class Loading extends Phaser.Scene {
     if (this.started) return;
     this.started = true;
     timings().loadingDone = performance.now();
+    // titleRendered-Kontrakt des Boot-Messskripts: erster gerendertes Titel-Frame.
+    this.scene.get("title").events.once(Phaser.Scenes.Events.RENDER, () => {
+      timings().titleRendered = performance.now();
+    });
     this.scene.start("title", { seed: this.seed, debug: this.debug });
   }
 }

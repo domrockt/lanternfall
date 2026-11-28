@@ -40,7 +40,7 @@ function freezeGateStep(state: FreezeState, paused: boolean, applyClock: (s: Fre
 
 describe("Pause-Freeze-Gate (m10-pause-freeze)", () => {
   it("Quell-Kontrakt: Gate existiert in Run.update() und liegt vor dem paused-Return", () => {
-    const gateIdx = SOURCE.indexOf("const frozen = this.paused;");
+    const gateIdx = SOURCE.indexOf("const frozen = this.paused || this.startGate;");
     expect(gateIdx).toBeGreaterThan(-1);
     const clockIdx = SOURCE.indexOf("this.time.paused = frozen;", gateIdx);
     const pauseAllIdx = SOURCE.indexOf("this.tweens.pauseAll();", gateIdx);
@@ -50,7 +50,7 @@ describe("Pause-Freeze-Gate (m10-pause-freeze)", () => {
     expect(resumeAllIdx).toBeGreaterThan(gateIdx);
     // Das Gate muss VOR dem frühen paused-Return angewandt werden (sonst läuft
     // die Clock im ersten Pausenframe weiter).
-    const pausedReturnIdx = SOURCE.indexOf("if (this.paused) return;", gateIdx);
+    const pausedReturnIdx = SOURCE.indexOf("if (this.paused || this.startGate) return;", gateIdx);
     expect(pausedReturnIdx).toBeGreaterThan(clockIdx);
     // Nur bei Wechsel anwenden (kein pro-Frame pauseAll/resumeAll-Spam).
     expect(SOURCE.indexOf("if (this.freezeGate !== frozen)")).toBeGreaterThan(gateIdx);

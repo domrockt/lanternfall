@@ -58,8 +58,8 @@ export const GLYPH_WARMUP_CHARS: readonly string[] = Object.keys(GLYPHS).filter(
  */
 export const GLYPH_WARMUP_COLORS: readonly number[] = PAL.map((_, i) => i);
 
-/** Zeichen + Farben, die die Loading-UI selbst braucht (Chunk 0, vor dem ersten Rendern der UI). */
-export const LOADING_UI_CHARS = "LADENMOOR .%0123456789";
+/** Zeichen + Farben, die die Loading-UI selbst braucht (Chunk 0, vor dem ersten Rendern der UI-Texte). */
+export const LOADING_UI_CHARS = "LADEN .%0123456789";
 
 /** Kleine Laterne (9x14) fuer die Loading-Szene, nur Paletten-Indizes (0-9, a-z). */
 export const LOADING_LANTERN: { rows: string[]; w: number; h: number } = {
@@ -95,8 +95,8 @@ function warmTitleRuntime(scene: Phaser.Scene): void {
  * Vignette-Kanten-Texturen fuer CharSelect/Results/Credits (addVignetteBg,
  * src/gfx/vignette-bg.ts — fremde Datei): gleiche Keys und gleiche
  * exists+Groesse-Guard-Logik wie mk() dort. Bewusst KOPIERT statt exportiert:
- * vignette-bg.ts ist fremd geclaimed; bei Aenderung dort bitte hierher
- * spiegeln (Guard-Test prueft die Key-Konvention).
+ * vignette-bg.ts ist fremd geclaimed; der Key-Kontrakt ist im Guard-Test
+ * tests/loading-warmup.test.ts gegen die Quelle gesichert.
  */
 export function warmVignetteEdges(scene: Phaser.Scene): void {
   const key = "vignette"; // Default-Key von addVignetteBg (CharSelect/Results/Credits rufen ohne key-Arg)
@@ -137,7 +137,8 @@ export function warmVignetteEdges(scene: Phaser.Scene): void {
  * ("enemy_shot_hd_" + family) und dieselbe Raster-Logik wie addHdShotTexture
  * dort. Der exists-Guard im Original sorgt dafuer, dass im Run NICHT doppelt
  * erzeugt wird — der erste Gegnerschuss zeichnet dann schon warme Texturen.
- * Bei Aenderung an HD_GRIDS/addHdShotTexture bitte hierher spiegeln.
+ * Der Key-Kontrakt (HD_PREFIX) ist im Guard-Test tests/loading-warmup.test.ts
+ * gegen die Quelle gesichert.
  */
 export function warmHdShotTextures(scene: Phaser.Scene): void {
   const prefix = "enemy_shot_hd_"; // muss HD_PREFIX in EnemyProjectiles.ts entsprechen
@@ -177,7 +178,9 @@ export function warmHdShotTextures(scene: Phaser.Scene): void {
 export function buildWarmupTasks(scene: Phaser.Scene): WarmupTask[] {
   const tasks: WarmupTask[] = [];
 
-  // 0) Glyphen der Loading-UI zuerst — die UI rendert ab Frame 1 ohne Lazy-Erzeugung.
+  // 0) Glyphen der Loading-UI zuerst — PixelText erzeugt Glyphen zwar synchron im
+  //    Konstruktor, aber mit diesem Chunk sind saemtliche setText-Updates der
+  //    UI (Prozent!) lazy-frei, bevor der Balken das erste Mal gezeichnet wird.
   tasks.push({
     label: "glyphs-loading-ui",
     run: (s) => {
