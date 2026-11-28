@@ -86,7 +86,13 @@ export function qualityBudgetFor(tier: ThermalTier): QualityBudget {
  * Flaeche zusaetzlich; das Komplettausschalten der Glows laeuft ueber
  * glowSlotCapForQuality (Slot-Deckel 0 -> NORMAL-Fallback).
  */
-export function glowAreaCapForQuality(tier: QualityTier): number {
+/**
+ * m10-thermal-tier-types: Signatur QualityTier -> ThermalTier. qualityBudgetFor
+ * deckt "thermal" zur Laufzeit bereits voll ab (THERMAL_BUDGET) — die
+ * Cap-Wrapper tragen das jetzt auch im Typ (reine Typ-Gewinnrate, kein
+ * Verhaltensunterschied).
+ */
+export function glowAreaCapForQuality(tier: ThermalTier): number {
   return qualityBudgetFor(tier).maxAddArea;
 }
 
@@ -102,13 +108,13 @@ export function glowSlotCapForQuality(tier: QualityTier, lodCap: number): number
   return Math.max(0, Math.floor(lodCap));
 }
 
-/** Ist der ADD-Glow-Pfad in dieser Stufe ueberhaupt aktiv? (low = nein) */
-export function glowEnabledFor(tier: QualityTier): boolean {
+/** Ist der ADD-Glow-Pfad in dieser Stufe ueberhaupt aktiv? (low/thermal = nein) */
+export function glowEnabledFor(tier: ThermalTier): boolean {
   return qualityBudgetFor(tier).glow;
 }
 
-/** Gleichzeitig sichtbare Schadenszahlen fuer eine Stufe. */
-export function damageLabelCapForQuality(tier: QualityTier): number {
+/** Gleichzeitig sichtbare Schadenszahlen fuer eine Stufe (m10-thermal-tier-types: ThermalTier). */
+export function damageLabelCapForQuality(tier: ThermalTier): number {
   return qualityBudgetFor(tier).maxDamageLabels;
 }
 
@@ -121,8 +127,8 @@ export function damageNumbersPerSecFor(tier: QualityTier): number {
   return qualityBudgetFor(tier).damageNumbersPerSec;
 }
 
-/** Fuer Mess-/Debug-Ausgaben: Partikel pro Treffer einer Stufe. */
-export function particlesPerHitFor(tier: QualityTier): number {
+/** Fuer Mess-/Debug-Ausgaben: Partikel pro Treffer einer Stufe (m10-thermal-tier-types: ThermalTier). */
+export function particlesPerHitFor(tier: ThermalTier): number {
   return qualityBudgetFor(tier).particlesPerHit;
 }
 

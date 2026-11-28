@@ -30,6 +30,7 @@ import {
   type QualityState,
   type QualityTier,
   type ThermalState,
+  type ThermalTier,
 } from "./logic/quality";
 
 /**
@@ -47,8 +48,18 @@ export let RENDER_SCALE = RENDER_SCALE_MIN;
  * NUR die Stufe (Hysterese: < 45 FPS 3 s runter, > 57 FPS 12 s rauf), nie die
  * Aufloesung. Live-Binding wie RENDER_SCALE: importierende Module sehen
  * Aenderungen sofort (FxSystem/DamageNumbers lesen die Deckel je Frame).
+ *
+ * m10-thermal-tier-types: ehrlich ThermalTier — der aktivierte thermische
+ * Guard uebersteuert hier auf "thermal" (Engage -> QUALITY = "thermal"), und
+ * alle Cap-Wrapper (glowEnabledFor, glowAreaCapForQuality,
+ * damageLabelCapForQuality, audioBudgetFor, …) tragen ThermalTier.
+ * AUSNAHME Hazard-Grenze (drawQualityTier & Co., src/gfx/hazardDisc.ts): die
+ * Hazard-Helfer bleiben bewusst QualityTier — Warn-Disc-Lesbarkeit in thermal
+ * erhalten (thermal faellt dort in den offenen Zweig, nie in den low-Draw-Cap);
+ * die Laufzeitidentitaet ist an der Aufrufstelle in src/systems/Hazards.ts
+ * dokumentiert.
  */
-export let QUALITY: QualityTier = "high";
+export let QUALITY: ThermalTier = "high";
 
 /**
  * m10-thermal-wiring K2: Aufrufer-Seite des thermischen Guards. Die Serie der
@@ -89,14 +100,14 @@ export function pushFpsSample(
 
 /**
  * Effektive Qualitaetsstufe: aktivierter thermischer Guard uebersteuert die
- * Basis-Stufe. ENGSTELLE (Bedarfsmeldung requests.md, 2026-11-28): zur
- * Laufzeit deckt qualityBudgetFor("thermal") das Budget voll ab, aber die
- * Cap-Wrapper (glowEnabledFor, glowAreaCapForQuality, damageLabelCapForQuality,
- * audioBudgetFor, …) deklarieren noch `QualityTier`. Der Cast ist dokumentiert
- * und entfaellt mit der Signatur-Erweiterung QualityTier → ThermalTier.
+ * Basis-Stufe. m10-thermal-tier-types: der frueher dokumentierte
+ * QualityTier-Cast ist ENTFALLEN — die Cap-Wrapper (glowEnabledFor,
+ * glowAreaCapForQuality, damageLabelCapForQuality, audioBudgetFor) tragen
+ * jetzt ThermalTier, der Rueckgabetyp ist ehrlich ThermalTier. Hazard-Helfer
+ * (drawQualityTier etc.) bleiben bewusst QualityTier — siehe QUALITY oben.
  */
-export function effectiveQuality(baseTier: QualityTier, thermal: ThermalState): QualityTier {
-  return thermal.active ? ("thermal" as QualityTier) : baseTier;
+export function effectiveQuality(baseTier: QualityTier, thermal: ThermalState): ThermalTier {
+  return thermal.active ? "thermal" : baseTier;
 }
 
 /**

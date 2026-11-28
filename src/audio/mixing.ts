@@ -46,7 +46,7 @@ interface StartMark {
 
 // M10-audio-quality-budget: Typ-Import (wird zur Laufzeit gestrippt — mixing.ts
 // bleibt phaser-/Node-frei und im Messskript ladbar).
-import type { QualityTier } from "../logic/quality";
+import type { QualityTier, ThermalTier } from "../logic/quality";
 
 export interface MixerState {
   now: number;
@@ -131,8 +131,15 @@ export const AUDIO_BUDGETS: Readonly<Record<QualityTier, AudioBudget>> = {
   },
 };
 
-/** Budget einer Stufe (mit Rückfall high bei unbekanntem Tier). */
-export function audioBudgetFor(tier: QualityTier): AudioBudget {
+/**
+ * Budget einer Stufe (mit Rückfall high bei unbekanntem Tier).
+ * m10-thermal-tier-types: Signatur QualityTier -> ThermalTier. "thermal" ist
+ * bewusst KEIN Audio-Hebel (Status quo, m10-thermal-wiring): AUDIO_BUDGETS hat
+ * keinen thermal-Eintrag — bisher lief das über `undefined ?? high`, jetzt
+ * explizit (bitgleich: thermal -> high).
+ */
+export function audioBudgetFor(tier: ThermalTier): AudioBudget {
+  if (tier === "thermal") return AUDIO_BUDGETS.high;
   return AUDIO_BUDGETS[tier] ?? AUDIO_BUDGETS.high;
 }
 
