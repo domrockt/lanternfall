@@ -18,6 +18,14 @@ import { readSceneGamepad } from "../input/Gamepad";
 import { TouchControls } from "../input/TouchControls";
 import type { HudState, Run } from "./Run";
 import { bossHudRects } from "../systems/BossSystem";
+import {
+  hudSideMargin,
+  hudTopMargin,
+  insetsOverCanvas,
+  insetsToGamePx,
+  readDeviceSafeAreaInsets,
+  type SafeAreaInsets,
+} from "../logic/safearea";
 
 /**
  * Banner-Timing (Dom 4b): kurz einblenden, 2,4 s halten, ausblenden
@@ -70,23 +78,30 @@ export interface HudAnchorInput {
  * Phaser-Abhaengigkeit, in tests/hud-anchor.test.ts gegen den Safe-Area-Rand
  * je Format geprueft). Alle Werte ganzzahlige Spielpixel.
  */
-export function hudAnchorBoxes(width: number, height: number, input: HudAnchorInput = {}):
-  Record<string, AnchorBox> {
+export function hudAnchorBoxes(width: number, height: number, input: HudAnchorInput = {},
+  safe?: Partial<SafeAreaInsets>): Record<string, AnchorBox> {
   const levelChars = input.levelChars ?? 5;   // "LV 40"
   const timerChars = input.timerChars ?? 5;   // "00:00"
   const killChars = input.killChars ?? 10;    // "KILL 99999"
   const evoHintChars = input.evoHintChars ?? 20; // "EVOLUTION BEREIT (2)"
   const iconCount = Math.max(0, Math.min(HUD_MAX_ICONS, input.iconCount ?? HUD_MAX_ICONS));
   const glyph = (chars: number): number => chars * 6;
+  // m10-hud-safearea: Geraete-Insets in Spielpixeln (0 = bitgleich zur
+  // Referenz). Elemente klemmen an View-Rand MINUS Marge.
+  const mLeft = hudSideMargin(HUD_MARGIN_X, safe?.left ?? 0, width);
+  const mRight = hudSideMargin(HUD_MARGIN_X, safe?.right ?? 0, width);
+  const topY = hudTopMargin(HUD_TOP_Y, safe?.top ?? 0);
+  const topOff = topY - HUD_TOP_Y;
+  const iconShift = mLeft - HUD_MARGIN_X;
   return {
-    level: { x: HUD_MARGIN_X, y: HUD_TOP_Y, w: glyph(levelChars), h: 7 },
-    timer: { x: Math.round(width / 2 - glyph(timerChars) / 2), y: HUD_TOP_Y, w: glyph(timerChars), h: 7 },
-    kills: { x: width - HUD_MARGIN_X - glyph(killChars), y: HUD_TOP_Y, w: glyph(killChars), h: 7 },
-    hp: { x: HUD_HP_X, y: 15, w: HUD_HP_W, h: 9 },
-    xp: { x: HUD_HP_X, y: 8, w: width - 2 * HUD_MARGIN_X, h: 4 },
-    "iconrow-bg": { x: HUD_ICONS_X - 8, y: 13, w: iconCount === 0 ? 0 : 8 + iconCount * HUD_ICON_PITCH, h: 19 },
-    icons: { x: HUD_ICONS_X, y: 15, w: iconCount === 0 ? 0 : (iconCount - 1) * HUD_ICON_PITCH + 16, h: 16 },
-    "evo-hint": { x: HUD_EVO_HINT_X, y: 15, w: glyph(evoHintChars), h: 15 },
+    level: { x: mLeft, y: topY, w: glyph(levelChars), h: 7 },
+    timer: { x: Math.round(width / 2 - glyph(timerChars) / 2), y: topY, w: glyph(timerChars), h: 7 },
+    kills: { x: width - mRight - glyph(killChars), y: topY, w: glyph(killChars), h: 7 },
+    hp: { x: mLeft, y: 15 + topOff, w: HUD_HP_W, h: 9 },
+    xp: { x: mLeft, y: 8 + topOff, w: width - mLeft - mRight, h: 4 },
+    "iconrow-bg": { x: HUD_ICONS_X + iconShift - 8, y: 13 + topOff, w: iconCount === 0 ? 0 : 8 + iconCount * HUD_ICON_PITCH, h: 19 },
+    icons: { x: HUD_ICONS_X + iconShift, y: 15 + topOff, w: iconCount === 0 ? 0 : (iconCount - 1) * HUD_ICON_PITCH + 16, h: 16 },
+    "evo-hint": { x: HUD_EVO_HINT_X + iconShift, y: 15 + topOff, w: glyph(evoHintChars), h: 15 },
   };
 }
 
@@ -235,6 +250,10 @@ export class UI extends Phaser.Scene {
   /** M8: Bei View-Wechsel (Resize/Rotation) wird die UI neu aufgebaut. */
   private viewW = 0;
   private viewH = 0;
+  /** m10-hud-safearea: Geraete-Insets in Spielpixeln (0 ohne Notch). */
+  private safeInset: SafeAreaInsets = { left: 0, right: 0, top: 0, bottom: 0 };
+  /** m10-hud-safearea: effektive HUD-Margen (HUD-Konvention + Geraete-Inset). */
+  private safeMargin = { left: HUD_MARGIN_X, right: HUD_MARGIN_X, top: HUD_TOP_Y };
 
   create(): void {
     this.run = this.scene.get("run") as Run;
@@ -252,21 +271,42 @@ export class UI extends Phaser.Scene {
     this.bossCache = { hidden: true, name: "", phase: "", ratio: NaN, color: -1 };
     this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
 
+    // m10-hud-safearea: Geraete-Insets einmalig pro Aufbau lesen (View-Wechsel
+    // baut die Szene neu auf). Nur der Inset-Anteil UEBER dem Canvas wirkt
+    // (body-Padding rueckt den Canvas bei Geraeten wie Pixel 7 bereits in die
+    // Safe-Area -> dort bitgleich). Canvas-CSS-Breite = Masseinheit; ohne
+    // Notch bleiben alle Anker bitgleich zur 640x360-Referenz.
+    const canvasRect = this.game.canvas?.getBoundingClientRect();
+    const screenW = (typeof window !== "undefined" ? window.innerWidth : 0) || GAME_WIDTH;
+    const screenH = (typeof window !== "undefined" ? window.innerHeight : 0) || GAME_HEIGHT;
+    this.safeInset = insetsToGamePx(
+      GAME_WIDTH,
+      canvasRect?.width ?? GAME_WIDTH,
+      insetsOverCanvas(readDeviceSafeAreaInsets(), canvasRect, screenW, screenH),
+    );
+    this.safeMargin = {
+      left: hudSideMargin(HUD_MARGIN_X, this.safeInset.left, GAME_WIDTH),
+      right: hudSideMargin(HUD_MARGIN_X, this.safeInset.right, GAME_WIDTH),
+      top: hudTopMargin(HUD_TOP_Y, this.safeInset.top),
+    };
+    const m = this.safeMargin;
+    const topOff = m.top - HUD_TOP_Y;
+
     // HUD-Leiste oben (volle aktuelle View-Breite).
-    this.add.rectangle(0, 0, GAME_WIDTH, 12, PAL[C.nightDeep], 0.82).setOrigin(0, 0).setDepth(10);
+    this.add.rectangle(0, topOff, GAME_WIDTH, 12, PAL[C.nightDeep], 0.82).setOrigin(0, 0).setDepth(10);
     // Texte auf y=1 (7 px hoch) und Depth 13: der XP-Balken darf keine
     // Glyphenzeile mehr ueberdecken (sonst wird aus "02:02" optisch "07:07").
-    this.levelText = new PixelText(this, HUD_MARGIN_X, HUD_TOP_Y, "LV 1", C.lantern).setDepth(13).setName("hud-level");
-    this.timerText = new PixelText(this, GAME_WIDTH / 2, HUD_TOP_Y, "00:00", C.candleWhite, "center").setDepth(13).setName("hud-timer");
-    this.killsText = new PixelText(this, GAME_WIDTH - HUD_MARGIN_X, HUD_TOP_Y, "KILL 0", C.bone, "right").setDepth(13).setName("hud-kills");
-    this.xpBg = this.add.rectangle(HUD_HP_X, 8, GAME_WIDTH - 2 * HUD_MARGIN_X, 4, PAL[C.ink]).setOrigin(0, 0)
+    this.levelText = new PixelText(this, m.left, m.top, "LV 1", C.lantern).setDepth(13).setName("hud-level");
+    this.timerText = new PixelText(this, GAME_WIDTH / 2, m.top, "00:00", C.candleWhite, "center").setDepth(13).setName("hud-timer");
+    this.killsText = new PixelText(this, GAME_WIDTH - m.right, m.top, "KILL 0", C.bone, "right").setDepth(13).setName("hud-kills");
+    this.xpBg = this.add.rectangle(m.left, 8 + topOff, GAME_WIDTH - m.left - m.right, 4, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11).setName("hud-xp-bg");
-    this.xpFill = this.add.rectangle(HUD_HP_X + 1, 9, GAME_WIDTH - 2 * HUD_MARGIN_X - 2, 2, PAL[C.amber]).setOrigin(0, 0).setDepth(12).setName("hud-xp-fill");
-    // Spieler-HP oben links, fester Rahmen + 4-px-Füllung.
-    this.hpBg = this.add.rectangle(HUD_HP_X, 15, HUD_HP_W, 9, PAL[C.ink]).setOrigin(0, 0)
+    this.xpFill = this.add.rectangle(m.left + 1, 9 + topOff, GAME_WIDTH - m.left - m.right - 2, 2, PAL[C.amber]).setOrigin(0, 0).setDepth(12).setName("hud-xp-fill");
+    // Spieler-HP oben links, fester Rahmen + 4-px-Fuellung.
+    this.hpBg = this.add.rectangle(m.left, 15 + topOff, HUD_HP_W, 9, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11).setName("hud-hp-bg");
-    this.hpLabel = new PixelText(this, 9, 16, "HP", C.bone).setDepth(12).setName("hud-hp-label");
-    this.hpFill = this.add.rectangle(25, 17, 82, 4, PAL[C.crimson]).setOrigin(0, 0).setDepth(12).setName("hud-hp-fill");
+    this.hpLabel = new PixelText(this, 9 + (m.left - HUD_MARGIN_X), 16 + topOff, "HP", C.bone).setDepth(12).setName("hud-hp-label");
+    this.hpFill = this.add.rectangle(25 + (m.left - HUD_MARGIN_X), 17 + topOff, 82, 4, PAL[C.crimson]).setOrigin(0, 0).setDepth(12).setName("hud-hp-fill");
     this.createHudIcons();
     this.createHudEvoHint();
 
@@ -323,11 +363,13 @@ export class UI extends Phaser.Scene {
   }
 
   private createHudIcons(): void {
-    this.hudIconBg = this.add.rectangle(HUD_ICONS_X - 8, 13, 4, 19, PAL[C.nightDeep], 0.6)
+    const iconShift = this.safeMargin.left - HUD_MARGIN_X;
+    const topOff = this.safeMargin.top - HUD_TOP_Y;
+    this.hudIconBg = this.add.rectangle(HUD_ICONS_X + iconShift - 8, 13 + topOff, 4, 19, PAL[C.nightDeep], 0.6)
       .setOrigin(0, 0).setDepth(10).setVisible(false).setName("hud-icons-bg");
     this.hudIcons = [];
     for (let i = 0; i < HUD_MAX_ICONS; i++) {
-      const img = this.add.image(HUD_ICONS_X + i * HUD_ICON_PITCH, 15, "icon_weapon_ember")
+      const img = this.add.image(HUD_ICONS_X + iconShift + i * HUD_ICON_PITCH, 15 + topOff, "icon_weapon_ember")
         .setOrigin(0, 0).setDepth(11).setVisible(false).setName(`hud-icon-${i}`);
       this.hudIcons.push(img);
     }
@@ -338,7 +380,9 @@ export class UI extends Phaser.Scene {
    * Bewusst ohne Grafik-Rahmen, damit keine Hit-/Fokusfläche verändert wird.
    */
   private createHudEvoHint(): void {
-    this.hudEvoHint = [0, 1].map((i) => new PixelText(this, HUD_EVO_HINT_X, 15 + i * 8, "", C.lantern)
+    const iconShift = this.safeMargin.left - HUD_MARGIN_X;
+    const topOff = this.safeMargin.top - HUD_TOP_Y;
+    this.hudEvoHint = [0, 1].map((i) => new PixelText(this, HUD_EVO_HINT_X + iconShift, 15 + topOff + i * 8, "", C.lantern)
       .setDepth(12).setVisible(false).setName(`hud-evo-hint-${i}`));
   }
 

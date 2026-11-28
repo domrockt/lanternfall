@@ -1,6 +1,12 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { getTouchSnapshot, resetTouchSnapshot, setTouchSnapshot } from "./TouchState";
+import {
+  insetsOverCanvas,
+  insetsToGamePx,
+  readDeviceSafeAreaInsets,
+  type SafeAreaInsets,
+} from "../logic/safearea";
 
 export interface TouchControlsOptions {
   /** Nur dann Joystick/Pause zeigen und Gesten annehmen (Run läuft, nicht pausiert/Level-up/Truhe). */
@@ -64,9 +70,10 @@ export function sectorWithHysteresis(angle: number, lastSector: number | null): 
   return nearest;
 }
 
-const PAUSE_W = 30;
-const PAUSE_H = 18;
-const PAUSE_MARGIN = 10;
+/** m10-hud-safearea: exportiert fuer tests/hud-safearea.test.ts (Pause-Anker). */
+export const PAUSE_W = 30;
+export const PAUSE_H = 18;
+export const PAUSE_MARGIN = 10;
 /** Puls-Länge des Pause-Tipps in ms. */
 const PAUSE_PULSE_MS = 120;
 
@@ -98,6 +105,8 @@ export class TouchControls {
   private identifier: number | null = null;
   private originX = 0;
   private originY = 0;
+  /** m10-hud-safearea: Geraete-Insets in Spielpixeln (0 ohne Notch), einmalig pro Aufbau. */
+  private readonly safeInsetGame: SafeAreaInsets;
   /** M10-touch-joystick-feel: zuletzt gesendeter Sektor (Richtungs-Hysterese). */
   private lastSector: number | null = null;
   /** M10-touch-joystick-feel: zuletzt geschriebener Snapshot-Vektor (Output-Eps). */
@@ -227,6 +236,20 @@ export class TouchControls {
     this.opts = opts;
     this.canvas = scene.game.canvas;
     this.enabled = hasTouchSupport();
+    // m10-hud-safearea: Insets einmalig lesen (View-Wechsel baut die Szene neu
+    // auf -> neuer TouchControls). Nur der Inset-Anteil UEBER dem Canvas wirkt
+    // (body-Padding rueckt den Canvas bei Geraeten wie Pixel 7 bereits in die
+    // Safe-Area). Pause-Knopf klemmt an View-Rand MINUS Inset.
+    const canvasRect = typeof this.canvas?.getBoundingClientRect === "function"
+      ? this.canvas.getBoundingClientRect()
+      : undefined;
+    const screenW = (typeof window !== "undefined" ? window.innerWidth : 0) || scene.scale.width;
+    const screenH = (typeof window !== "undefined" ? window.innerHeight : 0) || scene.scale.height;
+    this.safeInsetGame = insetsToGamePx(
+      scene.scale.width,
+      canvasRect?.width ?? scene.scale.width,
+      insetsOverCanvas(readDeviceSafeAreaInsets(), canvasRect, screenW, screenH),
+    );
 
     if (this.enabled) {
       this.installTouchControls();
@@ -267,9 +290,11 @@ export class TouchControls {
       }
     }
     if (this.pauseContainer) {
+      // m10-hud-safearea: Marge mindestens Geraete-Inset (Notch/Rundung),
+      // sonst HUD-Konvention PAUSE_MARGIN — ohne Notch bitgleich.
       this.pauseContainer.setPosition(
-        Math.round(this.scene.scale.width - PAUSE_MARGIN - PAUSE_W),
-        PAUSE_MARGIN,
+        Math.round(this.scene.scale.width - Math.max(PAUSE_MARGIN, this.safeInsetGame.right) - PAUSE_W),
+        Math.max(PAUSE_MARGIN, this.safeInsetGame.top),
       );
     }
     if (!canMove) {
@@ -374,6 +399,8 @@ export class TouchControls {
       .setDepth(TOUCH_DEPTH)
       .setScrollFactor(0)
       .setVisible(false);
+    // m10-hud-safearea: Name fuer die HUD-Messung (kein Layout-Eingriff).
+    if (typeof container.setName === "function") container.setName("hud-touch-pause");
     bg.setScrollFactor(0);
     bar1.setScrollFactor(0);
     bar2.setScrollFactor(0);
