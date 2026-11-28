@@ -11414,7 +11414,7 @@
       "id": 8852,
       "title": "m10-heap-softprint K1: Konsolen-Print auf softFloorVerdict umstellen",
       "description": "scripts/m10-heap-budget.mjs Zeile ~224 druckt rohes softVerdict (FAIL +41,5 %) statt robustes gate.softFloorVerdict aus scripts/m10-heap-budget-gate.mjs. Fix: Print auf softFloorVerdict + maxWindowFloor; gate.mjs unverändert. Abnahme: Print zeigt robustes Urteil, kein Mess-Verhalten geändert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T05:44:13Z",
@@ -11430,19 +11430,30 @@
           "at": "2026-11-28T05:44:47Z",
           "by": "build",
           "text": "doing → review: K1 committed 887388e: Print zeigt gate.softFloorVerdict + maxWindowFloor/softReferenceMB; gate.mjs unangetastet. Syntax-Check node --check OK. K2-Kontrolllauf folgt."
+        },
+        {
+          "at": "2026-11-28T05:55:51Z",
+          "by": "build",
+          "text": "review → done: lane #8852, Commit 887388e; Reviewer-PASS (Print zeigt softFloorVerdict + maxWindowFloor, gate.mjs 0 Diff-Zeilen)."
         }
       ],
       "created": "2026-11-28T05:42:50Z",
-      "updated": "2026-11-28T05:44:47Z"
+      "updated": "2026-11-28T05:55:51Z"
     },
     {
       "id": 8853,
       "title": "m10-heap-softprint K2: Verifikation + Lane-Doku",
       "description": "1 Kontrolllauf gegen shots/m10-reaccd-heap.json-Werte (HARD PASS +10,7 %, SOFT-Rohpeaks als Beobachtung, Print-Urteil = robust). Beleg shots/m10-softprint-*.json; tsc/Tests grün; docs/lanes/m10-heap-softprint.md; .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:55:51Z",
+          "by": "build",
+          "text": "todo → done: lane #8853, Commit 522fbc4; Reviewer-PASS: Replay (robust PASS +23,8 %, HARD +10,7 %) + Kontrolllauf iGPU RPL-S 0 Fehler; 1506 Tests gruen."
+        }
+      ],
       "created": "2026-11-28T05:42:50Z",
-      "updated": "2026-11-28T05:42:50Z"
+      "updated": "2026-11-28T05:55:51Z"
     }
   ]
 }
