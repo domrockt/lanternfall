@@ -58,6 +58,27 @@
       touch-action: none;
     }
     #lf-rotate.visible { display: flex; }
+    /* M10-phaser-lazy-import: sichtbare Boot-Fehlermeldung statt weissem Screen. */
+    #lf-boot-error {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: #06070c;
+      color: #f2edd8;
+      font-family: ui-monospace, monospace;
+      text-align: center;
+      padding: 24px;
+      z-index: 1001;
+      touch-action: none;
+    }
+    #lf-boot-error.visible { display: flex; }
+    #lf-boot-error .title { font-size: 20px; letter-spacing: 2px; }
+    #lf-boot-error .hint { font-size: 13px; color: #4e5f6e; }
+    #lf-boot-error .detail { font-size: 11px; color: #4e5f6e; max-width: 90vw; overflow-wrap: anywhere; }
     #lf-rotate .phone {
       width: 54px;
       height: 92px;
@@ -78,6 +99,11 @@
     <div class="phone"></div>
     <div class="title">GERÄT DREHEN</div>
     <div class="hint">LANTERNFALL SPIELT IM QUERFORMAT · DAS SPIEL IST PAUSIERT</div>
+  </div>
+  <div id="lf-boot-error" aria-live="assertive">
+    <div class="title">FEHLER</div>
+    <div class="hint">LANTERNFALL KONNTE NICHT GELADEN WERDEN.</div>
+    <div class="detail"></div>
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
