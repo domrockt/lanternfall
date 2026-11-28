@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11125,
+  "next": 11128,
   "cards": [
     {
       "id": 1,
@@ -14561,6 +14561,71 @@
       ],
       "created": "2026-11-28T10:20:37Z",
       "updated": "2026-11-28T10:27:11Z"
+    },
+    {
+      "id": 11125,
+      "title": "m10-chest-arrow-texture-r2 K1: Vorher-Probe (exists=false + __MISSING-Screenshot)",
+      "description": "Skript scripts/m10-chest-arrow-texture.mjs (--probe): textures.exists('arrow_chest') prüfen + Truhen-Screenshot mit __MISSING-Randpfeil in 640x360 und 780x360@3. Belege nach ~/games/.evidence/m10-chest-arrow-texture-r2/before-*. Abnahme: JSON mit exists=false + Screenshot(s) erzeugt, Skript committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:05:12Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-chest-arrow-texture-r2 angenommen: K1 Vorher-Probe gestartet."
+        },
+        {
+          "at": "2026-11-28T10:07:37Z",
+          "by": "build",
+          "text": "doing → review: K1 committed 80eb21fc: Probe-Skript + Vorher-Beleg exists=false/__MISSING (640x360@2, 780x360@3), Screenshots in ~/games/.evidence/m10-chest-arrow-texture-r2/."
+        },
+        {
+          "at": "2026-11-28T10:14:13Z",
+          "by": "build",
+          "text": "review → done: K1: Probe-Skript + Vorher-Beleg (exists=false, __MISSING), Commit 80eb21fc."
+        }
+      ],
+      "created": "2026-11-28T10:05:11Z",
+      "updated": "2026-11-28T10:14:13Z"
+    },
+    {
+      "id": 11126,
+      "title": "m10-chest-arrow-texture-r2 K2: arrow_chest-Grid in SPRITE_GRIDS + Tests",
+      "description": "arrow_chest-Grid (16x16, Pfeil nach rechts im Lantern-Look, palettentreu, binäres Alpha) in src/gfx/textures.ts SPRITE_GRIDS ergänzen. tests/chest-arrow-texture.test.ts neu: Grid existiert, Dimensionen 16x16, Palette-Compliance. Abnahme: npx tsc --noEmit grün, npx vitest run tests/chest-arrow-texture.test.ts + tests/palette-compliance.test.ts grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:14:13Z",
+          "by": "build",
+          "text": "todo → review: K2 committed a0c04e23: Grid 16x16 palettentreu + tests/chest-arrow-texture.test.ts, 1952/1952 grün, build grün."
+        },
+        {
+          "at": "2026-11-28T10:36:31+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10834, Merge branch m10-chest-arrow-texture-r2"
+        }
+      ],
+      "created": "2026-11-28T10:05:11Z",
+      "updated": "2026-11-28T10:14:13Z"
+    },
+    {
+      "id": 11127,
+      "title": "m10-chest-arrow-texture-r2 K3: Nachher-Probe + Doku + lane-done",
+      "description": "Nachher-Probe: exists('arrow_chest')=true + Truhen-Screenshot mit sichtbarem Pfeil in 640x360 und 780x360@3. Abnahme-Bilder nach shots/abnahme/m10-chest-arrow-texture-r2-*.png, JSON nach .evidence. Doku docs/lanes/m10-chest-arrow-texture-r2.md, .lane-done. Abnahme: build+tests grün, Belege committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:15:29Z",
+          "by": "build",
+          "text": "todo → doing: K3 in Arbeit: Nachher-Probe bereits erfasst (exists=true, runtime_atlas/arrow_chest, beide Formate ok), Abnahme-Bilder in shots/abnahme/, Doku geschrieben. Art-Director-Abnahme läuft."
+        },
+        {
+          "at": "2026-11-28T10:17:19Z",
+          "by": "build",
+          "text": "doing → done: K3 done, Commit 573418dc: Nachher-Probe exists=true (runtime_atlas/arrow_chest, beide Formate), Abnahme-Bilder shots/abnahme/, Doku + Art-Director PASS (4/4/4,5), commit-gate PASS, .lane-done committed. Lane abgeschlossen."
+        }
+      ],
+      "created": "2026-11-28T10:05:11Z",
+      "updated": "2026-11-28T10:17:19Z"
     }
   ]
 }
