@@ -18784,10 +18784,16 @@
       "id": 13284,
       "title": "m10-golden-frame-rebaseline-r2 K1: Guard-Lauf nach 4 Merges",
       "description": "4 Merges (heap-gate-recovery, fps-cap-stackfix, charstats-spec-followup, mira-hp-balance-check) sind auf main. node scripts/m10-golden-frame.mjs OHNE --write-baseline laufen lassen. AK: Verdict-JSON committed; bei PASS (keine Divergenz) Karte done + .lane-done, keine künstliche Rebaseline.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:37:28Z",
+          "by": "build",
+          "text": "doing → done: Guard-Lauf ohne --write-baseline: PASS — 3/3 Seeds (101/202/404) bitgleich zur Baseline 761f274a, deterministisch, 0 JS-Fehler, Renderer RPL-S (iGPU). Keine Divergenz → keine Rebaseline. Commit 548111ba, Doku docs/lanes/m10-golden-frame-rebaseline-r2.md"
+        }
+      ],
       "created": "2026-11-28T16:35:49Z",
-      "updated": "2026-11-28T16:35:49Z"
+      "updated": "2026-11-28T16:37:28Z"
     },
     {
       "id": 13285,
