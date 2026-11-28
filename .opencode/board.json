@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13263,
+  "next": 13408,
   "cards": [
     {
       "id": 1,
@@ -18779,6 +18779,52 @@
       "notes": [],
       "created": "2026-11-28T16:19:56Z",
       "updated": "2026-11-28T16:19:56Z"
+    },
+    {
+      "id": 13404,
+      "title": "m10-renderer-guard K1: Helper scripts/lf-renderer.mjs",
+      "description": "Owner: engine-dev. Export getRendererString(page) (WEBGL_debug_renderer_info / UNMASKED_RENDERER_WEBGL, Fallback gl.RENDERER), isSwiftShader(s), rendererValid(s). Wiederverwendbar, Logik der bestehenden Skripte (fullrun.mjs, m10-heap-budget.mjs) unangetastet. Abnahme: Unit-Tests in K3 grün, tsc rc=0.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T16:40:48Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-renderer-guard: K1 angenommen, Helper wird gebaut."
+        }
+      ],
+      "created": "2026-11-28T16:40:35Z",
+      "updated": "2026-11-28T16:40:48Z"
+    },
+    {
+      "id": 13405,
+      "title": "m10-renderer-guard K2: Einbau in perf.mjs + m10-v10-device-10min.mjs",
+      "description": "Owner: engine-dev. renderer + rendererValid in jedes Output-JSON; bei isSwiftShader: rendererValid=false, Kennzahl-Felder mit invalid:true markiert, passed=false. Abnahme: statischer Quell-Guard (K3) zeigt Import in beiden Skripten; bestehende Messlogik unverändert.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-28T16:40:35Z",
+      "updated": "2026-11-28T16:40:35Z"
+    },
+    {
+      "id": 13406,
+      "title": "m10-renderer-guard K3: Guard-Test tests/renderer-guard.test.ts",
+      "description": "Owner: gameplay-dev. Unit-Tests für isSwiftShader/rendererValid (SwiftShader-Varianten, echte iGPU-Strings, Adreno, leere Strings) + Quell-Guard: beide Skripte importieren lf-renderer. Abnahme: npx vitest run tests/renderer-guard.test.ts grün, npm test grün.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T16:40:35Z",
+      "updated": "2026-11-28T16:40:35Z"
+    },
+    {
+      "id": 13407,
+      "title": "m10-renderer-guard K4: Probe-Lauf perf.mjs + Lane-Doku",
+      "description": "Owner: engine-dev. Ein kurzer Probe-Lauf perf.mjs mit renderer im Output-JSON, Beleg nach ~/games/.evidence/m10-renderer-guard/; docs/lanes/m10-renderer-guard.md; .lane-done. Abnahme: renderer=Mesa Intel RPL-S (iGPU), rendererValid:true.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-28T16:40:35Z",
+      "updated": "2026-11-28T16:40:35Z"
     }
   ]
 }
