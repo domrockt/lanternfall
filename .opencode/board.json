@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12160,
+  "next": 12164,
   "cards": [
     {
       "id": 1,
@@ -16722,6 +16722,80 @@
       ],
       "created": "2026-11-28T11:59:34Z",
       "updated": "2026-11-28T12:20:19Z"
+    },
+    {
+      "id": 12160,
+      "title": "m10-hazard-tex-cap K1: Vorher-Beleg Hazard-Canvas-Zahl (10-min-Lauf)",
+      "description": "Probe scripts/m10-hazard-tex-cap.mjs zaehlt erstellte hazard_*-Canvas-Keys ueber 10-min-Lauf (fullrun-Settings, flock). AC: Baseline-JSON in ~/games/.evidence/m10-hazard-tex-cap/m10-hazard-tex-cap-before.json mit Key-Liste + Trend.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:07:08Z",
+          "by": "build",
+          "text": "todo → doing: K1 angenommen: Probe-Skript + Baseline-10-min-Lauf (flock)."
+        },
+        {
+          "at": "2026-11-28T12:29:44Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Probe-Skript + 2x 10-min-Lauf, je 21 Hazard-Canvases (Seed 99, @30x), Muster r22/r24, r70/r74, r92/r96, l312/l320, l832/l840 belegt. Renderer ANGLE Intel Mesa RPL-S, jsErrors=0. JSON: ~/games/.evidence/m10-hazard-tex-cap/m10-hazard-tex-cap-before.json. Commit c5a4cf6e (Runner-Checkpoint enthaelt Skript+Board)."
+        },
+        {
+          "at": "2026-11-28T12:59:20+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11812, Merge branch m10-hazard-tex-cap"
+        }
+      ],
+      "created": "2026-11-28T12:07:07Z",
+      "updated": "2026-11-28T12:29:44Z"
+    },
+    {
+      "id": 12161,
+      "title": "m10-hazard-tex-cap K2: Fix — grobes 16-px-Raster fuer Hazard-Textur-Keys",
+      "description": "src/gfx/hazardDisc.ts: texQuantizedRadius/texQuantizedBeamLength (16-px-Raster, abrundend, Klemme 8..160 bzw. 8..1024) nur fuer Textur-Keys/Masken; Warn-Disc-Geometrie innerhalb Quantisierungstoleranz (<=15 px). AC: tsc rc=0, gebundene Key-Anzahl beweisbar klein.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:29:44Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: 16-px-Raster nur fuer Textur-Keys/Masken, Warn-Geometrie innerhalb Toleranz."
+        },
+        {
+          "at": "2026-11-28T12:59:20+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12161, Merge branch m10-hazard-tex-cap (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T12:07:07Z",
+      "updated": "2026-11-28T12:29:44Z"
+    },
+    {
+      "id": 12162,
+      "title": "m10-hazard-tex-cap K3: Unit-Test tests/hazard-tex-cap.test.ts",
+      "description": "Quantisierungstabelle + Cap-Verhalten (200 unterschiedliche Radien -> <= Key-Cap); minimale Key-Expectation-Anpassungen in tests/hazard-disc.test.ts (begruenden, requests.md-Eintrag). AC: npx vitest run gruenn.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:33:08Z",
+          "by": "build",
+          "text": "todo → doing: K3: Test-Datei steht, commit folgt (Test lief bereits in K2-Lauf mit gruen)."
+        },
+        {
+          "at": "2026-11-28T12:59:20+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12162, Merge branch m10-hazard-tex-cap (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T12:07:07Z",
+      "updated": "2026-11-28T12:33:08Z"
+    },
+    {
+      "id": 12163,
+      "title": "m10-hazard-tex-cap K4: After-Lauf + Doku + .lane-done",
+      "description": "10-min-Lauf nach Fix: neue Hazard-Canvases <= Cap-Grenze, JSON in ~/games/.evidence/.../after.json; docs/lanes/m10-hazard-tex-cap.md mit Vorher/Nachher + Renderer-String; .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:07:07Z",
+      "updated": "2026-11-28T12:07:07Z"
     }
   ]
 }
