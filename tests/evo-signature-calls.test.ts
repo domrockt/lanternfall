@@ -132,7 +132,10 @@ describe("m10 evo-signature-calls: Spawn-Verhalten FxSystem.spawnEvolution", () 
     expect(recs[0].x).toBe(100); // Pixel-Grid: Position wird gerundet
     expect(recs[0].y).toBe(51);
     expect(recs[0].visible).toBe(true);
-    expect(recs[0].scale).toBeCloseTo(3.2);
+    // M10-evo-fx-phoenix: Phönix-Signatur wird in Zielgröße gebacken (128x128)
+    // und mit Draw-Scale 1 gezeichnet — Mixel-Regel „nie > 1x hochskalieren".
+    // Andere Evolutionen behalten den Alt-Scale (3,2 / 4,0).
+    expect(recs[0].scale).toBeCloseTo(sig.drawScale?.[0] ?? 3.2);
     expect(recs[0].alpha).toBeCloseTo(0.95);
     const rt = runtime as FxRuntime;
     expect(rt.life).toBeCloseTo(sig.hitLifetime);

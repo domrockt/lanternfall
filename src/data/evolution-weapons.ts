@@ -121,3 +121,29 @@ export const EVOLUTION_WEAPONS: Partial<Record<WeaponAnyId, WeaponDef>> = {
     ],
   },
 };
+
+/**
+ * M10-evo-fx-phoenix: reine FX-Parameter des Phönixschwarm (keine Gameplay-Werte).
+ * Vorlage für die Folge-Evo-Jobs (Ewiger Winter, Seelenleuchtfeuer, Zornpendel,
+ * Gewittersiegel): Texturen in Zielgröße zeichnen und mit Draw-Scale 1 rendern
+ * (nie > 1x hochskalieren), klare Element-Farbtreppe, Aufbau ≤ 0,3 s → Impact →
+ * kurzer Ausklang. Texturen liegen in src/gfx/gen-fx.ts (phoenix*Frame).
+ */
+export const PHOENIX_FX = {
+  /** Vogel: 3 Flatter-Frames (Zielgröße 15x11), Takt in s. */
+  birdFrames: ["projectile_phoenix", "projectile_phoenix_2", "projectile_phoenix_3"],
+  birdFrameInterval: 0.09,
+  /** Aufbau (Anticipation) am Abschusspunkt, life ≤ 0,3 s. */
+  launchTexture: "fx_phoenix_launch",
+  launchLife: 0.28,
+  /** Impact-Explosion: Textur 64x64 ≈ Explode-Radius 34, Draw-Scale 1. */
+  boomTexture: "fx_boom_phoenix",
+  boomLife: 0.4,
+  /** Ausklang: Brandfleck 64x64, Draw-Scale 1, Frame-Flackern-Takt in s. */
+  burnTexture: "fx_burn_phoenix",
+  burnTextureFrames: 3,
+  burnFrameInterval: 0.18,
+  /** Brandfleck-Lebenszeit (muss zum addBurn-Aufruf passen). */
+  burnLife: 3.2,
+} as const;
+

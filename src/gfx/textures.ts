@@ -389,20 +389,8 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "...000...",
     ],
   },
-  projectile_phoenix: {
-    w: 13, h: 9,
-    rows: [
-      "...0.........",
-      "..0j0........",
-      ".0jll0.......",
-      "0jllll0mm0...",
-      "0gjlllmm0mmh0",
-      "0jllll0mm0...",
-      ".0jll0.......",
-      "..0j0........",
-      "...0.........",
-    ],
-  },
+  // projectile_phoenix ist M10-evo-fx-phoenix in gen-fx.ts gezogen (Zielgröße 15x11,
+  // 3 Flatter-Frames, Feuer-Farbtreppe ohne Ink-Rand).
   projectile_ice: {
     w: 7, h: 7,
     rows: [
