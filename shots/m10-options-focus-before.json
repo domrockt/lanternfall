@@ -1,0 +1,2642 @@
+{
+  "lane": "m10-options-touch-focus",
+  "tag": "before",
+  "startedAt": "2026-11-28T01:36:09.248Z",
+  "palette": {
+    "lantern": 21,
+    "bone": 10
+  },
+  "entries": [
+    {
+      "screen": "title",
+      "mode": "keyboard",
+      "note": "idle ohne Eingabe",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-title-keyboard-00.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "title",
+      "mode": "keyboard",
+      "note": "ArrowDown -> Auswahl verschiebt sich",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-title-keyboard-01.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "title",
+      "mode": "mouse",
+      "note": "Hover über START",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-title-mouse-02.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "title",
+      "mode": "mouse",
+      "note": "pointerdown gehalten auf OPTIONEN (Pressed)",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": true,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-title-mouse-03.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "options",
+      "mode": "mouse",
+      "note": "Overlay nach Klick OPTIONEN",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": true,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-options-mouse-04.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "options",
+      "mode": "mouse",
+      "note": "Klick Zeile 0 (MUSIK)",
+      "overlayOpen": true,
+      "selected": 0,
+      "rows": [
+        {
+          "labelText": "> MUSIK",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "mouse",
+      "note": "Klick Zeile 6 (ZURÜCK schliesst)",
+      "overlayOpen": false
+    },
+    {
+      "screen": "options",
+      "mode": "keyboard",
+      "note": "6x ArrowDown -> Zeile 6 (ZURÜCK) fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": true,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-options-keyboard-05.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "options",
+      "mode": "keyboard",
+      "note": "Enter auf Zeile 6 schliesst Overlay (7/7 anwählbar)",
+      "closedOverlay": true,
+      "screenshot": "shots/m10-options-focus-before-options-keyboard-closecheck.json-inline",
+      "state": {
+        "before": [
+          {
+            "scene": "title",
+            "visible": true,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              }
+            ]
+          }
+        ],
+        "after": [
+          {
+            "scene": "title",
+            "visible": false,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "screen": "credits",
+      "mode": "keyboard",
+      "note": "idle, ZURÜCK fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "credits",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-credits-keyboard-06.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "credits",
+      "mode": "mouse",
+      "note": "Hover über ZURÜCK",
+      "state": {
+        "buttons": [
+          {
+            "scene": "credits",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-credits-mouse-07.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "charselect",
+      "mode": "keyboard",
+      "note": "idle, START fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "charselect",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "charselect",
+            "label": "START (ENTER)",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-charselect-keyboard-08.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "charselect",
+      "mode": "keyboard",
+      "note": "ArrowRight -> Charakterwechsel, Knopf-Fokus?",
+      "state": {
+        "buttons": [
+          {
+            "scene": "charselect",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "charselect",
+            "label": "START (ENTER)",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-charselect-keyboard-09.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "charselect",
+      "mode": "mouse",
+      "note": "Hover über ZURÜCK",
+      "state": {
+        "buttons": [
+          {
+            "scene": "charselect",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "charselect",
+            "label": "START (ENTER)",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-charselect-mouse-10.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "charselect",
+      "mode": "mouse",
+      "note": "pointerdown gehalten auf START (Pressed)",
+      "state": {
+        "buttons": [
+          {
+            "scene": "charselect",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "charselect",
+            "label": "START (ENTER)",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-charselect-mouse-11.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "pause",
+      "mode": "keyboard",
+      "note": "idle, FORTSETZEN fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "ui",
+            "label": "",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 20,
+            "bgAlpha": null,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "LEVEL UP",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "FORTSETZEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "AUFGABE",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "TRUHE GEÖFFNET",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-pause-keyboard-12.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "pause",
+      "mode": "keyboard",
+      "note": "ArrowDown -> OPTIONEN fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "ui",
+            "label": "",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 20,
+            "bgAlpha": null,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "LEVEL UP",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "FORTSETZEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "AUFGABE",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "TRUHE GEÖFFNET",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-pause-keyboard-13.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "pause",
+      "mode": "mouse",
+      "note": "Hover über AUFGABE (nur Hover, kein Klick)",
+      "state": {
+        "buttons": [
+          {
+            "scene": "ui",
+            "label": "",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 20,
+            "bgAlpha": null,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "LEVEL UP",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "FORTSETZEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "AUFGABE",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "TRUHE GEÖFFNET",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-pause-mouse-14.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "pause",
+      "mode": "mouse",
+      "note": "pointerdown gehalten auf OPTIONEN (Pressed)",
+      "state": {
+        "buttons": [
+          {
+            "scene": "ui",
+            "label": "",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 20,
+            "bgAlpha": null,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "LEVEL UP",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "FORTSETZEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "AUFGABE",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "TRUHE GEÖFFNET",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": true,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-pause-mouse-15.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "options",
+      "mode": "mouse",
+      "note": "Options-Overlay aus Pause",
+      "state": {
+        "buttons": [
+          {
+            "scene": "ui",
+            "label": "",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 20,
+            "bgAlpha": null,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "LEVEL UP",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "FORTSETZEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "AUFGABE",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "TRUHE GEÖFFNET",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": true,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-options-mouse-16.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "results",
+      "mode": "keyboard",
+      "note": "idle, NEU fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "results",
+            "label": "NEUE RUNDE",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "results",
+            "label": "TITEL",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-results-keyboard-17.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "results",
+      "mode": "keyboard",
+      "note": "ArrowRight -> TITEL fokussiert",
+      "state": {
+        "buttons": [
+          {
+            "scene": "results",
+            "label": "NEUE RUNDE",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "results",
+            "label": "TITEL",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-results-keyboard-18.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "results",
+      "mode": "mouse",
+      "note": "Hover über NEU",
+      "state": {
+        "buttons": [
+          {
+            "scene": "results",
+            "label": "NEUE RUNDE",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "results",
+            "label": "TITEL",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-results-mouse-19.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "title",
+      "mode": "touch",
+      "note": "idle, Pixel-7-Profil",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-title-touch-20.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Overlay nach Tap OPTIONEN",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": true,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-options-touch-21.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 0",
+      "overlayStillOpen": true,
+      "selected": 0,
+      "rows": [
+        {
+          "labelText": "> MUSIK",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 1",
+      "overlayStillOpen": true,
+      "selected": 1,
+      "rows": [
+        {
+          "labelText": "  MUSIK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "> SFX",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 2",
+      "overlayStillOpen": true,
+      "selected": 2,
+      "rows": [
+        {
+          "labelText": "  MUSIK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "> SCREEN-SHAKE",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 3",
+      "overlayStillOpen": true,
+      "selected": 3,
+      "rows": [
+        {
+          "labelText": "  MUSIK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "> DAMAGE-NUMBERS",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 4",
+      "overlayStillOpen": true,
+      "selected": 4,
+      "rows": [
+        {
+          "labelText": "  MUSIK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "> MASTER MUTE",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 5",
+      "overlayStillOpen": true,
+      "selected": 5,
+      "rows": [
+        {
+          "labelText": "  MUSIK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "> SKALIERUNG",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        },
+        {
+          "labelText": "  ZURÜCK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Tap Zeile 6",
+      "overlayStillOpen": false,
+      "selected": 6,
+      "rows": [
+        {
+          "labelText": "  MUSIK",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SFX",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SCREEN-SHAKE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  DAMAGE-NUMBERS",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  MASTER MUTE",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "  SKALIERUNG",
+          "labelColorIndex": 10,
+          "outlineVisible": false
+        },
+        {
+          "labelText": "> ZURÜCK",
+          "labelColorIndex": 21,
+          "outlineVisible": true
+        }
+      ]
+    },
+    {
+      "screen": "options",
+      "mode": "touch",
+      "note": "Endzustand nach Zeilen-Taps",
+      "state": {
+        "buttons": [
+          {
+            "scene": "title",
+            "label": "START",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "CREDITS",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "VOLLBILD",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "title",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": false,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "title",
+            "visible": false,
+            "selected": 6,
+            "rows": [
+              {
+                "labelText": "  MUSIK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "> ZURÜCK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-options-touch-22.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "charselect",
+      "mode": "touch",
+      "note": "nach Tap START",
+      "state": {
+        "buttons": [
+          {
+            "scene": "charselect",
+            "label": "ZURÜCK",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "charselect",
+            "label": "START (ENTER)",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": []
+      },
+      "screenshot": "shots/m10-options-focus-before-charselect-touch-23.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    },
+    {
+      "screen": "pause",
+      "mode": "touch",
+      "note": "Pause-Overlay (Einstieg via ESC, Buttons via Touch)",
+      "state": {
+        "buttons": [
+          {
+            "scene": "ui",
+            "label": "",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 20,
+            "bgAlpha": null,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "LEVEL UP",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "FORTSETZEN",
+            "containerVisible": true,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "AUFGABE",
+            "containerVisible": true,
+            "outlineVisible": false,
+            "labelColorIndex": 10,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": false
+          },
+          {
+            "scene": "ui",
+            "label": "OPTIONEN",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          },
+          {
+            "scene": "ui",
+            "label": "TRUHE GEÖFFNET",
+            "containerVisible": false,
+            "outlineVisible": true,
+            "labelColorIndex": 21,
+            "bgAlpha": 1,
+            "bgTint": null,
+            "focusLantern": true
+          }
+        ],
+        "texts": [],
+        "options": [
+          {
+            "scene": "ui",
+            "visible": false,
+            "selected": 0,
+            "rows": [
+              {
+                "labelText": "> MUSIK",
+                "labelColorIndex": 21,
+                "outlineVisible": true
+              },
+              {
+                "labelText": "  SFX",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SCREEN-SHAKE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  DAMAGE-NUMBERS",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  MASTER MUTE",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  SKALIERUNG",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              },
+              {
+                "labelText": "  ZURÜCK",
+                "labelColorIndex": 10,
+                "outlineVisible": false
+              }
+            ]
+          }
+        ]
+      },
+      "screenshot": "shots/m10-options-focus-before-pause-touch-24.png",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "context": "webgl1"
+    }
+  ],
+  "finishedAt": "2026-11-28T01:36:27.233Z",
+  "entryCount": 35
+}
