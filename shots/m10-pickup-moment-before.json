@@ -1,0 +1,69 @@
+{
+  "tag": "before",
+  "picked": {
+    "picked": true,
+    "index": 1,
+    "id": "tome",
+    "level": 1,
+    "panelStillOpen": false,
+    "paused": false
+  },
+  "peakWindow": "fixed120ms",
+  "sanityElapsedAdvanced": true,
+  "elapsedPeak": 1030.4801699999762,
+  "elapsedPost": 1034.1133099999734,
+  "view": "640x360@1",
+  "rendererInfo": {
+    "context": "webgl1",
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+  },
+  "runtimePeak": {
+    "momentActive": [],
+    "momentTriggered": 0,
+    "momentById": {},
+    "enemies": 320,
+    "xp": {
+      "spawnedXp": 10,
+      "grantedXp": 10,
+      "totalXp": 0,
+      "collectedXp": 10,
+      "xpLoss": 0
+    },
+    "drawCap": {
+      "maxVisibleGems": 120,
+      "limit": 120
+    }
+  },
+  "analysis": {
+    "crop": {
+      "w": 128,
+      "h": 96
+    },
+    "diffPeakPostPct": 81.43,
+    "paletteExactShareChanged": 7.14,
+    "nearWhitePct": 10.06,
+    "nearWhiteChangedShare": 10.99,
+    "offPalettePct": 93.43
+  },
+  "acceptance": {
+    "diffPeakPostPct": {
+      "value": 81.43,
+      "rule": "after > before (Moment addiert sichtbare Aenderung)"
+    },
+    "paletteExactShareChanged": {
+      "value": 7.14,
+      "rule": "after > before UND >= 50"
+    },
+    "nearWhitePct": {
+      "value": 10.06,
+      "rule": "after > before"
+    },
+    "xpLoss": {
+      "value": 0,
+      "rule": "== 0"
+    }
+  },
+  "jsErrors": []
+}
