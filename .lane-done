@@ -1,0 +1,26 @@
+Lane m10-damage-label-quality — abgeschlossen 2026-11-28 (#11509-#11512)
+
+Ergebnis: Die Tier-Verdrahtung damageLabelCapForQuality -> DamageNumbers.ts
+ist WIRKSAM — kein Fix erforderlich (K1-Befund, K2-Konsequenz).
+
+- K1 (#11509): statisch (import + viewLimit Z. 227, Bundle-Grep) UND runtime
+  belegt: Probe scripts/m10-damage-label-quality.mjs, M25-Chaos ~300 Ritter,
+  Tier via CDP-Drossel 20x ueber den echten Hysterese-Regler gefahren.
+  low pinnt exakt am Cap 5 (Frames 4/5/5/5 bzw. 3/4/5/5), medium <= 8,
+  high <= 12 (Zonen-/Burst-Caps binden dort zuerst: 6 Labels).
+- K2 (#11510): kein Fix; HIGH bitgleich (Cap 12 == MAX_VISIBLE_LABELS,
+  MAX_VIEWS_AGGREGATE unangetastet; damage-calm/grid/batch 44/44 gruen).
+- K3 (#11511): tests/damage-label-quality.test.ts friert die Matrix ein
+  (6/6 gruen).
+- K4 (#11512): Vorher/Nachher-JSON identisch (Code unveraendert), Belege in
+  ~/games/.evidence/m10-damage-label-quality/, Abnahme-Bild
+  shots/abnahme/m10-damage-label-quality-low-tier.png (5 Labels, ~260
+  Gegner, Boss lebendig), Sichtpruefung bestanden.
+
+Zahlen: LOW-Tier Labelzahl messbar gesenkt 6 -> 5 (−1/Frame, −17 %, hart
+bindend). tsc/build/tests: 2116/2116 gruen. JS-Fehler in Probes: 0.
+
+Nebenfund (offen, ausserhalb des Datei-Bereichs): ?rbscale-Override friert
+den Qualitaets-Regler auf high ein (src/config.ts tick(), early return) —
+betrifft nur Mess-Laeufe mit URL-Param, nicht Realgeraete. Detail:
+docs/lanes/m10-damage-label-quality.md B1.
