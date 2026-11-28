@@ -1,0 +1,26 @@
+# Lane m10-fps-cap-stackfix — FERTIG (2026-11-28, 4a4b09ae)
+
+Bedarf m10-mobile-fps-cap (15:00Z) gelöst: RangeError-Regression (Game-Loop-Tod unter Last) gefixt.
+
+- **Wurzel (K1-Stack, ~/games/.evidence/m10-fps-cap-stackfix/k1-stack-vorher.json):**
+  KEINE Rekursion — `Spawner.drainDebugQueue` repushte die Rest-Queue per
+  `push(...rest)`; Spread übergibt alle Einträge als Argumente, ab ~100–150k
+  Einträgen RangeError "Maximum call stack size exceeded" → Game-Loop tot
+  (Frozen-Loop, am Gerät 9× je 10-min-Lauf, alle ~40–80 s). Queue wächst, weil
+  der m25-Top-up (300/50 ms) den Drain (30/Sim-Substep) unter Last übersteigt.
+- **Fix (K2):** src/systems/Spawner.ts, drainDebugQueue — Front-Entnahme per
+  slice+splice statt Rest-Repush; Reihenfolge/Batchgröße bitgleich,
+  drainSpawnQueue-Vertrag unberührt. fps-cap.ts/main.ts/UI.ts unangetastet.
+- **K3:** tests/fps-cap-stackfix.test.ts, 5 Tests grün (Gegenprobe
+  push(...200k) wirft RangeError; Drain bei 200k Queue wirft nicht; Ordnung
+  bitgleich; Desktop-Pfad). Suite 2445/2445, build rc=0, tsc rc=0. Reviewer PASS.
+- **K4 Vorher/Nachher** (identisches Rezept, Android-Proxy-Profil CPU ×4,
+  je 3×60-s-Fenster): Vorher 2/2 Läufe mit Stack-Crash, **Nachher 2/2 Läufe
+  0 RangeError / 0 Frozen-Loop**. janky-Proxy im Rauschen (kein Renderlast-Hebel).
+- Belege: ~/games/.evidence/m10-fps-cap-stackfix/{k1-stack-vorher,k3-stack-nachher,
+  k4-vorher,k4-nachher}.json; Messpaar-Logs ~/tmp/m10-fps-cap-stackfix/.
+- Hinweise in .dispatch/requests.md (15:2xZ): m10-mobile-fps-cap K2-APK (700c815e)
+  enthält den Bug → APK neu bauen; m10-janky-remeasure erst mit Fix-Build messen
+  (K3-Zahlen enthalten je Lauf 9 Loop-Todungen). Gerät-Verifikation dort (409).
+- Board: #12813–#12816 (alle done). Merge-Hinweis: Lane enthält die fps-cap-
+  Dateien 1:1 aus m10-mobile-fps-cap (f64b3d33) — deckungsgleich, konfliktfrei.
