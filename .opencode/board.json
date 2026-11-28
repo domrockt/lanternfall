@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9735,
+  "next": 9759,
   "cards": [
     {
       "id": 1,
@@ -12263,6 +12263,48 @@
       ],
       "created": "2026-11-28T07:13:30Z",
       "updated": "2026-11-28T07:27:28Z"
+    },
+    {
+      "id": 9755,
+      "title": "m10-tiles-float-snap K1: Vorher-Scan — fraktionale Mischzellen 0,539 % belegen (before-JSON)",
+      "description": "Skript scripts/m10-tiles-snap.mjs läuft den Kanten-Scan (Muster ~/games/.evidence/m10-terrain-edge-crisp/m10-terrain-edge-after.json). AK: before-JSON in ~/games/.evidence/m10-tiles-float-snap/ zeigt mischRate ~0,00539 (3 Seeds, Region 960/960/320/320), Zahlen in docs/lanes.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:34:33Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-tiles-float-snap angenommen: Kanten-Scan-Skript + before-JSON"
+        }
+      ],
+      "created": "2026-11-28T07:34:31Z",
+      "updated": "2026-11-28T07:34:33Z"
+    },
+    {
+      "id": 9756,
+      "title": "m10-tiles-float-snap K2: Fix — terrainSampleAt()/terrainKindAt() snappen Float-Queries auf Tile (Math.floor)",
+      "description": "Snap am Eingang von terrainSampleAt (terrainKindAt delegiert). AK: paintTerrain/terrainMaskAt/Wasser-Pfad unangetastet, ganzzahlige Aufrufe bitgleich, tsc grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:34:31Z",
+      "updated": "2026-11-28T07:34:31Z"
+    },
+    {
+      "id": 9757,
+      "title": "m10-tiles-float-snap K3: Guard-Test tests/tiles-float-snap.test.ts",
+      "description": "AK: Float-Query == gesnappte Tile-Mitte (Stichproben über biome-Grenzen, Subpixel-Offsets wie im Scan), ganzzahlige Werte unverändert; npx vitest run tests/tiles-float-snap.test.ts grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:34:31Z",
+      "updated": "2026-11-28T07:34:31Z"
+    },
+    {
+      "id": 9758,
+      "title": "m10-tiles-float-snap K4: Nachher-Scan + Lane-Doku + .lane-done",
+      "description": "AK: after-Scan mischRate 0,00000 (vorher 0,00539), Zahlen vorher/nachher in docs/lanes/m10-tiles-float-snap.md + Belege in ~/games/.evidence/m10-tiles-float-snap/, .lane-done committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:34:31Z",
+      "updated": "2026-11-28T07:34:31Z"
     }
   ]
 }
