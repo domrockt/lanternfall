@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11638,
+  "next": 11662,
   "cards": [
     {
       "id": 1,
@@ -15742,6 +15742,48 @@
       ],
       "created": "2026-11-28T11:19:28Z",
       "updated": "2026-11-28T11:27:30Z"
+    },
+    {
+      "id": 11658,
+      "title": "m10-bundle-split K1: Vorher-Beleg (Build-Log + Chunk-Audit before.json)",
+      "description": "E-3 (docs/lanes/m10-acceptance-refresh-e.md, low). Vorher-Zustand dokumentieren: npm run build Log + Chunk-Größen; Audit-Skript scripts/m10-bundle-audit.mjs um Deprecation-Warn-Erkennung ergänzen; Report nach ~/games/.evidence/m10-bundle-split/before.json. AK: Audit-JSON existiert, Build-Status im Log erfasst, Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:36:50Z",
+          "by": "build",
+          "text": "todo → doing: m10-bundle-split K1 gestartet: Vorher-Audit (Build-Log + Chunk-Report). Befund: Größenwarnung ist durch Lane m10-bundle-chunk-fix (#9987) bereits weg; verbleibt Deprecation-WARN advancedChunks → codeSplitting."
+        }
+      ],
+      "created": "2026-11-28T11:36:41Z",
+      "updated": "2026-11-28T11:36:50Z"
+    },
+    {
+      "id": 11659,
+      "title": "m10-bundle-split K2: Fix — Migration advancedChunks → codeSplitting in vite.config.ts",
+      "description": "E-3-Hebel laut Abnahme-Doku. Nur Dateien der Lane (vite.config.ts), kein src/**, kein index.html. AK: npx vite build ohne DEP-Warnung und ohne Chunk-Großenwarnung, gleiche Chunk-Aufteilung (phaser/gfx/sprites), tsc grün, Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:36:41Z",
+      "updated": "2026-11-28T11:36:41Z"
+    },
+    {
+      "id": 11660,
+      "title": "m10-bundle-split K3: Nachher-Beleg + Smoke",
+      "description": "Audit nach Fix: after.json (Chunk-Tabelle + GZip + Smoke). AK: Build rc=0 ohne Chunk-Großenwarnung und ohne Deprecation-Warnung, Smoke 0 JS-Fehler, npm test grün, Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:36:41Z",
+      "updated": "2026-11-28T11:36:41Z"
+    },
+    {
+      "id": 11661,
+      "title": "m10-bundle-split K4: Lane-Doku + .lane-done",
+      "description": "docs/lanes/m10-bundle-split.md mit Vorher/Nachher-Tabelle + Kaltladezeit-Empfehlung (Vendor-Chunk lädt upfront, keine src-Änderung möglich); ggf. Bedarfsmeldung .dispatch/requests.md. AK: Doku committed, .lane-done im Worktree-Root, Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:36:41Z",
+      "updated": "2026-11-28T11:36:41Z"
     }
   ]
 }

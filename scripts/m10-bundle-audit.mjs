@@ -10,7 +10,7 @@
 // (Belege bleiben außerhalb des Repos, siehe AGENTS.md „Belege NACH ~/games/.evidence/“).
 //
 // Aufruf: node scripts/m10-bundle-audit.mjs [outname.json]
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -25,14 +25,19 @@ const MIME = { ".js": "text/javascript", ".html": "text/html", ".css": "text/css
 // 1) Build (einmal, synchron — kein Polling).
 const t0 = performance.now();
 let buildOut = "";
-try {
-  buildOut = execFileSync("npm", ["run", "build"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
-} catch (e) {
-  buildOut = String(e.stdout ?? "") + String(e.stderr ?? "");
+let buildStatus = null;
+{
+  // stdout UND stderr erfassen — Vite-Warnungen (WARN/DEP) gehen auf stderr.
+  const build = spawnSync("npm", ["run", "build"], { encoding: "utf8" });
+  buildStatus = build.status;
+  buildOut = String(build.stdout ?? "") + String(build.stderr ?? "");
 }
 const wallMs = Math.round(performance.now() - t0);
 const viteMatch = /built in (\d+)ms/.exec(buildOut);
 const warning = /larger than 500 kB|Some chunks are larger/.test(buildOut);
+// Lane m10-bundle-split: Deprecation-Warnungen (z. B. advancedChunks → codeSplitting)
+// getrennt erfassen — sie sind kein Großenproblem, aber Build-Rauschen.
+const deprecation = /option is deprecated/.test(buildOut);
 
 // 2) Chunk-Tabelle.
 const chunks = readdirSync("dist/assets")
@@ -77,16 +82,17 @@ server.close();
 const result = {
   date: new Date().toISOString(),
   command: "npm run build",
-  build_rc: warning ? "rc0-but-warning" : 0,
+  build_rc: buildStatus,
   wall_ms: wallMs,
   vite_ms: viteMatch ? Number(viteMatch[1]) : null,
   chunk_warning: warning,
+  deprecation_warning: deprecation,
   chunks,
   smoke: { sceneLoaded, jsErrors: errors },
 };
-const outDir = join(homedir(), "games", ".evidence", "m10-bundle-chunk");
+const outDir = join(homedir(), "games", ".evidence", "m10-bundle-split");
 mkdirSync(outDir, { recursive: true });
 const out = join(outDir, OUT);
 writeFileSync(out, JSON.stringify(result, null, 2));
-console.log(JSON.stringify({ out, wall_ms: wallMs, vite_ms: result.vite_ms, chunk_warning: warning, chunks, smoke: result.smoke }, null, 2));
-if (!sceneLoaded || errors.length || warning) process.exit(1);
+console.log(JSON.stringify({ out, wall_ms: wallMs, vite_ms: result.vite_ms, chunk_warning: warning, deprecation_warning: deprecation, chunks, smoke: result.smoke }, null, 2));
+if (!sceneLoaded || errors.length || warning || deprecation) process.exit(1);
