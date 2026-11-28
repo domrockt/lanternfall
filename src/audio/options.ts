@@ -5,7 +5,10 @@
  */
 // M10-mobile-fps-cap: BILDRATE-Logik liegt rein in src/logic/fps-cap.ts
 // (eine Quelle für Default/Label/Zyklus; hier nur die Verdrahtung).
-import { FPS_AUTO, clampFpsSetting, fpsSettingLabel, probeDeviceNode, stepFpsSetting } from "../logic/fps-cap";
+import { FPS_AUTO, FPS_MAX, clampFpsSetting, fpsSettingLabel, probeDeviceNode, stepFpsSetting } from "../logic/fps-cap";
+// M10-panel-hz-pref: BILDRATE=MAX hebt den 60-Hz-APK-Lock auf (Präferenz für die
+// APK-Bridge, siehe src/logic/panel-hz.ts).
+import { setPanelHzPref } from "../logic/panel-hz";
 
 export interface Options {
   music: number;        // 0..1
@@ -128,7 +131,11 @@ export function setOption(options: Options, key: keyof Options, value: number | 
   else if (key === "damageNumbers") next.damageNumbers = Boolean(value);
   else if (key === "muted") next.muted = Boolean(value);
   else if (key === "scale") next.scale = clampScale(Number(value));
-  else if (key === "fps") next.fps = clampFpsSetting(Number(value));
+  else if (key === "fps") {
+    next.fps = clampFpsSetting(Number(value));
+    // M10-panel-hz-pref: MAX schreibt die "hz=max"-Präferenz, sonst Default gelockt.
+    setPanelHzPref(next.fps === FPS_MAX ? "max" : "locked60");
+  }
   else next[key] = clampVolume(Number(value));
   return next;
 }
