@@ -1,0 +1,92 @@
+[
+  {
+    "id": "boss_moor_queen",
+    "size": "56x56",
+    "frames": 3,
+    "offPalette": 0,
+    "duplicates": 0,
+    "silhouetteContrast": 118.4,
+    "edgeContrast": 28.1,
+    "filledPixels": 1555,
+    "frameNames": [
+      "F0 Ruhe",
+      "F1 Atmen",
+      "F2 Wind-up"
+    ]
+  },
+  {
+    "id": "boss_bone_lord",
+    "size": "64x64",
+    "frames": 3,
+    "offPalette": 0,
+    "duplicates": 0,
+    "silhouetteContrast": 170.9,
+    "edgeContrast": 41.5,
+    "filledPixels": 1491,
+    "frameNames": [
+      "F0 Ruhe",
+      "F1 Atmen",
+      "F2 Wind-up"
+    ]
+  },
+  {
+    "id": "boss_pale_shepherd",
+    "size": "72x72",
+    "frames": 3,
+    "offPalette": 0,
+    "duplicates": 0,
+    "silhouetteContrast": 134.4,
+    "edgeContrast": 52,
+    "filledPixels": 2342,
+    "frameNames": [
+      "F0 Ruhe",
+      "F1 Atmen",
+      "F2 Wind-up"
+    ]
+  },
+  {
+    "id": "boss_bell_golem",
+    "size": "80x80",
+    "frames": 3,
+    "offPalette": 0,
+    "duplicates": 0,
+    "silhouetteContrast": 134.4,
+    "edgeContrast": 29.4,
+    "filledPixels": 2775,
+    "frameNames": [
+      "F0 Ruhe",
+      "F1 Atmen",
+      "F2 Wind-up"
+    ]
+  },
+  {
+    "id": "boss_coven",
+    "size": "96x96",
+    "frames": 3,
+    "offPalette": 0,
+    "duplicates": 0,
+    "silhouetteContrast": 70,
+    "edgeContrast": 32.6,
+    "filledPixels": 2342,
+    "frameNames": [
+      "F0 Ruhe",
+      "F1 Atmen",
+      "F2 Wind-up"
+    ]
+  },
+  {
+    "id": "boss_hollow_king",
+    "size": "96x96",
+    "frames": 3,
+    "offPalette": 0,
+    "duplicates": 0,
+    "silhouetteContrast": 70,
+    "edgeContrast": 34.7,
+    "filledPixels": 4084,
+    "frameNames": [
+      "F0 Ruhe",
+      "F1 Atmen",
+      "F2 Wind-up"
+    ]
+  }
+]
