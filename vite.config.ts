@@ -1,4 +1,16 @@
 import { defineConfig } from "vite";
+import { execSync } from "node:child_process";
+
+// Lane m10-device-telemetry (K1): Build-ID (Commit-Hash + Zeit) als globales
+// Define, damit Telemetry-Samples jeden Lauf einem Build zuordnen koennen.
+// Additiv und ohne Auswirkung auf Chunks/Assets; "dev", wenn git nicht greift.
+let lfBuild = "dev";
+try {
+  const commit = execSync("git rev-parse --short HEAD", { stdio: ["ignore", "pipe", "ignore"] })
+    .toString().trim();
+  lfBuild = `${commit} ${new Date().toISOString()}`;
+} catch { /* kein git (z. B. Export) */ }
+
 
 // Lane m10-bundle-chunk-fix (Befund E-3, docs/lanes/m10-acceptance-refresh-e.md):
 // Der Build lief bisher als ein einziger Chunk (~1,95 MB: Phaser-Engine + Spielcode)
@@ -15,6 +27,9 @@ import { defineConfig } from "vite";
 // index.html oder Asset-Pfaden (--base ./ bleibt im build-Skript), damit der
 // Android-APK-Preview-Pfad unverändert funktioniert.
 export default defineConfig({
+  define: {
+    __LF_BUILD__: JSON.stringify(lfBuild),
+  },
   build: {
     chunkSizeWarningLimit: 1250,
     rolldownOptions: {

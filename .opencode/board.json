@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10788,
+  "next": 10793,
   "cards": [
     {
       "id": 1,
@@ -13943,6 +13943,79 @@
       ],
       "created": "2026-11-28T09:38:54Z",
       "updated": "2026-11-28T09:51:29Z"
+    },
+    {
+      "id": 10790,
+      "title": "m10-device-telemetry K1: Telemetry-Collector (Sample + Puffer-Send)",
+      "description": "src/telemetry.ts: Sample alle 5 s {t, fps, frameMsP50/P95/max, quality, renderScale, enemies, fxActive, drawCalls, heapMB, scene, character, renderer+vendor (1x), ua, dpr, screen, build}, gepuffert per fetch POST keepalive. Abnahme: tsc grün, Sample-Aufbau Unit-getestet, KEINE personenbezogenen Daten.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:28:39Z",
+          "by": "build",
+          "text": "todo → doing: m10-device-telemetry K1 angenommen (Lane-Worktree lf-lanes/m10-device-telemetry) – vor FPS-Baseline-Messung."
+        },
+        {
+          "at": "2026-11-28T09:30:57Z",
+          "by": "build",
+          "text": "doing → review: K1: src/telemetry.ts (Collector, Sample, frameStats, gepuffertes flush) + __LF_BUILD__-Define in vite.config.ts + Hook in debug.ts nach READY. tsc grün; Commit 18c61118. K3-Abnahmelauf folgt."
+        },
+        {
+          "at": "2026-11-28T09:43:43Z",
+          "by": "build",
+          "text": "review → done: lane #10517, reviewer PASS. K1 Collector + Build-Define + debug-Hook, Commits 18c61118..5578aba4, 174 Dateien/1891 Tests grün."
+        }
+      ],
+      "created": "2026-11-28T09:28:36Z",
+      "updated": "2026-11-28T09:43:43Z"
+    },
+    {
+      "id": 10791,
+      "title": "m10-device-telemetry K2: Aktivierung + Drosselung",
+      "description": "Aktiv nur bei ?telemetry=1 oder APK (Host 127.0.0.1 + Android-UA); Desktop sendet nichts. Fehler beim Senden still schlucken, max 1 Request/5 s. Abnahme: Aktivierungslogik getestet; Desktop-Run ohne ?telemetry=1 erzeugt keine Requests.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:30:57Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: Aktivierung + Drosselung (telemetryEnabled, canSend, stiller Fehlermodus) ist implementiert, Tests folgen in tests/telemetry.test.ts."
+        },
+        {
+          "at": "2026-11-28T09:31:59Z",
+          "by": "build",
+          "text": "doing → review: K2: telemetryEnabled-Matrix (?telemetry=1/0, APK=127.0.0.1+Android-UA, Desktop aus) + Drosselung/Fehler-Puffer getestet (9 Tests grün). Commit 82683aa1. Zusätzlich: collectReadings/Collector try/catch-geschützt."
+        },
+        {
+          "at": "2026-11-28T09:43:43Z",
+          "by": "build",
+          "text": "review → done: lane #10518, reviewer PASS. Aktivierung (Desktop aus, APK an, ?telemetry=0 gewinnt) + Drosselung getestet, Commit 82683aa1."
+        }
+      ],
+      "created": "2026-11-28T09:28:36Z",
+      "updated": "2026-11-28T09:43:43Z"
+    },
+    {
+      "id": 10792,
+      "title": "m10-device-telemetry K3: Tests + Doku + Abnahmelauf",
+      "description": "tests/telemetry.test.ts (Sample-Aufbau, Drosselung), docs/DEVICE-TELEMETRY.md (Felder, Abschalten, Datenablage) + Beispiel-Auswertung (fps p5/Median je Minute). Abnahme: lokaler Lauf ?telemetry=1 erzeugt Zeilen in Tages-JSONL, 0 JS-Fehler, Tests/tsc grün, kein FPS-Einfluss (Vorher/Nachher).",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:31:59Z",
+          "by": "build",
+          "text": "todo → doing: K3 angenommen: Sample-Aufbau-Tests + docs/DEVICE-TELEMETRY.md + Abnahmelauf mit ?telemetry=1 + FPS Vorher/Nachher."
+        },
+        {
+          "at": "2026-11-28T09:43:43Z",
+          "by": "build",
+          "text": "doing → done: lane #10519, reviewer PASS. 19 Telemetry-Tests, docs/DEVICE-TELEMETRY.md, Abnahme ?telemetry=1 → JSONL-Zeilen, 0 JS-Fehler, FPS Vorher 60.1/59.9 vs. Nachher 60.1/60.0 (flock). Rest: APK-Verifikation am Tablet (Dom)."
+        }
+      ],
+      "created": "2026-11-28T09:28:36Z",
+      "updated": "2026-11-28T09:43:43Z"
     }
   ]
 }
