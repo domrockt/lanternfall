@@ -1,0 +1,20 @@
+# Lane m10-chaos-fix-glow-runpath — done (2026-11-28)
+
+Fix der Audit-Befunde B1-Teil/B2/B5 (docs/lanes/m10-chaos-legibility.md, art-director 3/5 streng)
+mit NUR den lane-zugewiesenen Dateien (Boot.ts, Run.ts); gen-fx.ts/textures.ts/FxSystem.ts
+(fremd geclaimed, Evo-FX-Kette) bewusst nicht angefasst.
+
+Messwerte (scripts/m10-chaos-fix-glowpath.mjs, seed=1, M25-Chaos, 640x360@1 + 780x360@3,
+iGPU-Pflicht erfüllt, worst of 3 Frames):
+- Near-White A7 ganzer Frame: 2,74 % → 0,45 % (Gate ≤ 4,16 %) — PASS
+- Near-White A7 Crop: 23,86 % → 2,98 % (Gate ≤ 4,16 %) — PASS
+- FPS: 60,1/60,2 nach Fix (60,0/60,1 vor Fix) — within noise, keine Regression
+- 0 pure-weiße gestreckte Partikel im 4x-Crop; fx_pillar/fx_shock auf Bake-Stufen,
+  Draw-Scale ≤ 1 (4x-Zoom zeigt 1-px-Stufen, art-director bestätigt)
+
+Commits: #7298 K1 Repro+before, #7299 K2 ADD-Alpha-/Scale-Deckel (fx-caps.ts NEU),
+#7300 K3 fx_pillar-Bake + fx_shock via spawnAnim, #7301 K4 Boot.ts Rampen-Ende Amber/Lantern +
+After-Gate, Review-Followup (reviewer PASS), #7302 K5 Doku.
+Kontrolleure: art-director 4/5 (streng, Gate ≥ 4/5 PASS), reviewer PASS.
+Details + offene Punkte (Rest-Near-White aus gen-fx/FxSystem → m10-chaos-fix-raster-glow /
+m10-evo-fx-*): docs/lanes/m10-chaos-fix-glow-runpath.md
