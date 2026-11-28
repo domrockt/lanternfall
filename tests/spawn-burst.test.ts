@@ -187,7 +187,7 @@ describe("Spawn-Summe mit und ohne Burst-Glättung (30-min-Simulation)", () => {
   });
 });
 
-describe("Integration: Spawner.update materialisiert pro echtem Frame max. Budget", () => {
+describe("Integration: Spawner.update materialisiert pro Substep max. Allowance", () => {
   // Spawner nutzt Phaser nur für Math.Clamp (top-level vi.mock oben);
   // Scene/Kamera/Pool/Rng werden durch Stubs ersetzt (Technik wie
   // tests/enemy-pool-reuse.test.ts).
@@ -213,7 +213,7 @@ describe("Integration: Spawner.update materialisiert pro echtem Frame max. Budge
   const POOL = { count: 0, active: [], spawn: () => ({}), despawn: () => {} };
   const RNG = { next: () => 0.5, pick: <T,>(arr: T[]) => arr[0] };
 
-  it("mehrere Substeps im selben Frame teilen sich eine Allowance; neuer Frame setzt sie zurück", async () => {
+  it("Allowance waechst mit Sim-dt (dt-Akkumulator #7758): 60-Hz-Substeps materialisieren je 8, Frame-Grenzen sind irrelevant", async () => {
     const { Spawner } = await import("../src/systems/Spawner");
     const scene = makeSceneStub();
     const spawner = new Spawner(scene as never, POOL as never, RNG as never);
@@ -223,14 +223,16 @@ describe("Integration: Spawner.update materialisiert pro echtem Frame max. Budge
     const first = spawner.update(0, 1 / 60, 300, 180);
     const second = spawner.update(1 / 60, 1 / 60, 300, 180);
     expect(first.length).toBe(SPAWN_FRAME_BUDGET);
-    expect(second.length).toBe(0); // Allowance für diesen Frame aufgebraucht
+    // Frueher: 0 — die Allowance wurde je ECHTEM Frame zurueckgesetzt und
+    // hing damit an der Echtzeit-FPS. Jetzt accresziert sie mit Sim-dt.
+    expect(second.length).toBe(SPAWN_FRAME_BUDGET);
 
     scene.game.loop.frame = 2;
-    const third = spawner.update(2 / 60, 1 / 60, 300, 180);
-    expect(third.length).toBe(SPAWN_FRAME_BUDGET);
+    const third = spawner.update(2 / 60, 1 / 30, 300, 180); // Substep ueber 1/30 s Sim-Zeit
+    expect(third.length).toBe(SPAWN_FRAME_BUDGET * 2); // Allowance waechst mit dt, nicht je Frame
 
     // Erhalt: 100 Startbudget + zugesammelnde Rate = materialisiert + Rest.
-    const granted = 100 + 3 * (0.38 * (1 / 60));
+    const granted = 100 + 0.38 * (1 / 60 + 1 / 60 + 1 / 30);
     expect(first.length + second.length + third.length + spawner.budget).toBeCloseTo(granted, 3);
   });
 
