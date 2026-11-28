@@ -155,11 +155,20 @@ const waitRunScene = async () => {
   const url = page.url();
   const targetUrl = /debug=1/.test(url) ? url : `${url}${url.includes("?") ? "&" : "?"}debug=1`;
   await page.goto(targetUrl, { waitUntil: "load" });
-  await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "title", null, { timeout: 30000 });
+  // Boot-Rennen: window.__lf existiert beim Ladeprozess halbseitig -> ein
+  // Wurf im Prädikat bricht waitForFunction GANZ ab (Playwright-Verhalten,
+  // 2 Fehlläufe 28.11.). Deshalb alles wirftsicher, Wurf == weiterwarten.
+  await page.waitForFunction(() => {
+    try { return window.__lf?.state?.().scene === "title"; } catch { return false; }
+  }, null, { timeout: 45000 });
   await page.keyboard.press("Enter");
-  await page.waitForFunction(() => window.__lf.state().scene === "charselect", null, { timeout: 10000 });
+  await page.waitForFunction(() => {
+    try { return window.__lf?.state?.().scene === "charselect"; } catch { return false; }
+  }, null, { timeout: 20000 });
   await page.keyboard.press("Enter");
-  await page.waitForFunction(() => window.__lf.state().scene === "run", null, { timeout: 10000 });
+  await page.waitForFunction(() => {
+    try { return window.__lf?.state?.().scene === "run"; } catch { return false; }
+  }, null, { timeout: 20000 });
   await page.evaluate(({ evolutions, passives }) => {
     window.__lf.god(true);
     window.__lf.setSuppressLevelUps(true);
