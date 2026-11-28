@@ -2028,8 +2028,9 @@ export function thornSignatureFrame(kind: "hit" | "death", stage: number, size =
       for (let s = -Math.ceil(w); s <= Math.ceil(w); s++) {
         const aS = Math.abs(s);
         if (aS > w) continue;
-        // Treppe: knochenhelle Spitze → marshLight → marsh → mossDark-Basis.
-        const idx = rel < 0.15 && aS < w * 0.5 ? 11 : rel < 0.55 ? 31 : rel < 0.85 ? 30 : 29;
+        // Treppe: knochenhelle Spitze (sparsam, nur jeder dritte Splitter —
+        // Near-White-Gate 4,16 %) → marshLight → marsh → mossDark-Basis.
+        const idx = rel < 0.15 && aS < w * 0.5 && i % 3 === 0 ? 11 : rel < 0.55 ? 31 : rel < 0.85 ? 30 : 29;
         put(hx - Math.sin(a) * s, hy + Math.cos(a) * s, idx);
       }
       // Einseitige Barbe (keine Spiegel-Symmetrie).
