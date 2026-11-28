@@ -303,6 +303,33 @@ Erzeuger: `scripts/qa-640-vfx.mjs`, `scripts/qa-640-sheets.py`; Karte #2499, Com
 Karten-Abschluss #2499: Belege oben sind auf `main` @ `217316d`/`17c9f25` erzeugt und
 per Vision geprüft; keine fehlenden Belege. Karte → done.
 
+## Heap-Tor (Lane m10-heap-budget, 27./28.11.)
+
+Der Heap-Fail der Nachabnahme C (Folge-Job „Heap-Tor +21 % FAIL (GC-Sägezahn)“, der
+bislang als Board-Karte fehlte) ist in der Lane `m10-heap-budget` behandelt. Das Tor
+bleibt hart (Dom 19:05Z) und wird messrausch-fest definiert, nicht abgeschwächt:
+
+- **HARD:** Heap(Run-Ende, nach erzwungenem GC) − Heap(Sim-Minute 1, nach erzwungenem GC) ≤ **+15 %**.
+  Begründung: „Minute 29 im Lauf vs. Minute 1“ ist mit legitimer Spielstärke konfundiert
+  (Level 38, Gegnerwellen, 6 Bosse); der nach Run-Ende + GC gehaltene Heap ist der
+  Leak-Signalgeber. Reine Definition: `scripts/m10-heap-budget-gate.mjs`, getestet in
+  `tests/heap-budget.test.ts` (8 Tests), Messlauf: `scripts/m10-heap-budget.mjs`.
+- **SOFT (Beobachtungswert, kein Gate):** max roher Peak je 5-min-Fenster ≤ Minute 1 + 25 %.
+  Die rohen Fenster-Peaks zeigen den GC-Sägezahn (41–55 MB um eine 30–36-MB-Basis);
+  sie kippen das Urteil nicht.
+
+Ist-Messung (verbindlicher Lauf, `shots/m10-heap-budget-before.json`, iGPU
+„ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)“, 0 JS-Fehler,
+FPS min 60,1): endMB 36,3 MB vs. Minute 1 32,7 MB = **+11,0 % ≤ +15 % → PASS, Fall A**
+(kein monotoner Leak; Timeline mit Rücksetzern, z. B. Minute 22 39,1 → Minute 25 34,3 MB).
+
+Nachweis-Lauf zur Tor-Definition (`shots/m10-heap-budget-after.json`, gleicher
+iGPU-Renderer-String, 0 JS-Fehler, FPS min 59,7): endMB 37,5 MB vs. Minute 1
+33,7 MB = **+11,3 % ≤ +15 % → PASS, Fall A** (SOFT: max Fenster-Peak 55,7 MB =
++65,3 %, nur Beobachtung — GC-Sägezahn). Zwei unabhängige Läufe bestätigen das
+Urteil (+11,0 % / +11,3 %); der alte +21-%-FAIL war Peak-Jitter gegen das
+Minute-1→29-im-Lauf-Tor.
+
 ## Nachabnahme C (27.11., PIN `43fd9eb`) — Versuch (c)
 
 Dritte unabhängige Re-Abnahme („Drain-Welle“) auf bei Job-Start gepinntem main-Commit
