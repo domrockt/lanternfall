@@ -49,7 +49,13 @@ import { shakeFor, hitStopFor, mergeHitStop, clampKnockbackSpeed, MAX_HITSTOP_SE
 import { deathClassFor } from "../logic/death";
 import { getSettings } from "../audio/settings";
 import { getAudio } from "../audio/AudioSystem";
-import { escToggleAllowed, InputState, type Vec2 } from "../input/InputState";
+import {
+  escToggleAllowed,
+  InputState,
+  padToggleEvent,
+  type EscToggleEvent,
+  type Vec2,
+} from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { getTouchSnapshot, resetTouchSnapshot } from "../input/TouchState";
 import {
@@ -458,7 +464,15 @@ export class Run extends Phaser.Scene {
     // (dort schliesst B/ESC das Menue, statt den Run fortzusetzen).
     if (frame.actions.pause && !this.levelUpOpen && !this.chestOpen
       && !this.registry.get("lf-options-open")) {
-      this.togglePause();
+      // M10-pad-start-pause: Pad-Start (Button 9) und Touch-Pause-Puls laufen
+      // als ESC-Aequivalent durch denselben Dedup-Pfad (escToggleAllowed) —
+      // eine TV-Fernbedienung hat kein ESC. Primärer Schutz gegen Mehrfach-
+      // Toggle ist die Edge-Triggerung in InputState (genau eine pause-Edge pro
+      // Press); der Dedup ist die zweite Verteidigung. Zeitquelle ist die
+      // Wanduhr (ms-Floor), nicht die Szenen-Clock (stand beim Fortsetzen aus
+      // der Pause still): Doppel-Dispatch im selben Frame = gleicher timeStamp
+      // -> genau ein Toggle; zwei echte Presses liegen weit ueber 1 ms auseinander.
+      this.togglePause(padToggleEvent(Math.floor(performance.now())));
     }
 
     // AutoPlay wählt Level-Up-Angebote nach kurzer Anzeige (unbeaufsichtigter Run).
@@ -1441,8 +1455,13 @@ export class Run extends Phaser.Scene {
     if (this.hp > this.maxHp) this.hp = this.maxHp;
   }
 
-  /** ESC wird zentral in der UI-Szene verarbeitet (Optionsmenü hat Vorrang). */
-  togglePause(): void {
+  /**
+   * Toggle des Pausenzustands. `ev` wird vom Frame-Pfad (Pad-Start/Touch) als
+   * synthetisches Event mitgegeben und durchlaeuft den Dedup in
+   * `escToggleAllowed`; ohne Event (ESC-Handler, Portrait-Auto-Pause) wird wie
+   * bisher `window.event` gelesen — der ESC-Dedup-Pfad bleibt bitgleich.
+   */
+  togglePause(ev?: EscToggleEvent | null): void {
     if (this.levelUpOpen || this.chestOpen || this.finished) return;
     // M10-esc-pause-fix: ein physischer ESC-Press togglet genau einmal.
     // Der UI-Handler wird pro Press mehrfach aufgerufen (Doppel-Dispatch
@@ -1451,11 +1470,11 @@ export class Run extends Phaser.Scene {
     // des DOM-Dispatch gesetzt — genau dort liegen die Duplikat-Aufrufe.
     // Touch-, Gamepad- und Portrait-Pfade rufen aus dem Frame-Update heraus auf
     // (window.event = null) und bleiben unberührt.
-    const ev = (globalThis as unknown as { event?: KeyboardEvent }).event;
-    const decision = escToggleAllowed(
-      ev ? { key: ev.key, type: ev.type, timeStamp: ev.timeStamp, repeat: ev.repeat } : null,
-      this.lastEscToggleTs,
-    );
+    const domEv = (globalThis as unknown as { event?: KeyboardEvent }).event;
+    const source = ev ?? (domEv
+      ? { key: domEv.key, type: domEv.type, timeStamp: domEv.timeStamp, repeat: domEv.repeat }
+      : null);
+    const decision = escToggleAllowed(source, this.lastEscToggleTs);
     if (!decision.allowed) return;
     this.lastEscToggleTs = decision.lastAcceptedTs;
     this.paused = !this.paused;

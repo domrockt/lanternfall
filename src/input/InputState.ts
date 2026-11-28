@@ -1,4 +1,16 @@
 /**
+ * M10-pad-start-pause: Schluessel des synthetischen Pad-/Touch-Pause-Events.
+ * Der Frame-Pfad in Run.ts (Pad-Start = Button 9, Touch-Pause-Pulse) erzeugt
+ * ueber `padToggleEvent()` ein Event, das dieselben Toggle-Regeln wie ESC
+ * durchlaeuft — eine physischer Press togglet genau einmal, 0 Doppel-Events.
+ */
+export const PAD_START_KEY = "PadStart";
+
+export function padToggleEvent(timeStamp: number): EscToggleEvent {
+  return { key: PAD_START_KEY, type: "keydown", timeStamp, repeat: false };
+}
+
+/**
  * M10-esc-pause-fix: Entscheidet, ob ein ESC-Toggle-Aufruf tatsaechlich togglen
  * darf. Ein physischer ESC-Press (= genau ein DOM-Dispatch) darf genau einmal
  * togglen. Beobachtete Pathologie (Beleg shots/m10-esc-pause-before*.json): der
@@ -6,11 +18,16 @@
  * Keydowns im selben Game-Step (Keyboard-Queue wird pro Step mehrfach
  * abgearbeitet, Single-Slot-Dedupe greift nicht) und keyup-getriebene Replays.
  * Deshalb:
- *  - `ev === null` (kein DOM-Dispatch: Touch/Gamepad/Frame-Pfad) → immer togglen,
+ *  - `ev === null` (kein DOM-Dispatch: Frame-Pfad ohne Event) → immer togglen,
  *  - keyup-Dispatches togglen nie,
  *  - OS-Key-Repeat (repeat=true) togglet nicht,
  *  - mehrfacher Dispatch desselben Keydowns (gleicher timeStamp) togglet einmal.
- * Reine Funktion, unit-testbar (tests/esc-pause.test.ts).
+ * M10-pad-start-pause: dieselben Regeln gelten fuer das synthetische
+ * Pad-Start/Touch-Event (`padToggleEvent`, key = PAD_START_KEY) — der Frame-Pfad
+ * fuehrt Pad-/Touch-Pause damit in denselben Dedup-Pfad. Andere Keys togglen
+ * immer (bisheriges Verhalten, nur ESC erreicht den Pfad per DOM).
+ * Reine Funktion, unit-testbar (tests/esc-pause.test.ts,
+ * tests/pad-start-pause.test.ts).
  */
 export interface EscToggleEvent {
   key: string;
@@ -23,7 +40,10 @@ export function escToggleAllowed(
   ev: EscToggleEvent | null | undefined,
   lastAcceptedTs: number | null,
 ): { allowed: boolean; lastAcceptedTs: number | null } {
-  if (!ev || ev.key !== "Escape") return { allowed: true, lastAcceptedTs };
+  if (!ev) return { allowed: true, lastAcceptedTs };
+  if (ev.key !== "Escape" && ev.key !== PAD_START_KEY) {
+    return { allowed: true, lastAcceptedTs };
+  }
   if (ev.type !== "keydown" || ev.repeat) return { allowed: false, lastAcceptedTs };
   if (lastAcceptedTs !== null && ev.timeStamp === lastAcceptedTs) {
     return { allowed: false, lastAcceptedTs };
