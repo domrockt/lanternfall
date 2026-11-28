@@ -18,7 +18,7 @@ Nur Messen, **kein** src-/tests-Code. Briefing: Vorrat-Job, Karten K1–K4.
 | #10904 | K1 Build rc + Testzahl + acceptance-count (Soll 30/6/6/6/6/2) | K1 erledigt |
 | #10905 | K2 verify:final (7/7 PASS, 0 JS-Fehler) + verify:terrain/terrain-coverage (0 schwarze Fläche, 960/1280/1920) | erledigt |
 | #10906 | K3 Burst + Minute-25 auf iGPU (780x360@3, 960x540), Renderer-String je Beleg | erledigt |
-| #10907 | K4 fullrun-Guard (6/6 Bosse + Truhen, Heap-Tor) + ACCEPTANCE.md Ergänzung | offen |
+| #10907 | K4 fullrun-Guard (6/6 Bosse + Truhen, Heap-Tor) + ACCEPTANCE.md Ergänzung | erledigt (Heap-Tor FAIL dokumentiert) |
 
 ## Ergebnisse
 
@@ -57,6 +57,20 @@ Belege: `~/games/.evidence/m10-acceptance-refresh-f/k3-perf-accf-780x360d3.json`
 
 Urteil K3: **PASS** (beide ≥ 55 FPS-Ziel, am 60-Cap; Minute-25-780 +18…+25 % gegen 27.11.-FAIL).
 
+### K4 (2026-11-28, 10:43–10:55Z, fullrun unter `flock /home/ai/games/.lf-perf.lock`)
+
+- `npm run fullrun -- --tag accf` und `--tag accf2` (Wiederholung 1): je **6/6 Bosse exakt
+  300–1800 s, 6 Truhen, Sieg `dawn`, fpsMin 60,4/60,3, 0 JS-Fehler** — aber
+  **Heap-Tor +18,2 % / +20,8 % > +15 %: FAIL (reproduziert)**. Formales Tor-Skript
+  `m10-heap-budget.mjs` crashete mittendrin → UNMESSBAR; fullrun-Beleg verbindlich.
+- `ACCEPTANCE.md`: Abschnitt „Nachabnahme F (2026-11-28)“ ergänzt, E-Werte unverändert,
+  Abweichungen ≥ 5 % markiert (Tests +18,2 %; Heap-Tor +13,9 % → +18,2/+20,8 %).
+
+Urteil K4: **FAIL (nur Heap-Tor)**; Inhalt/FPS/Truhen/JS-Fehler grün.
+
 ## Lane-Ergebnis
 
-offen
+**Nachabnahme F: NICHT ABGENOMMEN** — K1/K2/K3 PASS, K4 FAIL (einziger Blocker
+Heap-Tor > +15 %, 2 Läufe). Belege in `~/games/.evidence/m10-acceptance-refresh-f/`,
+Urteile in `docs/qa/acceptance-refresh-f-2026-11-28.md`. Folge-Bedarf:
+Heap-Regressions-Diagnose (Karte für Dora), kein Fix durch diese Lane.

@@ -66,8 +66,28 @@ und **+18…+25 % bei Minute-25-780** (43,1→60,1; Improvement, in ACCEPTANCE.m
 
 ## K4 — fullrun-Guard + ACCEPTANCE.md
 
-(wechselnde Ergebnisse)
+| Zeit (UTC) | Befehl | Ergebnis | Urteil |
+|---|---|---|---|
+| 2026-11-28T10:44Z | `flock … npm run fullrun -- --tag accf` | 6/6 Bosse exakt 300–1800 s, **6 Truhen**, Sieg `dawn`, fpsMin **60,4**, 0 JS-Fehler; **Heap-Tor +18,2 % > +15 %** | Inhalt/FPS **PASS**, Heap-Tor **FAIL** |
+| 2026-11-28T10:49Z | `flock … npm run fullrun -- --tag accf2` (Wiederholung 1, verbindlich) | identisches Bild: 6/6 Bosse, 6 Truhen, Sieg `dawn`, fpsMin **60,3**, 0 JS-Fehler; **Heap-Tor +20,8 % > +15 %** | **FAIL (reproduziert)** |
+| 2026-11-28T10:54Z | `node scripts/m10-heap-budget.mjs` (formales Tor-Skript) | Lauf crashete mittendrin („Target page … closed“) → `gate=UNMESSBAR`; partielles JSON als Beleg | **UNMESSBAR** — fullrun-Belege bleiben verbindlich |
+
+Heap-Detail: Minute 1 → Minute 29 **53,4 → 63,1 MB** (+18,2 %) bzw. **51,5 → 62,2 MB**
+(+20,8 %); endMB nach Run-Ende 47,5 MB (GC-Sägezahn-Muster, aber Re-Messung entkräftet
+den FAIL diesmal **nicht** — gegen Nachabnahme E (+13,9 % PASS) eine Verschlechterung
+≥ 5 %). Kein Spielcode durch diese Lane geändert.
+
+Belege: `~/games/.evidence/m10-acceptance-refresh-f/m3-fullrunaccf.json`,
+`m3-fullrunaccf2.json`, `k4-heap-budget-partial.json`.
+
+**Urteil K4: FAIL** (nur Heap-Tor; Inhalt/FPS/Truhen/JS-Fehler alle grün).
+ACCEPTANCE.md ist ergänzt (Abschnitt „Nachabnahme F“, alte Werte unverändert,
+Abweichungen ≥ 5 % markiert).
 
 ## Gesamtergebnis
 
-offen
+**Nachabnahme F: NICHT ABGENOMMEN.** K1, K2, K3 **PASS**; K4 **FAIL** — einziger
+Blocker das Heap-Tor (+18,2 %/+20,8 % > +15 %, in 2 vollen Läufen reproduziert).
+Alle FPS-Tore sind grün (60-Cap), Inhalte und Tests unverändert vollständig.
+Empfehlung: Heap-Regressions-Diagnose als Folge-Karte (Vergleich gegen `m10-fx-bakes-evo-r2`-
+Bakes und Menü-/Android-Merges seit Nachabnahme E `a6f1458`).
