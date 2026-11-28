@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10793,
+  "next": 10816,
   "cards": [
     {
       "id": 1,
@@ -14016,6 +14016,51 @@
       ],
       "created": "2026-11-28T09:28:36Z",
       "updated": "2026-11-28T09:43:43Z"
+    },
+    {
+      "id": 10813,
+      "title": "m10-swarm-gap-wiring K1: Bedarfsmeldung prüfen (resolvePlayerGap auf main?)",
+      "description": "Prüfen, ob die Bedarfsmeldung der Lane m10-player-swarm-gap (4-Zeilen-Wiring resolvePlayerGap in src/scenes/Run.ts) inzwischen über Merge erledigt ist. Abnahmekriterium: grep-Beleg auf origin/main (Import + Aufruf im updateEnemies-Ende), origin/main ist Ancestor des Worktrees, Doku in docs/lanes/m10-swarm-gap-wiring.md, Bedarfsmeldung geschlossen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:04:38Z",
+          "by": "build",
+          "text": "doing → done: Bedarfsmeldung erledigt: resolvePlayerGap-Wiring (Import + Aufruf im updateEnemies-Ende) bereits via Commit 3751e397 (m10-player-swarm-gap #10272) auf main. Belege: docs/lanes/m10-swarm-gap-wiring.md; Commit 0162b308 nennt #10813."
+        }
+      ],
+      "created": "2026-11-28T10:03:49Z",
+      "updated": "2026-11-28T10:04:38Z"
+    },
+    {
+      "id": 10814,
+      "title": "m10-swarm-gap-wiring K2: 4-Zeilen-Wiring (nur falls K1 negativ)",
+      "description": "Falls K1 negativ: resolvePlayerGap-Aufruf + Import + Kommentar im updateEnemies-Ende von src/scenes/Run.ts, Vorher-Messung live (<8px-Anteil). Nur ausführen, wenn Bedarf noch offen ist; sonst mit Begründung entfallen.",
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T10:04:38Z",
+          "by": "build",
+          "text": "backlog → backlog: ENTFÄLLT (K1 #10813 positiv): Wiring existiert bereits auf main (Commit 3751e397); Duplikat nicht nötig."
+        }
+      ],
+      "created": "2026-11-28T10:03:49Z",
+      "updated": "2026-11-28T10:04:38Z"
+    },
+    {
+      "id": 10815,
+      "title": "m10-swarm-gap-wiring K3: Nachher-Messung + Test + Doku (nur falls K1 negativ)",
+      "description": "Falls K1 negativ: Nachher-Messung (>=50% Gegner <8px), tests/swarm-gap-wiring.test.ts, Doku, Abnahme-Shots. Nur ausführen, wenn Bedarf noch offen ist; sonst mit Begründung entfallen.",
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T10:04:38Z",
+          "by": "build",
+          "text": "backlog → backlog: ENTFÄLLT (K1 #10813 positiv): Nachher-Messung (-66% <8px) + Tests (9/9) durch Ursprungs-Lane auf main abgeliefert."
+        }
+      ],
+      "created": "2026-11-28T10:03:49Z",
+      "updated": "2026-11-28T10:04:38Z"
     }
   ]
 }

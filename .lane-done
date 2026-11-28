@@ -1,0 +1,14 @@
+# Lane m10-swarm-gap-wiring — FERTIG (2026-11-28, 1 Commit)
+
+Bedarfsmeldung der Lane m10-player-swarm-gap (4-Zeilen-Wiring resolvePlayerGap in
+src/scenes/Run.ts, updateEnemies-Ende) wurde geprüft (Karte #10813) und als **bereits
+erledigt** geschlossen: Commit 3751e397 (m10-player-swarm-gap #10272) enthält Import
+(Run.ts:13) + Aufruf (Run.ts:1085) + Kommentar und ist über den Lane-Merge auf main.
+
+- Live-Nachher-Messung der Ursprungs-Lane: 9,38 → 3,20 Gegner < 8 px (−66 %, Ziel ≥ 50 %)
+  — Belege ~/games/.evidence/m10-player-swarm-gap/m10-player-gap-{before,after}.json
+- tests/player-swarm-gap.test.ts: 9/9 passed; npx tsc --noEmit rc=0
+- Keine Code-Änderung in dieser Lane: Separation-/SpatialHash-Logik bytegleich, keine
+  Abnahme-Shots nötig (Live-Belege von der Ursprungs-Lane)
+- K2 #10814 / K3 #10815 entfallen (Wiring + Messung/Tests bereits auf main)
+- Details: docs/lanes/m10-swarm-gap-wiring.md
