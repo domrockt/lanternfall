@@ -519,17 +519,6 @@ export class Run extends Phaser.Scene {
     }
 
     const scaledDt = realDt * this.timeScale;
-    // m10-run-determinism-fix: Kamera-Anker deterministisch aus der SIM-Position
-    // setzen, BEVOR Sim-Schritte laufen. Spawner.spawnOne positioniert Spawns
-    // relativ zum Kamera-Zentrum (cam.scrollX + width/2) und entscheidet
-    // outsideView() mit denselben Werten — der Lerp-Follow (0,18) glättete
-    // scrollX aber pro Echtzeit-Frame, sodass Spawn-Positionen frame-abhängig
-    // waren (Probe-Beleg: Gegner uid 15 bei Schritt 475 ~1 px unterschiedlich,
-    // obwohl RNG-Ziehungsstand bitgleich). Das Rendering folgt danach weiter
-    // dem Phaser-Follow; die SIM sieht immer den exakt abgeleiteten Anker.
-    const detCam = this.cameras.main;
-    detCam.scrollX = this.visualX - detCam.width / 2;
-    detCam.scrollY = this.visualY - detCam.height / 2;
     this.ground.update(this.cameras.main, time);
 
     // Feste Teilschritte: bei hoher Zeitskalierung würden Projekte/Gegner sonst
@@ -563,6 +552,17 @@ export class Run extends Phaser.Scene {
 
   /** Ein fester Simulationsschritt (Bewegung, Spawns, Kampf, Pickups). */
   private simulate(dt: number): void {
+    // m10-run-determinism-fix: Kamera-Anker PRO Sim-Schritt aus der SIM-Position
+    // (posX/posY, nicht das gerundete visualX). Spawner.spawnOne positioniert
+    // Spawns relativ zum Kamera-Zentrum (cam.scrollX + width/2) und entscheidet
+    // outsideView() mit denselben Werten — der Lerp-Follow (0,18) glättete
+    // scrollX aber pro Echtzeit-Frame, sodass Spawn-Positionen frame-abhängig
+    // waren (Probe-Beleg: Spawn-Position bei bitgleichem RNG-Ziehungsstand um
+    // ~1 px unterschiedlich; Kamerazentrum um 8/23 px). Der Anker gilt exakt
+    // während des Schritts; das Rendering folgt danach weiter dem Phaser-Lerp.
+    const detCam = this.cameras.main;
+    detCam.scrollX = this.posX - detCam.width / 2;
+    detCam.scrollY = this.posY - detCam.height / 2;
     this.elapsed += dt;
     this.applyLod();
     this.registry.set("lf-elapsed", this.elapsed);
