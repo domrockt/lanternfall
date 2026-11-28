@@ -24,6 +24,9 @@ const browser = await chromium.launch();
 const shots = [];
 const checks = [];
 const errors = [];
+// M10-gamepad-charselect-start: WebGL-Renderer-String je Lauf mitschreiben
+// (Argus-Regel: Belege ohne Renderer-String sind ungültig; SwiftShader zählt nicht).
+let glRenderer = "n/a";
 const check = (name, ok, detail) => {
   checks.push({ name, ok: Boolean(ok), detail });
   console.log(`${ok ? "OK  " : "FAIL"} ${name}${detail ? ` (${detail})` : ""}`);
@@ -355,6 +358,15 @@ async function runGamepadSuite() {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=23`);
   await page.waitForFunction(() => Boolean(window.__lf && window.__game), undefined, { timeout: 45000 });
   await waitForScene(page, "title");
+  // M10-gamepad-charselect-start: Renderer-String dieses Laufs erfassen.
+  glRenderer = await page.evaluate(() => {
+    const c = document.querySelector("canvas");
+    const gl = c?.getContext("webgl2") ?? c?.getContext("webgl");
+    if (!gl) return "kein-GL";
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+  });
+  console.log(`[verify-input] WebGL-Renderer: ${glRenderer}`);
   await page.waitForTimeout(400);
   // Hotplug: erst nach dem Titel verbinden (Polling/Plugin muss ihn finden).
   await page.evaluate(() => { window.__mockPadConnected = true; });
@@ -578,7 +590,7 @@ try {
   check("alle Shots vorhanden (>10KB)", missing.length === 0, missing.join(", "));
   check("keine JS-Fehler", errors.length === 0, errors.join(" | "));
   const passed = checks.every((c) => c.ok);
-  result = { milestone: "M8-input", tag: tag ?? null, passed, checks, shots, jsErrors: errors };
+  result = { milestone: "M8-input", tag: tag ?? null, passed, checks, shots, jsErrors: errors, webglRenderer: glRenderer };
   writeFileSync(outJson, JSON.stringify(result, null, 2));
   await browser.close();
   server.stop();
