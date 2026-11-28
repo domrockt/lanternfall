@@ -1,0 +1,27 @@
+Lane m10-android-scale-floor-r2 — abgeschlossen 2026-11-28
+
+Ziel: Text-Zerfall auf dem Android-Tablet behoben (Level-Up-Text als
+Strichreste, Repro per ?rbscale=2 auf Galaxy-Tab-Emulation).
+
+- K2: RENDER_SCALE_MAX hart auf 1 (src/logic/scale.ts) — kein Codepfad
+  rendert unter 640x360 logisch; ?rbscale nur Debug, max 1 geklemmt.
+- K3: src/logic/quality.ts — Stufen high/medium/low mit Budgets
+  (ADD-Flaeche ∞/9216/2025 px², Labels 12/8/5, Glow an/an/aus), Hysterese
+  <45 FPS 3 s runter / >57 FPS 12 s rauf. Verdrahtet an bestehenden Caps:
+  FxSystem ADD-Flaeche + Glow-Slots, DamageNumbers.viewLimit,
+  __lf.state().quality.
+- K1/K4: Belege in ~/games/.evidence/m10-android-scale-floor-r2/
+  (before: rb2 320x180 zerfaellt; after: rb2 geklemmt -> Text lesbar,
+  Canvas 640x360; Tier-Spur high->medium->low, Renderer Mesa-iGPU).
+  Abnahme-Screen: shots/abnahme/m10-android-scale-levelup-rb2-after.png.
+
+Messwerte: vitest 177 Files / 1937 Tests gruen, tsc --noEmit rc=0,
+Build ok, 0 JS-Fehler in allen Browser-Laeufen. Reviewer PASS
+(Sollte-Punkte im Follow-up 6ff4856b nachgezogen).
+
+Commits: 50609068 (#10605), 3bb22cd6 (#10606), 323ef009 + 65f72821 +
+6ff4856b (#10607), 7673fe03 (#10608).
+
+Offen (Folgekarten-Wert): Budget-Werte maxFxSprites/particlesPerHit/
+damageNumbersPerSec sind Daten, noch nicht verdrahtet (Caps existieren
+dort nicht). Echte Geraete-Freigabe ueber Telemetrie 10.10.50.185:5180.
