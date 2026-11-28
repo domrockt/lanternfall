@@ -98,6 +98,12 @@ Status K1: ✅ Befund dokumentiert, keine Code-Änderung.
   offenen Optionsmenü unverändert (Kern).
 - Repeat-Debounce via `menuRepeatTick` wie Kern-K2; ein Pad-Frame = maximal
   EINE Aktion (Priorität back > up > down > left > right > confirm).
+  **Klarstellung (Reviewer):** InputState liefert nur Rising-Edges — Halten
+  wiederholt NICHT, `menuRepeatTick` erreicht seine Erstwiederholung dadurch
+  faktisch nie; die Kanäle sind zukunftssicher verdrahtet (greifen sofort,
+  falls InputState künftig held-states liefert) und der Harness-Check
+  „250 ms gehalten = genau ein Schritt" besteht zurecht. Für
+  m10-pad-start-pause-r2: Repeat-Verhalten = nur Tippen.
 - **Review-Fund per Probe (belegt, behoben):** Confirm-Flanke und Repeat-Kanäle
   müssen JEDEN Frame gepflegt werden. Vorher blieb `pausePrevConfirmHeld` auf
   true, wenn das Options-Overlay den Frame konsumierte oder keine Aktion
@@ -119,6 +125,12 @@ Status K1: ✅ Befund dokumentiert, keine Code-Änderung.
 
 ## Befunde / offene Punkte
 
+0. **Review (PASS, 28.11.) — Follow-up-Bedarf (Folge-Karte/Kern-Lane):**
+   Der Hover-Sync hängt am Kontrakt „Hit-Zone ist das LETZTE Kind des
+   Button-Containers" (menu.ts addiert die Zone zuletzt). Bekommt
+   `createMenuButton` je ein weiteres Kind (Badge/Icon), bricht der Sync
+   stillschweigend. Saubere Lösung: Hit-Zone auf `MenuButton` exponieren —
+   Kern-API, hier nicht anfassbar (out of area).
 1. **Run.ts-Anteil (Nachfolgebedarf m10-pad-start-pause-r2):** siehe K1 —
    `src/scenes/Run.ts:457-461` (Pad-Start-Trigger), `1445-1461` (togglePause),
    `1465-1471` (resumeRun). Nicht geändert (out of area).

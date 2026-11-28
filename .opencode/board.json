@@ -12053,10 +12053,16 @@
       "id": 9548,
       "title": "m10-gamepad-nav-scenes-r2 K5: UI.ts Pause/Options per Gamepad + Harness",
       "description": "Abnahme: Pause-Buttons über Kern-API, ein Pad-Frame = eine Aktion, Repeat-Debounce; Harness scripts/m10-gamepad-nav-scenes.mjs PASS, tests/gamepad-nav-scenes.test.ts grün, Screenshots 640x360 mit Fokusrahmen, volle Suite + build rc=0, .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T07:23:48Z",
+          "by": "build",
+          "text": "todo → review: K5 + Lane-Doku committed (f62d68f, c103cd9): Harness 32/32 PASS, Tests 10/10, Suite 1665 grün, build rc=0. Kontrolleure laufen."
+        }
+      ],
       "created": "2026-11-28T07:04:52Z",
-      "updated": "2026-11-28T07:04:52Z"
+      "updated": "2026-11-28T07:23:48Z"
     }
   ]
 }

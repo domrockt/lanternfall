@@ -1148,11 +1148,11 @@ export class UI extends Phaser.Scene {
     const hud = this.run.getHudState();
     if (hud.paused && !hud.levelUpOpen && !hud.chestOpen) {
       if (ev.key === "ArrowLeft" || ev.key === "ArrowUp" || key === "a" || key === "w") {
-        this.pauseFocus.moveFocus(-1);
+        this.pauseFocus?.moveFocus(-1);
         return;
       }
       if (ev.key === "ArrowRight" || ev.key === "ArrowDown" || key === "d" || key === "s") {
-        this.pauseFocus.moveFocus(1);
+        this.pauseFocus?.moveFocus(1);
         return;
       }
       if (ev.key === "Enter" || ev.key === " ") { this.activatePauseButton(); return; }
