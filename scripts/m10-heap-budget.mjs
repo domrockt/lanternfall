@@ -383,8 +383,10 @@ async function main() {
   // Review K2 (kritisch): ohne explizites Ende haengt Node am lebenden
   // http.server-Child (startServer liefert stop(), das vorher nie gerufen
   // wurde) und haette flock /home/ai/games/.lf-perf.lock dauerhaft.
+  // flush-then-exit: process.exit direkt nach console.log verliert gepufferte
+  // Pipe-Ausgabe (belegt: stummer Smoke-Lauf) — erst flushen, dann beenden.
   try { server.stop(); } catch { /* schon tot */ }
-  process.exit(0);
+  process.stdout.write("", () => process.exit(0));
 }
 
 // Guard-Test-faehig (K2/K3): Import durch vitest fuehrt main() nicht aus.
