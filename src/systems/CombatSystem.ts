@@ -515,7 +515,17 @@ export class CombatSystem {
           e.vx += kb.vx;
           e.vy += kb.vy;
           const killed = this.hitEnemy(e, s.damage, ctx, s.weaponId);
-          if (killed) this.killsFx(e);
+          if (killed) this.killsFx(e, s.weaponId);
+          // m10-evo-fx-form-polish (Dom 03:00Z): Treffer-Funken in der Pendel-Farbe
+          // (Glut/Rot) statt neutral-weiß — Zorn liest sich als Hitze, nicht als Gift.
+          if (s.weaponId === "wrath_pendulum") {
+            this.particles.burst("fx_star", e.x, e.y, 3, {
+              life: 0.22, scaleFrom: 1.3, scaleTo: 0.2,
+              alphaFrom: 0.95, alphaTo: 0, additive: true,
+              tint: PAL[s.heal > 0 && killed ? C.crimson : C.hotRed],
+              depth: DEPTH.enemyDeath,
+            });
+          }
           if (s.heal > 0) ctx.onHeal?.(s.heal);
         }
         if (p >= 1) {
@@ -798,6 +808,35 @@ export class CombatSystem {
           // Kein fogBlue-Tint (Aura-Siegel-FAIL, art-director Runde 2): Textur-Treppe zeigen.
           rotation: a, additive: false, depth: DEPTH.fxLow,
         });
+      }
+      // m10-evo-fx-form-polish (Argus 02:00Z, „Element auf einem Standbild ohne
+      // Beschriftung erkennbar"): gefrorene Gegner sichtbar machen — Eiskristall-
+      // Overlay (fx_ice in Sprite-Pixelgröße, Scale <= 1) über jedem Gegner mit
+      // Freeze-Timer; der blaue Tint liegt in Run.ts (freeze -> paleMist).
+      // Plus Bodenfrost: kalte, nicht-additive Flocken im Aura-Inneren.
+      let frozenShown = 0;
+      let frost = 0;
+      for (const e of ctx.enemies) {
+        if (frost < 8 && ((e.x - ctx.playerX) ** 2 + (e.y - ctx.playerY) ** 2) < radius * radius) {
+          frost++;
+          this.particles.spawn({
+            texture: "fx_ice", frames: fxFrames("fx_ice", 4),
+            x: e.x, y: e.y + 6,
+            vy: 3, life: 0.7, scaleFrom: 0.6, scaleTo: 0.3,
+            alphaFrom: 0.5, alphaTo: 0, additive: false,
+            rotation: (e.uid % 4) * 0.9, depth: DEPTH.fxLow,
+          });
+        }
+        if (e.alive && e.hp > 0 && e.freezeTimer > 0 && frozenShown < 12) {
+          frozenShown++;
+          this.particles.spawn({
+            texture: "fx_ice", frames: fxFrames("fx_ice", 4),
+            x: e.x, y: e.y - 2,
+            vy: -6, life: 0.5, scaleFrom: 0.75, scaleTo: 0.4,
+            alphaFrom: 0.9, alphaTo: 0, additive: false,
+            rotation: (e.uid % 3) * 1.1, depth: DEPTH.enemy + 0.5,
+          });
+        }
       }
     }
     state.spikeTimer -= ctx.dt;
@@ -1149,13 +1188,18 @@ export class CombatSystem {
     return killed;
   }
 
-  private killsFx(e: EnemyRuntime): void {
+  private killsFx(e: EnemyRuntime, weaponId?: string): void {
     const cls = deathClassFor(e.def.archetype);
     const spec = deathFxFor(cls, e.boss);
+    // m10-evo-fx-form-polish (Dom 03:00Z): Kills durch das Zornpendel dämpfen die
+    // grüne Burst-Wolke (kleiner, weniger Shards/Staub) — an den Treffpunkten liest
+    // sich Zorn sonst als giftgrüner Schlamm. Death-Spec selbst bleibt in logic/death.ts.
+    const wrathDamp = weaponId === "wrath_pendulum" ? 0.55 : 1;
     // Elite sind etwas größer/partikelreicher, aber keine eigene Klasse.
     const eliteScale = e.elite && !e.boss ? 1.15 : 1;
-    const count = e.elite && !e.boss ? Math.round(spec.count * 1.4) : spec.count;
-    const dustCount = e.elite && !e.boss ? Math.round(spec.dustCount * 1.4) : spec.dustCount;
+    const count = Math.max(3, Math.round((e.elite && !e.boss ? Math.round(spec.count * 1.4) : spec.count) * wrathDamp));
+    const dustCount = Math.max(2, Math.round((e.elite && !e.boss ? Math.round(spec.dustCount * 1.4) : spec.dustCount) * wrathDamp));
+    const wrathSpread = spec.spread * (weaponId === "wrath_pendulum" ? 0.7 : 1);
     const shardFrames = fxFrames(spec.shard, FX_FRAME_COUNTS[spec.shard] ?? 1);
     const dustFrames = fxFrames(spec.dust, FX_FRAME_COUNTS[spec.dust] ?? 1);
     // Kontur/Rim: dieselbe Shard-Textur minimal größer und dunkel (nightDeep)
@@ -1169,7 +1213,7 @@ export class CombatSystem {
       scaleTo: spec.scaleTo * 1.15,
       // Art R2: Rim als duenner Saum, nicht als Mittelklecks.
       alphaFrom: 0.35, alphaTo: 0,
-      vx: spec.spread * 0.6,
+      vx: wrathSpread * 0.6,
       additive: false,
       tint: PAL[spec.rimTint],
       // 10.5: über Boss-Sprite (10), aber unter dem hellen Haupt-Burst (11).
@@ -1184,7 +1228,7 @@ export class CombatSystem {
       scaleFrom: spec.scaleFrom * eliteScale,
       scaleTo: spec.scaleTo,
       alphaFrom: cls === "dissolve" ? 0.65 : 0.95, alphaTo: 0,
-      vx: spec.spread,
+      vx: wrathSpread,
       additive: spec.additive,
       tint: PAL[spec.tint],
       // enemyDeath (11) liegt über Gegnern (9): im 300er-Gedränge sonst unsichtbar.
@@ -1196,7 +1240,7 @@ export class CombatSystem {
       scaleFrom: spec.dustScale * eliteScale,
       scaleTo: 0.2,
       alphaFrom: 0.4, alphaTo: 0,
-      vx: spec.spread * 0.6,
+      vx: wrathSpread * 0.6,
       additive: spec.additive,
       tint: PAL[spec.dustTint],
       depth: DEPTH.enemyDeath,
