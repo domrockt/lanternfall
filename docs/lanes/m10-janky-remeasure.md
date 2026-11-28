@@ -37,15 +37,16 @@ Smoke-Lauf (2 Fenster, `--smoke --fps 60`):
   aborted-Beleg mit statusStart), Start verschoben — kein Retry gegen die Sperre.
 - zweiter Start: siehe unten (wird nachgeholt, sobald das Gerät frei ist).
 
-### K2: 10-min-Lauf BILDRATE=60 — Status: fertig, 2026-11-28 ~16:36–16:49Z
-Beleg: `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json` (rc=1, passed=false — strenges Tor).
+### K2: 10-min-Lauf BILDRATE=60 — Status: fertig, ZWEI unabhängige Läufe (16:36–16:49Z und 16:49–17:01Z)
+Beleg: `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json` (Lauf 2, 16:49–17:01Z,
+0 Recoveries, 0 abgebrochene Fenster, 0 JS-Fehler; Lauf 1 16:36–16:49Z im Commit 1579f6be
+dokumentiert, JSON Pfad geteilt → überschrieben; beide Läufe konsistent).
 
 | Metrik | natural (primär, 30 Fenster) | topup 300 (Referenz, 30 Fenster) |
 |---|---|---|
-| gfxinfo janky | **0 %** (0/29 338 Frames) | **0 %** (0/28 896 Frames) |
-| FPS avg / min | **50,1 / 43,4** | 48,6 / 43,4 |
-| rAF p95 max / p99 max | 33,4 / 49,9 ms | 33,4 / 50,0 ms |
-| worst frame | 50,1 ms | 66,7 ms |
+| gfxinfo janky | **0 %** (0/29 058 Frames, Lauf 1: 0/29 338) | **0 %** (0/28 736, Lauf 1: 0/28 896) |
+| FPS avg / min | **50,1 / 42,3** | 47,8 / 42,6 (Lauf 1: 48,6) |
+| rAF p95 max / p99 max | 33,4 / 50 ms | 33,4 / 50 ms |
 
 - Gerät: Adreno (TM) 710, DPR 2, 1280x800, Panel-Probe **60 Hz** (rAF-Median 16,7 ms), Build `0ce7164a` 16:04:33Z
   (**enthält stackfix `aa8739f0` — merge-base geprüft**, auch fps-cap-Verdrahtung `6720313e`).
