@@ -1,0 +1,31 @@
+Lane m10-quality-stacked-smoke — Integrativer Qualitätsstufen-Smoke (NUR-MESS-Lane), abgeschlossen.
+
+Ergebnis: Die gestapelte Qualitätsstufen-Kette schaltet ZUSAMMEN stabil. Ein planmäßiger
+Smoke-Lauf (scripts/m10-quality-smoke.mjs, ~8 min, flock /home/ai/games/.lf-perf.lock,
+Renderer ANGLE Mesa Intel RPL-S) belegt die komplette Kette in EINEM Lauf:
+high→medium→low→thermal→low→medium→high, 0 JS-Fehler, kein Flapping (0 Wechsel in der
+Totzone 45–57), Erholung bitgleich zur Vor-Phase.
+
+FPS-Tore: Burst 60 FPS median / 452 Gegner; Minute-25 60 FPS median / 438 Gegner (Gate >=55).
+
+Caps folgen dem Tier: Damage-Labels exakt am Cap (medium 8 / low 5 / thermal 3);
+Audio-Stimmen low max 4, aber thermal bis 10 — Laufzeit-Beleg für Befund B1.
+
+Befunde (Details + Hebel in docs/lanes/m10-quality-stacked-smoke.md):
+- B1 major: audioBudgetFor("thermal") fällt auf HIGH zurück (src/audio/mixing.ts:135) —
+  der strengste Tier bekommt 16 Stimmen statt eines Thermal-Budgets.
+- B2 medium: warnDiscDrawCapForQuality("thermal") = Infinity + Rim-Puls 1 statt 0,5
+  (src/gfx/hazardDisc.ts:286-299); "thermal" ist zudem nicht per __lfForceQuality proebbar.
+- B3 minor: Glow-Flächen-Caps wirken nur bei Spawn, nicht retroaktiv (max ADD-Fläche ~71k
+  device-px bleibt über alle Stufen; src/systems/FxSystem.ts:330-340/771-781).
+- B4 info: Thermal-Guard engagiert mit bis zu ~18 s Lag (auch bei recoverter Last);
+  Hysterese-Design-Kompromiss, kein Flapping.
+- B5 info: Deckungslücken des Smoke (Warn-Disc-Cap nicht exerciert; FxSystem-intern
+  nicht zählbar).
+
+Belege (nicht im git): ~/games/.evidence/m10-quality-stacked-smoke/
+  - m10-quality-smoke-timeline-2026-11-28T13-03-48-426Z.json (478 Samples @1 Hz)
+  - m10-quality-smoke-summary-latest.json, m10-quality-smoke-caps-per-tier.json
+
+Commits: 383c0966 (#11852 WIP Skript), 51e5baf2 (#11852 K1), 21166d39 (#11853 K2),
+21166d39 (dieser Commit) (#11854 K3 + lane-done).
