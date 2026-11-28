@@ -34,7 +34,7 @@ function fakeScene(opts: { cull?: number } = {}) {
   return {
     registryMap: registry, // für Laufzeit-Toggle in Tests
     add: { image: () => ({}) },
-    cameras: { main: { worldView: { ...VIEW } } },
+    cameras: { main: { scrollX: VIEW.x, scrollY: VIEW.y, width: VIEW.width, height: VIEW.height } },
     registry: { get: (key: string) => registry.get(key) },
   };
 }

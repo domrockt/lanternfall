@@ -39,7 +39,7 @@ const noopHit = () => undefined;
 function fakeScene(view = { x: 0, y: 0, width: 640, height: 360 }) {
   const scene = {
     textures: { exists: () => true, addCanvas: vi.fn() },
-    cameras: { main: { worldView: { ...view } } },
+    cameras: { main: { scrollX: view.x, scrollY: view.y, width: view.width, height: view.height } },
     tweens: { add: vi.fn() },
     enemies: { active: [] as FakeEnemy[] },
   };

@@ -35,15 +35,20 @@ const { ProjectilePool } = await import("../src/systems/ProjectilePool");
 
 type ViewBox = { x: number; y: number; width: number; height: number };
 
-/** Szene mit Zähl-Kamera: misst, wie oft compact() worldView tatsächlich liest. */
+/** Szene mit Zähl-Kamera: misst, wie oft compact() den View tatsächlich liest. */
 function countingScene() {
   let reads = 0;
   const view: ViewBox = { x: 0, y: 0, width: 640, height: 360 };
   const camera = {
-    get worldView(): ViewBox {
+    // m10-worldview-anchor-pools: view() liest den Sim-Anker (scrollX + cam.width),
+    // nicht worldView — gezählt wird deshalb der scrollX-Lesezugriff.
+    get scrollX(): number {
       reads += 1;
-      return view;
+      return view.x;
     },
+    scrollY: view.y,
+    width: view.width,
+    height: view.height,
   };
   const scene = {
     cameras: { main: camera },
@@ -97,7 +102,7 @@ describe("ProjectilePool: m10-heap-pool-fix (K3)", () => {
     expect(again.hit.size).toBe(0); // und geleert (keine alten Treffer)
   });
 
-  it("view()-Cache: ein worldView-Lesezugriff pro Frame, in-place aktualisiert (kein Objekt pro Frame)", () => {
+  it("view()-Cache: ein View-Lesezugriff pro Frame, in-place aktualisiert (kein Objekt pro Frame)", () => {
     const ctx = countingScene();
     const pool = new ProjectilePool(ctx.scene as never);
 
