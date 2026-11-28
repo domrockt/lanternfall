@@ -1,0 +1,159 @@
+{
+  "dtMs": 16.666666666666668,
+  "fpsHigh": 62,
+  "fpsLow": 41.5,
+  "cap": 3,
+  "patterns": {
+    "alternating_5s": {
+      "desc": "5s@41.5fps / 5s@62fps, 24 Epochen (120 s je Richtung)",
+      "totalMs": 240000,
+      "deterministic": true,
+      "transitionCount": 2,
+      "upCount": 0,
+      "downCount": 2,
+      "pumpPairs": 0,
+      "finalScale": 3,
+      "transitions": [
+        {
+          "tMs": 1983,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 12250,
+          "from": 2,
+          "to": 3,
+          "dir": "down"
+        }
+      ]
+    },
+    "alternating_3s": {
+      "desc": "3s@41.5fps / 3s@62fps, 40 Epochen",
+      "totalMs": 240000,
+      "deterministic": true,
+      "transitionCount": 2,
+      "upCount": 0,
+      "downCount": 2,
+      "pumpPairs": 0,
+      "finalScale": 3,
+      "transitions": [
+        {
+          "tMs": 1983,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 14250,
+          "from": 2,
+          "to": 3,
+          "dir": "down"
+        }
+      ]
+    },
+    "spikes_4s": {
+      "desc": "8x (30s@62fps + 4s@41.5fps)",
+      "totalMs": 272000,
+      "deterministic": true,
+      "transitionCount": 15,
+      "upCount": 7,
+      "downCount": 8,
+      "pumpPairs": 7,
+      "finalScale": 2,
+      "transitions": [
+        {
+          "tMs": 32250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 46217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 66250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 80217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 100250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 114217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 134250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 148217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 168250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 182217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 202250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 216217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 236250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        },
+        {
+          "tMs": 250217,
+          "from": 2,
+          "to": 1,
+          "dir": "up"
+        },
+        {
+          "tMs": 270250,
+          "from": 1,
+          "to": 2,
+          "dir": "down"
+        }
+      ]
+    }
+  },
+  "allDeterministic": true
+}

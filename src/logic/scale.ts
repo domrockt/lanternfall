@@ -15,6 +15,22 @@ export const SCALE_HIGH_FPS = 57;
 export const SCALE_LOW_MS = 2000;
 export const SCALE_HIGH_MS = 4000;
 
+/**
+ * M10-scale-osc-guard: Pump-Schutz. Unter alternierender Last (Lastspitze/
+ * Entlastung im Wechsel) pendelte der Regler zwischen Stufen (Beleg
+ * shots/m10-scale-osc-before.json: 49 Wechsel/240 s bei 5-s-Epochen).
+ * Zwei Deckel:
+ *  - SCALE_MIN_STEP_MS: mindestens so viel Zeit zwischen ZWEI beliebigen
+ *    Stufenwechseln (max 1 Wechsel je ~480 Frames bei 60 FPS).
+ *  - SCALE_RECOVER_MS: Abbau (Teiler -1) braucht 12 s AM STUECK >= 57 FPS
+ *    (belowMs-Zone setzt aboveMs zurueck -> alternierende Epochen von
+ *    <= 12 s koennen den Abbau nie ausloesen). Erstwechsel (noch nie
+ *    gewechselt) bleibt bei SCALE_HIGH_MS, damit der Kaltstart unter Last
+ *    nicht verzoegert wird.
+ */
+export const SCALE_MIN_STEP_MS = 8000;
+export const SCALE_RECOVER_MS = 12000;
+
 function clampInt(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, Math.round(value)));
 }
@@ -60,6 +76,12 @@ export interface RenderScaleState {
   belowMs: number;
   /** Verweilzeit ab SCALE_HIGH_FPS (ms). */
   aboveMs: number;
+  /**
+   * Ms seit dem letzten Stufenwechsel (Pump-Deckel). Optional: undefined =
+   * noch nie gewechselt — der Erstschriftweg verhaelt sich wie vor dem Guard
+   * (src/config.ts legt den State ohne dieses Feld an).
+   */
+  sinceChangeMs?: number;
 }
 
 /**
@@ -68,6 +90,12 @@ export interface RenderScaleState {
  * Schwellen (totale Zone) bleiben beide Timer EINGEFROREN (Fortschritt bleibt):
  * Bei Last-Jitter um 45 FPS wuerde ein Reset den 2-s-Timer nie voll laufen
  * lassen (Probe 2026-11-27: FPS pendelt 41,6-53, Buffer blieb Teiler 1).
+ *
+ * M10-scale-osc-guard (Pump-Deckel): ein Wechsel ist zusaetzlich nur zulässig,
+ * wenn seit dem letzten Wechsel >= SCALE_MIN_STEP_MS vergangen sind; der Abbau
+ * (Teiler -1) braucht zudem SCALE_RECOVER_MS am Stueck >= 57 FPS. Alternierende
+ * Lastserien fuehren damit nach dem Einschwingen zu 0 Wechseln
+ * (tests/scale-osc.test.ts, shots/m10-scale-osc-after.json).
  */
 export function stepRenderScale(
   state: RenderScaleState,
@@ -78,26 +106,35 @@ export function stepRenderScale(
   const dt = Number.isFinite(dtMs) && dtMs > 0 ? dtMs : 0;
   const upperCap = Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(cap)));
   let { scale, belowMs, aboveMs } = state;
+  let sinceChangeMs = state.sinceChangeMs;
+  if (sinceChangeMs !== undefined) sinceChangeMs += dt;
+  const canChange = sinceChangeMs === undefined || sinceChangeMs >= SCALE_MIN_STEP_MS;
   if (Number.isFinite(fpsEwma) && fpsEwma > 0 && fpsEwma < SCALE_LOW_FPS) {
     belowMs += dt;
     aboveMs = 0;
-    if (belowMs >= SCALE_LOW_MS && scale < upperCap) {
+    if (belowMs >= SCALE_LOW_MS && scale < upperCap && canChange) {
       scale += 1;
       belowMs = 0;
       aboveMs = 0;
+      sinceChangeMs = 0;
     }
   } else if (Number.isFinite(fpsEwma) && fpsEwma >= SCALE_HIGH_FPS) {
     aboveMs += dt;
     belowMs = 0;
-    if (aboveMs >= SCALE_HIGH_MS && scale > RENDER_SCALE_MIN) {
+    // Abbau: Erstwechsel (noch nie gewechselt) am alten Schwellwert, danach
+    // erst nach SCALE_RECOVER_MS am Stueck (belowMs-Zone setzt aboveMs
+    // zurueck, "am Stueck" ist damit abgedeckt).
+    const downNeed = sinceChangeMs === undefined ? SCALE_HIGH_MS : Math.max(SCALE_HIGH_MS, SCALE_RECOVER_MS);
+    if (aboveMs >= downNeed && scale > RENDER_SCALE_MIN && canChange) {
       scale -= 1;
       belowMs = 0;
       aboveMs = 0;
+      sinceChangeMs = 0;
     }
   }
   // Totzone: beide Timer einfrieren (kein Zweig greift).
   scale = Math.max(RENDER_SCALE_MIN, Math.min(upperCap, scale));
-  return { scale, belowMs, aboveMs };
+  return { scale, belowMs, aboveMs, sinceChangeMs };
 }
 
 /**
@@ -112,6 +149,26 @@ export function parseRenderScaleOverride(raw: string | null): number | null {
   const rounded = Math.round(value);
   if (rounded >= RENDER_SCALE_MIN && rounded <= RENDER_SCALE_MAX) return rounded;
   return rounded === 0 ? 0 : null;
+}
+
+/**
+ * M10-scale-osc-guard: Wirkt einen ?rbscale-Override auf den Soll-Teiler.
+ * Ein gesetzter Override (0 = aus, 1..3 = fester Teiler) hat IMMER Vorrang
+ * vor dem Regler-Zustand; null laesst den Regler gelten. Reine Abbildung der
+ * Verdrahtung in src/config.ts (forced !== null -> apply(forced); return —
+ * dort nur gelesen, die Datei ist fuer diese Lane gesperrt).
+ */
+export function applyRenderScaleOverride(
+  override: number | null,
+  controllerScale: number,
+): number {
+  if (override === null) {
+    return Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(controllerScale)));
+  }
+  // 0 = Regler aus (voller Buffer) ist ein gueltiger, bedeutungstraegender
+  // Wert und darf NICHT auf 1 geklemmt werden; 1..3 kommen geklemmt durch.
+  if (override === 0) return 0;
+  return Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(override)));
 }
 
 /** Ganzzahlige Canvas-Skalierung: nie weiche Bruchteile, nie < 1. */
