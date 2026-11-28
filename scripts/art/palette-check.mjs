@@ -470,12 +470,16 @@ export async function loadAndAnalyze(root = process.cwd()) {
     const fx = analyzeCapturedFx(captured, palette.PAL);
 
     // M10-palette-guard-evo (K1): Evo-/Boss-/Truhen-Coverage explizit ausweisen.
-    const evolution = collectEvolutionSources(genFx).map((s) => s.frames.map((rows, i) =>
+    const evoSets = collectEvolutionSources(genFx);
+    const bossKeys = collectBossSourceKeys({ statics, numeric: [], fx });
+    const evolution = evoSets.map((s) => s.frames.map((rows, i) =>
       analyzeGrid(`${s.key}#${i}`, "src/gfx/gen-fx.ts", rows, s.w, s.h, palette.PAL))).flat();
     const staticsKeys = statics.map((a) => a.name);
     const coverage = {
-      evolutionSignatures: collectEvolutionSources(genFx).map((s) => s.key),
-      boss: collectBossSourceKeys({ statics, numeric: [], fx }),
+      evolutionSignatures: evoSets.map((s) => s.key),
+      // Boss-Frames (enemySprites laedt Phaser und ist hier nicht SSR-ladbar):
+      // werden im Test (tests/palette-compliance.test.ts) hart geprueft.
+      boss: { grids: bossKeys.grids, fx: bossKeys.fx, frames: "via tests/palette-compliance.test.ts (numericAssets)" },
       chest: collectChestKeys(statics),
       enemyProjectiles: staticsKeys.filter((n) => n.startsWith("enemy_shot")),
     };
