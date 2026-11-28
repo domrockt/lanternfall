@@ -44,4 +44,39 @@ erhalten; Klassen-Wechsel/Fremd-Key → Neuanlage ohne Warnung; Pool-Drop geleer
 
 ## K4 Nachher-Messung
 
-(nach dem Fix ergänzt)
+Gleicher Lauf wie K1 (`node scripts/m10-mira-hp-check.mjs`, volle Matrix, Stand mit Fix,
+Commit 63836a90):
+
+| Lauf | JSON | Spam-Zeilen (`chunk_*`) | sonstige JS-Fehler | accepted | Violations |
+|---|---|---|---|---|---|
+| Vorher | `…/m10-mira-hp-2026-11-28T16-37-55-504Z.json` | **166** | 0 | false | 5 (kaelDurationDelta) |
+| **Nachher** | `…/m10-mira-hp-2026-11-28T17-42-59-349Z.json` | **0** | **0** | false | 6 (identische kaelDurationDelta + mira/101 Glockenturm-Golem 17.1 s < 20) |
+
+**Kern-Ergebnis: „Texture key already in use: chunk_*" 166 → 0, jsErrors gesamt 166 → 0.**
+Die Messkette ist wieder belastbar (Spam zaehlt nicht mehr als JS-Fehler).
+
+**Offener Punkt (nicht diese Lane):** `accepted:false` bleibt wegen Balance-Korridor-
+Violations, die im Vorher-Lauf **wortgleich identisch** auftreten (deterministische
+kael-Dauern vs. committete Referenz `shots/m10-balance-corridor-full.json`: Moorkönigin
+32.2 s vs. 28.3 s usw., plus mira/101 Glockenturm-Golem 17.1 s) — die Abweichungen
+existierten VOR dem Fix in gleicher Höhe und sind der Lane m10-mira-hp-balance-check /
+einer Balance-Karte zuzuordnen (vermutlich veraltete Referenz nach den letzten Merges),
+nicht dem Texture-Fix. Dessen Routing/Logik wurde nicht beruehrt.
+
+Zusatz-Beleg (In-Game, ohne Korridor): `scripts/probe-tex-dup.mjs` — 100 s Autoplay bei
+Zeitskala 30 im gemessenen Run: 0 „already in use", 0 pageerrors, 0 „No texture found".
+Vorher brachen die Mess-Laeufe zudem mit Renderer-Tab-Crashes (geleakte ImageBitmaps).
+
+## Verlauf/Hindernisse
+
+- Reservierter Kartenblock #13263–#13282 war vergeben; Karte lief als **#13283**.
+- 2 Mess-Laeufe + 1 K4-Anlauf starben mit Infrastruktur-Fehlern (Browser-Crash durch
+  geleakte ImageBitmaps BEVOR der Adapter-Bug gefixt war; danach 1× Port-Konflikt der
+  Parallel-Lanes). Kein Loop: jede Auswertung vor dem naechsten Versuch.
+- Fix-Iterationen (alle belegt durch Probe-Pageerrors, nicht blind):
+  1. Wrapper statt Textur zurueckgegeben → `getContext is not a function` → `ref`-Feld.
+  2. Klassenerkennung via `frameTotal-1` falsch bei wiederverwendeten Canvases mit
+     Stale-Frames → aktive Images verloren ihre Textur (`null glTexture`) → Erkennung
+     ueber Canvas-Hoehe + Stale-Frame-Pruning.
+  3. Rennfall Sync/Async poolte die aktive Textur → `No texture found` beim Destroy →
+     Aktive-Key-Sperre (`textureKeyInUse`) + Bitmap-Verwerfen + destroy-Guard.
