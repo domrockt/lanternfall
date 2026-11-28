@@ -7834,7 +7834,7 @@
     {
       "id": 6666,
       "title": "m10-shot-clarity #1: Vorher-Messung Chaos 300/500 (scripts/m10-shot-clarity.mjs)",
-      "column": "review",
+      "column": "done",
       "description": "Skript zaehlt Schuesse je Typ, misst Kontrast/Near-White-Anteil der Schuss-Pixel in Chaos-Szenen (300/500 Gegner), schreibt shots/m10-shot-clarity-before-{300,500}.png + -before.json. Abnahme: JSON mit Schusszahlen je Typ + Near-White-% committed, Screenshots zeigen Chaos mit Schüssen.",
       "notes": [
         {
@@ -7849,12 +7849,12 @@
         }
       ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-27T23:56:50.393Z"
+      "updated": "2026-11-28T00:15:26.712Z"
     },
     {
       "id": 6667,
       "title": "m10-shot-clarity #2: Optik-Fix shotTextureFor/HD-Grids (Kontur, Palette-Farben, Groessenstaffel)",
-      "column": "review",
+      "column": "done",
       "description": "HD_GRIDS in src/systems/EnemyProjectiles.ts: je Familie eigene Palette-Farben (keine Kollision mit Spieler-Ember), dunkle Kontur, monotone Groessenstaffel spit<bone<shadow<fire, kein Near-White. Treffer-/Update-Pfad bitgleich. Abnahme: npx tsc --noEmit gruen, enemy-shots-fair.test.ts unangetastet gruen.",
       "notes": [
         {
@@ -7864,12 +7864,12 @@
         }
       ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-28T00:03:46.977Z"
+      "updated": "2026-11-28T00:15:26.712Z"
     },
     {
       "id": 6668,
       "title": "m10-shot-clarity #3: tests/shot-clarity.test.ts",
-      "column": "review",
+      "column": "done",
       "description": "Texturen je Typ pixel-differenzierbar, Palette-konform, binaeres Alpha, Treffer-Pfad-Statistik bitgleich zur Vorher-Messung. Abnahme: npx vitest run tests/shot-clarity.test.ts gruen.",
       "notes": [
         {
@@ -7879,22 +7879,27 @@
         }
       ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-28T00:06:49.788Z"
+      "updated": "2026-11-28T00:15:26.712Z"
     },
     {
       "id": 6669,
       "title": "m10-shot-clarity #4: Nachher-Messung + art-director",
-      "column": "doing",
+      "column": "done",
       "description": "After-Lauf scripts/m10-shot-clarity.mjs --tag=after, shots/m10-shot-clarity-after-{300,500}.png + -after.json; Near-White <= 4,16 % (A7), art-director >= 4/5. Abnahme: JSON committed, art-director-Urteil in Lane-Doku.",
       "notes": [
         {
           "at": "2026-11-28T00:08:29.763Z",
           "by": "lead",
           "text": "After-Messung committed (worst scene 0,36 % Near-White A7 <= 4,16 % PASS; Texturen exakt 0 %). Full build rc=0, Suite 871/871 gruen. Lane-Doku docs/lanes/m10-shot-clarity.md geschrieben. art-director-Abnahme laeuft (Subagent)."
+        },
+        {
+          "at": "2026-11-28T00:15:26.712Z",
+          "by": "lead",
+          "text": "art-director PASS 4/5 (Cluster-Scan im Chaos, Kontaktblatt, Vorher/Nachher-Crops; optional: fire-Basis 14/15, spit-Tail 29). commit-gate PASS (Scope sauber, tsc rc=0, shot-clarity 8/8 + enemy-shots-fair 14/14, Belege committed). Fremd-Timestamps m10-passive-math-*.json zurueckgesetzt. Lane fertig, .lane-done committet."
         }
       ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-28T00:08:29.763Z"
+      "updated": "2026-11-28T00:15:26.712Z"
     }
   ]
 }

@@ -1,0 +1,23 @@
+# Lane m10-shot-clarity — fertig (2026-11-28)
+
+Optik-Kurs Gegner-Projektile im 300/500-Chaos (Dom 21:45Z): reine Optik in
+`src/systems/EnemyProjectiles.ts::HD_GRIDS`, Treffer-/Update-Pfad bitgleich.
+
+- Vorher (shots/m10-shot-clarity-before.json): Near-White (A7) der Schuss-Pixel
+  im worst-case-Chaos **24,9 %** (Grenze 4,16 %) — FAIL; Texturen bis 27,78 %
+  A7-near-white (13 lanternWhite / 22 glow); Spieler-Ember teilte amber/lanternWhite.
+- Fix: Farbblocks je Familie (spit {0,30,31}, bone {0,10,11}, shadow {0,8,9},
+  fire {0,24,25,26}), 13/22 entfernt, monotone Groessenstaffel 34<44<46<78 px,
+  Spieler-Ember nur Ink 0 geteilt. gen-fx.ts / FxSystem.ts / CombatSystem.ts
+  unberuehrt.
+- Nachher (shots/m10-shot-clarity-after.json): worst scene **0,36 %** Near-White
+  (A7) → PASS; Texturen exakt 0 %, binaeres Alpha, Palette-konform.
+- Tests: tests/shot-clarity.test.ts 8/8 gruen (u. a. Treffer-Pfad-Statistik
+  bitgleich zur Baseline); tests/enemy-shots-fair.test.ts unangetastet 14/14;
+  Full-Suite 871/871; `npx tsc --noEmit` rc=0; `npm run build` rc=0.
+- Kontrolleure: art-director **PASS 4/5** (Cluster-Scan-Belege im Chaos);
+  commit-gate **PASS** (Scope, Build, Tests, Belege, Messages).
+- Belege: shots/m10-shot-clarity-before-{300,500}.png, -after-{300,500}.png,
+  -textures-sheet.png, -before.json, -after.json. Doku: docs/lanes/m10-shot-clarity.md.
+- Karten: #6666-#6669 (alle done). Optionale Nachbesserungen (art-director,
+  kein FAIL): fire-Basis Richtung 14/15, spit-Tail 1 px in 29.

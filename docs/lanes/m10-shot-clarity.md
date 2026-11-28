@@ -60,6 +60,14 @@ Worst scene 0,36 % ≤ 4,16 % → **PASS** (Restwert = Klassifikations-Toleranz 
 - fire-Rot liegt farblich nahe an roten Gegnern (spider/horror sind blood/hotRed-farben); im Chaos-Mix der Messung entsprechend vertreten. Kontur + Flamme-Silhouette tragen; art-director-Urteil siehe unten.
 - spit-Gruen (30/31) ist der Moor-Terrain-Block; ueber Moor-Grund traegt die Ink-Kontur (meanContrast 2,3,min 1,0). Alternative Farben im 32er-Raum wuerden mit Spieler/anderen Familien kollidieren.
 
-## Urteil art-director
+## Urteil art-director (2026-11-28)
 
-(siehe Board-Karte #6669 / Commit-Kommentar — wird nach Abschluss ergaenzt)
+**PASS — 4/5.** Belege: Kontaktblatt 3x nearest, Chaos-Szenen 2x, Zentrum-Crops 4x, In-Szene-Cluster-Scan (56x56-Crops um 8 echte Schuss-Cluster, 5x nearest), Messwerte gegengelesen.
+
+- (1) Auseinanderhaltbarkeit Farbe+Form: erfuellt — alle 4 Familien schussgross im 500er-Chaos nachweisbar, keine weissliche Masse mehr.
+- (2) Spieler-Ember-Trennung: erfuellt (warmgold vs. Blutrot, nur Ink 0 geteilt).
+- (3) Silhouetten/Konturen sauber: geschlossene 1-px-Inktenkontur, binaeres Alpha, Licht oben-links, Palette-konform.
+- (4) Lesbarkeit: Restrisiko, kein Verstoss — fire-Rot liegt paeltnah an roten Gegnern, spit-Gruen an Moor-Grund; dort traegt Kontur+Form.
+
+Optionale Nachbesserungen (kein FAIL-Grund, nicht umgesetzt): fire-Basis mehr 14/15 Glutbraun statt 24, oder heller 1-px-Kern; spit-Tail-Ende 1 px in 29 mossDark absetzen.
+
