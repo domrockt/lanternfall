@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 14010,
+  "next": 14014,
   "cards": [
     {
       "id": 1,
@@ -20224,6 +20224,48 @@
       ],
       "created": "2026-11-28T18:54:07Z",
       "updated": "2026-11-28T19:00:33Z"
+    },
+    {
+      "id": 14010,
+      "title": "m10-passive-math-artifact-fix K1: generatedAt deterministisch — Test schreibt stabile Datei-Bytes",
+      "description": "Abnahmekriterium: tests/passive-stack.test.ts schreibt shots/m10-passive-math-{caps,matrix}.json so, dass der Inhalt (Bytes) bei jedem Suite-Lauf identisch ist. Variante a bevorzugt: generatedAt weglassen; Begründung in docs/lanes/m10-passive-math-artifact-fix.md. Getrackte Snapshots an neuen Stand anpassen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T19:07:34Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-passive-math-artifact-fix: Fix beginnt — Variante a (generatedAt weglassen) geprüft gegen Snapshot-Leser."
+        }
+      ],
+      "created": "2026-11-28T19:07:32Z",
+      "updated": "2026-11-28T19:07:34Z"
+    },
+    {
+      "id": 14011,
+      "title": "m10-passive-math-artifact-fix K2: Abhängige Tests/Leser prüfen + Suite grün",
+      "description": "Abnahmekriterium: belegt, dass nichts anderes shots/m10-passive-math-*.json oder generatedAt liest; npm test grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:07:32Z",
+      "updated": "2026-11-28T19:07:32Z"
+    },
+    {
+      "id": 14012,
+      "title": "m10-passive-math-artifact-fix K3: Stabilitäts-Beleg 2x leerer git status",
+      "description": "Abnahmekriterium: nach zwei aufeinanderfolgenden npm test-Läufen ist `git status --porcelain -- shots/m10-passive-math-caps.json shots/m10-passive-math-matrix.json` jeweils LEER (0 Zeilen); Ausgabe in Lane-Doku.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:07:32Z",
+      "updated": "2026-11-28T19:07:32Z"
+    },
+    {
+      "id": 14013,
+      "title": "m10-passive-math-artifact-fix K4: Lane-Doku + .lane-done",
+      "description": "Abnahmekriterium: docs/lanes/m10-passive-math-artifact-fix.md begründet Variante a mit Belegen; .lane-done committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:07:32Z",
+      "updated": "2026-11-28T19:07:32Z"
     }
   ]
 }
