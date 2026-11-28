@@ -6107,10 +6107,16 @@
       "id": 5378,
       "title": "m10-reacceptance-c-Folge: Chest-Arrow 640×360 Re-Lauf FAIL auf PIN 43fd9eb",
       "description": "Abnahme-Befund (NICHT von der Abnahme gefixt): Re-Lauf von scripts/m10-chest-arrow.mjs auf PIN 43fd9eb (iGPU) failt 5/10 Cases bei 640×360 (top/bottom/tl/br: visibleAtSpawn=false, Winkelfehler 90–180°, Positionsfehler 312–355 px; disappear: Pfeil bleibt sichtbar obwohl Truhe im View). 780×360 alle ok. Gegenbefund: Lane-nachher-Lauf 17:52Z (shots/m10-chest-arrow-after.json, SwiftShader-Ära, vor iGPU 19:13Z) war PASS auf beiden Formaten; Unit-Tests tests/chest-arrow.test.ts auf PIN grün. Zu klären im Folge-Job: (a) Renderer-/Timing-Sensitivität des Probe-Harness (iGPU vs SwiftShader, Sampling), (b) echte Regression durch einen der 19 Drain-Merges — Verdächtige: m10-view-width-cap (interne Breite 640), m10-ground-props-batch (Batch-Container-Layer). Beleg: shots/qa-reaccc-chest-arrow.json im Lane-Branch m10-reacceptance-c.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:33:53Z",
+          "by": "build",
+          "text": "backlog → done: Fix gemergt (Merge 1f7dd78, Lane m10-chest-arrow-640-refit): POST_UPDATE-Sampling, 20/20 PASS 640x360+780x360; Re-Verifikation nach chest-reveal-Merge ebenfalls 20/20 PASS (shots/m10-chest-arrow-refit-after-reveal.json)"
+        }
+      ],
       "created": "2026-11-27T20:48:48Z",
-      "updated": "2026-11-27T20:48:48Z"
+      "updated": "2026-11-28T02:33:53Z"
     },
     {
       "id": 5418,
@@ -9427,9 +9433,15 @@
       "title": "m10-chest-arrow-640-refit A: Vorher-Messung altes rAF-Sampling + Sampling auf POST_UPDATE umstellen",
       "description": "Karte #5378 Fix-Job Schritt 0. AK: (1) Altes Sampling einmal laufen lassen, JSON committet (Beleg des rAF-Artefakts). (2) scripts/m10-chest-arrow.mjs sampelt im POST_UPDATE der Run-Szene (Kriterien unveraendert), max. 2 Edit-Iterationen. Commit M10-m10-chest-arrow-640-refit.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T02:33:53Z",
+          "by": "build",
+          "text": "done → done: lane #6598, Merge 1f7dd78 — Vorher-Beleg shots/m10-chest-arrow-refit-raf-before.json, Sampling auf POST_UPDATE"
+        }
+      ],
       "created": "2026-11-28T02:33:25Z",
-      "updated": "2026-11-28T02:33:25Z"
+      "updated": "2026-11-28T02:33:53Z"
     },
     {
       "id": 7520,
@@ -9454,9 +9466,15 @@
       "title": "m10-chest-arrow-640-refit D: Tests + Doku + Lane fertig",
       "description": "Schritt 3. AK: tests/chest-arrow.test.ts um Befund-Fall erweitert (gruen), docs/lanes/m10-chest-arrow-640-refit.md mit Vorher/Nachher + Ursache, npm test + tsc + build rc=0, .lane-done committet.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T02:33:53Z",
+          "by": "build",
+          "text": "done → done: lane #6601, Merge 1f7dd78 — tests/chest-arrow.test.ts 7/7 Befund-Faelle, Doku, build+Tests rc=0; Re-Verifikation nach chest-reveal-Merge 20/20 PASS (shots/m10-chest-arrow-refit-after-reveal.json)"
+        }
+      ],
       "created": "2026-11-28T02:33:25Z",
-      "updated": "2026-11-28T02:33:25Z"
+      "updated": "2026-11-28T02:33:53Z"
     }
   ]
 }
