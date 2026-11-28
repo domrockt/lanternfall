@@ -233,7 +233,7 @@ function smearFrame(stage: number, width = 44, height = 16): string[] {
  * Blitz-Rune als kühle Treppe lanternWhite(13) → candleWhite(12) → glow(22) →
  * lantern(21), Zwischenstufe boneLight(11). Kein Ink(0), keine Grau-Stufen (5–9).
  */
-function thunderSealFrame(stage: number, size = 64): string[] {
+export function thunderSealFrame(stage: number, size = 64): string[] {
   const out: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
   const c = (size - 1) / 2;
   const put = (x: number, y: number, ch: string): void => {
@@ -275,15 +275,15 @@ function thunderSealFrame(stage: number, size = 64): string[] {
     const [bx, by] = pts[(i + 1) % 8];
     line(ax, ay, bx, by, ringCh);
     // Zacken: gerade Strahlen von r=19 nach r=27 (Impact: hell, sonst kühl dunkel).
-    const tickCh = stage === 2 ? "d" : stage === 1 ? "l" : stage === 3 ? "b" : "a";
+    const tickCh = stage === 2 ? "d" : stage === 1 ? "l" : stage === 3 ? "b" : "4";
     line(c + Math.cos(a) * 19, c + Math.sin(a) * 19, c + Math.cos(a) * 27, c + Math.sin(a) * 27, tickCh);
   }
   // Blitz-Rune: gezackter Kernpfad durchs Zentrum, 1-px-Kern + 1-px Gelb-Kante.
   const path: [number, number][] = [
     [c + 1, 7], [c + 5, 19], [c - 3, 30], [c + 3, 42], [c - 2, 55],
   ];
-  const coreCh = stage === 0 ? "c" : "d";
-  const edgeCh = stage === 0 ? "b" : "m";
+  const coreCh = stage === 0 ? "b" : "d";
+  const edgeCh = stage === 0 ? "4" : "m";
   for (let i = 0; i < path.length - 1; i++) {
     const [ax, ay] = path[i];
     const [bx, by] = path[i + 1];
