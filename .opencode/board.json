@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8182,
+  "next": 8185,
   "cards": [
     {
       "id": 1,
@@ -10222,6 +10222,51 @@
       "notes": [],
       "created": "2026-11-28T03:59:33Z",
       "updated": "2026-11-28T03:59:33Z"
+    },
+    {
+      "id": 8182,
+      "title": "m10-atlas-gutter K1: Audit-Skript + Vorher-Messung",
+      "description": "scripts/art/atlas-audit.mjs: per-Prefix-Coverage (erfasst/abgelehnt je ATLAS_PREFIXES-Key), Gutter >= ATLAS_GUTTER, Pixel-Bleed im Rand. Vorher-JSON shots/m10-atlas-gutter-before.json committed. AK: Audit laeuft, JSON committed, Auswertung in docs/lanes/m10-atlas-gutter.md. — Lane abgeschlossen: Vorher PASS (0 Bleed, Coverage 100%, Gutter 4px).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T04:05:16Z",
+          "by": "build",
+          "text": "review → done: lane #7618-#7620, Merge a9a894b"
+        }
+      ],
+      "created": "2026-11-28T04:05:13Z",
+      "updated": "2026-11-28T04:05:16Z"
+    },
+    {
+      "id": 8183,
+      "title": "m10-atlas-gutter K2: Tests gehärtet — Bleed-Invariante zwischen Nachbar-Frames",
+      "description": "Kein atlas.ts-Fix noetig (Vorher PASS, Packer-Fix via m10-atlas-gaps bereits in main). tests/atlas.test.ts auf 391er-Stand + Bleed-Invariante (Padding-Ring fremdfrei, Worst-Case 200x64px) gehärtet; Audit-Beleg-Pinning entstarrt; Prefix-Luecken dokumentiert. 1240 Tests gruen. AK: tsc gruen, Tests gruen, Commit mit Belegen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T04:05:16Z",
+          "by": "build",
+          "text": "review → done: lane #7618-#7620, Merge a9a894b"
+        }
+      ],
+      "created": "2026-11-28T04:05:13Z",
+      "updated": "2026-11-28T04:05:16Z"
+    },
+    {
+      "id": 8184,
+      "title": "m10-atlas-gutter K3: Nachher-Audit + Zoom-Beleg",
+      "description": "Nachher-Audit shots/m10-atlas-gutter-after.json (0 Bleed, Coverage 391/391, Gutter min 4px/0 Verstoesse), 4x-Zoom fx_shock@4_5, Befund in docs/lanes/m10-atlas-gutter.md; Cross-File-Befund arrow_chest in requests.md. AK: Nachher-JSON committed, Zoom-Beleg, Lane-Doku.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T04:05:16Z",
+          "by": "build",
+          "text": "review → done: lane #7618-#7620, Merge a9a894b"
+        }
+      ],
+      "created": "2026-11-28T04:05:13Z",
+      "updated": "2026-11-28T04:05:16Z"
     }
   ]
 }
