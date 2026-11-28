@@ -105,8 +105,12 @@ export const MOMENT_RIM_UNTIL = 0.6;
 export const MOMENT_RING_MIN_ALPHA = 0.45;
 /** Aufblitz je Powerup = Akzentfarbe (im spec.flash); Laternenweiß würde in
  *  der hellen Level-up-Säule untergehen, die zur selben Zeit läuft. */
-/** Über den Gegner-Projektilen, unter dem Licht — im Chaos lesbar. */
-const MOMENT_DEPTH = DEPTH.enemyShot + 1;
+/** Über den Gegner-Projektilen, unter dem Licht — im Chaos lesbar. Kein ADD:
+ *  Icon (tintFill) und 1-px-Grafik rendern in NORMAL-Blend — der Moment kostet
+ *  keine Blend-Grenze und bleibt bewusst oberhalb des Glow-Bands
+ *  (m10-blend-band-followup K2: Lesbarkeit im Chaos geht vor Banddisziplin;
+ *  Blend-Zähler-Beleg docs/lanes/m10-blend-band-followup.md). */
+export const MOMENT_DEPTH = DEPTH.enemyShot + 1;
 
 /** Paletten-Akzentfarbe je Powerup (sprechbare Unterscheidbarkeit im Chaos). */
 export const POWERUP_ACCENT: Record<string, number> = {
