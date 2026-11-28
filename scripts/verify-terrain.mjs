@@ -3,6 +3,7 @@
 // Gegner-Slow, Spritzer und Screenshots Gras/Wasser. Exit != 0 bei Verstoß.
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { checkScreenshot } from "./terrain-coverage.mjs";
 
 const RATIO_MIN = 0.55;
 const RATIO_MAX = 0.68;
@@ -219,6 +220,67 @@ try {
     waterRun.kindAfter === "water" &&
     grassRun.kindAfter === "grass";
   result.splashOk = splashParticles >= 3;
+
+  // ---- Terrain-Schwarz-Pixel-Guard (Lane m10-terrain-hole-guard, K2) ----
+  // Festes Abnahme-Kriterium „kein Pixel der Spielflaeche ohne Terrain“:
+  // je Format Screenshots Start + nach 60 Spiel-Sekunden Lauf in 8 Richtungen,
+  // dann (im Node-Teil) Pruefung auf zusammenhaengende reine Schwarz-Flaechen
+  // (r,g,b < 6) im Spielfeld-Rect. Gleiche Prueffunktion wie der Suite-Test.
+  const SIZES = [
+    { width: 960, height: 540 },
+    { width: 1280, height: 720 },
+    { width: 1920, height: 1080 },
+  ];
+  const DIRECTIONS = [
+    ["ArrowRight"], ["ArrowRight", "ArrowUp"], ["ArrowUp"], ["ArrowLeft", "ArrowUp"],
+    ["ArrowLeft"], ["ArrowLeft", "ArrowDown"], ["ArrowDown"], ["ArrowRight", "ArrowDown"],
+  ];
+  const PHASE_MS = Math.round(7500 / 8); // 7.5 Spiel-Sekunden je Richtung (timeScale 8)
+  const coverage = [];
+  for (const size of SIZES) {
+    const gpage = await browser.newPage({ viewport: size });
+    gpage.setDefaultTimeout(10000); // evaluate hängt nicht endlos (3-min-Budget)
+    gpage.on("pageerror", (e) => errors.push(`[guard ${size.width}] ${e}`));
+    gpage.on("console", (m) => { if (m.type() === "error") errors.push(`[guard ${size.width}] ${m.text()}`); });
+    try {
+      await gpage.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=13`);
+      await startRun(gpage);
+      await gpage.evaluate(() => {
+        window.__lf.god(true);
+        window.__lf.setSuppressLevelUps(true); // keine Overlays im Prueffenster
+        window.__lf.setTimeScale(8); // 60 Spiel-Sekunden in ~8 s Echtzeit
+      });
+      await gpage.waitForTimeout(300);
+      const startShot = await gpage.screenshot();
+      for (const keys of DIRECTIONS) {
+        for (const k of keys) await gpage.keyboard.down(k);
+        await gpage.waitForTimeout(PHASE_MS);
+        for (const k of keys) await gpage.keyboard.up(k);
+      }
+      const endShot = await gpage.screenshot();
+      const renderer = await gpage.evaluate(() => window.__lf.rendererInfo());
+      const startCov = checkScreenshot(startShot);
+      const endCov = checkScreenshot(endShot);
+      coverage.push({
+        size: `${size.width}x${size.height}`,
+        renderer: { context: renderer.context, renderer: renderer.renderer, vendor: renderer.vendor },
+        start: startCov,
+        end: endCov,
+      });
+      writeFileSync(`shots/m10-terrain-guard-${size.width}-end.png`, endShot);
+    } finally {
+      await gpage.close();
+    }
+  }
+  result.coverage = coverage;
+  result.coverageOk = coverage.length === SIZES.length && coverage.every((c) => c.start.ok && c.end.ok);
+  const rendererStrings = coverage.map((c) => c.renderer.renderer).join(", ");
+  // Beleg-Pflicht: Software-Renderer machen visuelle Belege ungueltig.
+  result.rendererValid = coverage.length === SIZES.length &&
+    !/swiftshader|llvmpipe|software/i.test(rendererStrings);
+  result.coverageSummary = coverage.map(
+    (c) => `${c.size}: maxRegion ${c.start.maxRegion}/${c.end.maxRegion} (start/end), ok=${c.start.ok}/${c.end.ok}`,
+  );
 } finally {
   await page.close();
   await browser.close();
@@ -226,13 +288,19 @@ try {
 }
 
 result.jsErrors = errors;
-result.passed = Boolean(result.speedOk && result.splashOk && result.enemyOk && errors.length === 0);
+result.passed = Boolean(
+  result.speedOk && result.splashOk && result.enemyOk &&
+  result.coverageOk && result.rendererValid && errors.length === 0,
+);
 writeFileSync("shots/m3-terrain.json", JSON.stringify(result, null, 2));
+writeFileSync("shots/m10-terrain-guard.json", JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result, null, 2));
 console.log(
   `verify-terrain: Gras ${result.clamp?.grassSpeed} px/s, Wasser ${result.clamp?.waterSpeed} px/s, ` +
   `Ratio ${result.clamp?.ratio} (Ziel ${RATIO_TARGET}, erlaubt ${RATIO_MIN}-${RATIO_MAX}), ` +
-  `Spritzer ${result.clamp?.splashParticles}, Gegner ${result.enemy?.pxPerSec}/${result.enemy?.defSpeed} px/s -> ` +
+  `Spritzer ${result.clamp?.splashParticles}, Gegner ${result.enemy?.pxPerSec}/${result.enemy?.defSpeed} px/s, ` +
+  `Schwarz-Pixel-Guard ${(result.coverageSummary ?? []).join(" | ") || "n/a"}, ` +
+  `Renderer ${result.rendererValid ? "gueltig" : "UNGUeLTIG"} -> ` +
   `${result.passed ? "OK" : "FAIL"}`
 );
 process.exit(result.passed ? 0 : 1);
