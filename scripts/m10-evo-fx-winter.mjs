@@ -7,14 +7,36 @@
 //   - Farb-Stufen der projectile_ice-/Signaturen-Texturen (Paletten-Treffer + Ink-/Rand-Anteil)
 // Keine FPS-Messung -> kein flock. Einmal laufen lassen, JSON+PNG committen.
 // Vorlage: scripts/m10-evo-fx-phoenix.mjs (Lane m10-evo-fx-phoenix, Commit 6b62468).
-import { mkdirSync, writeFileSync } from "node:fs";
-import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
+import { mkdirSync, writeFileSync, readFile } from "node:fs";
+import { ensureBuild, loadPlaywright, startRun } from "./harness.mjs";
+import http from "node:http";
 
 ensureBuild();
 mkdirSync("shots", { recursive: true });
 
+// Kollisionsfreier statischer Server: Port 0 (ephemeral) statt Zufalls-Port aus
+// 5400-5800 — dort laufen parallele Lane-Server, ein Bind-Rennen liefert sonst
+// stillschweigend die FREMDE dist (Befund fixprobe, 28.11.).
+function startServerLocal() {
+  return new Promise((resolve) => {
+    const server = http.createServer((req, res) => {
+      const p = req.url === "/" || req.url.startsWith("/?")
+        ? "/index.html"
+        : req.url.split("?")[0];
+      readFile("dist" + p, (err, data) => {
+        if (err) { res.writeHead(404); res.end(); return; }
+        const type = p.endsWith(".html") ? "text/html" : p.endsWith(".js") ? "text/javascript"
+          : p.endsWith(".css") ? "text/css" : p.endsWith(".png") ? "image/png" : "application/octet-stream";
+        res.writeHead(200, { "content-type": type });
+        res.end(data);
+      });
+    });
+    server.listen(0, "127.0.0.1", () => resolve({ port: server.address().port, stop: () => server.close() }));
+  });
+}
+
 const { chromium } = await loadPlaywright();
-const server = await startServer();
+const server = await startServerLocal();
 const browser = await chromium.launch({
   args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"],
 });

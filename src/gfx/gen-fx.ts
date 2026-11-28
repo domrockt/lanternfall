@@ -723,6 +723,12 @@ export interface EvoSignature {
   deathLifetime: number;
   hitCount: number;
   deathCount: number;
+  /**
+   * M10-evo-fx-winter (Muster m10-evo-fx-phoenix): gesetzt → die Signatur-Textur
+   * wird in Zielgröße (128x128) gebacken und mit Draw-Scale [from, to] gezeichnet
+   * (nie > 1x hochskalieren). Nicht gesetzt → Alt-Verhalten (32x32 @ 3,2–4,6).
+   */
+  drawScale?: [number, number];
 }
 
 export const SIGNATURE_FRAME_COUNT = 4;
@@ -740,11 +746,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     palette: [21, 20, 16], hitLifetime: 0.12, deathLifetime: 0.30,
     hitCount: 4, deathCount: 8,
   },
-  // Frostnova + Sanduhr: kalte Nebelwolke, langsam ausklingend.
+  // Frostnova + Sanduhr: kalte Eiswolke, langsam ausklingend. Zielgröße 128x128
+  // @ Draw-Scale 1 (Mixel-Regel), eisige Kristall-Treppe statt grauer Blob-Wolke.
   eternal_winter: {
     evolution: "eternal_winter", baseWeapon: "frost", shape: "cloud",
     palette: [9, 6, 11], hitLifetime: 0.22, deathLifetime: 0.75,
     hitCount: 5, deathCount: 10,
+    drawScale: [1, 1],
   },
   // Dornensalve + Windstiefel: gruener Splitter-Kranz, mittleres Timing.
   thorn_storm: {
@@ -991,8 +999,9 @@ export function signatureFrame(
 // ein Textur-Pixel deckt damit höchstens 1 Spielpixel ab, der Glow läuft in
 // 1-px-Stufen. Level-1-Keys bleiben unverändert (Direkt-Pfaden kompatibel).
 
-/** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix). */
-export const FX_MIXEL_BASES = ["fx_fire", "fx_halo_cold", "fx_halo", "fx_shock"] as const;
+/** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix) plus
+ *  ring_frost (M10-evo-fx-winter: Aura-Siegel wird bis 2–3x gezeichnet). */
+export const FX_MIXEL_BASES = ["fx_fire", "fx_halo_cold", "fx_halo", "fx_shock", "ring_frost"] as const;
 
 export type FxMixelBase = (typeof FX_MIXEL_BASES)[number];
 
@@ -1007,6 +1016,43 @@ interface MixelBakeDef {
   maxLevel: number;
   /** Frame-Generator in Spielpixel-Basis + Stufe (Stufe 1 == Level-1-Frame). */
   frame: (stage: number, density: number) => string[];
+}
+
+/**
+ * M10-evo-fx-winter: Frost-Aura-Siegel als Row-Generator (Mixel-Bake).
+ * Level 1 (96x96) entspricht der bisherigen Canvas-Textur aus textures.ts:
+ * 2-px-Eisband mist(8)/paleMist(9) mit candleWhite(12)-Innenkante und 12
+ * lanternWhite(13)-Zacken. Density = Bake-Stufe (identische normierte Geometrie).
+ */
+export function frostRingFrame(size: number, density: number): string[] {
+  const L = Math.max(1, Math.round(density));
+  const rows: string[][] = Array.from({ length: size * L }, () => Array(size * L).fill("."));
+  const c = (size * L - 1) / 2;
+  const put = (x: number, y: number, idx: number) => putPixel(rows, x, y, idx);
+  // Gerastertes Eisband + Innenkante (Radien wie die Canvas-Version, × Stufe).
+  for (let y = 0; y < size * L; y++) {
+    for (let x = 0; x < size * L; x++) {
+      const d = Math.sqrt((x + 0.5 - c) ** 2 + (y + 0.5 - c) ** 2);
+      if (d >= 43.5 * L && d <= 45.5 * L) put(x, y, 8);
+      else if (d >= 41.5 * L && d <= 43.5 * L) put(x, y, 9);
+      else if (d >= 39.5 * L && d <= 40.5 * L) put(x, y, 12);
+    }
+  }
+  // 12 2-px-Zacken von r 43 nach r 47 (× Stufe), lanternWhite.
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2 + 0.26;
+    const x0 = Math.round(c + Math.cos(a) * 43 * L);
+    const y0 = Math.round(c + Math.sin(a) * 43 * L);
+    const x1 = Math.round(c + Math.cos(a) * 47 * L);
+    const y1 = Math.round(c + Math.sin(a) * 47 * L);
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+    for (let t = 0; t <= steps; t++) {
+      const px = x0 + Math.round(((x1 - x0) * t) / Math.max(1, steps));
+      const py = y0 + Math.round(((y1 - y0) * t) / Math.max(1, steps));
+      for (let w = 0; w < 2 * L; w++) put(px + w, py, 13);
+    }
+  }
+  return rows.map((r) => r.join(""));
 }
 
 const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
@@ -1025,6 +1071,15 @@ const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
   {
     base: "fx_shock", w: 48, h: 48, frameCount: 6, maxLevel: 4,
     frame: (i, d) => shockFrame(i, 48, d),
+  },
+  {
+    // M10-evo-fx-winter: Frost-Aura-Siegel (früher Canvas in textures.ts). Wird
+    // mit Scale radius/47 (bis ~2x, Extreme 3x) gezeichnet → Bake bis Level 3,
+    // Draw-Scale <= 1. Identische Geometrie wie die alte 96x96-Canvas-Version
+    // (2-px-Eisband mist/paleMist + candleWhite-Innenkante + 12 lanternWhite-
+    // Zacken), damit der art-director-Fundstand erhalten bleibt.
+    base: "ring_frost", w: 96, h: 96, frameCount: 1, maxLevel: 3,
+    frame: (_i, d) => frostRingFrame(96, d),
   },
 ];
 
@@ -1120,14 +1175,109 @@ export function mixelLevel1Frames(): Record<string, { w: number; h: number; fram
   return out;
 }
 
+/**
+ * M10-evo-fx-winter: Treffer-/Todes-Signatur des Ewigen Winters in Zielgröße
+ * 128x128 (Draw-Scale 1, siehe EvoSignature.drawScale). Eisiger Winter-Sturm
+ * statt grauer Blob-Wolke: klare Kristall-Scherben mit geraden Kanten, weiße
+ * Kerne, eisblaue Facetten — Farbtreppe lanternWhite(13) → candleWhite(12) →
+ * boneLight(11) → paleMist(9) → mist(8) → fogBlue(6). Kein Ink/Grau-Rand.
+ */
+function winterSignatureFrame(kind: "hit" | "death", stage: number): string[] {
+  const size = 128;
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  // Deterministische Winkel-Variante (kein Math.random): Todes-Wirbel gedreht.
+  const twist = death ? 0.35 : 0;
+
+  // Zentraler Eis-Kern: hexagonal geschichtete Treppe, schrumpft im Ausklang.
+  const coreR = death ? 15 + t * 7 : 11 + t * 5;
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+    const dx = x - c;
+    const dy = y - c;
+    // Hexagon-Metrik: max über 3 Achsen (klare Kanten statt runder Blobs).
+    const hex = Math.max(Math.abs(dx), Math.abs(dy), Math.abs(dx + dy) / Math.SQRT2, Math.abs(dx - dy) / Math.SQRT2);
+    if (hex < coreR * 0.38) putPixel(rows, x, y, 13);
+    else if (hex < coreR * 0.66) putPixel(rows, x, y, 12);
+    else if (hex < coreR) putPixel(rows, x, y, death && (x + y) % 3 === 0 ? 9 : 11);
+  }
+
+  // Kristall-Scherben: gerade Diamant-Strahlen mit heller Spine und kalter Spitze.
+  const shards = death ? 11 : 7;
+  const baseLen = death ? 34 : 26;
+  const len = baseLen + t * (death ? 38 : 30);
+  const maxW = death ? 3.4 : 2.6;
+  for (let i = 0; i < shards; i++) {
+    const a = (i / shards) * Math.PI * 2 + twist + t * (death ? 0.22 : 0.1);
+    const ca = Math.cos(a);
+    const sa = Math.sin(a);
+    const r0 = coreR * 0.9;
+    for (let k = r0; k <= r0 + len; k += 1) {
+      const fall = 1 - (k - r0) / len;
+      const w = Math.max(0, maxW * fall);
+      const cx = c + ca * k;
+      const cy = c + sa * k;
+      for (let s = -w; s <= w; s += 1) {
+        const px = cx - sa * s;
+        const py = cy + ca * s;
+        const rel = (k - r0) / len;
+        // Spine hell, Flanken eisblau, Spitze mist/paleMist — kein Ink.
+        let idx: number;
+        if (Math.abs(s) < 0.6 && rel < 0.62) idx = rel < 0.25 ? 13 : 12;
+        else if (rel > 0.82) idx = 9;
+        else if (Math.abs(s) > w - 1.1) idx = 6;
+        else idx = 11;
+        putPixel(rows, px, py, idx);
+      }
+    }
+  }
+
+  // Eis-Splitter am Rand (kleine Diamanten) — der Sturm bleibt lesbar, nicht amorph.
+  const chunks = death ? 8 : 4;
+  for (let i = 0; i < chunks; i++) {
+    const a = (i / chunks) * Math.PI * 2 + 0.7 + twist * 2 + stage * 0.09;
+    const rr = coreR + len * (death ? 1.02 : 0.78) + ((i * 13 + stage * 7) % 9);
+    const cx = c + Math.cos(a) * rr;
+    const cy = c + Math.sin(a) * rr;
+    putPixel(rows, cx, cy, 12);
+    putPixel(rows, cx + 1, cy, 11);
+    putPixel(rows, cx, cy + 1, 9);
+    if (i % 2 === 0) putPixel(rows, cx - 1, cy, 6);
+  }
+
+  // Schnee-Flocken (2-px-Punkte) — dezent, in Sprite-Pixelgröße.
+  const flakes = death ? 14 : 7;
+  for (let i = 0; i < flakes; i++) {
+    const a = (i / flakes) * Math.PI * 2 + stage * 0.31 + (death ? 0.5 : 0.2);
+    const rr = 30 + ((i * 23 + stage * 17) % (death ? 32 : 22));
+    const fx = Math.round(c + Math.cos(a) * rr);
+    const fy = Math.round(c + Math.sin(a) * rr * 0.82); // leicht abgeflacht = Flocken-Drift
+    putPixel(rows, fx, fy, i % 3 === 0 ? 9 : 11);
+    if (i % 2 === 0) putPixel(rows, fx + 1, fy, 6);
+  }
+
+  return rows.map((r) => r.join(""));
+}
+
+/** Eigene Frame-Generatoren je Evolution (Zielgrößen-Pfad). */
+const EVO_SIGNATURE_FRAME_GENS: Partial<Record<string, (kind: "hit" | "death", stage: number) => string[]>> = {
+  eternal_winter: winterSignatureFrame,
+};
+
 /** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
 function addEvolutionSignatures(scene: Phaser.Scene): void {  for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
+    // M10-evo-fx-winter: drawScale gesetzt → Zielgrößen-Textur (128x128) mit
+    // eigenem Frame-Generator; sonst Alt-Pfad (32x32, generischer signatureFrame).
+    const targetSize = sig.drawScale ? 128 : 32;
+    const gen = EVO_SIGNATURE_FRAME_GENS[id];
     for (const kind of ["hit", "death"] as const) {
       const def: FxDef = {
-        w: 32,
-        h: 32,
-        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
+        w: targetSize,
+        h: targetSize,
+        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) =>
+          gen ? gen(kind, i) : signatureFrame(sig.shape, sig.palette, i, kind)),
       };
       addFrames(scene, signatureTextureKey(id, kind), def);
     }
@@ -1158,6 +1308,10 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_orb", { w: 11, h: 11, frames: [0, 1, 2, 3].map(orbFrame) });
   addFrames(scene, "fx_pillar", { w: 26, h: 72, frames: [0, 1, 2, 3, 4].map((i) => pillarFrame(i)) });
   addFrames(scene, "fx_shock", { w: 48, h: 48, frames: [0, 1, 2, 3, 4, 5].map((i) => shockFrame(i)) });
+  // M10-evo-fx-winter: Frost-Aura-Siegel Level 1 (Mixel-Basis, siehe frostRingFrame);
+  // Bake-Stufen >= 2 kommen aus mixelBakes() unten. Ersetzt die Canvas-Textur
+  // aus textures.ts (gleiche Geometrie, jetzt als Row-Generator testbar).
+  addFrames(scene, "ring_frost", { w: 96, h: 96, frames: [frostRingFrame(96, 1)] });
   // Todes-/Boss-Frames: eine Quelle fuer Texturen, Tests und Beleg-Skripte.
   for (const [key, def] of Object.entries(deathFrameSets())) addFrames(scene, key, def);
   // Dunkler Rauchring für Zerfall
@@ -1189,7 +1343,7 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_fire: 6, fx_star: 3, fx_halo: 2, fx_ice: 4, fx_smear: 5, fx_bolt: 6,
   fx_seal: 5, fx_thorn: 3, fx_orb: 4, fx_pillar: 5, fx_shock: 6,
   fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4, fx_death_fire: 4,
-  fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2,
+  fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2, ring_frost: 1,
   ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
     [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
