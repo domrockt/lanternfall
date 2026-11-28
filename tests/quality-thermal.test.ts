@@ -104,6 +104,71 @@ describe("K2: Hysterese — Rueckweg und kein Flapping", () => {
   });
 });
 
+describe("K3: Grenzfaelle und Bitgleichheit", () => {
+  it("kurzer Einbruch ≠ thermisch: Unterbrechungen setzen crashMs zurueck (kein Kumulieren)", () => {
+    let s = atLow();
+    for (let i = 0; i < 9; i++) {
+      for (let ms = 0; ms < 7000; ms += DT) s = evaluateThermalStep(crashSerie(), s, DT); // 7 s < 10 s
+      s = evaluateThermalStep(stableSerie(), s, DT); // Einbruch endet -> Ruecksetzen
+      expect(s.crashMs).toBe(0);
+    }
+    expect(s.active).toBe(false);
+  });
+
+  it("Median genau auf der Schwelle engaged NICHT (strikt darunter)", () => {
+    let s = atLow();
+    // gerade Laenge: Median = (29 + 31) / 2 = 30 = THERMAL_FPS
+    for (let ms = 0; ms < THERMAL_HOLD_MS * 3; ms += DT) {
+      s = evaluateThermalStep([29, 31, 29, 31], s, DT);
+    }
+    expect(s.active).toBe(false);
+    // ungerade Laenge direkt auf 30
+    const on = Array.from({ length: 8 }, () => THERMAL_FPS);
+    for (let ms = 0; ms < THERMAL_HOLD_MS * 3; ms += DT) s = evaluateThermalStep(on, s, DT);
+    expect(s.active).toBe(false);
+  });
+
+  it("Erholung ab genau THERMAL_RECOVERY_FPS zaehlt (>=)", () => {
+    let s = atLow();
+    for (let ms = 0; ms < THERMAL_HOLD_MS; ms += DT) s = evaluateThermalStep(crashSerie(), s, DT);
+    const at = Array.from({ length: 8 }, () => THERMAL_RECOVERY_FPS);
+    for (let ms = 0; ms < THERMAL_RECOVERY_MS; ms += DT) s = evaluateThermalStep(at, s, DT);
+    expect(s.active).toBe(false);
+  });
+
+  it("stabile FPS auf low: Verhalten bitgleich (Zustand bleibt exakt gleich)", () => {
+    let s = atLow();
+    for (let ms = 0; ms < 60000; ms += DT) s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s).toEqual({ tier: "low", active: false, crashMs: 0, recoverMs: 0 });
+  });
+
+  it("ungueltige dt (NaN/0/negativ) macht keinen Fortschritt (flutscht nicht ins Haltefenster)", () => {
+    let s = atLow();
+    for (let i = 0; i < 100; i++) s = evaluateThermalStep(crashSerie(), s, NaN);
+    for (let i = 0; i < 100; i++) s = evaluateThermalStep(crashSerie(), s, 0);
+    for (let i = 0; i < 100; i++) s = evaluateThermalStep(crashSerie(), s, -1000);
+    expect(s.active).toBe(false);
+    expect(s.crashMs).toBe(0);
+  });
+
+  it("Kein-Flapping-Matrix: wechselnd 4 s Absturz / 4 s Erholung engages nie und kehrt nie zurueck", () => {
+    let s = atLow();
+    for (let i = 0; i < 12; i++) {
+      for (let ms = 0; ms < 4000; ms += DT) s = evaluateThermalStep(crashSerie(), s, DT);
+      expect(s.active).toBe(false);
+      for (let ms = 0; ms < 4000; ms += DT) s = evaluateThermalStep(stableSerie(), s, DT);
+      expect(s.active).toBe(false);
+      expect(s.tier).toBe("low");
+    }
+  });
+
+  it("Guard aendert nie stepQuality-Verhalten: Schwellen/Konstanten unveraendert", () => {
+    // (Bitgleichheits-Anker gegenueber dem bestehenden Regler, tests/quality-tier.test.ts)
+    expect(QUALITY_LOW_FPS).toBe(45);
+    expect(THERMAL_FPS).toBeLessThan(QUALITY_LOW_FPS);
+  });
+});
+
 describe("K1: Budget der Stufe thermal", () => {
   it("thermal streng unter low (Last senken statt Aufloesung)", () => {
     const low = qualityBudgetFor("low");
