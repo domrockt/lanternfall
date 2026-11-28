@@ -1,0 +1,12 @@
+Lane m10-acceptance-refresh-e — Nachabnahme E (NUR-PRÜF), 2026-11-28. PASS.
+PIN: main @ a6f1458 (2026-11-28T07:20:20Z), ~15 Merges seit Nachabnahme C abgedeckt.
+K1: tsc rc=0, build rc=0, 1655/1655 Tests (153 Dateien), acceptance-count 30/6/6/6/6/2 ok:true.
+K2: verify:final 7/7 + verify-input 28/28, 0 JS-Fehler; ESC-Regression aus C behoben (Befund E-1).
+K3 (flock, iGPU RPL-S, kein SwiftShader): fullrun 640x360 PASS — 6/6 Bosse exakt 300–1800 s,
+    6/6 Truhen, Sieg dawn, fpsMin 59,2 ≥ 55, Heap-Tor +13,9 % ≤ 15 %; Minute-25 780x360@3
+    60,1 FPS ≥ 50 (Sicht shots/abnahme/refresh-e-minute25-780x360dpr3.png).
+K4: ACCEPTANCE.md-Abschnitt „Nachabnahme E (2026-11-28)“ + Befundliste E-1..E-5 (2 low,
+    Rest positiv/historisch) in docs/lanes/m10-acceptance-refresh-e.md; Hebel-Pointer für Dora.
+Kein FAIL; GAME.md und alte ACCEPTANCE-Abschnitte unangetastet; Mess-Skripte nur ausgeführt.
+Belege: ~/games/.evidence/m10-acceptance-refresh-e/. Commits: 44cf008, b5b25a7, 81bd5b2, 26e3881 (+ .lane-done).
+.board.json bleibt uncommitted (fremd geclaimt, Live-Sync) — Board-Updates laut Briefing entfallen.
