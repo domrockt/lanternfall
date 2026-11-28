@@ -15191,27 +15191,38 @@
       "id": 11430,
       "title": "m10-telemetry-budget K2: Fix — Intervall/Puffer je Qualitaetsstufe",
       "description": "telemetryBudgetFor(quality): full=5s/600, reduced=10s/240, minimal=20s/120 (Intervall, Frame-Puffer, Pending-Deckel). Collector passt sich dynamisch an. Aktivierung (telemetryEnabled/installTelemetry) bitgleich unveraendert. Nachher-Probe zeigt gesenkte Sammelkosten. Akzeptanz: Kostenreduktion belegt, Aktivierung unveraendert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-28T11:11:16Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:13:10Z",
+          "by": "build",
+          "text": "doing → review: K2: telemetryBudgetFor + TELEMETRY_BUDGETS (full/reduced/minimal = 5s/600/60, 10s/240/24, 20s/120/12). Collector: Budget folgt sample.quality, Puffer-/Pending-Deckel dynamisch, Timer-Reschedule. Aktivierung (telemetryEnabled/installTelemetry) unveraendert. Nachher-Probe: reduced 13.4us/collect + 0.081ms/min (-80%), minimal 6.5us + 0.019ms/min (-95%); Payload 1.97/0.99 KB/min. Belege ~/games/.evidence/m10-telemetry-budget/after-*.json. tsc+build+telemetry-Suite gruen. Commit dd53f444."
         }
       ],
       "created": "2026-11-28T11:07:56Z",
-      "updated": "2026-11-28T11:11:16Z"
+      "updated": "2026-11-28T11:13:10Z"
     },
     {
       "id": 11431,
       "title": "m10-telemetry-budget K3: Tests telemetry-budget.test.ts (Budget-Matrix + Aktivierungsmatrix gruen)",
       "description": "tests/telemetry-budget.test.ts: Budget-Matrix je Tier (Intervall/Puffer/Deckel), dynamische Anpassung bei Stufenwechsel, Tests: telemetry.test.ts bleibt komplett gruen. Akzeptanz: npx vitest run tests/telemetry-budget.test.ts tests/telemetry.test.ts gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T11:13:10Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T11:07:56Z",
-      "updated": "2026-11-28T11:07:56Z"
+      "updated": "2026-11-28T11:13:10Z"
     },
     {
       "id": 11432,
