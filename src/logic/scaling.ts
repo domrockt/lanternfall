@@ -58,9 +58,21 @@ export function spawnRateFactor(width: number, height: number): number {
 }
 
 /**
+ * M10-Endgame-Balance (Lane m10-balance-endgame): ab Minute 20 greift ein
+ * reduzierter Basis-Deckel (260 statt 360). Das ist **der eine** Director-Hebel
+ * dieser Lane: Der Endgame-Tod der AutoPlay-Bots entsteht aus Massedruck im
+ * Übergang Minute 20–24, sobald der Deckel sein Maximum erreicht (960x540:
+ * 500 aktive Gegner). Mit 260 liegt 960x540 bei 390 statt 500 (−22 %) und
+ * 640x360 bei 260 statt 360 (−28 %); Minute 0–19 bleibt bitgleich zur
+ * M6/M8-Balance. Harte Obergrenze 500 bleibt.
+ */
+export const LATE_GAME_ACTIVE_CAP = 260;
+
+/**
  * Maximal gleichzeitig aktive Gegner für den normalen Run. M6-Balance:
- * gleichmäßiger Anstieg bis Deckel 360 (Minute ~20) auf 640x360; M8 skaliert
- * den Deckel mit der sichtbaren Fläche (780x360 ~ 439, harte Obergrenze 500).
+ * gleichmäßiger Anstieg bis Minute 20; M8 skaliert den Deckel mit der
+ * sichtbaren Fläche (harte Obergrenze 500). M10: ab Minute 20 Deckel
+ * `LATE_GAME_ACTIVE_CAP` (siehe oben).
  */
 export function maxActiveEnemies(
   elapsedSeconds: number,
@@ -69,7 +81,8 @@ export function maxActiveEnemies(
 ): number {
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
   const base = 100 + minute * 13;
-  return Math.min(500, Math.round(Math.min(360, base) * viewAreaFactor(width, height)));
+  const cap = minute >= 20 ? LATE_GAME_ACTIVE_CAP : 360;
+  return Math.min(500, Math.round(Math.min(cap, base) * viewAreaFactor(width, height)));
 }
 
 /** M8: Waffen-/AoE-Reichweite an die View-Breite anpassen. Breite Formate

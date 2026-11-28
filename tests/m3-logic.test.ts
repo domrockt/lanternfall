@@ -122,8 +122,8 @@ describe("Zeit-Skalierung und Director", () => {
 
   it("Gegner-Cap wächst bis 360 und bleibt dort (M6-Balance)", () => {
     expect(maxActiveEnemies(0)).toBeGreaterThan(0);
-    expect(maxActiveEnemies(20 * 60)).toBe(360);
-    expect(maxActiveEnemies(30 * 60)).toBe(360);
+    expect(maxActiveEnemies(20 * 60)).toBe(260); // M10-Endgame: Late-Deckel 260
+    expect(maxActiveEnemies(30 * 60)).toBe(260);
     // perf.mjs prüft die 500-Gegner-Last weiterhin separat mit erzwungenen Spawns.
   });
 
