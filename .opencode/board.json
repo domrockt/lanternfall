@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10793,
+  "next": 10836,
   "cards": [
     {
       "id": 1,
@@ -14016,6 +14016,39 @@
       ],
       "created": "2026-11-28T09:28:36Z",
       "updated": "2026-11-28T09:43:43Z"
+    },
+    {
+      "id": 10833,
+      "title": "m10-chest-arrow-texture-r2 K1: Vorher-Probe (exists=false + __MISSING-Screenshot)",
+      "description": "Skript scripts/m10-chest-arrow-texture.mjs (--probe): textures.exists('arrow_chest') prüfen + Truhen-Screenshot mit __MISSING-Randpfeil in 640x360 und 780x360@3. Belege nach ~/games/.evidence/m10-chest-arrow-texture-r2/before-*. Abnahme: JSON mit exists=false + Screenshot(s) erzeugt, Skript committed.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T10:05:12Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-chest-arrow-texture-r2 angenommen: K1 Vorher-Probe gestartet."
+        }
+      ],
+      "created": "2026-11-28T10:05:11Z",
+      "updated": "2026-11-28T10:05:12Z"
+    },
+    {
+      "id": 10834,
+      "title": "m10-chest-arrow-texture-r2 K2: arrow_chest-Grid in SPRITE_GRIDS + Tests",
+      "description": "arrow_chest-Grid (16x16, Pfeil nach rechts im Lantern-Look, palettentreu, binäres Alpha) in src/gfx/textures.ts SPRITE_GRIDS ergänzen. tests/chest-arrow-texture.test.ts neu: Grid existiert, Dimensionen 16x16, Palette-Compliance. Abnahme: npx tsc --noEmit grün, npx vitest run tests/chest-arrow-texture.test.ts + tests/palette-compliance.test.ts grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:05:11Z",
+      "updated": "2026-11-28T10:05:11Z"
+    },
+    {
+      "id": 10835,
+      "title": "m10-chest-arrow-texture-r2 K3: Nachher-Probe + Doku + lane-done",
+      "description": "Nachher-Probe: exists('arrow_chest')=true + Truhen-Screenshot mit sichtbarem Pfeil in 640x360 und 780x360@3. Abnahme-Bilder nach shots/abnahme/m10-chest-arrow-texture-r2-*.png, JSON nach .evidence. Doku docs/lanes/m10-chest-arrow-texture-r2.md, .lane-done. Abnahme: build+tests grün, Belege committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:05:11Z",
+      "updated": "2026-11-28T10:05:11Z"
     }
   ]
 }
