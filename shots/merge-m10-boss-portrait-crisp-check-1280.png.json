@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5610/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-m10-boss-portrait-crisp-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
