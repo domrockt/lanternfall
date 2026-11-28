@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6782,
+  "next": 6786,
   "cards": [
     {
       "id": 1,
@@ -7934,6 +7934,70 @@
       ],
       "created": "2026-11-27T23:59:59Z",
       "updated": "2026-11-28T00:00:17Z"
+    },
+    {
+      "id": 6782,
+      "title": "m10-touch-joystick-feel K1: Ist-Messung Joystick-Feel (scripts/m10-touch-joystick.mjs, before-JSON)",
+      "description": "Messbasis Joystick-Feel: Gerade 4,67% Fehlrichtung, 100% Update-Rate, 22 leere Updates; Kreis: 56 leere; Mikro-Jitter emittiert Bewegung. AC: before-JSON + Skript committed.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T00:04:47Z",
+          "by": "build",
+          "text": "lane #6678, Merge 9c9a62f"
+        }
+      ],
+      "created": "2026-11-28T00:04:43Z",
+      "updated": "2026-11-28T00:04:47Z"
+    },
+    {
+      "id": 6783,
+      "title": "m10-touch-joystick-feel K2: Fix Deadzone + Richtungs-Hysterese + 8-Richtungs-Snapping in TouchControls.ts",
+      "description": "Ausgabe-Feel-Filter in TouchControls.ts (Magnitude unangetastet): Deadzone 0,16*Ring viewport-skaliert, 8-Richtungs-Snapping, Sektor-Hysterese 5,625°. AC: chest-lock 7/7 + input-Tests grün, pooled Fehlrichtung <2%.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T00:04:47Z",
+          "by": "build",
+          "text": "lane #6679, Merge 9c9a62f"
+        }
+      ],
+      "created": "2026-11-28T00:04:43Z",
+      "updated": "2026-11-28T00:04:47Z"
+    },
+    {
+      "id": 6784,
+      "title": "m10-touch-joystick-feel K3: Regressionstests tests/touch-joystick-feel.test.ts",
+      "description": "Deadzone-Semantik/Viewport-Skalierung, 8-Snapping mit Magnitude-Erhalt, Sektor-Hysterese (Jitter <= 1 Wechsel/4 Frames), Output-Eps, Latenz 0 Frames, chest-lock-Gate. AC: Tests grün.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T00:04:47Z",
+          "by": "build",
+          "text": "lane #6680, Merge 9c9a62f"
+        }
+      ],
+      "created": "2026-11-28T00:04:43Z",
+      "updated": "2026-11-28T00:04:47Z"
+    },
+    {
+      "id": 6785,
+      "title": "m10-touch-joystick-feel K4: Nachher-Messung + Doku + .lane-done",
+      "description": "After-Messung: pooled Fehlrichtung 1,3% (<2%), Latenz 0 Frames (<=2), Updates/Frame 0,24 (Baseline 1,0); docs/lanes/m10-touch-joystick-feel.md. AC: Gates erfüllt, Lane-Doku committed.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T00:04:47Z",
+          "by": "build",
+          "text": "lane #6681, Merge 9c9a62f"
+        }
+      ],
+      "created": "2026-11-28T00:04:43Z",
+      "updated": "2026-11-28T00:04:47Z"
     }
   ]
 }
