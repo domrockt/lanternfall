@@ -20,10 +20,27 @@ eine Pixelgröße (Draw-Scale 1 — seit B3-Fix erfüllt).
 - Capture-Skript: `scripts/m10-hazard-raster.mjs` (ein Skript für Vorher/Nachher, 1 Edit-Iteration).
 
 ## K2 — Fix (#10069)
-t.b.d.
+`src/gfx/hazardDisc.ts` (Draw-Pfad in Hazards.ts unverändert, Warnlogik bitgleich):
+- `discMask`: Füllung im Interieur (round(d) <= r-3) jetzt **flächig** — jeder Innen-Pixel ist
+  DISC_FILL_I, kein 50-%-Schachbrett, kein 25-%-Raster, kein Muster auf der Fläche.
+- Dither nur noch als **1-px-Übergangsband** am Rand (round(d) = r-2, 50-% auf (x+y)-Parität);
+  Kontur weiter radial konstant 2 px (round(d) ∈ {r-1, r}).
+- Halbtransparenz im Bake: `bakeFromMask(..., fillAlpha)` — Disc-Füllpixel mit
+  `DISC_FILL_ALPHA = 0.4` (Basis) bzw. `DISC_FILL_ALPHA_STACKED = 0.28` (Stapel-Stufe 1, Key "_s1"
+  ab 5 Warn-Discs, deterministische Regel unverändert). Strahl/Ring bleiben deckend (fillAlpha=1).
+- Stapel-Stufe wirkt nur noch über die Alpha, nicht über die Dither-Frequenz (eine Maskenform).
+- Draw-Scale bleibt 1 (eine Pixelgröße, Textur in Sprite-Pixeln) — unverändert.
+- `npx tsc --noEmit` rc=0; `npx vitest run tests/hazard-disc.test.ts` 17/17 grün.
 
 ## K3 — Tests (#10070)
-t.b.d.
+- Raster-Guard neu in `tests/hazard-disc.test.ts`:
+  - Flächensample: für r ∈ {22, 60, 90, 160} ist **jeder** Innen-Pixel (round(d) <= r-3) Fuellung
+    (`expect(...).toBe(DISC_FILL_I)`) — jede Lücke/jedes Muster in der Fläche fällt an.
+  - Band-Guard: Dither ausschließlich bei round(d) = r-2, Dichte im Korridor 0.3–0.8, (x+y)-Parität;
+    Fläche (<= r-3) ditherfrei.
+  - Stapel-Guard: Masken stufenunabhängig; Stufe 1 nur über niedrigere Bake-Alpha.
+- Volle Suite: `npm test` → **158 Dateien / 1699 Tests grün**; `npm run build` rc=0.
+
 
 ## K4 — Abnahme (#10071)
 t.b.d.
