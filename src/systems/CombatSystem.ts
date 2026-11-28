@@ -19,6 +19,8 @@ import { deathClassFor, deathFxFor } from "../logic/death";
 import { knockbackFor } from "../logic/feedback";
 import { rollCrit, critDamage } from "../logic/damage-numbers";
 import { lodFor, fxAlphaFor, type LodState } from "../logic/lod";
+import { particlesPerHitFor, type ThermalTier } from "../logic/quality";
+import { QUALITY } from "../config";
 import { getAudio } from "../audio/AudioSystem";
 import { isWeaponsEnabled } from "../debug";
 import { ProjectilePool } from "./ProjectilePool";
@@ -26,6 +28,19 @@ import type { SpatialHash } from "./SpatialHash";
 import type { OwnedWeapon } from "./LevelUpSystem";
 
 export type HitCallback = (enemy: EnemyRuntime, damage: number, weaponId: string, killed: boolean) => void;
+
+/**
+ * m10-particles-hit-wiring (K2): Treffer-Funken je Qualitaetsstufe — Verdrahtung
+ * von particlesPerHitFor() (Rest-Hebel 1 aus docs/lanes/m10-fx-medium-cap; die
+ * Funktion war reine Daten ohne Aufrufort). Referenz ist das High-Budget:
+ * Skala 1 auf "high" -> bitgleiches High-Verhalten (crit 5 / normal 2 wie
+ * bisher); medium/low/thermal skalieren proportional zum gesenkten Budget.
+ * Rein (unit-getestet in tests/particles-hit-wiring.test.ts).
+ */
+export function hitParticlesFor(crit: boolean, tier: ThermalTier): number {
+  const scale = particlesPerHitFor(tier) / particlesPerHitFor("high");
+  return Math.max(1, Math.round((crit ? 5 : 2) * scale));
+}
 
 /**
  * m10-blend-band-followup (K2): Tiefe des Laterne-Korpus (fireLantern).
@@ -1207,7 +1222,10 @@ export class CombatSystem {
     this.damageNumbers.report(e.uid, e.x, e.y, finalDamage, crit);
     const killed = wasAlive && e.hp <= 0;
     ctx.onHit(e, finalDamage, weaponId, killed);
-    this.particles.burst("fx_star", e.x, e.y, crit ? 5 : 2, {
+    // m10-particles-hit-wiring (K2): Anzahl folgt particlesPerHitFor(QUALITY)
+    // statt fester Zahl — high bitgleich (hitParticlesFor-Skala 1), medium/low/
+    // thermal gesenkt. Optik (life/tint/alpha/scale) und Reihenfolge unverändert.
+    this.particles.burst("fx_star", e.x, e.y, hitParticlesFor(crit, QUALITY), {
       life: 0.16, tint: crit ? PAL[C.lanternWhite] : PAL[C.emberOrange],
       scaleTo: 0.12, alphaFrom: 0.9, additive: true,
     });
