@@ -11739,16 +11739,21 @@
       "id": 9196,
       "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
       "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
-      "column": "doing",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-28T05:45:00Z",
           "by": "build",
           "text": "todo → doing: K4 startet: art-director-Urteil zu Prop-Vielfalt auf After-Shots, Lane-Doku, .lane-done."
+        },
+        {
+          "at": "2026-11-28T07:52:03Z",
+          "by": "build",
+          "text": "doing → blocked: fremde Lane (m10-props-wiring, nicht m10-weapon-shot-readability) – Karte von der Lane nicht angetastet; laut Supervisor-Stuck-Alarm hier blocked gesetzt, damit der Alarm verschwindet. Zuständige Lane/Merge-Job muss schliessen."
         }
       ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:45:00Z"
+      "updated": "2026-11-28T07:52:03Z"
     },
     {
       "id": 9197,
@@ -11978,25 +11983,41 @@
       "id": 9664,
       "title": "m10-weapon-shot-readability K1: Vorher-Matrix (Solo + 300er-Chaos)",
       "description": "scripts/m10-weapon-shot.mjs: 6 Spieler-Waffen-Signaturen solo + im 300-Gegner-Chaos messen und als shots/m10-weapon-shot-before*.png/json belegen. Abnahmekriterium: JSON mit Near-White-A7 + Kontrast je Waffe existiert, Belege unter ~/games/.evidence/m10-weapon-shot-readability/ referenziert.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:44:01Z",
+          "by": "build",
+          "text": "todo → doing: Test-first-Reihenfolge nach Supervisor: K2-Daten stehen, jetzt Messskript scripts/m10-weapon-shot.mjs + Vorher-Belege (shotsig=0) nach ~/games/.evidence/m10-weapon-shot-readability/."
+        },
+        {
+          "at": "2026-11-28T07:52:03Z",
+          "by": "build",
+          "text": "K1 läuft: Skript steht, 1. Lauf hatte Lücken (flail/ember/frost/thorn fehlten im Chaos-Sample — niedrige Waffen-Duty-Cycle). Iteration 2: Centers über 3 s akkumulieren + 6 Solo-Läufe je Waffe. gen-fx.ts wird in K1 nicht mehr angefasst (shotsig-Flag war Teil des K2-Commits)."
+        }
+      ],
       "created": "2026-11-28T07:25:08Z",
-      "updated": "2026-11-28T07:25:08Z"
+      "updated": "2026-11-28T07:52:03Z"
     },
     {
       "id": 9665,
       "title": "m10-weapon-shot-readability K2: Signaturen in gen-fx.ts (6 Waffen)",
       "description": "WEAPON_SHOT_SIGNATURES in src/gfx/gen-fx.ts: je Waffe (ember, flail, frost, thorn, storm, lantern) eindeutige Kernfarbe + dunkle 1-px-Kontur + Groessenstufe (Mixel-Regel, Draw-Scale 1). Runtime-Registration via createFxTextures-Override. Abnahmekriterium: 6/6 Signaturen definiert, Paar-Tests in tests/weapon-shot-readability.test.ts gruen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T07:25:17Z",
           "by": "build",
           "text": "todo → doing: Test-first laut Supervisor: zuerst EIN Paar (ember vs. frost) mit Distanz-/Kontrast-Schwelle gegen WEAPON_SHOT_SIGNATURES, dann die restlichen 5 Waffen."
+        },
+        {
+          "at": "2026-11-28T07:44:01Z",
+          "by": "build",
+          "text": "doing → review: K2 committed (105f415): 6 Signaturen in gen-fx.ts, Runtime-Override, boltFrame-Rampe, 53/53 Paar-Tests. art-director-Urteil folgt in K4 zusammen mit den Chaos-Belegen."
         }
       ],
       "created": "2026-11-28T07:25:08Z",
-      "updated": "2026-11-28T07:25:17Z"
+      "updated": "2026-11-28T07:44:01Z"
     },
     {
       "id": 9666,

@@ -184,12 +184,18 @@ const BOLT_RAMP_SIGNATURE: BoltRamp = { core: "b", flank: "7", edge: "0", branch
 const BOLT_RAMP_LEGACY: BoltRamp = { core: "d", flank: "c", edge: "g", branch: ["c", "g"] };
 
 /**
- * M10-weapon-shot-readability (Messung): registry "lf-shot-signatures" —
- * 0 = Vorher-Optik (Basis-Grids aus textures.ts + Legacy-Blitzrampe),
- * 1/default = Waffen-Shot-Signaturen aus gen-fx. Reine Optik-Schaltung.
+ * M10-weapon-shot-readability (Messung): registry "lf-shot-signatures" oder
+ * URL-Parameter "shotsig=0" — Vorher-Optik (Basis-Grids aus textures.ts +
+ * Legacy-Blitzrampe); 1/default = Waffen-Shot-Signaturen aus gen-fx.
+ * Reine Optik-Schaltung. Der URL-Parameter ist die Boot-Quelle (Texturen
+ * entstehen im Boot, bevor ein Registry-Flag gesetzt werden kann).
  */
 export function weaponShotSignaturesEnabled(registry?: { get(key: string): unknown } | null): boolean {
-  return registry?.get("lf-shot-signatures") !== 0;
+  if (registry?.get("lf-shot-signatures") === 0) return false;
+  if (typeof location !== "undefined") {
+    if (new URLSearchParams(location.search).get("shotsig") === "0") return false;
+  }
+  return true;
 }
 
 /** Eiskristall (großer Diamant) mit Facetten und Glanzkante; 4 Zerfallsstufen. */
