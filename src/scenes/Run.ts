@@ -26,7 +26,8 @@ import { PLAYER_FRAMES, type WalkDir } from "../gfx/chars";
 import { EnemyPool, type EnemyRuntime } from "../systems/EnemyPool";
 import { SpatialHash } from "../systems/SpatialHash";
 import { Spawner } from "../systems/Spawner";
-import { CombatSystem } from "../systems/CombatSystem";
+import { CombatSystem, type CombatContext } from "../systems/CombatSystem";
+import type { EnemyShotRuntime } from "../systems/EnemyProjectiles";
 import { PickupSystem } from "../systems/PickupSystem";
 import { LevelUpSystem, type OwnedWeapon } from "../systems/LevelUpSystem";
 import { ChestSystem, type ChestRuntime } from "../systems/ChestSystem";
@@ -36,7 +37,7 @@ import {
   BossSystem, BOSS_HUD_CLEARANCE, bossHudRects, bossSpriteScreenRect, rectsOverlap, type BossInfo,
 } from "../systems/BossSystem";
 import { attachEnemyAiStream, resetAiState } from "../logic/ai-state";
-import { shouldSplit, stepEnemyAi, type AiAction, type AiRng } from "../logic/enemy-ai";
+import { shouldSplit, stepEnemyAi, type AiAction, type AiParams, type AiRng } from "../logic/enemy-ai";
 import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished, weaponRangeFactor } from "../logic/scaling";
 import { botDirection, chooseBestOffer, type BotPoint, type BotThreat } from "../logic/autoplay";
 import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
@@ -242,6 +243,63 @@ export class Run extends Phaser.Scene {
   private inputState = new InputState();
   private moveInput: Vec2 = { x: 0, y: 0 };
   private scratch: EnemyRuntime[] = [];
+  /**
+   * m10-run-cpu-budget K3 (Allocation-Hoisting): Der update-Loop erzeugte vorher
+   * pro Sim-Schritt ein KI-Param-Objekt JE GEGNER (~30 000 Objekte/s bei 500
+   * Gegnern, young-gen GC-Druck -> CPU-ms-p95-Spitzen) plus Combat-Kontext,
+   * 4 Closures, Pickup-View und Gap-Optionen je Schritt. Alle Konsumenten
+   * (stepEnemyAi, combat.update, enemyShots/hazards/pickups.update,
+   * resolvePlayerGap) lesen synchron und behalten keine Referenz — Wiederver-
+   *wendung ist daher verhaltens-bitgleich (run-determinism-Guard + K4-Test).
+   */
+  private aiParams: AiParams = {
+    archetype: "chaser",
+    tier: 1,
+    x: 0,
+    y: 0,
+    playerX: 0,
+    playerY: 0,
+    speed: 0,
+  };
+  /** Wiederverwendeter Combat-Kontext; onHit/onHeal als Instanz-Closures (1x). */
+  private combatCtx: CombatContext = {
+    dt: 0,
+    playerX: 0,
+    playerY: 0,
+    facingX: 1,
+    facingY: 0,
+    weapons: [],
+    enemies: [],
+    hash: null as unknown as SpatialHash<EnemyRuntime>,
+    agg: null as unknown as AggregateStats,
+    rng: null as unknown as SeededRng,
+    onHit: (enemy: EnemyRuntime, damage: number, weaponId: string, killed: boolean): void => {
+      this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
+      getAudio().play(killed ? "kill" : "hit");
+      if (enemy.boss && !killed) this.bossHitFeedback();
+      // M10: Evolutions-Signatur am getroffenen Gegner (rein visuell, Throttle im FxSystem).
+      this.combat.fx.spawnEvolution(weaponId, killed ? "death" : "hit", enemy.x, enemy.y);
+    },
+    onHeal: (amount: number): void => {
+      this.hp = Math.min(this.maxHp, this.hp + amount);
+    },
+  };
+  private onEnemyShotHit = (damage: number, shot: EnemyShotRuntime): void => {
+    this.hurtPlayer(damage, shot.x, shot.y);
+    enemyShotHitFx(this, shot.x, shot.y);
+  };
+  private onHazardHit = (damage: number): void => {
+    this.hurtPlayer(damage, this.posX, this.posY);
+  };
+  private onCollect = (value: number): void => {
+    this.giveXpInternal(value);
+  };
+  /** Sichtfenster fuer Pickup-Culling, pro Schritt neu befuellt. */
+  private pickupView = { x0: 0, y0: 0, x1: 0, y1: 0 };
+  /** Konstante Optionen fuer den Spieler-Abstoss-Ring (Closure 1x statt je Schritt). */
+  private gapOpts = { ignore: (e: EnemyRuntime): boolean => e.boss };
+  /** Scratch-Liste fuer Splitter-Kinder statt frischem Array je Schritt. */
+  private splitsScratch: EnemyRuntime[] = [];
   /** Terrain-Faktor-Cache pro 16-px-Tile: kindAt() ist Noise-teuer und wurde
    *  vorher fuer jeden Gegner in jedem Frame aufgerufen. 0 = unbekannt,
    *  1 = Gras, 2 = Wasser. Feste Groesse (256×256 Tiles) statt wachsender Map. */
@@ -601,37 +659,23 @@ export class Run extends Phaser.Scene {
     }
     this.updateEnemies(dt);
     this.bosses.update(dt, this.posX, this.posY);
-    this.combat.update({
-      dt,
-      playerX: this.posX,
-      playerY: this.posY,
-      facingX: this.facingX,
-      facingY: this.facingY,
-      weapons: this.levelSys.weapons,
-      enemies: this.enemies.active,
-      hash: this.hash,
-      agg: this.agg,
-      rng: this.rng,
-      onHit: (enemy, damage, weaponId, killed) => {
-        this.damageByWeapon[weaponId] = (this.damageByWeapon[weaponId] ?? 0) + damage;
-        getAudio().play(killed ? "kill" : "hit");
-        if (enemy.boss && !killed) this.bossHitFeedback();
-        // M10: Evolutions-Signatur am getroffenen Gegner (rein visuell, Throttle im FxSystem).
-        this.combat.fx.spawnEvolution(weaponId, killed ? "death" : "hit", enemy.x, enemy.y);
-      },
-      onHeal: (amount) => {
-        this.hp = Math.min(this.maxHp, this.hp + amount);
-      },
-    });
+    // m10-run-cpu-budget K3: Kontextobjekt wiederverwenden statt Literal je Schritt.
+    const ctx = this.combatCtx;
+    ctx.dt = dt;
+    ctx.playerX = this.posX;
+    ctx.playerY = this.posY;
+    ctx.facingX = this.facingX;
+    ctx.facingY = this.facingY;
+    ctx.weapons = this.levelSys.weapons;
+    ctx.enemies = this.enemies.active;
+    ctx.hash = this.hash;
+    ctx.agg = this.agg;
+    ctx.rng = this.rng;
+    this.combat.update(ctx);
     this.collectKills();
     this.touchDamage();
-    this.enemyShots.update(dt, this.posX, this.posY, (damage, shot) => {
-      this.hurtPlayer(damage, shot.x, shot.y);
-      enemyShotHitFx(this, shot.x, shot.y);
-    });
-    this.hazards.update(dt, this.posX, this.posY, (damage) => {
-      this.hurtPlayer(damage, this.posX, this.posY);
-    });
+    this.enemyShots.update(dt, this.posX, this.posY, this.onEnemyShotHit);
+    this.hazards.update(dt, this.posX, this.posY, this.onHazardHit);
     if (this.finished) return;
     this.enemies.compact();
     this.maybeSplash(dt);
@@ -639,12 +683,12 @@ export class Run extends Phaser.Scene {
     const pickupRadius = (effectivePickupRadius(PLAYER_BASE_PICKUP_RADIUS, this.agg) + this.combat.pickupBonus)
       * weaponRangeFactor(GAME_WIDTH, GAME_HEIGHT);
     const cam = this.cameras.main;
-    this.pickups.update(dt, this.posX, this.posY, pickupRadius, (value) => {
-      this.giveXpInternal(value);
-    }, {
-      x0: cam.scrollX - 80, y0: cam.scrollY - 80,
-      x1: cam.scrollX + cam.width + 80, y1: cam.scrollY + cam.height + 80,
-    });
+    const view = this.pickupView;
+    view.x0 = cam.scrollX - 80;
+    view.y0 = cam.scrollY - 80;
+    view.x1 = cam.scrollX + cam.width + 80;
+    view.y1 = cam.scrollY + cam.height + 80;
+    this.pickups.update(dt, this.posX, this.posY, pickupRadius, this.onCollect, view);
     const nearChest = this.chests.near(this.posX, this.posY, 15);
     if (nearChest) this.openChest(nearChest);
   }
@@ -1013,21 +1057,17 @@ export class Run extends Phaser.Scene {
       e.age += dt;
 
       const statusMul = e.freezeTimer > 0 ? 0 : Math.max(0.15, 1 - e.slowFactor);
-      const ai = stepEnemyAi(
-        e.ai,
-        {
-          archetype: e.def.archetype,
-          tier: e.def.tier,
-          x: e.x,
-          y: e.y,
-          playerX: px,
-          playerY: py,
-          speed: e.speed,
-        },
-        dt,
-        e.aiRng,
-        e.uid,
-      );
+      // m10-run-cpu-budget K3: Param-Objekt wiederverwenden (vorher je Gegner
+      // je Schritt ~1 Objekt; stepEnemyAi liest synchron, keine Retention).
+      const p = this.aiParams;
+      p.archetype = e.def.archetype;
+      p.tier = e.def.tier;
+      p.x = e.x;
+      p.y = e.y;
+      p.playerX = px;
+      p.playerY = py;
+      p.speed = e.speed;
+      const ai = stepEnemyAi(e.ai, p, dt, e.aiRng, e.uid);
       e.ai = ai.state;
       for (const action of ai.actions) this.applyAiAction(e, action, px, py);
 
@@ -1082,7 +1122,8 @@ export class Run extends Phaser.Scene {
     // ausgenommen (BossSystem-Verhalten unberührt). Wiring-Genehmigung über
     // .dispatch/requests.md notiert (Datei laut Lane-Briefing eigentlich
     // gesperrt; ohne diese 3 Zeilen wäre die Akzeptanz unerreichbar).
-    resolvePlayerGap(this.enemies.active, px, py, { ignore: (e) => e.boss }, this.hash);
+    // m10-run-cpu-budget K3: Gap-Optionen als Instanz-Feld (Closure 1x).
+    resolvePlayerGap(this.enemies.active, px, py, this.gapOpts, this.hash);
   }
 
   /** Führt eine KI-Aktion aus (Schuss, Beschwörung, Blinzeln, Explosion). */
@@ -1133,7 +1174,9 @@ export class Run extends Phaser.Scene {
   }
 
   private collectKills(): void {
-    const splits: EnemyRuntime[] = [];
+    // m10-run-cpu-budget K3: Scratch-Liste statt frischem Array je Schritt.
+    const splits = this.splitsScratch;
+    splits.length = 0;
     for (const e of this.enemies.active) {
       if (!e.alive || e.hp > 0) continue;
       e.alive = false;
