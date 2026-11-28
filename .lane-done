@@ -1,0 +1,27 @@
+# Lane m10-golden-frame-guard — abgeschlossen (2026-11-28)
+
+Golden-Frame-Regressionsschutz für die Merge-Welle: gleicher Seed = bitgleiche Simulation
+ist jetzt als Guard abgesichert. 3 Karten, 3 Commits, nur neue Dateien (0 Zeilen src/**).
+
+- #10311 scripts/m10-golden-frame.mjs + Baseline (ab50197b): 3 Seeds (101/202/404) x 2
+  Läufe über 600 Sim-Ticks, sim-exakte Marken (elapsed/kills/level/xp/hp, Gegner-UIDs +
+  0,1-px-Positionen, Spawn-UID-Zähler), SHA-256 über {marks, events, final}.
+- #10312 tests/golden-frame.test.ts (908d87a1): 4 Suite-Tests über die committeten
+  Belege; Grenze dokumentiert: Sim-Kern Phaser-gebunden → 0 Ticks in der Suite,
+  600-Ticks-Guard als Skript-Gate (node scripts/m10-golden-frame.mjs, ~23 s, kein flock).
+- #10313 diese Doku + .lane-done: Rebaseline-Anleitung (nur bewusst, mit Begruendung im
+  Commit), Divergenz-Durch-laufende-Merges-Prozess.
+
+Messwerte: 3/3 Seeds bitgleich (0 Divergenz); Hashes ee84b3af…/5bd26750…/2f338e1c…;
+Renderer Mesa Intel RPL-S (iGPU, kein SwiftShader); 0 JS-Fehler; Suite-Guard 195 ms;
+npm test 1850/1850 grün; tsc rc=0.
+
+Belege: shots/m10-golden-frame-baseline.json + -verdict.json (committet via
+.gitignore-Negation, Begründung in ~/.dispatch/requests.md); rohe Marken in
+~/games/.evidence/m10-golden-frame-guard/.
+
+Offen/ehrlich: Suite-Test validiert Belege, führt selbst keine Simulation aus (siehe
+Grenze oben). Jeder verhaltensändernde Merge braucht einen bewussten Rebaseline-Schritt
+(~25 s). Board: #10312/#10313 board_move nach review konnte durch fremde uncommittete
+shots/m10-passive-math-*.json blockiert sein — von Merge-Job/Board-Hygiene mit Commit-
+Referenz schließen.

@@ -13566,19 +13566,30 @@
           "at": "2026-11-28T09:03:43Z",
           "by": "build",
           "text": "todo → doing: Übernommen: Suite-Guard-Test anhand des run-determinism-Musters."
+        },
+        {
+          "at": "2026-11-28T09:05:17Z",
+          "by": "build",
+          "text": "Commit 908d87a1 nennt #10312. Beleg: 4/4 gruen in 195 ms, tsc rc=0, npm test 1850/1850. board_move → review vom Plugin VERWEIGERT wegen 2 FREMDEN uncommitteten Aenderungen (shots/m10-passive-math-caps.json, m10-passive-math-matrix.json — Lane m10-passive-math, nicht angefasst, wie schon bei #10246). Bitte Merge-Job/Board-Hygiene: Karte mit Referenz auf 908d87a1 schliessen."
         }
       ],
       "created": "2026-11-28T08:55:32Z",
-      "updated": "2026-11-28T09:03:43Z"
+      "updated": "2026-11-28T09:05:17Z"
     },
     {
       "id": 10313,
       "title": "m10-golden-frame-guard K3: Lane-Doku (Rebaseline-Anleitung) + .lane-done",
       "description": "docs/lanes/m10-golden-frame-guard.md (neu): Zweck (Regression-Schutz fuer Merge-Welle), Methode, Messwerte (Hashes je Seed, Laufzeit), Anleitung GEWOLLTE Rebaseline (node scripts/m10-golden-frame.mjs --write-baseline, bewusster Schritt mit Begruendung im Commit, nie stillschweigend), Hinweis zu Divergenz durch laufende Lane-Merges (Befund dokumentieren, kein stiller Rebaseline). .lane-done im Worktree-Wurzel (5-10 Zeilen Summary + Messwerte). Abnahme: npm test gruen, Doku erklaert Rebaseline-Prozess, .lane-done committet.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:05:18Z",
+          "by": "build",
+          "text": "todo → doing: Übernommen: Lane-Doku + Rebaseline-Anleitung + .lane-done."
+        }
+      ],
       "created": "2026-11-28T08:55:32Z",
-      "updated": "2026-11-28T08:55:32Z"
+      "updated": "2026-11-28T09:05:18Z"
     }
   ]
 }
