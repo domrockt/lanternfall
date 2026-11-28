@@ -1,0 +1,9 @@
+Lane m10-blend-band-followup — abgeschlossen 2026-11-28 (Karten #13344–#13347, Commits ef3765fc, bb1a641e, K3/K4 auf Branch m10-blend-band-followup).
+
+Ergebnis: Die letzte echte ADD-Insel in den geclaimten Dateien gezogen — unevolvierte Laternen-Korpus (orb_lantern, ADD) von DEPTH.fxLow (7) ins Glow-Band FX_GLOW_DEPTH (7.5), Helper lanternOrbDepth (Muster glowDepthFor). EnemyProjectiles verifiziert ADD-frei, PickupSystem-Momente verifiziert NORMAL (bewusst enemyShot+1, dokumentiert). Guard-Test tests/blend-band-followup.test.ts (9 Tests) pinnt: alle ADD-Zuweisungen im CombatSystem band-geankert, Walk-Modell 2 Grenzen vs. Gegenmodell 4, Ordnung GAME.md unveraendert.
+
+Messwerte (iGPU Mesa Intel RPL-S, 0 JS-Fehler, Kennzahl Blend-Wechsel/Frame, kein FPS-Tor): Vorher worst 6.2 (minute25:stack6+300) / 7.0 (stack:+2), Nachher 6.8 / 7.4 (Rauschen ±1.2). Abnahme „<= 4" NICHT erreicht — Grund belegt (Blend-Bend-A/B, ~/games/.evidence/m10-blend-band-followup/ab-bend.txt): alle ADD -> NORMAL gebaendigt aendert NICHTS (6.2 -> 6.0); die verbleibenden ~6 Wechsel sind strukturbedingt (blend-1-Grafiken, Ground-Chunks, HUD — je -2.2 im Hide-A/B), nicht ADD. Das Hotspot-Band arbeitet wie gebaut.
+
+Optik: Pixel-Diff am gefrorenen Frame orb@7.5 vs orb@7 = 0 Pixel (AE=0, RMSE=0), Abnahme-Bild shots/abnahme/m10-blend-band-lantern-side.png.
+
+Hebelliste (fremd geclaimed, docs/lanes/m10-blend-band-followup.md): Geraet „26/Frame" neu attributieren (Bend-Probe am Geraet), blend-1-Grafiken (DamageNumbers/Run), GroundRenderer-Chunks, Lichtkreis (Run.ts:351), Metrik-Abgleich m10-janky-remeasure.mjs. Kontrolleure: Reviewer PASS (Sollte-Befund umgesetzt). tsc rc=0, 233 Dateien / 2524 Tests gruen, Build gruen.
