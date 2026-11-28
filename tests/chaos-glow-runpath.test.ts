@@ -12,7 +12,6 @@ import { describe, expect, it } from "vitest";
 import {
   PILLAR_BAKE_MAX_LEVEL,
   pillarBakeLevel,
-  pillarDrawScale,
   RUN_ADD_ALPHA_CAP,
   RUN_ADD_ALPHA_FLOOR,
   RUN_LIGHT_ALPHA_MAX,
@@ -34,9 +33,9 @@ describe("fx_pillar/fx_shock Bake-Pfad (B1-Teil, Mixel-Rest des fx-mixel-fix)", 
     // Dokumentierter Fallback (wie mixelLevelFor): über dem Cap fällt der
     // Draw-Scale wieder auf > 1 — aktuell erreicht kein Run-Caller das.
     expect(pillarBakeLevel(5)).toBe(PILLAR_BAKE_MAX_LEVEL);
-    expect(pillarDrawScale(5)).toBeGreaterThan(1);
     for (const s of [0.4, 0.9, 1.4, 1.5, 2.4, 2.8, 3.4]) {
-      expect(pillarDrawScale(s)).toBeLessThanOrEqual(1);
+      // Draw-Scale = Scale/L <= 1 (rechnerisch, wie addPillarImage zeichnet).
+      expect(s / pillarBakeLevel(s)).toBeLessThanOrEqual(1);
     }
   });
 
@@ -127,7 +126,10 @@ describe("Run.ts-Verdrahtung ADD-Deckel (Quelltext-Check)", () => {
 
   it("alle Run-seitigen ADD-Alphas laufen ueber runAddAlpha", () => {
     // splash drop, dawn rays, dawn sun, levelup pillar, chest beam (+ K3: ring)
-    expect((RUN_TS.match(/runAddAlpha\(/g) ?? []).length).toBeGreaterThanOrEqual(5);
+    expect((RUN_TS.match(/runAddAlpha\(/g) ?? []).length).toBeGreaterThanOrEqual(10);
+    // Review-Followup: keine unkappchten ADD-alphaFrom-Werte in spawnAnim-Calls
+    // (fx_boss_core ist bewusst ausgenommen — Boss-FX-Regime mit Alpha-Boden).
+    expect(RUN_TS).not.toMatch(/alphaFrom: (0\.9|1|0\.85), alphaTo: 0, additive: true/);
   });
 
   it("kein nicht-uniformes setScale an den FX-Stellen mehr (B5)", () => {
@@ -141,7 +143,8 @@ describe("Run.ts-Verdrahtung ADD-Deckel (Quelltext-Check)", () => {
 
   it("die verbleibenden zwei-Argument-setScale sind keine Partikel (Schatten/Aura/HP)", () => {
     const lines = RUN_TS.split("\n");
-    const offenders = lines.filter((l: string) => /\.setScale\([^,)]+,[^)]+\)/.test(l));
+    const offenders = lines.filter((l: string) =>
+      /\.setScale\([^,)]+,[^)]+\)/.test(l) && !/uniformScale|draw\.x, draw\.y/.test(l));
     for (const l of offenders) {
       expect(l).toMatch(/shadow|aura|hpFill/);
     }

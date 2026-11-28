@@ -54,8 +54,3 @@ export function pillarBakeLevel(scale: number, maxLevel = PILLAR_BAKE_MAX_LEVEL)
   return Math.min(maxLevel, Math.max(1, Math.ceil(s)));
 }
 
-/** Draw-Scale einer Bake-Stufe (bleibt <= 1 fuer Scale <= maxLevel). */
-export function pillarDrawScale(scale: number, maxLevel = PILLAR_BAKE_MAX_LEVEL): number {
-  return scale / pillarBakeLevel(scale, maxLevel);
-}
-

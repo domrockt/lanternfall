@@ -55,6 +55,7 @@ import {
   RUN_LIGHT_ALPHA_MAX,
   pillarBakeLevel,
   runAddAlpha,
+  uniformScale,
 } from "../logic/fx-caps";
 
 /**
@@ -1640,9 +1641,12 @@ export class Run extends Phaser.Scene {
   private addPillarImage(x: number, y: number, drawScale: number, bakeScale = drawScale): Phaser.GameObjects.Image {
     const level = pillarBakeLevel(bakeScale);
     const key = ensurePillarBake(this, level)[0];
+    // uniformScale erzwingt hier den B5-Cap zentral (Draw-Scale bleibt
+    // uniform und <= RUN_PARTICLE_SCALE_CAP).
+    const draw = uniformScale(drawScale / level, drawScale / level);
     return makeImage(this, Math.round(x), Math.round(y), key)
       .setOrigin(0.5, 1).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-      .setScale(drawScale / level);
+      .setScale(draw.x, draw.y);
   }
 
   /** Level-up: Lichtsäule + aufsteigende Glut am Spieler. */
@@ -1658,7 +1662,7 @@ export class Run extends Phaser.Scene {
       duration: 950, ease: "Cubic.Out", onComplete: () => pillar.destroy(),
     });
     this.combat?.fx.spawnAnim("fx_halo", x, y, {
-      life: 0.6, scaleFrom: 0.6, scaleTo: 2.2, alphaFrom: 0.9, alphaTo: 0, additive: true,
+      life: 0.6, scaleFrom: 0.6, scaleTo: 2.2, alphaFrom: runAddAlpha(0.9), alphaTo: 0, additive: true,
     });
     for (let i = 0; i < 14; i++) {
       const a = (i / 14) * Math.PI * 2;
@@ -1666,7 +1670,7 @@ export class Run extends Phaser.Scene {
         texture: "fx_star", x: x + Math.cos(a) * 10, y: y + Math.sin(a) * 10,
         vx: Math.cos(a) * 26, vy: -30 - (i % 4) * 12,
         life: 0.7 + (i % 3) * 0.15, scaleFrom: 0.8, scaleTo: 0.15,
-        alphaFrom: 1, alphaTo: 0, additive: true,
+        alphaFrom: runAddAlpha(1), alphaTo: 0, additive: true,
         tint: i % 3 === 0 ? PAL[C.lanternWhite] : PAL[C.amber],
       });
     }
@@ -1691,7 +1695,7 @@ export class Run extends Phaser.Scene {
     for (let k = 0; k < 3; k++) {
       this.time.delayedCall(k * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
         life: 0.55, scaleFrom: 0.5 + k * 0.5, scaleTo: 2.2 + k * 0.5,
-        alphaFrom: 0.9, alphaTo: 0, additive: true, tint: PAL[C.lantern],
+        alphaFrom: runAddAlpha(0.9), alphaTo: 0, additive: true, tint: PAL[C.lantern],
       }));
     }
     this.playLevelUpFx();
@@ -1702,7 +1706,7 @@ export class Run extends Phaser.Scene {
       });
       this.combat?.particles.spawn({
         texture: "fx_star", x, y, vx: Math.cos(a) * 45, vy: Math.sin(a) * 45,
-        life: 0.85, scaleFrom: 1, scaleTo: 0.1, alphaFrom: 1, alphaTo: 0, additive: true,
+        life: 0.85, scaleFrom: 1, scaleTo: 0.1, alphaFrom: runAddAlpha(1), alphaTo: 0, additive: true,
         tint: PAL[C.lanternWhite],
       });
     }
@@ -1736,7 +1740,7 @@ export class Run extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       this.time.delayedCall(i * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y + 8, {
         life: 0.65, scaleFrom: 0.5 + i * 0.35, scaleTo: 1.8 + i * 0.5,
-        alphaFrom: 0.85, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
+        alphaFrom: runAddAlpha(0.85), alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
       }));
     }
     const shake = shakeFor("bossHit", getSettings().shake);
@@ -1763,7 +1767,7 @@ export class Run extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       this.time.delayedCall(90 + i * 95, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
         life: 0.6, scaleFrom: 0.8 + i * 0.5, scaleTo: 2.6 + i * 0.7,
-        alphaFrom: 1, alphaTo: 0, additive: true, tint: i === 0 ? PAL[C.lanternWhite] : tint,
+        alphaFrom: runAddAlpha(1), alphaTo: 0, additive: true, tint: i === 0 ? PAL[C.lanternWhite] : tint,
       }));
     }
     this.time.delayedCall(260, () => {
