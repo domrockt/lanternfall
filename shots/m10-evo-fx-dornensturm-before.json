@@ -1,0 +1,856 @@
+{
+  "generatedAt": "2026-11-28T03:12:37.868Z",
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "valid": true,
+  "errors": [],
+  "configs": {
+    "640": {
+      "renderer": {
+        "generatedAt": "2026-11-28T03:12:32.892Z",
+        "context": "webgl1",
+        "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)",
+        "maxTextureSize": 16384,
+        "maxTextureImageUnits": 32,
+        "extensions": [
+          "ANGLE_instanced_arrays",
+          "EXT_blend_minmax",
+          "EXT_clip_control",
+          "EXT_color_buffer_half_float",
+          "EXT_depth_clamp",
+          "EXT_disjoint_timer_query",
+          "EXT_float_blend",
+          "EXT_frag_depth",
+          "EXT_polygon_offset_clamp",
+          "EXT_texture_compression_bptc",
+          "EXT_texture_compression_rgtc",
+          "EXT_texture_filter_anisotropic",
+          "EXT_texture_mirror_clamp_to_edge",
+          "EXT_sRGB",
+          "KHR_parallel_shader_compile",
+          "OES_element_index_uint",
+          "OES_fbo_render_mipmap",
+          "OES_standard_derivatives",
+          "OES_texture_float",
+          "OES_texture_float_linear",
+          "OES_texture_half_float",
+          "OES_texture_half_float_linear",
+          "OES_vertex_array_object",
+          "WEBGL_blend_func_extended",
+          "WEBGL_color_buffer_float",
+          "WEBGL_compressed_texture_astc",
+          "WEBGL_compressed_texture_etc",
+          "WEBGL_compressed_texture_etc1",
+          "WEBGL_compressed_texture_s3tc",
+          "WEBGL_compressed_texture_s3tc_srgb",
+          "WEBGL_debug_renderer_info",
+          "WEBGL_debug_shaders",
+          "WEBGL_depth_texture",
+          "WEBGL_draw_buffers",
+          "WEBGL_lose_context",
+          "WEBGL_multi_draw"
+        ],
+        "contextAttributes": {
+          "alpha": false,
+          "antialias": false,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        },
+        "precision": {
+          "fragmentHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "fragmentMediump": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "vertexHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          }
+        },
+        "fps": {
+          "target": 60,
+          "limit": 60,
+          "cappedAt60": true
+        },
+        "powerPreference": "high-performance",
+        "canvas": {
+          "attrWidth": 640,
+          "attrHeight": 360,
+          "logicalWidth": 640,
+          "logicalHeight": 360,
+          "rendersDevicePixels": false
+        },
+        "textures": {
+          "count": 0,
+          "pixels": 0,
+          "approxBytes": 0,
+          "maxEdge": 0,
+          "oversized": []
+        }
+      },
+      "textures": {
+        "projectile_thorn": {
+          "sourceW": 7,
+          "sourceH": 7,
+          "frameW": 7,
+          "frameH": 7
+        },
+        "fx_thorn": {
+          "sourceW": 9,
+          "sourceH": 9,
+          "frameW": 9,
+          "frameH": 9
+        },
+        "ring_burst": {
+          "sourceW": 96,
+          "sourceH": 96,
+          "frameW": 96,
+          "frameH": 96
+        },
+        "fx_shock": {
+          "sourceW": 48,
+          "sourceH": 48,
+          "frameW": 48,
+          "frameH": 48
+        },
+        "fx_evo_hit_thorn_storm": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        },
+        "fx_evo_death_thorn_storm": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        }
+      },
+      "live": {
+        "fx_thorn": {
+          "maxScaleX": 2.908,
+          "maxScaleY": 2.908,
+          "samples": [
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            }
+          ]
+        },
+        "fx_shock@2": {
+          "maxScaleX": 0.282,
+          "maxScaleY": 0.282,
+          "samples": [
+            {
+              "scaleX": 0.282,
+              "scaleY": 0.282,
+              "dispW": 27,
+              "dispH": 27,
+              "blend": 1,
+              "tint": 7314264
+            }
+          ]
+        },
+        "ring_burst": {
+          "maxScaleX": 0.446,
+          "maxScaleY": 0.446,
+          "samples": [
+            {
+              "scaleX": 0.446,
+              "scaleY": 0.446,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1,
+              "tint": 16777215
+            }
+          ]
+        },
+        "projectile_thorn": {
+          "maxScaleX": 1.7,
+          "maxScaleY": 1.7,
+          "samples": [
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        }
+      },
+      "colors": {
+        "projectile_thorn": {
+          "width": 7,
+          "height": 7,
+          "opaque": 25,
+          "semiAlphaPixels": 0,
+          "inkPixels": 12,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 4,
+          "edgeSample": [
+            {
+              "x": 3,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 0,
+              "y": 3,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 3,
+              "i": 0
+            },
+            {
+              "x": 3,
+              "y": 6,
+              "i": 0
+            }
+          ],
+          "histogram": {
+            "pal0": 12,
+            "pal21": 3,
+            "pal17": 5,
+            "pal18": 4,
+            "pal13": 1
+          }
+        },
+        "fx_thorn": {
+          "width": 9,
+          "height": 9,
+          "opaque": 39,
+          "semiAlphaPixels": 0,
+          "inkPixels": 0,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 6,
+          "edgeSample": [
+            {
+              "x": 3,
+              "y": 0,
+              "i": 27
+            },
+            {
+              "x": 4,
+              "y": 0,
+              "i": 13
+            },
+            {
+              "x": 5,
+              "y": 0,
+              "i": 27
+            },
+            {
+              "x": 3,
+              "y": 8,
+              "i": 27
+            },
+            {
+              "x": 4,
+              "y": 8,
+              "i": 13
+            },
+            {
+              "x": 5,
+              "y": 8,
+              "i": 27
+            }
+          ],
+          "histogram": {
+            "pal27": 18,
+            "pal13": 9,
+            "pal28": 12
+          }
+        },
+        "fx_evo_death_thorn_storm": {
+          "width": 32,
+          "height": 32,
+          "opaque": 354,
+          "semiAlphaPixels": 0,
+          "inkPixels": 188,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal0": 188,
+            "pal11": 17,
+            "pal31": 28,
+            "pal30": 75,
+            "pal20": 46
+          }
+        }
+      },
+      "errors": [],
+      "liveCounts": {
+        "fx_thorn": 34,
+        "fx_shock@2": 1,
+        "ring_burst": 1,
+        "projectile_thorn": 18
+      },
+      "view": {
+        "configW": 640,
+        "configH": 360,
+        "zoom": 1,
+        "cameraW": 640
+      },
+      "aliveEnemies": 29
+    },
+    "960x540": {
+      "renderer": {
+        "generatedAt": "2026-11-28T03:12:35.635Z",
+        "context": "webgl1",
+        "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)",
+        "maxTextureSize": 16384,
+        "maxTextureImageUnits": 32,
+        "extensions": [
+          "ANGLE_instanced_arrays",
+          "EXT_blend_minmax",
+          "EXT_clip_control",
+          "EXT_color_buffer_half_float",
+          "EXT_depth_clamp",
+          "EXT_disjoint_timer_query",
+          "EXT_float_blend",
+          "EXT_frag_depth",
+          "EXT_polygon_offset_clamp",
+          "EXT_texture_compression_bptc",
+          "EXT_texture_compression_rgtc",
+          "EXT_texture_filter_anisotropic",
+          "EXT_texture_mirror_clamp_to_edge",
+          "EXT_sRGB",
+          "KHR_parallel_shader_compile",
+          "OES_element_index_uint",
+          "OES_fbo_render_mipmap",
+          "OES_standard_derivatives",
+          "OES_texture_float",
+          "OES_texture_float_linear",
+          "OES_texture_half_float",
+          "OES_texture_half_float_linear",
+          "OES_vertex_array_object",
+          "WEBGL_blend_func_extended",
+          "WEBGL_color_buffer_float",
+          "WEBGL_compressed_texture_astc",
+          "WEBGL_compressed_texture_etc",
+          "WEBGL_compressed_texture_etc1",
+          "WEBGL_compressed_texture_s3tc",
+          "WEBGL_compressed_texture_s3tc_srgb",
+          "WEBGL_debug_renderer_info",
+          "WEBGL_debug_shaders",
+          "WEBGL_depth_texture",
+          "WEBGL_draw_buffers",
+          "WEBGL_lose_context",
+          "WEBGL_multi_draw"
+        ],
+        "contextAttributes": {
+          "alpha": false,
+          "antialias": false,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        },
+        "precision": {
+          "fragmentHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "fragmentMediump": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "vertexHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          }
+        },
+        "fps": {
+          "target": 60,
+          "limit": 60,
+          "cappedAt60": true
+        },
+        "powerPreference": "high-performance",
+        "canvas": {
+          "attrWidth": 640,
+          "attrHeight": 360,
+          "logicalWidth": 640,
+          "logicalHeight": 360,
+          "rendersDevicePixels": false
+        },
+        "textures": {
+          "count": 0,
+          "pixels": 0,
+          "approxBytes": 0,
+          "maxEdge": 0,
+          "oversized": []
+        }
+      },
+      "textures": {
+        "projectile_thorn": {
+          "sourceW": 7,
+          "sourceH": 7,
+          "frameW": 7,
+          "frameH": 7
+        },
+        "fx_thorn": {
+          "sourceW": 9,
+          "sourceH": 9,
+          "frameW": 9,
+          "frameH": 9
+        },
+        "ring_burst": {
+          "sourceW": 96,
+          "sourceH": 96,
+          "frameW": 96,
+          "frameH": 96
+        },
+        "fx_shock": {
+          "sourceW": 48,
+          "sourceH": 48,
+          "frameW": 48,
+          "frameH": 48
+        },
+        "fx_evo_hit_thorn_storm": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        },
+        "fx_evo_death_thorn_storm": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        }
+      },
+      "live": {
+        "fx_thorn": {
+          "maxScaleX": 2.908,
+          "maxScaleY": 2.908,
+          "samples": [
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            },
+            {
+              "scaleX": 1.177,
+              "scaleY": 1.177,
+              "dispW": 11,
+              "dispH": 11,
+              "blend": 0,
+              "tint": 11029025
+            }
+          ]
+        },
+        "fx_shock@2": {
+          "maxScaleX": 0.282,
+          "maxScaleY": 0.282,
+          "samples": [
+            {
+              "scaleX": 0.282,
+              "scaleY": 0.282,
+              "dispW": 27,
+              "dispH": 27,
+              "blend": 1,
+              "tint": 7314264
+            }
+          ]
+        },
+        "ring_burst": {
+          "maxScaleX": 0.446,
+          "maxScaleY": 0.446,
+          "samples": [
+            {
+              "scaleX": 0.446,
+              "scaleY": 0.446,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1,
+              "tint": 16777215
+            }
+          ]
+        },
+        "projectile_thorn": {
+          "maxScaleX": 1.7,
+          "maxScaleY": 1.7,
+          "samples": [
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1.7,
+              "scaleY": 1.7,
+              "dispW": 12,
+              "dispH": 12,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        }
+      },
+      "colors": {
+        "projectile_thorn": {
+          "width": 7,
+          "height": 7,
+          "opaque": 25,
+          "semiAlphaPixels": 0,
+          "inkPixels": 12,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 4,
+          "edgeSample": [
+            {
+              "x": 3,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 0,
+              "y": 3,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 3,
+              "i": 0
+            },
+            {
+              "x": 3,
+              "y": 6,
+              "i": 0
+            }
+          ],
+          "histogram": {
+            "pal0": 12,
+            "pal21": 3,
+            "pal17": 5,
+            "pal18": 4,
+            "pal13": 1
+          }
+        },
+        "fx_thorn": {
+          "width": 9,
+          "height": 9,
+          "opaque": 39,
+          "semiAlphaPixels": 0,
+          "inkPixels": 0,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 6,
+          "edgeSample": [
+            {
+              "x": 3,
+              "y": 0,
+              "i": 27
+            },
+            {
+              "x": 4,
+              "y": 0,
+              "i": 13
+            },
+            {
+              "x": 5,
+              "y": 0,
+              "i": 27
+            },
+            {
+              "x": 3,
+              "y": 8,
+              "i": 27
+            },
+            {
+              "x": 4,
+              "y": 8,
+              "i": 13
+            },
+            {
+              "x": 5,
+              "y": 8,
+              "i": 27
+            }
+          ],
+          "histogram": {
+            "pal27": 18,
+            "pal13": 9,
+            "pal28": 12
+          }
+        },
+        "fx_evo_death_thorn_storm": {
+          "width": 32,
+          "height": 32,
+          "opaque": 354,
+          "semiAlphaPixels": 0,
+          "inkPixels": 188,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal0": 188,
+            "pal11": 17,
+            "pal31": 28,
+            "pal30": 75,
+            "pal20": 46
+          }
+        }
+      },
+      "errors": [],
+      "liveCounts": {
+        "fx_thorn": 34,
+        "fx_shock@2": 1,
+        "ring_burst": 1,
+        "projectile_thorn": 18
+      },
+      "view": {
+        "configW": 640,
+        "configH": 360,
+        "zoom": 1,
+        "cameraW": 640
+      },
+      "aliveEnemies": 29
+    }
+  }
+}

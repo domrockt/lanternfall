@@ -689,22 +689,9 @@ function bossCoreFrame(stage: number): string[] {
   return rows.map((r) => r.replace(/b/g, charOf(21)));
 }
 
-function thornFrame(stage: number): string[] {
-  const out: string[] = [];
-  const ramp = [16, 17, 18];
-  for (let y = 0; y < 9; y++) {
-    let row = "";
-    const half = Math.max(0, 3 - Math.floor(stage / 2));
-    for (let x = 0; x < 9; x++) {
-      const dx = Math.abs(x - 4);
-      if (dx > half - Math.abs(y - 4) * 0.4) row += ".";
-      else if (dx === 0) row += "d";
-      else row += String.fromCharCode(97 + ramp[Math.min(2, dx)]);
-    }
-    out.push(row);
-  }
-  return out;
-}
+// thornFrame (9x9, Ramp-Char 97+idx = fleshWarm/mossNight statt Glut) ist
+// M10-evo-fx-dornensturm durch thornTrailFrame in gen-fx.ts ersetzt (14x14,
+// Dorn-Treppe, Zielgröße).
 
 function orbFrame(stage: number): string[] {
   const out: string[] = [];
@@ -851,10 +838,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     drawScale: [1, 1],
   },
   // Dornensalve + Windstiefel: gruener Splitter-Kranz, mittleres Timing.
+  // M10-evo-fx-dornensturm: Signatur in Zielgroesse 128x128 gebacken, Draw-Scale 1
+  // (vorher 32x32 @ 4,0–4,6 = 188/354 Ink-Pixel).
   thorn_storm: {
     evolution: "thorn_storm", baseWeapon: "thorn", shape: "splitter",
     palette: [30, 31, 20], hitLifetime: 0.18, deathLifetime: 0.42,
     hitCount: 5, deathCount: 11,
+    drawScale: [1, 1],
   },
   // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
   thunder_seal: {
@@ -1797,6 +1787,287 @@ export function winterSignatureFrame(kind: "hit" | "death", stage: number): stri
   return rows.map((r) => r.join(""));
 }
 
+// ── Dornensturm-FX (M10-evo-fx-dornensturm) ─────────────────────
+// Vorlage „Eine Pixelgröße für alles" (m10-evo-fx-phoenix … -gewittersiegel).
+// Vorher (shots/m10-evo-fx-dornensturm-before.json): projectile_thorn 7x7 @ 1,7x
+// mit 12/25 Ink-Pixeln + warmer Glutrampe; fx_thorn 9x9 @ bis 2,9x (Ramp-Char
+// 97+idx ergab fleshWarm/mossNight statt Glut); 16 Streak-Partikel @ scaleFrom
+// 3,0 (Mixel); ring_burst 96 @ 0,45 + fx_shock 48 @ 0,28 (Matsch-Downscale).
+// Dorn-Farbtreppe (grünlich-gelbe Natur-Töne, kein Ink, kein Grau 1–9):
+//   Spitze boneLight(11, sparsam) → marshLight(31) → marsh(30) → mossDark(29)
+//   → Kontur mossNight(28). Binäres Alpha („." statt Halbdeckung).
+export const THORN_RAMP = [11, 31, 30, 29, 28] as const;
+
+export const THORN_PROJECTILE_SIZE = 12;
+export const THORN_TRAIL_SIZE = 14;
+export const THORN_STREAK_SIZE = 22;
+export const THORN_CROWN_SIZE = 96;
+
+/**
+ * Dornen-Projektil in Zielgröße (12x12, Draw-Scale 1 statt 7x7 @ 1,7x):
+ * unregelmäßiger Dornenstern — 4 Hauptdornen mit unterschiedlicher Länge/Taper
+ * + 4 kurze Diagonal-Barben, Kontur nur als 1-px-Saum (mossNight 28, kein Ink).
+ */
+export function thornProjectileFrame(): string[] {
+  const size = THORN_PROJECTILE_SIZE;
+  const rows: string[][] = Array.from({ length: size }, () => Array<string>(size).fill("."));
+  const c = (size - 1) / 2;
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix < 0 || iy < 0 || ix >= size || iy >= size) return;
+    rows[iy][ix] = charOf(idx);
+  };
+  // [Winkel, Länge, Basisbreite] — ungleich lang = organisch, keine Platte.
+  const spokes: Array<[number, number, number]> = [
+    [-Math.PI / 2, 5.2, 1.5],
+    [0, 4.6, 1.7],
+    [Math.PI / 2, 4.0, 1.4],
+    [Math.PI, 4.6, 1.6],
+    [-Math.PI / 4, 2.6, 1.2],
+    [Math.PI * 0.75, 2.9, 1.2],
+    [Math.PI * 0.25, 2.3, 1.1],
+    [Math.PI * 1.25, 2.5, 1.1],
+  ];
+  for (const [a, len, baseW] of spokes) {
+    const dx = Math.cos(a);
+    const dy = Math.sin(a);
+    for (let k = 1.1; k <= len; k += 0.5) {
+      const rel = k / len;
+      const w = Math.max(0.45, baseW * (1 - rel) + 0.45);
+      for (let s = -w; s <= w; s += 0.7) {
+        const idx = rel >= 0.75 ? 31 : rel >= 0.32 ? 30 : 29;
+        put(c + dx * k - dy * s, c + dy * k + dx * s, idx);
+      }
+      // Saum nur an den Flanken der Basis (kein geschlossener Ink-Rahmen).
+      if (rel < 0.55) {
+        put(c + dx * k - dy * (w + 0.8), c + dy * k + dx * (w + 0.8), 28);
+        put(c + dx * k + dy * (w + 0.8), c + dy * k - dx * (w + 0.8), 28);
+      }
+    }
+    // Dunkle Spitzenkappe hält den Dorn auch auf hellem Grund lesbar.
+    put(c + dx * (len + 0.5), c + dy * (len + 0.5), 28);
+  }
+  // Kern flächig hell ohne Raster.
+  for (let y = -1; y <= 1; y++) {
+    for (let x = -1; x <= 1; x++) {
+      if (Math.abs(x) + Math.abs(y) <= 1.5) put(c + x, c + y, Math.abs(x) + Math.abs(y) < 0.5 ? 31 : 30);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/**
+ * Dornen-Trail (14x14, 3 Frames, Draw-Scale 1): verwehender Splitter-Floh —
+ * Haupt-Splitter + 2 kurze Nebensplitter, die pro Frame schrumpfen. Ersetzt
+ * die 9x9-Raute mit Ramp-Off-by-Char (fleshWarm/Lantern-Verfärbung).
+ */
+export function thornTrailFrame(stage: number): string[] {
+  const size = THORN_TRAIL_SIZE;
+  const rows: string[][] = Array.from({ length: size }, () => Array<string>(size).fill("."));
+  const c = (size - 1) / 2;
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix < 0 || iy < 0 || ix >= size || iy >= size) return;
+    rows[iy][ix] = charOf(idx);
+  };
+  const shrink = 1 - stage * 0.3;
+  // Haupt-Splitter (leicht geneigt), Taper zur Spitze, Kappe 28.
+  const len = 8.5 * shrink;
+  for (let k = 0; k <= len; k += 0.5) {
+    const rel = k / len;
+    const w = Math.max(0.4, 1.3 * (1 - rel) + 0.4);
+    for (let s = -w; s <= w; s += 0.7) {
+      put(c - 0.8 + s * 0.4, c - len / 2 + k, rel < 0.28 ? 31 : rel < 0.65 ? 30 : 29);
+    }
+  }
+  put(c - 0.8, c - len / 2 - 0.6, 28);
+  // Zwei Nebensplitter (kurz, seitlich versetzt) — Unruhe ohne Rauschen.
+  for (let k = 0; k <= 3.4 * shrink; k += 0.5) {
+    put(c + 3.2 - k * 0.6, c + 2.4 - k * 0.9, k > 2.2 ? 31 : 30);
+    put(c - 3.6 + k * 0.7, c + 1.8 + k * 0.8, k > 2.2 ? 31 : 29);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/**
+ * Dornen-Streak (22x22, 3 Frames, Draw-Scale 1 statt fx_thorn @ 3,0x): Dornen-
+ * Dart entlang lokal -y (Spitze oben; Rotation im CombatSystem = Flugrichtung),
+ * Phase 0 = voller Dart, Phase 1 = kürzer + abgelöste Splitter, Phase 2 = nur
+ * noch Splitter (Ausklang). Unregelmäßige Barben statt symmetrischer Rauten.
+ */
+export function thornStreakFrame(stage: number): string[] {
+  const size = THORN_STREAK_SIZE;
+  const rows: string[][] = Array.from({ length: size }, () => Array<string>(size).fill("."));
+  const c = (size - 1) / 2;
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix < 0 || iy < 0 || ix >= size || iy >= size) return;
+    rows[iy][ix] = charOf(idx);
+  };
+  if (stage <= 1) {
+    const len = stage === 0 ? 17 : 12;
+    const yTip = c - len / 2 - 1;
+    for (let k = 0; k <= len; k += 0.5) {
+      const rel = k / len;
+      const w = Math.max(0.45, 1.6 * (1 - rel) + 0.45);
+      for (let s = -w; s <= w; s += 0.7) {
+        const idx = rel < 0.28 ? 31 : rel < 0.7 ? 30 : 29;
+        put(c + s, yTip + k, idx);
+      }
+      // Barben einseitig versetzt (organisch, kein Spiegel-Dorn).
+      if (rel > 0.3 && rel < 0.45) put(c + w + 1.1, yTip + k, 28);
+      if (rel > 0.6 && rel < 0.72) put(c - w - 1.1, yTip + k, 28);
+    }
+    put(c, yTip - 0.6, 28); // Spitzenkappe
+    put(c, yTip + len + 0.6, 28); // Fußkappe
+  }
+  // Abgelöste Splitter (Phase 1 hinter dem Dart, Phase 2 als Ausklang).
+  const frags = stage === 0 ? 0 : stage === 1 ? 3 : 5;
+  for (let i = 0; i < frags; i++) {
+    const fx = c + ((i * 7) % 5) - 2.5;
+    const fy = c + 3 + i * 2.3;
+    put(fx, fy, i % 2 === 0 ? 30 : 29);
+    put(fx + 1, fy - 1, 31);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/**
+ * Dornenkrone am Salven-Ursprung (96x96, 3 Frames, Draw-Scale 1 statt
+ * ring_burst @ 0,45 + fx_shock @ 0,28): Ring-Band mit Wobble (organisch, kein
+ * platter Kreis) + 11 unregelmäßig lange Dorn-Zacken nach außen. Phase 0 =
+ * Aufbau (kurze Zacken), 1 = Impact (volle Zacken), 2 = Ausklang (Zacken
+ * stubben, Band bricht an 3 Stellen — Lücken als Form, nicht als Raster).
+ */
+export function thornCrownFrame(stage: number): string[] {
+  const size = THORN_CROWN_SIZE;
+  const rows: string[][] = Array.from({ length: size }, () => Array<string>(size).fill("."));
+  const c = (size - 1) / 2;
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix < 0 || iy < 0 || ix >= size || iy >= size) return;
+    rows[iy][ix] = charOf(idx);
+  };
+  const r0 = 24;
+  const wobble = (a: number): number => Math.sin(a * 7 + 1.3) * 1.4;
+  // Band: außen 28, Mitte 30, innen 29 — Treppe statt Verwaschen.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x - c;
+      const dy = y - c;
+      const a = Math.atan2(dy, dx);
+      if (stage === 2 && Math.cos(a * 3 + 0.7) > 0.55) continue; // 3 organische Bruchstellen
+      const dd = Math.hypot(dx, dy) - (r0 + wobble(a));
+      if (Math.abs(dd) > 1.6) continue;
+      const w = (dd + 1.6) / 3.2;
+      rows[y][x] = charOf(w > 0.72 ? 28 : w > 0.34 ? 30 : 29);
+    }
+  }
+  // Zacken: unregelmäßige Länge (i*5 % 3), Impact am längsten, Ausklang stubbt.
+  const spikes = 11;
+  for (let i = 0; i < spikes; i++) {
+    if (stage === 2 && i % 3 === 0) continue;
+    const a = (i / spikes) * Math.PI * 2 + 0.35;
+    let len = 6.5 + ((i * 5) % 3) * 2.2 + (stage === 1 ? 1.6 : 0);
+    if (stage === 2) len *= 0.7;
+    const rStart = r0 + wobble(a);
+    for (let k = 1; k <= len; k += 0.5) {
+      const rel = k / len;
+      const w = Math.max(0.45, 1.6 * (1 - rel) + 0.45);
+      for (let s = -w; s <= w; s += 0.7) {
+        const idx = rel >= 0.7 ? 31 : 30;
+        put(c + Math.cos(a) * (rStart + k) - Math.sin(a) * s, c + Math.sin(a) * (rStart + k) + Math.cos(a) * s, idx);
+      }
+    }
+    put(c + Math.cos(a) * (rStart + len + 0.6), c + Math.sin(a) * (rStart + len + 0.6), 28);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/**
+ * Dornensturm-Signatur am Ziel (128x128, 4 Frames, Draw-Scale 1 statt 32x32 @
+ * 4,0-4,6x mit 188/354 Ink): gebogene Dornen-Splitter (Zweig-Silhouette, Taper,
+ * einseitige Barben), die mit der Phase auseinanderfliegen; Kern flächig hell
+ * ohne Raster; Phase 3 löst Splitter in Fragmente auf (Ausklang). Knochen-
+ * helle Spitzen (11) nur an 2-3 px je Splitter (Near-White-Budget).
+ */
+export const THORN_SIGNATURE_SIZE = 128;
+
+export function thornSignatureFrame(kind: "hit" | "death", stage: number, size = THORN_SIGNATURE_SIZE): string[] {
+  const rows: string[][] = Array.from({ length: size }, () => Array<string>(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix < 0 || iy < 0 || ix >= size || iy >= size) return;
+    rows[iy][ix] = charOf(idx);
+  };
+  // Splitter fliegen auseinander; Phase 3 bricht auseinander (Fragmente).
+  const burst = death ? 1.35 : 1.0;
+  const shards = death ? 7 : 4;
+  const ln = (death ? 19 : 13) * (0.7 + 0.3 * t);
+  for (let i = 0; i < shards; i++) {
+    if (stage === 3 && i % 3 === 1) continue; // Ausklang: jeder dritte Splitter weg
+    const a = (i / shards) * Math.PI * 2 + (death ? 0.3 : 0.75) + stage * 0.05;
+    const rr = shardRadius(burst, t, i);
+    const cx = c + Math.cos(a) * rr;
+    const cy = c + Math.sin(a) * rr;
+    const bend = (i % 2 === 0 ? 1 : -1) * 0.16; // organische Krümmung statt Gerade
+    for (let k = 0; k <= Math.ceil(ln); k++) {
+      const rel = Math.min(1, k / ln);
+      const w = Math.max(0.45, 2.0 * (1 - rel) ** 0.85 + 0.45);
+      const bendOff = Math.sin(rel * Math.PI * 0.8) * bend * ln;
+      const hx = cx + Math.cos(a) * k - Math.sin(a) * bendOff;
+      const hy = cy + Math.sin(a) * k + Math.cos(a) * bendOff;
+      for (let s = -Math.ceil(w); s <= Math.ceil(w); s++) {
+        const aS = Math.abs(s);
+        if (aS > w) continue;
+        // Treppe: knochenhelle Spitze (sparsam, nur jeder dritte Splitter —
+        // Near-White-Gate 4,16 %) → marshLight → marsh → mossDark-Basis.
+        const idx = rel < 0.15 && aS < w * 0.5 && i % 3 === 0 ? 11 : rel < 0.55 ? 31 : rel < 0.85 ? 30 : 29;
+        put(hx - Math.sin(a) * s, hy + Math.cos(a) * s, idx);
+      }
+      // Einseitige Barbe (keine Spiegel-Symmetrie); außen 1 px mossNight-Saum
+      // (art-director Minor: Grün-auf-Gras-Kontrast).
+      if (rel > 0.3 && rel < 0.45) {
+        put(hx - Math.sin(a) * (w + 1.1), hy + Math.cos(a) * (w + 1.1), 28);
+        put(hx - Math.sin(a) * (w + 2.1), hy + Math.cos(a) * (w + 2.1), 28);
+      }
+    }
+    // Dunkle Spitzenkappe.
+    const kCap = Math.ceil(ln);
+    put(cx + Math.cos(a) * (kCap + 0.6) - Math.sin(a) * bend, cy + Math.sin(a) * (kCap + 0.6) + Math.cos(a) * bend, 28);
+  }
+  // Zentraler Splitter-Rest: flächiger heller Kern (kein Raster, kein Ink).
+  const coreR = death ? 5.5 : 4;
+  for (let y = -Math.ceil(coreR); y <= Math.ceil(coreR); y++) {
+    for (let x = -Math.ceil(coreR); x <= Math.ceil(coreR); x++) {
+      const d = Math.hypot(x, y);
+      if (d <= coreR) put(c + x, c + y, d < coreR * 0.55 ? 31 : 30);
+    }
+  }
+  // Abgelöste Fragmente (Ausklang, Phase 2/3) — 2-px-Tupfer statt Einzelpixel.
+  const frags = stage >= 2 ? (death ? 6 : 4) : 0;
+  for (let i = 0; i < frags; i++) {
+    const fa = (i / frags) * Math.PI * 2 + 0.9;
+    const fr = 30 + ((i * 13) % 14) + t * 16;
+    put(c + Math.cos(fa) * fr, c + Math.sin(fa) * fr * 0.92, i % 2 === 0 ? 30 : 29);
+    put(c + Math.cos(fa) * fr + 1, c + Math.sin(fa) * fr * 0.92, 31);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Startradius der Splitter je Phase (Aufbau eng, Impact weit). */
+function shardRadius(burst: number, t: number, i: number): number {
+  return (20 + ((i * 7) % 5) * 1.8 + t * 10) * burst;
+}
+
 function addEvolutionSignatures(scene: Phaser.Scene): void {
   // Zielgroessen-Pfad (Mixel-Regel, m10-evo-fx-phoenix + m10-evo-fx-soulpyre):
   // Signaturen mit drawScale werden in voller Display-Groesse gebacken und mit
@@ -1806,6 +2077,10 @@ function addEvolutionSignatures(scene: Phaser.Scene): void {
     soul_beacon: { size: SOUL_SIGNATURE_SIZE, frame: soulSignatureFrame },
     eternal_winter: { size: 128, frame: winterSignatureFrame },
     wrath_pendulum: { size: WRATH_SIGNATURE_SIZE, frame: wrathSignatureFrame },
+    // m10-evo-fx-dornensturm: thorn_storm registriert. thunder_seal bleibt beim
+    // 64er-Pfad (main nach Revert 34e97d3) — das 128er-Upgrade war Chaos-Lane (K2)
+    // und wird mit Karte #8876 neu verhandelt, hier nicht schmuggeln.
+    thorn_storm: { size: THORN_SIGNATURE_SIZE, frame: thornSignatureFrame },
   };
   for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
@@ -1849,7 +2124,7 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_seal", { w: 32, h: 32, frames: [0, 1, 2, 3, 4].map((i) => sealFrame(i)) });
   // M10-evo-fx-gewittersiegel: Boden-Siegel in Zielgroesse (Draw-Scale 1, 4 Phasen).
   addFrames(scene, "fx_seal_thunder", { w: 64, h: 64, frames: [0, 1, 2, 3].map((i) => thunderSealFrame(i)) });
-  addFrames(scene, "fx_thorn", { w: 9, h: 9, frames: [0, 1, 2].map(thornFrame) });
+  addFrames(scene, "fx_thorn", { w: THORN_TRAIL_SIZE, h: THORN_TRAIL_SIZE, frames: [0, 1, 2].map((i) => thornTrailFrame(i)) });
   addFrames(scene, "fx_orb", { w: 11, h: 11, frames: [0, 1, 2, 3].map(orbFrame) });
   addFrames(scene, "fx_pillar", { w: 26, h: 72, frames: [0, 1, 2, 3, 4].map((i) => pillarFrame(i)) });
   addFrames(scene, "fx_shock", { w: 48, h: 48, frames: [0, 1, 2, 3, 4, 5].map((i) => shockFrame(i)) });
@@ -1883,6 +2158,11 @@ export function createFxTextures(scene: Phaser.Scene): void {
   // M10-evo-fx-zornpendel: Pendel-Ring/Glow in Zielgrößen (alle Draw-Scale 1).
   addFrames(scene, "fx_wrath_ring", { w: WRATH_RING_SIZE, h: WRATH_RING_SIZE, frames: [0, 1, 2].map((i) => pendulumRingFrame(i)) });
   addFrames(scene, "fx_wrath_glow", { w: 17, h: 17, frames: [wrathGlowFrame()] });
+  // M10-evo-fx-dornensturm: Dornen-Salve in Zielgrößen (alle Draw-Scale 1);
+  // projectile_thorn ist aus SPRITE_GRIDS hierher gezogen (12x12 statt 7x7 @ 1,7x).
+  addFrames(scene, "projectile_thorn", { w: THORN_PROJECTILE_SIZE, h: THORN_PROJECTILE_SIZE, frames: [thornProjectileFrame()] });
+  addFrames(scene, "fx_thorn_streak", { w: THORN_STREAK_SIZE, h: THORN_STREAK_SIZE, frames: [0, 1, 2].map((i) => thornStreakFrame(i)) });
+  addFrames(scene, "fx_thorn_crown", { w: THORN_CROWN_SIZE, h: THORN_CROWN_SIZE, frames: [0, 1, 2].map((i) => thornCrownFrame(i)) });
   // M10: eigene Treffer-/Todes-Signatur je Evolution (Form + Palette + Timing).
   addEvolutionSignatures(scene);
 }
@@ -1899,6 +2179,7 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2, ring_frost: 1,
   fx_phoenix_launch: 3, fx_boom_phoenix: 4, fx_burn_phoenix: 3,
   fx_wrath_ring: 3, fx_wrath_glow: 1, fx_seal_thunder: 4,
+  fx_thorn_streak: 3, fx_thorn_crown: 3,
   ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
     [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
