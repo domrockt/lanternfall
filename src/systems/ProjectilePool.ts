@@ -3,6 +3,51 @@ import type { EnemyRuntime } from "./EnemyPool";
 import { DEPTH } from "../gfx/depth";
 import { FX_GLOW_DEPTH } from "./FxSystem";
 import { applyTexture, makeImage } from "../gfx/atlas";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config";
+
+/**
+ * m10-worldview-anchor-pools: deterministischer Sim-Anker für den sichtbaren
+ * Weltbereich (Rezept m10-boss-dur-determinism K2, Beleg
+ * ~/games/.evidence/m10-boss-dur-determinism/probe-runtime-patch.json).
+ *
+ * Phaser setzt camera.worldView AUSSCHLIESSLICH in Camera.preRender (pro
+ * Render-Frame). Der Sim läuft in festen SIM_MAX_STEP-Teilschritten; jeder
+ * worldView-Leser im Teilschritt-Loop sieht daher einen bis zu einen
+ * Render-Frame alten, frame-abhängigen View → RNG-Divergenz.
+ *
+ * Der Anker ersetzt worldView durch reine Geometrie: Zentrum = Kamera-Mitte
+ * (`scrollX + cameraWidth / 2` — scrollX/Y wird pro Teilschritt in
+ * Run.simulate aus der SIM-Position gesetzt, m10-run-determinism-fix),
+ * Weite/Höhe = logischer Screen GAME_WIDTH × GAME_HEIGHT (#4658-Konvention).
+ *
+ * Verhalten bei 1x/60 fps unverändert: bei zoom = 1/Teiler gilt
+ * worldView.width = camera.width · Teiler = GAME_WIDTH bzw. height =
+ * GAME_HEIGHT, und worldView-Mitte = scroll + camera.width/2 — bis auf
+ * Phasers Floor-Rundung (~0,5 px) identisch. Bei Teiler = 1 ist
+ * camera.width = GAME_WIDTH, der Anker also exakt worldView.
+ */
+export interface SimViewRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** Reine Anker-Funktion (testbar, keine Kamera/Phaser-Abhängigkeit). */
+export function simAnchorView(
+  scrollX: number,
+  scrollY: number,
+  cameraWidth: number,
+  cameraHeight: number,
+): SimViewRect {
+  return {
+    x: scrollX + cameraWidth / 2 - GAME_WIDTH / 2,
+    y: scrollY + cameraHeight / 2 - GAME_HEIGHT / 2,
+    width: GAME_WIDTH,
+    height: GAME_HEIGHT,
+  };
+}
+
 
 export interface ProjectileRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -166,19 +211,25 @@ export class ProjectilePool {
   private readonly viewScratch: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 };
   private viewCacheFrame = -1;
 
-  /** Sichtbarer Weltbereich; null, wenn keine Kamera vorhanden (Tests). */
+  /**
+   * Sichtbarer Weltbereich; null, wenn keine Kamera vorhanden (Tests).
+   * m10-worldview-anchor-pools: liest den deterministischen Sim-Anker
+   * (simAnchorView) statt camera.worldView — worldView wird nur im
+   * Render-Frame aktualisiert und ist im Teilschritt-Loop frame-abhängig.
+   */
   private view(): { x: number; y: number; width: number; height: number } | null {
     const frame = this.scene.game?.loop?.frame;
     // Frame-Cache VOR jeder Allokation prüfen (Review m10-heap-pool-fix:
     // sonst wird pro Aufruf die compute-Closure alloziert).
     if (frame !== undefined && frame === this.viewCacheFrame) return this.viewCache;
-    const v = this.scene.cameras?.main?.worldView;
+    const cam = this.scene.cameras?.main;
     let result: { x: number; y: number; width: number; height: number } | null;
-    if (v && v.width > 0 && v.height > 0) {
-      this.viewScratch.x = v.x;
-      this.viewScratch.y = v.y;
-      this.viewScratch.width = v.width;
-      this.viewScratch.height = v.height;
+    if (cam && cam.width > 0 && cam.height > 0) {
+      const a = simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height);
+      this.viewScratch.x = a.x;
+      this.viewScratch.y = a.y;
+      this.viewScratch.width = a.width;
+      this.viewScratch.height = a.height;
       result = this.viewScratch;
     } else {
       result = null;
