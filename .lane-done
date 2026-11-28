@@ -1,0 +1,44 @@
+Lane m10-boss-dur-determinism — Zusammenfassung (2026-11-28)
+
+Bedarf: m10-balance-corridor-guard — gleiche Seeds, verschiedene Boss-Dauern
+(mira/202: 30,1 s kurz vs. 15,1 s full), Dom-Korridor A5 stochastisch.
+
+K1 (#12109): scripts/m10-boss-dur-det.mjs (3 Seeds x 2 Laeufe, sim-exakte
+bossWarn/bossDefeated-Marken). Vorher: 3/3 Seeds divergent (seed 202 Boss#0
+11,05 s vs. 27,70 s). Beleg: ~/games/.evidence/m10-boss-dur-determinism/
+m10-boss-dur-det-before.json (+ Kopie shots/m10-boss-dur-det-before.json,
+gitignored). Commit 4afa57eb.
+
+K2 (#12110): Ursache NACHWEISLICH ausserhalb der Boss-Area: camera.worldView
+wird nur in Camera.preRender gesetzt; die Sim-Pfad-Leser Spawner.outsideView
+(Spawner.ts:206), ProjectilePool.view (ProjectilePool.ts:175) und
+EnemyProjectiles.refreshView (EnemyProjectiles.ts:463) sind im
+SIM_MAX_STEP-Teilschritt-Loop frame-abhaengig → RNG-Strom divergiert
+(erste Abweichung schon s=48). BELEG: Laufzeit-Patch nur dieser 3 Leser
+auf den Sim-Anker (mid = scroll + viewport/2, Weite = Viewport x Teiler)
+macht 3 Seeds x 2 Laeufe (700 s, 30x) BITGLEICH inkl. Boss-Dauern
+(probe-runtime-patch.json). Hit-Stop-Probe (nohitstop) blieb divergent —
+ausgeschlossen. Bedarfsmeldung 2026-11-28 in ~/games/.dispatch/requests.md
+(Rezept inkl. 1x/60-fps-Aequivalenz: worldView ≈ scroll±(W/2,H/2) bei
+zoom=1/Teiler bis auf Integer-Rundung). Commit db134fb5.
+
+K3 (#12111): In-area-Haertung — simViewRect (pure, src/logic/bosses.ts)
+ersetzt die worldView-Lesung in BossSystem.viewRect; renderDivisor
+deterministisch aus game.scale.height/camera.height; spawn() ohne live
+camera.zoom (Intro-Puls-Tween). 60-FPS-Verhalten unveraendert (Delta:
+worldView-Integer-Rundung <= 0,5 px an Gate-Grenzen, dokumentiert).
+Commit 626d4121.
+
+K4 (#12112): tests/boss-dur-determinism.test.ts — 7 Tests (Teiler 1/2/3,
+Reinheit, worldView-Unabhaengigkeit, Teiler-Fallback, spawn zoom-unabhaengig).
+npx tsc --noEmit gruen, npm test 2286/2286 gruen, Reviewer-PASS.
+
+OFFEN (blockiert auf externem Fix, siehe requests.md): End-to-End-
+"Aufnahme 3 Seeds x 2 Laeufe mit 0 Boss-Dauer-Abweichung" im BUILD (ohne
+Laufzeit-Patch) ist erst nach Umstellung der 3 worldView-Leser durch die
+Zuständige Lane erfüllbar — mit Patch belegt erreichbar. Bis dahin bleibt
+der Korridor A5 stochastisch; das Korridor-Problem ist ein Symptom des
+allgemeinen Frame-Lecks, kein Boss-Datenproblem.
+
+Notiz: #12013 (m10-loading-screen Merge-Fix) ist eine fremde Lane-Karte —
+nicht angenommen (Briefing-Regel), zur Kenntnis an Supervisor gemeldet.
