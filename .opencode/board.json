@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11308,
+  "next": 11453,
   "cards": [
     {
       "id": 1,
@@ -15170,6 +15170,52 @@
       ],
       "created": "2026-11-28T10:42:57Z",
       "updated": "2026-11-28T10:48:25Z"
+    },
+    {
+      "id": 11449,
+      "title": "m10-hazard-quality-budget K1: Ist — Draw-Kosten der Warn-Discs bei M25-Dichte (Vorher-JSON)",
+      "description": "Probe scripts/m10-hazard-quality.mjs: bei M25-Dichte (500er-Schwarm) gleichzeitig warnende Disc-Hazards spawnen und Draw-Kosten strukturell messen (gezeichnete Warn-Sprites, ADD-Rim-Device-Fläche, Fill-Fläche). Vorher-JSON als Beleg. AK: Vorher-JSON existiert, Metriken fixiert, WebGL-Renderer-String enthalten, 0 JS-Fehler.",
+      "column": "doing",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [
+        {
+          "at": "2026-11-28T11:08:15Z",
+          "by": "build",
+          "text": "todo → doing: K1 angenommen: Probe-Skript bauen, Vorher-Messung bei M25-Dichte (500er-Schwarm), Vorher-JSON nach ~/games/.evidence/m10-hazard-quality-budget/."
+        }
+      ],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:08:15Z"
+    },
+    {
+      "id": 11450,
+      "title": "m10-hazard-quality-budget K2: Tier-Regel in hazardDisc.ts/Hazards.ts (reine Funktionen)",
+      "description": "Warn-Disc-Zeichnung je QualityTier dämpfen: LOW = Disc-Draw-Cap (weniger simultane gezeichnete Discs, nahe Spieler bevorzugt) + kürzere Rim-Puls-Phase; high/medium bitgleich. Raster-Contract aus tests/hazard-disc.test.ts unangetastet (Masken/Keys/Draw-Scale 1). AK: reine Funktionen unit-testbar, kein Dither-Flächen-Rückfall, MIN_WARN_S unverändert.",
+      "column": "todo",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:08:13Z"
+    },
+    {
+      "id": 11451,
+      "title": "m10-hazard-quality-budget K3: Tests — Tier-Matrix + Raster-Guard bleibt grün",
+      "description": "tests/hazard-quality-budget.test.ts: Tier-Matrix (high/medium bitgleich, LOW gedeckelt, Puls-Phase) + Hazards-Verdrahtung. AK: neue Tests grün, npx vitest run tests/hazard-disc.test.ts bleibt unverändert grün (Raster-Guard).",
+      "column": "todo",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:08:13Z"
+    },
+    {
+      "id": 11452,
+      "title": "m10-hazard-quality-budget K4: Nachher-Beleg + Doku + .lane-done",
+      "description": "Nachher-JSON (gleiche Probe, tag=after): LOW entlastet messbar (Draw-Cap greift, ADD-Fläche sinkt), HIGH bitgleich. Doku docs/lanes/m10-hazard-quality-budget.md, Abnahme-Screenshot shots/abnahme/, .lane-done. AK: LOW-Kennzahlen deutlich unter Vorher, Lesbarkeit (MIN_WARN_S/Puls) unveraendert, Suite grün.",
+      "column": "todo",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:08:13Z"
     }
   ]
 }
