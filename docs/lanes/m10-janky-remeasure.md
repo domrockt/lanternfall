@@ -108,6 +108,21 @@ direkt als `-> Job`-Zeile in `~/.dispatch/requests.md`.
 Methodik-Hinweis für die Endabnahme: gfxinfo-janky ist mit 0 % in K2 UND K3 nicht mehr unterscheidend
 (Deadline-Raster vs. 2-Vsync-Pacing) — als Tor-Metrik neben janky deshalb zwingend FPS avg + rAF-p95 führen.
 
+### Vorfall: parallele zweite Session an dieser Lane (2026-11-28T17:03–17:2xZ)
+Versuch 2 (diese Session, Titel „m10-janky-remeasure #2") stellte 17:16Z fest, dass eine zweite aktive
+Agent-Session (höchstwahrscheinlich Versuch 1, gleicher pty-Daemon, kein eigener `opencode run`-Prozess
+mehr sichtbar) parallel an derselben Lane arbeitet:
+- Commit `2bf7b4ae` (17:03:34Z) „K2-Doku praezisiert — zwei unabhängige K2-Läufe": dokumentiert einen
+  zweiten K2-Lauf (16:49–17:01Z, fpsAvg natural 50,1, janky 0/29 058) — konsistent mit Lauf 1.
+- Beleg-Überschreibungen: `k2-cap60-device.json` (17:01:02Z, = dessen Lauf 2) und `k3-max-device.json`
+  (17:14:42Z, K3-Rerun) — Werte decken sich mit den Läufen dieser Session (janky 0 %, fpsAvg 50,0–50,1,
+  p95 33,4 ms), **kein Datenkonflikt, aber Pfad-Kollision** (Beleg-JSON = immer der letzte Lauf).
+- Beobachtet 17:17Z: weiterer K3-Rerun (`flock … timeout 900 … --fps 0`) im Prozessbaum; läuft ~17:31Z aus.
+- Einordnung: Zahlen identisch, K4-Urteil unabhängig vom Rerun; die "ohne flock"-Aussage in `2bf7b4ae`
+  ist falsch (Lauf 1 lief MIT `flock /home/ai/games/.lf-perf.lock`, Commit 1579f6be).
+Diese Session schließt die Lane mit .lane-done ab; falls die zweite Session weitermisst, sind die Zahlen
+als Bestätigungsläufe zu werten.
+
 ## Gerät
 - Redmi Pad Pro, Android 16, SM7435-AC, Adreno (TM) 710, DPR 2, 1280x800, Panel per APK auf 60 Hz gezwungen
   (Panel-Probe rAF-Median 16,7 ms in beiden Belegen).
