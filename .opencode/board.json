@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7141,
+  "next": 7145,
   "cards": [
     {
       "id": 1,
@@ -8353,6 +8353,70 @@
       ],
       "created": "2026-11-28T00:43:46Z",
       "updated": "2026-11-28T00:43:50Z"
+    },
+    {
+      "id": 7141,
+      "title": "m10-fullrun-guard #1 Ist-Messung auf main (Guard-Lauf + Baseline-JSON)",
+      "description": "Guard-Lauf (autoPlay + timeScale 30, 30,2 Sim-Min): 6/6 Bosse exakt 300-1800 s, 6 Truhen, Sieg dawn, 0 JS-Fehler, Heap M1 39,1 MB -> Ende 30,9 MB (-21 %). Belege: shots/m10-fullrun-guard-baseline.json + -results.png. Uebernommen aus Lane m10-fullrun-guard.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T00:48:44Z",
+          "by": "build",
+          "text": "lane #6918, Merge 155b3cf"
+        }
+      ],
+      "created": "2026-11-28T00:48:40Z",
+      "updated": "2026-11-28T00:48:44Z"
+    },
+    {
+      "id": 7142,
+      "title": "m10-fullrun-guard #2 Harte Tore + Exit-Code im Skript",
+      "description": "evaluateGuardGates (rein, exportiert): 6/6 Bosse 300-1800 s ±2 s, bossesDefeated>=6, Truhen>=6, resultReason=dawn, 0 JS-Fehler, Heap M1->Ende <= +15 %; Exit 1 bei jeder Torverletzung, Browser-Lauf nur unter isMain. Beleg: Baseline-Lauf bestand alle 6 Tore (rc=0). Uebernommen aus Lane m10-fullrun-guard.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T00:48:44Z",
+          "by": "build",
+          "text": "lane #6919, Merge 155b3cf"
+        }
+      ],
+      "created": "2026-11-28T00:48:40Z",
+      "updated": "2026-11-28T00:48:44Z"
+    },
+    {
+      "id": 7143,
+      "title": "m10-fullrun-guard #3 Unit-Tests der Tor-Definitionen",
+      "description": "8 Tests / >20 Assertions in tests/fullrun-guard.test.ts, deterministische Fixtures: konsistenter Sieglauf besteht alle 6 Tore, negative Faelle (Boss +3 s, Welle fehlt, 5 Truhen, 5 Bosse, resultReason=death, JS-Fehler, Heap +21 %) werden als FAIL erkannt. Suite 941/941. Uebernommen aus Lane m10-fullrun-guard.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T00:48:44Z",
+          "by": "build",
+          "text": "lane #6920, Merge 155b3cf"
+        }
+      ],
+      "created": "2026-11-28T00:48:40Z",
+      "updated": "2026-11-28T00:48:44Z"
+    },
+    {
+      "id": 7144,
+      "title": "m10-fullrun-guard #4 Lane-Doku + after-JSON + Merge",
+      "description": "docs/lanes/m10-fullrun-guard.md mit Tor-Definitionen + belegten Zahlen; finaler Guard-Lauf auf main identisch gruen (30,2 Sim-Min, 6/6 Bosse, 6 Truhen, dawn, 0 JS-Fehler, Heap -21 %, Tor <= +15 %). Lane fertig, Merge 155b3cf in main. Uebernommen aus Lane m10-fullrun-guard.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T00:48:44Z",
+          "by": "build",
+          "text": "lane #6921, Merge 155b3cf"
+        }
+      ],
+      "created": "2026-11-28T00:48:40Z",
+      "updated": "2026-11-28T00:48:44Z"
     }
   ]
 }
