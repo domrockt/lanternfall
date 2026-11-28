@@ -44,7 +44,11 @@ const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const mixing = await import("../src/audio/mixing.ts");
 const { newMixerState, canPlay, notePlayed, releaseVoice, effectiveVolume, planPlay, limiterGain, TARGET_PEAK, SFX_CONFIG } = mixing;
 if (!SFX_CONFIG) throw new Error("SFX_CONFIG fehlt in src/audio/mixing.ts");
-const PICKUP_IDS = mixing.PICKUP_SFX_IDS ?? ["xp", "powerup", "levelup", "chest"];
+// Alle vier Pickup-Ereignis-Sounds fuer die Distanzmatrix (statisch, unabhaengig
+// davon, welche IDs die Mixer-Raten-Klasse PICKUP_SFX_IDS umfasst).
+const PICKUP_IDS = ["xp", "powerup", "levelup", "chest"];
+// Raten-Klasse (eigenes Band + Daempfung) — Feature-Detection fuer K3.
+const RATE_CLASS_IDS = mixing.PICKUP_SFX_IDS ?? PICKUP_IDS;
 
 const SR = 22050;
 const DT = 1 / 60;
@@ -178,10 +182,11 @@ function processRequest(id, t) {
   const cfg = SFX_CONFIG[id];
   if (!cfg) return; // fehlender Sound (z. B. powerup vor K2) — im Burst uebersprungen
   const isPickup = PICKUP_IDS.includes(id);
+  const inRateClass = RATE_CLASS_IDS.includes(id);
   const req = {
     id, priority: cfg.priority, cooldown: cfg.cooldown,
     maxVoices: cfg.maxVoices, volume: cfg.volume,
-    ...(isPickup && mixing.PICKUP_SFX_IDS ? { pickup: true } : {}),
+    ...(inRateClass && mixing.PICKUP_SFX_IDS ? { pickup: true } : {}),
   };
   const plan = planPlay(state, req);
   if (!plan.allow) {
@@ -194,7 +199,7 @@ function processRequest(id, t) {
   let vol = effectiveVolume(MASTER_SFX, req);
   let scale = 1;
   let damp = 1;
-  if (isPickup && mixing.pickupDampGain) {
+  if (isPickup && mixing.pickupDampGain && inRateClass) {
     damp = mixing.pickupDampGain(state, req);
     vol *= damp;
   }

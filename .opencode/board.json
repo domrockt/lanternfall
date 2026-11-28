@@ -11997,13 +11997,18 @@
    "id": 9585,
    "title": "m10-pickup-sfx-distinct K2 Signaturen: 4 Pickup-Sounds (sfx_pickup_*) regenerieren",
    "description": "gen_sfx.py erzeugt sfx_pickup_xp/powerup/levelup/chest.wav mit getrennten Signaturen; SFX_KEYS xp/levelup/chest umgemappt, neuer Key powerup; playPowerupMoment (PickupSystem.ts, minimal + begruendet) spielt powerup. Abnahme: alle 6 Paar-Distanzen >= 0,15 (vorlaeufig, Final in K4-Test).",
-   "column": "doing",
+   "column": "review",
    "assignee": "m10-pickup-sfx-distinct",
    "notes": [
     {
      "at": "2026-11-28T09:20:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "Karte angenommen -> doing."
+    },
+    {
+     "at": "2026-11-28T07:45:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "review: K2 committed. Alle 6 Paar-Distanzen >= 0,310 (Ziel 0,15), Sweep 4096 Kombis (Beleg .evidence/k2-sweep-result.json), 22 fremde WAVs bitgleich. powerup-Key bereit; Verdrahtung in m10-powerup-sfx-wire (Claimcheck-Block, siehe Lane-Doku). Selbst-Check: PASS."
     }
    ]
   },
@@ -12011,17 +12016,34 @@
    "id": 9586,
    "title": "m10-pickup-sfx-distinct K3 Mixer: Pickup-Klasse Voice-Prioritaet + Limit + Massen-Daempfung",
    "description": "mixing.ts: PICKUP_SFX_IDS, eigenes Start-Kontingent fuer Pickup-Klasse, Daempfungsfaktor bei Massen-Events (pure Funktion), Prioritaet 2 (verdraengt Waffen statt zu verstummen); AudioSystem.play wendet Daempfung an. Musik-Pfade unveraendert, Master-Mute bitgleich. Abnahme: Chaos-Sim 0 Clipping, keine Pickup-Verhungern, music-dawn-Tests gruen.",
-   "column": "backlog",
+   "column": "review",
    "assignee": "m10-pickup-sfx-distinct",
-   "notes": []
+   "notes": [
+    {
+     "at": "2026-11-28T07:45:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Karte angenommen -> doing."
+    },
+    {
+     "at": "2026-11-28T07:50:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "review: K3 committed. XP-Sounds im Burst 65 -> 469 von 900, 0 Clipping, Peak -17,5 dBFS, 28 Audio-Tests gruen. Musik/Mute-Pfade unberuehrt."
+    }
+   ]
   },
   {
    "id": 9587,
    "title": "m10-pickup-sfx-distinct K4 Test+Doku: tests/pickup-sfx-distinct.test.ts + After-Matrix",
    "description": "tests/pickup-sfx-distinct.test.ts (Paar-Distanzen >= 0,15, kein Clipping, Mixer-Regeln, Mute bitgleich), After-Messung, docs/lanes/m10-pickup-sfx-distinct.md. Abnahme: npm test gruen, npm run build gruen, Musik-Tests unveraendert gruen.",
-   "column": "backlog",
+   "column": "doing",
    "assignee": "m10-pickup-sfx-distinct",
-   "notes": []
+   "notes": [
+    {
+     "at": "2026-11-28T07:50:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Karte angenommen -> doing."
+    }
+   ]
   }
  ]
 }

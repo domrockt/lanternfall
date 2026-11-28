@@ -23,6 +23,8 @@ export interface SoundRequest {
   cooldown: number;
   maxVoices: number;
   volume: number;
+  /** Pickup-Klasse (m10-pickup-sfx-distinct): eigenes Band-Kontingent + Dämpfung. */
+  pickup?: boolean;
 }
 
 /** Eine aktive (amplitudenbekannte) Stimme für Limiter/Verdrängung. */
@@ -38,8 +40,8 @@ export interface ActiveVoice {
 interface StartMark {
   id: string;
   at: number;
-  /** 0 = Waffen-Band (Prio < 2), 1 = Treffer-Band (Prio 2), 2 = Prio >= 3. */
-  band: 0 | 1 | 2;
+  /** 0 = Waffen-Band (Prio < 2), 1 = Treffer-Band (Prio 2), 2 = Prio >= 3, 3 = Pickup-Klasse. */
+  band: 0 | 1 | 2 | 3;
 }
 
 export interface MixerState {
@@ -66,9 +68,16 @@ export const MAX_STARTS_PER_SECOND = 24;
 export const WEAPON_BAND_STARTS_PER_SEC = 12;
 /** Band Treffer/Kills (Priorität 2): Start-Kontingent pro Sekunde. */
 export const HIT_BAND_STARTS_PER_SEC = 12;
+/** Band Pickup-Klasse (xp/powerup, m10-pickup-sfx-distinct): Start-Kontingent pro Sekunde. */
+export const PICKUP_BAND_STARTS_PER_SEC = 8;
 
 function bandOf(priority: number): 0 | 1 | 2 {
   return priority < 2 ? 0 : priority === 2 ? 1 : 2;
+}
+
+/** Band eines Requests: Pickup-Klasse hat eigenes Band 3 (eigenes Kontingent). */
+function bandOfRequest(req: SoundRequest): 0 | 1 | 2 | 3 {
+  return req.pickup ? 3 : bandOf(req.priority);
 }
 
 function pruneStarts(state: MixerState): void {
@@ -100,14 +109,24 @@ export function planPlay(state: MixerState, req: SoundRequest): PlayPlan {
   if (last !== undefined && state.now - last < req.cooldown) return { allow: false, reason: "cooldown" };
   if (req.priority < 3) {
     pruneStarts(state);
-    // Harte Gesamt-Grenze: 24 Voice-Starts/s über beide Bänder (Prio < 3).
+    // Harte Gesamt-Grenze: 24 Voice-Starts/s über Waffen-/Treffer-Band. Die
+    // Pickup-Klasse (m10-pickup-sfx-distinct) zählt NICHT hinein — sie hat ihr
+    // eigenes Kontingent (8/s) und wird bei Massen-Events über pickupDampGain
+    // gedämpft statt verhungert (vorher: 622x rateFair bei 900 XP-Requests).
     const recent = state.starts.filter((s) => s.band < 2);
     if (recent.length >= MAX_STARTS_PER_SECOND) return { allow: false, reason: "rate" };
     // Fair-Anteil je Klang-ID: Band-Deckel / aktive IDs, mindestens 1/s — auch
-    // bei vollem Band, damit im Chaos keine Waffe verstummt.
-    const band = bandOf(req.priority);
-    const bandCap = band === 0 ? WEAPON_BAND_STARTS_PER_SEC : HIT_BAND_STARTS_PER_SEC;
-    const bandStarts = recent.filter((s) => s.band === band);
+    // bei vollem Band, damit im Chaos keine Waffe verstummt. Die Pickup-Klasse
+    // teilt sich ihr eigenes Kontingent (PICKUP_BAND_STARTS_PER_SEC) fair zwischen
+    // xp und powerup und läuft nicht mehr im Waffen-Band mit.
+    const band = bandOfRequest(req);
+    const bandCap =
+      band === 0 ? WEAPON_BAND_STARTS_PER_SEC
+      : band === 3 ? PICKUP_BAND_STARTS_PER_SEC
+      : HIT_BAND_STARTS_PER_SEC;
+    const bandStarts = band === 3
+      ? state.starts.filter((s) => s.band === 3)
+      : recent.filter((s) => s.band === band);
     const distinct = new Set(bandStarts.map((s) => s.id)).size;
     const share = Math.max(1, Math.floor(bandCap / Math.max(1, distinct)));
     const own = bandStarts.reduce((n, s) => n + (s.id === req.id ? 1 : 0), 0);
@@ -160,7 +179,7 @@ export function notePlayed(state: MixerState, req: SoundRequest, opts?: NoteOpti
     volume: opts?.volume ?? req.volume,
     startedAt: state.now,
   });
-  state.starts.push({ id: req.id, at: state.now, band: bandOf(req.priority) });
+  state.starts.push({ id: req.id, at: state.now, band: bandOfRequest(req) });
   pruneStarts(state);
   return state;
 }
@@ -211,6 +230,39 @@ export const PRIORITY = {
   crit: 4,
 } as const;
 
+/**
+ * Pickup-Klasse (m10-pickup-sfx-distinct): häufige Aufnahme-Sounds. Priorität 2
+ * (wie Treffer): bei vollem Voice-Budget verdrängen sie die älteste Waffenstimme,
+ * statt selbst zu verstummen — aber sie laufen im eigenen Band-Kontingent.
+ */
+export const PRIORITY_PICKUP = PRIORITY.hit;
+export const PICKUP_SFX_IDS = ["xp", "powerup"] as const;
+
+/** Pickup-Dämpfung: ab so vielen Starts/s wird gedämpft (Massen-Events). */
+export const PICKUP_DAMP_FULL_AT = 4;
+/** Pickup-Dämpfung: ab so vielen Starts/s Bodenwert erreicht. */
+export const PICKUP_DAMP_MAX_AT = 12;
+/** Pickup-Dämpfung: Lautstärke-Bodenwert (nie stumm). */
+export const PICKUP_DAMP_FLOOR = 0.45;
+
+/**
+ * Dämpfungsfaktor für einen Pickup-Request bei Massen-Events (rein, testbar):
+ * 1, solange <= PICKUP_DAMP_FULL_AT Pickup-Starts in der letzten Sekunde liegen,
+ * linear abnehmend bis PICKUP_DAMP_FLOOR bei >= PICKUP_DAMP_MAX_AT. Im 500er-
+ * Chaos klingt der einzelne XP-Pickup dadurch leiser statt in einem Brei unter-
+ * zugehen; Einzel-/Paar-Pickups bleiben ungedämpft voll hörbar.
+ */
+export function pickupDampGain(state: MixerState, req: SoundRequest): number {
+  if (!req.pickup) return 1;
+  pruneStarts(state);
+  const recent = state.starts.filter((s) => s.band === 3);
+  const n = recent.length;
+  if (n <= PICKUP_DAMP_FULL_AT) return 1;
+  const span = PICKUP_DAMP_MAX_AT - PICKUP_DAMP_FULL_AT;
+  const gain = 1 - ((n - PICKUP_DAMP_FULL_AT) / span) * (1 - PICKUP_DAMP_FLOOR);
+  return Math.max(PICKUP_DAMP_FLOOR, Math.min(1, gain));
+}
+
 /** Alle prozedural erzeugten WAVs (scripts/gen_sfx.py). */
 export const SFX_KEYS = {
   ember: "sfx_ember", flail: "sfx_flail", frost: "sfx_frost", thorn: "sfx_thorn",
@@ -256,9 +308,9 @@ export const SFX_CONFIG: Record<string, SfxConfig> = {
   soul_beacon: { priority: PRIORITY.weapon, cooldown: 1.0, maxVoices: 1, volume: 0.5 },
   hit: { priority: PRIORITY.hit, cooldown: 0.05, maxVoices: 4, volume: 0.45 },
   kill: { priority: PRIORITY.hit, cooldown: 0.04, maxVoices: 4, volume: 0.35 },
-  xp: { priority: PRIORITY.weapon, cooldown: 0.05, maxVoices: 3, volume: 0.25 },
+  xp: { priority: PRIORITY_PICKUP, cooldown: 0.05, maxVoices: 3, volume: 0.25 },
   // Powerup-Moment (passive Aufnahme): ähnlich selten wie levelup, aber eigenständig.
-  powerup: { priority: PRIORITY.weapon, cooldown: 0.15, maxVoices: 2, volume: 0.5 },
+  powerup: { priority: PRIORITY_PICKUP, cooldown: 0.15, maxVoices: 2, volume: 0.5 },
   levelup: { priority: PRIORITY.boss, cooldown: 0.5, maxVoices: 1, volume: 0.7 },
   chest: { priority: PRIORITY.boss, cooldown: 0.6, maxVoices: 1, volume: 0.65 },
   evolution: { priority: PRIORITY.crit, cooldown: 0.8, maxVoices: 1, volume: 0.85 },

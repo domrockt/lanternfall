@@ -70,6 +70,32 @@ Beleg `/home/ai/games/.evidence/m10-pickup-sfx-distinct/k2-sweep-result.json`), 
 Alle 6 Paare >= 0,310 (Ziel 0,15) — PASS. Grün: tsc, audio-mix, audio-mix-chaos, audio-frost-gap,
 pickup-sfx-distinct (24 Tests). Kein Clipping, Mix-Peak −15 dBFS.
 
+## K3 — Mixer (#9586)
+
+`mixing.ts`: neue Pickup-Klasse — `PICKUP_SFX_IDS = [xp, powerup]`, `PRIORITY_PICKUP = 2`
+(bei vollem Voice-Budget verdrängen Pickups die älteste Waffenstimme statt zu verstummen),
+eigenes Band-Kontingent `PICKUP_BAND_STARTS_PER_SEC = 8` (Fair-Share zwischen xp/powerup),
+Massen-Dämpfung `pickupDampGain` (rein/testbar: 1 bis 4 Starts/s, linear auf Boden 0,45 bei
+>= 12/s — nie stumm). `AudioSystem.play` setzt `pickup: true` für die Klasse und wendet die
+Dämpfung vor dem Limiter an. **Design-Entscheidung:** das globale 24/s-Starts-Deckel zählt
+weiterhin nur Waffen-/Treffer-Band; Pickups sind über ihr eigenes 8/s-Kontingent plus Dämpfung
+begrenzt (Worst-Case 32 Starts/s gesamt, begründet: XP ist Doms Haupt-Feedback-Kanal im Chaos).
+
+After-Messung (`~/.evidence/m10-pickup-sfx-distinct/m10-pickup-sfx-after-k3.json`, gleiche
+Sim wie K1: 60 s, Seed 411, XP 15/s):
+
+| Metrik | Vorher | Nachher |
+|---|---|---|
+| XP-Sounds gespielt (von 900) | 65 (7 %) | **469 (52 %)** |
+| Pickup-Starts/s (avg/p95/max) | 1,1 / 2 / 2 | 7,8 / 8 / 9 (eigenes Kontingent) |
+| Mix-Peak | −17,3 dBFS | −17,5 dBFS |
+| Clipping-Samples | 0 | **0** |
+| Gleichz. Voices max | 12 | 12 |
+
+Grün: tsc, audio-mix, audio-mix-chaos, audio-frost-gap, ambient-batching (28 Tests).
+Musik-Pfade unberührt (keine Änderung an setMusic/applyVolumes/MUSIC_KEYS); Master-Mute-Pfad
+(`muted`-Check in play/setMuted) unverändert — bitgleich, Test-Beleg in K4.
+
 ## Notizen / Abweichungen
 
 - **Supervisor-Fehlalarm #9196** (2026-11-28, „du bearbeitest die falsche Karte"):
