@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10157,
+  "next": 10181,
   "cards": [
     {
       "id": 1,
@@ -13141,6 +13141,91 @@
       ],
       "created": "2026-11-28T08:08:24Z",
       "updated": "2026-11-28T08:18:13Z"
+    },
+    {
+      "id": 10177,
+      "title": "m10-gem-value-reading #1 Ist-Messung: Chaos-Frame (>=300 Gem-Drops via Spawn-Automat), Klassifikation Stufe(px-Flaeche)+Farbe, Vorher-JSON",
+      "description": "Lane m10-gem-value-reading. Skript scripts/m10-gem-reading.mjs erzeugt 500-Gegner-Chaos (Seed 1, autoPlay, god), klassifiziert je Gem Stufe nach px-Flaeche + Dominantfarbe aus der Textur, misst paarweise Farb-Delta und Off-Palette-Pixel. Vorher-JSON nach ~/games/.evidence/m10-gem-value-reading/, Kernzahlen in docs/lanes/m10-gem-value-reading.md — BEVOR der Fix beginnt. Abnahme: JSON mit je Stufe Flaeche+Farbe+Delta existiert.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T08:28:26Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-gem-value-reading: Ist-Messung gestartet (Skript nach Muster m10-gem-drawcap.mjs)."
+        },
+        {
+          "at": "2026-11-28T08:34:26Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Messung committet (186d0f57): 305 Gem-Drops, Stufen/Farb-Klassifikation, Belege in ~/games/.evidence/m10-gem-value-reading/. Supervisor-Steer befolgt: kein weiteres Skript-Polieren."
+        }
+      ],
+      "created": "2026-11-28T08:28:23Z",
+      "updated": "2026-11-28T08:34:26Z"
+    },
+    {
+      "id": 10178,
+      "title": "m10-gem-value-reading #2 Stufen-Farbrampe: 3 klar getrennte Palette-Farben, Wertstufe->Farbe+Groesse deterministisch (PickupSystem.ts/xp.ts)",
+      "description": "Lane m10-gem-value-reading. Rampe aus Nacht-/Gold-Palette in src/logic/xp.ts (GEMS.color korrekt + exportierte Rampe) und src/gfx/textures.ts in Einklang; Zuordnung Wertstufe -> Farbe+Groesse deterministisch, Cap/Merge-Semantik unberuehrt. Abnahme: GEMS.color == Textur-Kernfarbe je Stufe, Delta >= Schwelle, tsc gruen.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T08:34:26Z",
+          "by": "build",
+          "text": "backlog → doing: Rampe festziehen: small mist/paleMist (Kollision 7,43% -> 0,21%), medium amber/lantern, large crimson/hotRed; Deltas 163/154/130."
+        },
+        {
+          "at": "2026-11-28T08:36:02Z",
+          "by": "build",
+          "text": "doing → review: Rampe committet (7937d48b): GEMS.color + GEM_VALUE_RAMP + gemStageForValue; Textur gem_small auf mist/paleMist; Merge-Semantik bitgleich (gem-draw-cap-Tests gruen)."
+        }
+      ],
+      "created": "2026-11-28T08:28:23Z",
+      "updated": "2026-11-28T08:36:02Z"
+    },
+    {
+      "id": 10179,
+      "title": "m10-gem-value-reading #3 Guard-Test tests/gem-value-reading.test.ts",
+      "description": "Lane m10-gem-value-reading. 3 Stufen paarweise farb-distant (Delta >= Schwelle, Zahl im Test), Groessenordnung monoton (7x7<9x9<11x11, Werte 2<6<18), 0 Off-Palette-Pixel in den Gem-Texturen; bestehende gem-draw-cap-Tests bleiben unveraendert gruen (Cap/Merge bitgleich). Abnahme: npx vitest run tests/gem-value-reading.test.ts gruen.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T08:36:02Z",
+          "by": "build",
+          "text": "backlog → review: Guard-Test committet (17b52c0a): 9 Tests, Deltas 169,6/154,1/129,4 >= 120, Flaeche 31<57<81, 0 Off-Palette, Merge-Vertraege."
+        }
+      ],
+      "created": "2026-11-28T08:28:23Z",
+      "updated": "2026-11-28T08:36:02Z"
+    },
+    {
+      "id": 10180,
+      "title": "m10-gem-value-reading #4 Nachher-Messung + Screenshots 640x360/960x540 + art-director-Urteil + Doku",
+      "description": "Lane m10-gem-value-reading. Nachher-JSON (Delta, Off-Palette 0, Monotonie), Abnahme-Bilder shots/abnahme/m10-gem-value-reading-{640,960}.png, art-director >= 4/5 auf dem Chaos-Frame, npm run build rc=0, 0 JS-Fehler. docs/lanes/m10-gem-value-reading.md + .lane-done.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:36:02Z",
+          "by": "build",
+          "text": "backlog → doing: Nachher-Messung + Abnahme-Screenshots (640/960) + art-director."
+        },
+        {
+          "at": "2026-11-28T08:50:34Z",
+          "by": "build",
+          "text": "art-director Runde 1: 3/5 FAIL -> Fix r3 (small=bone/candleWhite/lanternWhite, medium + lanternWhite-Kern, Dim 0.8) ist im Worktree fertig und getestet (10/10 gruene Guard-Tests, Nachher-Messung: small-Kollision 2,24 %, Deltas 137,4/154,1/197,7, 0 Off-Palette). BLOCKIERT fuers Commit: src/gfx/textures.ts ist von m10-fx-bakes-evo-r2 geclaimed; Bedarf in ~/.dispatch/requests.md eingetragen. Commit folgt, sobald Claim freigegeben ist."
+        },
+        {
+          "at": "2026-11-28T08:57:12Z",
+          "by": "build",
+          "text": "Versuch 2 (08:5xZ): Worktree-Verifikation erneuert — tsc rc=0, npm test 1773/1773 grün, npm run build rc=0; fremde passive-math-Shots aus Worktree zurückgesetzt. Kontrolleure laufen (art-director Runde 2 auf shots/abnahme/*, reviewer auf Lane-Commits). Commit r3 wartet weiterhin auf Freigabe von src/gfx/textures.ts (Claim m10-fx-bakes-evo-r2, Bedarf steht in ~/.dispatch/requests.md)."
+        },
+        {
+          "at": "2026-11-28T09:02:52Z",
+          "by": "build",
+          "text": "Versuch 2 (09:05Z): #10177-#10179 reviewer PASS → done. #10180 komplett abnahme-reif, beide Kontrolleure PASS (art-director r2 4,5/5 auf shots/abnahme/* inkl. echtem 3x-Zoom; reviewer: Merge-Semantik bitgleich, 18/18) — Suite 1773/1773, build rc=0, tsc rc=0. Commit blockiert AUSSCHLIESSLICH an pre-commit-Claimcheck: src/gfx/textures.ts -> m10-fx-bakes-evo-r2 (Claim legitim, Lane aktiv: bf82dc17 08:59, Karte #10251). Anfrage in ~/.dispatch/requests.md aktualisiert (09:05Z): disjunkter Mini-Job für gem-Row-Schnitt vorgeschlagen (Präzedenz m10-powerup-sfx-wire) oder Freigabe nach fx-bakes-Merge. Vollständiger Ständ liegt im Worktree; nächster Versuch: commit, sobald Claim freigegeben."
+        }
+      ],
+      "created": "2026-11-28T08:28:23Z",
+      "updated": "2026-11-28T09:02:52Z"
     }
   ]
 }
