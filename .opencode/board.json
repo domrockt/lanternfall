@@ -18948,19 +18948,31 @@
       "id": 13455,
       "title": "m10-v10-gate-rerun K1: Werkzeuge prüfen + Worktree auf main",
       "description": "Gate-Suite scripts/m10-v10-gate.mjs (Vorlage guard-Lauf 3, 15:57Z) auf dem aktuellen main verfügbar machen: Worktree m10-v10-gate-rerun fast-forward auf main (11f929c7), Skript/Werkzeuge vorhanden prüfen, Kopie scripts/m10-v10-gate-rerun.mjs (nur OUT/EVIDENCE-Lane-Name geändert, KEINE Methodikänderung), Renderer-String-Pflicht beachten (SwiftShader-Belege ungültig). Abnahme: Skript läuft, Doku-Grundlage steht.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:04:54Z",
+          "by": "build",
+          "text": "doing → done: K1 fertig: Wrapper scripts/m10-v10-gate-rerun.mjs (Suite unveraendert) in Commit 6556c8f8, Worktree fast-forward auf main 11f929c7, tsc rc=0, node --check ok."
+        }
+      ],
       "created": "2026-11-28T17:01:52Z",
-      "updated": "2026-11-28T17:01:52Z"
+      "updated": "2026-11-28T17:04:54Z"
     },
     {
       "id": 13456,
       "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
       "description": "Dieselbe Gate-Suite wie guard (gleiche Tore, gleicher Viewport 960x540) zweimal unter flock /home/ai/games/.lf-perf.lock auf main-HEAD laufen lassen. Ergebnisse: ~/games/.evidence/m10-v10-gate-rerun/gate-run{1,2}.json (+ shots/m10-v10-gate-rerun-run{1,2}.json Arbeitskopie). renderer-guard-Lane toucht scripts/perf.mjs: bei ungewohnten Abbrüchen Lauf wiederholen statt patchen; 0 JS-Fehler-Kriterium nur fürs Tor selbst. Abnahme: 2 vollständige Läufe mit Tor-JSONs + Renderer-String im Beleg.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T17:05:09Z",
+          "by": "build",
+          "text": "todo → doing: K2 laeuft: Doppel-Lauf (Suite m10-v10-gate.mjs unveraendert) unter flock /home/ai/games/.lf-perf.lock, Log ~/tmp/m10-v10-gate-rerun-k2.log, Ergebnisse nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json."
+        }
+      ],
       "created": "2026-11-28T17:01:52Z",
-      "updated": "2026-11-28T17:01:52Z"
+      "updated": "2026-11-28T17:05:09Z"
     },
     {
       "id": 13457,
@@ -18984,53 +18996,75 @@
       "id": 13491,
       "title": "m10-v10-gate-rerun K1: Gate-Werkzeuge bereit",
       "description": "scripts/m10-v10-gate-rerun.mjs als duenner Wrapper: ruft DIESELBE Gate-Suite scripts/m10-v10-gate.mjs (keine neue Methodik) 2x auf dem aktuellen main, --out nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json. Renderer-String-Pflicht beachtet (SwiftShader=ungueltig, Exit 2). Abnahme: Wrapper committed, Gate-Skript unveraendert.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T17:02:35Z",
           "by": "coder",
           "text": "todo → doing: K1 gestartet (Wrapper gebaut, Commit 3f12615e); K2-Laeufe folgen unter flock"
+        },
+        {
+          "at": "2026-11-28T17:04:37Z",
+          "by": "build",
+          "text": "doing → done: Duplikat von #13455 (dieselbe K1-Arbeit, Disponent-Reserveblock): Wrapper scripts/m10-v10-gate-rerun.mjs ist in Commit 6556c8f8 (#13455) gelandet — diese Karte hier nur zur Deduplication geschlossen, kein eigener Inhalt."
         }
       ],
       "created": "2026-11-28T17:02:02Z",
-      "updated": "2026-11-28T17:02:35Z"
+      "updated": "2026-11-28T17:04:37Z"
     },
     {
       "id": 13492,
       "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
       "description": "2 Gate-Laeufe (gleiche Tore + Viewport wie guard-Lauf 3, 15:57Z) unter flock /home/ai/games/.lf-perf.lock. JSONs nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json (Belegregel: shots/* gitignored). 0 JS-Fehler in beiden Laeufen, Renderer-String = echte iGPU in beiden Belegen. Bei ungewoehnlichen Abbruechen Lauf wiederholen statt patchen.",
-      "column": "doing",
+      "column": "backlog",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T17:02:35Z",
           "by": "coder",
           "text": "todo → doing: K2 Gate-Lauf 1+2 gestartet (flock .lf-perf.lock)"
+        },
+        {
+          "at": "2026-11-28T17:05:09Z",
+          "by": "build",
+          "text": "doing → backlog: Duplikat: #13456 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13456. Supervisor 17:0xZ: nur ein K-Set behalten."
         }
       ],
       "created": "2026-11-28T17:02:02Z",
-      "updated": "2026-11-28T17:02:35Z"
+      "updated": "2026-11-28T17:05:09Z"
     },
     {
       "id": 13493,
       "title": "m10-v10-gate-rerun K3: Urteil je Tor + Delta gegen 15:57Z",
       "description": "docs/lanes/m10-v10-gate-rerun.md: je Tor PASS/FAIL + Delta gegen gate-final-run3.json (15:57:11Z). frame-p95 wie im Guard-Befund 1 NICHT als FAIL werten (Tor gegen 60-FPS-Cap strukturell unerfuellbar, Frage bei Dom) — nur p95/worst dokumentieren, kein Fix. janky%/Geraetetore ausgespart (remeasure-Lane). Belegpfade referenzieren.",
-      "column": "todo",
+      "column": "backlog",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:05:09Z",
+          "by": "build",
+          "text": "todo → backlog: Duplikat: #13457 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13457. Supervisor 17:0xZ: nur ein K-Set behalten."
+        }
+      ],
       "created": "2026-11-28T17:02:02Z",
-      "updated": "2026-11-28T17:02:02Z"
+      "updated": "2026-11-28T17:05:09Z"
     },
     {
       "id": 13494,
       "title": "m10-v10-gate-rerun K4: Hebelliste oder 'keine Befunde' + .lane-done",
       "description": "Bei FAIL auf Tor != frame-p95: Fix-Empfehlungen (Datei/Hebel/erwarteter Gewinn) im Abschnitt 'Hebelliste' der Lane-Doku; sonst explizit 'keine Befunde'. .lane-done (5-10 Zeilen Summary + Werte) committen.",
-      "column": "todo",
+      "column": "backlog",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:05:09Z",
+          "by": "build",
+          "text": "todo → backlog: Duplikat: #13458 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13458. Supervisor 17:0xZ: nur ein K-Set behalten."
+        }
+      ],
       "created": "2026-11-28T17:02:02Z",
-      "updated": "2026-11-28T17:02:02Z"
+      "updated": "2026-11-28T17:05:09Z"
     }
   ]
 }

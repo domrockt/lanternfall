@@ -65,6 +65,20 @@ Messvaliditäts-Warnung wie Guard-Lauf 3), In-run-Heap-Beobachtung m1→end −1
 | `fullrun-inhalt` | PASS → FAIL | Einziges Guard-Failure ist `js-errors-0`; Bosse/Truhen/`dawn` unverändert grün. |
 | `renderer-pflicht` / `content-counts` / `heap-retained` | unverändert PASS (+8,8 % vs +8,1 %) | stabil über 5 Läufe gesamt (3× guard, 2× rerun). |
 
-## Hebelliste
+## Hebelliste (Fix-Empfehlungen: Datei + Hebel + erwarteter Gewinn)
 
-(folgt im K4-Commit)
+1. **`js-errors-0`: Doppelte Chunk-Textur-Keys — `src/gfx/GroundRenderer.ts`.**
+   Befund (nur Messung, keine Code-Änderung): 13× pro Lauf `Texture key already in use:
+   chunk_<x>_<y>` im Fullrun-Guard-Kanal (Konsolen-Fehler), beide Läufe, je Lauf teils andere
+   Keys + `chunk_8_15` konstant — d. h. der Chunk-Texturbau versucht `createCanvas`/Key-Neuanlage
+   für einen Key, den es noch gibt (Kandidat: Pool-/Eviction-Pfad des Textur-Poolings #12436,
+   das zwischen 15:57Z und jetzt auf main kam). **Hebel:** vor der Neuanlage eines
+   `chunk_*`-Keys den existierenden Key behandeln (wiederverwenden oder freigeben), sodass
+   Phaser nie „Texture key already in use" meldet; Fix-Gehärtung als Guard-Test „0 Konsolen-
+   Fehler mit doppelten Chunk-Anforderungen". **Erwarteter Gewinn:** `js-errors-0` 13 → 0
+   (Tor PASS), `fullrun-inhalt` FAIL → PASS (einziges Failure entfällt) ⇒ Gate-Gesamturteil
+   auf main voraussichtlich PASS (alle Tore grün). Fix-Job gehört ins Chunk-Textur-Area
+   (fremde Datei — hier nicht angefasst; Anfrage über Disponent, Karte #13283 referenziert).
+2. **Kein weiterer Befund:** Alle übrigen Tore PASS und über 5 Läufe wiederholbar;
+   `frame-p95`-Tor-Definition ist durch den entfallenen Desktop-Cap faktisch entschärft
+   (Dom-Frage 15:20Z bleibt zur Formalklärung offen).

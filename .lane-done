@@ -1,0 +1,22 @@
+# Lane m10-v10-gate-rerun — 2026-11-28, fertig
+
+Verbindliches v10-Host-Gate-Urteil auf aktuellem main (11f929c7), dieselbe Suite wie
+m10-v10-gate-guard (scripts/m10-v10-gate.mjs unverändert, dünner Wrapper), 2 Läufe unter
+flock /home/ai/games/.lf-perf.lock (17:16–17:22Z), Renderer Mesa Intel RPL-S (kein SwiftShader).
+
+Urteil: FAIL — ausschließlich js-errors-0 (13x "Texture key already in use: chunk_*" im
+Fullrun-Guard, beide Läufe reproduziert; Perf-Pass + verify:final 0 Fehler) und fullrun-inhalt
+als Folgetor desselben Befunds (Inhalt selbst grün: dawn, completed). PASS: renderer-pflicht,
+content-counts (30/6/6/6/6/2), heap-retained (+8,8 % < 15 %) und frame-p95 (2,0/1,9 ms —
+Desktop-Cap seit mobile-fps-cap 73b03c0e entfallen; Tor nur dokumentiert, 15:20Z-Frage an Dom).
+
+Delta gegen guard-Lauf 3 (15:57Z): frame-p95 16,8 → 2,0/1,9 ms (PASS), js-errors 0 → 13 (neu
+FAIL), übrige Tore stabil PASS (jetzt 5 Läufe insgesamt).
+
+Hebelliste (K4): src/gfx/GroundRenderer.ts — doppelte chunk_*-Keys beim Texturbau behandeln
+(wiederverwenden/freigeben statt createCanvas auf belegten Key); erwarteter Gewinn: js-errors-0
+13→0 und fullrun-inhalt FAIL→PASS ⇒ Gate voraussichtlich komplett PASS. Fix-Job gehört ins
+Chunk-Textur-Area (fremde Datei, nicht angefasst).
+
+Belege: ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json; Runtime-Belege + Log lt. Doku
+docs/lanes/m10-v10-gate-rerun.md. Board: #13455-#13458 (Duplikate #13491-#13494 markiert).
