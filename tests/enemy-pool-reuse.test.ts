@@ -63,4 +63,38 @@ describe("EnemyPool: Spawn-Recycling ohne neue KI-Objekte", () => {
     expect(b.hp).toBe(10);
     expect(b.alive).toBe(true);
   });
+
+  it("m10-heap-pool-fix: kein einziges neues Runtime-Objekt über 200 Spawn/Compact-Zyklen (createdTotal konstant)", () => {
+    const pool = new EnemyPool(fakeScene() as never);
+    const first = pool.spawn(DEF, 10, 10);
+    const createdAfterFirst = pool.createdTotal;
+    let last = first;
+    for (let i = 0; i < 200; i++) {
+      const freed = last;
+      freed.alive = false;
+      pool.compact();
+      last = pool.spawn(DEF, i, i, 1, 1, 0, i % 2 === 0 ? { elite: true } : undefined);
+      expect(pool.createdTotal).toBe(createdAfterFirst);
+      // Der soeben freigegebene Runtime-Slot wird sofort wiederverwendet.
+      expect(last).toBe(freed);
+    }
+    expect(last.alive).toBe(true);
+    expect(pool.freeCount).toBe(0);
+    expect(pool.count).toBe(1);
+  });
+
+  it("m10-heap-pool-fix: Spawn ohne Options alloziert kein Options-Objekt pro Aufruf (geteilte Default-Konstante)", () => {
+    const pool = new EnemyPool(fakeScene() as never);
+    // Zwei Spawns ohne Options-Objekt: beide müssen die Defaults anwenden
+    // (radius/speed aus der Def, hpScale 1) — das neue Verhalten teilt sich
+    // EIN eingefrorenes Default-Objekt statt `{}` pro Spawn.
+    const a = pool.spawn(DEF, 1, 1);
+    const b = pool.spawn(DEF, 2, 2);
+    expect(a.radius).toBe(DEF.radius);
+    expect(a.speed).toBe(DEF.speed);
+    expect(a.hpScale).toBe(1);
+    expect(b.radius).toBe(DEF.radius);
+    expect(b.speed).toBe(DEF.speed);
+    expect(b.hpScale).toBe(1);
+  });
 });

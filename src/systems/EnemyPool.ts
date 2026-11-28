@@ -124,6 +124,15 @@ export interface EnemyRuntime {
 /** Ein einziger Default-RNG statt einer Closure pro Spawn. */
 const DEFAULT_AI_RNG: AiRng = { next: () => Math.random() };
 
+/**
+ * Ein einziger geteilter Default-Spawn-Options-Satz statt eines leeren
+ * `{}` pro Spawn (m10-heap-pool-fix): `spawn()` liest nur, schreibt nie —
+ * eingefroren, damit kein Aufrufer versehentlich die Konstante verbiegt.
+ * Im Steady State (alle Spawns ohne Options) alloziert der Pool dadurch
+ * kein Options-Objekt mehr.
+ */
+const EMPTY_SPAWN_OPTIONS: EnemySpawnOptions = Object.freeze({});
+
 /** Gegner-Pool: Sprites werden wiederverwendet, nie pro Spawn neu erzeugt. */
 export class EnemyPool {
   active: EnemyRuntime[] = [];
@@ -153,7 +162,7 @@ export class EnemyPool {
     hpScale = 1,
     damageScale = 1,
     phase = 0,
-    options: EnemySpawnOptions = {},
+    options: EnemySpawnOptions = EMPTY_SPAWN_OPTIONS,
     rng?: AiRng,
   ): EnemyRuntime {
     const enemy = this.free.pop() ?? this.createRuntime();
@@ -270,6 +279,7 @@ export class EnemyPool {
   }
 
   private createRuntime(): EnemyRuntime {
+    this.created += 1;
     const sprite = this.scene.add.sprite(0, 0, "enemy_bog_rat").setOrigin(0.5, 0.5).setDepth(DEPTH.enemy);
     // Starttextur spaeter per applyTexture (Atlas-Frame) setzen.
     const aura = makeImage(this.scene, 0, 0, "elite_aura")
@@ -327,4 +337,16 @@ export class EnemyPool {
   get count(): number {
     return this.active.length;
   }
+
+  /** Diagnose (m10-heap-pool-fix): Growt die Free-List mit der Spielzeit? */
+  get freeCount(): number {
+    return this.free.length;
+  }
+
+  /** Diagnose (m10-heap-pool-fix): Wie oft lief createRuntime (Pooling!)? */
+  get createdTotal(): number {
+    return this.created;
+  }
+
+  private created = 0;
 }
