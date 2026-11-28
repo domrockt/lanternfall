@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10243,
+  "next": 10247,
   "cards": [
     {
       "id": 1,
@@ -13351,6 +13351,101 @@
       ],
       "created": "2026-11-28T07:44:35Z",
       "updated": "2026-11-28T08:36:56Z"
+    },
+    {
+      "id": 10243,
+      "title": "m10-weapon-shot-readability K1: Vorher-Matrix (Solo + 300er-Chaos)",
+      "description": "scripts/m10-weapon-shot.mjs: 6 Spieler-Waffen-Signaturen solo + im 300-Gegner-Chaos messen und als shots/m10-weapon-shot-before*.png/json belegen. Abnahmekriterium: JSON mit Near-White-A7 + Kontrast je Waffe existiert, Belege unter ~/games/.evidence/m10-weapon-shot-readability/ referenziert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:44:01Z",
+          "by": "build",
+          "text": "todo → doing: Test-first-Reihenfolge nach Supervisor: K2-Daten stehen, jetzt Messskript scripts/m10-weapon-shot.mjs + Vorher-Belege (shotsig=0) nach ~/games/.evidence/m10-weapon-shot-readability/."
+        },
+        {
+          "at": "2026-11-28T07:52:03Z",
+          "by": "build",
+          "text": "K1 läuft: Skript steht, 1. Lauf hatte Lücken (flail/ember/frost/thorn fehlten im Chaos-Sample — niedrige Waffen-Duty-Cycle). Iteration 2: Centers über 3 s akkumulieren + 6 Solo-Läufe je Waffe. gen-fx.ts wird in K1 nicht mehr angefasst (shotsig-Flag war Teil des K2-Commits)."
+        },
+        {
+          "at": "2026-11-28T08:26:44Z",
+          "by": "build",
+          "text": "doing → done: K1 committed (17699f3): 6 Solo-Shots + 300er-Chaos + Kontaktblatt, alle 6 Signaturen belegt, 0 fehlend. Baseline Near-White-A7: Texturen worst 58,0 % (fx_bolt), Chaos worst 37,3 % (lantern-Halo) vs. Grenze 4,16 %. Belege: ~/games/.evidence/m10-weapon-shot-readability/. Sichtprüfung der PNGs OK."
+        }
+      ],
+      "created": "2026-11-28T07:25:08Z",
+      "updated": "2026-11-28T08:26:44Z"
+    },
+    {
+      "id": 10244,
+      "title": "m10-weapon-shot-readability K2: Signaturen in gen-fx.ts (6 Waffen)",
+      "description": "WEAPON_SHOT_SIGNATURES in src/gfx/gen-fx.ts: je Waffe (ember, flail, frost, thorn, storm, lantern) eindeutige Kernfarbe + dunkle 1-px-Kontur + Groessenstufe (Mixel-Regel, Draw-Scale 1). Runtime-Registration via createFxTextures-Override. Abnahmekriterium: 6/6 Signaturen definiert, Paar-Tests in tests/weapon-shot-readability.test.ts gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:25:17Z",
+          "by": "build",
+          "text": "todo → doing: Test-first laut Supervisor: zuerst EIN Paar (ember vs. frost) mit Distanz-/Kontrast-Schwelle gegen WEAPON_SHOT_SIGNATURES, dann die restlichen 5 Waffen."
+        },
+        {
+          "at": "2026-11-28T07:44:01Z",
+          "by": "build",
+          "text": "doing → review: K2 committed (105f415): 6 Signaturen in gen-fx.ts, Runtime-Override, boltFrame-Rampe, 53/53 Paar-Tests. art-director-Urteil folgt in K4 zusammen mit den Chaos-Belegen."
+        },
+        {
+          "at": "2026-11-28T08:49:03+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9665, Merge branch m10-weapon-shot-readability"
+        }
+      ],
+      "created": "2026-11-28T07:25:08Z",
+      "updated": "2026-11-28T07:44:01Z"
+    },
+    {
+      "id": 10245,
+      "title": "m10-weapon-shot-readability K3: FxSystem Draw-Pfad (Alpha-Boden)",
+      "description": "src/systems/FxSystem.ts: Alpha-Boden gegen ADD-Auswaschen an Waffen-Signaturen, keine Near-White-Kerne im Draw-Pfad. CombatSystem.ts unangetastet. Abnahmekriterium: npx tsc + Logik-Tests gruen, Trefferverhalten bitgleich (nur Optik).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:39:25Z",
+          "by": "build",
+          "text": "K3 committed (50b1e62): Alpha-Deckel fx_halo 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58/37,3 %); npm test 1712/1712, build gruen. review-Versuch durch Board-Plugin abgelehnt: 2 FREMDE uncommittete Aenderungen im Lane-Worktree (shots/m10-passive-math-caps.json, shots/m10-passive-math-matrix.json — gehoeren nicht zu dieser Lane, werden nicht angefasst). review nach Merge/Bereinigung."
+        },
+        {
+          "at": "2026-11-28T08:39:33Z",
+          "by": "build",
+          "text": "todo → doing: K3 fertig + committed (50b1e62): Alpha-Deckel fx_halo 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58/37,3 %); npm test 1712/1712, build gruen. review-Versuch abgelehnt: 2 fremde uncommittete Aenderungen im Worktree (shots/m10-passive-math-*.json, nicht meine Lane) — review nach Bereinigung."
+        },
+        {
+          "at": "2026-11-28T08:48:32Z",
+          "by": "build",
+          "text": "K3 committed (50b1e62 nennt #9666): fx_halo-Deckel 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58,0/37,3 %); npm test 1712/1712, build gruen, 4 Guard-Tests. board_move auf done vom Plugin verweigert wegen 2 fremden uncommitteten Aenderungen im Worktree (shots/m10-passive-math-*.json, Lane m10-passive-math — nicht angefasst). Bitte Merge-Job/Board-Hygiene: mit Referenz auf 50b1e62 schliessen."
+        },
+        {
+          "at": "2026-11-28T08:49:03+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10245, Merge branch m10-weapon-shot-readability (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T07:25:08Z",
+      "updated": "2026-11-28T08:48:32Z"
+    },
+    {
+      "id": 10246,
+      "title": "m10-weapon-shot-readability K4: Tests + After-Belege + Doku",
+      "description": "tests/weapon-shot-readability.test.ts: Paar-Distanz/Kontrast-Schwelle fuer alle 6 Waffen (15 Paare), A7-Near-White <= 4,16 %. After-Shots via scripts/m10-weapon-shot.mjs, docs/lanes/m10-weapon-shot-readability.md, .lane-done. Abnahmekriterium: npm test gruen, 6/6 Waffen ueber Schwelle, art-director >= 4/5.",
+      "column": "todo",
+      "notes": [
+        {
+          "at": "2026-11-28T08:48:13Z",
+          "by": "build",
+          "text": "Lane abgeschlossen: K4 committed (47057161 nennt #9667) + .lane-done (bc423917). art-director PASS 4/5, Bitgleichkeit belegt, 15/15 Paare, Near-White 0,35 %. board_move auf done vom Plugin verweigert wegen 2 FREMDEN uncommitteten Aenderungen im Worktree (shots/m10-passive-math-caps.json, m10-passive-math-matrix.json — gehoeren zur Lane m10-passive-math, nicht angefasst). Bitte Merge-Job/Board-Hygiene: Karte mit Referenz auf 47057161 schliessen."
+        }
+      ],
+      "created": "2026-11-28T07:25:08Z",
+      "updated": "2026-11-28T08:48:13Z"
     }
   ]
 }

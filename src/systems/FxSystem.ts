@@ -25,6 +25,32 @@ export const ADD_GLOW_ALPHA_FLOOR = 0.04;
  */
 export const BOSS_FX_ALPHA_FLOOR = 0.7;
 
+// ── M10-weapon-shot-readability (K3): Draw-Pfad-Hebel fuer Waffen-Shots ─────
+// Vorher-Messung (~/games/.evidence/m10-weapon-shot-readability/m10-weapon-shot-
+// before.json): im 300er-Chaos liegen 29-64 % der Schuss-Pixel an A7-Near-White,
+// weil additive Support-Glows (fx_halo) hinter den Projektilen auf Weiss
+// stacken und additive Schweife im Endgame (alphaScale 0,2-0,5 + dprAlpha 0,6)
+// versanden. Beide Hebel wirken nur auf die Start-Alpha von FX im Waffen-Shot-
+// Umfeld — Trefferpfad, Radius, Timing und Schaden bleiben unberuehrt.
+/**
+ * Deckel fuer additive Support-Glows (fx_halo): deren Kern ist lanternWhite;
+ * mit Start-Alpha 0,8-0,9 stacken sie hinter Orb/Kugel/Ring zu Near-White.
+ * Max. 45 % Start-Alpha haelt den Glow als Kante sichtbar, ohne das Projektil
+ * auszuwaschen. (fx_halo hinter Boss-/Event-Pfaden bleibt via makeImage-Pfad
+ * in CombatSystem — bewusst nicht Teil dieses Deckels.)
+ */
+export const SHOT_SUPPORT_ADD_ALPHA_CEIL = 0.45;
+export const SHOT_SUPPORT_GLOW_KEYS: ReadonlySet<string> = new Set(["fx_halo"]);
+
+/**
+ * Alpha-Boden fuer additive Waffen-Trail-/Schweif-Keys: unter Endgame-
+ * Daempfung (alphaScale bis 0,2, dprAlpha 0,6) fallen sie auf <= 0,12 und
+ * das Projektil liest sich als nacktes Sprite ohne Bewegungsrichtung. Der
+ * Boden haelt die Schweif-Signatur sichtbar (rein visuell).
+ */
+export const SHOT_TRAIL_ALPHA_FLOOR = 0.3;
+export const SHOT_TRAIL_KEYS: ReadonlySet<string> = new Set(["fx_ember_trail", "fx_ice", "fx_fire", "fx_thorn"]);
+
 /** Max. Screengroesse (Device-Pixel-Flaeche) je ADD-Glow, solange der Regler gesenkt hat (96x96 @dpr3). */
 export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
 
@@ -241,6 +267,14 @@ export class FxSystem {
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
     let alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra * dprAlpha;
     if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);
+    // M10-weapon-shot-readability (K3): Support-Glows deckeln, Schweife mit
+    // Alpha-Boden halten — siehe Konstanten-Kommentar oben.
+    if (SHOT_SUPPORT_GLOW_KEYS.has(opts.texture)) {
+      alphaFrom = Math.min(alphaFrom, SHOT_SUPPORT_ADD_ALPHA_CEIL);
+    }
+    if (SHOT_TRAIL_KEYS.has(opts.texture)) {
+      alphaFrom = Math.max(alphaFrom, SHOT_TRAIL_ALPHA_FLOOR);
+    }
     fx.alphaFrom = alphaFrom;
     fx.alphaScaleExempt = exempt;
     fx.alphaTo = opts.alphaTo ?? 0;

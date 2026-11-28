@@ -141,7 +141,7 @@ function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1, den
 }
 
 /** Zickzack-Blitz mit Seitenast; x-Versatz alle zwei Zeilen. */
-function boltFrame(seed: number, height = 16, width = 12): string[] {
+function boltFrame(seed: number, height = 16, width = 12, ramp: BoltRamp = BOLT_RAMP_SIGNATURE): string[] {
   const rows: string[] = [];
   let cx = Math.floor(width / 2);
   for (let y = 0; y < height; y++) {
@@ -149,9 +149,12 @@ function boltFrame(seed: number, height = 16, width = 12): string[] {
     cx = Math.max(1, Math.min(width - 2, Math.floor(width / 2) + jitter));
     let row = "";
     for (let x = 0; x < width; x++) {
-      if (x === cx) row += "d";
-      else if (Math.abs(x - cx) === 1) row += "c";
-      else if (Math.abs(x - cx) === 2) row += "g"; // amber (20)
+      // M10-weapon-shot-readability: kalte Blitz-Rampe 11/7 + Tintenkontur
+      // statt lanternWhite/candleWhite-Kern (A7 = 0 %) und amber(20)-Saum —
+      // der Blitz liest sich jetzt als Gewitter, nicht als Feuer.
+      if (x === cx) row += ramp.core;
+      else if (Math.abs(x - cx) === 1) row += ramp.flank;
+      else if (Math.abs(x - cx) === 2) row += ramp.edge;
       else row += ".";
     }
     rows.push(row);
@@ -163,11 +166,36 @@ function boltFrame(seed: number, height = 16, width = 12): string[] {
     const x = cx + dir * (i + 1);
     if (y < height && x > 0 && x < width - 1) {
       const arr = rows[y].split("");
-      arr[x] = i < 2 ? "c" : "g";
+      arr[x] = i < 2 ? ramp.branch[0] : ramp.branch[1];
       rows[y] = arr.join("");
     }
   }
   return rows;
+}
+
+/** Blitz-Rampe: Signatur (Kern 11, Flanke 7, Tintenkontur) vs. Legacy (d/c/g). */
+interface BoltRamp {
+  core: string;
+  flank: string;
+  edge: string;
+  branch: [string, string];
+}
+const BOLT_RAMP_SIGNATURE: BoltRamp = { core: "b", flank: "7", edge: "0", branch: ["7", "0"] };
+const BOLT_RAMP_LEGACY: BoltRamp = { core: "d", flank: "c", edge: "g", branch: ["c", "g"] };
+
+/**
+ * M10-weapon-shot-readability (Messung): registry "lf-shot-signatures" oder
+ * URL-Parameter "shotsig=0" — Vorher-Optik (Basis-Grids aus textures.ts +
+ * Legacy-Blitzrampe); 1/default = Waffen-Shot-Signaturen aus gen-fx.
+ * Reine Optik-Schaltung. Der URL-Parameter ist die Boot-Quelle (Texturen
+ * entstehen im Boot, bevor ein Registry-Flag gesetzt werden kann).
+ */
+export function weaponShotSignaturesEnabled(registry?: { get(key: string): unknown } | null): boolean {
+  if (registry?.get("lf-shot-signatures") === 0) return false;
+  if (typeof location !== "undefined") {
+    if (new URLSearchParams(location.search).get("shotsig") === "0") return false;
+  }
+  return true;
 }
 
 /** Eiskristall (großer Diamant) mit Facetten und Glanzkante; 4 Zerfallsstufen. */
@@ -2163,6 +2191,145 @@ function addEvolutionSignatures(scene: Phaser.Scene): void {
   }
 }
 
+// ── M10-weapon-shot-readability: Waffen-Projektil-Signaturen ─────────
+// Je Spieler-Waffe eine eigene Shot-Signatur: eindeutige Kernfarbe (Kern-Index),
+// geschlossene 1-px-Inktenkontur (Index 0) und Groessenstufe in Sprite-Pixeln
+// (Mixel-Regel: Textur in Zielgroesse, Draw-Scale 1 — nie > 1x hochskalieren).
+// Kernfarben sind paarweise farb-disjunkt (nur Ink 0 geteilt) und ueber WCAG-
+// Kontrast + RGB-Distanz getrennt (Schwellen in tests/weapon-shot-readability.test.ts):
+//   ember 17 emberOrange | frost 9 paleMist | flail 4 nightSlate
+//   thorn 31 marshLight  | storm 11 boneLight | lantern 21 lantern
+// Kein A7-Near-White in Shot-Signaturen: 12 candleWhite / 13 lanternWhite /
+// 22 glow sind tabu (r >= 235 mit r,g,b >= 150 brennt im ADD-Chaos aus).
+export interface WeaponShotSignature {
+  /** Laufzeit-Textur-Key, den CombatSystem/ProjectilePool bereits verwenden. */
+  texture: string;
+  /** Zielgroesse in Sprite-Pixeln (Groessenstufe je Waffe). */
+  w: number;
+  h: number;
+  /** Pixel-Zeilen, "." = transparent, 0-9 a-v = Palettenindex (wie FX-Frames). */
+  rows: string[];
+  /** Kern-Palettenindex — der identitaetsstiftende Farbton der Waffe. */
+  core: number;
+}
+
+export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature>> = {
+  // Glut-Komet: heisse dunkle Orange-Rampe 15-17, 1 helles 18er-Gluhtpixel,
+  // Tinte-Kontur; kein lanternWhite-Kern mehr (A7 = 0 %).
+  ember: {
+    texture: "projectile_ember",
+    w: 7,
+    h: 7,
+    core: 17,
+    rows: [
+      "...00..",
+      "..0f00.",
+      "..0fg0.",
+      ".0fgh0.",
+      "0fghih0",
+      ".0fgh0.",
+      "..0fg0.",
+    ],
+  },
+  // Eiskristall: dunkle glaziale Rampe 5/6 mit paleMist(9)-Kantelight,
+  // Tinte-Kontur, Rhombus-Silhouette. Kern 5 (dunkles Eis), Rim traegt.
+  frost: {
+    texture: "projectile_ice",
+    w: 9,
+    h: 9,
+    core: 5,
+    rows: [
+      "....0....",
+      "...090...",
+      "..09690..",
+      ".0965690.",
+      "096555690",
+      ".0965690.",
+      "..09690..",
+      "...090...",
+      "....0....",
+    ],
+  },
+  // Eisenkugel mit N/S-Spikes: helle Knochenstahl-Rampe 8/10/11 (Kern 11
+  // boneLight), paleMist-Glanzpunkte, Tinte-Kontur — groesste Rundform.
+  flail: {
+    texture: "flail_ball",
+    w: 11,
+    h: 11,
+    core: 11,
+    rows: [
+      ".....0.....",
+      "....0b0....",
+      "....0b0....",
+      "..08bab80..",
+      ".08abbba80.",
+      "08ab9b9ba80",
+      ".08abbba80.",
+      "..08bab80..",
+      "....0b0....",
+      "....0b0....",
+      ".....0.....",
+    ],
+  },
+  // Gewitter-Blitzsegment: kalte Nebel-Rampe 7/9 mit boneLight(11)-Kamm,
+  // Tinte-Kontur; Kern 7. boltFrame liefert die 6 Laufzeit-Frames, hier ist
+  // Frame 0 die Signatur-Referenz (kein lanternWhite/candleWhite mehr).
+  storm: {
+    texture: "fx_bolt",
+    w: 12,
+    h: 16,
+    core: 7,
+    rows: boltFrame(0),
+  },
+  // Dorn-Dart: organische Speichen aus thornProjectileFrame (12x12, Draw-Scale 1),
+  // Moor-Rampe 28-31, Kern 31 marshLight, dunkle 28er-Spitzenkappen als Kontur.
+  thorn: {
+    texture: "projectile_thorn",
+    w: THORN_PROJECTILE_SIZE,
+    h: THORN_PROJECTILE_SIZE,
+    core: 31,
+    rows: thornProjectileFrame(),
+  },
+  // Laterne: runder Orb in warmer Amber-Rampe 20/21 (Kern 20 amber), Tinte-
+  // Kontur; kein candleWhite/lanternWhite-Kern mehr (A7 = 0 %).
+  lantern: {
+    texture: "orb_lantern",
+    w: 10,
+    h: 10,
+    core: 20,
+    rows: [
+      "...0000...",
+      "..0kkkk0..",
+      ".0kkllkk0.",
+      "0kkllllkk0",
+      "0kllllllk0",
+      "0kllllllk0",
+      "0kkllllkk0",
+      ".0kkllkk0.",
+      "..0kkkk0..",
+      "...0000...",
+    ],
+  },
+};
+
+/**
+ * Signaturen, deren Laufzeit-Key Basis-Grids aus textures.ts ueberschreibt:
+ * createFxTextures laeuft NACH der SPRITE_GRIDS-Registration, die Keys und
+ * Treffer-/Skalierungs-Logik (CombatSystem/ProjectilePool) bleiben unveraendert —
+ * nur die Optik kommt aus dieser Datei. thorn/storm registriert createFxTextures
+ * selbst (thornProjectileFrame/boltFrame), sie brauchen kein Override.
+ */
+const SHOT_TEXTURE_OVERRIDES = new Set(["projectile_ember", "projectile_ice", "flail_ball", "orb_lantern"]);
+
+function applyWeaponShotSignatureTextures(scene: Phaser.Scene): void {
+  if (!weaponShotSignaturesEnabled(scene.registry)) return;
+  for (const sig of Object.values(WEAPON_SHOT_SIGNATURES)) {
+    if (!SHOT_TEXTURE_OVERRIDES.has(sig.texture)) continue;
+    if (scene.textures.exists(sig.texture)) scene.textures.remove(sig.texture);
+    addFrame(scene, sig.texture, sig.rows, sig.w, sig.h);
+  }
+}
+
 export function createFxTextures(scene: Phaser.Scene): void {
   // Glut: weiß → gelb → orange → rot → dunkelrot
   addFrames(scene, "fx_fire", {
@@ -2181,7 +2348,11 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_halo", { w: 24, h: 24, frames: [0, 1].map((i) => ring(24, 24, [20, 18, 17], 0.3 + i * 0.16, i)) });
   addFrames(scene, "fx_ice", { w: 15, h: 21, frames: [0, 1, 2, 3].map(iceFrame) });
   addFrames(scene, "fx_smear", { w: 44, h: 16, frames: [0, 1, 2, 3, 4].map((i) => smearFrame(i)) });
-  addFrames(scene, "fx_bolt", { w: 12, h: 16, frames: [0, 1, 2, 3, 4, 5].map((i) => boltFrame(i)) });
+  addFrames(scene, "fx_bolt", {
+    w: 12, h: 16,
+    frames: [0, 1, 2, 3, 4, 5].map((i) =>
+      boltFrame(i, 16, 12, weaponShotSignaturesEnabled(scene.registry) ? BOLT_RAMP_SIGNATURE : BOLT_RAMP_LEGACY)),
+  });
   addFrames(scene, "fx_seal", { w: 32, h: 32, frames: [0, 1, 2, 3, 4].map((i) => sealFrame(i)) });
   // M10-evo-fx-gewittersiegel: Boden-Siegel in Zielgroesse (Draw-Scale 1, 4 Phasen).
   addFrames(scene, "fx_seal_thunder", { w: 64, h: 64, frames: [0, 1, 2, 3].map((i) => thunderSealFrame(i)) });
@@ -2226,6 +2397,10 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_thorn_crown", { w: THORN_CROWN_SIZE, h: THORN_CROWN_SIZE, frames: [0, 1, 2].map((i) => thornCrownFrame(i)) });
   // M10: eigene Treffer-/Todes-Signatur je Evolution (Form + Palette + Timing).
   addEvolutionSignatures(scene);
+  // M10-weapon-shot-readability: Waffen-Shot-Signaturen aus dieser Datei
+  // ueberschreiben die Basis-Grids (projectile_ember/ice, flail_ball,
+  // orb_lantern) — Keys und Treffer-Logik bleiben identisch, nur Optik.
+  applyWeaponShotSignatureTextures(scene);
 }
 
 /** Alle Frame-Keys eines Effekts (für FxSystem-Animationen). */
