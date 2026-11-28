@@ -2163,6 +2163,66 @@ function addEvolutionSignatures(scene: Phaser.Scene): void {
   }
 }
 
+// ── M10-weapon-shot-readability: Waffen-Projektil-Signaturen ─────────
+// Je Spieler-Waffe eine eigene Shot-Signatur: eindeutige Kernfarbe (Kern-Index),
+// geschlossene 1-px-Inktenkontur (Index 0) und Groessenstufe in Sprite-Pixeln
+// (Mixel-Regel: Textur in Zielgroesse, Draw-Scale 1 — nie > 1x hochskalieren).
+// Kernfarben sind paarweise farb-disjunkt (nur Ink 0 geteilt) und ueber WCAG-
+// Kontrast + RGB-Distanz getrennt (Schwellen in tests/weapon-shot-readability.test.ts):
+//   ember 17 emberOrange | frost 9 paleMist | flail 4 nightSlate
+//   thorn 31 marshLight  | storm 11 boneLight | lantern 21 lantern
+// Kein A7-Near-White in Shot-Signaturen: 12 candleWhite / 13 lanternWhite /
+// 22 glow sind tabu (r >= 235 mit r,g,b >= 150 brennt im ADD-Chaos aus).
+export interface WeaponShotSignature {
+  /** Laufzeit-Textur-Key, den CombatSystem/ProjectilePool bereits verwenden. */
+  texture: string;
+  /** Zielgroesse in Sprite-Pixeln (Groessenstufe je Waffe). */
+  w: number;
+  h: number;
+  /** Pixel-Zeilen, "." = transparent, 0-9 a-v = Palettenindex (wie FX-Frames). */
+  rows: string[];
+  /** Kern-Palettenindex — der identitaetsstiftende Farbton der Waffe. */
+  core: number;
+}
+
+export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature>> = {
+  // Glut-Komet: heisse dunkle Orange-Rampe 15-17, 1 helles 18er-Gluhtpixel,
+  // Tinte-Kontur; kein lanternWhite-Kern mehr (A7 = 0 %).
+  ember: {
+    texture: "projectile_ember",
+    w: 7,
+    h: 7,
+    core: 17,
+    rows: [
+      "...00..",
+      "..0f00.",
+      "..0fg0.",
+      ".0fgh0.",
+      "0fghih0",
+      ".0fgh0.",
+      "..0fg0.",
+    ],
+  },
+  // Eissplitter: Raute in Kalter Rampe 5/6 mit paleMist(9)-Kern, Tinte-Kontur.
+  frost: {
+    texture: "projectile_ice",
+    w: 9,
+    h: 9,
+    core: 9,
+    rows: [
+      "....0....",
+      "...050...",
+      "..06960..",
+      ".0699960.",
+      "069999960",
+      ".0699960.",
+      "..06960..",
+      "...060...",
+      "....0....",
+    ],
+  },
+};
+
 export function createFxTextures(scene: Phaser.Scene): void {
   // Glut: weiß → gelb → orange → rot → dunkelrot
   addFrames(scene, "fx_fire", {
