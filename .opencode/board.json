@@ -15747,7 +15747,7 @@
       "id": 11638,
       "title": "m10-verify-output-hygiene K1: Inventur verify-Outputs",
       "description": "Inventur der verify-Skripte verify-final/verify-menus/verify-terrain: welche Outputs wohin, Klassifikation (a) getracktes Abnahme-Fixture vs (b) Neben-Output. Beleg: shots/m10-verify-hygiene-before.json (+ Kopie ~/games/.evidence/verify-hygiene/). Abnahme: Inventur-JSON existiert, Klassifikation je Output belegt, Doku in docs/lanes/m10-verify-output-hygiene.md committed.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15763,16 +15763,21 @@
           "at": "2026-11-28T11:38:04Z",
           "by": "build",
           "text": "doing → review: K1 fertig: Inventur-JSON in ~/games/.evidence/verify-hygiene/, Klassifikation in Doku, Commit ea367f54"
+        },
+        {
+          "at": "2026-11-28T11:43:08Z",
+          "by": "build",
+          "text": "review → done: lane #11638, Commit ea367f54, Reviewer PASS"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:38:04Z"
+      "updated": "2026-11-28T11:43:08Z"
     },
     {
       "id": 11639,
       "title": "m10-verify-output-hygiene K2: --out-Flag + Evidence-Default",
       "description": "Fix in den drei Skripten: --out <dir>-CLI-Flag, Default ~/games/.evidence/verify-hygiene/ fuer Kategorie-(b)-Outputs; getrackte Fixtures unveraendert. verify-input.mjs und fremde verify-*/Skripte NICHT anfassen. Abnahme: npx tsc --noEmit gruen, alle 3 Skripte schreiben nicht mehr nach shots/.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15788,16 +15793,21 @@
           "at": "2026-11-28T11:38:35Z",
           "by": "build",
           "text": "doing → review: K2 fertig: 3 Skripte auf Evidence-Default + --out umgestellt, Commit 241555b1, node --check OK"
+        },
+        {
+          "at": "2026-11-28T11:43:08Z",
+          "by": "build",
+          "text": "review → done: lane #11639, Commit 241555b1, Reviewer PASS"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:38:35Z"
+      "updated": "2026-11-28T11:43:08Z"
     },
     {
       "id": 11640,
       "title": "m10-verify-output-hygiene K3: Gegenprobe 3 Skript-Laeufe",
       "description": "Alle drei Skripte je 1x laufen lassen (verify-terrain mit Renderer-String-Pflicht im JSON). Abnahme: rc=0, 0 JS-Fehler, git status --short danach sauber (keine getrackten/ungewollten shots-Aenderungen), Outputs in ~/games/.evidence/verify-hygiene/, Terrain-JSON enthaelt Renderer-String (kein SwiftShader).",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15813,16 +15823,21 @@
           "at": "2026-11-28T11:40:50Z",
           "by": "build",
           "text": "doing → review: K3 fertig: 3 Laeufe rc=0, Renderer RPL-S im JSON, git status sauber, Commit 977e305b"
+        },
+        {
+          "at": "2026-11-28T11:43:08Z",
+          "by": "build",
+          "text": "review → done: lane #11640, Commit 977e305b, Reviewer PASS"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:40:50Z"
+      "updated": "2026-11-28T11:43:08Z"
     },
     {
       "id": 11641,
       "title": "m10-verify-output-hygiene K4: Doku + .lane-done",
       "description": "Lane-Doku docs/lanes/m10-verify-output-hygiene.md finalisieren (inkl. Hinweis, welche getrackten Fixtures bewusst bleiben und warum), .lane-done anlegen und committen. Abnahme: Doku committed, git status clean, .lane-done vorhanden.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15833,10 +15848,15 @@
           "at": "2026-11-28T11:40:50Z",
           "by": "build",
           "text": "todo → doing: K4 Abschluss gestartet"
+        },
+        {
+          "at": "2026-11-28T11:43:08Z",
+          "by": "build",
+          "text": "doing → done: lane #11641, Commit 95d57dd6, Reviewer PASS, .lane-done"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:40:50Z"
+      "updated": "2026-11-28T11:43:08Z"
     }
   ]
 }
