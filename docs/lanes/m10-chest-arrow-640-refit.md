@@ -62,3 +62,10 @@ notwendig. ChestSystem selbst wurde von dieser Lane **nicht** geändert.
   Test-Dateien ergänzen sich (Layout-Invariante vs. Viewport-Klemm-Invariante).
 - Falls künftige QA-Harnesses Frame-Zustände prüfen: immer im Szenen-Event
   (`postupdate`/`render`) samplen, nie im freien rAF-Tick.
+
+## Re-Verifikation nach Merge m10-chest-reveal (2026-11-28)
+
+Ein Re-Lauf `node scripts/m10-chest-arrow.mjs` gegen den kombinierten main
+(1f7dd78, Lane + chest-reveal): **20/20 PASS** (640x360 + 780x360, je 10 Cases,
+webglRenderer Mesa Intel RPL-S, jsErrors 0) — Beleg
+`shots/m10-chest-arrow-refit-after-reveal.json`. Keine chest-reveal-Interaktion.
