@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7519,
+  "next": 7523,
   "cards": [
     {
       "id": 1,
@@ -9421,6 +9421,42 @@
       ],
       "created": "2026-11-28T02:26:11Z",
       "updated": "2026-11-28T02:26:31Z"
+    },
+    {
+      "id": 7519,
+      "title": "m10-chest-arrow-640-refit A: Vorher-Messung altes rAF-Sampling + Sampling auf POST_UPDATE umstellen",
+      "description": "Karte #5378 Fix-Job Schritt 0. AK: (1) Altes Sampling einmal laufen lassen, JSON committet (Beleg des rAF-Artefakts). (2) scripts/m10-chest-arrow.mjs sampelt im POST_UPDATE der Run-Szene (Kriterien unveraendert), max. 2 Edit-Iterationen. Commit M10-m10-chest-arrow-640-refit.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:33:25Z",
+      "updated": "2026-11-28T02:33:25Z"
+    },
+    {
+      "id": 7520,
+      "title": "m10-chest-arrow-640-refit B: Re-Lauf beider Formate auf aktuellem main -> shots/m10-chest-arrow-refit-before.json",
+      "description": "Schritt 1. AK: 640x360 UND 780x360 je 10 Cases, JSON mit WebGL-Renderer-String, ein Lauf committet. Fall A (10/10 PASS beide Formate): Ursache View-Width-Cap-Entfernung, Karte #5378 schliessen. Fall B: A/B engrenzen (ground-props-batch naechster Verdaechtiger).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:33:25Z",
+      "updated": "2026-11-28T02:33:25Z"
+    },
+    {
+      "id": 7521,
+      "title": "m10-chest-arrow-640-refit C: Verdict + Karte #5378 mit Belegpfaden abschliessen",
+      "description": "Schritt 2. AK: Karte #5378 auf done mit Zahlen + Belegpfaden (refit-before.json, ggf. A/B-Probe), Notiz im Board. Bei Fall B stattdessen Fix-Karten ableiten.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:33:25Z",
+      "updated": "2026-11-28T02:33:25Z"
+    },
+    {
+      "id": 7522,
+      "title": "m10-chest-arrow-640-refit D: Tests + Doku + Lane fertig",
+      "description": "Schritt 3. AK: tests/chest-arrow.test.ts um Befund-Fall erweitert (gruen), docs/lanes/m10-chest-arrow-640-refit.md mit Vorher/Nachher + Ursache, npm test + tsc + build rc=0, .lane-done committet.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:33:25Z",
+      "updated": "2026-11-28T02:33:25Z"
     }
   ]
 }
