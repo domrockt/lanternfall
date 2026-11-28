@@ -1,6 +1,6 @@
 {
   "tag": "before",
-  "gitSha": "7886039",
+  "gitSha": "c7893e9",
   "seed": 99,
   "minutes": 3,
   "burst": 500,
@@ -10,15 +10,18 @@
     "pools": {
       "EnemyPool": {
         "instances": 0,
-        "free": 0
+        "free": 0,
+        "active": 0
       },
       "ProjectilePool": {
         "instances": 0,
-        "free": 0
+        "free": 0,
+        "active": 0
       },
-      "Pool": {
+      "genericPool": {
         "instances": 0,
-        "free": 0
+        "free": 0,
+        "active": 0
       }
     },
     "heapMB": 38.8
@@ -26,27 +29,49 @@
   "tEnd": {
     "active": 309,
     "kills": 197,
-    "simSeconds": 180.8,
+    "simSeconds": 180.9,
     "pools": {
       "EnemyPool": {
-        "instances": 0,
-        "free": 0
+        "instances": 1,
+        "free": 0,
+        "active": 0
       },
       "ProjectilePool": {
-        "instances": 0,
-        "free": 0
+        "instances": 1,
+        "free": 0,
+        "active": 0
       },
-      "Pool": {
+      "genericPool": {
         "instances": 0,
-        "free": 0
+        "free": 0,
+        "active": 0
       }
     },
-    "heapMB": 51.1
+    "heapMB": 50.8
   },
   "overhang": {
     "EnemyPool": 0,
     "ProjectilePool": 0,
     "genericPool": 0
+  },
+  "crossCheck": {
+    "EnemyPoolActive": 0,
+    "statsActive": 309,
+    "freeListHolders": 5,
+    "unknownSignatures": [
+      {
+        "sig": "scene",
+        "free": 0
+      },
+      {
+        "sig": "__proto__,enabled,scene",
+        "free": 0
+      },
+      {
+        "sig": "pendingFree",
+        "free": 0
+      }
+    ]
   },
   "jsErrors": []
 }

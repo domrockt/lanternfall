@@ -2,7 +2,11 @@
  * Generischer Object-Pool für Gegner, Projektile, Gems, Partikel und
  * Damage-Number-Einträge. Im Steady State wird kein Objekt neu angelegt:
  * `obtain()` nimmt aus dem Free-Stack, `release()` legt nach Reset zurück.
- * `trim()` begrenzt bewusst den Free-Stack (Retention nach Peak-Wellen).
+ * `trim()` BEGRENZT den Free-Stack, ist aktuell aber NICHT verdrahtet: 0 Aufruf-
+ * stellen im Run-Pfad (Befund Karte #2438, docs/lanes/m10-pool-trim.md). Der
+ * generische Pool hält Overhang daher, bis sein Nutzer trim() ruft oder der
+ * Pool selbst garabge wird. Echte Verdrahtung: Karte #2439 (EnemyPool/
+ * ProjectilePool führen eigene free-Arrays ohne Trim).
  */
 export class Pool<T> {
   private readonly free: T[] = [];

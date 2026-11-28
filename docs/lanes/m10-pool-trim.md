@@ -55,3 +55,21 @@ committet sind: aktive Gegner/Kills/Sim-Sekunden und Heap nach erzwungenem GC (T
 direkt nach Burst vs. T+180 s) — Gesamtheap-Ebene, lastunabhängig gemessen (kein flock).
 
 Zahlen: siehe `shots/m10-pool-trim-before.json` (folgt im K2-Commit).
+
+## K2 — Doku-Korrektur (umgesetzt)
+
+1. `src/systems/Pool.ts` Header-Kommentar: `trim()` wird als **nicht verdrahtete
+   Fähigkeit** beschrieben („aktuell NICHT verdrahtet, 0 Aufrufstellen“) statt als
+   aktives Retentions-Kappen.
+2. Korrigierte Aussage (ersatzweise für `docs/lanes/m10-heap-tail.md:85`):
+   > Retention wird im Run-Pfad **nicht** per `Pool.trim()` gekappt — `trim()` hat
+   > 0 Aufrufstellen (Befund m10-pool-trim, #2438). Der generische Pool ist über das
+   > DamageNumbers-Cap (`MAX_ENTRIES = 48`) begrenzt; der Peak-Overhang der eigenen
+   > `free`-Arrays in `EnemyPool`/`ProjectilePool` bleibt bestehen und ist Gegenstand
+   > von Karte #2439.
+3. Antrag zum Nachziehen in `docs/lanes/m10-heap-tail.md` via requests.md (fremde Datei).
+
+**Vorher-Zahl (Gesamtheap nach erzwungenem GC, `shots/m10-pool-trim-before.json`):**
+T0 direkt nach 500er-Burst: 499 aktiv, 38,8 MB → T+180 s: 309 aktiv, 197 Kills,
+**50,8 MB** — der Heap gibt die Burst-Retention nach Ablauf der Spitze nicht frei,
+weil nichts trims (code-seitig belegt). Per-Pool-Zählung bleibt offener Punkt (K1).
