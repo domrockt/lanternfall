@@ -6,6 +6,9 @@ import {
   enemyDamageScale,
   spawnRateFactor,
 } from "../src/logic/scaling";
+import { LATE_GAME_MINUTE, LATE_GAME_MIX, lateGameSpawnRate, WAVES, waveForMinute } from "../src/data/waves";
+import { ENEMIES } from "../src/data/enemies";
+import type { EnemyId } from "../src/data/types";
 
 /**
  * Lane m10-balance-endgame (Karte K2): der Endgame-Director-Hebel.
@@ -53,5 +56,46 @@ describe("M10 Endgame-Balance: maxActiveEnemies-Late-Deckel", () => {
     expect(enemyDamageScale(30 * 60)).toBeCloseTo(1 + 1800 / 5000 + Math.pow(1800 / 5000, 2) * 0.35, 10);
     expect(spawnRateFactor(640, 360)).toBe(1);
     expect(spawnRateFactor(960, 540)).toBeCloseTo(Math.sqrt(1.5) * 0.85, 10);
+  });
+});
+
+/**
+ * Karte K3: Minuten-Mischung 25–30 (LATE_GAME_MIX + lateGameSpawnRate).
+ * Reine Datentabellen, deterministisch pruefbar.
+ */
+describe("M10 Endgame-Balance: Minuten-Mischung 25–30", () => {
+  it("Minute 0–24 bleibt unveraendert (TIER_MIXES + alte Rate)", () => {
+    for (let minute = 0; minute < LATE_GAME_MINUTE; minute++) {
+      const wave = waveForMinute(minute);
+      expect(wave.mix).toBe(WAVES[minute].mix);
+      expect(wave.spawnRate, `Minute ${minute}`).toBeCloseTo(0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04, 10);
+    }
+  });
+
+  it("Minute 25–29 nutzt LATE_GAME_MIX ohne Mengen-Vervielfacher (splitter/summoner)", () => {
+    for (let minute = LATE_GAME_MINUTE; minute <= 29; minute++) {
+      const wave = waveForMinute(minute);
+      expect(wave.mix).toBe(LATE_GAME_MIX);
+      for (const [id, weight] of Object.entries(wave.mix)) {
+        expect(weight ?? 0, `${id} in Minute ${minute}`).toBeGreaterThan(0);
+        const archetype = ENEMIES[id as EnemyId].archetype;
+        expect(archetype, `${id} (Minute ${minute})`).not.toBe("splitter");
+        expect(archetype, `${id} (Minute ${minute})`).not.toBe("summoner");
+      }
+    }
+  });
+
+  it("Late-Spawnrate wächst weiter (Monotonie-Kriterium der Datentabellen) und ist gedämpft", () => {
+    // Monoton steigend ueber alle 30 Minuten (Kriterium aus tests/data.test.ts).
+    for (let minute = 1; minute < WAVES.length; minute++) {
+      expect(WAVES[minute].spawnRate).toBeGreaterThan(WAVES[minute - 1].spawnRate);
+    }
+    // Ab Minute 25 deutlich unter der alten Formel (1,88 bis 2,12).
+    for (let minute = LATE_GAME_MINUTE; minute <= 29; minute++) {
+      const oldRate = 0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04;
+      expect(lateGameSpawnRate(minute)).toBeLessThan(oldRate);
+      expect(waveForMinute(minute).spawnRate).toBe(lateGameSpawnRate(minute));
+    }
+    expect(waveForMinute(29).spawnRate).toBeCloseTo(1.92, 10);
   });
 });
