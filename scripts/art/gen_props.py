@@ -147,6 +147,127 @@ def boulder() -> Grid:
     return _finish(g, 26, 20)
 
 
+def boulder_b() -> Grid:
+    """Mooblock 26x20: flacher, breiter Findling, stark bewachsen (Variantenziel:
+    Steine wiederholen seltener). Licht oben-links wie boulder()."""
+    g = Grid(26, 20)
+    g.ellipse(12, 13, 11, 5, 5)
+    g.ellipse(10, 12, 8, 3, 6)
+    g.rect(4, 16, 18, 2, 4)
+    g.put(6, 11, 8)
+    g.put(7, 10, 8)
+    g.put(13, 9, 8)
+    # Langer Riss quer zum Block.
+    g.line(8, 12, 14, 17, 4, 1)
+    g.put(15, 17, 4)
+    # Moosteppich mit Bewuchs-Kante (dichter als boulder()).
+    g.rect(6, 9, 7, 2, 29)
+    g.rect(5, 10, 3, 2, 29)
+    g.put(6, 9, 30)
+    g.put(9, 8, 30)
+    g.rect(15, 10, 5, 2, 29)
+    g.put(16, 9, 30)
+    g.put(19, 11, 28)
+    g.rect(12, 8, 2, 1, 29)
+    return _finish(g, 26, 20)
+
+
+def boulder_c() -> Grid:
+    """Splitterfels 26x20: hoher Fels mit echten Bruch-Spitzen (Ecken statt
+    Ellipsenbogen), Riss läuft von der Hauptspitze aus."""
+    g = Grid(26, 20)
+    # Kernmasse, dann Spitzen als Dreiecks-Stufen (keine glatte Ellipse).
+    g.ellipse(13, 12, 8, 7, 5)
+    g.ellipse(11, 10, 6, 5, 6)
+    g.rect(6, 15, 15, 2, 4)
+    # Hauptspitze links-oben: 3 Stufen (2-px-Basis je Stufe).
+    for i, (dx, w) in enumerate(((0, 6), (-1, 4), (-2, 2))):
+        y = 9 - i * 3
+        g.rect(10 + dx - w // 2, y, w, 2, 5)
+        g.rect(10 + dx - w // 2, y, max(1, w - 3), 1, 6)
+    g.put(8, 3, 8)   # Lichtkante an der Hauptspitze
+    g.put(9, 4, 8)
+    g.put(9, 6, 8)
+    # Sekundarspitze rechts: Bruch-Kerbe mit harter Ecke.
+    g.line(17, 8, 19, 5, 5, 2)
+    g.put(19, 4, 6)
+    g.put(18, 4, 5)
+    g.line(19, 5, 20, 10, 4, 1)
+    g.line(20, 10, 18, 15, 4, 1)
+    g.put(17, 9, 4)
+    # Riss von der Hauptspitze nach unten-rechts.
+    g.line(9, 5, 13, 11, 4, 1)
+    g.line(13, 11, 12, 15, 4, 1)
+    # Kies am Fuss + ein Moostupfer.
+    g.put(6, 17, 5)
+    g.put(19, 17, 5)
+    g.put(20, 16, 4)
+    g.rect(8, 13, 3, 2, 29)
+    g.put(9, 13, 30)
+    return _finish(g, 26, 20)
+
+
+def bones_b() -> Grid:
+    """Wirbelsaeule 23x14: Schaedel unten links, durchgehende Wirbelkette aus
+    2x2/2x3-Bloecken, verdickter loser Knochen (2-px-Schaft) darueber."""
+    g = Grid(23, 14)
+    # Schaedel halb versenkt, grob 7x6 mit Kiefer.
+    g.ellipse(5, 8, 4, 4, 10)
+    g.rect(2, 10, 8, 2, 10)
+    g.rect(3, 9, 2, 1, 2)
+    g.rect(6, 9, 2, 1, 2)
+    g.rect(4, 12, 4, 1, 8)
+    g.put(3, 6, 11)
+    g.put(6, 5, 11)
+    # Wirbelkette: durchgehende Rampe aus 2x2/2x3-Bloecken (keine Luecken),
+    # Licht oben, Schatten unten, Dornfortsatz je Wirbel.
+    for i in range(5):
+        x = 10 + i * 2
+        y = 9 - i
+        h = 3 if i % 2 == 0 else 2
+        g.rect(x, y, 2, h, 10)
+        g.rect(x, y, 2, 1, 11)
+        g.put(x + 1, y + h - 1, 8)
+        g.put(x - 1, y - 1, 11)  # Dornfortsatz (2 px inkl. Blockkante)
+    # Loser Knochen: 2-px-Schaft mit Knaeufen, parallel zur Rampe.
+    g.rect(11, 3, 8, 2, 11)
+    g.put(11, 3, 12)
+    g.put(13, 4, 10)
+    g.put(16, 3, 11)
+    g.put(19, 2, 10)
+    g.put(20, 2, 11)
+    g.put(20, 3, 10)
+    return _finish(g, 23, 14)
+
+
+def bones_c() -> Grid:
+    """Gebein-Haufen 23x14: zwei Schaedel ueber gekreuzten langen Knochen."""
+    g = Grid(23, 14)
+    # Gekreuzte Knochen zuerst (liegen unter den Schaedeln).
+    g.line(4, 11, 19, 4, 11, 2)
+    g.line(4, 4, 19, 11, 10, 2)
+    g.put(3, 12, 10)
+    g.put(3, 11, 11)
+    g.put(20, 3, 10)
+    g.put(20, 4, 11)
+    g.put(3, 3, 11)
+    g.put(3, 4, 10)
+    g.put(20, 12, 11)
+    g.put(20, 11, 10)
+    # Schaedel 1 (Mitte links, leicht gekippt).
+    g.ellipse(8, 6, 4, 3, 10)
+    g.rect(5, 8, 7, 1, 10)
+    g.rect(6, 5, 2, 1, 2)
+    g.rect(9, 5, 2, 1, 2)
+    g.rect(7, 7, 2, 1, 8)
+    # Schaedel 2 (rechts, tiefer, halb verdeckt).
+    g.ellipse(16, 8, 4, 3, 11)
+    g.rect(13, 10, 7, 1, 10)
+    g.rect(14, 8, 2, 1, 2)
+    g.rect(17, 8, 2, 1, 2)
+    return _finish(g, 23, 14)
+
+
 def grave() -> Grid:
     g = Grid(18, 22)
     # Grabstein mit gerundetem Kopf, schief eingelassen.
@@ -289,6 +410,47 @@ def post() -> Grid:
     return _finish(g, 20, 32)
 
 
+def post_b() -> Grid:
+    """Abgebrochene Laterne 20x32 (Rest): schief geknickter Pfosten, hängendes
+    zerbrochenes Gehäuse, Glas erloschen (Nachtton), Scherben am Fuss — kein
+    Lichtpool (GroundRenderer gibt nur der intakten Laterne den Glow)."""
+    g = Grid(20, 32)
+    cx = 10
+    # Sockel wie post().
+    g.rect(cx - 5, 27, 11, 3, 5)
+    g.rect(cx - 5, 27, 11, 1, 7)
+    # Pfosten nur bis zur Bruchstelle (y=19), oben gezackt.
+    g.rect(cx - 1, 15, 3, 13, 4)
+    g.put(cx - 1, 15, 5)
+    g.put(cx + 1, 26, 2)
+    g.put(cx - 1, 14, 4)
+    g.put(cx, 14, 2)
+    g.put(cx + 1, 15, 4)
+    # Verrosteter Querarm, hängt schief (2 px nach unten rechts).
+    g.rect(cx - 6, 16, 13, 2, 4)
+    g.rect(cx - 6, 16, 13, 1, 5)
+    g.put(cx - 6, 17, 2)
+    g.put(cx + 6, 18, 14)
+    # Hängendes, zerbrochenes Gehäuse: Rahmen schief, Glas erloschen + Riss.
+    g.rect(cx - 3, 19, 7, 2, 4)
+    g.rect(cx - 3, 19, 7, 1, 5)
+    g.rect(cx - 3, 21, 2, 3, 4)
+    g.rect(cx + 3, 22, 2, 3, 4)
+    g.rect(cx - 1, 21, 4, 4, 2)
+    # Glaskern 2x2 mit Bruchkante (erkennbar gegen den dunklen Rahmen).
+    g.rect(cx - 1, 21, 2, 2, 3)
+    g.put(cx - 1, 21, 9)
+    g.put(cx + 1, 23, 8)
+    g.rect(cx - 3, 24, 7, 1, 3)
+    # Riss im Glas.
+    g.line(cx, 22, cx + 1, 24, 0, 1)
+    # Scherben am Fuss: 2x2-Cluster (Dunstton), kein Einzelpixel-Rauschen.
+    g.rect(cx - 7, 29, 2, 2, 8)
+    g.rect(cx + 4, 29, 2, 2, 9)
+    g.put(cx + 6, 28, 8)
+    return _finish(g, 20, 32)
+
+
 def mushroom_ring() -> Grid:
     """Pilzring: 5 rote Kappen mit hellen Stielen, in einem Bogen."""
     g = Grid(30, 18)
@@ -361,6 +523,38 @@ def reeds() -> Grid:
     return _finish(g, 18, 24)
 
 
+def reeds_b() -> Grid:
+    """Buschwerk 18x24 (Schilf-Variante): 5 krumme Halme, dichtes Buschherz,
+    ein trockener Halm (Holzton) — Ufer wirken weniger wiederholt."""
+    g = Grid(18, 24)
+    base = 21
+    # Krumme Halme: (Fuss, Scheitel, Biege-Richtung)
+    stalks = ((3, 8, 1), (7, 4, -1), (10, 6, 1), (13, 9, -1), (15, 12, -1))
+    for x, top, bend in stalks:
+        g.vline(x, top + 3, base, 30)
+        g.vline(x + bend, top + 1, top + 4, 29)
+        g.vline(x + 2 * bend, top, top + 2, 30)
+        # Kolben klein, versetzt zur Biege.
+        g.rect(x + 2 * bend, top - 1, 2, 3, 16)
+        g.put(x + 2 * bend, top - 1, 17)
+        # Blätter.
+        g.put(x - 1, base - 5, 31)
+        g.put(x + 2, top + 5, 29)
+    # Trockener, geknickter Halm (Holzton, ohne Kolben).
+    g.vline(5, 14, base, 15)
+    g.line(5, 14, 9, 11, 16, 1)
+    g.put(10, 11, 14)
+    # Dichtes Buschherz + Grasbüschel am Fuss.
+    g.rect(4, base - 2, 9, 2, 29)
+    g.put(5, base - 2, 30)
+    g.put(11, base - 1, 28)
+    g.rect(1, base, 4, 2, 29)
+    g.put(1, base, 30)
+    g.rect(11, base + 1, 5, 2, 29)
+    g.put(12, base + 1, 30)
+    return _finish(g, 18, 24)
+
+
 def lilypad() -> Grid:
     g = Grid(15, 10)
     g.ellipse(7, 5, 6, 4, 29)
@@ -407,14 +601,20 @@ SPRITES = {
     "prop_tree_b": (dead_tree(1), 40, 56),
     "prop_stump": (stump(), 22, 16),
     "prop_boulder": (boulder(), 26, 20),
+    "prop_boulder_b": (boulder_b(), 26, 20),
+    "prop_boulder_c": (boulder_c(), 26, 20),
     "prop_grave": (grave(), 18, 22),
     "prop_cross": (cross(), 16, 24),
     "prop_ruin": (ruin(), 52, 30),
     "prop_column": (column(), 18, 38),
     "prop_post": (post(), 20, 32),
+    "prop_post_b": (post_b(), 20, 32),
     "prop_mushroom_ring": (mushroom_ring(), 30, 18),
     "prop_bones": (bones(), 23, 14),
+    "prop_bones_b": (bones_b(), 23, 14),
+    "prop_bones_c": (bones_c(), 23, 14),
     "prop_reeds": (reeds(), 18, 24),
+    "prop_reeds_b": (reeds_b(), 18, 24),
     "prop_lilypad": (lilypad(), 15, 10),
     "water_ripple_0": (ripple(0), 13, 6),
     "water_ripple_1": (ripple(1), 13, 6),
@@ -428,9 +628,36 @@ def build() -> dict:
     return data
 
 
+# m10-props-variety: Varianten-Wahl als reine Funktion (wird an gen-props.ts
+# angehaengt). Basis-Keys ohne existierende Basis (z.B. prop_tree_a) und
+# Fremd-Keys bleiben unveraendert; Wahl ist deterministisch je Position.
+VARIANT_HELPER = """
+// m10-props-variety: Sprite-Varianten je Prop-Klasse (Basis + _b/_c-Keys).
+const PROP_VARIANTS: Record<string, string[]> = {};
+for (const k of Object.keys(GEN_PROPS)) {
+  const m = /^(prop_.+)_[a-z]$/.exec(k);
+  if (m && GEN_PROPS[m[1]]) {
+    (PROP_VARIANTS[m[1]] ??= []).push(k);
+  }
+}
+
+/**
+ * Deterministische Variantenwahl: pick in [0,1) waehlt gleichverteilt zwischen
+ * der Basis-Sprite und ihren Varianten (prop_boulder_b/_c ...). Platzierung,
+ * LOD-Tier und Batching bleiben klassenbasiert — nur die Textur variiert.
+ */
+export function propVariantKeyFor(base: string, pick: number): string {
+  const variants = PROP_VARIANTS[base];
+  if (!variants || variants.length === 0) return base;
+  const idx = Math.min(variants.length, Math.max(0, Math.floor(pick * (variants.length + 1))));
+  return idx === 0 ? base : variants[idx - 1];
+}
+"""
+
+
 if __name__ == "__main__":
     data = build()
-    path = emit_ts("gen-props.ts", "GEN_PROPS", data, "Moor-Requisiten + Wasser-Details (M4b)")
+    path = emit_ts("gen-props.ts", "GEN_PROPS", data, "Moor-Requisiten + Wasser-Details (M4b)", extra=VARIANT_HELPER)
     print("wrote", path, len(data), "keys")
     keys = list(SPRITES.keys())
     save_sheet_png([SPRITES[k][0] for k in keys], os.path.join(SHOTS, "m4b-sheet-props.png"), scale=5, bg=(10, 14, 22))
