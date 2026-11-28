@@ -69,12 +69,18 @@ export class Results extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
     // Vignette pixelgenau (m10-menubg-crisp): ganzzahliger Scale + Kanten-Fuellung.
     addVignetteBg(this, W, H);
-    this.add.rectangle(cx, 136 + oy, 440, 250, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
+    // M10-results-followup (#4382): Panel 250 -> 254 hoch (Mitte bleibt
+    // 136+oy). Bodenluft der letzten Zeile war real 2px (before-JSON, alle
+    // 3 Formate), jetzt 4px; oben bleibt der Titel mit 6px im Panel.
+    this.add.rectangle(cx, 136 + oy, 440, 254, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
 
     const victory = this.result.reason === "dawn";
     const giveUp = this.result.reason === "giveup";
     const title = victory ? "MORGENDÄMMERUNG" : giveUp ? "AUFGEGEBEN" : "DIE LATERNE ERLISCHT";
-    new PixelText(this, cx, 24 + oy, title, victory ? C.lantern : C.crimson, "center").setScale(2).setDepth(2);
+    // M10-results-followup (#4382): Titel 24+oy -> 22+oy. Real gemessene
+    // Grundlinie Titel->Untertitel war 2px (before-JSON, alle 3 Formate);
+    // jetzt 4px (Untertitel- und Header-Abstand unveraendert).
+    new PixelText(this, cx, 22 + oy, title, victory ? C.lantern : C.crimson, "center").setScale(2).setDepth(2);
     // Untertitel top 40+oy (Ende 47+oy): laesst 3px zu Header (50+oy) und 2px
     // zum skalierten Titel - keine gebrochene Grundlinie mehr in der Bildmitte.
     new PixelText(this, cx, 40 + oy, victory ? "SIEG - DU HAST ÜBERLEBT" : "NIEDERLAGE", C.mist, "center").setDepth(2);
