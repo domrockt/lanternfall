@@ -1440,18 +1440,18 @@ export function pendulumRingFrame(stage: number, size = WRATH_RING_SIZE, radius 
       if (Math.abs(d - r0) > bandW) continue;
       const a = Math.atan2(dy, dx);
       if (a > 0 || a < -arc) continue;
-      const v = (a + arc) / arc; // 0 = Schwungstart (Glut) → 1 = Spitze (Kern)
+      const v = (a + arc) / arc; // 0 = Schwungstart (Glut) → 1 = Spitze (Kugel)
       const w = (d - (r0 - bandW)) / (2 * bandW); // 0 innen → 1 außen
       // Grenz-Jitter nur an den Band-Kanten (1–2 px), nie als Flächen-Raster.
       const flick = Math.sin(Math.abs(a) * 9 + stage * 2.1) * 0.05;
       const wEff = w + (w > 0.4 ? flick : -flick);
       let idx: number;
-      if (wEff > 0.94) idx = 23;                 // äußere Kontur (1 px)
-      else if (wEff > 0.78) idx = 20;            // Amber-Saum
-      else if (wEff > 0.40) idx = v > 0.5 ? 22   // Kern flächig hell-bernstein
-        : v > 0.3 ? 21 : 27;                     // Übergang → Glut am Schwungstart
-      else if (wEff > 0.24) idx = v > 0.4 ? 21 : 26;
-      else if (wEff > 0.1) idx = 26;
+      if (wEff > 0.96) idx = 23;                 // äußere Kontur (1 px)
+      else if (wEff > 0.86) idx = 20;            // Amber-Saum
+      else if (wEff > 0.34) idx = 22;            // Kern flächig hell-bernstein (ganzer Bogen)
+      else if (wEff > 0.22) idx = v > 0.35 ? 21  // Glut nur an den Bändern zum Schwungstart
+        : 27;
+      else if (wEff > 0.08) idx = 26;
       else idx = 25;                             // innere dunkle Glut
       rows[y][x] = charOf(idx);
     }
