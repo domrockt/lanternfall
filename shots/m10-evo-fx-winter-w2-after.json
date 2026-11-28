@@ -1,0 +1,193 @@
+{
+  "generatedAt": "2026-11-28T04:11:06.364Z",
+  "tag": "after",
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "valid": true,
+  "errors": [],
+  "run": {
+    "renderer": {
+      "generatedAt": "2026-11-28T04:10:59.764Z",
+      "context": "webgl1",
+      "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+      "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "vendor": "Google Inc. (Intel)",
+      "maxTextureSize": 16384,
+      "maxTextureImageUnits": 32,
+      "extensions": [
+        "ANGLE_instanced_arrays",
+        "EXT_blend_minmax",
+        "EXT_clip_control",
+        "EXT_color_buffer_half_float",
+        "EXT_depth_clamp",
+        "EXT_disjoint_timer_query",
+        "EXT_float_blend",
+        "EXT_frag_depth",
+        "EXT_polygon_offset_clamp",
+        "EXT_texture_compression_bptc",
+        "EXT_texture_compression_rgtc",
+        "EXT_texture_filter_anisotropic",
+        "EXT_texture_mirror_clamp_to_edge",
+        "EXT_sRGB",
+        "KHR_parallel_shader_compile",
+        "OES_element_index_uint",
+        "OES_fbo_render_mipmap",
+        "OES_standard_derivatives",
+        "OES_texture_float",
+        "OES_texture_float_linear",
+        "OES_texture_half_float",
+        "OES_texture_half_float_linear",
+        "OES_vertex_array_object",
+        "WEBGL_blend_func_extended",
+        "WEBGL_color_buffer_float",
+        "WEBGL_compressed_texture_astc",
+        "WEBGL_compressed_texture_etc",
+        "WEBGL_compressed_texture_etc1",
+        "WEBGL_compressed_texture_s3tc",
+        "WEBGL_compressed_texture_s3tc_srgb",
+        "WEBGL_debug_renderer_info",
+        "WEBGL_debug_shaders",
+        "WEBGL_depth_texture",
+        "WEBGL_draw_buffers",
+        "WEBGL_lose_context",
+        "WEBGL_multi_draw"
+      ],
+      "contextAttributes": {
+        "alpha": false,
+        "antialias": false,
+        "depth": true,
+        "desynchronized": false,
+        "failIfMajorPerformanceCaveat": false,
+        "powerPreference": "high-performance",
+        "premultipliedAlpha": true,
+        "preserveDrawingBuffer": false,
+        "stencil": true,
+        "xrCompatible": false
+      },
+      "precision": {
+        "fragmentHighp": {
+          "rangeMin": 127,
+          "rangeMax": 127,
+          "precision": 23
+        },
+        "fragmentMediump": {
+          "rangeMin": 127,
+          "rangeMax": 127,
+          "precision": 23
+        },
+        "vertexHighp": {
+          "rangeMin": 127,
+          "rangeMax": 127,
+          "precision": 23
+        }
+      },
+      "fps": {
+        "target": 60,
+        "limit": 60,
+        "cappedAt60": true
+      },
+      "powerPreference": "high-performance",
+      "canvas": {
+        "attrWidth": 640,
+        "attrHeight": 360,
+        "logicalWidth": 640,
+        "logicalHeight": 360,
+        "rendersDevicePixels": false
+      },
+      "textures": {
+        "count": 0,
+        "pixels": 0,
+        "approxBytes": 0,
+        "maxEdge": 0,
+        "oversized": []
+      }
+    },
+    "live": {
+      "fx_ice_2": {
+        "fogBlueTinted": 0,
+        "tints": [
+          16777215
+        ],
+        "count": 32,
+        "maxScaleX": 0.717,
+        "maxScaleY": 0.717,
+        "alphas": [
+          0.28
+        ]
+      },
+      "fx_ice_4": {
+        "fogBlueTinted": 0,
+        "tints": [
+          16777215
+        ],
+        "count": 26,
+        "maxScaleX": 0.308,
+        "maxScaleY": 0.308,
+        "alphas": [
+          0.109
+        ]
+      },
+      "fx_ice": {
+        "fogBlueTinted": 0,
+        "tints": [
+          16777215
+        ],
+        "count": 8,
+        "maxScaleX": 0.751,
+        "maxScaleY": 0.751,
+        "alphas": [
+          0.416
+        ]
+      },
+      "ring_frost@3": {
+        "fogBlueTinted": 0,
+        "tints": [
+          16777215
+        ],
+        "count": 3,
+        "maxScaleX": 0.671,
+        "maxScaleY": 0.671,
+        "alphas": [
+          0.394
+        ]
+      },
+      "fx_halo_cold_2": {
+        "fogBlueTinted": 0,
+        "tints": [
+          16777215
+        ],
+        "maxScaleX": 0.933,
+        "maxScaleY": 0.933,
+        "count": 1
+      },
+      "fx_ice_3": {
+        "fogBlueTinted": 0,
+        "tints": [
+          16777215
+        ],
+        "maxScaleX": 0.406,
+        "maxScaleY": 0.406,
+        "count": 14
+      }
+    },
+    "errors": [],
+    "player": {
+      "x": 2048,
+      "y": 2048
+    },
+    "cam": {
+      "scrollX": 1728,
+      "scrollY": 1868,
+      "zoom": 1,
+      "w": 640,
+      "h": 360
+    },
+    "clip": {
+      "x": 400,
+      "y": 180,
+      "width": 480,
+      "height": 360
+    },
+    "aliveEnemies": 9
+  }
+}
