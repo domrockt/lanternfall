@@ -393,3 +393,34 @@ diese Nachabnahme deckt genau diese ab.
 30-min-Echtzeitlauf war zum PIN-Zeitpunkt noch offen/blocked und ist seitdem
 nachgeholt — **PASS (iGPU)**, siehe Zeile oben; verbleibender Rest nur noch die
 bekannte fill-rate-Grenze 780×360@3 in Minute 25).
+
+## Nachabnahme E (2026-11-28)
+
+Vierte unabhängige Re-Abnahme (NUR-PRÜF-Lane) auf bei Job-Start gepinntem main-Commit
+`a6f1458b2ffaf578828f408a152dd58a0c2558bf` (2026-11-28T07:20:20Z), Worktree
+`m10-acceptance-refresh-e`, Branch `m10-acceptance-refresh-e`. Deckt die ~15 Merges seit
+Nachabnahme C ab (dpr-budget-Welle, Gamepad-Nav Kern+Szenen, Terrain-Hole-Guard,
+Winter-Reste, VFX-restore Stufe 2, Ops-Hygiene f71c3be/b54e742). Befehle, Belege und
+Befundliste mit Hebel-Pointern: `docs/lanes/m10-acceptance-refresh-e.md`; Roh-JSONs in
+`~/games/.evidence/m10-acceptance-refresh-e/`. Lange Läufe unter
+`flock /home/ai/games/.lf-perf.lock`; Renderer-Pflicht erfüllt: iGPU
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (kein SwiftShader).
+
+| Kriterium | Ist auf PIN `a6f1458` | Urteil |
+|---|---|---|
+| `npx tsc --noEmit` rc=0 | rc=0 | **PASS** |
+| `npm run build` rc=0 | rc=0 (487 ms; bekannte Chunk-Warnung) | **PASS** |
+| `npm test` 0 fail | **1655/1655** in 153 Dateien, 4,45 s | **PASS** |
+| `acceptance-count` 30/6/6/6/6/2 | `ok:true` — 30 Gegner / 6 Waffen / 6 Powerups / 6 Evolutionen / 6 Bosse / 2 Helden | **PASS** |
+| verify:final 7/7 | 7/7 PASS, 0 JS-Fehler (Master-Mute, Aggregation, Results `dawn`) | **PASS** |
+| verify-input 28/28 | 28/28 PASS, 0 JS-Fehler — **ESC-Regression aus Nachabnahme C behoben** (Befund E-1) | **PASS** |
+| fullrun 30 min 640×360 | 30,2 Sim-min; **6/6 Bosse exakt** 300–1800 s, **6/6 Truhen**, Sieg `dawn`; **fpsMin 59,2** ≥ 55; Heap-Tor **+13,9 %** ≤ +15 %; 0 JS-Fehler | **PASS** |
+| Minute-25 780×360@3 | **60,1 FPS** (gemessen 60,7) bei 300 Gegnern, Tor ≥ 50; Burst 60,1 bei 500; 0 JS-Fehler; Sicht `shots/abnahme/refresh-e-minute25-780x360dpr3.png` | **PASS** |
+
+**Ergebnis Nachabnahme E: ABGENOMMEN (PASS)** — alle K-Kriterien grün, kein FAIL.
+Positive Deltas gegen C: Tests 587 → 1655; FPS-Latte (fullrun-Min 34,8/35,7 → 59,2;
+M25-780 41,3–46,4 → 60,1); ESC-Regression behoben. Verbleibende Restpunkte sind nur
+die historischen (Heap-SOFT/GC-Sägezahn, 780@3 fill-rate-Grenze, Art-Restpunkte) und
+zwei low-Befunde (Bundle-Chunk-Warnung; verify-Skripte schreiben Neben-Outputs in
+getrackte `shots/*.json`) — Befundliste mit Hebeln in der Lane-Doku, Fix-Jobs daraus
+von Dora zu schneiden. Kein Spielcode/Mess-Skript durch diese Abnahme geändert.

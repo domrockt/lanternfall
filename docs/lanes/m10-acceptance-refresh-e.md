@@ -65,3 +65,15 @@ Befund E-2 (positiv): die FPS-Latte der Nachabnahme C/Versuch 3 (fullrun-fpsMin 
 M25-780 41,3–46,4) ist auf PIN `a6f1458` **voll erfüllt** — Attribution der Fix-Welle:
 dpr-budget (780@3-Pfad), separation-budget, endgame-fps/ground-cost Merges seit C.
 Hebel: keine.
+
+## Befundliste Nachabnahme E (Severity + Hebel)
+
+| # | Befund | Severity | Hebel / Pointer |
+|---|---|---|---|
+| E-1 | verify-input **28/28** — die ESC-Regression aus Nachabnahme C (27/28, „ESC setzt Pause nicht fort") ist auf PIN `a6f1458` **behoben** | info (positiv) | keine; Fix stammte aus Gamepad-Nav/pad-start-pause-Welle |
+| E-2 | FPS-Latte der Nachabnahme C/Versuch 3 vollständig erfüllt: fullrun-fpsMin 34,8/35,7 → **59,2**; M25-780 41,3–46,4 → **60,1** | info (positiv) | keine; Attribution dpr-budget, separation-budget, endgame-fps/ground-cost Merges |
+| E-3 | `npm run build`: Chunk-Größenwarnung (> 500 kB Bundle) | low | Vite-Code-Splitting (`build.rolldownOptions.output.codeSplitting`) — Backlog-Kandidat, kein Abnahme-Blocker (Dora) |
+| E-4 | verify-Skripte schreiben Neben-Outputs in getrackte `shots/*.json` (`shots/m10-passive-math-*.json` durch verify-final-Lauf verändert, im Worktree restored, nicht committed) | low | Hebel bei Skript-Owner (m10-pad-start-pause-r2 / QA): Outputs nach `~/games/.evidence/` statt in getrackte shots — als Bedarf gemeldet |
+| E-5 | Historische Restpunkte unverändert und nicht Teil dieses Urteils: Heap-SOFT (GC-Sägezahn-Peaks), 780@3 fill-rate-Grenze, art-director-Restpunkte (Halo, #320–#322) | info | siehe ACCEPTANCE.md „Offene Punkte / Restmängel" |
+
+**Kein FAIL unter den K-Kriterien.** Gesamtergebnis der Lane: Nachabnahme E = **PASS** (alle K1–K3-Kriterien grün).
