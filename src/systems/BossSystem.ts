@@ -8,6 +8,7 @@ import type { Rng } from "../logic/rng";
 import { attacksFor, bossHpColorIndex, bossPhase, nextBossAttack,
   bossCatchupSpeed, bossLeashSteer, clampPointToView, isPointInView,
   BOSS_CATCHUP_DIST, BOSS_ONSCREEN_MARGIN, type ViewRect } from "../logic/bosses";
+import { resolveBossStackSeparation, type StackNode } from "../logic/separation";
 import type { EnemyPool, EnemyRuntime } from "./EnemyPool";
 import type { EnemyProjectilePool } from "./EnemyProjectiles";
 import type { HazardSystem } from "./Hazards";
@@ -169,6 +170,9 @@ export function bossEnemyDef(index: number): EnemyDef {
  */
 export class BossSystem {
   readonly bosses: BossAgent[] = [];
+  /** Scratch-Pool für die Stapel-Trennung (allokationsfrei, siehe resolveStacks). */
+  private readonly stackScratch: StackNode[] = [];
+  private readonly stackRefs: EnemyRuntime[] = [];
   private readonly scene: Phaser.Scene;
   private readonly pool: EnemyPool;
   private readonly spawner: Spawner;
@@ -322,6 +326,55 @@ export class BossSystem {
           agent.timer = this.launch(agent, playerX, playerY);
         }
       }
+    }
+    this.resolveStacks();
+  }
+
+  /**
+   * M10-boss-stack-separation: leichter Abstoß zwischen Boss- und Elite-
+   * Entities. Befund late-1920: mehrere Bosse/Elites überlappen zu einem
+   * Haufen (Silhouetten/HP-Leisten unlesbar). Die Trennregel ist rein
+   * (src/logic/separation.ts) und arbeitet auf einem Scratch-Pool ohne
+   * Frame-Allokation; Bosse nutzen die Sprite-Halbbreite als Trennradius,
+   * weil die Trefferfläche (16..20) die sichtbare Stapelung unterschätzt.
+   * Ohne Überlappung null Kraft — kein Vibrieren im Stand.
+   */
+  private resolveStacks(): void {
+    const scratch = this.stackScratch;
+    const refs = this.stackRefs;
+    let n = 0;
+    for (const agent of this.bosses) {
+      const e = agent.enemy;
+      if (!e.alive || e.hp <= 0 || e.bossIndex < 0) continue;
+      const node = (scratch[n] ??= { x: 0, y: 0, radius: 0, uid: 0, alive: true });
+      node.x = e.x;
+      node.y = e.y;
+      node.radius = (BOSS_SPRITE_SIZE[e.bossIndex] ?? 96) / 2;
+      node.uid = e.uid;
+      node.alive = true;
+      refs[n] = e;
+      n++;
+    }
+    const active = this.pool.active;
+    for (let i = 0; i < active.length; i++) {
+      const e = active[i];
+      if (!e.elite || !e.alive || e.hp <= 0) continue;
+      const node = (scratch[n] ??= { x: 0, y: 0, radius: 0, uid: 0, alive: true });
+      node.x = e.x;
+      node.y = e.y;
+      node.radius = e.radius;
+      node.uid = e.uid;
+      node.alive = true;
+      refs[n] = e;
+      n++;
+    }
+    if (n < 2) return;
+    resolveBossStackSeparation(scratch, n);
+    for (let i = 0; i < n; i++) {
+      const node = scratch[i];
+      const e = refs[i];
+      if (node.x !== e.x) e.x = node.x;
+      if (node.y !== e.y) e.y = node.y;
     }
   }
 

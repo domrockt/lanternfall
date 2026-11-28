@@ -137,6 +137,131 @@ export function separationPush(
   return pooledVec2(ux * radial - uy * swirl, uy * radial + ux * swirl);
 }
 
+/* ── Boss-/Elite-Stapel-Trennung (M10-boss-stack-separation) ──── */
+
+export interface StackNode {
+  x: number;
+  y: number;
+  /**
+   * Trennradius. Bosse nutzen die Sprite-Halbbreite (56/64/72/80/96/96 px
+   * Frame ⇒ 28..48, Muster BossSystem.BOSS_SPRITE_SIZE), Elites den Hit-Radius
+   * (Sprite ≈ 2r). Die Trefferfläche allein würde die sichtbare Stapelung
+   * unterschätzen (Befund late-1920: Silhouetten unlesbar bei Hit-Distanz 12 px).
+   */
+  radius: number;
+  uid: number;
+  alive: boolean;
+}
+
+/**
+ * Zielabstand als Anteil an (r1 + r2): danach bleibt die Sprite-Deckung
+ * eines Paars ≤ 65 % — klar unter der Abnahmegrenze von 80 %.
+ */
+export const STACK_GAP_FACTOR = 0.35;
+/**
+ * Anteil des Defizits, der pro Paar und Frame korrigiert wird. < 0.5 heißt:
+ * der Abstand nähert sich dem Ziel monoton an und überschwingt nie — kein
+ * Vibrieren im Stand (Abnahme: ≤ 1 px/Frame nach Konvergenz).
+ */
+export const STACK_STRENGTH = 0.4;
+/** Durchläufe je Frame (kleine N: Bosse ≤ 6, Elites im zweistelligen Bereich). */
+export const STACK_MAX_ITERATIONS = 2;
+
+export interface StackSeparationOptions {
+  maxIterations?: number;
+  strength?: number;
+  gapFactor?: number;
+}
+
+export interface StackSeparationResult {
+  pairChecks: number;
+  /** Anzahl Knoten, die sich in diesem Aufruf bewegt haben. */
+  moved: number;
+}
+
+/** Deckung eines Paars (1 = deckungsgleich, 0 = Berührung); Test-/Messhilfe. */
+export function stackPairCoverage(
+  dx: number,
+  dy: number,
+  radiusA: number,
+  radiusB: number,
+): number {
+  const sum = radiusA + radiusB;
+  if (!(sum > 0)) return 1;
+  const d = Math.min(Math.hypot(dx, dy), sum);
+  return 1 - d / sum;
+}
+
+/**
+ * Leichter Abstoß zwischen Boss-/Elite-Entities (kein Positions-Snapping):
+ * pro überlappendem Paar wird STACK_STRENGTH des Abstandsdefizits korrigiert,
+ * massengewichtet über die Trennradien (schwerer Boss weicht kaum aus, der
+ * kleinere Partner mehr). Ohne Überlappung exakt null Kraft — wer einmal
+ * getrennt ist, steht still (Sprungfreiheit, kein Vibrieren).
+ *
+ * Deterministisch: feste Paar-Reihenfolge i<j, Fallback-Richtung über die
+ * kleinere UID (Goldener Winkel), kein Math.random.
+ */
+export function resolveBossStackSeparation(
+  nodes: StackNode[],
+  count = nodes.length,
+  options: StackSeparationOptions = {},
+): StackSeparationResult {
+  const maxIterations = Math.max(1, Math.min(4, Math.floor(options.maxIterations ?? STACK_MAX_ITERATIONS)));
+  const strength = Math.max(0.05, Math.min(0.9, options.strength ?? STACK_STRENGTH));
+  const gapFactor = Math.max(0.1, Math.min(0.9, options.gapFactor ?? STACK_GAP_FACTOR));
+
+  let pairChecks = 0;
+  let moved = 0;
+
+  for (let it = 0; it < maxIterations; it++) {
+    for (let i = 0; i < count; i++) {
+      const a = nodes[i];
+      if (!a.alive) continue;
+      for (let j = i + 1; j < count; j++) {
+        const b = nodes[j];
+        if (!b.alive) continue;
+        pairChecks++;
+        const sum = a.radius + b.radius;
+        const minDist = sum * gapFactor;
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 >= minDist * minDist) continue; // Deadzone: keine Kraft im Stand
+        let ux: number;
+        let uy: number;
+        let d: number;
+        if (d2 < 1e-12) {
+          const dir = fallbackDir(Math.min(a.uid, b.uid));
+          ux = dir.x;
+          uy = dir.y;
+          d = 0;
+        } else {
+          d = Math.sqrt(d2);
+          ux = dx / d;
+          uy = dy / d;
+        }
+        const deficit = minDist - d;
+        const correction = deficit * strength;
+        // Massengewichtung: Anteil invers zur eigenen Fläche (r*r) — der
+        // schwere Boss weicht kaum aus, der kleinere Partner mehr (Muster
+        // separationWeight: Anteil ~ Masse des anderen). Summe beider = 1.
+        const ma = a.radius > 0 ? a.radius * a.radius : 1;
+        const mb = b.radius > 0 ? b.radius * b.radius : 1;
+        const shareB = ma / (ma + mb);
+        const shareA = 1 - shareB;
+        a.x -= ux * correction * shareA;
+        a.y -= uy * correction * shareA;
+        b.x += ux * correction * shareB;
+        b.y += uy * correction * shareB;
+        moved++;
+      }
+    }
+  }
+
+  return { pairChecks, moved };
+}
+
 /* ── Mengen-Resolver mit Iterations- und Paar-Deckel (M10) ────── */
 
 export interface CrowdNode extends Vec2 {
