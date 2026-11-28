@@ -56,6 +56,15 @@ Perf-Pass und verify:final je 0 Fehler), und `fullrun-inhalt` als Folgetor desse
 Texturen 2787/2787 (Guard-Lauf 3: 2782), Minute-25-Top-up avg 71/51 (< 200, gleiche
 Messvaliditäts-Warnung wie Guard-Lauf 3), In-run-Heap-Beobachtung m1→end −13,1 %/−13,1 %.
 
-## Delta gegen Lauf 3 (15:57Z)
+## Delta gegen Lauf 3 (15:57Z, HEAD `fa93a8d6`)
 
-(folgt im K3-Commit)
+| Tor | Delta | Erklärung |
+|---|---|---|
+| `frame-p95` | 16,8 ms → 2,0/1,9 ms (**PASS**, war FAIL) | `mobile-fps-cap` (`73b03c0e`, 15:54Z) hat den Desktop-Cap entfernt (60 nur noch am Geräteknoten); rAF misst jetzt echte Frame-Kosten statt Cap-Quantisierung. Der 15:20Z-Fall bei Dom (Tor-Definition gegen 60-FPS-Cap) ist auf dem Host damit weitgehend ent schärft — Tor bleibt dokumentiert, nicht gewertet. |
+| `js-errors-0` | 0 → 13 Fehler (**neu FAIL**) | „Texture key already in use: chunk_*" (Phaser console.error) im Fullrun-Guard; je Lauf andere Chunk-Keys (`chunk_8_15` konstant 6×), Performance-/verify-Teile sauber. Zwischen 15:57Z und den Läufen gemergte Chunk-Textur-Arbeit (ground-chunk-tex-dup / Pooling #12436) ist der einzige plausible Neueintritt — Fix-Verantwortung liegt bei diesem Area (Karte #13283), nicht in dieser Lane. |
+| `fullrun-inhalt` | PASS → FAIL | Einziges Guard-Failure ist `js-errors-0`; Bosse/Truhen/`dawn` unverändert grün. |
+| `renderer-pflicht` / `content-counts` / `heap-retained` | unverändert PASS (+8,8 % vs +8,1 %) | stabil über 5 Läufe gesamt (3× guard, 2× rerun). |
+
+## Hebelliste
+
+(folgt im K4-Commit)
