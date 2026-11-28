@@ -53,7 +53,7 @@ export const DAMAGE_K_THRESHOLD = 100000;
  * gerundet ("185k!"). Rein darstellerisch — der Wert im Eintrag bleibt exakt.
  */
 export function formatDamageLabel(damage: number, crit: boolean): string {
-  const raw = Math.max(1, Math.round(damage));
+  const raw = Number.isFinite(damage) ? Math.max(1, Math.round(damage)) : 1;
   const suffix = crit ? "!" : "";
   if (raw < DAMAGE_K_THRESHOLD) return `${raw}${suffix}`;
   const k = raw / 1000;
@@ -72,7 +72,7 @@ export function formatDamageLabel(damage: number, crit: boolean): string {
 /** Grid-Zellengröße in Spielpixeln: breit genug für 6-Zeichen-Krits (56 px). */
 export const DAMAGE_GRID_CELL_W = 64;
 /** Hoch genug, damit das Absinken (DAMAGE_SINK_PX) die Nachbarzeile nicht erreicht. */
-export const DAMAGE_GRID_CELL_H = 22;
+export const DAMAGE_GRID_CELL_H = 24;
 /** Max. Umlauf-Radius in Zellen (Spiralsuche). */
 export const DAMAGE_GRID_MAX_CELLS = 3;
 /** Anker-Abstand unterhalb des Gegner-Zentrums. */
@@ -89,13 +89,20 @@ export function gridCellKey(screenX: number, screenY: number): string {
  * Freier Grid-Slot für ein Label an der natürlichen Bildschirmposition:
  * unbelegt -> Position bleibt exakt am Gegner; belegt -> Umlauf um ganze
  * Zellen in fester Spiralen-Reihenfolge (deterministisch, kein Flackern,
- * gleiche Eingaben => gleicher Slot). Im Sättigungsfall (alle Zellen im
- * Radius belegt) natürliche Position mit eigenem Schlüssel.
+ * gleiche Eingaben => gleicher Slot). Mit `placed` (Rects bereits sichtbarer
+ * Labels, inkl. Sink-Drift) wird zusätzlich je Kandidat geprüft, dass das
+ * neue Label-Rect kein bestehendes schneidet — Zellen-Belegung allein reicht
+ * nicht, weil natürliche Positionen innerhalb benachbarter Zellen dicht
+ * beieinander liegen können. Im Sättigungsfall (nichts frei im Radius)
+ * natürliche Position mit eigenem Schlüssel.
  */
 export function pickGridSlot(
   baseScreenX: number,
   baseScreenY: number,
   occupied: ReadonlySet<string>,
+  labelW = 0,
+  labelH = 0,
+  placed?: ReadonlyArray<{ x: number; y: number; w: number; h: number }>,
 ): { x: number; y: number; key: string } {
   const bx = Math.round(baseScreenX / DAMAGE_GRID_CELL_W);
   const by = Math.round(baseScreenY / DAMAGE_GRID_CELL_H);
@@ -105,13 +112,27 @@ export function pickGridSlot(
         if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
         const k = `${bx + dx},${by + dy}`;
         if (occupied.has(k)) continue;
-        return r === 0
-          ? { x: baseScreenX, y: baseScreenY, key: k }
-          : { x: baseScreenX + dx * DAMAGE_GRID_CELL_W, y: baseScreenY + dy * DAMAGE_GRID_CELL_H, key: k };
+        const x = r === 0 ? baseScreenX : baseScreenX + dx * DAMAGE_GRID_CELL_W;
+        const y = r === 0 ? baseScreenY : baseScreenY + dy * DAMAGE_GRID_CELL_H;
+        if (placed && labelW > 0 && labelH > 0
+          && placed.some((p) => overlapsRect({ x, y, w: labelW, h: labelH }, p))) continue;
+        return { x, y, key: k };
       }
     }
   }
   return { x: baseScreenX, y: baseScreenY, key: `sat,${bx},${by},${occupied.size}` };
+}
+
+/** Überlappen zwei Rects (echte Flächenüberschneidung > 0)? */
+function overlapsRect(
+  a: { x: number; y: number; w: number; h: number },
+  b: { x: number; y: number; w: number; h: number },
+): boolean {
+  return (
+    a.w > 0 && a.h > 0 && b.w > 0 && b.h > 0
+    && Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x) > 0
+    && Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y) > 0
+  );
 }
 
 /**
@@ -302,15 +323,33 @@ export class DamageNumberSystem {
         // Tween/Position nur beim (Erst-)Aufblitzen setzen — kein Neustart je Treffer.
         view.key = key;
         this.labelMemo.forget(key);
+        // Groesse/Farbe vor der Platzierung ableiten (Krit bleibt gross +
+        // hervorgehoben, Normaltreffer klein).
+        view.big = entry.crit || (entry.hits > 3 && entry.damage > 20);
+        view.color = entry.crit ? C.amber : view.big ? C.lantern : C.candleWhite;
+        view.scale = view.big ? 1.6 : 1;
         // Anker UNTERHALB des Gegners (B4: Labels verdeckten Sprite-Zentren);
         // Grid-Slot verhindert Stapeln/Überlappen mit bereits sichtbaren Labels.
         const baseSx = (entry.x ?? 0) - cam.scrollX;
         const baseSy = (entry.y ?? 0) - cam.scrollY + DAMAGE_ANCHOR_BELOW;
+        const labelW = Math.ceil((formatDamageLabel(entry.damage, entry.crit).length * 6 - 1) * view.scale);
+        const labelH = Math.ceil(7 * view.scale) + DAMAGE_SINK_PX; // Sink-Drift als Reserve
         const occupied = new Set<string>();
+        const placed: Array<{ x: number; y: number; w: number; h: number }> = [];
         for (const other of this.views) {
-          if (other !== view && other.active && other.gridKey) occupied.add(other.gridKey);
+          if (other === view || !other.active || !other.gridKey) continue;
+          occupied.add(other.gridKey);
+          const oc = other.text.valueText.length;
+          if (oc > 0) {
+            placed.push({
+              x: other.x - cam.scrollX,
+              y: other.y - cam.scrollY,
+              w: Math.ceil(other.text.textWidth * other.scaleApplied),
+              h: Math.ceil(7 * other.scaleApplied) + DAMAGE_SINK_PX,
+            });
+          }
         }
-        const slot = pickGridSlot(baseSx, baseSy, occupied);
+        const slot = pickGridSlot(baseSx, baseSy, occupied, labelW, labelH, placed);
         view.gridKey = slot.key;
         view.x = slot.x + cam.scrollX;
         view.y = slot.y + cam.scrollY;
