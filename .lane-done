@@ -1,0 +1,25 @@
+# Lane m10-scale-osc-guard — fertig (2026-11-28)
+
+Karten #7428-#7431, Commits 474a41f / 2c9b1c1 / 51fb4c5 (+ dieser Commit).
+
+Zusammenfassung:
+- K1: Deterministische Lastserie gegen stepRenderScale (scripts/m10-scale-osc.mjs)
+  belegt Pumpen: alternierende 5-s-Epochen = 49 Stufenwechsel/240 s
+  (shots/m10-scale-osc-before.json, 2 Laeufe byte-gleich).
+- K2: Guard in src/logic/scale.ts — SCALE_MIN_STEP_MS 8 s zwischen Wechseln,
+  SCALE_RECOVER_MS 12 s am Stueck fuer Abbau, Erstwechsel unveraendert,
+  applyRenderScaleOverride (?rbscale 0..3 hat Vorrang, 0 = aus).
+  Nachher: alternating_5s 49 -> 2 Wechsel, danach 0 ueber ~230 s
+  (shots/m10-scale-osc-after.json); spikes_4s behaelt Ereignis-Reaktion
+  (Recovery erhaelt). tests/scale-osc.test.ts 11 Faelle; Suite 1124/1124,
+  tsc rc=0, build rc=0. src/config.ts unveraendert (optionale State-Felder).
+- K3: Messbelege unter flock (M25, scripts/m10-dpr-budget.mjs nur gelesen):
+  auto-Regler bleibt Teiler 1 in 3/3 Laeufen (Buffer 780x360, kein Pendeln);
+  erzwungener Teiler 3 stabil 3/3 (260x120, 59.4-60 FPS); 640x360 dpr1
+  divisor 1, 60 FPS, passed. Renderer-String 6/6 iGPU
+  "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  kein SwiftShader, 0 JS-Fehler.
+- K4: docs/lanes/m10-scale-osc-guard.md + dieser Marker.
+
+Offen (nicht lane-bedingt): stale 480er-Exit-Kriterium in
+scripts/m10-dpr-budget.mjs (main liefert 640x360 nach #4658).
