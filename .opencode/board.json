@@ -8003,43 +8003,76 @@
       "id": 6938,
       "title": "m10-menubg-crisp K1: Ist-Messung Menü-Hintergründe (3 Szenen × 3 Formate)",
       "description": "Skript scripts/m10-menubg-crisp.mjs misst Scale/DisplaySize aller Hintergrund-/Panel-Bilder in CharSelect/Results/Credits bei 640x360, 780x360@3, 960x540; Beleg shots/m10-menubg-before.json. Abnahme: JSON committed, fraktionale Fälle gelistet.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T00:15:20Z",
           "by": "build",
           "text": "todo → doing: m10-menubg-crisp: Messskript über 3 Menü-Szenen (CharSelect/Results/Credits) × 3 Formate (640x360, 780x360@3, 960x540)"
+        },
+        {
+          "at": "2026-11-28T00:28:24Z",
+          "by": "build",
+          "text": "doing → review: m10-menubg-crisp: Skript + before-JSON/PNGs committet (Commit nennt #6938). Befund: Frisch-Load 0 Faelle; Live-Resize 640->780 -> vignette 1.21875x fraktional in CharSelect/Results/Credits. Wie geprueft: JSON-Klassifikation depth<=0 ohne ADD-Blend, 3+1 View-Laeufe."
         }
       ],
       "created": "2026-11-28T00:15:18Z",
-      "updated": "2026-11-28T00:15:20Z"
+      "updated": "2026-11-28T00:28:24Z"
     },
     {
       "id": 6939,
       "title": "m10-menubg-crisp K2: Fix fraktionale Hintergrund-Skalierung (ganzzahlig + Kanten-Fuellung)",
       "description": "Belegte Fälle (Erwartung: vignette @780 View 1.21875x) in CharSelect/Results/Credits fixen: ganzzahliger Scale + Rand-Fuellung wie m10-title-bg-crisp; Szenen ohne Befund begründet auslassen. Abnahme: 0 fraktionale Hintergrund-Skalen im After-Scan; sonstige Optik AE=0 außer dokumentierter Fuellung.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T00:28:28Z",
+          "by": "build",
+          "text": "todo → doing: m10-menubg-crisp: Fix in CharSelect/Results/Credits — ganzzahliger Vignette-Scale + Kanten-Fuellung (Muster m10-title-bg-crisp), Resize-Pfad abgedeckt (Szene restartet, Textur alt)"
+        },
+        {
+          "at": "2026-11-28T00:47:12Z",
+          "by": "build",
+          "text": "doing → review: m10-menubg-crisp: Fix committet (#6939). src/gfx/vignette-bg.ts (neu, unclaimt), CharSelect/Results/Credits nutzen addVignetteBg. After-Scan: 0 fraktionale Faelle in 3 Formaten + Resize-Probe. Run.ts/Title.ts nutzen vignette ebenfalls per setDisplaySize — fremde Lanes, nur dokumentiert."
+        }
+      ],
       "created": "2026-11-28T00:15:18Z",
-      "updated": "2026-11-28T00:15:18Z"
+      "updated": "2026-11-28T00:47:12Z"
     },
     {
       "id": 6940,
       "title": "m10-menubg-crisp K3: Tests tests/menu-bg-crisp.test.ts (Scale je Szene/Format)",
       "description": "Regressionstests: Layout-Funktion liefert ganzzahligen Scale + Fuellung deckt View (left+texW*s+right=W) für alle 3 Szenen und Formate; npx vitest run tests/menu-bg-crisp.test.ts grün. Abnahme: Tests committed und grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T00:47:14Z",
+          "by": "build",
+          "text": "todo → doing: m10-menubg-crisp: Regressionstests tests/menu-bg-crisp.test.ts — Layout-Vertrag je Szene/Format (ganzzahliger Scale, Fuellung deckt View, Exaktwerte 640/780)"
+        },
+        {
+          "at": "2026-11-28T00:49:38Z",
+          "by": "build",
+          "text": "doing → review: m10-menubg-crisp: Tests committet (#6940), 21 Tests: Layout-Vertrag (ganzzahlig, Fuellung deckt View, Crop-Fall), Exaktwerte, Quell-Checks 3 Szenen. Suite 954/954, tsc rc=0. (passive-math-JSONs werden vom geteilten Suite-Lauf re-getimestamped, nicht unsere Aenderung)"
+        }
+      ],
       "created": "2026-11-28T00:15:18Z",
-      "updated": "2026-11-28T00:15:18Z"
+      "updated": "2026-11-28T00:49:38Z"
     },
     {
       "id": 6941,
       "title": "m10-menubg-crisp K4: After-Shots + art-director >= 4/5 + Lane-Doku + .lane-done",
       "description": "After-Scan shots/m10-menubg-after.json (0 fraktionale Fälle), Screenshots 3 Szenen @780 (Zoom 4x), art-director-Urteil >= 4/5, docs/lanes/m10-menubg-crisp-rest.md, .lane-done. Abnahme: alle Belege im Commit, Urteil in Karten-Notiz.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T00:49:41Z",
+          "by": "build",
+          "text": "todo → doing: m10-menubg-crisp: After-Shots + 4x-Zoom @780, art-director-Urteil, Lane-Doku docs/lanes/m10-menubg-crisp-rest.md, .lane-done"
+        }
+      ],
       "created": "2026-11-28T00:15:18Z",
-      "updated": "2026-11-28T00:15:18Z"
+      "updated": "2026-11-28T00:49:41Z"
     }
   ]
 }

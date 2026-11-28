@@ -99,7 +99,13 @@ export function addVignetteBg(
   const l = vignetteBgLayout(gameW, gameH, texW, texH);
 
   const mk = (ekey: string, sx: number, sy: number, w: number, h: number): void => {
-    if (scene.textures.exists(ekey)) return;
+    const existing = scene.textures.exists(ekey)
+      ? (scene.textures.get(ekey).getSourceImage() as { width: number; height: number } | null)
+      : null;
+    // Reviewer-Nit #6939: falls die Basistextur kuenftig in anderer Groesse
+    // neu erzeugt wird, dürfen keine veralteten Kanten-Baender weiterleben.
+    if (existing && existing.width === w && existing.height === h) return;
+    if (existing) scene.textures.remove(ekey);
     const canvas = document.createElement("canvas");
     canvas.width = w;
     canvas.height = h;

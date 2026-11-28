@@ -1,0 +1,19 @@
+# Lane m10-menubg-crisp-rest — fertig (2026-11-28)
+
+Ziel: F1-Befundklasse (fraktionale setDisplaySize-Hintergrund-Skalierung) auf CharSelect/Results/Credits ausweiten.
+
+- **Befund (shots/m10-menubg-before.json):** Frisch-Load je Format (640x360, 780x360@3, 960x540) = 0 Fälle
+  (Vignette wird beim Boot in View-Größe erzeugt). Live-Resize 640→780 lässt die Textur auf Texel 640x360
+  stehen → fraktionale 1.21875×-Streckung in allen 3 Szenen (3 belegte Fälle).
+- **Fix (#6939):** src/gfx/vignette-bg.ts — ganzzahliger Texel-Scale + Kanten-Füllung aus echten 1px-Rand-Texeln
+  (Muster m10-title-bg-crisp #6739, inkl. Crop-Fall + Cache-Größenprüfung); CharSelect/Results/Credits nutzen
+  addVignetteBg statt setDisplaySize. After-Scan (shots/m10-menubg-after.json): 0 fraktionale Fälle in allen
+  3 Formaten + Resize-Probe; Frisch-Load AE = 0, Füllung nur im Resize-Pfad (dokumentiert).
+- **Tests (#6940):** tests/menu-bg-crisp.test.ts (21) — Layout-Vertrag, Exaktwerte 640/780, Crop-Fall,
+  Quell-Checks gegen setDisplaySize-Rückfall. Suite 954/954, tsc rc=0.
+- **Abnahme (#6941):** art-director PASS 4,5/5 (Naht-Differenz 0, Kern pixelidentisch zur 1x-Referenz,
+  4x-Zooms shots/m10-menubg-*-zoom.png); reviewer PASS.
+- **Offen (fremde Dateien, nur dokumentiert in docs/lanes/m10-menubg-crisp-rest.md):** Run.ts:282 nutzt
+  weiterhin setDisplaySize auf der Vignette (gleiche Mangel-Klasse beim Live-Resize — Folge-Karte empfohlen);
+  Title.ts-Vignette ebenfalls (Tabu, m10-title-bg-crisp); light_radius-Glows bewusst out of scope.
+- Karten: #6938–#6941, je ein Commit (M10-m10-menubg-crisp-rest-Präfix), Belege in den Commits.
