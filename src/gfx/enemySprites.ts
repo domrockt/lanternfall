@@ -204,43 +204,44 @@ export function enemyVariantFrames(index: number): Grid[] {
  * sich weiterhin als Block (art-director-Nachbesserung aus #6399: skeleton/
  * centipede/harpy kraeftiger trennen, Rampe zu eng).
  *
- * Fix: diese Typen mischen ihren Koerper zu 80 % Richtung eines FAMILIEN-
- * GEGENTONS (feste Tabelle, datengeleitet aus der Vorher-Messung — kein
- * Hand-Tuning-Loop, siehe scripts/m10-crowd-tone-search.mjs):
- *   knochen/nacht (helle/blaugraue Basen)  -> Karmesin (crimson)
- *   moor (gruene Basen)                    -> Glut-Orange (emberOrange)
- *   blut (helle rote Basen)                -> Moor-Gruen (marsh)
- *   glut/gold (warme Basen)                -> Nebelblau (fogBlue)
+ * Fix: diese Typen mischen ihren Koerper zu 80 % Richtung eines Palette-Ziel-
+ * tons. Die Tabelle ist das ERGEBNIS DES SUCHLAUFS
+ * scripts/m10-crowd-tone-search.ts (tsx, echte Grids, exakte Misch-Mathematik
+ * inkl. ausgesparter Lichtkante; EIN deterministischer Greedy-Durchlauf, 32
+ * Kandidaten je Typ, Nutzungsdeckel 6 je Ton, Kollisions-Guard >= 40 RGB zu
+ * fremden Basen, Ziel >= 60 RGB) — kein Hand-Tuning. Gemessenes Ergebnis:
+ * min eigene Distanz 64,1 (Ziel 60), min Kollisions-Distanz 40,3 (Grenze 40),
+ * 0 Fallbacks.
  * Nur Palette-Indizes (kein Off-Palette-Farbe), Kontur (0), Augen/Glow (13)
  * und die 1-px-Lichtkante bleiben unangetastet — Silhouette, binäres Alpha,
  * Key-Satz und Elite-Rim unverändert. Alle nicht gelisteten Typen bleiben
  * bytegleich zum crowd-variety-Stand (Rampen-Stufe, 55-%-Mischung).
+ * Hinweis: bog_rat/wisp/bogzombie stellen im Spiel handgezeichnete 2-Frame-
+ * Sets dar (textures.ts SPRITE_GRIDS/SPRITE_FRAMES überschreiben die generier-
+ * ten Frames) — deren Varianten-Frames werden nie gerendert und sind in
+ * tests/crowd-variant-tone.test.ts ausgeommen.
  */
 const VARIANT_TONE_OVERRIDES: Record<string, number> = {
-  // knochen + nacht (helle/blaugraue Basen) -> Blut-Karmesin
-  enemy_banshee: C.crimson,
-  enemy_skeleton: C.crimson,
-  enemy_centipede: C.crimson,
-  enemy_harpy: C.crimson,
-  enemy_spider: C.crimson,
-  enemy_wolf: C.crimson,
-  enemy_reaper_bat: C.crimson,
-  // moor (gruene Basen) -> warme Glut
-  enemy_ghoul: C.emberOrange,
-  enemy_bogzombie: C.emberOrange,
-  enemy_slime: C.emberOrange,
-  enemy_mudling: C.emberOrange,
-  enemy_toad: C.emberOrange,
-  // blut (helle rote Basen) -> Moor-Gruen
-  enemy_horror: C.marsh,
+  enemy_wolf: C.emberBrown,
+  enemy_spider: C.emberBrown,
+  enemy_centipede: C.flameBright,
+  enemy_ghoul: C.emberBrown,
+  enemy_harpy: C.emberBrown,
+  enemy_bat: C.fleshWarm,
+  enemy_imp: C.fleshWarm,
+  enemy_slime: C.emberBrown,
+  enemy_reaper_bat: C.fleshWarm,
+  enemy_toad: C.emberBrown,
+  enemy_skeleton: C.flameBright,
+  enemy_cultist: C.crimson,
+  enemy_scarecrow: C.fleshWarm,
   enemy_witchling: C.marsh,
-  enemy_bat: C.marsh,
-  enemy_cultist: C.marsh,
-  // glut/gold (warme Basen) -> Nebelblau
-  enemy_golem: C.fogBlue,
-  enemy_imp: C.fogBlue,
-  enemy_treant: C.fogBlue,
-  enemy_scarecrow: C.fogBlue,
+  enemy_voidcaller: C.flameBright,
+  enemy_horror: C.fleshWarm,
+  enemy_mudling: C.crimson,
+  enemy_treant: C.fleshWarm,
+  enemy_banshee: C.flameBright,
+  enemy_golem: C.marshLight,
 };
 
 /** Staerkere Mischung fuer Typen mit Familien-Gegenton (s. o.). */
