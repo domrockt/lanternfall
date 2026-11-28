@@ -1,0 +1,16 @@
+# Lane m10-dmglabel-cleanup — fertig (2026-11-28)
+
+Karte #7527 (aus reviewer-Folge #7062, Lane m10-chaos-fix-dmg-overlap): genau EIN
+Label-Formatter im Code.
+
+- `damageLabel(entry)` aus `src/logic/damage-numbers.ts` entfernt (produktiv ungenutzt,
+  keine Delegation — Signatur brauchte AggregateEntry, Delegation wäre zirkulär).
+- `tests/m5-jucie.test.ts` + `tests/damage-number-batch.test.ts` auf
+  `formatDamageLabel(damage, crit)` aus `src/systems/DamageNumbers.ts` umgestellt
+  (Phaser-Container-Stub wie `tests/damage-grid.test.ts`); Belegwerte "20!"/"15!" bleiben prüfbar.
+- Beleg K2: `grep -rn damageLabel src/ tests/ | grep -v formatDamageLabel` → 0 Treffer
+  (vorher 4). `src/systems/DamageNumbers.ts` unverändert — Anzeige-Verhalten bitgleich,
+  Trefferverhalten unberührt.
+- Abnahme: `npx tsc --noEmit` grün, `npm test` 114 Files / 1238 Tests grün,
+  `npm run build` grün. reviewer PASS, commit-gate PASS.
+- Commit: 25c5213 (M6-m10-dmglabel-cleanup: #7527), Doku in docs/lanes/m10-dmglabel-cleanup.md.
