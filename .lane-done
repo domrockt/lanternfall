@@ -1,0 +1,18 @@
+Lane m10-heap-gate-recovery — abgeschlossen 2026-11-28 (~16:05Z)
+
+Ziel: offener Abnahme-Blocker aus Nachabnahme F (fullrun 30 min 960x540,
+Heap-Tor +18,2 %/+20,8 % > +15 % auf PIN 1ebd4ca, vor hazard-tex-cap) remessen
+und ggf. fixen.
+
+Ergebnis (K1/K2, Karten #12547/#12548): Tor ERFUELLT, Fix-Fall entfaellt.
+- Lauf 1:  HARD -25,2 % (endMB 48,5 MB vs Minute 1 64,8 MB), SOFT robust +9,2 %, Sieg, 0 JS-Fehler
+- Lauf 2 (Retry nach Browser-Target-Crash wie in F): HARD -25,2 %, SOFT robust +9,9 %, Sieg, 0 JS-Fehler
+- Beide Laeufe Renderer Mesa Intel RPL-S (gueltig, kein SwiftShader); Post-GC-Profil ohne Aufwärtstrend.
+- Befund: main haelt das Tor nach dem hazard-tex-cap-Merge (Merge 39fdac5d,
+  16-px-Hazard-Textur-Raster band den einzigen belegten ungebundenen
+  Wachstumsmechanismus). K3 (Pool.ts/EnemyPool.ts) und K4 traten nicht ein
+  (#12549/#12550 entfallen, kein Hebel umgesetzt -> kein Guard-Test-Objekt).
+- Belege: ~/games/.evidence/m10-heap-gate-recovery/k1-run{1,2-retry}.json
+  (k1-run2.json = Crash-Teilbeleg), Logs ~/tmp/m10-heap-gate-recovery/.
+- Doku: docs/lanes/m10-heap-gate-recovery.md; G-Abschnitt-Vermerk in
+  ~/games/.dispatch/requests.md (ACCEPTANCE.md fremd-claimed).
