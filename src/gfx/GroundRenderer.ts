@@ -104,6 +104,18 @@ export interface ChunkInstallGateResult {
   defers: number;
 }
 
+/**
+ * Debug/Messung (#12436): Laufzeit-Override des Gate-Parameters fuer das
+ * Tune-Skript (scripts/tune-chunk-budget.mjs). Im Spiel ungesetzt -> die
+ * Konstanten oben gelten. Kein Spielcode schreibt hier hinein.
+ */
+export const chunkGateOverride: { budgetMs?: number; maxDefers?: number; intervalMs?: number } = {};
+
+// Mess-Hook: das Tune-Skript setzt Kandidatenwerte ueber window.__lfChunkGate.
+if (typeof globalThis !== "undefined") {
+  (globalThis as { __lfChunkGate?: typeof chunkGateOverride }).__lfChunkGate = chunkGateOverride;
+}
+
 /** Rein/testbar: Install-Gate mit Frame-Budget und Stillstands-Schutz. */
 export function chunkInstallGate(
   readyCount: number,
@@ -778,7 +790,10 @@ export class GroundRenderer {
     // M10-frame-tail-batching: Obergrenze je Frame (1 Install) + Mindestabstand
     // bei Rueckstau (chunkInstallDue); M10-ground-chunk-budget (#12436):
     // zusaetzlich Frame-Budget-Gate mit Stillstands-Schutz (max. 3 Defer-Frames).
-    const gate = chunkInstallGate(this.ready.length, timeMs - this.lastInstallMs, frameDtMs, this.installDefers);
+    const gate = chunkInstallGate(
+      this.ready.length, timeMs - this.lastInstallMs, frameDtMs, this.installDefers,
+      chunkGateOverride.intervalMs, chunkGateOverride.budgetMs, chunkGateOverride.maxDefers,
+    );
     this.installDefers = gate.defers;
     if (!gate.install) return;
     this.ready.sort((a, b) => {
