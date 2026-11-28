@@ -32,9 +32,19 @@ Konsequenz für K2: Verhalten ist funktional korrekt, aber der Toggle muss in de
 Dedup-Pfad geführt werden (synthetisches Pad-Event → `escToggleAllowed`), damit „keine neuen
 Toggle-Quellen ohne Dedup“ gilt. ESC-/Touch-Verhalten bleibt bitgleich.
 
-## K2 — Fix
+## K2 — Fix (Ergebnis)
 
-(offen)
+- `src/input/InputState.ts`: `escToggleAllowed` wendet die ESC-Regeln (nur keydown, kein repeat,
+  timeStamp-Dedup) jetzt auch für das synthetische Pad-Event an; neuer Export `padToggleEvent(ts)`
+  erzeugt `{ key: PAD_START_KEY, type: "keydown", timeStamp: ts, repeat: false }`.
+- `src/scenes/Run.ts`: Frame-Pfad (Pad-Start + Touch-Pause) ruft `togglePause(padToggleEvent(...))`
+  statt ohne Event; `togglePause(ev?)` nutzt mitgegebenes Event, sonst weiter `window.event` (ESC
+  unberührt). Zeitquelle `Math.floor(performance.now())`: Doppel-Dispatch im selben Frame = gleicher
+  ms-Floor → deduped; zwei echte Presses liegen weit auseinander. Pausen-frozen Clock (time.paused)
+  ist bewusst NICHT die Quelle (war beim Fortsetzen konstant → Start würde nie fortsetzen).
+- Reviewer-PASS (28.11.): ESC-Regeln bitgleich belegt, kein Blockierungspfad für legitime Toggles
+  (Edge-Triggerung in InputState ist der primäre Schutz, der Dedup die zweite Verteidigung);
+  verify-input/Tests grün.
 
 ## K3 — verify-input (Ergebnis)
 

@@ -466,10 +466,12 @@ export class Run extends Phaser.Scene {
       && !this.registry.get("lf-options-open")) {
       // M10-pad-start-pause: Pad-Start (Button 9) und Touch-Pause-Puls laufen
       // als ESC-Aequivalent durch denselben Dedup-Pfad (escToggleAllowed) —
-      // eine TV-Fernbedienung hat kein ESC. Zeitquelle ist die Wanduhr
-      // (ms-Floor): Doppel-Dispatch im selben Frame = gleicher timeStamp ->
-      // genau ein Toggle; die Szenen-Clock scheidet aus (stand beim Fortsetzen
-      // aus der Pause still). Zwei echte Presses liegen weit ueber 1 ms auseinander.
+      // eine TV-Fernbedienung hat kein ESC. Primärer Schutz gegen Mehrfach-
+      // Toggle ist die Edge-Triggerung in InputState (genau eine pause-Edge pro
+      // Press); der Dedup ist die zweite Verteidigung. Zeitquelle ist die
+      // Wanduhr (ms-Floor), nicht die Szenen-Clock (stand beim Fortsetzen aus
+      // der Pause still): Doppel-Dispatch im selben Frame = gleicher timeStamp
+      // -> genau ein Toggle; zwei echte Presses liegen weit ueber 1 ms auseinander.
       this.togglePause(padToggleEvent(Math.floor(performance.now())));
     }
 
