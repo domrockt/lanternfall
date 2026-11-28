@@ -96,6 +96,38 @@ dünne weiße Kettenlinien wirken hart.
 Abnahme-Kriterium der Lane: ≥3 belegte Punkte ✓ (B1–B3 Major, B4–B5 Minor, je Repro-Shot + Hebel).
 Blocker: **keine** — Kern-Lesbarkeit (Spieler/Boss/HUD) ist gegeben; die Majors sind Stilbruch-/Verdeckungs-Fälle.
 
-## 4. Verlauf
+## 4. art-director-Kontrolle (strenge Abnahme, 2026-11-28 00:30Z)
 
-- 2026-11-28: K1 Belege (9541b88, Korrektur 98fc186), K2 Sichtung, K3 Befundliste (#6958–#6960).
+Gesamt-Note **3/5 (streng)** — „nicht kommerziell auslieferbar" in der aktuellen Chaos-Szene:
+- **FAIL/Major (1) Mixel:** die große braun-orange Masse + bronzen Brocken = Blöcke grob 2–6 Spielpixel mit
+  weicher Außenkante (`780-360-3-m25-2-4x.png`, `780-360-3-stress500-1-4x.png` unten); die goldenen
+  Spieler-Strahlen sind **stufenlose Gradient-Keile, nicht auf das Raster quantisiert**
+  (`640-360-1-m25-2-4x.png`). Kleine Starbursts dagegen ok.
+- **FAIL/Major (2) Near-White:** Bereich über dem Spieler brennt zu blassgelb/crème aus, Bodendetails und
+  Gegner geschluckt (`780-360-3-m25-2-4x.png` oben Mitte; `780-360-3-stress500-1-4x.png` oben links reine
+  weiße Fläche). Spieler bleibt lesbar → Major, nicht Blocker.
+- **FAIL/Major (3) Stilbruch:** milchig-orange Ringe, rosa/beige Discs/Balken, Gradient-Strahlen —
+  „harte 1-px-Sprites unten, Luftbrause oben" bildet eigene Objektkanten, keine zulässige Licht-Überblendung.
+- **PASS (4) Lesbarkeit:** Spieler in allen 4x-Crops sofort identifizierbar; Boss/HUD/Schwarm klar;
+  Minor: Spieler im Strahlen-/Glow-Stack von `780-m25-2` fast zugedeckt.
+- **PASS (5) Dither:** keine Schachbretter in Effektflächen/Tiles/Glows.
+- Auslieferbar (4–4,5): Gegner-/Spieler-Sprites, Starbursts, Tiles, HUD, Damage-Numbers.
+
+**Konsolidierte Fix-Priorität (mit art-director-Hebeln, zeilengenau):**
+1. Strahlen-/Aura-/Massen-Effekte aufs Pixelraster baken (Gradient-Keile → 1–2-px-Stufen):
+   `src/gfx/gen-fx.ts` (Signaturen, soul_beacon ~762, „tongues" ~461, DEATH_GRID) +
+   `src/gfx/textures.ts` (radiale Canvas-Gradients ~740–780). Deckt B1 + Teile von B3.
+2. ADD-Glow-Intensität deckeln (kein Near-White über Sprites): `src/gfx/textures.ts` (~740),
+   `src/scenes/Boot.ts` (~53–76 Glow-Setup), Alpha/Blend in `src/scenes/Run.ts`. Deckt B2 + B5.
+3. Weiche Discs/Ringe härten (1–2-px-Band, Sprite-Pixelgröße): `src/gfx/textures.ts`
+   (ring/puddle/beam-Canvases ~560–610), `src/gfx/bakeAtlas.ts`, `src/systems/Hazards.ts`
+   (telegraph_disc). Deckt B3.
+4. Schadenszahlen: Grid-Offset + 100k-Kürzung in `src/systems/DamageNumbers.ts` (B4, Minor).
+
+Urteil übernommen: kein Blocker, **3 Major** — die Befundliste oben (B1–B5) und diese Priorität sind die
+Basis für Doras Fix-Jobs (Messen → sofort Fixen).
+
+## 5. Verlauf
+
+- 2026-11-28: K1 Belege (9541b88, Korrektur 98fc186), K2 Sichtung, K3 Befundliste (#6958–#6960),
+  art-director 3/5 (3 FAIL Major, 2 PASS) nachgezogen.

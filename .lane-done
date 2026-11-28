@@ -1,0 +1,13 @@
+# Lane m10-chaos-legibility-audit — fertig (NUR-MESS)
+
+Strenge Sichtung Minute-25-Chaos (300 + 500 Gegner, 6 Evolutionen), iGPU (Mesa Intel RPL-S, kein SwiftShader),
+640x360 + 780x360@3, 10 Native-Freeze-Frames + 8 Zooms (2x/4x nearest) + evidence.json in shots/m10-chaos-leg-*.
+
+Ergebnis (eigene Vision + art-director 3/5 streng): NICHT kommerziell auslieferbar in der Chaos-Szene.
+3 Major-Befunde, je Repro-Shot + Hebel in docs/lanes/m10-chaos-legibility.md:
+1. Mixel-Rester: Gradient-Strahlen/Massen 2-6Spielpixel-Blöcke statt Raster (gen-fx.ts/textures.ts Neubake).
+2. Near-White-Kerne in ADD-Glows schlucken Sprites (textures.ts/Boot.ts Glow-Deckel).
+3. Milchige Airbrush-Discs/Ringe = Stilbruch + Verdeckung (textures.ts/Hazards.ts härten).
+Minor: Schadenszahlen-Overlap, gestreckte Weisspartikel. Kein Schachbrett-Dither; Sprites/Tiles/HUD/Player
+auslieferbar (4-4,5). 4 Fix-Job-Empfehlungen stehen in der Doku (Messen -> sofort Fixen).
+Kein Code geändert; Karten #6958-#6960, Commits 9541b88, 98fc186, 4e8f970 + Abschluss-Commit.
