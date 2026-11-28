@@ -53,7 +53,6 @@ describe("startServer Port-Retry", () => {
     const servers: Array<FakeServer & { killed: boolean }> = [];
     spawnMock.mockImplementation(() => {
       let exitCb: (() => void) | null = null;
-      void exitCb;
       const s = {
         once: (_event: string, cb: () => void) => { exitCb = cb; },
         kill: () => {},
