@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11232,
+  "next": 11290,
   "cards": [
     {
       "id": 1,
@@ -14706,6 +14706,38 @@
       ],
       "created": "2026-11-28T10:46:58Z",
       "updated": "2026-11-28T10:47:35Z"
+    },
+    {
+      "id": 11288,
+      "title": "m10-tablet-fx-hotspot K2 — Blend-Gruppierung: ADD-Glows in ein zusammenhängendes Depth-Band (FxSystem)",
+      "description": "Fix laut Root-Cause-Bericht (docs/lanes/m10-tablet-fx-rootcause.md): Blend-Wechsel skalieren mit Evo-Anzahl (34,6/Frame bei vollem Stapel), jede ADD↔NORMAL-Grenze kostet Flush+Upload. Fix: alle ADD-Glow-Sprites des FxSystem rendern in einem zusammenhängenden Band, NORMAL-FX unangetastet. Abnahme: Blend-Wechsel/Frame < 8 im stackA:+6-Fenster (lokal, scripts/m10-tablet-fx.mjs), draws sinkt deutlich, Optik unverändert (Screenshot-Vergleich je Evo), npx tsc + vitest grün, tests/tablet-fx-budget.test.ts pinnt die Gruppierungs-Invariante. Owner: gameplay-dev; Kontrolleure: reviewer + test-auditor. [lane #10924]",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T10:55:27Z",
+          "by": "build",
+          "text": "lane #10924, Merge 312a0abc (m10-tablet-fx-hotspot → main, rebase auf main nötig: FxSystem QUALITY-Gate + Band-Tiefe beide erhalten). Reviewer/perf-check PASS aus Lane übernommen, Kontroll-Shots 960/1280 sauber."
+        }
+      ],
+      "created": "2026-11-28T10:55:19Z",
+      "updated": "2026-11-28T10:55:27Z"
+    },
+    {
+      "id": 11289,
+      "title": "m10-tablet-fx-hotspot K3 — Beleg: GL-Zahlen vorher/nachher (Renderer-String) + Android-Proxy",
+      "description": "Vorher/Nachher-Messung lokal (scripts/m10-tablet-fx.mjs, JSON mit Renderer-String nach ~/games/.evidence/m10-tablet-fx-hotspot/), Android-Proxy-Lauf vorbereiten/ausführen. Zielkorridore: blend < 8/Frame, 0 nicht-null FB-Binds lokal. Screenshot-Vergleich je Evo als Optik-Beleg. Nach Merge: Gerätemessung durch Argus/Claude (6 Evos >= 90 FPS, Minute-25-Dichte >= 60 FPS). Owner: gameplay-dev; Kontrolleure: perf-check + reviewer. [lane #10925]",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T10:55:27Z",
+          "by": "build",
+          "text": "lane #10925, Merge 312a0abc. Offen bleibt formale Gerätemessung nach Merge (Device-JSON mit Renderer-String, rc-device.json Baseline) — siehe docs/lanes/m10-tablet-fx-hotspot.md Punkt 5."
+        }
+      ],
+      "created": "2026-11-28T10:55:19Z",
+      "updated": "2026-11-28T10:55:27Z"
     }
   ]
 }
