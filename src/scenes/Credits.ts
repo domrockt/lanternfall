@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
-import { createMenuButton, type MenuButton } from "../ui/menu";
+import { createMenuButton, MenuFocus, type MenuButton } from "../ui/menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { addVignetteBg } from "../gfx/vignette-bg";
@@ -26,6 +26,8 @@ export class Credits extends Phaser.Scene {
   private seed = 1;
   private debug = false;
   private backButton!: MenuButton;
+  /** m10-gamepad-nav-scenes-r2 K4: Kern-MenuFocus über dem einzigen Knopf. */
+  private focus!: MenuFocus;
   private pad = new InputState();
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
   private padArmed = false;
@@ -72,7 +74,9 @@ export class Credits extends Phaser.Scene {
     this.backButton = createMenuButton(
       this, cx, H - 26, 116, "ZURÜCK", () => this.back(), { depth: 3 },
     );
-    this.backButton.setFocused(true);
+    // m10-gamepad-nav-scenes-r2 K4: Fokus via Kern-API; Creditsliste ist kurz
+    // (9 Zeilen, statisch) — kein Scrollen nötig (docs/lanes).
+    this.focus = new MenuFocus([this.backButton]);
     new PixelText(this, cx, H - 9, "ESC / ENTER = ZURÜCK", C.fog, "center").setDepth(2);
 
     const kb = this.input.keyboard!;
@@ -95,7 +99,8 @@ export class Credits extends Phaser.Scene {
       if (allActionsReleased(a)) this.padArmed = true;
       return;
     }
-    if (a.confirm || a.back) this.back();
+    if (a.confirm) this.focus.confirm();
+    else if (a.back) this.back();
   }
 
   private back(): void {
