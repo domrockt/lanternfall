@@ -134,8 +134,10 @@ describe("m10-menu-contrast-fixes: Overlap-Regression (Footer ↔ Title-Hint, KA
   });
 
   it("KAEL-Zeile hält >= 4 px Luft zum oberen Knopf-Rahmen (vorher 2 px)", () => {
-    const kaelY = num(/cx, (\d+) \+ oy, `KAEL/, "src/scenes/Title.ts", "KAEL-y");
-    const buttonY = num(/cx - 104, (\d+) \+ oy, 96, "START"/, "src/scenes/Title.ts", "Knopf-y");
+    // m10-title-bestwert-spacing: die Anker liegen jetzt in titleStatsLayout()
+    // (Title.ts) — der Test liest sie von dort statt aus den PixelText-Aufrufen.
+    const kaelY = num(/const kaelY = (\d+);/, "src/scenes/Title.ts", "KAEL-y (titleStatsLayout)");
+    const buttonY = num(/const buttonsY = (\d+);/, "src/scenes/Title.ts", "Knopf-y (titleStatsLayout)");
     // Rahmen-Top = Knopf-Mitte - 12 (Höhe 22 + 1 px Outline), Text-Bottom = y + 7.
     for (const oy of [45, 135]) {
       const gap = buttonY + oy - 12 - (kaelY + oy + 7);

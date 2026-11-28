@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
-import { PixelText } from "../gfx/font";
+import { PixelText, GLYPH_H } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { readMeta, metaLine } from "../logic/meta";
 import { TITLE_FLAME_SPOTS } from "../gfx/gen-title";
@@ -78,6 +78,53 @@ export function lanternGlassHoles(bgL: TitleBgLayout):
     w: TITLE_GLASS_HOLE.w * s,
     h: TITLE_GLASS_HOLE.h * s,
   }));
+}
+
+/**
+ * m10-title-bestwert-spacing (art-director-Abnahme 2026-11-28, Posten 6):
+ * Mindest-Puffer in internen px zwischen der Bestwerte-Zeile (KAEL-Zeile,
+ * Unterkante = Zeilen-y + GLYPH_H) und dem oberen ui_frame-Rahmen der
+ * Knopfreihe (START/OPTIONEN/CREDITS, Oberkante = Knopf-y - TITLE_BUTTON_H/2).
+ * Der Abstand ist nicht mehr handvertretelt: titleStatsLayout() leitet die
+ * Zeilen-y-Werte her und der Guard-Test (tests/title-bestwert-spacing.test.ts)
+ * prueft >= TITLE_STATS_BUTTON_GAP_MIN fuer beide Abnahme-Formate.
+ */
+export const TITLE_STATS_BUTTON_GAP_MIN = 4;
+/** Hoehe der Menue-Knoepfe (createMenuButton-Default, src/ui/menu.ts). */
+export const TITLE_BUTTON_H = 22;
+
+export interface TitleStatsLayout {
+  /** y der BESTWERTE-Kopfzeile (interne px vor +oy). */
+  statsTop: number;
+  /** y der MIRA-Zeile. */
+  miraY: number;
+  /** y der KAEL-Zeile (Unterkante = kaelY + GLYPH_H). */
+  kaelY: number;
+  /** Anker-y der Knopfreihe (START/OPTIONEN/CREDITS). */
+  buttonsY: number;
+  /** Tatsaechlicher Puffer: Rahmen-Oberkante minus KAEL-Unterkante (px). */
+  statsButtonGap: number;
+}
+
+/**
+ * Bestwerte-Block + Knopfreihe des Title-Screens: reine Geometrie (Muster
+ * titleBgLayout). Die sichtbaren Anker sind unveraendert zu main
+ * (167/179/189/214 + oy) — der Fix regelt nur den Abstand zw. KAEL-Zeile und
+ * Knopfreihe ueber Konstanten und macht ihn pruefbar. oy-unabhaengig: alle
+ * Werte teilen denselben +oy-Offset, der Puffer ist also in jedem Viewport
+ * (640x360 wie 780x360@3) identisch.
+ */
+export function titleStatsLayout(): TitleStatsLayout {
+  const statsTop = 167;
+  const miraY = 179;
+  const kaelY = 189;
+  const buttonsY = 214;
+  const kaelBottom = kaelY + GLYPH_H;
+  const frameTop = buttonsY - TITLE_BUTTON_H / 2;
+  return {
+    statsTop, miraY, kaelY, buttonsY,
+    statsButtonGap: frameTop - kaelBottom,
+  };
 }
 
 export class Title extends Phaser.Scene {
@@ -230,22 +277,22 @@ export class Title extends Phaser.Scene {
 
     // Meta-Bestwerte pro Charakter (localStorage, ohne Login/Shop).
     const meta = readMeta();
-    // m10-menu-contrast-fixes K5: Block 5 px nach oben — vorher lag nur 2 px
-    // Luft zwischen KAEL-Zeile (y1 = y + 7) und dem oberen Rahmen der
-    // Knopfreihe (Rahmen-Top = Knopf-y - 12); jetzt 7 px
-    // (art-director-Hebel (6): >= 4-6 interne px Freiraum).
-    new PixelText(this, cx, 167 + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
-    new PixelText(this, cx, 179 + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
-    new PixelText(this, cx, 189 + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
+    // m10-title-bestwert-spacing K2: Abstand Bestwerte-Zeile <-> Knopfreihe
+    // ueber titleStatsLayout() geregelt (art-director Posten 6: >= 4 interne
+    // px Puffer, vorher handgesetzte y-Werte). Anker unveraendert.
+    const stats = titleStatsLayout();
+    new PixelText(this, cx, stats.statsTop + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
+    new PixelText(this, cx, stats.miraY + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
+    new PixelText(this, cx, stats.kaelY + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
 
     this.buttons.push(createMenuButton(
-      this, cx - 104, 214 + oy, 96, "START", () => this.startSelect(), { depth: 6 },
+      this, cx - 104, stats.buttonsY + oy, 96, "START", () => this.startSelect(), { depth: 6 },
     ));
     this.buttons.push(createMenuButton(
-      this, cx, 214 + oy, 108, "OPTIONEN", () => this.openOptions(), { depth: 6 },
+      this, cx, stats.buttonsY + oy, 108, "OPTIONEN", () => this.openOptions(), { depth: 6 },
     ));
     this.buttons.push(createMenuButton(
-      this, cx + 106, 214 + oy, 92, "CREDITS", () => this.openCredits(), { depth: 6 },
+      this, cx + 106, stats.buttonsY + oy, 92, "CREDITS", () => this.openCredits(), { depth: 6 },
     ));
 
     // M8: Vollbild-Knopf oben rechts (Desktop + Android-WebView).
