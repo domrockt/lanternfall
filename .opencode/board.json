@@ -9854,37 +9854,61 @@
       "id": 7778,
       "title": "m10-game-md-sync: K1 Prüfmatrix: harte Spec-Aussagen extrahieren",
       "description": "Aus GAME.md 52 harte Spec-Aussagen extrahieren (Prüfmatrix). Akzeptanz: Matrix dokumentiert, Aussagen nummeriert.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:17:12Z",
+          "by": "build",
+          "text": "review → done: lane #7510-#7513, Merge ac8bb40 — merge-base rc=0, Build + 1284 Tests gruen, .lane-done nicht nach main"
+        }
+      ],
       "created": "2026-11-28T03:16:39Z",
-      "updated": "2026-11-28T03:16:39Z"
+      "updated": "2026-11-28T03:17:12Z"
     },
     {
       "id": 7779,
       "title": "m10-game-md-sync: K2 Ist-Abgleich je Aussage",
       "description": "Jede der 52 Aussagen gegen den Ist-Stand abgleichen. Akzeptanz: 52/52 abgeglichen (43 OK, 6 DIV, 3 TEIL).",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:17:12Z",
+          "by": "build",
+          "text": "review → done: lane #7510-#7513, Merge ac8bb40 — merge-base rc=0, Build + 1284 Tests gruen, .lane-done nicht nach main"
+        }
+      ],
       "created": "2026-11-28T03:16:39Z",
-      "updated": "2026-11-28T03:16:39Z"
+      "updated": "2026-11-28T03:17:12Z"
     },
     {
       "id": 7780,
       "title": "m10-game-md-sync: K3 Divergenzliste docs/lanes/m10-game-md-sync.md",
       "description": "Divergenzen mit Severity + Empfehlung dokumentieren. Akzeptanz: docs/lanes/m10-game-md-sync.md mit 11 Befunden, Zusammenfassung.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:17:12Z",
+          "by": "build",
+          "text": "review → done: lane #7510-#7513, Merge ac8bb40 — merge-base rc=0, Build + 1284 Tests gruen, .lane-done nicht nach main"
+        }
+      ],
       "created": "2026-11-28T03:16:39Z",
-      "updated": "2026-11-28T03:16:39Z"
+      "updated": "2026-11-28T03:17:12Z"
     },
     {
       "id": 7781,
       "title": "m10-game-md-sync: K4 .lane-done – Lane abgeschlossen",
       "description": "Lane-Abschluss markieren. Akzeptanz: 52/52 abgeglichen, 6 Divergenzen dokumentiert, 0 Code-Aenderungen; .lane-done bleibt im Lane-Worktree (nicht nach main).",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:17:12Z",
+          "by": "build",
+          "text": "review → done: lane #7510-#7513, Merge ac8bb40 — merge-base rc=0, Build + 1284 Tests gruen, .lane-done nicht nach main"
+        }
+      ],
       "created": "2026-11-28T03:16:39Z",
-      "updated": "2026-11-28T03:16:39Z"
+      "updated": "2026-11-28T03:17:12Z"
     }
   ]
 }
