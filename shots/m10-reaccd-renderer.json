@@ -1,0 +1,12 @@
+{
+  "script": "~/tmp/m10-verify-reaccd/renderer-probe.mjs (Lane m10-verify-reacceptance-d K1)",
+  "lane": "m10-verify-reacceptance-d",
+  "gitSha": "fe3ee61",
+  "probedAt": "2026-11-28T03:43:29.499Z",
+  "source": "WEBGL_debug_renderer_info.UNMASKED_RENDERER_WEBGL",
+  "webgl2": true,
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "vendor": "Google Inc. (Intel)",
+  "valid": true,
+  "rule": "SwiftShader/llvmpipe/Software = ungueltig (Dom 19:20Z/21:15Z)"
+}
