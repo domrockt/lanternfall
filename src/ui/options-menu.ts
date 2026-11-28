@@ -16,6 +16,22 @@ interface RowView {
 }
 
 /**
+ * M10-options-focus: Zeilen-Hover gilt nur, wenn der Zeiger sich seit dem
+ * Öffnen bewegt hat. Ohne diesen Guard öffnet das Overlay unter einem
+ * stillstehenden Mauszeiger (OPTIONEN-Knopf sitzt über Zeile 6 ZURÜCK) mit
+ * fokussierter ZURÜCK-Zeile statt Zeile 0 — Uneinigkeit zwischen Tastatur-
+ * und Maus-Fokus-Start (Befund K1, shots/m10-options-focus-before.json).
+ * Rein, testbar.
+ */
+export function hoverRowAllowed(
+  pointer: { x: number; y: number },
+  openPointer: { x: number; y: number } | null,
+): boolean {
+  if (!openPointer) return true;
+  return pointer.x !== openPointer.x || pointer.y !== openPointer.y;
+}
+
+/**
  * Optionsmenü für Titel und Pause: 5 Werte + ZURÜCK, Tastatur und Maus/Touch.
  * Werte werden sofort persistiert (localStorage) und angewendet.
  */
@@ -26,6 +42,8 @@ export class OptionsMenu {
   private readonly onClose: () => void;
   private readonly interactives: Phaser.GameObjects.GameObject[] = [];
   private selected = 0;
+  /** Zeigerposition beim Öffnen (Hover-Guard, hoverRowAllowed). */
+  private openPointer: { x: number; y: number } | null = null;
 
   constructor(scene: Phaser.Scene, depth: number, onClose: () => void) {
     this.scene = scene;
@@ -69,7 +87,11 @@ export class OptionsMenu {
       const value = new PixelText(scene, valueX, y, "", C.candleWhite, "right");
       this.container.add([rowZone, outline, label, value]);
       rowZone.setInteractive({ useHandCursor: true });
-      rowZone.on("pointerover", () => { this.selected = i; this.refresh(); });
+      rowZone.on("pointerover", (pointer: Phaser.Input.Pointer) => {
+        if (!hoverRowAllowed(pointer, this.openPointer)) return;
+        this.selected = i;
+        this.refresh();
+      });
       rowZone.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
         this.selected = i;
         this.refresh();
@@ -109,11 +131,16 @@ export class OptionsMenu {
     this.refresh();
     this.setInputEnabled(true);
     this.container.setVisible(true);
+    // M10-options-focus: Zeigerposition beim Öffnen merken — stillstehender
+    // Zeiger darf beim Erscheinen des Overlays keine Zeile anwählen.
+    const p = this.scene.input.activePointer;
+    this.openPointer = { x: p.x, y: p.y };
   }
 
   close(): void {
     this.container.setVisible(false);
     this.setInputEnabled(false);
+    this.openPointer = null;
     this.onClose();
   }
 
