@@ -12310,9 +12310,20 @@
       "id": 9857,
       "title": "m10-title-flame-glow-r2 K3: Regressionstest + Palette-Guard",
       "description": "tests/title-flame-glow.test.ts: Grid-Groesse, Palette-compliance, Glut-Flaechenanteil >= Schwelle; Palette-Guard gruen. Abnahme: npx vitest run tests/title-flame-glow.test.ts gruen + npm test gruen.",
-      "column": "todo",
+      "column": "review",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T07:49:05Z",
+          "by": "coder",
+          "text": "todo → doing: Regressionstest title-flame-glow schreiben"
+        },
+        {
+          "at": "2026-11-28T07:50:33Z",
+          "by": "coder",
+          "text": "doing → review: tests/title-flame-glow.test.ts 14/14 gruen (Grid, Palette, Glut >= 0.3, Kern flaechig); palette-compliance gruen; tsc gruen. Commit #9857"
+        }
+      ],
       "created": "2026-11-28T07:38:48Z",
       "updated": "2026-11-28T07:38:48Z"
     },

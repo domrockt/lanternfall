@@ -64,3 +64,18 @@ Dither nur an Übergangskanten (1–2 px Stufe 21 zwischen 22/13 und 20).
 Belege: `~/games/.evidence/m10-title-flame-glow-r2/m10-title-flame-frames-f{0,1,2}.png`
 (8x nearest). Tests: title-flame 14/14, title-bg-crisp + palette-compliance +
 menu-art-crisp + chest-icon-crisp zusammen 84/84 grün.
+
+## Karte K3 — Regressionstest + Palette-Guard (2026-11-28)
+
+`tests/title-flame-glow.test.ts` (neu, 14 Tests):
+- **Grid-Größe:** alle 3 Frames 8x11, je genau 1 Frame; Glas (Reihen 5..10) voll
+  opak, Funkenbereich (0..4) in F0 transparent.
+- **Palette-compliance:** Frames nur 13/20/21/22 + binäres Alpha; Basis-Glas-Fenster
+  je Spot exakt dieselben 4 Indizes.
+- **Glut-Flächenanteil:** Anteil (13+22) im Glas >= **0.3** (Schwelle = K1-Zielkorridor,
+  vorher 0.125) für alle 3 Frames UND im gebackenen Basis-Glas an allen 4 Spots;
+  Kern flächig hell (>= 6 Texel Palette 13 je Glas) statt Einzel-Pixel-Glow.
+- F0 bleibt Zellkopie der Basis (AE=0-Vertrag aus tests/title-flame.test.ts).
+
+Palette-Guard: `tests/palette-compliance.test.ts` (global, inkl. GEN_TITLE) grün.
+Ergebnis: 14/14 neu + 84/84 Nachbarschaft + `npx tsc --noEmit` grün.
