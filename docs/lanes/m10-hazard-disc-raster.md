@@ -45,4 +45,35 @@ eine Pixelgröße (Draw-Scale 1 — seit B3-Fix erfüllt).
 
 
 ## K4 — Abnahme (#10071)
-t.b.d.
+- Nachher-Shots (gleiche Szene/Parameter wie Vorher, Fix aktiv): `~/games/.evidence/m10-hazard-disc-raster/after-{960,1280}.png`
+  + Renderer-JSON (`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` — iGPU, nicht
+  SwiftShader; 0 JS-Fehler). Abnahme-Bilder in git: `shots/abnahme/m10-hazard-raster-after-{960,1280}.png`.
+- Befund am Nachher-Bild: kein Schachbrett/Raster mehr in der Füllung — Boss-Disc (r=92) flächig
+  halbtransparent, Standard-Disc (r=26) ebenfalls; Randband/Kontur klar, Gefahr weiter sofort
+  erkennbar. Gegenüber Vorher deutlich ruhiger.
+- art-director-Sichtprüfung (EINMAL, Maßstab kommerziell auslieferbar): **PASS**, Note 4,5
+  (after-960 und after-1280 "auslieferungsreif"). Belege: 4x nearest-Zooms + Vorher/Nachher-Crops
+  in `~/tmp/m10-hazard-disc-raster/`. Kriterien je erfüllt:
+  1. Kein regelmäßiges Schachbrett-/Raster-Muster in der Füllung (sichtbare Struktur im Nachher
+     ist die durchscheinende Bodentextur, unregelmäßig, gleiche Pixelgröße wie Sprites).
+  2. Dither nur am Rand (1–2 px Übergang), keine Dither-Flächen.
+  3. Gefahr sofort erkennbar: kräftige ~2-px-Kontur, klare Grenze, Terrain/Gegner unter der
+     Füllung lesbar.
+  4. Eine Pixelgröße über Effekt und Sprites, keine Mixel (auch der 1280er-Shot).
+  Optionale Nachbesserung (kein Blocker): auf sehr dunklem Untergrund (Fluss/Schatten) trägt
+  die Kontur die Lesbarkeit allein; falls auffällig, Füll-Alpha minimal anheben — bewusst NICHT
+  nachjustiert (Drift-Regel: Sichtprüfung einmal entschieden).
+
+## Ergebnis
+- Regel (Dom/Claude 08:15Z) umgesetzt: Füllung flächig halbtransparent (Bake-Alpha 0.40,
+  Stapel 0.28), Dither nur 1-px-Band am Rand, Kontur 2 px, Draw-Scale 1.
+- Abnahme 1: kein Raster in der Füllung (Vorher/Nachher 960+1280, s. o.), Dither ≤ 1–2 px Rand. ✓
+- Abnahme 2: art-director PASS (4,5). ✓
+- Abnahme 3: tsc rc=0, tests/hazard-disc.test.ts 17/17 (inkl. Raster-Guard), volle Suite
+  158 Dateien / 1699 Tests, npm run build rc=0. ✓
+- Abnahme 4: diese Lane-Doku. ✓
+- Commits: ab471c77 (#10068 K1), d8f062aa (#10069 K2), 19457374 (#10070 K3), <K4-SHA> (#10071).
+- Belege außerhalb git: `~/games/.evidence/m10-hazard-disc-raster/` (before/after PNG + JSON mit
+  WebGL-Renderer-String, Mesa Intel RPL-S, 0 JS-Fehler).
+- Offene Punkte: keine.
+
