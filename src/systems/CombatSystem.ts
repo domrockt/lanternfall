@@ -28,6 +28,23 @@ import type { OwnedWeapon } from "./LevelUpSystem";
 export type HitCallback = (enemy: EnemyRuntime, damage: number, weaponId: string, killed: boolean) => void;
 
 /**
+ * m10-blend-band-followup (K2): Tiefe des Laterne-Korpus (fireLantern).
+ * Die unevolvierte Laterne zieht ihren Korpus (orb_lantern) in ADD-Blend —
+ * vorher auf DEPTH.fxLow (7) MITTEN zwischen den NORMAL-FX-Formen: jede
+ * sichtbare Laterne kostete 2 zusaetzliche Batch-Flushes (Blend-Grenze
+ * rein/raus, Muster docs/lanes/m10-tablet-fx-rootcause.md). Jetzt wandert der
+ * ADD-Korpus ins zusammenhaengende Glow-Band FX_GLOW_DEPTH (7.5), in dem auch
+ * sein Halo lief. Evolviert (soul_beacon) bleibt der Korpus NORMAL auf fxLow
+ * — kein ADD, keine Grenze. Zeichenreihenfolge aus GAME.md unveraendert:
+ * Band 7.5 < Gegner 9 < enemyShot 14 (Glows bleiben unter den Gegnern).
+ * Pure Funktion (unit-getestet in tests/blend-band-followup.test.ts), Muster
+ * glowDepthFor in FxSystem.ts.
+ */
+export function lanternOrbDepth(evolved: boolean): number {
+  return evolved ? DEPTH.fxLow : FX_GLOW_DEPTH;
+}
+
+/**
  * M6-Balance: Ein aktiver Boss im Umkreis von 320 px ist das Ziel des ersten
  * Projektils je Salve. Die übrigen Projektile bleiben auf dem nächsten Trash,
  * damit die Adds nicht außer Kontrolle geraten. Ohne diesen Boss-Fokus schwankt
@@ -961,7 +978,7 @@ export class CombatSystem {
       // (48x48) mit Scale 0.9. Seele in Normal-Blend: das Grue-blau bleibt
       // eigenstaendig, kein Gold-Wash.
       const sprite = makeImage(this.scene, ctx.playerX, ctx.playerY, evolved ? SOUL_FX.orbFrames[0] : "orb_lantern")
-        .setDepth(DEPTH.fxLow)
+        .setDepth(lanternOrbDepth(evolved))
         .setScale(evolved ? 1 : 1)
         .setBlendMode(evolved ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
       const halo = evolved

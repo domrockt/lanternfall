@@ -18784,10 +18784,16 @@
       "id": 13344,
       "title": "m10-blend-band-followup K1: Vorher-Messung Blend-Wechsel/Frame",
       "description": "Eigener Probe scripts/m10-blend-band.mjs (Muster tablet-fx-rc): Blend-Wechsel/Frame in 2 Profilen — Evo-Stack (6 Evolutionen) und Minute-25-Dichte (300 Gegner), iGPU, Renderer-String Pflicht. Belege ~/games/.evidence/m10-blend-band-followup/before-*.json. Lange Läufe unter flock /home/ai/games/.lf-perf.lock. Abnahme: Vorher-Werte im JSON mit Renderer-String (iGPU, kein SwiftShader).",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T16:51:08Z",
+          "by": "build",
+          "text": "doing → review: K1 done, Commit ef3765fc (#13344): Probe scripts/m10-blend-band.mjs, Vorher blend 6.2/Frame worst (minute25:stack6+300) + 6.2 (stack:+6), Renderer 'Mesa Intel(R) Graphics (RPL-S)' (iGPU, kein SwiftShader), 0 JS-Fehler. Belege: ~/games/.evidence/m10-blend-band-followup/before.json, before-islands.json. Insel-Attribution (A/B runtime-hide, temp ~/tmp/m10-blend-band-followup/ab-islands.mjs): hide ADD-Band/7.5 oder Lichtkreis/20 aendert NICHTS (6.2 bleibt); hide blend-1-Graphics → 4.0; hide Ground-Chunks(d-100) → 4.0. Verbleibende Wechsel stammen aus Graphics/SKIP_CHECK + GroundRenderer, nicht aus sichtbaren ADD-Inseln."
+        }
+      ],
       "created": "2026-11-28T16:41:27Z",
-      "updated": "2026-11-28T16:41:27Z"
+      "updated": "2026-11-28T16:51:08Z"
     },
     {
       "id": 13345,
