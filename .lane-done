@@ -1,0 +1,31 @@
+# Lane m10-ember-halo-resight — abgeschlossen (2026-11-28)
+
+Ziel: Letzter offener Restpunkt des Dom-Sichtungs-Pakets „Halo-Überstrahlung
+Ember“ verbindlich nachsehen und ggf. fixen (docs/qa/dom-sight-package-2026-11-28.md).
+
+Ergebnis: **Nachsicht PASS — Lane ohne Fix beendet.**
+
+- Messlauf (scripts/m10-ember-halo.mjs, eingefroren, seed 77, iGPU Mesa RPL-S,
+  0 JS-Fehler): projectile_ember / fx_ember_muzzle / fx_ember_trail je 0 %
+  Near-White-A7 und minRgb200; Glow-Kleck additiv (real @0,55 + worst @0,95
+  über nightDeep, Footprint 37 px) 0 %; 0 off-palette; binäres Alpha.
+- Chaos (646–687 Gegner, 4 Ember-Projektile, eingefroren): worst Ember-Fenster
+  3,36 % A7 / 3,68 % min200 (Lauf B) bzw. 0,48 % (Lauf A) — beide ≤ 4,16 %;
+  Anteil stammt aus dem Fenster-Grund (Welt-Props/Heldelichtnähe), nicht vom
+  Ember. Gesamtframe 0,14 %.
+- art-director: **PASS 4/5** — Ember im Chaos als eigener Kern mit Tintenkontur
+  lesbar, Kern-Identität (Orange-Rampe + flameBright-Spitze) erhalten, keine
+  Überstrahlung, eine Pixelgröße.
+- K3/K4 entfallen: gen-fx.ts unberührt, kein Regressionstest nötig. Restpunkt im
+  dom-sight-Kontext als Nachsicht-geschlossen vermerkt (Doku selbst nicht
+  umgeschrieben; ACCEPTANCE.md unberührt — fremd-claimed).
+
+Commits: b7290bb2 (#12620 WIP, Messlauf), 379f1afe (#12621 K2 Entscheidung).
+Belege: ~/games/.evidence/m10-ember-halo-resight/ (JSON + PNGs, korrigierte
+Projekt-Montage). Doku: docs/lanes/m10-ember-halo-resight.md.
+
+Hinweise für künftige Lanes (kein Befund dieser Lane): fx_ember_muzzle hand-
+werklich schwach (flacher Kreis, messbar aber unkritisch, Textur in
+src/gfx/textures.ts — fremd-claimed); Hero-Lantern-Licht (light_radius ADD,
+Run.ts:432) ist die dominante Near-White-Quelle am Spieler (6,8 % im 41x41-
+Fenster) — nächstes Überstrahlungspotenzial, falls Dom dort etwas sieht.

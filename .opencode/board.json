@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12604,
+  "next": 12624,
   "cards": [
     {
       "id": 1,
@@ -17544,6 +17544,76 @@
       ],
       "created": "2026-11-28T14:10:48Z",
       "updated": "2026-11-28T14:10:52Z"
+    },
+    {
+      "id": 12620,
+      "title": "m10-ember-halo-resight K1: Nachsicht Ember-Halo auf main",
+      "description": "Frische Ember-Shots auf aktuellem main (500-Gegner-Burst + Einzelprojektil, Muster m10-ember-readability/final-vfx-readability), Messung Near-White-A7 + nearWhiteMinRgb200 von Projektil UND Glow-Klecks. Skript scripts/m10-ember-halo.mjs (max 2 Edit-Iterationen). Belege nach ~/games/.evidence/m10-ember-halo-resight/. Abnahme: Messwerte liegen vor, Baseline dokumentiert in docs/lanes/m10-ember-halo-resight.md.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:14:57Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-ember-halo-resight: K1 Nachsicht gestartet (Baseline-Messung auf main)."
+        },
+        {
+          "at": "2026-11-28T14:26:13Z",
+          "by": "build",
+          "text": "Supervisor-Ack: Skript eingefroren (5 Edits, alles Mess-Infrastruktur), verbindlicher Ein-Messlauf PASS: Textur+Glow-Kleck 0 % A7/min200, Chaos (687 Gegner, 4 Projektile) worst Ember-Fenster 0,48 %, Frame 0,14 %, 0 off-palette, binäres Alpha, iGPU. WIP-Commit b7290bb2. art-director-Urteil läuft als Subagent, K2 wartet darauf. Hinweis: Karte #12013 (m10-spawn-view-anchor) ist fremd — nicht übernommen."
+        },
+        {
+          "at": "2026-11-28T14:29:12Z",
+          "by": "build",
+          "text": "doing → done: K1 Nachsicht: Messlauf PASS, Commit b7290bb2, art-director PASS 4/5."
+        }
+      ],
+      "created": "2026-11-28T14:14:55Z",
+      "updated": "2026-11-28T14:29:12Z"
+    },
+    {
+      "id": 12621,
+      "title": "m10-ember-halo-resight K2: Entscheidung Nachsicht",
+      "description": "art-director ≥ 4/5 UND Near-White ≤ 4,16 % (Textur + Chaos) → Lane beenden (.lane-done, Doku-Abschluss, Restpunkt im dom-sight-Kontext als geschlossen vermerken, ACCEPTANCE.md nicht anfassen). Sonst K3/K4.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:29:12Z",
+          "by": "build",
+          "text": "todo → done: K2 Entscheidung: beide Kriterien erfuellt -> Lane beendet, Commit 379f1afe."
+        }
+      ],
+      "created": "2026-11-28T14:14:55Z",
+      "updated": "2026-11-28T14:29:12Z"
+    },
+    {
+      "id": 12622,
+      "title": "m10-ember-halo-resight K3: Halo-Fix gen-fx.ts",
+      "description": "src/gfx/gen-fx.ts Ember-Glow-/Trail-Keys: additiven Glow-Dämpfer/Alpha oder Glow-Radius am ember-Sprite-Frame zurücknehmen bis Überstrahlung weg, ohne Kern-Identität (dunkle Kontur, flameBright-Kern) zu verlieren. Werte-Tuning per festem Suchlauf/Commit je grünem Zwischenstand. Paar-Distanz-Guards grün.",
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T14:29:12Z",
+          "by": "build",
+          "text": "todo → backlog: entfaellt: K2-PASS, kein Halo-Fix noetig (gen-fx.ts unberuehrt)."
+        }
+      ],
+      "created": "2026-11-28T14:14:55Z",
+      "updated": "2026-11-28T14:29:12Z"
+    },
+    {
+      "id": 12623,
+      "title": "m10-ember-halo-resight K4: Nachher + Regressionstest",
+      "description": "Remessung wie K1 + tests/ember-halo.test.ts (Near-White-Grenzen + Kernpixel-Vertrag, deterministisch). art-director-Endurteil ≥ 4/5. Suite grün, ein Commit.",
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T14:29:12Z",
+          "by": "build",
+          "text": "todo → backlog: entfaellt: kein Fix -> kein Regressionstest/Remessung noetig."
+        }
+      ],
+      "created": "2026-11-28T14:14:55Z",
+      "updated": "2026-11-28T14:29:12Z"
     }
   ]
 }
