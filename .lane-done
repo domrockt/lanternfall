@@ -1,0 +1,29 @@
+Lane m10-heap-gate-retry — fertig (2026-11-28, Versuch 2).
+
+Ziel: Tor-Skript-Instabilität im Heap-Gate fixen (Nachabnahme F: mitten im
+30-min-Lauf „Browser-Target closed" → UNMESSBAR).
+
+- K1 (#13424, done): Beide historischen Crashes sind die Klasse „target-closed"
+  (page.evaluate/waitForTimeout wirft, kein crash-Event); Retry muss die
+  GESAMTE Messung neu ansetzen. Belege in docs/lanes/m10-heap-gate-retry.md.
+- K2 (#13425, done): scripts/m10-heap-budget.mjs — Browser-Neustart + komplette
+  Wiederholung der Messung, max. 2 Retries (3 Versuche); bei erneutem Scheitern
+  EINDEUTIG verdict=UNMESSBAR mit gate.cause/Fehlerklasse. Gate-Definition
+  (m10-heap-budget-gate.mjs) unangetastet.
+- K3 (#13426, done): tests/heap-budget-retry.test.ts, 10/10 grün (Fehlerklassen,
+  Retry-Grenze, UNMESSBAR-Pfad); Gate-Mathematik nicht dupliziert.
+- K4 (#13427, done): 2/2 verbindliche 30-min-Tor-Läufe unter
+  flock /home/ai/games/.lf-perf.lock: run1 gate=PASS endMB 48,6 vs 67,9 MB
+  (−28,4 %), run2 gate=PASS endMB 48,6 vs 67,8 MB (−28,3 %); Tor ≤ +15 %,
+  beide victory=true, attempts=[] (kein Retry nötig), beide iGPU
+  (ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2), kein
+  SwiftShader). Belege: ~/games/.evidence/m10-heap-gate-retry/
+  m10-heap-gate-retry-run{1,2}.json ( shots/ versionsignore: Kopien ignoriert),
+  Log ~/tmp/m10-heap-gate-retry/k4-gate-runs.log.
+- Reviewer PASS (K4-Abschluss-Commit 205a042c, Zahlenabgleich Doku ↔ Belege;
+  2 Nits nachgetragen: run2-FPS median 60,5/3668 Samples, Fehlerzahl 132–155).
+- tsc rc=0, vitest tests/heap-budget-retry.test.ts 10/10 grün.
+- Beobachtung (Bedarf gemeldet, nicht diese Lane): ~132–155 Console-Errors
+  „Texture key already in use: chunk_*" je Lauf — Terrain-/Textur-Lane.
+- Verlauf: Vorgänger-Run wurde nach Lauf 1 gekillt (Lauf 2 verlorengangen);
+  Versuch 2 hat nur Lauf 2 + Abschluss gefahren. ACCEPTANCE.md unangetastet.

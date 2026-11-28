@@ -152,7 +152,7 @@ rc=0):** `gate=PASS` — endMB 48,6 MB vs Minute1 67,8 MB = **−28,3 %** (Tor
 ≤ +15 %), soft robust PASS (maxWindowFloor 78,7 MB = +8,4 % vs Floor Fenster 0
 72,6 MB), Rohpeak-Beobachtung maxWindowPeak 93,9 MB = +38,5 %. victory=true,
 simSeconds 1830,7, truncated=false, fatal=null, attempts=[] (kein Retry nötig),
-Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` =
+FPS median 60,5 (3668 Samples), Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` =
 **iGPU** (kein SwiftShader). Datei: `shots/m10-heap-gate-retry-run2.json`,
 Kopie in `~/games/.evidence/m10-heap-gate-retry/`. Log:
 `~/tmp/m10-heap-gate-retry/k4-gate-runs.log`.
@@ -167,7 +167,8 @@ Kopie in `~/games/.evidence/m10-heap-gate-retry/`. Log:
   das Skript schreibt bei totalem Scheitern aller Versuche EINDEUTIG
   `verdict=UNMESSBAR` mit `gate.cause`/Fehlerklasse statt Halbsatz im Log
   (Unit-belegt in tests/heap-budget-retry.test.ts, 10/10 grün).
-- **Beobachtung, nicht Teil dieser Lane (Bedarf bereits gemeldet):** ~132
-  Console-Errors `Texture key already in use: chunk_*` je Lauf — Terrain-/
+- **Beobachtung, nicht Teil dieser Lane (Bedarf bereits gemeldet):** ~132–155
+  Console-Errors `Texture key already in use: chunk_*` je Lauf (run1: 132,
+  run2: 155) — Terrain-/
   Textur-Lane, hier nur notiert; beeinflusst das Heap-Tor nicht (beide Läufe
   PASS bei identischem Fehlerbild).
