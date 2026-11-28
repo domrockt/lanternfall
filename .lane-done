@@ -1,0 +1,36 @@
+Lane m10-title-flame-crisp — fertig (4/4 Karten, alle committet)
+
+Ziel: Titel-Screen belebt (Dom: "schöne Pixelgrafik") — sparsame, palettentreue
+Laternen-Flammen-Animation über den Source-Generator, Layout/Text unangetastet.
+
+Commits (Branch m10-title-flame-crisp):
+- 143de12 K1: Before-Shots 640x360/780x360/1920x1080 + Befund (Glas statisch)
+- 8eb5d63  K2: gen_title.py → title_flame_f0/f1/f2 (8x11 Sparse-Overlay, binäres
+           Alpha, Palette {13,20,21,22}) + TITLE_FLAME_SPOTS; title_background
+           byte-identisch; Keyliste-Test in menu-art-crisp erweitert (begründet)
+- 90e0a12  K3: Title.ts — 4 Overlay-Images, 500-ms-Zyklus f0→f1→f0→f2 (≈2 fps),
+           Depth 2 unter Dim-Overlay, Scale = bgL.scale (ganzzahlig)
+- 52402d7  K4: tests/title-flame.test.ts (14/14), After-Shots + GIF + Zoom/Strip,
+           art-director PASS, Phasenversatz je Laterne, .gitignore !shots/m10-*.gif
+
+Messwerte / Abnahme:
+- art-director: PASS — Noten 4 (Belebung) / 5 (Palette) / 4 (Dezenz) / 5 (Skalierung)
+  / 4 (Gesamt); muss neu: —; optionaler Hinweis Phasenversatz umgesetzt.
+- tests/title-flame.test.ts 14/14 grün; npm test 1375/1375 grün (128 Files);
+  npx tsc --noEmit grün; npm run build grün.
+- 0 Off-Palette-Pixel, 0 neue fraktionale Skalierungen, AE = 4 × (Glas 8x6 +
+  ≤ 2 Funkenpx); title_background unverändert (F0 = Zellkopie der Basis).
+- Animationsnachweis: GIF 10 Frames @ 2 fps, signalstats YDIF 0,05–0,07;
+  shots/m10-title-flame-after-anim-strip.png (4 Frames, 6x nearest).
+- verify:menus 14/15 — der eine FAIL (Skalierung 2X/Fit-View) ist Vorher-Befund
+  (auf Basis-Commit ohne Lane-Änderungen reproduziert), kein Layout-Umbau.
+- Burst/FPS unberührt: nur Titel-Szene, 4 statische Images, Texturenwechsel 2x/s.
+
+Offene Punkte (backlog-Kandidaten, nicht im Briefing):
+- Laternen 2–4 liegen hinter Menü-Knöpfen (Vorher-Zustand, Layout-Constraint);
+  nur Funken sichtbar. Flammen sichtbarer machen = Layout-Eingriff.
+- Bei 640x360 unter dem 0.62-Dim ist die Kern-Bewegung dezent (bewusst: "sparsam").
+
+Begründete Minimaleingriffe in fremde Dateien:
+- tests/menu-art-crisp.test.ts: GEN_TITLE-Keyliste um 3 Flammen-Frames erweitert.
+- .gitignore: !shots/m10-*.gif (Beleg-GIF-Pflicht, Muster !shots/m5-*.gif).
