@@ -1,0 +1,24 @@
+# Lane m10-renderer-guard-k4 — Restauftrag m10-renderer-guard K4 (Probe-Lauf + Beleg)
+
+Abgeschlossen 2026-11-28 ~17:35Z. Kein Code-Change: K1–K3 der Ursprungs-Lane
+m10-renderer-guard (Helper lf-renderer.mjs, Einbau in perf.mjs /
+m10-v10-device-10min.mjs, Guard-Test 12/12) waren bereits in main
+(9bcc1e41, 17:12Z); es fehlte nur der einmalige Probe-Beleg (K4 war wegen
+durchgehend fremdbelegter .lf-perf.lock blocked).
+
+Erledigt:
+- Probe-Lauf `node scripts/perf.mjs --viewport 780x360 --dpr 3 --out
+  shots/m10-renderer-guard-k4-perf.json` unter `flock /home/ai/games/.lf-perf.lock`
+  (flock -w 900 + timeout 5400, kein unlimitiertes Blockieren). Lock frei nach
+  kurzem Warten, Lauf Ende 17:32Z, Exit 0.
+- Beleg: /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json
+  (Kopie; shots/*.json ist gitignored und gehoert nicht in den Commit).
+- Lane-Doku docs/lanes/m10-renderer-guard.md K4-Abschnitt: blocked -> erledigt.
+
+Messwerte (Beleg):
+- renderer: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) — iGPU, kein SwiftShader
+- rendererValid: true, invalid: false, jsErrors: [], passed: true
+- burst: fps 59 (invalid:false, passed:true)
+- minute25: fps 60 / gemessen 60.6 (invalid:false, passed:true)
+
+Board: #13599 (K1 Probe-Lauf), #13600 (K2 Beleg + Doku), #13601 (K3 .lane-done) — alle done.

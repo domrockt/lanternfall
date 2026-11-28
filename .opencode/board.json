@@ -19163,10 +19163,11 @@
    "id": 13601,
    "title": "m10-renderer-guard-k4 K3: .lane-done committen",
    "description": "Lane-Abschluss: .lane-done im Worktree-Wurzelverzeichnis anlegen (Zusammenfassung + Messwerte) und committen; Board-Karten auf done.",
-   "column": "doing",
+   "column": "done",
    "createdAt": "2026-11-28T17:29Z",
    "notes": [
-    "doing: .lane-done"
+    "doing: .lane-done",
+    "done: .lane-done committed; Lane abgeschlossen."
    ]
   }
  ]
