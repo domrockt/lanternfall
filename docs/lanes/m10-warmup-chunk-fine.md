@@ -92,4 +92,29 @@ Splatten; das gehört in eine eigene Karte.
 
 ## K4 — Guard-Test + Abschluss (#12207)
 
-(offen)
+`tests/warmup-chunks.test.ts` (7 Tests, grün) friert ein:
+
+- **Chunk-Aufteilung:** `derived-atlas` existiert nicht mehr; die 6 Familien-
+  Chunks liegen direkt nach `icons` in fester Sichtbarkeits-Reihenfolge;
+  `static-atlas` ist der letzte Textur-Chunk vor `runtime-atlas` (Atlas-Vertrag).
+- **Exporte:** die 4 ehemals privaten Creator sind Funktionen aus
+  `textures.ts`, `createAllTextures` unverändert vorhanden.
+- **Idempotenz:** doppelte Ausführung aller Familien-Chunks (gemeinsam und je
+  einzeln) erzeugt keine Duplikat-Texturen — addCanvas genau 1× je Key, Key-Satz
+  identisch (15 Keys als Kontrakt: light_radius, vignette, shadow, 3 Ringe,
+  elite_aura, 5 Gegner-Projektile, 3 Telegraphen).
+
+`npm run build` + `npm test` grün (2314 + 7 Tests). Belege:
+`~/games/.evidence/m10-warmup-chunk-fine/` (before/after-JSON).
+
+## Zusammenfassung
+
+- Warmup Chunking: 48 → 53 Chunks; der 292-ms-Sammelchunk `derived-atlas` ist
+  durch 6 Familien-Chunks (je ≤ ~24 ms) ersetzt.
+- Gesamt-Warmup −28 % (3625,8 → 2597,7 ms), Zeit bis interaktiv −29 %
+  (4211 → 2983 ms). Schwelle „≤ +5 %" weit unterschritten.
+- Kein Verhaltensunterschied: `textures.ts` nur Export-/Kommentar-Diff,
+  `createAllTextures` unangetastet, Idempotenz per Guard-Test gesichert.
+
+**Offen (eigene Karte, fremde Area):** größter verbleibender Stall ist
+`runtime-atlas` (`buildRuntimeAtlas`, `src/gfx/atlas.ts`) mit ~980–1740 ms.
