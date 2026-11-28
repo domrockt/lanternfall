@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10904,
+  "next": 10457,
   "cards": [
     {
       "id": 1,
@@ -13667,391 +13667,37 @@
       "updated": "2026-11-28T09:05:18Z"
     },
     {
-      "id": 10494,
-      "title": "m10-crowd-silhouette-guard K1: Metriken aus Lane-Dokus extrahieren + per Skript gegen Spritesatz verifizieren",
-      "description": "scripts/m10-silhouette-guard.mjs — browserfreie Ist-Verifikation der Chaos-Lesbarkeits-Metriken (Phaser-Stub per Loader-Hook, kein flock). AK: Vorher-JSON in ~/games/.evidence/m10-crowd-silhouette-guard/, Werte deckungsgleich mit Lane-Dokus.",
-      "column": "done",
-      "assignee": "gameplay-dev",
+      "id": 10454,
+      "title": "m10-boss-name-legibility K1: Chaos-Repro + Befund klären (Layering vs. Kontrast) + Baseline",
+      "description": "AK: Ein M25-skipTo-Chaos-Repro (scripts/m10-boss-name.mjs) in 960x540 + 640x360 mit before-Shots + 6x-Zoom; mit EINEM Repro geklärt: Layering (Gegnerpixel über Depth 90) oder Kontrast (Amber auf Horde-Rot). Baseline-JSON (Textband-Deckung/Kontrast-Metrik) committet BEVOR der Fix beginnt.",
+      "column": "doing",
       "notes": [
         {
-          "at": "2026-11-28T09:20:17Z",
+          "at": "2026-11-28T09:18:58Z",
           "by": "build",
-          "text": "lane #10331, Merge 7214dbf1"
+          "text": "todo → doing: Übernommen: M25-Chaos-Repro + Befundklärung (Layering vs. Kontrast) + Baseline-JSON."
         }
       ],
-      "created": "2026-11-28T09:20:09Z",
-      "updated": "2026-11-28T09:20:17Z"
+      "created": "2026-11-28T09:18:44Z",
+      "updated": "2026-11-28T09:18:58Z"
     },
     {
-      "id": 10495,
-      "title": "m10-crowd-silhouette-guard K2: Guard-Test tests/crowd-silhouette-guard.test.ts",
-      "description": "6 harte Metrik-Assertions (M1 Kontur, M2 Elite-Rim, M3 Familien, M4 Varianten, M5 Idle, M6 Tier-Dyes) als npm-test-Schranke. AK: 7/7 gruen in < 2 s, Rebaseline-Verfahren dokumentiert.",
-      "column": "done",
-      "assignee": "gameplay-dev",
-      "notes": [
-        {
-          "at": "2026-11-28T09:20:17Z",
-          "by": "build",
-          "text": "lane #10332, Merge 7214dbf1"
-        }
-      ],
-      "created": "2026-11-28T09:20:09Z",
-      "updated": "2026-11-28T09:20:17Z"
-    },
-    {
-      "id": 10496,
-      "title": "m10-crowd-silhouette-guard K3: Lane-Doku + Rebaseline-Verfahren",
-      "description": "docs/lanes/m10-crowd-silhouette-guard.md mit gepinnten Werten + Rebaseline-Anleitung. AK: Doku vorhanden, reviewer PASS (Board-Notiz Lane #10333), npm test 1852 gruen.",
-      "column": "done",
-      "assignee": "gameplay-dev",
-      "notes": [
-        {
-          "at": "2026-11-28T09:20:17Z",
-          "by": "build",
-          "text": "lane #10333, Merge 7214dbf1"
-        }
-      ],
-      "created": "2026-11-28T09:20:09Z",
-      "updated": "2026-11-28T09:20:17Z"
-    },
-    {
-      "id": 10157,
-      "title": "m10-prop-contact-shadow K1: Vorher-Screenshots (640x360 + 960x540, Prop-Cluster)",
-      "description": "Skript scripts/m10-prop-shadow.mjs (--tag before): Vorher-Shots mit sichtbarem Prop-Cluster (Teleport an Cluster via ground.chunks) in 640x360 + 960x540 + 3x-Crop, Belege in shots/abnahme/ + ~/games/.evidence/m10-prop-contact-shadow/. Abnahme: beide Shots zeigen Props/Cluster, JSON-Probe mit Prop-/Schattenzahl, 0 JS-Fehler, Commit BEFORE Fix.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T08:28:28Z",
-          "by": "build",
-          "text": "todo → doing: Lane übernommen: Vorher-Screenshots + Probe-Skript"
-        },
-        {
-          "at": "2026-11-28T08:30:57Z",
-          "by": "build",
-          "text": "doing → review: Vorher-Shots committed (3c4edfba): Cluster 12 Props sichtbar, Probe 527 Props/0 Kontakt-Schatten (alter Soft-Blob), 0 JS-Fehler"
-        },
-        {
-          "at": "2026-11-28T09:19:58Z",
-          "by": "build",
-          "text": "review → done: m10-prop-contact-shadow lane #10157, Commit 3c4edfba — Vorher-Shots 640/960/3x-Crop + Probe (527 Props, alter Blob), 0 JS-Fehler"
-        }
-      ],
-      "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T09:19:58Z"
-    },
-    {
-      "id": 10158,
-      "title": "m10-prop-contact-shadow K2: Schatten-Generator + Kontakt-Schatten-Zeichnung",
-      "description": "Deterministischer Pixel-Kontakt-Schatten in gen-props.ts (propShadowFor: elliptisch, PAL[0], Alpha 0.35/0.18-Rim, per Prop-Klasse aus GEN_PROPS-Basisbreite, Varianten auf Basis-Klasse abgebildet); Zeichnung in GroundRenderer.addProp: gemeinsame Shadow-Atlas-Textur (1 Batch, Frames je Klasse), 1 px unterhalb/leicht versetzt, LOD/CLUSTER_PROPS/Platzierung/Batch-Struktur unangetastet. Abnahme: npx tsc --noEmit rc=0, ground-props-batch/prop-density-lod-Tests gruen.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T08:30:57Z",
-          "by": "build",
-          "text": "todo → doing: Schatten-Generator + Zeichnung"
-        },
-        {
-          "at": "2026-11-28T09:19:58Z",
-          "by": "build",
-          "text": "doing → done: m10-prop-contact-shadow lane #10158, Commit edccae24 — propShadowFor (PAL[0] α0,35/0,18) + Shadow-Atlas 1 Batch, tsc rc=0, Regressionen grün"
-        }
-      ],
-      "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T09:19:58Z"
-    },
-    {
-      "id": 10159,
-      "title": "m10-prop-contact-shadow K3: Guard-Test tests/prop-shadow.test.ts",
-      "description": "Guard-Test: jeder Prop-Key rendert Schatten-Daten (13 Klassen + Varianten auf Basis abgebildet), Schattenfarbe = Palette 0 (ink), Alpha > 0 und < opak (<= 0.35), elliptische Form (Mitte breiter als Rand), deterministisch bei wiederholtem Aufruf. Abnahme: npx vitest run tests/prop-shadow.test.ts gruen, npm test gruen.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T08:33:55Z",
-          "by": "build",
-          "text": "todo → doing: Guard-Test"
-        },
-        {
-          "at": "2026-11-28T09:19:58Z",
-          "by": "build",
-          "text": "doing → done: m10-prop-contact-shadow lane #10159, Commit 6ccd69b6 — Guard-Test 30→31 Tests grün"
-        }
-      ],
-      "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T09:19:58Z"
-    },
-    {
-      "id": 10160,
-      "title": "m10-prop-contact-shadow K4: Nachher-Belege, FPS-/Draw-Call-Gegenprobe, art-director",
-      "description": "--tag after: Nachher-Shots (640x360 + 960x540 + 3x-Crop, gleiche Cluster-Logik), Probe 100% Props mit Schatten + 0 Off-Palette-Pixel im Schatten; Burst 640x360 mit 500 Gegnern unter flock (>= 55 FPS, iGPU-Renderer-String), Draw-Calls <= Baseline+2; art-director-Urteil >= 4/5; docs/lanes/m10-prop-contact-shadow.md + .lane-done. Abnahme: build rc=0, npm test gruen, Belege in shots/abnahme/ + .evidence/.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T08:48:10Z",
-          "by": "build",
-          "text": "art-director FAIL Runde 1 (1-2/5): Schatten im Frame nicht wahrnehmbar laut dessen Pixelproben, Belege nicht eingefroren. Eigene Gegenpruefung laeuft: 960-Vorher/Nachher-Diff zeigt koherente Ellipsen unter Baeumen/Fels — AD-Messpunkte vermutlich an verschobenen Weltkoordinaten. Fix: --frozen-Modus (setTimeScale 0), Fusspunkt-Deltas an Props, ganzzahlige 3x-Crops, Texture-Dump."
-        },
-        {
-          "at": "2026-11-28T09:19:58Z",
-          "by": "build",
-          "text": "todo → done: m10-prop-contact-shadow lane #10160, Commits 8e53cc59/2ffdc740/0ec79671/93c88543 — art-director R1 FAIL → Root Cause (Okklusion wy-1) gefixt (wy+1), R2 PASS (0 Muss-Mängel); Reviewer PASS; Commit-Gate PASS; Burst 60,1 FPS, DC 6=Baseline+0, shadowBatches 1, Mesa-iGPU; 527/527 Schatten; 1794/1794 Tests; .lane-done 93c88543"
-        }
-      ],
-      "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T09:19:58Z"
-    },
-    {
-      "id": 10561,
-      "title": "m10-player-swarm-gap K1: Vorher-Baseline (Minute-25-Schwarm, Metrik <8px/p95/Frame-p95)",
-      "description": "Skript scripts/m10-player-gap.mjs (Minute 25, 300-500 Gegner, flock, iGPU, Renderer-String Pflicht). Metriken: Gegner mit Kantenabstand <8px zum Spieler, p95-Kantenabstand, Frame-Zeit p95. JSON nach ~/games/.evidence/m10-player-swarm-gap/m10-player-gap-before.json + Vorher-Shot. Abnahme: JSON committed, Renderer != SwiftShader.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T09:00:04Z",
-          "by": "build",
-          "text": "todo → doing: K1 gestartet: Vorher-Baseline-Skript (Minute-25-Schwarm-Metrik)."
-        },
-        {
-          "at": "2026-11-28T09:04:32Z",
-          "by": "build",
-          "text": "doing → review: K1 fertig: Commit a4f66225. Skript 1x gebaut + 1 Fix-Iteration (Crop), 2 Laeufe unter flock (beide iGPU RPL-S, 0 JS-Fehler): under8 9,46/9,38, minEdge -13,8/-12,6, frameP95 16,7/16,8 ms, enemiesMean ~375. Vorher-Shot zeigt unlesbare Spieler-Silhouette."
-        },
-        {
-          "at": "2026-11-28T09:32:35+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #10271, Merge branch m10-player-swarm-gap"
-        }
-      ],
-      "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T09:04:32Z"
-    },
-    {
-      "id": 10562,
-      "title": "m10-player-swarm-gap K2: Spieler-Ring resolvePlayerGap in src/logic/separation.ts",
-      "description": "Dedizierte Spieler-Abstoß-Regel (Radius/Power klein, deterministisch über feste Reihenfolge + UID-Golden-Angle, Muster resolveBossStackSeparation), Anbindung über SpatialHash-Query um Spielerposition; Spieler bleibt unverrückbar. Minimal-Wiring in Run.ts updateEnemies (~5 Zeilen, mit requests.md-Begründung). Abnahme: tsc rc=0, gegnerische Unterseiten-Separation unverändert.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T09:04:32Z",
-          "by": "build",
-          "text": "todo → doing: K2 gestartet: resolvePlayerGap in src/logic/separation.ts + Minimal-Wiring Run.ts (Begruendung folgt in Lane-Doku + requests.md)."
-        },
-        {
-          "at": "2026-11-28T09:07:51Z",
-          "by": "build",
-          "text": "doing → review: K2 fertig: Commit 3751e397. resolvePlayerGap (Kantenziel 14px, Strength 0.45, Step-Deckel 6px, UID-Fallback, Hash-Query um Spieler) + 4-Zeilen-Wiring in Run.ts updateEnemies (Bosse ausgenommen; Abweichung vom Briefing in requests.md begruendet). tsc rc=0, Separation-Pfad unveraendert."
-        },
-        {
-          "at": "2026-11-28T09:32:35+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #10272, Merge branch m10-player-swarm-gap"
-        }
-      ],
-      "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T09:07:51Z"
-    },
-    {
-      "id": 10563,
-      "title": "m10-player-swarm-gap K3: Tests tests/player-swarm-gap.test.ts",
-      "description": "Spieler nie bewegt, Gegner-Kantenabstand >= Mindestrand im Ring, 500 Gegner deterministisch (2 Läufe bitgleich), Gegner ausserhalb des Rings unberührt. Abnahme: npx vitest run tests/player-swarm-gap.test.ts grün, tsc rc=0.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T09:07:51Z",
-          "by": "build",
-          "text": "todo → doing: K3 gestartet: tests/player-swarm-gap.test.ts."
-        },
-        {
-          "at": "2026-11-28T09:12:24Z",
-          "by": "build",
-          "text": "doing → review: K3 fertig: Commit c68dd05b, 9/9 gruen, tsc rc=0. Test-Fund: PLAYER_GAP_PLAYER_RADIUS=6 in die Ziel-Zentrierdistanz (sonst Gleichgewicht bei Kante 8-eps, Metrik-Schwelle knapp gerissen)."
-        },
-        {
-          "at": "2026-11-28T09:32:35+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #10273, Merge branch m10-player-swarm-gap"
-        }
-      ],
-      "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T09:12:24Z"
-    },
-    {
-      "id": 10564,
-      "title": "m10-player-swarm-gap K4: Nachher-Messung + Shots + art-director + Lane-Doku",
-      "description": "Nachher-JSON (flock, Renderer-String), Vorher/Nachher <8px-Gegner um >=50% reduziert, identische Kills/XP (nur Abstoß), Frame-p95 <= Vorher+5%, Determinismus bitgleich. Shots shots/abnahme/m10-player-gap-{before,after}.png, art-director-Sichtprüfung >=4/5, docs/lanes/m10-player-swarm-gap.md + .lane-done.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T09:12:24Z",
-          "by": "build",
-          "text": "todo → doing: K4 gestartet: Nachher-Messung (flock) + Shots + art-director + Lane-Doku + .lane-done."
-        },
-        {
-          "at": "2026-11-28T09:32:35+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #10564, Merge branch m10-player-swarm-gap (doing-Karte der gemergten Lane)"
-        }
-      ],
-      "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T09:12:24Z"
-    },
-    {
-      "id": 10685,
-      "title": "m10-gamepad-charselect-start #10414 Fix: Pad-Startfokus Reihe 0 + A startet Run",
-      "description": "Fix B1 – Pad-Startfokus Reihe 0, row-0-confirm startet Run (aus Lane m10-gamepad-charselect-start, urspr. #10414).",
-      "column": "done",
-      "assignee": "ui-dev",
+      "id": 10455,
+      "title": "m10-boss-name-legibility K2: Fix Boss-Name-Lesbarkeit (UI.ts/depth.ts)",
+      "description": "AK: Fix je Befund aus K1 — Layering: Boss-Name/HP-Leiste pinnend über allem rendern; Kontrast: Textband auf dieselbe dunkle Alpha-Platte wie die Leiste oder Outline/Platte. Klein halten, keine UI-Umbauten. Nur area-Dateien (UI.ts, depth.ts). Regressionstest tests/boss-name-legibility.test.ts grün, tsc rc=0.",
+      "column": "todo",
       "notes": [],
-      "created": "2026-11-28T09:42:27Z",
-      "updated": "2026-11-28T09:42:27Z"
+      "created": "2026-11-28T09:18:44Z",
+      "updated": "2026-11-28T09:18:44Z"
     },
     {
-      "id": 10686,
-      "title": "m10-gamepad-charselect-start #10415 Regressionstest Gamepad-CharSelect-Start",
-      "description": "Regressionstest: d-right waehlt Kael, A startet; back erreichbar (aus Lane m10-gamepad-charselect-start, urspr. #10415).",
-      "column": "done",
-      "assignee": "ui-dev",
+      "id": 10456,
+      "title": "m10-boss-name-legibility K3: Nachher-Beleg + art-director-Urteil + .lane-done",
+      "description": "AK: Gleicher Repro nach Fix (after-Shots 640+960 + 6x-Zoom), Boss-Name im M25-Chaos vollständig lesbar, HP-Leiste weiter lesbar, kein neues Near-White/Overlap im Rest-HUD. art-director-Kurzsichtung (Note + 2-3 Sätze) in docs/lanes/m10-boss-name-legibility.md. npm test grün, npm run build grün, .lane-done committet.",
+      "column": "todo",
       "notes": [],
-      "created": "2026-11-28T09:42:27Z",
-      "updated": "2026-11-28T09:42:27Z"
-    },
-    {
-      "id": 10687,
-      "title": "m10-gamepad-charselect-start #10416 Gates: verify:input 2x + Belege",
-      "description": "Gates: verify:input 2x PASS 29/29, Renderer-Beleg im Harness, Lane-Doku (aus Lane m10-gamepad-charselect-start, urspr. #10416).",
-      "column": "done",
-      "assignee": "ui-dev",
-      "notes": [],
-      "created": "2026-11-28T09:42:27Z",
-      "updated": "2026-11-28T09:42:27Z"
-    },
-    {
-      "id": 10585,
-      "title": "m10-fx-mixel-test-speed: fx-mixel Palette-Test unter Last < 1 s (APK-Entblocker)",
-      "description": "tests/fx-mixel.test.ts 'nur Palettenfarben oder transparent' laeuft unter Rig-Last in den 5s-Timeout und blockiert lf-apk-hourly.sh. K1: Test umbauen (< 1 s, gleiche Aussagekraft, kein Timeout-Hochsetzen). K2: 5x gruene Laeufe unter Parallel-Last (2 Builds im Hintergrund), Laufzeiten in docs/lanes/m10-fx-mixel-test-speed.md. Keine Aenderungen an src/**. Akzeptanz: 5/5 gruen je < 1 s.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T09:41:18Z",
-          "by": "build",
-          "text": "doing → review: was: Palette-Test von Expect-pro-Zeichen (100k+ vitest-Assertionen) auf Set.has-Sammelloge + 1 expect umgebaut, timeout:15000 entfernt. wie geprueft: Baseline 1462 ms (>5s unter Rig-Load 18); nachher 5/5 gruen unter Parallel-Last (je 2 Builds im Hintergrund): 84/92/87/72/77 ms; tsc rc0, tests/fx-mixel.test.ts 17/17 (349 ms), npm run build rc0. Kein src/**-Touch (git diff --stat). Commit 8c5734ef."
-        },
-        {
-          "at": "2026-11-28T09:51:29Z",
-          "by": "build",
-          "text": "review → done: lane #10585, Merge c8b3baa4"
-        }
-      ],
-      "created": "2026-11-28T09:38:54Z",
-      "updated": "2026-11-28T09:51:29Z"
-    },
-    {
-      "id": 10790,
-      "title": "m10-device-telemetry K1: Telemetry-Collector (Sample + Puffer-Send)",
-      "description": "src/telemetry.ts: Sample alle 5 s {t, fps, frameMsP50/P95/max, quality, renderScale, enemies, fxActive, drawCalls, heapMB, scene, character, renderer+vendor (1x), ua, dpr, screen, build}, gepuffert per fetch POST keepalive. Abnahme: tsc grün, Sample-Aufbau Unit-getestet, KEINE personenbezogenen Daten.",
-      "column": "done",
-      "assignee": "engine-dev",
-      "notes": [
-        {
-          "at": "2026-11-28T09:28:39Z",
-          "by": "build",
-          "text": "todo → doing: m10-device-telemetry K1 angenommen (Lane-Worktree lf-lanes/m10-device-telemetry) – vor FPS-Baseline-Messung."
-        },
-        {
-          "at": "2026-11-28T09:30:57Z",
-          "by": "build",
-          "text": "doing → review: K1: src/telemetry.ts (Collector, Sample, frameStats, gepuffertes flush) + __LF_BUILD__-Define in vite.config.ts + Hook in debug.ts nach READY. tsc grün; Commit 18c61118. K3-Abnahmelauf folgt."
-        },
-        {
-          "at": "2026-11-28T09:43:43Z",
-          "by": "build",
-          "text": "review → done: lane #10517, reviewer PASS. K1 Collector + Build-Define + debug-Hook, Commits 18c61118..5578aba4, 174 Dateien/1891 Tests grün."
-        }
-      ],
-      "created": "2026-11-28T09:28:36Z",
-      "updated": "2026-11-28T09:43:43Z"
-    },
-    {
-      "id": 10791,
-      "title": "m10-device-telemetry K2: Aktivierung + Drosselung",
-      "description": "Aktiv nur bei ?telemetry=1 oder APK (Host 127.0.0.1 + Android-UA); Desktop sendet nichts. Fehler beim Senden still schlucken, max 1 Request/5 s. Abnahme: Aktivierungslogik getestet; Desktop-Run ohne ?telemetry=1 erzeugt keine Requests.",
-      "column": "done",
-      "assignee": "engine-dev",
-      "notes": [
-        {
-          "at": "2026-11-28T09:30:57Z",
-          "by": "build",
-          "text": "todo → doing: K2 angenommen: Aktivierung + Drosselung (telemetryEnabled, canSend, stiller Fehlermodus) ist implementiert, Tests folgen in tests/telemetry.test.ts."
-        },
-        {
-          "at": "2026-11-28T09:31:59Z",
-          "by": "build",
-          "text": "doing → review: K2: telemetryEnabled-Matrix (?telemetry=1/0, APK=127.0.0.1+Android-UA, Desktop aus) + Drosselung/Fehler-Puffer getestet (9 Tests grün). Commit 82683aa1. Zusätzlich: collectReadings/Collector try/catch-geschützt."
-        },
-        {
-          "at": "2026-11-28T09:43:43Z",
-          "by": "build",
-          "text": "review → done: lane #10518, reviewer PASS. Aktivierung (Desktop aus, APK an, ?telemetry=0 gewinnt) + Drosselung getestet, Commit 82683aa1."
-        }
-      ],
-      "created": "2026-11-28T09:28:36Z",
-      "updated": "2026-11-28T09:43:43Z"
-    },
-    {
-      "id": 10792,
-      "title": "m10-device-telemetry K3: Tests + Doku + Abnahmelauf",
-      "description": "tests/telemetry.test.ts (Sample-Aufbau, Drosselung), docs/DEVICE-TELEMETRY.md (Felder, Abschalten, Datenablage) + Beispiel-Auswertung (fps p5/Median je Minute). Abnahme: lokaler Lauf ?telemetry=1 erzeugt Zeilen in Tages-JSONL, 0 JS-Fehler, Tests/tsc grün, kein FPS-Einfluss (Vorher/Nachher).",
-      "column": "done",
-      "assignee": "ui-dev",
-      "notes": [
-        {
-          "at": "2026-11-28T09:31:59Z",
-          "by": "build",
-          "text": "todo → doing: K3 angenommen: Sample-Aufbau-Tests + docs/DEVICE-TELEMETRY.md + Abnahmelauf mit ?telemetry=1 + FPS Vorher/Nachher."
-        },
-        {
-          "at": "2026-11-28T09:43:43Z",
-          "by": "build",
-          "text": "doing → done: lane #10519, reviewer PASS. 19 Telemetry-Tests, docs/DEVICE-TELEMETRY.md, Abnahme ?telemetry=1 → JSONL-Zeilen, 0 JS-Fehler, FPS Vorher 60.1/59.9 vs. Nachher 60.1/60.0 (flock). Rest: APK-Verifikation am Tablet (Dom)."
-        }
-      ],
-      "created": "2026-11-28T09:28:36Z",
-      "updated": "2026-11-28T09:43:43Z"
-    },
-    {
-      "id": 10900,
-      "title": "m10-fx-bakes-evo-r2 K1: Sammler-/Fixture-Update (Ist-Coverage + Frames)",
-      "description": "Sammler scripts/m10-palette-fx-guard.mjs auf Ist der Evo-Kette heben: Evo-Signaturen in realer Texturgroesse (5 baked 96/128 @ drawScale 1, thunder_seal 32x32) statt pauschal 32x32; SCALE_MANIFEST auf Ist-Draw-Scales. 1 Sammler-Lauf, Fixture + Report committen. AK: Sammler rc=0, Ist-Coverage + frames im Report belegt, palette-compliance.test.ts gruen.\n\n[lane #10251, Merge 3bedf597]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T10:07:05Z",
-      "updated": "2026-11-28T10:07:05Z"
-    },
-    {
-      "id": 10901,
-      "title": "m10-fx-bakes-evo-r2 K2: Mixel-Bakes fuer uncovered fx_evo_* Keys",
-      "description": "Fuer die in K1 als uncovered belegten fx_evo_*-Keys (Erwartung: thunder_seal hit/death) Mixel-Bake-Stufen nach MIXEL_BAKE_DEFS-Muster; Draw-Scales unveraendert (Optik identisch, Quelle schaerfer). AK: mixelLevelFor deckt alle fx_evo_*-Keys, Draw-Scale/Level <= 1, Guard-Test gruen.\n\n[lane #10252, Merge 3bedf597]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T10:07:05Z",
-      "updated": "2026-11-28T10:07:05Z"
-    },
-    {
-      "id": 10902,
-      "title": "m10-fx-bakes-evo-r2 K3: fx_boss_core Bake oder Scale<=1 (Entscheidung)",
-      "description": "fx_boss_core (Draw-Scale 3,6 via Run.ts spawnAnim): Mixel-Bake nach MIXEL_BAKE_DEFS-Muster bevorzugt; Entscheidung mit Beleg dokumentieren. Run.ts nur an der Draw-Scale-Stelle anfassen, wenn noetig. AK: Coverage fx_boss_core covered, Beleg in docs/lanes/m10-fx-bakes-evo-r2.md.\n\n[lane #10253, Merge 3bedf597]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T10:07:05Z",
-      "updated": "2026-11-28T10:07:05Z"
-    },
-    {
-      "id": 10903,
-      "title": "m10-fx-bakes-evo-r2 K4: Ratchet abbauen + Sichtbelege + Lane-Abschluss",
-      "description": "knownFindings im Fixture auf 0 ungedeckte Keys (jede Rest-Ausnahme einzeln belegt), palette-compliance.test.ts an neuen Ratchet anpassen, Full-Suite gruen, npm run build rc=0, Guard < 3 s, iGPU-Sichtbelege (>=2 Evo-Signaturen + fx_boss_core) mit Mesa-Renderer-String, art-director-Note, Lane-Doku + .lane-done. AK: Alle AK des Briefings erfuellt.\n\n[lane #10254, Merge 3bedf597]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T10:07:05Z",
-      "updated": "2026-11-28T10:07:05Z"
+      "created": "2026-11-28T09:18:44Z",
+      "updated": "2026-11-28T09:18:44Z"
     }
   ]
 }
