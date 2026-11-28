@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9203,
+  "next": 9472,
   "cards": [
     {
       "id": 1,
@@ -11892,6 +11892,81 @@
       ],
       "created": "2026-11-28T06:17:44Z",
       "updated": "2026-11-28T06:20:39Z"
+    },
+    {
+      "id": 9467,
+      "title": "m10-gamepad-menu-nav K1: Befund Gamepad-Pfad zu Menüs",
+      "description": "Befund-Doku: Gamepad->Menü heute (Gamepad.ts-Snapshot, InputState Rising-Edges ohne Repeat, menu.ts Fokus nur via setFocused; Szenen duplizieren Fokus-Arithmetik). docs/lanes/m10-gamepad-menu-nav.md",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T06:51:34Z",
+          "by": "build",
+          "text": "lane #8916 (Merge 29c310e)"
+        }
+      ],
+      "created": "2026-11-28T06:51:26Z",
+      "updated": "2026-11-28T06:51:34Z"
+    },
+    {
+      "id": 9468,
+      "title": "m10-gamepad-menu-nav K2: menu.ts Fokus-API Gamepad",
+      "description": "press()/MenuFocus(moveFocus/setIndex/confirm/back)/menuRepeatTick (200 ms Erst-Repeat, 100 ms Folge, driftfrei); BUTTON_PRESSED_ALPHA/ButtonVisualState/Maus-Touch unangetastet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T06:51:34Z",
+          "by": "build",
+          "text": "lane #8917 (Merge 29c310e)"
+        }
+      ],
+      "created": "2026-11-28T06:51:26Z",
+      "updated": "2026-11-28T06:51:34Z"
+    },
+    {
+      "id": 9469,
+      "title": "m10-gamepad-menu-nav K3: options-menu.ts Gamepad-Zeilen",
+      "description": "handlePadFrame mit Repeat (200/100 ms), Confirm/Back Rising-Edge, Reset open/close, ein Pad-Frame = eine Aktion; alle 7 Zeilen inkl. MASTER MUTE erreichbar.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T06:51:34Z",
+          "by": "build",
+          "text": "lane #8918 (Merge 29c310e)"
+        }
+      ],
+      "created": "2026-11-28T06:51:26Z",
+      "updated": "2026-11-28T06:51:34Z"
+    },
+    {
+      "id": 9470,
+      "title": "m10-gamepad-menu-nav K4: Test + Harness Gamepad-Nav",
+      "description": "tests/gamepad-nav.test.ts (synthetische GamepadSnapshots) + scripts/m10-gamepad-nav.mjs (Playwright, gemocktes navigator.getGamepads): 15/15 PASS, 0 Sackgassen, 0 Doppel-Events.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T06:51:34Z",
+          "by": "build",
+          "text": "lane #8919 (Merge 29c310e)"
+        }
+      ],
+      "created": "2026-11-28T06:51:26Z",
+      "updated": "2026-11-28T06:51:34Z"
+    },
+    {
+      "id": 9471,
+      "title": "m10-gamepad-menu-nav K5: After-Belege + Lane-Doku + Abschluss",
+      "description": "Belege nach ~/games/.evidence/m10-gamepad-menu-nav/, Lane-Doku vervollständigt, .lane-done beim Merge entfernt (gehört nicht nach main).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T06:51:34Z",
+          "by": "build",
+          "text": "lane #89110 (Merge 29c310e)"
+        }
+      ],
+      "created": "2026-11-28T06:51:26Z",
+      "updated": "2026-11-28T06:51:34Z"
     }
   ]
 }
