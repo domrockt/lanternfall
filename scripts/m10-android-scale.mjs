@@ -10,14 +10,17 @@
  *
  * Vorher-Beleg: ~/games/.evidence/m10-android-scale-floor-r2/
  *   m10-android-scale-before.json + android-tabS4-levelup-{rb1,rb2}-before.png
+ * Nachher-Beleg (nach K2/K3, `--tag=after`): rbscale=2 wird auf 1 geklemmt —
+ *   Text bleibt lesbar, Canvas bleibt 640x360, quality-Tier im State.
  *
- *   node scripts/m10-android-scale.mjs            # baut dist/ bei Bedarf
- *   node scripts/m10-android-scale.mjs --no-build # dist/ muss aktuell sein
+ *   node scripts/m10-android-scale.mjs [--tag=before|after] [--no-build]
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
 
+const TAG = (process.argv.find((a) => a.startsWith("--tag=")) ?? "--tag=before")
+  .split("=")[1] || "before";
 const EVIDENCE_DIR = `${homedir()}/games/.evidence/m10-android-scale-floor-r2`;
 const STABLE_MS = 2000;
 
@@ -50,7 +53,7 @@ const pw = await loadPlaywright();
 const { chromium } = pw; // devices-Registry: pw.devices
 const server = await startServer();
 const browser = await chromium.launch();
-const out = { before: {} };
+const out = { tag: TAG, runs: {} };
 
 for (const [name, rbscale] of [["rb1", 1], ["rb2", 2]]) {
   const ctx = await browser.newContext(pw.devices["Galaxy Tab S4 landscape"]);
@@ -59,9 +62,9 @@ for (const [name, rbscale] of [["rb1", 1], ["rb2", 2]]) {
   page.on("pageerror", (e) => errs.push(String(e).slice(0, 200)));
   await openLevelUp(page, rbscale);
   await page.screenshot({
-    path: `${EVIDENCE_DIR}/android-tabS4-levelup-${name}-before.png`,
+    path: `${EVIDENCE_DIR}/android-tabS4-levelup-${name}-${TAG}.png`,
   });
-  out.before[name] = await page.evaluate(() => {
+  out.runs[name] = await page.evaluate(() => {
     const r = window.__lf.rendererInfo();
     const dbg = window.__rbDbg ?? {};
     return {
@@ -71,17 +74,18 @@ for (const [name, rbscale] of [["rb1", 1], ["rb2", 2]]) {
       dpr: devicePixelRatio,
       canvas: { w: r.canvas.width, h: r.canvas.height },
       rbDbg: { scale: dbg.scale ?? null, size: dbg.size ?? null },
+      quality: window.__lf.state().quality ?? null,
       levelUpOpen: Boolean(window.__lf.stats().levelUpOpen),
       ua: navigator.userAgent.slice(0, 80),
     };
   });
-  out.before[name].errs = errs;
+  out.runs[name].errs = errs;
   await ctx.close();
 }
 
 await browser.close();
 server.stop();
-const json = `${EVIDENCE_DIR}/m10-android-scale-before.json`;
+const json = `${EVIDENCE_DIR}/m10-android-scale-${TAG}.json`;
 writeFileSync(json, `${JSON.stringify(out, null, 2)}\n`);
 console.log(JSON.stringify(out, null, 2));
 console.log(`\nBeleg: ${json}`);

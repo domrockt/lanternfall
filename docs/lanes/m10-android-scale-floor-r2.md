@@ -70,4 +70,38 @@ gemerkt, keine neue Caps gebaut).
 Belege: `npx vitest run` 1936/1936 grün (neu: tests/quality-tier.test.ts,
 15 Tests), `npx tsc --noEmit` ok, `npm run build` ok.
 
+Nachcommit (Claim freigegeben): `src/systems/FxSystem.ts` Commit 65f72821 —
+ADD-Flächen-Deckel liest `glowAreaCapForQuality(QUALITY)`, Glow-Slots mit
+`glowEnabledFor(QUALITY)` (low = NORMAL-Fallback). Request-Eintrag in
+`.dispatch/requests.md` ist damit erledigt. ✔ Karte 3 abgeschlossen.
+
+## K4 — Nachher-Belege #10608
+
+Belege in `~/games/.evidence/m10-android-scale-floor-r2/`:
+- `android-tabS4-levelup-rb2-after.png` + `m10-android-scale-after.json`:
+  `?rbscale=2` wird auf 1 geklemmt → rbDbg.scale 1, Buffer 640×360,
+  Level-Up-Text voll lesbar (Sichtprüfung Crop 2x, identisch zu rb1),
+  Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`,
+  0 JS-Fehler. Abnahme-Kopie in git: `shots/abnahme/m10-android-scale-levelup-rb2-after.png`.
+- `m10-android-scale-throttle.json` (Skript `scripts/m10-android-scale-throttle.mjs`):
+  Tab-S4-Emulation + CDP-Throttle 4x; da die iGPU vsync-60 hält, wird der
+  FPS-Eingang des Reglers deterministisch gestreckt (rAF-Deltas ≥ 33,4 ms ≈
+  30 FPS — synthetische Last, im JSON gekennzeichnet). Ergebnis: Tier-Spur
+  high → medium → low (`tiers: ["medium","low"]`, `tierChanged: true`),
+  `minCanvasW = 640 = logicalW` → **nie unter logische Auflösung**, Renderer-String
+  im JSON. Qualitätsstufe sichtbar in `__lf.state().quality`.
+
+Abnahme gesamt: kein Codepfad rendert unter 640×360 logisch (K2-Invariante +
+K4-Lauf), Level-Up-Text in allen Fällen lesbar, Stufenwechsel im Debug-State
+sichtbar, `npx vitest run` 1936/1936, `npx tsc --noEmit` grün, 0 JS-Fehler.
+✔ Karte 4 abgeschlossen.
+
+## Offen / Hinweise
+- Budget-Werte `maxFxSprites`/`particlesPerHit`/`damageNumbersPerSec` sind als
+  Daten in quality.ts geliefert, aber (noch) nicht verdrahtet — es existieren
+  dort (noch) keine Caps; Bedarf für Folgekarten gemerkt.
+- Echte Gerätefreigabe bleibt die Telemetrie (`http://10.10.50.185:5180/latest`,
+  Praxisregel 8); der Ersatztest deckt CPU-/GC-Regressionen.
+
+
 
