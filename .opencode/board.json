@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12527,
+  "next": 12604,
   "cards": [
     {
       "id": 1,
@@ -17484,6 +17484,66 @@
       "notes": [],
       "created": "2026-11-28T13:08:23Z",
       "updated": "2026-11-28T13:08:23Z"
+    },
+    {
+      "id": 12600,
+      "title": "m10-acceptance-g-sync K1: ACCEPTANCE.md Abschnitt \"Nachabnahme G 2026-11-28\"",
+      "description": "G-Tabelle aus docs/qa/acceptance-refresh-g-2026-11-28.md (K-Tabellen, Abweichungen >=5 % vs F markiert) als neuen Abschnitt in ACCEPTANCE.md einpflegen, 4/4 PASS, Befundliste B1–B5 referenziert. Kein Umbau bestehender Abschnitte (git diff belegt).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:10:52Z",
+          "by": "build",
+          "text": "lane #12395 (m10-acceptance-g-sync, Merge c5ff3907)"
+        }
+      ],
+      "created": "2026-11-28T14:10:48Z",
+      "updated": "2026-11-28T14:10:52Z"
+    },
+    {
+      "id": 12601,
+      "title": "m10-acceptance-g-sync K2: harness.mjs startServer Port-Retry",
+      "description": "scripts/harness.mjs startServer: bei Portkonflikt bis zu 3 Versuche mit nächster freier Port-Nummer, klare Fehlermeldung bei Erschöpfung; Verhalten sonst bitgleich.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:10:52Z",
+          "by": "build",
+          "text": "lane #12396 (m10-acceptance-g-sync, Merge c5ff3907)"
+        }
+      ],
+      "created": "2026-11-28T14:10:48Z",
+      "updated": "2026-11-28T14:10:52Z"
+    },
+    {
+      "id": 12602,
+      "title": "m10-acceptance-g-sync K3: Guard-Test Port-Retry",
+      "description": "tests: Mock belegter Port -> Retry -> Erfolg; Erschöpfung -> erwartete Fehlermeldung. npx vitest run <datei> grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:10:52Z",
+          "by": "build",
+          "text": "lane #12397 (m10-acceptance-g-sync, Merge c5ff3907)"
+        }
+      ],
+      "created": "2026-11-28T14:10:48Z",
+      "updated": "2026-11-28T14:10:52Z"
+    },
+    {
+      "id": 12603,
+      "title": "m10-acceptance-g-sync K4: Smoke + Doku + .lane-done",
+      "description": "Ein Harness-Lauf (Burst-640) liefert unveränderte Zahlen (Beleg ~/games/.evidence/m10-acceptance-g-sync/); Lane-Doku docs/lanes/m10-acceptance-g-sync.md; npm test grün; .lane-done committet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:10:52Z",
+          "by": "build",
+          "text": "lane #12398 (m10-acceptance-g-sync, Merge c5ff3907)"
+        }
+      ],
+      "created": "2026-11-28T14:10:48Z",
+      "updated": "2026-11-28T14:10:52Z"
     }
   ]
 }
