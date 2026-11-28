@@ -1,0 +1,28 @@
+Lane m10-evo-fx-soulpyre-w2 — Seelenleuchtfeuer: Kältefeuer-Identität (Dom-Regel 02:00Z). FERTIG.
+
+Befund (Vorher, main-Nachfolgestand nach soulpyre+form-polish): das Leuchtfeuer las sich im
+Standbild "fast unsichtbar" — graue Halo-Ring-Blasen dominieren, die Seele selbst als blasser
+grün-weißer Streifen (Rampe 13/11/10/31/30/29), keine Flammenform.
+
+Fix (gen-fx.ts, evolution-weapons.ts):
+- SOUL_RAMP [13,11,9,6,5]: flächig weißer Kern lanternWhite → paleMist(9) als breite kalte
+  Außenflamme → fogBlue(6)-Kante → blueGrey(5)-Kontur. Kein Grün (28–31), kein Ink.
+- fx_halo_cold als stufiges Kalt-Glow gebacken (paleMist-Kern, mist, breite fogBlue-Außenzone,
+  KEIN Weißkern — der wusch die Flammenform), haloAlpha 0.28 / haloScale 0.85.
+- Silhouette entzackt (Sway 2.2→1.3, Sinus 0.7→0.5, Wobble 0.05→0.03); Funken kalt (sparkTint 9).
+- Geometrie/Draw-Scales unangetastet: orb 22x32 @1, Signaturen 96x96 @1, Halo @2-Bake @0.85.
+
+Abnahme: art-director Runde 1 FAIL (kalte Farbigkeit 2/5 decisiv) → Fixrunde 1 →
+Runde 2 **PASS, 4,3/5** ("kommerziell auslieferbar unter der Palette-Randbedingung",
+muss-neu: nichts; optional: Flammenspitzen-Kontur letzte 1–2 px kosmetisch).
+Standbild ohne Beschriftung liest als Seele/Kältefeuer (Kontrast zur warmen Laterne).
+
+Belege: shots/abnahme/m10-evo-fx-soulpyre-w2-{before,after}-*.png + *.json
+(Renderer ANGLE Mesa Intel RPL-S — nicht SwiftShader, 0 JS-Fehler).
+Doku: docs/lanes/m10-evo-fx-soulpyre-w2.md (Befund, Fix, Urteile, offene Punkte).
+
+Messwerte: tsc rc=0; npm test 2210/2210 grün; npm run build rc=0; Mixel-/Scale-Guards
+(FX-Guard-Fixture regeneriert, Dither-Bänder ≤ 2 px).
+Dispo: Fremd-Dateien tests/evo-fx-soulpyre.test.ts (Farbsätze auf Dom-Regel 02:00Z aktualisiert)
++ tests/fixtures/palette-fx-guard.json per /home/ai/games/.dispatch/requests.md beantragt —
+beim Merge behalten. Palette-Türkis-Stufe bleibt Dom/Rhea-Entscheidung.
