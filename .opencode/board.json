@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13962,
+  "next": 13966,
   "cards": [
     {
       "id": 1,
@@ -20112,6 +20112,46 @@
       ],
       "created": "2026-11-28T18:20:31Z",
       "updated": "2026-11-28T18:44:06Z"
+    },
+    {
+      "id": 13962,
+      "title": "m10-release-check-tool K1: scripts/m10-v10-release-check.mjs (4-Teil-Report JSON+Tabelle)",
+      "description": "Prüfwerkzeug: (a) Gerätetore K1–K5 aus docs/qa/v10-device-acceptance-2026-11-28.md mit aktuellem Urteil, K3-Tor aus docs/lanes/m10-janky-remeasure.md mit Tor-Metrik FPS avg/rAF-p95 nach gate-torprio (fps>=57, p95<=16ms, janky nur Beobachtung), Renderer-String-Pflicht (SwiftShader=ungültig); (b) Endabnahme-Beleg docs/qa/v10-final-2026-11-28.md vorhanden+Urteil, fehlt=OFFEN; (c) latest-build-APK-Alter vs HEAD (fa-04-Muster); (d) Liste der seit letzter APK gemergten Commits. Abnahme: Report mit begründeten Urteilen je Teil, OFFEN/PASS/FAIL dreistufig.",
+      "column": "doing",
+      "assignee": "m10-release-check-tool",
+      "notes": [],
+      "created": "2026-11-28T18:54:07Z",
+      "updated": "2026-11-28T18:54:07Z"
+    },
+    {
+      "id": 13963,
+      "title": "m10-release-check-tool K2: Guard-Test tests/v10-release-check.test.ts",
+      "description": "Skript läuft gegen Fixtures: Urteil je Teil OFFEN/PASS/FAIL korrekt abgeleitet, fehlende Datei=OFFEN, kein Netz/Device-Zwang (GitHub-API/git via Dependency-Injection gefaked). Abnahme: npx vitest run tests/v10-release-check.test.ts grün, tsc rc=0.",
+      "column": "todo",
+      "assignee": "m10-release-check-tool",
+      "notes": [],
+      "created": "2026-11-28T18:54:07Z",
+      "updated": "2026-11-28T18:54:07Z"
+    },
+    {
+      "id": 13964,
+      "title": "m10-release-check-tool K3: Probe-Lauf auf main + Befund in Lane-Doku",
+      "description": "Report shots/m10-release-check-probe.json (Beleg-Kopie nach ~/games/.evidence/m10-release-check-tool/), Befund in docs/lanes/m10-release-check-tool.md. Erwartung: (b) OFFEN, (c)/(d) mit echten Zahlen — Nutzen-Nachweis des Tools.",
+      "column": "todo",
+      "assignee": "m10-release-check-tool",
+      "notes": [],
+      "created": "2026-11-28T18:54:07Z",
+      "updated": "2026-11-28T18:54:07Z"
+    },
+    {
+      "id": 13965,
+      "title": "m10-release-check-tool K4: .lane-done",
+      "description": "Lane-Abschluss: alle Karten committed, .lane-done mit 5–10 Zeilen Zusammenfassung+Messwerte.",
+      "column": "todo",
+      "assignee": "m10-release-check-tool",
+      "notes": [],
+      "created": "2026-11-28T18:54:07Z",
+      "updated": "2026-11-28T18:54:07Z"
     }
   ]
 }
