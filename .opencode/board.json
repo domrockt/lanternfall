@@ -19152,19 +19152,22 @@
    "id": 13600,
    "title": "m10-renderer-guard-k4 K2: Beleg vervollstaendigen + Lane-Doku K4",
    "description": "JSON nach /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json kopieren; docs/lanes/m10-renderer-guard.md K4-Abschnitt blocked -> erledigt (Zahlen + Renderer-String).",
-   "column": "doing",
+   "column": "done",
    "createdAt": "2026-11-28T17:29Z",
    "notes": [
-    "doing: Belegkopie + Lane-Doku K4"
+    "doing: Belegkopie + Lane-Doku K4",
+    "done: Beleg /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json kopiert; docs/lanes/m10-renderer-guard.md K4 blocked -> erledigt (Zahlen + Renderer-String). Commit folgt in diesem Commit."
    ]
   },
   {
    "id": 13601,
    "title": "m10-renderer-guard-k4 K3: .lane-done committen",
    "description": "Lane-Abschluss: .lane-done im Worktree-Wurzelverzeichnis anlegen (Zusammenfassung + Messwerte) und committen; Board-Karten auf done.",
-   "column": "todo",
+   "column": "doing",
    "createdAt": "2026-11-28T17:29Z",
-   "notes": []
+   "notes": [
+    "doing: .lane-done"
+   ]
   }
  ]
 }

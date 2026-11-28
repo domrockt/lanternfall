@@ -36,27 +36,41 @@ SwiftShader-Zahlen als Belege technisch moeglich.
 - Commit: 98108511. `npx vitest run tests/renderer-guard.test.ts`: 12/12 gruen;
   `npx tsc --noEmit` rc=0; commit-gate PASS ueber alle 3 Commits.
 
-### K4 (#13407) — Probe-Lauf + Beleg — **BLOCKED (Mess-Sperre)**
-- Probe-Lauf `node scripts/perf.mjs --out ...` soll unter
-  `flock /home/ai/games/.lf-perf.lock` laufen. Zwei Versuche:
-  1. `flock -w 2400` (Hintergrund) — von Supervisor abgebrochen; zur Laufzeit
-     hielt u. a. `m10-janky-remeasure` (10-min-Lauf) die Sperre.
-  2. `flock -w 60` + `timeout 240` (kurzer Retry, 17:02Z) — rc=1, Lock auch
-     danach belegt (Halter/Wartende u. a.: m10-v10-gate-rerun,
-     m10-janky-remeasure, m10-heap-budget-Smoke, m10-gc-probe, m10-blend-band).
-- Beleg also NICHT erzeugt:
-  `/home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json`
-  fehlt. K4 bleibt auf `blocked`; der Lauf ist reines Ausfuehren der in K2
-  gebauten Funktion (Code ist committed und per Quell-Guard abgesichert).
-- Disponent in `/home/ai/games/.dispatch/requests.md` informiert: Restauftrag
-  ist der einmalige Probe-Lauf, sobald `.lf-perf.lock` frei ist.
+### K4 (#13407) — Probe-Lauf + Beleg — **ERLEDIGT (Restauftrag Lane m10-renderer-guard-k4, 28.11. 17:32Z)**
+- Erster Versuch 28.11. tagsueber war blocked (Mess-Sperre durchgehend fremd
+  belegt: `flock -w 2400` vom Supervisor abgebrochen, `flock -w 60` rc=1,
+  Halter/Wartende u. a. m10-v10-gate-rerun, m10-janky-remeasure,
+  m10-heap-budget-Smoke, m10-gc-probe, m10-blend-band).
+- Restauftrag als eigene Lane `m10-renderer-guard-k4` (Worktree
+  `/home/ai/games/lf-lanes/m10-renderer-guard-k4`, Board #13599–#13601)
+  abgeschlossen. Probe-Lauf mit begrenzter Wartezeit
+  (`flock -w 900` + `timeout 5400`, Log `~/tmp/m10-renderer-guard-k4/k1-perf.log`),
+  Sperre nach kurzem Warten (u. a. 1-min-Heap-Smoke von m10-heap-gate-retry)
+  frei geworden, Lauf Ende 17:32Z, Exit 0.
+- Befehl: `node scripts/perf.mjs --viewport 780x360 --dpr 3
+  --out shots/m10-renderer-guard-k4-perf.json` unter
+  `flock /home/ai/games/.lf-perf.lock`.
+- Beleg: `/home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json`
+  (Kopie des gitignorierten `shots/m10-renderer-guard-k4-perf.json`).
+- Kennzahlen:
+  - `renderer`: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`
+    → iGPU, kein SwiftShader.
+  - `rendererValid: true`, Top-Level `invalid: false`, `jsErrors: []`,
+    `passed: true`.
+  - `burst`: fps 59, `invalid: false`, `passed: true`.
+  - `minute25`: fps 60 (gemessen 60.6), `invalid: false`, `passed: true`.
+- Damit ist der K2-Guard (K1–K3 dieser Lane) an einem echten Lauf belegt:
+  der Renderer-String steht im JSON, die Kennzahl-Bloecke sind nicht mit
+  `invalid:true` markiert.
 
 ## Ergebnis
 
 - K1–K3 committed (af114498, c9316904, 98108511), commit-gate PASS, tsc rc=0,
   12/12 Guard-Tests gruen.
-- K4 blocked: Mess-Sperre durchgehend fremd belegt (Supervisor-Anweisung,
-  Abbruchkriterium erreicht).
+- K4 erledigt (Restauftrag Lane m10-renderer-guard-k4, 28.11. 17:32Z):
+  Probe-Beleg mit iGPU-Renderer-String (Mesa Intel RPL-S),
+  `rendererValid: true`, 0 JS-Fehler, burst/minute25 `passed`/nicht `invalid`.
+  Lane damit abgeschlossen.
 
 ## Offene Punkte / Folgen
 - Die beiden gesicherten Skripte decken `npm run perf` und den 10-min-Device-Lauf
