@@ -1,6 +1,6 @@
 {
   "phase": "after",
-  "generated": "2026-11-28T09:55:33.905Z",
+  "generated": "2026-11-28T15:37:03.036Z",
   "viewport": "960x540 (Canvas 480x270 @2x)",
   "data": {
     "characters": {
@@ -23,11 +23,10 @@
         "title": "Eisen-Mönch",
         "hp": 130,
         "speed": 59,
-        "armor": 2,
+        "armor": 1,
         "startWeapon": "flail",
         "mods": {
-          "moveSpeedPct": -5,
-          "maxHpPct": 25,
+          "maxHpPct": 20,
           "maxHpFlat": 90,
           "regen": 1.5,
           "xpPct": -25
@@ -115,12 +114,12 @@
       "y": 229
     },
     {
-      "text": "RÜSTUNG   2",
+      "text": "RÜSTUNG   1",
       "x": 340,
       "y": 239
     },
     {
-      "text": "+25% MAX-HP / -5% TEMPO",
+      "text": "+20% MAX-HP",
       "x": 432,
       "y": 249
     },

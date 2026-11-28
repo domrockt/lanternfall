@@ -99,7 +99,9 @@ describe("Datentabellen", () => {
       Math.round(c.hp * (1 + (c.mods.maxHpPct ?? 0) / 100)) + (c.mods.maxHpFlat ?? 0);
     expect(effectiveHp(CHARACTER_LIST[1])).toBeGreaterThan(effectiveHp(CHARACTER_LIST[0]));
     expect(CHARACTER_LIST[0].speed).toBeGreaterThan(CHARACTER_LIST[1].speed);
-    expect(CHARACTER_LIST[1].armor).toBeGreaterThan(CHARACTER_LIST[0].armor);
+    // F5-Entscheid (docs/lanes/m10-charstats-spec-followup.md): Spec GAME.md Z.35 "1 Rüstung"
+    // ⇒ Kael 1, Mira 1 (Spec schweigt zu Mira) — Tank-Intent bleibt über >= + HP-/Regen-Bonus.
+    expect(CHARACTER_LIST[1].armor).toBeGreaterThanOrEqual(CHARACTER_LIST[0].armor);
   });
 
   it("Bitmap-Font hat echte Umlaute und ß (keine AE/OE/UE-Ersetzung)", () => {
