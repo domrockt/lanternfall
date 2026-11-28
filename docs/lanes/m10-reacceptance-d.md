@@ -15,7 +15,7 @@ siehe `shots/m10-reaccd-renderer.json`.
 | K1 | Renderer-String-Pflicht vor jedem Lauf | kein SwiftShader/llvmpipe | ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2), vendor Google Inc. (Intel), webgl2=true | **PASS** | `shots/m10-reaccd-renderer.json` | ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) |
 | K2 | verify-input vollstaendig inkl. ESC | 28/28, 0 JS-Fehler | — | — | `shots/m10-reaccd-verify-input.json` | — |
 | K3 | Heap-Tor 30-min-Echtzeitlauf | HARD endMB−Minute1 ≤ +15 % (SOFT beobachten) | — | — | `shots/m10-reaccd-heap.json` | — |
-| K4 | FPS M25 780x360@3 / Burst 640x360 | ≥ 50 / ≥ 55, nur Vergleich zu Nachabnahme C | — | — | `shots/m10-reaccd-perf-*.json` | — |
+| K4 | FPS M25 780x360@3 / Burst 640x360 | ≥ 50 / ≥ 55, nur Vergleich zu Nachabnahme C | 780x360@3: M25 **60,0** FPS (worst frame 16,8 ms), Burst 60,1 — 640x360: Burst **60,0** FPS (worst frame 16,8 ms), M25 60,1 — 0 JS-Fehler; vs. Nachabnahme C (60,0/60,1): stabil, vsync-gecappt, kein Abfall | **PASS** | `shots/m10-reaccd-perf-780x360@3.json`, `shots/m10-reaccd-perf-640x360.json` | ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) |
 
 ## Methode
 
