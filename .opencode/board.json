@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10793,
+  "next": 10904,
   "cards": [
     {
       "id": 1,
@@ -14016,6 +14016,42 @@
       ],
       "created": "2026-11-28T09:28:36Z",
       "updated": "2026-11-28T09:43:43Z"
+    },
+    {
+      "id": 10900,
+      "title": "m10-fx-bakes-evo-r2 K1: Sammler-/Fixture-Update (Ist-Coverage + Frames)",
+      "description": "Sammler scripts/m10-palette-fx-guard.mjs auf Ist der Evo-Kette heben: Evo-Signaturen in realer Texturgroesse (5 baked 96/128 @ drawScale 1, thunder_seal 32x32) statt pauschal 32x32; SCALE_MANIFEST auf Ist-Draw-Scales. 1 Sammler-Lauf, Fixture + Report committen. AK: Sammler rc=0, Ist-Coverage + frames im Report belegt, palette-compliance.test.ts gruen.\n\n[lane #10251, Merge 3bedf597]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T10:07:05Z",
+      "updated": "2026-11-28T10:07:05Z"
+    },
+    {
+      "id": 10901,
+      "title": "m10-fx-bakes-evo-r2 K2: Mixel-Bakes fuer uncovered fx_evo_* Keys",
+      "description": "Fuer die in K1 als uncovered belegten fx_evo_*-Keys (Erwartung: thunder_seal hit/death) Mixel-Bake-Stufen nach MIXEL_BAKE_DEFS-Muster; Draw-Scales unveraendert (Optik identisch, Quelle schaerfer). AK: mixelLevelFor deckt alle fx_evo_*-Keys, Draw-Scale/Level <= 1, Guard-Test gruen.\n\n[lane #10252, Merge 3bedf597]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T10:07:05Z",
+      "updated": "2026-11-28T10:07:05Z"
+    },
+    {
+      "id": 10902,
+      "title": "m10-fx-bakes-evo-r2 K3: fx_boss_core Bake oder Scale<=1 (Entscheidung)",
+      "description": "fx_boss_core (Draw-Scale 3,6 via Run.ts spawnAnim): Mixel-Bake nach MIXEL_BAKE_DEFS-Muster bevorzugt; Entscheidung mit Beleg dokumentieren. Run.ts nur an der Draw-Scale-Stelle anfassen, wenn noetig. AK: Coverage fx_boss_core covered, Beleg in docs/lanes/m10-fx-bakes-evo-r2.md.\n\n[lane #10253, Merge 3bedf597]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T10:07:05Z",
+      "updated": "2026-11-28T10:07:05Z"
+    },
+    {
+      "id": 10903,
+      "title": "m10-fx-bakes-evo-r2 K4: Ratchet abbauen + Sichtbelege + Lane-Abschluss",
+      "description": "knownFindings im Fixture auf 0 ungedeckte Keys (jede Rest-Ausnahme einzeln belegt), palette-compliance.test.ts an neuen Ratchet anpassen, Full-Suite gruen, npm run build rc=0, Guard < 3 s, iGPU-Sichtbelege (>=2 Evo-Signaturen + fx_boss_core) mit Mesa-Renderer-String, art-director-Note, Lane-Doku + .lane-done. AK: Alle AK des Briefings erfuellt.\n\n[lane #10254, Merge 3bedf597]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T10:07:05Z",
+      "updated": "2026-11-28T10:07:05Z"
     }
   ]
 }
