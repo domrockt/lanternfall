@@ -460,3 +460,27 @@ bekannte GC-Sägezahn, aber diesmal durch die Re-Messung **nicht entkräftet**).
 Alle übrigen K-Kriterien (K1–K3) sind grün. Folge-Job für die Heap-Regressions-
 Diagnose von Dora zu schneiden; Belege: `shots/m3-fullrunaccf*.json` →
 `~/games/.evidence/m10-acceptance-refresh-f/`.
+
+## v1.0 Gerätetore (2026-11-28, Redmi Pad Pro, main @ `5664a7fc`)
+
+Doms Sichtabnahme 2026-11-28 10:00Z: 5 Gerätetore auf dem Redmi Pad Pro (Android 16, SM7435,
+Adreno 710, 2560x1600 @ dpr 2) gemessen. APK aus committetem main-HEAD `5664a7fc` via
+device-bridge `/install` (11:03Z Success). Vollständige Belege + Befundlisten:
+`docs/qa/v10-device-acceptance-2026-11-28.md` und `docs/lanes/m10-v10-device-acceptance.md`;
+Roh-JSONs: `~/games/.evidence/m10-v10-device-acceptance/`.
+
+| Tor | Kriterium | Messung | Urteil |
+|---|---|---|---|
+| K1 | 6 Evolutions-Fenster ≥ 60 FPS (Ziel 90) | alle 6 Einzelstufen **119,8–120,3 FPS**; Evo-Stack +6 ebenfalls 120,3 (blend 3/Frame, 0 nicht-null FB) | **PASS** |
+| K2 | Minute-25-Dichte ≥ 60 FPS | Minute 25:06, 300 Gegner Top-up: **109,4 FPS**, worst 33,4 ms, 0 JS-Fehler | **PASS** |
+| K3 | gfxinfo janky < 10 % über Messfenster | **13,44 % / 13,90 %** (2 Läufe, Minute-25-Fenster, je 10 s) | **FAIL** |
+| K4 | 10-min-Lauf, kein FPS-Abfall > 20 % | 110,5 → 108,8 FPS = **−1,5 %**; Thermal Status durchgehend 0; Akku 34,0→35,0 °C | **PASS** |
+| K5 | Text in allen Panels lesbar, RENDER_SCALE == 1 | 5 Screencaps (Titel/Charakterwahl/Level-Up/Truhe/Ergebnis) sichtgeprüft scharf; Canvas 640x360 = volle logische Auflösung (kein Teiler), quality „high" | **PASS** |
+
+**Ergebnis: 4/5 Tore PASS, K3 FAIL** (Frame-Zeit-Schwanz: p95 21 ms / p99 31 ms im Minute-25-Worst-Case
+bei quality „high"; FPS-Tore selbst mit 106–112 FPS weit grün). Befundliste mit Hebeln
+(Qualitätstier-Schwellen, Allokationen/Uploads im Frame) steht in der QA-Doku — Fixes schneidet
+der Lead aus dem Befund; in dieser Lane wurde bewusst NICHT gefixt.
+
+Abnahme-Bilder: `shots/abnahme/m10-v10-device-*.png` (im Repo). GPU-Renderer jedes Belegs:
+`Adreno (TM) 710` (kein SwiftShader → Belege gültig).

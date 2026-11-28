@@ -188,20 +188,27 @@ async function runMatrixLocal(page, results) {
   }
 }
 
-async function runMatrixDevice(page, results) {
-  const relaunch = async () => {
-    await fetch(`${BRIDGE}/launch?q=debug=1`, { method: "POST" });
+async function runMatrixDevice(browser, results, meta) {
+  // EINE CDP-Verbindung, kein App-Relaunch im Lauf (der killt connectOverCDP —
+  // Befund m10-tablet-fx-device-probe.mjs). Stattdessen page.reload() je Fenster.
+  const page = browser.contexts()[0].pages()[0];
+  page.on("pageerror", (e) => (meta.jsErrors ||= []).push(String(e)));
+  const reload = async () => {
+    await page.reload({ waitUntil: "load" });
     await startRun(page);
+    Object.assign(meta, await rendererInfo(page));
   };
+  await startRun(page);
+  Object.assign(meta, await rendererInfo(page));
   for (let i = 0; i <= EVOS.length; i++) {
     const evo = i === 0 ? null : EVOS[i - 1];
-    await relaunch();
+    await reload();
     if (evo) await page.evaluate((e) => window.__lf.addWeapon(e, 1), evo);
     await sleep(3000);
     results.push(await measureWindow(page, evo ? `single:${evo}` : "base"));
   }
   for (const [tag, order] of [["stackA", ORDER_A], ["stackB", ORDER_B]]) {
-    await relaunch();
+    await reload();
     await sleep(1500);
     results.push(await measureWindow(page, `${tag}:base`));
     for (let i = 0; i < order.length; i++) {
@@ -228,13 +235,23 @@ if (mode === "local") {
   await browser.close();
   stop();
 } else {
-  await fetch(`${BRIDGE}/launch?q=debug=1`, { method: "POST" });
+  // App starten (falls noetig) und auf die Game-Page warten, BEVOR
+  // connectOverCDP laeuft (Playwright sieht danach keine neuen Targets).
+  let ready = false;
+  for (let i = 0; i < 60 && !ready; i++) {
+    try {
+      const list = await (await fetch(`${CDP}/json/list`)).json();
+      ready = Array.isArray(list) && list.some((p) => (p.url || "").includes("index.html"));
+    } catch { /* CDP noch nicht bereit */ }
+    if (!ready) {
+      await fetch(`${BRIDGE}/launch?q=debug=1`, { method: "POST" }).catch(() => {});
+      await sleep(2000);
+    }
+  }
+  if (!ready) throw new Error("CDP: keine Game-Page nach ~120 s");
   const { chromium } = await loadPlaywright();
   const browser = await chromium.connectOverCDP(CDP);
-  const page = browser.contexts()[0].pages()[0];
-  page.on("pageerror", (e) => (meta.jsErrors ||= []).push(String(e)));
-  meta = { ...meta, ...(await rendererInfo(page)) };
-  await runMatrixDevice(page, results);
+  await runMatrixDevice(browser, results, meta);
   await browser.close();
 }
 
