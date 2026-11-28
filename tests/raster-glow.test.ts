@@ -7,6 +7,8 @@
  * K3/K4 ergänzen Gradient-Quantisierung (textures.ts) und ADD-Alpha-Deckel.
  */
 import { describe, expect, it } from "vitest";
+// @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
+import { readFileSync } from "node:fs";
 import {
   EVOLUTION_SIGNATURES,
   FX_MIXEL_BASES,
@@ -21,6 +23,10 @@ import {
   mixelMaxLevel,
   thunderSignatureFrame,
 } from "../src/gfx/gen-fx";
+import { LIGHT_EDGE_STEPS, lightEdgeAlphaFor, vignetteSteps } from "../src/gfx/textures";
+
+const TEXTURES_TS = readFileSync(new URL("../src/gfx/textures.ts", import.meta.url), "utf8");
+const BAKEATLAS_TS = readFileSync(new URL("../src/gfx/bakeAtlas.ts", import.meta.url), "utf8");
 
 /** Near-White-Zeichen in FX-Grids: Palette 12 ('c'), 13 ('d'), 22 ('m'). */
 const NEAR_WHITE_CHARS = new Set(["c", "d", "m"]);
@@ -144,5 +150,72 @@ describe("K2: Bestand — fx-mixel-Basenliste ist konsistent", () => {
   it("alle FX_MIXEL_BASES haben Level-1-Frames und Bake-Defs", () => {
     const level1 = mixelLevel1Frames();
     for (const base of FX_MIXEL_BASES) expect(level1[base]).toBeTruthy();
+  });
+});
+
+// ── K3: Gradient-Quantisierung (textures.ts) + bakeAtlas-Check ──────────────
+
+describe("K3: Licht-Außenkante in diskreten Stufen (1-px-Raster statt Gradient)", () => {
+  it("Bänder lückenlos über 0..96, je >= 6 px breit, Alpha monoton fallend", () => {
+    expect(LIGHT_EDGE_STEPS[0][0]).toBe(0);
+    for (let i = 0; i < LIGHT_EDGE_STEPS.length; i++) {
+      const [r0, r1, a] = LIGHT_EDGE_STEPS[i];
+      expect(r1 - r0, `Band ${i} Breite`).toBeGreaterThanOrEqual(6);
+      if (i > 0) {
+        expect(r0).toBe(LIGHT_EDGE_STEPS[i - 1][1]); // lückenlos
+        expect(a, `Band ${i} Alpha`).toBeLessThan(LIGHT_EDGE_STEPS[i - 1][2]);
+      }
+    }
+    expect(LIGHT_EDGE_STEPS[LIGHT_EDGE_STEPS.length - 1][1]).toBe(96);
+  });
+
+  it("lightEdgeAlphaFor liefert nur Stufenwerte, harte Kanten an den Grenzen", () => {
+    const alphas = new Set(LIGHT_EDGE_STEPS.map(([, , a]) => a));
+    for (const d of [0, 1, 69.5, 70, 70.5, 75.5, 76.5, 82.5, 88.5, 95.5, 96]) {
+      expect(alphas.has(lightEdgeAlphaFor(d)), `d=${d} -> ${lightEdgeAlphaFor(d)}`).toBe(true);
+    }
+    // Harte Kanten: keine Zwischenwerte knapp beidseits der Grenzen.
+    expect(lightEdgeAlphaFor(69.9)).toBe(1);
+    expect(lightEdgeAlphaFor(70.1)).toBe(0.66);
+    expect(lightEdgeAlphaFor(76.1)).toBe(0.38);
+    expect(lightEdgeAlphaFor(88.1)).toBe(0.08);
+    expect(lightEdgeAlphaFor(150)).toBe(0);
+  });
+
+  it("Quelltext-Guard: keine radialen Canvas-Gradients mehr in textures.ts", () => {
+    expect(TEXTURES_TS).not.toContain("createRadialGradient");
+    expect(TEXTURES_TS).not.toContain("createLinearGradient");
+    expect(TEXTURES_TS).toContain("LIGHT_EDGE_STEPS");
+    expect(TEXTURES_TS).toContain("vignetteSteps()");
+  });
+
+  it("bakeAtlas: keine Gradients, Bake bleibt nearest (imageSmoothingEnabled = false)", () => {
+    expect(BAKEATLAS_TS).not.toContain("createRadialGradient");
+    expect(BAKEATLAS_TS).not.toContain("createLinearGradient");
+    expect((BAKEATLAS_TS.match(/imageSmoothingEnabled = false/g) ?? []).length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe("K3: Vignette in diskreten Stufen (gleiche Alpha-Treppe wie der Gradient)", () => {
+  it("11 Bänder über 70..290 plus Ecken-Klemme, lückenlos, monoton steigend", () => {
+    const steps = vignetteSteps();
+    expect(steps.length).toBe(12);
+    for (let i = 0; i < steps.length - 1; i++) {
+      const [r0, r1, a] = steps[i];
+      expect(r1 - r0).toBeCloseTo(20, 6);
+      expect(steps[i + 1][0]).toBeCloseTo(r1, 6);
+      if (i > 0) expect(a).toBeGreaterThan(steps[i - 1][2]);
+    }
+    expect(steps[steps.length - 1]).toEqual([290, 410, 0.72]);
+  });
+
+  it("Band-Alpha entspricht dem Original-Gradient am Bandende (± 0,01)", () => {
+    const alphaAt = (t: number): number =>
+      t < 0.7 ? 0.18 * (t / 0.7) : 0.18 + 0.54 * ((t - 0.7) / 0.3);
+    const steps = vignetteSteps();
+    for (let i = 0; i < 11; i++) {
+      const expected = alphaAt((i + 1) / 11);
+      expect(steps[i][2]).toBeCloseTo(Math.round(expected * 100) / 100, 6);
+    }
   });
 });
