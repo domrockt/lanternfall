@@ -1,0 +1,19 @@
+# Lane m10-autoplay-victory-path — FERTIG (2026-11-28)
+
+Fix-Job F2 (Nachabnahme D): 30-min-Echtzeit-Heap-Lauf endete victory=false statt mit Sieg.
+
+- K1 (Commit 0eac3f9): Wurzel = Harness-Truncation — `scripts/m10-heap-budget.mjs` brach bei
+  `s.time >= RUN_SECONDS` (1800) ab, exakt wenn `FINAL_BOSS_AT` (src/logic/scaling.ts) den Endboss
+  spawnt; der Endboss hatte 0 s Kampfzeit. Bot intakt: K1-Probe (God/AutoPlay, seed 99, 30x→1x)
+  siegt im Echtzeit-Kampf (victory=true, dawn, ~40 s, 0 JS-Fehler).
+- K2 (Commit 642a2f5): Hebel (b) Harness-Fix — Truncation erst nach `RUN_SECONDS + BOSS_GRACE_SECONDS`
+  (600 s); dazwischen läuft der Endboss-Kampf in Echtzeit bis zum Sieg-Break (Results, reason dawn).
+  Kein Eingriff in `src/logic/autoplay.ts` (kein Risiko fürs normale Spiel); kein Testfile nötig
+  (Lever a entfällt). tsc + 1394 Tests grün.
+- K3 (Commit e74198b): `shots/m10-autoplay-victory-after.json` — 30-min-Echtzeitlauf unter
+  `flock /home/ai/games/.lf-perf.lock`: **victory=true** (dawn), truncated=false, simSeconds 1822,1,
+  **0 JS-Fehler**, **HARD PASS** endMB 41,4 MB vs Minute1 56,4 MB = −26,6 % (Tor ≤ +15 %),
+  Renderer iGPU (Intel RPL-S) im JSON (kein SwiftShader). FPS min 56,6 / median 60,5.
+  SOFT-Windows-Peaks +39,9 % = bekanntes F1-GC-Sägezahn-Rauschen (Beobachtungswert, wie Baseline).
+- Doku: `docs/lanes/m10-autoplay-victory-path.md` (PASS/FAIL je Karte, Hebelbegruendung).
+- 3/3 Karten PASS; `src/scenes/Run.ts` nicht berührt (Ausnahme lt. Briefing respektiert).
