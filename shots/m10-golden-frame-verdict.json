@@ -1,7 +1,7 @@
 {
  "name": "m10-golden-frame-verdict",
- "generatedAt": "2026-11-28T09:03:03.362Z",
- "runtimeMs": 22598,
+ "generatedAt": "2026-11-28T15:15:16.289Z",
+ "runtimeMs": 33519,
  "seeds": [
   101,
   202,
@@ -24,7 +24,7 @@
    "seed": 101,
    "identical": true,
    "matchesBaseline": true,
-   "hash": "ee84b3afc40918c3bcc423d5aaf1d38b537c9ea8bb80c52cc5f43c7b53d46804",
+   "hash": "9d3f3b2aff8461fc6f4086da41f63415e02108a6c2772d27ed1abd8dc006b352",
    "marks": 10,
    "final": {
     "scene": "run",
@@ -44,7 +44,7 @@
    "seed": 202,
    "identical": true,
    "matchesBaseline": true,
-   "hash": "5bd267501ce3054b5a95814137415f184df38ea9da120af35eb06737d9e7928f",
+   "hash": "b4555df0be113816b7bef47300157f303532cc0f1de7252ce1bf88ddd81e97e1",
    "marks": 10,
    "final": {
     "scene": "run",
@@ -64,7 +64,7 @@
    "seed": 404,
    "identical": true,
    "matchesBaseline": true,
-   "hash": "2f338e1c299779e67989342c47eee636f6af7431f9ce2f1401cf42a8681fe32c",
+   "hash": "a9f247a96b2e34d6e77dbcc29ac522ca77e724dd46dc184b66e34b6e3c2011ff",
    "marks": 10,
    "final": {
     "scene": "run",
