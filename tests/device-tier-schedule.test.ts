@@ -140,3 +140,52 @@ describe("Geräteknoten: Stufen-Cap + Zeitbudget-Grenze (K2)", () => {
     expect(states.slice(1).every((s) => s.belowMs === 0 && s.aboveMs === 0)).toBe(true);
   });
 });
+describe("Hysterese bei 120 Hz ohne Flapping (K3)", () => {
+  /** Startzustand nach dem Cap (medium, Timer 0) — der anfaengliche
+   *  high->medium-Klemmschritt zaehlt nicht als Wechsel. */
+  const clamped = (): QualityState =>
+    stepQuality(initialQualityState(), 110, 1000 / 110, DEV);
+
+  it("60 s bei 109–112 FPS -> 0 Stufenwechsel", () => {
+    let changes = 0;
+    for (const fps of [109, 110, 111, 112]) {
+      const r = run(clamped(), fps, 1000 / fps, Math.round(60 * fps), DEV);
+      changes += r.changes;
+      expect(r.states.every((s) => s.tier === "medium")).toBe(true);
+    }
+    expect(changes).toBe(0);
+  });
+
+  it("Last-Jitter um die Tier-Grenze (55–65 FPS) loest keine Kaskade aus", () => {
+    let s = clamped();
+    let changes = 0;
+    // 90 s alternating 55/65 FPS (beide nahe der 59,9-Kante).
+    for (let i = 0; i < 5400; i++) {
+      const fps = i % 2 === 0 ? 55 : 65;
+      const next = stepQuality(s, fps, 1000 / fps, DEV);
+      if (next.tier !== s.tier) changes++;
+      s = next;
+    }
+    expect(changes).toBeLessThanOrEqual(1);
+  });
+
+  it("Erholung von low braucht 12 s am Stueck ab 100 FPS (Muster Desktop)", () => {
+    let s = initialQualityState();
+    // Abstieg nach low: 20 ms Frames, 3 s.
+    for (let i = 0; i < 150; i++) s = stepQuality(s, 50, 20, DEV);
+    expect(s.tier).toBe("low");
+    // 90 FPS (11 ms, unter recoverFps 100): kein Aufstieg, Timer eingefroren.
+    for (let i = 0; i < 600; i++) s = stepQuality(s, 90, 1000 / 90, DEV);
+    expect(s.tier).toBe("low");
+    expect(s.aboveMs).toBe(0);
+    // 110 FPS: nach QUALITY_HIGH_MS (12 s) zurueck auf medium (Cap blockt high).
+    // 1400 Schritte: 12 s / (1000/110) = 1320 exakt — Puffer gegen FP-Runden.
+    for (let i = 0; i < 1400; i++) s = stepQuality(s, 110, 1000 / 110, DEV);
+    expect(s.tier).toBe("medium");
+  });
+
+  it("Haltezeiten bleiben die Desktop-Konstanten", () => {
+    expect(QUALITY_LOW_MS).toBe(3000);
+    expect(QUALITY_HIGH_MS).toBe(12000);
+  });
+});
