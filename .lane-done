@@ -1,0 +1,19 @@
+Lane m10-balance-damp-test — abgeschlossen, Versuch 3 (2026-11-28, 07:4xZ)
+
+Ergebnis: Lane REDUNDANT geschlossen. Der Beanstandete Bedarf (Test
+"Minute 0-24 bleibt unveraendert" in tests/balance-endgame.test.ts friert die
+Spawnraten 18-24 ein, die SPAWN_DAMP_18_24 der Lane m10-balance-spawn-damp
+aendert) wurde von der Dependency-Lane SELBST bedient: Commit 808e3f3 auf
+m10-balance-spawn-damp enthaelt Fenster 0-17 + Daempfungs-Expectation 18-24
+(importierte Konstante, Rampe 240 s, Grenzfall 17->18 sprungfrei) — inhaltlich
+deckungsgleich mit unseren K1/K2-Edits (92d2bf4, 249f7de), dieselben Hunks.
+
+Massnahme: eigene Test-Edits zurueckgenommen (Datei bitgleich mit main,
+Merge-Konflikt mit 808e3f3 vermieden). Verifikation: tsc rc=0,
+vitest tests/balance-endgame.test.ts 9/9 gruen. src/data/waves.ts wurde zu
+keiner Zeit angefasst (Disponent-Claim eingehalten). Der Fix geht mit dem
+Merge von m10-balance-spawn-damp in main.
+
+Karten: #8956/#8957/#8958 done (Commits 41fee9b, a3f0e5c).
+Beleg: ~/games/.evidence/m10-balance-damp-test/m10-balance-damp-test-versuch3.json
+Doku: docs/lanes/m10-balance-damp-test.md (Abschnitt "Versuch 3")
