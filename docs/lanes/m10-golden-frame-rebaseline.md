@@ -67,4 +67,10 @@ Verifikationslauf ohne Code-Änderung):
 
 ## K3 (#12855): Guard grün + Baseline-Stand
 
-siehe unten (wird beim Abarbeiten ergänzt).
+- `npx vitest run tests/golden-frame.test.ts` → 4/4 PASS (Ergebnis im Commit).
+- Baseline-Stand dokumentiert:
+  - Skript-Kopf (`scripts/m10-golden-frame.mjs`): Rebaseline-Commit `761f274a`,
+    Code-Stand des Capture `213b8494`; künftige Rebaselines tragen via
+    `--baseline-at=<Merge-SHA>` den Stand in die Baseline-JSON ein.
+  - `shots/m10-golden-frame-baseline.json`: Feld `baselineAt`.
+- Lane-Abschluss: siehe unten (`.lane-done`).

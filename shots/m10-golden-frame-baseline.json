@@ -1,7 +1,8 @@
 {
  "name": "m10-golden-frame-baseline",
  "generatedAt": "2026-11-28T15:14:38.854Z",
- "note": "Golden-Frame-Baseline (Lane m10-golden-frame-guard #10311). NIE stillschweigend neu schreiben: nur mit --write-baseline nach GEWOLLTER Verhaltensaenderung, Begruendung im Commit (siehe docs/lanes/m10-golden-frame-guard.md).",
+ "baselineAt": "761f274a (Rebaseline-Commit #12854; Code-Stand des Capture: 213b8494, alle 76 Merges seit ab50197b im Commit genannt)",
+ "note": "Golden-Frame-Baseline (Lane m10-golden-frame-guard #10311, Rebaseline m10-golden-frame-rebaseline #12854). NIE stillschweigend neu schreiben: nur mit --write-baseline --baseline-at=<Merge-SHA> nach GEWOLLTER Verhaltensaenderung, Begruendung im Commit (siehe docs/lanes/m10-golden-frame-guard.md).",
  "seeds": [
   101,
   202,
