@@ -1,0 +1,25 @@
+Lane m10-pool-trim — Karte #2438 „Pool.trim verdrahten oder Doku korrigieren“ — 2026-11-28
+
+Befund: Pool.trim() existiert (src/systems/Pool.ts:65), ist korrekt implementiert und
+unit-getestet, hat aber 0 Aufrufstellen im Run-Pfad (grep src/, git log -S "trim(" → nie
+verdrahtet gewesen). Die Doku (docs/lanes/m10-heap-tail.md:85) behauptet fälschlich
+„der Pool kappt Retention per trim()“.
+
+Entscheidung: Doku korrigiert (Pool.ts-Header-Kommentar + docs/lanes/m10-pool-trim.md);
+Verdrahtung an Karte #2439 verwiesen (EnemyPool/ProjectilePool/CombatSystem = hard
+boundary; einziger generischer Pool-Nutzer DamageNumbers cappt bei MAX_ENTRIES=48).
+
+Vorher-Messung (scripts/m10-pool-trim.mjs, 3-min-Probe, 500-Gegner-Burst, Seed 99,
+shots/m10-pool-trim-before.json): T0 38,8 MB bei 499 aktiven Gegnern → T+180 s
+50,8 MB nach erzwungenem GC (309 aktiv, 197 Kills, 0 JS-Fehler) — Burst-Retention
+wird nach Ablauf der Spitze nicht freigegeben, weil nichts trims.
+
+Qualität: tests/pool-trim.test.ts 5/5 (trim-Vertrag gepinnt), npm test 1503/1503
+(143 Dateien), npx tsc --noEmit rc=0, Reviewer-Kontrolleur: PASS.
+Commits: c7893e9 (K1), e98c755 (K2), 28ea94d (K3), 09d1659 (K4).
+
+Offene Punkte: (1) per-Pool-free-Zählung im Messskript nicht auswertbar — CDP-Heap-
+Snapshot dedupliziert Property-Werte über Shape-Knoten; Beleg läuft über die
+Gesamtheap-Ebene (in docs/lanes/m10-pool-trim.md dokumentiert). (2) Korrektur der
+fremden docs/lanes/m10-heap-tail.md:85 über /home/ai/games/.dispatch/requests.md
+beim Merge nachziehen.
