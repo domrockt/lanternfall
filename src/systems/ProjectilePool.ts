@@ -61,11 +61,14 @@ function sameTexture(
   sprite: Phaser.GameObjects.Image,
   key: string,
 ): boolean {
+  // Test-Stubs ohne texture-Feld (alte Pool-Mocks) landen bewusst im
+  // Fehlschlag-Richtung "erneut anwenden" — niemals crashen, nie überspringen.
   const tex = sprite.texture as Phaser.Textures.Texture | undefined;
   if (!tex) return false;
   if (tex.key === ATLAS_KEY) {
     return (sprite.frame?.name ?? null) === key;
   }
+  // Nicht-Atlas-Key: Texture-Key muss exakt passen (Frame ist __BASE).
   return tex.key === key;
 }
 
