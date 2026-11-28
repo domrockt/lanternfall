@@ -373,7 +373,9 @@ export class TouchControls {
       .container(0, 0, [bg, bar1, bar2])
       .setDepth(TOUCH_DEPTH)
       .setScrollFactor(0)
-      .setVisible(false);
+      .setVisible(false)
+      // m10-hud-safearea: Name fuer die HUD-Messung (kein Layout-Eingriff).
+      .setName("hud-touch-pause");
     bg.setScrollFactor(0);
     bar1.setScrollFactor(0);
     bar2.setScrollFactor(0);
