@@ -82,7 +82,30 @@ art-director-Sichtprüfung (EINMAL, Maßstab kommerziell auslieferbar): siehe Ur
 
 ## art-director-Urteil
 
-<!-- ART_DIRECTOR_VERDICT -->
+**Runde 1 (27.11.28, Nachmittag): FAIL (3/5 Kriterien unter Auslieferungsmaßstab).**
+Noten: (a) Identität 3 — Orbs lesen als weiße Blitz/Dunst-Fetzen, nicht als Seele;
+(b) Kern flächig 4; **(c) kalte Farbigkeit 2 (decisiv)** — die Kaltbänder 6/5 sind dunkel
+und sterben im ADD-Blend bzw. am NORMAL-gezeichneten Orb als 1-px-Rand; paleMist liest
+neutral-grau; (d) Flammenform 3 — Sway/High-Freq-Sin rezettet die Silhouette bei 1x;
+(e) Mixel 4. Korrekturen: Kaltzone verbreitern, Halo kalt tönen, Silhouette entzacken.
+
+**Fixrunde 1 (Commits facd35ac, c57d2e6e):**
+- Kaltraum = äußere Flamme: paleMist(9) bis d<0.86 (vorher 0.78), fogBlue-Kante bis 0.93,
+  Kern 13 bis 0.48 — die äußere Drittelfläche liest jetzt kalt.
+- Halo: breite fogBlue-Außenzone gebacken; haloAlpha 0.35 getestet und verworfen
+  (milchige ADD-Pools über grünem Grund) → final 0.28 / scale 0.85. Die Kälte trägt die
+  NORMAL-gezeichnete Flamme (exakte Palettenfarben), nicht der ADD-Pool.
+- Silhouette: Sway 2.2→1.3, Sinus 0.7→0.5, Wobble 0.05→0.03.
+
+**Runde 2 (Bestätigungsrunde nach Fixrunde 1):** siehe unten.
+
+<!-- ART_DIRECTOR_VERDICT_R2 -->
+
+**Palette-Randbedingung (beide Runden):** Die 32er-Palette hat keine gesättigte Türkis-Stufe.
+Off-Palette-Farben sind verboten (Palette-Guard), ADD über grünem Moorgrund verschiebt Blau
+nach grau-grün. Die maximal kalte lieferbare Identität ist: flächig weißer Kern + cyan-graue
+(paleMist) Außenflamme + blaue (fogBlue) Kante/Kontur + kühler Glow-Pool. Eine echte
+Türkis-Stufe bleibt eine Dom/Rhea-Palette-Entscheidung (bereits in der Alt-Lane-Doku notiert).
 
 ## Offene Punkte
 
