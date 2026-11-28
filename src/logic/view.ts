@@ -177,3 +177,53 @@ export function isIntegerPixelPerfect(spec: ViewSpec): boolean {
   return Math.abs(spec.cssWidth * spec.dpr - spec.width * spec.scale) <= 0.01
     && Math.abs(spec.cssHeight * spec.dpr - spec.height * spec.scale) <= 0.01;
 }
+
+export interface CanvasSnap {
+  /** Verschiebung in CSS-Px, die den Rect auf ganze Geraetepixel bringt (0 = schon ganzzaehlig). */
+  dx: number;
+  dy: number;
+  /** Position nach dem Verschieben (leftCss + dx). */
+  snappedLeftCss: number;
+  snappedTopCss: number;
+  /** true = Rect lag bereits auf ganzen Geraetepixeln, keine Aenderung noetig. */
+  alreadySnapped: boolean;
+}
+
+/**
+ * M10-view-pixel-snap: Verschiebung (CSS-Px), die einen Canvas-Rect mit linker/
+ * oberer Kante bei leftCss/topCss auf GANZE Geraetepixel snapt (Bedarf aus
+ * Lane m10-view-4k, Beleg /home/ai/games/.evidence/m10-view-4k/:
+ * 2560x1080@1 -> Canvas 2559 Geraetepx, zentriert bei CSS-x=0.5 -> die linke
+ * Randspalte blurrt zum Seitenhintergrund).
+ *
+ * Die View-Rechnung (computeView) bleibt unangetastet — bei unteilbaren
+ * Breiten ist ein 1-Geraetepx-Defizit bei ganzzahligem Scale mathematisch
+ * unvermeidbar; hier wird nur die POSITIONIERUNG korrigiert:
+ * - Nach UNEN/LINKS abrunden (floor) -> die Restspalte landet HART am rechten/
+ *   unteren Rand (Seitenhintergrund mit scharfer Kante) statt zu verblurren.
+ * - Toleranz 1e-4 Geraetepixel frisst Browser-Rauschen in getBoundingClientRect.
+ * - Faelschungs-sicher: NaN/Infinity/dpr<=0 liefern dx=dy=0.
+ * Reine Funktion ohne DOM, in Vitest testbar.
+ */
+export function snapCanvasRect(leftCss: number, topCss: number, dpr: number): CanvasSnap {
+  const d = finitePositive(dpr, 1);
+  const EPS = 1e-4;
+  const snapOne = (css: number): { delta: number; snapped: number } => {
+    if (!Number.isFinite(css)) return { delta: 0, snapped: css };
+    const device = css * d;
+    const deltaDevice = Math.floor(device + EPS) - device;
+    // Bereits ganzzaehlig (oder nur Rauschen) -> exakt 0, kein Transform.
+    if (Math.abs(deltaDevice) <= EPS) return { delta: 0, snapped: css };
+    const deltaCss = deltaDevice / d;
+    return { delta: deltaCss, snapped: css + deltaCss };
+  };
+  const x = snapOne(leftCss);
+  const y = snapOne(topCss);
+  return {
+    dx: x.delta,
+    dy: y.delta,
+    snappedLeftCss: x.snapped,
+    snappedTopCss: y.snapped,
+    alreadySnapped: x.delta === 0 && y.delta === 0,
+  };
+}

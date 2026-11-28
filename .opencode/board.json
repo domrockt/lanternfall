@@ -14631,27 +14631,38 @@
       "id": 11148,
       "title": "m10-view-pixel-snap K1: Vorher-Scan 2560x1080@1 + Kontrolle 1280x720@1",
       "description": "Skript scripts/m10-view-snap.mjs: Pixel-Scan bei 2560x1080@1 (Kontrolle 1280x720@1), Balken-/Kanten-Beleg (barsPx, Canvas-Rect). Before-JSON + Shot nach /home/ai/games/.evidence/m10-view-pixel-snap/. Abnahme: JSON belegt barsPx.left=1 bei 2560x1080@1 (Canvas 2559 Geraetepx, CSS-x=0.5) und 0 Balken bei der Kontrolle; 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T10:42:59Z",
           "by": "build",
           "text": "todo → doing: Lane m10-view-pixel-snap angenommen: Vorher-Scan 2560x1080@1 (Bedarf aus m10-view-4k K2-Meldung)."
+        },
+        {
+          "at": "2026-11-28T10:46:27Z",
+          "by": "build",
+          "text": "doing → review: Skript scripts/m10-view-snap.mjs (1 Iteration) + Before-JSON/Shots in /home/ai/games/.evidence/m10-view-pixel-snap/. Beleg: 2560x1080@1 canvasRectCss=[0.5,0,2559,1080], rectDevicePx=[0.5,0], rectIntegerDevice=false, barsPx.left=1; Kontrolle 1280x720@1 alles 0, 0 JS-Fehler, Renderer Mesa Intel RPL-S. Commit e99ffb8d."
         }
       ],
       "created": "2026-11-28T10:42:57Z",
-      "updated": "2026-11-28T10:42:59Z"
+      "updated": "2026-11-28T10:46:27Z"
     },
     {
       "id": 11149,
       "title": "m10-view-pixel-snap K2: Fix — Canvas-Rect auf ganze Geraetepixel snappen",
       "description": "Snap im POSITIONIERUNGSPfad (src/main.ts bzw. index.html), nicht in der View-Rechnung: reine Helper-Funktion snapCanvasRect ADDITIV in src/logic/view.ts ergaenzen (bestehende Exporte unangetastet), main.ts konsumiert sie. Restspalte nach rechts (harte Kante). Abnahme: npx tsc --noEmit rc=0, bestehende Tests gruen, bestehende view.ts-Exporte unveraendert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T10:46:27Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: snapCanvasRect additiv in src/logic/view.ts, Konsum in src/main.ts applyView (Transform nach Layout-Messung, Restspalte nach rechts)."
+        }
+      ],
       "created": "2026-11-28T10:42:57Z",
-      "updated": "2026-11-28T10:42:57Z"
+      "updated": "2026-11-28T10:46:27Z"
     },
     {
       "id": 11150,
