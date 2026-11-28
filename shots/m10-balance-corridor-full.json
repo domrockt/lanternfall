@@ -1,7 +1,7 @@
 {
   "lane": "m10-balance-corridor-guard",
   "mode": "full",
-  "generatedAt": "2026-11-28T12:35:42.789Z",
+  "generatedAt": "2026-11-28T13:34:56.431Z",
   "parameters": {
     "scale": 30,
     "seeds": [
@@ -42,13 +42,13 @@
       "seed": 101,
       "character": "mira",
       "outcome": "dawn",
-      "endSecond": 1825.8,
+      "endSecond": 1827.2,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 35,
+      "endLevel": 36,
       "result": {
         "reason": "dawn",
-        "level": 35,
-        "kills": 5428,
+        "level": 36,
+        "kills": 6300,
         "god": false,
         "character": "mira"
       },
@@ -81,52 +81,52 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 311.7500000000366
+          "at": 323.0500000000392
         },
         {
           "index": 1,
-          "at": 626.5499999999779
+          "at": 629.1499999999755
         },
         {
           "index": 2,
-          "at": 932.0499999997
+          "at": 934.5499999996978
         },
         {
           "index": 3,
-          "at": 1228.4999999994304
+          "at": 1235.7499999994238
         },
         {
           "index": 4,
-          "at": 1528.099999999158
+          "at": 1526.5999999991593
         },
         {
           "index": 5,
-          "at": 1822.59999999889
+          "at": 1823.9499999988889
         }
       ],
       "lastSeenByBoss": {
-        "0": 310.4500000000363,
-        "1": 620.949999999983,
-        "2": 924.8999999997066,
-        "3": 1222.6999999994357,
-        "4": 1516.1999999991688,
-        "5": 1815.6999999988964
+        "0": 311.00000000003644,
+        "1": 623.199999999981,
+        "2": 920.7499999997103,
+        "3": 1234.2499999994252,
+        "4": 1524.2499999991614,
+        "5": 1819.7499999988927
       },
       "pageErrors": [],
-      "wallSeconds": 90.6,
-      "endMinute": 30.43
+      "wallSeconds": 91.3,
+      "endMinute": 30.45
     },
     {
       "seed": 202,
       "character": "mira",
       "outcome": "dawn",
-      "endSecond": 1828.7,
+      "endSecond": 1831.3,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
       "endLevel": 36,
       "result": {
         "reason": "dawn",
         "level": 36,
-        "kills": 6727,
+        "kills": 7017,
         "god": false,
         "character": "mira"
       },
@@ -159,52 +159,52 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 315.10000000003737
+          "at": 332.0000000000412
         },
         {
           "index": 1,
-          "at": 629.8499999999749
+          "at": 633.5999999999715
         },
         {
           "index": 2,
-          "at": 931.2999999997007
+          "at": 934.349999999698
         },
         {
           "index": 3,
-          "at": 1226.1499999994326
+          "at": 1232.249999999427
         },
         {
           "index": 4,
-          "at": 1525.4999999991603
+          "at": 1529.5499999991566
         },
         {
           "index": 5,
-          "at": 1825.4499999988875
+          "at": 1828.0499999988851
         }
       ],
       "lastSeenByBoss": {
-        "0": 312.45000000003677,
-        "1": 624.4499999999798,
-        "2": 915.4499999997151,
-        "3": 1223.8999999994346,
-        "4": 1514.4999999991703,
-        "5": 1825.2499999988877
+        "0": 327.9000000000403,
+        "1": 623.3999999999808,
+        "2": 924.349999999707,
+        "3": 1220.3499999994378,
+        "4": 1524.849999999161,
+        "5": 1824.3499999988885
       },
       "pageErrors": [],
-      "wallSeconds": 89.2,
-      "endMinute": 30.48
+      "wallSeconds": 92.7,
+      "endMinute": 30.52
     },
     {
       "seed": 404,
       "character": "mira",
       "outcome": "dawn",
-      "endSecond": 1820.8,
+      "endSecond": 1829.9,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
       "endLevel": 36,
       "result": {
         "reason": "dawn",
         "level": 36,
-        "kills": 6167,
+        "kills": 6832,
         "god": false,
         "character": "mira"
       },
@@ -237,52 +237,52 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 310.0500000000362
+          "at": 316.70000000003773
         },
         {
           "index": 1,
-          "at": 622.2999999999818
+          "at": 630.5999999999742
         },
         {
           "index": 2,
-          "at": 923.6999999997076
+          "at": 932.5499999996996
         },
         {
           "index": 3,
-          "at": 1221.0999999994372
+          "at": 1232.349999999427
         },
         {
           "index": 4,
-          "at": 1519.6499999991656
+          "at": 1528.2999999991578
         },
         {
           "index": 5,
-          "at": 1817.5499999988947
+          "at": 1826.6999999988864
         }
       ],
       "lastSeenByBoss": {
-        "0": 300.45000000003404,
-        "1": 621.9499999999821,
-        "2": 922.6999999997086,
-        "3": 1217.1999999994407,
-        "4": 1510.1999999991742,
-        "5": 1805.6999999989055
+        "0": 311.15000000003647,
+        "1": 625.6999999999787,
+        "2": 917.6999999997131,
+        "3": 1228.6499999994303,
+        "4": 1512.8499999991718,
+        "5": 1823.799999998889
       },
       "pageErrors": [],
-      "wallSeconds": 90.5,
-      "endMinute": 30.35
+      "wallSeconds": 91.8,
+      "endMinute": 30.5
     },
     {
       "seed": 101,
       "character": "kael",
       "outcome": "dawn",
-      "endSecond": 1833.7,
+      "endSecond": 1832.1,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
       "endLevel": 34,
       "result": {
         "reason": "dawn",
         "level": 34,
-        "kills": 5664,
+        "kills": 6056,
         "god": false,
         "character": "kael"
       },
@@ -315,52 +315,52 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 329.00000000004053
+          "at": 328.30000000004037
         },
         {
           "index": 1,
-          "at": 648.8999999999576
+          "at": 642.5999999999633
         },
         {
           "index": 2,
-          "at": 940.2999999996925
+          "at": 935.8999999996965
         },
         {
           "index": 3,
-          "at": 1239.94999999942
+          "at": 1237.5999999994222
         },
         {
           "index": 4,
-          "at": 1534.749999999152
+          "at": 1532.449999999154
         },
         {
           "index": 5,
-          "at": 1830.499999998883
+          "at": 1828.8999999988844
         }
       ],
       "lastSeenByBoss": {
-        "0": 315.95000000003756,
-        "1": 646.24999999996,
-        "2": 936.1999999996963,
-        "3": 1232.199999999427,
-        "4": 1528.1999999991579,
-        "5": 1828.9499999988843
+        "0": 312.90000000003687,
+        "1": 639.599999999966,
+        "2": 932.0999999997,
+        "3": 1228.5999999994303,
+        "4": 1522.599999999163,
+        "5": 1816.5499999988956
       },
       "pageErrors": [],
-      "wallSeconds": 91.4,
-      "endMinute": 30.56
+      "wallSeconds": 94.3,
+      "endMinute": 30.54
     },
     {
       "seed": 202,
       "character": "kael",
       "outcome": "dawn",
-      "endSecond": 1826.3,
+      "endSecond": 1826.9,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 35,
+      "endLevel": 34,
       "result": {
         "reason": "dawn",
-        "level": 35,
-        "kills": 7834,
+        "level": 34,
+        "kills": 5803,
         "god": false,
         "character": "kael"
       },
@@ -393,52 +393,52 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 330.05000000004077
+          "at": 330.1500000000408
         },
         {
           "index": 1,
-          "at": 645.1999999999609
+          "at": 644.6499999999614
         },
         {
           "index": 2,
-          "at": 929.3499999997025
+          "at": 939.849999999693
         },
         {
           "index": 3,
-          "at": 1226.0499999994327
+          "at": 1239.1499999994207
         },
         {
           "index": 4,
-          "at": 1528.149999999158
+          "at": 1530.5499999991557
         },
         {
           "index": 5,
-          "at": 1823.0999999988896
+          "at": 1823.699999998889
         }
       ],
       "lastSeenByBoss": {
-        "0": 329.3000000000406,
-        "1": 644.2499999999618,
-        "2": 923.249999999708,
-        "3": 1225.8499999994328,
-        "4": 1526.3499999991595,
-        "5": 1818.5999999988937
+        "0": 325.4500000000397,
+        "1": 644.3999999999617,
+        "2": 934.3999999996979,
+        "3": 1234.8999999994246,
+        "4": 1524.8999999991609,
+        "5": 1814.2499999988977
       },
       "pageErrors": [],
-      "wallSeconds": 88.5,
-      "endMinute": 30.44
+      "wallSeconds": 94.6,
+      "endMinute": 30.45
     },
     {
       "seed": 404,
       "character": "kael",
       "outcome": "dawn",
-      "endSecond": 1842.7,
+      "endSecond": 1836.8,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 35,
+      "endLevel": 34,
       "result": {
         "reason": "dawn",
-        "level": 35,
-        "kills": 7744,
+        "level": 34,
+        "kills": 6649,
         "god": false,
         "character": "kael"
       },
@@ -471,49 +471,49 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 328.4000000000404
+          "at": 332.3500000000413
         },
         {
           "index": 1,
-          "at": 650.3999999999562
+          "at": 650.5499999999561
         },
         {
           "index": 2,
-          "at": 953.4999999996805
+          "at": 943.2999999996898
         },
         {
           "index": 3,
-          "at": 1243.299999999417
+          "at": 1247.8499999994128
         },
         {
           "index": 4,
-          "at": 1537.7999999991491
+          "at": 1537.1499999991497
         },
         {
           "index": 5,
-          "at": 1839.4499999988748
+          "at": 1833.59999999888
         }
       ],
       "lastSeenByBoss": {
-        "0": 318.000000000038,
-        "1": 636.5999999999688,
-        "2": 944.0499999996891,
-        "3": 1241.049999999419,
-        "4": 1534.0499999991525,
-        "5": 1838.5499999988756
+        "0": 331.8500000000412,
+        "1": 643.3499999999626,
+        "2": 935.349999999697,
+        "3": 1246.8499999994137,
+        "4": 1525.79999999916,
+        "5": 1822.2999999988904
       },
       "pageErrors": [],
-      "wallSeconds": 89.9,
-      "endMinute": 30.71
+      "wallSeconds": 93.9,
+      "endMinute": 30.61
     }
   ],
   "endLevels": [
-    35,
+    36,
     36,
     36,
     34,
-    35,
-    35
+    34,
+    34
   ],
   "bossRuns": [
     {
@@ -524,16 +524,16 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 11.8,
+          "durationSec": 23.1,
           "defeated": true,
           "aliveAtEnd": false,
-          "inCorridor": false
+          "inCorridor": true
         },
         {
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 26.5,
+          "durationSec": 29.1,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -542,7 +542,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 32,
+          "durationSec": 34.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -551,7 +551,7 @@
           "index": 3,
           "name": "Glockenturm-Golem",
           "spawnSecond": 1200,
-          "durationSec": 28.5,
+          "durationSec": 35.7,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -560,7 +560,7 @@
           "index": 4,
           "name": "Hexenzirkel",
           "spawnSecond": 1500,
-          "durationSec": 28.1,
+          "durationSec": 26.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -569,7 +569,7 @@
           "index": 5,
           "name": "Der Hohle König",
           "spawnSecond": 1800,
-          "durationSec": 22.6,
+          "durationSec": 23.9,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -584,16 +584,16 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 15.1,
+          "durationSec": 32,
           "defeated": true,
           "aliveAtEnd": false,
-          "inCorridor": false
+          "inCorridor": true
         },
         {
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 29.8,
+          "durationSec": 33.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -602,7 +602,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 31.3,
+          "durationSec": 34.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -611,7 +611,7 @@
           "index": 3,
           "name": "Glockenturm-Golem",
           "spawnSecond": 1200,
-          "durationSec": 26.1,
+          "durationSec": 32.2,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -620,7 +620,7 @@
           "index": 4,
           "name": "Hexenzirkel",
           "spawnSecond": 1500,
-          "durationSec": 25.5,
+          "durationSec": 29.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -629,7 +629,7 @@
           "index": 5,
           "name": "Der Hohle König",
           "spawnSecond": 1800,
-          "durationSec": 25.4,
+          "durationSec": 28,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -644,7 +644,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 10.1,
+          "durationSec": 16.7,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": false
@@ -653,7 +653,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 22.3,
+          "durationSec": 30.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -662,7 +662,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 23.7,
+          "durationSec": 32.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -671,7 +671,7 @@
           "index": 3,
           "name": "Glockenturm-Golem",
           "spawnSecond": 1200,
-          "durationSec": 21.1,
+          "durationSec": 32.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -680,19 +680,19 @@
           "index": 4,
           "name": "Hexenzirkel",
           "spawnSecond": 1500,
-          "durationSec": 19.6,
+          "durationSec": 28.3,
           "defeated": true,
           "aliveAtEnd": false,
-          "inCorridor": false
+          "inCorridor": true
         },
         {
           "index": 5,
           "name": "Der Hohle König",
           "spawnSecond": 1800,
-          "durationSec": 17.5,
+          "durationSec": 26.7,
           "defeated": true,
           "aliveAtEnd": false,
-          "inCorridor": false
+          "inCorridor": true
         }
       ]
     },
@@ -704,7 +704,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 29,
+          "durationSec": 28.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -713,7 +713,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 48.9,
+          "durationSec": 42.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -722,7 +722,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 40.3,
+          "durationSec": 35.9,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -731,7 +731,7 @@
           "index": 3,
           "name": "Glockenturm-Golem",
           "spawnSecond": 1200,
-          "durationSec": 39.9,
+          "durationSec": 37.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -740,7 +740,7 @@
           "index": 4,
           "name": "Hexenzirkel",
           "spawnSecond": 1500,
-          "durationSec": 34.7,
+          "durationSec": 32.4,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -749,7 +749,7 @@
           "index": 5,
           "name": "Der Hohle König",
           "spawnSecond": 1800,
-          "durationSec": 30.5,
+          "durationSec": 28.9,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -764,7 +764,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 30.1,
+          "durationSec": 30.2,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -773,7 +773,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 45.2,
+          "durationSec": 44.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -782,7 +782,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 29.3,
+          "durationSec": 39.8,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -791,7 +791,7 @@
           "index": 3,
           "name": "Glockenturm-Golem",
           "spawnSecond": 1200,
-          "durationSec": 26,
+          "durationSec": 39.1,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -800,7 +800,7 @@
           "index": 4,
           "name": "Hexenzirkel",
           "spawnSecond": 1500,
-          "durationSec": 28.1,
+          "durationSec": 30.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -809,7 +809,7 @@
           "index": 5,
           "name": "Der Hohle König",
           "spawnSecond": 1800,
-          "durationSec": 23.1,
+          "durationSec": 23.7,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -824,7 +824,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 28.4,
+          "durationSec": 32.4,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -833,7 +833,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 50.4,
+          "durationSec": 50.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -842,7 +842,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 53.5,
+          "durationSec": 43.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -851,7 +851,7 @@
           "index": 3,
           "name": "Glockenturm-Golem",
           "spawnSecond": 1200,
-          "durationSec": 43.3,
+          "durationSec": 47.8,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -860,7 +860,7 @@
           "index": 4,
           "name": "Hexenzirkel",
           "spawnSecond": 1500,
-          "durationSec": 37.8,
+          "durationSec": 37.1,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -869,7 +869,7 @@
           "index": 5,
           "name": "Der Hohle König",
           "spawnSecond": 1800,
-          "durationSec": 39.4,
+          "durationSec": 33.6,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -881,134 +881,31 @@
     {
       "type": "bossDuration",
       "character": "mira",
-      "seed": 101,
-      "bossIndex": 0,
-      "name": "Moorkönigin",
-      "durationSec": 11.8,
-      "corridor": [
-        20,
-        60
-      ]
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 202,
-      "bossIndex": 0,
-      "name": "Moorkönigin",
-      "durationSec": 15.1,
-      "corridor": [
-        20,
-        60
-      ]
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
       "seed": 404,
       "bossIndex": 0,
       "name": "Moorkönigin",
-      "durationSec": 10.1,
-      "corridor": [
-        20,
-        60
-      ]
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 404,
-      "bossIndex": 4,
-      "name": "Hexenzirkel",
-      "durationSec": 19.6,
-      "corridor": [
-        20,
-        60
-      ]
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 404,
-      "bossIndex": 5,
-      "name": "Der Hohle König",
-      "durationSec": 17.5,
+      "durationSec": 16.7,
       "corridor": [
         20,
         60
       ]
     }
   ],
-  "knownViolations": [
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 101,
-      "bossIndex": 0,
-      "name": "Moorkönigin",
-      "durationSec": 11.8,
-      "corridor": [
-        20,
-        60
-      ],
-      "reason": "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 24-30 s. Fund der Lane m10-balance-corridor-guard; Ursachenklärung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch."
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 202,
-      "bossIndex": 0,
-      "name": "Moorkönigin",
-      "durationSec": 15.1,
-      "corridor": [
-        20,
-        60
-      ],
-      "reason": "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 24-30 s. Fund der Lane m10-balance-corridor-guard; Ursachenklärung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch."
-    },
+  "knownViolations": [],
+  "unknownViolations": [
     {
       "type": "bossDuration",
       "character": "mira",
       "seed": 404,
       "bossIndex": 0,
       "name": "Moorkönigin",
-      "durationSec": 10.1,
+      "durationSec": 16.7,
       "corridor": [
         20,
         60
-      ],
-      "reason": "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 24-30 s. Fund der Lane m10-balance-corridor-guard; Ursachenklärung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch."
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 404,
-      "bossIndex": 4,
-      "name": "Hexenzirkel",
-      "durationSec": 19.6,
-      "corridor": [
-        20,
-        60
-      ],
-      "reason": "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 24-30 s. Fund der Lane m10-balance-corridor-guard; Ursachenklärung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch."
-    },
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 404,
-      "bossIndex": 5,
-      "name": "Der Hohle König",
-      "durationSec": 17.5,
-      "corridor": [
-        20,
-        60
-      ],
-      "reason": "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 24-30 s. Fund der Lane m10-balance-corridor-guard; Ursachenklärung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch."
+      ]
     }
   ],
-  "unknownViolations": [],
-  "accepted": true,
-  "jsErrors": [],
-  "reclassifiedAt": "2026-11-28T12:37:12.197Z",
-  "reclassifiedNote": "Metadaten (violations/knownViolations/unknownViolations/accepted) gegen geschaerfte Whitelist reklassifiziert; Marken (runs/bossRuns) unveraendert, kein neuer Messlauf (Supervisor-Steuerung 28.11.)."
+  "accepted": false,
+  "jsErrors": []
 }
