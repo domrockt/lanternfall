@@ -1,0 +1,17 @@
+# Lane m10-chest-closed-crisp — abgeschlossen (2026-11-28)
+
+Befundklasse menu-art-crisp F2 (chest_closed, Mixel/fraktionale Skalierung) auf
+Textur-Ebene abgeschlossen. Supervisor-Stopp beachtet: keine Draw-Pfad-Änderungen,
+K4 als Abschlusskarte (Belege + Skript + Doku).
+
+Ergebnis (scripts/m10-chest-closed.mjs, TAG=after, Belege shots/abnahme/m10-chest-closed-after*
++ ~/games/.evidence/m10-chest-closed-crisp/):
+- 640x360@2 und 780x360@3, Renderer "Mesa Intel(R) Graphics (RPL-S)" (iGPU, kein SwiftShader), 0 JS-Fehler
+- 0 Off-Palette-Pixel, 0 nicht-binaeres Alpha (Canvas-Erfassung der Live-Textur, 7 Palettenfarben)
+- 0 fraktionale Skalierungsschritte (Run-Length: 2544/3816 Runs, alle Vielfache der Texeleinheit 6/9 device-px)
+- Draw-Scale 3 ganzzahlig, scaleX==scaleY, zentriert
+- art-director PASS 4/5 (beide Formate); commit-gate PASS; npm test 1655/1655; npm run build grün
+
+Commits: c989378 (K4, #9624). Karte #9624 erledigt; #9196 aus der Supervisor-
+Nachricht ist fremd (m10-props-wiring) und wurde nicht angefasst.
+UI.ts (src/scenes/UI.ts) bewusst nicht verändert — Anzeige-Seite bleibt ausgespart.
