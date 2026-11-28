@@ -44,6 +44,10 @@ interface StartMark {
   band: 0 | 1 | 2 | 3;
 }
 
+// M10-audio-quality-budget: Typ-Import (wird zur Laufzeit gestrippt — mixing.ts
+// bleibt phaser-/Node-frei und im Messskript ladbar).
+import type { QualityTier } from "../logic/quality";
+
 export interface MixerState {
   now: number;
   /** id → letzter Startzeitpunkt */
@@ -70,6 +74,67 @@ export const WEAPON_BAND_STARTS_PER_SEC = 12;
 export const HIT_BAND_STARTS_PER_SEC = 12;
 /** Band Pickup-Klasse (xp/powerup, m10-pickup-sfx-distinct): Start-Kontingent pro Sekunde. */
 export const PICKUP_BAND_STARTS_PER_SEC = 8;
+
+// --- M10-audio-quality-budget: Budgets je Qualitaetsstufe -------------------
+//
+// Die Konstanten oben sind die HIGH-Stufe (heutige Werte, bitgleich). Auf
+// schwachen Geraeten (Android-Blocker-Runde, Dom 09:25Z) skalieren die
+// Stimmen-/Start-Budgets mit dem Qualitaets-Tier (src/logic/quality.ts,
+// Regler wechselt nur die Stufe): weniger gleichzeitige Stimmen und weniger
+// Voice-Starts/s sparen Audio-Mix-Kosten, ohne dass Musik/SFX ungehoerbar
+// werden — der Limiter haelt den Peak weiterhin unter -1 dBFS, und die
+// Band-Aufteilung (Waffen/Treffer/Pickup) bleibt erhalten.
+
+/** Stimmen-/Start-Budgets einer Qualitaetsstufe. */
+export interface AudioBudget {
+  /** Max gleichzeitig aktive Stimmen (Deckel für Prio < 3). */
+  maxTotalVoices: number;
+  /** Hartes Voice-Starts-Kontingent pro Sekunde (Prio < 3). */
+  maxStartsPerSecond: number;
+  /** Band Waffen/Evolutionen/XP: Start-Kontingent pro Sekunde. */
+  weaponBandStartsPerSec: number;
+  /** Band Treffer/Kills: Start-Kontingent pro Sekunde. */
+  hitBandStartsPerSec: number;
+  /** Band Pickup-Klasse: Start-Kontingent pro Sekunde. */
+  pickupBandStartsPerSec: number;
+}
+
+/** HIGH = heutige Werte (bitgleich zu den Konstanten oben). */
+export const AUDIO_BUDGET_HIGH: AudioBudget = {
+  maxTotalVoices: MAX_TOTAL_VOICES,
+  maxStartsPerSecond: MAX_STARTS_PER_SECOND,
+  weaponBandStartsPerSec: WEAPON_BAND_STARTS_PER_SEC,
+  hitBandStartsPerSec: HIT_BAND_STARTS_PER_SEC,
+  pickupBandStartsPerSec: PICKUP_BAND_STARTS_PER_SEC,
+};
+
+/**
+ * Budgets je Stufe. Hoch skaliert runter, Verhältnisse der Bänder zueinander
+ * bleiben erhalten (12/12/8), damit die Unterscheidbarkeit der Klänge im
+ * Chaos nicht kippt: medium 2/3, low 1/3 der HIGH-Stufe.
+ */
+export const AUDIO_BUDGETS: Readonly<Record<QualityTier, AudioBudget>> = {
+  high: AUDIO_BUDGET_HIGH,
+  medium: {
+    maxTotalVoices: 8,
+    maxStartsPerSecond: 16,
+    weaponBandStartsPerSec: 8,
+    hitBandStartsPerSec: 8,
+    pickupBandStartsPerSec: 6,
+  },
+  low: {
+    maxTotalVoices: 4,
+    maxStartsPerSecond: 8,
+    weaponBandStartsPerSec: 4,
+    hitBandStartsPerSec: 4,
+    pickupBandStartsPerSec: 3,
+  },
+};
+
+/** Budget einer Stufe (mit Rückfall high bei unbekanntem Tier). */
+export function audioBudgetFor(tier: QualityTier): AudioBudget {
+  return AUDIO_BUDGETS[tier] ?? AUDIO_BUDGETS.high;
+}
 
 function bandOf(priority: number): 0 | 1 | 2 {
   return priority < 2 ? 0 : priority === 2 ? 1 : 2;
@@ -101,8 +166,10 @@ export interface PlayPlan {
 /**
  * Entscheidet über einen Request (ohne Zustand zu verändern): Freigabe,
  * Freigabe mit Verdrängung einer älteren niederprioreren Stimme oder Ablehnung.
+ * `budget` (M10-audio-quality-budget) skaliert die Stimmen-/Start-Deckel je
+ * Qualitaetsstufe; Default = HIGH (heutige Werte, bitgleich).
  */
-export function planPlay(state: MixerState, req: SoundRequest): PlayPlan {
+export function planPlay(state: MixerState, req: SoundRequest, budget: AudioBudget = AUDIO_BUDGET_HIGH): PlayPlan {
   if (req.priority < 0) return { allow: false, reason: "priority" };
   if ((state.voices[req.id] ?? 0) >= req.maxVoices) return { allow: false, reason: "perSoundVoices" };
   const last = state.lastPlayed[req.id];
@@ -112,21 +179,21 @@ export function planPlay(state: MixerState, req: SoundRequest): PlayPlan {
     const recent = state.starts.filter((s) => s.band < 2);
     if (req.pickup) {
       // Pickup-Klasse (m10-pickup-sfx-distinct): eigenes Kontingent
-      // (PICKUP_BAND_STARTS_PER_SEC, Fair-Share je ID) statt des globalen
+      // (Band-Deckel der Stufe, Fair-Share je ID) statt des globalen
       // Waffen-/Treffer-Deckels — Massen-XP wird über pickupDampGain gedämpft
       // statt verhungert (vorher: 622x rateFair bei 900 XP-Requests).
       const bandStarts = state.starts.filter((s) => s.band === 3);
       const distinct = new Set(bandStarts.map((s) => s.id)).size;
-      const share = Math.max(1, Math.floor(PICKUP_BAND_STARTS_PER_SEC / Math.max(1, distinct)));
+      const share = Math.max(1, Math.floor(budget.pickupBandStartsPerSec / Math.max(1, distinct)));
       const own = bandStarts.reduce((n, s) => n + (s.id === req.id ? 1 : 0), 0);
       if (own >= share) return { allow: false, reason: "rateFair" };
     } else {
-      // Harte Gesamt-Grenze: 24 Voice-Starts/s über Waffen-/Treffer-Band.
-      if (recent.length >= MAX_STARTS_PER_SECOND) return { allow: false, reason: "rate" };
+      // Harte Gesamt-Grenze: maxStartsPerSecond Voice-Starts/s über Waffen-/Treffer-Band.
+      if (recent.length >= budget.maxStartsPerSecond) return { allow: false, reason: "rate" };
       // Fair-Anteil je Klang-ID: Band-Deckel / aktive IDs, mindestens 1/s — auch
       // bei vollem Band, damit im Chaos keine Waffe verstummt.
       const band = bandOfRequest(req) as 0 | 1;
-      const bandCap = band === 0 ? WEAPON_BAND_STARTS_PER_SEC : HIT_BAND_STARTS_PER_SEC;
+      const bandCap = band === 0 ? budget.weaponBandStartsPerSec : budget.hitBandStartsPerSec;
       const bandStarts = recent.filter((s) => s.band === band);
       const distinct = new Set(bandStarts.map((s) => s.id)).size;
       const share = Math.max(1, Math.floor(bandCap / Math.max(1, distinct)));
@@ -134,7 +201,7 @@ export function planPlay(state: MixerState, req: SoundRequest): PlayPlan {
       if (own >= share) return { allow: false, reason: "rateFair" };
     }
   }
-  if (state.totalVoices >= MAX_TOTAL_VOICES && req.priority < 3) {
+  if (state.totalVoices >= budget.maxTotalVoices && req.priority < 3) {
     if (req.priority >= 2) {
       // Älteste (bei Gleichstand leiseste) niederpriorere Stimme verdrängen.
       let evict: ActiveVoice | null = null;
