@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10497,
+  "next": 10520,
   "cards": [
     {
       "id": 1,
@@ -13713,6 +13713,64 @@
       ],
       "created": "2026-11-28T09:20:09Z",
       "updated": "2026-11-28T09:20:17Z"
+    },
+    {
+      "id": 10517,
+      "title": "m10-device-telemetry K1: Telemetry-Collector (Sample + Puffer-Send)",
+      "description": "src/telemetry.ts: Sample alle 5 s {t, fps, frameMsP50/P95/max, quality, renderScale, enemies, fxActive, drawCalls, heapMB, scene, character, renderer+vendor (1x), ua, dpr, screen, build}, gepuffert per fetch POST keepalive. Abnahme: tsc grün, Sample-Aufbau Unit-getestet, KEINE personenbezogenen Daten.",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:28:39Z",
+          "by": "build",
+          "text": "todo → doing: m10-device-telemetry K1 angenommen (Lane-Worktree lf-lanes/m10-device-telemetry) – vor FPS-Baseline-Messung."
+        },
+        {
+          "at": "2026-11-28T09:30:57Z",
+          "by": "build",
+          "text": "doing → review: K1: src/telemetry.ts (Collector, Sample, frameStats, gepuffertes flush) + __LF_BUILD__-Define in vite.config.ts + Hook in debug.ts nach READY. tsc grün; Commit 18c61118. K3-Abnahmelauf folgt."
+        }
+      ],
+      "created": "2026-11-28T09:28:36Z",
+      "updated": "2026-11-28T09:30:57Z"
+    },
+    {
+      "id": 10518,
+      "title": "m10-device-telemetry K2: Aktivierung + Drosselung",
+      "description": "Aktiv nur bei ?telemetry=1 oder APK (Host 127.0.0.1 + Android-UA); Desktop sendet nichts. Fehler beim Senden still schlucken, max 1 Request/5 s. Abnahme: Aktivierungslogik getestet; Desktop-Run ohne ?telemetry=1 erzeugt keine Requests.",
+      "column": "review",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:30:57Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: Aktivierung + Drosselung (telemetryEnabled, canSend, stiller Fehlermodus) ist implementiert, Tests folgen in tests/telemetry.test.ts."
+        },
+        {
+          "at": "2026-11-28T09:31:59Z",
+          "by": "build",
+          "text": "doing → review: K2: telemetryEnabled-Matrix (?telemetry=1/0, APK=127.0.0.1+Android-UA, Desktop aus) + Drosselung/Fehler-Puffer getestet (9 Tests grün). Commit 82683aa1. Zusätzlich: collectReadings/Collector try/catch-geschützt."
+        }
+      ],
+      "created": "2026-11-28T09:28:36Z",
+      "updated": "2026-11-28T09:31:59Z"
+    },
+    {
+      "id": 10519,
+      "title": "m10-device-telemetry K3: Tests + Doku + Abnahmelauf",
+      "description": "tests/telemetry.test.ts (Sample-Aufbau, Drosselung), docs/DEVICE-TELEMETRY.md (Felder, Abschalten, Datenablage) + Beispiel-Auswertung (fps p5/Median je Minute). Abnahme: lokaler Lauf ?telemetry=1 erzeugt Zeilen in Tages-JSONL, 0 JS-Fehler, Tests/tsc grün, kein FPS-Einfluss (Vorher/Nachher).",
+      "column": "doing",
+      "assignee": "ui-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:31:59Z",
+          "by": "build",
+          "text": "todo → doing: K3 angenommen: Sample-Aufbau-Tests + docs/DEVICE-TELEMETRY.md + Abnahmelauf mit ?telemetry=1 + FPS Vorher/Nachher."
+        }
+      ],
+      "created": "2026-11-28T09:28:36Z",
+      "updated": "2026-11-28T09:31:59Z"
     }
   ]
 }

@@ -92,6 +92,17 @@ Alle Belege liegen unter `~/games/.evidence/device-telemetry/` (außerhalb des R
 - Full-Suite einmal pro Karte vor dem Commit: `npm test` → 174 Dateien /
   1891 Tests grün; `npm run build` grün (Chunks unverändert).
 
+## Review
+- `reviewer` (Kontrolleur, 2026-11-28): **PASS** — mergebar; Belege: 174 Dateien /
+  1891 Tests grün, Aktivierungs-Matrix, Datenschutz-Check (keine PII), vite-define
+  additiv. Zwei „sollte"-Befunde noch in derselben Karte behoben (Commit
+  `40d8673f`): `recordFrame`-Deckel 1000→2000 ms (echte Frame-Hitches der
+  Thermik-Drosselung bleiben in `frameMsMax` sichtbar, in Doku notiert),
+  `isFinite`-Guard für `qs.time`, Happy-Pfad- und `?telemetryEndpoint=`-Tests
+  ergänzt (19 Telemetry-Tests).
+- Rest-Nits nicht blockierend, dokumentiert: `stop()` entfernt den `step`-Listener
+  nicht (Collector ist app-langlebig), Aktivierungs-Regex case-sensitiv.
+
 ## Offene Punkte / Hinweise für den Merge
 - `heapMB` nur in Chromium (`performance.memory`) — auf Desktop-Chromium/Android
   Chrome vorhanden, sonst `null`.

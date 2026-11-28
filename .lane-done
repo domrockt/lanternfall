@@ -1,0 +1,23 @@
+Lane m10-device-telemetry (M10) — abgeschlossen, Commit-Block 18c61118..40d8673f.
+
+K1 #10517: src/telemetry.ts (TelemetryCollector: Sample alle 5 s mit t, fps,
+frameMsP50/P95/max, quality, renderScale, gameScale, enemies, fxActive, drawCalls,
+heapMB, scene, character, renderer/vendor (1x/Lauf), ua, dpr, screen, build),
+__LF_BUILD__-Define in vite.config.ts (additiv, begründet), Hook in debug.ts nach READY.
+
+K2 #10518: Aktivierung nur ?telemetry=1 oder APK (127.0.0.1 + Android-UA);
+?telemetry=0 gewinnt immer; Desktop sendet nichts; max 1 Request/5 s; Sendefehler
+still, Puffer-Deckel 60 Samples; visibilitychange-Flush mit keepalive.
+
+K3 #10519: 19 Tests (tests/telemetry.test.ts), docs/DEVICE-TELEMETRY.md (Felder,
+Abschalten, Datenablage, JSONL-Auswertung fps p5/Median je Minute).
+
+Abnahme: lokaler Lauf ?telemetry=1 → 3 Zeilen in ~/games/.evidence/device/
+telemetry-2026-11-28.jsonl (build 82683aa1, korrekter renderer-String, 0 JS-Fehler).
+FPS unter flock (/home/ai/games/.lf-perf.lock): Vorher ohne Telemetry burst 60.1 /
+minute25 59.9, Nachher mit aktiver Telemetry 60.1 / 60.0 — kein messbarer Einfluss.
+reviewer: PASS (Befunde soll1/soll2 im Nachtrags-Commit 40d8673f behoben).
+
+Belege: ~/games/.evidence/device-telemetry/ (+~/tmp/m10-device-telemetry/ Runner).
+Offen: APK-Verifikation auf dem echten Tablet (Dom), WebGL-drawCalls bleibt null
+(Phaser 3.90 bietet es nur am Canvas-Renderer).
