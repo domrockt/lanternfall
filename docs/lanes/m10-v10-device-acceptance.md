@@ -78,3 +78,45 @@ Beleg: `~/games/.evidence/m10-v10-device-acceptance/m25-device.json`
 - Kein Auflösungs-Teiler aktiv: Canvas intern 640x360, CSS 1280x720, dpr 2, `state().quality = "high"`.
 
 Status: K2 gemessen 2026-11-28. Board #11309.
+
+## K3 — gfxinfo janky < 10 % über das Messfenster — **FAIL (13,4 % / 13,9 %)**
+
+Belege: `~/games/.evidence/m10-v10-device-acceptance/gfxinfo-device.json` und `gfxinfo-device-r2.json`
+(Skript `scripts/m10-v10-device-gfxinfo.mjs`: Minute-25-Dichte wie K2, `GET /gfxinfo` der device-bridge
+vor/nach dem 10-s-Fenster, Differenz = Fenster-Statistik; Log `~/tmp/m10-v10-device-acceptance/`).
+
+| Lauf | FPS (Fenster) | Frames | Janky | janky % | p50/p90/p95/p99 (ms) | worst (ms) |
+|---|---|---|---|---|---|---|
+| 1 | 111,8 | 1064 | 143 | **13,44 %** | 12/18/21/31 | 33,4 |
+| 2 | 106,4 | 1050 | 146 | **13,90 %** | — | — |
+
+Tor < 10 %: **FAIL**, zwei voneinander unabhängige Messungen bestätigen 13–14 % → verbindlich
+ausgewertet (Mess-Budget 2 Iterationen). Kontext:
+
+- Das Fenster ist der Minute-25-Worst-Case (300 Gegner Top-up, 6 Evos Lv8, Qualität „high“).
+  Die FPS-Tore K1/K2 sind mit 106–112 FPS weit weg von jedem Einbruch — der FAIL ist ein
+  **Frame-Zeit-Schwanzproblem**, kein Durchsatzproblem: ~13 % der Frames liegen über ~16,6 ms
+  (p90 18 ms, p95 21 ms, p99 31 ms), der Durchschnitt liegt bei ~9 ms.
+- Das 120-Hz-Panel ändert an der Zahl nichts: gfxinfo zählt gegen das Chrome-Frame-Deadline
+  (Histogramm-Kante bei ~16–17 ms), nicht gegen 8,33 ms.
+
+### Befundliste (für den Lead — keine Fixes in dieser Lane)
+
+1. **Frame-Zeit-Schwanz (Hebel A — Qualitätsschwellen):** p95 21 ms / p99 31 ms im Minute-25-Fenster
+   bei `quality = "high"`. Die Qualitätstiers aus m10-android-scale-floor-r2 schalten nur bei
+   echtem Budget-Mangel; am Gerät bleibt es dauerhaft auf „high“ (109–112 FPS), obwohl der
+   Janky-Tor nur mit „medium“-Budgets plausibel erreichbar ist. Datei: `src/config.ts`
+   (`installRenderBudget`) + `src/systems/FxSystem.ts` (GlowBudget-Caps 226/323/667/754).
+   Erwarteter Gewinn: ADD-Fläche/Partikel pro Treffer sinken → p95 Richtung ≤ 16 ms → janky < 10 %.
+2. **Spike 33 ms (Hebel B — Allokationen/Uploads im Frame):** worstFrame 33–34 ms ≈ alle ~11 s
+   einmal; Muster passt zu GC-/Texturupload-Spikes (Android-Praxis-Regel 5 „keine Allokationen im
+   Frame“). Verdacht: Spawn-Top-up im Harness selbst (300 bog_rat in 50-ms-Takt =measurement-Artefakt,
+   identisch zu perf.mjs) und Chunk-Generierung während des Laufs (GroundRenderer).
+   Datei: `src/systems/EnemySystem.ts` (Spawn-Batching) / `src/gfx/GroundRenderer.ts`.
+   Erwarteter Gewinn: p99 31 → < 20 ms; Einfluss auf janky ~1–3 Punkte.
+3. **Messmethodik-Hinweis (kein Hebel):** der 50-ms-Top-up erzeugt Spawn-Bursts, die im echten
+   Director-Spawn verteilt ankommen. Ein janky-Messfenster ohne Top-up (nur natürliche Director-
+   Dichte) wäre der fairere Vergleich zum echten Spiel — für diese Lane nicht mehr gefahren
+   (Budget), als Follow-up für den Fix-Job vorgeschlagen.
+
+Status: K3 gemessen 2026-11-28, FAIL dokumentiert. Board #11310.
