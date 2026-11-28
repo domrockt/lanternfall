@@ -1,0 +1,19 @@
+# Lane m10-acceptance-balance-criterion — fertig (2026-11-28)
+
+Doku-only-Lane: Balance-Abnahmekriterium auf Dom-Zustimmung (2026-11-28 06:00Z) gebracht.
+
+- #8997 K1: `ACCEPTANCE.md` Z. 151 (A5-Tabelle) und Z. 245 (Offene Punkte) auf neues Kriterium
+  **„Endlevel 25–40, 6/6 Läufe, Boss 20–60 s, kein Tod vor Minute 15“** geändert; „Kael/Seed 101
+  Level 47“ nur noch als **widerlegt** dokumentiert (8 Repro-Läufe → Level 28, Ursache
+  Gem-Sammelquote 28,4 % bei M8-Dichte); „formale Kriteriumsänderung offen“ entfernt. Commit `dce1bef`.
+- #8998 K2: `docs/qa/balance-criterion-2026-11-28.md` neu — zitierfähige Zustimmung
+  (Frage 23:35, Antwort 06:00Z aus `~/games/coding-brain/Lead/Fragen an Dom.md`), exakte
+  diff-Zeilen, Begründung mit Belegen `shots/m10-balance-kael-{repro,xp-budget,final}.json`
+  (auf main, nach Hygiene-Commit `cb920c5` ungetrackt). Commit `00e152c`.
+- Scope: `git diff main` = nur `ACCEPTANCE.md` (2 Kriteriumszeilen) + neue Doku (+ Board-Metadaten);
+  0 Code-/Test-Dateien. Kein Messen, kein Code.
+- Kontrolleur: reviewer PASS (`ses_ddf313e4cffeciuYmmydis1CJI`): „Level 47“ nur noch historisch
+  (2 Treffer, beide „widerlegt“), „25–40“ an beiden Stellen, Tabelle intakt, Doku vollständig.
+  npm test 1484 grün / 10 vorbestehende Fails (Beleg-Abhängigkeiten nach Enttrackung `cb920c5`,
+  SwiftShader-Gates) — konstruktiv identisch mit main, nicht lane-bedingt.
+- Offene Punkte: keine aus dieser Lane.
