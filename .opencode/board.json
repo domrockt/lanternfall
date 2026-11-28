@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8602,
+  "next": 8606,
   "cards": [
     {
       "id": 1,
@@ -11031,6 +11031,101 @@
       "notes": [],
       "created": "2026-11-28T04:32:11Z",
       "updated": "2026-11-28T04:32:11Z"
+    },
+    {
+      "id": 8602,
+      "title": "m10-shot-budget-dt K1: Vorher-Messung (dt-Divergenz belegen)",
+      "description": "Probe scripts/m10-shot-budget-dt.mjs (--probe, node --experimental-strip-types, echter EnemyProjectilePool + Stubs): gleicher Seed, Versuche an 1/30-Raster, dt-Folgen 60 FPS vs 30 FPS -> Schuss-/Telegraph-Marken divergieren. Akzeptanz VORHER festgelegt (in Lane-Doc + Kartennotiz): gleicher Seed + gleiche Sim-Zeit -> identische Schuss-/Telegraph-Marken (Launch-Zeitpunkt + Ursprungs-Identität) unabhängig von der dt-Folge; Referenz 60 FPS dicht = #7491-Baseline. Beleg: shots/m10-shotbudget-dt-before.json committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:22:14Z",
+          "by": "build",
+          "text": "todo → doing: m10-shot-budget-dt K1 gestartet: Probe-Skript bauen, Vorher-JSON."
+        },
+        {
+          "at": "2026-11-28T03:23:32Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig (Commit 8f0f714): Probe läuft headless gegen echten Pool; before-JSON committed. deterministic=false, erste Launch-Divergenz t=0.4 (ids unterscheiden sich), cancelledBudgetRotation 19 vs 168 (60 vs 30 FPS). Akzeptanz im Commit-Text festgelegt."
+        },
+        {
+          "at": "2026-11-28T03:34:24Z",
+          "by": "build",
+          "text": "review → done: lane #7738, K1 Commit 8f0f714. Reviewer-PASS (ses_ddfccbf): before-JSON belegt Divergenz; Akzeptanz vor Messung festgelegt."
+        }
+      ],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:34:24Z"
+    },
+    {
+      "id": 8603,
+      "title": "m10-shot-budget-dt K2: Fix — Sim-Zeit-Budgetfenster statt Frame-Zuteilung",
+      "description": "src/systems/EnemyProjectiles.ts: dt-Akkumulator (simTime) + Budget-Fenster à 1/60 s SIM-Zeit; Fenster rotieren nur bei Versuchen im Fenster (Skip leerer Fenster); launchBudget gilt je Sim-Zeit-Fenster. Fairness-Invarianten aus #7491 unverändert (Telegraph-Cap, Budget-Rückgabe, Rotation gegen Starving); festes 1/60-dt => bitgleich zu #7491 (dichte Versuche je Frame). Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:23:36Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Sim-Zeit-Budgetfenster in src/systems/EnemyProjectiles.ts."
+        },
+        {
+          "at": "2026-11-28T03:30:41Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig (Commit a0b9e0c): simTime-Akkumulator + 1/60-s-Sim-Zeit-Fenster; leere Fenster rotieren nicht; clear() resettet Budget-Uhr. Fair-Tests 22/22 gruen ohne inhaltliche Aenderung. Reviewer-Check läuft."
+        },
+        {
+          "at": "2026-11-28T03:34:24Z",
+          "by": "build",
+          "text": "review → done: lane #7739, K2 Commit a0b9e0c. Reviewer-PASS: nur Budget-Zeilen angefasst, Fairness-Tests bytegleich (0 Zeilen Diff), kein Grant-Leak, FP-Epsilon risikoarm, spawn()-Fensterzuordnung deterministisch."
+        }
+      ],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:34:24Z"
+    },
+    {
+      "id": 8604,
+      "title": "m10-shot-budget-dt K3: Test — Akkumulator + dt-Determinismus + Fairness unverändert",
+      "description": "tests/shot-budget-dt.test.ts neu: (a) Budget-Fenster an Sim-Zeit (mehrere Fenster je update, leere Fenster rotieren nicht), (b) gleiche Versuche an gleichen Sim-Zeiten bei dt 1/60 vs 1/30 -> identische Launch-Marken, (c) Rotation/Fairness wie #7491 (kein Starving, Budget-Rückgabe bei Telegraph-Mangel bleibt). npm test inkl. enemy-shots-fair.test.ts + shot-budget-cap.test.ts grün. Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:25:53Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: tests/shot-budget-dt.test.ts (Akkumulator, dt-Determinismus, Fairness unveraendert)."
+        },
+        {
+          "at": "2026-11-28T03:30:41Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig (Commit 6f2410d): 8 neue Tests (Akkumulator, dt-Determinismus bitgleiche Marken, Fairness/Cap/Rueckgabe unveraendert). npm test 118 Dateien/1287 Tests gruen inkl. enemy-shots-fair unveraendert; tsc + build gruen. Reviewer-Check läuft."
+        },
+        {
+          "at": "2026-11-28T03:34:24Z",
+          "by": "build",
+          "text": "review → done: lane #7740, K3 Commit 6f2410d. Reviewer-PASS: Tests nicht-tautologisch ((c) differentiell dt 1/60 vs 1/30, (d) echte Budget-Rueckgabe via 97>96-Cap), 1287 Tests gruen."
+        }
+      ],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:34:24Z"
+    },
+    {
+      "id": 8605,
+      "title": "m10-shot-budget-dt K4: Nachher-Messung + Lane-Doc + Abschluss",
+      "description": "Probe --tag=after --baseline=shots/m10-shotbudget-dt-before.json -> shots/m10-shotbudget-dt-after.json (deterministic=true, dense-60 bitgleich zur Before-Baseline). docs/lanes/m10-shot-budget-dt.md mit before/after + exaktem Hebel. tsc/npm test/npm run build grün. Commit + .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:30:41Z",
+          "by": "build",
+          "text": "todo → review: K4 fertig (Commit folgt im Board-Log): after-JSON (deterministic=true, denseMatchesBaseline=true, Rotation 168/168) + docs/lanes/m10-shot-budget-dt.md mit before/after und exaktem Hebel committed."
+        },
+        {
+          "at": "2026-11-28T03:34:24Z",
+          "by": "build",
+          "text": "review → done: lane #7741, K4 Commit c7f7fd4. Reviewer-PASS (Nit ohne Blocker: EPS als benannte Konstante waere schoener, negatives dt kein Spielszenario). Lane abgeschlossen."
+        }
+      ],
+      "created": "2026-11-28T03:22:11Z",
+      "updated": "2026-11-28T03:34:24Z"
     }
   ]
 }
