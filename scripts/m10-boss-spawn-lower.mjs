@@ -25,6 +25,11 @@ const argOf = (name, fallback) => {
 };
 
 const TAG = String(argOf("tag", "before"));
+// Optional: ?rbscale=N erzwingt den Render-Teiler (Mess-Override aus config.ts).
+// Der 780x360@3-Profile-Name meint Teiler 3 — ohne Last bleibt der Regler
+// sonst auf 1 und der Puls-Glitch (Zoom-Tween vs. enforceCameraProjection)
+// ist unsichtbar klein. Default: Teiler 3 fuer das @3-Profil.
+const RBScale3 = Number(argOf("rbscale3", "3"));
 const OUT_JSON = `shots/m10-boss-spawn-lower-${TAG}.json`;
 const PNG_PREFIX = `shots/m10-boss-spawn-lower-${TAG}`;
 
@@ -164,7 +169,7 @@ try {
     page.on("pageerror", (e) => errors.push(`[${view.name}] ${e}`));
     page.on("console", (m) => { if (m.type() === "error") errors.push(`[${view.name}] ${m.text()}`); });
 
-    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=7`);
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=7${view.dpr > 1 ? `&rbscale=${RBScale3}` : ""}`);
     await startRun(page);
     await page.evaluate(async () => {
       const run = window.__game.scene.getScene("run");
