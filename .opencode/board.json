@@ -7835,28 +7835,46 @@
       "id": 6798,
       "title": "m10-chest-hint-wrap K1: Ist-Messung Slot-Labels + Evo-Hint-Zeilen",
       "description": "scripts/m10-chest-hint-wrap.mjs (Muster m10-chest-panel.mjs, Glyph-Boxen) misst Slot-Label-Zeilen (text/text2) + beide chest-hint-Zeilen in 640x360@2 und 780x360@3. Abnahmekriterium: shots/m10-chest-hint-wrap-before.json + PNGs existieren, Messwerte nennen mid-word-Cuts und Hint-Vollständigkeit; EIN Lauf, max. 2 Edits am Skript, Commit mit Belegen.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:04:26Z",
+          "by": "build",
+          "text": "doing → done: Ist-Messung EIN Lauf, Belege committed (caabab7): mid-word Cut SEELENLEUCHTFEUER beide Profile, Hint-Zeile 1 leer, 0 Ueberlappungen/JS-Fehler."
+        }
+      ],
       "created": "2026-11-27T23:56:56Z",
-      "updated": "2026-11-27T23:56:56Z"
+      "updated": "2026-11-28T00:04:26Z"
     },
     {
       "id": 6799,
       "title": "m10-chest-hint-wrap K2: Fix Wortumbruch UI.ts + gfx/text.ts",
       "description": "Slot-Labels umbrechen an Wortgrenzen bzw. mit Trennstrich (Variante um fitBanner in src/gfx/text.ts), beide Evo-Hint-Zeilen vollständig sichtbar, kein Satz-Abbruch, keine Überlappung mit Icon/Slots; Untertitel-Anker aus m10-chest-panel-ui beibehalten, idempotent zu applyPanelFix. Abnahmekriterium: npx tsc --noEmit rc=0, gezielte Tests grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T00:04:26Z",
+          "by": "build",
+          "text": "todo → doing: Fix: slotLabelLines (Wortgrenze/Trennstrich) + wrapHintLines (2 balancierte Zeilen) in src/gfx/text.ts, UI.ts chest-Pfade umgestellt."
+        }
+      ],
       "created": "2026-11-27T23:56:56Z",
-      "updated": "2026-11-27T23:56:56Z"
+      "updated": "2026-11-28T00:04:26Z"
     },
     {
       "id": 6800,
       "title": "m10-chest-hint-wrap K3: Regressionstest chest-hint-wrap",
       "description": "tests/chest-hint-wrap.test.ts über 3 Viewport-Profile: kein mid-word Cut in Slot-Labels, 0 Überlappungen, Panel-/Viewport-Grenzen, Evo-Satz verlustfrei auf beide Hint-Zeilen. Abnahmekriterium: tsc rc=0, npm test grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T00:05:05Z",
+          "by": "build",
+          "text": "todo → doing: Regressionstest tests/chest-hint-wrap.test.ts: 3 Viewport-Profile, kein mid-word Cut, 0 Ueberlappungen, Panel-/Viewport-Grenzen, Evo-Satz verlustfrei."
+        }
+      ],
       "created": "2026-11-27T23:56:56Z",
-      "updated": "2026-11-27T23:56:56Z"
+      "updated": "2026-11-28T00:05:05Z"
     },
     {
       "id": 6801,
