@@ -27,6 +27,14 @@ function createLightTextureLocal(scene: Phaser.Scene): void {
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   const rings: { r: number; color: number; alpha: number }[] = [
+    // M10-chaos-fix-glow-runpath (B2, Audit docs/lanes/m10-chaos-legibility.md):
+    // Rampen-ENDE (Kern) Richtung Amber/Lantern statt lanternWhite — Addierung
+    // mit Weiß-Kern ist der Near-White-Fall im Chaos (A7: b >= 150 und r >= 235;
+    // Amber 0xffb84d / Lantern 0xffd77a fallen darunter, lanternWhite/candle
+    // nicht). Aeusserer Rand bleibt flame.
+    // Boot-seitiger Alpha/Blend-Deckel: die Flaeche wird nur ADD gezeichnet
+    // (Run.ts), Alpha dort auf RUN_LIGHT_ALPHA_MAX 0,7 gedeckelt (war 0,85);
+    // Ring-Alpha hier <= 0,10 pro Ring, Kern summiert <= ~0,25 vor Blend.
     { r: 96, color: 19, alpha: 0.05 },
     { r: 88, color: 19, alpha: 0.05 },
     { r: 80, color: 20, alpha: 0.05 },
@@ -34,11 +42,11 @@ function createLightTextureLocal(scene: Phaser.Scene): void {
     { r: 64, color: 21, alpha: 0.06 },
     { r: 56, color: 21, alpha: 0.06 },
     { r: 48, color: 21, alpha: 0.07 },
-    { r: 40, color: 22, alpha: 0.07 },
-    { r: 32, color: 22, alpha: 0.08 },
-    { r: 24, color: 13, alpha: 0.09 },
-    { r: 16, color: 13, alpha: 0.10 },
-    { r: 8, color: 13, alpha: 0.10 },
+    { r: 40, color: 21, alpha: 0.07 },
+    { r: 32, color: 21, alpha: 0.08 },
+    { r: 24, color: 20, alpha: 0.08 },
+    { r: 16, color: 20, alpha: 0.09 },
+    { r: 8, color: 20, alpha: 0.09 },
   ];
   const c = size / 2;
   for (const ring of rings) {

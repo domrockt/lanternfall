@@ -7,7 +7,7 @@
  * in src/logic/fx-caps.ts und werden direkt unit-getestet.
  */
 // @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   PILLAR_BAKE_MAX_LEVEL,
@@ -52,6 +52,50 @@ describe("fx_pillar/fx_shock Bake-Pfad (B1-Teil, Mixel-Rest des fx-mixel-fix)", 
   it("Bake-Stufen sind nearest (imageSmoothingEnabled=false) und idempotent", () => {
     expect(RUN_TS).toContain("imageSmoothingEnabled = false");
     expect(RUN_TS).toContain("scene.textures.exists(key)");
+  });
+});
+
+describe("Boot.ts Glow-Deckel (B2-Run-Anteil, Quelltext-Check)", () => {
+  const BOOT_TS = readFileSync(new URL("../src/scenes/Boot.ts", import.meta.url), "utf8");
+
+  it("light_radius-Rampen-Ende ist Amber/Lantern, kein lanternWhite/candle-Kern", () => {
+    // createLightTextureLocal: Kern (kleine Radien) darf nicht mehr die
+    // near-white Palette 13/22 nutzen (A7: b >= 150 und r >= 235).
+    const block = BOOT_TS.slice(BOOT_TS.indexOf("const rings"), BOOT_TS.indexOf("const c = size / 2"));
+    expect(block).not.toMatch(/\{ r: (8|16|24|32|40), color: (13|22)/);
+    expect(block).toMatch(/\{ r: 8, color: 20/);
+  });
+
+  it("Deckel-Kommentar dokumentiert den Boot-seitigen Alpha/Blend-Deckel", () => {
+    expect(BOOT_TS).toContain("RUN_LIGHT_ALPHA_MAX");
+  });
+});
+
+describe("After-Messung (Gate, shots/m10-chaos-fix-glowpath-after.json)", () => {
+  // @ts-ignore — URL Relatives Pfadmuster wie oben.
+  const hasAfter = existsSync(new URL("../shots/m10-chaos-fix-glowpath-after.json", import.meta.url));
+  const after = hasAfter
+    ? JSON.parse(readFileSync(new URL("../shots/m10-chaos-fix-glowpath-after.json", import.meta.url), "utf8"))
+    : null;
+
+  it("liegt mit dem Fix unter dem A7-Gate 4,16 % (ganzer Frame UND Crop)", () => {
+    expect(after).not.toBeNull();
+    expect(after.worstNearWhiteA7Pct).toBeLessThanOrEqual(4.16);
+    for (const p of after.profiles) {
+      for (const f of p.frames) {
+        expect(f.pixels.nearWhiteA7Pct).toBeLessThanOrEqual(4.16);
+        expect(f.pixels.nearWhiteA7CropPct).toBeLessThanOrEqual(4.16);
+      }
+    }
+  });
+
+  it("Beleg ist iGPU (kein SwiftShader), ohne JS-Fehler, FPS >= 50", () => {
+    for (const p of after.profiles) {
+      expect(p.renderer.swiftShader).toBe(false);
+      expect(p.renderer.renderer).toMatch(/ANGLE/);
+      expect(p.fps.fps).toBeGreaterThanOrEqual(50);
+    }
+    expect(after.jsErrors).toEqual([]);
   });
 });
 

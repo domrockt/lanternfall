@@ -8565,25 +8565,36 @@
       "id": 7300,
       "title": "m10-chaos-fix-glow-runpath K3: fx_pillar/fx_shock auf Bake-Pfad (B1-Teil)",
       "description": "Akzeptanz: fx_shock-Ring (playEvolutionFx) ueber spawnAnim (Mixel-Bake); fx_pillar-Ziel-Pixelgroesse wird Run-seitig gebacken (nearest, Stufen 2-4), Draw-Scale <= 1 an allen 4 makeImage-Stellen (dawn rays, levelup, chest, shock); Test: 4x-Zoom zeigt 1-px-Stufen (Pixel-Metrik im after-JSON), Quelltext-Check. Ein Commit inkl. Belege.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T01:10:26Z",
           "by": "build",
           "text": "todo → doing: K3 gestartet: fx_shock -> spawnAnim (Mixel-Bake), fx_pillar Ziel-Pixelgroesse Run-seitig backen (nearest-Stufen), Draw-Scale <= 1 an allen 4 Stellen."
+        },
+        {
+          "at": "2026-11-28T01:12:30Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig (Commit eff23af): ensurePillarBake nearest-Stufen + spawnAnim fuer fx_shock; 9/9 Tests, build rc=0."
         }
       ],
       "created": "2026-11-28T01:04:29Z",
-      "updated": "2026-11-28T01:10:26Z"
+      "updated": "2026-11-28T01:12:30Z"
     },
     {
       "id": 7301,
       "title": "m10-chaos-fix-glow-runpath K4: Boot.ts Glow-Deckel (B2-Run-Anteil)",
       "description": "Akzeptanz: light_radius-Rampen-Ende Richtung Amber/Lantern statt lanternWhite + Alpha-Deckel (Boot-seitig dokumentiert), Run.ts Licht-Alpha-Deckel; Near-White A7 im Chaos-Frame <= 4,16 % im after-JSON (beide Profile), FPS within noise, Renderer-String im Beleg. tsc/vitest/build gruen, ein Commit inkl. Belege.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:12:30Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: Boot.ts light_radius Rampen-Ende Amber/Lantern statt lanternWhite, Alpha-Doku; danach after-Lauf + Near-White-Gate-Test."
+        }
+      ],
       "created": "2026-11-28T01:04:29Z",
-      "updated": "2026-11-28T01:04:29Z"
+      "updated": "2026-11-28T01:12:30Z"
     },
     {
       "id": 7302,
