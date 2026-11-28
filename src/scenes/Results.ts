@@ -12,6 +12,7 @@ import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
 import { createMenuButton, type MenuButton } from "../ui/menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
+import { addVignetteBg } from "../gfx/vignette-bg";
 
 export interface RunResult {
   reason: "death" | "dawn" | "giveup";
@@ -66,7 +67,8 @@ export class Results extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN,
       () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-    this.add.image(cx, H / 2, "vignette").setDepth(-1).setDisplaySize(W, H);
+    // Vignette pixelgenau (m10-menubg-crisp): ganzzahliger Scale + Kanten-Fuellung.
+    addVignetteBg(this, W, H);
     this.add.rectangle(cx, 136 + oy, 440, 250, PAL[C.night], 0.96).setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
 
     const victory = this.result.reason === "dawn";

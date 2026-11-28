@@ -146,15 +146,20 @@ for (const spec of VIEWS) {
   await page.screenshot({ path: `shots/m10-menubg-${mode}-results-${spec.name.replace(/[@]/g, "_")}.png` });
 
   // Klassifikation: Hintergrund/Panel = depth <= 0, kein ADD-Blend (1).
+  // Kanten-Fuell-Texturen (vignette_col_*/row_*/px_*) sind die dokumentierte
+  // Fuellung: ganzzahlige Texel-Streckung pro Achse ungleich ist dort Design.
   const isLight = (img) => img.blend === 1;
   const isBg = (img) => img.depth <= 0 && !isLight(img);
+  const FILL_RE = /^[a-z_]+_(col_l|col_r|row_t|row_b|px_tl|px_tr|px_bl|px_br)$/;
   const frac = (v) => !Number.isInteger(v);
   const findings = [];
   for (const s of scenes) {
     if (!s) continue;
     for (const img of s.images) {
       if (!isBg(img)) continue;
-      if (frac(img.scaleX) || frac(img.scaleY) || img.scaleX !== img.scaleY) {
+      if (FILL_RE.test(img.key)) {
+        if (frac(img.scaleX) || frac(img.scaleY)) findings.push({ scene: s.scene, ...img });
+      } else if (frac(img.scaleX) || frac(img.scaleY) || img.scaleX !== img.scaleY) {
         findings.push({ scene: s.scene, ...img });
       }
     }
@@ -197,12 +202,18 @@ for (const spec of VIEWS) {
 
   const resizeScenes = [];
   const findings = [];
+  const FILL_RE = /^[a-z_]+_(col_l|col_r|row_t|row_b|px_tl|px_tr|px_bl|px_br)$/;
   const classify = (entries) => {
     for (const s of entries) {
       if (!s) continue;
       for (const img of s.images) {
         if (img.depth > 0 || img.blend === 1) continue; // Licht-Glows out of scope
-        if (!Number.isInteger(img.scaleX) || !Number.isInteger(img.scaleY)
+        if (FILL_RE.test(img.key)) {
+          // dokumentierte Kanten-Fuellung: pro Achse ganzzahlig
+          if (!Number.isInteger(img.scaleX) || !Number.isInteger(img.scaleY)) {
+            findings.push({ scene: s.scene, ...img });
+          }
+        } else if (!Number.isInteger(img.scaleX) || !Number.isInteger(img.scaleY)
           || img.scaleX !== img.scaleY) findings.push({ scene: s.scene, ...img });
       }
     }

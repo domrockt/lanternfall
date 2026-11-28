@@ -9,6 +9,7 @@ import { readMeta, metaLine } from "../logic/meta";
 import { createMenuButton } from "../ui/menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
+import { addVignetteBg } from "../gfx/vignette-bg";
 
 interface CharSelectData { seed?: number; debug?: boolean }
 
@@ -48,7 +49,8 @@ export class CharSelect extends Phaser.Scene {
       () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
 
     this.cameras.main.setBackgroundColor(PAL[C.night]);
-    this.add.image(cx, H / 2, "vignette").setDepth(-1).setDisplaySize(W, H);
+    // Vignette pixelgenau (m10-menubg-crisp): ganzzahliger Scale + Kanten-Fuellung.
+    addVignetteBg(this, W, H);
     new PixelText(this, cx, 16, "WÄHLE DEINEN CHARAKTER", C.lantern, "center").setScale(2).setDepth(4);
     new PixelText(this, cx, 32, `SEED ${this.seed} · PFEILE/MAUS = WAHL`, C.fog, "center").setDepth(4);
 
