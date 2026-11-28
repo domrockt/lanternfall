@@ -1,0 +1,22 @@
+# Lane m10-hazard-disc-raster — fertig (2026-11-28)
+
+Befund (Argus-Sichtung 08:15Z): Boss-/Hazard-Discs hatten großflächiges Schachbrett-Raster
+("Fliegengitter"). Fix (src/gfx/hazardDisc.ts): Füllung flächig halbtransparent (Bake-Alpha 0.40,
+Stapel-Stufe ab 5 Warn-Discs 0.28), Dither nur 1-px-Übergangsband am Rand, Kontur 2 px,
+Draw-Scale 1; Hazards.ts/Warnlogik bitgleich. Tests: Raster-Guard (Flächensample — jeder
+Innen-Pixel Fuellung; Band-Guard; Stapel nur via Alpha).
+
+Belege:
+- Vorher/Nachher 960x540 + 1280x720 in shots/abnahme/m10-hazard-raster-{before,after}-{960,1280}.png
+- Renderer-JSONs (Mesa Intel RPL-S iGPU, 0 JS-Fehler) in ~/games/.evidence/m10-hazard-disc-raster/
+- art-director: PASS, Note 4,5 ("auslieferungsreif"), Sichtprüfung EINMAL, kein Muss-Punkt.
+
+Verifikation: tsc rc=0; tests/hazard-disc.test.ts 17/17; volle Suite 158 Dateien / 1699 Tests;
+npm run build rc=0.
+
+Commits: ab471c77 (#10068 K1 Vorher-Baseline), d8f062aa (#10069 K2 Fix), 19457374 (#10070 K3
+Suite/Build), d2ae17ea + 27371b38 (#10071 K4 Abnahme/Doku). Lane-Doku:
+docs/lanes/m10-hazard-disc-raster.md. Offene Punkte: keine.
+
+Hinweis: `npm test` regeneriert shots/m10-passive-math-{caps,matrix}.json (nur generatedAt) —
+fremde Dateien, zurückgesetzt statt committet.
