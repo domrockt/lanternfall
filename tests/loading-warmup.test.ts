@@ -55,9 +55,9 @@ describe("Loading-Warmup Task-Struktur (m10-loading-screen K2)", () => {
     expect(labels[1]).toBe("title-textures");
   });
 
-  it("deckt alle Grossbloecke ab (chars/enemies/bosses/ui/props/fx/icons/derived)", () => {
+  it("deckt alle Grossbloecke ab (chars/enemies/bosses/ui/props/fx/icons + Creator-Familien, Lane m10-warmup-chunk-fine K2)", () => {
     const labels = taskLabels();
-    for (const l of ["chars", "enemies", "bosses", "ui-frames", "props", "fx", "icons", "derived-atlas"]) {
+    for (const l of ["chars", "enemies", "bosses", "ui-frames", "props", "fx", "icons", "light-vignette", "shadow", "rings", "enemy-projectiles", "telegraphs", "static-atlas"]) {
       expect(labels).toContain(l);
     }
   });
