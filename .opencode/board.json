@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12479,
+  "next": 12483,
   "cards": [
     {
       "id": 1,
@@ -17273,6 +17273,95 @@
       ],
       "created": "2026-11-28T13:40:26Z",
       "updated": "2026-11-28T13:42:13Z"
+    },
+    {
+      "id": 12479,
+      "title": "m10-boss-dur-determinism K1: Repro — gleicher Seed, 2 Laeufe, Boss-Dauern vergleichen",
+      "description": "Bedarfsmeldung m10-balance-corridor-guard (Ergaenzung 2026-11-28T12:35Z): gleiche Seeds liefern je Lauf VERSCHIEDENE Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full). Skript scripts/m10-boss-dur-det.mjs: je Seed 2 identische Laeufe (autoPlay, timeScale 30), Boss-Dauern je Boss (Spawn->Defeat-Events sim-exakt) vergleichen. Abnahme: Vorher-JSON belegt Abweichung (oder belegt deterministischen Ist-Stand).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:46:39Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-boss-dur-determinism uebernommen; K1 Repro-Skript in Arbeit."
+        },
+        {
+          "at": "2026-11-28T13:32:30Z",
+          "by": "build",
+          "text": "K1 fertig: Repro-Skript scripts/m10-boss-dur-det.mjs (bereits via Supervisor-Snapshot committet), Vorher-JSON mit Abweichung (seed 202 Boss#0 11,05 s vs 27,70 s; seed 404 26,95 s vs 8,40 s) unter ~/games/.evidence/m10-boss-dur-determinism/m10-boss-dur-det-before.json + Kopie shots/m10-boss-dur-det-before.json. Supervisor-Checkpoint b6a3476e bestaetigt. Hinweis: #12013 (m10-loading-screen Merge-Fix) gehoert NICHT zu dieser Lane (fremde Karte, nicht angenommen gem. Briefing-Regel)."
+        },
+        {
+          "at": "2026-11-28T13:34:26Z",
+          "by": "build",
+          "text": "doing → review: K1 complete, Commit 4afa57eb (#12109). Beleg: ~/games/.evidence/m10-boss-dur-determinism/m10-boss-dur-det-before.json (Abweichung 3/3 Seeds) + shots/m10-boss-dur-det-before.json (gitignored)."
+        },
+        {
+          "at": "2026-11-28T13:43:50+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12109, Merge branch m10-boss-dur-determinism"
+        }
+      ],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T13:34:26Z"
+    },
+    {
+      "id": 12480,
+      "title": "m10-boss-dur-determinism K2: Ursache in BossSystem.ts/bosses.ts benennen",
+      "description": "RNG-Quelle und dt- vs. Frame-Semantik im Boss-Pfad pruefen (Verdacht: ungesaete RNG oder frame-count-abhaengiges Timing, Muster m10-spawn-budget-dt/m10-shot-budget-dt). Liegt die Ursache nachweislich ausserhalb der area (z. B. Spawner/Run.ts): Befund + Datei/Hebel als Bedarfsmeldung in requests.md, Lane mit dem in-area deterministischen Teil abschliessen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:34:26Z",
+          "by": "build",
+          "text": "todo → doing: K2 Ursachenanalyse abgeschlossen (Befundkette in Lane-Doku): Ursache ausserhalb Boss-Area nachgewiesen — 3 worldView-Leser im Sim-Pfad (Spawner.ts:206, ProjectilePool.ts:175, EnemyProjectiles.ts:463); Laufzeit-Patch-Beweis probe-runtime-patch.json (3 Seeds x 2 Laeufe bitgleich). Bedarfsmeldung folgt in requests.md; K2-Commit mit #12110."
+        },
+        {
+          "at": "2026-11-28T13:34:55Z",
+          "by": "build",
+          "text": "doing → review: K2 complete, Commit db134fb5 (#12110). Befundkette + Bedarfsmeldung (requests.md 13:4xZ) in docs/lanes/m10-boss-dur-determinism.md K2; Beweis probe-runtime-patch.json."
+        },
+        {
+          "at": "2026-11-28T13:43:50+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12110, Merge branch m10-boss-dur-determinism"
+        }
+      ],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T13:34:55Z"
+    },
+    {
+      "id": 12481,
+      "title": "m10-boss-dur-determinism K3: Fix — deterministische Boss-Dauern",
+      "description": "Deterministischer Boss-Pfad (gesaete RNG/DT-Akkumulator statt Frame-Count), Verhalten bei vollem 60-FPS-Lauf unveraendert. Abnahme: npx tsc --noEmit gruen, Verhalten-Aequivalenz begruendet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:34:55Z",
+          "by": "build",
+          "text": "todo → doing: K3 in-area-Haertung BossSystem (simViewRect + zoom-Teiler) gestartet."
+        },
+        {
+          "at": "2026-11-28T13:39:48Z",
+          "by": "build",
+          "text": "K3 Implementierung fertig: simViewRect (pure, bosses.ts) + BossSystem.viewRect/renderDivisor + spawn ohne live-zoom-Lese. Tests: tests/boss-dur-determinism.test.ts 6/6 gruen, npx tsc --noEmit gruen, npm test 2285/2285 gruen. Reviewer-Check laeuft; Commit nach PASS mit #12111."
+        },
+        {
+          "at": "2026-11-28T13:43:50+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12481, Merge branch m10-boss-dur-determinism (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T13:39:48Z"
+    },
+    {
+      "id": 12482,
+      "title": "m10-boss-dur-determinism K4: Test + Nachher-Beleg + Lane-Doku + .lane-done",
+      "description": "tests/boss-dur-determinism.test.ts: gleicher Seed -> bitgleiche Boss-Dauern (mind. 3 Seeds). npm test gruen, Nachher-JSON (3 Seeds x 2 Laeufe, 0 Abweichung) nach ~/games/.evidence/m10-boss-dur-determinism/, docs/lanes/m10-boss-dur-determinism.md, .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T12:46:33Z"
     }
   ]
 }
