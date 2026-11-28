@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11308,
+  "next": 11393,
   "cards": [
     {
       "id": 1,
@@ -15170,6 +15170,33 @@
       ],
       "created": "2026-11-28T10:42:57Z",
       "updated": "2026-11-28T10:48:25Z"
+    },
+    {
+      "id": 11389,
+      "title": "m10-heap-regression-fix K1: Heap-Kurve eingrenzen (Belege m3-fullrunaccf{,2} vergleichen, Kurve messen, Verdachts-Merges pruefen)",
+      "description": "Ein dokumentierter Befund reicht (Lehre 07:23). Abnahme: Kurven-JSON in ~/games/.evidence/m10-heap-regression-fix/ + Befund in docs/lanes/m10-heap-regression-fix.md.",
+      "column": "doing",
+      "notes": [
+        "K1 gestartet: Kurven-Probe (fullrun-Kopie mit 2-min Post-GC-Heap-Kurve) + Verdachts-Merge-Diff."
+      ]
+    },
+    {
+      "id": 11390,
+      "title": "m10-heap-regression-fix K2: Ursache belegt — konkreter Halter/Cache (Datei + Mechanismus) mit Mini-Beweis",
+      "description": "Abnahme: Halter benannt (Datei, Mechanismus) + Beleg (Kurve vor/nach isolierter Repro ODER eindeutiger Code-Beleg) in der Lane-Doku.",
+      "column": "todo"
+    },
+    {
+      "id": 11391,
+      "title": "m10-heap-regression-fix K3: Fix klein und zielgerichtet (dispose/Grenze/Trim) innerhalb der area; falls Ursache ausserhalb: Befund + requests.md-Anfrage",
+      "description": "Abnahme: Fix commitet ODER vollstaendige Befundliste + Claim-Anfrage in ~/lf-runs/.dispatch/requests.md.",
+      "column": "todo"
+    },
+    {
+      "id": 11392,
+      "title": "m10-heap-regression-fix K4: Vorher/Nachher — fullrun --tag heapfix 2x, Heap-Tor <= +15 %, Inhalt unverändert grün (6/6 Bosse/Truhen, Sieg, 0 JS-Fehler)",
+      "description": "Abnahme: 2 Beleg-JSONs in ~/games/.evidence/m10-heap-regression-fix/, deltaVsMinute1Pct < 15, passed=true. Optional: renderer-Feld in fullrun, heap-budget haerter gegen Target-page-closed.",
+      "column": "todo"
     }
   ]
 }
