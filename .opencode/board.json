@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13037,
+  "next": 13041,
   "cards": [
     {
       "id": 1,
@@ -18280,6 +18280,86 @@
       ],
       "created": "2026-11-28T13:55:33Z",
       "updated": "2026-11-28T15:51:17Z"
+    },
+    {
+      "id": 13037,
+      "title": "m10-postwave-smoke-r2 K1: npm test + build (tsc)",
+      "description": "Smoke der Merge-Welle 12:00-15:30Z: npm test + npm run build, Zahlen+rc, Vergleich mit 2412/2412. AK: beide gruen mit Zahlen in docs/lanes/m10-postwave-smoke-r2.md.",
+      "column": "done",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [
+        {
+          "at": "2026-11-28T15:32:59.005Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K1 gestartet (npm test + build)"
+        },
+        {
+          "at": "2026-11-28T15:33:38.126Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K1 gruen (2455/2455, build 449ms rc=0), Commit f5a40318"
+        }
+      ],
+      "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 13038,
+      "title": "m10-postwave-smoke-r2 K2: verify:final + verify-input + acceptance",
+      "description": "Ausfuehren (nicht anfassen): verify:final, verify:input, acceptance-count. Soll 30/6/6/6/6/2. AK: PASS-Zahlen notiert, Abweichungen als Befund.",
+      "column": "done",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [
+        {
+          "at": "2026-11-28T15:33:38.127Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K2 gestartet"
+        },
+        {
+          "at": "2026-11-28T15:35:56.974Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K2 gruen (verify-final 7/7, verify-input 29/29, acceptance 30/6/6/6/6/2 = Soll), rc=0 je Skript"
+        }
+      ],
+      "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 13039,
+      "title": "m10-postwave-smoke-r2 K3: Perf-Kurzlauf unter flock",
+      "description": "Burst 640x360 und 780x360@3, je 2 Laeufe (Min zaehlt), flock /home/ai/games/.lf-perf.lock. Toren >=55 / >=55. AK: FPS-Zahlen in Lane-Doku, Urteil gegen Toren.",
+      "column": "done",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [
+        {
+          "at": "2026-11-28T15:35:56.974Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K3 gestartet (Perf-Kurzlauf unter flock)"
+        },
+        {
+          "at": "2026-11-28T15:56:20.582Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K3 PASS — Burst 640x360 min 60.0, 780x360@3 min 60.0 (Tore >=55), 0 JS-Fehler, Renderer Mesa RPL-S swiftshader=false; keine fremde Sperre (ps/proc/locks geprueft)"
+        }
+      ],
+      "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 13040,
+      "title": "m10-postwave-smoke-r2 K4: Befundliste Lane-Doku",
+      "description": "docs/lanes/m10-postwave-smoke-r2.md: Befunde je mit Severity + Datei + Hebel, sonst Welle-sauber-Doku mit Zahlen. AK: Doku vollständig, .lane-done.",
+      "column": "done",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [
+        {
+          "at": "2026-11-28T15:56:20.582Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K4 gestartet (Doku)"
+        },
+        {
+          "at": "2026-11-28T15:56:25.933Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K4 — Welle sauber (alle Checks gruen), 2 low-Befunde (B1 perf.mjs ohne renderer-Feld, B2 minEnemies im passed-Gate trotz dokumentiertem Quirk), Fix-Job-Empfehlungen in docs/lanes/m10-postwave-smoke-r2.md"
+        }
+      ],
+      "created": "2026-11-28T15:32:56.843Z"
     }
   ]
 }
