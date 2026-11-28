@@ -122,19 +122,20 @@ describe("Elite-Rim: Sprite-Generator (enemySprites.ts)", () => {
     });
   });
 
-  it("Rim-Frameset: genau 1 zusaetzliches Frame je Typ, richtungs-/frameunabhaengig", () => {
+  it("Rim-Frameset: 2 Frames je Typ (m10-enemy-idle-anim-r2: Idle/Bob statt Standbild)", () => {
     expect(Object.keys(ELITE_RIM_FRAMES).length).toBe(ENEMY_LIST.length);
     ENEMY_LIST.forEach((def) => {
       const keys = ELITE_RIM_FRAMES[eliteFrameId(def.id)];
-      expect(keys?.length, def.id).toBe(1);
+      expect(keys?.length, def.id).toBe(2);
       expect(keys?.[0], def.id).toBe(`${def.spriteKey}_rim`);
+      expect(keys?.[1], def.id).toBe(`${def.spriteKey}_rim2`);
     });
   });
 
-  it("framesForDef liefert fuer die Rim-Def das Rim-Frame (stabil gegen Run.ts-Zyklus)", () => {
+  it("framesForDef liefert fuer die Rim-Def das 2-Frame-Rim-Frameset (Run.ts zyklisiert Idle/Bob)", () => {
     ENEMY_LIST.forEach((def) => {
       const frames = framesForDef(eliteRimDef(def));
-      expect(frames, def.id).toEqual([`${def.spriteKey}_rim`]);
+      expect(frames, def.id).toEqual([`${def.spriteKey}_rim`, `${def.spriteKey}_rim2`]);
     });
   });
 

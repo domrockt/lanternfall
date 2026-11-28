@@ -239,7 +239,7 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
       expect(differing / interior, `${def.id}: Basis ungefaerbt`).toBeGreaterThanOrEqual(0.3);
       // Key-Satz und Frameset-Vertrag unveraendert
       expect(enemyFrameKeys(index)[0]).toBe(def.spriteKey);
-      expect(framesForDef(eliteRimDef(def))).toEqual([`${def.spriteKey}_rim`]);
+      expect(framesForDef(eliteRimDef(def))).toEqual([`${def.spriteKey}_rim`, `${def.spriteKey}_rim2`]);
     });
   });
 });
