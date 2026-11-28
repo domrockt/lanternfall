@@ -1,0 +1,24 @@
+# Lane m10-worldview-anchor-spawner — abgeschlossen 2026-11-28
+
+Ziel: dritter frame-abhängiger `camera.worldView`-Leser (`Spawner.outsideView`)
+auf den deterministischen Sim-Anker (mid = scroll + width/2, logischer Screen
+GAME_WIDTH × GAME_HEIGHT, Rezept m10-boss-dur-determinism K2) — Determinismus-
+Kette komplett.
+
+Zentraler Befund: der Fix war im Basis-Stand BEREITS gemergt
+(Lane m10-spawn-view-anchor, Commit 0910f360 / Merge 4c677cfe); die Vorher-
+Divergenz ist durch deren marks-before.json belegt. Diese Lane lieferte daher:
+Verifikation (Rezept-Konformität, Guard: kein worldView-Codeleser im Spawner),
+eigener Test tests/worldview-anchor-spawner.test.ts (3/3 grün: Spawn-Marken
+bitgleich über Render-Frame-Rhythmen 1/2/3/5/25 trotz worldView-Jitter) und
+den offenen GANZKETTEN-E2E-Nachweis.
+
+Ergebnis (scripts/m10-worldview-spawner.mjs, 3 Seeds × 2 Läufe, 700 s, 30x):
+DETERMINISTISCH, 0 Abweichung — Spawn-Marken (bis s=700: 1324/980/1092 je rep
+bitgleich) und Boss-Dauern bitgleich (Seed 101: 31,10/40,10 · 202: 25,20/29,50 ·
+404: 29,75/45,45 s; alle im Dom-Korridor A5 20–60 s). Renderer Mesa Intel
+(RPL-S), kein SwiftShader. Belege: ~/games/.evidence/m10-worldview-anchor-spawner/.
+
+Abnahme: tsc rc=0, npm run build grün, npm test grün (223 Dateien / 2419 Tests).
+Karten #12769–#12772 alle done. requests.md vermerkt: alle 3 worldView-Leser
+geankert, Korridor A5 deterministisch abnehmbar.

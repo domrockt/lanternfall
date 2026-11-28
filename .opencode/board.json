@@ -17798,16 +17798,21 @@
       "id": 12772,
       "title": "m10-worldview-anchor-spawner K4: Ganzketten-E2E 3 Seeds × 2 Läufe bitgleich + Lane-Doku + requests.md",
       "description": "Abnahme: scripts/m10-worldview-spawner.mjs (Harness nur lesen), 3 Seeds × 2 Läufe (700 s, 30x): Spawn-Marken + Boss-Dauern bitgleich (Exit 0); Belege ~/games/.evidence/m10-worldview-anchor-spawner/; docs/lanes/m10-worldview-anchor-spawner.md; requests.md-Vermerk alle 3 Leser geankert; .lane-done.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T14:57:25Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T15:07:50Z",
+          "by": "build",
+          "text": "doing → done: Ganzketten-E2E: 3 Seeds × 2 Läufe bitgleich (Exit 0), Suite 223/2419 grün. Commit 1952952f"
         }
       ],
       "created": "2026-11-28T14:55:10Z",
-      "updated": "2026-11-28T14:57:25Z"
+      "updated": "2026-11-28T15:07:50Z"
     }
   ]
 }
