@@ -1,0 +1,20 @@
+# Lane m10-board-cleanup-killed-lanes-r2 — fertig (2026-11-28)
+
+Opferkarten-Audit der 18 im Disponent-Bug (28.11. 06:22–06:52, Guard-Fix ops 77c84cd)
+getöteten Lane-Jobs — reine Board-/Doku-Lane, kein Codetouch.
+
+Ergebnis: Auf dem main-Board (Basis f71c3be, 783 Karten) enthält KEINE der 18 Opfer-Lanes
+noch Karten in doing/review — der Disponent hat im Kill-Fenster für die Opfer-Lanes gar
+keine Karten auf main angelegt (0 Agent-Läufe inkl. Karten-Erstellung). Board-weit einzige
+doing/review-Karte: #9196 (m10-props-wiring K4) — laut Supervisor-Entscheid NICHT
+opferbetroffen, unangetastet und als Ausnahme dokumentiert. #9101 (m10-gamepad-menu-nav K5)
+ist regulär done (Lane gemergt, 29c310e, ancestor rc=0). Keine Verschiebung nötig; die
+Spalte `cancelled` existiert im Board-Plugin nicht.
+
+Geändert (git diff gegen f71c3be): .opencode/board.json (nur Karte #9472 dieser Lane),
+docs/lanes/m10-board-cleanup-killed-lanes-r2.md (Audit-Tabelle + Ausnahmen + offene Punkte),
+diese .lane-done. Beleg: ~/games/.evidence/m10-board-cleanup-killed-lanes-r2/audit-9472.json.
+
+Offen an Vera/die Sammel-Re-Queue: fälschlich auf done stehende Opferkarten und
+Opfer-Themen ohne Karten (nicht Teil dieses Auftrags, „NICHT auf done"/Regel 3);
+stuck-Alarm auf #9196 bis zum regulären Abschluss von m10-props-wiring.
