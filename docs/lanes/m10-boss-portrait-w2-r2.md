@@ -53,6 +53,10 @@ Pipeline-Kette (aus crisp-Lane übernommen, wird beachtet):
   10/11/9, gebogene Rippenbögen) über zerschlissenem Wams, Glut-Herz; Unterkante beruhigt:
   Kapuzensaum in verbundenen Zipfeln (keine isolierten Tropfen), Beine/Schuhe lesbar,
   Diagonal-Dornen + isolierte Eck-Trümmer entfernt, Thronfragmente erdiger.
+  **Ergebnis (Abbruchkriterium erreicht, keine weitere Iteration):** silKontrast p75
+  **70.0 → 93.8**, Kanten 34.7 → 39.9, offPal 0, dup 0. Probe 4x gesehen: Rippenkorb +
+  Wams klar getrennt, Beine/Stiefel lesbar, keine Diagonal-Dornen mehr. Commit `57e2937c`
+  (#9898); Feinschliff bewusst K6 überlassen (art-director-Urteil).
 
 ## K5 — Regressionstest
 
@@ -66,9 +70,9 @@ nach `~/games/.evidence/m10-boss-portrait-w2-r2/`.
 
 ## Status
 
-- [x] K1 Vorher-Kontaktbögen + Metriken + Renderer-String
-- [ ] K2 coven
-- [ ] K3 pale_shepherd
-- [ ] K4 hollow_king
+- [x] K1 Vorher-Kontaktbögen + Metriken + Renderer-String (Commit `5505bcef`)
+- [x] K2 coven (Commit `04a25cbe`, silKontrast 70.0 → 93.8)
+- [x] K3 pale_shepherd (Commit `8b78eacd`, silKontrast 134.4 → 134.4, Kanten 52.9 → 54.2)
+- [x] K4 hollow_king (Commit `57e2937c`, silKontrast 70.0 → 93.8)
 - [ ] K5 Regressionstest
 - [ ] K6 Nachher + art-director + Doku
