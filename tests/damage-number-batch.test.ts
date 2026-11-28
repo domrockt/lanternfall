@@ -1,8 +1,23 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+// formatDamageLabel lebt in systems/DamageNumbers.ts, das Phaser nur fuer
+// PixelText/Scene importiert — Container-Stub wie in tests/damage-grid.test.ts.
+vi.mock("phaser", () => {
+  class Container {
+    scene: unknown;
+    children: unknown[] = [];
+    constructor(scene: unknown) { this.scene = scene; }
+    add(child: unknown) { this.children.push(child); return this; }
+    setDepth() { return this; }
+  }
+  return { default: { GameObjects: { Container } } };
+});
+
+import { formatDamageLabel } from "../src/systems/DamageNumbers";
 import {
   AGGREGATE_WINDOW, DAMAGE_AGGREGATE_MIN_ENEMIES, GROUP_COLUMNS, GROUP_ROWS,
   MAX_ENTRIES, MAX_VIEWS_AGGREGATE, LabelMemo, ViewBudget,
-  addDamage, aggregateKey, damageLabel, entryMatchesKey, expireDamage, groupZoneFor,
+  addDamage, aggregateKey, entryMatchesKey, expireDamage, groupZoneFor,
   resetAggregateEntry, shouldAggregateDamage,
   type AggregateEntry, type EntrySink,
 } from "../src/logic/damage-numbers";
@@ -48,7 +63,7 @@ describe("M10 Damage-Batch: Summe und Gruppierung", () => {
     addDamage(entries, { enemyUid: 42, damage: 8, crit: true, time: 1 + AGGREGATE_WINDOW - 0.01 });
     expect(entries.filter((e) => e.enemyUid === 42)).toHaveLength(1);
     expect(entries[0].crit).toBe(true);
-    expect(damageLabel(entries[0])).toBe("15!");
+    expect(formatDamageLabel(entries[0].damage, entries[0].crit)).toBe("15!");
   });
 
   it("nach dem Fenster entsteht genau ein neuer Eintrag (Label-Wechsel erlaubt)", () => {

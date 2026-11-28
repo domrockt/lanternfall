@@ -234,12 +234,6 @@ export function entryMatchesKey(entry: AggregateEntry, key: number): boolean {
   return key < 0 ? group === -key : group === 0 && entry.enemyUid === key;
 }
 
-/** Anzeige-Text: Schaden gerundet, optional mit "!" bei Krit. */
-export function damageLabel(entry: AggregateEntry): string {
-  const base = String(Math.max(1, Math.round(entry.damage)));
-  return entry.crit ? `${base}!` : base;
-}
-
 /**
  * Bildschirmzone als Gegner-Gruppe (3x3 = 9 <= MAX_VIEWS_AGGREGATE). Treffer
  * derselben Zone teilen sich einen Eintrag/View, statt pro Gegner einen Text

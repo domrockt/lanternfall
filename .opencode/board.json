@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7532,
+  "next": 7598,
   "cards": [
     {
       "id": 1,
@@ -9528,10 +9528,16 @@
       "id": 7527,
       "title": "m10-damage-label-formatter-ausdünnen: damageLabel entfernen oder Tests umstellen",
       "description": "lane #7062 (Folgekarte aus Lane m10-chaos-fix-dmg-overlap, Reviewer-Befund PASS). damageLabel (src/logic/damage-numbers.ts:238) ist produktiv ungenutzt (DamageNumbers.ts nutzt formatDamageLabel mit k-Kuerzung) und hat keine Kuerzung — zwei Formatter laufen auseinander. Entweder entfernen oder tests/damage-number-batch.test.ts + tests/m5-jucie.test.ts auf formatDamageLabel umstellen. Abnahme: nur noch ein Produktions-Formatter, Tests gruen, tsc gruen.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:45:57Z",
+          "by": "build",
+          "text": "backlog → doing: m10-dmglabel-cleanup: K1 – damageLabel entfernen, 2 Test-Dateien auf formatDamageLabel(damage, crit) umstellen. Owner: Lead. Baseline: tsc + 42 Tests der 2 Dateien gruen."
+        }
+      ],
       "created": "2026-11-28T02:37:07Z",
-      "updated": "2026-11-28T02:37:07Z"
+      "updated": "2026-11-28T02:45:57Z"
     },
     {
       "id": 7528,
