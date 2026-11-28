@@ -37,3 +37,31 @@ Fix-Welle Gamepad-Nav/pad-start-pause-r2 seit C. Hebel: keine.
 
 Roh-Belege: `~/games/.evidence/m10-acceptance-refresh-e/k2-verify-final.json`, `k2-verify-input.json`
 (Kopien der Skript-Outputs `shots/final-verify.json` / `shots/m8-input.json`; shots/ ist gitignored).
+
+## K3 — fullrun 30 min 640×360 + Minute-25 780×360@3 (07:26–07:35Z, flock `/home/ai/games/.lf-perf.lock`)
+
+**Renderer-Pflicht:** `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (iGPU, kein SwiftShader) —
+Beleg `~/games/.evidence/m10-acceptance-refresh-e/k3-renderer.txt`.
+
+**fullrun 640×360@1** (`flock … npm run fullrun -- --viewport 640x360 --dpr 1 --tag refresh-e-640`,
+JSON `shots/m3-fullrunrefresh-e-640.json` → Kopie `~/games/.evidence/m10-acceptance-refresh-e/k3-fullrun-640.json`):
+
+| Kriterium | Ist | Tor | Urteil |
+|---|---|---|---|
+| Sim-Dauer | 30,2 min | 30 | PASS |
+| Bosse | 6/6 bei 300/600/900/1200/1500/1800 s (exakt) | 6/6 ±2 s | **PASS** |
+| Truhen | 6/6 | 6/6 | **PASS** |
+| Sieg | `dawn=true`, `resultReason=dawn` | Sieg dawn | **PASS** |
+| fpsMin | **59,2** | ≥ 55 | **PASS** |
+| Heap-Tor | **+13,9 %** (Minute-1 → Run-Ende nach GC; endMB 40,5) | ≤ +15 % | **PASS** |
+| JS-Fehler | 0 | 0 | **PASS** |
+
+**Minute-25 780×360@3** (`flock … npm run perf -- --viewport 780x360 --dpr 3 --tag refresh-e-780`):
+Burst **60,1 FPS** bei 500 Gegnern (PASS), Minute-25 **60,1 FPS** (gemessen 60,7) bei 300 Gegnern,
+Tor ≥ 50 → **PASS**. Sicht: `shots/abnahme/refresh-e-minute25-780x360dpr3.png` (getrackt), 0 JS-Fehler.
+JSON `~/games/.evidence/m10-acceptance-refresh-e/k3-perf-780x360dpr3.json`.
+
+Befund E-2 (positiv): die FPS-Latte der Nachabnahme C/Versuch 3 (fullrun-fpsMin 34,8/35,7,
+M25-780 41,3–46,4) ist auf PIN `a6f1458` **voll erfüllt** — Attribution der Fix-Welle:
+dpr-budget (780@3-Pfad), separation-budget, endgame-fps/ground-cost Merges seit C.
+Hebel: keine.
