@@ -40,7 +40,9 @@ Rohdaten 6 × 120 Marken committed. Reproduzierbar mit
   ist damit nicht reproduzierbar.
 - Hebel liegt in einer **fremden Datei** (`src/scenes/Run.ts`, parallel belegt und in
   der Lane-Grenze explizit ausgeschlossen) → **Bedarfsmeldung** in
-  `/home/ai/games/.dispatch/requests.md`, kein Fix in dieser Lane.
+  `/home/ai/games/.dispatch/requests.md` (Eintrag 2026-11-28T02:4xZ, Lane
+  m10-run-determinism): Sim-Schrittführung auf feste `SIM_MAX_STEP`-Einheiten
+  quantisieren (Rest carry-over statt Partial-Schritt). Kein Fix in dieser Lane.
 
 ## Konsequenz für die Abnahme-Maschinerie
 
