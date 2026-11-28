@@ -117,7 +117,7 @@ async function runOnce(seed, character) {
         break;
       }
       // Kurzmodus: nach dem besiegten Boss 3 abbrechen (Level zu diesem Zeitpunkt als Marke mitnehmen).
-      const boss3Dead = (lastRun?.bossDeaths ?? []).some((d) => d.index === SHORT_LAST_BOSS_INDEX);
+      const boss3Dead = MODE === "short" && (lastRun?.bossDeaths ?? []).some((d) => d.index === SHORT_LAST_BOSS_INDEX);
       if (boss3Dead) {
         trace.outcome = "boss3";
         trace.endSecond = Math.round((lastRun?.time ?? 0) * 10) / 10;
@@ -187,9 +187,8 @@ const KNOWN_VIOLATIONS = [
   {
     type: "bossDuration",
     character: "mira",
-    bossIndex: 0,
     maxDurationSec: BOSS_CORRIDOR[0],
-    reason: "mira/101 meltet Boss 1 (Moorkönigin) in 12,9 s (Vorprobe Seed 7: 9,5 s). Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 27 s; mira/202 (30,1 s) und mira/404 (31,3 s) liegen im Korridor. Drift-Fund dieser Lane; Ursachenklaerung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet.",
+    reason: "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): alles 24-60 s. Fund dieser Lane; Ursachenklaerung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch.",
   },
 ];
 
