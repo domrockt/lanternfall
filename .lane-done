@@ -1,0 +1,23 @@
+Lane m10-audio-settings-guard — abgeschlossen (Karten #11004-#11007).
+
+Thema: src/audio/settings.ts (einzige unbehandelte src-Datei) geprueft, belegte
+Maengel gefixt, Guard-Tests, Doku. Master-Mute bitgleich (A7), verify:final
+unveraendert 7/7 PASS (rc=0).
+
+Ergebnis:
+- Vorher-Probe (scripts/m10-audio-settings.mjs, echte settings.ts/options.ts,
+  Kindprozess je Phase = Reload, StorageLike-Shim):
+  ~/games/.evidence/m10-audio-settings-guard/m10-audio-settings-before.json
+- 4 belegte Maengel: setSettings unvalidiert (NaN/out-of-range/falscher Typ
+  erreichte Konsumenten), Memory/Storage-Divergenz, Partial-Payload (fehlende
+  Felder -> undefined), Junk-Schluessel via changeSetting.
+- Fix (nur settings.ts, Commit 66cae756): normalizeOptions pro Feld gegen
+  DEFAULT_OPTIONS (Semantik wie loadOptions) in setSettings; Junk-Key-Gate in
+  changeSetting.
+- Nachher-Probe: ~/games/.evidence/m10-audio-settings-guard/m10-audio-settings-after.json
+  (alle 4 Maengel behoben, gut gebliebenes verifiziert).
+- Tests (Commit 950d68c9): tests/audio-settings.test.ts, 8 Tests; npm test
+  181 Dateien / 1982 Tests, 0 fail; tsc rc=0; build rc=0.
+- Doku: docs/lanes/m10-audio-settings-guard.md (Vorher/Nachher-Tabelle).
+
+Offene Punkte: keine. Keine Eingriffe in fremde Dateien.

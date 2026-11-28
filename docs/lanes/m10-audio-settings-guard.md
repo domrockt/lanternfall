@@ -63,12 +63,64 @@ loadOptions, als lokale Hilfsfunktion, options.ts bleibt unberuehrt);
 
 ## K2 Fix
 
-(folgt)
+Commit 66cae756 (`src/audio/settings.ts`, sonst nichts — options.ts,
+AudioSystem.ts, meta.ts unberuehrt):
+
+- `normalizeOptions()` (lokal): pro Feld gegen DEFAULT_OPTIONS, identische
+  Semantik wie `loadOptions` (nicht-finite Zahlen -> Feld-Default,
+  out-of-range -> clampVolume/clampScale, nicht-boolean -> Feld-Default,
+  fehlende Felder -> Default).
+- `setSettings()` normalisiert vor Zuweisung + Persistenz -> Maengel 1-3
+  behoben: Konsumenten sehen immer ein komplettes validiertes Objekt,
+  Memory == Storage.
+- `changeSetting()` verwirft unbekannte Schluessel (Maengel 4) statt sie via
+  setOption-else-Zweig als Junk-Feld anzufuegen.
+- **Master-Mute bitgleich:** gueltige Eingaben durchlaufen die Normalisierung
+  unverändert (`setClamp`-Probe nachher identisch: muted true, Speicherstand
+  wie vorher). `npm run verify:final` (unveraendert) rc=0, alle 7 Checks PASS,
+  u. a. "Master-Mute Option gesetzt options.muted=true audio.muted=true" und
+  "Master-Mute nach Reload persistiert".
+
+Probe nachher (`~/games/.evidence/m10-audio-settings-guard/m10-audio-settings-after.json`):
+- `directSet` {music: NaN, sfx: 2, muted: "yes"} -> music 0.55 (Default), sfx 1
+  (clamp), muted false (Default); `memoryStorageDiverge: false` (vorher true).
+- `partialSet` {music: 0.3} -> komplettes Objekt inkl. Defaults; `junkKeys: []`
+  (vorher ["mute"]).
+- defaults/corrupt/out-of-range/reset/reload: wie vorher OK (nicht
+  verschlechtert).
 
 ## K3 Guard-Tests
 
-(folgt)
+Commit 950d68c9: `tests/audio-settings.test.ts`, 8 Tests in 3 Blöcken:
+Defaults (leerer Storage), Clamping + Listener, Persist-Roundtrip (frisches
+Modul = Reload), korrupte Payload -> Defaults, out-of-range Payload ->
+geclamped/Feld-Default, K2-Regression (NaN/partial -> normalisiert, Memory ==
+Storage), Junk-Key verworfen, Master-Mute bitgleich (true/false + Persistenz +
+resetSettings).
+
+Lauf: Datei 8/8 PASS; Suite `npm test` 181 Dateien / 1982 Tests, 0 fail;
+tsc rc=0; build rc=0.
 
 ## K4 Nachher-Probe + Fazit
 
-(folgt)
+Beide Probe-JSONs (gleiche Skript-Version, Kindprozess je Phase):
+- Vorher: `~/games/.evidence/m10-audio-settings-guard/m10-audio-settings-before.json`
+- Nachher: `~/games/.evidence/m10-audio-settings-guard/m10-audio-settings-after.json`
+
+Vorher/Nachher der 4 belegten Maengel:
+
+| Maengel | Vorher | Nachher |
+|---|---|---|
+| setSettings unvalidiert (NaN/out-of-range/falscher Typ) | music NaN, sfx 2, muted "yes" in getSettings() | music 0.55, sfx 1, muted false (komplett validiert) |
+| Memory/Storage-Divergenz | true | false |
+| Partial-Payload | getSettings() nur {music: 0.3}, sfx undefined | komplettes Objekt mit Defaults |
+| Junk-Key ("mute") | junkKeys ["mute"] | junkKeys [] |
+
+Fazit: Der Audio-Einstellungspfad ist jetzt gegen ungepruefte Aufrufe gehaertet
+(gleichtes Validierungsverhalten beim Schreiben wie beim Laden), Persistenz-
+und Load-Pfad waren bereits korrekt (loadOptions, out of Scope) und sind per
+Test abgesichert. Master-Mute-Vertrag (A7) unverändert, verify:final 7/7 PASS.
+
+Offene Punkte: keine. Eingriff in fremde Dateien: keine (Disponent-Bereich
+eingehalten; verify:final nur gelesen/ausgefuehrt, Skript nicht geaendert).
+
