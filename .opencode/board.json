@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13519,
+  "next": 13542,
   "cards": [
     {
       "id": 1,
@@ -19136,6 +19136,39 @@
       ],
       "created": "2026-11-28T16:16:04Z",
       "updated": "2026-11-28T17:20:07Z"
+    },
+    {
+      "id": 13539,
+      "title": "m10-golden-frame-rebaseline-r3 K1: Probe auf aktuellem main (3 Seeds × 600 Ticks, sim-Hash)",
+      "description": "AE: node scripts/m10-golden-frame.mjs auf main-HEAD d75862cb+; Verdict-JSON mit je-Seed-Hashes + Determinismusbeleg als shots/m10-golden-frame-r3-verdict.json (Beleg auch ~/games/.evidence/). Frage: divergiert die r2-Baseline (213b8494-Stand)? Keine src-Änderung.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T17:22:57Z",
+          "by": "build",
+          "text": "todo → doing: K1 Probe gestartet: Guard-Lauf ohne --write-baseline gegen Baseline 761f274a (Stand 213b8494)."
+        }
+      ],
+      "created": "2026-11-28T17:22:38Z",
+      "updated": "2026-11-28T17:22:57Z"
+    },
+    {
+      "id": 13540,
+      "title": "m10-golden-frame-rebaseline-r3 K2: Rebaseline oder Befundliste",
+      "description": "AE: Bei legitimem Verhaltenswandel (dokumentierte Merge-Quellen je Differenz): --write-baseline + npx vitest run tests/golden-frame.test.ts grün. Bei echtem visuell/verhaltensseitigem Regress: KEIN Rebaseline — Befundliste (Seed, Tick, Differenz, verdächtiger Merge) + Bedarfsmeldung .dispatch/requests.md. Keine src-Änderung.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:22:38Z",
+      "updated": "2026-11-28T17:22:38Z"
+    },
+    {
+      "id": 13541,
+      "title": "m10-golden-frame-rebaseline-r3 K3: Lane-Doku + .lane-done",
+      "description": "AE: docs/lanes/m10-golden-frame-rebaseline-r3.md mit Differenzliste + Quellenzuordnung (Merge-SHAs); .lane-done mit 5-10 Zeilen Zusammenfassung + Messwerte. Differenzliste je Seed mit Quellen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:22:38Z",
+      "updated": "2026-11-28T17:22:38Z"
     }
   ]
 }
