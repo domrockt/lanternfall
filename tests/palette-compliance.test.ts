@@ -24,7 +24,18 @@ import { GEN_ICONS } from "../src/gfx/gen-icons";
 import { GEN_PROPS } from "../src/gfx/gen-props";
 import { GEN_TITLE } from "../src/gfx/gen-title";
 import { GEN_UI } from "../src/gfx/gen-ui";
-import { createFxTextures, deathFrameSets, EVOLUTION_SIGNATURES, EVOLUTION_SIGNATURE_IDS, mixelBakes, mixelLevel1Frames, mixelLevelFor, mixelMaxLevel, SIGNATURE_FRAME_COUNT, signatureFrame, signatureTextureKey, SOUL_SIGNATURE_SIZE } from "../src/gfx/gen-fx";
+import {
+  createFxTextures,
+  deathFrameSets,
+  EVOLUTION_SIGNATURE_IDS,
+  evolutionSignatureTextureDef,
+  mixelBakes,
+  mixelLevel1Frames,
+  mixelLevelFor,
+  mixelMaxLevel,
+  SIGNATURE_FRAME_COUNT,
+  signatureTextureKey,
+} from "../src/gfx/gen-fx";
 import * as genFxMod from "../src/gfx/gen-fx";
 import { bossSpriteFrames, enemySpriteFrames } from "../src/gfx/enemySprites";
 import { BOSSES, ENEMY_LIST } from "../src/data";
@@ -207,11 +218,10 @@ function expectFxMixelClean(assets: Array<Asset & { dither?: { bandPx: number } 
 function representativeFxSets(): Array<{ key: string; w: number; h: number; frames: string[][] }> {
   const sets: Array<{ key: string; w: number; h: number; frames: string[][] }> = [];
   for (const id of EVOLUTION_SIGNATURE_IDS) {
-    const sig = EVOLUTION_SIGNATURES[id];
     for (const kind of ["hit", "death"] as const) {
+      const def = evolutionSignatureTextureDef(id, kind);
       sets.push({
-        key: signatureTextureKey(id, kind), w: 32, h: 32,
-        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
+        key: signatureTextureKey(id, kind), w: def.w, h: def.h, frames: def.frames,
       });
     }
   }
@@ -289,7 +299,10 @@ describe("M10 FX-Frame-Guard: gerenderte FX-Frames (repraesentative Menge)", () 
       liveKeys,
       `Neue ungedeckte Draw-Scales (Mixel-Bake fehlt):\n  ${liveKeys.join("\n  ")}`,
     ).toEqual(pinnedKeys);
-    expect(pinnedKeys.length).toBeGreaterThanOrEqual(13);
+    // M10-fx-bakes-evo-r2 K1 (Ist nach Sammler-Update): 3 ungedeckte Keys
+    // (thunder_seal hit/death + fx_boss_core). Die 10 baked-Signaturen sind mit
+    // Draw-Scale 1 gedeckt. Ratchet darf nur schrumpfen — K4 zieht ihn auf 0.
+    expect(pinnedKeys.length, "Ratchet: ungedeckte Keys nur schrumpfen").toBeLessThanOrEqual(3);
   });
 
   // ── Negative Fixtures: bekannte Mixel-Befunde schlagen nachweislich an ──
@@ -395,8 +408,10 @@ describe("M10 palette-guard-evo: Evo-FX-, Boss- und Truhen-Keys (Grün-Schnitt)"
     expect(sets.length, "Evo-Signatur-Sets (hit+death je Evolution)").toBeGreaterThanOrEqual(12);
     for (const s of sets) {
       expect(s.frames.length).toBe(SIGNATURE_FRAME_COUNT);
-      const expected = s.baked ? (s.id === "phoenix" ? 128 : SOUL_SIGNATURE_SIZE) : 32;
-      expect(s.w, `${s.key}: gebackene Zielgroesse`).toBe(expected);
+      // Reale Laufzeit-Groesse: baked-Zielgroesse (drawScale [1,1]) oder 32x32.
+      const def = evolutionSignatureTextureDef(s.id, s.kind);
+      expect(s.w, `${s.key}: gebackene Zielgroesse`).toBe(def.w);
+      expect(s.h, `${s.key}: gebackene Zielgroesse`).toBe(def.h);
       s.frames.forEach((rows, i) => {
         const a = analyzeFxGuard(`${s.key}#${i}`, "src/gfx/gen-fx.ts (evo)", rows, s.w, s.h, PAL);
         expect(a.offPalette + a.alphaViolations, `Evo-Signatur ${s.key}#${i} verletzt die Pixel-Invariante`).toBe(0);

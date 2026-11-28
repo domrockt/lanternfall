@@ -2157,36 +2157,46 @@ function shardRadius(burst: number, t: number, i: number): number {
   return (20 + ((i * 7) % 5) * 1.8 + t * 10) * burst;
 }
 
+/** Zielgroessen-Pfad (Mixel-Regel, m10-evo-fx-phoenix + m10-evo-fx-soulpyre):
+ *  Signaturen mit drawScale werden in voller Display-Groesse gebacken und mit
+ *  Draw-Scale 1 gezeichnet — pro Signatur eigener Frame-Generator.
+ *  M10-fx-bakes-evo-r2 (K1): aus addEvolutionSignatures herausgezogen und
+ *  exportiert — eine Wahrheit fuer Laufzeit-Textur, FX-Guard-Sammler und Tests. */
+const BAKED_SIGNATURES: Readonly<Record<string, { size: number; frame: (kind: "hit" | "death", stage: number) => string[] }>> = {
+  phoenix: { size: 128, frame: phoenixSignatureFrame },
+  soul_beacon: { size: SOUL_SIGNATURE_SIZE, frame: soulSignatureFrame },
+  eternal_winter: { size: 128, frame: winterSignatureFrame },
+  wrath_pendulum: { size: WRATH_SIGNATURE_SIZE, frame: wrathSignatureFrame },
+  // m10-evo-fx-dornensturm: thorn_storm registriert. thunder_seal bleibt beim
+  // 64er-Pfad (main nach Revert 34e97d3) — das 128er-Upgrade war Chaos-Lane (K2)
+  // und wird mit Karte #8876 neu verhandelt, hier nicht schmuggeln.
+  thorn_storm: { size: THORN_SIGNATURE_SIZE, frame: thornSignatureFrame },
+};
+
+/** Textur-Definition einer Evo-Signatur in der REALEN Laufzeit-Groesse:
+ *  baked in Zielgroesse (drawScale [1,1]), sonst 32x32 via signatureFrame.
+ *  Quelle fuer addEvolutionSignatures, FX-Guard-Sammler und Tests. */
+export function evolutionSignatureTextureDef(id: string, kind: "hit" | "death"): FxDef {
+  const sig = EVOLUTION_SIGNATURES[id];
+  if (!sig) throw new Error(`unbekannte Evo-Signatur: ${id}`);
+  const baked = sig.drawScale ? BAKED_SIGNATURES[id] : undefined;
+  return baked
+    ? {
+        w: baked.size,
+        h: baked.size,
+        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => baked.frame(kind, i)),
+      }
+    : {
+        w: 32,
+        h: 32,
+        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
+      };
+}
+
 function addEvolutionSignatures(scene: Phaser.Scene): void {
-  // Zielgroessen-Pfad (Mixel-Regel, m10-evo-fx-phoenix + m10-evo-fx-soulpyre):
-  // Signaturen mit drawScale werden in voller Display-Groesse gebacken und mit
-  // Draw-Scale 1 gezeichnet — pro Signatur eigener Frame-Generator.
-  const BAKED_SIGNATURES: Readonly<Record<string, { size: number; frame: (kind: "hit" | "death", stage: number) => string[] }>> = {
-    phoenix: { size: 128, frame: phoenixSignatureFrame },
-    soul_beacon: { size: SOUL_SIGNATURE_SIZE, frame: soulSignatureFrame },
-    eternal_winter: { size: 128, frame: winterSignatureFrame },
-    wrath_pendulum: { size: WRATH_SIGNATURE_SIZE, frame: wrathSignatureFrame },
-    // m10-evo-fx-dornensturm: thorn_storm registriert. thunder_seal bleibt beim
-    // 64er-Pfad (main nach Revert 34e97d3) — das 128er-Upgrade war Chaos-Lane (K2)
-    // und wird mit Karte #8876 neu verhandelt, hier nicht schmuggeln.
-    thorn_storm: { size: THORN_SIGNATURE_SIZE, frame: thornSignatureFrame },
-  };
   for (const id of EVOLUTION_SIGNATURE_IDS) {
-    const sig = EVOLUTION_SIGNATURES[id];
     for (const kind of ["hit", "death"] as const) {
-      const baked = sig.drawScale ? BAKED_SIGNATURES[id] : undefined;
-      const def: FxDef = baked
-        ? {
-            w: baked.size,
-            h: baked.size,
-            frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => baked.frame(kind, i)),
-          }
-        : {
-            w: 32,
-            h: 32,
-            frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
-          };
-      addFrames(scene, signatureTextureKey(id, kind), def);
+      addFrames(scene, signatureTextureKey(id, kind), evolutionSignatureTextureDef(id, kind));
     }
   }
 }

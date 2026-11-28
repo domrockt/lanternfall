@@ -165,27 +165,18 @@ export function collectStaticSources({ textures, genEnemies, genBosses, genChars
 // NEUE Texturen nach main. Diese Helfer machen die Abdeckung dieser Gruppen
 // im Report UND im Test sichtbar (per-Key-Report + ratchet, statt Globalsumme).
 
-/** Spiegel von BAKED_SIGNATURES in addEvolutionSignatures (src/gfx/gen-fx.ts,
- *  fuer die Guard-Lane read-only): Signaturen mit drawScale werden in voller
- *  Zielgroesse gebacken (phoenix 128, soul_beacon 96) — die 32x32-signatureFrame-
- *  Menge der fx-guard-Fixture erfasst diese Frames nicht. Die Rahmen sind ueber
- *  die Canvas-Erfassung gedeckt; dieser Export liefert sie zusaetzlich benannt
- *  (Report-Modus: Verstoesse je Key). */
+/** Spiegel der echten Signatur-Texturen (M10-fx-bakes-evo-r2 K1): liefert je
+ *  Evolution+Kind die REALEN Laufzeit-Frames via evolutionSignatureTextureDef —
+ *  baked in Zielgroesse (drawScale [1,1]), sonst 32x32 via signatureFrame. */
 export function collectEvolutionSources(genFx) {
   const out = [];
   for (const id of genFx.EVOLUTION_SIGNATURE_IDS) {
-    const sig = genFx.EVOLUTION_SIGNATURES[id];
-    const baked = sig.drawScale
-      ? { phoenix: { size: 128, frame: genFx.phoenixSignatureFrame }, soul_beacon: { size: genFx.SOUL_SIGNATURE_SIZE, frame: genFx.soulSignatureFrame } }[id]
-      : undefined;
-    const w = baked ? baked.size : 32;
-    const h = baked ? baked.size : 32;
     for (const kind of ["hit", "death"]) {
+      const def = genFx.evolutionSignatureTextureDef(id, kind);
       out.push({
-        id, kind, baked: Boolean(baked),
-        key: genFx.signatureTextureKey(id, kind), w, h,
-        frames: Array.from({ length: genFx.SIGNATURE_FRAME_COUNT }, (_, i) =>
-          baked ? baked.frame(kind, i) : genFx.signatureFrame(sig.shape, sig.palette, i, kind)),
+        id, kind, baked: Boolean(genFx.EVOLUTION_SIGNATURES[id].drawScale),
+        key: genFx.signatureTextureKey(id, kind), w: def.w, h: def.h,
+        frames: def.frames,
       });
     }
   }
