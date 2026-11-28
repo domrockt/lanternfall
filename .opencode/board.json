@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9203,
+  "next": 8921,
   "cards": [
     {
       "id": 1,
@@ -11518,380 +11518,84 @@
       "updated": "2026-11-28T06:05:09Z"
     },
     {
-      "id": 8976,
-      "title": "m10-evo-fx-dornensturm Merge-Verifikation: Kontroll-Shots 960/1280/1920 (Start + 60 s, kein Schwarz im Spielfeld)",
-      "description": "Post-Merge-Kontrolle auf main nach Merge 063623a (paralleler Job): 6 Screenshots (960x540, 1280x720, 1920x1080, je Start + nach 60 s echtem Laufen mit auto-bestaetigten Level-Ups), Black-Pixel-Messung. Abnahmekriterium: keine schwarzen Terrain-Loecher; gemessene Schwarz-Pixel (0,25-0,30 %) nur HUD/Props, in Start-Shots identisch.",
-      "column": "done",
-      "assignee": "merge-job",
-      "notes": [
-        {
-          "at": "2026-11-28T06:11:06Z",
-          "by": "build",
-          "text": "doing → done: Merge-Verifikation auf main (Merge 063623a durch Parallel-Job): Commit 7e9d14a mit 6 Kontroll-Shots (960/1280/1920, Start + 60 s Laufen) + blackcheck.json; Terrain intakt, kein reines Schwarz im Spielfeld (0,25-0,30 % nur HUD/Props, statisch); Suite 1522/1522 gruen; Lane-Worktree bereits entfernt, Branch bleibt."
-        }
-      ],
-      "created": "2026-11-28T06:10:09Z",
-      "updated": "2026-11-28T06:11:06Z"
-    },
-    {
-      "id": 9097,
+      "id": 8916,
       "title": "m10-gamepad-menu-nav K1: Befund Gamepad-Pfad zu Menüs",
-      "description": "Befund-Doku: Gamepad→Menü heute (Gamepad.ts Snapshot, InputState Rising-Edges ohne Repeat, menu.ts Fokus nur via setFocused, Szenen duplizieren Arithmetik). AK erfüllt: docs/lanes/m10-gamepad-menu-nav.md, Commit 7f06c21.",
+      "description": "Befund-Doku: Gamepad->Menü heute (Gamepad.ts-Snapshot, InputState Rising-Edges ohne Repeat, menu.ts Fokus nur via setFocused, Szenen duplizieren Arithmetik). AK: Befund mit Datei+Zeilen-Belegen committed.",
       "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:24:17Z",
-      "updated": "2026-11-28T06:24:17Z"
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T06:25:46Z",
+          "by": "build",
+          "text": "doing → done: K1 committed 7f06c21; Belege in docs/lanes/m10-gamepad-menu-nav.md"
+        }
+      ],
+      "created": "2026-11-28T06:02:00Z",
+      "updated": "2026-11-28T06:25:46Z"
     },
     {
-      "id": 9098,
+      "id": 8917,
       "title": "m10-gamepad-menu-nav K2: menu.ts Fokus-API Gamepad",
-      "description": "press()/MenuFocus(moveFocus/confirm/back)/menuRepeatTick (200/100 ms driftfrei) in src/ui/menu.ts; BUTTON_PRESSED_ALPHA/ButtonVisualState unangetastet. 9 Tests in tests/gamepad-nav.test.ts. Commits 2b36dce; npm test 1531 grün.",
+      "description": "press()/MenuFocus(moveFocus/confirm/back)/menuRepeatTick (200/100 ms driftfrei); BUTTON_PRESSED_ALPHA/ButtonVisualState unangetastet, AE=0 Maus/Touch. AK: tsc+vitest grün.",
       "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:24:17Z",
-      "updated": "2026-11-28T06:24:17Z"
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T06:25:46Z",
+          "by": "build",
+          "text": "doing → done: K2 committed 2b36dce; 9 neue Tests, npm test 1531 grün, build grün"
+        }
+      ],
+      "created": "2026-11-28T06:02:00Z",
+      "updated": "2026-11-28T06:25:46Z"
     },
     {
-      "id": 9099,
+      "id": 8918,
       "title": "m10-gamepad-menu-nav K3: options-menu.ts Gamepad-Zeilen",
-      "description": "handlePadFrame mit Repeat (200/100 ms), Confirm/Back Rising-Edge, Reset bei open/close, ein Pad-Frame = eine Aktion. Alle 7 Zeilen inkl. MASTER MUTE testbar. Commit e145493; 16/16 Tests gamepad-nav grün.",
+      "description": "handlePadFrame mit Repeat (200/100 ms), Confirm/Back Rising-Edge, Reset open/close, ein Pad-Frame = eine Aktion; alle 7 Zeilen inkl. MASTER MUTE. AK: vitest+tsc grün.",
       "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:24:17Z",
-      "updated": "2026-11-28T06:24:17Z"
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T06:25:46Z",
+          "by": "build",
+          "text": "doing → done: K3 committed e145493; 16/16 gamepad-nav-Tests, tsc+build grün"
+        }
+      ],
+      "created": "2026-11-28T06:02:00Z",
+      "updated": "2026-11-28T06:25:46Z"
     },
     {
-      "id": 9100,
+      "id": 8919,
       "title": "m10-gamepad-menu-nav K4: Test + Harness Gamepad-Nav",
-      "description": "scripts/m10-gamepad-nav.mjs (synthetisches Pad via navigator.getGamepads): 15/15 PASS, 0 Sackgassen, 0 Doppel-Events. Belege ~/games/.evidence/m10-gamepad-menu-nav/. Commit 22e204a. Hinweis: verify-menus Skalierungs-Check failt bereits an Basis f1c3057 ohne Lane-Änderungen (Bedarf gemeldet).",
+      "description": "tests/gamepad-nav.test.ts (synthetische GamepadSnapshots) + scripts/m10-gamepad-nav.mjs (Playwright, gemocktes navigator.getGamepads). AK: 0 Sackgassen, 0 Doppel-Events.",
       "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:24:17Z",
-      "updated": "2026-11-28T06:24:17Z"
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T06:25:46Z",
+          "by": "build",
+          "text": "doing → done: K4 committed 22e204a; Harness 15/15 PASS, 0 Sackgassen, 0 Doppel-Events; Belege ~/games/.evidence/m10-gamepad-menu-nav/. Hinweis: verify-menus Skalierungs-Check failt bereits an Basis f1c3057 ohne Lane-Änderungen (Bedarf in .dispatch/requests.md gemeldet)"
+        }
+      ],
+      "created": "2026-11-28T06:02:00Z",
+      "updated": "2026-11-28T06:25:46Z"
     },
     {
-      "id": 9101,
+      "id": 8920,
       "title": "m10-gamepad-menu-nav K5: After-Belege + Lane-Doku + Abschluss",
-      "description": "Lane-Doku vervollständigen (Ergebnisse, verify-menus-Befund, Belegpfade), .lane-done anlegen und committen. AK: Doku vollständig, npm test + tsc grün, Harness PASS, .lane-done committed.",
-      "column": "doing",
-      "notes": [],
-      "created": "2026-11-28T06:24:17Z",
-      "updated": "2026-11-28T06:24:17Z"
-    },
-    {
-      "id": 9187,
-      "title": "m10-icons-consistency K1: Ist-Scan 4x-Kontaktbogen + Kanten-/Lum-Metrik (Vorher-JSON)",
-      "description": "Skript scripts/m10-icons-consistency.mjs + scripts/art-Kontaktbogen: alle 18 Icons als 4x-Sheet, Metrik je Icon (Kantenfarben-Treppung, Lichtkante-Anteil, Luminanz, 16px-Lesbarkeits-Schwellen aus Vorher-Metrik) → shots/m10-icons-consistency-before*.json/png. Nur belegte art-director-Mängel werden gefixt.\n\n[lane #8638, Merge 72e71a9 — m10-icons-consistency]",
+      "description": "Belege nach ~/games/.evidence/m10-gamepad-menu-nav/, Lane-Doku vervollständigen, .lane-done committen. AK: Doku vollständig, tests+tsc grün, Harness PASS.",
       "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:34:45Z",
-      "updated": "2026-11-28T06:34:45Z"
-    },
-    {
-      "id": 9188,
-      "title": "m10-icons-consistency K2: Zeichnen — Kontur/Lichtkante vereinfachen + Evolution prächtiger",
-      "description": "In scripts/art/gen_icons.py: einheitliche Kantenregeln (keine 'vereiste' 2-px-Rampenbänder), Evolution-Icons prächtiger als Basis (Palette, binäres Alpha, keine Mixel), Regeneration von src/gfx/gen-icons.ts. NICHT heart/charm/boots erneut zeichnen (#7149 erledigt), kein Kontrast-Thema (m10-icon-contrast erledigt).\n\n[lane #8639, Merge 72e71a9 — m10-icons-consistency]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:34:45Z",
-      "updated": "2026-11-28T06:34:45Z"
-    },
-    {
-      "id": 9189,
-      "title": "m10-icons-consistency K3: tests/icons-consistency.test.ts — Kantenregeln je Familie, 0 Off-Palette, 16px-Lesbarkeit",
-      "description": "Einheitliche Kantenregeln je Icon-Familie (Waffen/Passive/Evolution), 0 Off-Palette-Pixel, binäres Alpha, 16px-Lesbarkeits-Schwellen aus Vorher-Metrik. npx vitest run tests/icons-consistency.test.ts + tsc grün.\n\n[lane #8640, Merge 72e71a9 — m10-icons-consistency]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:34:45Z",
-      "updated": "2026-11-28T06:34:45Z"
-    },
-    {
-      "id": 9190,
-      "title": "m10-icons-consistency K4: After-Belege Kontaktbogen Vor/Nach + art-director >= 4,5/5 + docs/lanes",
-      "description": "4x-Kontaktbogen Vor/Nach in shots/m10-icons-consistency-* (Belege: ~/games/.evidence/m10-icons-consistency/, nicht getrackt per Repo-Hygiene), art-director-Sichtprüfung >= 4,5/5, Doku docs/lanes/m10-icons-consistency.md mit Board-Referenz #320.\n\n[lane #8641, Merge 72e71a9 — m10-icons-consistency]",
-      "column": "done",
-      "notes": [],
-      "created": "2026-11-28T06:34:45Z",
-      "updated": "2026-11-28T06:34:45Z"
-    },
-    {
-      "id": 9191,
-      "title": "m10-heap-softprint K1: Konsolen-Print auf softFloorVerdict umstellen",
-      "description": "scripts/m10-heap-budget.mjs Zeile ~224 druckt rohes softVerdict (FAIL +41,5 %) statt robustes gate.softFloorVerdict aus scripts/m10-heap-budget-gate.mjs. Fix: Print auf softFloorVerdict + maxWindowFloor; gate.mjs unverändert. Abnahme: Print zeigt robustes Urteil, kein Mess-Verhalten geändert.",
-      "column": "done",
+      "assignee": "coder",
       "notes": [
         {
-          "at": "2026-11-28T05:44:13Z",
+          "at": "2026-11-28T06:25:46Z",
           "by": "build",
-          "text": "todo → doing: Versuch 2: Briefing gelesen; Fix Print auf softFloorVerdict folgt."
-        },
-        {
-          "at": "2026-11-28T05:44:22Z",
-          "by": "build",
-          "text": "[Supervisor] bestaetigt: nur K1+K2 in doing; Print-Fix + Commit #8852, danach K2 Kontrolllauf."
-        },
-        {
-          "at": "2026-11-28T05:44:47Z",
-          "by": "build",
-          "text": "doing → review: K1 committed 887388e: Print zeigt gate.softFloorVerdict + maxWindowFloor/softReferenceMB; gate.mjs unangetastet. Syntax-Check node --check OK. K2-Kontrolllauf folgt."
-        },
-        {
-          "at": "2026-11-28T05:55:51Z",
-          "by": "build",
-          "text": "review → done: lane #8852, Commit 887388e; Reviewer-PASS (Print zeigt softFloorVerdict + maxWindowFloor, gate.mjs 0 Diff-Zeilen)."
+          "text": "doing → done: K5 committed dfa8643 (Lane-Doku + .lane-done). Lane abgeschlossen: 7f06c21/2b36dce/e145493/22e204a/dfa8643"
         }
       ],
-      "created": "2026-11-28T05:42:50Z",
-      "updated": "2026-11-28T05:55:51Z"
-    },
-    {
-      "id": 9192,
-      "title": "m10-heap-softprint K2: Verifikation + Lane-Doku",
-      "description": "1 Kontrolllauf gegen shots/m10-reaccd-heap.json-Werte (HARD PASS +10,7 %, SOFT-Rohpeaks als Beobachtung, Print-Urteil = robust). Beleg shots/m10-softprint-*.json; tsc/Tests grün; docs/lanes/m10-heap-softprint.md; .lane-done.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T05:55:51Z",
-          "by": "build",
-          "text": "todo → done: lane #8853, Commit 522fbc4; Reviewer-PASS: Replay (robust PASS +23,8 %, HARD +10,7 %) + Kontrolllauf iGPU RPL-S 0 Fehler; 1506 Tests gruen."
-        }
-      ],
-      "created": "2026-11-28T05:42:50Z",
-      "updated": "2026-11-28T05:55:51Z"
-    },
-    {
-      "id": 9193,
-      "title": "m10-props-wiring K1: Patch einarbeiten — addProp-Variantenwahl (3 Zeilen) + Wirkprobe",
-      "description": "3-Zeilen-Patch aus docs/lanes/m10-props-variety.md (offener Punkt) in GroundRenderer.addProp: deterministische Variantenwahl via propVariantKeyFor aus gen-props.ts, tileHash der Position, Fallback auf Basis-Textur. Platzierung/CLUSTER_PROPS/LOD-Tiers/Batch-Struktur unveraendert; propLayers.ts/textures.ts unangetastet. Abnahme: Wirkprobe boulder-Split (~46/55/54, Top-Anteil 23% -> 15%) als JSON-Beleg, tsc gruen.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T05:40:03Z",
-          "by": "build",
-          "text": "todo → doing: K1 startet: 3-Zeilen-Patch (Variantenwahl) + Wirkprobe. Vorher erst Before-Belege (K2-Skript), dann Patch."
-        },
-        {
-          "at": "2026-11-28T05:43:24Z",
-          "by": "build",
-          "text": "doing → review: K1 fertig: Commit 34ebe63 (Patch + Wirkprobe boulder 161/0/0 -> 51/61/49, Top 22,9% -> 15,0%, alle 6 Varianten sichtbar, tsc + 3 Testdateien gruen)."
-        },
-        {
-          "at": "2026-11-28T06:37:33+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #8798, Merge branch m10-props-wiring"
-        }
-      ],
-      "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:43:24Z"
-    },
-    {
-      "id": 9194,
-      "title": "m10-props-wiring K2: Vorher/Nachher-Shots 640x360 + 780x360@3 je 4x",
-      "description": "scripts/m10-props-wiring.mjs (frueh + Chaos, seed 7): je Tag 4 Shots (early/chaos x 1x-640x360 + 3x-780x360-Crop nearest), before ohne Patch, after mit Patch. Abnahme: 8 PNGs + 2 JSON in shots/, jsErrors: []",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T05:43:24Z",
-          "by": "build",
-          "text": "todo → review: K2 fertig: Commit 4cfbd4e (8 PNGs before/after je early/chaos 1x+3x, before/after JSON, jsErrors 0)."
-        },
-        {
-          "at": "2026-11-28T06:37:33+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #8799, Merge branch m10-props-wiring"
-        }
-      ],
-      "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:43:24Z"
-    },
-    {
-      "id": 9195,
-      "title": "m10-props-wiring K3: Guard-Test tests/props-wiring.test.ts",
-      "description": "Deterministische Wahl (gleicher Tile-Hash -> gleiche Variante) + Fallback bei unbekanntem Key/nicht existierender Textur. Abnahme: npx vitest run tests/props-wiring.test.ts, npm test + tsc rc=0",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T05:43:24Z",
-          "by": "build",
-          "text": "todo → doing: K3 startet: Guard-Test props-wiring.test.ts (Determinismus + Fallback)."
-        },
-        {
-          "at": "2026-11-28T05:45:00Z",
-          "by": "build",
-          "text": "doing → review: K3 fertig: Commit 93dfc3b (5 Tests: Determinismus 2 Seeds x 1000 Pos, Positionsabhaengigkeit, Fallback unbekannt/ohne Varianten, Grenz-Picks, Varianten=echte Sprite-Keys). npm test 1511/1511, tsc rc=0. (passive-math-JSON-Timestamps aus Test-Regeneration revertiert, fremde Datei.)"
-        },
-        {
-          "at": "2026-11-28T06:37:33+00:00",
-          "by": "merge-fastpath",
-          "text": "lane #8800, Merge branch m10-props-wiring"
-        }
-      ],
-      "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:45:00Z"
-    },
-    {
-      "id": 9196,
-      "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
-      "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
-      "column": "doing",
-      "notes": [
-        {
-          "at": "2026-11-28T05:45:00Z",
-          "by": "build",
-          "text": "todo → doing: K4 startet: art-director-Urteil zu Prop-Vielfalt auf After-Shots, Lane-Doku, .lane-done."
-        }
-      ],
-      "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:45:00Z"
-    },
-    {
-      "id": 9197,
-      "title": "m10-boot-glow-local K1: Befund/Repro — Boot-Local-Kopie gewinnt",
-      "description": "Runtime-Probe (scripts/m10-boot-glow.mjs): textures.get('light_radius')/('vignette') belegt, dass die Boot-Kopie vor textures.ts gewinnt. Vorher-Shots 640x360 + 780x360@3 je 4x. Abnahme: Probe-JSON in shots/m10-boot-glow-*, Befund in docs/lanes/m10-boot-glow-local.md.",
-      "column": "done",
-      "assignee": "boot-glow-local",
-      "notes": [
-        {
-          "at": "2026-11-28T05:12:51Z",
-          "by": "build",
-          "text": "todo → doing: K1 gestartet: Probe-Skript + Vorher-Shots (Base HEAD 86030a2; eaf2ab6 noch nicht in main - wird im Befund dokumentiert)"
-        },
-        {
-          "at": "2026-11-28T05:20:53Z",
-          "by": "build",
-          "text": "doing → review: Probe + Vorher-Shots committet (Commit enthaelt #8618). Geprueft: runtime-Probe light_radius vs Boot-Local maxDiff 1/255 vs textures.ts maxDiff 78; tsc gruen; 0 JS-Fehler; 4x-Crops gesehen (weiche Boegen sichtbar). Befund + 3 Blocker in docs/lanes/m10-boot-glow-local.md"
-        },
-        {
-          "at": "2026-11-28T06:15:37Z",
-          "by": "general",
-          "text": "review → done: K1 Probe + Vorher-Shots, Commits 061c800/8cc7f09; Befund Blocker + rev.2 dokumentiert"
-        }
-      ],
-      "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T06:15:37Z"
-    },
-    {
-      "id": 9198,
-      "title": "m10-boot-glow-local K2: Boot-Local-Registrierungen entfernen, Import aus textures.ts",
-      "description": "K2 rev. (Versuch 2): createLightTextureLocal/createVignetteTextureLocal in src/scenes/Boot.ts stellen harte Alpha-Stufen bereit (LIGHT_EDGE_STEPS-Band-Loop statt destination-in-Radialgradient; Vignette als vignetteSteps-Bänder statt Radialgradient). B2-Ring-Tuning (Farbe 21 im Kern) bleibt unangetastet (Guard tests/chaos-glow-runpath.test.ts). Abnahme: kein createRadialGradient mehr in Boot.ts, tsc+Tests grün, Runtime-Probe belegt Stufen statt Gradient.",
-      "column": "done",
-      "assignee": "boot-glow-local",
-      "notes": [
-        {
-          "at": "2026-11-28T05:20:53Z",
-          "by": "build",
-          "text": "todo → blocked: BLOCKER (docs/lanes/m10-boot-glow-local.md): textures.ts exportiert createLightTexture/createVignetteTexture nicht (fremd geclaimed m10-evo-fx-form-polish, claimcheck blockt Export-Zeile); eaf2ab6 (Stufen) nicht in main; Boot-Kopie traegt B2-Ring-Farb-Tuning (20/21-Kern), das textures.ts auch in eaf2ab6 fehlt -> Austausch wuerde Near-White-A7-Tuning rueckdrehen. Bedarfsmeldung in .dispatch/requests.md gestellt"
-        },
-        {
-          "at": "2026-11-28T05:24:57Z",
-          "by": "general",
-          "text": "blocked → doing: Versuch 2: Blocker (1)-(3) weiterhin unveraendert (eaf2ab6 nicht in origin/main, textures.ts fremd geclaimed, keine Exports). Revidierter Scope innerhalb der Lane-Claims: Stufen-Quantisierung aus eaf2ab6 (LIGHT_EDGE_STEPS/vignetteSteps) wird in die Boot.ts-Local-Kopien PORTIERT (B2-Ringfarben bleiben) — weiche Radialgradients verschwinden zur Laufzeit ohne textures.ts-Anfassung. Original-Swap (Import aus textures.ts) bleibt Folgekarte nach Merge+Export."
-        },
-        {
-          "at": "2026-11-28T05:51:26Z",
-          "by": "general",
-          "text": "Steer Supervisor (K2 = remove-local + import) geprüft 2026-11-28: Literal-NUMSETZUNG unmoeglich — textures.ts exportiert createLightTexture/createVignetteTexture nicht (Zeilen 647/690 module-privat, frisch nach git fetch origin geprüft) UND ist fremd geclaimed (m10-evo-fx-form-polish, claimcheck blockt) UND eaf2ab6 (Stufen) ist nicht in origin/main (rc=1). Alternative 'nur Registrierungen entfernen' = Rueckfall auf weiche Gradients + A7-Near-White-Regression + bricht fremden Guard tests/chaos-glow-runpath.test.ts (Suite rot). Gemäß Steer-Anweisung 'stopp und melde den Befund': Befund gemeldet (requests.md, Lane-Doku). Umgesetzt stattdessen: Port der Stufen in die Local-Kopie (Commit 8e8dff4, reviewer PASS), Runtime-Probe = STUFEN-Version gewinnt (maxDiff 0/1, shots/m10-boot-glow-after.json). Original-Swap bleibt Folgekarte nach Merge+Export. Kein weiteres Messen."
-        },
-        {
-          "at": "2026-11-28T06:15:37Z",
-          "by": "general",
-          "text": "doing → done: K2 rev.1 8e8dff4 + rev.2 86af697 (destination-in-Stacking-Bug gefixt, Spielerlicht wieder sichtbar); reviewer PASS; Supervisor-Steer bestätigt (Import unmoeglich — textures.ts fremd geclaimed ohne Exports, eaf2ab6 nicht in main; Port statt dessen, Befund gemeldet)"
-        }
-      ],
-      "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T06:15:37Z"
-    },
-    {
-      "id": 9199,
-      "title": "m10-boot-glow-local K3: Regressionstest tests/boot-light-textures.test.ts",
-      "description": "Beide Keys existieren, Pixelmuster entspricht LIGHT_EDGE_STEPS/vignetteSteps, keine zweite Registrierung. npm test + tsc grün.",
-      "column": "done",
-      "assignee": "boot-glow-local",
-      "notes": [
-        {
-          "at": "2026-11-28T05:20:53Z",
-          "by": "build",
-          "text": "todo → blocked: haengt an K2 (#8619): Stufen-Test braucht importierbare LIGHT_EDGE_STEPS/vignetteSteps aus eaf2ab6 (nicht in main) + abgeglichene Ring-Farben"
-        },
-        {
-          "at": "2026-11-28T06:15:37Z",
-          "by": "general",
-          "text": "blocked → done: K3 tests/boot-light-textures.test.ts, Commits 00d658f/8d6ca30 (destination-in verboten, pro-Pixel-Multiplikation gefordert); 19/19 gruen"
-        }
-      ],
-      "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T06:15:37Z"
-    },
-    {
-      "id": 9200,
-      "title": "m10-boot-glow-local K4: After-Belege + Abnahme",
-      "description": "After-Shots 640x360 + 780x360@3 je 4x, Near-White <= 4,16 %, art-director-Urteil Lichtkanten >= 4/5, Befund in docs/lanes/m10-boot-glow-local.md.",
-      "column": "done",
-      "assignee": "boot-glow-local",
-      "notes": [
-        {
-          "at": "2026-11-28T05:20:53Z",
-          "by": "build",
-          "text": "todo → blocked: haengt an K2 (#8619): After-Vergleich gegen harte Stufen nur nach Merge m10-chaos-fix-raster-glow + Export-Freigabe moeglich"
-        },
-        {
-          "at": "2026-11-28T06:15:37Z",
-          "by": "general",
-          "text": "blocked → done: K4 After-Belege Runde 2, Commit mit #8621; art-director Runde 1 FAIL → Runde 2 PASS 4/5 (Kontakt- bogen, Minute-3-Frame mit lebenden Gegnern, Vignette-Ecke); Probe steppedWins=true centerAlpha>0; near-white 0,38/0,19% < Gate 4,16"
-        }
-      ],
-      "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T06:15:37Z"
-    },
-    {
-      "id": 9201,
-      "title": "m10-acceptance-balance-criterion K1: ACCEPTANCE.md Balance-Kriterium auf 25–40 ändern, Level 47 widerlegt streichen",
-      "description": "ACCEPTANCE.md Z.151 + Z.245 (+ weitere Treffer per grep) konsistent auf „Endlevel 25–40, 6/6 Läufe, Boss 20–60 s, kein Tod vor Minute 15“ ändern; „Kael/Seed 101 Level 47“ als widerlegt dokumentieren. KEIN Code. AK: grep „Level 47“ nur noch als widerlegt; „25–40“ am Kriterium; Tabellen intakt; ein Commit #K1.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T06:17:53Z",
-          "by": "build",
-          "text": "todo → doing: Von Lane-Task übernommen (Versuch 2). K1-Start: ACCEPTANCE.md Z.151/245."
-        },
-        {
-          "at": "2026-11-28T06:18:25Z",
-          "by": "build",
-          "text": "doing → review: K1 fertig: ACCEPTANCE.md Z.151+245 auf neues Kriterium geändert, Level 47 als widerlegt markiert. Geprüft: grep „Level 47“ nur noch als „widerlegt“; „25–40“ am Kriterium; Tabelle intakt. Commit dce1bef #8997."
-        },
-        {
-          "at": "2026-11-28T06:20:39Z",
-          "by": "build",
-          "text": "review → done: lane #8997: reviewer-PASS (Diff nur Doku, „Level 47“ nur noch widerlegt, „25–40“ konsistent, Tabelle intakt). Commit dce1bef #8997; Lane-Abschluss bda2437."
-        }
-      ],
-      "created": "2026-11-28T06:17:44Z",
-      "updated": "2026-11-28T06:20:39Z"
-    },
-    {
-      "id": 9202,
-      "title": "m10-acceptance-balance-criterion K2: Doku docs/qa/balance-criterion-2026-11-28.md",
-      "description": "Neue Doku: Dom-Zustimmung zitieren (Frage 23:35, Antwort 06:00Z), exakte diff-Zeilen, Begründung mit Belegen (repro/xp-budget/final-JSONs). AK: Datei existiert, Diff nur ACCEPTANCE.md + diese Doku; ein Commit #K2; danach .lane-done.",
-      "column": "done",
-      "notes": [
-        {
-          "at": "2026-11-28T06:17:53Z",
-          "by": "build",
-          "text": "todo → backlog: K2 nach K1."
-        },
-        {
-          "at": "2026-11-28T06:18:25Z",
-          "by": "build",
-          "text": "backlog → doing: K2-Start: docs/qa/balance-criterion-2026-11-28.md"
-        },
-        {
-          "at": "2026-11-28T06:20:39Z",
-          "by": "build",
-          "text": "doing → done: lane #8998: reviewer-PASS (Zustimmung 23:35/06:00Z zitiert, diff-Zeilen, 3 Beleg-JSONs referenziert). Commit 00e152c #8998; Lane-Abschluss bda2437 (.lane-done committet)."
-        }
-      ],
-      "created": "2026-11-28T06:17:44Z",
-      "updated": "2026-11-28T06:20:39Z"
+      "created": "2026-11-28T06:02:00Z",
+      "updated": "2026-11-28T06:25:46Z"
     }
   ]
 }
