@@ -1,0 +1,23 @@
+# Lane m10-fps-pacing-timestep — abgeschlossen (Doku-only, keine Code-Änderung)
+
+Vorgehängter Fix-Job aus der 60-Hz-Entscheidung (Trigger: "janky >= 10 %" trotz 60-Hz-Panel + stackfix).
+
+**K1-Urteil:** Trigger NICHT erfüllt — m10-janky-remeasure misst gfxinfo-janky **0 %** in beiden
+10-min-Läufen (K2 Cap 60: 0/29 058 Frames; K3 MAX: 0/32 114 Frames; Belege
+`~/games/.evidence/m10-janky-remeasure/k{2-cap60,k3-max}-device.json`). Das ursprüngliche
+janky-Problem (13,44 %/13,90 %) ist durch die vorgelagerten Fixes behoben (0 Loop-Tötungen, 0 JS-Fehler).
+
+**K2-Lokalisierung:** Der verbleibende Gate-FAIL (FPS avg 50,1 < 60, rAF-p95 33,4 ms — 2-Vsync-Pacing)
+hat seinen Hebel in Phasers TimeStep, verdrahtet über `src/main.ts` (fps.limit-Boot, applyFpsLimit) und
+`src/logic/fps-cap.ts` — fremde Merge-Area (merge-m10-mobile-fps-cap/stackfix, gemergt aa8739f0/1d52d406).
+`src/scenes/Run.ts` hat keinen eigenen Akkumulator (nur Delta-Deckel 0,05 s, Run.ts:529) und kann
+Present-Pacing nicht verschieben. Kein Eingriff laut Briefing; Bedarf-Antwort in
+`/home/ai/games/.dispatch/requests.md` (17:31Z): Late-Frame-Toleranz im TimeStep braucht eine Lane mit
+Claim auf src/main.ts/src/logic/fps-cap.ts. Endabnahme-Lauf bleibt gesperrt; Tor-Metrik muss
+FPS avg + rAF-p95 führen (gfxinfo-janky bei 2-Vsync nicht unterscheidend).
+
+**Messwerte:** janky 0 % / 0 %, fpsAvg 50,1 / 50,0, rAF-p95 33,4 / 33,4 ms, p99 50,0 / 33,4 ms,
+Thermal Status 0, Panel 60 Hz (rAF-Median 16,7 ms), Build 0ce7164a.
+
+**Prüfungen:** tsc rc=0, Suite 234 Dateien / 2541 Tests grün, keine Code-Änderung (nur Doku + Board),
+Karte #13619, Doku docs/lanes/m10-fps-pacing-timestep.md.
