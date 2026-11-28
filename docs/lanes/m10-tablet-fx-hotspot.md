@@ -88,3 +88,10 @@ als Regressions-Anker; `glowDepthFor`-Zuordnung; Band < enemy/enemyShot (GAME.md
    (Test sollte die Zeit nicht in committed Belege schreiben).
 4. Lokale FPS sind VSync-gekappt (60,3) — K3-Beweis fuehrt bewusst GL-Zahlen, nicht FPS (rendererunabhaengig,
    siehe Root-Cause-Bericht).
+5. **Perf-Check (PASS, 2026-11-28) mit zwei Luecken fuer die formale Geraetemessung nach dem Merge:**
+   (A) `after-device-probe.json` enthaelt keinen Renderer-String — Geraetezugehoerigkeit belegt via
+   `~/games/.evidence/device/telemetry-2026-11-28.jsonl` (`"renderer": "Adreno (TM) 710"`, Qualcomm, Redmi
+   2405CRPFDG, gleicher Tag). Bei der Nachmessung den Renderer-String ins Device-JSON schreiben.
+   (B) Die Geraete-Baseline „43 FPS / blend 26 / draws 54“ ist als Zitat aus dem Root-Cause-Bericht belegt,
+   aber nicht aus Rohdaten nachrechenbar (`rc-device.json` wurde nie aufgenommen, Geraet war offline) —
+   `rc-device.json` (Vorher) nachholen, wenn das Geraet vor dem Merge laeuft.
