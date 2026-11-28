@@ -54,6 +54,75 @@ export function ambientBatchCount(budget: AmbientBudget): number {
 }
 
 /**
+ * m10-props-always-visible K3: Hysterese für die Ambient-Budgets. Die
+ * Ambient-Partikel (Glühwürmchen/Nebel) bleiben die EINZIGEN lastabhängigen
+ * Objekte — aber nie hart An/Aus: Abstieg erst ab `off` Gegnern, Rückkehr
+ * erst wenn die Gegnerzahl das Hysterese-Band unterschreitet (`on`-Schwelle).
+ * Dadurch kann Pendeln um die Schwelle die Stufe nicht mehr flappen lassen;
+ * der sichtbare Übergang ist zusätzlich im GroundRenderer eingeblendet
+ * (Alpha-Rampe), nicht umgeschaltet.
+ */
+export const AMBIENT_HYSTERESIS_BAND = 40;
+
+/** Abstiegs-/Rückkehr-Schwellen, absteigend geprüft (updateHz = Kennung der Stufe). */
+const AMBIENT_STEPS: ReadonlyArray<{ off: number; on: number; budget: AmbientBudget }> = [
+  { off: 360, on: 360 - AMBIENT_HYSTERESIS_BAND, budget: { glow: 0, fog: 1, updateHz: 15 } },
+  { off: 250, on: 250 - AMBIENT_HYSTERESIS_BAND, budget: { glow: 0, fog: 1, updateHz: 30 } },
+];
+
+const AMBIENT_FULL: AmbientBudget = { glow: AMBIENT_GLOW_MAX, fog: AMBIENT_FOG_MAX, updateHz: 60 };
+
+/**
+ * Ein Ambient-Budget-Schritt mit Hysterese: `current` ist das zuletzt
+ * angewendete Budget (Kennung über updateHz). Abstieg sofort bei enemies >= off;
+ * Rückkehr nur, wenn enemies < on (Band). Kaputte Eingaben liefern das
+ * volle Budget wie ambientBudgetFor.
+ */
+export function ambientBudgetWithHysteresis(current: AmbientBudget, enemies: number): AmbientBudget {
+  const n = Math.max(0, Math.floor(enemies));
+  if (!Number.isFinite(enemies)) return AMBIENT_FULL;
+  // Rückkehr prüfen, bevor der Abstieg greift: Wer schon tiefer gestuft ist,
+  // kommt nur über die on-Schwelle wieder hoch (Flapping-Schutz).
+  for (const step of AMBIENT_STEPS) {
+    if (current.updateHz === step.budget.updateHz) {
+      // Wir sind auf dieser Stufe: über die on-Schwelle zurück auf voll,
+      // ab der tieferen off-Schwelle weiter runter, sonst bleiben.
+      const deeper = AMBIENT_STEPS.find((s) => s.off > step.off);
+      if (n < step.on) return AMBIENT_FULL;
+      if (deeper && n >= deeper.off) return deeper.budget;
+      return step.budget;
+    }
+  }
+  // Volle Stufe aktiv: normal absteigen.
+  for (const step of AMBIENT_STEPS) {
+    if (n >= step.off) return step.budget;
+  }
+  return AMBIENT_FULL;
+}
+
+/**
+ * Weiche Überblendung (K3): ein sichtbarer Ambient-Zähler ("Shown") läuft
+ * mit begrenzter Rate auf das Budget-Ziel — der Übergang ist eine Alpha-Rampe
+ * über ~2 s, kein hartes An/Aus. Rein, unit-getestet.
+ */
+export function ambientShownStep(
+  current: number,
+  target: number,
+  ratePerSec: number,
+  dtSec: number,
+): number {
+  const rate = Math.max(0, ratePerSec) * Math.max(0, Number.isFinite(dtSec) ? dtSec : 0);
+  const d = target - current;
+  if (!Number.isFinite(current)) return target;
+  if (Math.abs(d) <= rate) return target;
+  return current + Math.sign(d) * rate;
+}
+
+/** Fade-Raten: 24 Glühwürmchen faden in ~2,4 s, 3 Nebelbänder in ~2 s. */
+export const AMBIENT_GLOW_FADE_PER_SEC = 10;
+export const AMBIENT_FOG_FADE_PER_SEC = 1.5;
+
+/**
  * M10-props-always-visible (Dom 2026-11-28): Der Dichte-LOD für Props wurde
  * ENTFERNT. Vorher: >=150 Gegner -> Deko aus, >=200 -> nur Laternen; die
  * Gegnerzahl pendelt im Endgame um die Schwellen -> Props flackerten im

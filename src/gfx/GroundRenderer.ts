@@ -3,7 +3,12 @@ import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
-import { ambientBudgetFor } from "../logic/lod";
+import {
+  ambientBudgetWithHysteresis, ambientShownStep,
+  AMBIENT_FOG_FADE_PER_SEC, AMBIENT_FOG_MAX,
+  AMBIENT_GLOW_FADE_PER_SEC, AMBIENT_GLOW_MAX,
+  type AmbientBudget,
+} from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor } from "./propLayers";
 import {
   propVariantKeyFor, propShadowClassFor, propShadowFor,
@@ -203,6 +208,19 @@ export class GroundRenderer {
   private glowLayer?: Phaser.GameObjects.Container;
   private fogLayer?: Phaser.GameObjects.Container;
   private ambientLastTick = Number.NEGATIVE_INFINITY;
+  /**
+   * m10-props-always-visible K3: Ambient-Budget mit Hysterese + weicher
+   * Überblendung. Glühwürmchen/Nebel faden über ~2-3 s ein/aus (Alpha-Rampe),
+   * statt hart setVisible() zu toggeln; die Hysterese verhindert Flapping um
+   * die Schwellen. Props/Schatten sind gar nicht mehr lastabhängig (K2).
+   */
+  private ambientBudget: AmbientBudget = {
+    glow: AMBIENT_GLOW_MAX,
+    fog: AMBIENT_FOG_MAX,
+    updateHz: 60,
+  };
+  private ambientGlowShown = AMBIENT_GLOW_MAX;
+  private ambientFogShown = AMBIENT_FOG_MAX;
   /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
   private readonly propLayers = new Map<string, PropLayers>();
   /** Kontakt-Schatten-Atlas-Textur (lazy, null = Fallback "shadow"). Bewusst
@@ -539,14 +557,25 @@ export class GroundRenderer {
   /** Ambient: Glühwürmchen umisen, Nebel drift, Zahl an Gegnerlast gekoppelt. */
   private updateAmbient(camera: Phaser.Cameras.Scene2D.Camera, timeMs: number): void {
     const enemies = (this.scene as unknown as { enemies?: { count?: number } }).enemies?.count ?? 0;
-    const budget = ambientBudgetFor(enemies);
+    // K3: Hysterese auf dem Budget (kein Flapping um die Schwellen) ...
+    this.ambientBudget = ambientBudgetWithHysteresis(this.ambientBudget, enemies);
+    const budget = this.ambientBudget;
     const stepMs = 1000 / budget.updateHz;
     if (timeMs - this.ambientLastTick < stepMs) return;
+    const dtS = Math.min(0.5, Math.max(0, (timeMs - this.ambientLastTick) / 1000));
     this.ambientLastTick = timeMs;
 
     // m10-props-always-visible: kein Prop-Dichte-LOD mehr — Props/Schatten/
     // Glows bleiben immer sichtbar (statisch gebatcht, billig; Flackern war
     // schlimmer als die Submit-Kosten).
+
+    // ... und weiche Überblendung: sichtbare Ambient-Zähler faden (Alpha-Rampe).
+    this.ambientGlowShown = ambientShownStep(
+      this.ambientGlowShown, budget.glow, AMBIENT_GLOW_FADE_PER_SEC, dtS,
+    );
+    this.ambientFogShown = ambientShownStep(
+      this.ambientFogShown, budget.fog, AMBIENT_FOG_FADE_PER_SEC, dtS,
+    );
 
     const t = timeMs * 0.001;
     // #4658: Gluehwuermchen sind weltverankert (scrollFactor 1) und sollen die
@@ -557,7 +586,9 @@ export class GroundRenderer {
     );
     for (let i = 0; i < this.fireflies.length; i++) {
       const f = this.fireflies[i];
-      const visible = i < budget.glow;
+      // K3: Alpha-Rampe statt hartem An/Aus (gate fällt sanft auf 0).
+      const gate = this.ambientGlowShown - i;
+      const visible = gate > 0.001;
       f.img.setVisible(visible);
       if (!visible) continue;
       const x = view.left + f.baseX * view.width
@@ -566,11 +597,12 @@ export class GroundRenderer {
         + Math.cos(t * f.speed * 0.7 + f.phase) * 9;
       f.img.setPosition(Math.round(x), Math.round(y));
       const pulse = 0.5 + 0.5 * Math.sin(t * 1.6 + f.phase * 3);
-      f.img.setAlpha(0.16 + pulse * 0.34);
+      f.img.setAlpha((0.16 + pulse * 0.34) * Math.min(1, Math.max(0, gate)));
     }
     for (let i = 0; i < this.fogBanks.length; i++) {
       const b = this.fogBanks[i];
-      const visible = i < budget.fog;
+      const gate = this.ambientFogShown - i;
+      const visible = gate > 0.001;
       b.img.setVisible(visible);
       if (!visible) continue;
       // #4658: Nebel ist screen-verankert (scrollFactor 0) und wird unter Zoom
@@ -584,7 +616,7 @@ export class GroundRenderer {
         Math.round(screenAnchoredX(b.baseY * camera.height, camera.height, camera.zoom)
           + Math.cos(t * 0.04 + b.phase) * 8),
       );
-      b.img.setAlpha(0.055 + 0.03 * Math.sin(t * 0.12 + b.phase));
+      b.img.setAlpha((0.055 + 0.03 * Math.sin(t * 0.12 + b.phase)) * Math.min(1, Math.max(0, gate)));
     }
   }
 
