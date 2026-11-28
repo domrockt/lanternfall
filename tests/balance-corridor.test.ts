@@ -153,8 +153,8 @@ describe("m10-balance-corridor-guard: Dom-Balance-Korridor (Suite-Guard über co
       expect(s.accepted).toBe(true);
       expect(s.unknownViolations).toEqual([]);
       expect(unknownOf(s)).toEqual([]);
-      // Die bekannte Abweichung (mira/101 Boss 1 < 20 s) muss dokumentiert sein.
-      expect(s.knownViolations.length, "knownViolations nicht leer — jede muss einen Grund haben").toBeGreaterThan(0);
+      // Whitelist darf leer sein (m10-mira-dps-corridor: mira-Fix, Eintrag zurückgebaut);
+      // wenn Abweichungen als knownViolations geführt werden, muss jeder einen Grund haben.
       for (const k of s.knownViolations) expect(k.reason?.length ?? 0, `Grund fuer ${k.type}:${k.character}/${k.seed}`).toBeGreaterThan(20);
     },
     GUARD_TIMEOUT,

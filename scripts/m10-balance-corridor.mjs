@@ -182,15 +182,13 @@ for (const character of CHARS) {
  * Bekannte, dokumentierte Korridor-Abweichungen (Whitelist mit Grund + Beleg).
  * JEDE neuerliche Abweichung, die hier nicht abgedeckt ist, laesst den Guard FAILen.
  * Aenderungen an dieser Liste NUR mit Begruendung in docs/lanes/m10-balance-corridor-guard.md.
+ *
+ * m10-mira-dps-corridor (2026-11-28, K3): der mira-Eintrag (bossDuration < 20 s) wurde
+ * ENTFERNT — Ursache behoben (phoenix L8 4/0,48 = 250 Basis-DPS → 2/1,1 = ~109), neue
+ * Baselines committed; alle mira/kael-Boss-Dauern in [20, 60] s. Befund + Zahlen:
+ * docs/lanes/m10-mira-dps-corridor.md.
  */
-const KNOWN_VIOLATIONS = [
-  {
-    type: "bossDuration",
-    character: "mira",
-    maxDurationSec: BOSS_CORRIDOR[0],
-    reason: "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): alles 24-60 s. Fund dieser Lane; Ursachenklaerung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch.",
-  },
-];
+const KNOWN_VIOLATIONS = [];
 
 /** Strukturierte Abweichung gegen den Dom-Korridor. */
 function violation(type, detail) {
