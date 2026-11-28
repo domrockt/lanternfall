@@ -1,0 +1,24 @@
+# Lane m10-icon-contrast — erledigt (2026-11-28)
+
+Auftrag: F2/F3-Folge aus m10-menu-art-crisp — 4 Passive-Icons mit Körperkontrast < 3:1
+(HUD #090c10 / Panel #101724) in Zielgröße neu zeichnen bzw. Kontrast fixen.
+
+Ergebnis: Der F3-Fix (boots/tome/heart/charm) war bereits von der Vor-Lane in
+gen-icons.ts umgesetzt und mit Merge 942af93 im Branch — Messung (scripts/m10-icon-contrast.mjs,
+identische WCAG-Methode) zeigt 0 Fails: alle 12 Icons ≥ 3:1 auf beiden Hintergründen
+(boots 4.53/4.15, tome 10.93/10.01, heart 5.38/4.93, charm 4.53/4.15). Neuzeichnen =
+dokumentierter No-Op (gen-icons.ts fremd-geclaimt; gen-ui.ts enthält keine Icons).
+AE=0 für nicht betroffene Icons belegt (leerer Diff gegen 942af93).
+
+Deliverables: Mess-Skript + Vorher/Nachher-JSON + Zoom-Sheets (shots/m10-icon-contrast-*),
+19 Regressionstests (tests/icon-contrast.test.ts), Doku docs/lanes/m10-icon-contrast.md.
+
+Qualität: npx tsc --noEmit rc=0, Tests 991/991 grün, npm run build grün,
+reviewer PASS (Mess-Skript reproduzierbar, Doku-Zahlen verifiziert, Scope sauber).
+
+Offen (ehrlich): art-director FAIL 3,5/5 für die 4 F3-Icons — Kontrast bestätigt, aber
+Icon-Design-Debt (heart gezackte Kontur, charm zweideutig, boots blockig). Muss-Liste
+als Backlog-Karte #7102 für die Icon-Owner-Lane angelegt (Hebel gen-icons.ts, hier tabu).
+Altlasten unverändert: F2 chest_closed 2.4x (Hebel src/scenes/UI.ts, tabu), F1 title_background.
+
+Commits: ef1b606 (#7098), 9de6a09 (#7099), 1a16541 (#7100), fce348b (#7101), Board 1283bbb.

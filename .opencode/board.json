@@ -8183,59 +8183,80 @@
       "id": 7098,
       "title": "m10-icon-contrast #1: Ist-Messung Icon-Körperkontrast (12 Icons, HUD+Panel)",
       "description": "scripts/m10-icon-contrast.mjs misst WCAG-Körperkontrast (Median-Luminanz ohne 1px-ink-Kontur) aller 6 Passive- + 6 Waffen-Icons gegen HUD #090c10 und Panel #101724 → shots/m10-icon-contrast-before.json + Zoom-Shots der Betroffenen. Abnahme: JSON committed, Betroffenenliste ermittelt.",
-      "column": "review",
+      "column": "done",
       "assignee": "Lead",
       "notes": [
         {
           "at": "2026-11-28T00:36:27Z",
           "by": "build",
           "text": "doing → review: Ist-Messung committed (ef1b606): 0 Fails, alle 12 Icons >= 3:1 auf beiden Hintergründen; Vorher-JSON + Zoom-Sheet als Belege. Fix der Vor-Lane bereits im Branch (Merge 942af93)."
+        },
+        {
+          "at": "2026-11-28T00:45:01Z",
+          "by": "build",
+          "text": "review → done: Merge-reif: Ist-Messung ef1b606, 0 Fails, Belege im Karten-Commit."
         }
       ],
       "created": "2026-11-28T00:33:10Z",
-      "updated": "2026-11-28T00:36:27Z"
+      "updated": "2026-11-28T00:45:01Z"
     },
     {
       "id": 7099,
       "title": "m10-icon-contrast #2: Kontrast-Fix der betroffenen Icons",
       "description": "URSPRÜNGLICH: 4 betroffene Icons in Zielgröße neu zeichnen. AKTUELL (Messung #7098): 0 Icons < 3:1 — der F3-Fix (boots/tome/heart/charm) ist mit Merge 942af93 der Vor-Lane in gen-icons.ts bereits enthalten; gen-icons.ts ist fremd-geclaimt, gen-ui.ts enthält keine Icons. Karte wird als dokumentierter No-Op umgesetzt: docs/lanes/m10-icon-contrast.md mit Befund + AE=0-Nachweis (leerer Diff) für die nicht betroffenen Icons. Abnahme: Doku committed, Begründung belegt.",
-      "column": "review",
+      "column": "done",
       "assignee": "Lead",
       "notes": [
         {
           "at": "2026-11-28T00:37:13Z",
           "by": "build",
           "text": "todo → review: No-Op dokumentiert (9de6a09): Fix bereits im Branch (Vor-Lane 00c500e/Merge 942af93); AE=0-Nachweis über leeren Diff gegen 942af93; F2 chest als Altlast vermerkt."
+        },
+        {
+          "at": "2026-11-28T00:45:01Z",
+          "by": "build",
+          "text": "review → done: No-Op dokumentiert 9de6a09; AE=0-Nachweis (leerer Diff gegen 942af93)."
         }
       ],
       "created": "2026-11-28T00:33:10Z",
-      "updated": "2026-11-28T00:37:13Z"
+      "updated": "2026-11-28T00:45:01Z"
     },
     {
       "id": 7100,
       "title": "m10-icon-contrast #3: Regressionstests Icon-Kontrast",
       "description": "tests/icon-contrast.test.ts: Kontrast ≥ 3:1 für alle 12 Icons auf HUD- und Panel-Hintergrund, 0 Off-Palette-Pixel, binäres Alpha. Abnahme: npx vitest run tests/icon-contrast.test.ts grün, npx tsc --noEmit grün.",
-      "column": "review",
+      "column": "done",
       "assignee": "Lead",
       "notes": [
         {
           "at": "2026-11-28T00:38:34Z",
           "by": "build",
           "text": "todo → review: tests/icon-contrast.test.ts (1a16541): 19 Tests grün (12 Icons Kontrast >=3:1 beidseitig, F3-Icons einzeln verankert, Off-Palette 0, binäres Alpha); tsc rc=0, Suite 991/991, build grün."
+        },
+        {
+          "at": "2026-11-28T00:45:01Z",
+          "by": "build",
+          "text": "review → done: Tests 1a16541: 19/19 grün, Suite 991/991, tsc rc=0, build grün."
         }
       ],
       "created": "2026-11-28T00:33:10Z",
-      "updated": "2026-11-28T00:38:34Z"
+      "updated": "2026-11-28T00:45:01Z"
     },
     {
       "id": 7101,
       "title": "m10-icon-contrast #4: Nachher-Messung + Doku + art-director",
       "description": "shots/m10-icon-contrast-after-*.png + JSON, docs/lanes/m10-icon-contrast.md mit Vorher/Nachher-Zahlen, art-director-Sichtprüfung der neu gezeichneten Icons (≥4/5, Maßstab kommerziell auslieferbar).",
-      "column": "todo",
+      "column": "review",
       "assignee": "Lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:45:01Z",
+          "by": "build",
+          "text": "todo → review: fce348b: after-JSON/-zoom, Doku, art-director FAIL 3,5 (Design-Debt) → Backlog #7102. Reviewer-Check läuft."
+        }
+      ],
       "created": "2026-11-28T00:33:10Z",
-      "updated": "2026-11-28T00:33:10Z"
+      "updated": "2026-11-28T00:45:01Z"
     },
     {
       "id": 7102,
