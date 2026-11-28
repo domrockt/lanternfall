@@ -97,7 +97,7 @@ async function runRep(seed, rep) {
   const pageErrors = [];
   page.on("pageerror", (e) => pageErrors.push(String(e)));
   try {
-    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=${seed}`);
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=${seed}&detstart=1`);
     await page.waitForFunction(() => Boolean(window.__lf), { timeout: 8000 });
     await waitForScene(page, "title");
     await page.keyboard.press("Enter");
@@ -111,6 +111,9 @@ async function runRep(seed, rep) {
       window.__lf.autoPlay(true);
       window.__lf.god(false);
       window.__lf.setTimeScale(scale);
+      // m10-run-determinism-fix: Run startet per ?detstart=1 pausiert — jetzt
+      // deterministisch fortsetzen (alle Flags sind gesetzt, bevor Schritt 1 laeuft).
+      window.__game.scene.getScene("run").resumeRun();
     }, SCALE);
 
     // Warten bis Szene endet (Tod/Sieg) oder Sim-Limit erreicht ist.
