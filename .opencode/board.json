@@ -18083,13 +18083,18 @@
       "id": 12887,
       "title": "m10-postwave-smoke-r2 K3: Perf-Kurzlauf unter flock",
       "description": "Burst 640x360 und 780x360@3, je 2 Laeufe (Min zaehlt), flock /home/ai/games/.lf-perf.lock. Toren >=55 / >=55. AK: FPS-Zahlen in Lane-Doku, Urteil gegen Toren.",
-      "column": "doing",
+      "column": "done",
       "assignee": "m10-postwave-smoke-r2",
       "notes": [
         {
           "at": "2026-11-28T15:35:56.974Z",
           "by": "m10-postwave-smoke-r2",
           "text": "todo → doing: K3 gestartet (Perf-Kurzlauf unter flock)"
+        },
+        {
+          "at": "2026-11-28T15:56:20.582Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K3 PASS — Burst 640x360 min 60.0, 780x360@3 min 60.0 (Tore >=55), 0 JS-Fehler, Renderer Mesa RPL-S swiftshader=false; keine fremde Sperre (ps/proc/locks geprueft)"
         }
       ],
       "created": "2026-11-28T15:32:56.843Z"
@@ -18098,9 +18103,15 @@
       "id": 12888,
       "title": "m10-postwave-smoke-r2 K4: Befundliste Lane-Doku",
       "description": "docs/lanes/m10-postwave-smoke-r2.md: Befunde je mit Severity + Datei + Hebel, sonst Welle-sauber-Doku mit Zahlen. AK: Doku vollständig, .lane-done.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-postwave-smoke-r2",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T15:56:20.582Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K4 gestartet (Doku)"
+        }
+      ],
       "created": "2026-11-28T15:32:56.843Z"
     }
   ]
