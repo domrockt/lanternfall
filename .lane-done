@@ -1,0 +1,24 @@
+# Lane m10-boss-lure-fair — fertig (2026-11-28)
+
+Boss-Verfolgungs-Fairness für alle 6 Bosse, ohne Balance-Eingriff
+(Boss-HP/Tempo/Dauer unverändert, Korridor 20-60 s = Nicht-Ziel, Beleg
+shots/balance-main.json; src/data, Run.ts, FxSystem.ts, CombatSystem.ts unberührt).
+
+Karten:
+- K1 423586e: scripts/m10-boss-fair.mjs + Vorher shots/m10-bossfair-before.json
+  (6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 Sim-s je Boss).
+- K2 f587736: Fairness-Regeln in src/logic/bosses.ts + BossSystem.ts:
+  sanfter Leash (320 px Spawn-Zone, Release bei Spielerflucht), Offscreen-Catch-up
+  (>360 px >=2 s -> x1,2, geklemmt 60 px/s), Angriffs-Halt ohne Sichtbarkeit,
+  View-Klemme fuer spieler-relative Schadensflaechen.
+- K3 ce5df8e: tests/boss-lure-fair.test.ts, 8 Guard-Tests.
+- K4 (dieser Commit): Nachher shots/m10-bossfair-after.json + docs/lanes/m10-boss-lure-fair.md.
+
+Messwerte vor -> nach:
+- Schadensereignisse ohne vorherige Sichtbarkeit: 35 -> 0 (Abnahme 0)
+- Leash-Verletzungen: 12 -> 0 (Abnahme 0)
+- Offscreen-Anteil 5,0% -> 3,0%, laengste Offscreen-Phase 4,6 s -> 2,6 s
+- Boss 0 (Drift-Spitzenreiter): 34/12/46% offscreen -> 19/0/27%
+
+Verifikation: npx tsc --noEmit rc=0; npm test 1307/1307 gruen (8 neu);
+npm run build gruen; 0 JS-Fehler in beiden Messlaeufen.
