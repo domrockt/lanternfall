@@ -17,7 +17,7 @@ vi.mock("phaser", () => ({
 }));
 
 import { SPRITE_GRIDS, charIndex } from "../src/gfx/textures";
-import { MAX_VISIBLE_GEMS, mergeGemValues } from "../src/systems/PickupSystem";
+import { MAX_VISIBLE_GEMS, GEM_DIM_ALPHA, GEM_FULL_ALPHA, mergeGemValues } from "../src/systems/PickupSystem";
 
 const dist = (a: number, b: number): number =>
   Math.hypot(((a >> 16) & 255) - ((b >> 16) & 255), ((a >> 8) & 255) - ((b >> 8) & 255), (a & 255) - (b & 255));
@@ -44,11 +44,12 @@ describe("gem-value-reading: Farb-Rampe", () => {
         expect(d).toBeGreaterThanOrEqual(COLOR_DELTA_MIN);
       }
     }
-    // Messbare Zahlen im Test-Report (Ist-Messung 2026-11-28: 169,6 / 154,1 / 129,4).
+    // Messbare Zahlen im Test-Report (r2, art-director-Fix:
+    // fogBlue/amber/crimson -> 226,1 / 154,1 / 131,9).
     expect(deltas).toEqual({ "small-medium": expect.any(Number), "medium-large": expect.any(Number), "small-large": expect.any(Number) });
-    expect(deltas["small-medium"]).toBeCloseTo(169.6, 0);
+    expect(deltas["small-medium"]).toBeCloseTo(226.1, 0);
     expect(deltas["medium-large"]).toBeCloseTo(154.1, 0);
-    expect(deltas["small-large"]).toBeCloseTo(129.4, 0);
+    expect(deltas["small-large"]).toBeCloseTo(131.9, 0);
   });
 
   it("Wert- und Größenordnung sind monoton (Fläche und XP)", () => {
@@ -68,6 +69,7 @@ describe("gem-value-reading: Texturen malen exakt die Rampe (palette-check-Pfad)
     it(`gem_${s}: nur Ink + Kern + Highlight aus der Rampe, 0 Off-Palette-Pixel`, () => {
       const grid = SPRITE_GRIDS[`gem_${s}`];
       const allowed = new Set([0, GEM_VALUE_RAMP[s].core, GEM_VALUE_RAMP[s].highlight]);
+      if (GEM_VALUE_RAMP[s].sparkle !== undefined) allowed.add(GEM_VALUE_RAMP[s].sparkle);
       const used = new Set<number>();
       for (const row of grid.rows) {
         for (const ch of row) {
@@ -87,6 +89,11 @@ describe("gem-value-reading: Texturen malen exakt die Rampe (palette-check-Pfad)
 describe("gem-value-reading: Cap/Merge-Semantik bitgleich (gem-drawcap-Vertrag)", () => {
   it("Draw-Cap und Magnet-Faktoren sind unverändert", () => {
     expect(MAX_VISIBLE_GEMS).toBe(120);
+  });
+
+  it("LOD-Dim laesst die Rampenfarben lesbar (art-director r2: alpha >= 0.8)", () => {
+    expect(GEM_DIM_ALPHA).toBeGreaterThanOrEqual(0.8);
+    expect(GEM_DIM_ALPHA).toBeLessThan(GEM_FULL_ALPHA);
   });
 
   it("gemStageForValue deterministisch an den kanonischen Schwellen", () => {

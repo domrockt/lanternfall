@@ -227,29 +227,31 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   gem_small: {
     w: 7, h: 7,
-    // M10-gem-value-reading: Groesse 1 (XP 2) = Mist (PAL 8) mit hellem
-    // Dunst-Glanz (9), 1-px-Tinten-Kontur. Blaugrau statt marshLight-Grün:
-    // die Bog-Horde ist grün (7,43 % Chaos-Kollision gemessen), mist 0,21 %.
-    // Rampen-Quelle der Wahrheit: GEM_VALUE_RAMP in src/logic/xp.ts.
+    // m10-gem-value-reading r2 (art-director FAIL->Fix): Groesse 1 (XP 2) =
+    // fogBlue (PAL 6) mit paleMist-Glanz (9) und 1 px candleWhite-Sparkle
+    // (12). mist (8) kollidierte mit den Bog-Rat-Flanken (sharpenEnemyGrid
+    // hebt die Rat-Midtone auf PAL 8); fogBlue: 0,01 % Chaos-Kollision
+    // (Kandidaten-Sweep, gem-reading-before.json).
     rows: [
       "..000..",
-      ".08980.",
-      "0899880",
-      "0888880",
-      ".08880.",
-      "..080..",
+      ".0c960.",
+      "0699660",
+      "0666660",
+      ".06660.",
+      "..060..",
       "...0...",
     ],
   },
   gem_medium: {
     w: 9, h: 9,
-    // Groesse 2 (XP 6) = Bernstein/Gold (PAL 20/21). Nicht in den 6
-    // haeufigsten Gegnerfarben -> im Chaos klar getrennt.
+    // Groesse 2 (XP 6) = Bernstein/Gold (PAL 20/21) + lanternWhite-Sparkle
+    // (13, art-director r2: heller Kern, damit das Gem ueber Glow-/Brand-
+    // Decals lesbar bleibt, auf denen es haeufig liegt).
     rows: [
       "...000...",
       "..0lll0..",
       ".0llkkk0.",
-      "0llkkkkk0",
+      "0llkdddk0",
       "0lkkkkkk0",
       "0llkkkkk0",
       ".0llkkk0.",

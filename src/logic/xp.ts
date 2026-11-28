@@ -16,17 +16,19 @@ export const GEMS: Record<GemSize, GemMeta> = {
   // Gem-Drops): marshLight-Grün kollidierte zu 7,43 % der Frame-Pixel mit der
   // Bog-Horde; mist liegt bei 0,21 %, amber 1,94 %, crimson 1,37 %. Paarweise
   // RGB-Deltas 163 / 154 / 130 (Schwelle 120, Guard-Test gem-value-reading).
-  small: { size: "small", value: 2, color: 8, weight: 70 },
+  small: { size: "small", value: 2, color: 6, weight: 70 },
   medium: { size: "medium", value: 6, color: 20, weight: 24 },
   large: { size: "large", value: 18, color: 25, weight: 6 },
 };
 
 /** Kern-/Highlight-Farbe je Wertstufe (m10-gem-value-reading). Die Gem-
  *  Texturen (SPRITE_GRIDS.gem_*) malen exakt diese Indizes; der Guard-Test
- *  prüft Textur gegen Rampe, paarweise Deltas >= 120 und 0 Off-Palette. */
-export const GEM_VALUE_RAMP: Record<GemSize, { core: number; highlight: number }> = {
-  small: { core: 8, highlight: 9 }, // mist / paleMist — kalt, häufig
-  medium: { core: 20, highlight: 21 }, // amber / lantern — warm, mittel
+ *  prüft Textur gegen Rampe, paarweise Deltas >= 120 und 0 Off-Palette.
+ *  sparkle = 1-3 px Glanz in candleWhite/lanternWhite ( hebt das Gem über
+ *  Glow-/Brand-Decals und liest sich auch im LOD-Dim). */
+export const GEM_VALUE_RAMP: Record<GemSize, { core: number; highlight: number; sparkle?: number }> = {
+  small: { core: 6, highlight: 9, sparkle: 12 }, // fogBlue / paleMist / candleWhite — kalt, häufig
+  medium: { core: 20, highlight: 21, sparkle: 13 }, // amber / lantern / lanternWhite — warm, mittel
   large: { core: 25, highlight: 26 }, // crimson / hotRed — heiß, selten
 };
 
