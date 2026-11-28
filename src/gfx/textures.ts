@@ -396,6 +396,27 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "...6...",
     ],
   },
+  arrow_chest: {
+    w: 16, h: 16,
+    rows: [
+      "................",
+      "...0............",
+      "...0mm0.........",
+      "...0mmm0........",
+      "...0mmmmm0......",
+      "...0mmmmmmm0....",
+      "0000mmmmmmmm0...",
+      "0mmmmmmmmmmmmd0.",
+      "0mllllllllllld0.",
+      "0000llllllll0...",
+      "...0lllllll0....",
+      "...0lllll0......",
+      "...0lll0........",
+      "...00...........",
+      "...0............",
+      "................",
+    ],
+  },
   chest_closed: {
     w: 16, h: 16,
     rows: [
