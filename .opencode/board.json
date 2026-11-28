@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7498,
+  "next": 7502,
   "cards": [
     {
       "id": 1,
@@ -9166,6 +9166,42 @@
       "notes": [],
       "created": "2026-11-28T02:03:50Z",
       "updated": "2026-11-28T02:03:50Z"
+    },
+    {
+      "id": 7498,
+      "title": "m10-elite-tier-families K1: Before-Belege (Elite-Cluster im Chaos, 4x, Renderer-Pflicht)",
+      "description": "Ist-Messung VOR dem Fix: scripts/m10-elite-tier.mjs --tag=before auf crowd-variety-Stand. 320+ Gegner + Elite-Cluster aller 5 Tiers nahe am Spieler, 640x360, Full-Shot + 4x-Crop (shots/m10-elite-tier-*)",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:08:26Z",
+      "updated": "2026-11-28T02:08:26Z"
+    },
+    {
+      "id": 7499,
+      "title": "m10-elite-tier-families K2: Tier-Faerbe-Klassen im Sprite-Generator + Tests",
+      "description": "enemySprites.ts: ELITE_TIER_DYES (5 Paletten-Klassen je Tier 0-4, min Paar-Distanz >= 60, L-Mitte), Elite-Rim-Frame-Innenraum deterministisch Richtung Tier-Klasse gemischt (70 % nach Nachschurf), Kontur 0 + Augen unveraendert. Beleg: Familien-Kontrast-Metrik 13,2 -> 56,8 (4,3x), Tests gruen",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:08:26Z",
+      "updated": "2026-11-28T02:08:26Z"
+    },
+    {
+      "id": 7500,
+      "title": "m10-elite-tier-families K3: Chaos-Nachweis 300+ Gegner + Abnahme",
+      "description": "scripts/m10-elite-tier.mjs --tag=after: 339 Gegner (305 Chaos + 34 Elites T0-T4), after-Shots + 4x-Crops, dominante Klassen je Tier (T0 glut-braun 100 %, T1 mittel-neutral 92 %, T2 glut-braun 85 %, T3 blut-rot 98 %, T4 gruen 82 %), Amber-Rim 1.0 intakt, Burst-FPS median 60, 0 JS-Fehler",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:08:26Z",
+      "updated": "2026-11-28T02:08:26Z"
+    },
+    {
+      "id": 7501,
+      "title": "m10-elite-tier-families K4: docs/lanes + .lane-done",
+      "description": "docs/lanes/m10-elite-tier-families.md (Ziel, Mechanik, Vorher/Nachher-Tabelle, art-director PASS 4/5), Reviewer-Sollte-Punkte umgesetzt (Docstring 70 % + ELITE_TIER_MIX-Konstante, Paar-Distanz 68, nicht-tautologischer Dye-Leak-Test), tsc + build gruen, elite-tier/elite-rim/crowd-variety 22/22",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:08:26Z",
+      "updated": "2026-11-28T02:08:26Z"
     }
   ]
 }
