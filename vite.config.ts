@@ -12,12 +12,11 @@ try {
 } catch { /* kein git (z. B. Export) */ }
 
 
-// Lane m10-bundle-chunk-fix (Befund E-3, docs/lanes/m10-acceptance-refresh-e.md):
-// Der Build lief bisher als ein einziger Chunk (~1,95 MB: Phaser-Engine + Spielcode)
-// und warf die Vite-Warnung "> 500 kB". Diese Konfiguration trennt NUR die
-// Phaser-Engine in einen eigenen Vendor-Chunk ab und den prozeduralen
-// Sprite-Generator-Code (src/gfx/gen-*.ts) in einen zweiten Chunk; der Rest des
-// Spielcodes bleibt als kleiner Applikations-Chunk zusammen.
+// Lane m10-bundle-split (Befund E-3, docs/lanes/m10-acceptance-refresh-e.md):
+// Diese Konfiguration trennt NUR die Phaser-Engine in einen eigenen Vendor-Chunk
+// ab und den prozeduralen Sprite-Generator-Code (src/gfx/gen-*.ts) in einen
+// zweiten Chunk; der Rest des Spielcodes bleibt als kleiner Applikations-Chunk
+// zusammen.
 //
 // chunkSizeWarningLimit: Phaser ist als einziges Paket ein einzelnes, vorgebundenes
 // Modul (~1,19 MB) und ohne Abhängigkeits-Änderungen nicht unter 500 kB teilbar.
@@ -26,6 +25,11 @@ try {
 // Bewusst minimal gehalten: kein dynamisches import(), keine Änderung an
 // index.html oder Asset-Pfaden (--base ./ bleibt im build-Skript), damit der
 // Android-APK-Preview-Pfad unverändert funktioniert.
+//
+// K2 (#11659): advancedChunks → codeSplitting migriert (gleiche Gruppen,
+// gleiche Semantik) — Rolldown warnt seit v8 "advancedChunks option is
+// deprecated, please use codeSplitting instead"; damit ist der Build jetzt
+// komplett warnfrei (Belege: ~/games/.evidence/m10-bundle-split/*.json).
 export default defineConfig({
   define: {
     __LF_BUILD__: JSON.stringify(lfBuild),
@@ -34,7 +38,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1250,
     rolldownOptions: {
       output: {
-        advancedChunks: {
+        codeSplitting: {
           groups: [
             {
               name: "phaser",
