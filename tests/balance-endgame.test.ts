@@ -10,7 +10,15 @@ import {
   enemyDamageScale,
   spawnRateFactor,
 } from "../src/logic/scaling";
-import { LATE_GAME_MINUTE, LATE_GAME_MIX, lateGameSpawnRate, TIER_MIXES, WAVES, waveForMinute } from "../src/data/waves";
+import {
+  LATE_GAME_MINUTE,
+  LATE_GAME_MIX,
+  lateGameSpawnRate,
+  SPAWN_DAMP_18_24,
+  TIER_MIXES,
+  WAVES,
+  waveForMinute,
+} from "../src/data/waves";
 import { ENEMIES } from "../src/data/enemies";
 import type { EnemyId } from "../src/data/types";
 
@@ -95,13 +103,23 @@ describe("M10 Endgame-Balance: enemyHpScale-Late-Relief", () => {
  * Reine Datentabellen, deterministisch pruefbar.
  */
 describe("M10 Endgame-Balance: Minuten-Mischung 25–30", () => {
-  it("Minute 0–24 bleibt unveraendert (TIER_MIXES + alte Rate)", () => {
-    for (let minute = 0; minute < LATE_GAME_MINUTE; minute++) {
+  it("Minute 0–17 bleibt unveraendert, 18–24 spawn-gedaempft (SPAWN_DAMP_18_24)", () => {
+    for (let minute = 0; minute < 18; minute++) {
       const wave = waveForMinute(minute);
       const tier = Math.min(4, Math.floor(minute / 5));
       // Echte Referenz: TIER_MIXES, nicht WAVES[minute].mix (tautologisch).
       expect(wave.mix).toBe(TIER_MIXES[tier]);
       expect(wave.spawnRate, `Minute ${minute}`).toBeCloseTo(0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04, 10);
+    }
+    // Lane m10-balance-spawn-damp (Befund B1): im Fenster Minute 18–24 wird der
+    // Anteil SPAWN_DAMP_18_24 des Zuwachses seit Minute 18 entfernt, Rampe 240 s
+    // (Start Minute 18 mit Grad 0, voll ab Minute 22). Minute 0–17 bleibt bitgleich.
+    const base18 = 0.38 + 18 * 0.06 + ((18 % 5) / 5) * 0.04;
+    for (let minute = 18; minute < LATE_GAME_MINUTE; minute++) {
+      const wave = waveForMinute(minute);
+      const base = 0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04;
+      const damp = SPAWN_DAMP_18_24 * Math.min(1, ((minute - 18) * 60) / 240);
+      expect(wave.spawnRate, `Minute ${minute}`).toBeCloseTo(base - damp * (base - base18), 10);
     }
   });
 

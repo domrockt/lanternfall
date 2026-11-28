@@ -5,7 +5,7 @@
  * (Renderer-String-Pflicht + Boss-Dauern ergaenzt, Spielparameter unveraendert).
  *
  *   node scripts/m10-balance-endgame.mjs before   # -> shots/m10-balance-band-before.json
- *   node scripts/m10-balance-endgame.mjs after    # -> shots/m10-balance-band-after.json
+ *   node scripts/m10-balance-endgame.mjs after    # -> shots/m10-balance-band-damp-after.json (Tag "damp", Lane m10-balance-spawn-damp)
  *
  * Parameter (in beiden Messungen identisch): autoPlay, KEIN god, timeScale 30,
  * Seeds 101/7/42, Charaktere mira+kael, Viewport 960x540 @dpr 1 (wie balance.mjs).
@@ -21,6 +21,14 @@ import { writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
 
 const PHASE = (process.argv[2] ?? "before") === "after" ? "after" : "before";
+/**
+ * Optionales Tag im Output-Dateinamen (Lane m10-balance-spawn-damp):
+ *   node scripts/m10-balance-endgame.mjs after          -> shots/m10-balance-band-damp-after.json
+ *   node scripts/m10-balance-endgame.mjs after search   -> shots/m10-balance-band-search-after.json
+ * (Suchskript ueberschreibt damit weder die Vorher-Baseline shots/m10-balance-band-after.json
+ *  noch den eigenen Nachher-Beleg.)
+ */
+const TAG = String(process.argv[3] ?? (PHASE === "after" ? "damp" : "")).replace(/[^a-zA-Z0-9-]/g, "");
 const SCALE = 30;
 const SEEDS = [101, 7, 42];
 const CHARS = ["mira", "kael"];
@@ -202,7 +210,7 @@ const summary = {
   accepted: allInWindow && spreadOk && errors.length === 0 && rendererOk,
   jsErrors: errors,
 };
-const out = `shots/m10-balance-band-${PHASE}.json`;
+const out = `shots/m10-balance-band-${TAG ? `${TAG}-` : ""}${PHASE}.json`;
 writeFileSync(out, JSON.stringify(summary, null, 2));
 console.log(JSON.stringify({
   phase: PHASE, renderer: renderers[0], rendererOk,
