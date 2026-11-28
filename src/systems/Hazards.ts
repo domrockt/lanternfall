@@ -104,6 +104,8 @@ interface HazardRuntime {
   activeSprite?: Phaser.GameObjects.Image;
   source: string;
   onTrigger?: () => void;
+  /** Draw-Budget (K2): Warn-Sprites aktuell vom Budget versteckt (NUR Optik). */
+  warnHidden?: boolean;
   /** Draw-Budget (K2): in dieser Auswahl-Iteration bereits als "gezeichnet" markiert. */
   warnDrawnMark?: boolean;
 }
@@ -115,6 +117,8 @@ interface HazardRuntime {
 export class HazardSystem {
   readonly active: HazardRuntime[] = [];
   private readonly scene: Phaser.Scene;
+  /** true, solange das Draw-Budget Warn-Sprites versteckt hat (Wiederherstellen beim Rueckauf). */
+  private discBudgetHidden = false;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -204,8 +208,8 @@ export class HazardSystem {
       if (!h.active) continue;
       if (h.warn > 0) {
         h.warn -= dt;
-        // Draw-Budget: unsichtbare Warn-Sprites brauchen keine Alpha-Updates.
-        if (h.warnSprite?.visible) {
+        // Draw-Budget: versteckte Warn-Sprites brauchen keine Alpha-Updates.
+        if (h.warnSprite && !h.warnHidden) {
           h.warnSprite.setAlpha(warnDiscAlpha(h.warnMax - h.warn));
           h.rimSprite?.setAlpha(rimPulseAlphaStaged(h.warnMax - h.warn, h.warnMax, pulseFraction));
         }
@@ -247,9 +251,36 @@ export class HazardSystem {
    * Warnflaechen aus). Auswahl ohne Sortier-Allokation: wiederholte Min-Suche
    * (Cap 6), Gleichstand -> niedrigerer Index (spawn-Reihenfolge) gewinnt.
    */
+  /** Warn-Sprites eines (warnenden) Circle-Hazards wieder einblenden. */
+  private showWarnSprites(h: HazardRuntime): void {
+    if (!h.warnHidden) return;
+    h.warnHidden = false;
+    h.warnSprite?.setVisible(true);
+    h.rimSprite?.setVisible(true);
+  }
+
+  /** Warn-Sprites eines (warnenden) Circle-Hazards ausblenden (NUR Optik). */
+  private hideWarnSprites(h: HazardRuntime): void {
+    if (h.warnHidden) return;
+    h.warnHidden = true;
+    this.discBudgetHidden = true;
+    h.warnSprite?.setVisible(false);
+    h.rimSprite?.setVisible(false);
+  }
+
   private applyDiscDrawBudget(tier: QualityTier, playerX: number, playerY: number): void {
     const cap = warnDiscDrawCapForQuality(tier);
-    if (cap === Number.POSITIVE_INFINITY) return;
+    if (cap === Number.POSITIVE_INFINITY) {
+      // high/medium: offen. Ohne eigenen Hidden-Zustand sofort zurueck (bitgleich,
+      // keine setVisible-Calls); nach einem LOW-Abstecher einmalig wiederherstellen.
+      if (!this.discBudgetHidden) return;
+      for (const h of this.active) {
+        if (h.kind !== "circle" || !h.active || h.triggered || h.warn <= 0) continue;
+        this.showWarnSprites(h);
+      }
+      this.discBudgetHidden = false;
+      return;
+    }
     let warnCircles = 0;
     for (const h of this.active) {
       if (h.kind === "circle" && h.active && !h.triggered && h.warn > 0) warnCircles++;
@@ -258,9 +289,9 @@ export class HazardSystem {
       // Unter dem Cap: Sichtbarkeit wiederherstellen (z. B. nach Tier-Rueckauf).
       for (const h of this.active) {
         if (h.kind !== "circle" || !h.active || h.triggered || h.warn <= 0) continue;
-        if (!h.warnSprite?.visible) h.warnSprite?.setVisible(true);
-        if (!h.rimSprite?.visible) h.rimSprite?.setVisible(true);
+        this.showWarnSprites(h);
       }
+      this.discBudgetHidden = false;
       return;
     }
     for (let j = 0; j < cap; j++) {
@@ -280,13 +311,9 @@ export class HazardSystem {
       const warnCircle = h.kind === "circle" && h.active && !h.triggered && h.warn > 0;
       if (h.warnDrawnMark) {
         h.warnDrawnMark = false;
-        if (warnCircle) {
-          if (!h.warnSprite?.visible) h.warnSprite?.setVisible(true);
-          if (!h.rimSprite?.visible) h.rimSprite?.setVisible(true);
-        }
+        if (warnCircle) this.showWarnSprites(h);
       } else if (warnCircle) {
-        if (h.warnSprite?.visible) h.warnSprite?.setVisible(false);
-        if (h.rimSprite?.visible) h.rimSprite?.setVisible(false);
+        this.hideWarnSprites(h);
       }
     }
   }

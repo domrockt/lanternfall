@@ -15196,27 +15196,38 @@
       "id": 11450,
       "title": "m10-hazard-quality-budget K2: Tier-Regel in hazardDisc.ts/Hazards.ts (reine Funktionen)",
       "description": "Warn-Disc-Zeichnung je QualityTier dämpfen: LOW = Disc-Draw-Cap (weniger simultane gezeichnete Discs, nahe Spieler bevorzugt) + kürzere Rim-Puls-Phase; high/medium bitgleich. Raster-Contract aus tests/hazard-disc.test.ts unangetastet (Masken/Keys/Draw-Scale 1). AK: reine Funktionen unit-testbar, kein Dither-Flächen-Rückfall, MIN_WARN_S unverändert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-hazard-quality-budget",
       "notes": [
         {
           "at": "2026-11-28T11:19:32Z",
           "by": "build",
           "text": "todo → doing: K2 angenommen: Tier-Regel in hazardDisc.ts (reine Funktionen: Draw-Cap, Puls-Phasen-Anteil, Tier-Resolution inkl. __lfForceQuality-Debug-Override) + Verdrahtung in Hazards.ts (Draw-Budget, gestutzter Rim-Puls). high/medium bitgleich."
+        },
+        {
+          "at": "2026-11-28T11:20:56Z",
+          "by": "build",
+          "text": "doing → review: K2 erledigt, Commit bf4805a6. Reine Funktionen in hazardDisc.ts (Cap 6 low, Puls-Phase 0.5 low, __lfForceQuality-Override) + Verdrahtung in Hazards.ts (applyDiscDrawBudget, rimPulseAlphaStaged). tsc gruen, hazard-disc+hazard-warn 24/24."
         }
       ],
       "created": "2026-11-28T11:08:13Z",
-      "updated": "2026-11-28T11:19:32Z"
+      "updated": "2026-11-28T11:20:56Z"
     },
     {
       "id": 11451,
       "title": "m10-hazard-quality-budget K3: Tests — Tier-Matrix + Raster-Guard bleibt grün",
       "description": "tests/hazard-quality-budget.test.ts: Tier-Matrix (high/medium bitgleich, LOW gedeckelt, Puls-Phase) + Hazards-Verdrahtung. AK: neue Tests grün, npx vitest run tests/hazard-disc.test.ts bleibt unverändert grün (Raster-Guard).",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-hazard-quality-budget",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T11:20:56Z",
+          "by": "build",
+          "text": "todo → doing: K3 angenommen: tests/hazard-quality-budget.test.ts — Tier-Matrix (Caps, Puls-Phasen, Override, bitgleich-Mathe), Hazards-Verdrahtung (Draw-Budget versteckt uerige Discs bei low, high bitgleich), Raster-Guard bleibt gruen."
+        }
+      ],
       "created": "2026-11-28T11:08:13Z",
-      "updated": "2026-11-28T11:08:13Z"
+      "updated": "2026-11-28T11:20:56Z"
     },
     {
       "id": 11452,
