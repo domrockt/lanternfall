@@ -72,7 +72,7 @@ eine Pixelgröße (Draw-Scale 1 — seit B3-Fix erfüllt).
 - Abnahme 3: tsc rc=0, tests/hazard-disc.test.ts 17/17 (inkl. Raster-Guard), volle Suite
   158 Dateien / 1699 Tests, npm run build rc=0. ✓
 - Abnahme 4: diese Lane-Doku. ✓
-- Commits: ab471c77 (#10068 K1), d8f062aa (#10069 K2), 19457374 (#10070 K3), <K4-SHA> (#10071).
+- Commits: ab471c77 (#10068 K1), d8f062aa (#10069 K2), 19457374 (#10070 K3), d2ae17ea (#10071).
 - Belege außerhalb git: `~/games/.evidence/m10-hazard-disc-raster/` (before/after PNG + JSON mit
   WebGL-Renderer-String, Mesa Intel RPL-S, 0 JS-Fehler).
 - Offene Punkte: keine.
