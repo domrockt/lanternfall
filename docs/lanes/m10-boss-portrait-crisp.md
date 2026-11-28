@@ -99,4 +99,56 @@ silKontrast p75 identisch oder >= Before (Guard-Test grün), edgeContrast bone_l
 
 ## K3 — Guard-Test
 
+`tests/boss-portrait-crisp.test.ts` friert die Before-Baseline (`shots/m10-boss-portrait-before.json`)
+als untere Grenze ein:
+
+1. 6/6 Bosse aus `src/data/bosses` haben generierte Sprites.
+2. Binaeres Alpha + 0 Off-Palette-Pixel in allen Frames aller Bosse (nur Indizes 0-31 + ".").
+3. Silhouetten-Kontrast je Boss >= Vorher (p75 der Luminanz-Differenz gegen PAL[2],
+   identische Metrik wie `scripts/m10-boss-portrait.mjs`).
+4. 0 Frame-Dubletten + Frame-Budget 3 je Boss.
+5. Frame-Grid konsistent (w x h).
+
+Lauf: 5/5 gruen nach K2; `tests/boss-idle-anim.test.ts` 9/9 gruen; `npm test` 128 Dateien /
+1366 Tests gruen. test-auditor-Pruefung: siehe Karten-Notiz.
+
 ## K4 — After-Belege + Urteil
+
+Belege: `shots/m10-boss-portrait-after-*.png` (je Boss 3 Frames 1x + 4x) + `-all.png` +
+`after.json`.
+
+**art-director-Endsichtung (Kontrolleur): PASS — Gesamtdurchschnitt 4,00/5** (Abnahme-Korridor
+>= 4/5 erreicht). Je Boss Note 4 und Muss-Punkt dieser Runde mit Pixel-Beleg gelöst:
+
+| Boss | Note | Muss-Punkt gelöst | Offen (Folge-Karte) |
+|---|---|---|---|
+| moor_queen | 4 | Kronen-Kontakt (Brücke) | F2-Duckpose (Idle-Kontrakt) |
+| bone_lord | 4 | Pauldron-Kontrast | – |
+| pale_shepherd | 4 | Stab-Griff + Bodenkontakt | Kopf-/Gesichtsfläche matschig |
+| bell_golem | 4 | Faust-Lichtkanten | – |
+| coven | 4 | Augen/Kinn-Keil | Props/Klon-Posen der Seiten-Hexen |
+| hollow_king | 4 | Kronen-Kontakt | Brustpanzer-Platten, Unterkanten-Rhythmus |
+
+Hinweis des Kontrolleurs: Korridor ohne Reserve bestanden — Folge-Karten dürfen nur führen,
+nicht verschieben. Keine neuen Defekte: Palette diszipliniert, 1-px-Konturen, keine
+Mixel-/Skalierungsartefakte, F0-F2 als Idle-Zyklus konsistent.
+
+## Abnahme-Zusammenfassung
+
+- Abnahme-Kriterien erfüllt: art-director 4,00/5 (>= 4/5) mit Belegen `shots/m10-boss-portrait-*`;
+  `tests/boss-portrait-crisp.test.ts` 5/5 gruen; `npm test` 128 Dateien / 1366 Tests gruen;
+  `npx tsc --noEmit` + `npm run build` gruen.
+- Keine Änderung an Spawn-/Kamera-/FX-Pfad — nur `scripts/art/gen_bosses.py` (F0-Zeichnung)
+  und das regenerierte `src/gfx/gen-bosses.ts` (plus erneute Anwendung des bestehenden
+  Idle-Transforms `scripts/m10-boss-idle-anim.mjs gen`).
+- Palette (32 Farben) und binaeres Alpha unverändert; Idle-Anim-Verträge
+  (`tests/boss-idle-anim.test.ts` 9/9) bleiben gruen.
+- Belegte, offene Punkte siehe K2/K4-Tabellen (Folge-Karten-Material, nichts eskalationswürdig).
+
+## Commits
+
+- `af413ae` — #8398 K1: Before-Kontaktboegen + Maengelliste + Baseline-Metriken
+- `9392cd7` — #8399 K2 WIP: Muss-Fixes + Pipeline-Befund
+- `64b53ef` — #8399 K2 final: Generator-Fixes, tsc/build/1366 Tests gruen
+- `0af596c` — #8400 K3: Guard-Test (test-auditor PASS)
+- `<k4>` — #8401 K4: Doku + Lane-Abschluss
