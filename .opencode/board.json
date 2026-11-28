@@ -16486,16 +16486,21 @@
       "id": 12013,
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T13:34:06Z",
           "by": "build",
           "text": "Merge m10-device-janky-node liegt auf main (f0bc1de0, ancestor-rc=0). Guard-Test boot-light-textures auf gemergtem Stand geprüft: npx vitest run tests/boot-light-textures.test.ts -> 4/4 grün, keine Anpassung nötig. Full-Suite 2338/2338 grün."
+        },
+        {
+          "at": "2026-11-28T14:42:35Z",
+          "by": "build",
+          "text": "doing → todo: Zurück nach todo auf Supervisor-Steer (28.11.): Karte #12013 gehört NICHT zu dieser Lane (m10-spawn-view-anchor, Briefing-Karten #12527-#12531). Es gab keinen #12013-Arbeitsstand hier — die Verwechslung stammt vermutlich vom fremden Checkpoint-Commit f0c48cd1 ('#12013 WIP', 14:14Z), der auf meinen Lane-Branch gelandet ist und meinen WIP (m10-spawn-view-anchor.mjs + tmp-debug) enthielt. Blocker für den echten Owner: unbekannt; die Karte bleibt für den Merge-Fix-Job stehen."
         }
       ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T13:34:06Z"
+      "updated": "2026-11-28T14:42:35Z"
     },
     {
       "id": 12029,
@@ -17495,10 +17500,15 @@
           "at": "2026-11-28T13:56:35Z",
           "by": "build",
           "text": "todo → doing: Lane m10-spawn-view-anchor gestartet (Worktree lf-lanes/m10-spawn-view-anchor, Branch m10-spawn-view-anchor). K1 Vorher-Messung."
+        },
+        {
+          "at": "2026-11-28T14:42:35Z",
+          "by": "build",
+          "text": "Supervisor-Steer 28.11. bestätigt: K1-Beleg-JSON zusätzlich nach shots/m10-spawn-view-* geschrieben (Kopie; kanonisch bleibt ~/games/.evidence/m10-spawn-view-anchor/, da shots-Belege nicht nach git kommen). Skript-Iterationen beendet — nur noch Auswertung."
         }
       ],
       "created": "2026-11-28T13:56:32Z",
-      "updated": "2026-11-28T13:56:35Z"
+      "updated": "2026-11-28T14:42:35Z"
     },
     {
       "id": 12528,

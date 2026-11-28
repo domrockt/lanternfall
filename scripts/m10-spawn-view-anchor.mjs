@@ -22,9 +22,11 @@ function arg(name, fallback) {
 }
 const TAG = arg("--tag", "before");
 const OUT = arg("--out", `${EVIDENCE_DIR}/marks-${TAG}.json`);
+const ANCHOR_OTHERS = process.argv.includes("--anchor-others");
 const SEEDS = (arg("--seeds", "101,202,404")).split(",").map(Number);
 const REPS = Number(arg("--reps", "2"));
 const MAX_SECONDS = Number(arg("--limit", "700"));
+const GW = 640; // logischer Screen (Anker-Rezept Ursachen-Lane, K2 Punkt 4)
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -44,7 +46,7 @@ async function runRep(seed, rep) {
     await page.keyboard.press("1");
     await page.keyboard.press("Enter");
     await waitForScene(page, "run");
-    await page.evaluate(([maxSec]) => {
+    await page.evaluate(([maxSec, anchorOthers]) => {
       const run = window.__game.scene.getScene("run");
       // Spawn-Marken: ALLE Spawns laufen ueber Spawner.spawnAt -> Position/UID
       // des frischen Spawns je Sim-Sekunde buendeln (bitgleicher Vergleich).
@@ -78,7 +80,55 @@ async function runRep(seed, rep) {
       };
       run.events.on("bossWarn", (e) => trace.events.push({ kind: "bossWarn", index: e.index, at: run.elapsed }));
       run.events.on("bossDefeated", (e) => trace.events.push({ kind: "bossDefeated", index: e.index, at: run.elapsed }));
-    }, [MAX_SECONDS]);
+      // Optional (--anchor-others): die beiden pool-Lane-Leser zur Laufzeit auf
+      // denselben Sim-Anker setzen (Rezept exakt nach der Ursachen-Lane K2 Punkt 4,
+      // Patches 2+3 aus probe-fix.mjs). Nur fuer den K4-Teil-Nachweis — die echte
+      // Umstellung ist Sache der Lane m10-worldview-anchor-pools; keine Aenderung
+      // an fremden Dateien.
+      if (anchorOthers) {
+        const det = (cam) => {
+          const s = Math.max(1, Math.round(GW / (cam.width || GW)));
+          return {
+            x: cam.scrollX + cam.width / 2 - (cam.width * s) / 2,
+            y: cam.scrollY + cam.height / 2 - (cam.height * s) / 2,
+            width: cam.width * s,
+            height: cam.height * s,
+          };
+        };
+        // ProjectilePool: Instanz je nach Base-Layout unter run.projectiles oder
+        // run.combat.* (wie im Kausalbeweis probe-fix.mjs).
+        const pool = run.projectiles ?? run.combat?.projectiles ?? run.combat?.pool;
+        const ppProto = pool ? Object.getPrototypeOf(pool) : null;
+        if (ppProto && typeof ppProto.view === "function") {
+          ppProto.view = function () {
+            const cam = this.scene?.cameras?.main;
+            if (!cam) return null;
+            const v = det(cam);
+            this.viewScratch.x = v.x;
+            this.viewScratch.y = v.y;
+            this.viewScratch.width = v.width;
+            this.viewScratch.height = v.height;
+            return this.viewScratch;
+          };
+        } else {
+          trace.poolsPatched = (trace.poolsPatched ?? 0);
+          console?.warn?.("ProjectilePool.view nicht gefunden");
+        }
+        const esProto = Object.getPrototypeOf(run.enemyShots);
+        esProto.refreshView = function () {
+          const cam = this.scene?.cameras?.main;
+          const v = cam ? det(cam) : null;
+          this.viewValid = Boolean(v && v.width > 0 && v.height > 0);
+          if (this.viewValid) {
+            this.viewProbe.x = v.x;
+            this.viewProbe.y = v.y;
+            this.viewProbe.width = v.width;
+            this.viewProbe.height = v.height;
+          }
+        };
+        trace.poolsPatched = Boolean(ppProto && typeof ppProto.view === "function") && typeof esProto.refreshView === "function";
+      }
+    }, [MAX_SECONDS, ANCHOR_OTHERS]);
     await page.evaluate(() => {
       window.__lf.autoPlay(true);
       window.__lf.god(false);
@@ -128,7 +178,7 @@ for (const seed of SEEDS) {
     const r = await runRep(seed, rep);
     r.durs = bossDurations(r.trace.events);
     const spawnTotal = r.trace.spawns.reduce((n, b) => n + (b ? b.split(";").length : 0), 0);
-    console.log(`[${TAG}] seed=${seed} rep=${rep}: Spawn-Marken=${spawnTotal} (calls=${r.trace.recCalls} first=${JSON.stringify(r.trace.recFirst)}) ` +
+    console.log(`[${TAG}] seed=${seed} rep=${rep}: Spawn-Marken=${spawnTotal} (calls=${r.trace.recCalls} first=${JSON.stringify(r.trace.recFirst)} poolsPatched=${r.trace.poolsPatched}) ` +
       `Bosse=${r.durs.map((b) => `#${b.index}:${b.duration}s`).join(" ")} errors=${r.pageErrors.length}`);
     reps.push(r);
   }
