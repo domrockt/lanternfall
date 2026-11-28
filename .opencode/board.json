@@ -13943,10 +13943,16 @@
       "id": 10769,
       "title": "m10-menu-contrast-fixes K2: Title.ts Hint-/Subtitle-Kontrast",
       "description": "3 Hint-Zeilen C.fog(7)->C.bone(10) (Ist 2.07), Subtitle C.mist(8)->C.paleMist(9) (Ist 4.34). AK: tsc rc=0, build+tests gruen, Commit nennt #Karte.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T10:02:36Z",
+          "by": "build",
+          "text": "todo → doing: K2 starten (K1 committed, review-Buchung durch fremde dirty shots-Dateien blockiert – siehe Lane-Doku)."
+        }
+      ],
       "created": "2026-11-28T09:54:52Z",
-      "updated": "2026-11-28T09:54:52Z"
+      "updated": "2026-11-28T10:02:36Z"
     },
     {
       "id": 10770,

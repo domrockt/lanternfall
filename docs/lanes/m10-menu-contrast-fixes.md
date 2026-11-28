@@ -56,4 +56,53 @@ Kontrast skaliert mit der Text-Luminanz: Ratio_neu ≈ Ratio_ist × (L_neu+0.05)
 
 ## Nachher (K6)
 
-_(wird in K6 ausgefüllt)_
+Scan: `~/games/.evidence/m10-menu-contrast-fixes/m10-menu-contrast-after-scan.json`
+(sowie Zwischen-Belege `…-k2/k3/k4/k5-scan.json` je Karte). Renderer beide Profile:
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` — kein SwiftShader. 0 JS-Fehler.
+
+| Screen | Kontrast-Fails < 4.5 (vorher) | Overlaps (vorher) |
+|---|---|---|
+| title | **0** (4) | 0 (0) |
+| options | **0** (5) | **0** (1 = 465 px²) |
+| credits | **0** (12) | 0 (0) |
+| charselect | **0** (5) | 0 (0) |
+
+KAEL-Gap: **7 px** (vorher 2 px) — kael y1=241, Knopf-Rahmen-Top y=248, beide Profile.
+
+Zeilen nachher: alle 13 betroffenen Zeilen ≥ 4.5 (After-Scan: 0 Fails auf allen 4 Screens,
+beide Profile). Erwartete Median-Ratios (Modell: skaliert aus den Vorher-Median-Ratios mit der
+Luminanz-Ratio alt→neu, im Test `tests/menu-contrast-fixes.test.ts` gegen die gemessenen
+Backdrop-Luminanzen geprüft):
+- Hint-Zeilen fog→bone: 2.07 → ≈ 7.6; Subtitle mist→paleMist: 4.34 → ≈ 6.9.
+- Options: `PFEILE ODER MAUS` 2.72 → ≈ 10.0; Footer mist→bone + H-14 → H-50 (Overlap 465 px² → 0).
+- Credits: Labels 2.73 → ≈ 10.1; `ESC/ENTER` 2.95 → ≈ 10.9; mist-Zeilen 4.16 → ≈ 6.6.
+- CharSelect: `SEED …` 2.77 → ≈ 10.2; `START: …` 2.48 → ≈ 9.2; Bonus-Zeilen 3.78 → ≈ 6.0.
+
+Regressionstest: `tests/menu-contrast-fixes.test.ts` (6 Tests) — Kontrast-Assertions für die
+13 betroffenen Zeilen (Backdrop-Luminanz aus dem Vorher-Scan zurückgerechnet, Muster
+menu-quality-Scan), Quelltext-Check der Farb-Indices, Overlap-Regressionen Footer ↔ Hint
+(0 px für H ∈ {360, 540}) und KAEL-Gap ≥ 4 px aus den Quell-Positionen geparst.
+
+Abnahme-Bilder (git): `shots/abnahme/m10-menu-contrast-after-<profil>-<screen>.png` (8×) +
+3x nearest-Zoom-Crops der Positions-Fixes (`…-title-kaelgap-3x.png`, `…-options-footer-3x.png`
+mit before-Gegenstücken). Sichtprüfung: KAEL-Zeile mit klarem Freiraum zur Knopfreihe, Footer
+hell (bone) und klar getrennt über dem Hint-Block — sonstige Optik unverändert.
+
+## Abweichungen vom Auftrag
+
+- **K3 Footer-Verschiebung:** Auftrag sagte „4–6 px nach oben“. Geometrisch nötig sind ≥ 12 px
+  (Footer-Rechteck [y, y+7] muss unterhalb der untersten Hint-Zeile [H-18, H-11] enden ODER
+  oberhalb der obersten [H-38, H-31] beginnen; dazwischen liegen nur 1-px-Lücken). Gewählt:
+  **H-14 → H-50** — Footer sitzt damit sauber zwischen Panel und Hint-Block, 0 px Overlap zu
+  ALLEN Title-Texten in beiden Profilen (belegt im After-Scan), keine neuen Overlaps.
+- **K3 Umfang:** zusätzlich zur Footer-Farbe (mist→bone) die dokumentierte FAIL-Zeile
+  `PFEILE ODER MAUS - ENTER/ESC` (fog→bone, Ist 2.72) in derselben Datei gefixt — nötig für
+  „0 Kontrast-Fails“ in options.
+- **K3 Footer-Farbe:** Scan meldete Index 8 (mist), nicht 7 — Ziel „>= 10“ trotzdem umgesetzt.
+
+## Board-Hinweis
+
+Board-Buchung war während der Lane teilweise verweigert (Plugin-Regel „uncommitted changes“):
+fremde dirty Dateien `shots/m10-passive-math-caps.json` / `shots/m10-passive-math-matrix.json`
+(Lane m10-passive-math) im Worktree — nicht angefasst, gleicher Fall wie #10246. Karten:
+#10768-#10773 (Reserve-Block), K1/K2-Kommits nennen die Karten-IDs.
