@@ -1,0 +1,68 @@
+{
+ "script": "scripts/m10-det-e2e.mjs",
+ "tag": null,
+ "seeds": [
+  101,
+  202,
+  404
+ ],
+ "reps": 2,
+ "limitSeconds": 700,
+ "timeScale": 30,
+ "character": "mira",
+ "deterministic": true,
+ "perSeed": [
+  {
+   "seed": 101,
+   "identical": true,
+   "marks": 700,
+   "divergingMarks": 0,
+   "bossDurations": [
+    [
+     31.1,
+     40.1
+    ],
+    [
+     31.1,
+     40.1
+    ]
+   ],
+   "diffs": []
+  },
+  {
+   "seed": 202,
+   "identical": true,
+   "marks": 700,
+   "divergingMarks": 0,
+   "bossDurations": [
+    [
+     25.2,
+     29.5
+    ],
+    [
+     25.2,
+     29.5
+    ]
+   ],
+   "diffs": []
+  },
+  {
+   "seed": 404,
+   "identical": true,
+   "marks": 700,
+   "divergingMarks": 0,
+   "bossDurations": [
+    [
+     29.75,
+     45.45
+    ],
+    [
+     29.75,
+     45.45
+    ]
+   ],
+   "diffs": []
+  }
+ ],
+ "measuredAt": "2026-11-28T15:09:13.398Z"
+}
