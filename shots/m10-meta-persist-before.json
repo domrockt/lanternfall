@@ -1,0 +1,286 @@
+{
+  "lane": "m10-meta-persist-guard",
+  "date": "2026-11-28T03:33:27.106Z",
+  "node": "v22.14.0",
+  "mode": "shots/m10-meta-persist-before.json",
+  "runs": [
+    {
+      "run": 1,
+      "input": {
+        "character": "mira",
+        "time": 120.5,
+        "kills": 40,
+        "level": 6,
+        "victory": false
+      },
+      "records": {
+        "time": true,
+        "kills": true,
+        "level": true,
+        "victory": false
+      },
+      "mira": {
+        "time": 120.5,
+        "kills": 40,
+        "level": 6,
+        "victories": 0,
+        "runs": 1
+      },
+      "kael": {
+        "time": 0,
+        "kills": 0,
+        "level": 0,
+        "victories": 0,
+        "runs": 0
+      }
+    },
+    {
+      "run": 2,
+      "input": {
+        "character": "mira",
+        "time": 60,
+        "kills": 20,
+        "level": 3,
+        "victory": false
+      },
+      "records": {
+        "time": false,
+        "kills": false,
+        "level": false,
+        "victory": false
+      },
+      "mira": {
+        "time": 120.5,
+        "kills": 40,
+        "level": 6,
+        "victories": 0,
+        "runs": 2
+      },
+      "kael": {
+        "time": 0,
+        "kills": 0,
+        "level": 0,
+        "victories": 0,
+        "runs": 0
+      }
+    },
+    {
+      "run": 3,
+      "input": {
+        "character": "mira",
+        "time": 200,
+        "kills": 55,
+        "level": 9,
+        "victory": true
+      },
+      "records": {
+        "time": true,
+        "kills": true,
+        "level": true,
+        "victory": true
+      },
+      "mira": {
+        "time": 200,
+        "kills": 55,
+        "level": 9,
+        "victories": 1,
+        "runs": 3
+      },
+      "kael": {
+        "time": 0,
+        "kills": 0,
+        "level": 0,
+        "victories": 0,
+        "runs": 0
+      }
+    },
+    {
+      "run": 4,
+      "input": {
+        "character": "mira",
+        "time": null,
+        "kills": null,
+        "victory": true
+      },
+      "records": {
+        "time": false,
+        "kills": false,
+        "level": false,
+        "victory": false
+      },
+      "mira": {
+        "time": 200,
+        "kills": 55,
+        "level": 9,
+        "victories": 2,
+        "runs": 4
+      },
+      "kael": {
+        "time": 0,
+        "kills": 0,
+        "level": 0,
+        "victories": 0,
+        "runs": 0
+      }
+    },
+    {
+      "run": 5,
+      "input": {
+        "character": "kael",
+        "time": 90,
+        "kills": 30,
+        "level": 5,
+        "victory": false
+      },
+      "records": {
+        "time": true,
+        "kills": true,
+        "level": true,
+        "victory": false
+      },
+      "mira": {
+        "time": 200,
+        "kills": 55,
+        "level": 9,
+        "victories": 2,
+        "runs": 4
+      },
+      "kael": {
+        "time": 90,
+        "kills": 30,
+        "level": 5,
+        "victories": 0,
+        "runs": 1
+      }
+    }
+  ],
+  "monotonicViolations": [],
+  "optionCycles": [
+    {
+      "cycle": 1,
+      "saved": {
+        "music": 0.3,
+        "sfx": 0.45,
+        "shake": false,
+        "damageNumbers": false,
+        "muted": true,
+        "scale": 4
+      },
+      "loaded": {
+        "music": 0.3,
+        "sfx": 0.45,
+        "shake": false,
+        "damageNumbers": false,
+        "muted": true,
+        "scale": 4
+      },
+      "equal": true
+    },
+    {
+      "cycle": 2,
+      "saved": {
+        "music": 0.3,
+        "sfx": 0.45,
+        "shake": false,
+        "damageNumbers": false,
+        "muted": true,
+        "scale": 4
+      },
+      "loaded": {
+        "music": 0.3,
+        "sfx": 0.45,
+        "shake": false,
+        "damageNumbers": false,
+        "muted": true,
+        "scale": 4
+      },
+      "equal": true
+    },
+    {
+      "cycle": 3,
+      "saved": {
+        "music": 0.3,
+        "sfx": 0.45,
+        "shake": false,
+        "damageNumbers": false,
+        "muted": true,
+        "scale": 4
+      },
+      "loaded": {
+        "music": 0.3,
+        "sfx": 0.45,
+        "shake": false,
+        "damageNumbers": false,
+        "muted": true,
+        "scale": 4
+      },
+      "equal": true
+    }
+  ],
+  "clampTrace": {
+    "clampVolume_neg": 0,
+    "clampVolume_over": 1,
+    "clampVolume_nan": 0,
+    "clampScale_neg": 0,
+    "clampScale_over": 6,
+    "clampScale_frac": 4,
+    "clampScale_nan": 0
+  },
+  "partialMeta": {
+    "mira": {
+      "time": 33,
+      "kills": 7,
+      "level": 2,
+      "victories": 1,
+      "runs": 3
+    },
+    "kael": {
+      "time": 0,
+      "kills": 0,
+      "level": 0,
+      "victories": 0,
+      "runs": 0
+    }
+  },
+  "partialOptions": {
+    "music": 0,
+    "sfx": 0.8,
+    "shake": true,
+    "damageNumbers": true,
+    "muted": false,
+    "scale": 6
+  },
+  "corruptOptions": {
+    "music": 0.55,
+    "sfx": 0.8,
+    "shake": true,
+    "damageNumbers": true,
+    "muted": false,
+    "scale": 0
+  },
+  "checks": {
+    "meta_monotonic_over_5_runs": true,
+    "meta_no_nan_or_undefined": true,
+    "meta_worse_run_sets_no_record": true,
+    "meta_nan_run_keeps_best": true,
+    "meta_run_counters": true,
+    "meta_victory_count": true,
+    "meta_corrupt_payload_falls_back": true,
+    "meta_partial_corrupt_falls_back_per_char": true,
+    "meta_throwing_storage_survives": true,
+    "meta_save_load_roundtrip": true,
+    "meta_null_storage_safe": true,
+    "options_roundtrip_7_rows_3_cycles": true,
+    "options_clamp_bounds_and_scalemax": true,
+    "options_step_and_set_clamp": true,
+    "options_key": true,
+    "options_corrupt_payload_defaults": true,
+    "options_partial_payload_defaults_per_field": false,
+    "options_null_storage_safe": true
+  },
+  "summary": {
+    "total": 18,
+    "passed": 17,
+    "nanFields": []
+  }
+}
