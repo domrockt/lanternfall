@@ -49,4 +49,17 @@ describe("M8-View ohne Crowd-Deckel (Rueckbau m10-perf-cap-rollback)", () => {
     expect(isIntegerPixelPerfect(forced)).toBe(true);
     expect(viewKey(forced)).toBe(viewKey(view(780, 360, 3)));
   });
+
+  it("M10-view-fill-refit: alle 7 Abnahme-Formate halten height*scale == Geraetehoehe (kein Hoehen-Balken)", () => {
+    // Ergänzt die Breiten-Invariante aus tests/view.test.ts um die Höhenseite
+    // und die Fill-Formate (n < 2): Höhe skaliert immer exakt mit.
+    for (const [w, h, dpr, setting] of [
+      [640, 360, 1, 0], [960, 540, 1, 0], [1280, 720, 1, 0],
+      [1920, 1080, 1, 0], [2560, 1440, 1, 0], [3840, 2160, 1, 0], [780, 360, 3, 3],
+    ] as Array<[number, number, number, number]>) {
+      const v = computeView({ width: w, height: h, dpr, setting });
+      expect(v.height * v.scale).toBe(h * dpr);
+      expect(isIntegerPixelPerfect(v)).toBe(true);
+    }
+  });
 });
