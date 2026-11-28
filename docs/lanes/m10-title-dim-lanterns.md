@@ -60,3 +60,81 @@ CREDITS zeichnen — visuell falsch. Loesch-Fenster exakt ueber den Glas-Reihen
 (Patch +5, 8x6 Texel) zeigen nur komplett opake Flammen-Texel (keine Hintergrund-
 kaestchen-Artefakte); Funken-Reihen (0-4) bleiben hinter dem Dim ( BG kaeme sonst
 undunkel durch die transparenten Reihen = helles Kasten-Artefakt).
+
+## Karte K2 — Dim-Ausnahmepfad (Commit 30770547, 2026-11-28)
+
+NUR `src/scenes/Title.ts` (gen_title.py/gen-title.ts unangetastet, Asset-Glut 0,125
+-> 0,375 aus title-flame-glow-r2 bereits asset-seitig):
+1. **`lanternGlassHoles(bgL)`** (rein, exportiert): je TITLE_FLAME_SPOT ein
+   8x6-Texel-Fenster ab Patch-Reihe 5 (`TITLE_GLASS_HOLE`), Position bgL-abhaengig.
+2. **Lasur**: das Rectangle (nightDeep, alpha 0,62, depth 3) ist jetzt eine Canvas-
+   Textur `title_dim_lasur_<W>x<H>` mit `clearRect`-Fenstern an den Glas-Positionen;
+   ausserhalb der Fenster identisches Dim-Compositing wie main (globalAlpha 0,62).
+3. **Vignette**: lokale Kopie `title_vignette_dim_<W>x<H>` (drawImage skaliert wie
+   `setDisplaySize`, Boot.ts unangetastet) mit denselben Fenstern, sonst gleiche
+   Zeichnung (cx, H/2, scrollFactor 0, depth 50).
+4. `TITLE_FLAME_DEPTH = 2` exportiert und genutzt — bewusst unter Buttons/Vignette:
+   die Ausnahme läuft ueber die Fenster, nicht ueber Depth (Flammen duerfen nicht
+   ueber dem Menue landen). `TITLE_DIM_ALPHA = 0.62` fixiert die Dim-Staerke.
+
+## Karte K3 — Regressionstest (Commit 3c5850a0, 2026-11-28)
+
+`tests/title-dim-lanterns.test.ts`, 9 Tests (Phaser neutral gemockt, Muster
+title-bg-crisp): Fenster-Ausrichtung je Viewport (640x360, 780x360, 480x270),
+Fenster = Patch-Reihe 5 + Hoehe 6 (keine Reihen darueber/darunter), Fenster in der
+Lasur, **Opak-Guard** (Reihen 5-10 in f0/f1/f2 lueckenlos opak — sonst kaeme
+Hintergrund undunkel durchs Fenster), Dim-Konstanten (0,62; depth 2 < 6).
+
+`npm test`: 165 Dateien / 1762 Tests gruen; `npx tsc --noEmit` gruen;
+`npm run build` gruen; title-flame-glow (14) + palette-compliance (16) = 30/30.
+
+## Karte K4 — Nachher-Messung + Abnahme (2026-11-28)
+
+Belege `~/games/.evidence/m10-title-dim-lanterns/`: `after-dim.json`,
+`after-<view>-full.png`, `after-<view>-zoom4x-laterne2/4.png` (je Vorher-Pendant).
+Renderer in ALLEN JSON-Belegen: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S),
+OpenGL ES 3.2)` (gültig, kein SwiftShader), 0 JS-Fehler.
+
+**Messwert (`after-dim.json`, Glas-Patch 8x6 je Spot):**
+
+| Laterne | 1920x1080 hellster Texel | 640x360 hellster Texel | vorher |
+|---|---|---|---|
+| 1 | **13** (255,248,230) | **13** (255,248,230) | 6 (80,81,81) |
+| 2 | 8 — Glas hinter OPTIONEN (Bestand) | 7 — dito | 8 (105,122,131) |
+| 3 | **13** (255,248,230) | **13** (255,248,230) | 10 (180,192,190) |
+| 4 | **13** (255,248,230) | **13** (255,248,230) | 8 (95,110,119) |
+
+Stufe 13 (lanternWhite) ist nach dem Fix im On-Screen-Glas der Laternen 1, 3 und 4
+in BEIDEN Views erreichbar — vorher 0/48 Texel, nachher 6-8/48 Texel je Laterne
+(a13 0,125-0,167, Glut 13+22 gesamt 0,21-0,375). Fix ausschliesslich ueber den
+Dim-Ausnahmepfad; Asset-Werte unveraendert (title-flame-glow-Tests 14/14,
+palette-compliance 16/16).
+
+**Laterne 2 (offener Punkt, dokumentiert nicht gefixt):** Das komplette Glas
+(x 291-299, y 248-254) liegt hinter dem OPTIONEN-Button (x 266-374, y 248-270) —
+bestehende Layout-Ueberlappung Menue/Moor, laut Briefing out of scope (keine
+Layout-/Text-Änderungen). Der Dim-Fix greift auch dort (Fenster vorhanden, behindert
+vom Button wie die gesamte Landschaftsgrafik); sichtbar sind nur ihre Funken.
+art-director-Anregung als Bedarf fuer eine spaetere Layout-Karte: Laterne 2 ist
+"verschwende­te Deko" hinter dem Menue-Button.
+
+## Kontrolleure (2026-11-28)
+
+- **art-director: PASS 5/5** (einmalig, kommerziell auslieferbar im Fix-Scope).
+  Starkster Beleg: quantitativer Before/After-Diff 640x360 = genau 129 Pixel mit
+  Delta > 4, bbox (99,244)-(477,253) — ausschliesslich Glas-Patch-Baender; Menue,
+  Text, Mondlaterne, Mond 0 geaenderte Pixel. Fensterrand faellt exakt mit der
+  dunklen Sprite-Kontur zusammen (kein Kasten-Artefakt). Muss-neu: keine.
+- **reviewer: PASS** (nicht-blockierende Findings, alle umgesetzt in
+  363b52c4/edf4fde4): skalenbewusste Fensterformel (bgL.scale; Scale>=2 aktuell
+  unerreichbar, logische Hoehe fest 360), TITLE_DIM_TOP/HEIGHT statt Magic
+  Numbers, imageSmoothingEnabled=false fuer pixelgenaue Bandkanten, Scale-2-
+  Testfall ergaenzt (11 Tests). Hinweise bewusst nicht umgesetzt: Textur-Keys
+  je Viewgroesse bleiben im Manager (wenige Keys, harmlos).
+- **Board-Bereinigung:** #10115/#10116 nach review notiert; K2-Beschreibung
+  (verworfener Depth-Ausnahmepfad) korrigiert. `shots/m10-passive-math-*.json`
+  im Worktree sind Lane-fremd (nicht gemergt, nicht mitcommittet).
+
+Finale Standes-Pruefung K4: `npm run build` gruen, `npm test` 165 Dateien /
+1764 Tests gruen, `npx tsc --noEmit` gruen.
+

@@ -13017,25 +13017,41 @@
       "id": 10114,
       "title": "m10-title-dim-lanterns K1: Vorher-Shots + Dim-Pfad-Diagnose",
       "description": "Vorher-Belege 1920x1080 + 640x360 (Zoom 4x Laterne 2+4), Messung der Glas-Texel im Flammenkern (Palette-Index), Diagnose welcher Layer (Lasur-Rechteck depth 3, Vignette depth 50) die TITLE_FLAME_SPOTS abdunkelt. AK: Mess-JSON mit Renderer-String in ~/games/.evidence/m10-title-dim-lanterns/, Vorher-Zustand dokumentiert (dunkelster Zustand belegt).",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T08:23:05Z",
           "by": "build",
           "text": "todo → doing: Vorher-Messung + Dim-Pfad-Diagnose gestartet (Lane m10-title-dim-lanterns)"
+        },
+        {
+          "at": "2026-11-28T08:35:29Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig, Commit 86cded1a: before-dim.json (Renderer RPL-S, a13=0 alle 4 Laternen) + Diagnose (Lasur 0,62 depth 3 + Vignette depth 50 ueber Flammen depth 2; L2 hinter OPTIONEN-Button). Fix-Entscheid: Loecher in beiden Dim-Layern statt depth>6."
         }
       ],
       "created": "2026-11-28T08:23:01Z",
-      "updated": "2026-11-28T08:23:05Z"
+      "updated": "2026-11-28T08:35:29Z"
     },
     {
       "id": 10115,
       "title": "m10-title-dim-lanterns K2: Dim-Ausnahme für Laternen-Flammen",
-      "description": "Title.ts-Rendering: Laternen-Flammen (Lichtquellen) über Nacht-Dim (Lasur-Rechteck) und Vignette zeichnen (Depth-Ausnahmepfad), Landschaft bleibt dunkel. NUR Title.ts; keine Layout-/Text-Änderungen. AK: npx tsc --noEmit grün, Zwischenstand committet.",
-      "column": "todo",
-      "notes": [],
+      "description": "Title.ts-Rendering: Nacht-Dim (Lasur-Rechteck nightDeep 0,62 depth 3) und Vignette (depth 50) nehmen die Laternen-Flammen über clearRect-Fenster exakt über den opaken Glas-Reihen (Patch +5, 8x6 Texel, skalenbewusst) vom Dim aus — Landschaft bleibt dunkel. Kein Depth-Trick (Flammen bleiben depth 2 unter Menü-Buttons). NUR Title.ts; keine Layout-/Text-Änderungen. AK: npx tsc --noEmit grün, Messwert Palette 13 im Glas, Zwischenstand committet.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:35:29Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: Dim-Ausnahmepfad via Fenster in Lasur + lokaler Vignette-Kopie (Title.ts)"
+        },
+        {
+          "at": "2026-11-28T08:36:28Z",
+          "by": "build",
+          "text": "K2 umgesetzt + Commit 30770547: lanternGlassHoles() (8x6 Texel ab Patch-Reihe 5) als clearRect-Fenster in title_dim_lasur (nightDeep 0,62) und title_vignette_dim (lokale Kopie). Messung after-dim.json: hellster Glas-Texel = exakt Palette 13 (255,248,230) an L1/L3/L4 in beiden Views; L2 Glas weiterhin hinter OPTIONEN (Bestand-Layout, out of scope). tsc gruen, 0 JS-Fehler."
+        }
+      ],
       "created": "2026-11-28T08:23:01Z",
-      "updated": "2026-11-28T08:23:01Z"
+      "updated": "2026-11-28T08:46:04Z"
     },
     {
       "id": 10116,
@@ -13050,10 +13066,21 @@
       "id": 10117,
       "title": "m10-title-dim-lanterns K4: Nachher-Shots + art-director + Doku",
       "description": "Nachher-Shots 1920x1080 + 640x360 je Zoom 4x Laterne 2+4; Messwert: hellster Glas-Texel = Palette 13 in jeder kleinen Laterne; JSON mit Renderer-String; art-director urteilt EINMAL (PASS >= 4/5); docs/lanes/m10-title-dim-lanterns.md aktualisiert. AK: Belege in ~/games/.evidence/m10-title-dim-lanterns/, npm run build + npm test grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:38:21Z",
+          "by": "build",
+          "text": "todo → doing: K4: Nachher-Shots vorhanden (probe.mjs after), jetzt build + art-director + Doku + lane-done"
+        },
+        {
+          "at": "2026-11-28T08:40:16Z",
+          "by": "build",
+          "text": "K4 in Arbeit: build gruen, npm test 1762/1762, title-flame-glow+palette-compliance 30/30. art-director + reviewer laufen parallel; danach Doku-Finale + lane-done."
+        }
+      ],
       "created": "2026-11-28T08:23:01Z",
-      "updated": "2026-11-28T08:23:01Z"
+      "updated": "2026-11-28T08:40:16Z"
     }
   ]
 }
