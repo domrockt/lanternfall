@@ -347,8 +347,11 @@ export class Spawner {
     return count;
   }
 
-  /** Verteilt wartende Debug-Spawns auf den aktuellen Frame (Obergrenze fix). */
-  private drainDebugQueue(): void {
+  /** Verteilt wartende Debug-Spawns auf den aktuellen Frame (Obergrenze fix).
+   *  Public seit m10-frame-tail-followup (#12288): während der Morgendämmerung
+   *  läuft update() nicht — Run.startDawn() ruft den Drain daher einmal beim
+   *  Dawn-Start, damit gequeuete Debug-Spawns nicht bis zum Run-Ende warten. */
+  drainDebugQueue(): void {
     if (this.debugQueue.length === 0) return;
     const { now, rest } = drainSpawnQueue(this.debugQueue, SPAWN_DEBUG_BATCH_PER_FRAME);
     this.debugQueue.length = 0;

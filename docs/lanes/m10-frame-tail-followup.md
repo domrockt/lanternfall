@@ -34,9 +34,37 @@ gelandet**: `queueEnemyWave` (Spawner.ts:335) queut weiterhin immer. Er ist **ni
 dieses Briefings** (K2–K4 decken exakt die 3 Reviewer-Befunde ab) und bleibt offener
 Punkt der Frame-Tail-Restarbeit — hier dokumentiert, damit der Bedarf nicht verloren geht.
 
-## K2 — Dawn-Drain
+## K2 — Dawn-Drain (#12288, Commit siehe git log)
 
-(Offen — wird in dieser Karte gefüllt.)
+**Ursache:** Während der Morgendämmerung läuft `Spawner.update()` nicht
+(Run.simulate: `this.dawn ? [] : this.spawner.update`) — gequeuete Debug-Spawns
+materialisierten nie (Reviewer-Befund 1).
+
+**Fix (zwei Hebel, Normalpfad unberührt):**
+1. `Run.startDawn()` ruft `this.spawner.drainDebugQueue()` (Methode jetzt public,
+   Spawner.ts): erste 30 materialisieren sofort beim Dawn-Start.
+2. `Run.simulate()` dränniert während `dawn` je Sim-Substep die Debug-Queue
+   (`drainDebugQueue()` statt `spawner.update()`) — der Rest materialisiert
+   verteilt mit der Batching-Obergrenze (30/Substep) statt als 300er-Burst;
+   die Wave-Logik startet weiterhin nicht.
+
+**Belege (Probe-Skript `scripts/m10-frame-tail-followup.mjs --mode=dawn`, headless,
+Seed 101, 80 gequeute bog_rat, `window.__lf.event("dawn")`; JSONs in
+`~/games/.evidence/m10-frame-tail-followup/`):**
+- `dawn-drain-probe-before.json` (Stand Merge 1c161482): `spawnCounts`-Delta
+  bog_rat = 8 (nur die 8 frischen Event-Spawns) → **0/80 materialisiert, Queue-Leak.**
+- `dawn-drain-probe-after.json` (Fix): Delta bog_rat = 88 (80 gedrännt + 8 frisch),
+  92 Gegner alive → **80/80 materialisiert.**
+- Hinweis: die Auxiliarmetrik `debugQueueLen` lieferte im Probe-Kontext `null`
+  (Feld existiert im Build, per Live-Check geprüft) und wird nicht als Kriterium
+  verwendet — das kampfunabhängige `spawnCounts`-Delta ist das Kriterium.
+- Erste Probe-Iteration maß Alive-Gegner statt spawnCounts (durch Kampftode des
+  Spielers verfälscht: 42 statt 80) — Skript auf spawnCounts umgestellt (2
+  Iterationen, dann eingefroren).
+
+**Normalpfad bitgleich:** die Änderungen liegen ausschließlich im Dawn-Pfad
+(`startDawn`, Dawn-Zweig von `simulate`); Seed-Vergleich des Normalpfads siehe
+K4 (`seed-baseline-before.json` vs. After-Run, identische Checksumme).
 
 ## K3 — Doku-Fix + reine Positions-Funktion
 

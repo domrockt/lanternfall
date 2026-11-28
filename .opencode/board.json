@@ -16909,25 +16909,36 @@
       "id": 12287,
       "title": "m10-frame-tail-followup K1: Merge-Recheck der 3 Reviewer-Befunde",
       "description": "Prüft, ob die 3 sollte-Befunde aus m10-frame-tail-batching-Review (docs/lanes/m10-frame-tail-batching.md, Abschnitt Review) über die Merges m10-frame-tail-batching + m10-spawn-burst-alloc gelandet sind. Abnahmekriterium: Ergebnis je Befund (gelandet/nicht gelandet, Beleg = Codezeile) in docs/lanes/m10-frame-tail-followup.md dokumentiert.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T13:19:12Z",
           "by": "build",
           "text": "todo → doing: K1 Merge-Recheck: Beide Merges (cc8a3590 spawn-burst-alloc, frame-tail-batching) im Worktree; Code-Lese läuft."
+        },
+        {
+          "at": "2026-11-28T13:20:06Z",
+          "by": "build",
+          "text": "doing → done: K1: Beleg Code-Lese 1c161482 — Befund 1 (Run.ts:678/1252, kein Dawn-Drain), 2 (Spawner.ts:331 'je Frame'), 3 (Duplikation Spawner.ts:310/335, kein Test) alle NICHT gelandet. Sofort-Zweig 12:52Z ebenfalls nicht gelandet, als offener Punkt dokumentiert. Commit 03856743."
         }
       ],
       "created": "2026-11-28T13:19:09Z",
-      "updated": "2026-11-28T13:19:12Z"
+      "updated": "2026-11-28T13:20:06Z"
     },
     {
       "id": 12288,
       "title": "m10-frame-tail-followup K2: Dawn-Drain — drainDebugQueue beim Morgendämmerung-Start",
       "description": "Während Morgendämmerung läuft Spawner.update() nicht (Run.ts:678), gequeuete Debug-Spawns materialisieren nie. drainDebugQueue beim startDawn() aufrufen. Abnahmekriterium: Probe belegt, dass gequeuete Debug-Spawns nach Dawn-Start materialisieren; Normalpfad unverändert (npm test grün, gleicher Seed = gleiche Spawn-Marken).",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:20:06Z",
+          "by": "build",
+          "text": "todo → doing: K2 Dawn-Drain: startDawn ruft drainDebugQueue (public), Normalpfad unberührt."
+        }
+      ],
       "created": "2026-11-28T13:19:09Z",
-      "updated": "2026-11-28T13:19:09Z"
+      "updated": "2026-11-28T13:20:06Z"
     },
     {
       "id": 12289,
