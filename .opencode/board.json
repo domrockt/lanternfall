@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7502,
+  "next": 7505,
   "cards": [
     {
       "id": 1,
@@ -9202,6 +9202,33 @@
       "notes": [],
       "created": "2026-11-28T02:08:26Z",
       "updated": "2026-11-28T02:08:26Z"
+    },
+    {
+      "id": 7502,
+      "title": "m10-audio-frost-gap K1: Paar-Distanz-Matrix vorher (66 Paare) sichern",
+      "description": "AC: scripts/m10-audio-frost-gap.mjs (Metrik = tests/audio-mix.test.ts: 10 Band-Energien, 4096-Hann-Fenster WAV-Mitte, Kosinus-Distanz) schreibt shots/m10-audio-frost-gap-matrix-before.json mit allen 66 Paardistanzen; frost/eternal_winter ≈ 0,125 reproduziert; Vorher-Tabelle in docs/lanes/m10-audio-frost-gap.md. Ein Commit.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:13:05Z",
+      "updated": "2026-11-28T02:13:05Z"
+    },
+    {
+      "id": 7503,
+      "title": "m10-audio-frost-gap K2: eternal_winter-Mixtur auseinanderziehen",
+      "description": "AC: automatisierter Suchlauf (festes Iterationslimit, pure Python, ~/tmp) über Winter-Glissando-Terz/Mixtur; Ziel frost/eternal_winter >= 0,15, alle 66 Paare >= 0,12, Stinger 0,6–1,0 s + rising, Peak <= 0,98. Fix in scripts/gen_sfx.py + neu generiertes public/sfx/sfx_winter.wav (beide unclaimed, Begruendung in requests.md + Lane-Doku); after-JSON als Beleg. Ein Commit.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:13:05Z",
+      "updated": "2026-11-28T02:13:05Z"
+    },
+    {
+      "id": 7504,
+      "title": "m10-audio-frost-gap K3: Test tests/audio-frost-gap.test.ts + Abnahme",
+      "description": "AC: neuer Test prueft frost/eternal_winter >= 0,15, alle 66 Paare >= 0,12, MAX_TOTAL_VOICES/Spam-Regeln unangetastet; vitest + npx tsc --noEmit + npm run build + volle Suite gruen; .lane-done. Kein Aenderung an AudioSystem.ts/options.ts. Ein Commit.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:13:05Z",
+      "updated": "2026-11-28T02:13:05Z"
     }
   ]
 }
