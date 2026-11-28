@@ -120,14 +120,30 @@ describe("Mixel-Bake: Effekt-Texturgroesse = Sprite-Pixelgroesse", () => {
     }
   });
 
-  it("nur Palettenfarben oder transparent (binaeres Alpha) in jeder Stufe", { timeout: 15000 }, () => {
-    const ok = (ch: string): boolean =>
-      ch === "." || (ch >= "0" && ch <= "9") || (ch >= "a" && ch <= "v");
+  /**
+   * Doku-Check (Karte #10585): frueher rief dieser Test pro Zeichen
+   * expect(ok(ch)).toBe(true) — hunderttausende vitest-Assertionen, unter
+   * Last > 5 s (Timeout). Jetzt: plain Set.has-Schleife, Verletzungen werden
+   * gesammelt und EIN expect je Lauf prueft die Liste. Gleiche Aussagekraft:
+   * jedes Zeichen wird geprueft; im Fehlerfall die ersten 20 mit Position.
+   */
+  it("nur Palettenfarben oder transparent (binaeres Alpha) in jeder Stufe", () => {
+    const palette = new Set<string>([".", ..."0123456789", ..."abcdefghijklmnopqrstuv"]);
+    const bad: string[] = [];
     for (const bake of mixelBakes()) {
-      for (const grid of bake.frames) {
-        for (const row of grid) for (const ch of row) expect(ok(ch)).toBe(true);
+      for (let f = 0; f < bake.frames.length; f++) {
+        const grid = bake.frames[f];
+        for (let y = 0; y < grid.length; y++) {
+          const row = grid[y];
+          for (let x = 0; x < row.length; x++) {
+            if (!palette.has(row[x]) && bad.length < 20) {
+              bad.push(`${bake.base}@${bake.level} frame ${f} (${x},${y})='${row[x]}'`);
+            }
+          }
+        }
       }
     }
+    expect(bad).toEqual([]);
   });
 });
 
