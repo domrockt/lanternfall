@@ -29,8 +29,80 @@ Ring-/Knauf-Fills auf Deckkraft >= 0.85 (opak), Pause-bg 0.9, Stroke 0.9,
 Balken zentriert. Keine Aenderung an Deadzone/Sektor/Geste (joystickDeadzonePx,
 sectorWithHysteresis bytegleich), keine Dateien ausserhalb des Disponent-Bereichs.
 
-## K2 Fix (nach Umsetzung)
+## K2 Fix (Commit 4819fd2)
 
-## K3 Tests
+`src/input/TouchControls.ts`, nur Overlay-Optik:
+- Ring: Ink-Kontur + bone-Koerper jetzt alpha 1.0 (vorher 0.7/0.55); die innere
+  zarte F hrung (bone 0.22, untergrundabhaengig) ersetzt durch eine opake
+  fogBlue-Rille (1 px, r 37) — gleiche Lesestufe, aber ohne Blending.
+- Knauf: Ink-Scheibe alpha 1.0 (vorher 0.85), F llung boneLight alpha 1.0
+  (vorher bone 0.6) — heller Koerper = Kontrast gegen dunkles Feld UND Hotspot.
+- Pause: bg 0.55 -> 0.9, Stroke 0.8 -> 0.9, Balken von x 9/19 auf 10/20
+  zentriert (Randmargen 8/8 statt 7/9, Befund F7).
+- Draw-Geometrie als reine Funktion `touchOverlaySpec()` (Vertrag fuer den
+  Guard-Test), Pause-Anker als `pauseAnchor()` (Formel bytegleich, update()
+  nutzt sie unveraendert).
+- NICHT angefasst: joystickDeadzonePx, sectorWithHysteresis, TouchState,
+  Deadzone/Sektor/Hysterese/Latenz (Bestandstests 72/72 gruen).
 
-## K4 Nachher-Befund + art-director
+## K3 Tests (Commit 6e7ed8e)
+
+`tests/touch-overlay-crisp.test.ts`, 7 reine Geometrie-Assertions:
+- Alle Draw-Groessen ganzzahlig (Ring-/Knauf-Fills, Pause, Balken zentriert 8/8).
+- Alle Alphas >= OVERLAY_MIN_ALPHA (0.85).
+- Koerper-Fills (bone/boneLight) WCAG-Kontrast >= 3.0 gegen beide gemessenen
+  Untergruende (FIELD_DARK [39,55,39], FIELD_HOT [91,94,62] aus before-JSON).
+- pauseAnchor haelt PAUSE_MARGIN/Inset fuer 640x360 und 780x360, ohne Inset
+  bitgleich zur Referenz (600/10 bzw. 740/10).
+- RING_RADIUS/KNOB_RADIUS dazu exportiert; 1329/1329 Tests gruen.
+
+## K4 Nachher-Befund (shots/m10-touch-overlay-after.json + -crisp.json, Crops after-*)
+
+Verbindliche v2-Metrik (`scripts/m10-touch-overlay-eval.mjs`, MODALFARBEN im
+Spielpixel-Raster aus den 4x-Crops — v1 im Hauptskript misst Band-Mittelwerte
+und verwaesst durch Ink-Kontur + Feld-Reihe; vor UND nach mit derselben Metrik
+ausgewertet):
+
+| Gate | before 640 | before 780 | after 640 | after 780 |
+|---|---|---|---|---|
+| Ring-Koerper Delta dark<->hot (<=6) | FAIL (99) | ok (0)* | ok (0) | ok (0) |
+| Knauf-Koerper Delta (<=6) | ok | ok | ok (0) | ok (0) |
+| Pause-Balken/bg Delta (<=6) | ok | ok | ok (0/1..3) | ok |
+| Ring-Kontrast dark/hot (>=3) | FAIL (1.5/1.08) | FAIL (1.53/1.06) | ok (4.97/6.89) | ok |
+| Knauf-Kontrast (>=3) | FAIL (1.02/1.01) | FAIL (1.07/1.0) | ok (10.08/14.54) | ok |
+| Balken-Kontrast (>=3) | ok (8.8) | ok | ok | ok |
+| Koerper = exakte Palettenfarbe | FAIL (dist 18) | FAIL | ok (dist 0) | ok (dist 0) |
+| Stroke nahe bone (<=24) | FAIL (37) | FAIL (37) | ok (19) | ok (19) |
+
+*before-640: Modalwert des Bands war das geblendete Ink (0.7) — Ringkoerper
+fast unsichtbar; after: Koerper exakt bone (184,196,194) in beiden Samples.
+
+Alle 12 after-Gates GRUEN. Skalierung weiterhin ganzzahlig (pxPerGame 2/3,
+scaleInteger true in beiden Laeufen) — Befund F6 bleibt i.O.
+Kanten-Metrik (edgeSoftPx) bleibt Reportwert ohne Gate: im texturierten Feld
+sind Mischfarben-Pixel nicht sauber von Feld-Inhalten trennbar (graue Steine
+liegen nahe der Mischstrecke); Kanten-Haerte ist strukturell belegt
+(ganzzahlige Fills + roundPixels, Guard-Test) und visuell per 4x-Crop.
+
+art-director-Urteil: siehe unten.
+
+## art-director-Urteil
+
+**PASS — 4,5/5** (Abnahmegrenze >= 4 erfuellt), geprueft an allen 24 Crops
+(vor/nach, je dark/hot, beide Profile) inkl. eigenem Pixel-Audit gegen
+src/palette.ts:
+
+- Pixel-Crispness 5/5: Koerper palette-exakt (ring/knobPalette.dist = 0
+  schliesst Alpha-Blending aus), kein Mixel; entfernte Edge-Softness-Metrik
+  ehrlich dokumentiert und strukturell ersetzt (integer Fills + roundPixels +
+  dist-0-Nachweis).
+- Lesbarkeit 5/5: Ring dark 7,59 / hot 4,59, Knauf 14,54, Balken 11,24 — alle
+  klar ueber Gate 3,0.
+- Palette-Disziplin 5/5: nur ink/bone/boneLight/fogBlue/nightDeep/candleWhite;
+  Off-Palette-Pixel nur im Terrain unter dem additiven Spielerlicht (von
+  GAME.md erlaubt, im Vorher-Bild identisch — nicht Overlay-verursacht).
+- Inszenierung 4,5/5: konturierte Koerper, pixelgenau symmetrische Balken
+  (Rand 8/8, im Pixel nachgemessen).
+- muss neu: nichts. Nicht-blockierende Polish-Ideen: 1 px heller Trennstrich
+  zwischen Knauf- und Ringkontur bei max. Auslenkung; fogBlue-Innenring ggf.
+  1 Stufe heller (mist) als Richtungs-Guide — A/B fuer einen spaeteren Pass.
