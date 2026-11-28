@@ -57,7 +57,7 @@ auf dem Gerät ein Build mit `fps.limit 60` aktiv (Probe `scripts/m10-fps-cap-pr
 werden, ohne selbst einen ungedrosselten Build zu committen. K3 misst deshalb gegen MEINE
 Lane-APK (`POST /install?lane=m10-mobile-fps-cap`).
 
-## K2 — Fix: Frame-Cap nur Geräteknoten + BILDRATE-Option — 28.11.
+## K2 — Fix: Frame-Cap nur Geräteknoten + BILDRATE-Option — 28.11. (Commit 700c815e)
 
 Umsetzung (Commit siehe git log, Karte #12248):
 
@@ -79,7 +79,15 @@ Umsetzung (Commit siehe git log, Karte #12248):
 - **Guard-Tests `tests/mobile-fps-cap.test.ts` (13):** pinnt Desktop-Werte (AUTO→null/MAX),
   Geräteknoten (AUTO→60), explizite Overrides beidseitig, Clamp, Menü-Zyklus, Labels,
   Node-Passivität der Probe, Persistenz-Roundtrip, applyFpsLimit-Laufzeitwechsel.
-- **Suite:** 2330 Tests grün (210 Dateien), `npx tsc --noEmit` rc=0, `npm run build` rc=0.
+- **Suite:** 2334 Tests grün (210 Dateien), `npx tsc --noEmit` rc=0, `npm run build` rc=0.
+
+**Reviewer-Runde 1 (FAIL → gefixt, Commit a04b6615):** kritischer Befund — die RAF-Schleife des
+Phaser-TimeStep bindet die Step-Funktion einmalig in `start()`/`wake()` (TimeStep.js:546/807);
+`applyFpsLimit` setzte nur Felder → Wechsel uncapped→capped ohne Wirkung („BILDRATE gilt sofort“
+beim Pfad MAX→60 ohne Reload gebrochen). Fix: `sleep()/wake()`-Rebind (Guard auf laufenden Loop,
+optionale Methoden für Test-Fakes), Latch-Test mit gestubtem `document`, `DEVICE_RENDERER` als
+benannte Konstante, main.ts-Handler nutzt den `installLifecycle`-Parameter. K3-Messung bleibt
+gültig: sie misst nur Boot-Zeit-Bindung (Konfigurationspfad), nicht den Laufzeitwechsel.
 
 **Desktop-Vorher/Nachher (unverändert, K3-Tor-Anteil):** Titel-Shots 960x540 headless,
 HEAD-Stand vs. K2-Stand — Pixel-Diff (Schwelle >8/255) **0 Pixel** außerhalb der animierten
