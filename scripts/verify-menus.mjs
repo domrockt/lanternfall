@@ -10,7 +10,21 @@
 // Tastatur-Pfade bleiben als Kontrolle (ESC, Aufgeben, "o").
 // Viewport überschreibbar: MENUS_VIEWPORT=1280x720 node scripts/verify-menus.mjs
 import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { homedir } from "node:os";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
+
+// Output-Hygiene (E-4): verify-Skripte duerfen nichts unter shots/ schreiben
+// (getrackte Abnahme-Belege). Outputs landen timestamped unter
+// ~/games/.evidence/verify-hygiene/ (untracked), Ueberschreiben ausgeschlossen.
+// Override: --out <dir> (CLI) oder LF_VERIFY_OUTPUT_DIR (Env).
+const argOut = (() => {
+  const i = process.argv.indexOf("--out");
+  return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : undefined;
+})();
+const OUT_DIR = argOut ?? process.env.LF_VERIFY_OUTPUT_DIR
+  ?? join(homedir(), "games", ".evidence", "verify-hygiene");
+const STAMP = new Date().toISOString().replace(/[:.]/g, "-");
 
 const VIEWPORT = (() => {
   const m = /^(\d+)x(\d+)$/.exec(process.env.MENUS_VIEWPORT ?? "");
@@ -18,7 +32,7 @@ const VIEWPORT = (() => {
 })();
 
 ensureBuild();
-mkdirSync("shots", { recursive: true });
+mkdirSync(OUT_DIR, { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch();
@@ -41,7 +55,7 @@ await page.addInitScript(() => {
 
 const shots = [];
 const snap = async (name) => {
-  const path = `shots/m10-verify-menus-${name}.png`;
+  const path = join(OUT_DIR, `${STAMP}-m10-verify-menus-${name}.png`);
   await page.screenshot({ path });
   shots.push(path);
 };
@@ -339,7 +353,7 @@ try {
   check("keine JS-Fehler", errors.length === 0, errors.join(" | "));
   const passed = checks.every((c) => c.ok);
   result = { ...result, passed, jsErrors: errors, checks, shots };
-  writeFileSync("shots/m10-verify-menus.json", JSON.stringify(result, null, 2));
+  writeFileSync(join(OUT_DIR, `${STAMP}-m10-verify-menus.json`), JSON.stringify(result, null, 2));
   await browser.close();
   server.stop();
   console.log(`\n${passed ? "verify-menus: PASS" : "verify-menus: FAIL"} (${checks.filter((c) => c.ok).length}/${checks.length} Checks)`);

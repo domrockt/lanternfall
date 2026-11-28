@@ -3,14 +3,28 @@
 // Gegner-Slow, Spritzer und Screenshots Gras/Wasser. Exit != 0 bei Verstoß.
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { homedir } from "node:os";
 import { checkScreenshot } from "./terrain-coverage.mjs";
+
+// Output-Hygiene (E-4): verify-Skripte duerfen nichts unter shots/ schreiben
+// (getrackte Abnahme-Belege). Outputs landen timestamped unter
+// ~/games/.evidence/verify-hygiene/ (untracked), Ueberschreiben ausgeschlossen.
+// Override: --out <dir> (CLI) oder LF_VERIFY_OUTPUT_DIR (Env).
+const argOut = (() => {
+  const i = process.argv.indexOf("--out");
+  return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : undefined;
+})();
+const OUT_DIR = argOut ?? process.env.LF_VERIFY_OUTPUT_DIR
+  ?? join(homedir(), "games", ".evidence", "verify-hygiene");
+const STAMP = new Date().toISOString().replace(/[:.]/g, "-");
 
 const RATIO_MIN = 0.55;
 const RATIO_MAX = 0.68;
 const RATIO_TARGET = 0.6;
 
 ensureBuild();
-mkdirSync("shots", { recursive: true });
+mkdirSync(OUT_DIR, { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch();
@@ -129,7 +143,7 @@ try {
   // Gras: keine Spritzer, volle Geschwindigkeit.
   await page.evaluate((p) => window.__lf.teleport(p.x, p.y), tiles.grass);
   await page.waitForTimeout(350);
-  await page.screenshot({ path: "shots/m3-water-grass.png" });
+  await page.screenshot({ path: join(OUT_DIR, `${STAMP}-m3-water-grass.png`) });
   const grassSamples = await measureRun(tiles.grass);
   const grassRun = speedFrom(grassSamples, "grass");
 
@@ -155,7 +169,7 @@ try {
       keyOf(o) === "fx_spark" && o.depth === 6 && o.alpha > 0.3
     ).length;
   });
-  await page.screenshot({ path: "shots/m3-water.png" });
+  await page.screenshot({ path: join(OUT_DIR, `${STAMP}-m3-water.png`) });
   await page.keyboard.up("KeyD");
   const waterRun = speedFrom(waterSamples, "water");
 
@@ -267,7 +281,7 @@ try {
         start: startCov,
         end: endCov,
       });
-      writeFileSync(`shots/m10-terrain-guard-${size.width}-end.png`, endShot);
+      writeFileSync(join(OUT_DIR, `${STAMP}-m10-terrain-guard-${size.width}-end.png`), endShot);
     } finally {
       await gpage.close();
     }
@@ -292,8 +306,8 @@ result.passed = Boolean(
   result.speedOk && result.splashOk && result.enemyOk &&
   result.coverageOk && result.rendererValid && errors.length === 0,
 );
-writeFileSync("shots/m3-terrain.json", JSON.stringify(result, null, 2));
-writeFileSync("shots/m10-terrain-guard.json", JSON.stringify(result, null, 2));
+writeFileSync(join(OUT_DIR, `${STAMP}-m3-terrain.json`), JSON.stringify(result, null, 2));
+writeFileSync(join(OUT_DIR, `${STAMP}-m10-terrain-guard.json`), JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result, null, 2));
 console.log(
   `verify-terrain: Gras ${result.clamp?.grassSpeed} px/s, Wasser ${result.clamp?.waterSpeed} px/s, ` +

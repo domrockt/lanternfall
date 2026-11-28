@@ -8,8 +8,14 @@ import { join } from "node:path";
 
 // Output-Hygiene (E-4): verify-Skripte duerfen nichts unter shots/ schreiben
 // (getrackte Abnahme-Belege). Outputs landen timestamped unter
-// ~/games/.evidence/verify-final/ (untracked), Ueberschreiben ausgeschlossen.
-const OUT_DIR = process.env.LF_VERIFY_OUTPUT_DIR ?? join(homedir(), "games", ".evidence", "verify-final");
+// ~/games/.evidence/verify-hygiene/ (untracked), Ueberschreiben ausgeschlossen.
+// Override: --out <dir> (CLI) oder LF_VERIFY_OUTPUT_DIR (Env).
+const argOut = (() => {
+  const i = process.argv.indexOf("--out");
+  return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : undefined;
+})();
+const OUT_DIR = argOut ?? process.env.LF_VERIFY_OUTPUT_DIR
+  ?? join(homedir(), "games", ".evidence", "verify-hygiene");
 const STAMP = new Date().toISOString().replace(/[:.]/g, "-");
 const outPath = (name) => join(OUT_DIR, `${STAMP}-${name}`);
 
