@@ -59,17 +59,59 @@ dokumentiert, JSON Pfad geteilt → überschrieben; beide Läufe konsistent).
   nicht Renderlast — janky-zähler bleibt 0, weil Frames pünktlich zum 2-Vsync-Raster ankommen).
 - Hebelkandidat für K4: TimeStep/rAF-Skip-Logik bei Cap 60 (Ergänzung 15:15Z Punkt 3).
 
-### K3: 10-min-Lauf BILDRATE=MAX — Status: offen
-Beleg-Ziel: `~/games/.evidence/m10-janky-remeasure/k3-max-device.json`.
+### K3: 10-min-Lauf BILDRATE=MAX — Status: fertig, 2026-11-28 ~16:50–17:03Z
+Beleg: `~/games/.evidence/m10-janky-remeasure/k3-max-device.json` (rc=1, passed=false — strenges Tor).
 
-### K4: Tor-Auswertung + Fix-Empfehlungen — Status: offen
-Tor (Ergänzung 15:15Z Punkt 3): janky < 10 % bei 60-Hz-Panel = K3-Tor erfüllt.
-Bei FAIL: Hebelliste direkt als `-> Job`-Zeile in `/home/ai/games/.dispatch/requests.md`
-(Fix-Job m10-fps-pacing-timestep liegt in der Queue); Rest-Ursachen
-(TimeStep/rAF-Skip-Logik) für m10-fps-cap-stackfix aufbereiten.
+| Metrik | natural (primär, 30 Fenster) | topup 300 (Referenz, 30 Fenster) |
+|---|---|---|
+| gfxinfo janky | **0 %** (0/32 114 Frames) | **0 %** (0/30 144 Frames) |
+| FPS avg / min | **50,0 / 44,0** | 47,2 / 43,3 |
+| rAF p95 max / p99 max | 33,4 / 50,0 ms | 33,4 / 33,4 ms |
+| worst frame | 50,1 ms | 50,1 ms |
+
+- Identische Rahmenbedingungen wie K2 (Adreno 710, DPR 2, Panel-Probe 60 Hz, Build `0ce7164a` mit stackfix),
+  0 Recoveries, 0 JS-Fehler, Thermal Status 0, Batterie 35,0 °C konstant, kein DOM_SPIELT.
+- **K2 vs. K3: keine Differenz** (janky 0 % vs 0 %, fpsAvg 50,1 vs 50,0, p95 33,4 vs 33,4). Der BILDRATE-Cap
+  ist bei 60-Hz-Panel wirkungslos fürs Pacing — der Engpass ist die Frame-Arbeit/Present (~1/3 der Frames
+  > 16,7 ms → 2-Vsync-Raster 33,4 ms, p50 bleibt 16,7 ms), nicht die Cap-Logik.
+
+### K4: Tor-Auswertung + Fix-Empfehlungen — Status: fertig, 2026-11-28 ~17:0xZ
+**Tor (v10, streng): gfxinfo janky < 10 % @ FPS >= 60, p95 <= 16 ms**
+
+| Kriterium | Cap 60 (K2) | MAX (K3) | Urteil |
+|---|---|---|---|
+| gfxinfo janky < 10 % | 0 % | 0 % | **ERFÜLLT** (beide) |
+| FPS >= 60 (natural avg) | 50,1 | 50,0 | **NICHT erfüllt** |
+| rAF p95 <= 16 ms | 33,4 ms | 33,4 ms | **NICHT erfüllt** |
+| Temperatur unauffällig | Thermal 0, 35→36 °C | Thermal 0, 35,0 °C | erfüllt |
+| 0 JS-Fehler / 0 Loop-Tötungen | ja | ja | erfüllt (stackfix wirkt: vorher 9 Tötungen/Lauf) |
+
+**Urteil: FAIL nach dem strengen Tor** (janky-Kriterium grün, FPS- und p95-Kriterium rot).
+Nach der 15:15Z-Lesart („janky < 10 % bei 60 Hz = Tor erfüllt") wäre der janky-Anteil grün — aber die
+Endabnahme misst dasselbe Pacing (50 FPS) und würde am FPS-Kriterium scheitern. **Empfehlung: Endabnahme-Lauf
+NICHT freigeben, erst nach dem Pacing-Fix** (Job m10-fps-pacing-timestep). Der Fix-Job bekommt die Hebelliste
+direkt als `-> Job`-Zeile in `~/.dispatch/requests.md`.
+
+**Hebelliste (File, Hebel, erwarteter Gewinn):**
+1. `src/main.ts` Game-Loop / `src/logic/fps-cap.ts` (TimeStep/rAF-Skip-Logik, Ergänzung 15:15Z Punkt 3):
+   Bei Cap 60 rendert der Loop jeden rAF; Frame-Arbeit knapp > 16,7 ms → rAF fällt aufs 2-Vsync-Raster
+   (bimodal 16,7/33,4 ms, p50 16,7, p95 33,4). Hebel: Late-Frame-Toleranz/Skip (z. B. wenn dt > 17 ms:
+   Sim-Substeps entlasten) bzw. Present-Phasen-Drift korrigieren.
+   Erwarteter Gewinn: fpsAvg 50 → 57–60, rAF-p95 33,4 → ~16,8 ms.
+2. GPU-Frame-Arbeit senken (Overdraw/ADD — Android-Praxis: ADD-Flächen sind der Mobile-GPU-Engpass):
+   Telemetrie zeigt fxActive ~100–120. Hebel in `src/data`/quality-Scheduling: Partikel-/ADD-Flächen-Cap
+   für medium-Tier weiter senken. Erwarteter Gewinn: Anteil der > 16,7-ms-Frames sinkt (weniger 2-Vsync).
+3. Beobachtung zur Einordnung (kein eigener Hebel): Das bimodale Muster (p50 16,7 / p95 33,3) zeigt sich auch
+   im Leerlauf-Telemetrie-Fenster (22–36 Gegner, fps 56–59, p95 33,33) — der Tail ist also nicht
+   Gegner-last-skaliert; Hebel 1 (Pacing/Loop) vor Hebel 2 (Last) priorisieren.
+
+Methodik-Hinweis für die Endabnahme: gfxinfo-janky ist mit 0 % in K2 UND K3 nicht mehr unterscheidend
+(Deadline-Raster vs. 2-Vsync-Pacing) — als Tor-Metrik neben janky deshalb zwingend FPS avg + rAF-p95 führen.
 
 ## Gerät
-- Redmi Pad Pro, Android 16, SM7435-AC, Adreno-Renderer (String im Beleg-JSON).
-- Thermik/Batterie bei Erstversuch 16:2xZ: Thermal Status 0, 33,0 °C — unauffällig.
-- Geräte-Sperre: Dom spielt seit ~16:2xZ; beide Mess-Läufe verschoben, dokumentiert
-  je Beleg-JSON (`aborted.reason`), **kein** Wiederholen gegen HTTP 409.
+- Redmi Pad Pro, Android 16, SM7435-AC, Adreno (TM) 710, DPR 2, 1280x800, Panel per APK auf 60 Hz gezwungen
+  (Panel-Probe rAF-Median 16,7 ms in beiden Belegen).
+- Thermik/Batterie über beide Läufe unauffällig (Thermal Status 0, 35,0–36,0 °C).
+- Geräte-Sperre: Dom spielte ~16:2x–16:3xZ; K1-Smoke-Start 1 abgebrochen (smoke.json, aborted-Grund), kein Retry.
+  K2 startete 16:36Z nach Freigabe (status.dom_playing=false), K3 16:50Z — beide ohne 409.
+
