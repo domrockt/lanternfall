@@ -53,13 +53,53 @@ Begründung: ohne die 3 Zeilen ist das Kartenziel (sichtbare Vielfalt,
 art-director ≥ 4/5) technisch unerreichbar; der Patch ist additiv, nur-lesend
 bezüglich Spiellogik und ohne FPS-Effekt (gleiche Sprite-Anzahl, gleiche Layer).
 
-## Karte 2 — Generator + Varianten
+## Karte 2 — Generator + Varianten (K2, Commit b899587 + Follow-up)
 
-*(folgt)*
+`scripts/art/gen_props.py` erzeugt jetzt 21 Sprites — 6 neue Varianten:
 
-## Karte 3 — Guard-Test
+| Klasse | Basis | Neu | Grösse | Charakter |
+|---|---|---|---|---|
+| Steine | `prop_boulder` | `prop_boulder_b`, `prop_boulder_c` | 26x20 | flacher Mooblock / spitzer Splitterfels |
+| Knochen | `prop_bones` | `prop_bones_b`, `prop_bones_c` | 23x14 | Wirbelsäule mit Schädel / Gebein-Haufen |
+| Büsche (Schilf) | `prop_reeds` | `prop_reeds_b` | 18x24 | 5 krumme Halme, trockener Halm, dichtes Herz |
+| Laternen-Reste | `prop_post` | `prop_post_b` | 20x32 | abgebrochen, Glas erloschen, Scherben |
 
-*(folgt)*
+Alle palettentreu (32er-Palette, binäres Alpha), gleiche Grösse wie die Basis,
+`_finish()`-Vertrag (Kontur + gebackener Bodenschatten) identisch. Tuning gemäss
+Abbruchkriterium: 1 Iteration an `bones_b` (Schädel/Wirbelkante lesbar gemacht),
+dann eingefroren.
+
+**Verdrahtung — OFFENER PUNKT (Supervisor-Entscheid 2026-11-28):**
+
+Neue Varianten sind ohne Änderung an `GroundRenderer.addProp` im Spiel
+*sichtbar ungenutzt* (Platzierung setzt feste Textur-Keys). Der zwischenzeitlich
+getestete 3-Zeilen-Patch in `addProp` (Commit b899587, jetzt revertiert) war:
+
+```ts
+// nach dem PROP_KEYS-Guard in addProp():
+const variantKey = propVariantKeyFor(key, tileHash(Math.round(wx), Math.round(wy), this.seed + 463));
+const texKey = this.scene.textures.exists(variantKey) ? variantKey : key;
+// add.image(wx, wy, texKey), propLayerFor(texKey), Glow-Bedingung texKey === "prop_post"
+```
+
+Wirkprobe mit Patch (Messlauf, Beleg im Commit b899587): alle 6 Varianten im
+Spiel sichtbar; `prop_boulder`-Split 46/55/54 statt 124; häufigstes Prop fiel
+von 22,6 %/23,7 % (`prop_boulder`) auf 15,2 %/15,3 % (`prop_stump`, unveränderte
+Klasse). Kein Einfluss auf Platzierungszahl, LOD-Tiers oder Schatten.
+
+**Offen für Lead/Merge:** Patch oben (3 Zeilen + 1 Import) als Folgekarte in
+`GroundRenderer.ts` einbringen. `propVariantKeyFor` liegt fertig in
+`gen-props.ts` (pure, getestet); `propLayers.ts`/`textures.ts` bleiben unangetastet
+(PROP_KEYS/PROP_TIERS unverändert — tests/ground-props-batch und
+prop-density-lod bleiben grün).
+
+## Karte 3 — Guard-Test (K3)
+
+`tests/props-variety.test.ts` (6 Tests): Variantenzahl je Zielklasse ≥ Ziel
+(4–6 gesamt), Grössen-/Klassenvertrag, 0 Off-Palette-Pixel + binäres Alpha +
+Kontur, Varianten ≠ Basis-Kopie, deterministische Gleichverteilung von
+`propVariantKeyFor` (keine tote Variante). Alle grün; prop-density-lod-Test
+unverändert grün.
 
 ## Karte 4 — After-Belege + art-director
 

@@ -10492,25 +10492,36 @@
       "id": 8439,
       "title": "m10-props-variety K2: Generator + 4-6 neue Prop-Varianten",
       "description": "scripts/art/gen_props.py: Varianten fuer boulder (Steine), bones (Knochen), reeds (Busch/Schilf), post (Lanternen-Reste), je palettentreu, gleiche Groesse/Klasse wie Basis. Regeneration von src/gfx/gen-props.ts + purem Varianten-Wahlhelper. Minimaler Wiring-Patch in GroundRenderer.addProp (3 Zeilen, Fremd-Datei, Begruendung in requests.md + Lane-Doku). AK: tsc gruen, Palette-Tests gruen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T04:51:42Z",
           "by": "build",
           "text": "todo → doing: m10-props-variety: K2 startet — Varianten in gen_props.py (boulder x2, bones x2, reeds, post), palettentreu, Basis-Groessen."
+        },
+        {
+          "at": "2026-11-28T04:58:56Z",
+          "by": "build",
+          "text": "doing → review: m10-props-variety: 6 Varianten generiert (palettentreu, Basis-Groessen), propVariantKeyFor (pure) + 3-Zeilen-Hook in GroundRenderer.addProp (Begruendung in requests.md + Lane-Doku). Verdrahtung belegt: boulder 124 -> 46/55/54, alle Varianten im Spiel sichtbar. tsc + 4 Testdateien gruen. Commit b899587."
         }
       ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T04:51:42Z"
+      "updated": "2026-11-28T04:58:56Z"
     },
     {
       "id": 8440,
       "title": "m10-props-variety K3: Guard-Test tests/props-variety.test.ts",
       "description": "Variantenzahl je Ziel-Klasse >= Ziel, 0 Off-Palette-Pixel, Dimensionen identisch zur Basisklasse, deterministische Variantenwahl; prop-density-lod-Test bleibt unveraendert gruen. AK: npx vitest run tests/props-variety.test.ts gruon, npm test gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T04:59:07Z",
+          "by": "build",
+          "text": "todo → doing: m10-props-variety: K3 startet — Guard-Test tests/props-variety.test.ts (Zielklassen-Variantenzahl, Palette, Groessen, deterministische Wahl)."
+        }
+      ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T04:47:51Z"
+      "updated": "2026-11-28T04:59:07Z"
     },
     {
       "id": 8441,
