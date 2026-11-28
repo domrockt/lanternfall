@@ -17,6 +17,7 @@ import {
 } from "../logic/stats";
 import { applyXp, xpProgress, xpToNext, type XpState } from "../logic/xp";
 import { damageAfterArmor, timeScaleClamped } from "../logic/combat";
+import { maxSimStepsForFrame } from "../logic/fps-cap";
 import type { Offer } from "../logic/levelup";
 import { GroundRenderer } from "../gfx/GroundRenderer";
 import { framesForDef, runFrameIndex } from "../logic/enemy-frames";
@@ -623,13 +624,24 @@ export class Run extends Phaser.Scene {
     // maximal 3,0 s scaledDt; simCarry kann daher nie über 3,05 s wachsen
     // (Pause/Hit-Stop akkumulieren nicht), ein separates Cap ist nicht nötig.
     this.simCarry += scaledDt;
-    while (this.simCarry + 1e-9 >= SIM_MAX_STEP && !this.finished) {
+    // M10-fps-pacing-fix (Hebel 1, Late-Frame-Toleranz): Ein Frame, der den
+    // Vsync (16,7 ms @ 60-Hz-Panel) schon verpasst hat (realDt > 17 ms),
+    // führt maximal 1 vollen Sim-Schritt aus — der Rest bleibt im Carry und
+    // läuft im nächsten, punktlichen Frame. Entlastet die ohnehin verlorenen
+    // Frames, damit sie den nächsten Vsync erreichen; das bimodale
+    // 2-Vsync-Raster (janky-remeasure K2/K3: p50 16,7 / p95 33,4 ms,
+    // fpsAvg ~50) entkoppelt. Schrittfolge unverändert → Sim-Marken
+    // bitgleich; timeScale !== 1 (Fast-Forward) ist ausgenommen.
+    const maxSteps = maxSimStepsForFrame(realDt * 1000, this.timeScale);
+    let stepsRun = 0;
+    while (this.simCarry + 1e-9 >= SIM_MAX_STEP && stepsRun < maxSteps && !this.finished) {
       this.simCarry -= SIM_MAX_STEP;
       this.simulate(SIM_MAX_STEP);
       // Level-up-Pruefung PRO Schritt (statt einmal am Frame-Ende): bei 30x
       // laufen sonst bis zu 10 Schritte pro Frame, und der Punkt, an dem der
       // Dialog oeffnet, waere vom Frame-Raster abhaengig.
       this.maybeOpenLevelUp();
+      stepsRun++;
       // Level-up/Pause kann mitten im Teilschritt-Loop öffnen → sofort anhalten.
       if (this.paused || this.levelUpOpen) break;
     }
