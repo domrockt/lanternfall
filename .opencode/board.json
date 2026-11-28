@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7145,
+  "next": 7218,
   "cards": [
     {
       "id": 1,
@@ -8417,6 +8417,51 @@
       ],
       "created": "2026-11-28T00:48:40Z",
       "updated": "2026-11-28T00:48:44Z"
+    },
+    {
+      "id": 7145,
+      "title": "m10-icon-contrast #1: Ist-Messung Icon-Körperkontrast (12 Icons, HUD+Panel)",
+      "description": "scripts/m10-icon-contrast.mjs misst WCAG-Körperkontrast (Median-Luminanz ohne 1px-ink-Kontur) aller 6 Passive- + 6 Waffen-Icons gegen HUD #090c10 und Panel #101724 → shots/m10-icon-contrast-before.json. Ergebnis: 0 Icons < 3:1.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T00:53:38Z",
+      "updated": "2026-11-28T00:53:38Z"
+    },
+    {
+      "id": 7146,
+      "title": "m10-icon-contrast #2: Kontrast-Fix der betroffenen Icons",
+      "description": "Messung (#7098) zeigte 0 Icons < 3:1 — der F3-Fix (boots/tome/heart/charm) ist bereits via Merge 942af93 der Vor-Lane in gen-icons. Fix als dokumentierter No-Op committet.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T00:53:38Z",
+      "updated": "2026-11-28T00:53:38Z"
+    },
+    {
+      "id": 7147,
+      "title": "m10-icon-contrast #3: Regressionstests Icon-Kontrast",
+      "description": "tests/icon-contrast.test.ts: Kontrast ≥ 3:1 für alle 12 Icons auf HUD- und Panel-Hintergrund, 0 Off-Palette-Pixel, binäres Alpha. Abnahme: npx vitest run tests/icon-contrast.test.ts grün.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T00:53:38Z",
+      "updated": "2026-11-28T00:53:38Z"
+    },
+    {
+      "id": 7148,
+      "title": "m10-icon-contrast #4: Nachher-Messung + Doku + art-director",
+      "description": "shots/m10-icon-contrast-after-*.png + JSON, docs/lanes/m10-icon-contrast.md mit Vorher/Nachher-Zahlen; art-director-Sichtprüfung (Kontrast-Abnahme erfüllt, Icon-Design-Debt als Backlog abgelegt).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T00:53:38Z",
+      "updated": "2026-11-28T00:53:38Z"
+    },
+    {
+      "id": 7149,
+      "title": "Icon-Design-Debt: heart/charm/boots nach art-director-Muss-Liste neu zeichnen",
+      "description": "Aus Lane m10-icon-contrast (art-director FAIL 3,5/5, Kontrast ok): passive_heart (3) — glatte Kurvenkante statt Zeilen-Alternation; passive_charm und passive_boots analog zur Muss-Liste überarbeiten. Kontrast bleibt ≥ 3:1, Off-Palette 0.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T00:53:38Z",
+      "updated": "2026-11-28T00:53:38Z"
     }
   ]
 }
