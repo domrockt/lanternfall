@@ -18450,19 +18450,22 @@
       "id": 13166,
       "title": "m10-g-heap-sync K2: verify-input-Zahl im G-Abschnitt abgleichen",
       "description": "Pruefen, ob der G-Abschnitt einen verify-input-Wert fuehrt. Ist-Stand postwave-smoke-r2 K2: 29/29 (docs/lanes/m10-postwave-smoke-r2.md, Belege ~/games/.evidence/m10-postwave-smoke-r2/). Falls G-Abschnitt einen Wert fuehrt: auf 29/29 ergaenzen/korrigieren; 28/28 in aelteren Abschnitten bleibt historisch. Abnahme: fundiert dokumentiert in docs/lanes/m10-g-heap-sync.md.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-g-heap-sync",
       "notes": [
-        "K2 angenommen (doing); Befund: G-Abschnitt fuehrt keinen verify-input-Wert -> dokumentierter No-op, Lane-Doku"
+        "K2 angenommen (doing); Befund: G-Abschnitt fuehrt keinen verify-input-Wert -> dokumentierter No-op, Lane-Doku",
+        "K2 erledigt: Commit d17ddd98, No-op fundiert dokumentiert (G-Abschnitt fuehrt keinen verify-input-Wert)"
       ]
     },
     {
       "id": 13167,
       "title": "m10-g-heap-sync K3: Selbstpruefung + Commit + lane-done",
       "description": "git diff nur G-Abschnitt + Lane-Doku, npx tsc --noEmit rc=0, ein Commit pro Karte, .lane-done mit 5-10 Zeilen Zusammenfassung. Abnahme: keine anderen ACCEPTANCE-Abschnitte veraendert, kein Tag/Push.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-g-heap-sync",
-      "notes": []
+      "notes": [
+        "K3 angenommen (doing): diff + tsc rc=0 geprueft, lane-done folgt im Commit"
+      ]
     }
   ]
 }

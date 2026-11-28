@@ -1,0 +1,14 @@
+Lane m10-g-heap-sync (2026-11-28) — ACCEPTANCE.md G-Abschnitt um verbindliche Heap-Tor-Zahlen ergänzt.
+
+- K1 (#13165, Commit c55e15d9): Nachtrag-Absatz (5 Zeilen) unterhalb der K3-Tabelle im G-Abschnitt:
+  Heap-Tor auf HEAD nach hazard-tex-cap (heap-gate-recovery, 16:05Z): 2/2 Läufe HARD −25,2 %
+  (endMB 48,5 MB vs. Minute-1 64,8 MB), Renderer Mesa Intel RPL-S (kein SwiftShader).
+- K2 (#13166, Commit d17ddd98): G-Abschnitt führt keinen verify-input-Wert (nur verify:final 7/7);
+  28/28 steht historisch im Nachtrag 2026-11-26 und bleibt. Ist-Stand 29/29 belegt durch
+  docs/lanes/m10-postwave-smoke-r2.md (K2) — dokumentiert, keine ACCEPTANCE-Änderung nötig.
+- K3 (#13167): git diff gegen 0ce7164a zeigt ausschließlich ACCEPTANCE.md G-Abschnitt (+6 Zeilen),
+  Lane-Doku und Board; npx tsc --noEmit rc=0. Keine Tabellenzeilen umgeschrieben, B–F unangetastet,
+  kein Tag/Push.
+- Belege: ~/games/.evidence/m10-heap-gate-recovery/ (k1-run1.json @ de677a92, k1-run2-retry.json
+  @ 705a6f97; beide hardPass=true, endDeltaPct −25,2, endMB 48,5, minute1MB 64,8, RPL-S).
+- Lane-Doku: docs/lanes/m10-g-heap-sync.md.

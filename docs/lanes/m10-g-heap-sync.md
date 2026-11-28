@@ -41,6 +41,8 @@ in K2** (Bedingung des Briefings nicht erfüllt).
 
 ## K3 (#13167) — Selbstprüfung
 
-- `git diff` gegen Ausgangs-HEAD: nur ACCEPTANCE.md G-Abschnitt (+6 Zeilen) + Lane-Doku/`.lane-done`.
-- `npx tsc --noEmit` → rc=0 (Doku-only-Änderung, zur Sicherheit).
-- Eine Karte = ein Commit; kein Tag, kein Push.
+- `git diff 0ce7164a..HEAD`: ACCEPTANCE.md G-Abschnitt (+6 Zeilen), Lane-Doku, Board — sonst nichts;
+  bestätigt: keine Tabellenzeilen umgeschrieben, keine Abschnitte B–F verändert.
+- `npx tsc --noEmit` → **rc=0** (Doku-only-Änderung, zur Sicherheit).
+- `git status --ignored`: keine Lane-Reste im Worktree.
+- Commits: K1 `c55e15d9` (#13165), K2 `d17ddd98` (#13166), K3 dieser Commit (#13167). Kein Tag, kein Push.
