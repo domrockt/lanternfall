@@ -139,7 +139,9 @@ describe("M10-death-fx-frames: Todes-Frame-Guards", () => {
       for (const ch of row) {
         if (ch === ".") continue;
         const idx = charIndex(ch);
-        expect(idx === 1 || idx === 12 || idx === 13 || idx === 30 || idx === 31).toBe(true);
+        // m10-chaos-fix-raster-glow: Kern/Übergang jetzt lantern(21)/amber(20)
+        // statt lanternWhite(13)/candleWhite(12) — kein Near-White-Ende (B2).
+        expect(idx === 1 || idx === 20 || idx === 21 || idx === 30 || idx === 31).toBe(true);
       }
     }
     // 3) Maskenvergleich: Blob (9x9, nearest auf 32x32 skaliert) vs. Boss —

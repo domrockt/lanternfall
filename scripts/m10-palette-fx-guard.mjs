@@ -60,16 +60,21 @@ function collectRepresentative(genFx, pal) {
 
   // Boss-FX + Todes-Frames: exportierte Frame-Sets (Rows direkt).
   const deaths = genFx.deathFrameSets();
+  const seen = new Set();
   for (const [key, def] of Object.entries(deaths)) {
+    seen.add(key);
     sets.push({
       key, file: "src/gfx/gen-fx.ts deathFrameSets",
       w: def.w, h: def.h, frames: def.frames, framesFull: true,
     });
   }
 
-  // Mixel-Basen Level-1 (Quelle der normalen Texturen).
+  // Mixel-Basen Level-1 (Quelle der normalen Texturen). Seit
+  // m10-chaos-fix-raster-glow sind fx_death_* auch Mixel-Basen — die
+  // Death-Sets haben Vorrang, hier deduplizieren (wie der Test-Spiegel).
   const level1 = genFx.mixelLevel1Frames();
   for (const [base, def] of Object.entries(level1)) {
+    if (seen.has(base)) continue;
     sets.push({
       key: base, file: "src/gfx/gen-fx.ts mixelLevel1Frames",
       w: def.w, h: def.h, frames: def.frames, framesFull: true,
