@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5639/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-fx-mixel-timeout-flake-check-960.png",
+  "gif": null,
+  "jsErrors": []
+}
