@@ -1,0 +1,33 @@
+{
+  "tag": "after",
+  "viewport": "640x360",
+  "dpr": 1,
+  "seed": 13,
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)"
+  },
+  "waterSpot": {
+    "x": 1916,
+    "y": 2156,
+    "score": 192
+  },
+  "shoreSpot": {
+    "x": 1988,
+    "y": 2156
+  },
+  "shoreScreen": {
+    "cx": 248,
+    "cy": 180
+  },
+  "frames": 18,
+  "frameMs": 140,
+  "frameDiff": {
+    "frameSize": "640x360",
+    "pairs": 17,
+    "changedPxAvg": 2553,
+    "changedPxMax": 3283,
+    "changedPercent": 1.11
+  },
+  "errors": []
+}

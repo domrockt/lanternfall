@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
-import { paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
+import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
 import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
@@ -50,11 +50,20 @@ interface Ripple {
   y: number;
 }
 
+/** Dauer einer Animationsstufe des Tile-Pfads (3 Stufen = 1,68-s-Zyklus). */
+const WATER_ANIM_MS = 560;
+
 interface ChunkEntry {
   image: Phaser.GameObjects.Image;
   key: string;
   props: Phaser.GameObjects.Image[];
   ripples: Ripple[];
+  /** Animationsstufen in der Chunk-Textur (1 = Land, WATER_ANIM_STEPS = Wasser). */
+  frames: number;
+  /** Weltverankerter Phasen-Offset (0..2), damit Chunks nicht taktgleich pulsieren. */
+  phase: number;
+  /** Zuletzt angezeigte Stufe (setFrame nur bei Wechsel). */
+  animStep: number;
 }
 
 /** Debug-Zaehler (nur aktiv, wenn ein Messskript sie einschaltet). */
@@ -85,7 +94,7 @@ interface ReadyChunk {
   cx: number;
   cy: number;
   key: string;
-  bitmap: ImageBitmap;
+  bitmaps: ImageBitmap[];
 }
 
 interface Firefly {
@@ -205,16 +214,16 @@ export class GroundRenderer {
     try {
       if (typeof Worker !== "undefined" && typeof OffscreenCanvas !== "undefined") {
         const worker = new Worker(new URL("./terrainWorker.ts", import.meta.url), { type: "module" });
-        worker.onmessage = (event: MessageEvent<{ cx: number; cy: number; bitmap: ImageBitmap | null }>) => {
-          const { cx, cy, bitmap } = event.data;
+        worker.onmessage = (event: MessageEvent<{ cx: number; cy: number; bitmaps: ImageBitmap[] | null }>) => {
+          const { cx, cy, bitmaps } = event.data;
           const key = `${cx},${cy}`;
           this.inflight.delete(key);
           if (this.counters) this.counters.workerReceived++;
-          if (!bitmap) {
+          if (!bitmaps) {
             this.useSyncFallback();
             return;
           }
-          this.ready.push({ cx, cy, key, bitmap });
+          this.ready.push({ cx, cy, key, bitmaps });
         };
         worker.onerror = () => this.useSyncFallback();
         this.worker = worker;
@@ -229,7 +238,9 @@ export class GroundRenderer {
   private useSyncFallback(): void {
     this.worker?.terminate();
     this.worker = null;
-    while (this.ready.length > 0) this.ready.pop()?.bitmap.close();
+    while (this.ready.length > 0) {
+      for (const b of this.ready.pop()!.bitmaps) b.close();
+    }
     this.requested.clear();
     this.inflight.clear();
     this.queue.length = 0;
@@ -304,6 +315,18 @@ export class GroundRenderer {
       applyTexture(r.img, frame === 0 ? "water_ripple_0" : "water_ripple_1");
       if (this.counters) this.counters.rippleTextureSets++;
       r.img.x = r.x + frame;
+    }
+    // Animationsstufen des Tile-Pfads: Wasser-Chunks schalten pro Stufe ihr
+    // Frame weiter (Wellen-Drift, Schaum-Puls, Glisser). setFrame nur beim
+    // Wechsel; Textur bleibt dieselbe (ein Batch, kein Rebind).
+    const animBase = Math.floor(timeMs / WATER_ANIM_MS);
+    for (const entry of this.chunks.values()) {
+      if (entry.frames <= 1) continue;
+      const step = (animBase + entry.phase) % entry.frames;
+      if (step !== entry.animStep) {
+        entry.animStep = step;
+        entry.image.setFrame(`f${step}`);
+      }
     }
     if (this.counters) {
       const c = this.counters;
@@ -562,6 +585,8 @@ export class GroundRenderer {
       const job = this.queue.shift()!;
       this.inflight.set(job.key, Date.now());
       if (this.counters) this.counters.workerPosted++;
+      // Der Worker entscheidet selbst (areaHasWater dort kostenfrei), ob er
+      // alle Animationsstufen malt — kein Main-Thread-Sampling im Dispatch.
       this.worker.postMessage({ cx: job.cx, cy: job.cy, seed: this.seed });
     }
   }
@@ -577,24 +602,44 @@ export class GroundRenderer {
     const job = this.ready.shift()!;
     if (this.counters) this.counters.readyInstalled++;
     const textureKey = `chunk_${job.key.replace(",", "_")}`;
-    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE);
-    if (!texture) {
-      job.bitmap.close();
-      this.requested.delete(job.key);
-      return;
+    if (this.buildChunkTexture(textureKey, job.bitmaps, job.cx, job.cy)) {
+      this.buildChunk(job.cx, job.cy, job.key, textureKey);
     }
-    const ctx = texture.getContext();
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(job.bitmap, 0, 0);
-    job.bitmap.close();
-    texture.refresh();
-    this.buildChunk(job.cx, job.cy, job.key, textureKey);
     this.requested.delete(job.key);
   }
 
+  /**
+   * Chunk-Textur mit allen Animationsstufen: ein Canvas der Hoehe
+   * CHUNK_SIZE * frames, Stufe f liegt bei y = f * CHUNK_SIZE (Frames f0..).
+   * Ein drawImage je Stufe, dann schaltet setFrame ohne Texturwechsel um.
+   */
+  private buildChunkTexture(textureKey: string, bitmaps: ImageBitmap[], cx: number, cy: number): boolean {
+    const frames = Math.max(1, bitmaps.length);
+    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+    if (!texture) {
+      for (const b of bitmaps) b.close();
+      return false;
+    }
+    const ctx = texture.getContext();
+    ctx.imageSmoothingEnabled = false;
+    for (let f = 0; f < frames; f++) {
+      const b = bitmaps[f];
+      if (b) ctx.drawImage(b, 0, f * CHUNK_SIZE);
+      b?.close();
+    }
+    texture.refresh();
+    for (let f = 0; f < frames; f++) {
+      if (!texture.has(`f${f}`)) texture.add(`f${f}`, 0, 0, f * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE);
+    }
+    return true;
+  }
+
+  /** Sync-Fallback (kein Worker): alle Stufen direkt auf dem Main-Thread malen. */
   private createChunk(cx: number, cy: number, key: string): void {
     const textureKey = `chunk_${key.replace(",", "_")}`;
-    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE);
+    const frames = areaHasWater(cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE)
+      ? WATER_ANIM_STEPS : 1;
+    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
     if (!texture) {
       // Kein Canvas (Speicher/GPU-Limit): Chunk erneut anfragbar machen statt
       // ihn dauerhaft als "requested" zu blockieren (Loch ohne Retry).
@@ -603,8 +648,16 @@ export class GroundRenderer {
     }
     const ctx = texture.getContext();
     ctx.imageSmoothingEnabled = false;
-    paintTerrain(ctx, cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE);
+    for (let f = 0; f < frames; f++) {
+      ctx.save();
+      ctx.translate(0, f * CHUNK_SIZE);
+      paintTerrain(ctx, cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE, f, f * CHUNK_SIZE);
+      ctx.restore();
+    }
     texture.refresh();
+    for (let f = 0; f < frames; f++) {
+      if (!texture.has(`f${f}`)) texture.add(`f${f}`, 0, 0, f * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE);
+    }
     this.buildChunk(cx, cy, key, textureKey);
     this.requested.delete(key);
   }
@@ -621,12 +674,19 @@ export class GroundRenderer {
     const image = this.scene.add.image(cx * CHUNK_SIZE, cy * CHUNK_SIZE, textureKey)
       .setOrigin(0, 0)
       .setDepth(-100);
+    const texture = this.scene.textures.get(textureKey);
+    const frames = texture ? texture.frameTotal - 1 : 1;
+    if (frames > 1) image.setFrame("f0");
 
     const props: Phaser.GameObjects.Image[] = [];
     const ripples: Ripple[] = [];
     this.placeProps(cx, cy, props);
     this.placeWaterDetails(cx, cy, props, ripples);
-    this.chunks.set(key, { image, key: textureKey, props, ripples });
+    this.chunks.set(key, {
+      image, key: textureKey, props, ripples, frames,
+      phase: Math.floor(tileHash(cx, cy, this.seed + 541) * WATER_ANIM_STEPS),
+      animStep: frames > 1 ? 0 : -1,
+    });
   }
 
   private kindsAround(wx: number, wy: number, radius: number): boolean {
@@ -781,7 +841,9 @@ export class GroundRenderer {
   destroy(): void {
     this.worker?.terminate();
     this.worker = null;
-    while (this.ready.length > 0) this.ready.pop()?.bitmap.close();
+    while (this.ready.length > 0) {
+      for (const b of this.ready.pop()!.bitmaps) b.close();
+    }
     this.requested.clear();
     this.inflight.clear();
     this.queue.length = 0;
