@@ -1,0 +1,27 @@
+Lane m10-acceptance-tor-sync — ACCEPTANCE.md v1.0-Gerätetore auf verbindlichen Stand (2026-11-28)
+
+NUR-DOKU-Lane, abgeschlossen. 4 Karten (#13726–#13729), je ein Commit:
+- K1 dcd0390f — Bestand aufgenommen: Befundtabelle in docs/lanes/m10-acceptance-tor-sync.md;
+  heap-gate-recovery-G-Zahlen (HARD −25,2 %, 48,5 vs. 64,8 MB) bereits in ACCEPTANCE (Nachtrag G)
+  und gegen ~/games/.evidence/m10-heap-gate-recovery/k1-run{1,2-retry}.json verifiziert.
+- K2 a9dd66d8 — 120-Hz-A/B-Nachtrag (Quelle: Wünsche von Dom.md 17:45Z, Pfad bestätigt):
+  60 Hz 60,0 FPS / rAF p95 16,8 ms / janky 0 %; 120 Hz 118,5 FPS / 8,4 ms / 11,8 %;
+  Dom-Freigabe „Tablet-Tor bestanden", Standard 60-Hz-Panel + 60-FPS-Cap, Folgepunkt
+  „Bildrate: max" hebt den 60-Hz-Panel-Wunsch auf (nicht v1.0-blockierend).
+- K3 1268189d — Tor-Priorität dokumentiert: nach merge-m10-v10-gate-torprio sind
+  FPS avg ≥ 57 + rAF-p95 ≤ 16 ms Tor 1/2, gfxinfo-janky ≥ 10 % nur Warnung
+  (--janky-as-gate = Rückweg); Gate-Rerun-Urteil main 11f929c7: FAIL ausschließlich
+  js-errors-0 (13× Texture key chunk_*), fullrun-inhalt nur Folgetor; frame-p95
+  2,0/1,9 ms PASS, heap-retained +8,8 % PASS. Verweise auf m10-janky-remeasure.md,
+  m10-v10-gate-torprio.md, m10-v10-gate-rerun.md (m10-v10-gate.md existiert nicht —
+  Abweichung vom Briefing in der Lane-Doku notiert).
+- K4 f3ec2ec4 — Querverweise auf Roh-Belege (~/games/.evidence/m10-janky-remeasure/,
+  m10-v10-gate-rerun/, m10-v10-gate-torprio/, m10-v10-gate-guard/, m10-heap-gate-recovery/);
+  Zahlen nur aus Belegen übernommen.
+
+Abnahme: npm test 2568/2568 in 237 Dateien, 0 fail; npx tsc --noEmit rc=0;
+git diff 2200f528..HEAD -- ACCEPTANCE.md/docs/lanes: rein additiv (0 gelöschte Zeilen),
+keine historischen Werte überschrieben, kein Code/Skript angefasst.
+Reviewer: PASS (Scope, Zahlenstimmen gegen Primärquellen, Secrets-Scan).
+Supervisor-Punkte übernommen: fremde Karte #13283 zurück nach todo; 17:45Z-Tabelle gelesen.
+Kein Push, kein Merge. Keine offenen Punkte aus dieser Lane.
