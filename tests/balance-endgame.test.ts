@@ -123,26 +123,6 @@ describe("M10 Endgame-Balance: Minuten-Mischung 25–30", () => {
     }
   });
 
-  it("Minute 18–24 ist gedaempft (SPAWN_DAMP_18_24-Rampe, Anker SPAWN_DAMP_BASE_RATE)", () => {
-    for (let minute = SPAWN_DAMP_18_24_START_MINUTE; minute < LATE_GAME_MINUTE; minute++) {
-      const wave = waveForMinute(minute);
-      const base = 0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04;
-      // Rampen-Dämpfungsgrad nach Doku in src/data/waves.ts: 0 bei Minute 18,
-      // linear auf SPAWN_DAMP_18_24 über SPAWN_DAMP_18_24_RAMP_S (voll ab Minute 22).
-      const progress = Math.min(1, ((minute - SPAWN_DAMP_18_24_START_MINUTE) * 60) / SPAWN_DAMP_18_24_RAMP_S);
-      const damp = SPAWN_DAMP_18_24 * progress;
-      // Im Fenster wird der Anteil `damp` des Zuwachses seit Minute 18 entfernt.
-      const expected = base - damp * (base - SPAWN_DAMP_BASE_RATE);
-      expect(wave.spawnRate, `Minute ${minute}`).toBeCloseTo(expected, 10);
-    }
-    // Grenzfall Minute 17 -> 18: Dämpfung startet exakt bei Minute 18 mit Grad 0 —
-    // der Übergang ist sprungfrei, Minute 17 bleibt bitgleich zur alten Kurve.
-    expect(waveForMinute(17).spawnRate).toBeCloseTo(0.38 + 17 * 0.06 + ((17 % 5) / 5) * 0.04, 10);
-    expect(waveForMinute(18).spawnRate).toBeCloseTo(SPAWN_DAMP_BASE_RATE, 10);
-    // Volle Dämpfung ab Minute 22: Rate deutlich unter der alten Basis.
-    expect(waveForMinute(22).spawnRate).toBeLessThan(0.38 + 22 * 0.06 + ((22 % 5) / 5) * 0.04);
-  });
-
   it("Minute 25–29 nutzt LATE_GAME_MIX ohne Mengen-Vervielfacher (splitter/summoner)", () => {
     for (let minute = LATE_GAME_MINUTE; minute <= 29; minute++) {
       const wave = waveForMinute(minute);

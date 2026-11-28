@@ -42,8 +42,36 @@ friert genau die alten Raten ein. Fix NUR in der Testdatei.
     Grenzfall Minute 17->18 sprungfrei (Dämpfungsgrad 0 exakt bei Minute 18), volle Dämpfung ab 22.
   - `npx tsc --noEmit` rot AUSSCHLIESSLICH wegen der 4 fehlenden Exports aus `src/data/waves.ts`
     (TS2305 ×4) — der Test-Edit selbst ist vollständig.
-- **Nach dem Merge** (Versuch 3 oder manuelles Nachziehen): Lane-Branch mit main aktualisieren
-  (`git merge main`, nur Richtung main -> Lane-Branch), dann `npx vitest run tests/balance-endgame.test.ts`,
-  `npm test` + `npx tsc --noEmit`, Beleg nach `~/games/.evidence/m10-balance-damp-test/`,
-  Doku abschließen, `.lane-done`. Keine weiteren Code-Änderungen erwartet.
 - Karte #8956 im Board `blocked` mit Grund; #8957/#8958 folgen demselben Dependency-Block.
+
+## Versuch 3 (2026-11-28): Lane redundant — Bedarf von der Dependency-Lane selbst bedient
+
+**Befund:** Die Dependency-Lane `m10-balance-spawn-damp` hat den Test-Fix bereits SELBST
+auf ihrem Branch (Commit `808e3f3`, „K1 WIP“): `tests/balance-endgame.test.ts` dort enthält
+
+- Import von `SPAWN_DAMP_18_24` aus `src/data/waves.ts`,
+- Test umbenannt: „Minute 0–17 bleibt unveraendert, 18–24 spawn-gedaempft (SPAWN_DAMP_18_24)“,
+- Fenster 0–17 bitgleich (alte Rate), Dämpfungs-Expectation für Minute 18–LATE_GAME_MINUTE:
+  `base - damp*(base - base18)` mit `damp = SPAWN_DAMP_18_24 * min(1, (minute-18)*60/240)`
+  — Minute 18 → Grad 0 (sprungfrei), volle Dämpfung ab Minute 22.
+
+Das ist inhaltlich deckungsgleich mit unseren K1/K2-Edits (`92d2bf4`, `249f7de`), zielt auf
+dieselben Hunks derselben Datei und war im Briefing noch nicht sichtbar (der requests.md-Bedarf
+wurde von der Lane selbst übernommen, nicht offen gelassen).
+
+**Konsequenz:** Unsere Test-Edits wären bei Merge von `m10-balance-spawn-damp` in main ein
+sicherer Konflikt, und dieser Branch kann standalone nie grün werden (die 4 Exports fehlen,
+bis jene Lane gemergt ist). Versuch 1+2 warteten vergeblich auf den Merge (Supervisor-
+Abbruchkriterium), Versuch 3 bricht den Loop ab (Regel „gleicher Fehlversuch 3x = Stopp“).
+
+**Maßnahme (Versuch 3):**
+- Eigene Edits an `tests/balance-endgame.test.ts` zurückgenommen — Datei ist wieder
+  bitgleich mit main (`git diff main -- tests/balance-endgame.test.ts` = leer).
+  Keine Code-Änderung dieser Lane bleibt im Diff; `src/data/waves.ts` wurde zu keiner Zeit
+  angefasst (Disponent-Claim eingehalten).
+- Verifikation auf dem zurückgenommenen Stand: `npx tsc --noEmit` rc=0,
+  `npx vitest run tests/balance-endgame.test.ts` 9/9 grün.
+  Beleg: `~/games/.evidence/m10-balance-damp-test/m10-balance-damp-test-versuch3.json`.
+- Ergebnis der Lane-Ziele (Fenster 0–17 + Dämpfungs-Expectation Minute 18–24 aus importierten
+  Konstanten, Grenzfall 17→18 sprungfrei) ist durch `808e3f3` in `m10-balance-spawn-damp`
+  erreicht und kommt mit deren Merge in main. Karten #8956–#8958 damit geschlossen.
