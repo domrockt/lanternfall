@@ -1,0 +1,24 @@
+Lane m10-pickup-moment — Aufnahme-Moment für das Powerup-Einsammeln (Dom 21:45Z + A10).
+
+Ergebnis: Powerup-Erwerb (Level-up-Wahl UND Truhe, erkannt per levelSys.passives-Diff in
+PickupSystem.update — keine Änderung an Run.ts/UI.ts/FxSystem/gen-fx) spielt jetzt einen
+0,4-s-Aufnahme-Moment: icon_passive_<id> 16x16 @ Scale 1 über dem Spielerkopf, 1-px-Rim in
+Powerup-Akzentfarbe mit 1-px-Ink-Gegenkontur, Aufblitz in Akzent (tome: paleMist), 1-px-Ring
+8→16 mit Mindest-Alpha, 1-px-Aufstieg, max 3 parallel. Gem-/XP-Pfad unberührt.
+
+Karten: K1 #7505 Ist-Beleg (077bf81) · K2 #7506 Fix + after-Belege (daed82f) ·
+K3 #7507 14 Tests (408d2a4) · K4 #7508 art-director-Korrekturen + Sichtungs-Belege + Doku.
+
+Messwerte: momentTriggered 0→1 (before/after-JSON), triggered 6/6 in der Sichtung,
+xpLoss = 0 (spawned − granted − total) in allen Läufen, Draw-Cap aktiv, 0 JS-Fehler.
+Tests: 111 Dateien / 1201 Tests grün, tsc grün, npm run build grün.
+Abnahme: art-director Runde 1 FAIL 3,5/5 (Kamouflage boots/tome/whetstone, Rim-Timing,
+Ring-Alpha) → Korrekturen umgesetzt → Runde 2 PASS 4,5/5.
+
+Belege: shots/m10-pickup-moment-before|after.{json,png,-4x.png}, -sheet.png,
+-moment-<id>.gif (6, Slow-Mo 0,12x, 12 Frames, 4x nearest), -shots.json;
+Doku: docs/lanes/m10-pickup-moment.md.
+
+Offen (Folgekarten, hier nicht angefasst): generischer Level-up-Pillar läuft parallel zum
+Moment (Run.ts, fremd geclaimed); boots-Icon-Silhouette (Bestandsasset); Crop-Diff-Metrik
+im Messskript ist Chaos-drift-dominiert (dokumentiert, Sichtungs-Belege tragen die Abnahme).
