@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12034,
+  "next": 12113,
   "cards": [
     {
       "id": 1,
@@ -16523,6 +16523,48 @@
       ],
       "created": "2026-11-28T12:29:16Z",
       "updated": "2026-11-28T12:30:13Z"
+    },
+    {
+      "id": 12109,
+      "title": "m10-boss-dur-determinism K1: Repro — gleicher Seed, 2 Laeufe, Boss-Dauern vergleichen",
+      "description": "Bedarfsmeldung m10-balance-corridor-guard (Ergaenzung 2026-11-28T12:35Z): gleiche Seeds liefern je Lauf VERSCHIEDENE Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full). Skript scripts/m10-boss-dur-det.mjs: je Seed 2 identische Laeufe (autoPlay, timeScale 30), Boss-Dauern je Boss (Spawn->Defeat-Events sim-exakt) vergleichen. Abnahme: Vorher-JSON belegt Abweichung (oder belegt deterministischen Ist-Stand).",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T12:46:39Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-boss-dur-determinism uebernommen; K1 Repro-Skript in Arbeit."
+        }
+      ],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T12:46:39Z"
+    },
+    {
+      "id": 12110,
+      "title": "m10-boss-dur-determinism K2: Ursache in BossSystem.ts/bosses.ts benennen",
+      "description": "RNG-Quelle und dt- vs. Frame-Semantik im Boss-Pfad pruefen (Verdacht: ungesaete RNG oder frame-count-abhaengiges Timing, Muster m10-spawn-budget-dt/m10-shot-budget-dt). Liegt die Ursache nachweislich ausserhalb der area (z. B. Spawner/Run.ts): Befund + Datei/Hebel als Bedarfsmeldung in requests.md, Lane mit dem in-area deterministischen Teil abschliessen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T12:46:33Z"
+    },
+    {
+      "id": 12111,
+      "title": "m10-boss-dur-determinism K3: Fix — deterministische Boss-Dauern",
+      "description": "Deterministischer Boss-Pfad (gesaete RNG/DT-Akkumulator statt Frame-Count), Verhalten bei vollem 60-FPS-Lauf unveraendert. Abnahme: npx tsc --noEmit gruen, Verhalten-Aequivalenz begruendet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T12:46:33Z"
+    },
+    {
+      "id": 12112,
+      "title": "m10-boss-dur-determinism K4: Test + Nachher-Beleg + Lane-Doku + .lane-done",
+      "description": "tests/boss-dur-determinism.test.ts: gleicher Seed -> bitgleiche Boss-Dauern (mind. 3 Seeds). npm test gruen, Nachher-JSON (3 Seeds x 2 Laeufe, 0 Abweichung) nach ~/games/.evidence/m10-boss-dur-determinism/, docs/lanes/m10-boss-dur-determinism.md, .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:46:33Z",
+      "updated": "2026-11-28T12:46:33Z"
     }
   ]
 }
