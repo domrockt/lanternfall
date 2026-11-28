@@ -13,6 +13,10 @@ import {
   signatureTextureKey,
 } from "../src/gfx/gen-fx";
 
+// mixelBakes() rendert bei JEDEM Aufruf alle Stufen (bis 160x160x4) — einmal
+// hoisten, sonst Timeout im Full-Suite-Parallellauf (Review K1).
+const BAKES = mixelBakes();
+
 /**
  * M10-fx-bakes-evo-r2 (K2): thunder_seal bleibt beim 32x32-Signatur-Pfad
  * (Revert 34e97d3, Karte #8876), wird aber in spawnEvolution mit Draw-Scale
@@ -59,7 +63,7 @@ describe("M10-fx-bakes-evo-r2: Mixel-Bakes fuer fx_evo_*_thunder_seal", () => {
       ["fx_evo_death_thunder_seal", 5],
     ] as const) {
       for (let level = 2; level <= maxLevel; level++) {
-        const bake = mixelBakes().find((b) => b.base === base && b.level === level);
+        const bake = BAKES.find((b) => b.base === base && b.level === level);
         expect(bake, `Bake ${base}@${level} fehlt`).toBeDefined();
         expect(bake!.w).toBe(32 * level);
         expect(bake!.h).toBe(32 * level);
@@ -92,7 +96,7 @@ describe("M10-fx-bakes-evo-r2: Mixel-Bakes fuer fx_evo_*_thunder_seal", () => {
       };
       const c1 = count(l1.frames[0]);
       const l1Colors = Object.keys(c1).sort();
-      for (const bake of mixelBakes().filter((b) => b.base === base)) {
+      for (const bake of BAKES.filter((b) => b.base === base)) {
         const L = bake.level;
         for (let fi = 0; fi < bake.frames.length; fi++) {
           const cb = count(bake.frames[fi]);
@@ -138,8 +142,8 @@ describe("M10-fx-bakes-evo-r2 K3: Mixel-Bake fx_boss_core (Entscheidung: Bake)",
   // schrumpfen wuerde (Optik-Verschlechterung). Run.ts bleibt unangetastet —
   // FxSystem.spawn waehlt die Stufe (bewusst NACH dem Area-Cap, siehe dort).
 
-  it("fx_boss_core ist Mixel-Basis mit Bake bis Level 4 (ceil 3,6)", () => {
-    expect(mixelMaxLevel("fx_boss_core")).toBe(4);
+  it("fx_boss_core ist Mixel-Basis mit Bake bis Level 5 (ceil max rim 4,531)", () => {
+    expect(mixelMaxLevel("fx_boss_core")).toBe(5);
     expect(mixelBaseFor("fx_boss_core")).toBe("fx_boss_core");
     expect(mixelBaseFor("fx_boss_core_2")).toBe("fx_boss_core");
     expect(mixelFrameKey("fx_boss_core_2", 4)).toBe("fx_boss_core@4_2");
@@ -150,8 +154,11 @@ describe("M10-fx-bakes-evo-r2 K3: Mixel-Bake fx_boss_core (Entscheidung: Bake)",
     expect(isBossFxKey("fx_shock@4")).toBe(false);
   });
 
-  it("Draw-Scale-Coverage: Auftritt 0,6-2,4, Tod 1,6-3,6, rim 1,2-1,25 — immer Scale/Level <= 1", () => {
-    const ranges: Array<[number, number]> = [[0.6, 2.4], [1.6, 3.6], [1.2, 1.25]];
+  it("Draw-Scale-Coverage: Auftritt 0,6-2,4, Tod 1,6-3,6, rim = scaleFrom*rimScale — immer Scale/Level <= 1", () => {
+    // rim = scaleFrom * rimScale (CombatSystem.ts:1212): crumble 2,88*1,2=3,456,
+    // burst 3,84*1,18=4,531, sputter 3,52*1,2=4,224 (death.ts); heute nur
+    // crumble erreichbar (alle Bosse tank), Bake bis 5 deckt alle Klassen.
+    const ranges: Array<[number, number]> = [[0.6, 2.4], [1.6, 3.6], [3.456, 4.531]];
     for (const [lo, hi] of ranges) {
       for (const scale of [lo, hi]) {
         const level = mixelLevelFor("fx_boss_core", scale);
@@ -160,9 +167,9 @@ describe("M10-fx-bakes-evo-r2 K3: Mixel-Bake fx_boss_core (Entscheidung: Bake)",
     }
   });
 
-  it("Bake-Stufen 2-4 existieren in Zielgroesse 32*L mit 6 Frames", () => {
-    for (let level = 2; level <= 4; level++) {
-      const bake = mixelBakes().find((b) => b.base === "fx_boss_core" && b.level === level);
+  it("Bake-Stufen 2-5 existieren in Zielgroesse 32*L mit 6 Frames", () => {
+    for (let level = 2; level <= 5; level++) {
+      const bake = BAKES.find((b) => b.base === "fx_boss_core" && b.level === level);
       expect(bake, `Bake fx_boss_core@${level} fehlt`).toBeDefined();
       expect(bake!.w).toBe(32 * level);
       expect(bake!.frames.length).toBe(6);
@@ -183,7 +190,7 @@ describe("M10-fx-bakes-evo-r2 K3: Mixel-Bake fx_boss_core (Entscheidung: Bake)",
     const l1 = mixelLevel1Frames()["fx_boss_core"];
     const ink1 = count(l1.frames[0], "0");
     expect(ink1).toBeGreaterThan(0);
-    for (const bake of mixelBakes().filter((b) => b.base === "fx_boss_core")) {
+    for (const bake of BAKES.filter((b) => b.base === "fx_boss_core")) {
       const L = bake.level;
       const inkL = count(bake.frames[0], "0");
       // Kontur ~ L dick × ~L lang: Flaeche ~L^2 (Toleranz fuer Rundung/Dilatation).

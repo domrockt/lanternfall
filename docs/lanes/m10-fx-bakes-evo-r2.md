@@ -141,5 +141,17 @@ als feine Creme-Kante bestätigt. Kontrolleur-Beleg: `npx vitest run tests/evo-f
 | Run.ts-Änderungen | keine (FxSystem wählt Stufe automatisch) |
 | Suite/Build | 171 Dateien / 1857 Tests grün, build rc=0, Guard < 3 s |
 
+**Review (Kontrolleur reviewer, Runde 1: FAIL → fixes → grün):**
+- K1 (kritisch): Full-Suite-Timeout `tests/fx-mixel.test.ts` unter Host-Last — `mixelBakes()`
+  rendert bei JEDEM Aufruf alle Stufen (bis 160²×4 Frames). Fix: einmaliges Hoisten
+  (`const BAKES = mixelBakes()`) in fx-mixel/evo-fx-bakes-Tests.
+- S1: Boss-Rim ist real `scaleFrom × rimScale` bis 4,531 (burst) — nur zufällig gedeckt, weil
+  heute alle Bosse Archetyp tank→crumble (3,456) sind. Fix: fx_boss_core-Bake auf **maxLevel 5**,
+  Manifest-Quelle dokumentiert das Produkt mit Fundstellen (CombatSystem.ts:1212, death.ts,
+  BossSystem.ts:154); Coverage-Test pinnt jetzt [3,456, 4,531].
+- N3: Taper-Slopes (0,55/0,6) als bewusst nicht skaliert kommentiert (normalisierte Rampe).
+- Test-Schärfe: `distinctColors` im fx-mixel-Rampen-Test jetzt frame-weit (Zentralreihe schnitt
+  bei @5 quantisierte Zackenstellen; Farbzählung über alle Stufen: 10/10 Farben mit ~L²-Ratios).
+
 **Offene Punkte:** keine aus dieser Lane. Der thunder_seal-Zielgrößen-Pfad (128er-Upgrade,
 Revert 34e97d3) bleibt bei Karte #8876 — der Bake macht ihn optional, nicht dringend.

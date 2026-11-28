@@ -709,6 +709,7 @@ function bossCoreFrame(stage: number, density = 1): string[] {
     const py = c + Math.sin(a) * dist;
     const len = (2.4 + (i % 2)) * L;
     for (let k = -len; k <= len; k += 0.5) {
+      // Taper-Slope 0.6 bewusst NICHT x L (normalisierte Rampe, Review N3).
       const w = Math.max(0, 1.3 * L - Math.abs(k) * 0.6);
       for (let s = -w; s <= w; s += 0.5) {
         const x = px + Math.cos(a) * k - Math.sin(a) * s;
@@ -1068,6 +1069,9 @@ export function signatureFrame(
       const cy = c + Math.sin(a) * rr;
       // Laenglicher Diamant entlang der Radialachse, mit hellem Kern.
       for (let k = -len; k <= len; k++) {
+        // Taper-Slope 0.55 bewusst NICHT x L: w = L*(2.6 - 0.55*|k/L|) — die
+        // Rampe ist normalisiert identisch (Review N3, scheinbarer Widerspruch
+        // zur "alle absoluten Masse x L"-Regel).
         const w = Math.max(0, 2.6 * L - Math.abs(k) * 0.55);
         for (let s = -w; s <= w; s += 1) {
           const px = cx + Math.cos(a) * k - Math.sin(a) * s;
@@ -1278,10 +1282,12 @@ const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
   },
   {
     // M10-fx-bakes-evo-r2 K3: Boss-Auftritt/-Tod (Run.ts spawnAnim bis Scale
-    // 3,6, death.ts rimScale 1,2-1,25) aus 32x32-Quelle → Bake bis Level 4
-    // (ceil 3,6), Draw-Scale/Level <= 1. Identische Geometrie (bossCoreFrame
-    // mit density), Optik-Kernschaerfe ist hier kritisch (#5219-Kontur).
-    base: "fx_boss_core", w: 32, h: 32, frameCount: 6, maxLevel: 4,
+    // 3,6, death.ts rim: scaleFrom * rimScale bis 4,531 = burst 3,84*1,18)
+    // aus 32x32-Quelle → Bake bis Level 5 (Review S1: Deckung aller Death-
+    // Klassen, nicht nur tank->crumble 3,456), Draw-Scale/Level <= 1.
+    // Identische Geometrie (bossCoreFrame mit density), Optik-Kernschaerfe ist
+    // hier kritisch (#5219-Kontur).
+    base: "fx_boss_core", w: 32, h: 32, frameCount: 6, maxLevel: 5,
     frame: (i, d) => bossCoreFrame(i, d),
   },
 ];

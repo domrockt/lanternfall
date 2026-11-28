@@ -41,7 +41,7 @@ const SCALE_MANIFEST = [
   // thunder_seal: noch 32x32-Quelle, spawnEvolution-Fallback Hit 3,2->3,6 / Death 4,0->4,6.
   { key: "fx_evo_hit_thunder_seal", maxScale: 3.6, source: "src/systems/FxSystem.ts spawnEvolution: Hit 3,2 -> 3,6 (ohne drawScale)" },
   { key: "fx_evo_death_thunder_seal", maxScale: 4.6, source: "src/systems/FxSystem.ts spawnEvolution: Death 4,0 -> 4,6 (ohne drawScale)" },
-  { key: "fx_boss_core", maxScale: 3.6, source: "src/scenes/Run.ts spawnAnim 1,6 -> 3,6; src/logic/death.ts rimScale 1,2-1,25" },
+  { key: "fx_boss_core", maxScale: 3.6, source: "src/scenes/Run.ts spawnAnim (Boss-Tod 1,6 -> 3,6, Auftritt bis 2,4); rim = scaleFrom * rimScale (src/systems/CombatSystem.ts:1212) bis 4,531 (burst 3,84*1,18, src/logic/death.ts) — heute erreichbar nur tank->crumble 3,456 (alle Bosse tank, BossSystem.ts:154); Bake bis 5 deckt alle Klassen" },
   { key: "fx_halo", maxScale: 4.6, source: "src/gfx/gen-fx.ts MIXEL_BAKE_DEFS-Kommentar: fx_halo bis 4,6 (Boss-Tod)" },
   { key: "fx_shock", maxScale: 3.3, source: "src/gfx/gen-fx.ts MIXEL_BAKE_DEFS-Kommentar: shock bis 3,3" },
   { key: "fx_fire", maxScale: 1.9, source: "src/gfx/gen-fx.ts MIXEL_BAKE_DEFS-Kommentar: fire < 2 + Reserve" },

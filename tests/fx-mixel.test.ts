@@ -95,10 +95,13 @@ const CALLER_SCALES: Record<string, number[]> = {
 };
 
 const LEVEL1 = mixelLevel1Frames();
+// M10-fx-bakes-evo-r2 K2/K3: mixelBakes() rendert bei JEDEM Aufruf alle Stufen
+// (bis 160x160x4 Frames) — einmal hoisten, sonst Timeout im Full-Suite-Parallellauf.
+const BAKES = mixelBakes();
 
 describe("Mixel-Bake: Effekt-Texturgroesse = Sprite-Pixelgroesse", () => {
   it("jede Stufe L rendert w0*L x h0*L (Frame-Zeilen passend)", () => {
-    for (const bake of mixelBakes()) {
+    for (const bake of BAKES) {
       const l1 = LEVEL1[bake.base];
       expect(bake.w).toBe(l1.w * bake.level);
       expect(bake.h).toBe(l1.h * bake.level);
@@ -128,9 +131,11 @@ describe("Mixel-Bake: Effekt-Texturgroesse = Sprite-Pixelgroesse", () => {
    * jedes Zeichen wird geprueft; im Fehlerfall die ersten 20 mit Position.
    */
   it("nur Palettenfarben oder transparent (binaeres Alpha) in jeder Stufe", () => {
+    // Rebase-merge (m10-fx-bakes-evo-r2): Set.has-Schleife + Positionsinfo (main,
+    // #10585) ueber BAKES-Hoist + 10-s-Timeout (Lane, K4) — beide Timeout-Fixes.
     const palette = new Set<string>([".", ..."0123456789", ..."abcdefghijklmnopqrstuv"]);
     const bad: string[] = [];
-    for (const bake of mixelBakes()) {
+    for (const bake of BAKES) {
       for (let f = 0; f < bake.frames.length; f++) {
         const grid = bake.frames[f];
         for (let y = 0; y < grid.length; y++) {
@@ -144,7 +149,7 @@ describe("Mixel-Bake: Effekt-Texturgroesse = Sprite-Pixelgroesse", () => {
       }
     }
     expect(bad).toEqual([]);
-  });
+  }, 10000);
 });
 
 describe("Level-Auswahl: Draw-Scale <= 1", () => {
@@ -312,19 +317,22 @@ describe("Glow-Abstufungen: 1-px-Stufen statt Bloecke", () => {
     return best;
   }
 
-  /** Anzahl verschiedener Ramp-Farben auf dem Zentralstrahl. */
+  /** Anzahl verschiedener Ramp-Farben im GESAMTEN Frame. (Bisher: nur
+   *  Zentralstrahl — bei fx_boss_core@5 schneidet die eine Reihe den Zacken-
+   *  Ring an quantisierten Stellen, obwohl alle Farben im Frame erhalten sind,
+   *  siehe Farbzählung Review-Fix M10-fx-bakes-evo-r2.) */
   function distinctColors(frame: string[], w: number, h: number): number {
-    const cy = h >> 1;
     const set = new Set<string>();
-    for (let x = 0; x < w; x++) {
-      const ch = frame[cy][x];
-      if (ch !== "." && ch !== "d" && ch !== "c") set.add(ch);
+    for (const row of frame) {
+      for (const ch of row) {
+        if (ch !== "." && ch !== "d" && ch !== "c") set.add(ch);
+      }
     }
     return set.size;
   }
 
   it("jede Stufe loest die Glow-Rampe in L-fach mehr Texturpixel auf als Level 1", () => {
-    for (const bake of mixelBakes()) {
+    for (const bake of BAKES) {
       const fi = bake.base === "fx_shock" ? 2 : 0;
       const l1 = LEVEL1[bake.base];
       const runL = rampRun(bake.frames[fi], bake.w, bake.h);
@@ -342,7 +350,7 @@ describe("Glow-Abstufungen: 1-px-Stufen statt Bloecke", () => {
   });
 
   it("fx_halo Stufe 5 (Boss-Tod, Scale 4,6): Rampe mit 1-px-Stufen am Draw", () => {
-    const bake = mixelBakes().find((b) => b.base === "fx_halo" && b.level === 5)!;
+    const bake = BAKES.find((b) => b.base === "fx_halo" && b.level === 5)!;
     const run1 = rampRun(LEVEL1.fx_halo.frames[0], 24, 24);
     const run5 = rampRun(bake.frames[0], bake.w, bake.h);
     // Gezeichnet mit Scale 4,6/5 = 0,92: ein Textur-Pixel <= 1 Spielpixel, der
