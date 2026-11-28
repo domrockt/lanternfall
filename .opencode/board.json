@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12527,
+  "next": 12551,
   "cards": [
     {
       "id": 1,
@@ -17484,6 +17484,48 @@
       "notes": [],
       "created": "2026-11-28T13:08:23Z",
       "updated": "2026-11-28T13:08:23Z"
+    },
+    {
+      "id": 12547,
+      "title": "m10-heap-gate-recovery K1: Remessung Heap-Tor auf aktuellem main",
+      "description": "fullrun 30 min 960×540 via scripts/m10-heap-budget.mjs (nur ausführen, nicht ändern) auf HEAD nach hazard-tex-cap-Merge. 2 Läufe, unter flock /home/ai/games/.lf-perf.lock. Abnahme: JSON-Belege in ~/games/.evidence/m10-heap-gate-recovery/. Tor: retained endMB vs Minute1 ≤ +15 %.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:55:35Z",
+          "by": "build",
+          "text": "todo → doing: Remessung auf HEAD 445a930d (hazard-tex-cap gemergt). Messung läuft unter flock."
+        }
+      ],
+      "created": "2026-11-28T13:55:33Z",
+      "updated": "2026-11-28T13:55:35Z"
+    },
+    {
+      "id": 12548,
+      "title": "m10-heap-gate-recovery K2: Entscheidung Tor",
+      "description": "Tor ≤ +15 % in 2 Läufen → Lane mit Doku-Abschluss beenden (.lane-done, Befund: hazard-tex-cap trägt das Tor). Weiter FAIL → K3-K4.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:55:33Z",
+      "updated": "2026-11-28T13:55:33Z"
+    },
+    {
+      "id": 12549,
+      "title": "m10-heap-gate-recovery K3: Heap-Retention-Fix in Pool/EnemyPool",
+      "description": "Nur falls K2 FAIL: Heap-Sawtooth-Profil aus K1-JSON lesen, Wachstumsquelle gegen belegte Mechanismen (trim() 0 Aufrufstellen, Pool-Retention, EnemyPool-AiState-Recycle) abgleichen. Hebel nur in src/systems/Pool.ts / src/systems/EnemyPool.ts.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:55:33Z",
+      "updated": "2026-11-28T13:55:33Z"
+    },
+    {
+      "id": 12550,
+      "title": "m10-heap-gate-recovery K4: Nachher-Messung + Guard-Test",
+      "description": "Nur falls K3: Remessung 2 × fullrun 960×540 → ≤ +15 %. Regressionstest tests/heap-gate-recovery.test.ts (deterministisch, ohne Phaser). Befund in docs/lanes/m10-heap-gate-recovery.md; ACCEPTANCE.md fremd-claimed — Vermerk in requests.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:55:33Z",
+      "updated": "2026-11-28T13:55:33Z"
     }
   ]
 }
