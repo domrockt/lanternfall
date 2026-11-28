@@ -107,8 +107,11 @@ describe("menu-art-crisp: deterministische Keys", () => {
     expect(Object.keys(GEN_UI).sort()).toEqual(["title_logo", "ui_frame"]);
   });
 
-  it("GEN_TITLE: genau title_background", () => {
-    expect(Object.keys(GEN_TITLE).sort()).toEqual(["title_background"]);
+  it("GEN_TITLE: genau title_background + Flammen-Overlay (m10-title-flame-crisp)", () => {
+    expect(Object.keys(GEN_TITLE).sort()).toEqual([
+      "title_background",
+      "title_flame_f0", "title_flame_f1", "title_flame_f2",
+    ]);
   });
 
   it("Icons sind 16x16 mit genau einem Frame", () => {

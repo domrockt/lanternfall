@@ -1,5 +1,5 @@
 // AUTO-GENERIERT von scripts/art — nicht von Hand editieren.
-// Titelbild 480x270 (Moor-Horizont, Mondlaterne)
+// Titelbild 480x270 (Moor-Horizont, Mondlaterne) + Laternen-Flammen-Overlay
 
 export interface GenSprite { w: number; h: number; frames: string[][] }
 
@@ -278,4 +278,55 @@ export const GEN_TITLE: Record<string, GenSprite> = {
       "ssssssssssssssssssssssssssssssttttttttttttttttttuuuuuuuuttttttttttttttttttttttttttttttttttttttttttttttssssssssssssssssssssstttttttttttttttttttttsssssssssssssssssssssstttttttttttuuuuuuuuuttttttttttttsssssttttttttttttttttttttttttttttttttttttsssssssssssttttttttttuuuuuuuttttttuuuutttttttttttttuuuuuuuuuuuuuuutttttttttttttttttsssssssssssssssssssssstttttttttttttttttuuuuuuutttttttttttttttttttttttttttttttttttttttttttttttttttttttttuutttttttttttssssssssssssssssssssssssssssssssssssssssss",
     ],
   ] },
+  title_flame_f0: { w: 8, h: 11, frames: [
+    [
+      "........",
+      "........",
+      "........",
+      "........",
+      "........",
+      "kkkkkkkk",
+      "kllllllk",
+      "klmdmllk",
+      "klmmmllk",
+      "kllllllk",
+      "kkkkkkkk",
+    ],
+  ] },
+  title_flame_f1: { w: 8, h: 11, frames: [
+    [
+      "........",
+      "....m...",
+      "........",
+      "........",
+      "........",
+      "kkkkkkkk",
+      "kllmlllk",
+      "kldmmllk",
+      "klmmlllk",
+      "klmllllk",
+      "kkkkkkkk",
+    ],
+  ] },
+  title_flame_f2: { w: 8, h: 11, frames: [
+    [
+      "...m....",
+      ".....l..",
+      "........",
+      "........",
+      "........",
+      "kkkkkkkk",
+      "klllmllk",
+      "kllmdmlk",
+      "klllmmlk",
+      "kllllmlk",
+      "kkkkkkkk",
+    ],
+  ] },
 };
+
+/** Flammen-Patch-Anker (Texel-Koordinaten im 480x270-Kernbild), Patch 8x11. */
+export const TITLE_FLAME_SPOTS: ReadonlyArray<{ x: number; y: number }> = [
+  { x: 19, y: 194 }, { x: 211, y: 198 }, { x: 297, y: 194 }, { x: 389, y: 197 },
+];
+
