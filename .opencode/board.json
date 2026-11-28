@@ -16128,37 +16128,61 @@
       "id": 11892,
       "title": "m10-vfx-restore-st2-r2 K1: Vorher-Messung Near-White + Draw-Calls (Skript scripts/m10-vfx-st2.mjs)",
       "description": "lane #11348, Merge c549d060. Vorher-Messung im Freeze-Frame (M25-Szenario, 640x360@1 + 780x360@3): Near-White-Anteil A7 (<= 4,16 % Tor, Werkzeug aus scripts/m10-ember-readability.mjs) + Draw-Calls/Frame vs. Baseline aus shots/m10-vfx-restore-baseline.json (<= +10 %). Ergebnis nach ~/games/.evidence/m10-vfx-restore-st2-r2/ + JSON committet. Abnahme: Mess-JSON mit beiden Profilen existiert, Werte dokumentiert in docs/lanes/m10-vfx-restore-st2-r2.md.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:06:51Z",
+          "by": "build",
+          "text": "review → done: lane #11348, Merge c549d060 (m10-vfx-restore-st2-r2, Rebase auf main 65adcdca; Kontroll-Shots 960/1280 o.k., build + 2237 Tests gruen)"
+        }
+      ],
       "created": "2026-11-28T12:04:59Z",
-      "updated": "2026-11-28T12:04:59Z"
+      "updated": "2026-11-28T12:06:51Z"
     },
     {
       "id": 11893,
       "title": "m10-vfx-restore-st2-r2 K2: Fix fxAlphaForDpr dpr>=3: 0,6 -> 0,7 (gen-fx.ts/FxSystem.ts-Pfad)",
       "description": "lane #11349, Merge c549d060. src/gfx/gen-fx.ts fxAlphaForDpr: dpr > 2 von 0,6 auf 0,7 (Alpha-Pfad in FxSystem.ts bleibt verdrahtet, keine weiteren Aenderungen noetig falls dort nichts angepasst werden muss). ADD-Glow-Caps (glowCapFor, tests/fx-add-cap.test.ts) bleiben unberuehrt und gruen. Abnahme: npx tsc --noEmit gruenn, tests/fx-add-cap.test.ts + tests/fx-overdraw.test.ts + tests/boss-fx-contrast.test.ts gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:06:51Z",
+          "by": "build",
+          "text": "todo → done: lane #11349, Merge c549d060 (m10-vfx-restore-st2-r2, Rebase auf main 65adcdca; Kontroll-Shots 960/1280 o.k., build + 2237 Tests gruen)"
+        }
+      ],
       "created": "2026-11-28T12:04:59Z",
-      "updated": "2026-11-28T12:04:59Z"
+      "updated": "2026-11-28T12:06:51Z"
     },
     {
       "id": 11894,
       "title": "m10-vfx-restore-st2-r2 K3: Tests tests/vfx-restore-st2.test.ts (Alpha-Boden, dpr-Schwellen, Near-White-Invariante)",
       "description": "lane #11350, Merge c549d060. Neue Tests: fxAlphaForDpr-Schwellen (dpr 1 -> 1, dpr 2 -> 1, dpr 3 -> 0,7, dpr > 2 -> 0,7), Alpha-Boden >= 0,7 im dpr>=3-Pfad, Near-White-Invariante gegen gemessene Vorher/Nachher-JSONs. tests/fx-overdraw.test.ts + tests/boss-fx-contrast.test.ts bleiben gruen. Abnahme: npx vitest run tests/vfx-restore-st2.test.ts + beide Regression-Tests gruen, tsc --noEmit gruen.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:06:51Z",
+          "by": "build",
+          "text": "doing → done: lane #11350, Merge c549d060 (m10-vfx-restore-st2-r2, Rebase auf main 65adcdca; Kontroll-Shots 960/1280 o.k., build + 2237 Tests gruen)"
+        }
+      ],
       "created": "2026-11-28T12:04:59Z",
-      "updated": "2026-11-28T12:04:59Z"
+      "updated": "2026-11-28T12:06:51Z"
     },
     {
       "id": 11895,
       "title": "m10-vfx-restore-st2-r2 K4: Nachher-Messung + Screenshot + Doku Vorher/Nachher + art-director-Urteil",
       "description": "lane #11351, Merge c549d060. Nachher-Messung mit gleichem Skript (Near-White <= 4,16 %, Draw-Calls <= Baseline+10 %), Screenshot shots/m10-vfx-st2-after.png (Abnahme-Bild in git: shots/abnahme/), Doku docs/lanes/m10-vfx-restore-st2-r2.md mit Vorher/Nachher-Tabelle. art-director Sichtprobe >= 4/5. Danach .lane-done.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:06:51Z",
+          "by": "build",
+          "text": "doing → done: lane #11351, Merge c549d060 (m10-vfx-restore-st2-r2, Rebase auf main 65adcdca; Kontroll-Shots 960/1280 o.k., build + 2237 Tests gruen)"
+        }
+      ],
       "created": "2026-11-28T12:04:59Z",
-      "updated": "2026-11-28T12:04:59Z"
+      "updated": "2026-11-28T12:06:51Z"
     }
   ]
 }
