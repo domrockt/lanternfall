@@ -1,0 +1,204 @@
+{
+  "tool": "scripts/m10-icon-contrast.mjs",
+  "method": "WCAG-Kontrast, Median-Luminanz des Icon-Körpers (ohne 1-px-ink-Kontur Index 0), Grenzwert 3:1",
+  "backgrounds": {
+    "hud": {
+      "hex": 592912,
+      "label": "HUD #090c10"
+    },
+    "panel": {
+      "hex": 1054500,
+      "label": "Panel #101724 (night)"
+    }
+  },
+  "thresholds": {
+    "minContrast": 3
+  },
+  "icons": [
+    {
+      "icon": "passive_boots",
+      "bodyPixels": 93,
+      "contourPixels": 52,
+      "bodyMedianLuminance": 0.1926,
+      "darkestBodyColor": "#6b7c86",
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "passive_charm",
+      "bodyPixels": 81,
+      "contourPixels": 48,
+      "bodyMedianLuminance": 0.1926,
+      "darkestBodyColor": "#a84a21",
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "passive_heart",
+      "bodyPixels": 111,
+      "contourPixels": 57,
+      "bodyMedianLuminance": 0.2385,
+      "darkestBodyColor": "#b8303f",
+      "contrast": {
+        "hud": 5.38,
+        "panel": 4.93
+      },
+      "worstContrast": 4.93,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "passive_hourglass",
+      "bodyPixels": 33,
+      "contourPixels": 65,
+      "bodyMedianLuminance": 0.5608,
+      "darkestBodyColor": "#7a331a",
+      "contrast": {
+        "hud": 11.4,
+        "panel": 10.44
+      },
+      "worstContrast": 10.44,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "passive_tome",
+      "bodyPixels": 90,
+      "contourPixels": 42,
+      "bodyMedianLuminance": 0.5357,
+      "darkestBodyColor": "#a84a21",
+      "contrast": {
+        "hud": 10.93,
+        "panel": 10.01
+      },
+      "worstContrast": 10.01,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "passive_whetstone",
+      "bodyPixels": 89,
+      "contourPixels": 62,
+      "bodyMedianLuminance": 0.3373,
+      "darkestBodyColor": "#0a0e16",
+      "contrast": {
+        "hud": 7.23,
+        "panel": 6.62
+      },
+      "worstContrast": 6.62,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "weapon_ember",
+      "bodyPixels": 54,
+      "contourPixels": 42,
+      "bodyMedianLuminance": 0.1333,
+      "darkestBodyColor": "#2b1410",
+      "contrast": {
+        "hud": 3.42,
+        "panel": 3.13
+      },
+      "worstContrast": 3.13,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "weapon_flail",
+      "bodyPixels": 62,
+      "contourPixels": 66,
+      "bodyMedianLuminance": 0.1926,
+      "darkestBodyColor": "#0a0e16",
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "weapon_frost",
+      "bodyPixels": 64,
+      "contourPixels": 68,
+      "bodyMedianLuminance": 0.1926,
+      "darkestBodyColor": "#101724",
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "weapon_lantern",
+      "bodyPixels": 49,
+      "contourPixels": 40,
+      "bodyMedianLuminance": 0.5608,
+      "darkestBodyColor": "#101724",
+      "contrast": {
+        "hud": 11.4,
+        "panel": 10.44
+      },
+      "worstContrast": 10.44,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "weapon_storm",
+      "bodyPixels": 64,
+      "contourPixels": 62,
+      "bodyMedianLuminance": 0.5357,
+      "darkestBodyColor": "#a84a21",
+      "contrast": {
+        "hud": 10.93,
+        "panel": 10.01
+      },
+      "worstContrast": 10.01,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    },
+    {
+      "icon": "weapon_thorn",
+      "bodyPixels": 63,
+      "contourPixels": 64,
+      "bodyMedianLuminance": 0.2753,
+      "darkestBodyColor": "#16261e",
+      "contrast": {
+        "hud": 6.07,
+        "panel": 5.56
+      },
+      "worstContrast": 5.56,
+      "pass": true,
+      "offPalette": 0,
+      "softAlpha": 0
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "fails": 0,
+    "failingIcons": []
+  }
+}
