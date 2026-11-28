@@ -233,6 +233,53 @@ export function enemyFrameGrids(index: number): Grid[] {
  * bekommen die Akzentfarbe, es wird nichts expandiert oder gedithert.
  */
 
+/* ── M10-elite-tier-families: Faerbe-Klassen je Tier (K2) ──
+ *
+ * Befund (Vorher-Messung, shots/m10-elite-tier-before.json): unter Elites
+ * der Tiers 2-4 dominiert "mittel-neutral" (Grau) — die Tier-Familie eines
+ * Elites ist im 300-500er-Chaos nicht ablesbar (Karte #6322: wolf, banshee,
+ * knight, lich, wraith, gargoyle bleiben blaugrau/weiss dominiert).
+ *
+ * Fix: der Koerper (Innenraum) des Elite-Rim-Frames wird deterministisch
+ * Richtung einer Tier-Faerbe-Klasse gemischt (55 % Klasse, wie bei der
+ * crowd-variety-Variante) — je Tier 0-4 genau eine Klasse:
+ *   T0 glut-braun (emberBrown) · T1 dunst (mist) · T2 flamme (flame)
+ *   T3 blut-rot (crimson)      · T4 gruen (marsh)
+ * Unangetastet bleiben:
+ * - der Amber-Rand (PAL 20, 100 % der Randpixel — A10-Elite-Signal und
+ *   Rim-Kontrast ungebrochen),
+ * - Kontur (0) und Augen/Glow (13),
+ * - Silhouette, Key-Satz ("<spriteKey>_rim"), Framezahl (1) und alle
+ *   Nicht-Elite-Frames (crowd-variety-Stand bytegleich).
+ * Die Warm-Ton-Klassen T2/T3 heben die betroffenen Elite-Typen (wolf,
+ * banshee, knight, lich, wraith) aus dem Blaugrau, T4 (gargoyle,
+ * voidcaller) ins Gruen — genau die art-director-Luecke aus #6322.
+ */
+
+/** Tier-Faerbe-Klasse je Tier 0-4 (nur Palettenindizes, min. Paar-Distanz 69). */
+export const ELITE_TIER_DYES: readonly [number, number, number, number, number] = [16, 8, 18, 25, 30];
+
+/** Faerbe-Klasse eines Tiers (clamp auf 0-4, deterministisch). */
+export function eliteTierDye(tier: number): number {
+  return ELITE_TIER_DYES[Math.min(4, Math.max(0, Math.round(tier)))];
+}
+
+/**
+ * Ein Elite-Koerperpixel in der Tier-Faerbe-Klasse: 55 % Klassenfarbe,
+ * 45 % Basispixel, gerundet auf den naechsten Palettenindex (deterministisch,
+ * nur Palette). Kontur (0) und Augen/Glow (13) bleiben unangetastet.
+ */
+export function eliteTierPixel(pixel: Pixel, tier: number): Pixel {
+  if (pixel === null || pixel === 0 || pixel === 13) return pixel;
+  const target = PAL[eliteTierDye(tier)];
+  const p = PAL[pixel];
+  return nearestPaletteIndex([
+    Math.round(((p >> 16) & 255) * 0.45 + ((target >> 16) & 255) * 0.55),
+    Math.round(((p >> 8) & 255) * 0.45 + ((target >> 8) & 255) * 0.55),
+    Math.round((p & 255) * 0.45 + (target & 255) * 0.55),
+  ]);
+}
+
 /** Palettenindex der Elite-Akzentfarbe (identisch zur Elite-Aura, C.amber). */
 export const ELITE_RIM_COLOR = C.amber;
 
@@ -254,12 +301,16 @@ export function eliteRimGrid(src: Grid): Grid {
 }
 
 /**
- * Der eine Elite-Rim-Frame je Typ: Rim-Variante der Ruhepose (Frame 0).
- * Als einziges zusaetzliches Frame im Bestand vorgehalten; die Vollumrandung
- * macht ihn fuer alle 4 Laufrichtungen und Frames gueltig (keine Duplikate).
+ * Der eine Elite-Rim-Frame je Typ: Rim-Variante der Ruhepose (Frame 0),
+ * Koerper in der Tier-Faerbe-Klasse (eliteTierPixel, siehe oben), Randpixel
+ * voll in der Elite-Akzentfarbe (Amber). Als einziges zusaetzliches Frame im
+ * Bestand vorgehalten; die Vollumrandung macht ihn fuer alle 4 Laufrichtungen
+ * und Frames gueltig (keine Duplikate).
  */
 export function eliteRimFrame(index: number): Grid {
-  return eliteRimGrid(enemySpriteFrames(index)[0]);
+  const tier = ENEMY_LIST[index].tier;
+  const body = enemySpriteFrames(index)[0].map((row) => row.map((p) => eliteTierPixel(p, tier)));
+  return eliteRimGrid(body);
 }
 
 /** Textur-Key des Elite-Rim-Frames ("<spriteKey>_rim"). */
