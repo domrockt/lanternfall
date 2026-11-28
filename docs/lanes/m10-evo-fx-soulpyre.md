@@ -65,20 +65,40 @@ anticipation 0,28 s, fadeOut 0,35 s, sparkInterval 0,34 s, sparkTexture fx_star,
 `shots/m10-evo-fx-soulpyre-after.json` (gleicher Renderer, 0 JS-Fehler):
 | Effekt | Nachher | Kriterium |
 |---|---|---|
-| `orb_soul` | **22x32, Draw-Scale 1**, 0 Ink-/0 Grau-Pixel | Mixel-Regel + Farb-Treppe ✓ |
+| `orb_soul` | **22x32, Draw-Scale 1**, 0 Ink-/0 Grau-Pixel, 13 größte Stufe | Mixel-Regel + Farb-Treppe ✓ |
 | Halo | **fx_halo_cold@2 (48x48) @ 0,9** | nie > 1x ✓ |
-| `fx_evo_death_soul_beacon` | **96x96, Draw-Scale 1**, 0 Ink-/0 Grau-Pixel | Mixel-Regel ✓ |
+| `fx_evo_death_soul_beacon` | **96x96, Draw-Scale 1**, 0 Ink-/0 Grau-Pixel, Kern 13 flächig dominant | Mixel-Regel + Kern-Regel ✓ |
 | Phasen | Anticipation 0,28 s → Orbit/Impact → Fade 0,35 s + Funken | Aufbau/Impact/Ausklang ✓ |
-| Histogramm | orb_soul nur pal 10–13 + 29–31; Signatur ebenso | Seelen-Treppe ✓ |
+| Histogramm | orb_soul nur 13/11/10/31/30/29; Signatur nur 13/11/31/30/29 (kein 12/10) | Seelen-Treppe ✓ |
 
-Tests: `tests/evo-fx-soulpyre.test.ts` (10 Guards: Zielgrößen 22x32/96x96, Draw-Scale-1-Guard
-am Quelltext, Seelen-Farb-Treppe ohne Ink/Grau/warm, hellflächiger Kern >60 %, Flacker-Frames
-verschieden, drawScale nur bei soul_beacon). Suite **1050/1050 grün**, `npx tsc --noEmit` rc=0,
-`npm run build` rc=0, 0 JS-Fehler im Probe-Lauf.
+Tests: `tests/evo-fx-soulpyre.test.ts` (12 Guards: Zielgrößen 22x32/96x96, Draw-Scale-1-Guard
+am Quelltext, Seelen-Farb-Treppe ohne Ink/Grau/warm, Signatur nur {13,11,31,30,29},
+Kern-Dominanz für Orb und Signatur, Flacker-Frames verschieden, drawScale nur bei
+soul_beacon). Suite **1052/1052 grün**, `npx tsc --noEmit` rc=0, `npm run build` rc=0,
+`npm run verify:vfx` 18/18 OK (soul_beacon inklusive), 0 JS-Fehler im Probe-Lauf.
 
 ## art-director-Sichtprüfung
 
-- (läuft — Urteil wird nach Rückspruch/Pass hier eingetragen)
+- Runde 1: **FAIL** (Hit-/Death-Signatur Note 3, orb_soul/Halo Note 4) — Kern nicht flächig
+  hell (11/12-Einschlüsse wanderten per Sinus in den Kern), breite wandernde Zwischenbänder
+  wirkten warm-beige, Death-Funken als freie 2-px-Quadrate; Mixel-Regel undHistogramm wurden
+  bestätigt. Behebungen (Commit 1f1c3c4): Kern flächig 13 bis d<0,52, Wobble nur auf
+  Außenband-Grenzen; Übergänge nur 1–2 px Bänder 11/31/30 + Kontur 29; 12/10 aus der Signatur
+  entfernt; Funken als 1–2-px-Häkchen mit 29er-Kontur; orb_soul entwarmt (Treppe
+  13/11/10/31/30/29, 13 größte Einzel-Stufe). Tests erweitert: Signatur nur noch
+  {13,11,31,30,29}, Kern-Dominanz-Guards für Orb und Signatur.
+- Runde 2: **PASS (4,5/5, kein Asset < 4)** — orb_soul 4,5 (flächiger Kern 13 dominant,
+  organische Welle, 3 unterscheidbare Flacker-Frames), kalter Halo 4, Hit-Signatur 4,
+  Death-Signatur 4 (Kern flächig ohne Raster, Dither nur als 1–2-px-Kantenbänder, Zungen
+  organisch, Funken konturiert). Mixel-Regel im 8–9x-Spiel-Crop verifiziert (Texel =
+  Spielpixel), Histogramme bestätigt. Maßstab „kommerziell auslieferbar" erfüllt.
+  Belege: `/home/ai/tmp/m10-evo-fx-soulpyre/{grid-sig-hit-5x,grid-sig-death-4x,grid-orb-8x,
+  r2-sig-8x,r2-wisp-9x,r2-deathring2-8x,r2-cluster2-8x}.png`, `shots/m10-evo-fx-soulpyre-after.json`.
+- Nicht-blockierende Hinweise (art-director, für Nachfolgelisten): (1) Funken-Menge bei
+  überlagerten Mehrfach-Toden drosseln (Lesbarkeit vor Menge); (2) Kontur 29 vor helleren
+  Biom-Grundflächen in einer späteren Sichtungsprobe verifizieren; (3) echte Türkis-Stufe
+  fehlt in der 32er-Palette — Kühl-Identität aktuell über 11/10 + Halo-Blau(6/9) + Grüntreppe;
+  Palette-Erweiterung ist eine Dom/Rhea-Entscheidung, kein Lane-Defekt.
 
 ## Offene Punkte
 
