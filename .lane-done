@@ -1,0 +1,22 @@
+Lane m10-balance-spawn-damp — Fix des Balance-Band-FAILs auf main (B1). ALLE 5 KARTEN DONE,
+Reviewer-Kontrolleur: PASS (Crash-Pfad- und Merge-Hinweis-Follow-ups nachgezogen: 3d5a0f7, 1abd149).
+
+Fix: SPAWN_DAMP_18_24 = 0.6 in src/data/waves.ts — Anteil des Spawnraten-Zuwachses seit
+Minute 18, der im Fenster Minute 18–24 entfernt wird (Rampe 240 s analog HP-Relief, Start
+Minute 18, Minute 25+ unverändert; lateGameSpawnRate/Endboss-Korridor unangetastet;
+src/logic/xp.ts + src/logic/scaling.ts nicht angefasst). Wert per Suchskript
+scripts/m10-balance-search-1824.mjs, festes Limit 3 Suchläufe, PASS im ersten Suchlauf.
+
+Messwerte (Nachher, 6 Läufe, Beleg shots/m10-balance-band-damp-after.json):
+- K2 PASS: 6/6 Endzeit in [25,40] Sim-Minuten (30,34–30,74, alle Dawn-Siege),
+  Streuung 0,40 min <= 4 (Baseline main: 5/6, Streuung 9,32; mira/7 Tod @ 21,21 → jetzt Sieg @ 30,46).
+- K3 PASS: 33/36 Boss-Dauern im Korridor 20–60 s (Ziel >= 30/33), alle 36 Bosse besiegt;
+  3 Verstöße (Moorkönigin 10,2/10,4 s; Hohler König 17,2 s) als B2-Befund dokumentiert
+  (Hebel src/data/bosses.ts — separater Hebel, nicht in dieser Lane).
+- K4 PASS: Endlevel 33–35, alle in [25,40] (Nebeneffekt-Check A5: Level-Korridor hält).
+- K5 PASS: Renderer jelaufig Mesa Intel RPL-S (kein SwiftShader), 0 JS-Fehler,
+  tsc + npm test (1494) + npm run build grün.
+- Suchergebnis: shots/m10-balance-search-1824.json; Doku: docs/lanes/m10-balance-spawn-damp.md.
+
+Commits: 808e3f3 (WIP), 1c3ea2e (#8698), bfe1b4d (#8699), 99081b7 (#8700), 34f3504 (#8701),
+6241edb (#8702), 3d5a0f7 + 1abd149 (Reviewer-Follow-ups). Offen: B2 (bosses.ts) für Folge-Lane.
