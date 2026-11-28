@@ -140,6 +140,10 @@ const summary = {
   })),
   inBandCount: measured.filter((r) => r.inBand).length,
   measuredCount: measured.length,
+  // Sekundaerkriterium (Level 30 zwischen Minute 28 und 31) getrennt ausgewiesen:
+  // es geht NICHT in passed ein, ist aber als Regressionssignal sichtbar (Befund
+  // Reviewer 2026-11-28; Konfliktbegruendung: docs/lanes/m10-level-target-balance.md).
+  secondaryPassed: measured.length > 0 && measured.every((r) => r.level30InWindow),
   jsErrors: errors,
   passed: measured.length >= 3 && measured.every((r) => r.inBand) && errors.length === 0,
 };
