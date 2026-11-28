@@ -4,7 +4,7 @@ import { ENEMIES, ENEMY_LIST } from "../data/enemies";
 import type { Archetype, EnemyDef, EnemyId } from "../data/types";
 import { BOSSES } from "../data/bosses";
 import { GEN_BOSSES } from "./gen-bosses";
-import { GEN_ENEMIES } from "./gen-enemies";
+import { GEN_ENEMIES, GEN_ENEMY_FAMILIES } from "./gen-enemies";
 
 /** 18x18-Raster; Frame 0 ist die Ruhepose, Frame 1 die Lauf-/Bob-Pose. */
 export const ENEMY_SPRITE_SIZE = 24;
@@ -125,6 +125,101 @@ export function enemySpriteFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
   const gen = GEN_ENEMIES[def.spriteKey];
   return gen.frames.map((rows) => sharpenEnemyGrid(gridFromRows(rows), def.color, def.id));
+}
+
+/* ── M10-crowd-variety: zweite Ton-/Detail-Variante je Gegnertyp ──
+ *
+ * Befund (Dom 21:45Z): die Gegnermasse in Minute 30 wirkt wie geklont — alle
+ * Instanzen eines Typs tragen denselben Ton. Hier entsteht eine zweite
+ * Variante pro Typ:
+ * - gleiche Silhouette (dieselben generierten Masken, nur umgefärbt),
+ * - gleiche Palette: die Variantenfarbe ist die Rampe-Stufe der
+ *   Daten-Familie (GEN_ENEMY_FAMILIES) mit dem grössten Luminanz-Abstand
+ *   zur Basisfarbe — "Tonstufe im selben Palette-Raster",
+ * - binäres Alpha bleibt erhalten (nur gefüllte Pixel bekommen Paletten-
+ *   indizes, schärfen/Elite-Rim-Mechanik unangetastet).
+ * Die Instanz-Auswahl läuft ohne Run.ts-/EnemyPool-Änderung über die
+ * bestehenden Keys: framesForDef liefert 4 Frames, die Lauf-Phase streut
+ * die Instanzen über [Basis, Basis, Variante, Variante] (Index 2/3 tragen
+ * den Variantenton, siehe enemyFrameGrids).
+ */
+
+/** Variantenfarbe eines Typs: deutlichste Rampe-Stufe zur Basisfarbe. */
+export function enemyVariantColor(index: number): number {
+  const def = ENEMY_LIST[index];
+  const ramp = GEN_ENEMY_FAMILIES[def.spriteKey]?.ramp;
+  if (ramp) {
+    let best = -1;
+    let bestDist = 0;
+    for (const c of ramp) {
+      const d = Math.abs(luminance(c) - luminance(def.color));
+      if (d > bestDist) { bestDist = d; best = c; }
+    }
+    if (best >= 0 && bestDist > 0) return best;
+  }
+  // Fallback (Rampe fehlt/identisch): nächsthellere Palette-Stufe.
+  return shadeIndex(def.color, 1.25);
+}
+
+/** Die 4 Frames der Variante (gleiche Posen wie enemySpriteFrames, anderer Ton).
+ *
+ * Nicht über sharpenEnemyGrid(color) — der Farb-Parameter greift nur bei Typen
+ * ohne CONTRAST_TONES-Eintrag. Stattdessen werden nach dem Schärfen alle
+ * Körperpixel deterministisch Richtung Variantenton gemischt (55 % Varianten-
+ * farbe) und auf den nächsten Palette-Index gerundet. Unangetastet bleiben:
+ * Kontur (0), Augen/Glow (13) und die 1-px-Lichtkante (tones.top) — daraus
+ * folgt: gleiche Silhouette, binäres Alpha, nur Palettenfarben.
+ */
+export function enemyVariantFrames(index: number): Grid[] {
+  const def = ENEMY_LIST[index];
+  const target = PAL[enemyVariantColor(index)];
+  const top = CONTRAST_TONES[def.id]?.top ?? lightEdgeIndex(def.color);
+  return enemySpriteFrames(index).map((g) => {
+    const out = g.map((row) => row.slice());
+    for (let y = 0; y < out.length; y++) {
+      for (let x = 0; x < out[0].length; x++) {
+        const c = out[y][x];
+        if (c === null || c === 0 || c === 13 || c === top) continue;
+        const p = PAL[c];
+        const mix = [
+          Math.round(((p >> 16) & 255) * 0.45 + ((target >> 16) & 255) * 0.55),
+          Math.round(((p >> 8) & 255) * 0.45 + ((target >> 8) & 255) * 0.55),
+          Math.round((p & 255) * 0.45 + (target & 255) * 0.55),
+        ];
+        out[y][x] = nearestPaletteIndex(mix);
+      }
+    }
+    return out;
+  });
+}
+
+/** Nächster Palette-Index zu einem RGB-Tripel (nur Palette, deterministisch). */
+function nearestPaletteIndex([r, g, b]: readonly number[]): number {
+  let best = 0;
+  let bestDist = Infinity;
+  for (let i = 0; i < PAL.length; i++) {
+    const p = PAL[i];
+    const dr = ((p >> 16) & 255) - r;
+    const dg = ((p >> 8) & 255) - g;
+    const db = (p & 255) - b;
+    const d = dr * dr + dg * dg + db * db;
+    if (d < bestDist) { bestDist = d; best = i; }
+  }
+  return best;
+}
+
+/**
+ * Frame-Grids in Key-Reihenfolge (enemyFrameKeys): Frames 0/1 Basis-Ton,
+ * Frames 2/3 Varianten-Ton. Reine Funktion — createEnemyTextures registriert
+ * genau diese Grids, tests/crowd-variety.test.ts prüft sie ohne Phaser.
+ */
+export function enemyFrameGrids(index: number): Grid[] {
+  const base = enemySpriteFrames(index);
+  const variant = enemyVariantFrames(index);
+  // Guard: GEN_ENEMIES liefert heute 4 Frames je Typ. Ohne Guard würde ein
+  // künftiger 2-Frame-Eintrag hier undefined in gridToCanvas schieben.
+  if (base.length < 4 || variant.length < 4) return base;
+  return [base[0], base[1], variant[2], variant[3]];
 }
 
 /* ── Elite-Rim-Light (A10-Restpunkt "Chaos-Rim-Light fuer Elites") ──
@@ -692,13 +787,12 @@ function gridToCanvas(g: Grid): HTMLCanvasElement {
   return canvas;
 }
 
-/** Erzeugt für alle 30 Gegner die Textur-Frames + den einen Elite-Rim-Frame
- *  (vorhandene bleiben erhalten). */
+/** Erzeugt für alle 30 Gegner die Textur-Frames (0/1 Basis-Ton, 2/3 Varianten-
+ *  ton, siehe enemyFrameGrids) + den einen Elite-Rim-Frame. */
 export function createEnemyTextures(scene: Phaser.Scene): void {
   ENEMY_LIST.forEach((def, index) => {
-    const frames = enemySpriteFrames(index);
     const keys = enemyFrameKeys(index);
-    frames.forEach((grid, i) => {
+    enemyFrameGrids(index).forEach((grid, i) => {
       if (scene.textures.exists(keys[i])) return;
       scene.textures.addCanvas(keys[i], gridToCanvas(grid));
     });
