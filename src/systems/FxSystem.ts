@@ -353,9 +353,10 @@ export class FxSystem {
     if (now - last < baseLife * 450) return null;
     this.signatureLast.set(key, now);
     const texture = signatureTextureKey(evolution, kind);
-    // M10-evo-fx-phoenix: Signaturen mit drawScale rendern ihre Textur in
-    // Zielgröße (Phönix 128x128) und zeichnen mit Draw-Scale 1 — Mixel-Regel
-    // „nie > 1x hochskalieren". Alt: 32x32-Texturen, Hit 3,2–3,6 / Death 4,0–4,6,
+    // M10-evo-fx-phoenix / m10-evo-fx-soulpyre: Signaturen mit drawScale rendern
+    // ihre Textur in Zielgrösse (Phönix 128x128, Seelenleuchtfeuer 96x96) und
+    // zeichnen mit Draw-Scale 1 — Mixel-Regel „nie > 1x hochskalieren".
+    // Alt: 32x32-Texturen, Hit 3,2–3,6 / Death 4,0–4,6,
     // volle Alpha auch im Minimal-LOD (alphaScaleExempt, Untergrenze effektiv 0,95).
     const drawScale = sig.drawScale;
     const spin = sig.shape === "splitter" ? (kind === "hit" ? 2.2 : 1.4) : sig.shape === "cloud" ? 0.7 : 0;
