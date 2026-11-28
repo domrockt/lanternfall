@@ -63,9 +63,15 @@ screenrecord liefert auf dem Redmi Pad nur Stümpfe → Screencaps).
   Shot kam erst bei t≈4,9 s (kalte Bridge: erste `/screenshot`-Abfrage nach Launch dauert
   ~4,5 s, danach ~420 ms Takt) und zeigte bereits die WebView-Bootphase.
 - Gegenmaßnahme (1 Edit-Iteration): Warm-up-Screencap vor jedem Launch in
-  `scripts/m10-apk-splash.mjs` — damit soll Shot 1 die ersten 1–3 s treffen. EIN verspäteter
-  Retry (Start 3 + natives Window) als Automation geplant; wenn wieder DOM_SPIELT: Befund
-  final notieren (2/3 Starts + statischer K1-Beleg).
+  `scripts/m10-apk-splash.mjs` — damit soll Shot 1 die ersten 1–3 s treffen.
+- **Final (16:06Z, run3):** EIN erneuter Versuch pro Karte nach Briefing —
+  `coldstart-run3/manifest.json`: alle 3 Starts durch aktive Spieler-Sperre geblockt
+  (`dom_playing=true` vor jedem Start, `user_idle_s=562`; kein Launch gegen die Sperre).
+  Kein Warten (Regel „kein sleep-Polling"). Damit ist K2 final:
+  **2/3 Kaltstart-Belege** (run2, je 13 Shots) + statischer K1-Beleg + natives
+  Starting-Window nicht dynamisch eingefangen (Warm-up-Fix im Skript unvalidiert).
+  Falls Dom die Sperre später löst, kann ein Folge-Job run3 mit dem Warm-up-Skript
+  nachholen (Skript liegt fertig in `scripts/m10-apk-splash.mjs`).
 
 ## K3 — Urteil + Doku — #12947 (Gerüst, wird nach K2 gefüllt)
 
