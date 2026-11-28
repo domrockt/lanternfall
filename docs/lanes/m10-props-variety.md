@@ -101,6 +101,41 @@ Kontur, Varianten ≠ Basis-Kopie, deterministische Gleichverteilung von
 `propVariantKeyFor` (keine tote Variante). Alle grün; prop-density-lod-Test
 unverändert grün.
 
-## Karte 4 — After-Belege + art-director
+## Karte 4 — After-Belege + art-director (K4)
 
-*(folgt)*
+**Wahrheitssicherung:** Der zwischenzeitliche 3-Zeilen-Patch war Teil von Commit
+b899587 und wurde nach dem Supervisor-Steer in Commit 71fc2f4 *dokumentiert,
+aber nicht aus dem Quellstand entfernt* (git checkout -- stellte HEAD wieder
+her, der den Patch enthielt). Vor der After-Messung wurde GroundRenderer.ts
+real auf den Stand vor b899587 zurückgesetzt (diff vs HEAD: −10/+3) und
+`npm run build` neu gebaut (neuer Bundle-Hash Cz10jgJp). Der reine
+`git checkout`-Revert war eine Falle: HEAD enthielt den Patch bereits.
+
+**After-Messung auf HEAD (ohne Verdrahtung, `--tag after`):**
+
+| Abschnitt | Häufigstes Prop | Anteil |
+|---|---|---|
+| früh   | `prop_boulder` | 23,3 % |
+| Chaos  | `prop_boulder` | 22,9 % |
+
+Identisch zur Vorher-Messung (22,6 %/23,7 % — Schwankung durch AutoPlay-
+Position): **ohne die 3-Zeilen-Verdrahtung ändert sich am Boden nichts**; die
+6 Varianten liegen fertig generiert, getestet und palettentreu in
+`gen-props.ts`, werden aber von der Platzierung nicht referenziert.
+
+**Wirkprobe (nicht HEAD, klar getrennt):** `shots/m10-props-variety-after-wired-*`
+— gleicher Messlauf mit ausschließlich dem in der Lane-Doku (Karte 2) dokumentierten
+3-Zeilen-Patches: häufigstes Prop fällt auf `prop_stump` 16,1 %/15,4 %,
+`prop_boulder`-Split 47/52/47, alle 6 Varianten im Spiel sichtbar. Diese Belege
+begründen den offenen Punkt für den Lead/Merge — sie sind kein Abnahme-/HEAD-Stand.
+
+**Sprite-Belege:** `shots/m10-props-variety-after-variants.png` (Klassen bei 4x)
+und `shots/m4b-sheet-props.png` (komplettes Sheet, 21 Sprites).
+
+**art-director-Urteil:** *(folgt)*
+
+**Tests:** npm test 1375/1375 grün (ein flaky Einzelfehllauf in
+tests/fx-mixel.test.ts im ersten vollen Lauf, in Isolation und im Wiederholungslauf
+grün — dokumentiert, kein Lane-Bezug). `npm run build` grün. FPS/Draw-Pfad:
+unverändert (keine Code-Änderung im Draw-Pfad auf HEAD; Wirkprobe zeigen gleiche
+Prop-Anzahl, nur Textur-Auswahl).
