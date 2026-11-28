@@ -45,6 +45,30 @@ export function lateGameSpawnRate(minute: number): number {
 export const LATE_GAME_MINUTE = 25;
 
 /**
+ * M10-Balance (Lane m10-mira-hp-balance-check, K3 #12907): eigene Mischung fuer
+ * Minute 20–24. TIER_MIXES[4] enthaelt mit `abom` (Splitter) und `voidcaller`
+ * (Beschwoerer) zwei Mengen-Vervielfacher — seit Mira auf HP 90 steht
+ * (m10-charstats-ssot), stirbt sie gemessen genau in diesem Fenster
+ * (20,4 / 22,2 / 25,4 min statt dawn ~30,5 auf dem alten Stand).
+ *
+ * Suchlauf (bindend, 4 Kandidaten): A = Vervielfacher ganz raus (beste Korridor-
+ * Zahlen: 2/3 dawn, aber abom/voidcaller wären toter Content — wave-coverage (c)
+ * FAIL); B = LATE_GAME_MIX fuer 20–24 (dito Coverage-FAIL); C = Fenster nur 20–22
+ * (1/3 dawn, zu schwach); D = Vervielfacher mit halbem Gewicht (0,5 statt 1).
+ * D haelt `tests/wave-coverage.test.ts` (c) gruen (erster Spawn weit vor 25:00)
+ * und halbiert die Vervielfacher-Präsenz (~18 % → ~10 % Anteil an Minute 20–24).
+ * Minute 0–19 (TIER_MIXES) und 25+ (LATE_GAME_MIX) bitgleich; Spawnrate/Monotonie
+ * unberuehrt.
+ */
+export const MID_GAME_MIX: Partial<Record<EnemyId, number>> = {
+  horror: 2, centipede: 2, gargoyle: 2, reaper_bat: 3, abom: 0.5, voidcaller: 0.5,
+};
+
+/** Start/Ende (inklusive) der entlasteten Mischung (mira-Todesfenster 20–24). */
+export const MID_GAME_MIX_MINUTE = 20;
+export const MID_GAME_MIX_LAST_MINUTE = 24;
+
+/**
  * M10-Balance Spawn-Dämpfung Minute 18–24 (Lane m10-balance-spawn-damp, Befund B1 der
  * Verifikations-Lane m10-balance-band-verify): die Ankunftsrate wächst im Fenster
  * Minute 18–24 um +25 % (1,484 → 1,852/s), während die Kill-Rate durch den
@@ -105,7 +129,12 @@ export const WAVES: WaveDef[] = Array.from({ length: 30 }, (_, minute) => {
   return {
     minute,
     spawnRate: late ? lateGameSpawnRate(minute) : baseRate - damp * (baseRate - SPAWN_DAMP_BASE_RATE),
-    mix: late ? LATE_GAME_MIX : TIER_MIXES[tier],
+    // Lane m10-mira-hp-balance-check (#12907): Minute 20–24 mit halbiertem
+    // Vervielfacher-Anteil (MID_GAME_MIX), sonst TIER_MIXES; Minute 25+ bleibt
+    // LATE_GAME_MIX.
+    mix: minute >= MID_GAME_MIX_MINUTE && minute <= MID_GAME_MIX_LAST_MINUTE
+      ? MID_GAME_MIX
+      : late ? LATE_GAME_MIX : TIER_MIXES[tier],
     special: specialForMinute(minute),
     elitePack: isEliteMinute(minute),
     bossIndex: minute === 5 ? 0 : minute === 10 ? 1 : minute === 15 ? 2 : minute === 20 ? 3 : minute === 25 ? 4 : undefined,

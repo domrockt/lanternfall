@@ -21,6 +21,9 @@ import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harnes
 const SCALE = 30;
 const SEEDS_MIRA = [101, 202, 404];
 const SEED_KAEL = 101;
+// Suchlauf-Overrides (Lane K3): MIRA_HP_SEEDS=101,202 MIRA_HP_KAEL=0 beschränken die Matrix.
+const MIRA_SEEDS = process.env.MIRA_HP_SEEDS ? process.env.MIRA_HP_SEEDS.split(",").map(Number) : SEEDS_MIRA;
+const RUN_KAEL = process.env.MIRA_HP_KAEL !== "0";
 const VIEWPORT = { width: 960, height: 540 };
 const DPR = 1;
 
@@ -151,8 +154,8 @@ function bossDurations(trace) {
 }
 
 const runs = [];
-for (const seed of SEEDS_MIRA) runs.push(await runOnce(seed, "mira"));
-for (const seed of [SEED_KAEL]) runs.push(await runOnce(seed, "kael"));
+for (const seed of MIRA_SEEDS) runs.push(await runOnce(seed, "mira"));
+if (RUN_KAEL) for (const seed of [SEED_KAEL]) runs.push(await runOnce(seed, "kael"));
 for (const r of runs) {
   console.log(`[m10-mira-hp-check] ${r.character}/${r.seed} -> ${r.outcome} @ ${r.endMinute} min, Level ${r.endLevel ?? "?"}, ${r.wallSeconds}s wall`);
 }
@@ -208,7 +211,7 @@ const summary = {
   generatedAt: new Date().toISOString(),
   miraHpStand: 90,
   miraHpSource: "src/data/characters.ts (m10-charstats-ssot af72458d)",
-  parameters: { scale: SCALE, seedsMira: SEEDS_MIRA, seedKael: SEED_KAEL, mode: "full", viewport: [VIEWPORT.width, VIEWPORT.height], dpr: DPR, autoPlay: true, god: false },
+  parameters: { scale: SCALE, seedsMira: MIRA_SEEDS, seedKael: RUN_KAEL ? SEED_KAEL : null, mode: "full", viewport: [VIEWPORT.width, VIEWPORT.height], dpr: DPR, autoPlay: true, god: false },
   corridor: { endLevel: ENDLEVEL_CORRIDOR, bossDurationSec: BOSS_CORRIDOR, noDeathBeforeMinute: NO_DEATH_BEFORE_MINUTE, kaelTolerancePct: 10 },
   renderer: runs.map((r) => r.renderer)[0] ?? null,
   rendererOk: Boolean(runs[0]?.renderer) && !/swiftshader/i.test(runs[0]?.renderer ?? "SwiftShader"),

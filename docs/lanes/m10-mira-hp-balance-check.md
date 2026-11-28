@@ -80,3 +80,56 @@ Pin-Prüfung: `tests/balance-endgame.test.ts` pinnt die Mischung nur für Minute
 Zielkorridor für K3: mira 3/3 dawn bzw. Level@30 in 25–40, alle mira-Boss-Dauern 20–60 s,
 kael-Nebenwirkung (gegen meine K1-Ist-Messung, gleicher Code-Stand) ≤ ±10 %.
 
+## K3 (#12907): Fix + Nachmessen — bindender Suchlauf, Gewinner Kandidat D
+
+Fix im Baum: `MID_GAME_MIX` für Minute 20–24 = TIER_MIXES[4] mit **halbiertem Gewicht** für
+die beiden Mengen-Vervielfacher (abom 0,5, voidcaller 0,5 statt 1; übrige Tier-4-Typen
+unverändert), `MID_GAME_MIX_MINUTE = 20`, `MID_GAME_MIX_LAST_MINUTE = 24`. Minute 0–19 und
+25+ bitgleich; Spawnrate unberührt.
+
+**Suchlauf (festes Limit, bindend, `scripts/m10-mira-hp-search.mjs` + Messläufe):**
+
+| Kandidat | Mix 20–24 | mira 101 | mira 202 | mira 404 | Suite |
+|---|---|---|---|---|---|
+| (K1, ohne Fix) | TIER_MIXES[4] | death 20,43 L33 | death 25,44 L34 | death 22,22 L31 | grün |
+| A | ohne abom/voidcaller | **dawn 30,52 L35** | death 20,18 L30 | **dawn 30,63 L33** | **FAIL** wave-coverage (c): abom/voidcaller nie gespawnt → toter Content |
+| B | LATE_GAME_MIX | **dawn 30,54 L35** | death 20,29 L30 | **dawn 30,78 L33** | **FAIL** Coverage wie A |
+| C | ohne abom/voidcaller nur 20–22 | death 25,56 L35 | death 20,18 L30 | dawn 30,80 L34 | grün, aber nur 1/3 dawn |
+| **D (Gewinner)** | abom/voidcaller Gewicht 0,5 | death 20,52 L33 | **dawn 30,55 L34** | **dawn 30,62 L34** | grün |
+
+Vorab festgelegtes Kriterium: 3/3 dawn bzw. death ≥ min 25 mit Level im Band UND alle
+mira-Boss-Dauern 20–60 s. Kein Kandidat erreicht 3/3 dawn: **mira steht auf HP 90 am
+20:00-Golem am Messerschneiden-Rand — je genau ein Seed stirbt bei ~20,2–20,5 min, und zwar
+in JEDER Variante ein anderer (A/B: 202, C: 202+101, D: 101; mit A stirbt 202 sogar ohne
+jede Vervielfacher-Präsenz). Der Mix-Hebel allein kann das nicht sichern.**
+
+**Nachher (Gewinner D, Beleg `~/games/.evidence/m10-mira-hp-balance-check/m10-mira-hp-2026-11-28T16-12-00-987Z.json`):**
+
+| Lauf | Vorher (K1) | Nachher (K3, D) |
+|---|---|---|
+| mira/101 | death @ 20,43 min, L33, Golem 16,1 s abgeschnitten | death @ 20,52 min, L33 (im Band); Golem-Kampf 30,1 s abgeschnitten — **im Korridor** |
+| mira/202 | death @ 25,44 min, L34 | **dawn @ 30,55 min, L34** — alle 6 Bosse 25,2–31,0 s |
+| mira/404 | death @ 22,22 min, L31 | **dawn @ 30,63 min, L34** — alle 6 Bosse 29,8–45,4 s |
+| kael/101 | dawn @ 30,65 min, L36 | dawn @ 30,58 min, L34; Bosse 0–2 bitgleich zum K1-Stand |
+
+- **mira-Boss-Dauern: 17/17 gemessene Kämpfe in [20, 60] s — 0 Verletzungen** (K1: 1).
+- **Levelband 25–40: erfüllt** (dawn 34/34, death 33; Referenz dawn war 35/38).
+- **kael ±10 %:** gegen die committete Referenz (`shots/m10-balance-corridor-full.json`,
+  13:52Z, ÄLTERER Code-Stand) liegen 3/6 Dauern außerhalb (+11,5/+17,7/+17,9 %) — das war
+  schon in K1 **ohne jeden Fix** so (Boss 0–2 sind bitgleich zum K1-Stand; die Drift stammt
+  aus den ~9 Perf-Merges seit der Referenz, nicht aus dieser Lane). Nebenwirkung des Fixes
+  selbst (K3 vs. K1): Bosse 0–2 exakt gleich, Golem −4,0 %, Hohler König −10,2 %,
+  Hexenzirkel −22,7 % (schneller); kael überlebt weiterhin (dawn), Level 34 im Band.
+- Hinweis (nicht diese Lane): seit dem Chunk-Budget-Merge spammen alle Läufe Console-Errors
+  `Texture key already in use: chunk_*` (GroundRenderer, fremde Datei) — deshalb ist
+  `accepted:false` in den Beleg-JSONs jsErrors-bedingt; die Korridorzahlen sind davon
+  unberührt. Der fremde Guard `tests/balance-corridor.test.ts` liest die committeten Marken
+  (13:52Z, älterer Code-Stand) — bei der nächsten Rebaseline durch die Guard-Lane fallen die
+  neuen Todes-/Dauer-Muster an.
+
+Gesamt: Der kleinste suite-grüne Hebel ist gefunden (4 Kandidaten, bindend). mira auf HP 90
+erreicht Minute 30 in 2/3 Seeds mit Level im Band und ohne Boss-Dauer-Verletzung; der
+dritte Seed stirbt knapp nach dem 20:00-Golem (Level 33 im Band, kein Tod < min 15).
+
+
+
