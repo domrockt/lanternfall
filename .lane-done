@@ -25,7 +25,8 @@ Bitgleichkeit: Spawn-Sequenz-Checksums (Seeds 1/2/3) identisch vor/nach
 (1048818830 / 4047071672 / 1745884332) — Spawn-Phasen und Tier-Verteilung
 unveraendert. tsc, build und 2282 Tests gruen.
 
-Commits: 735a4061 (K1), a8b94a69 (K2), 2ecb86d4 (K3), <K4> (K4).
+Commits: 735a4061 (#12089 K1), a8b94a69 (#12090 K2), 2ecb86d4 (#12091 K3),
+93dee396 (#12092 K4).
 Belege: ~/games/.evidence/m10-spawn-burst-alloc/ (before/after JSONs).
 Offene Reste (fremde Claims): advanceSpawnBudget/splitSpawnBurst-Ergebnis-
 objekte je Tick (logic/waves.ts), Options-Literale in Run.ts spawnAt-Aufrufen

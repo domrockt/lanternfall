@@ -32,14 +32,18 @@ gc-Entries — deshalb `--trace-gc` + fixer Semi-Space.
 Beleg (außerhalb des Repos):
 `~/games/.evidence/m10-spawn-burst-alloc/m10-spawn-burst-alloc-before.json`
 
-| Metrik | Vorher |
+| Metrik | Vorher (Beleg-JSON) |
 |---|---|
-| scavengesPer1000Ticks | **30.09** (Streuung 29–38 über 4 Läufe) |
+| scavengesPer1000Ticks | **30.09** |
 | gcMsPer1000Ticks | 1.04 |
-| tickMsPer1000Ticks | 13.5–15.3 |
+| tickMsPer1000Ticks | 13.49 |
 | mixPickCallsPerTick | 16 (= 1 `Object.entries` je Spawn) |
 | Checksum Seed 1/2/3 | 1048818830 / 4047071672 / 1745884332 |
 | Szenario | Minute 25, 960x540, Cap 300, 16 Spawns/Tick, 90000 Ticks |
+
+Run-zu-Run-Streuung (beobachtet, nicht als eigenes JSON abgelegt): 29–38
+Scavenges/1000 Ticks über vier interaktive Läufe; die Zielgrenze (≤ 50 %) ist
+auch am oberen Streuungsrand mit großem Abstand erfüllt.
 
 Hinweis: der Stub-Pool alloziert (wie beschrieben dokumentiert) je Spawn ein
 Runtime-Objekt — der echte Pool reutzt es (Free-List). Das verwässert das
@@ -71,16 +75,16 @@ unverändert. `npx tsc --noEmit`, `npm run build` und **2279 Tests** grün.
 ## K3 — Nachher-Messung + Grenze (Karte #12091)
 
 Beleg: `~/games/.evidence/m10-spawn-burst-alloc/m10-spawn-burst-alloc-after.json`
-(gleiche Methode/Szenario wie K1, zwei Nachher-Läufe: 10.81 und 10.91).
+(gleiche Methode/Szenario wie K1).
 
 **Grenze vor der Messung festgelegt:** Ziel ≤ 50 % der Vorher-Allokationen im
 Tick — erreicht.
 
 | Metrik | Vorher (#12089) | Nachher (#12091) | Verhältnis |
 |---|---|---|---|
-| scavengesPer1000Ticks | 30.09 | **10.81 / 10.91** | **0.36 (−64 %)** |
-| gcMsPer1000Ticks | 1.04 | 0.40 | 0.38 |
-| tickMsPer1000Ticks | 13.49 | 6.96–7.5 | ~0.5 |
+| scavengesPer1000Ticks | 30.09 | **10.91** | **0.36 (−64 %)** |
+| gcMsPer1000Ticks | 1.04 | 0.45 | 0.43 |
+| tickMsPer1000Ticks | 13.49 | 8.02 | 0.59 |
 | mixPickCallsPerTick | 16 | **0** | 0 |
 | Checksums (Seed 1/2/3) | s. o. | **identisch** | bitgleich |
 | Szenario | dito | dito | — |
@@ -99,8 +103,8 @@ Offene Reste (außerhalb dieses Claims): `advanceSpawnBudget`/
 
 ## Lane-Abschluss
 
-- Commits: 735a4061 (#12089 K1), a8b94a69 (#12090 K2), K3-Commit (#12091),
-  K4-Commit (#12092).
+- Commits: 735a4061 (#12089 K1), a8b94a69 (#12090 K2), 2ecb86d4 (#12091 K3),
+93dee396 (#12092 K4).
 - Belege ausschließlich `~/games/.evidence/m10-spawn-burst-alloc/` (before/after
   JSONs); nichts Abnahme-Bildpflichtiges.
 - Hinweis: die fremden Dirty-Dateien `shots/m10-passive-math-*.json` in diesem
