@@ -82,7 +82,12 @@ nach GC).
 
 Kleinste wirksame Änderung: Aggregat-Einträge und KI-Zustand werden recycelt
 (Pool/Cap 48 bzw. `resetAiState` in-place), die View-Zählung allokiert kein
-Array mehr pro Treffer, und der Pool kappt Retention per `trim()`.
+Array mehr pro Treffer. Retention wird im Run-Pfad **nicht** per `Pool.trim()`
+gekappt — `trim()` hat 0 Aufrufstellen (Befund m10-pool-trim, #2438, siehe
+`docs/lanes/m10-pool-trim.md`). Der generische Pool ist über das
+DamageNumbers-Cap (`MAX_ENTRIES = 48`) begrenzt; der Peak-Overhang der eigenen
+`free`-Arrays in `EnemyPool`/`ProjectilePool` bleibt bestehen und ist Gegenstand
+von Karte #2439.
 
 ## Abnahme (Karte #2062)
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10092,
+  "next": 10094,
   "cards": [
     {
       "id": 1,
@@ -12605,6 +12605,51 @@
           "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
         }
       ]
+    },
+    {
+      "id": 10092,
+      "title": "m10-heap-tail-doc-fix-r2 K1: trim()-Aussage in m10-heap-tail.md korrigieren",
+      "description": "docs/lanes/m10-heap-tail.md:85 behauptet 'der Pool kappt Retention per trim()' — falsch, trim() hat 0 Aufrufstellen (Befund c7893e9, docs/lanes/m10-pool-trim.md K2). Abnahme: korrigierte Formulierung aus m10-pool-trim.md übernommen, NUR diese Aussage geändert, Verweis auf Befund ergänzt; sonst 0 Änderungen an der Datei.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:55:06Z",
+          "by": "build",
+          "text": "WIP-Limit-Refusal beim doing-Move: doing ist mit fremden Lane-Karten #9725 (m10-chest-closed-crisp K4), #9922 (m10-powerup-sfx-wire K4) voll. Ich fasse fremde Karten nicht an. Arbeit startet trotzdem; Karte wird bei erster Gelegenheit nachgezogen."
+        },
+        {
+          "at": "2026-11-28T07:55:36Z",
+          "by": "build",
+          "text": "todo → review: Commit f533c582: nur die trim()-Aussage (Zeile 85) ersetzt, korrigierter Text wörtlich aus m10-pool-trim.md K2 + Verweis. Diff-Stat: 7 Zeilen in genau dieser Datei, sonst 0 Änderungen an der Datei."
+        },
+        {
+          "at": "2026-11-28T07:57:24Z",
+          "by": "build",
+          "text": "review → done: commit-gate PASS: K1-Text wortgleich aus m10-pool-trim.md K2, Verweis vorhanden, sonst 0 Änderungen an der Datei (git diff-Beleg). Commit f533c582."
+        }
+      ],
+      "created": "2026-11-28T07:54:50Z",
+      "updated": "2026-11-28T07:57:24Z"
+    },
+    {
+      "id": 10093,
+      "title": "m10-heap-tail-doc-fix-r2 K2: Gegenprobe trim()-Aufrufstellen + diff-Beleg",
+      "description": "Gegenprobe dokumentieren: grep der Aufrufstellen von Pool.trim im Repo + diff-Beleg der K1-Korrektur. Belege nach ~/games/.evidence/m10-heap-tail-doc-fix-r2/ (shots/* ist gitignore-gebunden), referenziert in der Lane-Doku. Abnahme: Beleg liegt vor und zeigt 0 Aufrufstellen im Run-Pfad + den exakten Doc-Diff.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:57:03Z",
+          "by": "build",
+          "text": "todo → review: Commit 68be7542: Lane-Doku docs/lanes/m10-heap-tail-doc-fix-r2.md + Gegenprobe-Belege unter ~/games/.evidence/m10-heap-tail-doc-fix-r2/ (trim-callers-grep.txt: nur Pool.ts:69-Definition + String.trim in UI.ts, 0 Run-Pfad-Aufrufe; k1-diff-f533c582.patch). tsc rc=0, build OK."
+        },
+        {
+          "at": "2026-11-28T07:57:24Z",
+          "by": "build",
+          "text": "review → done: commit-gate PASS: Gegenprobe-Belege vorhanden (0 Run-Pfad-Aufrufe von Pool.trim; diff-Beleg), in Lane-Doku referenziert. Commit 68be7542."
+        }
+      ],
+      "created": "2026-11-28T07:54:50Z",
+      "updated": "2026-11-28T07:57:24Z"
     }
   ]
 }
