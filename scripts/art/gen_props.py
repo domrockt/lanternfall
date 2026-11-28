@@ -173,33 +173,43 @@ def boulder_b() -> Grid:
 
 
 def boulder_c() -> Grid:
-    """Splitterfels 26x20: hoher, spitzer Brocken mit Kerbe und heller Kante."""
+    """Splitterfels 26x20: hoher Fels mit echten Bruch-Spitzen (Ecken statt
+    Ellipsenbogen), Riss läuft von der Hauptspitze aus."""
     g = Grid(26, 20)
-    g.ellipse(13, 11, 8, 8, 5)
-    g.ellipse(11, 9, 6, 6, 6)
+    # Kernmasse, dann Spitzen als Dreiecks-Stufen (keine glatte Ellipse).
+    g.ellipse(13, 12, 8, 7, 5)
+    g.ellipse(11, 10, 6, 5, 6)
     g.rect(6, 15, 15, 2, 4)
-    # Spitze oben, Kante oben-links hell.
-    g.put(13, 3, 6)
-    g.put(12, 4, 8)
-    g.put(11, 5, 8)
-    g.put(10, 7, 8)
-    g.put(9, 9, 8)
-    # Kerbe/Spalt auf der rechten Flanke.
-    g.line(16, 6, 18, 12, 4, 1)
-    g.line(18, 12, 16, 16, 4, 1)
+    # Hauptspitze links-oben: 3 Stufen (2-px-Basis je Stufe).
+    for i, (dx, w) in enumerate(((0, 6), (-1, 4), (-2, 2))):
+        y = 9 - i * 3
+        g.rect(10 + dx - w // 2, y, w, 2, 5)
+        g.rect(10 + dx - w // 2, y, max(1, w - 3), 1, 6)
+    g.put(8, 3, 8)   # Lichtkante an der Hauptspitze
+    g.put(9, 4, 8)
+    g.put(9, 6, 8)
+    # Sekundarspitze rechts: Bruch-Kerbe mit harter Ecke.
+    g.line(17, 8, 19, 5, 5, 2)
+    g.put(19, 4, 6)
+    g.put(18, 4, 5)
+    g.line(19, 5, 20, 10, 4, 1)
+    g.line(20, 10, 18, 15, 4, 1)
     g.put(17, 9, 4)
+    # Riss von der Hauptspitze nach unten-rechts.
+    g.line(9, 5, 13, 11, 4, 1)
+    g.line(13, 11, 12, 15, 4, 1)
     # Kies am Fuss + ein Moostupfer.
-    g.put(7, 17, 5)
-    g.put(18, 17, 5)
-    g.put(19, 16, 4)
+    g.put(6, 17, 5)
+    g.put(19, 17, 5)
+    g.put(20, 16, 4)
     g.rect(8, 13, 3, 2, 29)
     g.put(9, 13, 30)
     return _finish(g, 26, 20)
 
 
 def bones_b() -> Grid:
-    """Wirbelsaeule 23x14: Schaedel unten links, Wirbelkette nach rechts,
-    langer Knochen diagonal darueber."""
+    """Wirbelsaeule 23x14: Schaedel unten links, durchgehende Wirbelkette aus
+    2x2/2x3-Bloecken, verdickter loser Knochen (2-px-Schaft) darueber."""
     g = Grid(23, 14)
     # Schaedel halb versenkt, grob 7x6 mit Kiefer.
     g.ellipse(5, 8, 4, 4, 10)
@@ -209,20 +219,24 @@ def bones_b() -> Grid:
     g.rect(4, 12, 4, 1, 8)
     g.put(3, 6, 11)
     g.put(6, 5, 11)
-    # Wirbelkette: 5 Wirbel als 2x2-Blöcke auf 1-px-Spine, abnehmende Hoehe.
+    # Wirbelkette: durchgehende Rampe aus 2x2/2x3-Bloecken (keine Luecken),
+    # Licht oben, Schatten unten, Dornfortsatz je Wirbel.
     for i in range(5):
-        x = 11 + i * 2
-        y = 8 - i
-        g.put(x, y + 1, 10)
-        g.rect(x, y, 2, 2, 10)
-        g.put(x, y, 11)
-        g.put(x + 1, y + 1, 8)
-    # Langer Knochen diagonal, Knaeufe an beiden Enden.
-    g.line(10, 5, 18, 2, 11, 2)
-    g.put(9, 6, 10)
-    g.put(9, 5, 11)
-    g.put(19, 1, 10)
-    g.put(19, 2, 11)
+        x = 10 + i * 2
+        y = 9 - i
+        h = 3 if i % 2 == 0 else 2
+        g.rect(x, y, 2, h, 10)
+        g.rect(x, y, 2, 1, 11)
+        g.put(x + 1, y + h - 1, 8)
+        g.put(x - 1, y - 1, 11)  # Dornfortsatz (2 px inkl. Blockkante)
+    # Loser Knochen: 2-px-Schaft mit Knaeufen, parallel zur Rampe.
+    g.rect(11, 3, 8, 2, 11)
+    g.put(11, 3, 12)
+    g.put(13, 4, 10)
+    g.put(16, 3, 11)
+    g.put(19, 2, 10)
+    g.put(20, 2, 11)
+    g.put(20, 3, 10)
     return _finish(g, 23, 14)
 
 
@@ -423,15 +437,17 @@ def post_b() -> Grid:
     g.rect(cx - 3, 21, 2, 3, 4)
     g.rect(cx + 3, 22, 2, 3, 4)
     g.rect(cx - 1, 21, 4, 4, 2)
-    g.put(cx, 21, 3)
-    g.put(cx, 22, 3)
+    # Glaskern 2x2 mit Bruchkante (erkennbar gegen den dunklen Rahmen).
+    g.rect(cx - 1, 21, 2, 2, 3)
+    g.put(cx - 1, 21, 9)
+    g.put(cx + 1, 23, 8)
     g.rect(cx - 3, 24, 7, 1, 3)
     # Riss im Glas.
     g.line(cx, 22, cx + 1, 24, 0, 1)
-    # Scherben am Fuss (Knochen-/Dunstton, kein Licht).
-    g.put(cx - 6, 30, 8)
-    g.put(cx + 5, 30, 9)
-    g.put(cx + 6, 29, 8)
+    # Scherben am Fuss: 2x2-Cluster (Dunstton), kein Einzelpixel-Rauschen.
+    g.rect(cx - 7, 29, 2, 2, 8)
+    g.rect(cx + 4, 29, 2, 2, 9)
+    g.put(cx + 6, 28, 8)
     return _finish(g, 20, 32)
 
 

@@ -132,7 +132,17 @@ begründen den offenen Punkt für den Lead/Merge — sie sind kein Abnahme-/HEAD
 **Sprite-Belege:** `shots/m10-props-variety-after-variants.png` (Klassen bei 4x)
 und `shots/m4b-sheet-props.png` (komplettes Sheet, 21 Sprites).
 
-**art-director-Urteil:** *(folgt)*
+**art-director-Urteil (Runde 1, vor Korrektur): PASS — Note 4/5 für Bodenvielfalt.**
+Programmatisch geprüft: Palette (alle 10 Sprites nur Indizes 0–31), Größen-/Klassenvertrag,
+Kontur-/Schatten-Vertrag, Lesbarkeit in 1x-Crops; Vielfalt auf den Wire-Shots als echte
+Formvielfalt bestätigt. Nachbesserungen priorisiert: (1) `prop_bones_b` Wirbelsäule als
+durchgehende 2x2/2x3-Kette + 2-px-Knochen, (2) `prop_boulder_c` echte Bruch-Spitzen statt
+Ellipsenbogen, (3) `prop_post_b` Glaskern 2x2 mit Bruchkante + Scherben als 2x2-Cluster.
+
+**Korrektur-Runde (1 Iteration, alle 3 Punkte umgesetzt, Commit siehe git log):**
+Belege erneuert (`after-variants.png`, `m4b-sheet-props.png`, `after-wired-*`). Wirkprobe
+auf Patch-Stand erneut: häufigstes Prop `prop_stump` 14,8 %/15,2 %. Fokussierte
+Zweitprüfung: *(folgt)*
 
 **Tests:** npm test 1375/1375 grün (ein flaky Einzelfehllauf in
 tests/fx-mixel.test.ts im ersten vollen Lauf, in Isolation und im Wiederholungslauf
