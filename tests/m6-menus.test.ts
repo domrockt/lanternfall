@@ -21,8 +21,8 @@ describe("M6 Optionen: Damage-Numbers, Skalierung, Anzeige", () => {
   it("Defaults enthalten alle fünf Optionen", () => {
     expect(DEFAULT_OPTIONS.damageNumbers).toBe(true);
     expect(DEFAULT_OPTIONS.scale).toBe(0);
-    expect(OPTION_ROWS).toHaveLength(7);
-    expect(OPTION_ROWS[6]).toBe("ZURÜCK");
+    expect(OPTION_ROWS).toHaveLength(8);
+    expect(OPTION_ROWS[7]).toBe("ZURÜCK");
     expect(DEFAULT_OPTIONS.muted).toBe(false);
   });
   it("stepOption schaltet Schalter und skaliert ganzzahlig", () => {
@@ -57,7 +57,7 @@ describe("M6 Optionen: Damage-Numbers, Skalierung, Anzeige", () => {
   });
   it("Persistenz speichert neue Felder und lädt alte Saves defensiv", () => {
     const s = memStorage();
-    saveOptions(s, { music: 0.1, sfx: 0.2, shake: false, damageNumbers: false, muted: true, scale: 2 });
+    saveOptions(s, { music: 0.1, sfx: 0.2, shake: false, damageNumbers: false, muted: true, scale: 2, fps: -1 });
     expect(loadOptions(s).damageNumbers).toBe(false);
     expect(loadOptions(s).muted).toBe(true);
     expect(loadOptions(s).scale).toBe(2);

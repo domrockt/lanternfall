@@ -173,10 +173,10 @@ describe("Optionen-Persistenz", () => {
   it("speichert und lädt gerundet/validiert", () => {
     const s = memStorage();
     saveOptions(s, {
-      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, muted: false, scale: 2,
+      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, muted: false, scale: 2, fps: -1,
     });
     expect(loadOptions(s)).toEqual({
-      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, muted: false, scale: 2,
+      music: 0.3, sfx: 0.7, shake: false, damageNumbers: false, muted: false, scale: 2, fps: -1,
     });
   });
   it("kaputtes JSON und ungueltige Werte → Defaults/Clamp", () => {
