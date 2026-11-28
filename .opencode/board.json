@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13263,
+  "next": 13348,
   "cards": [
     {
       "id": 1,
@@ -18779,6 +18779,48 @@
       "notes": [],
       "created": "2026-11-28T16:19:56Z",
       "updated": "2026-11-28T16:19:56Z"
+    },
+    {
+      "id": 13344,
+      "title": "m10-blend-band-followup K1: Vorher-Messung Blend-Wechsel/Frame",
+      "description": "Eigener Probe scripts/m10-blend-band.mjs (Muster tablet-fx-rc): Blend-Wechsel/Frame in 2 Profilen — Evo-Stack (6 Evolutionen) und Minute-25-Dichte (300 Gegner), iGPU, Renderer-String Pflicht. Belege ~/games/.evidence/m10-blend-band-followup/before-*.json. Lange Läufe unter flock /home/ai/games/.lf-perf.lock. Abnahme: Vorher-Werte im JSON mit Renderer-String (iGPU, kein SwiftShader).",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T16:41:27Z",
+      "updated": "2026-11-28T16:41:27Z"
+    },
+    {
+      "id": 13345,
+      "title": "m10-blend-band-followup K2: Rest-ADD-Quellen ins Glow-Band ziehen",
+      "description": "Rest-ADD-Quellen (EnemyProjectiles, CombatSystem, PickupSystem) ins FX_GLOW_DEPTH-Band oder verträgliches zweites Band (Muster glowDepthFor/depthForSprite in FxSystem.ts — nur Muster, Datei nicht anfassen). GAME.md-Zeichenreihenfolge respektieren; zwingend über Gegnern liegende Quellen dokumentiert lassen. Abnahme: tsc rc=0, gezielte Tests grün, Quellen je dokumentiert in docs/lanes/m10-blend-band-followup.md.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T16:50:59Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Befund — EnemyProjectiles & PickupSystem sind ADD-frei (verifiziert: grep + Runtime-Census); einzige ADD-Insel in eigenen Dateien: CombatSystem Laterne unevolviert (orb_lantern ADD auf DEPTH.fxLow 7, mitten zwischen NORMAL-FX)."
+        }
+      ],
+      "created": "2026-11-28T16:41:27Z",
+      "updated": "2026-11-28T16:50:59Z"
+    },
+    {
+      "id": 13346,
+      "title": "m10-blend-band-followup K3: Guard-Test tests/blend-band-followup.test.ts",
+      "description": "Depth-Assertions je Quelle (Glow → Band, Basis unverändert), Muster tests/tablet-fx-budget.test.ts. Abnahme: npx vitest run tests/blend-band-followup.test.ts grün, Full-Suite vor Commit grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T16:41:27Z",
+      "updated": "2026-11-28T16:41:27Z"
+    },
+    {
+      "id": 13347,
+      "title": "m10-blend-band-followup K4: Nachher-Messung + Lane-Doku + .lane-done",
+      "description": "K1-Profile nachmessen (Blend-Wechsel/Frame im Worst-Profil <= 4), pixel-diff Probe gegen Vorher-Standbild (Differenz nur im ADD-Band erklärt), docs/lanes/m10-blend-band-followup.md mit Vorher/Nachher + Hebelliste Rest-Quellen, .lane-done committen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T16:41:27Z",
+      "updated": "2026-11-28T16:41:27Z"
     }
   ]
 }
