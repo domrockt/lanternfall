@@ -1,0 +1,19 @@
+# Lane m10-level-target-balance — FERTIG (2026-11-28)
+
+Ziel-Lücke (A5-Restpunkt: Kael/101 Level 47, Ziel 25–40) geschlossen:
+**Level bei Minute 30 in [25,40] für 6/6 Läufe** (god+autoPlay+30x, Seeds 101/202/404 × kael/mira).
+
+- Vorher (`shots/m10-level-target-before.json`, Commit f511796): 2/6 im Band — Kael 37/42/38, Mira 44/42/44.
+- Fix (Commit 635ad50): `src/logic/xp.ts` — zusätzlicher Endgame-XP-Aufschlag ab Level 28
+  (`XP_ENDGAME_START_N=26`, `XP_ENDGAME_MULT=40`, per Suchlauf K=0..60 gewählt).
+  Level 1–27 bitgleich, Gegner-HP/Damage byte-identisch, `waves.ts` nicht angefasst.
+- Nachher (`shots/m10-level-target-after.json`, Commit da0bd5c): 6/6 im Band — Level 36–38.
+- Tests (`tests/level-target.test.ts`, 2f73f82): 10 Tests (Monotonie, Bitgleichheit 1–27,
+  Band für God-/No-God-XP-Profile, A5-Deckel 34k→≤40); Suite 1180/1180, tsc + Build grün.
+- Reviewer: PASS (Befund „secondaryPassed im Messskript ausweisen“ umgesetzt, 927e3df).
+- Lane-Doku: `docs/lanes/m10-level-target-balance.md` (Vorher/Nachher-Tabelle, Suchlauf,
+  offene Punkte). Hinweis: Kurve lag in `xp.ts` (unclaimed), nicht in `levelup.ts`/`scaling.ts`
+  — Request-Notiz in `/home/ai/games/.dispatch/requests.md`.
+- Offen (dokumentiert): Sekundärkriterium „Level 30 bei Minute 28–31“ im god-Setup gegen
+  Level-1-25-Stabilität + No-God-Korridor nicht gleichzeitig erfüllbar; zugunsten des
+  bindenden Band-Kriteriums aufgelöst. Skript weist `secondaryPassed` getrennt aus.
