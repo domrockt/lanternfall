@@ -8546,43 +8546,59 @@
       "id": 7279,
       "title": "m10-evo-fx-soulpyre K2: Fix Seelenflammen in Zielgroesse",
       "description": "gen-fx.ts: orbSoulFrame neu (Zielgroesse, Scale 1, Farb-Treppe Kern weiss(13/12) -> kuehl(11/10) -> gruen-blau Rand(31/30) -> dunkler Rand(28), kein Ink/Grau 5-9); Signatur soul_beacon in Zielgroesse mit drawScale [1,1]; CombatSystem: orb Scale 1, Halo gebackene Stufe <=1 + sichtbarere Alpha, Anticipation <=0.3s + Ausklang-Fade. AK: tsc rc=0, keine Scale>1 am soul-Effekt im Quelltext.",
-      "column": "doing",
+      "column": "review",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-28T01:03:26Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T01:08:22Z",
+          "by": "build",
+          "text": "doing → review: #7279 Fix committed d9f4477: orb_soul 22x32 Scale 1, Sig 96x96 drawScale[1,1], Halo@2 0.9, Ramp/Fade/Sparks. tsc+build rc=0, 1040/1040 gruen."
         }
       ],
       "created": "2026-11-28T01:01:53Z",
-      "updated": "2026-11-28T01:03:26Z"
+      "updated": "2026-11-28T01:08:22Z"
     },
     {
       "id": 7280,
       "title": "m10-evo-fx-soulpyre K3: Tests evo-fx-soulpyre",
       "description": "tests/evo-fx-soulpyre.test.ts nach Vorlage evo-fx-phoenix: Zielgroessen, Draw-Scale-1-Guard, Farb-Treppe ohne Ink/Grau, Flacker-Frames verschieden. AK: zielbezogene Tests gruen, bestehende Suite bleibt gruen.",
-      "column": "doing",
+      "column": "review",
       "assignee": "test-auditor",
       "notes": [
         {
           "at": "2026-11-28T01:07:11Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T01:08:22Z",
+          "by": "build",
+          "text": "doing → review: #7280 Tests committed 4db839f: 10 Guards, 1050/1050 gruen."
         }
       ],
       "created": "2026-11-28T01:01:53Z",
-      "updated": "2026-11-28T01:07:11Z"
+      "updated": "2026-11-28T01:08:22Z"
     },
     {
       "id": 7281,
       "title": "m10-evo-fx-soulpyre K4: Nachher-Beleg + Abnahme + Doku",
       "description": "after.json/png (Renderer-String), art-director-Vision PASS gegen verschairfte Kriterien (Dither nur an Kanten, Kerne flaechig hell, organische Formen), docs/lanes/m10-evo-fx-soulpyre.md Vorher/Nachher, .lane-done. AK: art-director PASS, build+tests+tsc rc=0, 0 JS-Fehler im Probelauf.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T01:08:22Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T01:01:53Z",
-      "updated": "2026-11-28T01:01:53Z"
+      "updated": "2026-11-28T01:08:22Z"
     }
   ]
 }
