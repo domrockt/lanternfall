@@ -13940,17 +13940,22 @@
       "id": 10627,
       "title": "m10-android-proxy-gate K3: Proxy-Doku für Perf-Lanes",
       "description": "docs/lanes/m10-android-proxy-gate.md: wie jede Perf-Lane den Proxy vorher/nachher nutzt; Grenzen ehrlich benennen (Geräte-Telemetrie = Wahrheit, kein GPU-/Thermik-Ersatz). Abnahme: Doku commitet, Baseline-Werte referenziert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T10:11:21Z",
           "by": "build",
           "text": "todo → doing: Proxy-Doku schreiben"
+        },
+        {
+          "at": "2026-11-28T10:12:44Z",
+          "by": "build",
+          "text": "doing → review: was: docs/lanes/m10-android-proxy-gate.md; geprüft: Nutzung vorher/nachher mit flock-Befehl, Baseline-Tabelle aus shots/abnahme-JSONs, Grenzen (CPU-Throttle wirkungslos bei dieser Last, kein GPU-/Thermik-Ersatz, synthetische Dichte) + Geräte-Telemetrie als Wahrheit; Commit 1568f096"
         }
       ],
       "created": "2026-11-28T09:41:15Z",
-      "updated": "2026-11-28T10:11:21Z"
+      "updated": "2026-11-28T10:12:44Z"
     }
   ]
 }

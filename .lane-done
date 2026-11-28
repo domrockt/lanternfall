@@ -1,0 +1,39 @@
+# Lane m10-android-proxy-gate — Abschluss (2026-11-28)
+
+Automatischer Android-Ersatztest für alle Perf-Lanes (Regel 9 aus
+Wissen/Android-Optimierung-Praxis.md). Alle 3 Karten (#10625–#10627) done,
+Reviewer-PASS (Subagent ses_dde5afab6ffeH4fpxKoprkMatQ, 6/6 Kriterien).
+
+## Ergebnis
+- K1: `scripts/harness.mjs` — optionaler Helfer `androidProxyContext(browser)`
+  = Playwright `devices["Galaxy Tab S4 landscape"]` (1138x712, dpr 2.25, Touch)
+  + CDP `Emulation.setCPUThrottlingRate {rate: 4}`. Bestehende Aufrufer
+  unverändert (Diff nur Einfügung).
+- K2: `scripts/android-proxy.mjs` — je Charakter (mira, kael): 6 Evolutionen
+  (L8) + 6 Passiv-Items (L5), Zeitraffer 30x bis Minute 10, skipTo Minute 25,
+  6 s Einschwingen, 60 s Echtzeit-Messung bei Minute-25-Dichte (Auffüllen auf
+  300 mit treant/abom, Sampling im Spawn-Fenster wie perf.mjs). Felder:
+  fpsP5/fpsMedian/fpsAvg, frameP95, lodWorst (quality-Stufe), renderScaleWorst,
+  heapMB, WebGL-Renderer-String, jsErrors, passed.
+- K3: `docs/lanes/m10-android-proxy-gate.md` — Nutzung vorher/nachher mit
+  `flock /home/ai/games/.lf-perf.lock node scripts/android-proxy.mjs --tag …`,
+  Grenzen ehrlich (CPU-Throttle griff bei dieser Last kaum, kein GPU-/Thermik-
+  Ersatz, synthetische Dichte), echte Freigabe = Geräte-Telemetrie.
+
+## Baseline (main-Stand, 2 Läufe mit flock)
+Renderer: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) — kein
+SwiftShader. fpsMedian mira/kael: 59.9/59.9 (Lauf 1) und 59.9/59.9 (Lauf 2)
+→ Abweichung 0 % (< 10 % gefordert). passed=true, 0 JS-Fehler. Heap max
+85.6–89.7 MB, lodWorst minimal (korrekt bei ≥ 300 Gegnern).
+JSONs: shots/abnahme/m10-android-proxy-baseline{1,2}.json, Kopien in
+~/games/.evidence/m10-android-proxy-gate/.
+
+## Abnahme
+- Proxy-Lauf reproduzierbar (2 Läufe, Median-Abweichung 0 %): erfüllt.
+- Baseline-JSON committet (shots/abnahme/, da shots/* sonst ignoriert): erfüllt.
+- 0 JS-Fehler in beiden Läufen: erfüllt.
+- build (tsc + vite) und npm test grün (1921 Tests): erfüllt.
+- GAME.md nicht geändert; Lane-Ergebnisse in docs/lanes/m10-android-proxy-gate.md.
+
+Commits: 3bc6bf6d (K1), d0311fe1 (Watchdog-Snapshot, identischer Skriptstand),
+90500670 (K2 + Baseline-JSONs), 1568f096 (K3).
