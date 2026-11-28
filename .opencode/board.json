@@ -12525,17 +12525,27 @@
       "id": 10668,
       "title": "m10-levelup-panel-crisp K4: Regressionstest + Nachher + Lane-Doku",
       "description": "tests/levelup-panel-crisp.test.ts (ganzzahlige Skalen, 0 Überlappungs-Rects, Angebotslogik bitgleich vs. Vorher-Snapshot für 3 Seeds), Nachher-Shots, docs/lanes/m10-levelup-panel-crisp.md, .lane-done. Abnahme: npm test grün, tsc rc=0, art-director >= 4/5 auf Nachher-Shots.",
-      "column": "doing",
+      "column": "done",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-28T09:59:24Z",
           "by": "build",
           "text": "todo → doing: K4 gestartet: tests/levelup-panel-crisp.test.ts (ganzzahlige Skalen, 0 Überlappungen, Angebotslogik bitgleich vs Vorher-Snapshot 3 Seeds) + Lane-Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T10:08:30Z",
+          "by": "build",
+          "text": "doing → review: K4 + .lane-done committet (fec39332, a25b3076). Kontrolleure: art-director PASS 4,5/5, reviewer PASS."
+        },
+        {
+          "at": "2026-11-28T10:08:30Z",
+          "by": "build",
+          "text": "review → done: Review abgeschlossen: art-director PASS 4,5/5 + reviewer PASS (Belege in docs/lanes/m10-levelup-panel-crisp.md); Commits fec39332/a25b3076."
         }
       ],
       "created": "2026-11-28T09:43:28Z",
-      "updated": "2026-11-28T09:59:24Z"
+      "updated": "2026-11-28T10:08:30Z"
     }
   ]
 }
