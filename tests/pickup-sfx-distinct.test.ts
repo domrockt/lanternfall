@@ -305,6 +305,7 @@ describe("M10-pickup-sfx-distinct — AudioSystem: Mute bitgleich, Musik unanget
             },
             stop: () => {},
             once: () => {},
+            on: () => {}, // m10-audio-alloc-fix K2: permanente Listener via `on`
           };
         },
       },

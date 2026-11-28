@@ -42,6 +42,7 @@ function makeAudio() {
           stop: () => events.push({ ev: "stop", key }),
           destroy: () => events.push({ ev: "destroy", key }),
           once: () => {},
+          on: () => {}, // m10-audio-alloc-fix K2: permanente Listener via `on`
         };
       },
     },
