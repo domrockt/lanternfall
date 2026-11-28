@@ -79,22 +79,30 @@ def ui_frame() -> Grid:
     g = Grid(24, 24)
     g.rect(1, 1, 22, 22, 3)
     g.rect(2, 2, 20, 20, 2)
-    # Außenband aus Eisen mit Lichtkante oben-links: obere und linke Kante
-    # bekommen eine 2-px-Aufhellung (7/6), unten-rechts bleibt dunkel (2/0).
-    g.rect(0, 0, 24, 2, 6)
-    g.rect(0, 0, 24, 1, 7)
-    g.rect(0, 0, 2, 24, 6)
-    g.rect(0, 0, 1, 24, 7)
+    # Aussenband aus Eisen mit Lichtkante oben-links: obere und linke Kante
+    # bekommen eine 2-px-Aufhellung. m10-font-ui-frame-polish #8080 (F1): die
+    # alte Stufung 7/6 lag mit 2.72:1 unter der 3:1-Grenze gegen die
+    # Innenflaeche (2) -> neue Stufung 8/7 (mist/fog), aeusserste Kante 4.1:1.
+    g.rect(0, 0, 24, 2, 7)
+    g.rect(0, 0, 24, 1, 8)
+    g.rect(0, 0, 2, 24, 7)
+    g.rect(0, 0, 1, 24, 8)
+    # Schattenkanten unten/rechts. Malreihenfolge #8080 (F3): erst die dunklen
+    # 2er-Baender, DANACH die 1-px-Ink-Linien — vorher blieb ein Stoerpixel 2
+    # bei (22,23) in der unteren Ink-Kante.
     g.rect(0, 22, 24, 2, 2)
-    g.rect(0, 23, 24, 1, 0)
     g.rect(22, 0, 2, 24, 2)
+    g.rect(0, 23, 24, 1, 0)
     g.rect(23, 0, 1, 24, 0)
-    # Innenfase: 2 px dunkler + 1 px Licht.
+    # Innenfase: 2 px dunkler + 1 px Licht, lichtlogisch symmetrisch
+    # (#8080 F2): oben UND links eine 1-px-Lichtlinie (6), rechte und untere
+    # Fase beide 4 (vorher rechts 2 vs unten 4 bei gleicher Schattenrolle).
     g.rect(2, 2, 20, 2, 4)
-    g.rect(2, 2, 20, 1, 6)
     g.rect(2, 20, 20, 2, 4)
     g.rect(2, 2, 2, 20, 4)
-    g.rect(20, 2, 2, 20, 2)
+    g.rect(20, 2, 2, 20, 4)
+    g.rect(2, 2, 20, 1, 6)
+    g.rect(2, 2, 1, 20, 6)
     # Goldnieten 3x3 in allen vier Ecken: Glanz (22) oben-links, Schatten (0) unten-rechts.
     # Hoeherer Eckenkontrast, damit der Rahmen nicht oben flach wirkt (#321).
     for x, y in ((3, 3), (18, 3), (3, 18), (18, 18)):
