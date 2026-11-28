@@ -200,3 +200,25 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   Guard-Test 10/10 grün (09:35Z), Full-Suite + Build grün (09:27–09:31Z, s. Run 5).
 - Bedarf UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt in textures.ts via Mini-Job
   `m10-gem-rows-texture` oder Freigabe nach fx-bakes-evo-r2-Merge.
+
+## Run-Fortsetzung (28.11. 09:37–09:40Z, Versuch 2 / Run 7)
+
+- Ready-Zustand frisch verifiziert (09:37Z): `npx tsc --noEmit` clean,
+  `npx vitest run tests/gem-value-reading.test.ts` 10/10 grün, r3-Patch gestaget
+  (textures.ts 20 Z, xp.ts 24 Z, Test 8 Z) — unverändert zu Run 6.
+- Claim-Lage (Substring-Check 09:37Z): `src/gfx/textures.ts` weiterhin bei
+  `m10-fx-bakes-evo-r2` (Lane aktiv: K3-Commit 20a79970, kein `.lane-done`).
+  Mini-Job `m10-gem-rows-texture` noch nicht gestartet (Queue hinter
+  m10-chest-arrow-texture-r2). Kein Commit-Retry im Loop.
+- Doppel-Automation bereinigt: die beiden aktiven Rechecks feuerten fast
+  gleichzeitig (v2 10:00:58Z, #2 10:01:34Z) — einmaliger Recheck #2
+  (aut_221837c…) gelöscht, wiederkehrende v2 (aut_22182edd…, alle 25 min bis
+  10:55Z) bleibt aktiv.
+- Board: #10180-Notiz Run 7 gesetzt. #10177-#10179 konnten nicht auf `done`
+  gezogen werden — das Board-Plugin verweigert `done`-Moves bei uncommittetem
+  Worktree (r3-Patch wartet auf den Claim); sie bleiben korrekt in `review`,
+  Commit-Belege (186d0f57/7937d48b/17b52c0a) + reviewer-PASS stehen in der Doku.
+- Kein voller Build/Suite erneut gefahren (Tempo-Regel; Belege Run 5: Suite
+  1773 grün, Build rc=0, 0 JS-Fehler).
+- Bedarf UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt via Mini-Job
+  `m10-gem-rows-texture` oder Freigabe nach fx-bakes-evo-r2-Merge.
