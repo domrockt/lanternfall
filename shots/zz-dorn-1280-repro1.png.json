@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5563/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/zz-dorn-1280-repro1.png",
+  "gif": null,
+  "jsErrors": []
+}

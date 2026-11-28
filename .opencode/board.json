@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8877,
+  "next": 8882,
   "cards": [
     {
       "id": 1,
@@ -11444,6 +11444,51 @@
       "notes": [],
       "created": "2026-11-28T05:56:30Z",
       "updated": "2026-11-28T05:56:30Z"
+    },
+    {
+      "id": 8877,
+      "title": "m10-evo-fx-dornensturm K1: Ist-Beleg Dornensturm (Vorher)",
+      "description": "AK: before.json + PNGs (iGPU ANGLE RPL-S, 0 JS-Fehler): projectile_thorn 7x7@1.7x mit 12/25 Ink, fx_thorn 9x9@2.9x pal27, Todes-Sig 32x32@~4x mit 188/354 Ink; Mess-Skript. lane #7718, Merge 063623a",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:02:56Z",
+      "updated": "2026-11-28T06:02:56Z"
+    },
+    {
+      "id": 8878,
+      "title": "m10-evo-fx-dornensturm K2: Dornen-FX in Zielgroesse",
+      "description": "AK: projectile_thorn 12x12 (Draw-Scale 1), fx_thorn 14x14 (Ramp-Bug behoben), fx_thorn_streak 22x22, fx_thorn_crown 96x96 ersetzt ring_burst/fx_shock; Natur-Treppe 11/31/30/29/28, Trail-Tint Gruen, live Scales max 1.0. lane #7719, Merge 063623a",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:02:56Z",
+      "updated": "2026-11-28T06:02:56Z"
+    },
+    {
+      "id": 8879,
+      "title": "m10-evo-fx-dornensturm K3: Treffer-/Todes-Signatur 128x128",
+      "description": "AK: thornSignatureFrame 128x128 (Taper, Barben, 0 Ink), drawScale [1,1] am thorn_storm-Eintrag, BAKED_SIGNATURES-Registrierung; Rebase-Resolve: thunder_seal bleibt 64er-Pfad (Chaos-Revert 34e97d3, Karte #8876). lane #7720, Merge 063623a",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:02:56Z",
+      "updated": "2026-11-28T06:02:56Z"
+    },
+    {
+      "id": 8880,
+      "title": "m10-evo-fx-dornensturm K4: 11 Guards evo-fx-dornensturm.test.ts",
+      "description": "AK: 11 Guards (Signatur 128x128@[1,1] + Quelltext-Guard, Dorn-Treppe ohne Ink/Grau/warm, Projektil 12x12, Trail/Streak/Crown, kein Mixel, Determinismus, binaeres Alpha). Live-Check 28.11.: 11/11 gruen, Suite 1522. lane #7721, Merge 063623a",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:02:56Z",
+      "updated": "2026-11-28T06:02:56Z"
+    },
+    {
+      "id": 8881,
+      "title": "m10-evo-fx-dornensturm K5: Nachher-Belege + Abnahme + .lane-done",
+      "description": "AK: after.json (Near-White 3,76% <= 4,16, live Scales 1.0), after-GIF 24 Frames mit lebenden Gegnern, art-director PASS 4,5/5 (Round 2), Lane-Doku; Merge-Kontroll-Shots 960+1280 sauber (Pixelmessung == Baseline). lane #7722, Merge 063623a",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:02:56Z",
+      "updated": "2026-11-28T06:02:56Z"
     }
   ]
 }
