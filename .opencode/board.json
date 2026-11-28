@@ -9608,10 +9608,16 @@
       "id": 7620,
       "title": "m10-atlas-gutter K3: Nachher-Audit + Zoom-Beleg",
       "description": "Nachher-Audit -> shots/m10-atlas-gutter-after.json (0 Bleed, Coverage 100%), 4x-Zoom-Screenshot eines kritischen Frames, Befund in docs/lanes/m10-atlas-gutter.md, Commit + .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:02:54Z",
+          "by": "build",
+          "text": "todo → doing: K3: Nachher-Audit + 4x-Zoom kritischer Frame + Lane-Doku."
+        }
+      ],
       "created": "2026-11-28T02:46:44Z",
-      "updated": "2026-11-28T02:46:44Z"
+      "updated": "2026-11-28T03:02:54Z"
     }
   ]
 }
