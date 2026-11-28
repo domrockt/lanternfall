@@ -1,0 +1,20 @@
+# Lane m10-chaos-fix-raster-glow — fertig (2026-11-28)
+
+Alle 5 Karten committet (5ab51b4, 58fcde0, eaf2ab6, b4929e2 + finaler K5-Commit), Board #8218–#8222.
+
+Zusammenfassung:
+- K2: 5 Todes-Frame-Sets (9x9) + fx_bolt (12x16) als Mixel-Bake-Basen mit Density-Stufen — real bis
+  Scale 2,4 gezeichnet, Draw-Scale jetzt <= 1 ohne fremde Caller-Edits; Gewittersiegel-Signatur in
+  Zielgroesse 128x128 (drawScale [1,1]); Glow-Rampen enden auf Amber/Lantern statt Weiss
+  (blob/ring/fx_star/bolt/death-blob; Evo-Lane-Signaturen bewusst unangetastet).
+- K3: light_radius-Aussenkante + Vignette auf harte Alpha-Baender quantisiert (LIGHT_EDGE_STEPS,
+  vignetteSteps) + bakeAtlas-Check (keine Gradients). OFFENPUNKT: Boot.ts-Local-Kopien
+  ueberschreiben die Keys zur Laufzeit (Boot.ts dieser Lane verboten, Request in
+  .dispatch/requests.md, 2-Zeilen-Hebel beim Boot/Run-Scope).
+- K4: ADD_ALPHA_CAP 0,8 + addAlphaClamp in FxSystem + ParticleSystem (Boss-FX/Sig ausgenommen).
+
+Messwerte (verbindlicher After-Lauf, iGPU ANGLE RPL-S, 0 JS-Fehler):
+- Near-White A7 Frame worst 0,51 % (vorher 0,57), Crop worst 3,10 % (vorher 3,54) — Gate <= 4,16 %.
+- FPS 60,0/60,1 (vorher 60,1/60,1 — within noise). Suite 1365 Tests gruen, tsc + Build gruen.
+- art-director streng: PASS 4/5. Hinweise: Capture-Profil 640x360@1 nicht-ganzzahlig; 300er-Frames
+  teils mit Truhen-Dialog (Chaos-Nachweis ueber 62–74-Gegner-Frames + JSON).
