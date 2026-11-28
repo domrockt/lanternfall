@@ -13670,7 +13670,7 @@
       "id": 10454,
       "title": "m10-boss-name-legibility K1: Chaos-Repro + Befund klären (Layering vs. Kontrast) + Baseline",
       "description": "AK: Ein M25-skipTo-Chaos-Repro (scripts/m10-boss-name.mjs) in 960x540 + 640x360 mit before-Shots + 6x-Zoom; mit EINEM Repro geklärt: Layering (Gegnerpixel über Depth 90) oder Kontrast (Amber auf Horde-Rot). Baseline-JSON (Textband-Deckung/Kontrast-Metrik) committet BEVOR der Fix beginnt.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T09:18:58Z",
@@ -13681,40 +13681,55 @@
           "at": "2026-11-28T09:26:34Z",
           "by": "build",
           "text": "doing → review: K1: Repro gelaufen (iGPU, 0 JS-Fehler), Diagnose eindeutig: Chaos/Referenz-Glyphen-Deckung 253/253=1.0 → Kontrastproblem, Layering korrekt. Baseline-JSON + Vorher-Shots/Zooms in ~/games/.evidence/m10-boss-name-legibility/. Commit fbfe8d70 nennt #10454."
+        },
+        {
+          "at": "2026-11-28T09:35:41Z",
+          "by": "build",
+          "text": "review → done: lane #10454, commit fbfe8d70. Diagnose belegt: Kontrast, kein Layering (Deckung 253/253=1.0). commit-gate PASS."
         }
       ],
       "created": "2026-11-28T09:18:44Z",
-      "updated": "2026-11-28T09:26:34Z"
+      "updated": "2026-11-28T09:35:41Z"
     },
     {
       "id": 10455,
       "title": "m10-boss-name-legibility K2: Fix Boss-Name-Lesbarkeit (UI.ts/depth.ts)",
       "description": "AK: Fix je Befund aus K1 — Layering: Boss-Name/HP-Leiste pinnend über allem rendern; Kontrast: Textband auf dieselbe dunkle Alpha-Platte wie die Leiste oder Outline/Platte. Klein halten, keine UI-Umbauten. Nur area-Dateien (UI.ts, depth.ts). Regressionstest tests/boss-name-legibility.test.ts grün, tsc rc=0.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T09:26:18Z",
           "by": "build",
           "text": "todo → doing: Übernommen: Fix = dunkle Alpha-Platte (ink, 0,95) hinter dem Textband, wie Leiste."
+        },
+        {
+          "at": "2026-11-28T09:35:41Z",
+          "by": "build",
+          "text": "doing → done: lane #10455, commit d228fc38. Platte ink 0,95 bündig über Leiste; Test 17/17, npm test 1884/1884, build grün. commit-gate PASS."
         }
       ],
       "created": "2026-11-28T09:18:44Z",
-      "updated": "2026-11-28T09:26:18Z"
+      "updated": "2026-11-28T09:35:41Z"
     },
     {
       "id": 10456,
       "title": "m10-boss-name-legibility K3: Nachher-Beleg + art-director-Urteil + .lane-done",
       "description": "AK: Gleicher Repro nach Fix (after-Shots 640+960 + 6x-Zoom), Boss-Name im M25-Chaos vollständig lesbar, HP-Leiste weiter lesbar, kein neues Near-White/Overlap im Rest-HUD. art-director-Kurzsichtung (Note + 2-3 Sätze) in docs/lanes/m10-boss-name-legibility.md. npm test grün, npm run build grün, .lane-done committet.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T09:33:57Z",
           "by": "build",
           "text": "todo → doing: Übernommen: After-Belege + art-director-Kurzsichtung + Lane-Abschluss."
+        },
+        {
+          "at": "2026-11-28T09:35:41Z",
+          "by": "build",
+          "text": "doing → done: lane #10456, commit 8658fe39. After-Belege in shots/abnahme/ + Evidence; art-director PASS 5/5, commit-gate PASS. .lane-done committet."
         }
       ],
       "created": "2026-11-28T09:18:44Z",
-      "updated": "2026-11-28T09:33:57Z"
+      "updated": "2026-11-28T09:35:41Z"
     }
   ]
 }
