@@ -484,3 +484,35 @@ der Lead aus dem Befund; in dieser Lane wurde bewusst NICHT gefixt.
 
 Abnahme-Bilder: `shots/abnahme/m10-v10-device-*.png` (im Repo). GPU-Renderer jedes Belegs:
 `Adreno (TM) 710` (kein SwiftShader → Belege gültig).
+
+## Nachabnahme G (2026-11-28) — Nachabnahme nach Heap-Regressions-Fix
+
+**Basis:** main @ `b69ede5c` (nach `9153181d` Merge `m10-heap-regression-fix`).
+**Anlass:** Nachabnahme F scheiterte ausschließlich am Heap-Tor (+18,2 %/+20,8 % > +15 %).
+Die Fix-Lane entzerrte das Tor auf **retained Heap über Szenen-Teardown** (endMB nach
+Results + GC vs. startMB nach Boot + GC, strikt < +15 %). Vollständige QA-Doku:
+`docs/qa/acceptance-refresh-g-2026-11-28.md`; Lane-Doku: `docs/lanes/m10-acceptance-refresh-g.md`;
+Belege: `~/games/.evidence/m10-acceptance-refresh-g/` (Renderer jedes Belegs:
+`Mesa Intel(R) Graphics (RPL-S)`, kein SwiftShader).
+
+**Gesamturteil: PASS (4/4 Karten PASS, keine Blocker)** — Tabelle aus der QA-Doku
+(Abweichungen ≥ 5 % vs. Nachabnahme F markiert):
+
+| K | Kriterium | Ergebnis | Urteil |
+|---|---|---|---|
+| K1 | Build/Tests/Inhalt/verify:final | build rc=0, Tests **2243/2243** (201 Dateien), acceptance-count **30/6/6/6/6/2**, verify:final **7/7 PASS**, 0 JS-Fehler | PASS |
+| K2 | FPS-Kerne (iGPU) | Burst 640x360 **60,0** (≥55), Burst 780x360@3 **60,0** (≥55), Minute-25 780x360@3 **60,1** (≥50) | PASS |
+| K3 | Heap-Tor 2x fullrun | retained **+8,9 % / +9,2 % < +15 %** in BEIDEN Läufen; 6/6 Bosse+Truhen exakt, Sieg `dawn`, fpsMin 60,4/60,3, 0 JS-Fehler | PASS |
+| K4 | Doku + Urteil | QA-Doku + `docs/lanes/m10-acceptance-refresh-g.md` | PASS |
+
+Abweichungen ≥ 5 % gegen F: (1) Heap-Tor F +18,2/+20,8 % FAIL → G +8,9/+9,2 % PASS
+(retained-Tor, Gegenstand des Fix-Jobs); (2) In-run-Beobachtung F +18,2/+20,8 % →
+G +10,7/+14,9 % (GC-Sägezahn-Streuung); (3) Tests 1957 → 2243 (+14,6 %, neue
+Testdateien anderer Lanes).
+
+Befundliste (B1–B5) mit Hebel-Pointern: `docs/qa/acceptance-refresh-g-2026-11-28.md`
+(B1: dieser ACCEPTANCE-Eintrag — hier nachgeholt; B5: Port-Retry im fullrun-Harness —
+erledigt in Lane `m10-acceptance-g-sync`, K2/K3).
+
+**Ergebnis Nachabnahme G: ABGENOMMEN (PASS).** Die einzige FAIL-Basis von F
+(Heap-Tor) ist mit dem entzerrten retained-Tor in beiden Läufen geräumt.
