@@ -109,28 +109,30 @@ export function planPlay(state: MixerState, req: SoundRequest): PlayPlan {
   if (last !== undefined && state.now - last < req.cooldown) return { allow: false, reason: "cooldown" };
   if (req.priority < 3) {
     pruneStarts(state);
-    // Harte Gesamt-Grenze: 24 Voice-Starts/s über Waffen-/Treffer-Band. Die
-    // Pickup-Klasse (m10-pickup-sfx-distinct) zählt NICHT hinein — sie hat ihr
-    // eigenes Kontingent (8/s) und wird bei Massen-Events über pickupDampGain
-    // gedämpft statt verhungert (vorher: 622x rateFair bei 900 XP-Requests).
     const recent = state.starts.filter((s) => s.band < 2);
-    if (recent.length >= MAX_STARTS_PER_SECOND) return { allow: false, reason: "rate" };
-    // Fair-Anteil je Klang-ID: Band-Deckel / aktive IDs, mindestens 1/s — auch
-    // bei vollem Band, damit im Chaos keine Waffe verstummt. Die Pickup-Klasse
-    // teilt sich ihr eigenes Kontingent (PICKUP_BAND_STARTS_PER_SEC) fair zwischen
-    // xp und powerup und läuft nicht mehr im Waffen-Band mit.
-    const band = bandOfRequest(req);
-    const bandCap =
-      band === 0 ? WEAPON_BAND_STARTS_PER_SEC
-      : band === 3 ? PICKUP_BAND_STARTS_PER_SEC
-      : HIT_BAND_STARTS_PER_SEC;
-    const bandStarts = band === 3
-      ? state.starts.filter((s) => s.band === 3)
-      : recent.filter((s) => s.band === band);
-    const distinct = new Set(bandStarts.map((s) => s.id)).size;
-    const share = Math.max(1, Math.floor(bandCap / Math.max(1, distinct)));
-    const own = bandStarts.reduce((n, s) => n + (s.id === req.id ? 1 : 0), 0);
-    if (own >= share) return { allow: false, reason: "rateFair" };
+    if (req.pickup) {
+      // Pickup-Klasse (m10-pickup-sfx-distinct): eigenes Kontingent
+      // (PICKUP_BAND_STARTS_PER_SEC, Fair-Share je ID) statt des globalen
+      // Waffen-/Treffer-Deckels — Massen-XP wird über pickupDampGain gedämpft
+      // statt verhungert (vorher: 622x rateFair bei 900 XP-Requests).
+      const bandStarts = state.starts.filter((s) => s.band === 3);
+      const distinct = new Set(bandStarts.map((s) => s.id)).size;
+      const share = Math.max(1, Math.floor(PICKUP_BAND_STARTS_PER_SEC / Math.max(1, distinct)));
+      const own = bandStarts.reduce((n, s) => n + (s.id === req.id ? 1 : 0), 0);
+      if (own >= share) return { allow: false, reason: "rateFair" };
+    } else {
+      // Harte Gesamt-Grenze: 24 Voice-Starts/s über Waffen-/Treffer-Band.
+      if (recent.length >= MAX_STARTS_PER_SECOND) return { allow: false, reason: "rate" };
+      // Fair-Anteil je Klang-ID: Band-Deckel / aktive IDs, mindestens 1/s — auch
+      // bei vollem Band, damit im Chaos keine Waffe verstummt.
+      const band = bandOfRequest(req) as 0 | 1;
+      const bandCap = band === 0 ? WEAPON_BAND_STARTS_PER_SEC : HIT_BAND_STARTS_PER_SEC;
+      const bandStarts = recent.filter((s) => s.band === band);
+      const distinct = new Set(bandStarts.map((s) => s.id)).size;
+      const share = Math.max(1, Math.floor(bandCap / Math.max(1, distinct)));
+      const own = bandStarts.reduce((n, s) => n + (s.id === req.id ? 1 : 0), 0);
+      if (own >= share) return { allow: false, reason: "rateFair" };
+    }
   }
   if (state.totalVoices >= MAX_TOTAL_VOICES && req.priority < 3) {
     if (req.priority >= 2) {

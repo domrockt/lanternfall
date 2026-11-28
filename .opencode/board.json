@@ -12035,13 +12035,18 @@
    "id": 9587,
    "title": "m10-pickup-sfx-distinct K4 Test+Doku: tests/pickup-sfx-distinct.test.ts + After-Matrix",
    "description": "tests/pickup-sfx-distinct.test.ts (Paar-Distanzen >= 0,15, kein Clipping, Mixer-Regeln, Mute bitgleich), After-Messung, docs/lanes/m10-pickup-sfx-distinct.md. Abnahme: npm test gruen, npm run build gruen, Musik-Tests unveraendert gruen.",
-   "column": "doing",
+   "column": "review",
    "assignee": "m10-pickup-sfx-distinct",
    "notes": [
     {
      "at": "2026-11-28T07:50:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "Karte angenommen -> doing."
+    },
+    {
+     "at": "2026-11-28T07:55:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "review: K4 committed. 14 Tests, After-Matrix min 0,310 PASS, npm test 1669 gruen, build gruen. Reviewer-Subagent ueber Lane-Diff laeuft."
     }
    ]
   }

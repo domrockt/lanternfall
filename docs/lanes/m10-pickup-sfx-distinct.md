@@ -96,6 +96,37 @@ Grün: tsc, audio-mix, audio-mix-chaos, audio-frost-gap, ambient-batching (28 Te
 Musik-Pfade unberührt (keine Änderung an setMusic/applyVolumes/MUSIC_KEYS); Master-Mute-Pfad
 (`muted`-Check in play/setMuted) unverändert — bitgleich, Test-Beleg in K4.
 
+## K4 — Test + After-Matrix (#9587)
+
+`tests/pickup-sfx-distinct.test.ts` (14 Tests): WAV-Mapping/Längen, alle 6 Paar-Distanzen >= 0,15
+(Metrik textgleich aus tests/audio-mix.test.ts), kein Clipping, Mixer-Regeln (eigenes Kontingent
+unabhängig vom 24/s-Deckel, Fair-Share, Priorität-2-Verdrängung, Rückwärtskompatibilität ohne
+pickup-Flag), pickupDampGain (1 → 0,45, monoton, nie stumm, nur für die Klasse), Master-Mute
+bitgleich (Pfad unverändert, sfxPlayed-Zähler), Musik-Pfade unangetastet (MUSIC_KEYS + Track-Wechsel).
+
+**After-Matrix** (`~/.evidence/m10-pickup-sfx-distinct/m10-pickup-sfx-after.json`, gleiche Sim
+wie K1): min Paar-Distanz **0,310** (Ziel 0,15) — PASS; 477/900 XP-Sounds im Burst hörbar
+(vorher 65), 0 Clipping, Peak −16,9 dBFS.
+
+### Abnahme (Briefing)
+
+| Kriterium | Ergebnis |
+|---|---|
+| Alle Paar-Distanzen >= 0,15 | **PASS** — min 0,310 (levelup/chest), 6/6 Paare |
+| 0 Clipping im Burst | **PASS** — 0 Samples, Peak −16,9 dBFS |
+| Master-Mute bitgleich (A7) | **PASS** — Pfad unverändert, Tests (mute blockt jeden SFX, sfxPlayed konstant) |
+| Musik-Pfade unveraendert (music-dawn-Tests gruen) | **PASS** — `npm test` 154 Dateien / 1669 Tests grün, MUSIC_KEYS/Track-Wechsel getestet |
+| `npm test` gruen | **PASS** — 1669/1669 |
+| `npm run build` gruen | **PASS** — built in 407 ms |
+
+### Offene Punkte
+
+- Verdrahtung `play("powerup")` im Powerup-Moment: Lane `m10-powerup-sfx-wire` (Claim
+  `src/systems/PickupSystem.ts`). Key + WAV + Config sind hier fertig; bis deren Merge bleibt
+  der Powerup-Moment stumm (wie bisher).
+- GAME.md Abschnitt „Sound" nennt 24 WAVs und die alten Namen — wird beim Merge aus dieser
+  Doku aktualisiert (hier nicht änderbar).
+
 ## Notizen / Abweichungen
 
 - **Supervisor-Fehlalarm #9196** (2026-11-28, „du bearbeitest die falsche Karte"):
