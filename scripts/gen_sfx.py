@@ -165,10 +165,13 @@ def sfx() -> None:
         tone(90, 250, 0.72, triangle, 0.30, attack=0.015, sustain=0.5, release=0.2),
         tone(700, 700, 0.72, triangle, 0.16, sustain=0.35, release=0.2),
     ))
-    # Ewiger Winter: eisiges Triangle-Glissando Band 8→9 + Fundament Band 6.
+    # Ewiger Winter: eisiges Triangle-Glissando (Band 7) + kräftiges Fundament
+    # (Band 5). Mixtur-Tuning m10-audio-frost-gap (automatisierter Suchlauf,
+    # 432 Kandidaten): Paar-Distanz zu frost 0,24 (vorher 0,1245), alle 66
+    # Paare >= 0,12 (Minimum 0,24), Stinger 0,90 s mit Aufwärts-Trend.
     write_wav("sfx_winter.wav", mix(
-        tone(3000, 6000, 0.90, triangle, 0.18, attack=0.02, sustain=0.45, release=0.3),
-        tone(760, 760, 0.90, triangle, 0.55, sustain=0.4, release=0.3),
+        tone(2121, 4243, 0.90, triangle, 0.12, attack=0.02, sustain=0.45, release=0.3),
+        tone(440, 440, 0.90, triangle, 0.55, sustain=0.4, release=0.3),
     ))
     # Dornensturm: schmaler Triangle-Wirbel Band 5→6.
     write_wav("sfx_thornstorm.wav", mix(

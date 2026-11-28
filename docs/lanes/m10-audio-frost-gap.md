@@ -60,7 +60,39 @@ sondern in `scripts/gen_sfx.py` + `public/sfx/sfx_winter.wav`. Beide sind laut
 
 ## Nachher (K2)
 
-*(wird nach K2 eingetragen)*
+Suchlauf (Skript `~/tmp/m10-audio-frost-gap/search_winter.py`, pure Python ohne numpy,
+Metrik validiert: reproduziert Ist 0,1245 exakt): Runde 1 Gitter 150 Kandidaten
+(Terz-Verschiebung 3..7 aufwaerts) — bester OK-Kandidat nur min 0,1286 (Kollision des
+hoeheren Glissandos mit phoenix 5600→9800 Hz). Runde 2 erweitertes Gitter 432 Kandidaten
+(Verschiebung −8..+6 Halbtoene, Fundament 440..1290 Hz, Mixtur a1 0,12..0,35 /
+a2 0,35..0,55, festes Limit, kein Nachschuben): **83 Kandidaten erfuellen alle
+Nebenbedingungen**, bester:
+
+**Gewinner: Glissando −6 Halbtoene (3000→6000 wird 2121→4243 Hz), Fundament 760→440 Hz,
+Mixtur 0,18/0,55 → 0,12/0,55.** Das Glissando wandert unter Frosts Sweep, die Mixtur wird
+fundament-dominiert (Band 5 statt Band 6) — der Lane-Vorschlag „andere Obertoen-Mixtur“
+schlaegt die reine Terz nach oben (die kollidiert mit phoenix).
+
+| Kennzahl | vorher | nachher |
+|---|---|---|
+| frost / eternal_winter | 0,1245 | **0,2391** |
+| Minimum aller 66 Paare | 0,1245 (frost/eternal_winter) | 0,1459 (frost/lantern, unverändert) |
+| Paare < 0,12 | 0 | 0 |
+| Peak sfx_winter | 0,59 | 0,57 (kein Clipping) |
+| Dauer / Trend | 0,90 s / rising | 0,90 s / rising (unverändert) |
+
+Band-Energien eternal_winter nachher (B0..B9): 0,0009 / 0,0006 / 0,0005 / 0,0015 /
+0,0349 / 0,3244 / 0,1535 / 0,3222 / 0,1533 / 0,0087 — Band 8/9-Ueberlappung mit frost
+entfernt, Fundament in Band 5.
+
+Aenderungen: `scripts/gen_sfx.py` (Winter-Block, Kommentar mit Suchlauf-Befund) +
+regeneriertes `public/sfx/sfx_winter.wav` (beide laut claims.json unclaimed, Meldung in
+`/home/ai/games/.dispatch/requests.md`; Regeneration bit-identisch, nur sfx_winter.wav
+geaendert — `git status public/sfx/`). `src/audio/mixing.ts` bewusst UNveraendert:
+SFX_CONFIG/Cooldowns/Spam-Regeln sind von der Spektral-Distanz unabhaengig.
+
+Beleg: `shots/m10-audio-frost-gap-matrix-after.json` (alle 66 Paare, engste Paare),
+`npx vitest run tests/audio-mix.test.ts` 7/7 gruen.
 
 ## Offene Punkte
 
