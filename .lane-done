@@ -1,0 +1,38 @@
+# Lane m10-ground-chunk-tex-dup — FERTIG (Karte #13283)
+
+Regression gefixt: GroundRenderer loggte seit Chunk-Budget-Merge (39d1efe8) bei jedem
+Chunk-Wiederaufbau „Texture key already in use: chunk_*" (createCanvas auf belegtem Key),
+was in Mess-Skripten als JS-Fehler zaehlte und Balance-JSONs auf accepted:false drueckte.
+
+Ergebnis:
+- Vorher: 166 Spam-Zeilen, jsErrors 166, accepted:false
+  (~/games/.evidence/m10-mira-hp-balance-check/m10-mira-hp-2026-11-28T16-37-55-504Z.json)
+- Nachher: 0 Spam-Zeilen, jsErrors 0
+  (~/games/.evidence/m10-mira-hp-balance-check/m10-mira-hp-2026-11-28T17-42-59-349Z.json)
+- accepted bleibt false wegen Balance-Korridor-Violations, die im Vorher-Lauf identisch
+  bestehen (kaelDurationDelta vs. committete Referenz + mira/101 Golem 17.1 s) — fremde
+  Lane (m10-mira-hp-balance-check / Balance), nicht der Texture-Fix. Offener Punkt in
+  docs/lanes/m10-ground-chunk-tex-dup.md.
+
+Umsetzung (src/gfx/GroundRenderer.ts, kein Chunk-Streaming-Umbau):
+- Neuer testbarer Helfer acquireChunkCanvas(): existierenden chunk_*-Key wiederverwenden
+  (neu malen) statt createCanvas; nur bei Klassen-Wechsel neu anlegen. Genutzt an BEIDEN
+  Stellen (Async-Install buildChunkTexture + Sync-Fallback createChunk).
+- poolDrop(): Pool-Eintrag des Keys entfernen, wenn die Textur wieder aktiv wird.
+- Klassenerkennung ueber Canvas-Hoehe + Stale-Frame-Pruning (FrameTotal loeg bei
+  wiederverwendeten Canvases).
+- textureKeyInUse-Sperre: Key eines aktiven Chunk-Images wird weder umgemalt (Pool-
+  Borrowing) noch gepoolt (Sync/Async-Rennen) — Bitmaps werden verworfen, der Pool
+  selbst-heilt bei der naechsten Eviction des Borrowers.
+- destroy(): remove() nur noch bei existierender Textur.
+
+Qualitaet: tsc rc=0, build rc=0, volle Suite 233 Dateien / 2521 Tests gruen, neuer
+Guard-Test tests/ground-chunk-tex-dup.test.ts (6 Faelle, Phaser-Mimik: 0 'already in
+use' bei 50x Wiederaufbau). Sichtpruefung: scripts/probe-tex-dup.mjs, 100 s Autoplay
+bei 30x — 0 Spam, 0 pageerrors, 0 'No texture found'.
+
+Hindernisse: reserverter Kartenblock #13263-#13282 vergeben -> Karte #13283. 3 Laeufe
+starben an Infrastruktur (geleakte ImageBitmaps vor Adapter-Fix, 1x Port-Konflikt);
+keine Blind-Loops, jede Auswertung vor dem naechsten Versuch. Fremde Datei-Aenderungen
+im Worktree (shots/m10-passive-math-*.json, .opencode/board.json) NICHT von dieser Lane
+und nicht committet.
