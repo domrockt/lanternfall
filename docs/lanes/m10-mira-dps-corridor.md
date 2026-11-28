@@ -113,3 +113,12 @@ neue Karte/Befund.
 Belege: `~/games/.evidence/m10-mira-dps-corridor/` (probe-build-before/after.json,
 short-iter2-PASS.json, full-iter2-FAIL-mira404-16.7.json), committete Baselines
 `shots/m10-balance-corridor-{short,full}.json`.
+
+## Prozess-Notiz: Runner-Checkpoints mit falschem Kartenbezug
+
+Die Runner-/Supervisor-Checkpoints `b9400f86` („#12013 WIP") und `2470250a` („Supervisor-Snapshot")
+haben uncommittete Lane-Zwischenstände (K1-Doku, phoenix-Datenfix, Baseline-JSONs) gebunkert —
+mit fremdem Kartenbezug (#12013 gehört nicht zu dieser Lane, Block #12164–#12167). Inhaltlich
+entsprechen sie exakt den hier dokumentierten Ständen; die Karten-Commits
+`0ac7037a` (#12166) und `32ccc658` (#12167) tragen die finalen Fassungen.
+
