@@ -162,8 +162,10 @@ const deviations = rows.filter((r) => Math.abs(Number(r.deviation)) > 1e-9);
 const capViolations = rows.filter((r) => r.withinCap !== true);
 const invalid = rows.filter((r) => r.finiteNonNegative !== true);
 
+// Kein generatedAt: Die Datei ist ein getrackter, stabiler Snapshot — ein
+// Lauf-Zeitstempel wuerde bei jedem Suite-Lauf andere Bytes schreiben und den
+// git-Status dauerhaft dirty halten (siehe docs/lanes/m10-passive-math-artifact-fix.md).
 const summary = {
-  generatedAt: new Date().toISOString(),
   passiveMaxLevel: Object.fromEntries(
     (Object.keys(PASSIVES) as PassiveId[]).map((id) => [id, PASSIVES[id].maxLevel]),
   ),
@@ -333,8 +335,8 @@ const junkInvalid = junkValues.filter((v) => !Number.isFinite(v) || v < 0);
 
 const boundaryViolations = boundary.filter((c) => !c.withinCap || !c.finiteNonNegative);
 
+// Kein generatedAt — siehe Kommentar ueber `summary` (stabile Snapshot-Bytes).
 const capsSummary = {
-  generatedAt: new Date().toISOString(),
   caps: CAPS,
   checks: boundary.length,
   violations: boundaryViolations.length,
