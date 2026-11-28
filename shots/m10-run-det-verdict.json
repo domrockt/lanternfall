@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-28T04:40:44.686Z",
+ "generatedAt": "2026-11-28T05:02:49.335Z",
  "seeds": [
   101,
   202,
@@ -9,7 +9,7 @@
  "maxSeconds": 120,
  "scale": 30,
  "character": "mira",
- "deterministic": false,
+ "deterministic": true,
  "perSeed": [
   {
    "seed": 101,
@@ -22,52 +22,12 @@
   },
   {
    "seed": 202,
-   "identical": false,
+   "identical": true,
    "pageErrorCount": 0,
-   "divergingMarks": 73,
+   "divergingMarks": 0,
    "totalMarks": 120,
-   "divergingFields": {
-    "kills": 50,
-    "enemies": 24,
-    "px": 72,
-    "py": 72,
-    "xp": 67,
-    "level": 36
-   },
-   "firstDiff": {
-    "rep": 1,
-    "where": "mark[47] (s=48)",
-    "fields": [
-     "kills",
-     "enemies"
-    ],
-    "a": {
-     "s": 48,
-     "elapsed": 48.04999999999941,
-     "kills": 24,
-     "level": 3,
-     "xp": 9,
-     "hp": 250,
-     "enemies": 4,
-     "chestsDropped": 0,
-     "bossesSpawned": 0,
-     "px": 21085350,
-     "py": 25120111
-    },
-    "b": {
-     "s": 48,
-     "elapsed": 48.04999999999941,
-     "kills": 23,
-     "level": 3,
-     "xp": 9,
-     "hp": 250,
-     "enemies": 3,
-     "chestsDropped": 0,
-     "bossesSpawned": 0,
-     "px": 21085350,
-     "py": 25120111
-    }
-   }
+   "divergingFields": {},
+   "firstDiff": null
   },
   {
    "seed": 404,

@@ -21,13 +21,15 @@ import { mulberry32 } from "../src/logic/rng";
  *   4. Kamera-Anker pro Sim-Schritt aus posX/posY (spawnOne anchort am
  *      Kamera-Zentrum; der Lerp-Follow machte scrollX frame-abhaengig).
  *
- * IST nach dem Fix: Seeds 101 und 404 liefern BITGLEICHE Marken/Events/Final.
- * Seed 202 divergiert ab Sim-Sekunde 48 in kills/enemies — Rest-Leak ist die
- * frame-basierte Spawn-Allowance in src/systems/Spawner.ts (SPAWN_FRAME_BUDGET
- * wird pro Echtzeit-Frame zurueckgesetzt; bei 30x und rauen Frame-Zeiten
- * verschiebt sich die Spawn-Phase). Fremd-Datei — behoben vom vergebenen Job
- * m10-spawn-budget-dt (dt-basierte Zuteilung). Dieser Test schlaegt an, sobald
- * auch Seed 202 bitgleich ist (=> Befund + docs/lanes aktualisieren).
+ * Fuenfte Schichte (aus main uebernommen, Job m10-spawn-budget-dt):
+ *   5. Spawn-Allowance auf dt-Akkumulator (src/systems/Spawner.ts) — die alte
+ *      frame-basierte Zuteilung (SPAWN_FRAME_BUDGET je Echtzeit-Frame) liess
+ *      Seed 202 ab Sim-Sekunde 48 in kills/enemies divergieren.
+ *
+ * IST nach dem kompletten Fix: ALLE drei Seeds (101/202/404) liefern BITGLEICHE
+ * Marken + Events + Final, Urteil deterministic:true
+ * (shots/m10-run-det-verdict.json; before: shots/m10-run-det-verdict-before.json,
+ * deterministic:false, 120/120 Marken divergent je Seed).
  */
 
 const url = (rel: string) => new URL(rel, import.meta.url);
@@ -61,24 +63,23 @@ interface Verdict {
 
 const SEEDS = [101, 202, 404] as const;
 const MARKS = 120;
-const IDENTICAL_SEEDS = [101, 404] as const;
-const REMAINING_DIVERGENT_SEED = 202;
-const FIRST_DIFF_MARK_202 = 48; // Sim-Sekunde: kills 24 vs 23, enemies 4 vs 3
 
-describe("m10-run-determinism-fix: Befund nach Run.ts-Fix (Regressionsschranke)", () => {
+describe("m10-run-determinism-fix: Determinismus nach Komplett-Fix (Run.ts + Spawner-Dt, Regressionsschranke)", () => {
   it("Verdict: 3 Seeds x 2 Laeufe, 120 Marken je Lauf", () => {
     const v = readJson("../shots/m10-run-det-verdict.json") as Verdict;
     expect(v.seeds).toEqual([...SEEDS]);
     expect(v.reps).toBe(2);
     expect(v.maxSeconds).toBe(MARKS);
-    // Gesamt-Urteil: solange Seed 202 divergiert, ist der Lauf noch nicht
-    // deterministic:true — nach dem Merge von m10-spawn-budget-dt schlägt
-    // dieser Test hier an und der Befund wird zu deterministic:true geändert.
-    expect(v.deterministic).toBe(false);
+    // Gesamt-Urteil: alle drei Seeds bitgleich => deterministic:true.
+    expect(v.deterministic).toBe(true);
     expect(v.perSeed.map((p) => p.seed)).toEqual([...SEEDS]);
+    for (const p of v.perSeed) {
+      expect(p.identical, `seed ${p.seed} sollte bitgleich sein`).toBe(true);
+      expect(p.divergingMarks).toBe(0);
+    }
   });
 
-  for (const seed of IDENTICAL_SEEDS) {
+  for (const seed of SEEDS) {
     it(`seed ${seed}: beide Laeufe bitgleich — alle 120 Marken + Events + Final`, () => {
       const a = readJson(`../shots/m10-run-det-${seed}-r0.json`) as Rep;
       const b = readJson(`../shots/m10-run-det-${seed}-r1.json`) as Rep;
@@ -100,25 +101,15 @@ describe("m10-run-determinism-fix: Befund nach Run.ts-Fix (Regressionsschranke)"
     }
   });
 
-  it(`seed ${REMAINING_DIVERGENT_SEED}: Rest-Leak — erster Diff bei Sim-Sekunde ${FIRST_DIFF_MARK_202} in kills/enemies`, () => {
-    const a = readJson(`../shots/m10-run-det-${REMAINING_DIVERGENT_SEED}-r0.json`) as Rep;
-    const b = readJson(`../shots/m10-run-det-${REMAINING_DIVERGENT_SEED}-r1.json`) as Rep;
-    expect(a.marks.length).toBe(MARKS);
-    expect(b.marks.length).toBe(MARKS);
-    // Marken vor dem ersten Diff sind bitgleich (Tick-Phase + Spawns bis s=47).
-    for (let i = 0; i < FIRST_DIFF_MARK_202 - 1; i++) {
-      expect(a.marks[i], `Marke s=${i + 1} sollte bitgleich sein`).toEqual(b.marks[i]);
-    }
-    // Erste Divergenz: Spawn-Zahlungsebene (kills/enemies), Spielerposition noch identisch.
-    const ma = a.marks[FIRST_DIFF_MARK_202 - 1]!;
-    const mb = b.marks[FIRST_DIFF_MARK_202 - 1]!;
-    expect(ma.s).toBe(FIRST_DIFF_MARK_202);
-    expect(ma.kills).not.toBe(mb.kills);
-    expect(ma.enemies).not.toBe(mb.enemies);
-    expect(ma.px).toBe(mb.px);
-    // Sobald auch dieser Seed bitgleich ist (m10-spawn-budget-dt), schlägt
-    // dieser Test an: expect(a.marks).toEqual(b.marks) ergänzen und Verdict
-    // auf deterministic:true heben.
+  it(`seed 202: ehemaliger Rest-Leak (frame-basierte Spawn-Allowance) geschlossen — jetzt wie 101/404 bitgleich ab Marke 1`, () => {
+    // Vor dem Spawner-Dt-Fix (m10-spawn-budget-dt) divergierte Seed 202 ab
+    // Sim-Sekunde 48 in kills/enemies bei identischem px. Diese Schranke
+    // stellt sicher, dass er komplett bitgleich bleibt.
+    const a = readJson(`../shots/m10-run-det-202-r0.json`) as Rep;
+    const b = readJson(`../shots/m10-run-det-202-r1.json`) as Rep;
+    expect(a.marks).toEqual(b.marks);
+    expect(a.events).toEqual(b.events);
+    expect(a.final).toEqual(b.final);
   });
 
   it("Gegenprobe: reine Logik (mulberry32) ist deterministisch — die Vergleichsmethode ist tauglich", () => {

@@ -12,6 +12,28 @@ import type { Rng } from "../logic/rng";
 import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPool";
 
 /**
+ * M10 (#7758): Burst-Allowance auf dt-Basis (reine Funktion, testbar).
+ *
+ * Altes Verhalten: `SPAWN_FRAME_BUDGET` Spawns je ECHTEM Frame — die
+ * Abtragsrate eines Budget-Rueckstaus hing damit an der Echtzeit-FPS
+ * (60 fps: 16 Spawns/Sim-s bei timeScale 30, 30 fps: 8/Sim-s), sodass zwei
+ * Kontrolllaeufe mit gleichem Seed unterschiedliche Spawn-Marken hatten.
+ *
+ * Neues Verhalten: die Allowance waechst mit Sim-Zeit. Referenz ist das alte
+ * 60-Hz-Verhalten: 8 Spawns je 1/60 s => 480 Spawns je Sim-Sekunde. Der
+ * Akkumulator ist auf zwei Substep-Rationen gedeckelt (`SPAWN_ALLOWANCE_MAX`),
+ * damit nach Kap-Druck oder langen Hitches kein unbegrenzter Burst
+ * materialisiert wird; der Abtrag bleibt trotzdem rein simzeit-bestimmt.
+ */
+export const SPAWN_ALLOWANCE_PER_SECOND = SPAWN_FRAME_BUDGET * 60;
+export const SPAWN_ALLOWANCE_MAX = SPAWN_FRAME_BUDGET * 2;
+
+export function accrueSpawnAllowance(acc: number, dt: number): number {
+  if (!Number.isFinite(acc)) return SPAWN_ALLOWANCE_MAX;
+  return Math.min(acc + Math.max(0, dt) * SPAWN_ALLOWANCE_PER_SECOND, SPAWN_ALLOWANCE_MAX);
+}
+
+/**
  * Wellen-Director: Spawnrate/Mischung pro Minute aus `waves.ts`, Spezialwellen
  * (Ring-Einkesselung, Schwarm-Strom), Elite-Pakete, Gegner-Cap mit Recycling.
  * Alle 30 Gegner sind spielbar.
@@ -26,13 +48,16 @@ export class Spawner {
   // bestehende maxActiveEnemies-Deckel unveraendert. Siehe logic/scaling.ts.
   private frameBudget: FrameBudgetState;
   private lastBudgetFrame = -1;
-  // M10: Spawn-Burst-Glaettung. Pro echtem Frame duerfen maximal
-  // SPAWN_FRAME_BUDGET Director-Spawns materialisiert werden; ueberschuessige
-  // Spawns kehren ins Restbudget zurueck und werden in spaeteren Frames
-  // nachgeholt (Summe exakt erhalten, Mischung naeherungsweise — siehe
-  // logic/waves.ts). Spezialwellen/Boss-Spawns laufen nicht durch den Deckel.
-  private lastSpawnFrame = -1;
-  private spawnAllowance = SPAWN_FRAME_BUDGET;
+  // M10 (#7758): Spawn-Burst-Glaettung auf dt-Basis. Die Allowance waechst
+  // mit SIM-Zeit (dt-Akkumulator, ganzzahliger Abgriff, Rest bleibt stehen)
+  // statt je echtem Frame zurueckgesetzt zu werden — die Spawn-Phase haengt
+  // damit nur noch von der Sim-Zeit ab, nicht von Echtzeit-Frame-Zeiten
+  // (Beleg: shots/m10-spawnbudget-before.json, zwei Kontrolllaeufe gleicher
+  // Seed divergieren im alten Verhalten). Ueberschuessige Spawns kehren ins
+  // Restbudget zurueck und werden nachgeholt (Summe exakt erhalten, Mischung
+  // naeherungsweise — siehe logic/waves.ts). Spezialwellen/Boss-Spawns
+  // laufen nicht durch den Deckel.
+  private spawnAllowance = 0;
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
@@ -100,15 +125,16 @@ export class Spawner {
     this.budget = scaled.budget;
     const room = Math.max(0, cap - this.pool.count);
     const toSpawn = Math.min(scaled.count, room);
-    // M10: Burst-Glaettung — pro echtem Frame nur SPAWN_FRAME_BUDGET Spawns
-    // materialisieren, den Rest ins Restbudget zurueckstellen (Nachhol-Frames
-    // laufen mit normaler Rate; Spezialwellen/Boss-Spawns sind nicht betroffen).
-    if (frameId !== this.lastSpawnFrame) {
-      this.lastSpawnFrame = frameId;
-      this.spawnAllowance = SPAWN_FRAME_BUDGET;
-    }
-    const split = splitSpawnBurst(toSpawn, this.spawnAllowance);
-    this.spawnAllowance = split.allowanceLeft;
+    // M10 (#7758): Allowance aus dem dt-Akkumulator (ganzzahliger Abgriff,
+    // ungenutzte ganze Allowance und Bruchteil bleiben stehen bzw. kehren
+    // zurueck). Nicht mehr an scene.game.loop.frame gekoppelt — zwei Laeufe
+    // mit gleichem Seed und gleicher Sim-Zeit materialisieren identische
+    // Spawn-Marken, egal wie die Echtzeit-Frames fallen.
+    this.spawnAllowance = accrueSpawnAllowance(this.spawnAllowance, dt);
+    const allowance = Math.floor(this.spawnAllowance);
+    this.spawnAllowance -= allowance;
+    const split = splitSpawnBurst(toSpawn, allowance);
+    this.spawnAllowance += split.allowanceLeft;
     if (split.deferred > 0) this.budget += split.deferred;
     for (let i = 0; i < split.now; i++) {
       const id = pickEnemy(wave.mix, this.rng);
