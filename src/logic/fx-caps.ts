@@ -36,3 +36,26 @@ export function uniformScale(sx: number, sy: number, cap = RUN_PARTICLE_SCALE_CA
   const capped = Math.max(-cap, Math.min(cap, s));
   return { x: capped, y: capped };
 }
+
+/**
+ * B1-Teil (Audit docs/lanes/m10-chaos-legibility.md, Rest des fx-mixel-fix):
+ * fx_pillar ist KEIN Mixel-Bake in gen-fx.ts (FX_MIXEL_BASES — Datei fremd
+ * geclaimed), direkte makeImage-Zeichnung mit Scale > 1 deckt ein Textur-Pixel
+ * mehrere Spielpixel (Gradient-Keile statt 1-px-Stufen). Run.ts backt deshalb
+ * die Ziel-Pixelgroesse selbst (nearest-Stufen in ensurePillarBake) und zeichnet
+ * mit Draw-Scale = Scale/L <= 1. Gleiche Mathematik wie mixelLevelFor.
+ */
+export const PILLAR_BAKE_MAX_LEVEL = 4;
+
+/** Kleinste Bake-Stufe >= |scale| (1 bei Scale <= 1), Cap bei maxLevel. */
+export function pillarBakeLevel(scale: number, maxLevel = PILLAR_BAKE_MAX_LEVEL): number {
+  const s = Number.isFinite(scale) ? Math.abs(scale) : 1;
+  if (!(s > 1)) return 1;
+  return Math.min(maxLevel, Math.max(1, Math.ceil(s)));
+}
+
+/** Draw-Scale einer Bake-Stufe (bleibt <= 1 fuer Scale <= maxLevel). */
+export function pillarDrawScale(scale: number, maxLevel = PILLAR_BAKE_MAX_LEVEL): number {
+  return scale / pillarBakeLevel(scale, maxLevel);
+}
+

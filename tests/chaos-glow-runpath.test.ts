@@ -10,6 +10,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
+  PILLAR_BAKE_MAX_LEVEL,
+  pillarBakeLevel,
+  pillarDrawScale,
   RUN_ADD_ALPHA_CAP,
   RUN_ADD_ALPHA_FLOOR,
   RUN_LIGHT_ALPHA_MAX,
@@ -19,6 +22,38 @@ import {
 } from "../src/logic/fx-caps";
 
 const RUN_TS = readFileSync(new URL("../src/scenes/Run.ts", import.meta.url), "utf8");
+
+describe("fx_pillar/fx_shock Bake-Pfad (B1-Teil, Mixel-Rest des fx-mixel-fix)", () => {
+  it("waehlt kleinste Bake-Stufe >= |scale|, Draw-Scale bleibt <= 1 (bis Cap)", () => {
+    expect(pillarBakeLevel(0.4)).toBe(1);
+    expect(pillarBakeLevel(1)).toBe(1);
+    expect(pillarBakeLevel(1.4)).toBe(2);
+    expect(pillarBakeLevel(2.4)).toBe(3);
+    expect(pillarBakeLevel(3.2)).toBe(4);
+    expect(pillarBakeLevel(NaN)).toBe(1);
+    // Dokumentierter Fallback (wie mixelLevelFor): über dem Cap fällt der
+    // Draw-Scale wieder auf > 1 — aktuell erreicht kein Run-Caller das.
+    expect(pillarBakeLevel(5)).toBe(PILLAR_BAKE_MAX_LEVEL);
+    expect(pillarDrawScale(5)).toBeGreaterThan(1);
+    for (const s of [0.4, 0.9, 1.4, 1.5, 2.4, 2.8, 3.4]) {
+      expect(pillarDrawScale(s)).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it("Run.ts: keine direkten makeImage-Pfade fuer fx_pillar/fx_shock mehr", () => {
+    expect(RUN_TS).not.toMatch(/makeImage\(this,[^)]*"fx_pillar"/);
+    expect(RUN_TS).not.toMatch(/makeImage\(this,[^)]*"fx_shock"/);
+    // Alle drei pillar-Stellen (dawn rays, levelup, chest) ueber den Bake-Helper:
+    expect((RUN_TS.match(/addPillarImage\(/g) ?? []).length).toBeGreaterThanOrEqual(4); // 1 Def + 3 Calls
+    // fx_shock-Ring (playEvolutionFx) ueber den FxSystem-Bake-Pfad:
+    expect(RUN_TS).toMatch(/spawnAnim\("fx_shock", x, y, \{/);
+  });
+
+  it("Bake-Stufen sind nearest (imageSmoothingEnabled=false) und idempotent", () => {
+    expect(RUN_TS).toContain("imageSmoothingEnabled = false");
+    expect(RUN_TS).toContain("scene.textures.exists(key)");
+  });
+});
 
 describe("fx-caps (Run-seitiger ADD-Pfad, B2/B5)", () => {
   it("deckelt ADD-Alpha oben (nie voll weiss allein) und unten (kein negativer Alpha)", () => {

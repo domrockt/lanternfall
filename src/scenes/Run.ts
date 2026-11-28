@@ -53,8 +53,36 @@ import { readSceneGamepad } from "../input/Gamepad";
 import { getTouchSnapshot, resetTouchSnapshot } from "../input/TouchState";
 import {
   RUN_LIGHT_ALPHA_MAX,
+  pillarBakeLevel,
   runAddAlpha,
 } from "../logic/fx-caps";
+
+/**
+ * M10-chaos-fix-glow-runpath (B1-Teil): fx_pillar-Ziel-Pixelgroesse Run-seitig
+ * backen. Die Level-1-Frames liegen als Einzeltexturen vor (gen-fx.ts addFrames:
+ * `fx_pillar`, `fx_pillar_2`..`fx_pillar_5`, 26x72); jede Bake-Stufe L ist ein
+ * nearest-Hochskalieren der Level-1-Textur auf 26L x 72L, damit der Draw-Scale
+ * Scale/L <= 1 bleibt (1-px-Raster im 4x-Zoom). Idempotent (textures.exists),
+ * lazy beim ersten Ereignis-FX gebacken — Level-1 bleibt unveraendert.
+ */
+const PILLAR_FRAME_KEYS = ["fx_pillar", "fx_pillar_2", "fx_pillar_3", "fx_pillar_4", "fx_pillar_5"];
+
+function ensurePillarBake(scene: Phaser.Scene, level: number): string[] {
+  if (level <= 1) return PILLAR_FRAME_KEYS;
+  return PILLAR_FRAME_KEYS.map((baseKey, i) => {
+    const key = `fx_pillar_bake${level}_${i}`;
+    if (scene.textures.exists(key)) return key;
+    const src = scene.textures.get(baseKey).getSourceImage() as CanvasImageSource & { width: number; height: number };
+    const canvas = document.createElement("canvas");
+    canvas.width = src.width * level;
+    canvas.height = src.height * level;
+    const ctx = canvas.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(src, 0, 0, src.width, src.height, 0, 0, canvas.width, canvas.height);
+    scene.textures.addCanvas(key, canvas);
+    return key;
+  });
+}
 
 export interface RunData {
   character?: CharacterId;
@@ -1075,13 +1103,12 @@ export class Run extends Phaser.Scene {
       this.tweens.add({ targets: band, fillAlpha: 0.09 - i * 0.02, duration: 2400 + i * 300, ease: "Sine.InOut" });
     });
     // Lichtstrahlen vom Horizont.
-    // M10-chaos-fix-glow-runpath: einheitliche Scale (kein Strecken, B5),
-    // Alpha ueber runAddAlpha gedeckelt (B2). Bake-Pfad folgt in K3.
+    // Lichtstrahlen vom Horizont (B1-Teil: Bake-Stufen, Draw-Scale <= 1).
     for (let i = 0; i < 7; i++) {
-      const ray = makeImage(this, 60 + i * 60, GAME_HEIGHT, "fx_pillar")
-        .setOrigin(0.5, 1).setScrollFactor(0).setDepth(76)
-        .setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-        .setAlpha(0).setScale(2.4 + (i % 2) * 0.4);
+      const rayScale = 2.4 + (i % 2) * 0.4;
+      const ray = this.addPillarImage(60 + i * 60, GAME_HEIGHT, rayScale)
+        .setScrollFactor(0).setDepth(76)
+        .setAlpha(0);
       this.tweens.add({ targets: ray, alpha: runAddAlpha(0.09 + (i % 3) * 0.03), duration: 900 + i * 120, yoyo: true, repeat: 2 });
     }
     const sun = this.add.image(GAME_WIDTH / 2, 18, "light_radius")
@@ -1604,16 +1631,30 @@ export class Run extends Phaser.Scene {
   }
 
   // ── Ereignis-Inszenierung (M5) ──────────────────────────────
+  /**
+   * B1-Teil: fx_pillar nur noch ueber die Bake-Stufen zeichnen (siehe
+   * ensurePillarBake) — Draw-Scale = Scale/L <= 1, Position ganzzahlig.
+   * `drawScale` = gewuenschte Groesse jetzt, `bakeScale` = groesste Groesse,
+   * die der Sprite in diesem Leben erreicht (waehlt die Bake-Stufe).
+   */
+  private addPillarImage(x: number, y: number, drawScale: number, bakeScale = drawScale): Phaser.GameObjects.Image {
+    const level = pillarBakeLevel(bakeScale);
+    const key = ensurePillarBake(this, level)[0];
+    return makeImage(this, Math.round(x), Math.round(y), key)
+      .setOrigin(0.5, 1).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
+      .setScale(drawScale / level);
+  }
+
   /** Level-up: Lichtsäule + aufsteigende Glut am Spieler. */
   playLevelUpFx(): void {
     if (this.suppressEventFx) return;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
-    const pillar = makeImage(this, x, y + 12, "fx_pillar")
-      .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
-      .setTint(PAL[C.lantern]).setAlpha(runAddAlpha(0.95)).setScale(1.4);
+    const level = pillarBakeLevel(2.4);
+    const pillar = this.addPillarImage(x, y + 12, 1.4, 2.4)
+      .setDepth(11).setAlpha(runAddAlpha(0.95));
     this.tweens.add({
-      targets: pillar, alpha: 0, scale: 2.4, y: y - 70,
+      targets: pillar, alpha: 0, scale: 2.4 / level, y: y - 70,
       duration: 950, ease: "Cubic.Out", onComplete: () => pillar.destroy(),
     });
     this.combat?.fx.spawnAnim("fx_halo", x, y, {
@@ -1641,10 +1682,12 @@ export class Run extends Phaser.Scene {
     this.slowmoRemaining = 0.9;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
-    const ring = makeImage(this, x, y, "fx_shock")
-      .setDepth(11).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-      .setScale(0.4).setAlpha(runAddAlpha(1));
-    this.tweens.add({ targets: ring, scale: 3.4, alpha: 0, duration: 900, ease: "Cubic.Out", onComplete: () => ring.destroy() });
+    // B1-Teil: Ring ueber den Mixel-Bake-Pfad (fx_shock ist Bake-Basis, Stufen
+    // bis 4 -> Draw-Scale <= 1) statt direktem makeImage-Tween.
+    this.combat?.fx.spawnAnim("fx_shock", x, y, {
+      life: 0.9, scaleFrom: 0.4, scaleTo: 3.4, alphaFrom: runAddAlpha(1), alphaTo: 0,
+      additive: true, tint: PAL[C.lantern],
+    });
     for (let k = 0; k < 3; k++) {
       this.time.delayedCall(k * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
         life: 0.55, scaleFrom: 0.5 + k * 0.5, scaleTo: 2.2 + k * 0.5,
@@ -1670,10 +1713,9 @@ export class Run extends Phaser.Scene {
   /** Truhe: Lichtstrahl + Glanz + Funken (Weltposition). */
   playChestFx(x: number, y: number): void {
     if (this.suppressEventFx) return;
-    const beam = makeImage(this, x, y - 4, "fx_pillar")
-      .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
-      .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9);
-    this.tweens.add({ targets: beam, alpha: runAddAlpha(0.85), scale: 1.5, duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
+    const beam = this.addPillarImage(x, y - 4, 0.9, 1.5)
+      .setDepth(11).setAlpha(0);
+    this.tweens.add({ targets: beam, alpha: runAddAlpha(0.85), scale: 1.5 / pillarBakeLevel(1.5), duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
     for (let i = 0; i < 14; i++) {
       const a = -Math.PI / 2 + (i / 14 - 0.5) * 2.4;
       this.combat?.particles.spawn({
