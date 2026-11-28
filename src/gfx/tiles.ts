@@ -82,6 +82,15 @@ export function areaHasWater(ox: number, oy: number, w: number, h: number, seed:
  * Pfade. Die Klassifikation ist weltverankert und chunk-unabhängig.
  */
 export function terrainSampleAt(wx: number, wy: number, seed: number, worldSize: number): TerrainSample {
+  // Float-Queries snappen auf das Tile, das den Punkt enthält (Tile-Mitte via
+  // Math.floor): Spiel-Logik-Queries (Wasser-Slow, Spawns, Debug, Kanten-Scan
+  // über Subpixel-Offsets) und die gemalten Pixel-Zellen des Painters liefern
+  // dann dieselbe Klassifikation — keine fraktionalen Mischzellen an Kanten.
+  // Ganzzahlige Aufrufe (paintTerrain, terrainMaskAt, areaHasWater, Wasser-Pfad)
+  // bleiben bitgleich: Math.floor ist dort die Identität. terrainKindAt()
+  // delegiert hierher und erbt den Snap.
+  wx = Math.floor(wx);
+  wy = Math.floor(wy);
   // Domain-Warp: verzerrt die Felder zu unregelmäßigen, weichen Formen.
   const warpX = (valueNoise(wx, wy, 104, seed + 21) - 0.5) * 66;
   const warpY = (valueNoise(wx + 517, wy - 311, 97, seed + 22) - 0.5) * 66;
