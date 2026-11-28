@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13287,
+  "next": 13447,
   "cards": [
     {
       "id": 1,
@@ -18781,37 +18781,62 @@
       "updated": "2026-11-28T16:19:56Z"
     },
     {
-      "id": 13284,
+      "id": 13283,
+      "title": "m10-ground-chunk-tex-dup: GroundRenderer-Doppel-Add chunk_* verhindern",
+      "description": "Regression seit m10-ground-chunk-budget (Merge 39d1efe8): createCanvas auf belegtem Key chunk_<x>_<y> loggt 'Texture key already in use' und vergiftet Mess-JSONs (accepted:false). K1 Vorher-Messung (docs/lanes), K2 exists()-Guard an Z.807+Z.859, K3 Guard-Test tests/ground-chunk-tex-dup.test.ts, K4 Nachher-Messung 0 Spam + accepted:true. Abnahme: build rc=0, tsc rc=0, Suite gruen, Vorher/Nachher-Tabelle.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T16:31:59Z",
+      "updated": "2026-11-28T16:31:59Z"
+    },
+    {
+      "id": 13444,
       "title": "m10-golden-frame-rebaseline-r2 K1: Guard-Lauf nach 4 Merges",
-      "description": "4 Merges (heap-gate-recovery, fps-cap-stackfix, charstats-spec-followup, mira-hp-balance-check) sind auf main. node scripts/m10-golden-frame.mjs OHNE --write-baseline laufen lassen. AK: Verdict-JSON committed; bei PASS (keine Divergenz) Karte done + .lane-done, keine künstliche Rebaseline.",
+      "description": "lane #13284 — 4 Merges (heap-gate-recovery, fps-cap-stackfix, charstats-spec-followup, mira-hp-balance-check) sind auf main. node scripts/m10-golden-frame.mjs OHNE --write-baseline laufen lassen. AK: Verdict-JSON committed; bei PASS (keine Divergenz) Karte done + .lane-done, keine künstliche Rebaseline.",
       "column": "done",
+      "assignee": "coder",
       "notes": [
         {
-          "at": "2026-11-28T16:37:28Z",
+          "at": "2026-11-28T16:41:09Z",
           "by": "build",
-          "text": "doing → done: Guard-Lauf ohne --write-baseline: PASS — 3/3 Seeds (101/202/404) bitgleich zur Baseline 761f274a, deterministisch, 0 JS-Fehler, Renderer RPL-S (iGPU). Keine Divergenz → keine Rebaseline. Commit 548111ba, Doku docs/lanes/m10-golden-frame-rebaseline-r2.md"
+          "text": "lane #13284, erledigt im Lane-Commit 7ac4edd6, via Merge in main übernommen"
         }
       ],
-      "created": "2026-11-28T16:35:49Z",
-      "updated": "2026-11-28T16:37:28Z"
+      "created": "2026-11-28T16:41:02Z",
+      "updated": "2026-11-28T16:41:09Z"
     },
     {
-      "id": 13285,
+      "id": 13445,
       "title": "m10-golden-frame-rebaseline-r2 K2: Divergenz-Einordnung je Seed/Frame",
-      "description": "Falls K1 divergiert: Ursache je Differenz einordnen (legitime Daten-/Hebel-Änderung aus den 4 Merges vs. echter Regress). Belegliste (Seed, Tick, Feld, Vorher/Nachher) in docs/lanes/m10-golden-frame-rebaseline-r2.md. AK: jede Differenz hat Feld + Vorher/Nachher-Wert + Zuordnung.",
-      "column": "todo",
-      "notes": [],
-      "created": "2026-11-28T16:35:49Z",
-      "updated": "2026-11-28T16:35:49Z"
+      "description": "lane #13285 — Falls K1 divergiert: Ursache je Differenz einordnen (legitime Daten-/Hebel-Änderung aus den 4 Merges vs. echter Regress). Belegliste (Seed, Tick, Feld, Vorher/Nachher) in docs/lanes/m10-golden-frame-rebaseline-r2.md. AK: jede Differenz hat Feld + Vorher/Nachher-Wert + Zuordnung. [entfällt: K1 PASS ohne Divergenz, Lane-Done 7ac4edd6]",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T16:41:09Z",
+          "by": "build",
+          "text": "lane #13285, entfällt (K1 PASS ohne Divergenz)"
+        }
+      ],
+      "created": "2026-11-28T16:41:02Z",
+      "updated": "2026-11-28T16:41:09Z"
     },
     {
-      "id": 13286,
+      "id": 13446,
       "title": "m10-golden-frame-rebaseline-r2 K3: Rebaseline oder Befundliste",
-      "description": "K3a legitim: --write-baseline --baseline-at=<Merge-SHA>, verdict committen, tests/golden-frame.test.ts grün. K3b echter Regress: NICHT rebaseln, Befundliste + Bedarfsmeldung in /home/ai/games/.dispatch/requests.md. AK: golden-frame-Test grün auf Rebaseline-Stand ODER begründete Befundliste ohne Rebaseline.",
-      "column": "todo",
-      "notes": [],
-      "created": "2026-11-28T16:35:49Z",
-      "updated": "2026-11-28T16:35:49Z"
+      "description": "lane #13286 — K3a legitim: --write-baseline --baseline-at=<Merge-SHA>, verdict committen, tests/golden-frame.test.ts grün. K3b echter Regress: NICHT rebaseln, Befundliste + Bedarfsmeldung. AK: golden-frame-Test grün auf Rebaseline-Stand ODER begründete Befundliste ohne Rebaseline. [entfällt: K1 PASS ohne Divergenz, keine Rebaseline nötig, Lane-Done 7ac4edd6]",
+      "column": "backlog",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T16:41:09Z",
+          "by": "build",
+          "text": "lane #13286, entfällt (keine Rebaseline nötig)"
+        }
+      ],
+      "created": "2026-11-28T16:41:02Z",
+      "updated": "2026-11-28T16:41:09Z"
     }
   ]
 }
