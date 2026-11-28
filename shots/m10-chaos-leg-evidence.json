@@ -1,0 +1,168 @@
+{
+  "generatedAt": "2026-11-28T00:17:03.632Z",
+  "lane": "m10-chaos-legibility-audit",
+  "swiftShader": false,
+  "configs": [
+    {
+      "tag": "640-360-1-m25",
+      "width": 640,
+      "height": 360,
+      "dpr": 1,
+      "target": 300,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-leg-640-360-1-m25-1.png",
+          "player": {
+            "x": 2007,
+            "y": 2135
+          },
+          "time": 1496,
+          "enemies": 300,
+          "fps": 59.3,
+          "level": 21,
+          "kills": 915
+        },
+        {
+          "shot": "shots/m10-chaos-leg-640-360-1-m25-2.png",
+          "player": {
+            "x": 2031,
+            "y": 2133
+          },
+          "time": 1498,
+          "enemies": 300,
+          "fps": 60.1,
+          "level": 34,
+          "kills": 4243
+        },
+        {
+          "shot": "shots/m10-chaos-leg-640-360-1-m25-3.png",
+          "player": {
+            "x": 2045,
+            "y": 2078
+          },
+          "time": 1499,
+          "enemies": 300,
+          "fps": 60.2,
+          "level": 36,
+          "kills": 5792
+        }
+      ]
+    },
+    {
+      "tag": "780-360-3-m25",
+      "width": 780,
+      "height": 360,
+      "dpr": 3,
+      "target": 300,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-leg-780-360-3-m25-1.png",
+          "player": {
+            "x": 1997,
+            "y": 2165
+          },
+          "time": 1496,
+          "enemies": 300,
+          "fps": 59.8,
+          "level": 23,
+          "kills": 1136
+        },
+        {
+          "shot": "shots/m10-chaos-leg-780-360-3-m25-2.png",
+          "player": {
+            "x": 2005,
+            "y": 2139
+          },
+          "time": 1498,
+          "enemies": 300,
+          "fps": 60.1,
+          "level": 36,
+          "kills": 5261
+        },
+        {
+          "shot": "shots/m10-chaos-leg-780-360-3-m25-3.png",
+          "player": {
+            "x": 2010,
+            "y": 2092
+          },
+          "time": 1499,
+          "enemies": 300,
+          "fps": 60.1,
+          "level": 38,
+          "kills": 6638
+        }
+      ]
+    },
+    {
+      "tag": "640-360-1-stress500",
+      "width": 640,
+      "height": 360,
+      "dpr": 1,
+      "target": 500,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-leg-640-360-1-stress500-1.png",
+          "player": {
+            "x": 2002,
+            "y": 2157
+          },
+          "time": 1496,
+          "enemies": 500,
+          "fps": 59.3,
+          "level": 26,
+          "kills": 1637
+        },
+        {
+          "shot": "shots/m10-chaos-leg-640-360-1-stress500-2.png",
+          "player": {
+            "x": 2022,
+            "y": 2161
+          },
+          "time": 1498,
+          "enemies": 500,
+          "fps": 60,
+          "level": 38,
+          "kills": 6947
+        }
+      ]
+    },
+    {
+      "tag": "780-360-3-stress500",
+      "width": 780,
+      "height": 360,
+      "dpr": 3,
+      "target": 500,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-leg-780-360-3-stress500-1.png",
+          "player": {
+            "x": 2043,
+            "y": 2114
+          },
+          "time": 1498,
+          "enemies": 500,
+          "fps": 59.2,
+          "level": 38,
+          "kills": 6641
+        },
+        {
+          "shot": "shots/m10-chaos-leg-780-360-3-stress500-2.png",
+          "player": {
+            "x": 2050,
+            "y": 2071
+          },
+          "time": 1498,
+          "enemies": 500,
+          "fps": 59.8,
+          "level": 40,
+          "kills": 9024
+        }
+      ]
+    }
+  ],
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "webglVersion": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+  }
+}
