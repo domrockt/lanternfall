@@ -1,0 +1,25 @@
+# Lane m10-pause-freeze — fertig (2026-11-28)
+
+Ziel: Deterministisch nachweisen, dass PAUSE die Simulation komplett anhaelt, und
+belegte Lecks in src/scenes/Run.ts fixen. Alle 4 Karten committet (#7505-#7508).
+
+Ergebnis:
+- Vorher (shots/m10-pause-freeze-before.json, LECKS=2): Kern-Sim war bereits
+  eingefroren, ABER (1) die Szenen-Clock feuerte delayedCalls in der Pause
+  weiter (Probe ueber denselben Mechanismus wie Run.ts 668/1086/1811/1826/1835,
+  Kills +7 im Pausenbild mutiert) und (2) FX-Tweens (Splash-/Blink-Klasse)
+  animierten im Pausenbild (+1.0 Fortschritt).
+- Fix (#7506): Update-Gate in Run.update() vor dem paused-Return — bei Wechsel
+  von paused werden time.paused + tweens.pauseAll/resumeAll mitgezogen,
+  create()-Reset. Keine Balance-/Inhaltsaenderung.
+- Nachher (shots/m10-pause-freeze-after.json, Verdict PASS): 0 Sim-Events in
+  5 s Pause (kills/hp/elapsed/xp/spawnerBudget/enemies/proj/shots Delta 0),
+  Zustand nach 5 s Pause bitgleich Pause-Start (anschluss), Clock+Tweens
+  gefroren, Fortsetzen ohne Luecke (Sim-Zeit-Konto exakt).
+- Tests: tests/pause-freeze.test.ts 7/7, npm test 1194/1194, build gruen,
+  verify-input 28/28 PASS (ESC pausiert/setzt fort lokal gruen).
+- Offen/Fremd-Anfrage: Cross-Run-Bitgleichheit braucht EnemyPool.ts:125
+  (DEFAULT_AI_RNG = Math.random) + dt-basiertes Spawn-Budget (Spawner.ts) —
+  Anfrage in /home/ai/games/.dispatch/requests.md, Beleg im before-JSON.
+- Grenzen gehalten: InputState/UI/FxSystem/EnemyProjectiles/ProjectilePool/
+  logic(scaling|levelup|waves) unberuehrt. Doku: docs/lanes/m10-pause-freeze.md
