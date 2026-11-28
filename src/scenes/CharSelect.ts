@@ -86,6 +86,7 @@ export class CharSelect extends Phaser.Scene {
     this.started = false;
     this.pad.reset();
     this.padArmed = false;
+    this.padRow = 1;
     this.panels = [];
     const W = GAME_WIDTH;
     const H = GAME_HEIGHT;

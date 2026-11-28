@@ -12,7 +12,7 @@ import { evolutionReadyList } from "../logic/evolution";
 import type { EvolutionDef } from "../data/types";
 import { chooseBestOffer } from "../logic/autoplay";
 import { OptionsMenu } from "../ui/options-menu";
-import { createMenuButton, type MenuButton } from "../ui/menu";
+import { createMenuButton, MenuFocus, menuRepeatTick, type MenuButton, type MenuRepeatState } from "../ui/menu";
 import { InputState, type ActionState } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { TouchControls } from "../input/TouchControls";
@@ -244,7 +244,16 @@ export class UI extends Phaser.Scene {
   private pauseWeaponHead!: PixelText;
   private pausePassiveHead!: PixelText;
   private pauseButtons: MenuButton[] = [];
-  private pauseSelected = 0;
+  /** m10-gamepad-nav-scenes-r2 K5: Kern-MenuFocus über FORTSETZEN/OPTIONEN/AUFGABE. */
+  private pauseFocus!: MenuFocus;
+  /** K5: Repeat-Kanäle (menuRepeatTick, wie Kern-K2) + Confirm-Flanke. */
+  private pausePadRepeat: Record<"up" | "down" | "left" | "right", MenuRepeatState> = {
+    up: { held: false, fires: 0, lastFireMs: -1 },
+    down: { held: false, fires: 0, lastFireMs: -1 },
+    left: { held: false, fires: 0, lastFireMs: -1 },
+    right: { held: false, fires: 0, lastFireMs: -1 },
+  };
+  private pausePrevConfirmHeld = false;
   private lastPauseShown = false;
 
   private hudIconBg!: Phaser.GameObjects.Rectangle;
@@ -635,8 +644,15 @@ export class UI extends Phaser.Scene {
     const options = createMenuButton(this, cx, 201 + oy, 96, "OPTIONEN", () => this.options.open(), { height: 20, depth: 1 });
     const giveUp = createMenuButton(this, 368 + ox, 201 + oy, 92, "AUFGABE", () => this.run.giveUp(), { height: 20, depth: 1 });
     this.pauseButtons = [resume, options, giveUp];
-    this.pauseSelected = 0;
-    resume.setFocused(true);
+    // m10-gamepad-nav-scenes-r2 K5: Fokus-Kreis der Kern-API; Startfokus auf
+    // FORTSETZEN (Index 0). Fokus sieht wie Hover aus; Hover übernimmt nur den
+    // Index (AE=0). Ein Pad-Frame löst maximal EINE Aktion aus (siehe handlePad).
+    this.pauseFocus = new MenuFocus(this.pauseButtons);
+    this.pauseButtons.forEach((b, i) => {
+      const hit = b.container.list[b.container.list.length - 1] as
+        Phaser.GameObjects.Zone | undefined;
+      hit?.on("pointerover", () => this.pauseFocus.setIndex(i));
+    });
     for (const b of this.pauseButtons) {
       b.setEnabled(false);
       this.pauseGroup.add(b.container);
@@ -646,14 +662,19 @@ export class UI extends Phaser.Scene {
     this.pauseLines = [];
   }
 
-  private refreshPauseButtons(): void {
-    this.pauseButtons.forEach((b, i) => b.setFocused(i === this.pauseSelected));
+  private activatePauseButton(): void {
+    const i = this.pauseFocus?.currentIndex ?? 0;
+    if (i === 0) this.run.resumeRun();
+    else if (i === 1) this.options.open();
+    else this.run.giveUp();
   }
 
-  private activatePauseButton(): void {
-    if (this.pauseSelected === 0) this.run.resumeRun();
-    else if (this.pauseSelected === 1) this.options.open();
-    else this.run.giveUp();
+  /** K5: Repeat-/Flanken-Zustand zurücksetzen (beim Pause-Öffnen/Schließen). */
+  private resetPausePadRepeat(): void {
+    for (const key of ["up", "down", "left", "right"] as const) {
+      this.pausePadRepeat[key] = { held: false, fires: 0, lastFireMs: -1 };
+    }
+    this.pausePrevConfirmHeld = false;
   }
 
   private createChestUI(): void {
@@ -900,6 +921,15 @@ export class UI extends Phaser.Scene {
    */
   private handlePad(s: HudState): void {
     const a: ActionState = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
+    // K5 (Review-Fix Probe): Confirm-Flanke und Repeat-Kanäle werden JEDEN Frame
+    // gepflegt — auch wenn ein Overlay (Options) den Frame konsumiert oder keine
+    // Aktion gehalten ist. Sonst bleibt die Flanke/der Kanal „sticky“ (belegt:
+    // Confirm nach Options-Close tot, Probe pausePrevConfirmHeld=true).
+    const confirmEdge = a.confirm === true && !this.pausePrevConfirmHeld;
+    this.pausePrevConfirmHeld = a.confirm === true;
+    const fire = (dir: "up" | "down" | "left" | "right"): boolean =>
+      menuRepeatTick(this.pausePadRepeat[dir], a[dir] === true, performance.now());
+    const fired = { up: fire("up"), down: fire("down"), left: fire("left"), right: fire("right") };
     const any = a.up || a.down || a.left || a.right || a.confirm || a.back;
     if (!any) return;
     if (this.options.visible) {
@@ -924,17 +954,14 @@ export class UI extends Phaser.Scene {
       return;
     }
     if (s.paused) {
-      if (a.left || a.up) {
-        this.pauseSelected = (this.pauseSelected + this.pauseButtons.length - 1) % this.pauseButtons.length;
-        this.refreshPauseButtons();
-      } else if (a.right || a.down) {
-        this.pauseSelected = (this.pauseSelected + 1) % this.pauseButtons.length;
-        this.refreshPauseButtons();
-      } else if (a.confirm) {
-        this.activatePauseButton();
-      } else if (a.back) {
-        this.run.resumeRun();
-      }
+      // K5: ein Pad-Frame = maximal EINE Aktion (Priorität back > up > down >
+      // left > right > confirm), Repeat-Debounce über menuRepeatTick wie Kern-K2.
+      if (a.back === true) { this.run.resumeRun(); return; }
+      if (fired.up) { this.pauseFocus.moveFocus(-1); return; }
+      if (fired.down) { this.pauseFocus.moveFocus(1); return; }
+      if (fired.left) { this.pauseFocus.moveFocus(-1); return; }
+      if (fired.right) { this.pauseFocus.moveFocus(1); return; }
+      if (confirmEdge) this.activatePauseButton();
     }
   }
 
@@ -1040,7 +1067,8 @@ export class UI extends Phaser.Scene {
   }
 
   private onPauseChanged(): void {
-    this.pauseSelected = 0;
+    this.pauseFocus?.setIndex(0);
+    this.resetPausePadRepeat();
     this.refreshPause();
   }
 
@@ -1120,20 +1148,17 @@ export class UI extends Phaser.Scene {
     const hud = this.run.getHudState();
     if (hud.paused && !hud.levelUpOpen && !hud.chestOpen) {
       if (ev.key === "ArrowLeft" || ev.key === "ArrowUp" || key === "a" || key === "w") {
-        this.pauseSelected = (this.pauseSelected + this.pauseButtons.length - 1) % this.pauseButtons.length;
-        this.refreshPauseButtons();
+        this.pauseFocus.moveFocus(-1);
         return;
       }
       if (ev.key === "ArrowRight" || ev.key === "ArrowDown" || key === "d" || key === "s") {
-        this.pauseSelected = (this.pauseSelected + 1) % this.pauseButtons.length;
-        this.refreshPauseButtons();
+        this.pauseFocus.moveFocus(1);
         return;
       }
       if (ev.key === "Enter" || ev.key === " ") { this.activatePauseButton(); return; }
       if (key === "q") { this.run.giveUp(); return; }
       if (ev.key === "1" || ev.key === "2" || ev.key === "3") {
-        this.pauseSelected = Number(ev.key) - 1;
-        this.refreshPauseButtons();
+        this.pauseFocus.setIndex(Number(ev.key) - 1);
         return;
       }
     }
@@ -1177,7 +1202,6 @@ export class UI extends Phaser.Scene {
     this.lastPauseShown = visible;
     for (const b of this.pauseButtons) b.setEnabled(visible);
     if (!visible) return;
-    this.refreshPauseButtons();
     for (const line of this.pauseLines) line.destroy();
     this.pauseLines = [];
     const addRow = (
