@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12164,
+  "next": 12208,
   "cards": [
     {
       "id": 1,
@@ -16796,6 +16796,48 @@
       "notes": [],
       "created": "2026-11-28T12:07:07Z",
       "updated": "2026-11-28T12:07:07Z"
+    },
+    {
+      "id": 12204,
+      "title": "m10-warmup-chunk-fine: K1 Vorher-Messung Warmup-Chunks",
+      "description": "scripts/m10-warmup-chunk.mjs misst Warmup-Chunks (Anzahl, je-Chunk-Dauer, Zeit bis interaktiv) der BASIS (createAllTextures als derived-Chunk). JSON nach shots/m10-warmup-chunk-before.json (Kopie nach ~/games/.evidence/m10-warmup-chunk-fine/). Abnahme: JSON committed, Baseline-Zahlen in Lane-Doku.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:08:25Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet: Vorher-Messung des Warmup-Chunkings (Baseline vor Fix)."
+        }
+      ],
+      "created": "2026-11-28T13:08:23Z",
+      "updated": "2026-11-28T13:08:25Z"
+    },
+    {
+      "id": 12205,
+      "title": "m10-warmup-chunk-fine: K2 Exporte + feineres Chunking",
+      "description": "src/gfx/textures.ts: die 4 Creator createRingTexture/createEnemyProjectileTextures/createTelegraphTextures/createShadowTexture exportieren (nur Export-Zeilen + Kommentar, keine Verhaltensaenderung). src/gfx/warmup.ts: derived-Chunk durch einzelne Creator-Familien-Chunks ersetzen (Reihenfolge nach Sichtbarkeit: Spieler-/Boden-Texturen zuerst). Abnahme: git diff textures.ts nur Export/Kommentar; tsc gruenn.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:08:23Z",
+      "updated": "2026-11-28T13:08:23Z"
+    },
+    {
+      "id": 12206,
+      "title": "m10-warmup-chunk-fine: K3 Nachher-Messung + Vergleich",
+      "description": "Gleiche Messung wie K1 gegen den feineren Warmup. Ziel: First-Chunk-Wartezeit sinkt messbar, Gesamt-Warmup-Zeit <= Vorher + 5 %. After-JSON + Differenz in docs/lanes/m10-warmup-chunk-fine.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:08:23Z",
+      "updated": "2026-11-28T13:08:23Z"
+    },
+    {
+      "id": 12207,
+      "title": "m10-warmup-chunk-fine: K4 Guard-Test + Lane-Doku",
+      "description": "tests/warmup-chunks.test.ts: friert Chunk-Aufteilung (Labels/Reihenfolge) + Idempotenz ein (Doppel-Ausfuehrung erzeugt keine Duplikat-Texturen). npm test gruen. docs/lanes/m10-warmup-chunk-fine.md final. .lane-done am Ende.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:08:23Z",
+      "updated": "2026-11-28T13:08:23Z"
     }
   ]
 }
