@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10094,
+  "next": 10098,
   "cards": [
     {
       "id": 1,
@@ -12650,6 +12650,110 @@
       ],
       "created": "2026-11-28T07:54:50Z",
       "updated": "2026-11-28T07:57:24Z"
+    },
+    {
+      "id": 10094,
+      "title": "m10-title-flame-glow-r2 K1: Vorher-Belege + Glut-Messung",
+      "description": "Title-Screen 640x360 und 780x360@3 als PNG (1x + 4x-Zoom auf Flammenbereiche), before-JSON mit gemessenem Glut-Flaechenanteil. Abnahme: Belege in ~/games/.evidence/m10-title-flame-glow-r2/, before-JSON mit Zahl committed.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T07:38:53Z",
+          "by": "coder",
+          "text": "todo → doing: Karte angenommen, Before-Belege starten"
+        },
+        {
+          "at": "2026-11-28T07:44:29Z",
+          "by": "coder",
+          "text": "doing → review: Before-Belege (3 Viewports, 4x-Zooms) + before-glow.json: Glut-Anteil 0.125; Ziel >= 0.30. Commit #9855"
+        },
+        {
+          "at": "2026-11-28T08:15:52+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9855, Merge branch m10-title-flame-glow-r2"
+        }
+      ],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 10095,
+      "title": "m10-title-flame-glow-r2 K2: Generator-Glut-Akzente",
+      "description": "gen_title.py: Glut-Akzente kraeftiger (Kern-Pixel hellere Palette-Stufe), optional Mond-Glut-Flicken; Dither nur an Uebergangskanten 1-2 px, Kerne flaechig hell, organische Formen. gen-title.ts regenerieren. Abnahme: Frames regeneriert, Palette-Indices dokumentiert, Title.ts unberuehrt.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T07:45:41Z",
+          "by": "coder",
+          "text": "todo → doing: Generator-Glut-Akzente starten"
+        },
+        {
+          "at": "2026-11-28T07:47:48Z",
+          "by": "coder",
+          "text": "doing → review: gen_title.py Glut-Kern 13 flaechig (Anteil 0.125 -> 0.375), F1/F2 organisch (Diff 4/7 <= 12), Funken Palette 13; Guards in Generator. 35+49 Tests gruen. Commit #9856"
+        },
+        {
+          "at": "2026-11-28T08:15:52+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9856, Merge branch m10-title-flame-glow-r2"
+        }
+      ],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 10096,
+      "title": "m10-title-flame-glow-r2 K3: Regressionstest + Palette-Guard",
+      "description": "tests/title-flame-glow.test.ts: Grid-Groesse, Palette-compliance, Glut-Flaechenanteil >= Schwelle; Palette-Guard gruen. Abnahme: npx vitest run tests/title-flame-glow.test.ts gruen + npm test gruen.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T07:49:05Z",
+          "by": "coder",
+          "text": "todo → doing: Regressionstest title-flame-glow schreiben"
+        },
+        {
+          "at": "2026-11-28T07:50:33Z",
+          "by": "coder",
+          "text": "doing → review: tests/title-flame-glow.test.ts 14/14 gruen (Grid, Palette, Glut >= 0.3, Kern flaechig); palette-compliance gruen; tsc gruen. Commit #9857"
+        },
+        {
+          "at": "2026-11-28T08:15:52+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9857, Merge branch m10-title-flame-glow-r2"
+        }
+      ],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 10097,
+      "title": "m10-title-flame-glow-r2 K4: Nachher-Belege + art-director + Doku",
+      "description": "After-Shots beider Viewporte, art-director-Urteil >= 4/5 'kommerziell auslieferbar', Doku docs/lanes/m10-title-flame-glow-r2.md + .lane-done. Abnahme: art-director PASS mit Note >= 4/5 an Nachher-Shots, 0 off-Palette-Pixel, Tests gruen, Title.ts/menu.ts unberuehrt.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T07:50:49Z",
+          "by": "coder",
+          "text": "todo → doing: After-Belege + art-director-Abnahme"
+        },
+        {
+          "at": "2026-11-28T08:01:01Z",
+          "by": "coder",
+          "text": "doing → review: After-Belege 3 Viewports + GIF, art-director PASS 4/5 (alle >= 4), 1704/1704 Tests, Title.ts/menu.ts unberuehrt, Beleg-Crop ersetzt. Commit #9858"
+        },
+        {
+          "at": "2026-11-28T08:15:52+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9858, Merge branch m10-title-flame-glow-r2"
+        }
+      ],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
     }
   ]
 }

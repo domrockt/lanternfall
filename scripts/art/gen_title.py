@@ -181,10 +181,11 @@ def lantern(g: Grid, x: int, base_y: int) -> None:
     g.rect(x - 5, base_y - 18, 12, 2, 4)
     g.rect(x - 5, base_y - 18, 12, 1, 7)
     g.rect(x - 4, base_y - 16, 10, 8, 4)
-    g.rect(x - 3, base_y - 15, 8, 6, 20)
-    g.rect(x - 2, base_y - 14, 6, 4, 21)
-    g.rect(x - 1, base_y - 13, 3, 2, 22)
-    g.put(x, base_y - 13, 13)
+    # Glas-Innenfläche = exakt _GLASS_ROWS (m10-title-flame-glow-r2): flächiger
+    # heller Flammenkern (13), Glutfläche (22), Dither (21) nur an den Kanten.
+    for _r, _row in enumerate(_GLASS_ROWS):
+        for _c, _ch in enumerate(_row):
+            g.put(x - 3 + _c, base_y - 15 + _r, DIGITS.index(_ch))
     # Streulicht auf dem Boden (gruppiert).
     g.rect(x - 7, base_y, 4, 1, 19)
     g.rect(x + 4, base_y, 3, 1, 17)
@@ -200,19 +201,42 @@ FLAME_W, FLAME_H = 8, 11
 FLAME_DX, FLAME_DY = -3, -20
 
 # Glas je Frame (Patch-Spalten 0..7 = lx-3..lx+4, Reihen 5..10 = by-15..by-10);
-# nur Paletten-Indices 4 (k? nein: Gehäuserand), 13 (d=Glow-Kern), 20 (k=amber),
-# 21 (l=Laterne), 22 (m=Glühen). F0 = exakte Basis-Kopie.
-_FLAME_INTS = [
-    ["kkkkkkkk", "kllllllk", "klmdmllk", "klmmmllk", "kllllllk", "kkkkkkkk"],
-    ["kkkkkkkk", "kllmlllk", "kldmmllk", "klmmlllk", "klmllllk", "kkkkkkkk"],
-    ["kkkkkkkk", "klllmllk", "kllmdmlk", "klllmmlk", "kllllmlk", "kkkkkkkk"],
+# nur Paletten-Indices 13 (d=Glow-Kern), 20 (k=amber), 21 (l=Laterne), 22 (m=Glühen).
+# m10-title-flame-glow-r2: flächiger heller Kern (d-Gruppe, organisch geformt),
+# Dither (l) nur an den Übergangskanten; F0 = exakte Basis-Kopie (_GLASS_ROWS).
+_GLASS_ROWS = [
+    "kkkkkkkk",
+    "kllllllk",
+    "kldddllk",
+    "kldddmlk",
+    "klmddmmk",
+    "kmmmmmmk",
 ]
-# Glutfunken je Frame als (Reihe, Spalte) im Patch — 0..2 px, sparsam.
+_FLAME_INTS = [
+    _GLASS_ROWS,
+    ["kkkkkkkk", "kllllllk", "kllddllk", "kldddmlk", "klddmmmk", "kmmmmmmk"],
+    ["kkkkkkkk", "kllllllk", "kldddmlk", "klmdddlk", "klmmddmk", "kmmmmmmk"],
+]
+# Glutfunken je Frame als (Reihe, Spalte) im Patch — 0..2 px, sparsam, Palette 13.
 _FLAME_SPARKS = {0: [], 1: [(1, 4)], 2: [(0, 3), (1, 5)]}
+
+
+def _glass_ch(f: int, r: int, c: int) -> str:
+    """Patch-Zeichen (Reihe r 0..10, Spalte c) — Reihen 0..4 = transparent."""
+    return _FLAME_INTS[f][r - 5][c] if r >= 5 else "."
+
 
 for _rows in _FLAME_INTS:
     assert all(len(r) == FLAME_W for r in _rows), "Flammen-Zeile falsch lang"
     assert all(ch in "klmd" for r in _rows for ch in r), "Off-Palette-Zeichen im Flammen-Frame"
+assert _FLAME_INTS[0] == _GLASS_ROWS, "F0 muss Basis-Glas kopieren"
+for _f in (1, 2):
+    _diff = sum(1 for _r in range(FLAME_H) for _c in range(FLAME_W)
+                if _glass_ch(_f, _r, _c) != _glass_ch(0, _r, _c)) + len(_FLAME_SPARKS[_f])
+    assert 2 <= _diff <= 12, f"F{_f}-Diff {_diff} ausserhalb 2..12"
+# Glut-Anteil (13+22) im Glas muss das K1-Ziel (>= 0.30) uebertreffen.
+assert sum(1 for _row in _GLASS_ROWS for _ch in _row if _ch in "dm") / 48 >= 0.30, \
+    "Glut-Flaechenanteil < 0.30"
 
 
 def flame_frames(g: Grid, lx: int, by: int) -> list[Grid]:
@@ -220,11 +244,13 @@ def flame_frames(g: Grid, lx: int, by: int) -> list[Grid]:
     frames: list[Grid] = []
     for f in range(3):
         p = Grid(FLAME_W, FLAME_H)
-        for r, row in enumerate(_FLAME_INTS[f]):
-            for c, ch in enumerate(row):
-                p.put(c, 5 + r, DIGITS.index(ch))
+        for r in range(FLAME_H):
+            for c in range(FLAME_W):
+                ch = _glass_ch(f, r, c)
+                if ch != ".":
+                    p.put(c, r, DIGITS.index(ch))
         for r, c in _FLAME_SPARKS[f]:
-            p.put(c, r, 22 if (r + c) % 2 else 21)
+            p.put(c, r, DIGITS.index("d"))  # heller Glutfunken (Palette 13)
         frames.append(p)
     return frames
 
