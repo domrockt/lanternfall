@@ -3,7 +3,7 @@
  * UI/Debug ändern sie; Änderungen werden sofort persistiert und an
  * interessierte Laufzeit-Hooks (z. B. CSS-Skalierung) gemeldet.
  */
-import { DEFAULT_OPTIONS, loadOptions, saveOptions, setOption, type Options, type StorageLike } from "./options";
+import { DEFAULT_OPTIONS, clampScale, clampVolume, loadOptions, saveOptions, setOption, type Options, type StorageLike } from "./options";
 
 function storage(): StorageLike | null {
   try {
@@ -11,6 +11,33 @@ function storage(): StorageLike | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * Normalisiert ein Options-Objekt pro Feld gegen die Defaults (gleiche
+ * Semantik wie loadOptions): fehlende/nicht-numerische Zahlen fallen auf den
+ * Feld-Default, out-of-range wird geclamped, korrupte Booleans auf Default.
+ * Damit kann ein ungepruefter setSettings()-Aufruf (NaN, partial Payload,
+ * falsche Typen) den Speicher-Cache nicht vergiften — Konsumenten
+ * (AudioSystem, View-Skalierung) sehen immer ein komplettes validiertes
+ * Options-Objekt, und Speicher- und Persistenzstand bleiben identisch.
+ */
+function normalizeOptions(next: Partial<Options>): Options {
+  const num = (v: unknown, fallback: number): number => {
+    if (v === null || v === undefined) return fallback;
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  };
+  const bool = (v: unknown, fallback: boolean): boolean =>
+    typeof v === "boolean" ? v : fallback;
+  return {
+    music: clampVolume(num(next.music, DEFAULT_OPTIONS.music)),
+    sfx: clampVolume(num(next.sfx, DEFAULT_OPTIONS.sfx)),
+    shake: bool(next.shake, DEFAULT_OPTIONS.shake),
+    damageNumbers: bool(next.damageNumbers, DEFAULT_OPTIONS.damageNumbers),
+    muted: bool(next.muted, DEFAULT_OPTIONS.muted),
+    scale: clampScale(num(next.scale, DEFAULT_OPTIONS.scale)),
+  };
 }
 
 export type SettingsListener = (options: Options) => void;
@@ -35,13 +62,16 @@ export function getSettings(): Options {
 }
 
 export function setSettings(next: Options): Options {
-  current = next;
+  current = normalizeOptions(next);
   saveOptions(storage(), current);
   emit(getSettings());
   return getSettings();
 }
 
 export function changeSetting(key: keyof Options, value: number | boolean): Options {
+  // Gate: unbekannte Schluessel (Tippfehler in Debug-/Test-Aufrufen) werden
+  // verworfen, statt via setOption-else-Zweig ein Junk-Feld anzufuegen.
+  if (!(key in DEFAULT_OPTIONS)) return getSettings();
   return setSettings(setOption(current, key, value));
 }
 
