@@ -52,7 +52,7 @@ Belege `m3-fullrunaccg1.json`, `m3-fullrunaccg2.json`; Skripte nur konsumiert.
 
 | | accg1 | accg2 | Tor |
 |---|---|---|---|
-| **retained end−start** | **+8,9 %** (43,6→47,5 MB) | **+9,2 %** (43,6→47,5 MB) | < +15 % — **PASS beide** |
+| **retained end−start** | **+8,9 %** (43,6→47,5 MB) | **+9,2 %** (43,5→47,5 MB) | < +15 % — **PASS beide** |
 | In-run m1→m29 (Beobachtung) | +10,7 % (53,5→59,2) | +14,9 % (54,2→62,3) | nur Beobachtung |
 | Bosse / Truhen / Sieg | 6/6 / 6/6 / `dawn` | 6/6 / 6/6 / `dawn` | grün |
 | Boss-Zeiten | exakt 300..1800 s | exakt 300..1800 s | grün |
