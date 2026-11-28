@@ -1,0 +1,18 @@
+# Lane m10-charselect-truth — fertig (2026-11-28)
+
+SSOT-Guard für den Charakter-Auswahl-Screen: Anzeige == src/data, beide Charaktere vollständig geprüft.
+
+- **K1 (e5f681d):** scripts/m10-charselect-truth.mjs rendert CharSelect headless, extrahiert 20 Zeilen,
+  vergleicht gegen src/data/characters+weapons. before-JSON: 1 belegte Abweichung —
+  Kael-Bonus `+20% MAX-HP` vs. Daten `maxHpPct: 25`. Rest (Name/Titel/HP/TEMPO/RÜSTUNG/START, beide Chars) datengleich.
+- **K2 (feae7a3):** Fix in src/scenes/CharSelect.ts — bonusText aus char.mods abgeleitet, weaponName aus WEAPONS.
+  Anzeige folgt Daten; src/data/** nur gelesen. after-Lauf: 0 Abweichungen.
+- **K3 (93ea59f):** tests/charselect-truth.test.ts (5/5 grün) — jede angezeigte Zeile == Datenwert für beide
+  Charaktere + Regression +20%→+25%; after-JSON mit 0 Abweichungen/0 JS-Fehlern committed.
+- **K4:** Shots 1x + 4x nearest (shots/m10-charselect-truth-1x.png / -4x.png), art-director **PASS 4/5**
+  (4x/Überlappungen 5/5; optional: START-Zeilen-Kontrast, Kael-Icon-Silhouette — nicht blockierend).
+  Doku: docs/lanes/m10-charselect-truth.md.
+
+Werte: Abweichungen 1→0; Guard-Test 5/5; Build grün; Tests 1191/1192 (1 flaky pre-existing:
+tests/separation-crowd.test.ts Timing-Median, einzeln 13/13 grün, von dieser Lane unberührt).
+Abdeckung: alle 20 sichtbaren Textzeilen der Szene.

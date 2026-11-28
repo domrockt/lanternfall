@@ -164,6 +164,25 @@ const weaponNames = parseWeaponNames();
 const { lines, errors, canvasWidth } = await captureDisplay();
 const deviations = check(lines, chars, weaponNames, canvasWidth);
 
+// K4: Sicht-Beleg — 1x-Vollbild der CharSelect-Szene (4x-Zoom wird nach dem
+// Lauf per convert nearest-neighbor erzeugt, damit das Pixel-Grid unverzerrt bleibt).
+if (process.argv.includes("--shots")) {
+  const { chromium } = await loadPlaywright();
+  const server = await startServer();
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+  await page.goto(`http://127.0.0.1:${server.port}/`);
+  await page.waitForFunction(() => Boolean(window.__lf), null, { timeout: 10000 });
+  await page.waitForFunction(() => window.__lf.state().scene === "title", null, { timeout: 10000 });
+  await page.keyboard.press("Enter");
+  await page.waitForFunction(() => window.__lf.state().scene === "charselect", null, { timeout: 10000 });
+  await page.evaluate(() => new Promise((r) => window.__game.events.once("step", () => window.__game.events.once("step", r))));
+  await page.screenshot({ path: "shots/m10-charselect-truth-1x.png" });
+  await browser.close();
+  server.stop();
+  console.log("[charselect-truth] Shot shots/m10-charselect-truth-1x.png");
+}
+
 const result = {
   phase,
   generated: new Date().toISOString(),
