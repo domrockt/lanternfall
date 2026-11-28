@@ -2,11 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   CONTENT_TARGET,
   DRAWS_P95_WARN,
+  FPS_AVG_TARGET,
   FRAME_P95_TARGET_MS,
+  GFXINFO_JANKY_WARN_PCT,
   HEAP_TARGET_PCT,
   TEXTURES_WARN,
   evaluateGates,
+  fpsAvg,
   frameP95,
+  gfxinfoJankyPct,
   rendererVerdict,
   retainedHeapDeltaPct,
   // @ts-expect-error – reine JS-Tor-Definitionen aus dem Gate-Skript, keine d.ts vorhanden
@@ -17,6 +21,12 @@ import {
 // gegen Fixtures geprüft — PASS/FAIL-Matrix pro Tor plus Renderer-Pflicht
 // (Regel 6, 2026-11-28: SwiftShader-Belege sind ungültig). Kein echter Browser-
 // Lauf im Unit-Test; der Gate-Lauf selbst ist Karte K3.
+//
+// Lane m10-v10-gate-torprio, K2 (#13520): Urteilsreihenfolge gepinnt — FPS avg +
+// rAF-p95 sind PRIMÄRE Tore, gfxinfo-janky ist Beobachtung und kann allein kein
+// FAIL erzeugen (K4-Befund m10-janky-remeasure: 0 % janky bei FPS avg 50,1 /
+// rAF-p95 33,4 ms). Die alte strenge Lesart ist per opts { jankyAsGate: true }
+// (CLI: --janky-as-gate) reproduzierbar.
 
 /** Fixture: alles grün (realistische Werte eines gültigen iGPU-Laufs). Rückgabetyp offen, da Import aus .mjs. */
 function passingInput(): any {
@@ -66,6 +76,23 @@ describe("Helfer", () => {
     expect(frameP95([Number.NaN, 5])).toBe(5);
   });
 
+  it("fpsAvg = 1000/Mittelwert der dt, leere/entartete Samples -> null", () => {
+    expect(fpsAvg([16.67, 16.67, 16.66])).toBeCloseTo(60, 0);
+    expect(fpsAvg([20])).toBe(50);
+    expect(fpsAvg([])).toBeNull();
+    expect(fpsAvg([0, 0])).toBeNull();
+    expect(fpsAvg(null)).toBeNull();
+  });
+
+  it("gfxinfoJankyPct: nur endliche, nichtnegative Werte gelten", () => {
+    expect(gfxinfoJankyPct({ gfxinfoJankyPct: 0 })).toBe(0);
+    expect(gfxinfoJankyPct({ gfxinfoJankyPct: 10.62 })).toBe(10.62);
+    expect(gfxinfoJankyPct({})).toBeNull();
+    expect(gfxinfoJankyPct({ gfxinfoJankyPct: Number.NaN })).toBeNull();
+    expect(gfxinfoJankyPct({ gfxinfoJankyPct: -1 })).toBeNull();
+    expect(gfxinfoJankyPct(null)).toBeNull();
+  });
+
   it("retainedHeapDeltaPct rechnet endMB vs startMB, unmessbar -> null", () => {
     expect(retainedHeapDeltaPct(43.6, 47.5)).toBeCloseTo(8.9, 1);
     expect(retainedHeapDeltaPct(40, 40)).toBe(0);
@@ -77,10 +104,13 @@ describe("Helfer", () => {
 describe("evaluateGates PASS/FAIL-Matrix", () => {
   it("Sollwerte", () => {
     expect(CONTENT_TARGET).toEqual({ enemies: 30, weapons: 6, powerups: 6, evolutions: 6, bosses: 6, characters: 2 });
+    expect(FPS_AVG_TARGET).toBeGreaterThanOrEqual(57); // K4-Fixkorridor 57–60 (m10-fps-pacing-timestep)
+    expect(FPS_AVG_TARGET).toBeLessThanOrEqual(60);
     expect(FRAME_P95_TARGET_MS).toBe(16);
     expect(HEAP_TARGET_PCT).toBe(15);
     expect(DRAWS_P95_WARN).toBeGreaterThan(0);
     expect(TEXTURES_WARN).toBeGreaterThan(0);
+    expect(GFXINFO_JANKY_WARN_PCT).toBe(10); // alte strenge Tor-Schwelle, jetzt nur Warnung
   });
 
   it("alles grün -> PASS ohne failures", () => {
@@ -90,12 +120,60 @@ describe("evaluateGates PASS/FAIL-Matrix", () => {
     expect(verdict.failures).toEqual([]);
     expect(verdict.gates.map((g: any) => g.gate)).toEqual([
       "renderer-pflicht",
-      "content-counts",
+      "fps-avg",
       "frame-p95",
+      "content-counts",
       "js-errors-0",
       "fullrun-inhalt",
       "heap-retained",
     ]);
+  });
+
+  it("Urteilsreihenfolge K1 (#13519): fps-avg und frame-p95 sind die primären Tore nach der Renderer-Pflicht", () => {
+    const verdict = evaluateGates(passingInput());
+    const names = verdict.gates.map((g: any) => g.gate);
+    expect(names.indexOf("fps-avg")).toBe(1);
+    expect(names.indexOf("frame-p95")).toBe(2);
+  });
+
+  it("FPS avg unter 57 -> FAIL (K4-Gerätebeleg: fpsAvg 50,1 bei janky 0 %)", () => {
+    const input = passingInput();
+    // K4 m10-janky-remeasure (k2-cap60-device.json): fpsAvg 50,1, rAF-p95 33,4 ms.
+    input.perf.frameDtsMs = Array.from({ length: 100 }, () => 19.96); // 1000/19.96 = 50.1
+    input.perf.gfxinfoJankyPct = 0;
+    const verdict = evaluateGates(input);
+    expect(verdict.passed).toBe(false);
+    expect(verdict.failures).toContain("fps-avg");
+    expect(verdict.failures).toContain("frame-p95"); // rAF-p95 33,4 ms > 16 ms
+    expect(verdict.failures).not.toContain("gfxinfo-janky"); // janky 0 % ist kein Tor mehr
+  });
+
+  it("gfxinfo-janky allein FAILt nicht (K2-Kern: janky-ohne-FPS-Verletzung ist kein FAIL)", () => {
+    const input = passingInput();
+    input.perf.gfxinfoJankyPct = 25; // weit über der alten 10-%-Schwelle
+    const verdict = evaluateGates(input);
+    expect(verdict.verdict).toBe("PASS"); // FPS avg + p95 grün -> Urteil bleibt PASS
+    expect(verdict.failures).toEqual([]);
+    expect(verdict.warnings.some((w: string) => w.includes("gfxinfo-janky"))).toBe(true);
+    expect(verdict.observation.gfxinfoJanky.role).toContain("kein Tor");
+  });
+
+  it("--janky-as-gate stellt die alte strenge Lesart wieder her (Rückweg, K1)", () => {
+    const input = passingInput();
+    input.perf.gfxinfoJankyPct = 25;
+    const legacy = evaluateGates(input, { jankyAsGate: true });
+    expect(legacy.passed).toBe(false);
+    expect(legacy.failures).toContain("gfxinfo-janky");
+    expect(legacy.gates.map((g: any) => g.gate)).toContain("gfxinfo-janky");
+
+    const legacyZero = passingInput();
+    legacyZero.perf.gfxinfoJankyPct = 0; // K4: janky 0 % allein macht die alte Lesart nicht grün-wertig
+    expect(evaluateGates(legacyZero, { jankyAsGate: true }).failures).not.toContain("gfxinfo-janky");
+  });
+
+  it("--janky-as-gate ohne eingespeisten janky-Wert ist FAIL (kein stillschweigendes Grün)", () => {
+    const legacy = evaluateGates(passingInput(), { jankyAsGate: true });
+    expect(legacy.failures).toContain("gfxinfo-janky");
   });
 
   it("frame-p95 über 16 ms -> FAIL", () => {
