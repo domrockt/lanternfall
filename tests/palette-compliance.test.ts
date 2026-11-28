@@ -2,17 +2,20 @@ import { describe, expect, it } from "vitest";
 // @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
 import { readFileSync } from "node:fs";
 import { PAL } from "../src/palette";
-import { SPRITE_GRIDS } from "../src/gfx/textures";
+import { SPRITE_GRIDS, ENEMY_PROJECTILES } from "../src/gfx/textures";
 import {
   analyzeCapturedFx,
   analyzeFxGuard,
   analyzeGrid,
   analyzePixelGrid,
+  collectChestKeys,
+  collectEvolutionSources,
   collectStaticSources,
   ditherMetrics,
   makeFakeDocument,
   scaleCoverage,
   summarize,
+  violationsPerKey,
 } from "../scripts/art/palette-check.mjs";
 import { GEN_ENEMIES } from "../src/gfx/gen-enemies";
 import { GEN_BOSSES } from "../src/gfx/gen-bosses";
@@ -21,7 +24,8 @@ import { GEN_ICONS } from "../src/gfx/gen-icons";
 import { GEN_PROPS } from "../src/gfx/gen-props";
 import { GEN_TITLE } from "../src/gfx/gen-title";
 import { GEN_UI } from "../src/gfx/gen-ui";
-import { createFxTextures, deathFrameSets, EVOLUTION_SIGNATURES, EVOLUTION_SIGNATURE_IDS, mixelBakes, mixelLevel1Frames, mixelLevelFor, mixelMaxLevel, SIGNATURE_FRAME_COUNT, signatureFrame, signatureTextureKey } from "../src/gfx/gen-fx";
+import { createFxTextures, deathFrameSets, EVOLUTION_SIGNATURES, EVOLUTION_SIGNATURE_IDS, mixelBakes, mixelLevel1Frames, mixelLevelFor, mixelMaxLevel, SIGNATURE_FRAME_COUNT, signatureFrame, signatureTextureKey, SOUL_SIGNATURE_SIZE } from "../src/gfx/gen-fx";
+import * as genFxMod from "../src/gfx/gen-fx";
 import { bossSpriteFrames, enemySpriteFrames } from "../src/gfx/enemySprites";
 import { BOSSES, ENEMY_LIST } from "../src/data";
 
@@ -49,6 +53,10 @@ function formatViolations(assets: Asset[], limit = 20): string {
   }
   const rest = bad.length - Math.min(limit, bad.length);
   if (rest > 0) lines.push(`  … und ${rest} weitere Assets`);
+  // M10-palette-guard-evo: Hebel-Pointer je Basis-Key (wo drehen, welcher Job).
+  for (const g of violationsPerKey(assets as never).slice(0, limit)) {
+    lines.push(`  Hebel: ${g.lever} — betroffener Job: ${g.job} (${g.file} :: ${g.key}, ${g.frames} Frame(s))`);
+  }
   return lines.join("\n");
 }
 
@@ -60,10 +68,13 @@ function expectPaletteClean(assets: Asset[]): void {
   ).toBe(0);
 }
 
-/** Alle statischen Zeichen-Grids aus textures.ts + gen-*.ts. */
+/** Alle statischen Zeichen-Grids aus textures.ts + gen-*.ts. (Ergebnis wird
+ *  geteilt: die Grids sind reine Daten, K2-Grün-Schnitt haelt die Suite < 3 s.) */
+let staticsCache: Asset[] | null = null;
 function staticAssets(): Asset[] {
-  return collectStaticSources({
-    textures: { SPRITE_GRIDS },
+  if (staticsCache) return staticsCache;
+  staticsCache = collectStaticSources({
+    textures: { SPRITE_GRIDS, ENEMY_PROJECTILES },
     genEnemies: { GEN_ENEMIES },
     genBosses: { GEN_BOSSES },
     genChars: { GEN_CHARS },
@@ -72,10 +83,13 @@ function staticAssets(): Asset[] {
     genTitle: { GEN_TITLE },
     genUi: { GEN_UI },
   }).map((g) => analyzeGrid(g.name, g.file, g.rows, g.w, g.h, PAL));
+  return staticsCache;
 }
 
 /** Numerische Pixel-Grids, aus denen die Laufzeit-Gegner-/Boss-Texturen entstehen. */
+let numericCache: Asset[] | null = null;
 function numericAssets(): Asset[] {
+  if (numericCache) return numericCache;
   const out: Asset[] = [];
   ENEMY_LIST.forEach((def, i) => {
     enemySpriteFrames(i).forEach((grid, f) => {
@@ -87,11 +101,14 @@ function numericAssets(): Asset[] {
       out.push(analyzePixelGrid(`boss_${boss.id}#${f}`, "src/gfx/enemySprites.ts", grid, PAL));
     });
   });
+  numericCache = out;
   return out;
 }
 
 /** FX-Texturen: echte Canvas-Farben gegen die Palette-HEX-Werte pruefen. */
+let fxCaptureCache: Asset[] | null = null;
 function fxAssets(): Asset[] {
+  if (fxCaptureCache) return fxCaptureCache;
   const captured = new Map<string, { width: number; height: number; px: Map<number, { color: number; alpha: number }> }>();
   const prevDoc = (globalThis as { document?: unknown }).document;
   (globalThis as { document?: unknown }).document = makeFakeDocument(captured);
@@ -102,7 +119,8 @@ function fxAssets(): Asset[] {
   } finally {
     (globalThis as { document?: unknown }).document = prevDoc;
   }
-  return analyzeCapturedFx(captured, PAL);
+  fxCaptureCache = analyzeCapturedFx(captured, PAL);
+  return fxCaptureCache;
 }
 
 describe("M10 palette-guard: Pixel-Compliance", () => {
@@ -346,5 +364,73 @@ describe("M10 FX-Frame-Guard: gerenderte FX-Frames (repraesentative Menge)", () 
     const ms = performance.now() - t0;
     expect(ms, `FX-Guard-Laufzeit ${ms.toFixed(1)} ms`).toBeLessThan(3000);
     console.log(`[fx-guard] ${live.length} Sets in ${ms.toFixed(1)} ms geprueft`);
+  });
+});
+
+// ── M10-palette-guard-evo (K2, Grün-Schnitt, 2026-11-28) ────────────────────
+// Alles hier besteht auf aktuellem main und ist ab jetzt Harte Schranke. Die
+// Evo-FX-Kette (zornpendel, gewittersiegel, dornensturm, winter-w2, form-polish)
+// und die wartenden Merges (chest-reveal, evo-fx-winter) koennen neue Texturen
+// nur noch ueber bewusste Pflege dieser Assertions einschleppen; ein Verstoß
+// faellt mit Datei+Key+Hebel auf (siehe violationsPerKey/leverFor).
+describe("M10 palette-guard-evo: Evo-FX-, Boss- und Truhen-Keys (Grün-Schnitt)", () => {
+  const statics = staticAssets();
+  const numeric = numericAssets();
+  const fx = fxAssets();
+
+  it("Gegner-Geschosse (ENEMY_PROJECTILES) sind erfasst und palette-clean", () => {
+    const shots = statics.filter((a) => a.file === "src/gfx/textures.ts" && a.name.startsWith("enemy_shot"));
+    expect(shots.map((a) => a.name).sort(), "ENEMY_PROJECTILES unvollstaendig erfasst").toEqual(
+      Object.keys(ENEMY_PROJECTILES).sort(),
+    );
+    expect(shots.length).toBeGreaterThanOrEqual(5);
+    expectPaletteClean(shots);
+  });
+
+  it("Evo-Signaturen: hit+death je Evolution, gebackene Zielgroesse, palette-clean", () => {
+    const sets = collectEvolutionSources(genFxMod);
+    expect(sets.map((s) => s.key).sort()).toEqual(
+      EVOLUTION_SIGNATURE_IDS.flatMap((id) => [signatureTextureKey(id, "death"), signatureTextureKey(id, "hit")]).sort(),
+    );
+    expect(sets.length, "Evo-Signatur-Sets (hit+death je Evolution)").toBeGreaterThanOrEqual(12);
+    for (const s of sets) {
+      expect(s.frames.length).toBe(SIGNATURE_FRAME_COUNT);
+      const expected = s.baked ? (s.id === "phoenix" ? 128 : SOUL_SIGNATURE_SIZE) : 32;
+      expect(s.w, `${s.key}: gebackene Zielgroesse`).toBe(expected);
+      s.frames.forEach((rows, i) => {
+        const a = analyzeFxGuard(`${s.key}#${i}`, "src/gfx/gen-fx.ts (evo)", rows, s.w, s.h, PAL);
+        expect(a.offPalette + a.alphaViolations, `Evo-Signatur ${s.key}#${i} verletzt die Pixel-Invariante`).toBe(0);
+      });
+      // Die LAUFZEIT-Textur kommt aus derselben Quelle (Canvas-Erfassung).
+      expect(
+        fx.some((a) => a.name === s.key || a.name.startsWith(`${s.key}_`)),
+        `Evo-Signatur fehlt in der Canvas-Erfassung: ${s.key}`,
+      ).toBe(true);
+    }
+  });
+
+  it("Truhen-Grids (chest_*) sind erfasst und palette-clean", () => {
+    // Ratchet: chest-reveal-Merge erweitert diese Liste bewusst.
+    expect(collectChestKeys(statics).sort()).toEqual(["chest_closed", "chest_open"]);
+    expectPaletteClean(statics.filter((a) => a.name.startsWith("chest")));
+  });
+
+  it("Boss-Quellen (gen-bosses, bossSpriteFrames, fx_boss_core) sind erfasst und palette-clean", () => {
+    expect(statics.some((a) => a.file === "src/gfx/gen-bosses.ts"), "gen-bosses fehlt in der Compliance").toBe(true);
+    const bossFrames = numeric.filter((a) => a.name.startsWith("boss_"));
+    expect(bossFrames.length, "Boss-Frames").toBeGreaterThanOrEqual(BOSSES.length);
+    expect(
+      fx.some((a) => a.name === "fx_boss_core" || a.name.startsWith("fx_boss_core_")),
+      "fx_boss_core fehlt in der FX-Erfassung",
+    ).toBe(true);
+    expectPaletteClean(bossFrames);
+  });
+
+  it("Grün-Schnitt: violationsPerKey liefert 0 Gruppen (Hebel-Pointer greifen im roten Fall)", () => {
+    const groups = violationsPerKey([...statics, ...numeric, ...fx] as never);
+    expect(
+      groups,
+      "Off-Palette-Keys mit Hebel:\n" + groups.map((g) => `  ${g.file} :: ${g.key} — ${g.lever} (${g.job})`).join("\n"),
+    ).toEqual([]);
   });
 });

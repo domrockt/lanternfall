@@ -132,6 +132,13 @@ export function collectStaticSources({ textures, genEnemies, genBosses, genChars
   for (const [name, def] of Object.entries(textures.SPRITE_GRIDS)) {
     out.push({ file: "src/gfx/textures.ts", name, rows: def.rows, w: def.w, h: def.h });
   }
+  // M10-palette-guard-evo (K1): Gegner-Geschosse liegen als eigene Grid-Tabelle
+  // neben SPRITE_GRIDS und waren bislang von der Compliance-Fixture NICHT
+  // abgedeckt — jetzt mitgeprueft (Truhen-Keys chest_closed/chest_open und die
+  // Evo-/Boss-Keys laufen ueber SPRITE_GRIDS bzw. die FX-Erfassung mit).
+  for (const [name, def] of Object.entries(textures.ENEMY_PROJECTILES ?? {})) {
+    out.push({ file: "src/gfx/textures.ts", name, rows: def.rows, w: def.w, h: def.h });
+  }
   const genMods = [
     ["src/gfx/gen-enemies.ts", genEnemies?.GEN_ENEMIES],
     ["src/gfx/gen-bosses.ts", genBosses?.GEN_BOSSES],
@@ -150,6 +157,101 @@ export function collectStaticSources({ textures, genEnemies, genBosses, genChars
     }
   }
   return out;
+}
+
+// ── M10-palette-guard-evo (K1): Evo-FX-, Boss- und Truhen-Keys ──────────────
+// Die Evo-FX-Kette (zornpendel, gewittersiegel, dornensturm, winter-w2,
+// form-polish) und die wartenden Merges (chest-reveal, evo-fx-winter) bringen
+// NEUE Texturen nach main. Diese Helfer machen die Abdeckung dieser Gruppen
+// im Report UND im Test sichtbar (per-Key-Report + ratchet, statt Globalsumme).
+
+/** Spiegel von BAKED_SIGNATURES in addEvolutionSignatures (src/gfx/gen-fx.ts,
+ *  fuer die Guard-Lane read-only): Signaturen mit drawScale werden in voller
+ *  Zielgroesse gebacken (phoenix 128, soul_beacon 96) — die 32x32-signatureFrame-
+ *  Menge der fx-guard-Fixture erfasst diese Frames nicht. Die Rahmen sind ueber
+ *  die Canvas-Erfassung gedeckt; dieser Export liefert sie zusaetzlich benannt
+ *  (Report-Modus: Verstoesse je Key). */
+export function collectEvolutionSources(genFx) {
+  const out = [];
+  for (const id of genFx.EVOLUTION_SIGNATURE_IDS) {
+    const sig = genFx.EVOLUTION_SIGNATURES[id];
+    const baked = sig.drawScale
+      ? { phoenix: { size: 128, frame: genFx.phoenixSignatureFrame }, soul_beacon: { size: genFx.SOUL_SIGNATURE_SIZE, frame: genFx.soulSignatureFrame } }[id]
+      : undefined;
+    const w = baked ? baked.size : 32;
+    const h = baked ? baked.size : 32;
+    for (const kind of ["hit", "death"]) {
+      out.push({
+        id, kind, baked: Boolean(baked),
+        key: genFx.signatureTextureKey(id, kind), w, h,
+        frames: Array.from({ length: genFx.SIGNATURE_FRAME_COUNT }, (_, i) =>
+          baked ? baked.frame(kind, i) : genFx.signatureFrame(sig.shape, sig.palette, i, kind)),
+      });
+    }
+  }
+  return out;
+}
+
+/** Boss-Keys: gen-bosses-Grids + Boss-Frames aus enemySprites + fx_boss_core. */
+export function collectBossSourceKeys({ statics, numeric, fx }) {
+  return {
+    grids: statics.filter((a) => a.file === "src/gfx/gen-bosses.ts").map((a) => a.name),
+    frames: [...new Set(numeric.filter((a) => a.name.startsWith("boss_")).map((a) => a.name.split("#")[0]))],
+    fx: fx.filter((a) => a.name.startsWith("fx_boss")).map((a) => a.name),
+  };
+}
+
+/** Truhen-Keys (chest_*) aus SPRITE_GRIDS — chest-reveal-Merge erweitert diese. */
+export function collectChestKeys(statics) {
+  return statics.filter((a) => a.file === "src/gfx/textures.ts" && a.name.startsWith("chest")).map((a) => a.name);
+}
+
+/** Hebel-Pointer je Datei/Key-Familie: wo wird der Verstoß gedreht, welcher
+ *  Kettenglied-Job ist betroffen. Fuer Report + Bedarfsmeldung (K3). */
+export function leverFor(file, key) {
+  if (file === "src/gfx/gen-fx.ts") {
+    if (key.includes("evo_hit_wrath_pendulum") || key.includes("evo_death_wrath_pendulum"))
+      return { lever: "EVOLUTION_SIGNATURES.wrath_pendulum + signatureFrame/bake in src/gfx/gen-fx.ts", job: "Evo-Kette: zornpendel / form-polish" };
+    if (key.includes("thunder_seal")) return { lever: "EVOLUTION_SIGNATURES.thunder_seal (fx_evo_*_thunder_seal) in src/gfx/gen-fx.ts", job: "Evo-Kette: gewittersiegel / form-polish" };
+    if (key.includes("thorn_storm")) return { lever: "EVOLUTION_SIGNATURES.thorn_storm (fx_evo_*_thorn_storm) in src/gfx/gen-fx.ts", job: "Evo-Kette: dornensturm / form-polish" };
+    if (key.includes("eternal_winter") || key.includes("winter")) return { lever: "EVOLUTION_SIGNATURES.eternal_winter (fx_evo_*_eternal_winter) in src/gfx/gen-fx.ts", job: "Evo-Kette: winter-w2 / evo-fx-winter / form-polish" };
+    if (key.includes("soul")) return { lever: "soulSignatureFrame / orbSoulFrame in src/gfx/gen-fx.ts", job: "Evo-Kette: form-polish (soulpyre)" };
+    if (key.includes("phoenix")) return { lever: "phoenixSignatureFrame / phoenix*Frame in src/gfx/gen-fx.ts", job: "Evo-Kette: form-polish (phoenix)" };
+    if (key.startsWith("fx_boss")) return { lever: "deathFrameSets() (fx_boss_core) in src/gfx/gen-fx.ts", job: "Boss-FX-Lane" };
+    return { lever: "createFxTextures()-Frames in src/gfx/gen-fx.ts", job: "FX-/Evo-Kette" };
+  }
+  if (file === "src/gfx/textures.ts") {
+    if (key.startsWith("chest")) return { lever: `SPRITE_GRIDS.${key} in src/gfx/textures.ts`, job: "Truhen-Lane: chest-reveal-Merge" };
+    if (key.startsWith("enemy_shot")) return { lever: `ENEMY_PROJECTILES.${key} in src/gfx/textures.ts`, job: "Gegner-/Fairness-Lane" };
+    return { lever: `SPRITE_GRIDS.${key} in src/gfx/textures.ts`, job: "Art-Lane" };
+  }
+  if (file === "src/gfx/gen-bosses.ts") return { lever: `GEN_BOSSES.${key} in src/gfx/gen-bosses.ts`, job: "Boss-Art-Lane" };
+  if (file === "src/gfx/enemySprites.ts") return { lever: `bossSpriteFrames (${key}) in src/gfx/enemySprites.ts`, job: "Boss-Art-Lane" };
+  return { lever: `${file} :: ${key}`, job: "unbestimmt (Datei-Eigentuemer pruefen)" };
+}
+
+/** Report-Modus: Verstöße je Basis-Key (Frames zusammengefasst, '#' gefasst)
+ *  mit Datei + Hebel + betroffenem Kettenglied-Job. */
+export function violationsPerKey(assets) {
+  const byKey = new Map();
+  for (const a of assets) {
+    if (a.offPalette + a.alphaViolations === 0) continue;
+    const key = a.name.includes("#") ? a.name.split("#")[0] : a.name;
+    const cur = byKey.get(`${a.file}::${key}`);
+    if (!cur) {
+      byKey.set(`${a.file}::${key}`, {
+        file: a.file, key,
+        frames: 1, offPalette: a.offPalette, alphaViolations: a.alphaViolations,
+        first: a.violations[0] ?? null,
+        ...leverFor(a.file, key),
+      });
+    } else {
+      cur.frames++;
+      cur.offPalette += a.offPalette;
+      cur.alphaViolations += a.alphaViolations;
+    }
+  }
+  return [...byKey.values()].sort((a, b) => (b.offPalette + b.alphaViolations) - (a.offPalette + a.alphaViolations));
 }
 
 /** Fake-Canvas: faengt fillStyle-Hexwerte je Pixel auf, ohne DOM. */
@@ -367,8 +469,23 @@ export async function loadAndAnalyze(root = process.cwd()) {
     }
     const fx = analyzeCapturedFx(captured, palette.PAL);
 
-    const assets = [...statics, ...fx];
-    return { paletteSize: palette.PAL.length, assets, summary: summarize(assets) };
+    // M10-palette-guard-evo (K1): Evo-/Boss-/Truhen-Coverage explizit ausweisen.
+    const evoSets = collectEvolutionSources(genFx);
+    const bossKeys = collectBossSourceKeys({ statics, numeric: [], fx });
+    const evolution = evoSets.map((s) => s.frames.map((rows, i) =>
+      analyzeGrid(`${s.key}#${i}`, "src/gfx/gen-fx.ts", rows, s.w, s.h, palette.PAL))).flat();
+    const staticsKeys = statics.map((a) => a.name);
+    const coverage = {
+      evolutionSignatures: evoSets.map((s) => s.key),
+      // Boss-Frames (enemySprites laedt Phaser und ist hier nicht SSR-ladbar):
+      // werden im Test (tests/palette-compliance.test.ts) hart geprueft.
+      boss: { grids: bossKeys.grids, fx: bossKeys.fx, frames: "via tests/palette-compliance.test.ts (numericAssets)" },
+      chest: collectChestKeys(statics),
+      enemyProjectiles: staticsKeys.filter((n) => n.startsWith("enemy_shot")),
+    };
+
+    const assets = [...statics, ...fx, ...evolution];
+    return { paletteSize: palette.PAL.length, assets, summary: summarize(assets), coverage, evolution };
   } finally {
     await server.close();
   }
@@ -376,7 +493,7 @@ export async function loadAndAnalyze(root = process.cwd()) {
 
 async function main() {
   const outPath = path.resolve(process.argv[2] ?? "shots/m10-palette-guard-baseline.json");
-  const { paletteSize, assets, summary } = await loadAndAnalyze();
+  const { paletteSize, assets, summary, coverage } = await loadAndAnalyze();
 
   const violations = assets
     .filter((a) => a.offPalette + a.alphaViolations > 0)
@@ -385,7 +502,7 @@ async function main() {
 
   const out = {
     milestone: "M10",
-    lane: "m10-palette-guard",
+    lane: "m10-palette-guard-evo",
     generatedAt: new Date().toISOString(),
     paletteSize,
     summary,
@@ -394,6 +511,8 @@ async function main() {
       gen: assets.filter((a) => a.file !== "src/gfx/textures.ts" && a.file !== "src/gfx/gen-fx.ts").length,
       fx: assets.filter((a) => a.file === "src/gfx/gen-fx.ts").length,
     },
+    coverage,
+    violationsPerKey: violationsPerKey(assets),
     assets: assets.map((a) => ({
       file: a.file, name: a.name, w: a.w, h: a.h,
       hasAlphaField: a.hasAlphaField,
@@ -416,6 +535,14 @@ async function main() {
   } else {
     console.log("Top-10-Verstoesse:");
     top.forEach((a, i) => console.log(`  ${i + 1}. ${a.file} :: ${a.name} (${a.w}x${a.h}) — off ${a.offPalette}, alpha ${a.alphaViolations}`));
+  }
+  const perKey = out.violationsPerKey;
+  if (perKey.length === 0) {
+    console.log("Verstoesse je Key: keine.");
+  } else {
+    console.log("Verstoesse je Key (Datei, Key, Hebel, Kettenglied-Job):");
+    perKey.forEach((v, i) => console.log(`  ${i + 1}. ${v.file} :: ${v.key} — ${v.frames} Frame(s), off ${v.offPalette}, alpha ${v.alphaViolations}`
+      + `\n     Hebel: ${v.lever}\n     Job: ${v.job}`));
   }
   console.log(`geschrieben: ${path.relative(process.cwd(), outPath)}`);
   process.exitCode = summary.offPalette === 0 && summary.alphaViolations === 0 ? 0 : 1;

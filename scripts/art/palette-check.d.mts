@@ -80,3 +80,50 @@ export function scaleCoverage(
   fns: { mixelMaxLevel: (key: string) => number; mixelLevelFor: (key: string, scale: number) => number },
 ): ScaleCoverageResult;
 
+// ── M10-palette-guard-evo (K1) ─────────────────────────────────────────────
+export interface EvoSourceSet {
+  id: string;
+  kind: "hit" | "death";
+  baked: boolean;
+  key: string;
+  w: number;
+  h: number;
+  frames: string[][];
+}
+
+/** Spiegel von BAKED_SIGNATURES in addEvolutionSignatures (gen-fx.ts). */
+export function collectEvolutionSources(
+  genFx: {
+    EVOLUTION_SIGNATURES: Record<string, { drawScale?: readonly [number, number]; shape: string; palette: readonly number[] }>;
+    EVOLUTION_SIGNATURE_IDS: string[];
+    SIGNATURE_FRAME_COUNT: number;
+    signatureTextureKey: (evolution: string, kind: "hit" | "death") => string;
+    signatureFrame: (shape: "ring" | "beam" | "splitter" | "cloud", palette: readonly [number, number, number], stage: number, kind?: "hit" | "death") => string[];
+    phoenixSignatureFrame: (kind: "hit" | "death", stage: number, size?: number) => string[];
+    soulSignatureFrame: (kind: "hit" | "death", stage: number) => string[];
+    SOUL_SIGNATURE_SIZE: number;
+  },
+): EvoSourceSet[];
+
+export function collectBossSourceKeys(src: {
+  statics: PaletteAsset[];
+  numeric: PaletteAsset[];
+  fx: PaletteAsset[];
+}): { grids: string[]; frames: string[]; fx: string[] };
+
+export function collectChestKeys(statics: PaletteAsset[]): string[];
+
+export interface LeverPointer {
+  file: string;
+  key: string;
+  frames: number;
+  offPalette: number;
+  alphaViolations: number;
+  first: PaletteViolation | null;
+  lever: string;
+  job: string;
+}
+
+/** Report-Modus: Verstöße je Basis-Key mit Datei + Hebel + Kettenglied-Job. */
+export function violationsPerKey(assets: PaletteAsset[]): LeverPointer[];
+
