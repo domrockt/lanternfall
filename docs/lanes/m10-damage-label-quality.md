@@ -71,7 +71,7 @@ wird nicht ausgefuehrt (nur bei negativem K1-Befund vorgesehen). HIGH-Bitgleichh
   high-Pfad: `npx vitest run tests/damage-calm.test.ts tests/damage-grid.test.ts
   tests/damage-number-batch.test.ts` — 3 Dateien / 44 Tests bestanden.
 - Code-Aenderung in dieser Lane: keine (einzige Aenderung am Spiel:
-  keine;scripts/m10-damage-label-quality.mjs ist Mess-Harness).
+  keine; scripts/m10-damage-label-quality.mjs ist Mess-Harness).
 
 ## K3: Guard-Test tests/damage-label-quality.test.ts (#11511)
 
@@ -85,11 +85,33 @@ Friert die Tier-Matrix ein (siehe Testdatei):
 
 ## K4: Beleg + Abschluss (#11512)
 
-Nachher/Bestaetigungs-Lauf (`--tag=after`) nach dem Guard-Test: identische
-Zahlen (Code unveraendert) — siehe Tabelle oben, JSON
-`~/games/.evidence/m10-damage-label-quality/label-quality-after.json`,
-Abnahme-Screenshot `shots/abnahme/m10-damage-label-quality-low-tier.png`
-(low-Tier, Labels <= 5 bei ~270 Gegnern).
+Bestaetigungs-Lauf (`--tag=after`) nach dem Guard-Test — Code unveraendert,
+Zahlen reproduziert (JSON
+`~/games/.evidence/m10-damage-label-quality/label-quality-after.json`):
+
+| Tier | quality | Labels/Frame (after) | Cap | Vergleich before |
+|---|---|---|---|---|
+| high | high (~59-60 FPS) | 3/5/6/6 | 12 (agg. 10) | 4/5/6/6 — identisches Bild |
+| medium | medium (~41-55 FPS) | 6/6/6/6 | 8 | 6/6/6/6 — identisch |
+| low | low (~22-25 FPS) | 3/4/5/5 | **5** | 4/5/5/5 — pinnt am Cap |
+
+Abnahme-Screenshot (git): `shots/abnahme/m10-damage-label-quality-low-tier.png`
+— low-Tier, 5 Labels, ~260 Ritter auf dem Bildschirm + Boss (HEXENZIRKEL)
+lebendig; Sichtpruefung 2x verstaerkt: Chaosbild mit nur einzelnen
+Schadenszahlen, keine Label-Wolke. Uebrige Screenshots je Tier/Frame:
+`~/games/.evidence/m10-damage-label-quality/label-quality-{before,after}-<tier>-f<N>.png`.
+
+JS-Fehler in beiden Laeufen: 0.
+
+Abnahme-Kriterien:
+- **LOW-Tier Labelzahl messbar gesenkt: JA** — 6 (high) -> 5 (low) bei
+  gleichem Kandidatendruck (~250-280 Gegner), low hart bindend am Tier-Cap
+  (Frames exakt auf 5), plus Zonen-/Burst-Caps von m10-damage-calm.
+- **HIGH bitgleich: JA** — cap 12 == MAX_VISIBLE_LABELS, Aggregat-Cap
+  unangetastet, damage-Tests 44/44 auf unveraendertem high-Pfad, keine
+  Code-Aenderung am Spiel in dieser Lane.
+- **tsc/build/tests gruen: JA** — `npx tsc --noEmit` ok, `npm run build` ok,
+  `npm test` 193 Dateien / 2116 Tests bestanden.
 
 Offene Punkte:
 - B1 (rbscale friert Stufe ein) — ausserhalb des Datei-Bereichs dieser Lane.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11469,
+  "next": 11513,
   "cards": [
     {
       "id": 1,
@@ -15195,6 +15195,81 @@
       ],
       "created": "2026-11-28T11:01:27Z",
       "updated": "2026-11-28T11:03:30Z"
+    },
+    {
+      "id": 11509,
+      "title": "m10-damage-label-quality K1: Befund Verdrahtung damageLabelCapForQuality -> DamageNumbers.ts",
+      "description": "Pruefen, ob der Qualitaets-Cap (damageLabelCapForQuality, Tier-Budgets maxDamageLabels 5/8/12 aus src/logic/quality.ts) im Run-Pfad WIRKLICH bei DamageNumbers.ts ankommt: (a) statisch via grep (Import + Aufrufstelle viewLimit), (b) Runtime-Probe scripts/m10-damage-label-quality.mjs: M25-Chaos 300 Gegner, Tier per CDP-CPU-Drossel erzwingen, aktive Labels je Tier messen. AK: Befund dokumentiert in docs/lanes/m10-damage-label-quality.md mit JSON-Beleg (~/games/.evidence/).",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:19:31Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-damage-label-quality uebernimmt K1. Statischer grep schon gemacht: Import+Aufruf in DamageNumbers.viewLimit (Zeile 227) vorhanden; Runtime-Probe folgt (scripts/m10-damage-label-quality.mjs)."
+        },
+        {
+          "at": "2026-11-28T11:26:51Z",
+          "by": "build",
+          "text": "doing → review: Befund: Verdrahtung WIRKSAM (kein Fix). Statik: import+viewLimit Z227 + Bundle-Grep; Runtime: low pinnt exakt Cap 5 bei ~270 Gegnern, high 6/12, medium 6/8. Commit mit #11509. Kontrolleur folgt mit Lane-Review."
+        }
+      ],
+      "created": "2026-11-28T11:19:28Z",
+      "updated": "2026-11-28T11:26:51Z"
+    },
+    {
+      "id": 11510,
+      "title": "m10-damage-label-quality K2: Label-Budget je Tier wirksam verdrahten",
+      "description": "Falls K1 eine Luecke belegt: Verdrahtung NUR in src/systems/DamageNumbers.ts nachholen. Bei Tier HIGH bitgleiches Verhalten (kein Rueckschritt gegen tests/damage-calm.test.ts / tests/damage-grid.test.ts). AK: tsc gruen, Damage-Tests gruen, HIGH-Verhalten bitgleich belegt.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:26:51Z",
+          "by": "build",
+          "text": "todo → doing: K1 positiv -> kein Fix noetig. K2 = HIGH-Bitgleichheits-Verifikation: damage-calm/damage-grid laufen auf high-Pfad (QUALITY in Vitest immer high)."
+        },
+        {
+          "at": "2026-11-28T11:27:04Z",
+          "by": "build",
+          "text": "doing → review: Kein Fix noetig (K1 positiv); HIGH bitgleich (44/44 damage-Tests auf high-Pfad). Commit #11510."
+        }
+      ],
+      "created": "2026-11-28T11:19:28Z",
+      "updated": "2026-11-28T11:27:04Z"
+    },
+    {
+      "id": 11511,
+      "title": "m10-damage-label-quality K3: Guard tests/damage-label-quality.test.ts",
+      "description": "Test friert die Tier-Matrix ein: damageLabelCapForQuality LOW <= MID <= HIGH (5 <= 8 <= 12) und damageNumbersPerSecFor-Monotonie; Cap in viewLimit-Pfad abgesichert. AK: npx vitest run tests/damage-label-quality.test.ts gruen, ganze Suite gruen.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:27:04Z",
+          "by": "build",
+          "text": "todo → doing: Guard-Test tests/damage-label-quality.test.ts friert Tier-Matrix 5<=8<=12 ein."
+        },
+        {
+          "at": "2026-11-28T11:27:30Z",
+          "by": "build",
+          "text": "doing → review: 6/6 gruen, tsc ok. Commit #11511."
+        }
+      ],
+      "created": "2026-11-28T11:19:28Z",
+      "updated": "2026-11-28T11:27:30Z"
+    },
+    {
+      "id": 11512,
+      "title": "m10-damage-label-quality K4: Beleg Chaos-Probe je Tier + Lane-Doku + .lane-done",
+      "description": "Chaos-Probe (300 Gegner) Labelzahl/Frame je Tier (high/medium/low), Vorher/Nachher-JSON + Screenshots nach ~/games/.evidence/m10-damage-label-quality/, 1 Abnahme-Bild nach shots/abnahme/. Zahlen in docs/lanes/m10-damage-label-quality.md. AK: LOW-Tier Labelzahl messbar gesenkt, HIGH bitgleich, tsc/build/tests gruen, .lane-done committed.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:27:30Z",
+          "by": "build",
+          "text": "todo → doing: After-Lauf + Abnahme-Screenshot + Fullsuite + Lane-Doku + .lane-done."
+        }
+      ],
+      "created": "2026-11-28T11:19:28Z",
+      "updated": "2026-11-28T11:27:30Z"
     }
   ]
 }
