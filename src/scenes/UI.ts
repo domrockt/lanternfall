@@ -121,6 +121,16 @@ export const CHEST_SUBTITLE_GAP_PX = 6;
 export const CHEST_ICON_Y = 92;
 export const CHEST_ICON_SCALE = 2.6;
 export const CHEST_ICON_TEX = 16;
+/**
+ * m10-chest-icon-crisp (menu-art-crisp Befund F2): Das Panel-Icon wurde mit dem
+ * Layout-Wert 2.6 fraktional skaliert — Geraetepixel je Texel 5.2 (640x360@2)
+ * bzw. 7.8 (780x360@3), Mixelklasse wie title_background F1. Die Anker-Boxen
+ * (chestPanelBoxes, tests/chest-panel-ui.test.ts) bleiben beim Layout-Wert
+ * CHEST_ICON_SCALE = 2.6; der Draw-Pfad nutzt die naechste ganzzahlige Stufe.
+ * Platz geprueft (tests/chest-icon-crisp.test.ts): 3 px unter dem Untertitel,
+ * 6 px ueber dem Hint-Band, innerhalb des Panel-Rahmens.
+ */
+export const CHEST_ICON_DRAW_SCALE = 3;
 export const CHEST_HINT_Y = 122;
 export const CHEST_HINT_PITCH = 8;
 /** m10-chest-hint-wrap: max. Zeichen je Slot-Label-Zeile (Slot 96 px breit). */
@@ -603,10 +613,10 @@ export class UI extends Phaser.Scene {
       .setAlpha(0);
     this.chestGroup.add(this.chestBeam);
     // m10-chest-panel-ui: Panel-Layout-Werte wie in der verifizierten Inszenierung
-    // m10-chest-reveal (applyPanelFix): Untertitel 58+oy, Icon 92+oy @2.6,
-    // Evo-Hinweise 122/130+oy. applyPanelFix (ChestSystem) setzt nach dem Merge
-    // dieselben Werte -> idempotent, kein visueller Sprung.
-    this.chestSprite = this.add.image(cx, CHEST_ICON_Y + oy, "chest_closed").setScale(CHEST_ICON_SCALE);
+    // m10-chest-reveal (applyPanelFix): Untertitel 58+oy, Icon 92+oy, Evo-Hinweise
+    // 122/130+oy. Anker unverändert (Layout-Wert CHEST_ICON_SCALE = 2.6); der
+    // Draw-Pfad nutzt die ganzzahlige Stufe CHEST_ICON_DRAW_SCALE (m10-chest-icon-crisp).
+    this.chestSprite = this.add.image(cx, CHEST_ICON_Y + oy, "chest_closed").setScale(CHEST_ICON_DRAW_SCALE);
     this.chestGroup.add(this.chestSprite);
     this.chestTitle = new PixelText(this, cx, 38 + oy, "TRUHE GEÖFFNET", C.lantern, "center").setScale(2).setName("chest-title");
     this.chestGroup.add(this.chestTitle);
@@ -668,7 +678,7 @@ export class UI extends Phaser.Scene {
       t.setText(sentence[i] ?? "");
       t.setVisible(Boolean(sentence[i]));
     });
-    this.chestSprite.setTexture("chest_closed").setScale(CHEST_ICON_SCALE).setAlpha(1);
+    this.chestSprite.setTexture("chest_closed").setScale(CHEST_ICON_DRAW_SCALE).setAlpha(1);
     this.chestBeam.setAlpha(0).setScale(0.25);
     const n = result.rewards.length;
     const cx = GAME_WIDTH / 2;
