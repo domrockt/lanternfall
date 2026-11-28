@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5630/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-m10-golden-frame-rebaseline-r2-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
