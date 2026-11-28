@@ -54,17 +54,30 @@ fx_coin/chestBeam werden gemessen, aber als animierte FX/additives Licht nicht b
 (d) 0 Icon-Überlappungen mit Untertitel/Titel/Hints/Slot-Texten und Icon im Panel-Rahmen.
 Ein Wiederholungslauf ist nicht vorgesehen.
 
-## K2 — Fix (geplant/umgesetzt)
+## K2 — Fix (umgesetzt, a6b6bad0)
 
 `src/scenes/UI.ts`: Slot-Icon-Skala 2.4 → neue Export-Konstante `CHEST_SLOT_ICON_SCALE = 2`
 (ganzzahlig; Stufe 3 = 48 px passt nicht in den 44-px-Slot und würde in die Slot-Texte ragen).
-chestSprite-Draw unverändert (Stufe 3).
+chestSprite-Draw unverändert (Stufe 3). tsc + chest-icon-crisp/chest-panel-ui/chest-hint-wrap
+(44 Tests) grün.
 
-## K3 — Guard + Nachher (geplant/umgesetzt)
+## K3 — Guard + Nachher (umgesetzt)
 
-`tests/chest-closed-ui-crisp.test.ts`: ganzzahlige Skalen (chestSprite-Stufe 3, Slot-Icon-Konstante),
-0 Overlaps via chestPanelBoxes-/chestPanelLayout-Mathematik je Profil (640x360, 780x360, 1920x1080).
-Nachher-Lauf TAG=after → JSON + Crops in `~/games/.evidence/m10-chest-closed-crisp-ui/`.
+`tests/chest-closed-ui-crisp.test.ts` (12 Tests): ganzzahlige Skalen (Panel-Icon-Stufe ==
+`chestPanelLayout().iconScale`, Slot-Icon ganzzahlig und passend im 44-px-Slot), Gerätepixel je
+Texel ganzzahlig je Profil (640x360@2, 780x360@3, 1920x1080), 0 Icon-Überlappungen mit
+Titel-/Untertitel-/Hint-Ink und Icon im Panel-Rahmen, `chestPanelBoxes` überlappungsfrei.
+
+Nachher-Lauf (TAG=after, JSON in `~/games/.evidence/m10-chest-closed-crisp-ui/`):
+
+| Format | chestSprite | Slot-Icons | Crop frakt. Runs (Icon/Slot) | Overlaps | Verdict |
+|---|---|---|---|---|---|
+| 640x360@2 | Scale 3, DevPx/Texel 6 | Scale 2, DevPx/Texel 6 | 0 / 0 | 0, Gap Untertitel 5 px, im Rahmen | **passed** |
+| 780x360@3 | Scale 3, DevPx/Texel 9 | Scale 2, DevPx/Texel 6 | 0 / 0 | 0, Gap Untertitel 5 px, im Rahmen | **passed** |
+
+Renderer je JSON (iGPU `Mesa Intel(R) Graphics (RPL-S)`, kein SwiftShader), 0 JS-Fehler,
+`roundPixels: true`. Abnahme-Bilder: `shots/abnahme/m10-chest-closed-ui-after-640x360@2.png` und
+`...-780x360@3.png` (Sichtprüfung: Icon + 3 Slot-Icons sauber gerastert, klare Gaps).
 
 ## K4 — art-director + Abschluss
 
