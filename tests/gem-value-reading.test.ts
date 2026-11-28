@@ -44,12 +44,12 @@ describe("gem-value-reading: Farb-Rampe", () => {
         expect(d).toBeGreaterThanOrEqual(COLOR_DELTA_MIN);
       }
     }
-    // Messbare Zahlen im Test-Report (r2, art-director-Fix:
-    // fogBlue/amber/crimson -> 226,1 / 154,1 / 131,9).
+    // Messbare Zahlen im Test-Report (r3, Silber/Gold/Rubin:
+    // bone/amber/crimson -> 137,4 / 154,1 / 197,7).
     expect(deltas).toEqual({ "small-medium": expect.any(Number), "medium-large": expect.any(Number), "small-large": expect.any(Number) });
-    expect(deltas["small-medium"]).toBeCloseTo(226.1, 0);
+    expect(deltas["small-medium"]).toBeCloseTo(137.4, 0);
     expect(deltas["medium-large"]).toBeCloseTo(154.1, 0);
-    expect(deltas["small-large"]).toBeCloseTo(131.9, 0);
+    expect(deltas["small-large"]).toBeCloseTo(197.7, 0);
   });
 
   it("Wert- und Größenordnung sind monoton (Fläche und XP)", () => {

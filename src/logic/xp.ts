@@ -11,12 +11,14 @@ export interface GemMeta {
 }
 
 export const GEMS: Record<GemSize, GemMeta> = {
-  // m10-gem-value-reading: Farb-Rampe kalt -> warm (Saphir -> Gold -> Rubin),
-  // Kernfarben aus der Nacht-/Gold-Palette. Ist-Messung (Chaos-Frame, 305
-  // Gem-Drops): marshLight-Grün kollidierte zu 7,43 % der Frame-Pixel mit der
-  // Bog-Horde; mist liegt bei 0,21 %, amber 1,94 %, crimson 1,37 %. Paarweise
-  // RGB-Deltas 163 / 154 / 130 (Schwelle 120, Guard-Test gem-value-reading).
-  small: { size: "small", value: 2, color: 6, weight: 70 },
+  // m10-gem-value-reading: Farb-Rampe Silber -> Gold -> Rubin, Kernfarben aus
+  // der Nacht-/Gold-Palette. Ist-Messung (Chaos-Frame, 305 Gem-Drops):
+  // marshLight-Grün kollidierte zu 7,43 % der Frame-Pixel mit der Bog-Horde;
+  // r2 fogBlue wurde an der Nachher-Messung verworfen (29,45 % Boden-Kollision,
+  // RGB-Dist zum marsh-Boden nur 39,6); bone liegt bei 2,24 % (je-Stufe-
+// Messung, gem-reading-after.json). Paarweise
+  // Deltas 137,4 / 154,1 / 197,7 (Schwelle 120, Guard-Test gem-value-reading).
+  small: { size: "small", value: 2, color: 10, weight: 70 },
   medium: { size: "medium", value: 6, color: 20, weight: 24 },
   large: { size: "large", value: 18, color: 25, weight: 6 },
 };
@@ -27,9 +29,13 @@ export const GEMS: Record<GemSize, GemMeta> = {
  *  sparkle = 1-3 px Glanz in candleWhite/lanternWhite ( hebt das Gem über
  *  Glow-/Brand-Decals und liest sich auch im LOD-Dim). */
 export const GEM_VALUE_RAMP: Record<GemSize, { core: number; highlight: number; sparkle?: number }> = {
-  small: { core: 6, highlight: 9, sparkle: 12 }, // fogBlue / paleMist / candleWhite — kalt, häufig
-  medium: { core: 20, highlight: 21, sparkle: 13 }, // amber / lantern / lanternWhite — warm, mittel
-  large: { core: 25, highlight: 26 }, // crimson / hotRed — heiß, selten
+  // r3: fogBlue kollidierte zu 29,45 % des Chaos-Frames mit dem Moor-Boden
+  // (RGB-Dist marsh<->fogBlue 39,6, gem-reading-after.json). bone = Silber-
+  // Ende der Rampe: Luminanz 193, keine exakte Gegnerfarbe, 2,24 % Kollision
+  // (je-Stufe-Messung).
+  small: { core: 10, highlight: 12, sparkle: 13 }, // bone / candleWhite / lanternWhite — Silber, häufig
+  medium: { core: 20, highlight: 21, sparkle: 13 }, // amber / lantern / lanternWhite — Gold, mittel
+  large: { core: 25, highlight: 26 }, // crimson / hotRed — Rubin, selten
 };
 
 /** Deterministische Zuordnung XP-Wert -> Stufe (Kern der Merge-Semantik,
