@@ -78,17 +78,19 @@ const BASE: Record<DeathClass, Omit<DeathFxSpec, "cls" | "boss">> = {
     spread: 42, tint: C.boneLight, dustTint: C.mist,
     additive: false,
   },
-  // Schleim platzt explosionsartig auseinander, groß und schnell. Dunkler
-  // Rim hinter dem hellen Blob verhindert grün-auf-grün (Art-Befund Runde 1).
+  // Schleim platzt explosionsartig auseinander, aber ruhig: wenige, kleine
+  // Splitter in Normal-Blend mit Alpha-Ausklang (Befund "gruene Dither-Wolken",
+  // Dom 2026-11-28: 16 Shards @ 2.4x additiv = flaeche Wolkendeckel). Dunkler
+  // Rim hinter dem hellen Blob verhindert gruen-auf-gruen (Art-Befund Runde 1).
   burst: {
     shard: "fx_death_blob", dust: "fx_death_blob",
-    count: 16, dustCount: 8,
+    count: 9, dustCount: 4,
     life: 0.35, dustTint: C.mossDark,
     dustLife: 0.28,
-    scaleFrom: 2.4, scaleTo: 1.0, dustScale: 1.2,
+    scaleFrom: 1.0, scaleTo: 0.5, dustScale: 0.8,
     rim: "fx_death_blob", rimTint: C.nightDeep, rimScale: 1.14,
     spread: 130, tint: C.marshLight,
-    additive: true,
+    additive: false,
   },
   // Geist verpufft langsam nach oben und blendet additiv aus. Der dunkle
   // Void-Rim gibt dem weichen Halo eine lesbare Kontur.
