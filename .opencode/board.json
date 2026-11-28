@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12684,
+  "next": 12686,
   "cards": [
     {
       "id": 1,
@@ -16486,7 +16486,7 @@
       "id": 12013,
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T13:34:06Z",
@@ -16497,10 +16497,15 @@
           "at": "2026-11-28T14:40:51Z",
           "by": "build",
           "text": "[Supervisor-Steer 28.11. uebernommen] Lane m10-loadscreen-continuity arbeitet diese Karte ab: minimalster Hebel — Vor-Text mittig (bereits durch m10-loadscreen-pretext) + Boot-Phase im Ladescreen-Stil (Laterne+Balken-Rahmen 0% über gemeinsame Layout-Basis aus Loading.ts), kein neuer Mechanismus. Fix + Kaltstart-Shot + Commit folgen sofort."
+        },
+        {
+          "at": "2026-11-28T14:43:58Z",
+          "by": "build",
+          "text": "doing → review: Fix committed 4d2d3a2a: Boot-Vor-Phase im Ladescreen-Stil (drawLoadingChrome-Gemeinsam-Basis, Vor-Text mittig, BG nightDeep). Geprüft: tsc --noEmit grün, build grün, Guards boot-preload/loading-warmup/boot-light-textures 24/24, Kaltstart-Shot ~/games/.evidence/m10-loadscreen-continuity/boot-after/ (34 Frames, 0 JS-Fehler) — Laterne+Balken+Text mittig, kein Stilbruch. [Supervisor-Steer]"
         }
       ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T14:40:51Z"
+      "updated": "2026-11-28T14:43:58Z"
     },
     {
       "id": 12029,
@@ -17664,6 +17669,30 @@
       ],
       "created": "2026-11-28T14:14:55Z",
       "updated": "2026-11-28T14:29:12Z"
+    },
+    {
+      "id": 12684,
+      "title": "m10-loadscreen-continuity K3: Guard-Test tests/loadscreen-continuity.test.ts",
+      "description": "Abnahmekriterium: Quelltext-Guards (Muster boot-preload.test.ts) — Boot.preload nutzt drawLoadingChrome aus Loading.ts (eine Layout-Basis), Vor-Text-X an GAME_WIDTH gekoppelt, keine Balken-Duplikation in Boot.ts, Hintergrund nightDeep nur in drawLoadingChrome gesetzt. npx vitest run tests/loadscreen-continuity.test.ts gruen + Suite-Cards gruen. Commit Praefix M10-m10-loadscreen-continuity.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:44:30Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T14:44:15Z",
+      "updated": "2026-11-28T14:44:30Z"
+    },
+    {
+      "id": 12685,
+      "title": "m10-loadscreen-continuity K4: Lane-Doku + .lane-done",
+      "description": "Abnahmekriterium: docs/lanes/m10-loadscreen-continuity.md mit Vorher/Nachher-Belegpfaden (device/boot 13:14Z, boot-after 34 Frames 0 JS-Fehler), Messwerten, Supervisor-Steer-Vermerk; .lane-done im Worktree-Root committed. git status --ignored auf eigene Reste geprueft.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T14:44:15Z",
+      "updated": "2026-11-28T14:44:15Z"
     }
   ]
 }
