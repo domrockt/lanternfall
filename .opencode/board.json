@@ -11008,10 +11008,15 @@
           "at": "2026-11-28T05:13:32Z",
           "by": "build",
           "text": "Baseline grün (tsc + icon-redraw/icon-contrast 28 Tests). art-director-Abnahme des Vorher-Kontaktbogens läuft; Muss-Liste steht aus."
+        },
+        {
+          "at": "2026-11-28T05:35:12Z",
+          "by": "build",
+          "text": "Commit bcc81cf: 6 Muss-Items (M1-M6) umgesetzt, FINAL_DRAWN-Mechanik gegen normalize-Re-Banding. Nachher-Metrik: 0 Kontrast-Fails, 0 Eis, 0 fragmentiert, 0 Off-Palette. K3 (Tests) läuft."
         }
       ],
       "created": "2026-11-28T05:08:57Z",
-      "updated": "2026-11-28T05:13:32Z"
+      "updated": "2026-11-28T05:35:12Z"
     },
     {
       "id": 8640,
