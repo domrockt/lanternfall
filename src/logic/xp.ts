@@ -27,11 +27,27 @@ export const GEMS: Record<GemSize, GemMeta> = {
  * ohne Aufschlag wäre bei vollständigem Einsammeln Level 47+ möglich (alter
  * A5-Ausreißer). Level 1–25 bleibt exakt unverändert, damit der frühe
  * Spielfluss und die 5-Minuten-Boss-Kurve gleich bleiben.
+ *
+ * M10-Lane level-target-balance: ab Level 28 ein zweiter Endgame-Aufschlag.
+ * Die God-Modus-Ist-Messung (shots/m10-level-target-before.json, 6 Läufe,
+ * Seeds 101/202/404 × kael/mira) sammelt bis ~55k XP und landete bei Level
+ * 42–44, also 4/6 Läufe über dem Zielband [25, 40]. Der Multiplikator wurde
+ * per Suchlauf (K ∈ 0..60, Kriterium: alle God-XP-Obergrenzen → Level ≤ 40,
+ * alle No-God-Referenzen 6,3k–10,2k XP → Level ≥ 25) gewählt: K = 40 ergibt
+ * God-Level 35–39 und hält den No-God-Korridor (balance-kael, Level 27–30)
+ * auf 27–29. Level 1–27 bleibt bitgleich. Gegnerwerte (HP/Damage) unberührt.
  */
+export const XP_ENDGAME_START_N = 26; // n = level - 1; n > 26 ⇒ ab Level 28
+export const XP_ENDGAME_MULT = 40;
+
 export function xpToNext(level: number): number {
   const n = Math.max(1, level) - 1;
   const late = n > 24 ? 10 * (n - 24) * (n - 24) : 0;
-  return 8 + Math.round(1.1 * n * n) + late;
+  const endgame =
+    n > XP_ENDGAME_START_N
+      ? XP_ENDGAME_MULT * (n - XP_ENDGAME_START_N) * (n - XP_ENDGAME_START_N)
+      : 0;
+  return 8 + Math.round(1.1 * n * n) + late + endgame;
 }
 
 /** Kumulatives XP-Budget, um `level` zu erreichen (Start auf Level 1, 0 XP). */
