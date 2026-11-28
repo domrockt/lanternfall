@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12527,
+  "next": 12532,
   "cards": [
     {
       "id": 1,
@@ -17484,6 +17484,57 @@
       "notes": [],
       "created": "2026-11-28T13:08:23Z",
       "updated": "2026-11-28T13:08:23Z"
+    },
+    {
+      "id": 12527,
+      "title": "m10-spawn-view-anchor K1: Vorher — Spawn-Marken divergieren (3 Seeds × 2 Läufe)",
+      "description": "Spawn-Platzierungs-Marken (Position/UID frischer Spawns) bei 3 Seeds × 2 Läufen (700 s, 30x) messen; Divergenz zwischen Läufen desselben Seeds belegen (Ursache: camera.worldView-Lesung in Spawner.outsideView, siehe docs/lanes/m10-boss-dur-determinism.md K2). Abnahme: Beleg-JSON unter ~/games/.evidence/m10-spawn-view-anchor/ vorliegt und divergierende Spawn-Marken ausweist.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:56:35Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-spawn-view-anchor gestartet (Worktree lf-lanes/m10-spawn-view-anchor, Branch m10-spawn-view-anchor). K1 Vorher-Messung."
+        }
+      ],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:35Z"
+    },
+    {
+      "id": 12528,
+      "title": "m10-spawn-view-anchor K2: outsideView auf Sim-Anker umstellen",
+      "description": "Spawner.ts outsideView liest camera.worldView (frame-abhängig) → ersetzen durch deterministischen Sim-Anker (mid = scrollX/Y + width/2, logischer Screen GAME_WIDTH × GAME_HEIGHT, Rezept exakt wie K2-Punkt 4 der Ursachen-Lane). Anker inline in Spawner.ts, KEINE gemeinsame Hilfsdatei. Abnahme: keine camera.worldView-Lesung mehr im Spawner-Sim-Pfad; Verhalten 1x/60 fps unverändert (worldView ≈ scroll ± (W/2,H/2) bis auf Phasers Floor-Rundung ~0,5 px), Delta dokumentiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12529,
+      "title": "m10-spawn-view-anchor K3: tests/spawn-view-anchor.test.ts",
+      "description": "Regressionstest: Spawn-Platzierung bitgleich bei gleichem Seed, unabhängig von worldView-Mutationen (Reinheit gegen die K2-Leck-Klasse), Teiler-unabhängig wo anwendbar. Abnahme: Test grün, deckt die worldView-Leck-Klasse ab.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12530,
+      "title": "m10-spawn-view-anchor K4: Nachher — Teil-Nachweis bitgleich",
+      "description": "Nachher-Messung: Spawn-Marken bitgleich bei 3 Seeds × 2 Läufen (Vergleich K1-Beleg). Falls merge-m10-worldview-anchor-pools im eigenen Basis-Stand schon gemergt: VOLLER E2E node scripts/m10-boss-dur-det.mjs Exit 0 (bitgleiche Boss-Dauern vs probe-runtime-patch.json); sonst E2E offen vermerken (folgt mit Pools-Merge). Abnahme: Beleg-JSON + Kennzeichnung Teil- vs. E2E-Nachweis.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12531,
+      "title": "m10-spawn-view-anchor K5: Doku + .lane-done",
+      "description": "docs/lanes/m10-spawn-view-anchor.md (Vorher/Nachher, Delta-Doku, offene Punkte) + .lane-done. Abnahme: npm test grün, tsc rc=0, Belege committed, .lane-done existiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
     }
   ]
 }
