@@ -66,7 +66,13 @@ bleibt unverändert.
 
 ### Abnahme-Läufe (nach Fix)
 
-(tbd)
+- Lauf 1 (rc=0): `OK Skalierung 2X gestellt, Fit-View zentriert (center 480/270, 960x540,
+  logisch 640x360 (erwartet 960x540, logisch 640x360))` → **verify-menus: PASS 15/15**, 0 JS-Fehler
+  (`~/games/.evidence/m10-verify-menu-scale-fix-r2/k3-after-run1.log`).
+- Lauf 2 direkt danach (rc=0): **verify-menus: PASS 15/15**, 0 JS-Fehler
+  (`k4-after-run2.log`, Shot `k4-after-options-changed.png`).
+- `tests/view-menu-scale.test.ts`: 5/5 grün; Gesamtsuite 159 Dateien / 1703 Tests grün;
+  `npx tsc --noEmit` rc=0; `npm run build` rc=0.
 
 ## Offene Punkte
 

@@ -1,0 +1,22 @@
+Lane m10-verify-menu-scale-fix-r2 —verify-menus-Check „Skalierung 2X" gefixt.
+
+Diagnose: Harness-Bug, nicht Produkt-Bug. Der Check „Skalierung 2X gestellt, Fit-View
+zentriert" in scripts/verify-menus.mjs erwartete die pra-M10-view-fill 4:3-Letterbox-
+Regel (960x540 -> 720x540); computeView (src/logic/view.ts) füllt im n<2-Rückfall das
+Fenster dokumentiert (960x540 -> 640x360@1.5, Canvas-CSS 960x540, zentriert). Repro an
+Branch-Basis: FAIL 14/15 (erwartet 720x540, gemessen 960x540, center 480/270 korrekt).
+
+Fix (K3): Erwartungsformel im Harness auf die verbindliche computeView-Regel umgestellt
+(Fill-Pfad inklusive) + Gegenprobe gegen die logische View des Spiels (Drift-Frühwarnung).
+Produktcode view.ts/scale.ts unverändert, verify-input unberührt.
+
+Regression (K4): tests/view-menu-scale.test.ts neu (5 Tests: Fill 960x540, 2X==AUTO bei
+maxFitN<=1, ganzzahlig 1280x720, MAX_WIDTH-Klemme 1920x1080, 800x450@1.25) — 5/5 grün.
+Abnahme: verify-menus PASS 15/15 in 2 aufeinanderfolgenden Läufen, 0 JS-Fehler; Suite
+159 Dateien/1703 Tests, tsc, build je rc=0.
+
+Belege: ~/games/.evidence/m10-verify-menu-scale-fix-r2/ (k1-before.json/.png/.log,
+k3-after-run1.log, k4-after-run2.log). Doku: docs/lanes/m10-verify-menu-scale-fix-r2.md.
+Offen (Bedarf, fremde Datei): scripts/verify-display.mjs duplizierte View-Formel kennt
+den Fill-Pfad nicht.
+Commits: bdb1544c (K1+K2), 6916cd31 (K3), <k4> (K4+lane-done).
