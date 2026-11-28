@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { applyTexture, makeImage } from "../gfx/atlas";
-import { GAME_HEIGHT } from "../config";
+import { GAME_HEIGHT, WORLD_SIZE } from "../config";
 // M10-chest-reveal: reine Sequenz-/Layout-Teile liegen in src/logic/chest-reveal.ts
 // (unit-getestet ohne Phaser); das ChestSystem ist der Renderer dafuer.
 import {
@@ -145,6 +145,91 @@ interface BurstParticleRuntime {
   t: number;
 }
 
+// ── M10-chest-spawn-fair: Fair-Spawn-Regel (reine Funktion) ─────────────────
+//
+// Truhe = Kernmoment (Dom: "alle 5 min eine Art Boss, der eine Truhe spawnt
+// wie in Vampire Survivors"). Vorher spawnte die Truhe exakt an der Boss-Tode-
+// position — messbar 5/18 in unfairen Zellen (Moorwasser = 40 % Slow, Kante
+// 20 px, v. a. Boss #5). Das Spielfeld hat keine Waende: "Hindernis" ist
+// Moorwasser, "Wand/Ecke" ist die Spielfeldkante. Timing und Belohnungen
+// bleiben unveraendert — nur die Position wird auf eine freie, erreichbare
+// Zelle verschoben (naechste freie Zelle per Spiralsuche als Fallback).
+
+/** Mindestabstand der Truhe zur Spielfeldkante (3 Tiles). */
+export const CHEST_EDGE_MARGIN_PX = 48;
+/** Raster der Spiral-Fallback-Suche (16-px-Tiles, wie Terrain). */
+export const CHEST_SPAWN_TILE_PX = 16;
+/** Max. Suchradius der Spiralsuche in Tiles (24 Tiles = 384 px). */
+export const CHEST_SPAWN_SEARCH_TILES = 24;
+
+export interface FairChestSpawnOptions {
+  /** Spielfeldkante (WORLD_SIZE). */
+  worldSize: number;
+  /** Zelle unpassierbar/unfair (Moorwasser)? Kante wird intern geprueft. */
+  isBlocked: (x: number, y: number) => boolean;
+}
+
+export interface FairChestSpawnResult {
+  x: number;
+  y: number;
+  /** Urspruengliche Position. */
+  fromX: number;
+  fromY: number;
+  /** free = unveraendert, edge = in den Kanten-Margin geklemmt,
+   *  fallback = auf naechste freie Zelle verschoben (oder Notfall-Klemme). */
+  reason: "free" | "edge" | "fallback";
+}
+
+/**
+ * Verschiebt eine Truhen-Spawn-Position auf eine faire Zelle:
+ * 1. Klemme in den Kanten-Margin (niemals naeher als CHEST_EDGE_MARGIN_PX an
+ *    der Feldkante).
+ * 2. Primärzelle blockiert (Wasser)? → Spiralsuche über 16-px-Tiles, erste
+ *    freie Zelle innerhalb des Margins gewinnt (Ring r=1 naeher als r=2, …).
+ * 3. Kein Treffer bis CHEST_SPAWN_SEARCH_TILES: Notfall-Klemme (nie schlechter
+ *    als der Ist-Zustand).
+ * Rein positionell — kein RNG, kein Zeitbezug, Timing bleibt bitgleich.
+ */
+export function fairChestSpawn(
+  x: number,
+  y: number,
+  opts: FairChestSpawnOptions,
+): FairChestSpawnResult {
+  const m = CHEST_EDGE_MARGIN_PX;
+  const max = Math.max(m, opts.worldSize - m);
+  const cx = Math.min(Math.max(x, m), max);
+  const cy = Math.min(Math.max(y, m), max);
+  if (!opts.isBlocked(cx, cy)) {
+    return { x: cx, y: cy, fromX: x, fromY: y, reason: cx === x && cy === y ? "free" : "edge" };
+  }
+  const free = (px: number, py: number): boolean =>
+    px >= m && px <= max && py >= m && py <= max && !opts.isBlocked(px, py);
+  const rMax = CHEST_SPAWN_SEARCH_TILES;
+  let bx = Number.NaN;
+  let by = 0;
+  let bd = Number.POSITIVE_INFINITY;
+  for (let r = 1; r <= rMax; r++) {
+    // Ganzen Ring scannen, besten (Euclid-nächsten) Treffer merken — nicht den
+    // zuerst gefundenen (Diagonale zuerst waere bis zu r*sqrt(2) weiter weg).
+    for (let dx = -r; dx <= r; dx++) {
+      for (let dy = -r; dy <= r; dy++) {
+        // Nur der aeussere Ring (innere Ringe sind frueher geprueft).
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+        const px = cx + dx * CHEST_SPAWN_TILE_PX;
+        const py = cy + dy * CHEST_SPAWN_TILE_PX;
+        if (!free(px, py)) continue;
+        const d = (px - cx) ** 2 + (py - cy) ** 2;
+        if (d < bd) { bd = d; bx = px; by = py; }
+      }
+    }
+    // Frueher Abbruch: Ring r+1 hat mindestens (r+1)*tile Euclid-Abstand —
+    // ein gefundener naeherer Treffer kann nicht mehr geschlagen werden.
+    if (Math.sqrt(bd) < (r + 1) * CHEST_SPAWN_TILE_PX) break;
+  }
+  if (!Number.isNaN(bx)) return { x: bx, y: by, fromX: x, fromY: y, reason: "fallback" };
+  return { x: cx, y: cy, fromX: x, fromY: y, reason: "fallback" };
+}
+
 export class ChestSystem {
   readonly chests: ChestRuntime[] = [];
   /** M10-Timing-Beleg: jede Spawn-Zeit wird mitgeschrieben (nur Diagnose). */
@@ -202,6 +287,20 @@ export class ChestSystem {
   }
 
   spawn(x: number, y: number): ChestRuntime {
+    // M10-chest-spawn-fair: Position auf freie, erreichbare Zelle verschieben
+    // (Kanten-Margin, Moorwasser-Ausschluss, Spiral-Fallback). Das Spielfeld
+    // hat keine Waende — isBlocked kommt aus der Run-Szene (isWaterAt), wenn
+    // vorhanden; ohne Szene-Abfrage bleibt die Position unveraendert. Timing
+    // (`lf-elapsed`) und Belohnungslogik sind unberuehrt.
+    const run = this.scene as unknown as { isWaterAt?: (wx: number, wy: number) => boolean } | null;
+    const waterAt = run?.isWaterAt;
+    const isBlocked =
+      typeof waterAt === "function"
+        ? (wx: number, wy: number) => waterAt(wx, wy)
+        : () => false;
+    const fair = fairChestSpawn(x, y, { worldSize: WORLD_SIZE, isBlocked });
+    x = fair.x;
+    y = fair.y;
     const at = Number(this.scene.registry.get("lf-elapsed") ?? 0);
     this.spawns.push({ x: Math.round(x), y: Math.round(y), at: Math.round(at * 1000) / 1000 });
     const sprite = makeImage(this.scene, Math.round(x), Math.round(y), "chest_closed")
