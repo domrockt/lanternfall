@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { ENEMIES, waveForMinute } from "../data";
 import type { EnemyDef, EnemyId, WaveDef } from "../data/types";
 import { WORLD_SIZE } from "../config";
-import { advanceSpawnBudget, elitePackCount, pickEnemy, ringSpawnOffsets, SPAWN_FRAME_BUDGET, splitSpawnBurst, streamSpawnOffsets } from "../logic/waves";
+import { advanceSpawnBudget, elitePackCount, ringSpawnOffsets, SPAWN_FRAME_BUDGET, splitSpawnBurst, streamSpawnOffsets } from "../logic/waves";
 import {
   createFrameBudget, eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale,
   frameBudgetTarget, maxActiveEnemies, pickRecycleIndex, recycleDistance, spawnRateFactor,
@@ -27,6 +27,25 @@ import { EnemyPool, type EnemyRuntime, type EnemySpawnOptions } from "./EnemyPoo
  */
 export const SPAWN_ALLOWANCE_PER_SECOND = SPAWN_FRAME_BUDGET * 60;
 export const SPAWN_ALLOWANCE_MAX = SPAWN_FRAME_BUDGET * 2;
+
+/**
+ * M10 (#12090, m10-spawn-burst-alloc): geteilte Konstanten gegen Allokationen
+ * im Burst-Pfad. `EMPTY_SPAWN_OPTIONS` ersetzt das `{}`-Default je Aufruf,
+ * `ALL_ENEMY_DEFS` das `Object.values(ENEMIES)` je Fallback-Spawn (beide nur
+ * lesend genutzt, nie mutiert).
+ */
+const EMPTY_SPAWN_OPTIONS: EnemySpawnOptions = Object.freeze({});
+const ALL_ENEMY_DEFS: EnemyDef[] = Object.values(ENEMIES);
+
+/** Kompilierte Gewichts-Mischung: statt `Object.entries(mix)` + `filter` je
+ *  Spawn (2 Arrays + n Tupel + Closure) einmal je Wellen-Objekt kompilieren.
+ *  Reihenfolge/Summe identisch zu `pickEnemy` (logic/waves.ts) — die Ziehung
+ *  `roll = rng.next() * total; roll -= w; roll <= 0` ist bitgleich. */
+interface CompiledMix {
+  ids: EnemyId[];
+  weights: number[];
+  total: number;
+}
 
 export function accrueSpawnAllowance(acc: number, dt: number): number {
   if (!Number.isFinite(acc)) return SPAWN_ALLOWANCE_MAX;
@@ -89,6 +108,21 @@ export class Spawner {
   private spawnAllowance = 0;
   /** M10-frame-tail-batching: Debug-Spawns, die noch verteilt werden. */
   private readonly debugQueue: QueuedSpawn[] = [];
+  /**
+   * M10 (#12090): Kompilierte Mischungen je Wellen-Objekt (WAVES ist statisch,
+   * also max. 30 Eintraege) — der Burst-Pfad baut kein `Object.entries`-Array
+   * mehr je Spawn.
+   */
+  private readonly mixCache = new Map<WaveDef, CompiledMix>();
+  /**
+   * M10 (#12090): wiederverwendete Spawn-Options statt Objekt-Literale je
+   * Spawn. `pool.spawn` liest die Options nur synchron, behaelt sie nie —
+   * Mutation zwischen zwei Aufrufen ist dadurch bitgleich (gleiche Werte).
+   */
+  private readonly spawnOpts: EnemySpawnOptions = {
+    elite: false, splitDepth: 0, bossIndex: undefined, radius: undefined, speed: 0, hpScale: undefined,
+  };
+  private readonly eliteOpts: EnemySpawnOptions = { elite: true, hpScale: 0 };
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
@@ -172,12 +206,42 @@ export class Spawner {
     this.spawnAllowance += split.allowanceLeft;
     if (split.deferred > 0) this.budget += split.deferred;
     for (let i = 0; i < split.now; i++) {
-      const id = pickEnemy(wave.mix, this.rng);
-      const def = id ? ENEMIES[id] : this.rng.pick(Object.values(ENEMIES));
+      const id = this.pickEnemyCached(wave);
+      const def = id ? ENEMIES[id] : this.rng.pick(ALL_ENEMY_DEFS);
       const elite = this.rng.next() < eliteChance(wave.minute);
       spawned.push(this.spawnOne(def, playerX, playerY, elite));
     }
     return spawned;
+  }
+
+  /**
+   * M10 (#12090): gewichtete Gegnerwahl ueber die kompilierte Mischung.
+   * Mathe und Ziehungsfolge bitgleich zu `pickEnemy` (logic/waves.ts):
+   * gleiche Reihenfolge (Object.entries-Insertion-Order = Kompilier-Order),
+   * gleiche Summe, gleiche `roll <= 0`-Abbrueche, genau ein `rng.next()`.
+   */
+  private pickEnemyCached(wave: WaveDef): EnemyId | null {
+    let mix = this.mixCache.get(wave);
+    if (!mix) {
+      const ids: EnemyId[] = [];
+      const weights: number[] = [];
+      let total = 0;
+      for (const [id, w] of Object.entries(wave.mix) as [EnemyId, number][]) {
+        if ((w ?? 0) <= 0) continue;
+        ids.push(id);
+        weights.push(w);
+        total += w;
+      }
+      mix = { ids, weights, total };
+      this.mixCache.set(wave, mix);
+    }
+    if (mix.ids.length === 0) return null;
+    let roll = this.rng.next() * mix.total;
+    for (let i = 0; i < mix.ids.length; i++) {
+      roll -= mix.weights[i];
+      if (roll <= 0) return mix.ids[i];
+    }
+    return mix.ids[mix.ids.length - 1];
   }
 
   spawnRing(wave: WaveDef, playerX: number, playerY: number, out: EnemyRuntime[], count: number): void {
@@ -185,7 +249,7 @@ export class Spawner {
     const ringRadius = spawnRingRadius(this.camera.width, this.camera.height);
     const offsets = ringSpawnOffsets(count, ringRadius);
     for (const off of offsets) {
-      const id = pickEnemy(wave.mix, this.rng) ?? "bog_rat";
+      const id = this.pickEnemyCached(wave) ?? "bog_rat";
       const def = ENEMIES[id];
       const baseAngle = Math.atan2(off.y, off.x);
       let x = playerX;
@@ -213,7 +277,7 @@ export class Spawner {
     const angle = this.rng.next() * Math.PI * 2;
     const offsets = streamSpawnOffsets(count, radius, angle);
     for (const off of offsets) {
-      const id = pickEnemy(wave.mix, this.rng) ?? "bog_rat";
+      const id = this.pickEnemyCached(wave) ?? "bog_rat";
       const def = ENEMIES[id];
       out.push(this.spawnAt(
         def,
@@ -227,7 +291,7 @@ export class Spawner {
   spawnElitePack(wave: WaveDef, playerX: number, playerY: number, out: EnemyRuntime[]): void {
     const count = elitePackCount(wave.minute);
     for (let i = 0; i < count; i++) {
-      const id = pickEnemy(wave.mix, this.rng) ?? "bogzombie";
+      const id = this.pickEnemyCached(wave) ?? "bogzombie";
       const angle = (i / count) * Math.PI * 2 + this.rng.next() * 0.4;
       const r = 120 + this.rng.next() * 60;
       const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * r, 20, WORLD_SIZE - 20);
@@ -295,10 +359,20 @@ export class Spawner {
   }
 
   /** Direkter Spawn (Bosse, Splitter-Kinder, Summoner-Minions). */
-  spawnAt(def: EnemyDef, x: number, y: number, options: EnemySpawnOptions = {}): EnemyRuntime {
+  spawnAt(def: EnemyDef, x: number, y: number, options: EnemySpawnOptions = EMPTY_SPAWN_OPTIONS): EnemyRuntime {
     const elapsedSec = this.elapsed();
     const hpScale = options.hpScale ?? this.hpScaleFor(elapsedSec);
     const damageScale = enemyDamageScale(elapsedSec);
+    // M10 (#12090): Scratch-Options mutieren statt Literal + Spread je Spawn.
+    // `pool.spawn` liest synchron (`speed ??`, `bossIndex !== undefined`, ...),
+    // behaelt das Objekt nicht — Werte sind identisch zum alten Literal.
+    const opts = this.spawnOpts;
+    opts.elite = options.elite ?? false;
+    opts.splitDepth = options.splitDepth;
+    opts.bossIndex = options.bossIndex;
+    opts.radius = options.radius;
+    opts.hpScale = options.hpScale;
+    opts.speed = options.speed ?? def.speed * enemySpeedScale(elapsedSec);
     const runtime = this.pool.spawn(
       def,
       Phaser.Math.Clamp(x, 20, WORLD_SIZE - 20),
@@ -306,7 +380,7 @@ export class Spawner {
       hpScale,
       damageScale,
       this.rng.next() * Math.PI * 2,
-      { speed: def.speed * enemySpeedScale(elapsedSec), ...options },
+      opts,
       this.rng,
     );
     if (def.id in ENEMIES) {
@@ -340,7 +414,14 @@ export class Spawner {
       x = Phaser.Math.Clamp(cx - Math.cos(angle) * radius, 20, WORLD_SIZE - 20);
       y = Phaser.Math.Clamp(cy - Math.sin(angle) * radius, 20, WORLD_SIZE - 20);
     }
-    return this.spawnAt(def, x, y, elite ? { elite, hpScale: this.hpScaleFor(this.elapsed()) * 3 } : {});
+    // M10 (#12090): Scratch-Options statt Literal je Spawn (elite) bzw.
+    // geteiltes leeres Options-Objekt (normal).
+    if (elite) {
+      this.eliteOpts.elite = true;
+      this.eliteOpts.hpScale = this.hpScaleFor(this.elapsed()) * 3;
+      return this.spawnAt(def, x, y, this.eliteOpts);
+    }
+    return this.spawnAt(def, x, y);
   }
 }
 
