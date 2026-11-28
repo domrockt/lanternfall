@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8977,
+  "next": 8999,
   "cards": [
     {
       "id": 1,
@@ -11532,6 +11532,36 @@
       ],
       "created": "2026-11-28T06:10:09Z",
       "updated": "2026-11-28T06:11:06Z"
+    },
+    {
+      "id": 8997,
+      "title": "m10-acceptance-balance-criterion K1: ACCEPTANCE.md Balance-Kriterium auf 25–40 ändern, Level 47 widerlegt streichen",
+      "description": "ACCEPTANCE.md Z.151 + Z.245 (+ weitere Treffer per grep) konsistent auf „Endlevel 25–40, 6/6 Läufe, Boss 20–60 s, kein Tod vor Minute 15“ ändern; „Kael/Seed 101 Level 47“ als widerlegt dokumentieren. KEIN Code. AK: grep „Level 47“ nur noch als widerlegt; „25–40“ am Kriterium; Tabellen intakt; ein Commit #K1.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T06:17:53Z",
+          "by": "build",
+          "text": "todo → doing: Von Lane-Task übernommen (Versuch 2). K1-Start: ACCEPTANCE.md Z.151/245."
+        }
+      ],
+      "created": "2026-11-28T06:17:44Z",
+      "updated": "2026-11-28T06:17:53Z"
+    },
+    {
+      "id": 8998,
+      "title": "m10-acceptance-balance-criterion K2: Doku docs/qa/balance-criterion-2026-11-28.md",
+      "description": "Neue Doku: Dom-Zustimmung zitieren (Frage 23:35, Antwort 06:00Z), exakte diff-Zeilen, Begründung mit Belegen (repro/xp-budget/final-JSONs). AK: Datei existiert, Diff nur ACCEPTANCE.md + diese Doku; ein Commit #K2; danach .lane-done.",
+      "column": "backlog",
+      "notes": [
+        {
+          "at": "2026-11-28T06:17:53Z",
+          "by": "build",
+          "text": "todo → backlog: K2 nach K1."
+        }
+      ],
+      "created": "2026-11-28T06:17:44Z",
+      "updated": "2026-11-28T06:17:53Z"
     }
   ]
 }
