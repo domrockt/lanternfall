@@ -19798,36 +19798,60 @@
       "title": "m10-device10min-refresh K1 Befund: Output-JSON ohne refresh-Feld",
       "description": "Befund dokumentieren: Output-JSON von scripts/m10-v10-device-10min.mjs enthält renderer/rendererValid, aber keine aktive Panel-Refresh-Rate. A/B-Tabelle der Dom-Freigabe 17:45Z (60-Hz-APK-Lock vs hz=max) als Anforderungsquelle in docs/lanes/m10-device10min-refresh.md festhalten. Abnahme: Befund + Anforderungsquelle in der Lane-Doku belegt. [lane #13746]",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T18:10:35Z",
+          "by": "build",
+          "text": "lane #13746, Merge f13a2953"
+        }
+      ],
       "created": "2026-11-28T18:10:25Z",
-      "updated": "2026-11-28T18:10:25Z"
+      "updated": "2026-11-28T18:10:35Z"
     },
     {
       "id": 13891,
       "title": "m10-device10min-refresh K2 Integration: refreshRate + panelMode in Output-JSON",
       "description": "In scripts/m10-v10-device-10min.mjs nach Laufstart dumpsys display (device-bridge-Äquivalent) lesen, aktive refreshRate + panelMode parsen und in den Telemetrie-Teil des Output-JSONs schreiben. renderer/rendererValid unangetastet; Parsing-Fehler → Feld fehlt + Warnung, passed-Logik bytegleich (Lauf fällt nicht auf FAIL). Abnahme: node --check rc=0, passed-Ausdruck unverändert. [lane #13747]",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T18:10:35Z",
+          "by": "build",
+          "text": "lane #13747, Merge f13a2953"
+        }
+      ],
       "created": "2026-11-28T18:10:25Z",
-      "updated": "2026-11-28T18:10:25Z"
+      "updated": "2026-11-28T18:10:35Z"
     },
     {
       "id": 13892,
       "title": "m10-device10min-refresh K3 Test: device10min-refresh.test.ts",
       "description": "tests/device10min-refresh.test.ts: Dump-Parsing (60 Hz / 120 Hz / unlesbar) rein per Fixture-String, kein Gerät nötig. Plus Quell-Guard (Felder im Output-JSON). Abnahme: npx vitest run tests/device10min-refresh.test.ts grün. [lane #13748]",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T18:10:35Z",
+          "by": "build",
+          "text": "lane #13748, Merge f13a2953"
+        }
+      ],
       "created": "2026-11-28T18:10:25Z",
-      "updated": "2026-11-28T18:10:25Z"
+      "updated": "2026-11-28T18:10:35Z"
     },
     {
       "id": 13893,
       "title": "m10-device10min-refresh K4 Doku: Feldbedeutung + 17:45Z-Freigabe",
       "description": "docs/lanes/m10-device10min-refresh.md: Feldbedeutung refreshRate/panelMode dokumentieren, Verweis auf Dom-Freigabe 17:45Z; Grenze: kein neuer Messlauf nötig — Parsing/JSON-Vertrag only. Abnahme: JSON-Schema-Änderung in Doku belegt. [lane #13749]",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T18:10:35Z",
+          "by": "build",
+          "text": "lane #13749, Merge f13a2953"
+        }
+      ],
       "created": "2026-11-28T18:10:25Z",
-      "updated": "2026-11-28T18:10:25Z"
+      "updated": "2026-11-28T18:10:35Z"
     }
   ]
 }
