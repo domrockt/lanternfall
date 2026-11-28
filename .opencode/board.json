@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9735,
+  "next": 9859,
   "cards": [
     {
       "id": 1,
@@ -12263,6 +12263,57 @@
       ],
       "created": "2026-11-28T07:13:30Z",
       "updated": "2026-11-28T07:27:28Z"
+    },
+    {
+      "id": 9855,
+      "title": "m10-title-flame-glow-r2 K1: Vorher-Belege + Glut-Messung",
+      "description": "Title-Screen 640x360 und 780x360@3 als PNG (1x + 4x-Zoom auf Flammenbereiche), before-JSON mit gemessenem Glut-Flaechenanteil. Abnahme: Belege in ~/games/.evidence/m10-title-flame-glow-r2/, before-JSON mit Zahl committed.",
+      "column": "review",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T07:38:53Z",
+          "by": "coder",
+          "text": "todo → doing: Karte angenommen, Before-Belege starten"
+        },
+        {
+          "at": "2026-11-28T07:44:29Z",
+          "by": "coder",
+          "text": "doing → review: Before-Belege (3 Viewports, 4x-Zooms) + before-glow.json: Glut-Anteil 0.125; Ziel >= 0.30. Commit #9855"
+        }
+      ],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 9856,
+      "title": "m10-title-flame-glow-r2 K2: Generator-Glut-Akzente",
+      "description": "gen_title.py: Glut-Akzente kraeftiger (Kern-Pixel hellere Palette-Stufe), optional Mond-Glut-Flicken; Dither nur an Uebergangskanten 1-2 px, Kerne flaechig hell, organische Formen. gen-title.ts regenerieren. Abnahme: Frames regeneriert, Palette-Indices dokumentiert, Title.ts unberuehrt.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 9857,
+      "title": "m10-title-flame-glow-r2 K3: Regressionstest + Palette-Guard",
+      "description": "tests/title-flame-glow.test.ts: Grid-Groesse, Palette-compliance, Glut-Flaechenanteil >= Schwelle; Palette-Guard gruen. Abnahme: npx vitest run tests/title-flame-glow.test.ts gruen + npm test gruen.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 9858,
+      "title": "m10-title-flame-glow-r2 K4: Nachher-Belege + art-director + Doku",
+      "description": "After-Shots beider Viewporte, art-director-Urteil >= 4/5 'kommerziell auslieferbar', Doku docs/lanes/m10-title-flame-glow-r2.md + .lane-done. Abnahme: art-director PASS mit Note >= 4/5 an Nachher-Shots, 0 off-Palette-Pixel, Tests gruen, Title.ts/menu.ts unberuehrt.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T07:38:48Z",
+      "updated": "2026-11-28T07:38:48Z"
     }
   ]
 }
