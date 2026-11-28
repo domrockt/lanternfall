@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7423,
+  "next": 7428,
   "cards": [
     {
       "id": 1,
@@ -8885,6 +8885,56 @@
       ],
       "created": "2026-11-28T01:26:46Z",
       "updated": "2026-11-28T01:27:43Z"
+    },
+    {
+      "id": 7423,
+      "title": "m10-boss-idle-anim #1: Ist-Aufnahme Boss-Frames",
+      "description": "lane #6518, Merge 43bc9c4. Skript scripts/m10-boss-idle-anim.mjs rendert alle 6 Bosse 1x und 4x, zaehlt Frames/Duplikate/Pixel-Diffs je Boss → shots/m10-boss-idle-anim-before.json + before-640.png. Abnahme: JSON+PNG committed, Werte belegen Ist-Zustand.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-28T01:30:29Z",
+      "updated": "2026-11-28T01:30:29Z"
+    },
+    {
+      "id": 7424,
+      "title": "m10-boss-idle-anim #2: Idle-+Telegraph-Frames Bosse 1-3",
+      "description": "lane #6519, Merge 43bc9c4. moor_queen, bone_lord, pale_shepherd in src/gfx/gen-bosses.ts: 2-Frame-Idle (Atmung, <=1 px ganzzahliger Versatz) + 1-Frame-Telegraph. Palette unveraendert, 3 Frames je Boss (Budget neutral). Abnahme: 4x-Kontaktbogen committed, Palette-Guard-Tests gruen.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-28T01:30:29Z",
+      "updated": "2026-11-28T01:30:29Z"
+    },
+    {
+      "id": 7425,
+      "title": "m10-boss-idle-anim #3: Idle-+Telegraph-Frames Bosse 4-6",
+      "description": "lane #6520, Merge 43bc9c4. bell_golem, coven, hollow_king wie #2. Abnahme: 4x-Kontaktbogen committed, Palette-Guard-Tests gruen.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-28T01:30:29Z",
+      "updated": "2026-11-28T01:30:29Z"
+    },
+    {
+      "id": 7426,
+      "title": "m10-boss-idle-anim #4: Regressionstest Boss-Idle-Anim",
+      "description": "lane #6521, Merge 43bc9c4. tests/boss-idle-anim.test.ts: 6/6 Bosse >= 2 Idle-Frames, 0 Frame-Duplikate, Palette-Compliance, Frame-Budget neutral (3 Frames je Boss). Abnahme: npm test + tsc gruen, Commit.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T01:30:29Z",
+      "updated": "2026-11-28T01:30:29Z"
+    },
+    {
+      "id": 7427,
+      "title": "m10-boss-idle-anim #5: Nachher-Belege + Doku",
+      "description": "lane #6522, Merge 43bc9c4. After-Kontaktbogen shots/m10-boss-idle-anim-after-640.png, Idle-Zyklus-GIF shots/m10-boss-idle-anim-idle.gif, art-director >= 4/5, Burst >= 55 FPS (flock perf), docs/lanes/m10-boss-idle-anim.md. Abnahme: alle Belege committed.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-28T01:30:29Z",
+      "updated": "2026-11-28T01:30:29Z"
     }
   ]
 }
