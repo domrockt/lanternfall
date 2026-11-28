@@ -10424,9 +10424,15 @@
       "title": "m10-boss-portrait-crisp K2: Generator-Fixes für belegte Mängel",
       "description": "Owner: pixel-artist. AK: Nur die belegten Mängel aus K1 in scripts/art/gen_bosses.py gefixt, gen-bosses.ts regeneriert, Palette/binäres Alpha unverändert, boss-idle-anim-Verträge grün.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T04:51:29Z",
+          "by": "build",
+          "text": "Supervisor bestätigt: K1 committed (af413ae). K2-Zwischenstand wird committet; je Boss genau 1 Muss-Manko: moor_queen Kronenkontakt, bone_lord Schulter-Silhouette, pale_shepherd Stab-Griff, bell_golem Faust-Lichtkante, coven Augen, hollow_king Kronenkontakt. Danach Guard-Test 1x."
+        }
+      ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:11Z"
+      "updated": "2026-11-28T04:51:29Z"
     },
     {
       "id": 8400,
