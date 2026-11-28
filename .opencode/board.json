@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13263,
+  "next": 13388,
   "cards": [
     {
       "id": 1,
@@ -18779,6 +18779,52 @@
       "notes": [],
       "created": "2026-11-28T16:19:56Z",
       "updated": "2026-11-28T16:19:56Z"
+    },
+    {
+      "id": 13384,
+      "title": "m10-evo-element-guard K1: Probe Standbild-Frames je Evo (640x360 + 960x540)",
+      "description": "scripts/m10-evo-element-guard.mjs: je Evo (phoenix, eternal_winter, soul_beacon, thunder_seal, wrath_pendulum, thorn_storm) ein eingefrorener Standbild-Frame (scene.pause, Muster m10-boss-fx-contrast.mjs) in 640x360 und 960x540. Belege shots/m10-evo-element-<evo>-*.png + shots/m10-evo-element-guard.json. iGPU-Pflicht: Renderer-String via window.__lf.rendererInfo() (kein lf-renderer.mjs gemergt -> eigene Erfassung), SwiftShader/llvmpipe = FAIL. 0 JS-Fehler. AK: Skript laeuft einmal durch, 12 PNGs + JSON existieren, Renderer-String ist Mesa Intel (kein SwiftShader), Belege auch nach ~/games/.evidence/m10-evo-element-guard/ kopiert.",
+      "column": "doing",
+      "assignee": "m10-evo-element-guard",
+      "notes": [
+        {
+          "at": "2026-11-28T16:42:02Z",
+          "by": "build",
+          "text": "todo → doing: K1 angenommen (Lane m10-evo-element-guard): Probe-Skript wird gebaut."
+        }
+      ],
+      "created": "2026-11-28T16:42:00Z",
+      "updated": "2026-11-28T16:42:02Z"
+    },
+    {
+      "id": 13385,
+      "title": "m10-evo-element-guard K2: Farb-Signatur-Assertions je Evo",
+      "description": "Im selben Probe-Skript Farb-Signaturen je Evo aus den Standbild-Crops: Paletten-Histogramm (nearest-PAL-Mapping via decodePng), Zielbaender: Phoenix=Feuer-Orange (PAL 14-22, Kern 17-21), Winter=Eisblau (6-11), Soulpyre=tuerkis/weiß (7-13), Gewittersiegel=Blitz-Weiß-Peaks (12-13), Zornpendel=Glut/Rot (14-17+23-27), Dornensturm=Gruen (28-31) + kein flaechnaiges Raster (Zeilengleichmaessigkeit). Schwellen werden aus den aktuellen abgenommenen Standbildern (K1-Belege) kalibriert, NICHT aus alten SwiftShader-Belegen. FAIL einer Signatur -> kein Fix im Spielcode (FX-Dateien fremd), Befund + Hebel in Lane-Doku. AK: Kalibrierte Schwellen in shots/m10-evo-element-guard.json, 6/6 Signaturen GREEN oder FAIL dokumentiert.",
+      "column": "todo",
+      "assignee": "m10-evo-element-guard",
+      "notes": [],
+      "created": "2026-11-28T16:42:00Z",
+      "updated": "2026-11-28T16:42:00Z"
+    },
+    {
+      "id": 13386,
+      "title": "m10-evo-element-guard K3: tests/evo-element-guard.test.ts (Signaturen-Regression)",
+      "description": "Guard-Test liest die committeten Signaturen-JSONs (Muster run-determinism-Test) und prueft je Evo: Ziel-Farbband-Anteil >= kalibrierte Schwelle, Renderer-String kein SwiftShader, Datei vollstaendig (6 Evos x 2 Aufloesungen). Source-Guard: Probe-Skript + Palette-Band-Definitionen vorhanden. AK: npx vitest run tests/evo-element-guard.test.ts gruen, Suite gruen, tsc rc=0.",
+      "column": "todo",
+      "assignee": "m10-evo-element-guard",
+      "notes": [],
+      "created": "2026-11-28T16:42:00Z",
+      "updated": "2026-11-28T16:42:00Z"
+    },
+    {
+      "id": 13387,
+      "title": "m10-evo-element-guard K4: Lane-Doku + .lane-done",
+      "description": "docs/lanes/m10-evo-element-guard.md mit je Evo Vorher-Bild + Signatur + Schwelle, offene Punkte/Hebel (Dora-Fix-Job-Rohstoff). .gitignore-Whitelist !shots/m10-evo-element-* (analog f71c3be, explizit erlaubt). .lane-done mit 5-10 Zeilen Zusammenfassung + Werte. AK: Doku vollstaendig, npm test + npm run build gruen, Commit, .lane-done committet.",
+      "column": "todo",
+      "assignee": "m10-evo-element-guard",
+      "notes": [],
+      "created": "2026-11-28T16:42:00Z",
+      "updated": "2026-11-28T16:42:00Z"
     }
   ]
 }
