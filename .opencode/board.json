@@ -11739,7 +11739,7 @@
       "id": 9196,
       "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
       "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T05:45:00Z",
@@ -11750,10 +11750,15 @@
           "at": "2026-11-28T07:21:26Z",
           "by": "build",
           "text": "Supervisor-Steer 28.11.: Karte trägt Titel 'm10-props-wiring K4', gehört eigtl. zur props-wiring-Lane — terrain-edge-crisp-K4-Inhalt (After-Scan, Kanten-Screenshots, art-director, Lane-Doku, .lane-done) wird hier gemäß Supervisor-Anweisung abgearbeitet und mit #9196 committet. Titel-Mismatch in docs/lanes/m10-terrain-edge-crisp.md vermerkt."
+        },
+        {
+          "at": "2026-11-28T07:25:13Z",
+          "by": "build",
+          "text": "doing → review: terrain-edge-crisp K4 (Supervisor-Steer): Commit ec22bc6 – After-Scan 0,0003% < 0,1% (Restliste fraktionale Subpixel-Queries -> tiles.ts fremd, requests.md), 4 Kanten-Zooms in ~/games/.evidence/m10-terrain-edge-crisp/, art-director PASS 4/5, Lane-Doku + .lane-done."
         }
       ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T07:21:26Z"
+      "updated": "2026-11-28T07:25:13Z"
     },
     {
       "id": 9197,
