@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6982,
+  "next": 6986,
   "cards": [
     {
       "id": 1,
@@ -8118,6 +8118,66 @@
       ],
       "created": "2026-11-28T00:17:25Z",
       "updated": "2026-11-28T00:17:38Z"
+    },
+    {
+      "id": 6982,
+      "title": "m10-shot-clarity #1: Vorher-Messung Chaos 300/500 (scripts/m10-shot-clarity.mjs)",
+      "description": "Skript zaehlt Schuesse je Typ, misst Kontrast/Near-White-Anteil der Schuss-Pixel in Chaos-Szenen (300/500 Gegner), schreibt shots/m10-shot-clarity-before-{300,500}.png + -before.json. Abnahme: JSON mit Zahlen committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:22:16Z",
+          "by": "build",
+          "text": "lane #6666, Merge 7472ae3"
+        }
+      ],
+      "created": "2026-11-28T00:22:10Z",
+      "updated": "2026-11-28T00:22:16Z"
+    },
+    {
+      "id": 6983,
+      "title": "m10-shot-clarity #2: Optik-Fix shotTextureFor/HD-Grids (Kontur, Palette-Farben, Groessenstaffel)",
+      "description": "HD_GRIDS in src/systems/EnemyProjectiles.ts: je Familie eigene Palette-Farben (keine Kollision mit Spieler-Ember), dunkle Kontur, monotone Groessenstaffel spit<bone<shadow<fire, kein Near-White. Treffer-Pfad bitgleich zur Baseline. Abnahme: tsc rc=0, enemy-shots-fair 14/14, After-Belege.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:22:16Z",
+          "by": "build",
+          "text": "lane #6667, Merge 7472ae3"
+        }
+      ],
+      "created": "2026-11-28T00:22:10Z",
+      "updated": "2026-11-28T00:22:16Z"
+    },
+    {
+      "id": 6984,
+      "title": "m10-shot-clarity #3: tests/shot-clarity.test.ts",
+      "description": "Texturen je Typ pixel-differenzierbar, Palette-konform, binaeres Alpha, Treffer-Pfad-Statistik bitgleich zur Vorher-Messung. Abnahme: npx vitest run tests/shot-clarity.test.ts gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:22:16Z",
+          "by": "build",
+          "text": "lane #6668, Merge 7472ae3"
+        }
+      ],
+      "created": "2026-11-28T00:22:10Z",
+      "updated": "2026-11-28T00:22:16Z"
+    },
+    {
+      "id": 6985,
+      "title": "m10-shot-clarity #4: Nachher-Messung + art-director",
+      "description": "After-Lauf scripts/m10-shot-clarity.mjs --tag=after, shots/m10-shot-clarity-after-{300,500}.png + -after.json; Near-White <= 4,16 % (A7), art-director >= 4/5. Abnahme: JSON committed, art-director-Urteil PASS 4/5, Full-Build rc=0, Suite gruen, Lane-Doku + .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:22:16Z",
+          "by": "build",
+          "text": "lane #6669, Merge 7472ae3"
+        }
+      ],
+      "created": "2026-11-28T00:22:10Z",
+      "updated": "2026-11-28T00:22:16Z"
     }
   ]
 }
