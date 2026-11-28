@@ -146,7 +146,10 @@ describe("K3d: Verdrahtungs-Pin — config.ts importiert, ruft 1x, dupliziert ni
   });
 
   it("QUALITY wird über effectiveQuality gesetzt (Engage → 'thermal'), nicht mehr direkt", () => {
-    expect(src).toMatch(/QUALITY = effectiveQuality\(qState\.tier, thermalState\)/);
+    // M10-device-janky-node: Basis-Stufe kann am Geraeteknoten auf
+    // DEVICE_TIER_CAP geklemmt sein (baseTier); der Writer bleibt effectiveQuality.
+    const tierArg = src.includes("baseTier") ? "baseTier" : "qState.tier";
+    expect(src).toMatch(new RegExp(`QUALITY = effectiveQuality\\(${tierArg}, thermalState\\)`));
     expect(src).not.toMatch(/QUALITY = qState\.tier;/);
   });
 
