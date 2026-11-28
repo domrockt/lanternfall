@@ -8003,37 +8003,86 @@
       "id": 6918,
       "title": "m10-fullrun-guard #1 Ist-Messung auf main (Guard-Lauf + Baseline-JSON)",
       "description": "Guard-Skript v1 (Muster scripts/fullrun.mjs, autoPlay + timeScale 30) bauen, Ist-Lauf unter flock /home/ai/games/.lf-perf.lock auf aktuellem main, Baseline-JSON nach shots/m10-fullrun-guard-baseline.json. Abnahme: Baseline-JSON committed mit simMinutes>=30, bossesSpawned/chests/resultReason/jsErrors/heap belegt.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "doing → done: Reviewer PASS. "
+        },
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "Reviewer PASS (ses_de06670dfffeTqsmjFbSr0MVwT): Belege vollstaendig/plausibel, Commit 24c563d."
+        }
+      ],
       "created": "2026-11-28T00:13:24Z",
-      "updated": "2026-11-28T00:13:24Z"
+      "updated": "2026-11-28T00:42:39Z"
     },
     {
       "id": 6919,
       "title": "m10-fullrun-guard #2 Harte Tore + Exit-Code im Skript",
       "description": "scripts/m10-fullrun-guard.mjs: Tore 6/6 Bosse 300/600/900/1200/1500/1800 s (±2 s), 6 Truhen, resultReason=dawn, 0 JS-Fehler, Heap Minute 1 -> Ende <= +15 %. Exit 1 bei jeder Torverletzung. Abnahme: Guard-Lauf auf main grün mit belegten Zahlen in shots/m10-fullrun-guard.json, Torverletzung fuehrt zu Exit 1 (Skript-Logik).",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "backlog → done: Reviewer PASS. "
+        },
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "Reviewer PASS: Tore spezifikationskonform, Exit 1 belegt, Commit d00731b."
+        }
+      ],
       "created": "2026-11-28T00:13:24Z",
-      "updated": "2026-11-28T00:13:24Z"
+      "updated": "2026-11-28T00:42:39Z"
     },
     {
       "id": 6920,
       "title": "m10-fullrun-guard #3 Unit-Tests der Tor-Definitionen",
       "description": "tests/fullrun-guard.test.ts: Tor-Definitionen + JSON-Auswertung (evaluateGuardGates) als Unit-Test, >= 6 Assertions, inkl. negativer Testfall (Torverletzung -> FAIL), kein echter 30-min-Lauf. Abnahme: npx vitest run tests/fullrun-guard.test.ts gruen.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "backlog → done: Reviewer PASS. "
+        },
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "Reviewer PASS: 8 Tests inkl. negativer Faelle, vitest 8/8, Commit 3bb0fb7."
+        }
+      ],
       "created": "2026-11-28T00:13:24Z",
-      "updated": "2026-11-28T00:13:24Z"
+      "updated": "2026-11-28T00:42:39Z"
     },
     {
       "id": 6921,
       "title": "m10-fullrun-guard #4 Lane-Doku + after-JSON + .lane-done",
       "description": "docs/lanes/m10-fullrun-guard.md mit Messwerten/Toren, finales after-JSON committed, .lane-done im Worktree-Wurzel. Abnahme: Doku belegt Guard-Lauf gruen (Bosse/Truhen/Sieg/JS-Fehler/Heap), git status clean ausser Lane-Dateien.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:41:33Z",
+          "by": "build",
+          "text": "backlog → review: Nachweis-Lauf shots/m10-fullrun-guard.json passed=true (identisch Baseline), Doku docs/lanes/m10-fullrun-guard.md, .lane-done committed (0fd5c08). Reviewer läuft."
+        },
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS. "
+        },
+        {
+          "at": "2026-11-28T00:42:39Z",
+          "by": "build",
+          "text": "Reviewer PASS: Doku + Nachweis-Lauf + .lane-done, Commit 0fd5c08. Nits (nicht blockierend): cdpMB informativ, gates-Nesting redundant, bossFlags ungeprueft."
+        }
+      ],
       "created": "2026-11-28T00:13:24Z",
-      "updated": "2026-11-28T00:13:24Z"
+      "updated": "2026-11-28T00:42:39Z"
     }
   ]
 }
