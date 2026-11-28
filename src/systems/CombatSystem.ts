@@ -11,7 +11,7 @@ import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
-import { PHOENIX_FX, SOUL_FX } from "../data/evolution-weapons";
+import { PHOENIX_FX, SOUL_FX, THUNDER_FX } from "../data/evolution-weapons";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -94,7 +94,12 @@ interface WeaponState {
 interface PendingSeal {
   x: number;
   y: number;
+  /** Anticipation-Restzeit bis zum Impact in s. */
   timer: number;
+  /** Rest-Sichtzeit nach dem Impact (ganzer Cooldown-Zyklus) in s. */
+  hold: number;
+  /** Impact bereits ausgelöst? */
+  impacted: boolean;
   damage: number;
   chain: number;
   weaponId: string;
@@ -617,69 +622,94 @@ export class CombatSystem {
   // ── Gewittersiegel ───────────────────────────────────────────
   private fireThunderSeal(owned: OwnedWeapon, ctx: CombatContext, stats: ReturnType<typeof weaponLevel>): void {
     const count = Math.max(1, stats.count ?? 1);
+    // Fix (Dom 21:45Z): das Siegel bleibt über die GESAMTE Wirkungsdauer sichtbar
+    // — ein voller Cooldown-Zyklus (Anticipation → Impact → Dauer-Puls → Fade),
+    // nicht nur 0,55 s Ladezeit + 0,8 s Nachglühen. Textur in Zielgröße, Scale 1.
+    const cycle = effectiveCooldown(stats.cooldown, ctx.agg);
     for (let i = 0; i < count; i++) {
       const angle = this.clock + (i / count) * Math.PI * 2;
       const x = ctx.playerX + Math.cos(angle) * 26;
       const y = ctx.playerY + Math.sin(angle) * 26;
-      const sprite = makeImage(this.scene, x, y, "fx_seal")
+      const sprite = makeImage(this.scene, x, y, THUNDER_FX.sealTexture)
         .setDepth(DEPTH.decal)
         .setBlendMode(Phaser.BlendModes.NORMAL)
         .setAlpha(0.0)
-        .setScale(1.8);
+        .setScale(1);
       this.seals.push({
-        x, y, timer: 0.55, damage: effectiveDamage(stats.damage, ctx.agg),
+        x, y, timer: THUNDER_FX.anticipation, hold: cycle, impacted: false,
+        damage: effectiveDamage(stats.damage, ctx.agg),
         chain: stats.chain ?? 8, weaponId: owned.id, sprite,
       });
     }
   }
 
   private updateSeals(ctx: CombatContext): void {
+    const sealFrames = fxFrames(THUNDER_FX.sealTexture, THUNDER_FX.sealFrames);
     for (let i = this.seals.length - 1; i >= 0; i--) {
       const seal = this.seals[i];
-      seal.timer -= ctx.dt;
-      const p = 1 - Math.max(0, seal.timer) / 0.55;
-      const sealFrames = fxFrames("fx_seal", 5);
-      const frame = sealFrames[Math.min(4, Math.floor(p * 5))];
-      if (currentFrame(seal.sprite) !== frame) applyTexture(seal.sprite, frame);
-      seal.sprite.setAlpha(0.5 + p * 0.5);
-      seal.sprite.setScale(1.9 + Math.sin(this.clock * 12) * 0.15);
-      if (seal.timer > 0) continue;
-      seal.sprite.destroy();
-      this.seals.splice(i, 1);
-      // Nachglühendes Siegel bleibt kurz stehen, damit der Einschlag lesbar ist.
-      this.fx.spawnAnim("fx_seal", seal.x, seal.y, {
-        life: 0.8, scaleFrom: 2.0, scaleTo: 2.6, alphaFrom: 0.9, alphaTo: 0,
-        additive: false, tint: PAL[C.lanternWhite],
-      });
-      this.fx.spawnAnim("fx_halo", seal.x, seal.y, {
-        life: 0.35, scaleFrom: 0.6, scaleTo: 1.4, alphaFrom: 0.9, alphaTo: 0, additive: true,
-      });
-      // Kettenblitz ausgehend vom Siegel.
-      const hit = new Set<number>();
-      let last = { x: seal.x, y: seal.y };
-      // Genau `chain` Ziele insgesamt (Initialziel + Sprünge), nicht chain+1.
-      for (let jump = 0; jump < seal.chain; jump++) {
-        let next: EnemyRuntime | null = null;
-        let best = 150 * 150;
-        for (const e of ctx.enemies) {
-          if (!e.alive || e.hp <= 0 || hit.has(e.uid)) continue;
-          const d = (e.x - last.x) ** 2 + (e.y - last.y) ** 2;
-          if (d < best) { best = d; next = e; }
+      if (!seal.impacted) {
+        // Phase 1: Anticipation — Rune lädt hoch (Frames 0→1), Alpha steigt.
+        seal.timer -= ctx.dt;
+        const p = 1 - Math.max(0, seal.timer) / THUNDER_FX.anticipation;
+        const frame = sealFrames[Math.min(1, Math.floor(p * 2))];
+        if (currentFrame(seal.sprite) !== frame) applyTexture(seal.sprite, frame);
+        seal.sprite.setAlpha(THUNDER_FX.anticipationAlphaFrom + p * (1 - THUNDER_FX.anticipationAlphaFrom));
+        seal.sprite.setScale(1 + Math.sin(this.clock * 12) * THUNDER_FX.pulse);
+        if (seal.timer > 0) continue;
+        seal.impacted = true;
+        // Impact: heller Blitz-Frame am Siegel (Pool-Effekt, Scale 1).
+        this.fx.spawnAnim(THUNDER_FX.sealTexture, seal.x, seal.y, {
+          life: THUNDER_FX.impactFlashLife,
+          frames: [sealFrames[THUNDER_FX.chainImpactFrame]],
+          scaleFrom: 1, scaleTo: 1, alphaFrom: 1, alphaTo: 0,
+          additive: false, tint: PAL[C.lanternWhite],
+        });
+        this.fx.spawnAnim("fx_halo", seal.x, seal.y, {
+          life: 0.35, scaleFrom: 0.6, scaleTo: 1.4, alphaFrom: 0.9, alphaTo: 0, additive: true,
+        });
+        // Kettenblitz ausgehend vom Siegel.
+        const hit = new Set<number>();
+        let last = { x: seal.x, y: seal.y };
+        // Genau `chain` Ziele insgesamt (Initialziel + Sprünge), nicht chain+1.
+        for (let jump = 0; jump < seal.chain; jump++) {
+          let next: EnemyRuntime | null = null;
+          let best = 150 * 150;
+          for (const e of ctx.enemies) {
+            if (!e.alive || e.hp <= 0 || hit.has(e.uid)) continue;
+            const d = (e.x - last.x) ** 2 + (e.y - last.y) ** 2;
+            if (d < best) { best = d; next = e; }
+          }
+          if (!next) break;
+          this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.5, tint: PAL[C.lanternWhite] });
+          this.fx.spawnAnim(THUNDER_FX.sealTexture, next.x, next.y, {
+            life: THUNDER_FX.chainLife,
+            frames: [sealFrames[THUNDER_FX.chainImpactFrame]],
+            scaleFrom: THUNDER_FX.chainScaleFrom, scaleTo: THUNDER_FX.chainScaleTo,
+            alphaFrom: 1, alphaTo: 0, additive: false, tint: PAL[C.lantern],
+          });
+          this.particles.burst("fx_star", next.x, next.y, 4, {
+            life: 0.22, scaleFrom: 0.8, scaleTo: 0.15, alphaFrom: 1, alphaTo: 0, tint: PAL[C.lanternWhite],
+          });
+          const killed = this.hitEnemy(next, Math.round(seal.damage * (jump === 0 ? 1 : 0.7)), ctx, seal.weaponId);
+          if (killed) this.killsFx(next);
+          hit.add(next.uid);
+          last = next;
         }
-        if (!next) break;
-        this.fx.bolt(last.x, last.y, next.x, next.y, { life: 0.5, tint: PAL[C.lanternWhite] });
-        this.fx.spawnAnim("fx_seal", next.x, next.y, {
-          life: 0.45, scaleFrom: 0.4, scaleTo: 1.0, alphaFrom: 1, alphaTo: 0,
-          additive: false, tint: PAL[C.lantern],
-        });
-        this.particles.burst("fx_star", next.x, next.y, 4, {
-          life: 0.22, scaleFrom: 0.8, scaleTo: 0.15, alphaFrom: 1, alphaTo: 0, tint: PAL[C.lanternWhite],
-        });
-        const killed = this.hitEnemy(next, Math.round(seal.damage * (jump === 0 ? 1 : 0.7)), ctx, seal.weaponId);
-        if (killed) this.killsFx(next);
-        hit.add(next.uid);
-        last = next;
+        continue;
       }
+      // Phase 2: Dauer-Puls — Siegel bleibt lesbar am Boden, Frame 3 pulsiert;
+      // erst in den letzten fadeOut-Sekunden blendet es aus (Ausklang).
+      seal.hold -= ctx.dt;
+      if (seal.hold <= 0) {
+        seal.sprite.destroy();
+        this.seals.splice(i, 1);
+        continue;
+      }
+      const sustainFrame = sealFrames[3];
+      if (currentFrame(seal.sprite) !== sustainFrame) applyTexture(seal.sprite, sustainFrame);
+      const fade = Math.min(1, seal.hold / THUNDER_FX.fadeOut);
+      seal.sprite.setAlpha((THUNDER_FX.sustainAlpha + Math.sin(this.clock * 8) * THUNDER_FX.sustainPulse) * fade);
+      seal.sprite.setScale(1 + Math.sin(this.clock * 6) * THUNDER_FX.pulse);
     }
   }
 
