@@ -131,5 +131,41 @@ Gesamt: Der kleinste suite-grüne Hebel ist gefunden (4 Kandidaten, bindend). mi
 erreicht Minute 30 in 2/3 Seeds mit Level im Band und ohne Boss-Dauer-Verletzung; der
 dritte Seed stirbt knapp nach dem 20:00-Golem (Level 33 im Band, kein Tod < min 15).
 
+## K4 (#12908): Guard `tests/mira-hp-corridor.test.ts` — HP-90-Korridor gepinnt
+
+- Fixture `shots/m10-mira-hp-corridor.json` (committet, Muster `shots/m10-balance-corridor-*`):
+  erzeugt aus dem K3-Gewinner-Beleg (`scripts/m10-mira-hp-check.mjs`, 3 mira-Seeds + kael/101,
+  volle Läufe @ 30x); jsErrors nur als Zähler + Hinweis (GroundRenderer-Chunk-Spam, fremde
+  Datei), Rohbeleg weiter in `games/.evidence/m10-mira-hp-balance-check/`.
+- Guard (4 Tests, schnell — lädt nur die Fixture, kein Echtzeitlauf):
+  1. Provenienz: `miraHpStand 90`, Matrix 3×mira+kael/101, scale 30, 4/4 vollständige Läufe,
+     Renderer nicht SwiftShader.
+  2. mira streng: alle gemessenen Boss-Dauern 20–60 s (17/17), Endlevel 25–40, kein Tod < min 15,
+     `miraViolations` leer.
+  3. mira HP-90-Kante gepinnt: genau 2/3 Seeds dawn (Level im Band) — jede Abweichung =
+     Rebaseline mit Begründung in dieser Doku, nie stillschweigend.
+  4. kael: dawn, Levelband, alle Dauern im Korridor + Nebenwirkungs-Protokoll (6 Checks gegen
+     die ältere HP-250-Referenz bleiben dokumentiert).
+- Suite: 227 Dateien / 2459 Tests grün; `npx tsc --noEmit` rc=0; `npm run build` rc=0.
+
+## Lane-Abschluss
+
+- K1: Korridor hält auf HP 90 NICHT (mira 3/3 Tod 20,4–25,4 min statt dawn ~30,5; 1 Boss-Dauer-
+  Verletzung; kael-Deltas >10 % gegenüber veralteter Referenz = Drift der Perf-Merges).
+- K2: Ursache belegt — TTK ok, Überleben bricht im Tier-4-Fenster 20–24 (abom/voidcaller =
+  Mengen-Vervielfacher, derselbe dokumentierte Mechanismus wie in Minute 25+).
+- K3: kleinster suite-grüner Hebel = `MID_GAME_MIX` (Vervielfacher-Gewicht 0,5) in Minute 20–24.
+  Nachher: 2/3 mira dawn, 17/17 Boss-Dauern im Korridor, Levelband 30–34, kael unverändert
+  dawn. Offen: auf HP 90 stirbt in jeder gemessenen Variante genau EIN Seed knapp nach dem
+  20:00-Golem — das ist die HP-90-Kante, nur mit fremdgepinnten Hebeln (HP-Relief, Active-Cap,
+  Damage-Scale in tests/balance-endgame.test.ts) weiter anzugehen; Bedarf ggf. an Dom melden.
+- K4: Guard pinnt den HP-90-Stand (Fixture + 4 Suite-Tests).
+- Merge-Hinweise: (1) `tests/balance-corridor.test.ts` liest die committeten Marken von 13:52Z
+  (älterer Code-Stand) — bei der nächsten Rebaseline durch die Guard-Lane die neuen Todes-/
+  Dauer-Muster einpreisen. (2) GroundRenderer-Chunk-Spam (`Texture key already in use`) lässt
+  seit dem Chunk-Budget-Merge alle Balance-JSONs jsErrors-bedingt `accepted:false` sein —
+  Ursache liegt in einer fremden Datei und sollte separat gefixt werden.
+
+
 
 
