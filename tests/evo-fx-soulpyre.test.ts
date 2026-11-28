@@ -1,8 +1,10 @@
-// m10-evo-fx-soulpyre, Karte 3: Guards für die Mixel-/Farb-Regeln des Seelenleuchtfeuers.
+// m10-evo-fx-soulpyre-w2, Karte 3: Guards für die Mixel-/Farb-Regeln des Seelenleuchtfeuers.
 // Rein statisch: die Frame-Generatoren in gen-fx.ts sind reine Funktionen → die
 // Tests prüfen Texturgrößen, Draw-Scales (kein Scale > 1 am Effekt) und die
-// Seelen-Farb-Treppe (kein Ink, keine Grau-/Nacht-Stufen, grün-blauer Rand) direkt
-// an den Grids. Vorlage: tests/evo-fx-phoenix.test.ts.
+// Seelen-Farb-Treppe (kein Ink, kein Grau-Block, KALTE Treppe weiß→cyan→blau)
+// direkt an den Grids. Vorlage: tests/evo-fx-phoenix.test.ts.
+// Farb-Update w2 (Dom-Regel 02:00Z): alte grün-moorige Treppe 31/30/29 → kalt
+// 13/11/9/6/5 (weißer Kern, cyan/blau Rand) — siehe docs/lanes/m10-evo-fx-soulpyre-w2.md.
 import { describe, expect, it } from "vitest";
 // @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
 import { readFileSync } from "node:fs";
@@ -29,12 +31,13 @@ function usedIndices(rows: string[]): number[] {
   return [...out].sort((a, b) => a - b);
 }
 
-/** Seelen-Treppe: erlaubt sind nur die Rampen-Indizes (kühles Weiß + Grün). */
-const ALLOWED = [...SOUL_RAMP];
-/** Signatur: noch strenger — kein bone(10) und kein warmes candleWhite(12). */
-const SIG_ALLOWED = [13, 11, 31, 30, 29];
-/** Verboten: Ink, Nacht-/Grau-Töne (1–9) und alle warmen/blutigen Fremdfarben. */
-const FORBIDDEN = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+/** Seelen-Treppe (w2, kalt): erlaubt sind nur die Rampen-Indizes. */
+const ALLOWED: number[] = [...SOUL_RAMP];
+/** Signatur: gleicher kalter Satz — kein warmes 12/10, kein Grün 28–31. */
+const SIG_ALLOWED: number[] = [...SOUL_RAMP];
+/** Verboten: alles außer der kalten Treppe — Ink, Nacht-Töne, Grau (7/8), Knochen (10),
+ *  warmes Kerzenweiß (12), alle warmen/blutigen Fremdfarben und die Moor-Grüntöne (28–31). */
+const FORBIDDEN = [0, 1, 2, 3, 4, 7, 8, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 
 describe("m10-evo-fx-soulpyre: Texturen in Zielgröße + Draw-Scale 1", () => {
   it("Seele: 3 Flacker-Frames à 22x32 (Sprite-Pixelgröße), Register enthält alle Keys", () => {
@@ -106,7 +109,7 @@ describe("m10-evo-fx-soulpyre: Seelen-Farb-Treppe ohne Ink/Grau", () => {
     }
   });
 
-  it("Signatur-Grids: nur der strenge Satz {13,11,31,30,29} — kein warmes 12, kein bone(10) (art-director Runde 1)", () => {
+  it("Signatur-Grids: nur der kalte Rampen-Satz — kein warmes 12/10, kein Grün (Dom-Regel 02:00Z)", () => {
     for (const [name, rows] of grids.filter(([n]) => n.startsWith("sig"))) {
       const used = usedIndices(rows);
       const bad = used.filter((i) => !SIG_ALLOWED.includes(i));
@@ -114,16 +117,16 @@ describe("m10-evo-fx-soulpyre: Seelen-Farb-Treppe ohne Ink/Grau", () => {
     }
   });
 
-  it("jede Textur nutzt die Seelen-Treppe: heller Kern (13) UND grüner Rand (31/30/29)", () => {
+  it("jede Textur nutzt die Seelen-Treppe: heller Kern (13) UND kalter Rand (5/6/9)", () => {
     for (const [name, rows] of grids) {
       const used = usedIndices(rows);
       expect(used.some((i) => i === 13), `${name} ohne hellen Kern`).toBe(true);
-      expect(used.some((i) => i === 31 || i === 30 || i === 29), `${name} ohne grün-blauen Rand`).toBe(true);
+      expect(used.some((i) => i === 6 || i === 9 || i === 5), `${name} ohne kalten Rand`).toBe(true);
     }
   });
 
   it("Seele-Kern flächig hell: helle Stufen (13/11) dominieren mit > 55 %, 13 ist größte Einzel-Stufe", () => {
-    // art-director: Kern flächig hell, Rand grün — beides gewollt, daher ist die
+    // art-director: Kern flächig hell, Rand kalt — beides gewollt, daher ist die
     // Grenze Kern-Dominanz (13 größte Einzel-Stufe) + helle Mehrheit, nicht 100 % Weiß.
     for (const [name, rows] of grids.filter(([n]) => n.startsWith("soul"))) {
       const counts = new Map<number, number>();
@@ -134,7 +137,7 @@ describe("m10-evo-fx-soulpyre: Seelen-Farb-Treppe ohne Ink/Grau", () => {
       const total = [...counts.values()].reduce((a, b) => a + b, 0);
       const bright = (counts.get(13) ?? 0) + (counts.get(11) ?? 0);
       expect(bright / total, `${name}: heller Kern nur ${((bright / total) * 100).toFixed(1)} %`).toBeGreaterThan(0.55);
-      for (const other of [10, 31, 30, 29]) {
+      for (const other of [9, 6, 5]) {
         expect(counts.get(13) ?? 0, `${name}: Kern 13 > ${other}`).toBeGreaterThan(counts.get(other) ?? 0);
       }
     }
@@ -152,7 +155,7 @@ describe("m10-evo-fx-soulpyre: Seelen-Farb-Treppe ohne Ink/Grau", () => {
           if (i >= 0) counts.set(i, (counts.get(i) ?? 0) + 1);
         }
         const core = counts.get(13) ?? 0;
-        for (const other of [11, 31, 30, 29]) {
+        for (const other of [11, 9, 6, 5]) {
           expect(core, `${kind} stage${stage}: Kern 13 (${core}) > ${other} (${counts.get(other) ?? 0})`).toBeGreaterThan(counts.get(other) ?? 0);
         }
       }
