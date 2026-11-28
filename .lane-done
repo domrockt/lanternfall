@@ -1,0 +1,33 @@
+# Lane m10-evo-fx-dornensturm — FERTIG (2026-11-28)
+
+Dornensturm (thorn_storm) als 6. und letzter Evo-Effekt nach der Kette
+m10-evo-fx-phoenix … -gewittersiegel auf „eine Pixelgröße für alles" gestellt.
+
+## Ergebnis
+- Vorher (81470c2): Projektil 7x7 @ 1.7x mit 12/25 Ink + warmer Glutrampe,
+  fx_thorn 9x9 @ 2.9x (Ramp-Char-Bug), Streaks @ scaleFrom 3.0, Todes-Sig 32x32
+  @ ~4x mit 188/354 Ink, ring_burst/fx_shock als Matsch-Downscale.
+- Fix: projectile_thorn 12x12, fx_thorn 14x14 (Ramp-Bug behoben), fx_thorn_streak
+  22x22, fx_thorn_crown 96x96 (ersetzt ring_burst + fx_shock), Signatur 128x128
+  @ drawScale [1,1] (spawnEvolution-Muster); Dorn-Treppe 11/31/30/29/28, binäres
+  Alpha, kein Ink/Grau/warm; Trail ohne Ember-Tint (thornTrail-Flag).
+- Nachbesserung nach art-director FAIL 3,5/5: Streaks/Trail/Muzzle ohne Scale-Tween
+  (Frame-Decay statt Resample) — alle live Scales exakt 1.0.
+- Tests: tests/evo-fx-dornensturm.test.ts 11/11; Suite 1290/1290 (1x Timeout-Flake
+  unter Parallel-Last, Wiederholung gruen); tsc rc=0; build rc=0.
+- Abnahme: art-director PASS 4,5/5 (auslieferungsreif im Kartenscope), Round 2.
+
+## Messwerte (shots/m10-evo-fx-dornensturm-after.json, ANGLE RPL-S, 0 JS-Fehler)
+- Todes-Signatur 128x128 @ Scale 1, 0 Ink/Grau/Semi, Near-White 3,76% <= 4,16%.
+- Live-Scales: projectile_thorn 1.0, fx_thorn 1.0, fx_thorn_streak 1.0, crown 1.0.
+- GIF: shots/m10-evo-fx-dornensturm-after.gif (24 Frames, lebende Gegner).
+
+## Commits
+81470c2, 977de67, 11ac797, 781551a, 135ea6b, 8820123 (+ Lane-Doku docs/lanes/).
+
+## Offene Punkte (nicht blockierend)
+- fx_seal-Nachglüh + fx_star-Burst (>1x) der Sturm-/Generik-Pfade: Mixel-Bake-Lane.
+- Out-of-Scope (art-director): Vignette-Kantenseam am Spieler, World-Edge-Blackbox,
+  FX-Belege künftig ganzzahlig (2x/3x) aufnehmen.
+- Fremd-Dateien minimal: tests/evo-fx-zornpendel.test.ts (Assertion folgt
+  drawScale, Muster 0b3b563), .gitignore (1 Ausnahmezeile Lane-GIF).
