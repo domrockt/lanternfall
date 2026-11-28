@@ -100,8 +100,8 @@ export function pushFpsSample(
 
 /**
  * Effektive Qualitaetsstufe: aktivierter thermischer Guard uebersteuert die
- * Basis-Stufe. m10-thermal-tier-types: der dokumentierte Cast
- * ("thermal" as QualityTier) ist ENTFALLEN — die Cap-Wrapper (glowEnabledFor,
+ * Basis-Stufe. m10-thermal-tier-types: der frueher dokumentierte
+ * QualityTier-Cast ist ENTFALLEN — die Cap-Wrapper (glowEnabledFor,
  * glowAreaCapForQuality, damageLabelCapForQuality, audioBudgetFor) tragen
  * jetzt ThermalTier, der Rueckgabetyp ist ehrlich ThermalTier. Hazard-Helfer
  * (drawQualityTier etc.) bleiben bewusst QualityTier — siehe QUALITY oben.
