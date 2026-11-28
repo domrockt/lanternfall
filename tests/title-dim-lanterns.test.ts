@@ -19,6 +19,8 @@ vi.mock("phaser", () => {
 import {
   lanternGlassHoles,
   TITLE_DIM_ALPHA,
+  TITLE_DIM_HEIGHT,
+  TITLE_DIM_TOP,
   TITLE_FLAME_DEPTH,
   TITLE_GLASS_HOLE,
   titleBgLayout,
@@ -26,8 +28,11 @@ import {
 import { GEN_TITLE, TITLE_FLAME_SPOTS } from "../src/gfx/gen-title";
 
 const FLAME_KEYS = ["title_flame_f0", "title_flame_f1", "title_flame_f2"] as const;
-/** Logische Views (M8: Hoehe 360, Breite je Seitenverhaeltnis). */
+/** Logische Views (M8: Hoehe 360, Breite je Seitenverhaeltnis) — Scale 1. */
 const VIEWS: Array<[number, number]> = [[640, 360], [780, 360], [480, 270]];
+/** Scale-2-Faelle (aktuell unerreichbar: logische Hoehe fest 360, view.ts) —
+ * die Fensterformel bleibt trotzdem korrekt, siehe unten. */
+const VIEWS_SCALE2: Array<[number, number]> = [[960, 540], [1280, 720]];
 
 describe("lanternGlassHoles – Ausrichtung am Flammen-Patch", () => {
   it.each(VIEWS)("je Laterne ein 8x6-Fenster ab Patch-Reihe 5 (%ix%i)", (w, h) => {
@@ -37,30 +42,40 @@ describe("lanternGlassHoles – Ausrichtung am Flammen-Patch", () => {
     holes.forEach((hole, i) => {
       const spot = TITLE_FLAME_SPOTS[i]!;
       expect(hole).toEqual({
-        x: bgL.x + spot.x,
-        y: bgL.y + spot.y + TITLE_GLASS_HOLE.row,
-        w: TITLE_GLASS_HOLE.w,
-        h: TITLE_GLASS_HOLE.h,
+        x: bgL.x + spot.x * bgL.scale,
+        y: bgL.y + (spot.y + TITLE_GLASS_HOLE.row) * bgL.scale,
+        w: TITLE_GLASS_HOLE.w * bgL.scale,
+        h: TITLE_GLASS_HOLE.h * bgL.scale,
       });
     });
   });
 
-  it("Fenster enden genau am Patch-Unterrand (keine Reihen ueber 5+6 hinaus)", () => {
-    const bgL = titleBgLayout(640, 360);
-    for (const hole of lanternGlassHoles(bgL)) {
-      expect(hole.h).toBe(6);
-      expect(TITLE_GLASS_HOLE.row + hole.h).toBe(11); // Patchhoehe
-    }
+  it.each(VIEWS_SCALE2)("Fenster skalieren mit bgL.scale (Flammen zeichnen mit setScale(scale)) (%ix%i)", (w, h) => {
+    const bgL = titleBgLayout(w, h);
+    expect(bgL.scale).toBe(2);
+    const holes = lanternGlassHoles(bgL);
+    const spot = TITLE_FLAME_SPOTS[1]!; // Laterne 2
+    expect(holes[1]).toEqual({
+      x: bgL.x + spot.x * 2,
+      y: bgL.y + (spot.y + 5) * 2,
+      w: 16,
+      h: 12,
+    });
   });
 
-  it("Fenster liegen vollstaendig in der Bodenlasur (y 132+oy, Hoehe 138)", () => {
+  it("Fenster enden genau am Patch-Unterrand (keine Reihen ueber 5+6 hinaus)", () => {
+    expect(TITLE_GLASS_HOLE.h).toBe(6);
+    expect(TITLE_GLASS_HOLE.row + TITLE_GLASS_HOLE.h).toBe(11); // Patchhoehe
+  });
+
+  it("Fenster liegen vollstaendig in der Bodenlasur (Titel-Dim-Deckel)", () => {
     for (const [w, h] of VIEWS) {
       const bgL = titleBgLayout(w, h);
       const oy = Math.round((h - 270) / 2);
-      const dimTop = 132 + oy;
+      const dimTop = oy + TITLE_DIM_TOP;
       for (const hole of lanternGlassHoles(bgL)) {
         expect(hole.y).toBeGreaterThanOrEqual(dimTop);
-        expect(hole.y + hole.h).toBeLessThanOrEqual(dimTop + 138);
+        expect(hole.y + hole.h).toBeLessThanOrEqual(dimTop + TITLE_DIM_HEIGHT);
         expect(hole.x).toBeGreaterThanOrEqual(0);
         expect(hole.x + hole.w).toBeLessThanOrEqual(w);
       }
