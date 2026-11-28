@@ -1,0 +1,24 @@
+Lane m10-shot-budget-dt — abgeschlossen 2026-11-28 (Karten #7738-#7741, alle done, Reviewer-PASS).
+
+Ziel: Gegner-Schuss-Budget deterministisch (Teil 2 des Determinismus-Schnitts, Bedarf
+m10-pause-freeze #7505). Hebel: das Launch-Budget von EnemyProjectilePool hing je
+update()-Frame (#7491); jetzt Budget-Fenster à ENEMY_SHOT_BUDGET_WINDOW_SECONDS = 1/60 s
+SIM-Zeit (dt-Akkumulator, advanceBudgetClock am Anfang von update(), leere Fenster rotieren
+nicht, clear() resettet die Budget-Uhr). Fairness-Invarianten aus #7491 exakt erhalten
+(Telegraph-Cap, Budget-Rückgabe, Rotation gegen Starving); enemy-shots-fair.test.ts und
+shot-budget-cap.test.ts ohne inhaltliche Änderung grün.
+
+Messwerte (scripts/m10-shot-budget-dt.mjs, echter Pool headless, Seed 7505, 8 s Sim-Zeit):
+- Vorher (shots/m10-shotbudget-dt-before.json): deterministic=false; erste Launch-Divergenz
+  t=0,4 s; cancelledBudgetRotation 19 (60 FPS) vs 168 (30 FPS).
+- Nachher (shots/m10-shotbudget-dt-after.json): deterministic=true; festes 1/60-dt bitgleich
+  zur #7491-Baseline (denseMatchesBaseline=true); cancelledBudgetRotation 168/168 identisch.
+
+Qualität: 8 neue Tests (tests/shot-budget-dt.test.ts); npm test 118 Dateien / 1287 Tests grün;
+npx tsc --noEmit und npm run build grün. Belege in den Karten-Commits:
+8f0f714 (K1), a0b9e0c (K2), 6f2410d (K3), c7f7fd4 (K4). Doku: docs/lanes/m10-shot-budget-dt.md.
+
+Scope-Hinweis: deterministisch ist die ZUTEILUNG; ob Versuche an gleichen Sim-Zeiten ankommen,
+liegt beim KI-/Spawner-Strom (m10-spawn-budget-dt / AI-Lane). Fremder Job regenerierte zweimal
+shots/m10-passive-math-*.json in diesem Worktree (nur generatedAt) — zurückgesetzt, nicht
+committet. Keine Bedarfsmeldung nötig (keine Assertions-Kollision).
