@@ -18,15 +18,19 @@ nicht whitelistet, `git add -f` ist verboten):
 
 ### Befund Matrix (vor K2)
 
+Korrektur 28.11. (K2): Die im K1-Commit genannten Distanzen (0,137/0,012/0,085) stammten aus
+einer fehlerhaften FFT-Kopie im Messskript (in der Bit-Reversal-Schleife fehlte `j ^= bit;` —
+der Test in tests/audio-mix.test.ts ist korrekt, meine Kopien nicht). Korrigierte Before-Werte
+(echtes FFT-Spektrum, Beleg `/home/ai/games/.evidence/m10-pickup-sfx-distinct/m10-pickup-sfx-before.json`):
+
 | Paar | Distanz | Ziel |
 |---|---|---|
-| xp/levelup | 0,137 | >= 0,15 |
-| xp/chest | **0,012** | >= 0,15 |
-| levelup/chest | 0,085 | >= 0,15 |
-| powerup | WAV existiert nicht | — |
+| xp/levelup | 0,125 | >= 0,15 |
+| xp/chest | **0,011** | >= 0,15 |
+| levelup/chest | 0,094 | >= 0,15 |
+| powerup | WAV existierte nicht | — |
 
-Alle drei Paare verletzen das Ziel; xp/chest ist praktisch identisch (8 Band-Energien, 1−Kosinus,
-wie tests/audio-mix.test.ts).
+Alle drei Paare verletzen das Ziel (xp/chest praktisch identisch).
 
 ### Befund Voice-Last (500er-Burst, 60 s, Seed 411)
 
@@ -39,6 +43,32 @@ wie tests/audio-mix.test.ts).
 Priorität 2 statt Verhungern, Dämpfung bei Massen-Events) nötig. Abnahme-Kriterium K4:
 alle 6 Paare >= 0,15, 0 Clipping, XP-Starts im Burst deutlich über 7 %, Master-Mute bitgleich,
 music-dawn-Tests grün.
+
+## K2 — Signaturen (#9585)
+
+`scripts/gen_sfx.py` erzeugt jetzt vier Pickup-WAVs `public/sfx/sfx_pickup_{xp,powerup,levelup,chest}.wav`
+(separater RNG-Stream + Stream-Alignment: alle anderen 22 WAVs bitgleich, Beleg `git status`).
+`mixing.ts`: `SFX_KEYS` xp/levelup/chest auf die neuen Dateien umgemappt, neuer Key `powerup`
+(Priority weapon, Cooldown 0,15, 2 Stimmen, vol 0,5 — Feintuning in K3).
+**Powerup-Verdrahtung NICHT in dieser Lane:** der pre-commit-Claimcheck blockierte
+`src/systems/PickupSystem.ts` — die Datei gehört inzwischen der Lane `m10-powerup-sfx-wire`
+(das Ansehen von claims.json beim Lane-Start war veraltet). Meine 1-Zeilen-Änderung
+(`getAudio().play("powerup")` in `playPowerupMoment`) wurde zurückgenommen; die Wire-Lane
+verdrahtet den Aufruf gegen den hier bereitgestellten Key `powerup` + WAV. Der One-Zeiler steht
+in requests.md zur Info.
+
+Parameterwahl per Sweep-Skript (ein Lauf, 8^4 = 4096 Kombinationen, Kandidaten-Grid je Rolle;
+Beleg `/home/ai/games/.evidence/m10-pickup-sfx-distinct/k2-sweep-result.json`), Gewinner
+`xp_H_up + pu_A_warm + lu_F_low + ch_E_rumble`:
+
+| Paar | Distanz | | Paar | Distanz |
+|---|---|---|---|---|
+| xp/powerup | 0,841 | | powerup/chest | 0,862 |
+| xp/levelup | 0,459 | | levelup/chest | **0,310** (min) |
+| xp/chest | 0,542 | | | |
+
+Alle 6 Paare >= 0,310 (Ziel 0,15) — PASS. Grün: tsc, audio-mix, audio-mix-chaos, audio-frost-gap,
+pickup-sfx-distinct (24 Tests). Kein Clipping, Mix-Peak −15 dBFS.
 
 ## Notizen / Abweichungen
 

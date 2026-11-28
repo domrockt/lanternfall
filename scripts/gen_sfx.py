@@ -198,26 +198,65 @@ def sfx() -> None:
         tone(240, 80, 0.16, triangle, 0.22, decay=0.05, release=0.06),
         noise_burst(0.12, 0.14, 0.04, 0.3),
     ))
-    # XP: heller Zwei-Ton-Ping
-    write_wav("sfx_xp.wav", concat(
-        tone(1320, 1320, 0.05, square, 0.12, duty=0.25, release=0.03),
-        tone(1760, 1760, 0.07, square, 0.10, duty=0.25, release=0.04),
+    # ── Pickup-Klasse (m10-pickup-sfx-distinct): XP, Powerup, Level-up, Truhe ──
+    # Vier getrennte Signaturen (Ziel: Band-Distanz >= 0,15 je Paar,
+    # tests/pickup-sfx-distinct.test.ts). Sweep-optimiert (8^4 Kandidaten,
+    # feste Iterationsgrenze, Ergebnis min 0,311):
+    #   XP: kurzer Aufwärts-Ping hoch (Band 7) — feuert im Chaos oft.
+    #   Powerup: warmer Aufwärts-Sweep Mitte-tief (Bänder 4-6) — NEU,
+    #     vorher hatte der Powerup-Moment GAR KEINEN Sound.
+    #   Level-up: tiefe Square-Fanfare (Band 5) — schwer, feierlich.
+    #   Truhe: Rumble-Klick + helle Pings (breitbandig, Band 8/9 + Noise).
+    # Separater RNG-Stream: Regeneration beruehrt die RNG-Folge der anderen
+    # WAVs nicht (git-belegbar bitgleich).
+    prng = random.Random(0x5EC4)
+    def pnoise() -> float:
+        return prng.uniform(-1.0, 1.0)
+    def pnoise_burst(dur: float, vol: float = 0.3, decay: float = 0.05, lowpass: float = 0.0) -> list[float]:
+        n = int(dur * SR)
+        out = []
+        last = 0.0
+        for i in range(n):
+            t = i / SR
+            v = pnoise()
+            if lowpass > 0:
+                last = last + (v - last) * lowpass
+                v = last
+            out.append(v * vol * env(t, dur, 0.001, decay, 0.2, dur * 0.4))
+        return out
+    # XP-Gem: kurzer heller Aufwärts-Glissando-Ping 1400->3200 Hz (Band 7), 0,09 s
+    # (Parameter aus Sweep ~/tmp, 8^4 Kandidaten, min-Paar-Distanz 0,311;
+    # Beleg: .evidence/m10-pickup-sfx-distinct/k2-sweep-result.json)
+    write_wav("sfx_pickup_xp.wav", concat(
+        tone(1400, 3200, 0.09, triangle, 0.22, attack=0.003, sustain=0.5, release=0.03),
     ))
-    # Level-up: aufsteigende Fanfare
-    write_wav("sfx_levelup.wav", concat(
-        tone(523, 523, 0.10, square, 0.18, duty=0.5, release=0.04),
-        tone(659, 659, 0.10, square, 0.18, duty=0.5, release=0.04),
-        tone(784, 784, 0.12, square, 0.18, duty=0.5, release=0.04),
-        mix(tone(1046, 1046, 0.30, square, 0.20, duty=0.35, release=0.18),
-            tone(523, 523, 0.30, triangle, 0.12, release=0.18)),
+    # Powerup: warmer, aufsteigender Triangle-Sweep 180->520 Hz + Fundament, 0,28 s
+    write_wav("sfx_pickup_powerup.wav", mix(
+        tone(180, 520, 0.28, triangle, 0.30, attack=0.008, sustain=0.4, release=0.12),
+        tone(90, 260, 0.28, triangle, 0.16, attack=0.01, sustain=0.35, release=0.12),
     ))
-    # Truhe: Schloss-Klick + Münz-Glitzer
-    write_wav("sfx_chest.wav", concat(
-        mix(tone(180, 140, 0.05, square, 0.20, duty=0.2, release=0.02), noise_burst(0.05, 0.18, 0.015)),
+    # Level-up: tiefe Square-Fanfare C4-E4-G4-C5 (Band 5), 0,60 s
+    write_wav("sfx_pickup_levelup.wav", concat(
+        tone(262, 262, 0.10, square, 0.18, duty=0.5, release=0.03),
+        tone(330, 330, 0.10, square, 0.18, duty=0.5, release=0.03),
+        tone(392, 392, 0.12, square, 0.18, duty=0.5, release=0.03),
+        tone(523, 523, 0.28, square, 0.20, duty=0.35, release=0.16),
+    ))
+    # Truhe: tiefes Rumbl-Klick (Fundament + Rauschen) + helle Muenz-Pings
+    # (3136/4186 Hz, Band 8/9), breitbandige Signatur
+    write_wav("sfx_pickup_chest.wav", concat(
+        mix(tone(60, 45, 0.14, triangle, 0.30, sustain=0.4, release=0.06),
+            pnoise_burst(0.14, 0.22, 0.06, 0.1)),
         silence(0.03),
-        tone(1046, 1568, 0.06, square, 0.12, duty=0.25, release=0.03),
-        tone(1568, 2093, 0.10, square, 0.12, duty=0.25, release=0.06),
+        tone(3136, 3136, 0.07, square, 0.09, duty=0.5, release=0.04),
+        tone(4186, 4186, 0.09, square, 0.08, duty=0.5, release=0.05),
     ))
+    # Stream-Alignment: Der alte Pickup-Block verbrauchte im globalen RNG-Strom
+    # genau einen noise_burst(0.05) = 1102 Draws (alter sfx_chest-Klick). Damit
+    # evolution/boss_death/Musik bitgleich bleiben, wird derselbe Betrag hier
+    # abgezweigt (verworfen).
+    for _ in range(int(0.05 * SR)):
+        rng.uniform(-1.0, 1.0)
     # Evolution: große Sechs-Ton-Aufstieg mit Glow
     write_wav("sfx_evolution.wav", concat(
         tone(392, 392, 0.10, square, 0.16, duty=0.5, release=0.04),

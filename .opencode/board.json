@@ -11978,13 +11978,18 @@
    "id": 9584,
    "title": "m10-pickup-sfx-distinct K1 Vorher-Messung: Pickup-Paar-Distanzen + Voice-Last 500er-Burst",
    "description": "scripts/m10-pickup-sfx.mjs misst einmalig: (a) Band-Distanzmatrix der Pickup-Klasse (xp/levelup/chest vor der Regeneration, powerup existiert noch nicht), (b) Voice-Last bei 500-Gegner-Burst (XP 15/s) mit echter mixing.ts-Logik. Output JSON nach ~/games/.evidence/m10-pickup-sfx-distinct/before.json. Abnahme: Matrix + Voice-Last-Zahlen vorhanden, committet als Basis.",
-   "column": "doing",
+   "column": "review",
    "assignee": "m10-pickup-sfx-distinct",
    "notes": [
     {
      "at": "2026-11-28T09:00:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "Karte angenommen -> doing (Board-Buchung als erster Schritt)."
+    },
+    {
+     "at": "2026-11-28T09:20:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "review: K1 gemessen + committed 8b82095. Befund: alle Paare < 0,15 (xp/chest 0,012); XP im Burst 7% gespielt. Beleg ~/.evidence/.../m10-pickup-sfx-before.json. Selbst-Check gegen Abnahmekriterium (Matrix+Voice-Last vorhanden, committed): PASS."
     }
    ]
   },
@@ -11992,9 +11997,15 @@
    "id": 9585,
    "title": "m10-pickup-sfx-distinct K2 Signaturen: 4 Pickup-Sounds (sfx_pickup_*) regenerieren",
    "description": "gen_sfx.py erzeugt sfx_pickup_xp/powerup/levelup/chest.wav mit getrennten Signaturen; SFX_KEYS xp/levelup/chest umgemappt, neuer Key powerup; playPowerupMoment (PickupSystem.ts, minimal + begruendet) spielt powerup. Abnahme: alle 6 Paar-Distanzen >= 0,15 (vorlaeufig, Final in K4-Test).",
-   "column": "backlog",
+   "column": "doing",
    "assignee": "m10-pickup-sfx-distinct",
-   "notes": []
+   "notes": [
+    {
+     "at": "2026-11-28T09:20:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Karte angenommen -> doing."
+    }
+   ]
   },
   {
    "id": 9586,

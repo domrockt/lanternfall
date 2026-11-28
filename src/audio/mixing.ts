@@ -217,8 +217,11 @@ export const SFX_KEYS = {
   storm: "sfx_storm", lantern: "sfx_lantern", phoenix: "sfx_phoenix",
   wrath_pendulum: "sfx_wrath", eternal_winter: "sfx_winter", thorn_storm: "sfx_thornstorm",
   thunder_seal: "sfx_seal", soul_beacon: "sfx_soul",
-  hit: "sfx_hit", kill: "sfx_kill", xp: "sfx_xp", levelup: "sfx_levelup",
-  chest: "sfx_chest", evolution: "sfx_evolution", bossWarn: "sfx_boss_warn",
+  hit: "sfx_hit", kill: "sfx_kill",
+  // Pickup-Klasse (m10-pickup-sfx-distinct): eigene WAVs, vier getrennte Signaturen.
+  xp: "sfx_pickup_xp", powerup: "sfx_pickup_powerup",
+  levelup: "sfx_pickup_levelup", chest: "sfx_pickup_chest",
+  evolution: "sfx_evolution", bossWarn: "sfx_boss_warn",
   bossDeath: "sfx_boss_death", victory: "sfx_victory", defeat: "sfx_defeat",
 } as const;
 
@@ -254,6 +257,8 @@ export const SFX_CONFIG: Record<string, SfxConfig> = {
   hit: { priority: PRIORITY.hit, cooldown: 0.05, maxVoices: 4, volume: 0.45 },
   kill: { priority: PRIORITY.hit, cooldown: 0.04, maxVoices: 4, volume: 0.35 },
   xp: { priority: PRIORITY.weapon, cooldown: 0.05, maxVoices: 3, volume: 0.25 },
+  // Powerup-Moment (passive Aufnahme): ähnlich selten wie levelup, aber eigenständig.
+  powerup: { priority: PRIORITY.weapon, cooldown: 0.15, maxVoices: 2, volume: 0.5 },
   levelup: { priority: PRIORITY.boss, cooldown: 0.5, maxVoices: 1, volume: 0.7 },
   chest: { priority: PRIORITY.boss, cooldown: 0.6, maxVoices: 1, volume: 0.65 },
   evolution: { priority: PRIORITY.crit, cooldown: 0.8, maxVoices: 1, volume: 0.85 },
