@@ -31,7 +31,8 @@ function stubPlugin() {
     atlas: `export const applyTexture = () => {};\nexport const makeImage = (scene, x, y, key) => ({\n  key, active: true, setDepth() { return this; }, setScale() { return this; },\n  setAlpha() { return this; }, setTintFill() { return this; }, clearTint() { return this; },\n  setPosition() { return this; }, setVisible() { return this; }, setActive() { return this; },\n  destroy() { this.active = false; },\n});`,
     icons: `export const iconKeyForOffer = (kind, id) => \`icon_\${kind}_\${id}\`;`,
     // Zaehlender Audio-Stub — bildet getAudio().play(id) ab, ohne src/audio zu laden.
-    audio: `const calls = [];\nif (typeof globalThis !== "undefined") globalThis.__powerupSfxCalls = calls;\nexport function getAudio() {\n  return { play(id) { calls.push(id); return true; } };\n}`,
+    // SFX_KEYS = Stand nach Merge der sfx-distinct-Lane (Key "powerup" vorhanden).
+    audio: `const calls = [];\nif (typeof globalThis !== "undefined") globalThis.__powerupSfxCalls = calls;\nexport const SFX_KEYS = { hit: "sfx_hit", levelup: "sfx_levelup", powerup: "sfx_powerup" };\nexport function getAudio() {\n  return { play(id) { calls.push(id); return true; } };\n}`,
     // SFX_KEYS-Stand nach Merge der sfx-distinct-Lane (Key "powerup" vorhanden).
     mixing: `export const SFX_KEYS = { hit: "sfx_hit", levelup: "sfx_levelup", powerup: "sfx_powerup" };`,
   };
