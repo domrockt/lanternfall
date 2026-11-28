@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10947,
+  "next": 11062,
   "cards": [
     {
       "id": 1,
@@ -14082,6 +14082,81 @@
       "notes": [],
       "created": "2026-11-28T10:16:12Z",
       "updated": "2026-11-28T10:16:12Z"
+    },
+    {
+      "id": 11058,
+      "title": "m10-texture-glow-swap-r2 K1: Ist-Probe textures.ts vs Boot-Local rev.2",
+      "description": "Before-Messung: Runtime-Textur (Boot-Local rev.2) + textures.ts-main-Implementierung im Browser rendern und gegeneinander/ gegen Stufen-Referenz diffen (maxDiff-JSON). Abnahme: JSON in ~/games/.evidence/m10-texture-glow-swap-r2/, Baseline-Zahlen in Lane-Doku. Owner: Lead, Kontrolle: test-auditor.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T10:24:22Z",
+          "by": "build",
+          "text": "todo → doing: m10-texture-glow-swap-r2: Before-Probe gestartet (Runtime=Boot-Local rev.2 vs textures.ts-main vs Stufen-Referenz)."
+        },
+        {
+          "at": "2026-11-28T10:25:55Z",
+          "by": "build",
+          "text": "doing → review: K1 done (5f2e47d4): Baseline maxDiff 0 vs rev.2-Referenz, 255 vs textures.ts-Ist; Belege in ~/games/.evidence/m10-texture-glow-swap-r2/. test-auditor-Check folgt mit K4."
+        }
+      ],
+      "created": "2026-11-28T10:23:54Z",
+      "updated": "2026-11-28T10:25:55Z"
+    },
+    {
+      "id": 11059,
+      "title": "m10-texture-glow-swap-r2 K2: destination-in-Masken-Bug in createLightTexture fixen",
+      "description": "textures.ts createLightTexture: destination-in-Stacking (leere Textur bei gestapelten Baendern) durch rev.2-Stufen-Alpha pro Pixel ersetzen (getImageData/putImageData, LIGHT_EDGE_STEPS exakt eaf2ab6); Vignette auf vignetteSteps-Baender portieren. Abnahme: Probe light_radius maxDiff 0 gegen rev.2-Referenz, 0 createRadialGradient/destination-in im aktiven Code. Owner: Lead, Kontrolle: test-auditor + reviewer.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T10:25:55Z",
+          "by": "build",
+          "text": "todo → doing: K2: Stufen-Alpha-pro-Pixel-Fix in createLightTexture + vignetteSteps-Port in textures.ts."
+        },
+        {
+          "at": "2026-11-28T10:27:09Z",
+          "by": "build",
+          "text": "doing → review: K2 done (9b746d92): destination-in entfernt, Stufen-Alpha pro Pixel + vignetteSteps portiert; tsc gruen, 19/19. Runtime-Beleg folgt im K4-After-Lauf."
+        }
+      ],
+      "created": "2026-11-28T10:23:54Z",
+      "updated": "2026-11-28T10:27:09Z"
+    },
+    {
+      "id": 11060,
+      "title": "m10-texture-glow-swap-r2 K3: Creator exportieren + Boot.ts-Local-Swap + B2-Farb-Kern",
+      "description": "export function createLightTexture/createVignetteTexture in textures.ts; Boot.ts-Local-Block (createLightTextureLocal/createVignetteTextureLocal + Tabellen) entfernen und durch Import ersetzen; Ring-Farben B2 (Kern 20/21 ab r<=40) in textures.ts uebernehmen. Abnahme: Runtime-Probe unveraendert sauber (steppedWins, centerAlpha>0), A7-Near-White nicht verschlechtert. Owner: Lead, Kontrolle: reviewer.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T10:27:01Z",
+          "by": "build",
+          "text": "todo → doing: K3: Export-Kontrakt + Boot.ts-Local-Swap + B2-Kern-Farben."
+        },
+        {
+          "at": "2026-11-28T10:30:32Z",
+          "by": "build",
+          "text": "doing → review: K3 done (74c31e1d): Export + Boot-Swap + B2-Kern; alte unclaimed Guard-Tests repointet (Grund in requests.md 10:55Z); tsc+Build gruen, 17/17. Runtime-Beleg im K4-After-Lauf."
+        }
+      ],
+      "created": "2026-11-28T10:23:54Z",
+      "updated": "2026-11-28T10:30:32Z"
+    },
+    {
+      "id": 11061,
+      "title": "m10-texture-glow-swap-r2 K4: Regressionstest + Suite gruen + Doku + .lane-done",
+      "description": "tests/boot-light-textures-w2.test.ts: Stufen-Alpha-Multiplikation (kein destination-in), Export-Kontrakt, B2-Farb-Kern in textures.ts. Abnahme: vitest-Suite gruen, tsc+Build gruen, Lane-Doku mit Belegen, .lane-done committet. Owner: Lead, Kontrolle: test-auditor.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T10:30:32Z",
+          "by": "build",
+          "text": "todo → doing: K4: w2-Regressionstest, Full-Suite, After-Probe, Doku, .lane-done."
+        }
+      ],
+      "created": "2026-11-28T10:23:54Z",
+      "updated": "2026-11-28T10:30:32Z"
     }
   ]
 }

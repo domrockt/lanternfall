@@ -67,12 +67,40 @@ K3, dort greift die textures.ts-Version wirklich.
 
 ## K4 (#11061) — Test, Suite, Belege, Abschluss
 
-- tests/boot-light-textures-w2.test.ts: Export-Kontrakt, kein
-  createRadialGradient/destination-in im aktiven textures.ts-Code,
-  LIGHT_EDGE_STEPS/vignetteSteps-Tabellen exakt, B2-Kern-Farben, Boot.ts
-  importiert die Creator (kein Local-Duplikat mehr).
-- After-Probe: `~/games/.evidence/m10-texture-glow-swap-r2/m10-texture-glow-swap-after.json`
-- Suite: siehe Commit-Message.
+- tests/boot-light-textures-w2.test.ts (8 Tests): Export-Kontrakt (Creator +
+  LIGHT_EDGE_STEPS/lightEdgeAlphaFor/vignetteSteps exportiert), kein
+  createRadialGradient/destination-in/addColorStop im aktiven textures.ts-
+  Code, per-Pixel-Multiplikation-Pfad (getImageData/putImageData +
+  lightEdgeAlphaFor-Band), Tabellen exakt eaf2ab6, B2-Kern (20/21 ab r<=40,
+  kein 13/22), Kern-Alpha <= 0.10 pro Ring.
+- Alte Guard-Tests (unclaimed lt. claims.json) repointet statt gelöscht:
+  tests/boot-light-textures.test.ts bewacht jetzt den Swap-Kontrakt in
+  Boot.ts (kein Local-Duplikat, Import + Aufruf, keine Zeichnpfad-Reste,
+  RUN_LIGHT_ALPHA_MAX-Doku); tests/chaos-glow-runpath.test.ts B2-Ring-Check
+  auf textures.ts umgezogen, Deckel-Check auf RUN_TS. Begründung auch in
+  ~/games/.dispatch/requests.md (2026-11-28T10:55Z).
+- Full-Suite: **181 Dateien / 1980 Tests grün**, tsc gruen, `npm run build`
+  gruen (K3-Commit; K4 nur Test-Datei).
+- After-Probe (Runtime NACH dem Swap — textures.ts-Version ist jetzt live):
+  `~/games/.evidence/m10-texture-glow-swap-r2/m10-texture-glow-swap-after.json`
+  - light_radius: vsStufen-Referenz maxDiff **0** (mean 0), centerAlpha 143
+    (nicht-vakuos), vsSoft maxDiff 255 (0 weiche Gradient-Reste).
+  - vignette: maxDiff **1/255** (Rundung), centerAlpha 99.
+  - steppedWins=true, 0 JS-Fehler.
+- A7-Near-White nach dem Swap: 0,06 % (640x360) / 0,24 % (780x360@3) — Gate
+  4,16 %, Vorher-Baseline dieser Lane 0,47 %/0,20 % (Chaos-Frame-Varianz,
+  beide Werte klar unter Gate; keine Verschlechterung gegen den Gate-Sinn).
+
+## Abnahme-Check (Briefing)
+
+| Kriterium | Beleg | Ergebnis |
+|---|---|---|
+| Runtime light_radius maxDiff <= 1/255 vs rev.2-Referenz | after.json: 0 | OK |
+| Runtime vignette maxDiff <= 1/255 vs rev.2-Referenz | after.json: 1 | OK |
+| 0 weiche Radialgradient-Reste | vsSoft 255/255, Quelltext-Guards (w2 + chaos-glow-runpath) | OK |
+| Near-White-A7 nicht verschlechtert | 0,06 %/0,24 % vs Gate 4,16 % | OK |
+| Boot.ts-Local-Duplikat entfernt | Swap-Commit 74c31e1d, Guard tests/boot-light-textures.test.ts | OK |
+| Tests gruen | 1980/1980, tsc, Build | OK |
 
 ## Hinweise
 
