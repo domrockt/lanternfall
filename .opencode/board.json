@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10728,
+  "next": 12049,
   "cards": [
     {
       "id": 1,
@@ -13146,7 +13146,7 @@
       "id": 10177,
       "title": "m10-gem-value-reading #1 Ist-Messung: Chaos-Frame (>=300 Gem-Drops via Spawn-Automat), Klassifikation Stufe(px-Flaeche)+Farbe, Vorher-JSON",
       "description": "Lane m10-gem-value-reading. Skript scripts/m10-gem-reading.mjs erzeugt 500-Gegner-Chaos (Seed 1, autoPlay, god), klassifiziert je Gem Stufe nach px-Flaeche + Dominantfarbe aus der Textur, misst paarweise Farb-Delta und Off-Palette-Pixel. Vorher-JSON nach ~/games/.evidence/m10-gem-value-reading/, Kernzahlen in docs/lanes/m10-gem-value-reading.md — BEVOR der Fix beginnt. Abnahme: JSON mit je Stufe Flaeche+Farbe+Delta existiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:28:26Z",
@@ -13157,16 +13157,21 @@
           "at": "2026-11-28T08:34:26Z",
           "by": "build",
           "text": "doing → review: Vorher-Messung committet (186d0f57): 305 Gem-Drops, Stufen/Farb-Klassifikation, Belege in ~/games/.evidence/m10-gem-value-reading/. Supervisor-Steer befolgt: kein weiteres Skript-Polieren."
+        },
+        {
+          "at": "2026-11-28T12:37:20Z",
+          "by": "build",
+          "text": "review → done: lane m10-gem-value-reading: Endcommit-Kette #10177-#10180 mit 906637a8 (textures.ts r3) vollendet; Kontrolleure PASS (art-director 4,5/5, reviewer bitgleich, Guard 10/10, Suite 1773/1773)."
         }
       ],
       "created": "2026-11-28T08:28:23Z",
-      "updated": "2026-11-28T08:34:26Z"
+      "updated": "2026-11-28T12:37:20Z"
     },
     {
       "id": 10178,
       "title": "m10-gem-value-reading #2 Stufen-Farbrampe: 3 klar getrennte Palette-Farben, Wertstufe->Farbe+Groesse deterministisch (PickupSystem.ts/xp.ts)",
       "description": "Lane m10-gem-value-reading. Rampe aus Nacht-/Gold-Palette in src/logic/xp.ts (GEMS.color korrekt + exportierte Rampe) und src/gfx/textures.ts in Einklang; Zuordnung Wertstufe -> Farbe+Groesse deterministisch, Cap/Merge-Semantik unberuehrt. Abnahme: GEMS.color == Textur-Kernfarbe je Stufe, Delta >= Schwelle, tsc gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:34:26Z",
@@ -13177,31 +13182,41 @@
           "at": "2026-11-28T08:36:02Z",
           "by": "build",
           "text": "doing → review: Rampe committet (7937d48b): GEMS.color + GEM_VALUE_RAMP + gemStageForValue; Textur gem_small auf mist/paleMist; Merge-Semantik bitgleich (gem-draw-cap-Tests gruen)."
+        },
+        {
+          "at": "2026-11-28T12:37:20Z",
+          "by": "build",
+          "text": "review → done: lane m10-gem-value-reading: Endcommit-Kette #10177-#10180 mit 906637a8 (textures.ts r3) vollendet; Kontrolleure PASS (art-director 4,5/5, reviewer bitgleich, Guard 10/10, Suite 1773/1773)."
         }
       ],
       "created": "2026-11-28T08:28:23Z",
-      "updated": "2026-11-28T08:36:02Z"
+      "updated": "2026-11-28T12:37:20Z"
     },
     {
       "id": 10179,
       "title": "m10-gem-value-reading #3 Guard-Test tests/gem-value-reading.test.ts",
       "description": "Lane m10-gem-value-reading. 3 Stufen paarweise farb-distant (Delta >= Schwelle, Zahl im Test), Groessenordnung monoton (7x7<9x9<11x11, Werte 2<6<18), 0 Off-Palette-Pixel in den Gem-Texturen; bestehende gem-draw-cap-Tests bleiben unveraendert gruen (Cap/Merge bitgleich). Abnahme: npx vitest run tests/gem-value-reading.test.ts gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:36:02Z",
           "by": "build",
           "text": "backlog → review: Guard-Test committet (17b52c0a): 9 Tests, Deltas 169,6/154,1/129,4 >= 120, Flaeche 31<57<81, 0 Off-Palette, Merge-Vertraege."
+        },
+        {
+          "at": "2026-11-28T12:37:20Z",
+          "by": "build",
+          "text": "review → done: lane m10-gem-value-reading: Endcommit-Kette #10177-#10180 mit 906637a8 (textures.ts r3) vollendet; Kontrolleure PASS (art-director 4,5/5, reviewer bitgleich, Guard 10/10, Suite 1773/1773)."
         }
       ],
       "created": "2026-11-28T08:28:23Z",
-      "updated": "2026-11-28T08:36:02Z"
+      "updated": "2026-11-28T12:37:20Z"
     },
     {
       "id": 10180,
       "title": "m10-gem-value-reading #4 Nachher-Messung + Screenshots 640x360/960x540 + art-director-Urteil + Doku",
       "description": "Lane m10-gem-value-reading. Nachher-JSON (Delta, Off-Palette 0, Monotonie), Abnahme-Bilder shots/abnahme/m10-gem-value-reading-{640,960}.png, art-director >= 4/5 auf dem Chaos-Frame, npm run build rc=0, 0 JS-Fehler. docs/lanes/m10-gem-value-reading.md + .lane-done.",
-      "column": "blocked",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:36:02Z",
@@ -13263,10 +13278,15 @@
           "at": "2026-11-28T10:05:24Z",
           "by": "build",
           "text": "Run 11 (10:06Z): fx-bakes-evo-r2 lane-done (49b3879a) → Claim textures.ts rotierte an m10-chest-arrow-texture-r2. Recheck v4 aktiv: Shell-Automation aut_2219d80db (15 min bis 14:00Z) committet Endcommit+Board+.lane-done selbst bei Claim-Freiheit. Prioritätsantrag in requests.md. Ready: tsc clean, Guard 10/10, r3 gestaget."
+        },
+        {
+          "at": "2026-11-28T12:37:20Z",
+          "by": "build",
+          "text": "blocked → done: lane m10-gem-value-reading: textures.ts r3 gem_small-Row (bone/candleWhite/lanternWhite, 2,24% Moor-Kollision) committet 906637a8 nach Claim-Rotation; Screenshots 640/960 in shots/abnahme/, art-director 4,5/5, build rc=0. Lane fertig."
         }
       ],
       "created": "2026-11-28T08:28:23Z",
-      "updated": "2026-11-28T10:05:24Z"
+      "updated": "2026-11-28T12:37:20Z"
     }
   ]
 }

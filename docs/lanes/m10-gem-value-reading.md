@@ -305,3 +305,25 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   `m10-chest-arrow-texture-r2` dieser Lane geben (dann committet die v4-
   Automation binnen 15 min) statt einen eigenen Mini-Job zu starten.
 - Kein Commit-Retry (4 dokumentierte Fehlversuche); keine sleeps.
+
+## Run-Abschluss (28.11. 12:36–12:41Z, Versuch 1 Fortsetzung / Run 12 — LANE FERTIG)
+
+- **Claim-Rotation eingetreten:** claims.json (12:3xZ) hält `src/gfx/textures.ts`
+  jetzt bei `m10-gem-value-reading` (fx-bakes-evo-r2, chest-arrow-texture-r2 und
+  texture-glow-swap-r2 sind durch). Der ausstehende r3-Patch lag als unstaged
+  Diff im Worktree vor (Run 6–11 haben ihn korrekt NICHT committed).
+- **Endcommit 906637a8** (`#10180`, nur src/gfx/textures.ts, 10 Zeilen):
+  gem_small-Row r3 = bone (PAL 10) + candleWhite-Glanz (12) + lanternWhite-
+  Sparkle (13) — Silber-Ende der Rampe, 2,24 % Moor-Boden-Kollision statt
+  29,45 % (fogBlue r2). xp.ts + Guard-Test waren bereits in cce20452.
+- **Ready frisch verifiziert 12:36Z:** tsc clean, Guard-Test 10/10,
+  `npm run build` rc=0 (446 ms), volle Suite **1773/1773** (167 Dateien).
+- Kontrolleure (Vorversuch 09:05Z, unverändert gültig): art-director r2
+  **4,5/5** auf shots/abnahme/m10-gem-value-reading-{960,640}.png,
+  reviewer PASS (Merge-Semantik bitgleich 18/18).
+- Recheck-Automation v4 (aut_2219d80db…) nach manuellem Endcommit **gelöscht**;
+  Board #10177–#10180 → **done** (zwei spuriously regenerierte
+  shots/m10-passive-math-*.json zuvor via checkout zurückgesetzt).
+- Belege: ~/games/.evidence/m10-gem-value-reading/ (gem-reading-before/after.json,
+  Chaos-Frames); Abnahme-Bilder in shots/abnahme/ (bereits committed).
+- Offene Punkte: keine. `.lane-done` folgt imselben Commit.
