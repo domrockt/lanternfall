@@ -1,0 +1,27 @@
+Lane m10-warmup-chunk-fine — alle 4 Karten (#12204–#12207) erledigt und committet.
+
+Ziel: offener Nice-to-have aus den Merge-Hinweisen m10-loading-screen — der
+Warmup-Chunk "derived-atlas" nutzte den groben Sammelaufruf createAllTextures,
+weil textures.ts die Creator nicht exportierte.
+
+Ergebnis:
+- K1 (#12204): Vorher-Messung scripts/m10-warmup-chunk.mjs — 48 Chunks,
+  maxChunk 1672,5 ms, sumChunk 3625,8 ms, titleRendered 4211 ms.
+- K2 (#12205): 4 Creator (createRingTexture, createEnemyProjectileTextures,
+  createTelegraphTextures, createShadowTexture) in textures.ts exportiert
+  (Diff nur Export-/Kommentarzeilen); derived-atlas in 6 Familien-Chunks
+  aufgeloest (light-vignette/shadow/rings/enemy-projectiles/telegraphs/
+  static-atlas, Reihenfolge nach Sichtbarkeit). Fremd-Datei
+  tests/loading-warmup.test.ts einzeilig angepasst (Label-Guard), in
+  requests.md begruendet.
+- K3 (#12206): Nachher — derived-atlas (292 ms) entfallen, Nachfolge-Chunks
+  je <= ~24 ms; Gesamt-Warmup -28 % (3626 -> 2598 ms, Schwelle war +5 %),
+  Zeit bis interaktiv -29 % (4211 -> 2983 ms). Belege:
+  ~/games/.evidence/m10-warmup-chunk-fine/{before,after}.json.
+- K4 (#12207): tests/warmup-chunks.test.ts (7 Tests: Chunk-Aufteilung,
+  Exporte, Idempotenz — doppelte Ausfuehrung, keine Duplikat-Texturen);
+  npm run build + npm test gruen (2321 Tests).
+
+Offener Punkt (eigene Karte, fremde Area): groesster verbleibender Stall ist
+runtime-atlas (buildRuntimeAtlas, src/gfx/atlas.ts) mit ~980–1740 ms.
+Details: docs/lanes/m10-warmup-chunk-fine.md
