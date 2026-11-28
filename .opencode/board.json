@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7494,
+  "next": 7498,
   "cards": [
     {
       "id": 1,
@@ -9130,6 +9130,42 @@
       "notes": [],
       "created": "2026-11-28T01:59:03Z",
       "updated": "2026-11-28T01:59:03Z"
+    },
+    {
+      "id": 7494,
+      "title": "m10-palette-fx-guard K1: Sammler scripts/m10-palette-fx-guard.mjs + JSON-Fixtures",
+      "description": "Aus Lane m10-palette-fx-guard uebernommen (lane #7400, Merge 8452f9a). FX-Frame-Daten der repraesentativen Menge ueber oeffentliche Exporte von gen-fx.ts extrahiert (34 Sets/134 Frames) und als tests/fixtures/palette-fx-guard.json gepinnt.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:03:50Z",
+      "updated": "2026-11-28T02:03:50Z"
+    },
+    {
+      "id": 7495,
+      "title": "m10-palette-fx-guard K2: Guard palette-check.mjs + palette-compliance.test.ts",
+      "description": "Aus Lane m10-palette-fx-guard uebernommen (lane #7401, Merge 8452f9a). Guard ditherMetrics/analyzeFxGuard/scaleCoverage in scripts/art/palette-check.mjs; describe 'M10 FX-Frame-Guard' in tests/palette-compliance.test.ts (Fixture-Aktualitaet, Palette-Index/Alpha 34 Sets, Dither-Ratchet, Scale-Coverage 4/7 + 13 knownFindings).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:03:50Z",
+      "updated": "2026-11-28T02:03:50Z"
+    },
+    {
+      "id": 7496,
+      "title": "m10-palette-fx-guard K3: Laufzeit < 3 s + Negativ-Tests rot/gruen belegt",
+      "description": "Aus Lane m10-palette-fx-guard uebernommen (lane #7402, Merge 8452f9a). Suite 11/11 in 880 ms (< 3 s); echte Rot-Demo thunder_seal#0 6->2 => AssertionError; Negativproben Phoenix-Dither/Winter-fogBlue/hazard-disc milky rot + Gegenproben gruen (shots/m10-palette-fx-guard-rotgruen.json).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:03:50Z",
+      "updated": "2026-11-28T02:03:50Z"
+    },
+    {
+      "id": 7497,
+      "title": "m10-palette-fx-guard K4: docs/lanes + .lane-done",
+      "description": "Aus Lane m10-palette-fx-guard uebernommen (lane #7403, Merge 8452f9a). docs/lanes/m10-palette-fx-guard.md mit Belegen/Messwerten/offenen Punkten (Dither-Noise thunder_seal/phoenix, 13 ungedeckte Draw-Scales); .lane-done war Lane-only und ist nach main nicht gemergt.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:03:50Z",
+      "updated": "2026-11-28T02:03:50Z"
     }
   ]
 }
