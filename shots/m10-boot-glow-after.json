@@ -1,0 +1,83 @@
+{
+  "tag": "after",
+  "probe": {
+    "gameW": 640,
+    "gameH": 360,
+    "keys": {
+      "light_radius": {
+        "kind": "canvas",
+        "w": 192,
+        "h": 192,
+        "vsStepped": {
+          "maxDiff": 0,
+          "meanDiff": 0
+        },
+        "vsSoft": {
+          "maxDiff": 255,
+          "meanDiff": 98.244
+        },
+        "winner": "gestuft (hart)"
+      },
+      "vignette": {
+        "kind": "canvas",
+        "w": 640,
+        "h": 360,
+        "vsStepped": {
+          "maxDiff": 1,
+          "meanDiff": 0
+        },
+        "vsSoft": {
+          "maxDiff": 255,
+          "meanDiff": 3.648
+        },
+        "winner": "gestuft (hart)"
+      }
+    }
+  },
+  "profiles": [
+    {
+      "profile": {
+        "label": "640-360-1",
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "png": "shots/m10-boot-glow-after-640-360-1-m25-1.png",
+      "zoom": "shots/m10-boot-glow-after-640-360-1-m25-1-4x.png",
+      "stats": {
+        "enemies": 100,
+        "time": 1495.7,
+        "kills": 469,
+        "level": 15
+      },
+      "pixels": {
+        "pngWidth": 640,
+        "pngHeight": 360,
+        "nearWhiteA7Pct": 0.38
+      }
+    },
+    {
+      "profile": {
+        "label": "780-360-3",
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "png": "shots/m10-boot-glow-after-780-360-3-m25-1.png",
+      "zoom": "shots/m10-boot-glow-after-780-360-3-m25-1-4x.png",
+      "stats": {
+        "enemies": 23,
+        "time": 1495.7,
+        "kills": 853,
+        "level": 20
+      },
+      "pixels": {
+        "pngWidth": 2340,
+        "pngHeight": 1080,
+        "nearWhiteA7Pct": 0.19
+      }
+    }
+  ],
+  "jsErrors": [],
+  "steppedWins": true
+}

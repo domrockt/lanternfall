@@ -1,17 +1,14 @@
 #!/usr/bin/env node
 /**
- * Lane m10-boot-glow-local (K1 Befund/Repro): Belegt zur Laufzeit, dass die
- * Boot-Local-Kopien createLightTextureLocal/createVignetteTextureLocal (Boot.ts)
- die Texturen "light_radius"/"vignette" registrieren und damit die Versionen aus
- * src/gfx/textures.ts verdraengen (Warmup ueberspringt sie wegen exists-Guard).
+ * Lane m10-boot-glow-local (K1 Befund/Repro + K4 After-Belege, Versuch 2).
  *
- * Probe: Nach Run-Start wird der Quell-Canvas beider Texturen ausgelesen und mit
- * zwei Referenz-Renderings verglichen:
- *   A = Boot-Local-Variante (Ringe 19/20/21 im Kern, B2-Tuning aus dem Chaos-Audit)
- *   B = textures.ts-Variante wie in main (Ringe 19/20/21/22/13, lanternWhite-Kern)
- * Beide Varianten rendern die weiche destination-in-Kante (Stufen aus eaf2ab6 sind
- * in diesem Base NICHT enthalten - Commit nur auf Branch m10-chaos-fix-raster-glow).
- * Gewinner = Variante mit Diff 0 gegen den Runtime-Canvas.
+ * Probe: Nach Run-Start wird der Quell-Canvas beider Texturen ausgelesen und
+ * mit zwei Referenz-Renderings verglichen:
+ *   stepped = harte Alpha-Stufen (LIGHT_EDGE_STEPS-Band-Loop / vignetteSteps,
+ *             Port von eaf2ab6 in die Boot-Local-Kopien, K2 rev.)
+ *   soft    = weiche destination-in-/Radialgradient-Kante (Stand vor K2 rev.)
+ * Gewinner = Variante mit Diff 0 gegen den Runtime-Canvas. Nach dem Fix muss
+ * "stepped" mit maxDiff ~0 gewinnen (0 weiche Gradient-Reste zur Laufzeit).
  *
  * Danach Vorher-Shots wie im Glowpath-Audit (m10-chaos-legibility): 640x360@1 und
  * 780x360@3, Minute-25-Chaos (seed=1, god, autoPlay, 6 Waffen Lv8 + 6 Evos Lv8 +
@@ -50,17 +47,32 @@ const WEAPONS = ["ember", "flail", "frost", "thorn", "storm", "lantern"];
 const VARIANTS_SOURCE = `
 function hexColor(i) { return "#" + i.toString(16).padStart(6, "0"); }
 const PAL13 = 0xfff8e6, PAL19 = 0xef9130, PAL20 = 0xffb84d, PAL21 = 0xffd77a, PAL22 = 0xffeeb0;
-function renderLight(rings) {
-  const size = 192, c = size / 2;
-  const canvas = document.createElement("canvas");
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext("2d");
+// Hart quantisierte Aussenkante (eaf2ab6, seit K2 rev. in Boot.ts portiert).
+const LIGHT_EDGE_STEPS = [[0, 70, 1], [70, 76, 0.66], [76, 82, 0.38], [82, 88, 0.18], [88, 96, 0.08]];
+function vignetteSteps() {
+  const steps = [], r0 = 70, r1 = 290, bands = 11;
+  const alphaAt = (t) => t < 0.7 ? 0.18 * (t / 0.7) : 0.18 + 0.54 * ((t - 0.7) / 0.3);
+  for (let i = 0; i < bands; i++) {
+    steps.push([r0 + ((r1 - r0) * i) / bands, r0 + ((r1 - r0) * (i + 1)) / bands,
+      Math.round(alphaAt((i + 1) / bands) * 100) / 100]);
+  }
+  steps.push([r1, r1 + 120, 0.72]);
+  return steps;
+}
+function drawRings(ctx, c, rings) {
   for (const [r, color, alpha] of rings) {
     ctx.globalAlpha = alpha;
     ctx.fillStyle = hexColor(color);
     ctx.beginPath(); ctx.arc(c, c, r, 0, Math.PI * 2); ctx.fill();
   }
   ctx.globalAlpha = 1;
+}
+function renderLightSoft(rings) { // Vorher-Referenz: destination-in-Radialgradient
+  const size = 192, c = size / 2;
+  const canvas = document.createElement("canvas");
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  drawRings(ctx, c, rings);
   ctx.globalCompositeOperation = "destination-in";
   const g = ctx.createRadialGradient(c, c, 10, c, c, 96);
   g.addColorStop(0, "rgba(0,0,0,1)");
@@ -69,17 +81,28 @@ function renderLight(rings) {
   ctx.fillStyle = g; ctx.fillRect(0, 0, size, size);
   return ctx.getImageData(0, 0, size, size).data;
 }
+function renderLightStepped(rings) { // Nachher-Referenz: LIGHT_EDGE_STEPS-Band-Loop
+  const size = 192, c = size / 2;
+  const canvas = document.createElement("canvas");
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  drawRings(ctx, c, rings);
+  ctx.globalCompositeOperation = "destination-in";
+  for (const [r0, r1, a] of LIGHT_EDGE_STEPS) {
+    ctx.globalAlpha = a;
+    ctx.beginPath(); ctx.arc(c, c, r1, 0, Math.PI * 2);
+    if (r0 > 0) ctx.arc(c, c, r0, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+  return ctx.getImageData(0, 0, size, size).data;
+}
 const RINGS_BOOT = globalThis.RINGS_BOOT = [ // createLightTextureLocal, Boot.ts (B2-Tuning)
   [96, PAL19, 0.05], [88, PAL19, 0.05], [80, PAL20, 0.05], [72, PAL20, 0.05],
   [64, PAL21, 0.06], [56, PAL21, 0.06], [48, PAL21, 0.07], [40, PAL21, 0.07],
   [32, PAL21, 0.08], [24, PAL20, 0.08], [16, PAL20, 0.09], [8, PAL20, 0.09],
 ];
-const RINGS_TEXTURES_TS = globalThis.RINGS_TEXTURES_TS = [ // createLightTexture, src/gfx/textures.ts (main-Stand)
-  [96, PAL19, 0.05], [88, PAL19, 0.05], [80, PAL20, 0.05], [72, PAL20, 0.05],
-  [64, PAL21, 0.06], [56, PAL21, 0.06], [48, PAL21, 0.07], [40, PAL22, 0.07],
-  [32, PAL22, 0.08], [24, PAL13, 0.09], [16, PAL13, 0.10], [8, PAL13, 0.10],
-];
-function renderVignette(gameW, gameH) {
+function renderVignetteSoft(gameW, gameH) { // Vorher-Referenz: Radialgradient
   const canvas = document.createElement("canvas");
   canvas.width = gameW; canvas.height = gameH;
   const ctx = canvas.getContext("2d");
@@ -88,6 +111,19 @@ function renderVignette(gameW, gameH) {
   c.addColorStop(0.7, "rgba(6,7,12,0.18)");
   c.addColorStop(1, "rgba(6,7,12,0.72)");
   ctx.fillStyle = c; ctx.fillRect(0, 0, gameW, gameH);
+  return ctx.getImageData(0, 0, gameW, gameH).data;
+}
+function renderVignetteStepped(gameW, gameH) { // Nachher-Referenz: Stufen-Bänder
+  const canvas = document.createElement("canvas");
+  canvas.width = gameW; canvas.height = gameH;
+  const ctx = canvas.getContext("2d");
+  const cx = gameW / 2, cy = gameH / 2;
+  for (const [r0, r1, a] of vignetteSteps()) {
+    ctx.fillStyle = "rgba(6,7,12," + a + ")";
+    ctx.beginPath(); ctx.arc(cx, cy, r1, 0, Math.PI * 2);
+    ctx.arc(cx, cy, r0, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
   return ctx.getImageData(0, 0, gameW, gameH).data;
 }
 function diff(a, b) {
@@ -184,13 +220,13 @@ try {
         const tex = readTexture(game, key);
         if (!tex || tex.kind !== "canvas" || !tex.data) { out.keys[key] = { missing: true, info: tex }; continue; }
         const expected = {
-          boot: key === "light_radius" ? renderLight(RINGS_BOOT) : renderVignette(gameW, gameH),
-          texturesTs: key === "light_radius" ? renderLight(RINGS_TEXTURES_TS) : renderVignette(gameW, gameH),
+          stepped: key === "light_radius" ? renderLightStepped(RINGS_BOOT) : renderVignetteStepped(gameW, gameH),
+          soft: key === "light_radius" ? renderLightSoft(RINGS_BOOT) : renderVignetteSoft(gameW, gameH),
         };
         out.keys[key] = {
           kind: tex.kind, w: tex.w, h: tex.h,
-          vsBoot: diff(tex.data, expected.boot),
-          vsTexturesTs: diff(tex.data, expected.texturesTs),
+          vsStepped: diff(tex.data, expected.stepped),
+          vsSoft: diff(tex.data, expected.soft),
         };
       }
       return out;
@@ -253,16 +289,19 @@ try {
 
 // ---------- Urteil ----------
 for (const [key, r] of Object.entries(report.probe?.keys ?? {})) {
-  if (!r.vsBoot) continue;
-  const winner = r.vsBoot.maxDiff <= r.vsTexturesTs.maxDiff ? "boot-local" : "textures.ts";
+  if (!r.vsStepped) continue;
+  const winner = r.vsStepped.maxDiff <= r.vsSoft.maxDiff ? "gestuft (hart)" : "weich (Gradient)";
   r.winner = winner;
-  console.log(`[probe] ${key}: ${texInfo(r)} vsBoot(max=${r.vsBoot.maxDiff}, mean=${r.vsBoot.meanDiff}) vsTexturesTs(max=${r.vsTexturesTs.maxDiff}, mean=${r.vsTexturesTs.meanDiff}) -> GEWINNT: ${winner}`);
+  console.log(`[probe] ${key}: ${texInfo(r)} vsStepped(max=${r.vsStepped.maxDiff}, mean=${r.vsStepped.meanDiff}) vsSoft(max=${r.vsSoft.maxDiff}, mean=${r.vsSoft.meanDiff}) -> GEWINNT: ${winner}`);
 }
+const steppedWin = Object.values(report.probe?.keys ?? {}).every((r) => r.vsStepped && r.vsStepped.maxDiff <= r.vsSoft.maxDiff);
+report.steppedWins = steppedWin;
+console.log(`[boot-glow] ${TAG}: steppedWins=${steppedWin}`);
 function texInfo(r) {
   return `${r.kind} ${r.w}x${r.h}`;
 }
 writeFileSync(`${PREFIX}.json`, JSON.stringify(report, null, 2));
-console.log(`[boot-glow] ${TAG}: probe winners=${JSON.stringify(Object.fromEntries(Object.entries(report.probe?.keys ?? {}).filter(([, r]) => r.winner).map(([k, r]) => [k, r.winner])))}`);
+console.log(`[boot-glow] ${TAG}: steppedWins=${steppedWin}`);
 for (const p of report.profiles) {
   console.log(`  ${p.profile.label}: ${p.png} a7=${p.pixels.nearWhiteA7Pct}% enemies=${p.stats.enemies}`);
 }

@@ -56,9 +56,49 @@ Merge-Owner), (c) Abgleich der Ring-Farben (B2-Kern Amber/Lantern muss in
 textures.ts landen, sonst A7-Rueckschritt). Erst dann kann K2 die zwei Zeilen
 really sein, die das Briefing meint.
 
-## Status
+## K2 rev. / K3 / K4 (Versuch 2, 2026-11-28) — Stufen in die Boot-Local-Kopien portiert
 
-- K1 (#8618): erledigt (Probe + Vorher-Shots + dieser Befund).
-- K2 (#8619), K3 (#8620), K4 (#8621): blocked auf (a)-(c) oben;
-  Bedarfsmeldung in ~/games/.dispatch/requests.md gestellt (2026-11-28).
-- Kein `.lane-done` (Lane unvollendet, wartet auf Disponent/Merge-Owner).
+Versuch 2 startete mit unveränderten Blockern (eaf2ab6 weiterhin nicht in
+origin/main, textures.ts weiterhin fremd geclaimed und ohne Exports — geprüft
+per `git fetch origin` + claims.json). Statt erneut zu blockieren, wurde der
+Scope innerhalb der Lane-Claims revidiert:
+
+**K2 rev. (#8619, Commit 8e8dff4):** Die harte Quantisierung aus eaf2ab6 wurde
+in die Boot-Local-Kopien PORTIERT (Boot.ts ist Lane-Claim, textures.ts wurde
+nicht geändert und nur importiert/gelesen):
+- `light_radius`: LIGHT_EDGE_STEPS-Band-Loop (5 Bänder ≥ 6 px, Alpha
+  1/0.66/0.38/0.18/0.08, harte Kanten) statt destination-in-Radialgradient.
+- `vignette`: vignetteSteps (11 Bänder à 20 px über r=70..290 + Ecken-Klemme
+  0.72, Alpha-Treppe 0.02..0.72) statt Radialgradient.
+- B2-Ring-Tuning bewusst erhalten (Kern Farbe 20/21 statt 22/13) — kein
+  Near-White-A7-Rückschritt; Guard tests/chaos-glow-runpath.test.ts bleibt grün.
+
+**K3 (#8620, Commit nach 8e8dff4):** tests/boot-light-textures.test.ts
+(Quelltext-Checks nach Repo-Muster, Boot.ts ist nicht headless importierbar):
+0 createRadialGradient/addColorStop, Tabellen exakt wie eaf2ab6, arc-Band-
+Zeichnpfad, B2-Farben, exists-Guards. Suite 1447/1447 grün, tsc grün,
+`npm run build` grün.
+
+**K4 (#8621):** After-Lauf (`node scripts/m10-boot-glow.mjs --tag after`,
+Playwright/Chromium, Minute-25-Chaos seed=1, god/autoPlay, Waffen Lv8 + Evos +
+Passives, skipTo 1490):
+- Runtime-Probe: light_radius maxDiff **0** (mean 0) gegen die gestufte
+  Referenz; vignette maxDiff **1/255** (Rundung). Gegen die weiche Referenz
+  maxDiff 255 bzw. mean 3.6 — d. h. **0 weiche Gradient-Reste zur Laufzeit**,
+  `steppedWins=true` (shots/m10-boot-glow-after.json).
+- Near-White-A7: 0,38 % (640x360) / 0,19 % (780x360@3) — Gate 4,16 % klar
+  eingehalten (Vorher-Baseline 0,4 %/0,27 %).
+- Shots: shots/m10-boot-glow-after-640-360-1-m25-1.png(+ -4x) und
+  shots/m10-boot-glow-after-780-360-3-m25-1.png(+ -4x), lebende Gegner sichtbar.
+- art-director-Urteil: siehe Karten-Notiz #8621 (Ergebnis wird nachgetragen).
+
+## Offener Punkt (Folgekarte, nicht lane-fähig)
+
+Der ursprüngliche Briefing-Swap („Boot-Local-Block durch Import ersetzen")
+bleibt richtig, sobald ZUSAMMEN: (a) m10-chaos-fix-raster-glow (eaf2ab6) in
+main gemerged ist, (b) textures.ts die beiden Creator exportiert (Claim-
+Inhaber m10-evo-fx-form-polish), (c) der Ring-Farb-Abgleich geklärt ist
+(Boot-Kern 20/21 vs. textures.ts 22/13 — B2-Entscheid beim Merge-Owner).
+Bis dahin läuft die Runtime mit der portierten Stufen-Version; der exists-
+Guard macht einen Uebergangszustand (Export kommt, Import fehlt noch) harmlos.
+Bedarfsmeldung in ~/games/.dispatch/requests.md bleibt bestehen.
