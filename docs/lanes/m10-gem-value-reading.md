@@ -166,3 +166,19 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
 - Commit-Versuch 09:18Z: erneut am pre-commit-Claimcheck gescheitert (`src/gfx/textures.ts -> m10-fx-bakes-evo-r2`). Kein Retry-Loop, Karte #10180 bleibt `blocked` mit aktueller Notiz.
 - Alternativen geprüft und verworfen: (a) Split ohne textures.ts — Guard-Test importiert `SPRITE_GRIDS`, wäre rot; (b) Draw-Time-Tint in PickupSystem statt Textur-Farben — Verschlechterung, art-director-Abnahme galt der Textur-Rampe; (c) Umgehung des Hooks — verboten.
 - Wartet unverändert auf Disponent: Mini-Job `m10-gem-rows-texture` (exakter Patch: `git diff HEAD -- src/gfx/textures.ts`) oder Claim-Freigabe nach fx-bakes-evo-r2-Merge. Danach: 3 Dateien committen (`#10180`) + `.lane-done`.
+
+## Run-Fortsetzung (28.11. 09:26–09:32Z, Versuch 3 / Run 5)
+
+- Claim-Lage neu geprüft: `src/gfx/textures.ts` weiterhin bei `m10-fx-bakes-evo-r2`
+  (claims.json mtime 09:22Z; Lane aktiv, Commit 8eab0388 09:21:32Z, Worktree dirty —
+  legitime Nutzung, kein Eingriff). Dora-Mini-Job `m10-gem-rows-texture` noch nicht
+  gestartet (kein Worktree/Branch, Queue hinter m10-chest-arrow-texture-r2).
+- Ready-Zustand frisch verifiziert (09:27–09:31Z): `npx tsc --noEmit` clean,
+  Guard-Test 10/10, **Full-Suite 167 Files / 1773 Tests grün (rc=0)**,
+  `npm run build` rc=0 (Log: `~/tmp/m10-gem-value-reading-build.log`).
+- Kein weiterer Commit-Retry im Loop (4 Fehlversuche belegt); stattdessen
+  Automation geplant: alle 45 min Prüfung, ob der Claim frei ist bzw. die
+  gem-Rows über den Mini-Job in main gelandet sind → dann Endcommit (#10180),
+  Board auf done, `.lane-done`. Automation wird nach Lane-Abschluss gelöscht.
+- Bedarf an den Disponent UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt
+  (Mini-Job `m10-gem-rows-texture`) oder Freigabe nach fx-bakes-evo-r2-Merge.
