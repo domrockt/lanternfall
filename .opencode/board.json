@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6986,
+  "next": 7038,
   "cards": [
     {
       "id": 1,
@@ -8178,6 +8178,54 @@
       ],
       "created": "2026-11-28T00:22:10Z",
       "updated": "2026-11-28T00:22:16Z"
+    },
+    {
+      "id": 6986,
+      "title": "m10-chaos-legibility-audit K1: Belege erzeugen",
+      "description": "NUR-MESS-Lane. iGPU-Chromium (Renderer-String Pflicht, SwiftShader ungültig). M25-Freeze-Frames bei 640x360 und 780x360@3 + 300/500-Gegner-Stress, je 2x/4x-Zoom nach shots/m10-chaos-leg-*. AK: Shots + JSON mit Renderer-String existieren, kein SwiftShader, Gegnerzahlen protokolliert.",
+      "column": "done",
+      "assignee": "build",
+      "notes": [
+        {
+          "at": "2026-11-28T00:33:00Z",
+          "by": "build",
+          "text": "lane #6958: 19 iGPU-Belege (Mesa Intel RPL-S, swiftShader=false), 300/500 Gegner protokolliert, Commits 9541b88 + 98fc186. Karten als lane #-Notiz aus Lane m10-chaos-legibility-audit nachgetragen."
+        }
+      ],
+      "created": "2026-11-28T00:32:48Z",
+      "updated": "2026-11-28T00:33:00Z"
+    },
+    {
+      "id": 6987,
+      "title": "m10-chaos-legibility-audit K2: Vision-Sichtung",
+      "description": "Sicht der K1-Shots: Dither-Rester (Schachbrett-Muster), Mixel (Effekte in anderer Pixelgröße als Sprites), Überstrahlung/Near-White, Lesbarkeit Spieler/Gegner-Typen/Projektile/HUD/Schadenszahlen. AK: je Prüfpunkt ein Urteil mit Beleg-Shot-Referenz.",
+      "column": "done",
+      "assignee": "build",
+      "notes": [
+        {
+          "at": "2026-11-28T00:33:00Z",
+          "by": "build",
+          "text": "lane #6959: Sichtung committed 4e8f970; art-director 3 FAIL Major / 2 PASS (3/5 streng). Kein Schachbrett-Dither, Lesbarkeit PASS. lane #-Notiz aus Lane m10-chaos-legibility-audit."
+        }
+      ],
+      "created": "2026-11-28T00:32:48Z",
+      "updated": "2026-11-28T00:33:00Z"
+    },
+    {
+      "id": 6988,
+      "title": "m10-chaos-legibility-audit K3: Befundliste + Empfehlungen",
+      "description": "Befundliste mit Severity (Blocker/Major/Minor) in docs/lanes/m10-chaos-legibility.md, je Eintrag: Datei + Hebel + erwarteter Gewinn + Repro-Shot. AK: >=3 belegte Punkte ODER begründetes 'kein Major mehr'; daraus schneidbare Fix-Jobs.",
+      "column": "done",
+      "assignee": "build",
+      "notes": [
+        {
+          "at": "2026-11-28T00:33:00Z",
+          "by": "build",
+          "text": "lane #6960: Befundliste + art-director-Urteil + Fix-Priorität in docs/lanes/m10-chaos-legibility.md, Abschluss-Commit ccc62a9. 3 Major / 2 Minor, 4 Fix-Job-Empfehlungen. lane #-Notiz aus Lane m10-chaos-legibility-audit."
+        }
+      ],
+      "created": "2026-11-28T00:32:48Z",
+      "updated": "2026-11-28T00:33:00Z"
     }
   ]
 }
