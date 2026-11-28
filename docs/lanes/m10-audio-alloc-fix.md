@@ -52,13 +52,61 @@ Subtree-Abzug konsistent sichtbar, aber kleiner, dacooldown-gedrosselt).
   Seiteneffekten (pruneStarts), d. h. übersprungene planPlay-Aufrufe wären dort sowieso früh
   ausgestiegen ⇒ bitgleich by construction; Verhalten-Test in tests/audio-alloc.test.ts.
 
-## K2 — Fix (Karte #12130)
+## K2 — Fix (Karte #12130, Commit 71d44521)
 
-(kommt)
+Nur `src/audio/AudioSystem.ts` (mixing.ts unangetastet):
+
+1. **Wiederverwendete Play-Parameter:** `req` (SoundRequest) und `noteOpts` (NoteOptions) sind jetzt
+   Instanz-Felder; je Play werden nur Felder mutiert statt zwei Objekt-Literale alloziert. Alle
+   Konsumenten (effectiveVolume/pickupDampGain/planPlay/notePlayed) lesen synchron, keine Retention.
+2. **planPlay-Frühcheck:** play() spiegelt exakt die ersten drei planPlay-Prüfungen
+   (priority < 0, perSoundVoices, cooldown). Diese liegen in planPlay VOR allen Seiteneffekten
+   (pruneStarts/Filters) — für hier verworfene Requests wäre planPlay sowieso vor allen Filter-/Set-
+   Allokationen ausgestiegen ⇒ bitgleich by construction; verworfene Requests kosten jetzt zwei
+   Feldvergleiche.
+3. **Listener-Batching:** complete/stop-Listener werden EINMALIG je Stimme in der Voice-Fabrik
+   registriert (`on`, permanent) statt 2× `once` je Play — EventEmitter3 alloziert je `once`-Aufruf
+   einen Wrapper + Array-Churn (vorher 42 B/Play). Der `busy`-Guard ersetzt den Token-Snapshot:
+   Eine Stimme ist nur frei, wenn ihr Playback beendet/verdrängt wurde, und Phaser emittiert
+   COMPLETE nur beim echten Ende des aktuellen Buffers; Verdrängung setzt busy vor stop() auf false.
+   Der `token` bleibt (evictVoice), hat aber keine Freigabe-Rolle mehr.
+4. **Voice-Fabrik-Closure je SFX gecacht** (`voiceFactories`-Map) statt Closure je Play.
+5. **PICKUP_IDS als Set** statt Array.includes je Play; **sfxVolume-Cache** (getSettings() spread't
+   je Aufruf — Cache wird in updateSettings() aktualisiert; alle Änderungen laufen über
+   applyOptions → updateSettings, d. h. verhaltensgleich).
+
+Unvermeidbarer Minimal-Eingriff in fremde Dateien (begruendet, Disponent wird im Merge informiert):
+4 Test-Mocks (tests/audio-mix.test.ts, audio-mix-chaos.test.ts, music-dawn.test.ts,
+pickup-sfx-distinct.test.ts) um eine `on: () => {}`-Zeile ergänzt, weil die Mocks vorher nur `once`
+kannten und die Fabrik sonst ins Catch lief (play() → false). Keine Verhaltensänderung der Tests.
+
+Verifikation K2: `npx tsc --noEmit` grün, Suite **2289/2289**, `npm run build` rc=0.
 
 ## K3 — Nachher-Messung (Karte #12131)
 
-(kommt)
+`~/games/.evidence/m10-audio-alloc-fix/m10-audio-alloc-after.json` — eingefrorenes Skript, identische
+Parameter (Seed 1, 321 Plays / 20 s, 0 JS-Fehler, Renderer `ANGLE (Intel, Mesa Intel(R) Graphics
+(RPL-S), OpenGL ES 3.2)`):
+
+| Gruppe | Vorher B/Play | Nachher B/Play | Δ | Anteil Nachher |
+|---|---|---|---|---|
+| **SFX-Pfad gesamt** | **~218** | **89** | **−59 %** | 100 % (24 B/Frame, vorher 55-61) |
+| audio-system (Area) | 77 | **3** | **−96 %** | 3,9 % |
+| phaser-sfx (Engine) | 51 | 23 | −55 % | 26,2 % |
+| mixing (fremd) | 48 | 52 | ~±10 % Rauschen | 58,7 % |
+| sfx-other (Builtins) | 42 | 10 | −76 % | 11,2 % |
+
+**Abnahmekriterium (vor dem Fix festgelegt, siehe oben): erfüllt.** audio-system 3 B/Play ≤ 38 B/Play
+(≤ 50 % der kleinsten Baseline 77) — Faktor ~25 unter dem Tor. Auch die Gesamtmetrik liegt mit 41 %
+des Vorherwerts unter 50 %.
+
+Ehemalige Top-Sites weg: `play`-Frame-Selbstallokationen (76 B/Play) und EE3 `addListener`-Churn
+(42 B/Play) sind aus dem Profil. Verbleibende Residuals (außerhalb des Claims, wie in der Sister-Lane):
+- `mixing.ts` planPlay-interne Closures/Filter (46 B/Play) — Bedarf: eigener Pass, sobald der
+  Konflikt mit m10-thermal-tier-types gelöst ist; `notePlayed`-Pushes (6 B/Play).
+- Phaser-Engine-Churn je Play: `createBufferSource` + `source.onended` + `emit` (~23 B/Play) —
+  WebAudio-BufferSource ist One-Shot, nicht aus AudioSystem.ts hebelbar.
+
 
 ## K4 — Regressionstest + Abschluss (Karte #12132)
 
