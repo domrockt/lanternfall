@@ -1,0 +1,19 @@
+# Lane m10-hero-idle-frames — fertig (28.11.2026)
+
+Ziel lt. Briefing war Aufbau einer 2-Frame-Idle-Animation für Kael + Mira.
+**Zentraler Befund:** Beides existiert bereits auf main (Idle-Sätze + Umschaltung seit
+M4-02, Commit e778827; Run.ts idlePhase 2 fps). Die Lane wurde daher als Verifikation +
+Absicherung gefahren — kein Code im Draw-Pfad, `chars.ts`/`gen_chars.py` unverändert.
+
+Ergebnisse (alle committet, eine Karte = ein Commit):
+- #8378 Ist-Belege: Kontaktbögen Idle+Walk je Held 1x/4x (shots/m10-hero-idle-*-sheets-*.png);
+  ist.json: 0 Lauf-Dubletten, Idle-Versatz 313–433 px, 0 Off-Palette-Pixel.
+- #8379 Generator-Verifikation: gen_chars.py regeneriert → gen-chars.ts byte-identisch.
+- #8380 Runtime-Verifikation: Umschaltungs-Proof in-game (Idle alterniert idle_0/1,
+  Walk zykelt side_0..3), 4x-GIFs + JSON, 0 JS-Fehler.
+- #8381 tests/hero-idle-frames.test.ts (4/4 grün: Idle-Sätze, Versatz ≥ 100 px,
+  0 Dubletten, 0 Off-Palette); npm run build grün; npm test 1365/1365 grün.
+
+Abnahme: art-director PASS für beide Helden (Mira 4/5, Kael 4/5, Idle je 4,5; optionale
+Polier-Idee down/up F1/F3 Boot-Lift notiert, nicht blockernd). commit-gate PASS (#8381).
+Doku: docs/lanes/m10-hero-idle-frames.md. Offene Punkte: keine.
