@@ -1030,12 +1030,16 @@ export function frostRingFrame(size: number, density: number): string[] {
   const c = (size * L - 1) / 2;
   const put = (x: number, y: number, idx: number) => putPixel(rows, x, y, idx);
   // Gerastertes Eisband + Innenkante (Radien wie die Canvas-Version, × Stufe).
+  // M10-evo-fx-winter Abnahme Runde 1 (art-director FAIL: Aura 3.5 auf hellem
+  // Moor-Grund): 1 px kühle Außenkante in blueGrey(5) unter dem Band, damit der
+  // Ring auf Gras-Mitteltönen nicht verschmilzt.
   for (let y = 0; y < size * L; y++) {
     for (let x = 0; x < size * L; x++) {
       const d = Math.sqrt((x + 0.5 - c) ** 2 + (y + 0.5 - c) ** 2);
       if (d >= 43.5 * L && d <= 45.5 * L) put(x, y, 8);
       else if (d >= 41.5 * L && d <= 43.5 * L) put(x, y, 9);
       else if (d >= 39.5 * L && d <= 40.5 * L) put(x, y, 12);
+      else if (d > 45.5 * L && d <= 46.5 * L) put(x, y, 5);
     }
   }
   // 12 2-px-Zacken von r 43 nach r 47 (× Stufe), lanternWhite.

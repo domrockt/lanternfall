@@ -31,10 +31,11 @@ function usedIndices(rows: string[]): number[] {
   return [...out].sort((a, b) => a - b);
 }
 
-/** Eis-Farbtreppe des Winters: lanternWhite→candleWhite→boneLight→paleMist→mist→fogBlue. */
-const ICE_RAMP = [13, 12, 11, 9, 8, 6];
+/** Eis-Farbtreppe des Winters: lanternWhite→candleWhite→boneLight→paleMist→mist→fogBlue,
+ *  plus blueGrey(5) als kühle Außenkante (art-director Runde 1: Kontrast auf hellem Grund). */
+const ICE_RAMP = [13, 12, 11, 9, 8, 6, 5];
 /** Verboten: Ink (schwarzer Rand), Nacht-/Grau-Blobs, warme/Moor-Fremdfarben. */
-const FORBIDDEN = [0, 1, 2, 3, 4, 5, 7, 10, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+const FORBIDDEN = [0, 1, 2, 3, 4, 7, 10, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 
 describe("m10-evo-fx-winter: Signatur in Zielgröße 128x128 @ Draw-Scale 1", () => {
   const sig = EVOLUTION_SIGNATURES.eternal_winter;
@@ -105,6 +106,8 @@ describe("m10-evo-fx-winter: Aura-Siegel ring_frost als Mixel-Bake (Draw-Scale <
     const rows = frostRingFrame(96, 1);
     expect(rows.length).toBe(96);
     expect(rows.every((r) => r.length === 96)).toBe(true);
+    // Abnahme Runde 1 (art-director): kühle Außenkante blueGrey(5) vorhanden.
+    expect(usedIndices(rows)).toContain(5);
   });
 
   it("Level-1-Geometrie: Band bei r ~40-47, Zentrum frei (kein gefüllter Blob)", () => {
