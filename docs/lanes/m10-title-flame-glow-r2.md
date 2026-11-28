@@ -35,3 +35,32 @@ Standard-Viewport) wirkt die Lampe wie Deko, nicht wie eine brennende Lichtquell
 **Zielkorridor (vor dem Fix festgelegt):** Glut-Flächenanteil (13+22) je Glas-Patch
 >= 0,30 nach dem Fix; organischer Flammenkern (flächige 13-Gruppe, keine Symmetrie),
 Dither nur an Übergangskanten (1–2 px Stufe 21 zwischen 22/13 und 20).
+
+## Karte K2 — Generator-Glut-Akzente (2026-11-28)
+
+Änderungen nur in `scripts/art/gen_title.py` (+ regeneriertes `src/gfx/gen-title.ts`):
+
+1. **Glas in der Basis (`lantern()`)** wird jetzt aus `_GLASS_ROWS` gebacken statt aus
+   3 Rechtecken: flächiger heller Flammenkern (Palette 13, organisch 3/3/2-Gruppe),
+   Glutfläche (22), Dither (21) nur an der Übergangskante zum Amber-Rand (20).
+   Der Gehäuse-Rand (4) bleibt unverändert in der Basis.
+2. **Frames:** F0 = exakte Zellkopie des neuen Basis-Glas (Guard-Test verlangt das);
+   F1/F2 = organischer Flammen-Flick (Kern wandert 1 px links/rechts, Diff 4 bzw. 7
+   Zellen, Grenze 12 aus tests/title-flame.test.ts eingehalten). Glut-Funken jetzt
+   Palette 13 (vorher 21/22 gemischt) — Funken über dem Deckel sind heller erkennbar.
+3. **Generator-Guards neu:** F0==_GLASS_ROWS, F1/F2-Diff in 2..12, Glut-Anteil >= 0.30
+   (bricht laut, falls später jemand das Glas wieder abdunkelt).
+4. **Mond-Glut-Flicken: bewusst NICHT umgesetzt** (Briefing: optional). Der Mond hat
+   bereits einen additiven Puls-Tween (m10-title-flame-crisp, unangetastet) und einen
+   flächigen 13-Kern — ein statisch eingebackener Glut-Flicken würde doppelt leuchten
+   statt die Flammen lesbarer zu machen. Die vollständige Verbesserung liefert der
+   Flammenkern (Messwert unten).
+
+**Messwerte (vorher → nachher, 4 Glas-Patches à 48 Texel):**
+- Glut-Flächenanteil (13+22): **0,125 → 0,375** (Ziel >= 0,30 ✓)
+- F0-vs-Basis: 0 Abweichungen (Zellkopie-Vertrag)
+- Frame-Diff F1/F2 vs F0: 4 / 7 Zellen (vorher 3/5) — Grenze 12 ✓
+
+Belege: `~/games/.evidence/m10-title-flame-glow-r2/m10-title-flame-frames-f{0,1,2}.png`
+(8x nearest). Tests: title-flame 14/14, title-bg-crisp + palette-compliance +
+menu-art-crisp + chest-icon-crisp zusammen 84/84 grün.

@@ -12289,9 +12289,20 @@
       "id": 9856,
       "title": "m10-title-flame-glow-r2 K2: Generator-Glut-Akzente",
       "description": "gen_title.py: Glut-Akzente kraeftiger (Kern-Pixel hellere Palette-Stufe), optional Mond-Glut-Flicken; Dither nur an Uebergangskanten 1-2 px, Kerne flaechig hell, organische Formen. gen-title.ts regenerieren. Abnahme: Frames regeneriert, Palette-Indices dokumentiert, Title.ts unberuehrt.",
-      "column": "todo",
+      "column": "review",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T07:45:41Z",
+          "by": "coder",
+          "text": "todo → doing: Generator-Glut-Akzente starten"
+        },
+        {
+          "at": "2026-11-28T07:47:48Z",
+          "by": "coder",
+          "text": "doing → review: gen_title.py Glut-Kern 13 flaechig (Anteil 0.125 -> 0.375), F1/F2 organisch (Diff 4/7 <= 12), Funken Palette 13; Guards in Generator. 35+49 Tests gruen. Commit #9856"
+        }
+      ],
       "created": "2026-11-28T07:38:48Z",
       "updated": "2026-11-28T07:38:48Z"
     },
