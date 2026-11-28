@@ -224,3 +224,33 @@ export const WRATH_FX = {
   glowTexture: "fx_wrath_glow",
   glowAlpha: 0.6,
 } as const;
+
+/**
+ * m10-evo-fx-gewittersiegel: alle Gewittersiegel-FX-Parameter an einem Ort (Muster
+ * PHOENIX_FX). Eine Pixelgroesse fuer alles: das Boden-Siegel 64x64 (4 Phasen-
+ * Frames: 0/1 Anticipation, 2 Impact-Flash, 3 Dauer-Puls) wird mit Scale 1
+ * gezeichnet (nie > 1x hochskaliert). Farb-Treppe: lanternWhite(13)/
+ * candleWhite(12) → glow(22)/lantern(21) auf dunkler Grundflaeche night(2)/
+ * nightMid(3), Kontur nightSlate(4) — kein Ink(0), keine Grau-Stufen (5–9).
+ */
+export const THUNDER_FX = {
+  /** Boden-Siegel-Textur (64x64, 4 Phasen-Frames, Sprite-Pixelgroesse). */
+  sealTexture: "fx_seal_thunder",
+  sealFrames: 4,
+  /** Anticipation: Ladezeit in s (<= 0,6) + Start-Alpha, Puls um Scale 1. */
+  anticipation: 0.55,
+  anticipationAlphaFrom: 0.45,
+  pulse: 0.06,
+  /** Impact-Flash am Siegel (Frame 2) als kurzer Pool-Effekt. */
+  impactFlashLife: 0.3,
+  /** Kettenblitz-Ziele: Impact-Frame herunterskaliert (<= 1). */
+  chainImpactFrame: 2,
+  chainLife: 0.45,
+  chainScaleFrom: 0.5,
+  chainScaleTo: 0.7,
+  /** Ausklang: Fade am Ende des Sichtbarkeits-Zyklus in s. */
+  fadeOut: 0.3,
+  /** Dauer-Puls (Frame 3): Alpha-Modulation um der Grundalpha. */
+  sustainAlpha: 0.9,
+  sustainPulse: 0.1,
+} as const;

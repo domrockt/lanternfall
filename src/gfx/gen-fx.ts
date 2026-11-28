@@ -226,6 +226,92 @@ function smearFrame(stage: number, width = 44, height = 16): string[] {
   return out;
 }
 
+/**
+ * Gewittersiegel (m10-evo-fx-gewittersiegel): Boden-Siegel in Zielgröße 64x64,
+ * 4 Phasen-Frames (0/1 Anticipation, 2 Impact-Flash, 3 Dauer-Puls), Draw-Scale 1.
+ * Dunkle Siegel-Grundfläche (night 2 / nightMid 3, 1-px-Kontur nightSlate 4),
+ * Blitz-Rune als kühle Treppe lanternWhite(13) → candleWhite(12) → glow(22) →
+ * lantern(21), Zwischenstufe boneLight(11). Kein Ink(0), keine Grau-Stufen (5–9).
+ */
+export function thunderSealFrame(stage: number, size = 64): string[] {
+  const out: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const put = (x: number, y: number, ch: string): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix >= 0 && iy >= 0 && ix < size && iy < size) out[iy][ix] = ch;
+  };
+  const line = (x0: number, y0: number, x1: number, y1: number, ch: string): void => {
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+    for (let t = 0; t <= steps; t++) {
+      put(Math.round(x0 + (x1 - x0) * t / steps), Math.round(y0 + (y1 - y0) * t / steps), ch);
+    }
+  };
+  // Dunkle Siegel-Grundfläche: organischer Kreis (deterministischer Wobble),
+  // außen nightSlate(4)-Kontur, Fläche nightMid(3) mit night(2)-Kern.
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x - c;
+      const dy = y - c;
+      const d = Math.hypot(dx, dy);
+      const wobble = 25 + Math.sin(Math.atan2(dy, dx) * 3 + 1.7) * 1.4
+        + Math.sin(Math.atan2(dy, dx) * 5 + 0.4) * 0.8;
+      if (d > wobble) continue;
+      if (d > wobble - 1.5) put(x, y, "4");
+      else if (d > 17) put(x, y, "3");
+      else put(x, y, "2");
+    }
+  }
+  // Achteck-Außenring (1 px, gerade Segmente) + 8 gerade Zacken über den Ring.
+  const pts: [number, number][] = [];
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+    pts.push([c + Math.cos(a) * 21, c + Math.sin(a) * 21]);
+  }
+  const ringCh = stage === 2 ? "m" : "4";
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+    const [ax, ay] = pts[i];
+    const [bx, by] = pts[(i + 1) % 8];
+    line(ax, ay, bx, by, ringCh);
+    // Zacken: gerade Strahlen von r=19 nach 27-29 (handgezeichnete Längenvarianz,
+    // deterministisch über den Winkel; Impact: hell, sonst kühl dunkel).
+    const tickR = 27 + (i % 3);
+    const tickCh = stage === 2 ? "d" : stage === 1 ? "l" : stage === 3 ? "b" : "4";
+    line(c + Math.cos(a) * 19, c + Math.sin(a) * 19, c + Math.cos(a) * tickR, c + Math.sin(a) * tickR, tickCh);
+  }
+  // Blitz-Rune: gezackter Kernpfad durchs Zentrum, 1-px-Kern + 1-px Gelb-Kante.
+  const path: [number, number][] = [
+    [c + 1, 7], [c + 5, 19], [c - 3, 30], [c + 3, 42], [c - 2, 55],
+  ];
+  const coreCh = stage === 0 ? "b" : "d";
+  const edgeCh = stage === 0 ? "c" : "m";
+  for (let i = 0; i < path.length - 1; i++) {
+    const [ax, ay] = path[i];
+    const [bx, by] = path[i + 1];
+    line(ax, ay, bx, by, coreCh);
+    line(ax + 1, ay, bx + 1, by, edgeCh);
+  }
+  // Impact-Flash (Stage 2): kurze Strahlen + Funken-Tupfer (2-3 px, kein
+  // Einzelpixel-Rauschen) statt flächiger Glut.
+  if (stage === 2) {
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.PI / 16;
+      line(c + Math.cos(a) * 27, c + Math.sin(a) * 27, c + Math.cos(a) * 31, c + Math.sin(a) * 31, i % 2 ? "m" : "d");
+    }
+    // Vier Funken-Tupfer (deterministisch, 3-4 px je Tupfer).
+    const sparks: [number, number, string][] = [
+      [c - 8, c - 6, "d"], [c + 9, c - 4, "m"], [c - 6, c + 9, "m"], [c + 7, c + 8, "d"],
+    ];
+    for (const [sx, sy, ch] of sparks) {
+      put(sx, sy, ch);
+      put(sx + 1, sy, ch);
+      put(sx, sy + 1, ch === "d" ? "m" : "d");
+    }
+  }
+  return out.map((r) => r.join(""));
+}
+
 /** Boden-Siegel (Sturm/Donner): kantige Rune mit 8 geraden Zacken, 5 Pulsframes. */
 function sealFrame(stage: number, size = 32): string[] {
   const out: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
@@ -1761,6 +1847,8 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_smear", { w: 44, h: 16, frames: [0, 1, 2, 3, 4].map((i) => smearFrame(i)) });
   addFrames(scene, "fx_bolt", { w: 12, h: 16, frames: [0, 1, 2, 3, 4, 5].map((i) => boltFrame(i)) });
   addFrames(scene, "fx_seal", { w: 32, h: 32, frames: [0, 1, 2, 3, 4].map((i) => sealFrame(i)) });
+  // M10-evo-fx-gewittersiegel: Boden-Siegel in Zielgroesse (Draw-Scale 1, 4 Phasen).
+  addFrames(scene, "fx_seal_thunder", { w: 64, h: 64, frames: [0, 1, 2, 3].map((i) => thunderSealFrame(i)) });
   addFrames(scene, "fx_thorn", { w: 9, h: 9, frames: [0, 1, 2].map(thornFrame) });
   addFrames(scene, "fx_orb", { w: 11, h: 11, frames: [0, 1, 2, 3].map(orbFrame) });
   addFrames(scene, "fx_pillar", { w: 26, h: 72, frames: [0, 1, 2, 3, 4].map((i) => pillarFrame(i)) });
@@ -1810,7 +1898,7 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4, fx_death_fire: 4,
   fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2, ring_frost: 1,
   fx_phoenix_launch: 3, fx_boom_phoenix: 4, fx_burn_phoenix: 3,
-  fx_wrath_ring: 3, fx_wrath_glow: 1,
+  fx_wrath_ring: 3, fx_wrath_glow: 1, fx_seal_thunder: 4,
   ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
     [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],
