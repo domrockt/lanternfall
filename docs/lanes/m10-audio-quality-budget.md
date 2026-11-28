@@ -89,4 +89,10 @@ Geräten deutlich, alle Klänge bleiben hörbar, 0 Clipping in allen Tieren.
 - Die Verdrahtung liest `config.QUALITY` (Laufzeit-Regler, Start: high);
   keine eigenen Änderungen an Regler/Szenen (Disponent-Bereich).
 - Keine WAV-/gen_sfx-Änderungen; SFX_CONFIG unverändert.
+- Reviewer-Nit (kein Blocker): Nach einem Laufzeit-Downgrade klingen bereits
+  aktive Stimmen natürlich ab, statt auf das neue `maxTotalVoices` abgebaut
+  zu werden (Verdrängung ist 1:1-Ersatz). Betrifft HIGH nicht (bitgleich);
+  ggf. Nachfolge-Karte „Tier-Wechsel: aktive Stimmen aufs neue Budget
+  zusammenziehen".
+
 

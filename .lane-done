@@ -1,0 +1,24 @@
+# Lane m10-audio-quality-budget — fertig (2026-11-28)
+
+Audio-Kosten an Qualitaetsstufe gekoppelt (Android-Blocker-Runde). Aenderung
+NUR in src/audio/mixing.ts + src/audio/AudioSystem.ts; keine WAV-/gen_sfx-
+Aenderungen. 4 Karten (#11542-#11545), je ein Commit, Reviewer-PASS.
+
+- K1 (#11542, fba03bad): Ist-Messung 500er-Chaos — 21.92 Voice-Starts/s (max 24
+  am Deckel), 12 Voices, -7.01 dBFS, 0 Clipping. Beleg: ~/games/.evidence/
+  m10-audio-quality-budget/before-high.json
+- K2 (#11543, b5be64ac): audioBudgetFor(tier) — HIGH 12/24 (12/12/8) bitgleich,
+  medium 8/16, low 4/8; Band-Verhaeltnisse erhalten. planPlay nimmt Budget als
+  optionalen Parameter (Default HIGH = Legacy); AudioSystem liest config.QUALITY.
+- K3 (#11544, fd65db23): tests/audio-quality-budget.test.ts, 10 Tests (Tier-
+  Matrix, WAV-Burst 0 Clipping je Tier, HIGH bitgleich, LOW drosselt).
+- K4 (#11545, cb05acba): Tier-Vergleich (~/games/.evidence/m10-audio-quality-
+  budget/after-tiers.json): LOW 10.62 Starts/s / 5 Voices statt 23.55 / 13
+  (-55 % Starts), 0 Clipping in allen Tieren, 12/12 Waffen-IDs hoerbar.
+  HIGH bitgleich belegt: after-high.json vs. before-high.json (Muster-Skript
+  m10-audio-mix.mjs) unterscheiden sich nur in label/generatedAt.
+
+Qualitaet: npm test 194 Dateien / 2167 Tests gruen, npm run build gruen,
+npx tsc --noEmit gruen, Reviewer-PASS (Nit: Tier-Wechsel zieht aktive Stimmen
+nicht aufs neue Budget zusammen — als Nachfolge notiert in der Lane-Doku).
+Doku: docs/lanes/m10-audio-quality-budget.md
