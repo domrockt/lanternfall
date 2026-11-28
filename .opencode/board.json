@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13447,
+  "next": 13451,
   "cards": [
     {
       "id": 1,
@@ -18837,6 +18837,43 @@
       ],
       "created": "2026-11-28T16:41:02Z",
       "updated": "2026-11-28T16:41:09Z"
+    },
+    {
+      "id": 13447,
+      "title": "m10-game-md-sync-r2 K1: Divergenzliste GAME.md vs src/data (je Zeile Beleg)",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "K1 gestartet: GAME.md-Zeilen vs src/data prüfen",
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
+    },
+    {
+      "id": 13448,
+      "title": "m10-game-md-sync-r2 K2: geklärte Driften in GAME.md korrigieren",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
+    },
+    {
+      "id": 13449,
+      "title": "m10-game-md-sync-r2 K3: Gegenprobe tests/data.test.ts + charselect-truth grün",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
+    },
+    {
+      "id": 13450,
+      "title": "m10-game-md-sync-r2 K4: Commit + .lane-done",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
     }
   ]
 }
