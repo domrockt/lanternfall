@@ -748,10 +748,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     drawScale: [1, 1],
   },
   // Kettenflegel + Eisenherz: goldener Ring-Schlag, sehr kurz.
+  // M10-evo-fx-zornpendel: Signatur in Zielgroesse 96x96 gebacken, Draw-Scale 1
+  // (vorher 32x32 @ 4,0–4,6 = blockiger Ring mit 176 Ink-Pixeln).
   wrath_pendulum: {
     evolution: "wrath_pendulum", baseWeapon: "flail", shape: "ring",
     palette: [21, 20, 16], hitLifetime: 0.12, deathLifetime: 0.30,
     hitCount: 4, deathCount: 8,
+    drawScale: [1, 1],
   },
   // Frostnova + Sanduhr: kalte Nebelwolke, langsam ausklingend.
   eternal_winter: {
@@ -1390,6 +1393,168 @@ export function phoenixSignatureFrame(kind: "hit" | "death", stage: number, size
   return rows.map((r) => r.join(""));
 }
 
+// ── Zornpendel-FX (M10-evo-fx-zornpendel) ──────────────────────
+// Vorlage „Eine Pixelgröße für alles" (m10-evo-fx-phoenix/-soulpyre): Ring, Glow
+// und Signaturen werden in Zielgröße gebacken und mit Draw-Scale 1 gezeichnet.
+// Vorher: fx_evo_death_wrath_pendulum 32x32 @ 4,33x mit 176 Ink-Pixeln (schwarzer
+// Blockring), fx_halo 24x24 @ bis 10,7x am Spieler, fx_smear 44x16 @ 5,5x.
+// Zorn-Farbtreppe: Kern hell-bernstein (Glow 22 / Lantern 21 / Amber 20) →
+// Glut rot (FleshWarm 27 / HotRed 26 / Crimson 25), geschlossene 1-px-Kontur
+// Blutnacht (23) statt Ink(0). Kein Ink, keine Grau-Stufen (1–9).
+
+/** Zorn-Farb-Treppe (Kern → Glut → Kontur), für Generator + Tests. */
+export const ZORN_RAMP = [22, 21, 20, 27, 26, 25, 23] as const;
+
+/** Pendel-Ring in Zielgröße: Radius 96 (Zornpendel Lv 8) + 8 px Rand. */
+export const WRATH_RING_SIZE = 208;
+export const WRATH_RING_RADIUS = 96;
+
+/** Treffer-/Todes-Signatur in Zielgröße (Draw-Scale 1). */
+export const WRATH_SIGNATURE_SIZE = 96;
+
+/**
+ * Pendel-Ring (Schwung-Spur): wachsender Bogen um den Spieler — Aufbau
+ * (kurzer Bogen, Frame 0) → Impact (Bogen bis π, Frame 2) → Ausklang macht
+ * CombatSystem (Alpha-Fade + Glut-Rest). Spitze bei +x (Rotation = Winkel des
+ * Kugelkopfs), Bogen schließt nach hinten an; side −1 spiegelt über Scale.
+ * Kern flächig hell ohne Raster, Glut nur als radiale Treppe, organische
+ * Zungen-Flicks außen; Dither nur als 1–2-px-Kantenjitter (kein Schachbrett).
+ */
+export function pendulumRingFrame(stage: number, size = WRATH_RING_SIZE, radius = WRATH_RING_RADIUS): string[] {
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / 2;
+  const arc = Math.PI * (0.32 + 0.68 * t);
+  const bandW = 2.4;
+  const r0 = radius;
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix >= 0 && iy >= 0 && ix < size && iy < size) rows[iy][ix] = charOf(idx);
+  };
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x - c;
+      const dy = y - c;
+      const d = Math.hypot(dx, dy);
+      if (Math.abs(d - r0) > bandW) continue;
+      const a = Math.atan2(dy, dx);
+      if (a > 0 || a < -arc) continue;
+      const v = (a + arc) / arc; // 0 = Schwungstart (Glut) → 1 = Spitze (Kern)
+      const w = (d - (r0 - bandW)) / (2 * bandW); // 0 innen → 1 außen
+      // Grenz-Jitter nur an den Band-Kanten (1–2 px), nie als Flächen-Raster.
+      const flick = Math.sin(Math.abs(a) * 9 + stage * 2.1) * 0.05;
+      const wEff = w + (w > 0.4 ? flick : -flick);
+      let idx: number;
+      if (wEff > 0.94) idx = 23;                 // äußere Kontur (1 px)
+      else if (wEff > 0.78) idx = 20;            // Amber-Saum
+      else if (wEff > 0.40) idx = v > 0.5 ? 22   // Kern flächig hell-bernstein
+        : v > 0.3 ? 21 : 27;                     // Übergang → Glut am Schwungstart
+      else if (wEff > 0.24) idx = v > 0.4 ? 21 : 26;
+      else if (wEff > 0.1) idx = 26;
+      else idx = 25;                             // innere dunkle Glut
+      rows[y][x] = charOf(idx);
+    }
+  }
+  // Organische Zungen-Flicks außen (unregelmäßig, mit Taper — keine Rauten).
+  const zungen = 6;
+  for (let i = 0; i < zungen; i++) {
+    const za = -((i + 0.5) / zungen) * arc + Math.sin(i * 2.7 + stage * 1.3) * 0.14;
+    const len = 2 + ((i * 3 + stage) % 3);
+    for (let k = 1; k <= len; k++) {
+      const rr = r0 + bandW + k;
+      const idx = k >= len ? 27 : 26;
+      put(c + Math.cos(za) * rr, c + Math.sin(za) * rr, idx);
+      put(c + Math.cos(za) * (rr - 0.7), c + Math.sin(za) * (rr - 0.7) + 1, k === 1 ? 25 : 26);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Glut-Glow am Pendel-Kopf (17x17, Draw-Scale 1 statt fx_halo @ radius/18 ≈ 5,3x). */
+export function wrathGlowFrame(size = 17): string[] {
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const r = 6.6;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x - c, y - c);
+      if (d <= r) {
+        const idx = d < 1.6 ? 22 : d < 3.0 ? 21 : d < 4.4 ? 20 : d < 5.6 ? 27 : 26;
+        rows[y][x] = charOf(idx);
+      }
+    }
+  }
+  return rows.map((r2) => r2.join(""));
+}
+
+/**
+ * Zornpendel-Signatur in Zielgröße (96x96, Draw-Scale 1): geschlossener Glutring
+ * mit organischen Zungen statt 32x32-Blockring mit Ink-Rand (176 Ink-Pixel).
+ * Kern flächig hell (22) ohne Sinus-Wanderung; Zungen mit Taper, unregelmäßig
+ * verteilt; Dither nur als 1–2-px-Kantenjitter. Kontur 23 statt outlineAndRim.
+ */
+export function wrathSignatureFrame(kind: "hit" | "death", stage: number, size = WRATH_SIGNATURE_SIZE): string[] {
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  const r0 = (death ? 20 : 16) + t * 13;
+  const bandW = 2.6;
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix >= 0 && iy >= 0 && ix < size && iy < size) rows[iy][ix] = charOf(idx);
+  };
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = x - c;
+      const dy = y - c;
+      const d = Math.hypot(dx, dy);
+      if (Math.abs(d - r0) > bandW) continue;
+      const w = (d - (r0 - bandW)) / (2 * bandW);
+      // Kanten-Jitter (nur Band-Grenzen), Kern bleibt flächig.
+      const flick = Math.sin(Math.atan2(dy, dx) * 7 + stage * 1.7) * 0.05;
+      const wEff = w + (w > 0.4 ? flick : -flick);
+      let idx: number;
+      if (wEff > 0.94) idx = 23;
+      else if (wEff > 0.8) idx = 20;
+      else if (wEff > 0.42) idx = 22; // Kern flächig hell-bernstein
+      else if (wEff > 0.26) idx = 21;
+      else if (wEff > 0.1) idx = 26;
+      else idx = 25;
+      rows[y][x] = charOf(idx);
+    }
+  }
+  // Zungen nach außen (Taper, unregelmäßige Winkel — organisch statt Raster).
+  const zungen = death ? 9 : 6;
+  for (let i = 0; i < zungen; i++) {
+    const za = (i / zungen) * Math.PI * 2 + i * 0.73 + stage * 0.11;
+    const len = 3 + ((i * 5 + stage) % 3) + (death ? 1 : 0) + Math.round(t * 2);
+    for (let k = 1; k <= len; k++) {
+      const rr = r0 + bandW + k;
+      put(c + Math.cos(za) * rr, c + Math.sin(za) * rr, k >= len ? 27 : 26);
+    }
+  }
+  // Zentraler Glutkern: flächig hell, Randstufen statt Ink.
+  const coreR = death ? 7 : 5;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x - c, y - c);
+      if (d <= coreR) put(x, y, d < coreR * 0.55 ? 22 : d < coreR * 0.85 ? 21 : 20);
+    }
+  }
+  // Death: verstreute Glutkörner (1 px, golden angle — organisch verteilt).
+  if (death) {
+    for (let i = 0; i < 8 + stage * 2; i++) {
+      const a = i * 2.399;
+      const rr = r0 + bandW + 3 + ((i * 7) % 9);
+      put(c + Math.cos(a) * rr, c + Math.sin(a) * rr, i % 3 === 0 ? 26 : 25);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
 /** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
 function addEvolutionSignatures(scene: Phaser.Scene): void {
   // Zielgroessen-Pfad (Mixel-Regel, m10-evo-fx-phoenix + m10-evo-fx-soulpyre):
@@ -1398,6 +1563,7 @@ function addEvolutionSignatures(scene: Phaser.Scene): void {
   const BAKED_SIGNATURES: Readonly<Record<string, { size: number; frame: (kind: "hit" | "death", stage: number) => string[] }>> = {
     phoenix: { size: 128, frame: phoenixSignatureFrame },
     soul_beacon: { size: SOUL_SIGNATURE_SIZE, frame: soulSignatureFrame },
+    wrath_pendulum: { size: WRATH_SIGNATURE_SIZE, frame: wrathSignatureFrame },
   };
   for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
@@ -1466,6 +1632,9 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_phoenix_launch", { w: 14, h: 14, frames: [0, 1, 2].map((i) => phoenixLaunchFrame(i)) });
   addFrames(scene, "fx_boom_phoenix", { w: 64, h: 64, frames: [0, 1, 2, 3].map((i) => phoenixBoomFrame(i)) });
   addFrames(scene, "fx_burn_phoenix", { w: 64, h: 64, frames: [0, 1, 2].map((i) => phoenixBurnFrame(i)) });
+  // M10-evo-fx-zornpendel: Pendel-Ring/Glow in Zielgrößen (alle Draw-Scale 1).
+  addFrames(scene, "fx_wrath_ring", { w: WRATH_RING_SIZE, h: WRATH_RING_SIZE, frames: [0, 1, 2].map((i) => pendulumRingFrame(i)) });
+  addFrames(scene, "fx_wrath_glow", { w: 17, h: 17, frames: [wrathGlowFrame()] });
   // M10: eigene Treffer-/Todes-Signatur je Evolution (Form + Palette + Timing).
   addEvolutionSignatures(scene);
 }
@@ -1481,6 +1650,7 @@ export const FX_FRAME_COUNTS: Record<string, number> = {
   fx_death_bone: 4, fx_death_blob: 4, fx_death_void: 4, fx_death_dust: 4, fx_death_fire: 4,
   fx_boss_core: 6, fx_dusk: 3, fx_ash: 2, fx_halo_cold: 2,
   fx_phoenix_launch: 3, fx_boom_phoenix: 4, fx_burn_phoenix: 3,
+  fx_wrath_ring: 3, fx_wrath_glow: 1,
   ...Object.fromEntries(EVOLUTION_SIGNATURE_IDS.flatMap((id) => [
     [signatureTextureKey(id, "hit"), SIGNATURE_FRAME_COUNT],
     [signatureTextureKey(id, "death"), SIGNATURE_FRAME_COUNT],

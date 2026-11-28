@@ -171,3 +171,26 @@ export const SOUL_FX = {
   sparkTexture: "fx_star",
   sparkTint: 31,
 } as const;
+
+/**
+ * m10-evo-fx-zornpendel: alle Zornpendel-FX-Parameter an einem Ort (Muster
+ * PHOENIX_FX/SOUL_FX). Eine Pixelgroesse fuer alles: der Pendel-Ring wird in
+ * Zielgroesse 208 (Radius 96 + Rand) gebacken und mit Draw-Scale 1 gezeichnet,
+ * der Glut-Glow am Kugelkopf 17x17 @ Scale 1 (vorher fx_halo 24x24 @ bis 10,7x).
+ * Farb-Treppe: Kern hell-bernstein (22/21/20) → Glut rot (27/26/25), Kontur
+ * Blutnacht (23) statt Ink — siehe ZORN_RAMP in gen-fx.ts.
+ */
+export const WRATH_FX = {
+  /** Pendel-Ring: 3 Schwung-Frames (Aufbau → Impact), Takt folgt dem Schwung-Fortschritt. */
+  ringFrames: ["fx_wrath_ring", "fx_wrath_ring_2", "fx_wrath_ring_3"],
+  ringSize: 208,
+  ringRadius: 96,
+  ringAlpha: 0.95,
+  /** Anteil der Schwungdauer, ab dem der Ring ausblendet (Ausklang). */
+  fadeStart: 0.75,
+  /** Glut-Rest nach dem Schwung: kurzer Fade des letzten Frames. */
+  fadeOut: 0.18,
+  /** Glut-Glow am Kugelkopf (17x17, Scale 1, ADD). */
+  glowTexture: "fx_wrath_glow",
+  glowAlpha: 0.6,
+} as const;
