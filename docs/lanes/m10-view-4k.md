@@ -54,6 +54,14 @@ links) nur außerhalb des Bereichs fixbar → Bedarfsmeldung in
 **dokumentiert eingeschränktes Profil**: ganzzahliger Scale, 0 Crop, 0
 Overflow, Defizit exactly 1 Gerätepx (0,04 % der Breite).
 
+## K2 Befund zum einzigen Mangel (2560x1080@1) — Commit #10985
+
+Bedarfsmeldung (2026-11-28T~10:40Z) in `/home/ai/games/.dispatch/requests.md`
+eingetragen: Canvas-Gerätepixel-Snap in `src/main.ts`/`index.html` (Restspalte
+nach rechts snappen statt links zu verblurren). `src/logic/view.ts` bleibt
+nicht geändert — Begründung siehe oben (Trade-off bereits optimal, Restspalte
+mathematisch unvermeidbar).
+
 ## K3 Regressionsschutz
 
 `tests/view-4k.test.ts`: Guard über computeView (reine Funktion, gleiche
