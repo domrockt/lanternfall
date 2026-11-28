@@ -83,7 +83,12 @@ const diffBuckets = (a, b) => {
   return out;
 };
 const histogramStats = (buckets, total) => {
-  if (!total) return null;
+  // WICHTIG: Denominator = Bucket-Summe (das WebView-Histogramm zaehlt mehr
+  // Eintraege als "Total frames rendered" — z. B. 153658 vs. 144723 kumulativ).
+  // Gegen dFrames waeren p95 und die >16,7-ms-Anteile verzerrt.
+  const sum = Object.values(buckets).reduce((a, b) => a + b, 0);
+  const denom = sum > 0 ? sum : total;
+  if (!denom) return null;
   const edges = Object.keys(buckets).map(Number).sort((x, y) => x - y);
   const pct = (p) => {
     let acc = 0;
@@ -96,8 +101,10 @@ const histogramStats = (buckets, total) => {
   const sumAbove = (limit) => edges.filter((e) => e >= limit).reduce((s, e) => s + buckets[e], 0);
   return {
     p50: pct(0.5), p90: pct(0.9), p95: pct(0.95), p99: pct(0.99),
-    gt8_3Pct: Math.round((sumAbove(9) / total) * 10000) / 100,
-    gt16_7Pct: Math.round((sumAbove(17) / total) * 10000) / 100,
+    gt8_3Pct: Math.round((sumAbove(9) / denom) * 10000) / 100,
+    gt16_7Pct: Math.round((sumAbove(17) / denom) * 10000) / 100,
+    bucketSum: sum,
+    totalFramesDiff: total,
     maxBucketMs: [...edges].reverse().find((e) => buckets[e] > 0) ?? null,
   };
 };
@@ -144,7 +151,10 @@ const connectSession = async () => {
 };
 
 const waitRunScene = async () => {
-  await page.reload({ waitUntil: "load" });
+  // Reload darf das Debug-Flag nicht verlieren (Cheats/Debug-API brauchen ?debug=1).
+  const url = page.url();
+  const targetUrl = /debug=1/.test(url) ? url : `${url}${url.includes("?") ? "&" : "?"}debug=1`;
+  await page.goto(targetUrl, { waitUntil: "load" });
   await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "title", null, { timeout: 30000 });
   await page.keyboard.press("Enter");
   await page.waitForFunction(() => window.__lf.state().scene === "charselect", null, { timeout: 10000 });
@@ -261,7 +271,7 @@ for (let w = 0; w < N; w++) {
     pacing: hStats,
     ...win,
   });
-  console.log(`w${w} (${samples[samples.length - 1].elapsedMin} min): presented=${samples[samples.length - 1].presentedFps}fps janky16.7=${hStats?.gt16_7Pct}% p95=${hStats?.p95}ms enemies=${win.avgEnemies}${win.aborted ? " ABORTED(run-end)" : ""}`);
+  console.log(`w${w} (${samples[samples.length - 1].elapsedMin} min): presented=${samples[samples.length - 1].presentedFps}fps chromeJanky=${samples[samples.length - 1].chromeJankyPct}% janky16.7=${hStats?.gt16_7Pct}% p95=${hStats?.p95}ms p99=${hStats?.p99}ms enemies=${win.avgEnemies}${win.aborted ? " ABORTED(run-end)" : ""}`);
   if (win.aborted || windowsSinceRestart >= 24) { console.log("  -> neues Run-Segment"); await ensureRun(); }
   if (w % 6 === 5) {
     const st = await deviceStatus();
