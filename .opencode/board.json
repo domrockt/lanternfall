@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13678,
+  "next": 13681,
   "cards": [
     {
       "id": 1,
@@ -19453,6 +19453,39 @@
       ],
       "created": "2026-11-28T16:42:00Z",
       "updated": "2026-11-28T17:19:27Z"
+    },
+    {
+      "id": 13678,
+      "title": "m10-renderer-guard-k4 K1: Probe-Lauf perf.mjs unter flock",
+      "description": "Probe-Lauf `node scripts/perf.mjs --viewport 780x360 --dpr 3 --out shots/m10-renderer-guard-k4-perf.json` unter `flock /home/ai/games/.lf-perf.lock` (flock -w 900). Abnahme: JSON existiert, traegt renderer (Mesa Intel RPL-S iGPU), rendererValid:true, 0 JS-Fehler; burst/minute25 nicht invalid:true.",
+      "column": "done",
+      "createdAt": "2026-11-28T17:29Z",
+      "notes": [
+        "doing: Probe-Lauf gestartet (bg, flock -w 900, log ~/tmp/m10-renderer-guard-k4/k1-perf.log)",
+        "done: Probe-Lauf OK 17:32Z – renderer \"ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)\", rendererValid:true, jsErrors:[], burst fps 59 + minute25 fps 60 (beide invalid:false), passed:true. Beleg shots/m10-renderer-guard-k4-perf.json (gitignored, Kopie nach ~/games/.evidence in K2)."
+      ]
+    },
+    {
+      "id": 13679,
+      "title": "m10-renderer-guard-k4 K2: Beleg vervollstaendigen + Lane-Doku K4",
+      "description": "JSON nach /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json kopieren; docs/lanes/m10-renderer-guard.md K4-Abschnitt blocked -> erledigt (Zahlen + Renderer-String).",
+      "column": "done",
+      "createdAt": "2026-11-28T17:29Z",
+      "notes": [
+        "doing: Belegkopie + Lane-Doku K4",
+        "done: Beleg /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json kopiert; docs/lanes/m10-renderer-guard.md K4 blocked -> erledigt (Zahlen + Renderer-String). Commit folgt in diesem Commit."
+      ]
+    },
+    {
+      "id": 13680,
+      "title": "m10-renderer-guard-k4 K3: .lane-done committen",
+      "description": "Lane-Abschluss: .lane-done im Worktree-Wurzelverzeichnis anlegen (Zusammenfassung + Messwerte) und committen; Board-Karten auf done.",
+      "column": "done",
+      "createdAt": "2026-11-28T17:29Z",
+      "notes": [
+        "doing: .lane-done",
+        "done: .lane-done committed; Lane abgeschlossen."
+      ]
     }
   ]
 }
