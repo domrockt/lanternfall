@@ -11983,19 +11983,31 @@
       "id": 9564,
       "title": "m10-gamepad-stick-feel K1: Vorher-Messung Stick-Feel (Rauschen/Kreis/Half-Push durch Gamepad.ts)",
       "description": "Skript scripts/m10-gamepad-stick.mjs treibt synthetische Stick-Streams (Stillstand+Rauschen, Kreis, Half-Push, Sektorgrenzen-Sweep) durch den ECHTEN Pfad readNavigatorGamepad → InputState.update. AK: JSON-Beleg mit Fehlbewegungs-Quote + Dither-Events existiert (shots/m10-gamepad-stick-before.json bzw. ~/games/.evidence/), Baseline committet bevor K2 beginnt.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:17:37Z",
+          "by": "build",
+          "text": "doing → done: K1 fertig: Commit f0668b0. Baseline shots/m10-gamepad-stick-before.json ist .gitignore-ignoriert -> Beleg unter ~/games/.evidence/m10-gamepad-stick-feel/m10-gamepad-stick-before.json. Kernzahlen: Fehlbewegungs-Quote Stillstand 33,67 % (Gate <5 %), 112 Richtungs-Toggles/300 Frames, Half-Push-Dither (6 Zero-Frames, 14 Toggles), Sweep 2 Doppel-Events."
+        }
+      ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:13:30Z"
+      "updated": "2026-11-28T07:17:37Z"
     },
     {
       "id": 9565,
       "title": "m10-gamepad-stick-feel K2: Deadzone + Richtungs-Snapping in Gamepad.ts fixen",
       "description": "Wirksame radiale Deadzone mit Hysterese + 8-Richtungs-Snapping + Einheitsvektor-Ausgabe in src/input/Gamepad.ts (read*-Pfad, snapshotFromPad bleibt roh). InputState.ts NICHT anfassen (belegt). AK: npx tsc --noEmit grün, gamepad-nav-Tests unverändert grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:17:37Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Fix in src/input/Gamepad.ts (read*-Pfad; InputState.ts unberuehrt)."
+        }
+      ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:13:30Z"
+      "updated": "2026-11-28T07:17:37Z"
     },
     {
       "id": 9566,

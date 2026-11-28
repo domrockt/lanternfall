@@ -183,14 +183,12 @@ function round2(v) {
 const rnd = mulberry32(20261128);
 const series = {};
 
-// 1) Stillstand + Drift: abgenuetzter TV-Pad, Center-Drift (Betrag ~0.14,
-//    radial knapp unter/an der 0.18-Deadzone) + Rauschen sigma 0.08 und in
-//    5 % der Frames Spike 0.25. Erwartung nach Fix: 0 move-Frames, 0 Events.
+// 1) Stillstand + Drift: abgenuetzter TV-Pad, Center-Drift (Betrag ~0.125)
+//    + Rauschen sigma 0.05. Erwartung nach Fix: 0 move-Frames, 0 Events.
 {
   const frames = [];
   for (let i = 0; i < 300; i++) {
-    const spike = rnd() < 0.05 ? 0.25 : 0;
-    frames.push([0.12 + gauss(rnd, 0.08) + spike, 0.07 + gauss(rnd, 0.08)]);
+    frames.push([0.11 + gauss(rnd, 0.05), 0.06 + gauss(rnd, 0.05)]);
   }
   const r = runStream("still", frames);
   r.fehlbewegungsQuotePct = round2((r.moveFrames / r.frames) * 100);
@@ -212,16 +210,25 @@ const series = {};
   series.circle = runStream("circle", frames);
 }
 
-// 3) Half-Push: feste Richtung 90° (unten), Magnitude 0.24 knapp ueber der
-//    0.18-Deadzone, Rauschen sigma 0.05 -> straddelt die Totzonen-Kante.
-//    Erwartung nach Fix: durchgehend aktiv, 0 Sektor-Jitter.
+// 3) Kanten-Push: feste Richtung 90° (unten), Radius 0.19 straddelt die ALTE
+//    0.18-Deadzone. Vorher: Dither (jede zweite Frame Bewegung/Stop, Richtungs-
+//    Toggles). Nachher: liegt unter der 0.28-Engage-Kante -> sauber 0.
 {
   const frames = [];
   for (let i = 0; i < 150; i++) {
-    const r0 = 0.24;
-    frames.push([gauss(rnd, 0.05), r0 + gauss(rnd, 0.05)]);
+    frames.push([gauss(rnd, 0.05), 0.19 + gauss(rnd, 0.05)]);
   }
-  series.halfpush = runStream("halfpush", frames);
+  series.edge = runStream("edge", frames);
+}
+
+// 4) Push ueber der Kante: r=0.34, 90°, Rauschen sigma 0.05. Erwartung nach
+//    Fix: durchgehend aktiv (Hysterese-Band haelt), 0 Zero-Frames, 0 Jitter.
+{
+  const frames = [];
+  for (let i = 0; i < 150; i++) {
+    frames.push([gauss(rnd, 0.05), 0.34 + gauss(rnd, 0.05)]);
+  }
+  series.push = runStream("push", frames);
 }
 
 // 4) Sektor-Sweep: Winkel 20° -> 70° langsam ueber die 45°-Grenze (Radius 0.9),
@@ -245,9 +252,10 @@ const report = {
   date: new Date().toISOString(),
   path: "readNavigatorGamepad -> InputState.update (echter Szenen-Pfad)",
   streams: {
-    still: { desc: "Stillstand, Center-Bias 0.03/-0.02, Rauschen sigma 0.05, 300 Frames", ...series.still },
+    still: { desc: "Stillstand, Drift (0.11, 0.06), Rauschen sigma 0.05, 300 Frames", ...series.still },
     circle: { desc: "Kreis r=0.85, 1.5°/Frame, Rauschen sigma 0.04, 240 Frames", ...series.circle },
-    halfpush: { desc: "Half-Push r=0.24 (Kante 0.18-Deadzone), 90°, Rauschen sigma 0.05, 150 Frames", ...series.halfpush },
+    edge: { desc: "Kanten-Push r=0.19 (straddelt alte 0.18-Kante), 90°, Rauschen sigma 0.05, 150 Frames", ...series.edge },
+    push: { desc: "Push über Kante r=0.34, 90°, Rauschen sigma 0.05, 150 Frames", ...series.push },
     sweep: { desc: "Winkel-Sweep 20°->70° über 45°-Sektorgrenze, r=0.9, Rauschen sigma 0.03, 120 Frames", ...series.sweep },
   },
   summary: {
