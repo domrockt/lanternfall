@@ -39,4 +39,8 @@ Renderer Mesa Intel RPL-S — gültig, kein SwiftShader):
 Kein ungebundenes Wachstum sichtbar: die Post-GC-Timeline schwankt zwischen
 ~61,9 und ~71,4 MB ohne Trend nach oben; endMB unter Minute 1.
 
-**Lauf 2:** läuft.
+**Lauf 2:** erster Versuch (14:27Z gestartet) durch Browser-Target-Crash
+verloren — `Target page, context or browser has been closed` mitten im Lauf,
+nur partielles JSON (`UNMESSBAR`, endMB null); identisches Fehlerbild wie in
+Nachabnahme F dokumentiert. Log: `~/tmp/m10-heap-gate-recovery/k1-run2.log`.
+**Messfenster einmal wiederholt** (k1-run2-retry), Ergebnis folgt.
