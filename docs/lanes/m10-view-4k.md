@@ -38,9 +38,10 @@ Analyse (in `src/logic/view.ts` nachprüfbar, `computeView`):
   2562 (Overflow/Crop). **„0 Balken“ und „0 Crop“ sind bei ganzzahligem Scale
   mathematisch nicht gleichzeitig erreichbar.**
 - `computeView` wählt bereits die richtige Seite des Trade-offs:
-  `width = min(round(deviceWidth/n), floor(deviceWidth/n))` = floor → Defizit
-  statt Crop (Crop würde Spielfeld-Inhalt abschneiden, die Restspalte zeigt nur
-  Seitenhintergrund).
+  `width = min(MAX_WIDTH, max(MIN_WIDTH, round(deviceWidth/n)), floor(deviceWidth/n))`
+  — für 2560x1080 greifen die Klemmen nicht (480 < 853 < 860), es fällt die
+  floor-Wahl heraus: 853 → Defizit statt Crop (Crop würde Spielfeld-Inhalt
+  abschneiden, die Restspalte zeigt nur Seitenhintergrund).
 - Der Bruchteil-Offset (Canvas bei x = 0.5 CSS = 0.5 Gerätepx) entsteht durch
   die Zentrierung im Seiten-Layout, nicht durch die View-Rechnung: eine
   Korrektur (Gerätepixel-Snap des Canvas-Rect) läge in `src/main.ts` /
@@ -54,9 +55,7 @@ links) nur außerhalb des Bereichs fixbar → Bedarfsmeldung in
 **dokumentiert eingeschränktes Profil**: ganzzahliger Scale, 0 Crop, 0
 Overflow, Defizit exactly 1 Gerätepx (0,04 % der Breite).
 
-## K2 Befund zum einzigen Mangel (2560x1080@1) — Commit #10985
-
-Bedarfsmeldung (2026-11-28T~10:40Z) in `/home/ai/games/.dispatch/requests.md`
+**Commit #10985 (K2).** Bedarfsmeldung (2026-11-28T~10:40Z) in `/home/ai/games/.dispatch/requests.md`
 eingetragen: Canvas-Gerätepixel-Snap in `src/main.ts`/`index.html` (Restspalte
 nach rechts snappen statt links zu verblurren). `src/logic/view.ts` bleibt
 nicht geändert — Begründung siehe oben (Trade-off bereits optimal, Restspalte
@@ -74,4 +73,34 @@ Invarianten wie der Pixel-Scan):
 
 ## K4 Nachher-Messung
 
-(Nach K2/K3 ergänzt — siehe unten.)
+`m10-view-4k-after.json` (gleicher Lauf-Generator, Renderer Mesa RPL-S, 0
+JS-Fehler): identisch zum Vorher-Stand — erwartbar, da K2 kein Code-Fix in
+`src/logic/view.ts` gerechtfertigt hat und der Verhaltenstragende Code
+unverändert blieb.
+
+| Profil | intern | Scale | ganzzahlig | Balken | pass |
+|---|---|---|---|---|---|
+| 3840x2160@1 | 640x360 | 6 | ja | 0 | ✅ |
+| 3840x2160@2 | 640x360 | 12 | ja | 0 | ✅ |
+| 3840x2160@3 | 640x360 | 18 | ja | 0 | ✅ |
+| 2560x1080@1 | 853x360 | 3 | ja | 1 (Restspalte, dokumentiert) | ⚠️ eingeschränkt |
+| 3440x1440@1 | 860x360 | 4 | ja | 0 | ✅ |
+
+## Abnahme-Fazit
+
+- **4K (3840x2160, dpr 1/2/3): voll abgenommen** — ganzzahlige Stufen 6/12/18,
+  0 Balken, 0 Crop, 0 JS-Fehler. Doms „bis 4K“ ist für 16:9 belegt.
+- **3440x1440 (21:9-1440p): voll abgenommen** — 860x360 @ 4x füllt exakt.
+- **2560x1080@1: eingeschränkt abgenommen mit Begründung** — ganzzahliger
+  Scale (3), 0 Crop, 0 Overflow; 1 Gerätepx Restspalte (0,04 % der Breite) ist
+  bei ganzzahligem Scale mathematisch unvermeidbar (2560 % 3 ≠ 0, Beweis im
+  Guard-Test `tests/view-4k.test.ts`). Verbesserung des Kantensnaps als
+  Bedarf in `/home/ai/games/.dispatch/requests.md` gemeldet (main.ts/index.html,
+  außerhalb des Lane-Bereichs).
+- Regressionsschutz: `tests/view-4k.test.ts` (23 Tests) grün; bestehende
+  view-Tests (view.test.ts, view-fill.test.ts, view-width.test.ts,
+  view-menu-scale.test.ts, 40 Tests) unverändert grün.
+- Abweichung vom Briefing-Ziel „5/5 Profile 0 Balken“: 1 Profil
+  (2560x1080@1) erfüllt 0 Balken bei ganzzahligem Scale physikalisch nicht;
+  laut K4-Vorgabe („eingeschränkte Profile + Begründung“) dokumentiert statt
+  den Guard-Test zu verbiegen.

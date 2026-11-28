@@ -1,0 +1,8 @@
+Lane m10-view-4k abgeschlossen (Versuch 2, 2026-11-28).
+
+- K1 (#10984): Vorher-Pixel-Scan 5 Profile (scripts/m10-view-4k.mjs), Belege /home/ai/games/.evidence/m10-view-4k/m10-view-4k-before.json, Renderer Mesa Intel RPL-S.
+- K2 (#10985): Befund 2560x1080@1 — 1 Geraetepx Restspalte mathematisch unvermeidbar bei ganzzahligem Scale (2560 % 3 != 0); kein view.ts-Fix, Bedarfsmeldung main.ts-Snap in /home/ai/games/.dispatch/requests.md.
+- K3 (#10986): tests/view-4k.test.ts Guard (23 Tests) — 5 neue Profile ganzzahlig/0 Crop/Defizit-Schranke, 7 refit-Bestandsprofile unveraendert.
+- K4 (#10987): Nachher-Scan identisch (m10-view-4k-after.json), Doku docs/lanes/m10-view-4k.md.
+- Messwerte: 4K dpr1/2/3 -> 640x360 @ 6/12/18, 0 Balken; 3440x1440 -> 860x360 @ 4, 0 Balken; 2560x1080@1 -> 853x360 @ 3, Defizit 1 Geraetepx (dokumentiert eingeschraenkt).
+- npm test 181 Dateien gruen, npm run build gruen, npx tsc --noEmit rc=0, 0 JS-Fehler in allen Messlaeufen.

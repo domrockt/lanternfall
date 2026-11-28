@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10947,
+  "next": 10988,
   "cards": [
     {
       "id": 1,
@@ -14082,6 +14082,80 @@
       "notes": [],
       "created": "2026-11-28T10:16:12Z",
       "updated": "2026-11-28T10:16:12Z"
+    },
+    {
+      "id": 10984,
+      "title": "m10-view-4k K1: Vorher-Pixel-Scan 4K/Ultrawide (5 Profile)",
+      "description": "Profile 3840x2160 (dpr 1/2/3), 2560x1080, 3440x1440 je einmal im Pixel-Scan messen (Scale, Balken/Crop, ganzzahlig, Spielmenü + In-Game-HUD). Belege nach /home/ai/games/.evidence/m10-view-4k/*.json (Renderer-String je Profil). Skript scripts/m10-view-4k.mjs misst selbst (rAF-/Zustands-Waits, kein sleep-Polling). Abnahme: 5 JSON-Belege existieren, Renderer != SwiftShader.",
+      "column": "review",
+      "assignee": "m10-view-4k",
+      "notes": [
+        {
+          "at": "2026-11-28T10:20:39Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Skript scripts/m10-view-4k.mjs auf Basis des view-fill-refit-Scans, Messlauf über 5 Profile."
+        },
+        {
+          "at": "2026-11-28T10:25:47Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Pixel-Scan 5 Profile (Script scripts/m10-view-4k.mjs, Commit 98a29122). Belege /home/ai/games/.evidence/m10-view-4k/m10-view-4k-before.json, Renderer Mesa RPL-S. 4/5 pass, Mangel 2560x1080@1: 1 Geraetepx Restspalte."
+        }
+      ],
+      "created": "2026-11-28T10:20:37Z",
+      "updated": "2026-11-28T10:25:47Z"
+    },
+    {
+      "id": 10985,
+      "title": "m10-view-4k K2: Belegte View-Mängel in src/logic/view.ts fixen",
+      "description": "Nur belegte Mängel aus K1 fixen (ganzzahliger Scale, Fill-Pfad, Kamera-/View-Zentrierung bei sehr breiten/sehr hohen Seitenverhältnissen). src/logic/scale.ts, src/config.ts, src/main.ts sind NICHT im Bereich — Bedarf ggf. in /home/ai/games/.dispatch/requests.md melden. Abnahme: Fix-Commit mit Vorher/Nachher-Zahl aus K1-Belegen; falls 0 Mängel: Befund dokumentiert.",
+      "column": "review",
+      "assignee": "m10-view-4k",
+      "notes": [
+        {
+          "at": "2026-11-28T10:25:47Z",
+          "by": "build",
+          "text": "todo → doing: K2: Befund-Analyse abgeschlossen — kein view.ts-Fix mathematisch moeglich (Details Doku); Bedarfsmeldung fuer main.ts-Snap folgt."
+        },
+        {
+          "at": "2026-11-28T10:27:11Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: Befund + Bedarfsmeldung requests.md (Commit ad5162fb). Kein view.ts-Fix — Begründung in docs/lanes/m10-view-4k.md."
+        }
+      ],
+      "created": "2026-11-28T10:20:37Z",
+      "updated": "2026-11-28T10:27:11Z"
+    },
+    {
+      "id": 10986,
+      "title": "m10-view-4k K3: Regressionsschutz tests/view-4k.test.ts",
+      "description": "Guard-Test: alle 5 neuen Profile ganzzahlig, 0 Balken, 0 Crop; bestehende 7 view-fill-refit-Profile unverändert. Bestehende view-Tests nur lesen, nicht ändern. Abnahme: npx vitest run tests/view-4k.test.ts grün + bestehende view-Tests unverändert grün.",
+      "column": "review",
+      "assignee": "m10-view-4k",
+      "notes": [
+        {
+          "at": "2026-11-28T10:27:11Z",
+          "by": "build",
+          "text": "todo → review: K3 fertig: Guard-Test 23 grün, bestehende view-Tests unverändert grün (Commit 69f6742b)."
+        }
+      ],
+      "created": "2026-11-28T10:20:37Z",
+      "updated": "2026-11-28T10:27:11Z"
+    },
+    {
+      "id": 10987,
+      "title": "m10-view-4k K4: Nachher-Beleg + Lane-Doku + .lane-done",
+      "description": "Pixel-Scan je Profil nachher (evidence), docs/lanes/m10-view-4k.md (Vorher/Nachher-Zahlen, ggf. eingeschränkte Profile + Begründung), .lane-done committen. Abnahme: Nachher-JSONs in evidence, Doku referenziert Belegpfade, npm test + build grün, .lane-done im Commit.",
+      "column": "doing",
+      "assignee": "m10-view-4k",
+      "notes": [
+        {
+          "at": "2026-11-28T10:27:11Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: Nachher-Pixel-Scan + Doku + .lane-done."
+        }
+      ],
+      "created": "2026-11-28T10:20:37Z",
+      "updated": "2026-11-28T10:27:11Z"
     }
   ]
 }
