@@ -67,7 +67,34 @@ fremde Area), `flock /home/ai/games/.lf-perf.lock`, Belege nach
 `~/games/.evidence/m10-fps-pacing-fix/`, rendererValid-Pflicht (kein SwiftShader).
 Tor wie K1. Spieler-Sperre respektiert (HTTP 409 → lokal/Proxy messen, nicht wiederholen).
 
+### Stand 17:5xZ (Spieler-Sperre aktiv)
+
+- `POST /install?lane=m10-fps-pacing-fix` (17:52Z, rc=0, „Success“ in 1 s): hat **keine
+  Lane-APK gebaut** — `~/games/.apkbuild-lane/m10-fps-pacing-fix` wurde nicht angelegt,
+  Telemetrie-Build nach `/launch` weiter `11f929c7` (Main-Hourly-Build 17:14Z), nicht
+  Lane-HEAD `a1f84404`. Der Lane-Build-Pfad muss vor der Gerät-Messung geklärt werden
+  (Vera/Ops) — sonst misst man den Main-Stand.
+- Direkt danach `DOM_SPIELT` (letzte Tableteingabe < 10 min): Install/Launch gesperrt,
+  Regel befolgt — kein Retry, stattdessen **lokal/Proxy** gemessen:
+  `~/games/.evidence/m10-fps-pacing-fix/proxy-after-hebel1.json`
+  (`scripts/android-proxy.mjs`, desktop 1138x712 dpr 2.25, CPU-Throttle 4x, Minute-25-Dichte,
+  60 s Echtzeit je Charakter). Grenze: ersetzt das Tablet nicht (keine Adreno-Tile-/Treiber-
+  Effekte) — der 2-Vsync-Bimodalismus ist am Desktop nicht reproduzierbar; der Proxy-Beleg
+  dokumentiert, dass Hebel 1 das Desktop-Verhalten nicht verschlechtert und bei CPU-lastigen
+  Frames (Throttle 4x) die Late-Frame-Entlastung greift.
+- Gerät-Nachmessung bleibt offen bis: (a) Lane-APK-Build geklärt und (b) Gerät wieder
+  frei (Telemetrie `dom_playing=false` + idle >= 10 min). Dann einmalig:
+  Install → Launch → `flock /home/ai/games/.lf-perf.lock node scripts/m10-janky-remeasure.mjs
+  --out ~/games/.evidence/m10-fps-pacing-fix/after-cap60-device.json --fps 60 --minutes 10`.
+
 ## Belege
 
 - Vorher: `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json`, `k3-max-device.json`
-- Nachher: `~/games/.evidence/m10-fps-pacing-fix/` (K5)
+- Nachher: `~/games/.evidence/m10-fps-pacing-fix/` (K5: Proxy-Beleg liegt, Geräte-Beleg offen)
+
+## Nebenbefunde (nicht Teil der Karten)
+
+- Fremde uncommittete Änderungen im Lane-Worktree (`shots/m10-passive-math-caps.json`,
+  `shots/m10-passive-math-matrix.json`, Modified, gehören zur Lane m10-passive-math, vgl.
+  Notiz an #10246): Inhalte gesichert nach `~/tmp/m10-fps-pacing-fix/`, im Worktree auf
+  HEAD zurückgesetzt, NICHT committet.
