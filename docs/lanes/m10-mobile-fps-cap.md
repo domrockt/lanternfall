@@ -95,9 +95,40 @@ Mond-Glow-Region (Puls-Animation, Diff ≤8). Belege: `shots/abnahme/m10-fps-cap
 `shots/abnahme/m10-fps-cap-desktop-nachher.png` (Bytegrößen 53 297/53 157; Run-Shots mit RNG
 in `.evidence/desktop-vorher/nachher.png` verworfen, Titel ist der deterministische Vergleich).
 
-## K3 — Nachher-Messung am Gerät (Cap 60 + max-Referenz) — 28.11.
+## K3 — Nachher-Messung am Gerät (Cap 60 + max-Referenz) — 28.11. — **HANDOFF an Versuch 2**
 
-*(wird nach den Messläufen ergänzt)*
+**Stand (Original-Session, übergibt hier an die Fortsetzung ses_ddd97f876 / „Versuch 2“):**
+
+- **Lane-APK installiert** (`POST /install?lane=m10-mobile-fps-cap`, gebaut aus 700c815e): Probe bestätigt
+  `fps: {target 60, limit 60, cappedAt60: true}`, `options.fps: -1 (AUTO)` → Standard 60 am Gerät wirkt.
+  Hinweis: a04b6615 (Reviewer-Fix, Laufzeitwechsel) ist NICHT im installierten APK — für die Messung
+  irrelevant (K3 misst nur Boot-Zeit-Bindung; der Skript-Pfad setzt BILDRATE per localStorage + reload,
+  also ebenfalls Boot-Pfad). Optional nach eigenem Commit neu installieren.
+- **Methodik:** `scripts/m10-fps-cap-device.mjs --fps 60|max --gate` (10-min, Minute-25-Dichte,
+  Segmentierung alle 24 Fenster, Recovery bei Seiten-Tod; K3-Tor = janky(>16,7 ms) < 10 % UND 0 JS-Fehler).
+  `--fps` schreibt die BILDRATE-Option in localStorage + reload → misst den echten Persistenz-Pfad.
+  **Immer unter `flock /home/ai/games/.lf-perf.lock` starten** (Versuch-2-Läufe bisher ohne — bitte beachten).
+- **„Glatte 60“-Beleg:** `totalFrames`-FPS (presentedFps) zählt bei aktivem Cap auch Chromium-Duplikat-
+  Frames (~100/s statt 60) — nicht als Render-Rate verwenden! Stattdessen `scripts/m10-fps-cap-drawprobe.mjs
+  60|max` (echte WebGL-Draw-Aufrufe/s im Minute-25-Setup; bei wirksamem Cap halbiert sich die Rate ~60/110,
+  je Mode ~1 min). Chrome-Janky-Counter + Akkutemperatur sind die K3-Ergebnismetriken.
+- **Geräte-Kontention (4 App-Restarts 13:44–14:00Z durch m10-loadscreen-pretext Kaltstart-Serie):**
+  gfxinfo resettet bei App-Restart (neue pid) → Aggregate verfälscht; Fenster mit `presentedFps < 30` oder
+  `aborted` in der Auswertung AUSKLAMMERN (pro-Fenster-Daten sind im JSON). Lauf erst starten, wenn
+  `/json/list`-Port über ~2 min stabil ist. **Nur EIN Messer gleichzeitig** (flock + Board-Notiz auf #12249).
+- **Frozen-Loop-Falle (diagnostiziert 14:03Z):** nach verpasstem visibilitychange hängt der Game-Loop im
+  Schlaf (`stats().time` advancing 0, rAF lebt, Szene „run“) → Messfenster laufen ins Leere (presented=0,
+  enemies konstant). Heilung: `page.reload()` (Neustart des Skripts tut das ohnehin). Kein Skript-Bug.
+- **Teil-Daten aus abgebrochenen Läufen (Cap 60 aktiv, Minute-25, je ~5 saubere Fenster):** Chrome-Janky
+  17,7–20,9 %, janky16.7 24–33 % — NICHT als Endergebnis verwenden (trampled/zu wenig Fenster), aber als
+  Vorsignal: der Cap-60-Lauf MUSS sauber gemessen werden, ehe das K3-Tor bewertet wird.
+- **Desktop-Tor-Anteil ist bereits erledigt:** Vorher/Nachher-Titel-Shots pixelgleich (0 Pixel >8 außerhalb
+  Mond-Animation) — `shots/abnahme/m10-fps-cap-desktop-{vorher,nachher}.png`, Raw-Diffs in `.evidence`.
+
+**K4 (Vorbereitung):** Empfehlung 60 vs. max anhand Chrome-Janky + Histogramm-Pacing (p95/p99, korrigierte
+Denominator-Version) + Akkutemperatur (33→35 °C in 10 min Baseline) treffen — NICHT nur FPS-Median.
+Lagebericht zusätzlich als Eintrag in `/home/ai/games/.dispatch/requests.md` (Dom-Lagebild).
+Danach: `.lane-done` (Regeln siehe Briefing), Board #12250.
 
 ## K4 — Empfehlung 60 vs. max — 28.11.
 
