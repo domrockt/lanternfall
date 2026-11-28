@@ -8815,28 +8815,51 @@
       "id": 7478,
       "title": "m10-results-followup K1: Before-Messung 3 Formate (stress12, iGPU-Renderer-String)",
       "description": "scripts/m10-results-followup.mjs: Text-Rechtecke je Format (640x360, 780x360@3, 1920x1080) + stress12 als JSON + Screenshots; Renderer-String-Pflicht (iGPU, kein swiftShader). Abnahme: shots/m10-results-followup-before.json + 3+ Shots committed, Befund dokumentiert.",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T01:31:01Z",
+          "by": "build",
+          "text": "doing → review: K1 committed 332daea: before.json 6/6 PASS (0 Overlaps/0 Clipping/0 JS-Fehler, iGPU RPL-S); Befund: Bodenluft 2px + Titel->Untertitel 2px (#4382)"
+        }
+      ],
       "created": "2026-11-28T01:26:53Z",
-      "updated": "2026-11-28T01:26:53Z"
+      "updated": "2026-11-28T01:31:01Z"
     },
     {
       "id": 7479,
       "title": "m10-results-followup K2: belegte Maengel in Results.ts fixen + tests/results-followup.test.ts",
       "description": "Nur Results.ts (logic/results.ts nur lesen). Harte Assertions: 0 Ueberlappungen in allen 3 Formaten (logische Views aus computeView), Zeilenumbruch an Wortgrenzen. Abnahme: npx vitest run tests/results-followup.test.ts gruen, tsc --noEmit gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:31:01Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T01:26:53Z",
-      "updated": "2026-11-28T01:26:53Z"
+      "updated": "2026-11-28T01:31:01Z"
     },
     {
       "id": 7480,
       "title": "m10-results-followup K3: After-Belege + art-director >= 4/5 (streng)",
       "description": "After-JSON + Shots aller 3 Formate (Victory+Defeat), art-director-Subagent mit strenger Latte >= 4/5 gegen die After-Shots. Abnahme: PASS >= 4/5 belegt in docs/lanes/m10-results-followup.md.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:33:48Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T01:37:27Z",
+          "by": "build",
+          "text": "After-Messung 6/6 PASS (0 Overlaps/0 Clipping/0 JS-Fehler, iGPU RPL-S): Titel->Untertitel 4px (vorher 2), Bodenluft 4px (vorher 2); after.json + 6 Shots erzeugt; art-director-Subagent laeuft (streng >=4/5); Lead-Sichtpruefung: Ä/Ü korrekt, Pixel-Grid 3x ganzzahlig"
+        }
+      ],
       "created": "2026-11-28T01:26:53Z",
-      "updated": "2026-11-28T01:26:53Z"
+      "updated": "2026-11-28T01:37:27Z"
     },
     {
       "id": 7481,
