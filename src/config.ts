@@ -70,12 +70,14 @@ export function pushFpsSample(
 ): FpsSampleState {
   const out = serie.slice();
   let next = acc;
-  const dt = Number.isFinite(dtMs) && dtMs > 0 ? Math.min(250, dtMs) : 0;
+  const dt = Number.isFinite(dtMs) && dtMs > 0 ? dtMs : 0;
   if (dt > 0) {
     next += dt;
     if (next >= 1000) {
-      next -= 1000;
       out.push(Number.isFinite(fpsEwma) ? fpsEwma : 0);
+      // Neu beginnen (nicht -= 1000): auch ein Riesen-Delta ergibt genau
+      // EIN Sample und das Fenster startet sauber neu.
+      next = 0;
       const max = Math.max(1, Math.round(windowMs / 1000));
       while (out.length > max) out.shift();
     }
