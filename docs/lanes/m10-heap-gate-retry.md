@@ -99,6 +99,15 @@ Kontrolleure:
      UNMESSBAR; `gate.cause` nennt Ursache. PASS/FAIL auf Teilbeleg ist jetzt
      ausgeschlossen.
 
+## K3 — Guard-Test (Karte #13426, Commit 4480c18e)
+
+`tests/heap-budget-retry.test.ts`: 10 Tests — Fehlerklassen (beide historischen
+Belegmeldungen, Session-/CDP-/Timeout-/Port-/Sonstige), Retry-Grenze (exakt
+`MEASUREMENT_ATTEMPTS` Aufrufe, letzter Fehler), Nicht-Retry (1 Aufruf),
+`buildCause`-Format, UNMESSBAR-Pfad über die echte `evaluateHeapGate`. Import des
+Skripts im Test ist selbst Teil der Abnahme: main-guard belegt Nebeneffektlosigkeit.
+`tests/heap-budget.test.ts` unangetastet.
+
 ## K4 — Tor-Läufe auf main (Karte #13427)
 
 ### Smoke-Befunde (vor den verbindlichen Läufen, Belege in ~/games/.evidence/m10-heap-gate-retry/)
@@ -126,12 +135,3 @@ Kontrolleure:
 Kopie nach `~/games/.evidence/m10-heap-gate-retry/`). Ergebnis steht unten nach
 Abschluss; Abnahmekriterium: 2/2 verdict PASS oder FAIL (nie UNMESSBAR),
 Renderer-String = iGPU (kein SwiftShader).
-
-## K3 — Guard-Test (Karte #13426, Commit 4480c18e)
-
-`tests/heap-budget-retry.test.ts`: 10 Tests — Fehlerklassen (beide historischen
-Belegmeldungen, Session-/CDP-/Timeout-/Port-/Sonstige), Retry-Grenze (exakt
-`MEASUREMENT_ATTEMPTS` Aufrufe, letzter Fehler), Nicht-Retry (1 Aufruf),
-`buildCause`-Format, UNMESSBAR-Pfad über die echte `evaluateHeapGate`. Import des
-Skripts im Test ist selbst Teil der Abnahme: main-guard belegt Nebeneffektlosigkeit.
-`tests/heap-budget.test.ts` unangetastet.
