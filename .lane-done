@@ -1,0 +1,22 @@
+Lane m10-telemetry-budget — abgeschlossen (K1–K4, Karten #11429–#11432).
+
+Ziel: Eigene Messkosten der Device-Telemetry auf Geraeten deckeln (Android-Blocker-Runde).
+
+Ergebnis:
+- Sammel-Budget je Qualitaetsstufe in src/telemetry.ts (TELEMETRY_BUDGETS /
+  telemetryBudgetFor): full = Ist bitleich (5 s Takt, 600-Frame-Puffer, 60er
+  Pending-Deckel), reduced = 10 s/240/24, minimal = 20 s/120/12. Der Collector
+  folgt dem gemeldeten lod.level, kuerzt Puffer/Deckel sofort und takted den
+  Timer um. Aktivierung unverändert bitleich (?telemetry=1 / APK an, Desktop aus).
+- Messwerte (deterministischer Probe scripts/m10-telemetry-budget.mjs, Belege in
+  ~/games/.evidence/m10-telemetry-budget/): Ist 33,5 µs/collect, 334 B/Sample,
+  12 Samples/min = 0,40 ms/min + 3,9 KB/min. Nachher: reduced 0,081 ms/min (−80 %),
+  minimal 0,019 ms/min (−95 %); Payload 1,97/0,99 KB/min. Auf minimal also
+  3 statt 12 Wake-ups je Minute — der fuer das Tablet entscheidende Hebel.
+- Tests: tests/telemetry-budget.test.ts neu (11 Tests, Budget-Matrix + dynamische
+  Anpassung + Aktivierung bitleich); tests/telemetry.test.ts weiterhin gruen;
+  Gesamtsuite 193 Dateien / 2121 Tests gruen; npm run build gruen.
+- Doku: docs/lanes/m10-telemetry-budget.md (wird beim Merge in GAME.md uebernommen).
+
+Offen (Folge-Karten, kein Blocker): quality=null (Menue-Szenen) laeuft weiter auf
+full-Takt; Server-Empfaenger unveraendert, keine Aenderung noetig.

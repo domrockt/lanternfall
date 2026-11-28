@@ -15228,11 +15228,17 @@
       "id": 11432,
       "title": "m10-telemetry-budget K4: Nachher-JSON + Lane-Doku + .lane-done",
       "description": "Nachher-JSON nach ~/games/.evidence/m10-telemetry-budget/after.json, docs/lanes/m10-telemetry-budget.md mit Vorher/Nachher-Tabelle + offenen Punkten, .lane-done committet. Akzeptanz: Payload/Interval je Tier belegt, Suite gruen, lane-done vorhanden.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T11:15:09Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T11:07:56Z",
-      "updated": "2026-11-28T11:07:56Z"
+      "updated": "2026-11-28T11:15:09Z"
     }
   ]
 }
