@@ -1,0 +1,17 @@
+# Lane m10-chaos-fix-hazard-disc — FERTIG (2026-11-28)
+
+B3-Fix (Major, Audit m10-chaos-legibility): Telegraph-Discs/-Ringe/-Strahlen waren milchige
+Weich-Gradient-Scheiben (Draw-Scale bis 3,2x / ~26x). Fix als eigene Komponente
+src/gfx/hazardDisc.ts (Bake in Sprite-Pixelgroesse: 2-px-Konturband + 50%-Schachbrett-Dither,
+binaeres Alpha, nur Palettenfarben, abrundende 8er-Beam-Quantiserung) + Umstellung
+src/systems/Hazards.ts. Warnlogik/Draw-Pfad bitgleich, Tabu-Dateien unberuehrt.
+
+Messwerte (scripts/m10-chaos-fix-disc.mjs, milkyShareDisc, shown-vs-hidden im selben Frame):
+- stress500-640: 53,44 % -> 13,92 % (-74 %, Ziel >=50 %)
+- stress500-780: 68,73 % -> 9,93 % (-86 %)
+- m25-640:       59,50 % -> 16,83 % (-72 %)
+0 JS-Fehler, iGPU (ANGLE Intel RPL-S, swiftShader=false). Tests 94 Dateien/1003 gruen,
+tsc + build gruen. art-director streng: PASS 4/5 (2 optionale Nachbesserungen notiert).
+
+Karten: #7158-#7161 (alle review, Commits fabedd0, ea021e3, e9501b1, e69758f WIP, 74a7278, 8743f6d).
+Doku: docs/lanes/m10-chaos-fix-hazard-disc.md. Belege: shots/m10-chaos-fix-disc-{before,after}-*.
