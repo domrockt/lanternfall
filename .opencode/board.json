@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11301,
+  "next": 11305,
   "cards": [
     {
       "id": 1,
@@ -15002,6 +15002,101 @@
       ],
       "created": "2026-11-28T10:43:36Z",
       "updated": "2026-11-28T10:46:41Z"
+    },
+    {
+      "id": 11301,
+      "title": "m10-acceptance-refresh-f K1: Basis auf main (Build, Tests, acceptance-count)",
+      "description": "Formale Nachabnahme F auf main nach FX-/Menue-/Android-Merges. Abnahmekriterium: `npm run build` rc=0; `npm test` zaehlt Tests/Dateien 0 fail; `node scripts/acceptance-count.mjs` ok:true mit 30/6/6/6/6/2. Belege mit Zeit + main-HEAD in docs/qa/acceptance-refresh-f-2026-11-28.md. Kein src/tests-Code.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:10:33Z",
+          "by": "build",
+          "text": "doing → review: K1 PASS: build rc=0 (947ms), 1957 Tests/179 Dateien 0 fail, acceptance-count 30/6/6/6/6/2. Commit b3efca87 (#10904), QA-Doku docs/qa/acceptance-refresh-f-2026-11-28.md K1."
+        },
+        {
+          "at": "2026-11-28T10:49:52Z",
+          "by": "build",
+          "text": "review → done: lane #10904, Audit PASS (acceptance-auditor, Belege gegengeprueft), Commit b3efca87"
+        }
+      ],
+      "created": "2026-11-28T10:08:28Z",
+      "updated": "2026-11-28T10:49:52Z"
+    },
+    {
+      "id": 11302,
+      "title": "m10-acceptance-refresh-f K2: verify:final + verify:terrain/coverage",
+      "description": "Abnahmekriterium: `node scripts/verify-final.mjs` 7/7 PASS mit 0 JS-Fehlern; `verify:terrain` und `verify:terrain-coverage` 0 schwarze Flaeche bei 960/1280/1920 Breite. Renderer-String je Lauf. Belege JSON nach ~/games/.evidence/m10-acceptance-refresh-f/ und referenziert in der QA-Doku.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:10:14Z",
+          "by": "build",
+          "text": "backlog → doing: Start K2: verify:final + verify:terrain/coverage"
+        },
+        {
+          "at": "2026-11-28T10:12:39Z",
+          "by": "build",
+          "text": "doing → review: K2 PASS: verify:final 7/7 PASS 0 JS-Fehler; verify:terrain 0 schwarze Flaeche (960/1280/1920), rendererValid=true, RPL-S. Commit bb5c490e (#10905). Belege ~/games/.evidence/m10-acceptance-refresh-f/."
+        },
+        {
+          "at": "2026-11-28T10:49:52Z",
+          "by": "build",
+          "text": "review → done: lane #10905, Audit PASS, Commit bb5c490e"
+        }
+      ],
+      "created": "2026-11-28T10:08:28Z",
+      "updated": "2026-11-28T10:49:52Z"
+    },
+    {
+      "id": 11303,
+      "title": "m10-acceptance-refresh-f K3: Burst + Minute-25 auf iGPU (780x360@3, 960x540)",
+      "description": "Abnahmekriterium: Burst (500 Gegner) und Minute-25 fuer 780x360@3 und 960x540 auf der iGPU, Renderer-String 'Mesa Intel(R) Graphics (RPL-S)' in JEDEM Beleg (SwiftShader ungueltig). Laeufe unter flock /home/ai/games/.lf-perf.lock serialisiert. Ziele wie M6-Latte (Burst >=55, M25 >=50).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:12:39Z",
+          "by": "build",
+          "text": "backlog → doing: Start K3: Burst + Minute-25 (780x360@3, 960x540) unter flock"
+        },
+        {
+          "at": "2026-11-28T10:17:49Z",
+          "by": "build",
+          "text": "doing → review: K3 PASS: Burst 60,0 / M25 60,1 (780x360@3) und Burst 60,1 / M25 60,1 (960x540), Renderer RPL-S im selben JSON, 0 JS-Fehler, unter flock. Commit c1c5dc1c (#10906)."
+        },
+        {
+          "at": "2026-11-28T10:49:52Z",
+          "by": "build",
+          "text": "review → done: lane #10906, Audit PASS (K3-Harness-Quirk in QA-Doku nachgetragen), Commit c1c5dc1c"
+        }
+      ],
+      "created": "2026-11-28T10:08:28Z",
+      "updated": "2026-11-28T10:49:52Z"
+    },
+    {
+      "id": 11304,
+      "title": "m10-acceptance-refresh-f K4: fullrun-Guard + ACCEPTANCE.md + Lane-Abschluss",
+      "description": "Abnahmekriterium: fullrun-Guard 6/6 Bosse + Truhen + Heap-Tor gruen; ACCEPTANCE.md neuer Abschnitt (alte Werte unveraendert, Abweichungen >=5 % markiert); docs/qa/acceptance-refresh-f-2026-11-28.md mit Tabelle je Punkt + Urteil + Renderer-String je Lauf; .lane-done angelegt.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:17:49Z",
+          "by": "build",
+          "text": "backlog → doing: Start K4: fullrun-Guard + ACCEPTANCE.md + QA-Doku + .lane-done"
+        },
+        {
+          "at": "2026-11-28T10:39:47Z",
+          "by": "build",
+          "text": "doing → review: K4: fullrun Inhalt/FPS PASS (6/6 Bosse, 6 Truhen, Sieg dawn, fpsMin 60,3/60,4), Heap-Tor FAIL +18,2/+20,8 % > 15 % (2 Laeufe); ACCEPTANCE.md + QA-Doku ergaenzt. Commit f2809b0b (#10907)."
+        },
+        {
+          "at": "2026-11-28T10:49:52Z",
+          "by": "build",
+          "text": "review → done: lane #10907, Audit PASS; Heap-Tor FAIL als Blocker dokumentiert (Follow-up an Dora); Commits f2809b0b, 9b721410"
+        }
+      ],
+      "created": "2026-11-28T10:08:28Z",
+      "updated": "2026-11-28T10:49:52Z"
     }
   ]
 }

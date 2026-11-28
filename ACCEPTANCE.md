@@ -424,3 +424,39 @@ die historischen (Heap-SOFT/GC-Sägezahn, 780@3 fill-rate-Grenze, Art-Restpunkte
 zwei low-Befunde (Bundle-Chunk-Warnung; verify-Skripte schreiben Neben-Outputs in
 getrackte `shots/*.json`) — Befundliste mit Hebeln in der Lane-Doku, Fix-Jobs daraus
 von Dora zu schneiden. Kein Spielcode/Mess-Skript durch diese Abnahme geändert.
+
+## Nachabnahme F (2026-11-28)
+
+Fünfte unabhängige Re-Abnahme (NUR-PRÜF-Lane, Vorrat-Job nach FX-/Menue-/Android-Merge-Welle)
+auf bei Job-Start gepinntem main-Commit `1ebd4cab9d698d2994a7280009f6f28cd85b66b6`
+(2026-11-28T10:07:09Z), Worktree `m10-acceptance-refresh-f`, Branch `m10-acceptance-refresh-f`.
+Kein src-/tests-Code durch diese Lane. Befehle, Tabellen und Urteile:
+`docs/qa/acceptance-refresh-f-2026-11-28.md`; Roh-JSONs in
+`~/games/.evidence/m10-acceptance-refresh-f/`. Lange Läufe unter
+`flock /home/ai/games/.lf-perf.lock`; Renderer-Pflicht erfüllt: iGPU
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` in jedem FPS-/Terrain-Beleg
+(kein SwiftShader).
+
+| Kriterium | Ist auf PIN `1ebd4ca` | Urteil |
+|---|---|---|
+| `npm run build` rc=0 | rc=0 (947 ms; bekannte Chunk-Warnung) | **PASS** |
+| `npm test` 0 fail | **1957/1957** in 179 Dateien, 5,80 s | **PASS** |
+| `acceptance-count` 30/6/6/6/6/2 | `ok:true` (Soll = Ist) | **PASS** |
+| verify:final 7/7 | 7/7 PASS, 0 JS-Fehler | **PASS** |
+| verify:terrain / -coverage 960/1280/1920 | 0 schwarze Fläche (maxRegion 0/0 start/end je View), `rendererValid:true`, 0 JS-Fehler | **PASS** |
+| Burst 780×360@3 (500 Gegner) | **60,0 FPS** (worst frame 16,8 ms) ≥ 55 | **PASS** |
+| Minute-25 780×360@3 | **60,1 FPS** ≥ 55 | **PASS** |
+| Burst + Minute-25 960×540 | **60,1 / 60,1 FPS** | **PASS** |
+| fullrun 30 min 960×540 | 6/6 Bosse exakt 300–1800 s, 6 Truhen, Sieg `dawn`, fpsMin 60,3/60,4, 0 JS-Fehler; **Heap-Tor +18,2 % / +20,8 % > +15 % (2 Läufe, reproduziert)** | **FAIL (Heap-Tor)** |
+| Heap-Tor formales Skript (`m10-heap-budget.mjs`) | Lauf crashete mittendrin (Browser-Target closed) → `gate=UNMESSBAR`; fullrun-Beleg bleibt verbindlich | Beleg via fullrun |
+
+**Abweichungen ≥ 5 % gegen Nachabnahme E (`a6f1458`)** (markiert, E-Werte nicht überschrieben):
+Tests 1655 → 1957 (**+18,2 %**); **fullrun-Heap-Tor +13,9 % → +18,2 %/+20,8 % (≥ +5 % verschlechtert,
+jetzt über Tor)**. FPS-Werte unverändert am 60-Cap (kein relevantes Delta).
+
+**Ergebnis Nachabnahme F: NICHT ABGENOMMEN** — einziger Blocker ist das **Heap-Tor**
+(+18,2 %/+20,8 % > +15 %, in 2 vollen fullrun-Läufen reproduziert; Muster wie der
+bekannte GC-Sägezahn, aber diesmal durch die Re-Messung **nicht entkräftet**).
+Alle übrigen K-Kriterien (K1–K3) sind grün. Folge-Job für die Heap-Regressions-
+Diagnose von Dora zu schneiden; Belege: `shots/m3-fullrunaccf*.json` →
+`~/games/.evidence/m10-acceptance-refresh-f/`.
