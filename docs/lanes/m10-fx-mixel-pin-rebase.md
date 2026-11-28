@@ -32,6 +32,8 @@ dem Lane-Briefing (Belege nach `~/games/.evidence/`, eine Karte = ein Commit, `.
 ## K2: Pins zusammenfuehren — entfaellt
 
 K1 gruen (17/17, < 1 s), keine Konfliktreste, keine doppelten/widerspruechlichen Pins gefunden.
+Kein Code-/Pin-Eingriff noetig: Der kombinierte Stand auf main (`3155164e`) ist bereits die
+Schnittmenge aus Bake-Pins (bakes-evo-r2 K3/K4) und schnellen Assertions (test-speed #10585).
 
 ## K3: Suite + Build, Doku, .lane-done — PASS
 
