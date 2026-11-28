@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13894,
+  "next": 13934,
   "cards": [
     {
       "id": 1,
@@ -18790,7 +18790,7 @@
         {
           "at": "2026-11-28T17:52:25Z",
           "by": "build",
-          "text": "doing → todo: Supervisor 17:5xZ: gehört nicht in diese Lane (m10-panel-hz-pref) – von fremder Lane zurück nach todo; von m10-panel-hz-pref nie angefasst."
+          "text": "doing \u2192 todo: Supervisor 17:5xZ: geh\u00f6rt nicht in diese Lane (m10-panel-hz-pref) \u2013 von fremder Lane zur\u00fcck nach todo; von m10-panel-hz-pref nie angefasst."
         }
       ],
       "created": "2026-11-28T16:31:59Z",
@@ -18799,14 +18799,14 @@
     {
       "id": 13444,
       "title": "m10-golden-frame-rebaseline-r2 K1: Guard-Lauf nach 4 Merges",
-      "description": "lane #13284 — 4 Merges (heap-gate-recovery, fps-cap-stackfix, charstats-spec-followup, mira-hp-balance-check) sind auf main. node scripts/m10-golden-frame.mjs OHNE --write-baseline laufen lassen. AK: Verdict-JSON committed; bei PASS (keine Divergenz) Karte done + .lane-done, keine künstliche Rebaseline.",
+      "description": "lane #13284 \u2014 4 Merges (heap-gate-recovery, fps-cap-stackfix, charstats-spec-followup, mira-hp-balance-check) sind auf main. node scripts/m10-golden-frame.mjs OHNE --write-baseline laufen lassen. AK: Verdict-JSON committed; bei PASS (keine Divergenz) Karte done + .lane-done, keine k\u00fcnstliche Rebaseline.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T16:41:09Z",
           "by": "build",
-          "text": "lane #13284, erledigt im Lane-Commit 7ac4edd6, via Merge in main übernommen"
+          "text": "lane #13284, erledigt im Lane-Commit 7ac4edd6, via Merge in main \u00fcbernommen"
         }
       ],
       "created": "2026-11-28T16:41:02Z",
@@ -18815,14 +18815,14 @@
     {
       "id": 13445,
       "title": "m10-golden-frame-rebaseline-r2 K2: Divergenz-Einordnung je Seed/Frame",
-      "description": "lane #13285 — Falls K1 divergiert: Ursache je Differenz einordnen (legitime Daten-/Hebel-Änderung aus den 4 Merges vs. echter Regress). Belegliste (Seed, Tick, Feld, Vorher/Nachher) in docs/lanes/m10-golden-frame-rebaseline-r2.md. AK: jede Differenz hat Feld + Vorher/Nachher-Wert + Zuordnung. [entfällt: K1 PASS ohne Divergenz, Lane-Done 7ac4edd6]",
+      "description": "lane #13285 \u2014 Falls K1 divergiert: Ursache je Differenz einordnen (legitime Daten-/Hebel-\u00c4nderung aus den 4 Merges vs. echter Regress). Belegliste (Seed, Tick, Feld, Vorher/Nachher) in docs/lanes/m10-golden-frame-rebaseline-r2.md. AK: jede Differenz hat Feld + Vorher/Nachher-Wert + Zuordnung. [entf\u00e4llt: K1 PASS ohne Divergenz, Lane-Done 7ac4edd6]",
       "column": "backlog",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T16:41:09Z",
           "by": "build",
-          "text": "lane #13285, entfällt (K1 PASS ohne Divergenz)"
+          "text": "lane #13285, entf\u00e4llt (K1 PASS ohne Divergenz)"
         }
       ],
       "created": "2026-11-28T16:41:02Z",
@@ -18831,14 +18831,14 @@
     {
       "id": 13446,
       "title": "m10-golden-frame-rebaseline-r2 K3: Rebaseline oder Befundliste",
-      "description": "lane #13286 — K3a legitim: --write-baseline --baseline-at=<Merge-SHA>, verdict committen, tests/golden-frame.test.ts grün. K3b echter Regress: NICHT rebaseln, Befundliste + Bedarfsmeldung. AK: golden-frame-Test grün auf Rebaseline-Stand ODER begründete Befundliste ohne Rebaseline. [entfällt: K1 PASS ohne Divergenz, keine Rebaseline nötig, Lane-Done 7ac4edd6]",
+      "description": "lane #13286 \u2014 K3a legitim: --write-baseline --baseline-at=<Merge-SHA>, verdict committen, tests/golden-frame.test.ts gr\u00fcn. K3b echter Regress: NICHT rebaseln, Befundliste + Bedarfsmeldung. AK: golden-frame-Test gr\u00fcn auf Rebaseline-Stand ODER begr\u00fcndete Befundliste ohne Rebaseline. [entf\u00e4llt: K1 PASS ohne Divergenz, keine Rebaseline n\u00f6tig, Lane-Done 7ac4edd6]",
       "column": "backlog",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T16:41:09Z",
           "by": "build",
-          "text": "lane #13286, entfällt (keine Rebaseline nötig)"
+          "text": "lane #13286, entf\u00e4llt (keine Rebaseline n\u00f6tig)"
         }
       ],
       "created": "2026-11-28T16:41:02Z",
@@ -18847,17 +18847,17 @@
     {
       "id": 13447,
       "title": "m10-game-md-sync-r2 K1: Divergenzliste GAME.md vs src/data (je Zeile Beleg)",
-      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-\u00c4nderungen.",
       "column": "done",
       "notes": [
-        "K1 gestartet: GAME.md-Zeilen vs src/data prüfen",
+        "K1 gestartet: GAME.md-Zeilen vs src/data pr\u00fcfen",
         "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
       ]
     },
     {
       "id": 13448,
-      "title": "m10-game-md-sync-r2 K2: geklärte Driften in GAME.md korrigieren",
-      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "title": "m10-game-md-sync-r2 K2: gekl\u00e4rte Driften in GAME.md korrigieren",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-\u00c4nderungen.",
       "column": "done",
       "notes": [
         "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
@@ -18865,8 +18865,8 @@
     },
     {
       "id": 13449,
-      "title": "m10-game-md-sync-r2 K3: Gegenprobe tests/data.test.ts + charselect-truth grün",
-      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "title": "m10-game-md-sync-r2 K3: Gegenprobe tests/data.test.ts + charselect-truth gr\u00fcn",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-\u00c4nderungen.",
       "column": "done",
       "notes": [
         "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
@@ -18875,7 +18875,7 @@
     {
       "id": 13450,
       "title": "m10-game-md-sync-r2 K4: Commit + .lane-done",
-      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-\u00c4nderungen.",
       "column": "done",
       "notes": [
         "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
@@ -18884,19 +18884,19 @@
     {
       "id": 13451,
       "title": "m10-inrun-tor-sweep K1: Lint-Skript scripts/m10-acceptance-doc-lint.mjs",
-      "description": "Scannt docs/qa/*.md auf Tabellenzeilen, die In-run-Heap-Zitate (m1→m29) als Urteil/Tor ausweisen (Heuristik: 'Heap' + '+NN %' + Tor-/Urteil-Kontext, Whitelist für als Beobachtung markierte Zeilen). Bericht shots/m10-doc-lint-<datum>.json. Abnahme: Skript laeuft rc=0 und schreibt Bericht-JSON.",
+      "description": "Scannt docs/qa/*.md auf Tabellenzeilen, die In-run-Heap-Zitate (m1\u2192m29) als Urteil/Tor ausweisen (Heuristik: 'Heap' + '+NN %' + Tor-/Urteil-Kontext, Whitelist f\u00fcr als Beobachtung markierte Zeilen). Bericht shots/m10-doc-lint-<datum>.json. Abnahme: Skript laeuft rc=0 und schreibt Bericht-JSON.",
       "column": "done",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T16:46:46Z",
           "by": "build",
-          "text": "todo → doing: K1 gestartet: Lint-Skript scripts/m10-acceptance-doc-lint.mjs (Heuristik gegen docs/qa/*.md)"
+          "text": "todo \u2192 doing: K1 gestartet: Lint-Skript scripts/m10-acceptance-doc-lint.mjs (Heuristik gegen docs/qa/*.md)"
         },
         {
           "at": "2026-11-28T16:58:37Z",
           "by": "build",
-          "text": "doing → done: lane #13451, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
+          "text": "doing \u2192 done: lane #13451, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
         }
       ],
       "created": "2026-11-28T16:46:16Z",
@@ -18912,7 +18912,7 @@
         {
           "at": "2026-11-28T16:58:37Z",
           "by": "build",
-          "text": "todo → done: lane #13452, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
+          "text": "todo \u2192 done: lane #13452, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
         }
       ],
       "created": "2026-11-28T16:46:16Z",
@@ -18928,7 +18928,7 @@
         {
           "at": "2026-11-28T16:58:37Z",
           "by": "build",
-          "text": "todo → done: lane #13453, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
+          "text": "todo \u2192 done: lane #13453, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
         }
       ],
       "created": "2026-11-28T16:46:16Z",
@@ -18944,7 +18944,7 @@
         {
           "at": "2026-11-28T16:58:37Z",
           "by": "build",
-          "text": "todo → done: lane #13454, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
+          "text": "todo \u2192 done: lane #13454, Merge 32aaa78b (m10-inrun-tor-sweep in main)"
         }
       ],
       "created": "2026-11-28T16:46:16Z",
@@ -18953,19 +18953,19 @@
     {
       "id": 13511,
       "title": "m10-renderer-guard K1: Helper scripts/lf-renderer.mjs",
-      "description": "Owner: engine-dev. Export getRendererString(page) (WEBGL_debug_renderer_info / UNMASKED_RENDERER_WEBGL, Fallback gl.RENDERER), isSwiftShader(s), rendererValid(s). Wiederverwendbar, Logik der bestehenden Skripte (fullrun.mjs, m10-heap-budget.mjs) unangetastet. Abnahme: Unit-Tests in K3 grün, tsc rc=0.",
+      "description": "Owner: engine-dev. Export getRendererString(page) (WEBGL_debug_renderer_info / UNMASKED_RENDERER_WEBGL, Fallback gl.RENDERER), isSwiftShader(s), rendererValid(s). Wiederverwendbar, Logik der bestehenden Skripte (fullrun.mjs, m10-heap-budget.mjs) unangetastet. Abnahme: Unit-Tests in K3 gr\u00fcn, tsc rc=0.",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T16:40:48Z",
           "by": "build",
-          "text": "todo → doing: Lane m10-renderer-guard: K1 angenommen, Helper wird gebaut."
+          "text": "todo \u2192 doing: Lane m10-renderer-guard: K1 angenommen, Helper wird gebaut."
         },
         {
           "at": "2026-11-28T16:41:15Z",
           "by": "build",
-          "text": "doing → review: Helper gebaut, Commit af114498 (#13404). Kontrolle via commit-gate + Unit-Tests in K3."
+          "text": "doing \u2192 review: Helper gebaut, Commit af114498 (#13404). Kontrolle via commit-gate + Unit-Tests in K3."
         },
         {
           "at": "2026-11-28T17:12:04+00:00",
@@ -18979,19 +18979,19 @@
     {
       "id": 13512,
       "title": "m10-renderer-guard K2: Einbau in perf.mjs + m10-v10-device-10min.mjs",
-      "description": "Owner: engine-dev. renderer + rendererValid in jedes Output-JSON; bei isSwiftShader: rendererValid=false, Kennzahl-Felder mit invalid:true markiert, passed=false. Abnahme: statischer Quell-Guard (K3) zeigt Import in beiden Skripten; bestehende Messlogik unverändert.",
+      "description": "Owner: engine-dev. renderer + rendererValid in jedes Output-JSON; bei isSwiftShader: rendererValid=false, Kennzahl-Felder mit invalid:true markiert, passed=false. Abnahme: statischer Quell-Guard (K3) zeigt Import in beiden Skripten; bestehende Messlogik unver\u00e4ndert.",
       "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T16:41:15Z",
           "by": "build",
-          "text": "todo → doing: K2 angenommen: Einbau in perf.mjs + m10-v10-device-10min.mjs."
+          "text": "todo \u2192 doing: K2 angenommen: Einbau in perf.mjs + m10-v10-device-10min.mjs."
         },
         {
           "at": "2026-11-28T16:42:19Z",
           "by": "build",
-          "text": "doing → review: Einbau gebaut, Commit c9316904 (#13405). Beleg Quell-Guard-Test in K3."
+          "text": "doing \u2192 review: Einbau gebaut, Commit c9316904 (#13405). Beleg Quell-Guard-Test in K3."
         },
         {
           "at": "2026-11-28T17:12:04+00:00",
@@ -19005,14 +19005,14 @@
     {
       "id": 13513,
       "title": "m10-renderer-guard K3: Guard-Test tests/renderer-guard.test.ts",
-      "description": "Owner: gameplay-dev. Unit-Tests für isSwiftShader/rendererValid (SwiftShader-Varianten, echte iGPU-Strings, Adreno, leere Strings) + Quell-Guard: beide Skripte importieren lf-renderer. Abnahme: npx vitest run tests/renderer-guard.test.ts grün, npm test grün.",
+      "description": "Owner: gameplay-dev. Unit-Tests f\u00fcr isSwiftShader/rendererValid (SwiftShader-Varianten, echte iGPU-Strings, Adreno, leere Strings) + Quell-Guard: beide Skripte importieren lf-renderer. Abnahme: npx vitest run tests/renderer-guard.test.ts gr\u00fcn, npm test gr\u00fcn.",
       "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-28T16:42:19Z",
           "by": "build",
-          "text": "todo → review: Test gebaut, Commit 98108511 (#13406). 12/12 grün, tsc rc=0."
+          "text": "todo \u2192 review: Test gebaut, Commit 98108511 (#13406). 12/12 gr\u00fcn, tsc rc=0."
         },
         {
           "at": "2026-11-28T17:12:04+00:00",
@@ -19033,12 +19033,12 @@
         {
           "at": "2026-11-28T16:42:19Z",
           "by": "build",
-          "text": "todo → doing: K4 angenommen: Probe-Lauf perf.mjs, Beleg nach ~/games/.evidence/m10-renderer-guard/."
+          "text": "todo \u2192 doing: K4 angenommen: Probe-Lauf perf.mjs, Beleg nach ~/games/.evidence/m10-renderer-guard/."
         },
         {
           "at": "2026-11-28T17:09:43Z",
           "by": "build",
-          "text": "doing → blocked: K4 Probe-Lauf wartete 2400s auf /home/ai/games/.lf-perf.lock (fremde Lanes: m10-janky-remeasure 10-min-Lauf, m10-gc-sawtooth-Probe, m10-heap-gate-retry). Supervisor-Anweisung: Warten abgebrochen, K4 blocked. Ein kurzer Retry (flock -w 60) folgt; scheitert er, beendet die Lane mit gemeldetem Restauftrag."
+          "text": "doing \u2192 blocked: K4 Probe-Lauf wartete 2400s auf /home/ai/games/.lf-perf.lock (fremde Lanes: m10-janky-remeasure 10-min-Lauf, m10-gc-sawtooth-Probe, m10-heap-gate-retry). Supervisor-Anweisung: Warten abgebrochen, K4 blocked. Ein kurzer Retry (flock -w 60) folgt; scheitert er, beendet die Lane mit gemeldetem Restauftrag."
         }
       ],
       "created": "2026-11-28T16:40:35Z",
@@ -19047,29 +19047,29 @@
     {
       "id": 13515,
       "title": "m10-janky-remeasure K1: Messskript aufbauen",
-      "description": "scripts/m10-janky-remeasure.mjs (Muster m10-v10-device-10min.mjs + gfxinfo-Differenz je Fenster). Abnahmekriterium: Smoke-Lauf (2 Fenster) am Gerät liefert Beleg-JSON mit Pflichtfeldern Renderer-String (kein SwiftShader), DPR, Build-ID (Telemetrie /latest als versionName-Ersatz), Panel-Hz-Probe (rAF bei BILDRATE=MAX); 409/DOM_SPIELT bricht sauber ab; Methodik: natürliche Fenster (ohne Spawn-Top-up, fairer Vergleich) + Top-up-Fenster (Referenz) interleaved.",
+      "description": "scripts/m10-janky-remeasure.mjs (Muster m10-v10-device-10min.mjs + gfxinfo-Differenz je Fenster). Abnahmekriterium: Smoke-Lauf (2 Fenster) am Ger\u00e4t liefert Beleg-JSON mit Pflichtfeldern Renderer-String (kein SwiftShader), DPR, Build-ID (Telemetrie /latest als versionName-Ersatz), Panel-Hz-Probe (rAF bei BILDRATE=MAX); 409/DOM_SPIELT bricht sauber ab; Methodik: nat\u00fcrliche Fenster (ohne Spawn-Top-up, fairer Vergleich) + Top-up-Fenster (Referenz) interleaved.",
       "column": "done",
       "assignee": "m10-janky-remeasure",
       "notes": [
         {
           "at": "2026-11-28T16:16:07Z",
           "by": "build",
-          "text": "todo → doing: Versuch 2 (Fortsetzung): After-Kette geprüft (m10-fps-cap-stackfix aa8739f0 in main), Bridge dom_playing=false, Thermal 0. Skriptbau startet."
+          "text": "todo \u2192 doing: Versuch 2 (Fortsetzung): After-Kette gepr\u00fcft (m10-fps-cap-stackfix aa8739f0 in main), Bridge dom_playing=false, Thermal 0. Skriptbau startet."
         },
         {
           "at": "2026-11-28T16:36:33Z",
           "by": "general",
-          "text": "doing → review: K1 fertig: scripts/m10-janky-remeasure.mjs (gfxinfo-Diff je Fenster, natural/topup interleaved, Panel-Hz-Probe, Renderer/Build-Pflicht, DOM_SPIELT-409-Abbruch). Smoke 2 Fenster: Adreno 710, DPR 2, Build 0ce7164a (enthaelt stackfix aa8739f0), Panel 60 Hz, 2 natural-Fenster janky 0%, 0 JS-Fehler. Commit 09e7215f. Beleg ~/games/.evidence/m10-janky-remeasure/smoke-k1.json"
+          "text": "doing \u2192 review: K1 fertig: scripts/m10-janky-remeasure.mjs (gfxinfo-Diff je Fenster, natural/topup interleaved, Panel-Hz-Probe, Renderer/Build-Pflicht, DOM_SPIELT-409-Abbruch). Smoke 2 Fenster: Adreno 710, DPR 2, Build 0ce7164a (enthaelt stackfix aa8739f0), Panel 60 Hz, 2 natural-Fenster janky 0%, 0 JS-Fehler. Commit 09e7215f. Beleg ~/games/.evidence/m10-janky-remeasure/smoke-k1.json"
         },
         {
           "at": "2026-11-28T16:37:06Z",
           "by": "build",
-          "text": "review → review: K1 fertig: Skript 8ced4c9c + Fixes/Doku 218caf01 + K1-Abschluss 09e7215f (Versuch-1-Resume-Agent hatte parallel bis 16:34Z gearbeitet, Kollision vermieden). Smoke-Beleg ~/games/.evidence/m10-janky-remeasure/smoke-k1.json: Adreno 710/DPR2/Build 0ce7164a, Panel 60 Hz (rAF-Median 16,7 ms), 2 natural-Fenster janky 0 %, 0 JS-Fehler. Reviewer-Prüfung in K4 gebündelt."
+          "text": "review \u2192 review: K1 fertig: Skript 8ced4c9c + Fixes/Doku 218caf01 + K1-Abschluss 09e7215f (Versuch-1-Resume-Agent hatte parallel bis 16:34Z gearbeitet, Kollision vermieden). Smoke-Beleg ~/games/.evidence/m10-janky-remeasure/smoke-k1.json: Adreno 710/DPR2/Build 0ce7164a, Panel 60 Hz (rAF-Median 16,7 ms), 2 natural-Fenster janky 0 %, 0 JS-Fehler. Reviewer-Pr\u00fcfung in K4 geb\u00fcndelt."
         },
         {
           "at": "2026-11-28T17:20:07Z",
           "by": "build",
-          "text": "review → done: lane #13085: Reviewer PASS (Lane-Review ses_ddcd5b5eb): Skript + Smoke-Beleg konsistent, Commit 09e7215f"
+          "text": "review \u2192 done: lane #13085: Reviewer PASS (Lane-Review ses_ddcd5b5eb): Skript + Smoke-Beleg konsistent, Commit 09e7215f"
         }
       ],
       "created": "2026-11-28T16:16:04Z",
@@ -19077,30 +19077,30 @@
     },
     {
       "id": 13516,
-      "title": "m10-janky-remeasure K2: 10-min-Lauf BILDRATE=60 am Gerät",
-      "description": "Abnahmekriterium: Beleg ~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json — 10 min Minute-25-Dichte, je-Fenster gfxinfo janky %, rAF p95/p99, Thermal+Batterie-Poll je Minute, Renderer+DPR+Build-ID+Panel-Hz; JS-Fehler 0. Kein Fix in dieser Lane.",
+      "title": "m10-janky-remeasure K2: 10-min-Lauf BILDRATE=60 am Ger\u00e4t",
+      "description": "Abnahmekriterium: Beleg ~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json \u2014 10 min Minute-25-Dichte, je-Fenster gfxinfo janky %, rAF p95/p99, Thermal+Batterie-Poll je Minute, Renderer+DPR+Build-ID+Panel-Hz; JS-Fehler 0. Kein Fix in dieser Lane.",
       "column": "done",
       "assignee": "m10-janky-remeasure",
       "notes": [
         {
           "at": "2026-11-28T16:37:06Z",
           "by": "build",
-          "text": "todo → doing: 10-min-Lauf --fps 60 gestartet (Gerät frei, Thermal 0, Akku 33 °C)."
+          "text": "todo \u2192 doing: 10-min-Lauf --fps 60 gestartet (Ger\u00e4t frei, Thermal 0, Akku 33 \u00b0C)."
         },
         {
           "at": "2026-11-28T16:49:40Z",
           "by": "general",
-          "text": "doing → review: K2 fertig: 10-min-Lauf Cap 60 am Redmi Pad, Beleg ~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json. gfxinfo janky 0% (natural 0/29338, topup 0/28896), aber fpsAvg 50,1 (<60) und rAF-p95 33,4 ms (>16) -> passed=false nach strengem Tor. Panel-Probe 60 Hz, Build 0ce7164a (stackfix enthalten), 0 JS-Fehler, 0 Recoveries, Thermal Status 0, Batterie 35->36 C. Doku docs/lanes/m10-janky-remeasure.md K2-Abschnitt, Commit 1579f6be."
+          "text": "doing \u2192 review: K2 fertig: 10-min-Lauf Cap 60 am Redmi Pad, Beleg ~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json. gfxinfo janky 0% (natural 0/29338, topup 0/28896), aber fpsAvg 50,1 (<60) und rAF-p95 33,4 ms (>16) -> passed=false nach strengem Tor. Panel-Probe 60 Hz, Build 0ce7164a (stackfix enthalten), 0 JS-Fehler, 0 Recoveries, Thermal Status 0, Batterie 35->36 C. Doku docs/lanes/m10-janky-remeasure.md K2-Abschnitt, Commit 1579f6be."
         },
         {
           "at": "2026-11-28T17:03:37Z",
           "by": "build",
-          "text": "review → review: K2 fertig: 10-min-Lauf BILDRATE=60 (Lauf 2 mit flock, clean). gfxinfo janky 0 % beide Varianten, aber fpsAvg 50,1 < 60 und rAF-p95 33,4 ms > 16 → strenges Tor FAIL; Panel 60 Hz, Thermal 0, Akku 33→36 °C, 0 JS-Fehler, keine Loop-Tötung. Commit 2bf7b4ae."
+          "text": "review \u2192 review: K2 fertig: 10-min-Lauf BILDRATE=60 (Lauf 2 mit flock, clean). gfxinfo janky 0 % beide Varianten, aber fpsAvg 50,1 < 60 und rAF-p95 33,4 ms > 16 \u2192 strenges Tor FAIL; Panel 60 Hz, Thermal 0, Akku 33\u219236 \u00b0C, 0 JS-Fehler, keine Loop-T\u00f6tung. Commit 2bf7b4ae."
         },
         {
           "at": "2026-11-28T17:20:07Z",
           "by": "build",
-          "text": "review → done: lane #13086: Reviewer PASS — Doku-Zahlen decken sich mit Beleg-JSONs (Lauf 1+2), Commit 1579f6be/2bf7b4ae"
+          "text": "review \u2192 done: lane #13086: Reviewer PASS \u2014 Doku-Zahlen decken sich mit Beleg-JSONs (Lauf 1+2), Commit 1579f6be/2bf7b4ae"
         }
       ],
       "created": "2026-11-28T16:16:04Z",
@@ -19108,20 +19108,20 @@
     },
     {
       "id": 13517,
-      "title": "m10-janky-remeasure K3: 10-min-Lauf BILDRATE=MAX am Gerät",
-      "description": "Abnahmekriterium: Beleg ~/games/.evidence/m10-janky-remeasure/k3-max-device.json — identische Metriken wie K2; beide Läufe bei 60-Hz-Panel (APK erzwingt Preferred-Mode; Panel-Hz im JSON belegt). Vergleich = Spiel-Cap/Frame-Pacing, nicht Panel-Hz.",
+      "title": "m10-janky-remeasure K3: 10-min-Lauf BILDRATE=MAX am Ger\u00e4t",
+      "description": "Abnahmekriterium: Beleg ~/games/.evidence/m10-janky-remeasure/k3-max-device.json \u2014 identische Metriken wie K2; beide L\u00e4ufe bei 60-Hz-Panel (APK erzwingt Preferred-Mode; Panel-Hz im JSON belegt). Vergleich = Spiel-Cap/Frame-Pacing, nicht Panel-Hz.",
       "column": "done",
       "assignee": "m10-janky-remeasure",
       "notes": [
         {
           "at": "2026-11-28T17:03:37Z",
           "by": "build",
-          "text": "todo → doing: K3 10-min-Lauf BILDRATE=MAX startet (Entzerrung: Cap-Pacing vs. Last)."
+          "text": "todo \u2192 doing: K3 10-min-Lauf BILDRATE=MAX startet (Entzerrung: Cap-Pacing vs. Last)."
         },
         {
           "at": "2026-11-28T17:20:07Z",
           "by": "build",
-          "text": "doing → done: lane #13087: Reviewer PASS — K3-JSON (0/32114, fpsAvg 50,0, p95 33,4) = Doku, Commit 3b84b654"
+          "text": "doing \u2192 done: lane #13087: Reviewer PASS \u2014 K3-JSON (0/32114, fpsAvg 50,0, p95 33,4) = Doku, Commit 3b84b654"
         }
       ],
       "created": "2026-11-28T16:16:04Z",
@@ -19130,14 +19130,14 @@
     {
       "id": 13518,
       "title": "m10-janky-remeasure K4: Tor-Auswertung + Fix-Empfehlungen",
-      "description": "Abnahmekriterium: docs/lanes/m10-janky-remeasure.md mit verbindlicher Tor-Auswertung (K3-Tor: gfxinfo janky < 10 % @ FPS >= 60, p95 <= 16 ms; bei 60 Hz Panel = Tor erfüllt), Renderer-String-Beleg, Temperaturverlauf; bei FAIL Hebelliste (Datei/Hebel/Gewinn) als Job-Zeile in requests.md, bei PASS Empfehlung 'Endabnahme-Lauf freigeben'.",
+      "description": "Abnahmekriterium: docs/lanes/m10-janky-remeasure.md mit verbindlicher Tor-Auswertung (K3-Tor: gfxinfo janky < 10 % @ FPS >= 60, p95 <= 16 ms; bei 60 Hz Panel = Tor erf\u00fcllt), Renderer-String-Beleg, Temperaturverlauf; bei FAIL Hebelliste (Datei/Hebel/Gewinn) als Job-Zeile in requests.md, bei PASS Empfehlung 'Endabnahme-Lauf freigeben'.",
       "column": "done",
       "assignee": "m10-janky-remeasure",
       "notes": [
         {
           "at": "2026-11-28T17:20:07Z",
           "by": "build",
-          "text": "todo → done: lane #13088: Reviewer PASS — Tor-Auswertung FAIL korrekt abgeleitet, -> Job-Zeile m10-fps-pacing-timestep in requests.md, .lane-done committed (da57307a); Nits behoben"
+          "text": "todo \u2192 done: lane #13088: Reviewer PASS \u2014 Tor-Auswertung FAIL korrekt abgeleitet, -> Job-Zeile m10-fps-pacing-timestep in requests.md, .lane-done committed (da57307a); Nits behoben"
         }
       ],
       "created": "2026-11-28T16:16:04Z",
@@ -19155,7 +19155,7 @@
     {
       "id": 13660,
       "title": "m10-gc-sawtooth-trim #K2 Poolen Top-1..3 in ProjectilePool.ts",
-      "description": "Top-1 bis Top-3 Allokationsstellen aus K1 im Area ProjectilePool.ts poolen (Objekte wiederverwenden statt new je Frame/Treffer). Verhalten bitgleich: Determinismus-Anker (Sim-Marken, Boss-Dauern) unverändert, Run.ts nicht anfassen. AK: Determinismus-Tests grün, bytes/frame im Probe sinkt.\n\n[lane #<alt>] lane #13364-#13367, Merge a05a1d40, Rebase auf main (8a83cbfb)",
+      "description": "Top-1 bis Top-3 Allokationsstellen aus K1 im Area ProjectilePool.ts poolen (Objekte wiederverwenden statt new je Frame/Treffer). Verhalten bitgleich: Determinismus-Anker (Sim-Marken, Boss-Dauern) unver\u00e4ndert, Run.ts nicht anfassen. AK: Determinismus-Tests gr\u00fcn, bytes/frame im Probe sinkt.\n\n[lane #<alt>] lane #13364-#13367, Merge a05a1d40, Rebase auf main (8a83cbfb)",
       "column": "done",
       "notes": [],
       "created": "2026-11-28T17:29:24Z",
@@ -19164,7 +19164,7 @@
     {
       "id": 13661,
       "title": "m10-gc-sawtooth-trim #K3 Guard-Test gc-sawtooth-trim.test.ts",
-      "description": "tests/gc-sawtooth-trim.test.ts: gepoolte Pfade erzeugen 0 Objekte im Sim-Step (Snapshot-Zähler), bestehende Pool-Verträge unverändert. AK: Test grün, bestehende Pool-Tests unverändert grün.\n\n[lane #<alt>] lane #13364-#13367, Merge a05a1d40, Rebase auf main (8a83cbfb)",
+      "description": "tests/gc-sawtooth-trim.test.ts: gepoolte Pfade erzeugen 0 Objekte im Sim-Step (Snapshot-Z\u00e4hler), bestehende Pool-Vertr\u00e4ge unver\u00e4ndert. AK: Test gr\u00fcn, bestehende Pool-Tests unver\u00e4ndert gr\u00fcn.\n\n[lane #<alt>] lane #13364-#13367, Merge a05a1d40, Rebase auf main (8a83cbfb)",
       "column": "done",
       "notes": [],
       "created": "2026-11-28T17:29:24Z",
@@ -19173,7 +19173,7 @@
     {
       "id": 13662,
       "title": "m10-gc-sawtooth-trim #K4 Nachher-Profil + Lane-Doku",
-      "description": "K1-Methode nachher: bytes/frame Delta + p99-Frame-CPU-ms Vorher/Nachher; docs/lanes/m10-gc-sawtooth-trim.md mit Rest-Hebelliste (Stellen außerhalb des Areas). AK: bytes/frame -30 % oder besser, p99 nicht schlechter, Renderer-String in jedem Beleg, .lane-done.\n\n[lane #<alt>] lane #13364-#13367, Merge a05a1d40, Rebase auf main (8a83cbfb)",
+      "description": "K1-Methode nachher: bytes/frame Delta + p99-Frame-CPU-ms Vorher/Nachher; docs/lanes/m10-gc-sawtooth-trim.md mit Rest-Hebelliste (Stellen au\u00dferhalb des Areas). AK: bytes/frame -30 % oder besser, p99 nicht schlechter, Renderer-String in jedem Beleg, .lane-done.\n\n[lane #<alt>] lane #13364-#13367, Merge a05a1d40, Rebase auf main (8a83cbfb)",
       "column": "done",
       "notes": [],
       "created": "2026-11-28T17:29:24Z",
@@ -19181,14 +19181,14 @@
     },
     {
       "id": 13663,
-      "title": "m10-v10-gate-rerun K1: Werkzeuge prüfen + Worktree auf main",
-      "description": "Gate-Suite scripts/m10-v10-gate.mjs (Vorlage guard-Lauf 3, 15:57Z) auf dem aktuellen main verfügbar machen: Worktree m10-v10-gate-rerun fast-forward auf main (11f929c7), Skript/Werkzeuge vorhanden prüfen, Kopie scripts/m10-v10-gate-rerun.mjs (nur OUT/EVIDENCE-Lane-Name geändert, KEINE Methodikänderung), Renderer-String-Pflicht beachten (SwiftShader-Belege ungültig). Abnahme: Skript läuft, Doku-Grundlage steht.",
+      "title": "m10-v10-gate-rerun K1: Werkzeuge pr\u00fcfen + Worktree auf main",
+      "description": "Gate-Suite scripts/m10-v10-gate.mjs (Vorlage guard-Lauf 3, 15:57Z) auf dem aktuellen main verf\u00fcgbar machen: Worktree m10-v10-gate-rerun fast-forward auf main (11f929c7), Skript/Werkzeuge vorhanden pr\u00fcfen, Kopie scripts/m10-v10-gate-rerun.mjs (nur OUT/EVIDENCE-Lane-Name ge\u00e4ndert, KEINE Methodik\u00e4nderung), Renderer-String-Pflicht beachten (SwiftShader-Belege ung\u00fcltig). Abnahme: Skript l\u00e4uft, Doku-Grundlage steht.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:04:54Z",
           "by": "build",
-          "text": "doing → done: K1 fertig: Wrapper scripts/m10-v10-gate-rerun.mjs (Suite unveraendert) in Commit 6556c8f8, Worktree fast-forward auf main 11f929c7, tsc rc=0, node --check ok."
+          "text": "doing \u2192 done: K1 fertig: Wrapper scripts/m10-v10-gate-rerun.mjs (Suite unveraendert) in Commit 6556c8f8, Worktree fast-forward auf main 11f929c7, tsc rc=0, node --check ok."
         }
       ],
       "created": "2026-11-28T17:01:52Z",
@@ -19197,18 +19197,18 @@
     {
       "id": 13664,
       "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
-      "description": "Dieselbe Gate-Suite wie guard (gleiche Tore, gleicher Viewport 960x540) zweimal unter flock /home/ai/games/.lf-perf.lock auf main-HEAD laufen lassen. Ergebnisse: ~/games/.evidence/m10-v10-gate-rerun/gate-run{1,2}.json (+ shots/m10-v10-gate-rerun-run{1,2}.json Arbeitskopie). renderer-guard-Lane toucht scripts/perf.mjs: bei ungewohnten Abbrüchen Lauf wiederholen statt patchen; 0 JS-Fehler-Kriterium nur fürs Tor selbst. Abnahme: 2 vollständige Läufe mit Tor-JSONs + Renderer-String im Beleg.",
+      "description": "Dieselbe Gate-Suite wie guard (gleiche Tore, gleicher Viewport 960x540) zweimal unter flock /home/ai/games/.lf-perf.lock auf main-HEAD laufen lassen. Ergebnisse: ~/games/.evidence/m10-v10-gate-rerun/gate-run{1,2}.json (+ shots/m10-v10-gate-rerun-run{1,2}.json Arbeitskopie). renderer-guard-Lane toucht scripts/perf.mjs: bei ungewohnten Abbr\u00fcchen Lauf wiederholen statt patchen; 0 JS-Fehler-Kriterium nur f\u00fcrs Tor selbst. Abnahme: 2 vollst\u00e4ndige L\u00e4ufe mit Tor-JSONs + Renderer-String im Beleg.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:05:09Z",
           "by": "build",
-          "text": "todo → doing: K2 laeuft: Doppel-Lauf (Suite m10-v10-gate.mjs unveraendert) unter flock /home/ai/games/.lf-perf.lock, Log ~/tmp/m10-v10-gate-rerun-k2.log, Ergebnisse nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json."
+          "text": "todo \u2192 doing: K2 laeuft: Doppel-Lauf (Suite m10-v10-gate.mjs unveraendert) unter flock /home/ai/games/.lf-perf.lock, Log ~/tmp/m10-v10-gate-rerun-k2.log, Ergebnisse nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json."
         },
         {
           "at": "2026-11-28T17:25:50Z",
           "by": "build",
-          "text": "doing → done: K2 fertig (Commit 3a131c64): 2 vollständige Gate-Läufe auf main 11f929c7 unter flock, Tor-JSONs ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json, Renderer Mesa Intel RPL-S, Läufe reproduzierbar."
+          "text": "doing \u2192 done: K2 fertig (Commit 3a131c64): 2 vollst\u00e4ndige Gate-L\u00e4ufe auf main 11f929c7 unter flock, Tor-JSONs ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json, Renderer Mesa Intel RPL-S, L\u00e4ufe reproduzierbar."
         }
       ],
       "created": "2026-11-28T17:01:52Z",
@@ -19217,13 +19217,13 @@
     {
       "id": 13665,
       "title": "m10-v10-gate-rerun K3: Urteil je Tor + Delta gegen 15:57Z",
-      "description": "docs/lanes/m10-v10-gate-rerun.md: Urteil PASS/FAIL je Tor auf main-Stand, Delta gegen guard-Lauf 3 (shots/m10-v10-gate.json @15:57Z, .evidence/m10-v10-gate-guard/gate-final-run3.json). Besonderheiten: (a) frame-p95 wird NICHT als FAIL gewertet (Tor-Definition strukturell nicht erfüllbar, Frage bei Dom, Lead/Fragen an Dom.md 15:20Z) — nur p95/worst dokumentieren; (b) janky%/Gerätetore ausgespart (m10-janky-remeasure). Abnahme: Doku mit Tabelle je Tor, Belegpfaden, Renderer-String.",
+      "description": "docs/lanes/m10-v10-gate-rerun.md: Urteil PASS/FAIL je Tor auf main-Stand, Delta gegen guard-Lauf 3 (shots/m10-v10-gate.json @15:57Z, .evidence/m10-v10-gate-guard/gate-final-run3.json). Besonderheiten: (a) frame-p95 wird NICHT als FAIL gewertet (Tor-Definition strukturell nicht erf\u00fcllbar, Frage bei Dom, Lead/Fragen an Dom.md 15:20Z) \u2014 nur p95/worst dokumentieren; (b) janky%/Ger\u00e4tetore ausgespart (m10-janky-remeasure). Abnahme: Doku mit Tabelle je Tor, Belegpfaden, Renderer-String.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:25:50Z",
           "by": "build",
-          "text": "todo → done: K3 fertig (Commit 74fa9c75): Urteil je Tor in docs/lanes/m10-v10-gate-rerun.md — FAIL nur js-errors-0 (13x Texture key already in use: chunk_*) + fullrun-inhalt als Folgetor; frame-p95 2,0/1,9 ms nur dokumentiert; Delta gegen 15:57Z."
+          "text": "todo \u2192 done: K3 fertig (Commit 74fa9c75): Urteil je Tor in docs/lanes/m10-v10-gate-rerun.md \u2014 FAIL nur js-errors-0 (13x Texture key already in use: chunk_*) + fullrun-inhalt als Folgetor; frame-p95 2,0/1,9 ms nur dokumentiert; Delta gegen 15:57Z."
         }
       ],
       "created": "2026-11-28T17:01:52Z",
@@ -19232,13 +19232,13 @@
     {
       "id": 13666,
       "title": "m10-v10-gate-rerun K4: Hebelliste / Fix-Empfehlungen + .lane-done",
-      "description": "Bei FAIL auf einem anderen Tor als frame-p95: Fix-Empfehlungen (Datei + Hebel + erwarteter Gewinn) in Abschnitt 'Hebelliste' der Lane-Doku — daraus schneidet der Disponent Fix-Jobs. Sonst explizit 'keine Befunde'. Danach .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) im Worktree-Wurzel, committet. Abnahme: Hebelliste oder 'keine Befunde' + .lane-done.",
+      "description": "Bei FAIL auf einem anderen Tor als frame-p95: Fix-Empfehlungen (Datei + Hebel + erwarteter Gewinn) in Abschnitt 'Hebelliste' der Lane-Doku \u2014 daraus schneidet der Disponent Fix-Jobs. Sonst explizit 'keine Befunde'. Danach .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) im Worktree-Wurzel, committet. Abnahme: Hebelliste oder 'keine Befunde' + .lane-done.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:25:50Z",
           "by": "build",
-          "text": "todo → done: K4 fertig (Commit 6d22495b): Hebelliste mit 1 Befund (src/gfx/GroundRenderer.ts, doppelte chunk_*-Keys, Erwartung js-errors 13→0 + Gate gesamt PASS); .lane-done committet; Duplikate #13491-#13494 markiert."
+          "text": "todo \u2192 done: K4 fertig (Commit 6d22495b): Hebelliste mit 1 Befund (src/gfx/GroundRenderer.ts, doppelte chunk_*-Keys, Erwartung js-errors 13\u21920 + Gate gesamt PASS); .lane-done committet; Duplikate #13491-#13494 markiert."
         }
       ],
       "created": "2026-11-28T17:01:52Z",
@@ -19254,12 +19254,12 @@
         {
           "at": "2026-11-28T17:02:35Z",
           "by": "coder",
-          "text": "todo → doing: K1 gestartet (Wrapper gebaut, Commit 3f12615e); K2-Laeufe folgen unter flock"
+          "text": "todo \u2192 doing: K1 gestartet (Wrapper gebaut, Commit 3f12615e); K2-Laeufe folgen unter flock"
         },
         {
           "at": "2026-11-28T17:04:37Z",
           "by": "build",
-          "text": "doing → done: Duplikat von #13455 (dieselbe K1-Arbeit, Disponent-Reserveblock): Wrapper scripts/m10-v10-gate-rerun.mjs ist in Commit 6556c8f8 (#13455) gelandet — diese Karte hier nur zur Deduplication geschlossen, kein eigener Inhalt."
+          "text": "doing \u2192 done: Duplikat von #13455 (dieselbe K1-Arbeit, Disponent-Reserveblock): Wrapper scripts/m10-v10-gate-rerun.mjs ist in Commit 6556c8f8 (#13455) gelandet \u2014 diese Karte hier nur zur Deduplication geschlossen, kein eigener Inhalt."
         }
       ],
       "created": "2026-11-28T17:02:02Z",
@@ -19275,12 +19275,12 @@
         {
           "at": "2026-11-28T17:02:35Z",
           "by": "coder",
-          "text": "todo → doing: K2 Gate-Lauf 1+2 gestartet (flock .lf-perf.lock)"
+          "text": "todo \u2192 doing: K2 Gate-Lauf 1+2 gestartet (flock .lf-perf.lock)"
         },
         {
           "at": "2026-11-28T17:05:09Z",
           "by": "build",
-          "text": "doing → backlog: Duplikat: #13456 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13456. Supervisor 17:0xZ: nur ein K-Set behalten."
+          "text": "doing \u2192 backlog: Duplikat: #13456 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13456. Supervisor 17:0xZ: nur ein K-Set behalten."
         }
       ],
       "created": "2026-11-28T17:02:02Z",
@@ -19289,14 +19289,14 @@
     {
       "id": 13669,
       "title": "m10-v10-gate-rerun K3: Urteil je Tor + Delta gegen 15:57Z",
-      "description": "docs/lanes/m10-v10-gate-rerun.md: je Tor PASS/FAIL + Delta gegen gate-final-run3.json (15:57:11Z). frame-p95 wie im Guard-Befund 1 NICHT als FAIL werten (Tor gegen 60-FPS-Cap strukturell unerfuellbar, Frage bei Dom) — nur p95/worst dokumentieren, kein Fix. janky%/Geraetetore ausgespart (remeasure-Lane). Belegpfade referenzieren.",
+      "description": "docs/lanes/m10-v10-gate-rerun.md: je Tor PASS/FAIL + Delta gegen gate-final-run3.json (15:57:11Z). frame-p95 wie im Guard-Befund 1 NICHT als FAIL werten (Tor gegen 60-FPS-Cap strukturell unerfuellbar, Frage bei Dom) \u2014 nur p95/worst dokumentieren, kein Fix. janky%/Geraetetore ausgespart (remeasure-Lane). Belegpfade referenzieren.",
       "column": "backlog",
       "assignee": "coder",
       "notes": [
         {
           "at": "2026-11-28T17:05:09Z",
           "by": "build",
-          "text": "todo → backlog: Duplikat: #13457 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13457. Supervisor 17:0xZ: nur ein K-Set behalten."
+          "text": "todo \u2192 backlog: Duplikat: #13457 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13457. Supervisor 17:0xZ: nur ein K-Set behalten."
         }
       ],
       "created": "2026-11-28T17:02:02Z",
@@ -19312,7 +19312,7 @@
         {
           "at": "2026-11-28T17:05:09Z",
           "by": "build",
-          "text": "todo → backlog: Duplikat: #13458 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13458. Supervisor 17:0xZ: nur ein K-Set behalten."
+          "text": "todo \u2192 backlog: Duplikat: #13458 (Disponent-Reserveblock #13491-#13494 vs Lane-Board #13455-#13458, doppelt beim Resume angelegt). Arbeit laeuft unter #13458. Supervisor 17:0xZ: nur ein K-Set behalten."
         }
       ],
       "created": "2026-11-28T17:02:02Z",
@@ -19320,14 +19320,14 @@
     },
     {
       "id": 13671,
-      "title": "m10-golden-frame-rebaseline-r3 K1: Probe auf aktuellem main (3 Seeds × 600 Ticks, sim-Hash)",
-      "description": "AE: node scripts/m10-golden-frame.mjs auf main-HEAD d75862cb+; Verdict-JSON mit je-Seed-Hashes + Determinismusbeleg als shots/m10-golden-frame-r3-verdict.json (Beleg auch ~/games/.evidence/). Frage: divergiert die r2-Baseline (213b8494-Stand)? Keine src-Änderung.",
+      "title": "m10-golden-frame-rebaseline-r3 K1: Probe auf aktuellem main (3 Seeds \u00d7 600 Ticks, sim-Hash)",
+      "description": "AE: node scripts/m10-golden-frame.mjs auf main-HEAD d75862cb+; Verdict-JSON mit je-Seed-Hashes + Determinismusbeleg als shots/m10-golden-frame-r3-verdict.json (Beleg auch ~/games/.evidence/). Frage: divergiert die r2-Baseline (213b8494-Stand)? Keine src-\u00c4nderung.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:22:57Z",
           "by": "build",
-          "text": "todo → doing: K1 Probe gestartet: Guard-Lauf ohne --write-baseline gegen Baseline 761f274a (Stand 213b8494)."
+          "text": "todo \u2192 doing: K1 Probe gestartet: Guard-Lauf ohne --write-baseline gegen Baseline 761f274a (Stand 213b8494)."
         },
         {
           "at": "2026-11-28T17:31:56+00:00",
@@ -19341,7 +19341,7 @@
     {
       "id": 13672,
       "title": "m10-golden-frame-rebaseline-r3 K2: Rebaseline oder Befundliste",
-      "description": "AE: Bei legitimem Verhaltenswandel (dokumentierte Merge-Quellen je Differenz): --write-baseline + npx vitest run tests/golden-frame.test.ts grün. Bei echtem visuell/verhaltensseitigem Regress: KEIN Rebaseline — Befundliste (Seed, Tick, Differenz, verdächtiger Merge) + Bedarfsmeldung .dispatch/requests.md. Keine src-Änderung.",
+      "description": "AE: Bei legitimem Verhaltenswandel (dokumentierte Merge-Quellen je Differenz): --write-baseline + npx vitest run tests/golden-frame.test.ts gr\u00fcn. Bei echtem visuell/verhaltensseitigem Regress: KEIN Rebaseline \u2014 Befundliste (Seed, Tick, Differenz, verd\u00e4chtiger Merge) + Bedarfsmeldung .dispatch/requests.md. Keine src-\u00c4nderung.",
       "column": "todo",
       "notes": [],
       "created": "2026-11-28T17:22:38Z",
@@ -19366,12 +19366,12 @@
         {
           "at": "2026-11-28T16:42:02Z",
           "by": "build",
-          "text": "todo → doing: K1 angenommen (Lane m10-evo-element-guard): Probe-Skript wird gebaut."
+          "text": "todo \u2192 doing: K1 angenommen (Lane m10-evo-element-guard): Probe-Skript wird gebaut."
         },
         {
           "at": "2026-11-28T17:00:35Z",
           "by": "build",
-          "text": "doing → review: K1 fertig: scripts/m10-evo-element-guard.mjs, 12 Standbild-PNGs + shots/m10-evo-element-guard.json, Renderer ANGLE Mesa Intel RPL-S (iGPU, kein SwiftShader), 0 JS-Fehler. Belege auch in ~/games/.evidence/m10-evo-element-guard/. Commit 5b870f96 #13384."
+          "text": "doing \u2192 review: K1 fertig: scripts/m10-evo-element-guard.mjs, 12 Standbild-PNGs + shots/m10-evo-element-guard.json, Renderer ANGLE Mesa Intel RPL-S (iGPU, kein SwiftShader), 0 JS-Fehler. Belege auch in ~/games/.evidence/m10-evo-element-guard/. Commit 5b870f96 #13384."
         },
         {
           "at": "2026-11-28T17:32:27+00:00",
@@ -19385,24 +19385,24 @@
     {
       "id": 13675,
       "title": "m10-evo-element-guard K2: Farb-Signatur-Assertions je Evo",
-      "description": "Im selben Probe-Skript Farb-Signaturen je Evo aus den Standbild-Crops: Paletten-Histogramm (nearest-PAL-Mapping via decodePng), Zielbaender: Phoenix=Feuer-Orange (PAL 14-22, Kern 17-21), Winter=Eisblau (6-11), Soulpyre=tuerkis/weiß (7-13), Gewittersiegel=Blitz-Weiß-Peaks (12-13), Zornpendel=Glut/Rot (14-17+23-27), Dornensturm=Gruen (28-31) + kein flaechnaiges Raster (Zeilengleichmaessigkeit). Schwellen werden aus den aktuellen abgenommenen Standbildern (K1-Belege) kalibriert, NICHT aus alten SwiftShader-Belegen. FAIL einer Signatur -> kein Fix im Spielcode (FX-Dateien fremd), Befund + Hebel in Lane-Doku. AK: Kalibrierte Schwellen in shots/m10-evo-element-guard.json, 6/6 Signaturen GREEN oder FAIL dokumentiert.",
+      "description": "Im selben Probe-Skript Farb-Signaturen je Evo aus den Standbild-Crops: Paletten-Histogramm (nearest-PAL-Mapping via decodePng), Zielbaender: Phoenix=Feuer-Orange (PAL 14-22, Kern 17-21), Winter=Eisblau (6-11), Soulpyre=tuerkis/wei\u00df (7-13), Gewittersiegel=Blitz-Wei\u00df-Peaks (12-13), Zornpendel=Glut/Rot (14-17+23-27), Dornensturm=Gruen (28-31) + kein flaechnaiges Raster (Zeilengleichmaessigkeit). Schwellen werden aus den aktuellen abgenommenen Standbildern (K1-Belege) kalibriert, NICHT aus alten SwiftShader-Belegen. FAIL einer Signatur -> kein Fix im Spielcode (FX-Dateien fremd), Befund + Hebel in Lane-Doku. AK: Kalibrierte Schwellen in shots/m10-evo-element-guard.json, 6/6 Signaturen GREEN oder FAIL dokumentiert.",
       "column": "done",
       "assignee": "m10-evo-element-guard",
       "notes": [
         {
           "at": "2026-11-28T17:00:35Z",
           "by": "build",
-          "text": "todo → doing: K2 angenommen: Baseline-Differenz-Signaturen (waffenloser Referenz-Frame je Aufloesung) + Kalibrierung."
+          "text": "todo \u2192 doing: K2 angenommen: Baseline-Differenz-Signaturen (waffenloser Referenz-Frame je Aufloesung) + Kalibrierung."
         },
         {
           "at": "2026-11-28T17:17:27Z",
           "by": "build",
-          "text": "Supervisor-Steer bestätigt und bereits befolgt: Kalibrierung lief als CALIB-Einmallauf (CALIB=1 gab Ist-Anteile + Vorschlag in einem Durchlauf aus), Schwellen = min-über-2-Läufe × 0.4 als fester Sicherheitsabstand, GENAU EIN Edit am Guard-Skript, danach ein Verifikationslauf: 6/6 Evo-Signaturen GREEN (phoenix/winter/soulpyre/gewittersiegel/zornpendel/dornensturm). Kein weiteres Hand-Tuning. Befund Baseline-vs-Waffenlicht (FX-Budget) kommt in die Lane-Doku. Commit folgt als #13385."
+          "text": "Supervisor-Steer best\u00e4tigt und bereits befolgt: Kalibrierung lief als CALIB-Einmallauf (CALIB=1 gab Ist-Anteile + Vorschlag in einem Durchlauf aus), Schwellen = min-\u00fcber-2-L\u00e4ufe \u00d7 0.4 als fester Sicherheitsabstand, GENAU EIN Edit am Guard-Skript, danach ein Verifikationslauf: 6/6 Evo-Signaturen GREEN (phoenix/winter/soulpyre/gewittersiegel/zornpendel/dornensturm). Kein weiteres Hand-Tuning. Befund Baseline-vs-Waffenlicht (FX-Budget) kommt in die Lane-Doku. Commit folgt als #13385."
         },
         {
           "at": "2026-11-28T17:17:33Z",
           "by": "build",
-          "text": "doing → review: K2 fertig: Signatur = absoluter Ziel-Farbband-Anteil im Spieler-Crop (Seed 7, Teleport 2048/2048, deterministisch). Schwellen aus CALIB-Einmallauf uebernommen (min-Ist x0.4; soulpyre.noFire max=0.06, Umgebungsglut ~4.5% dokumentiert; dornensturm grid-CV >= 0.1 gegen Raster-Overlay). Verifikationslauf: 6/6 GREEN, 0 JS-Fehler, Renderer Mesa Intel RPL-S. Commit 63b89dee #13385."
+          "text": "doing \u2192 review: K2 fertig: Signatur = absoluter Ziel-Farbband-Anteil im Spieler-Crop (Seed 7, Teleport 2048/2048, deterministisch). Schwellen aus CALIB-Einmallauf uebernommen (min-Ist x0.4; soulpyre.noFire max=0.06, Umgebungsglut ~4.5% dokumentiert; dornensturm grid-CV >= 0.1 gegen Raster-Overlay). Verifikationslauf: 6/6 GREEN, 0 JS-Fehler, Renderer Mesa Intel RPL-S. Commit 63b89dee #13385."
         },
         {
           "at": "2026-11-28T17:32:27+00:00",
@@ -19423,12 +19423,12 @@
         {
           "at": "2026-11-28T17:17:33Z",
           "by": "build",
-          "text": "todo → doing: K3 angenommen: tests/evo-element-guard.test.ts (Signaturen-JSON-Guard + Source-Guard)."
+          "text": "todo \u2192 doing: K3 angenommen: tests/evo-element-guard.test.ts (Signaturen-JSON-Guard + Source-Guard)."
         },
         {
           "at": "2026-11-28T17:19:37Z",
           "by": "build",
-          "text": "doing → review: K3 fertig: tests/evo-element-guard.test.ts, 6 Tests gruen (iGPU-Gueltigkeit, 6x2 Signaturen GREEN, 12 PNGs, Schwellen-Erfuellung, Grid-CV, Source-Guard Schwellen-Sync). npm test 233 Dateien/2521 Tests gruen, tsc rc=0, build ok. Commit 73887835 #13386. (2 fremde shots/m10-passive-math-*.json waren nur npm-test-Timestamp-Regeneration, zurueckgesetzt.)"
+          "text": "doing \u2192 review: K3 fertig: tests/evo-element-guard.test.ts, 6 Tests gruen (iGPU-Gueltigkeit, 6x2 Signaturen GREEN, 12 PNGs, Schwellen-Erfuellung, Grid-CV, Source-Guard Schwellen-Sync). npm test 233 Dateien/2521 Tests gruen, tsc rc=0, build ok. Commit 73887835 #13386. (2 fremde shots/m10-passive-math-*.json waren nur npm-test-Timestamp-Regeneration, zurueckgesetzt.)"
         },
         {
           "at": "2026-11-28T17:32:27+00:00",
@@ -19449,7 +19449,7 @@
         {
           "at": "2026-11-28T17:19:27Z",
           "by": "build",
-          "text": "todo → doing: K4 angenommen: Lane-Doku + .lane-done."
+          "text": "todo \u2192 doing: K4 angenommen: Lane-Doku + .lane-done."
         },
         {
           "at": "2026-11-28T17:32:27+00:00",
@@ -19468,7 +19468,7 @@
       "createdAt": "2026-11-28T17:29Z",
       "notes": [
         "doing: Probe-Lauf gestartet (bg, flock -w 900, log ~/tmp/m10-renderer-guard-k4/k1-perf.log)",
-        "done: Probe-Lauf OK 17:32Z – renderer \"ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)\", rendererValid:true, jsErrors:[], burst fps 59 + minute25 fps 60 (beide invalid:false), passed:true. Beleg shots/m10-renderer-guard-k4-perf.json (gitignored, Kopie nach ~/games/.evidence in K2)."
+        "done: Probe-Lauf OK 17:32Z \u2013 renderer \"ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)\", rendererValid:true, jsErrors:[], burst fps 59 + minute25 fps 60 (beide invalid:false), passed:true. Beleg shots/m10-renderer-guard-k4-perf.json (gitignored, Kopie nach ~/games/.evidence in K2)."
       ]
     },
     {
@@ -19496,13 +19496,13 @@
     {
       "id": 13681,
       "title": "m10-fps-pacing-timestep K1+K2: Remeasure-Urteil + Hebel-Lokalisierung, Abschluss",
-      "description": "K1: Urteil aus docs/lanes/m10-janky-remeasure.md lesen — Trigger 'janky >= 10 %' gegen die gemessenen Werte prüfen (K2/K3: janky 0 %, 0/29 058 bzw. 0/32 114 Frames, Belege ~/games/.evidence/m10-janky-remeasure/). K2: Skip-/Pacing-Logik lokalisieren (Run.ts-Sim-Loop vs. src/main.ts/src/logic/fps-cap.ts Merge-Area). Bei janky < 10 % UND/ODER Hebel in fremder Merge-Area: KEINE Code-Änderung, Doku docs/lanes/m10-fps-pacing-timestep.md + Bedarfsmeldung .dispatch/requests.md + .lane-done. Abnahme: Doku nennt janky-Messwerte + Hebel-Datei(+Zeile) mit Belegen, tsc rc=0, Suite grün, ein Commit '#<id>'.",
+      "description": "K1: Urteil aus docs/lanes/m10-janky-remeasure.md lesen \u2014 Trigger 'janky >= 10 %' gegen die gemessenen Werte pr\u00fcfen (K2/K3: janky 0 %, 0/29 058 bzw. 0/32 114 Frames, Belege ~/games/.evidence/m10-janky-remeasure/). K2: Skip-/Pacing-Logik lokalisieren (Run.ts-Sim-Loop vs. src/main.ts/src/logic/fps-cap.ts Merge-Area). Bei janky < 10 % UND/ODER Hebel in fremder Merge-Area: KEINE Code-\u00c4nderung, Doku docs/lanes/m10-fps-pacing-timestep.md + Bedarfsmeldung .dispatch/requests.md + .lane-done. Abnahme: Doku nennt janky-Messwerte + Hebel-Datei(+Zeile) mit Belegen, tsc rc=0, Suite gr\u00fcn, ein Commit '#<id>'.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:31:03Z",
           "by": "build",
-          "text": "todo → doing: Lane m10-fps-pacing-timestep übernommen. K1 geprüft: Remeasure-Urteil (docs/lanes/m10-janky-remeasure.md) = janky 0 % in K2 UND K3 — Trigger 'janky >= 10 %' NICHT erfüllt. K2-Lokalisierung läuft (Run.ts vs. main.ts/fps-cap.ts Merge-Area)."
+          "text": "todo \u2192 doing: Lane m10-fps-pacing-timestep \u00fcbernommen. K1 gepr\u00fcft: Remeasure-Urteil (docs/lanes/m10-janky-remeasure.md) = janky 0 % in K2 UND K3 \u2014 Trigger 'janky >= 10 %' NICHT erf\u00fcllt. K2-Lokalisierung l\u00e4uft (Run.ts vs. main.ts/fps-cap.ts Merge-Area)."
         },
         {
           "at": "2026-11-28T17:37:13+00:00",
@@ -19516,18 +19516,18 @@
     {
       "id": 13682,
       "title": "m10-blend-band-followup K1: Vorher-Messung Blend-Wechsel/Frame",
-      "description": "Eigener Probe scripts/m10-blend-band.mjs (Muster tablet-fx-rc): Blend-Wechsel/Frame in 2 Profilen — Evo-Stack (6 Evolutionen) und Minute-25-Dichte (300 Gegner), iGPU, Renderer-String Pflicht. Belege ~/games/.evidence/m10-blend-band-followup/before-*.json. Lange Läufe unter flock /home/ai/games/.lf-perf.lock. Abnahme: Vorher-Werte im JSON mit Renderer-String (iGPU, kein SwiftShader).",
+      "description": "Eigener Probe scripts/m10-blend-band.mjs (Muster tablet-fx-rc): Blend-Wechsel/Frame in 2 Profilen \u2014 Evo-Stack (6 Evolutionen) und Minute-25-Dichte (300 Gegner), iGPU, Renderer-String Pflicht. Belege ~/games/.evidence/m10-blend-band-followup/before-*.json. Lange L\u00e4ufe unter flock /home/ai/games/.lf-perf.lock. Abnahme: Vorher-Werte im JSON mit Renderer-String (iGPU, kein SwiftShader).",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T16:51:08Z",
           "by": "build",
-          "text": "doing → review: K1 done, Commit ef3765fc (#13344): Probe scripts/m10-blend-band.mjs, Vorher blend 6.2/Frame worst (minute25:stack6+300) + 6.2 (stack:+6), Renderer 'Mesa Intel(R) Graphics (RPL-S)' (iGPU, kein SwiftShader), 0 JS-Fehler. Belege: ~/games/.evidence/m10-blend-band-followup/before.json, before-islands.json. Insel-Attribution (A/B runtime-hide, temp ~/tmp/m10-blend-band-followup/ab-islands.mjs): hide ADD-Band/7.5 oder Lichtkreis/20 aendert NICHTS (6.2 bleibt); hide blend-1-Graphics → 4.0; hide Ground-Chunks(d-100) → 4.0. Verbleibende Wechsel stammen aus Graphics/SKIP_CHECK + GroundRenderer, nicht aus sichtbaren ADD-Inseln."
+          "text": "doing \u2192 review: K1 done, Commit ef3765fc (#13344): Probe scripts/m10-blend-band.mjs, Vorher blend 6.2/Frame worst (minute25:stack6+300) + 6.2 (stack:+6), Renderer 'Mesa Intel(R) Graphics (RPL-S)' (iGPU, kein SwiftShader), 0 JS-Fehler. Belege: ~/games/.evidence/m10-blend-band-followup/before.json, before-islands.json. Insel-Attribution (A/B runtime-hide, temp ~/tmp/m10-blend-band-followup/ab-islands.mjs): hide ADD-Band/7.5 oder Lichtkreis/20 aendert NICHTS (6.2 bleibt); hide blend-1-Graphics \u2192 4.0; hide Ground-Chunks(d-100) \u2192 4.0. Verbleibende Wechsel stammen aus Graphics/SKIP_CHECK + GroundRenderer, nicht aus sichtbaren ADD-Inseln."
         },
         {
           "at": "2026-11-28T17:38:52Z",
           "by": "build",
-          "text": "review → done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
+          "text": "review \u2192 done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
         }
       ],
       "created": "2026-11-28T16:41:27Z",
@@ -19536,23 +19536,23 @@
     {
       "id": 13683,
       "title": "m10-blend-band-followup K2: Rest-ADD-Quellen ins Glow-Band ziehen",
-      "description": "Rest-ADD-Quellen (EnemyProjectiles, CombatSystem, PickupSystem) ins FX_GLOW_DEPTH-Band oder verträgliches zweites Band (Muster glowDepthFor/depthForSprite in FxSystem.ts — nur Muster, Datei nicht anfassen). GAME.md-Zeichenreihenfolge respektieren; zwingend über Gegnern liegende Quellen dokumentiert lassen. Abnahme: tsc rc=0, gezielte Tests grün, Quellen je dokumentiert in docs/lanes/m10-blend-band-followup.md.",
+      "description": "Rest-ADD-Quellen (EnemyProjectiles, CombatSystem, PickupSystem) ins FX_GLOW_DEPTH-Band oder vertr\u00e4gliches zweites Band (Muster glowDepthFor/depthForSprite in FxSystem.ts \u2014 nur Muster, Datei nicht anfassen). GAME.md-Zeichenreihenfolge respektieren; zwingend \u00fcber Gegnern liegende Quellen dokumentiert lassen. Abnahme: tsc rc=0, gezielte Tests gr\u00fcn, Quellen je dokumentiert in docs/lanes/m10-blend-band-followup.md.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T16:50:59Z",
           "by": "build",
-          "text": "todo → doing: K2 gestartet: Befund — EnemyProjectiles & PickupSystem sind ADD-frei (verifiziert: grep + Runtime-Census); einzige ADD-Insel in eigenen Dateien: CombatSystem Laterne unevolviert (orb_lantern ADD auf DEPTH.fxLow 7, mitten zwischen NORMAL-FX)."
+          "text": "todo \u2192 doing: K2 gestartet: Befund \u2014 EnemyProjectiles & PickupSystem sind ADD-frei (verifiziert: grep + Runtime-Census); einzige ADD-Insel in eigenen Dateien: CombatSystem Laterne unevolviert (orb_lantern ADD auf DEPTH.fxLow 7, mitten zwischen NORMAL-FX)."
         },
         {
           "at": "2026-11-28T16:52:12Z",
           "by": "build",
-          "text": "doing → review: K2 done, Commit bb1a641e (#13345). Befund ehrlich: EnemyProjectiles hat KEINE ADD-Quelle (grep + Runtime-Census before.json), PickupSystem-Momente sind NORMAL (tintFill+Graphics) und bleiben bewusst auf enemyShot+1 (Lesbarkeit, dokumentiert) — einzige reale ADD-Insel in eigenen Dateien war CombatSystem Laterne unevolviert (orb_lantern ADD auf fxLow 7 zwischen NORMAL-FX). Fix: lanternOrbDepth(evolved) → ADD-Korpus ins Band 7.5 (Halos liefen schon dort), evolviert bleibt NORMAL auf fxLow. tsc rc=0. Zahl-Wahrheit: sichtbare ADD-Inseln kosten lokal 0 Wechsel (A/B runtime-hide), Rest 6,2 stammt aus Graphics/SKIP_CHECK + GroundChunks (fremd)."
+          "text": "doing \u2192 review: K2 done, Commit bb1a641e (#13345). Befund ehrlich: EnemyProjectiles hat KEINE ADD-Quelle (grep + Runtime-Census before.json), PickupSystem-Momente sind NORMAL (tintFill+Graphics) und bleiben bewusst auf enemyShot+1 (Lesbarkeit, dokumentiert) \u2014 einzige reale ADD-Insel in eigenen Dateien war CombatSystem Laterne unevolviert (orb_lantern ADD auf fxLow 7 zwischen NORMAL-FX). Fix: lanternOrbDepth(evolved) \u2192 ADD-Korpus ins Band 7.5 (Halos liefen schon dort), evolviert bleibt NORMAL auf fxLow. tsc rc=0. Zahl-Wahrheit: sichtbare ADD-Inseln kosten lokal 0 Wechsel (A/B runtime-hide), Rest 6,2 stammt aus Graphics/SKIP_CHECK + GroundChunks (fremd)."
         },
         {
           "at": "2026-11-28T17:38:52Z",
           "by": "build",
-          "text": "review → done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
+          "text": "review \u2192 done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
         }
       ],
       "created": "2026-11-28T16:41:27Z",
@@ -19561,18 +19561,18 @@
     {
       "id": 13684,
       "title": "m10-blend-band-followup K3: Guard-Test tests/blend-band-followup.test.ts",
-      "description": "Depth-Assertions je Quelle (Glow → Band, Basis unverändert), Muster tests/tablet-fx-budget.test.ts. Abnahme: npx vitest run tests/blend-band-followup.test.ts grün, Full-Suite vor Commit grün.",
+      "description": "Depth-Assertions je Quelle (Glow \u2192 Band, Basis unver\u00e4ndert), Muster tests/tablet-fx-budget.test.ts. Abnahme: npx vitest run tests/blend-band-followup.test.ts gr\u00fcn, Full-Suite vor Commit gr\u00fcn.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T16:52:12Z",
           "by": "build",
-          "text": "todo → review: K3 done, Commit (tests/blend-band-followup.test.ts, 9 Tests gruen): Depth-Assertions je Quelle — Laterne im Band + alle ADD-Zuweisungen im CombatSystem band-geankert, Momente NORMAL auf enemyShot+1, EnemyProjectiles ADD-frei, Walk-Modell 2 Grenzen + Gegenmodell alte Laterne 4 Grenzen (Regressions-Anker)."
+          "text": "todo \u2192 review: K3 done, Commit (tests/blend-band-followup.test.ts, 9 Tests gruen): Depth-Assertions je Quelle \u2014 Laterne im Band + alle ADD-Zuweisungen im CombatSystem band-geankert, Momente NORMAL auf enemyShot+1, EnemyProjectiles ADD-frei, Walk-Modell 2 Grenzen + Gegenmodell alte Laterne 4 Grenzen (Regressions-Anker)."
         },
         {
           "at": "2026-11-28T17:38:52Z",
           "by": "build",
-          "text": "review → done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
+          "text": "review \u2192 done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
         }
       ],
       "created": "2026-11-28T16:41:27Z",
@@ -19581,18 +19581,18 @@
     {
       "id": 13685,
       "title": "m10-blend-band-followup K4: Nachher-Messung + Lane-Doku + .lane-done",
-      "description": "K1-Profile nachmessen (Blend-Wechsel/Frame im Worst-Profil <= 4), pixel-diff Probe gegen Vorher-Standbild (Differenz nur im ADD-Band erklärt), docs/lanes/m10-blend-band-followup.md mit Vorher/Nachher + Hebelliste Rest-Quellen, .lane-done committen.",
+      "description": "K1-Profile nachmessen (Blend-Wechsel/Frame im Worst-Profil <= 4), pixel-diff Probe gegen Vorher-Standbild (Differenz nur im ADD-Band erkl\u00e4rt), docs/lanes/m10-blend-band-followup.md mit Vorher/Nachher + Hebelliste Rest-Quellen, .lane-done committen.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T16:53:38Z",
           "by": "build",
-          "text": "todo → doing: K4 gestartet: Nachher-Messung (flock), Pixel-diff-Probe (runtime A/B am gefrorenen Scene-State: orb@7.5 vs orb@7 im selben Frame), Lane-Doku, .lane-done."
+          "text": "todo \u2192 doing: K4 gestartet: Nachher-Messung (flock), Pixel-diff-Probe (runtime A/B am gefrorenen Scene-State: orb@7.5 vs orb@7 im selben Frame), Lane-Doku, .lane-done."
         },
         {
           "at": "2026-11-28T17:38:52Z",
           "by": "build",
-          "text": "doing → done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
+          "text": "doing \u2192 done: lane #13344-#13347, Merge-Review: Reviewer PASS; Belege ~/games/.evidence/m10-blend-band-followup/"
         }
       ],
       "created": "2026-11-28T16:41:27Z",
@@ -19600,24 +19600,24 @@
     },
     {
       "id": 13766,
-      "title": "m10-panel-hz-pref K1: src/logic/panel-hz.ts (Präferenz schreiben/löschen)",
-      "description": "Neue reine Datei src/logic/panel-hz.ts: localStorage-Schlüssel lfhz_panel, API setPanelHzPref(mode: 'locked60'|'max'), injizierbarer Storage, kein Import aus fps-cap.ts (Lane m10-fps-pacing-fix belegt die Datei). Abnahme: tsc rc=0, keine Abhängigkeit zu fps-cap.ts.",
+      "title": "m10-panel-hz-pref K1: src/logic/panel-hz.ts (Pr\u00e4ferenz schreiben/l\u00f6schen)",
+      "description": "Neue reine Datei src/logic/panel-hz.ts: localStorage-Schl\u00fcssel lfhz_panel, API setPanelHzPref(mode: 'locked60'|'max'), injizierbarer Storage, kein Import aus fps-cap.ts (Lane m10-fps-pacing-fix belegt die Datei). Abnahme: tsc rc=0, keine Abh\u00e4ngigkeit zu fps-cap.ts.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:48:30Z",
           "by": "build",
-          "text": "todo → doing: Lane m10-panel-hz-pref übernommen: Panel-Hz-Präferenz für APK-Bridge (Dom-Folgepunkt 17:45Z)."
+          "text": "todo \u2192 doing: Lane m10-panel-hz-pref \u00fcbernommen: Panel-Hz-Pr\u00e4ferenz f\u00fcr APK-Bridge (Dom-Folgepunkt 17:45Z)."
         },
         {
           "at": "2026-11-28T17:48:53Z",
           "by": "build",
-          "text": "doing → review: K1 fertig, Commit 7192e2b9. Reine Datei ohne fps-cap-Import, tsc rc=0."
+          "text": "doing \u2192 review: K1 fertig, Commit 7192e2b9. Reine Datei ohne fps-cap-Import, tsc rc=0."
         },
         {
           "at": "2026-11-28T17:57:23Z",
           "by": "build",
-          "text": "review → done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build grün, 2575 Tests grün, Kontroll-Shots 960/1280 sauber)"
+          "text": "review \u2192 done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build gr\u00fcn, 2575 Tests gr\u00fcn, Kontroll-Shots 960/1280 sauber)"
         }
       ],
       "created": "2026-11-28T17:48:27Z",
@@ -19626,23 +19626,23 @@
     {
       "id": 13767,
       "title": "m10-panel-hz-pref K2: Hook in src/audio/options.ts setOption",
-      "description": "setOption(key==='fps'): fps=0 (MAX) → setPanelHzPref('max'), sonst 'locked60'. Semantik/BILDRATE-Anzeige bitgleich, Options-Persistenz unverändert. Abnahme: tsc rc=0, meta-persist-Tests grün, kein Touch an fps-cap.ts/main.ts/UI.ts.",
+      "description": "setOption(key==='fps'): fps=0 (MAX) \u2192 setPanelHzPref('max'), sonst 'locked60'. Semantik/BILDRATE-Anzeige bitgleich, Options-Persistenz unver\u00e4ndert. Abnahme: tsc rc=0, meta-persist-Tests gr\u00fcn, kein Touch an fps-cap.ts/main.ts/UI.ts.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:48:53Z",
           "by": "build",
-          "text": "todo → doing: K2 Hook in options.ts setOption starten."
+          "text": "todo \u2192 doing: K2 Hook in options.ts setOption starten."
         },
         {
           "at": "2026-11-28T17:49:09Z",
           "by": "build",
-          "text": "doing → review: K2 fertig, Commit 47355683. tsc rc=0, meta-persist+options-focus 31 Tests grün."
+          "text": "doing \u2192 review: K2 fertig, Commit 47355683. tsc rc=0, meta-persist+options-focus 31 Tests gr\u00fcn."
         },
         {
           "at": "2026-11-28T17:57:23Z",
           "by": "build",
-          "text": "review → done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build grün, 2575 Tests grün, Kontroll-Shots 960/1280 sauber)"
+          "text": "review \u2192 done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build gr\u00fcn, 2575 Tests gr\u00fcn, Kontroll-Shots 960/1280 sauber)"
         }
       ],
       "created": "2026-11-28T17:48:27Z",
@@ -19651,23 +19651,23 @@
     {
       "id": 13768,
       "title": "m10-panel-hz-pref K3: tests/panel-hz.test.ts",
-      "description": "Tests: setOption(fps=0) schreibt max-Präferenz; 60/AUTO löscht/auf locked60; kein NaN; Persistenz-Expecteds unangetastet (tests/meta-persist.test.ts bleibt grün). Abnahme: npx vitest run tests/panel-hz.test.ts + tests/meta-persist.test.ts 0 fail.",
+      "description": "Tests: setOption(fps=0) schreibt max-Pr\u00e4ferenz; 60/AUTO l\u00f6scht/auf locked60; kein NaN; Persistenz-Expecteds unangetastet (tests/meta-persist.test.ts bleibt gr\u00fcn). Abnahme: npx vitest run tests/panel-hz.test.ts + tests/meta-persist.test.ts 0 fail.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:49:09Z",
           "by": "build",
-          "text": "todo → doing: K3 Tests starten."
+          "text": "todo \u2192 doing: K3 Tests starten."
         },
         {
           "at": "2026-11-28T17:50:41Z",
           "by": "build",
-          "text": "doing → review: K3 fertig, Commit 003f165e. 7 neue Tests + meta-persist/options-focus/mobile-fps-cap 55 Tests grün, tsc rc=0."
+          "text": "doing \u2192 review: K3 fertig, Commit 003f165e. 7 neue Tests + meta-persist/options-focus/mobile-fps-cap 55 Tests gr\u00fcn, tsc rc=0."
         },
         {
           "at": "2026-11-28T17:57:23Z",
           "by": "build",
-          "text": "review → done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build grün, 2575 Tests grün, Kontroll-Shots 960/1280 sauber)"
+          "text": "review \u2192 done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build gr\u00fcn, 2575 Tests gr\u00fcn, Kontroll-Shots 960/1280 sauber)"
         }
       ],
       "created": "2026-11-28T17:48:27Z",
@@ -19682,12 +19682,12 @@
         {
           "at": "2026-11-28T17:50:41Z",
           "by": "build",
-          "text": "todo → doing: K4 Doku + .lane-done."
+          "text": "todo \u2192 doing: K4 Doku + .lane-done."
         },
         {
           "at": "2026-11-28T17:57:23Z",
           "by": "build",
-          "text": "doing → done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build grün, 2575 Tests grün, Kontroll-Shots 960/1280 sauber)"
+          "text": "doing \u2192 done: lane #m10-panel-hz-pref, Merge 79e01c5d (Rebase auf main, --no-ff; build gr\u00fcn, 2575 Tests gr\u00fcn, Kontroll-Shots 960/1280 sauber)"
         }
       ],
       "created": "2026-11-28T17:48:27Z",
@@ -19695,24 +19695,24 @@
     },
     {
       "id": 13826,
-      "title": "m10-acceptance-tor-sync K1: Bestand aufnehmen (Gerätetore-Abschnitt, Nachträge je Abschnitt prüfen)",
-      "description": "ACCEPTANCE.md v1.0-Gerätetore-Abschnitt (main @ 5664a7fc) lesen; spätere Einträge (heap-gate-recovery G-Zahlen, v10-gate-rerun-Urteil, torprio-Umstellung) je Abschnitt prüfen. Historische Abschnitte unangetastet, nur Ergänzungen. AK: Befundliste in docs/lanes/m10-acceptance-tor-sync.md mit Zahlenbeleg.",
+      "title": "m10-acceptance-tor-sync K1: Bestand aufnehmen (Ger\u00e4tetore-Abschnitt, Nachtr\u00e4ge je Abschnitt pr\u00fcfen)",
+      "description": "ACCEPTANCE.md v1.0-Ger\u00e4tetore-Abschnitt (main @ 5664a7fc) lesen; sp\u00e4tere Eintr\u00e4ge (heap-gate-recovery G-Zahlen, v10-gate-rerun-Urteil, torprio-Umstellung) je Abschnitt pr\u00fcfen. Historische Abschnitte unangetastet, nur Erg\u00e4nzungen. AK: Befundliste in docs/lanes/m10-acceptance-tor-sync.md mit Zahlenbeleg.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:48:45Z",
           "by": "build",
-          "text": "todo → doing: Lane gestartet: Bestand aufnehmen"
+          "text": "todo \u2192 doing: Lane gestartet: Bestand aufnehmen"
         },
         {
           "at": "2026-11-28T17:50:36Z",
           "by": "build",
-          "text": "K1 fertig: Bestand aufgenommen, Befundtabelle in docs/lanes/m10-acceptance-tor-sync.md (K1). 17:45Z-Tabelle gelesen (Pfad bestätigt), K2 nicht blockiert."
+          "text": "K1 fertig: Bestand aufgenommen, Befundtabelle in docs/lanes/m10-acceptance-tor-sync.md (K1). 17:45Z-Tabelle gelesen (Pfad best\u00e4tigt), K2 nicht blockiert."
         },
         {
           "at": "2026-11-28T17:51:10Z",
           "by": "build",
-          "text": "doing → review: K1 committed dcd0390f: Befundtabelle K1 in docs/lanes/m10-acceptance-tor-sync.md, Belegpfade geprueft"
+          "text": "doing \u2192 review: K1 committed dcd0390f: Befundtabelle K1 in docs/lanes/m10-acceptance-tor-sync.md, Belegpfade geprueft"
         },
         {
           "at": "2026-11-28T17:58:36+00:00",
@@ -19725,19 +19725,19 @@
     },
     {
       "id": 13827,
-      "title": "m10-acceptance-tor-sync K2: 120-Hz-A/B-Nachtrag (Wünsche 17:45Z) in ACCEPTANCE.md",
-      "description": "Tabelle 60 Hz vs. 120 Hz aus Wünsche von Dom.md 17:45Z (60 Hz: 60,0 FPS / rAF p95 16,8 ms / janky 0 %; 120 Hz: 118,5 FPS / 8,4 ms / 11,8 %; Quelle device-bridge Claude-A/B, Minute-25-Dichte) + Dom-Freigabe 'Tablet-Tor bestanden' + Standard 60-Hz-Panel + 60-FPS-Cap ergänzen. AK: Nachtrag im v1.0-/G-Kontext, keine historischen Werte überschrieben.",
+      "title": "m10-acceptance-tor-sync K2: 120-Hz-A/B-Nachtrag (W\u00fcnsche 17:45Z) in ACCEPTANCE.md",
+      "description": "Tabelle 60 Hz vs. 120 Hz aus W\u00fcnsche von Dom.md 17:45Z (60 Hz: 60,0 FPS / rAF p95 16,8 ms / janky 0 %; 120 Hz: 118,5 FPS / 8,4 ms / 11,8 %; Quelle device-bridge Claude-A/B, Minute-25-Dichte) + Dom-Freigabe 'Tablet-Tor bestanden' + Standard 60-Hz-Panel + 60-FPS-Cap erg\u00e4nzen. AK: Nachtrag im v1.0-/G-Kontext, keine historischen Werte \u00fcberschrieben.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:51:10Z",
           "by": "build",
-          "text": "todo → doing: 120-Hz-Nachtrag in ACCEPTANCE.md wird eingefuegt"
+          "text": "todo \u2192 doing: 120-Hz-Nachtrag in ACCEPTANCE.md wird eingefuegt"
         },
         {
           "at": "2026-11-28T17:52:17Z",
           "by": "build",
-          "text": "doing → review: K2 committed a9dd66d8: 120-Hz-A/B-Tabelle + Dom-Freigabe + Standard 60 Hz/Cap 60 im Nachtrag, npm test 2568/2568 gruen (regenerierte Timestamp-shots zurueckgesetzt)"
+          "text": "doing \u2192 review: K2 committed a9dd66d8: 120-Hz-A/B-Tabelle + Dom-Freigabe + Standard 60 Hz/Cap 60 im Nachtrag, npm test 2568/2568 gruen (regenerierte Timestamp-shots zurueckgesetzt)"
         },
         {
           "at": "2026-11-28T17:58:36+00:00",
@@ -19751,18 +19751,18 @@
     {
       "id": 13828,
       "title": "m10-acceptance-tor-sync K3: Blocker-Status korrigieren (fps-pacing-Tor-Lesart)",
-      "description": "FPS avg + rAF-p95 als Tor-Metriken nach merge-m10-v10-gate-torprio dokumentieren; gfxinfo-janky nur Beobachtung; Verweis auf docs/lanes/m10-janky-remeasure.md und m10-v10-gate-torprio.md. AK: K3-janky-FAIL im Gerätetore-Abschnitt mit aktueller Tor-Lesart kontextualisiert.",
+      "description": "FPS avg + rAF-p95 als Tor-Metriken nach merge-m10-v10-gate-torprio dokumentieren; gfxinfo-janky nur Beobachtung; Verweis auf docs/lanes/m10-janky-remeasure.md und m10-v10-gate-torprio.md. AK: K3-janky-FAIL im Ger\u00e4tetore-Abschnitt mit aktueller Tor-Lesart kontextualisiert.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:52:03Z",
           "by": "build",
-          "text": "todo → doing: Blocker-Status/Tor-Prioritaet wird ergaenzt"
+          "text": "todo \u2192 doing: Blocker-Status/Tor-Prioritaet wird ergaenzt"
         },
         {
           "at": "2026-11-28T17:53:01Z",
           "by": "build",
-          "text": "doing → review: K3 committed 1268189d: Tor-Prioritaet (fps-avg>=57, p95<=16ms primar; janky nur Warnung) + Rerun-Urteilstabelle im ACCEPTANCE-Nachtrag"
+          "text": "doing \u2192 review: K3 committed 1268189d: Tor-Prioritaet (fps-avg>=57, p95<=16ms primar; janky nur Warnung) + Rerun-Urteilstabelle im ACCEPTANCE-Nachtrag"
         },
         {
           "at": "2026-11-28T17:58:36+00:00",
@@ -19776,13 +19776,13 @@
     {
       "id": 13829,
       "title": "m10-acceptance-tor-sync K4: Abgleich + Querverweise auf Belege, Lane-Doku, npm test, Commit",
-      "description": "Querverweise auf Belege (~/games/.evidence/m10-janky-remeasure/, m10-v10-gate-rerun/) ergänzen; Zahlen nur aus Belegen. AK: npm test 0 fail, diff nur Ergänzungen im v1.0-/G-Kontext, Befunde mit Zahlenbeleg in docs/lanes/m10-acceptance-tor-sync.md.",
+      "description": "Querverweise auf Belege (~/games/.evidence/m10-janky-remeasure/, m10-v10-gate-rerun/) erg\u00e4nzen; Zahlen nur aus Belegen. AK: npm test 0 fail, diff nur Erg\u00e4nzungen im v1.0-/G-Kontext, Befunde mit Zahlenbeleg in docs/lanes/m10-acceptance-tor-sync.md.",
       "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:53:01Z",
           "by": "build",
-          "text": "todo → doing: Querverweise + Lane-Doku-Abschluss + finale Pruefung"
+          "text": "todo \u2192 doing: Querverweise + Lane-Doku-Abschluss + finale Pruefung"
         },
         {
           "at": "2026-11-28T17:58:36+00:00",
@@ -19796,7 +19796,7 @@
     {
       "id": 13890,
       "title": "m10-device10min-refresh K1 Befund: Output-JSON ohne refresh-Feld",
-      "description": "Befund dokumentieren: Output-JSON von scripts/m10-v10-device-10min.mjs enthält renderer/rendererValid, aber keine aktive Panel-Refresh-Rate. A/B-Tabelle der Dom-Freigabe 17:45Z (60-Hz-APK-Lock vs hz=max) als Anforderungsquelle in docs/lanes/m10-device10min-refresh.md festhalten. Abnahme: Befund + Anforderungsquelle in der Lane-Doku belegt. [lane #13746]",
+      "description": "Befund dokumentieren: Output-JSON von scripts/m10-v10-device-10min.mjs enth\u00e4lt renderer/rendererValid, aber keine aktive Panel-Refresh-Rate. A/B-Tabelle der Dom-Freigabe 17:45Z (60-Hz-APK-Lock vs hz=max) als Anforderungsquelle in docs/lanes/m10-device10min-refresh.md festhalten. Abnahme: Befund + Anforderungsquelle in der Lane-Doku belegt. [lane #13746]",
       "column": "done",
       "notes": [
         {
@@ -19811,7 +19811,7 @@
     {
       "id": 13891,
       "title": "m10-device10min-refresh K2 Integration: refreshRate + panelMode in Output-JSON",
-      "description": "In scripts/m10-v10-device-10min.mjs nach Laufstart dumpsys display (device-bridge-Äquivalent) lesen, aktive refreshRate + panelMode parsen und in den Telemetrie-Teil des Output-JSONs schreiben. renderer/rendererValid unangetastet; Parsing-Fehler → Feld fehlt + Warnung, passed-Logik bytegleich (Lauf fällt nicht auf FAIL). Abnahme: node --check rc=0, passed-Ausdruck unverändert. [lane #13747]",
+      "description": "In scripts/m10-v10-device-10min.mjs nach Laufstart dumpsys display (device-bridge-\u00c4quivalent) lesen, aktive refreshRate + panelMode parsen und in den Telemetrie-Teil des Output-JSONs schreiben. renderer/rendererValid unangetastet; Parsing-Fehler \u2192 Feld fehlt + Warnung, passed-Logik bytegleich (Lauf f\u00e4llt nicht auf FAIL). Abnahme: node --check rc=0, passed-Ausdruck unver\u00e4ndert. [lane #13747]",
       "column": "done",
       "notes": [
         {
@@ -19826,7 +19826,7 @@
     {
       "id": 13892,
       "title": "m10-device10min-refresh K3 Test: device10min-refresh.test.ts",
-      "description": "tests/device10min-refresh.test.ts: Dump-Parsing (60 Hz / 120 Hz / unlesbar) rein per Fixture-String, kein Gerät nötig. Plus Quell-Guard (Felder im Output-JSON). Abnahme: npx vitest run tests/device10min-refresh.test.ts grün. [lane #13748]",
+      "description": "tests/device10min-refresh.test.ts: Dump-Parsing (60 Hz / 120 Hz / unlesbar) rein per Fixture-String, kein Ger\u00e4t n\u00f6tig. Plus Quell-Guard (Felder im Output-JSON). Abnahme: npx vitest run tests/device10min-refresh.test.ts gr\u00fcn. [lane #13748]",
       "column": "done",
       "notes": [
         {
@@ -19841,7 +19841,7 @@
     {
       "id": 13893,
       "title": "m10-device10min-refresh K4 Doku: Feldbedeutung + 17:45Z-Freigabe",
-      "description": "docs/lanes/m10-device10min-refresh.md: Feldbedeutung refreshRate/panelMode dokumentieren, Verweis auf Dom-Freigabe 17:45Z; Grenze: kein neuer Messlauf nötig — Parsing/JSON-Vertrag only. Abnahme: JSON-Schema-Änderung in Doku belegt. [lane #13749]",
+      "description": "docs/lanes/m10-device10min-refresh.md: Feldbedeutung refreshRate/panelMode dokumentieren, Verweis auf Dom-Freigabe 17:45Z; Grenze: kein neuer Messlauf n\u00f6tig \u2014 Parsing/JSON-Vertrag only. Abnahme: JSON-Schema-\u00c4nderung in Doku belegt. [lane #13749]",
       "column": "done",
       "notes": [
         {
