@@ -12309,10 +12309,15 @@
           "at": "2026-11-28T08:06:07Z",
           "by": "build",
           "text": "review → done: lane #9776, Commit bc4fe7c3 — Dichte-Regel in fairChestSpawn."
+        },
+        {
+          "at": "2026-11-28T08:10:10Z",
+          "by": "build",
+          "text": "Reviewer-PASS (ses_ddecef10): Dichte-Logik korrekt (FALL-Zelle, Gleichstand/Zentrum), ohne enemyCount bitgleich, Snapshot einmalig, Tests echt. 3 Befunde (Box vs. Kreis, toter Code, Kommentar) gefixt in Commit f2845cc4. chest-Suiten 26/26, tsc rc=0."
         }
       ],
       "created": "2026-11-28T07:34:51Z",
-      "updated": "2026-11-28T08:06:07Z"
+      "updated": "2026-11-28T08:10:10Z"
     },
     {
       "id": 9777,
@@ -12344,10 +12349,15 @@
           "at": "2026-11-28T08:06:07Z",
           "by": "build",
           "text": "todo → review: K4 fertig, Commit a04c5924. Nachher: 48px Mean 1,28→0,06 (-95%), Max 10→1; 96px Mean 5,28→2,61, Max 36→18; Timing 6/6 ±0,5 s; Sicht-Shots in shots/abnahme/; Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T08:10:10Z",
+          "by": "build",
+          "text": "Reviewer-PASS; Belege: only-my-files diff (Run.ts/textures.ts/UI.ts unangetastet), 1701/1701. Review-Fixes f2845cc4. Lane abgeschlossen (.lane-done gecommitted)."
         }
       ],
       "created": "2026-11-28T07:34:51Z",
-      "updated": "2026-11-28T08:06:07Z"
+      "updated": "2026-11-28T08:10:10Z"
     }
   ]
 }
