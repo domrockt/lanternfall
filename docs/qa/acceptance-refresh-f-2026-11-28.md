@@ -27,7 +27,22 @@
 
 ## K2 — verify:final + verify:terrain/terrain-coverage
 
-(wechselnde Ergebnisse)
+| Zeit (UTC) | Befehl | Ergebnis | Urteil |
+|---|---|---|---|
+| 2026-11-28T10:11Z | `node scripts/verify-final.mjs` | **7/7 PASS**, rc=0, `errors:[]` (0 JS-Fehler) | **PASS** |
+| 2026-11-28T10:14Z | `node scripts/verify-terrain.mjs` (960/1280/1920) | `passed:true`, `coverageOk:true`, **0 schwarze Fläche** (maxRegion 0/0 start/end je View), `jsErrors:[]` | **PASS** |
+
+Belege (`~/games/.evidence/m10-acceptance-refresh-f/`):
+`2026-11-28T10-10-33-835Z-final-verify.json` (+ `…-final-options-mute.png`, `…-final-results-victory.png`),
+`k2-verify-terrain.json` (=`shots/m10-terrain-guard.json` des Laufs; Schwarz-Pixel-Guard mit
+`blackPx: 0`, `regions: []` für 960x540 / 1280x720 / 1920x1080).
+
+Renderer-String je Lauf (aus `k2-verify-terrain.json`, alle 3 Views):
+**„ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)“**; `rendererValid:true`.
+verify-final speichert keinen Renderer-String (kein FPS-Beleg, reiner UI/Logik-Check);
+iGPU-Besetzung desselben Hosts ist durch den Terrain-Lauf direkt belegt.
+
+**Urteil K2: PASS** (kein SwiftShader-Beleg in dieser Nachabnahme).
 
 ## K3 — Burst + Minute-25 auf iGPU (780x360@3, 960x540)
 

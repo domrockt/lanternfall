@@ -16,7 +16,7 @@ Nur Messen, **kein** src-/tests-Code. Briefing: Vorrat-Job, Karten K1–K4.
 | Karte | Inhalt | Status |
 |---|---|---|
 | #10904 | K1 Build rc + Testzahl + acceptance-count (Soll 30/6/6/6/6/2) | K1 erledigt |
-| #10905 | K2 verify:final (7/7 PASS, 0 JS-Fehler) + verify:terrain/terrain-coverage (0 schwarze Fläche, 960/1280/1920) | offen |
+| #10905 | K2 verify:final (7/7 PASS, 0 JS-Fehler) + verify:terrain/terrain-coverage (0 schwarze Fläche, 960/1280/1920) | erledigt |
 | #10906 | K3 Burst + Minute-25 auf iGPU (780x360@3, 960x540), Renderer-String je Beleg | offen |
 | #10907 | K4 fullrun-Guard (6/6 Bosse + Truhen, Heap-Tor) + ACCEPTANCE.md Ergänzung | offen |
 
@@ -29,6 +29,18 @@ Nur Messen, **kein** src-/tests-Code. Briefing: Vorrat-Job, Karten K1–K4.
 - `node scripts/acceptance-count.mjs`: **ok:true, 30/6/6/6/6/2** (Soll = Ist)
 
 Urteil K1: **PASS**.
+
+### K2 (2026-11-28, 10:11–10:14Z)
+
+- `node scripts/verify-final.mjs`: **7/7 PASS**, rc=0, 0 JS-Fehler
+- `node scripts/verify-terrain.mjs`: rc=0, **0 schwarze Fläche** bei 960/1280/1920
+  (maxRegion 0/0 start/end je View), `rendererValid:true`, `jsErrors:[]`
+- Terrain-Coverage ist Teil von `verify-terrain.mjs` (gleicher Lauf, Schwarz-Pixel-Guard)
+
+Belege: `~/games/.evidence/m10-acceptance-refresh-f/2026-11-28T10-10-33-835Z-final-verify.json`
+(+2 Screenshots), `k2-verify-terrain.json`.
+
+Urteil K2: **PASS** (iGPU „Mesa Intel(R) Graphics (RPL-S)“ belegt, kein SwiftShader).
 
 ## Lane-Ergebnis
 

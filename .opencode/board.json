@@ -14057,19 +14057,31 @@
       "id": 10904,
       "title": "m10-acceptance-refresh-f K1: Basis auf main (Build, Tests, acceptance-count)",
       "description": "Formale Nachabnahme F auf main nach FX-/Menue-/Android-Merges. Abnahmekriterium: `npm run build` rc=0; `npm test` zaehlt Tests/Dateien 0 fail; `node scripts/acceptance-count.mjs` ok:true mit 30/6/6/6/6/2. Belege mit Zeit + main-HEAD in docs/qa/acceptance-refresh-f-2026-11-28.md. Kein src/tests-Code.",
-      "column": "doing",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T10:10:33Z",
+          "by": "build",
+          "text": "doing → review: K1 PASS: build rc=0 (947ms), 1957 Tests/179 Dateien 0 fail, acceptance-count 30/6/6/6/6/2. Commit b3efca87 (#10904), QA-Doku docs/qa/acceptance-refresh-f-2026-11-28.md K1."
+        }
+      ],
       "created": "2026-11-28T10:08:28Z",
-      "updated": "2026-11-28T10:08:28Z"
+      "updated": "2026-11-28T10:10:33Z"
     },
     {
       "id": 10905,
       "title": "m10-acceptance-refresh-f K2: verify:final + verify:terrain/coverage",
       "description": "Abnahmekriterium: `node scripts/verify-final.mjs` 7/7 PASS mit 0 JS-Fehlern; `verify:terrain` und `verify:terrain-coverage` 0 schwarze Flaeche bei 960/1280/1920 Breite. Renderer-String je Lauf. Belege JSON nach ~/games/.evidence/m10-acceptance-refresh-f/ und referenziert in der QA-Doku.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T10:10:14Z",
+          "by": "build",
+          "text": "backlog → doing: Start K2: verify:final + verify:terrain/coverage"
+        }
+      ],
       "created": "2026-11-28T10:08:28Z",
-      "updated": "2026-11-28T10:08:28Z"
+      "updated": "2026-11-28T10:10:14Z"
     },
     {
       "id": 10906,
