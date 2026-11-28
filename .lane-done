@@ -1,0 +1,20 @@
+# Lane m10-m25-density-mode — fertig (2026-11-28)
+
+Befund 3 aus m10-v10-gate-guard abgesichert: Host-Minute-25-Dichte über Waffen-Deaktivierung
+im Messfenster belegbar.
+
+- K1 (#13145, 74fe6a0f): src/debug.ts — Modul-Flag + window.__lf.setWeaponsEnabled()/weaponsEnabled()
+  (Cheat-gated, Reset: setWeaponsEnabled(true)/Reload); src/systems/CombatSystem.ts — genau ein
+  Gate in updateWeapons vor dem Fire-Switch. Ohne Flag bitgleich.
+- K2 (#13146, 8598223c): tests/m25-density-mode.test.ts — 4 Guards (echter A/B-Default-Vergleich,
+  Gate-Pfad-Pinning, genau 1 Gate, Reset). Suite: 230 Dateien / 2498 Tests grün, Build grün.
+- K3 (#13147, 8f81d2cf): scripts/m10-m25-density.mjs (timeScale 30, 50-ms-Top-up, Flag an ab
+  Minute 20). Verbindlicher Run 2 (exit 0): Phase A Flag AUS avg 58 (Befund ~60 reproduziert,
+  34010 Kills); Phase B Minute-25-Fenster avg 1229 / min 1190 >= 250, killsDelta 0, worstFrameMs
+  584.6, Renderer Mesa Intel RPL-S (echte iGPU, kein SwiftShader).
+- K4 (#13148): docs/lanes/m10-m25-density-mode.md — Zahlen, Grenzen (Messwerkzeug, kein
+  Spielverhalten im Normalbetrieb; 30x-Top-up-Backlog; chunk-Textur-Warnungen = 30x-Artefakt).
+
+Belege: ~/games/.evidence/m10-m25-density-mode/ (density-*.json, minute25-*.png);
+Arbeitskopien shots/m10-m25-density*.json|png (gitignored). Der strenge Dichtebeweis bleibt
+das Gerät (m10-v10-device-m25) — dies ist die Host-Gegenprobe für die v1.0-Kette.
