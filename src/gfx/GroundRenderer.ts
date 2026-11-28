@@ -170,6 +170,51 @@ export function poolStore(
   return true;
 }
 
+/** m10-ground-chunk-tex-dup: minimale Registry-Sicht fuer acquireChunkCanvas
+ *  (testbar ohne Phaser; GroundRenderer adaptert scene.textures darauf). */
+export interface ChunkCanvasLike {
+  isCanvas: boolean;
+  /** Animationsstufen (frameTotal - 1). */
+  frames: number;
+}
+
+export interface ChunkCanvasRegistryLike {
+  exists(key: string): boolean;
+  get(key: string): ChunkCanvasLike | null;
+  /** Phaser-Mimik: Warnung + null, wenn der Key bereits belegt ist. */
+  createCanvas(key: string, frames: number): unknown;
+  remove(key: string): void;
+}
+
+/**
+ * m10-ground-chunk-tex-dup (#13283): Canvas-Textur fuer einen Chunk-Key holen,
+ * ohne Phaser-Warnung „Texture key already in use". Seit dem Chunk-Budget-
+ * Merge existiert der Key bei Wiederaufbau haeufig schon (Chunk weiterhin
+ * aktiv bzw. Pool-Textur unter dem alten Chunk-Key) — createCanvas lieferte
+ * dann null und der Chunk wurde nie gebaut (Spam + Loch, Balance-Mess-JSONs
+ * accepted:false). Existierende Canvas-Textur derselben Klasse wird
+ * wiederverwendet und neu gemalt; nur bei Klassen-Wechsel (Stufenzahl
+ * anders) oder Nicht-Canvas wird nach remove() neu angelegt. dropPooled
+ * entfernt einen etwaigen Pool-Eintrag des Keys, damit poolPick die jetzt
+ * aktive Textur nicht doppelt vergibt.
+ */
+export function acquireChunkCanvas(
+  registry: ChunkCanvasRegistryLike,
+  key: string,
+  frames: number,
+  dropPooled?: (key: string) => void,
+): { texture: unknown; reused: boolean } {
+  if (registry.exists(key)) {
+    const existing = registry.get(key);
+    dropPooled?.(key);
+    if (existing && existing.isCanvas && existing.frames === frames) {
+      return { texture: existing, reused: true };
+    }
+    registry.remove(key); // Klassen-Wechsel/Fremd-Textur: Key freigeben
+  }
+  return { texture: registry.createCanvas(key, frames), reused: false };
+}
+
 interface ChunkEntry {
   image: Phaser.GameObjects.Image;
   key: string;
@@ -785,6 +830,44 @@ export class GroundRenderer {
     }
   }
 
+  /** m10-ground-chunk-tex-dup: Pool-Eintrag eines Keys entfernen (Textur ist
+   *  wieder aktiv — poolPick darf sie nicht doppelt vergeben). */
+  private poolDrop(key: string): void {
+    for (const list of this.chunkTexturePool.values()) {
+      const idx = list.findIndex((e) => e.key === key);
+      if (idx >= 0) {
+        list.splice(idx, 1);
+        return;
+      }
+    }
+  }
+
+  /** m10-ground-chunk-tex-dup (#13283): scene.textures auf den testbaren
+   *  Helfer adaptern — existierenden Chunk-Key WIEDERVERWENDEN statt
+   *  createCanvas (Phaser-Warnung „Texture key already in use" + null). */
+  private acquireChunkTexture(textureKey: string, frames: number): Phaser.Textures.CanvasTexture | null {
+    const textures = this.scene.textures;
+    const result = acquireChunkCanvas(
+      {
+        exists: (key) => textures.exists(key),
+        get: (key) => {
+          const tex = textures.get(key) as Phaser.Textures.CanvasTexture | null;
+          if (!tex || !tex.source) return null;
+          return {
+            isCanvas: typeof tex.getContext === "function",
+            frames: Math.max(1, tex.frameTotal - 1),
+          };
+        },
+        createCanvas: (key, f) => textures.createCanvas(key, CHUNK_SIZE, CHUNK_SIZE * f),
+        remove: (key) => textures.remove(key),
+      },
+      textureKey,
+      frames,
+      (key) => this.poolDrop(key),
+    );
+    return (result.texture as Phaser.Textures.CanvasTexture) ?? null;
+  }
+
   /** Fertige Worker-Bitmaps einbauen — installs/Uploads über die Zeit glätten. */
   private finalizeReady(centerX: number, centerY: number, timeMs: number, frameDtMs: number): void {
     // M10-frame-tail-batching: Obergrenze je Frame (1 Install) + Mindestabstand
@@ -833,7 +916,7 @@ export class GroundRenderer {
       }
     }
     if (!texture) {
-      texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+      texture = this.acquireChunkTexture(textureKey, frames);
       if (!texture) {
         for (const b of bitmaps) b.close();
         return null;
@@ -859,7 +942,7 @@ export class GroundRenderer {
     const textureKey = `chunk_${key.replace(",", "_")}`;
     const frames = areaHasWater(cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE)
       ? WATER_ANIM_STEPS : 1;
-    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+    const texture = this.acquireChunkTexture(textureKey, frames);
     if (!texture) {
       // Kein Canvas (Speicher/GPU-Limit): Chunk erneut anfragbar machen statt
       // ihn dauerhaft als "requested" zu blockieren (Loch ohne Retry).
