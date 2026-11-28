@@ -1,0 +1,151 @@
+{
+  "schema": "m10-chest-closed-crisp/v1",
+  "tag": "after",
+  "generatedAt": "2026-11-28T07:20:34.776Z",
+  "scope": "Textur-Ebene chest_closed (menu-art-crisp F2); UI.ts bewusst unveraendert",
+  "formats": [
+    {
+      "profile": "640x360@2",
+      "pxPerGame": 2,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "view": {
+        "internalWidth": 640,
+        "internalHeight": 360,
+        "canvasCssWidth": 640,
+        "canvasCssHeight": 360,
+        "dpr": 2,
+        "roundPixels": true
+      },
+      "texScan": {
+        "texKey": "chest_closed",
+        "sourceW": 16,
+        "sourceH": 16,
+        "frameW": 16,
+        "frameH": 16,
+        "opaquePixels": 152,
+        "offPalette": 0,
+        "alphaViolations": 0,
+        "colorsUsed": [
+          "#06070c",
+          "#2a3547",
+          "#7a331a",
+          "#a84a21",
+          "#ffb84d",
+          "#ffd77a",
+          "#ffeeb0"
+        ]
+      },
+      "icon": {
+        "visible": true,
+        "texKey": "chest_closed",
+        "frameW": 16,
+        "frameH": 16,
+        "scaleX": 3,
+        "scaleY": 3,
+        "x": 320,
+        "y": 139,
+        "displayWidth": 48,
+        "displayHeight": 48
+      },
+      "world": null,
+      "checks": {
+        "rendererPresent": true,
+        "panelOpen": true,
+        "texCaptured": true,
+        "texOffPalette": 0,
+        "texAlphaViolations": 0,
+        "drawScale": 3,
+        "drawScaleIsInteger": true,
+        "scaleXEqualsScaleY": true,
+        "devicePxPerTexel": 6,
+        "devicePxPerTexelIsInteger": true,
+        "centeredX": true,
+        "cropRuns": 2544,
+        "cropNonMultipleRuns": 0,
+        "screenshots": {
+          "panel": "shots/m10-chest-closed-after-640x3602-panel.png",
+          "icon4x": "shots/m10-chest-closed-after-640x3602-icon4x.png"
+        },
+        "worldChest": null,
+        "pass": true
+      }
+    },
+    {
+      "profile": "780x360@3",
+      "pxPerGame": 3,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "view": {
+        "internalWidth": 780,
+        "internalHeight": 360,
+        "canvasCssWidth": 780,
+        "canvasCssHeight": 360,
+        "dpr": 3,
+        "roundPixels": true
+      },
+      "texScan": {
+        "texKey": "chest_closed",
+        "sourceW": 16,
+        "sourceH": 16,
+        "frameW": 16,
+        "frameH": 16,
+        "opaquePixels": 152,
+        "offPalette": 0,
+        "alphaViolations": 0,
+        "colorsUsed": [
+          "#06070c",
+          "#2a3547",
+          "#7a331a",
+          "#a84a21",
+          "#ffb84d",
+          "#ffd77a",
+          "#ffeeb0"
+        ]
+      },
+      "icon": {
+        "visible": true,
+        "texKey": "chest_closed",
+        "frameW": 16,
+        "frameH": 16,
+        "scaleX": 3,
+        "scaleY": 3,
+        "x": 390,
+        "y": 139,
+        "displayWidth": 48,
+        "displayHeight": 48
+      },
+      "world": null,
+      "checks": {
+        "rendererPresent": true,
+        "panelOpen": true,
+        "texCaptured": true,
+        "texOffPalette": 0,
+        "texAlphaViolations": 0,
+        "drawScale": 3,
+        "drawScaleIsInteger": true,
+        "scaleXEqualsScaleY": true,
+        "devicePxPerTexel": 9,
+        "devicePxPerTexelIsInteger": true,
+        "centeredX": true,
+        "cropRuns": 3816,
+        "cropNonMultipleRuns": 0,
+        "screenshots": {
+          "panel": "shots/m10-chest-closed-after-780x3603-panel.png",
+          "icon4x": "shots/m10-chest-closed-after-780x3603-icon4x.png"
+        },
+        "worldChest": null,
+        "pass": true
+      }
+    }
+  ],
+  "verdict": {
+    "rendererStringPresent": true,
+    "integerScaleEverywhere": true,
+    "integerDevicePxPerTexel": true,
+    "zeroOffPalettePixels": true,
+    "zeroNonBinaryAlpha": true,
+    "zeroFractionalScaleSteps": true,
+    "jsErrors": 0,
+    "passed": true
+  },
+  "errors": []
+}

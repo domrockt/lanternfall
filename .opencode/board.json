@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9472,
+  "next": 9625,
   "cards": [
     {
       "id": 1,
@@ -11973,6 +11973,16 @@
       ],
       "created": "2026-11-28T06:51:26Z",
       "updated": "2026-11-28T06:51:34Z"
+    },
+    {
+      "id": 9624,
+      "title": "m10-chest-closed-crisp K4: After-Shots + Verify-Skript + Lane-Doku + .lane-done",
+      "description": "Belegte Befundklasse menu-art-crisp F2 (chest_closed) auf Textur-Ebene abschliessen: Skript scripts/m10-chest-closed.mjs erzeugt After-Shots shots/m10-chest-closed-* (640x360@2, 780x360@3), Textur-Scan (0 Off-Palette, 0 nicht-binaeres Alpha), Draw-Metriken (ganzzahliger Scale), art-director-Urteil >= 4/5, docs/lanes/m10-chest-closed-crisp.md, .lane-done. UI.ts bleibt ausgespart.",
+      "column": "doing",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T07:17:47Z",
+      "updated": "2026-11-28T07:17:47Z"
     }
   ]
 }
