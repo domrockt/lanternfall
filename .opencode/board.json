@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12746,
+  "next": 12769,
   "cards": [
     {
       "id": 1,
@@ -17682,6 +17682,67 @@
       "notes": [],
       "created": "2026-11-28T14:50:40Z",
       "updated": "2026-11-28T14:50:40Z"
+    },
+    {
+      "id": 12764,
+      "title": "m10-spawn-view-anchor K1: Vorher — Spawn-Marken divergieren (3 Seeds × 2 Läufe)",
+      "description": "Spawn-Platzierungs-Marken (Position/UID frischer Spawns) bei 3 Seeds × 2 Läufen (700 s, 30x) messen; Divergenz zwischen Läufen desselben Seeds belegen (Ursache: camera.worldView-Lesung in Spawner.outsideView, siehe docs/lanes/m10-boss-dur-determinism.md K2). Abnahme: Beleg-JSON unter ~/games/.evidence/m10-spawn-view-anchor/ vorliegt und divergierende Spawn-Marken ausweist.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:56:35Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-spawn-view-anchor gestartet (Worktree lf-lanes/m10-spawn-view-anchor, Branch m10-spawn-view-anchor). K1 Vorher-Messung."
+        },
+        {
+          "at": "2026-11-28T14:42:35Z",
+          "by": "build",
+          "text": "Supervisor-Steer 28.11. bestätigt: K1-Beleg-JSON zusätzlich nach shots/m10-spawn-view-* geschrieben (Kopie; kanonisch bleibt ~/games/.evidence/m10-spawn-view-anchor/, da shots-Belege nicht nach git kommen). Skript-Iterationen beendet — nur noch Auswertung."
+        },
+        {
+          "at": "2026-11-28T14:53:20+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12764, Merge branch m10-spawn-view-anchor (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T14:42:35Z"
+    },
+    {
+      "id": 12765,
+      "title": "m10-spawn-view-anchor K2: outsideView auf Sim-Anker umstellen",
+      "description": "Spawner.ts outsideView liest camera.worldView (frame-abhängig) → ersetzen durch deterministischen Sim-Anker (mid = scrollX/Y + width/2, logischer Screen GAME_WIDTH × GAME_HEIGHT, Rezept exakt wie K2-Punkt 4 der Ursachen-Lane). Anker inline in Spawner.ts, KEINE gemeinsame Hilfsdatei. Abnahme: keine camera.worldView-Lesung mehr im Spawner-Sim-Pfad; Verhalten 1x/60 fps unverändert (worldView ≈ scroll ± (W/2,H/2) bis auf Phasers Floor-Rundung ~0,5 px), Delta dokumentiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12766,
+      "title": "m10-spawn-view-anchor K3: tests/spawn-view-anchor.test.ts",
+      "description": "Regressionstest: Spawn-Platzierung bitgleich bei gleichem Seed, unabhängig von worldView-Mutationen (Reinheit gegen die K2-Leck-Klasse), Teiler-unabhängig wo anwendbar. Abnahme: Test grün, deckt die worldView-Leck-Klasse ab.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12767,
+      "title": "m10-spawn-view-anchor K4: Nachher — Teil-Nachweis bitgleich",
+      "description": "Nachher-Messung: Spawn-Marken bitgleich bei 3 Seeds × 2 Läufen (Vergleich K1-Beleg). Falls merge-m10-worldview-anchor-pools im eigenen Basis-Stand schon gemergt: VOLLER E2E node scripts/m10-boss-dur-det.mjs Exit 0 (bitgleiche Boss-Dauern vs probe-runtime-patch.json); sonst E2E offen vermerken (folgt mit Pools-Merge). Abnahme: Beleg-JSON + Kennzeichnung Teil- vs. E2E-Nachweis.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12768,
+      "title": "m10-spawn-view-anchor K5: Doku + .lane-done",
+      "description": "docs/lanes/m10-spawn-view-anchor.md (Vorher/Nachher, Delta-Doku, offene Punkte) + .lane-done. Abnahme: npm test grün, tsc rc=0, Belege committed, .lane-done existiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:56:32Z",
+      "updated": "2026-11-28T13:56:32Z"
     }
   ]
 }
