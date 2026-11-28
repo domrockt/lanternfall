@@ -18963,34 +18963,51 @@
       "id": 13456,
       "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
       "description": "Dieselbe Gate-Suite wie guard (gleiche Tore, gleicher Viewport 960x540) zweimal unter flock /home/ai/games/.lf-perf.lock auf main-HEAD laufen lassen. Ergebnisse: ~/games/.evidence/m10-v10-gate-rerun/gate-run{1,2}.json (+ shots/m10-v10-gate-rerun-run{1,2}.json Arbeitskopie). renderer-guard-Lane toucht scripts/perf.mjs: bei ungewohnten Abbrüchen Lauf wiederholen statt patchen; 0 JS-Fehler-Kriterium nur fürs Tor selbst. Abnahme: 2 vollständige Läufe mit Tor-JSONs + Renderer-String im Beleg.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T17:05:09Z",
           "by": "build",
           "text": "todo → doing: K2 laeuft: Doppel-Lauf (Suite m10-v10-gate.mjs unveraendert) unter flock /home/ai/games/.lf-perf.lock, Log ~/tmp/m10-v10-gate-rerun-k2.log, Ergebnisse nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json."
+        },
+        {
+          "at": "2026-11-28T17:25:50Z",
+          "by": "build",
+          "text": "doing → done: K2 fertig (Commit 3a131c64): 2 vollständige Gate-Läufe auf main 11f929c7 unter flock, Tor-JSONs ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json, Renderer Mesa Intel RPL-S, Läufe reproduzierbar."
         }
       ],
       "created": "2026-11-28T17:01:52Z",
-      "updated": "2026-11-28T17:05:09Z"
+      "updated": "2026-11-28T17:25:50Z"
     },
     {
       "id": 13457,
       "title": "m10-v10-gate-rerun K3: Urteil je Tor + Delta gegen 15:57Z",
       "description": "docs/lanes/m10-v10-gate-rerun.md: Urteil PASS/FAIL je Tor auf main-Stand, Delta gegen guard-Lauf 3 (shots/m10-v10-gate.json @15:57Z, .evidence/m10-v10-gate-guard/gate-final-run3.json). Besonderheiten: (a) frame-p95 wird NICHT als FAIL gewertet (Tor-Definition strukturell nicht erfüllbar, Frage bei Dom, Lead/Fragen an Dom.md 15:20Z) — nur p95/worst dokumentieren; (b) janky%/Gerätetore ausgespart (m10-janky-remeasure). Abnahme: Doku mit Tabelle je Tor, Belegpfaden, Renderer-String.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:25:50Z",
+          "by": "build",
+          "text": "todo → done: K3 fertig (Commit 74fa9c75): Urteil je Tor in docs/lanes/m10-v10-gate-rerun.md — FAIL nur js-errors-0 (13x Texture key already in use: chunk_*) + fullrun-inhalt als Folgetor; frame-p95 2,0/1,9 ms nur dokumentiert; Delta gegen 15:57Z."
+        }
+      ],
       "created": "2026-11-28T17:01:52Z",
-      "updated": "2026-11-28T17:01:52Z"
+      "updated": "2026-11-28T17:25:50Z"
     },
     {
       "id": 13458,
       "title": "m10-v10-gate-rerun K4: Hebelliste / Fix-Empfehlungen + .lane-done",
       "description": "Bei FAIL auf einem anderen Tor als frame-p95: Fix-Empfehlungen (Datei + Hebel + erwarteter Gewinn) in Abschnitt 'Hebelliste' der Lane-Doku — daraus schneidet der Disponent Fix-Jobs. Sonst explizit 'keine Befunde'. Danach .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) im Worktree-Wurzel, committet. Abnahme: Hebelliste oder 'keine Befunde' + .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:25:50Z",
+          "by": "build",
+          "text": "todo → done: K4 fertig (Commit 6d22495b): Hebelliste mit 1 Befund (src/gfx/GroundRenderer.ts, doppelte chunk_*-Keys, Erwartung js-errors 13→0 + Gate gesamt PASS); .lane-done committet; Duplikate #13491-#13494 markiert."
+        }
+      ],
       "created": "2026-11-28T17:01:52Z",
-      "updated": "2026-11-28T17:01:52Z"
+      "updated": "2026-11-28T17:25:50Z"
     },
     {
       "id": 13491,
