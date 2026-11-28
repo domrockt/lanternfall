@@ -23,3 +23,17 @@ Testdateien 58 → 153. Ursache: dpr-budget-Welle, Gamepad-Nav, VFX-restore u. a
 ohne Abnahme-Beleg; keine roten Tests. Hebel: keine (positiver Befund).
 
 Roh-Beleg: `~/games/.evidence/m10-acceptance-refresh-e/k1-logs.txt` ( nachgetragen ).
+
+## K2 — verify:final + verify-input (07:20–07:24Z)
+
+| Check | Befehl | Ergebnis | Urteil |
+|---|---|---|---|
+| verify:final | `node scripts/verify-final.mjs` | **7/7 PASS**, `errors: []`, 0 JS-Fehler (Master-Mute, Aggregation 110/129, Results `dawn` weapons=12) | **PASS** |
+| verify-input | `node scripts/verify-input.mjs` | **28/28 PASS**, 0 JS-Fehler (`jsErrors: []`) — Touch 9, Gamepad 14, Tastatur 3, Shots ok | **PASS** |
+
+Befund E-1 (positiv): die **ESC-Regression aus Nachabnahme C (27/28 FAIL) ist behoben** —
+„ESC pausiert" + „ESC setzt fort" grün (`listeners:1`, kein Doppel-Listener), Plausibilität:
+Fix-Welle Gamepad-Nav/pad-start-pause-r2 seit C. Hebel: keine.
+
+Roh-Belege: `~/games/.evidence/m10-acceptance-refresh-e/k2-verify-final.json`, `k2-verify-input.json`
+(Kopien der Skript-Outputs `shots/final-verify.json` / `shots/m8-input.json`; shots/ ist gitignored).
