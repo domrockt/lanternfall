@@ -230,9 +230,13 @@ export class Title extends Phaser.Scene {
 
     // Meta-Bestwerte pro Charakter (localStorage, ohne Login/Shop).
     const meta = readMeta();
-    new PixelText(this, cx, 172 + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
-    new PixelText(this, cx, 184 + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
-    new PixelText(this, cx, 194 + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
+    // m10-menu-contrast-fixes K5: Block 5 px nach oben — vorher lag nur 2 px
+    // Luft zwischen KAEL-Zeile (y1 = y + 7) und dem oberen Rahmen der
+    // Knopfreihe (Rahmen-Top = Knopf-y - 12); jetzt 7 px
+    // (art-director-Hebel (6): >= 4-6 interne px Freiraum).
+    new PixelText(this, cx, 167 + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
+    new PixelText(this, cx, 179 + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
+    new PixelText(this, cx, 189 + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
 
     this.buttons.push(createMenuButton(
       this, cx - 104, 214 + oy, 96, "START", () => this.startSelect(), { depth: 6 },
