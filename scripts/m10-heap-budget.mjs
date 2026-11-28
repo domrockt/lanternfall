@@ -39,6 +39,13 @@ const MINUTES = Math.max(1, Math.min(30, Math.floor(numArg("minutes", 30))));
 const OUT = strArg("out", "shots/m10-heap-budget-before.json");
 const POLL_MS = 500;
 const RUN_SECONDS = MINUTES * 60;
+// F2 (m10-reacceptance-d): Der Endboss spawnt bei 30:00 (FINAL_BOSS_AT,
+// src/logic/scaling.ts). Baseline brach hier exakt ab (simSeconds 1800,8,
+// victory=false) — der Sieg-Pfad hatte im Echtzeitlauf nie Kampfzeit. Nach dem
+// 30-min-Budget warten wir bis zu dieser Verlaengerung auf den Endboss-Tod
+// (Sieg -> Morgendaemmerung -> Results); der Echtzeit-Kampf dauert ~40 s
+// (K1-Probe), 600 s sind Reserve fuer Phasen-3-Verzoegerung.
+const BOSS_GRACE_SECONDS = 600;
 
 const gitSha = (() => {
   try { return execSync("git rev-parse --short HEAD").toString().trim(); }
@@ -167,7 +174,10 @@ while (Date.now() - started < (RUN_SECONDS + 300) * 1000) {
     continue;
   }
   if (s.time > 10 && s.fps !== null) fpsSamples.push(s.fps);
-  if (s.time >= RUN_SECONDS) { truncated = true; break; }
+  // F2: erst nach RUN_SECONDS + BOSS_GRACE_SECONDS truncieren — dazwischen
+  // laeuft der Endboss-Kampf in Echtzeit weiter, bis Results (Sieg) erreicht
+  // ist (Break oben ueber scene !== "run").
+  if (s.time >= RUN_SECONDS + BOSS_GRACE_SECONDS) { truncated = true; break; }
 }
 // letzten Teil-Minuten-Peak flushen
 minutePeaks.push({ minute: curMinute, peakMB: round1(curPeak) });

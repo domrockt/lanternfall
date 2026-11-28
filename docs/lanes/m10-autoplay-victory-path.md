@@ -1,0 +1,83 @@
+# Lane m10-autoplay-victory-path — Fix-Job F2 (Nachabnahme D)
+
+Basis: main `04a0d2d` (Worktree-Branch `m10-autoplay-victory-path`). Fix-Job aus Befund F2 der
+Nachabnahme D (`docs/lanes/m10-reacceptance-d.md`, Lauf `shots/m10-reaccd-heap.json`): Im 30-Min-
+Echtzeit-Heap-Lauf (`scripts/m10-heap-budget.mjs`, God/AutoPlay, timeScale 1) endet der Lauf am
+Zeitbudget (`victory=false, truncated=true, simSeconds 1800,8`) statt mit Sieg — der Sieg-/Results-Pfad
+bleibt im Echtzeitlauf unbelegt. Kein Abnahme-Blocker (Sieg via m3-fullrun auf timeScale 30 belegt),
+aber der Echtzeit-Beleg fehlt. `src/scenes/Run.ts` ist ausgenommen (Konflikt mit Lane
+m10-run-determinism-fix); Hebel nur im Harness-Skript oder in `src/logic/autoplay.ts`.
+
+Renderer-Pflicht: iGPU-String im JSON des Laufs selbst (`m10-heap-budget.mjs` schreibt `renderer`);
+SwiftShader ungueltig. Flock: `flock /home/ai/games/.lf-perf.lock` (Echtzeitlauf K3).
+
+## K1 — Wurzel: Der Endboss stirbt im Echtzeitlauf, weil der Harness ihn nie Kampfzeit gibt — **PASS**
+
+**Urteil: Harness-Truncation, nicht Bot-Versagen.** Belege:
+
+1. **Endboss spawnt exakt bei 30:00:** `src/logic/scaling.ts:168/179` — `FINAL_BOSS_AT = 30 * 60` =
+   1800 s; Spawn in `src/scenes/Run.ts:650`
+   (`if (!this.bossFlags[5] && !this.dawn && this.elapsed >= FINAL_BOSS_AT) this.spawnBossAt(5)`).
+2. **Harness bricht im selben Moment ab:** `scripts/m10-heap-budget.mjs:170` —
+   `if (s.time >= RUN_SECONDS) { truncated = true; break; }` mit `RUN_SECONDS = MINUTES * 60 = 1800`.
+   Der Baselinelauf (`shots/m10-reaccd-heap.json`) pollte bei simSeconds 1800,8 → trunciert 0,8 s nach
+   dem Endboss-Spawn. Der Endboss (HP 15000, `src/data/bosses.ts`, 3 Phasen) hatte keine Sekunde
+   Kampfzeit — victory=false war im Setup garantiert, unabhaengig vom Bot.
+3. **Bot beendet den Endboss zuverlaessig im Echtzeit-Kampf — Probe** (God/AutoPlay, seed 99, wie
+   m3-fullrun; timeScale 30 bis 30:00, danach timeScale 1, Poll bis Results):
+   `victory=true, resultReason="dawn"`, 0 JS-Fehler, Kampf + Daemmerung ≈ 40 s Echtzeit
+   (Probe: `/home/ai/tmp/m10-autoplay-victory-path/probe-endboss.mjs`).
+   Damit sind die Briefing-Hypothesen „Bot weicht aus?“/„God-Modus greift am Endboss nicht?“
+   widerlegt; „Zeitbudget vs. Boss-HPS“ trifft es: das Zeitbudget endete VOR dem Kampf.
+4. `botDirection` (`src/logic/autoplay.ts:216-234`) folgt aktivem Boss (Ranged: >260 px heran,
+   <120 px zurueckweichen) — kein Ausweichpfad-Defekt; identisches God/AutoPlay-Setup siegt in
+   m3-fullrun (`scripts/fullrun.mjs:40-41`, dort schaltet es bei sim 1760 auf Echtzeit und laeuft
+   bis Sieg).
+
+**Hebelwahl (K2, Begruendung):** Lever (b) — Harness-Fix in `scripts/m10-heap-budget.mjs`. Der Bot
+ist im Endboss-Kampf nicht defekt (Probe 4/victory=true); ein autoplay.ts-Eingriff (Lever a) wuerde
+Spielverhalten-Risiko (God/AutoPlay-Pfad vs. normales Spiel trennen) ohne jeden Gewinn einfuehren.
+Fix: nach `RUN_SECONDS` den Endboss-Kampf aussitzen — bis zu 600 s Sim-Verlaengerung auf Sieg warten,
+erst danach `truncated=true` (ehrlicher Fallback, falls der Kampf doch mal schiefgeht).
+
+## K2 — Fix im Harness (Hebel b) — **PASS**
+
+`scripts/m10-heap-budget.mjs` (eine Aenderung, keine Logik-Datei beruehrt):
+- Neu `BOSS_GRACE_SECONDS = 600` (Kommentar mit F2-Bezug und K1-Probe-Dauer).
+- Truncation verschoben: vorher `if (s.time >= RUN_SECONDS) { truncated = true; break; }`
+  (= exakt `FINAL_BOSS_AT`, Endboss hatte 0 s Kampfzeit); jetzt erst
+  `s.time >= RUN_SECONDS + BOSS_GRACE_SECONDS`. Dazwischen laeuft der Echtzeit-Kampf weiter;
+  der Sieg-Break via `scene !== "run"` → Results (`reason === "dawn"` → `victory=true`) greift
+  unverändert.
+- Kein Lever-a-Eingriff in `src/logic/autoplay.ts` (Bot ist nicht defekt, K1) — damit auch kein
+  Risiko fuer normales Spielverhalten; kein `tests/autoplay-victory.test.ts` noetig (Lever a
+  entfaellt; der Harness ist Messwerkzeug, das Tor prueft der Lauf selbst).
+- Wall-Cap der Schleife bleibt `RUN_SECONDS + 300` s (= 35 min bei 30 min Lauf) — Kampf + Daemmerung
+  (~45 s lt. K1-Probe) passen mit >4 min Reserve.
+
+## K3 — Nachher: 30-min-Echtzeitlauf — **PASS**
+
+Beleg: `shots/m10-autoplay-victory-after.json` (Commit dieses Abschnitts), Lauf unter
+`flock /home/ai/games/.lf-perf.lock`, Renderer-Probe vorab separat iGPU PASS (Intel RPL-S) und
+im JSON selbst: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` — kein SwiftShader.
+
+| Kriterium | Tor | Ist | Urteil |
+|---|---|---|---|
+| Sieg im Echtzeitlauf | victory=true | `victory=true, resultReason="dawn", truncated=false`, simSeconds 1822,1 (Endboss-Kampf + Daemmerung ~22 s nach 30:00) | **PASS** |
+| JS-Fehler | 0 | errors=0, crashes=0 | **PASS** |
+| HARD-Heap-Tor | endMB − Minute1 ≤ +15 % | Minute1 56,4 MB → endMB 41,4 MB (post-GC) = **−26,6 %** | **PASS** |
+| SOFT (Beobachtung, kein Tor) | ≤ +25 % | maxWindowPeak 78,9 MB = +39,9 % — bekanntes F1-Rauschen (GC-Saegezahn), identisches Muster wie Baseline (`m10-reaccd-heap.json`: +41,5 %) | FAIL (Beobachtung, wie Baseline) |
+| FPS (Nebenbefund) | — | min 56,6 / median 60,5, 3649 Samples | vs. Baseline 57,2/60,5 unveraendert |
+
+Vergleich Baseline (`shots/m10-reaccd-heap.json`): victory=false/truncated=true → jetzt
+victory=true/truncated=false bei gleichem God/AutoPlay-Setup (seed 99, timeScale 1); HARD-Tor
++10,7 % → −26,6 % (stabil bis besser; endMB nach Sieg-Teardown inkl. Results-Szene).
+
+## Gesamturteil
+
+**3/3 Karten PASS.** K1: Wurzel = Harness-Truncation bei sim 1800 exakt am `FINAL_BOSS_AT`-Spawn
+(Bot nachgewiesen intakt, Echtzeit-Kampf ~22–40 s). K2: Harness-Fix (`BOSS_GRACE_SECONDS = 600`),
+kein autoplay.ts-Eingriff — normales Spielverhalten unberuehrt. K3: Echtzeit-Beleg des Sieg-Pfads
+(victory=true, 0 JS-Fehler, HARD PASS im selben Lauf). Offen bleibt F1 (SOFT-Fenster-Peaks,
+Beobachtungswert) — nicht Gegenstand dieser Lane.
+
