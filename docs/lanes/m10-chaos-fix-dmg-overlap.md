@@ -83,6 +83,22 @@ unberührt, Summen-Erhalt bleibt).
 - Gesamtsuite: **93 Dateien / 986 Tests grün**, `npx tsc --noEmit` grün,
   `npm run build` grün.
 
+## Review (reviewer, PASS)
+
+- **PASS** (ses_de0541d71ffePY3yBTsfjhEv5D): Trefferpfad bitgleich belegt
+  (Diff berührt nur DamageNumbers.ts/tests/skript), 986 Tests grün, Spirale
+  deterministisch, Format-Kette nachgerechnet.
+- Nachgezogene Fixes: `gridKey`-Reset auch in Expiry/Clear-Pfaden (Konsistenz
+  zu `deactivateView`), Font-Konstanten `GLYPH_ADVANCE`/`GLYPH_H` statt
+  Magic Numbers 6/7, Sink-Reserve im Test "y nie < Basis" vereinheitlicht.
+- Bekannt, dokumentiert (kein Korrektheitsbug): `gridKey` ist ein Screen-Space-
+  Snapshot aus der Aktivierungszeit; bei Kamera-Scroll während ein Label aktiv
+  ist, passt die Zelle nicht mehr exakt — der Rect-Check gegen die aktuellen
+  Screen-Positionen der `placed`-Labels fängt echte Überlappungen weiterhin ab.
+- Folge-Karte (Backlog): `damageLabel` in `src/logic/damage-numbers.ts` ist
+  produktiv ungenutzt und ohne k-Kürzung — entfernen oder Tests auf
+  `formatDamageLabel` umstellen (zwei Formatter laufen sonst auseinander).
+
 ## Offene Punkte / Hinweise
 
 - Die Kürzungsschwelle (≥ 100.000) wurde im In-Game-Repro nicht getroffen

@@ -147,9 +147,9 @@ describe("M10 Damage-Grid: Grid-Offset bei Kollision (B4: '184526!' ueberlappt '
       const placed: Array<{ x: number; y: number; w: number; h: number }> = [];
       for (let i = 0; i < n; i++) {
         const rect = critRect(baseX, baseY);
-        const slot = pickGridSlot(baseX, baseY, occupied, rect.w, rect.h, placed);
+        const slot = pickGridSlot(baseX, baseY, occupied, rect.w, rect.h + DAMAGE_SINK_PX, placed);
         occupied.add(slot.key);
-        placed.push({ ...critRect(slot.x, slot.y) });
+        placed.push({ ...critRect(slot.x, slot.y), h: critRect(slot.x, slot.y).h + DAMAGE_SINK_PX });
         expect(slot.y).toBeGreaterThanOrEqual(baseY); // never above the anchor
       }
     }

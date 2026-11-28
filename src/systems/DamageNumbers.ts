@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { C } from "../palette";
-import { PixelText } from "../gfx/font";
+import { GLYPH_ADVANCE, GLYPH_H, PixelText } from "../gfx/font";
 import {
   MAX_ENTRIES, MAX_VIEWS_AGGREGATE, ViewBudget, LabelMemo, addDamage, expireDamage,
   aggregateKey, entryMatchesKey, groupZoneFor, resetAggregateEntry, shouldAggregateDamage,
@@ -80,7 +80,8 @@ export const DAMAGE_ANCHOR_BELOW = 12;
 /** Wie weit ein Label über seine Lebenszeit nach unten sinkt. */
 export const DAMAGE_SINK_PX = 12;
 
-/** Grid-Zellen-Schlüssel einer Bildschirmposition. */
+/** Grid-Zellen-Schlüssel einer Bildschirmposition (Test-Helper; `pickGridSlot`
+ *  baut die Zellen-Keys inline aus den Zellindizes). */
 export function gridCellKey(screenX: number, screenY: number): string {
   return `${Math.round(screenX / DAMAGE_GRID_CELL_W)},${Math.round(screenY / DAMAGE_GRID_CELL_H)}`;
 }
@@ -335,8 +336,8 @@ export class DamageNumberSystem {
         // Grid-Slot verhindert Stapeln/Überlappen mit bereits sichtbaren Labels.
         const baseSx = (entry.x ?? 0) - cam.scrollX;
         const baseSy = (entry.y ?? 0) - cam.scrollY + DAMAGE_ANCHOR_BELOW;
-        const labelW = Math.ceil((formatDamageLabel(entry.damage, entry.crit).length * 6 - 1) * view.scale);
-        const labelH = Math.ceil(7 * view.scale) + DAMAGE_SINK_PX; // Sink-Drift als Reserve
+        const labelW = Math.ceil((formatDamageLabel(entry.damage, entry.crit).length * GLYPH_ADVANCE - 1) * view.scale);
+        const labelH = Math.ceil(GLYPH_H * view.scale) + DAMAGE_SINK_PX; // Sink-Drift als Reserve
         const occupied = new Set<string>();
         const placed: Array<{ x: number; y: number; w: number; h: number }> = [];
         for (const other of this.views) {
@@ -348,7 +349,7 @@ export class DamageNumberSystem {
               x: other.x - cam.scrollX,
               y: other.y - cam.scrollY,
               w: Math.ceil(other.text.textWidth * other.scaleApplied),
-              h: Math.ceil(7 * other.scaleApplied) + DAMAGE_SINK_PX,
+              h: Math.ceil(GLYPH_H * other.scaleApplied) + DAMAGE_SINK_PX,
             });
           }
         }
@@ -409,6 +410,7 @@ export class DamageNumberSystem {
       v.life -= dt;
       if (v.life <= 0) {
         v.active = false;
+        v.gridKey = null;
         this.viewBudget.deactivate();
         this.labelMemo.forget(v.key);
         v.text.setVisible(false);
@@ -437,6 +439,7 @@ export class DamageNumberSystem {
     this.labelMemo.reset();
     for (const v of this.views) {
       v.active = false;
+      v.gridKey = null;
       v.text.setVisible(false);
     }
   }
