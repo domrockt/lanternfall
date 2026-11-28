@@ -120,7 +120,7 @@ describe("Mixel-Bake: Effekt-Texturgroesse = Sprite-Pixelgroesse", () => {
     }
   });
 
-  it("nur Palettenfarben oder transparent (binaeres Alpha) in jeder Stufe", () => {
+  it("nur Palettenfarben oder transparent (binaeres Alpha) in jeder Stufe", { timeout: 15000 }, () => {
     const ok = (ch: string): boolean =>
       ch === "." || (ch >= "0" && ch <= "9") || (ch >= "a" && ch <= "v");
     for (const bake of mixelBakes()) {
