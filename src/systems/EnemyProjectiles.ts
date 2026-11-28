@@ -10,6 +10,7 @@ import {
   isPointInView,
   shotTextureKeyFor,
 } from "../logic/bosses";
+import { simAnchorView } from "./ProjectilePool";
 
 export interface EnemyShotRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -457,16 +458,17 @@ export class EnemyProjectilePool {
     return HD_PREFIX + family;
   }
 
-  /** View einmal pro spawn()/update() in die Probe kopieren; kein Objekt je Check. */
+  /**
+   * View einmal pro spawn()/update() in die Probe kopieren; kein Objekt je Check.
+   * m10-worldview-anchor-pools: liest den deterministischen Sim-Anker
+   * (simAnchorView, siehe ProjectilePool.ts) statt camera.worldView.
+   */
   private refreshView(): void {
     const cam = this.scene.cameras?.main;
-    const view = cam?.worldView;
-    this.viewValid = !!view && view.width > 0 && view.height > 0;
+    this.viewValid = !!cam && cam.width > 0 && cam.height > 0;
     if (this.viewValid) {
-      this.viewProbe.x = view.x;
-      this.viewProbe.y = view.y;
-      this.viewProbe.width = view.width;
-      this.viewProbe.height = view.height;
+      // Anker allokationsfrei direkt in die Probe (Out-Param).
+      simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height, this.viewProbe);
     }
   }
 

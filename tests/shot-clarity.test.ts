@@ -185,7 +185,7 @@ describe("M10-shot-clarity — Treffer-/Statistik-Pfad bitgleich zur Vorher-Mess
     return {
       textures: { exists: () => true, addCanvas: vi.fn() },
       add: { image: () => img() },
-      cameras: { main: { worldView: { x: 0, y: 0, width: 640, height: 360 } } },
+      cameras: { main: { scrollX: 0, scrollY: 0, width: 640, height: 360 } },
       tweens: { add: vi.fn() },
       enemies: { active: [] as Array<{ x: number; y: number; alive: boolean }> },
     } as unknown as import("phaser").Scene & { enemies: { active: Array<{ x: number; y: number; alive: boolean }> } };

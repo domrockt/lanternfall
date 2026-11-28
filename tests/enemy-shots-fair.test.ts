@@ -139,12 +139,12 @@ function fakeScene(view = { x: 0, y: 0, width: 640, height: 360 }) {
   const scene = {
     textures: { exists: () => true, addCanvas: vi.fn() },
     add: { image: () => img() },
-    cameras: { main: { worldView: { ...view } } },
+    cameras: { main: { scrollX: view.x, scrollY: view.y, width: view.width, height: view.height } },
     tweens: { add: vi.fn() },
     enemies: { active: [] as FakeEnemy[] },
   };
   return scene as unknown as import("phaser").Scene & {
-    cameras: { main: { worldView: { x: number; y: number; width: number; height: number } } };
+    cameras: { main: { scrollX: number; scrollY: number; width: number; height: number } };
     enemies: { active: FakeEnemy[] };
   };
 }
@@ -198,7 +198,8 @@ describe("M10 Gegnerschüsse fair — Pool-Pfad (spawn/update)", () => {
     const pool = new EnemyProjectilePool(scene);
     pool.spawn({ x: 120, y: 60, vx: 100, vy: 0, damage: 3, texture: "enemy_shot_shadow" });
     scene.enemies.active = [{ x: 120, y: 60, alive: true }];
-    Object.assign(scene.cameras.main.worldView, { x: 500, y: 0, width: 640, height: 360 });
+    // m10-worldview-anchor-pools: der Sim-Anker liest scrollX (nicht worldView).
+    scene.cameras.main.scrollX = 500;
     pool.update(0.4, 0, 0, noopHit);
     const stats = pool.statSnapshot();
     expect(stats.fired).toBe(0);

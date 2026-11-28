@@ -45,7 +45,7 @@ const DT = 1 / 60;
 type FakeImg = Record<string, unknown>;
 
 interface Scene {
-  cameras: { main: { worldView: typeof VIEW } };
+  cameras: { main: { scrollX: number; scrollY: number; width: number; height: number } };
   enemies: { active: Array<{ x: number; y: number; alive: boolean }> };
   tweens: { add: ReturnType<typeof vi.fn> };
   textures: { exists: () => boolean; addCanvas: () => void };
@@ -53,7 +53,7 @@ interface Scene {
 
 function fakeScene(): Scene {
   return {
-    cameras: { main: { worldView: { ...VIEW } } },
+    cameras: { main: { scrollX: VIEW.x, scrollY: VIEW.y, width: VIEW.width, height: VIEW.height } },
     enemies: { active: [] },
     tweens: { add: vi.fn() },
     textures: { exists: () => true, addCanvas: () => {} },
