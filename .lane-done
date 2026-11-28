@@ -1,0 +1,22 @@
+# Lane m10-hazard-quality-budget — abgeschlossen (2026-11-28)
+
+Warn-Disc-Zeichnung je QualityTier gedämpft, Raster-Fix (m10-hazard-disc-raster) unangetastet.
+
+- K2 (#11450, bf4805a6): reine Funktionen in src/gfx/hazardDisc.ts (warnDiscDrawCapForQuality
+  low=6, rimPulsePhaseFractionForQuality low=0.5, Debug-Override __lfForceQuality) +
+  Verdrahtung in src/systems/Hazards.ts (applyDiscDrawBudget: nur die 6 spieler-nächsten
+  warnenden Discs gezeichnet — Treffer/Trigger/threats() bitgleich; rimPulseAlphaStaged:
+  Puls friert nach halber Warnphase auf Lesbar-Alpha). high/medium bitgleich.
+- K3 (#11451): tests/hazard-quality-budget.test.ts 12/12 (Tier-Matrix, Verdrahtung,
+  Rückauf-Wiederherstellung), Raster-Guard tests/hazard-disc.test.ts 17/17 grün,
+  hazard-warn 7/7.
+- K1/K4 (#11449/#11452): Messung bei M25-Dichte (500er-Schwarm, Full-Build, skipTo 1490,
+  22 Discs, Android-Proxy 4×) — high: 22/22 Discs, 234 982 Quad-px (bitgleich zum Vorher);
+  low: 6/22 Discs, 95 590 Quad-px = −59,3 % Overdraw. 0 JS-Fehler, Renderer RPL-S iGPU.
+- Belege: ~/games/.evidence/m10-hazard-quality-budget/ (before/after JSON+PNG),
+  Abnahme-Screenshot shots/abnahme/m10-hazard-quality-low-cap.png.
+- Doku: docs/lanes/m10-hazard-quality-budget.md (Befunde: FPS-Regler erreicht low auf
+  Dev-Maschine nie → deterministischer Debug-Override; Probe brauchte 4 Edits, begründet).
+
+Commits: b7270505 (#11449), bf4805a6 (#11450), K3 (#11451), K4 (#11452) — Branch
+m10-hazard-quality-budget, bereit zum Merge.
