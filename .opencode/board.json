@@ -12018,25 +12018,36 @@
       "id": 9566,
       "title": "m10-gamepad-stick-feel K3: tests/gamepad-stick-feel.test.ts",
       "description": "Unit-Tests: Deadzone wirksam (Rauschen im Stillstand → exakt 0), 8-Richtungs-Konsistenz (Stick- und D-Pad-Einheitsvektoren identisch), kein Doppel-Event am Sektorwechsel, Hysterese-Release. AK: npx vitest run tests/gamepad-stick-feel.test.ts grün.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:23:35Z",
           "by": "build",
           "text": "todo → doing: K3 gestartet: tests/gamepad-stick-feel.test.ts"
+        },
+        {
+          "at": "2026-11-28T07:25:51Z",
+          "by": "build",
+          "text": "doing → done: K3 fertig: Commit 7a2b.. (tests/gamepad-stick-feel.test.ts, 13 Tests). 79/79 gruen inkl. unveraenderter gamepad-nav/input-adapters/input/input-latency/esc-pause-Tests. 2 Test-Bugs beim ersten Lauf selbst korrigiert (D-Pad-Button-Indizes 13/15, Sektor(40°)=1)."
         }
       ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:23:35Z"
+      "updated": "2026-11-28T07:25:51Z"
     },
     {
       "id": 9567,
       "title": "m10-gamepad-stick-feel K4: After-Messung + Doku + Lane-Abschluss",
       "description": "After-Lauf des Mess-Skripts, Vergleich gegen Before-Baseline, docs/lanes/m10-gamepad-stick-feel.md (Zahlen vorher/nachher), npm test + build grün, .lane-done. AK: Fehlbewegungs-Quote < 5 % bei Rauschen, 0 Events im Stillstand.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:25:51Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: After-Messung + Doku + .lane-done"
+        }
+      ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:13:30Z"
+      "updated": "2026-11-28T07:25:51Z"
     }
   ]
 }

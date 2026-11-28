@@ -1,0 +1,30 @@
+# Lane m10-gamepad-stick-feel — fertig (2026-11-28)
+
+Gamepad-Stick-Feel für Android TV (Dom-Freigabe 06:00Z): wirksame Deadzone, Richtungswechsel
+ohne Zwischen-Dither, konsistente Einheitsvektoren — ausschließlich in `src/input/Gamepad.ts`.
+`InputState.ts` (belegt von m10-pad-start-pause-r2) und Szenen-/Widget-Ebene unberührt.
+
+## Fix (K2, a8f1f16)
+Radiale Engage-Deadzone 0,28 + Hysterese-Release 0,18 im Adapter-Read-Pfad
+(`readNavigatorGamepad`/`readSceneGamepad`), 8-Richtungs-Snapping auf Sektormittelpunkt
+(45°-Raster, Sektor-Hysterese 5,625°), Ausgabe als Einheitsvektor (Diagonale √2/2, identisch
+zum D-Pad), nicht engaged exakt (0,0). `snapshotFromPad` bleibt roh.
+
+## Messwerte (echter Pfad readNavigatorGamepad -> InputState.update, Commit f0668b0/K1-Baseline
+auf altem Code gemessen, identisches Skript scripts/m10-gamepad-stick.mjs)
+- Stillstand (Drift + Rauschen σ 0,05): Fehlbewegungs-Quote **8,67 % -> 0 %**, 0 Events (Gate < 5 % / 0) ✓
+- Kanten-Push r=0,19: 68 Dither-Toggles -> 0 Events ✓
+- Sweep über 45°-Grenze: 2 Doppel-Events -> 0 ✓
+- Kreis: 9 Jitter-Sektoren -> 0, Push r=0,34 durchgehend aktiv (Regression) ✓
+- Erste Baseline mit härterem Rauschen (σ 0,08 + Spikes): 33,67 % — Beleg ebenfalls in ~/games/.evidence/
+
+## Tests (K3, 13 neue in tests/gamepad-stick-feel.test.ts)
+npm test: **154 Dateien / 1668 Tests grün** (inkl. unveränderte gamepad-nav, input-adapters,
+input, input-latency, esc-pause). `npm run build` grün.
+
+## Belege
+~/games/.evidence/m10-gamepad-stick-feel/m10-gamepad-stick-{before,after}.json
+(shots/*.json ist .gitignore-ignoriert — Regel „Belege nach ~/games/.evidence/" beachtet).
+
+Doku: docs/lanes/m10-gamepad-stick-feel.md. Offene Punkte: analoges Tempo bewusst digital
+(Stick == D-Pad == Tastatur); Stellschraube STICK_ENGAGE_DEADZONE falls Pads stärker drifteten.
