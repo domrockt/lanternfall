@@ -4,7 +4,10 @@ import { C, PAL } from "../palette";
 import { GLYPHS } from "./glyphs";
 import {
   addGridTexture,
-  createAllTextures,
+  createEnemyProjectileTextures,
+  createRingTexture,
+  createShadowTexture,
+  createTelegraphTextures,
   SPRITE_GRIDS,
 } from "./textures";
 import { createCharTextures } from "./chars";
@@ -15,6 +18,7 @@ import { GEN_PROPS } from "./gen-props";
 import { GEN_UI } from "./gen-ui";
 import { buildRuntimeAtlas } from "./atlas";
 import { bakeStaticAtlas } from "./bakeAtlas";
+import { createLightTexture, createVignetteTexture } from "./textures";
 import { warmGlyphs } from "./font";
 import { HD_GRIDS } from "../systems/EnemyProjectiles";
 import { createTitleTextures } from "../scenes/Boot";
@@ -31,9 +35,10 @@ import { ensureTitleRuntimeTextures } from "../scenes/Title";
  * erzeugt ist (inkl. Baked-/Runtime-Atlas und GPU-Warmup), startet der Titel.
  *
  * Alle Creator sind idempotent (textures.exists-Guards) — Reihenfolge und
- * Doppel-Aufrufe sind harmlos; der "derived"-Task (createAllTextures) fuellt
- * gezielt die Reste, die kein eigener Chunk hat (shadow/rings/Gegner-Projektil-
- * Telegraphen + bakeStaticAtlas).
+ * Doppel-Aufrufe sind harmlos. Lane m10-warmup-chunk-fine K2: die ehemalige
+ * "derived-atlas"-Sammelstelle (createAllTextures) ist in Creator-Familien-
+ * Chunks aufgeloest (light-vignette/shadow/rings/enemy-projectiles/telegraphs/
+ * static-atlas), Reihenfolge nach Sichtbarkeit (Spieler-/Boden zuerst).
  */
 
 /** Ein Warmup-Haeppchen. `run` ist idempotent und synchron. */
@@ -227,9 +232,42 @@ export function buildWarmupTasks(scene: Phaser.Scene): WarmupTask[] {
   tasks.push({ label: "fx", run: (s) => createFxTextures(s) });
   tasks.push({ label: "icons", run: (s) => createIconTextures(s) });
 
-  // Reste + statischer Baked-Atlas (shadows/rings/Telegraphen sind hier privat
-  // in textures.ts und laufen ueber den idempotenten Sammel-Aufruf mit).
-  tasks.push({ label: "derived-atlas", run: (s) => createAllTextures(s) });
+  // Lane m10-warmup-chunk-fine K2: Der fruehere Sammel-Chunk "derived-atlas"
+  // (createAllTextures — lief hier als idempotenter Reste-Aufruf, weil die
+  // Creator module-privat waren) ist aufgeloest: Jede Creator-Familie hat
+  // jetzt einen EIGENEN Chunk, Reihenfolge nach Sichtbarkeit — Spieler-/Boden-
+  // Texturen (Licht, Vignette, Bodenschatten) zuerst, dann Auren-Ringe, dann
+  // Gegner-Projektile/Telegraphen, zuletzt der statische Baked-Atlas. Alle
+  // Creator sind idempotent (textures.exists-Guards), createAllTextures bleibt
+  // unveraendert fuer die anderen Aufrufer (Boot.ts).
+  tasks.push({
+    label: "light-vignette",
+    run: (s) => {
+      createLightTexture(s);
+      createVignetteTexture(s);
+    },
+  });
+  tasks.push({ label: "shadow", run: (s) => createShadowTexture(s) });
+  tasks.push({
+    label: "rings",
+    run: (s) => {
+      createRingTexture(s, "ring_burst", [17, 19, 21, 13]);
+      createRingTexture(s, "ring_seal", [20, 21, 13]);
+      createRingTexture(s, "ring_soul", [8, 12, 13]);
+      // elite_aura entsteht im Chunk enemy-projectiles (createEnemyProjectile-
+      // Textures erzeugt ihn mit, wie im Original).
+    },
+  });
+  tasks.push({ label: "enemy-projectiles", run: (s) => createEnemyProjectileTextures(s) });
+  tasks.push({ label: "telegraphs", run: (s) => createTelegraphTextures(s) });
+  tasks.push({
+    label: "static-atlas",
+    run: (s) => {
+      // K2 m10-atlas-pack: statische Klein-Texturen (Props, Icons, Player-/
+      // Portrait-Frames) nach dem Erzeugen in Atlas-Seiten <= 2048 px kopieren.
+      bakeStaticAtlas(s);
+    },
+  });
 
   // Alle 32 Farben x alle Zeichen in Farbe-Chunks (~70 Glyphen je Chunk).
   for (const color of GLYPH_WARMUP_COLORS) {

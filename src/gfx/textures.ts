@@ -542,7 +542,11 @@ export const ENEMY_PROJECTILES: Record<string, { rows: string[]; w: number; h: n
   },
 };
 
-function createEnemyProjectileTextures(scene: Phaser.Scene): void {
+/**
+ * Gegner-Projektile-Creator: exportiert für den feiner gechunkten Warmup
+ * (Lane m10-warmup-chunk-fine, K2) statt module-privat im derived-atlas-Chunk.
+ */
+export function createEnemyProjectileTextures(scene: Phaser.Scene): void {
   for (const [key, def] of Object.entries(ENEMY_PROJECTILES)) {
     addGridTexture(scene, key, def.rows, def.w, def.h);
   }
@@ -550,8 +554,9 @@ function createEnemyProjectileTextures(scene: Phaser.Scene): void {
   createRingTexture(scene, "elite_aura", [20, 21, 22, 12]);
 }
 
-/** Bodenmarkierungen: gestrichelter Warnkreis + Pfütze, voll deckend. */
-function createTelegraphTextures(scene: Phaser.Scene): void {
+/** Bodenmarkierungen: gestrichelter Warnkreis + Pfütze, voll deckend.
+ * Exportiert für den feiner gechunkten Warmup (Lane m10-warmup-chunk-fine, K2). */
+export function createTelegraphTextures(scene: Phaser.Scene): void {
   const ring = "telegraph_disc";
   if (!scene.textures.exists(ring)) {
     const size = 64;
@@ -611,8 +616,9 @@ function createTelegraphTextures(scene: Phaser.Scene): void {
   }
 }
 
-/** Diskretes Ring-Sprite für Pulse/Auren (additive Nutzung, weiche Kante). */
-function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): void {
+/** Diskretes Ring-Sprite für Pulse/Auren (additive Nutzung, weiche Kante).
+ * Exportiert für den feiner gechunkten Warmup (Lane m10-warmup-chunk-fine, K2). */
+export function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): void {
   if (scene.textures.exists(key)) return;
   const size = 96;
   const canvas = document.createElement("canvas");
@@ -784,7 +790,9 @@ export function createVignetteTexture(scene: Phaser.Scene): void {
   scene.textures.addCanvas(key, canvas);
 }
 
-function createShadowTexture(scene: Phaser.Scene): void {
+/** Bodenschatten unter Sprites (14x6, halbtransparent). Exportiert für den
+ * feiner gechunkten Warmup (Lane m10-warmup-chunk-fine, K2). */
+export function createShadowTexture(scene: Phaser.Scene): void {
   const key = "shadow";
   if (scene.textures.exists(key)) return;
   const canvas = document.createElement("canvas");
