@@ -1,0 +1,21 @@
+# Lane m10-gem-value-reading — FERTIG (28.11. 12:41Z)
+
+Ziel erreicht: XP-Gems im 300–500er-Chaos in 3 Wertstufen ohne Hover lesbar.
+Farb-Rampe (Kupfer → Gold → Silber) + Größenstufe aus der Nacht-/Gold-Palette,
+Zuordnung deterministisch in PickupSystem.ts/xp.ts; XP-Wirtschaft und Cap/Merge-
+Semantik bitgleich zu gem-magnet/gem-drawcap (reviewer 18/18).
+
+Karten #10177–#10180 done. Endcommit-Kette:
+- cce20452: xp.ts r3 + Guard-Test (durch Ops committet)
+- 906637a8: textures.ts r3 gem_small-Row (bone/candleWhite/lanternWhite,
+  2,24 % Moor-Kollision statt 29,45 % bei r2 fogBlue, art-director-FAIL behoben)
+
+Messwerte (gem-reading-after.json, Belege ~/games/.evidence/m10-gem-value-reading/):
+- 3 Stufen paarweise farb-distant über Schwellwert (Guard-Test tests/gem-value-
+  reading.test.ts, 10/10, prüft auch Größen-Monotonie + Palette-Treue)
+- 0 Off-Palette-Pixel in den Gem-Texturen
+- Screenshots 640x360 + 960x540 in shots/abnahme/, art-director 4,5/5
+
+Verifikation 12:36Z: tsc clean, npm run build rc=0, Suite 1773/1773.
+Keine offenen Punkte, keine Reste im Worktree (shots-Churn zurückgesetzt,
+Recheck-Automation v4 gelöscht).

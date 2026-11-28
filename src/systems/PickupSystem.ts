@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GEMS, type GemSize } from "../logic/xp";
+import { GEMS, gemStageForValue, type GemSize } from "../logic/xp";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, makeImage } from "../gfx/atlas";
 import { iconKeyForOffer } from "../gfx/icons";
@@ -26,6 +26,13 @@ const MAX_GEMS_DEFAULT = 180;
  *  LOD-Stufe. Mehr als 120 Gems bringen im Chaos keinen Lesbarkeitsgewinn,
  *  kosten aber je ein Draw-Objekt. Überschuss wird verlustfrei verschmolzen. */
 export const MAX_VISIBLE_GEMS = 120;
+
+/** m10-gem-value-reading r2 (art-director): LOD-Dim 0,55 machte alle drei
+ *  Rampenfarben zu Matsch (Kern (143,71,62) statt crimson). Gems sind bereits
+ *  gecappt — der Dim ist nur noch leicht: 0,8 statt 0,55. Nur Darstellung,
+ *  keine XP-Wirtschaft. */
+export const GEM_DIM_ALPHA = 0.8;
+export const GEM_FULL_ALPHA = 0.9;
 
 /** Magnetradius als Vielfaches des Pickup-Radius (M10-Messung: siehe Lane-Doku). */
 export const MAGNET_RADIUS_FACTOR = 2.2;
@@ -189,7 +196,9 @@ export interface PowerupMoment {
  */
 export function mergeGemValues(a: number, b: number): GemMerge {
   const total = Math.max(0, Math.floor(a)) + Math.max(0, Math.floor(b));
-  const size: GemSize = total >= GEMS.large.value ? "large" : total >= GEMS.medium.value ? "medium" : "small";
+  // m10-gem-value-reading: Stufe aus EINEM deterministischen Wert->Stufe-Mapping
+  // (gemStageForValue); Schwellen unverändert -> Merge-Semantik bitgleich.
+  const size: GemSize = gemStageForValue(total);
   const value = GEMS[size].value;
   return { size, value, credited: Math.max(0, total - value) };
 }
@@ -250,7 +259,7 @@ export class PickupSystem {
       oldest.age = 0;
       oldest.active = true;
       applyTexture(oldest.sprite, `gem_${merged.size}`);
-      oldest.sprite.setAlpha(this.dim ? 0.55 : 0.9);
+      oldest.sprite.setAlpha(this.dim ? GEM_DIM_ALPHA : GEM_FULL_ALPHA);
       this.gems.push(oldest);
       this.pendingXp += merged.credited;
       this.stats.mergedGems += 1;
@@ -269,7 +278,7 @@ export class PickupSystem {
     gem.age = 0;
     applyTexture(gem.sprite, `gem_${size}`);
     gem.sprite.setVisible(true).setActive(true).setDepth(DEPTH.gem);
-    gem.sprite.setAlpha(this.dim ? 0.55 : 0.9);
+    gem.sprite.setAlpha(this.dim ? GEM_DIM_ALPHA : GEM_FULL_ALPHA);
     gem.sprite.setPosition(Math.round(x), Math.round(y));
     this.gems.push(gem);
   }
@@ -540,13 +549,13 @@ export class PickupSystem {
       oldest.value = merged.value;
       oldest.age = 0;
       applyTexture(oldest.sprite, `gem_${merged.size}`);
-      oldest.sprite.setAlpha(this.dim ? 0.55 : 0.9);
+      oldest.sprite.setAlpha(this.dim ? GEM_DIM_ALPHA : GEM_FULL_ALPHA);
       this.gems.push(oldest);
       this.pendingXp += merged.credited;
       this.stats.mergedGems += 1;
       this.stats.mergedXp += merged.credited;
     }
-    for (const g of this.gems) g.sprite.setAlpha(this.dim ? 0.55 : 0.9);
+    for (const g of this.gems) g.sprite.setAlpha(this.dim ? GEM_DIM_ALPHA : GEM_FULL_ALPHA);
   }
 
   get count(): number {
