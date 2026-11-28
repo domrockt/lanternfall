@@ -14124,27 +14124,38 @@
       "id": 10966,
       "title": "m10-data-ssot-guard K3: Guard-Test tests/data-ssot.test.ts",
       "description": "ID-Eindeutigkeit, weaponIds-Sollmenge, Evolutions-Paare vollstaendig, types-Kernfelder vorhanden, acceptance-count-Sollwert. Abnahme: >=8 Assertions, npx vitest run tests/data-ssot.test.ts gruen, npm test 0 fail, tsc rc=0.",
-      "column": "doing",
+      "column": "done",
       "assignee": "m10-data-ssot-guard",
       "notes": [
         {
           "at": "2026-11-28T10:20:55Z",
           "by": "build",
           "text": "todo → doing: Guard-Test mit >=8 Assertions anlegen und gegen Ist-Daten laufen lassen."
+        },
+        {
+          "at": "2026-11-28T10:22:10Z",
+          "by": "build",
+          "text": "doing → done: tests/data-ssot.test.ts: 10 Tests gruen (ID-Eindeutigkeit 6 Arrays, weaponIds-Sollmenge, Evo-Paare vollstaendig, Kernfelder, A3 30/6/6/6/6/2). tsc rc=0, npm test 181 Dateien/1984 Tests 0 fail. Commit 73bfe1cb. Hinweis: ein passive-math-Test beruehrt shots/m10-passive-math-*.json (nur generatedAt) - zurueckgesetzt, Befund in Lane-Doku."
         }
       ],
       "created": "2026-11-28T10:17:45Z",
-      "updated": "2026-11-28T10:20:55Z"
+      "updated": "2026-11-28T10:22:10Z"
     },
     {
       "id": 10967,
       "title": "m10-data-ssot-guard K4: Doku + Nachher-Zahlen + .lane-done",
       "description": "docs/lanes/m10-data-ssot-guard.md mit Vorher/Nachher-Zahlen und Befunden, Nachher-JSON, .lane-done. Abnahme: Doku committed, Nachher-Zahlen belegen acceptance-count 30/6/6/6/6/2.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-data-ssot-guard",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T10:22:11Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Lauf + acceptance-count + Doku-Abschluss + .lane-done."
+        }
+      ],
       "created": "2026-11-28T10:17:45Z",
-      "updated": "2026-11-28T10:17:45Z"
+      "updated": "2026-11-28T10:22:11Z"
     }
   ]
 }

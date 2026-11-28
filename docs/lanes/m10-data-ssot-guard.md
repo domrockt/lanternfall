@@ -60,3 +60,17 @@ acceptance-count-Sollwert 30/6/6/6/6/2.
 
 `node scripts/m10-data-ssot.mjs after` → rc=0, ok:true, 0 Befunde (siehe Beleg-Pfad oben).
 `node scripts/acceptance-count.mjs` → ok:true, 30/6/6/6/6/2 unverändert.
+
+## Nebenbefund (Fremd-Code, nicht behoben)
+
+`npm test` berührt `shots/m10-passive-math-caps.json` und `shots/m10-passive-math-matrix.json`
+(neuer `generatedAt`-Timestamp → Dirty-Tree nach jedem Testlauf, Board-Gate blockt `board_move`).
+Betroffen ist der passive-math-Test (fremde Lane/Dateien); Shots-JSONs wurden vor dem Board-Move
+per `git checkout --` zurückgesetzt. Empfehlung an den Owner: Timestamp-Aktualisierung im Test
+unterdrücken oder die JSONs aus dem Tracking nehmen.
+
+## Lane-Abschluss
+
+- Commits: 153aa244 (K1), 4399c53b (K2), 73bfe1cb (K3), K4 (dieser Commit).
+- tsc rc=0; `npm test` 181 Dateien / 1984 Tests, 0 fail; neuer Guard-Test 10/10 grün.
+- Belege: `~/games/.evidence/m10-data-ssot-guard/` (before/after-JSON, acceptance-count-after.log).

@@ -1,0 +1,18 @@
+Lane m10-data-ssot-guard abgeschlossen (Karten #10964-#10967).
+
+K1: scripts/m10-data-ssot.mjs (SSR-Loader, nur lesend) + Vorher-Lauf: rc=0, 0 Befunde,
+    Vertrag 30/6/6/6/6/2 intakt (Commit 153aa244).
+K2: Keine belegten Inkonsistenzen in weaponIds.ts/index.ts/types.ts -> keine Fixes,
+    keine Bedarfsmeldung; 5 types.ts-Typen nur transitiv konsumiert, kein toter Code
+    (Commit 4399c53b).
+K3: tests/data-ssot.test.ts mit 10 Tests (ID-Eindeutigkeit, weaponIds-Sollmenge,
+    Evo-Paare vollstaendig, Kernfelder, A3-Vertrag); tsc rc=0, npm test 181 Dateien /
+    1984 Tests 0 fail (Commit 73bfe1cb).
+K4: Nachher-Lauf rc=0, acceptance-count ok:true 30/6/6/6/6/2 bitgleich; Doku in
+    docs/lanes/m10-data-ssot-guard.md.
+
+Nebenbefund: ein passive-math-Test beruehrt shots/m10-passive-math-*.json (nur
+generatedAt) -> Dirty-Tree nach npm test; vor Board-Move zurueckgesetzt, Empfehlung
+in der Lane-Doku.
+
+Belege: ~/games/.evidence/m10-data-ssot-guard/ (before/after-JSON, acceptance-count-after.log).
