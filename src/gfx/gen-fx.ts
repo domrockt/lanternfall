@@ -667,7 +667,7 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
  */
 export const SOUL_RAMP = [13, 12, 11, 10, 31, 30, 29] as const;
 
-function orbSoulFrame(stage: number): string[] {
+export function orbSoulFrame(stage: number): string[] {
   const w = 22;
   const h = 32;
   const cx = 10.5;

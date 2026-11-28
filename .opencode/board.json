@@ -8562,11 +8562,17 @@
       "id": 7280,
       "title": "m10-evo-fx-soulpyre K3: Tests evo-fx-soulpyre",
       "description": "tests/evo-fx-soulpyre.test.ts nach Vorlage evo-fx-phoenix: Zielgroessen, Draw-Scale-1-Guard, Farb-Treppe ohne Ink/Grau, Flacker-Frames verschieden. AK: zielbezogene Tests gruen, bestehende Suite bleibt gruen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "test-auditor",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T01:07:11Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T01:01:53Z",
-      "updated": "2026-11-28T01:01:53Z"
+      "updated": "2026-11-28T01:07:11Z"
     },
     {
       "id": 7281,
