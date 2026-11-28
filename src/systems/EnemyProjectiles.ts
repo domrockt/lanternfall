@@ -82,23 +82,75 @@ const TELEGRAPH_ALPHA_END = 0.25;
 const TELEGRAPH_POOL_CAP = 96;
 
 /**
- * Aufgewertete Schuss-Optiken (M10-Lesbarkeit): je 1-px helle Kontur, eigene
- * Silhouette und Kernfarbe. Ersetzt nur die Optik der Gegnerschüsse, nicht
- * Radius/Kollision. Kontrastmessung: shots/m10-enemy-shots-contrast.json.
+ * Aufgewertete Schuss-Optiken (M10-shot-clarity, Chaos 300/500): je Familie ein
+ * eigener, farbdiskjunkter Palettblock, geschlossene 1-px-Inktenkontur und
+ * monotone Groessenstaffel — Flaeche wächst mit dem Tier: spit 34 px (7x8) <
+ * bone 44 px (8x7) < shadow 46 px (9x10) < fire 78 px (10x13).
+ * Kein Near-White mehr (A7: r,g,b>=150 && r>=235): 13 lanternWhite und 22 glow
+ * sind entfernt; hellste verwendete Farbe ist 26 hotRed (r=228). Farbblocks:
+ *   spit   = Moor-Gruen {0,30,31}   | bone = Knochen {0,10,11}
+ *   shadow = kalter Dunst {0,8,9}   | fire = Glut-Rot {0,24,25,26}
+ * Spieler-Ember ist {0,17,18,20,21,13}: nur 0 (Inktenkontur) geteilt —
+ * Gegner-Schuesse sind per Farbe vom Spieler-Projektil trennbar.
+ * Ersetzt nur die Optik; Radius/Kollision/Trefferpfad unveraendert.
  */
 const HD_PREFIX = "enemy_shot_hd_";
-const HD_GRIDS: Record<string, string[]> = {
-  // 3 Grüntöne: 31 (v) ist die Füllung, 13 (d) die 1-px-Lichtkante; + 1-px Tropfen-Tail
-  // unten: eigene Silhouette zu fire, unteres Randstück aufgehellt (kein 29 mehr an der Kante).
-  spit: ["...000...", "..0dd0...", ".0dvvvd0.", "0dvvvvvd0", "0dvvvvvd0", "0dvvvvvd0", ".0dvvvd0.", "..0dvd0..", "...0v0...", "....v...."],
-  // 9x7 Knochenpaar, asymmetrischer 1-px-Lichtpunkt (13 nur oben-links), 3 Stufen.
-  bone: [".00...00.", "0db0.0bb0", "0baa0bbb0", ".0baaab0.", "0baa0baa0", "0ba0.0ba0", ".00...00."],
-  // Offener Halo (Lücke rechts) statt runder Kugel: Form-IoU < 0,7 zu spit.
-  // Alle Füllpixel 9/13 (paleMist/lanternWhite): kein blueGrey 5 mehr, das gegen
-  // waterDeep/FogBlue fast verschwand; rechte Nase als sauberer C-Mund.
-  shadow: ["...000...", "..0ddd0..", ".0dd0....", "0dd0.....", "0990.....", "0990.....", ".0990....", "..0ddd0..", "...000..."],
-  // Warme 3-Stufen-Flamme (19/20/22), kein 17 emberOrange mehr (zu nah an Gras-Luminanz).
-  fire: ["....0....", "...0j0...", "...0j0...", "..0jk0...", "..0jk0...", ".0jkmmk0.", ".0jkmmk0.", "0jjkkkkj0", "0jjjjjkj0", ".0jjjjj0.", "..0jjjj0.", "...000..."],
+/** Fuer tests/shot-clarity.test.ts exportiert: Optik-Datenquelle der Gegner-Schuesse. */
+export const HD_GRIDS: Record<string, string[]> = {
+  // Moor-Gruen: Fuellung 31 (v), Schattenkante 30 (u), Kontur 0. Kleinstes
+  // Projektil (7x8), Tropfen-Tail unten bleibt eigene Silhouette.
+  spit: [
+    ".000...",
+    "0vvv0..",
+    "0vvvv0.",
+    "0vuvv0.",
+    "0vuuv0.",
+    ".0vv0..",
+    "..0u0..",
+    "...v...",
+  ],
+  // Knochenpaar (2 vertikale Knochen), 10 (a) Fuellung + 11 (b) 1-px-Lichtkante
+  // nur oben-links (11 ist KEIN Near-White A7: r=217<235).
+  bone: [
+    ".00..00.",
+    "0bb00ba0",
+    "0ab00ba0",
+    "0ab00ba0",
+    ".0a00a0.",
+    ".0a00a0.",
+    ".00..00.",
+  ],
+  // Offener Halo (Luecke rechts), 2-px-Wand: 9 (paleMist) Fuellung, 8 (mist)
+  // Schatten innen. Kein lanternWhite mehr.
+  shadow: [
+    "...000...",
+    "..09990..",
+    ".09990...",
+    "09990....",
+    "09890....",
+    "09990....",
+    "09990....",
+    ".09990...",
+    "..09990..",
+    "...000...",
+  ],
+  // Glut-Rot-Flamme: Kern 26 (q, hotRed), Mitte 25 (p, crimson), Basis 24 (o,
+  // blood) — weg vom warmen Spieler-Ember (17/18/20/21). Groesstes Projektil.
+  fire: [
+    "....0.....",
+    "...0q0....",
+    "...0q0....",
+    "..0qp0....",
+    "..0qp0....",
+    ".0qpooqp0.",
+    ".0qpooqp0.",
+    "0qqppppqq0",
+    "0qqqqqpqq0",
+    "0oqqqqqqo0",
+    ".0oqqqqo0.",
+    "..0oooo0..",
+    "...000....",
+  ],
 };
 
 function addHdShotTexture(scene: Phaser.Scene, family: string, rows: readonly string[]): void {
