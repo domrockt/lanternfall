@@ -16163,10 +16163,16 @@
       "id": 11814,
       "title": "m10-hazard-tex-cap K3: Unit-Test tests/hazard-tex-cap.test.ts",
       "description": "Quantisierungstabelle + Cap-Verhalten (200 unterschiedliche Radien -> <= Key-Cap); minimale Key-Expectation-Anpassungen in tests/hazard-disc.test.ts (begruenden, requests.md-Eintrag). AC: npx vitest run gruenn.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T12:33:08Z",
+          "by": "build",
+          "text": "todo → doing: K3: Test-Datei steht, commit folgt (Test lief bereits in K2-Lauf mit gruen)."
+        }
+      ],
       "created": "2026-11-28T12:07:07Z",
-      "updated": "2026-11-28T12:07:07Z"
+      "updated": "2026-11-28T12:33:08Z"
     },
     {
       "id": 11815,
