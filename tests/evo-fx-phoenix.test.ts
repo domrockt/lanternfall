@@ -86,7 +86,9 @@ describe("m10-evo-fx-phoenix: Texturen in Zielgröße + Draw-Scale 1", () => {
         expect(rows.every((r) => r.length === 128)).toBe(true);
       }
     }
-    expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toBeUndefined();
+    // Merge-Fix (#7642): eternal_winter ist seit m10-evo-fx-winter ebenfalls in
+    // Zielgröße 128 gebacken (drawScale [1,1], Muster phoenix/soul_beacon).
+    expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toEqual([1, 1]);
     expect(signatureTextureKey("phoenix", "death")).toBe("fx_evo_death_phoenix");
   });
 });

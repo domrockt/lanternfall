@@ -77,7 +77,9 @@ describe("m10-evo-fx-soulpyre: Texturen in Zielgröße + Draw-Scale 1", () => {
         expect(rows.every((r) => r.length === SOUL_SIGNATURE_SIZE)).toBe(true);
       }
     }
-    expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toBeUndefined();
+    // Merge-Fix (#7642): eternal_winter ist seit dem Winter-Merge ebenfalls in
+    // Zielgröße 128 gebacken (drawScale [1,1], Muster phoenix/soul_beacon).
+    expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toEqual([1, 1]);
     // Merge-Fix (m10-evo-fx-soulpyre × m10-evo-fx-phoenix): Phönix ist seit dem
     // Phoenix-Merge ebenfalls in Zielgröße 128 gebacken (drawScale [1,1]).
     expect(EVOLUTION_SIGNATURES.phoenix.drawScale).toEqual([1, 1]);

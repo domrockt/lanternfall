@@ -1,9 +1,9 @@
 {
   "milestone": "M10",
   "lane": "m10-palette-fx-guard",
-  "generatedAt": "2026-11-28T01:53:37.007Z",
-  "sets": 34,
-  "frames": 134,
+  "generatedAt": "2026-11-28T02:57:39.660Z",
+  "sets": 37,
+  "frames": 137,
   "offPaletteTotal": 0,
   "alphaViolationsTotal": 0,
   "maxDitherBandPx": 6,
@@ -258,6 +258,10 @@
       "bandPx": 3
     },
     {
+      "key": "ring_frost#0",
+      "bandPx": 3
+    },
+    {
       "key": "fx_fire@2#0",
       "bandPx": 4
     },
@@ -453,5 +457,5 @@
   ],
   "violations": [],
   "fixture": "tests/fixtures/palette-fx-guard.json",
-  "fixtureBytes": 241870
+  "fixtureBytes": 372905
 }

@@ -123,7 +123,6 @@ export const EVOLUTION_WEAPONS: Partial<Record<WeaponAnyId, WeaponDef>> = {
 };
 
 /**
-<<<<<<< HEAD
  * M10-evo-fx-phoenix: reine FX-Parameter des Phönixschwarm (keine Gameplay-Werte).
  * Vorlage für die Folge-Evo-Jobs (Ewiger Winter, Seelenleuchtfeuer, Zornpendel,
  * Gewittersiegel): Texturen in Zielgröße zeichnen und mit Draw-Scale 1 rendern
