@@ -700,11 +700,17 @@ export function createLightTexture(scene: Phaser.Scene): void {
     { r: 64, color: 21, alpha: 0.06 },
     { r: 56, color: 21, alpha: 0.06 },
     { r: 48, color: 21, alpha: 0.07 },
-    { r: 40, color: 22, alpha: 0.07 },
-    { r: 32, color: 22, alpha: 0.08 },
-    { r: 24, color: 13, alpha: 0.09 },
-    { r: 16, color: 13, alpha: 0.10 },
-    { r: 8, color: 13, alpha: 0.10 },
+    // M10-chaos-fix-glow-runpath (B2, Audit docs/lanes/m10-chaos-legibility.md):
+    // Rampen-ENDE (Kern) Richtung Amber/Lantern statt lanternWhite — Addierung
+    // mit Weiß-Kern ist der Near-White-Fall im Chaos (A7: b >= 150 und r >= 235;
+    // Amber 0xffb84d / Lantern 0xffd77a fallen darunter, lanternWhite/candle
+    // nicht). Aeusserer Rand bleibt flame. Identisch zur rev.2-Referenz in
+    // Boot.ts (Lane m10-boot-glow-local, K2 rev.2).
+    { r: 40, color: 21, alpha: 0.07 },
+    { r: 32, color: 21, alpha: 0.08 },
+    { r: 24, color: 20, alpha: 0.08 },
+    { r: 16, color: 20, alpha: 0.09 },
+    { r: 8, color: 20, alpha: 0.09 },
   ];
   const c = size / 2;
   for (const ring of rings) {
