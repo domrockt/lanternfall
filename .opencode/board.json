@@ -12039,19 +12039,30 @@
           "at": "2026-11-28T08:39:33Z",
           "by": "build",
           "text": "todo → doing: K3 fertig + committed (50b1e62): Alpha-Deckel fx_halo 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58/37,3 %); npm test 1712/1712, build gruen. review-Versuch abgelehnt: 2 fremde uncommittete Aenderungen im Worktree (shots/m10-passive-math-*.json, nicht meine Lane) — review nach Bereinigung."
+        },
+        {
+          "at": "2026-11-28T08:48:32Z",
+          "by": "build",
+          "text": "K3 committed (50b1e62 nennt #9666): fx_halo-Deckel 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58,0/37,3 %); npm test 1712/1712, build gruen, 4 Guard-Tests. board_move auf done vom Plugin verweigert wegen 2 fremden uncommitteten Aenderungen im Worktree (shots/m10-passive-math-*.json, Lane m10-passive-math — nicht angefasst). Bitte Merge-Job/Board-Hygiene: mit Referenz auf 50b1e62 schliessen."
         }
       ],
       "created": "2026-11-28T07:25:08Z",
-      "updated": "2026-11-28T08:39:33Z"
+      "updated": "2026-11-28T08:48:32Z"
     },
     {
       "id": 9667,
       "title": "m10-weapon-shot-readability K4: Tests + After-Belege + Doku",
       "description": "tests/weapon-shot-readability.test.ts: Paar-Distanz/Kontrast-Schwelle fuer alle 6 Waffen (15 Paare), A7-Near-White <= 4,16 %. After-Shots via scripts/m10-weapon-shot.mjs, docs/lanes/m10-weapon-shot-readability.md, .lane-done. Abnahmekriterium: npm test gruen, 6/6 Waffen ueber Schwelle, art-director >= 4/5.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T08:48:13Z",
+          "by": "build",
+          "text": "Lane abgeschlossen: K4 committed (47057161 nennt #9667) + .lane-done (bc423917). art-director PASS 4/5, Bitgleichkeit belegt, 15/15 Paare, Near-White 0,35 %. board_move auf done vom Plugin verweigert wegen 2 FREMDEN uncommitteten Aenderungen im Worktree (shots/m10-passive-math-caps.json, m10-passive-math-matrix.json — gehoeren zur Lane m10-passive-math, nicht angefasst). Bitte Merge-Job/Board-Hygiene: Karte mit Referenz auf 47057161 schliessen."
+        }
+      ],
       "created": "2026-11-28T07:25:08Z",
-      "updated": "2026-11-28T07:25:08Z"
+      "updated": "2026-11-28T08:48:13Z"
     }
   ]
 }
