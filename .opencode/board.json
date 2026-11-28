@@ -12462,27 +12462,38 @@
       "id": 10665,
       "title": "m10-levelup-panel-crisp K1: Vorher-Belege Level-Up-Panel",
       "description": "Screenshot-Probe des Level-Up-Panels (Pause/Level-Up via run.giveXp) bei 640x360@2, 780x360@3, 960x540@2; Mängel-Scan (fraktionale Skalierung, Überlappungs-Rects, Fokus-Kontrast) als JSON; Angebots-Snapshot für 3 Seeds. Abnahme: shots/m10-levelup-panel-before-*.png + shots/m10-levelup-panel-before.json existieren (Kopie in ~/games/.evidence/m10-levelup-panel-crisp/), Skript scripts/m10-levelup-panel.mjs committed, 0 JS-Fehler in den Läufen.",
-      "column": "doing",
+      "column": "review",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-28T09:43:31Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Probe-Skript scripts/m10-levelup-panel.mjs wird gebaut und läuft (before-Belege)."
+        },
+        {
+          "at": "2026-11-28T09:48:56Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig (Commit fef07bd9): before-Shots 3 Formate + JSON in ~/games/.evidence/m10-levelup-panel-crisp/. Befund: 5 Divider-Überlappungen je Format (Trennlinie falsch geankert, kreuzt Panelrahmen/Nachbarkarte), 0 fraktionale Skalen, Fokus-Kontrast 11.9:1, 0 JS-Fehler, 3-Seed-Angebots-Snapshot (je 3) als Bitgleich-Baseline. Sichtprüfung 640/960 bestätigt Linien-Artefakt."
         }
       ],
       "created": "2026-11-28T09:43:28Z",
-      "updated": "2026-11-28T09:43:31Z"
+      "updated": "2026-11-28T09:48:56Z"
     },
     {
       "id": 10666,
       "title": "m10-levelup-panel-crisp K2: Pixel-Crisp-Fix Panel",
       "description": "Panel/Icon/Text ganzzahlig skaliert (eine Pixelgröße, Mixel-Regel), Anker auf Spielpixel gerundet; UI.ts/levelup.ts minimal. Abnahme: Probe zeigt 0 fraktionale Skalen im levelGroup, npx tsc rc=0, build grün, tests grün.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T09:49:19Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Divider-Anker-Fix in UI.ts createLevelUpUI (setOrigin 0/0.5, linke Kante = textX, inset 4px beidseitig)."
+        }
+      ],
       "created": "2026-11-28T09:43:28Z",
-      "updated": "2026-11-28T09:43:28Z"
+      "updated": "2026-11-28T09:49:19Z"
     },
     {
       "id": 10667,

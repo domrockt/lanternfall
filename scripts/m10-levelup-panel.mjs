@@ -205,9 +205,20 @@ try {
     // Karte nicht verlassen (Vorher-Mangel: Divider ragt raus, kreuzt
     // Panelrahmen und Nachbar-Karte).
     if (dividerBoxes.length) {
-      for (const dv of dividerBoxes) {
+      for (let di = 0; di < dividerBoxes.length; di++) {
+        const dv = dividerBoxes[di];
         push(dv, iconBox); push(dv, slotBox);
-        for (const b of bgBoxes) push(dv, b);
+        for (let ci = 0; ci < bgBoxes.length; ci++) {
+          if (ci === di) {
+            // Eigene Karte: Trennlinie liegt als Deko AUF dem Hintergrund —
+            // Kriterium ist Voll-Einschluss (inset), keine Überlappung.
+            const insideOwn = dv.left >= bgBoxes[ci].left && dv.right <= bgBoxes[ci].right
+              && dv.top >= bgBoxes[ci].top && dv.bottom <= bgBoxes[ci].bottom;
+            if (!insideOwn) overlaps.push({ a: `divider${di}`, b: `levelup-card-${ci}`, note: "nicht in eigener Karte enthalten" });
+          } else {
+            push(dv, bgBoxes[ci]);
+          }
+        }
       }
     }
     const rows = [...numbers, ...names, ...levels, ...descs];

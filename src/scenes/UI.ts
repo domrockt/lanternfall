@@ -593,7 +593,7 @@ export class UI extends Phaser.Scene {
       });
       const slotBg = this.add.rectangle(cardX, 112 + oy, 60, 60, PAL[C.nightDeep]).setStrokeStyle(2, PAL[C.ink]);
       const icon = this.add.image(cardX, 112 + oy, "icon_weapon_ember").setScale(3).setVisible(false);
-      const divider = this.add.rectangle(textX, 148 + oy, cardW - 8, 1, PAL[C.nightSlate]);
+      const divider = this.add.rectangle(textX, 148 + oy, cardW - 8, 1, PAL[C.nightSlate]).setOrigin(0, 0.5);
       const number = new PixelText(this, textX + 2, 88 + oy, `${i + 1}`, C.lantern);
       const name = new PixelText(this, textX, 154 + oy, "", C.candleWhite);
       const level = new PixelText(this, textX, 166 + oy, "", C.amber);
