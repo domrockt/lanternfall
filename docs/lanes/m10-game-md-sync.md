@@ -246,3 +246,57 @@ Status: **OK** = deckungsgleich · **DIV** = Divergenz · **TEIL** = teilweise (
 | Z4 | Screenshots aller Gegner/Bosse/Waffen | m2-weapon-* (12), m3-enemy-* (30), m3-boss-* (6) + Kontaktbögen m4/m4b — alle vorhanden und abgenommen | `shots/` (Inventar dieser Lane) | OK |
 
 **Abgleichszahl: 52/52 = 100 %** — davon **43 OK, 6 Divergenzen (T1, A5, C1, C2, P4, F3), 3 TEIL (T2, G4, F2)**. Details und Empfehlungen in K3.
+
+---
+
+## K3 — Divergenzliste (GAME.md vs. Ist)
+
+Sortiert nach Irrtum-Risiko. Severity: **HOCH** = künftige Lanes zielen auf falsche Werte/Inhalte;
+**MITTEL** = Spec-Zeile erklärt das Ist falsch oder unvollständig; **NIEDRIG** = kosmetisch/interne Spannung.
+
+| # | ID | Spec-Aussage | Ist-Befund | Beleg-Pfad | Severity | Empfehlung |
+|---|---|---|---|---|---|---|
+| 1 | T1 | Interne Auflösung **480x270**, ganzzahlig skaliert | Ist **640×360 dynamisch**: logische Höhe 360, Breite je Seitenverhältnis (7 Display-Profile pixelgenau), plus DPR-Budget-Regler (`RENDER_SCALE`) auf dem Renderbuffer | `src/config.ts:1-23`, `src/main.ts:24-43`, `shots/qa-reaccc-renderer.json`, `docs/lanes/m8-display.md` | **HOCH** | **Spec anpassen** (M8/M10-Display-Stand: „logische Höhe 360, Breite dynamisch, DPR-Budget-Regler; 7 Profile“). 480x270 existiert nirgends mehr — wer danach baut, bricht Display-Lanes. |
+| 2 | A5 | Selten-Pickups: **Heil-Essen, Magnet-Pickup, Gold** | **Fehlen komplett.** Nur XP-Kristalle (3 Größen) werden gedroppt; Magnet existiert nur als Aufsammelradius/Magnetfeld (`MAGNET_RADIUS_FACTOR`), nicht als aufsammelbares Item; kein Gold, kein Heil-Essen | `src/systems/PickupSystem.ts` (Volltext gelesen), `grep -ri "gold\|food\|magnet" src/` | **HOCH** | **Lead-Entscheidung:** (a) Spec streichen (Design-Reduktion, Meta ohne Gold/Shop ist dokumentierte M6-Lücke) oder (b) **Code-Fix-Job** „Selten-Pickups“ starten. Beides legitim — aber Spec und Ist müssen dieselbe Aussage treffen. |
+| 3 | C1 | Mira: +10 % Fläche, **HP 90** | HP **250**; zusätzlich Rüstung 1 und Regeneration 1.0 HP/s (nicht in Spec); +10 % Fläche ✓, Glutfunke ✓ | `src/data/characters.ts:7-16`, Balance-Korridor `docs/lanes/balance.md`, `shots/balance-main.json` | **HOCH** | **Spec anpassen** auf M6-Balance-Werte (Mira 250 HP, Rüstung 1, Regen 1.0). Die 90-HP-Zeile stammt aus M1 und macht jede Balance-Karte falsch. |
+| 4 | C2 | Kael: **+20 % Max-HP, 1 Rüstung**, -5 % Tempo, HP 130 | **Rüstung 2**, **+25 % Max-HP** plus +90 flach, Regen 1.5, **XP -25 %**; -5 % Tempo ✓, HP 130 ✓ | `src/data/characters.ts:20-28`, `docs/qa/final-2026-11-27.md` (Kael-Korridor 6/6 Level 27-30) | **HOCH** | **Spec anpassen** auf Ist (M6-Werte inkl. XP-Malus), sonst charakterbezogene Lanes (Start-Bonus, Porträt-Text) divergieren. |
+| 5 | F3 | Karte: **Tileset 16x16** mit Autotiling | **Bewusst ersetzt** (M4b): per-Pixel-Klassifikation aus domain-warped fBm + Blob-47-/Wang-Masken; 16-px-Kachelgitter nicht mehr lesbar. Inhaltliche Pflicht (Wege, Wasser/Ufer, Steine, Bäume, Ruinen, Gräber, Laternenpfähle) erfüllt und über Spec hinaus (Props mit Tiefe/Schatten) | `src/gfx/tiles.ts`, `src/logic/autotile.ts`, `shots/m4b-sheet-tiles.png` | **MITTEL** | **Spec anpassen**: „Terrain per-Pixel (fBm) mit Ufer-/Weg-Masken, Props in Clustern“ statt Tileset 16x16. Kein Code-Fix — das Ist ist die gewollte Verbesserung. |
+| 6 | P4 | heart: +20 Max-HP, **+0.2 HP/s** | **+0.3 HP/s** pro Stufe (+20 HP stimmt) | `src/data/passives.ts:25-26`, `shots/m10-passive-math-caps.json` | **NIEDRIG** | **Spec anpassen** (0.3). Ein-Wert-Fix, kein eigener Code-Job nötig. |
+| 7 | T2 | „ganzzahlig skaliert“ | PixelArt/roundPixels ✓; aber Fit-Rückfall ist **gebrochen** skaliert und `RENDER_SCALE` teilt den Renderbuffer ganzzahlig (DPR-Budget) — „ganzzahlig“ stimmt nicht mehr uneingeschränkt | `src/config.ts:12-23`, `docs/lanes/m10-dpr-budget*` | **MITTEL** | **Spec anpassen**: Formulierung „pixelgenau pro Profil; DPR-Budget teilt Renderbuffer ganzzahlig“ statt pauschal „ganzzahlig skaliert“. |
+| 8 | G4/F2 | Z. 96: „Lauf 4 Frames, Idle/Hit/Tod“ vs. Z. 78: „2–4 Frames“ | Gegner Tier 0–1 haben **2 Frames** (bescheidene Posen, dokumentiert), Tier 2–4 vier; Figuren/Bosse 4 Frames + Idle/Hit/Tod | `src/gfx/gen-enemies.ts`, `shots/m4-sheet-enemies.png`, GAME.md Z. 261 | **NIEDRIG** | **Spec präzisieren**: Gegner 2–4 Frames (nach Tier), Figuren/Bosse 4 Frames — beseitigt die interne Spannung der Spec. |
+| 9 | Status Z. 440-443 | „Offener Abnahme-Blocker: FPS … Fix-Lanes **noch nicht gemerged**; danach neu messen“ | Fix-Lanes sind gemergt und neu gemessen: iGPU Burst 60,0 / Minute-25 60,0 / Realtime-30min min 60,1 FPS — FPS-Blocker **erledigt** | `docs/qa/reacceptance-c-2026-11-27.md` K6/K7, `shots/qa-reaccc-perf-summary.json` | **MITTEL** | **Spec-Status aktualisieren** (bei Übernahme): FPS-Blocker abschließen, Verweis auf Nachabnahme C ergänzen. Veraltet-„offen“-Status verleitet zu Doppel-Jobs. |
+| 10 | Status Z. 438 | „Kael-Balance-Korridor 6/6 Level 27–30 (Level-47-Befund widerlegt)“ vs. M6-Zeilen 366/372/421 („Kael/101 Level 47 … Restmangel“) | M10-Widerlegung ist korrekt (frischere Balance-Läufe); die alten M6-Befundzeilen bleiben aber stehen und erzählen Gegenteiliges | GAME.md Z. 366/372/421-422 vs. Z. 438, `shots/balance-main.json` | **NIEDRIG** | **Spec aufräumen**: M6-Restmangel-Zeilen als widerlegt markieren (ein Verweis genügt). |
+| 11 | (robust-Lane, kein Spec-Wert) | Heap-Ziel ≤ +15 % (GAME.md robust-Abschnitt) | Nachabnahme C: **+21 %** (GC-Sägezahn, endMB < Minute-1-Wert, kein monotoner Leak) — Hard-Gate FAIL, Folge-Job offen | `docs/qa/reacceptance-c-2026-11-27.md` K7 | **MITTEL** | Kein Spec-Fix, sondern **offener Punkt ins Board**: Heap-Gate-Definition (Sägezahn-robust messen, z. B. gleitendes Minimum) + Folge-Job `m10-heap-margin`. |
+
+### Zusätzlich geprüft, kein Befund (Auswahl mit frischem Beleg dieser Lane)
+
+- **ESC-Pause** (A2): Auf PIN `43fd9eb` der Nachabnahme C stabil FAIL („ESC setzt fort“, 27/28) — auf dem aktuellen Stand dieser Lane wieder **28/28 PASS** (`shots/m10-gamesync-verify-input.json`, inkl. 12 Screenshots `shots/m10-gamesync-*.png`). Kein Code-Fix-Job nötig; die Reacceptance-C-Verdachtsliste kann um „auf HEAD nicht mehr reproduzierbar“ ergänzt werden.
+- **Inhaltszählung** (`node scripts/acceptance-count.mjs`): `ok:true`, 30/6/6/6/6/2 — Spec-Listen Waffen/Powerups/Evolutionen/Bosse/Charaktere/Gegner sind vollständig umgesetzt.
+- **Gegner-Zuordnungstabelle G2** (30 Zeilen) und **Boss-Tabelle B1** wortgleich mit Spec geprüft (skriptgestützter Vergleich der `id`/Archetyp-Felder bzw. `atSecond`/Mechanik-Strings).
+
+---
+
+## Zusammenfassung
+
+**Umfang:** 52/52 harte Spec-Aussagen abgeglichen (**100 %**, Kriterium ≥ 90 % erfüllt).
+**Ergebnis:** 43 OK, **6 Divergenzen** (2× HOCH-Cluster: Auflösung T1, Selten-Pickups A5, Charakterwerte C1/C2), 3 TEIL.
+
+Kernbefunde für den Lead:
+
+1. **Spec-Techikblock ist an zwei Stellen falsch** (T1 Auflösung 640×360 statt 480x270; T2 Skalierung):
+   Empfehlung überall „Spec anpassen“, kein Code-Job.
+2. **Charakter- und Herz-Werte** (C1, C2, P4) sind M6/M10-Balance-Stand, Spec kennt nur M1-Werte:
+   „Spec anpassen“.
+3. **Echte Inhaltslücke**: Heil-Essen / Magnet-Pickup / Gold (A5) existieren nicht — hier muss der Lead
+   zwischen Spec-Streichung und Code-Fix-Job entscheiden (einziger Punkt mit Code-Fix-Option).
+4. **Statuszeilen in GAME.md sind überholt** (FPS-Blocker erledigt, Kael-Level-47 widerlegt, Heap-Gate offen):
+   bei Übernahme der Lane-Doku Status-Abschnitt nachziehen.
+5. **Keine Änderungen** an Code, GAME.md oder ACCEPTANCE.md durch diese Lane — nur diese Datei +
+   Belege (`shots/m10-gamesync-verify-input.json`, 12 PNGs).
+
+**Neue Messwerte dieser Lane (Worktree/Branch `m10-game-md-sync`, Basis main `a8bd303`, 2026-11-28):**
+- `npm test`: **1194/1194** in 111 Dateien, 0 fail.
+- `node scripts/verify-input.mjs --tag m10-gamesync`: **28/28 PASS**, 0 JS-Fehler
+  (`shots/m10-gamesync-verify-input.json`).
+- `node scripts/acceptance-count.mjs`: `ok:true` (30/6/6/6/6/2).
+- Palette: 32 Farben gezählt (`src/palette.ts`).
