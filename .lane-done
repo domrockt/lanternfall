@@ -1,0 +1,15 @@
+# m10-view-fill-refit — Lane fertig (2026-11-28)
+
+Nachschnitt Doms Punkt 3 (21:45Z) zur 16:9-Vollfuellung nach dem perf-cap-rollback-Merge:
+- Vorher-Matrix (scripts/m10-view-fill-refit.mjs, 7 Formate: 640x360@1 .. 3840x2160@1, 780x360@dpr3
+  Setting 3): 7/7 ohne Balken (0 px), ohne Crop, 0 JS-Fehler, Renderer Mesa Intel RPL-S —
+  der Rollback-Merge hat die Vollfuellung nicht beschaedigt (shots/m10-viewrefit-before.json).
+- Belegter Mangel gefixt: isIntegerPixelPerfect kurzcircuitte den Fill-Pfad auf false
+  (Pfad- statt Eigenschafts-Kenner). Fix: exakte Abbildung css*dpr == intern*scale, kein
+  Produktiv-Aufrufer betroffen (Commit 8b71015). Ganzzahlige Stufe 6/7 — 960x540 = 1.5x
+  dokumentierter Kompromiss (ganzzahlig waeren 90 px Balken, vgl. docs/lanes/m10-view-fill-refit.md).
+- Tests: 7-Format-Matrix als Unit-Tests in tests/view.test.ts (+9) und tests/view-width.test.ts (+1),
+  640-/780-Referenz unveraendert; view-fill.test.ts (fremd, unclaimed) minimal angepasst mit
+  Begründung in .dispatch/requests.md. Suite 873/873 gruen, tsc rc=0, build rc=0.
+- Nachher-Matrix 7/7 PASS (shots/m10-viewrefit-after.json), art-director-Sichtcheck PASS 4.71/5.
+- Commits: cf082d8 (#6758), 8b71015 (#6759), fae74a7 (#6760), dbe6ced (#6761). Karten #6758-#6761 done.
