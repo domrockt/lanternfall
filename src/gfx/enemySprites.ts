@@ -172,7 +172,9 @@ export function enemyVariantColor(index: number): number {
  */
 export function enemyVariantFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
-  const target = PAL[enemyVariantColor(index)];
+  const strong = VARIANT_TONE_OVERRIDES[def.spriteKey] !== undefined;
+  const target = PAL[enemyVariantTone(index)];
+  const weight = strong ? VARIANT_STRONG_MIX : 0.55;
   const top = CONTRAST_TONES[def.id]?.top ?? lightEdgeIndex(def.color);
   return enemySpriteFrames(index).map((g) => {
     const out = g.map((row) => row.slice());
@@ -182,15 +184,72 @@ export function enemyVariantFrames(index: number): Grid[] {
         if (c === null || c === 0 || c === 13 || c === top) continue;
         const p = PAL[c];
         const mix = [
-          Math.round(((p >> 16) & 255) * 0.45 + ((target >> 16) & 255) * 0.55),
-          Math.round(((p >> 8) & 255) * 0.45 + ((target >> 8) & 255) * 0.55),
-          Math.round((p & 255) * 0.45 + (target & 255) * 0.55),
+          Math.round(((p >> 16) & 255) * (1 - weight) + ((target >> 16) & 255) * weight),
+          Math.round(((p >> 8) & 255) * (1 - weight) + ((target >> 8) & 255) * weight),
+          Math.round((p & 255) * (1 - weight) + (target & 255) * weight),
         ];
         out[y][x] = nearestPaletteIndex(mix);
       }
     }
     return out;
   });
+}
+
+/* ── M10-crowd-variant-tone (#7327): kraeftiger Variantenton fuer dichte Paare ──
+ *
+ * Befund (Vorher-Messung, shots/m10-crowd-tone-before.json, Skript
+ * scripts/m10-crowd-tone.mjs): bei 21/30 Typen liegt die RGB-Distanz zwischen
+ * Basis- und Varianten-Koerper-Mittelton unter 60 (worst: wolf 7.6, centipede
+ * 11.2, spider 10, harpy 19.8, ghoul 19.8, skeleton 33) — die Masse liest
+ * sich weiterhin als Block (art-director-Nachbesserung aus #6399: skeleton/
+ * centipede/harpy kraeftiger trennen, Rampe zu eng).
+ *
+ * Fix: diese Typen mischen ihren Koerper zu 80 % Richtung eines FAMILIEN-
+ * GEGENTONS (feste Tabelle, datengeleitet aus der Vorher-Messung — kein
+ * Hand-Tuning-Loop, siehe scripts/m10-crowd-tone-search.mjs):
+ *   knochen/nacht (helle/blaugraue Basen)  -> Karmesin (crimson)
+ *   moor (gruene Basen)                    -> Glut-Orange (emberOrange)
+ *   blut (helle rote Basen)                -> Moor-Gruen (marsh)
+ *   glut/gold (warme Basen)                -> Nebelblau (fogBlue)
+ * Nur Palette-Indizes (kein Off-Palette-Farbe), Kontur (0), Augen/Glow (13)
+ * und die 1-px-Lichtkante bleiben unangetastet — Silhouette, binäres Alpha,
+ * Key-Satz und Elite-Rim unverändert. Alle nicht gelisteten Typen bleiben
+ * bytegleich zum crowd-variety-Stand (Rampen-Stufe, 55-%-Mischung).
+ */
+const VARIANT_TONE_OVERRIDES: Record<string, number> = {
+  // knochen + nacht (helle/blaugraue Basen) -> Blut-Karmesin
+  enemy_banshee: C.crimson,
+  enemy_skeleton: C.crimson,
+  enemy_centipede: C.crimson,
+  enemy_harpy: C.crimson,
+  enemy_spider: C.crimson,
+  enemy_wolf: C.crimson,
+  enemy_reaper_bat: C.crimson,
+  // moor (gruene Basen) -> warme Glut
+  enemy_ghoul: C.emberOrange,
+  enemy_bogzombie: C.emberOrange,
+  enemy_slime: C.emberOrange,
+  enemy_mudling: C.emberOrange,
+  enemy_toad: C.emberOrange,
+  // blut (helle rote Basen) -> Moor-Gruen
+  enemy_horror: C.marsh,
+  enemy_witchling: C.marsh,
+  enemy_bat: C.marsh,
+  enemy_cultist: C.marsh,
+  // glut/gold (warme Basen) -> Nebelblau
+  enemy_golem: C.fogBlue,
+  enemy_imp: C.fogBlue,
+  enemy_treant: C.fogBlue,
+  enemy_scarecrow: C.fogBlue,
+};
+
+/** Staerkere Mischung fuer Typen mit Familien-Gegenton (s. o.). */
+const VARIANT_STRONG_MIX = 0.8;
+
+/** Koerper-Zielton der Variante: Familien-Gegenton oder Rampen-Stufe. */
+export function enemyVariantTone(index: number): number {
+  const def = ENEMY_LIST[index];
+  return VARIANT_TONE_OVERRIDES[def.spriteKey] ?? enemyVariantColor(index);
 }
 
 /** Nächster Palette-Index zu einem RGB-Tripel (nur Palette, deterministisch). */
