@@ -3,6 +3,10 @@
  * localStorage-Persistenz. Reine Helfer mit injizierbarem Storage, damit
  * Vitest ohne Browser testen kann.
  */
+// M10-mobile-fps-cap: BILDRATE-Logik liegt rein in src/logic/fps-cap.ts
+// (eine Quelle für Default/Label/Zyklus; hier nur die Verdrahtung).
+import { FPS_AUTO, clampFpsSetting, fpsSettingLabel, probeDeviceNode, stepFpsSetting } from "../logic/fps-cap";
+
 export interface Options {
   music: number;        // 0..1
   sfx: number;          // 0..1
@@ -12,6 +16,12 @@ export interface Options {
   muted: boolean;
   /** M8: 0 = automatisch (n aus Gerätehöhe/360), 2..6 = feste Gerätepixel-Stufe. */
   scale: number;
+  /**
+   * M10-mobile-fps-cap: BILDRATE. -1 = AUTO (Geräte-Standard: 60 am Geräteknoten,
+   * MAX auf Desktop), 0 = MAX (kein Frame-Cap), 60 = hart 60 FPS.
+   * Semantik in src/logic/fps-cap.ts (eine Quelle, rein prüfbar).
+   */
+  fps: number;
 }
 
 export const DEFAULT_OPTIONS: Options = {
@@ -21,6 +31,7 @@ export const DEFAULT_OPTIONS: Options = {
   damageNumbers: true,
   muted: false,
   scale: 0,
+  fps: FPS_AUTO,
 };
 export const OPTIONS_KEY = "lanternfall-options-v1";
 /** M8: 2X-6X (1X ist der Fit-Rückfall bei kleinen Fenstern). */
@@ -88,6 +99,7 @@ export function loadOptions(storage: StorageLike | null | undefined): Options {
       damageNumbers: bool(parsed.damageNumbers, DEFAULT_OPTIONS.damageNumbers),
       muted: bool(parsed.muted, DEFAULT_OPTIONS.muted),
       scale: clampScale(num(parsed.scale, DEFAULT_OPTIONS.scale)),
+      fps: clampFpsSetting(parsed.fps),
     };
   } catch {
     return { ...DEFAULT_OPTIONS };
@@ -104,6 +116,7 @@ export function saveOptions(storage: StorageLike | null | undefined, options: Op
       damageNumbers: Boolean(options.damageNumbers),
       muted: Boolean(options.muted),
       scale: clampScale(options.scale),
+      fps: clampFpsSetting(options.fps),
     }));
   } catch { /* Quota/Privacy-Mode: still ignorieren */ }
 }
@@ -115,6 +128,7 @@ export function setOption(options: Options, key: keyof Options, value: number | 
   else if (key === "damageNumbers") next.damageNumbers = Boolean(value);
   else if (key === "muted") next.muted = Boolean(value);
   else if (key === "scale") next.scale = clampScale(Number(value));
+  else if (key === "fps") next.fps = clampFpsSetting(Number(value));
   else next[key] = clampVolume(Number(value));
   return next;
 }
@@ -124,7 +138,7 @@ export const OPTION_STEP = 0.1;
 
 /** Zeilen des Optionsmenüs (eine Quelle für Titel + Pause + Tests). */
 export const OPTION_ROWS = [
-  "MUSIK", "SFX", "SCREEN-SHAKE", "DAMAGE-NUMBERS", "MASTER MUTE", "SKALIERUNG", "ZURÜCK",
+  "MUSIK", "SFX", "SCREEN-SHAKE", "DAMAGE-NUMBERS", "MASTER MUTE", "SKALIERUNG", "BILDRATE", "ZURÜCK",
 ] as const;
 
 /** Anzeigetext des Werts einer Optionszeile. */
@@ -136,6 +150,9 @@ export function optionValueLabel(options: Options, row: number): string {
     case 3: return options.damageNumbers ? "AN" : "AUS";
     case 4: return options.muted ? "STUMM" : "AN";
     case 5: return scaleLabel(options.scale);
+    // M10-mobile-fps-cap: AUTO zeigt den aufgelösten Wert ("60" am Geräteknoten,
+    // "MAX" auf Desktop); im Node-Test (kein document) löst die Probe -> Desktop.
+    case 6: return fpsSettingLabel(options.fps, probeDeviceNode());
     default: return "";
   }
 }
@@ -156,5 +173,6 @@ export function stepOption(options: Options, row: number, delta: number): Option
     const next = (idx + (delta > 0 ? 1 : steps.length - 1)) % steps.length;
     return setOption(options, "scale", steps[next]);
   }
+  if (row === 6) return setOption(options, "fps", stepFpsSetting(options.fps, delta));
   return options;
 }

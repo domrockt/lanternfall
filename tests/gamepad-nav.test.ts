@@ -202,7 +202,7 @@ function moveRows(menu: OptionsMenu, n: number, startT = 0): number {
   return t;
 }
 
-describe("OptionsMenu.handlePadFrame – alle 7 Zeilen per Gamepad", () => {
+describe("OptionsMenu.handlePadFrame – alle 8 Zeilen per Gamepad", () => {
   beforeEach(() => { appliedOptions.length = 0; });
 
   it("alle Zeilen per D-Pad erreichbar, MASTER MUTE (Zeile 4) per right änderbar", () => {
@@ -214,13 +214,13 @@ describe("OptionsMenu.handlePadFrame – alle 7 Zeilen per Gamepad", () => {
     menu.handlePadFrame(pad({}), 1005);
     expect(appliedOptions.length).toBe(1);
     expect((appliedOptions[0] as { muted: boolean }).muted).toBe(true);
-    expect(OPTION_ROWS.length).toBe(7); // inkl. MASTER MUTE und ZURÜCK
+    expect(OPTION_ROWS.length).toBe(8); // inkl. MASTER MUTE, BILDRATE und ZURÜCK
   });
 
-  it("down wrappt von ZURÜCK (6) auf MUSIK (0) zurück", () => {
+  it("down wrappt von ZURÜCK (7) auf MUSIK (0) zurück", () => {
     const { menu } = makeOptionsMenu();
     menu.open();
-    moveRows(menu, 6); // ZURÜCK
+    moveRows(menu, 7); // ZURÜCK (M10-mobile-fps-cap: BILDRATE ist Zeile 6)
     menu.handlePadFrame(pad({ down: true }), 1000); // wrap vorwärts → MUSIK
     menu.handlePadFrame(pad({}), 1005);
     menu.handlePadFrame(pad({ left: true }), 1010); // MUSIK senken
@@ -232,7 +232,7 @@ describe("OptionsMenu.handlePadFrame – alle 7 Zeilen per Gamepad", () => {
   it("Confirm auf ZURÜCK schließt; gehaltener Confirm toggelt NICHT mehrfach", () => {
     const { menu, closed } = makeOptionsMenu();
     menu.open();
-    moveRows(menu, 6); // ZURÜCK
+    moveRows(menu, 7); // ZURÜCK (M10-mobile-fps-cap: BILDRATE ist Zeile 6)
     menu.handlePadFrame(pad({ confirm: true }), 1000);
     expect(closed()).toBe(1);
     expect(appliedOptions.length).toBe(0);

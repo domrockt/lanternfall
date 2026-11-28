@@ -8,8 +8,10 @@ import { auditTable, classifyOverlay, percentiles, rateStartup, summarizeTexture
 
 
 describe("M10 Mobile-Konfiguration (statischer Vertrag)", () => {
-  it("Phaser-Config begrenzt auf 60 FPS (target + limit)", () => {
-    expect(mainSrc).toMatch(/fps:\s*\{\s*target:\s*60,\s*limit:\s*60\s*,?\s*\}/);
+  it("Phaser-Config begrenzt am Geräteknoten auf 60 FPS (target + resolveFpsLimit)", () => {
+    // M10-mobile-fps-cap: hartes 60-Cap nur am Geräteknoten (resolveFpsLimit),
+    // Desktop MAX (limit 0) — auf 60-Hz-vsync-Profilen verhaltensgleich.
+    expect(mainSrc).toMatch(/fps:\s*\{\s*target:\s*60,\s*limit:\s*resolveFpsLimit\(getSettings\(\)\.fps,\s*probeDeviceNode\(\)\) \?\? 0\s*,?\s*\}/);
   });
 
   it("WebGL-Kontext fordert high-performance", () => {
