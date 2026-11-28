@@ -1,0 +1,28 @@
+# Lane m10-heap-budget — fertig (28.11.2026)
+
+Fix-Job zum Heap-Tor-Find der Nachabnahme C („+21 % FAIL (GC-Saegezahn)“, PIN 43fd9eb).
+Alle 3 Karten abgeschlossen (#6238 Ist-Messung, #6239 Tor-Entscheidung, #6240 Tests + Doku), reviewer-PASS.
+
+## Ergebnis: Fall A — kein monotoner Leak, Tor messrausch-fest umdefiniert
+
+- **Tor-Definition (HARD, bleibt +15 %):** endMB (Run-Ende, nach erzwungenem GC)
+  − minute1MB (Post-GC, Sim-Minute 1) ≤ +15 %. Reine Funktion
+  `scripts/m10-heap-budget-gate.mjs`, 8 Tests in `tests/heap-budget.test.ts`
+  (Sawtooth mit stabilen Enden PASSES, monotoner Zuwachs failt, Randfaelle).
+- **SOFT (nur Beobachtung):** max roher Peak je 5-min-Fenster ≤ Minute 1 + 25 % —
+  zeigt den GC-Saegezahn, kippt das Urteil nie.
+- **Ist-Messung** `shots/m10-heap-budget-before.json`: endMB 36,3 vs Minute 1 32,7 = **+11,0 % PASS**.
+- **Nachweis-Lauf** `shots/m10-heap-budget-after.json`: endMB 37,5 vs Minute 1 33,7 = **+11,3 % PASS**.
+- Beide Laeufe: 30 min Echtzeit, RPL-S iGPU (Renderer-String im JSON), 0 JS-Fehler,
+  0 Crashes, FPS min 59,7–60,1. Zwei unabhaengige Laeufe (+11,0 % / +11,3 %)
+  bestaetigen: der alte +21-%-FAIL war Peak-Jitter gegen das Minute-1→29-im-Lauf-Tor.
+- Fall B (Snapshot-Diff, Top-Holder-Fix) tritt nicht ein; Doku in
+  `docs/lanes/m10-heap-budget.md` + ACCEPTANCE.md Abschnitt „Heap-Tor“.
+
+## Qualitaet
+
+- npm test 795/795 gruen (78 Dateien), `npx tsc --noEmit` rc=0, `npm run build` rc=0.
+- reviewer-PASS (Scope sauber, Tor-Definition = Tests = Doku = JSON-Zahlen deckungsgleich).
+- Offene Nits (nicht blockernd, im Review notiert): endDeltaPct-Vergleich vor dem
+  Runden; endMB im truncated-Pfad in der laufenden Szene statt nach Teardown
+  (ehrlich dokumentiert, before/after konsistent).
