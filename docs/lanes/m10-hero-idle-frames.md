@@ -31,3 +31,15 @@ unterscheiden sich in ~10–40 % der Sprite-Pixel), der Lauf hat 4 distinkte Pha
 Generator-Pfad bestätigt: `scripts/art/gen_chars.py` → `emit_ts("gen-chars.ts", …)`;
 Idle-Zweig `fn(d, i, idle=True) for i in range(2)` (`gen_chars.py` build(), Zeile ~683).
 `src/gfx/chars.ts` war **nicht** zu ändern — `PlayerFrameSet.idle` existiert bereits.
+
+## Karte #2 — Generator-Verifikation
+
+`python3 scripts/art/gen_chars.py` neu laufen lassen → `src/gfx/gen-chars.ts` **byte-identisch**
+(`git diff --stat` leer, 18 Keys), auch die regenerierten `shots/m4-ref-*.png` unverändert
+(deterministische Pipeline). Kein Fix-Bedarf aus der Befundliste:
+- Idle-Pose-Satz je Held vorhanden (2 Frames: Ruhepose + Atem-Versatz), kein Generator-Edit nötig.
+- Lauf-Rhythmik: keine Dubletten, side hat 4 distinkte Phasen → keine Fixes nötig.
+- Palette/binäres Alpha exakt unverändert (0 Off-Palette-Pixel, Indexbereich 0–31).
+
+Ergebnis: Karte 2 endet in Verifikation ohne Code-Änderung — bewusst kein pseudo-Ästhetischer
+Tuning-Loop (Argus-Regel: kein Tuning ohne Zielmetrik; Zielmetrik bereits erfüllt).
