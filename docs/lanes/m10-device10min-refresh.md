@@ -78,7 +78,23 @@ Umgesetzt (Commit nach diesem Abschnitt):
 
 ## K3 — Test (#13748)
 
-(nachtragen)
+`tests/device10min-refresh.test.ts` — **14 Tests, rein per Fixture-String,
+kein Gerät nötig**:
+
+- `parseDisplayDump`: 120-Hz-Dump (aktiver Mode 2), 60-Hz-Dump (APK-Lock,
+  aktiver Mode 1), aktiver Mode schlägt erste refreshRate-Angabe, Fallbacks
+  (`refreshRate=`-Angabe, `"<f> Hz"`-Stil), implausible Werte (0, 99999) →
+  `null`, fehlende/unlesbare Dumps → `null`.
+- `panelHzFromRaf`: 120/90/60/null-Schwellen (inkl. 2-Vsync-Pacing 33,4 fps →
+  `null`), fehlende Werte → `null`.
+- Quell-Guard: 10-min-Skript importiert die Helfer, schreibt
+  `...(refresh ? { refresh } : {})` in den Telemetrie-Teil (nach
+  start/endStatus), `refreshWarn` vorhanden, **passed-Ausdruck bytegleich**
+  (Regex auf beide passed-Zeilen geprüft), Renderer-Guard #13405 unangetastet,
+  Helfer-Modul rein (kein fetch/CDP/Import).
+
+Lauf: `npx vitest run tests/device10min-refresh.test.ts` → 14/14 grün;
+`npm test` (Gesamtsuite) → 238 Dateien / 2582 Tests, 0 fail.
 
 ## K4 — Doku/JSON-Vertrag (#13749)
 
