@@ -40,3 +40,44 @@ Vorher-Belege (alle im Karten-Commit):
 - Nachher: Lichtkanten-Kontrast >= 3:1 (messbar im JSON), Kanten durchgehend,
   (22,23) sauber, ß deutlich von B verschieden; art-director 4x-Crop >= 4/5.
 - Eine Karte = ein Commit (`M6-m10-font-ui-frame-polish:`), Belege im Karten-Commit.
+
+## Karte 2 — Font-Fix (#8079, Commit 14d622a)
+- `src/gfx/glyphs.ts`: ß-Glyphe neu — alt: 1 px Differenz zu B (row0 `01110` vs
+  `11110`); neu: Doppel-s-Bogen mit offener linker Spalte und Schluss-Strich
+  (`01100/10010/10010/01100/10010/10010/01101`).
+- Validierung: 1 zusammenhängende 8-Fach-Komponente (15 px, ortho), 2 reguläre
+  2x2-Löcher, **15/35 px Differenz zu B**. `ß` ist im Spiel sichtbar (z. B.
+  Waffenbeschreibung „Rückstoß“ im Level-up-Dialog).
+- Tests: data/font-glyph-pack/menu-art-crisp 34/34 grün.
+
+## Karte 3 — Rahmen-Fixes (#8080, Commit 2e12322)
+- `scripts/art/gen_ui.py` + regeneriertes `src/gfx/gen-ui.ts` (AUTO, title_logo
+  unverändert):
+  - F1: äußere Lichtband-Stufung 7/6 → **8/7** (mist/fog).
+  - F2: Innenfase lichtlogisch symmetrisch — 6er-Lichtlinie oben **und** links,
+    rechte Fase 2 → 4 (= untere Fase).
+  - F3: Ink-Linien werden nach den 2er-Bändern gemalt → untere Kante lückenlos,
+    Störpixel (22,23) behoben.
+
+## Karte 4 — Tests + Nachher (#8081)
+- `tests/ui-frame-polish.test.ts` (10 Tests) mit **derselben** Analyse-Logik wie
+  das Messskript (`analyzeGlyphs`/`analyzeFrame` aus
+  `scripts/m10-uiframe-polish.mjs`, seiteneffektfrei importierbar, Typen in
+  `scripts/m10-uiframe-polish.d.mts`): Kanten-Durchgängigkeit, Eckpixel,
+  Lichtkanten-Kontrast >= 3:1, Innenfase-Symmetrie, 0 Off-Palette, keine
+  Fehlstufen (Ausnahme `!`/`?`-Satzpunkte), ß >= 8 px von B verschieden.
+- Nachher-Messung `shots/m10-uiframe-after.json` (+ Crops `-after-*.png`),
+  Profil 640x360@2, Renderer iGPU, **0 JS-Fehler**:
+  - Lichtkante oben/links gegen Innenfläche: **4.15 : 1** (vorher 2.72) → >= 3:1 PASS
+  - Untere/rechte Ink-Kante: je **ein** zusammenhängendes Band über 24 px
+    (vorher 22+1+1 mit Störpixel) → PASS
+  - Fraktionale Skalierung/Position an Font-/Rahmen-Objekten: **0** (Titel,
+    Options, Results) → unverändert sauber
+  - Dunkle Kanten unten/rechts 1.12:1: dokumentiert als ohne neuen Palettenindex
+    nicht hebbar (F7) — Lesbarkeitsträger ist die helle Kante + Innenfase.
+- `npx tsc --noEmit` rc=0, `npm run build` grün, **1332/1332 Tests** grün
+  (inkl. menu-art-crisp 19, xp-hud-crisp, icon-contrast unangetastet).
+
+## art-director-Abnahme
+- Urteil: folgt nach der strengen Prüfung (4x-Crops: Glyph-Probe, Titel-Knopf,
+  Options-Panel, Results-Panel).

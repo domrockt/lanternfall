@@ -16,6 +16,7 @@
 // Läuft OHNE flock (keine FPS-/Echtzeit-Messung).
 //   node scripts/m10-uiframe-polish.mjs --tag=before
 import { writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import { createServer } from "vite";
 import { ensureBuild, startServer, loadPlaywright, waitForScene } from "./harness.mjs";
 
@@ -199,24 +200,28 @@ const SCAN_SRC = `
   }
   function lfCollectObjects(scene) {
     const out = [];
-    const visit = (list) => {
+    const visit = (list, ox, oy) => {
       for (const obj of list) {
         if (!obj) continue;
-        if (obj.list) visit(obj.list);
+        const wx = ox + (obj.x ?? 0), wy = oy + (obj.y ?? 0);
+        if (obj.list) visit(obj.list, wx, wy);
         if (obj.texture && obj.frame) {
           out.push({
             type: obj.type, texKey: String(obj.texture.key),
             frameName: String(obj.frame.name ?? ""),
             frameW: obj.frame.width, frameH: obj.frame.height,
-            scaleX: obj.scaleX, scaleY: obj.scaleY, x: obj.x, y: obj.y,
+            scaleX: obj.scaleX, scaleY: obj.scaleY, x: wx, y: wy,
             originX: obj.originX, originY: obj.originY,
+            // NineSlice/Glyphs: Anzeigegroesse kommt bei NineSlice aus width/
+            // height (nicht aus scale) — displayWidth ist die Wahrheit.
+            displayW: obj.displayWidth ?? obj.frame.width * obj.scaleX,
+            displayH: obj.displayHeight ?? obj.frame.height * obj.scaleY,
             alpha: obj.alpha, visible: obj.visible, depth: obj.depth,
-            displayW: obj.frame.width * obj.scaleX, displayH: obj.frame.height * obj.scaleY,
           });
         }
       }
     };
-    visit(scene.children.list);
+    visit(scene.children.list, 0, 0);
     return out;
   }
   /** Fraktionale Skalierung/Position NUR an Font-/Rahmen-Objekten (Lane-Scope). */
@@ -225,11 +230,9 @@ const SCAN_SRC = `
     const out = [];
     for (const o of objs) {
       if (!o.visible || o.alpha < 0.05 || !inScope(o)) continue;
-      const sx = Math.abs(o.scaleX - Math.round(o.scaleX));
-      const sy = Math.abs(o.scaleY - Math.round(o.scaleY));
-      const dw = o.frameW * o.scaleX, dh = o.frameH * o.scaleY;
+      const dw = o.displayW, dh = o.displayH;
       const left = o.x - o.originX * dw, top = o.y - o.originY * dh;
-      if (sx > 1e-3 || sy > 1e-3
+      if (Math.abs(dw - Math.round(dw)) > 1e-3 || Math.abs(dh - Math.round(dh)) > 1e-3
         || Math.abs(left - Math.round(left)) > 1e-3 || Math.abs(top - Math.round(top)) > 1e-3) {
         out.push({ texKey: o.texKey, type: o.type, scaleX: o.scaleX, scaleY: o.scaleY,
           x: o.x, y: o.y, displayW: Math.round(dw * 100) / 100, displayH: Math.round(dh * 100) / 100 });
@@ -305,6 +308,11 @@ async function snapCrop(page, sceneName, kind, outPath) {
 }
 
 // ------------------------------------------------------------------- Run ---
+/** Nur bei Direktaufruf ausfuehren — Tests importieren nur die Analysefunktionen. */
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) await runLane();
+
+async function runLane() {
 ensureBuild();
 const { chromium } = await loadPlaywright();
 const server = await startServer();
@@ -439,3 +447,4 @@ console.log(JSON.stringify({
       fractionalDetail: v.fractionalFontFrame }])),
   jsErrors: errors.length,
 }, null, 2));
+}
