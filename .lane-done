@@ -1,0 +1,23 @@
+# Lane m10-pad-start-pause-r2 — done (28.11.2026)
+
+Ziel: Pause im RUN per Pad-Start/Options-Button (TV-Fernbedienung, kein ESC), geführt durch den
+bestehenden ESC-Dedup-Pfad `escToggleAllowed` in src/input/InputState.ts, 0 Doppel-Events.
+
+Ergebnis (4 Karten, Commits b4eecd9 / 4efe184 / 1904da7 / baa2e5a, Review-Nits e81f0ac):
+- K1 Befund: Pad-Start-Pause funktionierte auf main bereits (Frame-Pfad Run.ts:459 → togglePause),
+  umging aber den Dedup (togglePause ohne Event, ev=null → immer erlaubt). Touch-Pause derselbe Pfad.
+- K2 Fix: padToggleEvent(ts) + PAD_START_KEY; escToggleAllowed regelt Pad-Start wie ESC
+  (keydown-only, kein repeat, timeStamp-Dedup, geteilter Merker). Run.ts-Frame-Pfad (Pad + Touch)
+  ruft togglePause(padToggleEvent(floor(performance.now()))); ESC-/Portrait-Pfad bitgleich.
+- K3: verify-input um genau EINEN Fall ergänzt („Start-Start-Zyklus togglet genau einmal“).
+- K4: tests/pad-start-pause.test.ts, 12 Fälle (Dedup-Doppel-Toggle, Edges, Priorität unberührt).
+
+Messwerte / Abnahme:
+- verify-input: PASS 29/29 (vorher 28/28), 0 JS-Fehler; ESC-Fälle grün
+- npm test: 154 Dateien / 1667 Tests grün; tsc --noEmit grün; npm run build grün
+- Reviewer-Subagent: PASS (keine blockierenden Befunde, 2 Nits behoben in e81f0ac)
+
+Belege (außerhalb des Repos): ~/games/.evidence/m10-pad-start-pause-r2/
+  (m10-verify-input-padstart-before.json/-after.json + je 10 PNGs)
+Doku: docs/lanes/m10-pad-start-pause-r2.md (wird beim Merge in GAME.md übernommen)
+Nicht angerufen: src/ui/menu.ts, options-menu.ts, GAME.md.
