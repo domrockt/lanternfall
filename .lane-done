@@ -1,0 +1,22 @@
+# Lane m10-game-md-sync — .lane-done (2026-11-28)
+
+Prüf-Lane: GAME.md (verbindliche Spec) gegen Ist abgeglichen. Nur Doku + Belege, 0 Code-Änderungen,
+GAME.md unangetastet. Deliverable: `docs/lanes/m10-game-md-sync.md` (Karten #7510–#7512).
+
+- **Abdeckung 52/52 harte Spec-Aussagen = 100 %** (Kriterium ≥ 90 %): 43 OK, 6 Divergenzen, 3 TEIL.
+- **HOCH:** T1 Auflösung 480x270 → Ist 640×360 dynamisch + DPR-Budget (`src/config.ts`);
+  A5 Selten-Pickups (Heil-Essen/Magnet-Pickup/Gold) fehlen komplett (Lead-Entscheid: Spec streichen
+  oder Code-Fix-Job); C1/C2 Charakterwerte sind M6-Balance-Stand (Mira 250 HP, Kael Rüstung 2 /
+  +25 % Max-HP / XP -25 %) statt Spec-M1-Werten.
+- **MITTEL/NIEDRIG:** F3 Tileset 16x16 → per-Pixel-fBm (bewusst ersetzt, Spec anpassen);
+  P4 heart-Regen 0.2 → 0.3; T2 „ganzzahlig skaliert“ mit gebrochenem Fit-Rückfall; G4/F2
+  2–4-Frames-Spannung; überholte Statuszeilen (FPS-Blocker erledigt, Kael-47 widerlegt,
+  Heap-Gate +21 % FAIL offen → Board-Folge-Job).
+- **Frische Messwerte auf Branch `m10-game-md-sync` (Basis main `a8bd303`):** `npm test`
+  1194/1194 in 111 Dateien (0 fail); `verify-input` **28/28 PASS** mit 0 JS-Fehler
+  (`shots/m10-gamesync-verify-input.json` + 12 PNGs) — der Reacceptance-C-Befund „ESC setzt fort
+  nicht“ (PIN `43fd9eb`) ist auf aktuellem HEAD **nicht mehr reproduzierbar**;
+  `acceptance-count` ok:true (30/6/6/6/6/2); Palette 32 Farben gezählt.
+- Board-Karten #7510–#7513 wurden NICHT in `.opencode/board.json` gepflegt (Lane-Grenze:
+  „board.json ist main“); Board-Commit wurde in `2869164` zurückgesetzt. Der Disponent/Lead
+  schließt #7510–#7513 beim Merge.
