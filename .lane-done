@@ -1,0 +1,26 @@
+# Lane m10-weapon-shot-polish-w2 — DONE (2026-11-28)
+
+Drei optionale Qualitätsreserven aus dem art-director-Urteil der Lane
+m10-weapon-shot-readability umgesetzt (reine Optik, gen-fx.ts; CombatSystem/
+ProjectilePool unberührt -> Trefferverhalten bitgleich):
+
+- K1 #11909 Thorn: je Spitze +1 px marshLight(31)-Glint neben der dunklen
+  28er-Kappe (Commit d8200afc; WIP-Checkpoint e99a07f2 enthielt kurz die
+  kapppen-destruktive 0.9-Variante, final 1.3 mit intakten Kappen).
+- K2 #11910 Storm: boltFrame-Signaturpfad asymmetrisch gestaffelt
+  (Rechtsbaeuche 1.55+0.1*(seed%3), links 0.55) — Legacy shotsig=0 bitgleich
+  (Commit e46776a1).
+- K3 #11911 Ember: 2 flameBright(19)-Kernpixel (r239/g145 -> kein A7) an der
+  Kopfzone; Kern-19-Vollswap als gepruefte Alternative dokumentiert
+  (Commit d5aaa215).
+
+Abnahme: Full-Suite 2243/2243 gruen, tsc --noEmit rc=0, npm run build gruen.
+15 Paar-Tests gruen; A7-Near-White Textur 0 % in allen Laeufen, Chaos worst
+0,05 % / 0,2 % / 0 % (Grenze 4,16 %). art-director-Kurzurteil: PASS 4,5/5,
+keine neuen Makel.
+
+Belege: ~/games/.evidence/m10-weapon-shot-polish-w2/ (k1-before/k1-after/
+k2-after/k3-after je Chaos300 + Kontaktblatt + 6 Solos + JSON; Messskript
+scripts/m10-weapon-shot.mjs --tag=polish unveraendert genutzt). Abnahme-Bilder
+in git: shots/abnahme/m10-weapon-shot-polish-{before,after}-{chaos300,sheet}.png.
+Doku: docs/lanes/m10-weapon-shot-polish-w2.md. Board: #11909-#11912.

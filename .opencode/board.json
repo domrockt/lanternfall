@@ -16432,43 +16432,76 @@
       "id": 11909,
       "title": "m10-weapon-shot-polish-w2 K1: Thorn — je Spitze +1 px marshLight",
       "description": "AC: projectile_thorn-Signatur (thornProjectileFrame) bekommt je Dornspitze +1 marshLight(31)-Pixel (Spitzen-Signatur im Moor-Chaos staerken, art-director-Optional 1). 15 Paar-Tests bleiben gruen (Kern 31 unveraendert), A7-Textur 0 %, Trefferpfad bitgleich (kein CombatSystem/ProjectilePool-Kontakt). Vorher/Nachher Chaos300+Kontaktblatt via scripts/m10-weapon-shot.mjs --tag=polish, Belege ~/games/.evidence/m10-weapon-shot-polish-w2/. Ein Commit.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T12:15:07Z",
           "by": "build",
           "text": "todo → doing: Vorher-Messung als Basis laeuft zuerst (Baseline vor Edit 1)."
+        },
+        {
+          "at": "2026-11-28T12:50:10Z",
+          "by": "build",
+          "text": "doing → review: K1 Thorn: Glint(31) je Spitze neben intakter 28er-Kappe (1.3 statt kapppen-destruktiver 0.9-Variante). 68/68 Tests gruen, tsc rc=0, A7 Textur 0 %, Chaos worst 0,05 % <= 4,16 %. Commit d8200afc. Vorher/Nachher: ~/games/.evidence/m10-weapon-shot-polish-w2/k1-before-* / k1-after-* (Chaos300 + Kontaktblatt + 6 Solos)."
         }
       ],
       "created": "2026-11-28T12:15:05Z",
-      "updated": "2026-11-28T12:15:07Z"
+      "updated": "2026-11-28T12:50:10Z"
     },
     {
       "id": 11910,
       "title": "m10-weapon-shot-polish-w2 K2: Storm — Zickzack asymmetrisch staffeln",
       "description": "AC: boltFrame-Signaturpfad erhaelt asymmetrische Auslenkung (loest mechanische Alternierung, trennt zusaetzlich vom blassen Flail; art-director-Optional 2). Legacy-Pfad (shotsig=0) unveraendert. 15 Paar-Tests gruen (Kern 7 unveraendert), A7 0 %, Vorher/Nachher-Belege wie K1. Ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T12:50:10Z",
+          "by": "build",
+          "text": "todo → doing: K2 Storm: boltFrame-Signaturpfad bekommt asymmetrische Staffelung, Legacy (shotsig=0) unveraendert."
+        },
+        {
+          "at": "2026-11-28T13:01:40Z",
+          "by": "build",
+          "text": "doing → review: K2 Storm: boltFrame(asym) nur im Signaturpfad, Legacy bitgleich. Frame-0-Diff belegt 7 verschobene Zeilen (Rechtsbaeuche +2/+3, links -1). 77/77 Tests, tsc rc=0, A7 0 %/0,2 %. Commit e46776a1. Belege k2-after-* im Evidence-Ordner."
+        }
+      ],
       "created": "2026-11-28T12:15:05Z",
-      "updated": "2026-11-28T12:15:05Z"
+      "updated": "2026-11-28T13:01:40Z"
     },
     {
       "id": 11911,
       "title": "m10-weapon-shot-polish-w2 K3: Ember — 1-2 hellere Kernpixel unter A7-Grenze",
       "description": "AC: projectile_ember-Signatur bekommt 1-2 hellere Kernpixel (19 flameBright, r=239/g=145 -> NICHT A7-Near-White); Kern 19 als vollstaendig gepruefte Alternative in der Lane-Doku dokumentiert (art-director-Optional 3). 15 Paar-Tests gruen, A7-Textur exakt 0 %, Vorher/Nachher-Belege wie K1. Ein Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T13:01:40Z",
+          "by": "build",
+          "text": "todo → doing: K3 Ember: 1-2 hellere Kernpixel (19 flameBright, nicht A7), Kern-19-Alternative dokumentieren."
+        },
+        {
+          "at": "2026-11-28T13:12:23Z",
+          "by": "build",
+          "text": "doing → review: K3 Ember: rows[4] '0fghih0' -> '0fghjj0' (2 px 19 flameBright). A7 0 % (19: r239/g145), Paar-Tests inkl. ember/frost-strenn gruen. Commit d5aaa215. Belege k3-after-*."
+        }
+      ],
       "created": "2026-11-28T12:15:05Z",
-      "updated": "2026-11-28T12:15:05Z"
+      "updated": "2026-11-28T13:12:23Z"
     },
     {
       "id": 11912,
       "title": "m10-weapon-shot-polish-w2 K4: Doku + art-director-Kurzurteil + .lane-done",
       "description": "AC: docs/lanes/m10-weapon-shot-polish-w2.md mit Messwerten/Belegpfaden je Karte + art-director-Kurzurteil (Note + 2-3 Saetze); npm test gruen, tsc --noEmit rc=0; .lane-done committet.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:12:23Z",
+          "by": "build",
+          "text": "todo → doing: K4: Lane-Doku + art-director-Kurzurteil + Full-Suite + .lane-done."
+        }
+      ],
       "created": "2026-11-28T12:15:05Z",
-      "updated": "2026-11-28T12:15:05Z"
+      "updated": "2026-11-28T13:12:23Z"
     }
   ]
 }
