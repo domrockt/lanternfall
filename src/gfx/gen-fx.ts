@@ -2293,8 +2293,10 @@ export interface WeaponShotSignature {
 }
 
 export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature>> = {
-  // Glut-Komet: heisse dunkle Orange-Rampe 15-17, 1 helles 18er-Gluhtpixel,
-  // Tinte-Kontur; kein lanternWhite-Kern mehr (A7 = 0 %).
+  // Glut-Komet: heisse dunkle Orange-Rampe 15-17, 2 helle flameBright(19)-
+  // Kernpixel unter der A7-Grenze (r 239, g 145 -> kein Near-White; holt
+  // Kernidentitaet zurueck, art-director-Optional 3), Tinte-Kontur; kein
+  // lanternWhite-Kern (A7 = 0 %).
   ember: {
     texture: "projectile_ember",
     w: 7,
@@ -2305,7 +2307,7 @@ export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature
       "..0f00.",
       "..0fg0.",
       ".0fgh0.",
-      "0fghih0",
+      "0fghjj0",
       ".0fgh0.",
       "..0fg0.",
     ],
