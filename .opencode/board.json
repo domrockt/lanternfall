@@ -18103,13 +18103,18 @@
       "id": 12888,
       "title": "m10-postwave-smoke-r2 K4: Befundliste Lane-Doku",
       "description": "docs/lanes/m10-postwave-smoke-r2.md: Befunde je mit Severity + Datei + Hebel, sonst Welle-sauber-Doku mit Zahlen. AK: Doku vollständig, .lane-done.",
-      "column": "doing",
+      "column": "done",
       "assignee": "m10-postwave-smoke-r2",
       "notes": [
         {
           "at": "2026-11-28T15:56:20.582Z",
           "by": "m10-postwave-smoke-r2",
           "text": "todo → doing: K4 gestartet (Doku)"
+        },
+        {
+          "at": "2026-11-28T15:56:25.933Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K4 — Welle sauber (alle Checks gruen), 2 low-Befunde (B1 perf.mjs ohne renderer-Feld, B2 minEnemies im passed-Gate trotz dokumentiertem Quirk), Fix-Job-Empfehlungen in docs/lanes/m10-postwave-smoke-r2.md"
         }
       ],
       "created": "2026-11-28T15:32:56.843Z"
