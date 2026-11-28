@@ -5,6 +5,7 @@ import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { createMenuButton, type MenuButton } from "../ui/menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
+import { addVignetteBg } from "../gfx/vignette-bg";
 
 interface CreditsData { seed?: number; debug?: boolean }
 
@@ -52,7 +53,8 @@ export class Credits extends Phaser.Scene {
       () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
 
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-    this.add.image(cx, H / 2, "vignette").setDepth(-1).setDisplaySize(W, H);
+    // Vignette pixelgenau (m10-menubg-crisp): ganzzahliger Scale + Kanten-Fuellung.
+    addVignetteBg(this, W, H);
     this.add.rectangle(cx, 135 + oy, Math.min(412, W - 24), 244, PAL[C.night], 0.96)
       .setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
 
