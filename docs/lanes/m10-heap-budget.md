@@ -55,7 +55,21 @@ das harte Tor wird auf den stabilen Vergleich endMB (Post-GC) vs. Minute 1 umdef
 das zugehörige Diagnose-Skript wurde wieder verworfen. Nachweis-Lauf →
 `shots/m10-heap-budget-after.json`.
 
-<!-- Nachweis-Lauf-Ergebnis wird hier ergänzt -->
+### Nachweis-Lauf (Fall A) — `shots/m10-heap-budget-after.json`
+
+- 30-min-Echtzeitlauf auf derselben Definition, Renderer-String:
+  `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (iGPU), gitSha 8af5acb.
+- 0 JS-Fehler, 0 Crashes, victory=false (Endboss-Kampf zu Sim-Ende offen — kein
+  Laufabbruch: `truncated` markiert reguläres Erreichen von RUN_SECONDS, `fatal=null`);
+  FPS min 59,7 / Median 60,5 (3601 Samples).
+- **HARD-Tor:** Minute 1 (Post-GC) 33,7 MB → endMB (Post-GC, Run-Ende) 37,5 MB
+  = **+11,3 % ≤ +15 % → PASS** (identisches Urteil wie die Ist-Messung +11,0 %).
+- **SOFT (Beobachtung):** max Fenster-Peak 55,7 MB (Fenster 5, Minute 25–30) =
+  +65,3 % über Minute 1 → „FAIL (Beobachtung)“ — wie in der Ist-Messung der
+  GC-Sägezahn, keine monotone Tendenz: Post-GC-Timeline 33,7 / 31,5 / 30,5 / 32,4 /
+  34,5 … 37,5 ohne ansteigende Grundlinie.
+- Zwei voneinander unabhängige Läufe (before +11,0 %, after +11,3 %) bestätigen:
+  das endMB-basierte Tor ist messrausch-fest, der alte +21-%-FAIL war Peak-Jitter.
 
 ## Tests (Karte #6240)
 

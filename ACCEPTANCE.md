@@ -323,7 +323,12 @@ Ist-Messung (verbindlicher Lauf, `shots/m10-heap-budget-before.json`, iGPU
 FPS min 60,1): endMB 36,3 MB vs. Minute 1 32,7 MB = **+11,0 % ≤ +15 % → PASS, Fall A**
 (kein monotoner Leak; Timeline mit Rücksetzern, z. B. Minute 22 39,1 → Minute 25 34,3 MB).
 
-<!-- Nachweis-Lauf (#6239) wird hier ergänzt -->
+Nachweis-Lauf zur Tor-Definition (`shots/m10-heap-budget-after.json`, gleicher
+iGPU-Renderer-String, 0 JS-Fehler, FPS min 59,7): endMB 37,5 MB vs. Minute 1
+33,7 MB = **+11,3 % ≤ +15 % → PASS, Fall A** (SOFT: max Fenster-Peak 55,7 MB =
++65,3 %, nur Beobachtung — GC-Sägezahn). Zwei unabhängige Läufe bestätigen das
+Urteil (+11,0 % / +11,3 %); der alte +21-%-FAIL war Peak-Jitter gegen das
+Minute-1→29-im-Lauf-Tor.
 
 ## Nachabnahme C (27.11., PIN `43fd9eb`) — Versuch (c)
 
