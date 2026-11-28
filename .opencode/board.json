@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7102,
+  "next": 7103,
   "cards": [
     {
       "id": 1,
@@ -8215,11 +8215,17 @@
       "id": 7100,
       "title": "m10-icon-contrast #3: Regressionstests Icon-Kontrast",
       "description": "tests/icon-contrast.test.ts: Kontrast ≥ 3:1 für alle 12 Icons auf HUD- und Panel-Hintergrund, 0 Off-Palette-Pixel, binäres Alpha. Abnahme: npx vitest run tests/icon-contrast.test.ts grün, npx tsc --noEmit grün.",
-      "column": "todo",
+      "column": "review",
       "assignee": "Lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:38:34Z",
+          "by": "build",
+          "text": "todo → review: tests/icon-contrast.test.ts (1a16541): 19 Tests grün (12 Icons Kontrast >=3:1 beidseitig, F3-Icons einzeln verankert, Off-Palette 0, binäres Alpha); tsc rc=0, Suite 991/991, build grün."
+        }
+      ],
       "created": "2026-11-28T00:33:10Z",
-      "updated": "2026-11-28T00:33:10Z"
+      "updated": "2026-11-28T00:38:34Z"
     },
     {
       "id": 7101,
@@ -8230,6 +8236,16 @@
       "notes": [],
       "created": "2026-11-28T00:33:10Z",
       "updated": "2026-11-28T00:33:10Z"
+    },
+    {
+      "id": 7102,
+      "title": "Icon-Design-Debt: heart/charm/boots nach art-director-Muss-Liste neu zeichnen",
+      "description": "Aus Lane m10-icon-contrast (art-director FAIL 3,5/5, Kontrast ok): passive_heart (3) — glatte Kurvenkante statt Zeilen-Alternation (x=1/2, x=13/14, Z.173-179), Schatten als 1-px-Rand unten/rechts statt 2-px-h-Band, Glanzfleck ohne Störpixel; passive_charm (3) — Amulett-Merkmal (Kette/Anhänger), Farbwelt von boots entkoppeln (z. B. Messing/Gold-Rahmen statt Grau, Distinktheit); passive_boots (3,5) — Stufenblock auf dem Fußrücken abflachen (Z.138-140). Hebel src/gfx/gen-icons.ts (16x16, 32er-Palette, 1-px-ink-Kontur, binäres Alpha); Abnahme: art-director >= 4/5 auf beiden Hintergründen (HUD #090c10, Panel #101724) + Kontrast-Tests tests/icon-contrast.test.ts bleiben grün.",
+      "column": "backlog",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-28T00:44:47Z",
+      "updated": "2026-11-28T00:44:47Z"
     }
   ]
 }

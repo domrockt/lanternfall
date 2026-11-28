@@ -64,9 +64,54 @@ soft-Alpha: 0 (Raster per Konstruktion binär, '.' = transparent).
 
 ## Belege
 
-- `shots/m10-icon-contrast-before.json` — Rohdaten (Methode, Hintergründe, 12 Icons, Summary).
-- `shots/m10-icon-contrast-before-zoom.png` — boots/tome/heart/charm 8x nearest auf beiden
-  Hintergründen (oben HUD #090c10, unten Panel #101724).
+- `shots/m10-icon-contrast-before.json` — Rohdaten Ist-Stand (Methode, Hintergründe, 12 Icons, Summary).
+- `shots/m10-icon-contrast-after.json` — Rohdaten Lane-Ende (identisch zu before: 0 Fails).
+- `shots/m10-icon-contrast-before-zoom.png` / `-after-zoom.png` — boots/tome/heart/charm 8x nearest
+  auf beiden Hintergründen (oben HUD #090c10, unten Panel #101724).
+- `tests/icon-contrast.test.ts` — 19 Regressionstests (Kontrast ≥ 3:1, Off-Palette, binäres Alpha).
+
+## Abnahme-Status
+
+| Kriterium | Status |
+|---|---|
+| alle 12 Icons Kontrast ≥ 3:1 auf beiden Hintergründen (JSON belegt) | ✅ erfüllt (before == after, 0 Fails) |
+| Tests + `npx tsc --noEmit` grün | ✅ erfüllt (19 neue Tests, Suite 991/991, rc=0) |
+| AE=0 für nicht betroffene Icons (Pixel-Diff) | ✅ erfüllt (leerer Diff gegen 942af93) |
+| art-director ≥ 4/5 für die 4 neu gezeichneten Icons | ❌ **nicht erfüllt** (3,5 — Design-Debt aus Vor-Lane-Redraw, Backlog-Karte angelegt; Hebel fremd-geclaimt) |
+
+## Nachher-Stand (Karte #7101)
+
+- **Messung unverändert 0 Fails:** `shots/m10-icon-contrast-after.json` — identische Werte
+  wie Vorher (Vorher == Nachher, programmatisch geglichen: Icon-Arrays byteidentisch), da
+  diese Lane keine Icon-Raster ändert (Karte #7099, No-Op — Fix kam mit Merge `942af93`).
+- `shots/m10-icon-contrast-after-zoom.png` — boots/tome/heart/charm 8x nearest auf beiden
+  Hintergründen (Standlergebnis nach Lane-Ende).
+- **Regressionsschutz:** `tests/icon-contrast.test.ts` (Karte #7100) — 19 Tests: Kontrast ≥ 3:1
+  für alle 12 Icons auf beiden Hintergründen, F3-Icons einzeln verankert, 0 Off-Palette,
+  binäres Alpha. `npx tsc --noEmit` rc=0, Gesamt-Suite 991/991 grün, `npm run build` grün.
+- **art-director-Sichtprüfung** der 4 F3-Icons (Maßstab kommerziell auslieferbar, ≥ 4/5):
+  Ergebnis siehe unten.
+
+### art-director-Urteil
+
+**FAIL — Gesamtnote 3,5/5** (tome 4,5 / boots 3,5 / heart 3 / charm 3; Maßstab kommerziell
+auslieferbar). **Kontrast-Punkte uneingeschränkt bestätigt:** alle 4 Körper heben sich visuell auf
+beiden Hintergründen ab (nicht nur Akzentpixel), 1-px-ink-Kontur, 0 Off-Palette, 0 soft-Alpha,
+Licht durchgehend oben-links. Die FAIL-Gründe sind **Icon-Design der Vor-Lane**, nicht Kontrast:
+
+- `passive_heart` (3): gezackte Silhouettenkante (Zeilen-Alternation x=1/2 bzw. x=13/14,
+  Raster Z.173–179), Einzel-Pixel-Rauschen im Glanzfleck, 2-px-`h`-Band wirkt wie Riss.
+- `passive_charm` (3): liest sich als Hufeisenmagnet/Goldbarren statt Amulett (keine Kette),
+  teilt Grau+Orange-Farbwelt mit boots → Distinktheits-Risiko im HUD.
+- `passive_boots` (3,5): Block auf dem Fußrücken liest sich als Treppe; Silhouette sehr blockig.
+- `passive_tome` (4,5): auslieferungsreif.
+
+**Disposition:** Der Hebel `src/gfx/gen-icons.ts` ist in dieser Lane **fremd-geclaimt/tabu**
+(Briefing), und Icon-Redesign überschreitet den Kontrast-Scope. Die Muss-Liste (glatte Herz-Kontur,
+Schatten als 1-px-Rand, charm mit Kette + Farbtrennung von boots, boots Stufenblock abflachen)
+ist als Backlog-Karte für die Icon-Owner-Lane angelegt. Die Abnahme der Vor-Lane (art-director
+PASS 5/5/5/4/4 mit Kontrast-Fokus) bleibt davon unberührt — dieses strengere Urteil ist der
+Grund, warum die Lane-Abnahme „art-director ≥ 4/5“ hier NICHT als erfüllt gemeldet wird.
 
 ## Verbleibende offene Punkte (nicht Lane-Scope)
 
