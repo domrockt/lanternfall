@@ -1,0 +1,84 @@
+{
+ "name": "m10-golden-frame-verdict",
+ "generatedAt": "2026-11-28T17:23:37.733Z",
+ "runtimeMs": 33968,
+ "seeds": [
+  101,
+  202,
+  404
+ ],
+ "reps": 2,
+ "ticks": 600,
+ "simSeconds": 30,
+ "scale": 30,
+ "character": "mira",
+ "deterministic": true,
+ "baselinePresent": true,
+ "matchesBaseline": true,
+ "jsErrorCount": 0,
+ "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+ "rendererOk": true,
+ "passed": true,
+ "perSeed": [
+  {
+   "seed": 101,
+   "identical": true,
+   "matchesBaseline": true,
+   "hash": "9d3f3b2aff8461fc6f4086da41f63415e02108a6c2772d27ed1abd8dc006b352",
+   "marks": 10,
+   "final": {
+    "scene": "run",
+    "time": 30.050000000000292,
+    "kills": 14,
+    "level": 3
+   },
+   "lastMark": {
+    "s": 600,
+    "kills": 14,
+    "level": 3,
+    "enemies": 3
+   },
+   "firstDiff": null
+  },
+  {
+   "seed": 202,
+   "identical": true,
+   "matchesBaseline": true,
+   "hash": "b4555df0be113816b7bef47300157f303532cc0f1de7252ce1bf88ddd81e97e1",
+   "marks": 10,
+   "final": {
+    "scene": "run",
+    "time": 30.050000000000292,
+    "kills": 10,
+    "level": 2
+   },
+   "lastMark": {
+    "s": 600,
+    "kills": 10,
+    "level": 2,
+    "enemies": 1
+   },
+   "firstDiff": null
+  },
+  {
+   "seed": 404,
+   "identical": true,
+   "matchesBaseline": true,
+   "hash": "a9f247a96b2e34d6e77dbcc29ac522ca77e724dd46dc184b66e34b6e3c2011ff",
+   "marks": 10,
+   "final": {
+    "scene": "run",
+    "time": 30.050000000000292,
+    "kills": 16,
+    "level": 4
+   },
+   "lastMark": {
+    "s": 600,
+    "kills": 16,
+    "level": 4,
+    "enemies": 1
+   },
+   "firstDiff": null
+  }
+ ]
+}
