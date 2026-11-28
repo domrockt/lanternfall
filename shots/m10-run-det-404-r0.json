@@ -1566,8 +1566,9 @@
  "events": [],
  "final": {
   "scene": "run",
-  "time": 120.94999999999527,
-  "kills": 73
+  "time": 120.09999999999532,
+  "kills": 73,
+  "level": 8
  },
  "pageErrors": []
 }

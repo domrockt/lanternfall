@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-28T04:33:20.830Z",
+ "generatedAt": "2026-11-28T04:40:44.686Z",
  "seeds": [
   101,
   202,
@@ -13,25 +13,12 @@
  "perSeed": [
   {
    "seed": 101,
-   "identical": false,
+   "identical": true,
    "pageErrorCount": 0,
    "divergingMarks": 0,
    "totalMarks": 120,
    "divergingFields": {},
-   "firstDiff": {
-    "rep": 1,
-    "where": "final",
-    "a": {
-     "scene": "run",
-     "time": 120.3999999999953,
-     "kills": 58
-    },
-    "b": {
-     "scene": "run",
-     "time": 121.44999999999524,
-     "kills": 59
-    }
-   }
+   "firstDiff": null
   },
   {
    "seed": 202,
@@ -84,25 +71,12 @@
   },
   {
    "seed": 404,
-   "identical": false,
+   "identical": true,
    "pageErrorCount": 0,
    "divergingMarks": 0,
    "totalMarks": 120,
    "divergingFields": {},
-   "firstDiff": {
-    "rep": 1,
-    "where": "final",
-    "a": {
-     "scene": "run",
-     "time": 120.94999999999527,
-     "kills": 73
-    },
-    "b": {
-     "scene": "run",
-     "time": 122.44999999999519,
-     "kills": 74
-    }
-   }
+   "firstDiff": null
   }
  ]
 }
