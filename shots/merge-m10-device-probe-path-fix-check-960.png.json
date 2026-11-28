@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5449/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-m10-device-probe-path-fix-check-960.png",
+  "gif": null,
+  "jsErrors": []
+}
