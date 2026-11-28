@@ -1,0 +1,30 @@
+# Lane m10-evo-element-guard — fertig (28.11.2026)
+
+Automatischer Regression-Guard für Doms Evo-Regel ("Element muss auf einem Standbild
+ohne Beschriftung erkennbar sein", Optik-Abnahme 10:00Z) gegen künftige FX-/Depth-Änderungen.
+
+- K1 (#13384): scripts/m10-evo-element-guard.mjs — je Evo (phoenix, eternal_winter,
+  soul_beacon, thunder_seal, wrath_pendulum, thorn_storm) ein eingefrorener Standbild-Frame
+  (scene.pause-Muster m10-boss-fx-contrast) in 640x360 + 960x540, 12 PNGs
+  shots/m10-evo-element-*.png + shots/m10-evo-element-guard.json. Renderer-Beleg:
+  ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) — iGPU, kein SwiftShader.
+  0 JS-Fehler.
+- K2 (#13385): Farb-Signaturen (nearest-PAL-Histogramm im Spieler-Crop, Seed 7,
+  Teleport 2048/2048) mit kalibrierten Schwellen (min-Ist x 0.4 über 2 Ist-Läufe;
+  soulpyre.noFire max 0.06; Dornensturm Grid-CV >= 0.1 gegen Raster-Overlay).
+  Verifikationslauf: 6/6 Evo-Signaturen GREEN.
+- K3 (#13386): tests/evo-element-guard.test.ts — 6 Tests grün (Beleg-Gueltigkeit,
+  Signaturen, PNGs, Schwellen, Grid-CV, Source-Guard Schwellen-Sync). npm test
+  233 Dateien / 2521 Tests grün, tsc rc=0, npm run build ok.
+- K4 (#13387): docs/lanes/m10-evo-element-guard.md (je Evo Vorher-Bild + Signatur +
+  Schwelle, Befunde) + dieses .lane-done.
+
+Befunde für Dora (nicht im Spielcode gefixt, FX-Dateien fremd):
+1. FX-Budget dimmt das Lantern-Licht, sobald eine Waffe feuert (waffenlose Referenz-Frames
+   systematisch heller) — Baseline-Differenz-Guard dadurch nicht direkt brauchbar;
+   Hebel: additivies Lantern-Licht vom Waffen-FX-Budget entkoppeln.
+2. Soulpyre-Identität = nur Kalte-Halos, coldBright 1.5 % ist die kleinste Signatur.
+3. Gewittersiegel-Blitz-Weiß dünn (0.094 %) — empfindlichste Einzel-Schwelle.
+
+Belege zusätzlich in ~/games/.evidence/m10-evo-element-guard/ (Crops, PNGs, JSON).
+Kein FPS-Tor (Standbilder, kein flock). .gitignore-Whitelist !shots/m10-evo-element-* ergänzt.

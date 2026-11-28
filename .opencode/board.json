@@ -18831,27 +18831,38 @@
       "id": 13386,
       "title": "m10-evo-element-guard K3: tests/evo-element-guard.test.ts (Signaturen-Regression)",
       "description": "Guard-Test liest die committeten Signaturen-JSONs (Muster run-determinism-Test) und prueft je Evo: Ziel-Farbband-Anteil >= kalibrierte Schwelle, Renderer-String kein SwiftShader, Datei vollstaendig (6 Evos x 2 Aufloesungen). Source-Guard: Probe-Skript + Palette-Band-Definitionen vorhanden. AK: npx vitest run tests/evo-element-guard.test.ts gruen, Suite gruen, tsc rc=0.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-evo-element-guard",
       "notes": [
         {
           "at": "2026-11-28T17:17:33Z",
           "by": "build",
           "text": "todo → doing: K3 angenommen: tests/evo-element-guard.test.ts (Signaturen-JSON-Guard + Source-Guard)."
+        },
+        {
+          "at": "2026-11-28T17:19:37Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig: tests/evo-element-guard.test.ts, 6 Tests gruen (iGPU-Gueltigkeit, 6x2 Signaturen GREEN, 12 PNGs, Schwellen-Erfuellung, Grid-CV, Source-Guard Schwellen-Sync). npm test 233 Dateien/2521 Tests gruen, tsc rc=0, build ok. Commit 73887835 #13386. (2 fremde shots/m10-passive-math-*.json waren nur npm-test-Timestamp-Regeneration, zurueckgesetzt.)"
         }
       ],
       "created": "2026-11-28T16:42:00Z",
-      "updated": "2026-11-28T17:17:33Z"
+      "updated": "2026-11-28T17:19:37Z"
     },
     {
       "id": 13387,
       "title": "m10-evo-element-guard K4: Lane-Doku + .lane-done",
       "description": "docs/lanes/m10-evo-element-guard.md mit je Evo Vorher-Bild + Signatur + Schwelle, offene Punkte/Hebel (Dora-Fix-Job-Rohstoff). .gitignore-Whitelist !shots/m10-evo-element-* (analog f71c3be, explizit erlaubt). .lane-done mit 5-10 Zeilen Zusammenfassung + Werte. AK: Doku vollstaendig, npm test + npm run build gruen, Commit, .lane-done committet.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-evo-element-guard",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:19:27Z",
+          "by": "build",
+          "text": "todo → doing: K4 angenommen: Lane-Doku + .lane-done."
+        }
+      ],
       "created": "2026-11-28T16:42:00Z",
-      "updated": "2026-11-28T16:42:00Z"
+      "updated": "2026-11-28T17:19:27Z"
     }
   ]
 }
