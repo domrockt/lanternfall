@@ -9794,37 +9794,61 @@
       "id": 7698,
       "title": "m10-charselect-truth K1: Mess-Skript + before-JSON",
       "description": "scripts/m10-charselect-truth.mjs rendert CharSelect headless, extrahiert ALLE angezeigten Textzeilen beider Charaktere und vergleicht gegen src/data/characters.ts + weapons.ts. Ausgabe shots/m10-charselect-truth-before.json. AK: before-JSON mit belegten Abweichungen committed.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:11:51Z",
+          "by": "build",
+          "text": "review → done: lane #7505, Merge c97e8d3 (m10-charselect-truth)"
+        }
+      ],
       "created": "2026-11-28T03:11:29Z",
-      "updated": "2026-11-28T03:11:29Z"
+      "updated": "2026-11-28T03:11:51Z"
     },
     {
       "id": 7699,
       "title": "m10-charselect-truth K2: belegte Abweichungen in CharSelect.ts fixen",
       "description": "Nur belegte Abweichungen aus K1 fixen — Anzeige folgt src/data, nie umgekehrt; src/data/** unangetastet. AK: npx tsc --noEmit grün, Abweichungsliste aus K1 leer oder je Abweichung Fix in CharSelect.ts begründet.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:11:51Z",
+          "by": "build",
+          "text": "review → done: lane #7506, Merge c97e8d3 (m10-charselect-truth)"
+        }
+      ],
       "created": "2026-11-28T03:11:29Z",
-      "updated": "2026-11-28T03:11:29Z"
+      "updated": "2026-11-28T03:11:51Z"
     },
     {
       "id": 7700,
       "title": "m10-charselect-truth K3: Guard-Test + after-JSON",
       "description": "tests/charselect-truth.test.ts: jede angezeigte Zeile == Datenwert (beide Charaktere, HP/TEMPO/RÜSTUNG/START/Bonus), liest after-JSON aus dem Headless-Lauf. AK: vitest grün, after-JSON mit 0 Abweichungen committed.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:11:51Z",
+          "by": "build",
+          "text": "review → done: lane #7507, Merge c97e8d3 (m10-charselect-truth)"
+        }
+      ],
       "created": "2026-11-28T03:11:29Z",
-      "updated": "2026-11-28T03:11:29Z"
+      "updated": "2026-11-28T03:11:51Z"
     },
     {
       "id": 7701,
       "title": "m10-charselect-truth K4: Shots (1x+4x) + art-director + Doku + .lane-done",
       "description": "2 Shots (1x + 4x nearest), art-director-Sichtung Lesbarkeit >= 4/5, docs/lanes/m10-charselect-truth.md, .lane-done committet. AK: Belege committed, Urteil >= 4/5, Lane-Datei vollständig.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:11:51Z",
+          "by": "build",
+          "text": "review → done: lane #7508, Merge c97e8d3 (m10-charselect-truth)"
+        }
+      ],
       "created": "2026-11-28T03:11:29Z",
-      "updated": "2026-11-28T03:11:29Z"
+      "updated": "2026-11-28T03:11:51Z"
     }
   ]
 }
