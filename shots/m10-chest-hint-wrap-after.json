@@ -1,0 +1,260 @@
+{
+  "schema": "m10-chest-hint-wrap/v1",
+  "tag": "after",
+  "generatedAt": "2026-11-28T00:06:53.259Z",
+  "seed": 101,
+  "slotMaxChars": 13,
+  "note": "Nach Fix: Umbruch an Wortgrenzen bzw. mit Trennstrich; Evo-Satz verlustfrei über beide Hint-Zeilen.",
+  "jsErrors": 0,
+  "formats": [
+    {
+      "label": "640",
+      "internal": "640x360@2",
+      "rewardCount": 3,
+      "slots": [
+        {
+          "index": 0,
+          "name": "SEELENLEUCHTFEUER",
+          "kind": "evolution",
+          "lines": [
+            "SEELENLEU-",
+            "CHTFEUER"
+          ],
+          "boxes": [
+            {
+              "text": "SEELENLEU-",
+              "left": 205,
+              "right": 264,
+              "top": 247,
+              "bottom": 254
+            },
+            {
+              "text": "CHTFEUER",
+              "left": 211,
+              "right": 258,
+              "top": 258,
+              "bottom": 265
+            }
+          ],
+          "breakType": "hyphen",
+          "charsLost": false,
+          "midWordCut": false,
+          "widthOk": true
+        },
+        {
+          "index": 1,
+          "name": "WINDSTIEFEL",
+          "kind": "passive",
+          "lines": [
+            "WINDSTIEFEL",
+            ""
+          ],
+          "boxes": [
+            {
+              "text": "WINDSTIEFEL",
+              "left": 288,
+              "right": 353,
+              "top": 247,
+              "bottom": 254
+            }
+          ],
+          "breakType": "fits",
+          "charsLost": false,
+          "midWordCut": false,
+          "widthOk": true
+        },
+        {
+          "index": 2,
+          "name": "GLUTFUNKE",
+          "kind": "weapon",
+          "lines": [
+            "GLUTFUNKE",
+            ""
+          ],
+          "boxes": [
+            {
+              "text": "GLUTFUNKE",
+              "left": 380,
+              "right": 433,
+              "top": 247,
+              "bottom": 254
+            }
+          ],
+          "breakType": "fits",
+          "charsLost": false,
+          "midWordCut": false,
+          "widthOk": true
+        }
+      ],
+      "hints": {
+        "expected": "AUS GEISTERLATERNE + MAGNETAMULETT WIRD SEELENLEUCHTFEUER.",
+        "line0": "AUS GEISTERLATERNE + MAGNETAMULETT",
+        "line1": "WIRD SEELENLEUCHTFEUER.",
+        "chestHintChars": 72,
+        "maxLineChars": 34,
+        "bothLinesNonEmpty": true,
+        "complete": true,
+        "boxes": [
+          {
+            "text": "AUS GEISTERLATERNE + MAGNETAMULETT",
+            "left": 219,
+            "right": 422,
+            "top": 167,
+            "bottom": 174
+          },
+          {
+            "text": "WIRD SEELENLEUCHTFEUER.",
+            "left": 252,
+            "right": 389,
+            "top": 175,
+            "bottom": 182
+          }
+        ]
+      },
+      "icon": {
+        "left": 299.2,
+        "right": 340.8,
+        "top": 116.2,
+        "bottom": 157.8
+      },
+      "frame": {
+        "left": 94,
+        "right": 546,
+        "top": 63,
+        "bottom": 307
+      },
+      "midWordCuts": [],
+      "charsLost": [],
+      "overlaps": [],
+      "insideFrame": true,
+      "insideViewport": true,
+      "screenshot": "shots/m10-chest-hint-wrap-after-640.png",
+      "ok": true
+    },
+    {
+      "label": "780",
+      "internal": "780x360@3",
+      "rewardCount": 3,
+      "slots": [
+        {
+          "index": 0,
+          "name": "SEELENLEUCHTFEUER",
+          "kind": "evolution",
+          "lines": [
+            "SEELENLEU-",
+            "CHTFEUER"
+          ],
+          "boxes": [
+            {
+              "text": "SEELENLEU-",
+              "left": 275,
+              "right": 334,
+              "top": 247,
+              "bottom": 254
+            },
+            {
+              "text": "CHTFEUER",
+              "left": 281,
+              "right": 328,
+              "top": 258,
+              "bottom": 265
+            }
+          ],
+          "breakType": "hyphen",
+          "charsLost": false,
+          "midWordCut": false,
+          "widthOk": true
+        },
+        {
+          "index": 1,
+          "name": "WINDSTIEFEL",
+          "kind": "passive",
+          "lines": [
+            "WINDSTIEFEL",
+            ""
+          ],
+          "boxes": [
+            {
+              "text": "WINDSTIEFEL",
+              "left": 358,
+              "right": 423,
+              "top": 247,
+              "bottom": 254
+            }
+          ],
+          "breakType": "fits",
+          "charsLost": false,
+          "midWordCut": false,
+          "widthOk": true
+        },
+        {
+          "index": 2,
+          "name": "GLUTFUNKE",
+          "kind": "weapon",
+          "lines": [
+            "GLUTFUNKE",
+            ""
+          ],
+          "boxes": [
+            {
+              "text": "GLUTFUNKE",
+              "left": 450,
+              "right": 503,
+              "top": 247,
+              "bottom": 254
+            }
+          ],
+          "breakType": "fits",
+          "charsLost": false,
+          "midWordCut": false,
+          "widthOk": true
+        }
+      ],
+      "hints": {
+        "expected": "AUS GEISTERLATERNE + MAGNETAMULETT WIRD SEELENLEUCHTFEUER.",
+        "line0": "AUS GEISTERLATERNE + MAGNETAMULETT",
+        "line1": "WIRD SEELENLEUCHTFEUER.",
+        "chestHintChars": 72,
+        "maxLineChars": 34,
+        "bothLinesNonEmpty": true,
+        "complete": true,
+        "boxes": [
+          {
+            "text": "AUS GEISTERLATERNE + MAGNETAMULETT",
+            "left": 289,
+            "right": 492,
+            "top": 167,
+            "bottom": 174
+          },
+          {
+            "text": "WIRD SEELENLEUCHTFEUER.",
+            "left": 322,
+            "right": 459,
+            "top": 175,
+            "bottom": 182
+          }
+        ]
+      },
+      "icon": {
+        "left": 369.2,
+        "right": 410.8,
+        "top": 116.2,
+        "bottom": 157.8
+      },
+      "frame": {
+        "left": 164,
+        "right": 616,
+        "top": 63,
+        "bottom": 307
+      },
+      "midWordCuts": [],
+      "charsLost": [],
+      "overlaps": [],
+      "insideFrame": true,
+      "insideViewport": true,
+      "screenshot": "shots/m10-chest-hint-wrap-after-780.png",
+      "ok": true
+    }
+  ],
+  "passed": true
+}
