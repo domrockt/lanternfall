@@ -16469,9 +16469,15 @@
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
       "column": "doing",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T13:34:06Z",
+          "by": "build",
+          "text": "Merge m10-device-janky-node liegt auf main (f0bc1de0, ancestor-rc=0). Guard-Test boot-light-textures auf gemergtem Stand geprüft: npx vitest run tests/boot-light-textures.test.ts -> 4/4 grün, keine Anpassung nötig. Full-Suite 2338/2338 grün."
+        }
+      ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T12:25:04Z"
+      "updated": "2026-11-28T13:34:06Z"
     },
     {
       "id": 12029,
@@ -17040,41 +17046,65 @@
       "id": 12371,
       "title": "m10-device-janky-node K1: Vorher-Messung (gfxinfo Baseline, Renderer-String)",
       "description": "Akzeptanz: 2 gfxinfo-Fenster am Gerät (Minute-25-Dichte, device-bridge 172.17.0.1:5181) + 1 Fenster OHNE Spawn-Top-up (natürliche Director-Dichte); Renderer-String (kein SwiftShader) im JSON; Baseline-JSON committet BEVOR Code geändert wird. Owner: Lead. Kontrolle: acceptance-auditor (Beleg JSON + Renderer-String).",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T13:33:36Z",
+          "by": "build",
+          "text": "review → done: lane #11969, Merge f0bc1de0 (ancestor-rc=0, Kontroll-Screenshots 9f616add)"
+        }
+      ],
       "created": "2026-11-28T13:31:06Z",
-      "updated": "2026-11-28T13:31:06Z"
+      "updated": "2026-11-28T13:33:36Z"
     },
     {
       "id": 12372,
       "title": "m10-device-janky-node K2: Fix in src/config.ts + src/systems/FxSystem.ts",
       "description": "Akzeptanz: Geräteknoten (Renderer 'Adreno (TM) 710', DPR 2, 120 Hz) fällt unter Minute-25-Last auf medium-Budget; Desktop/iGPU-Pfade bitgleich (Guard-Test pinnt Desktop-Werte). NUR config.ts + FxSystem.ts + tests/device-janky-node.test.ts; quality.ts NICHT anfassen. Owner: gameplay-dev. Kontrolle: reviewer + test-auditor.",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T13:33:36Z",
+          "by": "build",
+          "text": "review → done: lane #11970, Merge f0bc1de0 (ancestor-rc=0, Kontroll-Screenshots 9f616add)"
+        }
+      ],
       "created": "2026-11-28T13:31:06Z",
-      "updated": "2026-11-28T13:31:06Z"
+      "updated": "2026-11-28T13:33:36Z"
     },
     {
       "id": 12373,
       "title": "m10-device-janky-node K3: Nachher-Messung + Tore",
       "description": "Akzeptanz: 2 gfxinfo-Fenster am Gerät (gleiche Methode wie K1); Tore janky < 10 % bei FPS >= 60, p95 <= 16 ms, 0 JS-Fehler; Desktop-Screenshots unverändert (Vorher/Nachher). Falls janky >= 10 %: Zwischenstände committet + Resthebel in Lane-Doku + Bedarfsmeldung requests.md. Owner: Lead. Kontrolle: acceptance-auditor.",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T13:33:36Z",
+          "by": "build",
+          "text": "review → done: lane #11971, Merge f0bc1de0 (ancestor-rc=0, Kontroll-Screenshots 9f616add)"
+        }
+      ],
       "created": "2026-11-28T13:31:06Z",
-      "updated": "2026-11-28T13:31:06Z"
+      "updated": "2026-11-28T13:33:36Z"
     },
     {
       "id": 12374,
       "title": "m10-device-janky-node K4: Suite grün + Reviewer-PASS + .lane-done",
       "description": "Akzeptanz: npm test grün, npm run build rc=0, Reviewer-PASS, je Karte ein Commit (Präfix M10-m10-device-janky-node:), Lane-Doku docs/lanes/m10-device-janky-node.md aktuell, .lane-done committet. Owner: Lead. Kontrolle: commit-gate.",
-      "column": "review",
+      "column": "done",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T13:33:36Z",
+          "by": "build",
+          "text": "review → done: lane #11972, Merge f0bc1de0 (ancestor-rc=0, Kontroll-Screenshots 9f616add)"
+        }
+      ],
       "created": "2026-11-28T13:31:06Z",
-      "updated": "2026-11-28T13:31:06Z"
+      "updated": "2026-11-28T13:33:36Z"
     }
   ]
 }
