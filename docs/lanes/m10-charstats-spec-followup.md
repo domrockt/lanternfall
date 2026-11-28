@@ -66,13 +66,32 @@ Z.356/357 (M6-Balance-Statusbericht — Status, nicht Spec), `src/logic/stats.ts
 mit Kommentar) und `tests/charselect-truth.test.ts` (maxHpPct 20, Bonus-Zeile `+20% MAX-HP`,
 Testname/Kommentar aktuell). Assertions-Intent bleibt: Kael ist der Tank, Mira ist schneller, Anzeige folgt Daten.
 
+**Fremd-Datei, minimal und begründet:** `tests/logic.test.ts:177-181` pinnte Kael `maxHpPct 25`
+(M6-Tankprofil) und effektive HP 163 — die K2-Spec-Entscheidung (F4: 20) widerspricht diesem Wert
+direkt, der Test wäre dauerhaft rot. Repoint auf 20 / eff. 156 (130·1,2), Testname mit Spec-Anker;
+der geprüfte Intent („aggregateMods überträgt Charakter-Mods korrekt“) ist unverändert. Begründung
+auch im K3-Commit; permanente Anpassungen an dieser Datei bleiben beim Owner.
+
 ## K4 — Guard
 
 `scripts/m10-charstats-followup.mjs`: Spec-Referenztabelle (im Skript mitgepflegt, Quelle GAME.md Z.34/35/173)
 gegen `src/data/characters.ts` (Regex-Parse wie `m10-charstats-ssot.mjs`); meldet jede unbekommentierte
 Drift (Wert ≠ Spec ohne „Bewusst“-Kommentar bzw. ≠ gepinntem Ist), exit 0/1.
 
+**Verifiziert (Probestriche auf Kopie in `~/tmp/m10-charstats-spec-followup/probe/`):**
+- Ist-Stand: `PASS`, exit 0 (alle Werte = Referenztabelle, alle Abweichungen kommentiert).
+- Probe 1: `mira.hp 250`, `maxHpPct 25` (unbekommentiert) → `FAIL`, exit 1, beide Drifts benannt.
+- Probe 2: `mira.armor`-Kommentar („Spec schweigt (F1/P1)“) entfernt → `FAIL` mit
+  `mira.armor: spec-schweigendes Feld ohne Kommentar (F1/P1)` (exit 1).
+- Guard erkennt zusätzlich: verbotene Mods (kael `moveSpeedPct` = F3-Doppel-Abzug), unbekannte Mods,
+  Charaktere ohne Tabellen-Eintrag.
+
 ## Status / Nachweise
 
-- K1: Audit-Tabelle oben, Baseline 2455/2455 grün.
-- K2–K4: siehe Commits (`M6-m10-charstats-spec-followup: #1292x …`) und Abschlusseintrag unten.
+- K1: Audit-Tabelle oben, Baseline 2455/2455 grün (#12925, Commit 01a88a03).
+- K2: Daten festgezogen (#12926, Commit 23d030b1) — 0 stille Felder; Zieltests 20/20, tsc rc=0.
+- K3: Tests repointet inkl. `tests/logic.test.ts` (#12927, Commit 23adf674).
+- K4: Guard verifiziert (#12928, siehe Commit) — `node scripts/m10-charstats-followup.mjs` exit 0.
+- **Abschluss: `npm test` 226 Dateien / 2455 Tests grün (3 aufeinanderfolgende Läufe, rc=0),
+  `npx tsc --noEmit` rc=0, Guard exit 0.** F1–F5 entschieden (s. Entscheidungs-Logik), offene
+  PRODUKT-Fragen P1–P3 oben für Dom.

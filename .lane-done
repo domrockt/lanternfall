@@ -1,0 +1,20 @@
+# Lane m10-charstats-spec-followup — abgeschlossen 2026-11-28
+
+SSOT-Dreiklang GAME.md-Spec ↔ src/data/characters.ts ↔ Tests abgeschlossen (Nachfolger von
+m10-charstats-ssot, dessen offene Fragen F1–F5). GAME.md und src/scenes/CharSelect.ts unverändert.
+
+- K1 (#12925): Ist-Audit — Baseline npm test 2455/2455 grün; F1–F5 belegt (GAME.md Z.34/35/173/356,
+  stats.ts:133-137, data.test.ts:100-102, charselect-truth.test.ts:84-91). Commit 01a88a03.
+- K2 (#12926): src/data/characters.ts — 0 stille Felder mehr (F1-Kommentare, Spec-Anker);
+  F3 moveSpeedPct entfernt (Doppel-Abzug weg, eff. Tempo 59 ≈ Spec 58,9), F4 maxHpPct 25→20 (Spec),
+  F5 armor 2→1 (Spec); after-JSON regeneriert (Anzeige folgt Daten 1:1). Commit 23d030b1.
+- K3 (#12927): Tests repointet (data.test, charselect-truth; fremd+minimal logic.test.ts 25→20 mit
+  Begründung), Assertions-Intents unverändert. Commit 23adf674.
+- K4 (#12928): Guard scripts/m10-charstats-followup.mjs (Spec-Referenztabelle vs Daten, exit 0/1),
+  verifiziert per Probestrichen (PASS rc=0; Proben mit Drift/kommentarlos → FAIL rc=1).
+- Abnahme: npm test 226 Dateien / 2455 Tests grün (3 aufeinanderfolgende Läufe, rc=0);
+  npx tsc --noEmit rc=0; Guard exit 0.
+- Offen für Dom (nur Spec-Text/Balance, Code ändert sich nicht): P1 spec-schweigende Felder
+  (Mira armor/regen, Kael maxHpFlat/regen/xpPct) in Spec aufnehmen oder aus Daten entfernen;
+  P2 Balance-Korridor neu prüfen (M6 war mit Mira 250 / Kael 25 %, Rüstung 2, 55,9 px/s getunt);
+  P3 GAME.md Z.356/357 (M6-Status) an Spec anpassen. Details: docs/lanes/m10-charstats-spec-followup.md.
