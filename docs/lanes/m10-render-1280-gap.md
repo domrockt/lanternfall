@@ -18,7 +18,7 @@ Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` — gül
 | 1280x720@2 | Lücke rechts/unten (Timing-Race, anteilig installiert) | vollständig gerendert |
 
 - Scan A (reine Schwarz-Flächen, `checkScreenshot` aus `scripts/terrain-coverage.mjs`, Schwelle ≥300 px):
-  **überall maxRegion=0** — der Befund ist KEINE reine Schwarz-Fläche, sonderndeckungsgleich mit der
+  **überall maxRegion=0** — der Befund ist KEINE reine Schwarz-Fläche, sondern deckungsgleich mit der
   Original-Beschreibung in #12969 („radiale Licht-Gradient sichtbar, NICHT reines Schwarz"). Der
   Schwarz-Pixel-Guard allein fängt diesen Defect NICHT — Entscheidungsgrund war die Sichtprüfung der Shots.
 - Scan B (Zellen-Luminanz, ergänzend): Start-Shots zeigen dunkle Quadranten (z. B. 1280@1: rechts
@@ -87,8 +87,37 @@ Vorher-Belege (Start-Luecke sichtbar): `2026-11-28T18-21-12-663Z-*.png` im selbe
 
 ## K3 (#13896): Guard-Test
 
-(folgt)
+`tests/render-1280-gap.test.ts` (Commit 80a488c0), 8 Tests, kein DOM-Phaser
+(`vi.mock("phaser")`, Muster ground-chunk-budget.test.ts):
+- `chunkRangeForView` deckt 960x540 / 1280x720 / 1920x1080 @ Teiler 1 an 4 Positionen
+  (Ecke, Mitte, Weltgrenze) lueckenlos; Teiler-2-Regressionssicherung (2560x1080 sichtbar,
+  alte `scrollX + camera.width`-Range faellt eine ganze Chunk-Spalte weg); Klemmung an Weltgrenzen.
+- `backlogInstallsAllowed`-Policy: kein Zusatz-Install im Ruhebetrieb, Zusatz-Installs nur bei
+  echtem Rueckstau ohne Frame-Budget-Defer.
+Suite: 241 Dateien / 2603 Tests gruen, `npx tsc --noEmit` rc=0, `npm run build` rc=0.
 
 ## K4 (#13897): Abschluss
 
-(folgt)
+- Lane-Karten: #13894 (K1) commit 1afda8f3, #13895 (K2) commit ce4ebb6a,
+  #13896 (K3) commit 80a488c0, #13897 (K4) dieser Commit.
+- Befund-Karte #12969: im Merge-Commit der Lane schliessen (Befund reproduziert + gefixt,
+  Belege oben und unter `~/games/.evidence/m10-render-1280-gap/`).
+- Abnahme-Bilder (git): `shots/abnahme/m10-render-1280-1280-start-before.png`,
+  `m10-render-1280-1280-start-after.png`, `m10-render-1280-1920-start-after.png`.
+- Mess-Skript/Probes sind Werkzeuge: `scripts/m10-render-1280.mjs` (committet, 2 Edit-Iterationen:
+  +1920er-Format), Probes nur unter `~/tmp/m10-render-1280-gap/` (probe1-probe6, untracked).
+
+### Offene Punkte / Hinweise fuer GAME.md-Uebernahme
+
+1. Der Schwarz-Pixel-Guard (`terrain-coverage.checkScreenshot`) erfasst diesen Defect NICHT
+   (defect war nie reines Schwarz). Fuer visuelle Chunk-Abnahme gilt: Sichtpruefung der
+   Start-Shots, ergaenzend Quadranten-Luminanz (Skript m10-render-1280.mjs, Scan B) —
+   dunkle Seen sind false positives, verbindlich ist das Bild.
+2. Der Start-Shot-Moment ist ein Timing-Race gegen die Chunk-Fuellzeit: Kontroll-Pipelines,
+   die direkt nach Szenenstart screenshoten, sehen bei langsamem Worker weiterhin anteilige
+   Fuellung. Nach dem Fix: 24 Chunks in ~0,95 s (Vorher ~2,1 s).
+3. Bundler-Falle dokumentiert (siehe K2): Worker-Referenz im Inline-Muster
+   `new Worker(new URL(...))` behalten.
+4. Restrisiko (Reviewer-Nit, nicht blockierend): die Dispatch-Logik (workerLoad-Belegung,
+   1 Job je Worker) ist ohne Worker-Mock nicht unit-getestet; abgedeckt durch Laufprobe
+   (probe4-Timeline: posted/rcv je Worker-Slot) und den 2-s-Timeout/Sync-Fallback.

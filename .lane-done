@@ -1,0 +1,32 @@
+# Lane m10-render-1280-gap — abgeschlossen (2026-11-28)
+
+Befund #12969 (1280er Viewport: Ground-Chunks rechts/unten ungerendert, dunkles Quadrat)
+reproduziert und gefixt. Karten #13894-#13897, Belege in docs/lanes/m10-render-1280-gap.md
+und ~/games/.evidence/m10-render-1280-gap/.
+
+Zusammenfassung:
+- K1 (#13894, 1afda8f3): Repro-Scan scripts/m10-render-1280.mjs. Befund = langsame
+  Start-Fuellung: EIN sequenzieller Terrain-Worker (~100 ms/Chunk, Wasser 3 Anim-Frames)
+  -> 2.113 ms fuer 24 Chunks; zum Kontroll-Shot-Moment fehlten rechte/untere Chunks.
+  960 war im Original-Beleg nur Timing-Luck. Reine Schwarz-Flaechen: 0 (Defect nie
+  reines Schwarz) — Entscheidungsgrund war die Sichtpruefung.
+- K2 (#13895, ce4ebb6a): Fix in src/gfx/GroundRenderer.ts — Worker-Pool
+  (CHUNK_WORKER_COUNT=4, je Worker 1 Job), Start-Rueckstau-Installs
+  (backlogInstallsAllowed + 10 ms Echtzeitbudget), Chunk-Range aus cameraWorldView
+  (chunkRangeForView, #4658-Muster). Nachher: 24 Chunks in ~0,95 s; Start-Shots VOLL
+  gerendert in 960x540@1, 1280x720@1, 1280x720@2, 1920x1080@1 (0 JS-Fehler, Renderer
+  Mesa Intel RPL-S, kein SwiftShader). Abnahme-Bilder in shots/abnahme/
+  (m10-render-1280-1280-start-before/after.png, -1920-start-after.png).
+  Bundler-Falle: Worker-Referenz im Inline-Muster new Worker(new URL(...)) behalten —
+  ausgezogene Variable wird als data:-URL eingebettet und schlaegt still fehl (Probe6).
+- K3 (#13896, 80a488c0): tests/render-1280-gap.test.ts, 8 Tests (chunkRangeForView
+  lueckenlos 960/1280/1920 + Teiler-2-Regression + Weltklemmung; Backlog-Policy).
+  Mutationstest (test-auditor PASS): 4/8 Tests schlagen bei Regression.
+- K4 (#13897): Doku + .lane-done (dieser Commit). Kontrolleure: test-auditor PASS,
+  reviewer PASS (3 Nits adressiert: Kommentar-Text, defensiver workerLoad-Guard,
+  Restrisiko Dispatch-Test in Doku).
+
+Werte: Suite 241 Dateien / 2603 Tests gruen, tsc rc=0, build rc=0.
+Hinweis fuer GAME.md: Schwarz-Pixel-Guard allein erfasst Chunk-Luecken nicht
+(Defect nicht reines Schwarz); Start-Shot-Momente sind Timing-Races gegen die
+Chunk-Fuellzeit (nach Fix ~0,95 s fuer 24 Chunks).

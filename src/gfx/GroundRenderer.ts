@@ -467,7 +467,11 @@ export class GroundRenderer {
           const worker = new Worker(new URL("./terrainWorker.ts", import.meta.url), { type: "module" });
           worker.onmessage = (event: MessageEvent<{ cx: number; cy: number; bitmaps: ImageBitmap[] | null }>) => {
             const { cx, cy, bitmaps } = event.data;
-            this.workerLoad[i] = Math.max(0, (this.workerLoad[i] ?? 1) - 1);
+            // Defensiv (Reviewer-Nit): Spaetmessage nach useSyncFallback
+            // soll das geleerte Array nicht wieder befuellen.
+            if (this.workerLoad[i] !== undefined) {
+              this.workerLoad[i] = Math.max(0, this.workerLoad[i] - 1);
+            }
             const key = `${cx},${cy}`;
             this.inflight.delete(key);
             if (this.counters) this.counters.workerReceived++;
@@ -876,7 +880,7 @@ export class GroundRenderer {
   /** Schickt faellige Chunk-Jobs an den Worker-Pool, naechstgelegene zuerst. */
   private dispatch(centerX: number, centerY: number): void {
     if (this.workers.length === 0) return;
-    // Robustheit: eine verlorene Worker-Antwort wuerde sonst beide Slots
+    // Robustheit: eine verlorene Worker-Antwort wuerde sonst alle Worker-Slots
     // dauerhaft blockieren. Nach 2 s ohne Antwort auf Sync-Fallback wechseln.
     const now = Date.now();
     for (const startedAt of this.inflight.values()) {
