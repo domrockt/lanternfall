@@ -16830,10 +16830,16 @@
       "id": 12206,
       "title": "m10-warmup-chunk-fine: K3 Nachher-Messung + Vergleich",
       "description": "Gleiche Messung wie K1 gegen den feineren Warmup. Ziel: First-Chunk-Wartezeit sinkt messbar, Gesamt-Warmup-Zeit <= Vorher + 5 %. After-JSON + Differenz in docs/lanes/m10-warmup-chunk-fine.md.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:13:11Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Messung mit identischem Skript, Vergleich gegen K1-Baseline."
+        }
+      ],
       "created": "2026-11-28T13:08:23Z",
-      "updated": "2026-11-28T13:08:23Z"
+      "updated": "2026-11-28T13:13:11Z"
     },
     {
       "id": 12207,

@@ -49,11 +49,46 @@ Bereichs (`src/gfx/atlas.ts`) und wird als offener Punkt gemeldet.
 
 ## K2 — Exporte + feineres Chunking (#12205)
 
-(siehe Commit)
+Commits b0449eba + bc1af0d0:
+
+- `src/gfx/textures.ts`: die 4 Creator `createRingTexture`,
+  `createEnemyProjectileTextures`, `createTelegraphTextures`,
+  `createShadowTexture` exportiert. `git diff` enthält NUR Export-Zeilen +
+  Kommentarzeilen (Abnahmekriterium erfüllt, Funktionskörper unberührt).
+  `createAllTextures` bleibt unangetastet (Aufrufer: Boot.ts).
+- `src/gfx/warmup.ts`: der Sammel-Chunk `derived-atlas` ist aufgelöst in 6
+  Creator-Familien-Chunks, Reihenfolge nach Sichtbarkeit:
+  `light-vignette` (light_radius + vignette = Spieler-/Boden-Sichtbarkeit) →
+  `shadow` → `rings` (ring_burst/seal/soul) → `enemy-projectiles` (inkl.
+  elite_aura wie im Original) → `telegraphs` → `static-atlas` (bakeStaticAtlas).
+- **Fremd-Datei, begründet:** `tests/loading-warmup.test.ts` (Lane
+  m10-loading-screen, von niemandem geclaimt) frierte das alte Label
+  `derived-atlas` ein. Einzeilige Label-Listen-Anpassung; Eintrag in
+  `/home/ai/games/.dispatch/requests.md`. Sonst keine Dateien außerhalb der Area.
 
 ## K3 — Nachher-Messung (#12206)
 
-(offen)
+Identisches Skript (`scripts/m10-warmup-chunk.mjs`, 3 Läufe, kalter Cache).
+
+Beleg: `~/games/.evidence/m10-warmup-chunk-fine/m10-warmup-chunk-after.json`
+
+| Metrik (Median, 3 Läufe) | Vorher | Nachher | Δ |
+|---|---|---|---|
+| Chunks | 48 | 53 | +5 (Sammelchunk → 6 Familien) |
+| **derived-atlas-Chunk** | 291,6 ms | **entfallen** | Nachfolge-Chunks je ≤ ~24 ms |
+| maxChunk (alle Chunks) | 1672,5 ms | 1042,7 ms | −38 % (runtime-atlas schwankt laufweise) |
+| sumChunk (Gesamt-Warmup) | 3625,8 ms | 2597,7 ms | **−28 %** (Schwelle war ≤ +5 %) |
+| titleRendered (interaktiv) | 4211 ms | 2983 ms | −29 % |
+
+**Abnahme:** First-Chunk-Wartezeit (derived-atlas-Sammelchunk 291,6 ms) entfällt
+— kein Nachfolge-Chunk liegt über ~24 ms. Gesamt-Warmup liegt mit −28 % weit
+unter der Regressionsschwelle +5 %. Keine JS-Fehler in allen Läufen, Atlas
+vollständig.
+
+**Offener Punkt (außerhalb der Lane-Area):** Der größte verbleibende Stall ist
+`runtime-atlas` (`buildRuntimeAtlas`, `src/gfx/atlas.ts` — fremde Datei) mit
+~980–1740 ms je Lauf. Wer den Kaltstart weiter drückt, muss dort chunking/
+Splatten; das gehört in eine eigene Karte.
 
 ## K4 — Guard-Test + Abschluss (#12207)
 
