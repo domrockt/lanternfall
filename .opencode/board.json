@@ -7263,6 +7263,11 @@
      "at": "2026-11-28T00:04:12Z",
      "by": "lead",
      "text": "Fall A belegt (endMB +11,0 % <= +15 %). Tor-Definition in ACCEPTANCE.md (Abschnitt 'Heap-Tor') + docs/lanes/m10-heap-budget.md festgehalten. Nachweis-Lauf -> shots/m10-heap-budget-after.json laeuft."
+    },
+    {
+     "at": "2026-11-28T00:20:36Z",
+     "by": "lead",
+     "text": "Supervisor-Check: kein Hang (npm test 795/795 beendet, tsc+build rc=0). Nachweis-Lauf laeuft (16/35 min, Wall-Limit im Skript). Falls kein valides JSON nach 35 min: Lauf als blocked dokumentieren, Tor-Entscheidung bleibt committed (8af5acb)."
     }
    ],
    "created": "2026-11-27T22:36:37Z",
