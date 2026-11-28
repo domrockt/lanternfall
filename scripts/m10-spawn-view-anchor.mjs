@@ -68,7 +68,9 @@ async function runRep(seed, rep) {
       const origSim = runProto.simulate;
       runProto.simulate = function (dt) {
         origSim.call(this, dt);
-        while (nextSec <= maxSec && this.elapsed >= nextSec) {
+        // Bucket N erst lesen, wenn Sekunde N VOLLZIEHIG abgeschlossen ist
+        // (elapsed >= N+1) — Spawns der Sekunde N passieren waehrend N.
+        while (nextSec <= maxSec && this.elapsed >= nextSec + 1) {
           const arr = rec.bySec[nextSec];
           trace.spawns.push(arr ? arr.join(";") : "");
           nextSec += 1;
