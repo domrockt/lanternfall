@@ -56,12 +56,24 @@ THERMAL-Konstanten (keine Duplikate; Test pinnt das).
 
 ## K3 — Test tests/thermal-wiring.test.ts (#11680)
 
+16 Tests, alle grün (`npx vitest run tests/thermal-wiring.test.ts`); Gesamtsuite
+2218 Tests / 198 Dateien grün, `npx tsc --noEmit` + `npm run build` grün (Commit c19b0a5e):
+
 - Konfig-Konsistenz (aus `src/logic/quality.ts`): `THERMAL_FPS < THERMAL_RECOVERY_FPS (= QUALITY_LOW_FPS)`,
   `THERMAL_WINDOW_MS < THERMAL_HOLD_MS < THERMAL_RECOVERY_MS`, `THERMAL_BUDGET` strikt unter
-  `QUALITY_BUDGETS.low` je Komponente, glow aus.
-- Verdrahtungs-Pin: `pushFpsSample` (1-Hz, Fensterkappung), effektive Tier-Auswahl
-  (`thermal` nur bei aktiv), config.ts importiert `evaluateThermalStep` aus `./logic/quality`,
-  ruft es genau 1x im `tick()` und deklariert keine eigenen THERMAL-Konstanten.
+  `QUALITY_BUDGETS.low` je Komponente, Glow aus (low wie thermal — Glow ist schon auf low aus).
+- Verdrahtungs-Pin: `pushFpsSample` (1-Hz, Fensterkappung, Riesen-Delta = genau 1 Sample),
+  effektive Tier-Auswahl (`thermal` nur bei aktiv, engage nur ab Basis `low`, voller Zyklus
+  engage nach THERMAL_HOLD_MS → Rückkehr auf `low` nach THERMAL_RECOVERY_MS), config.ts
+  importiert `evaluateThermalStep` aus `./logic/quality`, ruft es GENAU 1x im `tick()` und
+  deklariert keine eigenen THERMAL-Konstanten (keine Duplikate, kein zweiter TICK-Hebel).
+
+## Commits
+
+- #11678 f029b5ee — K1 Stand
+- #11679 7ed715cf — K2 Verdrahtung src/config.ts
+- #11680 c19b0a5e — K3 Test
+- #11681 K4 — Doku + .lane-done
 
 ## Offen / Folgekarten
 

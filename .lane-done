@@ -1,0 +1,18 @@
+Lane m10-thermal-wiring — abgeschlossen 2026-11-28 (K1-K4, Commits f029b5ee/7ed715cf/c19b0a5e + K4)
+
+Ziel: Bedarfsmeldung (requests.md von m10-quality-thermal-guard) erfuellt — der thermische
+Guard (evaluateThermalStep) ist im tick() von src/config.ts verdrahtet:
+- FPS-Serie 1 Hz / THERMAL_WINDOW_MS=8 s (pushFpsSample, rein + getestet)
+- thermalState mit tier-Sync zum stepQuality-Regler, engage nur ab Basis "low"
+- Engage → QUALITY="thermal" (effectiveQuality) — Budgets greift über qualityBudgetFor
+- Telemetrie __rbDbg.thermalState
+Werte ausschließlich aus src/logic/quality.ts (keine Duplikate, Test pinnt 1 Aufruf).
+
+Belege: tests/thermal-wiring.test.ts 16/16 grün; npm test 2218/2218 grün (198 Dateien);
+npx tsc --noEmit grün; npm run build grün. tick() liegt in config.ts (NICHT Run.ts) —
+keine Kollision mit m10-loading-screen. Keine Messungen (Geräte-Messung bleibt bei
+m10-v10-device-acceptance, kein flock nötig).
+
+Offener Rest: Cap-Wrapper-Signaturen QualityTier→ThermalTier (src/logic/quality.ts 4x,
+src/audio/mixing.ts 1x) als Bedarfsmeldung in requests.md 2026-11-28T11:50Z — bis dahin
+doku­mentierter Cast in effectiveQuality (src/config.ts). Details: docs/lanes/m10-thermal-wiring.md

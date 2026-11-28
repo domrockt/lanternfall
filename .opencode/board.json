@@ -15802,10 +15802,16 @@
       "id": 11681,
       "title": "m10-thermal-wiring #11681 K4: Doku + .lane-done",
       "description": "Lane-Doku finalisieren (Werte belegt aus Quelldoku, offener Rest: Cap-Wrapper-Signaturen QualityTier→ThermalTier als Bedarfsmeldung in .dispatch/requests.md, falls nötig), git status --ignored prüfen, .lane-done anlegen und committen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:48:50Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T11:44:07Z",
-      "updated": "2026-11-28T11:44:07Z"
+      "updated": "2026-11-28T11:48:50Z"
     }
   ]
 }
