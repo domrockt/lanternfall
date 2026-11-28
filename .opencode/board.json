@@ -16534,10 +16534,15 @@
           "at": "2026-11-28T12:46:39Z",
           "by": "build",
           "text": "todo → doing: Lane m10-boss-dur-determinism uebernommen; K1 Repro-Skript in Arbeit."
+        },
+        {
+          "at": "2026-11-28T13:32:30Z",
+          "by": "build",
+          "text": "K1 fertig: Repro-Skript scripts/m10-boss-dur-det.mjs (bereits via Supervisor-Snapshot committet), Vorher-JSON mit Abweichung (seed 202 Boss#0 11,05 s vs 27,70 s; seed 404 26,95 s vs 8,40 s) unter ~/games/.evidence/m10-boss-dur-determinism/m10-boss-dur-det-before.json + Kopie shots/m10-boss-dur-det-before.json. Supervisor-Checkpoint b6a3476e bestaetigt. Hinweis: #12013 (m10-loading-screen Merge-Fix) gehoert NICHT zu dieser Lane (fremde Karte, nicht angenommen gem. Briefing-Regel)."
         }
       ],
       "created": "2026-11-28T12:46:33Z",
-      "updated": "2026-11-28T12:46:39Z"
+      "updated": "2026-11-28T13:32:30Z"
     },
     {
       "id": 12110,
