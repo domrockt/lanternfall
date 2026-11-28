@@ -1,0 +1,21 @@
+# Lane m10-quality-thermal-guard — fertig (2026-11-28)
+
+Ziel: Geraet-Tor „10-min-Lauf ohne Thermik-Einbruch" ueber Qualitaets-Hebel entschaeft,
+RENDER_SCALE/Aufloesung UNANGETASTET (keine Textzerfall-Reaktivierung), kein Doppel-Messen
+auf dem Tablet (Geraet-Messung bleibt bei m10-v10-device-acceptance).
+
+Karten (je ein Commit):
+- #11562 K1 Definition: evaluateThermalStep(fpsSerie, state, dtMs) rein in src/logic/quality.ts,
+  ThermalTier "thermal" + THERMAL_BUDGET (48 FX / 640 ADD-px / 4 Partikel / 4 Zahlen/s / 3 Labels / Glow aus). Commit c5e7c9af
+- #11563 K2 Hysterese: Abstieg nach THERMAL_HOLD_MS=10 s, Rueckweg nach 20 s Erholung (>=45 FPS)
+  AM STUECK, Abbruch setzt Timer — kein Flapping; stepQuality/QUALITY_ORDER unveraendert. Commit 33cc3b9c
+- #11564 K3 Test-Matrix: tests/quality-thermal.test.ts, 33 Tests gruen (Grenzfaelle,
+  Kein-Flapping-Matrix, Bitgleichheit bei stabiler FPS). Commit b0416c3e
+- #11565 K4 Beleg: scripts/m10-thermal-guard.mjs (node --experimental-strip-types, deterministisch,
+  treibt echte Implementierung) — 6/6 Szenarien PASS; JSON ~/games/.evidence/m10-quality-thermal-guard/thermal-guard.json;
+  Doku docs/lanes/m10-quality-thermal-guard.md.
+
+Abschluss: npm run build gruen, npm test 194 Dateien / 2174 Tests gruen, tsc gruen.
+
+Offen: Verdrahtung src/config.ts (fremde Datei) als Folgekarte — Anfrage steht in
+/home/ai/games/.dispatch/requests.md; Budget greift dort automatisch ueber die bestehenden Cap-Helfer.
