@@ -96,3 +96,64 @@ Zusätzlich gemessene Zwischenstände (gleiche Methode, Main-APK): 10,30 % M25-A
   0 JS-Fehler). Bilder: `~/tmp/m10-device-janky-node/desktop-run-vorher.png` /
   `desktop-run-nachher.png` (Kopien in `~/games/.evidence/m10-device-janky-node/`).
 - Suite: 2269 Tests grün (203 Dateien), `npm run build` rc=0, `tsc --noEmit` rc=0.
+
+## K3 — Nachher-Messung am Gerät (Fixed-Build) — **Tor verbindlich NICHT erreicht (Fallback-Pfad)**
+
+Methodik: identisches Skript (`scripts/m10-device-janky-node.mjs`), 2× Minute-25-Top-up + 1
+natürliches Fenster. Fixed-Build am Gerät über den sanctionierten Weg installiert
+(`POST /install?lane=m10-device-janky-node`, Infrastruktur.md Z.106) und verifiziert:
+`state().quality = "medium"` ab Boot durch alle Fenster (vorher "high"), DPR 2, Renderer
+„Adreno (TM) 710“, Thermal 0, Batterie 33 °C, 0 JS-Fehler.
+
+**Auswertungsregel VOR der Messung festgelegt und protokolliert:** eine Bestätigungsmessung,
+dann verbindlich über das kombinierte M25-Aggregat (4 Fenster) entscheiden — kein Neu-Würfeln.
+
+| Lauf | Build | M25-Aggregat | janky % | FPS | p95 (rAF) | JS-Fehler |
+|---|---|---|---|---|---|---|
+| K1 (12:31) | Main-APK (12:00) | 226/2172 | **10,41 %** | 115,1 | 8,4 ms | 0 |
+| Repeat (12:35) | Main-APK | 220/2136 | **10,30 %** | 109,4 | 16,7 ms | 0 |
+| K3 (13:1x) | Lane-APK (Fix) | 207/2182 | **9,49 %** | 114,8 | 8,4 ms | 0 |
+| K3-Confirm (13:2x) | Lane-APK (Fix) | 255/2170 | **11,75 %** | 111,7 | 16,7 ms | 0 |
+| **Verbindlich (K3+Confirm)** | Lane-APK | **462/4352** | **10,62 %** | 113,2 | — | 0 |
+
+Tore: FPS ≥ 60 ✓ (111,7–114,8), p95(rAF) ≤ 16 ms ✓ (8,4 ms in 3 von 4 Fenstern),
+0 JS-Fehler ✓, **janky < 10 % ✗ (10,62 % kombiniert, Einzel-Läufe 9,49–11,75 % = Rauschen um
+das Tor)**. Der Fix verbessert janky NICHT signifikant gegenüber der Main-Baseline
+(10,30–10,41 % → 9,49–11,75 %).
+
+### Diagnose: der Janky-Schwanz ist NICHT Tier-/Budget-getrieben
+
+- Der Tier-Cap greift belegt (medium durchgehend, ADD-Flächen-Deckel 9216 Device-px,
+  Damage-Labels 8, FX-Pool 140, Partikel 240) — janky ändert sich nicht außerhalb des Rauschens.
+- rAF-p95 liegt bei 8,3–8,4 ms (Gegenwert: Callback-Seite ist schnell); gfxinfo janky zählt die
+  **Present-/GPU-Seite** (Frame-Deadline ~16,7 ms). p99 16,7 ms, worst 25–100 ms (Spikes).
+  Das passt zu Hebel B (EnemySystem/Spawner/GroundRenderer Frame-Tail — läuft parallel als
+  `m10-frame-tail-batching`, Spawner-Batching dort bereits committet 4ba140b0; nicht doppelt
+  gemessen laut Briefing).
+
+### Resthebel (für den disjunkten Nachfolger, Datei/Hebel/Gewinn)
+
+1. **`src/logic/quality.ts` — Tier-Regler selbst (Nachfolger zu Hebel A):** Geräte-Deckel und
+   Hysterese-Zeitbudget im `stepQuality` verankern (z. B. Tier-Cap je Gerät + angepasste
+   LOW/HIGH-Schwellen für 120 Hz). Diese Lane durfte die Datei nicht anfassen
+   (m10-props-always-visible) und deckelte nur den Wrapper in config.ts — ein Deckel IM
+   Regler könnte zusätzlich das Aufstiegs-Fenster steuern. Erwartbarer Gewinn: gering
+   (Diagnose oben zeigt, dass Budgets nicht der Engpass sind) — nur mit Hebel B zusammen wirksam.
+2. **Frame-Tail GPU/Present-Seite (Hebel B, parallel laufend):** `src/systems/Spawner.ts`
+   (Batching, committet), `src/gfx/GroundRenderer.ts` (Chunk-Generierung im Lauf),
+   Draw-Reihenfolge/Overdraw. Erwartbarer Gewinn: p99/worst-Spikes 25–100 ms → < 20 ms,
+   janky −3 bis −5 Punkte (Vor-Lane-Befund 2).
+3. **Messmethodik:** der 50-ms-Top-up erzeugt Spawn-Bursts (worst 100 ms im Fenster 1); das
+   natürliche Fenster lag bei 9,49–11,7 % — kein stabiler fairer Zielwert unter 10 %.
+
+**Bedarfsmeldung** ist eingetragen: `/home/ai/games/.dispatch/requests.md`
+(2026-11-28T13:2xZ, m10-device-janky-node → quality.ts-Nachfolger).
+
+Belege: `~/games/.evidence/m10-device-janky-node/k3-after-device-fixedbuild.json`,
+`k3-confirm-device-fixedbuild.json` (Fixed-Build), `k1-baseline-device.json`,
+`k3-after-device.json` (Main-APK-Repeat).
+
+## K4 — Suite / Review / Abschluss
+
+- `npm test` 2269 grün (203 Dateien), `npm run build` rc=0, `tsc --noEmit` rc=0.
+- Reviewer- und test-auditor-Urteil: siehe Board-Karten #11969/#11970/#11971/#11972.
