@@ -11983,7 +11983,7 @@
       "id": 9664,
       "title": "m10-weapon-shot-readability K1: Vorher-Matrix (Solo + 300er-Chaos)",
       "description": "scripts/m10-weapon-shot.mjs: 6 Spieler-Waffen-Signaturen solo + im 300-Gegner-Chaos messen und als shots/m10-weapon-shot-before*.png/json belegen. Abnahmekriterium: JSON mit Near-White-A7 + Kontrast je Waffe existiert, Belege unter ~/games/.evidence/m10-weapon-shot-readability/ referenziert.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:44:01Z",
@@ -11994,10 +11994,15 @@
           "at": "2026-11-28T07:52:03Z",
           "by": "build",
           "text": "K1 läuft: Skript steht, 1. Lauf hatte Lücken (flail/ember/frost/thorn fehlten im Chaos-Sample — niedrige Waffen-Duty-Cycle). Iteration 2: Centers über 3 s akkumulieren + 6 Solo-Läufe je Waffe. gen-fx.ts wird in K1 nicht mehr angefasst (shotsig-Flag war Teil des K2-Commits)."
+        },
+        {
+          "at": "2026-11-28T08:26:44Z",
+          "by": "build",
+          "text": "doing → done: K1 committed (17699f3): 6 Solo-Shots + 300er-Chaos + Kontaktblatt, alle 6 Signaturen belegt, 0 fehlend. Baseline Near-White-A7: Texturen worst 58,0 % (fx_bolt), Chaos worst 37,3 % (lantern-Halo) vs. Grenze 4,16 %. Belege: ~/games/.evidence/m10-weapon-shot-readability/. Sichtprüfung der PNGs OK."
         }
       ],
       "created": "2026-11-28T07:25:08Z",
-      "updated": "2026-11-28T07:52:03Z"
+      "updated": "2026-11-28T08:26:44Z"
     },
     {
       "id": 9665,

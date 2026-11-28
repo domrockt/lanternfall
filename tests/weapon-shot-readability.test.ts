@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 // M10-weapon-shot-readability: Die 6 Spieler-Waffen-Projektile muessen im
 // 300-500-Gegner-Chaos optisch klar unterscheidbar sein — je Waffe eigene
@@ -13,7 +13,18 @@ import { describe, expect, it } from "vitest";
 //   - Silhouetten-XOR >= 8 px (Form als eigener Unterscheidungskanal)
 //   - A7-Near-White (r,g,b >= 150 und r >= 235) = 0 Pixel je Signatur
 //   - Groessenstufen: alle 6 Signaturflaechen paarweise verschieden
+vi.mock("phaser", () => ({
+  default: { BlendModes: { NORMAL: 0, ADD: 1 }, Scenes: { Events: { SHUTDOWN: "shutdown" } } },
+}));
+
 import { WEAPON_SHOT_SIGNATURES, type WeaponShotSignature } from "../src/gfx/gen-fx";
+import {
+  FxSystem,
+  SHOT_SUPPORT_ADD_ALPHA_CEIL,
+  SHOT_SUPPORT_GLOW_KEYS,
+  SHOT_TRAIL_ALPHA_FLOOR,
+  SHOT_TRAIL_KEYS,
+} from "../src/systems/FxSystem";
 import { PAL } from "../src/palette";
 
 const WEAPON_IDS = ["ember", "flail", "frost", "storm", "thorn", "lantern"] as const;
@@ -205,5 +216,66 @@ describe("M10-weapon-shot-readability — Paar ember vs frost (streng)", () => {
 
   it("Groessenstufe frost > ember (Mixel-Regel: Zielgroesse, Scale 1)", () => {
     expect(b.w).toBeGreaterThan(a.w);
+  });
+});
+
+// ── K3: FxSystem Draw-Pfad (Alpha-Deckel Support-Glow, Alpha-Boden Trail) ──
+function fakeFxScene(): { fx: FxSystem; alpha: () => number } {
+  let lastAlpha = 0;
+  const sprite = {
+    width: 24,
+    height: 24,
+    alpha: 1,
+    visible: false,
+    setDepth() { return sprite; },
+    setBlendMode() { return sprite; },
+    setScale() { return sprite; },
+    setAlpha(a: number) { lastAlpha = a; return sprite; },
+    setRotation() { return sprite; },
+    setPosition() { return sprite; },
+    setTint() { return sprite; },
+    clearTint() { return sprite; },
+    setVisible() { return sprite; },
+    setActive() { return sprite; },
+    setTexture() { return sprite; },
+  };
+  const scene = {
+    events: { once: () => undefined },
+    add: { image: () => sprite },
+    time: { now: 0 },
+  };
+  const fx = new FxSystem(scene as unknown as Phaser.Scene);
+  return { fx, alpha: () => lastAlpha };
+}
+
+describe("M10-weapon-shot-readability — K3 Draw-Pfad (FxSystem)", () => {
+  it(`additiver Support-Glow (${[...SHOT_SUPPORT_GLOW_KEYS].join(",")}) wird auf ${SHOT_SUPPORT_ADD_ALPHA_CEIL} gedeckelt`, () => {
+    const { fx, alpha } = fakeFxScene();
+    fx.spawn({ texture: "fx_halo", x: 0, y: 0, life: 1, alphaFrom: 0.9, additive: true });
+    expect(alpha()).toBeCloseTo(SHOT_SUPPORT_ADD_ALPHA_CEIL, 10);
+  });
+
+  it("Nicht-Support-Glows behalten ihre Alpha (Deckel greift nicht ins Blaue)", () => {
+    const { fx, alpha } = fakeFxScene();
+    fx.spawn({ texture: "fx_shock", x: 0, y: 0, life: 1, alphaFrom: 0.9, additive: true });
+    expect(alpha()).toBeGreaterThan(SHOT_SUPPORT_ADD_ALPHA_CEIL);
+  });
+
+  it(`Waffen-Trail ([${[...SHOT_TRAIL_KEYS].join(", ")}]) hat Alpha-Boden ${SHOT_TRAIL_ALPHA_FLOOR} trotz Endgame-Daempfung`, () => {
+    const { fx, alpha } = fakeFxScene();
+    fx.setAlphaScale(0.2); // Endgame-Minimum
+    for (const key of SHOT_TRAIL_KEYS) {
+      fx.spawn({ texture: key, x: 0, y: 0, life: 1, alphaFrom: 0.45 });
+      expect(alpha(), `${key}: Start-Alpha`).toBeGreaterThanOrEqual(SHOT_TRAIL_ALPHA_FLOOR - 1e-9);
+    }
+  });
+
+  it("Treffer-/Pool-Verhalten unberuehrt: Spawn-Zaehler und life unverändert", () => {
+    const { fx } = fakeFxScene();
+    const before = fx.count;
+    const r = fx.spawn({ texture: "fx_ice", x: 5, y: 7, life: 0.5, alphaFrom: 0.45 });
+    expect(fx.count).toBe(before + 1);
+    expect(r?.life).toBe(0.5);
+    expect(r?.x).toBe(5);
   });
 });
