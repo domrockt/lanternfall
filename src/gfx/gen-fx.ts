@@ -140,12 +140,18 @@ function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1, den
   return out;
 }
 
-/** Zickzack-Blitz mit Seitenast; x-Versatz alle zwei Zeilen. */
-function boltFrame(seed: number, height = 16, width = 12, ramp: BoltRamp = BOLT_RAMP_SIGNATURE): string[] {
+/** Zickzack-Blitz mit Seitenast; x-Versatz alle zwei Zeilen.
+ *  M10-weapon-shot-polish-w2 (art-director-Optional 2): asym=true staffelt
+ *  den Zickzack UND asymmetrisch — Rechts-Baeuche laufen mit frame-abhaengigem
+ *  Gain weiter aus als linke, das mechanische Alterniermuster loest sich auf
+ *  und der Blitz trennt sich zusaetzlich vom blassen Flail. Nur Signaturpfad;
+ *  Legacy (shotsig=0) bleibt bitgleich. */
+function boltFrame(seed: number, height = 16, width = 12, ramp: BoltRamp = BOLT_RAMP_SIGNATURE, asym = false): string[] {
   const rows: string[] = [];
   let cx = Math.floor(width / 2);
   for (let y = 0; y < height; y++) {
-    const jitter = Math.round(Math.sin((y + seed * 3) * 1.9) * 1.6 + Math.sin((y + seed) * 4.1) * 0.8);
+    const wave = Math.sin((y + seed * 3) * 1.9) * 1.6 + Math.sin((y + seed) * 4.1) * 0.8;
+    const jitter = Math.round(asym ? (wave > 0 ? wave * (1.55 + 0.1 * (seed % 3)) : wave * 0.55) : wave);
     cx = Math.max(1, Math.min(width - 2, Math.floor(width / 2) + jitter));
     let row = "";
     for (let x = 0; x < width; x++) {
@@ -1973,6 +1979,7 @@ export function thornProjectileFrame(): string[] {
     [Math.PI * 0.25, 2.3, 1.1],
     [Math.PI * 1.25, 2.5, 1.1],
   ];
+  let spokeIdx = 0;
   for (const [a, len, baseW] of spokes) {
     const dx = Math.cos(a);
     const dy = Math.sin(a);
@@ -1991,6 +1998,13 @@ export function thornProjectileFrame(): string[] {
     }
     // Dunkle Spitzenkappe hält den Dorn auch auf hellem Grund lesbar.
     put(c + dx * (len + 0.5), c + dy * (len + 0.5), 28);
+    // M10-weapon-shot-polish-w2 (art-director-Optional 1): je Spitze +1 px
+    // marshLight (31) als heller Glanz neben der dunklen Kappe — staerkt die
+    // Spitzen-Signatur im Moor-Chaos (schwaechste Signatur). Seite wechselnd
+    // je Speiche (organisch, kein Spiegel-Muster), Kappe bleibt Anker.
+    const glintSide = spokeIdx % 2 === 0 ? 1.3 : -1.3;
+    put(c + dx * (len + 0.5) - dy * glintSide, c + dy * (len + 0.5) + dx * glintSide, 31);
+    spokeIdx++;
   }
   // Kern flächig hell ohne Raster.
   for (let y = -1; y <= 1; y++) {
@@ -2279,8 +2293,10 @@ export interface WeaponShotSignature {
 }
 
 export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature>> = {
-  // Glut-Komet: heisse dunkle Orange-Rampe 15-17, 1 helles 18er-Gluhtpixel,
-  // Tinte-Kontur; kein lanternWhite-Kern mehr (A7 = 0 %).
+  // Glut-Komet: heisse dunkle Orange-Rampe 15-17, 2 helle flameBright(19)-
+  // Kernpixel unter der A7-Grenze (r 239, g 145 -> kein Near-White; holt
+  // Kernidentitaet zurueck, art-director-Optional 3), Tinte-Kontur; kein
+  // lanternWhite-Kern (A7 = 0 %).
   ember: {
     texture: "projectile_ember",
     w: 7,
@@ -2291,7 +2307,7 @@ export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature
       "..0f00.",
       "..0fg0.",
       ".0fgh0.",
-      "0fghih0",
+      "0fghjj0",
       ".0fgh0.",
       "..0fg0.",
     ],
@@ -2344,7 +2360,7 @@ export const WEAPON_SHOT_SIGNATURES: Readonly<Record<string, WeaponShotSignature
     w: 12,
     h: 16,
     core: 7,
-    rows: boltFrame(0),
+    rows: boltFrame(0, 16, 12, BOLT_RAMP_SIGNATURE, true),
   },
   // Dorn-Dart: organische Speichen aus thornProjectileFrame (12x12, Draw-Scale 1),
   // Moor-Rampe 28-31, Kern 31 marshLight, dunkle 28er-Spitzenkappen als Kontur.
@@ -2413,10 +2429,11 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_halo", { w: 24, h: 24, frames: [0, 1].map((i) => ring(24, 24, [20, 18, 17], 0.3 + i * 0.16, i)) });
   addFrames(scene, "fx_ice", { w: 15, h: 21, frames: [0, 1, 2, 3].map(iceFrame) });
   addFrames(scene, "fx_smear", { w: 44, h: 16, frames: [0, 1, 2, 3, 4].map((i) => smearFrame(i)) });
+  const boltSig = weaponShotSignaturesEnabled(scene.registry);
   addFrames(scene, "fx_bolt", {
     w: 12, h: 16,
     frames: [0, 1, 2, 3, 4, 5].map((i) =>
-      boltFrame(i, 16, 12, weaponShotSignaturesEnabled(scene.registry) ? BOLT_RAMP_SIGNATURE : BOLT_RAMP_LEGACY)),
+      boltFrame(i, 16, 12, boltSig ? BOLT_RAMP_SIGNATURE : BOLT_RAMP_LEGACY, boltSig)),
   });
   addFrames(scene, "fx_seal", { w: 32, h: 32, frames: [0, 1, 2, 3, 4].map((i) => sealFrame(i)) });
   // M10-evo-fx-gewittersiegel: Boden-Siegel in Zielgroesse (Draw-Scale 1, 4 Phasen).
