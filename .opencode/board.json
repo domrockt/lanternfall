@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7338,
+  "next": 7382,
   "cards": [
     {
       "id": 1,
@@ -8744,6 +8744,48 @@
       ],
       "created": "2026-11-28T01:10:42Z",
       "updated": "2026-11-28T01:10:51Z"
+    },
+    {
+      "id": 7378,
+      "title": "m10-elite-tier-families K1: Before-Belege (Elite-Cluster im Chaos, 4x, Renderer-Pflicht)",
+      "description": "Ist-Messung VOR dem Fix: scripts/m10-elite-tier.mjs --tag=before auf crowd-variety-Stand. 320+ Gegner + Elite-Cluster aller 5 Tiers nahe am Spieler, 640x360, Full-Shot + 4x-Crop (shots/m10-elite-tier-before*), JSON mit iGPU-Renderer-String, Familien-Buckets der Elite-Koerper je Tier, Amber-Rim-Coverage. Abnahme: JSON+PNG committet, Renderer-String = Mesa Intel iGPU, Elite-Cluster im Crop sichtbar, Metrik zeigt: keine Tier-Klassen (Elites nur ueber Amber-Rim+Groesse erkennbar).",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:28:04Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Mess-Skript scripts/m10-elite-tier.mjs (vor Fix: Baseline-Messung)"
+        }
+      ],
+      "created": "2026-11-28T01:25:33Z",
+      "updated": "2026-11-28T01:28:04Z"
+    },
+    {
+      "id": 7379,
+      "title": "m10-elite-tier-families K2: Tier-Faerbe-Klassen im Sprite-Generator + Tests",
+      "description": "enemySprites.ts: ELITE_TIER_DYES (5 Paletten-Klassen je Tier 0-4, min Paar-Distanz >= 60, L-Mitte), Elite-Rim-Frame-Innenraum wird deterministisch Richtung Tier-Klasse gemischt (55 %, Kontur 0 + Augen 13 unangetastet), Amber-Rand (PAL 20) bleibt 100 % (A10-Kontrast ungebrochen), Silhouette/Key-Satz/Framezahl unveraendert, Nicht-Elite-Frames bytegleich (crowd-variety intakt). tests/elite-tier-families.test.ts (Familien-Kontrast-Metrik, Palette-Compliance, Determinismus, Nicht-Elite-Schutz) + minimale additive Anpassung der Innenraum-Assertion in tests/elite-rim.test.ts (fremd, Anfrage in .dispatch/requests.md, Border-Vertraege bleiben). Abnahme: npx tsc --noEmit gruen, npx vitest run elite-tier-families + elite-rim + crowd-variety gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:25:33Z",
+      "updated": "2026-11-28T01:25:33Z"
+    },
+    {
+      "id": 7380,
+      "title": "m10-elite-tier-families K3: Chaos-Nachweis 300+ Gegner + Abnahme",
+      "description": "scripts/m10-elite-tier.mjs --tag=after: 300+ Gegner + Elite-Cluster je Tier, after-Shots + 4x-Crops, Familien-Metrik messbar besser (Tier-Klassen je Tier unterscheidbar, Nicht-Elite unverändert), Burst-FPS unter flock within noise (Vergleich crowd-variety median 60). art-director (streng) >= 4/5 auf before/after-Crops. Abnahme: shots/m10-elite-tier-after* + JSON committet, art-director-Urteil in Karte, 0 JS-Fehler, Renderer-String iGPU.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:25:33Z",
+      "updated": "2026-11-28T01:25:33Z"
+    },
+    {
+      "id": 7381,
+      "title": "m10-elite-tier-families K4: docs/lanes + .lane-done",
+      "description": "docs/lanes/m10-elite-tier-families.md (Ziel, Mechanik, Vorher/Nachher-Metrik, art-director-Urteil, Abgrenzung: tests/elite-rim.test.ts Innenraum-Assertion-additive-Anpassung + requests.md-Eintrag, offene Punkte), git status --ignored pruefen und eigene Reste loeschen, .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) committen. Abnahme: Doku vollstaendig, nur Lane-Dateien im Diff, .lane-done im Worktree-Wurzelverzeichnis.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:25:33Z",
+      "updated": "2026-11-28T01:25:33Z"
     }
   ]
 }

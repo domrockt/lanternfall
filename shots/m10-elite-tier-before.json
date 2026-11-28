@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-11-28T01:33:25.161Z",
+  "method": "Chaos (305 Nicht-Elites, Tier-Mix) + Elite-Cluster (2 je Typ, alle 5 Tiers, Radius 30-75); Familien-Buckets der Elite-Rim-Innenpixel je Tier (Palettenindex-Klassifikation wie tests/enemy-palette.test.ts); Amber-Rim-Coverage = Randpixel-Anteil PAL 20 (A10-Vertrag); Burst-FPS = Median/Mittel ueber 240 rAF-Ticks (unter flock gemessen)",
+  "tag": "before",
+  "minuteSec": 730,
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "alive": 339,
+  "eliteSeen": 34,
+  "texMiss": 34,
+  "elitesPerTier": {
+    "0": 4,
+    "1": 4,
+    "2": 6,
+    "3": 8,
+    "4": 12
+  },
+  "amberShareMin": null,
+  "rimCoverage": {},
+  "tierFamilies": {},
+  "distinctDominantFamilies": 0,
+  "burstFps": {
+    "median": 60,
+    "mean": 60,
+    "frames": 240
+  },
+  "jsErrors": []
+}
