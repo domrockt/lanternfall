@@ -4,6 +4,7 @@ import { DEPTH } from "../gfx/depth";
 import { applyTexture, makeImage } from "../gfx/atlas";
 import { iconKeyForOffer } from "../gfx/icons";
 import { C, PAL } from "../palette";
+import { getAudio, SFX_KEYS } from "../audio/AudioSystem";
 
 interface GemRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -72,6 +73,12 @@ export interface GemMerge {
 // schritten, nur Palettenfarben (kein Mixel, nie > 1x hochskaliert).
 // Eigene Phaser-Objekte, eigene Uhr in update() — kein FxSystem-Slot,
 // keine Tweens im Massenpfad; der Gem-Pfad bleibt unberührt.
+
+/** M10: Audio-Key des Aufnahme-Moments. "powerup" wird von der sfx-distinct-
+ *  Lane in SFX_KEYS/SFX_CONFIG ergänzt (WAV + Mixing-Werte); src/audio ist von
+ *  jener Lane geclaimed. Der Guard unten spielt den Sound daher nur, wenn der
+ *  Key vorhanden ist — ohne ihn bleibt der Moment still statt zu crashen. */
+const POWERUP_SFX_ID = "powerup" as Parameters<ReturnType<typeof getAudio>["play"]>[0];
 
 /** Gesamtdauer eines Aufnahme-Moments (s). Abnahme: <= 0,5 s. */
 export const MOMENT_DURATION = 0.4;
@@ -303,6 +310,9 @@ export class PickupSystem {
   playPowerupMoment(id: string, x: number, y: number): void {
     const spec = pickupMomentSpec(id);
     if (!spec || !this.scene?.add) return;
+    // M10: Moment hörbar machen — genau ein Play-Call je gültigem Moment;
+    // unbekannte ids (kein spec) und der Gem-/XP-Pfad bleiben lautlos.
+    if (POWERUP_SFX_ID in SFX_KEYS) getAudio().play(POWERUP_SFX_ID);
     if (this.moments.length >= MAX_MOMENTS) this.finishMoment(this.moments[0]);
     // Bei Parallelen (gekettete Level-ups) leicht staffeln, sonst Full-Overlap.
     const baseY = Math.round(y) - 20 - this.moments.length * 6;

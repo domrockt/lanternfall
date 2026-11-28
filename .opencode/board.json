@@ -12268,25 +12268,36 @@
       "id": 9735,
       "title": "m10-powerup-sfx-wire K1: Vorher-Probe (0 Audio-Calls)",
       "description": "scripts/m10-powerup-sfx-wire.mjs (Vite-SSR + Stubs für phaser/atlas/icons/audio) ruft playPowerupMoment() und zählt getAudio().play-Calls. Abnahme: JSON-Beleg in ~/games/.evidence/m10-powerup-sfx-wire/before.json zeigt 0 play-Calls; Skript + JSON committed.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T07:37:40Z",
           "by": "build",
           "text": "backlog → doing: Lane m10-powerup-sfx-wire (Briefing Dora 07:3xZ) übernommen: Vorher-Probe. Karten #9585 war nicht im Board — Lane-Karten #9735-#9738 frisch angelegt."
+        },
+        {
+          "at": "2026-11-28T07:39:08Z",
+          "by": "build",
+          "text": "doing → review: Commit b1d4d54: Probe-Skript (Vite-SSR + Stubs, src/audio unberuehrt) + before.json: 0 play-Calls bei boots/tome/unbekannter id. Kontrolleur (reviewer) folgt gebuendelt vor K4."
         }
       ],
       "created": "2026-11-28T07:37:38Z",
-      "updated": "2026-11-28T07:37:40Z"
+      "updated": "2026-11-28T07:39:08Z"
     },
     {
       "id": 9736,
       "title": "m10-powerup-sfx-wire K2: getAudio().play(\"powerup\") in playPowerupMoment()",
       "description": "src/systems/PickupSystem.ts playPowerupMoment(): nach spec-Guard genau ein getAudio().play(\"powerup\")-Call (Guard: Key in SFX_KEYS, Cast ohne Änderung an src/audio/**). spec/Zeichnung/Positionen bitgleich. Abnahme: npx tsc --noEmit rc=0, bestehende pickup-Tests grün.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:39:08Z",
+          "by": "build",
+          "text": "backlog → doing: K2 Fix beginnt: 1-Zeilen-Audio-Call + Import/Guard, src/audio/** unangetastet."
+        }
+      ],
       "created": "2026-11-28T07:37:38Z",
-      "updated": "2026-11-28T07:37:38Z"
+      "updated": "2026-11-28T07:39:08Z"
     },
     {
       "id": 9737,
