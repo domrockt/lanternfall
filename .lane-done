@@ -1,0 +1,35 @@
+# Lane m10-4658-camera-width — done (2026-11-28)
+
+Folge-Karte #4658 aus m10-dpr-budget-cap abgeschlossen: Kamera-Projektions-Fix
+liest bei gesenktem Render-Teiler nicht mehr camera.width (= W/s) als logische
+Breite. Der WIP (a6e69fc, nie gemergt, zz/-Patches verloren) wurde auf dem
+heutigen main-Stand neu implementiert — dabei hatte m10-boss-onscreen den
+Inline-Spawn-Guard durch composedBossCenterY ersetzt, der Fix wurde an die neue
+Struktur angepasst (Semantik identisch).
+
+- K1: Befund 5 falscher camera.width-Leser (BossSystem Spawn-Distanz +
+  Spawn-Komposition, GroundRenderer Ripple-Cull/Fireflies/Fog-Pivot; Chunk-Margin
+  deckt Teiler 2/3 — dokumentiert, kein Fix). Vorher-Messung
+  shots/m10-4658-camera-width-before.json (M25 780x360 dpr3: Teiler1 60 FPS,
+  rbscale3 60 FPS, Mesa RPL-S iGPU, 0 JS-Fehler).
+- K3: GroundRenderer cameraWorldView (Ripple-Cull, Fireflies-Spanne) +
+  screenAnchoredX (Fog-Pivot, Drift NACH Kompensation) — Commit 54c1590.
+- K2: BossSystem bossSpawnDistance(GAME_WIDTH, GAME_HEIGHT) + Spawn-Komposition
+  in logischen Screen-Pixeln (camTopLog teilerunabhaengig, composedBossCenterY
+  mit GAME_*); Teiler-1-Verhalten bitgleich. Neue tests/boss-camera-width.test.ts
+  (14 Faelle: 640x360, 780x360@3, 960x540, 1920x1080, Nebel-Pivot/Drift,
+  Spawn-Komposition Teiler 1/2/3 identisch).
+- K4: Nachher-Messung shots/m10-4658-camera-width-after.json (60,1/60,0 FPS,
+  Renderer-String Pflicht erfuellt, 0 JS-Fehler) — unveraendert zur Baseline.
+  Pixel-Beleg Teiler 2: uniformAE 0, structVerdict PASS, contentAE innerhalb
+  Jitter (+297 px = 0,4 %) — shots/m10-4658-camera-width-pixel*.png/json.
+
+Abnahme: npm test 947/947 gruen (inkl. neuer Testdatei), npm run build rc=0,
+M25 780x360@3 >= 60 FPS bzw. unveraendert zu before.json (iGPU).
+
+Lane-Doku: docs/lanes/m10-4658-camera-width.md (inkl. offene Punkte: Spawner-
+spawnRingRadius und DamageNumbers-Cull haben dasselbe Bug-Muster — Folge-Karten).
+Hinweis: scripts/m10-dpr-budget.mjs um Renderer-String + --force-scale erganzt
+(unclaimed, in /home/ai/games/.dispatch/requests.md notiert). Fremde
+Timestamp-Churn in shots/m10-passive-math-*.json (Fremdlauf 00:52) bewusst NICHT
+committet. .lane-done wird nicht nach main gemergt.

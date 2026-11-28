@@ -5,6 +5,7 @@ import { GAME_WIDTH, renderBufferSize } from "../src/config";
 import { bossSpawnDistance } from "../src/logic/scaling";
 import { cameraWorldView, screenAnchoredX } from "../src/gfx/GroundRenderer";
 import {
+  BOSS_HUD_CLEARANCE,
   BOSS_INTRO_ZOOM,
   bossHudRects,
   composedBossCenterY,
@@ -222,16 +223,20 @@ describe("#4658 BossSystem: Spawn-Distanz und Spawn-Komposition", () => {
 
   it("bossHudRects(GAME_WIDTH) == Teiler-1-Layout; camera.width (Bug) haette halbes Layout", () => {
     // Im Test-Env ist GAME_WIDTH = 640 (setGameView setzt erst im Browser);
-    // im Spiel gilt GAME_WIDTH = 780 = camera.width bei Teiler 1.
-    const fixed = bossHudRects(GAME_WIDTH);
-    const teiler1 = bossHudRects(GAME_WIDTH);
-    expect(fixed).toEqual(teiler1);
-    expect(teiler1.hpBar.x).toBe(GAME_WIDTH / 2 - teiler1.hpBar.w / 2);
-    expect(teiler1.banner.x).toBe(GAME_WIDTH / 2 - teiler1.banner.w / 2);
+    // im Spiel gilt GAME_WIDTH = 780 = camera.width bei Teiler 1. Die Rect-Kette
+    // haengt nur an viewWidth: Zentren aus der vollen Breite, Banner fest unter
+    // der HP-Leiste (BOSS_HUD_CLEARANCE) — fuer 640 und 780 gleich.
+    for (const w of [GAME_WIDTH, 780]) {
+      const { hpBar, banner } = bossHudRects(w);
+      expect(hpBar.x).toBe(w / 2 - hpBar.w / 2);
+      expect(banner.x).toBe(w / 2 - banner.w / 2);
+      expect(banner.y).toBe(hpBar.y + hpBar.h + BOSS_HUD_CLEARANCE);
+    }
     // Alter Bug: camera.width = GAME_WIDTH/2 bei Teiler 2 haette andere (halbe) Zentren.
     const bug = bossHudRects(GAME_WIDTH / 2);
-    expect(bug.hpBar.x).not.toBe(teiler1.hpBar.x);
-    expect(bug.banner.x).not.toBe(teiler1.banner.x);
+    const fixed = bossHudRects(GAME_WIDTH);
+    expect(bug.hpBar.x).not.toBe(fixed.hpBar.x);
+    expect(bug.banner.x).not.toBe(fixed.banner.x);
   });
 
   it("renderBufferSize: 780x360@3 -> 260x120 (Soll-Buffer der Sonde)", () => {
