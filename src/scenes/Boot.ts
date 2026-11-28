@@ -10,13 +10,59 @@ import { seedFromUrl, hasFlag } from "../logic/rng";
 import { AudioSystem, initAudio } from "../audio/AudioSystem";
 
 /**
- * Licht/Vignette lokal erzeugt (1:1 wie createLightTexture/createVignetteTexture
- * in src/gfx/textures.ts). Grund: textures.ts ist Claim der Lane m10-atlas-pack;
- * Export-Freigabe ist beim Disponenten angefragt (.dispatch/requests.md,
- * 2026-11-27T20:06Z). Beide Versionen sind idempotent (textures.exists-Guard),
- * der Warmup (createAllTextures) ueberspringt sie - es gibt keine Doppel- und
- * keine abweichende Erzeugung in einer Session. Bei Freigabe durch einen Import
- * ersetzen und diesen Block loeschen.
+ * Licht-Außenkante als diskrete Stufen (m10-boot-glow-local K2 rev., Versuch 2):
+ * exakt die Tabelle aus Commit eaf2ab6 (m10-chaos-fix-raster-glow K3) —
+ * [r0, r1, alpha]-Bänder mit harten Kanten über den Licht-Radius 0..96
+ * (Textur 192 px, Radius 96). Bänder ≥ 6 px breit, Alpha monoton fallend.
+ * Der Original-Swap (Import aus src/gfx/textures.ts) ist im aktuellen Base
+ * unmoeglich: textures.ts exportiert die Creator nicht UND eaf2ab6 ist noch
+ * nicht in main (Bedarfsmeldung .dispatch/requests.md, 2026-11-28). Deshalb
+ * Port der Quantisierung in die Local-Kopie; bei Merge+Export diese Tabelle
+ * wieder entfernen und importieren (der exists-Guard macht einen Uebergangs-
+ * zustand mit beiden Registrationen harmlos).
+ */
+const LIGHT_EDGE_STEPS: ReadonlyArray<readonly [number, number, number]> = [
+  [0, 70, 1],
+  [70, 76, 0.66],
+  [76, 82, 0.38],
+  [82, 88, 0.18],
+  [88, 96, 0.08],
+];
+
+/**
+ * Vignette als diskrete Stufen (gleiche Herkunft wie LIGHT_EDGE_STEPS oben,
+ * eaf2ab6): [r0, r1, alpha]-Bänder über den Radius 70..290 des Original-
+ * Gradients (Stopps 0 → 0.18 @ 0.7 → 0.72 @ 1), plus Klemm-Band für die
+ * Ecken (> 290). 11 Bänder à 20 px, Alpha je Band = Gradientwert am Bandende
+ * (auf 2 Stellen gerundet, hart gekantet).
+ */
+function vignetteSteps(): Array<[number, number, number]> {
+  const steps: Array<[number, number, number]> = [];
+  const r0 = 70;
+  const r1 = 290;
+  const bands = 11;
+  const alphaAt = (t: number): number =>
+    t < 0.7 ? 0.18 * (t / 0.7) : 0.18 + 0.54 * ((t - 0.7) / 0.3);
+  for (let i = 0; i < bands; i++) {
+    const from = r0 + ((r1 - r0) * i) / bands;
+    const to = r0 + ((r1 - r0) * (i + 1)) / bands;
+    steps.push([from, to, Math.round(alphaAt((i + 1) / bands) * 100) / 100]);
+  }
+  steps.push([r1, r1 + 120, 0.72]); // Ecken-Klemme (Gradient ist ab r1 konstant)
+  return steps;
+}
+
+/**
+ * Licht/Vignette lokal erzeugt (einst 1:1 wie createLightTexture/
+ * createVignetteTexture in src/gfx/textures.ts, seit K2 rev. mit den harten
+ * Alpha-Stufen aus eaf2ab6 — siehe LIGHT_EDGE_STEPS/vignetteSteps oben).
+ * Grund für die Local-Kopie: textures.ts ist fremd geclaimed (m10-evo-fx-form-
+ * polish) und exportiert die Creator nicht (Bedarfsmeldung .dispatch/requests.md,
+ * 2026-11-28). Die Versionen sind idempotent (textures.exists-Guard), der
+ * Warmup (createAllTextures) überspringt sie - es gibt keine Doppel- und keine
+ * abweichende Erzeugung in einer Session. B2-Ring-Tuning (Kern Amber/Lantern)
+ * bleibt bewusst erhalten — kein Rueckfall auf lanternWhite/candle im Kern
+ * (Near-White-Fall A7, Guard tests/chaos-glow-runpath.test.ts).
  */
 function createLightTextureLocal(scene: Phaser.Scene): void {
   const key = "light_radius";
@@ -57,14 +103,19 @@ function createLightTextureLocal(scene: Phaser.Scene): void {
     ctx.fill();
   }
   ctx.globalAlpha = 1;
+  // Hart quantisierte Außenkante (K2 rev., Port von eaf2ab6): diskrete
+  // Stufen-Bänder statt destination-in-Radialgradient — der 4x-Zoom zeigt
+  // 1-px-Raster an den Bandkanten statt Luftbrause-Bögen.
   ctx.globalCompositeOperation = "destination-in";
-  const g = ctx.createRadialGradient(c, c, 10, c, c, 96);
-  g.addColorStop(0, "rgba(0,0,0,1)");
-  g.addColorStop(0.75, "rgba(0,0,0,0.6)");
-  g.addColorStop(1, "rgba(0,0,0,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, size, size);
+  for (const [r0, r1, a] of LIGHT_EDGE_STEPS) {
+    ctx.globalAlpha = a;
+    ctx.beginPath();
+    ctx.arc(c, c, r1, 0, Math.PI * 2);
+    if (r0 > 0) ctx.arc(c, c, r0, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
   ctx.globalCompositeOperation = "source-over";
+  ctx.globalAlpha = 1;
   scene.textures.addCanvas(key, canvas);
 }
 
@@ -75,12 +126,18 @@ function createVignetteTextureLocal(scene: Phaser.Scene): void {
   canvas.width = GAME_WIDTH;
   canvas.height = GAME_HEIGHT;
   const ctx = canvas.getContext("2d")!;
-  const c = ctx.createRadialGradient(GAME_WIDTH / 2, GAME_HEIGHT / 2, 70, GAME_WIDTH / 2, GAME_HEIGHT / 2, 290);
-  c.addColorStop(0, "rgba(6,7,12,0)");
-  c.addColorStop(0.7, "rgba(6,7,12,0.18)");
-  c.addColorStop(1, "rgba(6,7,12,0.72)");
-  ctx.fillStyle = c;
-  ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+  // Diskrete Stufen statt Radialgradient (K2 rev., Port von eaf2ab6):
+  // gleiche Alpha-Treppe wie der Original-Gradient, aber als harte Bänder —
+  // gerastert statt milchig-weich (B3-Stilbruch „Luftbrause").
+  const cx = GAME_WIDTH / 2;
+  const cy = GAME_HEIGHT / 2;
+  for (const [r0, r1, a] of vignetteSteps()) {
+    ctx.fillStyle = `rgba(6,7,12,${a})`;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r1, 0, Math.PI * 2);
+    ctx.arc(cx, cy, r0, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
   scene.textures.addCanvas(key, canvas);
 }
 
