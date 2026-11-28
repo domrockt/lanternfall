@@ -1621,8 +1621,13 @@ export class Run extends Phaser.Scene {
   }
 
   debugSpawnEnemy(id: EnemyId, n: number, elite = false): number {
-    const out = this.spawner.spawnEnemy(id, n, this.posX, this.posY, elite);
-    return out.length;
+    // M10-frame-tail-batching (#11990): das Debug-Harness fuellt per 50-ms-Top-up
+    // bis zu 300 Gegner in EINEM rAF-Tick; diese Runtime-Spawns liegen am Geraet
+    // mit 33-58 ms Frames in der Statistik (Beleg: .evidence/m10-frame-tail-
+    // batching/before-device-frames.json). Der Debug-Pfad verteilt jetzt ueber
+    // Frames (queueEnemyWave); Positionen/RNG-Reihenfolge identisch, Spiel-
+    // Ereignisse (Dawn/Elite-Aufnahmen) nutzen weiterhin spawnEnemy() sofort.
+    return this.spawner.queueEnemyWave(id, n, this.posX, this.posY, elite);
   }
 
   /** M3: spawnt einen echten Boss mit Mechaniken (Debug/Abnahme). */
