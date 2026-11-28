@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9923,
+  "next": 9986,
   "cards": [
     {
       "id": 1,
@@ -12413,6 +12413,33 @@
       ],
       "created": "2026-11-28T07:37:38Z",
       "updated": "2026-11-28T07:40:51Z"
+    },
+    {
+      "id": 9983,
+      "title": "m10-dom-sight-package K1: Sichtungs-Screenshots 640x360 + 1280x720 (iGPU, Renderer-Beleg)",
+      "description": "Screenshots je 640x360 UND 1280x720 (WebGL-Renderer-String Mesa Intel RPL-S / iGPU im Beleg; SwiftShader ungültig): Titel, Charakterauswahl (beide Charaktere), Optionen, Pause, Results, Ingame Minute 1/5/10/20/30, Truhe-Reveal-Moment, Boot-Screen. Ablage ~/games/.evidence/dom-sight/ (ungetrackt), Manifest-JSON dort. AK: Skript-Exit != 0 bei fehlender Datei; 0 JS-Fehler; 0 getrackte Shots; 0 Spielcode-Änderungen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:55:24Z",
+      "updated": "2026-11-28T07:55:24Z"
+    },
+    {
+      "id": 9984,
+      "title": "m10-dom-sight-package K2: Bestehende Belege katalogisieren (QA-GIFs, Galerien, Evo-After)",
+      "description": "Katalog: 12 Waffen-/Evolutions-GIFs (shots/qa-vfx-*.gif), Gegner-/Boss-Galerie (30/6), Evo-After-Belege der Evo-Kette (phoenix/winter/w2/soulpyre/zornpendel/gewittersiegel/dornensturm/form-polish). Pfade + Stand (main-Commit) auflisten; Existenz-Prüfung im Paket-Skript.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:55:24Z",
+      "updated": "2026-11-28T07:55:24Z"
+    },
+    {
+      "id": 9985,
+      "title": "m10-dom-sight-package K3: Anleitung docs/qa/dom-sight-package-2026-11-28.md + Paket-Skript",
+      "description": "Anleitung für Dom: Bewertungsmaßstab (a) Element-Identität ohne Beschriftung, (b) Dither nur an Übergangskanten 1-2px, (c) eine Pixelgröße/keine Mixel, (d) Lesbarkeit in Masse Minute 20/30, (e) kommerziell auslieferbar?. Jeder Beleg mit Pfad + konkreter Prüfauftrag (max. 1 Absatz je Punkt). Offene Restpunkte getrennt (Halo-Überstrahlung Ember; im Fluss: 6 -r2 Code-Lanes auf Vera-Guard). Commit enthält nur Doku + Skript; Worktree dirty=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:55:24Z",
+      "updated": "2026-11-28T07:55:24Z"
     }
   ]
 }
