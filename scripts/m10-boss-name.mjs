@@ -102,7 +102,9 @@ try {
       const ui = window.__game.scene.getScene("ui");
       return ui.bossGroup.visible && ui.bossName.valueText.length > 3;
     }, { timeout: 20000 });
-    await page.waitForTimeout(1200);
+    // Horde auf den Spieler konvergieren lassen, damit sie die oberste
+    // HUD-Zone erreicht (Overlap-Fall wie im B3-Beleg der Sightprep-Lane).
+    await page.waitForTimeout(3500);
 
     const renderer = await page.evaluate(() => window.__lf.rendererInfo().renderer);
     const state = await page.evaluate(() => {

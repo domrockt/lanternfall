@@ -13670,25 +13670,36 @@
       "id": 10454,
       "title": "m10-boss-name-legibility K1: Chaos-Repro + Befund klären (Layering vs. Kontrast) + Baseline",
       "description": "AK: Ein M25-skipTo-Chaos-Repro (scripts/m10-boss-name.mjs) in 960x540 + 640x360 mit before-Shots + 6x-Zoom; mit EINEM Repro geklärt: Layering (Gegnerpixel über Depth 90) oder Kontrast (Amber auf Horde-Rot). Baseline-JSON (Textband-Deckung/Kontrast-Metrik) committet BEVOR der Fix beginnt.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T09:18:58Z",
           "by": "build",
           "text": "todo → doing: Übernommen: M25-Chaos-Repro + Befundklärung (Layering vs. Kontrast) + Baseline-JSON."
+        },
+        {
+          "at": "2026-11-28T09:26:34Z",
+          "by": "build",
+          "text": "doing → review: K1: Repro gelaufen (iGPU, 0 JS-Fehler), Diagnose eindeutig: Chaos/Referenz-Glyphen-Deckung 253/253=1.0 → Kontrastproblem, Layering korrekt. Baseline-JSON + Vorher-Shots/Zooms in ~/games/.evidence/m10-boss-name-legibility/. Commit fbfe8d70 nennt #10454."
         }
       ],
       "created": "2026-11-28T09:18:44Z",
-      "updated": "2026-11-28T09:18:58Z"
+      "updated": "2026-11-28T09:26:34Z"
     },
     {
       "id": 10455,
       "title": "m10-boss-name-legibility K2: Fix Boss-Name-Lesbarkeit (UI.ts/depth.ts)",
       "description": "AK: Fix je Befund aus K1 — Layering: Boss-Name/HP-Leiste pinnend über allem rendern; Kontrast: Textband auf dieselbe dunkle Alpha-Platte wie die Leiste oder Outline/Platte. Klein halten, keine UI-Umbauten. Nur area-Dateien (UI.ts, depth.ts). Regressionstest tests/boss-name-legibility.test.ts grün, tsc rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:26:18Z",
+          "by": "build",
+          "text": "todo → doing: Übernommen: Fix = dunkle Alpha-Platte (ink, 0,95) hinter dem Textband, wie Leiste."
+        }
+      ],
       "created": "2026-11-28T09:18:44Z",
-      "updated": "2026-11-28T09:18:44Z"
+      "updated": "2026-11-28T09:26:18Z"
     },
     {
       "id": 10456,

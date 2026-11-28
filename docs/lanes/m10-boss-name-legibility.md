@@ -38,3 +38,30 @@ dünnerer Horde → sauberer Hintergrund → lesbar.
 **Fix-Schnitt (K2):** Textband auf dieselbe dunkle Alpha-Platte wie die Leiste setzen
 (ink, Alpha 0,95, direkt über dem Leistenband, gleiche Breite) — Befund (b)-Zweig des
 Briefings. Keine Depth-Änderung nötig (Diagnose belegt korrektes Layering).
+
+## K2 — Fix: dunkle Textband-Platte (#10455)
+
+**Änderung (nur area):** `src/scenes/UI.ts` — neue reine Geometrie
+`bossNamePlateRect(viewWidth)` (Platte = Leistenbreite, bündig über der Leiste,
+28..40, Textband y 33..40 vollständig abgedeckt) + `BOSS_NAME_PLATE_ALPHA = 0.95`;
+in `createBossUI` wird die Platte als **erstes Kind** von `bossGroup` (unter
+Leiste/Name) erzeugt — dieselbe ink-Farbe und dasselbe Alpha 0,95 wie die
+HP-Leiste, HUD liest sich als ein Block. Keine Depth-Änderung (`src/gfx/depth.ts`
+unverändert — K1 hat korrektes Layering belegt), keine anderen UI-Umbauten.
+
+**Regressionstest:** `tests/boss-name-legibility.test.ts` (17 Tests, Phaser gemockt,
+Muster boss-banner-layout): Platte bündig über der Leiste, gleiche Breite,
+Textband-Abdeckung, ganzzahlige Pixel, Alpha = 0,95 — für View-Breiten
+480/640/780/960/1280.
+
+**Verifikation:** `npx tsc --noEmit` rc=0; `npx vitest run tests/boss-name-legibility.test.ts`
+17/17; `npm test` 1884/1884 grün (2 Folgeläufe; im 1. Lauf 1 flaky Fremd-Test, nicht
+reproduzierbar, nicht aus dieser Änderung — Testdatei war in jenem Lauf noch nicht
+im Build-Path betroffen); `npm run build` grün.
+
+**Hinweis Mess-Technik:** Ein „before“-Ersatzlauf nach dem Fix ist wertlos (dist enthält
+dann den Fix — erst falscher Lauf fabrizierte eine geplattete before-Shot, Beleg im
+Log); der committete before-Stand stammt aus einem verifizierten Pre-Fix-Build
+(`grep bossNamePlateRect dist` = 0 vor dem Lauf). Vorher/Nachher-Paare jetzt bei
+identischen Bedingungen (dieselben Kommandos, 3,5 s Konvergenz, beide t≈24:53).
+
