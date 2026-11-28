@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12604,
+  "next": 12644,
   "cards": [
     {
       "id": 1,
@@ -17544,6 +17544,48 @@
       ],
       "created": "2026-11-28T14:10:48Z",
       "updated": "2026-11-28T14:10:52Z"
+    },
+    {
+      "id": 12640,
+      "title": "m10-fx-alloc-trim K1: Baseline Mess-Skript + Vorher-Messung",
+      "description": "Skript scripts/m10-fx-alloc.mjs (Chaos-Lauf M25-artig, 500 Gegner, god/autoplay): rAF-CPU-ms p50/p95/p99/max, worstFrame-Spitzen (33-34ms-Klasse zaehlen), Allokationen/Frame (heap-alloc-profile-Muster) + FX-Attribution (Sites hinter FxSystem.ts). Vorher-JSON nach ~/games/.evidence/m10-fx-alloc-trim/. AK: JSON mit Zahlen + Renderer-String existiert, Skript committed.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:15:43Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-fx-alloc-trim gestartet: Mess-Skript + Vorher-Messung (Owner: lead)"
+        }
+      ],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:15:43Z"
+    },
+    {
+      "id": 12641,
+      "title": "m10-fx-alloc-trim K2: FxSystem.ts Alloc-/Setter-Fix",
+      "description": "In src/systems/FxSystem.ts: Per-Frame-Objekt-Allokationen (Spread-Literale, frames.map) hoisten/poolen; Phaser-Setter-Churn senken (nur schreiben wenn geaendert); Hot-Loops allocations-frei. KEINE optische Aenderung: Alpha-/Palette-Semantik bitgleich, Caps unangetastet. AK: npx tsc --noEmit gruen, gezielte FX-Tests gruen, Diff nur in FxSystem.ts.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:15:39Z"
+    },
+    {
+      "id": 12642,
+      "title": "m10-fx-alloc-trim K3: Nachher-Messung + Regressionstest + Doku",
+      "description": "Remessung wie K1 (gleiche Fenster/Seed), Regressionstest tests/fx-alloc-trim.test.ts gegen den Hebel (deterministisch, ohne Phaser-Laufzeit), Befund+Zahlen in docs/lanes/m10-fx-alloc-trim.md. AK: Abnahme erfuellt (Alloc >=50 % reduziert ODER worstFrame-Spitzen weg bei p95 <= Baseline) ODER ehrlich dokumentiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:15:39Z"
+    },
+    {
+      "id": 12643,
+      "title": "m10-fx-alloc-trim K4: Abschluss",
+      "description": "npm test + npm run build gruen, Palette-/A7-Guards gruen, git status --ignored sauber, .lane-done mit Zusammenfassung + Messwerten. AK: komplette Suite gruen, .lane-done committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:15:39Z"
     }
   ]
 }
