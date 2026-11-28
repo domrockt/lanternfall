@@ -31,9 +31,10 @@ const COLD = [13, 11, 9, 6, 5] as const;
 describe("m10-evo-fx-soulpyre-w2: Kältefeuer-Identität (Dom-Regel 02:00Z)", () => {
   it("SOUL_RAMP ist die kalte Treppe [13,11,9,6,5] — kein Grün (28–31), kein warmes 10/12", () => {
     expect([...SOUL_RAMP]).toEqual([...COLD]);
-    expect(SOUL_RAMP.some((i) => i >= 28)).toBe(false);
-    expect(SOUL_RAMP.includes(10) || SOUL_RAMP.includes(12)).toBe(false);
-    expect(SOUL_RAMP.includes(0)).toBe(false);
+    const ramp = SOUL_RAMP as readonly number[];
+    expect(ramp.some((i) => i >= 28)).toBe(false);
+    expect(ramp.includes(10) || ramp.includes(12)).toBe(false);
+    expect(ramp.includes(0)).toBe(false);
   });
 
   it("Orb + Signatur: kein Pixel außerhalb der kalten Treppe (kein Grün-/Moor-/Ink-Einschluss)", () => {
@@ -48,7 +49,7 @@ describe("m10-evo-fx-soulpyre-w2: Kältefeuer-Identität (Dom-Regel 02:00Z)", ()
     ];
     for (const [name, rows] of grids) {
       const used = [...counts(rows).keys()].sort((a, b) => a - b);
-      const bad = used.filter((i) => !COLD.includes(i as 13 | 11 | 9 | 6 | 5));
+      const bad = used.filter((i) => !(COLD as readonly number[]).includes(i));
       expect(bad, `${name} verwendet kaltfremde Indizes ${bad.join(",")}`).toEqual([]);
     }
   });
@@ -84,11 +85,13 @@ describe("m10-evo-fx-soulpyre-w2: Kältefeuer-Identität (Dom-Regel 02:00Z)", ()
       const S = halo.h;
       const mid = Math.floor(S / 2);
       const centerRow = rows[mid];
-      // Zentrum des Glows ist hell (13/9), nicht leer oder dunkel.
-      expect(centerRow, `halo frame ${f}: Zentrum nicht hell`).toContain("d"); // charIndex('d') = 13
+      // Zentrum des Glows ist kalt-cyan (9), NICHT weiß (13) — ein Weißkern im
+      // ADD-Halo wäscht die Flammenform der Seele zu einem weißen Blob (w2-Iter. 2).
+      expect(centerRow, `halo frame ${f}: Zentrum nicht kalt-cyan`).toContain("9"); // Index 9 = paleMist
       const c = counts(rows);
       expect(c.get(6) ?? 0, `halo frame ${f} ohne kalte Außenstufe (6)`).toBeGreaterThan(0);
       expect(c.get(9) ?? 0, `halo frame ${f} ohne paleMist-Stufe (9)`).toBeGreaterThan(0);
+      expect(c.get(13) ?? 0, `halo frame ${f} mit Weißkern (13)`).toBe(0);
       expect(c.get(0) ?? 0, `halo frame ${f} mit Ink`).toBe(0);
       // Stufig gefüllt statt Ring: mehr als die Hälfte des Radius-Kreises ist opaque.
       const opaque = [...c.values()].reduce((a, b) => a + b, 0);

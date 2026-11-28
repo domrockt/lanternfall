@@ -765,9 +765,9 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
       // Hohlring-Kante.
       if (d > r + 0.7 * density) row += ".";
       else if (d > r * 0.82) row += charOf(6);  // fogBlue kalte Aussenstufe
-      else if (d > r * 0.6) row += charOf(8);   // mist
-      else if (d > r * 0.34) row += charOf(9);  // paleMist
-      else row += charOf(13);                   // lanternWhite Glutkern
+      else if (d > r * 0.55) row += charOf(8);  // mist
+      else row += charOf(9);                    // paleMist kalt-cyan Kern (KEIN Weißkern:
+                                                // der wäscht die Flammenform weg, w2-Iter. 2)
     }
     out.push(row);
   }
