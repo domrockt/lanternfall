@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13515,
+  "next": 13519,
   "cards": [
     {
       "id": 1,
@@ -19037,6 +19037,105 @@
       ],
       "created": "2026-11-28T16:40:35Z",
       "updated": "2026-11-28T17:09:43Z"
+    },
+    {
+      "id": 13515,
+      "title": "m10-janky-remeasure K1: Messskript aufbauen",
+      "description": "scripts/m10-janky-remeasure.mjs (Muster m10-v10-device-10min.mjs + gfxinfo-Differenz je Fenster). Abnahmekriterium: Smoke-Lauf (2 Fenster) am Gerät liefert Beleg-JSON mit Pflichtfeldern Renderer-String (kein SwiftShader), DPR, Build-ID (Telemetrie /latest als versionName-Ersatz), Panel-Hz-Probe (rAF bei BILDRATE=MAX); 409/DOM_SPIELT bricht sauber ab; Methodik: natürliche Fenster (ohne Spawn-Top-up, fairer Vergleich) + Top-up-Fenster (Referenz) interleaved.",
+      "column": "done",
+      "assignee": "m10-janky-remeasure",
+      "notes": [
+        {
+          "at": "2026-11-28T16:16:07Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 2 (Fortsetzung): After-Kette geprüft (m10-fps-cap-stackfix aa8739f0 in main), Bridge dom_playing=false, Thermal 0. Skriptbau startet."
+        },
+        {
+          "at": "2026-11-28T16:36:33Z",
+          "by": "general",
+          "text": "doing → review: K1 fertig: scripts/m10-janky-remeasure.mjs (gfxinfo-Diff je Fenster, natural/topup interleaved, Panel-Hz-Probe, Renderer/Build-Pflicht, DOM_SPIELT-409-Abbruch). Smoke 2 Fenster: Adreno 710, DPR 2, Build 0ce7164a (enthaelt stackfix aa8739f0), Panel 60 Hz, 2 natural-Fenster janky 0%, 0 JS-Fehler. Commit 09e7215f. Beleg ~/games/.evidence/m10-janky-remeasure/smoke-k1.json"
+        },
+        {
+          "at": "2026-11-28T16:37:06Z",
+          "by": "build",
+          "text": "review → review: K1 fertig: Skript 8ced4c9c + Fixes/Doku 218caf01 + K1-Abschluss 09e7215f (Versuch-1-Resume-Agent hatte parallel bis 16:34Z gearbeitet, Kollision vermieden). Smoke-Beleg ~/games/.evidence/m10-janky-remeasure/smoke-k1.json: Adreno 710/DPR2/Build 0ce7164a, Panel 60 Hz (rAF-Median 16,7 ms), 2 natural-Fenster janky 0 %, 0 JS-Fehler. Reviewer-Prüfung in K4 gebündelt."
+        },
+        {
+          "at": "2026-11-28T17:20:07Z",
+          "by": "build",
+          "text": "review → done: lane #13085: Reviewer PASS (Lane-Review ses_ddcd5b5eb): Skript + Smoke-Beleg konsistent, Commit 09e7215f"
+        }
+      ],
+      "created": "2026-11-28T16:16:04Z",
+      "updated": "2026-11-28T17:20:07Z"
+    },
+    {
+      "id": 13516,
+      "title": "m10-janky-remeasure K2: 10-min-Lauf BILDRATE=60 am Gerät",
+      "description": "Abnahmekriterium: Beleg ~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json — 10 min Minute-25-Dichte, je-Fenster gfxinfo janky %, rAF p95/p99, Thermal+Batterie-Poll je Minute, Renderer+DPR+Build-ID+Panel-Hz; JS-Fehler 0. Kein Fix in dieser Lane.",
+      "column": "done",
+      "assignee": "m10-janky-remeasure",
+      "notes": [
+        {
+          "at": "2026-11-28T16:37:06Z",
+          "by": "build",
+          "text": "todo → doing: 10-min-Lauf --fps 60 gestartet (Gerät frei, Thermal 0, Akku 33 °C)."
+        },
+        {
+          "at": "2026-11-28T16:49:40Z",
+          "by": "general",
+          "text": "doing → review: K2 fertig: 10-min-Lauf Cap 60 am Redmi Pad, Beleg ~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json. gfxinfo janky 0% (natural 0/29338, topup 0/28896), aber fpsAvg 50,1 (<60) und rAF-p95 33,4 ms (>16) -> passed=false nach strengem Tor. Panel-Probe 60 Hz, Build 0ce7164a (stackfix enthalten), 0 JS-Fehler, 0 Recoveries, Thermal Status 0, Batterie 35->36 C. Doku docs/lanes/m10-janky-remeasure.md K2-Abschnitt, Commit 1579f6be."
+        },
+        {
+          "at": "2026-11-28T17:03:37Z",
+          "by": "build",
+          "text": "review → review: K2 fertig: 10-min-Lauf BILDRATE=60 (Lauf 2 mit flock, clean). gfxinfo janky 0 % beide Varianten, aber fpsAvg 50,1 < 60 und rAF-p95 33,4 ms > 16 → strenges Tor FAIL; Panel 60 Hz, Thermal 0, Akku 33→36 °C, 0 JS-Fehler, keine Loop-Tötung. Commit 2bf7b4ae."
+        },
+        {
+          "at": "2026-11-28T17:20:07Z",
+          "by": "build",
+          "text": "review → done: lane #13086: Reviewer PASS — Doku-Zahlen decken sich mit Beleg-JSONs (Lauf 1+2), Commit 1579f6be/2bf7b4ae"
+        }
+      ],
+      "created": "2026-11-28T16:16:04Z",
+      "updated": "2026-11-28T17:20:07Z"
+    },
+    {
+      "id": 13517,
+      "title": "m10-janky-remeasure K3: 10-min-Lauf BILDRATE=MAX am Gerät",
+      "description": "Abnahmekriterium: Beleg ~/games/.evidence/m10-janky-remeasure/k3-max-device.json — identische Metriken wie K2; beide Läufe bei 60-Hz-Panel (APK erzwingt Preferred-Mode; Panel-Hz im JSON belegt). Vergleich = Spiel-Cap/Frame-Pacing, nicht Panel-Hz.",
+      "column": "done",
+      "assignee": "m10-janky-remeasure",
+      "notes": [
+        {
+          "at": "2026-11-28T17:03:37Z",
+          "by": "build",
+          "text": "todo → doing: K3 10-min-Lauf BILDRATE=MAX startet (Entzerrung: Cap-Pacing vs. Last)."
+        },
+        {
+          "at": "2026-11-28T17:20:07Z",
+          "by": "build",
+          "text": "doing → done: lane #13087: Reviewer PASS — K3-JSON (0/32114, fpsAvg 50,0, p95 33,4) = Doku, Commit 3b84b654"
+        }
+      ],
+      "created": "2026-11-28T16:16:04Z",
+      "updated": "2026-11-28T17:20:07Z"
+    },
+    {
+      "id": 13518,
+      "title": "m10-janky-remeasure K4: Tor-Auswertung + Fix-Empfehlungen",
+      "description": "Abnahmekriterium: docs/lanes/m10-janky-remeasure.md mit verbindlicher Tor-Auswertung (K3-Tor: gfxinfo janky < 10 % @ FPS >= 60, p95 <= 16 ms; bei 60 Hz Panel = Tor erfüllt), Renderer-String-Beleg, Temperaturverlauf; bei FAIL Hebelliste (Datei/Hebel/Gewinn) als Job-Zeile in requests.md, bei PASS Empfehlung 'Endabnahme-Lauf freigeben'.",
+      "column": "done",
+      "assignee": "m10-janky-remeasure",
+      "notes": [
+        {
+          "at": "2026-11-28T17:20:07Z",
+          "by": "build",
+          "text": "todo → done: lane #13088: Reviewer PASS — Tor-Auswertung FAIL korrekt abgeleitet, -> Job-Zeile m10-fps-pacing-timestep in requests.md, .lane-done committed (da57307a); Nits behoben"
+        }
+      ],
+      "created": "2026-11-28T16:16:04Z",
+      "updated": "2026-11-28T17:20:07Z"
     }
   ]
 }
