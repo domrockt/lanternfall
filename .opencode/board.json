@@ -11537,7 +11537,7 @@
       "id": 8997,
       "title": "m10-acceptance-balance-criterion K1: ACCEPTANCE.md Balance-Kriterium auf 25–40 ändern, Level 47 widerlegt streichen",
       "description": "ACCEPTANCE.md Z.151 + Z.245 (+ weitere Treffer per grep) konsistent auf „Endlevel 25–40, 6/6 Läufe, Boss 20–60 s, kein Tod vor Minute 15“ ändern; „Kael/Seed 101 Level 47“ als widerlegt dokumentieren. KEIN Code. AK: grep „Level 47“ nur noch als widerlegt; „25–40“ am Kriterium; Tabellen intakt; ein Commit #K1.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T06:17:53Z",
@@ -11548,16 +11548,21 @@
           "at": "2026-11-28T06:18:25Z",
           "by": "build",
           "text": "doing → review: K1 fertig: ACCEPTANCE.md Z.151+245 auf neues Kriterium geändert, Level 47 als widerlegt markiert. Geprüft: grep „Level 47“ nur noch als „widerlegt“; „25–40“ am Kriterium; Tabelle intakt. Commit dce1bef #8997."
+        },
+        {
+          "at": "2026-11-28T06:20:39Z",
+          "by": "build",
+          "text": "review → done: lane #8997: reviewer-PASS (Diff nur Doku, „Level 47“ nur noch widerlegt, „25–40“ konsistent, Tabelle intakt). Commit dce1bef #8997; Lane-Abschluss bda2437."
         }
       ],
       "created": "2026-11-28T06:17:44Z",
-      "updated": "2026-11-28T06:18:25Z"
+      "updated": "2026-11-28T06:20:39Z"
     },
     {
       "id": 8998,
       "title": "m10-acceptance-balance-criterion K2: Doku docs/qa/balance-criterion-2026-11-28.md",
       "description": "Neue Doku: Dom-Zustimmung zitieren (Frage 23:35, Antwort 06:00Z), exakte diff-Zeilen, Begründung mit Belegen (repro/xp-budget/final-JSONs). AK: Datei existiert, Diff nur ACCEPTANCE.md + diese Doku; ein Commit #K2; danach .lane-done.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T06:17:53Z",
@@ -11568,10 +11573,15 @@
           "at": "2026-11-28T06:18:25Z",
           "by": "build",
           "text": "backlog → doing: K2-Start: docs/qa/balance-criterion-2026-11-28.md"
+        },
+        {
+          "at": "2026-11-28T06:20:39Z",
+          "by": "build",
+          "text": "doing → done: lane #8998: reviewer-PASS (Zustimmung 23:35/06:00Z zitiert, diff-Zeilen, 3 Beleg-JSONs referenziert). Commit 00e152c #8998; Lane-Abschluss bda2437 (.lane-done committet)."
         }
       ],
       "created": "2026-11-28T06:17:44Z",
-      "updated": "2026-11-28T06:18:25Z"
+      "updated": "2026-11-28T06:20:39Z"
     }
   ]
 }
