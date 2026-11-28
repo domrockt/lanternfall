@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7494,
+  "next": 7498,
   "cards": [
     {
       "id": 1,
@@ -9130,6 +9130,81 @@
       "notes": [],
       "created": "2026-11-28T01:59:03Z",
       "updated": "2026-11-28T01:59:03Z"
+    },
+    {
+      "id": 7494,
+      "title": "m10-level-target-balance K1: Ist-Messung Level-Kurve (3 Seeds)",
+      "description": "Owner: gameplay-dev. scripts/m10-level-target.mjs (timeScale 30, autoPlay, god, Seeds 101/202/404) schreibt Level/Zeit-Kurve nach shots/m10-level-target-before.json. Abnahme: JSON committed, Level bei Minute 30 je Seed erfasst. Hinweis: Fix 7629b2f (m10-balance-kael) ist bereits auf main — Messung verifiziert den Ist-Stand.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T02:03:49Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: m10-level-target.mjs schreiben, Seeds 101/202/404, god+autoPlay+30x"
+        },
+        {
+          "at": "2026-11-28T02:17:17Z",
+          "by": "build",
+          "text": "doing → review: Ist-Messung committed (f511796): 6 Laeufe, 2/6 im Band — God-Setup zeigt Restlücke (Mira 42-44, Kael/202 42). Script einmalig gebaut, 1 Edit-Iteration. Beleg shots/m10-level-target-before.json."
+        }
+      ],
+      "created": "2026-11-28T02:03:47Z",
+      "updated": "2026-11-28T02:17:17Z"
+    },
+    {
+      "id": 7495,
+      "title": "m10-level-target-balance K2: XP-Kurve anpassen (nur falls Ist außerhalb [25,40])",
+      "description": "Owner: gameplay-dev. Kurve in src/logic/xp.ts ACHTUNG: Datei NICHT im Disponent-Bereich dieser Lane (levelup.ts/scaling.ts sind claims, Kurve liegt in xp.ts) → bei Bedarf Request in .dispatch/requests.md, Karte ggf. blocked. Abnahme: Level@30min in [25,40] für alle Seeds, Kurve monoton, Gegner-HP/Damage byte-identisch.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:17:17Z",
+          "by": "build",
+          "text": "todo → doing: K2 aktiv: Ist liegt teilweise über Band → Kurven-Fix nötig. HEBEL: src/logic/xp.ts (Kurve liegt dort, nicht in levelup.ts/scaling.ts wie im Briefing) — xp.ts ist in claims.json NIEMAND geclaimed, Request-Notiz folgt in .dispatch/requests.md. Tuning per Suchlauf (festes Iterationslimit), Gegnerwerte unangetastet."
+        }
+      ],
+      "created": "2026-11-28T02:03:47Z",
+      "updated": "2026-11-28T02:17:17Z"
+    },
+    {
+      "id": 7496,
+      "title": "m10-level-target-balance K3: tests/level-target.test.ts",
+      "description": "Owner: gameplay-dev. Schwellen-Tabelle xpToNext monoton, levelForXp als Umkehrung konsistent, Level-30-Erreichbarkeit im Band für 3 Referenz-XP-Profile (inkl. 29k-Potenzial < Level-40-Schwelle). Abnahme: npx vitest run tests/level-target.test.ts grün, bestehende levelup-Tests ohne Regression, tsc grün.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T02:19:51Z",
+          "by": "build",
+          "text": "todo → doing: K3 aktiv: tests/level-target.test.ts geschrieben, 10/10 gruen + keine Regression (logic/balance-curve/levelup-offers 57/57)."
+        },
+        {
+          "at": "2026-11-28T02:19:58Z",
+          "by": "build",
+          "text": "doing → review: K3 committed (2f73f82): 10/10 gruen, Regression-Checks logic/balance-curve/levelup-offers 57/57 gruen."
+        }
+      ],
+      "created": "2026-11-28T02:03:47Z",
+      "updated": "2026-11-28T02:19:58Z"
+    },
+    {
+      "id": 7497,
+      "title": "m10-level-target-balance K4: Nachher-Messung + Lane-Doku",
+      "description": "Owner: gameplay-dev. shots/m10-level-target-after.json (3 Seeds) + docs/lanes/m10-level-target-balance.md mit Vorher/Nachher-Tabelle und Verweis auf m10-balance-kael-Belege. Abnahme: Level@30min in [25,40] für >=3 Seeds, Doku committed.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T02:19:58Z",
+          "by": "build",
+          "text": "todo → doing: K4 aktiv: Nachher-Messung (gleiche Seeds/Modus wie before) + Lane-Doku."
+        },
+        {
+          "at": "2026-11-28T02:30:52Z",
+          "by": "build",
+          "text": "doing → review: K4 committed (da0bd5c): 6/6 im Band (36-38), Doku mit Vorher/Nachher-Tabelle + Konflikt-Notiz. Reviewer läuft über Lane-Diff 73b9440..HEAD. Fremdartefakte (passive-math-JSON, nur Test-Timestamps) zurückgesetzt."
+        }
+      ],
+      "created": "2026-11-28T02:03:47Z",
+      "updated": "2026-11-28T02:30:52Z"
     }
   ]
 }
