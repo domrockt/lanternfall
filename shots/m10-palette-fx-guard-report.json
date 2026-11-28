@@ -1,13 +1,311 @@
 {
   "milestone": "M10",
   "lane": "m10-palette-fx-guard",
-  "generatedAt": "2026-11-28T01:44:34.656Z",
+  "generatedAt": "2026-11-28T01:53:37.007Z",
   "sets": 34,
   "frames": 134,
   "offPaletteTotal": 0,
   "alphaViolationsTotal": 0,
   "maxDitherBandPx": 6,
   "maxDitherBandKey": "fx_evo_death_thunder_seal#0",
+  "ditherFindings": [
+    {
+      "key": "fx_evo_hit_phoenix#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_phoenix#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_phoenix#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_phoenix#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_phoenix#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_phoenix#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_phoenix#2",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_death_phoenix#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum#2",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum#2",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum#3",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_eternal_winter#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_death_eternal_winter#1",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_death_eternal_winter#2",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_death_eternal_winter#3",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm#2",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_thorn_storm#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_thorn_storm#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_thorn_storm#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_thorn_storm#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal#0",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal#1",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal#2",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal#3",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_evo_death_thunder_seal#0",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_evo_death_thunder_seal#1",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_evo_death_thunder_seal#2",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_evo_death_thunder_seal#3",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon#1",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_soul_beacon#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_soul_beacon#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_soul_beacon#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_evo_death_soul_beacon#3",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_death_blob#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_death_blob#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_boss_core#0",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_boss_core#1",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_boss_core#2",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_boss_core#3",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_boss_core#4",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_boss_core#5",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_fire#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_fire#1",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_fire#2",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_fire#3",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_fire#4",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_fire#5",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_halo#1",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_fire@2#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_fire@2#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_fire@2#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_fire@2#3",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_fire@2#4",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_fire@2#5",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_fire@3#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_fire@3#1",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_fire@3#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_fire@3#3",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_fire@3#4",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_fire@3#5",
+      "bandPx": 3
+    }
+  ],
   "scaleCoverage": [
     {
       "key": "fx_evo_hit_*",
@@ -155,5 +453,5 @@
   ],
   "violations": [],
   "fixture": "tests/fixtures/palette-fx-guard.json",
-  "fixtureBytes": 237528
+  "fixtureBytes": 241870
 }

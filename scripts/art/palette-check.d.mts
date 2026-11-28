@@ -45,3 +45,38 @@ export function summarize(assets: PaletteAsset[]): {
   transparentPct: number;
 };
 export function loadAndAnalyze(root?: string): Promise<{ paletteSize: number; assets: PaletteAsset[]; summary: ReturnType<typeof summarize> }>;
+
+// ── M10 FX-Frame-Guard (Lane m10-palette-fx-guard) ─────────────────────────
+export interface DitherMetrics {
+  /** Anzahl Dither-Pixel (Abwechslung in horizontaler UND vertikaler Richtung). */
+  ditherPixels: number;
+  /** Groesste Banddicke: Minimum der durchgehenden Dither-Laeufe (4 Richtungen). */
+  bandPx: number;
+}
+
+export function ditherMetrics(rows: readonly string[]): DitherMetrics;
+
+export function analyzeFxGuard(
+  name: string,
+  file: string,
+  rows: readonly string[],
+  w: number,
+  h: number,
+  pal: readonly number[],
+): PaletteAsset & { dither: DitherMetrics };
+
+export interface ScaleCoverageResult {
+  key: string;
+  maxScale: number;
+  bakeMaxLevel: number;
+  level: number;
+  effectiveScale: number;
+  covered: boolean;
+}
+
+export function scaleCoverage(
+  key: string,
+  maxScale: number,
+  fns: { mixelMaxLevel: (key: string) => number; mixelLevelFor: (key: string, scale: number) => number },
+): ScaleCoverageResult;
+

@@ -121,6 +121,11 @@ async function main() {
         mixelLevelFor: genFx.mixelLevelFor,
       }),
     }));
+    // Dither-Befunde > 2 px: der Test pinnt diese Menge als Ratchet (schreiben
+    // nur die Evo-Kette; schrumpfen erlaubt, neu entstehen schlaegt an).
+    const ditherFindings = analyzed.flatMap((s) => s.metrics
+      .filter((m) => m.ditherBandPx > 2)
+      .map((m) => ({ key: `${s.key}#${m.frame}`, bandPx: m.ditherBandPx })));
     // Wildcard-Manifest-Einträge auf konkrete Keys aufloesen (evo_* je Evolution).
     const knownFindings = [];
     for (const s of scales) {
@@ -166,6 +171,7 @@ async function main() {
       ])),
       scaleCoverage: scales.map((s) => ({ key: s.key, maxScale: s.maxScale, source: s.source, ...s.coverage })),
       knownFindings,
+      ditherFindings,
     };
 
     fs.mkdirSync("tests/fixtures", { recursive: true });
@@ -187,6 +193,7 @@ async function main() {
       offPaletteTotal: analyzed.reduce((n, s) => n + s.metrics.reduce((m, x) => m + x.offPalette, 0), 0),
       alphaViolationsTotal: analyzed.reduce((n, s) => n + s.metrics.reduce((m, x) => m + x.alphaViolations, 0), 0),
       maxDitherBandPx: worst.bandPx, maxDitherBandKey: worst.key,
+      ditherFindings,
       scaleCoverage: fixture.scaleCoverage,
       knownFindings,
       violations,
