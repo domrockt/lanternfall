@@ -1,0 +1,24 @@
+# Lane m10-fx-bakes-evo-r2 — Mixel-Bakes Evo-Signaturen + fx_boss_core (2026-11-28)
+
+Ziel (Re-Queue des Original-Briefings): Scale-Coverage-Ratchet des FX-Guards auf 0 ungedeckte
+Keys abbauen, ohne Optik-Verschlechterung.
+
+- K1 (#10251): Sammler/Fixture auf Ist gehoben — 10/12 Evo-Signaturen waren bereits baked in
+  Zielgroesse (drawScale [1,1]); uncovered nur thunder_seal hit/death + fx_boss_core.
+  `evolutionSignatureTextureDef()` als eine Wahrheit fuer Textur/Sammler/Test.
+- K2 (#10252): Mixel-Bakes fx_evo_{hit,death}_thunder_seal @2-4/@2-5 (MIXEL_BAKE_DEFS-Muster,
+  signatureFrame/outlineAndRim density-parametrisiert). Level-1 bitidentisch (verifiziert).
+- K3 (#10253): fx_boss_core-Entscheidung BAKE (maxLevel jetzt 5 nach Review S1: rim =
+  scaleFrom*rimScale bis 4,531). Run.ts unangetastet; isBossFxKey @-tolerant;
+  map-Index-Bug in deathFrameSets gefixt.
+- K4 (#10254): Ratchet 0 (hart), iGPU-Sichtbelege (Mesa Intel RPL-S, Runtime-Keys
+  fx_evo_hit_thunder_seal@4, fx_evo_death_thunder_seal@5, fx_boss_core@3/@4),
+  art-director PASS (4/4, keine Mixelbloecke, eine Pixelgroesse), reviewer FAIL Runde 1
+  behoben (BAKES-Hoisting, boss maxLevel 5, frame-weite Rampenpruefung).
+
+Messwerte: ungedeckte Keys 13 (davon 10 stale) -> 0; Coverage 17/17; Full-Suite 171 Dateien /
+1857 Tests gruen; npm run build rc=0; Guard < 3 s. Belege: shots/abnahme/k4-* und
+~/games/.evidence/m10-fx-bakes-evo-r2/ (Vorher-Fixture, Ist-Reports, Zoom-Crops).
+Offene Punkte: keine; thunder_seal-128er-Upgrade bleibt optional bei Karte #8876.
+Fremd-Dateien (nur nach Meldung in /home/ai/games/.dispatch/requests.md): tests/fx-mixel.test.ts
+(3 Alt-Pins + Rampenpruefung frame-weit), tests/boss-death-shards.test.ts (1 Alt-Pin).
