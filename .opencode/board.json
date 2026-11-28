@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11535,
+  "next": 11538,
   "cards": [
     {
       "id": 1,
@@ -15310,6 +15310,44 @@
       ],
       "created": "2026-11-28T11:05:27Z",
       "updated": "2026-11-28T11:13:26Z"
+    },
+    {
+      "id": 11535,
+      "title": "m10-boss-spawn-lower K1: Vorher-Messung Boss-Sprite vs HP-Leiste im Spawn-Moment",
+      "description": "Skript scripts/m10-boss-spawn-lower.mjs (Vorlage m10-boss-shards.mjs) misst im echten Spawn-Pfad (debugSpawnBoss -> spawnBossAt, Intro-FX) das Boss-Sprite-Rect vs. HP-Leisten-Rect in 640x360@1 und 780x360@3, pro Frame ueber 1,6 s, Worst-Case-Screenshot. AK: Before-JSON + PNG unter ~/games/.evidence/m10-boss-spawn-lower/ existiert und zeigt Overlap-Zahlen beider Formate; Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:49:34Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Messskript scripts/m10-boss-spawn-lower.mjs (Vorlage m10-boss-shards.mjs), Szenarien idle + run-down, 640x360@1 + 780x360@3."
+        },
+        {
+          "at": "2026-11-28T11:19:20+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11535, Merge branch m10-boss-spawn-lower (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T10:47:57Z",
+      "updated": "2026-11-28T10:49:34Z"
+    },
+    {
+      "id": 11536,
+      "title": "m10-boss-spawn-lower K2: Spawn-Anker tiefer + Invariante-Test",
+      "description": "Fix in src/systems/BossSystem.ts (Hebel composedBossCenterY/BOSS_SAFE_TOP/BOSS_HUD_CLEARANCE): Boss-Koerper beginnt beim Spawn UNTER der HP-Leiste. tests/boss-spawn-composition.test.ts erweitern: Invariante Boss-Sprite-Rect schneidet HP-Leisten-Rect im Spawn-Moment nicht (beide Formate). Spawn-Zeit/HP/Angriffe/Balance unangetastet. AK: npx tsc --noEmit + npx vitest run tests/boss-spawn-composition.test.ts gruen; Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:47:57Z",
+      "updated": "2026-11-28T10:47:57Z"
+    },
+    {
+      "id": 11537,
+      "title": "m10-boss-spawn-lower K3: After-Beleg + Lane-Doku + .lane-done",
+      "description": "After-Lauf des Messskripts (0 Ueberlappung in beiden Formaten, JSON-Beleg), Abnahme-Shots nach shots/abnahme/m10-boss-spawn-lower-*, art-director-Sichtung (Ziel >= 4/5), Doku docs/lanes/m10-boss-spawn-lower.md, npm test + npm run build gruen, .lane-done. AK: Commit mit allen Belegen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:47:57Z",
+      "updated": "2026-11-28T10:47:57Z"
     }
   ]
 }

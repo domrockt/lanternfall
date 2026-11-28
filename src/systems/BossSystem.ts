@@ -55,6 +55,13 @@ const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 export const BOSS_SPRITE_SIZE = [56, 64, 72, 80, 96, 96];
 /** Mindestabstand zwischen Boss-Sprite-Oberkante und HUD-/Banner-Unterkante. */
 export const BOSS_HUD_CLEARANCE = 6;
+/**
+ * Puffer im Zoom-Zweig der Komposition (art-director-Nachbesserung A10):
+ * der komponierte Worst-Case soll die sichere Oberkante nicht exakt
+ * BERUEHREN, sondern 3 px darunter beginnen — sonst laeuft die
+ * Puls-Magnifikation an der Leistenkante auf Touch.
+ */
+export const BOSS_PULSE_TOP_BUFFER = 3;
 export interface Rect { x: number; y: number; w: number; h: number }
 
 /**
@@ -122,7 +129,7 @@ export function composedBossCenterY(
     const midY = camTop + viewHeight / 2;
     const projectedTop = (camTop + y - midY) * zoom + viewHeight / 2 - size * zoom / 2;
     if (projectedTop < safeTop) {
-      y = midY + (safeTop + size * zoom / 2 - viewHeight / 2) / zoom - camTop + 0.01;
+      y = midY + (safeTop + BOSS_PULSE_TOP_BUFFER + size * zoom / 2 - viewHeight / 2) / zoom - camTop;
     }
   }
   return y;
@@ -219,6 +226,14 @@ export class BossSystem {
     // waeren W/s x H/s und haetten safeTop/Banner-Kette geschrumpft sowie den
     // y-Vergleich (Welt-Offset vs. logischer Screen) um H*(s-1)/(2s) verschoben.
     const camTopLog = camTop + this.camera.height / 2 - GAME_HEIGHT / 2;
+    // K1-Befund (m10-boss-spawn-lower): der Intro-Zoom-Tween in Run.ts setzt
+    // cam.zoom ABSOLUT auf BOSS_INTRO_ZOOM, waehrend enforceCameraProjection
+    // jede Frame 1/Teiler verlangt. Im Streit rendern Puls-Frames mit der
+    // Teiler-fachen logischen Magnifikation (bei Teiler 3 = 780x360@3 stand
+    // der Boss-Sprite im Spawn-Moment am oberen Rand hinter der HP-Leiste).
+    // Die Komposition nimmt deshalb den Worst-Case: BOSS_INTRO_ZOOM / cam.zoom
+    // (= 1.14 * Teiler). Bei Teiler 1 ist das bitgleich zum bisherigen 1.14.
+    const pulseZoom = BOSS_INTRO_ZOOM / (this.camera.zoom || 1);
     const composedScreenY = composedBossCenterY(
       desiredY - camTopLog,
       playerY - camTopLog,
@@ -226,7 +241,7 @@ export class BossSystem {
       GAME_WIDTH,
       GAME_HEIGHT,
       camTopLog,
-      BOSS_INTRO_ZOOM,
+      pulseZoom,
     );
     let y = Phaser.Math.Clamp(camTopLog + composedScreenY, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
