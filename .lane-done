@@ -1,0 +1,25 @@
+Lane m10-boss-spawn-lower — abgeschlossen 2026-11-28
+
+A10-Restpunkt "Boss spawnt am oberen Rand hinter seiner HP-Leiste" (art-director).
+
+Ergebnis:
+- K1 (#11208, ae15b31f): Messskript scripts/m10-boss-spawn-lower.mjs; Before-Belege
+  in ~/games/.evidence/m10-boss-spawn-lower/. Befund: Teiler 1 = 0 Überlappung;
+  bei Render-Teiler 3 (780x360@3) kämpft der Intro-Zoom-Tween (Run.ts:1882,
+  absolut 1.14) mit enforceCameraProjection (1/s pro Frame) — Puls-Frames
+  rendern mit 1.14*Teiler logischer Magnifikation (3.42), Peak-Shot zeigt das
+  gemeldete Symptom.
+- K2 (#11209, 2bf89348 + eadde013): BossSystem.spawn komponiert jetzt mit der
+  wahren Puls-Magnifikation BOSS_INTRO_ZOOM / cam.zoom (= 1.14*Teiler; Teiler 1
+  bitgleich) + 3px Leistenkanten-Puffer (BOSS_PULSE_TOP_BUFFER, art-director-
+  Nachbesserung). 36 neue Invarianz-Tests (Sprite UNTER HP-Leiste, kein Schnitt,
+  Magnifikation s=1..3). npm test 2068/2068, build rc=0.
+- K3 (#11210, dieser Commit): After-JSON 0 Überlappungs-Frames in allen 4
+  Szenario/Format-Kombis (~/games/.evidence/m10-boss-spawn-lower/), Abnahme-Shots
+  shots/abnahme/m10-boss-spawn-lower-after-*.png, Lane-Doku
+  docs/lanes/m10-boss-spawn-lower.md.
+
+Abnahme: art-director PASS, Note 4/5 (Ziel ≥ 4/5). Offen (fremder Claim,
+als Bedarf gemeldet): Intro-Zoom-Puls bei Teiler ≥ 2 erzeugt Glitch-Frames
+(Run.ts Zoom-Tween vs. Kameraprojektion) — Folge: dpr3-idle Boss teils
+off-screen im Zoom-Peak; erneute Sichtprüfung nach Run.ts-Klärung gefordert.
