@@ -66,9 +66,25 @@ Seed 101, 80 gequeute bog_rat, `window.__lf.event("dawn")`; JSONs in
 (`startDawn`, Dawn-Zweig von `simulate`); Seed-Vergleich des Normalpfads siehe
 K4 (`seed-baseline-before.json` vs. After-Run, identische Checksumme).
 
-## K3 — Doku-Fix + reine Positions-Funktion
+## K3 — Doku-Fix + reine Positions-Funktion (#12289)
 
-(Offen.)
+- Kommentar zu `SPAWN_DEBUG_BATCH_PER_FRAME` korrigiert (Reviewer-Befund 2): Cap gilt
+  **je `update()`-Aufruf (= Sim-Substep)**, nicht je rAF-Frame; bei timeScale 1 identisch
+  mit je rAF-Frame (Geräte-Harness läuft mit `setTimeScale(1)`).
+- Neue reine exportierte Funktion `debugRingPosition(rng, playerX, playerY)`
+  (Spawner.ts): zieht Winkel (`rng.next() * 2π`) dann Radius (`90 + rng.next() * 90`)
+  und clampt auf `[20, WORLD_SIZE - 20]`. Genutzt von `spawnEnemy` UND
+  `queueEnemyWave` — die Code-Duplikation (Reviewer-Befund 3, erster Teil) ist entfernt,
+  Ziehungsreihenfolge unverändert.
+- Beleg Spawn-Verhalten bitgleich: `scripts/m10-frame-tail-followup.mjs --mode=seed`
+  (sim-exakte Marks via simulate-Hook, Seed 101, 90 Sim-Sekunden, spawnTotal +
+  FNV-Positions-Hash je Sekunde). Checksumme nach Fix **identisch** zur
+  Vor-Fix-Baseline (Stand Merge 1c161482):
+  `1518447412:2166136261,…,1518447412` — JSONs
+  `~/games/.evidence/m10-frame-tail-followup/seed-baseline-before.json` und
+  `seed-after.json`, 0 JS-Fehler, kein flock (sim-exakt, lastunabhängig).
+- RNG-Identitätstest (zweiter Teil von Befund 3): siehe K4
+  (`tests/frame-tail-followup.test.ts`).
 
 ## K4 — Guards
 

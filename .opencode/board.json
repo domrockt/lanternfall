@@ -16929,25 +16929,36 @@
       "id": 12288,
       "title": "m10-frame-tail-followup K2: Dawn-Drain — drainDebugQueue beim Morgendämmerung-Start",
       "description": "Während Morgendämmerung läuft Spawner.update() nicht (Run.ts:678), gequeuete Debug-Spawns materialisieren nie. drainDebugQueue beim startDawn() aufrufen. Abnahmekriterium: Probe belegt, dass gequeuete Debug-Spawns nach Dawn-Start materialisieren; Normalpfad unverändert (npm test grün, gleicher Seed = gleiche Spawn-Marken).",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T13:20:06Z",
           "by": "build",
           "text": "todo → doing: K2 Dawn-Drain: startDawn ruft drainDebugQueue (public), Normalpfad unberührt."
+        },
+        {
+          "at": "2026-11-28T13:28:57Z",
+          "by": "build",
+          "text": "doing → review: K2: startDawn-Drain (30 sofort) + Substep-Drain während Dawn (Rest verteilt, Batching-Cap erhalten). Beleg: .evidence dawn-drain-probe-before (0/80, Leak) vs -after (80/80, Delta bog_rat 88). Tests 2317/2317 grün, Commit bb990bfd."
         }
       ],
       "created": "2026-11-28T13:19:09Z",
-      "updated": "2026-11-28T13:20:06Z"
+      "updated": "2026-11-28T13:28:57Z"
     },
     {
       "id": 12289,
       "title": "m10-frame-tail-followup K3: Doku-Fix SPAWN_DEBUG_BATCH_PER_FRAME + reine Positions-Funktion",
       "description": "Kommentar korrigieren: Cap gilt je update()/Sim-Substep (bei timeScale 1 = je rAF-Frame), nicht je rAF-Frame. Duplikation queueEnemyWave vs. spawnEnemy (Winkel→Radius→Clamp) in eine reine exportierte Funktion ziehen. Abnahmekriterium: tsc + Tests grün, Spawn-Verhalten bitgleich.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:28:57Z",
+          "by": "build",
+          "text": "todo → doing: K3: Doku-Fix je Sim-Substep + reine Positions-Funktion debugRingPosition."
+        }
+      ],
       "created": "2026-11-28T13:19:09Z",
-      "updated": "2026-11-28T13:19:09Z"
+      "updated": "2026-11-28T13:28:57Z"
     },
     {
       "id": 12290,
