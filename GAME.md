@@ -443,3 +443,21 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
   `m10-ground-cost` sind noch **nicht gemerged**; danach neu messen.
 - **APK:** Release `latest-build` = Build `0c525c8` (08:00Z), 44 min / 4 Commits hinter HEAD —
   erwartungsgemäß nicht HEAD-genau (stündlicher Timer).
+
+## v1.0-Status (2026-11-28)
+
+**Ziel (Dom, 10:00Z):** nach grünen Geräte-Toren Endabnahme, dann Tag + README +
+latest-build-APK. Diese Lane bereitet die Markierung vor; kein Tag, kein Push, kein
+APK-Build in der Lane.
+
+- **Blocker:** die Android-Geräte-Tore auf Doms Tablet sind noch **nicht** belegt —
+  6 Evolutionen ≥ 60 FPS (Ziel 90), Minute-25-Dichte ≥ 60 FPS, janky-Frames < 10 %,
+  10-min-Lauf ohne Thermik-Einbruch, Text lesbar. Messung über Gerätetelemetrie
+  (`docs/DEVICE-TELEMETRY.md`); der Harness-Proxy (`scripts/android-proxy.mjs`) ist
+  nur Zusatzbeleg, kein Tor.
+- **Checkliste:** abhakbare Endabnahme-Liste in
+  `docs/qa/v10-readiness-2026-11-28.md` (Geräte-Tore A1–A5, Endabnahme-Suite B1–B7,
+  Restpunkte C1–C3).
+- **Zuletzt belegt (Nachabnahme F, PIN `1ebd4ca`):** Build/Tests/Inhalte/verify grün;
+  einziger Suite-Blocker ist das fullrun-Heap-Tor (+18,2 %/+20,8 % > +15 %) — siehe
+  `ACCEPTANCE.md` und `docs/lanes/m10-acceptance-refresh-f.md`.
