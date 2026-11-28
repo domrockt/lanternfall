@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5562/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-m10-audio-quality-budget-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
