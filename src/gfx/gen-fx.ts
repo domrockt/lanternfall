@@ -659,41 +659,43 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
 }
 
 /**
- * Geisterflamme (Seele): geschlossene Tinte an Scheitel und welligem Schweif,
- * asymmetrischer Flammenkorper (kein Obelisk), 2x2-Kern mit 9-Glutrand und
- * diagonale 8/5-Schattierung. 3 Frames @ ~5 Hz.
+ * Seelenflamme (Seele, neu M10 m10-evo-fx-soulpyre): Zielgrösse 22x32, wird mit
+ * Draw-Scale 1 gezeichnet (nie > 1x hochskaliert). Farb-Treppe Seelenfeuer:
+ * Kern lanternWhite(13) → candleWhite(12) → boneLight(11)/bone(10) → marshLight(31)
+ * → marsh(30), Kontur mossDark(29) statt Ink — kein Ink(0), keine Nacht-/Grau-Töne
+ * (1–9). 3 Flacker-Frames (Sway + Zungenbreite) @ ~5 Hz.
  */
+export const SOUL_RAMP = [13, 12, 11, 10, 31, 30, 29] as const;
+
 function orbSoulFrame(stage: number): string[] {
-  const w = 15;
-  const h = 24;
-  const cx = 7;
-  const widths = [0, 1, 1, 2, 2, 3, 2, 3, 4, 3, 4, 4, 3, 2];
-  const lean = stage === 0 ? 0 : stage === 1 ? 1 : -1;
+  const w = 22;
+  const h = 32;
+  const cx = 10.5;
+  const sway = stage === 0 ? 0 : stage === 1 ? 1.0 : -0.9;
   const out: string[] = [];
   for (let y = 0; y < h; y++) {
     let row = "";
-    const body = y < 14;
-    const center = body
-      ? cx + Math.round(lean * (y / 13) * 1.4 + Math.sin(y * 0.85 + stage * 2.1) * 0.8)
-      : cx + Math.round(Math.sin(y * 1.15 + stage * 2.4) * 0.9);
-    const half = body ? widths[y] : 1;
+    const v = y / (h - 1); // 0 = Spitze, 1 = Schweif-Ende
+    const center = cx + sway * (0.25 - v) * 2.2 + Math.sin(y * 0.62 + stage * 2.0) * 0.7;
+    // Breitenprofil: Spitze (0) → Bauch (~y15) → weicher Schweif (y26+)
+    let half: number;
+    if (y === 0) half = 0.6;
+    else if (y < 5) half = 1.2 + y * 0.55;
+    else if (y < 15) half = 4.6 + Math.sin((y - 5) * 0.5 + stage) * 0.5;
+    else if (y < 26) half = 5.2 - (y - 15) * 0.22;
+    else half = Math.max(0.8, 2.6 - (y - 26) * 0.7);
+    if (stage === 2) half -= 0.25; // Frame 2 etwas schlanker (Flackern)
     for (let x = 0; x < w; x++) {
-      const dx = x - center;
-      if (body && y === 0) {
-        // Geschlossener Scheitel: nur Tinte, von y1 gefüllt umschlossen.
-        row += dx === 0 ? "0" : ".";
-        continue;
-      }
-      if (dx < -half || dx > half) { row += "."; continue; }
-      if (dx === -half || dx === half) { row += "0"; continue; }
-      const coreRow = body && y >= 10 && y <= 11;
-      const core = coreRow && (x === center || x === center + 1);
-      if (core) { row += "d"; continue; }
-      const glow = coreRow && Math.abs(y - 10.5) < 2.1 && dx >= -1 && dx <= 2;
-      if (glow) { row += "9"; continue; }
-      if (body && y >= 2 && y <= 6 && dx < 0) { row += "8"; continue; }
-      if (body && y > 6 && dx >= 0) { row += "5"; continue; }
-      row += "6";
+      const d = Math.abs(x - center) / half;
+      if (d > 1.05) { row += "."; continue; }
+      if (d > 0.92) { row += charOf(29); continue; }
+      const n = d + Math.sin(x * 1.7 + y * 0.9 + stage * 1.3) * 0.06;
+      const idx = n < 0.34 ? 13
+        : n < 0.52 ? 12
+        : n < 0.70 ? (y < 20 ? 11 : 10)
+        : n < 0.88 ? 31
+        : 30;
+      row += charOf(idx);
     }
     out.push(row);
   }
@@ -723,6 +725,12 @@ export interface EvoSignature {
   deathLifetime: number;
   hitCount: number;
   deathCount: number;
+  /**
+   * [scaleFrom, scaleTo] wenn die Signatur in Zielgrösse gebacken wird und mit
+   * Draw-Scale 1 gezeichnet wird (Mixel-Regel „eine Pixelgrösse", m10-evo-fx-
+   * soulpyre). Nicht gesetzt → Alt-Verhalten (32x32 @ 3,2–4,6).
+   */
+  drawScale?: readonly [number, number];
 }
 
 export const SIGNATURE_FRAME_COUNT = 4;
@@ -759,10 +767,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     hitCount: 3, deathCount: 7,
   },
   // Geisterlaterne + Magnetamulett: helle Seelenwolke, langes Nachgluehen.
+  // M10 m10-evo-fx-soulpyre: Signatur in Zielgroesse 96x96 gebacken, Draw-Scale 1
+  // (vorher 32x32 @ 4,0–4,6 = graue Rechteck-Platte mit Ink-Rand).
   soul_beacon: {
     evolution: "soul_beacon", baseWeapon: "lantern", shape: "cloud",
     palette: [11, 8, 5], hitLifetime: 0.26, deathLifetime: 0.55,
     hitCount: 4, deathCount: 9,
+    drawScale: [1, 1],
   },
 };
 
@@ -979,6 +990,59 @@ export function signatureFrame(
   return outlineAndRim(rows);
 }
 
+/**
+ * Seelenleuchtfeuer-Signatur in Zielgroesse (m10-evo-fx-soulpyre): 96x96, wird mit
+ * Draw-Scale 1 gezeichnet (vorher 32x32 @ 4,0–4,6 = graue Platte). Organische
+ * Flammenzungen (spitze Taper, Sway) statt Rauten/Platten: Kern weiss (13) →
+ * candleWhite(12)/boneLight(11) → marshLight(31) → marsh(30), dunkle Rand-Kontur
+ * mossDark(29) statt Ink. Hit: 1 grosse + 1 kleine Zunge; Death: 3 Zungen +
+ * aufsteigende Seelen-Funken.
+ */
+export const SOUL_SIGNATURE_SIZE = 96;
+
+export function soulSignatureFrame(kind: "hit" | "death", stage: number): string[] {
+  const size = SOUL_SIGNATURE_SIZE;
+  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  const wisps = death ? 3 : 2;
+  for (let wi = 0; wi < wisps; wi++) {
+    const offX = wi === 0 ? 0 : wi === 1 ? -15 : 14;
+    const offY = wi === 0 ? 8 : wi === 1 ? 14 : 12;
+    const wispScale = wi === 0 ? 1 : 0.58;
+    const top = ((death ? 36 : 28) + t * 8) * wispScale;
+    const baseY = c + offY;
+    // Flammenzunge: Basis unten, wandernde Spitze oben, Sway je Frame.
+    for (let yy = 0; yy <= top; yy++) {
+      const y = baseY - yy;
+      const v = yy / top; // 0 Basis → 1 Spitze
+      const half = Math.max(0.8, (1.2 + (1 - v) * 10.5 * wispScale) * (stage === 3 ? 0.82 : 1));
+      const sway = Math.sin(yy * 0.14 + stage * 1.5 + wi * 2.3) * (2.6 * (1 - v * 0.5));
+      const center = c + offX + sway + (death ? 0 : Math.sin(stage * 1.1) * 1.5);
+      for (let xx = -half; xx <= half; xx += 0.5) {
+        const n = Math.abs(xx) / half + Math.sin(yy * 0.45 + stage * 2.1 + wi) * 0.05;
+        const idx = n < 0.3 ? 13 : n < 0.5 ? 12 : n < 0.72 ? 11 : n < 0.9 ? 31 : 30;
+        putPixel(rows, center + xx, y, idx);
+      }
+      // Dunkle Rand-Kontur (mossDark) statt Ink — Kontur nur als dunkle FarbStufe.
+      putPixel(rows, center - half - 0.7, y, 29);
+      putPixel(rows, center + half + 0.7, y, 29);
+    }
+  }
+  if (death) {
+    // Aufsteigende Seelen-Funken (klein, 2-px-Marker) um die Zungen.
+    const sparks = 5 + stage;
+    for (let i = 0; i < sparks; i++) {
+      const a = i * 2.4 + stage * 0.7 + (death ? 0.9 : 0);
+      const rr = 12 + ((i * 7 + stage * 5) % 22);
+      const sy = c - 4 - ((i * 11 + stage * 9) % 26);
+      putPixel(rows, c + Math.cos(a) * rr, sy, i % 2 === 0 ? 31 : 13);
+    }
+  }
+  return rows.map((r) => r.join(""));
+}
+
 // ── Mixel-Fix (Dom-Wunsch 21:15Z, Punkt 4a) ─────────────────────────────────
 // Befund: große Feuer-/Aura-Effekte liegen als kleine Texturen vor (fx_fire
 // 14x14, fx_halo/fx_halo_cold 24x24, fx_shock 48x48) und werden mit Scale > 1
@@ -1124,11 +1188,19 @@ export function mixelLevel1Frames(): Record<string, { w: number; h: number; fram
 function addEvolutionSignatures(scene: Phaser.Scene): void {  for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
     for (const kind of ["hit", "death"] as const) {
-      const def: FxDef = {
-        w: 32,
-        h: 32,
-        frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
-      };
+      // Zielgroessen-Pfad (Mixel-Regel): Signatur mit drawScale wird in voller
+      // Display-Groesse gebacken und mit Draw-Scale 1 gezeichnet.
+      const def: FxDef = sig.drawScale
+        ? {
+            w: SOUL_SIGNATURE_SIZE,
+            h: SOUL_SIGNATURE_SIZE,
+            frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => soulSignatureFrame(kind, i)),
+          }
+        : {
+            w: 32,
+            h: 32,
+            frames: Array.from({ length: SIGNATURE_FRAME_COUNT }, (_, i) => signatureFrame(sig.shape, sig.palette, i, kind)),
+          };
       addFrames(scene, signatureTextureKey(id, kind), def);
     }
   }
@@ -1164,8 +1236,8 @@ export function createFxTextures(scene: Phaser.Scene): void {
   addFrames(scene, "fx_dusk", { w: 20, h: 20, frames: [0, 1, 2].map((i) => ring(20, 20, [5, 4, 3], 0.55 - i * 0.1, i)) });
   // Staub/Asche für Tod-Klassen (klein, normal blend)
   addFrames(scene, "fx_ash", { w: 5, h: 5, frames: [0, 1].map(() => [".ccc.", "c555c", "c505c", "c555c", ".ccc."]) });
-  // Seelenflamme fuer das Seelenleuchtfeuer (2 Frames, 15x22).
-  addFrames(scene, "orb_soul", { w: 15, h: 22, frames: [0, 1, 2].map(orbSoulFrame) });
+  // Seelenflamme fuer das Seelenleuchtfeuer (3 Flacker-Frames, 22x32, Draw-Scale 1).
+  addFrames(scene, "orb_soul", { w: 22, h: 32, frames: [0, 1, 2].map(orbSoulFrame) });
   // Kalter Halo fuer Seelen (blau-grau statt warmem Amber-Ring).
   addFrames(scene, "fx_halo_cold", { w: 24, h: 24, frames: [0, 1].map((i) => coldHaloFrame(i)) });
   // Mixel-Fix: Bake-Stufen der vier weichen Glow-Effekte (Level 1 = obige Keys,

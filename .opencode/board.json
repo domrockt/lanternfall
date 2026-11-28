@@ -8525,27 +8525,38 @@
       "id": 7278,
       "title": "m10-evo-fx-soulpyre K1: Ist-Beleg Seelenleuchtfeuer",
       "description": "Skript scripts/m10-evo-fx-soulpyre.mjs (Vorlage phoenix) nachstellen: soul_beacon Lv8, 20 lebende Gegner, 640x360@2x + 960x540@1x, before.json mit WebGL-Renderer-String + PNGs. AK: JSON committed, valid=true (kein SwiftShader), 0 JS-Fehler, Draw-Scale des orb_soul (aktuell 2.0) und Signaturen (3.2-4.6) belegt.",
-      "column": "doing",
+      "column": "review",
       "assignee": "vfx-artist",
       "notes": [
         {
           "at": "2026-11-28T01:01:55Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T01:03:26Z",
+          "by": "build",
+          "text": "doing → review: #7278 before.json+PNGs (iGPU, 0 JS-Fehler): orb_soul 15x22 @2x, sig 32x32 @4,0-4,3x, Ink/Grau-Anteile belegt. Commit a342076."
         }
       ],
       "created": "2026-11-28T01:01:53Z",
-      "updated": "2026-11-28T01:01:55Z"
+      "updated": "2026-11-28T01:03:26Z"
     },
     {
       "id": 7279,
       "title": "m10-evo-fx-soulpyre K2: Fix Seelenflammen in Zielgroesse",
       "description": "gen-fx.ts: orbSoulFrame neu (Zielgroesse, Scale 1, Farb-Treppe Kern weiss(13/12) -> kuehl(11/10) -> gruen-blau Rand(31/30) -> dunkler Rand(28), kein Ink/Grau 5-9); Signatur soul_beacon in Zielgroesse mit drawScale [1,1]; CombatSystem: orb Scale 1, Halo gebackene Stufe <=1 + sichtbarere Alpha, Anticipation <=0.3s + Ausklang-Fade. AK: tsc rc=0, keine Scale>1 am soul-Effekt im Quelltext.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "vfx-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T01:03:26Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T01:01:53Z",
-      "updated": "2026-11-28T01:01:53Z"
+      "updated": "2026-11-28T01:03:26Z"
     },
     {
       "id": 7280,

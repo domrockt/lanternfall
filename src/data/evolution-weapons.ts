@@ -121,3 +121,28 @@ export const EVOLUTION_WEAPONS: Partial<Record<WeaponAnyId, WeaponDef>> = {
     ],
   },
 };
+
+/**
+ * m10-evo-fx-soulpyre: alle Seelenleuchtfeuer-FX-Parameter an einem Ort (Muster
+ * PHOENIX_FX). Eine Pixelgroesse fuer alles: orb_soul 22x32 wird mit Scale 1
+ * gezeichnet, der kalte Halo kommt als gebackene Stufe 2 (48x48) mit Scale 0.9
+ * (nie > 1x hochskaliert). Farb-Treppe: Kern weiss (13/12) → kuehl (11/10) →
+ * gruen (31/30) → dunkler Rand (29) — kein Ink(0), keine Grau-Stufen (5–9).
+ */
+export const SOUL_FX = {
+  /** Orb-Texturen (3 Flacker-Frames, 22x32, Sprite-Pixelgroesse). */
+  orbFrames: ["orb_soul", "orb_soul_2", "orb_soul_3"],
+  orbFrameInterval: 0.2,
+  /** Gebackene Halo-Stufe (48x48) + Ziel-Scale <= 1 und Puls-Alpha. */
+  haloTexture: "fx_halo_cold@2",
+  haloScale: 0.9,
+  haloAlpha: 0.3,
+  haloPulse: 0.07,
+  /** Anticipation (Aufbau) <= 0,3 s und Ausklang-Fade in s. */
+  anticipation: 0.28,
+  fadeOut: 0.35,
+  /** Aufsteigende Seelen-Funken: pro Orb alle sparkInterval s ein 1-Sprite-Funken. */
+  sparkInterval: 0.34,
+  sparkTexture: "fx_star",
+  sparkTint: 31,
+} as const;

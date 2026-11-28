@@ -353,8 +353,10 @@ export class FxSystem {
     if (now - last < baseLife * 450) return null;
     this.signatureLast.set(key, now);
     const texture = signatureTextureKey(evolution, kind);
-    // M10-Abnahme: 32x32-Texturen, Hit 3,2–3,6 / Death 4,0–4,6, volle Alpha
-    // auch im Minimal-LOD (alphaScaleExempt, Untergrenze effektiv 0,95).
+    // Mixel-Regel (m10-evo-fx-soulpyre): Signatur mit drawScale ist in Zielgroesse
+    // gebacken und wird mit Draw-Scale 1 gezeichnet; sonst Alt-Verhalten
+    // (32x32-Texturen, Hit 3,2–3,6 / Death 4,0–4,6), volle Alpha auch im Minimal-LOD.
+    const ds = sig.drawScale;
     const spin = sig.shape === "splitter" ? (kind === "hit" ? 2.2 : 1.4) : sig.shape === "cloud" ? 0.7 : 0;
     return this.spawn({
       ...(opts as FxOptions),
@@ -363,8 +365,8 @@ export class FxSystem {
       x,
       y,
       life: opts.life ?? baseLife,
-      scaleFrom: opts.scaleFrom ?? (kind === "hit" ? 3.2 : 4.0),
-      scaleTo: opts.scaleTo ?? (kind === "hit" ? 3.6 : 4.6),
+      scaleFrom: opts.scaleFrom ?? (ds ? ds[0] : kind === "hit" ? 3.2 : 4.0),
+      scaleTo: opts.scaleTo ?? (ds ? ds[1] : kind === "hit" ? 3.6 : 4.6),
       alphaFrom: opts.alphaFrom ?? 0.95,
       alphaTo: 0,
       additive: false,

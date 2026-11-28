@@ -11,6 +11,7 @@ import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
+import { SOUL_FX } from "../data/evolution-weapons";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -58,6 +59,8 @@ interface Orb {
   sprite: Phaser.GameObjects.Image;
   halo?: Phaser.GameObjects.Image;
   phase: number;
+  /** Spielzeitpunkt der Erzeugung (Anticipation-Ramp, m10-evo-fx-soulpyre). */
+  born?: number;
 }
 
 interface Swing {
@@ -809,19 +812,32 @@ export class CombatSystem {
     state.orbRadius = radius;
     const evolved = owned.id === "soul_beacon";
     while (state.orbs.length < count) {
-      const sprite = makeImage(this.scene, ctx.playerX, ctx.playerY, evolved ? "orb_soul" : "orb_lantern")
+      // Seelenleuchtfeuer (m10-evo-fx-soulpyre): orb_soul 22x32 in Sprite-Pixel-
+      // groesse, Draw-Scale 1 (nie > 1x hochskaliert); Halo als gebackene Stufe 2
+      // (48x48) mit Scale 0.9. Seele in Normal-Blend: das Grue-blau bleibt
+      // eigenstaendig, kein Gold-Wash.
+      const sprite = makeImage(this.scene, ctx.playerX, ctx.playerY, evolved ? SOUL_FX.orbFrames[0] : "orb_lantern")
         .setDepth(DEPTH.fxLow)
-        .setScale(evolved ? 2 : 1)
-        // Seele in Normal-Blend: das Blau bleibt eigenstaendig, kein Gold-Wash.
+        .setScale(evolved ? 1 : 1)
         .setBlendMode(evolved ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
-      const halo = makeImage(this.scene, ctx.playerX, ctx.playerY, evolved ? "fx_halo_cold" : "fx_halo")
-        .setDepth(DEPTH.trail)
-        .setScale(evolved ? 1.8 : 0.8)
-        .setAlpha(evolved ? 0.09 : 0.55)
-        .setBlendMode(Phaser.BlendModes.ADD);
-      state.orbs.push({ sprite, halo, phase: (state.orbs.length / count) * Math.PI * 2 });
+      const halo = evolved
+        ? makeImage(this.scene, ctx.playerX, ctx.playerY, SOUL_FX.haloTexture)
+          .setDepth(DEPTH.trail)
+          .setScale(SOUL_FX.haloScale)
+          .setAlpha(SOUL_FX.haloAlpha)
+          .setBlendMode(Phaser.BlendModes.ADD)
+        : makeImage(this.scene, ctx.playerX, ctx.playerY, "fx_halo")
+          .setDepth(DEPTH.trail)
+          .setScale(0.8)
+          .setAlpha(0.55)
+          .setBlendMode(Phaser.BlendModes.ADD);
+      state.orbs.push({ sprite, halo, phase: (state.orbs.length / count) * Math.PI * 2, born: this.clock });
     }
-    for (const orb of state.orbs) { orb.sprite.setVisible(true); orb.halo?.setVisible(true); }
+    for (const orb of state.orbs) {
+      orb.sprite.setVisible(true);
+      if (orb.born === undefined) orb.born = this.clock;
+      orb.halo?.setVisible(true);
+    }
   }
 
   private updateOrbs(ctx: CombatContext): void {
@@ -846,23 +862,45 @@ export class CombatSystem {
         const ox = ctx.playerX + Math.cos(angle) * state.orbRadius;
         const oy = ctx.playerY + Math.sin(angle) * state.orbRadius;
         orb.sprite.setPosition(Math.round(ox), Math.round(oy));
+        // Seelenleuchtfeuer (m10-evo-fx-soulpyre): Flacker-Frames, Anticipation
+        // (<= 0,3 s Aufbau), kurzer Ausklang-Fade und aufsteigende Seelen-Funken.
         if (id === "soul_beacon") {
-          const soulIdx = Math.floor(this.clock * 5 + orb.phase) % 3;
-          const soulFrame = soulIdx === 0 ? "orb_soul" : soulIdx === 1 ? "orb_soul_2" : "orb_soul_3";
+          const soulIdx = Math.floor(this.clock / SOUL_FX.orbFrameInterval + orb.phase) % SOUL_FX.orbFrames.length;
+          const soulFrame = SOUL_FX.orbFrames[soulIdx];
           if (currentFrame(orb.sprite) !== soulFrame) applyTexture(orb.sprite, soulFrame);
-        }
-        orb.halo?.setPosition(Math.round(ox), Math.round(oy));
-        orb.halo?.setAlpha(id === "soul_beacon" ? 0.09 : 0.4 + Math.sin(this.clock * 5 + orb.phase) * 0.2);
-        orb.sprite.setAlpha(id === "soul_beacon" ? 1 : 0.65 + Math.sin(this.clock * 6 + orb.phase) * 0.25);
-        // Laterne behält den additiven Orb-Trail; die Seele nutzt ihren Sprite-Schweif.
-        if (id !== "soul_beacon" || (Math.floor(this.clock * 10) & 1) === 0) {
-          if (id !== "soul_beacon") {
-            this.fx.spawnAnim("fx_orb", ox, oy, {
-              life: 0.2, scaleFrom: 0.7, scaleTo: 0.2,
-              alphaFrom: 0.4, alphaTo: 0, additive: true,
-              tint: PAL[C.amber],
+          const born = orb.born ?? this.clock;
+          const ramp = Math.min(1, (this.clock - born) / SOUL_FX.anticipation);
+          const fade = Math.max(0, Math.min(1, state.orbTimeLeft / SOUL_FX.fadeOut));
+          orb.sprite.setAlpha(ramp * fade);
+          orb.halo?.setPosition(Math.round(ox), Math.round(oy));
+          orb.halo?.setAlpha((SOUL_FX.haloAlpha + Math.sin(this.clock * 5 + orb.phase) * SOUL_FX.haloPulse) * fade);
+          // Aufsteigender Seelen-Funke: ein kleiner Spark pro Orb im Takt (kein ADD-Stack).
+          const tick = Math.floor(this.clock / SOUL_FX.sparkInterval + orb.phase * 3);
+          const tickPrev = Math.floor((this.clock - ctx.dt) / SOUL_FX.sparkInterval + orb.phase * 3);
+          if (tick !== tickPrev && ramp >= 1) {
+            this.fx.spawn({
+              texture: SOUL_FX.sparkTexture,
+              x: ox, y: oy - 2,
+              vx: Math.sin(orb.phase) * 6,
+              vy: -22,
+              life: 0.5,
+              scaleFrom: 0.7, scaleTo: 0.2,
+              alphaFrom: 0.9, alphaTo: 0,
+              additive: true,
+              tint: PAL[SOUL_FX.sparkTint],
+              depth: DEPTH.fxLow,
             });
           }
+        } else {
+          orb.halo?.setPosition(Math.round(ox), Math.round(oy));
+          orb.halo?.setAlpha(0.4 + Math.sin(this.clock * 5 + orb.phase) * 0.2);
+          orb.sprite.setAlpha(0.65 + Math.sin(this.clock * 6 + orb.phase) * 0.25);
+          // Laterne behält den additiven Orb-Trail; die Seele nutzt ihren Sprite-Schweif.
+          this.fx.spawnAnim("fx_orb", ox, oy, {
+            life: 0.2, scaleFrom: 0.7, scaleTo: 0.2,
+            alphaFrom: 0.4, alphaTo: 0, additive: true,
+            tint: PAL[C.amber],
+          });
         }
         for (const e of ctx.enemies) {
           if (!e.alive || e.hp <= 0) continue;
