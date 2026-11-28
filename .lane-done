@@ -1,0 +1,22 @@
+# Lane m10-props-wiring — fertig (2026-11-28)
+
+Verdrahtung der Prop-Varianten aus m10-props-variety: der dokumentierte
+3-Zeilen-Patch sitzt in GroundRenderer.addProp (deterministische Auswahl via
+propVariantKeyFor aus gen-props.ts, tileHash der Position seed+463, Fallback
+auf Basis-Textur). Reviewer-Befund aus Runde 1 behoben: applyPropTier
+klassifiziert ueber ownerKey (Klassen-Key) statt Varianten-Textur.
+
+Messwerte (seed 7, frueh/Chaos 21:30, scripts/m10-props-wiring.mjs):
+- boulder-Split 161/0/0 -> 51/61/49; haeufigstes Prop prop_boulder
+  22,9 %/21,9 % -> prop_stump 13,8 %/14,7 %; alle 6 Varianten sichtbar
+  (boulder_b 57, boulder_c 53, bones_b 29, bones_c 24, reeds_b 26, post_b 12).
+- Tier-Sonde: floatingShadows 0 (natuerlich und bei forciertem Tier 0),
+  prop_post_b 14/14 bzw. 8/8 sichtbar (Tier-0-Erbe).
+- art-director: PASS 4/5 (Form-Vielfalt, Fusslinie/Schatten, 1x-Lesbarkeit).
+- tests: npm test 1512/1512, tsc rc=0; ground-props-batch + prop-density-lod
+  unveraendert gruen; propLayers.ts/textures.ts/gen-props.ts unangetastet.
+
+Karten: #8798 K1 (34ebe63), #8799 K2 (4cfbd4e), #8800 K3 (93dfc3b),
+#8801 K4 (b677219). Doku: docs/lanes/m10-props-wiring.md. Offen (Backlog-
+Empfehlung): optionaler Sprite-Nachschliff bones-Kontrast / boulder_b-
+Bruchkante; Glow fuer prop_post_b.
