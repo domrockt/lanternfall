@@ -1,0 +1,98 @@
+{
+  "card": "m10-props-wiring",
+  "tag": "after-tierfix",
+  "seed": 7,
+  "measuredAt": "2026-11-28T06:01:10.168Z",
+  "command": "node scripts/m10-props-wiring.mjs --tag after-tierfix",
+  "early": {
+    "totalProps": 704,
+    "topProp": "prop_stump",
+    "topCount": 97,
+    "topSharePct": 13.8,
+    "counts": {
+      "prop_post_b": 14,
+      "prop_grave": 66,
+      "prop_bones_b": 29,
+      "prop_cross": 18,
+      "prop_tree_a": 31,
+      "prop_stump": 97,
+      "prop_bones_c": 28,
+      "prop_lilypad": 69,
+      "prop_reeds_b": 26,
+      "prop_reeds": 28,
+      "prop_ruin": 29,
+      "prop_column": 29,
+      "prop_boulder_b": 61,
+      "prop_tree_b": 35,
+      "prop_boulder_c": 49,
+      "prop_boulder": 51,
+      "prop_mushroom_ring": 22,
+      "prop_bones": 14,
+      "prop_post": 8
+    }
+  },
+  "chaos": {
+    "totalProps": 538,
+    "topProp": "prop_stump",
+    "topCount": 79,
+    "topSharePct": 14.7,
+    "counts": {
+      "prop_post_b": 8,
+      "prop_grave": 38,
+      "prop_bones_b": 20,
+      "prop_cross": 14,
+      "prop_tree_a": 29,
+      "prop_stump": 79,
+      "prop_bones_c": 20,
+      "prop_lilypad": 58,
+      "prop_reeds_b": 27,
+      "prop_reeds": 28,
+      "prop_ruin": 21,
+      "prop_column": 21,
+      "prop_boulder_b": 37,
+      "prop_tree_b": 28,
+      "prop_boulder_c": 37,
+      "prop_boulder": 41,
+      "prop_mushroom_ring": 14,
+      "prop_bones": 14,
+      "prop_post": 4
+    }
+  },
+  "tierProbe": {
+    "early": {
+      "maxTier": 2,
+      "natural": {
+        "shadowTotal": 704,
+        "floatingShadows": 0,
+        "hiddenProps": 0,
+        "postB": 14,
+        "postBVisible": 14
+      },
+      "forcedTier0": {
+        "shadowTotal": 704,
+        "floatingShadows": 0,
+        "hiddenProps": 682,
+        "postB": 14,
+        "postBVisible": 14
+      }
+    },
+    "chaos": {
+      "maxTier": 2,
+      "natural": {
+        "shadowTotal": 538,
+        "floatingShadows": 0,
+        "hiddenProps": 0,
+        "postB": 8,
+        "postBVisible": 8
+      },
+      "forcedTier0": {
+        "shadowTotal": 538,
+        "floatingShadows": 0,
+        "hiddenProps": 526,
+        "postB": 8,
+        "postBVisible": 8
+      }
+    }
+  },
+  "jsErrors": []
+}

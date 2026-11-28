@@ -5,6 +5,7 @@ import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, 
 import { applyTexture } from "./atlas";
 import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
+import { propVariantKeyFor } from "./gen-props";
 import { PAL } from "../palette";
 
 /**
@@ -550,13 +551,15 @@ export class GroundRenderer {
 
   /** Dichte-LOD: Sichtbarkeit aller Props/Schatten/Glows nach Prop-Tier setzen
    *  (nur bei Stufenwechsel aufgerufen). Glows haengen an Laternen (Tier 0)
-   *  und bleiben sichtbar; Schatten folgen ihrem Prop. */
+   *  und bleiben sichtbar; Schatten folgen ihrem Prop. Klassifikation ueber
+   *  ownerKey (= Prop-Klasse) — Varianten-Texturen sind nicht in PROP_TIERS
+   *  und wuerden sonst von ihrem Schatten abweichen (Review-Befund K4). */
   private applyPropTier(maxTier: 0 | 1 | 2): void {
     for (const entry of this.chunks.values()) {
       for (const p of entry.props) {
         const tier = p.getData("glow")
           ? 0
-          : propTierFor(p.getData("isShadow") ? (p.getData("ownerKey") as string | undefined) : p.texture?.key);
+          : propTierFor((p.getData("ownerKey") as string | undefined) ?? p.texture?.key);
         p.setVisible(tier <= maxTier);
       }
     }
@@ -703,10 +706,21 @@ export class GroundRenderer {
     tinted = false, flip = false,
   ): void {
     if (!PROP_KEYS.has(key) || !this.scene.textures.exists(key)) return;
+    // Prop-Vielfalt (m10-props-variety): deterministische Variantenwahl pro
+    // Position — nur die Textur variiert, Platzierung/LOD/Batching bleiben
+    // klassenbasiert. Fallback auf die Basis-Textur, falls eine Variante
+    // (noch) nicht gebacken ist.
+    const variantKey = propVariantKeyFor(key, tileHash(Math.round(wx), Math.round(wy), this.seed + 463));
+    const texKey = this.scene.textures.exists(variantKey) ? variantKey : key;
     this.ensureBatchLayers();
-    const img = this.scene.add.image(wx, wy, key).setOrigin(0.5, 1);
+    const img = this.scene.add.image(wx, wy, texKey).setOrigin(0.5, 1);
     img.setFlipX(flip);
     img.setData("footY", wy);
+    // Dichte-LOD: Props klassifizieren ueber ihren Klassen-Key (Basis), nicht
+    // ueber die Varianten-Textur — sonst faellt prop_post_b (unbekannt in
+    // PROP_TIERS) auf Tier 2 und der Schatten (ownerKey = Basis, Tier 0)
+    // wuerde sichtbar bleiben, waehrend die Laterne versteckt wird.
+    img.setData("ownerKey", key);
     // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
     let shadow: Phaser.GameObjects.Image | undefined;
     if (this.scene.textures.exists("shadow")) {
@@ -723,7 +737,7 @@ export class GroundRenderer {
     if (tinted) img.setAlpha(0.92);
     // Startseite "hinter dem Spieler"; updatePropsDepth() sortiert um, sobald
     // der Spieler existiert (nur bei Seitenwechsel, nicht mehr pro Frame).
-    this.propLayerFor(key).behind.add(img);
+    this.propLayerFor(texKey).behind.add(img);
     img.setData("batchSide", "behind");
     props.push(img);
     // Dichte-LOD: neu gebaute Chunks erben sofort den aktuellen Tier-Zustand
@@ -733,7 +747,7 @@ export class GroundRenderer {
       shadow?.setVisible(false);
     }
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
-    if (key === "prop_post" && this.scene.textures.exists("light_radius")) {
+    if (texKey === "prop_post" && this.scene.textures.exists("light_radius")) {
       const glow = this.scene.add.image(wx, wy - 20, "light_radius")
         .setBlendMode(Phaser.BlendModes.ADD)
         .setScale(0.42)

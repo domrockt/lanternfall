@@ -1,0 +1,50 @@
+{
+  "card": "m10-props-wiring",
+  "tag": "before",
+  "seed": 7,
+  "measuredAt": "2026-11-28T05:41:11.776Z",
+  "command": "node scripts/m10-props-wiring.mjs --tag before",
+  "early": {
+    "totalProps": 704,
+    "topProp": "prop_boulder",
+    "topCount": 161,
+    "topSharePct": 22.9,
+    "counts": {
+      "prop_post": 22,
+      "prop_grave": 66,
+      "prop_bones": 71,
+      "prop_cross": 18,
+      "prop_tree_a": 31,
+      "prop_stump": 97,
+      "prop_lilypad": 69,
+      "prop_reeds": 54,
+      "prop_ruin": 29,
+      "prop_column": 29,
+      "prop_boulder": 161,
+      "prop_tree_b": 35,
+      "prop_mushroom_ring": 22
+    }
+  },
+  "chaos": {
+    "totalProps": 638,
+    "topProp": "prop_boulder",
+    "topCount": 140,
+    "topSharePct": 21.9,
+    "counts": {
+      "prop_tree_a": 37,
+      "prop_stump": 99,
+      "prop_bones": 71,
+      "prop_ruin": 28,
+      "prop_column": 28,
+      "prop_boulder": 140,
+      "prop_cross": 18,
+      "prop_grave": 57,
+      "prop_reeds": 44,
+      "prop_lilypad": 43,
+      "prop_tree_b": 40,
+      "prop_mushroom_ring": 17,
+      "prop_post": 16
+    }
+  },
+  "jsErrors": []
+}
