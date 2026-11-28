@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12604,
+  "next": 12665,
   "cards": [
     {
       "id": 1,
@@ -17544,6 +17544,51 @@
       ],
       "created": "2026-11-28T14:10:48Z",
       "updated": "2026-11-28T14:10:52Z"
+    },
+    {
+      "id": 12660,
+      "title": "m10-device-tier-schedule K1: Ist-Analyse stepQuality + Vorher-Beleg Geräteknoten",
+      "description": "Ist-Analyse src/logic/quality.ts (stepQuality, Hysterese, evaluateThermalStep) + Vorher-Beleg: Adreno 710 (DPR 2, 120 Hz, 8,3-ms-Deadline) bleibt dauerhaft 'high' (109–112 FPS >> Schwellen 45/57 FPS = 22,2/17,5 ms Frame-Zeit, beide ueber janky-Kante 16,6 ms). Befund in docs/lanes/m10-device-tier-schedule.md. Baseline: M25-Harness p95/p99 (scripts/m10-frame-tail-batching.mjs, 780x360@3) nach ~/games/.evidence/m10-device-tier-schedule/before.json. AK: Befund + Baseline-JSON mit Renderer-String committet.\n\nlane #12483, Merge dceee3f6",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T14:31:36Z",
+      "updated": "2026-11-28T14:31:36Z"
+    },
+    {
+      "id": 12661,
+      "title": "m10-device-tier-schedule K2: Geräte-Deckel/Tier-Abstufung im stepQuality",
+      "description": "In src/logic/quality.ts: Device-Klasse (Adreno 710 + DPR>=2, gleiches Renderer-String-Muster wie config.isDeviceNode, kein config-Import wegen Zyklus) als QualityDeviceClass; stepQuality klemmt am Geraeteknoten die Stufe auf medium (Cap, Aufstieg blockiert) und nutzt Zeitbudget-Soll 16,7 ms als Tier-Grenze statt der FPS-Schwellen allein. Kein config.ts-Edit. AK: Tests beweisen Cap + Abstufung; Desktop-Pfad bitgleich.\n\nlane #12484, Merge dceee3f6",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T14:31:36Z",
+      "updated": "2026-11-28T14:31:36Z"
+    },
+    {
+      "id": 12662,
+      "title": "m10-device-tier-schedule K3: Hysterese-Zeitbudget bei 120 Hz fixieren",
+      "description": "Hysterese-Band am Geraeteknoten: Abstieg bei Frame-Zeit > 16,7 ms (fpsEwma < ~60), Rueckweg/Verweilung so, dass bei 109–112 FPS kein Flapping zwischen high/medium entsteht (Totzone 60–100 FPS). Guard-Tests in tests/device-tier-schedule.test.ts. AK: Test simuliert 60 s bei 109–112 FPS -> 0 Stufenwechsel; Desktop-Verhalten unveraendert (bestehende Tests gruen).\n\nlane #12485, Merge dceee3f6",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T14:31:36Z",
+      "updated": "2026-11-28T14:31:36Z"
+    },
+    {
+      "id": 12663,
+      "title": "m10-device-tier-schedule K4: Messung M25-Harness Vorher/Nachher + Renderer-String",
+      "description": "iGPU-Harness (780x360@3, M25-Szene, scripts/m10-frame-tail-batching.mjs) p95/p99 Vorher/Nachher, Renderer-String-Pflicht (Beleg mit Mesa Intel = gueltig, SwiftShader ungueltig). AK: p95 nicht schlechter als Vorher (Ziel Richtung <= 16 ms), Desktop-Tier-Pfad AE=0 belegt; Geraeteprobe nur falls device-bridge erreichbar, sonst Befund in Doku.\n\nlane #12486, Merge dceee3f6",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T14:31:36Z",
+      "updated": "2026-11-28T14:31:36Z"
+    },
+    {
+      "id": 12664,
+      "title": "m10-device-tier-schedule K5: Doku + .lane-done",
+      "description": "docs/lanes/m10-device-tier-schedule.md mit Vorher/Nachher-Tabelle, Befunden, offenen Punkten; git status --ignored gepraeuft; .lane-done im Worktree-Root committet.\n\nlane #12487, Merge dceee3f6",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T14:31:36Z",
+      "updated": "2026-11-28T14:31:36Z"
     }
   ]
 }
