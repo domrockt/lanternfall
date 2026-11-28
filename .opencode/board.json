@@ -16486,16 +16486,21 @@
       "id": 12013,
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T13:34:06Z",
           "by": "build",
           "text": "Merge m10-device-janky-node liegt auf main (f0bc1de0, ancestor-rc=0). Guard-Test boot-light-textures auf gemergtem Stand geprüft: npx vitest run tests/boot-light-textures.test.ts -> 4/4 grün, keine Anpassung nötig. Full-Suite 2338/2338 grün."
+        },
+        {
+          "at": "2026-11-28T15:00:11Z",
+          "by": "build",
+          "text": "doing → done: Guard-Test boot-light-textures(.w2) in diesem Worktree 12/12 gruen (npx vitest run tests/boot-light-textures.test.ts tests/boot-light-textures-w2.test.ts); Fix-Commit 5a3e91de ist bereits im Branch enthalten (git merge-base --is-ancestor rc=0) — Karte war verwaist, Fix gemerged. Durch m10-fx-alloc-trim-Lane geschlossen auf Supervisor-Weisung 15:00Z; Befund in docs/lanes/m10-fx-alloc-trim.md."
         }
       ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T13:34:06Z"
+      "updated": "2026-11-28T15:00:11Z"
     },
     {
       "id": 12029,

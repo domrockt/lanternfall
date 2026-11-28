@@ -124,3 +124,19 @@ Target 300) — Zahlen nach Messende ergänzt (siehe unten), Renderer-String im 
 - #12642 K3: Doku + Test erledigt; Nachmessung im Container als nicht trennscharf
   dokumentiert, Proxy-A/B als bestes verfügbares Instrument beigefügt.
 - #12643 K4: offen bis Lead-Entscheidung.
+
+## Nachtrag (Supervisor-Steer 15:00Z)
+
+- **Fremde Karte #12013 (Merge-Fix m10-loading-screen) geschlossen:** der Fix-
+  Commit `5a3e91de` („boot-light-textures-Guard an neuen Boot-Import repointet“)
+  ist im Branch bereits enthalten (`git merge-base --is-ancestor 5a3e91de HEAD`
+  → rc 0) und die Guard-Tests laufen in diesem Worktree grün
+  (`npx vitest run tests/boot-light-textures.test.ts tests/boot-light-textures-w2.test.ts`
+  → 12/12). Karte war verwaist (Fix gemerged, Karte blieb offen) und wurde auf
+  ausdrückliche Supervisor-Weisung auf `done` gesetzt — Abweichung von der
+  „nur eigene Karten“-Regel ist im Board vermerkt.
+- Android-Proxy-A/B: Läufe unter flock gestartet (before detached auf e4f55b14,
+  after auf Lane-HEAD); Belegpfade
+  `~/games/.evidence/m10-fx-alloc-trim/android-proxy-{before,after}.json`.
+  Zahlen werden nach Abschluss ergänzt; die Container-Protokoll-Bewertung
+  (K3-Punkt 1–4) ist davon unabhängig und verbindlich.
