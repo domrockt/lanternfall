@@ -9,7 +9,7 @@ import {
 } from "../config";
 import { ENEMIES } from "../data/enemies";
 import { BOSSES } from "../data/bosses";
-import { SeededRng, hasFlag } from "../logic/rng";
+import { SeededRng, hasFlag, mulberry32 } from "../logic/rng";
 import { directionToPlayer, separationPush } from "../logic/separation";
 import {
   aggregateMods, effectiveMoveSpeed, effectivePickupRadius,
@@ -35,7 +35,8 @@ import { HazardSystem } from "../systems/Hazards";
 import {
   BossSystem, BOSS_HUD_CLEARANCE, bossHudRects, bossSpriteScreenRect, rectsOverlap, type BossInfo,
 } from "../systems/BossSystem";
-import { shouldSplit, stepEnemyAi, type AiAction } from "../logic/enemy-ai";
+import { resetAiState } from "../logic/ai-state";
+import { shouldSplit, stepEnemyAi, type AiAction, type AiRng } from "../logic/enemy-ai";
 import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished, weaponRangeFactor } from "../logic/scaling";
 import { botDirection, chooseBestOffer, type BotPoint, type BotThreat } from "../logic/autoplay";
 import { terrainSpeedFactor, type TerrainKind } from "../logic/terrain";
@@ -124,6 +125,21 @@ export class Run extends Phaser.Scene {
 
   elapsed = 0;
   timeScale = 1;
+  /**
+   * m10-run-determinism-fix: nicht simulierte Rest-Sim-Zeit (Sekunden) aus
+   * scaledDt. Nur volle SIM_MAX_STEP-Einheiten werden simuliert, der Rest
+   * bleibt hier liegen und wird im nächsten Frame verbraucht — die Phase
+   * aller Tick-Zyklen (Waffen-Cooldowns, Spawn-Timer, Regen) ist dadurch
+   * unabhängig vom Echtzeit-Frame-Raster deterministisch.
+   */
+  simCarry = 0;
+  /**
+   * m10-run-determinism-fix: eigene KI-RNG (aus dem Run-Seed abgeleitet, bewusst
+   * NICHT das Run-RNG — Kampff-/Spawn-Ziehungen bleiben unveraendert). Vorher
+   * nutzte die Gegner-KI den Math.random-Default des EnemyPool → zwei Laeufe
+   * mit gleichem Seed divergierten (Blink-Winkel, Timer, orbitDir).
+   */
+  aiRng: AiRng = { next: () => 0 };
   godMode = false;
   autoPlay = false;
   paused = false;
@@ -179,6 +195,8 @@ export class Run extends Phaser.Scene {
   /** M5: Zeitlupen-Sequenz bei Evolution. */
   private slowmoRemaining = 0;
   private slowmoRestore = 1;
+  /** m10-run-determinism-fix: Sim-Zeit, bei der die Zeitlupe endet. */
+  private slowmoUntil = 0;
   private lastEvolutionFxId = "";
   /** Abnahme-Harness: Ereignis-Overlays unterdrücken, Waffen-VFX bleiben. */
   suppressEventFx = false;
@@ -244,12 +262,23 @@ export class Run extends Phaser.Scene {
 
   create(): void {
     this.rng = new SeededRng(this.seed);
+    // m10-run-determinism-fix: abgeleiteter Seed fuer die Gegner-KI (deterministisch).
+    this.aiRng = { next: mulberry32(((this.seed ^ 0x9e3779b9) >>> 0) + 0x6d2b79f5) };
     this.elapsed = 0;
     this.timeScale = 1;
     this.godMode = false;
     this.autoPlay = false;
     this.paused = false;
     this.freezeGate = false;
+    // m10-run-determinism-fix: ?detstart=1 startet den Run PAUSIERT — bewusst
+    // NACH dem Reset-Block oben (sonst ueberschreibt paused=false das Gate).
+    // Mess-Harness (scripts/m10-run-determinism.mjs) setzt dann Trace/autoPlay/
+    // timeScale, BEVOR der erste Sim-Schritt laeuft, und ruft resumeRun(). Ohne
+    // dieses Gate war die Start-Phase ein Wall-Clock-Rennen: je nachdem, in
+    // welchem Sim-Schritt das Debug-Eval landete, bewegte der Bot den Spieler
+    // frueher/spaeter — zwei Laeufe mit gleichem Seed divergierten ab Schritt 1
+    // (Probe-Beleg: rep0 posX 20495500 vs rep1 20480000 nach Schritt 1).
+    if (hasFlag("detstart")) this.paused = true;
     this.time.paused = false;
     this.tweens.resumeAll();
     this.levelUpOpen = false;
@@ -462,9 +491,15 @@ export class Run extends Phaser.Scene {
     this.hitStop = Math.min(this.hitStop, MAX_HITSTOP_SECONDS);
 
     // Evolution-Zeitlupe (0,35–0,5 s) läuft in Echtzeit aus.
+    // m10-run-determinism-fix: ENDE der Zeitlupe an Sim-Zeit gekoppelt
+    // (slowmoUntil), nicht an Wanduhr-Frames — sonst hing die Anzahl der
+    // Zeitschritte während der Zeitlupe am Echtzeit-Frame-Raster. Mittelwert
+    // unverändert: 0,9 s Wandzeit bei timeScale 0,45 = 0,405 s Sim-Zeit.
     if (this.slowmoRemaining > 0) {
-      this.slowmoRemaining = Math.max(0, this.slowmoRemaining - realDt);
-      if (this.slowmoRemaining === 0) this.timeScale = this.slowmoRestore;
+      if (this.elapsed >= this.slowmoUntil) {
+        this.slowmoRemaining = 0;
+        this.timeScale = this.slowmoRestore;
+      }
     }
 
     // Hit-Stop: Welt kurz anhalten, aber VFX/Damage-Numbers weiter animieren.
@@ -483,11 +518,23 @@ export class Run extends Phaser.Scene {
 
     // Feste Teilschritte: bei hoher Zeitskalierung würden Projekte/Gegner sonst
     // ganze Bildschirmbreiten pro Frame springen und Kollisionen verpassen.
-    let remaining = scaledDt;
-    while (remaining > 0.0001 && !this.finished) {
-      const dt = Math.min(SIM_MAX_STEP, remaining);
-      remaining -= dt;
-      this.simulate(dt);
+    // m10-run-determinism-fix: NUR volle SIM_MAX_STEP-Einheiten simulieren;
+    // der Rest bleibt als Carry-over (this.simCarry) für den nächsten Frame
+    // liegen. Vorher wurde der Rest als variabler Partial-Schritt ausgeführt —
+    // die Tick-Phase aller Zyklen war damit frame-abhängig und zwei Läufe mit
+    // gleichem Seed divergierten ab Sim-Sekunde 1 in elapsed/px
+    // (Beleg shots/m10-run-det-verdict.json, deterministic:false).
+    // Bound: realDt ist auf 0,05 s geclampt, timeScale auf 60 → pro Frame
+    // maximal 3,0 s scaledDt; simCarry kann daher nie über 3,05 s wachsen
+    // (Pause/Hit-Stop akkumulieren nicht), ein separates Cap ist nicht nötig.
+    this.simCarry += scaledDt;
+    while (this.simCarry + 1e-9 >= SIM_MAX_STEP && !this.finished) {
+      this.simCarry -= SIM_MAX_STEP;
+      this.simulate(SIM_MAX_STEP);
+      // Level-up-Pruefung PRO Schritt (statt einmal am Frame-Ende): bei 30x
+      // laufen sonst bis zu 10 Schritte pro Frame, und der Punkt, an dem der
+      // Dialog oeffnet, waere vom Frame-Raster abhaengig.
+      this.maybeOpenLevelUp();
       // Level-up/Pause kann mitten im Teilschritt-Loop öffnen → sofort anhalten.
       if (this.paused || this.levelUpOpen) break;
     }
@@ -500,6 +547,17 @@ export class Run extends Phaser.Scene {
 
   /** Ein fester Simulationsschritt (Bewegung, Spawns, Kampf, Pickups). */
   private simulate(dt: number): void {
+    // m10-run-determinism-fix: Kamera-Anker PRO Sim-Schritt aus der SIM-Position
+    // (posX/posY, nicht das gerundete visualX). Spawner.spawnOne positioniert
+    // Spawns relativ zum Kamera-Zentrum (cam.scrollX + width/2) und entscheidet
+    // outsideView() mit denselben Werten — der Lerp-Follow (0,18) glättete
+    // scrollX aber pro Echtzeit-Frame, sodass Spawn-Positionen frame-abhängig
+    // waren (Probe-Beleg: Spawn-Position bei bitgleichem RNG-Ziehungsstand um
+    // ~1 px unterschiedlich; Kamerazentrum um 8/23 px). Der Anker gilt exakt
+    // während des Schritts; das Rendering folgt danach weiter dem Phaser-Lerp.
+    const detCam = this.cameras.main;
+    detCam.scrollX = this.posX - detCam.width / 2;
+    detCam.scrollY = this.posY - detCam.height / 2;
     this.elapsed += dt;
     this.applyLod();
     this.registry.set("lf-elapsed", this.elapsed);
@@ -523,7 +581,10 @@ export class Run extends Phaser.Scene {
 
     this.movePlayer(dt);
     const spawned = this.dawn ? [] : this.spawner.update(this.elapsed, dt, this.posX, this.posY);
-    for (const e of spawned) if (e.elite) this.elitesSpawned += 1;
+    for (const e of spawned) {
+      if (e.elite) this.elitesSpawned += 1;
+      this.attachAiRng(e);
+    }
     this.updateEnemies(dt);
     this.bosses.update(dt, this.posX, this.posY);
     this.combat.update({
@@ -765,6 +826,20 @@ export class Run extends Phaser.Scene {
   }
 
   // ── Spieler ──────────────────────────────────────────────────
+  /**
+   * m10-run-determinism-fix: KI-RNG + KI-Zustand eines frisch gespawnten
+   * Gegners deterministisch aus dem Run-Seed ableiten. Der EnemyPool setzt
+   * sonst den Math.random-Default (frame-/wallclock-abhaengige Blink-Winkel,
+   * Timer, orbitDir) — das war der zweite Nichtdeterminismus-Layer.
+   */
+  private attachAiRng(e: EnemyRuntime): void {
+    e.aiRng = this.aiRng;
+    // e.ai ist nach EnemyPool.spawn immer gesetzt (ensureAiState); resetAiState
+    // baut den Zustand in-place aus DERSELBEN Reihenfolge gezogener Werte auf
+    // wie newAiState — nur eben deterministisch aus dem abgeleiteten Seed.
+    if (e.ai) resetAiState(e.ai, this.aiRng);
+  }
+
   private movePlayer(dt: number): void {
     let dx = 0;
     let dy = 0;
@@ -1004,12 +1079,13 @@ export class Run extends Phaser.Scene {
       case "summon": {
         for (let i = 0; i < action.count; i++) {
           const a = (i / action.count) * Math.PI * 2 + this.rng.next() * 0.4;
-          this.spawner.spawnAt(
+          const minion = this.spawner.spawnAt(
             ENEMIES[action.minion],
             e.x + Math.cos(a) * 26,
             e.y + Math.sin(a) * 26,
             { hpScale: Math.max(0.6, e.hpScale * 0.55) },
           );
+          this.attachAiRng(minion);
         }
         break;
       }
@@ -1073,6 +1149,7 @@ export class Run extends Phaser.Scene {
           { splitDepth: parent.splitDepth + 1, hpScale: Math.max(0.3, parent.hpScale * 0.5) },
         );
         child.radius = Math.max(4, Math.round(parent.radius * 0.7));
+        this.attachAiRng(child);
         this.splitsSpawned += 1;
       }
     }
@@ -1709,6 +1786,7 @@ export class Run extends Phaser.Scene {
     this.slowmoRestore = this.timeScale;
     this.timeScale = 0.45;
     this.slowmoRemaining = 0.9;
+    this.slowmoUntil = this.elapsed + 0.9 * 0.45;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
     // B1-Teil: Ring ueber den Mixel-Bake-Pfad (fx_shock ist Bake-Basis, Stufen

@@ -1,0 +1,163 @@
+{
+ "generatedAt": "2026-11-28T02:37:00.622Z",
+ "seeds": [
+  101,
+  202,
+  404
+ ],
+ "reps": 2,
+ "maxSeconds": 120,
+ "scale": 30,
+ "character": "mira",
+ "deterministic": false,
+ "perSeed": [
+  {
+   "seed": 101,
+   "identical": false,
+   "divergingMarks": 120,
+   "totalMarks": 120,
+   "divergingFields": {
+    "elapsed": 120,
+    "px": 120,
+    "py": 118,
+    "kills": 58,
+    "enemies": 32,
+    "xp": 61,
+    "level": 11
+   },
+   "firstDiff": {
+    "rep": 1,
+    "where": "mark[0] (s=1)",
+    "fields": [
+     "elapsed",
+     "px"
+    ],
+    "a": {
+     "s": 1,
+     "elapsed": 1.0312733333333346,
+     "kills": 0,
+     "level": 1,
+     "xp": 0,
+     "hp": 250,
+     "enemies": 0,
+     "chestsDropped": 0,
+     "bossesSpawned": 0,
+     "px": 20789380,
+     "py": 20480000
+    },
+    "b": {
+     "s": 1,
+     "elapsed": 1.0320999999999998,
+     "kills": 0,
+     "level": 1,
+     "xp": 0,
+     "hp": 250,
+     "enemies": 0,
+     "chestsDropped": 0,
+     "bossesSpawned": 0,
+     "px": 20789628,
+     "py": 20480000
+    }
+   }
+  },
+  {
+   "seed": 202,
+   "identical": false,
+   "divergingMarks": 120,
+   "totalMarks": 120,
+   "divergingFields": {
+    "elapsed": 120,
+    "px": 120,
+    "py": 118,
+    "xp": 62,
+    "level": 70,
+    "kills": 69,
+    "enemies": 50,
+    "hp": 3
+   },
+   "firstDiff": {
+    "rep": 1,
+    "where": "mark[0] (s=1)",
+    "fields": [
+     "elapsed",
+     "px"
+    ],
+    "a": {
+     "s": 1,
+     "elapsed": 1.0318866666666668,
+     "kills": 0,
+     "level": 1,
+     "xp": 0,
+     "hp": 250,
+     "enemies": 0,
+     "chestsDropped": 0,
+     "bossesSpawned": 0,
+     "px": 20789566,
+     "py": 20480000
+    },
+    "b": {
+     "s": 1,
+     "elapsed": 1.016566666666667,
+     "kills": 0,
+     "level": 1,
+     "xp": 0,
+     "hp": 250,
+     "enemies": 0,
+     "chestsDropped": 0,
+     "bossesSpawned": 0,
+     "px": 20774500,
+     "py": 20480000
+    }
+   }
+  },
+  {
+   "seed": 404,
+   "identical": false,
+   "divergingMarks": 120,
+   "totalMarks": 120,
+   "divergingFields": {
+    "elapsed": 120,
+    "px": 120,
+    "py": 116,
+    "xp": 69,
+    "kills": 59,
+    "enemies": 35,
+    "level": 51
+   },
+   "firstDiff": {
+    "rep": 1,
+    "where": "mark[0] (s=1)",
+    "fields": [
+     "elapsed",
+     "px"
+    ],
+    "a": {
+     "s": 1,
+     "elapsed": 1.0320933333333315,
+     "kills": 0,
+     "level": 1,
+     "xp": 0,
+     "hp": 250,
+     "enemies": 0,
+     "chestsDropped": 0,
+     "bossesSpawned": 0,
+     "px": 20789628,
+     "py": 20480000
+    },
+    "b": {
+     "s": 1,
+     "elapsed": 1.0316766666666672,
+     "kills": 0,
+     "level": 1,
+     "xp": 0,
+     "hp": 250,
+     "enemies": 0,
+     "chestsDropped": 0,
+     "bossesSpawned": 0,
+     "px": 20789504,
+     "py": 20480000
+    }
+   }
+  }
+ ]
+}

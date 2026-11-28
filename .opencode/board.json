@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8669,
+  "next": 8671,
   "cards": [
     {
       "id": 1,
@@ -11352,6 +11352,38 @@
       ],
       "created": "2026-11-28T04:47:51Z",
       "updated": "2026-11-28T05:18:07Z"
+    },
+    {
+      "id": 8669,
+      "title": "m10-run-determinism-fix: Sim-Schrittführung deterministisch (Carry-over statt Partial-Schritt)",
+      "description": "Run.update akkumuliert scaledDt und führt den Rest als variablen Partial-Schritt aus → frame-abhängige Tick-Phase, Lauf nicht reproduzierbar (Beleg shots/m10-run-det-verdict.json, deterministic:false). Fix: eigener Carry-over-Akkumulator, nur volle SIM_MAX_STEP-Schritte. AK: (1) m10-run-determinism.mjs --seconds=120 → deterministic:true für Seeds 101/202/404, 0 divergierende Marken; (2) Marken-JSONs + Guard-Test im selben Commit aktualisiert, Suite grün; (3) tsc+tests+build grün; (4) Balance Kael/Seed101 30min im Korridor (Level 25–40, kein Tod <15min, 6 Bosse/Truhen); (5) docs/lanes/m10-run-determinism-fix.md + .lane-done.",
+      "column": "blocked",
+      "assignee": "@gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T04:59:14Z",
+          "by": "build",
+          "text": "doing → blocked: AK1 teilerfüllt: Seeds 101/404 nach 4-Schichten-Fix (Carry-over-Steps, KI-RNG aus Seed, detstart-Gate, Kamera-Anker pro Schritt) BITGLEICH über 120 Marken+Events+Final; Seed 202 divergiert ab s=48 in kills/enemies (px noch identisch) — Ursache: frame-basierte Spawn-Allowance in FREMD-Datei src/systems/Spawner.ts:106-108 (SPAWN_FRAME_BUDGET per game.loop.frame), Fix = vergebener Job m10-spawn-budget-dt. Diff-Log: s=47 bitgleich (k22/e3/px21651341); s=48 r0 k24/e4 vs r1 k23/e3, px identisch 21085350. AK2-5 erfüllt: Guard-Test 6/6 auf neuen Befund umgestellt, tsc+1307 Tests+Build grün, Balance Kael/101 Korridor ok (Sieg 30,6 min, Level 37, 6/6 Bosse 28-41 s, 6 Truhen), Doku docs/lanes/m10-run-determinism-fix.md. Nach Merge von m10-spawn-budget-dt: Guard-Lauf wiederholen, Verdict deterministic:true, Test erweitern (Markierung im Test), Befund 3/3."
+        }
+      ],
+      "created": "2026-11-28T03:42:09Z",
+      "updated": "2026-11-28T04:59:14Z"
+    },
+    {
+      "id": 8670,
+      "title": "m10-run-determinism-fix: Sim-Schrittführung deterministisch (Carry-over statt Partial-Schritt)",
+      "description": "Run.update akkumuliert scaledDt und führt den Rest als variablen Partial-Schritt aus → frame-abhängige Tick-Phase, Lauf nicht reproduzierbar (before: deterministic:false, 120/120 Marken divergent). Fix: Carry-over-Akkumulator + KI-RNG aus Seed + detstart-Gate + Kamera-Anker pro Schritt (Run.ts) + Spawn-Allowance dt-basiert (Spawner.ts, aus main/m10-spawn-budget-dt übernommen). AK: (1) m10-run-determinism.mjs --seconds=120 → deterministic:true für Seeds 101/202/404, 0 divergierende Marken; (2) Marken-JSONs + Guard-Test im selben Commit, Suite grün; (3) tsc+tests+build grün; (4) Balance Kael/Seed101 30min im Korridor; (5) docs/lanes/m10-run-determinism-fix.md + .lane-done.",
+      "column": "done",
+      "assignee": "@gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T05:21:11Z",
+          "by": "build",
+          "text": "review → done: review → done: Determinismus 3/3 Seeds bitgleich (deterministic:true, 120 Marken+Events+Final), Suite 1317/1317 + tsc + build gruen, Balance Kael/101 im Korridor (Sieg 30,4 min, Level 37, 6/6 Bosse); Reviewer PASS (K1 behoben in d320e93) + Commit-Gate PASS; lane #7978, lane-done 4acc1ce"
+        }
+      ],
+      "created": "2026-11-28T05:09:16Z",
+      "updated": "2026-11-28T05:21:11Z"
     }
   ]
 }
