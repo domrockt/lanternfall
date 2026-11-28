@@ -759,9 +759,15 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
     let row = "";
     for (let x = 0; x < S; x++) {
       const d = Math.hypot(x - c, y - c);
-      if (d < r - 2 * density || d > r + 0.7 * density) row += ".";
-      else if (d > r - 0.8 * density) row += "9";   // paleMist heller Rand
-      else row += "6";                    // fogBlue
+      // m10-evo-fx-soulpyre-w2 (Dom 02:00Z): stufiges Kalt-Glow statt Ring —
+      // vorher las sich der Alpha-Ring als graue Blase. Flaeche hell im Kern
+      // (lanternWhite 13), kalte Stufen paleMist(9)/mist(8)/fogBlue(6), keine
+      // Hohlring-Kante.
+      if (d > r + 0.7 * density) row += ".";
+      else if (d > r * 0.82) row += charOf(6);  // fogBlue kalte Aussenstufe
+      else if (d > r * 0.6) row += charOf(8);   // mist
+      else if (d > r * 0.34) row += charOf(9);  // paleMist
+      else row += charOf(13);                   // lanternWhite Glutkern
     }
     out.push(row);
   }
@@ -769,14 +775,16 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
 }
 
 /**
- * Seelenflamme (Seele, neu M10 m10-evo-fx-soulpyre): Zielgrösse 22x32, wird mit
- * Draw-Scale 1 gezeichnet (nie > 1x hochskaliert). Farb-Treppe Seelenfeuer
- * (art-director Runde 1: ohne warmes candleWhite — kühle Lesbarkeit):
- * Kern lanternWhite(13) → boneLight(11)/bone(10) → marshLight(31) → marsh(30),
- * Kontur mossDark(29) statt Ink — kein Ink(0), keine Nacht-/Grau-Töne (1–9).
- * 3 Flacker-Frames (Sway + Zungenbreite) @ ~5 Hz.
+ * Seelenflamme (Seele, m10-evo-fx-soulpyre-w2, Dom-Regel 02:00Z): Zielgrösse
+ * 22x32, Draw-Scale 1 (nie > 1x hochskaliert). Farb-Treppe **Kältefeuer** —
+ * ohne Beschriftung als Seele/Kältefeuer erkennbar: flächig heller Kern
+ * lanternWhite(13) → boneLight(11) → paleMist(9, kalt-cyan) → fogBlue(6,
+ * kalte Außenflamme), Kontur blueGrey(5) statt Ink/mossDark. Befund w2:
+ * die alte grün-moorige Treppe (31/30/29) las sich als blasses Grün-Weiß,
+ * kein Feuer. Kein Ink(0), kein Grau-Block (Flächen bleiben weiß-dominant,
+ * kalte Stufen nur als 1–2 px Kantenbänder). 3 Flacker-Frames @ ~5 Hz.
  */
-export const SOUL_RAMP = [13, 11, 10, 31, 30, 29] as const;
+export const SOUL_RAMP = [13, 11, 9, 6, 5] as const;
 
 export function orbSoulFrame(stage: number): string[] {
   const w = 22;
@@ -799,13 +807,13 @@ export function orbSoulFrame(stage: number): string[] {
     for (let x = 0; x < w; x++) {
       const d = Math.abs(x - center) / half;
       if (d > 1.05) { row += "."; continue; }
-      if (d > 0.92) { row += charOf(29); continue; }
+      if (d > 0.92) { row += charOf(5); continue; }
       const n = d + Math.sin(x * 1.7 + y * 0.9 + stage * 1.3) * 0.05;
-      const idx = n < 0.46 ? 13
-        : n < 0.64 ? 11
-        : n < 0.75 ? (y < 20 ? 10 : 31)
-        : n < 0.88 ? 31
-        : 30;
+      const idx = n < 0.52 ? 13
+        : n < 0.66 ? 11
+        : n < 0.78 ? 9
+        : n < 0.92 ? 6
+        : 5;
       row += charOf(idx);
     }
     out.push(row);
@@ -1137,15 +1145,15 @@ export function signatureFrame(
 }
 
 /**
- * Seelenleuchtfeuer-Signatur in Zielgroesse (m10-evo-fx-soulpyre): 96x96, wird mit
+ * Seelenleuchtfeuer-Signatur in Zielgroesse (m10-evo-fx-soulpyre-w2): 96x96, wird mit
  * Draw-Scale 1 gezeichnet (vorher 32x32 @ 4,0–4,6 = graue Platte). Organische
- * Flammenzungen (spitze Taper, Sway) statt Rauten/Platten. art-director Runde 1
- * (FAIL→Fix): Kern **flaechig** lanternWhite(13) ohne Sinus-Wanderung (Kriterium
- * „Kerne flaeche hell"); 11/31/30 nur als schmale 1–2 px Uebergangsbaender an der
- * Kante, kein bone(10)/candleWhite(12) in der Signatur (warm-beiger Schmutz);
- * Sway wirkt nur auf die Aussenband-Grenzen. Dunkle Rand-Kontur mossDark(29)
- * statt Ink. Hit: 1 grosse + 1 kleine Zunge; Death: 3 Zungen + kleine Seelen-
- * Funken (1–2 px Flamme mit 29er-Kontur, keine freien Quadrate).
+ * Flammenzungen (spitze Taper, Sway) statt Rauten/Platten. Dom-Regel 02:00Z
+ * (w2): Kältefeuer-Lesbarkeit — Kern **flaechig** lanternWhite(13) ohne
+ * Sinus-Wanderung; 11/9/6 nur als schmale 1–2 px kalte Uebergangsbaender an der
+ * Kante (kein Gruen 28–31, kein warmes 12/10); Sway wirkt nur auf die
+ * Aussenband-Grenzen. Dunkle Rand-Kontur blueGrey(5) statt Ink.
+ * Hit: 1 grosse + 1 kleine Zunge; Death: 3 Zungen + kleine kalte Seelen-
+ * Funken (1–2 px Flamme mit 5er-Kontur, keine freien Quadrate).
  */
 export const SOUL_SIGNATURE_SIZE = 96;
 
@@ -1175,18 +1183,18 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
         const d = Math.abs(xx) / half;
         const idx = d < 0.52 ? 13
           : d < 0.63 + wob ? 11
-          : d < 0.77 + wob ? 31
-          : d < 0.90 + wob ? 30
-          : 29;
+          : d < 0.77 + wob ? 9
+          : d < 0.90 + wob ? 6
+          : 5;
         putPixel(rows, center + xx, y, idx);
       }
-      // Dunkle Rand-Kontur (mossDark) statt Ink — Kontur nur als dunkle FarbStufe.
-      putPixel(rows, center - half - 0.7, y, 29);
-      putPixel(rows, center + half + 0.7, y, 29);
+      // Dunkle Rand-Kontur (blueGrey, kalt) statt Ink — Kontur nur als dunkle FarbStufe.
+      putPixel(rows, center - half - 0.7, y, 5);
+      putPixel(rows, center + half + 0.7, y, 5);
     }
   }
   if (death) {
-    // Aufsteigende Seelen-Funken: kleine 1–2 px Flamme (13/31) mit 29er-Kontur —
+    // Aufsteigende Seelen-Funken: kleine 1–2 px Flamme (13/9, kalt) mit 5er-Kontur —
     // keine freien Quadrate (art-director Runde 1).
     const sparks = 4 + stage;
     for (let i = 0; i < sparks; i++) {
@@ -1195,9 +1203,9 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
       const sx = Math.round(c + Math.cos(a) * rr);
       const sy = Math.round(c - 6 - ((i * 11 + stage * 9) % 24));
       putPixel(rows, sx, sy, 13);          // Flammenspitze
-      putPixel(rows, sx, sy + 1, 31);      // Fuss
-      putPixel(rows, sx - 1, sy, 29);      // Kontur links
-      putPixel(rows, sx + 1, sy, 29);      // Kontur rechts
+      putPixel(rows, sx, sy + 1, 9);       // Fuss (kalt-cyan)
+      putPixel(rows, sx - 1, sy, 5);       // Kontur links
+      putPixel(rows, sx + 1, sy, 5);       // Kontur rechts
     }
   }
   return rows.map((r) => r.join(""));

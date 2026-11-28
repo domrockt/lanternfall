@@ -169,7 +169,8 @@ export const SOUL_FX = {
   /** Aufsteigende Seelen-Funken: pro Orb alle sparkInterval s ein 1-Sprite-Funken. */
   sparkInterval: 0.34,
   sparkTexture: "fx_star",
-  sparkTint: 31,
+  // m10-evo-fx-soulpyre-w2: kalt (paleMist 9) statt grün (31) — Dom-Regel 02:00Z.
+  sparkTint: 9,
 } as const;
 
 /**
