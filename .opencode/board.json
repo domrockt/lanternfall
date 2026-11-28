@@ -8830,37 +8830,61 @@
       "id": 7419,
       "title": "m10-chaos-fix-glow-runpath K2: Run.ts Partikel-Scale/Streckung (B5)",
       "description": "lane #7299. Run-seitiger ADD-Alpha-Deckel + uniform Scale, fx-caps.ts (6 Unit-Tests). Abnahme: Tests gruen, fx-caps deckelt ADD-Alpha.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:27:43Z",
+          "by": "build",
+          "text": "review → done: lane #7299, Merge 173ca96"
+        }
+      ],
       "created": "2026-11-28T01:26:46Z",
-      "updated": "2026-11-28T01:26:46Z"
+      "updated": "2026-11-28T01:27:43Z"
     },
     {
       "id": 7420,
       "title": "m10-chaos-fix-glow-runpath K3: fx_pillar/fx_shock auf Bake-Pfad (B1-Teil)",
       "description": "lane #7300. ensurePillarBake nearest-Stufen + spawnAnim fuer fx_shock, 9/9 Tests. Abnahme: Tests gruen, Bake-Pfad aktiv.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:27:43Z",
+          "by": "build",
+          "text": "review → done: lane #7300, Merge 173ca96"
+        }
+      ],
       "created": "2026-11-28T01:26:46Z",
-      "updated": "2026-11-28T01:26:46Z"
+      "updated": "2026-11-28T01:27:43Z"
     },
     {
       "id": 7421,
       "title": "m10-chaos-fix-glow-runpath K4: Boot.ts Glow-Deckel (B2-Run-Anteil)",
       "description": "lane #7301. Rampen-Ende Amber/Lantern + Licht-Alpha 0,7, After-Gate verifiziert; Commit enthaelt NUR Boot.ts + Test + after-Belege. Abnahme: After-Gate PASS.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:27:43Z",
+          "by": "build",
+          "text": "review → done: lane #7301, Merge 173ca96"
+        }
+      ],
       "created": "2026-11-28T01:26:46Z",
-      "updated": "2026-11-28T01:26:46Z"
+      "updated": "2026-11-28T01:27:43Z"
     },
     {
       "id": 7422,
       "title": "m10-chaos-fix-glow-runpath K5: after-Belege + Doku + .lane-done",
       "description": "lane #7302. Lane-Doku docs/lanes/m10-chaos-fix-glow-runpath.md + after-Belege; Kontrolleure art-director/reviewer PASS. Abnahme: Doku + Belege in main, .lane-done bleibt auf der Lane.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:27:43Z",
+          "by": "build",
+          "text": "review → done: lane #7302, Merge 173ca96"
+        }
+      ],
       "created": "2026-11-28T01:26:46Z",
-      "updated": "2026-11-28T01:26:46Z"
+      "updated": "2026-11-28T01:27:43Z"
     }
   ]
 }
