@@ -37,8 +37,26 @@ Smoke-Lauf (2 Fenster, `--smoke --fps 60`):
   aborted-Beleg mit statusStart), Start verschoben — kein Retry gegen die Sperre.
 - zweiter Start: siehe unten (wird nachgeholt, sobald das Gerät frei ist).
 
-### K2: 10-min-Lauf BILDRATE=60 — Status: offen
-Beleg-Ziel: `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json`.
+### K2: 10-min-Lauf BILDRATE=60 — Status: fertig, 2026-11-28 ~16:36–16:49Z
+Beleg: `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json` (rc=1, passed=false — strenges Tor).
+
+| Metrik | natural (primär, 30 Fenster) | topup 300 (Referenz, 30 Fenster) |
+|---|---|---|
+| gfxinfo janky | **0 %** (0/29 338 Frames) | **0 %** (0/28 896 Frames) |
+| FPS avg / min | **50,1 / 43,4** | 48,6 / 43,4 |
+| rAF p95 max / p99 max | 33,4 / 49,9 ms | 33,4 / 50,0 ms |
+| worst frame | 50,1 ms | 66,7 ms |
+
+- Gerät: Adreno (TM) 710, DPR 2, 1280x800, Panel-Probe **60 Hz** (rAF-Median 16,7 ms), Build `0ce7164a` 16:04:33Z
+  (**enthält stackfix `aa8739f0` — merge-base geprüft**, auch fps-cap-Verdrahtung `6720313e`).
+- Kein Spawn-Top-up im natural = natürliche Director-Dichte; interleaved Segmente (10 Fenster), 0 Recoveries,
+  0 JS-Fehler, **keine Loop-Tötung** (stackfix wirkt — vorher 9 je Lauf).
+- Thermik: Status 0 über den ganzen Lauf, Batterie 35,0 → 36,0 °C, DOM_SPIELT nicht aufgetreten.
+- Befund: **Janky-Anteil sauber (0 %), aber das Frame-Pacing rutscht auf 2-Vsync (33,4 ms p95)** — fpsAvg 50,1
+  verfehlt FPS >= 60, p95 33,4 ms verfehlt p95 <= 16 ms. Verschlechterung über die Laufzeit: Segment 0 natural noch
+  ~55–59,5 FPS, ab Segment 2 nur noch ~44–48 FPS (Thermik Status 0 → kein Thermal-Throttle; Muster = Present/Pacing,
+  nicht Renderlast — janky-zähler bleibt 0, weil Frames pünktlich zum 2-Vsync-Raster ankommen).
+- Hebelkandidat für K4: TimeStep/rAF-Skip-Logik bei Cap 60 (Ergänzung 15:15Z Punkt 3).
 
 ### K3: 10-min-Lauf BILDRATE=MAX — Status: offen
 Beleg-Ziel: `~/games/.evidence/m10-janky-remeasure/k3-max-device.json`.
