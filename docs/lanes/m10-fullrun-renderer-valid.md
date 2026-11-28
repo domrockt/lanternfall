@@ -60,3 +60,58 @@ kein Duplikat, siehe Kommentar in lf-renderer.mjs), schreibt `renderer`,
 `rendererValid`, `invalid` ins Summary und zieht die Gültigkeit in `passed` ⇒
 SwiftShader ⇒ `passed=false` ⇒ Exit-Code 1. Messablauf (Tore, Heap-Metrik, FPS-Fenster,
 Screenshots) unverändert.
+
+## K2 — Umsetzung (Karte #13787, Commit c047a0a0)
+
+`scripts/fullrun.mjs` (+22/−3, Commit-Gate PASS):
+
+- `import { rendererValid } from "./lf-renderer.mjs";` — Helper unverändert genutzt
+  (kein Duplikat der SwiftShader-Erkennung; lf-renderer.mjs selbst nicht angefasst).
+- `rendererString`-Mapping: `"none"` (fehlender GL im Inline-Capture) ⇒ `""` —
+  fehlender Renderer ist **nie** valide (wie `rendererValid("")`).
+- Summary: `renderer` (Objekt, unveränderte JSON-Form), `rendererString` (flacher
+  String wie in perf.mjs-JSONs), `rendererValid`, `invalid`.
+- Tore: `heap.passed = heapOk && rendererValidFlag`, `fps.passed = fpsOk &&
+  rendererValidFlag`, Top-Level `passed = rendererValidFlag && ok && heapOk && fpsOk`;
+  `summaryPassed = summary.passed` ⇒ `process.exit(summaryPassed ? 0 : 1)` —
+  **SwiftShader ⇒ Exit-Code 1**, Kennzahlen bleiben lesbar (wie in perf.mjs).
+- Messablauf unangetastet: Loop, Heap-Metrik (Teardown-Tor), FPS-Fenster,
+  Inhalts-Tore (Bosse/Truhen/Dawn), Screenshots — Diff greift nur an Import,
+  Mapping und Summary-Feldern.
+- `npx tsc --noEmit` rc=0; `node --check` ok.
+
+## K3 — Test (Karte #13788, Commit 89b61fa9)
+
+`tests/fullrun-renderer-valid.test.ts` (9 Tests, gemockt, kein Browser; npm test
+238 Files / 2577 Tests, 0 fail):
+
+- Verhalten (über `lf-renderer.mjs`): iGPU-String (Mesa RPL-S, die echten Belege)
+  ⇒ `rendererValid=true`; SwiftShader-Varianten ⇒ `false`; Mapping `none ⇒ ""` ⇒
+  `rendererValid=false` (fehlender GL nie durchlassbar).
+- Quell-Guard auf `scripts/fullrun.mjs`: Helper-Import, `none`-Mapping,
+  `rendererString/rendererValid/invalid` im JSON, Tor-Verdrahtung
+  (`heap/fps/passed` ziehen `rendererValidFlag`), Exit über `summaryPassed`,
+  Inhalts-Tore weiterhin vorhanden (Messablauf unangetastet).
+
+## K4 — realer Kurz-Beleg (Karte #13789)
+
+**Geplant:** Ein fullrun-Kurzlauf (Skript-Fenster 150 s @30x + 1x-Endminute ⇒
+~3 min, `--viewport 640x360`, `--tag -rv`) unter `flock /home/ai/games/.lf-perf.lock`
+(`timeout 3300 flock -w 3200`, synchron/kein Polling). Ergebnis-JSON mit
+`rendererValid:true` nach `~/games/.evidence/m10-fullrun-renderer-valid/` und
+`shots/m10-fullrun-rv-1.json`.
+
+**Lage (17:59Z):** Sperre durch Lane `m10-heap-gate-retry` belegt — **zwei 30-min
+Heap-Läufe in EINEM flock-Halt** (17:39Z–ca. 18:41Z), dahinter wartet
+`m10-fx-medium-cap` seit 17:43Z (`flock -w 3900`). Erster eigener Versuch
+(`timeout 540 flock -w 900`) endete rc=124 im Warten, bevor die Sperre frei wurde
+(leeres Log ⇒ Prozess kam nie über `flock` hinaus). Kurzlauf ist queued; falls die
+Sperre nicht frei wird ⇒ Karte blocked mit Grund (Sperrenkontention), Ausweichbeleg
+bleibt dem Merge-/Abnahme-Job vorbehalten.
+
+**Befund-Seitennotiz (Supervisor-Steer):** Der Steer zu Karte #13283
+(GroundRenderer chunk_*-Doppel-Adds) ist dieser Lane fehlgeroutet — #13283 gehört
+nicht zu diesem Briefing (Disponent: nur #13786–#13805; Datei-Claims nennen `src/`
+nicht). Karte nicht angenommen, Spalte unverändert, Hinweis als Board-Notiz an
+#13283.
+
