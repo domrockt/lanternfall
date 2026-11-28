@@ -59,11 +59,23 @@ describe("M10 chest-spawn-cell: fairChestSpawn Dichte-Regel (r=64 px)", () => {
   });
 
   it("Gleichstand mit Zentrum: Zentrum gewinnt (kein Move bei gleicher Dichte)", () => {
-    // Dichte 0 nur genau bei (2032, 2000)-Umgebung? Nein: alle Kandidaten Dichte 1,
-    // Zentrum auch → keine Verbesserung, Position bleibt.
+    // Alle Zellen (Zentrum + alle Kandidaten) haben Dichte 1 → keine strikte
+    // Verbesserung, Position bleibt (Zentrum gewinnt den Gleichstand).
     const enemyCount = () => 1;
     const r = fairChestSpawn(2000, 2000, { worldSize: WORLD_SIZE, isBlocked: nothingBlocked, enemyCount });
     expect(r.reason).toBe("free");
+  });
+
+  it("Kreis-Filter: Kandidat jenseits von 64 px (Diagonale ~90 px) wird nicht gewählt", () => {
+    // Dichte 0 NUR an der Quadratecke (dx=4, dy=4 → 90,5 px) — außerhalb des
+    // Suchkreises. Die Regel darf dort nicht hinspringen (Box-Scan würde es).
+    const enemyCount = (x: number, y: number): number =>
+      (x === 2064 && y === 2064 ? 0 : 1);
+    const r = fairChestSpawn(2000, 2000, { worldSize: WORLD_SIZE, isBlocked: nothingBlocked, enemyCount });
+    expect(r.x).toBe(2000);
+    expect(r.y).toBe(2000);
+    expect(r.reason).toBe("free");
+    expect(r.density).toBe(1);
   });
 
   it("ohne enemyCount: Verhalten bitgleich (density 0, reason free)", () => {

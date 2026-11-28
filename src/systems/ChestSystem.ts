@@ -264,7 +264,7 @@ export function fairChestSpawn(
   let density = opts.enemyCount ? opts.enemyCount(fx, fy) : 0;
   if (opts.enemyCount) {
     const rTiles = Math.floor(CHEST_CELL_SEARCH_RADIUS_PX / CHEST_SPAWN_TILE_PX);
-    const r2 = CHEST_CELL_DENSITY_RADIUS_PX ** 2;
+    const rMax2 = CHEST_CELL_SEARCH_RADIUS_PX ** 2;
     let bx = fx;
     let by = fy;
     let bd = density;
@@ -275,6 +275,10 @@ export function fairChestSpawn(
         const px = fx + dx * CHEST_SPAWN_TILE_PX;
         const py = fy + dy * CHEST_SPAWN_TILE_PX;
         if (!free(px, py)) continue;
+        // Kreis r=64 px (Review-Befund: das ±4-Tile-Quadrat allein ließe
+        // Eckkandidaten bis ~90 px zu — die Doku verspricht einen Kreis).
+        const cd = (px - fx) ** 2 + (py - fy) ** 2;
+        if (cd > rMax2) continue;
         const d = opts.enemyCount(px, py);
         const dist = (px - fx) ** 2 + (py - fy) ** 2;
         if (d < bd || (d === bd && bDist > 0 && dist < bDist)) {

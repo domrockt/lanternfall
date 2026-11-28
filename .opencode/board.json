@@ -12268,7 +12268,7 @@
       "id": 9775,
       "title": "m10-chest-spawn-cell-fair-r2: K1 Vorher-Messung",
       "description": "Skript scripts/m10-chest-spawn-cell.mjs: 6 Bosse × 3 Seeds (7/101/4242), nearEnemies96px- und nearEnemies48px-Verteilung der Spawn-Zellen. Abnahme: before-JSON existiert mit 18 Truhen und Zahlen für 48/96px (~/games/.evidence/m10-chest-spawn-cell-fair-r2/m10-chest-cell-before.json).",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:34:58Z",
@@ -12279,16 +12279,21 @@
           "at": "2026-11-28T07:45:43Z",
           "by": "build",
           "text": "doing → review: K1 fertig, Commit 0cacf00d. Vorher: 18/18 Truhen, 0 JS-Fehler, nearEnemies48px Median 0/Mean 1,33/max 10, 96px max 36 (Seed 101 #3). Beleg: ~/games/.evidence/m10-chest-spawn-cell-fair-r2/m10-chest-cell-before.json."
+        },
+        {
+          "at": "2026-11-28T08:06:07Z",
+          "by": "build",
+          "text": "review → done: lane #9775, Commit 0cacf00d — Vorher-Messung committed (Beleg in ~/games/.evidence/m10-chest-spawn-cell-fair-r2/)."
         }
       ],
       "created": "2026-11-28T07:34:51Z",
-      "updated": "2026-11-28T07:45:43Z"
+      "updated": "2026-11-28T08:06:07Z"
     },
     {
       "id": 9776,
       "title": "m10-chest-spawn-cell-fair-r2: K2 Dichte-Regel im ChestSystem",
       "description": "In src/systems/ChestSystem.ts: innerhalb r=64px um die (fair verschobene) Boss-Todestelle die Zelle mit minimaler Gegnerdichte (Gegner im 48px-Radius) wählen; Fallback alte Position, wenn kein Kandidat besser ist; fairChestSpawn (Wasser/Kante) bleibt, Spawn-Distanz/Timing unverändert. Abnahme: npx tsc --noEmit grün, chest-Suiten grün.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:45:43Z",
@@ -12299,34 +12304,50 @@
           "at": "2026-11-28T07:51:06Z",
           "by": "build",
           "text": "doing → review: K2 fertig, Commit bc4fe7c3. Dichte-Regel in fairChestSpawn (r=64px, Dichte 48px), ChestSystem.spawn liest run.enemies.active lesend; tsc + chest-Suiten gruen."
+        },
+        {
+          "at": "2026-11-28T08:06:07Z",
+          "by": "build",
+          "text": "review → done: lane #9776, Commit bc4fe7c3 — Dichte-Regel in fairChestSpawn."
         }
       ],
       "created": "2026-11-28T07:34:51Z",
-      "updated": "2026-11-28T07:51:06Z"
+      "updated": "2026-11-28T08:06:07Z"
     },
     {
       "id": 9777,
       "title": "m10-chest-spawn-cell-fair-r2: K3 Guard-Tests",
       "description": "tests/chest-spawn-cell.test.ts: Dichte-Regel (mindere Dichte gewinnt), Fallback (kein besserer Kandidat), Randfälle (Wasser/Kante/ohne enemyCount). Abnahme: neue Suite + chest-timing/chest-spawn-fair grün.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:51:06Z",
           "by": "build",
           "text": "todo → review: K3 fertig, Commit 00c08d84. 11 neue Tests in tests/chest-spawn-cell.test.ts, chest-Suiten 25/25 gruen, tsc rc=0."
+        },
+        {
+          "at": "2026-11-28T08:06:07Z",
+          "by": "build",
+          "text": "review → done: lane #9777, Commit 00c08d84 — 11 Guard-Tests, Suite 1701/1701 grün."
         }
       ],
       "created": "2026-11-28T07:34:51Z",
-      "updated": "2026-11-28T07:51:06Z"
+      "updated": "2026-11-28T08:06:07Z"
     },
     {
       "id": 9778,
       "title": "m10-chest-spawn-cell-fair-r2: K4 Nachher-Messung + Sichtprüfung + Doku",
       "description": "After-JSON (gleiche Matrix), nearEnemies48px-Median vorher/nachher in der Lane-Doku; Art-/UX-Sichtprüfung (Truhe sichtbar, Randpfeil korrekt, GIF/Screenshot); docs/lanes/m10-chest-spawn-cell-fair-r2.md; .lane-done. Abnahme: Median 48px deutlich gesenkt, Truhen 6/6 × 3 Seeds, Tests+Build grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T08:06:07Z",
+          "by": "build",
+          "text": "todo → review: K4 fertig, Commit a04c5924. Nachher: 48px Mean 1,28→0,06 (-95%), Max 10→1; 96px Mean 5,28→2,61, Max 36→18; Timing 6/6 ±0,5 s; Sicht-Shots in shots/abnahme/; Doku + .lane-done."
+        }
+      ],
       "created": "2026-11-28T07:34:51Z",
-      "updated": "2026-11-28T07:34:51Z"
+      "updated": "2026-11-28T08:06:07Z"
     }
   ]
 }
