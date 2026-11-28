@@ -1,0 +1,25 @@
+# Lane m10-levelup-panel-crisp — DONE (Karten #10665-#10668, Commits fef07bd9/58723ee8/48b3da1a/fec39332)
+
+Level-Up-Panel (3 Angebote) ist pixel-crisp, lesbar und ohne Überlappung;
+Angebotslogik bitgleich (levelup.ts/LevelUpSystem.ts/Run.ts unberührt, leerer Diff).
+
+- K1 (#10665): Vorher-Belege 640x360@2/780x360@3/960x540@2 + Mängel-Scan. Befund:
+  Trennlinie falsch geankert (Origin 0.5), 5 Überlappungen je Format, kreuzte
+  Kartenrand/Panelrahmen (left=-10). 0 fraktionale Skalen, Fokus-Kontrast 11.9:1,
+  0 JS-Fehler, Angebots-Snapshot 3 Seeds.
+- K2 (#10666): Divider setOrigin(0, 0.5) — inset 4px beidseitig in eigener Karte.
+  Nachher: 0 Überlappungen, inside true, alle 3 Formate.
+- K3 (#10667): Fokus-Kontrast 11.9:1 (>=3) je Format; Hover-Guard nach
+  options-touch-focus (parkende Maus: Vorher selected=2 -> Nachher 0; Tastatur/
+  Gamepad/Touch Startfokus Karte 0; echte Bewegung wählt weiter).
+- K4 (#10668): tests/levelup-panel-crisp.test.ts (11 Tests: ganzzahlige Skalen,
+  0 Überlappungs-Rects, Divider inset, Snapshot 3 Seeds bitgleich) +
+  levelUpPanelBoxes (pure Mirror) + docs/lanes/m10-levelup-panel-crisp.md.
+
+Abnahme: 0 Überlappungen (Pixel-Scan JSON), 0 fraktionale Skalen, Fokus-Kontrast
+11.9:1 >= 3:1, art-director PASS 4,5/5 auf Nachher-Shots, reviewer PASS
+(Bitgleichheit + Scope), npm test 1709/1709, tsc rc=0, 0 JS-Fehler.
+
+Belege: ~/games/.evidence/m10-levelup-panel-crisp/ (before/after PNG + JSON).
+Offen (außerhalb der Lane): Pixel-Font rendert „WÄHLE" ohne Ä („WAHLE") —
+Font-Umlaut-Ticket; unselektierter Kartenrahmen 1.1:1 (bewusst leise).
