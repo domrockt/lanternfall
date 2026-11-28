@@ -7256,7 +7256,7 @@
       "id": 6239,
       "title": "m10-heap-budget #2: Tor-Entscheidung MIT Zahlen (Fall A/B)",
       "description": "Fall A (kein monotoner Leak): endMB <= Minute1 + 15 % UND Fenster-Statistik im Tor → Tor definiert als Heap(Ende, nach erzwungenem GC) − Minute 1 <= +15 %, weicher Rand 'Peak je 5-min-Fenster <= Minute1 + 25 %' als Beobachtungswert. Definition in Skript + ACCEPTANCE.md (Heap-Zeile) festhalten, Begruendung mit Zahlen (Altmessungen 8,9 %/16 %/21 %, endMB < Minute1 → GC-Saegezahn). Danach ein Nachweis-Lauf → shots/m10-heap-budget-after.json. Fall B (echter Zuwachs): Heap-Snapshot-Diff Minute 5 vs 29, Top-Holder fixen (fremde Areas: nur Disponent-Anfrage, kein Edit). Abnahme: Entscheidung mit Zahlen belegt, ACCEPTANCE.md konsistent, Commit 'M10-m10-heap-budget: #<id>'.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -7273,26 +7273,36 @@
           "at": "2026-11-28T00:37:58Z",
           "by": "build",
           "text": "doing → review: m10-heap-budget: Nachweis-Lauf shots/m10-heap-budget-after.json (30 min, RPL-S iGPU, 0 JS-Fehler, FPS min 59,7): HARD endMB 37,5 vs Minute1 33,7 = +11,3 % <= +15 % PASS, Fall A; SOFT Fenster-Peak +65,3 % nur Beobachtung. Commit 5061fbd. Reviewer-Check läuft."
+        },
+        {
+          "at": "2026-11-28T00:40:17Z",
+          "by": "build",
+          "text": "review → done: reviewer PASS (Beleg: Tor-Definition gate.mjs = tests = Doku = JSON-Zahlen deckungsgleich, 8/8 Tests). Commits 5061fbd + after.json (7cd55eb)."
         }
       ],
       "created": "2026-11-27T22:36:37Z",
-      "updated": "2026-11-28T00:37:58Z"
+      "updated": "2026-11-28T00:40:17Z"
     },
     {
       "id": 6240,
       "title": "m10-heap-budget #3: Tests + Doku (heap-budget.test.ts + docs/lanes/m10-heap-budget.md)",
       "description": "tests/heap-budget.test.ts: Tor-Definition deterministisch getestet — synthetischer GC-Saegezahn mit stabilen Enden besteht das Tor, monotoner Zuwachs failt es. Bestehende Suite bleibt gruen. Doku docs/lanes/m10-heap-budget.md mit Vorher/Nachher, Tor-Definition und Fall-A/B-Entscheidung. Abnahme: npx tsc --noEmit + npm test + npm run build rc=0, Commit 'M10-m10-heap-budget: #<id>'.",
-      "column": "doing",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-28T00:37:37Z",
           "by": "build",
           "text": "todo → doing: m10-heap-budget: Tests 8/8 grün (tests/heap-budget.test.ts), 795/795 Suite, tsc rc=0, build rc=0. Finaler Commit + .lane-done nach Reviewer-PASS."
+        },
+        {
+          "at": "2026-11-28T00:40:17Z",
+          "by": "build",
+          "text": "doing → done: 795/795 Tests, tsc rc=0, build rc=0, reviewer PASS (Nit-Kommentar-Fix e5d0988). Lane-Abschluss 988c206 mit .lane-done."
         }
       ],
       "created": "2026-11-27T22:36:37Z",
-      "updated": "2026-11-28T00:37:37Z"
+      "updated": "2026-11-28T00:40:17Z"
     }
   ]
 }
