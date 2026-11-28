@@ -22,7 +22,7 @@ Briefing: `.briefs/m10-acceptance-refresh-g.md`, Karten #11949–#11952 (K1–K4
 |---|---|---|
 | #11949 | K1 K-Basis: tsc/build/test/acceptance-count/verify:final | erledigt |
 | #11950 | K2 FPS-Kerne: Burst 640x360 + 780x360@3, Minute-25 780x360@3 | erledigt |
-| #11951 | K3 Heap-Tor: 2x 30-min-fullrun (retained < +15 %) | offen |
+| #11951 | K3 Heap-Tor: 2x 30-min-fullrun (retained < +15 %) | erledigt |
 | #11952 | K4 Doku + Gesamturteil + .lane-done | offen |
 
 ## K1 (2026-11-28, ~12:1x–12:2xZ, auf `b69ede5c`)
@@ -61,3 +61,37 @@ Renderer-String im selben JSON). Belege:
   Tor ist ausschließliche FPS-Grenze, `minEnemies` als Info im JSON.
 
 Urteil K2: **PASS** (alle Tore erfüllt, am 60-Cap, keine Abweichung ≥ 5 % gegen F).
+
+## K3 (2026-11-28, ~13:0x–13:4xZ, 2x `flock /home/ai/games/.lf-perf.lock npm run fullrun`)
+
+Skripte nur konsumiert (`scripts/fullrun.mjs` mit dem entzerrten Heap-Tor aus
+`m10-heap-regression-fix`, Commit 78cb1bc5; kein src-/tests-/Skript-Change).
+Belege: `~/games/.evidence/m10-acceptance-refresh-g/m3-fullrunaccg{1,2}.json`.
+
+| | Lauf 1 (accg1) | Lauf 2 (accg2) | Tor | F-Basis | Abweichung |
+|---|---|---|---|---|---|
+| **Heap retained (end−start)** | **+8,9 %** | **+9,2 %** | < +15 % (beide) PASS | FAIL +18,2/+20,8 % | ja, markiert (s. u.) |
+| Bosse / Truhen | 6/6 | 6/6 | grün | 6/6 | nein |
+| Boss-Zeiten | exakt 300..1800 s | exakt 300..1800 s | grün | ±2 s | nein |
+| Sieg (`dawn`) | ja | ja | grün | ja | nein |
+| fpsMin | 60,4 | 60,3 | ≥ 55 grün | 60,4/60,3 | nein |
+| JS-Fehler | 0 | 0 | grün | 0 | nein |
+| Renderer | Mesa Intel RPL-S | Mesa Intel RPL-S | gültig | — | — |
+| In-run-Beobachtung m1→m29 | +10,7 % (53,5→59,2 MB) | +14,9 % (54,2→62,3 MB) | nur Beobachtung | +18,2/+20,8 % | markiert |
+
+**Abweichungen ≥ 5 % gegen F (F-Werte bleiben unverändert in
+`docs/lanes/m10-acceptance-refresh-f.md`):**
+1. Heap-Tor: F maß mit dem alten Zwei-Punkte-Tor +18,2/+20,8 % (FAIL); G misst
+   mit dem entzerrten retained-Tor +8,9/+9,2 % (PASS). Das ist der Gegenstand
+   des geprüften Fix-Jobs, kein Verhaltenswechsel im Spielpfad.
+2. In-run-Beobachtung m1→m29: F +18,2/+20,8 % vs. G +10,7/+14,9 % (≥ 5 %);
+   laut K2-Diagnose der Fix-Lane GC-Sägezahn-Streuung, nur Beobachtungswert.
+3. Tests (K1): 2243 vs. 1957 (+14,6 %) — neue Testdateien anderer Lanes.
+
+Zwischenfall: 1. accg2-Lauf scheiterte am Serverstart („Statischer Server konnte
+nicht gestartet werden“, Port-Konflikt mit Parallel-Lane, Log
+`~/tmp/m10-acceptance-refresh-g/k3-fullrun.log`) — Wiederholung 1 erfolgreich,
+kein Messwert-Einfluss.
+
+Urteil K3: **PASS** — das Heap-Tor ist in BEIDEN Läufen geräumt
+(+8,9 % / +9,2 % < +15 %), Inhalt/FPS/Truhen/JS-Fehler grün.
