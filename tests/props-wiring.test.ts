@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+// @ts-expect-error – Vite-Raw-Import (nur String, GroundRenderer.ts wird nicht ausgefuehrt)
+import groundSrc from "../src/gfx/GroundRenderer.ts?raw";
 import { propVariantKeyFor } from "../src/gfx/gen-props";
 import { tileHash } from "../src/gfx/tiles";
 
@@ -51,10 +53,10 @@ describe("props-wiring (m10-props-wiring)", () => {
     expect(propVariantKeyFor("prop_tree_a", 0.5)).toBe("prop_tree_a");
   });
 
-  it("Grenz-Picks: 0 -> Basis, knapp unter 1 -> letzte Variante, kein undefined", () => {
+  it("Grenz-Picks: 0 -> Basis, knapp unter 1 -> letzte Variante (boulder_c), kein undefined", () => {
     expect(propVariantKeyFor("prop_boulder", 0)).toBe("prop_boulder");
-    const last = propVariantKeyFor("prop_boulder", 0.999999);
-    expect(["prop_boulder", "prop_boulder_b", "prop_boulder_c"]).toContain(last);
+    // Reihenfolge in PROP_VARIANTS ist deterministisch (b vor c, gen-props.ts).
+    expect(propVariantKeyFor("prop_boulder", 0.999999)).toBe("prop_boulder_c");
     for (const pick of [0.25, 0.5, 0.75]) {
       expect(propVariantKeyFor("prop_boulder", pick)).toMatch(/^prop_boulder(_[a-z])?$/);
     }
@@ -75,5 +77,23 @@ describe("props-wiring (m10-props-wiring)", () => {
       }
       for (const k of keys) expect(k.startsWith(base + "_") || k === base, `${k} aus ${base}`).toBe(true);
     }
+  });
+
+  it("Regression Review K4: applyPropTier klassifiziert ueber ownerKey (Klasse), nicht Varianten-Textur", () => {
+    // prop_post_b ist nicht in PROP_TIERS (propLayers.ts ist tabu und bleibt
+    // klassenbasiert). Klassifizierte der Renderer ueber p.texture?.key, fiel
+    // prop_post_b auf Tier 2, waehrend ihr Schatten (ownerKey = prop_post,
+    // Tier 0) sichtbar blieb -> schwebende Schatten im Dichte-LOD. Guard:
+    // addProp setzt ownerKey auf dem Bild, applyPropTier liest ownerKey fuer
+    // ALLE Instanzen (Quell-Vertrag, da GroundRenderer Phaser-bunden ist).
+    const src = groundSrc;
+    expect(src).toMatch(/img\.setData\("ownerKey", key\)/);
+    const tierFn = groundSrc.slice(
+      groundSrc.indexOf("private applyPropTier"),
+      groundSrc.indexOf("Schickt faellige"),
+    );
+    expect(tierFn).toMatch(/ownerKey/);
+    // Kein isShadow-Sonderweg mehr: Bild und Schatten teilen denselben Pfad.
+    expect(tierFn).not.toMatch(/isShadow/);
   });
 });

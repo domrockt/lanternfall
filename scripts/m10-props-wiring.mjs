@@ -46,6 +46,47 @@ const composition = () =>
     return { total, counts };
   });
 
+/** Dichte-LOD-Konsistenz: sichtbare Schatten ohne sichtbaren Owner-Prop
+ *  (Review-Befund K4: prop_post_b wurde als Tier 2 versteckt, der Schatten
+ *  blieb sichtbar -> schwebende Schatten). Ausserdem Fix-Probe: Stufenwechsel
+ *  auf Tier 0 (N2 = nur Laternen) erzwingen und erneut pruefen — prop_post_b
+ *  muss ueber ownerKey (Klasse prop_post, Tier 0) sichtbar bleiben. */
+const tierProbe = () =>
+  page.evaluate(() => {
+    const g = window.__game.scene.getScene("run").ground;
+    const probe = () => {
+      // Zwei Durchlaeufe: erst alle sichtbaren Props sammeln, dann Schatten
+      // pruefen (Ein-Durchlauf vergleicht gegen ein halb gefuelltes Set).
+      const propsAt = new Set();
+      let shadowTotal = 0;
+      for (const e of g.chunks.values()) {
+        for (const p of e.props) {
+          if (p.getData("isShadow") || p.getData("glow")) continue;
+          if (p.visible) propsAt.add(`${Math.round(p.x)},${Math.round(p.y)}`);
+        }
+      }
+      let floatingShadows = 0, hiddenProps = 0, postB = 0, postBVisible = 0;
+      for (const e of g.chunks.values()) {
+        for (const p of e.props) {
+          if (p.getData("glow")) continue;
+          if (p.getData("isShadow")) {
+            shadowTotal++;
+            if (p.visible && !propsAt.has(`${Math.round(p.x)},${Math.round(p.y + 1)}`)) floatingShadows++;
+            continue;
+          }
+          if (p.texture?.key === "prop_post_b") { postB++; if (p.visible) postBVisible++; }
+          if (!p.visible) hiddenProps++;
+        }
+      }
+      return { shadowTotal, floatingShadows, hiddenProps, postB, postBVisible };
+    };
+    const natural = probe();
+    g.applyPropTier(0); // Stufenwechsel erzwingen (enemies-Schwelle uebergehen)
+    const forcedTier0 = probe();
+    g.applyPropTier(2); // Sichtbarkeitszustand zuruecksetzen (maxTier bleibt 2)
+    return { maxTier: g.propLodMaxTier ?? null, natural, forcedTier0 };
+  });
+
 const shot3x = async (name) => {
   // 3x-Crop aus der Bildmitte (260x120 -> 780x360), nearest (keine Glättung).
   const raw = `shots/m10-props-wiring-${TAG}-${name}-1x.png`;
@@ -67,6 +108,7 @@ try {
   await page.waitForTimeout(1200);
   await shot3x("early");
   const earlyComp = await composition();
+  const earlyTier = await tierProbe();
 
   // ── Abschnitt "Chaos": Minute 21:30, Endgame-Build ──
   await page.evaluate((t) => {
@@ -93,6 +135,7 @@ try {
   await page.waitForTimeout(500);
   await shot3x("chaos");
   const chaosComp = await composition();
+  const chaosTier = await tierProbe();
 
   const share = (comp) => {
     const entries = Object.entries(comp.counts).sort((a, b) => b[1] - a[1]);
@@ -113,6 +156,7 @@ try {
     command: `node scripts/m10-props-wiring.mjs --tag ${TAG}`,
     early: share(earlyComp),
     chaos: share(chaosComp),
+    tierProbe: { early: earlyTier, chaos: chaosTier },
     jsErrors: errors,
   };
   writeFileSync(`shots/m10-props-wiring-${TAG}.json`, JSON.stringify(out, null, 2));
@@ -120,6 +164,7 @@ try {
     early: out.early.topProp, earlyPct: out.early.topSharePct,
     chaos: out.chaos.topProp, chaosPct: out.chaos.topSharePct,
     boulderSplit: [out.early.counts.prop_boulder ?? 0, out.early.counts.prop_boulder_b ?? 0, out.early.counts.prop_boulder_c ?? 0],
+    tierProbe: out.tierProbe,
     errors: errors.length,
   }));
 } finally {

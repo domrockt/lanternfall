@@ -11399,43 +11399,71 @@
       "id": 8798,
       "title": "m10-props-wiring K1: Patch einarbeiten — addProp-Variantenwahl (3 Zeilen) + Wirkprobe",
       "description": "3-Zeilen-Patch aus docs/lanes/m10-props-variety.md (offener Punkt) in GroundRenderer.addProp: deterministische Variantenwahl via propVariantKeyFor aus gen-props.ts, tileHash der Position, Fallback auf Basis-Textur. Platzierung/CLUSTER_PROPS/LOD-Tiers/Batch-Struktur unveraendert; propLayers.ts/textures.ts unangetastet. Abnahme: Wirkprobe boulder-Split (~46/55/54, Top-Anteil 23% -> 15%) als JSON-Beleg, tsc gruen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T05:40:03Z",
           "by": "build",
           "text": "todo → doing: K1 startet: 3-Zeilen-Patch (Variantenwahl) + Wirkprobe. Vorher erst Before-Belege (K2-Skript), dann Patch."
+        },
+        {
+          "at": "2026-11-28T05:43:24Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Commit 34ebe63 (Patch + Wirkprobe boulder 161/0/0 -> 51/61/49, Top 22,9% -> 15,0%, alle 6 Varianten sichtbar, tsc + 3 Testdateien gruen)."
         }
       ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:40:03Z"
+      "updated": "2026-11-28T05:43:24Z"
     },
     {
       "id": 8799,
       "title": "m10-props-wiring K2: Vorher/Nachher-Shots 640x360 + 780x360@3 je 4x",
       "description": "scripts/m10-props-wiring.mjs (frueh + Chaos, seed 7): je Tag 4 Shots (early/chaos x 1x-640x360 + 3x-780x360-Crop nearest), before ohne Patch, after mit Patch. Abnahme: 8 PNGs + 2 JSON in shots/, jsErrors: []",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T05:43:24Z",
+          "by": "build",
+          "text": "todo → review: K2 fertig: Commit 4cfbd4e (8 PNGs before/after je early/chaos 1x+3x, before/after JSON, jsErrors 0)."
+        }
+      ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:39:50Z"
+      "updated": "2026-11-28T05:43:24Z"
     },
     {
       "id": 8800,
       "title": "m10-props-wiring K3: Guard-Test tests/props-wiring.test.ts",
       "description": "Deterministische Wahl (gleicher Tile-Hash -> gleiche Variante) + Fallback bei unbekanntem Key/nicht existierender Textur. Abnahme: npx vitest run tests/props-wiring.test.ts, npm test + tsc rc=0",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T05:43:24Z",
+          "by": "build",
+          "text": "todo → doing: K3 startet: Guard-Test props-wiring.test.ts (Determinismus + Fallback)."
+        },
+        {
+          "at": "2026-11-28T05:45:00Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig: Commit 93dfc3b (5 Tests: Determinismus 2 Seeds x 1000 Pos, Positionsabhaengigkeit, Fallback unbekannt/ohne Varianten, Grenz-Picks, Varianten=echte Sprite-Keys). npm test 1511/1511, tsc rc=0. (passive-math-JSON-Timestamps aus Test-Regeneration revertiert, fremde Datei.)"
+        }
+      ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:39:50Z"
+      "updated": "2026-11-28T05:45:00Z"
     },
     {
       "id": 8801,
       "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
       "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T05:45:00Z",
+          "by": "build",
+          "text": "todo → doing: K4 startet: art-director-Urteil zu Prop-Vielfalt auf After-Shots, Lane-Doku, .lane-done."
+        }
+      ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:39:50Z"
+      "updated": "2026-11-28T05:45:00Z"
     }
   ]
 }

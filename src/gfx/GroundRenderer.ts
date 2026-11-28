@@ -551,13 +551,15 @@ export class GroundRenderer {
 
   /** Dichte-LOD: Sichtbarkeit aller Props/Schatten/Glows nach Prop-Tier setzen
    *  (nur bei Stufenwechsel aufgerufen). Glows haengen an Laternen (Tier 0)
-   *  und bleiben sichtbar; Schatten folgen ihrem Prop. */
+   *  und bleiben sichtbar; Schatten folgen ihrem Prop. Klassifikation ueber
+   *  ownerKey (= Prop-Klasse) — Varianten-Texturen sind nicht in PROP_TIERS
+   *  und wuerden sonst von ihrem Schatten abweichen (Review-Befund K4). */
   private applyPropTier(maxTier: 0 | 1 | 2): void {
     for (const entry of this.chunks.values()) {
       for (const p of entry.props) {
         const tier = p.getData("glow")
           ? 0
-          : propTierFor(p.getData("isShadow") ? (p.getData("ownerKey") as string | undefined) : p.texture?.key);
+          : propTierFor((p.getData("ownerKey") as string | undefined) ?? p.texture?.key);
         p.setVisible(tier <= maxTier);
       }
     }
@@ -714,6 +716,11 @@ export class GroundRenderer {
     const img = this.scene.add.image(wx, wy, texKey).setOrigin(0.5, 1);
     img.setFlipX(flip);
     img.setData("footY", wy);
+    // Dichte-LOD: Props klassifizieren ueber ihren Klassen-Key (Basis), nicht
+    // ueber die Varianten-Textur — sonst faellt prop_post_b (unbekannt in
+    // PROP_TIERS) auf Tier 2 und der Schatten (ownerKey = Basis, Tier 0)
+    // wuerde sichtbar bleiben, waehrend die Laterne versteckt wird.
+    img.setData("ownerKey", key);
     // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
     let shadow: Phaser.GameObjects.Image | undefined;
     if (this.scene.textures.exists("shadow")) {
