@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7482,
+  "next": 7486,
   "cards": [
     {
       "id": 1,
@@ -9022,6 +9022,42 @@
       ],
       "created": "2026-11-28T01:43:33Z",
       "updated": "2026-11-28T01:44:21Z"
+    },
+    {
+      "id": 7482,
+      "title": "m10-results-followup K1: Before-Messung 3 Formate (stress12, iGPU-Renderer-String)",
+      "description": "lane #7478. scripts/m10-results-followup.mjs: Text-Rechtecke je Format (640x360, 780x360@3, 1920x1080) + stress12 als JSON + Screenshots; Renderer-String-Pflicht. Abnahme: shots/m10-results-followup-before.json + Shots committed (6/6 PASS), Befund dokumentiert.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:48:34Z",
+      "updated": "2026-11-28T01:48:34Z"
+    },
+    {
+      "id": 7483,
+      "title": "m10-results-followup K2: belegte Maengel in Results.ts fixen + tests/results-followup.test.ts",
+      "description": "lane #7479. Nur Results.ts. Harte Assertions: 0 Ueberlappungen in allen 3 Formaten, Zeilenumbruch an Wortgrenzen. Abnahme: vitest results-followup gruen, tsc gruen (Commit fcca742).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:48:34Z",
+      "updated": "2026-11-28T01:48:34Z"
+    },
+    {
+      "id": 7484,
+      "title": "m10-results-followup K3: After-Belege + art-director >= 4/5 (streng)",
+      "description": "lane #7480. After-JSON + Shots aller 3 Formate (Victory+Defeat), art-director streng >= 4/5. Abnahme: PASS 4,5/5 belegt in docs/lanes/m10-results-followup.md (Commit c4381aa).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:48:34Z",
+      "updated": "2026-11-28T01:48:34Z"
+    },
+    {
+      "id": 7485,
+      "title": "m10-results-followup K4: docs/lanes + Lane fertig",
+      "description": "lane #7481. docs/lanes/m10-results-followup.md (Vorher/Nachher, Messwerte, Restpunkte). Abnahme: Datei committed (a08af7a); .lane-done bewusst NICHT nach main uebernommen (im Merge-Commit entfernt).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:48:34Z",
+      "updated": "2026-11-28T01:48:34Z"
     }
   ]
 }
