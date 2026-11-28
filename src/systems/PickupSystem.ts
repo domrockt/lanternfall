@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { GEMS, type GemSize } from "../logic/xp";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, makeImage } from "../gfx/atlas";
+import { iconKeyForOffer } from "../gfx/icons";
+import { C, PAL } from "../palette";
 
 interface GemRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -61,6 +63,103 @@ export interface GemMerge {
   credited: number;
 }
 
+// ── M10-Pickup-Moment (A10-Lesbarkeit, Dom 21:45Z) ─────────────────────────
+//
+// Das Einsammeln eines Powerups (Level-up-Wahl oder Truhe) war bisher ein
+// lautloser Stat-Austausch — im 500er-Chaos geht verloren, WANN welche
+// Stärke aktiv wurde. Der Moment ist bewusst kurz (~0,4 s) und wird in
+// Zielgröße gezeichnet: Icon 16x16 @ Scale 1, 1-px-Rim/Ring in Ganzzahl-
+// schritten, nur Palettenfarben (kein Mixel, nie > 1x hochskaliert).
+// Eigene Phaser-Objekte, eigene Uhr in update() — kein FxSystem-Slot,
+// keine Tweens im Massenpfad; der Gem-Pfad bleibt unberührt.
+
+/** Gesamtdauer eines Aufnahme-Moments (s). Abnahme: <= 0,5 s. */
+export const MOMENT_DURATION = 0.4;
+/** Maximal parallele Momente (gekettete Level-ups); Ältester wird beendet. */
+export const MAX_MOMENTS = 3;
+/** Icon-Größe (Spielpixel) — wird mit Scale 1 gezeichnet (kein Mixel). */
+export const MOMENT_ICON_SIZE = 16;
+/** Ring-Radius in 1-px-Schritten (Aufblitz-Welle um den Spieler). */
+export const MOMENT_RING_FROM = 8;
+export const MOMENT_RING_TO = 16;
+/** Rim-Breite in px (A10-Vertrag: 1-px-Stufen). */
+export const MOMENT_RIM_PX = 1;
+/** Aufblitz je Powerup = Akzentfarbe (im spec.flash); Laternenweiß würde in
+ *  der hellen Level-up-Säule untergehen, die zur selben Zeit läuft. */
+/** Über den Gegner-Projektilen, unter dem Licht — im Chaos lesbar. */
+const MOMENT_DEPTH = DEPTH.enemyShot + 1;
+
+/** Paletten-Akzentfarbe je Powerup (sprechbare Unterscheidbarkeit im Chaos). */
+export const POWERUP_ACCENT: Record<string, number> = {
+  boots: C.marshLight, // Windstiefel — helles Moor-Grün
+  tome: C.fogBlue, // Arkanes Buch — Nebelblau
+  heart: C.crimson, // Eisenherz — Karmesin
+  charm: C.amber, // Magnetamulett — Bernstein
+  whetstone: C.paleMist, // Wetzstein — heller Dunst (Eisen)
+  hourglass: C.glow, // Sanduhr — Glow-Gold
+};
+
+/** Datenblatt eines Moments (rein, für Tests + Zeichnen). */
+export interface MomentSpec {
+  iconKey: string;
+  accent: number;
+  /** Aufblitz = Akzentfarbe (Palette), nicht Weiß — siehe MOMENT_FLASH-Hinweis. */
+  flash: number;
+  iconSize: number;
+  /** Scale des Icons — fest 1: Effekt in Zielgröße, nie hochskaliert. */
+  scale: 1;
+  ringFrom: number;
+  ringTo: number;
+  rimPx: 1;
+  durationS: number;
+}
+
+/** Spezifikation des Moments für ein Powerup (null = unbekannte id). */
+export function pickupMomentSpec(id: string): MomentSpec | null {
+  const accent = POWERUP_ACCENT[id];
+  if (accent === undefined) return null;
+  return {
+    iconKey: iconKeyForOffer("passive", id),
+    accent,
+    flash: accent,
+    iconSize: MOMENT_ICON_SIZE,
+    scale: 1,
+    ringFrom: MOMENT_RING_FROM,
+    ringTo: MOMENT_RING_TO,
+    rimPx: MOMENT_RIM_PX,
+    durationS: MOMENT_DURATION,
+  };
+}
+
+/** Neue/gestufte Powerups zwischen zwei Passiv-Ständen (rein, für Tests). */
+export function diffPassiveAcquisitions(
+  prev: readonly { id: string; level: number }[],
+  next: readonly { id: string; level: number }[],
+): { id: string; kind: "new" | "upgrade" }[] {
+  const before = new Map(prev.map((p) => [p.id, p.level]));
+  const out: { id: string; kind: "new" | "upgrade" }[] = [];
+  for (const p of next) {
+    const was = before.get(p.id);
+    if (was === undefined) out.push({ id: p.id, kind: "new" });
+    else if (p.level > was) out.push({ id: p.id, kind: "upgrade" });
+  }
+  return out;
+}
+
+/** Laufzeitdatensatz eines aktiven Aufnahme-Moments (public für Tests/Messung). */
+export interface PowerupMoment {
+  id: string;
+  icon: Phaser.GameObjects.Image;
+  fx: Phaser.GameObjects.Graphics;
+  /** Verstrichene Zeit (s). */
+  t: number;
+  /** Weltbasisposition (Spieler beim Erwerb). */
+  x: number;
+  y: number;
+  /** Icon-Grundlinie (ganzzahlig), inkl. Staffelung bei Parallelen. */
+  baseY: number;
+}
+
 /**
  * M10: Zwei Kristall-Werte verschmelzen, ohne XP zu verlieren.
  * Kanonische Größen bleiben eindeutig (small=2, medium=6, large=18):
@@ -92,6 +191,18 @@ export class PickupSystem {
   /** LOD: Kristalle abdunkeln, damit Gegner-Silhouetten lesbar bleiben. */
   private dim = false;
   private readonly scene: Phaser.Scene;
+
+  // ── M10-Aufnahme-Moment ──
+  /** Aktive Momente (Ältester zuerst). */
+  readonly moments: PowerupMoment[] = [];
+  /** Abnahme-Messung: je Powerup ausgelöste Momente. */
+  readonly momentStats = { triggered: 0, byId: {} as Record<string, number> };
+  /** Passiv-Stand des letzten update()-Durchlaufs (Erkennung neu/Upgrade). */
+  private lastPassives: { id: string; level: number }[] = [];
+  /** Erstes update() liefert nur den Grundzustand (kein Moment beim Run-Start). */
+  private hasPassiveSnapshot = false;
+  /** levelSys-Referenz wird lazily gelesen (Run-Szene); null = nicht vorhanden. */
+  private levelRef: { passives: { id: string; level: number }[] } | null | undefined;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -173,6 +284,99 @@ export class PickupSystem {
     return { sprite, size: "small", value: 1, x: 0, y: 0, vx: 0, vy: 0, active: false, age: 0 };
   }
 
+  // ── M10-Aufnahme-Moment: API + Zeichnen ────────────────────────────────────
+
+  /** Startet den Aufnahme-Moment für ein Powerup an der Spielerposition. */
+  playPowerupMoment(id: string, x: number, y: number): void {
+    const spec = pickupMomentSpec(id);
+    if (!spec || !this.scene?.add) return;
+    if (this.moments.length >= MAX_MOMENTS) this.finishMoment(this.moments[0]);
+    // Bei Parallelen (gekettete Level-ups) leicht staffeln, sonst Full-Overlap.
+    const baseY = Math.round(y) - 20 - this.moments.length * 6;
+    const icon = makeImage(this.scene, Math.round(x), baseY, spec.iconKey)
+      .setDepth(MOMENT_DEPTH)
+      .setScale(spec.scale)
+      .setAlpha(1);
+    icon.setTintFill(PAL[spec.flash]); // Phase 1: Aufblitz
+    const fx = this.scene.add.graphics().setDepth(MOMENT_DEPTH);
+    this.moments.push({ id, icon, fx, t: 0, x, y, baseY });
+    this.momentStats.triggered += 1;
+    this.momentStats.byId[id] = (this.momentStats.byId[id] ?? 0) + 1;
+  }
+
+  /** Beendet einen Moment sofort (Objekte weg, Slot frei). */
+  private finishMoment(moment: PowerupMoment): void {
+    const i = this.moments.indexOf(moment);
+    if (i >= 0) this.moments.splice(i, 1);
+    moment.icon.destroy();
+    moment.fx.destroy();
+  }
+
+  /** Eigene Uhr des Moments: 1-px-Schritte, Palette, kein Mixel. */
+  private updateMoments(dt: number): void {
+    for (let i = this.moments.length - 1; i >= 0; i--) {
+      const m = this.moments[i];
+      if (!m.icon.active || !m.fx.active) {
+        // Szenen-Restart: Phaser hat die Objekte entsorgt — Slot verwerfen.
+        this.moments.splice(i, 1);
+        continue;
+      }
+      m.t += dt;
+      const p = m.t / MOMENT_DURATION;
+      if (p >= 1) {
+        this.finishMoment(m);
+        continue;
+      }
+      const spec = pickupMomentSpec(m.id)!;
+      // Icon steigt in 1-px-Schritten, letzte 25 % ausblenden.
+      const ix = Math.round(m.x);
+      const iy = m.baseY - Math.round(p * 6);
+      m.icon.setPosition(ix, iy);
+      if (p < 0.15) m.icon.setTintFill(PAL[spec.flash]);
+      else if (m.icon.tintFill) m.icon.clearTint();
+      m.icon.setAlpha(p < 0.75 ? 1 : 1 - (p - 0.75) / 0.25);
+      // 1-px-Grafik: Rim um das Icon + Ring-Welle in Ganzzahl-Radius.
+      const g = m.fx;
+      g.clear();
+      if (p < 0.4) {
+        g.lineStyle(MOMENT_RIM_PX, PAL[spec.accent], p < 0.2 ? 1 : 0.5);
+        g.strokeRect(ix - MOMENT_ICON_SIZE / 2 - 1, iy - MOMENT_ICON_SIZE / 2 - 1,
+          MOMENT_ICON_SIZE + 2, MOMENT_ICON_SIZE + 2);
+      }
+      const r = MOMENT_RING_FROM + Math.floor(p * (MOMENT_RING_TO - MOMENT_RING_FROM));
+      g.lineStyle(MOMENT_RIM_PX, PAL[spec.accent], (1 - p) * 0.9);
+      g.strokeCircle(ix, Math.round(m.y), r);
+    }
+  }
+
+  /**
+   * Erkennt Powerup-Erwerb (neu/Upgrade) ohne Eingriff in Run.ts/UI.ts:
+   * levelSys.passives wird pro Frame gelesen und differenziert. Level-ups und
+   * Truhen landen beide in applyOffer — der Diff deckt beide Pfade ab. Das
+   * erste update() liefert nur den Grundzustand.
+   */
+  private detectPowerupMoments(playerX: number, playerY: number): void {
+    if (this.levelRef === undefined) {
+      const run = this.scene as unknown as { levelSys?: { passives: { id: string; level: number }[] } } | null;
+      this.levelRef = run?.levelSys?.passives ? run.levelSys : null;
+    }
+    const passives = this.levelRef?.passives;
+    if (!passives) return;
+    if (!this.hasPassiveSnapshot) {
+      this.lastPassives = passives.map((p) => ({ id: p.id, level: p.level }));
+      this.hasPassiveSnapshot = true;
+      return;
+    }
+    const acquired = diffPassiveAcquisitions(this.lastPassives, passives);
+    this.lastPassives = passives.map((p) => ({ id: p.id, level: p.level }));
+    for (const a of acquired) this.playPowerupMoment(a.id, playerX, playerY);
+  }
+
+  /** Aktive Momente beenden (Run-Neustart/Shutdown). */
+  clearMoments(): void {
+    while (this.moments.length > 0) this.finishMoment(this.moments[0]);
+  }
+
   update(
     dt: number,
     playerX: number,
@@ -183,6 +387,10 @@ export class PickupSystem {
   ): void {
     const magnetRadius = PickupSystem.magnetRadiusFor(pickupRadius, this.gems.length);
     this.lastPickupRadius = pickupRadius;
+    // M10-Aufnahme-Moment: Erwerb erkennen + eigene Uhr laufen lassen.
+    // Reine Zusatz-Pfade — der Gem-/XP-Pfad unten bleibt unverändert.
+    this.detectPowerupMoments(playerX, playerY);
+    this.updateMoments(dt);
     if (this.pendingXp > 0) {
       // Rest-XP aus einer Verschmelzung sofort zuschreiben (kein Verlust).
       this.stats.grantedXp += this.pendingXp;
@@ -314,6 +522,7 @@ export class PickupSystem {
   }
 
   releaseAll(): void {
+    this.clearMoments();
     for (const g of this.gems) {
       g.sprite.setVisible(false).setActive(false);
       this.free.push(g);
