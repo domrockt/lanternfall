@@ -1,0 +1,18 @@
+Lane m10-xp-hud-crisp — HUD-Pixelqualität (Befundklasse menu-art-crisp F1 am In-Game-HUD), 2026-11-28.
+
+Ergebnis: BEFORE-Scan (scripts/m10-xp-hud-crisp.mjs, gefrorener Run-Frame, 3 Formate
+640x360@2 / 780x360@3 / 1080p) fand je Format 11 HUD-Befunde: XP-Füllung (displayW
+235.5/341.333/209.333), HP-Füllung (81.648), Boss-Bar-Füllung (221.374), 6/8 Boss-Segmente
+(25.333-px-Raster) und 2 Boss-Endkappen (left 194.5/430.5) mit fraktionalen Kanten.
+Fix in src/scenes/UI.ts (Commit d6d16be): crispFillWidth — Füllung als 1-px-Basis +
+ganzzahliger Scale; bossBarGeometry — ganzzahlige Segment-/Kappen-/Text-Anker. Keine
+inhaltlichen Änderungen. AFTER-Scan: 0 Befunde in allen 3 Formaten (xpRatio 0.333 →
+displayW 209/256/209 ganzzahlig). Regressionstest tests/xp-hud-crisp.test.ts (Commit
+2729170, 11 Tests). Build grün, Suite 1198 Tests grün, 0 JS-Fehler.
+
+Abnahme: art-director PASS, alle 7 Kriterien 5/5 (XP-Leiste, Timer/LV/KILL, HP, Icon-Reihe,
+Evo-Hinweis, Boss-Leiste, Format-Konsistenz). Details: docs/lanes/m10-xp-hud-crisp.md,
+Belege shots/m10-xp-hud-{before,after}*.json/.png.
+
+Offen (nicht diese Lane): Timer-Text-Container bei ungeraden Viewbreiten (GAME_WIDTH/2
+kann fraktional sein) — als Beobachtung in docs/lanes/m10-xp-hud-crisp.md dokumentiert.
