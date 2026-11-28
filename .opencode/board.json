@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7400,
+  "next": 7482,
   "cards": [
     {
       "id": 1,
@@ -8810,6 +8810,42 @@
       ],
       "created": "2026-11-28T01:20:31Z",
       "updated": "2026-11-28T01:20:34Z"
+    },
+    {
+      "id": 7478,
+      "title": "m10-results-followup K1: Before-Messung 3 Formate (stress12, iGPU-Renderer-String)",
+      "description": "scripts/m10-results-followup.mjs: Text-Rechtecke je Format (640x360, 780x360@3, 1920x1080) + stress12 als JSON + Screenshots; Renderer-String-Pflicht (iGPU, kein swiftShader). Abnahme: shots/m10-results-followup-before.json + 3+ Shots committed, Befund dokumentiert.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T01:26:53Z",
+      "updated": "2026-11-28T01:26:53Z"
+    },
+    {
+      "id": 7479,
+      "title": "m10-results-followup K2: belegte Maengel in Results.ts fixen + tests/results-followup.test.ts",
+      "description": "Nur Results.ts (logic/results.ts nur lesen). Harte Assertions: 0 Ueberlappungen in allen 3 Formaten (logische Views aus computeView), Zeilenumbruch an Wortgrenzen. Abnahme: npx vitest run tests/results-followup.test.ts gruen, tsc --noEmit gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:26:53Z",
+      "updated": "2026-11-28T01:26:53Z"
+    },
+    {
+      "id": 7480,
+      "title": "m10-results-followup K3: After-Belege + art-director >= 4/5 (streng)",
+      "description": "After-JSON + Shots aller 3 Formate (Victory+Defeat), art-director-Subagent mit strenger Latte >= 4/5 gegen die After-Shots. Abnahme: PASS >= 4/5 belegt in docs/lanes/m10-results-followup.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:26:53Z",
+      "updated": "2026-11-28T01:26:53Z"
+    },
+    {
+      "id": 7481,
+      "title": "m10-results-followup K4: docs/lanes + .lane-done",
+      "description": "docs/lanes/m10-results-followup.md (Vorher/Nachher, Messwerte, Restpunkte), .lane-done im Worktree, git status --ignored aufgeraeumt. Abnahme: beide Dateien committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:26:53Z",
+      "updated": "2026-11-28T01:26:53Z"
     }
   ]
 }
