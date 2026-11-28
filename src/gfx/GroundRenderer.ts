@@ -62,6 +62,29 @@ interface Ripple {
 /** Dauer einer Animationsstufe des Tile-Pfads (3 Stufen = 1,68-s-Zyklus). */
 const WATER_ANIM_MS = 560;
 
+/**
+ * M10-frame-tail-batching (#11990): Mindestabstand zwischen zwei Chunk-Installs,
+ * WENN mehrere fertig gemalte Chunks anstehen (typisch direkt nach Chunk-Grenz-
+ * ueberfahrt). Jeder Install erzeugt eine Canvas-Textur und stoesst per
+ * texture.refresh() einen GPU-Upload an (512 px, Wasser-Chunks 3 Stufen) —
+ * ein Render-Thread-Stall, der im gfxinfo-Janky sichtbar wird, ohne dass der
+ * rAF-dt steigt (Beleg: .evidence/m10-frame-tail-batching/before-device-frames.json,
+ * Chunk-Installs bei dt 8,3 ms, aber gfxinfo p95 22/p99 36 ms). Genau 1 fertiger
+ * Chunk (Steady-State) wird sofort installiert, kein kuenstlicher Delay.
+ */
+export const CHUNK_INSTALL_MIN_INTERVAL_MS = 12;
+
+/** Rein/testbar: darf dieser Frame einen Chunk installieren? */
+export function chunkInstallDue(
+  readyCount: number,
+  msSinceLastInstall: number,
+  intervalMs: number = CHUNK_INSTALL_MIN_INTERVAL_MS,
+): boolean {
+  if (readyCount <= 0) return false;
+  if (readyCount === 1) return true;
+  return msSinceLastInstall >= intervalMs;
+}
+
 interface ChunkEntry {
   image: Phaser.GameObjects.Image;
   key: string;
@@ -199,6 +222,8 @@ export class GroundRenderer {
   private readonly inflight = new Map<string, number>();
   private readonly queue: ChunkJob[] = [];
   private readonly ready: ReadyChunk[] = [];
+  /** M10-frame-tail-batching: Sim-Zeit des letzten Chunk-Installs (Glättung). */
+  private lastInstallMs = Number.NEGATIVE_INFINITY;
   /** Sync-Fallback (kein Worker): höchstens ein Chunk pro Frame. */
   private syncBudget = 1;
   private fireflies: Firefly[] = [];
@@ -290,7 +315,7 @@ export class GroundRenderer {
       }
     }
     this.dispatch(centerX, centerY);
-    this.finalizeReady(centerX, centerY);
+    this.finalizeReady(centerX, centerY, timeMs);
 
     // Sync-Fallback: höchstens einen Chunk pro Frame, damit kein Totalausfall.
     if (!this.worker) {
@@ -654,15 +679,18 @@ export class GroundRenderer {
     }
   }
 
-  /** Fertige Worker-Bitmaps einbauen, hoechstens einen Chunk pro Frame. */
-  private finalizeReady(centerX: number, centerY: number): void {
-    if (this.ready.length === 0) return;
+  /** Fertige Worker-Bitmaps einbauen — installs/Uploads über die Zeit glätten. */
+  private finalizeReady(centerX: number, centerY: number, timeMs: number): void {
+    // M10-frame-tail-batching: Obergrenze je Frame (1 Install) + Mindestabstand
+    // bei Rueckstau (chunkInstallDue); 1 fertiger Chunk im Steady-State bleibt sofort.
+    if (!chunkInstallDue(this.ready.length, timeMs - this.lastInstallMs)) return;
     this.ready.sort((a, b) => {
       const da = (a.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (a.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
       const db = (b.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (b.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
       return da - db;
     });
     const job = this.ready.shift()!;
+    this.lastInstallMs = timeMs;
     if (this.counters) this.counters.readyInstalled++;
     const textureKey = `chunk_${job.key.replace(",", "_")}`;
     if (this.buildChunkTexture(textureKey, job.bitmaps, job.cx, job.cy)) {

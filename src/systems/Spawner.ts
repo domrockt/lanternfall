@@ -34,6 +34,35 @@ export function accrueSpawnAllowance(acc: number, dt: number): number {
 }
 
 /**
+ * M10-frame-tail-batching (#11990): Obergrenze fuer den DEBUG-Spawn-Pfad
+ * (`queueEnemyWave`, vom Mess-/Verify-Harness ueber `window.__lf.spawnEnemy`
+ * genutzt). Der 50-ms-Top-up des Harness spawnte bis zu 300 Gegner in EINEM
+ * Aufruf im rAF-Tick — der daraus folgende Frame lag am Geraet bei 33-58 ms
+ * (Beleg: ~/games/.evidence/m10-frame-tail-batching/before-device-frames.json,
+ * dt-Nachlauf nach Top-up-Gruppen 41,6/33,4/25 ms). Die Runtime-Spawns werden
+ * jetzt ueber Frames verteilt; Positionen/RNG-Reihenfolge entstehen sofort und
+ * sind identisch zum bisherigen Verhalten. Der natuerliche Director-Pfad
+ * (update) ist unveraendert; kleine Spiel-Spawns (Dawn-Ereignis, Elite-Tier-
+ * Aufnahmen) bleiben ueber spawnEnemy() sofort.
+ */
+export const SPAWN_DEBUG_BATCH_PER_FRAME = 30;
+
+/** Ein in der Debug-Queue wartender Spawn (Position/Optionen bereits fest). */
+export interface QueuedSpawn {
+  def: EnemyDef;
+  x: number;
+  y: number;
+  elite: boolean;
+  hpScale: number;
+}
+
+/** Rein/testbar: entnimmt bis zu `cap` Eintraege (Reihenfolge erhalten). */
+export function drainSpawnQueue<T>(queue: T[], cap: number): { now: T[]; rest: T[] } {
+  const n = Math.max(0, Math.min(cap, queue.length));
+  return { now: queue.slice(0, n), rest: queue.slice(n) };
+}
+
+/**
  * Wellen-Director: Spawnrate/Mischung pro Minute aus `waves.ts`, Spezialwellen
  * (Ring-Einkesselung, Schwarm-Strom), Elite-Pakete, Gegner-Cap mit Recycling.
  * Alle 30 Gegner sind spielbar.
@@ -58,6 +87,8 @@ export class Spawner {
   // naeherungsweise — siehe logic/waves.ts). Spezialwellen/Boss-Spawns
   // laufen nicht durch den Deckel.
   private spawnAllowance = 0;
+  /** M10-frame-tail-batching: Debug-Spawns, die noch verteilt werden. */
+  private readonly debugQueue: QueuedSpawn[] = [];
   private readonly pool: EnemyPool;
   private readonly rng: Rng;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
@@ -79,6 +110,10 @@ export class Spawner {
 
   update(elapsedSeconds: number, dt: number, playerX: number, playerY: number): EnemyRuntime[] {
     const spawned: EnemyRuntime[] = [];
+    // M10-frame-tail-batching: wartende Debug-Spawns zuerst abtragen (vor der
+    // Wave-Logik, damit die Positionen exakt in der angefragten Reihenfolge
+    // materialisieren).
+    this.drainDebugQueue();
     const wave = this.currentWave(elapsedSeconds);
     if (wave.minute !== this.lastMinute) {
       this.lastMinute = wave.minute;
@@ -223,6 +258,40 @@ export class Spawner {
       }));
     }
     return out;
+  }
+
+  /**
+   * M10-frame-tail-batching: Debug-/Mess-Spawns ueber Frames verteilen.
+   * Berechnet ALLE Positionen sofort (gleiche RNG-Reihenfolge wie spawnEnemy:
+   * Winkel, Radius, Clamp), legt sie in die Queue und materialisiert sie im
+   * update() mit hoechstens SPAWN_DEBUG_BATCH_PER_FRAME je Frame. Rueckgabe =
+   * angefragte Anzahl (Semantik von debugSpawnEnemy bleibt erhalten).
+   * Nur fuer das Debug-Harness — nicht fuer Spielereignisse (dort spawnEnemy).
+   */
+  queueEnemyWave(id: EnemyId, n: number, playerX: number, playerY: number, elite = false): number {
+    const def = ENEMIES[id];
+    if (!def) throw new Error(`queueEnemyWave: unbekannter Gegner "${id}"`);
+    const count = Math.max(0, Math.floor(n));
+    const hpScale = this.hpScaleFor(this.elapsed()) * (elite ? 3 : 1);
+    for (let i = 0; i < count; i++) {
+      const angle = this.rng.next() * Math.PI * 2;
+      const radius = 90 + this.rng.next() * 90;
+      const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * radius, 20, WORLD_SIZE - 20);
+      const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * radius, 20, WORLD_SIZE - 20);
+      this.debugQueue.push({ def, x, y, elite, hpScale });
+    }
+    return count;
+  }
+
+  /** Verteilt wartende Debug-Spawns auf den aktuellen Frame (Obergrenze fix). */
+  private drainDebugQueue(): void {
+    if (this.debugQueue.length === 0) return;
+    const { now, rest } = drainSpawnQueue(this.debugQueue, SPAWN_DEBUG_BATCH_PER_FRAME);
+    this.debugQueue.length = 0;
+    for (const q of now) {
+      this.spawnAt(q.def, q.x, q.y, { elite: q.elite, hpScale: q.hpScale });
+    }
+    this.debugQueue.push(...rest);
   }
 
   /** Direkter Spawn (Bosse, Splitter-Kinder, Summoner-Minions). */
