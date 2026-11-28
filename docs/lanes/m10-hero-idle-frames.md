@@ -61,3 +61,41 @@ aktiven Texture-Key über Zeit:
 
 Kein Draw-Pfad geändert, `src/scenes/Run.ts` nur gelesen (`idlePhase`, 2 fps; `walkPhase`, 9 fps).
 Anmerkung: CharSelect-Index 0 = Mira, Index 1 = Kael (Taste „2“) — im Skript dokumentiert.
+
+## Karte #4 — Regressionstest + After-Belege
+
+- `tests/hero-idle-frames.test.ts` (4 Tests, grün): Idle-Sätze vorhanden (2 Frames je
+  Held/Richtung + PLAYER_FRAMES-Verdrahtung), Idle-Versatz ≥ 100 px (gemessen 313–433),
+  0 Dubletten im 4-Richtungs-Lauf **und** Idle-vs-Walk (Idle F1 darf kein Lauf-Frame sein;
+  Idle F0 == Walk F0 ist als Ruhepose = Kontaktpose erlaubt — Design-Entscheidung M4-02),
+  0 Off-Palette-Pixel (nur Indizes 0–31).
+- `shots/m10-hero-idle-after.json` — Zusammenfassung: 0 Lauf-Dubletten, Idle-Versatz
+  313–433 px, 0 Off-Palette, Runtime-Umschaltung Kael/Mira = true, 0 JS-Fehler.
+- `npm run build` grün; `npm test` grün (128 Files / 1365 Tests).
+- **Fremd-Berührung (nur lesen/revertieren):** `tests/passive-stack.test.ts` schreibt bei jedem
+  Lauf Timestamps in `shots/m10-passive-math-{caps,matrix}.json` (fremde Dateien). Nach dem
+  Testlauf revertiert — kein Content-Diff, nur `generatedAt`.
+- art-director-Urteil: siehe unten.
+
+## art-director-Urteil (2026-11-28)
+
+**PASS — beide Helden, je 4/5 (Abnahme ≥ 4/5 erfüllt).**
+- **Idle-Paar 4,5/5:** Versatz (dx=0, dy=+1) — nach reiner 1px-Translation bleiben nur 11 px
+  Restdifferenz (Mira) / 13 px (Kael) = echter Atem-Bob mit Bodenkontakt der Füße; dazu
+  Glut-Wechsel der Laterne (228,87,77 → 255,215,122). Timing 2 Hz auf realDt, sauberer
+  Key-Wechsel im Runtime-Sample, kein Ruckeln.
+- **Lauf-Frames 4/5:** alle 12 Satz-Paare paarweise distinkt (Silhouetten-Diff 4–16 px,
+  Farbdiffs 313–487 px); side zeigt 4 echte Phasen (Kontakt A → Durchschwung vorn →
+  Kontakt B → Durchschwung hinten), down/up wechselseitiger Boot-Lift (Mira 2 px, Kael 1 px
+  „stampfend“ — passt zur schweren Figur). Walk-Takt 9 fps rhythmisch korrekt.
+- **Silhouette/Palette 4,5/5:** 0 Off-Palette-Pixel (15 Farben Mira, 23 Kael, alle aus
+  palette.ts), 1-px-Ink-Kontur (nicht reines Schwarz), Licht oben-links mit ≥3 Stufen pro
+  Material, Walk-up echte Rückenansicht.
+- **In-Game 4/5:** beide Helden im Terrain klar lesbar, Laternen-Akzent mit Lichtkreis sichtbar.
+- Nicht-blockierende Nachbesserungsidee für späteres Polierbudget: down/up F1 vs F3
+  (gespiegelte Passing-Phasen) unterscheiden sich silhouettenseits nur um 6 px (Mira);
+  optional Boot-Lift 2→3 px oder 1 px Fußspreizung.
+
+## Abschluss
+
+Alle 4 Karten committet (`#8378`–`#8381`), Abnahme erfüllt. `.lane-done` folgt als eigener Commit.

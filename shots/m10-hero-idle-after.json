@@ -1,0 +1,61 @@
+{
+ "lane": "m10-hero-idle-frames",
+ "befund": "Idle-Satz (2 Frames/Held/Richtung) + Umschaltung bereits seit M4-02 (e778827) vorhanden; Lane = Verifikation + Regressionstest",
+ "walkDuplicates": [],
+ "idleVersatz": [
+  {
+   "char": "mira",
+   "dir": "down",
+   "diffPx": 387
+  },
+  {
+   "char": "mira",
+   "dir": "up",
+   "diffPx": 408
+  },
+  {
+   "char": "mira",
+   "dir": "side",
+   "diffPx": 319
+  },
+  {
+   "char": "kael",
+   "dir": "down",
+   "diffPx": 430
+  },
+  {
+   "char": "kael",
+   "dir": "up",
+   "diffPx": 433
+  },
+  {
+   "char": "kael",
+   "dir": "side",
+   "diffPx": 313
+  }
+ ],
+ "idleEqualsWalkF0": [
+  {
+   "char": "mira",
+   "dir": "down"
+  },
+  {
+   "char": "mira",
+   "dir": "up"
+  },
+  {
+   "char": "kael",
+   "dir": "down"
+  },
+  {
+   "char": "kael",
+   "dir": "up"
+  }
+ ],
+ "offPalettePixels": 0,
+ "runtimeUmschaltung": {
+  "kael": true,
+  "mira": true
+ },
+ "jsErrors": []
+}
