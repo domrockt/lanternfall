@@ -300,6 +300,9 @@ export class EnemyProjectilePool {
     const telegraph = this.acquireTelegraph(texture);
     if (!telegraph) {
       // Pool-Cap erreicht: lieber verwerfen als nach der Vorwarnung stumm zu feuern.
+      // Budget-Slot zurueckgeben (Review-Hinweis #7491): der Slot soll einem
+      // Schuetzen zugutekommen, der tatsaechlich feuern kann.
+      this.frameGrants -= 1;
       this.stats.cancelledNoTelegraph += 1;
       return null;
     }

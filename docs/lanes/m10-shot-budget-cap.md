@@ -52,6 +52,9 @@ UNDE Lesbarkeitsproblem (m10-shot-clarity). Kein Anfassen von Spieler-Projektile
   Telegraph-Flood-Test stellt `launchBudgetPerFrame: 200` (der Test floodet 96+
   Spawns in EINEM Fenster und prueft das Telegraph-Cap, nicht das neue Frame-Budget);
   Intention und Assertions unveraendert.
+- Reviewer-Nachbesserung (nicht blockierend war): schlaegt `acquireTelegraph()`
+  nach erteiltem Budget-Slot fehl (Telegraph-Pool-Cap 96), gibt `spawn()` den Slot
+  zurueck (`frameGrants -= 1`) — kein Slot-Verbrauch ohne Schuss.
 
 Startwert 160: Vorher-Chaos 500er 240 gleichzeitige -> <= 160 (−33 %), 300er
 158 -> 108 (−32 %). Normaler Spielbetrieb (Bench 13 % Schuetzen, ~86 aktiv +
