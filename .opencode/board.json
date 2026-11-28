@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7490,
+  "next": 7495,
   "cards": [
     {
       "id": 1,
@@ -9094,6 +9094,57 @@
       "notes": [],
       "created": "2026-11-28T01:53:48Z",
       "updated": "2026-11-28T01:53:48Z"
+    },
+    {
+      "id": 7490,
+      "title": "m10-shot-budget-cap #1 Vorher-Messung",
+      "description": "Bench+Chaos-Ist: scripts/m10-shot-path.mjs (Schuss-Pfad ms/Frame, aktive Schuesse) + scripts/m10-shot-clarity.mjs (300/500 Chaos) -> shots/m10-shot-budget-cap-before.json (Projektil-Zeitscheibe, Draw-Calls/aktive Schuesse, FPS-Min Basis). Abnahme: JSON committed, Ist-Zahlen in Doku notiert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:59:51Z",
+          "by": "build",
+          "text": "todo → doing: Vorher-Messung gestartet (Bench + Chaos-Ist)"
+        }
+      ],
+      "created": "2026-11-28T01:59:50Z",
+      "updated": "2026-11-28T01:59:51Z"
+    },
+    {
+      "id": 7491,
+      "title": "m10-shot-budget-cap #2 Cap + faire Zuteilung",
+      "description": "EnemyProjectiles.ts: hartes Concurrent-Cap (active+pending <= CAP) + pro-Frame-Launch-Budget N mit Rotation ueber die Schuss-Anrufe (kein Starving), Ueberschuss verworfen (Cooldown bleibt, neuer Stat cancelledBudgetCap). Abnahme: bei Volllast active+pending <= Cap; Tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:59:50Z",
+      "updated": "2026-11-28T01:59:50Z"
+    },
+    {
+      "id": 7492,
+      "title": "m10-shot-budget-cap #3 Pool-Recycle belegen",
+      "description": "Belegen, dass freie Projektile sofort recycelt werden, keine Allokation im Steady-State (EnemyProjectilePool free-Listen; ProjectilePool.ts nur lesen/pruefen). Abnahme: Test in tests/shot-budget-cap.test.ts zeigt Recycle ohne Leak.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:59:50Z",
+      "updated": "2026-11-28T01:59:50Z"
+    },
+    {
+      "id": 7493,
+      "title": "m10-shot-budget-cap #4 Tests",
+      "description": "tests/shot-budget-cap.test.ts: Cap haelt, Fairness (alle Schuetzen kommen dran, max. Wartezeit beschraenkt), Recycle ohne Leak. Abnahme: vitest gruen + npx tsc --noEmit rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:59:50Z",
+      "updated": "2026-11-28T01:59:50Z"
+    },
+    {
+      "id": 7494,
+      "title": "m10-shot-budget-cap #5 Nachher-Messung + Doku",
+      "description": "After-Messung (Bench + Chaos) -> shots/m10-shot-budget-cap-after.json; docs/lanes/m10-shot-budget-cap.md mit Vorher/Nachher inkl. Draw-Beitrag (Ziel: -20%) und FPS-Min bei 640x360/780x360@3. Abnahme: Doku committed, Kennzahlen erfuellt.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:59:50Z",
+      "updated": "2026-11-28T01:59:50Z"
     }
   ]
 }
