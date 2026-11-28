@@ -10438,10 +10438,16 @@
       "id": 8400,
       "title": "m10-boss-portrait-crisp K3: Guard-Test boss-portrait-crisp.test.ts",
       "description": "Owner: test-auditor. AK: tests/boss-portrait-crisp.test.ts (6/6 Bosse, 0 Off-Palette-Pixel, Silhouetten-Kontrast >= Vorher, keine Frame-Dubletten) grün; npm test bleibt grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T04:58:15Z",
+          "by": "build",
+          "text": "todo → doing: Start K3: Guard-Test liegt vor, 5/5 grün auf Baseline und nach K2; Commit folgt."
+        }
+      ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:11Z"
+      "updated": "2026-11-28T04:58:15Z"
     },
     {
       "id": 8401,
