@@ -1,0 +1,19 @@
+# Lane m10-charstats-ssot — fertig 2026-11-28
+
+Alle 4 Karten (#10748–#10751) done, je ein Commit (2365500c, bbf8cf36, 4debf536, dc2d0495).
+
+**Was:** Charakter-Daten Richtung GAME.md-Spec (Z. 34/35) gebracht. K1 Audit-Tabelle (je Held/Feld, mit
+GAME.md- und Code-Zeilen) in docs/lanes/m10-charstats-ssot.md. K2 Fix: mira.hp 250→90 (Befund art-director:
+CharSelect zeigte „HP 250"); truth-Snapshot regeneriert, Anzeige==Daten unverletzt. K3 Guard-Test
+tests/charstats-ssot.test.ts pinnt HP 90/130, Tempo, Startwaffen + relative Checks. K4 Beleg-Skript
+scripts/m10-charstats-ssot.mjs: 20 Anzeigezeilen, 0 Abweichungen, 0 JS-Fehler; Sichtbeleg
+shots/abnahme/m10-charstats-charselect-640.png (Mira „HP 90" gesehen), JSON in ~/games/.evidence/m10-charstats-ssot/.
+
+**Nachweise:** npm test 1932/1932 grün (178 Dateien), npx tsc --noEmit rc=0, npm run build rc=0.
+Kein Eingriff in src/scenes/CharSelect.ts, src/input/**, src/data/types.ts (nur gelesen).
+
+**Offen (Fragen an Dom, coding-brain/Lead/Fragen an Dom.md + Lane-Doku):** F2 Mira-HP 90 vs M6-Balance-250
+(Korridor mit 250 getunt — ggf. Balance-Neuprüfung); F3 Kael-Tempo-Doppel-Abzug (eff. ≈56 statt ≈58,9 px/s);
+F4 Kael maxHpPct 25 vs Spec +20 % (fremder Test pinnt 25 bewusst); F5 Kael-Rüstung 2 vs Spec „1 Rüstung";
+F1 schweigende Felder (armor/regen/maxHpFlat/xpPct). Diese Felder wurden NICHT geändert (Erfindungsverbot +
+fremde gepinnte Tests tests/data.test.ts / tests/charselect-truth.test.ts liegen außerhalb des Claims).
