@@ -485,6 +485,81 @@ der Lead aus dem Befund; in dieser Lane wurde bewusst NICHT gefixt.
 Abnahme-Bilder: `shots/abnahme/m10-v10-device-*.png` (im Repo). GPU-Renderer jedes Belegs:
 `Adreno (TM) 710` (kein SwiftShader → Belege gültig).
 
+## Nachtrag v1.0-Gerätetore (2026-11-28, 17:45Z ff.) — nur Ergänzungen, historische Werte oben unangetastet
+
+### 120-Hz-A/B am Gerät (17:45Z) — Tablet-Tor BESTANDEN (Dom-Freigabe)
+
+Claude-A/B auf dem Redmi Pad Pro über device-bridge, gleiche Szene (Minute-25-Dichte,
+262–344 Gegner per Nachschub, 6 Evolutionen). Quelle: „Wünsche von Dom.md",
+Abschnitt „2026-11-28 17:45Z — TABLET-TOR BESTANDEN" (`~/games/coding-brain/Lead/Wünsche von Dom.md`):
+
+| Panel | FPS | rAF p95 | rAF max | gfxinfo janky |
+|---|---|---|---|---|
+| 60 Hz (APK-Lock, Standard) | 60,0 | 16,8 ms | 16,8 ms | 0 % |
+| 120 Hz (`hz=max`) | 118,5 | 8,4 ms | 33,3 ms | 11,8 % |
+
+→ Gerät-Tor für v1.0 **bestanden** (Dom: „Macht noch den 120-Hz-Test, dann gilt es für
+mich als bestanden"). Standard bleibt **60-Hz-Panel + 60-FPS-Cap** (perfekt gleichmäßig,
+kühler, Akku). Einordnung zum K3-FAIL der Erstmessung oben (13,44 %/13,90 %): bei
+120 Hz zählt gfxinfo einen Frame als janky, wenn er die **8,3-ms-Deadline** verpasst —
+das Spiel rendert ~110–118 FPS, ein Teil der Frames reißt die 120-Hz-Deadline
+zwangsläufig, obwohl das Bild flüssig wirkt; bei 60 Hz (Standard) liegt janky bei 0 %.
+Folgepunkt (klein, nicht v1.0-blockierend): Menü-Option „Bildrate: max" soll den
+60-Hz-Panel-Wunsch der App aufheben (JS→Android-Bridge oder lfhz-Pref beim nächsten
+Start), sonst bringt „max" am Gerät nichts; Bridge kann `/launch?...&hz=max`.
+Nächster Schritt laut Dom: **m10-v10-final-run und m10-v10-release-prep freigeben.**
+
+### Tor-Priorität fps-pacing: FPS avg + rAF-p95 primär (nach `merge-m10-v10-gate-torprio`)
+
+Grundlage: Nachmessung des K3-Tors in Lane `m10-janky-remeasure`
+(`docs/lanes/m10-janky-remeasure.md`, Belege `~/games/.evidence/m10-janky-remeasure/`):
+**gfxinfo-janky ist als alleinige Tor-Metrik unbrauchbar** — 0 % janky (0/29 058 Frames)
+bei FPS avg **50,1** (< 60) und rAF-p95 **33,4 ms** (> 16 ms), identisch bei BILDRATE 60
+und MAX (Build `0ce7164a` mit stackfix, Panel-Probe 60 Hz, Thermal 0, 0 JS-Fehler, keine
+Loop-Tötung). Das Frame-Pacing rutscht auf ein bimodales 2-Vsync-Raster (16,7/33,4 ms).
+
+Das v10-Host-Gate (`scripts/m10-v10-gate.mjs`) wertet seit `merge-m10-v10-gate-torprio`
+daher als Tor 1/2: **FPS avg ≥ 57** und **rAF-p95 ≤ 16 ms**; **gfxinfo-janky ≥ 10 % ist
+nur noch eine Warnung, nie allein ein FAIL** (Rückweg zur alten strengen Lesart per Flag
+`--janky-as-gate`; Renderer-Pflicht unangetastet — SwiftShader-Belege ungültig). Doku und
+Urteils-Pinning: `docs/lanes/m10-v10-gate-torprio.md`, `tests/v10-gate.test.ts` (24 Tests).
+Der historische K3-FAIL der Erstmessung oben („gfxinfo janky 13,44 %/13,90 %") bleibt als
+Erstmessungs-Beleg stehen; die verbindliche Tor-Lesart dazu ist diese hier.
+
+### v10-Host-Gate-Rerun auf aktuellem main (`11f929c7`, 17:16–17:22Z)
+
+Zwei Gate-Läufe (`scripts/m10-v10-gate.mjs`, Viewport 960×540, iGPU
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`, kein SwiftShader;
+Belege `~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json`, Doku
+`docs/lanes/m10-v10-gate-rerun.md`):
+
+| Tor | Guard-Lauf 3 (15:57Z, Referenz) | Rerun Lauf 1 | Rerun Lauf 2 | Urteil (aktuelles main) |
+|---|---|---|---|---|
+| renderer-pflicht / content-counts | PASS 30/6/6/6/6/2 | PASS | PASS | **PASS** |
+| frame-p95 (nur dokumentiert, kein Urteilstreiber) | 16,8 ms / worst 16,9 (cap-quantisiert) | **2,0 ms** / worst 11,5 | **1,9 ms** / worst 7,4 | **PASS** |
+| heap-retained | PASS +8,1 % | PASS +8,8 % | PASS +8,8 % | **PASS** |
+| js-errors-0 | PASS | **FAIL — 13 Fehler** | **FAIL — 13 Fehler** | **FAIL** |
+| fullrun-inhalt | PASS | FAIL (nur Folgetor von js-errors-0; Inhalt selbst grün: dawn, completed) | dito | **FAIL** (Folgetor) |
+
+**Verbindliches Urteil: FAIL — ausschließlich `js-errors-0`** (13× „Texture key already
+in use: chunk_*" im Fullrun-Guard, in beiden Läufen reproduziert; Perf-Pass und
+verify:final je 0 Fehler), `fullrun-inhalt` nur als Folgetor desselben Befunds. Alle
+übrigen Host-Tore PASS.
+
+### Querverweise — Roh-Belege (außerhalb des Repos, `~/games/.evidence/`)
+
+| Beleg | Pfad | Inhalt |
+|---|---|---|
+| janky-remeasure K2/K3 | `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json`, `k3-max-device.json`, `smoke.json` | Gerätemessung Cap 60 / MAX: janky 0 %, FPS avg 50,1/50,0, rAF-p95 33,4 ms |
+| v10-Gate-Rerun | `~/games/.evidence/m10-v10-gate-rerun/run1.json`, `run2.json` | Tor-Urteile main `11f929c7`: FAIL nur `js-errors-0` + Folgetor |
+| Gate-torprio Vorher/Nachher | `~/games/.evidence/m10-v10-gate-torprio/…-vorher.json`, `…-nachher.json` | Urteilswechsel am identischen Input (Szenario A/B) |
+| Gate-Guard Referenz | `~/games/.evidence/m10-v10-gate-guard/gate-final-run3.json` | historischer FAIL(frame-p95-only), 15:57Z |
+| Heap-Gate-Recovery (G-Nachtrag) | `~/games/.evidence/m10-heap-gate-recovery/k1-run1.json`, `k1-run2-retry.json` | HARD −25,2 % (endMB 48,5 vs. Minute-1 64,8) — Zahlen hier gegen die JSONs verifiziert |
+
+Zahlen in diesem Nachtrag wurden ausschließlich aus „Wünsche von Dom.md" (17:45Z), den
+Lane-Dokus (`docs/lanes/m10-janky-remeasure.md`, `m10-v10-gate-torprio.md`,
+`m10-v10-gate-rerun.md`) und den JSON-Belegen oben übernommen; nichts aus dem Gedächtnis.
+
 ## Nachabnahme G (2026-11-28) — Nachabnahme nach Heap-Regressions-Fix
 
 **Basis:** main @ `b69ede5c` (nach `9153181d` Merge `m10-heap-regression-fix`).

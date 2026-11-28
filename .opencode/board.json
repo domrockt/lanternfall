@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13806,
+  "next": 13830,
   "cards": [
     {
       "id": 1,
@@ -19692,6 +19692,106 @@
       ],
       "created": "2026-11-28T17:48:27Z",
       "updated": "2026-11-28T17:57:23Z"
+    },
+    {
+      "id": 13826,
+      "title": "m10-acceptance-tor-sync K1: Bestand aufnehmen (Gerätetore-Abschnitt, Nachträge je Abschnitt prüfen)",
+      "description": "ACCEPTANCE.md v1.0-Gerätetore-Abschnitt (main @ 5664a7fc) lesen; spätere Einträge (heap-gate-recovery G-Zahlen, v10-gate-rerun-Urteil, torprio-Umstellung) je Abschnitt prüfen. Historische Abschnitte unangetastet, nur Ergänzungen. AK: Befundliste in docs/lanes/m10-acceptance-tor-sync.md mit Zahlenbeleg.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:48:45Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet: Bestand aufnehmen"
+        },
+        {
+          "at": "2026-11-28T17:50:36Z",
+          "by": "build",
+          "text": "K1 fertig: Bestand aufgenommen, Befundtabelle in docs/lanes/m10-acceptance-tor-sync.md (K1). 17:45Z-Tabelle gelesen (Pfad bestätigt), K2 nicht blockiert."
+        },
+        {
+          "at": "2026-11-28T17:51:10Z",
+          "by": "build",
+          "text": "doing → review: K1 committed dcd0390f: Befundtabelle K1 in docs/lanes/m10-acceptance-tor-sync.md, Belegpfade geprueft"
+        },
+        {
+          "at": "2026-11-28T17:58:36+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13726, Merge branch m10-acceptance-tor-sync"
+        }
+      ],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:51:10Z"
+    },
+    {
+      "id": 13827,
+      "title": "m10-acceptance-tor-sync K2: 120-Hz-A/B-Nachtrag (Wünsche 17:45Z) in ACCEPTANCE.md",
+      "description": "Tabelle 60 Hz vs. 120 Hz aus Wünsche von Dom.md 17:45Z (60 Hz: 60,0 FPS / rAF p95 16,8 ms / janky 0 %; 120 Hz: 118,5 FPS / 8,4 ms / 11,8 %; Quelle device-bridge Claude-A/B, Minute-25-Dichte) + Dom-Freigabe 'Tablet-Tor bestanden' + Standard 60-Hz-Panel + 60-FPS-Cap ergänzen. AK: Nachtrag im v1.0-/G-Kontext, keine historischen Werte überschrieben.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:51:10Z",
+          "by": "build",
+          "text": "todo → doing: 120-Hz-Nachtrag in ACCEPTANCE.md wird eingefuegt"
+        },
+        {
+          "at": "2026-11-28T17:52:17Z",
+          "by": "build",
+          "text": "doing → review: K2 committed a9dd66d8: 120-Hz-A/B-Tabelle + Dom-Freigabe + Standard 60 Hz/Cap 60 im Nachtrag, npm test 2568/2568 gruen (regenerierte Timestamp-shots zurueckgesetzt)"
+        },
+        {
+          "at": "2026-11-28T17:58:36+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13727, Merge branch m10-acceptance-tor-sync"
+        }
+      ],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:52:17Z"
+    },
+    {
+      "id": 13828,
+      "title": "m10-acceptance-tor-sync K3: Blocker-Status korrigieren (fps-pacing-Tor-Lesart)",
+      "description": "FPS avg + rAF-p95 als Tor-Metriken nach merge-m10-v10-gate-torprio dokumentieren; gfxinfo-janky nur Beobachtung; Verweis auf docs/lanes/m10-janky-remeasure.md und m10-v10-gate-torprio.md. AK: K3-janky-FAIL im Gerätetore-Abschnitt mit aktueller Tor-Lesart kontextualisiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:52:03Z",
+          "by": "build",
+          "text": "todo → doing: Blocker-Status/Tor-Prioritaet wird ergaenzt"
+        },
+        {
+          "at": "2026-11-28T17:53:01Z",
+          "by": "build",
+          "text": "doing → review: K3 committed 1268189d: Tor-Prioritaet (fps-avg>=57, p95<=16ms primar; janky nur Warnung) + Rerun-Urteilstabelle im ACCEPTANCE-Nachtrag"
+        },
+        {
+          "at": "2026-11-28T17:58:36+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13728, Merge branch m10-acceptance-tor-sync"
+        }
+      ],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:53:01Z"
+    },
+    {
+      "id": 13829,
+      "title": "m10-acceptance-tor-sync K4: Abgleich + Querverweise auf Belege, Lane-Doku, npm test, Commit",
+      "description": "Querverweise auf Belege (~/games/.evidence/m10-janky-remeasure/, m10-v10-gate-rerun/) ergänzen; Zahlen nur aus Belegen. AK: npm test 0 fail, diff nur Ergänzungen im v1.0-/G-Kontext, Befunde mit Zahlenbeleg in docs/lanes/m10-acceptance-tor-sync.md.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T17:53:01Z",
+          "by": "build",
+          "text": "todo → doing: Querverweise + Lane-Doku-Abschluss + finale Pruefung"
+        },
+        {
+          "at": "2026-11-28T17:58:36+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13829, Merge branch m10-acceptance-tor-sync (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:53:01Z"
     }
   ]
 }
