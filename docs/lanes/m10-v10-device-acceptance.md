@@ -144,3 +144,25 @@ Beleg: `~/games/.evidence/m10-v10-device-acceptance/10min-device.json`
   Temperaturverlauf 33–35 °C spricht für normales Laden/Entladen ohne thermische Drossel.
 
 Status: K4 gemessen 2026-11-28. Board #11311.
+
+## K5 — Text in allen Panels lesbar, kein Auflösungs-Teiler — **PASS**
+
+Belege: `~/games/.evidence/m10-v10-device-acceptance/panels/` (5 Gerät-Screencaps + `panels.json`,
+Skript `scripts/m10-v10-device-panels.mjs`); Abnahme-Bilder im Repo: `shots/abnahme/m10-v10-device-{title,charselect,levelup,chest,results}.png`
+(Briefing nannte `shots/m10-v10-device-*`; `shots/*` ist in .gitignore ignoriert und würde still
+fallen — `shots/abnahme/` ist die laut Lane-Regeln getrackte Verzeichnis-Destimation, daher dorthin).
+
+- Gerät-Screencaps 2560x1600 (volle Gerätepixel), jeweils sichtgeprüft (2x nearest):
+  **Titel** (Lanternfall, Bestwerte, Menüs), **Charakterwahl** (Mira/Kael mit allen Werten),
+  **Level-Up** (3 Karten, Text scharf), **Truhe** („TRUHE GEÖFFNET — SANDUHR STUFE 1"),
+  **Ergebnis** („MORGENDÄMMERUNG", Statistik, Buttons) — alles gestochen scharf, keine
+  Streifen-/Zerfall-Artefakte im 1-px-Pixelschrift-Text.
+- **Kein Auflösungs-Teiler aktiv:** Canvas-Backing-Store **640x360** = volle logische Auflösung
+  (`RENDER_SCALE == 1`, keine Halbierung), CSS 1280x720, dpr 2, `quality = "high"` während
+  aller Messungen (K1–K4). Scale-Floor aus m10-android-scale-floor-r2 greift: der Laufzeit-
+  Regler hat den Buffer nie geteilt (Sonst-Beleg wäre canvas 320x180/213x120).
+- Methodik-Notiz: CDP `page.screenshot` liefert auf dem WebView identische/leere Frames —
+  Shots deshalb über `POST /screenshot` (Geräte-Screencap) der Bridge; autoPlay für den
+  Level-Up-Shot deaktiviert (Panel blieb sonst nicht offen).
+
+Status: K5 gemessen + gesehen 2026-11-28. Board #11312.
