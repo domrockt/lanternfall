@@ -1,0 +1,26 @@
+# Lane m10-touch-overlay-crisp — fertig (2026-11-28)
+
+Touch-Overlay (Joystick-Ring, Thumb/Knauf, Pause-Knopf) pixel-crisp: Draw-Fills
+in src/input/TouchControls.ts auf Deckkraft 1.0 (Ring bone + Ink-Kontur, Knauf
+boneLight, fogBlue-Innenrille), Pause bg 0.9 / Stroke 0.9, Balken zentriert
+(10/20, Randmargen 8/8). Draw-Geometrie als reine touchOverlaySpec(), Pause-
+Anker als pauseAnchor() (hud-safearea-Formel bytegleich). Geste-Semantik
+(joystickDeadzonePx, sectorWithHysteresis, Output-Eps, Latenz) unangetastet.
+
+Messwerte (scripts/m10-touch-overlay.mjs + -eval.mjs, 640x360@2 + 780x360@3,
+Sample dark + Laternen-Hotspot):
+- before: Ring/Knauf-Kontrast am Hotspot 1.01-1.19 (Gate 3.0), Farb-Drift
+  dark<->hot bis 68 Kanalstufen, Koerper off-palette (dist 18), Pause
+  bg 0.55 / Stroke 0.8 (Befundliste F1-F7 in docs/lanes/m10-touch-overlay-crisp.md).
+- after: 12/12 v2-Gates gruen — Koerper exakt Palettenfarbe (bone 184,196,194 /
+  boneLight 217,221,205, dist 0 => kein Blending), Delta dark<->hot 0,
+  Kontrast 4.97-14.54, Skalierung weiterhin ganzzahlig (pxPerGame 2/3).
+- art-director: PASS 4.5/5 (kein Muss; 2 nicht-blockierende Polish-Ideen:
+  Trennstrich Knauf-/Ringkontur, Innenring evtl. mist statt fogBlue).
+
+Qualitaet: npx tsc --noEmit gruen, npm run build gruen, npm test 1329/1329
+(einschl. neue tests/touch-overlay-crisp.test.ts, 7 Tests; input-latency,
+input, chest-lock-touch, touch-joystick-feel, hud-safearea unangetastet gruen).
+Commits: a21843d (#8118), 4819fd2 (#8119), 6e7ed8e (#8120), b85c365 (#8121).
+Scope eingehalten: nur Disponent-Dateien; src/scenes/Run.ts, src/scenes/UI.ts,
+src/logic/safearea.ts unveraendert; keine Bedarfsanfrage noetig.
