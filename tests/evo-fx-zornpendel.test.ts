@@ -101,12 +101,14 @@ describe("m10-evo-fx-zornpendel: Texturen in Zielgröße + Draw-Scale 1", () => 
     expect(signatureTextureKey("wrath_pendulum", "death")).toBe("fx_evo_death_wrath_pendulum");
   });
 
-  it("Signaturen-Registry: Phoenix/Soul/Zorn in Zielgröße, Rest Alt-Pfad", () => {
+  it("Signaturen-Registry: Phoenix/Soul/Zorn/Dornensturm in Zielgröße, Rest Alt-Pfad", () => {
     expect(EVOLUTION_SIGNATURES.phoenix.drawScale).toEqual([1, 1]);
     expect(EVOLUTION_SIGNATURES.soul_beacon.drawScale).toEqual([1, 1]);
     expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toEqual([1, 1]);
-    expect(EVOLUTION_SIGNATURES.thorn_storm.drawScale).toBeUndefined();
     expect(EVOLUTION_SIGNATURES.thunder_seal.drawScale).toBeUndefined();
+    // M10-evo-fx-dornensturm: Assertion folgt drawScale (Muster 0b3b563) —
+    // Dornensturm-Signatur jetzt ebenfalls Zielgröße 128 @ [1,1].
+    expect(EVOLUTION_SIGNATURES.thorn_storm.drawScale).toEqual([1, 1]);
   });
 });
 

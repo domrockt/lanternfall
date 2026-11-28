@@ -838,10 +838,13 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     drawScale: [1, 1],
   },
   // Dornensalve + Windstiefel: gruener Splitter-Kranz, mittleres Timing.
+  // M10-evo-fx-dornensturm: Signatur in Zielgroesse 128x128 gebacken, Draw-Scale 1
+  // (vorher 32x32 @ 4,0–4,6 = 188/354 Ink-Pixel).
   thorn_storm: {
     evolution: "thorn_storm", baseWeapon: "thorn", shape: "splitter",
     palette: [30, 31, 20], hitLifetime: 0.18, deathLifetime: 0.42,
     hitCount: 5, deathCount: 11,
+    drawScale: [1, 1],
   },
   // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
   thunder_seal: {
@@ -1985,6 +1988,84 @@ export function thornCrownFrame(stage: number): string[] {
   return rows.map((r) => r.join(""));
 }
 
+/**
+ * Dornensturm-Signatur am Ziel (128x128, 4 Frames, Draw-Scale 1 statt 32x32 @
+ * 4,0-4,6x mit 188/354 Ink): gebogene Dornen-Splitter (Zweig-Silhouette, Taper,
+ * einseitige Barben), die mit der Phase auseinanderfliegen; Kern flächig hell
+ * ohne Raster; Phase 3 löst Splitter in Fragmente auf (Ausklang). Knochen-
+ * helle Spitzen (11) nur an 2-3 px je Splitter (Near-White-Budget).
+ */
+export const THORN_SIGNATURE_SIZE = 128;
+
+export function thornSignatureFrame(kind: "hit" | "death", stage: number, size = THORN_SIGNATURE_SIZE): string[] {
+  const rows: string[][] = Array.from({ length: size }, () => Array<string>(size).fill("."));
+  const c = (size - 1) / 2;
+  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
+  const death = kind === "death";
+  const put = (x: number, y: number, idx: number): void => {
+    const ix = Math.round(x);
+    const iy = Math.round(y);
+    if (ix < 0 || iy < 0 || ix >= size || iy >= size) return;
+    rows[iy][ix] = charOf(idx);
+  };
+  // Splitter fliegen auseinander; Phase 3 bricht auseinander (Fragmente).
+  const burst = death ? 1.35 : 1.0;
+  const shards = death ? 7 : 4;
+  const ln = (death ? 19 : 13) * (0.7 + 0.3 * t);
+  for (let i = 0; i < shards; i++) {
+    if (stage === 3 && i % 3 === 1) continue; // Ausklang: jeder dritte Splitter weg
+    const a = (i / shards) * Math.PI * 2 + (death ? 0.3 : 0.75) + stage * 0.05;
+    const rr = shardRadius(burst, t, i);
+    const cx = c + Math.cos(a) * rr;
+    const cy = c + Math.sin(a) * rr;
+    const bend = (i % 2 === 0 ? 1 : -1) * 0.16; // organische Krümmung statt Gerade
+    for (let k = 0; k <= Math.ceil(ln); k++) {
+      const rel = Math.min(1, k / ln);
+      const w = Math.max(0.45, 2.0 * (1 - rel) ** 0.85 + 0.45);
+      const bendOff = Math.sin(rel * Math.PI * 0.8) * bend * ln;
+      const hx = cx + Math.cos(a) * k - Math.sin(a) * bendOff;
+      const hy = cy + Math.sin(a) * k + Math.cos(a) * bendOff;
+      for (let s = -Math.ceil(w); s <= Math.ceil(w); s++) {
+        const aS = Math.abs(s);
+        if (aS > w) continue;
+        // Treppe: knochenhelle Spitze → marshLight → marsh → mossDark-Basis.
+        const idx = rel < 0.15 && aS < w * 0.5 ? 11 : rel < 0.55 ? 31 : rel < 0.85 ? 30 : 29;
+        put(hx - Math.sin(a) * s, hy + Math.cos(a) * s, idx);
+      }
+      // Einseitige Barbe (keine Spiegel-Symmetrie).
+      if (rel > 0.3 && rel < 0.45) {
+        put(hx - Math.sin(a) * (w + 1.1), hy + Math.cos(a) * (w + 1.1), 28);
+        put(hx - Math.sin(a) * (w + 2.1), hy + Math.cos(a) * (w + 2.1), 30);
+      }
+    }
+    // Dunkle Spitzenkappe.
+    const kCap = Math.ceil(ln);
+    put(cx + Math.cos(a) * (kCap + 0.6) - Math.sin(a) * bend, cy + Math.sin(a) * (kCap + 0.6) + Math.cos(a) * bend, 28);
+  }
+  // Zentraler Splitter-Rest: flächiger heller Kern (kein Raster, kein Ink).
+  const coreR = death ? 5.5 : 4;
+  for (let y = -Math.ceil(coreR); y <= Math.ceil(coreR); y++) {
+    for (let x = -Math.ceil(coreR); x <= Math.ceil(coreR); x++) {
+      const d = Math.hypot(x, y);
+      if (d <= coreR) put(c + x, c + y, d < coreR * 0.55 ? 31 : 30);
+    }
+  }
+  // Abgelöste Fragmente (Ausklang, Phase 2/3) — 2-px-Tupfer statt Einzelpixel.
+  const frags = stage >= 2 ? (death ? 6 : 4) : 0;
+  for (let i = 0; i < frags; i++) {
+    const fa = (i / frags) * Math.PI * 2 + 0.9;
+    const fr = 30 + ((i * 13) % 14) + t * 16;
+    put(c + Math.cos(fa) * fr, c + Math.sin(fa) * fr * 0.92, i % 2 === 0 ? 30 : 29);
+    put(c + Math.cos(fa) * fr + 1, c + Math.sin(fa) * fr * 0.92, 31);
+  }
+  return rows.map((r) => r.join(""));
+}
+
+/** Startradius der Splitter je Phase (Aufbau eng, Impact weit). */
+function shardRadius(burst: number, t: number, i: number): number {
+  return (20 + ((i * 7) % 5) * 1.8 + t * 10) * burst;
+}
+
 function addEvolutionSignatures(scene: Phaser.Scene): void {
   // Zielgroessen-Pfad (Mixel-Regel, m10-evo-fx-phoenix + m10-evo-fx-soulpyre):
   // Signaturen mit drawScale werden in voller Display-Groesse gebacken und mit
@@ -1994,6 +2075,10 @@ function addEvolutionSignatures(scene: Phaser.Scene): void {
     soul_beacon: { size: SOUL_SIGNATURE_SIZE, frame: soulSignatureFrame },
     eternal_winter: { size: 128, frame: winterSignatureFrame },
     wrath_pendulum: { size: WRATH_SIGNATURE_SIZE, frame: wrathSignatureFrame },
+    // m10-evo-fx-dornensturm: thorn_storm registriert. thunder_seal bleibt beim
+    // 64er-Pfad (main nach Revert 34e97d3) — das 128er-Upgrade war Chaos-Lane (K2)
+    // und wird mit Karte #8876 neu verhandelt, hier nicht schmuggeln.
+    thorn_storm: { size: THORN_SIGNATURE_SIZE, frame: thornSignatureFrame },
   };
   for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
