@@ -1,0 +1,736 @@
+{
+  "tag": "before",
+  "generatedAt": "2026-11-28T03:40:21.628Z",
+  "matrix": {
+    "bosses": 6,
+    "seeds": [
+      101,
+      202,
+      404
+    ],
+    "simSecondsPerBoss": 30,
+    "timeScale": 3,
+    "crowd": 500
+  },
+  "thresholds": {
+    "leashRadius": 320,
+    "catchupAfterS": 2,
+    "viewMargin": 8
+  },
+  "totals": {
+    "runs": 18,
+    "damageWithoutVisibility": 47,
+    "leashViolations": 40,
+    "meanOffscreenFraction": 0.06,
+    "maxConsecOffscreenS": 5.8,
+    "maxDistPlayer": 386.1,
+    "hazardTriggers": 181
+  },
+  "jsErrors": 0,
+  "perSeed": [
+    {
+      "seed": 101,
+      "bosses": [
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 257.7,
+            "max": 386.1
+          },
+          "distSpawn": {
+            "mean": 734,
+            "max": 1429.5
+          },
+          "offscreenFraction": 0.58,
+          "maxConsecOffscreenS": 5.8,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 15,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 0,
+          "spawn": {
+            "x": 2192,
+            "y": 2036
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 86.8,
+            "max": 128.6
+          },
+          "distSpawn": {
+            "mean": 213.1,
+            "max": 275.8
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 1,
+          "spawn": {
+            "x": 1434,
+            "y": 3803
+          },
+          "simCovered": 29.6
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.5,
+            "max": 124.1
+          },
+          "distSpawn": {
+            "mean": 137.4,
+            "max": 156
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 2,
+          "spawn": {
+            "x": 1513,
+            "y": 3942
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.6,
+            "max": 126.6
+          },
+          "distSpawn": {
+            "mean": 196.7,
+            "max": 237.5
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 11,
+          "damageWithoutVisibility": 1,
+          "noVisDetail": [
+            {
+              "t": 276.43,
+              "src": "boss3:stone",
+              "launchedT": 275.33,
+              "everInView": false
+            }
+          ],
+          "seed": 101,
+          "index": 3,
+          "spawn": {
+            "x": 1694,
+            "y": 4066
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 80.1,
+            "max": 126.9
+          },
+          "distSpawn": {
+            "mean": 106.2,
+            "max": 234.5
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 2,
+          "noVisDetail": [
+            {
+              "t": 312.93,
+              "src": "boss4:firecross",
+              "launchedT": 312.28,
+              "everInView": false
+            },
+            {
+              "t": 312.93,
+              "src": "boss4:firecross",
+              "launchedT": 312.28,
+              "everInView": false
+            }
+          ],
+          "seed": 101,
+          "index": 4,
+          "spawn": {
+            "x": 1413,
+            "y": 4066
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.2,
+            "max": 128.8
+          },
+          "distSpawn": {
+            "mean": 198,
+            "max": 240.2
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 32,
+          "damageWithoutVisibility": 12,
+          "noVisDetail": [
+            {
+              "t": 332.97,
+              "src": "boss5:thornring",
+              "launchedT": 331.87,
+              "everInView": false
+            },
+            {
+              "t": 332.97,
+              "src": "boss5:thornring",
+              "launchedT": 331.87,
+              "everInView": false
+            },
+            {
+              "t": 332.97,
+              "src": "boss5:thornring",
+              "launchedT": 331.87,
+              "everInView": false
+            },
+            {
+              "t": 340.82,
+              "src": "boss5:thornring",
+              "launchedT": 339.77,
+              "everInView": false
+            },
+            {
+              "t": 340.82,
+              "src": "boss5:thornring",
+              "launchedT": 339.77,
+              "everInView": false
+            },
+            {
+              "t": 340.82,
+              "src": "boss5:thornring",
+              "launchedT": 339.77,
+              "everInView": false
+            },
+            {
+              "t": 349.17,
+              "src": "boss5:thornring",
+              "launchedT": 348.07,
+              "everInView": false
+            },
+            {
+              "t": 349.17,
+              "src": "boss5:thornring",
+              "launchedT": 348.07,
+              "everInView": false
+            }
+          ],
+          "seed": 101,
+          "index": 5,
+          "spawn": {
+            "x": 1695,
+            "y": 4022
+          },
+          "simCovered": 29.5
+        }
+      ],
+      "jsErrors": 0
+    },
+    {
+      "seed": 202,
+      "bosses": [
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 181.4,
+            "max": 307.3
+          },
+          "distSpawn": {
+            "mean": 598.5,
+            "max": 1286.8
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 13,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 0,
+          "spawn": {
+            "x": 1972,
+            "y": 2172
+          },
+          "simCovered": 29.4
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 98.4,
+            "max": 172.6
+          },
+          "distSpawn": {
+            "mean": 380.7,
+            "max": 465.2
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 1,
+          "spawn": {
+            "x": 455,
+            "y": 2082
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 78.2,
+            "max": 86.2
+          },
+          "distSpawn": {
+            "mean": 83.3,
+            "max": 106.9
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 2,
+          "spawn": {
+            "x": 30,
+            "y": 2069
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.1,
+            "max": 126.9
+          },
+          "distSpawn": {
+            "mean": 189.5,
+            "max": 224.1
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 11,
+          "damageWithoutVisibility": 4,
+          "noVisDetail": [
+            {
+              "t": 276.43,
+              "src": "boss3:stone",
+              "launchedT": 275.33,
+              "everInView": false
+            },
+            {
+              "t": 276.43,
+              "src": "boss3:stone",
+              "launchedT": 275.33,
+              "everInView": false
+            },
+            {
+              "t": 299.48,
+              "src": "boss3:stone",
+              "launchedT": 298.33,
+              "everInView": false
+            },
+            {
+              "t": 299.48,
+              "src": "boss3:stone",
+              "launchedT": 298.33,
+              "everInView": false
+            }
+          ],
+          "seed": 202,
+          "index": 3,
+          "spawn": {
+            "x": 30,
+            "y": 2209
+          },
+          "simCovered": 29.6
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 84.4,
+            "max": 125.9
+          },
+          "distSpawn": {
+            "mean": 130.7,
+            "max": 192.3
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 4,
+          "spawn": {
+            "x": 133,
+            "y": 2152
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 84.4,
+            "max": 126.8
+          },
+          "distSpawn": {
+            "mean": 168.3,
+            "max": 209.5
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 32,
+          "damageWithoutVisibility": 12,
+          "noVisDetail": [
+            {
+              "t": 332.92,
+              "src": "boss5:thornring",
+              "launchedT": 331.82,
+              "everInView": false
+            },
+            {
+              "t": 332.92,
+              "src": "boss5:thornring",
+              "launchedT": 331.82,
+              "everInView": false
+            },
+            {
+              "t": 332.92,
+              "src": "boss5:thornring",
+              "launchedT": 331.82,
+              "everInView": false
+            },
+            {
+              "t": 340.82,
+              "src": "boss5:thornring",
+              "launchedT": 339.72,
+              "everInView": false
+            },
+            {
+              "t": 340.82,
+              "src": "boss5:thornring",
+              "launchedT": 339.72,
+              "everInView": false
+            },
+            {
+              "t": 340.82,
+              "src": "boss5:thornring",
+              "launchedT": 339.72,
+              "everInView": false
+            },
+            {
+              "t": 349.12,
+              "src": "boss5:thornring",
+              "launchedT": 348.02,
+              "everInView": false
+            },
+            {
+              "t": 349.12,
+              "src": "boss5:thornring",
+              "launchedT": 348.02,
+              "everInView": false
+            }
+          ],
+          "seed": 202,
+          "index": 5,
+          "spawn": {
+            "x": 30,
+            "y": 2295
+          },
+          "simCovered": 29.5
+        }
+      ],
+      "jsErrors": 0
+    },
+    {
+      "seed": 404,
+      "bosses": [
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 186.7,
+            "max": 325.9
+          },
+          "distSpawn": {
+            "mean": 567.8,
+            "max": 1262.2
+          },
+          "offscreenFraction": 0.42,
+          "maxConsecOffscreenS": 4.2,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 13,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 0,
+          "spawn": {
+            "x": 2008,
+            "y": 2186
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 80,
+            "max": 106
+          },
+          "distSpawn": {
+            "mean": 249.2,
+            "max": 368.3
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 40,
+          "maxLeashViolationS": 4.8,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 1,
+          "spawn": {
+            "x": 1802,
+            "y": 3898
+          },
+          "simCovered": 29.3
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.5,
+            "max": 124.7
+          },
+          "distSpawn": {
+            "mean": 164.3,
+            "max": 207.1
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 2,
+          "spawn": {
+            "x": 1684,
+            "y": 3985
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.2,
+            "max": 109.4
+          },
+          "distSpawn": {
+            "mean": 56.5,
+            "max": 65.3
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 12,
+          "damageWithoutVisibility": 2,
+          "noVisDetail": [
+            {
+              "t": 291.83,
+              "src": "boss3:stone",
+              "launchedT": 290.78,
+              "everInView": false
+            },
+            {
+              "t": 291.83,
+              "src": "boss3:stone",
+              "launchedT": 290.78,
+              "everInView": false
+            }
+          ],
+          "seed": 404,
+          "index": 3,
+          "spawn": {
+            "x": 1519,
+            "y": 4066
+          },
+          "simCovered": 29.6
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 80.5,
+            "max": 117.1
+          },
+          "distSpawn": {
+            "mean": 144,
+            "max": 293.4
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 2,
+          "noVisDetail": [
+            {
+              "t": 312.98,
+              "src": "boss4:firecross",
+              "launchedT": 312.23,
+              "everInView": false
+            },
+            {
+              "t": 312.98,
+              "src": "boss4:firecross",
+              "launchedT": 312.23,
+              "everInView": false
+            }
+          ],
+          "seed": 404,
+          "index": 4,
+          "spawn": {
+            "x": 1527,
+            "y": 4066
+          },
+          "simCovered": 29.5
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 83.8,
+            "max": 96.9
+          },
+          "distSpawn": {
+            "mean": 15.3,
+            "max": 29.3
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 32,
+          "damageWithoutVisibility": 12,
+          "noVisDetail": [
+            {
+              "t": 332.97,
+              "src": "boss5:thornring",
+              "launchedT": 331.87,
+              "everInView": false
+            },
+            {
+              "t": 332.97,
+              "src": "boss5:thornring",
+              "launchedT": 331.87,
+              "everInView": false
+            },
+            {
+              "t": 332.97,
+              "src": "boss5:thornring",
+              "launchedT": 331.87,
+              "everInView": false
+            },
+            {
+              "t": 340.87,
+              "src": "boss5:thornring",
+              "launchedT": 339.77,
+              "everInView": false
+            },
+            {
+              "t": 340.87,
+              "src": "boss5:thornring",
+              "launchedT": 339.77,
+              "everInView": false
+            },
+            {
+              "t": 340.87,
+              "src": "boss5:thornring",
+              "launchedT": 339.77,
+              "everInView": false
+            },
+            {
+              "t": 349.12,
+              "src": "boss5:thornring",
+              "launchedT": 348.02,
+              "everInView": false
+            },
+            {
+              "t": 349.12,
+              "src": "boss5:thornring",
+              "launchedT": 348.02,
+              "everInView": false
+            }
+          ],
+          "seed": 404,
+          "index": 5,
+          "spawn": {
+            "x": 1614,
+            "y": 4066
+          },
+          "simCovered": 29.4
+        }
+      ],
+      "jsErrors": 0
+    }
+  ]
+}

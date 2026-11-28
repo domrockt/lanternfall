@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7826,
+  "next": 7902,
   "cards": [
     {
       "id": 1,
@@ -10005,6 +10005,48 @@
       "notes": [],
       "created": "2026-11-28T03:28:16Z",
       "updated": "2026-11-28T03:28:16Z"
+    },
+    {
+      "id": 7898,
+      "title": "m10-boss-lure-fair K1: Vorher-Beleg 6 Bosse x 3 Seeds",
+      "description": "Skript scripts/m10-boss-fair.mjs: 6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 s Sim je Boss. Misst Distanz zum Spieler, Distanz zur Spawn-Zone (Leash), Sichtbarkeit im View, Schadensereignisse ohne vorherige Sichtbarkeit. Output shots/m10-bossfair-before.json. Abnahme: JSON committed, Kennzahlen (offscreenAnteil, maxLeashAbweichung, Schaden-ohne-Sicht) je Boss/Seed.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:33:39Z",
+          "by": "build",
+          "text": "todo → doing: Vorher-Beleg: Mess-Skript + Baseline-Lauf 6 Bosse x 3 Seeds"
+        }
+      ],
+      "created": "2026-11-28T03:33:37Z",
+      "updated": "2026-11-28T03:33:39Z"
+    },
+    {
+      "id": 7899,
+      "title": "m10-boss-lure-fair K2: Fairness-Regeln Leash/Target/Offscreen",
+      "description": "Reine Regeln in src/logic/bosses.ts + Verdrahtung in src/systems/BossSystem.ts: sanfter Leash zur Spawn-Zone (kein dauerhaftes Verlassen), Offscreen-Catch-up bei >2 s Abdrift, Zielwechsel-Regel Schadensfenster >= 0,3 s, deterministisch bei gleichem Seed. Keine Aenderung an Boss-HP/Speed/Dauer, Run.ts unberuehrt, FxSystem/CombatSystem unberuehrt. Abnahme: npx tsc --noEmit rc=0, gezielte Tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:33:37Z",
+      "updated": "2026-11-28T03:33:37Z"
+    },
+    {
+      "id": 7900,
+      "title": "m10-boss-lure-fair K3: Guard-Tests boss-lure-fair",
+      "description": "tests/boss-lure-fair.test.ts mit >= 6 Tests (reine Logik wie tests/enemy-ai.test.ts): Leash-Ruecklenkung, Leash-Release wenn Spieler ausserhalb, Catch-up-Schwellen, Zielwechsel-Regel >= 0,3 s, Determinismus bei gleichem Seed, alle Boss-Angriffe erfuellen Mindest-Schadensfenster. Abnahme: npx vitest run tests/boss-lure-fair.test.ts gruen, npm test gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:33:37Z",
+      "updated": "2026-11-28T03:33:37Z"
+    },
+    {
+      "id": 7901,
+      "title": "m10-boss-lure-fair K4: Nachher-Beleg + Lane-Doku",
+      "description": "Dieselbe Matrix wie K1 -> shots/m10-bossfair-after.json. Abnahme: 0 Schadensereignisse ohne vorherige Sichtbarkeit, Leash-Verletzung 0, Offscreen-Anteil deutlich gesenkt; Boss-Dauern 20-60 s als Nicht-Ziel dokumentiert (keine Balance-Aenderung, Beleg = shots/balance-main.json + git diff src/data leer). Doku docs/lanes/m10-boss-lure-fair.md + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:33:37Z",
+      "updated": "2026-11-28T03:33:37Z"
     }
   ]
 }
