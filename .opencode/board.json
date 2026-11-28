@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11308,
+  "next": 11433,
   "cards": [
     {
       "id": 1,
@@ -15170,6 +15170,46 @@
       ],
       "created": "2026-11-28T10:42:57Z",
       "updated": "2026-11-28T10:48:25Z"
+    },
+    {
+      "id": 11429,
+      "title": "m10-telemetry-budget K1: Ist — Sampler-Overhead + Payload-Groesse (Vorher-Probe)",
+      "description": "Deterministischer Probe scripts/m10-telemetry-budget.mjs: collect()/buildSample-Kosten (600-Frame-Puffer), JSON-Payload-Bytes je Sample, Samples+Kosten pro Minute. Kein Geraet noetig. Vorher-JSON nach ~/games/.evidence/m10-telemetry-budget/before.json. Akzeptanz: Zahlen belegt, Skript committed.",
+      "column": "doing",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:07:56Z"
+    },
+    {
+      "id": 11430,
+      "title": "m10-telemetry-budget K2: Fix — Intervall/Puffer je Qualitaetsstufe",
+      "description": "telemetryBudgetFor(quality): full=5s/600, reduced=10s/240, minimal=20s/120 (Intervall, Frame-Puffer, Pending-Deckel). Collector passt sich dynamisch an. Aktivierung (telemetryEnabled/installTelemetry) bitgleich unveraendert. Nachher-Probe zeigt gesenkte Sammelkosten. Akzeptanz: Kostenreduktion belegt, Aktivierung unveraendert.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:07:56Z"
+    },
+    {
+      "id": 11431,
+      "title": "m10-telemetry-budget K3: Tests telemetry-budget.test.ts (Budget-Matrix + Aktivierungsmatrix gruen)",
+      "description": "tests/telemetry-budget.test.ts: Budget-Matrix je Tier (Intervall/Puffer/Deckel), dynamische Anpassung bei Stufenwechsel, Tests: telemetry.test.ts bleibt komplett gruen. Akzeptanz: npx vitest run tests/telemetry-budget.test.ts tests/telemetry.test.ts gruen.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:07:56Z"
+    },
+    {
+      "id": 11432,
+      "title": "m10-telemetry-budget K4: Nachher-JSON + Lane-Doku + .lane-done",
+      "description": "Nachher-JSON nach ~/games/.evidence/m10-telemetry-budget/after.json, docs/lanes/m10-telemetry-budget.md mit Vorher/Nachher-Tabelle + offenen Punkten, .lane-done committet. Akzeptanz: Payload/Interval je Tier belegt, Suite gruen, lane-done vorhanden.",
+      "column": "todo",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:07:56Z"
     }
   ]
 }
