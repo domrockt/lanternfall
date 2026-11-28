@@ -1,0 +1,77 @@
+{
+  "tag": "before",
+  "gitSha": "c7893e9",
+  "seed": 99,
+  "minutes": 3,
+  "burst": 500,
+  "t0": {
+    "active": 499,
+    "kills": 1,
+    "pools": {
+      "EnemyPool": {
+        "instances": 0,
+        "free": 0,
+        "active": 0
+      },
+      "ProjectilePool": {
+        "instances": 0,
+        "free": 0,
+        "active": 0
+      },
+      "genericPool": {
+        "instances": 0,
+        "free": 0,
+        "active": 0
+      }
+    },
+    "heapMB": 38.8
+  },
+  "tEnd": {
+    "active": 309,
+    "kills": 197,
+    "simSeconds": 180.9,
+    "pools": {
+      "EnemyPool": {
+        "instances": 1,
+        "free": 0,
+        "active": 0
+      },
+      "ProjectilePool": {
+        "instances": 1,
+        "free": 0,
+        "active": 0
+      },
+      "genericPool": {
+        "instances": 0,
+        "free": 0,
+        "active": 0
+      }
+    },
+    "heapMB": 50.8
+  },
+  "overhang": {
+    "EnemyPool": 0,
+    "ProjectilePool": 0,
+    "genericPool": 0
+  },
+  "crossCheck": {
+    "EnemyPoolActive": 0,
+    "statsActive": 309,
+    "freeListHolders": 5,
+    "unknownSignatures": [
+      {
+        "sig": "scene",
+        "free": 0
+      },
+      {
+        "sig": "__proto__,enabled,scene",
+        "free": 0
+      },
+      {
+        "sig": "pendingFree",
+        "free": 0
+      }
+    ]
+  },
+  "jsErrors": []
+}
