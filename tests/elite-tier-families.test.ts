@@ -166,6 +166,21 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
         sharpenEnemyGrid(gridFromRows(rows), def.color, def.id),
       );
       expect(enemySpriteFrames(index), def.id).toEqual(expected);
+      // Nicht-tautologische Leak-Pruefung: die Basis-Frames duerfen NICHT die
+      // gefaerbte Version sein (ein Dye-Auftrag in der Basis-Pipeline wuerde
+      // hier sichtbar, ohne dass eliteTierPixel selbst beteiligt ist).
+      const dyed = eliteRimFrame(index);
+      let differing = 0;
+      let interior = 0;
+      const base0 = enemySpriteFrames(index)[0];
+      for (let y = 0; y < base0.length; y++) {
+        for (let x = 0; x < base0[0].length; x++) {
+          if (base0[y][x] === null || isBoundary(base0, x, y)) continue;
+          interior++;
+          if (base0[y][x] !== dyed[y][x]) differing++;
+        }
+      }
+      expect(differing / interior, `${def.id}: Basis ungefaerbt`).toBeGreaterThanOrEqual(0.3);
       // Key-Satz und Frameset-Vertrag unveraendert
       expect(enemyFrameKeys(index)[0]).toBe(def.spriteKey);
       expect(framesForDef(eliteRimDef(def))).toEqual([`${def.spriteKey}_rim`]);

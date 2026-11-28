@@ -258,7 +258,7 @@ export function enemyFrameGrids(index: number): Grid[] {
  * voidcaller) ins Gruen — genau die art-director-Luecke aus #6322.
  */
 
-/** Tier-Faerbe-Klasse je Tier 0-4 (nur Palettenindizes, min. Paar-Distanz 69). */
+/** Tier-Faerbe-Klasse je Tier 0-4 (nur Palettenindizes, min. Paar-Distanz 68). */
 export const ELITE_TIER_DYES: readonly [number, number, number, number, number] = [16, 8, 18, 25, 30];
 
 /** Faerbe-Klasse eines Tiers (clamp auf 0-4, deterministisch). */
@@ -267,18 +267,21 @@ export function eliteTierDye(tier: number): number {
 }
 
 /**
- * Ein Elite-Koerperpixel in der Tier-Faerbe-Klasse: 55 % Klassenfarbe,
- * 45 % Basispixel, gerundet auf den naechsten Palettenindex (deterministisch,
+ * Ein Elite-Koerperpixel in der Tier-Faerbe-Klasse: 70 % Klassenfarbe,
+ * 30 % Basispixel, gerundet auf den naechsten Palettenindex (deterministisch,
  * nur Palette). Kontur (0) und Augen/Glow (13) bleiben unangetastet.
  */
+const ELITE_TIER_MIX = 0.7;
+
 export function eliteTierPixel(pixel: Pixel, tier: number): Pixel {
   if (pixel === null || pixel === 0 || pixel === 13) return pixel;
   const target = PAL[eliteTierDye(tier)];
   const p = PAL[pixel];
+  const body = 1 - ELITE_TIER_MIX;
   return nearestPaletteIndex([
-    Math.round(((p >> 16) & 255) * 0.3 + ((target >> 16) & 255) * 0.7),
-    Math.round(((p >> 8) & 255) * 0.3 + ((target >> 8) & 255) * 0.7),
-    Math.round((p & 255) * 0.3 + (target & 255) * 0.7),
+    Math.round(((p >> 16) & 255) * body + ((target >> 16) & 255) * ELITE_TIER_MIX),
+    Math.round(((p >> 8) & 255) * body + ((target >> 8) & 255) * ELITE_TIER_MIX),
+    Math.round((p & 255) * body + (target & 255) * ELITE_TIER_MIX),
   ]);
 }
 
