@@ -13535,25 +13535,41 @@
       "id": 10311,
       "title": "m10-golden-frame-guard K1: Probe-Skript + Baseline-Hashes (3 Seeds x 600 Ticks)",
       "description": "scripts/m10-golden-frame.mjs (neu, Playwright-Harness wie m10-run-determinism.mjs, kein flock): 3 Seeds (101/202/404) x je 2 identische autoPlay-Laeufe ueber 600 Sim-Ticks (fast-forward, detstart-Gate), Hash ueber sim-exakte Marken (elapsed, kills, level, xp, hp, px/py gerundet, Gegner-UIDs+gerundete Positionen, events, final). Basis-Hashes nach shots/m10-golden-frame-baseline.json, Verdict nach shots/m10-golden-frame-verdict.json (inkl. WebGL-Renderer-String, kein SwiftShader, 0 JS-Fehler). Nur neue Dateien — keine src/**-Aenderung. Abnahme: gleicher Seed, 2 Laeufe bitgleiche Hashes (0 Divergenz) bei allen 3 Seeds; 3 Seeds in Baseline dokumentiert; Renderer-String im JSON.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T08:55:35Z",
           "by": "build",
           "text": "todo → doing: Übernommen (Lane m10-golden-frame-guard). Start: Probe-Skript anhand des m10-run-determinism-Musters bauen."
+        },
+        {
+          "at": "2026-11-28T09:03:37Z",
+          "by": "build",
+          "text": "doing → review: Commit ab50197b nennt #10311. Beleg: 3 Seeds x 2 Laeufe bitgleich (0 Divergenz), Baseline+Verdict committed, Renderer RPL-S iGPU, 0 JS-Fehler, Guard ~23 s. .gitignore-Einzeiler begruendet im Commit + requests.md. Review durch reviewer/commit-gate."
+        },
+        {
+          "at": "2026-11-28T09:04:29Z",
+          "by": "build",
+          "text": "Supervisor-Steer bestätigt (Board-Buchung): Die Divergenz war DIAGNOSTIZIERT und gelöst — Ursache war NICHT die Simulation, sondern der Hash im Skript (Feld `rep` 0 vs 1 ging in SHA-256 ein). Feld-feld-Vergleich der Marken (firstDiff über marks/events/final) seit dem Fix: 0 Divergenz, 3 Seeds x 2 Läufe bitgleich; Guard-Lauf gegen Baseline exit=0. K1 ist mit ab50197b committed (Baseline + Verdict + Renderer RPL-S-iGPU). Skript wird nicht weiter editiert."
         }
       ],
       "created": "2026-11-28T08:55:32Z",
-      "updated": "2026-11-28T08:55:35Z"
+      "updated": "2026-11-28T09:04:29Z"
     },
     {
       "id": 10312,
       "title": "m10-golden-frame-guard K2: Suite-Guard tests/golden-frame.test.ts",
       "description": "tests/golden-frame.test.ts (neu): validiert Baseline + Verdict im Suite-Kontext (3 Seeds, 0 Divergenz, matchesBaseline, Renderer != SwiftShader, 0 JS-Fehler) — Muster tests/run-determinism.test.ts. Grenze dokumentiert: Sim-Kern (Run.ts) ist Phaser-gebunden, im Suite-Kontext kein Tick-Lauf moeglich; Guard-Lauf als Skript-Gate (node scripts/m10-golden-frame.mjs) in Lane-Doku beschrieben. Notwendige Einzeiler-Ergaenzer: .gitignore !shots/m10-golden-frame-*.json (Begruendung in Lane-Doku + ~/.dispatch/requests.md). Abnahme: npx vitest run tests/golden-frame.test.ts gruen, npm test gruen, tsc rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:03:43Z",
+          "by": "build",
+          "text": "todo → doing: Übernommen: Suite-Guard-Test anhand des run-determinism-Musters."
+        }
+      ],
       "created": "2026-11-28T08:55:32Z",
-      "updated": "2026-11-28T08:55:32Z"
+      "updated": "2026-11-28T09:03:43Z"
     },
     {
       "id": 10313,
