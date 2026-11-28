@@ -68,7 +68,10 @@ export class Boot extends Phaser.Scene {
     const t = timings();
     t.preloadStart = performance.now();
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-    new PixelText(this, 240, 132, "LADE MOOR ...", C.mist, "center");
+    // m10-loadscreen-pretext: X an die View-Breite gekoppelt (GAME_WIDTH ist
+    // dynamisch, logische Hoehe 360) — vorher fixer X=240 (= Zentrum einer
+    // 480er-Annahme) und damit links der Mitte, belegt auf Redmi Pad und Desktop.
+    new PixelText(this, Math.round(GAME_WIDTH / 2), 132, "LADE MOOR ...", C.mist, "center");
     AudioSystem.preload(this);
     t.preloadDone = performance.now();
   }
