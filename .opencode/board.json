@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7486,
+  "next": 7490,
   "cards": [
     {
       "id": 1,
@@ -9058,6 +9058,42 @@
       "notes": [],
       "created": "2026-11-28T01:48:34Z",
       "updated": "2026-11-28T01:48:34Z"
+    },
+    {
+      "id": 7486,
+      "title": "m10-chest-icon-crisp K1: Vorher-Messung Truhen-Icon-Scale (640x360@2 + 780x360@3, fraktional 5.2/7.8 devPx = Mixel)",
+      "description": "Lane-Karte nach main übernommen (lane #7458, Merge efd87d4). Abnahme: Skript scripts/m10-chest-icon.mjs + before-JSON + Panel-Shots + 4x-nearest-Crops beider Formate vorhanden.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:53:48Z",
+      "updated": "2026-11-28T01:53:48Z"
+    },
+    {
+      "id": 7487,
+      "title": "m10-chest-icon-crisp K2: Fix UI.ts ganzzahlige Draw-Stufe (CHEST_ICON_DRAW_SCALE=3) + Zentrum + tests/chest-icon-crisp.test.ts",
+      "description": "Lane-Karte nach main übernommen (lane #7459, Merge efd87d4). Abnahme: beide Draw-Stellen (createChestUI + onChestOpen-Reset) mit Scale 3, 14 Tests in tests/chest-icon-crisp.test.ts, chest-panel-ui-Test pinnt 2.6 weiter.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:53:48Z",
+      "updated": "2026-11-28T01:53:48Z"
+    },
+    {
+      "id": 7488,
+      "title": "m10-chest-icon-crisp K3: After-Messung + 4x-Zoom + art-director streng >= 4/5",
+      "description": "Lane-Karte nach main übernommen (lane #7460, Merge efd87d4). Abnahme: verdict passed=true, 6/9 Geraetepixel je Texel, zentriert (320/390, y137), kein Clipping, 0 JS-Fehler, art-director streng PASS 5/5 + 5/5 auf 4x-nearest-Crops.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:53:48Z",
+      "updated": "2026-11-28T01:53:48Z"
+    },
+    {
+      "id": 7489,
+      "title": "m10-chest-icon-crisp K4: docs/lanes/m10-chest-icon-crisp.md + .lane-done",
+      "description": "Lane-Karte nach main übernommen (lane #7461, Merge efd87d4). Abnahme: Lane-Doku mit Befund 2.6→5.2/7.8 devPx und Fix dokumentiert; .lane-done bewusst NICHT nach main übernommen (im Merge-Commit entfernt).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:53:48Z",
+      "updated": "2026-11-28T01:53:48Z"
     }
   ]
 }
