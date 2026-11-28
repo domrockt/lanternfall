@@ -25,7 +25,7 @@ import { charSelectPadNav, type CharSelectNavState } from "../src/scenes/CharSel
 import { menuRepeatTick, type MenuRepeatState } from "../src/ui/menu";
 import type { ActionState } from "../src/input/InputState";
 
-const base: CharSelectNavState = { row: 1, charIndex: 0, buttonIndex: 1 };
+const base: CharSelectNavState = { row: 0, charIndex: 0, buttonIndex: 1 };
 
 const pad = (held: Partial<ActionState>): ActionState => ({
   pause: false, confirm: held.confirm === true, back: held.back === true,
@@ -35,11 +35,11 @@ const pad = (held: Partial<ActionState>): ActionState => ({
 const nav = (s: CharSelectNavState, a: ActionState) =>
   charSelectPadNav(s, a, { chars: 2, buttons: 2 });
 
-describe("charSelectPadNav – Panels + Knopfleiste per D-Pad (K3)", () => {
-  it("Startzustand: Knopf-Reihe mit START fokussiert; up wechselt in die Panel-Reihe, down bleibt", () => {
-    expect(nav(base, pad({ up: true }))).toMatchObject({ row: 0, charIndex: 0, buttonIndex: 1, action: null });
+describe("charSelectPadNav – Panels + Knopfleiste per D-Pad (K3, Startfokus Reihe 0 seit B1)", () => {
+  it("Startzustand: Panel-Reihe (Charakter fokussiert); down wechselt in die Knöpfe, up bleibt", () => {
     expect(nav(base, pad({ down: true }))).toMatchObject({ row: 1, charIndex: 0, buttonIndex: 1, action: null });
-    expect(nav(base, pad({}))).toMatchObject({ row: 1, action: null });
+    expect(nav(base, pad({ up: true }))).toMatchObject({ row: 0, charIndex: 0, buttonIndex: 1, action: null });
+    expect(nav(base, pad({}))).toMatchObject({ row: 0, action: null });
   });
 
   it("Panel-Reihe: left/right wrappt über beide Charaktere in beide Richtungen", () => {
@@ -50,34 +50,34 @@ describe("charSelectPadNav – Panels + Knopfleiste per D-Pad (K3)", () => {
   });
 
   it("up in der Panel-Reihe bleibt (kein Springen in die Knöpfe), up in Knopf-Reihe geht zu Panels", () => {
-    expect(nav({ row: 0, charIndex: 0, buttonIndex: 1 }, pad({ up: true }))).toMatchObject({ row: 0 });
     expect(nav(base, pad({ up: true }))).toMatchObject({ row: 0 });
+    expect(nav({ row: 1, charIndex: 0, buttonIndex: 1 }, pad({ up: true }))).toMatchObject({ row: 0 });
   });
 
   it("Knopf-Reihe: left/right wrappt ZURÜCK ↔ START", () => {
-    expect(nav(base, pad({ left: true }))).toMatchObject({ row: 1, buttonIndex: 0 });
-    expect(nav({ ...base, buttonIndex: 0 }, pad({ right: true }))).toMatchObject({ buttonIndex: 1 });
-    expect(nav({ ...base, buttonIndex: 0 }, pad({ left: true }))).toMatchObject({ buttonIndex: 1 }); // wrap
+    expect(nav({ row: 1, charIndex: 0, buttonIndex: 1 }, pad({ left: true }))).toMatchObject({ row: 1, buttonIndex: 0 });
+    expect(nav({ row: 1, charIndex: 0, buttonIndex: 0 }, pad({ right: true }))).toMatchObject({ buttonIndex: 1 });
+    expect(nav({ row: 1, charIndex: 0, buttonIndex: 0 }, pad({ left: true }))).toMatchObject({ buttonIndex: 1 }); // wrap
   });
 
-  it("A = auswählen: confirm in Panel-Reihe → pick, NICHT start", () => {
-    expect(nav({ row: 0, charIndex: 1, buttonIndex: 1 }, pad({ confirm: true })).action).toBe("pick");
+  it("A = bestätigen: confirm in Panel-Reihe startet den Run (B1: A wählt + startet)", () => {
+    expect(nav({ row: 0, charIndex: 1, buttonIndex: 1 }, pad({ confirm: true })).action).toBe("start");
   });
 
   it("A in Knopf-Reihe: START → start, ZURÜCK → back", () => {
-    expect(nav(base, pad({ confirm: true })).action).toBe("start");
-    expect(nav({ ...base, buttonIndex: 0 }, pad({ confirm: true })).action).toBe("back");
+    expect(nav({ row: 1, charIndex: 0, buttonIndex: 1 }, pad({ confirm: true })).action).toBe("start");
+    expect(nav({ row: 1, charIndex: 0, buttonIndex: 0 }, pad({ confirm: true })).action).toBe("back");
   });
 
   it("B = zurück (beide Reihen), ohne Fokusverschiebung", () => {
     expect(nav(base, pad({ back: true })).action).toBe("back");
-    expect(nav({ row: 0, charIndex: 1, buttonIndex: 1 }, pad({ back: true })).action).toBe("back");
+    expect(nav({ row: 1, charIndex: 1, buttonIndex: 1 }, pad({ back: true })).action).toBe("back");
   });
 
   it("ein Pad-Frame = eine Aktion: alles gleichzeitig → nur back (Priorität), keine Doppel-Events", () => {
     const r = nav(base, pad({ back: true, up: true, down: true, left: true, right: true, confirm: true }));
     expect(r.action).toBe("back");
-    expect(r).toMatchObject({ row: 1, charIndex: 0, buttonIndex: 1 }); // nichts zusätzlich verschoben
+    expect(r).toMatchObject({ row: 0, charIndex: 0, buttonIndex: 1 }); // nichts zusätzlich verschoben
   });
 });
 
