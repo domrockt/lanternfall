@@ -222,6 +222,10 @@ describe("M10 Gegnerschüsse fair — Telegraph-Pool + Aufräumen", () => {
   it("verwirft Schüsse, wenn der Telegraph-Pool erschöpft ist (nie stumm feuern)", () => {
     const scene = fakeScene();
     const pool = new EnemyProjectilePool(scene);
+    // M10-shot-budget-cap: der Test prueft das Telegraph-Cap, nicht das neue
+    // Frame-Budget — dafuer Budget fuer alle 96 Spawns + den Pruef-Spawn
+    // freigeben (Anfrage in .dispatch/requests.md, Intention unveraendert).
+    pool.setShotCaps({ launchBudgetPerFrame: 200 });
     scene.enemies.active = [{ x: 320, y: 180, alive: true }];
     for (let i = 0; i < 96; i++) {
       pool.spawn({ x: 20 + (i % 300), y: 20 + ((i * 7) % 300), vx: 10, vy: 0, damage: 1, texture: "enemy_shot_spit" });

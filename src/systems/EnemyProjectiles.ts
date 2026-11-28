@@ -82,6 +82,29 @@ const TELEGRAPH_ALPHA_END = 0.25;
 const TELEGRAPH_POOL_CAP = 96;
 
 /**
+ * M10-shot-budget-cap: hartes Cap fuer gleichzeitige Gegner-Projektile und
+ * faire Zuteilung des Frame-Budgets.
+ *
+ * Befund (docs/lanes/m10-enemy-shots-fair.md, Minute-25-Chaos): 500 Ranged-
+ * Gegner erzeugen 1359 Projektile in ~2 s — Draw-/Update-Kosten im Chaos und
+ * Lesbarkeitsproblem. Vorher-Messung dieser Lane: 500er-Chaos 240 gleichzeitige
+ * Schuesse (162 aktiv + 78 pending), 300er 158.
+ *
+ * - ACTIVE_CAP: hartes Maximum fuer active+pending. Darueber werden neue
+ *   spawn()-Aufrufe verworfen (Cooldown des Schuetzen bleibt unangetastet).
+ * - LAUNCH_BUDGET_PER_FRAME: max. neue Schuss-Zuteilungen je Frame-Strom.
+ *   Der Dienst-Fensterstart rotiert um das Budget weiter (Rotation ueber die
+ *   Aufruf-Reihenfolge), damit kein Schuetze verhungert: bei stabiler
+ *   Schuetzen-Reihenfolge kommt jeder alle ceil(A/N) Frames mindestens einmal
+ *   dran (A = Versuche je Frame). Weniger Versuche als Budget -> alle feuern.
+ *
+ * Beides beeinflusst nur NEUE Schuesse; Windup-Gates, Offscreen-Verwerfen und
+ * Trefferpfad bleiben unveraendert (tests/enemy-shots-fair.test.ts bleibt gruen).
+ */
+export const ENEMY_SHOT_ACTIVE_CAP = 160;
+export const ENEMY_SHOT_LAUNCH_BUDGET_PER_FRAME = 8;
+
+/**
  * Aufgewertete Schuss-Optiken (M10-shot-clarity, Chaos 300/500): je Familie ein
  * eigener, farbdiskjunkter Palettblock, geschlossene 1-px-Inktenkontur und
  * monotone Groessenstaffel — Flaeche wächst mit dem Tier: spit 34 px (7x8) <
@@ -205,6 +228,21 @@ export class EnemyProjectilePool {
   /** View-Probe: einmal pro spawn()/update() aufgefuellt (keine Allokation je Gate-Check). */
   private readonly viewProbe = { x: 0, y: 0, width: 0, height: 0 };
   private viewValid = false;
+  /** Aktuelles Concurrent-Cap (active+pending) — M10-shot-budget-cap. */
+  private activeCap = ENEMY_SHOT_ACTIVE_CAP;
+  /** Max. neue Schuss-Zuteilungen je Frame-Strom — M10-shot-budget-cap. */
+  private launchBudget = ENEMY_SHOT_LAUNCH_BUDGET_PER_FRAME;
+  /** Versuche im laufenden Budget-Fenster (seit dem letzten update()). */
+  private frameAttempts = 0;
+  /** Zuteilungen im laufenden Budget-Fenster. */
+  private frameGrants = 0;
+  /** Start des Dienst-Fensters (Rotation, damit kein Schuetze verhungert). */
+  private rotationStart = 0;
+  /** Versuche des letzten Fensters = Rotations-Periode. */
+  private rotationPeriod = 1;
+  /** Verworfen wegen Concurrent-Cap / aufgebrauchtem Frame-Budget. */
+  private cancelledBudgetCap = 0;
+  private cancelledBudgetRotation = 0;
   private readonly scene: Phaser.Scene;
   private readonly stats: EnemyShotStats;
   private readonly debugHook = () => this.snapshot();
@@ -218,6 +256,10 @@ export class EnemyProjectilePool {
       cancelledShooterDeath: 0, cancelledOffscreen: 0, cancelledNoTelegraph: 0,
       windupOk: 0, active: 0, pending: 0,
     };
+    // Budget-Zaehler (M10-shot-budget-cap) bewusst AUSSERHALB von stats:
+    // statSnapshot() bleibt bitgleich zum Vorher-Pfad (tests/shot-clarity).
+    this.cancelledBudgetCap = 0;
+    this.cancelledBudgetRotation = 0;
     // Debug-Hook für Sim-/Abnahme-Skripte (Run.ts bleibt unangetastet);
     // clear() räumt ihn wieder ab, damit kein Pool-Referenz leakt.
     (globalThis as unknown as Record<string, unknown>).__lfEnemyShots = this.debugHook;
@@ -250,6 +292,11 @@ export class EnemyProjectilePool {
       this.stats.cancelledOffscreen += 1;
       return null;
     }
+    // M10-shot-budget-cap: Zuteilung VOR der Telegraph-Anforderung — abge-
+    // lehnte Schuesse kosten nichts (Cooldown des Schuetzen bleibt unangetastet).
+    this.frameAttempts += 1;
+    if (!this.admitByBudget()) return null;
+    this.frameGrants += 1;
     const telegraph = this.acquireTelegraph(texture);
     if (!telegraph) {
       // Pool-Cap erreicht: lieber verwerfen als nach der Vorwarnung stumm zu feuern.
@@ -274,6 +321,69 @@ export class EnemyProjectilePool {
     p.telegraph = telegraph;
     this.pending.push(p);
     return null;
+  }
+
+  /**
+   * Budget-Zuteilung fuer einen In-View-Versuch (M10-shot-budget-cap):
+   * hartes Concurrent-Cap (active+pending), dann Frame-Budget mit rotierendem
+   * Dienst-Fenster. Gibt true zurueck, wenn der Versuch einen Slot bekam;
+   * frameGrants erhoeht der Aufrufer.
+   */
+  private admitByBudget(): boolean {
+    if (this.active.length + this.pending.length >= this.activeCap) {
+      this.cancelledBudgetCap += 1;
+      return false;
+    }
+    if (this.frameGrants >= this.launchBudget) {
+      this.cancelledBudgetRotation += 1;
+      return false;
+    }
+    if (this.rotationPeriod <= this.launchBudget) return true;
+    // Dienst-Fenster der Breite launchBudget rotiert ueber die Versuch-
+    // Positionen (stabile Schuetzen-Reihenfolge im KI-Strom): jede Position
+    // ist alle ceil(Periode/Budget) Fenster mindestens einmal dran — kein
+    // Starving. Zwei Restriktionen bleiben hart: nie mehr als launchBudget
+    // Zuteilungen je Fenster, nie mehr als activeCap gleichzeitig.
+    const j = (this.frameAttempts - 1 - this.rotationStart) % this.rotationPeriod;
+    const jj = j < 0 ? j + this.rotationPeriod : j;
+    if (jj >= this.launchBudget) {
+      this.cancelledBudgetRotation += 1;
+      return false;
+    }
+    return true;
+  }
+
+  /** Konfiguration fuer Tests/Tuning (Default: ENEMY_SHOT_*_CAP/BUDGET). */
+  setShotCaps(opts: { activeCap?: number; launchBudgetPerFrame?: number }): void {
+    if (opts.activeCap !== undefined) this.activeCap = Math.max(1, Math.floor(opts.activeCap));
+    if (opts.launchBudgetPerFrame !== undefined) {
+      this.launchBudget = Math.max(1, Math.floor(opts.launchBudgetPerFrame));
+    }
+  }
+
+  /**
+   * Budget-Kennzahlen (M10-shot-budget-cap), getrennt von statSnapshot():
+   * der Treffer-/Windup-Pfad bleibt bitgleich, nur NEUE Schuesse werden
+   * ueber Cap + Frame-Budget geregelt.
+   */
+  budgetSnapshot(): {
+    activeCap: number; launchBudgetPerFrame: number;
+    cancelledBudgetCap: number; cancelledBudgetRotation: number;
+  } {
+    return {
+      activeCap: this.activeCap,
+      launchBudgetPerFrame: this.launchBudget,
+      cancelledBudgetCap: this.cancelledBudgetCap,
+      cancelledBudgetRotation: this.cancelledBudgetRotation,
+    };
+  }
+
+  /** Budget-Fenster nach jedem update() weiterdrehen (Rotation gegen Starving). */
+  private rotateBudgetWindow(): void {
+    this.rotationPeriod = Math.max(this.frameAttempts, 1);
+    this.rotationStart = (this.rotationStart + this.launchBudget) % this.rotationPeriod;
+    this.frameAttempts = 0;
+    this.frameGrants = 0;
   }
 
   prewarm(n: number): void {
@@ -461,6 +571,9 @@ export class EnemyProjectilePool {
       this.updateTrails(this.trailFadeAccum);
       this.trailFadeAccum = 0;
     }
+
+    // Budget-Fenster abschliessen und weiterdrehen (M10-shot-budget-cap).
+    this.rotateBudgetWindow();
   }
 
   /** Gepoolter Trail: gleiche lineare Kurve wie der fruehere Tween (0.25→0 / 0.7→0.2, 160 ms). */
@@ -509,6 +622,8 @@ export class EnemyProjectilePool {
       this.trailPool.push(fx.img);
     }
     this.trails.length = 0;
+    // Budget-Fenster zuruecksetzen (M10-shot-budget-cap).
+    this.rotateBudgetWindow();
     // Debug-Hook nur abbauen, wenn er noch diesem Pool gehört (kein Leak).
     const g = globalThis as unknown as Record<string, unknown>;
     if (g.__lfEnemyShots === this.debugHook) delete g.__lfEnemyShots;
