@@ -3,7 +3,7 @@ import { DEPTH } from "../gfx/depth";
 import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, isBossFxKey, GlowBudget, mixelFrameKey, mixelLevelFor, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { ambientBudgetFor, lodFor } from "../logic/lod";
-import { QUALITY } from "../config";
+import { QUALITY, DEVICE_NODE, DEVICE_MAX_FX_ACTIVE, DEVICE_MAX_PARTICLES } from "../config";
 import { glowAreaCapForQuality, glowEnabledFor } from "../logic/quality";
 
 /**
@@ -230,8 +230,10 @@ export class FxSystem {
   readonly active: FxRuntime[] = [];
   private readonly free: FxRuntime[] = [];
   private readonly scene: Phaser.Scene;
-  /** Obergrenze für große Effekt-Sprites (LOD senkt sie bei Extremlast). */
-  private maxActive = 220;
+  /** Obergrenze für große Effekt-Sprites (LOD senkt sie bei Extremlast).
+   *  M10-device-janky-node: am Geräteknoten auf das medium-Budget geklemmt
+   *  (DEVICE_MAX_FX_ACTIVE = 140) — wirkt unmittelbar auf den Frame-Tail. */
+  private maxActive = DEVICE_NODE ? Math.min(220, DEVICE_MAX_FX_ACTIVE) : 220;
   /** Trails abschaltbar (LOD): spart Draw-Aufrufe bei > 400 Gegnern. */
   trailsEnabled = true;
   /** M6-Endgame-Dämpfung: Alpha-Faktor für alle neuen Effekte (1 = unverändert). */
@@ -274,7 +276,10 @@ export class FxSystem {
   }
 
   setMaxActive(max: number): void {
-    this.maxActive = Math.max(24, Math.floor(max));
+    // M10-device-janky-node: Geräteknoten — LOD-Cap an das medium-Budget
+    // klemmen (Desktop: DEVICE_NODE = false -> bitgleich max).
+    const capped = DEVICE_NODE ? Math.min(max, DEVICE_MAX_FX_ACTIVE) : max;
+    this.maxActive = Math.max(24, Math.floor(capped));
     // M10: LOD-Stufe aus dem Effekt-Cap ableiten (lod.ts wird nur gelesen) und
     // den geteilten Glow-Deckel anpassen: 180 = full, 90 = reduced, 60 = minimal.
     const level: FxLodLevel = this.maxActive <= 60 ? "minimal" : this.maxActive <= 90 ? "reduced" : "full";
@@ -683,7 +688,9 @@ export class ParticleSystem {
   active: FxRuntime[] = [];
   private readonly free: FxRuntime[] = [];
   private readonly scene: Phaser.Scene;
-  private maxActive = 360;
+  /** M10-device-janky-node: am Geräteknoten auf DEVICE_MAX_PARTICLES (240)
+   *  geklemmt — Proportion medium/high (140/220) angewandt auf 360 ≈ 229. */
+  private maxActive = DEVICE_NODE ? Math.min(360, DEVICE_MAX_PARTICLES) : 360;
   /** M6-Endgame-Dämpfung: Alpha-Faktor für neue Partikel (1 = unverändert). */
   alphaScale = 1;
   /** M10-Attribution: kompletter Partikel-Pool abschaltbar (nur Messung). */
@@ -722,7 +729,10 @@ export class ParticleSystem {
   }
 
   setMaxActive(max: number): void {
-    this.maxActive = Math.max(40, Math.floor(max));
+    // M10-device-janky-node: Geräteknoten — LOD-Cap an DEVICE_MAX_PARTICLES
+    // klemmen (Desktop: DEVICE_NODE = false -> bitgleich max).
+    const capped = DEVICE_NODE ? Math.min(max, DEVICE_MAX_PARTICLES) : max;
+    this.maxActive = Math.max(40, Math.floor(capped));
     // M10: LOD-Stufe aus dem Partikel-Cap ableiten (lod.ts wird nur gelesen):
     // 280 = full, 140 = reduced, 100 = minimal.
     const level: FxLodLevel = this.maxActive <= 100 ? "minimal" : this.maxActive <= 140 ? "reduced" : "full";

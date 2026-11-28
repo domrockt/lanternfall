@@ -1,0 +1,156 @@
+{
+ "gate": "K1/K3 gfxinfo janky < 10 % bei FPS >= 60, p95 (rAF je Fenster) <= 16 ms",
+ "device": {
+  "renderer": "Adreno (TM) 710",
+  "vendor": "Qualcomm",
+  "dpr": 2,
+  "screen": "1280x800",
+  "bridgeStatus": {
+   "serial": "10.10.40.27:5555",
+   "model": "Redmi Pad Pro",
+   "android": "16",
+   "soc": "SM7435",
+   "pid": "7031",
+   "thermal": [
+    "Thermal Status: 0"
+   ],
+   "battery": [
+    "temperature: 330"
+   ],
+   "cdp": "http://172.17.0.1:9333"
+  }
+ },
+ "windows": [
+  {
+   "label": "m25-topup-1",
+   "topUp": true,
+   "window": {
+    "seconds": 10,
+    "targetEnemies": 300,
+    "fps": 115.2,
+    "frames": 1152,
+    "elapsedMs": 10002,
+    "worstFrameMs": 91.6,
+    "minEnemies": 300,
+    "avgEnemies": 300,
+    "p50": 8.3,
+    "p90": 8.4,
+    "p95": 8.4,
+    "p99": 16.7
+   },
+   "quality": {
+    "before": "high",
+    "after": "high"
+   },
+   "gfxinfo": {
+    "before": {
+     "totalFrames": 282961,
+     "jankyFrames": 8721,
+     "p95": 22
+    },
+    "after": {
+     "totalFrames": 284063,
+     "jankyFrames": 8821,
+     "p95": 22
+    },
+    "diffFrames": 1102,
+    "diffJanky": 100,
+    "jankyPct": 9.07,
+    "rawBefore": "Applications Graphics Acceleration Info:\nUptime: 135947116 Realtime: 747916115\n\n** Graphics info for pid 7031 [de.domrockt.lanternfall] **\n\nStats since: 133133410725300ns\nTotal frames rendered: 282961\nJanky frames: 8721 (3.08%)\nJanky frames (legacy): 78571 (27.77%)\n50th percentile: 8ms\n90th percentile: 18ms\n95th percentile: 22ms\n99th percentile: 36ms\nNumber Missed Vsync: 530\nNumber High input latency: 242739\nNumber Slow UI thread: 660\nNumber Slow bitmap uploads: 0\nNumber Slow issue draw commands: 8717\nNumber Frame deadline missed: 8721\nNumber Frame deadline missed (legacy): 14315\n",
+    "rawAfter": "Applications Graphics Acceleration Info:\nUptime: 135957852 Realtime: 747926851\n\n** Graphics info for pid 7031 [de.domrockt.lanternfall] **\n\nStats since: 133133410725300ns\nTotal frames rendered: 284063\nJanky frames: 8821 (3.11%)\nJanky frames (legacy): 79597 (28.02%)\n50th percentile: 8ms\n90th percentile: 18ms\n95th percentile: 22ms\n99th percentile: 36ms\nNumber Missed Vsync: 530\nNumber High input latency: 244723\nNumber Slow UI thread: 663\nNumber Slow bitmap uploads: 0\nNumber Slow issue draw commands: 8817\nNumber Frame deadline missed: 8821\nNumber Frame deadline missed (legacy): 14430\n"
+   }
+  },
+  {
+   "label": "m25-topup-2",
+   "topUp": true,
+   "window": {
+    "seconds": 10,
+    "targetEnemies": 300,
+    "fps": 115,
+    "frames": 1152,
+    "elapsedMs": 10016,
+    "worstFrameMs": 25,
+    "minEnemies": 300,
+    "avgEnemies": 300,
+    "p50": 8.3,
+    "p90": 8.4,
+    "p95": 8.4,
+    "p99": 16.7
+   },
+   "quality": {
+    "before": "high",
+    "after": "high"
+   },
+   "gfxinfo": {
+    "before": {
+     "totalFrames": 284077,
+     "jankyFrames": 8821,
+     "p95": 22
+    },
+    "after": {
+     "totalFrames": 285147,
+     "jankyFrames": 8947,
+     "p95": 22
+    },
+    "diffFrames": 1070,
+    "diffJanky": 126,
+    "jankyPct": 11.78,
+    "rawBefore": "Applications Graphics Acceleration Info:\nUptime: 135957963 Realtime: 747926962\n\n** Graphics info for pid 7031 [de.domrockt.lanternfall] **\n\nStats since: 133133410725300ns\nTotal frames rendered: 284077\nJanky frames: 8821 (3.11%)\nJanky frames (legacy): 79609 (28.02%)\n50th percentile: 8ms\n90th percentile: 18ms\n95th percentile: 22ms\n99th percentile: 36ms\nNumber Missed Vsync: 530\nNumber High input latency: 244751\nNumber Slow UI thread: 663\nNumber Slow bitmap uploads: 0\nNumber Slow issue draw commands: 8817\nNumber Frame deadline missed: 8821\nNumber Frame deadline missed (legacy): 14430\n",
+    "rawAfter": "Applications Graphics Acceleration Info:\nUptime: 135968596 Realtime: 747937596\n\n** Graphics info for pid 7031 [de.domrockt.lanternfall] **\n\nStats since: 133133410725300ns\nTotal frames rendered: 285147\nJanky frames: 8947 (3.14%)\nJanky frames (legacy): 80605 (28.27%)\n50th percentile: 8ms\n90th percentile: 18ms\n95th percentile: 22ms\n99th percentile: 36ms\nNumber Missed Vsync: 531\nNumber High input latency: 246598\nNumber Slow UI thread: 666\nNumber Slow bitmap uploads: 0\nNumber Slow issue draw commands: 8943\nNumber Frame deadline missed: 8947\nNumber Frame deadline missed (legacy): 14575\n"
+   }
+  },
+  {
+   "label": "m25-natural",
+   "topUp": false,
+   "window": {
+    "seconds": 10,
+    "targetEnemies": null,
+    "fps": 118.5,
+    "frames": 1186,
+    "elapsedMs": 10005,
+    "worstFrameMs": 25,
+    "minEnemies": null,
+    "avgEnemies": null,
+    "p50": 8.3,
+    "p90": 8.4,
+    "p95": 8.4,
+    "p99": 16.6
+   },
+   "quality": {
+    "before": "high",
+    "after": "high"
+   },
+   "gfxinfo": {
+    "before": {
+     "totalFrames": 285789,
+     "jankyFrames": 9014,
+     "p95": 22
+    },
+    "after": {
+     "totalFrames": 286887,
+     "jankyFrames": 9126,
+     "p95": 22
+    },
+    "diffFrames": 1098,
+    "diffJanky": 112,
+    "jankyPct": 10.2,
+    "rawBefore": "Applications Graphics Acceleration Info:\nUptime: 135974956 Realtime: 747943956\n\n** Graphics info for pid 7031 [de.domrockt.lanternfall] **\n\nStats since: 133133410725300ns\nTotal frames rendered: 285789\nJanky frames: 9014 (3.15%)\nJanky frames (legacy): 81247 (28.43%)\n50th percentile: 8ms\n90th percentile: 18ms\n95th percentile: 22ms\n99th percentile: 36ms\nNumber Missed Vsync: 533\nNumber High input latency: 247732\nNumber Slow UI thread: 670\nNumber Slow bitmap uploads: 0\nNumber Slow issue draw commands: 9010\nNumber Frame deadline missed: 9014\nNumber Frame deadline missed (legacy): 14658\n",
+    "rawAfter": "Applications Graphics Acceleration Info:\nUptime: 135985702 Realtime: 747954702\n\n** Graphics info for pid 7031 [de.domrockt.lanternfall] **\n\nStats since: 133133410725300ns\nTotal frames rendered: 286887\nJanky frames: 9126 (3.18%)\nJanky frames (legacy): 82345 (28.70%)\n50th percentile: 8ms\n90th percentile: 18ms\n95th percentile: 22ms\n99th percentile: 36ms\nNumber Missed Vsync: 534\nNumber High input latency: 249673\nNumber Slow UI thread: 672\nNumber Slow bitmap uploads: 0\nNumber Slow issue draw commands: 9122\nNumber Frame deadline missed: 9126\nNumber Frame deadline missed (legacy): 14801\n"
+   }
+  }
+ ],
+ "m25Aggregate": {
+  "diffFrames": 2172,
+  "diffJanky": 226,
+  "jankyPct": 10.41,
+  "fpsAvg": 115.1,
+  "p95RafMax": 8.4
+ },
+ "naturalWindow": {
+  "jankyPct": 10.2,
+  "fps": 118.5,
+  "p95Raf": 8.4
+ },
+ "jsErrors": [],
+ "passed": false
+}

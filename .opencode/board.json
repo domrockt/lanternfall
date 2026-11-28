@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12351,
+  "next": 12375,
   "cards": [
     {
       "id": 1,
@@ -17035,6 +17035,46 @@
       ],
       "created": "2026-11-28T12:15:05Z",
       "updated": "2026-11-28T13:15:29Z"
+    },
+    {
+      "id": 12371,
+      "title": "m10-device-janky-node K1: Vorher-Messung (gfxinfo Baseline, Renderer-String)",
+      "description": "Akzeptanz: 2 gfxinfo-Fenster am Gerät (Minute-25-Dichte, device-bridge 172.17.0.1:5181) + 1 Fenster OHNE Spawn-Top-up (natürliche Director-Dichte); Renderer-String (kein SwiftShader) im JSON; Baseline-JSON committet BEVOR Code geändert wird. Owner: Lead. Kontrolle: acceptance-auditor (Beleg JSON + Renderer-String).",
+      "column": "review",
+      "assignee": "lead",
+      "notes": [],
+      "created": "2026-11-28T13:31:06Z",
+      "updated": "2026-11-28T13:31:06Z"
+    },
+    {
+      "id": 12372,
+      "title": "m10-device-janky-node K2: Fix in src/config.ts + src/systems/FxSystem.ts",
+      "description": "Akzeptanz: Geräteknoten (Renderer 'Adreno (TM) 710', DPR 2, 120 Hz) fällt unter Minute-25-Last auf medium-Budget; Desktop/iGPU-Pfade bitgleich (Guard-Test pinnt Desktop-Werte). NUR config.ts + FxSystem.ts + tests/device-janky-node.test.ts; quality.ts NICHT anfassen. Owner: gameplay-dev. Kontrolle: reviewer + test-auditor.",
+      "column": "review",
+      "assignee": "lead",
+      "notes": [],
+      "created": "2026-11-28T13:31:06Z",
+      "updated": "2026-11-28T13:31:06Z"
+    },
+    {
+      "id": 12373,
+      "title": "m10-device-janky-node K3: Nachher-Messung + Tore",
+      "description": "Akzeptanz: 2 gfxinfo-Fenster am Gerät (gleiche Methode wie K1); Tore janky < 10 % bei FPS >= 60, p95 <= 16 ms, 0 JS-Fehler; Desktop-Screenshots unverändert (Vorher/Nachher). Falls janky >= 10 %: Zwischenstände committet + Resthebel in Lane-Doku + Bedarfsmeldung requests.md. Owner: Lead. Kontrolle: acceptance-auditor.",
+      "column": "review",
+      "assignee": "lead",
+      "notes": [],
+      "created": "2026-11-28T13:31:06Z",
+      "updated": "2026-11-28T13:31:06Z"
+    },
+    {
+      "id": 12374,
+      "title": "m10-device-janky-node K4: Suite grün + Reviewer-PASS + .lane-done",
+      "description": "Akzeptanz: npm test grün, npm run build rc=0, Reviewer-PASS, je Karte ein Commit (Präfix M10-m10-device-janky-node:), Lane-Doku docs/lanes/m10-device-janky-node.md aktuell, .lane-done committet. Owner: Lead. Kontrolle: commit-gate.",
+      "column": "review",
+      "assignee": "lead",
+      "notes": [],
+      "created": "2026-11-28T13:31:06Z",
+      "updated": "2026-11-28T13:31:06Z"
     }
   ]
 }

@@ -24,7 +24,9 @@ import {
   evaluateThermalStep,
   initialQualityState,
   initialThermalState,
+  qualityBudgetFor,
   stepQuality,
+  QUALITY_ORDER,
   type QualityState,
   type QualityTier,
   type ThermalState,
@@ -95,6 +97,84 @@ export function pushFpsSample(
  */
 export function effectiveQuality(baseTier: QualityTier, thermal: ThermalState): QualityTier {
   return thermal.active ? ("thermal" as QualityTier) : baseTier;
+}
+
+/**
+ * M10-device-janky-node (K2): Geräteknoten-Erkennung. Das Redmi Pad Pro
+ * (SM7435, "Adreno (TM) 710", DPR 2, 120-Hz-Panel) faehrt unter Minute-25-Last
+ * 109–112 FPS Durchsatz — der stepQuality-Regler (Schwellen 45/57 FPS in
+ * src/logic/quality.ts, hier NICHT veraendert) sieht nie Budget-Mangel und das
+ * Geraet bleibt dauerhaft auf "high". Beleg: gfxinfo janky 13,44 %/13,90 %
+ * (m10-v10-device-acceptance K3 FAIL, p95 21 ms). Auf dem Tile-GPU-Geraet
+ * klemmt diese Lane daher die Basis-Stufe auf medium (Regler darf weiter auf
+ * low/thermal absehen, nie zurueck auf high).
+ *
+ * Rein (unit-getestet in tests/device-janky-node.test.ts): Erkennung ueber
+ * WebGL-UNMASKED_RENDERER_WEBGL + DPR. Der Renderer-String matcht bewusst
+ * NUR den Adreno-710-Knoten — Desktop/iGPU-Profile (Mesa Intel, Apple, NVIDIA,
+ * SwiftShader) bleiben unangetastet. Die 120 Hz werden nicht geprueft (im
+ * Browser unzuverlaessig ermittelbar); DPR 2 + Renderer sind gemeinsam
+ * eindeutig genug und der Cap wirkt nur auf dem Geraet.
+ */
+export function isDeviceNode(renderer: string | null | undefined, dpr: number): boolean {
+  return typeof renderer === "string" && renderer.includes("Adreno (TM) 710") && dpr >= 2;
+}
+
+/**
+ * Klemmt eine Basis-Stufe auf das Stufen-Maximum `cap` (reine Ordnung ueber
+ * QUALITY_ORDER; "thermal" ist im Basis-Pfad nie Eingang — effectiveQuality
+ * setzt es erst NACH diesem Cap). Desktop: cap = "high" -> Identitaet.
+ */
+export function clampTierMax(tier: QualityTier, cap: QualityTier): QualityTier {
+  const ti = QUALITY_ORDER.indexOf(tier);
+  const ci = QUALITY_ORDER.indexOf(cap);
+  if (ti < 0 || ci < 0) return tier;
+  return QUALITY_ORDER[Math.min(ti, ci)];
+}
+
+/** Stufen-Deckel am Geraeteknoten (medium-Budget, siehe isDeviceNode). */
+export const DEVICE_TIER_CAP: QualityTier = "medium";
+
+/**
+ * FX-Pool-Deckel am Geraeteknoten: grosser Effekt-Pool auf das medium-Budget
+ * (maxFxSprites 140 statt LOD-220), Partikel-Pool proportional gedrosselt
+ * (360 * 140/220 ≈ 229 -> 240). Wirkt unmittelbar auf den Frame-Tail
+ * (Spawn-/Update-Last je Frame), unabhaengig vom Tier-Regler.
+ */
+export const DEVICE_MAX_FX_ACTIVE = qualityBudgetFor("medium").maxFxSprites;
+export const DEVICE_MAX_PARTICLES = 240;
+
+/** Live-Binding: true, sobald der Geraeteknoten erkannt ist (siehe probeDeviceNode). */
+export let DEVICE_NODE = false;
+
+/**
+ * Einmalige Erkennung im Browser (WebGL-Probe-Canvas, unabhaengig vom Game-
+ * Boot). In Vitest/Node passiv (kein document -> false -> Desktop-Pfade
+ * bitgleich). Fehlerhaftem GL bewusst MISSTRAUEN: ohne String nie Geraet.
+ *
+ * Reviewer-Befund (m10-device-janky-node K4): das Latch gilt fuer BEIDE
+ * Ausgaenge — ohne `deviceProbed` wuerde der Probe-Body (Canvas + getContext)
+ * auf Desktop JEDEM rAF-Tick erneut laufen (60–144 WebGL-Kontexte/s, Browser
+ * begrenzen live Kontexte — im schlechtesten Fall verliert der Browser den
+ * Phaser-Kontext). Einmal pro Seite, inklusive Fehlerpfad.
+ */
+let deviceProbed = false;
+export function probeDeviceNode(): boolean {
+  if (deviceProbed) return DEVICE_NODE;
+  deviceProbed = true;
+  if (typeof window === "undefined" || typeof document === "undefined") return false;
+  try {
+    const c = document.createElement("canvas");
+    const gl = (c.getContext("webgl2") ?? c.getContext("webgl")) as WebGLRenderingContext | null;
+    const dbg = gl?.getExtension("WEBGL_debug_renderer_info");
+    const renderer = gl && dbg
+      ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL))
+      : String((gl && gl.getParameter(gl.RENDERER)) ?? "");
+    DEVICE_NODE = isDeviceNode(renderer, window.devicePixelRatio || 1);
+  } catch {
+    DEVICE_NODE = false;
+  }
+  return DEVICE_NODE;
 }
 
 export function setRenderScale(scale: number): number {
@@ -241,6 +321,9 @@ function installRenderBudget(): void {
 
   const tick = (now: number): void => {
     requestAnimationFrame(tick);
+    // M10-device-janky-node: Geraeteknoten einmalig erkennen (WebGL-Probe,
+    // unabhaengig vom Game-Boot). Desktop: no-op (DEVICE_NODE bleibt false).
+    probeDeviceNode();
     const game = (window as unknown as { __game?: BudgetGame }).__game;
     if (!game || !game.scale || !game.renderer) return;
     const dt = lastNow > 0 ? Math.min(250, now - lastNow) : 0;
@@ -275,7 +358,12 @@ function installRenderBudget(): void {
     // Synchronisation folgt dem Basis-Regler. Engage → QUALITY = "thermal",
     // Budget greift automatisch über qualityBudgetFor (alle Cap-Helfer).
     thermalState = evaluateThermalStep(fpsSerie, { ...thermalState, tier: qState.tier }, dt);
-    QUALITY = effectiveQuality(qState.tier, thermalState);
+    // M10-device-janky-node (K2): Geraeteknoten — Basis-Stufe auf
+    // DEVICE_TIER_CAP (medium) klemmen. Der Regler darf weiter auf low/
+    // thermal absehen (clampTierMax ist nur ein Maximum); zurueck auf high
+    // kommt das Geraet damit nie, Desktop (DEVICE_NODE = false) bitgleich.
+    const baseTier = DEVICE_NODE ? clampTierMax(qState.tier, DEVICE_TIER_CAP) : qState.tier;
+    QUALITY = effectiveQuality(baseTier, thermalState);
     const d2 = (window as unknown as { __rbDbg?: Record<string, unknown> }).__rbDbg;
     if (d2) {
       d2.fps = fpsEwma;
