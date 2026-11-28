@@ -90,3 +90,19 @@ Sammel-Re-Queue.
    regulär abschließt; siehe Ausnahmetabelle.
 3. **`lf-runs/lanes/common.md` fehlt im Repo** — Briefing-Referenz toter Link (auch
    m10-gamepad-nav-scenes-r2 hatte das schon bemerkt).
+
+## 5. Merge nach main (28.11., ~07:20Z)
+
+- **Rebase (Pflicht):** Lane auf main `268f3a3` gerebased; board.json-Konflikte konsequent
+  mit der main-Version gelöst (`checkout --ours`), Lane-Karte #9472 nicht per Diff, sondern
+  nach dem Merge einmalig per `board_add` neu angelegt → main-**#9684** (`lane #9472`).
+  Lane-Commit `76ae824` (nur board.json) thereby skipped — Inhalt über #9684 abgedeckt.
+- **Merge:** `git merge --no-ff` → Merge-Commit **f339995** auf main;
+  `git merge-base --is-ancestor m10-board-cleanup-killed-lanes-r2 main` = rc 0.
+- **.lane-done:** nach dem Merge `git rm` — bewusst NICHT nach main übernommen.
+- **Kontroll-Screenshots (Abbruchkriterium „reines Schwarz im Spielfeld-Canvas"):**
+  - `shots/merge-m10-board-cleanup-killed-lanes-r2-check-960.png` (960×540)
+  - `shots/merge-m10-board-cleanup-killed-lanes-r2-check-1280.png` (1280×720)
+  Beide sauber: Terrain, Spieler, HUD, Laternenlicht sichtbar — **Merge gilt**.
+- **Build/Tests:** `npm run build` grün (443 ms), `npm test` 153 Dateien / **1655 Tests bestanden**.
+- **Review-Karten dieser Lane:** keine offen (0 Karten in `review`); #9684 direkt `done`.
