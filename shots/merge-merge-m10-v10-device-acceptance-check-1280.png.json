@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5472/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-v10-device-acceptance-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
