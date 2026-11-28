@@ -18,6 +18,7 @@ import {
   eliteRimDef,
   eliteRimFrame,
   eliteTierDye,
+  eliteTierMixFor,
   eliteTierPixel,
   enemyFrameKeys,
   enemySpriteFrames,
@@ -114,7 +115,7 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
             if (bp !== null) expect(rp, `${def.id} Rand (${x},${y})`).toBe(ELITE_RIM_COLOR);
             continue;
           }
-          expect(rp, `${def.id} Innen (${x},${y})`).toBe(eliteTierPixel(bp, def.tier));
+          expect(rp, `${def.id} Innen (${x},${y})`).toBe(eliteTierPixel(bp, def.tier, eliteTierMixFor(def.id)));
           // Kontur/Augen-Positionen unveraendert
           if (bp === 0 || bp === 13) expect(rp, `${def.id} Kontur/Augen (${x},${y})`).toBe(bp);
         }
@@ -147,6 +148,27 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     console.log(`[elite-tier-families] min Tier-Zentroid-Distanz: vorher ${before.toFixed(1)} -> nachher ${after.toFixed(1)}`);
     expect(after).toBeGreaterThanOrEqual(30);
     expect(after).toBeGreaterThanOrEqual(before * 2);
+  });
+
+  it("K3 (#7525): Soft-Mix-Typen behalten >= 3 Innen-Schattierungsstufen im Rim-Frame", () => {
+    const softTypes = ["wisp", "knight", "harpy", "lich", "wraith", "treant", "imp"];
+    for (const id of softTypes) {
+      const index = ENEMY_LIST.findIndex((d) => d.id === id);
+      expect(index, id).toBeGreaterThanOrEqual(0);
+      const grid = eliteRimFrame(index);
+      const levels = new Set<number>();
+      for (let y = 0; y < grid.length; y++) {
+        for (let x = 0; x < grid[0].length; x++) {
+          if (grid[y][x] === null || isBoundary(grid, x, y)) continue;
+          const c = grid[y][x] as number;
+          if (c === 0 || c === 13 || c === ELITE_RIM_COLOR) continue;
+          levels.add(c);
+        }
+      }
+      // Gemessen (Offline-Suchlauf): 0,7 kollabiert diese Typen auf 2 Stufen,
+      // der Soft-Mix (0,65; imp 0,6) restauriert die dritte (imp: vierte).
+      expect(levels.size, `${id} (mix ${eliteTierMixFor(id)})`).toBeGreaterThanOrEqual(3);
+    }
   });
 
   it("eliteTierPixel/eliteTierDye sind deterministisch und klampen auf Tier 0-4", () => {

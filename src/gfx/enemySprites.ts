@@ -281,17 +281,39 @@ export function eliteTierDye(tier: number): number {
 }
 
 /**
- * Ein Elite-Koerperpixel in der Tier-Faerbe-Klasse: 70 % Klassenfarbe,
- * 30 % Basispixel, gerundet auf den naechsten Palettenindex (deterministisch,
+ * Ein Elite-Koerperpixel in der Tier-Faerbe-Klasse: `mix` Anteil Klassenfarbe,
+ * Rest Basispixel, gerundet auf den naechsten Palettenindex (deterministisch,
  * nur Palette). Kontur (0) und Augen/Glow (13) bleiben unangetastet.
  */
 const ELITE_TIER_MIX = 0.7;
 
-export function eliteTierPixel(pixel: Pixel, tier: number): Pixel {
+/**
+ * m10-elite-tier-refine (#7525, art-director-Nachbesserung 3): Typen, deren
+ * 70 %-Mix auf 2 Innen-Schattierungsstufen kollabiert, mischen weicher, damit
+ * die interne Schattierung lesbar bleibt. Gemessen (Offline-Suchlauf, festes
+ * Limit, shots/m10-elite-tier-refine-analysis.json): wisp/knight/harpy/lich/
+ * wraith/treant 2 -> 3 Stufen bei 0,65, imp 2 -> 4 bei 0,6. Typen ohne
+ * nachgewiesenen Effekt bleiben bei 0,7 (skeleton/bat: 2/2/2 Stufen, banshee:
+ * kein Kollaps, T0-Basen: 1 Stufe unabhaengig vom Mix).
+ */
+const ELITE_TIER_MIX_SOFT = 0.65;
+const ELITE_TIER_MIX_SOFT_TYPES: ReadonlySet<string> = new Set([
+  "wisp", "knight", "harpy", "lich", "wraith", "treant",
+]);
+const ELITE_TIER_MIX_FINE = 0.6;
+const ELITE_TIER_MIX_FINE_TYPES: ReadonlySet<string> = new Set(["imp"]);
+
+/** Mischung fuer einen Elite-Typ (deterministisch, reine Funktion der Typ-Id). */
+export function eliteTierMixFor(id: string): number {
+  if (ELITE_TIER_MIX_FINE_TYPES.has(id)) return ELITE_TIER_MIX_FINE;
+  return ELITE_TIER_MIX_SOFT_TYPES.has(id) ? ELITE_TIER_MIX_SOFT : ELITE_TIER_MIX;
+}
+
+export function eliteTierPixel(pixel: Pixel, tier: number, mix: number = ELITE_TIER_MIX): Pixel {
   if (pixel === null || pixel === 0 || pixel === 13) return pixel;
   const target = PAL[eliteTierDye(tier)];
   const p = PAL[pixel];
-  const body = 1 - ELITE_TIER_MIX;
+  const body = 1 - mix;
   return nearestPaletteIndex([
     Math.round(((p >> 16) & 255) * body + ((target >> 16) & 255) * ELITE_TIER_MIX),
     Math.round(((p >> 8) & 255) * body + ((target >> 8) & 255) * ELITE_TIER_MIX),
@@ -327,8 +349,9 @@ export function eliteRimGrid(src: Grid): Grid {
  * und Frames gueltig (keine Duplikate).
  */
 export function eliteRimFrame(index: number): Grid {
-  const tier = ENEMY_LIST[index].tier;
-  const body = enemySpriteFrames(index)[0].map((row) => row.map((p) => eliteTierPixel(p, tier)));
+  const def = ENEMY_LIST[index];
+  const mix = eliteTierMixFor(def.id);
+  const body = enemySpriteFrames(index)[0].map((row) => row.map((p) => eliteTierPixel(p, def.tier, mix)));
   return eliteRimGrid(body);
 }
 

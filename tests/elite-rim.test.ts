@@ -30,7 +30,7 @@ vi.mock("../src/gfx/atlas", () => {
 
 import { GEN_ENEMIES } from "../src/gfx/gen-enemies";
 import {
-  baseEnemyDef, eliteFrameId, eliteTierPixel, ELITE_RIM_COLOR, ELITE_RIM_FRAMES, eliteRimDef,
+  baseEnemyDef, eliteFrameId, eliteTierPixel, eliteTierMixFor, ELITE_RIM_COLOR, ELITE_RIM_FRAMES, eliteRimDef,
   eliteRimFrame, enemySpriteFrames, silhouette,
 } from "../src/gfx/enemySprites";
 import { framesForDef } from "../src/logic/enemy-frames";
@@ -77,7 +77,9 @@ describe("Elite-Rim: Sprite-Generator (enemySprites.ts)", () => {
             // M10-elite-tier-families: Innenpixel tragen deterministisch die
             // Tier-Faerbe-Klasse (eliteTierPixel; Kontur 0 und Augen 13 geben
             // sich unverändert zurück). A10-Randvertrag (voll Amber) unveraendert.
-            expect(rim[y][x], `${def.id} Innenpixel ${x},${y}`).toBe(eliteTierPixel(base[y][x], def.tier));
+            expect(rim[y][x], `${def.id} Innenpixel ${x},${y}`).toBe(
+              eliteTierPixel(base[y][x], def.tier, eliteTierMixFor(def.id)),
+            );
           }
         }
       }
