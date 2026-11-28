@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 14095,
+  "next": 14114,
   "cards": [
     {
       "id": 1,
@@ -20369,6 +20369,42 @@
       ],
       "created": "2026-11-28T19:34:55Z",
       "updated": "2026-11-28T19:35:01Z"
+    },
+    {
+      "id": 14110,
+      "title": "m10-panel-hz-k2-remeasure K1: APK-Stand prüfen — lfhz-Lesung im latest-build-APK?",
+      "description": "[lane #14110] Nur-lesend: APK-Build-Commit des latest-build-APK vs merge-m10-panel-hz-pref (79e01c5d, main). Prüfpfade: Telemetrie-Build-Kennzeichen + dist-APK + Bundle-Grep. Abnahme: Beleg-JSON in ~/games/.evidence/m10-panel-hz-k2-remeasure/ (Build-Kennzeichen, ancestry, grep-Positivkontrolle). Bei prä-merge: Doku-only, K2 wird NICHT angehangen (kein sleep-Warten), offener APK-Punkt bleibt bei Vera (escalations.md 17:5xZ).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:37:36Z",
+      "updated": "2026-11-28T19:37:36Z"
+    },
+    {
+      "id": 14111,
+      "title": "m10-panel-hz-k2-remeasure K2: Geräte-Fenster + 2 Belegläufe (60/AUTO vs max)",
+      "description": "[lane #14111] NUR wenn K1 grün: device-bridge /stop+/launch (Spieler-Sperre: 409 DOM_SPIELT = belegter Abbruch ohne Retry). Lauf a) BILDRATE=60/AUTO → lfhz_panel=locked60, Panel 60 Hz, FPS ~60; Lauf b) BILDRATE=max → lfhz_panel=max, aktive Refresh-Rate >60 (Ziel >100 Hz). Skript scripts/m10-panel-hz-device-check.mjs unverändert. Abnahme: 2 Beleg-JSONs in ~/games/.evidence/m10-panel-hz-k2-remeasure/ mit Build-Kennzeichen + Panel-Hz je Lauf; bei APK prä-merge oder 409: dokumentierter Blocker statt Läufe.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:37:36Z",
+      "updated": "2026-11-28T19:37:36Z"
+    },
+    {
+      "id": 14112,
+      "title": "m10-panel-hz-k2-remeasure K3: Urteil je Schritt in docs/lanes + Delta gegen A/B-Zahlen 17:45Z",
+      "description": "[lane #14112] docs/lanes/m10-panel-hz-k2-remeasure.md: Urteil je Schritt, Delta gegen A/B 17:45Z (60 Hz: 60,0 FPS/16,8 ms/0 % janky; 120 Hz: 118,5/8,4/11,8 %). Bei Abweichung Hebelliste (Datei/Hebel/erwarteter Gewinn) → Bedarfsmeldung requests.md, kein Fix in dieser Lane.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:37:36Z",
+      "updated": "2026-11-28T19:37:36Z"
+    },
+    {
+      "id": 14113,
+      "title": "m10-panel-hz-k2-remeasure K4: .lane-done",
+      "description": "[lane #14113] .lane-done im Worktree-Wurzelverzeichnis (5-10 Zeilen Zusammenfassung + Messwerte/Befund) committen — Signal für den Scheduler. Vorher git status --ignored auf eigene Reste prüfen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T19:37:36Z",
+      "updated": "2026-11-28T19:37:36Z"
     }
   ]
 }
