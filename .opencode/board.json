@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9685,
+  "next": 9709,
   "cards": [
     {
       "id": 1,
@@ -11985,10 +11985,55 @@
           "at": "2026-11-28T07:20:03Z",
           "by": "build",
           "text": "[Supervisor] bestätigt: Merge konsequent mit main-board.json gelöst (Rebase-Konflikte via checkout --ours), Lane-Karte einmalig per board_add nachgetragen. Merge f339995 auf main, ancestor rc=0, .lane-done entfernt, Build + 1655 Tests grün, Kontroll-Shots 960/1280 sauber (kein Schwarz)."
+        },
+        {
+          "at": "2026-11-28T07:21:04Z",
+          "by": "build",
+          "text": "art-director-Urteil: PASS — beide Kontroll-Shots (960/1280) korrekt gerendert, kein Schwarz-Canvas, keine Artefakte. Lane-Doku Abschnitt 5 abgeschlossen, Worktree entfernt. Karte fertig."
         }
       ],
       "created": "2026-11-28T07:18:42Z",
-      "updated": "2026-11-28T07:20:03Z"
+      "updated": "2026-11-28T07:21:04Z"
+    },
+    {
+      "id": 9705,
+      "title": "m10-pad-start-pause-r2 K1: Ist-Befund Pad-Start-Pause (Repro + verify-input before)",
+      "description": "lane #9504 — Ist-Befund: löst Pad-Start (Button 9) aktuell die Run-Pause aus? Repro + verify-input-Lauf belegen. AK erfüllt: Befund + Belegpfad in docs/lanes/m10-pad-start-pause-r2.md (Commit b4eecd9).",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T07:27:57Z",
+      "updated": "2026-11-28T07:27:57Z"
+    },
+    {
+      "id": 9706,
+      "title": "m10-pad-start-pause-r2 K2: Pad-Start als ESC-Äquivalent in escToggleAllowed-Dedup-Pfad",
+      "description": "lane #9505 — Fix: Pad-Start/Options-Button (9) geht als ESC-Äquivalent in den Dedup-Pfad escToggleAllowed (src/input/InputState.ts), 0 Doppel-Events, ESC-/Touch-Verhalten bitgleich. AK erfüllt: tsc grün, esc-pause-Bestandstests grün, Dedup im neuen Test belegt (Commit 4efe184).",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T07:27:57Z",
+      "updated": "2026-11-28T07:27:57Z"
+    },
+    {
+      "id": 9707,
+      "title": "m10-pad-start-pause-r2 K3: verify-input um genau EINEN Pad-Start-Pause-Fall ergänzen",
+      "description": "lane #9506 — scripts/verify-input.mjs um genau einen Pad-Start-Pause-Fall ergänzt. AK erfüllt: verify-input 29/29 PASS, 0 JS-Fehler (Commit 1904da7).",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T07:27:57Z",
+      "updated": "2026-11-28T07:27:57Z"
+    },
+    {
+      "id": 9708,
+      "title": "m10-pad-start-pause-r2 K4: Regressionstest tests/pad-start-pause.test.ts",
+      "description": "lane #9507 — tests/pad-start-pause.test.ts: Dedup gegen Doppel-Toggle, Priorität MOVE_SOURCE unberührt. AK erfüllt: 12/12 grün, Suite 1667/1667, build grün (Commit baa2e5a).",
+      "column": "review",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T07:27:57Z",
+      "updated": "2026-11-28T07:27:57Z"
     }
   ]
 }
