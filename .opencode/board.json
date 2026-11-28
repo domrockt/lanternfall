@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13962,
+  "next": 13989,
   "cards": [
     {
       "id": 1,
@@ -20112,6 +20112,54 @@
       ],
       "created": "2026-11-28T18:20:31Z",
       "updated": "2026-11-28T18:44:06Z"
+    },
+    {
+      "id": 13986,
+      "title": "m10-v10-flake-sweep: K1 Sweep-Skript + 3 Suite-Läufe",
+      "description": "scripts/m10-flake-sweep.mjs (NEU): führt `npm test` 3x aus (Timeout 900s je Lauf, kein sleep-Warten). Je Lauf Summary-JSON nach shots/m10-v10-flake-sweep-run{1,2,3}.json (Pass/Fail-Zahl, Dauer, FAILende Tests mit Testname + Fehlerklasse). Abnahme: 3 JSONs existieren und belegen je einen kompletten Suite-Lauf. [lane #13870]",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T19:03:31Z",
+          "by": "build",
+          "text": "review → done: lane #13870, Merge c7daeaf6 (m10-v10-flake-sweep in main, ancestor rc=0)"
+        }
+      ],
+      "created": "2026-11-28T19:03:26Z",
+      "updated": "2026-11-28T19:03:31Z"
+    },
+    {
+      "id": 13987,
+      "title": "m10-v10-flake-sweep: K2 Befundliste Flakes",
+      "description": "docs/lanes/m10-v10-flake-sweep.md: je flaky Test — Datei, Testname, Fehlerklasse, Repro-Rate (x/3), Hebel-Vorschlag. Flaky = FAIL in >=1 der 3 Läufe. Falls 0 Flakes über 3 Läufe: belegter 0-Flake-Abschluss (K3). Abnahme: Befundliste vollständig oder belegtes 0-Flake-Ergebnis. [lane #13871]",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T19:03:31Z",
+          "by": "build",
+          "text": "review → done: lane #13871, Merge c7daeaf6 (m10-v10-flake-sweep in main, ancestor rc=0)"
+        }
+      ],
+      "created": "2026-11-28T19:03:26Z",
+      "updated": "2026-11-28T19:03:31Z"
+    },
+    {
+      "id": 13988,
+      "title": "m10-v10-flake-sweep: K4 Bedarfsmeldungen + lane-done",
+      "description": "Bedarfsmeldungen in /home/ai/games/.dispatch/requests.md (eine Zeile je Befund) + .lane-done im Worktree-Wurzelverzeichnis. Abnahme: Zeilen in requests.md passend zu K2-Befunden, .lane-done committed. [lane #13872]",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T19:03:31Z",
+          "by": "build",
+          "text": "review → done: lane #13872, Merge c7daeaf6 (m10-v10-flake-sweep in main, ancestor rc=0)"
+        }
+      ],
+      "created": "2026-11-28T19:03:26Z",
+      "updated": "2026-11-28T19:03:31Z"
     }
   ]
 }
