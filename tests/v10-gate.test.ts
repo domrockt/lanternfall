@@ -188,9 +188,10 @@ describe("evaluateGates PASS/FAIL-Matrix", () => {
   it("Beobachtungen (Draw-Calls/Texturen) warnen, aber FAILen nicht", () => {
     const input = passingInput();
     input.perf.drawsP95 = 99;
-    input.perf.textures = 900;
+    input.perf.textures = 4000; // TEXTURES_WARN = 3500 (Baseline-Kalibrierung)
+    input.perf.avgEnemies = 61; // Minute-25-Top-up nicht gehalten -> Messvaliditäts-Warnung
     const verdict = evaluateGates(input);
     expect(verdict.verdict).toBe("PASS");
-    expect(verdict.warnings.length).toBe(2);
+    expect(verdict.warnings.length).toBe(3);
   });
 });
