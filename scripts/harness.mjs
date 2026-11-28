@@ -29,20 +29,47 @@ export function ensureBuild() {
   mkdirSync("shots", { recursive: true });
 }
 
-export async function startServer() {
-  const port = 5400 + Math.floor(Math.random() * 400);
-  const server = spawn("python3", ["-m", "http.server", String(port), "--bind", "127.0.0.1", "-d", "dist"], {
-    stdio: "ignore",
-  });
-  for (let i = 0; i < 60; i++) {
-    try {
-      const res = await fetch(`http://127.0.0.1:${port}/`);
-      if (res.ok) return { port, stop: () => server.kill() };
-    } catch { /* noch nicht bereit */ }
-    await new Promise((r) => setTimeout(r, 100));
+/**
+ * Startet den statischen Server mit Port-Retry (B5, Nachabnahme G): belegt eine
+ * Parallel-Lane den gewürfelten Port, wird bis zu `attempts`-mal mit der jeweils
+ * nächsten Port-Nummer wiederholt. Ein sofort beendeter Prozess (Bind-Fehler,
+ * "address in use") bricht den Poll früh ab, statt 6 s zu warten. Verhalten bei
+ * Erfolg ist bitgleich zu vorher (gleicher Spawn, gleiches Poll-Intervall).
+ * Parameter `opts` existiert nur für den Guard-Test (K3); Produktionsaufrufer
+ * bleiben ohne Argumente unverändert.
+ */
+export async function startServer(opts = {}) {
+  const {
+    basePort = 5400 + Math.floor(Math.random() * 400),
+    attempts = 3,
+    pollTries = 60,
+    pollMs = 100,
+    probe = defaultProbe,
+  } = opts;
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const port = basePort + attempt;
+    const server = spawn("python3", ["-m", "http.server", String(port), "--bind", "127.0.0.1", "-d", "dist"], {
+      stdio: "ignore",
+    });
+    let exited = false;
+    server.once?.("exit", () => { exited = true; });
+    for (let i = 0; i < pollTries; i++) {
+      try {
+        if (await probe(port)) return { port, stop: () => server.kill() };
+      } catch { /* noch nicht bereit */ }
+      if (exited) break; // Bind-Fehler (z. B. Port belegt) -> nächster Port
+      await new Promise((r) => setTimeout(r, pollMs));
+    }
+    server.kill();
   }
-  server.kill();
-  throw new Error("Statischer Server konnte nicht gestartet werden");
+  throw new Error(
+    `Statischer Server konnte nicht gestartet werden: Port-Konflikt auch nach ${attempts} Versuchen (Ports ${basePort}-${basePort + attempts - 1})`,
+  );
+}
+
+async function defaultProbe(port) {
+  const res = await fetch(`http://127.0.0.1:${port}/`);
+  return res.ok;
 }
 
 export async function loadPlaywright() {
