@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10098,
+  "next": 10102,
   "cards": [
     {
       "id": 1,
@@ -12754,6 +12754,48 @@
       ],
       "created": "2026-11-28T07:38:48Z",
       "updated": "2026-11-28T07:38:48Z"
+    },
+    {
+      "id": 10098,
+      "title": "m10-verify-menu-scale-fix-r2 K1: Repro verify-menus an Basis (Fehlbild + View-Zustand)",
+      "description": "Abnahme: verify-menus läuft an Branch-Basis, FAIL 'Skalierung 2X gestellt, Fit-View zentriert' mit Zahlen (erwartet 720x540, gemessen 960x540) belegt; Renderer/View-Zustand in ~/games/.evidence/m10-verify-menu-scale-fix-r2/ gesichert.",
+      "column": "todo",
+      "notes": [
+        {
+          "at": "2026-11-28T07:56:13Z",
+          "by": "build",
+          "text": "Lane übernommen; board_move → doing vom WIP-Limit abgelehnt (fremde Lanes #9725/#9922 belegen doing). K1 läuft trotzdem; Buchung nachgeholt, sobald frei."
+        }
+      ],
+      "created": "2026-11-28T07:56:05Z",
+      "updated": "2026-11-28T07:56:13Z"
+    },
+    {
+      "id": 10099,
+      "title": "m10-verify-menu-scale-fix-r2 K2: Root Cause — Produkt-Bug (view/scale) vs. Harness-Erwartung",
+      "description": "Abnahme: Beleg mit Zahlen, ob computeView (src/logic/view.ts) bei 960x540+setting=2 falsch handelt oder die Erwartung in scripts/verify-menus.mjs veraltet ist; Urteil in docs/lanes/m10-verify-menu-scale-fix-r2.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:56:05Z",
+      "updated": "2026-11-28T07:56:05Z"
+    },
+    {
+      "id": 10100,
+      "title": "m10-verify-menu-scale-fix-r2 K3: Fix des belegten Mangels",
+      "description": "Abnahme: Nur der belegte Mangel gefixt (Produkt-View/Scale ODER Harness-Erwartung mit Begründung); keine Nebenpflege; verify-input unberührt.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:56:05Z",
+      "updated": "2026-11-28T07:56:05Z"
+    },
+    {
+      "id": 10101,
+      "title": "m10-verify-menu-scale-fix-r2 K4: Regressionstest + Abnahme + .lane-done",
+      "description": "Abnahme: tests/view-menu-scale.test.ts (2X → erwartete View-Geometrie) grün; verify-menus 15/15 PASS in 2 aufeinanderfolgenden Läufen, 0 JS-Fehler; Suite+tsc+build grün; docs/lanes aktualisiert; .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:56:05Z",
+      "updated": "2026-11-28T07:56:05Z"
     }
   ]
 }
