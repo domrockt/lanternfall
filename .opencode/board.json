@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6778,
+  "next": 6842,
   "cards": [
     {
       "id": 1,
@@ -7870,6 +7870,91 @@
       "notes": "lane #6101",
       "created": "2026-11-27T23:54:04Z",
       "updated": "2026-11-27T23:54:04Z"
+    },
+    {
+      "id": 6838,
+      "title": "m10-evo-fx-winter K1: Ist-Beleg Ewiger Winter (before.json/png)",
+      "description": "Skript scripts/m10-evo-fx-winter.mjs (Kopie der Phoenix-Vorlage, Waffen-ID eternal_winter, Winter-Keys ring_frost/projectile_ice/fx_ice/fx_shock/Signaturen) stellt die Winter-Szene nach (Evolution ausgelöst, 10–30 lebende Gegner, je 640 und 960x540) → shots/m10-evo-fx-winter-before.png + -before.json (Textur-Pixelgröße, Draw-Scale, Farb-Stufen). EINMAL messen, committen, weiter — kein Skript-Tuning-Loop. Abnahme: JSON trägt WebGL-Renderer-String (kein SwiftShader), 0 JS-Fehler, Belege committed.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T00:03:13Z",
+          "by": "build",
+          "text": "todo → doing: Mess-Skript bauen + einmaliger before-Lauf (Renderer-String-Pflicht)."
+        },
+        {
+          "at": "2026-11-28T00:05:01Z",
+          "by": "build",
+          "text": "doing → review: Before-Belege committed (ece50bb): before.json valid Renderer ANGLE Mesa RPL-S, 0 JS-Fehler, 22/23 Gegner. Ist: ring_frost@2.01x, fx_ice@1.25x, Sig@3.26x/4.03x (Ink 95/105 px), projectile_ice 12/25 Ink. K2 startet."
+        }
+      ],
+      "created": "2026-11-28T00:03:10Z",
+      "updated": "2026-11-28T00:05:01Z"
+    },
+    {
+      "id": 6839,
+      "title": "m10-evo-fx-winter K2: Fix — Eis-/Schnee-Texturen in Zielgröße (gen-fx.ts)",
+      "description": "Eis-/Schnee-Textur in Zielgröße neu (gen-fx.ts): Farb-Treppe Kern weiß (lanternWhite/candleWhite) → hellblau (paleMist) → blau (fogBlue), klare Kristall-/Kanten-Struktur statt Blob; Aufbau ≤ 0,3 s (Anticipation), Impact (Frost-Blitz), kurzer Ausklang; dezente Schnee-/Frost-Partikel in Sprite-Pixelgröße; Parameter in src/data/evolution-weapons.ts (WINTER_FX) / evolutions.ts; kein Draw-Scale > 1 am Effekt; Signatur wie Phoenix mit drawScale-Stopptaste (128x128 @ Scale 1). Abnahme: tsc rc=0, gezielte Tests grün, visueller Probe-Shot zeigt Kristall-Struktur statt graue Wolke.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T00:05:44Z",
+          "by": "build",
+          "text": "todo → doing: Fix-Plan: projectile_ice ohne Ink (Blaustufe), ring_frost-Zielgröße (Scale ≤ 1), fx_ice-Partikel Scale ≤ 1, Winter-Signatur 128x128 (drawScale-Muster wie Phoenix), Windup/Anticipation ≤ 0,3 s."
+        },
+        {
+          "at": "2026-11-28T00:16:50Z",
+          "by": "build",
+          "text": "[Supervisor] befolgt: CombatSystem.ts + tests/evo-signature-calls.test.ts werden revertet/parket (nicht K2); gen-fx.ts-Stand kommt als #K2 WIP-Commit. Danach maximal 2 Edit-Test-Zyklen an der Textur (Treppe weiß→hellblau→blau, Zielgröße, Scale ≤ 1), dann ein Test-/tsc-Lauf, bei Rot → requests.md + blocked. Zusätzlich offener Befund: Probe-Lauf misst trotz neuem Bundle alte Texturen (Verdacht: vorgebackener Atlas überschreibt Runtime-Generatoren) — wird im WIP-Commit dokumentiert."
+        },
+        {
+          "at": "2026-11-28T00:20:46Z",
+          "by": "build",
+          "text": "doing → review: Fix committed (548405e WIP + d58364f): Signaturen 128x128@1 (0 Ink statt 95/105), projectile_ice 0 Ink, ring_frost@3 Scale 0.671. tsc rc=0, 23/23 Tests, after.json valid iGPU 0 JS-Fehler. Offen (dokumentiert): fx_ice-Partikel @1.25x — Scale steht im CombatSystem, auf Supervisor-Anweisung geparkt. Fremde Test-Assertion (1 Zeile) folgt drawScale, Request in requests.md."
+        }
+      ],
+      "created": "2026-11-28T00:03:10Z",
+      "updated": "2026-11-28T00:20:46Z"
+    },
+    {
+      "id": 6840,
+      "title": "m10-evo-fx-winter K3: Tests tests/evo-fx-winter.test.ts",
+      "description": "Tests nach tests/evo-fx-phoenix.test.ts-Muster: Effekt-Texturgröße = Sprite-Pixelgröße, kein Scale > 1 am Winter-Effekt (Draw-Scale-1-Guard am Quelltext), keine Grau-Blobs (Farb-Stufen im Blau-Bereich, kein Ink an Effekt-Texturen); bestehende Evolution-Tests bleiben grün. Abnahme: npx vitest run tests/evo-fx-winter.test.ts grün + Suite grün + tsc rc=0 + npm run build rc=0.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T00:20:46Z",
+          "by": "build",
+          "text": "todo → doing: Tests tests/evo-fx-winter.test.ts nach Phoenix-Muster (Zielgrößen, Scale-1-Guard, Farbtreppe ohne Ink/Grau)."
+        },
+        {
+          "at": "2026-11-28T00:23:05Z",
+          "by": "build",
+          "text": "doing → review: Tests committed (0b3b563): 9 Guards in tests/evo-fx-winter.test.ts, 32/32 gruen (inkl. fx-mixel + evo-signature-calls), tsc rc=0. Dabei Farbcodes-Fix projectile_ice (orange->Eis-Treppe), after.json re-gemessen."
+        }
+      ],
+      "created": "2026-11-28T00:03:10Z",
+      "updated": "2026-11-28T00:23:05Z"
+    },
+    {
+      "id": 6841,
+      "title": "m10-evo-fx-winter K4: Nachher-Beleg + art-director + Lane-Doku",
+      "description": "After-Lauf: shots/m10-evo-fx-winter-after.png + -after.json (gleicher Renderer-String, 0 JS-Fehler, lebende Gegner im Shot); art-director-Sichtprüfung (Vision) dokumentieren; Doku docs/lanes/m10-evo-fx-winter.md mit Vorher/Nachher-Tabelle; .lane-done mit Zusammenfassung. Abnahme: art-director PASS (liest sich als eisiger Winter-Sturm: weiß-blau, Kristall-Kanten, keine graue Wolke) mit Screenshot-Pfaden im Bericht; alle Belege committed.",
+      "column": "blocked",
+      "notes": [
+        {
+          "at": "2026-11-28T00:23:05Z",
+          "by": "build",
+          "text": "todo → doing: After-Belege liegen vor (iGPU, 0 JS-Fehler); art-director-Sichtprüfung + Lane-Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T00:35:07Z",
+          "by": "build",
+          "text": "doing → blocked: art-director Runde 2: Signaturen/projectile_ice PASS (4.5), aber Aura-Siegel auf hellem Moor-Grund 3.5/5 FAIL — Root Cause: multiplikativer fogBlue-Tint am FX-Spawn (CombatSystem.updateWinter, geparkte Datei). Fix (1 Zeile) per requests.md angefragt; gehört zur Folgelane m10-evo-fx-winter-w2 (mit geparktem Partikel-Scale/Windup-Diff). Doku docs/lanes/m10-evo-fx-winter.md mit Vorher/Nachher + beiden Urteilen; build rc=0, 32/32 Tests, 0 JS-Fehler."
+        }
+      ],
+      "created": "2026-11-28T00:03:10Z",
+      "updated": "2026-11-28T00:35:07Z"
     }
   ]
 }
