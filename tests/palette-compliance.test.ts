@@ -300,10 +300,11 @@ describe("M10 FX-Frame-Guard: gerenderte FX-Frames (repraesentative Menge)", () 
       liveKeys,
       `Neue ungedeckte Draw-Scales (Mixel-Bake fehlt):\n  ${liveKeys.join("\n  ")}`,
     ).toEqual(pinnedKeys);
-    // M10-fx-bakes-evo-r2 K1 (Ist nach Sammler-Update): 3 ungedeckte Keys
-    // (thunder_seal hit/death + fx_boss_core). Die 10 baked-Signaturen sind mit
-    // Draw-Scale 1 gedeckt. Ratchet darf nur schrumpfen — K4 zieht ihn auf 0.
-    expect(pinnedKeys.length, "Ratchet: ungedeckte Keys nur schrumpfen").toBeLessThanOrEqual(3);
+    // M10-fx-bakes-evo-r2 K4 (Ratchet abgebaut): 0 ungedeckte Keys — thunder_seal
+    // hit/death (Bake 4/5) und fx_boss_core (Bake 4) sind gebacken, die 10
+    // baked-Signaturen zeichnen mit Draw-Scale 1 aus Zielgroessen-Texturen.
+    // Der Ratchet bleibt HART: jede neue ungedeckte Draw-Scale macht rot.
+    expect(pinnedKeys.length, "Ratchet: ungedeckte Keys = 0 (M10-fx-bakes-evo-r2)").toBe(0);
   });
 
   // ── Negative Fixtures: bekannte Mixel-Befunde schlagen nachweislich an ──

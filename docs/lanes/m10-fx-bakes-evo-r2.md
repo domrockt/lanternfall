@@ -104,3 +104,42 @@ sind auf das neue, in `tests/evo-fx-bakes.test.ts` getestete Verhalten umgestell
 inkl. neue Assertions (mixelLevel 2 bei Scale 1,35, Alpha-Boden bleibt).
 
 Coverage nach K3: **17/17 gedeckt, knownFindings 0** (`~/games/.evidence/m10-fx-bakes-evo-r2/k3-ist-report.json`).
+
+## K4 — Ratchet abgebaut + Sichtbelege + Abschluss (#10254)
+
+**Ratchet:** `tests/palette-compliance.test.ts` pinnt jetzt **0 ungedeckte Keys** (vorher 13 →
+nach K1 3 → nach K2 1 → nach K3 0). Die Assertion ist hart: jede neue ungedeckte Draw-Scale
+macht rot. Dither-Ratchet: L1-Basen unverändert; neue gepinnte Befunde sind ausschließlich
+@L-Bake-Frames (Präzedenzfall fx_fire@2/@3, ring_frost@2/@3 — bandPx skaliert mit L, Screen-Band
+identisch, da Draw-Scale/L). Guard-Laufzeit < 3 s (Test-Assertion grün), Full-Suite grün
+(171 Dateien / 1857 Tests), `npm run build` rc=0.
+
+**Sichtbelege (iGPU, Mesa Intel(R) Graphics (RPL-S), kein SwiftShader):**
+`shots/abnahme/k4-shot-*.png` + `k4-zoom-*.png` (3× nearest), Beleg-JSON
+`shots/abnahme/k4-shot-evidence.json` (Kopien: `~/games/.evidence/m10-fx-bakes-evo-r2/`).
+Wirkungsmomente mit lebenden Gegnern:
+- thunder_seal hit (`fx_evo_hit_thunder_seal@4_3` aktiv) + death (`fx_evo_death_thunder_seal@5`)
+- eternal_winter death (baked-Zielgrößen-Referenz)
+- fx_boss_core Boss-Tod: **`fx_boss_core@4` zur Laufzeit aktiv** (Stufen-Rewrite im Spawn
+  funktioniert; Intro zusätzlich @3) — 0 JS-Fehler.
+
+**art-director-Sichtcheck:** **PASS** (strenge Abnahme, 4/4 Kriterien mit Bildbeleg):
+keine 6–10-px-Mixelblöcke (1-px-Treppen an Beam- und Core-Kanten), eine Pixelgröße im Bild
+(thunder_seal vom baked-Zielgrößen-Referenz-Setup nicht unterscheidbar), Formen/Kerne lesbar
+(thunder_seal death = 3 Beams + Seitenarme wie im Generator; fx_boss_core 3-Stufen-Kern +
+Zackenring + Splitter trotz Screen-Flash), keine ausgebrannten Stufen. Rim-1-px-Abweichung
+als feine Creme-Kante bestätigt. Kontrolleur-Beleg: `npx vitest run tests/evo-fx-bakes.test.ts`
+11/11 grün; Runtime-Keys `@4/@5` + Mesa-RPL-S-Renderer im Beleg-JSON.
+
+## Bilanz
+
+| Schritt | Ist |
+|---|---|
+| Ungedeckte Draw-Scale-Keys | 13 (gepinnt, davon 10 stale) → **0** |
+| Neue Mixel-Bakes | fx_evo_hit_thunder_seal@2–4, fx_evo_death_thunder_seal@2–5, fx_boss_core@2–4 |
+| Level-1-Optik | bitidentisch (12/12 Evo-Sets + fx_boss_core gegen alte Quelle verifiziert) |
+| Run.ts-Änderungen | keine (FxSystem wählt Stufe automatisch) |
+| Suite/Build | 171 Dateien / 1857 Tests grün, build rc=0, Guard < 3 s |
+
+**Offene Punkte:** keine aus dieser Lane. Der thunder_seal-Zielgrößen-Pfad (128er-Upgrade,
+Revert 34e97d3) bleibt bei Karte #8876 — der Bake macht ihn optional, nicht dringend.

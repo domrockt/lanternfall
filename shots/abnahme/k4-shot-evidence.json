@@ -1,0 +1,22 @@
+{
+  "shots": [
+    "k4-shot-thunder-seal-hit.png",
+    "k4-shot-thunder-seal-death.png",
+    "k4-shot-eternal-winter-death.png",
+    "k4-shot-boss-core-death.png"
+  ],
+  "bakedKeysSeen": [
+    "fx_evo_hit_thunder_seal@4_3",
+    "fx_evo_death_thunder_seal@5",
+    "fx_evo_death_thunder_seal@5_3",
+    "fx_evo_death_eternal_winter",
+    "fx_evo_hit_eternal_winter",
+    "fx_boss_core@3",
+    "fx_boss_core@4",
+    "fx_evo_death_eternal_winter",
+    "fx_evo_hit_eternal_winter_3"
+  ],
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "swiftShader": false,
+  "errors": []
+}
