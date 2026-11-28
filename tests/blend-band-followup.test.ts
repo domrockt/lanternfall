@@ -62,15 +62,23 @@ describe("Blend-Band-Followup: CombatSystem (Waffen-/Evolutions-FX)", () => {
 
   it("jede ADD-Blend-Zuweisung im CombatSystem sitzt im Glow-Band-Block (FX_GLOW_DEPTH oder lanternOrbDepth)", () => {
     // Alle ADD-Zuweisungen (direkt oder als Ternary-Zweig) finden und prüfen,
-    // dass im selben Sprite-Create-Block die Band-Tiefe gesetzt wird.
+    // dass der zugehörige Sprite-Create-Block die Band-Tiefe setzt. Anker ist
+    // der NAECHSTE `.setDepth(` VOR der ADD-Zuweisung (Review-Hinweis: nicht
+    // ein breites Rueckwaerts-Fenster, das auch Kommentar-Erwaehnungen des
+    // Bands falsch-gruen machen wuerde).
     const re = /Phaser\.BlendModes\.ADD/g;
     let match: RegExpExecArray | null;
     let checked = 0;
     while ((match = re.exec(combatSrc)) !== null) {
-      const before = combatSrc.slice(Math.max(0, match.index - 700), match.index);
+      const setDepthAt = combatSrc.lastIndexOf(".setDepth(", match.index);
       expect(
-        /FX_GLOW_DEPTH|lanternOrbDepth/.test(before),
-        `ADD-Zuweisung @${match.index} ohne Band-Tiefe im Create-Block`,
+        setDepthAt,
+        `ADD-Zuweisung @${match.index} ohne .setDepth im Create-Block`,
+      ).toBeGreaterThan(0);
+      const depthCall = combatSrc.slice(setDepthAt, match.index);
+      expect(
+        /FX_GLOW_DEPTH|lanternOrbDepth/.test(depthCall),
+        `ADD-Zuweisung @${match.index}: .setDepth(${depthCall.slice(10, 60).trim()}…) ohne Band-Tiefe`,
       ).toBe(true);
       checked++;
     }

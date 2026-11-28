@@ -18799,34 +18799,51 @@
       "id": 13345,
       "title": "m10-blend-band-followup K2: Rest-ADD-Quellen ins Glow-Band ziehen",
       "description": "Rest-ADD-Quellen (EnemyProjectiles, CombatSystem, PickupSystem) ins FX_GLOW_DEPTH-Band oder verträgliches zweites Band (Muster glowDepthFor/depthForSprite in FxSystem.ts — nur Muster, Datei nicht anfassen). GAME.md-Zeichenreihenfolge respektieren; zwingend über Gegnern liegende Quellen dokumentiert lassen. Abnahme: tsc rc=0, gezielte Tests grün, Quellen je dokumentiert in docs/lanes/m10-blend-band-followup.md.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T16:50:59Z",
           "by": "build",
           "text": "todo → doing: K2 gestartet: Befund — EnemyProjectiles & PickupSystem sind ADD-frei (verifiziert: grep + Runtime-Census); einzige ADD-Insel in eigenen Dateien: CombatSystem Laterne unevolviert (orb_lantern ADD auf DEPTH.fxLow 7, mitten zwischen NORMAL-FX)."
+        },
+        {
+          "at": "2026-11-28T16:52:12Z",
+          "by": "build",
+          "text": "doing → review: K2 done, Commit bb1a641e (#13345). Befund ehrlich: EnemyProjectiles hat KEINE ADD-Quelle (grep + Runtime-Census before.json), PickupSystem-Momente sind NORMAL (tintFill+Graphics) und bleiben bewusst auf enemyShot+1 (Lesbarkeit, dokumentiert) — einzige reale ADD-Insel in eigenen Dateien war CombatSystem Laterne unevolviert (orb_lantern ADD auf fxLow 7 zwischen NORMAL-FX). Fix: lanternOrbDepth(evolved) → ADD-Korpus ins Band 7.5 (Halos liefen schon dort), evolviert bleibt NORMAL auf fxLow. tsc rc=0. Zahl-Wahrheit: sichtbare ADD-Inseln kosten lokal 0 Wechsel (A/B runtime-hide), Rest 6,2 stammt aus Graphics/SKIP_CHECK + GroundChunks (fremd)."
         }
       ],
       "created": "2026-11-28T16:41:27Z",
-      "updated": "2026-11-28T16:50:59Z"
+      "updated": "2026-11-28T16:52:12Z"
     },
     {
       "id": 13346,
       "title": "m10-blend-band-followup K3: Guard-Test tests/blend-band-followup.test.ts",
       "description": "Depth-Assertions je Quelle (Glow → Band, Basis unverändert), Muster tests/tablet-fx-budget.test.ts. Abnahme: npx vitest run tests/blend-band-followup.test.ts grün, Full-Suite vor Commit grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T16:52:12Z",
+          "by": "build",
+          "text": "todo → review: K3 done, Commit (tests/blend-band-followup.test.ts, 9 Tests gruen): Depth-Assertions je Quelle — Laterne im Band + alle ADD-Zuweisungen im CombatSystem band-geankert, Momente NORMAL auf enemyShot+1, EnemyProjectiles ADD-frei, Walk-Modell 2 Grenzen + Gegenmodell alte Laterne 4 Grenzen (Regressions-Anker)."
+        }
+      ],
       "created": "2026-11-28T16:41:27Z",
-      "updated": "2026-11-28T16:41:27Z"
+      "updated": "2026-11-28T16:52:12Z"
     },
     {
       "id": 13347,
       "title": "m10-blend-band-followup K4: Nachher-Messung + Lane-Doku + .lane-done",
       "description": "K1-Profile nachmessen (Blend-Wechsel/Frame im Worst-Profil <= 4), pixel-diff Probe gegen Vorher-Standbild (Differenz nur im ADD-Band erklärt), docs/lanes/m10-blend-band-followup.md mit Vorher/Nachher + Hebelliste Rest-Quellen, .lane-done committen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T16:53:38Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: Nachher-Messung (flock), Pixel-diff-Probe (runtime A/B am gefrorenen Scene-State: orb@7.5 vs orb@7 im selben Frame), Lane-Doku, .lane-done."
+        }
+      ],
       "created": "2026-11-28T16:41:27Z",
-      "updated": "2026-11-28T16:41:27Z"
+      "updated": "2026-11-28T16:53:38Z"
     }
   ]
 }
