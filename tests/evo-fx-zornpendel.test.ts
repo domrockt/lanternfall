@@ -106,7 +106,8 @@ describe("m10-evo-fx-zornpendel: Texturen in Zielgröße + Draw-Scale 1", () => 
     expect(EVOLUTION_SIGNATURES.soul_beacon.drawScale).toEqual([1, 1]);
     expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toEqual([1, 1]);
     expect(EVOLUTION_SIGNATURES.thorn_storm.drawScale).toBeUndefined();
-    expect(EVOLUTION_SIGNATURES.thunder_seal.drawScale).toBeUndefined();
+    // m10-chaos-fix-raster-glow: Gewittersiegel jetzt ebenfalls Zielgroesse 128.
+    expect(EVOLUTION_SIGNATURES.thunder_seal.drawScale).toEqual([1, 1]);
   });
 });
 

@@ -1,13 +1,13 @@
 {
   "milestone": "M10",
   "lane": "m10-palette-fx-guard",
-  "generatedAt": "2026-11-28T02:57:39.660Z",
-  "sets": 37,
-  "frames": 137,
+  "generatedAt": "2026-11-28T04:34:36.426Z",
+  "sets": 48,
+  "frames": 187,
   "offPaletteTotal": 0,
   "alphaViolationsTotal": 0,
-  "maxDitherBandPx": 6,
-  "maxDitherBandKey": "fx_evo_death_thunder_seal#0",
+  "maxDitherBandPx": 7,
+  "maxDitherBandKey": "fx_bolt@2#4",
   "ditherFindings": [
     {
       "key": "fx_evo_hit_phoenix#0",
@@ -231,19 +231,19 @@
     },
     {
       "key": "fx_fire#0",
-      "bandPx": 4
+      "bandPx": 3
     },
     {
       "key": "fx_fire#1",
-      "bandPx": 6
+      "bandPx": 4
     },
     {
       "key": "fx_fire#2",
-      "bandPx": 5
+      "bandPx": 4
     },
     {
       "key": "fx_fire#3",
-      "bandPx": 4
+      "bandPx": 3
     },
     {
       "key": "fx_fire#4",
@@ -251,7 +251,7 @@
     },
     {
       "key": "fx_fire#5",
-      "bandPx": 4
+      "bandPx": 3
     },
     {
       "key": "fx_halo#1",
@@ -259,6 +259,30 @@
     },
     {
       "key": "ring_frost#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_bolt#0",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_bolt#1",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_bolt#2",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_bolt#3",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_bolt#4",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_bolt#5",
       "bandPx": 3
     },
     {
@@ -279,7 +303,7 @@
     },
     {
       "key": "fx_fire@2#4",
-      "bandPx": 5
+      "bandPx": 4
     },
     {
       "key": "fx_fire@2#5",
@@ -307,6 +331,46 @@
     },
     {
       "key": "fx_fire@3#5",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_death_blob@2#0",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_death_blob@2#1",
+      "bandPx": 4
+    },
+    {
+      "key": "fx_death_blob@3#2",
+      "bandPx": 3
+    },
+    {
+      "key": "fx_bolt@2#0",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_bolt@2#1",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_bolt@2#2",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_bolt@2#3",
+      "bandPx": 6
+    },
+    {
+      "key": "fx_bolt@2#4",
+      "bandPx": 7
+    },
+    {
+      "key": "fx_bolt@2#5",
+      "bandPx": 5
+    },
+    {
+      "key": "fx_bolt@3#0",
       "bandPx": 3
     }
   ],
@@ -457,5 +521,5 @@
   ],
   "violations": [],
   "fixture": "tests/fixtures/palette-fx-guard.json",
-  "fixtureBytes": 372905
+  "fixtureBytes": 389785
 }
