@@ -171,6 +171,32 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     }
   });
 
+  it("K1 (#7526): T4-Stufenkollaps — horror >= 2, gargoyle >= 3 Innen-Stufen (Soft-Mix 0,6)", () => {
+    const targets: Record<string, number> = { horror: 2, gargoyle: 3 };
+    for (const [id, min] of Object.entries(targets)) {
+      const index = ENEMY_LIST.findIndex((d) => d.id === id);
+      expect(index, id).toBeGreaterThanOrEqual(0);
+      expect(eliteTierMixFor(id), `${id} nutzt den Fine-Mix 0,6`).toBe(0.6);
+      const grid = eliteRimFrame(index);
+      const levels = new Set<number>();
+      for (let y = 0; y < grid.length; y++) {
+        for (let x = 0; x < grid[0].length; x++) {
+          if (grid[y][x] === null || isBoundary(grid, x, y)) continue;
+          const c = grid[y][x] as number;
+          if (c === 0 || c === 13 || c === ELITE_RIM_COLOR) continue;
+          levels.add(c);
+        }
+      }
+      expect(levels.size, `${id} (mix ${eliteTierMixFor(id)})`).toBeGreaterThanOrEqual(min);
+    }
+    // Gegenprobe (Offline-Suchlauf): die uebrigen T4-Typen sind im Fenster
+    // 0,55-0,6 nicht heilbar ([9,31], 2 Stufen) — sie bleiben bei 0,7 und
+    // brauchen einen neuen Palettenindex (dokumentiert, nicht getrickst).
+    for (const id of ["centipede", "reaper_bat", "abom", "voidcaller"]) {
+      expect(eliteTierMixFor(id), `${id} bleibt 0,7`).toBe(0.7);
+    }
+  });
+
   it("eliteTierPixel/eliteTierDye sind deterministisch und klampen auf Tier 0-4", () => {
     expect(eliteTierDye(-3)).toBe(ELITE_TIER_DYES[0]);
     expect(eliteTierDye(9)).toBe(ELITE_TIER_DYES[4]);

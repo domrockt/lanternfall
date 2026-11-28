@@ -296,13 +296,24 @@ const ELITE_TIER_MIX = 0.7;
  * wraith/treant 2 -> 3 Stufen bei 0,65, imp 2 -> 4 bei 0,6. Typen ohne
  * nachgewiesenen Effekt bleiben bei 0,7 (skeleton/bat: 2/2/2 Stufen, banshee:
  * kein Kollaps, T0-Basen: 1 Stufe unabhaengig vom Mix).
+ *
+ * m10-elite-tier-w3 (#7526, T4-Stufenkollaps): horror kollabiert bei 0,7 auf
+ * 1 Stufe (nur marshLight 31), gargoyle auf 2 — der FINE-Mix 0,6 restauriert
+ * horror 1 -> 2 und gargoyle 2 -> 3 (Offline-Suchlauf, festes Limit,
+ * shots/m10-elite-tier-w3-analysis.json). centipede/reaper_bat/abom/
+ * voidcaller bleiben im Fenster 0,55-0,6 bei 2 Stufen ([9,31]) — nicht
+ * heilbar ohne neuen Palettenindex, dokumentiert statt getrickst.
  */
 const ELITE_TIER_MIX_SOFT = 0.65;
 const ELITE_TIER_MIX_SOFT_TYPES: ReadonlySet<string> = new Set([
   "wisp", "knight", "harpy", "lich", "wraith", "treant",
 ]);
 const ELITE_TIER_MIX_FINE = 0.6;
-const ELITE_TIER_MIX_FINE_TYPES: ReadonlySet<string> = new Set(["imp"]);
+const ELITE_TIER_MIX_FINE_TYPES: ReadonlySet<string> = new Set([
+  "imp",
+  // #7526: T4-Stufenkollaps (horror 1 -> 2, gargoyle 2 -> 3 Stufen bei 0,6).
+  "horror", "gargoyle",
+]);
 
 /** Mischung fuer einen Elite-Typ (deterministisch, reine Funktion der Typ-Id). */
 export function eliteTierMixFor(id: string): number {
