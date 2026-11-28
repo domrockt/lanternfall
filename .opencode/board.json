@@ -12288,25 +12288,36 @@
       "id": 9736,
       "title": "m10-powerup-sfx-wire K2: getAudio().play(\"powerup\") in playPowerupMoment()",
       "description": "src/systems/PickupSystem.ts playPowerupMoment(): nach spec-Guard genau ein getAudio().play(\"powerup\")-Call (Guard: Key in SFX_KEYS, Cast ohne Änderung an src/audio/**). spec/Zeichnung/Positionen bitgleich. Abnahme: npx tsc --noEmit rc=0, bestehende pickup-Tests grün.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T07:39:08Z",
           "by": "build",
           "text": "backlog → doing: K2 Fix beginnt: 1-Zeilen-Audio-Call + Import/Guard, src/audio/** unangetastet."
+        },
+        {
+          "at": "2026-11-28T07:39:47Z",
+          "by": "build",
+          "text": "doing → review: Commit e82acac: +10 Zeilen in PickupSystem.ts (Import, POWERUP_SFX_ID mit Guard, 1 Play-Call nach spec-Guard). tsc rc=0, pickup-moment+pickup-gems 22 Tests gruen."
         }
       ],
       "created": "2026-11-28T07:37:38Z",
-      "updated": "2026-11-28T07:39:08Z"
+      "updated": "2026-11-28T07:39:47Z"
     },
     {
       "id": 9737,
       "title": "m10-powerup-sfx-wire K3: Guard-Test tests/powerup-sfx-wire.test.ts",
       "description": "Moment-Erzeugung löst genau einen \"powerup\"-Play-Call aus (Update-Erkennungspfad); Gem-/XP-Sammelpfad und Momente ohne Erwerb bleiben ohne Call (kein Doppel-Sound). Abnahme: npx vitest run tests/powerup-sfx-wire.test.ts grün.",
-      "column": "backlog",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:39:47Z",
+          "by": "build",
+          "text": "backlog → doing: K3 Guard-Test beginnt: genau 1 powerup-Call je Erwerb, Gem-/XP-Pfad lautlos."
+        }
+      ],
       "created": "2026-11-28T07:37:38Z",
-      "updated": "2026-11-28T07:37:38Z"
+      "updated": "2026-11-28T07:39:47Z"
     },
     {
       "id": 9738,
