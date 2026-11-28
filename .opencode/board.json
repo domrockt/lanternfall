@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7505,
+  "next": 7510,
   "cards": [
     {
       "id": 1,
@@ -9229,6 +9229,81 @@
       "notes": [],
       "created": "2026-11-28T02:13:05Z",
       "updated": "2026-11-28T02:13:05Z"
+    },
+    {
+      "id": 7505,
+      "title": "m10-water-shore-anim K1: before-GIF/PNG + WebGL-Renderer-JSON",
+      "description": "Ist-Zustand A8 (4/5-PASS-Wasser) festhalten: scripts/m10-shore-anim.mjs --tag=before erzeugt shots/m10-shore-anim-before.{png,gif}, before-4x.png und JSON mit WebGL-Renderer-String (iGPU-Pflicht ANGLE Intel RPL-S; SwiftShader = ungueltig) plus Frame-Diff-Metrik (animierte Pixel bei 1x). Abnahme: Belege committet, Renderer ist ANGLE Intel (kein SwiftShader), Frame-Diff-Metrik vorhanden.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:18:22Z",
+          "by": "build",
+          "text": "review → done: lane #7438, Merge decdb00"
+        }
+      ],
+      "created": "2026-11-28T02:17:24Z",
+      "updated": "2026-11-28T02:18:22Z"
+    },
+    {
+      "id": 7506,
+      "title": "m10-water-shore-anim K2: Animationsstufen tiles/worker + Test",
+      "description": "2-3 zusaetzliche Animationsstufen ausschliesslich im prozeduralen Tile-Pfad: tiles.ts bekommt animStep (WATER_ANIM_STEPS=3, Wellen-Drift + Schaum-Puls, deterministisch aus tileHash), terrainWorker malt 3 Frames pro Chunk, GroundRenderer zyklisiert Frames. tests/shore-anim.test.ts: deterministisch, hash-stabil, keine Frame-Reihenfolge-Abhaengigkeit. Abnahme: Test gruen, npx tsc --noEmit gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:18:22Z",
+          "by": "build",
+          "text": "review → done: lane #7439, Merge decdb00"
+        }
+      ],
+      "created": "2026-11-28T02:17:45Z",
+      "updated": "2026-11-28T02:18:22Z"
+    },
+    {
+      "id": 7507,
+      "title": "m10-water-shore-anim K3: weiche Ufer-Schale + FPS-Beleg M25 640x360",
+      "description": "Ufer-Kante weich: 1-px-Schale am Wasserufer im Tile-Pfad (tiles.ts, Dither statt harter Kante). FPS-Beleg: flock npm run perf -- --viewport=640x360 --dpr=1 before/after, Werte im Rauschen (Akzeptanz vor Messung festgelegt: after nicht schlechter als before - 5 %). Abnahme: perf-JSONs committet, M25 >= 55 FPS.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:18:22Z",
+          "by": "build",
+          "text": "review → done: lane #7440, Merge decdb00"
+        }
+      ],
+      "created": "2026-11-28T02:17:45Z",
+      "updated": "2026-11-28T02:18:22Z"
+    },
+    {
+      "id": 7508,
+      "title": "m10-water-shore-anim K4: after-GIF/4x + art-director >= 4/5",
+      "description": "scripts/m10-shore-anim.mjs --tag=after (gleicher Seed/Winkel wie before): after-GIF, after-4x.png, Frame-Diff im JSON. art-director (streng, Massstab kommerziell auslieferbar) prueft after-GIF/4x-Zoom; Ziel >= 4/5. Abnahme: art-director-Urteil >= 4/5 in Kartennnotiz.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:18:22Z",
+          "by": "build",
+          "text": "review → done: lane #7441, Merge decdb00"
+        }
+      ],
+      "created": "2026-11-28T02:17:45Z",
+      "updated": "2026-11-28T02:18:22Z"
+    },
+    {
+      "id": 7509,
+      "title": "m10-water-shore-anim K5: docs/lanes + .lane-done",
+      "description": "docs/lanes/m10-water-shore-anim.md (Befunde, Messwerte, offene Punkte), git status --ignored aufraeumen, .lane-done mit Zusammenfassung + Messwerten committen. Abnahme: Lane-Doku committet, .lane-done existiert, keine Temp-Reste im Worktree.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:18:22Z",
+          "by": "build",
+          "text": "review → done: lane #7442, Merge decdb00"
+        }
+      ],
+      "created": "2026-11-28T02:17:45Z",
+      "updated": "2026-11-28T02:18:22Z"
     }
   ]
 }
