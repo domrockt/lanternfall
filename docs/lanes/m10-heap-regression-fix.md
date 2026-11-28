@@ -54,9 +54,21 @@ zusammen in der Größenordnung des beobachteten m1→m29-Abstands.
 - BAKES-Hoisting (d5bd7b25): 5 einmalige `fx_pillar_bake2_*`-Seiten, begrenzt.
 - Gegenprobe auf E-Basis a6f1458 (detached Worktree, gleiche Probe): siehe Abschnitt K1.4.
 
-### 4. Gegenprobe E-Basis a6f1458
+### 4. Gegenprobe E-Basis a6f1458 (identische Probe, detached Worktree)
 
-TODO (läuft) — Kurve + Gate-Delta der E-Basis unter identischer Probe.
+Beleg: `~/games/.evidence/m10-heap-regression-fix/m3-fullrunebase.json` (+ `curve-ebase.log`)
+
+| Lauf | Basis | start | m1 | m29 | end (Results+GC) | m1→m29 (altes Tor) | end−start (Teardown) |
+|---|---|---|---|---|---|---|---|
+| E offiziell | a6f1458 | — | — | — | — | **+13,9 % PASS** | — |
+| Probe 1 | a6f1458 | 36,7 | 46,8 | 54,8 | 40,5 | **+17,1 % FAIL** | **+10,4 %** |
+| Probe HEAD r1 | HEAD | 43,5 | 53,7 | 62,5 | 47,4 | +16,4 % FAIL | **+9,0 %** |
+| Probe HEAD r2 | HEAD | 43,5 | 55,3 | 68,2 | 47,4 | +23,3 % FAIL | **+9,0 %** |
+
+**Die E-Basis a6f1458 fällt unter identischer Probe selbst durch das alte Tor
+(+17,1 %)** — auf demselben Commit, auf dem die offizielle Nachabnahme E mit
++13,9 % PASS maß. Damit ist das F-Urteil kein Code-Regression, sondern
+Gate-Sensitivität (K2).
 
 ## K2 — Ursache
 

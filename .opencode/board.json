@@ -15175,9 +15175,10 @@
       "id": 11389,
       "title": "m10-heap-regression-fix K1: Heap-Kurve eingrenzen (Belege m3-fullrunaccf{,2} vergleichen, Kurve messen, Verdachts-Merges pruefen)",
       "description": "Ein dokumentierter Befund reicht (Lehre 07:23). Abnahme: Kurven-JSON in ~/games/.evidence/m10-heap-regression-fix/ + Befund in docs/lanes/m10-heap-regression-fix.md.",
-      "column": "doing",
+      "column": "review",
       "notes": [
-        "K1 gestartet: Kurven-Probe (fullrun-Kopie mit 2-min Post-GC-Heap-Kurve) + Verdachts-Merge-Diff."
+        "K1 gestartet: Kurven-Probe (fullrun-Kopie mit 2-min Post-GC-Heap-Kurve) + Verdachts-Merge-Diff.",
+        "K1 fertig: Kurve m2-m28 (Saegzahn 54,5-64 MB, kein monotone Leak), TexKeys-Probe (hazard/glyph/chunk), Fenster-Diff (hazard nur Rasterung), E-Basis-Gegenprobe laeuft in K2. Belege: ~/games/.evidence/m10-heap-regression-fix/"
       ]
     },
     {
