@@ -55,8 +55,20 @@ Spawn-Reihenfolge in `hitEnemy()` unverändert.
 ## K3 — Probe (#13916)
 
 `scripts/m10-particles-hit-wiring.mjs`: Tabelle Spawn-Anzahl pro Hit vorher
-(konstant) / nachher (wired) je Tier, JSON nach `~/games/.evidence/
-m10-particles-hit-wiring/`.
+(konstant) / nachher (wired) je Tier. Die Budgets liest das Skript LIVE aus
+`src/logic/quality.ts` (kein Duplikat — Wert 14 oder 10 nach Merge beides ok).
+JSON-Beleg: `~/games/.evidence/m10-particles-hit-wiring/probe.json` (2026-11-28T18:32Z).
+
+Ergebnis (Budget-Stand 24/14/8/4):
+
+| Tier | vorher crit/normal | nachher crit/normal |
+|---|---|---|
+| high | 5 / 2 | 5 / 2 (bitgleich) |
+| medium | 5 / 2 | 3 / 1 |
+| low | 5 / 2 | 2 / 1 |
+| thermal | 5 / 2 | 1 / 1 |
+
+Verdict im JSON: highUnchanged, mediumReduced, monotonic — alle true.
 
 ## K4 — Regressionstest (#13917)
 
