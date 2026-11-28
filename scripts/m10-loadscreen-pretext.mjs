@@ -23,6 +23,10 @@ const tag = opt("tag", "before");
 const interval = Number(opt("interval-ms", "120"));
 const maxMs = Number(opt("max-ms", "6000"));
 const viewport = (opt("viewport", "960x540")).split("x").map(Number);
+// --stall-sfx: WAV-Laderequests auf ewig pending halten -> Boot-preload (und
+// damit der Vor-Text) bleibt sichtbar; fuer den Vorher/Nachher-Frame-Beleg,
+// weil die Phase auf Desktop < 40 ms ist (Geraet: ~1,6 s).
+const stallSfx = argv.includes("--stall-sfx");
 
 ensureBuild();
 mkdirSync(outDir, { recursive: true });
@@ -39,6 +43,9 @@ try {
   page.on("console", (msg) => { if (msg.type() === "error") jsErrors.push(msg.text()); });
 
   await page.goto(`http://127.0.0.1:${server.port}/`, { waitUntil: "commit" });
+  if (stallSfx) {
+    await page.route("**/*.wav", () => new Promise(() => { /* pending forever */ }));
+  }
   const t0 = Date.now();
   let idx = 0;
   while (Date.now() - t0 < maxMs) {
