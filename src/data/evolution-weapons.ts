@@ -160,8 +160,10 @@ export const SOUL_FX = {
   orbFrameInterval: 0.2,
   /** Gebackene Halo-Stufe (48x48) + Ziel-Scale <= 1 und Puls-Alpha. */
   haloTexture: "fx_halo_cold@2",
-  haloScale: 0.9,
-  haloAlpha: 0.3,
+  // w2: Scale < 1 — der Glow soll die Seele kalt einbetten, nicht als milchige
+  // Flaeche dominieren (art-director Runde 1 Fixrunde: Pools lasen milchig).
+  haloScale: 0.85,
+  haloAlpha: 0.28,
   haloPulse: 0.07,
   /** Anticipation (Aufbau) <= 0,3 s und Ausklang-Fade in s. */
   anticipation: 0.28,

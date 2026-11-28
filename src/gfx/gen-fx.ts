@@ -764,8 +764,9 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
       // (lanternWhite 13), kalte Stufen paleMist(9)/mist(8)/fogBlue(6), keine
       // Hohlring-Kante.
       if (d > r + 0.7 * density) row += ".";
-      else if (d > r * 0.82) row += charOf(6);  // fogBlue kalte Aussenstufe
-      else if (d > r * 0.55) row += charOf(8);  // mist
+      else if (d > r * 0.65) row += charOf(6);  // fogBlue kalte Aussenzone (breit —
+                                                // dunkle Bänder sterben im ADD-Blend)
+      else if (d > r * 0.4) row += charOf(8);   // mist
       else row += charOf(9);                    // paleMist kalt-cyan Kern (KEIN Weißkern:
                                                 // der wäscht die Flammenform weg, w2-Iter. 2)
     }
@@ -795,7 +796,7 @@ export function orbSoulFrame(stage: number): string[] {
   for (let y = 0; y < h; y++) {
     let row = "";
     const v = y / (h - 1); // 0 = Spitze, 1 = Schweif-Ende
-    const center = cx + sway * (0.25 - v) * 2.2 + Math.sin(y * 0.62 + stage * 2.0) * 0.7;
+    const center = cx + sway * (0.25 - v) * 1.3 + Math.sin(y * 0.62 + stage * 2.0) * 0.5;
     // Breitenprofil: Spitze (0) → Bauch (~y15) → weicher Schweif (y26+)
     let half: number;
     if (y === 0) half = 0.6;
@@ -807,12 +808,14 @@ export function orbSoulFrame(stage: number): string[] {
     for (let x = 0; x < w; x++) {
       const d = Math.abs(x - center) / half;
       if (d > 1.05) { row += "."; continue; }
-      if (d > 0.92) { row += charOf(5); continue; }
-      const n = d + Math.sin(x * 1.7 + y * 0.9 + stage * 1.3) * 0.05;
-      const idx = n < 0.52 ? 13
-        : n < 0.66 ? 11
-        : n < 0.78 ? 9
-        : n < 0.92 ? 6
+      if (d > 0.93) { row += charOf(5); continue; }
+      const n = d + Math.sin(x * 1.7 + y * 0.9 + stage * 1.3) * 0.03;
+      // w2 art-director Runde 1: kalte Zone = aeussere Drittel der Flamme
+      // (paleMist-Flaeche + fogBlue-Kante), sonst lesen die Orbs als weisser Blitz.
+      const idx = n < 0.48 ? 13
+        : n < 0.60 ? 11
+        : n < 0.86 ? 9
+        : n < 0.93 ? 6
         : 5;
       row += charOf(idx);
     }
@@ -1183,8 +1186,8 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
         const d = Math.abs(xx) / half;
         const idx = d < 0.52 ? 13
           : d < 0.63 + wob ? 11
-          : d < 0.77 + wob ? 9
-          : d < 0.90 + wob ? 6
+          : d < 0.84 + wob ? 9
+          : d < 0.92 + wob ? 6
           : 5;
         putPixel(rows, center + xx, y, idx);
       }
