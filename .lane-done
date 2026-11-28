@@ -1,0 +1,31 @@
+# Lane m10-chest-spawn-fair — Truhen-Spawn-Fairness (abgeschlossen)
+
+Ziel: Truhen (Kernmoment, Dom: "wie Vampire Survivors") müssen erreichbar
+spawnen — bisher war nur Timing belegt, nicht die Position.
+
+## Ergebnis
+- Vorher (`shots/m10-chestfair-before.json`, 3 Seeds × 6 Truhen): **13/18 fair,
+  5 unfair** — 2× Moorwasser-Tile (40 % Slow am Kernmoment), 3× 20 px von der
+  Feldkante (fast immer Boss #5).
+- Fix (K2): `fairChestSpawn()` in `src/systems/ChestSystem.ts`, angewendet in
+  `ChestSystem.spawn()` — Kanten-Margin 48 px, Wasser-Ausschluss per Tile-Mitte
+  (identische Klassifikation wie `Run.terrainFactorAt`), Euclid-nächste freie
+  Zelle per Spiralsuche (früher Abbruch), Notfall-Klemme. Run.ts/UI.ts/
+  m10-chest-arrow.mjs unangetastet; Timing ±0 s, Belohnungen bitgleich.
+- Guard-Tests (K3): 8 Tests in `tests/chest-spawn-fair.test.ts`.
+- Nachher (`shots/m10-chestfair-after.json`): **18/18 fair** (0 Wasser-Tiles,
+  0 Kanten-Spawns < 48 px), Timing ± 0,5 s, 0 JS-Fehler.
+
+## Checks
+- `npx tsc --noEmit` rc=0; `npm test` 1314/1314 grün; `npm run build` rc=0.
+- Reviewer-Subagent: PASS (Logik, Scopes, Tests, Belege selbst verifiziert).
+- Commits: 88ecabc (K1), a17cdcb (K2), 60f5c13 (K3), 107b5f1 (K4).
+
+## Offene Punkte (Doku: docs/lanes/m10-chest-spawn-fair.md)
+- „Hinter der Gegnermasse" nicht Teil der Spawn-Regel (ChestSystem kennt keine
+  Gegner; `nearEnemies96px` als Kontext gemessen) → Folgekarte „Spawn-Zelle mit
+  geringster Gegnerdichte" optional.
+- Before-JSON: pathSteps-Metrik null (String-Bug im Mess-BFS, nach K1 gefixt);
+  decisive Metriken (Terrain/Kante/Distanz) unberührt.
+- Spawn-Positionen variieren zwischen Runs (Thema m10-run-determinism-fix);
+  Fairness-Regel ist positionsrein und davon unabhängig.
