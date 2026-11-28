@@ -20,4 +20,23 @@ Belege (außerhalb des Repos): `~/games/.evidence/m10-heap-gate-recovery/`.
 
 ## K1 — Remessung auf aktuellem main (#12547)
 
-Stand: Läufe gestartet. Ergebnis hier, sobald beide Läufe vorliegen.
+Tor-Skript: `scripts/m10-heap-budget.mjs` (nur ausgeführt, nicht geändert),
+unter `flock /home/ai/games/.lf-perf.lock`, je Lauf `timeout 2700`.
+Belege: `~/games/.evidence/m10-heap-gate-recovery/k1-run{1,2}.json` (+ Logs in
+`~/tmp/m10-heap-gate-recovery/`).
+
+**Lauf 1** (gitSha de677a92, 30 min, simSeconds 1817,9, Sieg, 0 JS-Fehler,
+Renderer Mesa Intel RPL-S — gültig, kein SwiftShader):
+
+| Kriterium | Wert | Tor |
+|---|---|---|
+| Minute 1 (Post-GC) | 64,8 MB | Referenz |
+| endMB (Post-GC, Results) | 48,5 MB | — |
+| **HARD: endMB vs. Minute 1** | **−25,2 %** | ≤ +15 % → **PASS** |
+| SOFT robust (max Floor je 5-min-Fenster) | 77,4 MB = +9,2 % | ≤ +25 % → PASS |
+| Roh-Peak-Beobachtung (max 5-min-Peak) | 81,2 MB = +25,3 % | nur Beobachtung (GC-Sägezahn) |
+
+Kein ungebundenes Wachstum sichtbar: die Post-GC-Timeline schwankt zwischen
+~61,9 und ~71,4 MB ohne Trend nach oben; endMB unter Minute 1.
+
+**Lauf 2:** läuft.
