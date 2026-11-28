@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13259,
+  "next": 13263,
   "cards": [
     {
       "id": 1,
@@ -18721,6 +18721,64 @@
       ],
       "created": "2026-11-28T16:16:43Z",
       "updated": "2026-11-28T16:27:17Z"
+    },
+    {
+      "id": 13259,
+      "title": "m10-m25-density-mode K1: Waffen-Flag setWeaponsEnabled + Feuer-Gate",
+      "description": "Debug-Flag window.__lf.setWeaponsEnabled(false) in src/debug.ts (Modul-Zustand, Default true, dokumentierter Reset via setWeaponsEnabled(true)/Reload) + Gate im Waffen-Feuer-Pfad (src/systems/CombatSystem.ts updateWeapons vor dem Fire-Switch): nur bei explizit false kein Feuer/Projektil, kein playWeapon. OHNE Flag bitgleich. Abnahme: tsc grün, vitest-Datei K2 grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:19:57Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-m25-density-mode (Worktree lf-lanes/m10-m25-density-mode): K1 gestartet — Flag in src/debug.ts + Gate in CombatSystem.ts"
+        },
+        {
+          "at": "2026-11-28T16:29:54+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13259, Merge branch m10-m25-density-mode (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T16:19:56Z",
+      "updated": "2026-11-28T16:19:57Z"
+    },
+    {
+      "id": 13260,
+      "title": "m10-m25-density-mode K2: tests/m25-density-mode.test.ts",
+      "description": "Guard-Test: Default bitgleich (A/B gleiche Marken mit und ohne setWeaponsEnabled(true)), Flag deaktiviert Feuer (isWeaponsEnabled false + Quell-Gate vor Fire-Switch, 0 neue Projektile logisch), Reset-Pfad dokumentiert/getestet. Abnahme: npx vitest run tests/m25-density-mode.test.ts grün, Full-Suite vor Commit grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T16:19:56Z",
+      "updated": "2026-11-28T16:19:56Z"
+    },
+    {
+      "id": 13261,
+      "title": "m10-m25-density-mode K3: Messlauf scripts/m10-m25-density.mjs",
+      "description": "10-min-Lauf (Spielminuten 20-30, timeScale 30, 50-ms-Top-up wie m10-v10-gate.mjs/m10-v10-device-m25.mjs), Flag an ab Minute 20, Baseline-Phase Flag aus (Befund-Reproduktion avg ~60). Beleg: avg Gegner >= 250 im Minute-25-Fenster + worstFrameMs. JSON nach shots/m10-m25-density-*.json (gitignored) + ~/games/.evidence/m10-m25-density-mode/. Aufruf unter flock /home/ai/games/.lf-perf.lock.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:22:00Z",
+          "by": "build",
+          "text": "todo → doing: K3 Messlauf gestartet: scripts/m10-m25-density.mjs nach Muster m10-v10-gate.mjs/m10-v10-device-m25.mjs"
+        },
+        {
+          "at": "2026-11-28T16:29:54+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13261, Merge branch m10-m25-density-mode (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T16:19:56Z",
+      "updated": "2026-11-28T16:22:00Z"
+    },
+    {
+      "id": 13262,
+      "title": "m10-m25-density-mode K4: Lane-Doku + .lane-done",
+      "description": "docs/lanes/m10-m25-density-mode.md: Befund, Messzahlen, Grenze (Messwerkzeug, kein Spielverhalten im Normalbetrieb). Beleg-Pfade, ein Commit je Karte, .lane-done am Ende.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T16:19:56Z",
+      "updated": "2026-11-28T16:19:56Z"
     }
   ]
 }

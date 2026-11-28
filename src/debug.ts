@@ -50,6 +50,31 @@ export interface RendererInfo {
 
 interface PrecisionFormat { rangeMin: number; rangeMax: number; precision: number }
 
+/**
+ * M10-m25-density-mode: globaler Waffen-Feuer-Schalter (Mess-/Debug-Hebel für
+ * Befund 3 in docs/lanes/m10-v10-gate-guard.md — Host-Minute-25-Dichte hold nur,
+ * weil der AutoPlay-Bot schneller räumt als das 50-ms-Top-up füllt). CombatSystem
+ * fragt `isWeaponsEnabled()` im Waffen-Feuer-Pfad ab; nur bei explizit
+ * `setWeaponsEnabled(false)` wird kein Feuer/Projektil erzeugt — ohne Aufruf ist
+ * das Spiel bitgleich (Default-Zweig unverändert, siehe Guard-Test
+ * tests/m25-density-mode.test.ts).
+ *
+ * Reset-Pfad (dokumentiert): `window.__lf.setWeaponsEnabled(true)` oder
+ * Seiten-Reload. Der Zustand liegt im Modul und überlebt bewusst Pause/Resume
+ * und Szenenwechsel — er ist ein Messfenster-Hebel, kein Spielzustand.
+ */
+let weaponsEnabled = true;
+
+/** true, außer es wurde explizit `setWeaponsEnabled(false)` gerufen. */
+export function isWeaponsEnabled(): boolean {
+  return weaponsEnabled;
+}
+
+/** Mess-/Debug-Hebel: false unterdrückt den Waffen-Feuer-Pfad (kein Projektil). */
+export function setWeaponsEnabled(value: boolean): void {
+  weaponsEnabled = Boolean(value);
+}
+
 export function collectRendererInfo(game: Phaser.Game): RendererInfo {
   const gl = (game.renderer as { gl?: WebGLRenderingContext } | null)?.gl ?? null;
   let context: RendererInfo["context"] = "none";
@@ -306,6 +331,15 @@ export function installDebugApi(game: Phaser.Game): void {
     setSuppressLevelUps: (value: boolean) => requireRun().debugSetSuppressLevelUps(Boolean(value)),
     /** M6-Abnahme: Endgame-Effekt-Dämpfung für Vorher/Nachher-Shots schalten. */
     setFxDamping: (value: boolean) => requireRun().setFxDamping(Boolean(value)),
+
+    /** M10-m25-density-mode: Waffen-Feuer-Pfad fürs Messfenster schalten (nur debug).
+     *  Gibt den neuen Zustand zurück; Reset via setWeaponsEnabled(true) oder Reload. */
+    setWeaponsEnabled: (value: boolean) => {
+      requireDebug();
+      setWeaponsEnabled(Boolean(value));
+      return isWeaponsEnabled();
+    },
+    weaponsEnabled: (): boolean => isWeaponsEnabled(),
 
     /** M10 Android: WebGL-Kontext, Extensions, MAX_TEXTURE_SIZE, Textur-Inventar, 60-FPS-Cap. */
     rendererInfo: (): RendererInfo => {

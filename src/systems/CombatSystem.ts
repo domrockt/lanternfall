@@ -20,6 +20,7 @@ import { knockbackFor } from "../logic/feedback";
 import { rollCrit, critDamage } from "../logic/damage-numbers";
 import { lodFor, fxAlphaFor, type LodState } from "../logic/lod";
 import { getAudio } from "../audio/AudioSystem";
+import { isWeaponsEnabled } from "../debug";
 import { ProjectilePool } from "./ProjectilePool";
 import type { SpatialHash } from "./SpatialHash";
 import type { OwnedWeapon } from "./LevelUpSystem";
@@ -244,6 +245,14 @@ export class CombatSystem {
       }
       if (owned.timer > 0) continue;
       if (alive.length === 0) {
+        owned.timer = 0;
+        continue;
+      }
+      // m10-m25-density-mode: Mess-Hebel (Befund 3, docs/lanes/m10-v10-gate-guard.md).
+      // Nur bei EXPLIZIT deaktiviertem Flag (window.__lf.setWeaponsEnabled(false))
+      // entsteht kein Feuer/Projektil und kein Waffen-Sound — ohne Aufruf ist der
+      // Pfad bitgleich (Default true, Guard-Test tests/m25-density-mode.test.ts).
+      if (!isWeaponsEnabled()) {
         owned.timer = 0;
         continue;
       }
