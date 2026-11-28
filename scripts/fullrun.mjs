@@ -3,6 +3,10 @@
 // Truhen, Morgendämmerung/Sieg, JS-Fehler und FPS-Minimum.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
+// Renderer-Guard (Karte #13787, Lane m10-fullrun-renderer-valid): Doms Regel
+// "Abnahme ungueltig bei SwiftShader" auch fuer den 30-min-Abnahme-Lauf
+// durchsetzen — Muster: perf.mjs / m10-v10-device-10min.mjs (9bcc1e41).
+import { rendererValid } from "./lf-renderer.mjs";
 
 const EXPECTED_BOSS_SECONDS = [300, 600, 900, 1200, 1500, 1800];
 const BOSS_NAMES = ["Moorkönigin", "Knochenfürst", "Der Fahle Hirte", "Glockenturm-Golem", "Hexenzirkel", "Der Hohle König"];
@@ -47,6 +51,10 @@ try {
       vendor: ext ? String(gl.getParameter(ext.UNMASKED_VENDOR_WEBGL)) : String(gl.getParameter(gl.VENDOR)),
     };
   });
+  // Karte #13787: Renderer-Gueltigkeit wie in perf.mjs pruefen — fehlender GL
+  // ("none") zaehlt wie fehlender Renderer-String (leer) und ist NIE valide.
+  const rendererString = renderer.renderer === "none" ? "" : String(renderer.renderer ?? "");
+  const rendererValidFlag = rendererValid(rendererString);
   await startRun(page);
   await page.evaluate(({ evolutions, passives }) => {
     window.__lf.god(true);
@@ -187,6 +195,11 @@ try {
     viewport: VIEWPORT,
     dpr: DPR,
     renderer, // PFLICHT (Audit-Restmangel 1, Nachabnahme F): SwiftShader-Belege sind ungueltig
+    // Renderer-Guard (#13787, Muster perf.mjs 9bcc1e41): Gueltigkeit maschinell
+    // im JSON mitschreiben und ins Tor ziehen — SwiftShader/leer => ungueltig.
+    rendererString, // flacher String, wie in perf.mjs-JSONs
+    rendererValid: rendererValidFlag,
+    invalid: !rendererValidFlag,
     simMinutes: Math.round((finalRun?.time ?? lastTime) / 60 * 10) / 10,
     pollSamples: samples,
     bosses: {
@@ -232,11 +245,14 @@ try {
       },
       measured: retainedMeasured, // Tor-Relevanz: retained (Teardown), nicht In-run
       heapCurve: HEAP_CURVE ? curve : undefined,
-      passed: heapOk,
+      invalid: !rendererValidFlag,
+      passed: heapOk && rendererValidFlag,
     },
-    fps: { min: Number.isFinite(fpsMin) ? Math.round(fpsMin * 10) / 10 : null, target: 55, passed: fpsOk },
+    fps: { min: Number.isFinite(fpsMin) ? Math.round(fpsMin * 10) / 10 : null, target: 55, invalid: !rendererValidFlag, passed: fpsOk && rendererValidFlag },
     jsErrors: errors,
-    passed: ok && heapOk && fpsOk,
+    // Renderer-Guard (#13787): SwiftShader/fehlender Renderer => Abnahme
+    // ungueltig (passed=false => Exit-Code 1), Kennzahlen bleiben lesbar.
+    passed: rendererValidFlag && ok && heapOk && fpsOk,
   };
   summaryPassed = summary.passed;
   writeFileSync(`shots/m3-fullrun${TAG}.json`, JSON.stringify(summary, null, 2));
