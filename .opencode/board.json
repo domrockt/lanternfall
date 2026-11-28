@@ -13898,27 +13898,38 @@
       "id": 10625,
       "title": "m10-android-proxy-gate K1: androidProxyContext() im Harness",
       "description": "scripts/harness.mjs: optionaler Helfer androidProxyContext(browser) = Playwright devices[\"Galaxy Tab S4 landscape\"] + CDP Emulation.setCPUThrottlingRate {rate:4}; bestehende Aufrufer unverändert. Abnahme: Helfer exportiert, vorhandene Skripte (perf.mjs etc.) unverändert, tsc/build grün.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T09:41:20Z",
           "by": "build",
           "text": "todo → doing: Lane gestartet; androidProxyContext() in scripts/harness.mjs"
+        },
+        {
+          "at": "2026-11-28T09:42:22Z",
+          "by": "build",
+          "text": "doing → review: was: androidProxyContext(browser) + Konstanten in scripts/harness.mjs; geprüft: Smoke-Run (Device 1138x712 dpr 2.25 touch, CDP setCPUThrottlingRate ok), bestehende Aufrufer unangetastet; Commit 3bc6bf6d"
         }
       ],
       "created": "2026-11-28T09:41:15Z",
-      "updated": "2026-11-28T09:41:20Z"
+      "updated": "2026-11-28T09:42:22Z"
     },
     {
       "id": 10626,
       "title": "m10-android-proxy-gate K2: android-proxy.mjs + Baseline",
       "description": "scripts/android-proxy.mjs: Lauf mit 2 Charakteren (mira/kael) je 6 Evolutionen bis Minute 10 im Zeitraffer, dann 60 s Echtzeit-Messung bei Minute-25-Dichte; schreibt fps p5/Median, frame p95, quality-Stufe (LOD), JS-Heap, Renderer-String → shots/m10-android-proxy-<tag>.json. Baseline messen (flock) und committen; 2 Läufe, Median-Abweichung < 10 %; 0 JS-Fehler.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T09:42:24Z",
+          "by": "build",
+          "text": "todo → doing: android-proxy.mjs bauen, Baseline auf main-Stand messen"
+        }
+      ],
       "created": "2026-11-28T09:41:15Z",
-      "updated": "2026-11-28T09:41:15Z"
+      "updated": "2026-11-28T09:42:24Z"
     },
     {
       "id": 10627,
