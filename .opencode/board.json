@@ -15497,16 +15497,21 @@
       "id": 11565,
       "title": "m10-quality-thermal-guard K4: Beleg-Skript + Lane-Doku + .lane-done",
       "description": "scripts/m10-thermal-guard.mjs mit deterministischen FPS-Serien (node --experimental-strip-types, kein Geraet noetig), JSON-Beleg nach ~/games/.evidence/m10-quality-thermal-guard/, Doku docs/lanes/m10-quality-thermal-guard.md (Hebel-Beschreibung, qualitaets-tier-Reaktion, config.ts-Verdrahtung als Folgekarte). Abnahme: Skript-Lauf belegt engage/hold/erholung deterministisch, npm run build + npm test gruen, .lane-done angelegt.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T11:25:25Z",
           "by": "build",
           "text": "backlog → doing"
+        },
+        {
+          "at": "2026-11-28T11:27:38Z",
+          "by": "build",
+          "text": "doing → done: K4: Skript 6/6 Szenarien PASS (deterministisch, kein Geraet), Beleg ~/games/.evidence/m10-quality-thermal-guard/thermal-guard.json, Lane-Doku + config.ts-Anfrage; build+tsc+2174 Tests gruen; .lane-done committet (627b11cb). Shots-Regenerat (m10-passive-math-*, nur Zeitstempel) wurde auf HEAD zurueckgesetzt, um den Move zu erlauben."
         }
       ],
       "created": "2026-11-28T11:22:29Z",
-      "updated": "2026-11-28T11:25:25Z"
+      "updated": "2026-11-28T11:27:38Z"
     }
   ]
 }
