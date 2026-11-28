@@ -151,9 +151,17 @@ export let DEVICE_NODE = false;
  * Einmalige Erkennung im Browser (WebGL-Probe-Canvas, unabhaengig vom Game-
  * Boot). In Vitest/Node passiv (kein document -> false -> Desktop-Pfade
  * bitgleich). Fehlerhaftem GL bewusst MISSTRAUEN: ohne String nie Geraet.
+ *
+ * Reviewer-Befund (m10-device-janky-node K4): das Latch gilt fuer BEIDE
+ * Ausgaenge — ohne `deviceProbed` wuerde der Probe-Body (Canvas + getContext)
+ * auf Desktop JEDEM rAF-Tick erneut laufen (60–144 WebGL-Kontexte/s, Browser
+ * begrenzen live Kontexte — im schlechtesten Fall verliert der Browser den
+ * Phaser-Kontext). Einmal pro Seite, inklusive Fehlerpfad.
  */
+let deviceProbed = false;
 export function probeDeviceNode(): boolean {
-  if (DEVICE_NODE) return true;
+  if (deviceProbed) return DEVICE_NODE;
+  deviceProbed = true;
   if (typeof window === "undefined" || typeof document === "undefined") return false;
   try {
     const c = document.createElement("canvas");

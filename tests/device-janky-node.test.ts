@@ -158,6 +158,10 @@ describe("K2d: Quell-Pins — EINZIGE Verdrahtungsstellen, quality.ts unberuehrt
     expect(src).toContain("DEVICE_NODE ? clampTierMax(qState.tier, DEVICE_TIER_CAP) : qState.tier");
     // Desktop-Pfad bleibt exakt der alte: effectiveQuality(qState.tier, ...)
     expect(src).toContain("QUALITY = effectiveQuality(baseTier, thermalState)");
+    // Reviewer-Befund K4: Probe latcht BEIDE Ausgaenge (kein Canvas/GetContext
+    // pro rAF-Tick auf Desktop).
+    expect(src).toContain("if (deviceProbed) return DEVICE_NODE;");
+    expect(src).toContain("deviceProbed = true;");
   });
 
   it("FxSystem.ts: beide Pool-Caps an DEVICE_*_ geklemmt (Desktop: min(x, x) = x)", () => {
