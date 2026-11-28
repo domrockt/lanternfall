@@ -4,15 +4,16 @@
 // thermal-wiring). NUR-MESS-Lane: konsumiert harness.mjs, aendert nichts.
 //
 // Ablauf:
-//   A0 Burst-Tor        ~500 Gegner Minute 3, 15 s, Gate >= 55 FPS
-//   A1 Minute-25-Ref    skipTo(1500), 20 s Referenz (>= 55 angestrebt)
+//   A0 Burst-Tor        ~500 Gegner Minute 3, 15 s, Gate >= 55 FPS (wie perf.mjs)
+//   A1 Minute-25-Ref    skipTo(1500), 20 s Referenz
 //   B  Drosselphase     CDP-CPU-Throttle, 1-Hz-Timeline bis thermal engagiert
 //                       + 40 s Cap-Beobachtung (low/thermal wirksam?)
 //   C  Erholungsphase   Throttle aus, 1-Hz-Timeline bis high zurueck (oder
-//                       5 min -> ehrlicher Befund "Erholung unvollständig")
+//                       5 min -> ehrlicher Befund "Erholung unvollstaendig")
 //
-// Belege (NICHT ins git, Dom-Regel 27.11.): JSON nach
-// ~/games/.evidence/m10-quality-stacked-smoke/ (--out ueberschreibbar).
+// Lasthaltung wie perf.mjs: In-Page-rAF-Loop haelt 500 Gegner (Basiswaffen Lv8,
+// keine Evolutions-Insta-Kills). Belege (NICHT ins git, Dom-Regel 27.11.):
+// JSON nach ~/games/.evidence/m10-quality-stacked-smoke/ (--out ueberschreibbar).
 // Start IMMER mit flock /home/ai/games/.lf-perf.lock.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -26,8 +27,9 @@ const argOf = (name, fallback) => {
 };
 const THROTTLE = Number(argOf("throttle", "8")) || 8;
 const OUT = resolve(argOf("out", `${homedir()}/games/.evidence/m10-quality-stacked-smoke`).replace(/^~(?=\/|$)/, homedir()));
-const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
+const WEAPONS = ["ember", "flail", "frost", "thorn", "storm", "lantern"];
 const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
+const TARGET_ENEMIES = 500;
 
 ensureBuild();
 mkdirSync(OUT, { recursive: true });
@@ -39,8 +41,6 @@ const errors = [];
 page.on("pageerror", (e) => errors.push({ at: Date.now(), text: String(e) }));
 page.on("console", (m) => { if (m.type() === "error") errors.push({ at: Date.now(), text: m.text() }); });
 
-// --- In-Page Sensoren ---------------------------------------------------------
-
 // WebGL-Renderer-String (Pflicht, Regel 6): eigener Offscreen-Kontext, gleiche GPU.
 const rendererString = await page.evaluate(() => {
   const c = document.createElement("canvas");
@@ -50,11 +50,28 @@ const rendererString = await page.evaluate(() => {
   return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
 });
 
+const summary = { startedAt: new Date().toISOString(), renderer: rendererString, throttle: THROTTLE, gates: {}, findings: [] };
+let timeline = [];
+let lastTier = null;
+let lastBase = null;
+const transitions = [];
+const noteTiers = (s) => {
+  if (s.effTier !== lastTier && s.effTier != null) {
+    transitions.push({ t: s.t, kind: "effective", from: lastTier, to: s.effTier, fpsEwma: s.fpsEwma });
+    lastTier = s.effTier;
+  }
+  if (s.baseTier !== lastBase && s.baseTier != null) {
+    transitions.push({ t: s.t, kind: "base", from: lastBase, to: s.baseTier, fpsEwma: s.fpsEwma });
+    lastBase = s.baseTier;
+  }
+};
+
+// --- In-Page Sensoren ---------------------------------------------------------
+
 const senseOnce = () => page.evaluate(() => {
   const dbg = window.__rbDbg ?? {};
   const s = window.__lf?.state?.() ?? {};
   const audio = window.__lf?.audio?.() ?? {};
-  const run = window.__game ? null : null;
   let addChildren = -1;
   let addMaxArea = -1;
   let warnDiscs = -1;
@@ -102,89 +119,103 @@ const senseOnce = () => page.evaluate(() => {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** 1-Hz-Timeline bis stop() true oder Timeout. topup haelt die Last (500 Gegner). */
-async function sampleLoop(stop, maxMs, label, timeline) {
+/** Lasthaltung wie perf.mjs: In-Page-rAF-Loop haelt TARGET_ENEMIES aktiv. */
+async function startLoadKeeper() {
+  await page.evaluate((target) => {
+    if (window.__lfLoadKeeper) return;
+    let lastSpawn = performance.now();
+    const tick = (now) => {
+      if (now - lastSpawn >= 50) {
+        lastSpawn = now;
+        const active = window.__lf.stats().enemies;
+        const deficit = target - active;
+        if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
+      }
+      window.__lfLoadKeeper = requestAnimationFrame(tick);
+    };
+    window.__lfLoadKeeper = requestAnimationFrame(tick);
+  }, TARGET_ENEMIES);
+}
+
+/** Manueller Wartepunkt mit Diagnose (statt blindem waitForFunction-Timeout). */
+async function waitDiag(name, fn, timeoutMs) {
+  const start = Date.now();
+  let last = null;
+  while (Date.now() - start < timeoutMs) {
+    last = await page.evaluate(() => {
+      const s = window.__lf?.state?.() ?? {};
+      const dbg = window.__rbDbg ?? {};
+      return { enemies: s.enemies ?? null, time: s.time ?? null, paused: s.paused ?? null, levelUpOpen: s.levelUpOpen ?? null, scene: s.scene ?? null, quality: s.quality ?? null, fps: dbg.fps ?? null };
+    });
+    if (fn(last)) return last;
+    await sleep(500);
+  }
+  summary.findings.push({ severity: "blocker", text: `Wartepunkt "${name}" Timeout nach ${timeoutMs} ms — letzter Zustand: ${JSON.stringify(last)}` });
+  throw new Error(`waitDiag(${name}) timeout: ${JSON.stringify(last)}`);
+}
+
+/** 1-Hz-Timeline bis stop() true oder Timeout. */
+async function sampleLoop(stop, maxMs, label) {
   const start = Date.now();
   while (Date.now() - start < maxMs) {
-    await topUp();
     const s = await senseOnce();
     s.phase = label;
     timeline.push(s);
+    noteTiers(s);
     if (stop(s)) return s;
     await sleep(1000);
   }
   return timeline[timeline.length - 1];
 }
 
-const transitions = [];
-let lastTier = null;
-let lastBase = null;
-const noteTiers = (s) => {
-  if (s.effTier !== lastTier && s.effTier != null) {
-    transitions.push({ t: s.t, kind: "effective", from: lastTier, to: s.effTier, fpsEwma: s.fpsEwma });
-    lastTier = s.effTier;
-  }
-  if (s.baseTier !== lastBase && s.baseTier != null) {
-    transitions.push({ t: s.t, kind: "base", from: lastBase, to: s.baseTier, fpsEwma: s.fpsEwma });
-    lastBase = s.baseTier;
-  }
-};
+const snapOf = (samples) => samples.length === 0 ? null : ({
+  n: samples.length,
+  tier: samples[0]?.effTier,
+  damageLabelsMax: Math.max(...samples.map((s) => s.damageLabels ?? 0)),
+  audioVoicesMax: Math.max(...samples.map((s) => s.audioVoices ?? 0)),
+  addChildrenMed: samples.map((s) => s.addChildren).sort((a, b) => a - b)[Math.floor(samples.length / 2)],
+  addMaxAreaMax: Math.max(...samples.map((s) => s.addMaxArea ?? 0)),
+  warnDiscsMax: Math.max(...samples.map((s) => s.warnDiscs ?? 0)),
+});
 
 // --- Run ---------------------------------------------------------------------
 
-const summary = { startedAt: new Date().toISOString(), renderer: rendererString, throttle: THROTTLE, gates: {}, findings: [] };
-let timeline = [];
 try {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=99`);
   await startRun(page);
-  await page.evaluate(({ evolutions, passives }) => {
+  await page.evaluate(({ weapons, passives }) => {
     window.__lf.god(true);
     window.__lf.autoPlay(true);
-    for (const id of evolutions) window.__lf.addWeapon(id, 8);
+    for (const id of weapons) window.__lf.addWeapon(id, 8);
     for (const id of passives) window.__lf.addPassive(id, 5);
-  }, { evolutions: EVOLUTIONS, passives: PASSIVES });
+  }, { weapons: WEAPONS, passives: PASSIVES });
+  await startLoadKeeper();
 
-  // Gegner-Top-up (wie perf.mjs): Evolutions-Waffen killen instant — ohne
-  // Nachspawnen waere das Burst-Tor ohne Last gemessen.
-  const topUp = () => page.evaluate(() => {
-    const en = window.__lf?.state?.()?.enemies ?? 0;
-    const deficit = Math.min(500 - en, 120);
-    if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
-    return en;
-  });
-
-  // A0 Burst-Tor: ~500 Gegner bei Minute 3, normale Zeit, 15 s.
+  // A0 Burst-Tor: ~500 Gegner bei Minute 3, normale Zeit, 15 s (wie perf.mjs).
   await page.evaluate(() => { window.__lf.skipTo(150); });
-  await page.evaluate(() => { window.__lf.spawnEnemy("bog_rat", 260); window.__lf.spawnEnemy("wisp", 260); });
-  await page.waitForFunction(() => (window.__lf?.state?.()?.enemies ?? 0) >= 400, null, { timeout: 30000 });
+  await waitDiag("burst-enemies", (s) => (s.enemies ?? 0) >= 400, 30000);
   const burst = [];
   const bEnd = Date.now() + 15000;
-  while (Date.now() < bEnd) { await topUp(); burst.push(await senseOnce()); await sleep(500); }
+  while (Date.now() < bEnd) { burst.push(await senseOnce()); await sleep(500); }
   for (const s of burst) { s.phase = "A0-burst"; timeline.push(s); noteTiers(s); }
   const burstFps = burst.map((s) => s.fpsEwma).sort((a, b) => a - b);
-  summary.gates.burst = { fpsMedian: burstFps[Math.floor(burstFps.length / 2)], fpsMin: burstFps[0], pass: burstFps[Math.floor(burstFps.length / 2)] >= 55 };
+  const burstEnemies = Math.round(burst.reduce((a, s) => a + s.enemies, 0) / burst.length);
+  summary.gates.burst = { fpsMedian: burstFps[Math.floor(burstFps.length / 2)], fpsMin: burstFps[0], avgEnemies: burstEnemies, pass: burstFps[Math.floor(burstFps.length / 2)] >= 55 && burstEnemies >= 400 };
 
   // A1 Minute-25-Referenz: 30x hochlaufen, dann 20 s bei 1x.
   await page.evaluate(() => { window.__lf.setTimeScale(30); });
-  await page.waitForFunction(() => (window.__lf?.state?.()?.time ?? 0) >= 1500, null, { timeout: 240000, polling: 500 });
+  await waitDiag("minute25-time", (s) => (s.time ?? 0) >= 1500, 240000);
   await page.evaluate(() => { window.__lf.setTimeScale(1); });
-  await page.waitForFunction(() => (window.__lf?.state?.()?.enemies ?? 0) >= 300, null, { timeout: 30000, polling: 500 }).catch(() => {});
+  await waitDiag("minute25-enemies", (s) => (s.enemies ?? 0) >= 300, 30000).catch(() => null);
   const m25 = [];
   const mEnd = Date.now() + 20000;
-  while (Date.now() < mEnd) { await topUp(); m25.push(await senseOnce()); await sleep(500); }
+  while (Date.now() < mEnd) { m25.push(await senseOnce()); await sleep(500); }
   for (const s of m25) { s.phase = "A1-minute25"; timeline.push(s); noteTiers(s); }
   const m25Fps = m25.map((s) => s.fpsEwma).sort((a, b) => a - b);
-  summary.gates.minute25 = { fpsMedian: m25Fps[Math.floor(m25Fps.length / 2)], fpsMin: m25Fps[0], pass: m25Fps[Math.floor(m25Fps.length / 2)] >= 55 };
+  const m25Enemies = Math.round(m25.reduce((a, s) => a + s.enemies, 0) / m25.length);
+  summary.gates.minute25 = { fpsMedian: m25Fps[Math.floor(m25Fps.length / 2)], fpsMin: m25Fps[0], avgEnemies: m25Enemies, pass: m25Fps[Math.floor(m25Fps.length / 2)] >= 55 && m25Enemies >= 300 };
 
-  // Cap-Schnappschuss VOR der Drosselphase (Stufe high) fuer Bitgleichheits-Vergleich.
-  const snapOf = (samples) => ({
-    tier: samples[0]?.effTier,
-    damageLabelsMax: Math.max(...samples.map((s) => s.damageLabels ?? 0)),
-    audioVoicesMax: Math.max(...samples.map((s) => s.audioVoices ?? 0)),
-    addChildrenMed: samples.map((s) => s.addChildren).sort((a, b) => a - b)[Math.floor(samples.length / 2)],
-    addMaxAreaMax: Math.max(...samples.map((s) => s.addMaxArea ?? 0)),
-    warnDiscsMax: Math.max(...samples.map((s) => s.warnDiscs ?? 0)),
-  });
+  // Cap-Schnappschuss VOR der Drosselphase (Stufe high) fuer Bitgleichheit.
   summary.snapshotHighBefore = snapOf([...burst, ...m25]);
 
   // B Drosselphase: CPU-Throttle an, bis thermal engagiert + 40 s Beobachtung.
@@ -192,10 +223,9 @@ try {
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: THROTTLE });
   let thermalSeenAt = 0;
   await sampleLoop((s) => {
-    noteTiers(s);
     if (s.effTier === "thermal") { if (!thermalSeenAt) thermalSeenAt = s.t; if (s.t - thermalSeenAt >= 40000) return true; }
     return false;
-  }, 360000, "B-throttle", timeline);
+  }, 360000, "B-throttle");
   if (!thermalSeenAt) {
     summary.findings.push({ severity: "blocker", text: `Thermal-Stufe in 6 min Drossel (${THROTTLE}x) NICHT erreicht — Kette high->medium->low pruefen` });
   }
@@ -206,10 +236,9 @@ try {
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
   let highBackAt = 0;
   await sampleLoop((s) => {
-    noteTiers(s);
     if (s.effTier === "high") { if (!highBackAt) highBackAt = s.t; if (s.t - highBackAt >= 30000) return true; }
     return false;
-  }, 300000, "C-recovery", timeline);
+  }, 300000, "C-recovery");
   if (!highBackAt) {
     summary.findings.push({ severity: "major", text: "Rueckkehr auf high in 5 min Erholung NICHT erreicht (Regler/Totzone/Last pruefen)" });
   }
