@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13263,
+  "next": 13287,
   "cards": [
     {
       "id": 1,
@@ -18779,6 +18779,33 @@
       "notes": [],
       "created": "2026-11-28T16:19:56Z",
       "updated": "2026-11-28T16:19:56Z"
+    },
+    {
+      "id": 13284,
+      "title": "m10-golden-frame-rebaseline-r2 K1: Guard-Lauf nach 4 Merges",
+      "description": "4 Merges (heap-gate-recovery, fps-cap-stackfix, charstats-spec-followup, mira-hp-balance-check) sind auf main. node scripts/m10-golden-frame.mjs OHNE --write-baseline laufen lassen. AK: Verdict-JSON committed; bei PASS (keine Divergenz) Karte done + .lane-done, keine künstliche Rebaseline.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T16:35:49Z",
+      "updated": "2026-11-28T16:35:49Z"
+    },
+    {
+      "id": 13285,
+      "title": "m10-golden-frame-rebaseline-r2 K2: Divergenz-Einordnung je Seed/Frame",
+      "description": "Falls K1 divergiert: Ursache je Differenz einordnen (legitime Daten-/Hebel-Änderung aus den 4 Merges vs. echter Regress). Belegliste (Seed, Tick, Feld, Vorher/Nachher) in docs/lanes/m10-golden-frame-rebaseline-r2.md. AK: jede Differenz hat Feld + Vorher/Nachher-Wert + Zuordnung.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T16:35:49Z",
+      "updated": "2026-11-28T16:35:49Z"
+    },
+    {
+      "id": 13286,
+      "title": "m10-golden-frame-rebaseline-r2 K3: Rebaseline oder Befundliste",
+      "description": "K3a legitim: --write-baseline --baseline-at=<Merge-SHA>, verdict committen, tests/golden-frame.test.ts grün. K3b echter Regress: NICHT rebaseln, Befundliste + Bedarfsmeldung in /home/ai/games/.dispatch/requests.md. AK: golden-frame-Test grün auf Rebaseline-Stand ODER begründete Befundliste ohne Rebaseline.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T16:35:49Z",
+      "updated": "2026-11-28T16:35:49Z"
     }
   ]
 }
