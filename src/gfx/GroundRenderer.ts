@@ -115,7 +115,9 @@ export function chunkInstallGate(
   maxDefers: number = CHUNK_INSTALL_MAX_DEFER_FRAMES,
 ): ChunkInstallGateResult {
   if (readyCount <= 0) return { install: false, defers };
-  if (lastFrameDtMs > budgetMs && defers < maxDefers) return { install: false, defers: defers + 1 };
+  const force = defers >= maxDefers;
+  if (!force && lastFrameDtMs > budgetMs) return { install: false, defers: defers + 1 };
+  if (force) return { install: true, defers: 0 };
   if (readyCount === 1) return { install: true, defers: 0 };
   if (msSinceLastInstall >= intervalMs) return { install: true, defers: 0 };
   return { install: false, defers };
