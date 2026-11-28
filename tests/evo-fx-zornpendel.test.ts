@@ -104,7 +104,7 @@ describe("m10-evo-fx-zornpendel: Texturen in Zielgröße + Draw-Scale 1", () => 
   it("Signaturen-Registry: Phoenix/Soul/Zorn in Zielgröße, Rest Alt-Pfad", () => {
     expect(EVOLUTION_SIGNATURES.phoenix.drawScale).toEqual([1, 1]);
     expect(EVOLUTION_SIGNATURES.soul_beacon.drawScale).toEqual([1, 1]);
-    expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toBeUndefined();
+    expect(EVOLUTION_SIGNATURES.eternal_winter.drawScale).toEqual([1, 1]);
     expect(EVOLUTION_SIGNATURES.thorn_storm.drawScale).toBeUndefined();
     expect(EVOLUTION_SIGNATURES.thunder_seal.drawScale).toBeUndefined();
   });

@@ -200,6 +200,8 @@ export const WINTER_FX = {
   spikeTexture: "projectile_ice",
   /** Treffer-/Todes-Signatur in Zielgröße (128x128 @ Draw-Scale 1, gen-fx). */
   signatureDrawScale: [1, 1] as [number, number],
+} as const;
+
 /**
  * m10-evo-fx-zornpendel: alle Zornpendel-FX-Parameter an einem Ort (Muster
  * PHOENIX_FX/SOUL_FX). Eine Pixelgroesse fuer alles: der Pendel-Ring wird in
