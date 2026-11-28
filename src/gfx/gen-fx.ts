@@ -171,7 +171,7 @@ function boltFrame(seed: number, height = 16, width = 12): string[] {
 }
 
 /** Eiskristall (großer Diamant) mit Facetten und Glanzkante; 4 Zerfallsstufen. */
-function iceFrame(stage: number): string[] {
+export function iceFrame(stage: number): string[] {
   const w = 15;
   const h = 21;
   const cx = 7;
@@ -188,9 +188,9 @@ function iceFrame(stage: number): string[] {
       if (!inside) row += ".";
       else if (dx <= 1 && dy <= 2) row += "d";        // lanternWhite Kern
       else if (dx <= 2 && y < cy) row += "b";          // boneLight Glanzkante
-      else if (x < cx) row += "j";                     // paleMist helle Facette
-      else if (dx <= 3) row += "i";                    // mist
-      else row += "g";                                 // fogBlue Rand
+      else if (x < cx) row += "9";                     // paleMist helle Facette
+      else if (dx <= 3) row += "8";                    // mist
+      else row += "6";                                 // fogBlue Rand
     }
     out.push(row);
   }

@@ -12,6 +12,7 @@ import {
   FX_MIXEL_BASES,
   SIGNATURE_FRAME_COUNT,
   frostRingFrame,
+  iceFrame,
   mixelBakes,
   mixelLevelFor,
   mixelMaxLevel,
@@ -95,6 +96,27 @@ describe("m10-evo-fx-winter: Eisspitzen-Projektil ohne Ink", () => {
     expect(used).toContain(13); // weißer Kern
     expect(used).toContain(6); // blauer Rand statt schwarzer Kontur
     expect(WINTER_FX.spikeTexture).toBe("projectile_ice");
+  });
+});
+
+describe("m10-evo-fx-winter: fx_ice-Partikel in Eis-Treppe (art-director Runde 3)", () => {
+  it("4 Frames 15x21, nur Eis-Farben — Regression: 'j/i/g' codeten zu flame/ember (Glut-Sturm-Bug)", () => {
+    const all: number[] = [];
+    for (let stage = 0; stage < 4; stage++) {
+      const rows = iceFrame(stage);
+      expect(rows.length).toBe(21);
+      expect(rows.every((r) => r.length === 15)).toBe(true);
+      const used = usedIndices(rows);
+      expect(used.every((i) => ICE_RAMP.includes(i))).toBe(true);
+      expect(used.some((i) => FORBIDDEN.includes(i))).toBe(false);
+      expect(used).toContain(13); // lanternWhite Kern
+      expect(used).toContain(9); // paleMist Facette (war 'j' → pal19 flameBright)
+      all.push(...used);
+    }
+    // Späte Zerfallsstufen sind zu schmal für den Rand; die Familie muss die
+    // komplette Treppe zeigen (mist 'i'→8 war flame, fogBlue 'g'→6 war emberBrown).
+    expect(all).toContain(8);
+    expect(all).toContain(6);
   });
 });
 
