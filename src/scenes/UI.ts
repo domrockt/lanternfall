@@ -1239,6 +1239,8 @@ export class UI extends Phaser.Scene {
     // deren LV 8 mit 2 px an der Sanduhr-Icon-Kante. Zeilen 1-5 bleiben einzeilig
     // und damit pixelgleich. Glyph-Vorschub 6 px (GLYPH_W 5 + 1), "LV n" = 23 px.
     const PAUSE_NAME_LV_BUFFER_PX = 22;
+    // lvTextW 23 = "LV n" mit einstelligem Level (max. Stufe 8, GAME.md); bei
+    // zweistelligen Levels wuerde der Puffer stillschweigend schrumpfen.
     const lvTextW = 23;
     const colMaxChars = (nameX: number, lvRightX: number): number =>
       Math.max(4, Math.floor((lvRightX - lvTextW - PAUSE_NAME_LV_BUFFER_PX - nameX + 1) / 6));

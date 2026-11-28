@@ -175,6 +175,11 @@ describe("ui-pause-quality: Quell-Checks UI.ts (Fix bleibt verdrahtet)", () => {
   it("refreshPause nutzt Pitch 19 (+4 px Icon-Abstand)", () => {
     expect(src).toMatch(/const PAUSE_ROW_PITCH = 19;/);
   });
+  it("Spaltenpuffer-Formel in UI.ts entspricht der Test-Formel (Anti-Drift, Review-Nit 1/2)", () => {
+    // Pinnt lvTextW und Glyph-Vorschub 6: driftet eine Seite, schlaegt der Test an.
+    expect(src).toMatch(/const lvTextW = 23;/);
+    expect(src).toMatch(/- nameX \+ 1\) \/ 6\)/);
+  });
   it("Powerup-Spalte (Namen + LV) auf candleWhite, nicht mehr mist", () => {
     expect(src).toMatch(/C\.candleWhite, 234, 386/);
     expect(src).not.toMatch(/C\.mist, 234, 386/);
