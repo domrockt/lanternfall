@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { getTouchSnapshot, resetTouchSnapshot, setTouchSnapshot } from "./TouchState";
+import { insetsToGamePx, readDeviceSafeAreaInsets, type SafeAreaInsets } from "../logic/safearea";
 
 export interface TouchControlsOptions {
   /** Nur dann Joystick/Pause zeigen und Gesten annehmen (Run läuft, nicht pausiert/Level-up/Truhe). */
@@ -98,6 +99,8 @@ export class TouchControls {
   private identifier: number | null = null;
   private originX = 0;
   private originY = 0;
+  /** m10-hud-safearea: Geraete-Insets in Spielpixeln (0 ohne Notch), einmalig pro Aufbau. */
+  private readonly safeInsetGame: SafeAreaInsets;
   /** M10-touch-joystick-feel: zuletzt gesendeter Sektor (Richtungs-Hysterese). */
   private lastSector: number | null = null;
   /** M10-touch-joystick-feel: zuletzt geschriebener Snapshot-Vektor (Output-Eps). */
@@ -227,6 +230,13 @@ export class TouchControls {
     this.opts = opts;
     this.canvas = scene.game.canvas;
     this.enabled = hasTouchSupport();
+    // m10-hud-safearea: Insets einmalig lesen (View-Wechsel baut die Szene neu
+    // auf -> neuer TouchControls). Pause-Knopf klemmt an View-Rand MINUS Inset.
+    this.safeInsetGame = insetsToGamePx(
+      scene.scale.width,
+      this.canvas?.getBoundingClientRect().width ?? scene.scale.width,
+      readDeviceSafeAreaInsets(),
+    );
 
     if (this.enabled) {
       this.installTouchControls();
@@ -267,9 +277,11 @@ export class TouchControls {
       }
     }
     if (this.pauseContainer) {
+      // m10-hud-safearea: Marge mindestens Geraete-Inset (Notch/Rundung),
+      // sonst HUD-Konvention PAUSE_MARGIN — ohne Notch bitgleich.
       this.pauseContainer.setPosition(
-        Math.round(this.scene.scale.width - PAUSE_MARGIN - PAUSE_W),
-        PAUSE_MARGIN,
+        Math.round(this.scene.scale.width - Math.max(PAUSE_MARGIN, this.safeInsetGame.right) - PAUSE_W),
+        Math.max(PAUSE_MARGIN, this.safeInsetGame.top),
       );
     }
     if (!canMove) {
