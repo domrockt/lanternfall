@@ -9448,18 +9448,30 @@
       "title": "m10-chest-arrow-640-refit B: Re-Lauf beider Formate auf aktuellem main -> shots/m10-chest-arrow-refit-before.json",
       "description": "Schritt 1. AK: 640x360 UND 780x360 je 10 Cases, JSON mit WebGL-Renderer-String, ein Lauf committet. Fall A (10/10 PASS beide Formate): Ursache View-Width-Cap-Entfernung, Karte #5378 schliessen. Fall B: A/B engrenzen (ground-props-batch naechster Verdaechtiger).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T02:34:05Z",
+          "by": "build",
+          "text": "done → done: lane #6599, Merge 1f7dd78 — Re-Lauf 20/20 PASS (640x360+780x360), shots/m10-chest-arrow-refit-before.json, Ursache rAF-Sampling-Artefakt (Fall A)"
+        }
+      ],
       "created": "2026-11-28T02:33:25Z",
-      "updated": "2026-11-28T02:33:25Z"
+      "updated": "2026-11-28T02:34:05Z"
     },
     {
       "id": 7521,
       "title": "m10-chest-arrow-640-refit C: Verdict + Karte #5378 mit Belegpfaden abschliessen",
       "description": "Schritt 2. AK: Karte #5378 auf done mit Zahlen + Belegpfaden (refit-before.json, ggf. A/B-Probe), Notiz im Board. Bei Fall B stattdessen Fix-Karten ableiten.",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T02:34:05Z",
+          "by": "build",
+          "text": "done → done: lane #6600, Merge 1f7dd78 — Verdict Fall A, #5378 mit Belegpfaden abgeschlossen"
+        }
+      ],
       "created": "2026-11-28T02:33:25Z",
-      "updated": "2026-11-28T02:33:25Z"
+      "updated": "2026-11-28T02:34:05Z"
     },
     {
       "id": 7522,
