@@ -1,5 +1,14 @@
 # Lane m10-sightprep-smoke — Nur-Mess-Sanity vor Doms Sichtabnahme
 
+## Gesamturteil (für Dom, 28.11.)
+
+**Abnahme kann stattfinden; 2 Major-Befunde vorab kennen.** Gates tsc/build/test/acceptance/verify:final sind auf dem PIN
+grün; `verify:input` FAILT reproduzierbar (B1, Gamepad-Start aus CharSelect → Titel — File-Diff belegt: **vor den ~15
+Merges vorhanden, nicht frisch reingerutscht**). Einziges Sicht-Major: Boss-Name über der Boss-HP-Leiste im M25-Chaos
+unlesbar (B3, `src/scenes/UI.ts:490`-Hebel). Sonst: 12 Sicht-Shots beider Formate ohne Mixel/fraktionale Skalierung/
+Near-White/Schwarz-Blöcke/Überlappungen, 0 JS-Fehler, Burst 59,7 FPS @500, M25-Probe median 60,4 FPS (iGPU, kein
+SwiftShader). Dora kann B1/B3 als disjunkte Fix-Jobs schneiden (CharSelect vs. UI.ts).
+
 **Zweck:** Ein unabhängiges Sanity-Urteil auf aktuellem main vor Doms Sichtabgang (Wunsch 08:15Z, Referenz main `45c198d`,
 dahinter ~15 Merges). KEINE Spielcode-Änderung, keine Fix-Jobs in dieser Lane — Ergebnis ist die Befundliste
 (Severity + Belegpfad + Datei-/Hebel-Pointer), daraus schneidet Dora Fix-Jobs.
@@ -90,3 +99,10 @@ kein SwiftShader). Nur Vergleichswerte, **kein FPS-Tor-Urteil** (Headless-Chrome
 
 Einordnung: Minute-25-Lastphase mediant stabil bei 60, min-Dip 46,8 (Spawn-/Effekt-Spitzen) — konsistent mit den
 M25-Sicht-Shots (53–55 FPS im Batch). Keine Anomalie gegenüber den Merge-Checklisten-Werten.
+
+## Nachtrag — bekannte Issues, hier erneut gesichtet
+
+- **F-2 (bekannt, m10-verify-outputs-hygiene):** `npm test` überschreibt getrackte `shots/m10-passive-math-*.json`
+  (hier während K1 erneut aufgetreten, per `git restore` zurückgesetzt). Bleibt Fix-Bedarf des Test-Owners.
+- **Lane-Eigenheit:** Nach `skipTo(min)` dauert der Wellen-Nachschub einige Sekunden realtime (enemies=1 bei M2-Sofort-Shot)
+  — Capture-Artefakt, kein Spielbug; deshalb `m2-action-*` mit `spawnEnemy` als repräsentativer Beleg.
