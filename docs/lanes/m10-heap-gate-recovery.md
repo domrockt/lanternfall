@@ -43,21 +43,36 @@ Kein ungebundenes Wachstum sichtbar: die Post-GC-Timeline schwankt zwischen
 verloren — `Target page, context or browser has been closed` mitten im Lauf,
 nur partielles JSON (`UNMESSBAR`, endMB null); identisches Fehlerbild wie in
 Nachabnahme F dokumentiert. Log: `~/tmp/m10-heap-gate-recovery/k1-run2.log`.
-**Messfenster einmal wiederholt** (k1-run2-retry, 15:12Z gestartet): Ergebnis unten.
+**Messfenster einmal wiederholt** (k1-run2-retry, 15:12Z gestartet, gitSha
+705a6f97 = Lane-HEAD): **PASS** — simSeconds 1818,0, Sieg, 0 JS-Fehler,
+Renderer Mesa Intel RPL-S (gültig).
 
-## K2 — Entscheidung (#12548)
+## K1 — Tor-Tabelle (2 gültige Läufe)
 
-- **Befund bis hier: main hält das Tor nach hazard-tex-cap.** Lauf 1 PASS
-  (HARD −25,2 %, deutlich unter +15 %; kein Trend im 30-min-Post-GC-Profil).
-  Gegenüber dem Blocker-Stand (PIN 1ebd4ca, VOR hazard-tex-cap: +18,2 % /
-  +20,8 % in 2 Läufen) ist der belegte ungebundene Wachstumsmechanismus
-  (16-px-Hazard-Textur-Raster, Merge 39fdac5d) die plausibel wirksame Korrektur.
-- Finaler Tor-Wert (2. Lauf) wird nach Retry-Auswertung ergänzt; FAIL-Fall
-  (K3/K4, Hebel in Pool.ts/EnemyPool.ts) tritt nur ein, wenn der 2. Lauf > +15 %.
-- K3-Vorarbeit (nur Analyse, kein Code-Change nötig): `Pool.trim()` weiterhin
-  0 Aufrufstellen im Run-Pfad (docs/lanes/m10-pool-trim.md); EnemyPool hält
-  eigene `free`-Liste ohne Kappe — beides bleibt dokumentierter offener Hebel
-  (#2439), war aber in Lauf 1 nicht als Wachstum sichtbar.
+| Kriterium | Lauf 1 | Lauf 2 (Retry) | Tor |
+|---|---|---|---|
+| Minute 1 (Post-GC) | 64,8 MB | 64,8 MB | Referenz |
+| endMB (Post-GC, Results) | 48,5 MB | 48,5 MB | — |
+| **HARD: endMB vs. Minute 1** | **−25,2 %** | **−25,2 %** | ≤ +15 % → **PASS / PASS** |
+| SOFT robust (max Floor 5-min-Fenster) | +9,2 % | +9,9 % | ≤ +25 % → PASS |
+| Roh-Peak-Beobachtung | +25,3 % | +42,1 % | nur Beobachtung (GC-Sägezahn) |
+| Sieg / JS-Fehler / Renderer | ja / 0 / Mesa Intel RPL-S | ja / 0 / Mesa Intel RPL-S | grün |
+
+## K2 — Entscheidung (#12548): ENTFÄLLT FIX-FALL
+
+**Tor ≤ +15 % in 2 Läufen erfüllt (deutlich: −25,2 % beide Läufe).** Der
+Abnahme-Blocker aus Nachabnahme F (+18,2 %/+20,8 % auf PIN 1ebd4ca, VOR
+hazard-tex-cap) ist auf aktuellem main nicht reproduzierbar: der gemergte
+16-px-Hazard-Textur-Raster (Merge 39fdac5d, Lane m10-hazard-tex-cap) trägt
+das Tor — der einzige belegte ungebundene Wachstumsmechanismus ist gebunden.
+K3 (Fix in Pool.ts/EnemyPool.ts) und K4 (Nachher + Guard-Test gegen einen
+umgesetzten Hebel) **treten nicht ein**: kein Hebel umgesetzt → kein
+Regressionstest-Objekt. Die Kandidaten `Pool.trim()` (0 Aufrufstellen) und
+EnemyPool-Free-Liste ohne Kappe bleiben als dokumentierte Folge-Hebel
+(#2439), sind aber im 30-min-Profil kein Wachstumstreiber.
+
+Beide Läufe zeigen endMB UNTER Minute 1 (−16,3 MB) und ein Post-GC-Profil
+ohne Aufwärtstrend (~62–71 MB schwankend) — kein Retentions-Leck sichtbar.
 
 ## Abschluss (Supervisor-Budget 15:39Z)
 
@@ -65,10 +80,10 @@ Nachabnahme F dokumentiert. Log: `~/tmp/m10-heap-gate-recovery/k1-run2.log`.
   (`k1-run1.json` gültig, `k1-run2.json` Crash-Teilbeleg, `k1-run2-retry.json`
   Ergebnis des Wiederholungsfensters), Logs in `~/tmp/m10-heap-gate-recovery/`.
 - Offene Restpunkte (nicht mehr in dieser Lane nachgebaut):
-  1. 2. Tor-Lauf: falls der Retry wieder crasht oder > +15 % — Folge-Karte
-     Remessung/Hebel (K3-Hebel siehe oben) eröffnen; Lauf 1 allein trägt die
-     Aussage „main hält das Tor nach hazard-tex-cap" nur als 1/2-Beleg.
+  1. ~~2. Tor-Lauf~~ — erledigt: Retry lief sauber durch (PASS, siehe oben);
+     Tor ist mit 2 gültigen Läufen belegt. Keine Folge-Karte nötig.
   2. `ACCEPTANCE.md` ist fremd-claimed (m10-acceptance-g-sync) — Bedarf-Vermerk
      für den G-Abschnitt-Nachtrag in `/home/ai/games/.dispatch/requests.md`:
-     „Heap-Tor auf HEAD nach hazard-tex-cap: Lauf 1 HARD −25,2 % (2. Lauf:
-     siehe Evidence-Verzeichnis), Belege in ~/games/.evidence/m10-heap-gate-recovery/".
+     „Heap-Tor auf HEAD nach hazard-tex-cap: 2/2 Läufe HARD −25,2 %
+     (endMB 48,5 vs Minute1 64,8 MB), Belege in
+     ~/games/.evidence/m10-heap-gate-recovery/".
