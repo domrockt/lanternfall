@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7523,
+  "next": 7528,
   "cards": [
     {
       "id": 1,
@@ -9487,6 +9487,51 @@
       ],
       "created": "2026-11-28T02:33:25Z",
       "updated": "2026-11-28T02:33:53Z"
+    },
+    {
+      "id": 7523,
+      "title": "m10-chaos-fix-dmg-overlap #1: Vorher-Messung (M25-Chaos 300 + 500er-Stress, 3 Frames)",
+      "description": "lane #7058. Skript scripts/m10-chaos-fix-dmg.mjs: M25-Chaos (skipTo 1490) + 500er-Stress, je 3 Frames; zaehlt ueberlappende Damage-Label-Rects, max. Labelbreite, verdeckte Sprite-Zentren. Belege shots/m10-chaos-fix-dmg-before-*.png + -before.json. Abnahme erfuellt: JSON + PNGs committet (Merge 6d15539), Baseline-Zahlen in docs/lanes/m10-chaos-fix-dmg-overlap.md.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:37:07Z",
+      "updated": "2026-11-28T02:37:07Z"
+    },
+    {
+      "id": 7524,
+      "title": "m10-chaos-fix-dmg-overlap #2: Fix DamageNumbers — Grid-Offset + Kuerzung + Anker unterhalb",
+      "description": "lane #7059. In src/systems/DamageNumbers.ts: (1) Grid-Slot-Verteilung bei Kollision (deterministische Spirale, dy>=0), (2) Werte >= 100000 als '184,5k' (max 6 Zeichen inkl '!'), (3) Anker unterhalb des Gegners. Trefferverhalten/Damage-Berechnung bitgleich. Abnahme: Merge 6d15539, npm run build gruen, 1232/1232 Tests gruen.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:37:07Z",
+      "updated": "2026-11-28T02:37:07Z"
+    },
+    {
+      "id": 7525,
+      "title": "m10-chaos-fix-dmg-overlap #3: Tests tests/damage-* erweitern",
+      "description": "lane #7060. tests/damage-grid.test.ts: Grid-Offset verhindert Ueberlappung (deterministisch, nie dy<0, Anker y nie < Basis), Kuerzungsformat '184,5k' <= 6 Zeichen, Anker unterhalb des Gegners. Abnahme: npm test 1232/1232 gruen nach Merge 6d15539.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:37:07Z",
+      "updated": "2026-11-28T02:37:07Z"
+    },
+    {
+      "id": 7526,
+      "title": "m10-chaos-fix-dmg-overlap #4: Nachher-Messung + Doku",
+      "description": "lane #7061. Nachher-Lauf (--tag=after): 0 ueberlappende Labels in Repro (300+500, 3 Frames), 6-stellige Werte stets gekuerzt, Sprite-Zentren nicht verdeckt. shots/m10-chaos-fix-dmg-after-*.png + -after.json, Doku docs/lanes/m10-chaos-fix-dmg-overlap.md. .lane-done bewusst NICHT nach main uebernommen.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:37:07Z",
+      "updated": "2026-11-28T02:37:07Z"
+    },
+    {
+      "id": 7527,
+      "title": "m10-damage-label-formatter-ausdünnen: damageLabel entfernen oder Tests umstellen",
+      "description": "lane #7062 (Folgekarte aus Lane m10-chaos-fix-dmg-overlap, Reviewer-Befund PASS). damageLabel (src/logic/damage-numbers.ts:238) ist produktiv ungenutzt (DamageNumbers.ts nutzt formatDamageLabel mit k-Kuerzung) und hat keine Kuerzung — zwei Formatter laufen auseinander. Entweder entfernen oder tests/damage-number-batch.test.ts + tests/m5-jucie.test.ts auf formatDamageLabel umstellen. Abnahme: nur noch ein Produktions-Formatter, Tests gruen, tsc gruen.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T02:37:07Z",
+      "updated": "2026-11-28T02:37:07Z"
     }
   ]
 }
