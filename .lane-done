@@ -1,0 +1,21 @@
+# Lane m10-v10-gate-torprio — fertig (2026-11-28)
+
+K1–K3 erledigt, je ein Commit (7dc48827, c53ed533, + K3-Doku-Commit) auf Branch m10-v10-gate-torprio.
+
+Zusammenfassung: Endabnahme-/v10-Host-Gate (scripts/m10-v10-gate.mjs) führt jetzt FPS avg (Tor 1,
+>= 57 FPS, Host-Harness-rAF-dt) und rAF-Frame-p95 (Tor 2, <= 16 ms) als PRIMÄRE Tore;
+gfxinfo-janky ist gekennzeichnete Beobachtungsmetrik (Warning, nie allein FAIL). Die alte strenge
+janky-geführte Lesart ist per Flag --janky-as-gate reproduzierbar (Rückweg, falls Dom die Tor-Definition
+anders entscheidet — offene Frage: coding-brain/Lead/Fragen an Dom.md, „Tor-Definition an realer Last“
++ Ergänzung 17:0xZ). Renderer-String-Pflicht unangetastet.
+
+Messwerte/Belege: K4-Befund m10-janky-remeasure (0 % janky bei FPS avg 50,1 / rAF-p95 33,4 ms) als
+Test-Fixture gepinnt; Vorher/Nachher-Urteil am vorhandenen Gate-JSON
+(~/games/.evidence/m10-v10-gate-guard/gate-final-run3.json, historisch FAIL(frame-p95-only)):
+Vorher-Logik reproduziert die Aufzeichnung exakt, Nachher bewertet fps-avg als Tor 1 und führt
+FAIL-Urteile von fps-avg/rAF-p95. Belege: ~/games/.evidence/m10-v10-gate-torprio/
+{m10-v10-gate-torprio-vorher,nachher}.json (außerhalb des Repos, shots/* ist gitignored).
+
+Qualität: 24/24 Tests der Gate-Suite grün, npm test 234/234 Dateien grün, npm run build grün,
+npx tsc --noEmit sauber, kein src/-Touch (nur scripts/m10-v10-gate.mjs + tests/v10-gate.test.ts +
+docs/lanes/m10-v10-gate-torprio.md). Details: docs/lanes/m10-v10-gate-torprio.md.

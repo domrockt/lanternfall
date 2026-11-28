@@ -136,10 +136,11 @@ describe("evaluateGates PASS/FAIL-Matrix", () => {
     expect(names.indexOf("frame-p95")).toBe(2);
   });
 
-  it("FPS avg unter 57 -> FAIL (K4-Gerätebeleg: fpsAvg 50,1 bei janky 0 %)", () => {
+  it("FPS avg unter 57 -> FAIL (K4-Gerätebeleg: fpsAvg ~50 bei janky 0 %)", () => {
     const input = passingInput();
-    // K4 m10-janky-remeasure (k2-cap60-device.json): fpsAvg 50,1, rAF-p95 33,4 ms.
-    input.perf.frameDtsMs = Array.from({ length: 100 }, () => 19.96); // 1000/19.96 = 50.1
+    // K4 m10-janky-remeasure (k2-cap60-device.json): fpsAvg 50,1, rAF-p95 33,4 ms,
+    // bimodales 2-Vsync-Raster (p50 16,7 / p95 33,4) — Fixture reproduziert beide Werte.
+    input.perf.frameDtsMs = [...Array.from({ length: 80 }, () => 16.7), ...Array.from({ length: 20 }, () => 33.4)]; // fpsAvg 49,9, p95 33,4
     input.perf.gfxinfoJankyPct = 0;
     const verdict = evaluateGates(input);
     expect(verdict.passed).toBe(false);
