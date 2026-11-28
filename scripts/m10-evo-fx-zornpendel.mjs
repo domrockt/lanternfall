@@ -19,8 +19,8 @@ const browser = await chromium.launch({
 });
 
 // Zorn-relevante Texturen (Pendel-Kugel + Kette + Smear-Bogen + Halo + Signaturen).
-const FX_KEYS = ["flail_ball", "chain_link", "fx_smear", "fx_halo", "fx_evo_hit_wrath_pendulum", "fx_evo_death_wrath_pendulum"];
-const COLOR_KEYS = ["flail_ball", "fx_evo_death_wrath_pendulum"];
+const FX_KEYS = ["flail_ball", "chain_link", "fx_smear", "fx_halo", "fx_wrath_ring", "fx_wrath_glow", "fx_evo_hit_wrath_pendulum", "fx_evo_death_wrath_pendulum"];
+const COLOR_KEYS = ["flail_ball", "fx_evo_death_wrath_pendulum", "fx_wrath_ring"];
 
 const PROBE = ({ FX_KEYS, COLOR_KEYS }) => {
   const scene = window.__game.scene.getScene("run");
@@ -121,13 +121,12 @@ try {
       },
       { timeout: 15000 },
     );
-    // Impact-Moment (Schwung + Halo + evtl. Signaturen): Screenshot + Messung.
-    await page.waitForTimeout(300);
+    // Impact-Moment (mitten im Schwung: Ring + Glow + Signaturen): Sofort messen.
     results[cfg.tag] = await page.evaluate(PROBE, { FX_KEYS, COLOR_KEYS });
     results[cfg.tag].view = await page.evaluate(() => ({ configW: window.__game.config.width, configH: window.__game.config.height, zoom: window.__game.scene.getScene("run").cameras.main.zoom, cameraW: window.__game.scene.getScene("run").cameras.main.width }));
     await page.screenshot({ path: cfg.shot });
-    // Zweite Aufnahme: nächster Schwung (Anticipation/Impact, für Formbeleg).
-    await page.waitForTimeout(900);
+    // Zweite Aufnahme: 3/4 in den nächsten Schwung hinein (voller Ring, Ausblend-Fade).
+    await page.waitForTimeout(780);
     await page.screenshot({ path: cfg.shot.replace(".png", "-swing.png") });
     results[cfg.tag].aliveEnemies = await page.evaluate(() => window.__lf.state().enemies);
     await page.close();
