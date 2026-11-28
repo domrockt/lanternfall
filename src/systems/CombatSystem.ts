@@ -502,8 +502,10 @@ export class CombatSystem {
     this.fx.spawn({
       texture: "ring_frost", x: ctx.playerX, y: ctx.playerY, life: 0.5,
       scaleFrom: 0.5, scaleTo: radius / 47, alphaFrom: 1, alphaTo: 0,
-      // Normal-Blend: das Eis-Siegel soll blau-grau lesbar bleiben, nicht additiv ausbleichen.
-      additive: false, tint: PAL[C.fogBlue],
+      // Normal-Blend, kein Tint: die Textur bringt ihre Eis-Treppe (inkl. pal5-Kante)
+      // selbst mit — ein multiplikativer fogBlue-Tint drückt paleMist auf ~#2c3540
+      // (art-director Runde 2, Aura-Siegel 3.5/5) und erreicht den Screen nie.
+      additive: false,
     });
     // Eiskristalle/Splitter am Ring (keine Linienringe): 16 große Shards nach außen.
     for (let i = 0; i < 16; i++) {
@@ -516,7 +518,9 @@ export class CombatSystem {
         vx: Math.cos(a) * 24, vy: Math.sin(a) * 24,
         life: 0.7, scaleFrom: 1.5, scaleTo: 0.5,
         alphaFrom: 1, alphaTo: 0, rotation: a + Math.PI / 2,
-        additive: false, tint: PAL[C.fogBlue], depth: DEPTH.fxLow,
+        // Kein fogBlue-Tint: die fx_ice-Textur endet selbst in der Eis-Treppe;
+        // der Tint drückte die Shards auf Grau-Blau (#2c3540, art-director FAIL).
+        additive: false, depth: DEPTH.fxLow,
       });
     }
     this.fx.spawnAnim("fx_halo", ctx.playerX, ctx.playerY, {
@@ -707,7 +711,8 @@ export class CombatSystem {
           y: ctx.playerY + Math.sin(a) * radius * 0.82,
           vx: Math.cos(a) * 18, vy: Math.sin(a) * 18,
           life: 0.6, scaleFrom: 1.3, scaleTo: 0.4, alphaFrom: 0.95, alphaTo: 0,
-          rotation: a, additive: false, tint: PAL[C.fogBlue], depth: DEPTH.fxLow,
+          // Kein fogBlue-Tint (Aura-Siegel-FAIL, art-director Runde 2): Textur-Treppe zeigen.
+          rotation: a, additive: false, depth: DEPTH.fxLow,
         });
       }
     }
