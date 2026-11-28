@@ -270,8 +270,10 @@ function medianOf(serie: readonly number[]): number {
  * THERMAL_HOLD_MS anhaltendem Absturz; ohne Signal (NaN/leer) bleiben die
  * Timer eingefroren (wie stepQuality in der Totzone). Auf hoher/medium-Stufe
  * greift der Guard NICHT — dort faehrt stepQuality ab (Definition "trotz
- * low"). Aufloesung/RENDER_SCALE werden nie angefasst; der Rueckweg auf "low"
- * folgt in K2 (Erholungszeit).
+ * low"). Kein Flapping (K2): Abstieg erst nach dem Haltefenster, Rueckweg
+ * erst nach ununterbrochener Erholungszeit — danach braucht ein neuer Abstieg
+ * wieder das volle Haltefenster. Aufloesung/RENDER_SCALE werden nie
+ * angefasst.
  */
 export function evaluateThermalStep(
   fpsSerie: readonly number[],
@@ -281,12 +283,17 @@ export function evaluateThermalStep(
   const dt = Number.isFinite(dtMs) && dtMs > 0 ? dtMs : 0;
   const median = medianOf(fpsSerie);
   if (state.active) {
-    // Vorerst (K1): Median wieder ueber der Erholungs-Schwelle -> sofort
-    // zurueck auf "low". K2 haertet das zu einer Erholungszeit ab.
     if (Number.isFinite(median) && median >= THERMAL_RECOVERY_FPS) {
-      return { tier: "low", active: false, crashMs: 0, recoverMs: 0 };
+      // Rueckweg nur nach THERMAL_RECOVERY_MS AM STUECK (Hysterese, Muster
+      // stepQuality aboveMs): eine Unterbrechung beginnt die Erholung neu.
+      const recoverMs = state.recoverMs + dt;
+      if (recoverMs >= THERMAL_RECOVERY_MS) {
+        return { tier: "low", active: false, crashMs: 0, recoverMs: 0 };
+      }
+      return { ...state, recoverMs };
     }
-    return state;
+    // Erholungsfolge abgebrochen (wieder unter der Schwelle): neu beginnen.
+    return { ...state, recoverMs: 0 };
   }
   // Guard nur ab Basis-Stufe "low" (Definition: "trotz LOW-Stufe").
   if (state.tier !== "low") return state;

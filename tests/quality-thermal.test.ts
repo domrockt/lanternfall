@@ -53,6 +53,57 @@ describe("K1: Definition — thermischer Absturz trotz LOW-Stufe", () => {
   });
 });
 
+describe("K2: Hysterese — Rueckweg und kein Flapping", () => {
+  const engage = (): ThermalState => {
+    let s = atLow();
+    for (let ms = 0; ms < THERMAL_HOLD_MS; ms += DT) s = evaluateThermalStep(crashSerie(), s, DT);
+    expect(s.active).toBe(true);
+    return s;
+  };
+
+  it("Rueckkehr auf low erst nach ununterbrochener Erholungszeit (19,9 s reicht nicht)", () => {
+    let s = engage();
+    for (let ms = 0; ms < THERMAL_RECOVERY_MS - DT; ms += DT) s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s.active).toBe(true);
+    s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s).toEqual({ tier: "low", active: false, crashMs: 0, recoverMs: 0 });
+  });
+
+  it("Unterbrechung der Erholungsfolge setzt recoverMs zurueck (kein kumulieren)", () => {
+    let s = engage();
+    for (let ms = 0; ms < 15000; ms += DT) s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s.recoverMs).toBe(15000);
+    s = evaluateThermalStep(crashSerie(), s, DT); // Einbruch bricht die Folge
+    expect(s.recoverMs).toBe(0);
+    expect(s.active).toBe(true);
+    for (let ms = 0; ms < THERMAL_RECOVERY_MS - DT; ms += DT) s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s.active).toBe(true); // noch nicht wieder erholt
+    s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s.active).toBe(false); // erst nach vollen 20 s neu
+  });
+
+  it("kein Flapping: nach Rueckkehr braucht ein neuer Abstieg wieder das volle Haltefenster", () => {
+    let s = engage();
+    for (let ms = 0; ms < THERMAL_RECOVERY_MS; ms += DT) s = evaluateThermalStep(stableSerie(), s, DT);
+    expect(s.tier).toBe("low");
+    // kurz vor dem Haltefenster: keine Aktivierung
+    for (let ms = 0; ms < THERMAL_HOLD_MS - DT; ms += DT) s = evaluateThermalStep(crashSerie(), s, DT);
+    expect(s.active).toBe(false);
+    expect(s.tier).toBe("low");
+    s = evaluateThermalStep(crashSerie(), s, DT);
+    expect(s.tier).toBe("thermal");
+  });
+
+  it("Totzone 30..45 FPS waehrend aktiv: thermal bleibt, Erholung beginnt nicht", () => {
+    let s = engage();
+    const deadZone = Array.from({ length: 8 }, () => (THERMAL_FPS + THERMAL_RECOVERY_FPS) / 2); // 37,5
+    for (let ms = 0; ms < THERMAL_RECOVERY_MS * 2; ms += DT) s = evaluateThermalStep(deadZone, s, DT);
+    expect(s.tier).toBe("thermal");
+    expect(s.active).toBe(true);
+    expect(s.recoverMs).toBe(0);
+  });
+});
+
 describe("K1: Budget der Stufe thermal", () => {
   it("thermal streng unter low (Last senken statt Aufloesung)", () => {
     const low = qualityBudgetFor("low");
