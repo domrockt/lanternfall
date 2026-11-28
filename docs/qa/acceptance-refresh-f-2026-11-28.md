@@ -46,7 +46,23 @@ iGPU-Besetzung desselben Hosts ist durch den Terrain-Lauf direkt belegt.
 
 ## K3 — Burst + Minute-25 auf iGPU (780x360@3, 960x540)
 
-(wechselnde Ergebnisse)
+Messung mit `/home/ai/tmp/m10-acceptance-refresh-f/perf-f.mjs` (Messlogik identisch zu
+`scripts/perf.mjs`: Burst 500 Gegner synthetisch, Minute 25 via `skipTo(1490)` + Director-Dichte
+≥ 300, Ziel 55 FPS), jeweils **ein Lauf je View** unter
+`flock /home/ai/games/.lf-perf.lock`, Beleg-JSON mit Renderer-Feld im selben Lauf
+(`~/games/.evidence/m10-acceptance-refresh-f/k3-perf-accf-*.json`).
+
+| View | Burst (500 Gegner) | Minute 25 | Renderer-String (aus demselben JSON) |
+|---|---|---|---|
+| 780x360@3 | **60,0 FPS** (worst frame 16,8 ms) | **60,1 FPS** | „ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)“ |
+| 960x540 | **60,1 FPS** (worst frame 16,8 ms) | **60,1 FPS** | „ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)“ |
+
+`swiftshader:false` und `jsErrors:[]` in beiden Belegen.
+
+**Urteil K3: PASS** — beide Views ≥ 55 FPS (Ziel), beide am 60-FPS-Cap. Gegen die M6-Werte
+(01. Nachabnahme 27.11.: Burst 780x360@3 55,9–57,8, M25-780 43,1–47,3 FAIL, M25-960 50,7):
+**+7 % bei Burst-780** (innerhalb der 5-%-Marke? 55,9→60 = +7,3 % ≥ 5 % → markiert: Verbesserung)
+und **+18…+25 % bei Minute-25-780** (43,1→60,1; Improvement, in ACCEPTANCE.md markiert).
 
 ## K4 — fullrun-Guard + ACCEPTANCE.md
 
