@@ -1,0 +1,28 @@
+# Lane m10-apk-splash-sight — fertig (2026-11-28 ~16:2xZ)
+
+Ziel: Sichtbeleg Dom 13:25Z Punkt 2 — APK Starting-Window/Theme auf Ladescreen-Ton
+#0a0d14 + Laterne (Vera, lf-apk ea37f3e) am echten Kaltstart belegt.
+
+## Ergebnis
+- K1 (#12945, done): APK-Beleg nur lesend — Theme-Kette Manifest → LfTheme →
+  windowBackground lf_splash → lf_bg #0a0d14 (exakt 1 Fundstelle in resources.arsc)
+  + zentrierte Laterne ic.png. Beleg: ~/games/.evidence/m10-apk-splash-sight/k1-apk-theme.json
+- K2 (#12946, done): Kaltstart-Belege am Gerät — 2/3 Starts (coldstart-run2, je 13 Shots;
+  Start 3 + run3 durch Spieler-Sperre DOM_SPIELT geblockt, korrekt respektiert).
+  Phase A t≈4,9–6,8 s: WebView-Boot „LADE MOOR …" BG #0a0e16 (Δ ≤ 2/255 zu #0a0d14),
+  Phase B ab t≈7,0 s: Titel #121923. Belege: ~/games/.evidence/m10-apk-splash-sight/coldstart-run{1,2,3}/
+  Abnahme-Bilder: shots/abnahme/m10-apk-splash-phase{A,B}-*.png
+- K3 (#12947, done): art-Direkt-Urteil PASS 4/5 — Start wirkt als Ladescreen (nicht
+  hängend): Laterne + Fortschrittsbalken sichtbar, Farbstimmung im Zielkorridor,
+  Letterbox kein relevanter Befund. Befunde: [Medium] natives Starting-Window (erster
+  Paint < 4,9 s) nur statisch belegt (K1), Warm-up-Skript in scripts/m10-apk-splash.mjs
+  liegt bereit, unvalidiert; [Low] Ladetext-Copy „LADE MOOR …"/„LADEN …" uneinheitlich.
+
+## Commits
+- 88decbb6 #12945 K1 · f40177aa #12946 K2 final · 4201a60f #12947 K3 Urteil+Doku
+- Kontrolleure: Reviewer-PASS (K2), art-director PASS 4/5 (K3), commit-gate PASS (Lane).
+
+## Folgebedarf (für Dora/Lead)
+- EIN validierter Kaltstart-Lauf mit Warm-up-Skript, sobald die Spieler-Sperre frei ist,
+  um das native Starting-Window lebend zu belegen (Befund Medium).
+- Optional Ladetext vereinheitlichen (Hebel: Ladetext-String im Boot-/Preload-Pfad).
