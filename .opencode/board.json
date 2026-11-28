@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12882,
+  "next": 12885,
   "cards": [
     {
       "id": 1,
@@ -17968,6 +17968,76 @@
       "notes": [],
       "created": "2026-11-28T14:15:39Z",
       "updated": "2026-11-28T14:15:39Z"
+    },
+    {
+      "id": 12882,
+      "title": "m10-det-e2e-guard K1: Stand prüfen — Anker-Merges in main, E2E exit 0 (3 Seeds × 2 Läufe)",
+      "description": "Auf aktivem main verifizieren, dass beide after-Merges gelandet sind (m10-worldview-anchor-pools, m10-spawn-view-anchor) und m10-boss-dur-det.mjs exit 0 liefert (3 Seeds × 2 Läufe, 30x, Boss-Dauern bitgleich). Beleg nach ~/games/.evidence/m10-det-e2e-guard/. Abnahme: Merge-Belege + E2E-JSON mit deterministic:true.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:59:48Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet: Merge-Belege geprüft (pools 111f3f95, spawn 4c677cfe beide in main), E2E-Lauf folgt."
+        },
+        {
+          "at": "2026-11-28T15:04:28Z",
+          "by": "build",
+          "text": "doing → review: Beide Anker-Merges in main belegt (merge-base rc=0: pools 111f3f95, spawn 4c677cfe). E2E scripts/m10-boss-dur-det.mjs auf Lane-Basis (main tip a911d59c): exit 0, 3 Seeds × 2 Läufe, je 700 Marken bitgleich, Boss-Dauern bitgleich (101: 31.10/40.10s, 202: 25.20/29.50s, 404: 29.75/45.45s). Beleg ~/games/.evidence/m10-det-e2e-guard/m10-boss-dur-det-main.json + Log ~/tmp/m10-det-e2e-guard/k1-e2e.log. Commit 27534d3c."
+        },
+        {
+          "at": "2026-11-28T15:26:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12793, Merge branch m10-det-e2e-guard"
+        }
+      ],
+      "created": "2026-11-28T14:59:47Z",
+      "updated": "2026-11-28T15:04:28Z"
+    },
+    {
+      "id": 12883,
+      "title": "m10-det-e2e-guard K2: Guard-Wiring — tests/run-determinism.test.ts + scripts/m10-det-e2e.mjs",
+      "description": "Deterministischer Suite-fähiger Guard auf Basis des E2E: scripts/m10-det-e2e.mjs (Muster m10-boss-dur-det.mjs, schreibt shots/m10-det-e2e-<seed>-r<r>.json + verdict), tests/run-determinism.test.ts erweitern: bitgleiche Marken + Events + Boss-Dauern je Seed. Keine Langläufe in der Suite (Sim-level-Check über committete JSONs). Abnahme: npx vitest run tests/run-determinism.test.ts grün, E2E-Skript exit 0.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:04:31Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: scripts/m10-det-e2e.mjs (E2E-Guard, Muster m10-boss-dur-det.mjs) + Erweiterung tests/run-determinism.test.ts."
+        },
+        {
+          "at": "2026-11-28T15:10:06Z",
+          "by": "build",
+          "text": "doing → review: Commit 9644ea50. scripts/m10-det-e2e.mjs (E2E-Guard, Muster m10-boss-dur-det.mjs, schreibt shots/m10-det-e2e-<seed>-r<r>.json + verdict) exit 0: 3 Seeds × 2 Läufe, je 700 Marken + Events + Boss-Dauern bitgleich. Suite-Guard in tests/run-determinism.test.ts: npx vitest run tests/run-determinism.test.ts 11/11 grün. Negativ-Check: 1 px-Divergenz in r1 lässt seed-202-Test anschlagen, danach restauriert und wieder grün. .gitignore !shots/m10-det-e2e-*.json ergänzt (Beanspruchung in .dispatch/requests.md dokumentiert, folgt Muster !shots/m10-run-det-*.json). Kein Langlauf in der Suite — E2E bleibt dokumentiertes Skript."
+        },
+        {
+          "at": "2026-11-28T15:26:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12794, Merge branch m10-det-e2e-guard"
+        }
+      ],
+      "created": "2026-11-28T14:59:47Z",
+      "updated": "2026-11-28T15:10:06Z"
+    },
+    {
+      "id": 12884,
+      "title": "m10-det-e2e-guard K3: Doku + Abschluss — docs/lanes/m10-det-e2e-guard.md, .lane-done",
+      "description": "docs/lanes/m10-det-e2e-guard.md mit Aufruf, Grenzen (stochastische Reste außerhalb der 3 Anker), Belegpfaden; npm test + build grün; .lane-done. Abnahme: Doku vorhanden, Suite+Build grün, .lane-done committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:10:07Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: Lane-Doku + npm test/build + .lane-done."
+        },
+        {
+          "at": "2026-11-28T15:26:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12884, Merge branch m10-det-e2e-guard (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T14:59:47Z",
+      "updated": "2026-11-28T15:10:07Z"
     }
   ]
 }

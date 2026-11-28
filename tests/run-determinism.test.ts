@@ -121,3 +121,94 @@ describe("m10-run-determinism-fix: Determinismus nach Komplett-Fix (Run.ts + Spa
     expect(seq(202)).not.toEqual(seq(101));
   });
 });
+
+/**
+ * m10-det-e2e-guard K2: Suite-Teil des E2E-Determinismus-Guards ueber die
+ * komplette worldView-Anker-Kette — die drei Sim-Anker-Teile muessen
+ * zusammenhalten, ohne dass ein stochastischer Rest in den Sim greift:
+ *   1. ProjectilePool.ts/EnemyProjectiles.ts -> m10-worldview-anchor-pools
+ *   2. Spawner.ts outsideView                -> m10-spawn-view-anchor
+ *   3. Boss-Sim-View (Rezept aus m10-boss-dur-determinism K2:
+ *      Anker mid = scroll + width/2 statt camera.worldView)
+ *
+ * E2E-Methode (LANGE Browser-Laeufe, NICHT Teil der Suite): Skript
+ * scripts/m10-det-e2e.mjs — 3 Seeds x 2 identische Laeufe, timeScale 30,
+ * 700 Sim-Sekunden, sim-exakte Marken via prototype-Patch von Run.simulate
+ * (gleiches Verfahren wie oben). Dokumentierter Aufruf:
+ * `node scripts/m10-det-e2e.mjs` — exit 0 <=> deterministisch.
+ *
+ * Der Suite-Check schraenkt die von diesem Skript committeten JSONs:
+ *   shots/m10-det-e2e-<seed>-r<rep>.json + shots/m10-det-e2e-verdict.json.
+ * Nach einer Sim-Aenderung: Skript-Lauf erneuern, JSONs neu committen. Ist
+ * das Urteil NICHT deterministisch (oder fehlen die JSONs), schlaegt der
+ * Test hier mit der ersten Divergenz an — so regressiert die
+ * Determinismus-Kette nicht still.
+ */
+const E2E_SEEDS = [101, 202, 404] as const;
+const E2E_MARKS = 700;
+
+interface E2eMark {
+  s: number;
+  elapsed: number;
+  kills: number;
+  level: number;
+  xp: number;
+  hp: number;
+  enemies: number;
+  px: number;
+  py: number;
+}
+interface E2eRep {
+  seed: number;
+  rep: number;
+  marks: E2eMark[];
+  events: Array<{ kind: string; index: number; at: number }>;
+  bossDurations: Array<{ index: number; spawnAt: number; defeatAt: number; duration: number }>;
+  pageErrors: string[];
+}
+interface E2eVerdict {
+  script: string;
+  seeds: number[];
+  reps: number;
+  limitSeconds: number;
+  deterministic: boolean;
+  perSeed: Array<{ seed: number; identical: boolean; marks: number; divergingMarks: number }>;
+}
+
+const readE2e = (rel: string) =>
+  JSON.parse(readFileSync(new URL(rel, import.meta.url), "utf8")) as E2eRep;
+
+describe("m10-det-e2e-guard: E2E-Anker-Kette (Pools + Spawner + Boss-Sim-View) bitgleich", () => {
+  it("Verdict: 3 Seeds x 2 Laeufe, 700 Marken je Lauf, Urteil deterministic:true", () => {
+    const v = readJson("../shots/m10-det-e2e-verdict.json") as E2eVerdict;
+    expect(v.script).toBe("scripts/m10-det-e2e.mjs");
+    expect(v.seeds).toEqual([...E2E_SEEDS]);
+    expect(v.reps).toBe(2);
+    expect(v.limitSeconds).toBe(E2E_MARKS);
+    expect(v.deterministic).toBe(true);
+    for (const p of v.perSeed) {
+      expect(p.identical, `seed ${p.seed} sollte bitgleich sein`).toBe(true);
+      expect(p.divergingMarks).toBe(0);
+      expect(p.marks).toBe(E2E_MARKS);
+    }
+  });
+
+  for (const seed of E2E_SEEDS) {
+    it(`seed ${seed}: beide E2E-Laeufe bitgleich — 700 Marken + Events + Boss-Dauern, 0 JS-Fehler`, () => {
+      const a = readE2e(`../shots/m10-det-e2e-${seed}-r0.json`);
+      const b = readE2e(`../shots/m10-det-e2e-${seed}-r1.json`);
+      expect(a.seed).toBe(seed);
+      expect(b.seed).toBe(seed);
+      expect(a.marks.length).toBe(E2E_MARKS);
+      expect(b.marks.length).toBe(E2E_MARKS);
+      // Marken inkl. Position (px/py) — hier schlagen die Anker-Teile an.
+      expect(a.marks).toEqual(b.marks);
+      // Kompletter Event-Strom (bossWarn/bossDefeated, sim-exakt).
+      expect(a.events).toEqual(b.events);
+      // Boss-Dauern je Index (Defeat.at - Spawn.at) — das K2-Leck-Feld.
+      expect(a.bossDurations).toEqual(b.bossDurations);
+      expect(a.pageErrors).toEqual([]);
+      expect(b.pageErrors).toEqual([]);
+    });
+  }
+});

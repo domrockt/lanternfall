@@ -28,6 +28,7 @@ scripts/art/__pycache__/
 
 # Test-Fixtures (Regression-Marken) — von cb920c5 versehentlich enttrackt (Vera 2026-11-28):
 !shots/m10-run-det-*.json
+!shots/m10-det-e2e-*.json
 !shots/m10-golden-frame-*.json
 !shots/m10-balance-corridor-*.json
 !shots/m10-atlas-audit.json
