@@ -1,0 +1,42 @@
+{
+ "generatedAt": "2026-11-28T05:02:49.335Z",
+ "seeds": [
+  101,
+  202,
+  404
+ ],
+ "reps": 2,
+ "maxSeconds": 120,
+ "scale": 30,
+ "character": "mira",
+ "deterministic": true,
+ "perSeed": [
+  {
+   "seed": 101,
+   "identical": true,
+   "pageErrorCount": 0,
+   "divergingMarks": 0,
+   "totalMarks": 120,
+   "divergingFields": {},
+   "firstDiff": null
+  },
+  {
+   "seed": 202,
+   "identical": true,
+   "pageErrorCount": 0,
+   "divergingMarks": 0,
+   "totalMarks": 120,
+   "divergingFields": {},
+   "firstDiff": null
+  },
+  {
+   "seed": 404,
+   "identical": true,
+   "pageErrorCount": 0,
+   "divergingMarks": 0,
+   "totalMarks": 120,
+   "divergingFields": {},
+   "firstDiff": null
+  }
+ ]
+}

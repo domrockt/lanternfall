@@ -1,0 +1,168 @@
+{
+  "tag": "after",
+  "target": 300,
+  "profiles": [
+    {
+      "profile": {
+        "label": "640-360-1",
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "renderer": {
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "swiftShader": false
+      },
+      "fps": {
+        "fps": 60.2,
+        "frames": 301
+      },
+      "frames": [
+        {
+          "png": "shots/m10-chaos-fix-glowpath-after-640-360-1-m25-1.png",
+          "zoom": "shots/m10-chaos-fix-glowpath-after-640-360-1-m25-1-4x.png",
+          "stats": {
+            "enemies": 86,
+            "time": 1498.7,
+            "fxAlpha": 1,
+            "kills": 5487,
+            "level": 36
+          },
+          "pixels": {
+            "pngWidth": 640,
+            "pngHeight": 360,
+            "nearWhiteA7Pct": 0.45,
+            "nearWhiteMinRgb200Pct": 0.32,
+            "nearWhiteA7CropPct": 2.98,
+            "nearWhiteMinRgb200CropPct": 1.14,
+            "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+          }
+        },
+        {
+          "png": "shots/m10-chaos-fix-glowpath-after-640-360-1-m25-2.png",
+          "zoom": "shots/m10-chaos-fix-glowpath-after-640-360-1-m25-2-4x.png",
+          "stats": {
+            "enemies": 300,
+            "time": 1499,
+            "fxAlpha": 1,
+            "kills": 5532,
+            "level": 37
+          },
+          "pixels": {
+            "pngWidth": 640,
+            "pngHeight": 360,
+            "nearWhiteA7Pct": 0.04,
+            "nearWhiteMinRgb200Pct": 0.02,
+            "nearWhiteA7CropPct": 0.41,
+            "nearWhiteMinRgb200CropPct": 0.15,
+            "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+          }
+        },
+        {
+          "png": "shots/m10-chaos-fix-glowpath-after-640-360-1-m25-3.png",
+          "zoom": "shots/m10-chaos-fix-glowpath-after-640-360-1-m25-3-4x.png",
+          "stats": {
+            "enemies": 66,
+            "time": 1499.1,
+            "fxAlpha": 1,
+            "kills": 5766,
+            "level": 37
+          },
+          "pixels": {
+            "pngWidth": 640,
+            "pngHeight": 360,
+            "nearWhiteA7Pct": 0.36,
+            "nearWhiteMinRgb200Pct": 0.35,
+            "nearWhiteA7CropPct": 2.59,
+            "nearWhiteMinRgb200CropPct": 1.68,
+            "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+          }
+        }
+      ]
+    },
+    {
+      "profile": {
+        "label": "780-360-3",
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "renderer": {
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "swiftShader": false
+      },
+      "fps": {
+        "fps": 60.1,
+        "frames": 301
+      },
+      "frames": [
+        {
+          "png": "shots/m10-chaos-fix-glowpath-after-780-360-3-m25-1.png",
+          "zoom": "shots/m10-chaos-fix-glowpath-after-780-360-3-m25-1-4x.png",
+          "stats": {
+            "enemies": 25,
+            "time": 1498.6,
+            "fxAlpha": 1,
+            "kills": 6841,
+            "level": 38
+          },
+          "pixels": {
+            "pngWidth": 2340,
+            "pngHeight": 1080,
+            "nearWhiteA7Pct": 0.21,
+            "nearWhiteMinRgb200Pct": 0.2,
+            "nearWhiteA7CropPct": 0.87,
+            "nearWhiteMinRgb200CropPct": 0.48,
+            "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+          }
+        },
+        {
+          "png": "shots/m10-chaos-fix-glowpath-after-780-360-3-m25-2.png",
+          "zoom": "shots/m10-chaos-fix-glowpath-after-780-360-3-m25-2-4x.png",
+          "stats": {
+            "enemies": 300,
+            "time": 1498.8,
+            "fxAlpha": 1,
+            "kills": 6842,
+            "level": 38
+          },
+          "pixels": {
+            "pngWidth": 2340,
+            "pngHeight": 1080,
+            "nearWhiteA7Pct": 0.03,
+            "nearWhiteMinRgb200Pct": 0.01,
+            "nearWhiteA7CropPct": 0.33,
+            "nearWhiteMinRgb200CropPct": 0.12,
+            "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+          }
+        },
+        {
+          "png": "shots/m10-chaos-fix-glowpath-after-780-360-3-m25-3.png",
+          "zoom": "shots/m10-chaos-fix-glowpath-after-780-360-3-m25-3-4x.png",
+          "stats": {
+            "enemies": 26,
+            "time": 1499.4,
+            "fxAlpha": 1,
+            "kills": 7941,
+            "level": 39
+          },
+          "pixels": {
+            "pngWidth": 2340,
+            "pngHeight": 1080,
+            "nearWhiteA7Pct": 0.23,
+            "nearWhiteMinRgb200Pct": 0.17,
+            "nearWhiteA7CropPct": 1.33,
+            "nearWhiteMinRgb200CropPct": 0.62,
+            "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+          }
+        }
+      ]
+    }
+  ],
+  "jsErrors": [],
+  "worstNearWhiteA7Pct": 0.45,
+  "gate": {
+    "nearWhiteA7Pct": 4.16,
+    "definition": "A7: r,g,b >= 150 und r >= 235, ganzer Frame"
+  }
+}

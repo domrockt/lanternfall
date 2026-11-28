@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-11-28T06:52:44.554Z",
+  "passiveMaxLevel": {
+    "boots": 5,
+    "tome": 5,
+    "heart": 5,
+    "charm": 5,
+    "whetstone": 5,
+    "hourglass": 5
+  },
+  "caps": {
+    "moveSpeedPct": 40,
+    "cooldownPct": 40,
+    "maxHpFlat": 500,
+    "maxHpPct": 200,
+    "regen": 50,
+    "xpPct": 200,
+    "pickupRadiusPct": 125,
+    "damagePct": 50,
+    "areaPct": 200,
+    "durationPct": 200,
+    "armorFlat": 50
+  },
+  "levelsTested": "1..8",
+  "rows": 64,
+  "deviations": 0,
+  "capViolations": 0,
+  "nanOrNegative": 0,
+  "combo": {
+    "combined": true,
+    "mods": {
+      "moveSpeedPct": 40,
+      "cooldownPct": 40,
+      "maxHpFlat": 100,
+      "maxHpPct": 0,
+      "regen": 1.5,
+      "xpPct": 0,
+      "pickupRadiusPct": 125,
+      "damagePct": 50,
+      "areaPct": 50,
+      "durationPct": 50,
+      "armorFlat": 0
+    },
+    "effectiveMoveSpeed": 140,
+    "effectiveCooldown": 0.6,
+    "effectiveDamage": 150,
+    "effectivePickupRadius": 45,
+    "effectiveRadius": 150,
+    "effectiveDuration": 15,
+    "withinCaps": true
+  },
+  "adversarial": {
+    "duplicateBootsMoveSpeed": 140,
+    "duplicateBootsWithinCap": true,
+    "nanDamage": 0,
+    "infinityPickup": 0,
+    "negativeCooldown": 0
+  }
+}
