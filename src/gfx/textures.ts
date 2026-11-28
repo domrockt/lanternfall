@@ -675,67 +675,16 @@ function createLightTexture(scene: Phaser.Scene): void {
     ctx.fill();
   }
   ctx.globalAlpha = 1;
-  // Hart quantisierte Außenkante (m10-chaos-fix-raster-glow K3, B1/B3-Hebel):
-  // diskrete Stufen-Bänder statt destination-in-Radialgradient — der 4x-Zoom
-  // zeigt 1-px-Raster an den Bandkanten statt Luftbrause-Bögen.
+  // weiche Kante: außen transparent
   ctx.globalCompositeOperation = "destination-in";
-  for (const [r0, r1, a] of LIGHT_EDGE_STEPS) {
-    ctx.globalAlpha = a;
-    ctx.beginPath();
-    ctx.arc(c, c, r1, 0, Math.PI * 2);
-    if (r0 > 0) ctx.arc(c, c, r0, 0, Math.PI * 2, true);
-    ctx.fill();
-  }
+  const g = ctx.createRadialGradient(c, c, 10, c, c, 96);
+  g.addColorStop(0, "rgba(0,0,0,1)");
+  g.addColorStop(0.75, "rgba(0,0,0,0.6)");
+  g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
   ctx.globalCompositeOperation = "source-over";
-  ctx.globalAlpha = 1;
   scene.textures.addCanvas(key, canvas);
-}
-
-/**
- * Licht-Außenkante als diskrete Stufen (m10-chaos-fix-raster-glow K3):
- * [r0, r1, alpha]-Bänder mit harten Kanten über den Licht-Radius 0..96
- * (Textur 192 px, Radius 96). Bänder ≥ 6 px breit, Alpha monoton fallend —
- * vorher: destination-in-Gradient rgba-Stopps 1 / 0.6 / 0 (Weichspül-Bögen,
- * Befund audit 4x-Crop `m10-chaos-fix-glow-before-780-360-3-m25-2-4x.png`).
- */
-export const LIGHT_EDGE_STEPS: ReadonlyArray<readonly [number, number, number]> = [
-  [0, 70, 1],
-  [70, 76, 0.66],
-  [76, 82, 0.38],
-  [82, 88, 0.18],
-  [88, 96, 0.08],
-];
-
-/** Stufen-Alpha für Distanz d (rein funktional, hart an den Bandgrenzen —
- *  die Grenze gehört jeweils zum äußeren Band). */
-export function lightEdgeAlphaFor(d: number): number {
-  if (!(d > 0)) return 1;
-  for (const [r0, r1, a] of LIGHT_EDGE_STEPS) {
-    if (d > r0 && d <= r1) return a;
-  }
-  return 0;
-}
-
-/**
- * Vignette als diskrete Stufen (m10-chaos-fix-raster-glow K3): [r0, r1, alpha]-
- * Bänder über den Radius 70..290 des Original-Gradients (Stopps 0 → 0.18 @ 0.7 →
- * 0.72 @ 1), plus Klemm-Band für die Ecken (> 290). 11 Bänder à 20 px, Alpha
- * je Band = Gradientwert am Bandende (auf 2 Stellen gerundet, hart gekantet).
- */
-export function vignetteSteps(): Array<[number, number, number]> {
-  const steps: Array<[number, number, number]> = [];
-  const r0 = 70;
-  const r1 = 290;
-  const bands = 11;
-  const alphaAt = (t: number): number =>
-    t < 0.7 ? 0.18 * (t / 0.7) : 0.18 + 0.54 * ((t - 0.7) / 0.3);
-  for (let i = 0; i < bands; i++) {
-    const from = r0 + ((r1 - r0) * i) / bands;
-    const to = r0 + ((r1 - r0) * (i + 1)) / bands;
-    steps.push([from, to, Math.round(alphaAt((i + 1) / bands) * 100) / 100]);
-  }
-  steps.push([r1, r1 + 120, 0.72]); // Ecken-Klemme (Gradient ist ab r1 konstant)
-  return steps;
 }
 
 function createVignetteTexture(scene: Phaser.Scene): void {
@@ -745,18 +694,12 @@ function createVignetteTexture(scene: Phaser.Scene): void {
   canvas.width = GAME_WIDTH;
   canvas.height = GAME_HEIGHT;
   const ctx = canvas.getContext("2d")!;
-  // Diskrete Stufen statt Radialgradient (m10-chaos-fix-raster-glow K3):
-  // gleiche Alpha-Treppe wie der Original-Gradient, aber als harte Bänder —
-  // gerastert statt milchig-weich (B3-Stilbruch „Luftbrause“).
-  const cx = GAME_WIDTH / 2;
-  const cy = GAME_HEIGHT / 2;
-  for (const [r0, r1, a] of vignetteSteps()) {
-    ctx.fillStyle = `rgba(6,7,12,${a})`;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r1, 0, Math.PI * 2);
-    ctx.arc(cx, cy, r0, 0, Math.PI * 2, true);
-    ctx.fill();
-  }
+  const c = ctx.createRadialGradient(GAME_WIDTH / 2, GAME_HEIGHT / 2, 70, GAME_WIDTH / 2, GAME_HEIGHT / 2, 290);
+  c.addColorStop(0, "rgba(6,7,12,0)");
+  c.addColorStop(0.7, "rgba(6,7,12,0.18)");
+  c.addColorStop(1, "rgba(6,7,12,0.72)");
+  ctx.fillStyle = c;
+  ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   scene.textures.addCanvas(key, canvas);
 }
 

@@ -60,11 +60,11 @@ export interface FxFrameSet {
  */
 export function deathFrameSets(): Record<string, FxFrameSet> {
   return {
-    fx_death_bone: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => boneDeathFrame(i)) },
-    fx_death_blob: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => blobDeathFrame(i)) },
-    fx_death_void: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => voidDeathFrame(i)) },
-    fx_death_dust: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => dustDeathFrame(i)) },
-    fx_death_fire: { w: 9, h: 9, frames: [0, 1, 2, 3].map((i) => fireDeathFrame(i)) },
+    fx_death_bone: { w: 9, h: 9, frames: [0, 1, 2, 3].map(boneDeathFrame) },
+    fx_death_blob: { w: 9, h: 9, frames: [0, 1, 2, 3].map(blobDeathFrame) },
+    fx_death_void: { w: 9, h: 9, frames: [0, 1, 2, 3].map(voidDeathFrame) },
+    fx_death_dust: { w: 9, h: 9, frames: [0, 1, 2, 3].map(dustDeathFrame) },
+    fx_death_fire: { w: 9, h: 9, frames: [0, 1, 2, 3].map(fireDeathFrame) },
     // Boss-Tod-Stufe: 32x32 mit 3-Stufen-Kern, Kontur, Ringen und Splittern.
     fx_boss_core: { w: 32, h: 32, frames: [0, 1, 2, 3, 4, 5].map(bossCoreFrame) },
   };
@@ -96,10 +96,8 @@ function blob(w: number, h: number, ramp: number[], opts: { squash?: number; cor
       // (normierte Koordinaten, damit die Welle bei jeder Stufe gleich bleibt)
       d += Math.sin((x / density + (y / density) * 0.7) * 1.7 + (opts.seed ?? 0)) * 0.055;
       if (d > 1) row += ".";
-      // Glow-Rampen enden auf Amber/Lantern statt Weiss (Near-White-B2):
-      // Kern lantern(21), Uebergangsband in der ersten Rampenfarbe.
-      else if (d < core) row += "l"; // lantern (21): Kern
-      else if (d < core + 0.18) row += charOf(ramp[0]);
+      else if (d < core) row += "d"; // lanternWhite (13): Kern
+      else if (d < core + 0.18) row += "c"; // candleWhite (12)
       else {
         const idx = Math.min(ramp.length - 1, Math.floor((d - core) / (1 - core) * ramp.length));
         // charOf (nicht 97+idx): Ramp-Indizes sind Palettenindizes, a-v = 10-31
@@ -130,8 +128,7 @@ function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1, den
       // Ring-Band mit Zacken (deterministisch gezackt)
       const edge = inner + Math.sin(a * 9 + sweep * 2) * 0.05;
       if (d < edge || d > 1) row += ".";
-      // Innenkante lantern(21) statt candleWhite(12) — kein Weiss-Ende (B2).
-      else if (d < edge + 0.10) row += "l";
+      else if (d < edge + 0.10) row += "c";
       else {
         const idx = Math.min(ramp.length - 1, Math.floor((d - edge) / (1 - edge) * ramp.length));
         // charOf (Off-by-10-Fix, siehe blob).
@@ -144,41 +141,30 @@ function ring(w: number, h: number, ramp: number[], inner = 0.62, sweep = 1, den
 }
 
 /** Zickzack-Blitz mit Seitenast; x-Versatz alle zwei Zeilen. */
-function boltFrame(seed: number, density = 1, height = 16, width = 12): string[] {
-  // Mixel-Bake: Basis 12x16, Stufe L rendert 12L x 16L mit derselben normierten
-  // Geometrie (Zickzack-Mitte in Basis-Koordinaten, Strichstaerken skalieren mit).
-  // Farbtreppe ohne Weiss-Ende: Kern lantern(21) -> amber(20) -> flame(18)
-  // (vorher Kern lanternWhite(13)/Flanke candleWhite(12) = Near-White im ADD-Stack).
-  const L = Math.max(1, Math.round(density));
-  const G_H = height * L;
-  const G_W = width * L;
+function boltFrame(seed: number, height = 16, width = 12): string[] {
   const rows: string[] = [];
-  const idxAt = (bx: number, by: number, cxBase: number): string => {
-    const d = Math.abs(bx - cxBase);
-    return d < 0.5 ? charOf(21) : d < 1.5 ? charOf(20) : d < 2.5 ? charOf(18) : ".";
-  };
-  for (let ty = 0; ty < G_H; ty++) {
-    const by = ty / L;
-    const jitter = Math.sin((by + seed * 3) * 1.9) * 1.6 + Math.sin((by + seed) * 4.1) * 0.8;
-    const cxBase = Math.max(1.5, Math.min(width - 2.5, width / 2 + jitter));
+  let cx = Math.floor(width / 2);
+  for (let y = 0; y < height; y++) {
+    const jitter = Math.round(Math.sin((y + seed * 3) * 1.9) * 1.6 + Math.sin((y + seed) * 4.1) * 0.8);
+    cx = Math.max(1, Math.min(width - 2, Math.floor(width / 2) + jitter));
     let row = "";
-    for (let tx = 0; tx < G_W; tx++) row += idxAt(tx / L, by, cxBase);
+    for (let x = 0; x < width; x++) {
+      if (x === cx) row += "d";
+      else if (Math.abs(x - cx) === 1) row += "c";
+      else if (Math.abs(x - cx) === 2) row += "g"; // amber (20)
+      else row += ".";
+    }
     rows.push(row);
   }
-  // Verzweigung ab der Mitte: kurzer Seitenast nach rechts/links (Basis-Pixel).
+  // Verzweigung ab der Mitte: kurzer Seitenast nach rechts/links.
   const dir = seed % 2 === 0 ? 1 : -1;
-  const cxMid = width / 2 + (Math.sin((height * 0.35 + seed * 3) * 1.9) * 1.6 + Math.sin((height * 0.35 + seed) * 4.1) * 0.8);
   for (let i = 0; i < 4; i++) {
-    const by = height * 0.35 + i;
-    const bx = cxMid + dir * (i + 1);
-    for (let ty = Math.floor(by * L), tEnd = Math.floor((by + 1) * L); ty < tEnd && ty < G_H; ty++) {
-      const arr = rows[ty].split("");
-      const col = Math.round(bx * L);
-      for (let dx = 0; dx < L; dx++) {
-        const x = col + dx;
-        if (x > 0 && x < G_W) arr[x] = i < 2 ? charOf(20) : charOf(18);
-      }
-      rows[ty] = arr.join("");
+    const y = Math.floor(height * 0.35) + i;
+    const x = cx + dir * (i + 1);
+    if (y < height && x > 0 && x < width - 1) {
+      const arr = rows[y].split("");
+      arr[x] = i < 2 ? "c" : "g";
+      rows[y] = arr.join("");
     }
   }
   return rows;
@@ -423,46 +409,34 @@ function shockFrame(stage: number, size = 48, density = 1): string[] {
 // - void: aufsteigende Schwaden-Saeulen (statt Ring)
 // ---------------------------------------------------------------------------
 
-/** Basis-Raster der Todes-Frames (Level 1). Bake-Stufen rendern dieselbe
- *  normierte Geometrie in 9L x 9L Pixeln (Mixel-Fix: Death-Shards werden bis
- *  Scale 2,4 gezeichnet — vorher 9x9 @ 2,4x = bis zu 2,4-Spielpixel-Bloecke). */
-const DEATH_BASE_GRID = 9;
+const DEATH_GRID = 9;
 
-function deathGrid(L = 1): string[][] {
-  return Array.from({ length: DEATH_BASE_GRID * L }, () => Array(DEATH_BASE_GRID * L).fill("."));
+function deathGrid(): string[][] {
+  return Array.from({ length: DEATH_GRID }, () => Array(DEATH_GRID).fill("."));
 }
 
-/** Setzt ein Basis-Pixel (Koordinaten in 9x9-Basiseinheiten) als LxL-Block —
- *  Punkt-Merkmale (Tropfen, Flocken) behalten ihre Basismasse. */
 function deathPx(g: string[][], x: number, y: number, ch: string): void {
-  const L = g.length / DEATH_BASE_GRID;
-  const xi = Math.round(x) * L;
-  const yi = Math.round(y) * L;
-  if (xi < 0 || yi < 0 || xi >= g.length || yi >= g.length) return;
-  for (let dy = 0; dy < L; dy++) {
-    for (let dx = 0; dx < L; dx++) g[yi + dy][xi + dx] = ch;
-  }
+  const xi = Math.round(x);
+  const yi = Math.round(y);
+  if (xi < 0 || yi < 0 || xi >= DEATH_GRID || yi >= DEATH_GRID) return;
+  g[yi][xi] = ch;
 }
 
 function deathRows(g: string[][]): string[] {
   return g.map((r) => r.join(""));
 }
 
-/** fx_death_blob (burst): dunkler Koerper, nightDeep-Rim, Lantern-Kern, Tropfen. */
-function blobDeathFrame(stage: number, L = 1): string[] {
-  const G = DEATH_BASE_GRID * L;
-  const g = deathGrid(L);
+/** fx_death_blob (burst): dunkler Koerper, nightDeep-Rim, weisser Kern, Tropfen. */
+function blobDeathFrame(stage: number): string[] {
+  const g = deathGrid();
   const cx = 4;
   const cy = 4;
   // Koerper quillt (0), reisst auf (1-2), restet als Klumpen (3).
   // Spaete Stufen mit groesserem Rest (Art-Director Runde 3: dunkle Splitter
   // verschwinden sonst auf Nachtgrund fast komplett).
   const radius = [3.8, 3.4, 2.6, 1.8][stage];
-  for (let ty = 0; ty < G; ty++) {
-    for (let tx = 0; tx < G; tx++) {
-      // Normierte Geometrie: Textur-Pixel -> Basis-Koordinate (9x9-Raum).
-      const x = tx / L;
-      const y = ty / L;
+  for (let y = 0; y < DEATH_GRID; y++) {
+    for (let x = 0; x < DEATH_GRID; x++) {
       const dx = x - cx;
       const dy = y - cy;
       const d = Math.hypot(dx, dy);
@@ -470,10 +444,10 @@ function blobDeathFrame(stage: number, L = 1): string[] {
       // Unregelmaessige, deterministische Silhouette (kein glatter Kreis-Ring).
       const edge = radius + Math.sin(a * 5 + 1.1) * 0.45 + Math.sin(a * 9 - 0.6) * 0.25;
       if (d > edge) continue;
-      if (d > edge - 1.0) { g[ty][tx] = charOf(1); continue; } // harter nightDeep-Rim
-      if (d < 1.3) { g[ty][tx] = charOf(21); continue; } // Lantern-Kern (war lanternWhite)
-      if (d < 1.9) { g[ty][tx] = charOf(20); continue; } // Amber-Uebergang (war candleWhite)
-      g[ty][tx] = (Math.round(x) * 7 + Math.round(y) * 13 + stage * 3) % 9 === 0 ? charOf(31) : charOf(30);
+      if (d > edge - 1.0) { deathPx(g, x, y, charOf(1)); continue; } // harter nightDeep-Rim
+      if (d < 1.3) { deathPx(g, x, y, charOf(13)); continue; } // weisser Kern
+      if (d < 1.9) { deathPx(g, x, y, charOf(12)); continue; } // candleWhite-Uebergang
+      deathPx(g, x, y, (x * 7 + y * 13 + stage * 3) % 9 === 0 ? charOf(31) : charOf(30));
     }
   }
   // Grosse Tropfen: 4 feste Winkel, fliegen mit der Stufe nach aussen
@@ -490,16 +464,13 @@ function blobDeathFrame(stage: number, L = 1): string[] {
     deathPx(g, px - ax, py - ay, charOf(30)); // Schweif
     deathPx(g, px + ax, py + ay, charOf(1)); // Rim vor dem Kopf
     // Glanzpunkt auf dem Kopf (lesbar auch auf Nachtgrund).
-    deathPx(g, px - ay * 0.9, py + ax * 0.9 - 1, charOf(21));
+    deathPx(g, px - ay * 0.9, py + ax * 0.9 - 1, charOf(12));
   }
   return deathRows(g);
 }
 
-/** fx_death_bone (crumble): 2-3 handgesetzte Knochenformen, Zerfall nach unten.
- *  Density = Bake-Stufe: die 9x9-Basisframes werden per LxL-Block repliziert
- *  (handgesetzte ASCII-Frames — Detail kommt aus der Zeichnung, nicht aus der
- *  Stufe; der Bake-Gewinn ist das feinere Draw-Raster bei Scale > 1). */
-function boneDeathFrame(stage: number, L = 1): string[] {
+/** fx_death_bone (crumble): 2-3 handgesetzte Knochenformen, Zerfall nach unten. */
+function boneDeathFrame(stage: number): string[] {
   // Schaft = bone (a), Endknubbel = boneLight (b). Stufen: intakt → auseinander
   // → gebrochen → Truemmer/Staub.
   const frames: string[][][] = [
@@ -548,19 +519,12 @@ function boneDeathFrame(stage: number, L = 1): string[] {
       ".........",
     ]],
   ];
-  const base = frames[Math.min(stage, 3)][0];
-  if (L <= 1) return base;
-  const out: string[] = [];
-  for (const row of base) {
-    const expanded = [...row].flatMap((ch) => Array<string>(L).fill(ch));
-    for (let r = 0; r < L; r++) out.push(expanded.join(""));
-  }
-  return out;
+  return frames[Math.min(stage, 3)][0];
 }
 
 /** fx_death_dust (sputter-Staub): Ascheflakes — schraege Wind-Streifen, kein Ring. */
-function dustDeathFrame(stage: number, L = 1): string[] {
-  const g = deathGrid(L);
+function dustDeathFrame(stage: number): string[] {
+  const g = deathGrid();
   // Zwei schraeg aufstiebende Streifen, mit der Stufe hoeher/duenner werdend.
   for (let i = 0; i < 5; i++) {
     const x = 1 + i + stage * 0.5;
@@ -576,40 +540,27 @@ function dustDeathFrame(stage: number, L = 1): string[] {
   return deathRows(g);
 }
 
-/** fx_death_fire (sputter-Shard): Flammenzungen + abloesende Funken + Glimmreste.
- *  Density = Bake-Stufe: Zungen werden pro Textur-Pixel in Basis-Koordinaten
- *  ausgewertet (identische normierte Geometrie, feineres Raster ab Stufe 2). */
-function fireDeathFrame(stage: number, L = 1): string[] {
-  const G = DEATH_BASE_GRID * L;
-  const g = deathGrid(L);
+/** fx_death_fire (sputter-Shard): Flammenzungen + abloesende Funken + Glimmreste. */
+function fireDeathFrame(stage: number): string[] {
+  const g = deathGrid();
   // [x, hoehe, phase] — Zungen wachsen nach oben, Spitzen brechen heraus.
   const tongues: Array<[number, number, number]> = [
     [2.4, 4.2, 0], [4.5, 5.6, 1], [6.6, 3.8, 2],
   ];
-  for (let ty = 0; ty < G; ty++) {
-    const by = ty / L;
-    const yy = 8 - by; // Hoehe ueber dem Boden (Basiskoordinaten)
-    if (yy < 0) continue;
-    for (const [txb, hgt, ph] of tongues) {
-      const h = hgt + stage * 1.2;
-      if (yy > h) continue;
-      const sway = Math.sin(ph * 2.1 + stage) * 0.7;
-      const taper = Math.max(0, 1 - yy / h);
-      const half = 0.4 + taper * 0.9;
-      const x = txb + sway * (yy / h);
-      for (let tx = 0; tx < G; tx++) {
-        if (Math.abs(tx / L - x) <= half) {
-          g[ty][tx] = charOf(yy < h * 0.3 ? 19 : yy < h * 0.7 ? 18 : 20); // heisser Kern, amber Spitze
-        }
-      }
-    }
-  }
-  // Losgeloeste Zungen-Spitze als Funke (ab Stufe 2).
-  if (stage >= 2) {
-    const [txb, hgt, ph] = tongues[1];
+  for (const [tx, hgt, ph] of tongues) {
     const h = hgt + stage * 1.2;
     const sway = Math.sin(ph * 2.1 + stage) * 0.7;
-    deathPx(g, txb + sway, 8 - h - 1.4, charOf(20));
+    for (let yy = 0; yy <= h; yy += 0.5) {
+      const y = 8 - yy;
+      if (y < 0) break;
+      const taper = Math.max(0, 1 - yy / h);
+      const half = 0.4 + taper * 0.9;
+      const x = tx + sway * (yy / h);
+      const idx = yy < h * 0.3 ? 19 : yy < h * 0.7 ? 18 : 20; // heisser Kern, amber Spitze
+      for (let xx = -half; xx <= half; xx += 0.5) deathPx(g, x + xx, y, charOf(idx));
+    }
+    // Losgeloeste Zungen-Spitze als Funke (ab Stufe 2).
+    if (stage >= 2) deathPx(g, tx + sway, 8 - h - 1.4, charOf(20));
   }
   // Asche/Glimm im Sog der Zungen (dunkel, sparsam) — eigener Kontrast.
   deathPx(g, 1.2, 6.5 - stage * 0.5, charOf(15));
@@ -619,31 +570,26 @@ function fireDeathFrame(stage: number, L = 1): string[] {
 }
 
 /** fx_death_void (dissolve): ein geschwungener aufsteigender Schwaden + Nebenwisp. */
-function voidDeathFrame(stage: number, L = 1): string[] {
-  const G = DEATH_BASE_GRID * L;
-  const g = deathGrid(L);
+function voidDeathFrame(stage: number): string[] {
+  const g = deathGrid();
   // Haupt-Schwaden: unten breit, oben schmal, schwankt; loest sich in Punkten auf.
   const top = 0.8 + stage * 1.6;
-  for (let ty = 0; ty < G; ty++) {
-    const by = ty / L;
-    if (by > 7.4 || by < top) continue;
-    const sway = Math.sin(by * 0.75 + stage * 1.1) * 0.8;
-    const frac = (7.4 - by) / Math.max(0.5, 7.4 - top);
+  for (let y = 7.4; y >= top; y -= 0.5) {
+    const sway = Math.sin(y * 0.75 + stage * 1.1) * 0.8;
+    const frac = (7.4 - y) / Math.max(0.5, 7.4 - top);
     const w = Math.max(0.45, 0.55 + frac * 0.9 - stage * 0.08);
-    for (let tx = 0; tx < G; tx++) {
-      const off = Math.abs(tx / L - (3.6 + sway));
+    for (let xx = -w; xx <= w; xx += 0.5) {
+      const x = 3.6 + sway + xx;
       // Runde 3: Flaeche heller (fog statt fogBlue), Kern breiter — lesbar auf Nachtgrund.
-      if (off <= w) g[ty][tx] = off < w * 0.5 ? charOf(9) : charOf(7);
+      deathPx(g, x, y, Math.abs(xx) < w * 0.5 ? charOf(9) : charOf(7));
     }
   }
   // Abgeloeste Schwadenpunkte ueber der Spitze.
   deathPx(g, 3.6 + Math.sin(stage * 1.3), top - 0.9, charOf(9));
   if (stage >= 1) deathPx(g, 4.4, top - 0.2, charOf(7));
   // Kleiner Nebenwisp rechts, folgt mit Versatz.
-  for (let ty = 0; ty < G; ty++) {
-    const by = ty / L;
-    if (by < 5.2 - stage * 0.7 || by > 6.8) continue;
-    deathPx(g, 6.3 + Math.sin(by * 0.9 + stage), by, charOf(7));
+  for (let y = 5.2 - stage * 0.7; y <= 6.8; y += 0.5) {
+    deathPx(g, 6.3 + Math.sin(y * 0.9 + stage), y, charOf(7));
   }
   return deathRows(g);
 }
@@ -911,14 +857,10 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
     hitCount: 5, deathCount: 11,
   },
   // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
-  // m10-chaos-fix-raster-glow: Signatur in Zielgroesse 128x128 gebacken,
-  // Draw-Scale 1 (vorher 32x32 @ 3,2-4,6 = 3-5-px-Bloecke; letzter nicht
-  // gebackener Evo-Sig neben thorn_storm, die dornensturm behebt).
   thunder_seal: {
     evolution: "thunder_seal", baseWeapon: "storm", shape: "beam",
     palette: [12, 9, 7], hitLifetime: 0.10, deathLifetime: 0.24,
     hitCount: 3, deathCount: 7,
-    drawScale: [1, 1],
   },
   // Geisterlaterne + Magnetamulett: helle Seelenwolke, langes Nachgluehen.
   // M10 m10-evo-fx-soulpyre: Signatur in Zielgroesse 96x96 gebacken, Draw-Scale 1
@@ -1225,15 +1167,8 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
 
 /** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix). */
 /** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix) plus
- *  ring_frost (M10-evo-fx-winter: Aura-Siegel wird bis 2–3x gezeichnet) plus
- *  m10-chaos-fix-raster-glow: die 5 Todes-Frame-Sets (Basis 9x9, real bis Scale
- *  2,4 gezeichnet — death.ts scaleFrom/rimScale) und fx_bolt (12x16, Blitz-
- *  Segmente mit Scale segLen/16). */
-export const FX_MIXEL_BASES = [
-  "fx_fire", "fx_halo_cold", "fx_halo", "fx_shock", "ring_frost",
-  "fx_death_bone", "fx_death_blob", "fx_death_void", "fx_death_dust", "fx_death_fire",
-  "fx_bolt",
-] as const;
+ *  ring_frost (M10-evo-fx-winter: Aura-Siegel wird bis 2–3x gezeichnet). */
+export const FX_MIXEL_BASES = ["fx_fire", "fx_halo_cold", "fx_halo", "fx_shock", "ring_frost"] as const;
 
 export type FxMixelBase = (typeof FX_MIXEL_BASES)[number];
 
@@ -1275,34 +1210,6 @@ const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
     // Zacken), damit der art-director-Fundstand erhalten bleibt.
     base: "ring_frost", w: 96, h: 96, frameCount: 1, maxLevel: 3,
     frame: (_i, d) => frostRingFrame(96, d),
-  },
-  // ── m10-chaos-fix-raster-glow (B1-Rest): Todes-Frames + Blitz ──
-  // Death-Shards werden real mit Scale bis 2,4 gezeichnet (death.ts scaleFrom,
-  // rimScale 1,05–1,25, Boss-Tod 1,35) — vorher 9x9 @ >1 = 2–6-px-Bloecke.
-  {
-    base: "fx_death_blob", w: 9, h: 9, frameCount: 4, maxLevel: 3,
-    frame: (i, d) => blobDeathFrame(i, d),
-  },
-  {
-    base: "fx_death_bone", w: 9, h: 9, frameCount: 4, maxLevel: 2,
-    frame: (i, d) => boneDeathFrame(i, d),
-  },
-  {
-    base: "fx_death_void", w: 9, h: 9, frameCount: 4, maxLevel: 3,
-    frame: (i, d) => voidDeathFrame(i, d),
-  },
-  {
-    base: "fx_death_dust", w: 9, h: 9, frameCount: 4, maxLevel: 2,
-    frame: (i, d) => dustDeathFrame(i, d),
-  },
-  {
-    base: "fx_death_fire", w: 9, h: 9, frameCount: 4, maxLevel: 3,
-    frame: (i, d) => fireDeathFrame(i, d),
-  },
-  {
-    // Blitz-Segmente: bolt() zeichnet mit Scale = segLen/16 (real 1,6–2,5).
-    base: "fx_bolt", w: 12, h: 16, frameCount: 6, maxLevel: 3,
-    frame: (i, d) => boltFrame(i, d),
   },
 ];
 
@@ -1806,64 +1713,6 @@ export function wrathSignatureFrame(kind: "hit" | "death", stage: number, size =
 
 /** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
 /**
- * m10-chaos-fix-raster-glow: Treffer-/Todes-Signatur des Gewittersiegels in
- * Zielgroesse 128x128 (Draw-Scale 1, siehe EvoSignature.drawScale). Zickzack-
- * Blitzstrahl wie signatureFrame("beam"), aber in Sprite-Pixelgroesse:
- * candleWhite(12)-Kern (2-px), paleMist(9)-Flanken, fog(7)-Aussenkante — Palette
- * der Signatur unveraendert, kein Ink. Hit: 1 Strahl + 2 Aeste; Death: 3
- * Strahlen + verstreute Blitz-Koerner (Goldener Winkel, deterministisch).
- */
-export const THUNDER_SIGNATURE_SIZE = 128;
-
-export function thunderSignatureFrame(kind: "hit" | "death", stage: number): string[] {
-  const size = THUNDER_SIGNATURE_SIZE;
-  const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
-  const put = (x: number, y: number, idx: number): void => {
-    const xi = Math.round(x);
-    const yi = Math.round(y);
-    if (xi < 0 || yi < 0 || xi >= size || yi >= size) return;
-    rows[yi][xi] = charOf(idx);
-  };
-  const c = (size - 1) / 2;
-  const t = stage / (SIGNATURE_FRAME_COUNT - 1);
-  const death = kind === "death";
-  const variant = 3; // thunder_seal palette[0] % 7 = 12 % 7
-  const half = (death ? 54 : 46) + stage * 4;
-  const beams = death ? 3 : 1;
-  for (let b = 0; b < beams; b++) {
-    const off = b === 0 ? 0 : b === 1 ? -16 : 16;
-    for (let i = -half; i <= half; i += 0.5) {
-      const y = c + i;
-      const wob = Math.sin(i * 0.085 + variant + b * 1.3) * (death ? 11 : 8);
-      const x = c + off + wob;
-      // Kern 2 px (candleWhite), Flanken paleMist, Aussenkante fog.
-      put(x, y, 12); put(x + 1, y, 12);
-      put(x - 1, y, 9); put(x + 2, y, 9);
-      put(x - 2, y, 7); put(x + 3, y, 7);
-    }
-    if (b === 0) {
-      // Seitenäste: schräg nach unten außen, mit der Stufe ausgedünnt.
-      for (let k = 2; k <= 11; k++) {
-        if (!death && k > 6 + stage * 2) break;
-        put(c + 9 + k * 1.8, c + k * 2.4, 9);
-        put(c + 10 + k * 1.8, c + k * 2.4 + 1, 9);
-        put(c - 11 - k * 1.8, c - k * 2.4, 9);
-        put(c - 12 - k * 1.8, c - k * 2.4 - 1, 9);
-      }
-    }
-  }
-  // Death: verstreute Blitz-Koerner (Goldener Winkel, deterministisch).
-  if (death) {
-    for (let i = 0; i < 6 + stage * 3; i++) {
-      const a = i * 2.399 + 0.4;
-      const rr = 30 + ((i * 23 + stage * 17) % 30);
-      put(c + Math.cos(a) * rr, c + Math.sin(a) * rr, i % 3 === 0 ? 12 : 9);
-    }
-  }
-  return rows.map((r) => r.join(""));
-}
-
-/**
  * M10-evo-fx-winter: Treffer-/Todes-Signatur des Ewigen Winters in Zielgröße
  * 128x128 (Draw-Scale 1, siehe EvoSignature.drawScale). Eisiger Winter-Sturm
  * statt grauer Blob-Wolke: klare Kristall-Scherben mit geraden Kanten, weiße
@@ -1957,7 +1806,6 @@ function addEvolutionSignatures(scene: Phaser.Scene): void {
     soul_beacon: { size: SOUL_SIGNATURE_SIZE, frame: soulSignatureFrame },
     eternal_winter: { size: 128, frame: winterSignatureFrame },
     wrath_pendulum: { size: WRATH_SIGNATURE_SIZE, frame: wrathSignatureFrame },
-    thunder_seal: { size: THUNDER_SIGNATURE_SIZE, frame: thunderSignatureFrame },
   };
   for (const id of EVOLUTION_SIGNATURE_IDS) {
     const sig = EVOLUTION_SIGNATURES[id];
@@ -1985,15 +1833,13 @@ export function createFxTextures(scene: Phaser.Scene): void {
     w: 14, h: 14,
     frames: [0, 1, 2, 3, 4, 5].map((i) => blob(14, 14, [21, 20, 18, 17, 16, 15], { core: 0.18 + i * 0.045, seed: i * 1.3 })),
   });
-  // Treffer-Spark mit Kern und Kreuzstrahl — Kern/Flanken lantern(21)/amber(20)
-  // statt lanternWhite/candleWhite (Near-White-B2: ADD-Funken brennen nicht mehr
-  // zu Weiss aus; Muster fx_ember_trail/glpath-Lane Boot-Rampen).
+  // Treffer-Spark mit Kern und Kreuzstrahl
   addFrames(scene, "fx_star", {
     w: 9, h: 9,
     frames: [
-      ["....l....", "...lkl...", "..lkkkl..", "lkkkk.g.k", "..lkkkl..", "...lkl...", "....l....", ".........", "........."],
-      [".........", "....l....", "...lkl...", "..lkkkl..", "....l....", ".........", ".........", ".........", "........."],
-      [".........", ".........", "....l....", "....l....", "....l....", ".........", ".........", ".........", "........."],
+      ["....d....", "...dcd...", "..dcccd..", "dcccc g d", "..dcccd..", "...dcd...", "....d....", ".........", "........."],
+      [".........", "....d....", "...dcd...", "..dcccd..", "....d....", ".........", ".........", ".........", "........."],
+      [".........", ".........", "....d....", "....d....", "....d....", ".........", ".........", ".........", "........."],
     ].map((rows) => rows.map((r) => r.replace(/ /g, "."))),
   });
   addFrames(scene, "fx_halo", { w: 24, h: 24, frames: [0, 1].map((i) => ring(24, 24, [20, 18, 17], 0.3 + i * 0.16, i)) });

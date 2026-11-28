@@ -195,15 +195,11 @@ describe("Stufen-Keys", () => {
     expect(mixelFrameKey("fx_halo@2_1", 1)).toBe("fx_halo@2_1");
   });
 
-  it("Todes-Frame-Sets: Boss-Kern bleibt unangetastet, Death-Sets sind Bake-Basen (m10-chaos-fix-raster-glow)", () => {
+  it("Todes-Frame-Sets bleiben unveraendert (kein Uebergriff der Bake-Stufen)", () => {
     const sets = deathFrameSets();
     expect(sets.fx_death_bone.w).toBe(9);
     expect(sets.fx_boss_core.w).toBe(32);
-    // m10-chaos-fix-raster-glow: die 5 Todes-Frame-Sets sind jetzt Mixel-Basen
-    // (real bis Scale 2,4 gezeichnet, vorher 9x9 @ >1 = 2-6-px-Bloecke).
-    expect(mixelBaseFor("fx_death_blob")).toBe("fx_death_blob");
-    expect(mixelMaxLevel("fx_death_blob")).toBe(3);
-    // Der handgesetzte Boss-Kern bleibt außerhalb des Bake-Pfads.
+    expect(mixelBaseFor("fx_death_blob")).toBeNull();
     expect(mixelBaseFor("fx_boss_core")).toBeNull();
   });
 });

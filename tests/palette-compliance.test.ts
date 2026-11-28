@@ -218,12 +218,7 @@ function representativeFxSets(): Array<{ key: string; w: number; h: number; fram
   for (const [key, def] of Object.entries(deathFrameSets())) {
     sets.push({ key, w: def.w, h: def.h, frames: def.frames });
   }
-  // m10-chaos-fix-raster-glow: fx_death_* sind jetzt AUCH Mixel-Basen — die
-  // Level-1-Frames sind identisch mit den Death-Sets, daher deduplizieren
-  // (Spiegel wie der Sammler: erster Key gewinnt).
-  const seen = new Set(sets.map((s) => s.key));
   for (const [base, def] of Object.entries(mixelLevel1Frames())) {
-    if (seen.has(base)) continue;
     sets.push({ key: base, w: def.w, h: def.h, frames: def.frames });
   }
   for (const bake of mixelBakes()) {

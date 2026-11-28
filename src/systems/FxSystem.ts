@@ -29,26 +29,6 @@ export const BOSS_FX_ALPHA_FLOOR = 0.7;
 export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
 
 /**
- * ADD-Alpha-Deckel (m10-chaos-fix-raster-glow K4, Befund B2 „Near-White-Kerne“):
- * additive Sprites stacken auf 255 — mehrere ADD-Glows übereinander brennen die
- * darunterliegenden Sprites zu Weiß aus. Der Deckel hält den EINZELNEN ADD-
- * Alpha-Wert auf 0,8 (wie RUN_ADD_ALPHA_CAP aus src/logic/fx-caps.ts für die
- * Run.ts-Pfade); der Boden ist ADD_GLOW_ALPHA_FLOOR (0,04, frueh freigeben).
- * Gilt für FxSystem + ParticleSystem bei ADD-Blend; Boss-FX (NORMAL, isBossFxKey)
- * und Evolutions-Signaturen (additive: false) sind ausgenommen.
- */
-export const ADD_ALPHA_CAP = 0.8;
-
-/**
- * Rein funktional: ADD-Alpha in [0, cap] klemmen (Boden 0 — der Lifetim-Fade
- * läuft über alphaTo, ein härterer Boden würde Fade-outs verhindern).
- */
-export function addAlphaClamp(alpha: number, cap: number = ADD_ALPHA_CAP): number {
-  const a = Number.isFinite(alpha) ? alpha : 0;
-  return Math.max(0, Math.min(cap, a));
-}
-
-/**
  * M10-perf-cap-rollback (2026-11-27): der Flaechen-Deckel greift nur noch, wenn
  * der adaptive DPR-Budget-Regler tatsaechlich gesenkt hat (RENDER_SCALE > 1,
  * Android-Sicherheitsnetz). Auf iGPU/GPU bleibt RENDER_SCALE = 1 — grosse Feuer-/
@@ -261,8 +241,6 @@ export class FxSystem {
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
     let alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra * dprAlpha;
     if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);
-    // K4 (B2): ADD-Alpha-Deckel — keine ADD-Sprite ueber 0,8 (Near-White).
-    if (additive) alphaFrom = addAlphaClamp(alphaFrom);
     fx.alphaFrom = alphaFrom;
     fx.alphaScaleExempt = exempt;
     fx.alphaTo = opts.alphaTo ?? 0;
@@ -698,8 +676,6 @@ export class ParticleSystem {
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
     let alphaFrom = (opts.alphaFrom ?? 0.95) * scaleFactor * extra * dprAlpha;
     if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);
-    // K4 (B2): ADD-Alpha-Deckel — keine ADD-Partikel ueber 0,8 (Near-White).
-    if (additive) alphaFrom = addAlphaClamp(alphaFrom);
     p.alphaFrom = alphaFrom;
     p.alphaTo = opts.alphaTo ?? 0;
     p.rotation = opts.rotation ?? 0;
