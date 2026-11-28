@@ -1,8 +1,0 @@
-{
-  "url": "http://127.0.0.1:5629/?debug=1",
-  "scene": "run",
-  "commands": [],
-  "out": "shots/merge-m10-shot-budget-dt-check-1280.png",
-  "gif": null,
-  "jsErrors": []
-}
