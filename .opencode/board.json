@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8542,
+  "next": 8544,
   "cards": [
     {
       "id": 1,
@@ -1821,7 +1821,7 @@
       "id": 319,
       "title": "m9-art-fx-ui-02 Titelbild polieren",
       "description": "Mond-Halo als harte Pixelringe statt weichem Quadrat, Stergruppen, Silhouettenkante. Abnahme: Vorher/Nachher-Shot 2x, art-director PASS >=4.5, Layout keine build gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-26T14:13:38Z",
@@ -1832,6 +1832,11 @@
           "at": "2026-11-26T17:40:28Z",
           "by": "build",
           "text": "doing → review: Commit 9d3244a (#319): Halo-Ringe 30/35/40 px, Generator regeneriert, Vorher/Nachher 1x/2x + Mond-Vergleich 3x, 0 JS-Fehler; build+192 Tests gruen. Lead-Sicht: PASS 4,5/5. art-director-Abnahme laeuft (Modell-Retry)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #319, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-26T12:22:29Z",
@@ -2718,13 +2723,18 @@
       "id": 1658,
       "title": "m10-input-fix #1: F1 Truhen-Skip-Zone auf pointerup + F2 verify-input-Selektor",
       "description": "F1: Skip-Zone der Truhe von pointerdown auf pointerup; Touchstart bei offener Truhe darf keinen Joystick erzeugen, playerX konstant, Truhe schliesst erst beim Loslassen. Belege shots/m10-input-fix-chest.json + PNGs. F2: scripts/verify-input.mjs findet CharSelect-Namen 'Bruder Kael' (PixelText-Wert) und erreicht wieder alle Touch-/Gamepad-Checks. Abnahme: Repro PASS, verify-input PASS>=(Touch/Gamepad), vitest >=192 gruen, build rc=0, docs/lanes/m10-input-fix.md.",
-      "column": "review",
+      "column": "done",
       "assignee": "build",
       "notes": [
         {
           "at": "2026-11-26T23:53:35Z",
           "by": "build",
           "text": "Merge aus Lane m10-input-fix (lane #1538). F1 pointerup + F2 tapText-Elternflaeche; Repro PASS shots/m10-input-fix-chest.json, verify-input 28/28 shots/m10-input-fix-verify.json."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #1658, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-26T23:53:27Z",
@@ -2734,9 +2744,15 @@
       "id": 1659,
       "title": "m10-audio-distinct #1 Audit + Hörprobe",
       "description": "Mapping SFX-Key -> Waffe/Evolution aus src/audio/AudioSystem.ts und scripts/gen_sfx.py als shots/m10-audio-distinct-audit.json (Welle, Dauer, Hüllkurve je Key); Lücken benennen. Abnahme: JSON im Commit, mind. 12 Keys + Lückenliste.\n\nlane #1458: Audit-JSON 12 Keys, 6 fehlende Evolution-Stinger, 24 identische Signaturen; final neu erzeugt: 12 Keys, min Distanz 0,125 (6887705, Beleg 56a6539).",
-      "column": "review",
+      "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #1659, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T01:01:34Z",
       "updated": "2026-11-27T01:01:34Z"
     },
@@ -2744,9 +2760,15 @@
       "id": 1660,
       "title": "m10-audio-distinct #2 Test zuerst: tests/audio-mix.test.ts",
       "description": "Vitest: 12 Waffen-/Evolutions-Keys existieren, paarweise unterschiedliche Wellenform-Signatur (aus WAV), Mixer respektiert MAX_TOTAL_VOICES und PRIORITY, Lautstärken in [0,1], Mute blockt alle Requests. Abnahme: Test rot vor Fix, grün danach.\n\nlane #1459: Test zuerst, rot belegt 2/7 (b6113e0), final 7/7 grün (56a6539).",
-      "column": "review",
+      "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #1660, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T01:01:34Z",
       "updated": "2026-11-27T01:01:34Z"
     },
@@ -2754,9 +2776,15 @@
       "id": 1661,
       "title": "m10-audio-distinct #3 Fix: 6 Evolutions-Klänge eigenständig",
       "description": "In scripts/gen_sfx.py die 6 Evolutions-Keys eigenständig neu erzeugen (Treffer <0,4 s, Evolution-Stinger 0,6-1,0 s mit Aufwärts-Glissando, eigene Wellenform-Kombination je Key); AudioSystem-Mapping/Cooldowns ergänzen ohne Umbenennen; Master-Mute unverändert. Abnahme: tests/audio-mix.test.ts grün, WAV-Signaturen paarweise verschieden.\n\nlane #1460: 12 Klänge neu, alle 66 Paare >=0,12 (min 0,125 frost/eternal_winter), Stinger 0,70-0,90 s rising (2b18b37).",
-      "column": "review",
+      "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #1661, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T01:01:34Z",
       "updated": "2026-11-27T01:01:34Z"
     },
@@ -2764,9 +2792,15 @@
       "id": 1662,
       "title": "m10-audio-distinct #4 Beleg + Abnahme",
       "description": "node scripts/verify-final.mjs (Master-Mute 7/7) und node scripts/verify-weapons.mjs (12/12) ohne flock; WAV-/Spektral-Belege nach shots/m10-audio-*; npm run build + vitest gesamt grün mit Ist-Zahl; docs/lanes/m10-audio-distinct.md mit Key-/Klang-Tabelle. Abnahme: alle Belege im Commit.\n\nlane #1461: verify-final 7/7, verify-weapons 12/12, build grün, vitest 199/199; shots/m10-audio-distinct-audit.json, -spectra.png, -spectra-12.png (05428a5, 56a6539).",
-      "column": "review",
+      "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #1662, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T01:01:34Z",
       "updated": "2026-11-27T01:01:34Z"
     },
@@ -3194,7 +3228,7 @@
       "id": 2223,
       "title": "m10-enemy-ai #1 Matrix-Gerüst",
       "description": "lane #1758: tests/enemy-ai.test.ts: 30 Gegnertypen x Seeds 101/202, 60 s stepEnemyAi-Simulation, Metriken Ø-Abstand, Vorwärtsanteil, Richtungswechsel/s, Split/Summon/Blink/Shoot, Telegraph-Anteil. Tabelle in docs/lanes/m10-enemy-ai.md; Ist-Stand dokumentiert. Abnahme: Test grün (nur Ist-Stand), Tabelle 30 Zeilen, Doku-Abschnitt vorhanden.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3206,6 +3240,11 @@
           "at": "2026-11-27T04:21:18Z",
           "by": "merge",
           "text": "Merge Lane m10-enemy-ai: als #2223 neu angelegt (lane #1758)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2223, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T00:55:35Z",
@@ -3215,7 +3254,7 @@
       "id": 2224,
       "title": "m10-enemy-ai #2 Lückenliste",
       "description": "lane #1759: Archetypen ohne messbare Eigenheit benennen (z. B. swarm/chaser/tank identisch, splitter ohne Event-Signatur). Soll-Signatur je Archetyp in docs/lanes/m10-enemy-ai.md festschreiben. Abnahme: je Archetyp Soll-Ziel + Ist-Abweichung als Tabelle dokumentiert.",
-      "column": "review",
+      "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
@@ -3227,6 +3266,11 @@
           "at": "2026-11-27T04:21:18Z",
           "by": "merge",
           "text": "Merge Lane m10-enemy-ai: als #2224 neu angelegt (lane #1759)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2224, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T00:55:35Z",
@@ -3236,7 +3280,7 @@
       "id": 2225,
       "title": "m10-enemy-ai #3 Logik schärfen",
       "description": "lane #1760: src/logic/enemy-ai.ts: pro Archetyp eigene Parameter/Branches (Abstandsband, Flankier-Winkel, Split-Schwelle, Summon-Cooldown), deterministisch, keine temporären Allokationen im Hot-Path. Signatur stepEnemyAi/AiAction unverändert kompatibel. Abnahme: bestehende Tests grün, tsc grün.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3253,6 +3297,11 @@
           "at": "2026-11-27T04:21:18Z",
           "by": "merge",
           "text": "Merge Lane m10-enemy-ai: als #2225 neu angelegt (lane #1760)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2225, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T00:55:35Z",
@@ -3283,7 +3332,7 @@
       "id": 2227,
       "title": "m10-enemy-ai #5 In-Game-Beleg",
       "description": "lane #1762: 5-min-Lauf @ timeScale 10 mit >=100 Gegnern, Screenshot shots/m10-enemy-ai-mass.png, FPS-Minimum >=55 (flock), npm run build grün, .lane-done. Abnahme: Shot zeigt >=100 Gegner, FPS-Beleg im Log, .lane-done committed.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
@@ -3305,6 +3354,11 @@
           "at": "2026-11-27T11:01:34Z",
           "by": "build",
           "text": "Hinweis aus Merge m10-evolution-hint: Lane-Board meldete diese Karte als blocked (fremde Lane m10-enemy-ai, 155 min ohne Update); in main bleibt sie review."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2227, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T00:55:35Z",
@@ -3394,13 +3448,18 @@
       "id": 2318,
       "title": "m10-chest-timing #1 Zeit-Beleg 30-min-Sim",
       "description": "Owner gameplay-dev, Kontrolle test-auditor. 30-min-Sim (timeScale 30) mit Debug-Hook: Spawn-Zeit je Boss vs Soll (300/600/900/1200/1500/1800), Anzahl Truhen, Doppel-Spawns. Abnahme: shots/m10-chest-timing.json existiert und nennt 6 Bosse, Truhenzahl je Boss, Deltas; keine Doppel. (lane #2158)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
           "text": "Merge m10-chest-timing, lane #2158: Beleg b0d9aae, shots/m10-chest-timing.json – 6/6 ±0,5 s (Δ0), 1 Truhe je Boss, 0 Doppel-Spawns."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2318, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3410,13 +3469,18 @@
       "id": 2319,
       "title": "m10-chest-timing #2 Spawn-Robustheit + Tests",
       "description": "Owner gameplay-dev, Kontrolle test-auditor + reviewer. Truhe nur einmal je Boss, bleibt bei Pause/Level-up stehen, verschwindet nicht durch Recycling. Abnahme: tests/chest-timing.test.ts gruen, Off-by-one an Minutenraendern 299.99/300/300.01 geprueft. (lane #2159)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
           "text": "Merge m10-chest-timing, lane #2159: Beleg 0bb14e7, tests/chest-timing.test.ts 6/6 grün (Minutenränder 299.99/300/300.01)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2319, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3426,13 +3490,18 @@
       "id": 2320,
       "title": "m10-chest-timing #3 Pfeil + Panel-Layout",
       "description": "Owner ui-dev, Kontrolle ux-check + playtester. Pfeilrichtung bei 640x360 (16:9), 780x360 (19.5:9) und 4:3 korrekt (Winkelabweichung <=5 Grad), Namen via slotNameLines <=2 Zeilen, Pixel-Check Randabstand >=2 px. Abnahme: 3 Screenshots shots/m10-chest-arrow-*.png + Messwerte, 0 Textueberlappungen. (lane #2160)",
-      "column": "review",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-27T05:03:18Z",
           "by": "build",
           "text": "Merge m10-chest-timing, lane #2160: Beleg bb4b99f, Pfeil 0,00° in 16:9/19.5:9/4:3, Panel max 2 Zeilen, min Rand 31 px, 0 Overlaps."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2320, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T05:02:26Z",
@@ -3478,9 +3547,15 @@
       "id": 2324,
       "title": "m10-heap-tail-03 EnemyPool/DamageNumbers: Reuse + Caps",
       "description": "Damage-Number-Objekte und Elite-Felder wiederverwenden, Caps pruefen (24/10/6, Gegner-Cap 500); Unit-Test fuer Reuse + Cap. Abnahme: Test rot vor Fix, gruen danach. (lane #2060)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2324, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T05:14:54Z",
       "updated": "2026-11-27T05:14:54Z"
     },
@@ -3488,9 +3563,15 @@
       "id": 2325,
       "title": "m10-heap-tail-04 Nachmessen: 2x 30-min Heap + perf (flock)",
       "description": "2x 30-min-Lauf, Heap-Delta %/MB in shots/m10-heap-tail-after.json; flock /home/ai/games/.lf-perf.lock npm run perf (Burst >=55 FPS unveraendert). Abnahme: beide Nachlaeufe <=15 %, FPS >=55, 0 JS-Fehler. (lane #2061)",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2325, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T05:14:54Z",
       "updated": "2026-11-27T05:14:54Z"
     },
@@ -3498,9 +3579,15 @@
       "id": 2326,
       "title": "m10-heap-tail-05 Doku + .lane-done",
       "description": "Ursache, Zahlen vorher/nachher, offene Restpunkte in docs/lanes/m10-heap-tail.md; .lane-done mit Messwerten. Abnahme: Baseline-/After-JSON im Commit, build+alle Tests gruen. (lane #2062)",
-      "column": "review",
+      "column": "done",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2326, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T05:14:54Z",
       "updated": "2026-11-27T05:14:54Z"
     },
@@ -3508,9 +3595,15 @@
       "id": 2327,
       "title": "m10-heap-tail: Merge-Fix AiState.phase im Recycle-Reset",
       "description": "resetAiState setzt phase=0; Test-Fixture tests/pool-reuse.test.ts mit phase-Feld. Abnahme: tsc gruen, pool-reuse+enemy-pool-reuse Tests gruen. (Merge m10-heap-tail, lane #2058-#2062)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2327, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T05:17:10Z",
       "updated": "2026-11-27T05:17:10Z"
     },
@@ -3658,13 +3751,18 @@
       "id": 2458,
       "title": "m10-results-attribution: Beleg-Lauf 15 min autoPlay + JSON/Screenshots vorher",
       "description": "15-min-autoPlay-Run (timeScale 30, god) mit Debug-Hook: HUD-Gesamtschaden, Summe der Balken, Delta % nach shots/m10-results-attribution.json; Ist-Screenshots shots/m10-results-attribution-before.png bei 1920x1080 und 640x360. Abnahme: JSON vorhanden, deltaPct berechnet, Screenshots zeigen den Ist-Ergebnis-Screen, 0 JS-Fehler. (lane #2078)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T06:11:37Z",
           "by": "build",
           "text": "lane #2078 (m10-results-attribution): aus Lane uebernommen, Beleg-Lauf 78cdf03 15 Spielmin, total=179925 bars=179925 delta=0%, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2458, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T06:11:04Z",
@@ -3674,13 +3772,18 @@
       "id": 2459,
       "title": "m10-results-attribution: Logik damageTable + largest-remainder Rundung",
       "description": "damageTable filtert/sortiert deterministisch; Rundung so, dass Summe der Bars = gerundetem Gesamtschaden. tests/results.test.ts mit 0/1/vielen Waffen und Evolutions-Slot-Ersetzung. Abnahme: npx vitest run tests/results.test.ts gruen, Summenabweichung = 0, Sortierung absteigend. (lane #2079)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T06:11:37Z",
           "by": "build",
           "text": "lane #2079 (m10-results-attribution): largest-remainder Rundung + Evolutions-Slot-Ersetzung, tests/results.test.ts 10/10 (ba3f04a)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2459, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T06:11:04Z",
@@ -3690,13 +3793,18 @@
       "id": 2460,
       "title": "m10-results-attribution: Layout Namensumbruch + Overlap 0",
       "description": "slotNameLines fuer 12 Waffennamen (max 2 Zeilen, vollstaendig) und Balkenbreite bei 640x360/1920x1080; messbare Ueberlappung Text vs Trennlinie/Banner = 0, Screenshot je Aufloesung. Abnahme: tests/results.test.ts prueft 0 Overlaps, shots/m10-results-attribution-{1920x1080,640x360}.png zeigen alle 12 Namen. (lane #2080)",
-      "column": "review",
+      "column": "done",
       "assignee": "ui-dev",
       "notes": [
         {
           "at": "2026-11-27T06:11:37Z",
           "by": "build",
           "text": "lane #2080 (m10-results-attribution): slotNameLines max 2 Zeilen, overlaps 0 bei 640/1920 (eab1d1a); ux-check PASS bei 55bf9c4."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2460, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T06:11:04Z",
@@ -3706,13 +3814,18 @@
       "id": 2461,
       "title": "m10-results-attribution: Doku + .lane-done",
       "description": "docs/lanes/m10-results-attribution.md mit Abweichung vorher/nachher, Messwerten und ux-check-Urteil; .lane-done mit 5-10 Zeilen Zusammenfassung + Messwerten. Abnahme: npm run build + alle Tests gruen, ux-check PASS, docs + .lane-done committet. (lane #2081)",
-      "column": "review",
+      "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-27T06:11:37Z",
           "by": "build",
           "text": "lane #2081 (m10-results-attribution): docs/lane + .lane-done (ec2e476), .lane-done nach Merge entfernt."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2461, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T06:11:04Z",
@@ -4024,9 +4137,15 @@
       "id": 2738,
       "title": "m10-heroes-pass K1: Baseline-Kontaktbogen + Kennzahlen",
       "description": "lane #2398: Kontaktbogen 1x/4x beider Helden + Kennzahlen in shots/m10-heroes-before.json (Diff >=35 %, 0 Duplikate, 0 Off-Palette, Alpha nur 0/255). Abnahme: 3 Dateien im Commit, alle 48 Paare + Summen im JSON. Belege: 752d9c5 (Diff min 48,5 %, mean 56,2 %).",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2738, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T09:46:32Z",
       "updated": "2026-11-27T09:46:32Z"
     },
@@ -4034,9 +4153,15 @@
       "id": 2739,
       "title": "m10-heroes-pass K2: Silhouette + Akzentfarbe",
       "description": "lane #2399: Mira Laternen-Gold-Akzent/schmaler Umhang, Kael Rost/Stahl/breite Schultern/einschneidige Axt; tests/char-frames.test.ts (2 Helden x 4 Richtungen x 4 Frames, Palette, Alpha 0/255). Abnahme: vitest+tsc gruen, Kontaktbogen 4x. Belege: ebe2bc1, 5/5 Tests, 273 Tests gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2739, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T09:46:32Z",
       "updated": "2026-11-27T09:46:32Z"
     },
@@ -4044,9 +4169,15 @@
       "id": 2740,
       "title": "m10-heroes-pass K3: Lauf-/Bob-Zyklus",
       "description": "lane #2400: 4 Frames je Richtung mit Bob 0/1/0/1 px nach unten, Kael schwerer/langsamer (5-px-Stiefel, kleinere Schrittweite); GIF shots/m10-heroes-walk.gif + In-Game-Shot 5:00 mit >=250 Gegnern, 0 JS-Fehler. Abnahme: GIF zeigt beide Helden, Shot zeigt Held im Gedraenge. Belege: 065c232, Mira 286 / Kael 327 Gegner.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2740, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T09:46:32Z",
       "updated": "2026-11-27T09:46:32Z"
     },
@@ -4054,9 +4185,15 @@
       "id": 2741,
       "title": "m10-heroes-pass K4: Abnahme + Doku",
       "description": "lane #2401: build+Tests gruen (Ist-Zahl in Notiz), Kontaktbogen after 1x/4x, shots/m10-heroes-after.json mit Kennzahlen, art-director-Urteil in docs/lanes/m10-heroes-pass.md. Abnahme: >=35 % Diff je Richtung, 0 Duplikate/Off-Palette, Alpha nur 0/255, art-director JA <=1 s im Chaos, .lane-done mit Messwerten (nicht nach main). Belege: 1e2c57c, Diff min 49,12 %, 4,5/5.",
-      "column": "review",
+      "column": "done",
       "assignee": "tech-lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2741, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T09:46:32Z",
       "updated": "2026-11-27T09:46:32Z"
     },
@@ -4299,9 +4436,15 @@
       "id": 2867,
       "title": "m10-separation-crowd #1 Baseline 500er-Klumpen + FPS",
       "description": "scripts/m10-crowd-probe.mjs (auf harness.mjs): 500 Gegner dicht in der Mitte, 300 Frames messen: Anteil Paare <4px, mittlerer Naechster-Nachbar-Abstand, Gegner in 32px-Kreis um Spieler, FPS min/median (flock). Belege shots/m10-separation-before.json + -before.png (Frame Minute 25). Abnahme: beide Dateien im Commit, Zahlen im JSON. (lane #2358)",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2867, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T11:31:56Z",
       "updated": "2026-11-27T11:31:56Z"
     },
@@ -4309,9 +4452,15 @@
       "id": 2868,
       "title": "m10-separation-crowd #2 Separation haerten (Massengewicht, Fallback, Deckel)",
       "description": "src/logic/separation.ts: Massengewichtung (grosse/Elite druecken staerker, kleine weichen), deterministischer Golden-Angle-Fallback, Iterationsdeckel in neuer Resolver-Export-Funktion; bestehende API-Signaturen unveraendert. Tests tests/separation-crowd.test.ts: 20 exakt uebereinanderliegende nach 2s Sim >=6px getrennt, keine NaN/Infinity, 2 Laeufe seed-stabil identisch. Abnahme: npx vitest run tests/separation-crowd.test.ts gruen + npm test gruen. (lane #2359)",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2868, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T11:31:56Z",
       "updated": "2026-11-27T11:31:56Z"
     },
@@ -4319,9 +4468,15 @@
       "id": 2869,
       "title": "m10-separation-crowd #3 SpatialHash Nachbar-Query",
       "description": "src/systems/SpatialHash.ts: Zellgroesse/Neighbor-Radius aus max. Separationsradius ableiten, gefilterte Nachbar-Query (Distanzfilter) anbieten, damit Separation nur Nachbarzellen liest. Test: 500 Query-Zyklen <5 ms auf Testrechner, Trefferzahl identisch zu Brute-Force auf 3 Seeds. Abnahme: Test gruen, Messwert im Test-Log/Notiz. (lane #2360)",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2869, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T11:31:56Z",
       "updated": "2026-11-27T11:31:56Z"
     },
@@ -4329,9 +4484,15 @@
       "id": 2870,
       "title": "m10-separation-crowd #4 Nachmessen + Art-Urteil",
       "description": "Gleiches Probe-Skript wie #1: shots/m10-separation-after.json + -after.png bei 500 Gegnern. Ziel: Anteil <4px-Paare -50% vs Baseline, Gegner im 32px-Kreis <=40, FPS min >=55. Chaos-Frame von art-director bewerten (einzelne Gegnertypen rechts unterscheidbar JA/NEIN) in docs/lanes/m10-separation-crowd.md. Abnahme: JSON/PNG im Commit, Doku mit Vorher/Nachher-Tabelle + Urteil, .lane-done. (lane #2361)",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2870, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-27T11:31:56Z",
       "updated": "2026-11-27T11:31:56Z"
     },
@@ -4360,13 +4521,18 @@
       "id": 2872,
       "title": "m10-chaos-qa #2 Lesbarkeits-Matrix 640x360 + 780x360 (M25/27/29)",
       "description": "Owner playtester, Kontrolleure ux-check + vfx-check. 6 Standbilder shots/m10-chaos-qa-m25/27/29-640.png bzw. -780.png bei 500+ Gegnern. Je Bild pruefen: Spieler-Silhouette, Gegnerschuesse vs Hintergrund, HUD-Ueberdeckung, Truhe/Pfeil. Abnahme: Urteil je Bild + Pixel-Kontrastzahlen (Region, min/max/std) in docs/lane; keine Behauptung ohne Zahl. (lane #2299)",
-      "column": "review",
+      "column": "done",
       "assignee": "playtester",
       "notes": [
         {
           "at": "2026-11-27T11:54:47Z",
           "by": "build",
           "text": "lane #2299 (aus Lane m10-chaos-qa): 6 Standbilder 640/780 M25/27/29, shots/m10-chaos-qa-contrast.json + readability.md; Spieler-Silhouette FAIL in allen 6, HUD/Boss-Balken PASS, Schusskontrast 640 131-181 / 780 bis 45; Commits 61524f2+98ca771, vfx-check-Korrektur 01ad1ad (Lane)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #2872, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T11:54:06Z",
@@ -4434,7 +4600,7 @@
       "id": 3418,
       "title": "[fa2-01] Schnelle Checks: build, Tests, Inhaltszählung, verify:final",
       "description": "Abnahme: `npm run build` rc=0, `npm test` 0 fail (Zahl dokumentiert), `node scripts/acceptance-count.mjs` ok:true 30/6/6/6/6/2, `verify:final` 7/7, 0 JS-Fehler. Belege in docs/qa/reacceptance-2026-11-27.md. Ein Commit nur mit diesen Belegen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T13:15:12Z",
@@ -4445,6 +4611,11 @@
           "at": "2026-11-27T13:23:45Z",
           "by": "build",
           "text": "doing → review: PASS: build rc=0, 355 Tests/33 Dateien 0 fail, Inhalte 30/6/6/6/6/2, verify:final 7/7, 0 JS-Fehler. Beleg docs/qa/reacceptance-2026-11-27.md + /tmp/lf-fa2/*.log. Commit 438c5f3."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3418, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4474,12 +4645,17 @@
       "id": 3420,
       "title": "[fa2-03] 30-min-autoPlay fullrun (30×) + Boss/Truhe/Sieg + Heap",
       "description": "Abnahme: `flock … npm run fullrun` genau einmal: 6/6 Bosse zu 300/600/900/1200/1500/1800 s, 6 Truhen, Sieg dawn, 0 JS-Fehler, fpsMin und Heap-Delta dokumentiert. Beleg shots/m3-fullrun.json + docs/qa. Ein Commit.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T16:04:26Z",
           "by": "build",
           "text": "todo → review: Nachtrag: Arbeit liegt in Commit e62114c (13:41Z): fullrun 30x 640/780, 6/6 Bosse 300-1800s mit je 1 Truhe, Sieg dawn, 0 JS-Fehler; fpsMin 35,7/34,8 <55 FAIL; Heap +8,7% PASS / +15,2% knapp FAIL. Belege shots/qa-reaccept-fullrun-{640,780}.json, docs/qa/reacceptance-2026-11-27.md fa2-03."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3420, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4504,12 +4680,17 @@
       "id": 3422,
       "title": "[fa2-05] Touch/Gamepad (verify-input) + Optik (art-director shots)",
       "description": "Abnahme: `node scripts/verify-input.mjs` PASS (Zahl), 0 JS-Fehler; art-director-Urteil zu aktuellen 640×360-Shots (≥4/5 oder konkrete Mängel) in docs/qa. Ein Commit.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T15:59:26Z",
           "by": "build",
           "text": "todo → review: verify-input 28/28 PASS, 0 JS-Fehler (13:43-13:44Z, Log shots/qa-reaccept-input-log.txt). art-director-Urteil: FAIL 3,25/5 mit konkreten Maengeln - results-Screen Textueberlappung SIEG/SCHADEN/GESAMT + Wortumbruch SEELENLEU/CHTFEUER + 6 statt 12 Zeilen (muss neu), perf-minute25 Boss-FX-Kontrast rot-auf-orange + halbtransparentes Announce-Panel (nachbessern), perf-500 und fullrun-minute25 ok (4/5). Beleg: docs/qa/reacceptance-2026-11-27.md fa2-05, Commit 38c21c4. Folgekarten empfohlen: Results-Layout, Boss-FX-Kontrast."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3422, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4519,12 +4700,17 @@
       "id": 3423,
       "title": "[fa2-06] Re-Abnahme-Doku docs/qa + ACCEPTANCE.md aktualisieren",
       "description": "Abnahme: docs/qa/reacceptance-2026-11-27.md mit allen Messwerten/Befehlen/Zeitstempeln, ACCEPTANCE.md-Kopf auf Ist-Stand (Commit, Zahlen), ehrliches Urteil (abgenommen / blocked). Ein Commit.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-27T16:04:04Z",
           "by": "build",
           "text": "todo → review: docs/qa/reacceptance-2026-11-27.md vollstaendig (fa2-01..fa2-06 mit Befehlen/Zeitstempeln/Urteilen), ACCEPTANCE.md Endurteil Versuch 3: NICHT ABGENOMMEN. Blocker: 780-M25 41,3-46,4 <50, fullrun-fpsMin 35,7/34,8 <55, art-director FAIL 3,25/5, Echtzeitlauf blocked. Folgekarten #3424/#3425 im backlog. Commit 6a18d07."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3423, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T13:14:45Z",
@@ -4618,13 +4804,18 @@
       "id": 3678,
       "title": "m10-gem-drawcap #1 Baseline-Messung 500 Gegner",
       "description": "scripts/m10-gem-drawcap.mjs misst bei 500 Gegnern (Seed 1, autoPlay, god, 10 s) aktive Gem-Sprites, aktive Tweens, ms/Frame und gesammelte XP. Abnahme: shots/m10-gem-drawcap-before.json liegt vor und Script-Exit 0, keine JS-Fehler.",
-      "column": "review",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T16:26:51Z",
           "by": "build",
           "text": "lane #3478 (Merge-Commit 50f45ec): Baseline-Beleg shots/m10-gem-drawcap-before.json (peak 107 Gems, Cap 90, 16,65 ms/Frame)"
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3678, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T16:26:07Z",
@@ -4634,13 +4825,18 @@
       "id": 3679,
       "title": "m10-gem-drawcap #2 Fix PickupSystem: harter 120er-Deckel + Gem-Zahl-Magnet",
       "description": "Obergrenze sichtbarer Gems hart 120 (auch bei LOD full/reduced), Ueberschuss in naechsten freien Gem mergen (XP exakt erhalten), Magnetradius mit Gem-Zahl skalieren, pro Gem hoechstens ein Tween. Abnahme: npx tsc --noEmit gruen, bestehende pickup-gems-Tests gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T16:26:51Z",
           "by": "build",
           "text": "lane #3479 (Merge-Commit 50f45ec): harter 120er-Deckel, verlustfreies Merging, Gem-Zahl-Magnet; tsc+build gruen"
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3679, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T16:26:07Z",
@@ -4650,13 +4846,18 @@
       "id": 3680,
       "title": "m10-gem-drawcap #3 Test tests/gem-draw-cap.test.ts",
       "description": "XP-Summe vor/nach Cap identisch (<=1 %), kein Gem geht verloren, Groesse<->XP monoton, Cap greift deterministisch, keine NaN-Werte, drop() erzeugt keinen Tween pro Gem. Abnahme: npx vitest run tests/gem-draw-cap.test.ts gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
           "at": "2026-11-27T16:26:51Z",
           "by": "build",
           "text": "lane #3480 (Merge-Commit 50f45ec): tests/gem-draw-cap.test.ts, 10 Tests; 377/377 Tests gruen auf main"
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3680, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T16:26:07Z",
@@ -4666,13 +4867,18 @@
       "id": 3681,
       "title": "m10-gem-drawcap #4 Nachher-Messung + Doku",
       "description": "Nachher-Messung wie K1: aktive Gem-Sprites <=120 bei 500 kills, ms/Frame <= vorher, XP im Korridor (<=1 %). Beleg shots/m10-gem-drawcap-after.json + Vergleichs-PNG, docs/lanes/m10-gem-drawcap.md. Abnahme: npm test + npm run build gruen, Vorher/Nachher-JSON vorhanden.",
-      "column": "review",
+      "column": "done",
       "assignee": "tech-lead",
       "notes": [
         {
           "at": "2026-11-27T16:26:51Z",
           "by": "build",
           "text": "lane #3481 (Merge-Commit 50f45ec): after-Beleg shots/m10-gem-drawcap-after.json (peak 120 Gems, 16,67 ms/Frame, xpLoss 0); .lane-done bewusst nicht nach main uebernommen"
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #3681, Merge branch m10-elite-tier-w3"
         }
       ],
       "created": "2026-11-27T16:26:07Z",
@@ -10278,8 +10484,14 @@
       "id": 8238,
       "title": "m10-hazard-warn-fix K1: Ist-Messung Warnphasen unter Schwarm (Vorher-JSON)",
       "description": "Eigenes scripts/m10-hazard-warn.mjs (Chaos-Szene 500 Gegner, 640x360, alle 19 Hazard-Klassen): je Klasse Warnphase an 7 Punkten gesampelt -> sichtbar ja/nein (Michelson-Kontrast Ring/Fuellung vs Hintergrund) + effektive Warnzeit. Akzeptanz (vor Messung fest): (A1) effectiveWarn >= MIN_WARN_S 0.45 s je Klasse, (A2) 100 % der Warnphase sichtbar (Kontrast >= 0.06 an jedem Sample), (A3) min Ring-Kontrast ueber alle Klassen >= 0.06. Vorher-JSON shots/m10-hazard-warn-before.json committen. Abnahme: JSON committed, Baseline dokumentiert.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #8238, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-28T04:11:01Z",
       "updated": "2026-11-28T04:11:01Z"
     },
@@ -10287,8 +10499,14 @@
       "id": 8239,
       "title": "m10-hazard-warn-fix K2: Fix in src/systems/Hazards.ts + tests/hazard-warn.test.ts",
       "description": "effectiveWarn/rimPulseAlpha/HazardSystem so anpassen, dass Warnphasen unter Volllast nicht verkuerzt/unsichtbar werden (Puls-Boeden heben, Warnphase immer voll sichtbar). Nur src/systems/Hazards.ts (hazardDisc.ts ist Tabu). Neue tests/hazard-warn.test.ts (reine Funktionen, deterministisch). Abnahme: tsc gruen, vitest hazard-warn + hazard-fairness gruen, build gruen, Commit M10-m10-hazard-warn-fix.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #8239, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-28T04:11:01Z",
       "updated": "2026-11-28T04:11:01Z"
     },
@@ -10296,8 +10514,14 @@
       "id": 8240,
       "title": "m10-hazard-warn-fix K3: Nachher-Messung + Screenshots + Befund + .lane-done",
       "description": "Nachmessung mit selbem Skript -> shots/m10-hazard-warn-after.json + 2 Screenshots (Chaos-Frame je Problemklasse). Befund nach docs/lanes/m10-hazard-warn-fix.md. Abnahme: alle Klassen erfuellen Akzeptanz aus K1, Vorher-/Nachher-JSON committed, .lane-done.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #8240, Merge branch m10-elite-tier-w3"
+        }
+      ],
       "created": "2026-11-28T04:11:01Z",
       "updated": "2026-11-28T04:11:01Z"
     },
@@ -10637,6 +10861,58 @@
       ],
       "created": "2026-11-28T04:58:59Z",
       "updated": "2026-11-28T04:59:04Z"
+    },
+    {
+      "id": 8542,
+      "title": "m10-elite-tier-w3 K1: T4-Stufenkollaps (#7526) — per-Type Soft-Mix + Vorher/Nachher-Belege",
+      "description": "Rettet backlog-#7526 (ging beim Board-Reconcile verloren). Befund refine: bei mix 0,7 kollabieren T4-Typen — horror 1 Innen-Stufe, übrige betroffene T4-Typen 2. Hebel: per-Type Soft-Mix 0,55–0,6 in eliteTierMixFor für genau die betroffenen T4-Typen (Offline-Suchlauf, festes Iterationslimit). Ziele: horror ≥ 2 Stufen, übrige betroffene ≥ 3; T4-Bucket gruen ≥ ~75 %, min Tier-Zentroid ≥ 30, T2-dominant ≥ 82 %, T0/T2-Zentroid ≥ 130 unverändert. Verträge: A10 Rand 100 % Amber PAL 20, Silhouette/Kontur/Augen bytegleich, 1 Frame je Typ, Nicht-Elite bytegleich. AC: tsc/build/test grün, art-director PASS ≥ 4/5 am 4x-Crop, JSONs mit iGPU-Renderer.",
+      "column": "done",
+      "assignee": "@pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-28T04:35:07Z",
+          "by": "build",
+          "text": "K1 erledigt, in review: Fix horror/gargoyle FINE-Mix 0,6 (6425d45), Offline-Suchlauf 2 Iter (shots/m10-elite-tier-w3-analysis.json), Runtime w3-before/w3-k1 (Mesa RPL-S iGPU, 60/60 fps flock, Amber 1,0). Stufen: horror 2, gargoyle 3; 4 T4-Typen im Fenster 0,55-0,6 nicht heilbar ([9,31]) dokumentiert. T4 gruen 74,5 % (~-0,5 pp unter ~75-Marke, dominant erhalten — bewusster Trade-off). build+test 1357/1357 gruen. art-director/reviewer laufen."
+        },
+        {
+          "at": "2026-11-28T04:47:05Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Fix 6425d45 + Runtime 88ca935 + Doku d8dbf17 + Review-Fix 0494a47 (#8298). Belege: w3-before/w3-k1 JSON+PNG+crop4x, analysis.json. horror 2/gargoyle 3 Stufen; 4 T4-Typen im Fenster nicht heilbar (dokumentiert); T4 gruen 74,5 % dominant erhalten; A10 1,0; 60/60 fps flock; Mesa RPL-S iGPU; build+test 1357/1357. Kontrolleure: art-director PASS 4/5 (muss-neu: keine), Reviewer PASS (Doku-Fix 0494a47)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #8298, Merge branch m10-elite-tier-w3"
+        }
+      ],
+      "created": "2026-11-28T04:21:45Z",
+      "updated": "2026-11-28T04:47:05Z"
+    },
+    {
+      "id": 8543,
+      "title": "m10-elite-tier-w3 K2: centipede/voidcaller paleMist — eine Prüfung + dokumentierte Entscheidung",
+      "description": "Lane-Befund refine: helle Basen centipede/voidcaller mischen bei T4 teils auf paleMist (9). EIN Offline-Suchlauf (max. 2 Iterationen): macht ein per-Type-Dye beide nachweislich lesbarer OHNE K1-Grenzen zu verletzen (gruen ≥ ~75 %, min Zentroid ≥ 30)? Ergebnis als dokumentierte Entscheidung umgesetzt oder verworfen in docs/lanes/m10-elite-tier-w3.md. Keine zweite Karte, kein weiteres Messen.",
+      "column": "done",
+      "assignee": "@pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-28T04:35:07Z",
+          "by": "build",
+          "text": "K2 erledigt, in review: EIN Offline-Suchlauf (im K1-Lauf) — 6 Dye-Kandidaten; Dye 26 lesbar (0 % Fremd-Familie) verletzt aber gruen-Grenze (65,4 % < ~75 %), einziger guard-konformer Kandidat 30 = Grasrampe (Refine-K1-Mangel). ENTSCHEIDUNG: VERWORFEN, belegt in docs/lanes/m10-elite-tier-w3.md. Kein Code-Delta → w3-k1 = After-Stand, kein zweiter Lauf."
+        },
+        {
+          "at": "2026-11-28T04:47:05Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: EIN Offline-Suchlauf, 6 Dye-Kandidaten — Dye 26 lesbar verletzt gruen-Grenze (65,4 %), einziger guard-konformer Dye 30 = Grasrampe. ENTSCHEIDUNG: VERWORFEN, belegt docs/lanes/m10-elite-tier-w3.md + analysis.json. Kein Code-Delta → w3-k1 = After-Stand. Commit d8dbf17 + 0494a47 (#8299)."
+        },
+        {
+          "at": "2026-11-28T05:04:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #8299, Merge branch m10-elite-tier-w3"
+        }
+      ],
+      "created": "2026-11-28T04:21:45Z",
+      "updated": "2026-11-28T04:47:05Z"
     }
   ]
 }
