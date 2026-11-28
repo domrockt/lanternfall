@@ -41,7 +41,8 @@ vi.stubGlobal("document", {
 
 import { HazardSystem } from "../src/systems/Hazards";
 import {
-  BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_I, DISC_STACK_THRESHOLD, MASK_CLEAR,
+  BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_ALPHA, DISC_FILL_ALPHA_BY_STAGE,
+  DISC_FILL_ALPHA_STACKED, DISC_FILL_I, DISC_STACK_THRESHOLD, MASK_CLEAR,
   applyMask, beamMask, beamRimMask, discMask, discSide, fillStageForStacks,
   hazardDiscTexture, hazardRingTexture,
   quantizedBeamLength, quantizedRadius, ringMask, warnDiscStacks,
@@ -77,7 +78,7 @@ describe("hazardDisc: gebackene Telegraph-Texturen sind gerastert, nicht milchig
     expect(quantizedRadius(9999)).toBe(160);
   });
 
-  it("Warnlesbarkeit: 2-px-Konturband am Radius, heller als die Dither-Fuellung", () => {
+  it("Warnlesbarkeit: 2-px-Konturband am Radius, heller als die Fuellfarbe", () => {
     for (const r of radii) {
       const side = discSide(r);
       const mask = discMask(r);
@@ -109,23 +110,56 @@ describe("hazardDisc: gebackene Telegraph-Texturen sind gerastert, nicht milchig
     }
   });
 
-  it("Dither-Fuellung ist 50-Prozent-Schachbrett (Terrain bleibt zwischen den Pixeln sichtbar)", () => {
-    const r = 60;
-    const side = discSide(r);
-    const mask = discMask(r);
-    let fill = 0, inside = 0;
-    const c = (side - 1) / 2;
-    for (let y = 0; y < side; y++) {
-      for (let x = 0; x < side; x++) {
-        if (Math.hypot(x - c, y - c) <= r - 3) {
-          inside++;
-          if (mask[y * side + x] === DISC_FILL_I) fill++;
+  it("Fuellung ist flaechig und rasterfrei (Raster-Guard: Flaeche voll, kein Schachbrett)", () => {
+    for (const r of [22, 60, 90, 160]) {
+      const side = discSide(r);
+      const mask = discMask(r);
+      const c = (side - 1) / 2;
+      let inside = 0, fill = 0;
+      for (let y = 0; y < side; y++) {
+        for (let x = 0; x < side; x++) {
+          if (Math.round(Math.hypot(x - c, y - c)) <= r - 3) {
+            inside++;
+            // Raster-Guard: JEDE Innen-Flaeche ist Fuellung — kein Loch, kein Dither, kein Muster.
+            expect(mask[y * side + x], `r=${r} Flaeche ${x},${y}`).toBe(DISC_FILL_I);
+            fill++;
+          }
         }
       }
+      expect(inside, `r=${r} Innenflaeche nicht leer`).toBeGreaterThan(0);
+      expect(fill / inside).toBe(1);
     }
-    const share = fill / inside;
-    expect(share).toBeGreaterThan(0.45);
-    expect(share).toBeLessThan(0.55);
+  });
+
+  it("Dither nur am Rand: Uebergangsband genau 1 px (round(d)=r-2), sonst ditherfrei", () => {
+    for (const r of [22, 60, 90]) {
+      const side = discSide(r);
+      const mask = discMask(r);
+      const c = (side - 1) / 2;
+      let band = 0, bandFill = 0, outsideBand = 0;
+      for (let y = 0; y < side; y++) {
+        for (let x = 0; x < side; x++) {
+          const di = Math.round(Math.hypot(x - c, y - c));
+          if (di === r - 2) {
+            band++;
+            if (mask[y * side + x] === DISC_FILL_I) {
+              bandFill++;
+              // Band-Dither auf (x+y)-Paritaet: benachbarte Bandpixel wechseln (1 px breit).
+              if ((x + y) % 2 !== 0) throw new Error(`Band off-parity r=${r} ${x},${y}`);
+            }
+          } else if (di < r - 2 && mask[y * side + x] !== DISC_FILL_I) {
+            outsideBand++;
+          }
+        }
+      }
+      expect(band, `r=${r} Band-Pixel`).toBeGreaterThan(0);
+      // Uebergangsband: teils Fuellung, teils transparent. Der schmale Annulus sampelt den
+      // (x+y)-Checker systematisch schief -> weiter Korridor statt exakter 50 %.
+      expect(bandFill / band, `r=${r} Band-Dichte`).toBeGreaterThan(0.3);
+      expect(bandFill / band, `r=${r} Band-Dichte`).toBeLessThan(0.8);
+      // Innerhalb der Flaeche (<= r-3) genau eine Fuellfarbe, keine Luecken.
+      expect(outsideBand, `r=${r} ditherfreie Flaeche`).toBe(0);
+    }
   });
 
   it("ringMask: durchgehendes 2-px-Band ohne Luecken (Rand-Puls lesbar)", () => {
@@ -223,20 +257,20 @@ describe("Hazards.ts nutzt den Bake mit Draw-Scale 1 (Draw-Pfad sonst bitgleich)
 });
 
 describe("K2: Uebergangsband quantisiert + Ringkontur radial konstant 2 px", () => {
-  it("Innenkante: 25-%-Fringe ausschliesslich auf dem (gerade, gerade)-Raster, danach feste Kontur", () => {
+  it("Innenkante: 1-px-Ditherband auf (x+y)-Paritaet bei round(d)=r-2, danach feste Kontur", () => {
     for (const r of [8, 30, 60, 160]) {
       const side = discSide(r);
       const mask = discMask(r);
       const c = (side - 1) / 2;
-      let cells = 0, fill = 0, offGrid = 0;
+      let cells = 0, fill = 0, offParity = 0;
       for (let y = 0; y < side; y++) {
         for (let x = 0; x < side; x++) {
           const di = Math.round(Math.hypot(x - c, y - c));
-          if (di === r - 2 || di === r - 3) {
+          if (di === r - 2) {
             cells++;
             if (mask[y * side + x] === DISC_FILL_I) {
               fill++;
-              if (x % 2 !== 0 || y % 2 !== 0) offGrid++;
+              if ((x + y) % 2 !== 0) offParity++;
             }
           } else if (di === r - 1) {
             // Direkt ausserhalb des Bands: Kontur lueckenlos (harte Kante ist ins Band gewandert).
@@ -244,10 +278,11 @@ describe("K2: Uebergangsband quantisiert + Ringkontur radial konstant 2 px", () 
           }
         }
       }
-      expect(offGrid, `r=${r} Fringe off-grid`).toBe(0);
-      const share = fill / cells;
-      expect(share, `r=${r} Fringe-Dichte`).toBeGreaterThan(0.1);
-      expect(share, `r=${r} Fringe-Dichte`).toBeLessThan(0.4);
+      expect(offParity, `r=${r} Band off-parity`).toBe(0);
+      const share = cells > 0 ? fill / cells : 0.5;
+      // Schmaler Annulus sampelt den Checker systematisch schief -> weiter Korridor.
+      expect(share, `r=${r} Band-Dichte`).toBeGreaterThan(0.3);
+      expect(share, `r=${r} Band-Dichte`).toBeLessThan(0.8);
     }
   });
 
@@ -289,39 +324,35 @@ describe("K3: Stapel-Fuellstufe ab 5 Warn-Discs (deterministisch)", () => {
     expect(fillStageForStacks(-3)).toBe(0);
   });
 
-  it("Einzeldisc bitgleich: discMask(r) === discMask(r, 0) — Stapelregel ohne Stapel ist ein No-op", () => {
+  it("Raster-Guard-Stapel: Maske ist stufenunabhaengig (flaechige Fuellung, nie Dither-Flaeche)", () => {
     for (const r of [30, 60, 90]) {
-      expect(Array.from(discMask(r))).toEqual(Array.from(discMask(r, 0)));
-    }
-  });
-
-  it("Stufe 1: geringere Dither-Frequenz (25-%-Raster im Interieur), Kontur bitgleich zu Stufe 0", () => {
-    const r = 60;
-    const side = discSide(r);
-    const c = (side - 1) / 2;
-    const m0 = discMask(r, 0);
-    const m1 = discMask(r, 1);
-    expect([...new Set([...m1].filter((v) => v !== MASK_CLEAR))].sort()).toEqual(
-      [DISC_CONTOUR_I, DISC_FILL_I].sort(),
-    );
-    let n = 0, fill0 = 0, fill1 = 0;
-    for (let y = 0; y < side; y++) {
-      for (let x = 0; x < side; x++) {
-        const i = y * side + x;
-        expect((m1[i] === DISC_CONTOUR_I) === (m0[i] === DISC_CONTOUR_I), `Kontur ${x},${y}`).toBe(true);
-        if (Math.hypot(x - c, y - c) <= r - 4) {
-          n++;
-          if (m0[i] === DISC_FILL_I) fill0++;
-          if (m1[i] === DISC_FILL_I) fill1++;
-          if (m1[i] === DISC_FILL_I) {
-            expect(x % 2 === 0 && y % 2 === 0, `Stufe 1 off-grid ${x},${y}`).toBe(true);
+      // Nur noch EIN Maskenlayout: kein stage-Parameter mehr, kein 25-%/50-%-Raster im Interieur.
+      const mask = discMask(r);
+      const side = discSide(r);
+      const c = (side - 1) / 2;
+      for (let y = 0; y < side; y++) {
+        for (let x = 0; x < side; x++) {
+          if (Math.round(Math.hypot(x - c, y - c)) <= r - 3) {
+            expect(mask[y * side + x], `r=${r} Flaeche ${x},${y}`).toBe(DISC_FILL_I);
           }
         }
       }
     }
-    expect(fill0 / n).toBeGreaterThan(0.45);
-    expect(fill1 / n).toBeGreaterThan(0.2);
-    expect(fill1 / n).toBeLessThan(0.3);
+  });
+
+  it("Stufe 1: Maske bitgleich zur Basis, Stapel wirkt nur ueber die niedrigere Bake-Alpha", () => {
+    const r = 60;
+    const m = discMask(r);
+    // Alpha-Kurve: Stufe 1 ruhiger als Basis, beide halbtransparent und < 50 %.
+    expect(DISC_FILL_ALPHA_BY_STAGE[0]).toBe(DISC_FILL_ALPHA);
+    expect(DISC_FILL_ALPHA_BY_STAGE[1]).toBe(DISC_FILL_ALPHA_STACKED);
+    expect(DISC_FILL_ALPHA_STACKED).toBeLessThan(DISC_FILL_ALPHA);
+    expect(DISC_FILL_ALPHA).toBeLessThan(0.5);
+    expect(DISC_FILL_ALPHA).toBeGreaterThan(0.2);
+    // Maske enthaelt weiterhin genau die 2 Palettenindizes (kein Gradient, keine 3. Farbe).
+    expect([...new Set([...m].filter((v) => v !== MASK_CLEAR))].sort()).toEqual(
+      [DISC_CONTOUR_I, DISC_FILL_I].sort(),
+    );
   });
 
   it("warnDiscStacks zaehlt nur warnende Circle-Hazards; Key: <5 Stapel Basis-Key, >=5 '_s1'", () => {

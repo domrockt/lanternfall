@@ -14,8 +14,8 @@ import { PAL } from "../palette";
  * Fix: jede Disc/jeder Ring wird in EXAKTER Sprite-Pixelgroesse gebacken (Texturseite =
  * Radius in Spielpixeln, Draw-Scale immer 1) und rein gerastert:
  *   - 2-px-Konturband am Radius (volle Gefahr-Farbe via Tint),
- *   - 50-%-Schachbrett-Dither-Fuellung (Terrain bleibt zwischen den Pixeln sichtbar),
- *   - binaeres Alpha, nur 2 Palettenindizes — kein stufenloser Gradient.
+ *   - flaechig halbtransparente Fuellung (Alpha im Bake; seit Raster-Fix kein Schachbrett mehr),
+ *   - 1-px-Dither-Uebergangsband nur am Rand, sonst binaeres Muster-Verbot auf Flaechen.
  * Die Textur ist hell/neutral gebacken; der Tint in Hazards.ts faerbt Kontur (hell -> volle
  * Gefahr-Farbe) und Fuellung (mittel -> dunkler Ton derselben Farbe).
  *
@@ -24,13 +24,15 @@ import { PAL } from "../palette";
  *
  * Polish-Lane m10-hazard-disc-polish (2026-11-28, Nachbesserungen aus der art-director-Abnahme
  * von 3fa01eb):
- *   - K2a: 2-px-Uebergangsband (25-%-Fringe aus DISC_FILL_I) zwischen Kontur und 50-%-Checker —
- *     keine harte Checker-Kante am Innenrand.
- *   - K2b: Kontur via round(d)-Band (round(d) ∈ {r-1, r}) — radial konstant 2 px, kein
- *     1/2-px-Wechselschlag an Bogen-Flachstellen.
- *   - K3: ab 5 gleichzeitig warnenden Disc-Hazards Fuellstufe 1 (25-%-Raster statt 50-%-Checker,
- *     Key-Suffix "_s1") — stapelweise Discs wirken ruhiger. Stage 0 (Einzeldisc) bleibt
- *     bitgleich: gleicher Key, gleiche Rasterung wie ohne Stapelregel.
+ *   - K2a/K2b: Kontur via round(d)-Band, radial konstant 2 px, Uebergangsband am Innenrand.
+ *   - K3: ab 5 gleichzeitig warnenden Disc-Hazards Key-Suffix "_s1" (ruhigere Stapel-Fuellung).
+ *
+ * Raster-Fix (Lane m10-hazard-disc-raster, 2026-11-28, Argus-Sichtung zu 45c198d): das
+ * regelmaessige Schachbrett-"Fliegengitter" ueber der Disc-Flaeche ist raus. Neu (Regel
+ * Dom/Claude 08:15Z): Fuellung **flaechig halbtransparent** (Alpha im Bake, keine Dither-Flaeche),
+ * Dither nur als 1-px-Uebergangsband am Rand (round(d)=r-2), Kontur weiter 2 px voll. Die
+ * Stapel-Stufe senkt nur die Fuell-Alpha (0.40 -> 0.28), nicht mehr die Dither-Frequenz.
+ * Draw-Scale bleibt 1 (eine Pixelgroesse).
  */
 
 /** Fuellung: dunkler Warnton — mit Tint dunkler Ton der Gefahr-Farbe (hellt nie auf). */
@@ -40,10 +42,17 @@ export const DISC_CONTOUR_I = 13; // lanternWhite
 /** Maskenwert fuer transparent. */
 export const MASK_CLEAR = 255;
 
-/** Fuellstufe der Disc: 0 = Basis (50-%-Checker), 1 = Stapel ab Schwelle (25-%-Raster). */
+/** Fuellstufe der Disc: 0 = Basis-Alpha, 1 = Stapel ab Schwelle (ruhiger, niedrigere Alpha). */
 export type DiscFillStage = 0 | 1;
 /** Ab so vielen gleichzeitig warnenden Disc-Hazards greift Fuellstufe 1 (deterministisch). */
 export const DISC_STACK_THRESHOLD = 5;
+/** Fuell-Alpha der Disc-Flaeche (flaechig halbtransparent, kein Raster): Basis und Stapel-Stufe. */
+export const DISC_FILL_ALPHA = 0.4;
+export const DISC_FILL_ALPHA_STACKED = 0.28;
+/** Fuell-Alpha je Stapel-Stufe (Index = DiscFillStage). */
+export const DISC_FILL_ALPHA_BY_STAGE: readonly [number, number] = [
+  DISC_FILL_ALPHA, DISC_FILL_ALPHA_STACKED,
+];
 
 /**
  * Deterministische Stapel-Regel: ab `DISC_STACK_THRESHOLD` gleichzeitig warnenden Disc-Hazards
@@ -71,12 +80,12 @@ export function discSide(r: number): number {
 /**
  * Reine Rasterung der Warn-Disc: mask[y * side + x] = Palette-Index oder MASK_CLEAR.
  * - round(d) ∈ {r-1, r}: 2-px-Konturband (DISC_CONTOUR_I) — radial konstant 2 px (K2b),
- * - round(d) ∈ {r-3, r-2}: Uebergangsband, 25-%-Fringe (x und y gerade) statt harter
- *   Checker-Kante am Innenrand (K2a),
- * - sonst Fuellung: Stufe 0 = 50-%-Schachbrett (x+y) gerade, Stufe 1 = 25-%-Raster (K3).
- * Kein Alpha-Verlauf, keine Zwischentoene, nur 2 Palettenindizes. Für Vitest ohne Phaser testbar.
+ * - round(d) = r-2: 1-px-Uebergangsband, 50-%-Dither ((x+y) gerade) — Dither NUR hier am Rand,
+ * - sonst (round(d) <= r-3): flaechige Fuellung (DISC_FILL_I) ohne Muster; die Halbtransparenz
+ *   kommt aus dem Bake-Alpha (DISC_FILL_ALPHA_BY_STAGE), nicht aus einem Dither-Raster.
+ * Kein Alpha-Verlauf, keine Zwischenfarben, nur 2 Palettenindizes. Für Vitest ohne Phaser testbar.
  */
-export function discMask(r: number, stage: DiscFillStage = 0): Uint8Array {
+export function discMask(r: number): Uint8Array {
   const side = discSide(r);
   const c = (side - 1) / 2;
   const mask = new Uint8Array(side * side).fill(MASK_CLEAR);
@@ -87,9 +96,9 @@ export function discMask(r: number, stage: DiscFillStage = 0): Uint8Array {
       const i = y * side + x;
       if (di >= r - 1) {
         mask[i] = DISC_CONTOUR_I;
-      } else if (di >= r - 3) {
-        if (x % 2 === 0 && y % 2 === 0) mask[i] = DISC_FILL_I;
-      } else if (stage === 0 ? (x + y) % 2 === 0 : x % 2 === 0 && y % 2 === 0) {
+      } else if (di === r - 2) {
+        if ((x + y) % 2 === 0) mask[i] = DISC_FILL_I;
+      } else {
         mask[i] = DISC_FILL_I;
       }
     }
@@ -154,7 +163,9 @@ export function applyMask(
   return painted;
 }
 
-function bakeFromMask(scene: Phaser.Scene, key: string, mask: Uint8Array, width?: number): void {
+function bakeFromMask(
+  scene: Phaser.Scene, key: string, mask: Uint8Array, width?: number, fillAlpha = 1,
+): void {
   // Szenen ohne Texture-API (Unit-Test-Stubs) bekommen nur den Key; im Spiel ist
   // scene.textures immer vorhanden und der Bake laeuft genau einmal je Key.
   const textures = scene.textures as Phaser.Textures.TextureManager | undefined;
@@ -167,9 +178,12 @@ function bakeFromMask(scene: Phaser.Scene, key: string, mask: Uint8Array, width?
   const ctx = canvas.getContext("2d")!;
   ctx.clearRect(0, 0, w, h);
   applyMask((x, y, pi) => {
+    // Fuell-Alpha nur fuer die Warn-Disc (flaechig halbtransparent); Strahl/Ring bleiben deckend.
+    ctx.globalAlpha = pi === DISC_FILL_I ? fillAlpha : 1;
     ctx.fillStyle = hexColor(PAL[pi]);
     ctx.fillRect(x, y, 1, 1);
   }, mask, w);
+  ctx.globalAlpha = 1;
   scene.textures.addCanvas(key, canvas);
 }
 
@@ -178,13 +192,14 @@ function hexColor(rgb: number): string {
 }
 
 /** Ensures + liefert den Key der Warn-Disc-Textur in Sprite-Pixelgroesse fuer `radius`.
- *  Ab `DISC_STACK_THRESHOLD` gleichzeitig warnenden Disc-Hazards mit Fuellstufe 1 gebacken
- *  (Key-Suffix "_s1"); darunter Key und Rasterung bitgleich zum Basis-Key. */
+ *  Ab `DISC_STACK_THRESHOLD` gleichzeitig warnenden Disc-Hazards mit ruhigerer Stapel-Fuellung
+ *  gebacken (Key-Suffix "_s1", niedrigere Fuell-Alpha); darunter Key und Alpha bitgleich zum
+ *  Basis-Key. */
 export function hazardDiscTexture(scene: Phaser.Scene, radius: number): string {
   const r = quantizedRadius(radius);
   const stage = fillStageForStacks(warnDiscStacks(scene));
   const key = stage === 0 ? `hazard_disc_r${r}` : `hazard_disc_r${r}_s1`;
-  bakeFromMask(scene, key, discMask(r, stage));
+  bakeFromMask(scene, key, discMask(r), undefined, DISC_FILL_ALPHA_BY_STAGE[stage]);
   return key;
 }
 
