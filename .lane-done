@@ -1,0 +1,43 @@
+# Lane m10-mira-hp-balance-check — abgeschlossen (2026-11-28)
+
+Alle 4 Karten done, Kontrolleure reviewer + test-auditor je PASS. Suite 227 Dateien /
+2460 Tests grün, `npx tsc --noEmit` rc=0, `npm run build` rc=0. Commits: c9b9d6e5 (K1),
+056786c6 (K2), 43d2769f (K3), c6ae0e28 + 9551e3aa (K4 + Review-Fix).
+
+## Ergebnis
+
+Der Dom-Balance-Korridor (A5) hielt auf Mira HP 90 (m10-charstats-ssot) NICHT:
+
+- K1 (belegt, 3 mira-Seeds + kael/101, volle Läufe @30x): mira 3/3 Tod bei Minute
+  20,4–25,4 (Referenz HP-250-Stand: dawn ~30,5, L35/38), 1 Boss-Dauer-Verletzung
+  (Golem 16,1 s, durch Tod abgeschnitten). kael-Deltas >10 % gegenüber der committeten
+  Referenz bestanden schon vor dem Fix (Drift der ~9 Perf-Merges seit 13:52Z, kael-Code
+  bitidentisch — Bosse 0–2 exakt gleich).
+- K2: TTK ok, Überleben bricht im Tier-4-Fenster Minute 20–24: TIER_MIXES[4] enthält
+  mit abom (Splitter) + voidcaller (Beschwörer) zwei Mengen-Vervielfacher — derselbe
+  dokumentierte Mechanismus, den die Endgame-Lane für Minute 25+ entfernt hat.
+- K3 (kleinster suite-grüner Hebel, bindender Suchlauf A/B/C/D): MID_GAME_MIX in
+  src/data/waves.ts — Minute 20–24 mit halbiertem Vervielfacher-Gewicht (0,5 statt 1).
+  Nachher: mira 2/3 dawn @ 30,55/30,63 min (L34), 17/17 mira-Boss-Dauern 20–60 s
+  (0 Verletzungen), Levelband 30–34, kael dawn unverändert. Minute 0–19 und 25+
+  bitgleich, Spawnrate unberührt.
+- K4: tests/mira-hp-corridor.test.ts (5 Tests) + shots/m10-mira-hp-corridor.json pinnt
+  den HP-90-Stand: Korridor streng, 2/3-dawn-Kante, K3-Hebel direkt (WAVES-Mix) und
+  kael-Nebenwirkungsprotokoll (dokumentierte Bosse [1,2,4]).
+
+## Offen / Merge-Hinweise
+
+1. HP-90-Kante: in jeder gemessenen Mix-Variante stirbt genau EIN mira-Seed knapp nach
+   dem 20:00-Golem (~20,2–20,5 min, Level im Band, kein Tod < min 15). Weitere Hebel
+   (HP-Relief, LATE_GAME_ACTIVE_CAP, enemyDamageScale) sind in
+   tests/balance-endgame.test.ts fremdgepinnt — Bedarf an Dom melden, falls Mira auf
+   HP 90 durchgängig bis Minute 30 kommen soll.
+2. tests/balance-corridor.test.ts liest die committeten Marken von 13:52Z (älterer
+   Code-Stand) — bei der nächsten Rebaseline die neuen Todes-/Dauer-Muster einpreisen.
+3. GroundRenderer-Chunk-Spam (`Texture key already in use: chunk_*`) lässt seit dem
+   Chunk-Budget-Merge alle Balance-JSONs jsErrors-bedingt `accepted:false` sein —
+   fremde Datei, separat fixen.
+
+Belege: games/.evidence/m10-mira-hp-balance-check/ (4 Mess-JSONs, Renderer Mesa Intel
+RPL-S, nicht SwiftShader). Doku mit Vorher/Nachher-Tabellen:
+docs/lanes/m10-mira-hp-balance-check.md.
