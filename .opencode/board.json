@@ -15747,25 +15747,36 @@
       "id": 11678,
       "title": "m10-thermal-wiring #11678 K1: Stand prüfen (Merge, tick()-Ort)",
       "description": "Prüfe, ob merge-m10-quality-thermal-guard in main ist (evaluateThermalStep in src/logic/quality.ts) und wo tick() liegt (config.ts vs Run.ts). Abnahme: Befund in docs/lanes/m10-thermal-wiring.md; falls tick() in Run.ts: nur config-Teil + Bedarfsmeldung.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T11:44:12Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:44:54Z",
+          "by": "build",
+          "text": "doing → done: Befund: Merge in main, tick() in config.ts, kein Run.ts-Teil; Typ-Lücke Cap-Wrapper als Folgekarte. Commit f029b5ee"
         }
       ],
       "created": "2026-11-28T11:44:07Z",
-      "updated": "2026-11-28T11:44:12Z"
+      "updated": "2026-11-28T11:44:54Z"
     },
     {
       "id": 11679,
       "title": "m10-thermal-wiring #11679 K2: thermal-Verdrahtung in src/config.ts",
       "description": "Im tick() von config.ts: FPS-Serie (1 Hz, THERMAL_WINDOW_MS) führen, thermalState mitführen, nach stepQuality evaluateThermalStep aufrufen, engage → QUALITY='thermal', __rbDbg.thermalState. Werte aus docs/lanes/m10-quality-thermal-guard.md, keine Duplikate (Import aus logic/quality). Abnahme: npx tsc --noEmit grün, npm run build grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:44:54Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T11:44:07Z",
-      "updated": "2026-11-28T11:44:07Z"
+      "updated": "2026-11-28T11:44:54Z"
     },
     {
       "id": 11680,
