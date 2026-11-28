@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11742,
+  "next": 11745,
   "cards": [
     {
       "id": 1,
@@ -15931,6 +15931,55 @@
       "notes": [],
       "created": "2026-11-28T11:36:41Z",
       "updated": "2026-11-28T11:36:41Z"
+    },
+    {
+      "id": 11742,
+      "title": "m10-pause-footer-contrast K1+K2: 2 Pause-Footer-Farben >= 4,5 + Scan + Guard",
+      "description": "UI.ts createPauseUI(): Zeile 1 (C.mist idx 8, 4.15) -> C.paleMist, Zeile 2 (C.fog idx 7, 2.72) -> C.bone — Muster der resight-Fixes. Sonst KEINE UI-Aenderungen (Optik-Freeze). Abnahme: m10-menu-quality.mjs --tag=after-pause-footer: pause kontrastFails=0 in beiden Profilen, jsErrors=0, overlaps 0, Renderer Mesa Intel; Guard in tests/menu-contrast-fixes.test.ts erweitert, npm test gruen. Belege: ~/games/.evidence/m10-pause-footer-contrast/.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:31:45Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet: Farbfix + Scan + Test-Guard"
+        },
+        {
+          "at": "2026-11-28T11:49:22+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11742, Merge branch m10-pause-footer-contrast (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:31:45Z",
+      "updated": "2026-11-28T11:31:45Z"
+    },
+    {
+      "id": 11743,
+      "title": "m10-pause-footer-contrast K3: Abnahme-Shots + art-director-Sichtung",
+      "description": "shots/abnahme/m10-pause-footer-contrast-{640,960}-pause.png (2x-nearest wie resight), art-director-Sichtung NUR Pause-Screen, Ziel >= 4,5 (Abschluss des FAIL-Tracks m10-menu-quality-55). Urteil + Begruendung in die Lane-Doku.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:34:39Z",
+          "by": "build",
+          "text": "todo → doing: Abnahme-Shots liegen (2x-nearest), Sichtung startet."
+        },
+        {
+          "at": "2026-11-28T11:49:22+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11743, Merge branch m10-pause-footer-contrast (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:31:45Z",
+      "updated": "2026-11-28T11:34:39Z"
+    },
+    {
+      "id": 11744,
+      "title": "m10-pause-footer-contrast K4: Lane-Doku + .lane-done",
+      "description": "docs/lanes/m10-pause-footer-contrast.md mit Vorher/Nachher-Kontrastwerten und Evidence-Pfaden; .lane-done am Ende committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:31:45Z",
+      "updated": "2026-11-28T11:31:45Z"
     }
   ]
 }

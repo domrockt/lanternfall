@@ -191,8 +191,11 @@ describe("ui-pause-quality: Quell-Checks UI.ts (Fix bleibt verdrahtet)", () => {
   it("Waffen-Spalte bleibt bone (ausserhalb des gemeldeten Mangels)", () => {
     expect(src).toMatch(/C\.bone, 84, 212/);
   });
-  it("Hinweiszeilen (ESC/PFEILE) unveraendert — ausserhalb des gemeldeten Umfangs", () => {
-    expect(src).toMatch(/"ESC = WEITER - O = OPTIONEN - Q = AUFGABE", C\.mist/);
-    expect(src).toMatch(/"PFEILE \+ ENTER ODER MAUS", C\.fog/);
+  it("Hinweiszeilen (ESC/PFEILE) auf den Kontrast-Fix aus m10-pause-footer-contrast", () => {
+    // Folge-Karte zu diesem Out-of-Scope-Pin: beide Footer-Hints erreichten auf
+    // dem Panel nur 4.15/2.72 (Vorher-Scan m10-menu-art-resight) und sind jetzt
+    // wie die akzeptierten Menue-Footer auf paleMist/bone gehoben (Karten #11602).
+    expect(src).toMatch(/"ESC = WEITER - O = OPTIONEN - Q = AUFGABE", C\.paleMist/);
+    expect(src).toMatch(/"PFEILE \+ ENTER ODER MAUS", C\.bone/);
   });
 });
