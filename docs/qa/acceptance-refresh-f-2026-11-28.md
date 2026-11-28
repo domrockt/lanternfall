@@ -48,9 +48,16 @@ iGPU-Besetzung desselben Hosts ist durch den Terrain-Lauf direkt belegt.
 
 Messung mit `/home/ai/tmp/m10-acceptance-refresh-f/perf-f.mjs` (Messlogik identisch zu
 `scripts/perf.mjs`: Burst 500 Gegner synthetisch, Minute 25 via `skipTo(1490)` + Director-Dichte
-≥ 300, Ziel 55 FPS), jeweils **ein Lauf je View** unter
-`flock /home/ai/games/.lf-perf.lock`, Beleg-JSON mit Renderer-Feld im selben Lauf
-(`~/games/.evidence/m10-acceptance-refresh-f/k3-perf-accf-*.json`).
+≥ 300, Ziel 55 FPS), Beleg-JSON mit Renderer-Feld im selben Lauf
+(`~/games/.evidence/m10-acceptance-refresh-f/k3-perf-accf-*.json`), Lauffenster
+2026-11-28T10:15–10:17Z (Beleg-mtime 10:16:13Z/10:16:49Z), Läufe unter
+`flock /home/ai/games/.lf-perf.lock` serialisiert.
+
+**Harness-Anmerkung (Audit-Restmangel 3):** In den K3-Belegen steht `minute25.passed:false`,
+obwohl die Messung sachlich erfüllt ist — mein Harness-Kopie prüft `minute25.minEnemies`,
+ein Feld, das `perf-f.mjs` nicht schreibt (`undefined >= 200` → immer false). Die FPS- und
+Gegner-Kriterien sind im JSON selbst belegt: minute25.fps 60,1 ≥ 55 und enemies 300 ≥ 200.
+`burst.passed:true` ist nicht betroffen.
 
 | View | Burst (500 Gegner) | Minute 25 | Renderer-String (aus demselben JSON) |
 |---|---|---|---|
@@ -68,9 +75,9 @@ und **+18…+25 % bei Minute-25-780** (43,1→60,1; Improvement, in ACCEPTANCE.m
 
 | Zeit (UTC) | Befehl | Ergebnis | Urteil |
 |---|---|---|---|
-| 2026-11-28T10:44Z | `flock … npm run fullrun -- --tag accf` | 6/6 Bosse exakt 300–1800 s, **6 Truhen**, Sieg `dawn`, fpsMin **60,4**, 0 JS-Fehler; **Heap-Tor +18,2 % > +15 %** | Inhalt/FPS **PASS**, Heap-Tor **FAIL** |
-| 2026-11-28T10:49Z | `flock … npm run fullrun -- --tag accf2` (Wiederholung 1, verbindlich) | identisches Bild: 6/6 Bosse, 6 Truhen, Sieg `dawn`, fpsMin **60,3**, 0 JS-Fehler; **Heap-Tor +20,8 % > +15 %** | **FAIL (reproduziert)** |
-| 2026-11-28T10:54Z | `node scripts/m10-heap-budget.mjs` (formales Tor-Skript) | Lauf crashete mittendrin („Target page … closed“) → `gate=UNMESSBAR`; partielles JSON als Beleg | **UNMESSBAR** — fullrun-Belege bleiben verbindlich |
+| 2026-11-28T10:18–10:20Z | `flock … npm run fullrun -- --tag accf` (Beleg-mtime 10:20Z) | 6/6 Bosse exakt 300–1800 s, **6 Truhen**, Sieg `dawn`, fpsMin **60,4**, 0 JS-Fehler; **Heap-Tor +18,2 % > +15 %** | Inhalt/FPS **PASS**, Heap-Tor **FAIL** |
+| 2026-11-28T10:20–10:22Z | `flock … npm run fullrun -- --tag accf2` (Wiederholung 1, verbindlich; Beleg-mtime 10:22Z) | identisches Bild: 6/6 Bosse, 6 Truhen, Sieg `dawn`, fpsMin **60,3**, 0 JS-Fehler; **Heap-Tor +20,8 % > +15 %** | **FAIL (reproduziert)** |
+| 2026-11-28T10:23–10:38Z | `node scripts/m10-heap-budget.mjs` (formales Tor-Skript; interne Timestamps 10:23:06–10:38:02Z) | Lauf crashete mittendrin („Target page … closed“) → `gate=UNMESSBAR`; partielles JSON als Beleg | **UNMESSBAR** — fullrun-Belege bleiben verbindlich |
 
 Heap-Detail: Minute 1 → Minute 29 **53,4 → 63,1 MB** (+18,2 %) bzw. **51,5 → 62,2 MB**
 (+20,8 %); endMB nach Run-Ende 47,5 MB (GC-Sägezahn-Muster, aber Re-Messung entkräftet
@@ -83,6 +90,15 @@ Belege: `~/games/.evidence/m10-acceptance-refresh-f/m3-fullrunaccf.json`,
 **Urteil K4: FAIL** (nur Heap-Tor; Inhalt/FPS/Truhen/JS-Fehler alle grün).
 ACCEPTANCE.md ist ergänzt (Abschnitt „Nachabnahme F“, alte Werte unverändert,
 Abweichungen ≥ 5 % markiert).
+
+**Audit-Anmerkungen (Restmängel, nicht urteilsändernd):**
+1. **Renderer-Pflicht-Defizit im K4-FPS-Beleg:** `scripts/fullrun.mjs` schreibt keinen
+   Renderer-String ins Beleg-JSON; die iGPU-Besetzung ist hier nur indirekt gedeckt
+   (heap-budget-Lauf direkt danach auf demselben Host/`flock`: RPL-S; K3-Läufe: RPL-S im
+   selben JSON). Bei künftigen fullruns sollte `fullrun.mjs` ein `renderer`-Feld bekommen
+   (Folge-Bedarf an Dora, kein Fix durch diese Lane).
+2. Die ursprünglich dokumentierten K4-Zeitpunkte (10:44–10:54Z) waren um den Bearbeitungs-
+   overhead verschoben; korrigiert auf die Beleg-mtimes/internen Timestamps (siehe Tabelle).
 
 ## Gesamtergebnis
 

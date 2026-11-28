@@ -42,7 +42,7 @@ Belege: `~/games/.evidence/m10-acceptance-refresh-f/2026-11-28T10-10-33-835Z-fin
 
 Urteil K2: **PASS** (iGPU „Mesa Intel(R) Graphics (RPL-S)“ belegt, kein SwiftShader).
 
-### K3 (2026-11-28, 10:33–10:41Z, unter `flock /home/ai/games/.lf-perf.lock`)
+### K3 (2026-11-28, 10:15–10:17Z, unter `flock /home/ai/games/.lf-perf.lock`)
 
 Ein Lauf je View, Messlogik = scripts/perf.mjs + Renderer-Pflichtfeld im selben JSON
 (`~/tmp/m10-acceptance-refresh-f/perf-f.mjs`):
@@ -57,16 +57,27 @@ Belege: `~/games/.evidence/m10-acceptance-refresh-f/k3-perf-accf-780x360d3.json`
 
 Urteil K3: **PASS** (beide ≥ 55 FPS-Ziel, am 60-Cap; Minute-25-780 +18…+25 % gegen 27.11.-FAIL).
 
-### K4 (2026-11-28, 10:43–10:55Z, fullrun unter `flock /home/ai/games/.lf-perf.lock`)
+### K4 (2026-11-28, 10:18–10:38Z, fullrun unter `flock /home/ai/games/.lf-perf.lock`)
 
 - `npm run fullrun -- --tag accf` und `--tag accf2` (Wiederholung 1): je **6/6 Bosse exakt
   300–1800 s, 6 Truhen, Sieg `dawn`, fpsMin 60,4/60,3, 0 JS-Fehler** — aber
   **Heap-Tor +18,2 % / +20,8 % > +15 %: FAIL (reproduziert)**. Formales Tor-Skript
-  `m10-heap-budget.mjs` crashete mittendrin → UNMESSBAR; fullrun-Beleg verbindlich.
+  `m10-heap-budget.mjs` crashete mittendrin (10:23–10:38Z) → UNMESSBAR; fullrun-Beleg verbindlich.
+  Hinweis (Audit): fullrun-JSON enthält keinen Renderer-String (Skript schreibt keins);
+  iGPU via heap-budget/K3-Läufe auf demselben Host belegt.
 - `ACCEPTANCE.md`: Abschnitt „Nachabnahme F (2026-11-28)“ ergänzt, E-Werte unverändert,
   Abweichungen ≥ 5 % markiert (Tests +18,2 %; Heap-Tor +13,9 % → +18,2/+20,8 %).
 
 Urteil K4: **FAIL (nur Heap-Tor)**; Inhalt/FPS/Truhen/JS-Fehler grün.
+
+## Audit
+
+`acceptance-auditor` (2026-11-28, ses_dde42a5c): **PASS** — alle K-Zahlen gegen die
+JSON-Belege gegengeprüft (inkl. md5-Vergleich Belegkopien vs. shots-Originale), Lane hat
+keinen src-/tests-Code geändert, FAIL korrekt als Blocker geführt. 3 Restmängel
+(Dok-Zeitpunkte, fehlender Renderer-String im fullrun-JSON, K3-Harness-Quirk
+`minute25.passed:false` bei sachlich erfüllten Kriterien) sind in der QA-Doku
+nachgetragen und urteilsändernd nicht.
 
 ## Lane-Ergebnis
 
