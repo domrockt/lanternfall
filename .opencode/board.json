@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10251,
+  "next": 10275,
   "cards": [
     {
       "id": 1,
@@ -13530,6 +13530,48 @@
       ],
       "created": "2026-11-28T08:23:01Z",
       "updated": "2026-11-28T08:40:16Z"
+    },
+    {
+      "id": 10271,
+      "title": "m10-player-swarm-gap K1: Vorher-Baseline (Minute-25-Schwarm, Metrik <8px/p95/Frame-p95)",
+      "description": "Skript scripts/m10-player-gap.mjs (Minute 25, 300-500 Gegner, flock, iGPU, Renderer-String Pflicht). Metriken: Gegner mit Kantenabstand <8px zum Spieler, p95-Kantenabstand, Frame-Zeit p95. JSON nach ~/games/.evidence/m10-player-swarm-gap/m10-player-gap-before.json + Vorher-Shot. Abnahme: JSON committed, Renderer != SwiftShader.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:00:04Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Vorher-Baseline-Skript (Minute-25-Schwarm-Metrik)."
+        }
+      ],
+      "created": "2026-11-28T08:59:58Z",
+      "updated": "2026-11-28T09:00:04Z"
+    },
+    {
+      "id": 10272,
+      "title": "m10-player-swarm-gap K2: Spieler-Ring resolvePlayerGap in src/logic/separation.ts",
+      "description": "Dedizierte Spieler-Abstoß-Regel (Radius/Power klein, deterministisch über feste Reihenfolge + UID-Golden-Angle, Muster resolveBossStackSeparation), Anbindung über SpatialHash-Query um Spielerposition; Spieler bleibt unverrückbar. Minimal-Wiring in Run.ts updateEnemies (~5 Zeilen, mit requests.md-Begründung). Abnahme: tsc rc=0, gegnerische Unterseiten-Separation unverändert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:59:58Z",
+      "updated": "2026-11-28T08:59:58Z"
+    },
+    {
+      "id": 10273,
+      "title": "m10-player-swarm-gap K3: Tests tests/player-swarm-gap.test.ts",
+      "description": "Spieler nie bewegt, Gegner-Kantenabstand >= Mindestrand im Ring, 500 Gegner deterministisch (2 Läufe bitgleich), Gegner ausserhalb des Rings unberührt. Abnahme: npx vitest run tests/player-swarm-gap.test.ts grün, tsc rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:59:58Z",
+      "updated": "2026-11-28T08:59:58Z"
+    },
+    {
+      "id": 10274,
+      "title": "m10-player-swarm-gap K4: Nachher-Messung + Shots + art-director + Lane-Doku",
+      "description": "Nachher-JSON (flock, Renderer-String), Vorher/Nachher <8px-Gegner um >=50% reduziert, identische Kills/XP (nur Abstoß), Frame-p95 <= Vorher+5%, Determinismus bitgleich. Shots shots/abnahme/m10-player-gap-{before,after}.png, art-director-Sichtprüfung >=4/5, docs/lanes/m10-player-swarm-gap.md + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:59:58Z",
+      "updated": "2026-11-28T08:59:58Z"
     }
   ]
 }
