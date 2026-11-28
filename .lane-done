@@ -1,0 +1,30 @@
+# Lane m10-crowd-silhouette-guard — fertig (28.11.2026)
+
+Ziel: die Chaos-Lesbarkeits-Werte der gemergten A10-Lanes als schnelle npm-test-Guards
+gepinnen, bevor die Evo-FX-/Merge-Welle (gen-fx/textures/FxSystem/CombatSystem/Run.ts)
+main umschreibt. Nur neue Dateien; enemySprites.ts/gen-enemies.ts unangetastet.
+
+Commits:
+- 8bc02b33 #10331 K1: scripts/m10-silhouette-guard.mjs — browserfreie Ist-Verifikation
+  (node --experimental-strip-types, Phaser-Stub per Loader-Hook, kein flock).
+- b231f55c #10332 K2: tests/crowd-silhouette-guard.test.ts — 6 harte Metriken.
+- (K3) #10333: docs/lanes/m10-crowd-silhouette-guard.md + .lane-done.
+
+Gepinnte Ist-Werte (Vorher-JSON: ~/games/.evidence/m10-crowd-silhouette-guard/
+m10-silhouette-guard-before.json, Referenz-Commit 8bc02b33):
+- M1 Kontur (30 Archetypen): Rim-Light 69.8 %, Top-Light 100 %, Randkontrast dunkel 78.0 L,
+  unter Schwelle 31.6 %, min Randkontrast je Typ 41.6 (Schranke: > 40 bei allen 30).
+- M2 Elite-Rim: PAL 20, Amber-Edge-Share 1.0 in beiden Posen bei 30/30.
+- M3 Familien: strongFamilies 5 (blau, blut-rot, glut-braun, gruen, hell-neutral)
+  in der 500er-Chaos-Mischung aus docs/lanes/m10-enemy-palette.md.
+- M4 Varianten: 27 gerenderte Typen, Silhouetten bytegleich, min Body-RGB-Distanz 60.4 (>= 60).
+- M5 Idle: 30 Basis-Framesets a 4 Frames + 30 Rim-Framesets a 2 Frames, 0 Duplikate.
+- M6 Tier-Dyes [16,8,19,25,31], min Tier-Zentroid-Distanz 42.5 (Schranke >= 30).
+
+Abnahme: Guard 6/6 gruen in 0.31 s (< 2 s), npm test 1852/1852 gruen (171 Dateien),
+npx tsc --noEmit rc=0, npm run build rc=0. Kontrolleure: reviewer (PASS, siehe Board-Notiz
+#10333). Rebaseline-Verfahren fuer gewollte Aenderungen steht in der Lane-Doku.
+
+Offen (ausserhalb dieser Lane): FX-/Overlay-Ebene (Boss-Ringe, additive Flashes) ist der
+Restpunkt des art-director-Urteils in m10-chaos-silhouettes und liegt in den Dateien der
+Merge-Welle — bewacht diese Lane nicht (Sprite-Ebene only).
