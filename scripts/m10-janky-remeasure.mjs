@@ -117,10 +117,34 @@ const setFpsOption = async (value) => {
     localStorage.setItem(key, JSON.stringify(opts));
   }, { key: OPTIONS_KEY, fps: value });
 };
+// setFpsOption + Reload in einem Schritt (localStorage vor dem Boot setzen).
+const applyFpsOption = async (value) => {
+  await setFpsOption(value);
+  await reloadToTitle();
+};
 
+// Reload mit Reconnect: page.reload kann die CDP-Verbindung kappen
+// (WebView-Relaunch) — dann neu verbinden und Page-Handle frisch holen.
 const reloadToTitle = async () => {
-  await page.reload({ waitUntil: "load" });
-  await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "title", null, { timeout: 30000 });
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      if (!page) await connectSession();
+      await page.reload({ waitUntil: "load" });
+      await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "title", null, { timeout: 30000 });
+      return;
+    } catch (e) {
+      const msg = String(e);
+      if (msg.includes("Target page, context or browser has been closed") || msg.includes("Target closed")) {
+        try { await browser?.close(); } catch { /* schon tot */ }
+        browser = null; page = null;
+        await sleep(2000);
+        await connectSession();
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw new Error("reloadToTitle: 3 Versuche fehlgeschlagen");
 };
 
 const ensureRun = async () => {
@@ -128,15 +152,14 @@ const ensureRun = async () => {
   if (scene === "run") return;
   await reloadToTitle();
   await page.keyboard.press("Enter");
-  await page.waitForFunction(() => window.__lf.state().scene === "charselect", null, { timeout: 10000 });
+  await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "charselect", null, { timeout: 10000 });
   await page.keyboard.press("Enter");
-  await page.waitForFunction(() => window.__lf.state().scene === "run", null, { timeout: 10000 });
+  await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "run", null, { timeout: 10000 });
 };
 
 // Panel-Refresh-Probe: bei BILDRATE=MAX (kein Spiel-Cap) folgt rAF dem Panel.
 const probePanelHz = async () => {
-  await setFpsOption(0); // MAX
-  await reloadToTitle();
+  await applyFpsOption(0); // MAX
   await sleep(1500); // Boot-Effekte abklingen lassen
   const raf = await page.evaluate(async () => {
     const dts = [];
@@ -184,8 +207,7 @@ const latestDevice = Array.isArray(telemetry)
   ? telemetry.find((s) => String(s.renderer || "").includes("Adreno"))
   : null;
 
-await setFpsOption(fpsSetting);
-await reloadToTitle();
+await applyFpsOption(fpsSetting);
 
 // Geraete-Identitaet: Renderer-String + DPR (Pflicht, kein Beleg ohne).
 const device = await page.evaluate(() => {
@@ -228,6 +250,7 @@ const runWindowBody = (topUp, tgt) => page.evaluate(async ({ seconds, topUp, tar
   const dts = [];
   const enemies = [];
   let aborted = false;
+  let lastEnemies = null; // im Promise-Scope gepflegt, nach resolve lesbar
   await new Promise((resolve) => {
     const stats = () => { try { return window.__lf.stats(); } catch { return null; } };
     const tick = (now) => {
@@ -235,7 +258,7 @@ const runWindowBody = (topUp, tgt) => page.evaluate(async ({ seconds, topUp, tar
       if (frames > 0) { worst = Math.max(worst, dt); dts.push(dt); }
       last = now;
       frames++;
-      if (stats() === null || window.__lf?.state?.()?.scene !== "run") { aborted = true; resolve(); return; }
+      if (stats() === null || window.__lf?.state?.()?.scene !== "run") { lastEnemies = stats()?.enemies ?? null; aborted = true; resolve(); return; }
       if (topUp && now - lastSpawn >= 50) {
         lastSpawn = now;
         const active = stats().enemies;
@@ -256,7 +279,7 @@ const runWindowBody = (topUp, tgt) => page.evaluate(async ({ seconds, topUp, tar
     frames,
     elapsedMs: Math.round(elapsed),
     worstFrameMs: Math.round(worst * 10) / 10,
-    avgEnemies: enemies.length ? Math.round(enemies.reduce((a, b) => a + b, 0) / enemies.length) : (topUp ? null : (stats()?.enemies ?? null)),
+    avgEnemies: enemies.length ? Math.round(enemies.reduce((a, b) => a + b, 0) / enemies.length) : (topUp ? null : lastEnemies),
     p50: pct(0.5), p90: pct(0.9), p95: pct(0.95), p99: pct(0.99),
     aborted,
   };
