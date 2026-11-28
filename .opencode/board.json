@@ -12038,16 +12038,21 @@
       "id": 9567,
       "title": "m10-gamepad-stick-feel K4: After-Messung + Doku + Lane-Abschluss",
       "description": "After-Lauf des Mess-Skripts, Vergleich gegen Before-Baseline, docs/lanes/m10-gamepad-stick-feel.md (Zahlen vorher/nachher), npm test + build grün, .lane-done. AK: Fehlbewegungs-Quote < 5 % bei Rauschen, 0 Events im Stillstand.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:25:51Z",
           "by": "build",
           "text": "todo → doing: K4 gestartet: After-Messung + Doku + .lane-done"
+        },
+        {
+          "at": "2026-11-28T07:27:28Z",
+          "by": "build",
+          "text": "doing → done: K4 fertig: Commit f263384. Abnahme PASS: Fehlbewegungs-Quote 0 % < 5 %, 0 Events im Stillstand, 0 Doppel-Events, npm test 1668/1668 + build gruen. Belege ~/games/.evidence/m10-gamepad-stick-feel/, Doku docs/lanes/m10-gamepad-stick-feel.md. .lane-done committet — Lane abgeschlossen."
         }
       ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:25:51Z"
+      "updated": "2026-11-28T07:27:28Z"
     }
   ]
 }
