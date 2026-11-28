@@ -53,6 +53,37 @@ export async function loadPlaywright() {
   }
 }
 
+// M10-android-proxy-gate (K1): optionaler Android-Ersatztest nach Regel 9 aus
+// Wissen/Android-Optimierung-Praxis.md — Playwright-Geräteprofil "Galaxy Tab
+// S4 landscape" (1138x712 CSS, dpr 2.25, Touch) plus CDP-CPU-Drosselung um
+// Faktor 4. Fängt CPU-/GC-Probleme und Regressionen im Harness; ersetzt das
+// echte Gerät NICHT (GPU, Thermik, Treiber) — echte Freigabe = Geräte-Telemetrie.
+export const ANDROID_PROXY_DEVICE = "Galaxy Tab S4 landscape";
+export const ANDROID_PROXY_THROTTLE_RATE = 4;
+
+/**
+ * Öffnet einen Browser-Kontext im Android-Ersatzprofil und drosselt die CPU
+ * per CDP. Bestehende Aufrufer (perf.mjs & Co.) bleiben unverändert — der
+ * Helfer ist rein optional:
+ *
+ *   const { context, page } = await androidProxyContext(browser);
+ *
+ * Liefert { context, page, cdp, device }. Der Aufrufer schließt context/page.
+ */
+export async function androidProxyContext(browser) {
+  const pw = await loadPlaywright();
+  const devices = pw.devices ?? browser.browserType().devices;
+  const device = devices?.[ANDROID_PROXY_DEVICE];
+  if (!device) {
+    throw new Error(`androidProxyContext: Gerät "${ANDROID_PROXY_DEVICE}" fehlt in den Playwright-Devices`);
+  }
+  const context = await browser.newContext({ ...device });
+  const page = await context.newPage();
+  const cdp = await context.newCDPSession(page);
+  await cdp.send("Emulation.setCPUThrottlingRate", { rate: ANDROID_PROXY_THROTTLE_RATE });
+  return { context, page, cdp, device };
+}
+
 export async function waitForScene(page, scene, timeout = 8000) {
   await page.waitForFunction(
     (s) => window.__lf && window.__lf.state().scene === s,

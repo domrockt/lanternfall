@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10565,
+  "next": 10628,
   "cards": [
     {
       "id": 1,
@@ -13893,6 +13893,42 @@
       ],
       "created": "2026-11-28T08:59:58Z",
       "updated": "2026-11-28T09:12:24Z"
+    },
+    {
+      "id": 10625,
+      "title": "m10-android-proxy-gate K1: androidProxyContext() im Harness",
+      "description": "scripts/harness.mjs: optionaler Helfer androidProxyContext(browser) = Playwright devices[\"Galaxy Tab S4 landscape\"] + CDP Emulation.setCPUThrottlingRate {rate:4}; bestehende Aufrufer unverändert. Abnahme: Helfer exportiert, vorhandene Skripte (perf.mjs etc.) unverändert, tsc/build grün.",
+      "column": "doing",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:41:20Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet; androidProxyContext() in scripts/harness.mjs"
+        }
+      ],
+      "created": "2026-11-28T09:41:15Z",
+      "updated": "2026-11-28T09:41:20Z"
+    },
+    {
+      "id": 10626,
+      "title": "m10-android-proxy-gate K2: android-proxy.mjs + Baseline",
+      "description": "scripts/android-proxy.mjs: Lauf mit 2 Charakteren (mira/kael) je 6 Evolutionen bis Minute 10 im Zeitraffer, dann 60 s Echtzeit-Messung bei Minute-25-Dichte; schreibt fps p5/Median, frame p95, quality-Stufe (LOD), JS-Heap, Renderer-String → shots/m10-android-proxy-<tag>.json. Baseline messen (flock) und committen; 2 Läufe, Median-Abweichung < 10 %; 0 JS-Fehler.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-28T09:41:15Z",
+      "updated": "2026-11-28T09:41:15Z"
+    },
+    {
+      "id": 10627,
+      "title": "m10-android-proxy-gate K3: Proxy-Doku für Perf-Lanes",
+      "description": "docs/lanes/m10-android-proxy-gate.md: wie jede Perf-Lane den Proxy vorher/nachher nutzt; Grenzen ehrlich benennen (Geräte-Telemetrie = Wahrheit, kein GPU-/Thermik-Ersatz). Abnahme: Doku commitet, Baseline-Werte referenziert.",
+      "column": "todo",
+      "assignee": "engine-dev",
+      "notes": [],
+      "created": "2026-11-28T09:41:15Z",
+      "updated": "2026-11-28T09:41:15Z"
     }
   ]
 }
