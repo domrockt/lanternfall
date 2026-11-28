@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8662,
+  "next": 8738,
   "cards": [
     {
       "id": 1,
@@ -8951,17 +8951,32 @@
       "id": 7327,
       "title": "m10-crowd-variety Follow-up: Variantenton skeleton/centipede/harpy kräftiger trennen",
       "description": "art-director-Abnahme 4,4/5 (PASS), nicht blockierend: Varianten von skeleton (Lum-Distanz 29,9), centipede (25,9), harpy (28,6) sind Weiß-auf-Weiß-Rampenstufen und im 1x-Chaos grenzwertig. Variantenton kräftiger trennen.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "merge",
       "notes": [
         {
           "at": "2026-11-28T01:10:51Z",
           "by": "build",
           "text": "lane #6403, Merge 6944f5d — Backlog-Follow-up aus Lane übernommen"
+        },
+        {
+          "at": "2026-11-28T05:32:25Z",
+          "by": "build",
+          "text": "backlog → doing: Lane uebernimmt #7327 (K1 Vorher-Messung Variantenton)"
+        },
+        {
+          "at": "2026-11-28T06:06:08Z",
+          "by": "build",
+          "text": "K1-K4 erledigt: Vorher-Befund (21/30 Paare rgbDist<60, Commit c061e61), Suchlauf+Tabelle+Guard-Test (d4b35c5), After-Messung+Doku (987db31). min rgbDist 60.8 (Ziel 60), alle schwachen Paare +43..+1258%. Build rc=0, 1504/1504 Tests gruen. Warte auf art-director-Urteil (>=4/5), dann done."
+        },
+        {
+          "at": "2026-11-28T06:08:06Z",
+          "by": "build",
+          "text": "doing → done: K1-K4 fertig, Commits c061e61 (K1 Vorher), d4b35c5 (K2/K3 Suchlauf+Guard), 987db31 (K4 After), 2cdf588 (Urteil+.lane-done). min rgbDist 60.8 (Ziel 60), schwache Paare +43..+1258%, art-director PASS 4/5, 1504/1504 Tests + Build gruen."
         }
       ],
       "created": "2026-11-28T01:10:42Z",
-      "updated": "2026-11-28T01:10:51Z"
+      "updated": "2026-11-28T06:08:06Z"
     },
     {
       "id": 7358,
@@ -10982,16 +10997,21 @@
       "id": 8598,
       "title": "m10-boss-portrait-crisp K1: Before-Kontaktbögen 6 Bosse 1x+4x + Mängelliste",
       "description": "Owner: pixel-artist. AK: shots/m10-boss-portrait-before-*.png (je Boss 3 Frames 1x + 4x), Mängelliste je Boss max. 3 Muss-Punkte (Konturen, Silhouetten-Lesbarkeit, Lichtkanten), Baseline-JSON (Off-Palette, Silhouetten-Kontrast). Belege im Commit.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T04:32:17Z",
           "by": "build",
           "text": "todo → doing: Start K1: Kontaktbogen-Skript scripts/m10-boss-portrait.mjs, Before-Shots + Baseline-JSON."
+        },
+        {
+          "at": "2026-11-28T05:32:25Z",
+          "by": "build",
+          "text": "doing → todo: nicht Teil dieser Lane (m10-crowd-variant-tone) — Supervisor-Anweisung 28.11., zurueckgestellt"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:17Z"
+      "updated": "2026-11-28T05:32:25Z"
     },
     {
       "id": 8599,
@@ -11012,16 +11032,21 @@
       "id": 8600,
       "title": "m10-boss-portrait-crisp K3: Guard-Test boss-portrait-crisp.test.ts",
       "description": "Owner: test-auditor. AK: tests/boss-portrait-crisp.test.ts (6/6 Bosse, 0 Off-Palette-Pixel, Silhouetten-Kontrast >= Vorher, keine Frame-Dubletten) grün; npm test bleibt grün.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T04:58:15Z",
           "by": "build",
           "text": "todo → doing: Start K3: Guard-Test liegt vor, 5/5 grün auf Baseline und nach K2; Commit folgt."
+        },
+        {
+          "at": "2026-11-28T05:32:25Z",
+          "by": "build",
+          "text": "doing → todo: nicht Teil dieser Lane (m10-crowd-variant-tone) — Supervisor-Anweisung 28.11., zurueckgestellt"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:58:15Z"
+      "updated": "2026-11-28T05:32:25Z"
     },
     {
       "id": 8601,
@@ -11131,16 +11156,21 @@
       "id": 8606,
       "title": "m10-boss-lure-fair K1: Vorher-Beleg 6 Bosse x 3 Seeds",
       "description": "Skript scripts/m10-boss-fair.mjs: 6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 s Sim je Boss. Misst Distanz zum Spieler, Distanz zur Spawn-Zone (Leash), Sichtbarkeit im View, Schadensereignisse ohne vorherige Sichtbarkeit. Output shots/m10-bossfair-before.json. Abnahme: JSON committed, Kennzahlen (offscreenAnteil, maxLeashAbweichung, Schaden-ohne-Sicht) je Boss/Seed.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T03:33:39Z",
           "by": "build",
           "text": "todo → doing: Vorher-Beleg: Mess-Skript + Baseline-Lauf 6 Bosse x 3 Seeds"
+        },
+        {
+          "at": "2026-11-28T05:32:25Z",
+          "by": "build",
+          "text": "doing → todo: nicht Teil dieser Lane (m10-crowd-variant-tone) — Supervisor-Anweisung 28.11., zurueckgestellt"
         }
       ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:39Z"
+      "updated": "2026-11-28T05:32:25Z"
     },
     {
       "id": 8607,
