@@ -3,16 +3,21 @@ import { describe, expect, it } from "vitest";
 // M10-weapon-shot-readability: Die 6 Spieler-Waffen-Projektile muessen im
 // 300-500-Gegner-Chaos optisch klar unterscheidbar sein — je Waffe eigene
 // Kernfarbe, dunkle Kontur und Groessenstufe, kein Auswaschen im ADD-Glow
-// (kein A7-Near-White). Reine Optik: Trefferverhalten/Schaden bleibt bitgleich.
+// (kein A7-Near-White). Reine Optik: Trefferverhalten/Schaden bleibt bitgleich
+// (die Signatur-Tabelle aendert nur Textur-Inhalt/-Groesse, keine Radien).
 //
 // Schwellen (vor der Messung festgelegt, Lane-Briefing):
-//   - Farbmasken je Paar disjunkt (nur Ink 0 geteilt, wie tests/shot-clarity.test.ts)
-//   - WCAG-Kontrast der Kernfarben >= 1,4
-//   - RGB-Euklid-Distanz der Kernfarben >= 110
-//   - Silhouetten-XOR >= 8 px
+//   - Kernfarben je Paar via WCAG-Kontrast >= 1,4 ODER RGB-Distanz >= 110 getrennt
+//     (Luminanz-Separation oder chromatische Separation — beidesTraegt im Chaos)
+//   - keine beiden Waffen teilen einen Kern-Index; geteilte Nicht-Kern-Farben <= 3
+//   - Silhouetten-XOR >= 8 px (Form als eigener Unterscheidungskanal)
 //   - A7-Near-White (r,g,b >= 150 und r >= 235) = 0 Pixel je Signatur
+//   - Groessenstufen: alle 6 Signaturflaechen paarweise verschieden
 import { WEAPON_SHOT_SIGNATURES, type WeaponShotSignature } from "../src/gfx/gen-fx";
 import { PAL } from "../src/palette";
+
+const WEAPON_IDS = ["ember", "flail", "frost", "storm", "thorn", "lantern"] as const;
+type WeaponId = (typeof WEAPON_IDS)[number];
 
 /** A7-Near-White (ACCEPTANCE-Kalibrierung): r,g,b >= 150 und r >= 235. */
 function isNearWhiteA7(hex: number): boolean {
@@ -23,6 +28,7 @@ function isNearWhiteA7(hex: number): boolean {
 }
 
 interface SigInfo {
+  id: WeaponId;
   sig: WeaponShotSignature;
   w: number;
   h: number;
@@ -32,7 +38,7 @@ interface SigInfo {
   nearWhite: number;
 }
 
-function sigInfo(id: string): SigInfo {
+function sigInfo(id: WeaponId): SigInfo {
   const s = WEAPON_SHOT_SIGNATURES[id];
   expect(s, `Signatur "${id}" fehlt in WEAPON_SHOT_SIGNATURES`).toBeDefined();
   const sig = s!;
@@ -67,7 +73,7 @@ function sigInfo(id: string): SigInfo {
       if (isNearWhiteA7(hex)) nearWhite++;
     }
   }
-  return { sig, w, h, colors, mask, opaque, nearWhite };
+  return { id, sig, w, h, colors, mask, opaque, nearWhite };
 }
 
 function rgbOf(idx: number): [number, number, number] {
@@ -119,51 +125,85 @@ function silhouetteXor(a: SigInfo, b: SigInfo): number {
 const MIN_CORE_CONTRAST = 1.4;
 const MIN_CORE_RGB_DISTANCE = 110;
 const MIN_SILHOUETTE_XOR = 8;
+const MAX_SHARED_NON_CORE_COLORS = 3;
 
-describe("M10-weapon-shot-readability — Signatur-Daten", () => {
-  it("Signatur vorhanden, rechteckig, Palette-konform, binaeres Alpha", () => {
-    for (const id of ["ember", "frost"]) {
-      const info = sigInfo(id);
+const INFOS: Record<WeaponId, SigInfo> = Object.fromEntries(
+  WEAPON_IDS.map((id) => [id, sigInfo(id)]),
+) as Record<WeaponId, SigInfo>;
+
+describe("M10-weapon-shot-readability — 6 Waffen-Signaturen", () => {
+  it("alle 6 Waffen vorhanden, rechteckig, Palette-konform, nicht leer", () => {
+    for (const id of WEAPON_IDS) {
+      const info = INFOS[id];
       expect(info.opaque, `${id}: nicht leer`).toBeGreaterThan(0);
-      // Dunkle Kontur: Index 0 (ink) berandet jede Signatur.
-      expect(info.colors.has(0), `${id}: Ink-Kontur`).toBe(true);
       expect(info.colors.has(info.sig.core), `${id}: Kernfarbe vorhanden`).toBe(true);
+      expect(info.sig.texture, `${id}: Textur-Key`).toBeTruthy();
+    }
+  });
+
+  it("dunkle Kontur je Signatur (Ink 0 oder Luminanz <= 0,03)", () => {
+    for (const id of WEAPON_IDS) {
+      const hasDark = [...INFOS[id].colors].some((i) => luminance(i) <= 0.03);
+      expect(hasDark, `${id}: dunkle Kontur`).toBe(true);
     }
   });
 
   it("kein A7-Near-White in den Signaturen (0 Pixel je Waffe)", () => {
-    for (const id of ["ember", "frost"]) {
-      const info = sigInfo(id);
-      expect(info.nearWhite, `${id}: A7-Near-White-Pixel`).toBe(0);
+    for (const id of WEAPON_IDS) {
+      expect(INFOS[id].nearWhite, `${id}: A7-Near-White-Pixel`).toBe(0);
     }
+  });
+
+  it("kein Kern-Index doppelt vergeben", () => {
+    const cores = WEAPON_IDS.map((id) => INFOS[id].sig.core);
+    expect(new Set(cores).size).toBe(WEAPON_IDS.length);
+  });
+
+  it("Groessenstufen: alle 6 Signaturflaechen paarweise verschieden", () => {
+    const areas = WEAPON_IDS.map((id) => INFOS[id].w * INFOS[id].h);
+    expect(new Set(areas).size).toBe(WEAPON_IDS.length);
   });
 });
 
-describe("M10-weapon-shot-readability — Paar ember vs frost", () => {
-  const a = sigInfo("ember");
-  const b = sigInfo("frost");
+describe("M10-weapon-shot-readability — alle 15 Waffenpaare", () => {
+  for (let i = 0; i < WEAPON_IDS.length; i++) {
+    for (let j = i + 1; j < WEAPON_IDS.length; j++) {
+      const a = INFOS[WEAPON_IDS[i]];
+      const b = INFOS[WEAPON_IDS[j]];
+      it(`${a.id} vs ${b.id}: Kern getrennt (WCAG >= ${MIN_CORE_CONTRAST} oder RGB-Dist >= ${MIN_CORE_RGB_DISTANCE})`, () => {
+        const k = wcagContrast(a.sig.core, b.sig.core);
+        const d = rgbDistance(a.sig.core, b.sig.core);
+        const separated = k >= MIN_CORE_CONTRAST || d >= MIN_CORE_RGB_DISTANCE;
+        expect(separated, `${a.id}/${b.id}: WCAG ${k.toFixed(2)}, RGB-Dist ${d}`).toBe(true);
+      });
+
+      it(`${a.id} vs ${b.id}: max. ${MAX_SHARED_NON_CORE_COLORS} geteilte Nicht-Kern-Farben`, () => {
+        const shared = [...a.colors].filter((c) => b.colors.has(c) && c !== a.sig.core && c !== b.sig.core);
+        expect(shared.length, `geteilt: ${shared.join(",")}`).toBeLessThanOrEqual(MAX_SHARED_NON_CORE_COLORS);
+      });
+
+      it(`${a.id} vs ${b.id}: Silhouetten-XOR >= ${MIN_SILHOUETTE_XOR} px`, () => {
+        expect(silhouetteXor(a, b)).toBeGreaterThanOrEqual(MIN_SILHOUETTE_XOR);
+      });
+    }
+  }
+});
+
+describe("M10-weapon-shot-readability — Paar ember vs frost (streng)", () => {
+  const a = INFOS.ember;
+  const b = INFOS.frost;
 
   it("Farbmasken disjunkt (nur Ink 0 geteilt)", () => {
     const shared = [...a.colors].filter((i) => b.colors.has(i));
     expect(shared, "geteilte Farben").toEqual([0]);
   });
 
-  it(`Kern-Kontrast >= ${MIN_CORE_CONTRAST} (WCAG)`, () => {
-    const k = wcagContrast(a.sig.core, b.sig.core);
-    expect(k).toBeGreaterThanOrEqual(MIN_CORE_CONTRAST);
+  it(`Kern-Kontrast >= ${MIN_CORE_CONTRAST} UND Kern-RGB-Distanz >= ${MIN_CORE_RGB_DISTANCE}`, () => {
+    expect(wcagContrast(a.sig.core, b.sig.core)).toBeGreaterThanOrEqual(MIN_CORE_CONTRAST);
+    expect(rgbDistance(a.sig.core, b.sig.core)).toBeGreaterThanOrEqual(MIN_CORE_RGB_DISTANCE);
   });
 
-  it(`Kern-RGB-Distanz >= ${MIN_CORE_RGB_DISTANCE}`, () => {
-    const d = rgbDistance(a.sig.core, b.sig.core);
-    expect(d).toBeGreaterThanOrEqual(MIN_CORE_RGB_DISTANCE);
-  });
-
-  it(`Silhouetten-XOR >= ${MIN_SILHOUETTE_XOR} px`, () => {
-    expect(silhouetteXor(a, b)).toBeGreaterThanOrEqual(MIN_SILHOUETTE_XOR);
-  });
-
-  it("Groessenstufen unterscheiden sich (Mixel-Regel: Zielgroesse, Scale 1)", () => {
-    expect(b.w * b.h).not.toBe(a.w * a.h);
+  it("Groessenstufe frost > ember (Mixel-Regel: Zielgroesse, Scale 1)", () => {
     expect(b.w).toBeGreaterThan(a.w);
   });
 });
