@@ -17,6 +17,26 @@ nicht zum Karten-Plan dieser Lane und wurden auf Supervisor-Anweisung aus
 `doing` zurueck ins `backlog` verschoben (fremde Lanes, WIP-Grenze).
 Diese Lane haelt strikt eine Karte in `doing`: #8798 (K1).
 
+## K2 — Vorher/Nachher-Shots (#8799)
+
+`scripts/m10-props-wiring.mjs` (vor dem ersten Lauf eingefroren, identischer
+Aufruf fuer beide Tags): seed 7, debug-Run, god+autoPlay; Abschnitte frueh
+(~45 s) und Chaos (21:30 via `skipTo(1290)`, bossenfrei). Je Tag 4 Shots:
+`-early-1x`/`-chaos-1x` (640x360) und `-early-3x`/`-chaos-3x` (260x120-Crop,
+`convert -sample 300%` = nearest 3x -> 780x360, unverzerrt).
+
+- Vorher (ohne Patch): `shots/m10-props-wiring-before-{early,chaos}-{1x,3x}.png`
+  + `before.json` — Boden wiederholt denselben 26x20-Findling
+  (Split 161/0/0, Top 22,9 %/21,9 %).
+- Nachher (mit Patch): `shots/m10-props-wiring-after-{early,chaos}-{1x,3x}.png`
+  + `after.json` — flache/spitze Findlinge, Wirbelsaeulen-/Gebein-Haufen,
+  krummes Schilf, abgebrochene Laternen sichtbar gemischt; alle 6 Varianten
+  im Zaehler (siehe K1-Tabelle), jsErrors: [].
+
+Sichtpruefung: Chaos-3x zeigt Formvielfalt bei gleicher Platzierungsdichte;
+Boss-Banner (Glockenturm-Golem) verdeckt nur die Bildmitte, Randbereiche
+belegen die Vielfalt.
+
 ## K1 — Patch einarbeiten (#8798, Commit M10-m10-props-wiring #8798)
 
 Der in `docs/lanes/m10-props-variety.md` (Karte 2, offener Punkt) dokumentierte
