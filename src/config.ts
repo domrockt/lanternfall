@@ -20,10 +20,14 @@ import {
   parseRenderScaleOverride,
 } from "./logic/scale";
 import {
+  THERMAL_WINDOW_MS,
+  evaluateThermalStep,
   initialQualityState,
+  initialThermalState,
   stepQuality,
   type QualityState,
   type QualityTier,
+  type ThermalState,
 } from "./logic/quality";
 
 /**
@@ -43,6 +47,55 @@ export let RENDER_SCALE = RENDER_SCALE_MIN;
  * Aenderungen sofort (FxSystem/DamageNumbers lesen die Deckel je Frame).
  */
 export let QUALITY: QualityTier = "high";
+
+/**
+ * m10-thermal-wiring K2: Aufrufer-Seite des thermischen Guards. Die Serie der
+ * FPS-Median-Bewertung fuehrt der AUFRUFER (1-Hz-Samples über THERMAL_WINDOW_MS
+ * = 8 s, siehe src/logic/quality.ts THERMAL_WINDOW_MS); hier der Ringfenster-
+ * Schritt als reine Funktion (in Vitest getestet).
+ */
+export interface FpsSampleState {
+  /** 1-Hz-Samples von fpsEwma, Laenge ≤ round(THERMAL_WINDOW_MS/1000). */
+  serie: number[];
+  /** Akkumulierte ms bis zum naechsten 1-Hz-Sample. */
+  acc: number;
+}
+
+export function pushFpsSample(
+  serie: readonly number[],
+  acc: number,
+  dtMs: number,
+  fpsEwma: number,
+  windowMs: number = THERMAL_WINDOW_MS,
+): FpsSampleState {
+  const out = serie.slice();
+  let next = acc;
+  const dt = Number.isFinite(dtMs) && dtMs > 0 ? dtMs : 0;
+  if (dt > 0) {
+    next += dt;
+    if (next >= 1000) {
+      out.push(Number.isFinite(fpsEwma) ? fpsEwma : 0);
+      // Neu beginnen (nicht -= 1000): auch ein Riesen-Delta ergibt genau
+      // EIN Sample und das Fenster startet sauber neu.
+      next = 0;
+      const max = Math.max(1, Math.round(windowMs / 1000));
+      while (out.length > max) out.shift();
+    }
+  }
+  return { serie: out, acc: next };
+}
+
+/**
+ * Effektive Qualitaetsstufe: aktivierter thermischer Guard uebersteuert die
+ * Basis-Stufe. ENGSTELLE (Bedarfsmeldung requests.md, 2026-11-28): zur
+ * Laufzeit deckt qualityBudgetFor("thermal") das Budget voll ab, aber die
+ * Cap-Wrapper (glowEnabledFor, glowAreaCapForQuality, damageLabelCapForQuality,
+ * audioBudgetFor, …) deklarieren noch `QualityTier`. Der Cast ist dokumentiert
+ * und entfaellt mit der Signatur-Erweiterung QualityTier → ThermalTier.
+ */
+export function effectiveQuality(baseTier: QualityTier, thermal: ThermalState): QualityTier {
+  return thermal.active ? ("thermal" as QualityTier) : baseTier;
+}
 
 export function setRenderScale(scale: number): number {
   RENDER_SCALE = Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(scale)));
@@ -155,6 +208,11 @@ function enforceCameraProjection(game: BudgetGame, scale: number): void {
 function installRenderBudget(): void {
   if (typeof window === "undefined" || typeof document === "undefined") return;
   let qState: QualityState = initialQualityState();
+  // m10-thermal-wiring K2: Zustand des thermischen Guards + seine 1-Hz-
+  // Median-Serie (der Aufrufer fuehrt die Serie, siehe THERMAL_WINDOW_MS).
+  let thermalState: ThermalState = initialThermalState();
+  let fpsSerie: number[] = [];
+  let sampleAcc = 0;
   let applied = -1;
   let lastNow = 0;
   // Eigener FPS-EWMA aus den rAF-Deltas. Phaser loop.actualFps ist pro Sekunde
@@ -191,6 +249,11 @@ function installRenderBudget(): void {
       const instant = 1000 / dt;
       fpsEwma = fpsEwma === 0 ? instant : fpsEwma * 0.9 + (instant * 0.1);
     }
+    // m10-thermal-wiring K2: 1-Hz-Samples in das Median-Ringfenster
+    // (THERMAL_WINDOW_MS = 8 s) — die Serie fuehrt der Aufrufer.
+    const sample = pushFpsSample(fpsSerie, sampleAcc, dt, fpsEwma);
+    fpsSerie = sample.serie;
+    sampleAcc = sample.acc;
 
     const forced = forcedRenderScale();
     if (forced !== null) {
@@ -207,12 +270,18 @@ function installRenderBudget(): void {
     }
     // K3: Qualitaetsstufen-Regler (Hysterese) statt Aufloesungsregler.
     qState = stepQuality(qState, fpsEwma, dt);
-    QUALITY = qState.tier;
+    // m10-thermal-wiring K2: thermischer Guard NUR ab Basis-Stufe "low"
+    // (Definition "trotz LOW-Stufe"), engage nach THERMAL_HOLD_MS; die tier-
+    // Synchronisation folgt dem Basis-Regler. Engage → QUALITY = "thermal",
+    // Budget greift automatisch über qualityBudgetFor (alle Cap-Helfer).
+    thermalState = evaluateThermalStep(fpsSerie, { ...thermalState, tier: qState.tier }, dt);
+    QUALITY = effectiveQuality(qState.tier, thermalState);
     const d2 = (window as unknown as { __rbDbg?: Record<string, unknown> }).__rbDbg;
     if (d2) {
       d2.fps = fpsEwma;
       d2.quality = qState.tier;
       d2.qualityState = qState;
+      d2.thermalState = thermalState;
       d2.afterW = game.canvas.width;
     }
   };

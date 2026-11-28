@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11748,
+  "next": 11752,
   "cards": [
     {
       "id": 1,
@@ -16043,6 +16043,86 @@
       ],
       "created": "2026-11-28T10:43:28Z",
       "updated": "2026-11-28T10:58:33Z"
+    },
+    {
+      "id": 11748,
+      "title": "m10-thermal-wiring #11678 K1: Stand prüfen (Merge, tick()-Ort)",
+      "description": "Prüfe, ob merge-m10-quality-thermal-guard in main ist (evaluateThermalStep in src/logic/quality.ts) und wo tick() liegt (config.ts vs Run.ts). Abnahme: Befund in docs/lanes/m10-thermal-wiring.md; falls tick() in Run.ts: nur config-Teil + Bedarfsmeldung.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:44:12Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:44:54Z",
+          "by": "build",
+          "text": "doing → done: Befund: Merge in main, tick() in config.ts, kein Run.ts-Teil; Typ-Lücke Cap-Wrapper als Folgekarte. Commit f029b5ee"
+        }
+      ],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:44:54Z"
+    },
+    {
+      "id": 11749,
+      "title": "m10-thermal-wiring #11679 K2: thermal-Verdrahtung in src/config.ts",
+      "description": "Im tick() von config.ts: FPS-Serie (1 Hz, THERMAL_WINDOW_MS) führen, thermalState mitführen, nach stepQuality evaluateThermalStep aufrufen, engage → QUALITY='thermal', __rbDbg.thermalState. Werte aus docs/lanes/m10-quality-thermal-guard.md, keine Duplikate (Import aus logic/quality). Abnahme: npx tsc --noEmit grün, npm run build grün, Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:44:54Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:46:20Z",
+          "by": "build",
+          "text": "doing → done: Verdrahtung in config.ts commit 7ed715cf: tsc+build grün, 53 Bestandstests grün; Cast-Engstelle dokumentiert + Bedarfsmeldung folgt in K4"
+        }
+      ],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:46:20Z"
+    },
+    {
+      "id": 11750,
+      "title": "m10-thermal-wiring #11680 K3: Guard-Test tests/thermal-wiring.test.ts",
+      "description": "Tests: Config-Werte konsistent (Monotonie THERMAL_FPS < QUALITY_LOW_FPS, THERMAL_WINDOW_MS < THERMAL_HOLD_MS < THERMAL_RECOVERY_MS, THERMAL_BUDGET strikt unter low), Verdrahtung gepinnt (Import-Pfad logic/quality, evaluateThermalStep genau 1x, keine THERMAL-Konstanten-Duplikate in config.ts). Abnahme: npx vitest run tests/thermal-wiring.test.ts grün, npm test grün, Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:46:20Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:54:21+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11750, Merge branch m10-thermal-wiring (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:46:20Z"
+    },
+    {
+      "id": 11751,
+      "title": "m10-thermal-wiring #11681 K4: Doku + .lane-done",
+      "description": "Lane-Doku finalisieren (Werte belegt aus Quelldoku, offener Rest: Cap-Wrapper-Signaturen QualityTier→ThermalTier als Bedarfsmeldung in .dispatch/requests.md, falls nötig), git status --ignored prüfen, .lane-done anlegen und committen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:48:50Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:54:21+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11751, Merge branch m10-thermal-wiring (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:48:50Z"
     }
   ]
 }
