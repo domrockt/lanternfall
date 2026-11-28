@@ -51,6 +51,15 @@ function ensureGlyph(scene: Phaser.Scene, color: number, ch: string): void {
 export type TextAlign = "left" | "center" | "right";
 
 /**
+ * m10-loading-screen K2: waermt Glyphen vor (Loading-Warmup), damit
+ * PixelText.setText im Spiel nie lazy eine Textur erzeugt. Ruft exakt den
+ * gleichen Pfad wie der Laufzeit-Fall (ensureGlyph, Baked-Atlas-Registrierung).
+ */
+export function warmGlyphs(scene: Phaser.Scene, colorIndex: number, chars: Iterable<string>): void {
+  for (const ch of chars) ensureGlyph(scene, colorIndex, ch);
+}
+
+/**
  * Crisper Pixel-Text: ein 5x7-Glyphen-Sprite pro Zeichen, aus dem Object-Pool
  * der Container-Kinder wiederverwendet. Farben sind exakt Palettenindizes.
  */

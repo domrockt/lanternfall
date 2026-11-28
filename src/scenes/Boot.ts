@@ -2,10 +2,11 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { GAME_WIDTH, GAME_HEIGHT } from "../config";
 import { PixelText } from "../gfx/font";
-import { addGridTexture, createAllTextures, createLightTexture, createVignetteTexture } from "../gfx/textures";
+// m10-loading-screen: Boot erzeugt nur noch Titel-Texturen; alles weitere
+// uebernimmt die Loading-Szene (Warmup). createAllTextures entfaellt hier.
+import { addGridTexture, createLightTexture, createVignetteTexture } from "../gfx/textures";
 import { GEN_TITLE } from "../gfx/gen-title";
 import { GEN_UI } from "../gfx/gen-ui";
-import { buildRuntimeAtlas } from "../gfx/atlas";
 import { seedFromUrl, hasFlag } from "../logic/rng";
 import { AudioSystem, initAudio } from "../audio/AudioSystem";
 
@@ -16,7 +17,12 @@ import { AudioSystem, initAudio } from "../audio/AudioSystem";
 /** GEN_UI-Keys, die die Titel-Szene zeichnet (Menü-Rahmen + Logo). */
 const TITLE_UI_KEYS = ["ui_frame", "title_logo"] as const;
 
-function createTitleTextures(scene: Phaser.Scene): void {
+/**
+ * m10-loading-screen K2: von src/gfx/warmup.ts importiert (title-textures-Chunk),
+ * damit der Loading-Warmup exakt denselben Titel-Textur-Stand erzeugt wie der
+ * fruehere Boot-Schnellpfad.
+ */
+export function createTitleTextures(scene: Phaser.Scene): void {
   for (const [key, def] of Object.entries(GEN_TITLE)) {
     addGridTexture(scene, key, def.frames[0], def.w, def.h);
   }
@@ -79,35 +85,9 @@ export class Boot extends Phaser.Scene {
     const seed = seedFromUrl();
     const debug = hasFlag("debug");
     mark("titleStart");
-    this.scene.start("title", { seed, debug });
-    this.scheduleWarmup();
-  }
-
-  /**
-   * Warmup hinter dem ersten gerenderten Titel-Frame: Der CREATE-Event der
-   * Title-Szene feuert noch vor dem ersten Rendern (SceneManager.create emittiert
-   * synchron am Ende von scene.create), deshalb läuft der Warmup erst im nächsten
-   * Makro-Task nach CREATE - das ist nach dem Rendern des ersten Titel-Frames
-   * (ein rAF-Frame = ein Task inkl. Render). Zwei Häppchen mit setTimeout(0)
-   * dazwischen, damit der Titel zwischen den Blöcken eingabefähig bleibt.
-   */
-  private scheduleWarmup(): void {
-    const t = timings();
-    const mark = (k: string): void => { t[k] = performance.now(); };
-    const title = this.scene.get("title");
-    // Erster gerendertes Titel-Frame = "Titel sichtbar" (RENDER feuert, nachdem
-    // die Szene gerendert wurde, im Render-Teil des Frames - vor dem Warmup).
-    title.events.once(Phaser.Scenes.Events.RENDER, () => mark("titleRendered"));
-    title.events.once(Phaser.Scenes.Events.CREATE, () => {
-      window.setTimeout(() => {
-        mark("warmStart");
-        createAllTextures(this);
-        mark("warmTexturesDone");
-        window.setTimeout(() => {
-          buildRuntimeAtlas(this);
-          mark("warmDone");
-        }, 0);
-      }, 0);
-    });
+    // m10-loading-screen K2: nicht mehr direkt zum Titel — die Loading-Szene
+    // erzeugt jetzt ALLE Texturen/Atlanten/Glyphen (Haeppchen mit Fortschritt),
+    // waermt die GPU und startet DANACH den Titel (scheduleWarmup entfallen).
+    this.scene.start("loading", { seed, debug });
   }
 }

@@ -127,6 +127,64 @@ export function titleStatsLayout(): TitleStatsLayout {
   };
 }
 
+/**
+ * m10-loading-screen K2: erzeugt die View-abhaengigen Titel-Laufzeit-Texturen
+ * (Kanten-Fuellung, Dim-Lasur, gedimmte Vignette) VOR dem ersten Titel-Frame —
+ * gerufen aus dem Loading-Warmup (src/gfx/warmup.ts). create() ruft dieselbe
+ * Erzeugung (exists-Guards machen beide Wege idempotent); Keys und Pixel sind
+ * identisch zum bisherigen Inline-Code, damit Warmup und Szenen-Start
+ * bitgleich sind. Rueckgabe: das Layout (create() nutzt es zum Zeichnen).
+ */
+export function ensureTitleRuntimeTextures(
+  scene: Phaser.Scene, W: number, H: number,
+): TitleBgLayout {
+  const bgL = titleBgLayout(W, H);
+  const oy = Math.round((H - 270) / 2);
+  if (!scene.textures.exists("title_bg_col_l")) {
+    const src = scene.textures.get("title_background").getSourceImage() as HTMLCanvasElement;
+    const mk = (key: string, x: number, y: number, w: number, h: number): void => {
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      c.getContext("2d")!.drawImage(src, x, y, w, h, 0, 0, w, h);
+      scene.textures.addCanvas(key, c);
+    };
+    mk("title_bg_col_l", 0, 0, 1, 270);
+    mk("title_bg_col_r", 479, 0, 1, 270);
+    mk("title_bg_row_t", 0, 0, 480, 1);
+    mk("title_bg_row_b", 0, 269, 480, 1);
+    mk("title_bg_px_tl", 0, 0, 1, 1);
+    mk("title_bg_px_tr", 479, 0, 1, 1);
+    mk("title_bg_px_bl", 0, 269, 1, 1);
+    mk("title_bg_px_br", 479, 269, 1, 1);
+  }
+  const dimTop = oy + TITLE_DIM_TOP;
+  const dimHoles = lanternGlassHoles(bgL);
+  const dimKey = `title_dim_lasur_${W}x${H}`;
+  if (!scene.textures.exists(dimKey)) {
+    const c = document.createElement("canvas");
+    c.width = W; c.height = TITLE_DIM_HEIGHT;
+    const ctx = c.getContext("2d")!;
+    ctx.globalAlpha = TITLE_DIM_ALPHA;
+    ctx.fillStyle = "#" + PAL[C.nightDeep].toString(16).padStart(6, "0");
+    ctx.fillRect(0, 0, W, 138);
+    ctx.globalAlpha = 1;
+    for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y - dimTop, hole.w, hole.h);
+    scene.textures.addCanvas(dimKey, c);
+  }
+  const vinKey = `title_vignette_dim_${W}x${H}`;
+  if (!scene.textures.exists(vinKey)) {
+    const src = scene.textures.get("vignette").getSourceImage() as HTMLCanvasElement;
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const ctx = c.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(src, 0, 0, src.width, src.height, 0, 0, W, H);
+    for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y, hole.w, hole.h);
+    scene.textures.addCanvas(vinKey, c);
+  }
+  return bgL;
+}
+
 export class Title extends Phaser.Scene {
   private seed = 1;
   private debug = false;
@@ -153,6 +211,10 @@ export class Title extends Phaser.Scene {
     this.buttons = [];
     const W = GAME_WIDTH;
     const H = GAME_HEIGHT;
+    // m10-loading-screen K2: Laufzeit-Texturen (Kanten/Lasur/Vignette-Dim) kommen
+    // aus der gemeinsamen Funktion (Loading-Warmup erzeugt sie vorab; hier laufen
+    // nur die exists-Guards leer durch).
+    const bgL = ensureTitleRuntimeTextures(this, W, H);
     const cx = W / 2;
     const oy = Math.round((H - 270) / 2);
     this.viewW = W;
@@ -166,26 +228,7 @@ export class Title extends Phaser.Scene {
     // Restflaeche schliessen echte Rand-Texel (Kanten-Fuellung) ab.
     // Jeder Teil hat ganzzahlige Texel-Skalierung (keine Sub-Pixel-Kanten) und
     // die Teile kacheln die View lueckenlos (top+270*scale+bottom = H usw.).
-    // Kanten-Texturen (je 1 Texel-Reihe/Spalte des Quellbilds) einmalig erzeugen;
-    // setCrop ist hier unzuverlaessig (Samplet das falsche Texel).
-    const bgL = titleBgLayout(W, H);
-    if (!this.textures.exists("title_bg_col_l")) {
-      const src = this.textures.get("title_background").getSourceImage() as HTMLCanvasElement;
-      const mk = (key: string, x: number, y: number, w: number, h: number): void => {
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        c.getContext("2d")!.drawImage(src, x, y, w, h, 0, 0, w, h);
-        this.textures.addCanvas(key, c);
-      };
-      mk("title_bg_col_l", 0, 0, 1, 270);
-      mk("title_bg_col_r", 479, 0, 1, 270);
-      mk("title_bg_row_t", 0, 0, 480, 1);
-      mk("title_bg_row_b", 0, 269, 480, 1);
-      mk("title_bg_px_tl", 0, 0, 1, 1);
-      mk("title_bg_px_tr", 479, 0, 1, 1);
-      mk("title_bg_px_bl", 0, 269, 1, 1);
-      mk("title_bg_px_br", 479, 269, 1, 1);
-    }
+    // Kanten-Texturen erzeugt ensureTitleRuntimeTextures (oben) vorab.
     const bgBand = (tex: string, sx: number, sy: number, px: number, py: number): void => {
       this.add.image(px, py, tex).setOrigin(0, 0).setDepth(0).setScale(sx, sy);
     };
@@ -240,33 +283,12 @@ export class Title extends Phaser.Scene {
     const dimTop = oy + TITLE_DIM_TOP;
     const dimHoles = lanternGlassHoles(bgL);
     const dimKey = `title_dim_lasur_${W}x${H}`;
-    if (!this.textures.exists(dimKey)) {
-      const c = document.createElement("canvas");
-      c.width = W; c.height = TITLE_DIM_HEIGHT;
-      const ctx = c.getContext("2d")!;
-      ctx.globalAlpha = TITLE_DIM_ALPHA;
-      ctx.fillStyle = "#" + PAL[C.nightDeep].toString(16).padStart(6, "0");
-      ctx.fillRect(0, 0, W, 138);
-      ctx.globalAlpha = 1;
-      for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y - dimTop, hole.w, hole.h);
-      this.textures.addCanvas(dimKey, c);
-    }
     this.add.image(0, dimTop, dimKey).setOrigin(0, 0).setDepth(3);
     // Vignette bleibt Vollbild-Dim (depth 50) — ebenfalls mit denselben
     // Glas-Fenstern (lokale Kopie der Boot-Textur, Boot.ts unangetastet).
     // drawImage auf Zielgroesse WxH erzwungen (Verhalten wie setDisplaySize),
     // imageSmoothingEnabled = false fuer pixelgenaue Bandkanten (NEAREST).
     const vinKey = `title_vignette_dim_${W}x${H}`;
-    if (!this.textures.exists(vinKey)) {
-      const src = this.textures.get("vignette").getSourceImage() as HTMLCanvasElement;
-      const c = document.createElement("canvas");
-      c.width = W; c.height = H;
-      const ctx = c.getContext("2d")!;
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(src, 0, 0, src.width, src.height, 0, 0, W, H);
-      for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y, hole.w, hole.h);
-      this.textures.addCanvas(vinKey, c);
-    }
     this.add.image(cx, H / 2, vinKey).setScrollFactor(0).setDepth(50)
       .setDisplaySize(W, H);
 
