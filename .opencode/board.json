@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12375,
+  "next": 12395,
   "cards": [
     {
       "id": 1,
@@ -16441,8 +16441,14 @@
       "id": 12010,
       "title": "m10-loading-screen K2 Loading-Szene mit Vorab-Erzeugung + GPU-Warmup",
       "description": "Neue Szene 'Loading' (Laterne + Fortschrittsbalken + Hinweis, Pixel-Stil passend zum Titel): erzeugt alles aus K1 in Häppchen (Fortschritt sichtbar), bakt Atlanten, erzeugt alle Glyphen (inkl. ä ö ü ß, Ziffern, Satzzeichen), wärmt GPU (jede Textur/Atlas-Seite einmal offscreen/alpha 0), dann scene.start('title'). main.ts: Loading als erste Szene. Abnahme: build+tsc grün, Fortschritt sichtbar, Titel startet erst nach Warmup. | lane #11470",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:37:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12010, Merge branch m10-frame-tail-followup"
+        }
+      ],
       "created": "2026-11-28T12:24:12Z",
       "updated": "2026-11-28T12:24:12Z"
     },
@@ -16450,8 +16456,14 @@
       "id": 12011,
       "title": "m10-loading-screen K3 Run-Start: CharSelect→Run blendet erst ein, wenn Run aufgebaut ist",
       "description": "Run create() baut vollständig auf (Timer 00:00, Pausen-Block, keine Gegner-Updates), CharSelect-Übergang wartet auf Aufbau, dann kurzer Fade-in und Start; kein sichtbares Nachladen in den ersten Sekunden. Abnahme: erster Run-Frame ohne Pop-in, tsc+Tests grün. | lane #11471",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:37:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12011, Merge branch m10-frame-tail-followup"
+        }
+      ],
       "created": "2026-11-28T12:24:12Z",
       "updated": "2026-11-28T12:24:12Z"
     },
@@ -16459,8 +16471,14 @@
       "id": 12012,
       "title": "m10-loading-screen K4 Belege: Screenshot-Serie + Messung (lokal + CDP/Gerät)",
       "description": "Screenshot-Serie alle 100ms in den ersten 3s nach Titel und Run-Start (Galaxy-Tab-Emulation lokal, CDP gegen laufende APK; Geräte-Brücke als Vorlage). Messen: Zeit bis bereit (<3s Ziel), 0 Pop-in-Frames, erster Run-Frame ohne Ruckler. Belege nach ~/games/.evidence/m10-loading-screen/, Abnahme-Bilder nach shots/abnahme/. Lane-Doku mit Messwerten. | lane #11472",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:37:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12012, Merge branch m10-frame-tail-followup"
+        }
+      ],
       "created": "2026-11-28T12:24:12Z",
       "updated": "2026-11-28T12:24:12Z"
     },
@@ -17105,6 +17123,96 @@
       ],
       "created": "2026-11-28T13:31:06Z",
       "updated": "2026-11-28T13:33:36Z"
+    },
+    {
+      "id": 12391,
+      "title": "m10-frame-tail-followup K1: Merge-Recheck der 3 Reviewer-Befunde",
+      "description": "Prüft, ob die 3 sollte-Befunde aus m10-frame-tail-batching-Review (docs/lanes/m10-frame-tail-batching.md, Abschnitt Review) über die Merges m10-frame-tail-batching + m10-spawn-burst-alloc gelandet sind. Abnahmekriterium: Ergebnis je Befund (gelandet/nicht gelandet, Beleg = Codezeile) in docs/lanes/m10-frame-tail-followup.md dokumentiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:19:12Z",
+          "by": "build",
+          "text": "todo → doing: K1 Merge-Recheck: Beide Merges (cc8a3590 spawn-burst-alloc, frame-tail-batching) im Worktree; Code-Lese läuft."
+        },
+        {
+          "at": "2026-11-28T13:20:06Z",
+          "by": "build",
+          "text": "doing → done: K1: Beleg Code-Lese 1c161482 — Befund 1 (Run.ts:678/1252, kein Dawn-Drain), 2 (Spawner.ts:331 'je Frame'), 3 (Duplikation Spawner.ts:310/335, kein Test) alle NICHT gelandet. Sofort-Zweig 12:52Z ebenfalls nicht gelandet, als offener Punkt dokumentiert. Commit 03856743."
+        }
+      ],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:20:06Z"
+    },
+    {
+      "id": 12392,
+      "title": "m10-frame-tail-followup K2: Dawn-Drain — drainDebugQueue beim Morgendämmerung-Start",
+      "description": "Während Morgendämmerung läuft Spawner.update() nicht (Run.ts:678), gequeuete Debug-Spawns materialisieren nie. drainDebugQueue beim startDawn() aufrufen. Abnahmekriterium: Probe belegt, dass gequeuete Debug-Spawns nach Dawn-Start materialisieren; Normalpfad unverändert (npm test grün, gleicher Seed = gleiche Spawn-Marken).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:20:06Z",
+          "by": "build",
+          "text": "todo → doing: K2 Dawn-Drain: startDawn ruft drainDebugQueue (public), Normalpfad unberührt."
+        },
+        {
+          "at": "2026-11-28T13:28:57Z",
+          "by": "build",
+          "text": "doing → review: K2: startDawn-Drain (30 sofort) + Substep-Drain während Dawn (Rest verteilt, Batching-Cap erhalten). Beleg: .evidence dawn-drain-probe-before (0/80, Leak) vs -after (80/80, Delta bog_rat 88). Tests 2317/2317 grün, Commit bb990bfd."
+        },
+        {
+          "at": "2026-11-28T13:37:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12288, Merge branch m10-frame-tail-followup"
+        }
+      ],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:28:57Z"
+    },
+    {
+      "id": 12393,
+      "title": "m10-frame-tail-followup K3: Doku-Fix SPAWN_DEBUG_BATCH_PER_FRAME + reine Positions-Funktion",
+      "description": "Kommentar korrigieren: Cap gilt je update()/Sim-Substep (bei timeScale 1 = je rAF-Frame), nicht je rAF-Frame. Duplikation queueEnemyWave vs. spawnEnemy (Winkel→Radius→Clamp) in eine reine exportierte Funktion ziehen. Abnahmekriterium: tsc + Tests grün, Spawn-Verhalten bitgleich.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:28:57Z",
+          "by": "build",
+          "text": "todo → doing: K3: Doku-Fix je Sim-Substep + reine Positions-Funktion debugRingPosition."
+        },
+        {
+          "at": "2026-11-28T13:30:38Z",
+          "by": "build",
+          "text": "doing → review: K3: debugRingPosition (Winkel→Radius→Clamp, Duplikation entfernt) + Cap-Doku je Sim-Substep. Beleg: Seed-Checksumme identisch zur Pre-Fix-Baseline (90 sim-exakte Marks, .evidence seed-baseline-before/seed-after), Tests 2317/2317, Commit 3e2045fd."
+        },
+        {
+          "at": "2026-11-28T13:37:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12289, Merge branch m10-frame-tail-followup"
+        }
+      ],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:30:38Z"
+    },
+    {
+      "id": 12394,
+      "title": "m10-frame-tail-followup K4: Guards tests/frame-tail-followup.test.ts + Lane-Doku + .lane-done",
+      "description": "tests/frame-tail-followup.test.ts: Dawn-Drain-Guard + RNG-Identitätstest (queueEnemyWave erzeugt bitgleich dieselben Spawns wie direkte spawnEnemy-Aufrufe, geseedetes RNG). npm test einmal grün, Lane-Doku docs/lanes/m10-frame-tail-followup.md fertig, .lane-done committet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:30:38Z",
+          "by": "build",
+          "text": "todo → doing: K4: Guards tests/frame-tail-followup.test.ts (Dawn-Drain + RNG-Identität) + Lane-Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T13:37:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12394, Merge branch m10-frame-tail-followup (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:30:38Z"
     }
   ]
 }

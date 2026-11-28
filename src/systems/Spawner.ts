@@ -59,12 +59,37 @@ export function accrueSpawnAllowance(acc: number, dt: number): number {
  * Aufruf im rAF-Tick — der daraus folgende Frame lag am Geraet bei 33-58 ms
  * (Beleg: ~/games/.evidence/m10-frame-tail-batching/before-device-frames.json,
  * dt-Nachlauf nach Top-up-Gruppen 41,6/33,4/25 ms). Die Runtime-Spawns werden
- * jetzt ueber Frames verteilt; Positionen/RNG-Reihenfolge entstehen sofort und
- * sind identisch zum bisherigen Verhalten. Der natuerliche Director-Pfad
+ * jetzt verteilt materialisiert; Positionen/RNG-Reihenfolge entstehen sofort
+ * und sind identisch zum bisherigen Verhalten. Der natuerliche Director-Pfad
  * (update) ist unveraendert; kleine Spiel-Spawns (Dawn-Ereignis, Elite-Tier-
  * Aufnahmen) bleiben ueber spawnEnemy() sofort.
+ *
+ * m10-frame-tail-followup (#12289, Reviewer-Befund 2): die Obergrenze gilt
+ * JE update()-Aufruf (= je Sim-Substep), nicht je rAF-Frame — bei timeScale > 1
+ * laufen bis ~60 Substeps je rAF-Frame, also bis 30*Substeps Spawns je Frame.
+ * Bei timeScale 1 ist das identisch mit je rAF-Frame (Geräte-Harness läuft
+ * mit setTimeScale(1)).
  */
 export const SPAWN_DEBUG_BATCH_PER_FRAME = 30;
+
+/**
+ * m10-frame-tail-followup (#12289, Reviewer-Befund 3): reine Positions-Funktion
+ * des Debug-Ring-Spawns. Ziehungsreihenfolge Winkel → Radius ist identisch zur
+ * bisherigen Inline-Duplikation in `spawnEnemy` und `queueEnemyWave` (dort
+ * entfernt) — gleicher RNG-Ziehungsstand liefert bitgleich dieselbe Position.
+ */
+export function debugRingPosition(
+  rng: Pick<Rng, "next">,
+  playerX: number,
+  playerY: number,
+): { x: number; y: number } {
+  const angle = rng.next() * Math.PI * 2;
+  const radius = 90 + rng.next() * 90;
+  return {
+    x: Phaser.Math.Clamp(playerX + Math.cos(angle) * radius, 20, WORLD_SIZE - 20),
+    y: Phaser.Math.Clamp(playerY + Math.sin(angle) * radius, 20, WORLD_SIZE - 20),
+  };
+}
 
 /** Ein in der Debug-Queue wartender Spawn (Position/Optionen bereits fest). */
 export interface QueuedSpawn {
@@ -312,10 +337,7 @@ export class Spawner {
     if (!def) throw new Error(`spawnEnemy: unbekannter Gegner "${id}"`);
     const out: EnemyRuntime[] = [];
     for (let i = 0; i < n; i++) {
-      const angle = this.rng.next() * Math.PI * 2;
-      const radius = 90 + this.rng.next() * 90;
-      const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * radius, 20, WORLD_SIZE - 20);
-      const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * radius, 20, WORLD_SIZE - 20);
+      const { x, y } = debugRingPosition(this.rng, playerX, playerY);
       out.push(this.spawnAt(def, x, y, {
         elite,
         hpScale: this.hpScaleFor(this.elapsed()) * (elite ? 3 : 1),
@@ -326,10 +348,11 @@ export class Spawner {
 
   /**
    * M10-frame-tail-batching: Debug-/Mess-Spawns ueber Frames verteilen.
-   * Berechnet ALLE Positionen sofort (gleiche RNG-Reihenfolge wie spawnEnemy:
-   * Winkel, Radius, Clamp), legt sie in die Queue und materialisiert sie im
-   * update() mit hoechstens SPAWN_DEBUG_BATCH_PER_FRAME je Frame. Rueckgabe =
-   * angefragte Anzahl (Semantik von debugSpawnEnemy bleibt erhalten).
+   * Berechnet ALLE Positionen sofort (debugRingPosition, gleiche RNG-Reihenfolge
+   * wie spawnEnemy: Winkel, Radius, Clamp), legt sie in die Queue und
+   * materialisiert sie im update() mit hoechstens SPAWN_DEBUG_BATCH_PER_FRAME
+   * je update()/Sim-Substep. Rueckgabe = angefragte Anzahl (Semantik von
+   * debugSpawnEnemy bleibt erhalten).
    * Nur fuer das Debug-Harness — nicht fuer Spielereignisse (dort spawnEnemy).
    */
   queueEnemyWave(id: EnemyId, n: number, playerX: number, playerY: number, elite = false): number {
@@ -338,17 +361,17 @@ export class Spawner {
     const count = Math.max(0, Math.floor(n));
     const hpScale = this.hpScaleFor(this.elapsed()) * (elite ? 3 : 1);
     for (let i = 0; i < count; i++) {
-      const angle = this.rng.next() * Math.PI * 2;
-      const radius = 90 + this.rng.next() * 90;
-      const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * radius, 20, WORLD_SIZE - 20);
-      const y = Phaser.Math.Clamp(playerY + Math.sin(angle) * radius, 20, WORLD_SIZE - 20);
+      const { x, y } = debugRingPosition(this.rng, playerX, playerY);
       this.debugQueue.push({ def, x, y, elite, hpScale });
     }
     return count;
   }
 
-  /** Verteilt wartende Debug-Spawns auf den aktuellen Frame (Obergrenze fix). */
-  private drainDebugQueue(): void {
+  /** Verteilt wartende Debug-Spawns auf den aktuellen Frame (Obergrenze fix).
+   *  Public seit m10-frame-tail-followup (#12288): während der Morgendämmerung
+   *  läuft update() nicht — Run.startDawn() ruft den Drain daher einmal beim
+   *  Dawn-Start, damit gequeuete Debug-Spawns nicht bis zum Run-Ende warten. */
+  drainDebugQueue(): void {
     if (this.debugQueue.length === 0) return;
     const { now, rest } = drainSpawnQueue(this.debugQueue, SPAWN_DEBUG_BATCH_PER_FRAME);
     this.debugQueue.length = 0;

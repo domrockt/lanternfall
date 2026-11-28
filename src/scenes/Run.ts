@@ -675,7 +675,16 @@ export class Run extends Phaser.Scene {
     }
 
     this.movePlayer(dt);
-    const spawned = this.dawn ? [] : this.spawner.update(this.elapsed, dt, this.posX, this.posY);
+    let spawned: EnemyRuntime[] = [];
+    if (this.dawn) {
+      // m10-frame-tail-followup (#12288): während der Morgendämmerung läuft
+      // Spawner.update() nicht — der Debug-Queue-Drain hier hält die
+      // Batching-Obergrenze (30 je Substep) ein, ohne die Wave-Logik zu
+      // starten; gequeuete Debug-Spawns materialisieren verteilt statt nie.
+      this.spawner.drainDebugQueue();
+    } else {
+      spawned = this.spawner.update(this.elapsed, dt, this.posX, this.posY);
+    }
     for (const e of spawned) {
       if (e.elite) this.elitesSpawned += 1;
       this.attachAiRng(e);
@@ -1279,6 +1288,13 @@ export class Run extends Phaser.Scene {
       });
     }
     this.enemies.compact();
+    // m10-frame-tail-followup (#12288): Während der Morgendämmerung läuft
+    // Spawner.update() nicht (simulate: `this.dawn ? [] : this.spawner.update`)
+    // — gequeuete Debug-Spawns materialisierten nie (Queue-Leak, Reviewer-
+    // Befund 1 in docs/lanes/m10-frame-tail-batching.md, Abschnitt Review).
+    // Beim Dawn-Start einmal abtragen: Positionen/RNG sind bereits in
+    // queueEnemyWave fest; spielkritisches Spawnen läuft nie über die Queue.
+    this.spawner.drainDebugQueue();
     this.hazards.clear();
     this.enemyShots.clear();
     const amber = PAL[C.amber];
