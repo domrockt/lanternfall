@@ -82,5 +82,31 @@ Endlevel 33–35 (Tabelle oben), alle 6 Läufe in [25,40]. Der befürchtete Nebe
 „weniger Kills im Fenster → weniger XP → Endlevel < 25“ tritt nicht ein: die Läufe
 kommen mit 4.052–6.870 Kills und Level 33–35 durch (Baseline auf main: 30–35).
 
+## K5 — Qualitätsschleuse: **PASS**
+
+- **Renderer-String vor jedem Lauf belegt** (Pflicht, Dom 19:20Z): alle 6 Läufe
+  `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`, kein SwiftShader
+  (`rendererOk: true` in `shots/m10-balance-band-damp-after.json`).
+- `npx tsc --noEmit` grün · `npm test` grün (141 Dateien / 1.494 Tests) ·
+  `npm run build` grün (je zuletzt geprüft nach K1- und K5-Stand).
+- `src/logic/xp.ts` und `src/logic/scaling.ts` unangetastet (Diff-Briefing eingehalten);
+  `tests/balance-endgame.test.ts` minimal angepasst (Fenster des alten Rate-Freeze-Tests
+  0–24 → 0–17 + Dämpfungs-Expectation 18–24; Request in `/home/ai/games/.dispatch/requests.md`,
+  Datei war von keiner Lane geclaimed).
+
+## Abnahme-Übersicht
+
+| Karte | Kriterium | Ergebnis |
+|---|---|---|
+| K1 | SPAWN_DAMP_18_24 in waves.ts per Suchskript (Limit 3), Suchergebnis-JSON committed; xp.ts/scaling.ts unangetastet | ✅ PASS (0,6, erster Suchlauf; `shots/m10-balance-search-1824.json`) |
+| K2 | 6/6 Endzeit [25,40], Streuung ≤ 4 min, 0 JS-Fehler | ✅ **PASS** (6/6, 0,40 min; `shots/m10-balance-band-damp-after.json`) |
+| K3 | Boss-Dauern im Korridor 20–60 s, Ziel ≥ 30/33 | ✅ **PASS** (33/36; 3 Verstöße als B2-Befund dokumentiert) |
+| K4 | Endlevel je Lauf in [25,40] | ✅ **PASS** (33–35) |
+| K5 | Renderer-String pro Lauf; npm test / tsc / build grün; Doku | ✅ PASS (Details oben) |
+
+**Offene Punkte:** B2 (Boss-Dauern unter Korridor in DPS-starken Läufen, Hebel
+`src/data/bosses.ts`) — bewusst nicht in dieser Lane angefasst (Briefing).
+
+
 
 
