@@ -84,6 +84,11 @@ export const MOMENT_RING_FROM = 8;
 export const MOMENT_RING_TO = 16;
 /** Rim-Breite in px (A10-Vertrag: 1-px-Stufen). */
 export const MOMENT_RIM_PX = 1;
+/** Rim bleibt bis zu diesem Anteil der Dauer sichtbar (art-director Runde 1:
+ *  vorher war der volle Rim exakt während des Aufblitz-Blocks aktiv). */
+export const MOMENT_RIM_UNTIL = 0.6;
+/** Mindest-Alpha der Ring-Welle — stirbt nicht mehr vor Radius 16. */
+export const MOMENT_RING_MIN_ALPHA = 0.45;
 /** Aufblitz je Powerup = Akzentfarbe (im spec.flash); Laternenweiß würde in
  *  der hellen Level-up-Säule untergehen, die zur selben Zeit läuft. */
 /** Über den Gegner-Projektilen, unter dem Licht — im Chaos lesbar. */
@@ -103,8 +108,13 @@ export const POWERUP_ACCENT: Record<string, number> = {
 export interface MomentSpec {
   iconKey: string;
   accent: number;
-  /** Aufblitz = Akzentfarbe (Palette), nicht Weiß — siehe MOMENT_FLASH-Hinweis. */
+  /** Aufblitz-Farbe (Palette). Default = Akzent; tome liest sich als grau,
+   *  dort paleMist + fogBlue-Rim (art-director Runde 1). */
   flash: number;
+  /** 1-px dunkle Gegenkontur außen um den Rim (Palette-Ink) — hebt helle/
+   *  bodenähnliche Akzente (boots grün auf Moor, whetstone grau auf Skeletten,
+   *  tome grau-blau) vom Umfeld ab (art-director Runde 1). */
+  edge: number;
   iconSize: number;
   /** Scale des Icons — fest 1: Effekt in Zielgröße, nie hochskaliert. */
   scale: 1;
@@ -121,7 +131,10 @@ export function pickupMomentSpec(id: string): MomentSpec | null {
   return {
     iconKey: iconKeyForOffer("passive", id),
     accent,
-    flash: accent,
+    // tome: fogBlue liest sich als grau — Aufblitz paleMist über fogBlue-Rim
+    // macht die blaue Signatur lesbar (art-director Runde 1).
+    flash: id === "tome" ? C.paleMist : accent,
+    edge: C.ink,
     iconSize: MOMENT_ICON_SIZE,
     scale: 1,
     ringFrom: MOMENT_RING_FROM,
@@ -335,16 +348,23 @@ export class PickupSystem {
       if (p < 0.15) m.icon.setTintFill(PAL[spec.flash]);
       else if (m.icon.tintFill) m.icon.clearTint();
       m.icon.setAlpha(p < 0.75 ? 1 : 1 - (p - 0.75) / 0.25);
-      // 1-px-Grafik: Rim um das Icon + Ring-Welle in Ganzzahl-Radius.
+      // 1-px-Grafik: Gegenkontur + Rim um das Icon, Ring-Welle am Spieler.
       const g = m.fx;
       g.clear();
-      if (p < 0.4) {
-        g.lineStyle(MOMENT_RIM_PX, PAL[spec.accent], p < 0.2 ? 1 : 0.5);
+      if (p < MOMENT_RIM_UNTIL) {
+        // Dunkle Gegenkontur außen (Palette-Ink) — trennt den Akzent vom Boden.
+        g.lineStyle(MOMENT_RIM_PX, PAL[spec.edge], p < 0.4 ? 1 : 0.5);
+        g.strokeRect(ix - MOMENT_ICON_SIZE / 2 - 2, iy - MOMENT_ICON_SIZE / 2 - 2,
+          MOMENT_ICON_SIZE + 4, MOMENT_ICON_SIZE + 4);
+        // Akzent-Rim: volle Alpha bis 40 %, danach halbe (art-director Runde 1:
+        // volle Rim-Präsenz nicht mehr im Aufblitz-Block "verschenken").
+        g.lineStyle(MOMENT_RIM_PX, PAL[spec.accent], p < 0.4 ? 1 : 0.5);
         g.strokeRect(ix - MOMENT_ICON_SIZE / 2 - 1, iy - MOMENT_ICON_SIZE / 2 - 1,
           MOMENT_ICON_SIZE + 2, MOMENT_ICON_SIZE + 2);
       }
       const r = MOMENT_RING_FROM + Math.floor(p * (MOMENT_RING_TO - MOMENT_RING_FROM));
-      g.lineStyle(MOMENT_RIM_PX, PAL[spec.accent], (1 - p) * 0.9);
+      // Welle läuft sichtbar bis Radius 16 (Mindest-Alpha, statt (1-p)*0.9).
+      g.lineStyle(MOMENT_RIM_PX, PAL[spec.accent], Math.max(MOMENT_RING_MIN_ALPHA, 1 - p) * 0.9);
       g.strokeCircle(ix, Math.round(m.y), r);
     }
   }
