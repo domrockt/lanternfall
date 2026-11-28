@@ -20,6 +20,10 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const BOOT_TS = readFileSync(new URL("../src/scenes/Boot.ts", import.meta.url), "utf8");
+/** Quelltext ohne Kommentarzeilen (Guards zielen auf aktiven Code). */
+const BOOT_CODE = BOOT_TS.split("\n")
+  .filter((l: string) => { const t = l.trim(); return !t.startsWith("//") && !t.startsWith("*") && !t.startsWith("/*"); })
+  .join("\n");
 
 /** Extrahiert die LIGHT_EDGE_STEPS-Tabelle aus dem Boot.ts-Quelltext. */
 function lightEdgeStepsFromSource(): Array<[number, number, number]> {
@@ -49,8 +53,8 @@ function expectedVignetteSteps(): Array<[number, number, number]> {
 
 describe("Boot.ts Licht-/Vignette-Texturen (m10-boot-glow-local, K2 rev.)", () => {
   it("Boot.ts enthaelt keinen Radialgradient mehr (0 weiche Boegen im Quelltext)", () => {
-    expect(BOOT_TS).not.toContain("createRadialGradient");
-    expect(BOOT_TS).not.toContain("addColorStop");
+    expect(BOOT_CODE).not.toContain("createRadialGradient");
+    expect(BOOT_CODE).not.toContain("addColorStop");
   });
 
   it("LIGHT_EDGE_STEPS: Bänder >= 6 px, Alpha monoton fallend, Kern Alpha 1", () => {
@@ -91,9 +95,15 @@ describe("Boot.ts Licht-/Vignette-Texturen (m10-boot-glow-local, K2 rev.)", () =
     expect(BOOT_TS).toMatch(/for \(const \[r0, r1, a\] of vignetteSteps\(\)\)/);
   });
 
-  it("Licht-Zeichnpfad nutzt die Stufen-Bänder statt fillRect + Gradient", () => {
-    expect(BOOT_TS).toMatch(/for \(const \[r0, r1, a\] of LIGHT_EDGE_STEPS\)/);
-    expect(BOOT_TS).toContain('ctx.arc(c, c, r0, 0, Math.PI * 2, true)');
+  it("Licht-Zeichnpfad: pro-Pixel-Stufen-Multiplikation, KEIN destination-in-Stacking", () => {
+    // destination-in-Band-Loop (wie eaf2ab6) schneidet die Masken und ergibt
+    // eine leere Textur (Befund Probe-Lauf, siehe Lane-Doku) — verboten.
+    expect(BOOT_CODE).not.toContain("destination-in");
+    // Stattdessen: getImageData/putImageData + Band-Alpha-Multiplikation.
+    expect(BOOT_TS).toContain('ctx.getImageData(0, 0, size, size)');
+    expect(BOOT_TS).toContain("ctx.putImageData(img, 0, 0)");
+    expect(BOOT_TS).toMatch(/for \(const \[r0, r1, stepAlpha\] of LIGHT_EDGE_STEPS\)/);
+    expect(BOOT_TS).toMatch(/pxs\[\(y \* size \+ x\) \* 4 \+ 3\] = pxs\[\(y \* size \+ x\) \* 4 \+ 3\] \* band/);
   });
 
   it("B2-Ring-Tuning bleibt: Kern Amber/Lantern (20/21), kein lanternWhite/candle", () => {
