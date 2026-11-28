@@ -6,7 +6,7 @@ import { ENEMIES } from "../data/enemies";
 import type { EnemyDef } from "../data/types";
 import type { Rng } from "../logic/rng";
 import { attacksFor, bossHpColorIndex, bossPhase, nextBossAttack,
-  bossCatchupSpeed, bossLeashSteer, clampPointToView, isPointInView,
+  bossCatchupSpeed, bossLeashSteer, clampPointToView, isPointInView, simViewRect,
   BOSS_CATCHUP_DIST, BOSS_ONSCREEN_MARGIN, type ViewRect } from "../logic/bosses";
 import { resolveBossStackSeparation, type StackNode } from "../logic/separation";
 import type { EnemyPool, EnemyRuntime } from "./EnemyPool";
@@ -233,7 +233,12 @@ export class BossSystem {
     // der Boss-Sprite im Spawn-Moment am oberen Rand hinter der HP-Leiste).
     // Die Komposition nimmt deshalb den Worst-Case: BOSS_INTRO_ZOOM / cam.zoom
     // (= 1.14 * Teiler). Bei Teiler 1 ist das bitgleich zum bisherigen 1.14.
-    const pulseZoom = BOSS_INTRO_ZOOM / (this.camera.zoom || 1);
+    // m10-boss-dur-determinism: Teiler NICHT aus live camera.zoom ableiten —
+    // der Intro-Zoom-Puls ist ein Echtzeit-Tween und waere frame-abhaengig.
+    // Der Render-Teiler ist konstant pro Skalierung (enforceCameraProjection:
+    // camera.height = scale.height / s); bei zoom = 1/s bitgleich zum bisherigen
+    // Worst-Case BOSS_INTRO_ZOOM / zoom.
+    const pulseZoom = BOSS_INTRO_ZOOM * this.renderDivisor();
     const composedScreenY = composedBossCenterY(
       desiredY - camTopLog,
       playerY - camTopLog,
@@ -393,10 +398,33 @@ export class BossSystem {
     }
   }
 
-  /** Sichtbarer Weltbereich (Kamera worldView) als flaches Rect. */
+  /**
+   * m10-boss-dur-determinism (K2): Sichtbarer Weltbereich DETERMINISTISCH aus
+   * dem Sim-Anker statt aus camera.worldView — worldView aktualisiert Phaser
+   * erst im preRender des naechsten Render-Frames, war im Teilschritt-Loop
+   * also frame-abhaengig (K2-Beweis: Laufzeit-Patch der Sim-Pfad-Leser macht
+   * 3 Seeds x 2 Laeufe bitgleich; siehe docs/lanes/m10-boss-dur-determinism.md).
+   */
   private viewRect(): ViewRect {
-    const v = this.camera.worldView;
-    return { x: v.x, y: v.y, width: v.width, height: v.height };
+    const cam = this.camera;
+    return simViewRect(cam.scrollX, cam.scrollY, cam.width, cam.height, this.renderDivisor());
+  }
+
+  /**
+   * Render-Teiler s deterministisch: enforceCameraProjection setzt pro Frame
+   * camera.height = game.scale.height / s und zoom = 1/s — beide Werte sind
+   * konstant pro Skalierung (nicht animiert), im Gegensatz zu camera.zoom
+   * waehrend des Intro-Zoom-Pulses. Ohne Scale-Info (Tests, Headless) faellt
+   * der Teiler auf GAME_HEIGHT / camera.height bzw. 1.
+   */
+  private renderDivisor(): number {
+    const scale = (this.scene.game as { scale?: { height?: number } } | undefined)?.scale;
+    const bufferHeight = scale?.height;
+    const camH = this.camera.height || GAME_HEIGHT;
+    if (!bufferHeight || bufferHeight <= 0) {
+      return Math.max(1, Math.round(GAME_HEIGHT / camH));
+    }
+    return Math.max(1, Math.round(bufferHeight / camH));
   }
 
   /** Klemmt eine Schadensfläche in den sichtbaren Bereich (reine Regel). */

@@ -79,23 +79,31 @@ damit der Boss-Pfad nach dem externen Fix garantiert leckfrei ist:
 
 1. `BossSystem.viewRect()` liest `camera.worldView` → ersetzt durch reine Funktion
    `simViewRect()` in `src/logic/bosses.ts` (Sim-Anker: `camera.scrollX/Y` wird pro
-   Teilschritt in `Run.simulate` gesetzt; Weite/Höhe aus dem logischen Screen, #4658-Konvention).
+   Teilschritt in `Run.simulate` gesetzt; Weite/Höhe = Viewport × Render-Teiler —
+   `enforceCameraProjection` setzt `camera.width = scale.width/s` und `zoom = 1/s`,
+   die `worldView` ist bei ungepulstem Zoom genau `camera.width × s` breit).
 2. `BossSystem.spawn()` liest live `camera.zoom` (Intro-Zoom-Puls ist ein Echtzeit-Tween) →
-   Teiler jetzt aus `camera.width` abgeleitet (`GAME_WIDTH / camera.width`, konstant pro
-   Skalierung), `pulseZoom = BOSS_INTRO_ZOOM × Teiler` — bei `zoom = 1/Teiler` bitgleich zum
-   bisherigen Worst-Case.
+   Teiler jetzt deterministisch aus `game.scale.height / camera.height` abgeleitet
+   (beide konstant pro Skalierung), `pulseZoom = BOSS_INTRO_ZOOM × Teiler` — bei
+   `zoom = 1/Teiler` bitgleich zum bisherigen Worst-Case.
 
-Verhalten bei vollem 60-FPS-Lauf: unverändert (bei `zoom = 1/Teiler` liefert die reine
-Funktion dieselbe Rect-Geometrie wie `worldView`; der Intro-Puls wird bewusst nicht mehr
-in die Sim-Gates eingerechnet — rein visuell).
+Verhalten bei vollem 60-FPS-Lauf: unverändert bis auf ≤ 0,5 px an Gate-Grenzen —
+Phaser rundet die `worldView` ganzzahlig (`Camera.preRender`), die reine Funktion
+rechnet mit exaktem `scrollX`; Richtung des Deltas: weg vom frame-abhängigen
+Render-Stand, hin zum Sim-Anker. `pulseZoom` ist bei Teiler 1 bitgleich (1,14);
+der Intro-Puls wird bewusst nicht mehr in die Sim-Gates eingerechnet (rein visuell).
 
 ## K4 — Test + Belege + Abschluss (#12112)
 
-- `tests/boss-dur-determinism.test.ts`:
+- `tests/boss-dur-determinism.test.ts` (7 Tests, grün):
   - `simViewRect` pure: Sim-Anker-Rect unabhängig von `worldView`-Mutationen (Regression gegen
-    die K2-Leck-Klasse im Boss-Bereich), Teiler-Ableitung 1/2/3.
+    die K2-Leck-Klasse im Boss-Bereich), Teiler-Ableitung 1/2/3, Reinheit/Determinismus,
+    Fallback ohne `game.scale` (Headless).
   - `BossSystem.spawn` mit Stub-Szene: Spawn-Position bitgleich unabhängig von `camera.zoom`
     (Intro-Puls darf die Komposition nicht frame-abhängig machen).
+- Reviewer-PASS (2026-11-28): simViewRect/renderDivisor-Geometrie, Deltas dokumentiert
+  (worldView-Integer-Rundung ≤ 0,5 px an Gate-Grenzen; pulseZoom bei Teiler 1 bitgleich 1,14);
+  Fallback-Test + Doku-Präzisierung nach Review umgesetzt.
 - End-to-End (3 Seeds × 2 Läufe, 0 Abweichung): **blockiert auf dem externen Fix**
   (Bedarfsmeldung, siehe K2) — mit dem Laufzeit-Patch belegt erreichbar
   (`probe-runtime-patch.json`), im unveränderten Build stochastisch. `npm test` grün.

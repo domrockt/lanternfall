@@ -238,6 +238,37 @@ export interface ViewRect {
 }
 
 /**
+ * m10-boss-dur-determinism (K2-Befund, docs/lanes/m10-boss-dur-determinism.md):
+ * Phaser aktualisiert camera.worldView nur im preRender (pro Render-Frame) —
+ * im SIM_MAX_STEP-Teilschritt-Loop ist das frame-abhängig. Diese reine Funktion
+ * leitet den sichtbaren Weltbereich stattdessen aus dem Sim-Anker ab:
+ * scrollX/Y wird pro Teilschritt in Run.simulate gesetzt; die Weite ergibt sich
+ * aus Viewport × Render-Teiler (enforceCameraProjection: camera.width =
+ * scale.width/s, zoom = 1/s → worldView.width = scale.width). Bei zoom = 1/s
+ * bis auf Phasers Integer-Rundung der worldView identisch (Camera.preRender
+ * rundet x/y/Weite ganzzahlig, Delta ≤ 0,5 px an Gate-Grenzen); der
+ * Intro-Zoom-Puls (Echtzeit-Tween) wird bewusst NICHT eingerechnet — rein
+ * visuell, keine Sim-Bedeutung.
+ */
+export function simViewRect(
+  scrollX: number,
+  scrollY: number,
+  cameraWidth: number,
+  cameraHeight: number,
+  renderDivisor: number,
+): ViewRect {
+  const s = Math.max(1, Math.round(renderDivisor || 1));
+  const w = cameraWidth * s;
+  const h = cameraHeight * s;
+  return {
+    x: scrollX + cameraWidth / 2 - w / 2,
+    y: scrollY + cameraHeight / 2 - h / 2,
+    width: w,
+    height: h,
+  };
+}
+
+/**
  * Klemmt den Mittelpunkt einer (Schadens-)Fläche in den sichtbaren
  * Weltbereich: Warnfläche und Trefferfläche liegen komplett im View, auch
  * wenn die Kamera an der Weltkante geklemmt ist. Rein geometrisch, ohne
