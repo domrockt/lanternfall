@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { ENEMIES, waveForMinute } from "../data";
 import type { EnemyDef, EnemyId, WaveDef } from "../data/types";
-import { WORLD_SIZE } from "../config";
+import { GAME_HEIGHT, GAME_WIDTH, WORLD_SIZE } from "../config";
 import { advanceSpawnBudget, elitePackCount, ringSpawnOffsets, SPAWN_FRAME_BUDGET, splitSpawnBurst, streamSpawnOffsets } from "../logic/waves";
 import {
   createFrameBudget, eliteChance, enemyDamageScale, enemyHpScale, enemySpeedScale,
@@ -325,10 +325,33 @@ export class Spawner {
     }
   }
 
-  /** Liegt der Punkt sicher außerhalb des aktuellen Kamera-Views (inkl. Rand)? */
+  /**
+   * Liegt der Punkt sicher ausserhalb des aktuellen Kamera-Views (inkl. Rand)?
+   *
+   * m10-spawn-view-anchor (#12528, K2): liest NICHT `camera.worldView` — Phaser setzt
+   * die worldView AUSSCHLIESSLICH in `Camera.preRender` (pro Render-Frame), der Sim
+   * laeuft aber in festen SIM_MAX_STEP-Teilschritten (bis zu ~25 je Frame). Der
+   * frame-abhaengige Render-Stand hat Spawn-Entscheidungen verschoben und damit den
+   * RNG-Ziehungsstrom gekippt -> stochastische Boss-Dauern (Dom-Korridor A5,
+   * Ursachennachweis docs/lanes/m10-boss-dur-determinism.md K2, Laufzeit-Patch
+   * probe-runtime-patch.json: genau diese 3 Leser gepatcht -> 3 Seeds bitgleich).
+   *
+   * Rezept EXAKT nach der Ursachen-Lane (K2 Punkt 4): Anker-Midpoint
+   * `scrollX/Y + width/2` (scrollX/Y wird pro Teilschritt in Run.simulate gesetzt,
+   * camera.width/height sind konstant pro Skalierung — enforceCameraProjection),
+   * logischer Screen GAME_WIDTH x GAME_HEIGHT (das ist die worldView bei erzwungener
+   * Projektion zoom = 1/Teiler: width = cam.width * Teiler). Teiler wie im
+   * Kausalbeweis aus cam.width abgeleitet; der Anker steht inline in dieser Datei
+   * (Area-Disziplin, keine gemeinsame Hilfsdatei mit der pools-Lane).
+   */
   private outsideView(x: number, y: number, margin = 16): boolean {
-    const v = this.camera.worldView;
-    return x < v.x - margin || x > v.right + margin || y < v.y - margin || y > v.bottom + margin;
+    const cam = this.camera;
+    const s = Math.max(1, Math.round(GAME_WIDTH / (cam.width || GAME_WIDTH)));
+    const w = cam.width * s;
+    const h = cam.height * s;
+    const vx = cam.scrollX + cam.width / 2 - w / 2;
+    const vy = cam.scrollY + cam.height / 2 - h / 2;
+    return x < vx - margin || x > vx + w + margin || y < vy - margin || y > vy + h + margin;
   }
 
   /** Debug/Perf: `n` Gegner im Ring um den Spieler (leicht gestreut, sichtbar). */
