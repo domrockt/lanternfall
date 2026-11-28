@@ -1,0 +1,20 @@
+# Lane m10-title-bg-crisp — fertig (2026-11-28)
+
+Titel-Hintergrund pixelgenau statt fraktional skaliert (Bedarfsmeldung m10-menu-art-crisp, F1).
+
+- Vorher (85a8d7d): `title_background` (480x270) per setDisplaySize fraktional —
+  texelScale 1.3333/1.3333 @640x360, 1.6250/1.3333 @780x360 (shots/m10-title-bg-before.json).
+- Fix (bd67d00): nur src/scenes/Title.ts — reine `titleBgLayout()` (ganzzahliger Scale
+  max(1, floor(min(W/480,H/270))), zentriert, Rest-Rand) + Kanten-Fuellung aus echten
+  Rand-Texel-Reihen/Spalten als einmalige 1px-Canvas-Texturen (setCrop-Falle umgangen:
+  setCrop samplete falsches Texel). Mond-Glow an On-Screen-Mondposition gekoppelt
+  (Mond im Quellbild (404,56)). Keine Text-/Layout-/Eingabe-Aenderungen.
+- Tests (5ecfae0): tests/title-bg-crisp.test.ts, 21 Tests gruen — Scale ganzzahlig (8
+  Viewports), Kachelung lueckenlos, 640/780-Exaktwerte, oy-Anker unveraendert.
+- Nachher (ff6bed2): texelScale 1/1 in beiden Viewports, Naht AE=0 (fuzz 3%),
+  0 JS-Fehler, sichtbarer Rand 0 (shots/m10-title-bg-after*.png + Zooms).
+- Kontrolleure: art-director PASS 4/5 → nach Glow-Kopplung PASS 4,5/5 (auslieferungsreif).
+  Offen (bewusst nicht diese Karte, Vorher-Verhalten identisch): Text-Bodenlasur endet
+  hart auf Panel-Unterkante — ggf. eigene Karte.
+- Qualitaet: tsc rc=0, Suite 884/884, npm run build rc=0.
+- Doku: docs/lanes/m10-title-bg-crisp.md. Ein Commit je Karte (#6738–#6741).
