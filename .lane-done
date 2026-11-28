@@ -1,0 +1,15 @@
+# .lane-done — m10-fullrun-guard (2026-11-28)
+
+Lane fertig: Abnahme-Wächter als automatisierter Beleg gesichert (kein Balance-/Spielcode-Eingriff).
+
+- scripts/m10-fullrun-guard.mjs: beschleunigter 30-min-Sim-Lauf (autoPlay + timeScale 30, Muster
+  scripts/fullrun.mjs), harte Tore + Exit 1 bei Verletzung; Tor-Definitionen rein + exportiert.
+- tests/fullrun-guard.test.ts: 8 Tests, Tor-Definitionen + negative Testfälle (FAIL-Erkennung),
+  kein echter 30-min-Lauf.
+- Messwerte (Seed 99, beide Läufe auf main, je 30,2 Sim-Min in 72 s Echtzeit): 6/6 Bosse exakt
+  300/600/900/1200/1500/1800 s, 6 besiegt, 6 Truhen, Sieg resultReason=dawn (Screenshot),
+  0 JS-Fehler, Heap M1 39,1 MB → Ende 30,9 MB = −21 % (Tor ≤ +15 %).
+- Belege: shots/m10-fullrun-guard-baseline.json/-results.png (K1), shots/m10-fullrun-guard.json/-results.png (K4).
+- Qualität: tsc rc=0, vitest 8/8, npm test 941/941, npm run build rc=0.
+- Karten: #6918 (Ist-Messung), #6919 (Tore+Exit), #6920 (Tests), #6921 (Doku+lane-done).
+- Doku: docs/lanes/m10-fullrun-guard.md
