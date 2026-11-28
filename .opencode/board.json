@@ -13247,7 +13247,8 @@
           "at": "2026-11-28T09:38:20Z",
           "by": "build",
           "text": "Run 7 (Versuch 2, 09:38Z): Ready frisch verifiziert — tsc clean, Guard-Test 10/10 grün, r3-Patch gestaget (textures.ts 20 Z / xp.ts 24 Z / Test 8 Z). Claim src/gfx/textures.ts weiterhin aktiv bei m10-fx-bakes-evo-r2 (Substring-Check 09:37Z, Lane aktiv: K3-Commit 20a79970, kein .lane-done). Mini-Job m10-gem-rows-texture noch nicht gestartet (Queue hinter m10-chest-arrow-texture-r2). Doppel-Automation bereinigt: einmaliger Recheck #2 gelöscht, wiederkehrende v2 (aut_22182edd…, 25 min bis 10:55Z) bleibt aktiv. #10177-#10179 → done. Endcommit wartet unverändert auf Claim-Freigabe."
-        }
+        },
+        "Run 8 (09:41Z): Dora hat Mini-Job m10-gem-rows-texture eingereiht (nach chest-arrow-texture-r2; K1 prueft Lane-Selbstcommit). Ready frisch gruen (tsc, Guard 10/10, Patch gestaget). Automation v2 aktiv, Recheck 10:00Z. Kein Commit-Retry."
       ],
       "created": "2026-11-28T08:28:23Z",
       "updated": "2026-11-28T09:38:20Z"
