@@ -318,19 +318,8 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "..000..",
     ],
   },
-  projectile_thorn: {
-    w: 7, h: 7,
-    // Dornenstern mit warmer Glutrampe + Laternen-Spitze; Kontur haelt ihn auf Gras.
-    rows: [
-      "...0...",
-      "..0l0..",
-      ".0hih0.",
-      "0hildi0",
-      ".0hih0.",
-      "..0l0..",
-      "...0...",
-    ],
-  },
+  // projectile_thorn ist M10-evo-fx-dornensturm in gen-fx.ts gezogen (Zielgröße
+  // 12x12, thornProjectileFrame, Draw-Scale 1 statt 7x7 @ 1,7x mit Ink-Raute).
   flail_ball: {
     w: 9, h: 9,
     // Eisenkugel mit vier 2-px-Spikes; Rampe 5/8/9 statt Weiß-Blob.

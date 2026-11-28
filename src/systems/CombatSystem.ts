@@ -607,7 +607,7 @@ export class CombatSystem {
         weaponId: owned.id,
         texture: "projectile_thorn",
         radius: this.effRadius(4, ctx.agg),
-        scale: 1.6,
+        scale: 1,
         trail: "fx_thorn",
         trailFrames: fxFrames("fx_thorn", 3),
         trailInterval: 0.06,
@@ -640,29 +640,29 @@ export class CombatSystem {
         weaponId: owned.id,
         texture: "projectile_thorn",
         radius: this.effRadius(5, ctx.agg),
-        scale: 1.7,
+        scale: 1,
         trail: "fx_thorn",
         trailFrames: fxFrames("fx_thorn", 3),
         trailInterval: 0.05,
       });
     }
+    // Dornenkrone am Ursprung (Aufbau → Impact → Ausklang, 96x96 @ Draw-Scale 1
+    // statt ring_burst @ 0,45 + fx_shock @ 0,28 = Matsch-Downscale).
     this.fx.spawn({
-      texture: "ring_burst", x: ctx.playerX, y: ctx.playerY, life: 0.25,
-      scaleFrom: 0.3, scaleTo: 1.4, alphaFrom: 0.7, alphaTo: 0, additive: true,
+      texture: "fx_thorn_crown", frames: fxFrames("fx_thorn_crown", 3),
+      x: ctx.playerX, y: ctx.playerY, life: 0.36,
+      scaleFrom: 1, scaleTo: 1, alphaFrom: 0.95, alphaTo: 0, additive: false,
     });
-    this.fx.spawnAnim("fx_shock", ctx.playerX, ctx.playerY, {
-      life: 0.36, scaleFrom: 0.5, scaleTo: 1.2, alphaFrom: 0.8, alphaTo: 0,
-      tint: PAL[C.marshLight], additive: true,
-    });
-    // 16 große Dornen-Streaks nach außen: der Wirbel ist als Igelring lesbar.
+    // 16 Dornen-Streaks in Zielgröße (22x22 @ Draw-Scale 1 statt fx_thorn @ 3,0x):
+    // Dart + abgelöste Splitter als Ausklang, Rotation = Flugrichtung.
     for (let i = 0; i < 16; i++) {
       const a = (i / 16) * Math.PI * 2 + this.clock * 0.4;
       this.particles.spawn({
-        texture: "fx_thorn", frames: fxFrames("fx_thorn", 3),
+        texture: "fx_thorn_streak", frames: fxFrames("fx_thorn_streak", 3),
         x: ctx.playerX + Math.cos(a) * 16, y: ctx.playerY + Math.sin(a) * 16,
         vx: Math.cos(a) * 78, vy: Math.sin(a) * 78,
-        life: 0.8, scaleFrom: 3.0, scaleTo: 0.8, alphaFrom: 1, alphaTo: 0,
-        rotation: a + Math.PI / 2, additive: false, tint: PAL[C.amber],
+        life: 0.8, scaleFrom: 1, scaleTo: 0.55, alphaFrom: 1, alphaTo: 0,
+        rotation: a + Math.PI / 2, additive: false,
       });
     }
   }
@@ -1046,6 +1046,9 @@ export class CombatSystem {
           // Feuervogel-Trail bleibt warm und additiv, auch wenn das Projektil selbst
           // mit Normal-Blend (klare Flügel/Kontur) gerendert wird.
           const phoenixTrail = p.weaponId === "phoenix";
+          // M10-evo-fx-dornensturm: Dornen-Trails behalten ihre Natur-Grün-Palette
+          // (kein Ember-Orange-Tint mehr, der die Dornen warm verwaschen ließ).
+          const thornTrail = p.weaponId === "thorn" || p.weaponId === "thorn_storm";
           // M10-Restpunkt ember-readability: Ember-Schweif gedämpft (alphaFrom
           // 0,4 statt 0,45) — NORMAL-Blend + Orange-Tint bleiben, der kleinere
           // fx_ember_trail-Puff haelt Footprint <= 60 px und Near-White bei 0 %.
@@ -1056,7 +1059,7 @@ export class CombatSystem {
             x: p.x, y: p.y, life: 0.22,
             scaleFrom: p.sprite.scaleX * 0.8, scaleTo: 0.15,
             alphaFrom: emberTrail ? 0.4 : 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
-            tint: p.blendAdd || phoenixTrail ? undefined : PAL[C.emberOrange],
+            tint: p.blendAdd || phoenixTrail || thornTrail ? undefined : PAL[C.emberOrange],
           });
         }
       }
