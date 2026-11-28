@@ -266,12 +266,12 @@ export function resolveBossStackSeparation(
 
 /**
  * Ziel-Mindest-Kantenabstand Gegner↔Spieler in px (Kante = Zentrierabstand
- * minus Spieler-Hitradius 6 minus Gegnerradius). 14 liegt bewusst über der
+ * minus Spieler-Hitradius 6 minus Gegnerradius). 18 liegt bewusst über der
  * Metrik-Schwelle von 8 px: unter Verfolgungsdruck stellt sich ein Rest-Defizit
- * von ~2-3 px ein (Chase-Schritt ≈ 1 px/Frame, korrigiert mit `strength`) —
+ * von ~1-2 px ein (Chase-Schritt ≈ 1 px/Frame, korrigiert mit `strength`) —
  * das Gleichgewicht bleibt damit klar über 8 px.
  */
-export const PLAYER_GAP_EDGE = 14;
+export const PLAYER_GAP_EDGE = 18;
 /**
  * Spieler-Hitradius (Run.ts-Kontaktprüfung: Treffer bei dist < e.radius + 6).
  * Der Ring zielt auf den SPRITE-Kantenabstand, also muss der Spielerradius in
@@ -280,15 +280,18 @@ export const PLAYER_GAP_EDGE = 14;
  */
 export const PLAYER_GAP_PLAYER_RADIUS = 6;
 /**
- * Korrekturanteil am Abstandsdefizit pro Frame (Muster STACK_STRENGTH).
- * < 0.5 heißt: der Abstand nähert sich dem Ziel monoton an, kein Überschwingen.
+ * Korrekturanteil am Abstandsdefizit pro Frame (Muster STACK_STRENGTH). Beim
+ * einseitigen Ring bleibt die Annäherung für jede Strength < 1 monoton von
+ * unten (Schritt = Strength · Defizit < Defizit — ein Überschwingen ist
+ * rechnerisch ausgeschlossen); der <0,5-Bonus betrifft nur die zweiseitige
+ * Paar-Korrektur des Boss-Stacks.
  */
-export const PLAYER_GAP_STRENGTH = 0.45;
+export const PLAYER_GAP_STRENGTH = 0.6;
 /**
  * Deckel je Gegner und Frame in px: tief im Klumpen steckende Gegner laufen in
  * 3-5 Frames auf den Ring, statt zu snappen (kein sichtbarer Pop).
  */
-export const PLAYER_GAP_MAX_STEP = 6;
+export const PLAYER_GAP_MAX_STEP = 8;
 
 export interface PlayerGapOptions<T extends CrowdNode = CrowdNode> {
   edge?: number;

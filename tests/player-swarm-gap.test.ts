@@ -128,7 +128,7 @@ describe("resolvePlayerGap", () => {
       expect(Math.hypot(n.x - PLAYER_X, n.y - PLAYER_Y)).toBeGreaterThan(0);
     }
     // Fallback-Richtung = Goldener Winkel der eigenen UID; Schritt = Step-Deckel
-    // (Defizit 6 + 8 + 14 = 28 px ⇒ min(6, 28 * 0.45) = 6).
+    // (Defizit 6 + 8 + 18 = 32 px ⇒ min(8, 32 * 0.6) = 8).
     const dir = fallbackDir(301);
     expect(nodes[0].x - PLAYER_X).toBeCloseTo(dir.x * PLAYER_GAP_MAX_STEP, 5);
     expect(nodes[0].y - PLAYER_Y).toBeCloseTo(dir.y * PLAYER_GAP_MAX_STEP, 5);
