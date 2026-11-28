@@ -9829,10 +9829,16 @@
       "id": 7740,
       "title": "m10-shot-budget-dt K3: Test — Akkumulator + dt-Determinismus + Fairness unverändert",
       "description": "tests/shot-budget-dt.test.ts neu: (a) Budget-Fenster an Sim-Zeit (mehrere Fenster je update, leere Fenster rotieren nicht), (b) gleiche Versuche an gleichen Sim-Zeiten bei dt 1/60 vs 1/30 -> identische Launch-Marken, (c) Rotation/Fairness wie #7491 (kein Starving, Budget-Rückgabe bei Telegraph-Mangel bleibt). npm test inkl. enemy-shots-fair.test.ts + shot-budget-cap.test.ts grün. Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:25:53Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: tests/shot-budget-dt.test.ts (Akkumulator, dt-Determinismus, Fairness unveraendert)."
+        }
+      ],
       "created": "2026-11-28T03:22:11Z",
-      "updated": "2026-11-28T03:22:11Z"
+      "updated": "2026-11-28T03:25:53Z"
     },
     {
       "id": 7741,
