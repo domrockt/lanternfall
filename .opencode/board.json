@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10110,
+  "next": 10114,
   "cards": [
     {
       "id": 1,
@@ -12965,6 +12965,53 @@
       "notes": [],
       "created": "2026-11-28T07:37:10Z",
       "updated": "2026-11-28T07:37:10Z"
+    },
+    {
+      "id": 10110,
+      "title": "m10-bundle-chunk-fix K1: Vorher-Messung Build-Warnung",
+      "description": "Abnahme: `npm run build` einmal laufen lassen, Warnung + Chunk-Größen + Build-Zeit als JSON nach ~/games/.evidence/m10-bundle-chunk/before.json schreiben und in docs/lanes/m10-bundle-chunk-fix.md referenzieren. Commit mit Beleg.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:02:36Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-bundle-chunk-fix: Baseline-Build-Messung E-3 (Chunk-Warnung)"
+        },
+        {
+          "at": "2026-11-28T08:16:41+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10110, Merge branch m10-bundle-chunk-fix (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:02:36Z"
+    },
+    {
+      "id": 10111,
+      "title": "m10-bundle-chunk-fix K2: vite.config.ts Code-Split",
+      "description": "Abnahme: vite.config.ts neu (minimal: advancedChunks-Group für Phaser-Vendor vs. Spielcode), `npm run build` rc=0 ohne Chunk-Größenwarnung, Build-Zeit <= 2 s. Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:01:52Z"
+    },
+    {
+      "id": 10112,
+      "title": "m10-bundle-chunk-fix K3: Guard-Test + Preview-Smoke",
+      "description": "Abnahme: tests/bundle-chunks.test.ts (0 Chunk-Warnungen, Spielcode-Chunks < 500 kB) + Preview-/index-Load-Smoke (Spiel lädt, keine JS-Fehler). npm test grün, tsc rc=0. Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:01:52Z"
+    },
+    {
+      "id": 10113,
+      "title": "m10-bundle-chunk-fix K4: Android-Beleg + Lane-Doku + lane-done",
+      "description": "Abnahme: Vor/Nach-Tabelle der Chunk-Größen in docs/lanes/m10-bundle-chunk-fix.md, Kaltstart-Hinweis Android; sonst dokumentierter Rollback mit Befund. .lane-done committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:01:52Z"
     }
   ]
 }
