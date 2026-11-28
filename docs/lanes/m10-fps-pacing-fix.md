@@ -60,32 +60,28 @@ Ausnahme, Schrittfolgen-bitgleichheit (Prefix-Verhältnis vor/nach), Carry-Begre
 (kein unbegrenztes Wachstum, dt-Clamp 0,05 s), keine Spikes > 33 ms im Fixture-Muster,
 Cap-60-Vertrag unangetastet.
 
-## K5: Gerät-Nachmessung
+## K5: Gerät-Nachmessung — **BLOCKED** (Stand 18:1xZ)
 
 10-min-Lauf BILDRATE=60 mit `scripts/m10-janky-remeasure.mjs` (nur ausgeführt, nicht geändert —
 fremde Area), `flock /home/ai/games/.lf-perf.lock`, Belege nach
 `~/games/.evidence/m10-fps-pacing-fix/`, rendererValid-Pflicht (kein SwiftShader).
 Tor wie K1. Spieler-Sperre respektiert (HTTP 409 → lokal/Proxy messen, nicht wiederholen).
 
-### Stand 17:5xZ (Spieler-Sperre aktiv)
+**Blocked-Grund (Karte #13689):**
+1. `POST /install?lane=m10-fps-pacing-fix` (17:52Z, rc=0, „Success“ in 1 s) hat **keine
+   Lane-APK gebaut**: `~/games/.apkbuild-lane/m10-fps-pacing-fix` nicht angelegt, Telemetrie-
+   Build nach `/launch` weiter `11f929c7` (Main-Hourly 17:14Z) statt Lane-HEAD `a1f84404` —
+   eine Messung jetzt würde den Main-Stand messen, nicht den Fix. Bedarf in
+   `.dispatch/requests.md` gemeldet.
+2. Proxy-Ersatzbeleg (`scripts/android-proxy.mjs`, sanktioniert bei Spieler-Sperre)
+   unvollständig: Lauf ohne Output gestorben; unmittelbar danach `DOM_SPIELT` (Spieler-Sperre,
+   Regel befolgt: kein Retry am Gerät); die Mess-Sperre `.lf-perf.lock` ist durch die Lane
+   m10-heap-gate-retry ~60 min belegt (2×30-min-Läufe) — ein Retry würde dort einreihen.
 
-- `POST /install?lane=m10-fps-pacing-fix` (17:52Z, rc=0, „Success“ in 1 s): hat **keine
-  Lane-APK gebaut** — `~/games/.apkbuild-lane/m10-fps-pacing-fix` wurde nicht angelegt,
-  Telemetrie-Build nach `/launch` weiter `11f929c7` (Main-Hourly-Build 17:14Z), nicht
-  Lane-HEAD `a1f84404`. Der Lane-Build-Pfad muss vor der Gerät-Messung geklärt werden
-  (Vera/Ops) — sonst misst man den Main-Stand.
-- Direkt danach `DOM_SPIELT` (letzte Tableteingabe < 10 min): Install/Launch gesperrt,
-  Regel befolgt — kein Retry, stattdessen **lokal/Proxy** gemessen:
-  `~/games/.evidence/m10-fps-pacing-fix/proxy-after-hebel1.json`
-  (`scripts/android-proxy.mjs`, desktop 1138x712 dpr 2.25, CPU-Throttle 4x, Minute-25-Dichte,
-  60 s Echtzeit je Charakter). Grenze: ersetzt das Tablet nicht (keine Adreno-Tile-/Treiber-
-  Effekte) — der 2-Vsync-Bimodalismus ist am Desktop nicht reproduzierbar; der Proxy-Beleg
-  dokumentiert, dass Hebel 1 das Desktop-Verhalten nicht verschlechtert und bei CPU-lastigen
-  Frames (Throttle 4x) die Late-Frame-Entlastung greift.
-- Gerät-Nachmessung bleibt offen bis: (a) Lane-APK-Build geklärt und (b) Gerät wieder
-  frei (Telemetrie `dom_playing=false` + idle >= 10 min). Dann einmalig:
-  Install → Launch → `flock /home/ai/games/.lf-perf.lock node scripts/m10-janky-remeasure.mjs
-  --out ~/games/.evidence/m10-fps-pacing-fix/after-cap60-device.json --fps 60 --minutes 10`.
+**Nachhol-Pfad (sobald frei):** Lane-APK-Build geklärt → Install → Launch →
+`flock /home/ai/games/.lf-perf.lock node scripts/m10-janky-remeasure.mjs
+--out ~/games/.evidence/m10-fps-pacing-fix/after-cap60-device.json --fps 60 --minutes 10`
+→ Tor wie K1 auswerten. Fix + Test + Doku sind fertig und committet.
 
 ## Belege
 
