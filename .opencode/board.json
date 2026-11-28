@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8662,
+  "next": 8665,
   "cards": [
     {
       "id": 1,
@@ -11204,6 +11204,54 @@
       "notes": [],
       "created": "2026-11-28T05:20:43Z",
       "updated": "2026-11-28T05:20:43Z"
+    },
+    {
+      "id": 8662,
+      "title": "m10-ai-rng-seed K1: Vorher-Probe (2 Kontrollläufe, Divergenz belegen)",
+      "description": "Aus Lane übernommen (lane #7798). 2 Kontrollläufe mit gleichem Seed divergieren in der KI (Math.random-Fallback): shots/m10-ai-rng-before.json.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T05:26:57Z",
+          "by": "build",
+          "text": "lane #7798, Merge 7886039"
+        }
+      ],
+      "created": "2026-11-28T05:26:54Z",
+      "updated": "2026-11-28T05:26:57Z"
+    },
+    {
+      "id": 8663,
+      "title": "m10-ai-rng-seed K2: Gesäte KI-RNG in EnemyPool + Tests",
+      "description": "Aus Lane übernommen (lane #7799). EnemyPool-Fallback = pool-eigener SeededRng(aiSeed), Run.ts übergibt Run-Seed; tests/enemy-ai-rng.test.ts.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T05:26:57Z",
+          "by": "build",
+          "text": "lane #7799, Merge 7886039"
+        }
+      ],
+      "created": "2026-11-28T05:26:54Z",
+      "updated": "2026-11-28T05:26:57Z"
+    },
+    {
+      "id": 8664,
+      "title": "m10-ai-rng-seed K3: Nachher-Probe + Doku",
+      "description": "Aus Lane übernommen (lane #7800). After-Probe bitgleich (fa543c71==fa543c71, shots/m10-ai-rng-after.json); Balance-Korridor A/B — Drift vorbestehend; docs/lanes/m10-ai-rng-seed.md.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T05:26:57Z",
+          "by": "build",
+          "text": "lane #7800, Merge 7886039"
+        }
+      ],
+      "created": "2026-11-28T05:26:54Z",
+      "updated": "2026-11-28T05:26:57Z"
     }
   ]
 }
