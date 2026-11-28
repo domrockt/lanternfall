@@ -11,7 +11,7 @@ import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
-import { PHOENIX_FX, SOUL_FX, WRATH_FX, THUNDER_FX } from "../data/evolution-weapons";
+import { PHOENIX_FX, SOUL_FX, WRATH_FX, THUNDER_FX, WINTER_FX } from "../data/evolution-weapons";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -91,6 +91,8 @@ interface WeaponState {
   orbHitAt: Map<number, number>;
   auraTick: number;
   spikeTimer: number;
+  /** m10-evo-fx-winter-w2: Windup-Anticipation einmal je Spike-Zyklus (WINTER_FX.windupAt). */
+  winterWindup: boolean;
 }
 
 interface PendingSeal {
@@ -210,7 +212,7 @@ export class CombatSystem {
     if (!s) {
       s = {
         swings: [], orbs: [], orbTimeLeft: 0, orbDamage: 0, orbRadius: 0,
-        orbHitAt: new Map(), auraTick: 0, spikeTimer: 0,
+        orbHitAt: new Map(), auraTick: 0, spikeTimer: 0, winterWindup: false,
       };
       this.states.set(id, s);
     }
@@ -567,7 +569,8 @@ export class CombatSystem {
         x: ctx.playerX + Math.cos(a) * radius * 0.70,
         y: ctx.playerY + Math.sin(a) * radius * 0.70,
         vx: Math.cos(a) * 24, vy: Math.sin(a) * 24,
-        life: 0.7, scaleFrom: 1.5, scaleTo: 0.5,
+        // K2: Shards ebenfalls Scale <= 1 (vorher 1.5, Mixel-Regel).
+        life: 0.7, scaleFrom: WINTER_FX.particleScale, scaleTo: 0.5,
         alphaFrom: 1, alphaTo: 0, rotation: a + Math.PI / 2,
         // Kein fogBlue-Tint: die fx_ice-Textur endet selbst in der Eis-Treppe;
         // der Tint drückte die Shards auf Grau-Blau (#2c3540, art-director FAIL).
@@ -786,15 +789,27 @@ export class CombatSystem {
           x: ctx.playerX + Math.cos(a) * radius * 0.82,
           y: ctx.playerY + Math.sin(a) * radius * 0.82,
           vx: Math.cos(a) * 18, vy: Math.sin(a) * 18,
-          life: 0.6, scaleFrom: 1.3, scaleTo: 0.4, alphaFrom: 0.95, alphaTo: 0,
+          // m10-evo-fx-winter-w2 K2 (geparkter Winter-Diff): Scale <= 1 (Mixel-Regel),
+          // vorher scaleFrom 1.3 — die Textur wird nie hochskaliert.
+          life: 0.6, scaleFrom: WINTER_FX.particleScale, scaleTo: 0.4, alphaFrom: 0.95, alphaTo: 0,
           // Kein fogBlue-Tint (Aura-Siegel-FAIL, art-director Runde 2): Textur-Treppe zeigen.
           rotation: a, additive: false, depth: DEPTH.fxLow,
         });
       }
     }
     state.spikeTimer -= ctx.dt;
+    // K2 (geparkter Winter-Diff): Windup-Anticipation — kalter Halo kurz vor dem
+    // Eisspitzen-Volley, einmal je Zyklus (WINTER_FX.windupAt/windupLife, 24x24 @ Scale <= 1).
+    if (!state.winterWindup && state.spikeTimer > 0 && state.spikeTimer <= WINTER_FX.windupAt) {
+      state.winterWindup = true;
+      this.fx.spawnAnim(WINTER_FX.windupTexture, ctx.playerX, ctx.playerY, {
+        life: WINTER_FX.windupLife, scaleFrom: 0.5, scaleTo: 1,
+        alphaFrom: 0, alphaTo: 0.6, additive: false,
+      });
+    }
     if (state.spikeTimer <= 0) {
       state.spikeTimer = 1.35;
+      state.winterWindup = false;
       const count = Math.max(6, stats.count ?? 10);
       const spikeDamage = effectiveDamage(stats.damage, ctx.agg);
       for (let i = 0; i < count; i++) {
