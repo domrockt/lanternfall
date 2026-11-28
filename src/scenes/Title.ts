@@ -48,6 +48,9 @@ export function titleBgLayout(gameW: number, gameH: number,
 export const TITLE_GLASS_HOLE = { row: 5, w: 8, h: 6 } as const;
 /** Nacht-Dim-Stärke der Bodenlasur (unverändert zu main — nur Ausnahmefenster neu). */
 export const TITLE_DIM_ALPHA = 0.62;
+/** Nacht-Dim-Lasur: Deckel wie in main (Rectangle 0, 132+oy, W, 138). */
+export const TITLE_DIM_TOP = 132;
+export const TITLE_DIM_HEIGHT = 138;
 /**
  * Flammen-Depth wie in main (2): bewusst UNTER den Menue-Buttons (6) und der
  * Vignette (50) — die Dim-Ausnahme läuft über die Glas-Fenster in den Dim-
@@ -60,17 +63,20 @@ export const TITLE_FLAME_DEPTH = 2;
  * (Lichtquellen). Je Laterne ein 8x6-Texel-Fenster exakt über den GLAS-Reihen
  * des Flammen-Patches (Reihen 5-10, vollständig opake Texel) — dort zeigt die
  * Szene dann die unverdunkelten Palettenstufen (13 lanternWhite im Kern).
+ * Skalenbewusst: Flammen-Patches werden mit bgL.scale gezeichnet, Fenster
+ * skalieren mit (bei Scale 1 identisch zu den Texel-Koordinaten).
  * Bewusst NICHT die Funken-Reihen 0-4 (transparent, Hintergrund käme undunkel
  * durch = helles Kasten-Artefakt) und bewusst KEIN Depth > Vignette/Buttons
  * (Flammen dürften nicht über dem Menü landen).
  */
 export function lanternGlassHoles(bgL: TitleBgLayout):
   Array<{ x: number; y: number; w: number; h: number }> {
+  const s = bgL.scale;
   return TITLE_FLAME_SPOTS.map((spot) => ({
-    x: bgL.x + spot.x,
-    y: bgL.y + spot.y + TITLE_GLASS_HOLE.row,
-    w: TITLE_GLASS_HOLE.w,
-    h: TITLE_GLASS_HOLE.h,
+    x: bgL.x + spot.x * s,
+    y: bgL.y + (spot.y + TITLE_GLASS_HOLE.row) * s,
+    w: TITLE_GLASS_HOLE.w * s,
+    h: TITLE_GLASS_HOLE.h * s,
   }));
 }
 
@@ -184,12 +190,12 @@ export class Title extends Phaser.Scene {
     // gedimmt (nightDeep, TITLE_DIM_ALPHA), nur das Glas zeigt ab sofort die
     // ungedimmte Palette (Kern 13 lanternWhite). Kein Depth-Trick: die Flammen
     // bleiben unter Menue-Buttons (L2 Glas liegt hinter OPTIONEN - Bestand).
-    const dimTop = 132 + oy;
+    const dimTop = oy + TITLE_DIM_TOP;
     const dimHoles = lanternGlassHoles(bgL);
     const dimKey = `title_dim_lasur_${W}x${H}`;
     if (!this.textures.exists(dimKey)) {
       const c = document.createElement("canvas");
-      c.width = W; c.height = 138;
+      c.width = W; c.height = TITLE_DIM_HEIGHT;
       const ctx = c.getContext("2d")!;
       ctx.globalAlpha = TITLE_DIM_ALPHA;
       ctx.fillStyle = "#" + PAL[C.nightDeep].toString(16).padStart(6, "0");
@@ -201,13 +207,15 @@ export class Title extends Phaser.Scene {
     this.add.image(0, dimTop, dimKey).setOrigin(0, 0).setDepth(3);
     // Vignette bleibt Vollbild-Dim (depth 50) — ebenfalls mit denselben
     // Glas-Fenstern (lokale Kopie der Boot-Textur, Boot.ts unangetastet).
-    // drawImage skaliert wie setDisplaySize (Breite je Seitenverhaeltnis).
+    // drawImage auf Zielgroesse WxH erzwungen (Verhalten wie setDisplaySize),
+    // imageSmoothingEnabled = false fuer pixelgenaue Bandkanten (NEAREST).
     const vinKey = `title_vignette_dim_${W}x${H}`;
     if (!this.textures.exists(vinKey)) {
       const src = this.textures.get("vignette").getSourceImage() as HTMLCanvasElement;
       const c = document.createElement("canvas");
       c.width = W; c.height = H;
       const ctx = c.getContext("2d")!;
+      ctx.imageSmoothingEnabled = false;
       ctx.drawImage(src, 0, 0, src.width, src.height, 0, 0, W, H);
       for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y, hole.w, hole.h);
       this.textures.addCanvas(vinKey, c);
