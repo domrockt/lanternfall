@@ -1,0 +1,29 @@
+# Lane m10-v10-flake-sweep — fertig (2026-11-28)
+
+Befund-Sammlung vor der v1.0-Markierung: EIN systematischer Flake-Sweep statt einzelner
+Build-Blocker-Entdeckungen. Karten #13870/#13871/#13872, Board-Karten in `review`.
+
+## Ergebnis
+- **0 Flakes in 3 Läufen:** 3× `npm test` auf HEAD 47086a84, je **2575/2575 PASS, 0 FAIL**
+  (Dauer 6,5/5,8/5,7 s, Start 18:57Z, exit 0 je Lauf).
+- Skript: `scripts/m10-flake-sweep.mjs` (neu) — synchron, kein sleep-Warten, Timeout 900 s/Lauf,
+  je Lauf Summary-JSON (Pass/Fail, Dauer, FAILende Tests mit Datei/Testname/Fehlerklasse).
+- Belege: `shots/m10-v10-flake-sweep-run{1,2,3}.json` + `~/games/.evidence/m10-v10-flake-sweep/`.
+- Doku: `docs/lanes/m10-v10-flake-sweep.md` (0-Flake-Beleg, Grenzen der Aussagekraft, Prozedur).
+
+## Abweichungen / Befunde
+- **ohne flock** statt wie im Karten-Text „unter flock“: erster Versuch `flock -w 900` verbrannte
+  3×900 s auf der fremdbelegten .lf-perf.lock-Sperre ohne einen einzigen Test (18:11–18:26Z).
+  common.md sagt ausdrücklich: Tests ohne flock. Opt-in per `FLAKE_SWEEP_FLOCK=1`.
+- Historische Flakes (fx-mixel-Timeout, weapons, chest-roll-names bei Last, heap-budget) 0/3
+  reproduziert. Grenze: Suite läuft ~6 s ohne künstliche Last — Last-/Langlauf-Flakes können
+  unsichtbar bleiben; bei erneutem Blocker zuerst `node scripts/m10-flake-sweep.mjs` als Diagnose.
+- Kein Fix-Bedarf → eine Info-Zeile in `/home/ai/games/.dispatch/requests.md` (18:58Z).
+- NB: bekannter Seiteneffekt bestätigt — jeder Suite-Lauf re-timestampet
+  `shots/m10-passive-math-{caps,matrix}.json` (tests/passive-stack.test.ts); restored,
+  gehört zu bestehendem E-4-Bedarf (m10-verify-outputs-hygiene).
+
+## Checks
+- `npm test` grün (3×2575 PASS), `npm run build` grün, `npx tsc --noEmit` Teil des Builds.
+- Eigene Änderungen nur neue Dateien: scripts/m10-flake-sweep.mjs, docs/lanes/m10-v10-flake-sweep.md.
+- Commits: 023d195e (#13870 WIP), 47086a84 (#13870), 9cca8bb1 (#13871), dieser Commit (#13872).
