@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8671,
+  "next": 8802,
   "cards": [
     {
       "id": 1,
@@ -10982,16 +10982,21 @@
       "id": 8598,
       "title": "m10-boss-portrait-crisp K1: Before-Kontaktbögen 6 Bosse 1x+4x + Mängelliste",
       "description": "Owner: pixel-artist. AK: shots/m10-boss-portrait-before-*.png (je Boss 3 Frames 1x + 4x), Mängelliste je Boss max. 3 Muss-Punkte (Konturen, Silhouetten-Lesbarkeit, Lichtkanten), Baseline-JSON (Off-Palette, Silhouetten-Kontrast). Belege im Commit.",
-      "column": "doing",
+      "column": "backlog",
       "notes": [
         {
           "at": "2026-11-28T04:32:17Z",
           "by": "build",
           "text": "todo → doing: Start K1: Kontaktbogen-Skript scripts/m10-boss-portrait.mjs, Before-Shots + Baseline-JSON."
+        },
+        {
+          "at": "2026-11-28T05:40:03Z",
+          "by": "build",
+          "text": "doing → backlog: Supervisor-Steer 28.11.: gehoert nicht zum Karten-Plan der Lane m10-props-wiring (fremde Lane m10-boss-portrait-crisp), raus aus doing wegen WIP-Grenze. Von der props-wiring-Lane nur verschoben, inhaltlich nicht angefasst."
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:17Z"
+      "updated": "2026-11-28T05:40:03Z"
     },
     {
       "id": 8599,
@@ -11131,16 +11136,21 @@
       "id": 8606,
       "title": "m10-boss-lure-fair K1: Vorher-Beleg 6 Bosse x 3 Seeds",
       "description": "Skript scripts/m10-boss-fair.mjs: 6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 s Sim je Boss. Misst Distanz zum Spieler, Distanz zur Spawn-Zone (Leash), Sichtbarkeit im View, Schadensereignisse ohne vorherige Sichtbarkeit. Output shots/m10-bossfair-before.json. Abnahme: JSON committed, Kennzahlen (offscreenAnteil, maxLeashAbweichung, Schaden-ohne-Sicht) je Boss/Seed.",
-      "column": "doing",
+      "column": "backlog",
       "notes": [
         {
           "at": "2026-11-28T03:33:39Z",
           "by": "build",
           "text": "todo → doing: Vorher-Beleg: Mess-Skript + Baseline-Lauf 6 Bosse x 3 Seeds"
+        },
+        {
+          "at": "2026-11-28T05:40:03Z",
+          "by": "build",
+          "text": "doing → backlog: Supervisor-Steer 28.11.: gehoert nicht zum Karten-Plan der Lane m10-props-wiring (fremde Lane m10-boss-lure-fair), raus aus doing wegen WIP-Grenze. Von der props-wiring-Lane nur verschoben, inhaltlich nicht angefasst."
         }
       ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:39Z"
+      "updated": "2026-11-28T05:40:03Z"
     },
     {
       "id": 8607,
@@ -11384,6 +11394,48 @@
       ],
       "created": "2026-11-28T05:09:16Z",
       "updated": "2026-11-28T05:21:11Z"
+    },
+    {
+      "id": 8798,
+      "title": "m10-props-wiring K1: Patch einarbeiten — addProp-Variantenwahl (3 Zeilen) + Wirkprobe",
+      "description": "3-Zeilen-Patch aus docs/lanes/m10-props-variety.md (offener Punkt) in GroundRenderer.addProp: deterministische Variantenwahl via propVariantKeyFor aus gen-props.ts, tileHash der Position, Fallback auf Basis-Textur. Platzierung/CLUSTER_PROPS/LOD-Tiers/Batch-Struktur unveraendert; propLayers.ts/textures.ts unangetastet. Abnahme: Wirkprobe boulder-Split (~46/55/54, Top-Anteil 23% -> 15%) als JSON-Beleg, tsc gruen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T05:40:03Z",
+          "by": "build",
+          "text": "todo → doing: K1 startet: 3-Zeilen-Patch (Variantenwahl) + Wirkprobe. Vorher erst Before-Belege (K2-Skript), dann Patch."
+        }
+      ],
+      "created": "2026-11-28T05:39:50Z",
+      "updated": "2026-11-28T05:40:03Z"
+    },
+    {
+      "id": 8799,
+      "title": "m10-props-wiring K2: Vorher/Nachher-Shots 640x360 + 780x360@3 je 4x",
+      "description": "scripts/m10-props-wiring.mjs (frueh + Chaos, seed 7): je Tag 4 Shots (early/chaos x 1x-640x360 + 3x-780x360-Crop nearest), before ohne Patch, after mit Patch. Abnahme: 8 PNGs + 2 JSON in shots/, jsErrors: []",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T05:39:50Z",
+      "updated": "2026-11-28T05:39:50Z"
+    },
+    {
+      "id": 8800,
+      "title": "m10-props-wiring K3: Guard-Test tests/props-wiring.test.ts",
+      "description": "Deterministische Wahl (gleicher Tile-Hash -> gleiche Variante) + Fallback bei unbekanntem Key/nicht existierender Textur. Abnahme: npx vitest run tests/props-wiring.test.ts, npm test + tsc rc=0",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T05:39:50Z",
+      "updated": "2026-11-28T05:39:50Z"
+    },
+    {
+      "id": 8801,
+      "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
+      "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T05:39:50Z",
+      "updated": "2026-11-28T05:39:50Z"
     }
   ]
 }

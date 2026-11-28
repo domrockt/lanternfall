@@ -1,0 +1,62 @@
+{
+  "card": "m10-props-wiring",
+  "tag": "after",
+  "seed": 7,
+  "measuredAt": "2026-11-28T05:41:42.970Z",
+  "command": "node scripts/m10-props-wiring.mjs --tag after",
+  "early": {
+    "totalProps": 704,
+    "topProp": "prop_stump",
+    "topCount": 97,
+    "topSharePct": 13.8,
+    "counts": {
+      "prop_post_b": 14,
+      "prop_grave": 66,
+      "prop_bones_b": 29,
+      "prop_cross": 18,
+      "prop_tree_a": 31,
+      "prop_stump": 97,
+      "prop_bones_c": 28,
+      "prop_lilypad": 69,
+      "prop_reeds_b": 26,
+      "prop_reeds": 28,
+      "prop_ruin": 29,
+      "prop_column": 29,
+      "prop_boulder_b": 61,
+      "prop_tree_b": 35,
+      "prop_boulder_c": 49,
+      "prop_boulder": 51,
+      "prop_mushroom_ring": 22,
+      "prop_bones": 14,
+      "prop_post": 8
+    }
+  },
+  "chaos": {
+    "totalProps": 722,
+    "topProp": "prop_stump",
+    "topCount": 108,
+    "topSharePct": 15,
+    "counts": {
+      "prop_tree_a": 42,
+      "prop_stump": 108,
+      "prop_bones_b": 29,
+      "prop_ruin": 31,
+      "prop_column": 32,
+      "prop_boulder_b": 57,
+      "prop_boulder_c": 53,
+      "prop_cross": 21,
+      "prop_grave": 65,
+      "prop_bones_c": 24,
+      "prop_bones": 28,
+      "prop_reeds_b": 26,
+      "prop_lilypad": 47,
+      "prop_tree_b": 44,
+      "prop_boulder": 46,
+      "prop_reeds": 29,
+      "prop_mushroom_ring": 22,
+      "prop_post": 6,
+      "prop_post_b": 12
+    }
+  },
+  "jsErrors": []
+}
