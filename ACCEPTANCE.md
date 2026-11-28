@@ -148,7 +148,7 @@ in 1869 s Echtzeit** (31,2 min inkl. Dawn/Results), nicht abgeschnitten.
 | perf Minute 25 (300 + 6 Evolutionen) | **57,9 FPS** (Team), Lead-Nachmessung **56,4 FPS** | `shots/perf-m3.json` |
 | fullrun FPS-Minimum (29:20–Sieg, 1×) | **55,8** (Ziel ≥ 55) in beiden Läufen | `shots/m3-fullrun.json` |
 | fullrun Gesamt | 30,1 min, 6 Bosse, 6 Truhen, Sieg, 0 JS-Fehler | `shots/m3-fullrun.json` |
-| balance Hauptläufe | A5-Befund „Kael/Seed 101 Level 47“ ist **widerlegt**: 8 Repro-Läufe → Level 28 bei Kael/101 (Ursache: Gem-Sammelquote 28,4 % bei M8-Dichte); nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: **6/6 im Korridor Level 25–40**, kein Tod vor Minute 15; **formale Kriteriumsänderung offen (Frage an Dom 23:35)** | `shots/m10-balance-kael-repro.json`, `shots/m10-balance-kael-xp-budget.json`, `shots/m10-balance-kael-final.json` |
+| balance Hauptläufe | Kriterium (Dom-Zustimmung 2026-11-28 06:00Z, `docs/qa/balance-criterion-2026-11-28.md`): **Endlevel 25–40, 6/6 Läufe, Boss 20–60 s, kein Tod vor Minute 15**. Historischer A5-Befund „Kael/Seed 101 Level 47“ ist **widerlegt**: 8 Repro-Läufe → Level 28 bei Kael/101 (Ursache: Gem-Sammelquote 28,4 % bei M8-Dichte); nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: 6/6 im Korridor Level 25–40 | `shots/m10-balance-kael-repro.json`, `shots/m10-balance-kael-xp-budget.json`, `shots/m10-balance-kael-final.json` |
 | balance Boss-Dauern | 23–51 s (Ziel 20–60 s) im Nachlauf `6/6`; alter A5-Wert 23–54 s | `shots/m10-balance-kael-final.json`, `shots/balance-main.json` |
 | Tests | **204/204** grün in 14 Testdateien (Beleg: `npm test`-Lauf 2026-11-26 23:58Z auf `4c04404`; Lane-Nachlauf `bb4214a`) | `npm test` |
 
@@ -242,7 +242,7 @@ Nachträge, Restmängel).
 
 ## Offene Punkte / Restmängel
 
-- Balance: Kael/Seed 101 Level 47 ist **widerlegt** (8 Repro-Läufe: Level 28; Ursache Gem-Sammelquote 28,4 % bei M8-Dichte, `shots/m10-balance-kael-repro.json`/`-xp-budget.json`); Ist nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: **6/6 im Korridor 25–40** (Level 27–30, Boss 20–60 s, kein Tod vor Minute 15, `shots/m10-balance-kael-final.json`); formale Kriteriumsänderung offen (Frage an Dom 23:35).
+- Balance: Kriterium (Dom-Zustimmung 2026-11-28 06:00Z): **Endlevel 25–40, 6/6 Läufe, Boss 20–60 s, kein Tod vor Minute 15** (`docs/qa/balance-criterion-2026-11-28.md`). Historisch: „Kael/Seed 101 Level 47“ ist **widerlegt** (8 Repro-Läufe: Level 28; Ursache Gem-Sammelquote 28,4 % bei M8-Dichte, `shots/m10-balance-kael-repro.json`/`-xp-budget.json`); Ist nach Fix `7629b2f` (Merge `e4d7fba`) und QA-Merge `4c04404`: 6/6 im Korridor 25–40 (Level 27–30, `shots/m10-balance-kael-final.json`).
 - Boss-Inszenierung: Knochenfürst spawnt am oberen Rand hinter der HP-Leiste
   (art-director-Restpunkt; keine Abnahme-Blockade).
 - Heap: historisch fullrun +18,7 % (25,7 → 30,5 MB) und Realtime +15,8 % über dem
