@@ -1,6 +1,18 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { applyTexture, makeImage } from "../gfx/atlas";
+import { GAME_HEIGHT } from "../config";
+// M10-chest-reveal: reine Sequenz-/Layout-Teile liegen in src/logic/chest-reveal.ts
+// (unit-getestet ohne Phaser); das ChestSystem ist der Renderer dafuer.
+import {
+  CHEST_OPEN_BURST_MS,
+  CHEST_OPEN_LID_MS,
+  CHEST_OPEN_REVEAL_MS,
+  CHEST_OPENING_TTL_MS,
+  chestBurstSpec,
+  chestPanelLayout,
+  type ChestBurstParticle,
+} from "../logic/chest-reveal";
 
 export interface ChestRuntime {
   x: number;
@@ -9,6 +21,8 @@ export interface ChestRuntime {
   glow: Phaser.GameObjects.Image;
   phase: number;
   age: number;
+  /** M10-chest-reveal: Truhe ist geöffnet (Sequenz läuft im Panel). */
+  opened: boolean;
 }
 
 /**
@@ -87,12 +101,61 @@ export function computeChestArrow(view: ArrowView, chestX: number, chestY: numbe
   };
 }
 
+// ── Laufzeit der Sequenz (ChestSystem-eigener Renderer, kein FxSystem) ──────
+//
+// M10-chest-reveal (Supervisor 27.11.): UI.ts ist für diese Lane Tabu. Die
+// Öffnungs-Sequenz läuft komplett hier, in drei klar getrennten Phasen mit
+// festen Zeitstempeln:
+//
+//   Phase 1 GLOW     0 ms       Aufleuchten: Glanz-Animation hoch (Welt-Glow)
+//   Phase 2 PARTIKEL 280/420 ms Deckel + Münzen-/Funken-Burst aus der Truhe
+//   Phase 3 REVEAL   520 ms..   Belohnungs-Reveal nacheinander (Timeline)
+//
+// Die Untertitel-Position im Panel fixt `applyPanelFix` — ebenfalls hier im
+// ChestSystem-eigenen Renderer (Laufzeit-Zugriff auf die existierenden Panel-
+// Objekte, kein UI.ts-Edit, kein Duplikat-Rendering).
+
+/** Phase 1 Glow endet (ms): Glanz voll hoch. */
+export const CHEST_PHASE_GLOW_END_MS = CHEST_OPEN_LID_MS;
+/** Phase 2 Partikel: Deckel auf (ms). */
+export const CHEST_PHASE_LID_MS = CHEST_OPEN_LID_MS;
+/** Phase 2 Partikel: Burst aus der Truhe (ms). */
+export const CHEST_PHASE_BURST_MS = CHEST_OPEN_BURST_MS;
+/** Phase 2 endet / Phase 3 Reveal beginnt (ms). */
+export const CHEST_PHASE_REVEAL_MS = CHEST_OPEN_REVEAL_MS;
+
+/** Poolgröße für den Öffnungs-Burst (16 Münzen + 8 Funken + Puffer). */
+export const CHEST_BURST_POOL = 28;
+
+interface ChestOpening {
+  sprite: Phaser.GameObjects.Image;
+  glow: Phaser.GameObjects.Image;
+  x: number;
+  y: number;
+  ageMs: number;
+  lidDone: boolean;
+  burstDone: boolean;
+}
+
+interface BurstParticleRuntime {
+  img: Phaser.GameObjects.Image;
+  spec: ChestBurstParticle | null;
+  x0: number;
+  y0: number;
+  t: number;
+}
+
 export class ChestSystem {
   readonly chests: ChestRuntime[] = [];
   /** M10-Timing-Beleg: jede Spawn-Zeit wird mitgeschrieben (nur Diagnose). */
   readonly spawns: ChestSpawnRecord[] = [];
   private readonly scene: Phaser.Scene;
   private readonly arrow: Phaser.GameObjects.Image;
+  /** M10-chest-reveal: laufende Öffnungs-Sequenzen (Sprite/Glow leben weiter). */
+  private readonly openings: ChestOpening[] = [];
+  /** M10-chest-reveal: eigener Partikel-Pool für den Öffnungs-Burst (kein FxSystem). */
+  private readonly burstPool: BurstParticleRuntime[] = [];
+  private readonly burstFree: BurstParticleRuntime[] = [];
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -103,6 +166,14 @@ export class ChestSystem {
       .setTint(PAL[C.lantern])
       .setScale(1.35)
       .setVisible(false);
+    for (let i = 0; i < CHEST_BURST_POOL; i++) {
+      const img = makeImage(scene, 0, 0, "fx_coin")
+        .setDepth(8)
+        .setVisible(false);
+      const p: BurstParticleRuntime = { img, spec: null, x0: 0, y0: 0, t: 0 };
+      this.burstPool.push(p);
+      this.burstFree.push(p);
+    }
   }
 
   /**
@@ -142,13 +213,16 @@ export class ChestSystem {
       .setTint(PAL[C.amber])
       .setScale(0.34)
       .setAlpha(0.55);
-    const chest: ChestRuntime = { x, y, sprite, glow, phase: (this.chests.length % 7) * 0.9, age: 0 };
+    const chest: ChestRuntime = { x, y, sprite, glow, phase: (this.chests.length % 7) * 0.9, age: 0, opened: false };
     this.chests.push(chest);
     return chest;
   }
 
-  /** Glanz-Puls und Randpfeil zur nächstgelegenen Truhe. */
+  /** Glanz-Puls, Öffnungs-Sequenz und Randpfeil zur nächstgelegenen Truhe. */
   update(dt: number, camera: Phaser.Cameras.Scene2D.Camera, playerX: number, playerY: number): void {
+    // Öffnungs-Sequenz + Partikel laufen unabhängig von offenen Truhen weiter
+    // (updateVisuals läuft auch bei pausierter Sim — Panel offen).
+    this.updateOpenings(dt);
     if (this.chests.length === 0) {
       this.arrow.setVisible(false);
       return;
@@ -189,9 +263,137 @@ export class ChestSystem {
     return found;
   }
 
+  /**
+   * M10-chest-reveal: Öffnen startet die inszenierte Sequenz. Das Sprite/Glow
+   * leben als `opening` weiter (Phase 1 Glow, Phase 2 Deckel + Münzen/Funken
+   * aus dem ChestSystem-eigenen Partikel-Pool), sind aber aus `chests` raus —
+   * Pfeil, `near()` und Tap reagieren nicht mehr auf sie. Das Panel folgt
+   * derselben Timeline aus `chestOpenTimeline`.
+   */
   open(chest: ChestRuntime): void {
-    applyTexture(chest.sprite, "chest_open");
-    this.remove(chest);
+    const idx = this.chests.indexOf(chest);
+    if (idx >= 0) this.chests.splice(idx, 1);
+    if (this.chests.length === 0) this.arrow.setVisible(false);
+    chest.opened = true;
+    this.openings.push({
+      sprite: chest.sprite,
+      glow: chest.glow,
+      x: chest.x,
+      y: chest.y,
+      ageMs: 0,
+      lidDone: false,
+      burstDone: false,
+    });
+    // Panel-Renderer: Untertitel-/Icon-Position fixen, sobald die UI die
+    // Sequenz aufgesetzt hat (onChestOpen läuft synchron beim emit).
+    this.scene.time.delayedCall(30, () => this.applyPanelFix());
+  }
+
+  /**
+   * M10-chest-reveal: Untertitel-Position — ChestSystem-eigener Renderer-Fix
+   * zur Laufzeit (UI.ts ist für diese Lane Tabu, Supervisor 27.11.). Der
+   * Untertitel wird über seinen Text eindeutig identifiziert und auf die
+   * überlappungsfreie Position aus `chestPanelLayout` gesetzt; das Truhen-Icon
+   * geht auf Layout-Position/-Skalierung (größer, Kernmoment), die Evo-
+   * Hinweiszeilen rücken unter das größere Icon. Es wird nur das existierende
+   * Objekt umpositioniert — kein Duplikat-Rendering, keine UI.ts-Änderung.
+   * Idempotent: onChestOpen setzt Skalierung/Textur bei jeder Truhe neu,
+   * deshalb läuft der Fix bei jedem Öffnen.
+   */
+  private applyPanelFix(): void {
+    const ui = this.scene.scene.get("ui");
+    const group = ui?.children.getByName("chest-group") as Phaser.GameObjects.Container | null;
+    if (!group) return;
+    const oy = Math.round((GAME_HEIGHT - 270) / 2);
+    const layout = chestPanelLayout(oy);
+    for (const obj of group.list) {
+      const ch = obj as Phaser.GameObjects.Container & {
+        valueText?: string;
+        texture?: Phaser.Textures.Texture | null;
+      };
+      if (typeof ch.valueText === "string" && ch.valueText === "BELOHNUNGEN ROLLEN ...") {
+        ch.setName("chest-subtitle");
+        ch.setY(layout.subtitleY);
+      } else if (ch.texture && String(ch.texture.key).startsWith("chest_")) {
+        ch.setName("chest-icon");
+        ch.setY(layout.iconY).setScale(layout.iconScale);
+      }
+    }
+    const hints = [group.getByName("chest-hint-0"), group.getByName("chest-hint-1")];
+    hints.forEach((t, i) => (t as unknown as { setY(y: number): unknown } | null)?.setY(layout.hintY[i]));
+  }
+
+  /** Aufleuchten → Deckel/Burst → Ausklang; deterministisch pro Opening. */
+  private updateOpenings(dt: number): void {
+    const dtMs = dt * 1000;
+    for (let i = this.openings.length - 1; i >= 0; i--) {
+      const o = this.openings[i];
+      o.ageMs += dtMs;
+      // ── Phase 1 GLOW (0..CHEST_PHASE_GLOW_END_MS): Aufleuchten ──────────
+      const glowPhase = Math.max(0, Math.min(1, o.ageMs / CHEST_PHASE_GLOW_END_MS));
+      o.glow.setAlpha(0.55 + glowPhase * 0.45);
+      o.glow.setScale(0.34 + glowPhase * 0.26);
+      // Bob ruht während der Sequenz; Sprite steht auf der Basisposition.
+      o.sprite.setY(Math.round(o.y));
+      // ── Phase 2 PARTIKEL (Deckel 280 ms, Burst 420 ms) ──────────────────
+      if (!o.lidDone && o.ageMs >= CHEST_PHASE_LID_MS) {
+        o.lidDone = true;
+        applyTexture(o.sprite, "chest_open");
+      }
+      if (!o.burstDone && o.ageMs >= CHEST_PHASE_BURST_MS) {
+        o.burstDone = true;
+        this.spawnBurst(o.x, o.y - 4);
+      }
+      // ── Phase 3 REVEAL (ab 520 ms): Panel übernimmt; Ausklang + Freigabe.
+      if (o.ageMs >= CHEST_OPENING_TTL_MS) {
+        o.sprite.destroy();
+        o.glow.destroy();
+        this.openings.splice(i, 1);
+      }
+    }
+    this.updateBurst(dt);
+  }
+
+  /** Münzen-/Funken-Burst aus dem eigenen Pool (deterministische Spec). */
+  private spawnBurst(x: number, y: number): void {
+    for (const spec of chestBurstSpec()) {
+      const p = this.burstFree.pop();
+      if (!p) return; // Pool aus: Rest fällt still weg (Cap, kein Wachstum)
+      p.spec = spec;
+      p.x0 = x;
+      p.y0 = y;
+      p.t = -spec.delayMs / 1000;
+      p.img.setTexture(spec.kind === "coin" ? "fx_coin" : "fx_spark")
+        .setBlendMode(spec.kind === "spark" ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL)
+        .setTint(spec.kind === "spark" ? PAL[C.lantern] : PAL[C.amber])
+        .setScale(spec.scale)
+        .setAlpha(1)
+        .setPosition(Math.round(x), Math.round(y))
+        .setVisible(true);
+    }
+  }
+
+  private updateBurst(dt: number): void {
+    for (const p of this.burstPool) {
+      if (!p.spec || !p.img.visible) continue;
+      p.t += dt;
+      if (p.t < 0) continue;
+      const life = p.spec.lifeMs / 1000;
+      const prog = Math.max(0, Math.min(1, p.t / life));
+      const ease = 1 - (1 - prog) ** 3;
+      p.img.setPosition(
+        Math.round(p.x0 + Math.cos(p.spec.angle) * p.spec.dist * ease),
+        Math.round(p.y0 + Math.sin(p.spec.angle) * p.spec.dist * ease - prog * 6),
+      ).setAlpha(1 - prog)
+        // Pixel-Grid (art-director): Skalierung in 0.5-Schritten (fx_coin ist
+        // 2x2) → Partikelbreite bleibt ganzzahlig (1/2/3 px), kein Flackern.
+        .setScale(Math.max(0.5, Math.round(p.spec.scale * (1 - prog * 0.6) * 2) / 2));
+      if (prog >= 1) {
+        p.img.setVisible(false);
+        p.spec = null;
+        this.burstFree.push(p);
+      }
+    }
   }
 
   remove(chest: ChestRuntime): void {
@@ -209,6 +411,17 @@ export class ChestSystem {
     }
     this.chests.length = 0;
     this.spawns.length = 0;
+    for (const o of this.openings) {
+      o.sprite.destroy();
+      o.glow.destroy();
+    }
+    this.openings.length = 0;
+    for (const p of this.burstPool) {
+      p.img.setVisible(false);
+      p.spec = null;
+    }
+    this.burstFree.length = 0;
+    this.burstFree.push(...this.burstPool);
     this.arrow.setVisible(false);
   }
 

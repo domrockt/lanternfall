@@ -144,3 +144,26 @@ export function chestRewards(
 /** Nur für Typ-Export: passive IDs bleiben Teil der Evolutionsregeln. */
 export type EvolutionPassive = PassiveId;
 export type EvolutionWeapon = WeaponId;
+
+// ── M10-chest-reveal: lesbarer Reveal (reine Funktionen) ────────────────────
+
+/**
+ * Label unter dem Belohnungsnamen im Truhen-Slot. Evolutionen bekommen das
+ * eigene Wort "EVOLUTION", Upgrades die klare Stufenangabe — so liest sich
+ * jeder Slot in derselben Grammatik (Name + Label).
+ */
+export function chestRewardLabel(reward: Pick<ChestReward, "kind" | "level">): string {
+  return reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`;
+}
+
+/**
+ * Deterministische Reveal-Reihenfolge der Truhen-Belohnungen: Evolution zuerst
+ * (der Moment), dann neue Items, dann Upgrades — bei Gleichstand alphabetisch
+ * nach id. Die Reihenfolge ist stabil und unabhängig von der Angebotslogik;
+ * die Rewards selbst (kind/id/name/description/level/isNew/iconColor) werden
+ * nicht verändert, nur umsortiert.
+ */
+export function revealOrder(rewards: readonly ChestReward[]): ChestReward[] {
+  const rank = (r: ChestReward): number => (r.kind === "evolution" ? 0 : r.isNew ? 1 : 2);
+  return rewards.slice().sort((a, b) => rank(a) - rank(b) || a.id.localeCompare(b.id));
+}

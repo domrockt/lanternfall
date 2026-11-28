@@ -1,0 +1,25 @@
+Lane m10-chest-reveal — Inszenierter Truhen-Moment (Worktree /home/ai/games/lf-lanes/m10-chest-reveal, Branch m10-chest-reveal)
+
+Ergebnis: Die Truhe öffnet jetzt inszeniert — 3-Phasen-Sequenz (Glow → Partikel → Reveal) aus
+src/logic/chest-reveal.ts (rein, getestet) mit ChestSystem-eigenem Partikel-Pool (28 Images,
+Münzen + ADD-Funken, kein FxSystem), Panel-Icon ganzzahlig 48x48 bei y=115, Untertitel mit
+harten Abständen (≥5 px) zu Titel und Icon. UI.ts wurde NICHT beschrieben (Supervisor-Tabu,
+git-revert belegt); die Panel-Positionen setzt ChestSystem.applyPanelFix zur Laufzeit.
+
+Messwerte:
+- 0 Inhalts-Überlappungen (Titel/Untertitel/Icon/Evo-Hinweise/Slot-Texte) in open-mid,
+  open-settled, open-evo bei 640x360 UND 780x360@3 — shots/m10-chest-reveal-after.json
+  (iGPU-Renderer-String enthalten: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2))
+- Vorher-Beleg: shots/m10-chest-reveal-before.json/-before.png (Untertitel 2 px unter Titel gequetscht)
+- Truhen-Count 6/6 unberührt: shots/m10-chest-reveal-sim.json (30-min-Sim, timeScale 30,
+  seed 101: bossesDefeated 6, chestsDropped 6, spawns 6, count66 true, 0 JS-Fehler)
+- art-director: PASS 4/5 (Inszenierung); Korrekturen (Pixel-Grid Icon, Welt-Burst-Münzen) umgesetzt
+- Tests 724/724 grün, npx tsc --noEmit grün, npm run build grün
+
+Commits: 9276723 (#5958 K1 Vorher-Beleg), 938d9da (#5959 K2 Sequenz+Panel-Renderer),
+b214553 (#5960 K3 Labels/Reihenfolge), K4 (#5961) = dieser Commit.
+
+Offene Punkte (dokumentiert in docs/lanes/m10-chest-reveal.md):
+- Panel-Münzen (UI.ts spawnChestCoins) nicht-ganzzahlig → UI.ts-Claim nötig
+- revealOrder/chestRewardLabel sind rein+getestet, Panel-Verdrahtung folgt mit UI-Claim
+- Sauberer Folgeschritt: chestPanelLayout direkt in createChestUI nutzen, dann applyPanelFix entfernen
