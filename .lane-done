@@ -1,0 +1,17 @@
+Lane m10-bundle-chunk-fix — E-3 Chunk-Größenwarnung (docs/lanes/m10-acceptance-refresh-e.md)
+
+Ergebnis: npm run build rc=0 OHNE Chunk-Größenwarnung. Vite 8/rolldown advancedChunks
+trennt phaser (Vendor), sprites (src/gfx/gen-*), gfx (Rest src/gfx) und index (Spielcode):
+1954,17 kB Monolith -> 250,9 / 420,8 / 88,2 / 1194,4 kB. Alle Spielcode-Chunks < 500 kB;
+Phaser-Vendor (1194,42 kB) ist als einzelnes vorgebundenes Modul ohne Abhängigkeits-Upgrade
+nicht teilbar -> dokumentierte Ausnahme, chunkSizeWarningLimit 1250 nur für ihn (Kommentar
+in vite.config.ts), Guard-Test erzwingt beide Grenzen.
+
+Build-Zeit: 470–523 ms vite / ~0,9 s Wall (Budget 2 s: Pass). npm test: 159 Dateien /
+1701 Tests grün. tsc rc=0. Android-Preview-Pfad intakt (relative ./assets-Pfade per
+Guard-Test, index-Load-Smoke auf statischem dist-Server: Szene lädt, 0 JS-Fehler).
+Kein Rollback nötig.
+
+Neue Dateien: vite.config.ts, tests/bundle-chunks.test.ts, scripts/m10-bundle-audit.mjs,
+docs/lanes/m10-bundle-chunk-fix.md. Kein Spielcode/index.html angefasst, GAME.md unberührt.
+Belege: ~/games/.evidence/m10-bundle-chunk/{before,after}.json.

@@ -66,6 +66,53 @@ Rolldown `advancedChunks` mit drei Gruppen: `phaser` (node_modules/phaser),
   Szene geladen, JS-Fehler 0. Belege: `~/games/.evidence/m10-bundle-chunk/after.json`.
 
 
-## K4 — Android-Beleg + Doku
+## K4 — Android-Beleg + Abnahme-Urteil
 
-(offen)
+### Chunk-Größen vor/nach (`npm run build`, `--base ./`)
+
+| Chunk | vorher (K1) | nachher (K3) | gzip nachher |
+|---|---|---|---|
+| `index` (Spielcode) | 1954,17 kB | **250,92 kB** | 77,32 kB |
+| `sprites` (src/gfx/gen-*) | – | **420,78 kB** | 39,86 kB |
+| `gfx` (Rest src/gfx) | – | **88,19 kB** | 26,11 kB |
+| `phaser` (Vendor) | – | 1194,42 kB (Limit 1250, dokumentierte Ausnahme) | 318,49 kB |
+| terrainWorker | 10,78 kB | 10,78 kB | – |
+| rolldown-runtime | – | 0,59 kB | 0,36 kB |
+| **Warnung** | **ja** (> 500 kB) | **nein** | |
+
+- Gesamt-Payload unverändert (~1,95 MB / ~462 kB gzip) — Code-Splitting komprimiert nichts,
+  es verteilt: das Spiel startet mit 3 parallelen Chunks statt einem Monolithen, der
+  Spielcode (339 kB gzip statt 462) ist cache-freundlich trennbar vom Engine-Chunk
+  (der sich über Spiel-Updates hinweg nicht ändert → bleibt im HTTP-Cache des WebView/
+  lokalen Servers). Kaltstart-Gewinn auf Android kommt aus Parallelität + Cache, nicht
+  aus weniger Bytes.
+- Build-Zeit: vite 470–523 ms (vorher 571 ms), Wall inkl. tsc ~0,8–0,9 s lokal — Budget 2 s: Pass.
+- Android-Preview-Pfad: unverändert — kein dynamisches `import()`, kein index.html-Eingriff,
+  relative Chunk-Referenzen `./assets/…` per Guard-Test gesichert; index-Load-Smoke auf
+  statischem `dist/`-Server: Szene lädt, 0 JS-Fehler.
+
+### Abnahme-Kriterien
+
+| Kriterium | Ergebnis |
+|---|---|
+| `npm run build` rc=0 ohne Chunk-Warnung | **PASS** |
+| alle Chunks < 500 kB | **PASS mit dokumentierter Ausnahme**: Phaser-Vendor (1194,42 kB) ist als einzelnes vorgebundenes Modul ohne Abhängigkeits-Änderung nicht teilbar; alle Spielcode-Chunks < 500 kB (250,9/420,8/88,2 kB), Guard-Test erzwingt beides |
+| Build-Zeit <= 2 s | **PASS** (0,8–0,9 s Wall) |
+| `npm test` grün | **PASS** (159 Dateien / 1701 Tests) |
+| tsc rc=0 | **PASS** |
+| Android-Preview-Pfad intakt | **PASS** (Guard-Test relative Pfade + Smoke auf dist) |
+
+**Kein Rollback nötig** (Revert-Pflicht laut Briefing tritt nicht ein: Build-Zeit im Budget,
+Preview-Pfad geprüft intakt, Tests grün).
+
+### Belege
+
+- `~/games/.evidence/m10-bundle-chunk/before.json` (K1: Warnung + 1954-kB-Monolith)
+- `~/games/.evidence/m10-bundle-chunk/after.json` (K3: Audit rc=0, Smoke grün)
+- Logs: `~/tmp/m10-bundle-chunk-fix/build-{before,after-k2*}.log`
+
+### Grenzen eingehalten
+
+Nur `vite.config.ts` (neu), `tests/bundle-chunks.test.ts` (neu), `scripts/m10-bundle-audit.mjs` (neu),
+diese Lane-Doku. Kein Spielcode, kein index.html, keine Abhängigkeits-Upgrades, GAME.md unberührt.
+
