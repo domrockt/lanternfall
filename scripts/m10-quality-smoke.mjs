@@ -154,7 +154,9 @@ async function waitDiag(name, fn, timeoutMs) {
   throw new Error(`waitDiag(${name}) timeout: ${JSON.stringify(last)}`);
 }
 
-/** 1-Hz-Timeline bis stop() true oder Timeout. */
+/** 1-Hz-Timeline bis stop() true oder Timeout. Haelt den Run am Leben:
+ *  Sim-Zeit >= 1780 s -> skipTo(1500) (sonst endet der Run bei 30:00 mitten
+ *  in Phase B/C: Results-Szene, LoadKeeper-Fehler, Sensoren lesen 0). */
 async function sampleLoop(stop, maxMs, label) {
   const start = Date.now();
   while (Date.now() - start < maxMs) {
@@ -162,6 +164,7 @@ async function sampleLoop(stop, maxMs, label) {
     s.phase = label;
     timeline.push(s);
     noteTiers(s);
+    if ((s.time ?? 0) >= 1780) await page.evaluate(() => { window.__lf.skipTo(1500); });
     if (stop(s)) return s;
     await sleep(1000);
   }
