@@ -9012,10 +9012,16 @@
       "id": 7436,
       "title": "m10-evo-fx-soulpyre Merge-Fix: Signatur-Test phoenix drawScale [1,1]",
       "description": "Merge 6135fcc (m10-evo-fx-soulpyre × m10-evo-fx-phoenix). tests/evo-fx-soulpyre.test.ts erwartete phoenix.drawScale = undefined (Lane-Stand); auf main ist Phönix seit dem Phoenix-Merge in Zielgröße 128 gebacken. Erwartung auf toEqual([1,1]) korrigiert, Baked-Verhalten beider Signaturen im Test dokumentiert. AC: vitest evo-fx-soulpyre + evo-fx-phoenix gruen, tsc rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:44:21Z",
+          "by": "build",
+          "text": "todo → done: Merge-Fix in ca966ad committet: vitest 20/20, Suite 1133/1133, build rc=0, tsc rc=0"
+        }
+      ],
       "created": "2026-11-28T01:43:33Z",
-      "updated": "2026-11-28T01:43:33Z"
+      "updated": "2026-11-28T01:44:21Z"
     }
   ]
 }
