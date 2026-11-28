@@ -57,3 +57,5 @@ scripts/art/__pycache__/
 !shots/m10-viewrefit-before.json
 !shots/m10-xp-hud-before.json
 !shots/qa-reaccc-chest-arrow.json
+# vfx-restore-Tests pruefen existsSync auf die Beleg-PNGs der Baseline-/Stage1-Reports (Vera 2026-11-28)
+!shots/m10-vfx-restore-*.png
