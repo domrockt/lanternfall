@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7258,
+  "next": 7322,
   "cards": [
     {
       "id": 1,
@@ -8584,6 +8584,70 @@
       ],
       "created": "2026-11-28T01:00:50Z",
       "updated": "2026-11-28T01:00:56Z"
+    },
+    {
+      "id": 7318,
+      "title": "m10-menubg-crisp K1: Ist-Messung Menü-Hintergründe (3 Szenen × 3 Formate)",
+      "description": "Skript scripts/m10-menubg-crisp.mjs misst Scale/DisplaySize aller Hintergrund-/Panel-Bilder in CharSelect/Results/Credits bei 640x360, 780x360@3, 960x540; Beleg shots/m10-menubg-before.json. Abnahme: JSON committed, fraktionale Fälle gelistet.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T01:05:34Z",
+          "by": "build",
+          "text": "lane #6938, Merge 6743ecc (m10-menubg-crisp-rest, .lane-done nicht nach main)"
+        }
+      ],
+      "created": "2026-11-28T01:05:27Z",
+      "updated": "2026-11-28T01:05:34Z"
+    },
+    {
+      "id": 7319,
+      "title": "m10-menubg-crisp K2: Fix fraktionale Hintergrund-Skalierung (ganzzahlig + Kanten-Fuellung)",
+      "description": "Belegte Fälle (Erwartung: vignette @780 View 1.21875x) in CharSelect/Results/Credits fixen: ganzzahliger Scale + Rand-Fuellung wie m10-title-bg-crisp; Szenen ohne Befund begründet auslassen. Abnahme: 0 fraktionale Hintergrund-Skalen im After-Scan; sonstige Optik AE=0 außer dokumentierter Fuellung.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T01:05:34Z",
+          "by": "build",
+          "text": "lane #6939, Merge 6743ecc (m10-menubg-crisp-rest, .lane-done nicht nach main)"
+        }
+      ],
+      "created": "2026-11-28T01:05:27Z",
+      "updated": "2026-11-28T01:05:34Z"
+    },
+    {
+      "id": 7320,
+      "title": "m10-menubg-crisp K3: Tests tests/menu-bg-crisp.test.ts (Scale je Szene/Format)",
+      "description": "Regressionstests: Layout-Funktion liefert ganzzahligen Scale + Fuellung deckt View (left+texW*s+right=W) für alle 3 Szenen und Formate; npx vitest run tests/menu-bg-crisp.test.ts grün. Abnahme: Tests committed und grün.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T01:05:34Z",
+          "by": "build",
+          "text": "lane #6940, Merge 6743ecc (m10-menubg-crisp-rest, .lane-done nicht nach main)"
+        }
+      ],
+      "created": "2026-11-28T01:05:27Z",
+      "updated": "2026-11-28T01:05:34Z"
+    },
+    {
+      "id": 7321,
+      "title": "m10-menubg-crisp K4: After-Shots + art-director >= 4/5 + Lane-Doku + .lane-done",
+      "description": "After-Scan shots/m10-menubg-after.json (0 fraktionale Fälle), Screenshots 3 Szenen @780 (Zoom 4x), art-director-Urteil >= 4/5, docs/lanes/m10-menubg-crisp-rest.md, .lane-done. Abnahme: alle Belege im Commit, Urteil in Karten-Notiz.",
+      "column": "done",
+      "assignee": "pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-28T01:05:34Z",
+          "by": "build",
+          "text": "lane #6941, Merge 6743ecc (m10-menubg-crisp-rest, .lane-done nicht nach main)"
+        }
+      ],
+      "created": "2026-11-28T01:05:27Z",
+      "updated": "2026-11-28T01:05:34Z"
     }
   ]
 }
