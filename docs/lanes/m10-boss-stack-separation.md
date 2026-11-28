@@ -50,7 +50,13 @@ Spieler steht still): late-game Minute 25 mit 5 Bossen + Elite-Packs + Horde.
   (je Frame-Statistik, 2 Stapel-Samples mit schlimmstem Paar, Renderer-String, Szenario-Parameter).
 - Abnahme-Shots (in git): `shots/abnahme/m10-boss-stack-before.png` (Klumpen, Vorher),
   `shots/abnahme/m10-boss-stack-after.png` (Einzel-Silhouetten, Nachher).
-- art-director-Abnahme (EINMAL, Punkt 3): siehe Karten-Notiz #10051 im Board.
+- art-director-Abnahme (EINMAL, Punkt 3): **PASS** (Sitzung ses_ddebdecb8ffeGDgAQ9wxwGgqrO,
+  2026-11-28) — alle 4 Kriterien erfüllt: Hexenzirkel-Hexen einzeln mit Hut/Robe-Kontur,
+  Knochenfürst/Glockenturm-Golem/Fahler Hirte als abgesetzte Einzel-Silhouetten,
+  Aura-Elites unterscheidbar, keine Snapping-Lücken, keine Standbild-Artefakte.
+  Vorher-Bild bestätigt den Klumpen-Befund. Hinweise (kein FAIL): Kleingegner-Überlappung
+  im Aura-Kreis explizit nicht Scope; Moorkönigin im Standbild nicht eindeutig
+  identifiziert (Silhouetten-Nachweis für alle identifizierbaren Bosse erbracht).
 - Deterministischer Test: `tests/boss-stack-separation.test.ts` (7 Tests) —
   ≥ 3 Bosse/Elites auf engem Raum, kein Paar > 80 % Deckung nach 60 Frames,
   ≤ 1 px/Frame im Stand über 120 Frames, Elite weicht ~9× mehr aus als der Boss,
