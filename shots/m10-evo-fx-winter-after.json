@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-28T00:27:14.775Z",
+  "generatedAt": "2026-11-28T00:41:36.117Z",
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "valid": true,
   "errors": [],
   "configs": {
     "640": {
       "renderer": {
-        "generatedAt": "2026-11-28T00:27:09.480Z",
+        "generatedAt": "2026-11-28T00:41:30.712Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -410,7 +410,7 @@
     },
     "960x540": {
       "renderer": {
-        "generatedAt": "2026-11-28T00:27:12.292Z",
+        "generatedAt": "2026-11-28T00:41:33.671Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -810,7 +810,7 @@
         "zoom": 1,
         "cameraW": 640
       },
-      "aliveEnemies": 23
+      "aliveEnemies": 24
     }
   }
 }
