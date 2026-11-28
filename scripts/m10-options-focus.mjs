@@ -173,6 +173,18 @@ try {
     await page.mouse.move(hoverP.x, hoverP.y);
     await page.waitForTimeout(120);
     await shot(page, "title-hover-START", matrix, "title", "mouse", "Hover über START");
+    // Pressed auf VOLLBILD: nicht navigierend, Knopf bleibt sichtbar -> der
+    // Abdunkel-Beleg ist nicht verdeckt (OPTIONEN oeffnet das Overlay sofort,
+    // deshalb zuerst VOLLBILD, bevor irgendein Overlay offen ist).
+    const vbC = await buttonCenter(page, "title", "VOLLBILD");
+    const vbP = await gameToClient(page, vbC.x, vbC.y);
+    await page.mouse.move(vbP.x, vbP.y);
+    await page.mouse.down();
+    await page.waitForTimeout(120);
+    await shot(page, "title-pressed-VOLLBILD", matrix, "title", "mouse", "pointerdown gehalten auf VOLLBILD (Pressed, sichtbar)");
+    await page.mouse.up();
+    await page.waitForTimeout(150);
+    await shot(page, "title-after-press-VOLLBILD", matrix, "title", "mouse", "nach pointerup: Pressed gelöst, Idle-Optik restored");
     // Pressed auf OPTIONEN (nicht destruktiv, Overlay geht auf).
     const optC = await buttonCenter(page, "title", "OPTIONEN");
     const optP = await gameToClient(page, optC.x, optC.y);

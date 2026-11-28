@@ -1,0 +1,26 @@
+# Lane m10-options-touch-focus — fertig (2026-11-28)
+
+Ziel: Fokus-/Pressed-Zustände aller 5 Menü-Screens konsistent (A10 → 5/5-Niveau).
+
+Ergebnis:
+- Pressed-Zustand neu: pointerdown dunkelt den Button-Hintergrund auf Alpha 0.72
+  (Maus UND Touch), bei Fokus/Hover bleibt Lanternfarbe + 1-px-Rahmen; released
+  wird sauber zurückgesetzt — inkl. dem Reviewer-Stuck-Pfad (Zone wird mitten im
+  Pressed deaktiviert, z. B. FORTSETZEN).
+- Options-Hover-Leak gefixt: Overlay öffnet je Eingabeart mit Zeile 0 (vorher
+  per Maus Zeile 6 ZURÜCK, weil der stationäre Zeiger auf der ZURÜCK-Zeile lag).
+- 7/7 Optionszeilen je Eingabeart anwählbar (Maus/Tastatur/Touch, JSON-Beleg).
+- Idle-Optik AE=0 (art-director: byte-identische Diffs, nur Mond-Glow-Animation).
+- Keine Gamepad-Menü-Navigation (Produktentscheidung offen, Frage an Dom).
+
+Kontrolleure: art-director PASS 4/5; reviewer FAIL (toter pointerupoutside-
+Handler, stuck-pressed via setEnabled, Regex-Tests) → behoben in 4ca8273;
+tests/options-focus.test.ts 19/19 mit echtem Event-Lifecycle gegen Fake-Scene.
+
+Belege: scripts/m10-options-focus.mjs, shots/m10-options-focus-before.json +
+25 PNG, shots/m10-options-focus-after.json + 28 PNG (+300%-Zooms), Renderer iGPU
+(ANGLE Mesa Intel RPL-S, webgl1) in jedem JSON-Eintrag; Doku:
+docs/lanes/m10-options-touch-focus.md.
+
+Build grün, 1110/1110 Tests (102 Files). 4 Commits auf Branch
+m10-options-touch-focus: 02c49fb (K1), 42ae58d (K2), 4ca8273 (K3), K4 (dieser).

@@ -49,6 +49,24 @@ Entscheidung (dokumentiert): Fokus+Hover gleichzeitig bleibt erlaubt und zeigt
 denselben aktiven Zustand — das ist die geforderte Konsistenz; ein
 Exklusiv-Highlight wäre eine Optik-Änderung außerhalb des Auftrags (AE>0).
 
+## Kontrolleure
+
+- **art-director: PASS 4/5** (streng): aktiver Zustand auf allen Screens identisch
+  (1-px nativ, Lanternfarbe, Eck-Nieten), Pressed messbar dunkler (bg-Faktor ~0.72
+  via Pixelmessung), Idle byte-identisch bzw. diff nur durch Mond-Glow-Animation
+  (Amplitude ≤ 15/255, keine strukturellen UI-Änderungen). Hinweise (nicht
+  blockierend): Pressed-Beleg auf pause/title-OPTIONEN nur per JSON (Overlay
+  verdeckt sofort — freier Beleg über VOLLBILD), VOLLBILD-Kontrast durch Vignette
+  gedimmt (pre-existing), Touch-Fokusrahmen 1 screen-px statt 2.
+- **reviewer: FAIL → behoben (Commit 4ca8273)**: (1) `pointerupoutside` existiert
+  in Phaser 3 nicht auf Game-Object-Ebene (toter Handler) und Pressed blieb über
+  den `setEnabled(false)`-Zyklus hängen (FORTSETZEN deaktiviert die Zone mitten im
+  Pressed) — Fix: `setEnabled(false)` resettet Pressed/Hover + paint(), toter
+  Handler entfernt; (2) Regex-„Verankerung" des toten Events ersetzt durch echte
+  Event-Lifecycle-Tests gegen createMenuButton + Fake-Scene (down→up/out,
+  setEnabled-Resets, Re-Enable), verbleibende Quelltext-Anker whitespace-tolerant.
+  (3) Hygiene: `openPointer = null` in `close()`.
+
 ## Nachher (`shots/m10-options-focus-after.json`)
 
 | Check | Ergebnis |
@@ -61,8 +79,8 @@ Exklusiv-Highlight wäre eine Optik-Änderung außerhalb des Auftrags (AE>0).
 | JS-Fehler Desktop/Touch | 0 |
 | Renderer | iGPU (Intel RPL-S), s. o. |
 
-Build grün, Tests 1105/1105 (inkl. options-focus 14/14 und
-menu-touch-targets unverändert grün).
+Build grün, Tests 1110/1110 (102 Files; options-focus 19/19,
+menu-touch-targets und alle weiteren Menü-Tests unverändert grün).
 
 ## Belege
 
@@ -78,7 +96,10 @@ menu-touch-targets unverändert grün).
 - Mess-Skript-Iterationen: 4 (2 Bugfixes Konstanten/Labels, 1 Matrix-Ergänzung
   Maus-Zeilenklick + bg-Alpha im Probe, 1 Verschiebung der VOLLBILD-Probe vor
   die OPTIONEN-Probe, da das sofort öffnende Overlay den Pressed-Beleg
-  verdeckte). Overlays verdecken Pressed-Belege auf OPTIONEN-Knöpfen strukturell
-  (Klick öffnet sofort); der freie Beleg läuft über VOLLBILD.
+  verdeckte — art-director-Hinweis deckt die verbleibende JSON-only-Lücke auf
+  denselben strukturellen Grund).
+- Drag-off + -back über einen gehaltenen Knopf zeigt Pressed nicht wieder an
+  (pointerout resettet, kein erneuter pointerdown) — kosmetisch, unverändert
+  zum Vorverhalten des Klicks selbst.
 - Grenze eingehalten: keine Commits an gen-title/gen-ui/gen-icons, keine
   Gamepad-Nav, board.json (Main) nicht geändert (Lane-Board-Karten via Plugin).
