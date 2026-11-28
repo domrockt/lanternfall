@@ -81,7 +81,7 @@ describe("charselect-truth: Anzeige == src/data (SSOT)", () => {
     });
   }
 
-  it("Kael-Bonus folgt den Daten (Regression für den +20%-Befund, Daten sagen maxHpPct 25)", () => {
+  it("Kael-Bonus folgt den Daten (Spec GAME.md Z.35 '+20 % Max-HP'; F4-Entscheid, siehe docs/lanes/m10-charstats-spec-followup.md)", () => {
     const kael = CHARACTER_LIST.find((c) => c.id === "kael")!;
     expect(kael.mods.maxHpPct).toBe(20); // Spec GAME.md Z.35 "+20 % Max-HP" (F4-Entscheid)
     const kaelLines = truth.displayLines
