@@ -1973,6 +1973,7 @@ export function thornProjectileFrame(): string[] {
     [Math.PI * 0.25, 2.3, 1.1],
     [Math.PI * 1.25, 2.5, 1.1],
   ];
+  let spokeIdx = 0;
   for (const [a, len, baseW] of spokes) {
     const dx = Math.cos(a);
     const dy = Math.sin(a);
@@ -1991,6 +1992,13 @@ export function thornProjectileFrame(): string[] {
     }
     // Dunkle Spitzenkappe hält den Dorn auch auf hellem Grund lesbar.
     put(c + dx * (len + 0.5), c + dy * (len + 0.5), 28);
+    // M10-weapon-shot-polish-w2 (art-director-Optional 1): je Spitze +1 px
+    // marshLight (31) als heller Glanz neben der dunklen Kappe — staerkt die
+    // Spitzen-Signatur im Moor-Chaos (schwaechste Signatur). Seite wechselnd
+    // je Speiche (organisch, kein Spiegel-Muster), Kappe bleibt Anker.
+    const glintSide = spokeIdx % 2 === 0 ? 0.9 : -0.9;
+    put(c + dx * (len + 0.5) - dy * glintSide, c + dy * (len + 0.5) + dx * glintSide, 31);
+    spokeIdx++;
   }
   // Kern flächig hell ohne Raster.
   for (let y = -1; y <= 1; y++) {

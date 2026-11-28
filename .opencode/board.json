@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11909,
+  "next": 11913,
   "cards": [
     {
       "id": 1,
@@ -16427,6 +16427,48 @@
       ],
       "created": "2026-11-28T10:23:54Z",
       "updated": "2026-11-28T10:35:06Z"
+    },
+    {
+      "id": 11909,
+      "title": "m10-weapon-shot-polish-w2 K1: Thorn — je Spitze +1 px marshLight",
+      "description": "AC: projectile_thorn-Signatur (thornProjectileFrame) bekommt je Dornspitze +1 marshLight(31)-Pixel (Spitzen-Signatur im Moor-Chaos staerken, art-director-Optional 1). 15 Paar-Tests bleiben gruen (Kern 31 unveraendert), A7-Textur 0 %, Trefferpfad bitgleich (kein CombatSystem/ProjectilePool-Kontakt). Vorher/Nachher Chaos300+Kontaktblatt via scripts/m10-weapon-shot.mjs --tag=polish, Belege ~/games/.evidence/m10-weapon-shot-polish-w2/. Ein Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T12:15:07Z",
+          "by": "build",
+          "text": "todo → doing: Vorher-Messung als Basis laeuft zuerst (Baseline vor Edit 1)."
+        }
+      ],
+      "created": "2026-11-28T12:15:05Z",
+      "updated": "2026-11-28T12:15:07Z"
+    },
+    {
+      "id": 11910,
+      "title": "m10-weapon-shot-polish-w2 K2: Storm — Zickzack asymmetrisch staffeln",
+      "description": "AC: boltFrame-Signaturpfad erhaelt asymmetrische Auslenkung (loest mechanische Alternierung, trennt zusaetzlich vom blassen Flail; art-director-Optional 2). Legacy-Pfad (shotsig=0) unveraendert. 15 Paar-Tests gruen (Kern 7 unveraendert), A7 0 %, Vorher/Nachher-Belege wie K1. Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:15:05Z",
+      "updated": "2026-11-28T12:15:05Z"
+    },
+    {
+      "id": 11911,
+      "title": "m10-weapon-shot-polish-w2 K3: Ember — 1-2 hellere Kernpixel unter A7-Grenze",
+      "description": "AC: projectile_ember-Signatur bekommt 1-2 hellere Kernpixel (19 flameBright, r=239/g=145 -> NICHT A7-Near-White); Kern 19 als vollstaendig gepruefte Alternative in der Lane-Doku dokumentiert (art-director-Optional 3). 15 Paar-Tests gruen, A7-Textur exakt 0 %, Vorher/Nachher-Belege wie K1. Ein Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:15:05Z",
+      "updated": "2026-11-28T12:15:05Z"
+    },
+    {
+      "id": 11912,
+      "title": "m10-weapon-shot-polish-w2 K4: Doku + art-director-Kurzurteil + .lane-done",
+      "description": "AC: docs/lanes/m10-weapon-shot-polish-w2.md mit Messwerten/Belegpfaden je Karte + art-director-Kurzurteil (Note + 2-3 Saetze); npm test gruen, tsc --noEmit rc=0; .lane-done committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T12:15:05Z",
+      "updated": "2026-11-28T12:15:05Z"
     }
   ]
 }
