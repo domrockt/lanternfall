@@ -10,7 +10,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from lib import Grid, ROOT, SHOTS, emit_ts, outline, save_grid_png  # noqa: E402
+from lib import DIGITS, Grid, ROOT, SHOTS, emit_ts, outline, save_grid_png  # noqa: E402
 
 W, H = 480, 270
 
@@ -165,6 +165,11 @@ def dead_tree(g: Grid, x: int, base_y: int, h: int, s: int) -> None:
     g.blit(t, x - t.w // 2, base_y - h)
 
 
+def lantern_spots() -> list[tuple[int, int]]:
+    """Positionen der Moor-Laternen (x, base_y) — identisch zum Aufruf in build()."""
+    return [(x, 214 + int(_hash(x, 5, 13) * 5)) for x in (22, 214, 300, 392)]
+
+
 def lantern(g: Grid, x: int, base_y: int) -> None:
     # Laternenpfahl 20 px hoch, Eisen 4/5/7, Glaskern 21/22/13.
     g.rect(x - 4, base_y - 3, 10, 3, 5)
@@ -185,26 +190,86 @@ def lantern(g: Grid, x: int, base_y: int) -> None:
     g.rect(x + 4, base_y, 3, 1, 17)
 
 
+# ── Laternen-Flammen (m10-title-flame-crisp) ────────────────────────────────
+# Sparse-Overlay 8x11 über der Glas-Innenfläche: '.' = transparent (binäres
+# Alpha). Reihen 0..4 = nur Glutfunken über dem Deckel, Reihen 5..10 = Glas
+# (base_y-15..-10) voll opak übermalt. Das Gehäuse (base_y-16..-9, Reihenrand)
+# bleibt komplett in der Basis — dort sitzt z. B. ein Glühwürmchen-Pixel, das
+# das Overlay NICHT überdecken darf (AE=0 außer der Glasfläche + Funken).
+FLAME_W, FLAME_H = 8, 11
+FLAME_DX, FLAME_DY = -3, -20
+
+# Glas je Frame (Patch-Spalten 0..7 = lx-3..lx+4, Reihen 5..10 = by-15..by-10);
+# nur Paletten-Indices 4 (k? nein: Gehäuserand), 13 (d=Glow-Kern), 20 (k=amber),
+# 21 (l=Laterne), 22 (m=Glühen). F0 = exakte Basis-Kopie.
+_FLAME_INTS = [
+    ["kkkkkkkk", "kllllllk", "klmdmllk", "klmmmllk", "kllllllk", "kkkkkkkk"],
+    ["kkkkkkkk", "kllmlllk", "kldmmllk", "klmmlllk", "klmllllk", "kkkkkkkk"],
+    ["kkkkkkkk", "klllmllk", "kllmdmlk", "klllmmlk", "kllllmlk", "kkkkkkkk"],
+]
+# Glutfunken je Frame als (Reihe, Spalte) im Patch — 0..2 px, sparsam.
+_FLAME_SPARKS = {0: [], 1: [(1, 4)], 2: [(0, 3), (1, 5)]}
+
+for _rows in _FLAME_INTS:
+    assert all(len(r) == FLAME_W for r in _rows), "Flammen-Zeile falsch lang"
+    assert all(ch in "klmd" for r in _rows for ch in r), "Off-Palette-Zeichen im Flammen-Frame"
+
+
+def flame_frames(g: Grid, lx: int, by: int) -> list[Grid]:
+    """3 Frames; F0 ist eine Zell-kopie der Basis (statischer Referenz-Frame)."""
+    frames: list[Grid] = []
+    for f in range(3):
+        p = Grid(FLAME_W, FLAME_H)
+        for r, row in enumerate(_FLAME_INTS[f]):
+            for c, ch in enumerate(row):
+                p.put(c, 5 + r, DIGITS.index(ch))
+        for r, c in _FLAME_SPARKS[f]:
+            p.put(c, r, 22 if (r + c) % 2 else 21)
+        frames.append(p)
+    return frames
+
+
 def build() -> dict[str, list[Grid]]:
     g = Grid(W, H)
     sky(g)
     hills(g)
     for x, h in ((40, 66), (96, 46), (148, 74), (410, 70), (452, 48), (478, 58)):
         dead_tree(g, x, 174 + int(_hash(x, 3, 11) * 10), h, x)
-    for x in (22, 214, 300, 392):
-        lantern(g, x, 214 + int(_hash(x, 5, 13) * 5))
+    spots = lantern_spots()
+    for lx, by in spots:
+        lantern(g, lx, by)
     # Glühwürmchen: 2x2 mit hellem Kern (Glow nur als Glanzpunkt).
     for i in range(22):
         fx = int(_hash(i, 7, 71) * (W - 6)) + 3
         fy = 178 + int(_hash(i, 8, 71) * 74)
         g.rect(fx, fy, 2, 2, 20)
         g.put(fx, fy, 22)
-    return {"title_background": [g]}
+    # Flammen-Overlay: Glas-Innenfläche muss an allen Spots identisch sein
+    # (sonst wäre ein gemeinsamer Frame falsch). Guard bricht laut, falls sich
+    # das ändert (z. B. neue Deko-Elemente im Glasbereich).
+    regions = [[[g.px[by - 15 + i][lx - 3 + j] for j in range(8)] for i in range(6)]
+               for lx, by in spots]
+    if any(r != regions[0] for r in regions[1:]):
+        raise SystemExit("flame: Laternen-Glas unterscheidet sich zwischen Spots")
+    data: dict[str, list[Grid]] = {"title_background": [g]}
+    for f, frame in enumerate(flame_frames(g, *spots[0])):
+        data[f"title_flame_f{f}"] = [frame]
+    return data
 
 
 if __name__ == "__main__":
     data = build()
-    path = emit_ts("gen-title.ts", "GEN_TITLE", data, "Titelbild 480x270 (Moor-Horizont, Mondlaterne)")
+    spots = lantern_spots()
+    spots_ts = ", ".join(f"{{ x: {lx + FLAME_DX}, y: {by + FLAME_DY} }}" for lx, by in spots)
+    extra = (f"\n/** Flammen-Patch-Anker (Texel-Koordinaten im 480x270-Kernbild), "
+             f"Patch {FLAME_W}x{FLAME_H}. */\n"
+             "export const TITLE_FLAME_SPOTS: ReadonlyArray<{ x: number; y: number }> = [\n"
+             f"  {spots_ts},\n];\n")
+    path = emit_ts("gen-title.ts", "GEN_TITLE", data,
+                   "Titelbild 480x270 (Moor-Horizont, Mondlaterne) + Laternen-Flammen-Overlay", extra)
     print("wrote", path)
     save_grid_png(data["title_background"][0], os.path.join(SHOTS, "m4-title-bg.png"), scale=2)
-    print("title bg written")
+    for f in range(3):
+        save_grid_png(data[f"title_flame_f{f}"][0],
+                      os.path.join(SHOTS, f"m10-title-flame-frames-f{f}.png"), scale=8)
+    print("title bg + flame frames written")

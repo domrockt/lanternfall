@@ -1,0 +1,23 @@
+[
+  {
+    "out": "shots/m10-title-flame-after-640x360.png",
+    "view": "640x360",
+    "jsErrors": []
+  },
+  {
+    "out": "shots/m10-title-flame-after-640x360.gif",
+    "view": "640x360",
+    "frames": 10,
+    "jsErrors": []
+  },
+  {
+    "out": "shots/m10-title-flame-after-780x360.png",
+    "view": "780x360",
+    "jsErrors": []
+  },
+  {
+    "out": "shots/m10-title-flame-after-1920x1080.png",
+    "view": "1920x1080",
+    "jsErrors": []
+  }
+]

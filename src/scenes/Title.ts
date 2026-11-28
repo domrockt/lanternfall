@@ -3,6 +3,7 @@ import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { readMeta, metaLine } from "../logic/meta";
+import { TITLE_FLAME_SPOTS } from "../gfx/gen-title";
 import { createMenuButton, type MenuButton } from "../ui/menu";
 import { OptionsMenu } from "../ui/options-menu";
 import { InputState, allActionsReleased } from "../input/InputState";
@@ -124,6 +125,27 @@ export class Title extends Phaser.Scene {
     const glow = this.add.image(bgL.x + 404, bgL.y + 56, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD).setScale(0.9).setAlpha(0.45).setDepth(1);
     this.tweens.add({ targets: glow, alpha: 0.3, scale: 1.0, duration: 2400, yoyo: true, repeat: -1 });
+    // Laternen-Flammen (m10-title-flame-crisp): Sparse-Overlay 8x11 Texel
+    // (binäres Alpha) an den 4 Moor-Laternen, AE = Glasfläche + Funken.
+    // Ruhiger ~2-fps-Texturwechsel (f0 -> f1 -> f0 -> f2), selbe Pixelgröße
+    // wie der Hintergrund (bgL.scale ganzzahlig, Muster titleBgLayout/crisp).
+    // Phasenversatz je Laterne (art-director-Hinweis): nicht alle 4 Laternen
+    // schalten synchron — organischer, gleiches Tempo.
+    const flameFrames = ["title_flame_f0", "title_flame_f1", "title_flame_f2"];
+    const flameSeq = [0, 1, 0, 2];
+    const flames = TITLE_FLAME_SPOTS.map((spot, i) =>
+      this.add.image(bgL.x + spot.x, bgL.y + spot.y, flameFrames[flameSeq[i % flameSeq.length]!])
+        .setOrigin(0, 0).setDepth(2).setScale(s));
+    let flameStep = 0;
+    this.time.addEvent({
+      delay: 500,
+      loop: true,
+      callback: () => {
+        flameStep = (flameStep + 1) % flameSeq.length;
+        flames.forEach((f, i) =>
+          f.setTexture(flameFrames[flameSeq[(flameStep + i) % flameSeq.length]!]));
+      },
+    });
     // Dunkle Bodenlasur unter dem Textblock (nur Palettenfarbe, Alpha-Overlay).
     this.add.rectangle(0, 132 + oy, W, 138, PAL[C.nightDeep], 0.62)
       .setOrigin(0, 0).setDepth(3);
