@@ -2,13 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 
 // M10-elite-tier-families (K2): Elites sind im 300-500er-Chaos ihrer Tier-
 // Familie zuzuordnen. Der Elite-Rim-Innenraum traegt je Tier 0-4 genau eine
-// Faerbe-Klasse (ELITE_TIER_DYES, 55 % Mischung wie die crowd-variety-
-// Variante); der Amber-Rand (PAL 20, A10-Vertrag), Kontur/Augen, Silhouette,
-// Key-Satz und alle Nicht-Elite-Frames bleiben unveraendert.
+// Faerbe-Klasse (ELITE_TIER_DYES, 70 % Mischung), der Amber-Rand (PAL 20,
+// A10-Vertrag), Kontur/Augen, Silhouette, Key-Satz und alle Nicht-Elite-
+// Frames bleiben unveraendert.
 //
 // Familien-Kontrast-Metrik: RGB-Zentroid der Elite-Koerperpixel je Tier —
 // min. Paar-Distanz zwischen den 5 Tier-Zentroiden mit Faerbung >= 30 und
-// >= 2x den ungefaerbten Stand (gemessen: 13,2 -> 31,5).
+// >= 2x den ungefaerbten Stand (gemessen bei 70 % Mischung: 13,2 -> 56,8).
 vi.mock("phaser", () => ({ default: { BlendModes: { ADD: 1, NORMAL: 0 } } }));
 
 import { GEN_ENEMIES } from "../src/gfx/gen-enemies";

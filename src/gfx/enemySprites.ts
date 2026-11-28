@@ -241,8 +241,10 @@ export function enemyFrameGrids(index: number): Grid[] {
  * knight, lich, wraith, gargoyle bleiben blaugrau/weiss dominiert).
  *
  * Fix: der Koerper (Innenraum) des Elite-Rim-Frames wird deterministisch
- * Richtung einer Tier-Faerbe-Klasse gemischt (55 % Klasse, wie bei der
- * crowd-variety-Variante) — je Tier 0-4 genau eine Klasse:
+ * Richtung einer Tier-Faerbe-Klasse gemischt (70 % Klasse — staerker als die
+ * crowd-variety-Variante, weil helle Koerper die Klasse sonst ueberstrahlen;
+ * nach der after-Messung mit dominanter Klasse je Tier festgelegt) — je
+ * Tier 0-4 genau eine Klasse:
  *   T0 glut-braun (emberBrown) · T1 dunst (mist) · T2 flamme (flame)
  *   T3 blut-rot (crimson)      · T4 gruen (marsh)
  * Unangetastet bleiben:
@@ -274,9 +276,9 @@ export function eliteTierPixel(pixel: Pixel, tier: number): Pixel {
   const target = PAL[eliteTierDye(tier)];
   const p = PAL[pixel];
   return nearestPaletteIndex([
-    Math.round(((p >> 16) & 255) * 0.45 + ((target >> 16) & 255) * 0.55),
-    Math.round(((p >> 8) & 255) * 0.45 + ((target >> 8) & 255) * 0.55),
-    Math.round((p & 255) * 0.45 + (target & 255) * 0.55),
+    Math.round(((p >> 16) & 255) * 0.3 + ((target >> 16) & 255) * 0.7),
+    Math.round(((p >> 8) & 255) * 0.3 + ((target >> 8) & 255) * 0.7),
+    Math.round((p & 255) * 0.3 + (target & 255) * 0.7),
   ]);
 }
 
