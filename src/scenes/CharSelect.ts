@@ -7,12 +7,56 @@ import { WEAPONS } from "../data/weapons";
 import type { CharacterDef } from "../data/types";
 import { iconTextureKey } from "../gfx/icons";
 import { readMeta, metaLine } from "../logic/meta";
-import { createMenuButton } from "../ui/menu";
+import { createMenuButton, MenuFocus, type MenuButton } from "../ui/menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { addVignetteBg } from "../gfx/vignette-bg";
 
 interface CharSelectData { seed?: number; debug?: boolean }
+
+// ---------------------------------------------------------------------------
+// m10-gamepad-nav-scenes-r2 K3: Pad-Navigation als reine Funktion (unit-testbar).
+// Zwei Fokus-Reihen: 0 = Charakter-Panels (Fokus-Rahmen = derselbe Lantern-Strok
+// wie Hover), 1 = Knopfleiste (ZURÜCK/START via Kern-MenuFocus).
+// Ein Pad-Frame = genau EINE Aktion (Priorität back > up > down > left > right
+// > confirm, InputState liefert ohnehin nur Rising-Edges).
+// ---------------------------------------------------------------------------
+
+export interface CharSelectNavState {
+  row: 0 | 1;
+  charIndex: number;
+  buttonIndex: number;
+}
+
+export type CharSelectAction = "pick" | "start" | "back" | null;
+
+export function charSelectPadNav(
+  s: CharSelectNavState,
+  a: { up: boolean; down: boolean; left: boolean; right: boolean; confirm: boolean; back: boolean },
+  counts: { chars: number; buttons: number },
+): { row: 0 | 1; charIndex: number; buttonIndex: number; action: CharSelectAction } {
+  const st = { row: s.row, charIndex: s.charIndex, buttonIndex: s.buttonIndex, action: null as CharSelectAction };
+  const wrap = (i: number, d: number, n: number): number => ((i + d) % n + n) % n;
+  if (a.back) { st.action = "back"; return st; }
+  if (a.up) { if (st.row === 1) st.row = 0; return st; }
+  if (a.down) { if (st.row === 0) st.row = 1; return st; }
+  if (a.left) {
+    if (st.row === 0) st.charIndex = wrap(st.charIndex, -1, counts.chars);
+    else st.buttonIndex = wrap(st.buttonIndex, -1, counts.buttons);
+    return st;
+  }
+  if (a.right) {
+    if (st.row === 0) st.charIndex = wrap(st.charIndex, 1, counts.chars);
+    else st.buttonIndex = wrap(st.buttonIndex, 1, counts.buttons);
+    return st;
+  }
+  if (a.confirm) {
+    if (st.row === 0) st.action = "pick";
+    else st.action = st.buttonIndex === 0 ? "back" : "start";
+    return st;
+  }
+  return st;
+}
 
 export class CharSelect extends Phaser.Scene {
   private seed = 1;
@@ -21,6 +65,10 @@ export class CharSelect extends Phaser.Scene {
   private panels: Phaser.GameObjects.Rectangle[] = [];
   private started = false;
   private pad = new InputState();
+  /** m10-gamepad-nav-scenes-r2 K3: Fokus-Reihe (0 Panels, 1 Knöpfe) + Knopf-Fokus. */
+  private padRow: 0 | 1 = 1;
+  private buttonFocus!: MenuFocus;
+  private footerButtons: MenuButton[] = [];
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
   private padArmed = false;
   private viewW = 0;
@@ -59,7 +107,12 @@ export class CharSelect extends Phaser.Scene {
       const x = cx + (i - 0.5) * 224;
       const panel = this.add.rectangle(x, 140 + oy, 204, 196, PAL[C.nightMid])
         .setStrokeStyle(2, PAL[C.nightSlate]).setDepth(2).setInteractive({ useHandCursor: true });
-      panel.on("pointerover", () => { this.index = i; this.refresh(); });
+      panel.on("pointerover", () => {
+        // K3 Hover-Sync: Zeiger übernimmt Pad-Fokus (AE=0 — nur Indizes).
+        this.padRow = 0;
+        this.index = i;
+        this.refresh();
+      });
       panel.on("pointerdown", () => this.pick(i));
       this.panels.push(panel);
       // Portrait 48x48 @2x sitzt oben bündig im Rahmen.
@@ -87,11 +140,22 @@ export class CharSelect extends Phaser.Scene {
         .setDepth(4);
     });
 
-    createMenuButton(this, cx - 154, H - 18, 96, "ZURÜCK", () => this.back(), { height: 18, depth: 6 });
+    const backButton = createMenuButton(
+      this, cx - 154, H - 18, 96, "ZURÜCK", () => this.back(), { height: 18, depth: 6 },
+    );
     const start = createMenuButton(
       this, cx + 40, H - 18, 132, "START (ENTER)", () => this.start(), { height: 18, depth: 6 },
     );
-    start.setFocused(true);
+    this.footerButtons = [backButton, start];
+    // K3: Kern-MenuFocus über der Knopfleiste; Startfokus auf START (Index 1)
+    // wie bisher. Hover übernimmt den Fokus-Index (AE=0).
+    this.buttonFocus = new MenuFocus(this.footerButtons);
+    this.buttonFocus.setIndex(1);
+    this.footerButtons.forEach((b, i) => {
+      const hit = b.container.list[b.container.list.length - 1] as
+        Phaser.GameObjects.Zone | undefined;
+      hit?.on("pointerover", () => { this.padRow = 1; this.buttonFocus.setIndex(i); });
+    });
 
     this.refresh();
     const kb = this.input.keyboard!;
@@ -124,10 +188,16 @@ export class CharSelect extends Phaser.Scene {
       if (allActionsReleased(a)) this.padArmed = true;
       return;
     }
-    if (a.left || a.up) this.move(-1);
-    else if (a.right || a.down) this.move(1);
-    else if (a.confirm) this.start();
-    else if (a.back) this.back();
+    const counts = { chars: CHARACTER_LIST.length, buttons: this.footerButtons.length };
+    const next = charSelectPadNav(
+      { row: this.padRow, charIndex: this.index, buttonIndex: this.buttonFocus.currentIndex }, a, counts,
+    );
+    this.padRow = next.row;
+    if (next.charIndex !== this.index) { this.index = next.charIndex; this.refresh(); }
+    if (next.buttonIndex !== this.buttonFocus.currentIndex) this.buttonFocus.setIndex(next.buttonIndex);
+    if (next.action === "pick") this.pick(next.charIndex);
+    else if (next.action === "start") this.start();
+    else if (next.action === "back") this.back();
   }
 
   private move(delta: number): void {
