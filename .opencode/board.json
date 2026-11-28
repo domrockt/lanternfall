@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12231,
+  "next": 12291,
   "cards": [
     {
       "id": 1,
@@ -16904,6 +16904,48 @@
       ],
       "created": "2026-11-28T13:16:04Z",
       "updated": "2026-11-28T13:16:07Z"
+    },
+    {
+      "id": 12287,
+      "title": "m10-frame-tail-followup K1: Merge-Recheck der 3 Reviewer-Befunde",
+      "description": "Prüft, ob die 3 sollte-Befunde aus m10-frame-tail-batching-Review (docs/lanes/m10-frame-tail-batching.md, Abschnitt Review) über die Merges m10-frame-tail-batching + m10-spawn-burst-alloc gelandet sind. Abnahmekriterium: Ergebnis je Befund (gelandet/nicht gelandet, Beleg = Codezeile) in docs/lanes/m10-frame-tail-followup.md dokumentiert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:19:12Z",
+          "by": "build",
+          "text": "todo → doing: K1 Merge-Recheck: Beide Merges (cc8a3590 spawn-burst-alloc, frame-tail-batching) im Worktree; Code-Lese läuft."
+        }
+      ],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:19:12Z"
+    },
+    {
+      "id": 12288,
+      "title": "m10-frame-tail-followup K2: Dawn-Drain — drainDebugQueue beim Morgendämmerung-Start",
+      "description": "Während Morgendämmerung läuft Spawner.update() nicht (Run.ts:678), gequeuete Debug-Spawns materialisieren nie. drainDebugQueue beim startDawn() aufrufen. Abnahmekriterium: Probe belegt, dass gequeuete Debug-Spawns nach Dawn-Start materialisieren; Normalpfad unverändert (npm test grün, gleicher Seed = gleiche Spawn-Marken).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:19:09Z"
+    },
+    {
+      "id": 12289,
+      "title": "m10-frame-tail-followup K3: Doku-Fix SPAWN_DEBUG_BATCH_PER_FRAME + reine Positions-Funktion",
+      "description": "Kommentar korrigieren: Cap gilt je update()/Sim-Substep (bei timeScale 1 = je rAF-Frame), nicht je rAF-Frame. Duplikation queueEnemyWave vs. spawnEnemy (Winkel→Radius→Clamp) in eine reine exportierte Funktion ziehen. Abnahmekriterium: tsc + Tests grün, Spawn-Verhalten bitgleich.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:19:09Z"
+    },
+    {
+      "id": 12290,
+      "title": "m10-frame-tail-followup K4: Guards tests/frame-tail-followup.test.ts + Lane-Doku + .lane-done",
+      "description": "tests/frame-tail-followup.test.ts: Dawn-Drain-Guard + RNG-Identitätstest (queueEnemyWave erzeugt bitgleich dieselben Spawns wie direkte spawnEnemy-Aufrufe, geseedetes RNG). npm test einmal grün, Lane-Doku docs/lanes/m10-frame-tail-followup.md fertig, .lane-done committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:19:09Z",
+      "updated": "2026-11-28T13:19:09Z"
     }
   ]
 }
