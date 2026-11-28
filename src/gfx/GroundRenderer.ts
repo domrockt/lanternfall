@@ -7,6 +7,42 @@ import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
 import { PAL } from "../palette";
 
+/**
+ * #4658: Sichtbarer Weltausschnitt der Kamera bei beliebigem ganzzahligen
+ * Render-Teiler (Zoom 1/s + Viewport W/s x H/s, siehe enforceCameraProjection).
+ * Phaser rendert Weltposition p (scrollFactor 1) bei
+ *   screen = zoom * (p - scroll - origin * camSize/2) + origin * camSize/2,
+ * der sichtbare Ausschnitt ist darum um den Viewport-Mittelpunkt zentriert und
+ * camSize/zoom gross. Bei Teiler 1 (zoom 1) gilt left=scrollX, width=camW —
+ * identisch zum bisherigen Verhalten.
+ */
+export function cameraWorldView(
+  camW: number, camH: number, scrollX: number, scrollY: number, zoom: number,
+): { left: number; top: number; width: number; height: number } {
+  const w = camW / zoom;
+  const h = camH / zoom;
+  return {
+    left: scrollX + camW / 2 - w / 2,
+    top: scrollY + camH / 2 - h / 2,
+    width: w,
+    height: h,
+  };
+}
+
+/**
+ * #4658: Screen-verankerte Deko (scrollFactor 0, z. B. Nebel) wird unter Zoom
+ * um den Viewport-Mittelpunkt verschoben/skaliert:
+ *   screen = zoom * (p - camSize/2) + camSize/2.
+ * Damit ein solches Objekt bei Teiler s an derselben Bildschirmposition steht
+ * wie bei Teiler 1, muss die logische Position p diesen Pivot ausgleichen.
+ * Bei zoom 1 Identitaet (p -> p). Achtung: Drift/Animation in SCREEN-Pixeln
+ * erst NACH dieser Kompensation addieren — sie wuerde sonst mit 1/zoom
+ * hochskaliert (Befund Reviewer, Karte #5362).
+ */
+export function screenAnchoredX(logicalX: number, camSize: number, zoom: number): number {
+  return (logicalX - camSize / 2) / zoom + camSize / 2;
+}
+
 interface Ripple {
   img: Phaser.GameObjects.Image;
   phase: number;
@@ -252,9 +288,16 @@ export class GroundRenderer {
 
     // Leichte Wellen-Animation: zwei Frames, 1-px-Drift, nur sichtbare Ripples.
     this.rippleTick = timeMs;
+    // #4658: Cull gegen den TATSAECHLICH sichtbaren Weltausschnitt (bei Teiler
+    // s ist camera.width = W/s; der Ausschnitt bleibt aber W breit und um den
+    // Viewport-Mittelpunkt zentriert). Alter Ausdruck scrollX + camera.width
+    // cullte bei Teiler 2 die rechte Bildschirmhaelfte (Popping am Rand).
+    const view = cameraWorldView(
+      camera.width, camera.height, camera.scrollX, camera.scrollY, camera.zoom,
+    );
     for (const r of this.ripples) {
-      const onScreen = r.x > camera.scrollX - 16 && r.x < camera.scrollX + camera.width + 16 &&
-        r.y > camera.scrollY - 16 && r.y < camera.scrollY + camera.height + 16;
+      const onScreen = r.x > view.left - 16 && r.x < view.left + view.width + 16 &&
+        r.y > view.top - 16 && r.y < view.top + view.height + 16;
       r.img.setVisible(onScreen);
       if (!onScreen) continue;
       const frame = Math.floor((timeMs + r.phase) / 620) % 2;
@@ -438,14 +481,20 @@ export class GroundRenderer {
     }
 
     const t = timeMs * 0.001;
+    // #4658: Gluehwuermchen sind weltverankert (scrollFactor 1) und sollen die
+    // volle SICHTBARE Weltbreite/-hoehe ueberstreichen — camera.width ist bei
+    // Teiler s nur W/s, der Ausschnitt bleibt W breit (siehe cameraWorldView).
+    const view = cameraWorldView(
+      camera.width, camera.height, camera.scrollX, camera.scrollY, camera.zoom,
+    );
     for (let i = 0; i < this.fireflies.length; i++) {
       const f = this.fireflies[i];
       const visible = i < budget.glow;
       f.img.setVisible(visible);
       if (!visible) continue;
-      const x = camera.scrollX + f.baseX * camera.width
+      const x = view.left + f.baseX * view.width
         + Math.sin(t * f.speed * 0.55 + f.phase) * 14;
-      const y = camera.scrollY + f.baseY * camera.height
+      const y = view.top + f.baseY * view.height
         + Math.cos(t * f.speed * 0.7 + f.phase) * 9;
       f.img.setPosition(Math.round(x), Math.round(y));
       const pulse = 0.5 + 0.5 * Math.sin(t * 1.6 + f.phase * 3);
@@ -456,9 +505,16 @@ export class GroundRenderer {
       const visible = i < budget.fog;
       b.img.setVisible(visible);
       if (!visible) continue;
+      // #4658: Nebel ist screen-verankert (scrollFactor 0) und wird unter Zoom
+      // um den Viewport-Mittelpunkt verschoben — logische Position daher ueber
+      // screenAnchoredX puffern. Der Drift ist SCREEN-Pixel und wird erst NACH
+      // der Kompensation addiert (sonst CSS-Drift 46*s statt 46 px —
+      // Reviewer-Befund); bei Teiler 1 beides Identitaet.
       b.img.setPosition(
-        Math.round(b.baseX * camera.width + Math.sin(t * 0.055 + b.phase) * 46),
-        Math.round(b.baseY * camera.height + Math.cos(t * 0.04 + b.phase) * 8),
+        Math.round(screenAnchoredX(b.baseX * camera.width, camera.width, camera.zoom)
+          + Math.sin(t * 0.055 + b.phase) * 46),
+        Math.round(screenAnchoredX(b.baseY * camera.height, camera.height, camera.zoom)
+          + Math.cos(t * 0.04 + b.phase) * 8),
       );
       b.img.setAlpha(0.055 + 0.03 * Math.sin(t * 0.12 + b.phase));
     }

@@ -20,6 +20,9 @@ const argOf = (name, fallback) => {
 const AFTER_RUNS = Math.max(1, Number(argOf("after-runs", "2")));
 const STRESS = Math.max(0, Number(argOf("stress", "0")));
 const SIX40 = process.argv.includes("--six40"); // 640x360 dpr1 Regressionssprung
+// #4658: After-Laeufe mit festem Render-Teiler fahren (?rbscale=N statt
+// adaptivem Regler), damit der Kamera-Projektions-Fix bei Teiler 2/3 messbar ist.
+const FORCE_SCALE = Math.min(3, Math.max(0, Number(argOf("force-scale", "-1"))));
 const OUT = String(argOf("out", "shots/m10-dpr-budget.json"));
 
 ensureBuild();
@@ -30,7 +33,7 @@ const browser = await chromium.launch({
 });
 
 const measureMinute25 = async (mode, stressEnemies = 0, viewport = VIEWPORT, dpr = DPR) => {
-  const query = mode === "before" ? "?debug=1&seed=1&rbscale=0" : "?debug=1&seed=1";
+  const query = mode === "before" ? "?debug=1&seed=1&rbscale=0" : `?debug=1&seed=1${FORCE_SCALE >= 0 ? `&rbscale=${FORCE_SCALE}` : ""}`;
   const page = await browser.newPage({ viewport, deviceScaleFactor: dpr });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
@@ -102,7 +105,15 @@ const measureMinute25 = async (mode, stressEnemies = 0, viewport = VIEWPORT, dpr
     const elapsed = performance.now() - start;
     const canvas = document.querySelector("canvas");
     const rect = canvas.getBoundingClientRect();
+    let renderer = "unavailable";
+    try {
+      const probe = document.createElement("canvas");
+      const gl = probe.getContext("webgl2") || probe.getContext("webgl");
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER));
+    } catch { renderer = "unavailable"; }
     return {
+      renderer,
       fps: Math.round((frames / (elapsed / 1000)) * 10) / 10,
       frames,
       worstFrameMs: Math.round(worst * 10) / 10,
@@ -143,6 +154,7 @@ const result = {
   targetFps: TARGET_FPS,
   viewport: VIEWPORT,
   dpr: DPR,
+  forceScale: FORCE_SCALE >= 0 ? FORCE_SCALE : null,
   runs,
   summary: {
     beforeFps: runs[0].fps,
