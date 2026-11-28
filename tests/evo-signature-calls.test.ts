@@ -151,7 +151,9 @@ describe("m10 evo-signature-calls: Spawn-Verhalten FxSystem.spawnEvolution", () 
     const sig = EVOLUTION_SIGNATURES.eternal_winter;
     expect(recs[0].textureKey).toBe(signatureTextureKey("eternal_winter", "death"));
     expect((runtime as FxRuntime).life).toBeCloseTo(sig.deathLifetime);
-    expect(recs[0].scale).toBeCloseTo(4.0);
+    // M10-evo-fx-winter (fremde Datei, 1 Assertion — Begründung in .dispatch/requests.md):
+    // Winter-Signatur rendert in Zielgröße 128x128 mit Draw-Scale 1 statt 32x32 @ 4,0.
+    expect(recs[0].scale).toBeCloseTo(sig.drawScale?.[1] ?? 4.0);
     expect(recs[0].textureKey).not.toBe(signatureTextureKey("eternal_winter", "hit"));
   });
 

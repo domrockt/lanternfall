@@ -391,16 +391,20 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   // projectile_phoenix ist M10-evo-fx-phoenix in gen-fx.ts gezogen (Zielgröße 15x11,
   // 3 Flatter-Frames, Feuer-Farbtreppe ohne Ink-Rand).
+  // M10-evo-fx-winter: Eisspitze ohne Ink-Rand — Farb-Treppe Kern lanternWhite(d=13)/
+  // boneLight(b=11) → paleMist(9) → fogBlue(6)-Rand (vorher: schwarze Raute mit
+  // grauer bone-Facette, 12/25 Ink-Pixel). Zeichnung mit Draw-Scale 1.
+  // Zeichencodes: Ziffern = Palettenindex direkt (6/9), b=11, d=13.
   projectile_ice: {
     w: 7, h: 7,
     rows: [
-      "...0...",
-      "..0a0..",
-      ".0ab80.",
-      "0abc9b0",
-      ".0ab80.",
-      "..0a0..",
-      "...0...",
+      "...6...",
+      "..696..",
+      ".69b96.",
+      "69bdb96",
+      ".69b96.",
+      "..696..",
+      "...6...",
     ],
   },
   chest_closed: {
@@ -484,7 +488,6 @@ export function createAllTextures(scene: Phaser.Scene): void {
   createVignetteTexture(scene);
   createShadowTexture(scene);
   createFxTextures(scene);
-  createFrostRingTexture(scene);
   createRingTexture(scene, "ring_burst", [17, 19, 21, 13]);
   createRingTexture(scene, "ring_seal", [20, 21, 13]);
   createRingTexture(scene, "ring_soul", [8, 12, 13]);
@@ -635,57 +638,6 @@ function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): 
         ctx.fillStyle = hexColor(dx < -4 && dy < -4 ? (colors[colors.length - 1] ?? colors[0]) : colors[0]);
         ctx.fillRect(x, y, 1, 1);
       }
-    }
-  }
-  scene.textures.addCanvas(key, canvas);
-}
-
-/**
- * Frost-Ring: kein dünner additiver Puls, sondern ein klar lesbares Eis-Siegel —
- * 2-px-Band in Mist/PaleMist, weißer Kern und 12 nach außen ragende Eiszacken.
- * Wird mit Normal-Blend gezeichnet, damit die blau-grauen Werte auf Gras stehen.
- */
-function createFrostRingTexture(scene: Phaser.Scene): void {
-  const key = "ring_frost";
-  if (scene.textures.exists(key)) return;
-  const size = 96;
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
-  const c = size / 2;
-  // Gerastertes 2-px-Eisband + 12 Zacken, keine geglätteten Vektorbögen.
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const dx = x + 0.5 - c;
-      const dy = y + 0.5 - c;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      if (d >= 43.5 && d <= 45.5) {
-        ctx.fillStyle = hexColor(8);
-      } else if (d >= 41.5 && d <= 43.5) {
-        ctx.fillStyle = hexColor(9);
-      } else if (d >= 39.5 && d <= 40.5) {
-        ctx.fillStyle = hexColor(12);
-      } else {
-        continue;
-      }
-      ctx.fillRect(x, y, 1, 1);
-    }
-  }
-  // 12 Zacken (2-px-Strahlen) von r 43 nach r 47.
-  for (let i = 0; i < 12; i++) {
-    const a = (i / 12) * Math.PI * 2 + 0.26;
-    const x0 = Math.round(c + Math.cos(a) * 43);
-    const y0 = Math.round(c + Math.sin(a) * 43);
-    const x1 = Math.round(c + Math.cos(a) * 47);
-    const y1 = Math.round(c + Math.sin(a) * 47);
-    ctx.fillStyle = hexColor(13);
-    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
-    for (let t = 0; t <= steps; t++) {
-      const px = x0 + Math.round((x1 - x0) * (t / Math.max(1, steps)));
-      const py = y0 + Math.round((y1 - y0) * (t / Math.max(1, steps)));
-      ctx.fillRect(px, py, 1, 1);
-      ctx.fillRect(px + 1, py, 1, 1);
     }
   }
   scene.textures.addCanvas(key, canvas);

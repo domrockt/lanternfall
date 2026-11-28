@@ -123,6 +123,7 @@ export const EVOLUTION_WEAPONS: Partial<Record<WeaponAnyId, WeaponDef>> = {
 };
 
 /**
+<<<<<<< HEAD
  * M10-evo-fx-phoenix: reine FX-Parameter des Phönixschwarm (keine Gameplay-Werte).
  * Vorlage für die Folge-Evo-Jobs (Ewiger Winter, Seelenleuchtfeuer, Zornpendel,
  * Gewittersiegel): Texturen in Zielgröße zeichnen und mit Draw-Scale 1 rendern
@@ -170,4 +171,34 @@ export const SOUL_FX = {
   sparkInterval: 0.34,
   sparkTexture: "fx_star",
   sparkTint: 31,
+} as const;
+
+/**
+ * M10-evo-fx-winter: reine FX-Parameter des Ewigen Winters (keine Gameplay-Werte),
+ * Muster PHOENIX_FX (Lane m10-evo-fx-phoenix). Regel „Eine Pixelgröße für alles":
+ * Texturen in Zielgröße zeichnen, nie > 1x hochskalieren. Ablauf: Aufbau (Windup
+ * <= 0,3 s, Anticipation) → Impact (Eisspitzen-Volley + Frost-Puls) → kurzer
+ * Ausklang (Partikel-Fade in Sprite-Pixelgröße).
+ */
+export const WINTER_FX = {
+  /** Aura-Siegel (Mixel-Bake, Level 1 = 96x96, Draw-Scale <= 1). */
+  auraTexture: "ring_frost",
+  auraLife: 0.45,
+  /** Frost-Partikel am Aura-Rand, Sprite-Pixelgröße (Scale <= 1). */
+  particleTexture: "fx_ice",
+  particleFrames: 4,
+  particleLife: 0.6,
+  particleScale: 1,
+  /** Windup (Anticipation) vor der Eisspitzen-Volley, life <= 0,3 s. */
+  windupTexture: "fx_halo_cold",
+  windupLife: 0.25,
+  /** Restzeit der Spike-Timer, ab der der Windup einmalig gespawnt wird. */
+  windupAt: 0.25,
+  /** Impact-Puls beim Volley (fx_shock, Mixel-Bake, Draw-Scale <= 1). */
+  impactTexture: "fx_shock",
+  impactLife: 0.4,
+  /** Eisspitzen-Projektil (7x7, keine Ink-Pixel mehr). */
+  spikeTexture: "projectile_ice",
+  /** Treffer-/Todes-Signatur in Zielgröße (128x128 @ Draw-Scale 1, gen-fx). */
+  signatureDrawScale: [1, 1] as [number, number],
 } as const;
