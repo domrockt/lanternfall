@@ -1,0 +1,26 @@
+Lane m10-palette-guard-evo — Palette-Compliance auf Evo-FX-/Boss-/Truhen-Texturen erweitert. FERTIG, Reviewer PASS.
+
+Was:
+- K1 (#7505): scripts/art/palette-check.mjs erweitert — ENEMY_PROJECTILES neu erfasst (lief bisher an
+  der Compliance vorbei), Report-Modus mit Verstößen je Key inkl. Datei+Hebel+Kettenglied-Job
+  (violationsPerKey/leverFor), Coverage-Sektion (Evo-/Boss-/Truhen-Keys). Before-Report committed.
+- K2 (#7506): 5 harte Assertions in tests/palette-compliance.test.ts (enemy_shot-Keys,
+  Evo-Signaturen hit+death inkl. gebackener phoenix 128/soul_beacon 96 + Canvas-Erfassung,
+  chest_*-Ratchet, Boss-Quellen, violationsPerKey==[]), Hebel-Pointer in Failure-Meldung,
+  statics/numeric/fx memoized. Reviewer-Should-Fix (coverage.boss.frames) in c93725a behoben.
+- K3 (#7507): Rote Liste LEER (0 off-palette/alpha über 483 Grids/1,47 Mio px, Beleg
+  shots/m10-palette-guard-evo-before.json); gepinnte Evo-Ketten-Befunde (thunder_seal-Dither 6 px,
+  phoenix 4 px, 13 ungedeckte Draw-Scales) mit Datei+Key+Hebel+Job dokumentiert; Bedarfsmeldung in
+  /home/ai/games/.dispatch/requests.md (2026-11-28T02:2xZ).
+- K4 (#7508): .lane-done, Doku in docs/lanes/m10-palette-guard-evo.md.
+
+Messwerte:
+- Report: 483 Grids/Frames, 1 473 817 Pixel, 0 off-palette, 0 alpha (shots/m10-palette-guard-evo-before.json).
+- npx vitest run tests/palette-compliance.test.ts: 16/16 grün in 0,61–0,66 s (vorher 0,88 s).
+- npm test: 110 Files / 1192 Tests grün in 3,53 s Wandzeit (Baseline vor Lane 3,20 s; Delta +0,33 s
+  für die 5 neuen Tests — 3-s-Gesamtgrenze war durch Suiten-Wachstum anderer Lanes schon überschritten).
+- npm run build grün, npx tsc --noEmit rc=0.
+- 0 Änderungen an Spielcode (src/ unberührt, auch src/palette.ts).
+
+Commits: 743817e, af93f9b, 12f667b, c93725a. Offene Punkte (Backlog): hazardDisc-Laufzeit-Texturen
+unguarded; chest_*-Liste beim chest-reveal-Merge bewusst erweitern.

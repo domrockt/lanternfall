@@ -10,7 +10,9 @@ nur gelesen; angefasst wurden nur meine Claims: `scripts/art/palette-check.mjs`,
 `scripts/art/palette-check.d.mts` (Typen), `tests/palette-compliance.test.ts`, `src/palette.ts` (unverändert).
 
 Board-Karten: #7505 (K1 Check/Before-Report), #7506 (K2 Grün-Schnitt), #7507 (K3 rote Liste +
-Bedarfsmeldung), #7508 (K4 .lane-done). Commits: 743817e (K1), af93f9b (K2), K3/K4 folgen.
+Bedarfsmeldung), #7508 (K4 .lane-done). Commits: 743817e (K1), af93f9b (K2), 12f667b (K3),
+c93725a (K2-Review-Followup). **Reviewer: PASS** (Spielcode-Verbot, Mirror von BAKED_SIGNATURES,
+leverFor-Zuordnungen, Memoization, tsc + 16/16 grün; Should-Fix coverage.boss.frames in c93725a behoben).
 
 ## 1. K1 — Check erweitert (`scripts/art/palette-check.mjs`, Commit 743817e)
 
