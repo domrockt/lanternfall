@@ -13718,7 +13718,7 @@
       "id": 10157,
       "title": "m10-prop-contact-shadow K1: Vorher-Screenshots (640x360 + 960x540, Prop-Cluster)",
       "description": "Skript scripts/m10-prop-shadow.mjs (--tag before): Vorher-Shots mit sichtbarem Prop-Cluster (Teleport an Cluster via ground.chunks) in 640x360 + 960x540 + 3x-Crop, Belege in shots/abnahme/ + ~/games/.evidence/m10-prop-contact-shadow/. Abnahme: beide Shots zeigen Props/Cluster, JSON-Probe mit Prop-/Schattenzahl, 0 JS-Fehler, Commit BEFORE Fix.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:28:28Z",
@@ -13729,55 +13729,75 @@
           "at": "2026-11-28T08:30:57Z",
           "by": "build",
           "text": "doing → review: Vorher-Shots committed (3c4edfba): Cluster 12 Props sichtbar, Probe 527 Props/0 Kontakt-Schatten (alter Soft-Blob), 0 JS-Fehler"
+        },
+        {
+          "at": "2026-11-28T09:19:58Z",
+          "by": "build",
+          "text": "review → done: m10-prop-contact-shadow lane #10157, Commit 3c4edfba — Vorher-Shots 640/960/3x-Crop + Probe (527 Props, alter Blob), 0 JS-Fehler"
         }
       ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:30:57Z"
+      "updated": "2026-11-28T09:19:58Z"
     },
     {
       "id": 10158,
       "title": "m10-prop-contact-shadow K2: Schatten-Generator + Kontakt-Schatten-Zeichnung",
       "description": "Deterministischer Pixel-Kontakt-Schatten in gen-props.ts (propShadowFor: elliptisch, PAL[0], Alpha 0.35/0.18-Rim, per Prop-Klasse aus GEN_PROPS-Basisbreite, Varianten auf Basis-Klasse abgebildet); Zeichnung in GroundRenderer.addProp: gemeinsame Shadow-Atlas-Textur (1 Batch, Frames je Klasse), 1 px unterhalb/leicht versetzt, LOD/CLUSTER_PROPS/Platzierung/Batch-Struktur unangetastet. Abnahme: npx tsc --noEmit rc=0, ground-props-batch/prop-density-lod-Tests gruen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:30:57Z",
           "by": "build",
           "text": "todo → doing: Schatten-Generator + Zeichnung"
+        },
+        {
+          "at": "2026-11-28T09:19:58Z",
+          "by": "build",
+          "text": "doing → done: m10-prop-contact-shadow lane #10158, Commit edccae24 — propShadowFor (PAL[0] α0,35/0,18) + Shadow-Atlas 1 Batch, tsc rc=0, Regressionen grün"
         }
       ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:30:57Z"
+      "updated": "2026-11-28T09:19:58Z"
     },
     {
       "id": 10159,
       "title": "m10-prop-contact-shadow K3: Guard-Test tests/prop-shadow.test.ts",
       "description": "Guard-Test: jeder Prop-Key rendert Schatten-Daten (13 Klassen + Varianten auf Basis abgebildet), Schattenfarbe = Palette 0 (ink), Alpha > 0 und < opak (<= 0.35), elliptische Form (Mitte breiter als Rand), deterministisch bei wiederholtem Aufruf. Abnahme: npx vitest run tests/prop-shadow.test.ts gruen, npm test gruen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:33:55Z",
           "by": "build",
           "text": "todo → doing: Guard-Test"
+        },
+        {
+          "at": "2026-11-28T09:19:58Z",
+          "by": "build",
+          "text": "doing → done: m10-prop-contact-shadow lane #10159, Commit 6ccd69b6 — Guard-Test 30→31 Tests grün"
         }
       ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:33:55Z"
+      "updated": "2026-11-28T09:19:58Z"
     },
     {
       "id": 10160,
       "title": "m10-prop-contact-shadow K4: Nachher-Belege, FPS-/Draw-Call-Gegenprobe, art-director",
       "description": "--tag after: Nachher-Shots (640x360 + 960x540 + 3x-Crop, gleiche Cluster-Logik), Probe 100% Props mit Schatten + 0 Off-Palette-Pixel im Schatten; Burst 640x360 mit 500 Gegnern unter flock (>= 55 FPS, iGPU-Renderer-String), Draw-Calls <= Baseline+2; art-director-Urteil >= 4/5; docs/lanes/m10-prop-contact-shadow.md + .lane-done. Abnahme: build rc=0, npm test gruen, Belege in shots/abnahme/ + .evidence/.",
-      "column": "todo",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T08:48:10Z",
           "by": "build",
           "text": "art-director FAIL Runde 1 (1-2/5): Schatten im Frame nicht wahrnehmbar laut dessen Pixelproben, Belege nicht eingefroren. Eigene Gegenpruefung laeuft: 960-Vorher/Nachher-Diff zeigt koherente Ellipsen unter Baeumen/Fels — AD-Messpunkte vermutlich an verschobenen Weltkoordinaten. Fix: --frozen-Modus (setTimeScale 0), Fusspunkt-Deltas an Props, ganzzahlige 3x-Crops, Texture-Dump."
+        },
+        {
+          "at": "2026-11-28T09:19:58Z",
+          "by": "build",
+          "text": "todo → done: m10-prop-contact-shadow lane #10160, Commits 8e53cc59/2ffdc740/0ec79671/93c88543 — art-director R1 FAIL → Root Cause (Okklusion wy-1) gefixt (wy+1), R2 PASS (0 Muss-Mängel); Reviewer PASS; Commit-Gate PASS; Burst 60,1 FPS, DC 6=Baseline+0, shadowBatches 1, Mesa-iGPU; 527/527 Schatten; 1794/1794 Tests; .lane-done 93c88543"
         }
       ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:48:10Z"
+      "updated": "2026-11-28T09:19:58Z"
     }
   ]
 }
