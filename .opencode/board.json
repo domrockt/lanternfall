@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8882,
+  "next": 8885,
   "cards": [
     {
       "id": 1,
@@ -11489,6 +11489,33 @@
       "notes": [],
       "created": "2026-11-28T06:02:56Z",
       "updated": "2026-11-28T06:02:56Z"
+    },
+    {
+      "id": 8882,
+      "title": "m10-evo-signature-calls K1: Verdrahtung verifiziert (kein Doppelspawn)",
+      "description": "AK: spawnEvolution-Aufruf in Run.ts:480 verifiziert (lag bereits in main, fx-evolution-WIP 56da3a5); git diff main...HEAD -- src/ = 0 Zeilen. lane #4518, Merge 3e2271f (Inhalte bereits in main)",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:05:09Z",
+      "updated": "2026-11-28T06:05:09Z"
+    },
+    {
+      "id": 8883,
+      "title": "m10-evo-signature-calls K2: tests/evo-signature-calls.test.ts 6/6",
+      "description": "AK: Verdrahtung Run.ts (genau 1 Aufruf), Hit/Death Typ/Textur/Position (Pixel-Grid), Nicht-Evo-Waffen spawnen nichts, Cooldown, 6 Evolutionen Hit+Death. Live-Check 28.11.: 6/6 gruen. lane #4519, Merge 3e2271f",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:05:09Z",
+      "updated": "2026-11-28T06:05:09Z"
+    },
+    {
+      "id": 8884,
+      "title": "m10-evo-signature-calls K3: In-Game-Belege + Doku",
+      "description": "AK: scripts/m10-evo-signature-shots.mjs, shots/m10-evo-signature-hit/-death.png + evidence.json (0 JS-Fehler), docs/lanes/m10-evo-signature-calls.md — alles bereits in main verifiziert. lane #4520, Merge 3e2271f",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T06:05:09Z",
+      "updated": "2026-11-28T06:05:09Z"
     }
   ]
 }
