@@ -182,3 +182,21 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   Board auf done, `.lane-done`. Automation wird nach Lane-Abschluss gelöscht.
 - Bedarf an den Disponent UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt
   (Mini-Job `m10-gem-rows-texture`) oder Freigabe nach fx-bakes-evo-r2-Merge.
+
+## Run-Fortsetzung (28.11. 09:35–09:38Z, Versuch 1 / Run 6)
+
+- Endcommit-Versuch nach scheinbar freiem Claim: **vom pre-commit-Hook korrekt blockiert**
+  (`src/gfx/textures.ts -> m10-fx-bakes-evo-r2`). Ursache war ein Fehler im eigenen
+  Re-Check: `'textures.ts' in v.get('globs',[])` ist Listen-Membership und meldet für
+  `'src/gfx/textures.ts'` fälschlich „nicht geclaimed" — Substring-Check über `str(v)`
+  zeigt: **Claim weiterhin aktiv** (claims.json mtime 09:33Z). Hook hat den Fehlgriff
+  abgefangen, kein Schaden; falscher Re-Check nicht wiederholt.
+- Alte Automation `aut_22169de2d…` gelöscht — ihr Prompt enthielt exakt denselben
+  fehlerhaften Check und hätte einen sinnlosen Commit-Versuch ausgelöst. Ersetzt durch
+  `aut_22182edd40017Enkrgc9rUIIUZ` (alle 25 min, läuft 10:00/10:25/10:50Z, Ablauf 10:55Z)
+  mit korrigiertem Substring-Check; bei freiem Claim: Endcommit (#10180), Board done/review,
+  `.lane-done`, Automation löschen.
+- Ready-Zustand unverändert: r3-Patch gestaget (textures.ts 20 Z, xp.ts 24 Z, Test 8 Z),
+  Guard-Test 10/10 grün (09:35Z), Full-Suite + Build grün (09:27–09:31Z, s. Run 5).
+- Bedarf UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt in textures.ts via Mini-Job
+  `m10-gem-rows-texture` oder Freigabe nach fx-bakes-evo-r2-Merge.
