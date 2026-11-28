@@ -1182,7 +1182,7 @@ export function mixelLevel1Frames(): Record<string, { w: number; h: number; fram
  * Kerne, eisblaue Facetten — Farbtreppe lanternWhite(13) → candleWhite(12) →
  * boneLight(11) → paleMist(9) → mist(8) → fogBlue(6). Kein Ink/Grau-Rand.
  */
-function winterSignatureFrame(kind: "hit" | "death", stage: number): string[] {
+export function winterSignatureFrame(kind: "hit" | "death", stage: number): string[] {
   const size = 128;
   const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
   const c = (size - 1) / 2;

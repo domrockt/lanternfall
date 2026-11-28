@@ -403,19 +403,20 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
       "...0.........",
     ],
   },
-  // M10-evo-fx-winter: Eisspitze ohne Ink-Rand — Farb-Treppe Kern lanternWhite/
-  // candleWhite → boneLight/paleMist → fogBlue-Rand (vorher: schwarze Raute mit
+  // M10-evo-fx-winter: Eisspitze ohne Ink-Rand — Farb-Treppe Kern lanternWhite(d=13)/
+  // boneLight(b=11) → paleMist(9) → fogBlue(6)-Rand (vorher: schwarze Raute mit
   // grauer bone-Facette, 12/25 Ink-Pixel). Zeichnung mit Draw-Scale 1.
+  // Zeichencodes: Ziffern = Palettenindex direkt (6/9), b=11, d=13.
   projectile_ice: {
     w: 7, h: 7,
     rows: [
-      "...g...",
-      "..gjg..",
-      ".gjbjg.",
-      "gjbdbjg",
-      ".gjbjg.",
-      "..gjg..",
-      "...g...",
+      "...6...",
+      "..696..",
+      ".69b96.",
+      "69bdb96",
+      ".69b96.",
+      "..696..",
+      "...6...",
     ],
   },
   chest_closed: {

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-28T00:19:49.027Z",
+  "generatedAt": "2026-11-28T00:22:54.725Z",
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "valid": true,
   "errors": [],
   "configs": {
     "640": {
       "renderer": {
-        "generatedAt": "2026-11-28T00:19:43.846Z",
+        "generatedAt": "2026-11-28T00:22:49.516Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -335,27 +335,27 @@
             {
               "x": 3,
               "y": 0,
-              "i": 16
+              "i": 6
             },
             {
               "x": 0,
               "y": 3,
-              "i": 16
+              "i": 6
             },
             {
               "x": 6,
               "y": 3,
-              "i": 16
+              "i": 6
             },
             {
               "x": 3,
               "y": 6,
-              "i": 16
+              "i": 6
             }
           ],
           "histogram": {
-            "pal16": 12,
-            "pal19": 8,
+            "pal6": 12,
+            "pal9": 8,
             "pal11": 4,
             "pal13": 1
           }
@@ -410,7 +410,7 @@
     },
     "960x540": {
       "renderer": {
-        "generatedAt": "2026-11-28T00:19:46.648Z",
+        "generatedAt": "2026-11-28T00:22:52.339Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -739,27 +739,27 @@
             {
               "x": 3,
               "y": 0,
-              "i": 16
+              "i": 6
             },
             {
               "x": 0,
               "y": 3,
-              "i": 16
+              "i": 6
             },
             {
               "x": 6,
               "y": 3,
-              "i": 16
+              "i": 6
             },
             {
               "x": 3,
               "y": 6,
-              "i": 16
+              "i": 6
             }
           ],
           "histogram": {
-            "pal16": 12,
-            "pal19": 8,
+            "pal6": 12,
+            "pal9": 8,
             "pal11": 4,
             "pal13": 1
           }
