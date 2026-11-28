@@ -55,8 +55,29 @@ erst danach `truncated=true` (ehrlicher Fallback, falls der Kampf doch mal schie
 - Wall-Cap der Schleife bleibt `RUN_SECONDS + 300` s (= 35 min bei 30 min Lauf) — Kampf + Daemmerung
   (~45 s lt. K1-Probe) passen mit >4 min Reserve.
 
-## K3 — Nachher: 30-min-Echtzeitlauf — (Ergebnis nach Commit)
+## K3 — Nachher: 30-min-Echtzeitlauf — **PASS**
+
+Beleg: `shots/m10-autoplay-victory-after.json` (Commit dieses Abschnitts), Lauf unter
+`flock /home/ai/games/.lf-perf.lock`, Renderer-Probe vorab separat iGPU PASS (Intel RPL-S) und
+im JSON selbst: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` — kein SwiftShader.
+
+| Kriterium | Tor | Ist | Urteil |
+|---|---|---|---|
+| Sieg im Echtzeitlauf | victory=true | `victory=true, resultReason="dawn", truncated=false`, simSeconds 1822,1 (Endboss-Kampf + Daemmerung ~22 s nach 30:00) | **PASS** |
+| JS-Fehler | 0 | errors=0, crashes=0 | **PASS** |
+| HARD-Heap-Tor | endMB − Minute1 ≤ +15 % | Minute1 56,4 MB → endMB 41,4 MB (post-GC) = **−26,6 %** | **PASS** |
+| SOFT (Beobachtung, kein Tor) | ≤ +25 % | maxWindowPeak 78,9 MB = +39,9 % — bekanntes F1-Rauschen (GC-Saegezahn), identisches Muster wie Baseline (`m10-reaccd-heap.json`: +41,5 %) | FAIL (Beobachtung, wie Baseline) |
+| FPS (Nebenbefund) | — | min 56,6 / median 60,5, 3649 Samples | vs. Baseline 57,2/60,5 unveraendert |
+
+Vergleich Baseline (`shots/m10-reaccd-heap.json`): victory=false/truncated=true → jetzt
+victory=true/truncated=false bei gleichem God/AutoPlay-Setup (seed 99, timeScale 1); HARD-Tor
++10,7 % → −26,6 % (stabil bis besser; endMB nach Sieg-Teardown inkl. Results-Szene).
 
 ## Gesamturteil
 
-(K3 nachtraeglich)
+**3/3 Karten PASS.** K1: Wurzel = Harness-Truncation bei sim 1800 exakt am `FINAL_BOSS_AT`-Spawn
+(Bot nachgewiesen intakt, Echtzeit-Kampf ~22–40 s). K2: Harness-Fix (`BOSS_GRACE_SECONDS = 600`),
+kein autoplay.ts-Eingriff — normales Spielverhalten unberuehrt. K3: Echtzeit-Beleg des Sieg-Pfads
+(victory=true, 0 JS-Fehler, HARD PASS im selben Lauf). Offen bleibt F1 (SOFT-Fenster-Peaks,
+Beobachtungswert) — nicht Gegenstand dieser Lane.
+
