@@ -33,6 +33,7 @@ import { PAL } from "../src/palette";
 const BOOT_TS = readFileSync(new URL("../src/scenes/Boot.ts", import.meta.url), "utf8");
 const MAIN_TS = readFileSync(new URL("../src/main.ts", import.meta.url), "utf8");
 const LOADING_TS = readFileSync(new URL("../src/scenes/Loading.ts", import.meta.url), "utf8");
+const RUN_TS = readFileSync(new URL("../src/scenes/Run.ts", import.meta.url), "utf8");
 
 /** Task-Erzeugung braucht keine echte Szene (run-Closures werden hier nicht ausgefuehrt). */
 const dummyScene = {} as never;
@@ -121,6 +122,21 @@ describe("Loading-Szenen-Verdrahtung (Quelltext-Check)", () => {
     expect(LOADING_TS.indexOf("scene.start(\"title\"")).toBeGreaterThan(
       LOADING_TS.indexOf("startTitleOnce"),
     );
+  });
+});
+
+describe("Run-Start-Gate (m10-loading-screen K3, Quelltext-Check)", () => {
+  it("Run pausiert den Sim bis FADE_IN_COMPLETE (Gate, detstart unberuehrt)", () => {
+    expect(RUN_TS).toContain("Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE");
+    expect(RUN_TS).toMatch(/startGate = true[\s\S]*?FADE_IN_COMPLETE/);
+    expect(RUN_TS).toContain('if (!hasFlag("detstart"))');
+  });
+
+  it("togglePause/resumeRun respektieren das Start-Gate (kein vorzeitiger Start)", () => {
+    const toggleBlock = RUN_TS.slice(RUN_TS.indexOf("togglePause(ev?: EscToggleEvent"));
+    const resumeBlock = RUN_TS.slice(RUN_TS.indexOf("resumeRun(): void"));
+    expect(toggleBlock.slice(0, 400)).toContain("if (this.startGate) return;");
+    expect(resumeBlock.slice(0, 400)).toContain("if (this.startGate) return;");
   });
 });
 

@@ -151,6 +151,14 @@ export class Run extends Phaser.Scene {
   autoPlay = false;
   paused = false;
   /**
+   * m10-loading-screen K3: Start-Gate. Während des Fade-ins (CharSelect → Run)
+   * ist der Sim pausiert (Timer 00:00, keine Gegner-Updates; freezeGate friert
+   * Timer/Tweens), damit der erste sichtbare Run-Frame ein fertig aufgebautes,
+   * stehendes Bild zeigt. FADE_IN_COMPLETE öffnet das Gate. detstart (Mess-
+   * Harness) setzt das Gate bewusst NICHT — dort steuert resumeRun() den Start.
+   */
+  startGate = false;
+  /**
    * M10-esc-pause-fix: timeStamp des zuletzt akzeptierten ESC-Keydowns
    * (Dedup pro physischem Press, siehe escToggleAllowed in InputState).
    */
@@ -343,6 +351,17 @@ export class Run extends Phaser.Scene {
     // frueher/spaeter — zwei Laeufe mit gleichem Seed divergierten ab Schritt 1
     // (Probe-Beleg: rep0 posX 20495500 vs rep1 20480000 nach Schritt 1).
     if (hasFlag("detstart")) this.paused = true;
+    // m10-loading-screen K3: Run-Start-Gate (siehe startGate). Nach dem synchronen
+    // Aufbau in create() bleibt der Sim stehen, bis der Fade-in komplett ist —
+    // der Spieler sieht nie einen halbfertigen oder schon laufenden Run.
+    if (!hasFlag("detstart")) {
+      this.startGate = true;
+      this.paused = true;
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE, () => {
+        this.startGate = false;
+        if (!this.levelUpOpen && !this.chestOpen && !this.finished) this.paused = false;
+      });
+    }
     this.time.paused = false;
     this.tweens.resumeAll();
     this.levelUpOpen = false;
@@ -1516,6 +1535,9 @@ export class Run extends Phaser.Scene {
    */
   togglePause(ev?: EscToggleEvent | null): void {
     if (this.levelUpOpen || this.chestOpen || this.finished) return;
+    // m10-loading-screen K3: waehrend des Start-Gates nicht pausierbar — ESC/Start
+    // wuerde sonst das Gate vorzeitig aufheben (paused=false vor Fade-Ende).
+    if (this.startGate) return;
     // M10-esc-pause-fix: ein physischer ESC-Press togglet genau einmal.
     // Der UI-Handler wird pro Press mehrfach aufgerufen (Doppel-Dispatch
     // desselben Keydowns im selben Game-Step + keyup-getriebene Queue-Replays,
@@ -1537,6 +1559,8 @@ export class Run extends Phaser.Scene {
   /** Pause-Menü: Fortsetzen per Knopf/Maus. */
   resumeRun(): void {
     if (!this.paused || this.levelUpOpen || this.chestOpen || this.finished) return;
+    // m10-loading-screen K3: das Start-Gate wird nur vom FADE_IN_COMPLETE geöffnet.
+    if (this.startGate) return;
     this.paused = false;
     this.events.emit("pauseChanged", false);
   }
