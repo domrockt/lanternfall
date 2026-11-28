@@ -18038,6 +18038,48 @@
       ],
       "created": "2026-11-28T14:59:47Z",
       "updated": "2026-11-28T15:10:07Z"
+    },
+    {
+      "id": 12885,
+      "title": "m10-postwave-smoke-r2 K1: npm test + build (tsc)",
+      "description": "Smoke der Merge-Welle 12:00-15:30Z: npm test + npm run build, Zahlen+rc, Vergleich mit 2412/2412. AK: beide gruen mit Zahlen in docs/lanes/m10-postwave-smoke-r2.md.",
+      "column": "doing",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [
+        {
+          "at": "2026-11-28T15:32:59.005Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K1 gestartet (npm test + build)"
+        }
+      ],
+      "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 12886,
+      "title": "m10-postwave-smoke-r2 K2: verify:final + verify-input + acceptance",
+      "description": "Ausfuehren (nicht anfassen): verify:final, verify:input, acceptance-count. Soll 30/6/6/6/6/2. AK: PASS-Zahlen notiert, Abweichungen als Befund.",
+      "column": "todo",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [],
+      "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 12887,
+      "title": "m10-postwave-smoke-r2 K3: Perf-Kurzlauf unter flock",
+      "description": "Burst 640x360 und 780x360@3, je 2 Laeufe (Min zaehlt), flock /home/ai/games/.lf-perf.lock. Toren >=55 / >=55. AK: FPS-Zahlen in Lane-Doku, Urteil gegen Toren.",
+      "column": "todo",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [],
+      "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 12888,
+      "title": "m10-postwave-smoke-r2 K4: Befundliste Lane-Doku",
+      "description": "docs/lanes/m10-postwave-smoke-r2.md: Befunde je mit Severity + Datei + Hebel, sonst Welle-sauber-Doku mit Zahlen. AK: Doku vollständig, .lane-done.",
+      "column": "todo",
+      "assignee": "m10-postwave-smoke-r2",
+      "notes": [],
+      "created": "2026-11-28T15:32:56.843Z"
     }
   ]
 }
