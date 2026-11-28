@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7510,
+  "next": 7515,
   "cards": [
     {
       "id": 1,
@@ -9304,6 +9304,81 @@
       ],
       "created": "2026-11-28T02:17:45Z",
       "updated": "2026-11-28T02:18:22Z"
+    },
+    {
+      "id": 7510,
+      "title": "m10-shot-budget-cap #1 Vorher-Messung",
+      "description": "Bench+Chaos-Ist: scripts/m10-shot-path.mjs (Schuss-Pfad ms/Frame, aktive Schuesse) + scripts/m10-shot-clarity.mjs (300/500 Chaos) -> shots/m10-shot-budget-cap-before.json (Projektil-Zeitscheibe, Draw-Calls/aktive Schuesse, FPS-Min Basis). Abnahme: JSON committed, Ist-Zahlen in Doku notiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:21:19Z",
+          "by": "build",
+          "text": "lane #7490, Merge b90c229"
+        }
+      ],
+      "created": "2026-11-28T02:21:15Z",
+      "updated": "2026-11-28T02:21:19Z"
+    },
+    {
+      "id": 7511,
+      "title": "m10-shot-budget-cap #2 Cap + faire Zuteilung",
+      "description": "EnemyProjectiles.ts: hartes Concurrent-Cap (active+pending <= CAP) + pro-Frame-Launch-Budget N mit Rotation ueber die Schuss-Anrufe (kein Starving), Ueberschuss verworfen (Cooldown bleibt, neuer Stat cancelledBudgetCap). Abnahme: bei Volllast active+pending <= Cap; Tests gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:21:19Z",
+          "by": "build",
+          "text": "lane #7491, Merge b90c229"
+        }
+      ],
+      "created": "2026-11-28T02:21:15Z",
+      "updated": "2026-11-28T02:21:19Z"
+    },
+    {
+      "id": 7512,
+      "title": "m10-shot-budget-cap #3 Pool-Recycle belegen",
+      "description": "Belegen, dass freie Projektile sofort recycelt werden, keine Allokation im Steady-State (EnemyProjectilePool free-Listen; ProjectilePool.ts nur lesen/pruefen). Abnahme: Test in tests/shot-budget-cap.test.ts zeigt Recycle ohne Leak.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:21:19Z",
+          "by": "build",
+          "text": "lane #7492, Merge b90c229"
+        }
+      ],
+      "created": "2026-11-28T02:21:15Z",
+      "updated": "2026-11-28T02:21:19Z"
+    },
+    {
+      "id": 7513,
+      "title": "m10-shot-budget-cap #4 Tests",
+      "description": "tests/shot-budget-cap.test.ts: Cap haelt, Fairness (alle Schuetzen kommen dran, max. Wartezeit beschraenkt), Recycle ohne Leak. Abnahme: vitest gruen + npx tsc --noEmit rc=0.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:21:19Z",
+          "by": "build",
+          "text": "lane #7493, Merge b90c229"
+        }
+      ],
+      "created": "2026-11-28T02:21:15Z",
+      "updated": "2026-11-28T02:21:19Z"
+    },
+    {
+      "id": 7514,
+      "title": "m10-shot-budget-cap #5 Nachher-Messung + Doku",
+      "description": "After-Messung (Bench + Chaos) -> shots/m10-shot-budget-cap-after.json; docs/lanes/m10-shot-budget-cap.md mit Vorher/Nachher inkl. Draw-Beitrag (Ziel: -20%) und FPS-Min bei 640x360/780x360@3. Abnahme: Doku committed, Kennzahlen erfuellt.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:21:19Z",
+          "by": "build",
+          "text": "lane #7494, Merge b90c229"
+        }
+      ],
+      "created": "2026-11-28T02:21:15Z",
+      "updated": "2026-11-28T02:21:19Z"
     }
   ]
 }
