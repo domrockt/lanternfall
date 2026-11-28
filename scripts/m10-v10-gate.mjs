@@ -253,13 +253,16 @@ if (isMain) {
       if (!(await page.evaluate(() => window.__lf?.stats().levelUpOpen))) break;
       await page.evaluate(() => window.__lf.pickLevelUp(0));
     }
-    // 10 s Minute-25-Worst-Case (300er Top-up JEDE Frame, wie device-m25 — im 50-ms-Takt
-    // räumt der lokale Bot schneller nach als nachgespawnt wird: avg 61 statt 300 im
-    // ersten Gate-Lauf, Befund in der Lane-Doku).
+    // 10 s Minute-25-Worst-Case — Top-up im 50-ms-Takt = Geräte-Methodik
+    // (m10-v10-device-m25). Per-Frame-Top-up erzeugt Spawn-Queue-Druck mit
+    // RangeError-Artefakten (Lauf 2, Muster Team/Stolperfallen.md 63) und ist
+    // keine faire Last. Lokal hält auch der 50-ms-Takt nur avg ~60 Gegner
+    // (Bot räumt auf Host-CPU schneller ab) -> Messvaliditäts-Warnung im Gate.
     const sample = await page.evaluate(async ({ seconds, target }) => {
       const start = performance.now();
       let frames = 0;
       let last = start;
+      let lastSpawn = start;
       const dts = [];
       const draws = [];
       const enemies = [];
@@ -271,10 +274,13 @@ if (isMain) {
             dts.push(Math.round(dt * 100) / 100);
             draws.push(window.__dc.current - dcAtFrameStart);
             dcAtFrameStart = window.__dc.current;
-            const active = window.__lf.stats().enemies;
-            enemies.push(active);
-            const deficit = target - active;
-            if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
+            enemies.push(window.__lf.stats().enemies);
+            if (now - lastSpawn >= 50) {
+              lastSpawn = now;
+              const active = window.__lf.stats().enemies;
+              const deficit = target - active;
+              if (deficit > 0) window.__lf.spawnEnemy("bog_rat", deficit);
+            }
           }
           last = now;
           frames++;
