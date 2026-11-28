@@ -1,0 +1,1062 @@
+{
+  "generatedAt": "2026-11-28T05:37:16.308Z",
+  "method": "Je Gegnertyp: Mittelton aller Koerperpixel (ohne Kontur 0x06070c und Augen/Glow 0xfff8e6, deckende Pixel) aus Atlas-Frame <spriteKey> vs. <spriteKey>_3 (Canvas-Readback, exakte Palettenwerte); lumDist = |Luminanz-Differenz|, rgbDist = euklidische RGB-Distanz",
+  "tag": "before",
+  "weakestFirst": [
+    {
+      "spriteKey": "enemy_banshee",
+      "base": {
+        "mean": [
+          170,
+          178,
+          172
+        ],
+        "dominant": 14278093,
+        "tones": 9,
+        "hsv": {
+          "h": 135,
+          "s": 0.045,
+          "v": 0.698
+        }
+      },
+      "variant": {
+        "mean": [
+          200,
+          207,
+          196
+        ],
+        "dominant": 14278093,
+        "tones": 6,
+        "hsv": {
+          "h": 98.2,
+          "s": 0.053,
+          "v": 0.812
+        }
+      },
+      "lumDist": 28.9,
+      "domLumDist": 0,
+      "rgbDist": 48.1,
+      "hueDelta": 36.8
+    },
+    {
+      "spriteKey": "enemy_ghoul",
+      "base": {
+        "mean": [
+          97,
+          128,
+          96
+        ],
+        "dominant": 7314264,
+        "tones": 8,
+        "hsv": {
+          "h": 118.1,
+          "s": 0.25,
+          "v": 0.502
+        }
+      },
+      "variant": {
+        "mean": [
+          107,
+          145,
+          94
+        ],
+        "dominant": 7314264,
+        "tones": 3,
+        "hsv": {
+          "h": 104.7,
+          "s": 0.352,
+          "v": 0.569
+        }
+      },
+      "lumDist": 14.1,
+      "domLumDist": 0,
+      "rgbDist": 19.8,
+      "hueDelta": 13.4
+    },
+    {
+      "spriteKey": "enemy_horror",
+      "base": {
+        "mean": [
+          192,
+          110,
+          104
+        ],
+        "dominant": 16747115,
+        "tones": 5,
+        "hsv": {
+          "h": 4.1,
+          "s": 0.458,
+          "v": 0.753
+        }
+      },
+      "variant": {
+        "mean": [
+          162,
+          90,
+          89
+        ],
+        "dominant": 16747115,
+        "tones": 5,
+        "hsv": {
+          "h": 0.8,
+          "s": 0.451,
+          "v": 0.635
+        }
+      },
+      "lumDist": 21.8,
+      "domLumDist": 0,
+      "rgbDist": 39.1,
+      "hueDelta": 3.3
+    },
+    {
+      "spriteKey": "enemy_scarecrow",
+      "base": {
+        "mean": [
+          200,
+          141,
+          80
+        ],
+        "dominant": 11029025,
+        "tones": 6,
+        "hsv": {
+          "h": 30.5,
+          "s": 0.6,
+          "v": 0.784
+        }
+      },
+      "variant": {
+        "mean": [
+          199,
+          113,
+          55
+        ],
+        "dominant": 11029025,
+        "tones": 4,
+        "hsv": {
+          "h": 24.2,
+          "s": 0.724,
+          "v": 0.78
+        }
+      },
+      "lumDist": 22,
+      "domLumDist": 0,
+      "rgbDist": 37.5,
+      "hueDelta": 6.3
+    },
+    {
+      "spriteKey": "enemy_skeleton",
+      "base": {
+        "mean": [
+          204,
+          208,
+          196
+        ],
+        "dominant": 15920600,
+        "tones": 5,
+        "hsv": {
+          "h": 80,
+          "s": 0.058,
+          "v": 0.816
+        }
+      },
+      "variant": {
+        "mean": [
+          227,
+          227,
+          210
+        ],
+        "dominant": 15920600,
+        "tones": 3,
+        "hsv": {
+          "h": 60,
+          "s": 0.075,
+          "v": 0.89
+        }
+      },
+      "lumDist": 19.5,
+      "domLumDist": 0,
+      "rgbDist": 33,
+      "hueDelta": 20
+    },
+    {
+      "spriteKey": "enemy_spider",
+      "base": {
+        "mean": [
+          106,
+          122,
+          131
+        ],
+        "dominant": 7044230,
+        "tones": 7,
+        "hsv": {
+          "h": 201.6,
+          "s": 0.191,
+          "v": 0.514
+        }
+      },
+      "variant": {
+        "mean": [
+          99,
+          116,
+          127
+        ],
+        "dominant": 7044230,
+        "tones": 4,
+        "hsv": {
+          "h": 203.6,
+          "s": 0.22,
+          "v": 0.498
+        }
+      },
+      "lumDist": 6.1,
+      "domLumDist": 0,
+      "rgbDist": 10,
+      "hueDelta": 2
+    },
+    {
+      "spriteKey": "enemy_witchling",
+      "base": {
+        "mean": [
+          187,
+          97,
+          85
+        ],
+        "dominant": 14964557,
+        "tones": 9,
+        "hsv": {
+          "h": 7.1,
+          "s": 0.545,
+          "v": 0.733
+        }
+      },
+      "variant": {
+        "mean": [
+          222,
+          92,
+          72
+        ],
+        "dominant": 14964557,
+        "tones": 5,
+        "hsv": {
+          "h": 8,
+          "s": 0.676,
+          "v": 0.871
+        }
+      },
+      "lumDist": 2.9,
+      "domLumDist": 0,
+      "rgbDist": 37.7,
+      "hueDelta": 0.9
+    },
+    {
+      "spriteKey": "enemy_bog_rat",
+      "base": {
+        "mean": [
+          124,
+          52,
+          26
+        ],
+        "dominant": 8008474,
+        "tones": 2,
+        "hsv": {
+          "h": 15.9,
+          "s": 0.79,
+          "v": 0.486
+        }
+      },
+      "variant": {
+        "mean": [
+          116,
+          100,
+          93
+        ],
+        "dominant": 3820124,
+        "tones": 5,
+        "hsv": {
+          "h": 18.3,
+          "s": 0.198,
+          "v": 0.455
+        }
+      },
+      "lumDist": 37.5,
+      "domLumDist": 7.6,
+      "rgbDist": 82.8,
+      "hueDelta": 2.4
+    },
+    {
+      "spriteKey": "enemy_bogzombie",
+      "base": {
+        "mean": [
+          70,
+          98,
+          64
+        ],
+        "dominant": 4020792,
+        "tones": 3,
+        "hsv": {
+          "h": 109.4,
+          "s": 0.347,
+          "v": 0.384
+        }
+      },
+      "variant": {
+        "mean": [
+          73,
+          94,
+          90
+        ],
+        "dominant": 3820124,
+        "tones": 4,
+        "hsv": {
+          "h": 168.6,
+          "s": 0.223,
+          "v": 0.369
+        }
+      },
+      "lumDist": 0.3,
+      "domLumDist": 9.5,
+      "rgbDist": 26.5,
+      "hueDelta": 59.2
+    },
+    {
+      "spriteKey": "enemy_slime",
+      "base": {
+        "mean": [
+          97,
+          121,
+          105
+        ],
+        "dominant": 7044230,
+        "tones": 6,
+        "hsv": {
+          "h": 140,
+          "s": 0.198,
+          "v": 0.475
+        }
+      },
+      "variant": {
+        "mean": [
+          107,
+          145,
+          97
+        ],
+        "dominant": 7314264,
+        "tones": 3,
+        "hsv": {
+          "h": 107.5,
+          "s": 0.331,
+          "v": 0.569
+        }
+      },
+      "lumDist": 18.7,
+      "domLumDist": 19.7,
+      "rgbDist": 27.2,
+      "hueDelta": 32.5
+    },
+    {
+      "spriteKey": "enemy_wolf",
+      "base": {
+        "mean": [
+          105,
+          119,
+          127
+        ],
+        "dominant": 3820124,
+        "tones": 5,
+        "hsv": {
+          "h": 201.8,
+          "s": 0.173,
+          "v": 0.498
+        }
+      },
+      "variant": {
+        "mean": [
+          98,
+          116,
+          127
+        ],
+        "dominant": 5136238,
+        "tones": 4,
+        "hsv": {
+          "h": 202.8,
+          "s": 0.228,
+          "v": 0.498
+        }
+      },
+      "lumDist": 3.6,
+      "domLumDist": 20.6,
+      "rgbDist": 7.6,
+      "hueDelta": 1
+    },
+    {
+      "spriteKey": "enemy_centipede",
+      "base": {
+        "mean": [
+          204,
+          208,
+          197
+        ],
+        "dominant": 14278093,
+        "tones": 6,
+        "hsv": {
+          "h": 81.8,
+          "s": 0.053,
+          "v": 0.816
+        }
+      },
+      "variant": {
+        "mean": [
+          194,
+          203,
+          197
+        ],
+        "dominant": 12108994,
+        "tones": 3,
+        "hsv": {
+          "h": 140,
+          "s": 0.044,
+          "v": 0.796
+        }
+      },
+      "lumDist": 5.7,
+      "domLumDist": 25.7,
+      "rgbDist": 11.2,
+      "hueDelta": 58.2
+    },
+    {
+      "spriteKey": "enemy_harpy",
+      "base": {
+        "mean": [
+          187,
+          184,
+          173
+        ],
+        "dominant": 14278093,
+        "tones": 9,
+        "hsv": {
+          "h": 47.1,
+          "s": 0.075,
+          "v": 0.733
+        }
+      },
+      "variant": {
+        "mean": [
+          185,
+          194,
+          190
+        ],
+        "dominant": 12108994,
+        "tones": 5,
+        "hsv": {
+          "h": 153.3,
+          "s": 0.046,
+          "v": 0.761
+        }
+      },
+      "lumDist": 8,
+      "domLumDist": 25.7,
+      "rgbDist": 19.8,
+      "hueDelta": 106.2
+    },
+    {
+      "spriteKey": "enemy_abom",
+      "base": {
+        "mean": [
+          173,
+          107,
+          107
+        ],
+        "dominant": 7044230,
+        "tones": 6,
+        "hsv": {
+          "h": 0,
+          "s": 0.382,
+          "v": 0.678
+        }
+      },
+      "variant": {
+        "mean": [
+          126,
+          68,
+          82
+        ],
+        "dominant": 5136238,
+        "tones": 4,
+        "hsv": {
+          "h": 345.5,
+          "s": 0.46,
+          "v": 0.494
+        }
+      },
+      "lumDist": 39.7,
+      "domLumDist": 28.6,
+      "rgbDist": 66,
+      "hueDelta": 345.5
+    },
+    {
+      "spriteKey": "enemy_gargoyle",
+      "base": {
+        "mean": [
+          141,
+          145,
+          136
+        ],
+        "dominant": 7044230,
+        "tones": 7,
+        "hsv": {
+          "h": 86.7,
+          "s": 0.062,
+          "v": 0.569
+        }
+      },
+      "variant": {
+        "mean": [
+          104,
+          108,
+          105
+        ],
+        "dominant": 5136238,
+        "tones": 5,
+        "hsv": {
+          "h": 135,
+          "s": 0.037,
+          "v": 0.424
+        }
+      },
+      "lumDist": 36.6,
+      "domLumDist": 28.6,
+      "rgbDist": 60.8,
+      "hueDelta": 48.3
+    },
+    {
+      "spriteKey": "enemy_golem",
+      "base": {
+        "mean": [
+          162,
+          109,
+          79
+        ],
+        "dominant": 11029025,
+        "tones": 8,
+        "hsv": {
+          "h": 21.7,
+          "s": 0.512,
+          "v": 0.635
+        }
+      },
+      "variant": {
+        "mean": [
+          206,
+          119,
+          60
+        ],
+        "dominant": 13593382,
+        "tones": 4,
+        "hsv": {
+          "h": 24.2,
+          "s": 0.709,
+          "v": 0.808
+        }
+      },
+      "lumDist": 15.1,
+      "domLumDist": 32.3,
+      "rgbDist": 49,
+      "hueDelta": 2.5
+    },
+    {
+      "spriteKey": "enemy_imp",
+      "base": {
+        "mean": [
+          195,
+          120,
+          78
+        ],
+        "dominant": 11029025,
+        "tones": 7,
+        "hsv": {
+          "h": 21.5,
+          "s": 0.6,
+          "v": 0.765
+        }
+      },
+      "variant": {
+        "mean": [
+          215,
+          136,
+          78
+        ],
+        "dominant": 13593382,
+        "tones": 4,
+        "hsv": {
+          "h": 25.4,
+          "s": 0.637,
+          "v": 0.843
+        }
+      },
+      "lumDist": 15.7,
+      "domLumDist": 32.3,
+      "rgbDist": 25.6,
+      "hueDelta": 3.9
+    },
+    {
+      "spriteKey": "enemy_treant",
+      "base": {
+        "mean": [
+          172,
+          105,
+          68
+        ],
+        "dominant": 11029025,
+        "tones": 6,
+        "hsv": {
+          "h": 21.3,
+          "s": 0.605,
+          "v": 0.675
+        }
+      },
+      "variant": {
+        "mean": [
+          209,
+          126,
+          68
+        ],
+        "dominant": 13593382,
+        "tones": 3,
+        "hsv": {
+          "h": 24.7,
+          "s": 0.675,
+          "v": 0.82
+        }
+      },
+      "lumDist": 22.9,
+      "domLumDist": 32.3,
+      "rgbDist": 42.5,
+      "hueDelta": 3.4
+    },
+    {
+      "spriteKey": "enemy_bat",
+      "base": {
+        "mean": [
+          211,
+          110,
+          107
+        ],
+        "dominant": 12070975,
+        "tones": 6,
+        "hsv": {
+          "h": 1.7,
+          "s": 0.493,
+          "v": 0.827
+        }
+      },
+      "variant": {
+        "mean": [
+          232,
+          122,
+          109
+        ],
+        "dominant": 14964557,
+        "tones": 3,
+        "hsv": {
+          "h": 6.3,
+          "s": 0.53,
+          "v": 0.91
+        }
+      },
+      "lumDist": 13.2,
+      "domLumDist": 38.3,
+      "rgbDist": 24.3,
+      "hueDelta": 4.6
+    },
+    {
+      "spriteKey": "enemy_voidcaller",
+      "base": {
+        "mean": [
+          199,
+          201,
+          190
+        ],
+        "dominant": 15920600,
+        "tones": 6,
+        "hsv": {
+          "h": 70.9,
+          "s": 0.055,
+          "v": 0.788
+        }
+      },
+      "variant": {
+        "mean": [
+          167,
+          181,
+          182
+        ],
+        "dominant": 12108994,
+        "tones": 3,
+        "hsv": {
+          "h": 184,
+          "s": 0.082,
+          "v": 0.714
+        }
+      },
+      "lumDist": 21.7,
+      "domLumDist": 43.2,
+      "rgbDist": 38.6,
+      "hueDelta": 113.1
+    },
+    {
+      "spriteKey": "enemy_cultist",
+      "base": {
+        "mean": [
+          181,
+          117,
+          102
+        ],
+        "dominant": 16747115,
+        "tones": 10,
+        "hsv": {
+          "h": 11.4,
+          "s": 0.436,
+          "v": 0.71
+        }
+      },
+      "variant": {
+        "mean": [
+          205,
+          96,
+          83
+        ],
+        "dominant": 14964557,
+        "tones": 6,
+        "hsv": {
+          "h": 6.4,
+          "s": 0.595,
+          "v": 0.804
+        }
+      },
+      "lumDist": 11.3,
+      "domLumDist": 44.4,
+      "rgbDist": 37.1,
+      "hueDelta": 5
+    },
+    {
+      "spriteKey": "enemy_crow",
+      "base": {
+        "mean": [
+          131,
+          143,
+          145
+        ],
+        "dominant": 7044230,
+        "tones": 5,
+        "hsv": {
+          "h": 188.6,
+          "s": 0.097,
+          "v": 0.569
+        }
+      },
+      "variant": {
+        "mean": [
+          92,
+          101,
+          108
+        ],
+        "dominant": 3820124,
+        "tones": 6,
+        "hsv": {
+          "h": 206.3,
+          "s": 0.148,
+          "v": 0.424
+        }
+      },
+      "lumDist": 41,
+      "domLumDist": 49.2,
+      "rgbDist": 68.2,
+      "hueDelta": 17.7
+    },
+    {
+      "spriteKey": "enemy_knight",
+      "base": {
+        "mean": [
+          118,
+          129,
+          135
+        ],
+        "dominant": 7044230,
+        "tones": 13,
+        "hsv": {
+          "h": 201.2,
+          "s": 0.126,
+          "v": 0.529
+        }
+      },
+      "variant": {
+        "mean": [
+          79,
+          93,
+          105
+        ],
+        "dominant": 3820124,
+        "tones": 9,
+        "hsv": {
+          "h": 207.7,
+          "s": 0.248,
+          "v": 0.412
+        }
+      },
+      "lumDist": 36.2,
+      "domLumDist": 49.2,
+      "rgbDist": 61,
+      "hueDelta": 6.5
+    },
+    {
+      "spriteKey": "enemy_wraith",
+      "base": {
+        "mean": [
+          125,
+          138,
+          145
+        ],
+        "dominant": 7044230,
+        "tones": 8,
+        "hsv": {
+          "h": 201,
+          "s": 0.138,
+          "v": 0.569
+        }
+      },
+      "variant": {
+        "mean": [
+          71,
+          85,
+          101
+        ],
+        "dominant": 3820124,
+        "tones": 5,
+        "hsv": {
+          "h": 212,
+          "s": 0.297,
+          "v": 0.396
+        }
+      },
+      "lumDist": 52.6,
+      "domLumDist": 49.2,
+      "rgbDist": 87.5,
+      "hueDelta": 11
+    },
+    {
+      "spriteKey": "enemy_mudling",
+      "base": {
+        "mean": [
+          81,
+          108,
+          88
+        ],
+        "dominant": 4020792,
+        "tones": 4,
+        "hsv": {
+          "h": 135.6,
+          "s": 0.25,
+          "v": 0.424
+        }
+      },
+      "variant": {
+        "mean": [
+          104,
+          143,
+          92
+        ],
+        "dominant": 7314264,
+        "tones": 2,
+        "hsv": {
+          "h": 105.9,
+          "s": 0.357,
+          "v": 0.561
+        }
+      },
+      "lumDist": 30.2,
+      "domLumDist": 59.4,
+      "rgbDist": 42.1,
+      "hueDelta": 29.7
+    },
+    {
+      "spriteKey": "enemy_toad",
+      "base": {
+        "mean": [
+          89,
+          116,
+          96
+        ],
+        "dominant": 4020792,
+        "tones": 4,
+        "hsv": {
+          "h": 135.6,
+          "s": 0.233,
+          "v": 0.455
+        }
+      },
+      "variant": {
+        "mean": [
+          105,
+          143,
+          92
+        ],
+        "dominant": 7314264,
+        "tones": 2,
+        "hsv": {
+          "h": 104.7,
+          "s": 0.357,
+          "v": 0.561
+        }
+      },
+      "lumDist": 22.4,
+      "domLumDist": 59.4,
+      "rgbDist": 31.6,
+      "hueDelta": 30.9
+    },
+    {
+      "spriteKey": "enemy_lich",
+      "base": {
+        "mean": [
+          176,
+          173,
+          163
+        ],
+        "dominant": 9412774,
+        "tones": 11,
+        "hsv": {
+          "h": 46.2,
+          "s": 0.074,
+          "v": 0.69
+        }
+      },
+      "variant": {
+        "mean": [
+          119,
+          123,
+          125
+        ],
+        "dominant": 5136238,
+        "tones": 9,
+        "hsv": {
+          "h": 200,
+          "s": 0.048,
+          "v": 0.49
+        }
+      },
+      "lumDist": 50.6,
+      "domLumDist": 64.4,
+      "rgbDist": 84.8,
+      "hueDelta": 153.8
+    },
+    {
+      "spriteKey": "enemy_reaper_bat",
+      "base": {
+        "mean": [
+          136,
+          149,
+          153
+        ],
+        "dominant": 5136238,
+        "tones": 5,
+        "hsv": {
+          "h": 194.1,
+          "s": 0.111,
+          "v": 0.6
+        }
+      },
+      "variant": {
+        "mean": [
+          153,
+          165,
+          167
+        ],
+        "dominant": 9412774,
+        "tones": 4,
+        "hsv": {
+          "h": 188.6,
+          "s": 0.084,
+          "v": 0.655
+        }
+      },
+      "lumDist": 16.1,
+      "domLumDist": 64.4,
+      "rgbDist": 27.2,
+      "hueDelta": 5.5
+    },
+    {
+      "spriteKey": "enemy_wisp",
+      "base": {
+        "mean": [
+          255,
+          215,
+          122
+        ],
+        "dominant": 16766842,
+        "tones": 1,
+        "hsv": {
+          "h": 42,
+          "s": 0.522,
+          "v": 1
+        }
+      },
+      "variant": {
+        "mean": [
+          207,
+          135,
+          83
+        ],
+        "dominant": 13593382,
+        "tones": 3,
+        "hsv": {
+          "h": 25.2,
+          "s": 0.599,
+          "v": 0.812
+        }
+      },
+      "lumDist": 70.2,
+      "domLumDist": 93.5,
+      "rgbDist": 101.1,
+      "hueDelta": 16.8
+    },
+    {
+      "spriteKey": "enemy_bomber",
+      "base": {
+        "mean": [
+          190,
+          128,
+          74
+        ],
+        "dominant": 15700272,
+        "tones": 7,
+        "hsv": {
+          "h": 27.9,
+          "s": 0.611,
+          "v": 0.745
+        }
+      },
+      "variant": {
+        "mean": [
+          138,
+          90,
+          42
+        ],
+        "dominant": 8008474,
+        "tones": 6,
+        "hsv": {
+          "h": 30,
+          "s": 0.696,
+          "v": 0.541
+        }
+      },
+      "lumDist": 40.5,
+      "domLumDist": 93.7,
+      "rgbDist": 71.9,
+      "hueDelta": 2.1
+    }
+  ],
+  "focus": [
+    "skeleton",
+    "centipede",
+    "harpy"
+  ]
+}

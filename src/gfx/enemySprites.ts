@@ -172,7 +172,9 @@ export function enemyVariantColor(index: number): number {
  */
 export function enemyVariantFrames(index: number): Grid[] {
   const def = ENEMY_LIST[index];
-  const target = PAL[enemyVariantColor(index)];
+  const strong = VARIANT_TONE_OVERRIDES[def.spriteKey] !== undefined;
+  const target = PAL[enemyVariantTone(index)];
+  const weight = strong ? VARIANT_STRONG_MIX : 0.55;
   const top = CONTRAST_TONES[def.id]?.top ?? lightEdgeIndex(def.color);
   return enemySpriteFrames(index).map((g) => {
     const out = g.map((row) => row.slice());
@@ -182,15 +184,73 @@ export function enemyVariantFrames(index: number): Grid[] {
         if (c === null || c === 0 || c === 13 || c === top) continue;
         const p = PAL[c];
         const mix = [
-          Math.round(((p >> 16) & 255) * 0.45 + ((target >> 16) & 255) * 0.55),
-          Math.round(((p >> 8) & 255) * 0.45 + ((target >> 8) & 255) * 0.55),
-          Math.round((p & 255) * 0.45 + (target & 255) * 0.55),
+          Math.round(((p >> 16) & 255) * (1 - weight) + ((target >> 16) & 255) * weight),
+          Math.round(((p >> 8) & 255) * (1 - weight) + ((target >> 8) & 255) * weight),
+          Math.round((p & 255) * (1 - weight) + (target & 255) * weight),
         ];
         out[y][x] = nearestPaletteIndex(mix);
       }
     }
     return out;
   });
+}
+
+/* ── M10-crowd-variant-tone (#7327): kraeftiger Variantenton fuer dichte Paare ──
+ *
+ * Befund (Vorher-Messung, shots/m10-crowd-tone-before.json, Skript
+ * scripts/m10-crowd-tone.mjs): bei 21/30 Typen liegt die RGB-Distanz zwischen
+ * Basis- und Varianten-Koerper-Mittelton unter 60 (worst: wolf 7.6, centipede
+ * 11.2, spider 10, harpy 19.8, ghoul 19.8, skeleton 33) — die Masse liest
+ * sich weiterhin als Block (art-director-Nachbesserung aus #6399: skeleton/
+ * centipede/harpy kraeftiger trennen, Rampe zu eng).
+ *
+ * Fix: diese Typen mischen ihren Koerper zu 80 % Richtung eines Palette-Ziel-
+ * tons. Die Tabelle ist das ERGEBNIS DES SUCHLAUFS
+ * scripts/m10-crowd-tone-search.ts (tsx, echte Grids, exakte Misch-Mathematik
+ * inkl. ausgesparter Lichtkante; EIN deterministischer Greedy-Durchlauf, 32
+ * Kandidaten je Typ, Nutzungsdeckel 6 je Ton, Kollisions-Guard >= 40 RGB zu
+ * fremden Basen, Ziel >= 60 RGB) — kein Hand-Tuning. Gemessenes Ergebnis:
+ * min eigene Distanz 64,1 (Ziel 60), min Kollisions-Distanz 40,3 (Grenze 40),
+ * 0 Fallbacks.
+ * Nur Palette-Indizes (kein Off-Palette-Farbe), Kontur (0), Augen/Glow (13)
+ * und die 1-px-Lichtkante bleiben unangetastet — Silhouette, binäres Alpha,
+ * Key-Satz und Elite-Rim unverändert. Alle nicht gelisteten Typen bleiben
+ * bytegleich zum crowd-variety-Stand (Rampen-Stufe, 55-%-Mischung).
+ * Hinweis: bog_rat/wisp/bogzombie stellen im Spiel handgezeichnete 2-Frame-
+ * Sets dar (textures.ts SPRITE_GRIDS/SPRITE_FRAMES überschreiben die generier-
+ * ten Frames) — deren Varianten-Frames werden nie gerendert und sind in
+ * tests/crowd-variant-tone.test.ts ausgeommen.
+ */
+const VARIANT_TONE_OVERRIDES: Record<string, number> = {
+  enemy_wolf: C.emberBrown,
+  enemy_spider: C.emberBrown,
+  enemy_centipede: C.flameBright,
+  enemy_ghoul: C.emberBrown,
+  enemy_harpy: C.emberBrown,
+  enemy_bat: C.fleshWarm,
+  enemy_imp: C.fleshWarm,
+  enemy_slime: C.emberBrown,
+  enemy_reaper_bat: C.fleshWarm,
+  enemy_toad: C.emberBrown,
+  enemy_skeleton: C.flameBright,
+  enemy_cultist: C.crimson,
+  enemy_scarecrow: C.fleshWarm,
+  enemy_witchling: C.marsh,
+  enemy_voidcaller: C.flameBright,
+  enemy_horror: C.fleshWarm,
+  enemy_mudling: C.crimson,
+  enemy_treant: C.fleshWarm,
+  enemy_banshee: C.flameBright,
+  enemy_golem: C.marshLight,
+};
+
+/** Staerkere Mischung fuer Typen mit Familien-Gegenton (s. o.). */
+const VARIANT_STRONG_MIX = 0.8;
+
+/** Koerper-Zielton der Variante: Familien-Gegenton oder Rampen-Stufe. */
+export function enemyVariantTone(index: number): number {
+  const def = ENEMY_LIST[index];
+  return VARIANT_TONE_OVERRIDES[def.spriteKey] ?? enemyVariantColor(index);
 }
 
 /** Nächster Palette-Index zu einem RGB-Tripel (nur Palette, deterministisch). */
