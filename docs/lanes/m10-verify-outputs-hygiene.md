@@ -58,6 +58,47 @@ Befund F-1 (an Engine-/Verify-Owner): `verify:robust` FAILt auf PIN `a6613639` b
 dieser Lane (Scaling-Erwartung 480er-Fit vs. Ist 640x360 intern). Hebel: außerhalb des Lane-Scopes,
 nur dokumentiert. Beleg: `k2-verify-robust-baseline.log` vs. `k2-verify-robust.log`.
 
-## K3 — Guard-Test + Nachher-Lauf (#10010)
+## K3 — Guard-Test + Nachher-Lauf (#10010, 08:14–08:25Z)
 
-(folgt)
+- **Guard-Test:** `tests/verify-outputs-hygiene.test.ts` (statisch, kein Browser) —
+  prüft für `verify-final.mjs` + `verify-robust.mjs`: (1) kein Schreibziel unter `shots/`,
+  (2) Output-Pfad konfigurierbar (`LF_VERIFY_OUTPUT_DIR`) + außerhalb des Repos (`.evidence`),
+  (3) timestamped (kein fixer Dateiname = kein Overwrite). Ergebnis: **6/6 PASS**
+  (`npx vitest run tests/verify-outputs-hygiene.test.ts`, 108 ms).
+  Muster `// @ts-ignore` vor Node-Import übernommen (repo-weit kein `@types/node`).
+- **Nachher-Lauf:** `node scripts/verify-final.mjs` → **7/7 PASS**, rc=0;
+  `git status --porcelain shots/` danach **0 Zeilen**. Output:
+  `~/games/.evidence/verify-final/2026-11-28T08-14-…-final-verify.json` (+2 PNGs).
+- **Full-Check:** `npm test` → **1704/1704 grün in 159 Dateien** (incl. neuem Guard-Test);
+  `npm run build` → rc=0, `✓ built in 411ms`. `npx tsc --noEmit` → rc=0.
+  (Bekannter Nebeneffekt dokumentiert: `npm test` schreibt `shots/m10-passive-math-*.json`
+  neu → im Worktree restored, siehe K1/Befund F-2.)
+
+Befund F-2 (Bedarf an Test-Owner, nicht in dieser Lane fixbar — Datei fremd):
+`tests/passive-stack.test.ts` schreibt per top-level `writeFileSync` bei **jedem Testlauf**
+die getrackten `shots/m10-passive-math-matrix.json` / `-caps.json` neu (Hash-Delta belegt
+in K1). Das ist der eigentliche E-4-Mechanismus für getrackte Belege. Hebel-Vorschlag:
+Output ebenfalls nach `~/games/.evidence/passive-stack/` verschieben oder Write nur bei
+explizitem Flag (`PASSIVE_WRITE_SHOTS=1`) ausführen; Test selbst braucht den Write nicht.
+
+## Abnahme-Kriterien der Lane (alle erfüllt)
+
+| Kriterium | Beleg | Urteil |
+|---|---|---|
+| verify-final bleibt 7/7 PASS | K2- und K3-Lauf, rc=0 (`k2-`/`k3-verify-final.log`) | PASS |
+| git status nach verify-Lauf: 0 Änderungen unter shots/ | `git status --porcelain shots/ | wc -l` = 0 | PASS |
+| Guard-Test grün | 6/6, `tests/verify-outputs-hygiene.test.ts` | PASS |
+| tsc + npm test + npm run build grün | rc=0 / 1704/1704 / `✓ built in 411ms` | PASS |
+
+Urteil: Lane PASS. Verify-Skripte schreiben nicht mehr in `shots/`; der verbleibende
+Overwrite getrackter Belege liegt bei `tests/passive-stack.test.ts` (F-2, gemeldet).
+
+## Offene Punkte / gemeldete Bedarfe
+
+- **F-1** `verify:robust` FAIL (Scaling-Checks, 960x540 → intern 640x360 statt 480er-Fit)
+  bereits auf Baseline vor dieser Lane — an Engine-/Verify-Owner.
+- **F-2** `tests/passive-stack.test.ts` überschreibt bei jedem `npm test` die getrackten
+  `shots/m10-passive-math-*.json` — an Test-Owner (echter E-4-Hebel).
+- `scripts/verify-input.mjs` (Besitz m10-pad-start-pause-r2) wurde NICHT angefasst;
+  kurzer Blick: schreibt `shots/m8-input.json` (+ Shots) — gleiches Muster, als Bedarf
+  beim Owner gemeldet, hier nicht gefixt (laut Briefing).
