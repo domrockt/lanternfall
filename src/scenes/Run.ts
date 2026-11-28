@@ -271,13 +271,21 @@ export class Run extends Phaser.Scene {
     // Debug-Eval landete, bewegte der Bot den Spieler frueher/spaeter — zwei
     // Laeufe mit gleichem Seed divergierten ab Schritt 1 (Probe-Beleg:
     // rep0 posX 20495500 vs rep1 20480000 nach Schritt 1).
-    if (hasFlag("detstart")) this.paused = true;
     this.elapsed = 0;
     this.timeScale = 1;
     this.godMode = false;
     this.autoPlay = false;
     this.paused = false;
     this.freezeGate = false;
+    // m10-run-determinism-fix: ?detstart=1 startet den Run PAUSIERT — bewusst
+    // NACH dem Reset-Block oben (sonst ueberschreibt paused=false das Gate).
+    // Mess-Harness (scripts/m10-run-determinism.mjs) setzt dann Trace/autoPlay/
+    // timeScale, BEVOR der erste Sim-Schritt laeuft, und ruft resumeRun(). Ohne
+    // dieses Gate war die Start-Phase ein Wall-Clock-Rennen: je nachdem, in
+    // welchem Sim-Schritt das Debug-Eval landete, bewegte der Bot den Spieler
+    // frueher/spaeter — zwei Laeufe mit gleichem Seed divergierten ab Schritt 1
+    // (Probe-Beleg: rep0 posX 20495500 vs rep1 20480000 nach Schritt 1).
+    if (hasFlag("detstart")) this.paused = true;
     this.time.paused = false;
     this.tweens.resumeAll();
     this.levelUpOpen = false;
