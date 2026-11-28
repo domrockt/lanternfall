@@ -1,0 +1,17 @@
+# Lane m10-title-flame-glow-r2 — fertig (2026-11-28)
+
+Titelflammen sichtbarer gemacht (Folgekarte von m10-title-flame-crisp), nur über den
+Generator — Title.ts/menu.ts byte-identisch zu main.
+
+- K1 (#9855): Before-Belege 3 Viewports + 4x-Zooms; Glut-Anteil (13+22) im Glas vorab 0,125; Zielkorridor >= 0,30 vor dem Fix festgelegt.
+- K2 (#9856): gen_title.py: Glas aus _GLASS_ROWS gebacken — flächiger heller Kern (Palette 13, organisch), Glut 22, Dither (21) nur an Kanten; F1/F2 organischer Flick (Diff 4/7 <= 12), Funken Palette 13; Generator-Guards (F0=Zellkopie, Diff 2..12, Glut >= 0.30). Mond-Glut-Flicken bewusst nicht umgesetzt (Mond hat bereits Puls-Tween + 13-Kern).
+- K3 (#9857): tests/title-flame-glow.test.ts 14/14 (Grid, Palette 13/20/21/22, Glut >= 0.3 in Frames UND Basis, Kern >= 6 Texel 13); Palette-Guard grün.
+- K4 (#9858): After-Belege + GIF (Repo: shots/m10-title-flame-after-640x360.gif), art-director **PASS 4/5** (alle Kriterien >= 4, „auslieferbar"), Beleg-Crop 1920 ersetzt.
+
+Messwerte: Glut-Flächenanteil 0,125 -> 0,375 (Ziel 0,30); 0 off-Palette-Pixel; F0 = Zellkopie (0 Abweichungen); Build + 1704/1704 Tests grün; 0 JS-Fehler in allen Captures.
+
+Belege: ~/games/.evidence/m10-title-flame-glow-r2/ (23 Files, inkl. compare-lantern1-before-after.png).
+
+Offene Punkte (künftige Karten, nicht diese Lane):
+- Moor-Laternen 1–4 sind im 1920x1080-Viewport hinter dem Nacht-Dim/Vignette praktisch unsichtbar (vorbestehend, Before-Shot identisch, Title.ts-Verhalten): Dim-Layer/Vignette pro Viewport prüfen.
+- Laternen 2–4 liegen hinter den Menü-Knöpfen (Layout-Constraint aus crisp-Lane).
