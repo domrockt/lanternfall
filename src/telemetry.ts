@@ -201,7 +201,8 @@ export function collectReadings(game: GameLike, frameMs: number[], nowMs: number
     if (game.scene.isActive("run") || game.scene.isPaused("run")) {
       const run = game.scene.getScene("run") as RunLike;
       const qs = run.getQuickStats();
-      readings.t = Number(qs.time ?? readings.t);
+      const time = Number(qs.time ?? readings.t);
+      if (Number.isFinite(time)) readings.t = time;
       readings.fps = round1(Number(qs.fps ?? readings.fps));
       readings.enemies = Number(qs.enemies ?? 0);
       readings.character = typeof qs.character === "string" ? qs.character : null;
@@ -255,9 +256,10 @@ export class TelemetryCollector {
     this.startedAtMs = (opts.now ?? Date.now)();
   }
 
-  /** Frame-Dauer registrieren (Phaser-Step-Delta in ms). */
+  /** Frame-Dauer registrieren (Phaser-Step-Delta in ms). Deckel 2 s: echte
+   * Frame-Hitches (z. B. Thermik-Drosselung auf dem Tablet) bleiben sichtbar. */
   recordFrame(deltaMs: number): void {
-    if (!Number.isFinite(deltaMs) || deltaMs <= 0 || deltaMs > 1000) return;
+    if (!Number.isFinite(deltaMs) || deltaMs <= 0 || deltaMs > 2000) return;
     this.frameMs.push(deltaMs);
     if (this.frameMs.length > FRAME_BUFFER_MAX) this.frameMs.shift();
   }

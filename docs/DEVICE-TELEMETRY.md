@@ -24,7 +24,9 @@ Probe-Läufe).
 ## Datenfluss
 
 - Collector (`TelemetryCollector`) hängt an den Phaser-Step und sammelt
-  Frame-Dauern in einem Ringpuffer (10 s bei 60 FPS).
+  Frame-Dauern in einem Ringpuffer (10 s bei 60 FPS). Gültig sind Dauern von
+  0–2000 ms; damit bleiben echte Frame-Hitches (z. B. Thermik-Drosselung auf dem
+  Tablet) in `frameMsMax` sichtbar statt als „Unsinn" verworfen zu werden.
 - Alle 5 s: ein Sample, gepuffert und als **JSON-Liste** per
   `fetch(..., { method: "POST", keepalive: true })` gesendet.
   **Max. 1 Request / 5 s**; beim Verstecken der App wird noch einmal geflusht.

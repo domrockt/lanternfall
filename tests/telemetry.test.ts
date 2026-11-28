@@ -49,6 +49,44 @@ describe("telemetryEnabled (Aktivierung)", () => {
     // location/navigator fehlen im Node-Testlauf → aktivierung schlaegt zu.
     expect(installTelemetry({ events: { on: vi.fn() } } as never, () => undefined)).toBeNull();
   });
+
+  it("installTelemetry Happy-Pfad: ?telemetry=1 installiert, sendet sofort, haengt an step", () => {
+    vi.stubGlobal("location", { search: "?telemetry=1", hostname: "localhost" });
+    vi.stubGlobal("navigator", { userAgent: "HeadlessChrome Test" });
+    vi.stubGlobal("document", { addEventListener: vi.fn(), hidden: false });
+    try {
+      const send = vi.fn(async () => {});
+      const on = vi.fn();
+      const collector = installTelemetry(
+        { events: { on } } as never,
+        () => ({ renderer: "Mali-G52", vendor: "ARM" }),
+        { send, now: () => 42 },
+      );
+      expect(collector).not.toBeNull();
+      expect(send).toHaveBeenCalled(); // Sofort-Sample beim Install
+      expect(on).toHaveBeenCalledWith("step", expect.any(Function));
+      expect(document.addEventListener).toHaveBeenCalledWith("visibilitychange", expect.any(Function));
+      collector?.stop();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("?telemetryEndpoint= ueberschreibt den Empfaenger", () => {
+    vi.stubGlobal("location", {
+      search: "?telemetry=1&telemetryEndpoint=http://192.168.5.5:9999/t",
+      hostname: "localhost",
+    });
+    vi.stubGlobal("navigator", { userAgent: "HeadlessChrome Test" });
+    vi.stubGlobal("document", { addEventListener: vi.fn(), hidden: false });
+    try {
+      const send = vi.fn(async (_url: string, _body: string) => {});
+      installTelemetry({ events: { on: vi.fn() } } as never, () => undefined, { send });
+      expect(send.mock.calls[0][0]).toBe("http://192.168.5.5:9999/t");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
 
 function makeCollector(overrides: {
