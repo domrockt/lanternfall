@@ -1,0 +1,26 @@
+# Lane m10-spawn-view-anchor — done (2026-11-28)
+
+Dritter Sim-Pfad-Leser von camera.worldView (Bedarfsmeldung m10-boss-dur-determinism K2)
+gefixt: Spawner.outsideView liest jetzt den deterministischen Sim-Anker
+(mid = scrollX/Y + width/2, logischer Screen GAME_WIDTH x GAME_HEIGHT, Rezept formelidentisch
+zum Kausalbeweis probe-runtime-patch.json, Patch 1) — Anker inline in Spawner.ts
+(Area-Disziplin, keine gemeinsame Hilfsdatei mit der pools-Lane).
+
+Karten: #12527 K1 Vorher, #12528 K2 Fix, #12529 K3 Tests, #12530 K4 Nachher, #12531 K5 Doku.
+Commits: fc2a1feb (K1), 0910f360 (K2), b05cb645 (K3), 810f7cc4 (K4), <K5-Sha> (K5).
+
+Belege (~/games/.evidence/m10-spawn-view-anchor/, Kopien shots/m10-spawn-view-*.json):
+- Vorher (marks-before.json): 3 Seeds x 2 Laeufe (700s, 30x), Spawn-Marken (UID/Position je
+  Sim-Sekunde) DIVERGENT — first div s=249/47/130, Boss-Dauern stochastisch.
+- Nachher (marks-after.json, nur Spawner geanchert, pools-Fix NICHT im Basis-Stand
+  445a930d): Seed 101 + 404 Spawn-Marken BITGLEICH inkl. Boss-Dauern; Seed 202 divergiert
+  ab s=47 — Restleck = die beiden pools-Lane-Leser (ProjectilePool.view,
+  EnemyProjectiles.refreshView), Zuständigkeit m10-worldview-anchor-pools (auf main schon
+  gemergt, hier noch nicht im Basis-Stand). Kombinations-Nachweis alle 3 Leser:
+  ~/games/.evidence/m10-boss-dur-determinism/probe-runtime-patch.json (bitgleich).
+
+Abnahme: tsc rc=0, npm test 218 Dateien / 2385 Tests gruen, build gruen, Guard-Test
+(Spawner-Code worldView-frei), Verhalten 1x/60fps bitgleich bis auf Phasers Floor-Rundung
+(<= 0,5 px, im Test abgegrenzt). Offen: VOLLER E2E (m10-boss-dur-det.mjs Exit 0) folgt mit
+dem pools-Merge in den gemeinsamen Basis-Stand; Anker-Konsolidierung (Spawner/pools/BossSystem)
+bewusst nicht in dieser Lane.
