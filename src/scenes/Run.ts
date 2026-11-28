@@ -35,7 +35,7 @@ import { HazardSystem } from "../systems/Hazards";
 import {
   BossSystem, BOSS_HUD_CLEARANCE, bossHudRects, bossSpriteScreenRect, rectsOverlap, type BossInfo,
 } from "../systems/BossSystem";
-import { resetAiState } from "../logic/ai-state";
+import { attachEnemyAiStream, resetAiState } from "../logic/ai-state";
 import { shouldSplit, stepEnemyAi, type AiAction, type AiRng } from "../logic/enemy-ai";
 import { FINAL_BOSS_AT, bossSpawnSecond, dawnFinished, weaponRangeFactor } from "../logic/scaling";
 import { botDirection, chooseBestOffer, type BotPoint, type BotThreat } from "../logic/autoplay";
@@ -847,11 +847,13 @@ export class Run extends Phaser.Scene {
    * Timer, orbitDir) — das war der zweite Nichtdeterminismus-Layer.
    */
   private attachAiRng(e: EnemyRuntime): void {
-    e.aiRng = this.aiRng;
-    // e.ai ist nach EnemyPool.spawn immer gesetzt (ensureAiState); resetAiState
-    // baut den Zustand in-place aus DERSELBEN Reihenfolge gezogener Werte auf
-    // wie newAiState — nur eben deterministisch aus dem abgeleiteten Seed.
-    if (e.ai) resetAiState(e.ai, this.aiRng);
+    // m10-ai-stream-cadence-r2: pro Gegner eigener KI-RNG-Stream aus
+    // (Run-Seed, UID) statt EINES gemeinsamen Streams — der KI-Zug zieht
+    // damit nicht mehr zeichenzahlabhängig (AI-Stagger-/Kadenz-Verschiebungen
+    // ändern keine Ziehungsfolgen mehr). resetAiState zieht den
+    // Initialzustand aus DEMSELBEN pro-Gegner-Stream.
+    e.aiRng = attachEnemyAiStream(e, this.seed, e.uid);
+    if (e.ai) resetAiState(e.ai, e.aiRng);
   }
 
   private movePlayer(dt: number): void {

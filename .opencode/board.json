@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10106,
+  "next": 10110,
   "cards": [
     {
       "id": 1,
@@ -12896,6 +12896,75 @@
       ],
       "created": "2026-11-28T07:34:51Z",
       "updated": "2026-11-28T08:10:10Z"
+    },
+    {
+      "id": 10106,
+      "title": "m10-ai-stream-cadence-r2 K1: Vorher-Probe KI-Divergenz bei Frame-Kadenz",
+      "description": "2 Kontrollläufe gleicher Seed, verschiedene Frame-Kadenz (timeScale-Variante) -> Divergenz der KI-Entscheidungen belegen. Abnahme: JSON-Beleg mit Marken beider Läufe + Divergenz-Urteil (shots/m10-ai-cadence-before.json bzw. ~/games/.evidence/m10-ai-stream-cadence-r2/), Akzeptanz vor Messung im JSON.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:37:13Z",
+          "by": "build",
+          "text": "todo → doing: K1 angenommen: Vorher-Probe KI-Divergenz (gleicher Seed, timeScale 30 vs 5). Beleg nach ~/games/.evidence/m10-ai-stream-cadence-r2/."
+        },
+        {
+          "at": "2026-11-28T08:16:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10106, Merge branch m10-ai-stream-cadence-r2 (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T07:37:10Z",
+      "updated": "2026-11-28T07:37:13Z"
+    },
+    {
+      "id": 10107,
+      "title": "m10-ai-stream-cadence-r2 K2: Pro-Gegner-KI-RNG aus Seed+UID",
+      "description": "EnemyPool.ts/ai-state.ts: KI-RNG pro Gegner aus (Seed, UID) ableiten; gemeinsame Draw-Reihenfolge aus dem KI-Zug eliminieren; DEFAULT_AI_RNG/aiRng-Pfad bleibt als Fallback ohne Seed. Abnahme: npx tsc --noEmit grün, bestehende AI-/Pool-Tests unangetastet grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:52:54Z",
+          "by": "build",
+          "text": "todo → review: K2 erledigt (Commit 579d9ec4): ai-state.ts enemyStreamSeed/EnemyAiRng/attachEnemyAiStream (Objekt-Identität beim Recycle bleibt, Pooling-Vertrag); EnemyPool-Fallback per (aiSeed, uid), explizite rng behält Vorrang; Run.attachAiRng 2 Zeilen (Fremdberührung begründet, requests.md). tsc grün, enemy-ai-rng/enemy-pool-reuse/enemy-ai/enemy-ai-budget 28/28 grün."
+        },
+        {
+          "at": "2026-11-28T08:16:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9796, Merge branch m10-ai-stream-cadence-r2"
+        }
+      ],
+      "created": "2026-11-28T07:37:10Z",
+      "updated": "2026-11-28T07:52:54Z"
+    },
+    {
+      "id": 10108,
+      "title": "m10-ai-stream-cadence-r2 K3: tests/ai-cadence.test.ts",
+      "description": "Gleiche Seed+UID-Reihenfolge -> identische Entscheidungskette unabhängig von Frame-Grenzen; resetAiState setzt Stream-Position korrekt zurück. Abnahme: npx vitest run tests/ai-cadence.test.ts grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:55:27Z",
+          "by": "build",
+          "text": "todo → review: K3 erledigt (Commit baf1d069): 7/7 Tests grün — peruid-Kadenzen 0 divergente UIDs, shared-Kontrolle divergiert (Defekt gepinnt), Rekey setzt Stream-Position auf 0, Objekt-Identität beim Recycle, Pool-Fallback je UID bitgleich."
+        },
+        {
+          "at": "2026-11-28T08:16:28+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9797, Merge branch m10-ai-stream-cadence-r2"
+        }
+      ],
+      "created": "2026-11-28T07:37:10Z",
+      "updated": "2026-11-28T07:55:27Z"
+    },
+    {
+      "id": 10109,
+      "title": "m10-ai-stream-cadence-r2 K4: Nachher-Probe + Bilanz + Abschluss",
+      "description": "Nachher-Probe: 0 KI-Divergenz bei gleicher Seed+UID und verschiedener Frame-Kadenz (shots/m10-ai-cadence-after.json); Kills/Level/Minuten-Log im erwarteten Korridor (kein Balance-Drift); npm test + build grün; docs/lanes/m10-ai-stream-cadence-r2.md + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:37:10Z",
+      "updated": "2026-11-28T07:37:10Z"
     }
   ]
 }

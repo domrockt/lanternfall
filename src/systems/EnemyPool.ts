@@ -4,7 +4,7 @@ import { SPRITE_FRAMES } from "../gfx/textures";
 import { baseEnemyDef, eliteFrameId, ELITE_RIM_FRAMES, eliteRimDef } from "../gfx/enemySprites";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
 import { SeededRng } from "../logic/rng";
-import { ensureAiState } from "../logic/ai-state";
+import { ensureAiState, attachEnemyAiStream, EnemyAiRng } from "../logic/ai-state";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { C, PAL } from "../palette";
@@ -145,12 +145,11 @@ export class EnemyPool {
   private readonly free: EnemyRuntime[] = [];
   private readonly scene: Phaser.Scene;
   /**
-   * m10-ai-rng-seed: Gesäter Fallback-KI-RNG (Muster Run-SeededRng). Er greift,
-   * wenn ein Spawn ohne explizite `rng` erfolgt (Tests, Pfade ohne Run-Zugriff);
-   * im Spiel übergeben Spawner/BossSystem die Run-SeededRng. Ein Stream pro Pool
-   * (nicht pro Spawn), damit Recycelte Gegner ihr RNG-Objekt behalten.
+   * m10-ai-stream-cadence-r2: Run-Seed der Fallback-Stream-Adressierung. Der
+   * Fallback (Spawn ohne explizite `rng`) sä't pro Gegner aus (aiSeed, uid)
+   * statt einen pool-weiten Stream zu teilen — siehe attachEnemyAiStream.
    */
-  private readonly fallbackAiRng: AiRng;
+  private readonly aiSeed: number;
   private nextUid = 1;
   /**
    * M10-heap-sawtooth: Cache fuer Elite-Rim-Defs (eliteRimDef spreadet sonst
@@ -166,7 +165,7 @@ export class EnemyPool {
 
   constructor(scene: Phaser.Scene, aiSeed = 0) {
     this.scene = scene;
-    this.fallbackAiRng = new SeededRng(aiSeed >>> 0);
+    this.aiSeed = aiSeed >>> 0;
   }
 
   spawn(
@@ -211,7 +210,18 @@ export class EnemyPool {
     enemy.hitFlash = 0;
     enemy.tint = "none";
     enemy.alpha = 1;
-    enemy.aiRng = rng ?? this.fallbackAiRng;
+    if (rng) {
+      // Explizite rng (Run-SeededRng der Spawner/BossSystem) behält Vorrang —
+      // Vertrag aus tests/enemy-ai-rng.test.ts.
+      enemy.aiRng = rng;
+    } else {
+      // m10-ai-stream-cadence-r2: Fallback sä't pro Gegner aus (aiSeed, uid).
+      // Kein pool-weiter geteilter Stream mehr: die Ziehungsfolge eines
+      // Gegners hängt nicht mehr davon ab, wann/wie oft andere Gegner im
+      // KI-Zug ziehen (AI-Stagger-Kadenz). Das EnemyAiRng-Objekt bleibt
+      // pro Runtime bestehen (Pooling-Vertrag) und wird nur umgesät.
+      attachEnemyAiStream(enemy, this.aiSeed, enemy.uid);
+    }
     enemy.ai = ensureAiState(enemy.ai, enemy.aiRng);
     enemy.threat = enemy.boss ? 0.35 : def.archetype === "exploder" ? 1.8 : 1;
     enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
@@ -306,7 +316,7 @@ export class EnemyPool {
       slowFactor: 0, slowTimer: 0, freezeTimer: 0, boss: false, bossIndex: -1, elite: false,
       splitDepth: 0, age: 0, recycled: false, ai: newAiState(INIT_AI_RNG), threat: 1, telegraph: 0,
       attackCounter: 0, bossPhase: 1, contactCooldown: 0, hitFlash: 0, tint: "none", alpha: 1,
-      aiRng: INIT_AI_RNG,
+      aiRng: new EnemyAiRng(),
     };
   }
 
