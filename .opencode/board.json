@@ -13934,10 +13934,15 @@
           "at": "2026-11-28T09:53:23Z",
           "by": "build",
           "text": "todo → doing: Angenommen 2026-11-28; Geraet-Bridge antwortet, aber adb-Device offline (10.10.40.27:35099 not found) — lokal zuerst, Geraet retry."
+        },
+        {
+          "at": "2026-11-28T10:04:55Z",
+          "by": "build",
+          "text": "K1 lokal fertig: 21 Fenster in ~/games/.evidence/m10-tablet-fx-rootcause/rc-local.json (Renderer-String drin). Blend 4,5→34,6/Frame mit Evo-Anzahl (beide Reihenfolgen), draws≈blend+1, 0 nicht-null FB-Binds. Geraet offline (adb not found) — rc-device.json ausstehend."
         }
       ],
       "created": "2026-11-28T09:53:19Z",
-      "updated": "2026-11-28T09:53:23Z"
+      "updated": "2026-11-28T10:04:55Z"
     },
     {
       "id": 10689,

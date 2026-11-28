@@ -73,6 +73,19 @@ sind die Glow-Halos des FxSystem, die NORMAL-Sprites sind FX-Formen, Projektile,
 Der frühere Probe „setSuppressFx ändert nichts → nicht die FxSystem-Sprites“ ist damit **inkonklusiv**; die
 FxSystem-Sprites sind nach dieser Messung sehr wohl der Haupttäter (Blend-Grenzen).
 
+**Kausaler Beweis (A/B, `~/games/.evidence/m10-tablet-fx-rootcause/ab-blend.json`):** voller Evo-Stapel,
+dann jede `setBlendMode(ADD)`-Anfrage zur Laufzeit nach NORMAL umgebogen (Sprite- **und** Image-Prototype,
+weil FX-Sprites `Image`s sind — `makeImage`, `FxSystem.ts:573`; ein Patch nur auf `Sprite.prototype` war
+wirkungslos, weil der Update-Loop `FxSystem.ts:226` ADD pro Frame zurücksetzt):
+
+| Fenster | draws | blend |
+|---|---|---|
+| A — unverändert (ADD/NORMAL-Mix) | 38 | 37 |
+| B — alle ADD erzwungen NORMAL | **4** | **3** |
+
+Damit ist belegt: **die gesamte Blend-Explosion kommt von ADD-Blend-Sprites** (FxSystem-Glows + Lichtkreis),
+die zwischen NORMAL-Draws liegen. Kein anderer Code-Pfad trägt messbar bei.
+
 **Framebuffer-Wechsel:** lokal 0 nicht-null FB-Binds in allen Fenstern (auch voller Stapel). Der am Gerät
 gesehene „+1/Frame“ kann mit dem lokalen Befund nicht erklärt werden; src/** nutzt keine RenderTexture/
 Pipeline/PostFX (grep-leer). Siehe „Offene Punkte“.
@@ -90,16 +103,18 @@ Blend-Blöcke.** Konkret (eine der zwei Varianten, V1 bevorzugt):
   Qualitätsstufen an den ADD-Caps in `FxSystem.ts:226/323/667/754`) die Glow-Promotion ganz auslassen —
   alle FX NORMAL. Verliert additive Glühen, aber garantiert 2 Blend-Zustände gesamt.
 
-**Erwartung in Zahlen** (aus K1; Phasers Flush-Kosten pro Grenze sind rendererunabhängig):
-- Blend-Wechsel/Frame: 26–35 → **< 8** (Ziel: Grund-Grenzen Boden/Gems/Licht/UI ≈ 3–5,Stretch < 8).
-- Draws/Frame: 36 (lokal, voller Stapel) bzw. 54 (Gerät) → **~10–14** (−60 bis −75 %); bufferSubData sinkt
-  entsprechend (35,3 → ~8/Frame).
+**Erwartung in Zahlen** (A/B-Beweis oben; Phasers Flush-Kosten pro Grenze sind rendererunabhängig):
+- **V2 gemessen** (alle ADD→NORMAL, lokaler Volllast-Stapel): blend **37 → 3**/Frame, draws **38 → 4**/Frame.
+  Das Ziel „Blend < 8“ ist mit dem Hebel also beweisbar erreicht; Preis: additive Glows fehlen.
+- **V1 erwartet** (zusammenhängendes ADD-Band, additiver Look bleibt): blend **< 8**/Frame (Grund-Grenzen
+  Boden/Gems/Licht/UI ≈ 3–5), draws **≤ 14** (−60 bis −75 % gegenüber 36 lokal / 54 am Gerät);
+  bufferSubData sinkt entsprechend (35,3 → ~8/Frame).
 - FPS am Gerät (Adreno 710, 43 → ): Gerät lief mit ≤ 3 Evos und blend ≈ 10–13 bei 109–120 FPS. Da CPU 65 %
   idle war und die Flush-Zerlegung die Draw-Zahl pro Frame annähernd halbiert, wird **≥ 90 FPS** im
   Dornensturm-Kombi-Fenster erwartet; Akzeptanzschwelle für den Fix-Job: **Blend < 8/Frame, 0 nicht-null
   FB-Wechsel, FPS ≥ 90** am Gerät im selben Szenario (640x360, 200+ Gegner, Kombi).
 - Lokaler Korridor zur Verifikation des Fixs ohne Gerät: `scripts/m10-tablet-fx-rc.mjs --mode local`,
-  Fenster `stackA:+6` — blend ≤ 8, draws ≤ 14 (vorher 34,6/36).
+  Fenster `stackA:+6` — blend ≤ 8, draws ≤ 14 (vorher 34,6/36); A/B-Referenz `ab-blend.json` (3/4).
 
 ## Offene Punkte (ehrlich)
 
