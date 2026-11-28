@@ -7,14 +7,19 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, relative, resolve } from "node:path";
+import { basename, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 const RUNS = 3;
 const LOCK = "/home/ai/games/.lf-perf.lock";
-const LOCK_WAIT_S = 900; // flock -w 900 (Muster m10-renderer-guard, Lehre 17:08Z)
+// common.md (2026-11-28): Tests laufen OHNE flock (nur FPS/Echtzeit unter der
+// Sperre) — sonst blockiert eine Lane die andere. Erster Versuch mit flock -w 900
+// verbrannte 3x900s auf fremdbelegter Sperre ohne einen einzigen Test (18:11Z).
+// Opt-in fuer Kontrollzwecke: FLAKE_SWEEP_FLOCK=1.
+const USE_FLOCK = process.env.FLAKE_SWEEP_FLOCK === "1";
+const LOCK_WAIT_S = 900; // flock -w 900 (nur bei USE_FLOCK)
 const RUN_TIMEOUT_S = 900; // harter Timeout je Suite-Lauf
 const OUT_DIR = resolve(ROOT, "shots");
 const RAW_DIR = resolve(tmpdir(), "m10-v10-flake-sweep");
@@ -49,10 +54,11 @@ const runOnce = (i) => {
   const log = resolve(LOG_DIR, `m10-v10-flake-sweep-run${i}.log`);
   const startedAt = new Date().toISOString();
   const t0 = Date.now();
-  const cmd = `flock -w ${LOCK_WAIT_S} ${LOCK} npm test -- --reporter=default --reporter=json --outputFile=${raw}`;
+  const testCmd = `npm test -- --reporter=default --reporter=json --outputFile=${raw}`;
+  const cmd = USE_FLOCK ? `flock -w ${LOCK_WAIT_S} ${LOCK} ${testCmd}` : testCmd;
   const res = spawnSync("bash", ["-lc", cmd], {
     cwd: ROOT,
-    timeout: RUN_TIMEOUT_S * 1000 + LOCK_WAIT_S * 1000,
+    timeout: (USE_FLOCK ? RUN_TIMEOUT_S + LOCK_WAIT_S : RUN_TIMEOUT_S) * 1000,
     encoding: "utf8",
   });
   const finishedAt = new Date().toISOString();
