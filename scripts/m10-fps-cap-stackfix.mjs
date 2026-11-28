@@ -132,12 +132,19 @@ for (let w = 0; w < windows; w++) {
         let last = start;
         let worst = 0;
         let frames = 0;
+        let over167 = 0;
+        const deltas = [];
         const enemies = [];
         let aborted = false;
         await new Promise((resolve) => {
           const stats = () => { try { return window.__lf.stats(); } catch { return null; } };
           const tick = (now) => {
-            if (frames > 0) worst = Math.max(worst, now - last);
+            if (frames > 0) {
+              const dt = now - last;
+              worst = Math.max(worst, dt);
+              deltas.push(dt);
+              if (dt > 16.7) over167++;
+            }
             last = now;
             frames++;
             if (stats() === null || window.__lf?.state?.()?.scene !== "run") { aborted = true; resolve(); return; }
@@ -154,10 +161,15 @@ for (let w = 0; w < windows; w++) {
           requestAnimationFrame(tick);
         });
         const elapsed = performance.now() - start;
+        deltas.sort((a, b) => a - b);
         return {
           aborted,
           rafFps: Math.round((frames / (elapsed / 1000)) * 10) / 10,
           worstFrameMs: Math.round(worst * 10) / 10,
+          rafP95Ms: deltas.length ? Math.round(deltas[Math.floor(deltas.length * 0.95)] * 10) / 10 : null,
+          // Lokaler janky-Proxy (NICHT Geraete-gfxinfo): Anteil rAF-Frames mit
+          // Delta > 16,7 ms — fuer Vorher/Nachher unter IDENTISCHEM Rezept.
+          janky167Pct: deltas.length ? Math.round((over167 / deltas.length) * 10000) / 100 : null,
           avgEnemies: enemies.length ? Math.round(enemies.reduce((a, b) => a + b, 0) / enemies.length) : 0,
         };
       }, { target: 300, secs: seconds });
@@ -167,7 +179,7 @@ for (let w = 0; w < windows; w++) {
     }
   }
   const winErrors = errors.slice(errBefore);
-  const rangeErrors = winErrors.filter((e) => (e.message || "").includes("RangeError"));
+  const rangeErrors = winErrors.filter((e) => /call stack|RangeError/.test(e.message || ""));
   const frozen = !win || win.aborted || (win.rafFps ?? 60) < 5;
   samples.push({
     window: w,
@@ -175,7 +187,7 @@ for (let w = 0; w < windows; w++) {
     frozen,
     errors: winErrors.map((e) => e.message),
   });
-  console.log(`  w${w}: rafFps=${win?.rafFps} worst=${win?.worstFrameMs}ms enemies=${win?.avgEnemies} frozen=${frozen} errors=${winErrors.length} (RangeError ${rangeErrors.length})`);
+  console.log(`  w${w}: rafFps=${win?.rafFps} worst=${win?.worstFrameMs}ms p95=${win?.rafP95Ms}ms janky167=${win?.janky167Pct}% enemies=${win?.avgEnemies} frozen=${frozen} errors=${winErrors.length} (RangeError ${rangeErrors.length})`);
   if (frozen) {
     // Heilung wie fps-cap-Lane: Reload + frischer Run, damit die Folgenfenster
     // nicht im toten Loop laufen.

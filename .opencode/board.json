@@ -17748,43 +17748,66 @@
       "id": 12813,
       "title": "m10-fps-cap-stackfix K1: Stack-Capture unter Last",
       "description": "Abnahmekriterium: Voller Callstack mindestens eines RangeError-Treffers (Datei + Funktion) als JSON in ~/games/.evidence/m10-fps-cap-stackfix/. Probe scripts/m10-fps-cap-stackfix.mjs nach fps-cap-Rezept (m25-Last, 3x60-Fenster), lokal/Android-Proxy (Geraet 409 -> nicht wiederholen).",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T15:10:01Z",
           "by": "build",
           "text": "todo → doing: Angenommen: fps-cap-Dateien aus m10-mobile-fps-cap (f64b3d33, lane-done, unmerged) in den Lane-Worktree materialisiert, damit die Regression ueberhaupt reproduzierbar ist; Probe scripts/m10-fps-cap-stackfix.mjs gebaut."
+        },
+        {
+          "at": "2026-11-28T15:21:15Z",
+          "by": "build",
+          "text": "doing → review: Stack-Capture fertig: RangeError = Spread-Overflow in Spawner.drainDebugQueue (push(...rest), ~100-150k Argumente), kein JS-Rekurs. Beleg ~/games/.evidence/m10-fps-cap-stackfix/k1-stack-vorher.json; Commits bd33a081 + Doku nennen #12813."
         }
       ],
       "created": "2026-11-28T15:09:59Z",
-      "updated": "2026-11-28T15:10:01Z"
+      "updated": "2026-11-28T15:21:15Z"
     },
     {
       "id": 12814,
       "title": "m10-fps-cap-stackfix K2: Wurzel fixen",
       "description": "Abnahmekriterium: minimaler Fix der Rekursionsquelle (Beleg Datei + Hebel in docs/lanes/m10-fps-cap-stackfix.md); fps-cap.ts gegen Vorgaenger diffen, Fremdgriff begruendet; main.ts/UI.ts nicht anfassen (Bedarf in .dispatch/requests.md falls noetig).",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T15:21:15Z",
+          "by": "build",
+          "text": "todo → review: Fix: Front-Entnahme per slice+splice statt Rest-Repush; Reihenfolge/Batches bitgleich. Commit ad78560e (#12814/#12815)."
+        }
+      ],
       "created": "2026-11-28T15:09:59Z",
-      "updated": "2026-11-28T15:09:59Z"
+      "updated": "2026-11-28T15:21:15Z"
     },
     {
       "id": 12815,
       "title": "m10-fps-cap-stackfix K3: Regressionstest",
       "description": "Abnahmekriterium: tests/fps-cap-stackfix.test.ts — Lastaufnahme 3x60-Fenster mit 0 RangeError, 0 Frozen-Loop; Desktop-Pfad (kein Cap) bitgleich gepinnt. Suite + tsc gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T15:21:15Z",
+          "by": "build",
+          "text": "todo → review: tests/fps-cap-stackfix.test.ts 5 gruen (Gegenprobe 200k push wirft RangeError, Drain 200k wirft nicht, Ordnung bitgleich, Desktop-Pfad); tsc rc=0. Commit ad78560e."
+        }
+      ],
       "created": "2026-11-28T15:09:59Z",
-      "updated": "2026-11-28T15:09:59Z"
+      "updated": "2026-11-28T15:21:15Z"
     },
     {
       "id": 12816,
       "title": "m10-fps-cap-stackfix K4: Vorher/Nachher + Doku",
       "description": "Abnahmekriterium: janky-Anteil vor/nach Fix unter identischer Last (eigener Nachweis, keine Geraete-Doppelmessung), Empfehlung der fps-cap-Lane unberuehrt, Lane-Doku + .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T15:21:11Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Lauf (3x60-Fenster, identisches Rezept) laeuft; danach Doku + .lane-done."
+        }
+      ],
       "created": "2026-11-28T15:09:59Z",
-      "updated": "2026-11-28T15:09:59Z"
+      "updated": "2026-11-28T15:21:11Z"
     }
   ]
 }
