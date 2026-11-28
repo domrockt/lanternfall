@@ -4,7 +4,7 @@ import {
   effectiveVolume, newMixerState, notePlayed, releaseVoice, planPlay,
   activeVolumeSum, limiterGain, pickupDampGain, audioBudgetFor, PRIORITY,
   PICKUP_SFX_IDS, EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
-  type MixerState, type SoundRequest,
+  type MixerState, type NoteOptions, type SoundRequest,
 } from "./mixing";
 import { QUALITY } from "../config";
 import type { WeaponAnyId } from "../data/types";
@@ -27,6 +27,9 @@ interface Voice {
 
 export const MUSIC_KEYS = { run: "music_run", boss: "music_boss" } as const;
 
+/** Pickup-Klasse als Set: `has` statt Array.includes je Play (K2). */
+const PICKUP_IDS = new Set<string>(PICKUP_SFX_IDS);
+
 type SfxId = keyof typeof SFX_KEYS;
 
 
@@ -43,9 +46,26 @@ export class AudioSystem {
   private now = 0;
   /** Feste Stimmen-Pools je SFX: kein Sound-Objekt pro Treffer (Leak/GC). */
   private readonly voicePool = new Map<string, Voice[]>();
+  /** Gecachte sfx-Einstellung (getSettings() spread't je Aufruf — K2: nicht
+   * im Hot Path; updateSettings() wird bei jeder Änderung aufgerufen). */
+  private sfxVolume = 0;
+  /**
+   * Wiederverwendete Play-Parameter (K2 m10-audio-alloc-fix): je Play nur
+   * Felder mutiert statt Objekt-Literal alloziert. Alle Konsumenten
+   * (effectiveVolume/pickupDampGain/planPlay/notePlayed) lesen synchron,
+   * keine Retention über den Aufruf hinaus.
+   */
+  private readonly req: SoundRequest = {
+    id: "kill", priority: 0, cooldown: 0, maxVoices: 0, volume: 0, pickup: false,
+  };
+  /** Wiederverwendete NoteOptions (notePlayed liest synchron, keine Retention). */
+  private readonly noteOpts: NoteOptions = {};
+  /** Einmal-Closures je SFX-ID für die Voice-Fabrik (K2: nicht je Play). */
+  private readonly voiceFactories = new Map<SfxId, () => Voice | null>();
 
   constructor(game: Phaser.Game) {
     this.game = game;
+    this.sfxVolume = getSettings().sfx;
   }
 
   tick(nowMs?: number): void {
@@ -56,21 +76,33 @@ export class AudioSystem {
   play(id: SfxId): boolean {
     if (this.muted || this.failed) return false;
     const cfg = SFX_CONFIG[id];
-    const settings = getSettings();
-    if (settings.sfx <= 0) return false;
+    const sfxVolume = this.sfxVolume;
+    if (sfxVolume <= 0) return false;
     this.mixer.now = performance.now() / 1000;
-    const req: SoundRequest = {
-      id, priority: cfg.priority, cooldown: cfg.cooldown,
-      maxVoices: cfg.maxVoices, volume: cfg.volume,
-      // Pickup-Klasse (m10-pickup-sfx-distinct): eigenes Band + Massen-Dämpfung.
-      pickup: (PICKUP_SFX_IDS as readonly string[]).includes(id),
-    };
+    // Frühcheck (K2 m10-audio-alloc-fix): spiegelt exakt die ersten drei
+    // planPlay-Prüfungen (priority/perSoundVoices/cooldown). Diese haben
+    // KEINE Seiteneffekte und liegen in planPlay VOR pruneStarts/Filters —
+    // d. h. für hier verworfene Requests wäre planPlay sowieso vor allen
+    // Filter-/Set-Allokationen ausgestiegen. Verhalten bitgleich, Aufwand
+    // verworfener Requests sinkt auf zwei Feldvergleiche.
+    if (cfg.priority < 0) return false;
+    if ((this.mixer.voices[id] ?? 0) >= cfg.maxVoices) return false;
+    const last = this.mixer.lastPlayed[id];
+    if (last !== undefined && this.mixer.now - last < cfg.cooldown) return false;
+    // Wiederverwendetes Request-Objekt: Felder je Aufruf mutiert statt neu.
+    const req = this.req;
+    req.id = id;
+    req.priority = cfg.priority;
+    req.cooldown = cfg.cooldown;
+    req.maxVoices = cfg.maxVoices;
+    req.volume = cfg.volume;
+    // Pickup-Klasse (m10-pickup-sfx-distinct): eigenes Band + Massen-Dämpfung.
+    req.pickup = PICKUP_IDS.has(id);
     // Fairness: Prio >= 2 verdrängt bei vollem Budget die älteste niederpriorere
     // Stimme; Rate-Deckel und Voice-Budget bleiben harte Grenzen. Beide Deckel
     // folgen der Qualitaetsstufe (M10-audio-quality-budget): QUALITY wird vom
     // Laufzeit-Regler (config.ts) gesetzt; HIGH bleibt bitgleich zum alten Verhalten.
-    const budget = audioBudgetFor(QUALITY);
-    const plan = planPlay(this.mixer, req, budget);
+    const plan = planPlay(this.mixer, req, audioBudgetFor(QUALITY));
     if (!plan.allow) return false;
     if (plan.evict) this.evictVoice(plan.evict.id);
     const voice = this.acquireVoice(id, cfg.maxVoices);
@@ -78,8 +110,7 @@ export class AudioSystem {
     try {
       voice.busy = true;
       voice.token += 1;
-      const token = voice.token;
-      let vol = effectiveVolume(settings.sfx, req);
+      let vol = effectiveVolume(sfxVolume, req);
       // Pickup-Massen-Dämpfung: viele Pickup-Starts/s -> gleichmäßige, hörbare
       // Rücknahme (nie stumm), bevor der Limiter die Gesamtsumme deckelt.
       if (req.pickup) vol *= pickupDampGain(this.mixer, req);
@@ -99,7 +130,11 @@ export class AudioSystem {
       voice.vol = vol;
       voice.startedAt = this.mixer.now;
       (voice.sound as unknown as { setVolume(v: number): void }).setVolume(vol);
-      notePlayed(this.mixer, req, { volume: vol, scaleExisting: scale });
+      // Wiederverwendete NoteOptions statt Objekt-Literal je Play.
+      const noteOpts = this.noteOpts;
+      noteOpts.volume = vol;
+      noteOpts.scaleExisting = scale;
+      notePlayed(this.mixer, req, noteOpts);
       const started = voice.sound.play();
       if (!started) {
         voice.busy = false;
@@ -107,15 +142,9 @@ export class AudioSystem {
         return false;
       }
       this.sfxPlayed += 1;
-      // Auch externe stop()-Aufrufe geben die Stimme frei; der Token verhindert
-      // Doppel-Freigabe, wenn complete und stop beide feuern.
-      const release = () => {
-        if (!voice.busy || voice.token !== token) return;
-        voice.busy = false;
-        releaseVoice(this.mixer, id);
-      };
-      voice.sound.once("complete", release);
-      voice.sound.once("stop", release);
+      // Freigabe läuft über die PERMANENTEN complete/stop-Listener der Stimme
+      // (einmalig je Voice in der Fabrik registriert, siehe acquireVoice);
+      // der busy-Guard ersetzt den früheren Token-Snapshot je Play.
       return true;
     } catch {
       voice.busy = false;
@@ -148,14 +177,35 @@ export class AudioSystem {
       list = [];
       this.voicePool.set(id, list);
     }
-    return acquireVoiceSlot(list, maxVoices, () => {
-      try {
-        const sound = this.game.sound.add(SFX_KEYS[id], { volume: 0 });
-        return { sound, busy: false, token: 0, vol: 0, startedAt: 0 };
-      } catch {
-        return null;
-      }
-    });
+    // Fabrik-Closure je SFX-ID cachen (K2): nicht bei jedem Play neu allozieren.
+    let factory = this.voiceFactories.get(id);
+    if (!factory) {
+      factory = () => {
+        try {
+          const sound = this.game.sound.add(SFX_KEYS[id], { volume: 0 });
+          const voice: Voice = { sound, busy: false, token: 0, vol: 0, startedAt: 0 };
+          // Listener-Batching (K2): complete/stop EINMALIG je Stimme statt
+          // 2x once je Play (EventEmitter3 alloziert je once einen Wrapper).
+          // Der busy-Guard ersetzt den Token-Snapshot: Eine Stimme ist nur
+          // frei (nicht busy), wenn ihr Playback beendet/verdrängt wurde,
+          // und Phaser emittiert COMPLETE nur beim echten Ende des aktuellen
+          // Buffers — complete/stop-Doppel-Feuern wird vom busy-Guard
+          // abgefangen, Verdrängung setzt busy vor dem stop() auf false.
+          const release = () => {
+            if (!voice.busy) return;
+            voice.busy = false;
+            releaseVoice(this.mixer, id);
+          };
+          sound.on("complete", release);
+          sound.on("stop", release);
+          return voice;
+        } catch {
+          return null;
+        }
+      };
+      this.voiceFactories.set(id, factory);
+    }
+    return acquireVoiceSlot(list, maxVoices, factory);
   }
 
   playWeapon(id: WeaponAnyId | string): void {
@@ -205,6 +255,9 @@ export class AudioSystem {
 
   /** Optionen aus dem Menue/Debug anwenden. */
   updateSettings(): void {
+    // K2: sfx-Wert cachen (getSettings() spread't je Aufruf); alle Änderungen
+    // laufen über applyOptions -> updateSettings, der Cache ist damit aktuell.
+    this.sfxVolume = getSettings().sfx;
     this.applyVolumes();
   }
 

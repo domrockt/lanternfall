@@ -132,7 +132,9 @@ describe("M10-audio-mix-chaos — Master-Mute (bitgleich)", () => {
               return true;
             },
             stop: () => {},
+            // m10-audio-alloc-fix K2: permanente Listener via `on`.
             once: () => {},
+            on: () => {},
           };
         },
       },

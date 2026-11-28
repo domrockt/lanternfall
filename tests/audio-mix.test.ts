@@ -217,7 +217,10 @@ describe("M10 Audio-Distinct — Mixer und Mute", () => {
         add: (key: string) => ({
           setVolume: () => {},
           play: () => { played.push(key); return true; },
+          // m10-audio-alloc-fix K2: complete/stop werden per `on` dauerhaft
+          // registriert (Listener-Batching statt 2x once je Play).
           once: () => {},
+          on: () => {},
         }),
       },
     } as unknown as ConstructorParameters<typeof AudioSystem>[0];
