@@ -1,0 +1,52 @@
+{
+ "merge": "e0c65704",
+ "lane": "m10-gem-value-reading",
+ "checks": {
+  "suite": "2289/2289 passed (205 files), rc=0",
+  "build": "rc=0",
+  "tsc": "rc=0",
+  "jsErrors": [],
+  "blackScan": {
+   "640x360": {
+    "file": "/home/ai/games/.evidence/m10-gem-value-reading/chaos-merge-main-640.png",
+    "size": "640x360",
+    "blackPx": 2,
+    "total": 230400,
+    "sharePct": 0.001
+   },
+   "960x540": {
+    "file": "/home/ai/games/.evidence/m10-gem-value-reading/chaos-merge-main-960.png",
+    "size": "960x540",
+    "blackPx": 3,
+    "total": 518400,
+    "sharePct": 0.001
+   },
+   "1280x720": {
+    "file": "shots/merge-m10-gem-value-reading-check-1280.png",
+    "size": "1280x720",
+    "blackPx": 0,
+    "total": 921600,
+    "sharePct": 0.0
+   }
+  },
+  "gemStages": {
+   "small": 12108994,
+   "medium": 16758861,
+   "large": 12070975,
+   "pairwiseDelta": {
+    "small-medium": 137.38,
+    "medium-large": 154.06,
+    "small-large": 197.65
+   },
+   "offPalette": 0,
+   "areaMonotonic": true
+  },
+  "chaos": {
+   "drops": 310,
+   "added": 96,
+   "mergedGems": 214,
+   "seed": 1,
+   "targetEnemies": 500
+  }
+ }
+}
