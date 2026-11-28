@@ -1,0 +1,32 @@
+# Lane m10-chest-closed-crisp-ui — DONE (2026-11-28)
+
+Letzter offener UI-Teil des menu-art-crisp-Befunds F2: Truhen-Darstellung im In-Game-UI
+ganzzahlig skaliert und mixel-frei, 0 Icon-/Text-Überlappungen bei 640x360@2 UND 780x360@3.
+Keine Inszenierungs-Änderungen (m10-chest-reveal-staging thematisch getrennt).
+
+## Was getan wurde
+- K1 (#13125): Mess-Skript scripts/m10-chest-closed-ui.mjs (Playwright-Harness, Muster
+  m10-chest-closed.mjs; Panel via debugTriggerEvent, finishChest gesticct + Settle-Wartung).
+  Vorher-Befund: chestSprite ok (Scale 3, DevPx/Texel 6|9, 0 frakt. Runs, Gap 5 px, im Rahmen);
+  Reward-Slot-Icons fraktional Scale 2.4 (DevPx/Texel 4.8|7.2, Crop 1844/3104 nicht-Vielfache
+  Runs = Mixel, F2-Klasse).
+- K2 (#13126): Fix src/scenes/UI.ts — CHEST_SLOT_ICON_SCALE = 2 (Export, 32 px im 44-px-Slot;
+  Stufe 3 würde in die Slot-Texte ragen). chestSprite-Draw unverändert Stufe 3.
+- K3 (#13127): Guard-Test tests/chest-closed-ui-crisp.test.ts (12 Tests: ganzzahlige Skalen,
+  DevPx/Texel, 0 Overlaps via chestPanelLayout/chestPanelBoxes, Profile 640/780/1920) +
+  Nachher-Lauf: verdict passed in beiden Formaten (0 frakt. Skalen, 0 frakt. Runs, 0 Overlaps).
+- K4 (#13128): art-director PASS 4,5/5; reviewer PASS; verify:final 7/7 PASS; build + 2506 Tests grün.
+
+## Messwerte (after, ~/games/.evidence/m10-chest-closed-crisp-ui/)
+- 640x360@2: chestSprite Scale 3 → DevPx/Texel 6; Slots Scale 2 → 4; Crops 0/0 frakt. Runs;
+  Gap Untertitel 5 px; 0 Overlaps; iGPU (Mesa Intel RPL-S, kein SwiftShader); 0 JS-Fehler.
+- 780x360@3: chestSprite Scale 3 → 9; Slots Scale 2 → 6; Crops 0/0; 0 Overlaps; wie oben.
+- Abnahme-Bilder: shots/abnahme/m10-chest-closed-ui-after-640x360@2.png, …-780x360@3.png.
+
+## Hinweise
+- Laufzeit-Anker: ChestSystem.applyPanelFix setzt Panel-Icon/Untertitel/Hints auf
+  chestPanelLayout (iconY 94+oy, iconScale 3) — UI-Erstellungs-Konstanten sind nur Anker der
+  Erstellung; Guard-Test prüft den sichtbaren Zustand.
+- fx_coin/chestBeam: animierte FX/additives Licht, außerhalb der statischen Crisp-Semantik
+  (GAME.md-Ausnahme), im JSON informativ gemessen.
+- Commits: d3c59995 (#13125), a6b6bad0 (#13126), 2ac05c3b (#13127), K4-Abschluss (#13128).
