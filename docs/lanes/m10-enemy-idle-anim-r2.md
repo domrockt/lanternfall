@@ -49,6 +49,56 @@ Rim-Framesets angewendet; die Basis-Klassen erfuellen es bereits (K1-Beleg).
   Burst >= 55 FPS bei 500 Gegnern (flock, Vorher/Nachher),
   art-director >= 4/5, `.lane-done`.
 
+### K4-Teilstand
+
+- **tests/enemy-idle.test.ts: ERLEDIGT** (4 Tests: 30 Basis- + 30 Rim-Framesets >= 2
+  Frames, 0 Duplikate, 0 Off-Palette, binaeres Alpha, Idle/Bob-Diff > 0, Amber-Rand
+  in beiden Posen). Full-Suite 1694/1694 gruen (K3-Commit).
+- **Probe after: ERLEDIGT** (`~/games/.evidence/m10-enemy-idle-anim-r2/
+  m10-enemy-idle-after.json`) — Basis-Frames bytegleich zu before (Lauf-Zyklen,
+  Silhouetten unberuehrt).
+- **Perf nachher: ERLEDIGT** — Burst 59,7 FPS bei 500 Gegnern (worstFrameMs 50),
+  60,1 FPS @ 300 (worstFrameMs 16,8), Vorher 60/60,7 — beide >= 55, innerhalb der
+  Mess-Streuung. Logs: `~/tmp/m10-enemy-idle-anim-r2-perf-{before,after}.log`.
+- **In-game Sicht-Beleg (Elite-GIF): BLOCKED.** Ursache (Diagnose-JSON,
+  3 Konfigurationen): Elites sind im Spiel nicht deterministisch erreichbar.
+  - `window.__lf.spawnEnemy` (src/debug.ts) exponiert `Spawner.spawnEnemy` ohne
+    den `elite`-Parameter (Spawner.ts:211 `elite = false`) — Debug-Spawns sind
+    NIE Elites.
+  - Natuerliche Elite-Wellen: in der Fast-Forward-Konfiguration (god,
+    level-ups unterdrueckt, timeScale 30) spawnen bis Minute 4,5 ausschliesslich
+    Tier-0-Gegner (spawnCounts: bog_rat/bogzombie/crow/wisp/mudling/toad),
+    0 Rim-IDs im `__lfEnemyFrames`-Fenster; auch Minute 10 (isEliteMinute,
+    eliteChance 4,3 %) liefert in 90 s Beobachtung keinen Elite im Viewport.
+  - Der `slice(0, 12)` in `__lfEnemyFrames` (Run.ts, fremde Datei) begrenzt das
+    Sichtfenster zusaetzlich.
+  Benoetigt: 1-Zeilen-Aenderung in src/debug.ts — `spawnEnemy(id, n, elite = false)`
+  an `Spawner.spawnEnemy(id, n, x, y, elite)` durchreichen (oder eigenes
+  `spawnElite`). Antrag in `/home/ai/games/.dispatch/requests.md` gestellt.
+  Das Skript `scripts/m10-enemy-idle-shots.mjs` ist fertig gebaut (Minute-10-
+  Fast-Forward, Elite-Fenster-Wait, GIF + `slotsWithBothFrames`-Nachweis) und
+  laeuft, sobald der Debug-Spawn existiert.
+
 ## FPS-Messungen (nur mit flock /home/ai/games/.lf-perf.lock)
 
-- Vorher (K1-Baseline): `~/tmp/m10-enemy-idle-anim-r2-perf-before.log` — TBD
+- Vorher (K1-Baseline): `~/tmp/m10-enemy-idle-anim-r2-perf-before.log` —
+  Burst 60,0 FPS @ 500 (worstFrameMs 16,8), 60,7 FPS @ 300 — passed.
+- Nachher (K4): `~/tmp/m10-enemy-idle-anim-r2-perf-after.log` —
+  Burst 59,7 FPS @ 500 (worstFrameMs 50), 60,1 FPS @ 300 (worstFrameMs 16,8) —
+  Ziel >= 55 erfuellt; 2. Rim-Frame kostet keine messbare Frame-Zeit
+  (+30 Canvas-Texturen <= 32 px im Atlas).
+
+## Fremd-Dateien (minimal, begruendet)
+
+- tests/elite-rim.test.ts, tests/elite-tier-families.test.ts,
+  tests/enemy-run-frames.test.ts, tests/crowd-variety.test.ts: je 1-2
+  Assertion-Zeilen, die den alten 1-Frame-Rim-Vertrag pinnen — ohne Aktualisierung
+  wären sie durch die 2-Frame-Rim-Idle rot. Nicht geclaimed, Aenderung minimal.
+- src/debug.ts NICHT angefasst (Antrag gestellt, siehe K4-BLOCKED).
+
+## Probe-Skript-Iterationen (ehrlich)
+
+scripts/m10-enemy-idle-shots.mjs benoetigte 6 Laeufe (2 Fachfehler: state().time
+heisst nicht elapsed; Fast-Forward braucht permanente Level-up-Unterdrueckung —
+Ember-8-Variante tötete die Elites, bevor sie sichtbar wurden). Der Supervisor
+stoppte den Loop; Ursache ist die fehlende Debug-Elite-Spawn-API, nicht das Skript.
