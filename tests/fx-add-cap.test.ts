@@ -168,22 +168,18 @@ afterEach(() => {
 });
 
 describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
-  it("RENDER_SCALE 2 (Regler gesenkt) + dpr 3: grosser Glow wird beim Spawn verkleinert", () => {
+  it("K2 (m10-android-scale-floor-r2): setRenderScale(2) wird auf 1 geklemmt — kein Teiler-Cap beim Spawn", () => {
+    // RENDER_SCALE_MAX ist seit K2 hart 1: der Teiler-Regler kann den Buffer
+    // nicht mehr senken, der Flaechen-Deckel ueber RENDER_SCALE greift nie.
+    // Die Laststeuerung kommt stattdessen ueber die Qualitaetsstufe (K3).
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
-    setRenderScale(2);
+    expect(setRenderScale(2)).toBe(1);
     const sprite = fakeSprite(32, 32);
     const { scene } = fakeScene(sprite);
     const fx = new FxSystem(scene);
     const runtime = fx.spawn({ texture: "fx_halo", x: 0, y: 0, scaleFrom: 6, scaleTo: 6, life: 1 });
-    expect(runtime).not.toBeNull();
-    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3 (Spielpixel-Groesse)
-    expect(runtime?.scaleFrom).toBeCloseTo(3, 10);
-    expect(runtime?.scaleTo).toBeCloseTo(3, 10);
-    // Mixel-Fix (m10-fx-mixel-fix): fx_halo wird gebacken, Draw-Scale = Scale/Stufe.
-    // Stufe 3 (>= 3) -> Sprite-Scale 3/3 = 1 (Textur 72x72, gleiche Screengroesse).
-    const last = sprite.scaleCalls[sprite.scaleCalls.length - 1];
-    expect(last[0]).toBeCloseTo(1, 10);
-    expect(last[1]).toBeCloseTo(1, 10);
+    expect(runtime?.scaleFrom).toBe(6);
+    expect(runtime?.scaleTo).toBe(6);
   });
 
   it("RENDER_SCALE 1 (iGPU): grosser Glow bleibt volllaufend, auch bei dpr 3", () => {
@@ -226,14 +222,14 @@ describe("ADD-Glow-Screengroessen-Deckel (spawn)", () => {
     expect(runtime?.scaleFrom).toBe(3);
   });
 
-  it("ParticleSystem cappt ebenso (RENDER_SCALE 2)", () => {
+  it("ParticleSystem: K2 klemmt RENDER_SCALE auf 1 — kein Teiler-Cap mehr (Qualitaetsstufe folgt in K3)", () => {
     (globalThis as { window?: unknown }).window = { devicePixelRatio: 3 };
     setRenderScale(2);
     const sprite = fakeSprite(32, 32);
     const { scene } = fakeScene(sprite);
     const ps = new ParticleSystem(scene);
     const p = ps.spawn({ texture: "fx_spark", x: 0, y: 0, scaleFrom: 6, scaleTo: 6, life: 1 });
-    expect(p?.scaleFrom).toBeCloseTo(3, 10);
+    expect(p?.scaleFrom).toBe(6);
   });
 });
 

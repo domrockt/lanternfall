@@ -49,7 +49,8 @@ export function renderBufferSize(
 
 /** Frame-Budget des Reglers (Ziel 60 FPS,deckungsgleich mit perf-Ziel). */
 const RENDER_BUDGET_MS = 1000 / 60;
-/** URL-Override fuer Messungen: ?rbscale=0 (aus) oder ?rbscale=1..3 (fest). */
+/** URL-Override fuer Messungen: ?rbscale=0 (aus) oder ?rbscale=1..3 (fest,
+ *  seit K2 auf 1 geklemmt — Werte > 1 zerstoeren den Text nicht mehr). */
 const QUERY_RENDER_SCALE =
   typeof window !== "undefined" && window.location
     ? parseRenderScaleOverride(new URLSearchParams(window.location.search).get("rbscale"))
@@ -135,6 +136,11 @@ function enforceCameraProjection(game: BudgetGame, scale: number): void {
  * wartet auf `window.__game` (installDebugApi), haengt FPS-EWMA + Hysterese an
  * den Game-Loop und setzt Canvas-Buffer + renderer zusammen. main.ts/view.ts
  * bleiben unveraendert; CSS bleibt geraetepixelgenau wie in m8-display.
+ *
+ * M10-android-scale-floor-r2 (K2): der Regler kann den Teiler nicht mehr
+ * ueber 1 hinaus anheben (RENDER_SCALE_MAX = 1) — der Soll/Ist-Vergleich in
+ * apply() bleibt: Boot/applyView/Scale-Manager koennen den Buffer jederzeit
+ * zuruecksetzen, dann wird sofort wieder die volle logische Groesse angelegt.
  */
 function installRenderBudget(): void {
   if (typeof window === "undefined" || typeof document === "undefined") return;
