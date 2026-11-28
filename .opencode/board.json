@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12773,
+  "next": 12873,
   "cards": [
     {
       "id": 1,
@@ -17783,12 +17783,17 @@
       "id": 12771,
       "title": "m10-worldview-anchor-spawner K3: tests/worldview-anchor-spawner.test.ts — Spawn-Determinismus über Render-Frame-Rhythmen",
       "description": "Abnahme: eigene Testdatei (nicht tests/worldview-anchor.test.ts der pools-Lane); Spawn-Platzierung/Offscreen-Entscheidung bitgleich bei gleichem Seed unabhängig von worldView-Mutationen/Frame-Rhythmus; npx vitest run grün.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T14:56:03Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T15:20:00Z",
+          "by": "merge",
+          "text": "lane #12771, Merge d908ba47 — doing-Karte der gemergten Lane nach Merge geschlossen"
         }
       ],
       "created": "2026-11-28T14:55:10Z",
