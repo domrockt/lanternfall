@@ -53,3 +53,80 @@ kein Doppel-Event über die InputState-Edge-Pfade) — gehört zu m10-pad-start-
 wurde hier NUR dokumentiert, nicht geändert.
 
 Status K1: ✅ Befund dokumentiert, keine Code-Änderung.
+
+---
+
+## K2 — Title.ts (Karte #9545, Commit 94f1a6b)
+
+- Fokus-Kreis der Kern-API (`MenuFocus`) über ALLEN 4 bedienbaren Elementen:
+  START, OPTIONEN, CREDITS, VOLLBILD (wrap in beide Richtungen).
+- Confirm = `press()` des fokussierten Knopfs; Hover übernimmt nur den
+  Fokus-Index (Start/Hover-Sync, AE=0 — Maus/Touch-Pfade unberührt).
+- `get selected()` als Kompatibilitäts-Leser für den Kern-Harness
+  (scripts/m10-gamepad-nav.mjs liest `t.selected`).
+- Beleg: Kern-Harness 15/15 PASS (`~/games/.evidence/m10-gamepad-menu-nav/m10-gamepad-nav.json`).
+
+## K3 — CharSelect.ts (Karte #9546, Commit e074967)
+
+- Reine Nav-Funktion `charSelectPadNav` (unit-getestet) + 2 Fokus-Reihen:
+  0 = Charakter-Panels (Fokus = derselbe Lantern-Strok wie Hover),
+  1 = Knopfleiste ZURÜCK/START via Kern-`MenuFocus` (Startfokus START wie bisher).
+- A = auswählen (Panel: pick; Knopf: start/back), B = zurück.
+- Waffen-/Evolution-Felder: CharSelect hat KEINE interaktiven Waffen-/Evo-Felder —
+  Startwaffe/Evolutionen sind reine Anzeige im Panel und damit mit dem Panel
+  per D-Pad erreichbar (Befund, kein Feld ausgelassen).
+- Fix während K5: `padRow` wird in `create()` resettet (Wiedereintritt über
+  B→Titel→START landete sonst in der Panel-Reihe statt Knopf-Reihe).
+- **Bekannte Restoptik:** Initial sind Panel 0 UND der START-Knopf umrandet
+  (Panel-Reihe-Fokus + MenuFocus-Paint), identisch zum alten Verhalten
+  (`start.setFocused(true)`). Bewusst so belassen (AE=0).
+
+## K4 — Results.ts + Credits.ts (Karte #9547, Commit 83bb0b4)
+
+- Results: `MenuFocus` über NEUE RUNDE/TITEL (wrap, confirm=press, B=TITEL).
+- Credits: `MenuFocus` über ZURÜCK (A und B → Titel).
+- **Scrollen mit Stick/D-Pad: N/A (Befund, kein Implementierungsversuch):**
+  Results hat keine interaktive/scrollbare Liste — die Schadensbalken sind ein
+  statisches Layout mit max. 12 Zeilen (rowsTop 68, Panel-Inneres bis ~306,
+  m10-results-followup #4382), Credits 9 feste Zeilen. Beide passen immer
+  vollständig ins Panel; es gibt nichts zu scrollen.
+
+## K5 — UI.ts + Harness (Karte #9548, Commit f62d68f)
+
+- Pause-Overlay (in der Area, siehe K1): `MenuFocus` über
+  FORTSETZEN/OPTIONEN/AUFGABE; Back (B) = resumeRun; Optionsaufruf/Pad-Pfad im
+  offenen Optionsmenü unverändert (Kern).
+- Repeat-Debounce via `menuRepeatTick` wie Kern-K2; ein Pad-Frame = maximal
+  EINE Aktion (Priorität back > up > down > left > right > confirm).
+- **Review-Fund per Probe (belegt, behoben):** Confirm-Flanke und Repeat-Kanäle
+  müssen JEDEN Frame gepflegt werden. Vorher blieb `pausePrevConfirmHeld` auf
+  true, wenn das Options-Overlay den Frame konsumierte oder keine Aktion
+  gehalten war („sticky edge“) → der zweite Confirm (AUFGABE) war tot
+  (Probe: `~/tmp/m10-gamepad-nav-scenes-r2-probe-pause.mjs`, Ausgabe
+  pausePrevConfirmHeld=true trotz Release). Fix: Flanke + `menuRepeatTick`-Ticks
+  vor den Early-Returns in `handlePad()`.
+- Harness `scripts/m10-gamepad-nav-scenes.mjs`: fährt mit synthetischem Pad
+  Title (inkl. VOLLBILD, wrap, Options auf/zu) → CharSelect (Panels, A/B,
+  ZURÜCK/START) → Run → Pause (Start-Knopf, Repeat 250 ms = 1 Schritt,
+  Options, AUFGABE) → Results (wrap, B) → Credits (A und B). **32/32 PASS,
+  0 JS-Fehler** (JSON: `~/games/.evidence/m10-gamepad-nav-scenes-r2/m10-gamepad-nav-scenes.json`).
+- Abnahme-Screenshots 640x360 mit sichtbarem Fokusrahmen (in git):
+  `shots/abnahme/m10-gamepad-nav-scenes-{title,charselect-kael,pause-fortsetzen,results,credits}.png`
+  (Sichtprüfung vergrößert 2x nearest: Fokusrahmen klar, Pixel knackscharf).
+- tests/gamepad-nav-scenes.test.ts: 10/10 grün; Kern-Tests
+  (tests/gamepad-nav.test.ts) unangetastet grün; volle Suite 154 Dateien /
+  1665 Tests grün; `npm run build` rc=0; `npx tsc --noEmit` grün.
+
+## Befunde / offene Punkte
+
+1. **Run.ts-Anteil (Nachfolgebedarf m10-pad-start-pause-r2):** siehe K1 —
+   `src/scenes/Run.ts:457-461` (Pad-Start-Trigger), `1445-1461` (togglePause),
+   `1465-1471` (resumeRun). Nicht geändert (out of area).
+2. **Vorhandene Optik, nicht von dieser Lane:** Im 640x360-Format liegt im
+   Results-Screen der Untertitel „NIEDERLAGE“ dicht unter dem Titel
+   („AUFGEGEBEN“/„MORGENDÄMMERUNG“ kollidieren optisch mit dem
+   SCHADEN-Header bei oy=45). Layout in Results.ts wurde von dieser Lane
+   nicht berührt (AE=0); Beleg: shots/abnahme/m10-gamepad-nav-scenes-results.png.
+   → Bedarf für eine Layout-Lane (m10-results-overlap Follow-up).
+3. `lf-runs/lanes/common.md` existiert nicht (siehe oben).
+
