@@ -1,0 +1,156 @@
+{
+  "tag": "baseline2",
+  "date": "2026-11-28T10:09:44.308Z",
+  "proxy": {
+    "device": "Galaxy Tab S4 landscape",
+    "cpuThrottleRate": 4,
+    "seconds": 60,
+    "target": 300,
+    "timelapseTo": 600,
+    "timeScale": 30
+  },
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "rendererSwiftShader": false,
+  "evolutions": [
+    "phoenix",
+    "wrath_pendulum",
+    "eternal_winter",
+    "thorn_storm",
+    "thunder_seal",
+    "soul_beacon"
+  ],
+  "characters": {
+    "mira": {
+      "timelapse": {
+        "wallMs": 24777,
+        "gameSeconds": 604.9,
+        "level": 22,
+        "kills": 748
+      },
+      "minute25": {
+        "before": {
+          "time": 1494.2,
+          "enemies": 15,
+          "level": 22
+        },
+        "after": {
+          "time": 1548.1,
+          "enemies": 301,
+          "kills": 5909
+        },
+        "view": {
+          "before": {
+            "logical": [
+              640,
+              360
+            ],
+            "css": [
+              1138,
+              640
+            ],
+            "dpr": 2.25,
+            "renderScale": 1
+          },
+          "after": {
+            "logical": [
+              640,
+              360
+            ],
+            "css": [
+              1138,
+              640
+            ],
+            "dpr": 2.25,
+            "renderScale": 1
+          }
+        },
+        "seconds": 60,
+        "target": 300,
+        "frames": 3343,
+        "elapsedMs": 60021,
+        "minEnemies": 300,
+        "maxEnemies": 333,
+        "lodWorstRank": 2,
+        "renderScaleWorst": 2,
+        "heapMB": {
+          "max": 85.6,
+          "end": 79.4
+        },
+        "lodWorst": "minimal",
+        "fpsAvg": 55.7,
+        "fpsP5": 30,
+        "fpsMedian": 59.9,
+        "frameMedianMs": 16.7,
+        "frameP95": 33.3,
+        "densityOk": true
+      }
+    },
+    "kael": {
+      "timelapse": {
+        "wallMs": 22344,
+        "gameSeconds": 601.6,
+        "level": 19,
+        "kills": 780
+      },
+      "minute25": {
+        "before": {
+          "time": 1494,
+          "enemies": 15,
+          "level": 19
+        },
+        "after": {
+          "time": 1547.8,
+          "enemies": 301,
+          "kills": 5391
+        },
+        "view": {
+          "before": {
+            "logical": [
+              640,
+              360
+            ],
+            "css": [
+              1138,
+              640
+            ],
+            "dpr": 2.25,
+            "renderScale": 1
+          },
+          "after": {
+            "logical": [
+              640,
+              360
+            ],
+            "css": [
+              1138,
+              640
+            ],
+            "dpr": 2.25,
+            "renderScale": 1
+          }
+        },
+        "seconds": 60,
+        "target": 300,
+        "frames": 3554,
+        "elapsedMs": 60027,
+        "minEnemies": 300,
+        "maxEnemies": 331,
+        "lodWorstRank": 2,
+        "renderScaleWorst": 1,
+        "heapMB": {
+          "max": 88.9,
+          "end": 76.8
+        },
+        "lodWorst": "minimal",
+        "fpsAvg": 59.2,
+        "fpsP5": 59.5,
+        "fpsMedian": 59.9,
+        "frameMedianMs": 16.7,
+        "frameP95": 16.8,
+        "densityOk": true
+      }
+    }
+  },
+  "jsErrors": [],
+  "passed": true
+}
