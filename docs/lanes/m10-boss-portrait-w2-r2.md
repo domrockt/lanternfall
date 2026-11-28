@@ -60,13 +60,46 @@ Pipeline-Kette (aus crisp-Lane übernommen, wird beachtet):
 
 ## K5 — Regressionstest
 
-`tests/boss-portrait-w2.test.ts`: Grid-Größen unverändert, Palette (0 offPal, binäres Alpha),
-Silhouetten-Kontrast der 3 fixen Bosse >= Vorher-Wert, Frame-Dubletten 0.
+`tests/boss-portrait-w2.test.ts` (7 Tests, Commit `59f84abe`): Grid-Größen unverändert,
+binaeres Alpha + 0 offPal, Silhouetten-Kontrast der 3 fixen Bosse >= Vorher (coven 70.0,
+pale_shepherd 134.4, hollow_king 70.0), unangetastete Bosse >= Vorher, 0 Frame-Dubletten,
+Rollen-Asserts (coven: drei Roben-Treppen 24/25/26; hollow_king: Knochen im Brustbereich).
+Lauf: 7/7 grün; `npm test` 157 Dateien / 1697 Tests grün.
 
-## K6 — Nachher + art-director
+## K6 — Nachher-Stand + art-director
 
-Nachher-Bögen + Urteil; Abnahme-Bilder nach `shots/abnahme/` (in git), Mess-JSON wieder
-nach `~/games/.evidence/m10-boss-portrait-w2-r2/`.
+Nachher-Bögen: `~/games/.evidence/m10-boss-portrait-w2-r2/m10-boss-portrait-w2-after-*.png`
+(+ JSON mit Renderer-String `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`),
+Abnahme-Bilder zusätzlich in `shots/abnahme/`.
+
+| Boss | silKontrast p75 vor→nach | Kanten vor→nach | Fix |
+|---|---|---|---|
+| coven | 70.0 → **93.8** | 32.5 → 37.2 | 3 Rollen statt Klone, Flammen statt Goldkugeln, Besen statt Nadel |
+| pale_shepherd | 134.4 → 134.4 | 52.9 → **54.2** | Kopf/Gesicht mit 1-px-Stufen, klare Kapuzen-Lesart |
+| hollow_king | 70.0 → **93.8** | 34.7 → **39.9** | Rippenkorb statt Tech-Panel, Saum verbunden statt Rauschen |
+| moor_queen (Kontrolle) | 118.4 → 118.4 | 27.7 → 27.7 | unangetastet (Idle-Kontrakt) |
+
+art-director-Urteil (streng, Maßstab „kommerziell auslieferbar“): **PASS — coven 4, pale_shepherd 4,
+hollow_king 4,5** (Ziel ≥ 4/5 je gefixtem Boss erreicht, muss-neu: keines). Belege:
+`shots/abnahme/m10-boss-portrait-w2-after-{coven,pale_shepherd,hollow_king}.png` (4x+1x,
+nearest), Gegenstücke `~/games/.evidence/m10-boss-portrait-w2-r2/*-before-*.png`.
+Optionale Nachbesser-Punkte für eine nächste Grafik-Runde (kein Muss, laut Kontrolleur):
+- coven: einzelne dunkelrote Einzelpunkte in den erhobenen Arm-Innenkanten (Mittel/rechts)
+  wirken nah als Rauschen → 2-px-Saumschatten; Gesicht: asymmetrischer heller
+  Mittelstreifen + weiße 1-px-Punkte neben Augen/Kiefer klären oder streichen.
+- pale_shepherd: Saum-Fransen weiterhin 1-px-Spitzen + 1 isoliertes hellgraues Einzel-Pixel
+  im Saum (War nicht Teil des W2-Fixumfangs, Restpunkt aus crisp-Lane).
+
+## Abnahme-Zusammenfassung
+
+- art-director ≥ 4/5 für alle drei gefixten Bosse an 4x-Kontaktbögen (coven 4, pale_shepherd 4,
+  hollow_king 4,5; moor_queen bewusst nicht bewertet/unangetastet).
+- `tests/boss-portrait-w2.test.ts` 7/7 grün; `tests/boss-portrait-crisp.test.ts` +
+  `tests/boss-idle-anim.test.ts` grün; `npm test` 157 Dateien / 1697 Tests grün;
+  `npx tsc --noEmit` grün; `npm run build` über Harness-Lauf grün (Renderer-Beleg oben).
+- Keine Änderung an Balance/HP/Angriffslogik; nur `scripts/art/gen_bosses.py` +
+  regeneriertes `src/gfx/gen-bosses.ts` (Kette: python + idle-anim gen für alle 6).
+- Palette-Guard grün: 0 Off-Palette-Pixel, binäres Alpha, 0 Frame-Dubletten.
 
 ## Status
 
@@ -74,5 +107,17 @@ nach `~/games/.evidence/m10-boss-portrait-w2-r2/`.
 - [x] K2 coven (Commit `04a25cbe`, silKontrast 70.0 → 93.8)
 - [x] K3 pale_shepherd (Commit `8b78eacd`, silKontrast 134.4 → 134.4, Kanten 52.9 → 54.2)
 - [x] K4 hollow_king (Commit `57e2937c`, silKontrast 70.0 → 93.8)
-- [ ] K5 Regressionstest
-- [ ] K6 Nachher + art-director + Doku
+- [x] K5 Regressionstest (Commit `59f84abe` + Guard-Tightening im K6-Commit, 7/7 + npm test 1697 grün)
+- [x] K6 Nachher + art-director PASS (coven 4 / shepherd 4 / hollow_king 4,5)
+
+## Reviewer-Befunde (Kontrolleur, PASS)
+
+- Lane-Diff umfasst genau die 6 Lane-Dateien; moor_queen/bone_lord/bell_golem pixel-exakt
+  main-identisch; 0 offPal über alle 6 Bosse × 3 Frames; keine Secrets/Temp-Dateien.
+- Umgesetzt: Guard auf Nachher-Werte verschärft (coven/hollow_king 93.8, shepherd 134.4),
+  Testtitel präzisiert.
+- Bekannter, NICHT lane-bedingt offen Punkt (Bedarf für einen Folge-Job): `python3
+  scripts/art/gen_bosses.py` erzeugt auf diesem Stand 785 Diff-Zeilen gegen das committete
+  `gen-bosses.ts` — das driftet bereits auf main (vermutliche Python-Umgebungs-Differenz bei
+  ursprünglicher Generierung). Verletzt langfristig GAME.md „Assets entstehen reproduzierbar
+  per Skript“; hier nicht gefixt, um fremde Boss-Bytes nicht anzufassen.

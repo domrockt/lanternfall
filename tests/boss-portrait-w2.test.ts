@@ -69,7 +69,7 @@ describe("boss-portrait-w2: Regression der Zeichen-Fixes (coven, pale_shepherd, 
     }
   });
 
-  it("binaeres Alpha + 0 Off-Palette-Pixel in allen Frames der 4 Bezug-Bosse", () => {
+  it("Palettenbereich 0-31 in allen Frames der 4 Bezug-Bosse (binäres Alpha via '.')", () => {
     for (const id of Object.keys(BEFORE)) {
       const sprite = GEN_BOSSES[id];
       for (const [fi, frame] of sprite.frames.entries()) {
@@ -88,11 +88,17 @@ describe("boss-portrait-w2: Regression der Zeichen-Fixes (coven, pale_shepherd, 
     }
   });
 
-  it("Silhouetten-Kontrast der 3 fixen Bosse >= Vorher-Wert", () => {
+  it("Silhouetten-Kontrast der 3 fixen Bosse >= Nachher-Wert (Fix-Freeze)", () => {
+    // Staerkerer Guard als ">= Vorher": der erreichte Nachher-Stand (K2-K4) ist
+    // eingefroren — ein Rueckfall wird gefangen.
+    const AFTER: Record<string, number> = {
+      boss_coven: 93.8,
+      boss_pale_shepherd: 134.4,
+      boss_hollow_king: 93.8,
+    };
     for (const id of FIXED) {
       const now = Math.round(silhouetteContrast(GEN_BOSSES[id].frames[0]) * 10) / 10;
-      const base = BEFORE[id].silKontrast;
-      expect(now, `${id}: silKontrast ${now} < Vorher ${base}`).toBeGreaterThanOrEqual(base);
+      expect(now, `${id}: silKontrast ${now} < Nachher ${AFTER[id]}`).toBeGreaterThanOrEqual(AFTER[id]);
     }
   });
 

@@ -1,0 +1,24 @@
+Lane m10-boss-portrait-w2-r2 — abgeschlossen (Re-Queue des getöteten m10-boss-portrait-w2).
+
+Umsetzung: Die drei belegten Mängel aus docs/lanes/m10-boss-portrait-crisp.md („Offene Punkte“)
+am Boss-Sprite-Generator gefixt, nur Optik:
+- K2 coven (#9896, 04a25cbe): 3 unterscheidbare Rollen statt Klon-Posen (Besen/gebeugt,
+  Zauberei/V-Arme, Feuerkugel), Roben-Treppen 24/25/26, Flammen-Tropfen statt Goldkugeln,
+  echter Besen statt 1-px-Nadel. silKontrast 70.0 → 93.8.
+- K3 pale_shepherd (#9897, 8b78eacd): Kopf/Gesicht enträtselt — Kapuzen-Randlicht, dunkle
+  Höhlung, Gesichtsebene mit 1-px-Stufen, 3x2-Glutaugen, abgesetzter Kinnbart.
+- K4 hollow_king (#9898, 57e2937c): Rippenkorb statt Tech-Panel (Brustbein, gebogene Rippen,
+  Glutherz, Leder-Knochen-Schnalle), Unterkante beruhigt (verbundene Zipfel, lesbarer
+  Beine/Stiefel, keine Diagonal-Dornen). silKontrast 70.0 → 93.8.
+- K5 (#9899, 59f84abe): tests/boss-portrait-w2.test.ts, 7 Regression-Tests (Grid, Palette,
+  silKontrast >= Vorher, Rollen-Asserts).
+- moor_queen bewusst unangetastet (Idle-Kontrakt), bone_lord/bell_golem unangetastet.
+
+Abnahme: art-director PASS (streng, „kommerziell auslieferbar“) — coven 4, pale_shepherd 4,
+hollow_king 4,5 an 4x-Kontaktbögen; muss-neu: keines. Palette-Guard grün (0 offPal, binäres
+Alpha, 0 Dupletten). npm test 157 Dateien / 1697 Tests grün; tsc grün.
+Belege: shots/abnahme/m10-boss-portrait-w2-after-*.png (in git) sowie Vorher/Nachher + Metriken
+inkl. Renderer-String (Mesa Intel RPL-S) in ~/games/.evidence/m10-boss-portrait-w2-r2/.
+Optional Restpunkte für nächste Grafik-Runde: coven-Arm-Sprenkel/Gesichtsdetails,
+shepherd-Saum-Fransen (Doku: docs/lanes/m10-boss-portrait-w2-r2.md).
+Commits: 5505bcef (K1), 04a25cbe (K2), 8b78eacd (K3), 57e2937c (K4), 59f84abe (K5), K6 = dieser.
