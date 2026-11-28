@@ -28,4 +28,4 @@ Belege (nicht im git): ~/games/.evidence/m10-quality-stacked-smoke/
   - m10-quality-smoke-summary-latest.json, m10-quality-smoke-caps-per-tier.json
 
 Commits: 383c0966 (#11852 WIP Skript), 51e5baf2 (#11852 K1), 21166d39 (#11853 K2),
-21166d39 (dieser Commit) (#11854 K3 + lane-done).
+#11854 K3 + lane-done (git log --grep=#11854)

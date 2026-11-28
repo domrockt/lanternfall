@@ -221,6 +221,12 @@ try {
   // Cap-Schnappschuss VOR der Drosselphase (Stufe high) fuer Bitgleichheit.
   summary.snapshotHighBefore = snapOf([...burst, ...m25]);
 
+  // SwiftShader-Gate (Reviewer-Nit): ein Lauf auf Software-GL ist kein
+  // gueltiger iGPU-Beleg — als Gate vermerken, nicht nur als String loggen.
+  if (rendererString.includes("SwiftShader")) {
+    summary.findings.push({ severity: "blocker", text: `Renderer ist SwiftShader (${rendererString}) — Lauf ungueltig, auf iGPU wiederholen` });
+  }
+
   // B Drosselphase: CPU-Throttle an, bis thermal engagiert + 40 s Beobachtung.
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: THROTTLE });
@@ -233,7 +239,9 @@ try {
     summary.findings.push({ severity: "blocker", text: `Thermal-Stufe in 6 min Drossel (${THROTTLE}x) NICHT erreicht — Kette high->medium->low pruefen` });
   }
   const bSamples = timeline.filter((s) => s.phase === "B-throttle");
-  summary.snapshotLowThermal = snapOf(bSamples.filter((s) => s.effTier !== "high"));
+  // Enthaelt alle Nicht-high-Samples der Drosselphase (medium + low + thermal);
+  // Per-Tier-Aufschluesselung siehe m10-quality-smoke-caps-per-tier.json.
+  summary.snapshotDownThermal = snapOf(bSamples.filter((s) => s.effTier !== "high"));
 
   // C Erholungsphase: Throttle aus, bis high zurueck (oder 5 min).
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
