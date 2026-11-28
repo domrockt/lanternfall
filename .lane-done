@@ -1,0 +1,22 @@
+# Lane m10-menu-contrast-fixes — fertig (2026-11-28)
+
+Alle 6 Karten (#10768-#10773) committed, je ein Commit (`M10-m10-menu-contrast-fixes: #<karte>`).
+
+Umfang: Kontrast-/Overlap-Mini-Fixes aus der Bedarfsmeldung m10-menu-quality-55, genau die
+gemeldeten Hebel in den 4 fremd-Beanspruchten Dateien, UI.ts unberührt (eigene Lane).
+
+- K1 (#10768): Vorher-Scan an Branch-Basis. Belege: ~/games/.evidence/m10-menu-contrast-fixes/
+  (before-scan.json + PNGs). Vorher: Fails title 4 / options 5 / credits 12 / charselect 5,
+  Overlap options 465 px², KAEL-Gap 2 px, 0 JS-Fehler, Renderer Intel-iGPU (kein SwiftShader).
+- K2 (#10769): Title.ts 3 Hint-Zeilen fog→bone, Subtitle mist→paleMist → title 0 Fails.
+- K3 (#10770): options-menu.ts Footer mist→bone + H-14→H-50, Hint fog→bone → options 0 Fails,
+  0 Overlaps. Abweichung dokumentiert: ≥12 px Verschiebung nötig (4–6 px geometrisch unmöglich).
+- K4 (#10771): Credits.ts + CharSelect.ts fog→bone / mist→paleMist → 0 Fails.
+- K5 (#10772): Title.ts Bestwerte-Block 5 px hoch → KAEL-Gap 2 → 7 px, keine neuen Overlaps.
+- K6 (#10773): After-Scan (0 Kontrast-Fails / 0 Overlaps auf allen 4 Screens, beide Profile,
+  0 JS-Fehler), tests/menu-contrast-fixes.test.ts 6/6, Suite 1933 Tests grün, build rc=0,
+  Abnahme-Shots shots/abnahme/m10-menu-contrast-* (12 Stück inkl. 3x-Zoom-Crops).
+
+Abnahme-Kriterien erfüllt: alle betroffenen Zeilen ≥ 4.5, Footer-Overlap 0 px, tsc/build/test
+grün, sonstige Optik unverändert (nur Farb-Indices + die zwei dokumentierten Positions-Fixes).
+Doku: docs/lanes/m10-menu-contrast-fixes.md (Vorher/Nachher + Belegpfade + Abweichungen).
