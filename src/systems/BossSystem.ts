@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { bossSpawnDistance } from "../logic/scaling";
 import { BOSSES } from "../data/bosses";
 import { ENEMIES } from "../data/enemies";
@@ -188,7 +189,10 @@ export class BossSystem {
     const def = bossEnemyDef(index);
     const angle = this.rng.next() * Math.PI * 2;
     // M8: Sichtbar im View, aber nicht auf dem Spieler; Abstand skaliert mit der View-Hoehe.
-    const distance = bossSpawnDistance(this.camera.width, this.camera.height);
+    // #4658: Die sichtbare WELT ist bei jedem Render-Teiler GAME_WIDTH x GAME_HEIGHT
+    // (Zoom 1/s kompensiert den W/s-Viewport, enforceCameraProjection). camera.width
+    // ist bei Teiler s nur W/s und wuerde den Spawn-Ring halbieren/dritteln.
+    const distance = bossSpawnDistance(GAME_WIDTH, GAME_HEIGHT);
     const x = Phaser.Math.Clamp(playerX + Math.cos(angle) * distance, 30, 4096 - 30);
     const desiredY = playerY + Math.sin(angle) * distance;
     // M10 A10: Spawn-Komposition. Das volle Sprite-Frame (inkl. transparenter
@@ -196,16 +200,24 @@ export class BossSystem {
     // Ring-Winkel wird gespiegelt; wenn auch das nicht reicht, wird die
     // Vertikale minimal auf die sichere Oberkante geschoben. X bleibt erhalten.
     const camTop = this.camera.scrollY;
+    // #4658: Spawn-Komposition rechnet in LOGISCHEN Screen-Pixeln (Skala-1-
+    // Aequivalent, HUD-Muster Run.ts/UI.ts -> bossHudRects(GAME_WIDTH)).
+    // camTopLog = Welt-Midpoint - GAME_HEIGHT/2 ist teilerunabhaengig, denn
+    // scrollY + camera.height/2 ist der Midpoint bei jedem Teiler — die
+    // Komposition liefert bei Teiler 1..3 bitgleiche Welt-Y. camera.width/height
+    // waeren W/s x H/s und haetten safeTop/Banner-Kette geschrumpft sowie den
+    // y-Vergleich (Welt-Offset vs. logischer Screen) um H*(s-1)/(2s) verschoben.
+    const camTopLog = camTop + this.camera.height / 2 - GAME_HEIGHT / 2;
     const composedScreenY = composedBossCenterY(
-      desiredY - camTop,
-      playerY - camTop,
+      desiredY - camTopLog,
+      playerY - camTopLog,
       index,
-      this.camera.width,
-      this.camera.height,
-      camTop,
+      GAME_WIDTH,
+      GAME_HEIGHT,
+      camTopLog,
       BOSS_INTRO_ZOOM,
     );
-    let y = Phaser.Math.Clamp(camTop + composedScreenY, 30, 4096 - 30);
+    let y = Phaser.Math.Clamp(camTopLog + composedScreenY, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {
       bossIndex: index,
       radius: def.radius,
