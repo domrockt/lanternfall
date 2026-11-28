@@ -8,6 +8,7 @@ import type { Run } from "./scenes/Run";
 import { getAudio, applyOptions } from "./audio/AudioSystem";
 import { getSettings, changeSetting } from "./audio/settings";
 import { readMeta, writeMeta, emptyMeta } from "./logic/meta";
+import { installTelemetry } from "./telemetry";
 
 /**
  * M10 Android/ARM: WebGL-Kontext, Extensions, MAX_TEXTURE_SIZE und Textur-Inventar
@@ -373,6 +374,17 @@ export function installDebugApi(game: Phaser.Game): void {
 
   (window as unknown as { __lf: typeof api }).__lf = api;
   (window as unknown as { __game: Phaser.Game }).__game = game;
+
+  // M10 Device-Telemetry (Lane m10-device-telemetry): nur mit ?telemetry=1 oder
+  // im APK aktiv; installTelemetry gibt sonst null zurueck. Auf READY warten,
+  // damit "lf-render-info" (renderer/vendor) bereits im Registry liegt — Statics
+  // werden genau einmal pro Lauf gelesen.
+  game.events.once(Phaser.Core.Events.READY, () => {
+    installTelemetry(
+      game,
+      () => game.registry.get("lf-render-info") as { renderer?: string; vendor?: string } | undefined,
+    );
+  });
 }
 
 function finiteNumber(name: string, value: number): number {
