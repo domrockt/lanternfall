@@ -18805,7 +18805,7 @@
       "id": 13385,
       "title": "m10-evo-element-guard K2: Farb-Signatur-Assertions je Evo",
       "description": "Im selben Probe-Skript Farb-Signaturen je Evo aus den Standbild-Crops: Paletten-Histogramm (nearest-PAL-Mapping via decodePng), Zielbaender: Phoenix=Feuer-Orange (PAL 14-22, Kern 17-21), Winter=Eisblau (6-11), Soulpyre=tuerkis/weiß (7-13), Gewittersiegel=Blitz-Weiß-Peaks (12-13), Zornpendel=Glut/Rot (14-17+23-27), Dornensturm=Gruen (28-31) + kein flaechnaiges Raster (Zeilengleichmaessigkeit). Schwellen werden aus den aktuellen abgenommenen Standbildern (K1-Belege) kalibriert, NICHT aus alten SwiftShader-Belegen. FAIL einer Signatur -> kein Fix im Spielcode (FX-Dateien fremd), Befund + Hebel in Lane-Doku. AK: Kalibrierte Schwellen in shots/m10-evo-element-guard.json, 6/6 Signaturen GREEN oder FAIL dokumentiert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-evo-element-guard",
       "notes": [
         {
@@ -18817,20 +18817,31 @@
           "at": "2026-11-28T17:17:27Z",
           "by": "build",
           "text": "Supervisor-Steer bestätigt und bereits befolgt: Kalibrierung lief als CALIB-Einmallauf (CALIB=1 gab Ist-Anteile + Vorschlag in einem Durchlauf aus), Schwellen = min-über-2-Läufe × 0.4 als fester Sicherheitsabstand, GENAU EIN Edit am Guard-Skript, danach ein Verifikationslauf: 6/6 Evo-Signaturen GREEN (phoenix/winter/soulpyre/gewittersiegel/zornpendel/dornensturm). Kein weiteres Hand-Tuning. Befund Baseline-vs-Waffenlicht (FX-Budget) kommt in die Lane-Doku. Commit folgt als #13385."
+        },
+        {
+          "at": "2026-11-28T17:17:33Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: Signatur = absoluter Ziel-Farbband-Anteil im Spieler-Crop (Seed 7, Teleport 2048/2048, deterministisch). Schwellen aus CALIB-Einmallauf uebernommen (min-Ist x0.4; soulpyre.noFire max=0.06, Umgebungsglut ~4.5% dokumentiert; dornensturm grid-CV >= 0.1 gegen Raster-Overlay). Verifikationslauf: 6/6 GREEN, 0 JS-Fehler, Renderer Mesa Intel RPL-S. Commit 63b89dee #13385."
         }
       ],
       "created": "2026-11-28T16:42:00Z",
-      "updated": "2026-11-28T17:17:27Z"
+      "updated": "2026-11-28T17:17:33Z"
     },
     {
       "id": 13386,
       "title": "m10-evo-element-guard K3: tests/evo-element-guard.test.ts (Signaturen-Regression)",
       "description": "Guard-Test liest die committeten Signaturen-JSONs (Muster run-determinism-Test) und prueft je Evo: Ziel-Farbband-Anteil >= kalibrierte Schwelle, Renderer-String kein SwiftShader, Datei vollstaendig (6 Evos x 2 Aufloesungen). Source-Guard: Probe-Skript + Palette-Band-Definitionen vorhanden. AK: npx vitest run tests/evo-element-guard.test.ts gruen, Suite gruen, tsc rc=0.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-evo-element-guard",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:17:33Z",
+          "by": "build",
+          "text": "todo → doing: K3 angenommen: tests/evo-element-guard.test.ts (Signaturen-JSON-Guard + Source-Guard)."
+        }
+      ],
       "created": "2026-11-28T16:42:00Z",
-      "updated": "2026-11-28T16:42:00Z"
+      "updated": "2026-11-28T17:17:33Z"
     },
     {
       "id": 13387,
