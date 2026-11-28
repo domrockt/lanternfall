@@ -8830,22 +8830,37 @@
       "id": 7479,
       "title": "m10-results-followup K2: belegte Maengel in Results.ts fixen + tests/results-followup.test.ts",
       "description": "Nur Results.ts (logic/results.ts nur lesen). Harte Assertions: 0 Ueberlappungen in allen 3 Formaten (logische Views aus computeView), Zeilenumbruch an Wortgrenzen. Abnahme: npx vitest run tests/results-followup.test.ts gruen, tsc --noEmit gruen.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T01:31:01Z",
           "by": "build",
           "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T01:42:39Z",
+          "by": "build",
+          "text": "doing → done: lane #7479, Commit fcca742: Fixes + 12 Assertions, Suite 1103/1103, build rc=0, commit-gate PASS"
+        },
+        {
+          "at": "2026-11-28T01:42:42Z",
+          "by": "build",
+          "text": "done → done: lane #7479, Commit fcca742: Fixes + 12 Assertions, Suite 1103/1103, build rc=0, commit-gate PASS"
+        },
+        {
+          "at": "2026-11-28T01:42:44Z",
+          "by": "build",
+          "text": "done → done: lane #7479, Commit fcca742: Fixes + 12 Assertions, Suite 1103/1103, build rc=0, commit-gate PASS"
         }
       ],
       "created": "2026-11-28T01:26:53Z",
-      "updated": "2026-11-28T01:31:01Z"
+      "updated": "2026-11-28T01:42:44Z"
     },
     {
       "id": 7480,
       "title": "m10-results-followup K3: After-Belege + art-director >= 4/5 (streng)",
       "description": "After-JSON + Shots aller 3 Formate (Victory+Defeat), art-director-Subagent mit strenger Latte >= 4/5 gegen die After-Shots. Abnahme: PASS >= 4/5 belegt in docs/lanes/m10-results-followup.md.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T01:33:48Z",
@@ -8856,19 +8871,35 @@
           "at": "2026-11-28T01:37:27Z",
           "by": "build",
           "text": "After-Messung 6/6 PASS (0 Overlaps/0 Clipping/0 JS-Fehler, iGPU RPL-S): Titel->Untertitel 4px (vorher 2), Bodenluft 4px (vorher 2); after.json + 6 Shots erzeugt; art-director-Subagent laeuft (streng >=4/5); Lead-Sichtpruefung: Ä/Ü korrekt, Pixel-Grid 3x ganzzahlig"
+        },
+        {
+          "at": "2026-11-28T01:42:39Z",
+          "by": "build",
+          "text": "doing → done: lane #7480, Commit c4381aa: after 6/6 PASS (0 Overlaps/0 Clipping, iGPU), art-director streng PASS 4,5/5"
+        },
+        {
+          "at": "2026-11-28T01:42:42Z",
+          "by": "build",
+          "text": "done → done: lane #7480, Commit c4381aa: after 6/6 PASS (0 Overlaps/0 Clipping, iGPU), art-director streng PASS 4,5/5"
         }
       ],
       "created": "2026-11-28T01:26:53Z",
-      "updated": "2026-11-28T01:37:27Z"
+      "updated": "2026-11-28T01:42:42Z"
     },
     {
       "id": 7481,
       "title": "m10-results-followup K4: docs/lanes + .lane-done",
       "description": "docs/lanes/m10-results-followup.md (Vorher/Nachher, Messwerte, Restpunkte), .lane-done im Worktree, git status --ignored aufgeraeumt. Abnahme: beide Dateien committed.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:42:39Z",
+          "by": "build",
+          "text": "todo → done: lane #7481, Commit a08af7a: docs/lanes + .lane-done; Lane m10-results-followup fertig"
+        }
+      ],
       "created": "2026-11-28T01:26:53Z",
-      "updated": "2026-11-28T01:26:53Z"
+      "updated": "2026-11-28T01:42:39Z"
     }
   ]
 }
