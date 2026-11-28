@@ -1,0 +1,20 @@
+# Lane m10-verify-outputs-hygiene — DONE (2026-11-28)
+
+Befund E-4 (Nachabnahme E) gefixt: Verify-Skripte schreiben keine Neben-Outputs mehr in shots/.
+
+- K1 (#10008, 3008c7a8): E-4 reproduziert + Attribution präzisiert — verify-final schrieb
+  shots/final-{options-mute.png,results-victory.png,verify.json} (ungetrackt); der Overwrite
+  GETRACKTER Belege stammt von tests/passive-stack.test.ts (top-level writeFileSync bei jedem
+  npm test → shots/m10-passive-math-*.json, Hash-Delta belegt, restored). F-2 an Test-Owner gemeldet.
+- K2 (#10009, 10c220cd): verify-final.mjs schreibt timestamped nach ~/games/.evidence/verify-final/
+  (Override LF_VERIFY_OUTPUT_DIR); verify-robust.mjs (schrieb vorher nichts) bekommt dasselbe
+  Evidence-Muster. verify:final bleibt 7/7 PASS; git status shots/ nach Lauf leer.
+  F-1: verify-robust scaling-FAIL bereits auf Baseline vorhanden (nicht von dieser Lane).
+- K3 (#10010, 789523bf): Guard-Test tests/verify-outputs-hygiene.test.ts 6/6 grün (kein
+  Schreibziel unter shots/, .evidence-Pfad, timestamped); Nachher-Lauf sauber;
+  1704/1704 Tests, npm run build grün, tsc rc=0.
+- verify-input.mjs unangetastet (Besitz m10-pad-start-pause-r2; schreibt selbst noch shots/ —
+  als Bedarf beim Owner dokumentiert, docs/lanes/m10-verify-outputs-hygiene.md).
+- Abnahme: alle 4 Kriterien PASS (verify-final 7/7, shots/ 0 Änderungen, Guard-Test grün, tsc+test+build grün).
+- Kontrolleure: reviewer + test-auditor PASS (Urteile in Karten-Notizen #10008-#10010).
+- Belege: ~/games/.evidence/m10-verify-outputs-hygiene/ (k1-before.json, k1-*/k2-*/k3-*.log).
