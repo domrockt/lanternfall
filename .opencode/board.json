@@ -15747,16 +15747,21 @@
       "id": 11658,
       "title": "m10-bundle-split K1: Vorher-Beleg (Build-Log + Chunk-Audit before.json)",
       "description": "E-3 (docs/lanes/m10-acceptance-refresh-e.md, low). Vorher-Zustand dokumentieren: npm run build Log + Chunk-Größen; Audit-Skript scripts/m10-bundle-audit.mjs um Deprecation-Warn-Erkennung ergänzen; Report nach ~/games/.evidence/m10-bundle-split/before.json. AK: Audit-JSON existiert, Build-Status im Log erfasst, Commit.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T11:36:50Z",
           "by": "build",
           "text": "todo → doing: m10-bundle-split K1 gestartet: Vorher-Audit (Build-Log + Chunk-Report). Befund: Größenwarnung ist durch Lane m10-bundle-chunk-fix (#9987) bereits weg; verbleibt Deprecation-WARN advancedChunks → codeSplitting."
+        },
+        {
+          "at": "2026-11-28T11:37:31Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig, Commit c6df267d. Beleg: ~/games/.evidence/m10-bundle-split/before.json — chunk_warning:false (bereits durch m10-bundle-chunk-fix #9987 behoben), deprecation_warning:true, Smoke sceneLoaded:true / 0 JS-Fehler. Audit-Skript erfasst jetzt stdout+stderr (Vite-WARN liegt auf stderr)."
         }
       ],
       "created": "2026-11-28T11:36:41Z",
-      "updated": "2026-11-28T11:36:50Z"
+      "updated": "2026-11-28T11:37:31Z"
     },
     {
       "id": 11659,
