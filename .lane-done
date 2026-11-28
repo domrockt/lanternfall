@@ -1,0 +1,28 @@
+# Lane m10-pause-footer-contrast — done (2026-11-28)
+
+Abschluss des art-director-FAIL-Tracks aus m10-menu-art-resight (FAIL 4,4/5):
+die 2 Pause-Footer-Hints in `src/scenes/UI.ts` createPauseUI() aufgehellt —
+NUR 2 Farbkonstanten (Optik-Freeze Dom 2026-11-28 10:00Z eingehalten):
+- Zeile 1 "ESC = WEITER - O = OPTIONEN - Q = AUFGABE": C.mist (#6B7C86, WCAG 4,15) -> C.paleMist (#8FA0A6, ~6,6)
+- Zeile 2 "PFEILE + ENTER ODER MAUS": C.fog (#4E5F6E, WCAG 2,72) -> C.bone (#B8C4C2, ~10,0)
+(Panel #101724 unverändert; Vorher-Medians lt. resight-Scan, beide Profile identisch.)
+
+Belege:
+- K1: scripts/m10-menu-quality.mjs --tag=after-pause-footer (Lane-Stand):
+  pause kontrastFails=0 in beiden Profilen (640x360@2, 960x540@1), jsErrors=0,
+  Overlaps 0, alle anderen Screens 0 Fails (keine Regression).
+  Renderer: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) — KEIN SwiftShader.
+  JSON/PNGs: ~/games/.evidence/m10-pause-footer-contrast/
+- K2: tests/menu-contrast-fixes.test.ts um beide Zeilen erweitert (Muster der
+  Menü-Kontrast-Guards); npm test 2157 grün, build rc=0. Fremd-Datei
+  tests/ui-pause-quality.test.ts (alter Out-of-Scope-Pin) aktualisiert —
+  Anfrage in /home/ai/games/.dispatch/requests.md (11:34Z).
+- K3: shots/abnahme/m10-pause-footer-contrast-{640,960}-pause.png (2x-nearest);
+  art-director: PASS 4,7/5 (Schwelle 4,5), "muss neu: nichts" — FAIL-Track
+  m10-menu-quality-55 abgeschlossen. Urteil in docs/lanes/m10-pause-footer-contrast.md.
+- K4: Doku docs/lanes/m10-pause-footer-contrast.md (Vorher/Nachher + Evidence-Pfade).
+
+Karten: #11602 (Fix+Scan+Guard), #11603 (Shots+Sichtung), #11604 (Doku+done).
+Commits: dda564a7 (#11602), #11603-Shots, dieser Commit (#11604).
+Nicht in der Lane (bewusst): kosmetische Options-960-Nineslice-Kante; Font-Ö
+("PHOENIXSCHWARM") + Wortumbruch "SEELENLEU/CHTFEUER" (Font/Umbruch-Scope).

@@ -15457,10 +15457,16 @@
       "id": 11603,
       "title": "m10-pause-footer-contrast K3: Abnahme-Shots + art-director-Sichtung",
       "description": "shots/abnahme/m10-pause-footer-contrast-{640,960}-pause.png (2x-nearest wie resight), art-director-Sichtung NUR Pause-Screen, Ziel >= 4,5 (Abschluss des FAIL-Tracks m10-menu-quality-55). Urteil + Begruendung in die Lane-Doku.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:34:39Z",
+          "by": "build",
+          "text": "todo → doing: Abnahme-Shots liegen (2x-nearest), Sichtung startet."
+        }
+      ],
       "created": "2026-11-28T11:31:45Z",
-      "updated": "2026-11-28T11:31:45Z"
+      "updated": "2026-11-28T11:34:39Z"
     },
     {
       "id": 11604,
