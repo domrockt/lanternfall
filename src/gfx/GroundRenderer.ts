@@ -85,6 +85,91 @@ export function chunkInstallDue(
   return msSinceLastInstall >= intervalMs;
 }
 
+/**
+ * M10-ground-chunk-budget (#12436): Frame-Budget fuer Chunk-Installs. Der
+ * rAF-Frame, der eine Chunk-Textur uploaded (texture.refresh -> GPU-Upload),
+ * ist am Geraet der wiederkehrende Spike-Kandidat (Beleg K1 dieser Lane +
+ * m10-frame-tail-batching: Tail Compositor-seitig). Liegt der letzte Frame
+ * schon ueber dem Budget, wird der Install in nachfolgende Frames geschoben —
+ * aber nie laenger als CHUNK_INSTALL_MAX_DEFER_FRAMES hintereinander (Stillstands-
+ * Schutz: der 4. Frame installiert erzwingend). Steady-State ohne Budget-Druck
+ * bleibt sofort (chunkInstallDue).
+ */
+export const CHUNK_INSTALL_FRAME_BUDGET_MS = 22;
+export const CHUNK_INSTALL_MAX_DEFER_FRAMES = 3;
+
+export interface ChunkInstallGateResult {
+  install: boolean;
+  /** Neue Zahl der aufeinanderfolgenden Defer-Frames (fuer den naechsten Frame). */
+  defers: number;
+}
+
+/**
+ * Debug/Messung (#12436): Laufzeit-Override des Gate-Parameters fuer das
+ * Tune-Skript (scripts/tune-chunk-budget.mjs). Im Spiel ungesetzt -> die
+ * Konstanten oben gelten. Kein Spielcode schreibt hier hinein.
+ */
+export const chunkGateOverride: { budgetMs?: number; maxDefers?: number; intervalMs?: number } = {};
+
+// Mess-Hook: das Tune-Skript setzt Kandidatenwerte ueber window.__lfChunkGate.
+if (typeof globalThis !== "undefined") {
+  (globalThis as { __lfChunkGate?: typeof chunkGateOverride }).__lfChunkGate = chunkGateOverride;
+}
+
+/** Rein/testbar: Install-Gate mit Frame-Budget und Stillstands-Schutz. */
+export function chunkInstallGate(
+  readyCount: number,
+  msSinceLastInstall: number,
+  lastFrameDtMs: number,
+  defers: number,
+  intervalMs: number = CHUNK_INSTALL_MIN_INTERVAL_MS,
+  budgetMs: number = CHUNK_INSTALL_FRAME_BUDGET_MS,
+  maxDefers: number = CHUNK_INSTALL_MAX_DEFER_FRAMES,
+): ChunkInstallGateResult {
+  if (readyCount <= 0) return { install: false, defers };
+  const force = defers >= maxDefers;
+  if (!force && lastFrameDtMs > budgetMs) return { install: false, defers: defers + 1 };
+  if (force) return { install: true, defers: 0 };
+  if (readyCount === 1) return { install: true, defers: 0 };
+  if (msSinceLastInstall >= intervalMs) return { install: true, defers: 0 };
+  return { install: false, defers };
+}
+
+/** Pooled Chunk-Canvas-Textur (Klassen-Schluessel = Animationsstufen-Zahl). */
+export interface PooledChunkTexture {
+  key: string;
+  frames: number;
+}
+
+/** Pool-Cap je Klasse (1-Stufen-Land 256 KB, 3-Stufen-Wasser 768 KB Canvas). */
+export const CHUNK_TEXTURE_POOL_CAP_PER_CLASS = 6;
+
+/** Rein/testbar: nimmt eine passende Textur aus dem Pool (LIFO) oder null. */
+export function poolPick(
+  pool: Map<number, PooledChunkTexture[]>,
+  frames: number,
+): PooledChunkTexture | null {
+  const list = pool.get(frames);
+  const entry = list?.pop();
+  return entry ?? null;
+}
+
+/** Rein/testbar: legt eine Textur im Pool ab (Cap je Klasse). false = verworfen. */
+export function poolStore(
+  pool: Map<number, PooledChunkTexture[]>,
+  entry: PooledChunkTexture,
+  cap: number = CHUNK_TEXTURE_POOL_CAP_PER_CLASS,
+): boolean {
+  let list = pool.get(entry.frames);
+  if (!list) {
+    list = [];
+    pool.set(entry.frames, list);
+  }
+  if (list.length >= cap) return false;
+  list.push(entry);
+  return true;
+}
+
 interface ChunkEntry {
   image: Phaser.GameObjects.Image;
   key: string;
@@ -224,6 +309,12 @@ export class GroundRenderer {
   private readonly ready: ReadyChunk[] = [];
   /** M10-frame-tail-batching: Sim-Zeit des letzten Chunk-Installs (Glättung). */
   private lastInstallMs = Number.NEGATIVE_INFINITY;
+  /** M10-ground-chunk-budget (#12436): Canvas-Textur-Pool gegen Allokations-Spikes. */
+  private readonly chunkTexturePool = new Map<number, PooledChunkTexture[]>();
+  /** M10-ground-chunk-budget (#12436): aufeinanderfolgende Defer-Frames des Gates. */
+  private installDefers = 0;
+  /** M10-ground-chunk-budget (#12436): Echtzeit des letzten update()-Aufrufs (Frame-Budget). */
+  private lastUpdateRealMs = Number.NEGATIVE_INFINITY;
   /** Sync-Fallback (kein Worker): höchstens ein Chunk pro Frame. */
   private syncBudget = 1;
   private fireflies: Firefly[] = [];
@@ -314,22 +405,35 @@ export class GroundRenderer {
         this.queue.push({ cx, cy, key });
       }
     }
+    // #12436: echter Frame-Abstand (Echtzeit) fuer das Install-Budget-Gate.
+    const realNow = performance.now();
+    const frameDtMs = this.lastUpdateRealMs === Number.NEGATIVE_INFINITY ? 0 : Math.max(0, realNow - this.lastUpdateRealMs);
+    this.lastUpdateRealMs = realNow;
     this.dispatch(centerX, centerY);
-    this.finalizeReady(centerX, centerY, timeMs);
+    this.finalizeReady(centerX, centerY, timeMs, frameDtMs);
 
     // Sync-Fallback: höchstens einen Chunk pro Frame, damit kein Totalausfall.
+    // #12436: dasselbe Budget-Gate wie der Worker-Pfad (kein Stillstand: max.
+    // 3 Defer-Frames, dann erzwingender Install).
     if (!this.worker) {
-      while (this.syncBudget > 0 && this.queue.length > 0) {
-        const job = this.queue.shift()!;
-        this.syncBudget -= 1;
-        const live = job.cx >= minCx && job.cx <= maxCx && job.cy >= minCy && job.cy <= maxCy;
-        if (live && !this.chunks.has(job.key)) this.createChunk(job.cx, job.cy, job.key);
-        this.requested.delete(job.key);
+      const gate = chunkInstallGate(
+        this.queue.length, 0, frameDtMs, this.installDefers, 0,
+      );
+      this.installDefers = gate.defers;
+      if (gate.install) {
+        while (this.syncBudget > 0 && this.queue.length > 0) {
+          const job = this.queue.shift()!;
+          this.syncBudget -= 1;
+          const live = job.cx >= minCx && job.cx <= maxCx && job.cy >= minCy && job.cy <= maxCy;
+          if (live && !this.chunks.has(job.key)) this.createChunk(job.cx, job.cy, job.key);
+          this.requested.delete(job.key);
+        }
+        this.syncBudget = 1;
       }
-      this.syncBudget = 1;
     }
 
-    // Ferne Chunks freigeben (Textur + Bilder), gegen Speicherwachstum.
+    // Ferne Chunks freigeben (Bilder), Canvas-Textur in den Pool (#12436),
+    // gegen Speicherwachstum.
     for (const [key, entry] of this.chunks) {
       const [cxStr, cyStr] = key.split(",");
       const cx = Number(cxStr);
@@ -342,7 +446,9 @@ export class GroundRenderer {
           if (idx >= 0) this.ripples.splice(idx, 1);
           r.img.destroy();
         }
-        this.scene.textures.remove(entry.key);
+        if (!poolStore(this.chunkTexturePool, { key: entry.key, frames: entry.frames })) {
+          this.scene.textures.remove(entry.key); // Cap voll: Key freigeben (kein Leak)
+        }
         this.chunks.delete(key);
       }
     }
@@ -680,10 +786,16 @@ export class GroundRenderer {
   }
 
   /** Fertige Worker-Bitmaps einbauen — installs/Uploads über die Zeit glätten. */
-  private finalizeReady(centerX: number, centerY: number, timeMs: number): void {
+  private finalizeReady(centerX: number, centerY: number, timeMs: number, frameDtMs: number): void {
     // M10-frame-tail-batching: Obergrenze je Frame (1 Install) + Mindestabstand
-    // bei Rueckstau (chunkInstallDue); 1 fertiger Chunk im Steady-State bleibt sofort.
-    if (!chunkInstallDue(this.ready.length, timeMs - this.lastInstallMs)) return;
+    // bei Rueckstau (chunkInstallDue); M10-ground-chunk-budget (#12436):
+    // zusaetzlich Frame-Budget-Gate mit Stillstands-Schutz (max. 3 Defer-Frames).
+    const gate = chunkInstallGate(
+      this.ready.length, timeMs - this.lastInstallMs, frameDtMs, this.installDefers,
+      chunkGateOverride.intervalMs, chunkGateOverride.budgetMs, chunkGateOverride.maxDefers,
+    );
+    this.installDefers = gate.defers;
+    if (!gate.install) return;
     this.ready.sort((a, b) => {
       const da = (a.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (a.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
       const db = (b.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (b.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
@@ -693,8 +805,9 @@ export class GroundRenderer {
     this.lastInstallMs = timeMs;
     if (this.counters) this.counters.readyInstalled++;
     const textureKey = `chunk_${job.key.replace(",", "_")}`;
-    if (this.buildChunkTexture(textureKey, job.bitmaps, job.cx, job.cy)) {
-      this.buildChunk(job.cx, job.cy, job.key, textureKey);
+    const builtKey = this.buildChunkTexture(textureKey, job.bitmaps, job.cx, job.cy);
+    if (builtKey) {
+      this.buildChunk(job.cx, job.cy, job.key, builtKey);
     }
     this.requested.delete(job.key);
   }
@@ -703,16 +816,32 @@ export class GroundRenderer {
    * Chunk-Textur mit allen Animationsstufen: ein Canvas der Hoehe
    * CHUNK_SIZE * frames, Stufe f liegt bei y = f * CHUNK_SIZE (Frames f0..).
    * Ein drawImage je Stufe, dann schaltet setFrame ohne Texturwechsel um.
+   * #12436: Textur kommt bevorzugt aus dem Pool (gleiche Klasse = gleiche
+   * Frames-Zahl) statt frisch aus createCanvas — Rueckgabe ist der TATSAECHLICH
+   * genutzte Textur-Key (Pool-Textur behaelt ihren alten Key) oder null.
    */
-  private buildChunkTexture(textureKey: string, bitmaps: ImageBitmap[], cx: number, cy: number): boolean {
+  private buildChunkTexture(textureKey: string, bitmaps: ImageBitmap[], cx: number, cy: number): string | null {
     const frames = Math.max(1, bitmaps.length);
-    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+    let texture: Phaser.Textures.CanvasTexture | null = null;
+    let effectiveKey = textureKey;
+    const pooled = poolPick(this.chunkTexturePool, frames);
+    if (pooled) {
+      const existing = this.scene.textures.get(pooled.key);
+      if (existing && existing.source && (existing as Phaser.Textures.CanvasTexture).getContext) {
+        texture = existing as Phaser.Textures.CanvasTexture;
+        effectiveKey = pooled.key;
+      }
+    }
     if (!texture) {
-      for (const b of bitmaps) b.close();
-      return false;
+      texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+      if (!texture) {
+        for (const b of bitmaps) b.close();
+        return null;
+      }
     }
     const ctx = texture.getContext();
     ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, CHUNK_SIZE, CHUNK_SIZE * frames);
     for (let f = 0; f < frames; f++) {
       const b = bitmaps[f];
       if (b) ctx.drawImage(b, 0, f * CHUNK_SIZE);
@@ -722,7 +851,7 @@ export class GroundRenderer {
     for (let f = 0; f < frames; f++) {
       if (!texture.has(`f${f}`)) texture.add(`f${f}`, 0, 0, f * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE);
     }
-    return true;
+    return effectiveKey;
   }
 
   /** Sync-Fallback (kein Worker): alle Stufen direkt auf dem Main-Thread malen. */
@@ -739,6 +868,7 @@ export class GroundRenderer {
     }
     const ctx = texture.getContext();
     ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, CHUNK_SIZE, CHUNK_SIZE * frames);
     for (let f = 0; f < frames; f++) {
       ctx.save();
       ctx.translate(0, f * CHUNK_SIZE);
@@ -757,7 +887,11 @@ export class GroundRenderer {
   private buildChunk(cx: number, cy: number, key: string, textureKey: string): void {
     if (this.chunks.has(key)) {
       if (this.counters) this.counters.chunkRebuilds++;
-      this.scene.textures.remove(textureKey);
+      // #12436: frisch gebaute Textur ist ungenutzt — in den Pool statt remove.
+      const pooledFrames = Math.max(1, (this.scene.textures.get(textureKey)?.frameTotal ?? 2) - 1);
+      if (!poolStore(this.chunkTexturePool, { key: textureKey, frames: pooledFrames })) {
+        this.scene.textures.remove(textureKey); // Cap voll: Key freigeben (kein Leak)
+      }
       return;
     }
     if (this.counters) this.counters.chunkBuilds++;
@@ -966,6 +1100,14 @@ export class GroundRenderer {
     }
     this.chunks.clear();
     this.ripples.length = 0;
+    // #12436: Pool-Texturen beim Zerstoeren freigeben.
+    for (const list of this.chunkTexturePool.values()) {
+      for (const pooled of list) {
+        if (this.scene.textures.exists(pooled.key)) this.scene.textures.remove(pooled.key);
+      }
+    }
+    this.chunkTexturePool.clear();
+    this.installDefers = 0;
     this.glowLayer?.destroy(true);
     this.fogLayer?.destroy(true);
     this.glowLayer = undefined;

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12873,
+  "next": 12878,
   "cards": [
     {
       "id": 1,
@@ -17818,6 +17818,88 @@
       ],
       "created": "2026-11-28T14:55:10Z",
       "updated": "2026-11-28T15:07:50Z"
+    },
+    {
+      "id": 12873,
+      "title": "m10-ground-chunk-budget K1: Vorher-Messung (Chunk-Ereignisse vs worstFrame)",
+      "description": "Abnahmekriterium: scripts/m10-ground-chunk.mjs misst im M25-Harness (skipTo 1490, Top-up 300, 6 Evos) je Frame dt + Chunk-Events (requested/installs/canvas-Erzeugung, Texturanzahl, Heap); JSON + Befund (Korrelation worstFrame vs Chunk-Install/GC) in docs/lanes/m10-ground-chunk-budget.md + Beleg in ~/games/.evidence/m10-ground-chunk-budget/; Renderer-String enthalten. Commit M10-...: #K1.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:40:14Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-ground-chunk-budget übernommen: K1 Vorher-Messung startet (Baseline vor Fix)."
+        },
+        {
+          "at": "2026-11-28T13:44:49Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: before-local.json (40s M25, Renderer-String) — Worst-Frames korrelieren mit Top-up+GC, NICHT mit Chunk-Installs; Commit 6c731c55."
+        },
+        {
+          "at": "2026-11-28T15:16:33+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12435, Merge branch m10-ground-chunk-budget"
+        }
+      ],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:44:49Z"
+    },
+    {
+      "id": 12874,
+      "title": "m10-ground-chunk-budget K2: Fix Chunk-Budget/-Upload im Frame",
+      "description": "Abnahmekriterium: GroundRendererChunk-Uploads/Canvas-Allokationen geglättet (Texture-Pool gegen createCanvas-GC-Spikes und/oder Frame-Budget-Gate), Terrain-Ausgabe pixelidentisch, minimalinvasiv, keine fremden Dateien (nur src/gfx/GroundRenderer.ts). tsc grün, gezielte Tests grün. Commit M10-...: #K2.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:44:49Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: Canvas-Textur-Pool + Frame-Budget-Gate in GroundRenderer.ts."
+        },
+        {
+          "at": "2026-11-28T13:50:46Z",
+          "by": "build",
+          "text": "Supervisor-Steer befolgt: GroundRenderer-Edits gestoppt, K2-Stand wird jetzt committet (Pool + Gate), dann gemessene Iterationen mit flock npm run perf / m10-ground-chunk.mjs + Pixel-Scan (verify:terrain) nach jeder Änderung."
+        },
+        {
+          "at": "2026-11-28T14:19:54Z",
+          "by": "build",
+          "text": "Supervisor-Steer befolgt: K2 (97030f7f) + K3-Tests (f5d7fc69) sind committet, Terrain bitgleich (verify:terrain 0 schwarze Regionen in 3 Formaten). Hand-Tuning gestoppt: jetzt scripts/tune-chunk-budget.mjs (Kandidaten-Grid BudgetMs x MaxDefers, je kurzer Walk-Harness-Lauf, p99 + Schwarz-Pixel-Check automatisch, Limit 12)."
+        },
+        {
+          "at": "2026-11-28T15:16:33+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12874, Merge branch m10-ground-chunk-budget (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T14:19:54Z"
+    },
+    {
+      "id": 12875,
+      "title": "m10-ground-chunk-budget K3: Guard-Tests (Budget, bitgleich, kein Stillstand, keine Löcher)",
+      "description": "Abnahmekriterium: tests/ground-chunk-budget.test.ts — Chunk-Erzeugung deckelbar (rein getestet), Terrain-Ergebnis bitgleich (Pixel-Scan 0 schwarze Flächen nach Muster m10-terrain-hole-guard), kein Chunk-Stillstand (Rückstau wird vollständig abgebaut / Verlustquote 0). Suite grün. Commit M10-...: #K3.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:40:13Z"
+    },
+    {
+      "id": 12876,
+      "title": "m10-ground-chunk-budget K4: Nachher-Messung worstFrame p99",
+      "description": "Abnahmekriterium: gleiche Methode/Skript wie K1 (flock), Vorher/Nachher-Vergleich: wiederkehrende 33–34-ms-Spikes beseitigt bzw. p99 < 20 ms (lokaler Lauf) — Renderer-String im Beleg; Gerät-Nachmessung als Merge-Follow-up dokumentiert. JSON in ~/games/.evidence/. Commit M10-...: #K4.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:40:13Z"
+    },
+    {
+      "id": 12877,
+      "title": "m10-ground-chunk-budget K5: Doku + .lane-done",
+      "description": "Abnahmekriterium: docs/lanes/m10-ground-chunk-budget.md vollständig (Befunde, Messwerte Vorher/Nachher, offene Punkte), git status --ignored geprüft, .lane-done mit 5–10 Zeilen Summary committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:40:13Z"
     }
   ]
 }
