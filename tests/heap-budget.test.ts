@@ -84,7 +84,7 @@ describe("evaluateHeapGate — Tor-Definition (HARD endMB vs Minute 1, SOFT Fens
   it("Randfall: genau +15 % besteht, +15,1 % failt", () => {
     const m1 = 32;
     expect(evaluateHeapGate({ minute1MB: m1, endMB: 36.8, minutePeaks: [] }).hardPass).toBe(true); // exakt +15 %
-    expect(evaluateHeapGate({ minute1MB: m1, endMB: 36.9, minutePeaks: [] }).hardPass).toBe(false); // +15,6 %
+    expect(evaluateHeapGate({ minute1MB: m1, endMB: 36.9, minutePeaks: [] }).hardPass).toBe(false); // +15,3 % (36,9−32)/32
   });
 
   it("Weicher Rand: max Peak je 5-min-Fenster aus den rohen Minuten-Peaks", () => {
