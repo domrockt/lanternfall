@@ -267,8 +267,13 @@ export function enemyFrameGrids(index: number): Grid[] {
  * lesbar. 31 liegt als Flaechenfarbe ausserhalb der haeufigen Grasrampe
  * (28/29/30). Min. Paar-Distanz 55,6 (T1 mist 8 vs T4 marshLight 31);
  * Zentroid-Metrik bleibt >= 30 (gemessen 43,8).
+ *
+ * m10-elite-tier-refine (#7524, art-director-Nachbesserung 2): T2 auf
+ * flameBright (19) statt flame (18) — das Paar T0/T2 (glut-braun-Bucket)
+ * war das engste sichtbare Paar; Zentroid T0/T2 97,6 -> 135,4, min
+ * Tier-Zentroid 56,8 -> 69,3, T2-Bucket glut-braun 85 % -> 83 % (>= 82 %).
  */
-export const ELITE_TIER_DYES: readonly [number, number, number, number, number] = [16, 8, 18, 25, 31];
+export const ELITE_TIER_DYES: readonly [number, number, number, number, number] = [16, 8, 19, 25, 31];
 
 /** Faerbe-Klasse eines Tiers (clamp auf 0-4, deterministisch). */
 export function eliteTierDye(tier: number): number {
