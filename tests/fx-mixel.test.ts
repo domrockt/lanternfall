@@ -176,7 +176,9 @@ describe("Level-Auswahl: Draw-Scale <= 1", () => {
     expect(mixelLevelFor("fx_halo", 1)).toBe(1);
     expect(mixelLevelFor("fx_halo", 0.5)).toBe(1);
     expect(mixelLevelFor("fx_star", 6)).toBe(1);
-    expect(mixelLevelFor("fx_boss_core", 3.6)).toBe(1);
+    // M10-fx-bakes-evo-r2 K3: fx_boss_core ist jetzt Mixel-Basis (Bake bis 4).
+    expect(mixelLevelFor("fx_boss_core", 3.6)).toBe(4);
+    expect(mixelLevelFor("fx_boss_core", 1)).toBe(1);
     expect(mixelLevelFor("fx_evo_hit_phoenix", 4)).toBe(1);
     expect(mixelLevelFor("fx_halo", Number.NaN)).toBe(1);
   });
@@ -188,7 +190,9 @@ describe("Stufen-Keys", () => {
     expect(mixelFrameKey("fx_halo", 1)).toBe("fx_halo");
     expect(mixelFrameKey("fx_fire_3", 1)).toBe("fx_fire_3");
     expect(mixelFrameKey("fx_star", 4)).toBe("fx_star");
-    expect(mixelFrameKey("fx_boss_core_2", 3)).toBe("fx_boss_core_2");
+    // M10-fx-bakes-evo-r2 K3: fx_boss_core ist Mixel-Basis — Frame-Key wird
+    // in die Stufen-Variante ueberfuehrt (wie fx_halo_2 oben).
+    expect(mixelFrameKey("fx_boss_core_2", 3)).toBe("fx_boss_core@3_2");
   });
 
   it("Frame-Key wird in die Stufen-Variante ueberfuehrt (Prefix-Transfer)", () => {
@@ -214,9 +218,12 @@ describe("Stufen-Keys", () => {
   it("Todes-Frame-Sets bleiben unveraendert (kein Uebergriff der Bake-Stufen)", () => {
     const sets = deathFrameSets();
     expect(sets.fx_death_bone.w).toBe(9);
+    // M10-fx-bakes-evo-r2 K3: fx_boss_core ist jetzt Mixel-Basis (Level 1
+    // bleibt 32x32, Bakes >= 2 kommen aus mixelBakes()); die uebrigen
+    // Death-Sets bleiben nicht-Mixel.
     expect(sets.fx_boss_core.w).toBe(32);
     expect(mixelBaseFor("fx_death_blob")).toBeNull();
-    expect(mixelBaseFor("fx_boss_core")).toBeNull();
+    expect(mixelBaseFor("fx_boss_core")).toBe("fx_boss_core");
   });
 });
 

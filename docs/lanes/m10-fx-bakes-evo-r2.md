@@ -74,3 +74,33 @@ sind unverändert gepinnt. Beleg: `~/games/.evidence/m10-fx-bakes-evo-r2/k2-ist-
 Coverage nach K2: 16/17 gedeckt; uncovered nur noch `fx_boss_core` (K3).
 Neue Tests: `tests/evo-fx-bakes.test.ts` (6 Assertions-Blöcke: Basis-Keys, Coverage-Bereich,
 Stufen-Existenz, L1-Bitidentität, Geometrie-Skalierung, bestehende Basen unangetastet).
+
+## K3 — fx_boss_core: Entscheidung BAKE (#10253)
+
+**Entscheidung: Mixel-Bake bis Level 4** (nicht Scale ≤ 1). Beleg:
+- Runtime-Draw-Scales: Boss-Tod `Run.ts playBossDeathFx` 1,6→3,6, Boss-Auftritt 0,6→2,4,
+  Boss-Tod-Shards `death.ts` rimScale 1,2–1,25. Gewünschte Screen-Größe bis 115 px.
+- Scale ≤ 1 wäre eine Optik-Verschlechterung: der Effekt würde auf 32 px schrumpfen und die
+  #5219-Schärfe-Features (geschlossene Tintenkontur + Offset-Outline, eingeführt gegen den
+  Blocker „Boss-FX-Kontrast") würden ihre Wirkung verlieren. Bake hält die Kontur bei
+  Draw-Scale 0,9 scharf — genau der Briefing-Fall „Bake bevorzugt, wo Optik-Kernscharfe
+  wichtig ist".
+- Implementierung wie K2: `bossCoreFrame(stage, density)` (Kontur/Outline/Bandbreiten ×L,
+  Zack-Frequenz pro Umlauf konstant, L=1 bitidentisch), Bake-Def maxLevel 4.
+- `Run.ts` wurde NICHT angefasst: `FxSystem.spawn` wählt die Stufe automatisch nach dem
+  Area-Cap (Design-Kommentar dort: Cap rechnet bewusst mit L1-Textur, Stufe L verkleinert
+  die Device-Fläche um Faktor L).
+- `isBossFxKey` ist jetzt "@"-tolerant (`fx_boss_core@4` bleibt Boss-FX) — Alpha-Boden 0,7,
+  NORMAL-Blend und LOD-Ausnahme überleben den Frame-Rewrite.
+- Bug unterwegs gefunden und gefixt: `deathFrameSets` rief `[0..5].map(bossCoreFrame)` auf —
+  `Array.map` liefert den Index als 2. Argument, der jetzt als density interpretiert wurde
+  (Frame 2 renderte 64²). Fix: `.map((i) => bossCoreFrame(i))`, L1 wieder bitidentisch.
+
+**Fremde Alt-Pins aktualisiert (4 Assertion-Zeilen, Bedarf in
+`/home/ai/games/.dispatch/requests.md` gemeldet):** `tests/fx-mixel.test.ts` (3) und
+`tests/boss-death-shards.test.ts` (1) pinnten ausdrücklich „fx_boss_core ist kein
+Mixel-Basis" (Stand der m10-fx-mixel-fix-Lane, bevor ein Boss-Bake geplant war). Die Pins
+sind auf das neue, in `tests/evo-fx-bakes.test.ts` getestete Verhalten umgestellt —
+inkl. neue Assertions (mixelLevel 2 bei Scale 1,35, Alpha-Boden bleibt).
+
+Coverage nach K3: **17/17 gedeckt, knownFindings 0** (`~/games/.evidence/m10-fx-bakes-evo-r2/k3-ist-report.json`).

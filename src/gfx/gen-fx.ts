@@ -66,7 +66,7 @@ export function deathFrameSets(): Record<string, FxFrameSet> {
     fx_death_dust: { w: 9, h: 9, frames: [0, 1, 2, 3].map(dustDeathFrame) },
     fx_death_fire: { w: 9, h: 9, frames: [0, 1, 2, 3].map(fireDeathFrame) },
     // Boss-Tod-Stufe: 32x32 mit 3-Stufen-Kern, Kontur, Ringen und Splittern.
-    fx_boss_core: { w: 32, h: 32, frames: [0, 1, 2, 3, 4, 5].map(bossCoreFrame) },
+    fx_boss_core: { w: 32, h: 32, frames: [0, 1, 2, 3, 4, 5].map((i) => bossCoreFrame(i)) },
   };
 }
 
@@ -637,8 +637,12 @@ function voidDeathFrame(stage: number): string[] {
  * um +1/+1 versetzte Offset-Outline trennen den Boss-Effekt auch ueber heller
  * Horde. Nur Palettenfarben, binaeres Alpha.
  */
-function bossCoreFrame(stage: number): string[] {
-  const size = 32;
+function bossCoreFrame(stage: number, density = 1): string[] {
+  // M10-fx-bakes-evo-r2 K3: density = Bake-Stufe L rendert dieselbe normierte
+  // Geometrie in L-facher Pixelgroesse (Kontur/Offset-Outline/Bandbreiten ×L,
+  // Zack-Frequenz pro Umlauf konstant). L=1 bitidentisch zur 32x32-Quelle.
+  const L = Math.max(1, Math.round(density));
+  const size = 32 * L;
   const g: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
   const put = (x: number, y: number, idx: number): void => {
     const xi = Math.round(x);
@@ -649,7 +653,7 @@ function bossCoreFrame(stage: number): string[] {
   const c = (size - 1) / 2;
   const t = stage / 5;
   // 3-Stufen-Kern, schrumpft mit der Stufe (Kern kollabiert).
-  const rCore = [5.6, 5.0, 4.2, 3.4, 2.6, 1.8][stage];
+  const rCore = [5.6, 5.0, 4.2, 3.4, 2.6, 1.8][stage] * L;
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
@@ -660,38 +664,38 @@ function bossCoreFrame(stage: number): string[] {
     }
   }
   // M10 #5219: Kontur VOR den Ringen zeichnen (ueberschreiben sonst die Tinte).
-  // Geschlossene 1-px-Tintenkontur unmittelbar ausserhalb des Kerns.
+  // Geschlossene Tintenkontur unmittelbar ausserhalb des Kerns (Dicke ~1 px @L1).
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
-      if (d >= rCore && d < rCore + 1.2) put(x, y, 0);
+      if (d >= rCore && d < rCore + 1.2 * L) put(x, y, 0);
     }
   }
-  // Offset-Outline: Kernsilhouette um +1/+1 versetzt, wo noch frei — liest sich
+  // Offset-Outline: Kernsilhouette um +L/+L versetzt, wo noch frei — liest sich
   // als harte Schattenkante und haelt den Kern auch ueber heller Horde getrennt.
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       if (g[y][x] !== ".") continue;
-      const d = Math.hypot(x - 1 - c, y - 1 - c);
-      if (d < rCore + 1.2) put(x, y, 0);
+      const d = Math.hypot(x - L - c, y - L - c);
+      if (d < rCore + 1.2 * L) put(x, y, 0);
     }
   }
   // Zwei expandierende Zackenringe (Flamme aussen, Glut innen). M10 #5219:
   // Radius an die neue Kontur angepasst — mit Jag (±1,1) und Band (±1,6) muss
   // der innere Rand ausserhalb der Tinte bleiben (rCore + 3,4 - 1,1 - 0,9 >= rCore + 1,2).
   for (let ring = 0; ring < 2; ring++) {
-    const rr = rCore + 3.4 + ring * 4.5 + t * (7 - ring * 2);
+    const rr = rCore + (3.4 + ring * 4.5 + t * (7 - ring * 2)) * L;
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
         const dx = x - c;
         const dy = y - c;
         const d = Math.hypot(dx, dy);
-        if (Math.abs(d - rr) > 2.2) continue;
+        if (Math.abs(d - rr) > 2.2 * L) continue;
         const a = Math.atan2(dy, dx);
-        const jag = Math.sin(a * 7 + ring * 2.4 + stage) * 1.1;
+        const jag = Math.sin(a * 7 + ring * 2.4 + stage) * 1.1 * L;
         const band = Math.abs(d - (rr + jag));
-        if (band < 0.9) put(x, y, ring === 0 ? 18 : 16);
-        else if (band < 1.6) put(x, y, ring === 0 ? 17 : 15);
+        if (band < 0.9 * L) put(x, y, ring === 0 ? 18 : 16);
+        else if (band < 1.6 * L) put(x, y, ring === 0 ? 17 : 15);
       }
     }
   }
@@ -700,21 +704,21 @@ function bossCoreFrame(stage: number): string[] {
   // damit sie Kern-Kontur/Offset-Outline nicht uebermalen.
   for (let i = 0; i < 8; i++) {
     const a = (i * Math.PI) / 4 + 0.39;
-    const dist = rCore + 4.2 + t * 8.5;
+    const dist = rCore + (4.2 + t * 8.5) * L;
     const px = c + Math.cos(a) * dist;
     const py = c + Math.sin(a) * dist;
-    const len = 2.4 + (i % 2);
+    const len = (2.4 + (i % 2)) * L;
     for (let k = -len; k <= len; k += 0.5) {
-      const w = Math.max(0, 1.3 - Math.abs(k) * 0.6);
+      const w = Math.max(0, 1.3 * L - Math.abs(k) * 0.6);
       for (let s = -w; s <= w; s += 0.5) {
         const x = px + Math.cos(a) * k - Math.sin(a) * s;
         const y = py + Math.sin(a) * k + Math.cos(a) * s;
-        if (Math.hypot(x - c, y - c) < rCore + 1.4) continue;
-        put(x, y, Math.abs(k) < 0.8 ? 19 : 20);
+        if (Math.hypot(x - c, y - c) < rCore + 1.4 * L) continue;
+        put(x, y, Math.abs(k) < 0.8 * L ? 19 : 20);
       }
     }
   }
-  const rows = outlineAndRim(g);
+  const rows = outlineAndRim(g, L);
   // M10 #5219: Die Lichtkante von oben-links wird im Boss-Frame auf Laterne (21)
   // gemappt statt Knochenhell (11) — 11 ist near-white und ließ den Kern
   // ausbrennen; die Lichtkante selbst bleibt erhalten.
@@ -1214,7 +1218,7 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
  *  Geometrie, Draw-Scales unverändert). */
 export const FX_MIXEL_BASES = [
   "fx_fire", "fx_halo_cold", "fx_halo", "fx_shock", "ring_frost",
-  "fx_evo_hit_thunder_seal", "fx_evo_death_thunder_seal",
+  "fx_evo_hit_thunder_seal", "fx_evo_death_thunder_seal", "fx_boss_core",
 ] as const;
 
 export type FxMixelBase = (typeof FX_MIXEL_BASES)[number];
@@ -1271,6 +1275,14 @@ const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
     // Death-Signatur: Draw-Scale 4,0–4,6 → Bake bis Level 5 (ceil 4,6).
     base: "fx_evo_death_thunder_seal", w: 32, h: 32, frameCount: 4, maxLevel: 5,
     frame: (i, d) => signatureFrame("beam", EVOLUTION_SIGNATURES.thunder_seal.palette, i, "death", d),
+  },
+  {
+    // M10-fx-bakes-evo-r2 K3: Boss-Auftritt/-Tod (Run.ts spawnAnim bis Scale
+    // 3,6, death.ts rimScale 1,2-1,25) aus 32x32-Quelle → Bake bis Level 4
+    // (ceil 3,6), Draw-Scale/Level <= 1. Identische Geometrie (bossCoreFrame
+    // mit density), Optik-Kernschaerfe ist hier kritisch (#5219-Kontur).
+    base: "fx_boss_core", w: 32, h: 32, frameCount: 6, maxLevel: 4,
+    frame: (i, d) => bossCoreFrame(i, d),
   },
 ];
 
@@ -2480,12 +2492,15 @@ export const BOSS_FX_BASES: readonly string[] = ["fx_boss_core"];
 
 const bossFxKeySet = new Set<string>(BOSS_FX_BASES);
 
-/** true, wenn Basis- oder Frame-Key ein Boss-spezifischer Effekt ist. */
+/** true, wenn Basis- oder Frame-Key ein Boss-spezifischer Effekt ist.
+ *  Mixel-Stufen-Keys ("fx_boss_core@4", "fx_boss_core@4_2") werden über das
+ *  "@"-Suffix erkannt — der Boss-Status ueberlebt den Frame-Rewrite im Spawn. */
 export function isBossFxKey(key: string | undefined | null): boolean {
   if (!key) return false;
-  if (bossFxKeySet.has(key)) return true;
+  const plain = key.includes("@") ? key.slice(0, key.indexOf("@")) : key;
+  if (bossFxKeySet.has(plain)) return true;
   for (const base of bossFxKeySet) {
-    if (key.startsWith(`${base}_`)) return true;
+    if (plain.startsWith(`${base}_`)) return true;
   }
   return false;
 }
