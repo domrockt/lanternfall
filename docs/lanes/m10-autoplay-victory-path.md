@@ -26,7 +26,7 @@ SwiftShader ungueltig. Flock: `flock /home/ai/games/.lf-perf.lock` (Echtzeitlauf
 3. **Bot beendet den Endboss zuverlaessig im Echtzeit-Kampf — Probe** (God/AutoPlay, seed 99, wie
    m3-fullrun; timeScale 30 bis 30:00, danach timeScale 1, Poll bis Results):
    `victory=true, resultReason="dawn"`, 0 JS-Fehler, Kampf + Daemmerung ≈ 40 s Echtzeit
-   (Probe: `/home/ai/tmp/m10-autoplay-victory-path/probe-endboss.mjs`, log im Commit).
+   (Probe: `/home/ai/tmp/m10-autoplay-victory-path/probe-endboss.mjs`).
    Damit sind die Briefing-Hypothesen „Bot weicht aus?“/„God-Modus greift am Endboss nicht?“
    widerlegt; „Zeitbudget vs. Boss-HPS“ trifft es: das Zeitbudget endete VOR dem Kampf.
 4. `botDirection` (`src/logic/autoplay.ts:216-234`) folgt aktivem Boss (Ranged: >260 px heran,
@@ -40,7 +40,20 @@ Spielverhalten-Risiko (God/AutoPlay-Pfad vs. normales Spiel trennen) ohne jeden 
 Fix: nach `RUN_SECONDS` den Endboss-Kampf aussitzen — bis zu 600 s Sim-Verlaengerung auf Sieg warten,
 erst danach `truncated=true` (ehrlicher Fallback, falls der Kampf doch mal schiefgeht).
 
-## K2 — Fix im Harness — (Ergebnis nach Commit)
+## K2 — Fix im Harness (Hebel b) — **PASS**
+
+`scripts/m10-heap-budget.mjs` (eine Aenderung, keine Logik-Datei beruehrt):
+- Neu `BOSS_GRACE_SECONDS = 600` (Kommentar mit F2-Bezug und K1-Probe-Dauer).
+- Truncation verschoben: vorher `if (s.time >= RUN_SECONDS) { truncated = true; break; }`
+  (= exakt `FINAL_BOSS_AT`, Endboss hatte 0 s Kampfzeit); jetzt erst
+  `s.time >= RUN_SECONDS + BOSS_GRACE_SECONDS`. Dazwischen laeuft der Echtzeit-Kampf weiter;
+  der Sieg-Break via `scene !== "run"` → Results (`reason === "dawn"` → `victory=true`) greift
+  unverändert.
+- Kein Lever-a-Eingriff in `src/logic/autoplay.ts` (Bot ist nicht defekt, K1) — damit auch kein
+  Risiko fuer normales Spielverhalten; kein `tests/autoplay-victory.test.ts` noetig (Lever a
+  entfaellt; der Harness ist Messwerkzeug, das Tor prueft der Lauf selbst).
+- Wall-Cap der Schleife bleibt `RUN_SECONDS + 300` s (= 35 min bei 30 min Lauf) — Kampf + Daemmerung
+  (~45 s lt. K1-Probe) passen mit >4 min Reserve.
 
 ## K3 — Nachher: 30-min-Echtzeitlauf — (Ergebnis nach Commit)
 
