@@ -1,0 +1,37 @@
+# Lane m10-boss-portrait-crisp — FERTIG (2026-11-28)
+
+Zeichen-Qualitäts-Pass für die 6 Boss-Sprites (Konturen, Silhouetten-Lesbarkeit,
+Lichtkanten) nach dem idle-anim-Pass. Generator-Fixes nur für belegte Muss-Punkte,
+Palette/binäres Alpha unverändert, keine Änderung an Spawn-/Kamera-/FX-Pfad.
+
+## Messwerte
+- Baseline silKontrast (p75, F0 vs. Nacht PAL[2]): moor_queen 118.4, bone_lord 170.9,
+  pale_shepherd 134.4, bell_golem 134.4, coven 70.0, hollow_king 70.0 — after identisch
+  oder besser (Guard-Test friert Before-Baseline als Untergrenze ein).
+- edgeContrast: bone_lord 41.5→46.1, bell_golem 29.4→31.6, pale_shepherd 52.0→52.9.
+- offPalette 0/0, Frame-Dubletten 0/0, Frame-Budget 3 je Boss (idle-anim-Verträge 9/9 grün).
+- art-director: Before FAIL 6x (Noten 2-3) → After PASS 4,00/5 (6/6 Muss-Punkte gelöst).
+
+## Fixes (je Boss 1 Muss-Manko)
+Kronen-Kontakt moor_queen + hollow_king, Schulter-Silhouette bone_lord, Stab-Griff
+pale_shepherd, Faust-Lichtkanten bell_golem, Hexen-Augen coven; zusätzlich Zähne/Saum/
+Rippen ent-Rhythmisierung.
+
+## Pipeline-Befund (wichtig für Nachfolger)
+gen-bosses.ts = scripts/art/gen_bosses.py (F0) + `node scripts/m10-boss-idle-anim.mjs gen
+<ids>` (F1 Atmen / F2 Zucken aus F0 abgeleitet). Python-Regen allein zerstört den
+Idle-Kontrakt — Kette immer komplett laufen lassen.
+
+## Belege
+shots/m10-boss-portrait-{before,after}-*.png + .json; Doku docs/lanes/
+m10-boss-portrait-crisp.md (inkl. offener Punkte: coven Props/Klon-Posen,
+hollow_king Brustpanzer/Unterkante, moor_queen F2-Duckpose, pale_shepherd Kopf).
+
+## Tests
+npx tsc --noEmit grün, npm run build grün, npm test 128 Dateien / 1366 Tests grün
+(1 fx-mixel-Last-Flake isoliert verifiziert: grün). Kontrolleure: art-director PASS,
+test-auditor PASS, commit-gate PASS.
+
+Commits: af413ae (#8398), 9392cd7+64b53ef (#8399), 0af596c (#8400), 14b143a (#8401).
+Offen/nicht Lane-eigen im Worktree: fremde Änderungen an shots/m10-passive-math-*.json
+(nicht von dieser Lane berührt).
