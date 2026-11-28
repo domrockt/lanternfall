@@ -22,7 +22,15 @@ export const EVOLUTION_WEAPONS: Partial<Record<WeaponAnyId, WeaponDef>> = {
       { level: 5, damage: 21, cooldown: 0.62, count: 3, pierce: 0, speed: 210, knockback: 34 },
       { level: 6, damage: 23, cooldown: 0.58, count: 3, pierce: 0, speed: 215, knockback: 35 },
       { level: 7, damage: 27, cooldown: 0.54, count: 4, pierce: 0, speed: 220, knockback: 36 },
-      { level: 8, damage: 30, cooldown: 0.48, count: 4, pierce: 0, speed: 230, knockback: 38 },
+      { level: 8, damage: 30, cooldown: 0.75, count: 3, pierce: 0, speed: 230, knockback: 38 },
+      // m10-mira-dps-corridor (K2, 2026-11-28): phoenix L8 war mit 4 Funken/0,48 s
+      // (250 Basis-DPS) die Melt-Ursache — mira erreicht ember:8 schon bei Minute ~4,
+      // bekommt die Evolution über das Level-up-Angebot VOR Boss 1 und meltet die
+      // Moorkönigin in 9,5-15,1 s (< 20-s-Korridor, Baseline Guard-Lane). Fix NUR
+      // über count/cooldown (damage bleibt > 28, Pin tests/evolution.test.ts:99):
+      // 3 Funken/0,75 s = 120 Basis-DPS (-52 %). Level 1-7 sind Tot-Daten
+      // (Evolutionen starten auf Stufe 8), bleiben unverändert. kael baut zu dem
+      // Zeitpunkt Zornpendel (~94 DPS vs. Einzelziel) und bleibt im Korridor.
     ],
   },
   wrath_pendulum: {
