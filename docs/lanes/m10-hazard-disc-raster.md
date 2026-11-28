@@ -40,6 +40,8 @@ eine Pixelgröße (Draw-Scale 1 — seit B3-Fix erfüllt).
     Fläche (<= r-3) ditherfrei.
   - Stapel-Guard: Masken stufenunabhängig; Stufe 1 nur über niedrigere Bake-Alpha.
 - Volle Suite: `npm test` → **158 Dateien / 1699 Tests grün**; `npm run build` rc=0.
+- Commit d8f062aa enthält die Testumstellung (K2-Karte schließt tests/hazard-disc.test.ts ein,
+  K3-Karte ist der Suite-/Build-Lauf mit diesem Beleg).
 
 
 ## K4 — Abnahme (#10071)
