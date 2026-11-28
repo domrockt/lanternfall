@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8418,
+  "next": 8482,
   "cards": [
     {
       "id": 1,
@@ -10473,6 +10473,46 @@
       ],
       "created": "2026-11-28T04:32:09Z",
       "updated": "2026-11-28T04:32:14Z"
+    },
+    {
+      "id": 8478,
+      "title": "m10-balance-endgame K1: Ist-Messung Endzeit (Vorher)",
+      "description": "6 Läufe (3 Seeds x 2 Chars), Zielmetrik vorher festgelegt: 3/6 im Fenster [25,40], Streuung 9,66 min. Beleg shots/m10-balance-endgame-before.json. Lane m10-balance-endgame, Commits 0848af2..5dd067c, Merge fcad4df.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-28T04:42:30Z",
+      "updated": "2026-11-28T04:42:30Z"
+    },
+    {
+      "id": 8479,
+      "title": "m10-balance-endgame K2/K4: Director-Hebel ab Minute 18 (src/logic/scaling.ts)",
+      "description": "Late-Deckel maxActiveEnemies 200 ab Minute 18 (960x540: 300 statt 500) + enemyHpScale-Relief ab t=1080 s, Rampe 240 s, max -25% HP. Minute 0-18 bitgleich. tests/balance-endgame.test.ts neu. Lane m10-balance-endgame, Merge fcad4df.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-28T04:42:30Z",
+      "updated": "2026-11-28T04:42:30Z"
+    },
+    {
+      "id": 8480,
+      "title": "m10-balance-endgame K3: Minuten-Mischung 25-29 (src/data/waves.ts)",
+      "description": "LATE_GAME_MIX ohne Splitter/Beschwoerer (abom/voidcaller -> knight/lich), lateGameSpawnRate 1,86-1,92. Minute 0-24 bitgleich; Datei unclaimed, Begruendung in docs/lanes/m10-balance-endgame.md. Lane m10-balance-endgame, Merge fcad4df.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-28T04:42:30Z",
+      "updated": "2026-11-28T04:42:30Z"
+    },
+    {
+      "id": 8481,
+      "title": "m10-balance-endgame K4: Nachher-Messung + Abnahme",
+      "description": "6/6 Sieg (Dawn) bei 30,32-30,60 min, Streuung 0,28 min (Ziel <=4), 0 JS-Fehler. Beleg shots/m10-balance-endgame-after.json, reviewer-PASS. Merge fcad4df auf main.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [],
+      "created": "2026-11-28T04:42:30Z",
+      "updated": "2026-11-28T04:42:30Z"
     }
   ]
 }
