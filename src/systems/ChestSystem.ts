@@ -34,6 +34,9 @@ export interface ChestSpawnRecord {
   y: number;
   /** Run-Zeit (Sekunden) zum Spawn-Zeitpunkt, aus `lf-elapsed`. */
   at: number;
+  /** M10-chest-spawn-cell: unfaire Boss-Todeposition (Diagnose, Distanz-Vergleich). */
+  fromX?: number;
+  fromY?: number;
 }
 
 /** Kamera-Stück für das Pfeil-Layout (reine Funktion, unit-testbar). */
@@ -154,6 +157,14 @@ interface BurstParticleRuntime {
 // Moorwasser, "Wand/Ecke" ist die Spielfeldkante. Timing und Belohnungen
 // bleiben unveraendert — nur die Position wird auf eine freie, erreichbare
 // Zelle verschoben (naechste freie Zelle per Spiralsuche als Fallback).
+//
+// M10-chest-spawn-cell (Folgekarte): "hinter der Gegnermasse" ist jetzt Teil
+// der Regel — innerhalb CHEST_CELL_SEARCH_RADIUS_PX (64 px) um die faire
+// Zelle gewinnt die Kandidaten-Zelle mit der geringsten Gegnerdichte
+// (lebende Gegner im 48-px-Radius). Suchen statt teleportieren: die Truhe
+// bleibt nahe am VS-Referenzmoment (Boss-Tod). Ist die aktuelle Zelle schon
+// mindestens so gut wie jeder Kandidat, bleibt sie (Fallback alte Position).
+// Rein positionell, kein RNG, kein Zeitbezug — Timing bleibt bitgleich.
 
 /** Mindestabstand der Truhe zur Spielfeldkante (3 Tiles). */
 export const CHEST_EDGE_MARGIN_PX = 48;
@@ -162,11 +173,22 @@ export const CHEST_SPAWN_TILE_PX = 16;
 /** Max. Suchradius der Spiralsuche in Tiles (24 Tiles = 384 px). */
 export const CHEST_SPAWN_SEARCH_TILES = 24;
 
+/** M10-chest-spawn-cell: Suchradius um die faire Zelle (px, 4 Tiles). */
+export const CHEST_CELL_SEARCH_RADIUS_PX = 64;
+/** M10-chest-spawn-cell: Dichte-Radius einer Kandidaten-Zelle (px). */
+export const CHEST_CELL_DENSITY_RADIUS_PX = 48;
+
 export interface FairChestSpawnOptions {
   /** Spielfeldkante (WORLD_SIZE). */
   worldSize: number;
   /** Zelle unpassierbar/unfair (Moorwasser)? Kante wird intern geprueft. */
   isBlocked: (x: number, y: number) => boolean;
+  /**
+   * M10-chest-spawn-cell: Anzahl lebender Gegner im 48-px-Radius um (x, y).
+   * Optional — ohne Dichte-Funktion bleibt das Verhalten bitgleich zu
+   * m10-chest-spawn-fair.
+   */
+  enemyCount?: (x: number, y: number) => number;
 }
 
 export interface FairChestSpawnResult {
@@ -176,8 +198,11 @@ export interface FairChestSpawnResult {
   fromX: number;
   fromY: number;
   /** free = unveraendert, edge = in den Kanten-Margin geklemmt,
-   *  fallback = auf naechste freie Zelle verschoben (oder Notfall-Klemme). */
-  reason: "free" | "edge" | "fallback";
+   *  fallback = auf naechste freie Zelle verschoben (oder Notfall-Klemme),
+   *  cell = auf die Zelle mit geringster Gegnerdichte in r=64 px verschoben. */
+  reason: "free" | "edge" | "fallback" | "cell";
+  /** M10-chest-spawn-cell: Dichte (Gegner im 48-px-Radius) der Ergebnis-Zelle. */
+  density: number;
 }
 
 /**
@@ -199,35 +224,75 @@ export function fairChestSpawn(
   const max = Math.max(m, opts.worldSize - m);
   const cx = Math.min(Math.max(x, m), max);
   const cy = Math.min(Math.max(y, m), max);
-  if (!opts.isBlocked(cx, cy)) {
-    return { x: cx, y: cy, fromX: x, fromY: y, reason: cx === x && cy === y ? "free" : "edge" };
-  }
   const free = (px: number, py: number): boolean =>
     px >= m && px <= max && py >= m && py <= max && !opts.isBlocked(px, py);
-  const rMax = CHEST_SPAWN_SEARCH_TILES;
-  let bx = Number.NaN;
-  let by = 0;
-  let bd = Number.POSITIVE_INFINITY;
-  for (let r = 1; r <= rMax; r++) {
-    // Ganzen Ring scannen, besten (Euclid-nächsten) Treffer merken — nicht den
-    // zuerst gefundenen (Diagonale zuerst waere bis zu r*sqrt(2) weiter weg).
-    for (let dx = -r; dx <= r; dx++) {
-      for (let dy = -r; dy <= r; dy++) {
-        // Nur der aeussere Ring (innere Ringe sind frueher geprueft).
-        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
-        const px = cx + dx * CHEST_SPAWN_TILE_PX;
-        const py = cy + dy * CHEST_SPAWN_TILE_PX;
+  // 1.+2. Faire Zelle: unveraendert / Kanten-Klemme / Spiral-Fallback.
+  let fx = cx;
+  let fy = cy;
+  let reason: FairChestSpawnResult["reason"] = cx === x && cy === y ? "free" : "edge";
+  if (opts.isBlocked(cx, cy)) {
+    const rMax = CHEST_SPAWN_SEARCH_TILES;
+    let bx = Number.NaN;
+    let by = 0;
+    let bd = Number.POSITIVE_INFINITY;
+    for (let r = 1; r <= rMax; r++) {
+      // Ganzen Ring scannen, besten (Euclid-nächsten) Treffer merken — nicht den
+      // zuerst gefundenen (Diagonale zuerst waere bis zu r*sqrt(2) weiter weg).
+      for (let dx = -r; dx <= r; dx++) {
+        for (let dy = -r; dy <= r; dy++) {
+          // Nur der aeussere Ring (innere Ringe sind frueher geprueft).
+          if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+          const px = cx + dx * CHEST_SPAWN_TILE_PX;
+          const py = cy + dy * CHEST_SPAWN_TILE_PX;
+          if (!free(px, py)) continue;
+          const d = (px - cx) ** 2 + (py - cy) ** 2;
+          if (d < bd) { bd = d; bx = px; by = py; }
+        }
+      }
+      // Frueher Abbruch: Ring r+1 hat mindestens (r+1)*tile Euclid-Abstand —
+      // ein gefundener naeherer Treffer kann nicht mehr geschlagen werden.
+      if (Math.sqrt(bd) < (r + 1) * CHEST_SPAWN_TILE_PX) break;
+    }
+    if (!Number.isNaN(bx)) { fx = bx; fy = by; }
+    // Notfall: geklemmte Primaerzelle (nie schlechter als der Ist-Zustand).
+    reason = "fallback";
+  }
+  // 3. M10-chest-spawn-cell: Zelle mit geringster Gegnerdichte in r=64 px.
+  //    Kandidaten auf dem 16-px-Raster, nur freie Zellen; Gleichstand →
+  //    naeherste Zelle (Zentrum gewinnt Gleichstand → Fallback alte Position,
+  //    wenn kein Kandidat strikt besser ist).
+  let density = opts.enemyCount ? opts.enemyCount(fx, fy) : 0;
+  if (opts.enemyCount) {
+    const rTiles = Math.floor(CHEST_CELL_SEARCH_RADIUS_PX / CHEST_SPAWN_TILE_PX);
+    const r2 = CHEST_CELL_DENSITY_RADIUS_PX ** 2;
+    let bx = fx;
+    let by = fy;
+    let bd = density;
+    let bDist = 0;
+    for (let dx = -rTiles; dx <= rTiles; dx++) {
+      for (let dy = -rTiles; dy <= rTiles; dy++) {
+        if (dx === 0 && dy === 0) continue;
+        const px = fx + dx * CHEST_SPAWN_TILE_PX;
+        const py = fy + dy * CHEST_SPAWN_TILE_PX;
         if (!free(px, py)) continue;
-        const d = (px - cx) ** 2 + (py - cy) ** 2;
-        if (d < bd) { bd = d; bx = px; by = py; }
+        const d = opts.enemyCount(px, py);
+        const dist = (px - fx) ** 2 + (py - fy) ** 2;
+        if (d < bd || (d === bd && bDist > 0 && dist < bDist)) {
+          bd = d;
+          bx = px;
+          by = py;
+          bDist = dist;
+        }
       }
     }
-    // Frueher Abbruch: Ring r+1 hat mindestens (r+1)*tile Euclid-Abstand —
-    // ein gefundener naeherer Treffer kann nicht mehr geschlagen werden.
-    if (Math.sqrt(bd) < (r + 1) * CHEST_SPAWN_TILE_PX) break;
+    if (bd < density) {
+      fx = bx;
+      fy = by;
+      density = bd;
+      reason = "cell";
+    }
   }
-  if (!Number.isNaN(bx)) return { x: bx, y: by, fromX: x, fromY: y, reason: "fallback" };
-  return { x: cx, y: cy, fromX: x, fromY: y, reason: "fallback" };
+  return { x: fx, y: fy, fromX: x, fromY: y, reason, density };
 }
 
 export class ChestSystem {
@@ -292,7 +357,10 @@ export class ChestSystem {
     // hat keine Waende — isBlocked kommt aus der Run-Szene (isWaterAt), wenn
     // vorhanden; ohne Szene-Abfrage bleibt die Position unveraendert. Timing
     // (`lf-elapsed`) und Belohnungslogik sind unberuehrt.
-    const run = this.scene as unknown as { isWaterAt?: (wx: number, wy: number) => boolean } | null;
+    const run = this.scene as unknown as {
+      isWaterAt?: (wx: number, wy: number) => boolean;
+      enemies?: { active?: readonly { x: number; y: number; alive: boolean }[] };
+    } | null;
     // Klassifikation per TILE-MITTE — identisch zur Spiel-Mechanik
     // (Run.terrainFactorAt nutzt denselben Referenzpunkt für den 40-%-Slow).
     // Aufruf ueber `run?.isWaterAt?.(...)` — die Methode als Wert extrahieren
@@ -302,11 +370,29 @@ export class ChestSystem {
       const by = Math.floor(wy / CHEST_SPAWN_TILE_PX) * CHEST_SPAWN_TILE_PX + 8;
       return run?.isWaterAt?.(bx, by) ?? false;
     };
-    const fair = fairChestSpawn(x, y, { worldSize: WORLD_SIZE, isBlocked });
+    // M10-chest-spawn-cell: Gegner-Snapshot im Spawn-Schritt (VS-Referenzmoment).
+    // Nur lesender Zugriff auf Run.enemies.active — Run.ts bleibt unangetastet.
+    const alive: { x: number; y: number }[] = [];
+    for (const e of run?.enemies?.active ?? []) {
+      if (e.alive) alive.push({ x: e.x, y: e.y });
+    }
+    const enemyCount = alive.length > 0
+      ? (wx: number, wy: number): number => {
+          let n = 0;
+          const r2 = CHEST_CELL_DENSITY_RADIUS_PX ** 2;
+          for (const p of alive) {
+            const dx = p.x - wx;
+            const dy = p.y - wy;
+            if (dx * dx + dy * dy <= r2) n += 1;
+          }
+          return n;
+        }
+      : undefined;
+    const fair = fairChestSpawn(x, y, { worldSize: WORLD_SIZE, isBlocked, enemyCount });
     x = fair.x;
     y = fair.y;
     const at = Number(this.scene.registry.get("lf-elapsed") ?? 0);
-    this.spawns.push({ x: Math.round(x), y: Math.round(y), at: Math.round(at * 1000) / 1000 });
+    this.spawns.push({ x: Math.round(x), y: Math.round(y), at: Math.round(at * 1000) / 1000, fromX: fair.fromX, fromY: fair.fromY });
     const sprite = makeImage(this.scene, Math.round(x), Math.round(y), "chest_closed")
       .setDepth(7)
       .setScale(1);
