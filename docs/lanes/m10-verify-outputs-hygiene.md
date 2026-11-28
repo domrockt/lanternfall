@@ -33,9 +33,30 @@ Befunde:
 
 Urteil K1: Befund E-4 bestätigt (Pfade) + präzisiert (echter Overwrite-Writer ist der passive-stack-Test).
 
-## K2 — Outputs nach `~/games/.evidence/` (#10009)
+## K2 — Outputs nach `~/games/.evidence/` (#10009, 08:11–08:20Z)
 
-(folgt)
+Änderungen (nur Skripte, kein Spielcode):
+
+- `scripts/verify-final.mjs`: Screenshot-/JSON-Outputs jetzt timestamped nach
+  `~/games/.evidence/verify-final/` (Override: `LF_VERIFY_OUTPUT_DIR`); `mkdirSync("shots")`
+  entfernt. Ein Überschreiben bestehender `shots/*` ist per Konstruktion ausgeschlossen
+  (Pfad außerhalb des Repos, Zeitstempel im Dateinamen).
+- `scripts/verify-robust.mjs`: schrieb bisher keine Dateien; ergänzt um denselben
+  Evidence-Output (`~/games/.evidence/verify-robust/<stamp>-verify-robust.json`), `console.log` bleibt.
+- `verify-input.mjs`: unangetastet ( laut Briefing; Besitz m10-pad-start-pause-r2).
+
+Nachher-Lauf (Beleg `~/tmp/m10-verify-outputs-hygiene/k2-verify-final.log`, Kopie in Evidence):
+
+| Check | Ergebnis | Urteil |
+|---|---|---|
+| `node scripts/verify-final.mjs` | **7/7 PASS**, rc=0 | PASS |
+| Output-Pfad | `~/games/.evidence/verify-final/2026-11-28T08-11-18-974Z-final-{options-mute.png,results-victory.png,verify.json}` | PASS |
+| `git status --porcelain shots/` nach Lauf | leer (0 Änderungen) | PASS |
+| `node scripts/verify-robust.mjs` | rc=1, `passed:false` — **vorhanden**: Baseline-Lauf (git stash, ungeänderte Skripte) ebenfalls rc=1; FAIL betrifft die Scaling-Checks (960x540 → internal 640x360, erwartet 480er-Fit), nicht meine Änderung | Befund F-1, kein Regressionsursprung dieser Lane |
+
+Befund F-1 (an Engine-/Verify-Owner): `verify:robust` FAILt auf PIN `a6613639` bereits vor
+dieser Lane (Scaling-Erwartung 480er-Fit vs. Ist 640x360 intern). Hebel: außerhalb des Lane-Scopes,
+nur dokumentiert. Beleg: `k2-verify-robust-baseline.log` vs. `k2-verify-robust.log`.
 
 ## K3 — Guard-Test + Nachher-Lauf (#10010)
 

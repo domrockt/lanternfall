@@ -2,6 +2,14 @@
 // Robustheits-Check: ganzzahlige Skalierung bei Fenstergrößen, Tab-Pause
 // (visibilitychange → Loop schläft, keine Zeit springt) und Terrain-Worker.
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
+
+// Output-Hygiene (E-4): nichts unter shots/ schreiben. Evidence-Output
+// timestamped nach ~/games/.evidence/verify-robust/ (untracked).
+const OUT_DIR = process.env.LF_VERIFY_OUTPUT_DIR ?? join(homedir(), "games", ".evidence", "verify-robust");
+const STAMP = new Date().toISOString().replace(/[:.]/g, "-");
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -109,6 +117,8 @@ try {
     passed,
   };
   console.log(JSON.stringify(result, null, 2));
+  mkdirSync(OUT_DIR, { recursive: true });
+  writeFileSync(join(OUT_DIR, `${STAMP}-verify-robust.json`), JSON.stringify(result, null, 2));
 } finally {
   await page.close();
   await browser.close();

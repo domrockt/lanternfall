@@ -3,9 +3,18 @@
 // ab 120 Gegnern (Runtime-Wert), zweispaltiger Ergebnis-Screen + Bestwert-Banner.
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
+
+// Output-Hygiene (E-4): verify-Skripte duerfen nichts unter shots/ schreiben
+// (getrackte Abnahme-Belege). Outputs landen timestamped unter
+// ~/games/.evidence/verify-final/ (untracked), Ueberschreiben ausgeschlossen.
+const OUT_DIR = process.env.LF_VERIFY_OUTPUT_DIR ?? join(homedir(), "games", ".evidence", "verify-final");
+const STAMP = new Date().toISOString().replace(/[:.]/g, "-");
+const outPath = (name) => join(OUT_DIR, `${STAMP}-${name}`);
 
 ensureBuild();
-mkdirSync("shots", { recursive: true });
+mkdirSync(OUT_DIR, { recursive: true });
 const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch();
@@ -55,7 +64,7 @@ try {
     return sc.options?.container?.visible === true;
   }, { timeout: 2000 });
   await page.waitForTimeout(300);
-  await page.screenshot({ path: "shots/final-options-mute.png" });
+  await page.screenshot({ path: outPath("final-options-mute.png") });
   const muteRow = await page.evaluate(() => {
     const sc = window.__game.scene.getScene("title");
     return sc.options ? sc.options.container.visible : null;
@@ -117,7 +126,7 @@ try {
   await page.evaluate(() => window.__lf.finishRun("dawn"));
   await page.waitForFunction(() => window.__lf.state().scene === "results", { timeout: 6000 });
   await page.waitForTimeout(400);
-  await page.screenshot({ path: "shots/final-results-victory.png" });
+  await page.screenshot({ path: outPath("final-results-victory.png") });
   const resultInfo = await page.evaluate(() => {
     const sc = window.__game.scene.getScene("results");
     return { scene: "results", reason: sc.result.reason, entries: Object.keys(sc.result.damageByWeapon).length };
@@ -126,7 +135,7 @@ try {
   check("Ergebnis-Screen Sieg mit Schadenstabelle", resultInfo.reason === "dawn" && resultInfo.entries >= 3,
     `reason=${resultInfo.reason} weapons=${resultInfo.entries}`);
 } finally {
-  writeFileSync("shots/final-verify.json", JSON.stringify({ checks, report, errors }, null, 2));
+  writeFileSync(outPath("final-verify.json"), JSON.stringify({ checks, report, errors }, null, 2));
   await browser.close();
   server.stop();
 }
