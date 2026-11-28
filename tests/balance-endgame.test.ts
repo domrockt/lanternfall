@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   LATE_GAME_ACTIVE_CAP,
+  LATE_GAME_START_MINUTE,
   maxActiveEnemies,
   enemyHpScale,
   enemyDamageScale,
@@ -21,30 +22,31 @@ import type { EnemyId } from "../src/data/types";
  */
 
 describe("M10 Endgame-Balance: maxActiveEnemies-Late-Deckel", () => {
-  it("Minute 0–19 bleibt bitgleich zur alten Kurve (100 + 13/Minute, Deckel 360)", () => {
-    for (const minute of [0, 1, 5, 10, 15, 19]) {
+  it("Minute 0–17 bleibt bitgleich zur alten Kurve (100 + 13/Minute, Deckel 360)", () => {
+    for (const minute of [0, 1, 5, 10, 15, 17]) {
       const expected = Math.min(360, 100 + minute * 13);
       expect(maxActiveEnemies(minute * 60, 640, 360), `Minute ${minute}`).toBe(expected);
     }
     // Letzte Sekunde vor dem Late-Deckel: noch alter Wert.
-    expect(maxActiveEnemies(19 * 60 + 59, 640, 360)).toBe(347);
+    expect(maxActiveEnemies(17 * 60 + 59, 640, 360)).toBe(321);
   });
 
-  it("ab Minute 20 deckelt LATE_GAME_ACTIVE_CAP (640x360-Referenz)", () => {
-    expect(LATE_GAME_ACTIVE_CAP).toBe(260);
-    for (const minute of [20, 21, 25, 29, 30]) {
+  it("ab Minute 18 deckelt LATE_GAME_ACTIVE_CAP (640x360-Referenz)", () => {
+    expect(LATE_GAME_ACTIVE_CAP).toBe(200);
+    expect(LATE_GAME_START_MINUTE).toBe(18);
+    for (const minute of [18, 19, 20, 21, 25, 29, 30]) {
       expect(maxActiveEnemies(minute * 60, 640, 360), `Minute ${minute}`).toBe(LATE_GAME_ACTIVE_CAP);
     }
-    expect(maxActiveEnemies(20 * 60, 640, 360)).toBeLessThan(maxActiveEnemies(19 * 60, 640, 360));
+    expect(maxActiveEnemies(18 * 60, 640, 360)).toBeLessThan(maxActiveEnemies(17 * 60, 640, 360));
   });
 
   it("View-Skalierung wirkt weiter, harte Obergrenze 500 bleibt respektiert", () => {
-    // 960x540: viewAreaFactor 1,5 → 260*1,5 = 390 statt bisher 500 (−22 %).
-    expect(maxActiveEnemies(30 * 60, 960, 540)).toBe(390);
-    // 780x360: Faktor ~1,21875 → 317 statt bisher 439.
-    expect(maxActiveEnemies(30 * 60, 780, 360)).toBe(317);
+    // 960x540: viewAreaFactor 1,5 → 200*1,5 = 300 statt bisher 500 (−40 %).
+    expect(maxActiveEnemies(30 * 60, 960, 540)).toBe(300);
+    // 780x360: Faktor ~1,21875 → 244 statt bisher 439.
+    expect(maxActiveEnemies(30 * 60, 780, 360)).toBe(244);
     // Extrem breit: viewAreaFactor deckelt auf 1,5, Ergebnis bleibt ≤ 500.
-    expect(maxActiveEnemies(30 * 60, 1920, 1080)).toBe(390);
+    expect(maxActiveEnemies(30 * 60, 1920, 1080)).toBe(300);
     expect(maxActiveEnemies(30 * 60, 1920, 1080)).toBeLessThanOrEqual(500);
   });
 

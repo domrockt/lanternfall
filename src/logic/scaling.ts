@@ -58,21 +58,25 @@ export function spawnRateFactor(width: number, height: number): number {
 }
 
 /**
- * M10-Endgame-Balance (Lane m10-balance-endgame): ab Minute 20 greift ein
- * reduzierter Basis-Deckel (260 statt 360). Das ist **der eine** Director-Hebel
+ * M10-Endgame-Balance (Lane m10-balance-endgame): ab Minute 18 greift ein
+ * reduzierter Basis-Deckel (200 statt 360). Das ist **der eine** Director-Hebel
  * dieser Lane: Der Endgame-Tod der AutoPlay-Bots entsteht aus Massedruck im
- * Übergang Minute 20–24, sobald der Deckel sein Maximum erreicht (960x540:
- * 500 aktive Gegner). Mit 260 liegt 960x540 bei 390 statt 500 (−22 %) und
- * 640x360 bei 260 statt 360 (−28 %); Minute 0–19 bleibt bitgleich zur
- * M6/M8-Balance. Harte Obergrenze 500 bleibt.
+ * Übergang Minute 18–24 — der 500er-Deckel bindet bei 960x540 messbar genau ab
+ * Minute 18 (`round(min(360,334)·1,5) = 500`), und die Tode (20,25–21,5 min)
+ * fallen in den Glockenturm-Golem-Kampf (Boss bei 20:00). Die Entlastung muss
+ * deshalb VOR dem Boss ansetzen: 960x540 liegt damit bei 300 statt 500 aktiven
+ * Gegnern (−40 %), 640x360 bei 200 statt 360 (−44 %). Minute 0–17 bleibt
+ * bitgleich zur M6/M8-Balance. Harte Obergrenze 500 bleibt.
  */
-export const LATE_GAME_ACTIVE_CAP = 260;
+export const LATE_GAME_ACTIVE_CAP = 200;
+/** Startminute der Endgame-Entlastung (zwei Minuten vor dem Boss bei 20:00). */
+export const LATE_GAME_START_MINUTE = 18;
 
 /**
  * Maximal gleichzeitig aktive Gegner für den normalen Run. M6-Balance:
- * gleichmäßiger Anstieg bis Minute 20; M8 skaliert den Deckel mit der
- * sichtbaren Fläche (harte Obergrenze 500). M10: ab Minute 20 Deckel
- * `LATE_GAME_ACTIVE_CAP` (siehe oben).
+ * gleichmäßiger Anstieg bis Minute 18; M8 skaliert den Deckel mit der
+ * sichtbaren Fläche (harte Obergrenze 500). M10: ab Minute
+ * `LATE_GAME_START_MINUTE` Deckel `LATE_GAME_ACTIVE_CAP` (siehe oben).
  */
 export function maxActiveEnemies(
   elapsedSeconds: number,
@@ -81,7 +85,7 @@ export function maxActiveEnemies(
 ): number {
   const minute = Math.floor(Math.max(0, elapsedSeconds) / 60);
   const base = 100 + minute * 13;
-  const cap = minute >= 20 ? LATE_GAME_ACTIVE_CAP : 360;
+  const cap = minute >= LATE_GAME_START_MINUTE ? LATE_GAME_ACTIVE_CAP : 360;
   return Math.min(500, Math.round(Math.min(cap, base) * viewAreaFactor(width, height)));
 }
 
