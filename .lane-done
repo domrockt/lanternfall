@@ -1,0 +1,24 @@
+Lane m10-gamepad-menu-nav — Gamepad-/Fernbedienungs-Navigation auf Widget-Ebene (2026-11-28)
+
+Fertig (K1–K5, je ein Commit, Präfix M10-m10-gamepad-menu-nav):
+- K1 7f06c21: Befund Gamepad→Menü (Gamepad.ts-Snapshot, InputState Rising-Edges ohne Repeat,
+  Fokus nur via setFocused; Szenen duplizieren Fokus-Arithmetik) — docs/lanes/m10-gamepad-menu-nav.md
+- K2 2b36dce: src/ui/menu.ts — press(), MenuFocus (moveFocus/setIndex/confirm/back),
+  menuRepeatTick (200 ms Erstwiederholung, 100 ms Folgerepeat, driftfrei), Fokus-Optik wie Hover,
+  BUTTON_PRESSED_ALPHA/ButtonVisualState/Maus-Touch unangetastet (AE=0)
+- K3 e145493: src/ui/options-menu.ts — handlePadFrame(actions, nowMs): Repeat für Richtungen,
+  Confirm/Back Rising-Edge, Reset bei open/close, ein Pad-Frame = eine Aktion; alle 7 Zeilen
+  inkl. MASTER MUTE erreichbar/änderbar
+- K4 22e204a: tests/gamepad-nav.test.ts (16 Tests) + scripts/m10-gamepad-nav.mjs (synthetisches
+  Pad): 15/15 Checks PASS, 0 Sackgassen, 0 Doppel-Events
+- K5: Lane-Doku vervollständigt + dieser Abschluss
+
+Messwerte: tsc grün, npm test 146 Files/1538 Tests grün, build grün.
+Belege: ~/games/.evidence/m10-gamepad-menu-nav/ (m10-gamepad-nav.json, 2 PNGs).
+
+Offen/Bedarf:
+- verify-menus 14/15: Skalierungs-Check (720x540 vs 960x540) failt bereits an Branch-Basis
+  f1c3057 OHNE Lane-Änderungen (2× nachgewiesen) — keine Regression der Lane, Bedarf in
+  ~/games/.dispatch/requests.md gemeldet. Lane kann diese fremde Datei-Domäne nicht fixen.
+- Szenen-Wiring (Title/CharSelect/Pause/Results/Credits auf MenuFocus/handlePadFrame) ist der
+  geplante separate Folgejob; Szenen-Dateien hier bewusst unangetastet.

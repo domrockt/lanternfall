@@ -57,16 +57,54 @@ Sackgassen/Doppel-Events. Szenen duplizieren Fokus-Arithmetik und warten auf den
 
 | Karte | Inhalt | Status |
 |---|---|---|
-| K1 (#8916) | Befund (dieser Abschnitt) | doing |
-| K2 (#8917) | menu.ts Fokus-API + Repeat-Debounce | todo |
-| K3 (#8918) | options-menu.ts Gamepad-Zeilen + Repeat | todo |
-| K4 (#8919) | tests/gamepad-nav.test.ts + scripts/m10-gamepad-nav.mjs | todo |
-| K5 (#8920) | After-Belege + .lane-done | todo |
+| K1 (#9097, Commit 7f06c21) | Befund (Abschnitt oben) | done |
+| K2 (#9098, Commit 2b36dce) | menu.ts: `press()`, `MenuFocus` (moveFocus/setIndex/confirm/back), `menuRepeatTick` (200/100 ms, driftfrei) + 9 Tests | done |
+| K3 (#9099, Commit e145493) | options-menu.ts: `handlePadFrame(a, nowMs)` — Repeat für up/down/left/right, Confirm/Back nur Rising-Edge, Reset bei open/close, Priorität back > up > down > left > right > confirm → **ein Pad-Frame = eine Aktion**; 7 weitere Tests (16 gesamt) | done |
+| K4 (#9100, Commit 22e204a) | tests/gamepad-nav.test.ts (16 Tests) + scripts/m10-gamepad-nav.mjs: Harness mit synthetischem Pad (gemocktes `navigator.getGamepads`), 15/15 PASS, **0 Sackgassen, 0 Doppel-Events** | done |
+| K5 (#9101) | After-Belege + .lane-done | done |
 
-## Abnahme
-- verify-menus bleibt 15/15 PASS (Touch/Maus-Pfade bitgleich), npm test + tsc grün.
-- Harness: jede Menü-Zeile per Gamepad erreichbar/bedienbar, 0 Sackgassen, 0 Doppel-Events.
-- Master-Mute-Persistenz wie heute (A7).
+## Ergebnisse / Messwerte
 
-## Belege
-- (Pfade nach `~/games/.evidence/m10-gamepad-menu-nav/` folgen in K4/K5.)
+- **Widget-Ebene (neu, K2/K3):**
+  - `MenuFocus`: Fokus-Kreis über `MenuButton`-Listen, visualisiert wie Hover
+    (Lanternfarbe + 1-px-Rahmen via `setFocused`); `confirm()` feuert genau ein Event
+    (Knopf-`onClick` via neuem `press()`), deaktivierte Knöpfe sind No-Ops.
+    `BUTTON_PRESSED_ALPHA`/`ButtonVisualState`/Maus-/Touch-Pfade unangetastet (AE=0).
+  - `menuRepeatTick`: Press-Flanke sofort, Erstwiederholung nach 200 ms, Folgerepeat 100 ms,
+    driftfrei (`lastFireMs += interval`); drückt man neu, feuert es sofort wieder.
+  - `OptionsMenu.handlePadFrame(actions, nowMs)`: Repeat-fähiger Pad-Pfad auf Widget-Ebene,
+    Confirm absichtlich KEIN Repeat-Kanal (Toggles sollen beim Halten nicht durchschalten).
+    `handlePad()` delegiert (Bestandspfad bleibt kompatibel).
+- **Harness (K4):** `node scripts/m10-gamepad-nav.mjs` → 15/15 Checks PASS,
+  0 Sackgassen, 0 Doppel-Events, keine JS-Fehler. Geprüft: Titel-Fokus, Options öffnen,
+  alle 7 Zeilen inkl. Wrap, alle 6 Wertzeilen left/right änderbar, MASTER MUTE toggle +
+  Persistenz (A7) in `lanternfall-options-v1`, ZURÜCK per Confirm und B-Knopf,
+  ein Press = genau eine Zeile (auch 250 ms halten).
+- **Tests/Build:** `npx tsc --noEmit` grün; `npm test` 146 Files / 1538 Tests grün;
+  `npm run build` grün.
+
+## Belege (`~/games/.evidence/m10-gamepad-menu-nav/`)
+
+- `m10-gamepad-nav.json` — Harness-Report (15/15 Checks, 0 Sackgassen, 0 Doppel-Events)
+- `m10-gamepad-nav-options-zeile0.png` — Optionsmenü, Zeile 0 MUSIK per Gamepad fokussiert
+- `m10-gamepad-nav-options-master-mute.png` — MASTER MUTE (Zeile 4) per Gamepad fokussiert/änderbar
+
+## Offene Punkte / Bedarf
+
+1. **verify-menus 14/15 (Skalierungs-Check):** Der Check „Skalierung 2X gestellt, Fit-View
+   zentriert" (erwartet 720x540, gemessen 960x540) schlägt **bereits an der Branch-Basis
+   f1c3057 ohne jegliche Lane-Änderung fehl** (nachgewiesen: Basis-Build + verify:menus 2×,
+   identischer Fehler). Keine Regression dieser Lane; die 14 anderen Checks (Maus-/Touch-Pfade,
+   Persistenz) sind PASS und verhalten sich mit/ohne Lane-Änderungen gleich. Bedarf ist in
+   `~/games/.dispatch/requests.md` gemeldet (Zuständig: View-/Scale-Lane).
+2. **Szenen-Wiring (Folgejob):** Title/CharSelect/Pause/Results/Credits nutzen die neue API
+   noch über ihre eigenen `selected`-Pfade (Befund K1 Abschnitt 4). Umstellung auf
+   `MenuFocus` + `handlePadFrame` (Repeat beim Halten auch im Titelmenü) ist der geplante
+   Folgejob — Szenen-Dateien hier bewusst nicht angefasst.
+
+## Abnahme (Ist)
+- verify-menus: 14/15 — der eine FAIL ist basisseitig (Punkt 1 oben), durch Lane-Änderungen unverändert.
+- npm test + tsc: grün (1538 Tests).
+- Harness: jede Menü-Zeile per Gamepad erreichbar/bedienbar, 0 Sackgassen, 0 Doppel-Events. ✔
+- Master-Mute-Persistenz wie heute (A7): Harness-Check PASS. ✔
+
