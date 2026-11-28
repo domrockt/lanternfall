@@ -70,9 +70,37 @@ Beleg: `~/games/.evidence/m10-heap-regression-fix/m3-fullrunebase.json` (+ `curv
 +13,9 % PASS maß. Damit ist das F-Urteil kein Code-Regression, sondern
 Gate-Sensitivität (K2).
 
-## K2 — Ursache
+## K2 — Ursache (belegt)
 
-(folgt nach Gegenprobe)
+**Es gibt keine Heap-Regression im Code.** Das F-K4-Urteil (+18,2/+20,8 %) ist die
+Messunsicherheit eines unsound Gates:
+
+1. **Kalte m1-Referenz:** Bei 30x liegt Sim-Minute 1 bei **2 s Echtzeit** — die
+   Referenz wird gemessen, bevor Evolution-Waffen-/Hazard-/Glyph-Texturen lazy
+   gebacken sind. Der Großteil des m1→m29-Abstands (+4,7 MB allein m1→m2 in der
+   HEAD-Kurve) ist legitimer Warmup, kein Leak.
+2. **Sägezahn-Amplitude:** Post-GC-Einzelsamples streuen ±5 MB (m26 = 54,5 MB
+   unter m4 = 58,8 MB, HEAD r2 m28 62,9 → m29 68,2). Zwei Punktsamples auf diesem
+   Sägezahn ergeben Laufstreuung 13,9–23,3 % **bei gleichem Verhalten** — das Tor
+   ≤ 15 % liegt mitten im Streubereich (E-Basis selbst misst +17,1 %, s. K1.4).
+3. **Kein retained Leak über Szenengrenzen:** Nach Results-Teardown + GC liegt
+   der Heap bei HEAD auf **47,4 MB = +9,0 %** über Start (zwei Läufe: 9,0/9,0),
+   E-Basis +10,4 %. Das gesamte m1→m29-Wachstum ist Run-Szenen-Zustand (lazy
+   Texturen, Chunks, Floating Garbage) und wird beim Teardown freigegeben.
+4. **Wachstumsrate gleich:** m1→m29 absolut +8,0 MB (E-Basis) vs. +8,8 MB (HEAD)
+   — das Fenster a6f1458..1ebd4cab hat die Wachstumsrate nicht verändert.
+
+**Nebenbefund (nicht Tor-relevant, Android-relevant):** Die Boot-Baseline stieg
+im Fenster von 36,7 auf 43,5 MB (+6,8 MB, v. a. gebackte Atlas-/Pillar-Seiten
+des fx-bakes-Fensters). Das ist einmaliger, begrenzter Zustand — erhöht aber das
+Absolutniveau auf dem Tablet. Gehört in die Android-Beobachtung, nicht in diese Lane.
+
+**Echter offener Punkt (ungebunden, aber nicht Regression):** Hazard-Texturen
+werden pro Radius/Länge gebacken (`hazard_disc_r<NN>`, 1-px-Quantisierung, Bereich
+8..160; Beams bis l840+, nie freigegeben) → prinzipiell ungebunden über lange
+Echtzeit-Sessions mit vielen Boss-Leveln. Datei `src/gfx/hazardDisc.ts` ist von
+der Lane `m10-hazard-quality-budget` geclaimt → Claim-Anfrage (K3), kein Selbstgriff.
+
 
 ## K3/K4
 
