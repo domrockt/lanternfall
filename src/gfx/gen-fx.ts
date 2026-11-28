@@ -1437,20 +1437,24 @@ export function pendulumRingFrame(stage: number, size = WRATH_RING_SIZE, radius 
       const dx = x - c;
       const dy = y - c;
       const d = Math.hypot(dx, dy);
-      if (Math.abs(d - r0) > bandW) continue;
       const a = Math.atan2(dy, dx);
       if (a > 0 || a < -arc) continue;
       const v = (a + arc) / arc; // 0 = Schwungstart (Glut) → 1 = Spitze (Kugel)
-      const w = (d - (r0 - bandW)) / (2 * bandW); // 0 innen → 1 außen
+      // Tail-Taper (art-director): Bogen am Schwungstart schmaler — auslaufende
+      // Spur statt gleichmäßiger Röhre.
+      const bandHere = bandW * (0.6 + 0.4 * v);
+      if (Math.abs(d - r0) > bandHere) continue;
+      const w = (d - (r0 - bandHere)) / (2 * bandHere); // 0 innen → 1 außen
       // Grenz-Jitter nur an den Band-Kanten (1–2 px), nie als Flächen-Raster.
       const flick = Math.sin(Math.abs(a) * 9 + stage * 2.1) * 0.05;
       const wEff = w + (w > 0.4 ? flick : -flick);
       let idx: number;
       if (wEff > 0.96) idx = 23;                 // äußere Kontur (1 px)
       else if (wEff > 0.86) idx = 20;            // Amber-Saum
-      else if (wEff > 0.34) idx = 22;            // Kern flächig hell-bernstein (ganzer Bogen)
+      else if (wEff > 0.34) idx = v > 0.45 ? 22  // Kern flächig, zur Glut abdimmern
+        : v > 0.18 ? 21 : 27;
       else if (wEff > 0.22) idx = v > 0.35 ? 21  // Glut nur an den Bändern zum Schwungstart
-        : 27;
+        : 26;
       else if (wEff > 0.08) idx = 26;
       else idx = 25;                             // innere dunkle Glut
       rows[y][x] = charOf(idx);
@@ -1479,9 +1483,13 @@ export function wrathGlowFrame(size = 17): string[] {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
-      if (d <= r) {
+      if (d <= 6.6) {
         const idx = d < 1.6 ? 22 : d < 3.0 ? 21 : d < 4.4 ? 20 : d < 5.6 ? 27 : 26;
         rows[y][x] = charOf(idx);
+      } else if (d <= 7.05) {
+        // Ecken-Rim (art-director): die abgeschnittenen Diagonalen mit Glut (26)
+        // auffüllen — runder Rand statt quadratischer Eckstufen.
+        rows[y][x] = charOf(26);
       }
     }
   }
@@ -1526,14 +1534,22 @@ export function wrathSignatureFrame(kind: "hit" | "death", stage: number, size =
       rows[y][x] = charOf(idx);
     }
   }
-  // Zungen nach außen (Taper, unregelmäßige Winkel — organisch statt Raster).
+  // Zungen nach außen (Breiten-Taper: Wurzel 2 px, Spitze 1 px — art-director:
+  // „Streichholz-Nadeln" vermeiden). Unregelmäßige Winkel, organisch statt Raster.
   const zungen = death ? 9 : 6;
   for (let i = 0; i < zungen; i++) {
     const za = (i / zungen) * Math.PI * 2 + i * 0.73 + stage * 0.11;
     const len = 3 + ((i * 5 + stage) % 3) + (death ? 1 : 0) + Math.round(t * 2);
     for (let k = 1; k <= len; k++) {
       const rr = r0 + bandW + k;
-      put(c + Math.cos(za) * rr, c + Math.sin(za) * rr, k >= len ? 27 : 26);
+      const px = c + Math.cos(za) * rr;
+      const py = c + Math.sin(za) * rr;
+      put(px, py, k >= len ? 27 : 26);
+      if (k === 1) {
+        // Wurzel: seitlich je 1 px (26) — Zunge liest sich als Flamme, nicht als Nadel.
+        put(c + Math.cos(za + 0.09) * rr, c + Math.sin(za + 0.09) * rr, 26);
+        put(c + Math.cos(za - 0.09) * rr, c + Math.sin(za - 0.09) * rr, 26);
+      }
     }
   }
   // Zentraler Glutkern: flächig hell, Randstufen statt Ink.

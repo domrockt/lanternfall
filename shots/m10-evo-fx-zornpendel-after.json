@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-28T02:05:17.251Z",
+  "generatedAt": "2026-11-28T02:14:53.614Z",
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "valid": true,
   "errors": [],
   "configs": {
     "640": {
       "renderer": {
-        "generatedAt": "2026-11-28T02:05:11.710Z",
+        "generatedAt": "2026-11-28T02:14:47.923Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -338,7 +338,7 @@
         "fx_evo_death_wrath_pendulum": {
           "width": 96,
           "height": 96,
-          "opaque": 856,
+          "opaque": 874,
           "inkPixels": 0,
           "grayPixels": 0,
           "edgeOpaquePixels": 0,
@@ -346,7 +346,7 @@
           "histogram": {
             "pal25": 65,
             "pal27": 9,
-            "pal26": 124,
+            "pal26": 142,
             "pal23": 42,
             "pal20": 142,
             "pal22": 306,
@@ -356,19 +356,19 @@
         "fx_wrath_ring": {
           "width": 208,
           "height": 208,
-          "opaque": 484,
+          "opaque": 390,
           "inkPixels": 0,
           "grayPixels": 0,
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal20": 49,
-            "pal23": 22,
-            "pal22": 232,
-            "pal26": 78,
-            "pal27": 21,
-            "pal25": 50,
-            "pal21": 32
+            "pal27": 29,
+            "pal26": 82,
+            "pal20": 32,
+            "pal25": 37,
+            "pal23": 19,
+            "pal21": 77,
+            "pal22": 114
           }
         }
       },
@@ -390,7 +390,7 @@
     },
     "960x540": {
       "renderer": {
-        "generatedAt": "2026-11-28T02:05:14.733Z",
+        "generatedAt": "2026-11-28T02:14:51.028Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -722,7 +722,7 @@
         "fx_evo_death_wrath_pendulum": {
           "width": 96,
           "height": 96,
-          "opaque": 856,
+          "opaque": 874,
           "inkPixels": 0,
           "grayPixels": 0,
           "edgeOpaquePixels": 0,
@@ -730,7 +730,7 @@
           "histogram": {
             "pal25": 65,
             "pal27": 9,
-            "pal26": 124,
+            "pal26": 142,
             "pal23": 42,
             "pal20": 142,
             "pal22": 306,
@@ -740,19 +740,19 @@
         "fx_wrath_ring": {
           "width": 208,
           "height": 208,
-          "opaque": 484,
+          "opaque": 390,
           "inkPixels": 0,
           "grayPixels": 0,
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal20": 49,
-            "pal23": 22,
-            "pal22": 232,
-            "pal26": 78,
-            "pal27": 21,
-            "pal25": 50,
-            "pal21": 32
+            "pal27": 29,
+            "pal26": 82,
+            "pal20": 32,
+            "pal25": 37,
+            "pal23": 19,
+            "pal21": 77,
+            "pal22": 114
           }
         }
       },

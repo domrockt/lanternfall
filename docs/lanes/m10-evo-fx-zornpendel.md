@@ -89,10 +89,26 @@ Alt-Signaturen unverändert). Suite **1145/1145 grün**, `npx tsc --noEmit` rc=0
 
 ## art-director-Sichtprüfung
 
-- Urteil: siehe Karten-Notiz #7440 (Board); Maßstab „kommerziell auslieferbar",
-  verschärfte Kriterien (1) Kanten-Dither, (2) flächige Kerne, (3) organische Formen —
-  Selbstcheck vor der Abnahme: Ring/Signatur haben flächigen 22-Kern (testbelegt),
-  Dither nur als Band-Kanten-Jitter, Zungen organisch mit Taper.
+- **Runde 1: PASS** (keine Blocker, Note je Asset: Pendel-Ring 4, Glow 4, Hit-Signatur 4,
+  Death-Signatur 4,5, Schwung-Lesbarkeit 640/960 je 4,5 — Maßstab „kommerziell
+  auslieferbar"). Defekte vorher (Ink-Blockring 176 px, fx_halo @5,3–10,7x, Smear @4,8x)
+  als beseitigt bestätigt; Mixel-Regel (alle Live-Scales 1.0), ZORN_RAMP-Einheitlichkeit
+  und Konturregel (0 Ink) bestätigt.
+- **Nachbesserungsliste umgesetzt (Commit mit `-aftersig` + frischen `-after`-Belegen):**
+  1. Pendel-Ring **Tail-Taper** — Bandbreite am Schwungstart auf 60 % verzietert,
+     Kern 22 nur noch für v > 0,45, davor 21 → 27 zur Glut abgedimmt (auslaufende
+     Spur statt gleichmäßiger Röhre).
+  2. Hit-/Death-Signatur **Zungen mit Breiten-Taper** — Wurzel 2 px (seitlich ±1 px,
+     Winkel-Offset 0,09 rad), Spitze 1 px („Streichholz-Nadeln" behoben).
+  3. Glow **Ecken-Rim** — abgeschnittene Diagonalen bei d ≤ 7,05 mit Glut (26)
+     aufgefüllt, runder Rand statt quadratischer Eckstufen.
+  4. **Beleg Hit-Signatur im Einsatz**: `shots/m10-evo-fx-zornpendel-aftersig.png`
+     (+ `-aftersig.json`, Skript `scripts/m10-evo-fx-zornpendel-hitsig.mjs`) — Hit-Sig
+     am lebenden Golem (220 HP), Draw-Scale 1, iGPU-Renderer, 0 JS-Fehler.
+  Tests bleiben 12/12 grün (Kern-22-Dominanz nach Tail-Taper verifiziert:
+  Ring-Frames 114/253/374 px für 22 vs. nächstgrößere Stufe 82/233/242 für 26).
+- Beleg-Lücke „Hit-Signatur im Spiel" damit geschlossen; Nachtszene-Dämpfung (Moment-
+  Wahl der Stills) als nicht-blockierender Hinweis für kommende Evo-Lanes notiert.
 
 ## Offene Punkte
 
