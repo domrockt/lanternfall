@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7122,
+  "next": 7162,
   "cards": [
     {
       "id": 1,
@@ -8305,6 +8305,64 @@
       ],
       "created": "2026-11-28T00:37:09Z",
       "updated": "2026-11-28T00:37:21Z"
+    },
+    {
+      "id": 7158,
+      "title": "m10-chaos-fix-hazard-disc K1: Vorher-Messung milchiger Disc-Anteil (500er-Stress + M25, before-JSON + Shots)",
+      "description": "Abnahme: scripts/m10-chaos-fix-disc.mjs misst im 500er-Stress-Repro (Vorlage Audit-Lane) den milchigen Feld-Anteil (near-white/hoch-Transparenz-Pixel ueber Terrain) und committet shots/m10-chaos-fix-disc-before-*.png + -before.json. Metrik + Akzeptanzgrenze (>=50 % Reduktion) im JSON fixiert, BEVOR der Fix beginnt.",
+      "column": "review",
+      "assignee": "@build",
+      "notes": [
+        {
+          "at": "2026-11-28T00:57:15Z",
+          "by": "build",
+          "text": "todo → review: Vorher-Messung committed (fabedd0): milkyShareDisc stress500-640 53,44 % / stress500-780 68,73 % / m25 59,5 %, 0 JS-Fehler, iGPU-Renderer belegt; Grenze >=50 % Reduktion fixiert"
+        }
+      ],
+      "created": "2026-11-28T00:41:54Z",
+      "updated": "2026-11-28T00:57:15Z"
+    },
+    {
+      "id": 7159,
+      "title": "m10-chaos-fix-hazard-disc K2: Bake src/gfx/hazardDisc.ts + Umstellung Hazards.ts (reine Optik)",
+      "description": "Abnahme: Neue Datei src/gfx/hazardDisc.ts bakt Telegraph-Disc/-Ring-Texturen in Sprite-Pixelgroesse (gerasterte Ringe/Kontur, 1-2-px-Band, kein stufenloser Gradient, klare Gefahr-Lesbarkeit ja/nein). src/systems/Hazards.ts (telegraph_disc) nutzt den Bake; Draw-Pfad/Warnlogik bitgleich. Tabu-Dateien unberuehrt.",
+      "column": "doing",
+      "assignee": "@build",
+      "notes": [
+        {
+          "at": "2026-11-28T00:57:15Z",
+          "by": "build",
+          "text": "todo → doing: Bake src/gfx/hazardDisc.ts + Umstellung Hazards.ts"
+        }
+      ],
+      "created": "2026-11-28T00:41:54Z",
+      "updated": "2026-11-28T00:57:15Z"
+    },
+    {
+      "id": 7160,
+      "title": "m10-chaos-fix-hazard-disc K3: Tests tests/hazard-disc.test.ts",
+      "description": "Abnahme: tests/hazard-disc.test.ts prueft gebackene Texturen quantisiert (kein stufenloser Gradient), Sprite-Pixelgroesse, Warnlesbarkeit (Band-Kontrast), 0 JS-Fehler-Repro-Skript gruen; npx tsc --noEmit gruen.",
+      "column": "todo",
+      "assignee": "@build",
+      "notes": [],
+      "created": "2026-11-28T00:41:54Z",
+      "updated": "2026-11-28T00:41:54Z"
+    },
+    {
+      "id": 7161,
+      "title": "m10-chaos-fix-hazard-disc K4: Nachher-Messung + Screenshots + Doku + lane-done",
+      "description": "Abnahme: after-*.png/-after.json committed; milchiger Feld-Anteil um >=50 % gesenkt (Skript-Metrik vorher/nachher); Telegraph als gerasterter Ring lesbar (art-director streng >=4/5, Renderer-String mitgeliefert); docs/lanes/m10-chaos-fix-hazard-disc.md + .lane-done.",
+      "column": "doing",
+      "assignee": "@build",
+      "notes": [
+        {
+          "at": "2026-11-28T01:00:31Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Messung + Screenshots + Doku"
+        }
+      ],
+      "created": "2026-11-28T00:41:54Z",
+      "updated": "2026-11-28T01:00:31Z"
     }
   ]
 }

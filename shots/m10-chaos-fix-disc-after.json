@@ -1,0 +1,138 @@
+{
+  "lane": "m10-chaos-fix-hazard-disc",
+  "tag": "after",
+  "generatedAt": "2026-11-28T01:00:34.044Z",
+  "swiftShader": false,
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "webglVersion": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+  },
+  "errors": [],
+  "acceptance": {
+    "metric": "milkyShareDisc (hazard-attribuierte helle Nicht-Paletten-Pixel in Disc-Fenstern, shown-vs-hidden im selben Frame)",
+    "threshold": "500er-Stress: Mittel je Viewport um >= 50 % vs. before gesenkt; 0 JS-Fehler",
+    "milkyBrightMin": 110,
+    "diffMin": 10
+  },
+  "scenarios": [
+    {
+      "tag": "stress500-640",
+      "viewport": "640x360@1",
+      "target": 500,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-stress500-640-f1.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-stress500-640-f1-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 41.4,
+          "hazardShareDisc": 51.48,
+          "milkyShareFull": 14.14,
+          "time": 1498,
+          "enemies": 22,
+          "fps": 55.3,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-stress500-640-f2.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-stress500-640-f2-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 28.57,
+          "hazardShareDisc": 48.5,
+          "milkyShareFull": 9.75,
+          "time": 1503,
+          "enemies": 46,
+          "fps": 56.8,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-stress500-640-f3.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-stress500-640-f3-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 25.08,
+          "hazardShareDisc": 48.45,
+          "milkyShareFull": 8.48,
+          "time": 1508,
+          "enemies": 35,
+          "fps": 53.3,
+          "hazards": null
+        }
+      ],
+      "milkyShareDiscAvg": 31.68,
+      "milkyShareFullAvg": 10.79
+    },
+    {
+      "tag": "stress500-780",
+      "viewport": "780x360@3",
+      "target": 500,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-stress500-780-f1.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-stress500-780-f1-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 21.8,
+          "hazardShareDisc": 56.05,
+          "milkyShareFull": 5.73,
+          "time": 1498,
+          "enemies": 28,
+          "fps": 50.9,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-stress500-780-f2.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-stress500-780-f2-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 22.09,
+          "hazardShareDisc": 55.44,
+          "milkyShareFull": 5.88,
+          "time": 1502,
+          "enemies": 44,
+          "fps": 49.9,
+          "hazards": null
+        }
+      ],
+      "milkyShareDiscAvg": 21.95,
+      "milkyShareFullAvg": 5.8
+    },
+    {
+      "tag": "m25-640",
+      "viewport": "640x360@1",
+      "target": 300,
+      "frames": [
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-m25-640-f1.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-m25-640-f1-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 51.52,
+          "hazardShareDisc": 52.71,
+          "milkyShareFull": 19.41,
+          "time": 1499,
+          "enemies": 25,
+          "fps": 54.1,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-chaos-fix-disc-after-m25-640-f2.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-chaos-fix-disc-after-m25-640-f2-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 51.31,
+          "hazardShareDisc": 52.44,
+          "milkyShareFull": 19.42,
+          "time": 1503,
+          "enemies": 33,
+          "fps": 54.5,
+          "hazards": null
+        }
+      ],
+      "milkyShareDiscAvg": 51.42,
+      "milkyShareFullAvg": 19.41
+    }
+  ]
+}
