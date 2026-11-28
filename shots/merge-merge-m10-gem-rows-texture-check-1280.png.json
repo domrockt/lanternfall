@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5698/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-gem-rows-texture-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
