@@ -43,3 +43,21 @@ Idle-Zweig `fn(d, i, idle=True) for i in range(2)` (`gen_chars.py` build(), Zeil
 
 Ergebnis: Karte 2 endet in Verifikation ohne Code-Änderung — bewusst kein pseudo-Ästhetischer
 Tuning-Loop (Argus-Regel: kein Tuning ohne Zielmetrik; Zielmetrik bereits erfüllt).
+
+## Karte #3 — Runtime-Verifikation (In-Game)
+
+`scripts/m10-hero-idle.mjs` (Playwright, headless, seed=13, god mode) probiert je Held den
+aktiven Texture-Key über Zeit:
+
+| Held | Idle-Keys (stehend, 2,5 s) | Walk-Keys (ArrowRight, 1,6 s) |
+|---|---|---|
+| Kael | `player_kael_down_idle_0/1` (Alternanz ✅) | `player_kael_side_0..3` (Zyklus ✅) |
+| Mira | `player_mira_down_idle_0/1` (Alternanz ✅) | `player_mira_side_0..3` (Zyklus ✅) |
+
+- `shots/m10-hero-idle-ingame.json` — Key-Probierung, `UMSCHALTUNG-PROOF: true`, 0 JS-Fehler.
+- `shots/m10-hero-idle-ingame-{kael,mira}-idle.gif` — Idle-Bob sichtbar (4x nearest Crop).
+- `shots/m10-hero-idle-ingame-{kael,mira}-walk.gif` — 4-Frame-Laufzyklus sichtbar.
+- `shots/m10-hero-idle-ingame-kael-idle-4x.png`, `...-mira-walk-4x.png` — Standbilder 4x nearest.
+
+Kein Draw-Pfad geändert, `src/scenes/Run.ts` nur gelesen (`idlePhase`, 2 fps; `walkPhase`, 9 fps).
+Anmerkung: CharSelect-Index 0 = Mira, Index 1 = Kael (Taste „2“) — im Skript dokumentiert.

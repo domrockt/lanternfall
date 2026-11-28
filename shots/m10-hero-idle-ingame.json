@@ -1,0 +1,71 @@
+{
+ "heroes": {
+  "kael": {
+   "idleKeysUnique": [
+    "player_kael_down_idle_0",
+    "player_kael_down_idle_1"
+   ],
+   "walkKeysUnique": [
+    "player_kael_down_idle_1",
+    "player_kael_side_1",
+    "player_kael_side_3",
+    "player_kael_side_2",
+    "player_kael_side_0"
+   ],
+   "idleSample": [
+    "player_kael_down_idle_0",
+    "player_kael_down_idle_0",
+    "player_kael_down_idle_0",
+    "player_kael_down_idle_1",
+    "player_kael_down_idle_1",
+    "player_kael_down_idle_1",
+    "player_kael_down_idle_0",
+    "player_kael_down_idle_0"
+   ],
+   "walkSample": [
+    "player_kael_down_idle_1",
+    "player_kael_side_1",
+    "player_kael_side_3",
+    "player_kael_side_1",
+    "player_kael_side_3",
+    "player_kael_side_1",
+    "player_kael_side_3",
+    "player_kael_side_2"
+   ]
+  },
+  "mira": {
+   "idleKeysUnique": [
+    "player_mira_down_idle_0",
+    "player_mira_down_idle_1"
+   ],
+   "walkKeysUnique": [
+    "player_mira_down_idle_1",
+    "player_mira_side_1",
+    "player_mira_side_3",
+    "player_mira_side_0",
+    "player_mira_side_2"
+   ],
+   "idleSample": [
+    "player_mira_down_idle_0",
+    "player_mira_down_idle_0",
+    "player_mira_down_idle_0",
+    "player_mira_down_idle_1",
+    "player_mira_down_idle_1",
+    "player_mira_down_idle_1",
+    "player_mira_down_idle_0",
+    "player_mira_down_idle_0"
+   ],
+   "walkSample": [
+    "player_mira_down_idle_1",
+    "player_mira_side_1",
+    "player_mira_side_3",
+    "player_mira_side_1",
+    "player_mira_side_3",
+    "player_mira_side_0",
+    "player_mira_side_2",
+    "player_mira_side_3"
+   ]
+  }
+ },
+ "jsErrors": []
+}
