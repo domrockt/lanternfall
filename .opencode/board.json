@@ -9309,13 +9309,14 @@
    "id": 7510,
    "title": "m10-game-md-sync: K1 Pr\u00fcfmatrix: harte Spec-Aussagen extrahieren",
    "description": "Alle numerischen/harten Aussagen in GAME.md (Werte, Ziele, Inhaltslisten, Steuerung, Regeln) als Liste extrahieren. Abnahme: Matrix mit IDs existiert, jede Aussage zitierbar.",
-   "column": "doing"
+   "column": "done",
+   "note": "52 Aussagen mit IDs (T/D/A/C/W/P/E/G/B/F/S/Z) in docs/lanes/m10-game-md-sync.md; Commit mit #7510."
   },
   {
    "id": 7511,
    "title": "m10-game-md-sync: K2 Ist-Abgleich je Aussage",
    "description": "Je Aussage Ist-Beleg suchen (acceptance-count, Tests, shots-JSON, docs/qa, docs/lanes) und abgleichen. Abnahme: >=90% der harten Aussagen abgeglichen, Zahl dokumentiert.",
-   "column": "todo"
+   "column": "doing"
   },
   {
    "id": 7512,
