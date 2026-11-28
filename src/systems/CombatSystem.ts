@@ -9,7 +9,7 @@ import {
 import { knockbackVector } from "../logic/combat";
 import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
-import { FxSystem, ParticleSystem } from "./FxSystem";
+import { FxSystem, ParticleSystem, FX_GLOW_DEPTH } from "./FxSystem";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
 import { PHOENIX_FX, SOUL_FX, WRATH_FX, THUNDER_FX, WINTER_FX } from "../data/evolution-weapons";
 import { DEPTH } from "../gfx/depth";
@@ -380,12 +380,12 @@ export class CombatSystem {
       // Zornpendel: gebackener Glut-Glow (17x17 @ 1) statt fx_halo 24x24 @ radius/18.
       const halo = evolved
         ? makeImage(this.scene, ctx.playerX, ctx.playerY, WRATH_FX.glowTexture)
-          .setDepth(DEPTH.trail)
+          .setDepth(FX_GLOW_DEPTH)
           .setBlendMode(Phaser.BlendModes.ADD)
           .setScale(1)
           .setAlpha(WRATH_FX.glowAlpha)
         : makeImage(this.scene, ctx.playerX, ctx.playerY, "fx_halo")
-          .setDepth(DEPTH.trail)
+          .setDepth(FX_GLOW_DEPTH)
           .setBlendMode(Phaser.BlendModes.ADD)
           .setTint(PAL[C.boneLight])
           .setScale(radius / 18)
@@ -957,12 +957,12 @@ export class CombatSystem {
         .setBlendMode(evolved ? Phaser.BlendModes.NORMAL : Phaser.BlendModes.ADD);
       const halo = evolved
         ? makeImage(this.scene, ctx.playerX, ctx.playerY, SOUL_FX.haloTexture)
-          .setDepth(DEPTH.trail)
+          .setDepth(FX_GLOW_DEPTH)
           .setScale(SOUL_FX.haloScale)
           .setAlpha(SOUL_FX.haloAlpha)
           .setBlendMode(Phaser.BlendModes.ADD)
         : makeImage(this.scene, ctx.playerX, ctx.playerY, "fx_halo")
-          .setDepth(DEPTH.trail)
+          .setDepth(FX_GLOW_DEPTH)
           .setScale(0.8)
           .setAlpha(0.55)
           .setBlendMode(Phaser.BlendModes.ADD);
