@@ -592,8 +592,8 @@ def hollow_king(f: int) -> Grid:
         g.put(tx - 1, 84, 7)
         g.put(tx + tw_, 86, 4)
 
-    # ── Umhang: dunkles Blutrot, unten breiter und ausgefranst ──
-    top, bot = 31, 84
+    # ── Umhang: dunkles Blutrot, unten breiter, Saum verbunden ──
+    top, bot = 31, 76
     for i in range(bot - top + 1):
         y = top + i - bob
         w = 30 + int(i * 0.34)
@@ -604,17 +604,15 @@ def hollow_king(f: int) -> Grid:
         g.rect(x0, y, 3, 1, 25)
         g.rect(cx + w // 2 - 3, y, 3, 1, 23)
         g.rect(cx + w // 2 - 1, y, 1, 1, 14)
-    # Links weht ein zerrissener Zipfel heraus, rechts ist der Saum kuerzer.
-    for i in range(26):
-        y = 58 + i
-        g.rect(cx - 24 - (i // 8), y, 3, 1, 24)
-        g.put(cx - 24 - (i // 8), y, 25)
-    # Ausgefranster Saum: ungleiche Streifen mit Luecken.
-    for i, x in enumerate(range(cx - 22, cx + 22, 3)):
-        length = (3, 6, 4, 7, 3, 6, 8, 3, 5, 6, 4, 7)[i % 12]
-        g.rect(x, bot - bob, 2, length, 24)
-        g.put(x, bot - bob, 23)
-        g.put(x + 1, bot - bob + length - 1, 14)
+    # Ausgefranster, aber VERBUNDENER Saum: Zipfel als Dreiecke direkt am
+    # Umhang (keine isolierten Tropfen/Streifen mit Luecken mehr).
+    for k, x in enumerate(range(cx - 20, cx + 20, 4)):
+        length = (6, 9, 4, 8, 5, 9, 3, 7, 6, 4)[k % 10]
+        for j in range(length):
+            wj = max(1, 3 - (j * 3) // length)
+            g.rect(x + (3 - wj) // 2, bot + j - bob, wj, 1, 24)
+            g.put(x + (3 - wj) // 2, bot + j - bob, 23)
+        g.put(x, bot + length - 1 - bob, 25)
     # Zwei Risse im Umhang (dunkle Schlitze).
     g.rect(cx + 16, 52 - bob, 1, 9, 14)
     g.rect(cx - 19, 64 - bob, 1, 7, 14)
@@ -633,51 +631,56 @@ def hollow_king(f: int) -> Grid:
     g.put(cx - 13, 87, 4)
     g.put(cx + 12, 87, 4)
 
-    # ── Schmale Ruestung (Rumpf), verwittert ──
-    g.rect(cx - 15, 35 - bob, 30, 30, 5)
-    g.rect(cx - 15, 35 - bob, 3, 30, 7)
-    g.rect(cx + 12, 35 - bob, 3, 30, 4)
-    g.rect(cx - 15, 35 - bob, 30, 2, 7)
-    g.rect(cx - 13, 46 - bob, 26, 2, 4)      # Segmentnaht
-    g.rect(cx - 13, 46 - bob, 26, 1, 7)
-    g.rect(cx - 13, 58 - bob, 26, 3, 5)      # Guertel
-    g.put(cx - 13, 58 - bob, 20)
-    g.put(cx - 11, 58 - bob, 21)
-    # Rost und Dellen, kein Roboter-Look.
-    g.rect(cx + 6, 39 - bob, 3, 2, 6)
-    g.rect(cx - 12, 52 - bob, 2, 3, 6)
-    g.line(cx + 9, 43 - bob, cx + 11, 52 - bob, 4)
-    g.line(cx - 13, 61 - bob, cx - 10, 64 - bob, 4)
-
-    # ── Hohler Brustkorb mit Rippen und Glutherz ──
-    g.rect(cx - 6, 41 - bob, 12, 14, 2)
-    g.rect(cx - 6, 41 - bob, 12, 1, 5)
-    for ry in (44, 48, 52):
-        g.rect(cx - 5, ry - bob, 10, 1, 6)
-        g.put(cx - 5, ry - bob, 7)
-        g.put(cx + 4, ry - bob, 7)
-    g.rect(cx - 4, 54 - bob, 8, 1, 3)        # Zwerchfell-Schatten
+    # ── Zerissener Wams (23) ueber freiliegendem Rippenkorb — organisch/knochenig,
+    #    kein Tech-Panel mehr (keine Segmentnaehte, keine LueftungsSchlitze) ──
+    g.rect(cx - 13, 35 - bob, 26, 27, 23)         # Wams
+    g.rect(cx - 13, 35 - bob, 2, 27, 24)          # Licht links
+    g.rect(cx + 11, 35 - bob, 2, 27, 14)          # Schatten rechts
+    g.rect(cx - 13, 35 - bob, 26, 2, 24)          # Schulter-Licht
+    g.rect(cx - 8, 47 - bob, 2, 5, 2)             # Einkerbung links (zerissen)
+    g.rect(cx + 6, 55 - bob, 2, 4, 2)             # Einkerbung rechts
+    # Hohler Brustkorb: dunkle Hoehlung (2) mit Brustbein (10) und gebogenen
+    # Rippenboegen (10/11), Glutherz als Detail nach dem Shading.
+    g.rect(cx - 7, 39 - bob, 14, 17, 2)
+    g.rect(cx - 1, 38 - bob, 2, 15, 10)           # Brustbein
+    g.put(cx - 1, 38 - bob, 11)
+    g.line(cx - 1, 41 - bob, cx - 7, 44 - bob, 10, 2)   # Rippe 1 links
+    g.line(cx, 41 - bob, cx + 6, 44 - bob, 10, 2)       # Rippe 1 rechts
+    g.put(cx - 7, 44 - bob, 11)
+    g.put(cx + 6, 44 - bob, 11)
+    g.line(cx - 1, 46 - bob, cx - 6, 50 - bob, 10, 2)   # Rippe 2 links
+    g.line(cx, 46 - bob, cx + 5, 50 - bob, 10, 2)       # Rippe 2 rechts
+    g.put(cx - 6, 50 - bob, 11)
+    g.put(cx + 5, 50 - bob, 11)
+    g.line(cx - 1, 52 - bob, cx - 4, 55 - bob, 9, 2)    # Rippe 3 (im Schatten)
+    g.line(cx, 52 - bob, cx + 3, 55 - bob, 9, 2)
+    g.rect(cx - 5, 56 - bob, 10, 1, 3)            # Zwerchfell-Schatten
+    # Guertel: Leder (14) mit Knochen-Schnalle (10/11).
+    g.rect(cx - 13, 62 - bob, 26, 3, 14)
+    g.rect(cx - 13, 62 - bob, 26, 1, 15)
+    g.rect(cx - 2, 62 - bob, 4, 3, 10)
+    g.put(cx - 1, 63 - bob, 11)
 
     # ── Asymmetrische Schulterplatten ──
-    g.ellipse(cx - 20, 36 - bob, 9, 5, 5)    # links gross
-    g.ellipse(cx + 20, 37 - bob, 7, 4, 5)    # rechts klein
-    g.put(cx - 26, 33 - bob, 7)
-    g.put(cx + 16, 35 - bob, 7)
-    g.rect(cx - 27, 29 - bob, 2, 5, 5)       # abgebrochener Spike links
-    g.put(cx - 27, 29 - bob, 7)
-    g.rect(cx + 23, 33 - bob, 2, 3, 5)
-    g.put(cx + 23, 33 - bob, 7)
+    g.ellipse(cx - 20, 36 - bob, 9, 5, 6)    # links gross
+    g.ellipse(cx + 20, 37 - bob, 7, 4, 6)    # rechts klein
+    g.put(cx - 26, 33 - bob, 8)
+    g.put(cx + 16, 35 - bob, 8)
+    g.rect(cx - 27, 29 - bob, 2, 5, 6)       # abgebrochener Spike links
+    g.put(cx - 27, 29 - bob, 8)
+    g.rect(cx + 23, 33 - bob, 2, 3, 6)
+    g.put(cx + 23, 33 - bob, 8)
     # Riss in der linken Platte.
     g.put(cx - 22, 33 - bob, 4)
 
     # ── Arme ──
-    g.rect(cx - 26, 39 - bob, 6, 21, 5)
-    g.rect(cx - 26, 39 - bob, 2, 21, 7)
+    g.rect(cx - 26, 39 - bob, 6, 21, 6)
+    g.rect(cx - 26, 39 - bob, 2, 21, 8)
     g.rect(cx - 26, 57 - bob, 5, 4, 10)      # Knochenhand
     g.put(cx - 26, 57 - bob, 11)
     if wind:
         # Wind-up: Schwertarm hoch, Klinge diagonal nach rechts oben.
-        g.line(cx + 19, 38 - bob, cx + 24, 27 - bob, 5, 3)
+        g.line(cx + 19, 38 - bob, cx + 24, 27 - bob, 6, 3)
         g.line(cx + 19, 38 - bob, cx + 24, 27 - bob, 7, 1)
         g.rect(cx + 22, 25 - bob, 5, 4, 10)  # Hand
         g.put(cx + 22, 25 - bob, 11)
@@ -687,8 +690,8 @@ def hollow_king(f: int) -> Grid:
         g.rect(cx + 19, 27 - bob, 10, 2, 20) # Parierstange
         g.put(cx + 19, 27 - bob, 21)
     else:
-        g.rect(cx + 19, 39 - bob, 6, 19, 5)
-        g.rect(cx + 19, 39 - bob, 2, 19, 7)
+        g.rect(cx + 19, 39 - bob, 6, 19, 6)
+        g.rect(cx + 19, 39 - bob, 2, 19, 8)
         g.rect(cx + 21, 55 - bob, 5, 4, 10)  # Hand am Griff
         g.put(cx + 21, 55 - bob, 11)
         # Duennes Schwert: 2-px-Klinge mit Lichtkante, senkrecht.
@@ -742,21 +745,22 @@ def hollow_king(f: int) -> Grid:
     g.put(cx + 2, 13 - bob, 16)
     g.put(cx - 4, 5 - bob, 22)               # Glanzpunkt
 
-    # ── Dornen / Thronfragmente im Vordergrund ──
-    for ox, oy, dx, dy in ((-34, 92, -27, 80), (-29, 93, -22, 84),
-                           (27, 92, 21, 82), (33, 93, 36, 85)):
-        g.line(cx + ox, oy, cx + dx, dy, 26, 2)
-        g.line(cx + ox, oy, cx + dx, dy + 1, 24, 1)
-        g.put(cx + dx, dy, 25)
-    g.rect(cx - 38, 88, 8, 4, 5)
-    g.rect(cx - 38, 88, 8, 1, 7)
-    g.rect(cx + 30, 89, 7, 3, 5)
-    g.rect(cx + 30, 89, 7, 1, 7)
+    # ── Boden: zwei stabile Steinbrocken mit fest aufgesetzten Dornen ──
+    # (frueher: Diagonal-Dornen ueber das ganze Bild + isolierte Truemmer-Pixel)
+    g.rect(cx - 36, 88, 8, 4, 5)
+    g.rect(cx - 36, 88, 8, 1, 7)
+    g.line(cx - 33, 88, cx - 31, 82, 26, 2)
+    g.put(cx - 31, 81, 25)
+    g.put(cx - 32, 83, 24)
+    g.rect(cx + 28, 89, 7, 3, 5)
+    g.rect(cx + 28, 89, 7, 1, 7)
+    g.line(cx + 31, 89, cx + 33, 83, 26, 2)
+    g.put(cx + 33, 82, 25)
+    g.put(cx + 32, 84, 24)
     if wind:
-        # Wind-up: Umhangbausch + gluehende Dornenspitzen.
-        for i in range(8):
-            g.put(cx - 35 + i * 2, 86 - (i % 3), 26)
-            g.put(cx + 30 - i, 86 - (i % 2), 26)
+        # Wind-up: gluehende Dornenspitzen (an den Dornen, nicht freischwebend).
+        g.put(cx - 31, 81, 13)
+        g.put(cx + 33, 82, 13)
 
     details = [(cx - 7, 24 - bob, 11), (cx + 6, 24 - bob, 11)]
     details += eye_glow(cx - 5, 20 - bob, f)
