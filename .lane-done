@@ -1,0 +1,22 @@
+# Lane m10-powerup-sfx-wire — fertig (2026-11-28)
+
+Powerup-Aufnahme-Moment hörbar gemacht: `playPowerupMoment()` (src/systems/PickupSystem.ts)
+ruft nach dem spec-Guard `getAudio().play("powerup")` — mit Guard auf SFX_KEYS, damit
+kein Crash entsteht, solange der Key "powerup" (WAV + Mixing) von der Parallel-Lane
+m10-pickup-sfx-distinct nicht gemergt ist. src/audio/**, gen_sfx.py, public/sfx/**
+unangetastet (Claim-Konflikte: 0, per git diff belegt).
+
+Karten: #9735 K1 Vorher-Probe (0 Audio-Calls, b1d4d54), #9736 K2 Fix (e82acac),
+#9737 K3 Guard-Test (6e2bbcc, 5 Tests), #9738 K4 Nachher-Probe + Doku (a973213).
+Hinweis: Briefing-Karte #9585 existierte auf keinem Board — Lane-Karten neu angelegt.
+
+Messung (scripts/m10-powerup-sfx-wire.mjs, Vite-SSR + Stubs, API-Ebene):
+0 → 1 play-Call je gültigem Moment (boots/tome), unbekannte id/Gem-Pfad/Frame ohne
+Erwerb: 0. Belege: ~/games/.evidence/m10-powerup-sfx-wire/{before,after}.json.
+
+Verifikation: tsc rc=0, npm run build rc=0, npm test 157 Dateien / 1695 Tests grün.
+Reviewer: PASS (2 nicht-blockierende Nits, siehe docs/lanes/m10-powerup-sfx-wire.md).
+
+Offen: hörbare Abnahme des Sounds erst nach Merge der sfx-distinct-Lane (audio-check);
+bis dahin bleibt der Moment in diesem Stand still (kein Crash).
+Doku: docs/lanes/m10-powerup-sfx-wire.md
