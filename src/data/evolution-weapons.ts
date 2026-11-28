@@ -186,7 +186,7 @@ export const THUNDER_FX = {
   sealFrames: 4,
   /** Anticipation: Ladezeit in s (<= 0,6) + Start-Alpha, Puls um Scale 1. */
   anticipation: 0.55,
-  anticipationAlphaFrom: 0.35,
+  anticipationAlphaFrom: 0.45,
   pulse: 0.06,
   /** Impact-Flash am Siegel (Frame 2) als kurzer Pool-Effekt. */
   impactFlashLife: 0.3,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T02:37:23.141Z",
+  "generatedAt": "2026-11-28T02:44:06.712Z",
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "valid": true,
   "errors": [],
@@ -16,12 +16,12 @@
           "kills": 0
         },
         {
-          "t": 0.21,
+          "t": 0.22,
           "counts": {
             "fx_seal_thunder": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.59
+            "fx_seal_thunder": 0.68
           },
           "scale": {
             "fx_seal_thunder": 0.94
@@ -39,12 +39,12 @@
             "fx_star": 1
           },
           "alpha": {
-            "fx_seal_thunder": 0.94,
-            "fx_star": 0.18
+            "fx_seal_thunder": 0.98,
+            "fx_star": 0.05
           },
           "scale": {
             "fx_seal_thunder": 0.97,
-            "fx_star": 0.69
+            "fx_star": 0.32
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_2",
@@ -59,24 +59,24 @@
             "fx_seal_thunder": 25,
             "fx_bolt": 100,
             "fx_halo": 3,
-            "fx_star": 44
+            "fx_star": 27
           },
           "alpha": {
             "fx_seal_thunder": 0.88,
-            "fx_bolt": 0.67,
-            "fx_halo": 0.47,
-            "fx_star": 0.45
+            "fx_bolt": 0.6,
+            "fx_halo": 0.39,
+            "fx_star": 0.34
           },
           "scale": {
             "fx_seal_thunder": 1,
             "fx_bolt": 1.61,
-            "fx_halo": 0.49,
-            "fx_star": 1.41
+            "fx_halo": 0.53,
+            "fx_star": 1.12
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
-            "fx_bolt": "fx_bolt_2",
-            "fx_halo": "fx_halo@2",
+            "fx_bolt": "fx_bolt_3",
+            "fx_halo": "fx_halo@2_2",
             "fx_star": "fx_star"
           },
           "aliveEnemies": 24,
@@ -86,11 +86,11 @@
           "t": 0.92,
           "counts": {
             "fx_seal_thunder": 22,
-            "fx_bolt": 96
+            "fx_bolt": 62
           },
           "alpha": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 0.27
+            "fx_bolt": 0.2
           },
           "scale": {
             "fx_seal_thunder": 0.91,
@@ -111,11 +111,11 @@
           },
           "alpha": {
             "fx_seal_thunder": 0.91,
-            "fx_star": 0.73
+            "fx_star": 0.56
           },
           "scale": {
             "fx_seal_thunder": 0.98,
-            "fx_star": 0.83
+            "fx_star": 0.67
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_4",
@@ -159,15 +159,15 @@
           "kills": 20
         },
         {
-          "t": 1.85,
+          "t": 1.84,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.82
+            "fx_seal_thunder": 0.87
           },
           "scale": {
-            "fx_seal_thunder": 0.9
+            "fx_seal_thunder": 0.91
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_2"
@@ -176,7 +176,7 @@
           "kills": 20
         },
         {
-          "t": 2.06,
+          "t": 2.05,
           "counts": {
             "fx_seal_thunder": 25,
             "fx_bolt": 98,
@@ -184,16 +184,16 @@
             "fx_star": 56
           },
           "alpha": {
-            "fx_seal_thunder": 0.85,
-            "fx_bolt": 0.87,
-            "fx_halo": 0.73,
-            "fx_star": 0.77
+            "fx_seal_thunder": 0.81,
+            "fx_bolt": 0.8,
+            "fx_halo": 0.64,
+            "fx_star": 0.66
           },
           "scale": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 1.58,
-            "fx_halo": 0.38,
-            "fx_star": 2.27
+            "fx_bolt": 1.6,
+            "fx_halo": 0.41,
+            "fx_star": 1.96
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
@@ -205,47 +205,43 @@
           "kills": 40
         },
         {
-          "t": 2.26,
+          "t": 2.25,
           "counts": {
-            "fx_seal_thunder": 25,
+            "fx_seal_thunder": 22,
             "fx_bolt": 98,
-            "fx_halo": 3,
-            "fx_star": 4
+            "fx_halo": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.87,
-            "fx_bolt": 0.47,
-            "fx_halo": 0.21,
-            "fx_star": 0.08
+            "fx_seal_thunder": 0.85,
+            "fx_bolt": 0.4,
+            "fx_halo": 0.13
           },
           "scale": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 1.58,
-            "fx_halo": 0.6,
-            "fx_star": 0.42
+            "fx_bolt": 1.6,
+            "fx_halo": 0.64
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
             "fx_bolt": "fx_bolt_5",
-            "fx_halo": "fx_halo@2_2",
-            "fx_star": "fx_star"
+            "fx_halo": "fx_halo@2_2"
           },
           "aliveEnemies": 42,
           "kills": 40
         },
         {
-          "t": 2.46,
+          "t": 2.45,
           "counts": {
             "fx_seal_thunder": 3,
-            "fx_bolt": 60
+            "fx_bolt": 54
           },
           "alpha": {
-            "fx_seal_thunder": 1,
-            "fx_bolt": 0.07
+            "fx_seal_thunder": 0.99,
+            "fx_bolt": 0
           },
           "scale": {
-            "fx_seal_thunder": 0.97,
-            "fx_bolt": 1.58
+            "fx_seal_thunder": 0.98,
+            "fx_bolt": 1.6
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_4",
@@ -255,15 +251,15 @@
           "kills": 40
         },
         {
-          "t": 2.67,
+          "t": 2.66,
           "counts": {
             "fx_seal_thunder": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.91
+            "fx_seal_thunder": 0.94
           },
           "scale": {
-            "fx_seal_thunder": 0.9
+            "fx_seal_thunder": 0.91
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_4"
@@ -272,18 +268,18 @@
           "kills": 40
         },
         {
-          "t": 2.87,
+          "t": 2.86,
           "counts": {
             "fx_seal_thunder": 3,
             "fx_star": 3
           },
           "alpha": {
             "fx_seal_thunder": 0.8,
-            "fx_star": 0.69
+            "fx_star": 0.53
           },
           "scale": {
             "fx_seal_thunder": 0.88,
-            "fx_star": 2.05
+            "fx_star": 1.63
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_4",
@@ -293,15 +289,15 @@
           "kills": 41
         },
         {
-          "t": 3.07,
+          "t": 3.06,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.89
+            "fx_seal_thunder": 0.87
           },
           "scale": {
-            "fx_seal_thunder": 0.94
+            "fx_seal_thunder": 0.92
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder"
@@ -310,12 +306,12 @@
           "kills": 41
         },
         {
-          "t": 3.27,
+          "t": 3.26,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.8
+            "fx_seal_thunder": 0.85
           },
           "scale": {
             "fx_seal_thunder": 0.99
@@ -327,7 +323,7 @@
           "kills": 41
         },
         {
-          "t": 3.48,
+          "t": 3.47,
           "counts": {
             "fx_seal_thunder": 30,
             "fx_bolt": 120,
@@ -335,16 +331,16 @@
             "fx_star": 58
           },
           "alpha": {
-            "fx_seal_thunder": 1,
-            "fx_bolt": 0.93,
-            "fx_halo": 0.81,
-            "fx_star": 0.89
+            "fx_seal_thunder": 0.92,
+            "fx_bolt": 0.83,
+            "fx_halo": 0.69,
+            "fx_star": 0.72
           },
           "scale": {
             "fx_seal_thunder": 1,
             "fx_bolt": 0.9,
-            "fx_halo": 0.34,
-            "fx_star": 2.58
+            "fx_halo": 0.4,
+            "fx_star": 2.13
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
@@ -356,28 +352,28 @@
           "kills": 65
         },
         {
-          "t": 3.68,
+          "t": 3.67,
           "counts": {
             "fx_seal_thunder": 30,
             "fx_bolt": 120,
             "fx_halo": 3,
-            "fx_star": 12
+            "fx_star": 1
           },
           "alpha": {
             "fx_seal_thunder": 0.8,
-            "fx_bolt": 0.5,
-            "fx_halo": 0.26,
-            "fx_star": 0.16
+            "fx_bolt": 0.43,
+            "fx_halo": 0.17,
+            "fx_star": 0.04
           },
           "scale": {
             "fx_seal_thunder": 1,
             "fx_bolt": 0.9,
-            "fx_halo": 0.59,
-            "fx_star": 0.62
+            "fx_halo": 0.62,
+            "fx_star": 0.32
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
-            "fx_bolt": "fx_bolt_3",
+            "fx_bolt": "fx_bolt_4",
             "fx_halo": "fx_halo@2_2",
             "fx_star": "fx_star"
           },
@@ -385,7 +381,24 @@
           "kills": 65
         },
         {
-          "t": 3.99,
+          "t": 4,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.98
+          },
+          "scale": {
+            "fx_seal_thunder": 0.9
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.2,
           "counts": {
             "fx_seal_thunder": 3
           },
@@ -393,25 +406,8 @@
             "fx_seal_thunder": 0.97
           },
           "scale": {
-            "fx_seal_thunder": 0.89
-          },
-          "frames": {
-            "fx_seal_thunder": "fx_seal_thunder_4"
-          },
-          "aliveEnemies": 21,
-          "kills": 66
-        },
-        {
-          "t": 4.19,
-          "counts": {
-            "fx_seal_thunder": 3
-          },
-          "alpha": {
             "fx_seal_thunder": 0.95
           },
-          "scale": {
-            "fx_seal_thunder": 0.96
-          },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_4"
           },
@@ -419,12 +415,12 @@
           "kills": 66
         },
         {
-          "t": 4.39,
+          "t": 4.4,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.82
+            "fx_seal_thunder": 0.81
           },
           "scale": {
             "fx_seal_thunder": 1
@@ -436,62 +432,58 @@
           "kills": 66
         },
         {
-          "t": 4.59,
+          "t": 4.6,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.81
+            "fx_seal_thunder": 0.73
           },
           "scale": {
             "fx_seal_thunder": 0.96
           },
           "frames": {
-            "fx_seal_thunder": "fx_seal_thunder"
+            "fx_seal_thunder": "fx_seal_thunder_2"
           },
           "aliveEnemies": 21,
           "kills": 66
         },
         {
-          "t": 4.79,
+          "t": 4.81,
           "counts": {
-            "fx_seal_thunder": 6,
-            "fx_star": 3
+            "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.88,
-            "fx_star": 0.31
+            "fx_seal_thunder": 0.95
           },
           "scale": {
-            "fx_seal_thunder": 1,
-            "fx_star": 1.04
+            "fx_seal_thunder": 1
           },
           "frames": {
-            "fx_seal_thunder": "fx_seal_thunder_2",
-            "fx_star": "fx_star"
+            "fx_seal_thunder": "fx_seal_thunder_2"
           },
           "aliveEnemies": 20,
           "kills": 67
         },
         {
-          "t": 5,
+          "t": 5.01,
           "counts": {
             "fx_seal_thunder": 25,
             "fx_bolt": 96,
             "fx_halo": 3,
-            "fx_star": 55
+            "fx_star": 46
           },
           "alpha": {
-            "fx_seal_thunder": 0.94,
-            "fx_bolt": 0.73,
-            "fx_halo": 0.56,
-            "fx_star": 0.54
+            "fx_seal_thunder": 0.93,
+            "fx_bolt": 0.67,
+            "fx_halo": 0.47,
+            "fx_star": 0.42
           },
           "scale": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 1.6,
-            "fx_halo": 0.45,
-            "fx_star": 1.64
+            "fx_bolt": 1.64,
+            "fx_halo": 0.49,
+            "fx_star": 1.33
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
@@ -505,7 +497,7 @@
       ],
       "probe": {
         "renderer": {
-          "generatedAt": "2026-11-28T02:37:08.748Z",
+          "generatedAt": "2026-11-28T02:43:52.052Z",
           "context": "webgl1",
           "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
           "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -659,142 +651,142 @@
             ]
           },
           "fx_bolt_5": {
-            "maxScaleX": 1.599,
-            "maxScaleY": 1.599,
+            "maxScaleX": 1.638,
+            "maxScaleY": 1.638,
             "samples": [
               {
-                "scaleX": 0.606,
-                "scaleY": 0.606,
+                "scaleX": 0.602,
+                "scaleY": 0.602,
                 "dispW": 7,
                 "dispH": 10,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.27
               },
               {
-                "scaleX": 0.516,
-                "scaleY": 0.516,
+                "scaleX": 0.371,
+                "scaleY": 0.371,
+                "dispW": 4,
+                "dispH": 6,
+                "blend": 0,
+                "alpha": 0.27
+              },
+              {
+                "scaleX": 0.373,
+                "scaleY": 0.373,
+                "dispW": 4,
+                "dispH": 6,
+                "blend": 0,
+                "alpha": 0.27
+              },
+              {
+                "scaleX": 0.219,
+                "scaleY": 0.219,
+                "dispW": 3,
+                "dispH": 3,
+                "blend": 0,
+                "alpha": 0.27
+              },
+              {
+                "scaleX": 0.519,
+                "scaleY": 0.519,
                 "dispW": 6,
                 "dispH": 8,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.27
               },
               {
-                "scaleX": 0.308,
-                "scaleY": 0.308,
-                "dispW": 4,
-                "dispH": 5,
-                "blend": 0,
-                "alpha": 0.3
-              },
-              {
-                "scaleX": 0.297,
-                "scaleY": 0.297,
-                "dispW": 4,
-                "dispH": 5,
-                "blend": 0,
-                "alpha": 0.3
-              },
-              {
-                "scaleX": 0.448,
-                "scaleY": 0.448,
-                "dispW": 5,
-                "dispH": 7,
-                "blend": 0,
-                "alpha": 0.3
-              },
-              {
-                "scaleX": 0.23,
-                "scaleY": 0.23,
+                "scaleX": 0.225,
+                "scaleY": 0.225,
                 "dispW": 3,
                 "dispH": 4,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.27
               },
               {
-                "scaleX": 1.007,
-                "scaleY": 1.007,
-                "dispW": 12,
-                "dispH": 16,
+                "scaleX": 0.549,
+                "scaleY": 0.549,
+                "dispW": 7,
+                "dispH": 9,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.27
               },
               {
-                "scaleX": 1.575,
-                "scaleY": 1.575,
-                "dispW": 19,
-                "dispH": 25,
+                "scaleX": 0.398,
+                "scaleY": 0.398,
+                "dispW": 5,
+                "dispH": 6,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.27
               }
             ]
           },
           "fx_seal_thunder_3": {
-            "maxScaleX": 0.656,
-            "maxScaleY": 0.656,
+            "maxScaleX": 0.663,
+            "maxScaleY": 0.663,
             "samples": [
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               },
               {
-                "scaleX": 0.656,
-                "scaleY": 0.656,
+                "scaleX": 0.663,
+                "scaleY": 0.663,
                 "dispW": 42,
                 "dispH": 42,
                 "blend": 0,
-                "alpha": 0.22
+                "alpha": 0.19
               }
             ]
           },
@@ -808,7 +800,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -816,7 +808,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -824,7 +816,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -832,7 +824,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -840,7 +832,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -848,7 +840,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -856,7 +848,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
+                "alpha": 0.02
               },
               {
                 "scaleX": 0.9,
@@ -864,29 +856,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.06
-              }
-            ]
-          },
-          "fx_halo@2_2": {
-            "maxScaleX": 0.7,
-            "maxScaleY": 0.7,
-            "samples": [
-              {
-                "scaleX": 0.7,
-                "scaleY": 0.7,
-                "dispW": 34,
-                "dispH": 34,
-                "blend": 0,
-                "alpha": 0
-              },
-              {
-                "scaleX": 0.7,
-                "scaleY": 0.7,
-                "dispW": 34,
-                "dispH": 34,
-                "blend": 0,
-                "alpha": 0
+                "alpha": 0.02
               }
             ]
           }
@@ -894,14 +864,15 @@
         "colors": {
           "width": 64,
           "height": 64,
-          "opaque": 1983,
+          "opaque": 1990,
           "inkPixels": 0,
           "greyPixels": 0,
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal4": 427,
+            "pal4": 385,
             "pal11": 49,
+            "pal12": 49,
             "pal3": 662,
             "pal2": 845
           }
@@ -911,8 +882,7 @@
           "fx_seal_thunder_4": 3,
           "fx_bolt_5": 58,
           "fx_seal_thunder_3": 19,
-          "fx_bolt_6": 38,
-          "fx_halo@2_2": 2
+          "fx_bolt_6": 34
         }
       }
     },
@@ -928,12 +898,12 @@
           "kills": 0
         },
         {
-          "t": 0.21,
+          "t": 0.2,
           "counts": {
             "fx_seal_thunder": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.59
+            "fx_seal_thunder": 0.65
           },
           "scale": {
             "fx_seal_thunder": 0.96
@@ -951,7 +921,7 @@
             "fx_star": 1
           },
           "alpha": {
-            "fx_seal_thunder": 0.94,
+            "fx_seal_thunder": 0.95,
             "fx_star": 0.18
           },
           "scale": {
@@ -966,7 +936,7 @@
           "kills": 1
         },
         {
-          "t": 0.71,
+          "t": 0.7,
           "counts": {
             "fx_seal_thunder": 25,
             "fx_bolt": 100,
@@ -998,14 +968,14 @@
           "t": 0.91,
           "counts": {
             "fx_seal_thunder": 22,
-            "fx_bolt": 62
+            "fx_bolt": 96
           },
           "alpha": {
-            "fx_seal_thunder": 1,
-            "fx_bolt": 0.2
+            "fx_seal_thunder": 0.99,
+            "fx_bolt": 0.27
           },
           "scale": {
-            "fx_seal_thunder": 0.91,
+            "fx_seal_thunder": 0.9,
             "fx_bolt": 1.61
           },
           "frames": {
@@ -1037,7 +1007,7 @@
           "kills": 20
         },
         {
-          "t": 1.32,
+          "t": 1.31,
           "counts": {
             "fx_seal_thunder": 3
           },
@@ -1071,15 +1041,15 @@
           "kills": 20
         },
         {
-          "t": 1.8,
+          "t": 1.82,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.78
+            "fx_seal_thunder": 0.85
           },
           "scale": {
-            "fx_seal_thunder": 0.94
+            "fx_seal_thunder": 0.92
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_2"
@@ -1088,7 +1058,7 @@
           "kills": 20
         },
         {
-          "t": 2,
+          "t": 2.02,
           "counts": {
             "fx_seal_thunder": 25,
             "fx_bolt": 98,
@@ -1096,16 +1066,16 @@
             "fx_star": 56
           },
           "alpha": {
-            "fx_seal_thunder": 1,
-            "fx_bolt": 0.97,
-            "fx_halo": 0.86,
-            "fx_star": 0.94
+            "fx_seal_thunder": 0.89,
+            "fx_bolt": 0.9,
+            "fx_halo": 0.77,
+            "fx_star": 0.83
           },
           "scale": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 1.62,
-            "fx_halo": 0.32,
-            "fx_star": 2.73
+            "fx_bolt": 1.52,
+            "fx_halo": 0.36,
+            "fx_star": 2.42
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
@@ -1113,28 +1083,28 @@
             "fx_halo": "fx_halo@2",
             "fx_star": "fx_star"
           },
-          "aliveEnemies": 43,
-          "kills": 39
+          "aliveEnemies": 42,
+          "kills": 40
         },
         {
-          "t": 2.21,
+          "t": 2.22,
           "counts": {
             "fx_seal_thunder": 25,
             "fx_bolt": 98,
             "fx_halo": 3,
-            "fx_star": 13
+            "fx_star": 10
           },
           "alpha": {
-            "fx_seal_thunder": 0.82,
-            "fx_bolt": 0.53,
-            "fx_halo": 0.3,
-            "fx_star": 0.2
+            "fx_seal_thunder": 0.83,
+            "fx_bolt": 0.5,
+            "fx_halo": 0.26,
+            "fx_star": 0.14
           },
           "scale": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 1.62,
-            "fx_halo": 0.57,
-            "fx_star": 0.73
+            "fx_bolt": 1.52,
+            "fx_halo": 0.59,
+            "fx_star": 0.58
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
@@ -1146,33 +1116,33 @@
           "kills": 40
         },
         {
-          "t": 2.41,
+          "t": 2.43,
           "counts": {
-            "fx_seal_thunder": 22,
+            "fx_seal_thunder": 3,
             "fx_bolt": 60
           },
           "alpha": {
             "fx_seal_thunder": 0.98,
-            "fx_bolt": 0.1
+            "fx_bolt": 0.07
           },
           "scale": {
-            "fx_seal_thunder": 0.99,
-            "fx_bolt": 1.62
+            "fx_seal_thunder": 0.98,
+            "fx_bolt": 1.52
           },
           "frames": {
-            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_seal_thunder": "fx_seal_thunder_4",
             "fx_bolt": "fx_bolt_6"
           },
           "aliveEnemies": 42,
           "kills": 40
         },
         {
-          "t": 2.61,
+          "t": 2.63,
           "counts": {
             "fx_seal_thunder": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.96
+            "fx_seal_thunder": 0.95
           },
           "scale": {
             "fx_seal_thunder": 0.92
@@ -1184,18 +1154,18 @@
           "kills": 40
         },
         {
-          "t": 2.82,
+          "t": 2.83,
           "counts": {
             "fx_seal_thunder": 3,
             "fx_star": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.82,
-            "fx_star": 0.77
+            "fx_seal_thunder": 0.81,
+            "fx_star": 0.61
           },
           "scale": {
             "fx_seal_thunder": 0.88,
-            "fx_star": 2.26
+            "fx_star": 1.84
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_4",
@@ -1205,15 +1175,15 @@
           "kills": 41
         },
         {
-          "t": 3.02,
+          "t": 3.04,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.84
+            "fx_seal_thunder": 0.85
           },
           "scale": {
-            "fx_seal_thunder": 0.91
+            "fx_seal_thunder": 0.92
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder"
@@ -1222,12 +1192,12 @@
           "kills": 41
         },
         {
-          "t": 3.22,
+          "t": 3.24,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.76
+            "fx_seal_thunder": 0.8
           },
           "scale": {
             "fx_seal_thunder": 1
@@ -1239,24 +1209,36 @@
           "kills": 41
         },
         {
-          "t": 3.42,
+          "t": 3.44,
           "counts": {
-            "fx_seal_thunder": 6
+            "fx_seal_thunder": 30,
+            "fx_bolt": 120,
+            "fx_halo": 3,
+            "fx_star": 58
           },
           "alpha": {
-            "fx_seal_thunder": 1
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.97,
+            "fx_halo": 0.86,
+            "fx_star": 0.94
           },
           "scale": {
-            "fx_seal_thunder": 1
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.9,
+            "fx_halo": 0.32,
+            "fx_star": 2.73
           },
           "frames": {
-            "fx_seal_thunder": "fx_seal_thunder_2"
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
           },
-          "aliveEnemies": 42,
-          "kills": 41
+          "aliveEnemies": 22,
+          "kills": 65
         },
         {
-          "t": 3.63,
+          "t": 3.64,
           "counts": {
             "fx_seal_thunder": 30,
             "fx_bolt": 120,
@@ -1264,7 +1246,7 @@
             "fx_star": 16
           },
           "alpha": {
-            "fx_seal_thunder": 0.81,
+            "fx_seal_thunder": 0.8,
             "fx_bolt": 0.53,
             "fx_halo": 0.3,
             "fx_star": 0.21
@@ -1285,33 +1267,29 @@
           "kills": 65
         },
         {
-          "t": 3.93,
+          "t": 3.94,
           "counts": {
-            "fx_seal_thunder": 3,
-            "fx_star": 1
+            "fx_seal_thunder": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.93,
-            "fx_star": 0.12
+            "fx_seal_thunder": 0.95
           },
           "scale": {
-            "fx_seal_thunder": 0.88,
-            "fx_star": 0.53
+            "fx_seal_thunder": 0.89
           },
           "frames": {
-            "fx_seal_thunder": "fx_seal_thunder_4",
-            "fx_star": "fx_star"
+            "fx_seal_thunder": "fx_seal_thunder_4"
           },
           "aliveEnemies": 21,
           "kills": 66
         },
         {
-          "t": 4.13,
+          "t": 4.15,
           "counts": {
             "fx_seal_thunder": 3
           },
           "alpha": {
-            "fx_seal_thunder": 0.99
+            "fx_seal_thunder": 0.98
           },
           "scale": {
             "fx_seal_thunder": 0.94
@@ -1323,15 +1301,15 @@
           "kills": 66
         },
         {
-          "t": 4.34,
+          "t": 4.35,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.85
+            "fx_seal_thunder": 0.84
           },
           "scale": {
-            "fx_seal_thunder": 0.99
+            "fx_seal_thunder": 1
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder"
@@ -1340,12 +1318,12 @@
           "kills": 66
         },
         {
-          "t": 4.54,
+          "t": 4.55,
           "counts": {
             "fx_seal_thunder": 6
           },
           "alpha": {
-            "fx_seal_thunder": 0.81
+            "fx_seal_thunder": 0.82
           },
           "scale": {
             "fx_seal_thunder": 0.98
@@ -1357,18 +1335,18 @@
           "kills": 66
         },
         {
-          "t": 4.74,
+          "t": 4.75,
           "counts": {
             "fx_seal_thunder": 6,
-            "fx_star": 3
+            "fx_star": 2
           },
           "alpha": {
-            "fx_seal_thunder": 0.86,
-            "fx_star": 0.4
+            "fx_seal_thunder": 0.9,
+            "fx_star": 0.23
           },
           "scale": {
-            "fx_seal_thunder": 0.98,
-            "fx_star": 1.27
+            "fx_seal_thunder": 0.99,
+            "fx_star": 0.8
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_2",
@@ -1378,7 +1356,7 @@
           "kills": 67
         },
         {
-          "t": 4.94,
+          "t": 4.96,
           "counts": {
             "fx_seal_thunder": 25,
             "fx_bolt": 96,
@@ -1387,15 +1365,15 @@
           },
           "alpha": {
             "fx_seal_thunder": 0.98,
-            "fx_bolt": 0.8,
-            "fx_halo": 0.64,
-            "fx_star": 0.65
+            "fx_bolt": 0.77,
+            "fx_halo": 0.6,
+            "fx_star": 0.59
           },
           "scale": {
             "fx_seal_thunder": 1,
-            "fx_bolt": 1.6,
-            "fx_halo": 0.41,
-            "fx_star": 1.95
+            "fx_bolt": 1.61,
+            "fx_halo": 0.43,
+            "fx_star": 1.79
           },
           "frames": {
             "fx_seal_thunder": "fx_seal_thunder_3",
@@ -1409,7 +1387,7 @@
       ],
       "probe": {
         "renderer": {
-          "generatedAt": "2026-11-28T02:37:16.183Z",
+          "generatedAt": "2026-11-28T02:43:59.668Z",
           "context": "webgl1",
           "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
           "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -1533,172 +1511,172 @@
         },
         "live": {
           "fx_seal_thunder_4": {
-            "maxScaleX": 0.926,
-            "maxScaleY": 0.926,
+            "maxScaleX": 0.932,
+            "maxScaleY": 0.932,
             "samples": [
               {
-                "scaleX": 0.926,
-                "scaleY": 0.926,
-                "dispW": 59,
-                "dispH": 59,
+                "scaleX": 0.932,
+                "scaleY": 0.932,
+                "dispW": 60,
+                "dispH": 60,
                 "blend": 0,
-                "alpha": 0.83
+                "alpha": 0.82
               },
               {
-                "scaleX": 0.926,
-                "scaleY": 0.926,
-                "dispW": 59,
-                "dispH": 59,
+                "scaleX": 0.932,
+                "scaleY": 0.932,
+                "dispW": 60,
+                "dispH": 60,
                 "blend": 0,
-                "alpha": 0.83
+                "alpha": 0.82
               },
               {
-                "scaleX": 0.926,
-                "scaleY": 0.926,
-                "dispW": 59,
-                "dispH": 59,
+                "scaleX": 0.932,
+                "scaleY": 0.932,
+                "dispW": 60,
+                "dispH": 60,
                 "blend": 0,
-                "alpha": 0.83
+                "alpha": 0.82
               }
             ]
           },
           "fx_bolt_4": {
-            "maxScaleX": 1.6,
-            "maxScaleY": 1.6,
+            "maxScaleX": 1.614,
+            "maxScaleY": 1.614,
             "samples": [
               {
-                "scaleX": 0.32,
-                "scaleY": 0.32,
-                "dispW": 4,
-                "dispH": 5,
+                "scaleX": 1.534,
+                "scaleY": 1.534,
+                "dispW": 18,
+                "dispH": 25,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
               },
               {
-                "scaleX": 0.508,
-                "scaleY": 0.508,
-                "dispW": 6,
-                "dispH": 8,
+                "scaleX": 0.559,
+                "scaleY": 0.559,
+                "dispW": 7,
+                "dispH": 9,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
               },
               {
-                "scaleX": 0.217,
-                "scaleY": 0.217,
-                "dispW": 3,
-                "dispH": 3,
-                "blend": 0,
-                "alpha": 0.37
-              },
-              {
-                "scaleX": 0.385,
-                "scaleY": 0.385,
+                "scaleX": 0.421,
+                "scaleY": 0.421,
                 "dispW": 5,
-                "dispH": 6,
+                "dispH": 7,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
               },
               {
-                "scaleX": 0.257,
-                "scaleY": 0.257,
+                "scaleX": 0.246,
+                "scaleY": 0.246,
                 "dispW": 3,
                 "dispH": 4,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
               },
               {
-                "scaleX": 0.531,
-                "scaleY": 0.531,
+                "scaleX": 0.47,
+                "scaleY": 0.47,
                 "dispW": 6,
                 "dispH": 8,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
               },
               {
-                "scaleX": 0.608,
-                "scaleY": 0.608,
-                "dispW": 7,
-                "dispH": 10,
+                "scaleX": 0.299,
+                "scaleY": 0.299,
+                "dispW": 4,
+                "dispH": 5,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
               },
               {
-                "scaleX": 1.155,
-                "scaleY": 1.155,
-                "dispW": 14,
-                "dispH": 18,
+                "scaleX": 0.479,
+                "scaleY": 0.479,
+                "dispW": 6,
+                "dispH": 8,
                 "blend": 0,
-                "alpha": 0.37
+                "alpha": 0.33
+              },
+              {
+                "scaleX": 1.011,
+                "scaleY": 1.011,
+                "dispW": 12,
+                "dispH": 16,
+                "blend": 0,
+                "alpha": 0.33
               }
             ]
           },
           "fx_seal_thunder_3": {
-            "maxScaleX": 0.641,
-            "maxScaleY": 0.641,
+            "maxScaleX": 0.648,
+            "maxScaleY": 0.648,
             "samples": [
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               },
               {
-                "scaleX": 0.641,
-                "scaleY": 0.641,
+                "scaleX": 0.648,
+                "scaleY": 0.648,
                 "dispW": 41,
                 "dispH": 41,
                 "blend": 0,
-                "alpha": 0.3
+                "alpha": 0.26
               }
             ]
           },
@@ -1712,7 +1690,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1720,7 +1698,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1728,7 +1706,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1736,7 +1714,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1744,7 +1722,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1752,7 +1730,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1760,7 +1738,7 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               },
               {
                 "scaleX": 0.9,
@@ -1768,37 +1746,37 @@
                 "dispW": 11,
                 "dispH": 14,
                 "blend": 0,
-                "alpha": 0.13
+                "alpha": 0.09
               }
             ]
           },
           "fx_halo@2_2": {
-            "maxScaleX": 0.662,
-            "maxScaleY": 0.662,
+            "maxScaleX": 0.681,
+            "maxScaleY": 0.681,
             "samples": [
               {
-                "scaleX": 0.662,
-                "scaleY": 0.662,
-                "dispW": 32,
-                "dispH": 32,
+                "scaleX": 0.681,
+                "scaleY": 0.681,
+                "dispW": 33,
+                "dispH": 33,
+                "blend": 0,
+                "alpha": 0.04
+              },
+              {
+                "scaleX": 0.681,
+                "scaleY": 0.681,
+                "dispW": 33,
+                "dispH": 33,
                 "blend": 1,
-                "alpha": 0.09
+                "alpha": 0.04
               },
               {
-                "scaleX": 0.662,
-                "scaleY": 0.662,
-                "dispW": 32,
-                "dispH": 32,
+                "scaleX": 0.681,
+                "scaleY": 0.681,
+                "dispW": 33,
+                "dispH": 33,
                 "blend": 0,
-                "alpha": 0.09
-              },
-              {
-                "scaleX": 0.662,
-                "scaleY": 0.662,
-                "dispW": 32,
-                "dispH": 32,
-                "blend": 0,
-                "alpha": 0.09
+                "alpha": 0.04
               }
             ]
           }
@@ -1806,14 +1784,15 @@
         "colors": {
           "width": 64,
           "height": 64,
-          "opaque": 1983,
+          "opaque": 1990,
           "inkPixels": 0,
           "greyPixels": 0,
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal4": 427,
+            "pal4": 385,
             "pal11": 49,
+            "pal12": 49,
             "pal3": 662,
             "pal2": 845
           }

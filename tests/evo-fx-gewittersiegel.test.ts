@@ -53,13 +53,15 @@ describe("m10-evo-fx-gewittersiegel: Textur in Zielgröße, Draw-Scale 1", () =>
     expect(f0).not.toBe(f1);
     expect(f1).not.toBe(f2);
     expect(f2).not.toBe(f3);
-    // Impact-Frame leuchtet am hellsten (Kern lanternWhite/candleWhite).
-    const bright = grids.map((g) => countBright(g, [13, 12]));
-    expect(bright[2]).toBeGreaterThan(bright[0]);
-    expect(bright[2]).toBeGreaterThan(bright[1]);
-    expect(bright[2]).toBeGreaterThan(bright[3]);
-    // Anticipation-Frame 0 bleibt dunkel (Ladezustand).
-    expect(bright[0]).toBeLessThan(bright[1]);
+    // Impact-Frame leuchtet am hellsten (Kern lanternWhite/candleWhite + Zacken).
+    const white = grids.map((g) => countBright(g, [13]));
+    expect(white[2]).toBeGreaterThan(white[0]);
+    expect(white[2]).toBeGreaterThan(white[1]);
+    expect(white[2]).toBeGreaterThan(white[3]);
+    // Anticipation-Frame 0 hat keinen lanternWhite-Kern (Ladezustand kühl-dunkel).
+    expect(white[0]).toBe(0);
+    // Dauer-Puls (3) bleibt unter dem Charged-Zustand (1) erkennbar: weniger Glow-Kante.
+    expect(countBright(grids[1], [22])).toBeGreaterThanOrEqual(countBright(grids[3], [22]));
   });
 
   it("Sprite-Pixelgröße = Texturgröße: fireThunderSeal zeichnet mit Scale 1 (kein >1x-Hochskalieren)", () => {
@@ -128,8 +130,9 @@ describe("m10-evo-fx-gewittersiegel: Farb-Treppe ohne Ink/Grau", () => {
   it("Impact-Frame nutzt Gelb-Kante (lantern 21 / glow 22), Anticipation bleibt kühl-dunkel", () => {
     expect(countBright(thunderSealFrame(2), [21, 22])).toBeGreaterThan(0);
     const used0 = usedIndices(thunderSealFrame(0));
-    // Anticipation: Rune in der Zwischenstufe boneLight(11), kein weißer Kern.
+    // Anticipation: Rune in der Zwischenstufe boneLight(11) + candleWhite(12)-Kante,
+    // kein lanternWhite(13)-Kern.
     expect(used0.includes(11)).toBe(true);
-    expect(countBright(thunderSealFrame(0), [13, 12])).toBe(0);
+    expect(countBright(thunderSealFrame(0), [13])).toBe(0);
   });
 });

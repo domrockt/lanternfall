@@ -274,29 +274,40 @@ export function thunderSealFrame(stage: number, size = 64): string[] {
     const [ax, ay] = pts[i];
     const [bx, by] = pts[(i + 1) % 8];
     line(ax, ay, bx, by, ringCh);
-    // Zacken: gerade Strahlen von r=19 nach r=27 (Impact: hell, sonst kühl dunkel).
+    // Zacken: gerade Strahlen von r=19 nach 27-29 (handgezeichnete Längenvarianz,
+    // deterministisch über den Winkel; Impact: hell, sonst kühl dunkel).
+    const tickR = 27 + (i % 3);
     const tickCh = stage === 2 ? "d" : stage === 1 ? "l" : stage === 3 ? "b" : "4";
-    line(c + Math.cos(a) * 19, c + Math.sin(a) * 19, c + Math.cos(a) * 27, c + Math.sin(a) * 27, tickCh);
+    line(c + Math.cos(a) * 19, c + Math.sin(a) * 19, c + Math.cos(a) * tickR, c + Math.sin(a) * tickR, tickCh);
   }
   // Blitz-Rune: gezackter Kernpfad durchs Zentrum, 1-px-Kern + 1-px Gelb-Kante.
   const path: [number, number][] = [
     [c + 1, 7], [c + 5, 19], [c - 3, 30], [c + 3, 42], [c - 2, 55],
   ];
   const coreCh = stage === 0 ? "b" : "d";
-  const edgeCh = stage === 0 ? "4" : "m";
+  const edgeCh = stage === 0 ? "c" : "m";
   for (let i = 0; i < path.length - 1; i++) {
     const [ax, ay] = path[i];
     const [bx, by] = path[i + 1];
     line(ax, ay, bx, by, coreCh);
     line(ax + 1, ay, bx + 1, by, edgeCh);
   }
-  // Impact-Flash (Stage 2): kurze Strahlen + Funkenpunkte statt flächiger Glut.
+  // Impact-Flash (Stage 2): kurze Strahlen + Funken-Tupfer (2-3 px, kein
+  // Einzelpixel-Rauschen) statt flächiger Glut.
   if (stage === 2) {
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2 + Math.PI / 16;
       line(c + Math.cos(a) * 27, c + Math.sin(a) * 27, c + Math.cos(a) * 31, c + Math.sin(a) * 31, i % 2 ? "m" : "d");
     }
-    put(c - 8, c - 6, "d"); put(c + 9, c - 4, "m"); put(c - 6, c + 9, "m"); put(c + 7, c + 8, "d");
+    // Vier Funken-Tupfer (deterministisch, 3-4 px je Tupfer).
+    const sparks: [number, number, string][] = [
+      [c - 8, c - 6, "d"], [c + 9, c - 4, "m"], [c - 6, c + 9, "m"], [c + 7, c + 8, "d"],
+    ];
+    for (const [sx, sy, ch] of sparks) {
+      put(sx, sy, ch);
+      put(sx + 1, sy, ch);
+      put(sx, sy + 1, ch === "d" ? "m" : "d");
+    }
   }
   return out.map((r) => r.join(""));
 }
