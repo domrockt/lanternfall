@@ -30,7 +30,7 @@ vi.mock("../src/gfx/atlas", () => {
 
 import { GEN_ENEMIES } from "../src/gfx/gen-enemies";
 import {
-  baseEnemyDef, eliteFrameId, ELITE_RIM_COLOR, ELITE_RIM_FRAMES, eliteRimDef,
+  baseEnemyDef, eliteFrameId, eliteTierPixel, ELITE_RIM_COLOR, ELITE_RIM_FRAMES, eliteRimDef,
   eliteRimFrame, enemySpriteFrames, silhouette,
 } from "../src/gfx/enemySprites";
 import { framesForDef } from "../src/logic/enemy-frames";
@@ -55,7 +55,7 @@ describe("Elite-Rim: Sprite-Generator (enemySprites.ts)", () => {
     });
   });
 
-  it("Rim-Frame: alle Randpixel in Elite-Akzentfarbe, Innenpixel unveraendert", () => {
+  it("Rim-Frame: alle Randpixel in Elite-Akzentfarbe, Innenpixel in Tier-Faerbe-Klasse", () => {
     ENEMY_LIST.forEach((def, index) => {
       const base = enemySpriteFrames(index)[0];
       const rim = eliteRimFrame(index);
@@ -74,7 +74,10 @@ describe("Elite-Rim: Sprite-Generator (enemySprites.ts)", () => {
             expect(rim[y][x], `${def.id} Randpixel ${x},${y}`).toBe(ELITE_RIM_COLOR);
             amber++;
           } else {
-            expect(rim[y][x], `${def.id} Innenpixel ${x},${y}`).toBe(base[y][x]);
+            // M10-elite-tier-families: Innenpixel tragen deterministisch die
+            // Tier-Faerbe-Klasse (eliteTierPixel; Kontur 0 und Augen 13 geben
+            // sich unverändert zurück). A10-Randvertrag (voll Amber) unveraendert.
+            expect(rim[y][x], `${def.id} Innenpixel ${x},${y}`).toBe(eliteTierPixel(base[y][x], def.tier));
           }
         }
       }
