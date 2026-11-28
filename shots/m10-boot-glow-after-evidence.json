@@ -1,0 +1,101 @@
+{
+  "tag": "after-evidence",
+  "probe": {
+    "gameW": 640,
+    "gameH": 360,
+    "keys": {
+      "light_radius": {
+        "kind": "canvas",
+        "w": 192,
+        "h": 192,
+        "centerAlpha": 143,
+        "vsStepped": {
+          "maxDiff": 0,
+          "meanDiff": 0
+        },
+        "vsSoft": {
+          "maxDiff": 255,
+          "meanDiff": 10.555
+        },
+        "winner": "gestuft (hart)"
+      },
+      "vignette": {
+        "kind": "canvas",
+        "w": 640,
+        "h": 360,
+        "centerAlpha": 99,
+        "vsStepped": {
+          "maxDiff": 1,
+          "meanDiff": 0
+        },
+        "vsSoft": {
+          "maxDiff": 255,
+          "meanDiff": 3.648
+        },
+        "winner": "gestuft (hart)"
+      }
+    },
+    "contact": {
+      "drawA": 143,
+      "offA": 143,
+      "offDataLen": 147456,
+      "offDataCenterA": 143,
+      "redTest": [
+        255,
+        0,
+        0,
+        255
+      ],
+      "runtimeRow": [
+        1,
+        14,
+        71,
+        108,
+        143,
+        132,
+        96,
+        71,
+        24,
+        1
+      ]
+    }
+  },
+  "profiles": [],
+  "jsErrors": [],
+  "evidence": {
+    "stats": {
+      "enemies": 14,
+      "time": 181.3,
+      "level": 1
+    },
+    "png": "shots/m10-boot-glow-after-evidence-evidence-780-360-3-m8.png",
+    "zoom": "shots/m10-boot-glow-after-evidence-evidence-780-360-3-m8-center-4x.png",
+    "corner": "shots/m10-boot-glow-after-evidence-evidence-780-360-3-m8-corner-4x.png",
+    "contact": "shots/m10-boot-glow-after-evidence-evidence-light-radius-4x.png",
+    "contactDraw": {
+      "drawA": 143,
+      "offA": 143,
+      "offDataLen": 147456,
+      "offDataCenterA": 143,
+      "redTest": [
+        255,
+        0,
+        0,
+        255
+      ],
+      "runtimeRow": [
+        1,
+        14,
+        71,
+        108,
+        143,
+        132,
+        96,
+        71,
+        24,
+        1
+      ]
+    }
+  },
+  "steppedWins": true
+}
