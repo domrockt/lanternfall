@@ -1,0 +1,23 @@
+Lane m10-balance-endgame — Endzeit-Fenster [25,40] min geschlossen (Abnahme erfüllt).
+
+Vorher (shots/m10-balance-endgame-before.json): 3/6 Läufe im Fenster — 3 Tode bei
+20,74/21,50/23,81 min, Streuung 9,66 min. Nachher (…-after.json): 6/6 Sieg (Dawn)
+bei 30,32–30,60 min, Streuung 0,28 min (Ziel ≤ 4), 0 JS-Fehler, Endlevel 36–40
+(auch der alte M6-Level-Korridor 25–40 jetzt für beide Charaktere erfüllt).
+
+Fix (2 Hebel, beide ab Minute 18 = 2 min vor dem Golem-Boss, der die Tode verursachte):
+1. maxActiveEnemies-Late-Deckel 200 statt 360 (src/logic/scaling.ts; 960x540:
+   300 statt 500 aktive Gegner, −40 %).
+2. enemyHpScale-Relief: ab t=1080 s Rampe 240 s auf max. −25 % HP (Minute 0–18
+   bitgleich; Boss-HP aus src/data/bosses unberührt).
+Zusätzlich Minuten-Mischung 25–29 (src/data/waves.ts, unclaimed): LATE_GAME_MIX
+ohne Splitter/Beschwörer (abom/voidcaller → knight/lich), Rate 1,86–1,92 statt
+1,88–2,12.
+
+Qualität: tests/balance-endgame.test.ts neu (reine Funktionen, deterministisch),
+tsc grün, npm test 1241/1241 grün, build grün. Reviewer-Subagent: PASS (3 Nits
+behoben). Fremde Dateien nur minimal & unclaimed: 3 Test-Expectations
+(spawn-view/m3-logic/endgame-budget) + src/data/waves.ts — Begründung in
+docs/lanes/m10-balance-endgame.md. GAME.md unangetastet. Befunde:
+docs/lanes/m10-balance-endgame.md. Commits 0848af2..5dd067c (Branch
+m10-balance-endgame, nicht gemergt — Merge-Job übernimmt).
