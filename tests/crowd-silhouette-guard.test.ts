@@ -8,9 +8,11 @@ vi.mock("phaser", () => ({ default: { BlendModes: { ADD: 1, NORMAL: 0 } } }));
  * A10: "im Chaos verschwimmen einzelne Typen" / "Horde überlagert sich stark".
  *
  * Alle Schranken sind IST-Werte (keine Wunschwerte), verifiziert per
- * scripts/m10-silhouette-guard.mjs gegen den gemergten Stand
- * (Commit 8bc02b33, Vorher-JSON: ~/games/.evidence/m10-crowd-silhouette-guard/
- * m10-silhouette-guard-before.json). Browserfrei: nur Sprite-Grids.
+ * scripts/m10-silhouette-guard.mjs gegen den gemergten Stand (Vorher-JSON:
+ * ~/games/.evidence/m10-crowd-silhouette-guard/m10-silhouette-guard-before.json,
+ * erzeugt auf main-HEAD ddab8749 — dem Sprungbrett-Commit dieser Lane; der
+ * Skript-Commit 8bc02b33 enthaelt nur das Skript selbst). Browserfrei: nur
+ * Sprite-Grids.
  * Rebaseline bei GEWOLLTER Änderung: Skript laufen lassen, Werte + Beleg
  * aktualisieren, Schranken anheben — siehe docs/lanes/m10-crowd-silhouette-guard.md.
  *
@@ -28,6 +30,7 @@ import {
   enemySpriteFrames,
   eliteRimFrame,
   ELITE_RIM_COLOR,
+  ELITE_RIM_FRAMES,
   ELITE_TIER_DYES,
   type Grid,
 } from "../src/gfx/enemySprites";
@@ -178,23 +181,24 @@ const eliteRim = ENEMY_LIST.map((def, i) => {
   };
 });
 
-const tierCentroids = ENEMY_LIST.map((def, i) => ({ tier: def.tier, mean: bodyMean(eliteRimFrame(i, 0)) }))
-  .reduce<Record<number, [number, number, number] & { n?: number }>>((acc, e) => {
-    const cur = acc[e.tier] ?? [0, 0, 0];
-    const prevN = (acc[e.tier]?.n as number | undefined) ?? 0;
-    acc[e.tier] = [
-      cur[0] * prevN + e.mean[0],
-      cur[1] * prevN + e.mean[1],
-      cur[2] * prevN + e.mean[2],
-    ] as [number, number, number] & { n?: number };
-    acc[e.tier].n = prevN + 1;
-    return acc;
-  }, {});
-const centroidList = [0, 1, 2, 3, 4].map((t) => {
-  const [r, g, b] = tierCentroids[t];
-  const n = tierCentroids[t].n as number;
-  return [r / n, g / n, b / n];
+// Tier-Zentroiden: pixelweise gewichtete Koerper-Mitteltoene der Rim-Frames,
+// ohne Kontur (0), Augen/Glow (13) und Amber-Rand (20) — deckungsgleich zu
+// scripts/m10-silhouette-guard.mjs (M6).
+const tierSum = Array.from({ length: 5 }, () => [0, 0, 0]);
+const tierN = Array.from({ length: 5 }, () => 0);
+ENEMY_LIST.forEach((def, i) => {
+  for (const row of eliteRimFrame(i, 0)) {
+    for (const c of row) {
+      if (c === null || c === 0 || c === 13 || c === ELITE_RIM_COLOR) continue;
+      const t = tierSum[def.tier];
+      t[0] += (PAL[c] >> 16) & 255;
+      t[1] += (PAL[c] >> 8) & 255;
+      t[2] += PAL[c] & 255;
+      tierN[def.tier]++;
+    }
+  }
 });
+const centroidList = tierSum.map((t, i) => [t[0] / tierN[i], t[1] / tierN[i], t[2] / tierN[i]]);
 let minTierDist = Infinity;
 for (let a = 0; a < 5; a++) {
   for (let b = a + 1; b < 5; b++) minTierDist = Math.min(minTierDist, rgbDist(centroidList[a], centroidList[b]));
@@ -317,5 +321,12 @@ describe("crowd-silhouette-guard: gepinnte Chaos-Lesbarkeits-Werte (A10)", () =>
     // Ist (m10-elite-tier-families + -refine): Dyes fixiert, min Zentroid-Distanz 42.5.
     expect([...ELITE_TIER_DYES]).toEqual([16, 8, 19, 25, 31]);
     expect(minTierDist, `min Tier-Zentroid-Distanz ${minTierDist.toFixed(1)}`).toBeGreaterThanOrEqual(30);
+  });
+
+  it("M5b Rim-Framesets: Key-Satz <id>_rim traegt genau 2 Frames (Ruhe + Bob)", () => {
+    // Ist (m10-enemy-idle-anim-r2): ELITE_RIM_FRAMES = [<key>_rim, <key>_rim2] je Typ.
+    for (const [id, frames] of Object.entries(ELITE_RIM_FRAMES)) {
+      expect(frames, `${id}: Rim-Frameset`).toHaveLength(2);
+    }
   });
 });

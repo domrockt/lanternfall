@@ -61,6 +61,7 @@ const {
   enemyFrameGrids,
   eliteRimFrame,
   ELITE_RIM_COLOR,
+  ELITE_RIM_FRAMES,
   ELITE_TIER_DYES,
 } = await import(new URL("../src/gfx/enemySprites.ts", import.meta.url));
 
@@ -254,17 +255,21 @@ const silhouette = (g) => g.map((row) => row.map((p) => (p === null ? "." : "#")
 const variants = ENEMY_LIST.filter((d) => !HAND_DRAWN.has(d.id)).map((def) => {
   const i = ENEMY_LIST.indexOf(def);
   const grids = enemyFrameGrids(i);
-  const base = grids[0], varG = grids[2], genPose2 = enemySpriteFrames(i)[2];
+  const base = grids[0], varG = grids[2], genPose2 = enemySpriteFrames(i)[2], genPose3 = enemySpriteFrames(i)[3], varG3 = grids[3];
   const f0 = genPose2.flat(), f2 = varG.flat();
   let d = 0;
   for (let k = 0; k < f0.length; k++) if (f0[k] !== f2[k]) d++;
+  let d3 = 0;
+  const g0 = genPose3.flat(), g3 = varG3.flat();
+  for (let k = 0; k < g0.length; k++) if (g0[k] !== g3[k]) d3++;
   return {
     id: def.id,
     frames: grids.length,
-    // "gleiche Silhouette": Varianten-Frame 2 gegen den generierten Pose-2-Frame
+    // "gleiche Silhouette": Varianten-Frame 2/3 gegen die generierten Posen
     // (Vertrag aus tests/crowd-variant-tone.test.ts — nur Umfaerbung, gleiche Maske).
-    silhouetteEqual: silhouette(genPose2) === silhouette(varG),
+    silhouetteEqual: silhouette(genPose2) === silhouette(varG) && silhouette(genPose3) === silhouette(varG3),
     variantDiffPixels: d,
+    variantDiffPixelsPose3: d3,
     bodyRgbDist: rgbDist(bodyMean(base), bodyMean(varG)),
   };
 });
@@ -305,7 +310,7 @@ const report = {
   tierDyes: { dyes: ELITE_TIER_DYES, minTierCentroidDist, tierDistances: tierDistances.map((d) => d) },
   families: { mixTotal, shares: familyShares, strongFamilies },
   variants: { handDrawnTypes: [...HAND_DRAWN], perType: variants, minBodyRgbDist: +Math.min(...variants.map((v) => v.bodyRgbDist)).toFixed(1) },
-  idle: { perType: idle, baseFrameCounts: [...new Set(idle.map((x) => x.baseFrames))], rimFrameCounts: [...new Set(idle.map((x) => x.rimFrames))], totalDuplicatePairs: idle.reduce((a, b) => a + b.baseDuplicatePairs, 0), rimDuplicates: idle.filter((x) => x.rimDuplicate).map((x) => x.id) },
+  idle: { perType: idle, baseFrameCounts: [...new Set(idle.map((x) => x.baseFrames))], rimFrameCounts: [...new Set(idle.map((x) => x.rimFrames))], rimFramesetLengths: [...new Set(Object.values(ELITE_RIM_FRAMES).map((f) => f.length))], totalDuplicatePairs: idle.reduce((a, b) => a + b.baseDuplicatePairs, 0), rimDuplicates: idle.filter((x) => x.rimDuplicate).map((x) => x.id) },
 };
 
 const outDir = `${homedir()}/games/.evidence/m10-crowd-silhouette-guard`;
