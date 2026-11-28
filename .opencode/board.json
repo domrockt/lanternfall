@@ -12418,16 +12418,21 @@
       "id": 9943,
       "title": "m10-heap-tail-doc-fix-r2 K1: trim()-Aussage in m10-heap-tail.md korrigieren",
       "description": "docs/lanes/m10-heap-tail.md:85 behauptet 'der Pool kappt Retention per trim()' — falsch, trim() hat 0 Aufrufstellen (Befund c7893e9, docs/lanes/m10-pool-trim.md K2). Abnahme: korrigierte Formulierung aus m10-pool-trim.md übernommen, NUR diese Aussage geändert, Verweis auf Befund ergänzt; sonst 0 Änderungen an der Datei.",
-      "column": "todo",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T07:55:06Z",
           "by": "build",
           "text": "WIP-Limit-Refusal beim doing-Move: doing ist mit fremden Lane-Karten #9725 (m10-chest-closed-crisp K4), #9922 (m10-powerup-sfx-wire K4) voll. Ich fasse fremde Karten nicht an. Arbeit startet trotzdem; Karte wird bei erster Gelegenheit nachgezogen."
+        },
+        {
+          "at": "2026-11-28T07:55:36Z",
+          "by": "build",
+          "text": "todo → review: Commit f533c582: nur die trim()-Aussage (Zeile 85) ersetzt, korrigierter Text wörtlich aus m10-pool-trim.md K2 + Verweis. Diff-Stat: 7 Zeilen in genau dieser Datei, sonst 0 Änderungen an der Datei."
         }
       ],
       "created": "2026-11-28T07:54:50Z",
-      "updated": "2026-11-28T07:55:06Z"
+      "updated": "2026-11-28T07:55:36Z"
     },
     {
       "id": 9944,
