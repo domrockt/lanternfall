@@ -1,0 +1,19 @@
+Lane m10-fx-mixel-pin-rebase — 2026-11-28, abgeschlossen (K1+K3 erledigt, K2 entfiel).
+
+Auftrag (Dora 09:47Z): pruefen, ob die K3-Bake-Pins von m10-fx-bakes-evo-r2 in
+tests/fx-mixel.test.ts mit dem Beschleunigungs-Umbau von m10-fx-mixel-test-speed
+zusammenpassen, bevor die Merges in main landen.
+
+Ergebnis: Auf lokalem main (3155164e, == Worktree-HEAD) liegen beide Aenderungen
+bereits kombiniert und konsistent vor (d5bd7b25 + eb7be798 + 0192e537 in der
+Datei-Historie). Keine doppelten/widerspruechlichen Pins, kein Konflikt-Resolve
+noetig — K2 entfaellt.
+
+Messwerte:
+- tests/fx-mixel.test.ts gezielt: 17/17 gruen, 414–568 ms (< 5-s-Timeout)
+- npm test: 186/186 Dateien, 2032/2032 Tests, 0 fail, Wall 5,6 s
+- npm run build: rc=0, built in 439 ms
+
+Belege: ~/games/.evidence/m10-fx-mixel-pin-rebase/{K1-vitest-fx-mixel.log,K3-npm-test.log,K3-build.log}
+Doku: docs/lanes/m10-fx-mixel-pin-rebase.md. Kein Eingriff in src/**.
+Hinweis: ~/lf-runs/lanes/common.md existierte nicht; Regeln laut Briefing angewandt.

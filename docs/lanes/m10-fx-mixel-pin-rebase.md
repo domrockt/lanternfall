@@ -33,7 +33,18 @@ dem Lane-Briefing (Belege nach `~/games/.evidence/`, eine Karte = ein Commit, `.
 
 K1 gruen (17/17, < 1 s), keine Konfliktreste, keine doppelten/widerspruechlichen Pins gefunden.
 
-## K3: Suite + Build, Doku, .lane-done
+## K3: Suite + Build, Doku, .lane-done — PASS
 
-- `npm test` und `npm run build`: siehe Commit M10-m10-fx-mixel-pin-rebase (Ergebnis wird hier nachgetragen).
+- **`npm test` (voll):** **186/186 Testdateien, 2032/2032 Tests, 0 fail**, Wall **5,6 s**
+  (Beleg: `~/games/.evidence/m10-fx-mixel-pin-rebase/K3-npm-test.log`, rc=0).
+- **`npm run build`:** rc=0, built in 439 ms
+  (Beleg: `~/games/.evidence/m10-fx-mixel-pin-rebase/K3-build.log`).
+- **Testdauer fx-mixel weiter unter dem 5-s-Timeout:** gezielter Lauf 414–568 ms (K1-Beleg);
+  im Suite-Parallellauf keine Timeout-Flakes (0 fail).
 - Kein Eingriff in `src/**` (nur Doku, `.lane-done`, Board).
+
+## Fazit
+
+Die Sorge von Dora ist entkraeftet: Auf lokalem main (`3155164e`) liegen test-speed-Umbau (#10585)
+und bakes-evo-r2-K3/K4-Bake-Pins bereits **kombiniert und konsistent** vor — der Merge-Job braucht
+keinen Konflikt-Resolve fuer diese Datei. Suite voll gruen.
