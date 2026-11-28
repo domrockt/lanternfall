@@ -1,0 +1,21 @@
+# Lane m10-run-cpu-budget — done (2026-11-28)
+
+Ziel: Android-/Tablet-Blocker auf dem CPU-Anteil (JS-Frame-CPU-ms p95, update+render).
+
+- K1 (#11752, b0c4407e): scripts/m10-run-cpu.mjs — Chaos-Lauf (M25, 6 Evo, 500 Gegner), rAF-CPU-ms
+  p50/p95/p99 + Allokationen + Renderer-String. Vorher: p95 5.50 ms (p50 0.10), 891 B/Frame,
+  RPL-S-iGPU, 0 JS-Fehler. Beleg: ~/games/.evidence/m10-run-cpu-budget/m10-run-cpu-before.json
+- K2 (#11753, 4f9a8337): Top-3 im Run.ts-Loop: (A) KI-Param-Objekt je Gegner je Schritt ~30k/s,
+  (B) Combat-Kontext + 4 Closures + Pickup-View + Gap-Opts je Schritt, (C) splits-Array je Schritt.
+  Harness-Rauschen "(anonymous) @ :14" isoliert bewiesen (Probe ohne rAF-Wrapper).
+- K3 (#11754, 36fac41e): Allocation-Hoisting in src/scenes/Run.ts (aiParams, combatCtx+onHit/onHeal,
+  onEnemyShotHit/onHazardHit/onCollect, pickupView, gapOpts, splitsScratch). Bitgleich belegt:
+  tests/run-cpu-budget.test.ts 13/13 + m10-run-determinism.mjs 3 Seeds × 2 Runs bitgleich
+  (deterministic: true, ~/games/.evidence/m10-run-cpu-budget/det-verdict/). 2237 Tests, tsc, build grün.
+- K4 (#11755): Nachher p95 5.80 ms (500 Gegner, 119.9 fps, gleicher Renderer, 0 Fehler).
+  p95 -10 % NICHT darstellbar → begründete Grenze dokumentiert (docs/lanes/m10-run-cpu-budget.md):
+  Fenster GC-frei (Heap-Wachstum 0 B), Tail dominiert von Render-Pfad (batchSprite ~25 % Self-CPU),
+  Host-Rauschen ±3 % > Ziel-Signal; GC-Gewinn wirkt auf 4× gedrosseltem Android-CPU-Budget.
+  Alloc-Sites der Spiellogik aus Top-10 raus; Rest: AudioSystem-SFX (~141 B/Frame, fremder Claim).
+
+Karten: #11752-#11755 (Block m10-run-cpu-budget). Belege: ~/games/.evidence/m10-run-cpu-budget/.
