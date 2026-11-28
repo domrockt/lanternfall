@@ -10982,47 +10982,70 @@
       "id": 8618,
       "title": "m10-boot-glow-local K1: Befund/Repro — Boot-Local-Kopie gewinnt",
       "description": "Runtime-Probe (scripts/m10-boot-glow.mjs): textures.get('light_radius')/('vignette') belegt, dass die Boot-Kopie vor textures.ts gewinnt. Vorher-Shots 640x360 + 780x360@3 je 4x. Abnahme: Probe-JSON in shots/m10-boot-glow-*, Befund in docs/lanes/m10-boot-glow-local.md.",
-      "column": "doing",
+      "column": "review",
       "assignee": "boot-glow-local",
       "notes": [
         {
           "at": "2026-11-28T05:12:51Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Probe-Skript + Vorher-Shots (Base HEAD 86030a2; eaf2ab6 noch nicht in main - wird im Befund dokumentiert)"
+        },
+        {
+          "at": "2026-11-28T05:20:53Z",
+          "by": "build",
+          "text": "doing → review: Probe + Vorher-Shots committet (Commit enthaelt #8618). Geprueft: runtime-Probe light_radius vs Boot-Local maxDiff 1/255 vs textures.ts maxDiff 78; tsc gruen; 0 JS-Fehler; 4x-Crops gesehen (weiche Boegen sichtbar). Befund + 3 Blocker in docs/lanes/m10-boot-glow-local.md"
         }
       ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:12:51Z"
+      "updated": "2026-11-28T05:20:53Z"
     },
     {
       "id": 8619,
       "title": "m10-boot-glow-local K2: Boot-Local-Registrierungen entfernen, Import aus textures.ts",
       "description": "createLightTextureLocal/createVignetteTextureLocal in Boot.ts löschen, Import aus src/gfx/textures.ts (textures.ts erzeugt, Boot konsumiert nur). BLOCKER-PRÜFUNG: textures.ts exportiert die Creator NICHT (weder in main noch in eaf2ab6) und ist fremd geclaimed (m10-evo-fx-form-polish) — Umsetzbarkeit ist Teil der Karte.",
-      "column": "todo",
+      "column": "blocked",
       "assignee": "boot-glow-local",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:20:53Z",
+          "by": "build",
+          "text": "todo → blocked: BLOCKER (docs/lanes/m10-boot-glow-local.md): textures.ts exportiert createLightTexture/createVignetteTexture nicht (fremd geclaimed m10-evo-fx-form-polish, claimcheck blockt Export-Zeile); eaf2ab6 (Stufen) nicht in main; Boot-Kopie traegt B2-Ring-Farb-Tuning (20/21-Kern), das textures.ts auch in eaf2ab6 fehlt -> Austausch wuerde Near-White-A7-Tuning rueckdrehen. Bedarfsmeldung in .dispatch/requests.md gestellt"
+        }
+      ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:12:47Z"
+      "updated": "2026-11-28T05:20:53Z"
     },
     {
       "id": 8620,
       "title": "m10-boot-glow-local K3: Regressionstest tests/boot-light-textures.test.ts",
       "description": "Beide Keys existieren, Pixelmuster entspricht LIGHT_EDGE_STEPS/vignetteSteps, keine zweite Registrierung. npm test + tsc grün.",
-      "column": "todo",
+      "column": "blocked",
       "assignee": "boot-glow-local",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:20:53Z",
+          "by": "build",
+          "text": "todo → blocked: haengt an K2 (#8619): Stufen-Test braucht importierbare LIGHT_EDGE_STEPS/vignetteSteps aus eaf2ab6 (nicht in main) + abgeglichene Ring-Farben"
+        }
+      ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:12:47Z"
+      "updated": "2026-11-28T05:20:53Z"
     },
     {
       "id": 8621,
       "title": "m10-boot-glow-local K4: After-Belege + Abnahme",
       "description": "After-Shots 640x360 + 780x360@3 je 4x, Near-White <= 4,16 %, art-director-Urteil Lichtkanten >= 4/5, Befund in docs/lanes/m10-boot-glow-local.md.",
-      "column": "todo",
+      "column": "blocked",
       "assignee": "boot-glow-local",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:20:53Z",
+          "by": "build",
+          "text": "todo → blocked: haengt an K2 (#8619): After-Vergleich gegen harte Stufen nur nach Merge m10-chaos-fix-raster-glow + Export-Freigabe moeglich"
+        }
+      ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:12:47Z"
+      "updated": "2026-11-28T05:20:53Z"
     }
   ]
 }
