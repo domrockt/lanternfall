@@ -166,14 +166,19 @@ async function capture() {
       await page.keyboard.press("Escape");
       await page.waitForTimeout(300);
 
-      // 4) Charakterauswahl — beide Charaktere
+      // 4) Charakterauswahl — beide Charaktere. CHARACTER_LIST = [mira, kael]
+      //    (src/data/characters.ts): Index 0 = Mira (linke Karte), 1 = Kael.
       await page.keyboard.press("Enter");
       await waitForScene(page, "charselect");
       await page.waitForTimeout(400);
-      await shot("charselect-kael");
+      const charId = async () => await page.evaluate(() => {
+        const cs = window.__game?.scene?.getScene("charselect");
+        return cs && typeof cs.index === "number" ? (cs.index === 0 ? "mira" : "kael") : "unbekannt";
+      });
+      await shot(`charselect-${await charId()}`);
       await page.keyboard.press("ArrowRight");
       await page.waitForTimeout(400);
-      await shot("charselect-mira");
+      await shot(`charselect-${await charId()}`);
 
       // 5) Lauf starten (mit dem zweiten Charakter), dann Minuten-Shots
       await page.keyboard.press("Enter");
