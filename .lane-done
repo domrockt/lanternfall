@@ -1,0 +1,13 @@
+Lane m10-panel-hz-k2-remeasure — abgeschlossen als dokumentierter Blocker (Abnahme-Alternative 2).
+
+Ziel: Dom-Folgepunkt 17:45Z („BILDRATE: max hebt den 60-Hz-Panel-Lock auf“) end-to-end am Gerät belegen (K2a/K2b-Nachholung der Lane m10-panel-hz-device-check).
+
+K1 (FAIL belegt): latest-build-APK = lanternfall-20261128-1714-11f929c.apk, Build-Commit 11f929c7 (16:59Z) prädatiert merge-m10-panel-hz-pref 79e01c5d (17:55Z) — ancestry rc≠0. Bundle-Grep im APK: lfhz_panel/lfhz/setPanelHzPref 0 Treffer (Positivkontrolle BILDRATE gefunden). Telemetrie (19:32–19:36Z) bestätigt Build 11f929c7 am Gerät (Adreno 710, Titel 60 FPS). Beleg: ~/games/.evidence/m10-panel-hz-k2-remeasure/k1-apk-lesung.json.
+
+K2: NICHT angehangen (Briefing: bei prä-merge APK Doku-only, kein sleep-Warten) — Gerät nicht berührt, keine Retry-Loops.
+
+K3: Kein eigener Messwert gegen die A/B-Zahlen 17:45Z (60 Hz: 60,0 FPS/16,8 ms/0 % janky; 120 Hz: 118,5/8,4/11,8 %) möglich; Hebelliste (APK mit lfhz-Lesung, CDP-leer-Klärung, .apkbuild-lane-Fallback) → Bedarfsmeldung requests.md 19:4xZ. APK-Punkt bleibt bei Vera (ops/escalations.md 17:5xZ).
+
+Karten: #14110 review (Commit af1699b5), #14111 blocked (APK-Blocker), #14112 review (128cf64b), #14113 .lane-done. Doku: docs/lanes/m10-panel-hz-k2-remeasure.md. Keine Quellcode-Änderungen; Skript scripts/m10-panel-hz-device-check.mjs unverändert.
+
+Nach APK-Update: K2a/K2b mit dem unveränderten lane-committeten Skript (main, Merge 18039f33) nachholen.
