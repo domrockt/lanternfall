@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11117,
+  "next": 11121,
   "cards": [
     {
       "id": 1,
@@ -14388,6 +14388,85 @@
       "notes": [],
       "created": "2026-11-28T09:54:52Z",
       "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 11117,
+      "title": "m10-data-ssot-guard K1: Befund – Data-SSOT nur lesend einlesen (Vorher-JSON)",
+      "description": "scripts/m10-data-ssot.mjs (SSR-Loader wie acceptance-count.mjs) liest alle src/data-Dateien NUR LESEND, zaehlt doppelte IDs, weaponIds vs weapons.ts-Keys, evolutions.ts-Waffen-Paare gegen weaponIds, types.ts-Felder ohne Consumer. Ausgabe shots/m10-data-ssot-before.json. Abnahme: Skript rc=0, Beleg-JSON geschrieben, keine src-Datei veraendert.",
+      "column": "done",
+      "assignee": "m10-data-ssot-guard",
+      "notes": [
+        {
+          "at": "2026-11-28T10:20:21Z",
+          "by": "build",
+          "text": "doing → done: Skript scripts/m10-data-ssot.mjs (SSR-Loader, nur lesend) + Vorher-Lauf: rc=0, ok:true, 0 Befunde, Vertrag 30/6/6/6/6/2, tsc rc=0. Beleg: ~/games/.evidence/m10-data-ssot-guard/m10-data-ssot-before.json, Commit 153aa244."
+        }
+      ],
+      "created": "2026-11-28T10:17:45Z",
+      "updated": "2026-11-28T10:20:21Z"
+    },
+    {
+      "id": 11118,
+      "title": "m10-data-ssot-guard K2: Belegte Inkonsistenzen in weaponIds/index/types fixen",
+      "description": "Nur die drei area-Dateien (weaponIds.ts, index.ts, types.ts); keine Verhaltensaenderung, acceptance-count bleibt 30/6/6/6/6/2 bitgleich. Befunde in Fremd-Dateien -> /home/ai/games/.dispatch/requests.md. Abnahme: acceptance-count ok:true 30/6/6/6/6/2, tsc rc=0, Befundliste in docs/lanes/m10-data-ssot-guard.md.",
+      "column": "done",
+      "assignee": "m10-data-ssot-guard",
+      "notes": [
+        {
+          "at": "2026-11-28T10:20:27Z",
+          "by": "build",
+          "text": "todo → doing: Befund K1: 0 Duplikate, 0 Drifts, Vertrag intakt -> keine Fixes erforderlich; Doku-Commit als Nachweis."
+        },
+        {
+          "at": "2026-11-28T10:20:54Z",
+          "by": "build",
+          "text": "doing → done: 0 belegte Inkonsistenzen in weaponIds/index/types -> keine Fixes, keine Bedarfsmeldung. Befundliste in docs/lanes/m10-data-ssot-guard.md, Commit 4399c53b."
+        }
+      ],
+      "created": "2026-11-28T10:17:45Z",
+      "updated": "2026-11-28T10:20:54Z"
+    },
+    {
+      "id": 11119,
+      "title": "m10-data-ssot-guard K3: Guard-Test tests/data-ssot.test.ts",
+      "description": "ID-Eindeutigkeit, weaponIds-Sollmenge, Evolutions-Paare vollstaendig, types-Kernfelder vorhanden, acceptance-count-Sollwert. Abnahme: >=8 Assertions, npx vitest run tests/data-ssot.test.ts gruen, npm test 0 fail, tsc rc=0.",
+      "column": "done",
+      "assignee": "m10-data-ssot-guard",
+      "notes": [
+        {
+          "at": "2026-11-28T10:20:55Z",
+          "by": "build",
+          "text": "todo → doing: Guard-Test mit >=8 Assertions anlegen und gegen Ist-Daten laufen lassen."
+        },
+        {
+          "at": "2026-11-28T10:22:10Z",
+          "by": "build",
+          "text": "doing → done: tests/data-ssot.test.ts: 10 Tests gruen (ID-Eindeutigkeit 6 Arrays, weaponIds-Sollmenge, Evo-Paare vollstaendig, Kernfelder, A3 30/6/6/6/6/2). tsc rc=0, npm test 181 Dateien/1984 Tests 0 fail. Commit 73bfe1cb. Hinweis: ein passive-math-Test beruehrt shots/m10-passive-math-*.json (nur generatedAt) - zurueckgesetzt, Befund in Lane-Doku."
+        }
+      ],
+      "created": "2026-11-28T10:17:45Z",
+      "updated": "2026-11-28T10:22:10Z"
+    },
+    {
+      "id": 11120,
+      "title": "m10-data-ssot-guard K4: Doku + Nachher-Zahlen + .lane-done",
+      "description": "docs/lanes/m10-data-ssot-guard.md mit Vorher/Nachher-Zahlen und Befunden, Nachher-JSON, .lane-done. Abnahme: Doku committed, Nachher-Zahlen belegen acceptance-count 30/6/6/6/6/2.",
+      "column": "done",
+      "assignee": "m10-data-ssot-guard",
+      "notes": [
+        {
+          "at": "2026-11-28T10:22:11Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Lauf + acceptance-count + Doku-Abschluss + .lane-done."
+        },
+        {
+          "at": "2026-11-28T10:22:44Z",
+          "by": "build",
+          "text": "doing → done: Nachher: scripts/m10-data-ssot.mjs rc=0 (0 Befunde), acceptance-count ok:true 30/6/6/6/6/2 bitgleich. Doku + Nebenbefund (passive-math touched shots) in docs/lanes/m10-data-ssot-guard.md, .lane-done committed (3989e8da)."
+        }
+      ],
+      "created": "2026-11-28T10:17:45Z",
+      "updated": "2026-11-28T10:22:44Z"
     }
   ]
 }
