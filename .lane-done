@@ -1,0 +1,17 @@
+# Lane m10-terrain-edge-crisp — abgeschlossen (Supervisor-Steer 28.11., K4 unter #9196)
+
+Ziel: Terrain-Kanten/-Übergänge pixel-crisp, lückenlos. Die Kanten-Logik wurde auf der
+Logik-Ebene gescannt (Autotile Blob-47 in src/logic/autotile.ts deterministisch und
+ganzzahlig, kein Fehler; Feld-Klassifikation liegt in src/gfx/tiles.ts = fremde Datei).
+
+Messwerte (scripts/m10-terrain-edge.mjs, Seeds 13/7/42, 307 200 Zellen, eine Messung):
+- Kanten-Fehlerquote (Löcher + doppelte Kanten): 1 / 307 200 = 0,0003 % ✅ < 0,1 %
+- Doppelte Kanten: 0; Löcher: 1 (Gras-Speckle, vom Painter abgedeckt)
+- Restliste: fraktionale Subpixel-Queries 0,539 % — Fix erfordert Math.floor-Snap in
+  tiles.ts (fremd, water-shore-Anim-Wartebereich); Bedarf in .dispatch/requests.md gemeldet.
+  Beleg: ~/games/.evidence/m10-terrain-edge-crisp/m10-terrain-edge-after.json
+
+Abnahme: art-director PASS 4/5 (Kanten-Screenshots edge-zoom1..4.png, Glow-Ränder als
+Lighting erkannt); verify-terrain unangetastet (kein Terrain-Code geändert); Details in
+docs/lanes/m10-terrain-edge-crisp.md. Kartenbuchung: Inhalt K4 unter Board-#9196
+(Titel „m10-props-wiring K4" — Mismatch dokumentiert).
