@@ -35,6 +35,11 @@ const OUT_DIR = join(homedir(), "games", ".evidence", "m10-weapon-shot-readabili
 mkdirSync(OUT_DIR, { recursive: true });
 
 const SHOTSIG = TAG === "before" ? 0 : 1;
+// Bitgleichkeits-Nachweis (K4) laeuft NICHT hier: Frame-genaues Polling ist
+// zu unscharf fuer Sim-Marken. Beleg ueber das sim-exakte Harness
+// scripts/m10-run-determinism.mjs gegen die committete Baseline
+// shots/m10-run-det-*-r0/r1.json (Vor-Lane-Optik) — alle Marken bitgleich,
+// Belege in ~/games/.evidence/m10-weapon-shot-readability/det-baseline/.
 
 // 32-Farben-Palette (Hex, identisch zu PAL in src/palette.ts).
 const PALETTE_HEX = [

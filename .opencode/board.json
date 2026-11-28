@@ -12028,10 +12028,21 @@
       "id": 9666,
       "title": "m10-weapon-shot-readability K3: FxSystem Draw-Pfad (Alpha-Boden)",
       "description": "src/systems/FxSystem.ts: Alpha-Boden gegen ADD-Auswaschen an Waffen-Signaturen, keine Near-White-Kerne im Draw-Pfad. CombatSystem.ts unangetastet. Abnahmekriterium: npx tsc + Logik-Tests gruen, Trefferverhalten bitgleich (nur Optik).",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:39:25Z",
+          "by": "build",
+          "text": "K3 committed (50b1e62): Alpha-Deckel fx_halo 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58/37,3 %); npm test 1712/1712, build gruen. review-Versuch durch Board-Plugin abgelehnt: 2 FREMDE uncommittete Aenderungen im Lane-Worktree (shots/m10-passive-math-caps.json, shots/m10-passive-math-matrix.json — gehoeren nicht zu dieser Lane, werden nicht angefasst). review nach Merge/Bereinigung."
+        },
+        {
+          "at": "2026-11-28T08:39:33Z",
+          "by": "build",
+          "text": "todo → doing: K3 fertig + committed (50b1e62): Alpha-Deckel fx_halo 0,45 + Trail-Alpha-Boden 0,3; Nachher Texturen 0 % A7 / Chaos 0,35 % (vor 58/37,3 %); npm test 1712/1712, build gruen. review-Versuch abgelehnt: 2 fremde uncommittete Aenderungen im Worktree (shots/m10-passive-math-*.json, nicht meine Lane) — review nach Bereinigung."
+        }
+      ],
       "created": "2026-11-28T07:25:08Z",
-      "updated": "2026-11-28T07:25:08Z"
+      "updated": "2026-11-28T08:39:33Z"
     },
     {
       "id": 9667,
