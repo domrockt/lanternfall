@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11108,
+  "next": 11111,
   "cards": [
     {
       "id": 1,
@@ -14234,6 +14234,84 @@
       "notes": [],
       "created": "2026-11-28T09:53:19Z",
       "updated": "2026-11-28T09:53:19Z"
+    },
+    {
+      "id": 11108,
+      "title": "m10-android-proxy-gate K1: androidProxyContext() im Harness",
+      "description": "scripts/harness.mjs: optionaler Helfer androidProxyContext(browser) = Playwright devices[\"Galaxy Tab S4 landscape\"] + CDP Emulation.setCPUThrottlingRate {rate:4}; bestehende Aufrufer unverändert. Abnahme: Helfer exportiert, vorhandene Skripte (perf.mjs etc.) unverändert, tsc/build grün.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:41:20Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet; androidProxyContext() in scripts/harness.mjs"
+        },
+        {
+          "at": "2026-11-28T09:42:22Z",
+          "by": "build",
+          "text": "doing → review: was: androidProxyContext(browser) + Konstanten in scripts/harness.mjs; geprüft: Smoke-Run (Device 1138x712 dpr 2.25 touch, CDP setCPUThrottlingRate ok), bestehende Aufrufer unangetastet; Commit 3bc6bf6d"
+        },
+        {
+          "at": "2026-11-28T10:26:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10625, Merge branch m10-android-proxy-gate"
+        }
+      ],
+      "created": "2026-11-28T09:41:15Z",
+      "updated": "2026-11-28T09:42:22Z"
+    },
+    {
+      "id": 11109,
+      "title": "m10-android-proxy-gate K2: android-proxy.mjs + Baseline",
+      "description": "scripts/android-proxy.mjs: Lauf mit 2 Charakteren (mira/kael) je 6 Evolutionen bis Minute 10 im Zeitraffer, dann 60 s Echtzeit-Messung bei Minute-25-Dichte; schreibt fps p5/Median, frame p95, quality-Stufe (LOD), JS-Heap, Renderer-String → shots/m10-android-proxy-<tag>.json. Baseline messen (flock) und committen; 2 Läufe, Median-Abweichung < 10 %; 0 JS-Fehler.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T09:42:24Z",
+          "by": "build",
+          "text": "todo → doing: android-proxy.mjs bauen, Baseline auf main-Stand messen"
+        },
+        {
+          "at": "2026-11-28T10:11:42Z",
+          "by": "build",
+          "text": "doing → review: was: scripts/android-proxy.mjs (mira/kael, 6 Evolutionen, Zeitraffer bis Minute 10, 60s Echtzeit bei Minute-25-Dichte) + Baseline; geprüft: 2 flock-Läufe rc=0, fpsMedian je 59.9 (Abweichung 0% < 10%), passed=true, 0 JS-Fehler, Renderer Intel RPL-S (kein SwiftShader); JSONs shots/abnahme/m10-android-proxy-baseline{1,2}.json + ~/games/.evidence/m10-android-proxy-gate/; build+test grün; Commits d0311fe1 (Watchdog-Snapshot, identischer Stand) + 90500670"
+        },
+        {
+          "at": "2026-11-28T10:26:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10626, Merge branch m10-android-proxy-gate"
+        }
+      ],
+      "created": "2026-11-28T09:41:15Z",
+      "updated": "2026-11-28T10:11:42Z"
+    },
+    {
+      "id": 11110,
+      "title": "m10-android-proxy-gate K3: Proxy-Doku für Perf-Lanes",
+      "description": "docs/lanes/m10-android-proxy-gate.md: wie jede Perf-Lane den Proxy vorher/nachher nutzt; Grenzen ehrlich benennen (Geräte-Telemetrie = Wahrheit, kein GPU-/Thermik-Ersatz). Abnahme: Doku commitet, Baseline-Werte referenziert.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T10:11:21Z",
+          "by": "build",
+          "text": "todo → doing: Proxy-Doku schreiben"
+        },
+        {
+          "at": "2026-11-28T10:12:44Z",
+          "by": "build",
+          "text": "doing → review: was: docs/lanes/m10-android-proxy-gate.md; geprüft: Nutzung vorher/nachher mit flock-Befehl, Baseline-Tabelle aus shots/abnahme-JSONs, Grenzen (CPU-Throttle wirkungslos bei dieser Last, kein GPU-/Thermik-Ersatz, synthetische Dichte) + Geräte-Telemetrie als Wahrheit; Commit 1568f096"
+        },
+        {
+          "at": "2026-11-28T10:26:59+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10627, Merge branch m10-android-proxy-gate"
+        }
+      ],
+      "created": "2026-11-28T09:41:15Z",
+      "updated": "2026-11-28T10:12:44Z"
     }
   ]
 }
