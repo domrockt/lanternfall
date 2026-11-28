@@ -1,0 +1,19 @@
+Lane m10-palette-fx-guard — Versuch 3, abgeschlossen 2026-11-28.
+
+Ergebnis: Harte FX-Frame-Regressionsschranke in npm test.
+- K1 (a35e70f): Sammler scripts/m10-palette-fx-guard.mjs extrahiert 34 Sets / 134 FX-Frames
+  (12 Evo-Signaturen, fx_boss_core + 5 Todes-Sets, 4 Mixel-Basen + 24 Bakes) ueber oeffentliche
+  Exporte von gen-fx.ts (nur gelesen) -> tests/fixtures/palette-fx-guard.json (236 KB).
+- K2 (a64572d): Guard in scripts/art/palette-check.mjs (ditherMetrics/analyzeFxGuard/
+  scaleCoverage) + 7 neue Tests: Palette-Index + binaeres Alpha (Ist: 0 Verstoesse), Dither-
+  Ratchet (Banddicke = duennste Dither-Lauf-Achse, Schwelle 2 px; gepinnte Befunde:
+  fx_evo_death_thunder_seal 6 px, fx_evo_hit_phoenix 4 px), Scale-Coverage (4/7 gedeckt,
+  13 ungedeckte Keys gepinnt: Evo-Signaturen 3,2-4,6x + fx_boss_core 3,6x ohne Mixel-Bake).
+- K3 (39b7a02): Suite 11/11 in 880 ms (< 3 s); echte Rot-Demo (Baseline-Senkung -> AssertionError)
+  + Restore gruen; Negativ-Fixtures Phoenix-Dither / Winter-fogBlue / hazard-disc milky schlagen
+  an, Gegenproben gruen. Belege shots/m10-palette-fx-guard-*.
+- K4: docs/lanes/m10-palette-fx-guard.md; keine Spielcode-Aenderung (gen-fx/textures/FxSystem/
+  Run/palette unberuehrt); Full-Suite 1098/1098 gruen, build ok.
+
+Offene Punkte (Evo-Kette): Dither-Noise thunder_seal/phoenix auf <= 2 px; Mixel-Bakes oder
+Scale <= 1 fuer die 13 ungedeckten FX-Keys.
