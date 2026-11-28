@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8876,
+  "next": 8896,
   "cards": [
     {
       "id": 1,
@@ -3311,7 +3311,7 @@
       "id": 2226,
       "title": "m10-enemy-ai #4 Matrix nachher",
       "description": "lane #1761: Alle 30 Gegnertypen erfüllen ihre Soll-Signatur; mindestens 4 klar verschiedene Verhaltenscluster; Test-Assertions je Cluster. Abnahme: npx vitest run tests/enemy-ai.test.ts grün, Matrix-Tabelle nachher in Doku, Cluster-Belege im Test.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
       "notes": [
         {
@@ -3323,10 +3323,15 @@
           "at": "2026-11-27T04:35:25Z",
           "by": "build",
           "text": "Merge m10-enemy-ai: Matrix-nachher-Arbeit liegt in der Lane (39e0d69), aber kein Commit nennt #2226 – bleibt todo/review-Kandidat bis ein Commit #2226 nennt."
+        },
+        {
+          "at": "2026-11-28T05:57:25Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-enemy-ai abgeschlossen + gemergt (Merge 287a8ac) — Matrix-nachher in docs/lanes/m10-enemy-ai.md mit Beleg shots/m10-enemy-ai-matrix.json; verwaiste Karte geschlossen durch m10-board-hygiene-stale"
         }
       ],
       "created": "2026-11-27T00:55:35Z",
-      "updated": "2026-11-27T04:35:25Z"
+      "updated": "2026-11-28T05:57:25Z"
     },
     {
       "id": 2227,
@@ -6168,16 +6173,22 @@
       "id": 2678,
       "title": "m10-perf-fix-ambient-batching @engine-dev",
       "description": "Fix der in m10-perf-recovery belegten Regression aus c0f56d5 (#280 Ambient Gluehwürmchen+Nebel): 24 ADD-Glow + 3 NORMAL-Nebel-Sprites brechen im Endgame das Batching (88 Draw-Calls/Frame, 82 Blend-Wechsel bei Minute 25; minute25 51,4 statt 60 FPS). Abnahme: npm run perf Burst >=55 bei 640 und 780, Minute-25 >=55, fullrun fpsMin >=55 beide Formate, build+Tests gruen, tests/perf-budget.test.ts als Regressionsschutz (Draws/Frame + sichtbare Images unter Budget), art-director-Sichtpruefung (Ambient nicht sichtbar entfernt). Dateien: src/gfx/GroundRenderer.ts, ggf. src/logic/lod.ts, tests/perf-budget.test.ts.",
-      "column": "todo",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-27T13:30:00Z",
           "by": "build",
           "text": "Merge Lane m10-perf-recovery: als #2678 neu angelegt (lane #2678). Fix-Entwurf (Ambient-Layer + ambientBudgetFor-LOD) liegt als Patch unter ~/tmp/m10-perf-recovery/ambient-lod-fix.patch; braucht Freigabe von src/gfx/GroundRenderer.ts (Claim m10-ground-cost) und eine eigene engine-dev-Karte."
+        },
+        {
+          "at": "2026-11-28T05:57:25Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-perf-fix-ambient-batching abgeschlossen + gemergt (Merge 8c1b8d4, lane-done 6ca654d, Karten #3498-#3500) — Ambient-Layer-Batching ist auf main; verwaiste Karte geschlossen durch m10-board-hygiene-stale"
         }
       ],
-      "created": "2026-11-27T13:30:00Z"
+      "created": "2026-11-27T13:30:00Z",
+      "updated": "2026-11-28T05:57:25Z"
     },
     {
       "id": 5338,
@@ -10228,41 +10239,85 @@
       "id": 7858,
       "title": "m10-pause-freeze K1: Harness + Vorher-Messung Pause-Lecks",
       "description": "Lane-Karte nach main übernommen (lane #7505, Merge 1b1b352). scripts/m10-pause-freeze.mjs: Run (Seed fix) bei Minute 3 pausieren, 5 s Echtzeit warten, Deltas zaehlen (kills/damage/spawn/waveTime/elapsed/FX), Baseline-Determinismus (2 Laeufe ohne Pause) + Pause-Lauf gegen Kontrolle. Abnahme: before-JSON in shots/ committed, Lecks benannt.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:57:25Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, lane-done 8fc6212, K1-Commit 31b06f5) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        },
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "done → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, lane-done 8fc6212, K1-Commit 31b06f5) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:31:40Z",
-      "updated": "2026-11-28T03:31:40Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 7859,
       "title": "m10-pause-freeze K2: belegte Lecks in Run.ts fixen (Update-Gate)",
       "description": "Lane-Karte nach main übernommen (lane #7506, Merge 1b1b352). Update-Gate in src/scenes/Run.ts: Szene-Clock (delayedCall) + Tweens bei paused einfrieren. Keine Balance-/Inhaltsaenderung. Abnahme: after-JSON zeigt 0 Sim-Events waehrend Pause, Fortsetzen bitgleich.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:57:25Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, K2-Commit bed2ca0: Update-Gate in Run.ts) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        },
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "done → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, K2-Commit bed2ca0: Update-Gate in Run.ts) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:31:40Z",
-      "updated": "2026-11-28T03:31:40Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 7860,
       "title": "m10-pause-freeze K3: tests/pause-freeze.test.ts + after-JSON",
       "description": "Lane-Karte nach main übernommen (lane #7507, Merge 1b1b352). Unit-Test: Pause-Flag unterbricht alle System-Updates (Gate-Definitionen), Fortsetzen bitgleich. Abnahme: npx vitest run tests/pause-freeze.test.ts gruen, after-JSON committed.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:57:25Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, K3-Commit 4f59aee: tests/pause-freeze.test.ts 7/7) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        },
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "done → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, K3-Commit 4f59aee: tests/pause-freeze.test.ts 7/7) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:31:40Z",
-      "updated": "2026-11-28T03:31:40Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 7861,
       "title": "m10-pause-freeze K4: docs/lanes + .lane-done",
       "description": "Lane-Karte nach main übernommen (lane #7508, Merge 1b1b352). docs/lanes/m10-pause-freeze.md mit Vorher/Nachher-Zahlen + Belegen; .lane-done im Worktree. verify-input-ESC-Pfad lokal gruen als Abschluss.",
-      "column": "todo",
+      "column": "done",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:57:25Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, K4-Commit 8fc6212: Doku + .lane-done) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        },
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "done → done: done: lane m10-pause-freeze abgeschlossen + gemergt (Merge 1b1b352, K4-Commit 8fc6212: Doku + .lane-done) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:31:40Z",
-      "updated": "2026-11-28T03:31:40Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 7958,
@@ -11002,16 +11057,21 @@
       "id": 8599,
       "title": "m10-boss-portrait-crisp K2: Generator-Fixes für belegte Mängel",
       "description": "Owner: pixel-artist. AK: Nur die belegten Mängel aus K1 in scripts/art/gen_bosses.py gefixt, gen-bosses.ts regeneriert, Palette/binäres Alpha unverändert, boss-idle-anim-Verträge grün.",
-      "column": "todo",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T04:51:29Z",
           "by": "build",
           "text": "Supervisor bestätigt: K1 committed (af413ae). K2-Zwischenstand wird committet; je Boss genau 1 Muss-Manko: moor_queen Kronenkontakt, bone_lord Schulter-Silhouette, pale_shepherd Stab-Griff, bell_golem Faust-Lichtkante, coven Augen, hollow_king Kronenkontakt. Danach Guard-Test 1x."
+        },
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-boss-portrait-crisp abgeschlossen + gemergt (Merge b959a63, lane-done f5f201c; K2-Commits 9392cd7/64b53ef) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:51:29Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 8600,
@@ -11037,10 +11097,16 @@
       "id": 8601,
       "title": "m10-boss-portrait-crisp K4: After-Belege + art-director-Urteil + Abschluss",
       "description": "Owner: pixel-artist. AK: shots/m10-boss-portrait-after-*.png, art-director-Urteil je Boss >= 4/5, docs/lanes/m10-boss-portrait-crisp.md, .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-boss-portrait-crisp abgeschlossen + gemergt (Merge b959a63, K4-Commit 14b143a + .lane-done f5f201c, art-director PASS 4,00/5) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:11Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 8602,
@@ -11161,28 +11227,46 @@
       "id": 8607,
       "title": "m10-boss-lure-fair K2: Fairness-Regeln Leash/Target/Offscreen",
       "description": "Reine Regeln in src/logic/bosses.ts + Verdrahtung in src/systems/BossSystem.ts: sanfter Leash zur Spawn-Zone (kein dauerhaftes Verlassen), Offscreen-Catch-up bei >2 s Abdrift, Zielwechsel-Regel Schadensfenster >= 0,3 s, deterministisch bei gleichem Seed. Keine Aenderung an Boss-HP/Speed/Dauer, Run.ts unberuehrt, FxSystem/CombatSystem unberuehrt. Abnahme: npx tsc --noEmit rc=0, gezielte Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-boss-lure-fair abgeschlossen + gemergt (Merge d8b4961, K2-Commit f587736: Fairness-Regeln Leash/Target/Offscreen) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:37Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 8608,
       "title": "m10-boss-lure-fair K3: Guard-Tests boss-lure-fair",
       "description": "tests/boss-lure-fair.test.ts mit >= 6 Tests (reine Logik wie tests/enemy-ai.test.ts): Leash-Ruecklenkung, Leash-Release wenn Spieler ausserhalb, Catch-up-Schwellen, Zielwechsel-Regel >= 0,3 s, Determinismus bei gleichem Seed, alle Boss-Angriffe erfuellen Mindest-Schadensfenster. Abnahme: npx vitest run tests/boss-lure-fair.test.ts gruen, npm test gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-boss-lure-fair abgeschlossen + gemergt (Merge d8b4961, K3-Commit ce5df8e: tests/boss-lure-fair.test.ts 8 Tests) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:37Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 8609,
       "title": "m10-boss-lure-fair K4: Nachher-Beleg + Lane-Doku",
       "description": "Dieselbe Matrix wie K1 -> shots/m10-bossfair-after.json. Abnahme: 0 Schadensereignisse ohne vorherige Sichtbarkeit, Leash-Verletzung 0, Offscreen-Anteil deutlich gesenkt; Boss-Dauern 20-60 s als Nicht-Ziel dokumentiert (keine Balance-Aenderung, Beleg = shots/balance-main.json + git diff src/data leer). Doku docs/lanes/m10-boss-lure-fair.md + .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "todo → done: done: lane m10-boss-lure-fair abgeschlossen + gemergt (Merge d8b4961, K4-Commit c04727c: Nachher-Beleg noVis 35→0, Leash 12→0 + .lane-done) — verwaiste Karte geschlossen durch m10-board-hygiene-stale"
+        }
+      ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:37Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 8658,
@@ -11372,17 +11456,22 @@
       "id": 8669,
       "title": "m10-run-determinism-fix: Sim-Schrittführung deterministisch (Carry-over statt Partial-Schritt)",
       "description": "Run.update akkumuliert scaledDt und führt den Rest als variablen Partial-Schritt aus → frame-abhängige Tick-Phase, Lauf nicht reproduzierbar (Beleg shots/m10-run-det-verdict.json, deterministic:false). Fix: eigener Carry-over-Akkumulator, nur volle SIM_MAX_STEP-Schritte. AK: (1) m10-run-determinism.mjs --seconds=120 → deterministic:true für Seeds 101/202/404, 0 divergierende Marken; (2) Marken-JSONs + Guard-Test im selben Commit aktualisiert, Suite grün; (3) tsc+tests+build grün; (4) Balance Kael/Seed101 30min im Korridor (Level 25–40, kein Tod <15min, 6 Bosse/Truhen); (5) docs/lanes/m10-run-determinism-fix.md + .lane-done.",
-      "column": "blocked",
+      "column": "done",
       "assignee": "@gameplay-dev",
       "notes": [
         {
           "at": "2026-11-28T04:59:14Z",
           "by": "build",
           "text": "doing → blocked: AK1 teilerfüllt: Seeds 101/404 nach 4-Schichten-Fix (Carry-over-Steps, KI-RNG aus Seed, detstart-Gate, Kamera-Anker pro Schritt) BITGLEICH über 120 Marken+Events+Final; Seed 202 divergiert ab s=48 in kills/enemies (px noch identisch) — Ursache: frame-basierte Spawn-Allowance in FREMD-Datei src/systems/Spawner.ts:106-108 (SPAWN_FRAME_BUDGET per game.loop.frame), Fix = vergebener Job m10-spawn-budget-dt. Diff-Log: s=47 bitgleich (k22/e3/px21651341); s=48 r0 k24/e4 vs r1 k23/e3, px identisch 21085350. AK2-5 erfüllt: Guard-Test 6/6 auf neuen Befund umgestellt, tsc+1307 Tests+Build grün, Balance Kael/101 Korridor ok (Sieg 30,6 min, Level 37, 6/6 Bosse 28-41 s, 6 Truhen), Doku docs/lanes/m10-run-determinism-fix.md. Nach Merge von m10-spawn-budget-dt: Guard-Lauf wiederholen, Verdict deterministic:true, Test erweitern (Markierung im Test), Befund 3/3."
+        },
+        {
+          "at": "2026-11-28T05:58:52Z",
+          "by": "build",
+          "text": "blocked → done: done: lane m10-run-determinism-fix abgeschlossen + gemergt (Merge 97fac33, lane-done 4acc1ce, Karte #7979 done: 3/3 Seeds bitgleich) — verwaistes Duplikat geschlossen durch m10-board-hygiene-stale"
         }
       ],
       "created": "2026-11-28T03:42:09Z",
-      "updated": "2026-11-28T04:59:14Z"
+      "updated": "2026-11-28T05:58:52Z"
     },
     {
       "id": 8670,
