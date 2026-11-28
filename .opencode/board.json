@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7505,
+  "next": 7509,
   "cards": [
     {
       "id": 1,
@@ -9229,6 +9229,48 @@
       "notes": [],
       "created": "2026-11-28T02:13:05Z",
       "updated": "2026-11-28T02:13:05Z"
+    },
+    {
+      "id": 7505,
+      "title": "m10-pause-freeze K1: Harness + Vorher-Messung Pause-Lecks",
+      "description": "scripts/m10-pause-freeze.mjs: Run (Seed fix) bei Minute 3 pausieren, 5 s Echtzeit warten, Deltas zaehlen (kills/damage/spawn/waveTime/elapsed/FX), Baseline-Determinismus (2 Laeufe ohne Pause) + Pause-Lauf gegen Kontrolle. Abnahme: before-JSON in shots/ committed, Lecks benannt.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:20:17Z",
+          "by": "build",
+          "text": "todo → doing: Start: Harness m10-pause-freeze.mjs + Vorher-Messung (Lane m10-pause-freeze)"
+        }
+      ],
+      "created": "2026-11-28T02:19:52Z",
+      "updated": "2026-11-28T02:20:17Z"
+    },
+    {
+      "id": 7506,
+      "title": "m10-pause-freeze K2: belegte Lecks in Run.ts fixen (Update-Gate)",
+      "description": "Update-Gate in src/scenes/Run.ts: Szene-Clock (delayedCall) + Tweens bei paused einfrieren. Keine Balance-/Inhaltsaenderung. Abnahme: after-JSON zeigt 0 Sim-Events waehrend Pause, Fortsetzen bitgleich.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:19:52Z",
+      "updated": "2026-11-28T02:19:52Z"
+    },
+    {
+      "id": 7507,
+      "title": "m10-pause-freeze K3: tests/pause-freeze.test.ts + after-JSON",
+      "description": "Unit-Test: Pause-Flag unterbricht alle System-Updates (Gate-Definitionen), Fortsetzen bitgleich. Abnahme: npx vitest run tests/pause-freeze.test.ts gruen, after-JSON committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:19:52Z",
+      "updated": "2026-11-28T02:19:52Z"
+    },
+    {
+      "id": 7508,
+      "title": "m10-pause-freeze K4: docs/lanes + .lane-done",
+      "description": "docs/lanes/m10-pause-freeze.md mit Vorher/Nachher-Zahlen + Belegen; .lane-done im Worktree. verify-input-ESC-Pfad lokal gruen als Abschluss.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:19:52Z",
+      "updated": "2026-11-28T02:19:52Z"
     }
   ]
 }
