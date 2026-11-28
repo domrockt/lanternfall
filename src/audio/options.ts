@@ -75,6 +75,7 @@ export function loadOptions(storage: StorageLike | null | undefined): Options {
     // Guard: nicht-numerische/NaN-Felder fallen auf den Feld-Default zurück
     // (statt über clampVolume auf 0 zu rutschen), korrupte Booleans auf Default.
     const num = (v: unknown, fallback: number): number => {
+      if (v === null || v === undefined) return fallback;
       const n = Number(v);
       return Number.isFinite(n) ? n : fallback;
     };
