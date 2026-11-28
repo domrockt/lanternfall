@@ -231,6 +231,12 @@ const out = {
 };
 writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
 if (fatal) console.log(`FATAL (partielles JSON geschrieben): ${fatal}`);
-console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${gate.gatePct} %), soft=${gate.softVerdict} (maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${renderer.renderer}, errors=${errors.length}, victory=${victory}`);
+// Karte m10-heap-softprint K1: Konsolen-Print zeigt das ROBUSTE Urteil
+// (gate.softFloorVerdict, Floor je 5-min-Fenster) statt des rohen
+// softVerdict (F1-GC-Saegezahn-Spitzen erzeugten Fehl-FAILs wie +41,5 %).
+// Die Rohpeaks bleiben als Beobachtung im JSON (gate.windowPeaks) und hier
+// als Zusatzfeld sichtbar — die Gate-Logik in m10-heap-budget-gate.mjs ist
+// unveraendert.
+console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${gate.gatePct} %), soft=${gate.softFloorVerdict} (maxWindowFloor ${gate.maxWindowFloorMB} MB = ${gate.maxWindowFloorPct} % vs Floor Fenster 0 ${gate.softReferenceMB} MB, Tor <= +${gate.softPct} %; Rohpeak-Beobachtung: maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${renderer.renderer}, errors=${errors.length}, victory=${victory}`);
 await browser.close();
 process.exit(0);

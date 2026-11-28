@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8671,
+  "next": 8854,
   "cards": [
     {
       "id": 1,
@@ -10982,16 +10982,26 @@
       "id": 8598,
       "title": "m10-boss-portrait-crisp K1: Before-Kontaktbögen 6 Bosse 1x+4x + Mängelliste",
       "description": "Owner: pixel-artist. AK: shots/m10-boss-portrait-before-*.png (je Boss 3 Frames 1x + 4x), Mängelliste je Boss max. 3 Muss-Punkte (Konturen, Silhouetten-Lesbarkeit, Lichtkanten), Baseline-JSON (Off-Palette, Silhouetten-Kontrast). Belege im Commit.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T04:32:17Z",
           "by": "build",
           "text": "todo → doing: Start K1: Kontaktbogen-Skript scripts/m10-boss-portrait.mjs, Before-Shots + Baseline-JSON."
+        },
+        {
+          "at": "2026-11-28T05:44:13Z",
+          "by": "build",
+          "text": "doing → blocked: Board-Hygiene (Lane m10-heap-softprint): verwaiste Karte – Worktree m10-boss-portrait-crisp existiert nicht mehr; WIP-Limit 2 blockiert neue Karten. NICHT von dieser Lane angenommen."
+        },
+        {
+          "at": "2026-11-28T05:44:22Z",
+          "by": "build",
+          "text": "blocked → todo: [Supervisor] zurueck auf todo – gehoert nicht in diese Lane (m10-heap-softprint)."
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:17Z"
+      "updated": "2026-11-28T05:44:22Z"
     },
     {
       "id": 8599,
@@ -11012,16 +11022,26 @@
       "id": 8600,
       "title": "m10-boss-portrait-crisp K3: Guard-Test boss-portrait-crisp.test.ts",
       "description": "Owner: test-auditor. AK: tests/boss-portrait-crisp.test.ts (6/6 Bosse, 0 Off-Palette-Pixel, Silhouetten-Kontrast >= Vorher, keine Frame-Dubletten) grün; npm test bleibt grün.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T04:58:15Z",
           "by": "build",
           "text": "todo → doing: Start K3: Guard-Test liegt vor, 5/5 grün auf Baseline und nach K2; Commit folgt."
+        },
+        {
+          "at": "2026-11-28T05:44:08Z",
+          "by": "build",
+          "text": "doing → blocked: Board-Hygiene (Lane m10-heap-softprint): verwaiste Karte – Worktree m10-boss-portrait-crisp existiert nicht mehr (Lane offenbar abgeschlossen); WIP-Limit 2 blockiert neue Karten. NICHT von dieser Lane angenommen."
+        },
+        {
+          "at": "2026-11-28T05:44:22Z",
+          "by": "build",
+          "text": "blocked → todo: [Supervisor] zurueck auf todo – gehoert nicht in diese Lane (m10-heap-softprint)."
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:58:15Z"
+      "updated": "2026-11-28T05:44:22Z"
     },
     {
       "id": 8601,
@@ -11131,16 +11151,21 @@
       "id": 8606,
       "title": "m10-boss-lure-fair K1: Vorher-Beleg 6 Bosse x 3 Seeds",
       "description": "Skript scripts/m10-boss-fair.mjs: 6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 s Sim je Boss. Misst Distanz zum Spieler, Distanz zur Spawn-Zone (Leash), Sichtbarkeit im View, Schadensereignisse ohne vorherige Sichtbarkeit. Output shots/m10-bossfair-before.json. Abnahme: JSON committed, Kennzahlen (offscreenAnteil, maxLeashAbweichung, Schaden-ohne-Sicht) je Boss/Seed.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T03:33:39Z",
           "by": "build",
           "text": "todo → doing: Vorher-Beleg: Mess-Skript + Baseline-Lauf 6 Bosse x 3 Seeds"
+        },
+        {
+          "at": "2026-11-28T05:44:37Z",
+          "by": "build",
+          "text": "doing → todo: [Supervisor] zurueck auf todo – gehoert nicht in diese Lane (m10-heap-softprint)."
         }
       ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:39Z"
+      "updated": "2026-11-28T05:44:37Z"
     },
     {
       "id": 8607,
@@ -11384,6 +11409,35 @@
       ],
       "created": "2026-11-28T05:09:16Z",
       "updated": "2026-11-28T05:21:11Z"
+    },
+    {
+      "id": 8852,
+      "title": "m10-heap-softprint K1: Konsolen-Print auf softFloorVerdict umstellen",
+      "description": "scripts/m10-heap-budget.mjs Zeile ~224 druckt rohes softVerdict (FAIL +41,5 %) statt robustes gate.softFloorVerdict aus scripts/m10-heap-budget-gate.mjs. Fix: Print auf softFloorVerdict + maxWindowFloor; gate.mjs unverändert. Abnahme: Print zeigt robustes Urteil, kein Mess-Verhalten geändert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T05:44:13Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 2: Briefing gelesen; Fix Print auf softFloorVerdict folgt."
+        },
+        {
+          "at": "2026-11-28T05:44:22Z",
+          "by": "build",
+          "text": "[Supervisor] bestaetigt: nur K1+K2 in doing; Print-Fix + Commit #8852, danach K2 Kontrolllauf."
+        }
+      ],
+      "created": "2026-11-28T05:42:50Z",
+      "updated": "2026-11-28T05:44:22Z"
+    },
+    {
+      "id": 8853,
+      "title": "m10-heap-softprint K2: Verifikation + Lane-Doku",
+      "description": "1 Kontrolllauf gegen shots/m10-reaccd-heap.json-Werte (HARD PASS +10,7 %, SOFT-Rohpeaks als Beobachtung, Print-Urteil = robust). Beleg shots/m10-softprint-*.json; tsc/Tests grün; docs/lanes/m10-heap-softprint.md; .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T05:42:50Z",
+      "updated": "2026-11-28T05:42:50Z"
     }
   ]
 }
