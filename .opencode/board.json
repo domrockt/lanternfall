@@ -18043,13 +18043,18 @@
       "id": 12885,
       "title": "m10-postwave-smoke-r2 K1: npm test + build (tsc)",
       "description": "Smoke der Merge-Welle 12:00-15:30Z: npm test + npm run build, Zahlen+rc, Vergleich mit 2412/2412. AK: beide gruen mit Zahlen in docs/lanes/m10-postwave-smoke-r2.md.",
-      "column": "doing",
+      "column": "done",
       "assignee": "m10-postwave-smoke-r2",
       "notes": [
         {
           "at": "2026-11-28T15:32:59.005Z",
           "by": "m10-postwave-smoke-r2",
           "text": "todo → doing: K1 gestartet (npm test + build)"
+        },
+        {
+          "at": "2026-11-28T15:33:38.126Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K1 gruen (2455/2455, build 449ms rc=0), Commit f5a40318"
         }
       ],
       "created": "2026-11-28T15:32:56.843Z"
@@ -18058,18 +18063,35 @@
       "id": 12886,
       "title": "m10-postwave-smoke-r2 K2: verify:final + verify-input + acceptance",
       "description": "Ausfuehren (nicht anfassen): verify:final, verify:input, acceptance-count. Soll 30/6/6/6/6/2. AK: PASS-Zahlen notiert, Abweichungen als Befund.",
-      "column": "todo",
+      "column": "done",
       "assignee": "m10-postwave-smoke-r2",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T15:33:38.127Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K2 gestartet"
+        },
+        {
+          "at": "2026-11-28T15:35:56.974Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "doing → done: K2 gruen (verify-final 7/7, verify-input 29/29, acceptance 30/6/6/6/6/2 = Soll), rc=0 je Skript"
+        }
+      ],
       "created": "2026-11-28T15:32:56.843Z"
     },
     {
       "id": 12887,
       "title": "m10-postwave-smoke-r2 K3: Perf-Kurzlauf unter flock",
       "description": "Burst 640x360 und 780x360@3, je 2 Laeufe (Min zaehlt), flock /home/ai/games/.lf-perf.lock. Toren >=55 / >=55. AK: FPS-Zahlen in Lane-Doku, Urteil gegen Toren.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-postwave-smoke-r2",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T15:35:56.974Z",
+          "by": "m10-postwave-smoke-r2",
+          "text": "todo → doing: K3 gestartet (Perf-Kurzlauf unter flock)"
+        }
+      ],
       "created": "2026-11-28T15:32:56.843Z"
     },
     {

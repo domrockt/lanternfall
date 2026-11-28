@@ -18,3 +18,17 @@ Details: Test-Duration 6.34 s (vitest run, 226 isolierte Worker). Build-Ausgaben
 `~/games/.evidence/m10-postwave-smoke-r2/` (Logs K1).
 
 Commit: `M6-m10-postwave-smoke-r2: #12885 K1 test+build grün (2455/2455, build ok)`
+
+## K2 – verify:final + verify:input + acceptance-count
+
+| Check | Ergebnis | rc |
+|---|---|---|
+| `node scripts/verify-final.mjs` | **7/7 Checks PASS** (Master-Mute-Option/-Block/-Persistenz, Aggregation <120/≥120, Ergebnis-Screen Sieg) | 0 |
+| `node scripts/verify-input.mjs` | **29/29 Checks PASS** (`M8-input: PASS`), alle Shots >10 KB, keine JS-Fehler | 0 |
+| `node scripts/acceptance-count.mjs` | **30/6/6/6/6/2** (enemies/weapons/powerups/evolutions/bosses/characters) = exakt Soll, `ok: true` | 0 |
+
+Urteil K2: **PASS** – Soll 30/6/6/6/6/2 exakt getroffen; keine Abweichungen.
+
+Logs: `~/games/.evidence/m10-postwave-smoke-r2/` (verify-final, verify-input, acceptance-count).
+
+Commit: `M6-m10-postwave-smoke-r2: #12886 K2 verify-Skripte 7/7 + 29/29 + 30/6/6/6/6/2 grün`
