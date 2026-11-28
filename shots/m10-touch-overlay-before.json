@@ -1,0 +1,443 @@
+{
+  "tag": "before",
+  "gates": {
+    "scaleInteger": true,
+    "maxColorDeltaDarkVsHot": 6,
+    "minContrast": 3,
+    "maxEdgeIntermediate": 0,
+    "minAlpha": 0.85
+  },
+  "profiles": [
+    {
+      "name": "640x360@2",
+      "samples": {
+        "dark": {
+          "origin": {
+            "x": 141,
+            "y": 108
+          },
+          "facts": {
+            "view": {
+              "internalW": 640,
+              "internalH": 360,
+              "cssW": 640,
+              "cssH": 360,
+              "cssX": 0,
+              "cssY": 0,
+              "dpr": 2
+            },
+            "stick": {
+              "x": 141,
+              "y": 108,
+              "visible": true
+            },
+            "knob": {
+              "x": 27,
+              "y": 0
+            },
+            "pause": {
+              "x": 600,
+              "y": 10,
+              "w": 30,
+              "h": 18,
+              "visible": true,
+              "fillAlpha": 0.55,
+              "strokeAlpha": 0.8,
+              "bar1": {
+                "x": 9,
+                "fillAlpha": 0.9
+              },
+              "bar2": {
+                "x": 19,
+                "fillAlpha": 0.9
+              }
+            },
+            "safeInset": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            }
+          },
+          "pxPerGame": 2,
+          "scaleInteger": true,
+          "crops": {
+            "ring": "shots/m10-touch-overlay-before-640x3602-dark-ring-4x.png",
+            "pause": "shots/m10-touch-overlay-before-640x3602-dark-pause-4x.png"
+          },
+          "ringBandColor": [
+            70,
+            82,
+            77
+          ],
+          "fieldColor": [
+            42,
+            57,
+            43
+          ],
+          "ringContrast": 1.5,
+          "ringEdgeIntermediate": 31,
+          "ringEdgeSamples": 920,
+          "knobColor": [
+            83,
+            96,
+            89
+          ],
+          "knobFieldColor": [
+            54,
+            73,
+            58
+          ],
+          "knobContrast": 1.47,
+          "pauseBarColor": [
+            196,
+            200,
+            186
+          ],
+          "pauseBgColor": [
+            16,
+            22,
+            27
+          ],
+          "pauseFieldColor": [
+            35,
+            40,
+            43
+          ],
+          "pauseBarContrast": 8.74,
+          "pauseEdgeIntermediate": 47,
+          "pauseEdgeSamples": 92
+        },
+        "hot": {
+          "origin": {
+            "x": 260,
+            "y": 180
+          },
+          "facts": {
+            "view": {
+              "internalW": 640,
+              "internalH": 360,
+              "cssW": 640,
+              "cssH": 360,
+              "cssX": 0,
+              "cssY": 0,
+              "dpr": 2
+            },
+            "stick": {
+              "x": 260,
+              "y": 180,
+              "visible": true
+            },
+            "knob": {
+              "x": 27,
+              "y": 0
+            },
+            "pause": {
+              "x": 600,
+              "y": 10,
+              "w": 30,
+              "h": 18,
+              "visible": true,
+              "fillAlpha": 0.55,
+              "strokeAlpha": 0.8,
+              "bar1": {
+                "x": 9,
+                "fillAlpha": 0.9
+              },
+              "bar2": {
+                "x": 19,
+                "fillAlpha": 0.9
+              }
+            },
+            "safeInset": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            }
+          },
+          "pxPerGame": 2,
+          "scaleInteger": true,
+          "crops": {
+            "ring": "shots/m10-touch-overlay-before-640x3602-hot-ring-4x.png",
+            "pause": "shots/m10-touch-overlay-before-640x3602-hot-pause-4x.png"
+          },
+          "ringBandColor": [
+            90,
+            97,
+            86
+          ],
+          "fieldColor": [
+            76,
+            88,
+            58
+          ],
+          "ringContrast": 1.19,
+          "ringEdgeIntermediate": 371,
+          "ringEdgeSamples": 920,
+          "knobColor": [
+            107,
+            116,
+            100
+          ],
+          "knobFieldColor": [
+            109,
+            117,
+            86
+          ],
+          "knobContrast": 1.01,
+          "pauseBarColor": [
+            196,
+            200,
+            186
+          ],
+          "pauseBgColor": [
+            15,
+            19,
+            24
+          ],
+          "pauseFieldColor": [
+            33,
+            37,
+            41
+          ],
+          "pauseBarContrast": 9.05,
+          "pauseEdgeIntermediate": 47,
+          "pauseEdgeSamples": 92
+        }
+      },
+      "ringBandDeltaDarkVsHot": 20,
+      "knobDeltaDarkVsHot": 24,
+      "fieldBrightnessDeltaDarkVsHot": 34,
+      "pauseBgDeltaDarkVsHot": 3
+    },
+    {
+      "name": "780x360@3",
+      "samples": {
+        "dark": {
+          "origin": {
+            "x": 172,
+            "y": 108
+          },
+          "facts": {
+            "view": {
+              "internalW": 780,
+              "internalH": 360,
+              "cssW": 780,
+              "cssH": 360,
+              "cssX": 0,
+              "cssY": 0,
+              "dpr": 3
+            },
+            "stick": {
+              "x": 172,
+              "y": 108,
+              "visible": true
+            },
+            "knob": {
+              "x": 27,
+              "y": 0
+            },
+            "pause": {
+              "x": 740,
+              "y": 10,
+              "w": 30,
+              "h": 18,
+              "visible": true,
+              "fillAlpha": 0.55,
+              "strokeAlpha": 0.8,
+              "bar1": {
+                "x": 9,
+                "fillAlpha": 0.9
+              },
+              "bar2": {
+                "x": 19,
+                "fillAlpha": 0.9
+              }
+            },
+            "safeInset": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            }
+          },
+          "pxPerGame": 3,
+          "scaleInteger": true,
+          "crops": {
+            "ring": "shots/m10-touch-overlay-before-780x3603-dark-ring-4x.png",
+            "pause": "shots/m10-touch-overlay-before-780x3603-dark-pause-4x.png"
+          },
+          "ringBandColor": [
+            70,
+            81,
+            74
+          ],
+          "fieldColor": [
+            39,
+            55,
+            39
+          ],
+          "ringContrast": 1.53,
+          "ringEdgeIntermediate": 11,
+          "ringEdgeSamples": 920,
+          "knobColor": [
+            78,
+            90,
+            85
+          ],
+          "knobFieldColor": [
+            48,
+            63,
+            51
+          ],
+          "knobContrast": 1.55,
+          "pauseBarColor": [
+            196,
+            200,
+            186
+          ],
+          "pauseBgColor": [
+            13,
+            20,
+            23
+          ],
+          "pauseFieldColor": [
+            33,
+            40,
+            41
+          ],
+          "pauseBarContrast": 8.8,
+          "pauseEdgeIntermediate": 47,
+          "pauseEdgeSamples": 92
+        },
+        "hot": {
+          "origin": {
+            "x": 330,
+            "y": 180
+          },
+          "facts": {
+            "view": {
+              "internalW": 780,
+              "internalH": 360,
+              "cssW": 780,
+              "cssH": 360,
+              "cssX": 0,
+              "cssY": 0,
+              "dpr": 3
+            },
+            "stick": {
+              "x": 330,
+              "y": 180,
+              "visible": true
+            },
+            "knob": {
+              "x": 27,
+              "y": 0
+            },
+            "pause": {
+              "x": 740,
+              "y": 10,
+              "w": 30,
+              "h": 18,
+              "visible": true,
+              "fillAlpha": 0.55,
+              "strokeAlpha": 0.8,
+              "bar1": {
+                "x": 9,
+                "fillAlpha": 0.9
+              },
+              "bar2": {
+                "x": 19,
+                "fillAlpha": 0.9
+              }
+            },
+            "safeInset": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            }
+          },
+          "pxPerGame": 3,
+          "scaleInteger": true,
+          "crops": {
+            "ring": "shots/m10-touch-overlay-before-780x3603-hot-ring-4x.png",
+            "pause": "shots/m10-touch-overlay-before-780x3603-hot-pause-4x.png"
+          },
+          "ringBandColor": [
+            91,
+            98,
+            87
+          ],
+          "fieldColor": [
+            79,
+            88,
+            58
+          ],
+          "ringContrast": 1.19,
+          "ringEdgeIntermediate": 399,
+          "ringEdgeSamples": 920,
+          "knobColor": [
+            106,
+            116,
+            99
+          ],
+          "knobFieldColor": [
+            110,
+            117,
+            88
+          ],
+          "knobContrast": 1.01,
+          "pauseBarColor": [
+            197,
+            201,
+            187
+          ],
+          "pauseBgColor": [
+            17,
+            23,
+            27
+          ],
+          "pauseFieldColor": [
+            33,
+            40,
+            41
+          ],
+          "pauseBarContrast": 8.89,
+          "pauseEdgeIntermediate": 47,
+          "pauseEdgeSamples": 92
+        }
+      },
+      "ringBandDeltaDarkVsHot": 21,
+      "knobDeltaDarkVsHot": 28,
+      "fieldBrightnessDeltaDarkVsHot": 40,
+      "pauseBgDeltaDarkVsHot": 4
+    }
+  ],
+  "errors": [],
+  "gateResults": [
+    {
+      "profile": "640x360@2",
+      "scaleInteger": true,
+      "ringBandDeltaOk": false,
+      "knobDeltaOk": false,
+      "ringContrastOk": false,
+      "knobContrastOk": false,
+      "pauseBarContrastOk": true,
+      "edgesOk": false,
+      "pauseAlphasOk": false
+    },
+    {
+      "profile": "780x360@3",
+      "scaleInteger": true,
+      "ringBandDeltaOk": false,
+      "knobDeltaOk": false,
+      "ringContrastOk": false,
+      "knobContrastOk": false,
+      "pauseBarContrastOk": true,
+      "edgesOk": false,
+      "pauseAlphasOk": false
+    }
+  ]
+}
