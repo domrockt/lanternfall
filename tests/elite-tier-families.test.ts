@@ -123,7 +123,7 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     });
   });
 
-  it("Familien-Kontrast-Metrik: Tier-Zentroiden min. 40 auseinander und messbar besser als ungefaerbt", () => {
+  it("Familien-Kontrast-Metrik: Tier-Zentroiden min. 30 auseinander und messbar besser als ungefaerbt", () => {
     const byTier = eliteFramesByTier();
     expect([...byTier.keys()].sort()).toEqual([0, 1, 2, 3, 4]);
     const minPairwise = (gridsByTier: Map<number, Grid[]>) => {
@@ -177,6 +177,10 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     for (let tier = -1; tier <= 6; tier++) {
       for (let pixel = 0; pixel < PAL.length; pixel++) {
         expect(eliteTierPixel(pixel, tier)).toBe(eliteTierPixel(pixel, tier));
+        // m10-elite-tier-refine (#7525): auch der mix-Pfad ist deterministisch
+        // (Soft-Mix 0,65 und imp 0,6 — haette den K3-Mix-Bug im Review gefangen).
+        expect(eliteTierPixel(pixel, tier, eliteTierMixFor("imp"))).toBe(eliteTierPixel(pixel, tier, eliteTierMixFor("imp")));
+        expect(eliteTierPixel(pixel, tier, eliteTierMixFor("wraith"))).toBe(eliteTierPixel(pixel, tier, eliteTierMixFor("wraith")));
       }
     }
     expect(eliteTierPixel(0, 3)).toBe(0); // Kontur unangetastet

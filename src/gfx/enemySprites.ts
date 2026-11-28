@@ -283,7 +283,8 @@ export function eliteTierDye(tier: number): number {
 /**
  * Ein Elite-Koerperpixel in der Tier-Faerbe-Klasse: `mix` Anteil Klassenfarbe,
  * Rest Basispixel, gerundet auf den naechsten Palettenindex (deterministisch,
- * nur Palette). Kontur (0) und Augen/Glow (13) bleiben unangetastet.
+ * nur Palette). `mix` muss in [0, 1] liegen (Konvexblend; Aufrufer nutzen
+ * eliteTierMixFor). Kontur (0) und Augen/Glow (13) bleiben unangetastet.
  */
 const ELITE_TIER_MIX = 0.7;
 
@@ -315,9 +316,9 @@ export function eliteTierPixel(pixel: Pixel, tier: number, mix: number = ELITE_T
   const p = PAL[pixel];
   const body = 1 - mix;
   return nearestPaletteIndex([
-    Math.round(((p >> 16) & 255) * body + ((target >> 16) & 255) * ELITE_TIER_MIX),
-    Math.round(((p >> 8) & 255) * body + ((target >> 8) & 255) * ELITE_TIER_MIX),
-    Math.round((p & 255) * body + (target & 255) * ELITE_TIER_MIX),
+    Math.round(((p >> 16) & 255) * body + ((target >> 16) & 255) * mix),
+    Math.round(((p >> 8) & 255) * body + ((target >> 8) & 255) * mix),
+    Math.round((p & 255) * body + (target & 255) * mix),
   ]);
 }
 

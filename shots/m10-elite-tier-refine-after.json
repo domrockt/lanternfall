@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T02:59:10.106Z",
+  "generatedAt": "2026-11-28T03:08:01.238Z",
   "method": "Chaos (305 Nicht-Elites, Tier-Mix) + Elite-Cluster (2 je Typ, alle 5 Tiers, Radius 30-75); Familien-Buckets der Elite-Rim-Innenpixel je Tier (Palettenindex-Klassifikation wie tests/enemy-palette.test.ts); Amber-Rim-Coverage = Randpixel-Anteil PAL 20 (A10-Vertrag); Burst-FPS = Median/Mittel ueber 240 rAF-Ticks (unter flock gemessen)",
   "tag": "refine-after",
   "minuteSec": 730,
@@ -127,8 +127,8 @@
     "3": {
       "dominantFamily": "blut-rot",
       "shares": {
-        "blut-rot": 0.981,
-        "glut-braun": 0.019
+        "blut-rot": 0.986,
+        "glut-braun": 0.014
       }
     },
     "4": {
