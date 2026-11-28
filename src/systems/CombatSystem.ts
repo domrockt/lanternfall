@@ -654,7 +654,7 @@ export class CombatSystem {
         const frame = sealFrames[Math.min(1, Math.floor(p * 2))];
         if (currentFrame(seal.sprite) !== frame) applyTexture(seal.sprite, frame);
         seal.sprite.setAlpha(THUNDER_FX.anticipationAlphaFrom + p * (1 - THUNDER_FX.anticipationAlphaFrom));
-        seal.sprite.setScale(1 + Math.sin(this.clock * 12) * THUNDER_FX.pulse);
+        seal.sprite.setScale(1 - THUNDER_FX.pulse + Math.sin(this.clock * 12) * THUNDER_FX.pulse);
         if (seal.timer > 0) continue;
         seal.impacted = true;
         // Impact: heller Blitz-Frame am Siegel (Pool-Effekt, Scale 1).
@@ -709,7 +709,7 @@ export class CombatSystem {
       if (currentFrame(seal.sprite) !== sustainFrame) applyTexture(seal.sprite, sustainFrame);
       const fade = Math.min(1, seal.hold / THUNDER_FX.fadeOut);
       seal.sprite.setAlpha((THUNDER_FX.sustainAlpha + Math.sin(this.clock * 8) * THUNDER_FX.sustainPulse) * fade);
-      seal.sprite.setScale(1 + Math.sin(this.clock * 6) * THUNDER_FX.pulse);
+      seal.sprite.setScale(1 - THUNDER_FX.pulse + Math.sin(this.clock * 6) * THUNDER_FX.pulse);
     }
   }
 
