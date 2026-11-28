@@ -51,6 +51,39 @@ import { getAudio } from "../audio/AudioSystem";
 import { escToggleAllowed, InputState, type Vec2 } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { getTouchSnapshot, resetTouchSnapshot } from "../input/TouchState";
+import {
+  RUN_LIGHT_ALPHA_MAX,
+  pillarBakeLevel,
+  runAddAlpha,
+  uniformScale,
+} from "../logic/fx-caps";
+
+/**
+ * M10-chaos-fix-glow-runpath (B1-Teil): fx_pillar-Ziel-Pixelgroesse Run-seitig
+ * backen. Die Level-1-Frames liegen als Einzeltexturen vor (gen-fx.ts addFrames:
+ * `fx_pillar`, `fx_pillar_2`..`fx_pillar_5`, 26x72); jede Bake-Stufe L ist ein
+ * nearest-Hochskalieren der Level-1-Textur auf 26L x 72L, damit der Draw-Scale
+ * Scale/L <= 1 bleibt (1-px-Raster im 4x-Zoom). Idempotent (textures.exists),
+ * lazy beim ersten Ereignis-FX gebacken — Level-1 bleibt unveraendert.
+ */
+const PILLAR_FRAME_KEYS = ["fx_pillar", "fx_pillar_2", "fx_pillar_3", "fx_pillar_4", "fx_pillar_5"];
+
+function ensurePillarBake(scene: Phaser.Scene, level: number): string[] {
+  if (level <= 1) return PILLAR_FRAME_KEYS;
+  return PILLAR_FRAME_KEYS.map((baseKey, i) => {
+    const key = `fx_pillar_bake${level}_${i}`;
+    if (scene.textures.exists(key)) return key;
+    const src = scene.textures.get(baseKey).getSourceImage() as CanvasImageSource & { width: number; height: number };
+    const canvas = document.createElement("canvas");
+    canvas.width = src.width * level;
+    canvas.height = src.height * level;
+    const ctx = canvas.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(src, 0, 0, src.width, src.height, 0, 0, canvas.width, canvas.height);
+    scene.textures.addCanvas(key, canvas);
+    return key;
+  });
+}
 
 export interface RunData {
   character?: CharacterId;
@@ -276,7 +309,7 @@ export class Run extends Phaser.Scene {
       .setBlendMode(Phaser.BlendModes.ADD)
       .setDepth(20)
       .setScale(1.35)
-      .setAlpha(0.85);
+      .setAlpha(RUN_LIGHT_ALPHA_MAX);
     this.vignette = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
       .setScrollFactor(0).setDepth(80).setAlpha(0.9);
     this.vignette.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
@@ -550,7 +583,7 @@ export class Run extends Phaser.Scene {
     const a = active ? Run.FX_RESTORE_ALPHA : this.fxDampingEnabled ? fxAlphaFor(this.lod.level) : 1;
     this.combat?.fx.setAlphaScale(a);
     this.combat?.particles.setAlphaScale(a);
-    this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? a : 1));
+    this.light?.setAlpha(RUN_LIGHT_ALPHA_MAX * (this.fxDampingEnabled ? a : 1));
   }
 
   setFxDamping(enabled: boolean): void {
@@ -569,7 +602,7 @@ export class Run extends Phaser.Scene {
       this.pickups?.setCap(lod.gemCap);
       // Auch die additive Laternen-Lichtfläche dämpfen: sie liegt über den
       // Gegnern und ist im Endgame ein Hauptteil der Überstrahlung.
-      this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? fxAlphaFor(lod.level) : 1));
+      this.light?.setAlpha(RUN_LIGHT_ALPHA_MAX * (this.fxDampingEnabled ? fxAlphaFor(lod.level) : 1));
     }
     // M10-vfx-restore: Ruecknahme-Stufe nach dem LOD-Update sicherstellen
     // (idempotent; greift nur im minimal-LOD).
@@ -674,7 +707,7 @@ export class Run extends Phaser.Scene {
   private spawnSplash(x: number, y: number): void {
     for (let i = 0; i < 3; i++) {
       const drop = makeImage(this, Math.round(x + (i - 1) * 3), Math.round(y), "fx_spark")
-        .setDepth(6).setTint(PAL[C.fogBlue]).setScale(0.6).setAlpha(0.8);
+        .setDepth(6).setTint(PAL[C.fogBlue]).setScale(0.6).setAlpha(runAddAlpha(0.8));
       this.tweens.add({
         targets: drop, y: y - 8 - i * 2, alpha: 0, scale: 0.2,
         duration: 240 + i * 30, onComplete: () => drop.destroy(),
@@ -1071,17 +1104,18 @@ export class Run extends Phaser.Scene {
       this.tweens.add({ targets: band, fillAlpha: 0.09 - i * 0.02, duration: 2400 + i * 300, ease: "Sine.InOut" });
     });
     // Lichtstrahlen vom Horizont.
+    // Lichtstrahlen vom Horizont (B1-Teil: Bake-Stufen, Draw-Scale <= 1).
     for (let i = 0; i < 7; i++) {
-      const ray = makeImage(this, 60 + i * 60, GAME_HEIGHT, "fx_pillar")
-        .setOrigin(0.5, 1).setScrollFactor(0).setDepth(76)
-        .setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-        .setAlpha(0).setScale(2.4 + (i % 2) * 0.5, 3.2);
-      this.tweens.add({ targets: ray, alpha: 0.09 + (i % 3) * 0.03, duration: 900 + i * 120, yoyo: true, repeat: 2 });
+      const rayScale = 2.4 + (i % 2) * 0.4;
+      const ray = this.addPillarImage(60 + i * 60, GAME_HEIGHT, rayScale)
+        .setScrollFactor(0).setDepth(76)
+        .setAlpha(0);
+      this.tweens.add({ targets: ray, alpha: runAddAlpha(0.09 + (i % 3) * 0.03), duration: 900 + i * 120, yoyo: true, repeat: 2 });
     }
     const sun = this.add.image(GAME_WIDTH / 2, 18, "light_radius")
       .setScrollFactor(0).setDepth(77).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setScale(2.2).setAlpha(0);
-    this.tweens.add({ targets: sun, alpha: 0.6, scale: 2.8, duration: 2400, ease: "Sine.Out" });
+    this.tweens.add({ targets: sun, alpha: runAddAlpha(0.6), scale: 2.8, duration: 2400, ease: "Sine.Out" });
     getAudio().play("victory");
     getAudio().stopMusic();
     this.time.delayedCall(160, () => this.events.emit("dawn"));
@@ -1598,20 +1632,37 @@ export class Run extends Phaser.Scene {
   }
 
   // ── Ereignis-Inszenierung (M5) ──────────────────────────────
+  /**
+   * B1-Teil: fx_pillar nur noch ueber die Bake-Stufen zeichnen (siehe
+   * ensurePillarBake) — Draw-Scale = Scale/L <= 1, Position ganzzahlig.
+   * `drawScale` = gewuenschte Groesse jetzt, `bakeScale` = groesste Groesse,
+   * die der Sprite in diesem Leben erreicht (waehlt die Bake-Stufe).
+   */
+  private addPillarImage(x: number, y: number, drawScale: number, bakeScale = drawScale): Phaser.GameObjects.Image {
+    const level = pillarBakeLevel(bakeScale);
+    const key = ensurePillarBake(this, level)[0];
+    // uniformScale erzwingt hier den B5-Cap zentral (Draw-Scale bleibt
+    // uniform und <= RUN_PARTICLE_SCALE_CAP).
+    const draw = uniformScale(drawScale / level, drawScale / level);
+    return makeImage(this, Math.round(x), Math.round(y), key)
+      .setOrigin(0.5, 1).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
+      .setScale(draw.x, draw.y);
+  }
+
   /** Level-up: Lichtsäule + aufsteigende Glut am Spieler. */
   playLevelUpFx(): void {
     if (this.suppressEventFx) return;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
-    const pillar = makeImage(this, x, y + 12, "fx_pillar")
-      .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
-      .setTint(PAL[C.lantern]).setAlpha(0.95).setScale(1.4, 1.6);
+    const level = pillarBakeLevel(2.4);
+    const pillar = this.addPillarImage(x, y + 12, 1.4, 2.4)
+      .setDepth(11).setAlpha(runAddAlpha(0.95));
     this.tweens.add({
-      targets: pillar, alpha: 0, scaleX: 2.4, scaleY: 2.2, y: y - 70,
+      targets: pillar, alpha: 0, scale: 2.4 / level, y: y - 70,
       duration: 950, ease: "Cubic.Out", onComplete: () => pillar.destroy(),
     });
     this.combat?.fx.spawnAnim("fx_halo", x, y, {
-      life: 0.6, scaleFrom: 0.6, scaleTo: 2.2, alphaFrom: 0.9, alphaTo: 0, additive: true,
+      life: 0.6, scaleFrom: 0.6, scaleTo: 2.2, alphaFrom: runAddAlpha(0.9), alphaTo: 0, additive: true,
     });
     for (let i = 0; i < 14; i++) {
       const a = (i / 14) * Math.PI * 2;
@@ -1619,7 +1670,7 @@ export class Run extends Phaser.Scene {
         texture: "fx_star", x: x + Math.cos(a) * 10, y: y + Math.sin(a) * 10,
         vx: Math.cos(a) * 26, vy: -30 - (i % 4) * 12,
         life: 0.7 + (i % 3) * 0.15, scaleFrom: 0.8, scaleTo: 0.15,
-        alphaFrom: 1, alphaTo: 0, additive: true,
+        alphaFrom: runAddAlpha(1), alphaTo: 0, additive: true,
         tint: i % 3 === 0 ? PAL[C.lanternWhite] : PAL[C.amber],
       });
     }
@@ -1635,14 +1686,16 @@ export class Run extends Phaser.Scene {
     this.slowmoRemaining = 0.9;
     const x = this.visualX || Math.round(this.posX);
     const y = this.visualY || Math.round(this.posY);
-    const ring = makeImage(this, x, y, "fx_shock")
-      .setDepth(11).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-      .setScale(0.4).setAlpha(1);
-    this.tweens.add({ targets: ring, scale: 3.4, alpha: 0, duration: 900, ease: "Cubic.Out", onComplete: () => ring.destroy() });
+    // B1-Teil: Ring ueber den Mixel-Bake-Pfad (fx_shock ist Bake-Basis, Stufen
+    // bis 4 -> Draw-Scale <= 1) statt direktem makeImage-Tween.
+    this.combat?.fx.spawnAnim("fx_shock", x, y, {
+      life: 0.9, scaleFrom: 0.4, scaleTo: 3.4, alphaFrom: runAddAlpha(1), alphaTo: 0,
+      additive: true, tint: PAL[C.lantern],
+    });
     for (let k = 0; k < 3; k++) {
       this.time.delayedCall(k * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
         life: 0.55, scaleFrom: 0.5 + k * 0.5, scaleTo: 2.2 + k * 0.5,
-        alphaFrom: 0.9, alphaTo: 0, additive: true, tint: PAL[C.lantern],
+        alphaFrom: runAddAlpha(0.9), alphaTo: 0, additive: true, tint: PAL[C.lantern],
       }));
     }
     this.playLevelUpFx();
@@ -1653,7 +1706,7 @@ export class Run extends Phaser.Scene {
       });
       this.combat?.particles.spawn({
         texture: "fx_star", x, y, vx: Math.cos(a) * 45, vy: Math.sin(a) * 45,
-        life: 0.85, scaleFrom: 1, scaleTo: 0.1, alphaFrom: 1, alphaTo: 0, additive: true,
+        life: 0.85, scaleFrom: 1, scaleTo: 0.1, alphaFrom: runAddAlpha(1), alphaTo: 0, additive: true,
         tint: PAL[C.lanternWhite],
       });
     }
@@ -1664,10 +1717,9 @@ export class Run extends Phaser.Scene {
   /** Truhe: Lichtstrahl + Glanz + Funken (Weltposition). */
   playChestFx(x: number, y: number): void {
     if (this.suppressEventFx) return;
-    const beam = makeImage(this, x, y - 4, "fx_pillar")
-      .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
-      .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9, 1.1);
-    this.tweens.add({ targets: beam, alpha: 0.85, scaleX: 1.5, duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
+    const beam = this.addPillarImage(x, y - 4, 0.9, 1.5)
+      .setDepth(11).setAlpha(0);
+    this.tweens.add({ targets: beam, alpha: runAddAlpha(0.85), scale: 1.5 / pillarBakeLevel(1.5), duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
     for (let i = 0; i < 14; i++) {
       const a = -Math.PI / 2 + (i / 14 - 0.5) * 2.4;
       this.combat?.particles.spawn({
@@ -1688,7 +1740,7 @@ export class Run extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       this.time.delayedCall(i * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y + 8, {
         life: 0.65, scaleFrom: 0.5 + i * 0.35, scaleTo: 1.8 + i * 0.5,
-        alphaFrom: 0.85, alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
+        alphaFrom: runAddAlpha(0.85), alphaTo: 0, additive: true, tint: PAL[C.emberOrange],
       }));
     }
     const shake = shakeFor("bossHit", getSettings().shake);
@@ -1715,7 +1767,7 @@ export class Run extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       this.time.delayedCall(90 + i * 95, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
         life: 0.6, scaleFrom: 0.8 + i * 0.5, scaleTo: 2.6 + i * 0.7,
-        alphaFrom: 1, alphaTo: 0, additive: true, tint: i === 0 ? PAL[C.lanternWhite] : tint,
+        alphaFrom: runAddAlpha(1), alphaTo: 0, additive: true, tint: i === 0 ? PAL[C.lanternWhite] : tint,
       }));
     }
     this.time.delayedCall(260, () => {
