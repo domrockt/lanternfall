@@ -96,8 +96,9 @@ describe("crowd-variety: zweite Variante je Gegnertyp", () => {
   it("Elite-Rim-Frames bleiben unveraendert (Rim aus Basis-Frame 0, Basis-Frame 0 unangetastet)", () => {
     for (const [index, def] of ENEMY_LIST.entries()) {
       // Rim-Key und Rim-Frame existieren und stammen aus der Basis-Ruhepose.
+      // m10-enemy-idle-anim-r2: Frameset jetzt 2 Frames (Ruhe-Rim + Bob-Rim).
       expect(eliteRimFrameKey(index)).toBe(`${def.spriteKey}_rim`);
-      expect(ELITE_RIM_FRAMES[`${def.id}_rim`]).toEqual([`${def.spriteKey}_rim`]);
+      expect(ELITE_RIM_FRAMES[`${def.id}_rim`]).toEqual([`${def.spriteKey}_rim`, `${def.spriteKey}_rim2`]);
       const rim = eliteRimFrame(index);
       const base0 = enemySpriteFrames(index)[0];
       // Rim = Vollumrandung der Basis-Silhouette: gleiche gefüllte Fläche.
