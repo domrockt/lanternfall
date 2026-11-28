@@ -15782,10 +15782,16 @@
       "id": 11660,
       "title": "m10-bundle-split K3: Nachher-Beleg + Smoke",
       "description": "Audit nach Fix: after.json (Chunk-Tabelle + GZip + Smoke). AK: Build rc=0 ohne Chunk-Großenwarnung und ohne Deprecation-Warnung, Smoke 0 JS-Fehler, npm test grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:38:09Z",
+          "by": "build",
+          "text": "todo → review: K3 fertig, Commit 292d2b56. after.json: build_rc 0, chunk_warning false, deprecation_warning false, Smoke 0 JS-Fehler. npm test 197 Dateien / 2202 Tests gruen. (Testlauf hatte shots/m10-passive-math-*.json veraendert — E-4-Nebeneffekt fremder Lane, im Worktree restored.)"
+        }
+      ],
       "created": "2026-11-28T11:36:41Z",
-      "updated": "2026-11-28T11:36:41Z"
+      "updated": "2026-11-28T11:38:09Z"
     },
     {
       "id": 11661,

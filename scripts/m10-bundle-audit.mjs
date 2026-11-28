@@ -10,7 +10,7 @@
 // (Belege bleiben außerhalb des Repos, siehe AGENTS.md „Belege NACH ~/games/.evidence/“).
 //
 // Aufruf: node scripts/m10-bundle-audit.mjs [outname.json]
-import { execFileSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -29,8 +29,8 @@ let buildStatus = null;
 {
   // stdout UND stderr erfassen — Vite-Warnungen (WARN/DEP) gehen auf stderr.
   const build = spawnSync("npm", ["run", "build"], { encoding: "utf8" });
-  buildStatus = build.status;
-  buildOut = String(build.stdout ?? "") + String(build.stderr ?? "");
+  buildStatus = build.status ?? (build.error ? 1 : null);
+  buildOut = String(build.stdout ?? "") + String(build.stderr ?? "") + (build.error ? `\n[spawn-error] ${build.error}` : "");
 }
 const wallMs = Math.round(performance.now() - t0);
 const viteMatch = /built in (\d+)ms/.exec(buildOut);
@@ -95,4 +95,4 @@ mkdirSync(outDir, { recursive: true });
 const out = join(outDir, OUT);
 writeFileSync(out, JSON.stringify(result, null, 2));
 console.log(JSON.stringify({ out, wall_ms: wallMs, vite_ms: result.vite_ms, chunk_warning: warning, deprecation_warning: deprecation, chunks, smoke: result.smoke }, null, 2));
-if (!sceneLoaded || errors.length || warning || deprecation) process.exit(1);
+if (!sceneLoaded || errors.length || warning || deprecation || buildStatus !== 0) process.exit(1);

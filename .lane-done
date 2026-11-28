@@ -1,0 +1,17 @@
+Lane m10-bundle-split — Befund E-3 (Chunk-Größenwarnung Build, Nachabnahme E) erledigt.
+
+Ist-Stand bei Start: Größenwarnung war bereits durch Lane m10-bundle-chunk-fix (#9987) behoben;
+übrig war die Deprecation-WARN "advancedChunks option is deprecated".
+Erledigt:
+- K1 #11658: Audit-Skript scripts/m10-bundle-audit.mjs erweitert (stdout+stderr, Deprecation-Erkennung,
+  Build-Fail -> rc=1); Vorher-Beleg ~/games/.evidence/m10-bundle-split/before.json.
+- K2 #11659: vite.config.ts advancedChunks -> codeSplitting migriert (gleiche Gruppen phaser/gfx/sprites,
+  identische Chunk-Hashes bis auf index). Kein src/**, kein index.html.
+- K3 #11660: Nachher-Beleg after.json — build_rc 0, chunk_warning false, deprecation_warning false,
+  Smoke (dist + Playwright) sceneLoaded true / 0 JS-Fehler; npm test 2202/2202 grün.
+- K4 #11661: docs/lanes/m10-bundle-split.md (Vorher/Nachher-Tabelle, Kaltladezeit-Empfehlung:
+  phaser 1,19 MB gzip 318 kB lädt weiterhin upfront — dynamischer Import wäre der echte Hebel,
+  gehört zu m10-loading-screen; Bedarfsmeldung in /home/ai/games/.dispatch/requests.md).
+Review: reviewer PASS (Review-Fixes umgesetzt).
+Abnahme: npm run build rc=0 komplett warnfrei; Chunk-Reports vorher/nachher in
+~/games/.evidence/m10-bundle-split/*.json; Smoke 0 JS-Fehler; Tests grün.
