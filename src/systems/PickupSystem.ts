@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GEMS, type GemSize } from "../logic/xp";
+import { GEMS, gemStageForValue, type GemSize } from "../logic/xp";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, makeImage } from "../gfx/atlas";
 import { iconKeyForOffer } from "../gfx/icons";
@@ -189,7 +189,9 @@ export interface PowerupMoment {
  */
 export function mergeGemValues(a: number, b: number): GemMerge {
   const total = Math.max(0, Math.floor(a)) + Math.max(0, Math.floor(b));
-  const size: GemSize = total >= GEMS.large.value ? "large" : total >= GEMS.medium.value ? "medium" : "small";
+  // m10-gem-value-reading: Stufe aus EINEM deterministischen Wert->Stufe-Mapping
+  // (gemStageForValue); Schwellen unverändert -> Merge-Semantik bitgleich.
+  const size: GemSize = gemStageForValue(total);
   const value = GEMS[size].value;
   return { size, value, credited: Math.max(0, total - value) };
 }

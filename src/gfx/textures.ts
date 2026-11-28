@@ -227,15 +227,17 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   gem_small: {
     w: 7, h: 7,
-    // M10-Lesbarkeit: Groesse 1 (XP 2) = Moor-Gruen (PAL 31) mit Glanz (22),
-    // 1-px-Tinten-Kontur. Drei Groessen sind farblich eindeutig getrennt.
+    // M10-gem-value-reading: Groesse 1 (XP 2) = Mist (PAL 8) mit hellem
+    // Dunst-Glanz (9), 1-px-Tinten-Kontur. Blaugrau statt marshLight-Grün:
+    // die Bog-Horde ist grün (7,43 % Chaos-Kollision gemessen), mist 0,21 %.
+    // Rampen-Quelle der Wahrheit: GEM_VALUE_RAMP in src/logic/xp.ts.
     rows: [
       "..000..",
-      ".0vmv0.",
-      "0vmmvv0",
-      "0vvvvv0",
-      ".0vvv0.",
-      "..0v0..",
+      ".08980.",
+      "0899880",
+      "0888880",
+      ".08880.",
+      "..080..",
       "...0...",
     ],
   },
