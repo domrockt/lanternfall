@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11638,
+  "next": 11682,
   "cards": [
     {
       "id": 1,
@@ -15742,6 +15742,48 @@
       ],
       "created": "2026-11-28T11:19:28Z",
       "updated": "2026-11-28T11:27:30Z"
+    },
+    {
+      "id": 11678,
+      "title": "m10-thermal-wiring #11678 K1: Stand prüfen (Merge, tick()-Ort)",
+      "description": "Prüfe, ob merge-m10-quality-thermal-guard in main ist (evaluateThermalStep in src/logic/quality.ts) und wo tick() liegt (config.ts vs Run.ts). Abnahme: Befund in docs/lanes/m10-thermal-wiring.md; falls tick() in Run.ts: nur config-Teil + Bedarfsmeldung.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:44:12Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:44:12Z"
+    },
+    {
+      "id": 11679,
+      "title": "m10-thermal-wiring #11679 K2: thermal-Verdrahtung in src/config.ts",
+      "description": "Im tick() von config.ts: FPS-Serie (1 Hz, THERMAL_WINDOW_MS) führen, thermalState mitführen, nach stepQuality evaluateThermalStep aufrufen, engage → QUALITY='thermal', __rbDbg.thermalState. Werte aus docs/lanes/m10-quality-thermal-guard.md, keine Duplikate (Import aus logic/quality). Abnahme: npx tsc --noEmit grün, npm run build grün, Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:44:07Z"
+    },
+    {
+      "id": 11680,
+      "title": "m10-thermal-wiring #11680 K3: Guard-Test tests/thermal-wiring.test.ts",
+      "description": "Tests: Config-Werte konsistent (Monotonie THERMAL_FPS < QUALITY_LOW_FPS, THERMAL_WINDOW_MS < THERMAL_HOLD_MS < THERMAL_RECOVERY_MS, THERMAL_BUDGET strikt unter low), Verdrahtung gepinnt (Import-Pfad logic/quality, evaluateThermalStep genau 1x, keine THERMAL-Konstanten-Duplikate in config.ts). Abnahme: npx vitest run tests/thermal-wiring.test.ts grün, npm test grün, Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:44:07Z"
+    },
+    {
+      "id": 11681,
+      "title": "m10-thermal-wiring #11681 K4: Doku + .lane-done",
+      "description": "Lane-Doku finalisieren (Werte belegt aus Quelldoku, offener Rest: Cap-Wrapper-Signaturen QualityTier→ThermalTier als Bedarfsmeldung in .dispatch/requests.md, falls nötig), git status --ignored prüfen, .lane-done anlegen und committen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:44:07Z",
+      "updated": "2026-11-28T11:44:07Z"
     }
   ]
 }
