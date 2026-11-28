@@ -170,6 +170,53 @@ export function poolStore(
   return true;
 }
 
+/** m10-ground-chunk-tex-dup: minimale Registry-Sicht fuer acquireChunkCanvas
+ *  (testbar ohne Phaser; GroundRenderer adaptert scene.textures darauf). */
+export interface ChunkCanvasLike {
+  isCanvas: boolean;
+  /** Animationsstufen (frameTotal - 1). */
+  frames: number;
+  /** Backing-Objekt (die echte Textur) — Reuse gibt ref zurueck, nicht den Datensatz. */
+  ref: unknown;
+}
+
+export interface ChunkCanvasRegistryLike {
+  exists(key: string): boolean;
+  get(key: string): ChunkCanvasLike | null;
+  /** Phaser-Mimik: Warnung + null, wenn der Key bereits belegt ist. */
+  createCanvas(key: string, frames: number): unknown;
+  remove(key: string): void;
+}
+
+/**
+ * m10-ground-chunk-tex-dup (#13283): Canvas-Textur fuer einen Chunk-Key holen,
+ * ohne Phaser-Warnung „Texture key already in use". Seit dem Chunk-Budget-
+ * Merge existiert der Key bei Wiederaufbau haeufig schon (Chunk weiterhin
+ * aktiv bzw. Pool-Textur unter dem alten Chunk-Key) — createCanvas lieferte
+ * dann null und der Chunk wurde nie gebaut (Spam + Loch, Balance-Mess-JSONs
+ * accepted:false). Existierende Canvas-Textur derselben Klasse wird
+ * wiederverwendet und neu gemalt; nur bei Klassen-Wechsel (Stufenzahl
+ * anders) oder Nicht-Canvas wird nach remove() neu angelegt. dropPooled
+ * entfernt einen etwaigen Pool-Eintrag des Keys, damit poolPick die jetzt
+ * aktive Textur nicht doppelt vergibt.
+ */
+export function acquireChunkCanvas(
+  registry: ChunkCanvasRegistryLike,
+  key: string,
+  frames: number,
+  dropPooled?: (key: string) => void,
+): { texture: unknown; reused: boolean } {
+  if (registry.exists(key)) {
+    const existing = registry.get(key);
+    dropPooled?.(key);
+    if (existing && existing.isCanvas && existing.frames === frames) {
+      return { texture: existing.ref, reused: true };
+    }
+    registry.remove(key); // Klassen-Wechsel/Fremd-Textur: Key freigeben
+  }
+  return { texture: registry.createCanvas(key, frames), reused: false };
+}
+
 interface ChunkEntry {
   image: Phaser.GameObjects.Image;
   key: string;
@@ -785,6 +832,58 @@ export class GroundRenderer {
     }
   }
 
+  /** m10-ground-chunk-tex-dup: Pool-Eintrag eines Keys entfernen (Textur ist
+   *  wieder aktiv — poolPick darf sie nicht doppelt vergeben). */
+  private poolDrop(key: string): void {
+    for (const list of this.chunkTexturePool.values()) {
+      const idx = list.findIndex((e) => e.key === key);
+      if (idx >= 0) {
+        list.splice(idx, 1);
+        return;
+      }
+    }
+  }
+
+  /** m10-ground-chunk-tex-dup: laeuft der Chunk-Key bereits auf einem AKTIVEN
+   *  Chunk-Image? (Aktiver Chunk im Rennfall oder Pool-Borrowing: ein anderer
+   *  Chunk nutzt die gepoolte Textur unter ihrem alten Key.) */
+  private textureKeyInUse(textureKey: string): boolean {
+    for (const entry of this.chunks.values()) {
+      if (entry.key === textureKey) return true;
+    }
+    return false;
+  }
+
+  /** m10-ground-chunk-tex-dup (#13283): scene.textures auf den testbaren
+   *  Helfer adaptern — existierenden Chunk-Key WIEDERVERWENDEN statt
+   *  createCanvas (Phaser-Warnung „Texture key already in use" + null). */
+  private acquireChunkTexture(textureKey: string, frames: number): Phaser.Textures.CanvasTexture | null {
+    const textures = this.scene.textures;
+    const result = acquireChunkCanvas(
+      {
+        exists: (key) => textures.exists(key),
+        get: (key) => {
+          const tex = textures.get(key) as Phaser.Textures.CanvasTexture | null;
+          if (!tex || !tex.source) return null;
+          return {
+            isCanvas: typeof tex.getContext === "function",
+            // Canvas-HOEHE statt frameTotal-1: wiederverwendete Canvases
+            // koennen Frame-Definitionen einer frueheren Nutzung mit mehr
+            // Stufen tragen — die Hoehe leitet die echte Klassen-Zahl ab.
+            frames: Math.max(1, Math.round(tex.height / CHUNK_SIZE)),
+            ref: tex,
+          };
+        },
+        createCanvas: (key, f) => textures.createCanvas(key, CHUNK_SIZE, CHUNK_SIZE * f),
+        remove: (key) => textures.remove(key),
+      },
+      textureKey,
+      frames,
+      (key) => this.poolDrop(key),
+    );
+    return (result.texture as Phaser.Textures.CanvasTexture) ?? null;
+  }
+
   /** Fertige Worker-Bitmaps einbauen — installs/Uploads über die Zeit glätten. */
   private finalizeReady(centerX: number, centerY: number, timeMs: number, frameDtMs: number): void {
     // M10-frame-tail-batching: Obergrenze je Frame (1 Install) + Mindestabstand
@@ -804,6 +903,14 @@ export class GroundRenderer {
     const job = this.ready.shift()!;
     this.lastInstallMs = timeMs;
     if (this.counters) this.counters.readyInstalled++;
+    this.requested.delete(job.key);
+    if (this.chunks.has(job.key)) {
+      // m10-ground-chunk-tex-dup: Sync-Fallback hat den Chunk inzwischen schon
+      // gebaut (Rennen). Bitmaps verwerfen — die aktive Chunk-Textur wird NICHT
+      // angefasst und NICHT gepoolt (wäre doppelt in Umlauf).
+      for (const b of job.bitmaps) b.close();
+      return;
+    }
     const textureKey = `chunk_${job.key.replace(",", "_")}`;
     const builtKey = this.buildChunkTexture(textureKey, job.bitmaps, job.cx, job.cy);
     if (builtKey) {
@@ -833,7 +940,14 @@ export class GroundRenderer {
       }
     }
     if (!texture) {
-      texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+      if (this.textureKeyInUse(textureKey)) {
+        // Key laeuft auf einem aktiven Chunk-Image (Rennfall oder Pool-Borrowing):
+        // weder ummalen (Fremd-Chunk wuerde falsches Terrain zeigen) noch neu
+        // anlegen (Spam). Der Pool selbst-heilt, sobald der Borrower evicted.
+        for (const b of bitmaps) b.close();
+        return null;
+      }
+      texture = this.acquireChunkTexture(textureKey, frames);
       if (!texture) {
         for (const b of bitmaps) b.close();
         return null;
@@ -851,15 +965,25 @@ export class GroundRenderer {
     for (let f = 0; f < frames; f++) {
       if (!texture.has(`f${f}`)) texture.add(`f${f}`, 0, 0, f * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE);
     }
+    // m10-ground-chunk-tex-dup: wiederverwendete Canvas kann Frame-Definitionen
+    // einer frueheren Nutzung mit MEHR Stufen tragen — restlos entfernen, sonst
+    // leitet frameTotal-1 eine falsche Klasse ab und aktive Images verlieren
+    // bei Replace ihre Textur (null glTexture).
+    for (let f = frames; texture.has(`f${f}`); f++) texture.remove(`f${f}`);
     return effectiveKey;
   }
 
   /** Sync-Fallback (kein Worker): alle Stufen direkt auf dem Main-Thread malen. */
   private createChunk(cx: number, cy: number, key: string): void {
     const textureKey = `chunk_${key.replace(",", "_")}`;
+    if (this.textureKeyInUse(textureKey)) {
+      // m10-ground-chunk-tex-dup: Key auf aktivem Image — siehe buildChunkTexture.
+      this.requested.delete(key);
+      return;
+    }
     const frames = areaHasWater(cx * CHUNK_SIZE, cy * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE, this.seed, WORLD_SIZE)
       ? WATER_ANIM_STEPS : 1;
-    const texture = this.scene.textures.createCanvas(textureKey, CHUNK_SIZE, CHUNK_SIZE * frames);
+    const texture = this.acquireChunkTexture(textureKey, frames);
     if (!texture) {
       // Kein Canvas (Speicher/GPU-Limit): Chunk erneut anfragbar machen statt
       // ihn dauerhaft als "requested" zu blockieren (Loch ohne Retry).
@@ -879,6 +1003,8 @@ export class GroundRenderer {
     for (let f = 0; f < frames; f++) {
       if (!texture.has(`f${f}`)) texture.add(`f${f}`, 0, 0, f * CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE);
     }
+    // m10-ground-chunk-tex-dup: siehe buildChunkTexture (Stale-Frames entfernen).
+    for (let f = frames; texture.has(`f${f}`); f++) texture.remove(`f${f}`);
     this.buildChunk(cx, cy, key, textureKey);
     this.requested.delete(key);
   }
@@ -1096,7 +1222,7 @@ export class GroundRenderer {
       entry.image.destroy();
       for (const p of entry.props) p.destroy();
       for (const r of entry.ripples) r.img.destroy();
-      this.scene.textures.remove(entry.key);
+      if (this.scene.textures.exists(entry.key)) this.scene.textures.remove(entry.key);
     }
     this.chunks.clear();
     this.ripples.length = 0;
