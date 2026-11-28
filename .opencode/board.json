@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10221,
+  "next": 10243,
   "cards": [
     {
       "id": 1,
@@ -13201,6 +13201,156 @@
       ],
       "created": "2026-11-28T08:32:06Z",
       "updated": "2026-11-28T08:34:05Z"
+    },
+    {
+      "id": 10237,
+      "title": "m10-boss-portrait-w2-r2 K1: Vorher-Kontaktbögen + Befund-JSON",
+      "description": "Kontaktbögen (1x + 4x) der 4 genannten Bosse (coven, pale_shepherd, hollow_king, moor_queen) + Befund-JSON; Renderer-String mitschreiben. Belege nach ~/games/.evidence/m10-boss-portrait-w2-r2/. Abnahme: JSON mit offPal/dup/silKontrast/kanten je Boss vorhanden, Renderer-String dokumentiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:44:37Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-boss-portrait-w2-r2 (Re-Queue) gestartet; Before-Kontaktbögen über scripts/m10-boss-portrait.mjs."
+        },
+        {
+          "at": "2026-11-28T07:55:32Z",
+          "by": "build",
+          "text": "doing → review: K1 done: Belege in ~/games/.evidence/m10-boss-portrait-w2-r2/ (4 Boegen 1x+4x + JSON mit Renderer-String Mesa Intel RPL-S). Commit 5505bcef. Sichtpruefung bestaetigt die Befunde aus der crisp-Lane."
+        },
+        {
+          "at": "2026-11-28T08:37:02Z",
+          "by": "build",
+          "text": "review → done: lane #9895, Commit 5505bcef — Vorher-Boegen + Metriken + Renderer-String (Mesa Intel RPL-S) in ~/games/.evidence/m10-boss-portrait-w2-r2/."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T08:37:02Z"
+    },
+    {
+      "id": 10238,
+      "title": "m10-boss-portrait-w2-r2 K2: coven — Klon-Posen + Props unterscheidbar",
+      "description": "Klon-Posen der 3 Hexen unterscheidbar machen (nicht 3x dieselbe Pose), Props klar lesen: Besenstiel-Nadel ersetzen/klären, Goldkugel lesbar oder streichen. Maßstab: art-director-Note der Runde 1. Nur scripts/art/gen_bosses.py + regeneriertes gen-bosses.ts; Idle-Kontrakt (m10-boss-idle-anim.mjs gen) erneut anwenden.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:58:53Z",
+          "by": "build",
+          "text": "todo → doing: coven-Redraw: drei Rollen (Besen/Zauberei/Feuerkugel), Roben-Traene 24/25/26, Flammen statt Goldkugeln, Besen statt Nadel."
+        },
+        {
+          "at": "2026-11-28T08:06:19Z",
+          "by": "build",
+          "text": "doing → review: K2 done, Commit 04a25cbe. coven: 3 Rollen (broom/caster/orb), Roben 24/25/26, Flammen statt Goldkugeln, Besen statt Nadel. silKontrast 70.0->93.8, kanten 32.5->37.2, offPal 0, dup 0. Probe gesehen (4x). 1690 Tests gruen."
+        },
+        {
+          "at": "2026-11-28T08:36:56Z",
+          "by": "build",
+          "text": "review → done: lane #9896, Commit 04a25cbe — art-director 4/5, Reviewer PASS (pixel-identische Nachbarn, 0 offPal)."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T08:36:56Z"
+    },
+    {
+      "id": 10239,
+      "title": "m10-boss-portrait-w2-r2 K3: pale_shepherd — Kopf/Gesicht enträtseln",
+      "description": "Kopf-/Gesichtsfläche matschig: klare Schädel-/Kapuzen-Lesart, 1-px-Stufen, keine Matschfläche. Abnahme: Augenhöhle/Kapuzenbogen einzeln lesbar, keine flächigen Verläufe.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:06:21Z",
+          "by": "build",
+          "text": "todo → doing: pale_shepherd: Kopf/Gesicht neu — Kapuzenrand, Gesichtsebene mit 1-px-Stufen, keine Matschflaeche."
+        },
+        {
+          "at": "2026-11-28T08:10:50Z",
+          "by": "build",
+          "text": "doing → review: K3 done, Commit 8b78eacd. Kopf neu: Kapuze+Hoehlung+Gesichtsebene mit 1-px-Stufen, Glutaugen, Bart abgesetzt. silKontrast 134.4 >= 134.4, kanten 54.2, offPal 0. Probe gesehen (4x)."
+        },
+        {
+          "at": "2026-11-28T08:36:56Z",
+          "by": "build",
+          "text": "review → done: lane #9897, Commit 8b78eacd — art-director 4/5 (Kopf klar, 1-px-Stufen)."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T08:36:56Z"
+    },
+    {
+      "id": 10240,
+      "title": "m10-boss-portrait-w2-r2 K4: hollow_king — Brustpanzer organisch + Unterkante beruhigen",
+      "description": "Brustpanzer weg vom Tech-Panel-Look (organisch/knochenig), Unterkante beruhigen (silKontrast 70 → lesbar, Ziel >= Vorher-Wert). Krone bleibt (Kontaktband aus crisp-Lane erhalten).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:10:50Z",
+          "by": "build",
+          "text": "todo → doing: hollow_king: Brust organisch (Rippenkorb), Unterkante beruhigen."
+        },
+        {
+          "at": "2026-11-28T08:19:08Z",
+          "by": "build",
+          "text": "Supervisor-Steer bestätigt: K4 war bereits committet (57e2937c, #9898). silKontrast-Abbruchkriterium erreicht: 70.0 -> 93.8 (>= Vorher), Unterkante beruhigt — keine weiteren Iterationen an hollow_king. Ergebnis in Lane-Doku dokumentiert, weiter zu K5."
+        },
+        {
+          "at": "2026-11-28T08:19:08Z",
+          "by": "build",
+          "text": "doing → review"
+        },
+        {
+          "at": "2026-11-28T08:36:56Z",
+          "by": "build",
+          "text": "review → done: lane #9898, Commit 57e2937c — art-director 4,5/5 (Rippenkorb + Saum ok, auslieferungsreif)."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T08:36:56Z"
+    },
+    {
+      "id": 10241,
+      "title": "m10-boss-portrait-w2-r2 K5: Regressionstest boss-portrait-w2.test.ts",
+      "description": "Grid-Größen, Palette (0 offPal, binäres Alpha), Silhouetten-Kontrast >= Vorher je fixes Boss. npx vitest run tests/boss-portrait-w2.test.ts grün, boss-idle-anim.test.ts grün, npm test grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:19:36Z",
+          "by": "build",
+          "text": "todo → doing: K5: Regressionstest tests/boss-portrait-w2.test.ts (Grid, Palette, silKontrast >= Vorher je fixem Boss)."
+        },
+        {
+          "at": "2026-11-28T08:20:46Z",
+          "by": "build",
+          "text": "doing → review: K5 done, Commit 59f84abe. 7 Regression-Tests gruen (Grid/Palette/silKontrast >= Vorher/Dupletten/Rollen-Asserts); npm test 1697 gruen."
+        },
+        {
+          "at": "2026-11-28T08:36:56Z",
+          "by": "build",
+          "text": "review → done: lane #9899, Commits 59f84abe + 25ff11fc — 7/7 Tests, Guard auf Nachher-Werte verschärft, npm test 1697 gruen."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T08:36:56Z"
+    },
+    {
+      "id": 10242,
+      "title": "m10-boss-portrait-w2-r2 K6: Nachher-Kontaktbögen + art-director-Urteil + Doku",
+      "description": "Nachher-Kontaktbögen (1x+4x) + art-director-Urteil (streng, Maßstab 'kommerziell auslieferbar'), Ziel >= 4/5 je gefixtem Boss. Abnahme-Bilder nach shots/abnahme/. Doku docs/lanes/m10-boss-portrait-w2-r2.md + .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:20:46Z",
+          "by": "build",
+          "text": "todo → doing: K6: Nachher-Kontaktboegen + art-director-Urteil (>= 4/5 je Boss) + Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T08:36:56Z",
+          "by": "build",
+          "text": "doing → done: lane #9900, Commit 25ff11fc — art-director PASS (coven 4 / shepherd 4 / hollow_king 4,5), Reviewer PASS, Abnahme in shots/abnahme/, .lane-done committed."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T08:36:56Z"
     }
   ]
 }
