@@ -120,3 +120,27 @@ ausgewertet (Mess-Budget 2 Iterationen). Kontext:
    (Budget), als Follow-up für den Fix-Job vorgeschlagen.
 
 Status: K3 gemessen 2026-11-28, FAIL dokumentiert. Board #11310.
+
+## K4 — 10-min-Lauf ohne Thermik-Einbruch — **PASS**
+
+Beleg: `~/games/.evidence/m10-v10-device-acceptance/10min-device.json`
+(Skript `scripts/m10-v10-device-10min.mjs`, Log `~/tmp/m10-v10-device-acceptance/k4-10min-r3.log`).
+
+- Methode: Minute-25-Worst-Case dauerhaft (300 Gegner Top-up, 6 Evos Lv8, autoPlay, god),
+  60 Messfenster je 10 s; Thermik-/Batterie-Poll jede Minute über `GET /status`.
+  Weil der Run bei Minute 30 in die Morgendämmerung endet (kein Debug-Schalter), läuft die
+  Messung **segmentiert**: alle 24 Fenster Neustart per `page.reload()` + `skipTo(1490)`
+  (killt die CDP-Verbindung nicht); FPS-Fenster sind unabhängig, Thermik läuft durch.
+  Erkenntnisse aus zwei abgebrochenen Läufen sind im JSON/Log dokumentiert: (a) Run-Ende bei
+  Minute 30 lässt ein rAF-Fenster nie terminieren → Szene-Guard + Segmentierung; (b) der
+  WebView kann unter Volllast sterben (Renderer/Seite weg) → Session-Recovery mit frischer
+  CDP-Verbindung. Im PASS-Lauf: 0 Recoveries, 0 JS-Fehler.
+- **FPS-Kurve:** Mittelwert erste 5 min **110,5**, letzte 5 min **108,8** → Abfall **1,5 %**
+  (Tor: < 20 %). Minimum 95,2 FPS (einzelnes Fenster mit 75-ms-Spike), Maximum 117,2.
+  Laufende Run-Zeit Ende: Minute 26:45 (Segment), Level 66, 291 276 Kills.
+- **Thermik:** Thermal Status durchgehend **0** (alle 10 Polls); Akku 34,0 → 35,0 °C (Ende 35,0),
+  kein Throttling-Anzeichen; FPS-Kurve flach.
+- GPU: `Adreno (TM) 710` (rc-device.json), Gerät dauerhaft am Netzteil? unbekannt — Batterie-
+  Temperaturverlauf 33–35 °C spricht für normales Laden/Entladen ohne thermische Drossel.
+
+Status: K4 gemessen 2026-11-28. Board #11311.
