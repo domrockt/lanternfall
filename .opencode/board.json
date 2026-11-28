@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7528,
+  "next": 7532,
   "cards": [
     {
       "id": 1,
@@ -9532,6 +9532,42 @@
       "notes": [],
       "created": "2026-11-28T02:37:07Z",
       "updated": "2026-11-28T02:37:07Z"
+    },
+    {
+      "id": 7528,
+      "title": "m10-hazard-disc-polish K1 Vorher-Messung",
+      "description": "lane #7400, Merge db3aac7. AK erfüllt: scripts/m10-chaos-fix-disc.mjs --tag=before gelaufen; shots/m10-hazard-disc-polish-before-*.png/zoom4x + JSON committed; milkyShareDisc stress500-640 12,78 % (< 20 % Ziel). Beleg: Merge-Commit 14449e2 (in db3aac7).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:42:01Z",
+      "updated": "2026-11-28T02:42:01Z"
+    },
+    {
+      "id": 7529,
+      "title": "m10-hazard-disc-polish K2 Fix a: Innenkante + stabile 2-px-Ringkontur",
+      "description": "lane #7401, Merge db3aac7. AK erfüllt: 2-px-Uebergangsband (25 %-Fringe aus emberDark, nur (gerade,gerade)-Raster) statt harter Checker-Kante; Ringkontur via round(d)-Band {r-1,r} konstant 2 px; nur 2 Palettenindizes; Tests quantisiert + 360°-Ring/Disc; tsc+vitest gruen. Beleg: Merge-Commit 41aea60.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:42:01Z",
+      "updated": "2026-11-28T02:42:01Z"
+    },
+    {
+      "id": 7530,
+      "title": "m10-hazard-disc-polish K3 Fix b: Stapel-Fuellstufe ab 5 Warn-Discs",
+      "description": "lane #7402, Merge db3aac7. AK erfüllt: fillStageForStacks (>=5 gleichzeitig warnende Disc-Hazards -> Fuellstufe 1, Key hazard_disc_rN_s1), deterministisch via scene.hazards-Lookup; Einzeldisc/Stage-0 bitgleich (Test); Tests +4 inkl. NaN. Beleg: Merge-Commit f69b3e6.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:42:01Z",
+      "updated": "2026-11-28T02:42:01Z"
+    },
+    {
+      "id": 7531,
+      "title": "m10-hazard-disc-polish K4 Nachher + Doku + Abnahme",
+      "description": "lane #7403, Merge db3aac7. AK erfüllt: milkyShareDisc stress500-640 14,44 % / stress500-780 12,85 % / m25-640 16,68 % — alle < 20 %; 4x-Zooms before/after; docs/lanes/m10-hazard-disc-polish.md; build rc=0, 1097 Tests gruen; art-director strenge Abnahme PASS 4/5 (iGPU ANGLE Intel RPL-S, swiftShader=false). Beleg: Merge-Commit 23b4d4e.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:42:01Z",
+      "updated": "2026-11-28T02:42:01Z"
     }
   ]
 }
