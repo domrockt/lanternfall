@@ -13718,25 +13718,36 @@
       "id": 10157,
       "title": "m10-prop-contact-shadow K1: Vorher-Screenshots (640x360 + 960x540, Prop-Cluster)",
       "description": "Skript scripts/m10-prop-shadow.mjs (--tag before): Vorher-Shots mit sichtbarem Prop-Cluster (Teleport an Cluster via ground.chunks) in 640x360 + 960x540 + 3x-Crop, Belege in shots/abnahme/ + ~/games/.evidence/m10-prop-contact-shadow/. Abnahme: beide Shots zeigen Props/Cluster, JSON-Probe mit Prop-/Schattenzahl, 0 JS-Fehler, Commit BEFORE Fix.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T08:28:28Z",
           "by": "build",
           "text": "todo → doing: Lane übernommen: Vorher-Screenshots + Probe-Skript"
+        },
+        {
+          "at": "2026-11-28T08:30:57Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Shots committed (3c4edfba): Cluster 12 Props sichtbar, Probe 527 Props/0 Kontakt-Schatten (alter Soft-Blob), 0 JS-Fehler"
         }
       ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:28:28Z"
+      "updated": "2026-11-28T08:30:57Z"
     },
     {
       "id": 10158,
       "title": "m10-prop-contact-shadow K2: Schatten-Generator + Kontakt-Schatten-Zeichnung",
       "description": "Deterministischer Pixel-Kontakt-Schatten in gen-props.ts (propShadowFor: elliptisch, PAL[0], Alpha 0.35/0.18-Rim, per Prop-Klasse aus GEN_PROPS-Basisbreite, Varianten auf Basis-Klasse abgebildet); Zeichnung in GroundRenderer.addProp: gemeinsame Shadow-Atlas-Textur (1 Batch, Frames je Klasse), 1 px unterhalb/leicht versetzt, LOD/CLUSTER_PROPS/Platzierung/Batch-Struktur unangetastet. Abnahme: npx tsc --noEmit rc=0, ground-props-batch/prop-density-lod-Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:30:57Z",
+          "by": "build",
+          "text": "todo → doing: Schatten-Generator + Zeichnung"
+        }
+      ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:28:26Z"
+      "updated": "2026-11-28T08:30:57Z"
     },
     {
       "id": 10159,
