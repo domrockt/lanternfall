@@ -95,9 +95,60 @@ Mond-Glow-Region (Puls-Animation, Diff ≤8). Belege: `shots/abnahme/m10-fps-cap
 `shots/abnahme/m10-fps-cap-desktop-nachher.png` (Bytegrößen 53 297/53 157; Run-Shots mit RNG
 in `.evidence/desktop-vorher/nachher.png` verworfen, Titel ist der deterministische Vergleich).
 
-## K3 — Nachher-Messung am Gerät (Cap 60 + max-Referenz) — 28.11. — **HANDOFF an Versuch 2**
+## K3 — Nachher-Messung am Gerät (Cap 60 + max-Referenz) — 28.11. — **gemessen (Versuch 3, 14:28–14:52Z)**
 
-**Stand (Original-Session, übergibt hier an die Fortsetzung ses_ddd97f876 / „Versuch 2“):**
+### Ergebnis (verbindlich, Versuch 3)
+
+Belege: `~/games/.evidence/m10-mobile-fps-cap/k3-nachher-cap60.json` + `k3-referenz-max.json`
+(Log `~/tmp/m10-fps-cap-k3-seq.log`, Sequenz unter `flock /home/ai/games/.lf-perf.lock`).
+Je 60/60 Fenster, Renderer **Adreno (TM) 710** (kein SwiftShader), DPR 2, K2-APK (Build 700c815e),
+BILDRATE per Persistenz-Pfad gesetzt (`--fps 60|max` schreibt `lanternfall-options-v1` + reload).
+
+| Metrik | Cap **60** | Referenz **max** | Baseline K1 (uncapped, 120-Hz-Ist) |
+|---|---|---|---|
+| **janky >16,7 ms** (Histogramm, 60-Hz-Deadline) | **21,54 %** | 37,01 % | (K1 verzerrt, nicht vergleichbar) |
+| janky >8,3 ms (Histogramm) | 21,58 % | 37,31 % | — |
+| Chrome-Janky-Counter | 15,82 % | 0,26 % | 11,91 % |
+| Pacing p95 / p99 | 5 / 5 ms | 5 / 8 ms | — |
+| Präsentierte FPS (Median, saubere Fenster) | 97,2 (15–103, σ 25,6) | 129,6 (5–154, σ 35,4) | 100,4 |
+| WebGL-Draws/s (Probe, echte Render-Rate) | **2 864** | 4 843 (60/Max = 0,59) | — |
+| fpsConfig der Probe | `limit 60, cappedAt60 true` | `limit 0, cappedAt60 false` | — |
+| Akkutemperatur | 33 → 35 °C (+2,0 K) | 35 → 36 °C (+1,0 K, geerbt) | 33 → 35 °C (+2,0 K) |
+| JS-Fehler | 9 × RangeError | 9 × RangeError | 0 |
+| Frozen-Loop-Ereignisse | 9 | 9 | 0 |
+
+**„Glatte 60“ belegt:** die Draw-Probe zählt echte WebGL-Draw-Aufrufe — bei Cap 60 halbiert sich die
+Render-Rate (2 864 vs. 4 843/s, Faktor 0,59) und die Probe bestätigt `cappedAt60: true`. Die
+präsentierten ~97 FPS sind Chromium-Duplikat-Frames auf dem 120-Hz-Display und kein Widerspruch.
+
+**K3-Tor (janky >16,7 ms < 10 %, 0 JS-Fehler): NICHT erreicht — ehrlich FAIL.**
+Zwei Ursachen, beide dokumentiert:
+
+1. **Regression gefunden (Hauptursache, neu auf dem K2-Build):** In BEIDEN Läufen exakt
+   **9 × `RangeError: Maximum call stack size exceeded`** — zeitlich deckungsgleich mit
+   **9 Frozen-Loop-Ereignissen** je Lauf (Game-Loop stirbt, rAF lebt weiter, presented=0-Fenster).
+   Der K1-Old-Build lief 12 min ohne einen einzigen Fehler/Freeze; alle K3-Läufe auf dem K2-Build
+   (700c815e) crashen so alle ~40–80 s unter Minute-25-Last. Verdacht: Interaktion der
+   fps-Config/fps.limit am Boot mit dem TimeStep. **Stack-Capture steht noch offen** (Diagnose-Probe
+   `~/tmp/m10-fps-cap-stackprobe.mjs` gebaut; erster Versuch 15:00Z scheiterte, weil **Dom gerade am
+   Gerät spielt** — 409-Regel, kein zweiter Versuch). → Bedarfsmeldung, Fix außerhalb meines
+   Datei-Bereichs (src/systems/**, src/scenes/** sind fremd beansprucht).
+2. **Minute-25-Dichte ist zu schwer für <10 %:** auch in frischen Segmenten (direkt nach Reload,
+   ~46–76 Gegner) liegen die >16,7-ms-Anteile bei 6,5–19,2 % (Cap 60) bzw. 29,7–40,6 % (max); sie steigen mit
+   rampender Gegnerzahl bis 46/50 %. Bei 300 Gegnern + DPR 2 schafft selbst die halbierte
+   Renderlast keine <10-%-Deadline-Compliance — das ist ein Renderlast-Thema, kein Frame-Cap-Thema.
+
+**Vorsicht bei Chrome-Janky:** Der Chromium-Counter (0,26 % bei max) widerspricht dem Histogramm
+(37 % >16,7 ms) und der uncapped-Baseline (11,91 %) — sein Deadline-Modell ist bei
+App-Rate ≠ Display-Rate nicht interpretierbar. Er wird dokumentiert, aber NICHT als
+Entscheidungsbasis verwendet (K4 nutzt Histogramm + Pacing + Temperatur, wie beauftragt).
+
+*Caveat p95/p99:* `histogramStats.pct()` denominiert (pre-existing, K1-Erbe) gegen
+`totalFramesDiff` statt Bucket-Summe → p50–p99 leicht zu niedrig; die >16,7-ms-Anteile nutzen
+korrekt die Bucket-Summe. Beidseitig gleicher Bias, die 60-vs-max-Vergleichsrichtung bleibt
+brauchbar.
+
+### Methodik/Protokoll (aus den Versuchen 1–2, gültig)
 
 - **Lane-APK installiert** (`POST /install?lane=m10-mobile-fps-cap`, gebaut aus 700c815e): Probe bestätigt
   `fps: {target 60, limit 60, cappedAt60: true}`, `options.fps: -1 (AUTO)` → Standard 60 am Gerät wirkt.
@@ -130,6 +181,6 @@ Denominator-Version) + Akkutemperatur (33→35 °C in 10 min Baseline) treffen �
 Lagebericht zusätzlich als Eintrag in `/home/ai/games/.dispatch/requests.md` (Dom-Lagebild).
 Danach: `.lane-done` (Regeln siehe Briefing), Board #12250.
 
-## K4 — Empfehlung 60 vs. max — 28.11.
+## K4 — Empfehlung 60 vs. max
 
-*(wird nach K3 ergänzt)*
+*(folgt im K4-Commit, #12250)*
