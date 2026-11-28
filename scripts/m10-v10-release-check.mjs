@@ -126,13 +126,37 @@ export function parseApkName(name) {
   return { stamp: iso, sha };
 }
 
-/** Aus GitHub-Releases-JSON: neuestes lanternfall-…-<sha>.apk-Asset (created_at absteigend). */
+/** Build-ID im Release-Namen (Muster seit Umstellung des Assets auf lanternfall.apk): "… (20261128-1714-11f929c)". */
+export function parseBuildIdText(text) {
+  const m = String(text).match(/(\d{8})-(\d{4})-([0-9a-f]{4,12})\b/);
+  if (!m) return null;
+  const [, d, t, sha] = m;
+  const iso = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}T${t.slice(0, 2)}:${t.slice(2, 4)}:00Z`;
+  return { stamp: iso, sha };
+}
+
+/**
+ * Aus GitHub-Releases-JSON: das neueste lanternfall-APK-Asset (created_at absteigend).
+ * Build-ID kommt bevorzugt aus dem Asset-Namen (fa-04-Muster), sonst aus dem Release-Namen
+ * (aktuelles Muster: Asset "lanternfall.apk", Release "… (20261128-1714-11f929c)").
+ */
 export function selectLatestBuildAsset(releases) {
   const cands = [];
   for (const rel of Array.isArray(releases) ? releases : []) {
     for (const a of Array.isArray(rel?.assets) ? rel.assets : []) {
-      const parsed = parseApkName(a?.name ?? "");
-      if (parsed) cands.push({ name: a.name, createdAt: a.created_at ?? rel.created_at ?? null, sha: parsed.sha, stamp: parsed.stamp, release: rel.name ?? rel.tag_name ?? null });
+      if (!/\.apk$/i.test(String(a?.name ?? ""))) continue;
+      const fromAsset = parseApkName(a.name ?? "");
+      const fromRelease = fromAsset ? null : parseBuildIdText(`${rel?.name ?? ""} ${rel?.tag_name ?? ""}`);
+      const id = fromAsset ?? fromRelease;
+      if (!fromAsset && !fromRelease) continue;
+      cands.push({
+        name: a.name,
+        createdAt: a.created_at ?? rel.created_at ?? null,
+        sha: id?.sha ?? null,
+        stamp: id?.stamp ?? null,
+        release: rel.name ?? rel.tag_name ?? null,
+        idSource: fromAsset ? "asset-name" : "release-name",
+      });
     }
   }
   cands.sort((x, y) => String(y.createdAt ?? "").localeCompare(String(x.createdAt ?? "")));

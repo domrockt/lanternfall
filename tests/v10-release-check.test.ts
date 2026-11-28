@@ -202,6 +202,20 @@ describe("selectLatestBuildAsset — GitHub-Releases-JSON", () => {
     expect(a?.sha).toBe("11ded2e");
   });
 
+  it("Asset 'lanternfall.apk' ohne Muster im Namen → Build-ID aus Release-Namen (aktuelles Muster)", () => {
+    const a = selectLatestBuildAsset([
+      {
+        name: "Lanternfall – neuester Build (20261128-1714-11f929c)",
+        tag_name: "latest-build",
+        created_at: "2026-11-28T16:59:28Z",
+        assets: [{ name: "lanternfall.apk", created_at: "2026-11-28T16:59:28Z" }],
+      },
+    ]);
+    expect(a?.sha).toBe("11f929c");
+    expect(a?.stamp).toBe("2026-11-28T17:14:00Z");
+    expect(a?.idSource).toBe("release-name");
+  });
+
   it("ohne passendes Asset → null", () => {
     expect(selectLatestBuildAsset([{ name: "r", assets: [{ name: "readme.md" }] }])).toBeNull();
     expect(selectLatestBuildAsset(null)).toBeNull();
