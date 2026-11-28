@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { PAL } from "../palette";
+import type { QualityTier } from "../logic/quality";
 
 /**
  * Bake von Telegraph-Disc-/-Ring-Texturen in Sprite-Pixelgroesse (B3-Fix, Lane
@@ -262,4 +263,59 @@ export function hazardBeamRimTexture(scene: Phaser.Scene, length: number): strin
   const key = `hazard_beam_rim_l${l}`;
   bakeFromMask(scene, key, beamRimMask(l), BEAM_RIM_W);
   return key;
+}
+
+// --- m10-hazard-quality-budget (K2): Tier-Regel fuer den Warn-Disc-Draw -------------
+//
+// Warn-Discs kosten auf Geraeten Daempfung statt Raster-Rueckbau (Raster-Fix von
+// m10-hazard-disc-raster bleibt unangetastet — Masken, Keys, Draw-Scale 1):
+//   - low:  Draw-Cap — nur die `DISC_DRAW_CAP_LOW` spieler-naechsten warnenden Discs
+//     werden gezeichnet (Disc + ADD-Rim), der Rest bleibt unsichtbar (Gameplay/
+//     Treffer/Threats unveraendert) und der Rim-Puls atmet nur in der ersten Haelfte
+//     der Warnphase, danach Lesbar-Alpha-Konstante.
+//   - medium/high: offen bzw. Phase 1 — BITGLEICH zum Stand vor der Lane.
+
+/**
+ * Max gleichzeitig gezeichnete Warn-Discs (Disc + Rim) bei Tier low. M25-Dichte: 20+
+ * simultane Warn-Discs; jedes Disc-/Rim-Quad ist Overdraw, der ADD-Rim zuerst Engpass
+ * auf Tile-GPUs (Android-Praxis). high/medium: offen (bitgleich).
+ */
+export const DISC_DRAW_CAP_LOW = 6;
+
+/** Draw-Cap fuer gleichzeitig gezeichnete Warn-Discs je Tier (low = 6, sonst offen). */
+export function warnDiscDrawCapForQuality(tier: QualityTier): number {
+  if (tier === "low") return DISC_DRAW_CAP_LOW;
+  return Number.POSITIVE_INFINITY;
+}
+
+/**
+ * Anteil der Warnphase, in der der Rim-Puls atmet (danach Konstante). low = 1/2
+ * ("kuerzere Puls-Phase"), sonst 1 (bitgleich).
+ */
+export const RIM_PULSE_PHASE_FRACTION_LOW = 0.5;
+
+export function rimPulsePhaseFractionForQuality(tier: QualityTier): number {
+  if (tier === "low") return RIM_PULSE_PHASE_FRACTION_LOW;
+  return 1;
+}
+
+/**
+ * Debug-Override fuer Probes/Abnahme: `window.__lfForceQuality` zwingt ein Tier
+ * (unabhaengig vom FPS-Regler); alles andere als "low"/"medium"/"high" wird ignoriert.
+ * Reine Funktion (Host wird uebergeben).
+ */
+export function forcedQualityTier(host: { __lfForceQuality?: unknown }): QualityTier | null {
+  const v = host.__lfForceQuality;
+  return v === "low" || v === "medium" || v === "high" ? v : null;
+}
+
+/**
+ * Wirksames Tier fuer den Warn-Disc-Draw: Debug-Override hat Vorrang, sonst der
+ * Regler-Stand (`QUALITY` aus config.ts). Reine Funktion.
+ */
+export function drawQualityTier(
+  current: QualityTier,
+  host: { __lfForceQuality?: unknown } = globalThis as unknown as { __lfForceQuality?: unknown },
+): QualityTier {
+  return forcedQualityTier(host) ?? current;
 }

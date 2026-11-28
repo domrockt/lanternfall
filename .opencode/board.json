@@ -15175,27 +15175,38 @@
       "id": 11449,
       "title": "m10-hazard-quality-budget K1: Ist — Draw-Kosten der Warn-Discs bei M25-Dichte (Vorher-JSON)",
       "description": "Probe scripts/m10-hazard-quality.mjs: bei M25-Dichte (500er-Schwarm) gleichzeitig warnende Disc-Hazards spawnen und Draw-Kosten strukturell messen (gezeichnete Warn-Sprites, ADD-Rim-Device-Fläche, Fill-Fläche). Vorher-JSON als Beleg. AK: Vorher-JSON existiert, Metriken fixiert, WebGL-Renderer-String enthalten, 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-hazard-quality-budget",
       "notes": [
         {
           "at": "2026-11-28T11:08:15Z",
           "by": "build",
           "text": "todo → doing: K1 angenommen: Probe-Skript bauen, Vorher-Messung bei M25-Dichte (500er-Schwarm), Vorher-JSON nach ~/games/.evidence/m10-hazard-quality-budget/."
+        },
+        {
+          "at": "2026-11-28T11:18:03Z",
+          "by": "build",
+          "text": "doing → review: K1 erledigt, Commit b7270505 (Probe #11449). Vorher-JSON: ~/games/.evidence/m10-hazard-quality-budget/m10-hazard-quality-before.json — high: 22/22 Discs, ADD-Rim 234982 Device-px, renderer iGPU (RPL-S), 0 JS-Fehler. Befund: FPS-Regler erreicht 'low' auf Dev-Maschine nie (EWMA 47,3, Totzone) -> K2 ergänzt deterministischen Debug-Override __lfForceQuality, dann After-Messung damit."
         }
       ],
       "created": "2026-11-28T11:08:13Z",
-      "updated": "2026-11-28T11:08:15Z"
+      "updated": "2026-11-28T11:18:03Z"
     },
     {
       "id": 11450,
       "title": "m10-hazard-quality-budget K2: Tier-Regel in hazardDisc.ts/Hazards.ts (reine Funktionen)",
       "description": "Warn-Disc-Zeichnung je QualityTier dämpfen: LOW = Disc-Draw-Cap (weniger simultane gezeichnete Discs, nahe Spieler bevorzugt) + kürzere Rim-Puls-Phase; high/medium bitgleich. Raster-Contract aus tests/hazard-disc.test.ts unangetastet (Masken/Keys/Draw-Scale 1). AK: reine Funktionen unit-testbar, kein Dither-Flächen-Rückfall, MIN_WARN_S unverändert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-hazard-quality-budget",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T11:19:32Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: Tier-Regel in hazardDisc.ts (reine Funktionen: Draw-Cap, Puls-Phasen-Anteil, Tier-Resolution inkl. __lfForceQuality-Debug-Override) + Verdrahtung in Hazards.ts (Draw-Budget, gestutzter Rim-Puls). high/medium bitgleich."
+        }
+      ],
       "created": "2026-11-28T11:08:13Z",
-      "updated": "2026-11-28T11:08:13Z"
+      "updated": "2026-11-28T11:19:32Z"
     },
     {
       "id": 11451,
