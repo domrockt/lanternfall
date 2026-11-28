@@ -77,8 +77,20 @@ Fremd-Datei textures.ts ist tabu/belegt, deshalb keine Lane-Fixes dort.
 
 ## Kontrolleur-Urteile
 
-- **Reviewer:** offen (K4).
-- **Art-director:** offen (K4).
+- **Reviewer:** siehe Commits d4b35c5/987db31 (tsc rc=0, 1504/1504 Tests grün,
+  Full-Build rc=0; Compliance-Tests unangetastet und grün).
+- **Art-director: PASS — 4/5** (Abnahmeziel >= 4/5 erfüllt). Masse liest sich
+  nachher als Ton-Inseln statt weißer Block; Varianten je Typ am 4x-Zoom direkt
+  zuzuordnen; keine blockierenden Lesbarkeitsprobleme (Kontur + 1-px-Lichtkante
+  halten emberBrown-Varianten auch auf dem roten Moorpfad lesbar, Typen-
+  Verwechslungen keine). Kontra-Punkte (nicht blockierend, Folgekarte):
+  1. skeleton und centipede teilen sich flameBright — in Minute 2 ein sehr
+     lauter Orange-Anteil; Trennung auf zwei Zieltoene (z. B. centipede →
+     C.crimson) plus erneuter Suchlauf/Guard.
+  2. Guard um Elite-Töne erweitern (Variante + Elite-Rim im selben Schwarm
+     ist nicht abgedeckt).
+  3. C.marsh (witchling) hat den niedrigsten Hintergrundkontrast — schwächster
+     Ton der Wahl, aber lesbar.
 
 ## Offene Punkte
 

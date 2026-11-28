@@ -1,0 +1,25 @@
+Lane m10-crowd-variant-tone — fertig (Board-Karte #7327).
+
+Ziel: Variantenton je Gegnertyp kräftig trennen (art-director-Nachbesserung
+aus m10-crowd-variety: skeleton/centipede/harpy „Weiß-auf-Weiß").
+
+Ergebnis:
+- 20 schwache Typen (Vorher rgbDist < 60) mischen Körperpixel zu 80 % Richtung
+  Palette-Zielton; Tabelle VARIANT_TONE_OVERRIDES aus Suchlauf
+  scripts/m10-crowd-tone-search.ts (ein Greedy-Durchlauf, Nutzungsdeckel 6,
+  Kollisions-Guard 40 RGB, Ziel 60 RGB, exakte Pipeline-Mathematik).
+- Messwerte (shots/m10-crowd-tone-before.json / -after.json):
+  min rgbDist über 27 gerenderte Typen 60.8 (Ziel 60); alle 20 schwachen
+  Paare verbessert, +43.1 % (golem) bis +1257.9 % (wolf); z. B. skeleton
+  33 -> 139.6, centipede 11.2 -> 142.8, harpy 19.8 -> 186.9.
+- Guard: tests/crowd-variant-tone.test.ts (rgbDist >= 60, Silhouetten/Keys/
+  Framezahl unverändert, Palette + binäres Alpha, Kollisions-Guard).
+- Qualitaet: tsc rc=0, Full-Build rc=0, 1504/1504 Tests grün; art-director
+  PASS 4/5. Tabu-Dateien unangetastet, keine Geheimnisse.
+
+Commits: c061e61 (K1 Vorher), d4b35c5 (K2/K3 Fix+Guard), 987db31 (K4 After+
+Doku), <final> (Urteil + .lane-done).
+
+Offene Punkte (Folgekarten): bog_rat/wisp/bogzombie haben handgezeichnete
+2-Frame-Sets ohne sichtbare Variante (textures.ts, tabu); skeleton/centipede
+Zielton-Trennung + Elite-Rim-Guard laut art-director-Nachbesserung.
