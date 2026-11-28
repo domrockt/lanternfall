@@ -56,7 +56,21 @@ Disponent-Bereich; ein Churn-Fix dort braucht eine Folgelane (siehe K4).
 
 ## K3 — ProjectilePool
 
-(folgt)
+Fix in `src/systems/ProjectilePool.ts`:
+- `view()` (Cull-/Hide-Margin-Berechnung, 1× pro Frame) allozierte pro Frame ein neues
+  Cache-Objekt. Jetzt: in-place-Update des wiederverwendeten `viewScratch`-Objekts —
+  semantisch identisch (Werte pro Frame frisch, null ohne Kamera).
+- Der Spawn-Pfad selbst war bereits allokationsfrei (`hit`-Set wird wiederverwendet und
+  geleert, `trailFrames` in-place befüllt, Runtime-Objekte per Free-Stack) — jetzt durch
+  Tests fixiert.
+
+Tests (`tests/heap-pool-fix.test.ts` neu, deterministische Wiederverwendungs-/Lese-Zählung):
+- 500 Spawn/Compact-Zyklen: `stats.created` konstant, freigegebene Runtime-Instanz wird
+  sofort wiederverwendet, `stats.reused` = 500.
+- `hit`-Set-Identität bleibt über Recycling erhalten, Inhalt wird geleert (keine alten UIDs).
+- `view()`-Cache: genau **ein** `worldView`-Lesezugriff pro Frame (zwei compact()-Läufe im
+  selben Frame = 1 Read, Frame-Wechsel = 1 weiterer Read), in-place-Update verfälscht die
+  Cull-/Hide-Entscheidungen nicht (Cull/Hide-Verhalten verifiziert).
 
 ## K4 — Nachher-Messung + Befund
 

@@ -155,6 +155,7 @@ export class ProjectilePool {
   static readonly HIDE_MARGIN = 24;
 
   private viewCache: { x: number; y: number; width: number; height: number } | null = null;
+  private readonly viewScratch: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 };
   private viewCacheFrame = -1;
 
   /** Sichtbarer Weltbereich; null, wenn keine Kamera vorhanden (Tests). */
@@ -162,9 +163,16 @@ export class ProjectilePool {
     const frame = this.scene.game?.loop?.frame;
     const compute = (): { x: number; y: number; width: number; height: number } | null => {
       const v = this.scene.cameras?.main?.worldView;
-      return v && v.width > 0 && v.height > 0
-        ? { x: v.x, y: v.y, width: v.width, height: v.height }
-        : null;
+      // m10-heap-pool-fix: in-place in den Scratch schreiben statt ein neues
+      // Objekt pro Frame — compact() läuft einmal pro Frame, sonst nichts.
+      if (v && v.width > 0 && v.height > 0) {
+        this.viewScratch.x = v.x;
+        this.viewScratch.y = v.y;
+        this.viewScratch.width = v.width;
+        this.viewScratch.height = v.height;
+        return this.viewScratch;
+      }
+      return null;
     };
     if (frame === undefined) return compute(); // Testumgebung ohne Loop: frisch rechnen
     if (frame === this.viewCacheFrame) return this.viewCache;
