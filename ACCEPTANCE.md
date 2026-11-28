@@ -505,6 +505,12 @@ Belege: `~/games/.evidence/m10-acceptance-refresh-g/` (Renderer jedes Belegs:
 | K3 | Heap-Tor 2x fullrun | retained **+8,9 % / +9,2 % < +15 %** in BEIDEN Läufen; 6/6 Bosse+Truhen exakt, Sieg `dawn`, fpsMin 60,4/60,3, 0 JS-Fehler | PASS |
 | K4 | Doku + Urteil | QA-Doku + `docs/lanes/m10-acceptance-refresh-g.md` | PASS |
 
+**Nachtrag Heap-Tor auf HEAD nach `hazard-tex-cap` (Lane `m10-heap-gate-recovery`, 16:05Z):** Das
+ursprüngliche Heap-Budget-Tor (HARD: endMB vs. Minute 1 ≤ +15 %) liegt auf dem aktuellen HEAD in
+**2/2 Läufen PASS: HARD −25,2 %** (endMB **48,5 MB** vs. Minute-1 **64,8 MB**), Renderer
+`Mesa Intel(R) Graphics (RPL-S)`, kein SwiftShader. Belege: `~/games/.evidence/m10-heap-gate-recovery/`
+(`k1-run1.json`, `k1-run2-retry.json`), Doku: `docs/lanes/m10-heap-gate-recovery.md`.
+
 Abweichungen ≥ 5 % gegen F: (1) Heap-Tor F +18,2/+20,8 % FAIL → G +8,9/+9,2 % PASS
 (retained-Tor, Gegenstand des Fix-Jobs); (2) In-run-Beobachtung F +18,2/+20,8 % →
 G +10,7/+14,9 % (GC-Sägezahn-Streuung); (3) Tests 1957 → 2243 (+14,6 %, neue
