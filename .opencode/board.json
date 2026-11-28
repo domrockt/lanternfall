@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11308,
+  "next": 11313,
   "cards": [
     {
       "id": 1,
@@ -15170,6 +15170,90 @@
       ],
       "created": "2026-11-28T10:42:57Z",
       "updated": "2026-11-28T10:48:25Z"
+    },
+    {
+      "id": 11308,
+      "title": "m10-v10-device-acceptance K1: 6 Evolutions-Fenster >= 60 FPS am Gerät (Ziel 90)",
+      "description": "Redmi Pad Pro, Methode scripts/m10-tablet-fx-rc.mjs --mode device → rc-device.json. Belege: ~/games/.evidence/m10-v10-device-acceptance/. Akzeptanz: 6 Evo-Einzelstufen je >= 60 FPS (Ziel 90); GPU-Renderer/Version + Auflösung im Beleg; versionName/Commit in jedem Beleg. FAIL = Befundliste mit Hebel, keine Fixes in dieser Lane.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:05:23Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-v10-device-acceptance übernimmt; Main-APK (main 5664a7fc) 11:03Z installiert."
+        },
+        {
+          "at": "2026-11-28T11:16:16Z",
+          "by": "build",
+          "text": "doing → review: K1 PASS: rc-device.json (21 Fenster, Adreno 710, dpr 2) — 6 Evo-Einzelstufen je ~120 FPS (Ziel 90), Stack +6 ebenfalls 120 FPS, blend 3/Frame, 0 nicht-null FB. Commit 3aed6185."
+        }
+      ],
+      "created": "2026-11-28T11:05:20Z",
+      "updated": "2026-11-28T11:16:16Z"
+    },
+    {
+      "id": 11309,
+      "title": "m10-v10-device-acceptance K2: Minute-25-Dichte >= 60 FPS am Gerät",
+      "description": "Methode analog K1 (Minute-25-Dichte-Fenster, 200+ Gegner). Belege nach ~/games/.evidence/m10-v10-device-acceptance/. Akzeptanz: >= 60 FPS im Minute-25-Fenster.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:16:16Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Minute-25-Dichte auf dem Gerät."
+        },
+        {
+          "at": "2026-11-28T11:19:34Z",
+          "by": "build",
+          "text": "doing → review: K2 PASS: m25-device.json — Minute 25:06, 300 Gegner (Top-up), 109,4 FPS, worst 33,4 ms, 0 JS-Fehler. Commit 27081685."
+        }
+      ],
+      "created": "2026-11-28T11:05:20Z",
+      "updated": "2026-11-28T11:19:34Z"
+    },
+    {
+      "id": 11310,
+      "title": "m10-v10-device-acceptance K3: gfxinfo janky < 10 %",
+      "description": "dumpsys gfxinfo janky < 10 % über das Messfenster (device-bridge). Beleg-JSON nach ~/games/.evidence/m10-v10-device-acceptance/.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:19:34Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: dumpsys gfxinfo janky < 10 % über das Messfenster."
+        },
+        {
+          "at": "2026-11-28T11:22:59Z",
+          "by": "build",
+          "text": "doing → review: K3 FAIL (verbindlich, 2 Läufe): janky 13,44 %/13,90 % vs Tor <10 % — Frame-Zeit-Schwanz (p95 21ms, p99 31ms) bei quality=high, FPS selbst 106–112. Befundliste mit Hebeln in docs/lanes/m10-v10-device-acceptance.md. Commit eaa79f02."
+        }
+      ],
+      "created": "2026-11-28T11:05:20Z",
+      "updated": "2026-11-28T11:22:59Z"
+    },
+    {
+      "id": 11311,
+      "title": "m10-v10-device-acceptance K4: 10-min-Lauf ohne Thermik-Einbruch",
+      "description": "FPS-Kurve + Thermal-Status + Batterietemperatur über 10 min; kein Abfall > 20 %. Belege nach ~/games/.evidence/m10-v10-device-acceptance/.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:22:59Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: 10-min-Lauf ohne Thermik-Einbruch."
+        }
+      ],
+      "created": "2026-11-28T11:05:20Z",
+      "updated": "2026-11-28T11:22:59Z"
+    },
+    {
+      "id": 11312,
+      "title": "m10-v10-device-acceptance K5: Text lesbar in allen Panels, RENDER_SCALE == 1",
+      "description": "Screenshots Titel/Charakterwahl/Level-Up/Truhe/Ergebnis → shots/m10-v10-device-*.png + ~/games/.evidence/. Akzeptanz: lesbar, kein Auflösungs-Teiler aktiv (RENDER_SCALE == 1, Scale-Floor r2 belegt).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:05:20Z",
+      "updated": "2026-11-28T11:05:20Z"
     }
   ]
 }
