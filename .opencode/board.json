@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7938,
+  "next": 7979,
   "cards": [
     {
       "id": 1,
@@ -10051,6 +10051,16 @@
       "notes": [],
       "created": "2026-11-28T03:31:40Z",
       "updated": "2026-11-28T03:31:40Z"
+    },
+    {
+      "id": 7978,
+      "title": "m10-run-determinism-fix: Sim-Schrittführung deterministisch (Carry-over statt Partial-Schritt)",
+      "description": "Run.update akkumuliert scaledDt und führt den Rest als variablen Partial-Schritt aus → frame-abhängige Tick-Phase, Lauf nicht reproduzierbar (Beleg shots/m10-run-det-verdict.json, deterministic:false). Fix: eigener Carry-over-Akkumulator, nur volle SIM_MAX_STEP-Schritte. AK: (1) m10-run-determinism.mjs --seconds=120 → deterministic:true für Seeds 101/202/404, 0 divergierende Marken; (2) Marken-JSONs + Guard-Test im selben Commit aktualisiert, Suite grün; (3) tsc+tests+build grün; (4) Balance Kael/Seed101 30min im Korridor (Level 25–40, kein Tod <15min, 6 Bosse/Truhen); (5) docs/lanes/m10-run-determinism-fix.md + .lane-done.",
+      "column": "doing",
+      "assignee": "@gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T03:42:09Z",
+      "updated": "2026-11-28T03:42:09Z"
     }
   ]
 }

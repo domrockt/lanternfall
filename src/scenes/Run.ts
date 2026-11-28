@@ -124,6 +124,14 @@ export class Run extends Phaser.Scene {
 
   elapsed = 0;
   timeScale = 1;
+  /**
+   * m10-run-determinism-fix: nicht simulierte Rest-Sim-Zeit (Sekunden) aus
+   * scaledDt. Nur volle SIM_MAX_STEP-Einheiten werden simuliert, der Rest
+   * bleibt hier liegen und wird im nächsten Frame verbraucht — die Phase
+   * aller Tick-Zyklen (Waffen-Cooldowns, Spawn-Timer, Regen) ist dadurch
+   * unabhängig vom Echtzeit-Frame-Raster deterministisch.
+   */
+  simCarry = 0;
   godMode = false;
   autoPlay = false;
   paused = false;
@@ -481,11 +489,19 @@ export class Run extends Phaser.Scene {
 
     // Feste Teilschritte: bei hoher Zeitskalierung würden Projekte/Gegner sonst
     // ganze Bildschirmbreiten pro Frame springen und Kollisionen verpassen.
-    let remaining = scaledDt;
-    while (remaining > 0.0001 && !this.finished) {
-      const dt = Math.min(SIM_MAX_STEP, remaining);
-      remaining -= dt;
-      this.simulate(dt);
+    // m10-run-determinism-fix: NUR volle SIM_MAX_STEP-Einheiten simulieren;
+    // der Rest bleibt als Carry-over (this.simCarry) für den nächsten Frame
+    // liegen. Vorher wurde der Rest als variabler Partial-Schritt ausgeführt —
+    // die Tick-Phase aller Zyklen war damit frame-abhängig und zwei Läufe mit
+    // gleichem Seed divergierten ab Sim-Sekunde 1 in elapsed/px
+    // (Beleg shots/m10-run-det-verdict.json, deterministic:false).
+    // Bound: realDt ist auf 0,05 s geclampt, timeScale auf 60 → pro Frame
+    // maximal 3,0 s scaledDt; simCarry kann daher nie über 3,05 s wachsen
+    // (Pause/Hit-Stop akkumulieren nicht), ein separates Cap ist nicht nötig.
+    this.simCarry += scaledDt;
+    while (this.simCarry + 1e-9 >= SIM_MAX_STEP && !this.finished) {
+      this.simCarry -= SIM_MAX_STEP;
+      this.simulate(SIM_MAX_STEP);
       // Level-up/Pause kann mitten im Teilschritt-Loop öffnen → sofort anhalten.
       if (this.paused || this.levelUpOpen) break;
     }
