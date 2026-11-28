@@ -54,6 +54,29 @@ export interface TerrainSample {
 }
 
 /**
+ * Animationsstufen des prozeduralen Tile-Pfads: Wasser-Wellen driften,
+ * Ufer-Schaum und Tiefen-Glisser wechseln ihre Stellen. Der Chunk-Maler
+ * (terrainWorker) malt alle Stufen; der GroundRenderer zyklisiert sie.
+ * Jede Stufe ist deterministisch aus tileHash abgeleitet — kein Zustand,
+ * keine Abhängigkeit von der Mal-Reihenfolge.
+ */
+export const WATER_ANIM_STEPS = 3;
+
+/**
+ * Enthält der Bereich Wasser (grobe 4-px-Abtastung)? Der Worker malt nur
+ * dann alle Animationsstufen; reine Land-Chunks bleiben Einzel-Frame
+ * (Speicher: eine 256-px-Stufe statt dreien).
+ */
+export function areaHasWater(ox: number, oy: number, w: number, h: number, seed: number, worldSize: number): boolean {
+  for (let y = oy; y < oy + h; y += 4) {
+    for (let x = ox; x < ox + w; x += 4) {
+      if (terrainSampleAt(x, y, seed, worldSize).kind === "water") return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Terrain-Art an einer Weltposition. Regionen entstehen aus domain-warpten
  * Noise-Feldern (keine Rechtecke/Kacheln); Wege sind schmale, ausgefranste
  * Pfade. Die Klassifikation ist weltverankert und chunk-unabhängig.
@@ -132,6 +155,8 @@ export function paintTerrain(
   h: number,
   seed: number,
   worldSize: number,
+  animStep = 0,
+  destY = 0,
 ): void {
   const pad = 3;
   const bw = w + pad * 2;
@@ -197,6 +222,12 @@ export function paintTerrain(
         const dn = (tileHash(wx, wy, seed + 923) - 0.5) * 0.03;
         const dv = depth[i] + dn;
         col = dv < 0.095 ? 2 : dv < 0.15 ? 4 : 5;
+        // Tiefen-Glisser: sparsame 2-px-Funken in offenem Wasser, die pro
+        // Stufe ihren Platz wechseln (Paar-Hash, kein 1-px-Pfeffer).
+        if (dv >= 0.15) {
+          const g = tileHash(Math.floor(wx / 2) + animStep * 53, wy, seed + 931);
+          if (g > 0.986) col = 6;
+        }
       } else if (k === 2) {
         // Schlamm: dunkles, nasses Moor (3/14/15), kein großer Glutbraun-Block.
         const n = fbm(wx + 300, wy - 90, 26, seed + 5);
@@ -216,7 +247,7 @@ export function paintTerrain(
       data[o + 3] = 255;
     }
   }
-  ctx.putImageData(img, 0, 0);
+  ctx.putImageData(img, 0, destY);
 
   // 3) Autotiling-Kanten. Reihenfolge: Weg-, Schlamm-, Grasinsel-Kanten,
   //    dann Wasserbank (landseitig) und Wasserufer (wasserseitig).
@@ -329,6 +360,8 @@ export function paintTerrain(
   // Wasserufer (Wasser): saubere Tiefen-Staffel ohne Rauschpixel.
   // Oben-links 1-px-Highlight paleMist(9), darunter mist(8);
   // unten-rechts 2-px-Schatten nightDeep(1)/night(2), Mittellage 5.
+  // Schaum-Puls: gehashte Stellen der Uferkante wechseln pro Stufe zwischen
+  // paleMist(9) und mist(8) — die Kante schimmert, statt stillzustehen.
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       if (codeAt(x, y) !== 3) continue;
@@ -340,8 +373,10 @@ export function paintTerrain(
       const e2 = codeAt(x + 2, y) !== 3;
       const s2 = codeAt(x, y + 2) !== 3;
       const w2 = codeAt(x - 2, y) !== 3;
-      if (n1 || w1) setPx(x, y, 9);
-      else if (n2 || w2) setPx(x, y, 8);
+      if (n1 || w1) {
+        const gate = Math.floor(tileHash(ox + x, oy + y, seed + 929) * WATER_ANIM_STEPS);
+        setPx(x, y, (animStep + gate) % WATER_ANIM_STEPS === 0 ? 8 : 9);
+      } else if (n2 || w2) setPx(x, y, 8);
       else if (s1 || e1) setPx(x, y, 1);
       else if (s2 || e2) setPx(x, y, 2);
     }
@@ -427,7 +462,11 @@ export function paintTerrain(
         if (r > 0.42 && !atDist(cx0, cy0, 4, 3)) {
           const groups = r > 0.75 ? 3 : 2;
           for (let wv = 0; wv < groups; wv++) {
-            const wx = px + 1 + wv * 4 + Math.floor(tileHash(tx + wv, ty + 2, seed + 301) * 2);
+            // Wellen-Drift: jede Gruppe kriecht pro Stufe 1 px in ihre
+            // Richtung (Richtung pro Gruppe gehasht) — Wellenzuege wandern.
+            const dir = tileHash(tx + wv * 7, ty - wv * 3, seed + 901) > 0.5 ? 1 : -1;
+            const drift = (((animStep * dir) % WATER_ANIM_STEPS) + WATER_ANIM_STEPS) % WATER_ANIM_STEPS - 1;
+            const wx = px + 1 + drift + wv * 4 + Math.floor(tileHash(tx + wv, ty + 2, seed + 301) * 2);
             const wy = py + 2 + wv * 4 + Math.floor(tileHash(tx + 1, ty + wv, seed + 307) * 2);
             const wlen = 3 + Math.floor(tileHash(tx + wv, ty + 9, seed + 311) * 3);
             if (wv % 2 === 0) {

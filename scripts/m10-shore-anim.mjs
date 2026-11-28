@@ -21,6 +21,9 @@ import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mj
 
 const argv = process.argv.slice(2);
 const argOf = (name, fallback) => {
+  const prefix = `--${name}=`;
+  const inline = argv.find((a) => a.startsWith(prefix));
+  if (inline) return inline.slice(prefix.length);
   const i = argv.indexOf(`--${name}`);
   return i >= 0 ? argv[i + 1] : fallback;
 };
@@ -162,7 +165,15 @@ try {
     return { x: w.x, y: w.y };
   }, water);
   await page.evaluate((p) => window.__lf.teleport(p.x, p.y), shore);
-  await page.waitForTimeout(600);
+  // Chunks nach dem Teleport laden (Worker malt je Chunk alle Animations-
+  // stufen): grosszuegig warten, bis der Ausschnitt vollstaendig da ist.
+  await page.waitForTimeout(2600);
+  for (let i = 0; i < 40; i++) {
+    const loaded = await page.evaluate(() => window.__game.scene.getScene("run").ground.loadedChunks);
+    await page.waitForTimeout(250);
+    const loaded2 = await page.evaluate(() => window.__game.scene.getScene("run").ground.loadedChunks);
+    if (loaded2 === loaded && loaded2 >= 12) break;
+  }
   const canvas = page.locator("canvas");
 
   // 1x-Standbild + GIF-Frames.
