@@ -1,0 +1,23 @@
+# Lane m10-renderer-guard — Zusammenfassung (28.11.2026)
+
+Ziel: Doms Regel "in jedem Perf-Beleg den WebGL-Renderer mitschreiben
+(Abnahme ungueltig bei SwiftShader)" maschinell durchsetzen.
+
+- K1 (#13404, af114498): Helper scripts/lf-renderer.mjs — getRendererString(page),
+  isSwiftShader(s), rendererValid(s); bestehende Skripte unangetastet.
+- K2 (#13405, c9316904): perf.mjs + m10-v10-device-10min.mjs schreiben
+  renderer + rendererValid ins Output-JSON; SwiftShader/fehlender Renderer ->
+  invalid:true in den Kennzahl-Bloecken und passed=false (Exit 1).
+- K3 (#13406, 98108511): tests/renderer-guard.test.ts — 12 Tests
+  (SwiftShader-Varianten, Mesa Intel RPL-S/UHD 620, Adreno, leere Werte)
+  + Quell-Guard (beide Skripte importieren lf-renderer, Felder im Output).
+  tsc rc=0, 12/12 gruen, commit-gate PASS ueber alle 3 Commits.
+- K4 (#13407): BLOCKED — Probe-Lauf braucht .lf-perf.lock; 2x fremd belegt
+  (flock -w 2400 von Supervisor abgebrochen, flock -w 60 rc=1). Beleg-JSON
+  /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json
+  fehlt; Disponent informiert (.dispatch/requests.md). Restauftrag: einmaliger
+  Lauf `flock /home/ai/games/.lf-perf.lock node scripts/perf.mjs --out
+  /home/ai/games/.evidence/m10-renderer-guard/m10-renderer-guard-perf.json`,
+  Erwartung renderer="ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), ...)" +
+  rendererValid:true.
+- Detail-Doku: docs/lanes/m10-renderer-guard.md (geht beim Merge in GAME.md ein).

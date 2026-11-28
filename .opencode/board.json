@@ -18805,37 +18805,59 @@
       "id": 13405,
       "title": "m10-renderer-guard K2: Einbau in perf.mjs + m10-v10-device-10min.mjs",
       "description": "Owner: engine-dev. renderer + rendererValid in jedes Output-JSON; bei isSwiftShader: rendererValid=false, Kennzahl-Felder mit invalid:true markiert, passed=false. Abnahme: statischer Quell-Guard (K3) zeigt Import in beiden Skripten; bestehende Messlogik unverändert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T16:41:15Z",
           "by": "build",
           "text": "todo → doing: K2 angenommen: Einbau in perf.mjs + m10-v10-device-10min.mjs."
+        },
+        {
+          "at": "2026-11-28T16:42:19Z",
+          "by": "build",
+          "text": "doing → review: Einbau gebaut, Commit c9316904 (#13405). Beleg Quell-Guard-Test in K3."
         }
       ],
       "created": "2026-11-28T16:40:35Z",
-      "updated": "2026-11-28T16:41:15Z"
+      "updated": "2026-11-28T16:42:19Z"
     },
     {
       "id": 13406,
       "title": "m10-renderer-guard K3: Guard-Test tests/renderer-guard.test.ts",
       "description": "Owner: gameplay-dev. Unit-Tests für isSwiftShader/rendererValid (SwiftShader-Varianten, echte iGPU-Strings, Adreno, leere Strings) + Quell-Guard: beide Skripte importieren lf-renderer. Abnahme: npx vitest run tests/renderer-guard.test.ts grün, npm test grün.",
-      "column": "todo",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T16:42:19Z",
+          "by": "build",
+          "text": "todo → review: Test gebaut, Commit 98108511 (#13406). 12/12 grün, tsc rc=0."
+        }
+      ],
       "created": "2026-11-28T16:40:35Z",
-      "updated": "2026-11-28T16:40:35Z"
+      "updated": "2026-11-28T16:42:19Z"
     },
     {
       "id": 13407,
       "title": "m10-renderer-guard K4: Probe-Lauf perf.mjs + Lane-Doku",
       "description": "Owner: engine-dev. Ein kurzer Probe-Lauf perf.mjs mit renderer im Output-JSON, Beleg nach ~/games/.evidence/m10-renderer-guard/; docs/lanes/m10-renderer-guard.md; .lane-done. Abnahme: renderer=Mesa Intel RPL-S (iGPU), rendererValid:true.",
-      "column": "todo",
+      "column": "blocked",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T16:42:19Z",
+          "by": "build",
+          "text": "todo → doing: K4 angenommen: Probe-Lauf perf.mjs, Beleg nach ~/games/.evidence/m10-renderer-guard/."
+        },
+        {
+          "at": "2026-11-28T17:09:43Z",
+          "by": "build",
+          "text": "doing → blocked: K4 Probe-Lauf wartete 2400s auf /home/ai/games/.lf-perf.lock (fremde Lanes: m10-janky-remeasure 10-min-Lauf, m10-gc-sawtooth-Probe, m10-heap-gate-retry). Supervisor-Anweisung: Warten abgebrochen, K4 blocked. Ein kurzer Retry (flock -w 60) folgt; scheitert er, beendet die Lane mit gemeldetem Restauftrag."
+        }
+      ],
       "created": "2026-11-28T16:40:35Z",
-      "updated": "2026-11-28T16:40:35Z"
+      "updated": "2026-11-28T17:09:43Z"
     }
   ]
 }
