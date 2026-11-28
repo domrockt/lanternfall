@@ -48,3 +48,15 @@ screenrecord liefert auf dem Redmi Pad nur Stümpfe → Screencaps).
 - Geplant: EIN verspäteter Retry (Briefing: „bei 409 später erneut versuchen, ein Versuch pro
   Karte") als Automation `aut_222d6287c001NnxHGjSYpIN42s` um 16:01:30Z — prüft `/status` und
   läuft nur, wenn die Sperre aufgehoben ist; sonst Befund notieren.
+- 15:54Z (Versuch 2, Resume): Session übernommen. Die zugehörige Auswertungs-Automation zeigte
+  auf die tote Session des Versuchs 1 → gelöscht; Ersatz `aut_222ddd4b2001CFPUw5YAaaD9vS`
+  pingt diese Session um 16:07:30Z. Messwerkzeug `~/tmp/m10-apk-splash-sight/measure.py`
+  (Boot-BG-Median zentral, Letterbox-Streifen, Laterne/Text-Anteil >90 Helligkeit) steht bereit.
+
+## K3 — Urteil + Doku — #12947 (Gerüst, wird nach K2 gefüllt)
+
+- Belege: `~/games/.evidence/m10-apk-splash-sight/coldstart-run{1,2}/` (manifest + PNGs),
+  Farb-JSONs je Start.
+- Zu beantworten: Zeigt der echte Kaltstart das Starting-Window in #0a0d14 mit zentrierter
+  Laterne? Wirkt der Start wie „hängt" oder wie Ladescreen?
+- Urteil erfolgt nach K2-Daten; art-Direkt-Urteil (>= 4/5 oder Befundliste mit Severity).
