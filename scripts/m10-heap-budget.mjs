@@ -238,5 +238,12 @@ if (fatal) console.log(`FATAL (partielles JSON geschrieben): ${fatal}`);
 // als Zusatzfeld sichtbar — die Gate-Logik in m10-heap-budget-gate.mjs ist
 // unveraendert.
 console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${gate.gatePct} %), soft=${gate.softFloorVerdict} (maxWindowFloor ${gate.maxWindowFloorMB} MB = ${gate.maxWindowFloorPct} % vs Floor Fenster 0 ${gate.softReferenceMB} MB, Tor <= +${gate.softPct} %; Rohpeak-Beobachtung: maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${renderer.renderer}, errors=${errors.length}, victory=${victory}`);
-await browser.close();
+// Haertung (Karte m10-heap-regression-fix K4, optional): Nach "Target page closed"
+// (Renderer-/Browser-Tod im Langlauf) darf das Aufräumen nicht noch das schon
+// geschriebene partielles JSON durch einen ungefangenen Close-Fehler entwerten.
+try {
+  await browser.close();
+} catch (e) {
+  console.log(`browser.close nach FATAL ignoriert: ${e}`);
+}
 process.exit(0);

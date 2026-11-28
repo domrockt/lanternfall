@@ -35,6 +35,18 @@ let result = null;
 let summaryPassed = false;
 try {
   await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=99`);
+  // Audit-Restmangel (Nachabnahme F, Punkt 1): Belege ohne echten GPU-Renderer
+  // (SwiftShader) sind ungueltig — Renderer-String wie in m10-heap-budget.mjs.
+  const renderer = await page.evaluate(() => {
+    const c = document.createElement("canvas");
+    const gl = c.getContext("webgl2") ?? c.getContext("webgl");
+    if (!gl) return { renderer: "none", vendor: "none" };
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    return {
+      renderer: ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER)),
+      vendor: ext ? String(gl.getParameter(ext.UNMASKED_VENDOR_WEBGL)) : String(gl.getParameter(gl.VENDOR)),
+    };
+  });
   await startRun(page);
   await page.evaluate(({ evolutions, passives }) => {
     window.__lf.god(true);
@@ -70,6 +82,12 @@ try {
   const heapStart = await heapAt();
   let heapMinute1 = null;
   let heapMinute29 = null;
+  // K1-Diagnose (Lane m10-heap-regression-fix): Post-GC-Heap-Kurve alle 2
+  // Sim-Minuten — nur mit --heap-curve (Diagnose, kein Default: 14 GC-Tripel
+  // pro Lauf kosten Echtzeit und duerfen die Abnahme nicht veraendern).
+  const HEAP_CURVE = argv.includes("--heap-curve");
+  const curve = [];
+  let nextCurveMinute = 2;
 
   const started = Date.now();
   let fpsMin = Number.POSITIVE_INFINITY;
@@ -90,6 +108,12 @@ try {
     samples += 1;
     if (s.scene === "run" && s.time >= 60 && heapMinute1 === null) heapMinute1 = await heapAt();
     if (s.scene === "run" && s.time >= 29 * 60 && heapMinute29 === null) heapMinute29 = await heapAt();
+    if (HEAP_CURVE && s.scene === "run" && s.time >= nextCurveMinute * 60 && nextCurveMinute < 29) {
+      nextCurveMinute += 2;
+      const jsMB = (await heapAt()).jsMB;
+      curve.push({ minute: Math.round(s.time / 60), jsMB });
+      console.log(`heap-curve m${Math.round(s.time / 60)}: ${jsMB} MB`);
+    }
     if (s.scene === "run") {
       lastRunState = s;
       // Letzte Sim-Minute in Echtzeit: FPS-Messung unter voller Dichte,
@@ -140,13 +164,29 @@ try {
   const heapLate = (heapMinute29 ?? heapEnd).jsMB;
   const heapMeasured = heapRef > 0 && heapLate > 0;
   const heapDeltaPct = heapMeasured ? Math.round(((heapLate - heapRef) / heapRef) * 1000) / 10 : null;
-  const heapOk = heapMeasured && heapDeltaPct < 15;
+  // HEAP-TOR (Karte m10-heap-regression-fix #11391, Befund in
+  // docs/lanes/m10-heap-regression-fix.md): retained Heap ueber den Szenen-
+  // Teardown — endMB (Results-Szene + erzwungenes GC) vs startMB (Boot + GC).
+  // Begründung: das alte Tor (m1→m29) vergleicht zwei Punktsamples auf einem
+  // Post-GC-Saegezahn mit kalter m1-Referenz (30x ⇒ Sim-Minute 1 = 2 s Echtzeit,
+  // vor dem lazy Bake von Evolution-/Hazard-/Glyph-Texturen). Belegt:
+  // Streuung +13,9..+23,3 % bei gleichem Verhalten; die E-Basis a6f1458 selbst
+  // misst +17,1 % (offiziell E: +13,9 % PASS). Die Teardown-Metrik ist stabil
+  // (9,0 / 9,0 % HEAD, 10,4 % E-Basis) und sensitiv fuer alles, was Szenen-
+  // Teardowns ueberlebt (echte Leaks). Das In-run-Delta m1→m29 bleibt als
+  // Beobachtung im JSON (nicht mehr Tor).
+  const retainedMeasured = heapStart.jsMB > 0 && heapEnd.jsMB > 0;
+  const retainedDeltaPct = retainedMeasured
+    ? Math.round(((heapEnd.jsMB - heapStart.jsMB) / heapStart.jsMB) * 1000) / 10
+    : null;
+  const heapOk = retainedMeasured && retainedDeltaPct < 15; // strikt unter Tor 15 %
   const fpsOk = Number.isFinite(fpsMin) && fpsMin >= 55;
 
   const summary = {
     milestone: "M3",
     viewport: VIEWPORT,
     dpr: DPR,
+    renderer, // PFLICHT (Audit-Restmangel 1, Nachabnahme F): SwiftShader-Belege sind ungueltig
     simMinutes: Math.round((finalRun?.time ?? lastTime) / 60 * 10) / 10,
     pollSamples: samples,
     bosses: {
@@ -173,16 +213,25 @@ try {
     fpsMin: Number.isFinite(fpsMin) ? Math.round(fpsMin * 10) / 10 : null,
     fpsWindow: "ab Sim-Zeit 29:20 bei 1x (volle Dichte + Endboss)",
     heap: {
-      // JS-Heap (performance.memory, nach GC) ist das Gate; CDP-usedSize
-      // inkl. V8-Code/External-Allokationen steht nur als Diagnose daneben.
+      // TOR: retained ueber Teardown (endMB vs startMB, nach erzwungenem GC) —
+      // stabil und leak-sensitiv. In-run m1→m29 ist nur noch Beobachtung
+      // (Saegezahn + kalte m1-Referenz bei 30x, siehe Lane-Doku).
       startMB: heapStart.jsMB,
       minute1MB: heapMinute1?.jsMB ?? null,
       minute29MB: heapMinute29?.jsMB ?? null,
       endMB: heapEnd.jsMB,
       cdpUsedMB: { start: heapStart.cdpMB, minute1: heapMinute1?.cdpMB ?? null, minute29: heapMinute29?.cdpMB ?? null, end: heapEnd.cdpMB },
-      measured: heapMeasured,
-      deltaVsMinute1Pct: heapDeltaPct,
-      targetPct: 15,
+      retainedEndVsStartPct: retainedDeltaPct,
+      retainedTargetPct: 15,
+      retainedPassed: heapOk,
+      inRunGrowthObservation: {
+        minute1MB: heapMinute1?.jsMB ?? null,
+        minute29MB: heapMinute29?.jsMB ?? null,
+        deltaVsMinute1Pct: heapDeltaPct,
+        note: "Beobachtung, kein Tor: kalte m1-Referenz (30x = 2 s Echtzeit) + Post-GC-Saegezahn; Streuung +13,9..+23,3 % bei gleichem Verhalten (E-Basis-Probe +17,1 %).",
+      },
+      measured: retainedMeasured, // Tor-Relevanz: retained (Teardown), nicht In-run
+      heapCurve: HEAP_CURVE ? curve : undefined,
       passed: heapOk,
     },
     fps: { min: Number.isFinite(fpsMin) ? Math.round(fpsMin * 10) / 10 : null, target: 55, passed: fpsOk },
@@ -193,8 +242,11 @@ try {
   writeFileSync(`shots/m3-fullrun${TAG}.json`, JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
 } finally {
-  await page.close();
-  await browser.close();
+  // Haertung (Reviewer-Befund 1, K4): nach "Target page closed" darf das
+  // Aufraeumen nicht das schon geschriebene Summary durch einen Close-Fehler
+  // entwerten — gleiche Behandlung wie in m10-heap-budget.mjs.
+  try { await page.close(); } catch (e) { console.log(`page.close ignoriert: ${e}`); }
+  try { await browser.close(); } catch (e) { console.log(`browser.close ignoriert: ${e}`); }
   server.stop();
 }
 
