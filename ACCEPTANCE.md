@@ -509,6 +509,43 @@ Folgepunkt (klein, nicht v1.0-blockierend): Menü-Option „Bildrate: max" soll 
 Start), sonst bringt „max" am Gerät nichts; Bridge kann `/launch?...&hz=max`.
 Nächster Schritt laut Dom: **m10-v10-final-run und m10-v10-release-prep freigeben.**
 
+### Tor-Priorität fps-pacing: FPS avg + rAF-p95 primär (nach `merge-m10-v10-gate-torprio`)
+
+Grundlage: Nachmessung des K3-Tors in Lane `m10-janky-remeasure`
+(`docs/lanes/m10-janky-remeasure.md`, Belege `~/games/.evidence/m10-janky-remeasure/`):
+**gfxinfo-janky ist als alleinige Tor-Metrik unbrauchbar** — 0 % janky (0/29 058 Frames)
+bei FPS avg **50,1** (< 60) und rAF-p95 **33,4 ms** (> 16 ms), identisch bei BILDRATE 60
+und MAX (Build `0ce7164a` mit stackfix, Panel-Probe 60 Hz, Thermal 0, 0 JS-Fehler, keine
+Loop-Tötung). Das Frame-Pacing rutscht auf ein bimodales 2-Vsync-Raster (16,7/33,4 ms).
+
+Das v10-Host-Gate (`scripts/m10-v10-gate.mjs`) wertet seit `merge-m10-v10-gate-torprio`
+daher als Tor 1/2: **FPS avg ≥ 57** und **rAF-p95 ≤ 16 ms**; **gfxinfo-janky ≥ 10 % ist
+nur noch eine Warnung, nie allein ein FAIL** (Rückweg zur alten strengen Lesart per Flag
+`--janky-as-gate`; Renderer-Pflicht unangetastet — SwiftShader-Belege ungültig). Doku und
+Urteils-Pinning: `docs/lanes/m10-v10-gate-torprio.md`, `tests/v10-gate.test.ts` (24 Tests).
+Der historische K3-FAIL der Erstmessung oben („gfxinfo janky 13,44 %/13,90 %") bleibt als
+Erstmessungs-Beleg stehen; die verbindliche Tor-Lesart dazu ist diese hier.
+
+### v10-Host-Gate-Rerun auf aktuellem main (`11f929c7`, 17:16–17:22Z)
+
+Zwei Gate-Läufe (`scripts/m10-v10-gate.mjs`, Viewport 960×540, iGPU
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`, kein SwiftShader;
+Belege `~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json`, Doku
+`docs/lanes/m10-v10-gate-rerun.md`):
+
+| Tor | Guard-Lauf 3 (15:57Z, Referenz) | Rerun Lauf 1 | Rerun Lauf 2 | Urteil (aktuelles main) |
+|---|---|---|---|---|
+| renderer-pflicht / content-counts | PASS 30/6/6/6/6/2 | PASS | PASS | **PASS** |
+| frame-p95 (nur dokumentiert, kein Urteilstreiber) | 16,8 ms / worst 16,9 (cap-quantisiert) | **2,0 ms** / worst 11,5 | **1,9 ms** / worst 7,4 | **PASS** |
+| heap-retained | PASS +8,1 % | PASS +8,8 % | PASS +8,8 % | **PASS** |
+| js-errors-0 | PASS | **FAIL — 13 Fehler** | **FAIL — 13 Fehler** | **FAIL** |
+| fullrun-inhalt | PASS | FAIL (nur Folgetor von js-errors-0; Inhalt selbst grün: dawn, completed) | dito | **FAIL** (Folgetor) |
+
+**Verbindliches Urteil: FAIL — ausschließlich `js-errors-0`** (13× „Texture key already
+in use: chunk_*" im Fullrun-Guard, in beiden Läufen reproduziert; Perf-Pass und
+verify:final je 0 Fehler), `fullrun-inhalt` nur als Folgetor desselben Befunds. Alle
+übrigen Host-Tore PASS.
+
 ## Nachabnahme G (2026-11-28) — Nachabnahme nach Heap-Regressions-Fix
 
 **Basis:** main @ `b69ede5c` (nach `9153181d` Merge `m10-heap-regression-fix`).
