@@ -30,7 +30,7 @@ export const BOSS_FX_ALPHA_FLOOR = 0.7;
 // Vorher-Messung (~/games/.evidence/m10-weapon-shot-readability/m10-weapon-shot-
 // before.json): im 300er-Chaos liegen 29-64 % der Schuss-Pixel an A7-Near-White,
 // weil additive Support-Glows (fx_halo) hinter den Projektilen auf Weiss
-// stacken und additive Schweife im Endgame (alphaScale 0,2-0,5 + dprAlpha 0,6)
+// stacken und additive Schweife im Endgame (alphaScale 0,2-0,5 + dprAlpha 0,6 — seit Stufe 2 (m10-vfx-restore-st2-r2) 0,7)
 // versanden. Beide Hebel wirken nur auf die Start-Alpha von FX im Waffen-Shot-
 // Umfeld — Trefferpfad, Radius, Timing und Schaden bleiben unberuehrt.
 /**
@@ -45,7 +45,7 @@ export const SHOT_SUPPORT_GLOW_KEYS: ReadonlySet<string> = new Set(["fx_halo"]);
 
 /**
  * Alpha-Boden fuer additive Waffen-Trail-/Schweif-Keys: unter Endgame-
- * Daempfung (alphaScale bis 0,2, dprAlpha 0,6) fallen sie auf <= 0,12 und
+ * Daempfung (alphaScale bis 0,2, dprAlpha 0,6 — seit Stufe 2: 0,7) fallen sie auf <= 0,12 und
  * das Projektil liest sich als nacktes Sprite ohne Bewegungsrichtung. Der
  * Boden haelt die Schweif-Signatur sichtbar (rein visuell).
  */
@@ -304,7 +304,7 @@ export class FxSystem {
     const scaleFactor = exempt ? 1 : this.alphaScale;
     const extra = additive ? scaleFactor : 1;
     // M10: dpr-Skalierung — bei dpr > 2 kostet jedes additive Sprite die volle
-    // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher auf 0,6.
+    // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher daempfend (Stufe 2, m10-vfx-restore-st2-r2: 0,7 statt 0,6).
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
     let alphaFrom = (opts.alphaFrom ?? 0.9) * scaleFactor * extra * dprAlpha;
     if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);
@@ -754,7 +754,7 @@ export class ParticleSystem {
     const scaleFactor = bossFx ? 1 : this.alphaScale;
     const extra = additive ? scaleFactor : 1;
     // M10: dpr-Skalierung — bei dpr > 2 kostet jedes additive Sprite die volle
-    // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher auf 0,6.
+    // Device-Flaeche (2,5 Mio px bei 780x360@3), Alpha daher daempfend (Stufe 2, m10-vfx-restore-st2-r2: 0,7 statt 0,6).
     const dprAlpha = additive ? fxAlphaForDpr(currentDpr()) : 1;
     let alphaFrom = (opts.alphaFrom ?? 0.95) * scaleFactor * extra * dprAlpha;
     if (bossFx) alphaFrom = Math.max(alphaFrom, BOSS_FX_ALPHA_FLOOR);

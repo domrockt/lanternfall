@@ -2521,12 +2521,14 @@ export function isBossFxKey(key: string | undefined | null): boolean {
 export type FxLodLevel = "full" | "reduced" | "minimal";
 
 /** Alpha-Faktor fuer additive FX je Geraetepixel-Verhaeltnis (dpr).
- *  dpr > 2 (z. B. 780x360@3): 0,6 — bei 2,5 Mio Device-Pixeln kostet jedes
- *  additive Sprite die volle Flaeche; 0,8 fuer dpr > 1,5, sonst 1. */
+ *  dpr > 2 (z. B. 780x360@3): 0,7 — Stufe 2 der VFX-Ruecknahme
+ *  (m10-vfx-restore-st2-r2, vorher 0,6: Effekte wirkten verwaschen); bei
+ *  2,5 Mio Device-Pixeln kostet jedes additive Sprite die volle Flaeche.
+ *  0,8 fuer dpr > 1,5, sonst 1. */
 export function fxAlphaForDpr(dpr: number): number {
-  if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? 0.6 : 1;
+  if (!Number.isFinite(dpr)) return dpr === Number.POSITIVE_INFINITY ? 0.7 : 1;
   const d = dpr > 0 ? dpr : 1;
-  if (d > 2) return 0.6;
+  if (d > 2) return 0.7;
   if (d > 1.5) return 0.8;
   return 1;
 }

@@ -15,13 +15,13 @@ describe("fxAlphaForDpr (dpr-Treppe)", () => {
     expect(fxAlphaForDpr(2)).toBe(0.8);
   });
 
-  it("dpr 3 -> Faktor 0,6 (780x360@3 = 2,5 Mio Device-Pixel)", () => {
-    expect(fxAlphaForDpr(3)).toBe(0.6);
+  it("dpr 3 -> Faktor 0,7 (Stufe 2, m10-vfx-restore-st2-r2: 0,6 -> 0,7; 780x360@3 = 2,5 Mio Device-Pixel)", () => {
+    expect(fxAlphaForDpr(3)).toBe(0.7);
   });
 
-  it("dpr 4 und hoeher bleibt bei 0,6", () => {
-    expect(fxAlphaForDpr(4)).toBe(0.6);
-    expect(fxAlphaForDpr(3.5)).toBe(0.6);
+  it("dpr 4 und hoeher bleibt bei 0,7", () => {
+    expect(fxAlphaForDpr(4)).toBe(0.7);
+    expect(fxAlphaForDpr(3.5)).toBe(0.7);
   });
 
   it("dpr zwischen 1,5 und 2 -> 0,8", () => {
@@ -34,7 +34,7 @@ describe("fxAlphaForDpr (dpr-Treppe)", () => {
     expect(fxAlphaForDpr(0)).toBe(1);
     expect(fxAlphaForDpr(-1)).toBe(1);
     expect(fxAlphaForDpr(Number.NaN)).toBe(1);
-    expect(fxAlphaForDpr(Number.POSITIVE_INFINITY)).toBe(0.6);
+    expect(fxAlphaForDpr(Number.POSITIVE_INFINITY)).toBe(0.7);
     expect(fxAlphaForDpr(Number.NEGATIVE_INFINITY)).toBe(1);
   });
 });
