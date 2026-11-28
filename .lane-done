@@ -1,0 +1,28 @@
+# .lane-done — m10-player-swarm-gap (2026-11-28)
+
+Mindest-Abstoß-Ring um den Spieler (offener Punkt aus m10-boss-stack-separation):
+im Minute-25-Chaos (~375 Gegner) drückte der Schwarm den Spieler zu (9,4 Gegner
+< 8 px Sprite-Kante, min-Kante −12,6 px). Fix: resolvePlayerGap() in
+src/logic/separation.ts — einseitige, deterministische radiale Korrektur auf
+Kantenabstand 18 px (Strength 0.6, Step-Deckel 8 px, Spieler unverrückbar,
+Gegner-Gegner-Separation/KI unberührt), verdrahtet am Ende von Run.ts
+updateEnemies() über den Frame-SpatialHash (Bosse ausgenommen).
+
+Messwerte (scripts/m10-player-gap.mjs, seed 7, flock, iGPU RPL-S, 0 JS-Fehler):
+Gegner < 8 px Kante 9,38 → 3,20 (−66 %, Grenze −50 %) ✓; < 2 px 5,16 → 0,88
+(−83 %); Frame-p95 16,8 ms = Vorher (+0 %) ✓; Determinismus bitgleich (Unit-Test,
+500 Gegner) ✓. Belege: ~/games/.evidence/m10-player-swarm-gap/m10-player-gap-{
+before,after}.json; Abnahme-Shots shots/abnahme/m10-player-gap-{before,after}*.png.
+
+Abnahme: build rc=0, tsc rc=0, Testsuite 171 Dateien / 1855 Tests grün (inkl. 9
+neue in tests/player-swarm-gap.test.ts), art-director PASS 4/5 (Spieler-Silhouette
+im Chaos frei lesbar). Doku: docs/lanes/m10-player-swarm-gap.md.
+
+Abweichung dokumentiert: 4-Zeilen-Wiring in src/scenes/Run.ts — laut Briefing
+gesperrt ("wartende Kette"), in claims.json aber unclaimed; ohne Wiring wäre die
+geforderte Live-Nachher-Messung unerreichbar. Begründung + Merge-Hinweis in
+.dispatch/requests.md (2026-11-28T10:5xZ) und Lane-Doku K2. Beim Merge der
+wartenden Kette diese 4 Zeilen zusammenführen.
+
+Karten: #10271 (Vorher-Baseline), #10272 (Ring), #10273 (Tests), #10274 (Nachher +
+Sichtprüfung) — je 1 Commit, Branch m10-player-swarm-gap.

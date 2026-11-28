@@ -13535,43 +13535,76 @@
       "id": 10271,
       "title": "m10-player-swarm-gap K1: Vorher-Baseline (Minute-25-Schwarm, Metrik <8px/p95/Frame-p95)",
       "description": "Skript scripts/m10-player-gap.mjs (Minute 25, 300-500 Gegner, flock, iGPU, Renderer-String Pflicht). Metriken: Gegner mit Kantenabstand <8px zum Spieler, p95-Kantenabstand, Frame-Zeit p95. JSON nach ~/games/.evidence/m10-player-swarm-gap/m10-player-gap-before.json + Vorher-Shot. Abnahme: JSON committed, Renderer != SwiftShader.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T09:00:04Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Vorher-Baseline-Skript (Minute-25-Schwarm-Metrik)."
+        },
+        {
+          "at": "2026-11-28T09:04:32Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Commit a4f66225. Skript 1x gebaut + 1 Fix-Iteration (Crop), 2 Laeufe unter flock (beide iGPU RPL-S, 0 JS-Fehler): under8 9,46/9,38, minEdge -13,8/-12,6, frameP95 16,7/16,8 ms, enemiesMean ~375. Vorher-Shot zeigt unlesbare Spieler-Silhouette."
         }
       ],
       "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T09:00:04Z"
+      "updated": "2026-11-28T09:04:32Z"
     },
     {
       "id": 10272,
       "title": "m10-player-swarm-gap K2: Spieler-Ring resolvePlayerGap in src/logic/separation.ts",
       "description": "Dedizierte Spieler-Abstoß-Regel (Radius/Power klein, deterministisch über feste Reihenfolge + UID-Golden-Angle, Muster resolveBossStackSeparation), Anbindung über SpatialHash-Query um Spielerposition; Spieler bleibt unverrückbar. Minimal-Wiring in Run.ts updateEnemies (~5 Zeilen, mit requests.md-Begründung). Abnahme: tsc rc=0, gegnerische Unterseiten-Separation unverändert.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T09:04:32Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: resolvePlayerGap in src/logic/separation.ts + Minimal-Wiring Run.ts (Begruendung folgt in Lane-Doku + requests.md)."
+        },
+        {
+          "at": "2026-11-28T09:07:51Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: Commit 3751e397. resolvePlayerGap (Kantenziel 14px, Strength 0.45, Step-Deckel 6px, UID-Fallback, Hash-Query um Spieler) + 4-Zeilen-Wiring in Run.ts updateEnemies (Bosse ausgenommen; Abweichung vom Briefing in requests.md begruendet). tsc rc=0, Separation-Pfad unveraendert."
+        }
+      ],
       "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T08:59:58Z"
+      "updated": "2026-11-28T09:07:51Z"
     },
     {
       "id": 10273,
       "title": "m10-player-swarm-gap K3: Tests tests/player-swarm-gap.test.ts",
       "description": "Spieler nie bewegt, Gegner-Kantenabstand >= Mindestrand im Ring, 500 Gegner deterministisch (2 Läufe bitgleich), Gegner ausserhalb des Rings unberührt. Abnahme: npx vitest run tests/player-swarm-gap.test.ts grün, tsc rc=0.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T09:07:51Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: tests/player-swarm-gap.test.ts."
+        },
+        {
+          "at": "2026-11-28T09:12:24Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig: Commit c68dd05b, 9/9 gruen, tsc rc=0. Test-Fund: PLAYER_GAP_PLAYER_RADIUS=6 in die Ziel-Zentrierdistanz (sonst Gleichgewicht bei Kante 8-eps, Metrik-Schwelle knapp gerissen)."
+        }
+      ],
       "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T08:59:58Z"
+      "updated": "2026-11-28T09:12:24Z"
     },
     {
       "id": 10274,
       "title": "m10-player-swarm-gap K4: Nachher-Messung + Shots + art-director + Lane-Doku",
       "description": "Nachher-JSON (flock, Renderer-String), Vorher/Nachher <8px-Gegner um >=50% reduziert, identische Kills/XP (nur Abstoß), Frame-p95 <= Vorher+5%, Determinismus bitgleich. Shots shots/abnahme/m10-player-gap-{before,after}.png, art-director-Sichtprüfung >=4/5, docs/lanes/m10-player-swarm-gap.md + .lane-done.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:12:24Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: Nachher-Messung (flock) + Shots + art-director + Lane-Doku + .lane-done."
+        }
+      ],
       "created": "2026-11-28T08:59:58Z",
-      "updated": "2026-11-28T08:59:58Z"
+      "updated": "2026-11-28T09:12:24Z"
     }
   ]
 }
