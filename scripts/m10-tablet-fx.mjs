@@ -168,9 +168,12 @@ async function runLocal(page, port, results) {
   }
 }
 
-async function runDevice(page, results) {
+async function runDevice(page, results, browser) {
   const relaunch = async () => {
     await fetch(`${BRIDGE}/launch?q=debug=1`, { method: "POST" });
+    // App-Restart schliesst die alte CDP-Page -> frisch holen.
+    page = browser.contexts()[0].pages()[0];
+    page.on("pageerror", (e) => (meta.jsErrors ||= []).push(String(e)));
     await page.waitForFunction(() => window.__lf && window.__lf.state().scene === "title", null, { timeout: 30000 });
     await page.keyboard.press("Enter");
     await page.waitForFunction(() => window.__lf.state().scene === "charselect", null, { timeout: 10000 });
@@ -212,10 +215,10 @@ if (mode === "local") {
   await fetch(`${BRIDGE}/launch?q=debug=1`, { method: "POST" });
   const { chromium } = await loadPlaywright();
   const browser = await chromium.connectOverCDP(CDP);
-  const page = browser.contexts()[0].pages()[0];
+  let page = browser.contexts()[0].pages()[0];
   page.on("pageerror", (e) => (meta.jsErrors ||= []).push(String(e)));
   meta = { ...meta, ...(await rendererInfo(page)) };
-  await runDevice(page, results);
+  await runDevice(page, results, browser);
   await browser.close();
 }
 
