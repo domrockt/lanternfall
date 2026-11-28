@@ -1,0 +1,20 @@
+# Lane m10-hazard-disc-polish — FERTIG (2026-11-28)
+
+Optik-Polish der Telegraph-Discs (2 Nachbesserungen aus art-director-Abnahme zu 3fa01eb +
+Argus-Bestaetigung 01:17Z). Nur Optik: Warnlogik/Draw-Pfad bitgleich, Hazards.ts/Tabu-Dateien
+unangetastet. Board #7400-#7403, Commits 14449e2 (K1), 41aea60 (K2), f69b3e6 (K3), 23b4d4e (K4).
+
+- K2: Kontur via round(d)-Band {r-1,r} — radial konstant 2 px (kein 1/2-px-Wechselschlag);
+  Innenkante als 2-px-25%-Fringe aus emberDark statt harter Checker-Kante; nur 2 Palettenindizes.
+- K3: Stapel-Fuellstufe 1 (25-%-Raster, Key hazard_disc_rN_s1) ab 5 gleichzeitig warnenden
+  Disc-Hazards, deterministisch via scene.hazards-Lookup; Einzeldisc/Stage-0 bitgleich (Test).
+- Messung (scripts/m10-chaos-fix-disc.mjs, je 1x before/after, verbindlich):
+  milkyShareDisc stress500-640 12,78 -> 14,44 %, stress500-780 14,75 -> 12,85 %,
+  m25-640 13,00 -> 16,68 % — alle < 20 % (keine Rueckkehr der Milch).
+- 0 JS-Fehler; Renderer iGPU: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2),
+  swiftShader=false. tsc rc=0, 101 Testdateien/1097 Tests gruen, npm run build rc=0.
+- art-director strenge Abnahme: PASS, Note 4/5 (Innenkante/Ringkontur/Stapelung bestaetigt,
+  0 partielle Alpha-Werte, keine neuen Maengel). Belege: shots/m10-hazard-disc-polish-{before,after}*
+  inkl. 4x-Zooms + JSON, docs/lanes/m10-hazard-disc-polish.md.
+- Offen (nicht blockierend): positionsbezogene Stapelbestimmung braucht 1 Zeile in Hazards.ts
+  (Tabu-Datei, Folgekarte); art-director-Hinweise siehe Board-Notiz #7403.
