@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6786,
+  "next": 6790,
   "cards": [
     {
       "id": 1,
@@ -7998,6 +7998,66 @@
       ],
       "created": "2026-11-28T00:04:43Z",
       "updated": "2026-11-28T00:04:47Z"
+    },
+    {
+      "id": 6786,
+      "title": "m10-view-fill-refit K1: Format-Matrix vorher messen (7 Formate)",
+      "description": "scripts/m10-view-fill-refit.mjs misst 640x360@1, 960x540@1, 1280x720@1, 1920x1080@1, 2560x1440@1, 3840x2160@1, 780x360@dpr3(SKALIERUNG=3): Balken-Pixelscan, Canvas-Rect, interne View, Renderer-String. Abnahme: shots/m10-viewrefit-before.json mit 7 Eintraegen, 0 JS-Fehler, Mesa-Renderer.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:11:18Z",
+          "by": "build",
+          "text": "lane #6758, Merge eb79c88"
+        }
+      ],
+      "created": "2026-11-28T00:11:05Z",
+      "updated": "2026-11-28T00:11:18Z"
+    },
+    {
+      "id": 6787,
+      "title": "m10-view-fill-refit K2: Belegte Maengel fixen (view.ts)",
+      "description": "Befund K1: isIntegerPixelPerfect meldet Pfad statt Eigenschaft (fit-Short-Circuit) — Fill-Formate exakt (Pixel-Scan belegt) aber ipp=false. Fix: exakte Abbildung css*dpr == intern*scale pruefen; view.test.ts/view-fill.test.ts an neue Semantik angepasst. Abnahme: ipp==true fuer alle 7 Formate, Suite gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:11:18Z",
+          "by": "build",
+          "text": "lane #6759, Merge eb79c88"
+        }
+      ],
+      "created": "2026-11-28T00:11:05Z",
+      "updated": "2026-11-28T00:11:18Z"
+    },
+    {
+      "id": 6788,
+      "title": "m10-view-fill-refit K3: Tests view.test.ts + view-width.test.ts erweitern (7/7 Invarianten)",
+      "description": "7-Format-Matrix als Unit-Tests: width*scale==deviceW, 360*scale==deviceH (kein Balken per Konstruktion), ipp true, 640-Referenz (1280x720->640x360@2) unveraendert, 780x360@3 unveraendert. Abnahme: npx vitest run tests/view*.test.ts gruen, tsc rc=0.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:11:18Z",
+          "by": "build",
+          "text": "lane #6760, Merge eb79c88"
+        }
+      ],
+      "created": "2026-11-28T00:11:05Z",
+      "updated": "2026-11-28T00:11:18Z"
+    },
+    {
+      "id": 6789,
+      "title": "m10-view-fill-refit K4: Nachher-Matrix + Lane-Doku (Vorher/Nachher)",
+      "description": "--tag after Lauf + docs/lanes/m10-view-fill-refit.md mit Vorher/Nachher-Tabelle ueber 7 Formate; art-director-Sichtcheck der 7 Screenshots >= 4/5. Abnahme: allPass==true in after-JSON, Doku mit Zahlen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:11:18Z",
+          "by": "build",
+          "text": "lane #6761, Merge eb79c88"
+        }
+      ],
+      "created": "2026-11-28T00:11:05Z",
+      "updated": "2026-11-28T00:11:18Z"
     }
   ]
 }
