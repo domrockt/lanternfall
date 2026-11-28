@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7437,
+  "next": 7440,
   "cards": [
     {
       "id": 1,
@@ -9022,6 +9022,81 @@
       ],
       "created": "2026-11-28T01:43:33Z",
       "updated": "2026-11-28T01:44:21Z"
+    },
+    {
+      "id": 7437,
+      "title": "m10-audio-frost-gap K1: Paar-Distanz-Matrix vorher (66 Paare) sichern",
+      "description": "AC: scripts/m10-audio-frost-gap.mjs (Metrik = tests/audio-mix.test.ts: 10 Band-Energien, 4096-Hann-Fenster WAV-Mitte, Kosinus-Distanz) schreibt shots/m10-audio-frost-gap-matrix-before.json mit allen 66 Paardistanzen; frost/eternal_winter ≈ 0,125 reproduziert; Vorher-Tabelle in docs/lanes/m10-audio-frost-gap.md. Ein Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:52:12Z",
+          "by": "build",
+          "text": "todo → doing: Start: Mess-Skript mit Test-Metrik bauen + Vorher-Matrix"
+        },
+        {
+          "at": "2026-11-28T01:53:57Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Matrix: 66 Paare, min frost/eternal_winter 0,1245 (=Audit 0,125), Metrik validiert. Commit 0c9b7bb (#7437): scripts/m10-audio-frost-gap.mjs + shots/m10-audio-frost-gap-matrix-before.json + docs/lanes/m10-audio-frost-gap.md"
+        },
+        {
+          "at": "2026-11-28T02:01:10Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS: Metrik zeichengleich zur Test-Metrik, before-JSON selbst nachgerechnet (frost/eternal_winter 0.1245). Commit 0c9b7bb (#7437)"
+        }
+      ],
+      "created": "2026-11-28T01:51:29Z",
+      "updated": "2026-11-28T02:01:10Z"
+    },
+    {
+      "id": 7438,
+      "title": "m10-audio-frost-gap K2: eternal_winter-Mixtur auseinanderziehen",
+      "description": "AC: automatisierter Suchlauf (festes Iterationslimit, pure Python, ~/tmp) über Winter-Glissando-Terz/Mixtur; Ziel frost/eternal_winter >= 0,15, alle 66 Paare >= 0,12, Stinger 0,6–1,0 s + rising, Peak <= 0,98. Fix in scripts/gen_sfx.py + neu generiertes public/sfx/sfx_winter.wav (beide unclaimed, Begruendung in requests.md + Lane-Doku); after-JSON als Beleg. Ein Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:53:57Z",
+          "by": "build",
+          "text": "todo → doing: Start: Suchlauf (pure Python, festes Limit) ueber Glissando-Terz/Fundament/Mixtur"
+        },
+        {
+          "at": "2026-11-28T01:58:03Z",
+          "by": "build",
+          "text": "doing → review: Suchlauf Runde 2 (432 Kandidaten): Gewinner Glissando −6 Halbst. + Fundament 440 Hz + Mixtur 0,12/0,55 → frost/eternal_winter 0,2391 (vorher 0,1245), alle 66 Paare >= 0,12. Commit 28cb78c (#7438): gen_sfx.py + sfx_winter.wav + after-JSON + Doku"
+        },
+        {
+          "at": "2026-11-28T02:01:10Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS: Live-Messung byte-identisch zum after-JSON, frost/eternal_winter 0.2391 >= 0.15, alle 66 Paare >= 0.12 (min frost/lantern 0.1459 unverändert); gen_sfx.py-Diff minimal, nur sfx_winter.wav. Commit 28cb78c (#7438)"
+        }
+      ],
+      "created": "2026-11-28T01:51:29Z",
+      "updated": "2026-11-28T02:01:10Z"
+    },
+    {
+      "id": 7439,
+      "title": "m10-audio-frost-gap K3: Test tests/audio-frost-gap.test.ts + Abnahme",
+      "description": "AC: neuer Test prueft frost/eternal_winter >= 0,15, alle 66 Paare >= 0,12, MAX_TOTAL_VOICES/Spam-Regeln unangetastet; vitest + npx tsc --noEmit + npm run build + volle Suite gruen; .lane-done. Kein Aenderung an AudioSystem.ts/options.ts. Ein Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T01:58:03Z",
+          "by": "build",
+          "text": "todo → doing: Start: tests/audio-frost-gap.test.ts + Abnahme"
+        },
+        {
+          "at": "2026-11-28T02:00:04Z",
+          "by": "build",
+          "text": "doing → review: Test 5/5 gruen (frost/eternal_winter 0,2391 >= 0,15; alle 66 Paare >= 0,12; WAV-Regeln; Mixer/Spam-Regeln unverändert). tsc + vitest 1138/1138 + build gruen. Commit 2b6b244 (#7439) inkl. .lane-done"
+        },
+        {
+          "at": "2026-11-28T02:01:10Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS: Test 5/5 gruen und nicht zirkulaer (Verhaltens-Checks Mixer, echte WAV-Distanzen); Scope sauber (kein AudioSystem/options, keine Secrets, keine Temp-Dateien); Belege im Commit. Commit 2b6b244 (#7439); tsc + vitest 1138/1138 + build gruen"
+        }
+      ],
+      "created": "2026-11-28T01:51:29Z",
+      "updated": "2026-11-28T02:01:10Z"
     }
   ]
 }
