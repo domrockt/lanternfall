@@ -1,0 +1,25 @@
+# Lane m10-golden-frame-rebaseline — FERTIG (2026-11-28)
+
+Bedarf m10-run-setter-churn: Golden-Frame-Baseline (ab50197b) divergierte dauerhaft
+(~40 Dateien/~4136 Zeilen in src/); Guard-Verdict dauerhaft rot. Lane rebased die
+Baseline bewusst, keine src-Änderung.
+
+- K1 #12853: Vorher-Verdict FAIL belegt — divergent 3/3 Seeds, ABER final+lastMark
+  je Seed bitgleich mit Baseline, Determinismus intakt (2 Läufe je Seed bitgleich),
+  Renderer RPL-S iGPU, 0 JS-Fehler. Commit 2b999b13.
+- K2 #12854: Rebaseline commit 761f274a — Baseline+Verdict neu (Hashes 9d3f3b2a…,
+  b4555df0…, a9f247a9…), Commit-Begruendung nennt ALLE 76 Merges seit ab50197b
+  (verhaltensrelevant markiert: spawn-view-anchor 4c677cfe, spawn-burst-alloc
+  cc8a3590, boss-dur-determinism 2e721bf1, mira-dps-corridor 90e02d4a,
+  gem-value-reading e0c65704, run-setter-churn 0f3bab90 u. a.).
+  Selbstbeleg: 2 aufeinanderfolgende Läufe ohne Code-Änderung = identische Hashes
+  je Seed, beide PASS (matchesBaseline=true).
+- K3 #12855: tests/golden-frame.test.ts 4/4 PASS, Suite 2423/2423, build rc=0,
+  tsc rc=0. Baseline-Stand in Skript-Kopf + `baselineAt`-Feld der Baseline-JSON
+  (Rebaseline-Commit 761f274a, Code-Stand 213b8494); künftige Rebaselines via
+  `--baseline-at=<Merge-SHA>`.
+- K4 #12856: NICHT aktiviert — Divergenz war gewolltes Lane-Delta (nur Gegner-Marker
+  der Zwischen-Marken), kein visueller Regress.
+
+Belege: ~/games/.evidence/m10-golden-frame-rebaseline/
+Doku: docs/lanes/m10-golden-frame-rebaseline.md
