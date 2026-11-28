@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8342,
+  "next": 8442,
   "cards": [
     {
       "id": 1,
@@ -10467,6 +10467,48 @@
       ],
       "created": "2026-11-28T04:32:09Z",
       "updated": "2026-11-28T04:32:14Z"
+    },
+    {
+      "id": 8438,
+      "title": "m10-props-variety K1: Vorher-Belege frueh/Chaos (1x+2x) + Wiederholungs-Befund",
+      "description": "Skript scripts/m10-props-variety.mjs: Debug-Run (god/autoPlay), Screenshots frueh+Chaos je 1x und 2x (shots/m10-props-variety-before-*.png) + propComposition aus g.chunks; haeufigstes Prop-Anteil in % als Befund in docs/lanes/m10-props-variety.md. AK: 4 PNGs + JSON mit jsErrors=[] committet, Befund-Zahl dokumentiert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T04:47:56Z",
+          "by": "build",
+          "text": "todo → doing: m10-props-variety: Karte uebernommen — Vorher-Messung startet (Mess-Skript einmal bauen, 1 Lauf, committen)."
+        }
+      ],
+      "created": "2026-11-28T04:47:51Z",
+      "updated": "2026-11-28T04:47:56Z"
+    },
+    {
+      "id": 8439,
+      "title": "m10-props-variety K2: Generator + 4-6 neue Prop-Varianten",
+      "description": "scripts/art/gen_props.py: Varianten fuer boulder (Steine), bones (Knochen), reeds (Busch/Schilf), post (Lanternen-Reste), je palettentreu, gleiche Groesse/Klasse wie Basis. Regeneration von src/gfx/gen-props.ts + purem Varianten-Wahlhelper. Minimaler Wiring-Patch in GroundRenderer.addProp (3 Zeilen, Fremd-Datei, Begruendung in requests.md + Lane-Doku). AK: tsc gruen, Palette-Tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T04:47:51Z",
+      "updated": "2026-11-28T04:47:51Z"
+    },
+    {
+      "id": 8440,
+      "title": "m10-props-variety K3: Guard-Test tests/props-variety.test.ts",
+      "description": "Variantenzahl je Ziel-Klasse >= Ziel, 0 Off-Palette-Pixel, Dimensionen identisch zur Basisklasse, deterministische Variantenwahl; prop-density-lod-Test bleibt unveraendert gruen. AK: npx vitest run tests/props-variety.test.ts gruon, npm test gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T04:47:51Z",
+      "updated": "2026-11-28T04:47:51Z"
+    },
+    {
+      "id": 8441,
+      "title": "m10-props-variety K4: After-Belege + art-director-Urteil + Doku + lane-done",
+      "description": "After-Shots (1x+2x, frueh/Chaos), Wiederholungs-Anteil nachher messen (Ziel deutlich gesenkt), art-director >= 4/5 fuer Bodenvielfalt, npm run build + npm test gruen, docs/lanes/m10-props-variety.md final, .lane-done. AK: Belege committet, Urteil in Doku.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T04:47:51Z",
+      "updated": "2026-11-28T04:47:51Z"
     }
   ]
 }
