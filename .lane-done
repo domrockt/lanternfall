@@ -1,0 +1,30 @@
+# Lane m10-chest-spawn-cell-fair-r2 — fertig
+
+Alle 4 Karten (K1–K4) abgeschlossen, je ein Commit (#9775 0cacf00d, #9776 bc4fe7c3,
+#9777 00c08d84, #9778 dieser Commit).
+
+## Zusammenfassung
+
+Truhen-Spawn: innerhalb r=64 px um die faire Zelle gewinnt die Kandidaten-Zelle mit der
+geringsten Gegnerdichte (lebende Gegner im 48-px-Radius); Gleichstand → naeherste Zelle,
+kein strikt besserer Kandidat → Fallback alte Position. Wasser-/Kanten-Regel, Spiralsuche,
+Timing und Randpfeil unverändert; Run.ts/textures.ts/UI.ts nicht angefasst.
+
+## Messwerte (3 Seeds × 6 Bosse, timeScale 30)
+
+- nearEnemies48px: Mean 1,28 → 0,06 (−95 %), Max 10 → 1; Truhen mit ≥1 Gegner im 48 px: 4/18 → 1/18
+- nearEnemies96px: Mean 5,28 → 2,61 (−51 %), Max 36 → 18
+- Distanz Truhe↔Spieler unverändert (Mean 115 → 111 px) — Truhe bleibt am VS-Referenzmoment
+- Timing 6/6 Truhen ± 0,5 s, 0 Doppel-Spawns, 0 JS-Fehler (m10-chest-timing verdict.passed)
+- Tests 1701/1701 grün (11 neu in tests/chest-spawn-cell.test.ts), tsc rc=0, build rc=0
+
+## Belege
+
+~/games/.evidence/m10-chest-spawn-cell-fair-r2/ (before/after-JSON, timing-after.json,
+Sicht-Shots) + shots/abnahme/m10-chest-cell-visible.png und m10-chest-cell-arrow.png (git).
+
+## Offene Punkte
+
+Dichte ist Snapshot im Spawn-Schritt (Gegner bewegen sich weiter); Median 48px war vorher
+schon 0, Tail (Max/Mean) ist die entscheidende Metrik; r=64 px bewusst klein — Details in
+docs/lanes/m10-chest-spawn-cell-fair-r2.md.
