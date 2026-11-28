@@ -18461,10 +18461,11 @@
       "id": 13167,
       "title": "m10-g-heap-sync K3: Selbstpruefung + Commit + lane-done",
       "description": "git diff nur G-Abschnitt + Lane-Doku, npx tsc --noEmit rc=0, ein Commit pro Karte, .lane-done mit 5-10 Zeilen Zusammenfassung. Abnahme: keine anderen ACCEPTANCE-Abschnitte veraendert, kein Tag/Push.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-g-heap-sync",
       "notes": [
-        "K3 angenommen (doing): diff + tsc rc=0 geprueft, lane-done folgt im Commit"
+        "K3 angenommen (doing): diff + tsc rc=0 geprueft, lane-done folgt im Commit",
+        "K3 erledigt: Commit cec5eca8; diff 0ce7164a..HEAD nur G-Abschnitt+Doku+Board, tsc rc=0, .lane-done committed"
       ]
     }
   ]
