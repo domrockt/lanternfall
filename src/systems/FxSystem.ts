@@ -261,7 +261,7 @@ export class FxSystem {
       // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
       // weil frueher per NORMAL-Fallback abgewiesene Sprites ohne Slot-Request
       // wieder auf ADD gestellt wuerden. Ohne freien Slot bleibt NORMAL.
-      if (blendAdd && !fx.glow && glowEnabledFor(QUALITY)) fx.glow = budget.request(); (M10-m10-tablet-fx-hotspot: #10924 K2 – Blend-Gruppierung: alle ADD-Glows UNTERHALB der Gegner rendern im zusammenhaengenden Band FX_GLOW_DEPTH (fxLow+0.5) — FxSystem/ParticleSystem (Tiefe an Glow-Zustand gekoppelt, spawn+setAlphaScale), ADD-Inseln zugerollt (Wrath/Soul-Halos CombatSystem, Eis-Volley-Projektile ProjectilePool, unclaimed 2 Zeilen). Review-Fix: glowDepthFor begrenzt auf Basis <= death (enemyDeath-Bursts bleiben ueber Gegnern, kein Popping). Gemessen (Mesa Intel RPL-S): stackA:+6 blend 32->5, draws 33->6, fbNonNull 0; Geraet (Redmi Pad Pro): 119,4 FPS, blend 7, draws 21. Optik je Evo unveraendert (shots/abnahme/side-*.png). tests/tablet-fx-budget.test.ts pinnt Gruppierung + Band-Grenze. tsc + 1966 Tests + Build gruen)
+      if (blendAdd && !fx.glow && glowEnabledFor(QUALITY)) fx.glow = budget.request();
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && fx.glow) {
         budget.release();
@@ -709,7 +709,7 @@ export class ParticleSystem {
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
       const blendAdd = p.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
-      if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request(); (M10-m10-tablet-fx-hotspot: #10924 K2 – Blend-Gruppierung: alle ADD-Glows UNTERHALB der Gegner rendern im zusammenhaengenden Band FX_GLOW_DEPTH (fxLow+0.5) — FxSystem/ParticleSystem (Tiefe an Glow-Zustand gekoppelt, spawn+setAlphaScale), ADD-Inseln zugerollt (Wrath/Soul-Halos CombatSystem, Eis-Volley-Projektile ProjectilePool, unclaimed 2 Zeilen). Review-Fix: glowDepthFor begrenzt auf Basis <= death (enemyDeath-Bursts bleiben ueber Gegnern, kein Popping). Gemessen (Mesa Intel RPL-S): stackA:+6 blend 32->5, draws 33->6, fbNonNull 0; Geraet (Redmi Pad Pro): 119,4 FPS, blend 7, draws 21. Optik je Evo unveraendert (shots/abnahme/side-*.png). tests/tablet-fx-budget.test.ts pinnt Gruppierung + Band-Grenze. tsc + 1966 Tests + Build gruen)
+      if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request();
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && p.glow) {
         budget.release();
