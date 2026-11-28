@@ -293,11 +293,15 @@ export class ChestSystem {
     // vorhanden; ohne Szene-Abfrage bleibt die Position unveraendert. Timing
     // (`lf-elapsed`) und Belohnungslogik sind unberuehrt.
     const run = this.scene as unknown as { isWaterAt?: (wx: number, wy: number) => boolean } | null;
-    const waterAt = run?.isWaterAt;
-    const isBlocked =
-      typeof waterAt === "function"
-        ? (wx: number, wy: number) => waterAt(wx, wy)
-        : () => false;
+    // Klassifikation per TILE-MITTE — identisch zur Spiel-Mechanik
+    // (Run.terrainFactorAt nutzt denselben Referenzpunkt für den 40-%-Slow).
+    // Aufruf ueber `run?.isWaterAt?.(...)` — die Methode als Wert extrahieren
+    // (`const waterAt = run.isWaterAt; waterAt(...)`) wuerde `this` verlieren.
+    const isBlocked = (wx: number, wy: number): boolean => {
+      const bx = Math.floor(wx / CHEST_SPAWN_TILE_PX) * CHEST_SPAWN_TILE_PX + 8;
+      const by = Math.floor(wy / CHEST_SPAWN_TILE_PX) * CHEST_SPAWN_TILE_PX + 8;
+      return run?.isWaterAt?.(bx, by) ?? false;
+    };
     const fair = fairChestSpawn(x, y, { worldSize: WORLD_SIZE, isBlocked });
     x = fair.x;
     y = fair.y;

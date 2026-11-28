@@ -1,0 +1,270 @@
+{
+  "schema": "m10-chest-spawn-fair/v1",
+  "generatedAt": "2026-11-28T04:21:40.096Z",
+  "phase": "after",
+  "fairnessLimits": {
+    "edgeMarginPx": 48,
+    "worldSize": 4096,
+    "blockedTerrain": "water"
+  },
+  "seeds": [
+    {
+      "seed": 7,
+      "timeScale": 30,
+      "elapsedSeconds": 1824.8,
+      "bossesDefeated": 6,
+      "chests": [
+        {
+          "index": 0,
+          "at": 332.664,
+          "x": 1818,
+          "y": 4019,
+          "terrain": "land",
+          "edgeDistPx": 77,
+          "distToPlayerPx": 96,
+          "pathStepsWaterBlocked": null,
+          "nearEnemies96px": 0,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "at": 646.098,
+          "x": 2681,
+          "y": 3095,
+          "terrain": "land",
+          "edgeDistPx": 1001,
+          "distToPlayerPx": 120,
+          "pathStepsWaterBlocked": 10,
+          "nearEnemies96px": 1,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "at": 928.871,
+          "x": 3032,
+          "y": 1462,
+          "terrain": "land",
+          "edgeDistPx": 1064,
+          "distToPlayerPx": 120,
+          "pathStepsWaterBlocked": 8,
+          "nearEnemies96px": 4,
+          "ok": true
+        },
+        {
+          "index": 3,
+          "at": 1227.646,
+          "x": 2854,
+          "y": 2117,
+          "terrain": "land",
+          "edgeDistPx": 1242,
+          "distToPlayerPx": 120,
+          "pathStepsWaterBlocked": 9,
+          "nearEnemies96px": 2,
+          "ok": true
+        },
+        {
+          "index": 4,
+          "at": 1530.57,
+          "x": 765,
+          "y": 4048,
+          "terrain": "land",
+          "edgeDistPx": 48,
+          "distToPlayerPx": 76,
+          "pathStepsWaterBlocked": 8,
+          "nearEnemies96px": 0,
+          "ok": true
+        },
+        {
+          "index": 5,
+          "at": 1824.141,
+          "x": 3118,
+          "y": 1717,
+          "terrain": "land",
+          "edgeDistPx": 978,
+          "distToPlayerPx": 71,
+          "pathStepsWaterBlocked": 6,
+          "nearEnemies96px": 10,
+          "ok": true
+        }
+      ],
+      "unfairCount": 0,
+      "unfair": []
+    },
+    {
+      "seed": 101,
+      "timeScale": 30,
+      "elapsedSeconds": 1819.1,
+      "bossesDefeated": 6,
+      "chests": [
+        {
+          "index": 0,
+          "at": 330.741,
+          "x": 1565,
+          "y": 3979,
+          "terrain": "land",
+          "edgeDistPx": 117,
+          "distToPlayerPx": 128,
+          "pathStepsWaterBlocked": 9,
+          "nearEnemies96px": 0,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "at": 629.331,
+          "x": 1690,
+          "y": 2458,
+          "terrain": "land",
+          "edgeDistPx": 1638,
+          "distToPlayerPx": 160,
+          "pathStepsWaterBlocked": 13,
+          "nearEnemies96px": 2,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "at": 928.209,
+          "x": 469,
+          "y": 3978,
+          "terrain": "land",
+          "edgeDistPx": 118,
+          "distToPlayerPx": 120,
+          "pathStepsWaterBlocked": 10,
+          "nearEnemies96px": 3,
+          "ok": true
+        },
+        {
+          "index": 3,
+          "at": 1224.982,
+          "x": 572,
+          "y": 3595,
+          "terrain": "land",
+          "edgeDistPx": 501,
+          "distToPlayerPx": 82,
+          "pathStepsWaterBlocked": 7,
+          "nearEnemies96px": 4,
+          "ok": true
+        },
+        {
+          "index": 4,
+          "at": 1517.504,
+          "x": 48,
+          "y": 3963,
+          "terrain": "land",
+          "edgeDistPx": 48,
+          "distToPlayerPx": 58,
+          "pathStepsWaterBlocked": null,
+          "nearEnemies96px": 20,
+          "ok": true
+        },
+        {
+          "index": 5,
+          "at": 1818.878,
+          "x": 1509,
+          "y": 1692,
+          "terrain": "land",
+          "edgeDistPx": 1509,
+          "distToPlayerPx": 81,
+          "pathStepsWaterBlocked": 7,
+          "nearEnemies96px": 26,
+          "ok": true
+        }
+      ],
+      "unfairCount": 0,
+      "unfair": []
+    },
+    {
+      "seed": 4242,
+      "timeScale": 30,
+      "elapsedSeconds": 1817.7,
+      "bossesDefeated": 6,
+      "chests": [
+        {
+          "index": 0,
+          "at": 330.124,
+          "x": 2194,
+          "y": 2682,
+          "terrain": "land",
+          "edgeDistPx": 1414,
+          "distToPlayerPx": 128,
+          "pathStepsWaterBlocked": 11,
+          "nearEnemies96px": 0,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "at": 651.459,
+          "x": 2246,
+          "y": 2222,
+          "terrain": "land",
+          "edgeDistPx": 1850,
+          "distToPlayerPx": 117,
+          "pathStepsWaterBlocked": 10,
+          "nearEnemies96px": 2,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "at": 929.984,
+          "x": 1433,
+          "y": 1707,
+          "terrain": "land",
+          "edgeDistPx": 1433,
+          "distToPlayerPx": 180,
+          "pathStepsWaterBlocked": 14,
+          "nearEnemies96px": 2,
+          "ok": true
+        },
+        {
+          "index": 3,
+          "at": 1238.207,
+          "x": 425,
+          "y": 728,
+          "terrain": "land",
+          "edgeDistPx": 425,
+          "distToPlayerPx": 115,
+          "pathStepsWaterBlocked": 7,
+          "nearEnemies96px": 9,
+          "ok": true
+        },
+        {
+          "index": 4,
+          "at": 1523.681,
+          "x": 2866,
+          "y": 3713,
+          "terrain": "land",
+          "edgeDistPx": 383,
+          "distToPlayerPx": 76,
+          "pathStepsWaterBlocked": 7,
+          "nearEnemies96px": 2,
+          "ok": true
+        },
+        {
+          "index": 5,
+          "at": 1817.55,
+          "x": 2021,
+          "y": 1700,
+          "terrain": "land",
+          "edgeDistPx": 1700,
+          "distToPlayerPx": 81,
+          "pathStepsWaterBlocked": 6,
+          "nearEnemies96px": 47,
+          "ok": true
+        }
+      ],
+      "unfairCount": 0,
+      "unfair": []
+    }
+  ],
+  "totals": {
+    "chests": 18,
+    "okChests": 18,
+    "unfairChests": 0,
+    "jsErrors": 0
+  },
+  "verdict": {
+    "allChestsOnFairCell": true,
+    "jsErrors": 0,
+    "passed": true
+  },
+  "errors": []
+}

@@ -36,7 +36,7 @@ const browser = await chromium.launch({
 /** Grober begehbarer Pfad über das 16-px-Raster (Wasser blockiert, 4-dir BFS). */
 function gridPathSteps(water, startTx, startTy, goalTx, goalTy) {
   if (startTx === goalTx && startTy === goalTy) return 0;
-  if (water[startTy * WORLD_TILES + startTx] || water[goalTy * WORLD_TILES + goalTx]) return null;
+  if (water[startTy * WORLD_TILES + startTx] === "1" || water[goalTy * WORLD_TILES + goalTx] === "1") return null;
   const prev = new Int32Array(WORLD_TILES * WORLD_TILES).fill(-2);
   const queue = [startTy * WORLD_TILES + startTx];
   prev[queue[0]] = -1;
@@ -49,7 +49,7 @@ function gridPathSteps(water, startTx, startTy, goalTx, goalTy) {
       const ny = cy + dy;
       if (nx < 0 || ny < 0 || nx >= WORLD_TILES || ny >= WORLD_TILES) continue;
       const ni = ny * WORLD_TILES + nx;
-      if (prev[ni] !== -2 || water[ni]) continue;
+      if (prev[ni] !== -2 || water[ni] === "1") continue;
       prev[ni] = cur;
       if (nx === goalTx && ny === goalTy) {
         let steps = 0;
