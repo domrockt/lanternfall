@@ -69,5 +69,9 @@ export const GLYPHS: Record<string, string[]> = {
   "a": ["00000", "00000", "01110", "10001", "11111", "10001", "10001"],
   "o": ["00000", "00000", "01110", "10001", "10001", "10001", "01110"],
   "u": ["00000", "00000", "10001", "10001", "10001", "10011", "01101"],
-  "ß": ["01110", "10001", "10001", "11110", "10001", "10001", "11110"],
+  // m10-font-ui-frame-polish #8079: alte ß-Glyphe war pixelgleich mit B bis auf
+  // 1 px (row0 01110 vs 11110) — verwechselbar. Neu: Doppel-s-Bogen mit offener
+  // linker Spalte und Schluss-Strich (unten rechts), 1 Komponente, 2 reguläre
+  // 2x2-Löcher, 15/35 px Differenz zu B.
+  "ß": ["01100", "10010", "10010", "01100", "10010", "10010", "01101"],
 };
