@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12227,
+  "next": 12231,
   "cards": [
     {
       "id": 1,
@@ -16844,6 +16844,66 @@
       ],
       "created": "2026-11-28T13:07:35Z",
       "updated": "2026-11-28T13:07:43Z"
+    },
+    {
+      "id": 12227,
+      "title": "m10-spawn-burst-alloc K1: Vorher-Messung Spawn-Pfad-Allokationen je Nachschub-Tick",
+      "description": "lane #12089: Skript scripts/m10-spawn-burst-alloc.mjs (rolldown-Bundle des echten Spawners, --trace-gc, Semi-Space 1 MiB): Allokationen/Frame im Nachschub-Tick bei 500 Gegnern, Burst-Szenario (Minute 25). Metrik: sampled Bytes je Tick + Spawn-Sequenz-Checksum ueber feste Seeds. Beleg ~/games/.evidence/m10-spawn-burst-alloc/m10-spawn-burst-alloc-before.json. Reviewer-PASS (ses_dddc07a22ffeL9N9BI1Ua42Fwj), Vorher 30.09 Scav/1000 Ticks.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:16:07Z",
+          "by": "build",
+          "text": "lane #12089, Merge cc8a3590 — Lane abgeschlossen (Reviewer-PASS auf allen 4 Karten), auf main neu angelegt"
+        }
+      ],
+      "created": "2026-11-28T13:16:04Z",
+      "updated": "2026-11-28T13:16:07Z"
+    },
+    {
+      "id": 12228,
+      "title": "m10-spawn-burst-alloc K2: Fix — Allokationen im Spawn-Hot-Pfad hoisten",
+      "description": "lane #12090: Nur src/systems/Spawner.ts: Mix-Kompilierung gecacht (kein Object.entries/filter je Spawn), ALL_ENEMY_DEFS-Hoist, Scratch-Options statt Literale je Spawn in spawnAt/spawnOne. Spawn-Phasen und Tier-Verteilung bitgleich. Reviewer-PASS; Commits a8b94a69 + Review-Fix 6b4b5c63 (Lane-Shas vor Rebase).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:16:07Z",
+          "by": "build",
+          "text": "lane #12090, Merge cc8a3590 — Lane abgeschlossen (Reviewer-PASS auf allen 4 Karten), auf main neu angelegt"
+        }
+      ],
+      "created": "2026-11-28T13:16:04Z",
+      "updated": "2026-11-28T13:16:07Z"
+    },
+    {
+      "id": 12229,
+      "title": "m10-spawn-burst-alloc K3: Nachher-Messung — Ziel <= 50 % der Vorher-Allokationen je Tick",
+      "description": "lane #12091: Gleiche Messung wie K1 (--tag=after), Grenze VOR der Messung festgelegt. Beleg ~/games/.evidence/m10-spawn-burst-alloc/m10-spawn-burst-alloc-after.json + Vorher/Nachher-Tabelle in docs/lanes/m10-spawn-burst-alloc.md, Checksum bitgleich. Reviewer-PASS: 30.09 -> 10.91 Scav/1000 Ticks = 0.363 (Ziel <= 0.50). Commit 2ecb86d4 (Lane-Sha vor Rebase).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:16:07Z",
+          "by": "build",
+          "text": "lane #12091, Merge cc8a3590 — Lane abgeschlossen (Reviewer-PASS auf allen 4 Karten), auf main neu angelegt"
+        }
+      ],
+      "created": "2026-11-28T13:16:04Z",
+      "updated": "2026-11-28T13:16:07Z"
+    },
+    {
+      "id": 12230,
+      "title": "m10-spawn-burst-alloc K4: tests/spawn-burst-alloc.test.ts friert Hebel ein + Lane-Abschluss",
+      "description": "lane #12092: Test friert Hebel ein: (a) 0 Object.entries/values-Aufrufe im Burst-Tick, (b) pool.spawn erhaelt im Burstfall dasselbe Options-Objekt (Identity), (c) Spawn-Sequenz bitgleich ueber feste Seeds. npm test gruen (2317), Lane-Doku docs/lanes/m10-spawn-burst-alloc.md. Reviewer-PASS (Nit: bedingte Elite-Assertion bewusst belassen). Commits 93dee396 + 6b4b5c63 (Lane-Shas vor Rebase).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:16:07Z",
+          "by": "build",
+          "text": "lane #12092, Merge cc8a3590 — Lane abgeschlossen (Reviewer-PASS auf allen 4 Karten), auf main neu angelegt"
+        }
+      ],
+      "created": "2026-11-28T13:16:04Z",
+      "updated": "2026-11-28T13:16:07Z"
     }
   ]
 }
