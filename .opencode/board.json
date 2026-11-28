@@ -9099,7 +9099,7 @@
       "id": 7490,
       "title": "m10-shot-budget-cap #1 Vorher-Messung",
       "description": "Bench+Chaos-Ist: scripts/m10-shot-path.mjs (Schuss-Pfad ms/Frame, aktive Schuesse) + scripts/m10-shot-clarity.mjs (300/500 Chaos) -> shots/m10-shot-budget-cap-before.json (Projektil-Zeitscheibe, Draw-Calls/aktive Schuesse, FPS-Min Basis). Abnahme: JSON committed, Ist-Zahlen in Doku notiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T01:59:51Z",
@@ -9110,31 +9110,41 @@
           "at": "2026-11-28T02:08:43Z",
           "by": "build",
           "text": "doing → review: Vorher-Messung committed (Bench 0.026 ms/Frame; Chaos 500er 240 gleichz., 300er 158; Burst 640/780x360@3 je 60 fpsMin; Fullrun 780x360@3 fpsMin 60.3, rot nur Heap-Gate). Akzeptanzgrenze vor Fix festgelegt: gleichzeitige Schuesse -20%."
+        },
+        {
+          "at": "2026-11-28T02:19:01Z",
+          "by": "build",
+          "text": "review → done: lane #7490, Commit-Batch m10-shot-budget-cap; Vorher-Messung belegt (Chaos 240/158, Bench 0.026 ms/Frame, FPS 60/60/60.3)"
         }
       ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T02:08:43Z"
+      "updated": "2026-11-28T02:19:01Z"
     },
     {
       "id": 7491,
       "title": "m10-shot-budget-cap #2 Cap + faire Zuteilung",
       "description": "EnemyProjectiles.ts: hartes Concurrent-Cap (active+pending <= CAP) + pro-Frame-Launch-Budget N mit Rotation ueber die Schuss-Anrufe (kein Starving), Ueberschuss verworfen (Cooldown bleibt, neuer Stat cancelledBudgetCap). Abnahme: bei Volllast active+pending <= Cap; Tests gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T02:08:43Z",
           "by": "build",
           "text": "todo → review: Cap 160 + Frame-Budget 8 mit Rotation; statSnapshot bitgleich; 1159 Tests + Build gruen; Commit 04a8cf5. Fremd-Edit tests/enemy-shots-fair.test.ts per .dispatch/requests.md angefragt (Telegraph-Test Budget 200, Intention unveraendert)."
+        },
+        {
+          "at": "2026-11-28T02:19:01Z",
+          "by": "build",
+          "text": "review → done: lane #7491; reviewer PASS (6 Belege: gesperrte Dateien unangetastet, Modulo/Fairness korrekt, statSnapshot bitgleich, Tests echt, keine Secrets, Fremd-Edit sauber); Nachbesserung Budget-Slot-Return Commit 2ae0087"
         }
       ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T02:08:43Z"
+      "updated": "2026-11-28T02:19:01Z"
     },
     {
       "id": 7492,
       "title": "m10-shot-budget-cap #3 Pool-Recycle belegen",
       "description": "Belegen, dass freie Projektile sofort recycelt werden, keine Allokation im Steady-State (EnemyProjectilePool free-Listen; ProjectilePool.ts nur lesen/pruefen). Abnahme: Test in tests/shot-budget-cap.test.ts zeigt Recycle ohne Leak.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T02:08:43Z",
@@ -9145,40 +9155,60 @@
           "at": "2026-11-28T02:11:27Z",
           "by": "build",
           "text": "doing → review: Recycle-Tests committed: 120 Frames Steady-State ohne makeImage-Allokation, Objektzahl konstant, 5 Launch/Expire-Zyklen recyclen. ProjectilePool.ts geprueft (recycelt bereits via spawned/reused/created + stealCullable) - keine Aenderung noetig. 1162 Tests gruen."
+        },
+        {
+          "at": "2026-11-28T02:19:01Z",
+          "by": "build",
+          "text": "review → done: lane #7492; reviewer PASS, Recycle-Tests belegt Steady-State ohne Allokation; ProjectilePool.ts geprueft (recycelt bereits)"
         }
       ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T02:11:27Z"
+      "updated": "2026-11-28T02:19:01Z"
     },
     {
       "id": 7493,
       "title": "m10-shot-budget-cap #4 Tests",
       "description": "tests/shot-budget-cap.test.ts: Cap haelt, Fairness (alle Schuetzen kommen dran, max. Wartezeit beschraenkt), Recycle ohne Leak. Abnahme: vitest gruen + npx tsc --noEmit rc=0.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T02:11:27Z",
           "by": "build",
           "text": "todo → review: Cap-/Fairness-Tests committed (8 Tests): Cap haelt je Frame, Budget 3/50 Versuchen, Offscreen-Gate vor Budget, 12 Schuetzen alle dran <= 30 Fenster. 1167 Tests gruen, Commit 013f3a1."
+        },
+        {
+          "at": "2026-11-28T02:19:01Z",
+          "by": "build",
+          "text": "review → done: lane #7493; reviewer PASS, 8 Tests beweisen Cap/Budget/Offscreen-Gate/Fairness"
         }
       ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T02:11:27Z"
+      "updated": "2026-11-28T02:19:01Z"
     },
     {
       "id": 7494,
       "title": "m10-shot-budget-cap #5 Nachher-Messung + Doku",
       "description": "After-Messung (Bench + Chaos) -> shots/m10-shot-budget-cap-after.json; docs/lanes/m10-shot-budget-cap.md mit Vorher/Nachher inkl. Draw-Beitrag (Ziel: -20%) und FPS-Min bei 640x360/780x360@3. Abnahme: Doku committed, Kennzahlen erfuellt.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T02:11:27Z",
           "by": "build",
           "text": "todo → doing: After-Messung + Doku"
+        },
+        {
+          "at": "2026-11-28T02:14:40Z",
+          "by": "build",
+          "text": "doing → review: After-Messung + Doku committed: Chaos -33.8%/-31.6% gleichzeitige Schuesse (<= Cap 160), windupOk 100%, Burst/Fullrun FPS unverändert (60/60/60.2, Fullrun passed:true), Doku mit Vorher/Nachher in docs/lanes/m10-shot-budget-cap.md. 1167 Tests + Build gruen."
+        },
+        {
+          "at": "2026-11-28T02:19:01Z",
+          "by": "build",
+          "text": "review → done: lane #7494; reviewer PASS; Abnahme erfuellt: Chaos gleichzeitige Schuesse -33.8%/-31.6% (<= Cap 160), windupOk 100%, FPS unverändert (60/60/60.2), 1167 Tests + Build gruen"
         }
       ],
       "created": "2026-11-28T01:59:50Z",
-      "updated": "2026-11-28T02:11:27Z"
+      "updated": "2026-11-28T02:19:01Z"
     }
   ]
 }
