@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12013,
+  "next": 12014,
   "cards": [
     {
       "id": 1,
@@ -16463,6 +16463,15 @@
       "notes": [],
       "created": "2026-11-28T12:24:12Z",
       "updated": "2026-11-28T12:24:12Z"
+    },
+    {
+      "id": 12013,
+      "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
+      "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T12:25:04Z",
+      "updated": "2026-11-28T12:25:04Z"
     }
   ]
 }
