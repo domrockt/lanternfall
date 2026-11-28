@@ -1,0 +1,449 @@
+{
+  "schema": "m10-chest-arrow/v1",
+  "generatedAt": "2026-11-27T23:27:05.228Z",
+  "toleranceDeg": 5,
+  "marginPx": 24,
+  "formats": [
+    {
+      "label": "640x360",
+      "internal": "640x360",
+      "toleranceDeg": 5,
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -820,
+            "y": 1000
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 29.36,
+          "maxPosErrPx": 181.6,
+          "edgeOk": false,
+          "ok": false
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2880,
+            "y": 1000
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 180,
+          "maxPosErrPx": 592,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 90,
+          "maxPosErrPx": 334.6,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 180,
+          "maxPosErrPx": 312,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -820,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2880,
+            "y": -620
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 94.58,
+          "maxPosErrPx": 338,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -820,
+            "y": 2800
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2880,
+            "y": 2740
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.08,
+          "maxPosErrPx": 0.4,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": false,
+          "insideSamples": 6,
+          "visibleWhileInside": 2,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 940,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 860,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 820,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 780,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 780,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 700,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 1,
+              "sx": 620,
+              "cw": 640
+            },
+            {
+              "v": 1,
+              "i": 1,
+              "sx": 620,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 540,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 540,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 460,
+              "cw": 640
+            }
+          ]
+        }
+      ],
+      "ok": false
+    },
+    {
+      "label": "780x360",
+      "internal": "780x360",
+      "toleranceDeg": 5,
+      "cases": [
+        {
+          "id": "left",
+          "chest": {
+            "x": -890,
+            "y": 1000
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 24.78,
+          "maxPosErrPx": 181.6,
+          "edgeOk": false,
+          "ok": false
+        },
+        {
+          "id": "right",
+          "chest": {
+            "x": 2950,
+            "y": 1000
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 180,
+          "maxPosErrPx": 732,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "top",
+          "chest": {
+            "x": 1000,
+            "y": -680
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 90,
+          "maxPosErrPx": 397.9,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "bottom",
+          "chest": {
+            "x": 1000,
+            "y": 2740
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 180,
+          "maxPosErrPx": 312,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "tl",
+          "chest": {
+            "x": -890,
+            "y": -680
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0.03,
+          "maxPosErrPx": 0.2,
+          "edgeOk": true,
+          "ok": true
+        },
+        {
+          "id": "tr",
+          "chest": {
+            "x": 2950,
+            "y": -620
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 96.65,
+          "maxPosErrPx": 350.5,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "bl",
+          "chest": {
+            "x": -890,
+            "y": 2800
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 179.92,
+          "maxPosErrPx": 469.2,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "br",
+          "chest": {
+            "x": 2950,
+            "y": 2740
+          },
+          "visibleAtSpawn": false,
+          "maxAngleDeg": 96.65,
+          "maxPosErrPx": 350.5,
+          "edgeOk": true,
+          "ok": false
+        },
+        {
+          "id": "zoom1.14",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": 0,
+          "maxPosErrPx": 0,
+          "edgeOk": true,
+          "ok": true,
+          "zoomVisibleSamples": 12
+        },
+        {
+          "id": "disappear",
+          "chest": {
+            "x": 0,
+            "y": 0
+          },
+          "visibleAtSpawn": true,
+          "maxAngleDeg": null,
+          "maxPosErrPx": null,
+          "edgeOk": true,
+          "ok": false,
+          "insideSamples": 6,
+          "visibleWhileInside": 2,
+          "frames": [
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1080,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1040,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 1000,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 960,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 960,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 880,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 880,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 0,
+              "sx": 800,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 1,
+              "sx": 760,
+              "cw": 780
+            },
+            {
+              "v": 1,
+              "i": 1,
+              "sx": 760,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 680,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 640,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 600,
+              "cw": 780
+            },
+            {
+              "v": 0,
+              "i": 1,
+              "sx": 600,
+              "cw": 780
+            }
+          ]
+        }
+      ],
+      "ok": false
+    }
+  ],
+  "insideShot": null,
+  "verdict": {
+    "allCasesOk": false,
+    "jsErrors": 0,
+    "passed": false
+  },
+  "errors": []
+}

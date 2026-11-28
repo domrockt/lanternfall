@@ -47,6 +47,13 @@ try {
     page.on("console", (m) => { if (m.type() === "error") errors.push(`${fmt.label}: ${m.text()}`); });
     await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=101`);
     await startRun(page);
+    const webglRenderer = await page.evaluate(() => {
+      const g = window.__game;
+      const gl = g.renderer?.gl ?? g.canvas.getContext("webgl2") ?? g.canvas.getContext("webgl");
+      if (!gl) return "no-webgl";
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      return dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER));
+    });
     await page.evaluate(() => {
       window.__lf.god(true);
       window.__lf.autoPlay(false);
@@ -76,21 +83,23 @@ try {
         run.chests.spawn(cx, cy);
         return { cx, cy, px: view.centerX - ox * 60, py: view.centerY - oy * 60 };
       }, { ...c, FAR });
+      // Sampling im POST_UPDATE der Run-Szene (direkt nach ChestSystem.update) —
+      // der rAF-Tick kann stale Frames liefern, wenn Phaser rAF-Ticks skippt
+      // (fps.limit 60) und damit vor dem Step misst (Befund #5378).
       const samples = await page.evaluate(() => new Promise((resolve) => {
         const run = window.__game.scene.getScene("run");
         const cam = run.cameras.main;
         const arrow = run.chests["arrow"];
         const out = [];
-        let n = 0;
-        function step() {
+        const onPost = () => {
           out.push({
             visible: arrow.visible, x: arrow.x, y: arrow.y, rot: arrow.rotation,
             wx: cam.worldView.x, wy: cam.worldView.y, ww: cam.worldView.width, wh: cam.worldView.height,
             zoom: cam.zoom, cw: cam.width, ch: cam.height,
           });
-          if (++n >= 24) resolve(out); else requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+          if (out.length >= 24) { run.events.off("postupdate", onPost); resolve(out); }
+        };
+        run.events.on("postupdate", onPost);
       }));
       // Analyse in Node: gerenderte Screen-Pos (scrollFactor 0 wird um Kameramitte gezoomt).
       let maxAngle = 0, maxPosErr = 0, firstVisible = null, edgeOkAll = true;
@@ -143,14 +152,13 @@ try {
       run.chests.spawn(cx, cy);
       const arrow = run.chests["arrow"];
       const out = [];
-      let n = 0;
-      function step() {
+      const onPost = () => {
         out.push({ visible: arrow.visible, x: arrow.x, y: arrow.y, rot: arrow.rotation,
           wx: cam.worldView.x, wy: cam.worldView.y, ww: cam.worldView.width, wh: cam.worldView.height,
           zoom: cam.zoom, cw: cam.width, ch: cam.height, chestX: cx, chestY: cy });
-        if (++n >= 12) { cam.setZoom(1); resolve(out); } else requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
+        if (out.length >= 12) { run.events.off("postupdate", onPost); cam.setZoom(1); resolve(out); }
+      };
+      run.events.on("postupdate", onPost);
     }));
     let zoomVisibleSamples = 0;
     let zoomMaxAngle = 0;
@@ -195,14 +203,14 @@ try {
       const arrow = run.chests["arrow"];
       const out = [];
       let n = 0;
-      function step() {
+      const onPost = () => {
         const v = cam.worldView;
         const inside = cx > v.x + 8 && cx < v.x + v.width - 8 && cy > v.y + 8 && cy < v.y + v.height - 8;
         out.push({ visible: arrow.visible, inside, zoom: cam.zoom, sx: cx - v.x, cw: cam.width });
-        run.teleport(run.posX + 40, run.posY);
-        if (++n >= 14) resolve(out); else requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
+        if (++n >= 14) { run.events.off("postupdate", onPost); resolve(out); }
+        else run.teleport(run.posX + 40, run.posY);
+      };
+      run.events.on("postupdate", onPost);
     }));
     const insideSamples = disappear.filter((s) => s.inside);
     const visibleWhileInside = insideSamples.filter((s) => s.visible).length;
@@ -246,6 +254,7 @@ try {
     formats.push({
       label: fmt.label,
       internal: `${fmt.cssW}x${fmt.cssH}`,
+      webglRenderer,
       toleranceDeg: TOLERANCE_DEG,
       cases,
       ok: cases.every((c) => c.ok),
@@ -259,6 +268,7 @@ try {
 
 const report = {
   schema: "m10-chest-arrow/v1",
+  sampling: "POST_UPDATE",
   generatedAt: new Date().toISOString(),
   toleranceDeg: TOLERANCE_DEG,
   marginPx: MARGIN,

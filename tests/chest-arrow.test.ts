@@ -110,4 +110,52 @@ describe("M10 chest-arrow: Randpfeil-Layout (computeChestArrow)", () => {
     expect(angleDiffDeg(Math.atan2(rp.y - v.height / 2, rp.x - v.width / 2), expAngle)).toBeLessThanOrEqual(5);
     expect(rp.y).toBeCloseTo(v.height - CHEST_ARROW_MARGIN, 0);
   });
+
+  // Re-Abnahme-Befund #5378: bei 640x360 failten Rand-/Eckfaelle mit
+  // visibleAtSpawn=false und Winkelfehlern 90-180 Grad (raf-before: left 29.36°,
+  // right 180°, top 90°, bottom 180°, tr 94.58°; 780x360 zusaetzlich bl/br).
+  // Ursache war ein Messartefakt (rAF-Sampling misst vor dem Phaser-Step ->
+  // stale Frames, shots/m10-chest-arrow-refit-raf-before.json), NICHT die
+  // Layout-Logik. Diese Tests kodieren die FAIL-Signaturen als Invariante: bei
+  // konsistenter worldView bleibt der Pfeil sichtbar, winkelrichtig und in der
+  // Margin-Box.
+  it("Befund #5378: top/bottom/tl/br bei 640x360, FAR 1500 — sichtbar, Winkel <= 5 Grad, Margin-Box", () => {
+    const cases = [
+      { id: "top", ox: 0, oy: -1 }, { id: "bottom", ox: 0, oy: 1 },
+      { id: "tl", ox: -1, oy: -1 }, { id: "br", ox: 1, oy: 1 },
+    ];
+    for (const c of cases) {
+      const v = view(640);
+      const chest = {
+        x: v.viewX + v.viewWidth / 2 + c.ox * (v.viewWidth / 2 + 1500),
+        y: v.viewY + v.viewHeight / 2 + c.oy * (v.viewHeight / 2 + 1500),
+      };
+      const layout = computeChestArrow(v, chest.x, chest.y);
+      expect(layout.visible, c.id).toBe(true); // Befund: visibleAtSpawn=false
+      expect(
+        angleDiffDeg(layout.angle, trueAngleDeg(v, chest.x, chest.y)),
+        c.id,
+      ).toBeLessThanOrEqual(5); // Befund: 90-180 Grad
+      const rp = renderPos(layout, v.width, v.height, v.zoom);
+      expect(rp.x).toBeGreaterThanOrEqual(CHEST_ARROW_MARGIN - 1);
+      expect(rp.x).toBeLessThanOrEqual(v.width - CHEST_ARROW_MARGIN + 1);
+      expect(rp.y).toBeGreaterThanOrEqual(CHEST_ARROW_MARGIN - 1);
+      expect(rp.y).toBeLessThanOrEqual(v.height - CHEST_ARROW_MARGIN + 1);
+      const rAngle = Math.atan2(rp.y - v.height / 2, rp.x - v.width / 2);
+      expect(angleDiffDeg(rAngle, trueAngleDeg(v, chest.x, chest.y)), c.id).toBeLessThanOrEqual(5);
+    }
+  });
+
+  it("Befund #5378 disappear-Fall: Pfeil verschwindet, sobald Truhe im View (Einzug 8 px)", () => {
+    const v = view(640);
+    // Truhe 300 px hinter dem rechten Rand, dann naeher (wie der Lauf).
+    const out = computeChestArrow(v, v.viewX + v.viewWidth + 300, v.viewY + v.viewHeight / 2);
+    expect(out.visible).toBe(true);
+    // Truhe im View, aber knapp ausserhalb des 8-px-Einzugs: noch sichtbar.
+    const near = computeChestArrow(v, v.viewX + 8, v.viewY + v.viewHeight / 2);
+    expect(near.visible).toBe(true);
+    // Truhe innerhalb des Einzugs: aus.
+    const inside = computeChestArrow(v, v.viewX + CHEST_ARROW_INSET + 4, v.viewY + v.viewHeight / 2);
+    expect(inside.visible).toBe(false); // Befund: Pfeil bleibt sichtbar, obwohl Truhe im View
+  });
 });
