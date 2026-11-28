@@ -43,6 +43,13 @@ im JSON, Datei `scripts/m10-balance-corridor.mjs` → `KNOWN_VIOLATIONS`):
    auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Referenz 2026-11-26: alles 24–60 s.
    **Alle kael-Läufe liegen im Korridor.** Ursachenklärung/Fix braucht `src/**` (in dieser
    Lane gesperrt) — deshalb als knownViolation dokumentiert statt still geschönt.
+   **GELÖST (2026-11-28, Lane m10-mira-dps-corridor):** Ursache war phoenix L8
+   (4 Funken/0,48 s = 250 Basis-DPS; mira erreicht ember:8 bei Minute ~4 und bekommt die
+   Evolution über das Level-up-Angebot vor Boss 1). Fix: phoenix L8 → 2 Funken/1,1 s
+   (src/data/evolution-weapons.ts); der mira-Eintrag wurde aus `KNOWN_VIOLATIONS` entfernt
+   (Rückbau-Grund + Vorher/Nachher: docs/lanes/m10-mira-dps-corridor.md). Neue Baselines
+   `shots/m10-balance-corridor-{short,full}.json` (13:43Z/13:52Z): alle mira-Boss-Dauern
+   21,9–57,6 s, kael 28,3–49,2 s, alles im Korridor, Guard-Test grün ohne Whitelist.
 2. Endlevel aller 6/6 Referenzläufe: 34–36 — im Dom-Fenster [25, 40], keine Abweichung.
 
 ## Grenzen des Guards (wichtig)

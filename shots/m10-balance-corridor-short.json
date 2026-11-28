@@ -1,7 +1,7 @@
 {
   "lane": "m10-balance-corridor-guard",
   "mode": "short",
-  "generatedAt": "2026-11-28T12:19:29.449Z",
+  "generatedAt": "2026-11-28T13:43:36.749Z",
   "parameters": {
     "scale": 30,
     "seeds": [
@@ -42,9 +42,9 @@
       "seed": 101,
       "character": "mira",
       "outcome": "boss3",
-      "endSecond": 930.2,
+      "endSecond": 942.7,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 26,
+      "endLevel": 27,
       "bossesSpawned": [
         {
           "index": 0,
@@ -62,33 +62,33 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 312.85000000003686
+          "at": 326.55000000004
         },
         {
           "index": 1,
-          "at": 623.149999999981
+          "at": 649.7999999999568
         },
         {
           "index": 2,
-          "at": 928.6499999997031
+          "at": 942.2999999996907
         }
       ],
       "lastSeenByBoss": {
-        "0": 302.1500000000344,
-        "1": 615.449999999988,
-        "2": 921.4499999997097
+        "0": 311.90000000003664,
+        "1": 635.6999999999696,
+        "2": 931.7999999997003
       },
       "pageErrors": [],
-      "wallSeconds": 47.2,
-      "endMinute": 15.5
+      "wallSeconds": 49.8,
+      "endMinute": 15.71
     },
     {
       "seed": 202,
       "character": "mira",
       "outcome": "boss3",
-      "endSecond": 929.4,
+      "endSecond": 939.9,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 26,
+      "endLevel": 27,
       "bossesSpawned": [
         {
           "index": 0,
@@ -106,33 +106,33 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 330.1000000000408
+          "at": 332.0000000000412
         },
         {
           "index": 1,
-          "at": 629.1999999999755
+          "at": 644.0999999999619
         },
         {
           "index": 2,
-          "at": 929.0499999997028
+          "at": 939.1499999996936
         }
       ],
       "lastSeenByBoss": {
-        "0": 327.4500000000402,
-        "1": 615.449999999988,
-        "2": 919.4999999997115
+        "0": 327.6000000000402,
+        "1": 634.8999999999703,
+        "2": 928.3999999997034
       },
       "pageErrors": [],
-      "wallSeconds": 46.1,
-      "endMinute": 15.49
+      "wallSeconds": 48.8,
+      "endMinute": 15.67
     },
     {
       "seed": 404,
       "character": "mira",
       "outcome": "boss3",
-      "endSecond": 933.4,
+      "endSecond": 936.3,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 26,
+      "endLevel": 27,
       "bossesSpawned": [
         {
           "index": 0,
@@ -150,31 +150,31 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 331.25000000004104
+          "at": 321.9000000000389
         },
         {
           "index": 1,
-          "at": 629.5499999999752
+          "at": 635.3999999999699
         },
         {
           "index": 2,
-          "at": 933.4499999996988
+          "at": 935.8999999996965
         }
       ],
       "lastSeenByBoss": {
-        "0": 322.45000000003904,
-        "1": 615.449999999988,
-        "2": 918.949999999712
+        "0": 311.95000000003665,
+        "1": 634.8499999999704,
+        "2": 928.3499999997034
       },
       "pageErrors": [],
-      "wallSeconds": 47,
-      "endMinute": 15.56
+      "wallSeconds": 48.4,
+      "endMinute": 15.6
     },
     {
       "seed": 101,
       "character": "kael",
       "outcome": "boss3",
-      "endSecond": 936.4,
+      "endSecond": 935.4,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
       "endLevel": 25,
       "bossesSpawned": [
@@ -194,75 +194,31 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 326.90000000004005
+          "at": 328.30000000004037
         },
         {
           "index": 1,
-          "at": 630.0999999999747
+          "at": 642.4999999999634
         },
         {
           "index": 2,
-          "at": 936.2999999996962
+          "at": 934.299999999698
         }
       ],
       "lastSeenByBoss": {
-        "0": 316.9500000000378,
-        "1": 623.3999999999808,
-        "2": 925.8999999997056
+        "0": 314.95000000003733,
+        "1": 634.9499999999703,
+        "2": 931.9499999997001
       },
       "pageErrors": [],
-      "wallSeconds": 46,
-      "endMinute": 15.61
+      "wallSeconds": 50.5,
+      "endMinute": 15.59
     },
     {
       "seed": 202,
       "character": "kael",
       "outcome": "boss3",
-      "endSecond": 947.7,
-      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
-      "endLevel": 26,
-      "bossesSpawned": [
-        {
-          "index": 0,
-          "at": 300
-        },
-        {
-          "index": 1,
-          "at": 600
-        },
-        {
-          "index": 2,
-          "at": 900
-        }
-      ],
-      "bossDeaths": [
-        {
-          "index": 0,
-          "at": 329.2500000000406
-        },
-        {
-          "index": 1,
-          "at": 651.9499999999548
-        },
-        {
-          "index": 2,
-          "at": 947.1499999996863
-        }
-      ],
-      "lastSeenByBoss": {
-        "0": 323.1000000000392,
-        "1": 644.6999999999614,
-        "2": 937.8499999996948
-      },
-      "pageErrors": [],
-      "wallSeconds": 47.5,
-      "endMinute": 15.8
-    },
-    {
-      "seed": 404,
-      "character": "kael",
-      "outcome": "boss3",
-      "endSecond": 940.5,
+      "endSecond": 944.9,
       "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
       "endLevel": 25,
       "bossesSpawned": [
@@ -282,33 +238,77 @@
       "bossDeaths": [
         {
           "index": 0,
-          "at": 327.25000000004013
+          "at": 328.3500000000404
         },
         {
           "index": 1,
-          "at": 642.4499999999634
+          "at": 639.1999999999664
         },
         {
           "index": 2,
-          "at": 939.799999999693
+          "at": 938.4999999996942
         }
       ],
       "lastSeenByBoss": {
-        "0": 326.95000000004006,
-        "1": 634.9499999999703,
-        "2": 935.449999999697
+        "0": 321.9500000000389,
+        "1": 631.2999999999736,
+        "2": 938.0999999996945
       },
       "pageErrors": [],
-      "wallSeconds": 46.8,
-      "endMinute": 15.68
+      "wallSeconds": 51.5,
+      "endMinute": 15.75
+    },
+    {
+      "seed": 404,
+      "character": "kael",
+      "outcome": "boss3",
+      "endSecond": 939.5,
+      "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+      "endLevel": 25,
+      "bossesSpawned": [
+        {
+          "index": 0,
+          "at": 300
+        },
+        {
+          "index": 1,
+          "at": 600
+        },
+        {
+          "index": 2,
+          "at": 900
+        }
+      ],
+      "bossDeaths": [
+        {
+          "index": 0,
+          "at": 331.150000000041
+        },
+        {
+          "index": 1,
+          "at": 643.4999999999625
+        },
+        {
+          "index": 2,
+          "at": 938.3999999996943
+        }
+      ],
+      "lastSeenByBoss": {
+        "0": 327.40000000004017,
+        "1": 643.3999999999626,
+        "2": 935.8999999996965
+      },
+      "pageErrors": [],
+      "wallSeconds": 49.1,
+      "endMinute": 15.66
     }
   ],
   "endLevels": [
-    26,
-    26,
-    26,
+    27,
+    27,
+    27,
     25,
-    26,
+    25,
     25
   ],
   "bossRuns": [
@@ -320,16 +320,16 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 12.9,
+          "durationSec": 26.6,
           "defeated": true,
           "aliveAtEnd": false,
-          "inCorridor": false
+          "inCorridor": true
         },
         {
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 23.1,
+          "durationSec": 49.8,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -338,7 +338,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 28.6,
+          "durationSec": 42.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -353,7 +353,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 30.1,
+          "durationSec": 32,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -362,7 +362,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 29.2,
+          "durationSec": 44.1,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -371,7 +371,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 29,
+          "durationSec": 39.1,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -386,7 +386,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 31.3,
+          "durationSec": 21.9,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -395,7 +395,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 29.5,
+          "durationSec": 35.4,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -404,7 +404,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 33.4,
+          "durationSec": 35.9,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -419,7 +419,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 26.9,
+          "durationSec": 28.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -428,7 +428,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 30.1,
+          "durationSec": 42.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -437,7 +437,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 36.3,
+          "durationSec": 34.3,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -452,7 +452,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 29.3,
+          "durationSec": 28.4,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -461,7 +461,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 51.9,
+          "durationSec": 39.2,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -470,7 +470,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 47.1,
+          "durationSec": 38.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -485,7 +485,7 @@
           "index": 0,
           "name": "Moorkönigin",
           "spawnSecond": 300,
-          "durationSec": 27.3,
+          "durationSec": 31.2,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -494,7 +494,7 @@
           "index": 1,
           "name": "Knochenfürst",
           "spawnSecond": 600,
-          "durationSec": 42.4,
+          "durationSec": 43.5,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -503,7 +503,7 @@
           "index": 2,
           "name": "Der Fahle Hirte",
           "spawnSecond": 900,
-          "durationSec": 39.8,
+          "durationSec": 38.4,
           "defeated": true,
           "aliveAtEnd": false,
           "inCorridor": true
@@ -511,38 +511,9 @@
       ]
     }
   ],
-  "violations": [
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 101,
-      "bossIndex": 0,
-      "name": "Moorkönigin",
-      "durationSec": 12.9,
-      "corridor": [
-        20,
-        60
-      ]
-    }
-  ],
-  "knownViolations": [
-    {
-      "type": "bossDuration",
-      "character": "mira",
-      "seed": 101,
-      "bossIndex": 0,
-      "name": "Moorkönigin",
-      "durationSec": 12.9,
-      "corridor": [
-        20,
-        60
-      ],
-      "reason": "mira meltet Bosse messbar unter dem 20-s-Minimum: Boss 1 (Moorkönigin) 9,5-15,1 s über Seeds/Läufe; mira/404 (30-min-Referenz) auch Hexenzirkel 19,6 s und Hohler König 17,5 s. Alle kael-Läufe im Korridor. Referenz 2026-11-26 (shots/m10-balance-kael-final.json): 24-30 s. Fund der Lane m10-balance-corridor-guard; Ursachenklärung/Fix braucht src/** (Sperre) — Bedarf in .dispatch/requests.md gemeldet. Hinweis: gleiche Seeds liefern je Lauf verschiedene Boss-Dauern (mira/202: 30,1 s kurz vs. 15,1 s full) — der Korridor ist stochastisch, kein bitgenauer Determinismus-Anspruch."
-    }
-  ],
+  "violations": [],
+  "knownViolations": [],
   "unknownViolations": [],
   "accepted": true,
-  "jsErrors": [],
-  "reclassifiedAt": "2026-11-28T12:37:12.194Z",
-  "reclassifiedNote": "Metadaten (violations/knownViolations/unknownViolations/accepted) gegen geschaerfte Whitelist reklassifiziert; Marken (runs/bossRuns) unveraendert, kein neuer Messlauf (Supervisor-Steuerung 28.11.)."
+  "jsErrors": []
 }
