@@ -20,6 +20,11 @@ interface CharSelectData { seed?: number; debug?: boolean }
 // wie Hover), 1 = Knopfleiste (ZURÜCK/START via Kern-MenuFocus).
 // Ein Pad-Frame = genau EINE Aktion (Priorität back > up > down > left > right
 // > confirm, InputState liefert ohnehin nur Rising-Edges).
+// M10-gamepad-charselect-start (B1, Lane m10-sightprep-smoke): Startfokus ist
+// Reihe 0 (Charakter-Panel). Confirm in Reihe 0 wählt den fokussierten
+// Charakter und startet den Run — d-right/d-left wechselt IMMER den
+// Charakter und kann nie in die Knopfreihe wappen. "back" bleibt erreichbar:
+// B-Knopf (back) in beiden Reihen, oder down in die Knopfreihe + A auf ZURÜCK.
 // ---------------------------------------------------------------------------
 
 export interface CharSelectNavState {
@@ -28,7 +33,7 @@ export interface CharSelectNavState {
   buttonIndex: number;
 }
 
-export type CharSelectAction = "pick" | "start" | "back" | null;
+export type CharSelectAction = "start" | "back" | null;
 
 export function charSelectPadNav(
   s: CharSelectNavState,
@@ -51,7 +56,9 @@ export function charSelectPadNav(
     return st;
   }
   if (a.confirm) {
-    if (st.row === 0) st.action = "pick";
+    // B1: Confirm in Reihe 0 = Charakter bestätigen und Run starten
+    // (d-right wählt vor, A startet — siehe Harness scripts/verify-input.mjs).
+    if (st.row === 0) st.action = "start";
     else st.action = st.buttonIndex === 0 ? "back" : "start";
     return st;
   }
@@ -65,8 +72,10 @@ export class CharSelect extends Phaser.Scene {
   private panels: Phaser.GameObjects.Rectangle[] = [];
   private started = false;
   private pad = new InputState();
-  /** m10-gamepad-nav-scenes-r2 K3: Fokus-Reihe (0 Panels, 1 Knöpfe) + Knopf-Fokus. */
-  private padRow: 0 | 1 = 1;
+  /** m10-gamepad-nav-scenes-r2 K3 + B1: Fokus-Reihe (0 Panels, 1 Knöpfe).
+   * Startfokus Reihe 0 (Charakter-Panel) — Pad-Start aus CharSelect darf nie
+   * in der Knopfreihe beginnen (B1: d-right wrappte auf ZURÜCK). */
+  private padRow: 0 | 1 = 0;
   private buttonFocus!: MenuFocus;
   private footerButtons: MenuButton[] = [];
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
@@ -86,7 +95,7 @@ export class CharSelect extends Phaser.Scene {
     this.started = false;
     this.pad.reset();
     this.padArmed = false;
-    this.padRow = 1;
+    this.padRow = 0;
     this.panels = [];
     const W = GAME_WIDTH;
     const H = GAME_HEIGHT;
@@ -148,8 +157,10 @@ export class CharSelect extends Phaser.Scene {
       this, cx + 40, H - 18, 132, "START (ENTER)", () => this.start(), { height: 18, depth: 6 },
     );
     this.footerButtons = [backButton, start];
-    // K3: Kern-MenuFocus über der Knopfleiste; Startfokus auf START (Index 1)
-    // wie bisher. Hover übernimmt den Fokus-Index (AE=0).
+    // K3: Kern-MenuFocus über der Knopfleiste. Fokus liegt auf START (Index 1),
+    // aber der Pad-Startfokus ist Reihe 0 (B1): d-right/d-left wechselt dort
+    // den Charakter, erst down springt in die Knopfreihe. Hover übernimmt den
+    // Fokus-Index (AE=0).
     this.buttonFocus = new MenuFocus(this.footerButtons);
     this.buttonFocus.setIndex(1);
     this.footerButtons.forEach((b, i) => {
@@ -196,8 +207,7 @@ export class CharSelect extends Phaser.Scene {
     this.padRow = next.row;
     if (next.charIndex !== this.index) { this.index = next.charIndex; this.refresh(); }
     if (next.buttonIndex !== this.buttonFocus.currentIndex) this.buttonFocus.setIndex(next.buttonIndex);
-    if (next.action === "pick") this.pick(next.charIndex);
-    else if (next.action === "start") this.start();
+    if (next.action === "start") this.start();
     else if (next.action === "back") this.back();
   }
 
