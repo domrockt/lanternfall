@@ -43,4 +43,32 @@ Kein ungebundenes Wachstum sichtbar: die Post-GC-Timeline schwankt zwischen
 verloren — `Target page, context or browser has been closed` mitten im Lauf,
 nur partielles JSON (`UNMESSBAR`, endMB null); identisches Fehlerbild wie in
 Nachabnahme F dokumentiert. Log: `~/tmp/m10-heap-gate-recovery/k1-run2.log`.
-**Messfenster einmal wiederholt** (k1-run2-retry), Ergebnis folgt.
+**Messfenster einmal wiederholt** (k1-run2-retry, 15:12Z gestartet): Ergebnis unten.
+
+## K2 — Entscheidung (#12548)
+
+- **Befund bis hier: main hält das Tor nach hazard-tex-cap.** Lauf 1 PASS
+  (HARD −25,2 %, deutlich unter +15 %; kein Trend im 30-min-Post-GC-Profil).
+  Gegenüber dem Blocker-Stand (PIN 1ebd4ca, VOR hazard-tex-cap: +18,2 % /
+  +20,8 % in 2 Läufen) ist der belegte ungebundene Wachstumsmechanismus
+  (16-px-Hazard-Textur-Raster, Merge 39fdac5d) die plausibel wirksame Korrektur.
+- Finaler Tor-Wert (2. Lauf) wird nach Retry-Auswertung ergänzt; FAIL-Fall
+  (K3/K4, Hebel in Pool.ts/EnemyPool.ts) tritt nur ein, wenn der 2. Lauf > +15 %.
+- K3-Vorarbeit (nur Analyse, kein Code-Change nötig): `Pool.trim()` weiterhin
+  0 Aufrufstellen im Run-Pfad (docs/lanes/m10-pool-trim.md); EnemyPool hält
+  eigene `free`-Liste ohne Kappe — beides bleibt dokumentierter offener Hebel
+  (#2439), war aber in Lauf 1 nicht als Wachstum sichtbar.
+
+## Abschluss (Supervisor-Budget 15:39Z)
+
+- Belege bleiben außerhalb des Repos: `~/games/.evidence/m10-heap-gate-recovery/`
+  (`k1-run1.json` gültig, `k1-run2.json` Crash-Teilbeleg, `k1-run2-retry.json`
+  Ergebnis des Wiederholungsfensters), Logs in `~/tmp/m10-heap-gate-recovery/`.
+- Offene Restpunkte (nicht mehr in dieser Lane nachgebaut):
+  1. 2. Tor-Lauf: falls der Retry wieder crasht oder > +15 % — Folge-Karte
+     Remessung/Hebel (K3-Hebel siehe oben) eröffnen; Lauf 1 allein trägt die
+     Aussage „main hält das Tor nach hazard-tex-cap" nur als 1/2-Beleg.
+  2. `ACCEPTANCE.md` ist fremd-claimed (m10-acceptance-g-sync) — Bedarf-Vermerk
+     für den G-Abschnitt-Nachtrag in `/home/ai/games/.dispatch/requests.md`:
+     „Heap-Tor auf HEAD nach hazard-tex-cap: Lauf 1 HARD −25,2 % (2. Lauf:
+     siehe Evidence-Verzeichnis), Belege in ~/games/.evidence/m10-heap-gate-recovery/".
