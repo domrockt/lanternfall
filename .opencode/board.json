@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8876,
+  "next": 8877,
   "cards": [
     {
       "id": 1,
@@ -11435,6 +11435,15 @@
       "notes": [],
       "created": "2026-11-28T05:45:21Z",
       "updated": "2026-11-28T05:45:21Z"
+    },
+    {
+      "id": 8876,
+      "title": "m10-chaos-fix-raster-glow: Schwarz-Block-Regression beheben (Merge revertiert)",
+      "description": "Merge f2844a4 wurde revertiert (34e97d3): 960x540 zeigt hartkantigen Schwarz-Block x=0-95/y=230-540 im Spielfeld (Belege shots/merge-m10-chaos-fix-raster-glow-check-960.png, zz-chaos-check-960-crop-bl.png, after-revert-960.png). Prime-Verdacht K3 vignetteSteps/LIGHT_EDGE_STEPS (textures.ts), Blockbreite ≈ 5 Vignette-Bänder à 20 px. AK: Guard-Shot 960x540 ohne Schwarz-Run >=30px + regressionstest, dann Re-Merge mit Kontroll-Screenshots.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T05:56:30Z",
+      "updated": "2026-11-28T05:56:30Z"
     }
   ]
 }
