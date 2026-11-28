@@ -139,7 +139,7 @@ if (PHASE) {
         mutedIsBoolean: typeof g.muted === "boolean",
         storedPayload: stored ? stored["lanternfall-options-v1"] : null,
         memoryStorageDiverge: stored && stored["lanternfall-options-v1"]
-          ? JSON.stringify(stored["lanternfall-options-v1"]) !== JSON.stringify({
+          ? JSON.stringify(JSON.parse(stored["lanternfall-options-v1"])) !== JSON.stringify({
               music: g.music, sfx: g.sfx, shake: g.shake,
               damageNumbers: g.damageNumbers, muted: g.muted, scale: g.scale,
             })
