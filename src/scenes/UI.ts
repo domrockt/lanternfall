@@ -21,6 +21,7 @@ import { bossHudRects } from "../systems/BossSystem";
 import {
   hudSideMargin,
   hudTopMargin,
+  insetsOverCanvas,
   insetsToGamePx,
   readDeviceSafeAreaInsets,
   type SafeAreaInsets,
@@ -271,12 +272,15 @@ export class UI extends Phaser.Scene {
     this.scale.on(Phaser.Scale.Events.RESIZE, this.onScaleResize, this);
 
     // m10-hud-safearea: Geraete-Insets einmalig pro Aufbau lesen (View-Wechsel
-    // baut die Szene neu auf). Canvas-CSS-Breite = Masseinheit der Umrechnung;
-    // ohne Notch bleiben alle Anker bitgleich zur 640x360-Referenz.
+    // baut die Szene neu auf). Nur der Inset-Anteil UEBER dem Canvas wirkt
+    // (body-Padding rueckt den Canvas bei Geraeten wie Pixel 7 bereits in die
+    // Safe-Area -> dort bitgleich). Canvas-CSS-Breite = Masseinheit; ohne
+    // Notch bleiben alle Anker bitgleich zur 640x360-Referenz.
+    const canvasRect = this.game.canvas?.getBoundingClientRect();
     this.safeInset = insetsToGamePx(
       GAME_WIDTH,
-      this.game.canvas?.getBoundingClientRect().width ?? GAME_WIDTH,
-      readDeviceSafeAreaInsets(),
+      canvasRect?.width ?? GAME_WIDTH,
+      insetsOverCanvas(readDeviceSafeAreaInsets(), canvasRect, window.innerWidth, window.innerHeight),
     );
     this.safeMargin = {
       left: hudSideMargin(HUD_MARGIN_X, this.safeInset.left, GAME_WIDTH),

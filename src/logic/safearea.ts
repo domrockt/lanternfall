@@ -17,6 +17,31 @@ export interface SafeAreaInsets {
 export const NO_INSETS: SafeAreaInsets = { left: 0, right: 0, top: 0, bottom: 0 };
 
 /**
+ * Inset-Anteil, der UEBER dem Canvas liegt: index.html legt das body-Padding
+ * (env(safe-area-inset-*)) an, das den Canvas bei Geraeten mit funktionierendem
+ * Layout bereits in die Safe-Area rueckt (z. B. Pixel 7: Canvas x≈28 bei
+ * Inset 12). Nur der Rest darf als HUD-Marge wirken, sonst wuerde ein
+ * bereits sicheres Profil verschoben. Alle Werte in CSS-Px.
+ */
+export function insetsOverCanvas(
+  insetsCss: SafeAreaInsets,
+  rect: { x: number; y: number; width: number; height: number } | undefined | null,
+  screenW: number,
+  screenH: number,
+): SafeAreaInsets {
+  const g = (v: number): number => (Number.isFinite(v) && v > 0 ? v : 0);
+  if (!rect) return { ...NO_INSETS };
+  const rightGap = Math.max(0, screenW - rect.x - rect.width);
+  const bottomGap = Math.max(0, screenH - rect.y - rect.height);
+  return {
+    left: Math.max(0, g(insetsCss.left) - g(rect.x)),
+    right: Math.max(0, g(insetsCss.right) - rightGap),
+    top: Math.max(0, g(insetsCss.top) - g(rect.y)),
+    bottom: Math.max(0, g(insetsCss.bottom) - bottomGap),
+  };
+}
+
+/**
  * CSS-Insets in Spielpixel umrechnen: Spielpixel = CSS-Px * (viewWidth /
  * cssWidth). Es wird aufgerunden (nie in die Notch-Zone ragen) und negatives/
  * NaN auf 0 gesetzt. cssWidth <= 0 -> Faktor 1.
