@@ -32,6 +32,9 @@ const arg = (name, def) => {
 const outPath = arg("out", null);
 const secs = Number(arg("secs", "40"));
 const target = Number(arg("target", "300"));
+// --walk 1: deterministischer Laufrad (ArrowRight halten, autoPlay aus), damit
+// das Fenster garantiert Chunk-Grenzueberfahrten enthaelt (A/B-Vergleich).
+const walk = arg("walk", "0") === "1";
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -69,12 +72,14 @@ await page.evaluate(({ evolutions, passives }) => {
   window.__lf.setTimeScale(1);
 }, { evolutions: EVOLUTIONS, passives: PASSIVES });
 await page.waitForTimeout(6000);
+if (walk) await page.keyboard.down("ArrowRight");
 for (let i = 0; i < 40; i++) {
   if (!(await page.evaluate(() => window.__lf?.stats().levelUpOpen))) break;
   await page.evaluate(() => window.__lf.pickLevelUp(0));
 }
 
-const minute25 = await page.evaluate(async ({ target, seconds }) => {
+const minute25 = await page.evaluate(async ({ target, seconds, walk }) => {
+  if (walk) window.__lf.autoPlay(false);
   const g = window.__game.scene.getScene("run").ground;
   g.debugEnableCounters();
   const start = performance.now();
@@ -123,7 +128,9 @@ const minute25 = await page.evaluate(async ({ target, seconds }) => {
   });
   const total = g.debugStats();
   return { frames, rows, total };
-}, { target, seconds: secs });
+}, { target, seconds: secs, walk });
+
+if (walk) await page.keyboard.up("ArrowRight");
 
 // Auswertung: Perzentile + Korrelation worstFrame <-> Chunk-Ereignisse.
 const dts = minute25.rows.map((r) => r.dt).sort((a, b) => a - b);

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12395,
+  "next": 12440,
   "cards": [
     {
       "id": 1,
@@ -17213,6 +17213,73 @@
       ],
       "created": "2026-11-28T13:19:09Z",
       "updated": "2026-11-28T13:30:38Z"
+    },
+    {
+      "id": 12435,
+      "title": "m10-ground-chunk-budget K1: Vorher-Messung (Chunk-Ereignisse vs worstFrame)",
+      "description": "Abnahmekriterium: scripts/m10-ground-chunk.mjs misst im M25-Harness (skipTo 1490, Top-up 300, 6 Evos) je Frame dt + Chunk-Events (requested/installs/canvas-Erzeugung, Texturanzahl, Heap); JSON + Befund (Korrelation worstFrame vs Chunk-Install/GC) in docs/lanes/m10-ground-chunk-budget.md + Beleg in ~/games/.evidence/m10-ground-chunk-budget/; Renderer-String enthalten. Commit M10-...: #K1.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T13:40:14Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-ground-chunk-budget übernommen: K1 Vorher-Messung startet (Baseline vor Fix)."
+        },
+        {
+          "at": "2026-11-28T13:44:49Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: before-local.json (40s M25, Renderer-String) — Worst-Frames korrelieren mit Top-up+GC, NICHT mit Chunk-Installs; Commit 6c731c55."
+        }
+      ],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:44:49Z"
+    },
+    {
+      "id": 12436,
+      "title": "m10-ground-chunk-budget K2: Fix Chunk-Budget/-Upload im Frame",
+      "description": "Abnahmekriterium: GroundRendererChunk-Uploads/Canvas-Allokationen geglättet (Texture-Pool gegen createCanvas-GC-Spikes und/oder Frame-Budget-Gate), Terrain-Ausgabe pixelidentisch, minimalinvasiv, keine fremden Dateien (nur src/gfx/GroundRenderer.ts). tsc grün, gezielte Tests grün. Commit M10-...: #K2.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:44:49Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: Canvas-Textur-Pool + Frame-Budget-Gate in GroundRenderer.ts."
+        },
+        {
+          "at": "2026-11-28T13:50:46Z",
+          "by": "build",
+          "text": "Supervisor-Steer befolgt: GroundRenderer-Edits gestoppt, K2-Stand wird jetzt committet (Pool + Gate), dann gemessene Iterationen mit flock npm run perf / m10-ground-chunk.mjs + Pixel-Scan (verify:terrain) nach jeder Änderung."
+        }
+      ],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:50:46Z"
+    },
+    {
+      "id": 12437,
+      "title": "m10-ground-chunk-budget K3: Guard-Tests (Budget, bitgleich, kein Stillstand, keine Löcher)",
+      "description": "Abnahmekriterium: tests/ground-chunk-budget.test.ts — Chunk-Erzeugung deckelbar (rein getestet), Terrain-Ergebnis bitgleich (Pixel-Scan 0 schwarze Flächen nach Muster m10-terrain-hole-guard), kein Chunk-Stillstand (Rückstau wird vollständig abgebaut / Verlustquote 0). Suite grün. Commit M10-...: #K3.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:40:13Z"
+    },
+    {
+      "id": 12438,
+      "title": "m10-ground-chunk-budget K4: Nachher-Messung worstFrame p99",
+      "description": "Abnahmekriterium: gleiche Methode/Skript wie K1 (flock), Vorher/Nachher-Vergleich: wiederkehrende 33–34-ms-Spikes beseitigt bzw. p99 < 20 ms (lokaler Lauf) — Renderer-String im Beleg; Gerät-Nachmessung als Merge-Follow-up dokumentiert. JSON in ~/games/.evidence/. Commit M10-...: #K4.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:40:13Z"
+    },
+    {
+      "id": 12439,
+      "title": "m10-ground-chunk-budget K5: Doku + .lane-done",
+      "description": "Abnahmekriterium: docs/lanes/m10-ground-chunk-budget.md vollständig (Befunde, Messwerte Vorher/Nachher, offene Punkte), git status --ignored geprüft, .lane-done mit 5–10 Zeilen Summary committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T13:40:13Z",
+      "updated": "2026-11-28T13:40:13Z"
     }
   ]
 }
