@@ -55,6 +55,13 @@ const BOSS_RADIUS = [20, 16, 17, 20, 16, 19];
 export const BOSS_SPRITE_SIZE = [56, 64, 72, 80, 96, 96];
 /** Mindestabstand zwischen Boss-Sprite-Oberkante und HUD-/Banner-Unterkante. */
 export const BOSS_HUD_CLEARANCE = 6;
+/**
+ * Puffer im Zoom-Zweig der Komposition (art-director-Nachbesserung A10):
+ * der komponierte Worst-Case soll die sichere Oberkante nicht exakt
+ * BERUEHREN, sondern 3 px darunter beginnen — sonst laeuft die
+ * Puls-Magnifikation an der Leistenkante auf Touch.
+ */
+export const BOSS_PULSE_TOP_BUFFER = 3;
 export interface Rect { x: number; y: number; w: number; h: number }
 
 /**
@@ -122,7 +129,7 @@ export function composedBossCenterY(
     const midY = camTop + viewHeight / 2;
     const projectedTop = (camTop + y - midY) * zoom + viewHeight / 2 - size * zoom / 2;
     if (projectedTop < safeTop) {
-      y = midY + (safeTop + size * zoom / 2 - viewHeight / 2) / zoom - camTop + 0.01;
+      y = midY + (safeTop + BOSS_PULSE_TOP_BUFFER + size * zoom / 2 - viewHeight / 2) / zoom - camTop;
     }
   }
   return y;
