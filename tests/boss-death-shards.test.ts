@@ -146,7 +146,11 @@ describe("m10-boss-death-shards: Boss-Partikel im ParticleSystem (#5220-Analog)"
     ps.setAlphaScale(REDUCED);
     ps.shards("fx_boss_core", 0, 0, 4, { life: 0.9, scaleFrom: 1.35, additive: false, alphaFrom: 1 });
     const rt = (ps.active as FxRuntime[])[0];
-    expect(rt.frames[0]).toBe("fx_boss_core");
+    // M10-fx-bakes-evo-r2 K3: fx_boss_core ist Mixel-Basis — bei Scale 1,35
+    // waehlt der Spawn Stufe 2 (Draw 0,675); Boss-Status und Alpha-Boden
+    // ueberleben den Rewrite (isBossFxKey erkennt "fx_boss_core@2").
+    expect(rt.frames[0]).toBe("fx_boss_core@2");
+    expect(rt.mixelLevel).toBe(2);
     expect(rt.alphaFrom).toBeGreaterThanOrEqual(BOSS_FX_ALPHA_FLOOR);
     expect(recs[0].blend).toBe(Phaser.BlendModes.NORMAL);
   });

@@ -7,8 +7,8 @@
  * Evo-Kette) und sichert sie als JSON-Fixture nach
  * `tests/fixtures/palette-fx-guard.json`:
  *
- *   - 12 Evo-Signaturen (hit/death je 4 Frames, 32x32) via EVOLUTION_SIGNATURES
- *     + signatureFrame
+ *   - 12 Evo-Signaturen (hit/death je 4 Frames) via evolutionSignatureTextureDef
+ *     in der realen Laufzeit-Groesse (5 baked 128/96, thunder_seal 32x32)
  *   - Boss-FX fx_boss_core (6 Frames, 32x32) via deathFrameSets()
  *   - 4 Mixel-Basen Level-1 via mixelLevel1Frames() + alle Bakes >= 2 via
  *     mixelBakes() (Metrik + erster Frame)
@@ -26,13 +26,22 @@ import { analyzeFxGuard, ditherMetrics, scaleCoverage } from "./art/palette-chec
 
 /**
  * Kuratierte max. Laufzeit-Draw-Scales der repraesentativen FX mit Quellen.
- * Nur Lese-Belege aus dem Code (Stand 28.11.); bei Aenderungen der Spawn-Sites
- * hier nachziehen — der Test pinnt effectiveScale gegen die Fixture.
+ * M10-fx-bakes-evo-r2 (K1): auf Ist der Evo-Kette gehoben — 5 Signaturen sind
+ * in Zielgroesse gebacken (drawScale [1,1], Draw-Scale 1) und gelten damit als
+ * gedeckt; thunder_seal bleibt 32x32 @ 3,2-4,6 (spawnEvolution-Fallback).
+ * Bei Aenderungen der Spawn-Sites hier nachziehen — der Test pinnt
+ * effectiveScale gegen die Fixture.
  */
 const SCALE_MANIFEST = [
-  { key: "fx_evo_hit_*", maxScale: 3.6, source: "src/systems/FxSystem.ts spawnEvolution: Hit 3,2 -> 3,6" },
-  { key: "fx_evo_death_*", maxScale: 4.6, source: "src/systems/FxSystem.ts spawnEvolution: Death 4,0 -> 4,6" },
-  { key: "fx_boss_core", maxScale: 3.6, source: "src/scenes/Run.ts:1711 spawnAnim 1,6 -> 3,6; src/logic/death.ts rimScale 1,2-1,25" },
+  // Baked-Signaturen: Textur in Zielgroesse, Draw-Scale 1 (Mixel-Regel erfuellt).
+  ...["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "soul_beacon"].flatMap((id) => [
+    { key: `fx_evo_hit_${id}`, maxScale: 1, source: `src/gfx/gen-fx.ts EVOLUTION_SIGNATURES.${id}.drawScale [1,1] — baked in Zielgroesse (evolutionSignatureTextureDef)` },
+    { key: `fx_evo_death_${id}`, maxScale: 1, source: `src/gfx/gen-fx.ts EVOLUTION_SIGNATURES.${id}.drawScale [1,1] — baked in Zielgroesse (evolutionSignatureTextureDef)` },
+  ]),
+  // thunder_seal: noch 32x32-Quelle, spawnEvolution-Fallback Hit 3,2->3,6 / Death 4,0->4,6.
+  { key: "fx_evo_hit_thunder_seal", maxScale: 3.6, source: "src/systems/FxSystem.ts spawnEvolution: Hit 3,2 -> 3,6 (ohne drawScale)" },
+  { key: "fx_evo_death_thunder_seal", maxScale: 4.6, source: "src/systems/FxSystem.ts spawnEvolution: Death 4,0 -> 4,6 (ohne drawScale)" },
+  { key: "fx_boss_core", maxScale: 3.6, source: "src/scenes/Run.ts spawnAnim (Boss-Tod 1,6 -> 3,6, Auftritt bis 2,4); rim = scaleFrom * rimScale (src/systems/CombatSystem.ts:1212) bis 4,531 (burst 3,84*1,18, src/logic/death.ts) — heute erreichbar nur tank->crumble 3,456 (alle Bosse tank, BossSystem.ts:154); Bake bis 5 deckt alle Klassen" },
   { key: "fx_halo", maxScale: 4.6, source: "src/gfx/gen-fx.ts MIXEL_BAKE_DEFS-Kommentar: fx_halo bis 4,6 (Boss-Tod)" },
   { key: "fx_shock", maxScale: 3.3, source: "src/gfx/gen-fx.ts MIXEL_BAKE_DEFS-Kommentar: shock bis 3,3" },
   { key: "fx_fire", maxScale: 1.9, source: "src/gfx/gen-fx.ts MIXEL_BAKE_DEFS-Kommentar: fire < 2 + Reserve" },
@@ -43,16 +52,17 @@ const SCALE_MANIFEST = [
 function collectRepresentative(genFx, pal) {
   const sets = []; // { key, file, w, h, frames: string[][], framesFull: boolean }
 
-  // Evo-Signaturen: 12 Sets (6 Evolutionen x hit/death) je 4 Frames.
+  // Evo-Signaturen: 12 Sets (6 Evolutionen x hit/death) je 4 Frames, in der
+  // REALEN Laufzeit-Groesse (M10-fx-bakes-evo-r2 K1): 5 Signaturen baked in
+  // Zielgroesse (128/96 @ drawScale [1,1]), thunder_seal 32x32.
   for (const id of genFx.EVOLUTION_SIGNATURE_IDS) {
-    const sig = genFx.EVOLUTION_SIGNATURES[id];
     for (const kind of ["hit", "death"]) {
+      const def = genFx.evolutionSignatureTextureDef(id, kind);
       sets.push({
         key: genFx.signatureTextureKey(id, kind),
-        file: "src/gfx/gen-fx.ts signatureFrame",
-        w: 32, h: 32,
-        frames: Array.from({ length: genFx.SIGNATURE_FRAME_COUNT }, (_, i) =>
-          genFx.signatureFrame(sig.shape, sig.palette, i, kind)),
+        file: "src/gfx/gen-fx.ts evolutionSignatureTextureDef",
+        w: def.w, h: def.h,
+        frames: def.frames,
         framesFull: true,
       });
     }
@@ -67,9 +77,13 @@ function collectRepresentative(genFx, pal) {
     });
   }
 
-  // Mixel-Basen Level-1 (Quelle der normalen Texturen).
+  // Mixel-Basen Level-1 (Quelle der normalen Texturen). Keys, die schon als
+  // Evo-Signatur erfasst sind (thunder_seal seit M10-fx-bakes-evo-r2 K2 auch
+  // Mixel-Basis), nicht doppelt aufnehmen.
+  const seen = new Set(sets.map((s) => s.key));
   const level1 = genFx.mixelLevel1Frames();
   for (const [base, def] of Object.entries(level1)) {
+    if (seen.has(base)) continue;
     sets.push({
       key: base, file: "src/gfx/gen-fx.ts mixelLevel1Frames",
       w: def.w, h: def.h, frames: def.frames, framesFull: true,
