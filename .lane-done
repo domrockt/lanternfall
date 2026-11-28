@@ -1,0 +1,25 @@
+# Lane m10-loadscreen-pretext — fertig (2026-11-28)
+
+Dom-Wunsch: Vor-Text „LADE MOOR …" saß auf fixem x=240 (Zentrum einer 480er-Annahme)
+und damit links der Mitte (Gerät: ~37 % Breite). Fix (Option a, Supervisor-Steer):
+`src/scenes/Boot.ts` — PixelText-X an `Math.round(GAME_WIDTH/2)` gekoppelt (eine
+aktive Zeile); Option (b) (Laterne ab Frame 0) nur begründet, nicht gebaut.
+
+Messwerte:
+- Gerät (Redmi Pad Pro, installierte Lane-APK, Adreno (TM) 710, 0 JS-Fehler):
+  Vor-Text jetzt mittig (Textzentrum 639/1280) — Beleg
+  `~/games/.evidence/m10-loadscreen-pretext/device-after-reload/dev-005.jpg`;
+  Ladescreen Laterne+Balken unverändert gut.
+- Desktop (Mesa Intel RPL-S): Vorher 37,5 % → Nachher 50 % Breite
+  (`shots/abnahme/m10-loadscreen-pretext-before.png` / `-after.png`);
+  shot.mjs 960+1280: 0 JS-Fehler.
+- Boot-Startup: verschränkte Paare before/after (3× je 1 Run):
+  +248/+27/−524 ms → Median +27 ms ≤ FAIL-Grenze 50 ms (Rauschen ±500 ms).
+  Belege `~/games/.evidence/m10-loadscreen-pretext/pair*.json`.
+- Build + Tests grün (210 Dateien / 2320 Tests); Guard-Test
+  `tests/boot-preload.test.ts` pinnt die Zentrierung.
+
+Karten: #12351 Vorher-Beleg, #12352 Fix+Test, #12353 Desktop-Verify,
+#12354 Gerät+Doku — alle committet (a3dbb8bf, 04cac82d, 6fe6d2fa, K4-Commit).
+Art-director-Sichtcheck: PASS. Doku: docs/lanes/m10-loadscreen-pretext.md.
+Offen (fremd): 0–3,6 s Schwarz beim App-Start → Vera (`~/lf-apk` Theme).
