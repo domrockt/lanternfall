@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7826,
+  "next": 7882,
   "cards": [
     {
       "id": 1,
@@ -10005,6 +10005,48 @@
       "notes": [],
       "created": "2026-11-28T03:28:16Z",
       "updated": "2026-11-28T03:28:16Z"
+    },
+    {
+      "id": 7878,
+      "title": "m10-audio-music-dawn #K1: Ist-Analyse Musik-Pfade + Messskript",
+      "description": "Ist-Analyse der Musik-Umschaltung in src/audio/AudioSystem.ts (MUSIC_KEYS, setMusic, stopMusic, applyVolumes/setMuted-Interaktion). Messskript scripts/m10-music-dawn.mjs (reine Zustandslogik, kein Phaser) misst Uebergangs-Matrix Titel/Run/Boss/Dawn x Master-Mute: Doppel-Voice-Starts, Stop-ohne-Start-Reihenfolge. Vorher-Beleg shots/m10-music-dawn-before.json committen. Abnahme: JSON vorhanden + Befund benennt Knackser-Quellen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:30:18Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Ist-Analyse AudioSystem-Musikpfade, Messskript scripts/m10-music-dawn.mjs"
+        }
+      ],
+      "created": "2026-11-28T03:30:16Z",
+      "updated": "2026-11-28T03:30:18Z"
+    },
+    {
+      "id": 7879,
+      "title": "m10-audio-music-dawn #K2: Uebergangs-Regeln ohne Dopplerton",
+      "description": "Track-Wechsel in AudioSystem: alter Voice ist gestoppt/destroyed BEVOR der neue startet (aktuell: stopMusic() stoppt erst, dann add — Reihenfolge pruefen), Wiederhol-Start derselben Stufe = No-op ohne Sound-Neuanlage, Mute/Reload-Pfade bitgleich zu A7. mixing.ts nur falls noetig, WEAPON/HIT-Band-Grenzen unangetastet. Abnahme: npx tsc --noEmit rc=0, gezielte Tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:30:16Z",
+      "updated": "2026-11-28T03:30:16Z"
+    },
+    {
+      "id": 7880,
+      "title": "m10-audio-music-dawn #K3: Guard-Tests music-dawn",
+      "description": "tests/music-dawn.test.ts mit >= 6 Tests: Uebergangs-Matrix (Titel/Run/Boss/Dawn x Master-Mute x Reload), 0 Doppel-Voices (bei Wechsel nie 2 Musik-Sounds aktiv), Wiederhol-Start No-op, Mute bitgleich (sfxPlayed/voices/musicTrack wie A7). Abnahme: npx vitest run tests/music-dawn.test.ts gruen, audio-mix-chaos + audio-frost-gap Tests unveraendert gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:30:16Z",
+      "updated": "2026-11-28T03:30:16Z"
+    },
+    {
+      "id": 7881,
+      "title": "m10-audio-music-dawn #K4: Nachher-Beleg + Doku",
+      "description": "Nachher-Beleg shots/m10-music-dawn-after.json via Messskript, docs/lanes/m10-audio-music-dawn.md mit Vorher/Nachher-Zahlen, Befunden und offenen Punkten. Abnahme: beide JSONs committed, Doku enthaelt Messwerte, npm run build + npm test einmal gruen, ein Commit pro Karte.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T03:30:16Z",
+      "updated": "2026-11-28T03:30:16Z"
     }
   ]
 }
