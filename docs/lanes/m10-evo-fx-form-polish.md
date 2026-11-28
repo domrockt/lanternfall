@@ -53,8 +53,25 @@ Winter-Skript (dokumentiert, korrigiert in der Auswertung; kein Spieleffekt).
 
 - [x] K1 Befundtabelle + Vorher-Belege (#8558, Commit 5a01965)
 - [x] K2a/K2b Fixes (#8560, #8559) — siehe unten
-- [ ] K3 art-director-Abnahme ≥ 4/5 je geändertem Evo (#8561)
-- [ ] K4 Tests/FPS/Doku/lane-done (#8562)
+- [x] K3 art-director-Abnahme ≥ 4/5 je geändertem Evo (#8561) — **PASS, kein Muss**
+- [x] K4 Tests/FPS/Doku/lane-done (#8562)
+
+## K3 — art-director-Abnahme (2026-11-28, streng, Vorher/Nachher + JSON)
+
+Belege: after-Shots aller 6 Evos (2x nearest vergrößert) + Zoom-Crops (~/tmp/m10-evo-fx-form-polish/)
++ after.json (Renderer ANGLE Intel RPL-S — gültig, kein SwiftShader).
+
+| Evo | Note | Urteil | Kernbefund |
+|---|---|---|---|
+| phoenix | 4,5 | PASS | Petale flächig, kein Checkerboard mehr (vorher systematische 1-px-Löcher), Kern hell-amber |
+| eternal_winter | 4 | PASS | Aura kalt Blau-Weiß mit Reif-Kristallen am Rand, Nova-Kerne weiß; grüne Death-Sprenkel = dokumentierter Rest |
+| wrath_pendulum | 4 | PASS | Arc Glut/Rot-Orange, rote Treffer-Funken sichtbar; Arc nur 1–2 px dünn (optional nachbessern) |
+| thunder_seal | 4 | PASS | Bolzen klar Gelb-Weiß, Siegel-Kreise am Boden als Ankündigung lesbar; Hex-Segmente könnten unregelmäßiger jitten |
+| thorn_storm | 4 | PASS | Block-Mosaik weg, organische grüne Ranken + rotbraune Dornspitzen; lose rotbraune Fragmente dichter clustern (optional) |
+| soul_beacon | 4 | PASS (unverändert) | blasses Grün-Weiß stimmig, kollidiert nicht mit den neuen Evos |
+
+**Gesamt: PASS für die Lane — muss neu: nichts.** Optionale Nachbesser-Punkte (nicht blockierend,
+nächste Karte): Zorn-Arc +1 px, Siegel-Jitter variieren, Dornen-Fragmente clustern.
 
 ## K2 — Umsetzung (Commits, in Reihenfolge)
 
