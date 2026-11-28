@@ -10982,16 +10982,21 @@
       "id": 8598,
       "title": "m10-boss-portrait-crisp K1: Before-Kontaktbögen 6 Bosse 1x+4x + Mängelliste",
       "description": "Owner: pixel-artist. AK: shots/m10-boss-portrait-before-*.png (je Boss 3 Frames 1x + 4x), Mängelliste je Boss max. 3 Muss-Punkte (Konturen, Silhouetten-Lesbarkeit, Lichtkanten), Baseline-JSON (Off-Palette, Silhouetten-Kontrast). Belege im Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T04:32:17Z",
           "by": "build",
           "text": "todo → doing: Start K1: Kontaktbogen-Skript scripts/m10-boss-portrait.mjs, Before-Shots + Baseline-JSON."
+        },
+        {
+          "at": "2026-11-28T05:51:10Z",
+          "by": "build",
+          "text": "doing → done: lane m10-boss-portrait-crisp: erledigt – Marker 5d2bceb, Nachweis shots/m10-boss-portrait-before-* + Lane-Abschluss f5f201c, Merge b959a63 (rc=0)"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:17Z"
+      "updated": "2026-11-28T05:51:10Z"
     },
     {
       "id": 8599,
@@ -11012,16 +11017,21 @@
       "id": 8600,
       "title": "m10-boss-portrait-crisp K3: Guard-Test boss-portrait-crisp.test.ts",
       "description": "Owner: test-auditor. AK: tests/boss-portrait-crisp.test.ts (6/6 Bosse, 0 Off-Palette-Pixel, Silhouetten-Kontrast >= Vorher, keine Frame-Dubletten) grün; npm test bleibt grün.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T04:58:15Z",
           "by": "build",
           "text": "todo → doing: Start K3: Guard-Test liegt vor, 5/5 grün auf Baseline und nach K2; Commit folgt."
+        },
+        {
+          "at": "2026-11-28T05:51:10Z",
+          "by": "build",
+          "text": "doing → done: lane m10-boss-portrait-crisp: erledigt – Marker d111ea7, Guard-Test 6/6 gruen (05:50Z), Merge b959a63 (rc=0)"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:58:15Z"
+      "updated": "2026-11-28T05:51:10Z"
     },
     {
       "id": 8601,
@@ -11131,16 +11141,21 @@
       "id": 8606,
       "title": "m10-boss-lure-fair K1: Vorher-Beleg 6 Bosse x 3 Seeds",
       "description": "Skript scripts/m10-boss-fair.mjs: 6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 s Sim je Boss. Misst Distanz zum Spieler, Distanz zur Spawn-Zone (Leash), Sichtbarkeit im View, Schadensereignisse ohne vorherige Sichtbarkeit. Output shots/m10-bossfair-before.json. Abnahme: JSON committed, Kennzahlen (offscreenAnteil, maxLeashAbweichung, Schaden-ohne-Sicht) je Boss/Seed.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T03:33:39Z",
           "by": "build",
           "text": "todo → doing: Vorher-Beleg: Mess-Skript + Baseline-Lauf 6 Bosse x 3 Seeds"
+        },
+        {
+          "at": "2026-11-28T05:51:10Z",
+          "by": "build",
+          "text": "doing → done: lane m10-boss-lure-fair: erledigt – Marker 5fffe0d, scripts/m10-boss-fair.mjs + before.json auf main, Merge d8b4961 (rc=0)"
         }
       ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:39Z"
+      "updated": "2026-11-28T05:51:10Z"
     },
     {
       "id": 8607,
