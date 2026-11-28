@@ -121,6 +121,19 @@ Typen via `scripts/terrain-coverage.d.mts` (Repo-Muster m10-heap-budget-gate.d.m
 | Rot-Beweis: künstliches 80x60-Loch im echten Shot | Region 4800 px erkannt, guardOk=false | `k4-red-proof.json` + `-1280.png` |
 | Suite-Test | 7/7 grün, gesamt npm test 1529/1529, tsc + build grün | `~/tmp/m10-terrain-hole-guard/k3-{build,test}.log` |
 
+## Review
+
+Reviewer-Pass über K1–K4: **PASS** (Belege: flood-fill 4-Nachbarn korrekt,
+kein falsch-PASS-Pfad, Test-Aussagekraft bestätigt, 1529 Tests grün, Laufzeit
+38 s vs. 3 min). Umgesetzte Review-Funde (Commit 8d08de6):
+- Sollte 1: Test „Loch schneidet HUD-Grenze" — nur der Spielfeld-Anteil
+  (15×60 = 900 px, minY 34) zählt als Befund; Suite jetzt 8/8.
+- Sollte 2: `gpage.setDefaultTimeout(10000)` — hängender Game-Main-Thread
+  kann das 3-min-Budget nicht mehr sprengen.
+- Nit (dokumentiert, nicht umgesetzt): `RUN_SECONDS`-Konstante statt 7500;
+  Pass-Evidenz liegt bewusst nur in `~/games/.evidence/m10-terrain-hole-guard/`
+  (kein Repo-Bloat), Abnahme-Shots in `shots/abnahme/`.
+
 ## Offene Punkte / Bedarfsmeldungen
 
 - (keine aus dem Guard-Lauf — main `91361e3` ist terrain-sauber in allen 3 Formaten)

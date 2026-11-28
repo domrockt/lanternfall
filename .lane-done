@@ -1,0 +1,22 @@
+# Lane m10-terrain-hole-guard — fertig (2026-11-28)
+
+Regressionsschranke für Doms DRINGEND-Meldung 04:00Z („schwarze Löcher“) gebaut:
+`node scripts/verify-terrain.mjs` prüft jetzt zusätzlich das feste
+Abnahme-Kriterium „kein Pixel der Spielfläche ohne Terrain“.
+
+- Guard: Screenshots 960x540 / 1280x720 / 1920x1080, je Start + nach 60 Spiel-Sekunden
+  Lauf in 8 Richtungen (timeScale 8); Kriterium: keine zusammenhängende reine
+  Schwarz-Fläche (r,g,b < 6, ≥ 300 px, 4-Nachbarn) im Spielfeld-Rect; HUD-Blacklist
+  top 34 Spiel-px (skaliert mit der Bildbreite) dokumentiert.
+- Suite-Test tests/terrain-coverage.test.ts 8/8 (In-Memory-PNG-Fixtures): bekannt-gut ok,
+  bekannt-lochig FAIL mit exakter Region, HUD-/Grenz-Schnitt/Mindestflächen-Toleranzen.
+- Guard-Lauf auf Lane-Stand (= main 91361e3 + Guard): PASS in 38 s (Budget ≤ 3 min),
+  0 schwarze Flächen in allen 3 Formaten × Start/Ende, Renderer Mesa Intel RPL-S
+  (nicht SwiftShader, sonst FAIL).
+- Rot-Beweis: künstliches 80x60-Loch im echten 1280-Shot → Region 4800 px erkannt,
+  guardOk=false (~/games/.evidence/m10-terrain-hole-guard/k4-red-proof.json).
+- Reviewer PASS, Review-Fixes umgesetzt (Grenz-Schnitt-Test, setDefaultTimeout).
+  tsc + npm run build + npm test (1529+ Tests) grün.
+- Kein roter Befund gegen main → keine Bedarfsmeldung; Belege in
+  ~/games/.evidence/m10-terrain-hole-guard/, Abnahme-Shots in shots/abnahme/.
+- Commits: 1590dc9 (K1), ded8f06 (K2), 364654c (K3), 75fde5d (K4), 8d08de6 (Review-Fix).
