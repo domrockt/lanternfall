@@ -99,6 +99,34 @@ Kontrolleure:
      UNMESSBAR; `gate.cause` nennt Ursache. PASS/FAIL auf Teilbeleg ist jetzt
      ausgeschlossen.
 
+## K4 — Tor-Läufe auf main (Karte #13427)
+
+### Smoke-Befunde (vor den verbindlichen Läufen, Belege in ~/games/.evidence/m10-heap-gate-retry/)
+
+- **smoke-1min.json** (17:24–17:30): `endMB` fehlte im Ergebnis — Befund:
+  `measureOnce` gab nach der Umstrukturierung `endMB` nicht mit zurück; ein
+  gesunder Lauf wäre UNMESSBAR gewesen, ohne `fatal`, ohne Fehler. Fix e7012251
+  (Feld zurück in der Rückgabe). Genau die Klasse von Bug, die K4 unbrauchbar
+  gemacht hätte — deshalb erst Smoke, dann verbindliche Läufe.
+- **smoke-1min-b.json** (17:38–17:44): `gate=PASS (endMB 66,9 vs Minute1 67,9 MB
+  = −1,5 %)`, Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES
+  3.2)` = iGPU, rc=0, Lock wird freigegeben (Server-Stop + Flush-Exit wirken).
+- Beobachtung, nicht diese Lane (ein Zeile als Bedarf gemeldet): ~39–75
+  Console-Errors `Texture key already in use: chunk_5_10` im Lauf — gehört in
+  eine Terrain/Textur-Lane, hier nur notiert.
+- 1-min-Smoke: victory=false und UNMESSBAR/PASS-Grenzfälle erklärt — 1 min Budget
+  ohne Endboss: Loop endet am Wall-Cap (RUN_SECONDS + 300 s), simSeconds 350,8
+  ≥ RUN_SECONDS(60) → Tor wertet Minute-1 vs endMB. Für die verbindlichen
+  Belege zählt nur der 30-min-Lauf mit Sieg (victory=true).
+
+### Verbindliche Läufe
+
+2 aufeinanderfolgende 30-min-Tor-Läufe unter `flock /home/ai/games/.lf-perf.lock`
+(ein Hintergrundbefehl, run1 → run2, Belege `shots/m10-heap-gate-retry-run{1,2}.json`,
+Kopie nach `~/games/.evidence/m10-heap-gate-retry/`). Ergebnis steht unten nach
+Abschluss; Abnahmekriterium: 2/2 verdict PASS oder FAIL (nie UNMESSBAR),
+Renderer-String = iGPU (kein SwiftShader).
+
 ## K3 — Guard-Test (Karte #13426, Commit 4480c18e)
 
 `tests/heap-budget-retry.test.ts`: 10 Tests — Fehlerklassen (beide historischen
