@@ -1,0 +1,24 @@
+# Lane m10-results-followup fertig (2026-11-28)
+
+Ergebnis-Screen nach view-fill-refit + menubg-crisp in main gegen alle 3 Abnahme-Formate
+neu geprüft und die Restpunkte aus Karte #4382 (Luftpuffer) gefixt.
+
+- K1 (#7478, 332daea): scripts/m10-results-followup.mjs — before-JSON + 6 Shots,
+  640x360 (Fill, logisch 640 breit), 780x360@3, 1920x1080 (logisch 640x360@3), stress12,
+  Renderer-String iGPU (Mesa Intel RPL-S). 6/6: 0 Overlaps, 0 Clipping, 0 JS-Fehler.
+- K2 (#7479, fcca742): Results.ts-Fixes — Panel 250→254 (Bodenluft 2→4 px), Titel
+  24+oy→22+oy (Titel→Untertitel 2→4 px); tests/results-followup.test.ts (12 harte
+  Assertions: 0 Overlaps in 3 Formaten, Wortgrenzen-Umbruch, ≥4-px-Puffer).
+  Suite 1103/1103, tsc + build grün.
+- K3 (#7480): after-JSON + 6 Shots — 6/6 wieder 0 Overlaps/0 Clipping; gemessen 4 px
+  Bodenluft, 4 px Titelabstand in allen 3 Formaten. art-director streng PASS 4,5/5
+  (Pixel-Grid Run-Length: nur 3er-Vielfache; Ä/Ö/Ü korrekt, kein AE-Mojibake).
+- K4 (#7481): docs/lanes/m10-results-followup.md + diese Datei.
+
+Messwerte after (alle 3 Formate × victory/defeat): overlaps 0, clipped 0, jsErrors 0,
+iGPU ANGLE Mesa Intel RPL-S, kein swiftShader. Optimale Abstände: Titel→Untertitel 4 px,
+Untertitel→Header 3 px, Header→Total ≥2 px, letzte Zeile→Panel 4 px.
+
+Restpunkte (Fremd-Dateien, Folgekarten): slotNameLines-Trennung „SEELENLEU/CHTFEUER"
+ohne weichen Trennstrich (src/logic/text.ts), Ö-Glyph des Listenfonts x-hoch statt
+Kapshöhe (Font).
