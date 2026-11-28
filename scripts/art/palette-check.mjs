@@ -220,6 +220,112 @@ export function analyzeCapturedFx(captured, pal) {
   return out;
 }
 
+// ── M10 FX-Frame-Guard (Lane m10-palette-fx-guard) ─────────────────────────
+// Ergaenzung zur statischen Pixel-Invariante: gerenderte FX-Frames gegen die
+// Mixel-Regeln pruefen (Dom 21:45Z: "eine Pixelgroesse fuer alles", Dither nur
+// an Uebergangskanten 1-2 px, Kerne flaechig hell).
+
+/**
+ * Dither-/Halftone-Metrik fuer ein FX-Frame (Zeichen-Zeilen, "." = transparent).
+ *
+ * Ein Pixel gilt als Dither-Pixel, wenn es BOTH-Directions-Abwechslung hat:
+ * mind. ein horizontaler UND ein vertikaler Nachbar ist opak und andersfarbig.
+ * Das ist die Signatur von Schachbrett-/Halftone-Rastern (Abwechslung in beiden
+ * Achsen); Streifen, Konturen und Zickzack-Beams wechseln nur quer zur Richtung
+ * und bleiben unbeanstandet.
+ *
+ * Die BANDDICKE misst pro Dither-Pixel die durchgehende Dither-Lauf-Laenge in
+ * allen 4 Richtungen (x, y, Diagonale \, Diagonale /) und nimmt das Minimum —
+ * das ist die duennste Achse des Rasters an dieser Stelle. Ein Ring-/Kanten-
+ * Dither (1-2 px radial) bleibt unter der Grenze, ein flaechiger Halftone-Kern
+ * (z. B. Phoenix-Dither) ist in allen Richtungen dick und faellt auf.
+ * bandPx = Maximum dieser Minima ueber alle Dither-Pixel (0 ohne Dither).
+ */
+export function ditherMetrics(rows) {
+  const h = rows.length;
+  const w = h ? rows[0].length : 0;
+  const idx = [];
+  for (let y = 0; y < h; y++) {
+    const row = rows[y] ?? "";
+    const line = new Int16Array(w);
+    for (let x = 0; x < w; x++) line[x] = decodeChar(row[x]);
+    idx.push(line);
+  }
+  const isDither = Array.from({ length: h }, () => new Uint8Array(w));
+  let ditherPixels = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const c = idx[y][x];
+      if (c < 0) continue;
+      let hDiff = false, vDiff = false;
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nx = x + dx, ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
+        const n = idx[ny][nx];
+        if (n < 0 || n === c) continue;
+        if (dx !== 0) hDiff = true;
+        else vDiff = true;
+      }
+      if (hDiff && vDiff) { isDither[y][x] = 1; ditherPixels++; }
+    }
+  }
+  // Banddicke: je Dither-Pixel durchgehende Lauf-Laenge in 4 Richtungen,
+  // Minimum = duennste Achse; bandPx = Maximum dieser Minima.
+  const runsAt = (y, x, dy, dx) => {
+    let n = 1;
+    for (let s = 1; ; s++) {
+      const ny2 = y + dy * s, nx2 = x + dx * s;
+      if (ny2 < 0 || nx2 < 0 || ny2 >= h || nx2 >= w || !isDither[ny2][nx2]) break;
+      n++;
+    }
+    for (let s = 1; ; s++) {
+      const ny2 = y - dy * s, nx2 = x - dx * s;
+      if (ny2 < 0 || nx2 < 0 || ny2 >= h || nx2 >= w || !isDither[ny2][nx2]) break;
+      n++;
+    }
+    return n;
+  };
+  let bandPx = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (!isDither[y][x]) continue;
+      const t = Math.min(runsAt(y, x, 0, 1), runsAt(y, x, 1, 0), runsAt(y, x, 1, 1), runsAt(y, x, 1, -1));
+      if (t > bandPx) bandPx = t;
+    }
+  }
+  return { ditherPixels, bandPx };
+}
+
+/**
+ * Analysiert ein FX-Frame-Set (Zeichen-Zeilen) mit Palette-Index-Gueltigkeit,
+ * binaerer Alpha-Annahme und Dither-Metrik. Char-Grids haben per Konstruktion
+ * binaeres Alpha ("." = 0, Index = 1) — alphaViolations bleibt hier 0 und wird
+ * fuer Canvas-gefangene FX in analyzeCapturedFx gezaehlt.
+ */
+export function analyzeFxGuard(name, file, rows, w, h, pal) {
+  const base = analyzeGrid(name, file, rows, w, h, pal);
+  const dither = ditherMetrics(rows);
+  return { ...base, dither };
+}
+
+/**
+ * Mixel-Coverage fuer einen FX-Key bei bekanntem max. Laufzeit-Draw-Scale.
+ * Regel: Draw-Scale > 1 nur mit Bake-Stufe >= ceil(Scale) (effektiver Draw-Scale
+ * = Scale / Level <= 1). Nicht-Mixel-Keys (Level 1) gelten dann als nicht
+ * gedeckt — die Liste der nicht gedeckten Keys wird im Test als Ratchet gegen
+ * die Fixture gepinnt (neue ungedeckte FX machen den Test rot).
+ */
+export function scaleCoverage(key, maxScale, { mixelMaxLevel, mixelLevelFor }) {
+  const max = mixelMaxLevel(key);
+  const level = mixelLevelFor(key, maxScale);
+  const effective = maxScale / level;
+  return {
+    key, maxScale, bakeMaxLevel: max, level,
+    effectiveScale: +effective.toFixed(3),
+    covered: effective <= 1.001,
+  };
+}
+
 /** Fasst Einzel-Grids zu einer Gesamtbilanz zusammen. */
 export function summarize(assets) {
   const s = { assets: assets.length, pixels: 0, opaque: 0, offPalette: 0, alphaViolations: 0 };
