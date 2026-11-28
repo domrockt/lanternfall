@@ -18984,21 +18984,33 @@
       "id": 13491,
       "title": "m10-v10-gate-rerun K1: Gate-Werkzeuge bereit",
       "description": "scripts/m10-v10-gate-rerun.mjs als duenner Wrapper: ruft DIESELBE Gate-Suite scripts/m10-v10-gate.mjs (keine neue Methodik) 2x auf dem aktuellen main, --out nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json. Renderer-String-Pflicht beachtet (SwiftShader=ungueltig, Exit 2). Abnahme: Wrapper committed, Gate-Skript unveraendert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:02:35Z",
+          "by": "coder",
+          "text": "todo → doing: K1 gestartet (Wrapper gebaut, Commit 3f12615e); K2-Laeufe folgen unter flock"
+        }
+      ],
       "created": "2026-11-28T17:02:02Z",
-      "updated": "2026-11-28T17:02:02Z"
+      "updated": "2026-11-28T17:02:35Z"
     },
     {
       "id": 13492,
       "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
       "description": "2 Gate-Laeufe (gleiche Tore + Viewport wie guard-Lauf 3, 15:57Z) unter flock /home/ai/games/.lf-perf.lock. JSONs nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json (Belegregel: shots/* gitignored). 0 JS-Fehler in beiden Laeufen, Renderer-String = echte iGPU in beiden Belegen. Bei ungewoehnlichen Abbruechen Lauf wiederholen statt patchen.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:02:35Z",
+          "by": "coder",
+          "text": "todo → doing: K2 Gate-Lauf 1+2 gestartet (flock .lf-perf.lock)"
+        }
+      ],
       "created": "2026-11-28T17:02:02Z",
-      "updated": "2026-11-28T17:02:02Z"
+      "updated": "2026-11-28T17:02:35Z"
     },
     {
       "id": 13493,
