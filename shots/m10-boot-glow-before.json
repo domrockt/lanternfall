@@ -1,0 +1,82 @@
+{
+  "tag": "before",
+  "probe": {
+    "gameW": 640,
+    "gameH": 360,
+    "keys": {
+      "light_radius": {
+        "kind": "canvas",
+        "w": 192,
+        "h": 192,
+        "vsBoot": {
+          "maxDiff": 1,
+          "meanDiff": 0.017
+        },
+        "vsTexturesTs": {
+          "maxDiff": 78,
+          "meanDiff": 1.378
+        },
+        "winner": "boot-local"
+      },
+      "vignette": {
+        "kind": "canvas",
+        "w": 640,
+        "h": 360,
+        "vsBoot": {
+          "maxDiff": 1,
+          "meanDiff": 0.01
+        },
+        "vsTexturesTs": {
+          "maxDiff": 1,
+          "meanDiff": 0.01
+        },
+        "winner": "boot-local"
+      }
+    }
+  },
+  "profiles": [
+    {
+      "profile": {
+        "label": "640-360-1",
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "png": "shots/m10-boot-glow-before-640-360-1-m25-1.png",
+      "zoom": "shots/m10-boot-glow-before-640-360-1-m25-1-4x.png",
+      "stats": {
+        "enemies": 49,
+        "time": 1495.8,
+        "kills": 624,
+        "level": 18
+      },
+      "pixels": {
+        "pngWidth": 640,
+        "pngHeight": 360,
+        "nearWhiteA7Pct": 0.4
+      }
+    },
+    {
+      "profile": {
+        "label": "780-360-3",
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "png": "shots/m10-boot-glow-before-780-360-3-m25-1.png",
+      "zoom": "shots/m10-boot-glow-before-780-360-3-m25-1-4x.png",
+      "stats": {
+        "enemies": 26,
+        "time": 1495.7,
+        "kills": 667,
+        "level": 17
+      },
+      "pixels": {
+        "pngWidth": 2340,
+        "pngHeight": 1080,
+        "nearWhiteA7Pct": 0.27
+      }
+    }
+  ],
+  "jsErrors": []
+}
