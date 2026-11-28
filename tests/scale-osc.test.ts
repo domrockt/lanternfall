@@ -92,80 +92,59 @@ describe("M10-scale-osc-guard: alternierende Lastserie pumpt NICHT", () => {
     expect(b.final).toBe(a.final);
   });
 
-  it("Spitzenmuster (30 s stabil + 4 s Last): Abbau bleibt moeglich (kein Ratchet)", () => {
-    // Guard darf Regler nicht nur hochratchen lassen: nach der Spitze muss
-    // der Abbau auf Teiler 1 zurueck errecihbar sein (12 s am Stueck >= 57).
+  it("Spitzenmuster (30 s stabil + 4 s Last): seit K2 gar keine Wechsel mehr", () => {
+    // K2 (RENDER_SCALE_MAX = 1): der Regler kann die Aufloesung nicht mehr
+    // aendern — auch unter Lastspitzen bleibt der Buffer voll.
     const epochs: Array<[number, number]> = Array.from({ length: 3 }, () => [
       [30, FPS_HIGH],
       [4, FPS_LOW],
     ]).flat() as Array<[number, number]>;
     const r = runSeries(epochs);
-    const downs = r.transitions.filter((t) => t.to < t.from);
-    // Abbau greift (Recovery works) und der Regler ratcht nicht hoch:
-    // nach 3 Zyklen steht er auf Teiler 1 oder 2 (Spike-Ende), nie 3.
-    expect(downs.length).toBeGreaterThanOrEqual(1);
-    expect(r.final).toBeLessThan(3);
+    expect(r.transitions).toEqual([]);
+    expect(r.final).toBe(1);
   });
 });
 
-describe("M10-scale-osc-guard: Guard-Einzelregeln", () => {
-  it("SCALE_MIN_STEP_MS: zweiter Wechsel fruehestens nach 8 s", () => {
+describe("M10-android-scale-floor-r2 (K2): Guard-Regeln unter hartem Teiler-1-Deckel", () => {
+  it("Konstanten sind dokumentiert (Deckel history)", () => {
     expect(SCALE_MIN_STEP_MS).toBe(8000);
-    let s: RenderScaleState = { scale: 1, belowMs: 0, aboveMs: 0 };
-    s = stepRenderScale(s, FPS_LOW, 2000, 3); // Erstschriftweg: sofortiger Wechsel
-    expect(s.scale).toBe(2);
-    // Naechster Bedarf 2 s spaeter: durch den Deckel blockiert.
-    s = stepRenderScale(s, FPS_LOW, 2000, 3);
-    expect(s.scale).toBe(2);
-    // Nach 8 s Abstand greift der Regler wieder.
-    s = stepRenderScale(s, FPS_LOW, SCALE_MIN_STEP_MS, 3);
-    expect(s.scale).toBe(3);
+    expect(SCALE_RECOVER_MS).toBe(12000);
   });
 
-  it("SCALE_RECOVER_MS: Abbau braucht 12 s am Stueck >= 57 FPS (Erstwechsel: 4 s)", () => {
-    expect(SCALE_RECOVER_MS).toBe(12000);
-    // Erstwechsel ohne Historie: alter Schwellwert (4 s).
-    let fresh: RenderScaleState = { scale: 2, belowMs: 0, aboveMs: 0 };
-    fresh = stepRenderScale(fresh, FPS_HIGH, 4000, 3);
-    expect(fresh.scale).toBe(1);
-    // Nach einem Wechsel: 4 s @62 reichen NICHT mehr zum Abbau...
+  it("kein Wechsel, auch bei dauerhaft 41,5 FPS mit cap 3", () => {
     let s: RenderScaleState = { scale: 1, belowMs: 0, aboveMs: 0 };
-    s = stepRenderScale(s, FPS_LOW, 2000, 3); // Wechsel -> Teiler 2
-    s = stepRenderScale(s, FPS_HIGH, 4000, 3);
-    expect(s.scale).toBe(2);
-    // ...aber 12 s am Stueck schon.
-    s = stepRenderScale(s, FPS_HIGH, 8000, 3);
+    for (let i = 0; i < 600; i++) s = stepRenderScale(s, FPS_LOW, 2000, 3);
     expect(s.scale).toBe(1);
-    // Unterbrochene Folge (Last dazwischen) setzt den Abbau zurueck.
-    let r: RenderScaleState = { scale: 1, belowMs: 0, aboveMs: 0 };
-    r = stepRenderScale(r, FPS_LOW, 2000, 3); // Wechsel -> Teiler 2
-    r = stepRenderScale(r, FPS_HIGH, 6000, 3);
-    r = stepRenderScale(r, FPS_LOW, 100, 3); // Totzone/Bedarf bricht "am Stueck"
-    r = stepRenderScale(r, FPS_HIGH, 6000, 3);
-    expect(r.scale).toBe(2);
+  });
+
+  it("historischer State mit Teiler 2/3 wird sofort auf 1 geklemmt", () => {
+    let s: RenderScaleState = { scale: 3, belowMs: 0, aboveMs: 0 };
+    s = stepRenderScale(s, FPS_HIGH, 16, 3);
+    expect(s.scale).toBe(1);
   });
 });
 
-describe("M10-scale-osc-guard: ?rbscale-Override hat Vorrang", () => {
-  it("applyRenderScaleOverride: jeder Override schlaegt den Regler-Zustand", () => {
-    for (const override of [0, 1, 2, 3]) {
-      for (const controller of [1, 2, 3]) {
-        expect(applyRenderScaleOverride(override, controller)).toBe(override);
-      }
+describe("M10-android-scale-floor-r2 (K2): ?rbscale-Override als Debug auf max 1 geklemmt", () => {
+  it("applyRenderScaleOverride: 0/1 kommen durch, 2/3 werden auf 1 geklemmt (Text kann nicht zerstoert werden)", () => {
+    for (const controller of [1, 2, 3]) {
+      expect(applyRenderScaleOverride(0, controller)).toBe(0);
+      expect(applyRenderScaleOverride(1, controller)).toBe(1);
+      expect(applyRenderScaleOverride(2, controller)).toBe(1);
+      expect(applyRenderScaleOverride(3, controller)).toBe(1);
     }
   });
 
-  it("null -> Regler gilt (geklemmt auf [1,3], ganzzahlig)", () => {
-    expect(applyRenderScaleOverride(null, 2)).toBe(2);
+  it("null -> Regler gilt (geklemmt auf [1,1], ganzzahlig)", () => {
+    expect(applyRenderScaleOverride(null, 2)).toBe(1);
     expect(applyRenderScaleOverride(null, 99)).toBe(RENDER_SCALE_MAX);
     expect(applyRenderScaleOverride(null, 0.4)).toBe(1);
   });
 
-  it("parseRenderScaleOverride liefert nur gueltige Override-Werte", () => {
+  it("parseRenderScaleOverride liefert nur gueltige Override-Werte (K2: max 1)", () => {
     expect(parseRenderScaleOverride(null)).toBeNull();
     expect(parseRenderScaleOverride("0")).toBe(0);
     expect(parseRenderScaleOverride("1")).toBe(1);
-    expect(parseRenderScaleOverride("3")).toBe(3);
+    expect(parseRenderScaleOverride("3")).toBeNull();
     expect(parseRenderScaleOverride("4")).toBeNull();
     expect(parseRenderScaleOverride("bananenbrot")).toBeNull();
   });

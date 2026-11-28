@@ -291,13 +291,13 @@ describe("Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme (Karte #5220)", () => {
     // Daempfung quadratisch + dpr-Alpha (0,9*0,5*0,5*0,6) — bestehendes M6/M10-Verhalten, unveraendert.
     expect(runtime?.alphaScaleExempt).toBe(false);
     expect(runtime?.alphaFrom).toBeCloseTo(0.9 * 0.5 * 0.5 * 0.6, 10);
-    // M10-perf-cap-rollback: der Flaechen-Deckel greift nur noch, wenn der
-    // DPR-Budget-Regler gesenkt hat (RENDER_SCALE > 1, Android-Sicherheitsnetz);
-    // auf iGPU (RENDER_SCALE 1) bleibt der Glow volllaufend.
+    // M10-perf-cap-rollback + K2 (m10-android-scale-floor-r2): der
+    // Flaechen-Deckel ueber RENDER_SCALE greift nie mehr — der Teiler ist
+    // hart 1, der Glow bleibt volllaufend; Laststeuerung ueber die
+    // Qualitaetsstufe (K3).
     expect(runtime?.scaleFrom).toBeCloseTo(6, 10);
-    setRenderScale(2); // Regler gesenkt -> Deckel greift beim naechsten Spawn
-    const capped = fx.spawn({ texture: "fx_halo", x: 0, y: 0, life: 1, scaleFrom: 6, scaleTo: 6 });
-    // Flaeche (32*6)^2 = 36864 > 9216 -> Faktor 0,5 -> Scale 3.
-    expect(capped?.scaleFrom).toBeCloseTo(3, 10);
+    setRenderScale(2); // wird auf 1 geklemmt -> Deckel greift weiterhin nicht
+    const uncapped = fx.spawn({ texture: "fx_halo", x: 0, y: 0, life: 1, scaleFrom: 6, scaleTo: 6 });
+    expect(uncapped?.scaleFrom).toBeCloseTo(6, 10);
   });
 });

@@ -3,7 +3,8 @@ import { DEPTH } from "../gfx/depth";
 import { EVOLUTION_SIGNATURES, FX_FRAME_COUNTS, SIGNATURE_FRAME_COUNT, fxFrames, signatureTextureKey, fxAlphaForDpr, glowCapFor, isBossFxKey, GlowBudget, mixelFrameKey, mixelLevelFor, type FxLodLevel } from "../gfx/gen-fx";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { ambientBudgetFor, lodFor } from "../logic/lod";
-import { RENDER_SCALE } from "../config";
+import { QUALITY } from "../config";
+import { glowAreaCapForQuality, glowEnabledFor } from "../logic/quality";
 
 /**
  * M10-A4 (Bedarfsmeldung m10-android-perf, 2026-11-27): ADD-Glows klein halten.
@@ -61,6 +62,12 @@ export const ADD_GLOW_MAX_SCREEN_AREA = 9216;
  * Aura-Glows laufen wieder volllaufend (Befund: Deckel kostete Optik ohne
  * FPS-Nutzen, alle iGPU-Läufe vsync-60, siehe docs/lanes/m10-perf-cap-rollback.md).
  * Rein funktional; Laufzeit nutzt das Live-Binding RENDER_SCALE aus config.ts.
+ */
+/**
+ * M10-android-scale-floor-r2 (K2): RETIERT — der Teiler-Regler existiert
+ * nicht mehr (RENDER_SCALE_MAX = 1), der Flaechen-Deckel kommt jetzt aus der
+ * Qualitaetsstufe (glowAreaCapForQuality). Funktion bleibt fuer die
+ * Unit-Tests des alten Verhaltens (tests/fx-add-cap.test.ts).
  */
 export function glowAreaCapForRenderScale(renderScale: number): number {
   if (!Number.isFinite(renderScale)) {
@@ -222,7 +229,7 @@ export class FxSystem {
       // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
       // weil frueher per NORMAL-Fallback abgewiesene Sprites ohne Slot-Request
       // wieder auf ADD gestellt wuerden. Ohne freien Slot bleibt NORMAL.
-      if (blendAdd && !fx.glow) fx.glow = budget.request();
+      if (blendAdd && !fx.glow && glowEnabledFor(QUALITY)) fx.glow = budget.request();
       fx.sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && fx.glow) {
@@ -286,13 +293,13 @@ export class FxSystem {
     const sprite = fx.sprite;
     applyTexture(sprite, fx.frames[0]);
     sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
-    // M10-A4: additive Glows auf Screengroesse cappen — nur wenn der DPR-Budget-
-    // Regler gesenkt hat (RENDER_SCALE > 1); auf iGPU unveraendert volllaufend.
+    // M10-android-scale-floor-r2 (K3): ADD-Glows auf Screengroesse cappen —
+    // Deckel aus der Qualitaetsstufe (medium = 9216, low = 2025; high offen).
     if (additive) {
       const clamped = clampGlowScreenArea(
         sprite.width || 0, sprite.height || 0,
         fx.scaleFrom, fx.scaleTo, fx.aspect,
-        glowAreaCapForRenderScale(RENDER_SCALE),
+        glowAreaCapForQuality(QUALITY),
       );
       if (clamped.capped) {
         fx.scaleFrom = clamped.scaleFrom;
@@ -319,7 +326,9 @@ export class FxSystem {
     // ueber dem Deckel faellt das Sprite auf NORMAL zurueck (Form bleibt).
     const blendAdd = fx.additive && this.alphaScale >= 0.7;
     const budget = glowBudgetFor(this.scene);
-    fx.glow = blendAdd ? budget.request() : false;
+    // K3 (m10-android-scale-floor-r2): low schaltet den ADD-Glow-Pfad ab
+    // (Glow-Budget glow=false -> NORMAL-Blend, wie beim Slot-Fallback).
+    fx.glow = blendAdd && glowEnabledFor(QUALITY) ? budget.request() : false;
     sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     if (opts.tint !== undefined) sprite.setTint(opts.tint);
     else sprite.clearTint();
@@ -663,7 +672,7 @@ export class ParticleSystem {
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
       const blendAdd = p.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
-      if (blendAdd && !p.glow) p.glow = budget.request();
+      if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request();
       p.sprite.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && p.glow) {
@@ -720,13 +729,13 @@ export class ParticleSystem {
     const s = p.sprite;
     applyTexture(s, p.frames[0]);
     s.setPosition(Math.round(p.x), Math.round(p.y));
-    // M10-A4: additive Glows auf Screengroesse cappen — nur wenn der DPR-Budget-
-    // Regler gesenkt hat (RENDER_SCALE > 1); auf iGPU unveraendert volllaufend.
+    // M10-android-scale-floor-r2 (K3): Deckel aus der Qualitaetsstufe
+    // (identisch zum FxSystem-Spawn oben).
     if (additive) {
       const clamped = clampGlowScreenArea(
         s.width || 0, s.height || 0,
         p.scaleFrom, p.scaleTo, p.aspect,
-        glowAreaCapForRenderScale(RENDER_SCALE),
+        glowAreaCapForQuality(QUALITY),
       );
       if (clamped.capped) {
         p.scaleFrom = clamped.scaleFrom;
@@ -750,7 +759,8 @@ export class ParticleSystem {
     // Boss-Partikel sind ab oben non-additiv und belegen deshalb nie einen Slot.
     const blendAdd = p.additive && this.alphaScale >= 0.7 && !bossFx;
     const budget = glowBudgetFor(this.scene);
-    p.glow = blendAdd ? budget.request() : false;
+    // K3: Deckel wie im FxSystem-Spawn (Glow an/aus aus der Qualitaetsstufe).
+    p.glow = blendAdd && glowEnabledFor(QUALITY) ? budget.request() : false;
     s.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
     if (opts.tint !== undefined) s.setTint(opts.tint);
     else s.clearTint();

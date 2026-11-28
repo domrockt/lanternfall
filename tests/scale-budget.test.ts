@@ -27,12 +27,12 @@ describe("M10-dpr-budget-cap: chooseRenderScale", () => {
     expect(chooseRenderScale(3, 780, 360, 100, BUDGET)).toBe(1);
   });
 
-  it("M25-Fall 780x360 dpr3 bei ~42,5 FPS: ganzzahliger Teiler 2", () => {
-    expect(chooseRenderScale(3, 780, 360, 42.5, BUDGET)).toBe(2);
+  it("M10-android-scale-floor-r2 (K2): Nie unter logische Aufloesung — auch bei 42,5 FPS bleibt Teiler 1", () => {
+    expect(chooseRenderScale(3, 780, 360, 42.5, BUDGET)).toBe(1);
   });
 
-  it("Starker Mangel (20 FPS) waehlt den grossmoeglichen Teiler (dpr3, 780x360 -> 2)", () => {
-    expect(chooseRenderScale(3, 780, 360, 20, BUDGET)).toBe(2);
+  it("Starker Mangel (20 FPS) schrumpft NICHT: Renderpuffer nie unter 640x360 logisch", () => {
+    expect(chooseRenderScale(3, 780, 360, 20, BUDGET)).toBe(1);
   });
 
   it("dpr 1 schrumpft nie (kein Geraete-Pixel-Budget)", () => {
@@ -49,58 +49,39 @@ describe("M10-dpr-budget-cap: chooseRenderScale", () => {
     }
   });
 
-  it("budgetMs von 0/NaN faellt auf 16,67 ms zurueck", () => {
-    expect(chooseRenderScale(3, 780, 360, 42.5, 0)).toBe(2);
-    expect(chooseRenderScale(3, 780, 360, 42.5, NaN)).toBe(2);
+  it("budgetMs von 0/NaN faellt auf 16,67 ms zurueck — Teiler bleibt trotzdem 1 (K2)", () => {
+    expect(chooseRenderScale(3, 780, 360, 42.5, 0)).toBe(1);
+    expect(chooseRenderScale(3, 780, 360, 42.5, NaN)).toBe(1);
   });
 });
 
-describe("M10-dpr-budget-cap: stepRenderScale (Hysterese)", () => {
+describe("M10-android-scale-floor-r2 (K2): stepRenderScale kann den Teiler nie ueber 1 heben", () => {
   const S = (scale = 1) => ({ scale, belowMs: 0, aboveMs: 0 });
 
-  it("senkt NICHT sofort: unter 45 FPS fuer < 2 s bleibt Teiler 1", () => {
+  it("unter 45 FPS beliebig lange: Teiler bleibt 1 (Renderpuffer voll)", () => {
     let s = S();
-    for (let i = 0; i < 10; i++) s = stepRenderScale(s, 42, 199, 2); // 1990 ms
-    expect(s.scale).toBe(1);
-    s = stepRenderScale(s, 42, 10, 2); // 2000 ms ueberschritten
-    expect(s.scale).toBe(2);
-    expect(s.belowMs).toBe(0);
-  });
-
-  it("hebt erst ab 57 FPS nach 4 s: 57 FPS fuer < 4 s haelt Teiler 2", () => {
-    let s = S(2);
-    for (let i = 0; i < 30; i++) s = stepRenderScale(s, 58, 133, 2); // 3990 ms
-    expect(s.scale).toBe(2);
-    s = stepRenderScale(s, 58, 10, 2); // 4000 ms
+    for (let i = 0; i < 200; i++) s = stepRenderScale(s, 42, 200, 3);
     expect(s.scale).toBe(1);
   });
 
-  it("totale Zone 45..57 FPS friert beide Timer ein (Fortschritt bleibt bei Last-Jitter)", () => {
-    let s = S();
-    s = stepRenderScale(s, 42, 1900, 2);
-    expect(s.belowMs).toBe(1900);
-    s = stepRenderScale(s, 50, 100, 2);
-    expect(s.belowMs).toBe(1900);
-    expect(s.aboveMs).toBe(0);
+  it("historischer State mit Teiler 2 wird sofort auf 1 geklemmt", () => {
+    let s: Parameters<typeof stepRenderScale>[0] = { scale: 2, belowMs: 0, aboveMs: 0 };
+    s = stepRenderScale(s, 60, 16, 3);
     expect(s.scale).toBe(1);
   });
 
-  it("Last-Jitter um 45 FPS (42/50 abwechselnd) erreicht den 2-s-Timer und senkt", () => {
-    // Beleg 2026-11-27: unter Parallel-Last pendelt der EWMA 41,6-53 FPS.
-    // Mit Reset in der Totzone lief belowMs nie ueber ~500 ms (Regler blieb
-    // bei Teiler 1, ~40-44 FPS < Ziel 50). Mit Einfrieren addiert sich die
-    // unter-45-Zeit und der Regler greift.
+  it("Last-Jitter um 45 FPS aendert den Teiler nie", () => {
     let s = S();
     for (let i = 0; i < 20; i++) {
-      s = stepRenderScale(s, i % 2 === 0 ? 42 : 50, 300, 2); // je 150 ms unter 45
+      s = stepRenderScale(s, i % 2 === 0 ? 42 : 50, 300, 2);
     }
-    expect(s.scale).toBe(2); // 10 x 300 ms = 3000 ms kumulativ unter 45 FPS
+    expect(s.scale).toBe(1);
   });
 
-  it("Grenzen: Teiler steigt nie ueber cap und faellt nie unter RENDER_SCALE_MIN", () => {
+  it("Grenzen: Teiler bleibt in [1, RENDER_SCALE_MAX] (=1)", () => {
     let s = S(1);
     for (let i = 0; i < 100; i++) s = stepRenderScale(s, 10, 1000, 2);
-    expect(s.scale).toBe(2);
+    expect(s.scale).toBe(1);
 
     let up = S(1);
     for (let i = 0; i < 100; i++) up = stepRenderScale(up, 10, 1000, RENDER_SCALE_MAX);
@@ -137,11 +118,10 @@ describe("M10-dpr-budget-cap: parseRenderScaleOverride", () => {
     expect(parseRenderScaleOverride("0")).toBe(0);
   });
 
-  it("1..3 -> fester Teiler, ganzzahlig gerundet", () => {
+  it("1 -> fester Teiler, ganzzahlig gerundet; 2/3 sind seit K2 kein gueltiger Override mehr", () => {
     expect(parseRenderScaleOverride("1")).toBe(1);
-    expect(parseRenderScaleOverride("2")).toBe(2);
-    expect(parseRenderScaleOverride("3")).toBe(3);
-    expect(parseRenderScaleOverride("2.6")).toBe(3);
+    expect(parseRenderScaleOverride("2")).toBeNull();
+    expect(parseRenderScaleOverride("3")).toBeNull();
     expect(parseRenderScaleOverride("1.2")).toBe(1);
   });
 
@@ -152,17 +132,17 @@ describe("M10-dpr-budget-cap: parseRenderScaleOverride", () => {
   });
 });
 
-describe("M10-dpr-budget-cap: renderBufferSize", () => {
-  it("Stufe 1 = volle logische Groesse, Stufe 2/3 = ganzzahlige Teilung", () => {
+describe("M10-android-scale-floor-r2 (K2): renderBufferSize", () => {
+  it("jede Stufe liefert die volle logische Groesse (Teiler hart 1)", () => {
     expect(renderBufferSize(780, 360, 1)).toEqual({ width: 780, height: 360 });
-    expect(renderBufferSize(780, 360, 2)).toEqual({ width: 390, height: 180 });
-    expect(renderBufferSize(780, 360, 3)).toEqual({ width: 260, height: 120 });
+    expect(renderBufferSize(780, 360, 2)).toEqual({ width: 780, height: 360 });
+    expect(renderBufferSize(780, 360, 3)).toEqual({ width: 780, height: 360 });
   });
 
-  it("klemmt auf [1, 3] und rundet (0/2.6/4)", () => {
+  it("klemmt auf [1, 1] und rundet (0/2.6/4)", () => {
     expect(renderBufferSize(780, 360, 0)).toEqual({ width: 780, height: 360 });
-    expect(renderBufferSize(780, 360, 2.6)).toEqual({ width: 260, height: 120 });
-    expect(renderBufferSize(780, 360, 4)).toEqual({ width: 260, height: 120 });
+    expect(renderBufferSize(780, 360, 2.6)).toEqual({ width: 780, height: 360 });
+    expect(renderBufferSize(780, 360, 4)).toEqual({ width: 780, height: 360 });
   });
 
   it("nie kleiner als 1x1 (auch bei winzigen Views)", () => {

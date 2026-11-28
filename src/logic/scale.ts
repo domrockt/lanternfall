@@ -1,13 +1,20 @@
 /**
- * M10-dpr-budget-cap: adaptiver Render-Massstab (fill-rate-Budget).
+ * M10-android-scale-floor-r2 (K2): Renderpuffer nie unter logische
+ * Aufloesung. RENDER_SCALE war ein ganzzahliger TEILER der internen
+ * Renderbuffer-Kanten (1 = voll, 2/3 = Viertel/Neuntel der Pixel). Der
+ * adaptive Regler aus m10-dpr-budget-cap senkte den Buffer bei Ruckeln auf
+ * 320x180 — 1-px-Pixelschrift und Sprites verlieren Zeilen (Dom-Foto:
+ * Level-Up-Text als Strichreste, Repro
+ * ~/games/.evidence/m10-android-scale-floor-r2/android-tabS4-levelup-rb2-before.png).
  *
- * RENDER_SCALE ist ein ganzzahliger TEILER der internen Renderbuffer-Kanten:
- *   1 = volle logische Aufloesung, 2 = halbe Kanten (1/4 der Pixel), 3 = Drittel.
- * Die CSS-Groesse bleibt unveraendert (image-rendering: pixelated Upscale) —
- * die logische Szene aendert sich nicht, nur die gerenderte Pixelmenge.
+ * Seit K2 ist der Teiler HART auf 1 festgesetzt: kein Codepfad rendert unter
+ * 640x360 logisch (Android-Praxisregel 1: Last reduzieren statt Aufloesung).
+ * Die Laststeuerung uebernimmt die Qualitaetsstufe src/logic/quality.ts (K3).
+ * Das ?rbscale-Override bleibt als Debug-Messwerkzeug, Werte > 1 werden auf 1
+ * geklemmt (applyRenderScaleOverride).
  */
 export const RENDER_SCALE_MIN = 1;
-export const RENDER_SCALE_MAX = 3;
+export const RENDER_SCALE_MAX = 1;
 
 /** Hysterese-Schwellen (FPS) und -zeiten (ms) fuer den Einbau. */
 export const SCALE_LOW_FPS = 45;
@@ -152,11 +159,13 @@ export function parseRenderScaleOverride(raw: string | null): number | null {
 }
 
 /**
- * M10-scale-osc-guard: Wirkt einen ?rbscale-Override auf den Soll-Teiler.
- * Ein gesetzter Override (0 = aus, 1..3 = fester Teiler) hat IMMER Vorrang
- * vor dem Regler-Zustand; null laesst den Regler gelten. Reine Abbildung der
- * Verdrahtung in src/config.ts (forced !== null -> apply(forced); return —
- * dort nur gelesen, die Datei ist fuer diese Lane gesperrt).
+ * M10-android-scale-floor-r2 (K2): Wirkt einen ?rbscale-Override auf den
+ * Soll-Teiler. Ein gesetzter Override (0 = aus = voller Buffer, 1 = voller
+ * Buffer) hat Vorrang vor dem Regler-Zustand; Werte > 1 werden auf 1
+ * GEKLEMMT — das Override bleibt nur ein Debug-Werkzeug und kann den Text
+ * nicht mehr zerstoeren (K4-Abnahme). null laesst den Regler gelten (der
+ * kann seit K2 ebenfalls nicht mehr unter 1). 0 darf NICHT auf 1 geklemmt
+ * werden (bedeutungstraegender Wert "Regler aus", Verdrahtung src/config.ts).
  */
 export function applyRenderScaleOverride(
   override: number | null,
@@ -165,8 +174,6 @@ export function applyRenderScaleOverride(
   if (override === null) {
     return Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(controllerScale)));
   }
-  // 0 = Regler aus (voller Buffer) ist ein gueltiger, bedeutungstraegender
-  // Wert und darf NICHT auf 1 geklemmt werden; 1..3 kommen geklemmt durch.
   if (override === 0) return 0;
   return Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(override)));
 }

@@ -239,7 +239,7 @@ describe("#4658 BossSystem: Spawn-Distanz und Spawn-Komposition", () => {
     expect(bug.banner.x).not.toBe(fixed.banner.x);
   });
 
-  it("renderBufferSize: 780x360@3 -> 260x120 (Soll-Buffer der Sonde)", () => {
-    expect(renderBufferSize(780, 360, 3)).toEqual({ width: 260, height: 120 });
+  it("K2 (m10-android-scale-floor-r2): renderBufferSize liefert jede Stufe als volle logische Groesse", () => {
+    expect(renderBufferSize(780, 360, 3)).toEqual({ width: 780, height: 360 });
   });
 });

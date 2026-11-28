@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11128,
+  "next": 11232,
   "cards": [
     {
       "id": 1,
@@ -14626,6 +14626,86 @@
       ],
       "created": "2026-11-28T10:05:11Z",
       "updated": "2026-11-28T10:17:19Z"
+    },
+    {
+      "id": 11228,
+      "title": "m10-android-scale-floor-r2: K1 Repro-Skript (Vorher-Beleg)",
+      "description": "Skript scripts/m10-android-scale.mjs: Galaxy-Tab-S4-Emulation, Run starten, Level-Up per giveXp öffnen, Screenshots bei ?rbscale=2 (zerfallen) und ?rbscale=1 (sauber) → Vorher-Beleg nach ~/games/.evidence/m10-android-scale-floor-r2/. Abnahme: rbscale=2-Bild zeigt unlesbaren Text (Repro des Dom-Fotos).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:47:08Z",
+          "by": "build",
+          "text": "lane #10605, Merge 5c0f7149"
+        },
+        {
+          "at": "2026-11-28T10:47:35Z",
+          "by": "build",
+          "text": "lane #10605, Merge 0a83e8f4"
+        }
+      ],
+      "created": "2026-11-28T10:46:58Z",
+      "updated": "2026-11-28T10:47:35Z"
+    },
+    {
+      "id": 11229,
+      "title": "m10-android-scale-floor-r2: K2 Renderpuffer hart auf 1",
+      "description": "src/logic/scale.ts: RENDER_SCALE_MAX = 1 — kein Codepfad rendert unter logische Auflösung (640x360). ?rbscale bleibt als Debug-Override, wird aber auf max 1 geklemmt. tests/scale-budget.test.ts + scale-osc.test.ts anpassen. Abnahme: alle Tests grün, renderBufferSize liefert nie < volle Größe.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:47:08Z",
+          "by": "build",
+          "text": "lane #10606, Merge 5c0f7149"
+        },
+        {
+          "at": "2026-11-28T10:47:35Z",
+          "by": "build",
+          "text": "lane #10606, Merge 0a83e8f4"
+        }
+      ],
+      "created": "2026-11-28T10:46:58Z",
+      "updated": "2026-11-28T10:47:35Z"
+    },
+    {
+      "id": 11230,
+      "title": "m10-android-scale-floor-r2: K3 Qualitätsstufen statt Auflösung",
+      "description": "Neu src/logic/quality.ts (reine Funktionen): Stufen high/medium/low mit Budgets (FX-Sprites, ADD-Fläche, Partikel/Treffer, Schadenszahlen/s, Glow an/aus); Regler wechselt nur die Stufe mit Hysterese (<45 FPS 3 s → runter, >57 FPS 12 s → rauf). Verdrahtung nur an bestehenden Caps (FxSystem-Glow-Area, DamageNumbers-Cap). Unit-Tests tests/quality-tier.test.ts. Abnahme: Stufenlogik getestet, tsc/vitest grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:47:08Z",
+          "by": "build",
+          "text": "lane #10607, Merge 5c0f7149"
+        },
+        {
+          "at": "2026-11-28T10:47:35Z",
+          "by": "build",
+          "text": "lane #10607, Merge 0a83e8f4"
+        }
+      ],
+      "created": "2026-11-28T10:46:58Z",
+      "updated": "2026-11-28T10:47:35Z"
+    },
+    {
+      "id": 11231,
+      "title": "m10-android-scale-floor-r2: K4 Nachher-Beleg",
+      "description": "Belege (~/games/.evidence/m10-android-scale-floor-r2/ + Abnahme-PNG in shots/abnahme/): (1) ?rbscale=2 kann Text nicht mehr zerstören (Screenshot Tab-Emulation, Text lesbar), (2) CPU-Throttle-4x-Lauf zeigt Stufenwechsel statt Auflösungswechsel (JSON mit quality-Tier-Spur), (3) WebGL-Renderer-String im Beleg. Abnahme: kein Codepfad < 640x360, Text lesbar, __lf.state().quality sichtbar.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:47:08Z",
+          "by": "build",
+          "text": "lane #10608, Merge 5c0f7149"
+        },
+        {
+          "at": "2026-11-28T10:47:35Z",
+          "by": "build",
+          "text": "lane #10608, Merge 0a83e8f4"
+        }
+      ],
+      "created": "2026-11-28T10:46:58Z",
+      "updated": "2026-11-28T10:47:35Z"
     }
   ]
 }

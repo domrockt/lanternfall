@@ -17,11 +17,14 @@ export function setGameView(width: number, height: number, scale: number): void 
 import {
   RENDER_SCALE_MAX,
   RENDER_SCALE_MIN,
-  chooseRenderScale,
   parseRenderScaleOverride,
-  stepRenderScale,
-  type RenderScaleState,
 } from "./logic/scale";
+import {
+  initialQualityState,
+  stepQuality,
+  type QualityState,
+  type QualityTier,
+} from "./logic/quality";
 
 /**
  * M10-dpr-budget-cap: adaptiver Render-Massstab. RENDER_SCALE ist der
@@ -31,6 +34,15 @@ import {
  * Gesetzt wird ausschliesslich ueber setRenderScale()/den Laufzeit-Regler.
  */
 export let RENDER_SCALE = RENDER_SCALE_MIN;
+
+/**
+ * M10-android-scale-floor-r2 (K3): Qualitaetsstufe des Laufzeit-Reglers.
+ * high/medium/low mit Budgets in src/logic/quality.ts; der Regler wechselt
+ * NUR die Stufe (Hysterese: < 45 FPS 3 s runter, > 57 FPS 12 s rauf), nie die
+ * Aufloesung. Live-Binding wie RENDER_SCALE: importierende Module sehen
+ * Aenderungen sofort (FxSystem/DamageNumbers lesen die Deckel je Frame).
+ */
+export let QUALITY: QualityTier = "high";
 
 export function setRenderScale(scale: number): number {
   RENDER_SCALE = Math.max(RENDER_SCALE_MIN, Math.min(RENDER_SCALE_MAX, Math.round(scale)));
@@ -47,9 +59,8 @@ export function renderBufferSize(
   return { width: Math.max(1, Math.floor(width / s)), height: Math.max(1, Math.floor(height / s)) };
 }
 
-/** Frame-Budget des Reglers (Ziel 60 FPS,deckungsgleich mit perf-Ziel). */
-const RENDER_BUDGET_MS = 1000 / 60;
-/** URL-Override fuer Messungen: ?rbscale=0 (aus) oder ?rbscale=1..3 (fest). */
+/** URL-Override fuer Messungen: ?rbscale=0 (aus) oder ?rbscale=1..3 (fest,
+ *  seit K2 auf 1 geklemmt — Werte > 1 zerstoeren den Text nicht mehr). */
 const QUERY_RENDER_SCALE =
   typeof window !== "undefined" && window.location
     ? parseRenderScaleOverride(new URLSearchParams(window.location.search).get("rbscale"))
@@ -135,10 +146,15 @@ function enforceCameraProjection(game: BudgetGame, scale: number): void {
  * wartet auf `window.__game` (installDebugApi), haengt FPS-EWMA + Hysterese an
  * den Game-Loop und setzt Canvas-Buffer + renderer zusammen. main.ts/view.ts
  * bleiben unveraendert; CSS bleibt geraetepixelgenau wie in m8-display.
+ *
+ * M10-android-scale-floor-r2 (K2): der Regler kann den Teiler nicht mehr
+ * ueber 1 hinaus anheben (RENDER_SCALE_MAX = 1) — der Soll/Ist-Vergleich in
+ * apply() bleibt: Boot/applyView/Scale-Manager koennen den Buffer jederzeit
+ * zuruecksetzen, dann wird sofort wieder die volle logische Groesse angelegt.
  */
 function installRenderBudget(): void {
   if (typeof window === "undefined" || typeof document === "undefined") return;
-  let state: RenderScaleState = { scale: RENDER_SCALE_MIN, belowMs: 0, aboveMs: 0 };
+  let qState: QualityState = initialQualityState();
   let applied = -1;
   let lastNow = 0;
   // Eigener FPS-EWMA aus den rAF-Deltas. Phaser loop.actualFps ist pro Sekunde
@@ -184,20 +200,21 @@ function installRenderBudget(): void {
       }
       return;
     }
-    const cap = chooseRenderScale(
-      window.devicePixelRatio || 1,
-      game.scale.width,
-      game.scale.height,
-      fpsEwma,
-      RENDER_BUDGET_MS,
-    );
-    state = stepRenderScale(state, fpsEwma, dt, cap);
-    apply(game, state.scale);
+    // K2: Teiler bleibt 1 — Soll/Ist-Vergleich stellt Buffer-Resets wieder her.
+    apply(game, RENDER_SCALE_MIN);
     if (!(window as unknown as { __rbManual?: boolean }).__rbManual) {
-      enforceCameraProjection(game, state.scale);
+      enforceCameraProjection(game, RENDER_SCALE_MIN);
     }
+    // K3: Qualitaetsstufen-Regler (Hysterese) statt Aufloesungsregler.
+    qState = stepQuality(qState, fpsEwma, dt);
+    QUALITY = qState.tier;
     const d2 = (window as unknown as { __rbDbg?: Record<string, unknown> }).__rbDbg;
-    if (d2) { d2.fps = fpsEwma; d2.cap = cap; d2.afterW = game.canvas.width; d2.state = state; }
+    if (d2) {
+      d2.fps = fpsEwma;
+      d2.quality = qState.tier;
+      d2.qualityState = qState;
+      d2.afterW = game.canvas.width;
+    }
   };
 
   const wait = (): void => {

@@ -8,6 +8,8 @@ import {
   type AggregateEntry, type EntrySink, type LabelCandidate,
 } from "../logic/damage-numbers";
 import type { LodState } from "../logic/lod";
+import { QUALITY } from "../config";
+import { damageLabelCapForQuality } from "../logic/quality";
 import { Pool } from "./Pool";
 
 interface DamageView {
@@ -218,11 +220,14 @@ export class DamageNumberSystem {
     return this.enabled;
   }
 
-  /** Aktive View-Obergrenze: im Aggregat-Modus hart auf MAX_VIEWS_AGGREGATE. */
+  /** Aktive View-Obergrenze: im Aggregat-Modus hart auf MAX_VIEWS_AGGREGATE.
+   *  K3 (m10-android-scale-floor-r2): zusaetzlich durch die Qualitaetsstufe
+   *  gedeckelt (high 12 / medium 8 / low 5). */
   private viewLimit(aggregate: boolean): number {
-    if (!aggregate) return Math.min(this.maxViews, MAX_VISIBLE_LABELS);
+    const qualityCap = damageLabelCapForQuality(QUALITY);
+    if (!aggregate) return Math.min(this.maxViews, MAX_VISIBLE_LABELS, qualityCap);
     const lodLimit = this.lod?.level === "minimal" ? 6 : MAX_VIEWS_AGGREGATE;
-    return Math.min(lodLimit, MAX_VIEWS_AGGREGATE);
+    return Math.min(lodLimit, MAX_VIEWS_AGGREGATE, qualityCap);
   }
 
   /**

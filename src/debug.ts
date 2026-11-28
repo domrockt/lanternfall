@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { ENEMIES, PASSIVES, weaponDef } from "./data";
 import type { EnemyId, PassiveId, WeaponAnyId } from "./data/types";
 import { hasFlag } from "./logic/rng";
-import { TILE, WORLD_SIZE } from "./config";
+import { TILE, WORLD_SIZE, QUALITY } from "./config";
 import { paintTerrain, terrainKindAt, type TileKind } from "./gfx/tiles";
 import type { Run } from "./scenes/Run";
 import { getAudio, applyOptions } from "./audio/AudioSystem";
@@ -208,7 +208,13 @@ export function installDebugApi(game: Phaser.Game): void {
     /** Immer verfügbar. */
     state: () => {
       if (game.scene.isActive("run") || game.scene.isPaused("run")) {
-        return { ...(game.scene.getScene("run") as Run).getDebugState(), spawnCounts: spawnCounts() };
+        // K3 (m10-android-scale-floor-r2): Qualitaetsstufe im Debug-State
+        // (Abnahme: Stufenwechsel sichtbar in __lf.state().quality).
+        return {
+          ...(game.scene.getScene("run") as Run).getDebugState(),
+          spawnCounts: spawnCounts(),
+          quality: QUALITY,
+        };
       }
       return {
         scene: activeScene(),
@@ -224,6 +230,7 @@ export function installDebugApi(game: Phaser.Game): void {
         bossesDefeated: 0,
         fps: Math.round((game.loop.actualFps ?? 0) * 10) / 10,
         character: null,
+        quality: QUALITY,
       };
     },
 
