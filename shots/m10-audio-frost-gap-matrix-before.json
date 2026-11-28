@@ -1,0 +1,553 @@
+{
+  "schema": "m10-audio-frost-gap/v1",
+  "generatedAt": "2026-11-28T01:52:21.369Z",
+  "method": "10 Band-Energien (4096er-Hann-Fenster WAV-Mitte, Kanten [0,4,8,16,32,64,128,256,512,1024,2048] Bins @22050 Hz, normiert), Kosinus-Distanz — identisch zu tests/audio-mix.test.ts",
+  "thresholds": {
+    "minPairDist": 0.12,
+    "frostWinterTarget": 0.15
+  },
+  "durationsSec": {
+    "ember": 0.19,
+    "flail": 0.26,
+    "frost": 0.33,
+    "thorn": 0.15,
+    "storm": 0.31,
+    "lantern": 0.36,
+    "phoenix": 0.82,
+    "wrath_pendulum": 0.72,
+    "eternal_winter": 0.9,
+    "thorn_storm": 0.75,
+    "thunder_seal": 0.7,
+    "soul_beacon": 0.85
+  },
+  "bandEnergies": {
+    "ember": [
+      0.0006,
+      0.0011,
+      0.0029,
+      0.4198,
+      0.0086,
+      0.1003,
+      0.0474,
+      0.0775,
+      0.2309,
+      0.111
+    ],
+    "flail": [
+      0.0019,
+      0.0092,
+      0.528,
+      0.0688,
+      0.0335,
+      0.2328,
+      0.0555,
+      0.0351,
+      0.0198,
+      0.0154
+    ],
+    "frost": [
+      0,
+      0,
+      0.0001,
+      0.0001,
+      0.1903,
+      0.0392,
+      0.038,
+      0.0296,
+      0.5496,
+      0.1531
+    ],
+    "thorn": [
+      0.0004,
+      0.0012,
+      0.0043,
+      0.0249,
+      0.4455,
+      0.0463,
+      0.0968,
+      0.2671,
+      0.0652,
+      0.0482
+    ],
+    "storm": [
+      0.0076,
+      0.564,
+      0.0211,
+      0.0949,
+      0.0303,
+      0.0215,
+      0.1767,
+      0.0079,
+      0.0495,
+      0.0265
+    ],
+    "lantern": [
+      0.0001,
+      0.0001,
+      0.0004,
+      0.2551,
+      0.0008,
+      0.0495,
+      0.0365,
+      0.016,
+      0.5037,
+      0.1377
+    ],
+    "phoenix": [
+      0.0005,
+      0.0005,
+      0.0013,
+      0.002,
+      0.0954,
+      0.0228,
+      0.0701,
+      0.0419,
+      0.0377,
+      0.7278
+    ],
+    "wrath_pendulum": [
+      0.0001,
+      0,
+      0.0001,
+      0.2737,
+      0.2948,
+      0.1006,
+      0.211,
+      0.0651,
+      0.0346,
+      0.02
+    ],
+    "eternal_winter": [
+      0.0008,
+      0.0006,
+      0.0006,
+      0.0028,
+      0.0054,
+      0.0101,
+      0.2777,
+      0.0366,
+      0.5357,
+      0.1297
+    ],
+    "thorn_storm": [
+      0.0001,
+      0.0001,
+      0.0002,
+      0.0005,
+      0.0409,
+      0.0016,
+      0.6689,
+      0.0102,
+      0.1382,
+      0.1393
+    ],
+    "thunder_seal": [
+      0,
+      0,
+      0,
+      0.0001,
+      0.0003,
+      0.695,
+      0.001,
+      0.158,
+      0.0934,
+      0.052
+    ],
+    "soul_beacon": [
+      0.0001,
+      0.0001,
+      0.0461,
+      0.0002,
+      0.0074,
+      0.0023,
+      0.0057,
+      0.7024,
+      0.014,
+      0.2217
+    ]
+  },
+  "pairs": [
+    {
+      "a": "frost",
+      "b": "eternal_winter",
+      "dist": 0.1245
+    },
+    {
+      "a": "frost",
+      "b": "lantern",
+      "dist": 0.1459
+    },
+    {
+      "a": "lantern",
+      "b": "eternal_winter",
+      "dist": 0.1712
+    },
+    {
+      "a": "ember",
+      "b": "lantern",
+      "dist": 0.1731
+    },
+    {
+      "a": "thorn",
+      "b": "wrath_pendulum",
+      "dist": 0.274
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thorn_storm",
+      "dist": 0.3551
+    },
+    {
+      "a": "ember",
+      "b": "wrath_pendulum",
+      "dist": 0.3648
+    },
+    {
+      "a": "thorn",
+      "b": "soul_beacon",
+      "dist": 0.4872
+    },
+    {
+      "a": "ember",
+      "b": "frost",
+      "dist": 0.502
+    },
+    {
+      "a": "ember",
+      "b": "eternal_winter",
+      "dist": 0.5045
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thorn_storm",
+      "dist": 0.5089
+    },
+    {
+      "a": "frost",
+      "b": "thorn",
+      "dist": 0.5646
+    },
+    {
+      "a": "flail",
+      "b": "thunder_seal",
+      "dist": 0.5976
+    },
+    {
+      "a": "lantern",
+      "b": "wrath_pendulum",
+      "dist": 0.6227
+    },
+    {
+      "a": "phoenix",
+      "b": "soul_beacon",
+      "dist": 0.6475
+    },
+    {
+      "a": "frost",
+      "b": "phoenix",
+      "dist": 0.6534
+    },
+    {
+      "a": "frost",
+      "b": "wrath_pendulum",
+      "dist": 0.6769
+    },
+    {
+      "a": "frost",
+      "b": "thorn_storm",
+      "dist": 0.6901
+    },
+    {
+      "a": "storm",
+      "b": "thorn_storm",
+      "dist": 0.6907
+    },
+    {
+      "a": "phoenix",
+      "b": "thorn_storm",
+      "dist": 0.6944
+    },
+    {
+      "a": "phoenix",
+      "b": "eternal_winter",
+      "dist": 0.702
+    },
+    {
+      "a": "ember",
+      "b": "thunder_seal",
+      "dist": 0.7025
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "eternal_winter",
+      "dist": 0.7068
+    },
+    {
+      "a": "lantern",
+      "b": "phoenix",
+      "dist": 0.713
+    },
+    {
+      "a": "lantern",
+      "b": "thorn_storm",
+      "dist": 0.7217
+    },
+    {
+      "a": "storm",
+      "b": "wrath_pendulum",
+      "dist": 0.7287
+    },
+    {
+      "a": "thorn",
+      "b": "thorn_storm",
+      "dist": 0.7295
+    },
+    {
+      "a": "ember",
+      "b": "phoenix",
+      "dist": 0.7351
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "thunder_seal",
+      "dist": 0.7505
+    },
+    {
+      "a": "thorn",
+      "b": "phoenix",
+      "dist": 0.7506
+    },
+    {
+      "a": "thorn",
+      "b": "eternal_winter",
+      "dist": 0.7568
+    },
+    {
+      "a": "flail",
+      "b": "wrath_pendulum",
+      "dist": 0.7572
+    },
+    {
+      "a": "ember",
+      "b": "thorn",
+      "dist": 0.7641
+    },
+    {
+      "a": "thunder_seal",
+      "b": "soul_beacon",
+      "dist": 0.7643
+    },
+    {
+      "a": "ember",
+      "b": "thorn_storm",
+      "dist": 0.7739
+    },
+    {
+      "a": "ember",
+      "b": "soul_beacon",
+      "dist": 0.7795
+    },
+    {
+      "a": "ember",
+      "b": "flail",
+      "dist": 0.7805
+    },
+    {
+      "a": "lantern",
+      "b": "thunder_seal",
+      "dist": 0.7834
+    },
+    {
+      "a": "ember",
+      "b": "storm",
+      "dist": 0.7844
+    },
+    {
+      "a": "storm",
+      "b": "eternal_winter",
+      "dist": 0.7845
+    },
+    {
+      "a": "thorn",
+      "b": "thunder_seal",
+      "dist": 0.785
+    },
+    {
+      "a": "frost",
+      "b": "thunder_seal",
+      "dist": 0.7905
+    },
+    {
+      "a": "phoenix",
+      "b": "wrath_pendulum",
+      "dist": 0.8156
+    },
+    {
+      "a": "thorn",
+      "b": "lantern",
+      "dist": 0.8206
+    },
+    {
+      "a": "storm",
+      "b": "lantern",
+      "dist": 0.8283
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thunder_seal",
+      "dist": 0.8432
+    },
+    {
+      "a": "wrath_pendulum",
+      "b": "soul_beacon",
+      "dist": 0.8438
+    },
+    {
+      "a": "flail",
+      "b": "thorn",
+      "dist": 0.8523
+    },
+    {
+      "a": "frost",
+      "b": "soul_beacon",
+      "dist": 0.8563
+    },
+    {
+      "a": "eternal_winter",
+      "b": "soul_beacon",
+      "dist": 0.8605
+    },
+    {
+      "a": "flail",
+      "b": "lantern",
+      "dist": 0.8717
+    },
+    {
+      "a": "thorn",
+      "b": "storm",
+      "dist": 0.8722
+    },
+    {
+      "a": "flail",
+      "b": "soul_beacon",
+      "dist": 0.8756
+    },
+    {
+      "a": "frost",
+      "b": "storm",
+      "dist": 0.877
+    },
+    {
+      "a": "phoenix",
+      "b": "thunder_seal",
+      "dist": 0.8801
+    },
+    {
+      "a": "lantern",
+      "b": "soul_beacon",
+      "dist": 0.8858
+    },
+    {
+      "a": "flail",
+      "b": "storm",
+      "dist": 0.8859
+    },
+    {
+      "a": "flail",
+      "b": "thorn_storm",
+      "dist": 0.892
+    },
+    {
+      "a": "flail",
+      "b": "frost",
+      "dist": 0.91
+    },
+    {
+      "a": "flail",
+      "b": "eternal_winter",
+      "dist": 0.9109
+    },
+    {
+      "a": "thorn_storm",
+      "b": "soul_beacon",
+      "dist": 0.9144
+    },
+    {
+      "a": "storm",
+      "b": "phoenix",
+      "dist": 0.9153
+    },
+    {
+      "a": "flail",
+      "b": "phoenix",
+      "dist": 0.9385
+    },
+    {
+      "a": "storm",
+      "b": "thunder_seal",
+      "dist": 0.9485
+    },
+    {
+      "a": "thorn_storm",
+      "b": "thunder_seal",
+      "dist": 0.953
+    },
+    {
+      "a": "storm",
+      "b": "soul_beacon",
+      "dist": 0.9675
+    }
+  ],
+  "closest": [
+    {
+      "a": "frost",
+      "b": "eternal_winter",
+      "dist": 0.1245
+    },
+    {
+      "a": "frost",
+      "b": "lantern",
+      "dist": 0.1459
+    },
+    {
+      "a": "lantern",
+      "b": "eternal_winter",
+      "dist": 0.1712
+    },
+    {
+      "a": "ember",
+      "b": "lantern",
+      "dist": 0.1731
+    },
+    {
+      "a": "thorn",
+      "b": "wrath_pendulum",
+      "dist": 0.274
+    },
+    {
+      "a": "eternal_winter",
+      "b": "thorn_storm",
+      "dist": 0.3551
+    },
+    {
+      "a": "ember",
+      "b": "wrath_pendulum",
+      "dist": 0.3648
+    },
+    {
+      "a": "thorn",
+      "b": "soul_beacon",
+      "dist": 0.4872
+    }
+  ],
+  "minPair": {
+    "a": "frost",
+    "b": "eternal_winter",
+    "dist": 0.1245
+  },
+  "frostWinter": {
+    "a": "frost",
+    "b": "eternal_winter",
+    "dist": 0.1245
+  }
+}
