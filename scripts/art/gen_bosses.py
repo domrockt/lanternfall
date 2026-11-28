@@ -440,103 +440,126 @@ def bell_golem(f: int) -> Grid:
 
 
 
-def _witch(g: Grid, cx: int, base_y: int, h: float, raise_arms: bool, f: int,
-           robe: int = 25, variant: str = "caster"):
-    """Eine Hexe: eine Robe-Flaeche, Kapuze, Hut, warmes Gesicht MIT Augen,
-    Rolle ueber Props (links Stab mit Glutknauf, rechts gebeugt mit
-    Feuerball, Mitte zaubert ohne Requisit)."""
-    bw = max(8, int(14 * h))
-    top = base_y - int(36 * h)
-    # Robe als zusammenhaengende Flaeche.
-    for y in range(top + 14, base_y):
-        t = (y - top - 14) / max(1, base_y - top - 14)
-        w = int(bw * (0.75 + 0.55 * t))
+def _flame(g: Grid, x: int, y: int):
+    """Klare Flamme (Tropfenform, Spitze oben, heller Kern) — liest sich als
+    Feuer und nicht mehr als Goldkugel (Mangel aus crisp-Lane K2)."""
+    g.put(x, y - 2, 22)                    # Glut-Spitze
+    g.put(x - 1, y - 1, 18)
+    g.put(x + 1, y - 1, 18)
+    g.rect(x - 1, y, 3, 1, 19)
+    g.put(x, y, 13)                        # weisser Kern
+    g.rect(x - 2, y + 1, 5, 1, 18)
+    g.put(x - 2, y + 1, 22)                # Glüh-Rand
+    g.put(x + 2, y + 1, 22)
+    g.rect(x - 1, y + 2, 3, 1, 15)         # Sockel
+
+
+def _broom(g: Grid, bx: int, top_y: int, base_y: int):
+    """Besen: 2-px-Holzstiel mit Lichtkante, Bernstein-Kordel und dunklem
+    Reisigkopf mit Fransen — ersetzt den alten 1-px-Nadel-Strich (Index 5)."""
+    h_ = base_y - 8 - top_y
+    g.rect(bx, top_y, 2, h_, 16)           # Stiel (Holz)
+    g.rect(bx, top_y, 1, h_, 17)           # Lichtkante links
+    g.rect(bx - 1, base_y - 10, 4, 2, 20)  # Bindung (Kordel)
+    g.put(bx - 1, base_y - 10, 21)
+    for i, w in enumerate((5, 7, 8, 8, 6)):  # Reisigkopf
+        yy = base_y - 8 + i
+        g.rect(bx - w // 2, yy, w, 1, 15)
+        g.put(bx - w // 2, yy, 16)
+        g.put(bx + w // 2 - 1, yy, 14)
+
+
+def _witch(g: Grid, cx: int, base_y: int, h: float, role: str, f: int,
+           robe: int = 25):
+    """Eine Hexe mit klarer Rolle statt Klon (Mangel aus crisp-Lane K2):
+      broom  — gebeugt, Besen an der Aussenseite
+      caster — Arme als V, wirft ohne Requisit
+      orb    — erhobener Arm mit Feuerkugel
+    Robe in eigener Rot-Treppenstufe (+1 Licht / -1 Schatten), damit die drei
+    Figuren einzeln silhouettieren."""
+    light, dark = robe + 1, robe - 1
+    bw = max(8, int(13 * h))
+    top = base_y - int(34 * h)
+    hd = top + (4 if role == "broom" else 0)   # gebeugte Hexe: Kopf tiefer
+    # Robe als zusammenhaengendes Trapez mit Licht-/Schattenkante.
+    for y in range(top + 13, base_y):
+        t = (y - top - 13) / max(1, base_y - top - 13)
+        w = int(bw * (0.8 + 0.5 * t))
         g.rect(cx - w // 2, y, w, 1, robe)
+        g.rect(cx - w // 2, y, 2, 1, light)
+        g.rect(cx + w // 2 - 2, y, 2, 1, dark)
     # Kragen.
-    g.rect(cx - bw // 2, top + 12, bw, 3, 26)
-    g.put(cx - bw // 2, top + 12, 27)
+    g.rect(cx - bw // 2, top + 11, bw, 3, dark)
+    g.put(cx - bw // 2, top + 11, light)
     # Kapuze + warmes Gesicht (27 Basis, 16 Schatten, 21 nur 1-px-Kante).
-    # hd: gebeugte Hexen lassen den Kopf in die Schultern sinken.
-    hd = top + (2 if variant == "orb" else 0)
     g.ellipse(cx, hd + 7, max(3, int(4.5 * h)), max(3, int(3.5 * h)), 9)
     fw = max(4, int(8 * h))
     g.rect(cx - fw // 2, hd + 4, fw, 5, 27)
     g.rect(cx - fw // 2, hd + 8, fw, 1, 16)        # Kinnschatten
-    g.rect(cx - fw // 2, hd + 9, fw, 2, robe)      # Robe statt grauem Kinn-Keil
-    g.put(cx - fw // 2, hd + 9, 9)                 # Kapuzenrim bleibt stehen
-    g.put(cx + fw // 2 - 1, hd + 9, 9)
+    g.rect(cx - fw // 2, hd + 9, fw, 2, robe)      # Robe unter dem Gesicht
     g.rect(cx - fw // 2, hd + 4, 1, 5, 21)         # 1-px-Lichtkante links
-    # Augen: F0 2x2 Bernstein, F1 2x2 Laternenweiss (pulsiert).
+    # Augen: 2x2 Bernstein in dunklem Sockel.
     ey = hd + 6
-    if f >= 1:
-        g.rect(cx - 3, ey, 2, 2, 13)
-        g.rect(cx + 1, ey, 2, 2, 13)
-        g.put(cx - 4, ey + 1, 22)
-        g.put(cx + 3, ey + 1, 22)
-    else:
-        g.rect(cx - 3, ey, 2, 2, 20)
-        g.rect(cx + 1, ey, 2, 2, 20)
-    # Hut.
-    g.rect(cx - int(8 * h), hd + 2, int(17 * h), 2, 24)
-    g.put(cx - int(8 * h), hd + 2, 26)
-    g.rect(cx - int(5 * h), hd - 4, int(10 * h), 4, 25)
-    g.put(cx - int(5 * h), hd - 4, 26)
-    g.put(cx + int(4 * h), hd - 3, 23)
-    g.put(cx, hd - 5, 27)
-    # Arme.
+    g.rect(cx - 3, ey, 2, 2, 20)
+    g.rect(cx + 1, ey, 2, 2, 20)
+    # Hut: rollen-abhaengige Silhouette.
+    if role == "broom":            # gebeugte Spitze nach links
+        g.rect(cx - int(8 * h), hd + 2, int(17 * h), 2, 24)
+        g.put(cx - int(8 * h), hd + 2, 26)
+        g.rect(cx - int(6 * h), hd - 3, int(9 * h), 4, 25)
+        g.rect(cx - int(9 * h) - 1, hd - 6, 3, 4, 25)
+        g.put(cx - int(9 * h) - 1, hd - 6, 26)
+    elif role == "caster":         # hoher, gerader Hut
+        g.rect(cx - int(8 * h), hd + 2, int(17 * h), 2, 24)
+        g.put(cx - int(8 * h), hd + 2, 26)
+        g.rect(cx - int(5 * h), hd - 5, int(10 * h), 6, 25)
+        g.put(cx - int(5 * h), hd - 5, 26)
+        g.put(cx + int(4 * h), hd - 3, 23)
+    else:                          # schlaffer breiter Hut mit Bernstein-Band
+        g.rect(cx - int(9 * h), hd + 2, int(19 * h), 2, 24)
+        g.rect(cx - int(9 * h), hd + 3, int(19 * h), 1, 20)
+        g.rect(cx - int(5 * h), hd - 2, int(10 * h), 4, 25)
+        g.put(cx - int(5 * h), hd - 2, 26)
+    # Arme + Requisit: rollen-abhaengige Pose.
     arm_y = top + 12
-    if raise_arms:
-        g.line(cx - bw // 2, arm_y, cx - bw - 5, top + 2, 23, 2)
-        g.line(cx + bw // 2, arm_y, cx + bw + 4, top + 2, 23, 2)
-        hand_l = (cx - bw - 6, top + 1)
-        hand_r = (cx + bw + 4, top + 1)
-    else:
-        g.line(cx - bw // 2, arm_y, cx - bw - 4, top + 20, 23, 2)
-        g.line(cx + bw // 2, arm_y, cx + bw + 3, top + 20, 23, 2)
-        hand_l = (cx - bw - 4, top + 20)
-        hand_r = (cx + bw + 2, top + 20)
-    for hx, hy in (hand_l, hand_r):
-        g.rect(hx, hy, 3, 3, 27)                   # warme Haut
-        g.rect(hx, hy + 2, 3, 1, 16)
-        g.put(hx, hy, 21)                          # 1-px-Kante
-    # Flamme in einer Hand: F0 ruhig, F1/F2 groesser + heller Kern.
-    fx, fy = hand_r
-    if f >= 1:
-        g.ellipse(fx + 1, fy - 5, 4, 4, 18)
-        g.rect(fx, fy - 6, 2, 2, 13)
-        g.put(fx - 2, fy - 4, 22)
-        g.put(fx + 3, fy - 4, 22)
-        g.put(fx, fy - 7, 22)
-    else:
-        g.ellipse(fx + 1, fy - 4, 3, 3, 18)
-        g.ellipse(fx + 1, fy - 4, 2, 2, 20)
-        g.put(fx, fy - 5, 22)
-    # Besenstiel am Ruecken.
-    g.vline(cx + bw + 7, top + 10, base_y - 4, 5)
+    if role == "caster":
+        g.line(cx - bw // 2, arm_y, cx - bw - 5, top + 3, light, 2)
+        g.line(cx + bw // 2, arm_y, cx + bw + 4, top + 3, light, 2)
+        for hx2, hy2 in ((cx - bw - 6, top + 1), (cx + bw + 3, top + 1)):
+            g.rect(hx2, hy2, 3, 3, 27)             # warme Haut
+            g.put(hx2, hy2, 21)
+    elif role == "orb":
+        g.line(cx + bw // 2, arm_y, cx + bw + 3, top + 5, light, 2)
+        hx2, hy2 = cx + bw + 2, top + 3
+        g.rect(hx2, hy2, 3, 3, 27)
+        g.put(hx2, hy2, 21)
+        _flame(g, hx2 + 1, hy2 - 4)                # Feuerkugel ueber der Hand
+        g.line(cx - bw // 2, arm_y, cx - bw - 4, top + 20, light, 2)
+        g.rect(cx - bw - 5, top + 19, 3, 3, 27)
+        g.put(cx - bw - 5, top + 19, 21)
+    else:  # broom
+        g.line(cx - bw // 2, arm_y, cx - bw - 4, top + 20, light, 2)
+        g.line(cx + bw // 2, arm_y, cx + bw + 3, top + 20, light, 2)
+        for hx2, hy2 in ((cx - bw - 5, top + 19), (cx + bw + 2, top + 19)):
+            g.rect(hx2, hy2, 3, 3, 27)
+            g.put(hx2, hy2, 21)
+        _broom(g, cx - bw - 8, top + 6, base_y)
 
 
 def coven(f: int) -> Grid:
+    """Hexenzirkel: drei einzeln lesbare Rollen (Besen / Zauberei / Feuerkugel)
+    in drei Rot-Treppen (24/25/26), eigener Silhouetten-Kontur je Figur und
+    Feuerring als klare Flammen (keine Goldkugeln, kein Besen-Nadel-Strich)."""
     g = Grid(96, 96)
     bob = 2 if f == 1 else 0
-    raise_arms = f == 2
-    _witch(g, 24, 88 - bob, 0.9, raise_arms, f)
-    _witch(g, 72, 88 - bob, 0.9, raise_arms, f)
-    _witch(g, 48, 80 - bob, 1.15, raise_arms, f)
-    # Feuerkreis: gruppierte Kerne, F1/F2 pulsierend groesser.
-    for x, y in ((48, 30), (18, 52), (78, 52)):
-        if f >= 1:
-            g.ellipse(x, y - bob, 5, 5, 18)
-            g.rect(x - 1, y - 1 - bob, 2, 2, 13)
-            g.put(x - 3, y - bob, 22)
-            g.put(x + 3, y - bob, 22)
-        else:
-            g.ellipse(x, y - bob, 4, 4, 18)
-            g.ellipse(x, y - bob, 2, 2, 20)
-            g.put(x - 1, y - 1 - bob, 22)
-    if raise_arms:
-        # Kreuzende Feuerstrahlen (nur Wirkphase).
-        g.line(18, 50 - bob, 78, 62 - bob, 26, 2)
-        g.line(78, 50 - bob, 18, 62 - bob, 26, 2)
+    # Seitenfiguren zuerst, Mitte zuletzt — Figuren ueberlappen nicht mehr.
+    _witch(g, 22, 88 - bob, 0.85, "broom", f, robe=24)
+    _witch(g, 74, 88 - bob, 0.9, "orb", f, robe=26)
+    _witch(g, 48, 78 - bob, 1.2, "caster", f, robe=25)
+    # Feuerring: drei klare Flammen im Dreieck um die Figuren.
+    _flame(g, 48, 26)
+    _flame(g, 12, 44)
+    _flame(g, 84, 44)
     return finish(g, [])
 
 
