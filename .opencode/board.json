@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12769,
+  "next": 12773,
   "cards": [
     {
       "id": 1,
@@ -17743,6 +17743,71 @@
       "notes": [],
       "created": "2026-11-28T13:56:32Z",
       "updated": "2026-11-28T13:56:32Z"
+    },
+    {
+      "id": 12769,
+      "title": "m10-worldview-anchor-spawner K1: Ist-Analyse — Fix bereits gemergt (m10-spawn-view-anchor), claims geprüft",
+      "description": "Abnahme: claims.json bestätigt Spawner.ts-Claim; Rezept (docs/lanes/m10-boss-dur-determinism.md K2) und pools-Lane-Konventionen gelesen; Befund dokumentiert, dass outsideView-Fix (Commit 0910f360) im Basis-Stand gemergt ist und die Vorher-Divergenz über marks-before.json der gemergten Lane belegt ist.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:55:46Z",
+          "by": "build",
+          "text": "doing → done: Ist-Analyse: Fix (0910f360) im Basis-Stand, Vorher-Beleg der Vorläufer-Lane zitiert, claims ok. Commit 816a7c5b"
+        }
+      ],
+      "created": "2026-11-28T14:55:10Z",
+      "updated": "2026-11-28T14:55:46Z"
+    },
+    {
+      "id": 12770,
+      "title": "m10-worldview-anchor-spawner K2: Verifikation outsideView-Anker — Rezept-Konformität + Guard",
+      "description": "Abnahme: outsideView (Spawner.ts ~Z.347) liest NICHT camera.worldView, sondern Anker mid=scroll+width/2, logischer Screen GAME_WIDTH×GAME_HEIGHT, formelidentisch zum Rezept K2 Punkt 4; Guard-Scan: kein worldView-Leser im Spawner-Sim-Pfad; npx tsc --noEmit rc=0.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:55:46Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T14:56:03Z",
+          "by": "build",
+          "text": "doing → done: Verifikation: Rezept konform, Guard clean, tsc rc=0. Commit 0923e7ee"
+        }
+      ],
+      "created": "2026-11-28T14:55:10Z",
+      "updated": "2026-11-28T14:56:03Z"
+    },
+    {
+      "id": 12771,
+      "title": "m10-worldview-anchor-spawner K3: tests/worldview-anchor-spawner.test.ts — Spawn-Determinismus über Render-Frame-Rhythmen",
+      "description": "Abnahme: eigene Testdatei (nicht tests/worldview-anchor.test.ts der pools-Lane); Spawn-Platzierung/Offscreen-Entscheidung bitgleich bei gleichem Seed unabhängig von worldView-Mutationen/Frame-Rhythmus; npx vitest run grün.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:56:03Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T14:55:10Z",
+      "updated": "2026-11-28T14:56:03Z"
+    },
+    {
+      "id": 12772,
+      "title": "m10-worldview-anchor-spawner K4: Ganzketten-E2E 3 Seeds × 2 Läufe bitgleich + Lane-Doku + requests.md",
+      "description": "Abnahme: scripts/m10-worldview-spawner.mjs (Harness nur lesen), 3 Seeds × 2 Läufe (700 s, 30x): Spawn-Marken + Boss-Dauern bitgleich (Exit 0); Belege ~/games/.evidence/m10-worldview-anchor-spawner/; docs/lanes/m10-worldview-anchor-spawner.md; requests.md-Vermerk alle 3 Leser geankert; .lane-done.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:57:25Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T14:55:10Z",
+      "updated": "2026-11-28T14:57:25Z"
     }
   ]
 }
