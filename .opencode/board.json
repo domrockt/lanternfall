@@ -13146,37 +13146,61 @@
       "id": 10217,
       "title": "m10-boss-stack-separation K1: Vorher-Baseline (Messung + Shot)",
       "description": "Abnahmekriterium: scripts/m10-boss-stack.mjs läuft einmal (flock) gegen unfixierten Stand, schreibt shots/m10-boss-stack-before.png + Beleg-JSON nach ~/games/.evidence/m10-boss-stack-separation/ (Frame-Zeit p95, WebGL-Renderer-String, Max-Paar-Deckung Boss/Elite); alles committet BEVOR der Fix beginnt.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:34:05Z",
+          "by": "build",
+          "text": "review → done: lane #10048, Merge faeb8be8 (rebased auf main 7bf95e54)"
+        }
+      ],
       "created": "2026-11-28T08:32:06Z",
-      "updated": "2026-11-28T08:32:06Z"
+      "updated": "2026-11-28T08:34:05Z"
     },
     {
       "id": 10218,
       "title": "m10-boss-stack-separation K2: Stapel-Trennregel (separation.ts) + Test",
       "description": "Abnahmekriterium: tests/boss-stack-separation.test.ts grün — Szene mit ≥3 Bossen/Elites auf engem Raum, kein Paar mit >80% Sprite-Deckung (Kreisdistanz vs. Radiensumme), kein Oszillieren >1 px/Frame im Stand, deterministisch; npx tsc --noEmit rc=0.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:34:05Z",
+          "by": "build",
+          "text": "review → done: lane #10049, Merge faeb8be8 (rebased auf main 7bf95e54)"
+        }
+      ],
       "created": "2026-11-28T08:32:06Z",
-      "updated": "2026-11-28T08:32:06Z"
+      "updated": "2026-11-28T08:34:05Z"
     },
     {
       "id": 10219,
       "title": "m10-boss-stack-separation K3: Anbindung BossSystem",
       "description": "Abnahmekriterium: BossSystem ruft die Stapel-Trennregel je Frame für Boss+Elite-Entities (Pool-Scratch, allokationsfrei); gezielte Tests grün; sanfter Kraftanteil (kein Positions-Snapping), Sprungfreiheit erhalten.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:34:05Z",
+          "by": "build",
+          "text": "review → done: lane #10050, Merge faeb8be8 (rebased auf main 7bf95e54)"
+        }
+      ],
       "created": "2026-11-28T08:32:06Z",
-      "updated": "2026-11-28T08:32:06Z"
+      "updated": "2026-11-28T08:34:05Z"
     },
     {
       "id": 10220,
       "title": "m10-boss-stack-separation K4: Nachher-Messung + Shots + Abnahme",
       "description": "Abnahmekriterium: Vorher/Nachher im selben Skript-Lauf unter flock (Frame-Zeit p95 ≤ +5%, WebGL-Renderer-String im JSON), Vorher/Nachher-Shots committet (shots/m10-boss-stack-*), art-director EINMAL PASS, volle Testsuite + build grün, Lane-Doku + .lane-done.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:34:05Z",
+          "by": "build",
+          "text": "review → done: lane #10051, Merge faeb8be8 (rebased auf main 7bf95e54)"
+        }
+      ],
       "created": "2026-11-28T08:32:06Z",
-      "updated": "2026-11-28T08:32:06Z"
+      "updated": "2026-11-28T08:34:05Z"
     }
   ]
 }
