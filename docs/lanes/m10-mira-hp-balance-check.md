@@ -49,17 +49,34 @@ Befunde gegen den Korridor:
 
 ## K2 (#12906): Ursache + kleinster Hebel
 
-Ursache: Mira-Schadensausgabe ist unverändert ( DPS-Korridor-Lane hatte mira-DPS schon auf
-HP-250-Stand getunt), aber die Einsteckfähigkeit fiel von 250 auf 90 HP (-64 %). Kael hat als
+Ursache: Mira-Schadensausgabe ist unverändert (DPS-Korridor-Lane hatte mira-DPS schon auf
+HP-250-Stand getunt), aber die Einsteckfähigkeit fiel von 250 auf 90 HP (−64 %). Kael hat als
 Tank ~252 effektive HP und überlebt; Mira (HP 90, armor 1, regen 1,0) stirbt im
 Minute-20–25-Druckfenster. Das bestätigt genau die Briefing-Hypothese („Boss-TTK sinkt mit
 HP 90 … Levelband bricht?"): TTK der Bosse ist ok (12/13 gemessener mira-Boss-Kämpfe im
 20–60-s-Fenster), es bricht das Levelband/Überleben.
 
-Kleinstmöglicher Hebel darf NICHT miras HP/DPS wieder hochdrehen (Spec-Richtung HP 90 ist
-bindend, und `src/data/characters.ts` ist nicht unsere Datei). Verbleibende Hebel in unseren
-Dateien: Gegnerdruck (Schaden/Dichte) in `src/data/waves.ts` bzw. Schadens-Skalierung in
-`src/logic/scaling.ts`. Ziel: mira erreicht Minute 30 wieder (dawn), kael bleibt im ±10-%-Band
-gegen seine Referenz (Endlevel/Dauern).
+### Hebel-Wahl (belegt gegen die gepinnten Tests)
 
-(K2 wird mit der Fix-Messung in K3 belegt.)
+Verboten ist, miras HP/DPS zurückzudrehen (Spec-Richtung HP 90 bindend; `characters.ts`
+fremd). Die übrigen Hebel sind von der Endgame-Lane gepinnt (`tests/balance-endgame.test.ts`):
+`HP_RELIEF_MAX 0,25`, `HP_RELIEF_START_S 1080`, `HP_RELIEF_RAMP_S 240`,
+`LATE_GAME_ACTIVE_CAP 200`, `enemyDamageScale(1800)` — jede Änderung dort bricht fremde Pins.
+
+**Gewählter kleinster Hebel (nur `src/data/waves.ts`, eigene Datei):** TIER_MIXES[4] enthält
+mit `abom` (Splitter: teilt sich beim Tod) und `voidcaller` (Beschwörer: erzeugt weitere
+Gegner) zwei Mengen-Vervielfacher — genau in Minute 20–24, dem gemessenen mira-Todesfenster
+(20,4 / 22,2 / 25,4 min). Die Endgame-Lane hat denselben Mechanismus für Minute 25+ bereits
+dokumentiert (LATE_GAME_MIX, „genau in der Phase, in der die AutoPlay-Läufe vor Minute 25
+starben bzw. kurz davor kippten"); HP 90 verschiebt miras Todeszeitpunkt in das
+entsprechende Fenster 20–24. Fix: neuer Mix `MID_GAME_MIX` = TIER_MIXES[4] MINUS abom/voidcaller
+(reine Subtraktion, Gewichte unverändert, nur Tier-4-Typen) für Minute 20–24. Minute 0–19 und
+25+ bleiben bitgleich; Spawnrate unberührt (Monotonie-Pins bleiben grün).
+
+Pin-Prüfung: `tests/balance-endgame.test.ts` pinnt die Mischung nur für Minute 0–17
+(TIER_MIXES) und 25–29 (LATE_GAME_MIX) — Minute 18–24 ist NUR bei der Spawnrate gepinnt;
+`tests/data.test.ts` pinnt WAVES[0/5/29] + Monotonie. Kein fremder Test bricht.
+
+Zielkorridor für K3: mira 3/3 dawn bzw. Level@30 in 25–40, alle mira-Boss-Dauern 20–60 s,
+kael-Nebenwirkung (gegen meine K1-Ist-Messung, gleicher Code-Stand) ≤ ±10 %.
+
