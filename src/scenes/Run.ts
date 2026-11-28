@@ -151,6 +151,16 @@ export class Run extends Phaser.Scene {
   autoPlay = false;
   paused = false;
   /**
+   * m10-loading-screen K3: Start-Gate. Während des Fade-ins (CharSelect → Run)
+   * steht der Sim (freezeGate friert Timer/Tweens im update(), kein Sim-Schritt),
+   * damit der erste sichtbare Run-Frame ein fertig aufgebautes, stehendes Bild
+   * zeigt (Timer 00:00, 0 Gegner). FADE_IN_COMPLETE öffnet das Gate. detstart
+   * (Mess-Harness) setzt das Gate bewusst NICHT — dort steuert resumeRun() den
+   * Start. Bewusst NICHT über `paused`: die UI blendet das Pause-Panel direkt
+   * an `paused` ein — das Gate soll kein Pause-UI aufblitzen.
+   */
+  startGate = false;
+  /**
    * M10-esc-pause-fix: timeStamp des zuletzt akzeptierten ESC-Keydowns
    * (Dedup pro physischem Press, siehe escToggleAllowed in InputState).
    */
@@ -343,6 +353,19 @@ export class Run extends Phaser.Scene {
     // frueher/spaeter — zwei Laeufe mit gleichem Seed divergierten ab Schritt 1
     // (Probe-Beleg: rep0 posX 20495500 vs rep1 20480000 nach Schritt 1).
     if (hasFlag("detstart")) this.paused = true;
+    // m10-loading-screen K3: Run-Start-Gate (siehe startGate). Nach dem synchronen
+    // Aufbau in create() bleibt der Sim stehen, bis der Fade-in komplett ist —
+    // der Spieler sieht nie einen halbfertigen oder schon laufenden Run.
+    // Bewusst NICHT ueber `paused`: die UI-Szene blendet das Pause-Panel direkt
+    // an `paused` ein (UI.ts pauseVisible) — das Gate friert stattdessen ueber
+    // die freezeGate-Logik im update() (Timer/Tweens stehen, kein Sim-Schritt),
+    // ohne dass das Pause-UI aufblitzt.
+    if (!hasFlag("detstart")) {
+      this.startGate = true;
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE, () => {
+        this.startGate = false;
+      });
+    }
     this.time.paused = false;
     this.tweens.resumeAll();
     this.levelUpOpen = false;
@@ -546,14 +569,14 @@ export class Run extends Phaser.Scene {
     //     feuerten mitten in der Pause und mutierten den Sim-Zustand,
     //   - FX-Tweens (Splash/Blink, Run.ts 711/995/1097) animierten im Pausenbild.
     // Gate: nur bei Wechsel anwenden (freezeGate), nicht pro Frame.
-    const frozen = this.paused;
+    const frozen = this.paused || this.startGate;
     if (this.freezeGate !== frozen) {
       this.freezeGate = frozen;
       this.time.paused = frozen;
       if (frozen) this.tweens.pauseAll();
       else this.tweens.resumeAll();
     }
-    if (this.paused) return;
+    if (this.paused || this.startGate) return;
 
     // Feedback-Debounce laeuft in Echtzeit (nicht in Sim-Zeit): bei timeScale 30
     // wuerde ein 1,2-s-Boss-Cooldown sonst alle 40 ms Wandzeit erneut feuern und

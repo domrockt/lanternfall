@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH, setGameView } from "./config";
 import { computeView, snapCanvasRect, viewKey, type ViewSpec } from "./logic/view";
 import { Boot } from "./scenes/Boot";
+import { Loading } from "./scenes/Loading";
 import { Title } from "./scenes/Title";
 import { CharSelect } from "./scenes/CharSelect";
 import { Run } from "./scenes/Run";
@@ -59,7 +60,7 @@ const game = new Phaser.Game({
     // Canvas bleibt logisch klein; die CSS-Anzeige setzt main.ts geraetepixelgenau.
     mode: Phaser.Scale.NONE,
   },
-  scene: [Boot, Title, CharSelect, Run, UI, Results, Credits],
+  scene: [Boot, Loading, Title, CharSelect, Run, UI, Results, Credits],
 });
 
 installDebugApi(game);
