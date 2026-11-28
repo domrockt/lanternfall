@@ -129,10 +129,12 @@ export class Title extends Phaser.Scene {
     // (binäres Alpha) an den 4 Moor-Laternen, AE = Glasfläche + Funken.
     // Ruhiger ~2-fps-Texturwechsel (f0 -> f1 -> f0 -> f2), selbe Pixelgröße
     // wie der Hintergrund (bgL.scale ganzzahlig, Muster titleBgLayout/crisp).
+    // Phasenversatz je Laterne (art-director-Hinweis): nicht alle 4 Laternen
+    // schalten synchron — organischer, gleiches Tempo.
     const flameFrames = ["title_flame_f0", "title_flame_f1", "title_flame_f2"];
     const flameSeq = [0, 1, 0, 2];
-    const flames = TITLE_FLAME_SPOTS.map((spot) =>
-      this.add.image(bgL.x + spot.x, bgL.y + spot.y, flameFrames[0])
+    const flames = TITLE_FLAME_SPOTS.map((spot, i) =>
+      this.add.image(bgL.x + spot.x, bgL.y + spot.y, flameFrames[flameSeq[i % flameSeq.length]!])
         .setOrigin(0, 0).setDepth(2).setScale(s));
     let flameStep = 0;
     this.time.addEvent({
@@ -140,8 +142,8 @@ export class Title extends Phaser.Scene {
       loop: true,
       callback: () => {
         flameStep = (flameStep + 1) % flameSeq.length;
-        const tex = flameFrames[flameSeq[flameStep]!];
-        for (const f of flames) f.setTexture(tex);
+        flames.forEach((f, i) =>
+          f.setTexture(flameFrames[flameSeq[(flameStep + i) % flameSeq.length]!]));
       },
     });
     // Dunkle Bodenlasur unter dem Textblock (nur Palettenfarbe, Alpha-Overlay).
