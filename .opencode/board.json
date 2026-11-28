@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7322,
+  "next": 7338,
   "cards": [
     {
       "id": 1,
@@ -8648,6 +8648,102 @@
       ],
       "created": "2026-11-28T01:05:27Z",
       "updated": "2026-11-28T01:05:34Z"
+    },
+    {
+      "id": 7322,
+      "title": "m10-crowd-variety #1: Vorher-Messung 500er-Frame (Distinct-Keys + Renderer)",
+      "description": "Abnahme: scripts/m10-crowd-variety.mjs rendert 500-Gegner-Frame via Playwright, zählt Distinct-Sprite-Texture-Keys je Typ, Renderer-String im JSON; shots/m10-crowd-variety-before.json+png committed. Ergebnis: 32 Distinct-Keys (je Typ 4 Keys über 4 nahezu identische Posen), Mesa Intel RPL-S, Burst 60 fps.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:10:51Z",
+          "by": "build",
+          "text": "lane #6398, Merge 6944f5d — Vorher: 32 Keys/4 je Typ über identische Posen, Mesa RPL-S, 60 fps"
+        }
+      ],
+      "created": "2026-11-28T01:10:42Z",
+      "updated": "2026-11-28T01:10:51Z"
+    },
+    {
+      "id": 7323,
+      "title": "m10-crowd-variety #2: zweite Grid-Variante je Gegnertyp in enemySprites.ts",
+      "description": "Abnahme: pro Gegnertyp >= 2 unterscheidbare Varianten (enemyVariantColor aus Familien-Rampe, enemyVariantFrames als deterministische Tonmischung; Kontur/Augen/Lichtkante/Elite-Rim unverändert), Texturen registriert; Guard in enemyFrameGrids (frames.length<4 fällt auf Basis zurück). Reviewer PASS 826/826, Anmerkungen 2+5 umgesetzt.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:10:51Z",
+          "by": "build",
+          "text": "lane #6399, Merge 6944f5d — Variante + Reviewer-PASS-Follow-up (Guard enemyFrameGrids)"
+        }
+      ],
+      "created": "2026-11-28T01:10:42Z",
+      "updated": "2026-11-28T01:10:51Z"
+    },
+    {
+      "id": 7324,
+      "title": "m10-crowd-variety #3: Instanz-Auswahl Variante ohne Run.ts/EnemyPool",
+      "description": "Abnahme: Frame-Auswahl liefert pro Instanz unterschiedliche Keys über bestehende Arrays (SPRITE_FRAMES/ALL_ENEMY_FRAMES, Basis 0/1, Variante 2/3, Phasen-Streuung via Spawner-rng). EnemyPool.ts/Run.ts unangetastet.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:10:51Z",
+          "by": "build",
+          "text": "lane #6400, Merge 6944f5d — Auswahl via bestehende Keys, keine Tabu-Eingriffe"
+        }
+      ],
+      "created": "2026-11-28T01:10:42Z",
+      "updated": "2026-11-28T01:10:51Z"
+    },
+    {
+      "id": 7325,
+      "title": "m10-crowd-variety #4: tests/crowd-variety.test.ts",
+      "description": "Abnahme: 6 Tests — Variantenfarbe aus Familien-Rampe, >=2 unterscheidbare Frames je Typ bei unverändertem 4-Key-Satz, Palette/binäres Alpha, Elite-Rim unverändert, Determinismus über alle 30 Typen, Instanz-Streuung 200 Phasen. tsc + Tests grün.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:10:51Z",
+          "by": "build",
+          "text": "lane #6401, Merge 6944f5d — 6 Tests inkl. Instanz-Streuung und Determinismus (30 Typen)"
+        }
+      ],
+      "created": "2026-11-28T01:10:42Z",
+      "updated": "2026-11-28T01:10:51Z"
+    },
+    {
+      "id": 7326,
+      "title": "m10-crowd-variety #5: Nachher-Messung + art-director-Sichtprüfung",
+      "description": "Abnahme: Distinct-Keys im 500er-Frame >= 2 je Typ (vorher 1 Ton/4 identische Posen), shots/m10-crowd-variety-after-*, Vorher/Nachher nebeneinander, Burst-FPS unverändert 60; Reviewer PASS (826/826), art-director PASS 4,4/5 (>= 4/5).",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:10:51Z",
+          "by": "build",
+          "text": "lane #6402, Merge 6944f5d — Nachher + Reviewer PASS (826/826), art-director PASS 4,4/5"
+        }
+      ],
+      "created": "2026-11-28T01:10:42Z",
+      "updated": "2026-11-28T01:10:51Z"
+    },
+    {
+      "id": 7327,
+      "title": "m10-crowd-variety Follow-up: Variantenton skeleton/centipede/harpy kräftiger trennen",
+      "description": "art-director-Abnahme 4,4/5 (PASS), nicht blockierend: Varianten von skeleton (Lum-Distanz 29,9), centipede (25,9), harpy (28,6) sind Weiß-auf-Weiß-Rampenstufen und im 1x-Chaos grenzwertig. Variantenton kräftiger trennen.",
+      "column": "backlog",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:10:51Z",
+          "by": "build",
+          "text": "lane #6403, Merge 6944f5d — Backlog-Follow-up aus Lane übernommen"
+        }
+      ],
+      "created": "2026-11-28T01:10:42Z",
+      "updated": "2026-11-28T01:10:51Z"
     }
   ]
 }
