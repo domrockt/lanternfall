@@ -41,3 +41,24 @@ Kartengültigkeit: Briefing-K1 (Vorher-Messung) ist durch den oben zitierten Bel
 Vorläufer-Lane erfüllt; Briefing-K2 wird als Verifikation ausgeführt (K2 unten).
 Abweichung vom Briefing hiermit begründet: identischer Fix existiert bereits im
 Basis-Stand — Duplikation wäre Drift.
+
+## K2 — Verifikation outsideView-Anker (#12770)
+
+Der Fix ist im Basis-Stand; verifiziert statt neu implementiert (siehe K1):
+
+1. **Rezept-Konformität**: `outsideView()` (`src/systems/Spawner.ts:347`) — Teiler
+   `s = max(1, round(GAME_WIDTH / (cam.width || GAME_WIDTH)))`, View
+   `vx = scrollX + cam.width/2 − w/2` (Mid = `scroll + width/2`), Weite/Höhe
+   `cam.width*s × cam.height*s` = `GAME_WIDTH × GAME_HEIGHT`. Formelidentisch zu
+   m10-boss-dur-determinism K2 Punkt 4 (Kausalbeweis `probe-runtime-patch.json`).
+   Namensgebung/Konvention konsistent mit der pools-Lane (`simAnchorView`,
+   logischer Screen #4658); Anker bewusst inline (Area-Disziplin, siehe dort).
+2. **Guard**: `grep worldView src/systems/Spawner.ts` → nur 3 Kommentarzeilen
+   (Z.331/332/342), kein Code-Leser im Sim-Pfad.
+3. **Call-Sites**: `outsideView` an Z.288 (Ring-Welle `spawnWave`, Drehlogik nahe
+   Weltgrenze) und Z.459 (`spawnOne`-Rand-Richtungsentscheid) — beide entscheiden
+   ausschließlich über den Anker.
+4. `npx tsc --noEmit` → rc=0.
+
+Keine Änderung an 1x/60 fps erwartet: `worldView ≈ scroll ± (W/2, H/2)` bei
+`zoom = 1/Teiler` bis auf Phasers Floor-Rundung ~0,5 px (Rezept, Vorläufer-Lane K2).
