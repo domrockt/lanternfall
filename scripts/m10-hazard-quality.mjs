@@ -185,7 +185,8 @@ const measure = () => page.evaluate(() => {
   }
   const st = window.__lf.state();
   return {
-    tier: st.quality,
+    drawTier: window.__lfForceQuality ?? st.quality,
+    reglerTier: st.quality,
     fps: st.fps ?? null,
     enemiesAlive: run.enemies.active.filter((e) => e.alive).length,
     warnDiscs: discs.length,
@@ -197,20 +198,17 @@ const measure = () => page.evaluate(() => {
   };
 });
 
-// Messung 1: sobald alle Discs warnen (Tier = Regler-Stand, high/medium -> bitgleich-Pfad).
+// Messung 1: alle Discs warnen, Tier deterministisch HIGH (bitgleich-Pfad).
+await page.evaluate(() => { window.__lfForceQuality = "high"; });
 await new Promise((r) => setTimeout(r, 400));
 const istHighMedium = await measure();
 
-// Messung 2: warten, bis der Regler unter Last auf "low" abgestiegen ist (max 45 s,
-// unter CPU-Drossel dauern die 2 Stufen bis 6 s kumulativ unter 45 FPS + Puffer).
-let lowReached = false;
-for (let i = 0; i < 90; i++) {
-  await new Promise((r) => setTimeout(r, 500));
-  const tier = await page.evaluate(() => window.__lf.state().quality);
-  if (tier === "low") { lowReached = true; break; }
-}
+// Messung 2: Tier deterministisch LOW (Debug-Override aus hazardDisc.ts, K2 — der
+// FPS-Regler erreicht low auf der Dev-Maschine nie, Vorher-JSON dokumentiert das).
+await page.evaluate(() => { window.__lfForceQuality = "low"; });
 await new Promise((r) => setTimeout(r, 1000)); // Draw-Policy sich setzen lassen
-const istLow = lowReached ? await measure() : null;
+const istLow = await measure();
+const lowReached = istLow.drawTier === "low";
 
 mkdirSync(dirname(pngOut), { recursive: true });
 await page.screenshot({ path: pngOut });
@@ -248,8 +246,8 @@ await browser.close();
 server.stop();
 const sum = (m, k) => (m ? m[k] : null);
 console.log(
-  `[${TAG}] high/medium: tier=${sum(istHighMedium, "tier")} discs=${sum(istHighMedium, "drawnWarnDiscs")}/${sum(istHighMedium, "warnDiscs")} addPx=${sum(istHighMedium, "rimAddDevicePx")}` +
-  ` | low: tier=${sum(istLow, "tier")} discs=${sum(istLow, "drawnWarnDiscs")} addPx=${sum(istLow, "rimAddDevicePx")} reached=${lowReached}` +
+  `[${TAG}] high/medium: tier=${sum(istHighMedium, "drawTier")} discs=${sum(istHighMedium, "drawnWarnDiscs")}/${sum(istHighMedium, "warnDiscs")} addPx=${sum(istHighMedium, "rimAddDevicePx")}` +
+  ` | low: drawTier=${sum(istLow, "drawTier")} discs=${sum(istLow, "drawnWarnDiscs")} addPx=${sum(istLow, "rimAddDevicePx")} reached=${lowReached}` +
   ` | renderer: ${renderer} | jsErrors: ${errors.length}`,
 );
 if (errors.length || !lowReached) process.exitCode = 1;
