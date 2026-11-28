@@ -21,7 +21,7 @@ Briefing: `.briefs/m10-acceptance-refresh-g.md`, Karten #11949–#11952 (K1–K4
 | Karte | Inhalt | Status |
 |---|---|---|
 | #11949 | K1 K-Basis: tsc/build/test/acceptance-count/verify:final | erledigt |
-| #11950 | K2 FPS-Kerne: Burst 640x360 + 780x360@3, Minute-25 780x360@3 | offen |
+| #11950 | K2 FPS-Kerne: Burst 640x360 + 780x360@3, Minute-25 780x360@3 | erledigt |
 | #11951 | K3 Heap-Tor: 2x 30-min-fullrun (retained < +15 %) | offen |
 | #11952 | K4 Doku + Gesamturteil + .lane-done | offen |
 
@@ -40,3 +40,24 @@ Briefing: `.briefs/m10-acceptance-refresh-g.md`, Karten #11949–#11952 (K1–K4
   (+ Screenshots unter `~/games/.evidence/verify-hygiene/2026-11-28T12-20-25-*`)
 
 Urteil K1: **PASS**.
+
+## K2 (2026-11-28, ~12:4xZ, unter `flock /home/ai/games/.lf-perf.lock`)
+
+Harness: `scripts/m10-refresh-g-perf.mjs` (Messlogik wie scripts/perf.mjs, Pflicht-
+Renderer-String im selben JSON). Belege:
+`~/games/.evidence/m10-acceptance-refresh-g/k2-perf-accg-{640,780d3}.json`.
+
+| Messung | Wert | Tor | F-Basis | ≥5 %-Abweichung |
+|---|---|---|---|---|
+| Burst 640x360 | **60,0 FPS** | ≥55 | — (F maß nicht) | — |
+| Burst 780x360@3 | **60,0 FPS** | ≥55 | 60,0 | nein |
+| Minute-25 780x360@3 | **60,1 FPS** | ≥50 | 60,1 | nein |
+
+- Renderer je Beleg: „ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  `swiftshader:false` — gültige iGPU.
+- jsErrors: [] in beiden Läufen.
+- Harness-Quirk (wie F-Audit-Restmangel 3, urteilsändernd nicht): Minute-25
+  `minEnemies` niedrig (God-Mode-Bot räumt schneller ab als der Director spawnt);
+  Tor ist ausschließliche FPS-Grenze, `minEnemies` als Info im JSON.
+
+Urteil K2: **PASS** (alle Tore erfüllt, am 60-Cap, keine Abweichung ≥ 5 % gegen F).
