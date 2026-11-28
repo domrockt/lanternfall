@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9191,
+  "next": 9193,
   "cards": [
     {
       "id": 1,
@@ -11613,6 +11613,51 @@
       "notes": [],
       "created": "2026-11-28T06:34:45Z",
       "updated": "2026-11-28T06:34:45Z"
+    },
+    {
+      "id": 9191,
+      "title": "m10-heap-softprint K1: Konsolen-Print auf softFloorVerdict umstellen",
+      "description": "scripts/m10-heap-budget.mjs Zeile ~224 druckt rohes softVerdict (FAIL +41,5 %) statt robustes gate.softFloorVerdict aus scripts/m10-heap-budget-gate.mjs. Fix: Print auf softFloorVerdict + maxWindowFloor; gate.mjs unverändert. Abnahme: Print zeigt robustes Urteil, kein Mess-Verhalten geändert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:44:13Z",
+          "by": "build",
+          "text": "todo → doing: Versuch 2: Briefing gelesen; Fix Print auf softFloorVerdict folgt."
+        },
+        {
+          "at": "2026-11-28T05:44:22Z",
+          "by": "build",
+          "text": "[Supervisor] bestaetigt: nur K1+K2 in doing; Print-Fix + Commit #8852, danach K2 Kontrolllauf."
+        },
+        {
+          "at": "2026-11-28T05:44:47Z",
+          "by": "build",
+          "text": "doing → review: K1 committed 887388e: Print zeigt gate.softFloorVerdict + maxWindowFloor/softReferenceMB; gate.mjs unangetastet. Syntax-Check node --check OK. K2-Kontrolllauf folgt."
+        },
+        {
+          "at": "2026-11-28T05:55:51Z",
+          "by": "build",
+          "text": "review → done: lane #8852, Commit 887388e; Reviewer-PASS (Print zeigt softFloorVerdict + maxWindowFloor, gate.mjs 0 Diff-Zeilen)."
+        }
+      ],
+      "created": "2026-11-28T05:42:50Z",
+      "updated": "2026-11-28T05:55:51Z"
+    },
+    {
+      "id": 9192,
+      "title": "m10-heap-softprint K2: Verifikation + Lane-Doku",
+      "description": "1 Kontrolllauf gegen shots/m10-reaccd-heap.json-Werte (HARD PASS +10,7 %, SOFT-Rohpeaks als Beobachtung, Print-Urteil = robust). Beleg shots/m10-softprint-*.json; tsc/Tests grün; docs/lanes/m10-heap-softprint.md; .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T05:55:51Z",
+          "by": "build",
+          "text": "todo → done: lane #8853, Commit 522fbc4; Reviewer-PASS: Replay (robust PASS +23,8 %, HARD +10,7 %) + Kontrolllauf iGPU RPL-S 0 Fehler; 1506 Tests gruen."
+        }
+      ],
+      "created": "2026-11-28T05:42:50Z",
+      "updated": "2026-11-28T05:55:51Z"
     }
   ]
 }
