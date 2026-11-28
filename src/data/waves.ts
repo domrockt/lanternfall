@@ -45,6 +45,50 @@ export function lateGameSpawnRate(minute: number): number {
 export const LATE_GAME_MINUTE = 25;
 
 /**
+ * M10-Balance Spawn-Dämpfung Minute 18–24 (Lane m10-balance-spawn-damp, Befund B1 der
+ * Verifikations-Lane m10-balance-band-verify): die Ankunftsrate wächst im Fenster
+ * Minute 18–24 um +25 % (1,484 → 1,852/s), während die Kill-Rate durch den
+ * XP_ENDGAME-Aufschlag (wirkt ab Level 28, erreicht ~Minute 18–20) sinkt. Der
+ * Late-Deckel (maxActiveEnemies, 300 @ 960x540) begrenzt nur die Gleichzeitigkeit,
+ * nicht die Ankunftsrate — mira/7 starb auf main bei 21,21 min (Level 30).
+ *
+ * Hebel: im Fenster wird der Anteil `SPAWN_DAMP_18_24` des Zuwachses seit Minute 18
+ * entfernt. Rampe analog zum HP-Relief-Muster: Start Minute 18 (= 1080 s, dort 0),
+ * 240 s bis voll — Minute 22–24 sind voll gedämpft. Minute 0–17 bleibt bitgleich,
+ * Minute 25+ nutzt unverändert `lateGameSpawnRate` (Endboss-Korridor unangetastet).
+ * Grenze: SPAWN_DAMP_18_24 ≤ 0,62 hält die Monotonie-Kriterien der Datentabellen
+ * (strikt steigende spawnRate, tests/data.test.ts + tests/balance-endgame.test.ts).
+ * Wert per Suchskript scripts/m10-balance-search-1824.mjs gesucht (festes
+ * Iterationslimit, Ergebnis: shots/m10-balance-search-1824.json).
+ */
+export const SPAWN_DAMP_18_24 = 0.6;
+/** Start der Spawn-Dämpfung: Minute 18 = 1080 s (dort Dämpfungsgrad 0). */
+export const SPAWN_DAMP_18_24_START_MINUTE = 18;
+/** Rampe auf den vollen Dämpfungsgrad: 240 s (voll ab Minute 22). */
+export const SPAWN_DAMP_18_24_RAMP_S = 240;
+/** Basisrate von Minute 18 (Anker des gedämpften Zuwachses, 1,484/s). */
+export const SPAWN_DAMP_BASE_RATE = 0.38 + 18 * 0.06 + ((18 % 5) / 5) * 0.04;
+
+/**
+ * Dämpfungsgrad (0..1) der Basis-Spawnrate in Minute `minute`:
+ * 0 außerhalb [18, 25), im Fenster linear auf `SPAWN_DAMP_18_24` rampend.
+ */
+export function spawnDamp1824(minute: number): number {
+  const m = Math.floor(minute);
+  if (m < SPAWN_DAMP_18_24_START_MINUTE || m >= LATE_GAME_MINUTE) return 0;
+  const progress = Math.min(
+    1,
+    ((m - SPAWN_DAMP_18_24_START_MINUTE) * 60) / SPAWN_DAMP_18_24_RAMP_S,
+  );
+  return SPAWN_DAMP_18_24 * progress;
+}
+
+/** Basisrate vor Dämpfung (0,38 + 0,06·minute + tierProgress·0,04). */
+export function baseSpawnRate(minute: number): number {
+  return 0.38 + minute * 0.06 + ((minute % 5) / 5) * 0.04;
+}
+
+/**
  * 30 Wellen (eine pro Spielminute). Spawnrate wächst, Mischung wechselt alle 5 min,
  * Spezialwellen ab Minute 3, Elite-Pakete ab Minute 4.
  * Bosse erscheinen in Minute 5/10/15/20/25; der Endboss bei 30:00.
@@ -55,9 +99,12 @@ export const WAVES: WaveDef[] = Array.from({ length: 30 }, (_, minute) => {
   const tierProgress = (minute % 5) / 5;
   const baseRate = 0.38 + minute * 0.06 + tierProgress * 0.04;
   const late = minute >= LATE_GAME_MINUTE;
+  // M10-Balance Spawn-Dämpfung Minute 18–24 (siehe spawnDamp1824): nur die
+  // Basis-Wellen des Fensters; Minute 25+ bleibt lateGameSpawnRate.
+  const damp = spawnDamp1824(minute);
   return {
     minute,
-    spawnRate: late ? lateGameSpawnRate(minute) : baseRate,
+    spawnRate: late ? lateGameSpawnRate(minute) : baseRate - damp * (baseRate - SPAWN_DAMP_BASE_RATE),
     mix: late ? LATE_GAME_MIX : TIER_MIXES[tier],
     special: specialForMinute(minute),
     elitePack: isEliteMinute(minute),

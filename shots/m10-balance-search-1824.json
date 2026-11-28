@@ -1,0 +1,44 @@
+{
+  "lane": "m10-balance-spawn-damp",
+  "generatedAt": "2026-11-28T05:43:10.732Z",
+  "parameter": "SPAWN_DAMP_18_24 (Anteil des Zuwachses seit Minute 18, Rampenform siehe waves.ts)",
+  "maxSearchRuns": 3,
+  "candidates": [
+    0.6,
+    0.45,
+    0.3
+  ],
+  "runs": [
+    {
+      "candidate": 0.6,
+      "inWindow": 6,
+      "spread": 3.91,
+      "levels": [
+        35,
+        34,
+        36,
+        35,
+        34,
+        34
+      ],
+      "levelsOk": true,
+      "bossOk": 30,
+      "bossMeasured": 35,
+      "deaths": 1,
+      "jsErrors": 0,
+      "rendererOk": true,
+      "rank": 6049689,
+      "pass": true,
+      "endMinutes": [
+        26.71,
+        30.37,
+        30.4,
+        30.58,
+        30.36,
+        30.62
+      ]
+    }
+  ],
+  "chosen": 0.6,
+  "note": "Festes Iterationslimit (max. 3 Suchläufe, Frühabbruch bei PASS). Nach dem Limit bester Kandidat, kein weiteres Tuning."
+}
