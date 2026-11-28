@@ -1,0 +1,26 @@
+# Lane m10-ui-frame-gold — done (2026-11-28)
+
+Auftrag: Offener Optik-Punkt „Gold-Rahmen ohne Tinte" (docs/lanes/m10-palette-audit.md
+Z.197). Karten #10371–#10374, alle done; Commits e1fa1c18 (K1), eee3b4b3 (K3), dieser
+Commit (K4). Board: #10372 done ohne Code-Commit (Urteils-Outcome).
+
+Ergebnis:
+- art-director-Urteil: **PASS 4/5** — der ui_frame ist **bewusst ohne durchgehende
+  Tinte-Kontur**: die helle Kante oben/links (mist 8 / fog 7) trägt die Silhouette
+  gegen den fast schwarzen Hintergrund; eine Tinte-Kontur (Luminanz <= 0,03) wäre
+  dort visuell nicht existent. Die Kontur-Regel (<= 0,03) zielt auf Figuren/Gegner-
+  Sprites, nicht auf 9-Slice-UI-Panels. Kein Fix in src/gfx/gen-ui.ts.
+- Konsistenz mit #8080/#8081 (WCAG-3:1-Lichtkante, F7-Dunkelkante 1,12:1 dokumentiert).
+- K1 Vorher-Messung: 5 UI-Shots 640x360 (menu/options/levelup/chest/results, 0
+  JS-Fehler) + ui-frame-palette-before.json — Aussenring 50/92 Tinte (oben/links
+  mist/fog), 0 Off-Palette. Belege: ~/games/.evidence/m10-ui-frame-gold/.
+- K3 Guard-Test tests/ui-frame-gold.test.ts: 24x24 + 8er-nineslice-Rand, Lichtkante
+  oben/links NICHT Tinte, Bevel-Tinte unten/rechts lückenlos (Luminanz <= 0,03),
+  Ecken hart Tinte, Gold-Nieten (16–22), 0 Off-Palette.
+- Anmerkung dokumentiert: Results-Goldrahmen ist ein anderes Element (2-px-Lantern-
+  Stroke, Results.ts:75), bewusstes Endscreen-Highlight.
+
+Gates: npx tsc --noEmit rc=0; vitest gezielt 33/33, Full-Suite 1853/1853 (171 Dateien);
+npm run build grün. Boot.ts/menu.ts/options-menu.ts/UI.ts/gen-ui.ts unberührt.
+Keine FPS-/Langläufe, kein flock. Ergebnisse auch in docs/lanes/m10-ui-frame-gold.md
+(wird beim Merge in GAME.md übernommen).
