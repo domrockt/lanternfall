@@ -32,9 +32,9 @@ function usedIndices(rows: string[]): number[] {
 }
 
 /** Seelen-Treppe (w2, kalt): erlaubt sind nur die Rampen-Indizes. */
-const ALLOWED = [...SOUL_RAMP];
+const ALLOWED: number[] = [...SOUL_RAMP];
 /** Signatur: gleicher kalter Satz — kein warmes 12/10, kein Grün 28–31. */
-const SIG_ALLOWED = [...SOUL_RAMP];
+const SIG_ALLOWED: number[] = [...SOUL_RAMP];
 /** Verboten: alles außer der kalten Treppe — Ink, Nacht-Töne, Grau (7/8), Knochen (10),
  *  warmes Kerzenweiß (12), alle warmen/blutigen Fremdfarben und die Moor-Grüntöne (28–31). */
 const FORBIDDEN = [0, 1, 2, 3, 4, 7, 8, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
