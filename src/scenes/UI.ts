@@ -108,6 +108,28 @@ export function bossBarGeometry(viewWidth: number): BossBarGeom {
   };
 }
 
+/** Alpha der Textband-Platte (= Alpha der HP-Leiste, 0,95). */
+export const BOSS_NAME_PLATE_ALPHA = 0.95;
+
+/**
+ * m10-boss-name-legibility (#10455, Befund B3 aus m10-sightprep-smoke):
+ * Textband-Platte hinter dem Boss-Namen. Diagnose (m10-boss-name.mjs before):
+ * die Glyphen-Deckung im Chaos ist intakt (253/253 = 1.0) — der Name liegt
+ * korrekt ÜBER den Gegnern; unlesbar wird er, weil die 1-px-Amber-Glyphen
+ * ohne Untergrund direkt auf warmroten Horde-Sprites stehen (43 % des Bands
+ * sind Gegnerpixel der selben Hue-Familie) und mit ihnen verschmelzen.
+ * Fix: dieselbe dunkle ink-Platte wie die HP-Leiste (Alpha 0,95), direkt
+ * darüber, gleiche Breite — HUD liest sich als ein Block. Reine Geometrie,
+ * ganzzahlige Spielpixel, in tests/boss-name-legibility.test.ts geprüft.
+ */
+export function bossNamePlateRect(viewWidth: number): AnchorBox {
+  const g = bossBarGeometry(viewWidth);
+  // Bar-Anker: y=46, Höhe 12, Origin (0,0.5) → Leistenoberkante 40.
+  // Platte schließt bündig oben an: 28..40, Textband (y 33..40) liegt
+  // vollständig in der Platte.
+  return { x: g.left, y: 28, w: g.barW, h: 12 };
+}
+
 export interface AnchorBox { x: number; y: number; w: number; h: number }
 
 export interface HudAnchorInput {
@@ -274,6 +296,7 @@ export class UI extends Phaser.Scene {
   private chestSkip?: Phaser.GameObjects.Zone;
 
   private bossGroup!: Phaser.GameObjects.Container;
+  private bossNamePlate!: Phaser.GameObjects.Rectangle;
   private bossName!: PixelText;
   private bossPhaseText!: PixelText;
   private bossBarBg!: Phaser.GameObjects.Rectangle;
@@ -466,6 +489,11 @@ export class UI extends Phaser.Scene {
     const cx = GAME_WIDTH / 2;
     const left = g.left;
     this.bossGroup = this.add.container(0, 0).setDepth(90).setVisible(false);
+    // m10-boss-name-legibility (#10455): Platte HINTER dem Textband, als
+    // erstes Kind (unter Leiste/Name), Geometrie aus bossNamePlateRect.
+    const plate = bossNamePlateRect(GAME_WIDTH);
+    this.bossNamePlate = this.add.rectangle(plate.x, plate.y, plate.w, plate.h,
+      PAL[C.ink], BOSS_NAME_PLATE_ALPHA).setOrigin(0, 0).setName("boss-name-plate");
     this.bossBarBg = this.add.rectangle(left, 46, g.barW, 12, PAL[C.ink], 0.95)
       .setOrigin(0, 0.5).setStrokeStyle(1, PAL[C.amber]);
     this.bossFillBaseW = g.fillW;
@@ -489,7 +517,7 @@ export class UI extends Phaser.Scene {
     }
     this.bossName = new PixelText(this, cx, 33, "", C.amber, "center");
     this.bossPhaseText = new PixelText(this, g.left + g.barW - 6, 33, "", C.candleWhite, "right");
-    this.bossGroup.add([this.bossBarBg, this.bossBarShadow, this.bossBarFill, ...segs,
+    this.bossGroup.add([this.bossNamePlate, this.bossBarBg, this.bossBarShadow, this.bossBarFill, ...segs,
       this.bossName, this.bossPhaseText]);
 
     // Banner fest unter der HP-Leiste: Position/Größe kommen aus der
