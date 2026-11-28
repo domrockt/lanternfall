@@ -10057,36 +10057,60 @@
       "title": "m10-xp-hud-crisp K1: HUD-Pixel-Scan-Skript + before-Belege (lane #7505)",
       "description": "scripts/m10-xp-hud-crisp.mjs rendert die Run-Szene mit gefrorenem Frame in 3 Formaten (640x360@2, 780x360@3, 1080p) und scannt die HUD-Rechtecke der UI-Szene auf fraktionale Skalen/Display-Groessen/Kanten. AE: before-JSON committed, Befundliste mit Zahlen. Aus Lane m10-xp-hud-crisp uebernommen (lane #7505).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:41:55Z",
+          "by": "build",
+          "text": "done → done: lane #7505, Merge 919719c — K1 review→done: Commit 36ee1b1 (before-JSON + 4x-Crops), Befunde vollstaendig belegt"
+        }
+      ],
       "created": "2026-11-28T03:41:29Z",
-      "updated": "2026-11-28T03:41:29Z"
+      "updated": "2026-11-28T03:41:55Z"
     },
     {
       "id": 7959,
       "title": "m10-xp-hud-crisp K2: belegte HUD-Maengel in src/scenes/UI.ts fixen (lane #7506)",
       "description": "Nur die im before-JSON belegten Stellen: XP-/HP-/Boss-Fuellung auf ganzzahlige Display-Breite (crispFillWidth: 1-px-Basis + ganzzahliger Scale), Boss-Segmente/-Kappen ganzzahlig (bossBarGeometry), Phase-Text-Anker ganzzahlig. AE: tsc gruen, after-Scan 0 HUD-findings in allen 3 Formaten. Aus Lane m10-xp-hud-crisp uebernommen (lane #7506).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:41:55Z",
+          "by": "build",
+          "text": "done → done: lane #7506, Merge 919719c — K2 review→done: Commit d6d16be, after-Scan 0 Befunde in 3 Formaten"
+        }
+      ],
       "created": "2026-11-28T03:41:29Z",
-      "updated": "2026-11-28T03:41:29Z"
+      "updated": "2026-11-28T03:41:55Z"
     },
     {
       "id": 7960,
       "title": "m10-xp-hud-crisp K3: Regressionstest tests/xp-hud-crisp.test.ts (lane #7507)",
       "description": "Guard: crispFillWidth/bossBarGeometry liefern ganzzahlige HUD-Rechtecke fuer 640/780/683 px Viewbreite in allen 3 Formaten; after-JSON committed. AE: vitest gruen, npm test gruen. Aus Lane m10-xp-hud-crisp uebernommen (lane #7507).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:41:55Z",
+          "by": "build",
+          "text": "done → done: lane #7507, Merge 919719c — K3 review→done: Commit 2729170, 11 Guard-Tests gruen (Suite 1198 gruen)"
+        }
+      ],
       "created": "2026-11-28T03:41:29Z",
-      "updated": "2026-11-28T03:41:29Z"
+      "updated": "2026-11-28T03:41:55Z"
     },
     {
       "id": 7961,
       "title": "m10-xp-hud-crisp K4: art-director-Sichtung + Lane-Doku + .lane-done (lane #7508)",
       "description": "art-director sichtet before/after-HUD-Shots (4x nearest) in 3 Formaten, Ziel >= 4/5; docs/lanes/m10-xp-hud-crisp.md mit Befundliste + Messwerten; .lane-done am Lane-Ende. AE: Urteil im Board notiert, Lane-Doku committed. Aus Lane m10-xp-hud-crisp uebernommen (lane #7508).",
       "column": "done",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:41:55Z",
+          "by": "build",
+          "text": "done → done: lane #7508, Merge 919719c — K4 doing→done: Commit c62a8d8, art-director PASS 7x 5/5; .lane-done im Merge-Workflow entfernt (main erbt den Marker nicht)"
+        }
+      ],
       "created": "2026-11-28T03:41:29Z",
-      "updated": "2026-11-28T03:41:29Z"
+      "updated": "2026-11-28T03:41:55Z"
     }
   ]
 }
