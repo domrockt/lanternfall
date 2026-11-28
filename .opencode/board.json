@@ -11573,10 +11573,16 @@
       "id": 9101,
       "title": "m10-gamepad-menu-nav K5: After-Belege + Lane-Doku + Abschluss",
       "description": "Lane-Doku vervollständigen (Ergebnisse, verify-menus-Befund, Belegpfade), .lane-done anlegen und committen. AK: Doku vollständig, npm test + tsc grün, Harness PASS, .lane-done committed.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T06:52:03Z",
+          "by": "build",
+          "text": "doing → done: lane m10-gamepad-menu-nav gemergt: Merge 29c310e (ancestor rc=0), build+Tests gruen (152 Files/1647 Tests), Kontroll-Shots 960/1280 sauber. K5-Inhalt (Lane-Doku + .lane-done) im Lane-Commit 69d4973."
+        }
+      ],
       "created": "2026-11-28T06:24:17Z",
-      "updated": "2026-11-28T06:24:17Z"
+      "updated": "2026-11-28T06:52:03Z"
     },
     {
       "id": 9187,
