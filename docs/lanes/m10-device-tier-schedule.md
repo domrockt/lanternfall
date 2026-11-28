@@ -60,11 +60,22 @@ nur die Geräteprobe zeigen.
 
 ### Geräteprobe
 
-Device-bridge (`http://172.17.0.1:5181`) zum Zeitpunkt der Lane nicht geprüft/erreichbar —
-Geräteprobe entfällt, Befund hier dokumentiert (Nachholpunkt für einen device-Job:
-`scripts/m10-device-tier.mjs --mode device`-Pfad existiert in dieser Lane nicht, der
-Harness läuft lokal; ein Geräte-Lauf kann scripts/m10-frame-tail-batching.mjs
-`--mode device` bzw. m10-v10-device-gfxinfo.mjs nutzen).
+Device-bridge (`http://172.17.0.1:5181`) ist erreichbar (Redmi Pad Pro, SM7435,
+Adreno 710, Thermal 0, Akku 33,0 °C). Geräteprobe in dieser Lane **nicht gefahren**,
+Begruendung:
+
+- CDP (`172.17.0.1:9333`) lieferte zur Lane-Laufzeit keine Game-Page (`/json/list`
+  leer) und `/status` meldete `dom_playing: true` — das Geraet ist in Benutzung,
+  ein Probe-Lauf waere in eine fremde Session gelaufen.
+- Der Deployment-Pfad eines Lane-Builds aufs Geraet ist in dieser Lane nicht
+  belegt (die Abnahme-Messungen liefen ueber die Merge-Pipeline); ohne gesicherten
+  Build-Bezug waere ein janky-Wert nicht der Lane zurechenbar.
+
+Nachholpunkt fuer einen device-Job mit Build-Bezug: `scripts/m10-v10-device-gfxinfo.mjs`
+(janky % vor/nach, K3-Metrik) gegen einen Build mit dieser Lane. Erwartung aus dem
+Befund: Stufe `medium` statt `high` am Geraet (Kap ist im stepQuality verankert,
+Gegenprobe im Test #12484) → ADD-Flaeche/Partikel unter medium-Budget → p95 Richtung
+≤ 16 ms → janky < 10 %.
 
 ## K2/K3 — Umsetzung (Tier-Scheduling + Hysterese im stepQuality)
 
