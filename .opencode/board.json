@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12164,
+  "next": 12227,
   "cards": [
     {
       "id": 1,
@@ -16796,6 +16796,54 @@
       "notes": [],
       "created": "2026-11-28T12:07:07Z",
       "updated": "2026-11-28T12:07:07Z"
+    },
+    {
+      "id": 12224,
+      "title": "m10-frame-tail-batching K1: Baseline Frame-Tail (Gerät gfxinfo + lokal p99/worstFrame)",
+      "description": "Vorher-Messung vor jeder Änderung (gfxinfo-Fenster am Gerät, lokal iGPU p99/worstFrame, Renderer-String). AK: JSON-Belege existieren, Renderer nicht SwiftShader, Zahlen in docs/lanes/m10-frame-tail-batching.md, Commit.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T13:07:43Z",
+          "by": "build",
+          "text": "lane #11989, Merge 00efd705 (rebased auf main: 1db3ab7b/c7c80a60/3b112922)"
+        }
+      ],
+      "created": "2026-11-28T13:07:35Z",
+      "updated": "2026-11-28T13:07:43Z"
+    },
+    {
+      "id": 12225,
+      "title": "m10-frame-tail-batching K2: Spawn-Batching + Chunk-Generierung aus dem heißen Frame",
+      "description": "Fix: Debug-Spawn-Pfad über Frames verteilen (Cap 30/Frame), GroundRenderer Chunk-Install-Glättung (chunkInstallDue). Spawn-Positionen/RNG bitgleich, Director-Pfad unverändert. AK: tsc grün, Tests grün, Verhaltens-Äquivalenz belegt.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T13:07:43Z",
+          "by": "build",
+          "text": "lane #11990, Merge 00efd705. Offen (an m10-spawn-burst-alloc-Merge übergeben): K2-Rest 'Sofort-Zweig für Aufrufe <= 30' war NICHT committet (requests.md 12:52Z) + 3 Reviewer-sollte-Befunde (requests.md 13:05Z)."
+        }
+      ],
+      "created": "2026-11-28T13:07:35Z",
+      "updated": "2026-11-28T13:07:43Z"
+    },
+    {
+      "id": 12226,
+      "title": "m10-frame-tail-batching K3: Nachher-Messung (Gerät + lokal) + Reviewer + Lane-Abschluss",
+      "description": "Nachher-Messung lokal p99 16,8 = Baseline, Reviewer-PASS; Geräte-Nachmessung als Post-Merge-Pflicht dokumentiert (Bridge baut nur main-HEAD). AK: build+Suite grün, Lane-Doku final + .lane-done.",
+      "column": "done",
+      "assignee": "build",
+      "notes": [
+        {
+          "at": "2026-11-28T13:07:43Z",
+          "by": "build",
+          "text": "lane #11991, Merge 00efd705. Post-Merge: Geräte-Probe ausgelöst (Lageberichte.md), Kontroll-Shots 960/1280 PASS."
+        }
+      ],
+      "created": "2026-11-28T13:07:35Z",
+      "updated": "2026-11-28T13:07:43Z"
     }
   ]
 }
