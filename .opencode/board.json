@@ -16486,16 +16486,21 @@
       "id": 12013,
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
-      "column": "doing",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-28T13:34:06Z",
           "by": "build",
           "text": "Merge m10-device-janky-node liegt auf main (f0bc1de0, ancestor-rc=0). Guard-Test boot-light-textures auf gemergtem Stand geprüft: npx vitest run tests/boot-light-textures.test.ts -> 4/4 grün, keine Anpassung nötig. Full-Suite 2338/2338 grün."
+        },
+        {
+          "at": "2026-11-28T15:07:25Z",
+          "by": "build",
+          "text": "doing → blocked: Aus doing entfernt (Supervisor-Anweisung 14:5xZ): Karte gehoert zur Lane m10-loading-screen (Merge-Fix boot-light-textures), NICHT zu m10-ground-chunk-budget — sie war hier nur haengengeblieben (Stuck-Flag). Kein Inhalt von dieser Lane angefasst; die zustaendige Lane/der Disponent uebernimmt sie wieder."
         }
       ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T13:34:06Z"
+      "updated": "2026-11-28T15:07:25Z"
     },
     {
       "id": 12029,
@@ -17249,10 +17254,15 @@
           "at": "2026-11-28T13:50:46Z",
           "by": "build",
           "text": "Supervisor-Steer befolgt: GroundRenderer-Edits gestoppt, K2-Stand wird jetzt committet (Pool + Gate), dann gemessene Iterationen mit flock npm run perf / m10-ground-chunk.mjs + Pixel-Scan (verify:terrain) nach jeder Änderung."
+        },
+        {
+          "at": "2026-11-28T14:19:54Z",
+          "by": "build",
+          "text": "Supervisor-Steer befolgt: K2 (97030f7f) + K3-Tests (f5d7fc69) sind committet, Terrain bitgleich (verify:terrain 0 schwarze Regionen in 3 Formaten). Hand-Tuning gestoppt: jetzt scripts/tune-chunk-budget.mjs (Kandidaten-Grid BudgetMs x MaxDefers, je kurzer Walk-Harness-Lauf, p99 + Schwarz-Pixel-Check automatisch, Limit 12)."
         }
       ],
       "created": "2026-11-28T13:40:13Z",
-      "updated": "2026-11-28T13:50:46Z"
+      "updated": "2026-11-28T14:19:54Z"
     },
     {
       "id": 12437,
