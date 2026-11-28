@@ -159,3 +159,10 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   fx-bakes-evo-r2-Merge oder disjunkter Mini-Job (Präzedenz m10-powerup-sfx-wire).
 - Nächster Versuch: nur die drei gestagten Code-Dateien committen (`#10180`), dann .lane-done.
 
+
+## Run-Fortsetzung (28.11. 09:18–09:20Z, Versuch 4)
+
+- Sanity: `npx tsc --noEmit` clean, `npx vitest run tests/gem-value-reading.test.ts` 10/10 grün, Diff unverändert gestaget (textures.ts 20 Z, xp.ts 24 Z, Test 8 Z).
+- Commit-Versuch 09:18Z: erneut am pre-commit-Claimcheck gescheitert (`src/gfx/textures.ts -> m10-fx-bakes-evo-r2`). Kein Retry-Loop, Karte #10180 bleibt `blocked` mit aktueller Notiz.
+- Alternativen geprüft und verworfen: (a) Split ohne textures.ts — Guard-Test importiert `SPRITE_GRIDS`, wäre rot; (b) Draw-Time-Tint in PickupSystem statt Textur-Farben — Verschlechterung, art-director-Abnahme galt der Textur-Rampe; (c) Umgehung des Hooks — verboten.
+- Wartet unverändert auf Disponent: Mini-Job `m10-gem-rows-texture` (exakter Patch: `git diff HEAD -- src/gfx/textures.ts`) oder Claim-Freigabe nach fx-bakes-evo-r2-Merge. Danach: 3 Dateien committen (`#10180`) + `.lane-done`.
