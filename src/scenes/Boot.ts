@@ -103,19 +103,27 @@ function createLightTextureLocal(scene: Phaser.Scene): void {
     ctx.fill();
   }
   ctx.globalAlpha = 1;
-  // Hart quantisierte Außenkante (K2 rev., Port von eaf2ab6): diskrete
-  // Stufen-Bänder statt destination-in-Radialgradient — der 4x-Zoom zeigt
-  // 1-px-Raster an den Bandkanten statt Luftbrause-Bögen.
-  ctx.globalCompositeOperation = "destination-in";
-  for (const [r0, r1, a] of LIGHT_EDGE_STEPS) {
-    ctx.globalAlpha = a;
-    ctx.beginPath();
-    ctx.arc(c, c, r1, 0, Math.PI * 2);
-    if (r0 > 0) ctx.arc(c, c, r0, 0, Math.PI * 2, true);
-    ctx.fill();
+  // Hart quantisierte Außenkante (K2 rev.2): Stufen-Alpha wird PRO PIXEL auf
+  // den gestapelten Ring-Aufbau multipliziert (getImageData/putImageData).
+  // Bewusst KEIN destination-in-Band-Stacking (so steht es in eaf2ab6):
+  // aufeinanderfolgende destination-in-Fills SCHNEIDEN ihre Masken — Band 2
+  // löscht den Kern von Band 1, am Ende bleibt eine vollständig transparente
+  // Textur. Befund im Probe-Lauf (A/B: discKeep works, stacked loops leer),
+  // Details docs/lanes/m10-boot-glow-local.md. Die Stufen-Tabelle bleibt
+  // exakt eaf2ab6; der 4x-Zoom zeigt 1-px-Raster an den Bandkanten.
+  const img = ctx.getImageData(0, 0, size, size);
+  const pxs = img.data;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x + 0.5 - c, y + 0.5 - c);
+      let band = 0;
+      for (const [r0, r1, stepAlpha] of LIGHT_EDGE_STEPS) {
+        if (d > r0 && d <= r1) { band = stepAlpha; break; }
+      }
+      pxs[(y * size + x) * 4 + 3] = pxs[(y * size + x) * 4 + 3] * band; // U8: clamped+gerundet
+    }
   }
-  ctx.globalCompositeOperation = "source-over";
-  ctx.globalAlpha = 1;
+  ctx.putImageData(img, 0, 0);
   scene.textures.addCanvas(key, canvas);
 }
 
