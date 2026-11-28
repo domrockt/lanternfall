@@ -6,7 +6,7 @@ export const CHARACTERS: Record<CharacterId, CharacterDef> = {
     name: "Mira Ashwick",
     title: "Laternen-Hexe",
     description: "Junge Hexe mit rotem Tuch und Laterne. Schnell und flächenstark.",
-    hp: 250,
+    hp: 90, // GAME.md Z.34: "HP 90" (M6-Balance hatte 250; F2 in docs/lanes/m10-charstats-ssot.md)
     speed: 62,
     armor: 1,
     startWeapon: "ember",

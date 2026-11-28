@@ -1,6 +1,6 @@
 {
   "phase": "after",
-  "generated": "2026-11-28T02:24:09.784Z",
+  "generated": "2026-11-28T09:55:33.905Z",
   "viewport": "960x540 (Canvas 480x270 @2x)",
   "data": {
     "characters": {
@@ -8,7 +8,7 @@
         "id": "mira",
         "name": "Mira Ashwick",
         "title": "Laternen-Hexe",
-        "hp": 250,
+        "hp": 90,
         "speed": 62,
         "armor": 1,
         "startWeapon": "ember",
@@ -65,7 +65,7 @@
       "y": 205
     },
     {
-      "text": "HP        250",
+      "text": "HP        90",
       "x": 116,
       "y": 219
     },
