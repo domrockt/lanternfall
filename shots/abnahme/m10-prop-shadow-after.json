@@ -1,0 +1,34 @@
+{
+  "card": "m10-prop-contact-shadow",
+  "tag": "after",
+  "seed": "7",
+  "measuredAt": "2026-11-28T09:05:44.720Z",
+  "command": "node scripts/m10-prop-shadow.mjs --tag after",
+  "cluster": {
+    "count": 12,
+    "x": 2453.162018848583,
+    "y": 2096.5051191961393
+  },
+  "visiblePropsNearby": 704,
+  "probe640": {
+    "props": 527,
+    "visibleShadows": 527,
+    "withShadow": 527,
+    "withoutShadow": 0,
+    "missing": [],
+    "texKeys": [
+      "prop_contact_shadow"
+    ]
+  },
+  "probe960": {
+    "props": 527,
+    "visibleShadows": 527,
+    "withShadow": 527,
+    "withoutShadow": 0,
+    "missing": [],
+    "texKeys": [
+      "prop_contact_shadow"
+    ]
+  },
+  "jsErrors": []
+}

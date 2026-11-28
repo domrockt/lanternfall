@@ -5,7 +5,10 @@ import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, 
 import { applyTexture } from "./atlas";
 import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
-import { propVariantKeyFor } from "./gen-props";
+import {
+  propVariantKeyFor, propShadowClassFor, propShadowFor,
+  PROP_SHADOW_COLOR, PROP_SHADOW_OFFSET,
+} from "./gen-props";
 import { PAL } from "../palette";
 
 /**
@@ -203,6 +206,10 @@ export class GroundRenderer {
   private propLodMaxTier: 0 | 1 | 2 = 2;
   /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
   private readonly propLayers = new Map<string, PropLayers>();
+  /** Kontakt-Schatten-Atlas-Textur (lazy, null = Fallback "shadow"). Bewusst
+   *  nicht in destroy() entfernt: deterministisch und seed-unabhaengig, wird
+   *  ueber textures.exists() wiederverwendet. */
+  private propShadowTexture: string | null | undefined;
   private shadowLayer?: Phaser.GameObjects.Container;
   private rippleLayer?: Phaser.GameObjects.Container;
   private glowLayers?: PropLayers;
@@ -386,6 +393,48 @@ export class GroundRenderer {
       behind: this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.glowBehind),
       front: this.scene.add.container(0, 0).setDepth(PROP_LAYER_DEPTHS.glowFront),
     };
+  }
+
+  /**
+   * Kontakt-Schatten-Atlas (m10-prop-contact-shadow): alle Prop-Klassen in EINER
+   * Canvas-Textur (Frames `ps_<Klasse>`) — alle Schatten teilen sich damit
+   * weiterhin genau einen Batch. Pixel kommen aus propShadowFor() (Palette 0,
+   * halbtransparent, elliptisch); kein weicher Canvas-Gradient mehr.
+   */
+  private ensurePropShadowTexture(): void {
+    if (this.propShadowTexture !== undefined) return;
+    this.propShadowTexture = null;
+    if (this.scene.textures.exists("prop_contact_shadow")) {
+      this.propShadowTexture = "prop_contact_shadow";
+      return;
+    }
+    const classes = [...PROP_KEYS].map((k) => propShadowClassFor(k));
+    const shadows = classes.map((k) => propShadowFor(k));
+    const gap = 2;
+    const width = shadows.reduce((sum, s) => sum + s.w + gap, gap);
+    const height = Math.max(...shadows.map((s) => s.h));
+    const texture = this.scene.textures.createCanvas("prop_contact_shadow", width, height);
+    if (!texture) return;
+    const ctx = texture.getContext();
+    const r = (PAL[PROP_SHADOW_COLOR] >> 16) & 0xff;
+    const g = (PAL[PROP_SHADOW_COLOR] >> 8) & 0xff;
+    const b = PAL[PROP_SHADOW_COLOR] & 0xff;
+    let x = gap;
+    classes.forEach((cls, i) => {
+      const s = shadows[i];
+      for (let py = 0; py < s.h; py++) {
+        for (let px = 0; px < s.w; px++) {
+          const a = s.alpha[py * s.w + px];
+          if (a <= 0) continue;
+          ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+          ctx.fillRect(x + px, py, 1, 1);
+        }
+      }
+      if (!texture.has(`ps_${cls}`)) texture.add(`ps_${cls}`, 0, x, 0, s.w, s.h);
+      x += s.w + gap;
+    });
+    texture.refresh();
+    this.propShadowTexture = "prop_contact_shadow";
   }
 
   /** Ziel-Container-Paar eines Props (Glow, sonst Textur-Layer); null = fest gelistet. */
@@ -721,14 +770,29 @@ export class GroundRenderer {
     // PROP_TIERS) auf Tier 2 und der Schatten (ownerKey = Basis, Tier 0)
     // wuerde sichtbar bleiben, waehrend die Laterne versteckt wird.
     img.setData("ownerKey", key);
-    // Weicher Bodenschatten am Fuss, Breite abhaengig von der Prop-Breite.
+    // Kontakt-Schatten (m10-prop-contact-shadow): palettetreue Pixel-Ellipse
+    // (Palette 0, α0,35 Kern/α0,18 Rand) aus dem Shadow-Atlas, 1 px unter dem
+    // Fusspunkt und leicht versetzt. Alle Schatten teilen sich eine Textur
+    // (1 Batch); Variante -> Basis-Klasse, kein weicher Canvas-Gradient mehr.
     let shadow: Phaser.GameObjects.Image | undefined;
-    if (this.scene.textures.exists("shadow")) {
+    this.ensurePropShadowTexture();
+    const shadowCls = propShadowClassFor(texKey);
+    const shadowTex = this.propShadowTexture ? this.scene.textures.get(this.propShadowTexture) : null;
+    const shadowFrame = shadowTex && shadowTex.has(`ps_${shadowCls}`) ? `ps_${shadowCls}` : null;
+    if (shadowFrame && this.propShadowTexture) {
+      shadow = this.scene.add.image(
+        wx + PROP_SHADOW_OFFSET.x, wy + PROP_SHADOW_OFFSET.y,
+        this.propShadowTexture, shadowFrame,
+      ).setOrigin(0.5, 0.5);
+    } else if (this.scene.textures.exists("shadow")) {
+      // Fallback (Atlas ohne Shadow-Frame): alter weicher Bodenschatten.
       const sw = Math.max(0.7, Math.min(4, img.width / 16));
       shadow = this.scene.add.image(wx, wy - 1, "shadow")
         .setOrigin(0.5, 0.5)
         .setScale(sw, 0.85)
         .setAlpha(0.62);
+    }
+    if (shadow) {
       shadow.setData("isShadow", true);
       shadow.setData("ownerKey", key); // Dichte-LOD: Schatten folgt seinem Prop
       this.shadowLayer!.add(shadow); // feste Tiefe: alle Schatten = 1 Batch

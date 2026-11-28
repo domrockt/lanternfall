@@ -605,3 +605,99 @@ export function propVariantKeyFor(base: string, pick: number): string {
   return idx === 0 ? base : variants[idx - 1];
 }
 
+// ── m10-prop-contact-shadow ────────────────────────────────────────────────
+// Palettetreue 1-px-Kontakt-Schatten unter Props (Restthema m9-art-world
+// "Props mit Tiefe"): elliptische Pixel-Silhouette in Palette 0 (ink),
+// halbtransparent (Alpha-Overlay), leicht versetzt unter dem Fusspunkt.
+// Rein und Phaser-frei — GroundRenderer backt die Daten in eine geteilte
+// Shadow-Atlas-Textur (1 Batch) und platziert ein Image je Prop.
+
+export interface PropShadow {
+  w: number;
+  h: number;
+  /** Alpha je Pixel (row-major); 0 = transparent, sonst in (0, PROP_SHADOW_ALPHA_CORE]. */
+  alpha: readonly number[];
+}
+
+/** Kontakt-Schattenfarbe = Palette 0 (ink). */
+export const PROP_SHADOW_COLOR = 0;
+/** Kern-Alpha des Schattens (m9-art-world-Vorgabe: PAL[0] α0,35, nicht opak). */
+export const PROP_SHADOW_ALPHA_CORE = 0.35;
+/** Rand-Stufe fuer die elliptische Silhouette. */
+export const PROP_SHADOW_ALPHA_RIM = 0.18;
+/** Platzierung relativ zum Fusspunkt (wx, wy): leicht versetzt (+1) und
+ *  Zentrum 1 px UNTER der Basis, damit die untere Ellipsen-Haelfte unter der
+ *  opaken Prop-Basis sichtbar bleibt (art-director-Befund Runde 1: bei wy-1
+ *  verdeckt die Basis den Schatten). Wird in addProp() verwendet. */
+export const PROP_SHADOW_OFFSET = { x: 1, y: 1 } as const;
+
+const PROP_SHADOWS = new Map<string, PropShadow>();
+
+/** Varianten-Key (prop_boulder_b) auf seine Basis-Klasse abbilden — der
+ *  Schatten folgt der Klasse (Platzierung/LOD/Batching bleiben klassenbasiert). */
+export function propShadowClassFor(key: string): string {
+  const m = /^(prop_.+)_[a-z]$/.exec(key);
+  return m && GEN_PROPS[m[1]] ? m[1] : key;
+}
+
+/** Fussbreite einer Prop-Klasse: breiteste Zeile des unteren Sprite-Viertels
+ *  (deterministisch aus dem generierten Sprite). Bewusst OHNE ink-Kontur
+ *  ('0'): die ist Umriss/Schattenrand und liest sich am Boden bereits als
+ *  Schatten — der Kontakt zaehlt farbige Basis-Pixel inkl. gemaltem
+ *  Boden-Saum (s/t). */
+const PROP_FOOT_FALLBACK_WIDTH = 10;
+
+function propFootWidth(key: string): number {
+  const def = GEN_PROPS[key];
+  if (!def) return PROP_FOOT_FALLBACK_WIDTH;
+  const frame = def.frames[0];
+  const rows = Math.max(1, Math.floor(def.h / 4));
+  let w = 0;
+  for (let y = def.h - rows; y < def.h; y++) {
+    const row = frame[y] ?? "";
+    let min = -1;
+    let max = -1;
+    for (let x = 0; x < row.length; x++) {
+      if (row[x] !== "." && row[x] !== "0") {
+        if (min < 0) min = x;
+        max = x;
+      }
+    }
+    if (min >= 0) w = Math.max(w, max - min + 1);
+  }
+  return w;
+}
+
+/**
+ * Deterministischer Kontakt-Schatten einer Prop-Klasse (oder ihrer Variante):
+ * Ellipse ueber der Fussbreite, Kern α0,35, Rand α0,18, alles Palette 0.
+ * Gleiches Argument -> bitgleich dasselbe Ergebnis (Cache).
+ */
+export function propShadowFor(key: string): PropShadow {
+  const cls = propShadowClassFor(key);
+  const cached = PROP_SHADOWS.get(cls);
+  if (cached) return cached;
+  const w = Math.max(8, Math.min(56, propFootWidth(cls) + 2));
+  const h = w >= 24 ? 4 : 3;
+  const halfW = (w - 1) / 2;
+  const halfH = (h - 1) / 2;
+  const alpha: number[] = [];
+  for (let y = 0; y < h; y++) {
+    // Ellipsenquerschnitt der Zeile (1..4 Zeilen hoch — kein weicher Blob).
+    const t = Math.max(0, 1 - ((y - halfH) / (halfH + 0.5)) ** 2);
+    const rowHalf = Math.max(1, Math.round(halfW * Math.sqrt(t)));
+    for (let x = 0; x < w; x++) {
+      const dx = Math.abs(x - halfW);
+      let a = 0;
+      if (dx <= rowHalf) {
+        const edge = dx > rowHalf - 1 || Math.abs(y - halfH) >= halfH;
+        a = edge ? PROP_SHADOW_ALPHA_RIM : PROP_SHADOW_ALPHA_CORE;
+      }
+      alpha.push(a);
+    }
+  }
+  const shadow: PropShadow = { w, h, alpha };
+  PROP_SHADOWS.set(cls, shadow);
+  return shadow;
+}
+
