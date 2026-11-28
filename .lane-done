@@ -1,0 +1,21 @@
+Lane m10-evo-fx-winter — Ewiger-Winter-Evolutions-FX neu (Dom 21:45Z, Punkt 1, 2/5). ABGESCHLOSSEN, art-director Runde 4: PASS 4.5/5.
+
+Karten (alle done): K1 Ist-Beleg (before.json iGPU, 0 JS-Fehler), K2 Fix in Zielgröße
+(Signaturen 128x128 @ Draw-Scale 1, 0 Ink statt 95/105; projectile_ice 7x7 0 Ink;
+ring_frost Mixel-Bake @3, live 0.671 statt 2.013), K3 Tests, K4 Nachher + Abnahme.
+
+Versuch 3 (dieser Run): K4-Blocker gelöst.
+1) fogBlue-Multiplikativtint an fx_ice-Partikeln (updateWinter, Frostnova) + Frostnova-
+   ring_frost gestrichen (4787abc) — autorierte Eis-Treppe erreicht den Screen.
+2) Eigentlicher Root Cause (art-director Runde 3, FAIL 2.7/5): iceFrame schrieb "j/i/g"
+   → pal19 flameBright/pal18 flame/pal16 emberBrown (Glut-Sturm-Bug, charCode-Falle).
+   Fix: Ziffern 9/8/6 + Regressionstest fx_ice ⊆ Eis-Treppe {13,12,11,9,8,6,5} (ebf5a61).
+3) art-director Runde 4 PASS 4.5/5 (fx_ice 1.5→4.5, Aura 4.5, Signaturen 4.5, Projektil
+   4.5): weiß-blau, Kristall-Kanten, keine graue Wolke, Aura ≠ Lampenschein.
+
+Messwerte: after.json renderer ANGLE (Intel, Mesa RPL-S) valid, 0 JS-Fehler, 22/24
+lebende Gegner; 0 Glut-Palettenpixel in den FX-Zonen. Build rc=0, tsc rc=0, 907/907
+Tests. Belege: shots/m10-evo-fx-winter-after.json + PNGs, docs/lanes/m10-evo-fx-winter.md.
+
+Offen (nicht blockierend, eigene Karten): geparkter CombatSystem-Diff (Windup-Wiring,
+fx_ice-Partikel-Scale 1.25/1.5 → ≤1, Mixel-Regel); Polier-Hinweis Lampenglow-Entsättigung.
