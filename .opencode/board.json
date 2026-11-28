@@ -7877,9 +7877,15 @@
       "description": "Skript scripts/m10-audio-mix.mjs: synthetischer 500-Gegner-Chaos-Lauf (60 s Spielzeit, Request-Raten aus Baseline ~53 Hits/s), Mixer-Logik aus src/audio/mixing.ts + SFX_CONFIG + WAV-Peaks. before-JSON: 52,65 Starts/s, Burst +0,77 dBFS mit 5 Clipping-Samples.",
       "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:00:17Z",
+          "by": "build",
+          "text": "done → done: lane #6538, Merge 4ac4e3e"
+        }
+      ],
       "created": "2026-11-27T23:59:59Z",
-      "updated": "2026-11-27T23:59:59Z"
+      "updated": "2026-11-28T00:00:17Z"
     },
     {
       "id": 6779,
@@ -7887,9 +7893,15 @@
       "description": "src/audio/mixing.ts (rein): planPlay mit Verdraengung aeltester/leisester niederpriorer Stimme fuer Prio>=2 statt Ablehnung, Rate-Deckel 24/s in zwei Baenden (Waffen 12/s mit Fair-Anteil je Waffe, Hit 12/s, Prio>=3 bypass), Limiter -1 dBFS auf der Summe; AudioSystem wendet Plan an.",
       "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:00:17Z",
+          "by": "build",
+          "text": "done → done: lane #6539, Merge 4ac4e3e"
+        }
+      ],
       "created": "2026-11-27T23:59:59Z",
-      "updated": "2026-11-27T23:59:59Z"
+      "updated": "2026-11-28T00:00:17Z"
     },
     {
       "id": 6780,
@@ -7897,9 +7909,15 @@
       "description": "Tests: Voice-Limit hart (global <= MAX_TOTAL_VOICES), Peak-Deckel deterministisch (200-Stimmen-Welle -> Summe <= -1 dBFS), Master-Mute blockt sfx/voices/music, Waffen-Prioritaet im Saettigungsfall stabil. Review-Fix: toter canPlay-Import entfernt (reviewer PASS 27.11.).",
       "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:00:17Z",
+          "by": "build",
+          "text": "done → done: lane #6540, Merge 4ac4e3e"
+        }
+      ],
       "created": "2026-11-27T23:59:59Z",
-      "updated": "2026-11-27T23:59:59Z"
+      "updated": "2026-11-28T00:00:17Z"
     },
     {
       "id": 6781,
@@ -7907,9 +7925,15 @@
       "description": "after-JSON shots/m10-audio-mix-after.json mit eingefrorenem Skript: 22,65 Starts/s avg (P3-max 24 = Deckel), 12 Voices, Chaos-Peak -6,46 dBFS, 0 Clipping. Doku docs/lanes/m10-audio-mix-chaos.md. audio-check + reviewer PASS.",
       "column": "done",
       "assignee": "audio-designer",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:00:17Z",
+          "by": "build",
+          "text": "done → done: lane #6541, Merge 4ac4e3e"
+        }
+      ],
       "created": "2026-11-27T23:59:59Z",
-      "updated": "2026-11-27T23:59:59Z"
+      "updated": "2026-11-28T00:00:17Z"
     }
   ]
 }
