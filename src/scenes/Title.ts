@@ -4,7 +4,7 @@ import { PixelText } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { readMeta, metaLine } from "../logic/meta";
 import { TITLE_FLAME_SPOTS } from "../gfx/gen-title";
-import { createMenuButton, type MenuButton } from "../ui/menu";
+import { createMenuButton, MenuFocus, type MenuButton } from "../ui/menu";
 import { OptionsMenu } from "../ui/options-menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
@@ -49,7 +49,8 @@ export class Title extends Phaser.Scene {
   private debug = false;
   private options!: OptionsMenu;
   private buttons: MenuButton[] = [];
-  private selected = 0;
+  /** m10-gamepad-nav-scenes-r2 K2: Fokus-Kreis der Kern-API über allen Knöpfen. */
+  private focus!: MenuFocus;
   private started = false;
   private pad = new InputState();
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
@@ -64,7 +65,6 @@ export class Title extends Phaser.Scene {
 
   create(): void {
     this.started = false;
-    this.selected = 0;
     this.pad.reset();
     this.padArmed = false;
     this.buttons = [];
@@ -172,13 +172,26 @@ export class Title extends Phaser.Scene {
     this.buttons.push(createMenuButton(
       this, cx + 106, 214 + oy, 92, "CREDITS", () => this.openCredits(), { depth: 6 },
     ));
-    this.refreshButtons();
 
     // M8: Vollbild-Knopf oben rechts (Desktop + Android-WebView).
     this.fullscreenButton = createMenuButton(
       this, W - 54, 18, 92, "VOLLBILD", () => this.toggleFullscreen(), { height: 18, depth: 6 },
     );
     this.fullscreenButton.setEnabled(true);
+    this.buttons.push(this.fullscreenButton);
+
+    // m10-gamepad-nav-scenes-r2 K2: Gamepad-Fokus über der Kern-API (MenuFocus,
+    // moveFocus/confirm). Der Fokus-Kreis umfasst ALLE bedienbaren Elemente
+    // (START, OPTIONEN, CREDITS, VOLLBILD) und wrappt. Fokus sieht exakt wie
+    // Hover aus (menuButtonVisual: setFocused → Lanternfarbe + 1-px-Rahmen);
+    // Maus/Touch-Pfade bleiben unberührt (AE=0) — Hover übernimmt nur den
+    // Fokus-Index (Start/Hover-Sync, kein zusätzlicher Event).
+    this.focus = new MenuFocus(this.buttons);
+    this.buttons.forEach((b, i) => {
+      const hit = b.container.list[b.container.list.length - 1] as
+        Phaser.GameObjects.Zone | undefined;
+      hit?.on("pointerover", () => this.focus.setIndex(i));
+    });
 
     // Hinweise am unteren Rand (nicht auf festen 270er-Koordinaten).
     new PixelText(this, cx, H - 38, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
@@ -189,7 +202,7 @@ export class Title extends Phaser.Scene {
       new PixelText(this, cx, H - 8, "IOS: TEILEN > ZUM HOME-BILDSCHIRM", C.amber, "center").setDepth(4);
     }
 
-    this.options = new OptionsMenu(this, 110, () => this.refreshButtons());
+    this.options = new OptionsMenu(this, 110, () => {});
     const kb = this.input.keyboard!;
     // Szenen-Restart darf keine alten Tastatur-Handler ansammeln.
     kb.removeAllListeners("keydown");
@@ -218,6 +231,11 @@ export class Title extends Phaser.Scene {
     } catch { /* iOS Safari: kein Fullscreen API -> Home-Bildschirm-Hinweis */ }
   }
 
+  /** m10-gamepad-nav-scenes-r2 K2: Kompatibilitäts-Leser (Kern-Harness liest t.selected). */
+  get selected(): number {
+    return this.focus ? this.focus.currentIndex : 0;
+  }
+
   update(): void {
     if (this.started) return;
     const a = this.pad.update({ gamepad: readSceneGamepad(this) }).actions;
@@ -226,17 +244,10 @@ export class Title extends Phaser.Scene {
       return;
     }
     if (this.options.visible) { this.options.handlePad(a); return; }
-    if (a.left || a.up) { this.selected = (this.selected + 2) % 3; this.refreshButtons(); }
-    else if (a.right || a.down) { this.selected = (this.selected + 1) % 3; this.refreshButtons(); }
-    else if (a.confirm) {
-      if (this.selected === 0) this.startSelect();
-      else if (this.selected === 1) this.openOptions();
-      else this.openCredits();
-    }
-  }
-
-  private refreshButtons(): void {
-    this.buttons.forEach((b, i) => b.setFocused(i === this.selected));
+    // K2: Edge-Aktionen (InputState, rising edge) → ein Pad-Press = eine Aktion.
+    if (a.left || a.up) this.focus.moveFocus(-1);
+    else if (a.right || a.down) this.focus.moveFocus(1);
+    else if (a.confirm) this.focus.confirm();
   }
 
   private onKey(ev: KeyboardEvent): void {
@@ -246,17 +257,13 @@ export class Title extends Phaser.Scene {
       return;
     }
     const key = ev.key.toLowerCase();
-    if (ev.key === "ArrowLeft" || key === "a") { this.selected = (this.selected + 2) % 3; this.refreshButtons(); return; }
-    if (ev.key === "ArrowRight" || key === "d") { this.selected = (this.selected + 1) % 3; this.refreshButtons(); return; }
-    if (ev.key === "ArrowUp" || key === "w") { this.selected = (this.selected + 2) % 3; this.refreshButtons(); return; }
-    if (ev.key === "ArrowDown" || key === "s") { this.selected = (this.selected + 1) % 3; this.refreshButtons(); return; }
+    if (ev.key === "ArrowLeft" || key === "a") { this.focus.moveFocus(-1); return; }
+    if (ev.key === "ArrowRight" || key === "d") { this.focus.moveFocus(1); return; }
+    if (ev.key === "ArrowUp" || key === "w") { this.focus.moveFocus(-1); return; }
+    if (ev.key === "ArrowDown" || key === "s") { this.focus.moveFocus(1); return; }
     if (key === "o") { this.openOptions(); return; }
     if (key === "c") { this.openCredits(); return; }
-    if (ev.key === "Enter" || ev.key === " ") {
-      if (this.selected === 0) this.startSelect();
-      else if (this.selected === 1) this.openOptions();
-      else this.openCredits();
-    }
+    if (ev.key === "Enter" || ev.key === " ") this.focus.confirm();
   }
 
   private openOptions(): void {

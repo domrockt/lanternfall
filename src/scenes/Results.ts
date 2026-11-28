@@ -9,7 +9,7 @@ import { hasFlag } from "../logic/rng";
 import { CHARACTERS } from "../data/characters";
 import type { CharacterId } from "../data/types";
 import { formatDuration, readMeta, recordRun, writeMeta } from "../logic/meta";
-import { createMenuButton, type MenuButton } from "../ui/menu";
+import { createMenuButton, MenuFocus, type MenuButton } from "../ui/menu";
 import { InputState, allActionsReleased } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { addVignetteBg } from "../gfx/vignette-bg";
@@ -29,7 +29,8 @@ export interface RunResult {
 export class Results extends Phaser.Scene {
   private result!: RunResult;
   private buttons: MenuButton[] = [];
-  private selected = 0;
+  /** m10-gamepad-nav-scenes-r2 K4: Kern-MenuFocus über NEUE RUNDE/TITEL. */
+  private focus!: MenuFocus;
   private leaving = false;
   private pad = new InputState();
   /** Erst nach einem Loslassen aller Pad-Aktionen wieder Eingaben annehmen. */
@@ -52,7 +53,6 @@ export class Results extends Phaser.Scene {
   private viewH = 0;
 
   create(): void {
-    this.selected = 0;
     this.leaving = false;
     this.pad.reset();
     this.padArmed = false;
@@ -191,7 +191,11 @@ export class Results extends Phaser.Scene {
     this.buttons.push(createMenuButton(
       this, cx + 76, H - 26, 112, "TITEL", () => this.toTitle(), { height: 20, depth: 4 },
     ));
-    this.refreshButtons();
+    // m10-gamepad-nav-scenes-r2 K4: Fokus-Kreis der Kern-API; wrappt zwischen
+    // den beiden Knöpfen, Fokus sieht wie Hover aus (setFocused). Kein
+    // scrollbares Element in Results (Schadensliste max. 12 Zeilen, statisch
+    // im Panel — siehe docs/lanes/m10-gamepad-nav-scenes-r2.md).
+    this.focus = new MenuFocus(this.buttons);
     new PixelText(this, cx, H - 9, "ENTER/PFEILE ODER MAUS", C.fog, "center").setDepth(2);
 
     const kb = this.input.keyboard!;
@@ -213,18 +217,10 @@ export class Results extends Phaser.Scene {
       if (allActionsReleased(a)) this.padArmed = true;
       return;
     }
-    if (a.left || a.up) { this.selected = 0; this.refreshButtons(); }
-    else if (a.right || a.down) { this.selected = 1; this.refreshButtons(); }
-    else if (a.confirm) {
-      if (this.selected === 0) this.newRun();
-      else this.toTitle();
-    } else if (a.back) {
-      this.toTitle();
-    }
-  }
-
-  private refreshButtons(): void {
-    this.buttons.forEach((b, i) => b.setFocused(i === this.selected));
+    if (a.left || a.up) this.focus.moveFocus(-1);
+    else if (a.right || a.down) this.focus.moveFocus(1);
+    else if (a.confirm) this.focus.confirm();
+    else if (a.back) this.toTitle();
   }
 
   private onKey(ev: KeyboardEvent): void {
@@ -232,12 +228,9 @@ export class Results extends Phaser.Scene {
     const key = ev.key.toLowerCase();
     if (key === "1") { this.newRun(); return; }
     if (key === "2" || ev.key === "Escape") { this.toTitle(); return; }
-    if (ev.key === "ArrowLeft" || key === "a") { this.selected = 0; this.refreshButtons(); return; }
-    if (ev.key === "ArrowRight" || key === "d") { this.selected = 1; this.refreshButtons(); return; }
-    if (ev.key === "Enter" || ev.key === " ") {
-      if (this.selected === 0) this.newRun();
-      else this.toTitle();
-    }
+    if (ev.key === "ArrowLeft" || key === "a") { this.focus.moveFocus(-1); return; }
+    if (ev.key === "ArrowRight" || key === "d") { this.focus.moveFocus(1); return; }
+    if (ev.key === "Enter" || ev.key === " ") this.focus.confirm();
   }
 
   private newRun(): void {

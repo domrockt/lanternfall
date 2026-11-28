@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9726,
+  "next": 9731,
   "cards": [
     {
       "id": 1,
@@ -12073,6 +12073,121 @@
       "notes": [],
       "created": "2026-11-28T07:17:47Z",
       "updated": "2026-11-28T07:17:47Z"
+    },
+    {
+      "id": 9726,
+      "title": "m10-gamepad-nav-scenes-r2 K1: Befund Pause-UI (UI.ts vs Run.ts)",
+      "description": "Abnahme: Befund dokumentiert in docs/lanes/m10-gamepad-nav-scenes-r2.md mit Datei:Zeile (Pause-Overlay in UI.ts, Pause-Trigger in Run.ts als Nachfolgebedarf), kurz committet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:05:03Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-gamepad-nav-scenes-r2 (Wiedereinreihung nach Disponent-Bug 06:27Z). Befund-Karte gestartet."
+        },
+        {
+          "at": "2026-11-28T07:05:59Z",
+          "by": "build",
+          "text": "doing → review: Befund committed (fcc72e9): Pause-Overlay in UI.ts (in der Area), Pause-Trigger Run.ts:457-461/1445-1471 als Nachfolgebedarf m10-pad-start-pause-r2. Kontrolle: review-commit-gate folgt beim Lane-Abschluss."
+        },
+        {
+          "at": "2026-11-28T07:30:11Z",
+          "by": "build",
+          "text": "review → done: lane #9544, Merge folgt durch Merge-Job. Kontrolleure: reviewer PASS, commit-gate PASS (38871fa)."
+        }
+      ],
+      "created": "2026-11-28T07:04:52Z",
+      "updated": "2026-11-28T07:30:11Z"
+    },
+    {
+      "id": 9727,
+      "title": "m10-gamepad-nav-scenes-r2 K2: Title.ts Gamepad-Fokus über Kern-API",
+      "description": "Abnahme: MenuFocus über alle Title-Buttons (inkl. VOLLBILD), Confirm=B press, Hover-Sync, Maus/Touch AE=0; tsc grün, Commit #K2.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:05:59Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Title.ts Gamepad-Fokus über Kern-API (MenuFocus)."
+        },
+        {
+          "at": "2026-11-28T07:09:00Z",
+          "by": "build",
+          "text": "doing → review: K2 committed (94f1a6b): MenuFocus über alle 4 Title-Knöpfe, Hover-Sync, Kern-Harness 15/15 PASS."
+        },
+        {
+          "at": "2026-11-28T07:30:11Z",
+          "by": "build",
+          "text": "review → done: lane #9545, Commit 94f1a6b. reviewer PASS, commit-gate PASS."
+        }
+      ],
+      "created": "2026-11-28T07:04:52Z",
+      "updated": "2026-11-28T07:30:11Z"
+    },
+    {
+      "id": 9728,
+      "title": "m10-gamepad-nav-scenes-r2 K3: CharSelect.ts Pad-Navigation",
+      "description": "Abnahme: Charakter-Panels + ZURÜCK/START per D-Pad/Stick erreichbar, A=auswählen, B=zurück, Fokus-Rahmen wie Hover; Maus unverändert; Commit #K3.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:09:01Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: CharSelect.ts Pad-Navigation (2 Reihen: Panels + Knöpfe)."
+        },
+        {
+          "at": "2026-11-28T07:09:48Z",
+          "by": "build",
+          "text": "doing → review: K3 committed (e074967): charSelectPadNav rein + 2-Reihen-Fokus, Hover-Sync AE=0."
+        },
+        {
+          "at": "2026-11-28T07:30:11Z",
+          "by": "build",
+          "text": "review → done: lane #9546, Commit e074967. reviewer PASS, commit-gate PASS."
+        }
+      ],
+      "created": "2026-11-28T07:04:52Z",
+      "updated": "2026-11-28T07:30:11Z"
+    },
+    {
+      "id": 9729,
+      "title": "m10-gamepad-nav-scenes-r2 K4: Results.ts + Credits.ts navigierbar",
+      "description": "Abnahme: alle Buttons per Pad fokussierbar/aktivierbar (MenuFocus), Back-Action, Repeat-Debounce; Commit #K4.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:09:48Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: Results.ts + Credits.ts über Kern-MenuFocus (Supervisor-Steuer beachtet: nur Wiring, kein erneutes Kern-API-Lesen)."
+        },
+        {
+          "at": "2026-11-28T07:30:11Z",
+          "by": "build",
+          "text": "doing → done: lane #9547, Commit 83bb0b4. reviewer PASS, commit-gate PASS."
+        }
+      ],
+      "created": "2026-11-28T07:04:52Z",
+      "updated": "2026-11-28T07:30:11Z"
+    },
+    {
+      "id": 9730,
+      "title": "m10-gamepad-nav-scenes-r2 K5: UI.ts Pause/Options per Gamepad + Harness",
+      "description": "Abnahme: Pause-Buttons über Kern-API, ein Pad-Frame = eine Aktion, Repeat-Debounce; Harness scripts/m10-gamepad-nav-scenes.mjs PASS, tests/gamepad-nav-scenes.test.ts grün, Screenshots 640x360 mit Fokusrahmen, volle Suite + build rc=0, .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:23:48Z",
+          "by": "build",
+          "text": "todo → review: K5 + Lane-Doku committed (f62d68f, c103cd9): Harness 32/32 PASS, Tests 10/10, Suite 1665 grün, build rc=0. Kontrolleure laufen."
+        },
+        {
+          "at": "2026-11-28T07:30:11Z",
+          "by": "build",
+          "text": "review → done: lane #9548, Commits f62d68f/c103cd9/38871fa. reviewer PASS, commit-gate PASS (32/32 Harness, 1665 Tests, build rc=0)."
+        }
+      ],
+      "created": "2026-11-28T07:04:52Z",
+      "updated": "2026-11-28T07:30:11Z"
     }
   ]
 }
