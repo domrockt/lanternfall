@@ -68,33 +68,42 @@ function score(json) {
 
 const results = [];
 let chosen = null;
+/** Ursprünglich committeter Wert (Crash-Pfad: waves.ts restaurieren). */
+const COMMITTED_DAMP =
+  Number((readFileSync(WAVES_FILE, "utf8").match(/SPAWN_DAMP_18_24 = ([0-9.]+);/) ?? [])[1]) || CANDIDATES[0];
 
-for (const candidate of CANDIDATES) {
-  if (results.length >= MAX_SEARCH_RUNS) break;
-  console.log(`[search-1824] Suchlauf ${results.length + 1}/${MAX_SEARCH_RUNS}: SPAWN_DAMP_18_24 = ${candidate}`);
-  patchWaves(candidate);
-  const run = spawnSync("node", ["scripts/m10-balance-endgame.mjs", "after", "search"], {
-    stdio: "inherit",
-  });
-  if (run.status !== 0 && run.status !== 1) {
-    // Modellausfall/Harness-Killer: ehrlich abbrechen, nicht als Ergebnis verkaufen.
-    console.error(`[search-1824] Endgame-Lauf rc=${run.status} — Suche abgebrochen.`);
-    results.push({ candidate, error: `rc=${run.status}` });
-    break;
+try {
+  for (const candidate of CANDIDATES) {
+    if (results.length >= MAX_SEARCH_RUNS) break;
+    console.log(`[search-1824] Suchlauf ${results.length + 1}/${MAX_SEARCH_RUNS}: SPAWN_DAMP_18_24 = ${candidate}`);
+    patchWaves(candidate);
+    const run = spawnSync("node", ["scripts/m10-balance-endgame.mjs", "after", "search"], {
+      stdio: "inherit",
+    });
+    if (run.status !== 0 && run.status !== 1) {
+      // Modellausfall/Harness-Killer: ehrlich abbrechen, nicht als Ergebnis verkaufen.
+      console.error(`[search-1824] Endgame-Lauf rc=${run.status} — Suche abgebrochen.`);
+      results.push({ candidate, error: `rc=${run.status}` });
+      break;
+    }
+    const json = JSON.parse(readFileSync("shots/m10-balance-band-search-after.json", "utf8"));
+    const s = score(json);
+    results.push({ candidate, ...s, endMinutes: json.endMinutes });
+    console.log(`[search-1824]   -> im Fenster ${s.inWindow}/6, Streuung ${s.spread} min, Tode ${s.deaths}, Level ${s.levels}, Boss ${s.bossOk}/${s.bossMeasured}, pass=${s.pass}`);
+    if (s.pass) { chosen = candidate; break; }
   }
-  const json = JSON.parse(readFileSync("shots/m10-balance-band-search-after.json", "utf8"));
-  const s = score(json);
-  results.push({ candidate, ...s, endMinutes: json.endMinutes });
-  console.log(`[search-1824]   -> im Fenster ${s.inWindow}/6, Streuung ${s.spread} min, Tode ${s.deaths}, Level ${s.levels}, Boss ${s.bossOk}/${s.bossMeasured}, pass=${s.pass}`);
-  if (s.pass) { chosen = candidate; break; }
+
+  if (chosen == null) {
+    const ranked = results.filter((r) => !r.error).sort((a, b) => b.rank - a.rank);
+    chosen = ranked[0]?.candidate ?? CANDIDATES[0];
+    console.log(`[search-1824] Limit erreicht — bester Kandidat: ${chosen} (kein weiteres Tuning, K2-Messung fährt).`);
+  }
+} finally {
+  // Auch bei Exception mid-Lauf (Harness-Crash, JSON-Parse): waves.ts nie mit
+  // Kandidatenwert liegen lassen — gewählten Wert, sonst den committeten.
+  patchWaves(chosen ?? COMMITTED_DAMP);
 }
 
-if (chosen == null) {
-  const ranked = results.filter((r) => !r.error).sort((a, b) => b.rank - a.rank);
-  chosen = ranked[0]?.candidate ?? CANDIDATES[0];
-  console.log(`[search-1824] Limit erreicht — bester Kandidat: ${chosen} (kein weiteres Tuning, K2-Messung fährt).`);
-}
-patchWaves(chosen);
 
 const summary = {
   lane: "m10-balance-spawn-damp",
