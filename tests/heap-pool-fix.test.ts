@@ -102,19 +102,20 @@ describe("ProjectilePool: m10-heap-pool-fix (K3)", () => {
     expect(again.hit.size).toBe(0); // und geleert (keine alten Treffer)
   });
 
-  it("view()-Cache: ein View-Lesezugriff pro Frame, in-place aktualisiert (kein Objekt pro Frame)", () => {
+  it("view(): Werte frisch je Aufruf (m10-worldview-anchor-pools: kein Frame-Cache, der bei timeScale > 1 frame-abhängig friert), weiterhin 0 Objekt-Allokationen", () => {
     const ctx = countingScene();
     const pool = new ProjectilePool(ctx.scene as never);
 
-    // Zwei compact()-Läufe im selben Frame: genau ein worldView-Read.
+    // Zwei compact()-Läufe im selben Frame: je Aufruf ein frischer Lesezugriff
+    // (der Anker muss exakt je Teilschritt gelten — Rezept m10-boss-dur-determinism).
     pool.compact();
-    pool.compact();
-    expect(ctx.readCount()).toBe(1);
-
-    // Nächster Frame: genau ein weiterer Read.
-    ctx.setFrame(2);
     pool.compact();
     expect(ctx.readCount()).toBe(2);
+
+    // Nächster Frame: ein weiterer Read je compact().
+    ctx.setFrame(2);
+    pool.compact();
+    expect(ctx.readCount()).toBe(3);
   });
 
   it("view()-Cache liefert aktuelle Werte (in-place-Update verfälscht nichts)", () => {

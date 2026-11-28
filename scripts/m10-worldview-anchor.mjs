@@ -49,6 +49,12 @@ const TAG = String(argOf("tag", ""));
 const OUT = String(argOf("out",
   `${homedir()}/games/.evidence/m10-worldview-anchor-pools/m10-worldview-anchor${TAG ? `-${TAG}` : ""}.json`));
 const CHARACTER = "mira";
+// Isolation-Probe (K4): patcht NUR den dritten, fremden Leser
+// Spawner.outsideView zur Laufzeit auf den Sim-Anker (exakt Patch 1 aus
+// ~/tmp/m10-boss-dur-determinism/probe-fix.mjs). Bitgleich damit => die
+// beiden hiesigen Leser (ProjectilePool.view, EnemyProjectiles.refreshView)
+// sind leckfrei; die Rest-Divergenz ohne Patch ist der Spawner-Leser.
+const PATCH_SPAWNER = String(argOf("patch-spawner", "0")) === "1";
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
@@ -56,9 +62,23 @@ const server = await startServer();
 const browser = await chromium.launch();
 
 /** Sim-exakte Schuss-Marken: Pool-Stats + Enemy-Shot-Stats je Sekunde. */
-async function armTrace(page, maxSec) {
-  return page.evaluate((limit) => {
+async function armTrace(page, maxSec, patchSpawner) {
+  return page.evaluate(([limit, patchSpawnerArg]) => {
     const run = window.__game.scene.getScene("run");
+    if (patchSpawnerArg) {
+      // Isolation: dritter Leser (Spawner.outsideView, fremde Lane) -> Sim-Anker.
+      const gw = 640; // GAME_WIDTH (logischer Screen, config.ts)
+      const spProto = Object.getPrototypeOf(run.spawner);
+      spProto.outsideView = function (x, y, margin = 16) {
+        const cam = this.camera;
+        const s = Math.max(1, Math.round(gw / (cam.width || gw)));
+        const w = cam.width * s;
+        const h = cam.height * s;
+        const vx = cam.scrollX + cam.width / 2 - w / 2;
+        const vy = cam.scrollY + cam.height / 2 - h / 2;
+        return x < vx - margin || x > vx + w + margin || y < vy - margin || y > vy + h + margin;
+      };
+    }
     let nextSec = 1;
     const trace = { marks: [] };
     window.__detTrace = trace;
@@ -88,7 +108,7 @@ async function armTrace(page, maxSec) {
       }
     };
     return true;
-  }, maxSec);
+  }, [maxSec, patchSpawner]);
 }
 
 /** Ein Lauf: Seite oeffnen, Trace bewaffnen, bis Limit/Ende laufen lassen. */
@@ -105,7 +125,7 @@ async function runRep(seed, rep) {
     await page.keyboard.press(CHARACTER === "kael" ? "2" : "1");
     await page.keyboard.press("Enter");
     await waitForScene(page, "run");
-    await armTrace(page, MAX_SECONDS);
+    await armTrace(page, MAX_SECONDS, PATCH_SPAWNER);
     await page.evaluate((scale) => {
       window.__lf.autoPlay(true);
       window.__lf.god(false);
@@ -131,7 +151,11 @@ async function runRep(seed, rep) {
     const trace = await page.evaluate(() => window.__detTrace);
     const renderer = await page.evaluate(() => {
       const g = window.__game;
-      return g?.renderer?.gl ? String(g.renderer.gl.getParameter(g.renderer.gl.RENDERER)) : "unknown";
+      const gl = g?.renderer?.gl;
+      if (!gl) return "unknown";
+      // Abnahme-Pflicht: echter GPU-Renderer (SwiftShader = ungültig).
+      const ext = gl.getExtension("WEBGL_debug_renderer_info");
+      return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
     }).catch(() => "unknown");
     return { seed, rep, marks: trace.marks, pageErrors, renderer };
   } finally {

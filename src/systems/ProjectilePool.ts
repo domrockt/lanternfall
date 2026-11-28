@@ -202,42 +202,36 @@ export class ProjectilePool {
   /** Sprite-/Trail-Skip dicht außerhalb des Views (ohne Verhaltenseinfluss). */
   static readonly HIDE_MARGIN = 24;
 
-  private viewCache: { x: number; y: number; width: number; height: number } | null = null;
   /**
-   * m10-heap-pool-fix: wiederverwendetes Cache-Objekt — das Ergebnis von
+   * m10-heap-pool-fix: wiederverwendetes Scratch-Objekt — das Ergebnis von
    * `view()` darf NICHT über den Frame hinaus gehalten werden (Identität
-   * bleibt dieselbe, Werte werden pro Frame in-place neu geschrieben).
+   * bleibt dieselbe, Werte werden pro Aufruf in-place neu geschrieben).
    */
   private readonly viewScratch: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 };
-  private viewCacheFrame = -1;
 
   /**
    * Sichtbarer Weltbereich; null, wenn keine Kamera vorhanden (Tests).
    * m10-worldview-anchor-pools: liest den deterministischen Sim-Anker
    * (simAnchorView) statt camera.worldView — worldView wird nur im
    * Render-Frame aktualisiert und ist im Teilschritt-Loop frame-abhängig.
+   *
+   * KEIN Frame-Cache mehr: compact() läuft je SIM-Teilschritt, und ein
+   * pro Render-Frame eingefrorener Anker wäre bei timeScale > 1 selbst
+   * frame-abhängig (Rezept m10-boss-dur-determinism K2: der Beweis-Patch
+   * liest frisch je Aufruf). Der Anker ist billige Arithmetik (4 Adds),
+   * kein Alloziieren — viewScratch bleibt das einzige Objekt.
    */
   private view(): { x: number; y: number; width: number; height: number } | null {
-    const frame = this.scene.game?.loop?.frame;
-    // Frame-Cache VOR jeder Allokation prüfen (Review m10-heap-pool-fix:
-    // sonst wird pro Aufruf die compute-Closure alloziert).
-    if (frame !== undefined && frame === this.viewCacheFrame) return this.viewCache;
     const cam = this.scene.cameras?.main;
-    let result: { x: number; y: number; width: number; height: number } | null;
     if (cam && cam.width > 0 && cam.height > 0) {
       const a = simAnchorView(cam.scrollX, cam.scrollY, cam.width, cam.height);
       this.viewScratch.x = a.x;
       this.viewScratch.y = a.y;
       this.viewScratch.width = a.width;
       this.viewScratch.height = a.height;
-      result = this.viewScratch;
-    } else {
-      result = null;
+      return this.viewScratch;
     }
-    if (frame === undefined) return result; // Testumgebung ohne Loop: frisch rechnen
-    this.viewCache = result;
-    this.viewCacheFrame = frame;
-    return result;
+    return null;
   }
 
   /** Abnahme-Flag (registry "lf-proj-cull"); default an, 0 = Vorher-Verhalten. */

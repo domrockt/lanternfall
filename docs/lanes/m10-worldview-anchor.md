@@ -84,7 +84,39 @@ vor dem Boss).
 
 ## K4 — Nachher: 3 Seeds × 2 Läufe (#12458)
 
-Beleg: `~/games/.evidence/m10-worldview-anchor-pools/m10-worldview-anchor-after.json`.
+**Zweite Leck-Schicht im eigenen Bereich gefunden und geschlossen:** die erste
+Nachher-Probe divergierte weiter im `culled`-Zähler. Ursache: der Frame-Cache in
+`ProjectilePool.view()` (m10-heap-pool-fix) friert den View PRO RENDER-FRAME ein —
+`compact()` läuft aber je SIM-Teilschritt, bei timeScale 30 also bis zu ~25
+Teilschritte pro Frame, die den Anker des ersten Teilschritts sehen. Der Rezept-
+Beweis-Patch (m10-boss-dur-determinism, `~/tmp/m10-boss-dur-determinism/probe-fix.mjs`)
+hat `view()` komplett ersetzt — also ohne Cache. Konsequenz: **Frame-Cache entfernt**,
+`view()` liest den Anker frisch je Aufruf (billige Arithmetik, viewScratch bleibt,
+0 Allokationen — Heap-Invarianten bleiben, `tests/heap-pool-fix` entsprechend
+geschärft: frisch je Aufruf statt ein Read pro Frame).
+
+Belege (`scripts/m10-worldview-anchor.mjs`, je 3 Seeds × 2 Läufe, 700 Sim-Sekunden,
+timeScale 30, mira, ohne flock):
+
+| Probe | Urteil | erste Divergenz | Datei |
+|---|---|---|---|
+| Vorher (unverändert) | divergent | s=42/52/50, Feld `culled` | `m10-worldview-anchor-before.json` |
+| Nachher (K1+K2-Fix) | divergent | s=205/173 — frühe Cull-Divergenzen weg | `m10-worldview-anchor-after.json` |
+| Nachher + Spawner-Isolation (`--patch-spawner=1`) | **DETERMINISTISCH (0 Abweichung)** | — | `m10-worldview-anchor-after-spawner-isolated.json` |
+
+Alle in `~/games/.evidence/m10-worldview-anchor-pools/`. Renderer-String im Beleg:
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (kein SwiftShader).
+
+**Interpretation:** Mit den beiden hiesigen Lesern am Sim-Anker (frisch je
+Teilschritt) und NUR dem fremden Leser `Spawner.outsideView` zur Laufzeit gepatcht
+sind 3 Seeds × 2 Läufe bitgleich — die beiden hiesigen Leser sind leckfrei. Die
+Rest-Divergenz des ungepatchten Builds (s=205/173, deutlich später als Vorher)
+ist der dritte Leser `Spawner.outsideView` (Z.330) und wird mit der Folgekarte
+nach m10-frame-tail-followup geschlossen (Dora schneidet).
+
+Offen: **Boss-Dauer-Determinismus komplett erst mit dem Spawner-Teil** — der
+End-to-End-Beweis über Boss-Dauern (wie probe-runtime-patch.json in der
+Bedarfs-Lane) wird dann mit allen drei Lesern am Anker erwartet.
 
 ## K5 — Doku + Abschluss (#12459)
 
