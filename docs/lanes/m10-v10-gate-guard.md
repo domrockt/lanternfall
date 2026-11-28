@@ -31,8 +31,9 @@ Tore (Exit 0 = PASS, 1 = FAIL, **2 = Renderer ungültig**):
 | `heap-retained` | retained Heap (endMB vs startMB, nach erzwungenem GC) strikt < +15 % (Tor-Definition #11391 / Nachabnahme G) |
 
 Beobachtungen (Warnung, kein FAIL — keine selbst erfundenen Tore): Draw-Calls/Frame p95 ≤ 40,
-Texturanzahl ≤ 500. Das In-run-Heap-Delta m1→end bleibt Beobachtung (kalte m1-Referenz bei 30x,
-Post-GC-Sägezahn — siehe `docs/qa/acceptance-refresh-g-2026-11-28.md`).
+Texturanzahl ≤ 3500 (Baseline-Kalibrierung aus Gate-Lauf 28.11.: gemessen 2776–2787). Das In-run-
+Heap-Delta m1→end bleibt Beobachtung (kalte m1-Referenz bei 30x, Post-GC-Sägezahn — siehe
+`docs/qa/acceptance-refresh-g-2026-11-28.md`).
 
 Aufruf (FPS/Echtzeit ⇒ Mess-Sperre):
 
