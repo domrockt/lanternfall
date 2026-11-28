@@ -1,0 +1,19 @@
+# Lane m10-run-determinism-fix — fertig (2026-11-28)
+
+Sim-Schrittführung deterministisch: Run.ts führt nur volle SIM_MAX_STEP-Schritte aus
+(Carry-over statt variabler Partial-Schritt), KI-RNG aus Run-Seed, ?detstart=1-Start-Gate,
+Kamera-Anker pro Sim-Schritt; Spawn-Allowance dt-basiert (Spawner.ts, 1:1 aus main
+übernommen — Job m10-spawn-budget-dt, Merge 6728485, schloss den Rest-Leak Seed 202).
+
+Messwerte (Belege in shots/):
+- Determinismus: 3 Seeds (101/202/404) × 2 Läufe × 120 Marken + Events + Final ALLE bitgleich,
+  verdict deterministic:true (shots/m10-run-det-verdict.json; before: deterministic:false,
+  120/120 divergent je Seed).
+- Guard-Test tests/run-determinism.test.ts 7/7 grün; Suite 1317/1317 in 122 Dateien;
+  tsc + build rc=0.
+- Balance Kael/Seed 101 (30 min sim, autoPlay, timeScale 30): Sieg (dawn) 30,4 min,
+  Level 37 (Korridor 25–40), 6/6 Bosse 32/41/44/35/31/22 s, 4 Evolutionen, passedAll
+  (shots/m10-run-det-balance-kael-101.json).
+
+Doku: docs/lanes/m10-run-determinism-fix.md. Reviewer PASS (K1-Beleg-Fehler behoben,
+Commit d320e93), Commit-Gate PASS. Karte #7979 (lane #7978).
