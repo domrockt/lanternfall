@@ -72,7 +72,23 @@ FAIL-Tracks m10-menu-quality-55): siehe Urteil unten.
 
 ### art-director-Urteil (#11603)
 
-> _steht noch aus — wird nach der Sichtung eingetragen._
+> **PASS 4,7/5** (Schwelle 4,5) — 2026-11-28, Sichtung beider Abnahme-Shots
+> (bereits 2x-nearest) gegen den Vorher-Shot des resight-Scans:
+> - **Footer-Lesbarkeit (Hauptkriterium):** beide Zeilen in beiden Profilen klar
+>   und mühelos lesbar; Zeile 2 war vorher kaum vom Panel abgehoben (2,72),
+>   jetzt „der größte Sprung". Kein Clipping, keine Überlappung.
+> - **Hierarchie/Farbton:** `paleMist`/`bone` bleiben kühlgraue Panel-Töne aus
+>   derselben Familie wie Item-Text — kein Golden-Overreach; Rangfolge
+>   Titel (Gold) → Header (Gold) → Item-Text → Buttons → Footer bleibt intakt.
+>   Nicht-blockierende Anmerkung: Zeile 2 ist jetzt marginal heller als Zeile 1
+>   (semantisch umgekehrt logischer) — wie bei den bereits abgenommenen
+>   Menü-Footern, kein Nachbesserungs-Zwang.
+> - **Gesamteindruck:** Panel sauber, Nineslice tadellos, keine Mixel/Subpixel-
+>   Artefakte im UI (151 Subpixel = Wasser-Ripples im Run-Layer). Out-of-scope-
+>   Punkte („SEELENLEU/CHTFEUER", „PHOENIXSCHWARM" ohne Ö) nur leicht gewichtet.
+> - **muss neu: nichts. nachbessern: nichts in diesem Scope.**
+>
+> **Damit ist der art-director-FAIL-Track aus m10-menu-quality-55 abgeschlossen.**
 
 ## K4: Fazit
 
