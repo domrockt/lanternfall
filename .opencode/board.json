@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11105,
+  "next": 11108,
   "cards": [
     {
       "id": 1,
@@ -14191,6 +14191,49 @@
       ],
       "created": "2026-11-28T10:03:49Z",
       "updated": "2026-11-28T10:04:38Z"
+    },
+    {
+      "id": 11105,
+      "title": "m10-tablet-fx-rootcause #K1 GL-Aufruf-Matrix Evo-Stack (lokal + Gerät)",
+      "description": "Abnahme: Beleg-JSONs (lokal + Gerät, falls erreichbar) mit je-Fenster-Metriken fps/draws/useProgram/blendFunc/bindFramebuffer pro Evo-Einzelstufe + Stapel-Reihenfolgen, gespeichert unter ~/games/.evidence/m10-tablet-fx-rootcause/. Skript scripts/m10-tablet-fx-rc.mjs. Keine src/tests-Änderungen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T09:53:23Z",
+          "by": "build",
+          "text": "todo → doing: Angenommen 2026-11-28; Geraet-Bridge antwortet, aber adb-Device offline (10.10.40.27:35099 not found) — lokal zuerst, Geraet retry."
+        },
+        {
+          "at": "2026-11-28T10:04:55Z",
+          "by": "build",
+          "text": "K1 lokal fertig: 21 Fenster in ~/games/.evidence/m10-tablet-fx-rootcause/rc-local.json (Renderer-String drin). Blend 4,5→34,6/Frame mit Evo-Anzahl (beide Reihenfolgen), draws≈blend+1, 0 nicht-null FB-Binds. Geraet offline (adb not found) — rc-device.json ausstehend."
+        },
+        {
+          "at": "2026-11-28T10:26:45+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11105, Merge branch m10-tablet-fx-rootcause (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T09:53:19Z",
+      "updated": "2026-11-28T10:04:55Z"
+    },
+    {
+      "id": 11106,
+      "title": "m10-tablet-fx-rootcause #K2 Quelle FB-Wechsel + Blend-Explosion benennen",
+      "description": "Abnahme: Ursache mit Datei+Zeile (Welche Draw-Aufrufe/Code-Pfad erzeugen die Blend-Wechsel 4→26/Frame und +1 bindFramebuffer), Beleg-JSON je Schritt (Stacks + Sprite-Census). Eingang in docs/lanes/m10-tablet-fx-rootcause.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:53:19Z",
+      "updated": "2026-11-28T09:53:19Z"
+    },
+    {
+      "id": 11107,
+      "title": "m10-tablet-fx-rootcause #K3 Fix-Empfehlung mit Hebel + erwartetem Gewinn",
+      "description": "Abnahme: Fix-Empfehlung (Datei/Zeile, Hebel) mit Zielzahlen Blend-Wechsel/Frame < 8 und 0 FB-Wechsel, erwartet in FPS am Gerät; Übergabe an m10-tablet-fx-hotspot in der Lane-Doku. .lane-done am Ende.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:53:19Z",
+      "updated": "2026-11-28T09:53:19Z"
     }
   ]
 }
