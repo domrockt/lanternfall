@@ -71,4 +71,79 @@ Steady-State/Intervall/Überschreibung des Install-Gates). tsc rc=0.
 
 ## K3 — Nachher-Messung (gleiche Methode wie K1)
 
-Siehe Abschnitt unten (wird nach den Läufen ergänzt).
+### Lokal iGPU (`after-local.json`, gleiche Methode/Skript wie K1)
+
+- p50 16,7 / p90 16,7 / p95 16,7 / p99 **16,8** / worst **16,8** ms, jankyPctLocal **0 %**,
+  0 JS-Fehler — identisch zur Baseline (`before-local.json`): **kein Regressionssignal**.
+  Wie in K1 belegt ist der lokale Lauf 60-Hz-VSync-gebunden und quantisiert den Tail
+  (vorher wie nachher 0 Frames > 16,9 ms) — der Tail selbst ist lokal nicht auflösbar.
+- Methodik-Notiz: der after-Lauf enthielt noch den (später durch claimcheck blockierten)
+  Sofort-Zweig für Aufrufe ≤ 30; der Unterschied zum committeten Stand (alle Debug-Spawns
+  gequeuet) ist am 60-Hz-vsUnc-Lauf unsichtbar und betrifft nur Debug-Spawns ≤ 30.
+
+### Gerät — verbindliche Nachmessung nach dem Merge (offener Punkt)
+
+Die device-bridge (`POST /install`) baut ausschließlich den committierten main-HEAD; der
+Lane-Branch kann vor dem Merge nicht auf das Gerät (Präzedenz: m10-device-telemetry,
+„APK-Verifikation kann diese Lane nicht liefern"). Nach dem Merge ist die Messung ein
+einzelner Befehl:
+
+    POST http://172.17.0.1:5181/install        # baut main-HEAD mit diesem Fix
+    node scripts/m10-v10-device-gfxinfo.mjs --out ~/games/.evidence/m10-frame-tail-batching/after-device.json
+
+Kriterien (gegen die EIGENE Baseline dieser Lane, gleiche Methode/Session):
+janky ≥ 1 Punkt besser als 9,09 % (Zielbild gemeinsam mit m10-device-janky-tier: < 10 %),
+gfxinfo-p99 < 20 ms (Baseline dieser Lane: 36; Akzeptanz-Lane: 31), 0 JS-Fehler, FPS ≥ 60.
+
+Erwarteter Mechanismus (aus K1 belegt): die 33–58-ms-rAF-Spikes folgen Top-up-Gruppen von
+bis 281 Gegnern in einem rAF-Tick; mit Cap 30/Frame entsteht dieser Burst nicht mehr. Der
+rAF-dt-Tail (1,33 % der Frames) war klein gegen den gfxinfo-Janky (9 %) — der Rest ist
+Compositor-seitig; dort wirkt zusätzlich die Chunk-Upload-Glättung (12 ms Mindestabstand
+bei Rückstau).
+
+## Review (m10-frame-tail-batching, reviewer-Subagent) — PASS
+
+Urteil PASS, 2267/2267 Tests grün, tsc clean, keine kritischen Befunde. „Sollte“-Befunde und
+Disposition (alle betreffen `src/systems/Spawner.ts` bzw. den Dawn-Pfad — der Claim von
+Spawner.ts liegt bei m10-spawn-burst-alloc, deshalb hier dokumentiert statt selbst gefixt):
+
+1. **Dawn = Queue-Leak (Debug-API):** während der Morgendämmerung läuft `Spawner.update()`
+   nicht (Run.ts:655) → eingereihte Debug-Spawns materialisieren erst nach Run-Ende nie.
+   Debug-only, spielkritisch nein. Vorschlag für den Merge: `drainDebugQueue` auch beim
+   Dawn-Start aufrufen (oder Queue bei `startDawn` räumen). → `requests.md`-Eintrag 12:52Z
+   ergänzt um diesen Punkt.
+2. **Cap gilt je Sim-Substep, nicht je rAF-Frame:** bei timeScale > 1 (bis ~60 Substeps/Frame)
+   materialisieren bis 30×Substeps je Frame. Für den 1×-Geräte-Harness wirkungslos (das
+   Messfenster läuft mit `setTimeScale(1)`). Doku-Korrektur: Obergrenze = je `update()`-
+   Aufruf (= Sim-Substep); bei 1× identisch mit je Frame. Der Kommentar in Spawner.ts
+   (blockierte Datei) sollte beim Merge angepasst werden.
+3. **RNG-Identität Batch-Pfad vs. spawnEnemy nur durch Code-Duplikation belegt, nicht per
+   Test:** reviewer verifiziert die Identität per Code-Lesung (gleiche Ziehungsreihenfolge
+   Winkel→Radius, gleiche Clamps/hpScale-Formel). Sauberere Lösung: reine Positions-Funktion
+   + Identitäts-Test mit geseedetem RNG — gehört zur Spawner.ts-Arbeit von m10-spawn-burst-alloc,
+   Bedarf steht in `requests.md`.
+
+## Bekannte Restrisiken / offene Punkte
+
+1. **Fremde Verify-Skripte mit synchroner Spawn-Lese:** `window.__lf.spawnEnemy` materialisiert
+   jetzt im nächsten `update()`-Aufruf statt synchron (bei 1× = nächster Frame; GAME.md verspricht
+   keine Synchroneität; Rückgabewert = angefragte Anzahl, unverändert). Zwei fremde Skripte lesen
+   frische Spawns
+   UNMITTELBAR nach dem Aufruf und liefern bei n > 30 falsche Daten auf einem Re-Lauf:
+   `scripts/m10-boss-fair.mjs` (topUpCrowd, `enemies.active.slice(before)` nach `spawnEnemy(need)`)
+   und `scripts/m10-crowd-probe.mjs` (gleiches Muster). Beide sind nicht in aktiver Abnahme
+   (ACCEPTANCE.md nennt sie nicht); ihre Lane-Owner sollten entweder 1 Frame warten oder den
+   Sofort-Zweig nutzen: **Bedarf in `.dispatch/requests.md` (12:52Z) gemeldet** — Aufrufe
+   ≤ `SPAWN_DEBUG_BATCH_PER_FRAME` (30) sofort materialisieren statt queuen. Die Änderung
+   (~15 Zeilen in `queueEnemyWave` + 1 Test) war ausgearbeitet, aber der Claim von
+   `src/systems/Spawner.ts` wurde zwischenzeitlich an **m10-spawn-burst-alloc** vergeben
+   (claimcheck hat den Commit blockiert; K2-Kern war zu dem Zeitpunkt bereits committet).
+   Merge-Konfliktrisiko mit m10-spawn-burst-alloc (gleiche Datei) ist real — beide Lanes
+   arbeiten an Spawn-Burst-Kosten; der Merge-Job sollte die Queues/Drain-Logik zusammenführen.
+2. **Spawner.ts-Claim-Mapping:** Disponent-Claim dieser Lane nennt `src/systems/EnemySystem.ts`
+   (existiert nicht); real bearbeitet: `src/systems/Spawner.ts` + 3 Zeilen `src/scenes/Run.ts`
+   (`debugSpawnEnemy`-Wiring, siehe Abschnitt Datei-Mapping).
+3. **Chunk-Prefetch-Margin bewusst NICHT erhöht** (K1: kein Main-Thread-Tail am Worker-Pfad;
+   +1 Margin-Ring wären ~50 MB GPU-Texturmemor auf Android — siehe
+   `coding-brain/Wissen/Android-Optimierung-Praxis.md`).
+

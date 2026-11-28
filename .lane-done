@@ -1,0 +1,26 @@
+# Lane m10-frame-tail-batching — Frame-Zeit-Schwanz (Hebel B) abgeschlossen
+
+Fix des Frame-Zeit-Schwanzes (K3-FAIL der v10-device-acceptance: gfxinfo janky 13,44/13,90 %,
+p99 31 ms, worstFrame 33–34 ms ≈ alle ~11 s). Belege: ~/games/.evidence/m10-frame-tail-batching/,
+Doku: docs/lanes/m10-frame-tail-batching.md. Board: #11989/#11990 (done), #11991 (review).
+
+1. K1 Baseline (a8a7144a): Gerät gfxinfo janky 9,09 % (p50 8/p90 18/p95 22/p99 36 ms, worst rAF
+   91,6, Adreno 710, 0 JS-Fehler); je-Frame 24 s: rAF-Spikes 25–58 ms folgen Top-up-Gruppen bis
+   281 Gegnern; Chunk-Installs bei dt 8,3 ms (Main-Thread sauber). Lokal iGPU vsync-quantisiert
+   (p99 16,8, kein Tail sichtbar).
+2. K2 Fix (4ba140b0): Spawn-Batching — Debug-Spawn-Pfad (window.__lf.spawnEnemy → queueEnemyWave)
+   verteilt Runtime-Spawns über Frames (Cap 30 je update(), reine drainSpawnQueue; Positionen/
+   RNG-Reihenfolge identisch, Director-Pfad unangetastet, Dawn/Elite nutzen weiter spawnEnemy
+   sofort). GroundRenderer: Chunk-Installs/Uploads bei Rückstau ≥12 ms auseinander
+   (chunkInstallDue; Steady-State sofort). 11 neue Tests, Suite 2267/2267 grün, build rc=0,
+   tsc rc=0.
+3. K3 Nachher: lokal identisch zur Baseline (kein Regressionssignal; lokal ist der Tail vsync-
+   quantisiert nicht auflösbar). Gerät-Nachmessung erst nach Merge möglich (Bridge baut nur
+   main-HEAD) — exakter Befehl + Kriterien (janky ≥1 Punkt unter 9,09 %, p99 < 20 ms, 0
+   JS-Fehler, FPS ≥ 60) in der Lane-Doku, Abschnitt K3.
+4. Reviewer PASS (2267 grün, keine kritischen Befunde); 3 „sollte“-Befunde (Dawn-Queue-Leak,
+   Cap je Substep-Doku, RNG-Identitätstest) in requests.md (13:05Z) an m10-spawn-burst-alloc /
+   Merge übergeben — Spawner.ts-Claim liegt dort (claimcheck blockierte weitere Edits).
+5. Bekanntes Restrisiko: window.__lf.spawnEnemy materialisiert jetzt im nächsten update() statt
+   synchron — fremde Skripte m10-boss-fair.mjs/m10-crowd-probe.mjs lesen frische Spawns sofort
+   und wären bei Re-Lauf betroffen (nicht in aktiver Abnahme; requests.md 12:52Z).
