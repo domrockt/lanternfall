@@ -1,0 +1,32 @@
+Lane m10-atlas-gutter — Runtime-Atlas-Güte (Gutter & Pixel-Bleed), 2026-11-28
+
+Ergebnis: Vorher- UND Nachher-Audit PASS. Der Runtime-Atlas war auf dem aktuellen
+Stand bereits defektfrei — der Packer-Fix (GUTTER/PAD) aus m10-atlas-gaps (Merge
+41451ce) hält auch über das auf 391 Frames gewachsene Texturen-Set. Diese Lane
+bestätigt die Güte und macht künftige Abweichungen durch Audit + Tests sichtbar.
+
+Messwerte (Vorher f90f569 = Nachher 0fb2802, Atlas runtime_atlas 1024x1359):
+- Frames: 391 (vor Lane: Beleg auf 227er-Stand eingefroren)
+- Coverage: 391/391 = 100 %, 17/17 ATLAS_PREFIXES ohne Lücken
+- Gutter: min 4 px (2*ATLAS_PAD + ATLAS_GUTTER), 0 Verstösse
+- Pixel-Bleed (strenge Definition: Ring-Pixel transparent | eigene Replika |
+  Fremdinhalt): 0 Fremd-Fälle, 0 Inhalts-Differenzen über 391 Frames
+
+Deliverables:
+- scripts/art/atlas-audit.mjs erweitert: Prefix-Coverage je Key, Ring-
+  Klassifikation, Inhaltsvergleich mit Quelle, 4x-Zoom-Shot (--shot/--shot-key)
+- tests/atlas.test.ts: Bleed-Invariante zwischen Nachbar-Frames + Worst-Case
+  (200x64px), Beleg-Pinning aus JSON abgeleitet (bricht bei Wachstum nicht mehr)
+- Belege: shots/m10-atlas-gutter-before.json/-after.json, -zoom-before/-after.png,
+  shots/m10-atlas-audit.json (refresh), docs/lanes/m10-atlas-gutter.md
+- build + tsc grün, npm test 1240/1240 grün, Reviewer PASS
+
+Offen (fremde Dateien, in /home/ai/games/.dispatch/requests.md gemeldet):
+- Textur "arrow_chest" wird nirgends erzeugt (Grid im M6-robust-Refactor aus
+  textures.ts/SPRITE_GRIDS verloren); ChestSystem.ts:162 hängt den Truhern-
+  Randpfeil an Phaser-__MISSING (Runtime-Probe belegt). Fix: Grid in
+  textures.ts ergänzen — Atlas-Prefix steht bereit und atlasiert automatisch.
+- Toter Prefix "bone_" (Boss nutzt enemy_shot_bone) im Test als erlaubt
+  dokumentiert; neue tote Prefixe schlagen an.
+
+Commits: f90f569 (#7618 K1), ba09e06 (#7619 K2), 0fb2802 (#7620 K3)
