@@ -17569,7 +17569,7 @@
       "id": 12641,
       "title": "m10-fx-alloc-trim K2: FxSystem.ts Alloc-/Setter-Fix",
       "description": "In src/systems/FxSystem.ts: Per-Frame-Objekt-Allokationen (Spread-Literale, frames.map) hoisten/poolen; Phaser-Setter-Churn senken (nur schreiben wenn geaendert); Hot-Loops allocations-frei. KEINE optische Aenderung: Alpha-/Palette-Semantik bitgleich, Caps unangetastet. AK: npx tsc --noEmit gruen, gezielte FX-Tests gruen, Diff nur in FxSystem.ts.",
-      "column": "doing",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-28T14:21:46Z",
@@ -17580,10 +17580,15 @@
           "at": "2026-11-28T14:30:55Z",
           "by": "build",
           "text": "[Supervisor 14:35Z bestätigt] WIP committed 178e0086. K2-Hebel (Setter-Gates + Scratch-Pooling) war vor dem Steer als eine Einheit umgesetzt, 9/9 fx-alloc-trim + FX/A7-Guards gruen. KEINE weiteren Edit-Iterationen — Auswertung der vorliegenden before/after-JSONs folgt in der Lane-Doku. Hinweis: Karte #12013 ist fremd (Merge-Fix m10-loading-screen, andere Lane) — laut Lane-Briefing/Argus-Regel 'Nur Karten des eigenen Briefings' nicht annehmbar; Disponent zieht sie zurück."
+        },
+        {
+          "at": "2026-11-28T14:43:27Z",
+          "by": "build",
+          "text": "doing → blocked: Gemäß Supervisor-Abbruchkriterium blocked: Hebel umgesetzt (Setter-Gates + Scratch-Pooling, Commits 178e0086/1c92e0ac, Reviewer PASS, 12/12 Guards, FX/A7-Suiten gruen), aber >=50% Frame-Alloc-Reduktion im Container-Protokoll nicht messbar — Metrik zu 75-80% Harness-Artefakt (queueEnemyWave Top-up), FX-Eigenanteil unter Sampling-Sichtbarkeit, p95 durch Load-Confounds (Gegner 66-283, Parallel-Lanes) nicht trennscharf. Vollstaendige Auswertung: docs/lanes/m10-fx-alloc-trim.md K3. Entscheidung uebernahme beim Lead/Disponent."
         }
       ],
       "created": "2026-11-28T14:15:39Z",
-      "updated": "2026-11-28T14:30:55Z"
+      "updated": "2026-11-28T14:43:27Z"
     },
     {
       "id": 12642,
