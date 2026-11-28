@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7437,
+  "next": 7441,
   "cards": [
     {
       "id": 1,
@@ -9022,6 +9022,76 @@
       ],
       "created": "2026-11-28T01:43:33Z",
       "updated": "2026-11-28T01:44:21Z"
+    },
+    {
+      "id": 7437,
+      "title": "m10-evo-fx-zornpendel #1: Ist-Beleg Zornpendel (Skript + before.png/json)",
+      "description": "Skript scripts/m10-evo-fx-zornpendel.mjs stellt die Zornpendel-Szene nach (wrath_pendulum Lv8, 20 lebende Gegner, je 640x360@2 und 960x540). Misst WebGL-Renderer-String, Textur-Pixelgroessen (flail_ball, chain_link, fx_smear, fx_halo, Signaturen), live Draw-Scales (Mixel-Nachweis: fx_halo @ radius/18 ≈ 5.3x), Farb-Stufen. Belege shots/m10-evo-fx-zornpendel-before-*.png + -before.json. EINMAL messen, committen, weiter. AK: JSON mit Renderer-String (kein SwiftShader), 0 JS-Fehler, PNGs zeigen lebende Gegner + Schwung.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T01:52:20Z",
+          "by": "build",
+          "text": "doing → review: Ist-Beleg committed 4c26b5a: Skript läuft 1x, Renderer iGPU, 0 JS-Fehler. Befund: death-Signatur 32x32 @4.33x mit 176 Ink-px, fx_smear live @5.51x, fx_halo (Code) @5.3-10.7x, flail_ball 9x9 @1.69x."
+        }
+      ],
+      "created": "2026-11-28T01:49:43Z",
+      "updated": "2026-11-28T01:52:20Z"
+    },
+    {
+      "id": 7438,
+      "title": "m10-evo-fx-zornpendel #2: Fix Zornpendel-Textur in Zielgroesse (gen-fx.ts/CombatSystem)",
+      "description": "Pendel-Ring/Schwung neu in Zielgroesse (gen-fx.ts): hellgluehender Kern (Lantern/Amber), rote Glut-Treppe (Ember/Rot-Stufen), geschlossene 1-px-Kontur ohne Ink; 2-3 Schwung-Frames statt statischem Blockring. FxSystem/CombatSystem fireFlail+updateSwings: fx_halo @5.3x/@10x und Smear @4.8x durch gebackene Zielgroessen-Texturen mit Draw-Scale 1 ersetzen. Parameter WRATH_FX in src/data/evolution-weapons.ts. Signatur wrath_pendulum: drawScale [1,1] + BAKED_SIGNATURES. AK: alle live Scales <= 1, 0 Ink-Pixel an Zorn-Texturen, npx tsc --noEmit rc=0.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T01:52:20Z",
+          "by": "build",
+          "text": "backlog → doing"
+        },
+        {
+          "at": "2026-11-28T02:01:45Z",
+          "by": "build",
+          "text": "doing → review: Fix committed b424891: Ring 208x208 @1, Glow 17x17 @1, Signatur 96x96 @1 (176 Ink-px -> 0), ZORN_RAMP ohne Ink/Grau. tsc rc=0, evo-Tests 33/33."
+        }
+      ],
+      "created": "2026-11-28T01:49:43Z",
+      "updated": "2026-11-28T02:01:45Z"
+    },
+    {
+      "id": 7439,
+      "title": "m10-evo-fx-zornpendel #3: Tests tests/evo-fx-zornpendel.test.ts",
+      "description": "Guards: Effekt-Texturgroesse = Sprite-Pixelgroesse, kein Scale > 1 am Quelltext (Guard), Zorn-Farb-Treppe bernstein/rot ohne Ink/Grau belegt, 2-3 Schwung-Frames verschieden, Signaturen-Zielgroesse. Bestehende Evolution-Tests bleiben gruen. AK: npx vitest run tests/evo-fx-zornpendel.test.ts gruen + Suite gruen + build rc=0.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T02:01:45Z",
+          "by": "build",
+          "text": "backlog → doing"
+        },
+        {
+          "at": "2026-11-28T02:04:03Z",
+          "by": "build",
+          "text": "doing → review: Tests committed 4fb34d7: 12/12 gruen (Zielgroessen, Scale-1-Guard, Treppe, Kern-Dominanz, Frames), tsc rc=0. Ring-Kern dabei flaechiger gemacht."
+        }
+      ],
+      "created": "2026-11-28T01:49:43Z",
+      "updated": "2026-11-28T02:04:03Z"
+    },
+    {
+      "id": 7440,
+      "title": "m10-evo-fx-zornpendel #4: Nachher-Beleg + art-director + Lane-Doku",
+      "description": "shots/m10-evo-fx-zornpendel-after.json + -after PNGs (lebende Gegner, waehrend des Schwungs), art-director-Sichtprüfung gegen verschärfte Skala (1) Dither nur 1-2px-Kanten, (2) Kerne flächig, (3) organische Formen — Urteil dokumentiert. Doku docs/lanes/m10-evo-fx-zornpendel.md mit Vorher/Nachher-Tabelle. AK: PASS mit Screenshot-Pfaden, JSON mit Renderer-String, Doku vollständig.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:04:03Z",
+          "by": "build",
+          "text": "backlog → doing"
+        }
+      ],
+      "created": "2026-11-28T01:49:43Z",
+      "updated": "2026-11-28T02:04:03Z"
     }
   ]
 }

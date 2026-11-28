@@ -1,0 +1,28 @@
+# Lane m10-evo-fx-zornpendel — abgeschlossen (2026-11-28)
+
+Zornpendel-FX neu (Dom 21:45Z Punkt 1, 4/5): blockiger Ring → glühender Pendel-Ring.
+Vorlage m10-evo-fx-phoenix/-soulpyre, Regelwerk „Eine Pixelgröße für alles" 1:1.
+
+## Messwerte (vorher → nachher)
+- fx_evo_death_wrath_pendulum: 32x32 @ 4,33x mit 176 Ink-Pixeln → **96x96, Draw-Scale 1, 0 Ink/0 Grau**
+- fx_wrath_ring (neu): **208x208, Draw-Scale 1** (vorher fx_halo 24x24 @ 5,3–10,7x)
+- fx_wrath_glow (neu): **17x17 @ 1** am Kugelkopf (vorher fx_halo @ 5,3x, tint fogBlue)
+- Kugel: 9x9 @ 1,69x → **@ 1,0**; alle live Scales exakt 1.0 (after.json)
+- Farb-Treppe: ZORN_RAMP [22,21,20,27,26,25,23], Kern 22 größte Stufe (Ring 114–374 px),
+  0 Ink-/0 Grau-Pixel an Ring/Glow/Signaturen
+- Phasen: Bogen wächst (3 Frames) → Alpha-Fade ab 75 % → Glut-Rest 0,18 s
+
+## Belege
+- Vorher: shots/m10-evo-fx-zornpendel-before.json + -640/-960/-swing.png (Commit 4c26b5a)
+- Nachher: shots/m10-evo-fx-zornpendel-after.json + -640/-960/-swing.png (8b7e885, 44c03b8)
+- Hit-Sig im Einsatz: shots/m10-evo-fx-zornpendel-aftersig.png (lebender Golem)
+- Renderer: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2), 0 JS-Fehler
+
+## Abnahme
+- art-director Runde 1: **PASS** (Ring 4, Glow 4, Hit-Sig 4, Death-Sig 4,5, Lesbarkeit 4,5)
+- Nachbesserungen umgesetzt: Ring-Tail-Taper, Zungen-Breiten-Taper, Glow-Eckenrim, Hit-Sig-Beleg
+- Tests: tests/evo-fx-zornpendel.test.ts 12/12, Suite 1145/1145, tsc rc=0, build rc=0
+
+## Offen (nicht blockierend)
+- Basis-Flegel nutzt weiter fx_halo @ radius/18 + Smear @ radius/20 (Lane-Grenze)
+- Nachtszene: Beleg-Momente wählen, in denen der Ring nicht unter dem Nacht-Overlay liegt
