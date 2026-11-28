@@ -9914,37 +9914,61 @@
       "id": 7818,
       "title": "m10-run-determinism K1: Guard-Skript scripts/m10-run-determinism.mjs",
       "description": "Deterministischer Sim-Vergleich: je Seed (101,202,404) 2 Laeufe (gleicher Seed, autoPlay, timeScale 30), exakte Marken je Sim-Sekunde im simulate-Hook (kills/level/xp/hp/enemies/px/py) + Events (bossDe...). lane #7519, Merge e94d46e.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:23:02Z",
+          "by": "build",
+          "text": "review → done: lane #7519, Merge e94d46e — build rc=0, 1289/1289 Tests grün (inkl. run-determinism), ancestor-Check rc=0"
+        }
+      ],
       "created": "2026-11-28T03:22:36Z",
-      "updated": "2026-11-28T03:22:36Z"
+      "updated": "2026-11-28T03:23:02Z"
     },
     {
       "id": 7819,
       "title": "m10-run-determinism K2: Guard-Test tests/run-determinism.test.ts",
       "description": "Fixture-Test gegen die committed Marken-JSONs: bei bitgleichen Laeufen hard-coded erwartete Marken; bei belegtem Nichtdeterminismus Befund-Regression (Vergleichs-JSON stimmt mit dokumentiertem Befund). lane #7520, Merge e94d46e.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:23:02Z",
+          "by": "build",
+          "text": "review → done: lane #7520, Merge e94d46e — build rc=0, 1289/1289 Tests grün (inkl. run-determinism), ancestor-Check rc=0"
+        }
+      ],
       "created": "2026-11-28T03:22:36Z",
-      "updated": "2026-11-28T03:22:36Z"
+      "updated": "2026-11-28T03:23:02Z"
     },
     {
       "id": 7820,
       "title": "m10-run-determinism K3: Befund + Bedarfsmeldung",
       "description": "Nichtdeterminismus belegt: Befundliste (reproduzierbarer Seed, erster Divergenz-Moment, Verdachts-Datei) in docs/lanes/m10-run-determinism.md + Bedarfsmeldung in /home/ai/games/.dispatch/requests.md (Run.ts Partial-Schritt-Hebel). lane #7521, Merge e94d46e.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:23:02Z",
+          "by": "build",
+          "text": "review → done: lane #7521, Merge e94d46e — build rc=0, 1289/1289 Tests grün (inkl. run-determinism), ancestor-Check rc=0"
+        }
+      ],
       "created": "2026-11-28T03:22:36Z",
-      "updated": "2026-11-28T03:22:36Z"
+      "updated": "2026-11-28T03:23:02Z"
     },
     {
       "id": 7821,
       "title": "m10-run-determinism K4: Lane-Abschluss docs/lanes + .lane-done",
       "description": "docs/lanes/m10-run-determinism.md finalisiert (Ergebnis, Messwerte, offene Punkte), .lane-done im Worktree committed (nach main bewusst NICHT uebernommen, im Merge-Nachlauf entfernt). lane #7522, Merge e94d46e.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:23:02Z",
+          "by": "build",
+          "text": "review → done: lane #7522, Merge e94d46e — build rc=0, 1289/1289 Tests grün (inkl. run-determinism), ancestor-Check rc=0"
+        }
+      ],
       "created": "2026-11-28T03:22:36Z",
-      "updated": "2026-11-28T03:22:36Z"
+      "updated": "2026-11-28T03:23:02Z"
     }
   ]
 }
