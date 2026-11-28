@@ -1,0 +1,25 @@
+# Lane m10-run-setter-churn — abgeschlossen (2026-11-28)
+
+Scope: Phaser-Setter-Churn + per-Frame-Allokationen im Run.ts-eigenen Frame-Pfad
+(Restbefund m10-run-cpu-budget, v10-Geräteabnahme K3 Hebel B). FX-Teil separat
+(m10-fx-alloc-trim), Run.ts dort nicht berührt.
+
+Ergebnis:
+- K1 Vorher (#12704, 635b27d6): Run-Szene 123,5 Setter/Frame, 94,3 % No-ops;
+  Run.ts-eigene Allokationen 0 B/Frame gesampelt (vom cpu-budget-Fix bereits
+  abgeräumt); p95 14,3 ms, max 35,7 ms. Beleg:
+  ~/games/.evidence/m10-run-setter-churn/m10-run-setter-churn-before.json
+- K2 Fix (#12705, aa45d15e): compare-then-set in src/scenes/Run.ts — Elite-Aura-
+  Block, playerBody Tint/Alpha, hpBar, Positionen player/shadow/light/enemy/aura.
+- K3 (#12706, a78bde25): Guard-Test 7/7 + Suite 2414/2414 + tsc grün.
+  Nachher: 96,9 Setter/Frame (−21,5 %), setPosition −59 %, p95 11,6 ms,
+  max 28 ms, 0 Frames >33 ms (vorher 1). Beleg: .../m10-run-setter-churn-after.json
+- Sim bitgleich belegt: Golden-Frame-Hash mit Fix === Hash des Parent-Commits
+  (b4555df0be113816, Seed 202); Suite 2414/2414 grün auf committetem Stand.
+
+Offene Punkte: (1) Golden-Frame-Baseline (ab50197b) ist VOR dieser Lane
+divergiert (40 Dateien/4136 Zeilen in src/ seit Baseline) — Rebaseline durch
+Owner-Lane/Disponent nötig, Befund + divergentes Verdict unter
+~/games/.evidence/m10-run-setter-churn/. (2) 50 %-Tor auf die Setter-Summe ist
+in-scope nicht erreichbar: Rest-Churn stammt aus FX-/Damage-/Pickup-Pools
+(fremde Dateien). (3) Doku: docs/lanes/m10-run-setter-churn.md.
