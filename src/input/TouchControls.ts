@@ -78,6 +78,94 @@ export const PAUSE_MARGIN = 10;
 const PAUSE_PULSE_MS = 120;
 
 /**
+ * M10-touch-overlay-crisp: Mindest-Deckkraft JEDES Overlay-Fills gegen jeden
+ * Untergrund (Laternen-Hotspot inklusive). Beleg shots/m10-touch-overlay-
+ * before.json F1-F5: Alpha-Fills (0.55-0.7) blendeten mit dem Spielfeld,
+ * Kontrast ueber dem Hotspot 1.01-1.19 (Gate 3.0) und farbliche Drift
+ * dark<->hot bis 68 Kanalstufen.
+ */
+export const OVERLAY_MIN_ALPHA = 0.85;
+
+/** Ein opaker Pixel-Fill des Overlays (Ring-/Knauf-Kommando). */
+export interface TouchOverlayFill {
+  /** Radius in Spielpixeln (ganzzahlig). */
+  radius: number;
+  /** Ring: Strichstaerke in Spielpixeln (ganzzahlig); Knauf: 0 = gefuellte Scheibe. */
+  thickness: number;
+  /** Palettenindex (PAL). */
+  colorIndex: number;
+  /** Deckkraft, immer >= OVERLAY_MIN_ALPHA (1 = opak). */
+  alpha: number;
+}
+
+export interface TouchOverlaySpec {
+  ring: { radius: number; fills: TouchOverlayFill[] };
+  knob: { radius: number; fills: TouchOverlayFill[] };
+  pause: {
+    width: number;
+    height: number;
+    bgAlpha: number;
+    strokeAlpha: number;
+    barWidth: number;
+    barHeight: number;
+    /** Balken-Anker x im Knopf (ganzzahlig, zentriert: Rander 8/8). */
+    barOffsetsX: [number, number];
+    barAlpha: number;
+  };
+}
+
+/**
+ * Reine Draw-Geometrie des Touch-Overlays (Vertrag fuer tests/touch-overlay-
+ * crisp.test.ts). Alles ganzzahlig in Spielpixeln, alle Alphas opak
+ * (>= OVERLAY_MIN_ALPHA) — keine Untergrundabhaengigkeit mehr.
+ */
+export function touchOverlaySpec(): TouchOverlaySpec {
+  return {
+    ring: {
+      radius: RING_RADIUS,
+      fills: [
+        { radius: RING_RADIUS + 1, thickness: 2, colorIndex: C.ink, alpha: 1 },
+        { radius: RING_RADIUS, thickness: 2, colorIndex: C.bone, alpha: 1 },
+        { radius: RING_RADIUS - 7, thickness: 1, colorIndex: C.fogBlue, alpha: 1 },
+      ],
+    },
+    knob: {
+      radius: KNOB_RADIUS,
+      fills: [
+        { radius: KNOB_RADIUS, thickness: 0, colorIndex: C.ink, alpha: 1 },
+        { radius: KNOB_RADIUS - 2, thickness: 0, colorIndex: C.boneLight, alpha: 1 },
+      ],
+    },
+    pause: {
+      width: PAUSE_W,
+      height: PAUSE_H,
+      bgAlpha: 0.9,
+      strokeAlpha: 0.9,
+      barWidth: 4,
+      barHeight: 10,
+      barOffsetsX: [10, 20],
+      barAlpha: 0.9,
+    },
+  };
+}
+
+/**
+ * m10-hud-safearea (Formel bytegleich aus update(), jetzt testbar): Pause-Knopf
+ * klemmt an View-Rand MINUS Geraete-Inset; Marge mindestens PAUSE_MARGIN.
+ */
+export function pauseAnchor(
+  viewWidth: number,
+  viewHeight: number,
+  insetRight: number,
+  insetTop: number,
+): { x: number; y: number } {
+  return {
+    x: Math.round(viewWidth - Math.max(PAUSE_MARGIN, insetRight) - PAUSE_W),
+    y: Math.max(PAUSE_MARGIN, insetTop),
+  };
+}
+
+/**
  * Schwebender virtueller Joystick + Pause-Knopf für Touch-Geräte.
  *
  * - Der Joystick entsteht dort, wo der erste Finger auf der linken Bildhälfte aufsetzt.
@@ -291,11 +379,15 @@ export class TouchControls {
     }
     if (this.pauseContainer) {
       // m10-hud-safearea: Marge mindestens Geraete-Inset (Notch/Rundung),
-      // sonst HUD-Konvention PAUSE_MARGIN — ohne Notch bitgleich.
-      this.pauseContainer.setPosition(
-        Math.round(this.scene.scale.width - Math.max(PAUSE_MARGIN, this.safeInsetGame.right) - PAUSE_W),
-        Math.max(PAUSE_MARGIN, this.safeInsetGame.top),
+      // sonst HUD-Konvention PAUSE_MARGIN — ohne Notch bitgleich (Formel
+      // bytegleich, jetzt ueber pauseAnchor() testbar).
+      const anchor = pauseAnchor(
+        this.scene.scale.width,
+        this.scene.scale.height,
+        this.safeInsetGame.right,
+        this.safeInsetGame.top,
       );
+      this.pauseContainer.setPosition(anchor.x, anchor.y);
     }
     if (!canMove) {
       if (this.identifier !== null) {
@@ -362,19 +454,20 @@ export class TouchControls {
   }
 
   private createStick(): void {
+    // M10-touch-overlay-crisp: Draw-Befehle aus der reinen Spec (opak,
+    // ganzzahlig) — siehe touchOverlaySpec(); Beleg before/after-JSON.
+    const spec = touchOverlaySpec();
     const ring = this.scene.add.graphics();
-    ring.fillStyle(PAL[C.ink], 0.7);
-    pixelRing(ring, RING_RADIUS + 1, 2);
-    ring.fillStyle(PAL[C.bone], 0.55);
-    pixelRing(ring, RING_RADIUS, 2);
-    ring.fillStyle(PAL[C.bone], 0.22);
-    pixelRing(ring, RING_RADIUS - 7, 1);
+    for (const f of spec.ring.fills) {
+      ring.fillStyle(PAL[f.colorIndex], f.alpha);
+      pixelRing(ring, f.radius, f.thickness);
+    }
 
     const knob = this.scene.add.graphics();
-    knob.fillStyle(PAL[C.ink], 0.85);
-    pixelDisk(knob, KNOB_RADIUS);
-    knob.fillStyle(PAL[C.bone], 0.6);
-    pixelDisk(knob, KNOB_RADIUS - 2);
+    for (const f of spec.knob.fills) {
+      knob.fillStyle(PAL[f.colorIndex], f.alpha);
+      pixelDisk(knob, f.radius);
+    }
 
     const container = this.scene.add
       .container(0, 0, [ring, knob])
@@ -388,12 +481,15 @@ export class TouchControls {
   }
 
   private createPauseButton(): void {
+    // M10-touch-overlay-crisp: Werte aus der Spec (bg 0.9, Stroke 0.9, Balken
+    // zentriert auf 10/20 statt 9/19 — Randmargen 8/8 statt 7/9).
+    const spec = touchOverlaySpec().pause;
     const bg = this.scene.add
-      .rectangle(PAUSE_W / 2, PAUSE_H / 2, PAUSE_W, PAUSE_H, PAL[C.nightDeep], 0.55)
-      .setStrokeStyle(1, PAL[C.bone], 0.8)
+      .rectangle(spec.width / 2, spec.height / 2, spec.width, spec.height, PAL[C.nightDeep], spec.bgAlpha)
+      .setStrokeStyle(1, PAL[C.bone], spec.strokeAlpha)
       .setInteractive({ useHandCursor: true });
-    const bar1 = this.scene.add.rectangle(9, PAUSE_H / 2, 4, 10, PAL[C.boneLight], 0.9);
-    const bar2 = this.scene.add.rectangle(19, PAUSE_H / 2, 4, 10, PAL[C.boneLight], 0.9);
+    const bar1 = this.scene.add.rectangle(spec.barOffsetsX[0], spec.height / 2, spec.barWidth, spec.barHeight, PAL[C.boneLight], spec.barAlpha);
+    const bar2 = this.scene.add.rectangle(spec.barOffsetsX[1], spec.height / 2, spec.barWidth, spec.barHeight, PAL[C.boneLight], spec.barAlpha);
     const container = this.scene.add
       .container(0, 0, [bg, bar1, bar2])
       .setDepth(TOUCH_DEPTH)
