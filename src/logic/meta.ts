@@ -62,7 +62,14 @@ function validizeBest(raw: unknown): BestStats {
 
 /** Prüft, ob ein Lauf Bestwerte schlägt, und liefert den neuen Stand. */
 export function recordRun(meta: MetaState, run: RunSummaryInput): RecordResult {
-  const before = meta[run.character] ?? emptyBest();
+  // Guard: unbekannte Charakter-IDs (z. B. korrupte Runtime-Daten) erzeugen
+  // keinen Streu-Eintrag in MetaState, sondern lassen den Stand unverändert.
+  if (!Object.hasOwn(emptyMeta(), run.character)) {
+    return { meta, records: { time: false, kills: false, level: false, victory: false } };
+  }
+  // Guard: korrupter In-Memory-Stand (NaN/undefined in BestStats) wird
+  // sanitisiert, damit Math.max nicht NaN in die Bestwerte zieht.
+  const before = validizeBest(meta[run.character] ?? emptyBest());
   const time = Math.max(0, Number.isFinite(run.time) ? run.time : 0);
   const kills = finiteInt(run.kills);
   const level = finiteInt(run.level);
