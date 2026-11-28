@@ -8190,10 +8190,15 @@
           "at": "2026-11-28T00:33:00Z",
           "by": "build",
           "text": "lane #6958: 19 iGPU-Belege (Mesa Intel RPL-S, swiftShader=false), 300/500 Gegner protokolliert, Commits 9541b88 + 98fc186. Karten als lane #-Notiz aus Lane m10-chaos-legibility-audit nachgetragen."
+        },
+        {
+          "at": "2026-11-28T00:33:59Z",
+          "by": "build",
+          "text": "lane #6958, Merge c61189c (Branch m10-chaos-legibility-audit ist ancestor von main, rc=0)."
         }
       ],
       "created": "2026-11-28T00:32:48Z",
-      "updated": "2026-11-28T00:33:00Z"
+      "updated": "2026-11-28T00:33:59Z"
     },
     {
       "id": 6987,
@@ -8206,10 +8211,15 @@
           "at": "2026-11-28T00:33:00Z",
           "by": "build",
           "text": "lane #6959: Sichtung committed 4e8f970; art-director 3 FAIL Major / 2 PASS (3/5 streng). Kein Schachbrett-Dither, Lesbarkeit PASS. lane #-Notiz aus Lane m10-chaos-legibility-audit."
+        },
+        {
+          "at": "2026-11-28T00:33:59Z",
+          "by": "build",
+          "text": "lane #6959, Merge c61189c (Branch m10-chaos-legibility-audit ist ancestor von main, rc=0)."
         }
       ],
       "created": "2026-11-28T00:32:48Z",
-      "updated": "2026-11-28T00:33:00Z"
+      "updated": "2026-11-28T00:33:59Z"
     },
     {
       "id": 6988,
@@ -8222,10 +8232,15 @@
           "at": "2026-11-28T00:33:00Z",
           "by": "build",
           "text": "lane #6960: Befundliste + art-director-Urteil + Fix-Priorität in docs/lanes/m10-chaos-legibility.md, Abschluss-Commit ccc62a9. 3 Major / 2 Minor, 4 Fix-Job-Empfehlungen. lane #-Notiz aus Lane m10-chaos-legibility-audit."
+        },
+        {
+          "at": "2026-11-28T00:33:59Z",
+          "by": "build",
+          "text": "lane #6960, Merge c61189c (Branch m10-chaos-legibility-audit ist ancestor von main, rc=0)."
         }
       ],
       "created": "2026-11-28T00:32:48Z",
-      "updated": "2026-11-28T00:33:00Z"
+      "updated": "2026-11-28T00:33:59Z"
     }
   ]
 }
