@@ -62,9 +62,19 @@ ohne In-run-Marker und ohne „Heap-Tor“-Wort (z. B. „Heap 1× PASS / 1× kn
 `reacceptance-2026-11-27.md:141/230`, Tabellenkopf `:126`) werden nicht gemeldet;
 die verbindlichen Tor-Zeilen derselben Dokumente werden erfasst.
 
-## K4 — Verfahrensanmerkung (künftige Abnahme-Dokus)
+## K4 — Verfahrensanmerkung (künftige Abnahme-Doks)
 
-Siehe Folge-Commit (#13454) — Verfahrensanmerkung wird mit dem Lane-Abschluss ergänzt.
+1. **Tor-Definition in Abnahme-Dokus:** ausschließlich **retained Heap über Szenen-Teardown**
+   (endMB nach Results + GC vs. startMB nach Boot + GC, strikt < +15 %, 2 Läufe).
+2. Das In-run-Feld (Minute 1 → 29) darf nur als **Beobachtung** ausgewiesen werden
+   (Kennzeichnung „Beobachtung“/„nur Beobachtung“/„Info“ in derselben Zeile/Tabellenzeile) —
+   nie als Tor, Urteil oder PASS/FAIL-Basis.
+3. **Lint im Nachlauf:** jede künftige Abnahme-Doku lässt nach dem Schreiben
+   `node scripts/m10-acceptance-doc-lint.mjs` laufen und referenziert den Bericht
+   (`shots/m10-doc-lint-<datum>.json` + Kopie in `~/games/.evidence/m10-inrun-tor-sweep/`).
+   Neue Funde in einem aktuellen Abschnitt sind ein Doku-Mangel (Fix: Zeile als Beobachtung
+   kennzeichnen oder Tor als retained ausweisen); Funde in Historien-Abschnitten stehen als
+   Zeitzeugen. Für harte Pipeline-Nutzung: `--fail-on-findings` (Exit 1 bei Funden).
 
 ## Belege
 

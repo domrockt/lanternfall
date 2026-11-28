@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13451,
+  "next": 13455,
   "cards": [
     {
       "id": 1,
@@ -18874,6 +18874,52 @@
       "notes": [
         "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
       ]
+    },
+    {
+      "id": 13451,
+      "title": "m10-inrun-tor-sweep K1: Lint-Skript scripts/m10-acceptance-doc-lint.mjs",
+      "description": "Scannt docs/qa/*.md auf Tabellenzeilen, die In-run-Heap-Zitate (m1→m29) als Urteil/Tor ausweisen (Heuristik: 'Heap' + '+NN %' + Tor-/Urteil-Kontext, Whitelist für als Beobachtung markierte Zeilen). Bericht shots/m10-doc-lint-<datum>.json. Abnahme: Skript laeuft rc=0 und schreibt Bericht-JSON.",
+      "column": "doing",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T16:46:46Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Lint-Skript scripts/m10-acceptance-doc-lint.mjs (Heuristik gegen docs/qa/*.md)"
+        }
+      ],
+      "created": "2026-11-28T16:46:16Z",
+      "updated": "2026-11-28T16:46:46Z"
+    },
+    {
+      "id": 13452,
+      "title": "m10-inrun-tor-sweep K2: tests/acceptance-doc-lint.test.ts",
+      "description": "Heuristik-Unit-Tests: Positiv-/Negativ-Beispiele, Whitelist-Faelle (Beobachtung). Abnahme: Suite gruen (npx vitest run tests/acceptance-doc-lint.test.ts), tsc rc=0.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T16:46:16Z",
+      "updated": "2026-11-28T16:46:16Z"
+    },
+    {
+      "id": 13453,
+      "title": "m10-inrun-tor-sweep K3: Lint ueber Ist-Bestand fahren",
+      "description": "Lint-Skript ueber docs/qa/*.md laufen lassen; Funde als Liste in docs/lanes/m10-inrun-tor-sweep.md. Historische QA-Dokumente NICHT aendern. Abnahme: Bericht-JSON existiert, Fundliste in der Lane-Doku.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T16:46:16Z",
+      "updated": "2026-11-28T16:46:16Z"
+    },
+    {
+      "id": 13454,
+      "title": "m10-inrun-tor-sweep K4: Lane-Doku + Verfahrensanmerkung + .lane-done",
+      "description": "docs/lanes/m10-inrun-tor-sweep.md mit Verfahrensanmerkung: kuenftige Abnahme-Dokus lassen den Lint im Nachlauf laufen. .lane-done anlegen und committen. Abnahme: Doku lesbar, .lane-done committed.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T16:46:16Z",
+      "updated": "2026-11-28T16:46:16Z"
     }
   ]
 }
