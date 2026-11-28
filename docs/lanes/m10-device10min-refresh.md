@@ -52,7 +52,29 @@ Pflichtfeld in jedem Geräte-Beleg.
 
 ## K2 — Integration (#13747)
 
-(nachtragen)
+Umgesetzt (Commit nach diesem Abschnitt):
+
+- **Neue Datei `scripts/m10-device-refresh.mjs`** (Begründung: Disponent-Claim
+  nennt sie nicht, aber eine NEUE Datei kollidiert mit keiner Lane; Muster wie
+  `lf-renderer.mjs` — reine Helfer, vom Mess-Skript importiert, per Fixture
+  testbar, ohne Geräte-Zwang):
+  - `parseDisplayDump(text)`: `dumpsys display`-Text → `{ refreshRate, panelMode }`
+    (mActiveModeId + supportedModes → Mode-Eintrag; Fallbacks `refreshRate=`,
+    `"<f> Hz"`); unlesbar → `null`.
+  - `panelHzFromRaf(fps)`: rAF-FPS → 120/90/60/null (Schwellen wie
+    `m10-janky-remeasure.mjs`).
+- **`scripts/m10-v10-device-10min.mjs`**: nach Laufstart (vor Setup) Quelle 1
+  = Bridge `/shell?cmd=dumpsys display` (falls die Bridge ihn anbietet, source
+  `dumpsys-display`), sonst Quelle 2 = device-bridge-Äquivalent rAF-Median bei
+  BILDRATE=MAX (Option auf 0 gesetzt, Probe, Option restauriert — das nächste
+  Reload des Lauf-Starts wendet die Restauration an; Probe-Block fängt Fehler
+  ab und verbindet CDP neu, falls die WebView-Seite stirbt).
+- **JSON-Vertrag**: `out.refresh` = `{ refreshRate: number, panelMode: string|null,
+  source: "dumpsys-display"|"raf-max", t: number, rafFps?: number }`. Bei
+  Parsing-/Verbindungsfehlern **entfällt das Feld** + `WARN`-Zeile im Log —
+  `passed` bytegleich, `renderer`/`rendererValid` unangetastet, kein
+  FAIL-Effekt.
+- Grenze: kein neuer Messlauf nötig — Parsing/JSON-Vertrag only.
 
 ## K3 — Test (#13748)
 
