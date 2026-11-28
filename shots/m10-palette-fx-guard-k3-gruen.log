@@ -1,9 +1,0 @@
-
- RUN  v5.1.1 /home/ai/games/lf-lanes/m10-palette-fx-guard
-
-
- Test Files  1 passed (1)
-      Tests  11 passed (11)
-   Start at  01:55:05
-   Duration  880ms (tests 70%, import 25%, transform 4%)
-
