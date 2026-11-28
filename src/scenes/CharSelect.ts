@@ -3,6 +3,7 @@ import { C, PAL } from "../palette";
 import { PixelText } from "../gfx/font";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 import { CHARACTER_LIST } from "../data/characters";
+import { WEAPONS } from "../data/weapons";
 import type { CharacterDef } from "../data/types";
 import { iconTextureKey } from "../gfx/icons";
 import { readMeta, metaLine } from "../logic/meta";
@@ -162,10 +163,21 @@ export class CharSelect extends Phaser.Scene {
   }
 }
 
+// SSOT (m10-charselect-truth): Anzeige folgt den Daten, nie umgekehrt.
 function weaponName(char: CharacterDef): string {
-  return char.startWeapon === "ember" ? "GLUTFUNKE" : "KETTENFLEGEL";
+  return (WEAPONS[char.startWeapon]?.name ?? char.startWeapon).toUpperCase();
 }
 
+const pct = (v: number): string => `${v >= 0 ? "+" : ""}${v}%`;
+
+/** Bonus-Zeile aus char.mods abgeleitet (m10-charselect-truth): Werte kommen
+ * aus src/data, nur die Anzeige-Reihenfolge/Label-Wahl liegt hier. Nicht
+ * angezeigt (bewusster Anzeige-Scope, siehe docs/lanes): maxHpFlat, regen, xpPct. */
 function bonusText(char: CharacterDef): string {
-  return char.id === "mira" ? "+10% FLÄCHENWIRKUNG" : "+20% MAX-HP / -5% TEMPO";
+  const m = char.mods;
+  const parts: string[] = [];
+  if (m.areaPct) parts.push(`${pct(m.areaPct)} FLÄCHENWIRKUNG`);
+  if (m.maxHpPct) parts.push(`${pct(m.maxHpPct)} MAX-HP`);
+  if (m.moveSpeedPct) parts.push(`${pct(m.moveSpeedPct)} TEMPO`);
+  return parts.join(" / ");
 }
