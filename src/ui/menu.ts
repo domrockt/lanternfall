@@ -12,6 +12,13 @@ export interface MenuButton {
   setFocused(value: boolean): void;
   /** Blendet den Knopf aus: verhindert Klicks durch unsichtbare Container. */
   setEnabled(value: boolean): void;
+  /**
+   * M10-gamepad-menu-nav: löst den Knopf ohne Zeiger aus (Gamepad-Fokus).
+   * Tut nichts, wenn der Knopf deaktiviert ist. Berührt weder Pressed-Optik
+   * noch ButtonVisualState — der Fokus-Zustand zeigt die Auswahl bereits an
+   * (AE=0 für Maus/Touch-Pfade).
+   */
+  press(): void;
 }
 
 /** Anteil, auf den der Knopf-Hintergrund im Pressed-Zustand abdunkelt. */
@@ -82,6 +89,7 @@ export function createMenuButton(
   let focus = false;
   let hover = false;
   let pressed = false;
+  let enabled = true;
   const paint = (): void => {
     const v = menuButtonVisual({ focus, hover, pressed, baseColorIndex: color });
     text.setColorIndex(v.labelColorIndex);
@@ -109,6 +117,7 @@ export function createMenuButton(
       paint();
     },
     setEnabled(value: boolean): void {
+      enabled = value;
       if (value) {
         hit.setInteractive({ useHandCursor: true });
       } else {
@@ -122,6 +131,11 @@ export function createMenuButton(
         paint();
         hit.disableInteractive();
       }
+    },
+    press(): void {
+      // M10-gamepad-menu-nav: Gamepad-Confirm. Kein Pressed-Zustand (keine
+      // Verweildauer ohne pointerup) — nur der Klick selbst.
+      if (enabled) onClick();
     },
   };
 }
@@ -146,4 +160,118 @@ export function createHitZone(
   zone.on("pointerdown", () => onDown());
   parent.add(zone);
   return zone;
+}
+
+// ---------------------------------------------------------------------------
+// M10-gamepad-menu-nav: Gamepad-Fokus-API auf Widget-Ebene.
+// Szenen-Wiring folgt als separater Folgejob — diese API ist die Grundlage.
+// ---------------------------------------------------------------------------
+
+/** Erstwiederholung beim Halten einer Richtung (ms). */
+export const MENU_REPEAT_FIRST_MS = 200;
+/** Folgerepeat beim weiteren Halten (ms). */
+export const MENU_REPEAT_NEXT_MS = 100;
+
+/** Veränderlicher Zustand des Repeat-Debounce (reine Funktion, testbar). */
+export interface MenuRepeatState {
+  held: boolean;
+  /** Anzahl Feuer seit Press-Flanke (1 = der Press selbst). */
+  fires: number;
+  /** Zeitpunkt des letzten Feuers (ms). */
+  lastFireMs: number;
+}
+
+/**
+ * Ein Repeat-Kanal (z. B. „Hoch gehalten“). Rein und testbar:
+ * - Press-Flanke (held false→true) feuert sofort.
+ * - Nach MENU_REPEAT_FIRST_MS feuert die Erstwiederholung,
+ *   danach alle MENU_REPEAT_NEXT_MS (driftfrei via lastFireMs += interval).
+ * - Loslassen setzt zurück; ein neuer Press feuert wieder sofort.
+ */
+export function menuRepeatTick(
+  s: MenuRepeatState,
+  held: boolean,
+  nowMs: number,
+): boolean {
+  if (held) {
+    if (!s.held) {
+      s.held = true;
+      s.fires = 1;
+      s.lastFireMs = nowMs;
+      return true;
+    }
+    const interval = s.fires === 1 ? MENU_REPEAT_FIRST_MS : MENU_REPEAT_NEXT_MS;
+    if (nowMs - s.lastFireMs >= interval) {
+      s.fires++;
+      s.lastFireMs += interval;
+      return true;
+    }
+    return false;
+  }
+  s.held = false;
+  s.fires = 0;
+  return false;
+}
+
+/** Rückrufe des Fokus-Kreises. */
+export interface MenuFocusCallbacks {
+  /** Back (z. B. B-Knopf) — Szenen-Verantwortung (Overlay schließen o. ä.). */
+  onBack?: () => void;
+}
+
+/**
+ * Fokus-Kreis über einer Knopfliste (Widget-Ebene). moveFocus(delta) springt
+ * wrapping weiter/zurück und visualisiert Fokus genau wie Hover (setFocused →
+ * Lanternfarbe + 1-px-Rahmen). confirm()/back() feuern die Rückrufe; Maus- und
+ * Touch-Pfade (pointerover/pointerdown) werden nicht berührt (AE=0).
+ */
+export class MenuFocus {
+  private readonly buttons: readonly MenuButton[];
+  private readonly callbacks: MenuFocusCallbacks;
+  private index = 0;
+
+  constructor(buttons: readonly MenuButton[], callbacks: MenuFocusCallbacks = {}) {
+    this.buttons = buttons;
+    this.callbacks = callbacks;
+    this.paint();
+  }
+
+  get currentIndex(): number {
+    return this.index;
+  }
+
+  /** delta = +1 (weiter) / −1 (zurück), wrappt am Kreis. */
+  moveFocus(delta: number): void {
+    const count = this.buttons.length;
+    if (count === 0) return;
+    const next = ((this.index + delta) % count + count) % count;
+    if (next !== this.index) {
+      this.index = next;
+      this.paint();
+    }
+  }
+
+  /** Springt direkt auf einen Index (z. B. um Hover-Fokus zu übernehmen). */
+  setIndex(i: number): void {
+    if (i < 0 || i >= this.buttons.length || i === this.index) return;
+    this.index = i;
+    this.paint();
+  }
+
+  /**
+   * Confirm auf dem fokussierten Knopf: feuert genau EIN Event (den onClick des
+   * Knopfs via press()); deaktivierte Knöpfe tun nichts. Kein zusätzlicher
+   * onConfirm-Hook — ein Pad-Frame darf nie zwei Events auslösen.
+   */
+  confirm(): void {
+    this.buttons[this.index]?.press();
+  }
+
+  back(): void {
+    this.callbacks.onBack?.();
+  }
+
+  private paint(): void {
+    this.buttons.forEach((b, i) => b.setFocused(i === this.index));
+  }
 }
