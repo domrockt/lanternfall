@@ -13,6 +13,13 @@
  *   node scripts/m10-golden-frame.mjs --seeds=101,202    # andere Seeds
  *   node scripts/m10-golden-frame.mjs --ticks=600        # Sim-Ticks (1 Tick = SIM_MAX_STEP = 1/20 s)
  *
+ * Baseline-Stand (Stand 2026-11-28, Lane m10-golden-frame-rebaseline #12854/#12855):
+ *   - Rebaseline-Commit 761f274a, Code-Stand des Capture: 213b8494
+ *     (Rebaseline-Begruendung: alle 76 Merges seit ab50197b im Commit genannt).
+ *   - Künftige Rebaselines NIE stillschweigend: `--write-baseline
+ *     --baseline-at=<Merge-SHA des eigenen Commits>` setzt `baselineAt` in die
+ *     Baseline-JSON, damit der nächste Divergenzbefund einzuordnen ist.
+ *
  * Methode (Muster scripts/m10-run-determinism.mjs):
  *   - Playwright + dist-Build, ?debug=1&seed=<s>&detstart=1 (Run startet pausiert),
  *     autoPlay + timeScale gesetzt, BEVOR Schritt 1 laeuft (detstart-Gate).
@@ -294,7 +301,8 @@ if (WRITE_BASELINE) {
   baseline = {
     name: "m10-golden-frame-baseline",
     generatedAt: new Date().toISOString(),
-    note: "Golden-Frame-Baseline (Lane m10-golden-frame-guard #10311). NIE stillschweigend neu schreiben: nur mit --write-baseline nach GEWOLLTER Verhaltensaenderung, Begruendung im Commit (siehe docs/lanes/m10-golden-frame-guard.md).",
+    baselineAt: argOf("baseline-at", "unspecified — siehe Lane-Doku / Rebaseline-Commit"),
+    note: "Golden-Frame-Baseline (Lane m10-golden-frame-guard #10311, Rebaseline m10-golden-frame-rebaseline #12854). NIE stillschweigend neu schreiben: nur mit --write-baseline --baseline-at=<Merge-SHA> nach GEWOLLTER Verhaltensaenderung, Begruendung im Commit (siehe docs/lanes/m10-golden-frame-guard.md).",
     seeds: SEEDS,
     reps: REPS,
     ticks: TICKS,

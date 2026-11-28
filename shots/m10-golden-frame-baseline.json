@@ -1,7 +1,8 @@
 {
  "name": "m10-golden-frame-baseline",
- "generatedAt": "2026-11-28T09:02:09.948Z",
- "note": "Golden-Frame-Baseline (Lane m10-golden-frame-guard #10311). NIE stillschweigend neu schreiben: nur mit --write-baseline nach GEWOLLTER Verhaltensaenderung, Begruendung im Commit (siehe docs/lanes/m10-golden-frame-guard.md).",
+ "generatedAt": "2026-11-28T15:14:38.854Z",
+ "baselineAt": "761f274a (Rebaseline-Commit #12854; Code-Stand des Capture: 213b8494, alle 76 Merges seit ab50197b im Commit genannt)",
+ "note": "Golden-Frame-Baseline (Lane m10-golden-frame-guard #10311, Rebaseline m10-golden-frame-rebaseline #12854). NIE stillschweigend neu schreiben: nur mit --write-baseline --baseline-at=<Merge-SHA> nach GEWOLLTER Verhaltensaenderung, Begruendung im Commit (siehe docs/lanes/m10-golden-frame-guard.md).",
  "seeds": [
   101,
   202,
@@ -17,7 +18,7 @@
  "hashAlgorithm": "sha256(JSON.stringify({marks, events, final}))",
  "perSeed": {
   "101": {
-   "hash": "ee84b3afc40918c3bcc423d5aaf1d38b537c9ea8bb80c52cc5f43c7b53d46804",
+   "hash": "9d3f3b2aff8461fc6f4086da41f63415e02108a6c2772d27ed1abd8dc006b352",
    "marks": 10,
    "final": {
     "scene": "run",
@@ -33,7 +34,7 @@
    }
   },
   "202": {
-   "hash": "5bd267501ce3054b5a95814137415f184df38ea9da120af35eb06737d9e7928f",
+   "hash": "b4555df0be113816b7bef47300157f303532cc0f1de7252ce1bf88ddd81e97e1",
    "marks": 10,
    "final": {
     "scene": "run",
@@ -49,7 +50,7 @@
    }
   },
   "404": {
-   "hash": "2f338e1c299779e67989342c47eee636f6af7431f9ce2f1401cf42a8681fe32c",
+   "hash": "a9f247a96b2e34d6e77dbcc29ac522ca77e724dd46dc184b66e34b6e3c2011ff",
    "marks": 10,
    "final": {
     "scene": "run",
