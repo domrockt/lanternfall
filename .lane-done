@@ -1,0 +1,22 @@
+Lane m10-heap-tail-doc-fix-r2 — fertig (2026-11-28)
+
+Ziel: belegten Doku-Fehler aus Bedarfsmeldung m10-pool-trim (Befund-Commit
+c7893e9, Karte #2438) nachziehen — der fast-path-Merge (06:37) hatte die
+Karte „Doku korrigieren" nicht ausgeführt.
+
+K1 (#9943, Commit f533c582): docs/lanes/m10-heap-tail.md:85 — falsche Aussage
+„der Pool kappt Retention per trim()" ersetzt durch den korrigierten Text aus
+docs/lanes/m10-pool-trim.md K2 (wortgleich): Retention wird im Run-Pfad NICHT
+per Pool.trim() gekappt, trim() hat 0 Aufrufstellen; Verweis auf den Befund
+ergänzt. Sonst 0 Änderungen an der Datei.
+
+K2 (#9944, Commit 68be7542): Gegenprobe dokumentiert — grep zeigt nur die
+Definition (Pool.ts:69) + „NICHT verdrahtet"-Header + String.trim (UI.ts),
+kein Pool.trim-Aufruf im Run-Pfad. Belege:
+~/games/.evidence/m10-heap-tail-doc-fix-r2/{trim-callers-grep.txt,k1-diff-f533c582.patch}
+(in shots/ nicht commit-bar, gitignore-gebunden → .evidence nach Lane-Regel).
+
+Checks: npx tsc --noEmit rc=0, npm run build OK (rein Doku-Änderung, Tests
+nicht erneut gefahren — 0 Code-Zeilen; Basis c7893e9 1503/1503 grün).
+commit-gate: PASS (je Commit genau eine Karte, nur erlaubte Dateien,
+Worktree sauber). Board: #9943/#9944 done.
