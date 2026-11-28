@@ -12,6 +12,58 @@ const RING_RADIUS = 44;
 const KNOB_RADIUS = 14;
 const TOUCH_DEPTH = 200;
 
+/**
+ * M10-touch-joystick-feel: Feel-Parameter des Joysticks (nur Ausgabe-Semantik,
+ * kein Bewegungsbudget/Speed-Eingriff — die Magnitude-Remap passiert unverändert
+ * in `InputState.applyTouchDeadzoneHysteresis`).
+ */
+
+/** Totzone als Anteil des Ring-Radius (Basis-View 480 px breit). */
+export const DEADZONE_FRACTION = 0.16;
+/** Basis-Breite, auf die sich `DEADZONE_FRACTION` bezieht. */
+const BASE_VIEW_WIDTH = 480;
+/** Sektorbreite des 8-Richtungs-Snappings (45°). */
+export const SECTOR_STEP = Math.PI / 4;
+/**
+ * Hysterese-Marge zwischen Nachbarsektoren: Erst wenn der Rohwinkel mehr als
+ * `SECTOR_STEP / 2 + SECTOR_HYSTERESIS_RAD` vom Zentrum des bisherigen Sektors
+ * entfernt ist, wechselt die Richtung. Verhindert Flackern an Sektorgrenzen.
+ */
+export const SECTOR_HYSTERESIS_RAD = Math.PI / 32; // 5,625°
+/** Ausgabe-Schwelle: erst schreiben, wenn sich der Vektor merklich ändert (≈ 0,9 px). */
+export const OUTPUT_EPSILON = 0.02;
+
+/**
+ * Totzone in Scene-Einheiten, skaliert mit der Viewport-Breite: Auf breiteren
+ * Views (640/780) wächst der physische Abstand proportional — der Daumen hat
+ * auf großen Screens mehr Platz, die Totzone skaliert mit.
+ */
+export function joystickDeadzonePx(viewWidth: number): number {
+  const scale = Math.max(1, viewWidth / BASE_VIEW_WIDTH);
+  return Math.round(RING_RADIUS * DEADZONE_FRACTION * scale);
+}
+
+/** Nächster Sektorindex (0..7, Sektor 0 = +x-Rechts, gegen den Uhrzeigersinn in Screen-Y). */
+export function sectorIndex8(angle: number): number {
+  return ((Math.round(angle / SECTOR_STEP) % 8) + 8) % 8;
+}
+
+/**
+ * Sektor mit Hysterese: Ohne Historie oder klar jenseits der Grenze zählt der
+ * nächste Sektor; im Marge-Band um den bisherigen Sektor bleibt dieser stehen
+ * (kein Richtungsflackern durch Mikro-Jitter an Sektorgrenzen).
+ */
+export function sectorWithHysteresis(angle: number, lastSector: number | null): number {
+  const nearest = sectorIndex8(angle);
+  if (lastSector === null || nearest === lastSector) return nearest;
+  const lastCenter = lastSector * SECTOR_STEP;
+  let diff = angle - lastCenter;
+  while (diff > Math.PI) diff -= Math.PI * 2;
+  while (diff < -Math.PI) diff += Math.PI * 2;
+  if (Math.abs(diff) < SECTOR_STEP / 2 + SECTOR_HYSTERESIS_RAD) return lastSector;
+  return nearest;
+}
+
 const PAUSE_W = 30;
 const PAUSE_H = 18;
 const PAUSE_MARGIN = 10;
@@ -46,6 +98,11 @@ export class TouchControls {
   private identifier: number | null = null;
   private originX = 0;
   private originY = 0;
+  /** M10-touch-joystick-feel: zuletzt gesendeter Sektor (Richtungs-Hysterese). */
+  private lastSector: number | null = null;
+  /** M10-touch-joystick-feel: zuletzt geschriebener Snapshot-Vektor (Output-Eps). */
+  private lastSentX = 0;
+  private lastSentY = 0;
   private lastCanMove = false;
   private destroyed = false;
 
@@ -74,6 +131,9 @@ export class TouchControls {
     this.identifier = picked.identifier;
     this.originX = Math.round(pos.x);
     this.originY = Math.round(pos.y);
+    this.lastSector = null;
+    this.lastSentX = 0;
+    this.lastSentY = 0;
     this.showStick(this.originX, this.originY);
     this.setKnobOffset(0, 0);
 
@@ -106,15 +166,44 @@ export class TouchControls {
       dx *= scale;
       dy *= scale;
     }
+
+    // M10-touch-joystick-feel: Feel-Filter — Deadzone, 8-Richtungs-Snapping und
+    // Sektor-Hysterese formen nur die AUSGABE. Die Magnitude (dx, dy nach Ring-
+    // Klemmung) bleibt unangetastet; Totzone/Remap/Normierung passieren wie zuvor
+    // in InputState, der Bewegungsbudget/Speed nicht veraendert.
+    const deadzone = joystickDeadzonePx(this.scene.scale.width);
+    if (len < deadzone) {
+      // Unter der Totzone: Knauf ruht, Vektor exakt 0 (kein Mikro-Drift).
+      this.lastSector = null;
+      this.applyFeel(0, 0);
+    } else {
+      const sector = sectorWithHysteresis(Math.atan2(dy, dx), this.lastSector);
+      this.lastSector = sector;
+      const angle = sector * SECTOR_STEP;
+      this.applyFeel(Math.cos(angle) * len, Math.sin(angle) * len);
+    }
+    ev.preventDefault();
+  };
+
+  /**
+   * M10-touch-joystick-feel: Knopf + Snapshot nur bei merklicher Aenderung
+   * (|Delta| > OUTPUT_EPSILON) schreiben — Mikro-Jitter erzeugt keine
+   * Positions-Updates mehr, echte Bewegung bleibt synchron (0 Frames Latenz).
+   */
+  private applyFeel(dx: number, dy: number): void {
+    const nx = dx / RING_RADIUS;
+    const ny = dy / RING_RADIUS;
+    if (Math.hypot(nx - this.lastSentX, ny - this.lastSentY) <= OUTPUT_EPSILON) return;
+    this.lastSentX = nx;
+    this.lastSentY = ny;
     this.setKnobOffset(dx, dy);
     setTouchSnapshot({
       active: true,
-      x: dx / RING_RADIUS,
-      y: dy / RING_RADIUS,
+      x: nx,
+      y: ny,
       pause: this.pulse,
     });
-    ev.preventDefault();
-  };
+  }
 
   private readonly onTouchEnd = (ev: TouchEvent): void => {
     if (!this.enabled || this.destroyed || this.identifier === null) return;
@@ -188,6 +277,9 @@ export class TouchControls {
         this.identifier = null;
         this.hideStick();
       }
+      this.lastSector = null;
+      this.lastSentX = 0;
+      this.lastSentY = 0;
       // Bewegung nullen, aber einen noch laufenden Pause-Puls erhalten:
       // Run und UI koennen in unterschiedlicher Reihenfolge updaten.
       const current = getTouchSnapshot();
@@ -202,6 +294,9 @@ export class TouchControls {
    */
   private discardGesture(): void {
     this.identifier = null;
+    this.lastSector = null;
+    this.lastSentX = 0;
+    this.lastSentY = 0;
     this.hideStick();
     const current = getTouchSnapshot();
     setTouchSnapshot({ active: false, x: 0, y: 0, pause: current.pause });
