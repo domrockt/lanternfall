@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5408/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-warmup-chunk-fine-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
