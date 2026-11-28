@@ -143,9 +143,31 @@ truncated=false, fatal=null, attempts=[] (kein Retry nötig), FPS median 60,5
 3.2)` = **iGPU** (kein SwiftShader). Datei: `shots/m10-heap-gate-retry-run1.json`,
 Kopie in `~/games/.evidence/m10-heap-gate-retry/`.
 
-**Lauf 2:** gestartet 18:10Z unmittelbar nach Lauf 1 (derselbe flock-Block,
-`,lane-done`-Budget des Supervisors endete ~18:44Z; Lauf 2 endet ~18:41Z).
-Ergebnis wird beim Abschluss angehängt; falls der Lauf nach Abschlussbudget
-nicht mehr gewertet werden kann, gilt der Ersatznachweis aus dem Briefing
-(1 verbindlicher Lauf PASS + Retry-Pfad per Unit-Test belegt, 10/10 Tests in
-tests/heap-budget-retry.test.ts).
+Verlaufsanmerkung: der ursprüngliche Lauf 2 (18:10Z, im flock-Block des
+Vorgänger-Runs) wurde durch den Runner-Kill des Vorgänger-Runs nie beendet
+(kein run2-JSON, kein Prozess mehr) — Resume Versuch 2 hat Lauf 2 neu gefahren.
+
+**Lauf 2 (belegt, Resume Versuch 2, unter `flock /home/ai/games/.lf-perf.lock`,
+rc=0):** `gate=PASS` — endMB 48,6 MB vs Minute1 67,8 MB = **−28,3 %** (Tor
+≤ +15 %), soft robust PASS (maxWindowFloor 78,7 MB = +8,4 % vs Floor Fenster 0
+72,6 MB), Rohpeak-Beobachtung maxWindowPeak 93,9 MB = +38,5 %. victory=true,
+simSeconds 1830,7, truncated=false, fatal=null, attempts=[] (kein Retry nötig),
+Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` =
+**iGPU** (kein SwiftShader). Datei: `shots/m10-heap-gate-retry-run2.json`,
+Kopie in `~/games/.evidence/m10-heap-gate-retry/`. Log:
+`~/tmp/m10-heap-gate-retry/k4-gate-runs.log`.
+
+## K4 — Gesamteurteil (Karte #13427)
+
+- **Abnahme erfüllt:** 2/2 verbindliche Tor-Läufe liefern `verdict=PASS`
+  (nie UNMESSBAR); beide mit iGPU-Renderer-String (Mesa Intel RPL-S, kein
+  SwiftShader), beide victory=true ohne truncation und ohne Retry-Einsatz
+  (attempts=[]), endMB −28,4 % / −28,3 % gegen Tor ≤ +15 %.
+- **Tor-Verhalten:** Gate-Definition (m10-heap-budget-gate.mjs) unangetastet;
+  das Skript schreibt bei totalem Scheitern aller Versuche EINDEUTIG
+  `verdict=UNMESSBAR` mit `gate.cause`/Fehlerklasse statt Halbsatz im Log
+  (Unit-belegt in tests/heap-budget-retry.test.ts, 10/10 grün).
+- **Beobachtung, nicht Teil dieser Lane (Bedarf bereits gemeldet):** ~132
+  Console-Errors `Texture key already in use: chunk_*` je Lauf — Terrain-/
+  Textur-Lane, hier nur notiert; beeinflusst das Heap-Tor nicht (beide Läufe
+  PASS bei identischem Fehlerbild).
