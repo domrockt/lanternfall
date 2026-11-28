@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11298,
+  "next": 11301,
   "cards": [
     {
       "id": 1,
@@ -14937,6 +14937,71 @@
       ],
       "created": "2026-11-28T10:31:04Z",
       "updated": "2026-11-28T10:46:21Z"
+    },
+    {
+      "id": 11298,
+      "title": "m10-fx-mixel-pin-rebase K1: fx-mixel-Test auf main pruefen (beide Aenderungen + gruen)",
+      "description": "Abnahme: git-Beleg, dass test-speed (#10585) und bakes-evo-r2 K3/K4 zusammen auf main liegen; gezielter vitest-Lauf tests/fx-mixel.test.ts gruen mit Dauer < 5 s; Beleg in docs/lanes/m10-fx-mixel-pin-rebase.md.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:43:43Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: main-Stand = Worktree-HEAD 3155164e, test-speed + bakes-evo-r2 liegen zusammen vor; Testlauf mit Zeitmessung folgt."
+        },
+        {
+          "at": "2026-11-28T10:46:41Z",
+          "by": "build",
+          "text": "doing → done: K1 PASS: beide Aenderungen kombiniert auf main 3155164e, 17/17 gruen in 414-568 ms (< 5 s). Beleg .evidence/K1-vitest-fx-mixel.log, Commit a4997a15 (#11168)."
+        }
+      ],
+      "created": "2026-11-28T10:43:36Z",
+      "updated": "2026-11-28T10:46:41Z"
+    },
+    {
+      "id": 11299,
+      "title": "m10-fx-mixel-pin-rebase K2: Pins zusammenfuehren (nur falls K1 rot)",
+      "description": "Nur falls K1 rot/Konfliktreste: Bake-Pins UND schnelle Assertions kombinieren, Testintention unangetastet. Abnahme: keine widerspruechlichen Pins, Datei gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:43:43Z",
+          "by": "build",
+          "text": "todo → backlog"
+        },
+        {
+          "at": "2026-11-28T10:46:55Z",
+          "by": "build",
+          "text": "backlog → done: entfaellt: K1 gruen, keine Konfliktreste/widerspruechlichen Pins; Begruendung commit-t mit #11169."
+        }
+      ],
+      "created": "2026-11-28T10:43:36Z",
+      "updated": "2026-11-28T10:46:55Z"
+    },
+    {
+      "id": 11300,
+      "title": "m10-fx-mixel-pin-rebase K3: Suite+Build gruen, Doku, .lane-done",
+      "description": "Abnahme: npm test 0 fail, npm run build rc=0, Messung Testdauer im Beleg, Lane-Doku + .lane-done committet.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:43:43Z",
+          "by": "build",
+          "text": "todo → backlog"
+        },
+        {
+          "at": "2026-11-28T10:44:42Z",
+          "by": "build",
+          "text": "backlog → doing: K3 gestartet: npm test + npm run build, danach Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T10:46:41Z",
+          "by": "build",
+          "text": "doing → done: K3 PASS: npm test 2032/2032 (0 fail, Wall 5,6 s), Build rc=0, Doku + .lane-done committet (5aaa93f5, #11170)."
+        }
+      ],
+      "created": "2026-11-28T10:43:36Z",
+      "updated": "2026-11-28T10:46:41Z"
     }
   ]
 }
