@@ -73,3 +73,25 @@ Zahlen: siehe `shots/m10-pool-trim-before.json` (folgt im K2-Commit).
 T0 direkt nach 500er-Burst: 499 aktiv, 38,8 MB → T+180 s: 309 aktiv, 197 Kills,
 **50,8 MB** — der Heap gibt die Burst-Retention nach Ablauf der Spitze nicht frei,
 weil nichts trims (code-seitig belegt). Per-Pool-Zählung bleibt offener Punkt (K1).
+
+## K3 — Guard-Test
+
+`tests/pool-trim.test.ts` pinnt den `trim()`-Vertrag für die spätere Verdrahtung
+(#2439): Kapazität nach Spitze sinkt (Overhang-Zahl wird zurückgegeben), Steady-State-
+Reuse bleibt nach Trim erhalten (kein Neuanlagen, Reset greift), `trim(0)` gibt den
+gesamten Overhang wirklich frei (nachfolgende obtains wachsen neu), Idempotenz und
+Deck-/Negativwerte, Fremdrelease wächst nicht in den Free-Stack. 5/5 grün.
+
+## K4 — Ergebnis (Abnahme)
+
+- Entscheidung: **Doku korrigiert** (K1/K2), Verdrahtung begründet an Karte #2439
+  verwiesen (hard boundary EnemyPool/ProjectilePool/CombatSystem).
+- Vorher-Zahl (Gesamtheap nach erzwungenem GC, `shots/m10-pool-trim-before.json`):
+  T0 direkt nach 500er-Burst **38,8 MB** (499 aktiv) → T+180 s **50,8 MB** (309 aktiv,
+  197 Kills, 180,9 Sim-Sekunden) — Burst-Retention wird nach Ablauf der Spitze nicht
+  zurückgegeben, weil nichts trims (code-seitig belegt, 0 Aufrufstellen).
+  Per-Pool-Zählung: offener Punkt (s. K1, CDP-Shape-Deduplizierung).
+- `npx tsc --noEmit` rc=0; `npm test` **1503/1503** (143 Dateien) grün;
+  `npx vitest run tests/pool-trim.test.ts` 5/5.
+- Verhalten bei 500 Gegnern unverändert: keine Spieldaten-/Balance-Änderung, nur
+  Doku-Korrektur + Guard-Test.
