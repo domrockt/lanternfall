@@ -1,0 +1,20 @@
+Lane m10-tiles-float-snap – fertig (2026-11-28)
+
+Bedarf aus m10-terrain-edge-crisp: terrainKindAt()/terrainSampleAt() snappen
+Float-Queries auf die Tile-Mitte (Math.floor) in src/gfx/tiles.ts, damit der
+Kanten-Scan keine fraktionalen Mischzellen mehr findet.
+
+Karten:
+- K1 scripts/m10-tiles-snap.mjs: Kanten-Scan (Muster terrain-edge-after.json);
+  before-JSON: mischRate 0.00539 exakt reproduziert (1241/230400)
+  ~/games/.evidence/m10-tiles-float-snap/m10-tiles-snap-before.json
+- K2 Fix: Snap am Eingang von terrainSampleAt (terrainKindAt delegiert);
+  paintTerrain/terrainMaskAt/Wasser-Pfad unangetastet, Integer-Pfad bitgleich.
+- K3 tests/tiles-float-snap.test.ts: 3/3 grün (Snap-Identität über Biom-Grenzen,
+  4 Subpixel-Offsets; terrainKindAt erbt; fixierte Integer-Referenz).
+- K4 after-JSON: mischRate 0.00000 (0,539 % -> 0,0 %), loch/doppel unverändert.
+  ~/games/.evidence/m10-tiles-float-snap/m10-tiles-snap-after.json
+
+Checks: npx tsc --noEmit grün, npm run build grün, npm test 1693/1693 grün.
+Fremde Dateien (GroundRenderer.ts, autotile.ts, terrain.ts) nicht angefasst.
+Details: docs/lanes/m10-tiles-float-snap.md

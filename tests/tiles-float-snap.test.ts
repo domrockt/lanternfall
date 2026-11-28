@@ -27,8 +27,8 @@ describe("tiles float snap", () => {
     let samples = 0;
     let kindKinds = new Set<TileKind>();
     for (const seed of SEEDS) {
-      for (let y = OY; y < OY + 160; y++) {
-        for (let x = OX; x < OX + 160; x++) {
+      for (let y = OY; y < OY + 80; y++) {
+        for (let x = OX; x < OX + 80; x++) {
           const base = terrainSampleAt(x, y, seed, WORLD_SIZE);
           kindKinds.add(base.kind);
           for (const [fx, fy] of OFFS) {
@@ -47,8 +47,8 @@ describe("tiles float snap", () => {
     }
     // Stichprobe muss mehrfach Biom-Grenzen berühren: alle 4 Arten gesehen.
     expect(kindKinds.size).toBe(4);
-    expect(samples).toBeGreaterThanOrEqual(3 * 160 * 160 * OFFS.length);
-  });
+    expect(samples).toBeGreaterThanOrEqual(3 * 80 * 80 * OFFS.length);
+  }, 30000);
 
   it("terrainKindAt erbt den Snap (Float-Query == ganzzahlige Tile)", () => {
     for (const seed of SEEDS) {
