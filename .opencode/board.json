@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13519,
+  "next": 13620,
   "cards": [
     {
       "id": 1,
@@ -19136,6 +19136,21 @@
       ],
       "created": "2026-11-28T16:16:04Z",
       "updated": "2026-11-28T17:20:07Z"
+    },
+    {
+      "id": 13619,
+      "title": "m10-fps-pacing-timestep K1+K2: Remeasure-Urteil + Hebel-Lokalisierung, Abschluss",
+      "description": "K1: Urteil aus docs/lanes/m10-janky-remeasure.md lesen — Trigger 'janky >= 10 %' gegen die gemessenen Werte prüfen (K2/K3: janky 0 %, 0/29 058 bzw. 0/32 114 Frames, Belege ~/games/.evidence/m10-janky-remeasure/). K2: Skip-/Pacing-Logik lokalisieren (Run.ts-Sim-Loop vs. src/main.ts/src/logic/fps-cap.ts Merge-Area). Bei janky < 10 % UND/ODER Hebel in fremder Merge-Area: KEINE Code-Änderung, Doku docs/lanes/m10-fps-pacing-timestep.md + Bedarfsmeldung .dispatch/requests.md + .lane-done. Abnahme: Doku nennt janky-Messwerte + Hebel-Datei(+Zeile) mit Belegen, tsc rc=0, Suite grün, ein Commit '#<id>'.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T17:31:03Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-fps-pacing-timestep übernommen. K1 geprüft: Remeasure-Urteil (docs/lanes/m10-janky-remeasure.md) = janky 0 % in K2 UND K3 — Trigger 'janky >= 10 %' NICHT erfüllt. K2-Lokalisierung läuft (Run.ts vs. main.ts/fps-cap.ts Merge-Area)."
+        }
+      ],
+      "created": "2026-11-28T17:31:00Z",
+      "updated": "2026-11-28T17:31:03Z"
     }
   ]
 }
