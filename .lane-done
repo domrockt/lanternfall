@@ -1,0 +1,47 @@
+# Lane m10-fullrun-renderer-valid — DONE (K1–K3), K4 blocked
+
+Datum: 2026-11-28, ~18:40Z. Branch m10-fullrun-renderer-valid, Worktree
+/home/ai/games/lf-lanes/m10-fullrun-renderer-valid.
+
+## Zusammenfassung
+
+Ziel war, Doms Renderer-Regel („Abnahme ungültig bei SwiftShader", 19:20Z) in
+`scripts/fullrun.mjs` maschinell durchzusetzen — sie war nach merge-m10-renderer-guard
+(9bcc1e41) nur in perf.mjs und m10-v10-device-10min.mjs aktiv.
+
+- **#13786 K1 (Befund, Commit 1ad38629):** fullrun.mjs schrieb zwar seit 78cb1bc5 ein
+  renderer-Objekt, aber kein `rendererValid`/`invalid` und kein Tor im Exit-Code —
+  ein SwiftShader-Lauf mit grünen Inhalts-/Heap-/FPS-Toren wäre mit rc=0 durchgegangen.
+  Belegt an 4 JSONs in ~/games/.evidence (alle `rendererValid=None`). Muster: perf.mjs.
+  Diff-Grenze: m10-heap-budget.mjs (gleiches Defizit, separater Job
+  merge-m10-heap-gate-retry) bewusst NICHT angerührt.
+- **#13787 K2 (Integration, Commit c047a0a0):** fullrun.mjs importiert `rendererValid`
+  aus lf-renderer.mjs, mappt fehlenden GL („none“) ⇒ „“ (nie valide), schreibt
+  `rendererString` + `rendererValid` + `invalid` ins Output-JSON und zieht die
+  Gültigkeit in `heap.passed`, `fps.passed` und Top-Level `passed` ⇒
+  `summaryPassed` ⇒ `process.exit(0|1)`. SwiftShader ⇒ Exit-Code 1.
+  Messablauf unangetastet (+22/−3).
+- **#13788 K3 (Test, Commit 89b61fa9):** tests/fullrun-renderer-valid.test.ts, 9 Tests
+  (gemockt, kein Browser): iGPU-Pfad grün (Mesa RPL-S), SwiftShader/leer invalid,
+  Quell-Guard pinnen Import, Mapping, JSON-Felder, Tor-Verdrahtung und Exit.
+  npm test: 238 Files / 2577 Tests, 0 fail. tsc rc=0.
+- **#13789 K4 (realer Kurz-Beleg): BLOCKED** — „perf-lock durch Heap-Gate-Lane belegt“.
+  Zwei begrenzte Versuche (flock -w 900 nach Steer): rc=124 im Warten bzw. flock-Exit 1
+  (node lief nie, Log 9 Bytes). Sperre: m10-heap-gate-retry (2×30 min in EINEM
+  flock-Halt) + Warteschlange m10-fx-medium-cap. Beleg-Konvention: jedes künftige
+  fullrun-JSON trägt rendererString/rendererValid/invalid; der explizite
+  rendererValid:true-Beleg (shots/m10-fullrun-rv-*) ist bei der nächsten
+  Abnahme-Lauf-Gelegenheit zu erzeugen.
+
+## Qualitätssicherung
+
+- Je Karte Commit-Gate PASS (Scope, Build, Tests, Secrets).
+- Lane-Reviewer über die drei Karten-Commits: siehe Board-Notiz #13786–#13788.
+- npx tsc --noEmit rc=0; npm test 0 fail (238/2577).
+
+## Nebensachen
+
+- Supervisor-Steer zu #13283 als fehlgeroutet quittiert (Board-Notiz, Karte blocked),
+  kein Übernehmen fremder Karten.
+- Lane-Doku: docs/lanes/m10-fullrun-renderer-valid.md (Befund, Diff-Grenzen, K4-Blocker).
+- Logs/Temp: ~/tmp/m10-fullrun-renderer-valid-k4*.log (außerhalb des Repos).

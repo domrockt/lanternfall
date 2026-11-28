@@ -109,6 +109,19 @@ Heap-Läufe in EINEM flock-Halt** (17:39Z–ca. 18:41Z), dahinter wartet
 Sperre nicht frei wird ⇒ Karte blocked mit Grund (Sperrenkontention), Ausweichbeleg
 bleibt dem Merge-/Abnahme-Job vorbehalten.
 
+**Ergebnis (18:35Z, Supervisor-Abbruchkriterium gezogen):** Nach Steer-Umsetzung
+(`flock -w 3200` beendet, Neustart mit `flock -w 900`) ist der zweite Versuch
+ebenfalls ohne Sperre abgelaufen: Log `~/tmp/m10-fullrun-renderer-valid-k4b.log`
+enthält nur `k4b rc=1` — flock-Exit 1 = `-w`-Timeout, node lief nie (9 Bytes,
+kein Build-/Summary-Output). Sperre weiterhin durch `m10-heap-gate-retry` (bis
+ca. 18:41Z) plus wartende `m10-fx-medium-cap` belegt. **Karte #13789 ⇒ blocked,
+Grund: „perf-lock durch Heap-Gate-Lane belegt".** Der Renderer-Guard selbst ist
+damit implementiert und getestet (K1–K3); der reale `rendererValid:true`-Beleg
+über den fullrun bleibt offen und wird bei der nächsten Abnahme-Lauf-Gelegenheit
+(freie Mess-Sperre) automatisch erzeugt — jedes künftige fullrun-JSON trägt
+`rendererString/rendererValid/invalid`, und ein SwiftShader-Lauf würde mit
+Exit-Code 1 sichtbar scheitern (K3-Quell-Guard pinnen das).
+
 **Befund-Seitennotiz (Supervisor-Steer):** Der Steer zu Karte #13283
 (GroundRenderer chunk_*-Doppel-Adds) ist dieser Lane fehlgeroutet — #13283 gehört
 nicht zu diesem Briefing (Disponent: nur #13786–#13805; Datei-Claims nennen `src/`
