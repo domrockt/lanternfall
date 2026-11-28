@@ -1,0 +1,27 @@
+# Lane m10-weapon-shot-readability — abgeschlossen 2026-11-28
+
+Ziel: 6 Spieler-Waffen-Projektile (ember, flail, frost, storm, thorn, lantern) im 300-500-Chaos
+klar unterscheidbar, kein Auswaschen im ADD-Glow. NUR Optik, CombatSystem.ts unangetastet.
+
+Ergebnis:
+- Signaturen in src/gfx/gen-fx.ts (WEAPON_SHOT_SIGNATURES): je Waffe Kernfarbe + 1-px-Tintenkontur
+  + Groessenstufe (7x7/11x11/9x9/12x16/12x12/10x10); Runtime-Override der 4 textures.ts-Keys;
+  boltFrame-Rampe 11/7/0 statt lanternWhite/candleWhite. Vorher-Schalter: ?shotsig=0.
+- FxSystem Draw-Pfad: additive fx_halo auf Start-Alpha 0,45 gedeckelt (SHOT_SUPPORT_ADD_ALPHA_CEIL),
+  Waffen-Schweife auf Alpha-Boden 0,3 (SHOT_TRAIL_ALPHA_FLOOR).
+- Near-White-A7: Texturen worst 58,0 % -> 0,00 %; Chaos worst 37,3 % -> 0,35 % (Grenze 4,16 %) PASS.
+- 15/15 Waffenpaare ueber Schwellen (WCAG >= 1,4 oder RGB-Dist >= 110, XOR >= 8 px, Kern-Indizes
+  eindeutig); tests/weapon-shot-readability.test.ts 57/57, npm test 1712/1712, build + tsc gruen.
+- Trefferverhalten bitgleich: scripts/m10-run-determinism.mjs (3 Seeds x 2 Reps x 120 Sim-Sekunden)
+  auf diesem Branch (neue Optik) vs. committete Vor-Lane-Baseline: alle Mark-Dateien bitgleich.
+- art-director PASS 4/5 (keine Muss-Korrekturen; 3 optionale Nachbesserungen als Qualitaetsreserve,
+  dokumentiert in docs/lanes/m10-weapon-shot-readability.md).
+
+Commits: 866d145 (#9665 WIP) 105f415 (#9665 K2) 17699f3 (#9664 K1) 50b1e62 (#9666 K3)
++ K4-Commit (#9667). Belege: ~/games/.evidence/m10-weapon-shot-readability/ (nicht in git),
+Abnahme-Bilder: shots/abnahme/m10-weapon-shot-*.png.
+
+Offen (nicht blockierend): textures.ts-Grids fuer die 4 ueberschriebenen Keys sind stale
+(Runtime-Wahrheit = gen-fx-Tabelle; beim naechsten textures.ts-Kontakt synchronisieren).
+Fremde uncommittete Aenderungen im Worktree (shots/m10-passive-math-*.json) gehoeren nicht zur
+Lane und wurden nicht angefasst.
