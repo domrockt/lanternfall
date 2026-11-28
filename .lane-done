@@ -1,0 +1,34 @@
+# Lane m10-chaos-fix-dmg-overlap — fertig (2026-11-28)
+
+Befund B4 (Minor, aus m10-chaos-legibility-audit) gefixt: Damage-Numbers
+überlappten sich, 6-stellige Werte dominierten, Anker saß über dem Sprite.
+Fix rein darstellerisch in src/systems/DamageNumbers.ts — Trefferverhalten und
+Damage-Berechnung bitgleich (report/addDamage/planLabels unberührt).
+
+Karten: #7058 Vorher-Messung (fc23dd0), #7059 Fix (d3661ce),
+#7060 Tests (b77a477), #7061 Grid nie nach oben + Nachher + Doku
+(05b6af7, 183d709, 1c7f25c). reviewer-PASS (ses_de0541d71ffePY3yBTsfjhEv5D).
+
+Fix-Hebel:
+1. Grid-Slot-Spirale (Zellen 64×24 px, Radius 3, deterministisch, nur dy ≥ 0,
+   Rechteck-Check gegen platzierte Labels inkl. Sink-Reserve).
+2. formatDamageLabel: ≥ 100.000 → "184,5k" (max. 6 Zeichen inkl. "!").
+3. Anker 12 px unterhalb des Gegner-Zentrums, Label sinkt nach unten weg.
+
+Messwerte (scripts/m10-chaos-fix-dmg.mjs, 780×360@3, M25 300 Gegner +
+500er-Stress, 3 Frames je Szenario, Seed 1):
+- Überlappende Label-Paare: vorher 0–2 je Frame (Audit-Beleg "184526!" über
+  "4577") → nachher 0 in allen 6 Frames.
+- Max. Labelzeichen: vorher 7 ("101266!") → nachher 6 (>= 100.000 immer "…k").
+- Anker-Gegner verdeckt: vorher ja → nachher ownCovered 0 in allen Frames
+  (Probe + Unit-Tests; Rest-occl = fremde Nachbarn in 500er-Dichte).
+- JS-Fehler: 0. Belege: shots/m10-chaos-fix-dmg-{before,after}-*.png/*.json.
+
+Qualität: npx tsc --noEmit grün, npm run build grün, 93 Dateien / 986 Tests
+grün (davon 14 neu in tests/damage-grid.test.ts). Keine Tabu-Dateien angefasst
+(gen-fx/textures/FxSystem/CombatSystem unberührt).
+
+Offen: Folge-Karte #7062 (backlog) — produktiv ungenutztes damageLabel
+entfernen oder Tests umstellen; gridKey ist Screen-Space-Snapshot (doku­mentiert,
+kein Korrektheitsbug, Rect-Check fängt Overlaps ab).
+Doku: docs/lanes/m10-chaos-fix-dmg-overlap.md
