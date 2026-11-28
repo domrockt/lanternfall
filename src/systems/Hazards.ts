@@ -200,7 +200,13 @@ export class HazardSystem {
   ): void {
     // m10-hazard-quality-budget K2: Tier einmal pro Update aufloesen (Debug-Override
     // vor Regler-Stand), Draw-Budget anwenden, Puls-Phasen-Anteil ableiten.
-    const tier = drawQualityTier(QUALITY);
+    // m10-thermal-tier-types: QUALITY traegt ehrlich ThermalTier ("thermal"
+    // moeglich). Die Hazard-Helfer (drawQualityTier, warnDiscDrawCapForQuality,
+    // …) bleiben bewusst QualityTier — Warn-Disc-Lesbarkeit in thermal
+    // erhalten: "thermal" faellt in deren offenen Zweig, nie in den
+    // low-Draw-Cap. Verengung hier ist laufzeitidentisch (Status quo: auch
+    // bisher floss "thermal" zur Laufzeit in den QualityTier-Parameter).
+    const tier = drawQualityTier(QUALITY as QualityTier);
     this.applyDiscDrawBudget(tier, playerX, playerY);
     const pulseFraction = rimPulsePhaseFractionForQuality(tier);
     for (let i = this.active.length - 1; i >= 0; i--) {
