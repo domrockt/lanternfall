@@ -65,38 +65,16 @@ def handdrawn() -> dict[str, Grid]:
 
 def special() -> dict[str, Grid]:
     """Icons mit eindeutiger Silhouette, per Primitiven gesetzt (vor-schattiert)."""
+    from lib import from_rows
+    from icons_src import ICON_REDRAW_ROWS
+
     out: dict[str, Grid] = {}
 
-    # Herz: zwei Ohren, Kerbe in der Mitte, Spitze unten.
-    g = Grid(16, 16)
-    g.ellipse(5, 5, 3, 3, 25)
-    g.ellipse(10, 5, 3, 3, 25)
-    for i in range(8):
-        y = 7 + i
-        w = 12 - int(i * 1.4)
-        g.rect(8 - w // 2, y, w, 1, 25)
-    g.rect(3, 3, 2, 2, 26)          # Licht links
-    g.rect(4, 2, 4, 1, 26)
-    g.rect(9, 2, 2, 2, 26)
-    g.rect(11, 4, 2, 3, 24)         # Schatten rechts
-    g.rect(9, 9, 3, 5, 24)
-    g.rect(4, 3, 2, 2, 12)          # Glanz
-    out["passive_heart"] = outline(g, diagonal=True)
-
-    # Stiefel: Schaft, Ferse, Fuß, Sohle, Schnürung.
-    g = Grid(16, 16)
-    g.rect(3, 2, 5, 9, 16)          # Schaft
-    g.rect(3, 2, 2, 9, 17)          # Lichtkante
-    g.rect(6, 5, 2, 5, 15)
-    g.rect(3, 10, 10, 4, 16)        # Fuß
-    g.rect(3, 10, 10, 1, 17)
-    g.rect(8, 10, 2, 3, 15)         # Knöchel
-    g.rect(12, 12, 2, 2, 15)        # Zeh
-    g.rect(3, 13, 11, 2, 5)         # Sohle
-    g.rect(3, 13, 11, 1, 4)
-    for y in (5, 7, 9):
-        g.rect(4, y, 2, 1, 11)      # Schnürsenkel 2x1
-    out["passive_boots"] = outline(g, diagonal=True)
+    # #7149: Herz/Stiefel/Gluecksbringer sind als handgezeichnete ASCII-Raster
+    # (icons_src.ICON_REDRAW_ROWS) neu gefasst; normalize() schattiert/konturiert.
+    # passive_tome: Drift-Fix, siehe Kommentar in icons_src.py.
+    for key in ("passive_heart", "passive_charm", "passive_boots", "passive_tome"):
+        out[key] = from_rows(ICON_REDRAW_ROWS[key])
 
     # Wetzstein: keilförmiger Stein mit Funken.
     g = Grid(16, 16)
@@ -111,22 +89,6 @@ def special() -> dict[str, Grid]:
     g.put(14, 3, 13)
     g.rect(11, 12, 2, 2, 17)
     out["passive_whetstone"] = outline(g, diagonal=True)
-
-    # Gluecksbringer: eisernes U (4/5/6/7) mit 2x2-Amberkern.
-    g = Grid(16, 16)
-    g.rect(4, 3, 3, 8, 5)            # linke Schenkel
-    g.rect(4, 3, 1, 8, 7)            # Lichtkante links
-    g.rect(10, 3, 3, 8, 5)           # rechter Schenkel
-    g.rect(12, 3, 1, 8, 4)           # Schatten rechts
-    g.rect(4, 10, 9, 3, 5)           # Bogen unten
-    g.rect(4, 10, 3, 1, 7)
-    g.rect(10, 12, 3, 1, 4)
-    g.rect(6, 6, 4, 4, 20)           # Kern
-    g.rect(7, 6, 2, 2, 21)
-    g.rect(7, 10, 2, 2, 22)          # Glanz am Bogen
-    g.put(5, 4, 7)
-    g.put(11, 5, 6)
-    out["passive_charm"] = outline(g, diagonal=True)
 
     # Phoenix: Fluegel/Flammen-Silhouette ohne Blob.
     g = Grid(16, 16)
