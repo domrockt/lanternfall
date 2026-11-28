@@ -86,7 +86,7 @@ def moor_queen(f: int) -> Grid:
     g.put(42, 28 - bob, 28)
     # Krone: sitzt MIT Kontakt auf dem Kopf — Band läuft bis in die
     # Kopf-Huegel, Bruecke ueber der Schaedelmitte schliesst die Luecke.
-    crown_y = 13 - bob
+    crown_y = 13  # fix am Kopf (nicht am Atem-Bob) — Idle-Versatz-Kontrakt
     g.rect(17, crown_y + 4, 22, 3, 20)
     g.rect(17, crown_y + 4, 22, 1, 21)
     g.rect(22, crown_y + 7, 13, 2, 30)      # Schaedel-Bruecke (Kontaktband)

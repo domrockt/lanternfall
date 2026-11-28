@@ -66,7 +66,36 @@ vermerkt; nur von beiden Seiten belegte Muss-Punkte werden in K2 gezeichnet.
 
 ## K2 — Generator-Fixes
 
-(nach art-director-Abgleich, nur belegte Mängel)
+**Pipeline-Befund (wichtig):** `src/gfx/gen-bosses.ts` wird von ZWEI Werkzeugen gebaut:
+`scripts/art/gen_bosses.py` liefert die F0-Basis-Frames, danach leitet
+`node scripts/m10-boss-idle-anim.mjs gen <ids>` (Lane m10-boss-idle-anim, #6518/#6519/#6520)
+F1 (Atmen: Oberkörper 1 px runter, Füße fix) und F2 (Zucken: 1 px hoch) aus F0 ab und
+schreibt die TS direkt. Ein Wholesale-Regen über Python allein zerstört den Idle-Kontrakt —
+Korrekte Kette: `python3 scripts/art/gen_bosses.py && node scripts/m10-boss-idle-anim.mjs gen
+moor_queen,bone_lord,pale_shepherd,bell_golem,coven,hollow_king`.
+
+Umgesetzte Muss-Fixes (je Boss genau 1, art-director-Abgleich):
+
+| Boss | Fix | Umsetzung |
+|---|---|---|
+| moor_queen | Krone schwebte 2-3 px über dem Kopf | Kronenband auf Kopfhöhe + Schädel-Brücke (Kontaktband), Krone fix am Kopf (nicht am Atem-Bob, Idle-Versatz-Kontrakt); zusätzlich Zähne unregelmäßig (art-director #2) |
+| bone_lord | Schulter-Blobs verschwanden im Grund | Pauldrons 5→6 + Licht 8 + Rim 9; Rippen unregelmäßig mit Brüchen (art-director #2); Gürtel-Punkte entklart (art-director #3) |
+| pale_shepherd | Stab schwebte (nicht in der Hand) | Griff nach dem Schaft nachgezeichnet (1 px Überlapp), Schaft bis zur Bodenkontakt-Kante verlängert; Saum unregelmäßig mit echten Lücken (#2); Fellzeichnung + Kralle (#3-Blob) |
+| bell_golem | Fäuste flach/blockig | Faust-Lichtkante oben + Kern-/Fingerbruch; Ellbogen-Kerben (#2); Beinspalt asymmetrisch + Riss/Moos (#3) |
+| coven | Gesichter ohne Augen | 2x2-Augen (F0 Bernstein 20, F1+ Laternenweiß 13 + 22-Rim), grauer Kinn-Keil zur Robe aufgelöst, gebeugte Kopf-Variante (hd) |
+| hollow_king | Krone rechts abgehoben | Kontaktband Schädel↔Kronenband (Reihe 14-15, Knochenfarbe) |
+
+Nach dem Fix (Metriken gegen Before-Baseline): offPal 0/0, Dupletten 0/0,
+silKontrast p75 identisch oder >= Before (Guard-Test grün), edgeContrast bone_lord
+41.5→46.1, bell_golem 29.4→31.6, pale_shepherd 52.0→52.9.
+
+**Offene Punkte (belegte, aber nicht in K2 — Folge-Karten):**
+- coven: Klon-Posen + unklare Props (Besenstiel-Nadel, Goldkugel) — art-director #3
+- hollow_king: Brustpanzer als Tech-Panel (art-director #1), rauschende Unterkante
+  (Owner #1, silKontrast 70)
+- moor_queen: F2 als lesbare Duckpose — kollidiert mit Idle-Kontrakt (F2 = 1 px Zucken),
+  nur gemeinsam mit m10-boss-idle-anim-Nachfolger lösbar
+- pale_shepherd: Kopf-/Gesichtsfläche matschig (Owner #1, von art-director nicht geflaggt)
 
 ## K3 — Guard-Test
 
