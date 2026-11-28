@@ -73,10 +73,35 @@ screenrecord liefert auf dem Redmi Pad nur Stümpfe → Screencaps).
   Falls Dom die Sperre später löst, kann ein Folge-Job run3 mit dem Warm-up-Skript
   nachholen (Skript liegt fertig in `scripts/m10-apk-splash.mjs`).
 
-## K3 — Urteil + Doku — #12947 (Gerüst, wird nach K2 gefüllt)
+## K3 — Urteil + Doku — #12947
 
-- Belege: `~/games/.evidence/m10-apk-splash-sight/coldstart-run{1,2}/` (manifest + PNGs),
-  Farb-JSONs je Start.
-- Zu beantworten: Zeigt der echte Kaltstart das Starting-Window in #0a0d14 mit zentrierter
-  Laterne? Wirkt der Start wie „hängt" oder wie Ladescreen?
-- Urteil erfolgt nach K2-Daten; art-Direkt-Urteil (>= 4/5 oder Befundliste mit Severity).
+- Belege: `~/games/.evidence/m10-apk-splash-sight/coldstart-run{1,2,3}/` (manifest + PNGs),
+  Farb-JSONs je Start, statisch `k1-apk-theme.json`. Abnahme-Bilder in git:
+  `shots/abnahme/m10-apk-splash-phaseA-lade-moor.png` („LADE MOOR …" + Laterne + Balken)
+  und `shots/abnahme/m10-apk-splash-phaseB-titel.png` (Titel-Screen).
+- **Frage 1 — wirkt der Start wie „hängt" oder wie Ladescreen?** **Ladescreen**, eindeutig
+  lesbar: Phase A zeigt „LADE MOOR …", kleine Pixel-Laterne (amber Kern, 1-px-Kontur, ab
+  Frame 2 weicher radialer Glow) und Fortschrittsbalken 0 % → 100 % — es passiert sichtbar
+  etwas, nichts wartet auf etwas Unsichtbares. Phase B: Titel-Screen sauber, stilistisch
+  konsistent (gleiche Laterne, Palettentreu, hot `#fff8e6`).
+- **Frage 2 — Farbstimmung vs. Ziel #0a0d14 + Laterne?** Phase A BG `#0a0e16` vs. Ziel
+  `#0a0d14` = Δ(0,+1,+2) ≤ 2/255 (beide Runs, colors-run1/run2.json) ✔. Laterne hellstes
+  Pixel `#b8c4c2` bei 0,2–0,4 % Fläche — dezent, kein Blinding. Glow im 4x-Zoom als weicher
+  radialer Gradient, keine Dither-/Blockmixel-Artefakte. K1 deckt das Starting-Window
+  statisch: `#0a0d14` exakt 1 Fundstelle in resources.arsc, Laterne zentriert (CENTER).
+- **art-Direkt-Urteil (Subagent, 16:1xZ): PASS, 4/5** → Abnahme-Kriterium erfüllt.
+- **Befunde (nicht abnahmehemmend):**
+  1. **[Medium, Beleglücke — kein Pixeldefekt]** Das native Starting-Window (erster Paint
+     vor t≈4,9 s) wurde nie lebend eingefangen; Warm-up-Fix im Skript unvalidiert, Start 3
+     durch DOM_SPIELT geblockt. Das Sichturteil gilt t≥4,9 s. → Vor Meilenstein-Abschluss
+     EIN validierter Lauf (`node scripts/m10-apk-splash.mjs <outdir>` mit Warm-up), sobald
+     die Spieler-Sperre frei ist; sonst bleibt der früheste Moment nur statisch belegt (K1).
+  2. **[Low, kosmetisch]** Ladetext wechselt „LADE MOOR …" → „LADEN …" zwischen Frames —
+     wirkt wie zwei Ladephasen, nicht wie ein Bug; optional vereinheitlichen (Hebel:
+     Ladetext-String im Boot-/Preload-Pfad).
+  3. **[Low, aus K2]** Letterbox-Balken `#06070c` vs. BG `#0a0e16` — art-Urteil: kein
+     relevanter Befund, wirkt als bewusst dunklerer Rahmen, kein Kantenbruch.
+- **Lane-Fazit:** Vera's Theme-Änderung (lf-apk ea37f3e) ist am echten Kaltstart sichtbar
+  bestätigt: dunkler Ladescreen-Ton (Δ ≤ 2/255 zu #0a0d14) mit Laterne als Lademarken,
+  Start wirkt nicht wie hängend. Offen bleibt nur der dynamische Beleg des allerersten
+  Paints (Befund 1) — Dora kann daraus ggf. einen kleinen Fix-Job schneiden (Ladetext-Copy).
