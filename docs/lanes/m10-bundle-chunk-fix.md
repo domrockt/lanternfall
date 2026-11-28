@@ -55,7 +55,16 @@ Rolldown `advancedChunks` mit drei Gruppen: `phaser` (node_modules/phaser),
 
 ## K3 — Guard-Test + Preview-Smoke
 
-(offen)
+- Neu: `tests/bundle-chunks.test.ts` (3 Tests) — baut selbst (`vite build --base ./`) und erzwingt:
+  1. keine Chunk-Größenwarnung im Build-Output,
+  2. jeder Spielcode-Chunk (index/sprites/gfx/terrainWorker) < 500 kB; Phaser-Chunk < chunkSizeWarningLimit (1250 kB),
+  3. `dist/index.html` referenziert Chunks relativ (`./assets/…`) — Android-APK-Preview-Pfad intakt.
+- Neu: `scripts/m10-bundle-audit.mjs` — Build + Chunk-Tabelle + index-Load-Smoke (statischer Server auf `dist/`,
+  Playwright lädt index.html, wartet auf `window.__game`, zählt JS-Fehler). Ein Aufruf, rc=1 bei Warnung/Fehlern.
+- Ergebnisse (`npm test`): **159 Dateien / 1701 Tests grün** (inkl. neue Guard-Tests), `npx tsc --noEmit` rc=0.
+- Audit-Lauf (`node scripts/m10-bundle-audit.mjs after.json`) rc=0: vite 470 ms, keine Warnung,
+  Szene geladen, JS-Fehler 0. Belege: `~/games/.evidence/m10-bundle-chunk/after.json`.
+
 
 ## K4 — Android-Beleg + Doku
 
