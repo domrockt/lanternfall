@@ -245,7 +245,18 @@ try {
     crop.width = cw * 4; crop.height = ch * 4;
     const cctx = crop.getContext("2d");
     cctx.imageSmoothingEnabled = false;
-    cctx.drawImage(gameCanvas, sx, sy, Math.round(cw * scale), Math.round(ch * scale), 0, 0, cw * 4, ch * 4);
+    // Fix (m10-elite-tier-refine, Re-Abnahme): drawImage aus dem WebGL-Canvas
+    // nur direkt innerhalb eines rAF nach dem Render-Frame — ausserhalb kann
+    // der Buffer bereits geleert sein (schwarzes Crop, Beleg: 502-Byte-PNG).
+    await new Promise((r) => requestAnimationFrame(() => {
+      cctx.drawImage(gameCanvas, sx, sy, Math.round(cw * scale), Math.round(ch * scale), 0, 0, cw * 4, ch * 4);
+      r();
+    }));
+    // Schwarz-Falle: ein uniform schwarzes Crop ist kein Beleg.
+    const probe = cctx.getImageData(0, 0, crop.width, crop.height).data;
+    let lit = 0;
+    for (let i = 0; i < probe.length; i += 4) if (probe[i] + probe[i + 1] + probe[i + 2] > 0) lit++;
+    if (lit < (crop.width * crop.height) / 10) throw new Error(`Crop4x ungueltig (nur ${lit} beleuchtete Pixel)`);
     crop.style.cssText = `position:fixed;top:0;left:0;z-index:9999;image-rendering:pixelated;width:${cw * 4}px;height:${ch * 4}px;background:#06070c;`;
     crop.id = "crop4x";
     // Erst NACH dem Full-Shot einfuegen (zweites evaluate), damit das

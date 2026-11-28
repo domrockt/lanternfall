@@ -37,10 +37,20 @@
     "method": "distinct Innen-Indices des gefaerbten Frames; Kandidaten = Typen mit 2 Stufen bei 0.7, die bei 0.6-0.65 wieder >= 3 erreichen",
     "adopted": { "wisp": "2 -> 3 (mix 0.65)", "knight": "2 -> 3 (0.65)", "harpy": "2 -> 3 (0.65)", "lich": "2 -> 3 (0.65)", "wraith": "2 -> 3 (0.65)", "treant": "2 -> 3 (0.65)", "imp": "2 -> 4 (0.6)" },
     "notAdopted": { "skeleton": "2/2/2 (kein Effekt)", "bat": "2/2/2 (kein Effekt)", "banshee": "9 Basis -> 4 Stufen bei 0.7, kein Kollaps", "T0_mudling_crow_bogzombie_toad_bog_rat": "1 Stufe bei allen Mixen (Dye 16 vs dunkle Basis), nicht heilbar" },
-    "metric": "min Zentroid mit soft-Mix 43.8 >= 30, Buckets unveraendert dominant -> UEBERNOMMEN"
+    "metric": "min Zentroid mit soft-Mix 43.8 >= 30, Buckets unveraendert dominant -> UEBERNOMMEN",
+    "verifiedByArtDirector_afterMixFix": {
+      "note": "Re-Abnahme (28.11., Fix-Check gegen den SHIPPED Code, eliteRimFrame = exakter Pfad, Innen ohne 0/13/Rand)",
+      "levels": { "wisp": "3 (17,18,16)", "knight": "3 (26,25,24)", "harpy": "3 (26,25,24)", "lich": "3 (26,25,24)", "wraith": "3 (25,26,24)", "treant": "3 (17,25,24)", "imp": "4 (25,18,27,26)", "skeleton": "2 (9,8) bei 0.7" },
+      "imp": "misst nach dem Mix-Fix wirklich 4 Stufen (fruehere Diskrepanz 3 entkraeftet)",
+      "skeletonNote": "0.6 wuerde 3 Stufen geben — optional, als backlog #7526 neben der T4-Stufen-Hebung gefuehrt"
+    }
   },
   "k1_evaluation": {
     "criterion": "T4-Elite auf hellem Moorgras ueber KOERPERFARBE erkennbar; Zielmetrik: Index-Overlap T4-Innenraum vs. haeufige Grasrampe (28/29/30) + min Tier-Zentroid >= 30",
     "result": "Dye 30: 66-99 % der T4-Innenpixel auf hellem-Gras-Farben (30/31) — unlesbar. Dye 31: Flaechenfarbe 31 ausserhalb der haeufigen Grasrampe; Trade-off T4-Bucket gruen 82 % -> 77 % (bleibt dominant), min Zentroid 43.8 -> UEBERNOMMEN (dye[4] 30 -> 31), art-director-Gewicht: Prioritaet Terrain-Kontrast"
+  },
+  "reviewerAndArtDirectorRounds": {
+    "reviewer": "FAIL 28.11. (mix-Parameter halb angewendet: Klassenfarbe weiter mit Konstante 0,7 statt mix) -> Fix im Produktionscode, Determinismus-Test deckt mix-Pfad, Titelnit 40 -> 30; erneute Laufzeit-Messung (refine-after, 23f8824).",
+    "artDirector": "PASS 4,5/5 (28.11., am 8x-gesichteten Crop, K1/K2 geloest, K3 fuer benannte Typen geloest); Re-Abnahme: Fix bestätigt (imp 4 Stufen, PASS); erstes Crop4x des Fix-Laufs war ein schwarzes Capture-Artefakt (502 Byte, WebGL-Buffer-Race) — Mess-Skript gefixt (rAF-Zeichnung + Schwarz-Falle), Crop neu erzeugt (33.732 Byte, gesichtet). Folgekarte backlog #7526 (T4-Stufenkollaps horror 1 Stufe etc.)."
   }
 }
