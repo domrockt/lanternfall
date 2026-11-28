@@ -1,0 +1,17 @@
+Lane m10-fx-mixel-timeout-flake – Befund B2 (Minor) aus docs/lanes/m10-sightprep-smoke.md behoben.
+
+Was: Testfall "nur Palettenfarben oder transparent (binaeres Alpha) in jeder Stufe"
+in tests/fx-mixel.test.ts brach unter Volllast (166 parallele Worker-Dateien) mit
+TestTimeoutError nach 5000 ms ab (1762/1763); isoliert 2/2 gruen. Kein Funktionsfehler,
+reiner Last-Timeout. Fix: Timeout des Testfalls auf 15000 ms erhoeht ({ timeout: 15000 }
+als it-Option). Keine Serialisierung noetig, keine Produktionscode-Aenderung
+(Diff: tests/fx-mixel.test.ts, 1 Zeile, + docs/lanes/m10-fx-mixel-timeout-flake.md).
+
+Belege (~/games/.evidence/m10-fx-mixel-timeout-flake/):
+- vitest-isolated-1.log: npx vitest run tests/fx-mixel.test.ts → 17/17 gruen, 1.91 s
+- vitest-isolated-2.log: erneut → 17/17 gruen, 1.83 s
+- npm-test-full.log: npm test Gesamtlauf → 172 Dateien / 1867 Tests gruen,
+  0x TestTimeoutError, RC=0
+
+Karte: #10474. Board-Karte im Commit nicht enthalten (.opencode/board.json ist
+fremd beansprucht, siehe .dispatch/claims.json).
