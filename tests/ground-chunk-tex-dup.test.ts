@@ -35,7 +35,8 @@ class FakeTextureRegistry implements ChunkCanvasRegistryLike {
       this.warnings.push(`Texture key already in use: ${key}`);
       return null;
     }
-    const texture = { isCanvas: true, frames, id: this.nextId++ };
+    const texture: ChunkCanvasLike & { id: number } = { isCanvas: true, frames, id: this.nextId++, ref: null };
+    texture.ref = texture;
     this.map.set(key, texture);
     return texture;
   }
@@ -100,7 +101,7 @@ describe("acquireChunkCanvas (Doppel-Add-Schutz chunk_*)", () => {
 
   it("Fremd-Textur unter dem Key (kein Canvas): Key wird freigegeben und neu angelegt", () => {
     const reg = new FakeTextureRegistry();
-    reg.mapSetForTest("chunk_2_2", { isCanvas: false, frames: 1, id: 99 });
+    reg.mapSetForTest("chunk_2_2", { isCanvas: false, frames: 1, id: 99, ref: null });
     const res = acquireChunkCanvas(reg, "chunk_2_2", 1);
     expect(res.reused).toBe(false);
     expect((res.texture as { id: number }).id).toBeGreaterThan(0);
