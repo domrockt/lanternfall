@@ -11521,11 +11521,17 @@
       "id": 8976,
       "title": "m10-evo-fx-dornensturm Merge-Verifikation: Kontroll-Shots 960/1280/1920 (Start + 60 s, kein Schwarz im Spielfeld)",
       "description": "Post-Merge-Kontrolle auf main nach Merge 063623a (paralleler Job): 6 Screenshots (960x540, 1280x720, 1920x1080, je Start + nach 60 s echtem Laufen mit auto-bestaetigten Level-Ups), Black-Pixel-Messung. Abnahmekriterium: keine schwarzen Terrain-Loecher; gemessene Schwarz-Pixel (0,25-0,30 %) nur HUD/Props, in Start-Shots identisch.",
-      "column": "doing",
+      "column": "done",
       "assignee": "merge-job",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T06:11:06Z",
+          "by": "build",
+          "text": "doing → done: Merge-Verifikation auf main (Merge 063623a durch Parallel-Job): Commit 7e9d14a mit 6 Kontroll-Shots (960/1280/1920, Start + 60 s Laufen) + blackcheck.json; Terrain intakt, kein reines Schwarz im Spielfeld (0,25-0,30 % nur HUD/Props, statisch); Suite 1522/1522 gruen; Lane-Worktree bereits entfernt, Branch bleibt."
+        }
+      ],
       "created": "2026-11-28T06:10:09Z",
-      "updated": "2026-11-28T06:10:09Z"
+      "updated": "2026-11-28T06:11:06Z"
     }
   ]
 }
