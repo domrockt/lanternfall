@@ -1,0 +1,25 @@
+# Lane m10-boss-name-legibility — fertig (2026-11-28)
+
+Befund B3 (Major, aus docs/lanes/m10-sightprep-smoke.md) behoben: Boss-Name über der
+Boss-HP-Leiste im M25-Chaos unlesbar.
+
+- K1 (#10454, commit fbfe8d70): M25-Chaos-Repro (scripts/m10-boss-name.mjs, skipTo 1490 +
+  80x horror, 960x540 + 640x360, iGPU, 0 JS-Fehler). Diagnose mit EINEM Repro: Glyphen-
+  Deckung im Chaos = Referenz ohne Gegner (253/253 = 1.0 in beiden Formaten) → **Kontrast-
+  problem, NICHT Layering** (43 % des Textbands sind Gegnerpixel derselben Hue-Familie).
+  Baseline: ~/games/.evidence/m10-boss-name-legibility/m10-boss-name-before.json.
+- K2 (#10455, commit d228fc38): Fix = dunkle Textband-Platte (ink, Alpha 0,95 wie die
+  Leiste, gleiche Breite, bündig über der Leiste) als erstes Kind von bossGroup; reine
+  Geometrie bossNamePlateRect + BOSS_NAME_PLATE_ALPHA in src/scenes/UI.ts. Kein Depth-
+  Eingriff (K1 belegt korrektes Layering). Regressionstest tests/boss-name-legibility.test.ts
+  (17 Tests: bündig, gleiche Breite, Textband-Abdeckung, Ganzzahligkeit, Alpha für 5 View-
+  Breiten). tsc rc=0, npm test 1884/1884 (2 grüne Folgeläufe; 1 nicht reproduzierbarer
+  Fremd-Flake im ersten Lauf), npm run build grün.
+- K3 (#10456): Nachher-Repro bei identischen Bedingungen: Name in beiden Formaten im Chaos
+  vollständig lesbar, HP-Leiste weiter lesbar, kein neues Near-White/Overlap. Vorher/Nachher-
+  Paare in shots/abnahme/m10-boss-name-{before,after}-{960x540,640x360}.png, Zooms im
+  Evidence-Ordner. art-director: PASS 5/5 (Mikro-Hinweis: 1 px Puffer Glyphen↔Leisten-Stroke,
+  Follow-up). commit-gate: PASS.
+
+Offene Punkte: 1 px Puffer unter dem Textband (nicht blockierend); Lehre: Vorher-Läufe nach
+einem Fix nur gegen verifizierten Pre-Fix-Build (dist-Check).

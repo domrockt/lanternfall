@@ -13705,10 +13705,16 @@
       "id": 10456,
       "title": "m10-boss-name-legibility K3: Nachher-Beleg + art-director-Urteil + .lane-done",
       "description": "AK: Gleicher Repro nach Fix (after-Shots 640+960 + 6x-Zoom), Boss-Name im M25-Chaos vollständig lesbar, HP-Leiste weiter lesbar, kein neues Near-White/Overlap im Rest-HUD. art-director-Kurzsichtung (Note + 2-3 Sätze) in docs/lanes/m10-boss-name-legibility.md. npm test grün, npm run build grün, .lane-done committet.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:33:57Z",
+          "by": "build",
+          "text": "todo → doing: Übernommen: After-Belege + art-director-Kurzsichtung + Lane-Abschluss."
+        }
+      ],
       "created": "2026-11-28T09:18:44Z",
-      "updated": "2026-11-28T09:18:44Z"
+      "updated": "2026-11-28T09:33:57Z"
     }
   ]
 }
