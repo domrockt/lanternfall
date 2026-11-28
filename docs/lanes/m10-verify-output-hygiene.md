@@ -43,7 +43,21 @@ Bewusst getrackte Verwandte, die unangetastet bleiben (kein Skript-Output):
 
 ## K3 — Gegenprobe (#11640)
 
-(d folgt)
+Alle drei Skripte je 1x gelaufen (ohne flock, Verify-Skripte), Logs in `~/tmp/m10-verify-output-hygiene-k3-*.log`:
+
+| Skript | rc | Ergebnis |
+|---|---|---|
+| verify-menus.mjs | 0 | PASS 15/15 Checks, 0 JS-Fehler |
+| verify-terrain.mjs | 0 | OK — Gras 60 px/s, Wasser 37,6 px/s, Ratio 0,63, 3 Spritzer, Gegner 6,4/15 px/s, Schwarz-Pixel-Guard 3 Formate ok, 0 JS-Fehler; Renderer-String im JSON: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (iGPU, kein SwiftShader), `rendererValid: true` |
+| verify-final.mjs | 0 | Alle 7 Checks PASS, 0 JS-Fehler |
+
+Belege in `~/games/.evidence/verify-hygiene/` (23 Dateien, timestamped; u. a.
+`2026-11-28T11-39-13-712Z-m10-terrain-guard.json` mit Renderer-String,
+`2026-11-28T11-39-56-829Z-final-verify.json`, `2026-11-28T11-38-42-803Z-m10-verify-menus.json`).
+
+**Hygiene-Nachweis:** `git status --short` nach allen drei Läufen zeigt **keine** shots-/skript-bedingten
+Änderungen — nur die lane-eigene Board-Buchung (`.opencode/board.json`). `shots/` unverändert
+(alle neuen Outputs liegen im Evidence-Dir außerhalb des Repos).
 
 ## K4 — Doku + Abschluss (#11641)
 

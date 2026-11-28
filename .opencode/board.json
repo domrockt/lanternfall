@@ -15772,7 +15772,7 @@
       "id": 11639,
       "title": "m10-verify-output-hygiene K2: --out-Flag + Evidence-Default",
       "description": "Fix in den drei Skripten: --out <dir>-CLI-Flag, Default ~/games/.evidence/verify-hygiene/ fuer Kategorie-(b)-Outputs; getrackte Fixtures unveraendert. verify-input.mjs und fremde verify-*/Skripte NICHT anfassen. Abnahme: npx tsc --noEmit gruen, alle 3 Skripte schreiben nicht mehr nach shots/.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15783,25 +15783,35 @@
           "at": "2026-11-28T11:38:04Z",
           "by": "build",
           "text": "todo → doing: K2 Fix gestartet"
+        },
+        {
+          "at": "2026-11-28T11:38:35Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: 3 Skripte auf Evidence-Default + --out umgestellt, Commit 241555b1, node --check OK"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:38:04Z"
+      "updated": "2026-11-28T11:38:35Z"
     },
     {
       "id": 11640,
       "title": "m10-verify-output-hygiene K3: Gegenprobe 3 Skript-Laeufe",
       "description": "Alle drei Skripte je 1x laufen lassen (verify-terrain mit Renderer-String-Pflicht im JSON). Abnahme: rc=0, 0 JS-Fehler, git status --short danach sauber (keine getrackten/ungewollten shots-Aenderungen), Outputs in ~/games/.evidence/verify-hygiene/, Terrain-JSON enthaelt Renderer-String (kein SwiftShader).",
-      "column": "todo",
+      "column": "doing",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
           "by": "build",
           "text": "todo → todo: Lane gebucht (Briefing #11638-#11641)"
+        },
+        {
+          "at": "2026-11-28T11:38:35Z",
+          "by": "build",
+          "text": "todo → doing: K3 Gegenprobe gestartet"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:37:18Z"
+      "updated": "2026-11-28T11:38:35Z"
     },
     {
       "id": 11641,
