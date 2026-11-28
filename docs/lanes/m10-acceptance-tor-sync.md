@@ -55,3 +55,17 @@ Querverweise auf Belege ergänzt (`~/games/.evidence/m10-janky-remeasure/`,
 `m10-v10-gate-rerun/`, `m10-v10-gate-torprio/`, `m10-v10-gate-guard/`,
 `m10-heap-gate-recovery/`). Alle Zahlen nur aus Belegen/Lane-Dokus übernommen.
 Abnahme: `npm test` 0 fail; `git diff` zeigt nur Ergänzungen im v1.0-/G-Kontext.
+
+## Abnahme-Nachweis (Karte #13729)
+
+- `npm test`: **2568/2568 in 237 Dateien, 0 fail** (ACCEPTANCE-Text ändert keinen Code;
+  die zwei während der Läufe regenerierten Timestamp-Diffs in
+  `shots/m10-passive-math-*.json` wurden zurückgesetzt — Inhalt identisch, nur `generatedAt`).
+- `npx tsc --noEmit`: rc=0 (K1).
+- `git diff 2200f528..HEAD -- ACCEPTANCE.md`: ausschließlich **Ergänzungen** — ein neuer
+  Nachtrag-Abschnitt nach dem v1.0-Gerätetore-Abschnitt (120-Hz-A/B, Tor-Priorität,
+  Gate-Rerun, Querverweise) plus Lane-Doku. Kein historischer Wert überschrieben,
+  keine Löschung außerhalb der Lane-Doku (geprüft mit `git diff --stat` und
+  `git diff -- ACCEPTANCE.md | grep '^-'` → nur Kontextzeilen des Einfügepunkts).
+- Commits: K1 `dcd0390f`, K2 `a9dd66d8`, K3 `1268189d`, K4 = dieser Commit.
+- Reviewer: reviewer-PASS steht aus; Urteile in den Karten-Notizen.

@@ -19647,25 +19647,36 @@
       "id": 13728,
       "title": "m10-acceptance-tor-sync K3: Blocker-Status korrigieren (fps-pacing-Tor-Lesart)",
       "description": "FPS avg + rAF-p95 als Tor-Metriken nach merge-m10-v10-gate-torprio dokumentieren; gfxinfo-janky nur Beobachtung; Verweis auf docs/lanes/m10-janky-remeasure.md und m10-v10-gate-torprio.md. AK: K3-janky-FAIL im Gerätetore-Abschnitt mit aktueller Tor-Lesart kontextualisiert.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T17:52:03Z",
           "by": "build",
           "text": "todo → doing: Blocker-Status/Tor-Prioritaet wird ergaenzt"
+        },
+        {
+          "at": "2026-11-28T17:53:01Z",
+          "by": "build",
+          "text": "doing → review: K3 committed 1268189d: Tor-Prioritaet (fps-avg>=57, p95<=16ms primar; janky nur Warnung) + Rerun-Urteilstabelle im ACCEPTANCE-Nachtrag"
         }
       ],
       "created": "2026-11-28T17:48:43Z",
-      "updated": "2026-11-28T17:52:03Z"
+      "updated": "2026-11-28T17:53:01Z"
     },
     {
       "id": 13729,
       "title": "m10-acceptance-tor-sync K4: Abgleich + Querverweise auf Belege, Lane-Doku, npm test, Commit",
       "description": "Querverweise auf Belege (~/games/.evidence/m10-janky-remeasure/, m10-v10-gate-rerun/) ergänzen; Zahlen nur aus Belegen. AK: npm test 0 fail, diff nur Ergänzungen im v1.0-/G-Kontext, Befunde mit Zahlenbeleg in docs/lanes/m10-acceptance-tor-sync.md.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T17:53:01Z",
+          "by": "build",
+          "text": "todo → doing: Querverweise + Lane-Doku-Abschluss + finale Pruefung"
+        }
+      ],
       "created": "2026-11-28T17:48:43Z",
-      "updated": "2026-11-28T17:48:43Z"
+      "updated": "2026-11-28T17:53:01Z"
     }
   ]
 }

@@ -546,6 +546,20 @@ in use: chunk_*" im Fullrun-Guard, in beiden Läufen reproduziert; Perf-Pass und
 verify:final je 0 Fehler), `fullrun-inhalt` nur als Folgetor desselben Befunds. Alle
 übrigen Host-Tore PASS.
 
+### Querverweise — Roh-Belege (außerhalb des Repos, `~/games/.evidence/`)
+
+| Beleg | Pfad | Inhalt |
+|---|---|---|
+| janky-remeasure K2/K3 | `~/games/.evidence/m10-janky-remeasure/k2-cap60-device.json`, `k3-max-device.json`, `smoke.json` | Gerätemessung Cap 60 / MAX: janky 0 %, FPS avg 50,1/50,0, rAF-p95 33,4 ms |
+| v10-Gate-Rerun | `~/games/.evidence/m10-v10-gate-rerun/run1.json`, `run2.json` | Tor-Urteile main `11f929c7`: FAIL nur `js-errors-0` + Folgetor |
+| Gate-torprio Vorher/Nachher | `~/games/.evidence/m10-v10-gate-torprio/…-vorher.json`, `…-nachher.json` | Urteilswechsel am identischen Input (Szenario A/B) |
+| Gate-Guard Referenz | `~/games/.evidence/m10-v10-gate-guard/gate-final-run3.json` | historischer FAIL(frame-p95-only), 15:57Z |
+| Heap-Gate-Recovery (G-Nachtrag) | `~/games/.evidence/m10-heap-gate-recovery/k1-run1.json`, `k1-run2-retry.json` | HARD −25,2 % (endMB 48,5 vs. Minute-1 64,8) — Zahlen hier gegen die JSONs verifiziert |
+
+Zahlen in diesem Nachtrag wurden ausschließlich aus „Wünsche von Dom.md" (17:45Z), den
+Lane-Dokus (`docs/lanes/m10-janky-remeasure.md`, `m10-v10-gate-torprio.md`,
+`m10-v10-gate-rerun.md`) und den JSON-Belegen oben übernommen; nichts aus dem Gedächtnis.
+
 ## Nachabnahme G (2026-11-28) — Nachabnahme nach Heap-Regressions-Fix
 
 **Basis:** main @ `b69ede5c` (nach `9153181d` Merge `m10-heap-regression-fix`).
