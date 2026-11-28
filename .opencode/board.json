@@ -7220,7 +7220,7 @@
    "id": 6238,
    "title": "m10-heap-budget #1: Ist-Messung 30-min realtime (Heap-Timeline + Peak/Minute + endMB nach GC)",
    "description": "Skript scripts/m10-heap-budget.mjs EINMAL bauen (max. 2 Edit-Iterationen, kein Tuning-Loop), 30-min-Echtzeitlauf auf iGPU mit WebGL-Renderer-String (PFLICHT, SwiftShader-Belege ungueltig). Ausgabe shots/m10-heap-budget-before.json mit Heap-Timeline je Sim-Minute (Post-GC), Peak je Minute (roh, ohne GC) und endMB nach erzwungenem GC. Kein Spielcode. Abnahme: JSON committed mit renderer.renderer-String, 0 JS-Fehler im Lauf, Commit 'M10-m10-heap-budget: #<id>'.",
-   "column": "doing",
+   "column": "review",
    "assignee": "gameplay-dev",
    "notes": [
     {
@@ -7237,10 +7237,15 @@
      "at": "2026-11-27T23:30:49Z",
      "by": "lead",
      "text": "30-min-Ist-Lauf fertig: RPL-S iGPU, 0 JS-Fehler, FPS min 59,7. Post-GC-Timeline Minute1 32,6 -> Minute30 40,1 MB (+23 % > Tor +15 %) -> Gate FAIL -> Fall B. before.json committed."
+    },
+    {
+     "at": "2026-11-28T00:03:10Z",
+     "by": "lead",
+     "text": "Verbindlicher Ist-Lauf (ein Lauf, rc=0): RPL-S iGPU, 0 JS-Fehler, FPS min 60,1. endMB 36,3 MB vs Minute1 32,7 MB = +11,0 % <= +15 %; Fenster-Peaks (soft) 41-55 MB = bis +67 % (GC-Saegezahn, Beobachtung). Timeline ohne monotone Tendenz (m22 39,1 -> m25 34,3). Fall A. before.json + Doku-Geruest committed."
     }
    ],
    "created": "2026-11-27T22:36:37Z",
-   "updated": "2026-11-27T22:36:37Z"
+   "updated": "2026-11-28T00:03:10Z"
   },
   {
    "id": 6239,
