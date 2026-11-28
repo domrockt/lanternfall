@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7510,
+  "next": 7515,
   "cards": [
     {
       "id": 1,
@@ -9304,6 +9304,63 @@
       ],
       "created": "2026-11-28T02:17:45Z",
       "updated": "2026-11-28T02:18:22Z"
+    },
+    {
+      "id": 7510,
+      "title": "m10-evo-fx-gewittersiegel #1 Ist + Bug-Repro",
+      "description": "Skript scripts/m10-evo-fx-gewittersiegel.mjs (von phoenix kopieren, Waffen-ID thunderseal), Evolution auslösen, Zeitreihe 0–0,5s / 1–2s / >2s je 640+960 → shots/m10-evo-fx-gewittersiegel-before-*.png + -before.json mit WebGL-Renderer-String. EINMAL messen, committen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:20:45Z",
+      "updated": "2026-11-28T02:20:45Z"
+    },
+    {
+      "id": 7511,
+      "title": "m10-evo-fx-gewittersiegel #2 Bug-Fix Sichtbarkeit",
+      "description": "Ursache des Verschwindens nach ~2s in FxSystem.ts/evolution-weapons.ts/evolutions.ts (Lifetime, Alpha-Fade, Culling, Wiederholungs-Intervall) finden und beheben — Siegel bleibt während der Wirkungsdauer sichtbar.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:27:21Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T02:20:45Z",
+      "updated": "2026-11-28T02:27:21Z"
+    },
+    {
+      "id": 7512,
+      "title": "m10-evo-fx-gewittersiegel #3 Optik neu (gen-fx.ts)",
+      "description": "Siegel-Textur in Zielgröße neu: dunkle Siegel-Grundfläche mit 1-px-Rune/Kontur, Blitz-Impact hell/kontrastreich (kühles Blitz-Weiß/Gelb, keine Ink/Grau), 2–3 Frames, Anticipation→Impact→Ausklang, Draw-Scale 1.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:20:45Z",
+      "updated": "2026-11-28T02:20:45Z"
+    },
+    {
+      "id": 7513,
+      "title": "m10-evo-fx-gewittersiegel #4 Tests",
+      "description": "tests/evo-fx-gewittersiegel.test.ts: Sichtbarkeit über volle Wirkungsdauer (Regression 2s-Bug), Texturgröße = Sprite-Pixelgröße, Farb-Treppe ohne Ink/Grau; bestehende Evolution-Tests grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:20:45Z",
+      "updated": "2026-11-28T02:20:45Z"
+    },
+    {
+      "id": 7514,
+      "title": "m10-evo-fx-gewittersiegel #5 Nachher + Abnahme",
+      "description": "after-Belege shots/*-after.png + -after.json (Renderer-String), art-director-Sichtprüfung (verschärfte Skala: Dither nur an Kanten, Kerne flächig, organische Formen), Doku docs/lanes/m10-evo-fx-gewittersiegel.md mit Vorher/Nachher.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:34:31Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T02:20:45Z",
+      "updated": "2026-11-28T02:34:31Z"
     }
   ]
 }

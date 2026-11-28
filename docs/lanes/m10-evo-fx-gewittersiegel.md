@@ -84,6 +84,11 @@ uniforme Zackenlängen.
 After-Belege nach der Nachbesserung (`-after.json`, `-after-*-t*.png`) zeigen
 minAlpha 0,65/0,68, maxScale 1,0, Lücken nur t=0 — Criterion (1)–(3) weiter erfüllt.
 
+**Kurzbestätigung Runde 2: PASS — Note 4,5/5 (auslieferungsreif).** Alle drei
+Minormängel bestätigt behoben (Funken-Tupfer, Rune als klarer Blitz-Zickzack,
+variierte Zackenlängen); kein Dither, keine Mixel, Palettentreue und Frame-Kohärenz
+sauber.
+
 
 ## Offene Punkte
 
