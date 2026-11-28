@@ -239,3 +239,26 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   (aut_22182edd…) aktiv, nächster Recheck 10:00:58Z. Bedarf UNVERÄNDERT:
   gem-Rows via Mini-Job oder Freigabe — danach 3 Dateien committen (#10180),
   Board done, `.lane-done`.
+
+## Run-Fortsetzung (28.11. 09:48–09:52Z, Versuch 4 / Run 9)
+
+- Ready-Zustand frisch verifiziert (09:49Z): `npx tsc --noEmit` clean,
+  `npx vitest run tests/gem-value-reading.test.ts` 10/10 grün, r3-Patch gestaget
+  (textures.ts 20 Z, xp.ts 24 Z, Test 8 Z) — unverändert zu Run 6/7/8.
+- Claim-Lage (Substring-Check 09:48Z): `src/gfx/textures.ts` weiterhin bei
+  `m10-fx-bakes-evo-r2`. Lane aktiv und NICHT gemergt (`git merge-base
+  --is-ancestor m10-fx-bakes-evo-r2 main` → NOT-MERGED; K3-Commit 20a79970
+  08:59). Mini-Jobs `m10-chest-arrow-texture-r2` / `m10-gem-rows-texture`
+  nicht gestartet (keine Worktrees). Kein Commit-Retry (4 dokumentierte
+  Fehlversuche).
+- **Done-Moves #10177–#10179 versucht (09:49Z)**: vom Board-Plugin korrekt
+  verweigert („5 uncommitted change(s)… Commit this card's work first“) —
+  die Karten bleiben in `review`, bis der r3-Endcommit (#10180) durch ist;
+  dann bewegt die Automation v2 sie zusammen mit #10180.
+- Worktree-Hygiene: spuriously regenerierte `shots/m10-passive-math-*.json`
+  (nur `generatedAt`, 09:28) zurückgesetzt; board.json-Plugin-Churn
+  (Re-Escapes, next 10565→10728) bewusst uncommittet gelassen.
+- Automation v2 (aut_22182edd…) aktiv, nächster Recheck 10:00:58Z, läuft bis
+  10:55Z. Bedarf UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt via Mini-Job
+  oder Freigabe nach fx-bakes-evo-r2-Merge — danach 3 Dateien committen
+  (#10180), Board #10177–#10180 done/review→done, `.lane-done`.
