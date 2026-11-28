@@ -263,6 +263,60 @@ try {
     });
   }
 
+  // Phase C: Fokus-Verhalten je Eingabeart (K3). Muster options-touch-focus:
+  // Startfokus 0 beim Öffnen, stillstehender Zeiger wählt nichts (Hover-Guard).
+  const focusCases = [];
+  {
+    const ctx = await browser.newContext({ viewport: { width: 780, height: 360 }, deviceScaleFactor: 3 });
+    const page = await ctx.newPage();
+    page.on("pageerror", (e) => errors.push(`focus: ${String(e)}`));
+    page.on("console", (m) => { if (m.type() === "error") errors.push(`focus: ${m.text()}`); });
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=${SHOT_SEED}`);
+    await startRun(page);
+    // Tastatur: Panel oeffnet, Startfokus soll 0 sein.
+    const keyboard = await page.evaluate(() => {
+      const run = window.__game.scene.getScene("run");
+      run.giveXp(200);
+      return new Promise((res) => setTimeout(() => res({
+        selected: window.__game.scene.getScene("ui").selected,
+        levelUpOpen: run.levelUpOpen,
+      }), 200));
+    });
+    focusCases.push({ input: "keyboard-open", ...keyboard, expect: "selected=0" });
+    // Panel schliessen: Angebote per Enter picken, bis zu (mehrere Level-Ups;
+    // giveXp(200) kann ~7 Level-Ups queuen, der Loop muss komplett abarbeiten).
+    for (let i = 0; i < 12; i++) {
+      const open = await page.evaluate(() => window.__game.scene.getScene("run").levelUpOpen);
+      if (!open) break;
+      await page.keyboard.press("Enter");
+      await page.waitForTimeout(120);
+    }
+
+    // Maus parkt auf Karten-2-Mitte (game 568,203; CSS = game bei 780x360@3),
+    // DANN Panel oeffnen -> Guard soll Fokus 0 lassen (Vorher: Hover-Leak 2).
+    await page.mouse.move(568, 203);
+    await page.waitForTimeout(80);
+    const mouseParked = await page.evaluate(() => {
+      const run = window.__game.scene.getScene("run");
+      run.giveXp(200);
+      return new Promise((res) => setTimeout(() => res({
+        selected: window.__game.scene.getScene("ui").selected,
+        levelUpOpen: run.levelUpOpen,
+      }), 200));
+    });
+    focusCases.push({ input: "mouse-parked-pre-open", ...mouseParked, expect: "selected=0 (Guard) / 2 (Leak, Vorher)" });
+    // Echte Bewegung nach dem Öffnen: 1 px links, Hover soll Karte 2 waehlen
+    // (566 liegt noch in Karte 2: 472..632).
+    await page.mouse.move(566, 203);
+    await page.waitForTimeout(120);
+    const hoverMoved = await page.evaluate(() => ({
+      selected: window.__game.scene.getScene("ui").selected,
+      levelUpOpen: window.__game.scene.getScene("run").levelUpOpen,
+    }));
+    focusCases.push({ input: "mouse-move-after-open", ...hoverMoved, expect: "selected=2 (Hover nach Bewegung)" });
+    await ctx.close();
+  }
+
   const report = {
     schema: "m10-levelup-panel-crisp/v1",
     tag,
@@ -274,6 +328,7 @@ try {
       ? "Ist-Stand vor dem Crisp-Fix: Panel-Layout UI.ts createLevelUpUI (Anker 134/36/56+oy, Karten 158+oy, Icon Scale 3)."
       : "Nach Fix: ganzzahlige Skalen, 0 Überlappungen, Fokus-Kontrast >= 3:1.",
     jsErrors: errors.length,
+    focusCases,
     formats,
     passed: formats.every((f) => f.ok) && errors.length === 0 && seedSnapshots.every((s) => s.offers.length > 0),
   };

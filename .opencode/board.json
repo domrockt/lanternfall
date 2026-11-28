@@ -12483,27 +12483,38 @@
       "id": 10666,
       "title": "m10-levelup-panel-crisp K2: Pixel-Crisp-Fix Panel",
       "description": "Panel/Icon/Text ganzzahlig skaliert (eine Pixelgröße, Mixel-Regel), Anker auf Spielpixel gerundet; UI.ts/levelup.ts minimal. Abnahme: Probe zeigt 0 fraktionale Skalen im levelGroup, npx tsc rc=0, build grün, tests grün.",
-      "column": "doing",
+      "column": "review",
       "assignee": "lead",
       "notes": [
         {
           "at": "2026-11-28T09:49:19Z",
           "by": "build",
           "text": "todo → doing: K2 gestartet: Divider-Anker-Fix in UI.ts createLevelUpUI (setOrigin 0/0.5, linke Kante = textX, inset 4px beidseitig)."
+        },
+        {
+          "at": "2026-11-28T09:51:31Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig (Commit 58723ee8): Divider setOrigin(0,0.5) — Linie jetzt inset 4px in eigener Karte. Nachher-JSON: 0 Überlappungen, 0 fraktionale Skalen, inside true in 640/780/960; Sichtprüfung after-640 sauber. build ok, 1698/1698 Tests gruen, tsc rc=0. Probe-Edit #3 dokumentiert: Kriterium 'Divider-vs-eigene-Karte' auf Voll-Einschluss korrigiert (false positive), keine Werte-Tuning-Schleife. (2 gemutete shots/m10-passive-math-*.json waren Timestamp-Churn meines Testlaufs, revertet.)"
         }
       ],
       "created": "2026-11-28T09:43:28Z",
-      "updated": "2026-11-28T09:49:19Z"
+      "updated": "2026-11-28T09:51:31Z"
     },
     {
       "id": 10667,
       "title": "m10-levelup-panel-crisp K3: Fokus-Kontrast >= 3:1",
       "description": "Gewähltes Angebot Kontrast >= 3:1 gegen Panel-Hintergrund (gemessen WCAG), Tastatur/Gamepad/Touch gleiches Fokusverhalten (Muster options-touch-focus). Abnahme: Probe-JSON focus.ratioSelected >= 3 für alle 3 Formate.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "lead",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T09:51:40Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: Fokus-Kontrast gemessen 11.9:1 (>=3 ok); Pruefung Tastatur/Gamepad/Touch-Fokusgleichheit gegen Muster options-touch-focus."
+        }
+      ],
       "created": "2026-11-28T09:43:28Z",
-      "updated": "2026-11-28T09:43:28Z"
+      "updated": "2026-11-28T09:51:40Z"
     },
     {
       "id": 10668,

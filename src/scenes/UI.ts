@@ -11,7 +11,7 @@ import { slotLabelLines, wrapHintLines } from "../gfx/text";
 import { evolutionReadyList } from "../logic/evolution";
 import type { EvolutionDef } from "../data/types";
 import { chooseBestOffer } from "../logic/autoplay";
-import { OptionsMenu } from "../ui/options-menu";
+import { OptionsMenu, hoverRowAllowed } from "../ui/options-menu";
 import { createMenuButton, MenuFocus, menuRepeatTick, type MenuButton, type MenuRepeatState } from "../ui/menu";
 import { InputState, type ActionState } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
@@ -580,8 +580,12 @@ export class UI extends Phaser.Scene {
       const bg = this.add.rectangle(cardX, 158 + oy, cardW, 150, PAL[C.nightMid]).setStrokeStyle(2, PAL[C.nightSlate])
         .setName(`levelup-card-${i}`);
       bg.setInteractive({ useHandCursor: true });
-      bg.on("pointerover", () => {
+      bg.on("pointerover", (pointer: Phaser.Input.Pointer) => {
         if (!this.run?.levelUpOpen) return;
+        // m10-levelup-panel-crisp K3 (Muster options-touch-focus): ein
+        // stillstehender Zeiger waehlt beim Erscheinen des Panels nichts;
+        // FokusStart bleibt je Eingabeart Karte 0.
+        if (!hoverRowAllowed(pointer, this.levelOpenPointer)) return;
         this.selected = i;
         this.highlight();
       });
@@ -622,6 +626,9 @@ export class UI extends Phaser.Scene {
       else card.bg.disableInteractive();
     }
   }
+
+  /** K3 Hover-Guard: Zeigerposition beim Öffnen des Level-Up-Panels. */
+  private levelOpenPointer: { x: number; y: number } | null = null;
 
   private createPauseUI(): void {
     const W = GAME_WIDTH;
@@ -1082,6 +1089,7 @@ export class UI extends Phaser.Scene {
     this.levelGroup.setVisible(false);
     this.setLevelCardsEnabled(false);
     this.selected = 0;
+    this.levelOpenPointer = null;
   }
 
   private showOffers(offers: Offer[], level: number): void {
@@ -1123,6 +1131,10 @@ export class UI extends Phaser.Scene {
       card.desc.forEach((t) => t.setVisible(false));
     }
     this.highlight();
+    // K3: Zeigerposition beim Öffnen merken — stillstehender Zeiger darf beim
+    // Erscheinen des Panels keine Karte anwählen (Muster options-touch-focus).
+    const p = this.input.activePointer;
+    this.levelOpenPointer = { x: p.x, y: p.y };
     this.levelGroup.setVisible(true);
     this.setLevelCardsEnabled(true);
   }
