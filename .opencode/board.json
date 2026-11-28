@@ -12331,9 +12331,20 @@
       "id": 9858,
       "title": "m10-title-flame-glow-r2 K4: Nachher-Belege + art-director + Doku",
       "description": "After-Shots beider Viewporte, art-director-Urteil >= 4/5 'kommerziell auslieferbar', Doku docs/lanes/m10-title-flame-glow-r2.md + .lane-done. Abnahme: art-director PASS mit Note >= 4/5 an Nachher-Shots, 0 off-Palette-Pixel, Tests gruen, Title.ts/menu.ts unberuehrt.",
-      "column": "todo",
+      "column": "review",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T07:50:49Z",
+          "by": "coder",
+          "text": "todo → doing: After-Belege + art-director-Abnahme"
+        },
+        {
+          "at": "2026-11-28T08:01:01Z",
+          "by": "coder",
+          "text": "doing → review: After-Belege 3 Viewports + GIF, art-director PASS 4/5 (alle >= 4), 1704/1704 Tests, Title.ts/menu.ts unberuehrt, Beleg-Crop ersetzt. Commit #9858"
+        }
+      ],
       "created": "2026-11-28T07:38:48Z",
       "updated": "2026-11-28T07:38:48Z"
     }

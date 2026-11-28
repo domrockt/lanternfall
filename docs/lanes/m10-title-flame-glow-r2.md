@@ -79,3 +79,50 @@ menu-art-crisp + chest-icon-crisp zusammen 84/84 grün.
 
 Palette-Guard: `tests/palette-compliance.test.ts` (global, inkl. GEN_TITLE) grün.
 Ergebnis: 14/14 neu + 84/84 Nachbarschaft + `npx tsc --noEmit` grün.
+
+## Karte K4 — Nachher-Belege + art-director + Doku (2026-11-28)
+
+Aufnahme: `node scripts/m10-title-flame.mjs after` (0 JS-Fehler, 3 Viewports + GIF).
+Volle Verifikation: `npm run build` grün, `npm test` **1704/1704 grün (157 Files)**,
+`npx tsc --noEmit` grün. Geänderte Dateien vs. main: nur gen_title.py, gen-title.ts,
+tests/title-flame-glow.test.ts, Lane-Doku, Board — **Title.ts/menu.ts unberührt**.
+
+Belege: `~/games/.evidence/m10-title-flame-glow-r2/`
+- `m10-title-flame-after-640x360.png`, `-780x360.png`, `-1920x1080.png`
+- `m10-title-flame-after-640x360.gif` (10 Frames @ 2 fps; auch im Repo:
+  `shots/m10-title-flame-after-640x360.gif` aktualisiert — animiertes Flammen-Asset)
+- Zooms: `after-640-zoom4x-lantern1/3.png`, `after-1920-zoom1x-lantern1.png`
+  (zentrale Titel-Laterne, Scale-4-Krispheit), `after-1920-moorlanterns-dimmed-4x.png`
+- Vergleich: `compare-lantern1-before-after.png` (links vorher, rechts nachher)
+- `after-glow.json`: Glut-Anteil **0,125 → 0,375** (Ziel ≥ 0,30 ✓)
+
+### art-director-Urteil (2026-11-28, **PASS**, alle Noten ≥ 4, Gesamt 4/5)
+
+| # | Kriterium | Note |
+|---|---|---|
+| 1 | Flamme/Glut als Feuer erkennbar, auffällig im 640er First Screen | 4 |
+| 2 | Kern organisch, Dither nur an Kanten, kein Platten-Licht | 4 |
+| 3 | Lesbarkeit/Skalierung 640 Scale 1 UND 1920 Scale 4 (keine Mixel) | 4 |
+| 4 | Gesamteindruck vs. vorher (heller Kern + Glut-Hof statt flacher Amber-Fläche) | 4 |
+| – | GIF-Flackern ruhig (f0→f1→f0→f2, 2 fps, kein Strobo) | ok |
+
+muss neu: — / nachbessern (nicht blockierend): Beleg-Crop ersetzt (s. u.); kleine
+Laternen 2–4 liegen hinter dem Nacht-Dim-Overlay (vorbestehend, Layout-Constraint) —
+Hinweis für eine künftige Dim-Layer-Karte dokumentiert.
+
+**Vorbestehender Befund (nicht von dieser Lane, ehrlich dokumentiert):** Im
+1920x1080-Viewport ist der Bodenbereich (Moor-Laternen 1–4) deutlich dunkler als im
+640x360-Viewport — der Before-Shot zeigt exakt dasselbe (Glas-Pixel (88,800) =
+(9,13,17) vor UND nach dem Fix). Die kleinen Laternen sind dort hinter dem
+Nacht-Dim/Vignette praktisch unsichtbar; das ist ein Title.ts-Rendering-Verhalten und
+damit außerhalb dieser Lane (Title.ts bleibt unangetastet). Der art-director hat die
+Scale-4-Lesbarkeit deshalb an der zentralen Titel-Laterne geprüft (Note 4, keine
+Mixel, knackscharf). Kandidat für eine künftige Karte (Dim-Layer/Vignette pro Viewport).
+
+## Ergebnis / Messwerte
+
+- Glut-Flächenanteil (13+22) je Glas-Patch: **0,125 → 0,375** (Ziel ≥ 0,30)
+- 0 off-Palette-Pixel (Palette-Guard global grün), binäres Alpha, F0 = Zellkopie
+- F1/F2-Diff vs. F0: 4/7 Zellen (Grenze 12), Funken Palette 13
+- Build + 1704 Tests grün; Title.ts/menu.ts byte-identisch zum main-Stand
+- Abnahme: art-director PASS, 4/5 („auslieferbar im aktuellen Umfang")
