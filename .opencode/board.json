@@ -17689,10 +17689,16 @@
       "id": 12685,
       "title": "m10-loadscreen-continuity K4: Lane-Doku + .lane-done",
       "description": "Abnahmekriterium: docs/lanes/m10-loadscreen-continuity.md mit Vorher/Nachher-Belegpfaden (device/boot 13:14Z, boot-after 34 Frames 0 JS-Fehler), Messwerten, Supervisor-Steer-Vermerk; .lane-done im Worktree-Root committed. git status --ignored auf eigene Reste geprueft.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:45:05Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T14:44:15Z",
-      "updated": "2026-11-28T14:44:15Z"
+      "updated": "2026-11-28T14:45:05Z"
     }
   ]
 }
