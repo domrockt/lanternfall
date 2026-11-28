@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10088,
+  "next": 10092,
   "cards": [
     {
       "id": 1,
@@ -12489,6 +12489,122 @@
       ],
       "created": "2026-11-28T07:55:24Z",
       "updated": "2026-11-28T08:13:39Z"
+    },
+    {
+      "id": 10088,
+      "title": "m10-pickup-sfx-distinct K1 Vorher-Messung: Pickup-Paar-Distanzen + Voice-Last 500er-Burst",
+      "description": "scripts/m10-pickup-sfx.mjs misst einmalig: (a) Band-Distanzmatrix der Pickup-Klasse (xp/levelup/chest vor der Regeneration, powerup existiert noch nicht), (b) Voice-Last bei 500-Gegner-Burst (XP 15/s) mit echter mixing.ts-Logik. Output JSON nach ~/games/.evidence/m10-pickup-sfx-distinct/before.json. Abnahme: Matrix + Voice-Last-Zahlen vorhanden, committet als Basis.",
+      "column": "done",
+      "assignee": "m10-pickup-sfx-distinct",
+      "notes": [
+        {
+          "at": "2026-11-28T09:00:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Karte angenommen -> doing (Board-Buchung als erster Schritt)."
+        },
+        {
+          "at": "2026-11-28T09:20:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "review: K1 gemessen + committed 8b82095. Befund: alle Paare < 0,15 (xp/chest 0,012); XP im Burst 7% gespielt. Beleg ~/.evidence/.../m10-pickup-sfx-before.json. Selbst-Check gegen Abnahmekriterium (Matrix+Voice-Last vorhanden, committed): PASS."
+        },
+        {
+          "at": "2026-11-28T08:05:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+        },
+        {
+          "at": "2026-11-28T08:20:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
+        }
+      ]
+    },
+    {
+      "id": 10089,
+      "title": "m10-pickup-sfx-distinct K2 Signaturen: 4 Pickup-Sounds (sfx_pickup_*) regenerieren",
+      "description": "gen_sfx.py erzeugt sfx_pickup_xp/powerup/levelup/chest.wav mit getrennten Signaturen; SFX_KEYS xp/levelup/chest umgemappt, neuer Key powerup; playPowerupMoment (PickupSystem.ts, minimal + begruendet) spielt powerup. Abnahme: alle 6 Paar-Distanzen >= 0,15 (vorlaeufig, Final in K4-Test).",
+      "column": "done",
+      "assignee": "m10-pickup-sfx-distinct",
+      "notes": [
+        {
+          "at": "2026-11-28T09:20:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Karte angenommen -> doing."
+        },
+        {
+          "at": "2026-11-28T07:45:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "review: K2 committed. Alle 6 Paar-Distanzen >= 0,310 (Ziel 0,15), Sweep 4096 Kombis (Beleg .evidence/k2-sweep-result.json), 22 fremde WAVs bitgleich. powerup-Key bereit; Verdrahtung in m10-powerup-sfx-wire (Claimcheck-Block, siehe Lane-Doku). Selbst-Check: PASS."
+        },
+        {
+          "at": "2026-11-28T08:05:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+        },
+        {
+          "at": "2026-11-28T08:20:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
+        }
+      ]
+    },
+    {
+      "id": 10090,
+      "title": "m10-pickup-sfx-distinct K3 Mixer: Pickup-Klasse Voice-Prioritaet + Limit + Massen-Daempfung",
+      "description": "mixing.ts: PICKUP_SFX_IDS, eigenes Start-Kontingent fuer Pickup-Klasse, Daempfungsfaktor bei Massen-Events (pure Funktion), Prioritaet 2 (verdraengt Waffen statt zu verstummen); AudioSystem.play wendet Daempfung an. Musik-Pfade unveraendert, Master-Mute bitgleich. Abnahme: Chaos-Sim 0 Clipping, keine Pickup-Verhungern, music-dawn-Tests gruen.",
+      "column": "done",
+      "assignee": "m10-pickup-sfx-distinct",
+      "notes": [
+        {
+          "at": "2026-11-28T07:45:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Karte angenommen -> doing."
+        },
+        {
+          "at": "2026-11-28T07:50:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "review: K3 committed. XP-Sounds im Burst 65 -> 469 von 900, 0 Clipping, Peak -17,5 dBFS, 28 Audio-Tests gruen. Musik/Mute-Pfade unberuehrt."
+        },
+        {
+          "at": "2026-11-28T08:05:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+        },
+        {
+          "at": "2026-11-28T08:20:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
+        }
+      ]
+    },
+    {
+      "id": 10091,
+      "title": "m10-pickup-sfx-distinct K4 Test+Doku: tests/pickup-sfx-distinct.test.ts + After-Matrix",
+      "description": "tests/pickup-sfx-distinct.test.ts (Paar-Distanzen >= 0,15, kein Clipping, Mixer-Regeln, Mute bitgleich), After-Messung, docs/lanes/m10-pickup-sfx-distinct.md. Abnahme: npm test gruen, npm run build gruen, Musik-Tests unveraendert gruen.",
+      "column": "done",
+      "assignee": "m10-pickup-sfx-distinct",
+      "notes": [
+        {
+          "at": "2026-11-28T07:50:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Karte angenommen -> doing."
+        },
+        {
+          "at": "2026-11-28T07:55:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "review: K4 committed. 14 Tests, After-Matrix min 0,310 PASS, npm test 1669 gruen, build gruen. Reviewer-Subagent ueber Lane-Diff laeuft."
+        },
+        {
+          "at": "2026-11-28T08:05:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+        },
+        {
+          "at": "2026-11-28T08:20:00Z",
+          "by": "m10-pickup-sfx-distinct",
+          "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
+        }
+      ]
     }
   ]
 }

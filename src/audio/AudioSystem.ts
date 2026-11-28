@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { getSettings, setSettings } from "./settings";
 import {
   effectiveVolume, newMixerState, notePlayed, releaseVoice, planPlay,
-  activeVolumeSum, limiterGain, PRIORITY,
+  activeVolumeSum, limiterGain, pickupDampGain, PRIORITY, PICKUP_SFX_IDS,
   EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
   type MixerState, type SoundRequest,
 } from "./mixing";
@@ -61,6 +61,8 @@ export class AudioSystem {
     const req: SoundRequest = {
       id, priority: cfg.priority, cooldown: cfg.cooldown,
       maxVoices: cfg.maxVoices, volume: cfg.volume,
+      // Pickup-Klasse (m10-pickup-sfx-distinct): eigenes Band + Massen-Dämpfung.
+      pickup: (PICKUP_SFX_IDS as readonly string[]).includes(id),
     };
     // Fairness: Prio >= 2 verdrängt bei vollem Budget die älteste niederpriorere
     // Stimme; Rate-Deckel (24/s) und Budget bleiben harte Grenzen.
@@ -74,6 +76,9 @@ export class AudioSystem {
       voice.token += 1;
       const token = voice.token;
       let vol = effectiveVolume(settings.sfx, req);
+      // Pickup-Massen-Dämpfung: viele Pickup-Starts/s -> gleichmäßige, hörbare
+      // Rücknahme (nie stumm), bevor der Limiter die Gesamtsumme deckelt.
+      if (req.pickup) vol *= pickupDampGain(this.mixer, req);
       // Limiter: Summe aller aktiven Stimmen <= -1 dBFS halten, indem alle
       // aktiven Stimmen gleichmäßig zurückgenommen werden (nie stumm).
       const scale = limiterGain(activeVolumeSum(this.mixer), vol);
