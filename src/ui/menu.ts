@@ -14,6 +14,39 @@ export interface MenuButton {
   setEnabled(value: boolean): void;
 }
 
+/** Anteil, auf den der Knopf-Hintergrund im Pressed-Zustand abdunkelt. */
+export const BUTTON_PRESSED_ALPHA = 0.72;
+
+/** Eingabe-Zustand eines Menüknopfs (rein, testbar — m10-options-focus). */
+export interface ButtonVisualState {
+  focus: boolean;
+  hover: boolean;
+  pressed: boolean;
+  baseColorIndex: number;
+}
+
+/** Sichtbares Ergebnis (Outline/Textfarbe/Hintergrund-Abdunkelung). */
+export interface ButtonVisual {
+  outlineVisible: boolean;
+  labelColorIndex: number;
+  bgAlpha: number;
+}
+
+/**
+ * M10-options-focus: einheitliche Zustandsmatrix aller Menüknöpfe. Tastatur-Fokus,
+ * Maus-Hover und Touch-Press zeigen denselben aktiven Zustand (Lanternfarbe +
+ * 1-px-Rahmen); gedrückt wirkt zusätzlich kurz dunkler. Idle bleibt unverändert
+ * (AE=0): kein Outline, Basisfarbe, bgAlpha 1.
+ */
+export function menuButtonVisual(s: ButtonVisualState): ButtonVisual {
+  const active = s.focus || s.hover || s.pressed;
+  return {
+    outlineVisible: active,
+    labelColorIndex: active ? C.lantern : s.baseColorIndex,
+    bgAlpha: s.pressed ? BUTTON_PRESSED_ALPHA : 1,
+  };
+}
+
 /**
  * Einheitlicher 9-Slice-Menüknopf (Tastatur + Maus/Touch). Der Knopf ist
  * ganzzahlig positioniert und nutzt ausschließlich Palettenfarben.
@@ -48,14 +81,24 @@ export function createMenuButton(
 
   let focus = false;
   let hover = false;
+  let pressed = false;
   const paint = (): void => {
-    const active = focus || hover;
-    text.setColorIndex(active ? C.lantern : color);
-    outline.setVisible(active);
+    const v = menuButtonVisual({ focus, hover, pressed, baseColorIndex: color });
+    text.setColorIndex(v.labelColorIndex);
+    outline.setVisible(v.outlineVisible);
+    bg.setAlpha(v.bgAlpha);
   };
   hit.on("pointerover", () => { hover = true; paint(); });
-  hit.on("pointerout", () => { hover = false; paint(); });
-  hit.on("pointerdown", () => onClick());
+  hit.on("pointerout", () => { hover = false; pressed = false; paint(); });
+  hit.on("pointerdown", () => {
+    // M10-options-focus: Pressed-Zustand (kurz dunkler) beim Runterdruecken,
+    // fuer Maus UND Touch (pointerdown feuert in beiden Faellen).
+    pressed = true;
+    paint();
+    onClick();
+  });
+  hit.on("pointerup", () => { pressed = false; paint(); });
+  hit.on("pointerupoutside", () => { pressed = false; paint(); });
 
   paint();
   return {
