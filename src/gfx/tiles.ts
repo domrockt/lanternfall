@@ -374,11 +374,15 @@ export function paintTerrain(
       const s2 = codeAt(x, y + 2) !== 3;
       const w2 = codeAt(x - 2, y) !== 3;
       if (n1 || w1) {
-        const gate = Math.floor(tileHash(ox + x, oy + y, seed + 929) * WATER_ANIM_STEPS);
-        setPx(x, y, (animStep + gate) % WATER_ANIM_STEPS === 0 ? 8 : 9);
+        // Weiche 1-px-Schale statt geschlossener Leuchtlinie: die Kante wird
+        // gehasht aufgeloekert (9/7) und pulsiert je Stufe zwischen 9 und 8 —
+        // Land->Wasser wirkt gesoftet, nicht hart abgeschnitten.
+        const h = tileHash(ox + x, oy + y, seed + 929);
+        if ((animStep + Math.floor(h * WATER_ANIM_STEPS)) % WATER_ANIM_STEPS === 0) setPx(x, y, 8);
+        else setPx(x, y, h > 0.85 ? 7 : 9);
       } else if (n2 || w2) setPx(x, y, 8);
-      else if (s1 || e1) setPx(x, y, 1);
-      else if (s2 || e2) setPx(x, y, 2);
+      else if (s1 || e1) setPx(x, y, tileHash(ox + x, oy + y, seed + 933) > 0.3 ? 1 : 2);
+      else if (s2 || e2) setPx(x, y, tileHash(ox + x, oy + y, seed + 935) > 0.45 ? 2 : 5);
     }
   }
 
