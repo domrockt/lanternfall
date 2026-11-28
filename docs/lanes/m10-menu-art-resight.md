@@ -102,8 +102,18 @@ Blocker der 7 Hebel.
 
 ## K2: art-director-Sichtung (#11269)
 
-- (offen)
+- Urteil: **FAIL 4,4/5** (Schwelle 4,5) — 2026-11-28, frische Sichtung aller 10
+  Screens (5 × 2 Profile, je 3x nearest vergrößert) + eigene Pixelmessung der
+  Rest-Fails.
+- Je Screen: Title 4,6 · Options 4,4 · Credits 4,7 · CharSelect 4,7 · Pause 4,2.
+- Die früherenBlocking-Hebel sind sichtbar behoben (Title-Hints, Options-Footer,
+  Credits, KAEL-Freiraum, Pause-Build-Texte/Icons — alle „ok").
+- Restbefunde: (a) Pause-Footer-Hints verfehlen die Latte messbar — Zeile 2
+  `PFEILE + ENTER ODER MAUS` C.fog (#4E5F6E) auf Panel #101724 = WCAG 2,72;
+  Zeile 1 `ESC = WEITER…` C.mist (#6B7C86) = WCAG 4,22 (knapp unter 4,5);
+  (b) kosmetisch: Options-960 unten links ~2–3 px helles Rechteck über den
+  Panelrand (ui_frame-Nineslice-Kante).
 
 ## K3: Urteil + Abschluss (#11270)
 
-- (offen)
+- (K3 folgt in eigenem Commit)
