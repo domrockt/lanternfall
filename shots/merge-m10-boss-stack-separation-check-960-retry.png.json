@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5696/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-m10-boss-stack-separation-check-960-retry.png",
+  "gif": null,
+  "jsErrors": []
+}
