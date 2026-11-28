@@ -1,0 +1,21 @@
+# Lane m10-audio-frost-gap — DONE (28.11.2026)
+
+Ziel: offener Punkt aus docs/lanes/m10-audio-distinct.md — Paar-Distanz frost/eternal_winter
+von 0,1245 (knapp ueber 0,12) auf >= 0,15 heben, ohne andere Paare unter 0,12 zu druecken.
+
+- K1 (#7437, Commit 0c9b7bb): Mess-Skript scripts/m10-audio-frost-gap.mjs (Metrik = Test-Metrik,
+  validiert: reproduziert 0,1245) + Vorher-Matrix shots/m10-audio-frost-gap-matrix-before.json
+  (66 Paare, min = frost/eternal_winter 0,1245) + docs/lanes/m10-audio-frost-gap.md.
+- K2 (#7438, Commit 28cb78c): Suchlauf (pure Python, 2 Runden, 150+432 Kandidaten, festes Limit):
+  Winter-Glissando −6 Halbtoene (3000→6000 → 2121→4243 Hz), Fundament 760→440 Hz, Mixtur
+  0,18/0,55 → 0,12/0,55 in scripts/gen_sfx.py; sfx_winter.wav regeneriert (beide unclaimed,
+  Meldung in requests.md). frost/eternal_winter 0,1245 → 0,2391; alle 66 Paare >= 0,12
+  (min frost/lantern 0,1459, unverändert); Stinger 0,90 s rising, Peak 0,57, kein Clipping.
+  Beleg: shots/m10-audio-frost-gap-matrix-after.json.
+- K3 (#7439, Commit <this>): tests/audio-frost-gap.test.ts (5 Tests: frost/eternal_winter >= 0,15,
+  alle 66 Paare >= 0,12, WAV-Regeln, MAX_TOTAL_VOICES/Band-Deckel/TARGET_PEAK + Spam-Verhalten
+  unangetastet). npx tsc --noEmit gruen, vitest 1138/1138 (106 Dateien), npm run build gruen.
+
+Hinweis: src/audio/mixing.ts bewusst unveraendert — die Noten-/Mixtur-Daten liegen in
+gen_sfx.py (WAV-Synthese), nicht in mixing.ts; SFX_CONFIG/Spam-Regeln sind von der
+Spektral-Distanz unabhaengig. Keine Aenderung an AudioSystem.ts/options.ts.
