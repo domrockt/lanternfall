@@ -219,6 +219,14 @@ export class BossSystem {
     // waeren W/s x H/s und haetten safeTop/Banner-Kette geschrumpft sowie den
     // y-Vergleich (Welt-Offset vs. logischer Screen) um H*(s-1)/(2s) verschoben.
     const camTopLog = camTop + this.camera.height / 2 - GAME_HEIGHT / 2;
+    // K1-Befund (m10-boss-spawn-lower): der Intro-Zoom-Tween in Run.ts setzt
+    // cam.zoom ABSOLUT auf BOSS_INTRO_ZOOM, waehrend enforceCameraProjection
+    // jede Frame 1/Teiler verlangt. Im Streit rendern Puls-Frames mit der
+    // Teiler-fachen logischen Magnifikation (bei Teiler 3 = 780x360@3 stand
+    // der Boss-Sprite im Spawn-Moment am oberen Rand hinter der HP-Leiste).
+    // Die Komposition nimmt deshalb den Worst-Case: BOSS_INTRO_ZOOM / cam.zoom
+    // (= 1.14 * Teiler). Bei Teiler 1 ist das bitgleich zum bisherigen 1.14.
+    const pulseZoom = BOSS_INTRO_ZOOM / (this.camera.zoom || 1);
     const composedScreenY = composedBossCenterY(
       desiredY - camTopLog,
       playerY - camTopLog,
@@ -226,7 +234,7 @@ export class BossSystem {
       GAME_WIDTH,
       GAME_HEIGHT,
       camTopLog,
-      BOSS_INTRO_ZOOM,
+      pulseZoom,
     );
     let y = Phaser.Math.Clamp(camTopLog + composedScreenY, 30, 4096 - 30);
     const enemy = this.pool.spawn(def, x, y, 1, 1, this.rng.next() * Math.PI * 2, {

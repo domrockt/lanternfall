@@ -46,6 +46,39 @@ describe("M10 A10 Boss-Spawn-Komposition", () => {
         }
       });
 
+      // A10-Restpunkt (m10-boss-spawn-lower): Invariante gegen die HP-Leiste
+      // selbst (nicht nur Banner) — im Spawn-Moment muss das Boss-Sprite-Rect
+      // UNTER der Leiste beginnen (rect.y >= bar.bottom) und sie nicht
+      // schneiden. Zusätzlich die Puls-Magnifikation der Render-Teiler
+      // (BOSS_INTRO_ZOOM * s, s = 1..3): der Intro-Zoom-Tween kaempft mit
+      // enforceCameraProjection, Worst-Case-Magnifikation = 1.14 * Teiler.
+      for (const s of [1, 2, 3]) {
+        it(`${view.width}x${view.height} Boss ${BOSSES[index].id}: Puls-Magnifikation 1.14*${s} — unter HP-Leiste, kein Schnitt`, () => {
+          const { hpBar, banner } = bossHudRects(view.width);
+          const distance = bossSpawnDistance(view.width, view.height);
+          const playerScreenX = view.width / 2;
+          for (const playerScreenY of [90, 180, 270]) {
+            for (let step = 0; step < ANGLE_STEPS; step++) {
+              const angle = (step / ANGLE_STEPS) * Math.PI * 2;
+              const desiredScreenY = playerScreenY + Math.sin(angle) * distance;
+              const screenY = composedBossCenterY(
+                desiredScreenY, playerScreenY, index, view.width, view.height,
+                0, BOSS_INTRO_ZOOM * s,
+              );
+              const screenX = playerScreenX + Math.cos(angle) * distance;
+              const worldX = screenX + 100;
+              const rect = bossSpriteScreenRect(
+                worldX, screenY, index, 100, 0, BOSS_INTRO_ZOOM * s,
+                view.width, view.height,
+              );
+              expect(rect.y).toBeGreaterThanOrEqual(hpBar.y + hpBar.h);
+              expect(rectsOverlap(rect, hpBar)).toBe(false);
+              expect(rectsOverlap(rect, banner)).toBe(false);
+            }
+          }
+        });
+      }
+
       it(`${view.width}x${view.height} Boss ${BOSSES[index].id}: auch bei Intro-Zoom 1,14 und Weltkanten frei`, () => {
         const { banner } = bossHudRects(view.width);
         const safeTop = banner.y + banner.h + BOSS_HUD_CLEARANCE;
