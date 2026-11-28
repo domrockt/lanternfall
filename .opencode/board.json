@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9919,
+  "next": 9923,
   "cards": [
     {
       "id": 1,
@@ -12323,6 +12323,96 @@
       ],
       "created": "2026-11-28T07:46:27Z",
       "updated": "2026-11-28T07:47:33Z"
+    },
+    {
+      "id": 9919,
+      "title": "m10-powerup-sfx-wire K1: Vorher-Probe (0 Audio-Calls)",
+      "description": "scripts/m10-powerup-sfx-wire.mjs (Vite-SSR + Stubs für phaser/atlas/icons/audio) ruft playPowerupMoment() und zählt getAudio().play-Calls. Abnahme: JSON-Beleg in ~/games/.evidence/m10-powerup-sfx-wire/before.json zeigt 0 play-Calls; Skript + JSON committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:37:40Z",
+          "by": "build",
+          "text": "backlog → doing: Lane m10-powerup-sfx-wire (Briefing Dora 07:3xZ) übernommen: Vorher-Probe. Karten #9585 war nicht im Board — Lane-Karten #9735-#9738 frisch angelegt."
+        },
+        {
+          "at": "2026-11-28T07:39:08Z",
+          "by": "build",
+          "text": "doing → review: Commit b1d4d54: Probe-Skript (Vite-SSR + Stubs, src/audio unberuehrt) + before.json: 0 play-Calls bei boots/tome/unbekannter id. Kontrolleur (reviewer) folgt gebuendelt vor K4."
+        },
+        {
+          "at": "2026-11-28T07:53:01+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9735, Merge branch m10-powerup-sfx-wire"
+        }
+      ],
+      "created": "2026-11-28T07:37:38Z",
+      "updated": "2026-11-28T07:39:08Z"
+    },
+    {
+      "id": 9920,
+      "title": "m10-powerup-sfx-wire K2: getAudio().play(\"powerup\") in playPowerupMoment()",
+      "description": "src/systems/PickupSystem.ts playPowerupMoment(): nach spec-Guard genau ein getAudio().play(\"powerup\")-Call (Guard: Key in SFX_KEYS, Cast ohne Änderung an src/audio/**). spec/Zeichnung/Positionen bitgleich. Abnahme: npx tsc --noEmit rc=0, bestehende pickup-Tests grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:39:08Z",
+          "by": "build",
+          "text": "backlog → doing: K2 Fix beginnt: 1-Zeilen-Audio-Call + Import/Guard, src/audio/** unangetastet."
+        },
+        {
+          "at": "2026-11-28T07:39:47Z",
+          "by": "build",
+          "text": "doing → review: Commit e82acac: +10 Zeilen in PickupSystem.ts (Import, POWERUP_SFX_ID mit Guard, 1 Play-Call nach spec-Guard). tsc rc=0, pickup-moment+pickup-gems 22 Tests gruen."
+        },
+        {
+          "at": "2026-11-28T07:53:01+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9736, Merge branch m10-powerup-sfx-wire"
+        }
+      ],
+      "created": "2026-11-28T07:37:38Z",
+      "updated": "2026-11-28T07:39:47Z"
+    },
+    {
+      "id": 9921,
+      "title": "m10-powerup-sfx-wire K3: Guard-Test tests/powerup-sfx-wire.test.ts",
+      "description": "Moment-Erzeugung löst genau einen \"powerup\"-Play-Call aus (Update-Erkennungspfad); Gem-/XP-Sammelpfad und Momente ohne Erwerb bleiben ohne Call (kein Doppel-Sound). Abnahme: npx vitest run tests/powerup-sfx-wire.test.ts grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:39:47Z",
+          "by": "build",
+          "text": "backlog → doing: K3 Guard-Test beginnt: genau 1 powerup-Call je Erwerb, Gem-/XP-Pfad lautlos."
+        },
+        {
+          "at": "2026-11-28T07:40:51Z",
+          "by": "build",
+          "text": "doing → review: Commit 6e2bbcc: tests/powerup-sfx-wire.test.ts, 5/5 gruen (tsc rc=0). Deckt Direktaufruf, Erkennungspfad (Erwerb/Upgrade/kein Doppel), unbekannte id, Gem-Pfad, clearMoments."
+        },
+        {
+          "at": "2026-11-28T07:53:01+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #9737, Merge branch m10-powerup-sfx-wire"
+        }
+      ],
+      "created": "2026-11-28T07:37:38Z",
+      "updated": "2026-11-28T07:40:51Z"
+    },
+    {
+      "id": 9922,
+      "title": "m10-powerup-sfx-wire K4: Nachher-Probe + Lane-Doku + .lane-done",
+      "description": "Probe erneut: 1 Play-Call je Moment (0 -> 1), after-JSON als Beleg; docs/lanes/m10-powerup-sfx-wire.md mit Vorher/Nachher + Claim-Grenzen; .lane-done. Abnahme: npx tsc + npx vitest run tests/powerup* grün, git status sauber.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:40:51Z",
+          "by": "build",
+          "text": "backlog → doing: K4: Nachher-Probe + Lane-Doku + .lane-done; danach Reviewer ueber die ganze Lane."
+        }
+      ],
+      "created": "2026-11-28T07:37:38Z",
+      "updated": "2026-11-28T07:40:51Z"
     }
   ]
 }
