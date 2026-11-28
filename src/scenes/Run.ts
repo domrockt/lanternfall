@@ -264,13 +264,6 @@ export class Run extends Phaser.Scene {
     this.rng = new SeededRng(this.seed);
     // m10-run-determinism-fix: abgeleiteter Seed fuer die Gegner-KI (deterministisch).
     this.aiRng = { next: mulberry32(((this.seed ^ 0x9e3779b9) >>> 0) + 0x6d2b79f5) };
-    // m10-run-determinism-fix: ?detstart=1 startet den Run PAUSIERT. Mess-Harness
-    // (scripts/m10-run-determinism.mjs) setzt dann Trace/autoPlay/timeScale, BEVOR
-    // der erste Sim-Schritt laeuft, und ruft resumeRun(). Ohne dieses Gate war die
-    // Start-Phase ein Wall-Clock-Rennen: je nachdem, in welchem Sim-Schritt das
-    // Debug-Eval landete, bewegte der Bot den Spieler frueher/spaeter — zwei
-    // Laeufe mit gleichem Seed divergierten ab Schritt 1 (Probe-Beleg:
-    // rep0 posX 20495500 vs rep1 20480000 nach Schritt 1).
     this.elapsed = 0;
     this.timeScale = 1;
     this.godMode = false;

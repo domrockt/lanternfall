@@ -105,15 +105,18 @@ Nicht die Ursache (geprüft/ausgeschlossen):
 4. **Balance-Korridor unverändert** (`node scripts/balance.mjs --seeds 101 --characters kael`,
    autoPlay, timeScale 30, ohne flock; Beleg `shots/m10-run-det-balance-kael-101.json`,
    **nach dem Spawner-Dt-Fix neu gemessen**):
-   Kael/Seed 101 — **Sieg (dawn) bei 30,6 min**, Endlevel **40** (Korridor 25–40, obere Grenze),
-   18254 Kills, **6/6 Bosse besiegt** (Dauern 33/48/44/36/40/34 s — Korridor 20–60 s,
-   `bossDurationsInCorridor: true`), 3 Evolutionen (wrath_pendulum, thunder_seal, soul_beacon),
+   Kael/Seed 101 — **Sieg (dawn) bei 30,4 min**, Endlevel **37** (Korridor 25–40), **6/6 Bosse
+   besiegt** (Dauern 32/41/44/35/31/22 s — Korridor 20–60 s, `bossDurationsInCorridor: true`),
+   4 Evolutionen (wrath_pendulum, thunder_seal, soul_beacon, thorn_storm),
    `passedAll: true`, `allRunsPass: true`, 0 JS-Fehler, kein Tod vor Minute 15.
-   Level 40 vs. Referenz 27–30 (`shots/m10-balance-kael-final.json`) und vs. 37 (Erst-Messung
-   d81019c): die deterministische Umstellung + Spawner-Dt-Fix ändern die Trajektorie (KI-RNG aus
-   Seed statt Math.random, Kamera-Anker, feste Schritte, simzeit-basierte Spawn-Allowance) —
-   im Zielband (25–40 inklusive), Ursache dokumentiert, nicht wegtunet.
-5. **Doku** = dieses Dokument. `.lane-done` committet (alle Karten done).
+   Level 37 vs. Referenz 27–30 (`shots/m10-balance-kael-final.json`): die deterministische
+   Umstellung ändert die Trajektorie leicht (KI-RNG aus Seed statt Math.random, Kamera-Anker,
+   feste Schritte, simzeit-basierte Spawn-Allowance) — im Zielband, Ursache dokumentiert,
+   nicht wegtunet. Hinweis: zwei aufeinanderfolgende balance.mjs-Läufe liefern NICHT bitgleiche
+   Läufe (Level 40 vs. 37) — der Balance-Harness nutzt nicht das `?detstart=1`-Gate, daher bleibt
+   der Start-Renner (autoPlay-Setzung vs. Schritt 1) frame-abhängig; für den Korridor relevanzlos,
+   für künftige bitgenaue Balance-Abnahmen wäre ein detstart-Flag im Harness nötig (offen).
+5. **Doku** = dieses Dokument. `.lane-done` wird mit dem Abschluss-Commit gesetzt (alle Karten done).
 
 ## Offen / Erledigt
 
@@ -124,6 +127,12 @@ Nicht die Ursache (geprüft/ausgeschlossen):
   (für spätere Lanes): Truhe-Autoöffnung/Boss-Tod-Ketten laufen über Phaser-delayedCall (Wall-Clock,
   aber sim-gepaust → erst ab Boss-Phasen relevant); `EnemyProjectilePool.launchBudgetPerFrame`
   (#7491) — vom Dispatcher als `m10-shot-budget-dt` vermerkt.
+- Sim-neutrales `Math.random()` (Reviewer-Befund S1): `maybeSplash` (Run.ts ~:794, aufgerufen in
+  `simulate`) würfelt Wasser-Spritzer-VFX mit `Math.random() < 0.12` — erzeugt nur Rendering-
+  Objekte, berührt KEINEN Sim-Zustand, macht den Determinismus-Befund nicht falsch. Sauberer wäre
+  `aiRng`; bewusst nicht mehr angefasst, um den abgenommenen Fix-Stand nicht zu verschieben.
+- Balance-Harness ohne detstart-Gate: zwei balance.mjs-Läufe desselben Seeds weichen leicht ab
+  (Start-Renner, siehe AK 4) — Korridor-Bewertung unberührt.
 - Verhaltensänderungen, die Reviewer wissen sollten: Sim-Positionen quantisieren jetzt exakt auf
   20 Hz (visuell minimal stufenliger bei 1×; bei 30× identisch); Gegner-KI-Zufallswerte kommen aus
   einem Seed-abgeleiteten RNG (Verteilung identisch, Instanz-Trajektorie anders); Kamera folgt

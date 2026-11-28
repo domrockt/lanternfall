@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7979,
+  "next": 7980,
   "cards": [
     {
       "id": 1,
@@ -10067,6 +10067,16 @@
       ],
       "created": "2026-11-28T03:42:09Z",
       "updated": "2026-11-28T04:59:14Z"
+    },
+    {
+      "id": 7979,
+      "title": "m10-run-determinism-fix: Sim-Schrittführung deterministisch (Carry-over statt Partial-Schritt)",
+      "description": "Run.update akkumuliert scaledDt und führt den Rest als variablen Partial-Schritt aus → frame-abhängige Tick-Phase, Lauf nicht reproduzierbar (before: deterministic:false, 120/120 Marken divergent). Fix: Carry-over-Akkumulator + KI-RNG aus Seed + detstart-Gate + Kamera-Anker pro Schritt (Run.ts) + Spawn-Allowance dt-basiert (Spawner.ts, aus main/m10-spawn-budget-dt übernommen). AK: (1) m10-run-determinism.mjs --seconds=120 → deterministic:true für Seeds 101/202/404, 0 divergierende Marken; (2) Marken-JSONs + Guard-Test im selben Commit, Suite grün; (3) tsc+tests+build grün; (4) Balance Kael/Seed101 30min im Korridor; (5) docs/lanes/m10-run-determinism-fix.md + .lane-done.",
+      "column": "review",
+      "assignee": "@gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T05:09:16Z",
+      "updated": "2026-11-28T05:09:16Z"
     }
   ]
 }
