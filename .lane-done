@@ -1,0 +1,18 @@
+# Lane m10-evo-fx-form-polish — DONE (2026-11-28)
+
+Querschnitts-Fix über 5 von 6 Evo-Effekten (soul_beacon i.O., unverändert) gegen
+Doms Kriterien: kein Flächendither (Dither nur 1–2 px an Übergangskanten),
+Kerne flächig hell, organische Formen, klare Farbidentität je Evo, Element auf
+Standbild erkennbar.
+
+- phoenix (c1e9be9): Signatur invers gemappt — Alias-Löcher/Flächendither weg.
+- thunder_seal (84f577c): Siegel-Ankündigung lantern(21) sichtbar; 96x96 gebackene Signatur, 0 Ink.
+- thorn_storm (b078632 + 9eeee03): 96x96 organische Ranken statt 32x32 @4x mit 55–68 % Ink; giftgrün/rotbraun.
+- wrath_pendulum (c90ffa6): Treffer-Funken hotRed/crimson; Zorn-Death-Wolken gedämpft (0.55/0.7).
+- eternal_winter (6a013b8): frostRing fogBlue + Reif-Kante, weiße Kern-Dominanz; Eiskristall-Overlay an gefrorenen Gegnern + Bodenfrost.
+
+Abnahme: art-director PASS — alle 5 geänderten Evos ≥ 4/5 („muss neu: nichts“),
+Urteil in docs/lanes/m10-evo-fx-form-polish.md. 1401/1401 Tests, tsc + build grün;
+FPS kein Regression (Burst 60,0→59,8, Minute25 60,2→60,4, gleicher flock-Lauf,
+shots/perf-m3-evo-{before,after}.json). Offen für Folgekarten: logic/death.ts
+burst-Wolke global verkleinern (fremd, Dispo-Notiz), Run.ts Freeze-Tint satter.
