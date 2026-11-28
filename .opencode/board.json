@@ -7869,11 +7869,17 @@
     {
       "id": 6668,
       "title": "m10-shot-clarity #3: tests/shot-clarity.test.ts",
-      "column": "todo",
+      "column": "review",
       "description": "Texturen je Typ pixel-differenzierbar, Palette-konform, binaeres Alpha, Treffer-Pfad-Statistik bitgleich zur Vorher-Messung. Abnahme: npx vitest run tests/shot-clarity.test.ts gruen.",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:06:49.788Z",
+          "by": "lead",
+          "text": "tests/shot-clarity.test.ts (8 Tests): Rechteckigkeit, Palette-Konformitaet, binaeres Alpha, 0 % A7-Near-White, paarweise Farb-Diskjunktion (nur Ink 0 geteilt), Silhouetten-XOR >= 8 px, Groessenstaffel 34<44<46<78, Spieler-Ember-Diskjunktion, Treffer-Pfad-Statistik bitgleich zur deterministischen Baseline (attempted 7/fired 5/hits 2/cancelled 1+1). npx vitest run tests/shot-clarity.test.ts 8/8 gruen, tsc rc=0, enemy-shots-fair 14/14 unangetastet."
+        }
+      ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-27T23:52:56.879Z"
+      "updated": "2026-11-28T00:06:49.788Z"
     },
     {
       "id": 6669,

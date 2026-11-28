@@ -95,7 +95,8 @@ const TELEGRAPH_POOL_CAP = 96;
  * Ersetzt nur die Optik; Radius/Kollision/Trefferpfad unveraendert.
  */
 const HD_PREFIX = "enemy_shot_hd_";
-const HD_GRIDS: Record<string, string[]> = {
+/** Fuer tests/shot-clarity.test.ts exportiert: Optik-Datenquelle der Gegner-Schuesse. */
+export const HD_GRIDS: Record<string, string[]> = {
   // Moor-Gruen: Fuellung 31 (v), Schattenkante 30 (u), Kontur 0. Kleinstes
   // Projektil (7x8), Tropfen-Tail unten bleibt eigene Silhouette.
   spit: [
