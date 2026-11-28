@@ -79,5 +79,18 @@ Vorher-Belege (alle im Karten-Commit):
   (inkl. menu-art-crisp 19, xp-hud-crisp, icon-contrast unangetastet).
 
 ## art-director-Abnahme
-- Urteil: folgt nach der strengen Prüfung (4x-Crops: Glyph-Probe, Titel-Knopf,
-  Options-Panel, Results-Panel).
+- **Gesamturteil: PASS — Font 4,5/5, Rahmen 4,5/5** (strenge Prüfung, 4x-Crops teils
+  selbst weiter vergrößert, nearest-only; Vergleich gegen Vorher-Stand `01012fa`).
+- Font: neue ß-Glyphe liest sich als Doppel-s und ist eindeutig von B verschieden
+  (10x-Crop); Umlaut-Punkte mit klarem 1-px-Luftband; keine Fehlstufen; Zeile 1
+  (A–Z 0–9) einheitliche Strichstärke. Abzug (kein Blocker): ß wirkt in 5x7 etwas
+  dichter, Schluss-Strich ohne Unterlänge.
+- Rahmen: Lichtkante 8/7 messbar+optisch klar (4.15:1), Innenfase lichtlogisch
+  symmetrisch, untere/rechte Ink-Kante lückenlos (je ein 24-px-Band), Ecken und
+  Goldnieten sauber; in situ (Options 3x, Results 2x) ohne 9-Slice-Artefakte.
+- F7 (dunkle Kante 1.12:1): vom art-director als **akzeptabel** bewertet — Ink ist
+  der dunkelste Palette-Index, der Schatten liest sich über die tragende helle
+  Kante; Aufhellung der Innenfläche würde Text-Lesbarkeit verschlechtern. Kein
+  offener belegter Mangel.
+- Ergebnis: **kein belegter Mangel bleibt offen**; A10 „Menü-/HUD-Qualität“ für
+  Font/Rahmen mit 4,5/5 über dem Ziel (>= 4/5) erfüllt.

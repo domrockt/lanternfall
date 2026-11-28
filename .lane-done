@@ -1,0 +1,32 @@
+# Lane m10-font-ui-frame-polish — FERTIG (2026-11-28)
+
+Bitmap-Font + 9-Slice-UI-Rahmen auf 5/5-Niveau poliert (Rest #320/#321, m9-art-fx-ui).
+Alle 4 Karten done, je ein Commit, Belege in den Karten-Commits.
+
+## Ergebnis
+- art-director (strenge Abnahme, 4x-Crops): **PASS — Font 4,5/5, Rahmen 4,5/5**.
+- Alle belegten Mängel geschlossen:
+  - F1 Lichtkante 7/6 → 8/7: Kontrast gegen Panel-Innenfläche 2.72:1 → **4.15:1** (>= 3:1).
+  - F2 Innenfase lichtlogisch symmetrisch (6er-Lichtlinie oben + links, Fase 4 rechts + unten).
+  - F3 Störpixel (22,23) in der unteren Ink-Kante behoben (Kanten je ein lückenloses 24-px-Band).
+  - F4 ß-Glyphe neu: war 1 px von B entfernt → jetzt 15/35 px Differenz, Doppel-s-Bogen,
+    1 zusammenhängende Komponente, 2 reguläre 2x2-Löcher.
+- F7 (dunkle Kante 1.12:1) dokumentiert: ohne neuen Palettenindex nicht hebbar, vom
+  art-director als akzeptabel bewertet. F5/F6 positiv gemessen (keine Fehlstufen außer
+  !/?-Satzpunkten, 0 fraktionale Font-/Rahmen-Objekte in Titel/Options/Results).
+
+## Messwerte
+- Vorher/Nachher: shots/m10-uiframe-{before,after}.json (+ PNG-Crops 4x/3x/2x nearest), 0 JS-Fehler.
+- Tests: tests/ui-frame-polish.test.ts 10/10 (teilt Analyse-Logik mit scripts/m10-uiframe-polish.mjs);
+  Suite 1332/1332 grün inkl. menu-art-crisp, xp-hud-crisp, icon-contrast unangetastet.
+- npx tsc --noEmit rc=0, npm run build grün.
+
+## Commits (eine Karte = ein Commit)
+- 01012fa #8078 K1 Befund sichern (Messskript + Vorher-Belege + Befundliste F1–F8)
+- 14d622a #8079 K2 Font-Fix (ß-Glyphe)
+- 2e12322 #8080 K3 Rahmen-Fixes (gen_ui.py + regeneriertes gen-ui.ts)
+- 303f1ce #8081 K4 Tests + Nachher-Belege
+
+## Offene Punkte (Bedarfsmeldungen)
+- Keine in dieser Lane. Außer-Scope-Beobachtungen stehen in docs/lanes/m10-font-ui-frame-polish.md (F8:
+  title_background 1.333x/1.625x und chest_closed 2.4x — fremde Dateien, bereits in m10-menu-art-crisp dokumentiert).
