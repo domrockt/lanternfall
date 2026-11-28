@@ -156,4 +156,19 @@ Belege: `~/games/.evidence/m10-device-janky-node/k3-after-device-fixedbuild.json
 ## K4 — Suite / Review / Abschluss
 
 - `npm test` 2269 grün (203 Dateien), `npm run build` rc=0, `tsc --noEmit` rc=0.
-- Reviewer- und test-auditor-Urteil: siehe Board-Karten #11969/#11970/#11971/#11972.
+- **test-auditor: PASS** (29/29 in den Lane-Tests; reale Logik per Spawn-Zählung getestet;
+  Quell-Pins wirksam; Mängel nur „nicht FAIL-würdig“: Geräte-Zweig `DEVICE_NODE=true` nicht
+  unit-testbar — `export let` ohne Setter — kompensiert durch Pin + reine Funktionen).
+- **Reviewer: PASS** mit 2 „sollte“-Befunden:
+  1. `probeDeviceNode` latchte nur den TRUE-Fall → auf Desktop wäre der Probe-Body (Canvas +
+     `getContext`) JEDEM rAF-Tick erneut gelaufen (60–144 WebGL-Kontexte/s; Browser begrenzen
+     live Kontexte — im schlechtesten Fall verliert der Browser den Phaser-Kontext).
+     **In dieser Lane gefixt** (config.ts: `deviceProbed`-Latch für beide Ausgänge inkl.
+     Fehlerpfad + Quell-Pin im Guard-Test); Suite danach erneut 2269 grün, build rc=0.
+  2. FxSystem/ParticleSystem-Feld-Initialisierer lesen `DEVICE_NODE` zur Konstruktionszeit —
+     Korrektheit hängt an der Initialisierungsreihenfolge (Probe-Tick vor Scene-Boot).
+     Empirisch entkräftet (Gerät live: FX-Pool 140, Partikel 240 gelesen), als Nit dokumentiert;
+     robuster Ausbau (Cap-Erzwingung beim ersten `spawn()`/`update()`) = Folgeticket, nicht
+     lane-blockend (Reviewer-Zitat: „Hinweis, kein Fehlerbefund“).
+- Desktop-Bitgleichheit nach dem Review-Fix erneut belegt: die Änderung betrifft nur die
+  Probe-Häufigkeit, nicht den Probe-Ausgang (`clampTierMax`/`isDeviceNode` unberührt).
