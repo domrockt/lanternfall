@@ -1,7 +1,12 @@
 import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { getTouchSnapshot, resetTouchSnapshot, setTouchSnapshot } from "./TouchState";
-import { insetsToGamePx, readDeviceSafeAreaInsets, type SafeAreaInsets } from "../logic/safearea";
+import {
+  insetsOverCanvas,
+  insetsToGamePx,
+  readDeviceSafeAreaInsets,
+  type SafeAreaInsets,
+} from "../logic/safearea";
 
 export interface TouchControlsOptions {
   /** Nur dann Joystick/Pause zeigen und Gesten annehmen (Run läuft, nicht pausiert/Level-up/Truhe). */
@@ -231,11 +236,18 @@ export class TouchControls {
     this.canvas = scene.game.canvas;
     this.enabled = hasTouchSupport();
     // m10-hud-safearea: Insets einmalig lesen (View-Wechsel baut die Szene neu
-    // auf -> neuer TouchControls). Pause-Knopf klemmt an View-Rand MINUS Inset.
+    // auf -> neuer TouchControls). Nur der Inset-Anteil UEBER dem Canvas wirkt
+    // (body-Padding rueckt den Canvas bei Geraeten wie Pixel 7 bereits in die
+    // Safe-Area). Pause-Knopf klemmt an View-Rand MINUS Inset.
+    const canvasRect = typeof this.canvas?.getBoundingClientRect === "function"
+      ? this.canvas.getBoundingClientRect()
+      : undefined;
+    const screenW = (typeof window !== "undefined" ? window.innerWidth : 0) || scene.scale.width;
+    const screenH = (typeof window !== "undefined" ? window.innerHeight : 0) || scene.scale.height;
     this.safeInsetGame = insetsToGamePx(
       scene.scale.width,
-      this.canvas?.getBoundingClientRect().width ?? scene.scale.width,
-      readDeviceSafeAreaInsets(),
+      canvasRect?.width ?? scene.scale.width,
+      insetsOverCanvas(readDeviceSafeAreaInsets(), canvasRect, screenW, screenH),
     );
 
     if (this.enabled) {
@@ -385,9 +397,9 @@ export class TouchControls {
       .container(0, 0, [bg, bar1, bar2])
       .setDepth(TOUCH_DEPTH)
       .setScrollFactor(0)
-      .setVisible(false)
-      // m10-hud-safearea: Name fuer die HUD-Messung (kein Layout-Eingriff).
-      .setName("hud-touch-pause");
+      .setVisible(false);
+    // m10-hud-safearea: Name fuer die HUD-Messung (kein Layout-Eingriff).
+    if (typeof container.setName === "function") container.setName("hud-touch-pause");
     bg.setScrollFactor(0);
     bar1.setScrollFactor(0);
     bar2.setScrollFactor(0);

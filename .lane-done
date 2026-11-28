@@ -1,0 +1,21 @@
+# Lane m10-hud-notch-safearea — fertig (2026-11-28)
+
+Board-#1020 „Display: iPhone14 Safe-Area (HUD unter Notch)“ geschlossen (m10-display-qa FAIL 1).
+
+- Fix: NEU src/logic/safearea.ts (rein) + HUD-Ankerpfad src/scenes/UI.ts (level/kills/xp/hp/
+  icons/evo-hint klemmen an View-Rand MINUS Geraete-Inset) + TouchControls.ts Pause-Knopf-Marge
+  (unclaimed, Request in .dispatch/requests.md; setName als Mess-Instrumentierung).
+- Kern: insetsOverCanvas — nur der Inset-Anteil ueber dem Canvas wirkt (body-Padding rueckt den
+  Canvas bei Pixel 7 bereits in die Safe-Area); ohne Notch bitgleich.
+- Messung scripts/m10-hud-safearea.mjs (7 Display-Profile, CDP Emulation.setSafeAreaInsetsOverride,
+  iphone14 47/47/21, pixel7 rundum 12): Vorher iphone14 FAIL (9 Verstoesse: level/hp/xp/kills/
+  touch-pause in 47-px-Zone), Nachher **7/7 PASS, 0 Verstoesse, jsErrors=0**.
+- iphone14-Anker: level x 5→52, kills Rechtskante 839→792, Pause 804..834→767..797 (Kante 797).
+- Regression: 6/6 uebrige Profile bitgleich (HUD-Boxen before vs. after AE=0);
+  tests/hud-safearea.test.ts 19 Tests (zusammen mit hud-anchor), Gesamt 984/984 gruen,
+  tsc rc=0, build gruen.
+- Belege: shots/m10-hud-safearea-before.json, -after.json, je 7 Screenshots
+  shots/m10-hud-safearea-{before,after}-<profil>.png; Doku docs/lanes/m10-hud-safearea.md.
+- Offen bleibt Display-QA FAIL 2 (#638 Minute-25-FPS) — nicht Teil dieser Lane.
+- Fremddateien: src/input/TouchControls.ts (minimal, Begruendung s. requests.md + Lane-Doku);
+  src/scenes/CharSelect.ts/Results.ts/Credits.ts und src/gfx/font.ts nicht angefasst.

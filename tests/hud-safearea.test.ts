@@ -8,6 +8,7 @@ vi.mock("phaser", () => {
 });
 import { type AnchorBox, hudAnchorBoxes, HUD_MARGIN_X, HUD_TOP_Y } from "../src/scenes/UI";
 import {
+  insetsOverCanvas,
   insetsToGamePx,
   hudSideMargin,
   hudTopMargin,
@@ -48,6 +49,34 @@ describe("m10-hud-safearea: insetsToGamePx", () => {
       .toEqual({ left: 0, right: 0, top: 1, bottom: 0 });
     expect(insetsToGamePx(640, 0, { left: 10, right: 10, top: 0, bottom: 0 }))
       .toEqual({ left: 10, right: 10, top: 0, bottom: 0 });
+  });
+});
+
+describe("m10-hud-safearea: insetsOverCanvas", () => {
+  it("iphone14: Canvas full-bleed seitlich (x=0) -> volles Seiten-Inset wirkt", () => {
+    // Unten: Canvas y=15, Hoehe 360 bei Screen 390 -> 15 px Overlap bereits
+    // abgedeckt, Rest 21-15=6 wirkt.
+    expect(insetsOverCanvas(
+      { left: 47, right: 47, top: 0, bottom: 21 },
+      { x: 0, y: 15, width: 844, height: 360 }, 844, 390,
+    )).toEqual({ left: 47, right: 47, top: 0, bottom: 6 });
+  });
+
+  it("pixel7: Canvas sitzt durch body-Padding bereits in der Safe-Area -> 0 (bitgleich)", () => {
+    // Screen 915x412, Canvas 860 breit bei x=27.5 (Padding 12 + Zentrierung).
+    expect(insetsOverCanvas(
+      { left: 12, right: 12, top: 12, bottom: 12 },
+      { x: 27.5, y: 26, width: 860, height: 360 }, 915, 412,
+    )).toEqual({ left: 0, right: 0, top: 0, bottom: 0 });
+  });
+
+  it("Teilueberlappung: nur der Rest ueber dem Canvas wirkt; ohne Canvas 0", () => {
+    expect(insetsOverCanvas(
+      { left: 30, right: 30, top: 0, bottom: 0 },
+      { x: 10, y: 0, width: 700, height: 360 }, 720, 360,
+    )).toEqual({ left: 20, right: 20, top: 0, bottom: 0 });
+    expect(insetsOverCanvas({ left: 30, right: 30, top: 0, bottom: 0 }, undefined, 720, 360))
+      .toEqual({ left: 0, right: 0, top: 0, bottom: 0 });
   });
 });
 
