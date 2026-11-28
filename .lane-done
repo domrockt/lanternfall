@@ -1,0 +1,25 @@
+# Lane m10-title-dim-lanterns — FERTIG (2026-11-28)
+
+Dim-Ausnahme für die 4 Moor-Laternen-Flammen im Titel (Befund aus
+m10-title-flame-glow-r2 K4): Lasur (nightDeep 0,62, depth 3) und Vignette
+(depth 50) haben jetzt clearRect-Fenster exakt über den opaken Glas-Reihen
+(Patch +5, 8x6 Texel, skalenbewusst über bgL.scale) — das Glas zeigt die
+ungedimmte Palette, Landschaft/Menü bleiben unverändert gedimmt.
+NUR src/scenes/Title.ts (gen-title Assets unangetastet), Flammen bewusst auf
+depth 2 unter den Menü-Buttons gelassen (kein Depth-Trick).
+
+Messwerte (~/games/.evidence/m10-title-dim-lanterns/, Renderer Mesa Intel
+RPL-S, 0 JS-Fehler): hellster Glas-Texel = exakt Palette 13 (255,248,230) an
+Laternen 1/3/4 in 1920x1080 UND 640x360; vorher Palette 6-10, Palette-13-Anteil
+0. Laterne 2: Glas komplett hinter OPTIONEN-Button (bestehende Layout-
+Überlappung, out of scope, als Bedarf dokumentiert — "verschwendete Deko").
+
+Abnahme: art-director PASS 5/5 (quantitativer Diff: 129 Pixel geändert in
+640x360, alle im Glas-Bereich; Menü/Text/Mond 0 Pixel), reviewer PASS
+(Follow-ups umgesetzt: skalenbewusste Formel, TITLE_DIM_TOP/HEIGHT,
+imageSmoothingEnabled=false, Scale-2-Testfall). tests/title-dim-lanterns.test.ts
+11/11; npm test 165 Dateien / 1764 Tests; build + tsc grün.
+
+Commits (Branch m10-title-dim-lanterns): 86cded1a K1, 30770547 K2, 3c5850a0 K3,
+75f6aa7e K4, 363b52c4/edf4fde4 Review-Follow-ups. Details:
+docs/lanes/m10-title-dim-lanterns.md. Board #10114-#10117 done.
