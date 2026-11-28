@@ -1,0 +1,459 @@
+{
+  "tool": "scripts/m10-icons-consistency.mjs",
+  "card": "#320 (m9-art-fx-ui-03), Lane m10-icons-consistency",
+  "method": "Offline-Analyse der GEN_ICONS-Raster: Kanten-/Lichtkanten-Metrik, Pracht-Metrik, 16px-Lesbarkeit, WCAG-Kontrast (Regression).",
+  "thresholds": {
+    "offPalette": 0,
+    "softAlpha": 0,
+    "orphanContour": 0,
+    "worstContrastMin": 3,
+    "rimShareMax": 0.9,
+    "evoDistinctMin": 4,
+    "largestComponentShareMin": 0.6
+  },
+  "familyMedians": {
+    "weaponDistinctColors": 8,
+    "evoDistinctColors": 7.5,
+    "evoOrnateAdvantage": -0.5
+  },
+  "icons": [
+    {
+      "icon": "evo_eternal_winter",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 84,
+      "orphanContourPixels": 0,
+      "bodyPixels": 77,
+      "distinctColors": 6,
+      "accentPixels": 15,
+      "rampTonesUsed": 6,
+      "lightShare": 0.195,
+      "shadowShare": 0.39,
+      "rimShare": 0.667,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.7087,
+      "contrast": {
+        "hud": 14.16,
+        "panel": 12.97
+      },
+      "worstContrast": 12.97
+    },
+    {
+      "icon": "evo_phoenix",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 71,
+      "orphanContourPixels": 0,
+      "bodyPixels": 100,
+      "distinctColors": 9,
+      "accentPixels": 46,
+      "rampTonesUsed": 9,
+      "lightShare": 0.01,
+      "shadowShare": 0.4,
+      "rimShare": 0,
+      "components": 2,
+      "largestComponentShare": 0.9,
+      "bodyMedianLuminance": 0.4745,
+      "contrast": {
+        "hud": 9.79,
+        "panel": 8.96
+      },
+      "worstContrast": 8.96
+    },
+    {
+      "icon": "evo_soul_beacon",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 52,
+      "orphanContourPixels": 0,
+      "bodyPixels": 130,
+      "distinctColors": 10,
+      "accentPixels": 20,
+      "rampTonesUsed": 10,
+      "lightShare": 0.146,
+      "shadowShare": 0.7,
+      "rimShare": 0,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.1926,
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15
+    },
+    {
+      "icon": "evo_thorn_storm",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 93,
+      "orphanContourPixels": 0,
+      "bodyPixels": 112,
+      "distinctColors": 3,
+      "accentPixels": 0,
+      "rampTonesUsed": 3,
+      "lightShare": 0.429,
+      "shadowShare": 0.25,
+      "rimShare": 1,
+      "components": 2,
+      "largestComponentShare": 0.857,
+      "bodyMedianLuminance": 0.0859,
+      "contrast": {
+        "hud": 2.54,
+        "panel": 2.32
+      },
+      "worstContrast": 2.32
+    },
+    {
+      "icon": "evo_thunder_seal",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 46,
+      "orphanContourPixels": 0,
+      "bodyPixels": 102,
+      "distinctColors": 8,
+      "accentPixels": 39,
+      "rampTonesUsed": 8,
+      "lightShare": 0,
+      "shadowShare": 0.333,
+      "rimShare": 0,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.3881,
+      "contrast": {
+        "hud": 8.18,
+        "panel": 7.49
+      },
+      "worstContrast": 7.49
+    },
+    {
+      "icon": "evo_wrath_pendulum",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 59,
+      "orphanContourPixels": 0,
+      "bodyPixels": 60,
+      "distinctColors": 7,
+      "accentPixels": 0,
+      "rampTonesUsed": 7,
+      "lightShare": 0.317,
+      "shadowShare": 0.283,
+      "rimShare": 0.632,
+      "components": 3,
+      "largestComponentShare": 0.933,
+      "bodyMedianLuminance": 0.1266,
+      "contrast": {
+        "hud": 3.3,
+        "panel": 3.02
+      },
+      "worstContrast": 3.02
+    },
+    {
+      "icon": "passive_boots",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 62,
+      "orphanContourPixels": 0,
+      "bodyPixels": 104,
+      "distinctColors": 11,
+      "accentPixels": 11,
+      "rampTonesUsed": 11,
+      "lightShare": 0,
+      "shadowShare": 0.75,
+      "rimShare": 0,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.1926,
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15
+    },
+    {
+      "icon": "passive_charm",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 68,
+      "orphanContourPixels": 0,
+      "bodyPixels": 96,
+      "distinctColors": 9,
+      "accentPixels": 29,
+      "rampTonesUsed": 9,
+      "lightShare": 0,
+      "shadowShare": 0.344,
+      "rimShare": 0,
+      "components": 7,
+      "largestComponentShare": 0.938,
+      "bodyMedianLuminance": 0.1859,
+      "contrast": {
+        "hud": 4.4,
+        "panel": 4.03
+      },
+      "worstContrast": 4.03
+    },
+    {
+      "icon": "passive_heart",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 58,
+      "orphanContourPixels": 0,
+      "bodyPixels": 110,
+      "distinctColors": 5,
+      "accentPixels": 1,
+      "rampTonesUsed": 5,
+      "lightShare": 0,
+      "shadowShare": 0.245,
+      "rimShare": 0,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.1266,
+      "contrast": {
+        "hud": 3.3,
+        "panel": 3.02
+      },
+      "worstContrast": 3.02
+    },
+    {
+      "icon": "passive_hourglass",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 65,
+      "orphanContourPixels": 0,
+      "bodyPixels": 33,
+      "distinctColors": 5,
+      "accentPixels": 20,
+      "rampTonesUsed": 5,
+      "lightShare": 0,
+      "shadowShare": 0.242,
+      "rimShare": 0,
+      "components": 5,
+      "largestComponentShare": 0.394,
+      "bodyMedianLuminance": 0.5608,
+      "contrast": {
+        "hud": 11.4,
+        "panel": 10.44
+      },
+      "worstContrast": 10.44
+    },
+    {
+      "icon": "passive_tome",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 42,
+      "orphanContourPixels": 0,
+      "bodyPixels": 90,
+      "distinctColors": 11,
+      "accentPixels": 25,
+      "rampTonesUsed": 11,
+      "lightShare": 0.089,
+      "shadowShare": 0.322,
+      "rimShare": 0,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.3881,
+      "contrast": {
+        "hud": 8.18,
+        "panel": 7.49
+      },
+      "worstContrast": 7.49
+    },
+    {
+      "icon": "passive_whetstone",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 62,
+      "orphanContourPixels": 0,
+      "bodyPixels": 89,
+      "distinctColors": 11,
+      "accentPixels": 4,
+      "rampTonesUsed": 11,
+      "lightShare": 0.045,
+      "shadowShare": 0.685,
+      "rimShare": 1,
+      "components": 3,
+      "largestComponentShare": 0.944,
+      "bodyMedianLuminance": 0.3373,
+      "contrast": {
+        "hud": 7.23,
+        "panel": 6.62
+      },
+      "worstContrast": 6.62
+    },
+    {
+      "icon": "weapon_ember",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 42,
+      "orphanContourPixels": 0,
+      "bodyPixels": 54,
+      "distinctColors": 8,
+      "accentPixels": 4,
+      "rampTonesUsed": 8,
+      "lightShare": 0,
+      "shadowShare": 0.593,
+      "rimShare": 0,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.1333,
+      "contrast": {
+        "hud": 3.42,
+        "panel": 3.13
+      },
+      "worstContrast": 3.13
+    },
+    {
+      "icon": "weapon_flail",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 66,
+      "orphanContourPixels": 0,
+      "bodyPixels": 62,
+      "distinctColors": 7,
+      "accentPixels": 0,
+      "rampTonesUsed": 7,
+      "lightShare": 0,
+      "shadowShare": 1,
+      "rimShare": 0,
+      "components": 3,
+      "largestComponentShare": 0.677,
+      "bodyMedianLuminance": 0.1926,
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15
+    },
+    {
+      "icon": "weapon_frost",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 68,
+      "orphanContourPixels": 0,
+      "bodyPixels": 64,
+      "distinctColors": 10,
+      "accentPixels": 3,
+      "rampTonesUsed": 10,
+      "lightShare": 0.047,
+      "shadowShare": 0.766,
+      "rimShare": 0,
+      "components": 5,
+      "largestComponentShare": 0.75,
+      "bodyMedianLuminance": 0.1926,
+      "contrast": {
+        "hud": 4.53,
+        "panel": 4.15
+      },
+      "worstContrast": 4.15
+    },
+    {
+      "icon": "weapon_lantern",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 40,
+      "orphanContourPixels": 0,
+      "bodyPixels": 49,
+      "distinctColors": 10,
+      "accentPixels": 26,
+      "rampTonesUsed": 10,
+      "lightShare": 0.082,
+      "shadowShare": 0.204,
+      "rimShare": 0,
+      "components": 2,
+      "largestComponentShare": 0.98,
+      "bodyMedianLuminance": 0.5608,
+      "contrast": {
+        "hud": 11.4,
+        "panel": 10.44
+      },
+      "worstContrast": 10.44
+    },
+    {
+      "icon": "weapon_storm",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 62,
+      "orphanContourPixels": 0,
+      "bodyPixels": 64,
+      "distinctColors": 5,
+      "accentPixels": 31,
+      "rampTonesUsed": 5,
+      "lightShare": 0.25,
+      "shadowShare": 0.359,
+      "rimShare": 0.813,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.5357,
+      "contrast": {
+        "hud": 10.93,
+        "panel": 10.01
+      },
+      "worstContrast": 10.01
+    },
+    {
+      "icon": "weapon_thorn",
+      "offPalette": 0,
+      "softAlpha": 0,
+      "contourPixels": 64,
+      "orphanContourPixels": 0,
+      "bodyPixels": 63,
+      "distinctColors": 8,
+      "accentPixels": 0,
+      "rampTonesUsed": 8,
+      "lightShare": 0.127,
+      "shadowShare": 0.556,
+      "rimShare": 0.875,
+      "components": 1,
+      "largestComponentShare": 1,
+      "bodyMedianLuminance": 0.2753,
+      "contrast": {
+        "hud": 6.07,
+        "panel": 5.56
+      },
+      "worstContrast": 5.56
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "offPalette": 0,
+    "softAlpha": 0,
+    "orphanContour": 0,
+    "contrastFails": [
+      "evo_thorn_storm"
+    ],
+    "icedCandidates": [
+      {
+        "icon": "evo_thorn_storm",
+        "rimShare": 1,
+        "lightShare": 0.429
+      },
+      {
+        "icon": "passive_whetstone",
+        "rimShare": 1,
+        "lightShare": 0.045
+      }
+    ],
+    "fragmented": [
+      {
+        "icon": "passive_hourglass",
+        "largestComponentShare": 0.394,
+        "components": 5
+      }
+    ],
+    "evoNotOrnate": [
+      {
+        "icon": "evo_eternal_winter",
+        "distinctColors": 6
+      },
+      {
+        "icon": "evo_thorn_storm",
+        "distinctColors": 3
+      },
+      {
+        "icon": "evo_wrath_pendulum",
+        "distinctColors": 7
+      }
+    ]
+  }
+}
