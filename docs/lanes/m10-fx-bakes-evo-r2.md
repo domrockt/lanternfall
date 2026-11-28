@@ -45,3 +45,32 @@ alpha 0. Sammler: 1 Lauf (Iter limit eingehalten).
 **Scope-Anpassung ggü. Briefing (dokumentiert):** K2 betrifft nur noch `fx_evo_*_thunder_seal`
 (2 Keys statt 12); die 10 baked-Signaturen brauchen keinen Bake — sie zeichnen bereits mit
 Scale 1 aus Zielgrößen-Texturen. K3/K4 wie geplant.
+
+## K2 — Mixel-Bakes für fx_evo_{hit,death}_thunder_seal (#10252)
+
+**Ansatz:** `MIXEL_BAKE_DEFS`-Muster 1:1 übernommen — `signatureFrame()` um `density`-Parameter
+erweitert (identische normierte Geometrie in 32·L Pixeln: Radien/Bandbreiten ×L, Sinus-Frequenzen
+pro normierter Einheit i/L), `outlineAndRim()` um Kontur-Thickness t=L. Neue Bake-Defs:
+hit maxLevel 4 (ceil 3,6), death maxLevel 5 (ceil 4,6). Draw-Scales unverändert — FxSystem
+wählt Stufe L=ceil(Scale) und zeichnet mit Scale/L ≤ 1 (0,9/0,92).
+
+**Optik-Abbruchkriterien geprüft:**
+- Level-1-Ausgabe **bitidentisch** zur alten 32×32-Quelle (Beleg: 12/12 Evo-Sets == K1-Fixture,
+  Skript `~/tmp/m10-fx-bakes-evo-r2/verify-density1.mjs`). thunder_seal-Pfad (Revert 34e97d3,
+  Karte #8876) unangetastet — kein baked-Upgrade geschmuggelt.
+- Farbrampe in jeder Stufe vollständig (Test: Farbmenge == L1), Flachenskalierung ~L² je Farbe.
+- Gefundener und gefixter Bug unterwegs: Beam-Seitenband/Kern war in Stufen nur 1 Texel breit
+  statt L (Screen-Band hätte 3,6 px → 0,9 px schrumpft); Querschnitt jetzt 9|12|9 in L-fach
+  Auflösung, bei L=1 bitidentisch.
+- Dokumentierte Abweichung: die 1-Texel-Rim-Lichtkante (11) bleibt 1 Texel (statt auf L zu
+  wachsen) — sie liest sich am Schirm als feine 0,9-px-Kante statt 3,6-px-Block. Eine „innerhalb
+  t"-Rim-Regel kollabierte den steilen Beam (Wobble-Slope ~2) und wurde verworfen.
+
+**Dither-Baseline:** Die neuen @L-Frames erzeugen zusätzliche gepinnte Dither-Befunde (>2 px
+Band in Texturpixeln) — strukturell identisch zum bestehenden Präzedenzfall fx_fire@2/@3 und
+ring_frost@2/@3 (bandPx skaliert mit L, Screen-Band unverändert, da Draw-Scale/L). Die L1-Basen
+sind unverändert gepinnt. Beleg: `~/games/.evidence/m10-fx-bakes-evo-r2/k2-ist-report.json`.
+
+Coverage nach K2: 16/17 gedeckt; uncovered nur noch `fx_boss_core` (K3).
+Neue Tests: `tests/evo-fx-bakes.test.ts` (6 Assertions-Blöcke: Basis-Keys, Coverage-Bereich,
+Stufen-Existenz, L1-Bitidentität, Geometrie-Skalierung, bestehende Basen unangetastet).

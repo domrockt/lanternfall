@@ -947,16 +947,19 @@ function charOf(idx: number): string {
   return i < 10 ? String.fromCharCode(48 + i) : String.fromCharCode(97 + i - 10);
 }
 
-/** 1-px-Kontur in ink (0) plus helle Lichtkante oben-links (boneLight, 11). */
-function outlineAndRim(rows: string[][]): string[] {
+/** 1-px-Kontur in ink (0) plus helle Lichtkante oben-links (boneLight, 11).
+ *  M10-fx-bakes-evo-r2 K2: optionaler Kontur-/Kanten-Thickness t (Bake-Stufe L
+ *  -> t=L), damit die gebackene Stufe dieselbe SCREEN-Banddicke hat wie die
+ *  32x32-Quelle bei Draw-Scale L (Kontur bleibt L Screen-px, nicht 1). */
+function outlineAndRim(rows: string[][], t = 1): string[] {
   const size = rows.length;
   const snapshot = rows.map((r) => r.slice());
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       if (snapshot[y][x] !== ".") continue;
       let touches = false;
-      for (let dy = -1; dy <= 1 && !touches; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -t; dy <= t && !touches; dy++) {
+        for (let dx = -t; dx <= t; dx++) {
           const nx = x + dx, ny = y + dy;
           if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
           if (snapshot[ny][nx] !== ".") { touches = true; break; }
@@ -966,6 +969,9 @@ function outlineAndRim(rows: string[][]): string[] {
     }
   }
   // Lichtkante: obere/links angrenzende Farbpixel einer Kontur aufhellen.
+  // Bewusst WEITERHIN 1-px-Adjazenz (unabhaengig von t): eine „innerhalb t"-
+  // Regel frisst bei steilen Beams (Wobble-Slope ~2) den Kern — der Rim bleibt
+  // die feine Kante, die Kontur selbst skaliert mit t (Screen-Dicke erhalten).
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const ch = rows[y][x];
@@ -978,14 +984,21 @@ function outlineAndRim(rows: string[][]): string[] {
   return rows.map((r) => r.join(""));
 }
 
-/** Form-Frame einer Signatur: 4 Frames (klein → gross / ausklingend). */
+/** Form-Frame einer Signatur: 4 Frames (klein → gross / ausklingend).
+ *  M10-fx-bakes-evo-r2 K2: density = Bake-Stufe L rendert dieselbe normierte
+ *  Geometrie in L-facher Pixelgroesse (32*L) — alle absoluten Pixel-Masse
+ *  (Radien, Bandbreiten, Wobble, Kontur) skalieren mit L, Frequenzen bleiben
+ *  pro normierter Einheit gleich (Wobble/Sway-Sinus auf i/L). Stufe 1 ist
+ *  bitidentisch zur bisherigen 32x32-Ausgabe. */
 export function signatureFrame(
   shape: EvoSignatureShape,
   palette: readonly [number, number, number],
   stage: number,
   kind: "hit" | "death" = "hit",
+  density = 1,
 ): string[] {
-  const size = 32;
+  const L = Math.max(1, Math.round(density));
+  const size = 32 * L;
   const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
   const c = (size - 1) / 2;
   const t = stage / (SIGNATURE_FRAME_COUNT - 1);
@@ -997,48 +1010,53 @@ export function signatureFrame(
 
   if (shape === "ring") {
     // Geschlossener 2-px-Zackenring: amber aussen, lantern innen, ink-Kontur.
-    const r = Math.min(13.2, (5.2 + t * 6.6) * spread);
+    const r = Math.min(13.2 * L, (5.2 + t * 6.6) * L * spread);
     for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
       const a = Math.atan2(y - c, x - c);
-      const jag = Math.sin(a * 8 + variant * 0.4) * 1.15
-        + Math.sin(a * 16 + stage * 1.7) * (death ? 0.85 : 0.35);
+      const jag = Math.sin(a * 8 + variant * 0.4) * 1.15 * L
+        + Math.sin(a * 16 + stage * 1.7) * (death ? 0.85 : 0.35) * L;
       const edge = d - (r + jag);
-      if (edge >= -1.8 && edge < 0) putPixel(rows, x, y, palette[0]);
-      else if (edge >= 0 && edge <= 1.8) putPixel(rows, x, y, palette[1]);
-      else if (edge > 1.8 && edge <= 2.6) putPixel(rows, x, y, palette[2]);
+      if (edge >= -1.8 * L && edge < 0) putPixel(rows, x, y, palette[0]);
+      else if (edge >= 0 && edge <= 1.8 * L) putPixel(rows, x, y, palette[1]);
+      else if (edge > 1.8 * L && edge <= 2.6 * L) putPixel(rows, x, y, palette[2]);
     }
-    return outlineAndRim(rows);
+    return outlineAndRim(rows, L);
   }
 
   if (shape === "beam") {
     // 2-3 px breiter Zickzack: candleWhite-Kern, fogBlue/paleMist-Rand, ink-Kontur.
-    const h = (death ? 28 : 20) + stage * 2;
+    const h = ((death ? 28 : 20) + stage * 2) * L;
     const beams = death ? 3 : 1;
     for (let b = 0; b < beams; b++) {
-      const off = b === 0 ? 0 : b === 1 ? -3 : 3;
+      const off = (b === 0 ? 0 : b === 1 ? -3 : 3) * L;
       for (let i = -h / 2; i <= h / 2; i++) {
         const y = Math.round(c + i);
-        const wob = Math.round(Math.sin(i * 0.85 + variant + b * 1.3) * (death ? 2.4 : 1.7));
+        // Wobble-Frequenz pro normierter Einheit (i/L), Amplitude × L.
+        const wob = Math.round(Math.sin((i / L) * 0.85 + variant + b * 1.3) * (death ? 2.4 : 1.7) * L);
         const x = Math.round(c + off + wob);
-        putPixel(rows, x, y, palette[0]);
-        putPixel(rows, x - 1, y, palette[1]);
-        putPixel(rows, x + 1, y, palette[1]);
+        // Querschnitt 9|12|9 in L-fach aufgeloest: [x-L .. x+2L-1), Kern in der
+        // Mitte. L=1: x-1 -> 9, x -> 12, x+1 -> 9 (bitidentisch zur Quelle).
+        for (let j = 0; j < 3 * L; j++) {
+          putPixel(rows, x - L + j, y, j < L ? palette[1] : j < 2 * L ? palette[0] : palette[1]);
+        }
       }
       if (b === 0) {
-        for (let k = 1; k <= 5; k++) {
-          putPixel(rows, c + 4 + k, c + k * 0.7, palette[1]);
-          putPixel(rows, c - 5 - k, c - k * 0.7, palette[1]);
+        for (let k = 1; k <= 5 * L; k++) {
+          for (let w2 = 0; w2 < L; w2++) {
+            putPixel(rows, c + 4 * L + k + w2, c + k * 0.7, palette[1]);
+            putPixel(rows, c - 5 * L - k - w2, c - k * 0.7, palette[1]);
+          }
         }
       }
     }
-    return outlineAndRim(rows);
+    return outlineAndRim(rows, L);
   }
 
   if (shape === "splitter") {
     const shards = death ? 6 : 4;
-    const base = death ? 5.5 : 6.5;
-    const len = 4 + t * 4.5;
+    const base = (death ? 5.5 : 6.5) * L;
+    const len = (4 + t * 4.5) * L;
     for (let i = 0; i < shards; i++) {
       const a = variant * 0.37 + (i / shards) * Math.PI * 2 + stage * 0.13;
       const rr = base * spread;
@@ -1046,18 +1064,18 @@ export function signatureFrame(
       const cy = c + Math.sin(a) * rr;
       // Laenglicher Diamant entlang der Radialachse, mit hellem Kern.
       for (let k = -len; k <= len; k++) {
-        const w = Math.max(0, 2.6 - Math.abs(k) * 0.55);
+        const w = Math.max(0, 2.6 * L - Math.abs(k) * 0.55);
         for (let s = -w; s <= w; s += 1) {
           const px = cx + Math.cos(a) * k - Math.sin(a) * s;
           const py = cy + Math.sin(a) * k + Math.cos(a) * s;
-          const idx = Math.abs(k) < 1.2 && Math.abs(s) < 1.2 ? palette[2]
-            : Math.abs(k) > len - 1.5 ? palette[1] : palette[0];
+          const idx = Math.abs(k) < 1.2 * L && Math.abs(s) < 1.2 * L ? palette[2]
+            : Math.abs(k) > len - 1.5 * L ? palette[1] : palette[0];
           putPixel(rows, px, py, idx);
         }
       }
     }
     if (!death) putPixel(rows, c, c, palette[2]);
-    return outlineAndRim(rows);
+    return outlineAndRim(rows, L);
   }
 
   // cloud: zwei klar verschiedene Silhouetten — asymmetrische Eiswolke oder aufsteigender Wisp.
@@ -1067,9 +1085,9 @@ export function signatureFrame(
       [-4, -2, 4.4], [3.5, -3, 3.8], [5, 2.5, 4.2], [-2, 4, 3.9], [0, 0, 4.8],
     ];
     for (const [bx, by, br] of blobs) {
-      const r = br * (death ? 1.45 : 1) * (1 + t * 0.35);
+      const r = br * L * (death ? 1.45 : 1) * (1 + t * 0.35);
       for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
-        const d = Math.hypot(x - (c + bx * spread), y - (c + by * spread));
+        const d = Math.hypot(x - (c + bx * L * spread), y - (c + by * L * spread));
         if (d > r) continue;
         const idx = d < r * 0.5 ? palette[0] : d < r * 0.85 ? palette[1] : palette[2];
         putPixel(rows, x, y, idx);
@@ -1078,22 +1096,22 @@ export function signatureFrame(
     // Drei Eis-Splitter am Rand, damit die Wolke nicht amorph bleibt.
     for (let i = 0; i < 3; i++) {
       const a = -0.6 + i * 1.1 + variant * 0.2;
-      for (let k = 0; k < 5; k++) putPixel(rows, c + Math.cos(a) * (8 + k), c + Math.sin(a) * (7 + k), palette[1]);
+      for (let k = 0; k < 5 * L; k++) putPixel(rows, c + Math.cos(a) * (8 * L + k), c + Math.sin(a) * (7 * L + k), palette[1]);
     }
-    return outlineAndRim(rows);
+    return outlineAndRim(rows, L);
   }
 
   // Seelenleuchtfeuer: aufsteigender Wisp (schmaler Kern, breiter Saum, Schweif).
   const wisps = death ? 3 : 1;
   for (let w = 0; w < wisps; w++) {
-    const offX = w === 0 ? 0 : w === 1 ? -5 : 5;
-    const offY = w === 0 ? 0 : w === 1 ? 3 : -2;
-    const top = 10 + t * 4;
-    for (let yy = -top; yy <= 8; yy++) {
+    const offX = (w === 0 ? 0 : w === 1 ? -5 : 5) * L;
+    const offY = (w === 0 ? 0 : w === 1 ? 3 : -2) * L;
+    const top = (10 + t * 4) * L;
+    for (let yy = -top; yy <= 8 * L; yy++) {
       const y = c + yy + offY;
       const taper = 1 - Math.max(0, yy + top * 0.2) / (top * 1.2);
-      const half = Math.max(0.6, 4.2 * taper + (death ? 1.2 : 0));
-      const sway = Math.sin(yy * 0.35 + stage * 0.9 + variant + w) * 1.7;
+      const half = Math.max(0.6 * L, (4.2 * taper + (death ? 1.2 : 0)) * L);
+      const sway = Math.sin((yy / L) * 0.35 + stage * 0.9 + variant + w) * 1.7 * L;
       for (let xx = -half; xx <= half; xx += 0.75) {
         const x = c + offX + sway + xx;
         const idx = Math.abs(xx) < half * 0.42 ? palette[0]
@@ -1103,11 +1121,11 @@ export function signatureFrame(
     }
     // Zwei kleine seitliche Flammenarmen.
     for (let k = 0; k < 4; k++) {
-      putPixel(rows, c + offX - 4 - k * 0.6, c + offY + 3 - k, palette[1]);
-      putPixel(rows, c + offX + 4 + k * 0.6, c + offY + 2 + k * 0.4, palette[1]);
+      putPixel(rows, c + offX - (4 + k * 0.6) * L, c + offY + (3 - k) * L, palette[1]);
+      putPixel(rows, c + offX + (4 + k * 0.6) * L, c + offY + (2 + k * 0.4) * L, palette[1]);
     }
   }
-  return outlineAndRim(rows);
+  return outlineAndRim(rows, L);
 }
 
 /**
@@ -1189,10 +1207,15 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
 // ein Textur-Pixel deckt damit höchstens 1 Spielpixel ab, der Glow läuft in
 // 1-px-Stufen. Level-1-Keys bleiben unverändert (Direkt-Pfaden kompatibel).
 
-/** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix). */
 /** Die vier weichen Glow-/Explosions-Effekte mit Bake-Stufen (Mixel-Fix) plus
- *  ring_frost (M10-evo-fx-winter: Aura-Siegel wird bis 2–3x gezeichnet). */
-export const FX_MIXEL_BASES = ["fx_fire", "fx_halo_cold", "fx_halo", "fx_shock", "ring_frost"] as const;
+ *  ring_frost (M10-evo-fx-winter: Aura-Siegel wird bis 2–3x gezeichnet) und
+ *  fx_evo_{hit,death}_thunder_seal (M10-fx-bakes-evo-r2 K2: 32x32-Signatur wird
+ *  mit Draw-Scale 3,2–4,6 gezeichnet — Mixel-Bake mit identischer normierter
+ *  Geometrie, Draw-Scales unverändert). */
+export const FX_MIXEL_BASES = [
+  "fx_fire", "fx_halo_cold", "fx_halo", "fx_shock", "ring_frost",
+  "fx_evo_hit_thunder_seal", "fx_evo_death_thunder_seal",
+] as const;
 
 export type FxMixelBase = (typeof FX_MIXEL_BASES)[number];
 
@@ -1234,6 +1257,20 @@ const MIXEL_BAKE_DEFS: readonly MixelBakeDef[] = [
     // Zacken), damit der art-director-Fundstand erhalten bleibt.
     base: "ring_frost", w: 96, h: 96, frameCount: 1, maxLevel: 3,
     frame: (_i, d) => frostRingFrame(96, d),
+  },
+  {
+    // M10-fx-bakes-evo-r2 K2: thunder_seal bleibt beim 32x32-Pfad (Revert
+    // 34e97d3, Karte #8876), wird aber in spawnEvolution mit Draw-Scale 3,2–3,6
+    // gezeichnet → Mixel-Bake bis Level 4 (ceil 3,6), Draw-Scale/Level <= 1.
+    // Identische normierte Geometrie (signatureFrame mit density) — Optik
+    // unverändert, Quelle schärfer.
+    base: "fx_evo_hit_thunder_seal", w: 32, h: 32, frameCount: 4, maxLevel: 4,
+    frame: (i, d) => signatureFrame("beam", EVOLUTION_SIGNATURES.thunder_seal.palette, i, "hit", d),
+  },
+  {
+    // Death-Signatur: Draw-Scale 4,0–4,6 → Bake bis Level 5 (ceil 4,6).
+    base: "fx_evo_death_thunder_seal", w: 32, h: 32, frameCount: 4, maxLevel: 5,
+    frame: (i, d) => signatureFrame("beam", EVOLUTION_SIGNATURES.thunder_seal.palette, i, "death", d),
   },
 ];
 

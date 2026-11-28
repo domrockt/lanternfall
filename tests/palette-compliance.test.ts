@@ -229,6 +229,7 @@ function representativeFxSets(): Array<{ key: string; w: number; h: number; fram
     sets.push({ key, w: def.w, h: def.h, frames: def.frames });
   }
   for (const [base, def] of Object.entries(mixelLevel1Frames())) {
+    if (sets.some((s) => s.key === base)) continue; // Evo-Signaturen nicht doppelt
     sets.push({ key: base, w: def.w, h: def.h, frames: def.frames });
   }
   for (const bake of mixelBakes()) {
