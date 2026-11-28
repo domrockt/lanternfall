@@ -7,8 +7,9 @@
 // den Pfad in der Antwort — wir lesen ihn per fs und archivieren ihn mit Zeitstempel.
 // Kein flock (kein FPS). Spieler-Sperre: bei 409 DOM_SPIELT je Karte EIN erneuter Versuch.
 const BRIDGE = "http://172.17.0.1:5181";
-const STARTS = 3;
-const WINDOW_MS = 10000; // Aufnahmefenster je Start
+// M10_STARTS: Anzahl Kaltstarts (Default 1 = Beleg-Karte m10-apk-splash-window-beleg, EIN Start)
+const STARTS = Number(process.env.M10_STARTS ?? 1);
+const WINDOW_MS = Number(process.env.M10_WINDOW_MS ?? 6000); // Aufnahmefenster je Start
 
 const outDir = process.argv[2];
 if (!outDir) { console.error("usage: node scripts/m10-apk-splash.mjs <outdir>"); process.exit(2); }
@@ -17,7 +18,7 @@ import { mkdirSync, copyFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 mkdirSync(outDir, { recursive: true });
 
-const manifest = { lane: "m10-apk-splash-sight", card: "K2", bridge: BRIDGE, starts: [] };
+const manifest = { lane: "m10-apk-splash-window-beleg", card: "#13215", bridge: BRIDGE, starts: [] };
 
 for (let n = 1; n <= STARTS; n++) {
   const run = { n, launch: null, shots: [], blocked: null };
