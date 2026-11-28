@@ -2033,10 +2033,11 @@ export function thornSignatureFrame(kind: "hit" | "death", stage: number, size =
         const idx = rel < 0.15 && aS < w * 0.5 && i % 3 === 0 ? 11 : rel < 0.55 ? 31 : rel < 0.85 ? 30 : 29;
         put(hx - Math.sin(a) * s, hy + Math.cos(a) * s, idx);
       }
-      // Einseitige Barbe (keine Spiegel-Symmetrie).
+      // Einseitige Barbe (keine Spiegel-Symmetrie); außen 1 px mossNight-Saum
+      // (art-director Minor: Grün-auf-Gras-Kontrast).
       if (rel > 0.3 && rel < 0.45) {
         put(hx - Math.sin(a) * (w + 1.1), hy + Math.cos(a) * (w + 1.1), 28);
-        put(hx - Math.sin(a) * (w + 2.1), hy + Math.cos(a) * (w + 2.1), 30);
+        put(hx - Math.sin(a) * (w + 2.1), hy + Math.cos(a) * (w + 2.1), 28);
       }
     }
     // Dunkle Spitzenkappe.

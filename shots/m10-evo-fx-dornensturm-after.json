@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-28T03:29:02.512Z",
+  "generatedAt": "2026-11-28T03:39:45.261Z",
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "valid": true,
   "errors": [],
   "configs": {
     "640": {
       "renderer": {
-        "generatedAt": "2026-11-28T03:28:57.200Z",
+        "generatedAt": "2026-11-28T03:39:40.572Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -142,70 +142,70 @@
       },
       "live": {
         "fx_thorn": {
-          "maxScaleX": 0.702,
-          "maxScaleY": 0.702,
+          "maxScaleX": 1,
+          "maxScaleY": 1,
           "samples": [
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             }
@@ -226,68 +226,68 @@
           ]
         },
         "fx_thorn_streak": {
-          "maxScaleX": 0.981,
-          "maxScaleY": 0.981,
+          "maxScaleX": 1,
+          "maxScaleY": 1,
           "samples": [
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
@@ -429,9 +429,9 @@
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal28": 19,
+            "pal28": 32,
             "pal29": 20,
-            "pal30": 151,
+            "pal30": 138,
             "pal31": 219,
             "pal11": 16
           }
@@ -450,11 +450,11 @@
         "zoom": 1,
         "cameraW": 640
       },
-      "aliveEnemies": 32
+      "aliveEnemies": 29
     },
     "960x540": {
       "renderer": {
-        "generatedAt": "2026-11-28T03:29:00.201Z",
+        "generatedAt": "2026-11-28T03:39:43.108Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -590,70 +590,70 @@
       },
       "live": {
         "fx_thorn": {
-          "maxScaleX": 0.702,
-          "maxScaleY": 0.702,
+          "maxScaleX": 1,
+          "maxScaleY": 1,
           "samples": [
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.702,
-              "scaleY": 0.702,
-              "dispW": 10,
-              "dispH": 10,
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 14,
+              "dispH": 14,
               "blend": 0,
               "tint": 16777215
             }
@@ -674,68 +674,68 @@
           ]
         },
         "fx_thorn_streak": {
-          "maxScaleX": 0.981,
-          "maxScaleY": 0.981,
+          "maxScaleX": 1,
+          "maxScaleY": 1,
           "samples": [
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
               "tint": 16777215
             },
             {
-              "scaleX": 0.981,
-              "scaleY": 0.981,
+              "scaleX": 1,
+              "scaleY": 1,
               "dispW": 22,
               "dispH": 22,
               "blend": 0,
@@ -877,9 +877,9 @@
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal28": 19,
+            "pal28": 32,
             "pal29": 20,
-            "pal30": 151,
+            "pal30": 138,
             "pal31": 219,
             "pal11": 16
           }

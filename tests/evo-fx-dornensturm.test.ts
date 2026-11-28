@@ -144,11 +144,20 @@ describe("m10-evo-fx-dornensturm: Salven-Effekte in Zielgröße (eine Pixelgrö�
     expect(src).toContain("fx_thorn_crown");
     expect(src).toContain("fx_thorn_streak");
     expect(src).not.toContain("scaleFrom: 3.0");
-    // Krone ohne Up- oder Downscale gezeichnet (Draw-Scale 1).
-    const crownBlock = src.slice(src.indexOf("fx_thorn_crown") - 200, src.indexOf("fx_thorn_crown") + 400);
-    expect(crownBlock).toContain("scaleFrom: 1");
-    expect(crownBlock).toContain("scaleTo: 1");
-    // Dornen-Trail verliert den warmen Ember-Tint (Natur-Grün bleibt sichtbar).
+    // Krone und Streaks ohne Up- oder Downscale gezeichnet (Draw-Scale 1, kein
+    // Scale-Tween — art-director: nicht-ganzzahliges Resample = Mixel).
+    for (const key of ["fx_thorn_crown", "fx_thorn_streak"]) {
+      const block = src.slice(src.indexOf(key) - 200, src.indexOf(key) + 400);
+      expect(block).toContain("scaleFrom: 1, scaleTo: 1");
+    }
+    // Dornen-Trail: Scale 1 + Frame-Decay statt Resample-Tween, Alpha 0,6;
+    // Ember/Phoenix-Verhalten unverändert.
+    const trailBlock = src.slice(src.indexOf("scaleFrom: thornTrail ? 1") - 300, src.indexOf("scaleFrom: thornTrail ? 1") + 300);
+    expect(trailBlock).toContain("scaleTo: thornTrail ? 1 : 0.15");
+    expect(trailBlock).toContain("alphaFrom: thornTrail ? 0.6");
+    // Muzzle-Puff der Basiswaffe ebenfalls ohne Tween; Tint-Flag bleibt.
+    const muzzleBlock = src.slice(src.indexOf("kein Scale-Tween am Muzzle-Puff") - 150, src.indexOf("kein Scale-Tween am Muzzle-Puff") + 250);
+    expect(muzzleBlock).toContain("scaleFrom: 1, scaleTo: 1");
     expect(src).toContain('p.weaponId === "thorn" || p.weaponId === "thorn_storm"');
   });
 });

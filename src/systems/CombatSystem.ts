@@ -615,7 +615,8 @@ export class CombatSystem {
       this.particles.spawn({
         texture: "fx_thorn", x: ctx.playerX + Math.cos(angle) * 9, y: ctx.playerY + Math.sin(angle) * 9,
         vx: Math.cos(angle) * 40, vy: Math.sin(angle) * 40, life: 0.2,
-        scaleFrom: 0.7, scaleTo: 0.2, alphaFrom: 0.8, alphaTo: 0,
+        // art-director: kein Scale-Tween am Muzzle-Puff — Scale 1, Frame-Fade.
+        scaleFrom: 1, scaleTo: 1, alphaFrom: 0.8, alphaTo: 0,
         additive: false, rotation: angle,
       });
     }
@@ -654,14 +655,16 @@ export class CombatSystem {
       scaleFrom: 1, scaleTo: 1, alphaFrom: 0.95, alphaTo: 0, additive: false,
     });
     // 16 Dornen-Streaks in Zielgröße (22x22 @ Draw-Scale 1 statt fx_thorn @ 3,0x):
-    // Dart + abgelöste Splitter als Ausklang, Rotation = Flugrichtung.
+    // Dart + abgelöste Splitter als Ausklang, Rotation = Flugrichtung. Kein
+    // Scale-Tween (art-director FAIL 3,5/5: nicht-ganzzahliges Resample = Mixel) —
+    // das Schrumpfen übernehmen die 3 Frames (Dart → kürzer → Splitter).
     for (let i = 0; i < 16; i++) {
       const a = (i / 16) * Math.PI * 2 + this.clock * 0.4;
       this.particles.spawn({
         texture: "fx_thorn_streak", frames: fxFrames("fx_thorn_streak", 3),
         x: ctx.playerX + Math.cos(a) * 16, y: ctx.playerY + Math.sin(a) * 16,
         vx: Math.cos(a) * 78, vy: Math.sin(a) * 78,
-        life: 0.8, scaleFrom: 1, scaleTo: 0.55, alphaFrom: 1, alphaTo: 0,
+        life: 0.8, scaleFrom: 1, scaleTo: 1, alphaFrom: 1, alphaTo: 0,
         rotation: a + Math.PI / 2, additive: false,
       });
     }
@@ -1057,8 +1060,10 @@ export class CombatSystem {
             texture: p.trail,
             frames: p.trailFrames.length > 0 ? p.trailFrames : undefined,
             x: p.x, y: p.y, life: 0.22,
-            scaleFrom: p.sprite.scaleX * 0.8, scaleTo: 0.15,
-            alphaFrom: emberTrail ? 0.4 : 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
+            // Dornen-Trail (art-director FAIL 3,5/5): kein Scale-Tween — Draw-Scale 1
+            // und Frame-Decay der 3 14x14-Frames; Alpha 0,6 für Präsenz.
+            scaleFrom: thornTrail ? 1 : p.sprite.scaleX * 0.8, scaleTo: thornTrail ? 1 : 0.15,
+            alphaFrom: thornTrail ? 0.6 : emberTrail ? 0.4 : 0.45, alphaTo: 0, additive: p.blendAdd || phoenixTrail,
             tint: p.blendAdd || phoenixTrail || thornTrail ? undefined : PAL[C.emberOrange],
           });
         }
