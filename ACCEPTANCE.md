@@ -387,8 +387,9 @@ diese Nachabnahme deckt genau diese ab.
 | menu-touch-targets: Probe 36/36 | **PASS** (erneut auf PIN, rc=0, 0 JS-Fehler) | `shots/qa-reaccb-menu-touch-after.json`, QA-Doku K2b |
 | feedback-budget: Peaks | **PASS** (Shake 2,56 px, Hit-Stop-Peak 120 ms, aktive Stop-Frames 125→55, 0 JS-Fehler) | `shots/m10-feedback-budget-{baseline,after}.json`, QA-Doku K2c |
 | ambient-batching: Nachher-Zahlen | **PASS** (640/M25 Median 54,0→56,3 ≥ 55; 780/M25 44,8 = fill-rate-Grenze, kein Rückschritt) | `shots/m10-ambient-after-{640,780}-{1..3}.json`, QA-Doku K2d, Lane-Doc Abschnitte 3+4 |
-| 30-min-Echtzeitlauf (A4) | **offen/blocked (Runner-Limits, Vera)** — nicht erneut versucht, Übernahme aus erster Nachabnahme | `docs/qa/reacceptance-2026-11-27.md` |
+| 30-min-Echtzeitlauf (A4) | **PASS (iGPU)** — nachgeholt im Rahmen der Nachabnahme C auf späterem main (nicht auf PIN `49727faa`): FPS-Tor PASS (min 60,1 / Median 60,5, 7307 Samples, iGPU, 0 Crashes/0 JS-Fehler), Inhalt PASS (Sieg `dawn` 30,3 Sim-Min, 6/6 Bosse 300–1800 s ±0 s, 6 Truhen, 3 Evolutionen). Heap im Lauf selbst **FAIL +21 %** (Minute 1→29, GC-Sägezahn) — entkräftet durch Remessung auf main `65a1b74` (**+5,2 % ≤ +12 %**, Merge-Text `m10-heap-sawtooth`); formaler Tor-Abschluss über `m10-heap-budget` (HARD-Gate Fall A: +11,0 %/+11,3 % ≤ +15 % PASS) | `shots/qa-reaccc-realtime-30min.json`, `docs/qa/reacceptance-2026-11-27.md` (fa2-04-Nachtrag) |
 
-**Gesamturteil Nachabnahme B: PASS** (alle prüfbaren Kriterien auf PIN grün; einziger
-offener Punkt bleibt der 30-min-Echtzeitlauf sowie die bekannte fill-rate-Grenze
-780×360@3 in Minute 25 — beides nicht neu).
+**Gesamturteil Nachabnahme B: PASS** (alle prüfbaren Kriterien auf PIN grün; der
+30-min-Echtzeitlauf war zum PIN-Zeitpunkt noch offen/blocked und ist seitdem
+nachgeholt — **PASS (iGPU)**, siehe Zeile oben; verbleibender Rest nur noch die
+bekannte fill-rate-Grenze 780×360@3 in Minute 25).

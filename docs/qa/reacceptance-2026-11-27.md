@@ -160,6 +160,30 @@ des Laufs), nicht ein Spielfehler. Die inhaltlichen Boss-/Truhen-/Sieg-Belege li
 bereits aus dem 30×-fullrun vor (fa2-03). Für die Heap-Abnahme bleibt der Echtzeitlauf
 offen, bis ein stabiler Host/Lauf vorliegt.
 
+### Nachtrag fa2-04 (28.11.): iGPU-Lauf erfolgreich — BLOCKED aufgelöst
+
+Der Lauf wurde zu einem späteren Zeitpunkt auf dem iGPU-Renderer erneut versucht und
+lief diesmal **komplett durch** (30 min Echtzeit, 0 Crashes, 0 JS-Fehler).
+Vollständiges JSON: `shots/qa-reaccc-realtime-30min.json`, Minuten-Shots:
+`shots/qa-reaccc-realtime-minute-*.png` (Belege aus der Nachabnahme C auf späterem
+main, nicht auf PIN `49727faa` — die Blocker-Ursache „Renderer-Abbruch nach Minute 20“
+trat damit nicht mehr auf).
+
+- **FPS-Tor (≥ 55): PASS** — min 60,1 / Median 60,5, 7307 Samples, iGPU,
+  vsync-gecappt, 0 Crashes / 0 JS-Fehler.
+- **Inhalt: PASS** — Sieg `dawn` nach 30,3 Sim-Minuten; 6/6 Bosse 300–1800 s (±0 s),
+  6 Truhen, 3 Evolutionen, Level 38, 5687 Kills.
+- **Heap-Tor (≤ +15 %): im Lauf selbst FAIL — +21 %** (Minute 1→29: 31,9 → 38,6 MB;
+  endMB 27,1 < Minute-1 → GC-Sägezahn, kein monotoner Leak; das harte Tor zählt).
+  Entkräftet durch Remessung auf main `65a1b74` (Merge `m10-heap-sawtooth`):
+  **+5,2 % ≤ +12 %** (Merge-Commit-Text). Formaler Tor-Abschluss über die Lane
+  `m10-heap-budget`: messrausch-festes HARD-Gate „Heap(Run-Ende, nach erzwungenem GC)
+  vs. Sim-Minute 1 ≤ +15 %“, zwei unabhängige Läufe **+11,0 % / +11,3 % → PASS,
+  Fall A** (`shots/m10-heap-budget-before/after.json`, `tests/heap-budget.test.ts`).
+
+Damit ist A4 (30-min-Echtzeitlauf) im Ist-Stand **PASS (iGPU)**; der BLOCKED-Status
+oben bleibt als historischer Befund vom 15:35Z-Lauf stehen.
+
 ## fa2-05 — Touch/Gamepad (verify-input) + Optik-Urteil
 
 ### Eingabe: `node scripts/verify-input.mjs` (2026-11-27T13:43:05–13:44:54Z)
@@ -223,3 +247,10 @@ Blocker, alle mit Beleg in diesem Dokument:
 Offene Folgekarten: Results-Screen-Layout, Boss-FX-Kontrast (aus fa2-05),
 780-Endgame-FPS (Lanes `m10-endgame-fps`/`m10-perf-recovery`/`m10-fx-overdraw-cap`
 nicht in main), stabiler Echtzeitlauf.
+
+**Nachtrag (28.11., Doc-Sync-Lane):** Punkt 4 (Echtzeitlauf/Heap) ist seither
+aufgelöst — der 30-min-Echtzeitlauf lief auf iGPU komplett durch: FPS PASS
+(min 60,1), Inhalt PASS (Sieg `dawn`, 6/6 Bosse, 6 Truhen), Heap im Lauf +21 % FAIL
+(GC-Sägezahn) → entkräftet durch Remessung auf main `65a1b74` (+5,2 % ≤ +12 %),
+formaler Abschluss über `m10-heap-budget` (HARD-Gate Fall A +11,0/+11,3 % PASS).
+Details: Abschnitt fa2-04 (Nachtrag), `shots/qa-reaccc-realtime-30min.json`.
