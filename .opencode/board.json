@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11290,
+  "next": 11294,
   "cards": [
     {
       "id": 1,
@@ -14738,6 +14738,110 @@
       ],
       "created": "2026-11-28T10:55:19Z",
       "updated": "2026-11-28T10:55:27Z"
+    },
+    {
+      "id": 11290,
+      "title": "m10-levelup-panel-crisp K1: Vorher-Belege Level-Up-Panel",
+      "description": "Screenshot-Probe des Level-Up-Panels (Pause/Level-Up via run.giveXp) bei 640x360@2, 780x360@3, 960x540@2; Mängel-Scan (fraktionale Skalierung, Überlappungs-Rects, Fokus-Kontrast) als JSON; Angebots-Snapshot für 3 Seeds. Abnahme: shots/m10-levelup-panel-before-*.png + shots/m10-levelup-panel-before.json existieren (Kopie in ~/games/.evidence/m10-levelup-panel-crisp/), Skript scripts/m10-levelup-panel.mjs committed, 0 JS-Fehler in den Läufen.",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T09:43:31Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Probe-Skript scripts/m10-levelup-panel.mjs wird gebaut und läuft (before-Belege)."
+        },
+        {
+          "at": "2026-11-28T09:48:56Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig (Commit fef07bd9): before-Shots 3 Formate + JSON in ~/games/.evidence/m10-levelup-panel-crisp/. Befund: 5 Divider-Überlappungen je Format (Trennlinie falsch geankert, kreuzt Panelrahmen/Nachbarkarte), 0 fraktionale Skalen, Fokus-Kontrast 11.9:1, 0 JS-Fehler, 3-Seed-Angebots-Snapshot (je 3) als Bitgleich-Baseline. Sichtprüfung 640/960 bestätigt Linien-Artefakt."
+        },
+        {
+          "at": "2026-11-28T10:59:17+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10665, Merge branch m10-levelup-panel-crisp"
+        }
+      ],
+      "created": "2026-11-28T09:43:28Z",
+      "updated": "2026-11-28T09:48:56Z"
+    },
+    {
+      "id": 11291,
+      "title": "m10-levelup-panel-crisp K2: Pixel-Crisp-Fix Panel",
+      "description": "Panel/Icon/Text ganzzahlig skaliert (eine Pixelgröße, Mixel-Regel), Anker auf Spielpixel gerundet; UI.ts/levelup.ts minimal. Abnahme: Probe zeigt 0 fraktionale Skalen im levelGroup, npx tsc rc=0, build grün, tests grün.",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T09:49:19Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Divider-Anker-Fix in UI.ts createLevelUpUI (setOrigin 0/0.5, linke Kante = textX, inset 4px beidseitig)."
+        },
+        {
+          "at": "2026-11-28T09:51:31Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig (Commit 58723ee8): Divider setOrigin(0,0.5) — Linie jetzt inset 4px in eigener Karte. Nachher-JSON: 0 Überlappungen, 0 fraktionale Skalen, inside true in 640/780/960; Sichtprüfung after-640 sauber. build ok, 1698/1698 Tests gruen, tsc rc=0. Probe-Edit #3 dokumentiert: Kriterium 'Divider-vs-eigene-Karte' auf Voll-Einschluss korrigiert (false positive), keine Werte-Tuning-Schleife. (2 gemutete shots/m10-passive-math-*.json waren Timestamp-Churn meines Testlaufs, revertet.)"
+        },
+        {
+          "at": "2026-11-28T10:59:17+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10666, Merge branch m10-levelup-panel-crisp"
+        }
+      ],
+      "created": "2026-11-28T09:43:28Z",
+      "updated": "2026-11-28T09:51:31Z"
+    },
+    {
+      "id": 11292,
+      "title": "m10-levelup-panel-crisp K3: Fokus-Kontrast >= 3:1",
+      "description": "Gewähltes Angebot Kontrast >= 3:1 gegen Panel-Hintergrund (gemessen WCAG), Tastatur/Gamepad/Touch gleiches Fokusverhalten (Muster options-touch-focus). Abnahme: Probe-JSON focus.ratioSelected >= 3 für alle 3 Formate.",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T09:51:40Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: Fokus-Kontrast gemessen 11.9:1 (>=3 ok); Pruefung Tastatur/Gamepad/Touch-Fokusgleichheit gegen Muster options-touch-focus."
+        },
+        {
+          "at": "2026-11-28T09:59:08Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig (Commit 48b3da1a): Kontrast 11.9:1 (>=3) in allen 3 Formaten; Hover-Guard nach options-touch-focus (mouse-parked-pre-open vorher 2 -> nachher 0; keyboard 0; echte Bewegung waehlt 2). build ok, 1698/1698 Tests, 0 JS-Fehler. Belege .evidence/m10-levelup-panel-crisp/ (after.json focusCases)."
+        },
+        {
+          "at": "2026-11-28T10:59:17+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #10667, Merge branch m10-levelup-panel-crisp"
+        }
+      ],
+      "created": "2026-11-28T09:43:28Z",
+      "updated": "2026-11-28T09:59:08Z"
+    },
+    {
+      "id": 11293,
+      "title": "m10-levelup-panel-crisp K4: Regressionstest + Nachher + Lane-Doku",
+      "description": "tests/levelup-panel-crisp.test.ts (ganzzahlige Skalen, 0 Überlappungs-Rects, Angebotslogik bitgleich vs. Vorher-Snapshot für 3 Seeds), Nachher-Shots, docs/lanes/m10-levelup-panel-crisp.md, .lane-done. Abnahme: npm test grün, tsc rc=0, art-director >= 4/5 auf Nachher-Shots.",
+      "column": "done",
+      "assignee": "lead",
+      "notes": [
+        {
+          "at": "2026-11-28T09:59:24Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: tests/levelup-panel-crisp.test.ts (ganzzahlige Skalen, 0 Überlappungen, Angebotslogik bitgleich vs Vorher-Snapshot 3 Seeds) + Lane-Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T10:08:30Z",
+          "by": "build",
+          "text": "doing → review: K4 + .lane-done committet (fec39332, a25b3076). Kontrolleure: art-director PASS 4,5/5, reviewer PASS."
+        },
+        {
+          "at": "2026-11-28T10:08:30Z",
+          "by": "build",
+          "text": "review → done: Review abgeschlossen: art-director PASS 4,5/5 + reviewer PASS (Belege in docs/lanes/m10-levelup-panel-crisp.md); Commits fec39332/a25b3076."
+        }
+      ],
+      "created": "2026-11-28T09:43:28Z",
+      "updated": "2026-11-28T10:08:30Z"
     }
   ]
 }
