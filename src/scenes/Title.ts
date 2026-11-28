@@ -119,7 +119,9 @@ export class Title extends Phaser.Scene {
     this.add.image(bgL.x, bgL.y, "title_background").setOrigin(0, 0).setDepth(0)
       .setScale(s);
     // Atmender Mond-Glow (additiv, nur Licht – keine Off-Palette-Flächen).
-    const glow = this.add.image(W - 76, 56, "light_radius")
+    // Mond sitzt im Quellbild bei (404, 56); der Glow folgt der On-Screen-
+    // Mondposition (m10-title-bg-crisp: vorher fix an (W-76, 56)).
+    const glow = this.add.image(bgL.x + 404, bgL.y + 56, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD).setScale(0.9).setAlpha(0.45).setDepth(1);
     this.tweens.add({ targets: glow, alpha: 0.3, scale: 1.0, duration: 2400, yoyo: true, repeat: -1 });
     // Dunkle Bodenlasur unter dem Textblock (nur Palettenfarbe, Alpha-Overlay).
