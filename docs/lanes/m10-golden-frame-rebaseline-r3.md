@@ -57,3 +57,8 @@ ein künftiger Guard-FAIL wird zuerst je Differenz eingeordnet, nicht stillschwe
 ## Offene Punkte
 - Keine. Schranke bleibt scharf gegen die nächste Merge-Welle (Baseline unverändert:
   `shots/m10-golden-frame-baseline.json`, `baselineAt: 761f274a`).
+
+## Lane-Abschluss (#13541)
+Schranke nach der Merge-Welle seit r2 **scharf**: Guard PASS ohne Rebaseline, Baseline
+unverändert (`baselineAt: 761f274a`). Keine src-Änderung in dieser Lane; Mess-/Probe-Aufwand
+1 Skript-Lauf, 0 Edit-Iterationen am Mess-Skript.

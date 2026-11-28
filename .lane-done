@@ -1,0 +1,11 @@
+# Lane m10-golden-frame-rebaseline-r3 — Abschluss (2026-11-28)
+Ziel: Golden-Frame-Schranke nach Merge-Welle seit r2 (ab d75862cb) scharf machen.
+Ergebnis: Guard PASS — node scripts/m10-golden-frame.mjs (3 Seeds × 2 Läufe × 600 Ticks, mira):
+deterministic=true, matchesBaseline=3/3, jsErrors=0, Renderer RPL-S iGPU (kein SwiftShader).
+Hashes bitgleich zur r2-Doku (101=9d3f3b2a, 202=b4555df0, 404=a9f247a9) → KEINE Rebaseline,
+keine Befundliste. Quellenzuordnung: alle 3 Merges seit d75862cb (32aaa78b inrun-tor-sweep,
+9bcc1e41 renderer-guard, 08ef5235 janky-remeasure) src-frei → Sim-Hash erwartungskonform neutral.
+Tests: golden-frame.test.ts 4/4 grün; volle Suite 234 Dateien/2541 Tests grün; tsc sauber.
+Baseline unverändert (shots/m10-golden-frame-baseline.json, baselineAt 761f274a).
+Karten: #13539/#13540/#13541; Commits 7d34cef4 (K1), 1fac3f63 (K2), K3 = dieser Commit. Belege:
+shots/m10-golden-frame-r3-verdict.json, ~/tmp/m10-golden-frame-rebaseline-r3-k1.log.
