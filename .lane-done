@@ -1,0 +1,42 @@
+# Lane m10-prop-contact-shadow — abgeschlossen
+
+Props (Steine, Knochen, Büsche, Bäume, Ruinen — inkl. Varianten aus
+m10-props-variety) wirken jetzt mit palettetreuen 1-px-Kontakt-Schatten im
+Moor — Restthema des m9-art-world-Ziels "Props mit Tiefe" geschlossen.
+
+## Was
+- Schatten-Generator in src/gfx/gen-props.ts (propShadowFor): elliptische
+  Pixel-Silhouette je Prop-Klasse aus der Fussbreite des Sprites, Palette 0
+  (ink), Kern α0,35 / Rand α0,18, 3-4 Zeilen; Varianten auf Basis-Klasse.
+- Zeichnung in GroundRenderer.addProp: alle Schatten in EINER Canvas-Textur
+  (prop_contact_shadow, 13 ps_-Frames) = 1 Batch; Schatten-Zentrum (wx+1, wy+1)
+  — untere Ellipsen-Hälfte unter der opaken Basis sichtbar (art-director-R1:
+  bei wy-1 verdeckt die Basis den Schatten). Fallback auf alten Soft-Schatten.
+- Guard-Test tests/prop-shadow.test.ts (31 Tests): Palette, Alpha < opak,
+  Ellipse/Symmetrie, Determinismus, Offset-Invariante wy+1, Atlas < 1024 px.
+- Mess-Skript scripts/m10-prop-shadow.mjs (--tag/--frozen/--drawcalls).
+
+## Abnahme
+- art-director Runde 1: FAIL (1-2/5) → Root Cause Okklusion + Beleg-Prozess
+  gefixt; Runde 2: **PASS** (5/5, 4/5, 5/5, 5/5, 5/5 — 0 Muss-Mängel).
+- Reviewer: PASS (Findings eingearbeitet: PROP_SHADOW_OFFSET gepinnt,
+  Kommentare/Konstanten, Test-Iteration auf prop_* begrenzt).
+- 527/527 gerenderte Props haben Kontakt-Schatten (0 ohne), 0 Off-Palette
+  (Shadow-Textur nur PAL[0] mit Alpha; Frame = erlaubte Alpha-Überblendung).
+- Fußpunkt-Delta eingefroren (n=78): gesamt −4,9/−7,2/−5,5 (R/G/B), hell
+  −6,4/−8,5/−8,2, dunkel −4,4/−6,7/−4,5; 88 % abgedunkelt.
+- Burst 640x360, 500 Gegner, flock /home/ai/games/.lf-perf.lock: 60,1 FPS
+  (Baseline 60,1), Draw-Calls/Frame Median/P95 6/6 = Baseline 6/6 (+0),
+  shadowBatches 1, Renderer ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S),
+  OpenGL ES 3.2) — iGPU, kein SwiftShader.
+- npm run build rc=0; npm test 1794/1794 grün; 0 JS-Fehler in allen Läufen.
+
+## Belege
+- git: shots/abnahme/m10-prop-shadow-* (Vorher/Nachher 640+960+Crops,
+  frozen960, 3x-Detailpaare, JSON-Probes).
+- ~/games/.evidence/m10-prop-contact-shadow/ (32 Dateien: Shots, frozen-Diff,
+  Fusspunkt-Delta, Drawcalls before/after, Texture-/Bounds-Probe).
+- Doku: docs/lanes/m10-prop-contact-shadow.md.
+
+## Offen
+- Keine. Board-Karten #10157-#10160 (reserved block) done.
