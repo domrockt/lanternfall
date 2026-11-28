@@ -73,6 +73,61 @@ export function quantizedRadius(radius: number): number {
   return Math.max(8, Math.min(160, Math.round(radius)));
 }
 
+// --- m10-hazard-tex-cap (K2): Textur-Cap ueber grobes Raster --------------------------
+//
+// Bedarfsmeldung m10-heap-regression-fix (2026-11-28): hazard_disc/ring/beam-Canvases
+// werden pro Radius bzw. Laenge gebacken und nie freigegeben — der einzige ungebundene
+// Wachstumsmechanismus im 30-min-Lauf (~25 neue Canvases; 1-px-Quantisierung erzeugt
+// Nachbar-Keys wie r22/r24, l312/l320, l832/l840). Fix: KEINE LRU-Eviction (ein
+// textures.remove() wuerde laufende Sprites anderer Hazards brechen), sondern die
+// Textur-Spezifikation auf ein grobes 16-px-Raster ABRUNDEND quantisieren — analog zur
+// bestehenden Strahl-Regel "Textur nie laenger als der Treffer-Strahl". Warn-Logik und
+// Treffer (hazard.radius = opts.radius in Hazards.ts) bleiben bitgleich; die gezeichnete
+// Warn-Geometrie weicht um maximal TEX_QUANT_STEP-1 = 15 px ab (Quantisierungstoleranz
+// laut Lane-Briefing). Obergrenzen damit hart gebunden:
+//   Disc:  11 Radien x 2 Fuellstufen = 22, Ring: 11, Strahl: 65 Laengen x 2 = 130
+//   -> max. 163 Hazard-Canvases, unabhaengig von Spieldauer/Seed.
+
+/** Rasterweite der Textur-Quantisierung (Radius und Strahl-Laenge) in Spielpixeln. */
+export const TEX_QUANT_STEP = 16;
+/** Klemme der Textur-Quantisierung fuer Radien (wie quantizedRadius). */
+export const TEX_RADIUS_MIN = 8;
+export const TEX_RADIUS_MAX = 160;
+/** Klemme der Textur-Quantisierung fuer Strahl-Laengen (wie quantizedBeamLength). */
+export const TEX_BEAM_MIN = 8;
+export const TEX_BEAM_MAX = 1024;
+
+/**
+ * Textur-Radius auf dem 16-px-Raster: abrundend (Textur nie groesser als die
+ * Warn-Geometrie), geklemmt auf 8..160. Reine Funktion; determiniert den Bake-Key,
+ * nicht die Treffergeometrie.
+ */
+export function texQuantizedRadius(radius: number): number {
+  if (!Number.isFinite(radius)) return TEX_RADIUS_MIN;
+  return Math.max(
+    TEX_RADIUS_MIN,
+    Math.min(TEX_RADIUS_MAX, Math.floor(radius / TEX_QUANT_STEP) * TEX_QUANT_STEP),
+  );
+}
+
+/**
+ * Textur-Strahl-Laenge auf dem 16-px-Raster: abrundend, geklemmt auf 8..1024. Reine
+ * Funktion; determiniert den Bake-Key, nicht den Treffer-Strahl.
+ */
+export function texQuantizedBeamLength(len: number): number {
+  if (!Number.isFinite(len)) return TEX_BEAM_MIN;
+  return Math.max(
+    TEX_BEAM_MIN,
+    Math.min(TEX_BEAM_MAX, Math.floor(len / TEX_QUANT_STEP) * TEX_QUANT_STEP),
+  );
+}
+
+/** Zahl moeglicher Textur-Radien (8, 16, 32 .. 160) — Bestandteil des Caps. */
+export const TEX_RADIUS_COUNT = Math.floor(TEX_RADIUS_MAX / TEX_QUANT_STEP) + 1;
+/** Zahl moeglicher Textur-Strahl-Laengen (8, 16, 32 .. 1024) — Bestandteil des Caps. */
+export const TEX_BEAM_COUNT = Math.floor(TEX_BEAM_MAX / TEX_QUANT_STEP) + 1;
+
+
 /** Kantenlaenge der Disc-/Ring-Textur fuer Radius r (1 px transparenter Rand). */
 export function discSide(r: number): number {
   return 2 * r + 3;
@@ -197,7 +252,7 @@ function hexColor(rgb: number): string {
  *  gebacken (Key-Suffix "_s1", niedrigere Fuell-Alpha); darunter Key und Alpha bitgleich zum
  *  Basis-Key. */
 export function hazardDiscTexture(scene: Phaser.Scene, radius: number): string {
-  const r = quantizedRadius(radius);
+  const r = texQuantizedRadius(radius);
   const stage = fillStageForStacks(warnDiscStacks(scene));
   const key = stage === 0 ? `hazard_disc_r${r}` : `hazard_disc_r${r}_s1`;
   bakeFromMask(scene, key, discMask(r), undefined, DISC_FILL_ALPHA_BY_STAGE[stage]);
@@ -206,7 +261,7 @@ export function hazardDiscTexture(scene: Phaser.Scene, radius: number): string {
 
 /** Ensures + liefert den Key des Warn-Ring-Textur (Rand-Puls) in Sprite-Pixelgroesse. */
 export function hazardRingTexture(scene: Phaser.Scene, radius: number): string {
-  const r = quantizedRadius(radius);
+  const r = texQuantizedRadius(radius);
   const key = `hazard_ring_r${r}`;
   bakeFromMask(scene, key, ringMask(r));
   return key;
@@ -251,7 +306,7 @@ export function beamRimMask(len: number): Uint8Array {
 
 /** Ensures + liefert den Key des Warn-Strahl-Texturen in Sprite-Pixelgroesse. */
 export function hazardBeamTexture(scene: Phaser.Scene, length: number): string {
-  const l = quantizedBeamLength(length);
+  const l = texQuantizedBeamLength(length);
   const key = `hazard_beam_l${l}`;
   bakeFromMask(scene, key, beamMask(l), BEAM_W);
   return key;
@@ -259,7 +314,7 @@ export function hazardBeamTexture(scene: Phaser.Scene, length: number): string {
 
 /** Ensures + liefert den Key des Strahl-Rand-Puls in Sprite-Pixelgroesse. */
 export function hazardBeamRimTexture(scene: Phaser.Scene, length: number): string {
-  const l = quantizedBeamLength(length);
+  const l = texQuantizedBeamLength(length);
   const key = `hazard_beam_rim_l${l}`;
   bakeFromMask(scene, key, beamRimMask(l), BEAM_RIM_W);
   return key;

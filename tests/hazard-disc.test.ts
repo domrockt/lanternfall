@@ -44,7 +44,7 @@ import {
   BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_ALPHA, DISC_FILL_ALPHA_BY_STAGE,
   DISC_FILL_ALPHA_STACKED, DISC_FILL_I, DISC_STACK_THRESHOLD, MASK_CLEAR,
   applyMask, beamMask, beamRimMask, discMask, discSide, fillStageForStacks,
-  hazardDiscTexture, hazardRingTexture,
+  hazardDiscTexture, hazardRingTexture, texQuantizedBeamLength, texQuantizedRadius,
   quantizedBeamLength, quantizedRadius, ringMask, warnDiscStacks,
 } from "../src/gfx/hazardDisc";
 import { PAL, C } from "../src/palette";
@@ -221,8 +221,9 @@ describe("Hazards.ts nutzt den Bake mit Draw-Scale 1 (Draw-Pfad sonst bitgleich)
     const hz = new HazardSystem(fakeScene());
     hz.spawnCircle(40, 40, { warn: 1, damage: 1, radius: 60 });
     expect(imageCalls).toHaveLength(2);
-    expect(imageCalls[0].key).toBe("hazard_disc_r60");
-    expect(imageCalls[1].key).toBe("hazard_ring_r60");
+    // m10-hazard-tex-cap: Textur-Keys liegen auf dem 16-px-Raster (radius 60 -> r48).
+    expect(imageCalls[0].key).toBe(`hazard_disc_r${texQuantizedRadius(60)}`);
+    expect(imageCalls[1].key).toBe(`hazard_ring_r${texQuantizedRadius(60)}`);
     const discScale = imageCalls[0].calls.find(([m]) => m === "setScale");
     const rimScale = imageCalls[1].calls.find(([m]) => m === "setScale");
     expect(discScale).toEqual(["setScale", 1]);
@@ -242,8 +243,8 @@ describe("Hazards.ts nutzt den Bake mit Draw-Scale 1 (Draw-Pfad sonst bitgleich)
     const hz = new HazardSystem(fakeScene());
     hz.spawnBeam(10, 10, 210, 110, { warn: 1, damage: 1, radius: 16 });
     expect(imageCalls).toHaveLength(2);
-    expect(imageCalls[0].key).toBe(`hazard_beam_l${quantizedBeamLength(Math.hypot(200, 100))}`);
-    expect(imageCalls[1].key).toBe(`hazard_beam_rim_l${quantizedBeamLength(Math.hypot(200, 100))}`);
+    expect(imageCalls[0].key).toBe(`hazard_beam_l${texQuantizedBeamLength(Math.hypot(200, 100))}`);
+    expect(imageCalls[1].key).toBe(`hazard_beam_rim_l${texQuantizedBeamLength(Math.hypot(200, 100))}`);
     expect(imageCalls[0].calls.find(([m]) => m === "setScale")).toEqual(["setScale", 1]);
     expect(imageCalls[1].calls.find(([m]) => m === "setScale")).toEqual(["setScale", 1]);
     expect(imageCalls[0].calls.find(([m]) => m === "setAlpha")).toEqual(["setAlpha", 0.9]);
@@ -370,13 +371,14 @@ describe("K3: Stapel-Fuellstufe ab 5 Warn-Discs (deterministisch)", () => {
     ).toBe(1);
 
     const sceneFew = mkScene(Array.from({ length: DISC_STACK_THRESHOLD - 1 }, () => warnDisc));
-    expect(hazardDiscTexture(sceneFew, 60)).toBe("hazard_disc_r60");
-    expect(hazardRingTexture(sceneFew, 60)).toBe("hazard_ring_r60");
+    // m10-hazard-tex-cap: Key auf 16-px-Raster (radius 60 -> r48), Stapel-Suffix unveraendert.
+    expect(hazardDiscTexture(sceneFew, 60)).toBe(`hazard_disc_r${texQuantizedRadius(60)}`);
+    expect(hazardRingTexture(sceneFew, 60)).toBe(`hazard_ring_r${texQuantizedRadius(60)}`);
 
     const sceneMany = mkScene(Array.from({ length: DISC_STACK_THRESHOLD }, () => warnDisc));
-    expect(hazardDiscTexture(sceneMany, 60)).toBe("hazard_disc_r60_s1");
+    expect(hazardDiscTexture(sceneMany, 60)).toBe(`hazard_disc_r${texQuantizedRadius(60)}_s1`);
     // Ring hat keine Fuellung — kein Stufen-Key.
-    expect(hazardRingTexture(sceneMany, 60)).toBe("hazard_ring_r60");
+    expect(hazardRingTexture(sceneMany, 60)).toBe(`hazard_ring_r${texQuantizedRadius(60)}`);
   });
 });
 
