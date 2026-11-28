@@ -97,9 +97,14 @@ neutral-grau; (d) Flammenform 3 — Sway/High-Freq-Sin rezettet die Silhouette b
   NORMAL-gezeichnete Flamme (exakte Palettenfarben), nicht der ADD-Pool.
 - Silhouette: Sway 2.2→1.3, Sinus 0.7→0.5, Wobble 0.05→0.03.
 
-**Runde 2 (Bestätigungsrunde nach Fixrunde 1):** siehe unten.
-
-<!-- ART_DIRECTOR_VERDICT_R2 -->
+**Runde 2 (Bestätigungsrunde nach Fixrunde 1): PASS — Gesamt 4,3/5, unter der Palette-Randbedingung
+kommerziell auslieferbar.** Alle 3 Runde-1-Korrekturen als umgesetzt verifiziert (Kaltbänder 1–2 px
+sichtbar, Blasen-Ring weg, Silhouette organisch). Noten: (a) 4,0 — liest sich klar als
+Geisterflamme/Wisp, Kontrast zur warmen Laterne trägt die Identität; (b) 5,0 — Kern kompakt weiß,
+kein Dither/Grau-Block; (c) 4,0 — paleMist/fogBlue-Kante lesbar, kein Grün-Kipp; (d) 4,5; (e) 4,5.
+"muss neu: nichts". Optionaler Nicht-Blocker: untere Flammenspitzen verlieren die fogBlue-Kontur
+auf den letzten 1–2 px (kosmetisch, mitnehmen bei nächster Gelegenheit). Verbleibende Türkis-Wünsche
+sind mit der 32er-Palette nicht lieferbar und als Dom/Rhea-Entscheidung eskaliert.
 
 **Palette-Randbedingung (beide Runden):** Die 32er-Palette hat keine gesättigte Türkis-Stufe.
 Off-Palette-Farben sind verboten (Palette-Guard), ADD über grünem Moorgrund verschiebt Blau
