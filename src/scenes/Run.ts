@@ -1368,9 +1368,15 @@ export class Run extends Phaser.Scene {
     const ry = Math.round(this.posY);
     this.visualX = rx;
     this.visualY = ry;
-    this.player.setPosition(rx, ry);
-    this.shadow.setPosition(rx, ry + 14);
-    this.light.setPosition(rx, ry);
+    // Setter nur bei Wertänderung (m10-run-setter-churn K2): Phaser-Setter,
+    // die denselben Wert schreiben, kosten je Aufruf CPU (tint/transform-
+    // Dirty-Flags) ohne sichtbare Wirkung. Vergleich vor dem Setzen ist
+    // bitgleich (identische Werte werden übersprungen).
+    if (this.player.x !== rx || this.player.y !== ry) {
+      this.player.setPosition(rx, ry);
+      this.shadow.setPosition(rx, ry + 14);
+      this.light.setPosition(rx, ry);
+    }
     const pulse = 1.35 + Math.sin(this.elapsed * 2) * 0.04;
     this.light.setScale(pulse);
     const frames = PLAYER_FRAMES[this.character.id];
@@ -1386,10 +1392,15 @@ export class Run extends Phaser.Scene {
       key = frames.idle[this.walkDir][Math.floor(this.idlePhase) % 2];
     }
     if (this.playerBody.texture.key !== key) this.playerBody.setTexture(key);
-    if (this.hitFlash > 0) this.playerBody.setTint(PAL[C.hotRed]);
-    else this.playerBody.clearTint();
-    if (this.invuln > 0 && this.hitFlash <= 0) this.playerBody.setAlpha(0.55);
-    else this.playerBody.setAlpha(1);
+    // Tint/Alpha nur bei Änderung (K2): je-Frame clearTint()+setAlpha(1) sind
+    // No-ops, sofern der Zustand schon stimmt.
+    if (this.hitFlash > 0) {
+      if (this.playerBody.tintTopLeft !== PAL[C.hotRed]) this.playerBody.setTint(PAL[C.hotRed]);
+    } else if (this.playerBody.tintTopLeft !== 0xffffff) {
+      this.playerBody.clearTint();
+    }
+    const bodyAlpha = this.invuln > 0 && this.hitFlash <= 0 ? 0.55 : 1;
+    if (this.playerBody.alpha !== bodyAlpha) this.playerBody.setAlpha(bodyAlpha);
 
     const t = this.elapsed;
     // Sichtbarkeits-Culling: Gegner weit ausserhalb des Viewports brauchen
@@ -1430,8 +1441,14 @@ export class Run extends Phaser.Scene {
       }
       // Nur Elite/Bosse tragen eine Aura; der Aufruf für alle Gegner kostet
       // bei 500+ Einheiten spürbar Frame-Zeit.
-      if (e.elite || e.boss) e.aura.setPosition(Math.round(e.x), Math.round(e.y));
-      e.sprite.setPosition(Math.round(e.x), Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2));
+      if (e.elite || e.boss) {
+        const ax = Math.round(e.x);
+        const ay = Math.round(e.y);
+        if (e.aura.x !== ax || e.aura.y !== ay) e.aura.setPosition(ax, ay);
+      }
+      const ex = Math.round(e.x);
+      const ey = Math.round(e.y + Math.sin(t * 4 + e.phase) * 1.2);
+      if (e.sprite.x !== ex || e.sprite.y !== ey) e.sprite.setPosition(ex, ey);
       const frames = framesForDef(e.def);
       if (frames) {
         // Bosse: Wind-up-Frame während des Telegraphen, sonst Ruhe/Atmen.
@@ -1448,24 +1465,31 @@ export class Run extends Phaser.Scene {
       // hinter dem Sprite liegt — dadurch folgt der Rand der Kontur und ist
       // exakt 1 Spielpixel breit. Kein Near-White, Lesbarkeit bleibt.
       if (e.elite) {
-        e.aura.setBlendMode(Phaser.BlendModes.NORMAL);
+        // Aura-Konstanten nur bei Änderung setzen (K2): je-Frame setBlendMode/
+        // setTintFill/setAlpha/setDepth sind nach dem ersten Frame No-ops.
+        if (e.aura.blendMode !== Phaser.BlendModes.NORMAL) e.aura.setBlendMode(Phaser.BlendModes.NORMAL);
         // setTintFill statt setTint: die Aura wird als reine Amber-Silhouette
         // gefuellt, statt die Gegnerfarbe zu multiplizieren (sonst verschwindet
         // der Rand bei dunklen Sprites). Deterministisch, nur Elite.
-        e.aura.setTintFill(PAL[C.amber]);
-        e.aura.setAlpha(0.92);
+        if (e.aura.tintTopLeft !== PAL[C.amber]) e.aura.setTintFill(PAL[C.amber]);
+        if (e.aura.alpha !== 0.92) e.aura.setAlpha(0.92);
         const frame = currentFrame(e.sprite);
         if (currentFrame(e.aura) !== frame) applyTexture(e.aura, frame);
         const srcW = Math.max(8, e.aura.width);
         const rim = 1 + 2 / srcW;
-        e.aura.setScale(e.sprite.scaleX * rim, e.sprite.scaleY * rim);
-        e.aura.setPosition(e.sprite.x, e.sprite.y);
-        e.aura.setDepth(e.sprite.depth - 0.01);
-        e.aura.setVisible(true);
+        if (e.aura.scaleX !== e.sprite.scaleX * rim || e.aura.scaleY !== e.sprite.scaleY * rim) {
+          e.aura.setScale(e.sprite.scaleX * rim, e.sprite.scaleY * rim);
+        }
+        if (e.aura.x !== e.sprite.x || e.aura.y !== e.sprite.y) e.aura.setPosition(e.sprite.x, e.sprite.y);
+        const auraDepth = e.sprite.depth - 0.01;
+        if (e.aura.depth !== auraDepth) e.aura.setDepth(auraDepth);
+        if (!e.aura.visible) e.aura.setVisible(true);
       }
     }
     this.chests.update(realDt, this.cameras.main, this.posX, this.posY);
   }
+
+  private hpBarShown = false;
 
   private updateHpBar(): void {
     const px = this.posX;
@@ -1473,8 +1497,16 @@ export class Run extends Phaser.Scene {
     const ratio = Math.max(0, Math.min(1, this.hp / this.maxHp));
     // Die schwebende Mini-Leiste entfällt; HP steht jetzt oben links im HUD.
     const hurt = false;
-    this.hpBg.setVisible(hurt).setPosition(Math.round(px - 13), Math.round(py));
-    this.hpFill.setVisible(hurt).setPosition(Math.round(px - 12), Math.round(py + 1));
+    // Sichtbarkeits-Sync nur bei Wechsel; Position/Scale nur im sichtbaren
+    // Zustand (unsichtbare Setter sind No-ops mit vollem Aufrufpreis, K2).
+    if (hurt !== this.hpBarShown) {
+      this.hpBarShown = hurt;
+      this.hpBg.setVisible(hurt);
+      this.hpFill.setVisible(hurt);
+    }
+    if (!hurt) return;
+    this.hpBg.setPosition(Math.round(px - 13), Math.round(py));
+    this.hpFill.setPosition(Math.round(px - 12), Math.round(py + 1));
     this.hpFill.setScale(Math.max(0.001, ratio), 1);
   }
 
