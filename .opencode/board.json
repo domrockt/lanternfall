@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12684,
+  "next": 12728,
   "cards": [
     {
       "id": 1,
@@ -16492,10 +16492,15 @@
           "at": "2026-11-28T13:34:06Z",
           "by": "build",
           "text": "Merge m10-device-janky-node liegt auf main (f0bc1de0, ancestor-rc=0). Guard-Test boot-light-textures auf gemergtem Stand geprüft: npx vitest run tests/boot-light-textures.test.ts -> 4/4 grün, keine Anpassung nötig. Full-Suite 2338/2338 grün."
+        },
+        {
+          "at": "2026-11-28T14:44:14Z",
+          "by": "general",
+          "text": "Supervisor-Steer 28.11. geprüft: Karte gehoert NICHT zu Lane m10-v10-gate-guard (Merge-Fix m10-loading-screen, fremde Lane; Lane-Briefing = IDs #12724-#12743). Karte bleibt unangetastet in doing; der Disponent/Merge-Job muss sie bearbeiten. Lane m10-v10-gate-guard arbeitet weiter an #12724 (K1 Gate-Skript)."
         }
       ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T13:34:06Z"
+      "updated": "2026-11-28T14:44:14Z"
     },
     {
       "id": 12029,
@@ -17659,6 +17664,48 @@
       ],
       "created": "2026-11-28T14:14:55Z",
       "updated": "2026-11-28T14:29:12Z"
+    },
+    {
+      "id": 12724,
+      "title": "m10-v10-gate-guard K1: Gate-Skript scripts/m10-v10-gate.mjs",
+      "description": "Orchestriert bestehende Werkzeuge (acceptance-count, m10-fullrun-guard, verify-final, eigener Perf-Pass nach frame-tail-batching-Muster) zu einem wiederholbaren v1.0-Host-Gate-Lauf: Renderer-String Pflicht (SwiftShader = ungültig, Exit 2), Frame-Zeit p95 ≤ 16 ms (Minute-25-Worst-Case), Draw-Calls/Frame + Texturanzahl (gemessen), Heap-Tor ≤ +15 % retained (endMB vs startMB), 0 JS-Fehler, Inhalte 30/6/6/6/6/2, Fullrun-Inhalt 6/6 Bosse 300–1800 s ±2 s, 6 Truhen, Sieg dawn. Keine src-Änderung. Abnahme: npx tsc --noEmit grün, Skript startet und schreibt Tor-JSON.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:42:18Z",
+          "by": "general",
+          "text": "backlog → doing: K1 gestartet"
+        }
+      ],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:42:18Z"
+    },
+    {
+      "id": 12725,
+      "title": "m10-v10-gate-guard K2: Unit-Tests tests/v10-gate.test.ts",
+      "description": "Tor-Logik als reine Funktion exportiert und unit-getestet: PASS/FAIL-Matrix gegen Fixtures (alles grün; je ein FAIL pro Tor: p95>16, Heap>15, Bosse fehlen, Truhen<6, kein dawn, JS-Fehler, Inhaltszählung falsch; missing fields → FAIL bzw. null), Renderer-Check (Mesa Intel RPL-S ok, SwiftShader/llvmpipe/none → ungültig/Exit 2). Abnahme: npx vitest run tests/v10-gate.test.ts grün, npx tsc --noEmit grün.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:42:10Z"
+    },
+    {
+      "id": 12726,
+      "title": "m10-v10-gate-guard K3: vollständiger Gate-Lauf auf main-Stand",
+      "description": "Gate-Lauf unter flock /home/ai/games/.lf-perf.lock: node scripts/m10-v10-gate.mjs --out shots/m10-v10-gate.json. Tor-JSON + Screenshot nach shots/m10-v10-gate-*, Roh-Belege nach ~/games/.evidence/m10-v10-gate-guard/. Bei FAIL: Befundliste (Datei/Hebel/Gewinn) in docs/lanes/m10-v10-gate-guard.md, NICHT selbst fixen. Abnahme: Exit 0 mit Renderer-String Intel-iGPU (kein SwiftShader) auf aktuellem main-Stand.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:42:10Z"
+    },
+    {
+      "id": 12727,
+      "title": "m10-v10-gate-guard K4: Lane-Doku + .lane-done",
+      "description": "docs/lanes/m10-v10-gate-guard.md schreiben (Ziel, Tore, Ergebnisse, Befunde/Hebelliste, Belegpfade) und .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) committen. Abnahme: Suite + tsc grün, alle 4 Karten-Commits mit Präfix M10-m10-v10-gate-guard, .lane-done committed.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:42:10Z"
     }
   ]
 }
