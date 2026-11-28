@@ -8,6 +8,7 @@ shots/*
 !shots/m5-*.gif
 !shots/final-*.gif
 !shots/m10-*.gif
+!shots/m10-evo-element-*
 .brief.md
 .opencode.log
 briefs/

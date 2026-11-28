@@ -1,0 +1,826 @@
+{
+  "generatedAt": "2026-11-28T16:56:09.745Z",
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "valid": true,
+  "errors": [],
+  "evos": {
+    "phoenix": {
+      "640": {
+        "shot": "shots/m10-evo-element-phoenix-640.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_phoenix_launch",
+          "fx_fire"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 51,
+          "y0": 43,
+          "x1": 589,
+          "y1": 317,
+          "w": 640,
+          "h": 360
+        },
+        "paletteHist": [
+          6254,
+          54763,
+          1997,
+          122,
+          1243,
+          3318,
+          1965,
+          2573,
+          902,
+          436,
+          97,
+          82,
+          41,
+          112,
+          3078,
+          2251,
+          568,
+          489,
+          181,
+          85,
+          22,
+          77,
+          86,
+          73,
+          4,
+          306,
+          16,
+          118,
+          11792,
+          29395,
+          21581,
+          3385
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2325
+        },
+        "bands": {
+          "fire": {
+            "share": 0.04638,
+            "threshold": 0.02,
+            "direction": "min"
+          },
+          "fireCore": {
+            "share": 0.00579,
+            "threshold": 0.004,
+            "direction": "min"
+          }
+        }
+      },
+      "960": {
+        "shot": "shots/m10-evo-element-phoenix-960.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_phoenix_launch",
+          "fx_fire"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 77,
+          "y0": 65,
+          "x1": 883,
+          "y1": 475,
+          "w": 960,
+          "h": 540
+        },
+        "paletteHist": [
+          13713,
+          122757,
+          4439,
+          277,
+          2771,
+          7496,
+          4349,
+          5877,
+          1938,
+          925,
+          185,
+          180,
+          92,
+          259,
+          6924,
+          5081,
+          1236,
+          1139,
+          403,
+          200,
+          58,
+          175,
+          199,
+          151,
+          14,
+          703,
+          27,
+          245,
+          26404,
+          66071,
+          48605,
+          7567
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.233
+        },
+        "bands": {
+          "fire": {
+            "share": 0.04665,
+            "threshold": 0.02,
+            "direction": "min"
+          },
+          "fireCore": {
+            "share": 0.00598,
+            "threshold": 0.004,
+            "direction": "min"
+          }
+        }
+      }
+    },
+    "winter": {
+      "640": {
+        "shot": "shots/m10-evo-element-winter-640.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_evo_hit_eternal_winter",
+          "fx_evo_death_eternal_winter",
+          "ring_frost@3",
+          "fx_shock",
+          "fx_ember_trail",
+          "fx_ice"
+        ],
+        "aliveEnemies": 19,
+        "crop": {
+          "x0": 51,
+          "y0": 43,
+          "x1": 589,
+          "y1": 317,
+          "w": 640,
+          "h": 360
+        },
+        "paletteHist": [
+          6681,
+          79277,
+          2284,
+          86,
+          1418,
+          4315,
+          1025,
+          4883,
+          3149,
+          2222,
+          800,
+          951,
+          466,
+          449,
+          1282,
+          706,
+          335,
+          281,
+          30,
+          39,
+          2,
+          44,
+          95,
+          58,
+          39,
+          127,
+          5,
+          144,
+          6160,
+          13567,
+          14925,
+          1567
+        ],
+        "grid": {
+          "rowsWithGreenShare": 0.9818,
+          "greenPerRowCv": 0.5384
+        },
+        "bands": {
+          "cold": {
+            "share": 0.11121,
+            "threshold": 0.02,
+            "direction": "min"
+          },
+          "coldBright": {
+            "share": 0.04186,
+            "threshold": 0.004,
+            "direction": "min"
+          }
+        }
+      },
+      "960": {
+        "shot": "shots/m10-evo-element-winter-960.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_evo_hit_eternal_winter",
+          "fx_evo_death_eternal_winter",
+          "ring_frost@3",
+          "fx_shock",
+          "fx_ember_trail",
+          "fx_ice"
+        ],
+        "aliveEnemies": 19,
+        "crop": {
+          "x0": 77,
+          "y0": 65,
+          "x1": 883,
+          "y1": 475,
+          "w": 960,
+          "h": 540
+        },
+        "paletteHist": [
+          13683,
+          120931,
+          3729,
+          275,
+          2965,
+          9569,
+          2568,
+          11536,
+          6898,
+          5227,
+          2087,
+          2158,
+          1082,
+          1029,
+          6609,
+          4923,
+          1239,
+          1079,
+          319,
+          197,
+          4,
+          94,
+          210,
+          131,
+          100,
+          286,
+          8,
+          245,
+          21582,
+          57171,
+          46458,
+          6068
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2039
+        },
+        "bands": {
+          "cold": {
+            "share": 0.11464,
+            "threshold": 0.02,
+            "direction": "min"
+          },
+          "coldBright": {
+            "share": 0.04301,
+            "threshold": 0.004,
+            "direction": "min"
+          }
+        }
+      }
+    },
+    "soulpyre": {
+      "640": {
+        "shot": "shots/m10-evo-element-soulpyre-640.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_evo_death_soul_beacon",
+          "fx_ember_trail"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 51,
+          "y0": 43,
+          "x1": 589,
+          "y1": 317,
+          "w": 640,
+          "h": 360
+        },
+        "paletteHist": [
+          6254,
+          54621,
+          1563,
+          163,
+          1309,
+          3861,
+          1617,
+          3553,
+          1241,
+          540,
+          141,
+          204,
+          214,
+          154,
+          3091,
+          2214,
+          580,
+          477,
+          138,
+          82,
+          2,
+          41,
+          57,
+          58,
+          4,
+          213,
+          37,
+          118,
+          10976,
+          27452,
+          22847,
+          3590
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2237
+        },
+        "bands": {
+          "cold": {
+            "share": 0.0743,
+            "threshold": 0.02,
+            "direction": "min"
+          },
+          "coldBright": {
+            "share": 0.01553,
+            "threshold": 0.004,
+            "direction": "min"
+          },
+          "noFire": {
+            "share": 0.04465,
+            "threshold": 0.004,
+            "direction": "max"
+          }
+        }
+      },
+      "960": {
+        "shot": "shots/m10-evo-element-soulpyre-960.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_evo_death_soul_beacon",
+          "fx_ember_trail"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 77,
+          "y0": 65,
+          "x1": 883,
+          "y1": 475,
+          "w": 960,
+          "h": 540
+        },
+        "paletteHist": [
+          13713,
+          122386,
+          3536,
+          379,
+          2913,
+          8694,
+          3601,
+          8039,
+          2681,
+          1214,
+          277,
+          458,
+          469,
+          375,
+          6918,
+          4936,
+          1260,
+          1111,
+          319,
+          197,
+          6,
+          94,
+          124,
+          131,
+          14,
+          485,
+          85,
+          245,
+          24653,
+          61702,
+          51445,
+          8000
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2239
+        },
+        "bands": {
+          "cold": {
+            "share": 0.07416,
+            "threshold": 0.02,
+            "direction": "min"
+          },
+          "coldBright": {
+            "share": 0.01518,
+            "threshold": 0.004,
+            "direction": "min"
+          },
+          "noFire": {
+            "share": 0.04461,
+            "threshold": 0.004,
+            "direction": "max"
+          }
+        }
+      }
+    },
+    "gewittersiegel": {
+      "640": {
+        "shot": "shots/m10-evo-element-gewittersiegel-640.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_ember_trail"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 51,
+          "y0": 43,
+          "x1": 589,
+          "y1": 317,
+          "w": 640,
+          "h": 360
+        },
+        "paletteHist": [
+          6254,
+          54767,
+          1968,
+          122,
+          1247,
+          3342,
+          1854,
+          3187,
+          884,
+          397,
+          215,
+          105,
+          40,
+          98,
+          3096,
+          2232,
+          565,
+          480,
+          164,
+          82,
+          222,
+          189,
+          88,
+          85,
+          4,
+          306,
+          16,
+          118,
+          11754,
+          29374,
+          21487,
+          2670
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2248
+        },
+        "bands": {
+          "whitePeak": {
+            "share": 0.00094,
+            "threshold": 0.004,
+            "direction": "min"
+          }
+        }
+      },
+      "960": {
+        "shot": "shots/m10-evo-element-gewittersiegel-960.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_ember_trail"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 77,
+          "y0": 65,
+          "x1": 883,
+          "y1": 475,
+          "w": 960,
+          "h": 540
+        },
+        "paletteHist": [
+          13713,
+          122722,
+          4471,
+          277,
+          2771,
+          7538,
+          4253,
+          7166,
+          1840,
+          895,
+          444,
+          230,
+          90,
+          227,
+          6967,
+          5037,
+          1233,
+          1114,
+          373,
+          195,
+          458,
+          427,
+          206,
+          155,
+          14,
+          703,
+          27,
+          245,
+          26358,
+          66097,
+          48301,
+          5913
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.224
+        },
+        "bands": {
+          "whitePeak": {
+            "share": 0.00096,
+            "threshold": 0.004,
+            "direction": "min"
+          }
+        }
+      }
+    },
+    "zornpendel": {
+      "640": {
+        "shot": "shots/m10-evo-element-zornpendel-640.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_spark",
+          "flail_ball",
+          "fx_evo_death_wrath_pendulum",
+          "fx_ember_trail"
+        ],
+        "aliveEnemies": 23,
+        "crop": {
+          "x0": 51,
+          "y0": 43,
+          "x1": 589,
+          "y1": 317,
+          "w": 640,
+          "h": 360
+        },
+        "paletteHist": [
+          6329,
+          54656,
+          1812,
+          121,
+          1250,
+          3359,
+          1875,
+          2533,
+          861,
+          457,
+          272,
+          166,
+          86,
+          144,
+          3499,
+          2313,
+          592,
+          536,
+          146,
+          149,
+          136,
+          192,
+          208,
+          107,
+          74,
+          353,
+          174,
+          163,
+          11516,
+          28011,
+          21668,
+          3654
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2188
+        },
+        "bands": {
+          "emberRed": {
+            "share": 0.05188,
+            "threshold": 0.02,
+            "direction": "min"
+          }
+        }
+      },
+      "960": {
+        "shot": "shots/m10-evo-element-zornpendel-960.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_spark",
+          "flail_ball",
+          "fx_evo_death_wrath_pendulum",
+          "fx_ember_trail"
+        ],
+        "aliveEnemies": 23,
+        "crop": {
+          "x0": 77,
+          "y0": 65,
+          "x1": 883,
+          "y1": 475,
+          "w": 960,
+          "h": 540
+        },
+        "paletteHist": [
+          13901,
+          122501,
+          4092,
+          277,
+          2775,
+          7602,
+          4193,
+          5703,
+          1851,
+          999,
+          588,
+          383,
+          194,
+          335,
+          7844,
+          5167,
+          1293,
+          1231,
+          336,
+          346,
+          288,
+          437,
+          470,
+          252,
+          170,
+          777,
+          406,
+          330,
+          25781,
+          62982,
+          48854,
+          8102
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2192
+        },
+        "bands": {
+          "emberRed": {
+            "share": 0.05187,
+            "threshold": 0.02,
+            "direction": "min"
+          }
+        }
+      }
+    },
+    "dornensturm": {
+      "640": {
+        "shot": "shots/m10-evo-element-dornensturm-640.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_thorn_crown",
+          "fx_ember_trail",
+          "fx_thorn"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 51,
+          "y0": 43,
+          "x1": 589,
+          "y1": 317,
+          "w": 640,
+          "h": 360
+        },
+        "paletteHist": [
+          6254,
+          54779,
+          1965,
+          121,
+          1250,
+          3336,
+          1892,
+          2617,
+          906,
+          461,
+          92,
+          80,
+          37,
+          95,
+          3121,
+          2274,
+          567,
+          479,
+          164,
+          83,
+          2,
+          625,
+          47,
+          66,
+          4,
+          306,
+          16,
+          118,
+          11735,
+          29377,
+          21114,
+          3429
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2278
+        },
+        "bands": {
+          "green": {
+            "share": 0.44538,
+            "threshold": 0.01,
+            "direction": "min"
+          }
+        }
+      },
+      "960": {
+        "shot": "shots/m10-evo-element-dornensturm-960.png",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "fxKeys": [
+          "fx_ember_muzzle",
+          "fx_thorn_crown",
+          "fx_ember_trail",
+          "fx_thorn"
+        ],
+        "aliveEnemies": 20,
+        "crop": {
+          "x0": 77,
+          "y0": 65,
+          "x1": 883,
+          "y1": 475,
+          "w": 960,
+          "h": 540
+        },
+        "paletteHist": [
+          13713,
+          122741,
+          4446,
+          277,
+          2771,
+          7515,
+          4286,
+          5887,
+          1949,
+          998,
+          185,
+          180,
+          80,
+          222,
+          6914,
+          5011,
+          1233,
+          1114,
+          373,
+          195,
+          4,
+          1386,
+          107,
+          165,
+          14,
+          703,
+          27,
+          245,
+          26439,
+          66101,
+          47532,
+          7647
+        ],
+        "grid": {
+          "rowsWithGreenShare": 1,
+          "greenPerRowCv": 0.2281
+        },
+        "bands": {
+          "green": {
+            "share": 0.44701,
+            "threshold": 0.01,
+            "direction": "min"
+          }
+        }
+      }
+    }
+  }
+}
