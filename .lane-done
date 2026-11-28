@@ -1,0 +1,32 @@
+# Lane m10-spawn-burst-alloc — abgeschlossen (2026-11-28)
+
+Bedarf: Spawn-Burst-Kosten des Nachschub-Ticks dominieren die JS-Frame-Zeit-
+Spitzen (p95) — Allokationen im Spawn-Pfad senken (Bedarf aus
+docs/lanes/m10-run-cpu-budget.md). Burst-Verteilung (m10-spawn-burst-budget,
+m10-spawn-budget-dt) unangetastet.
+
+Ergebnis:
+- K1 (#12089): scripts/m10-spawn-burst-alloc.mjs — echter Spawner via
+  rolldown-Bundle in Node, Burst-Szenario Minute 25 @ 960x540 (16 Spawns/Tick);
+  Metrik Minor-GC-Haeufigkeit via --trace-gc bei Semi-Space 1 MiB.
+  Vorher: 30.09 Scavenges/1000 Ticks (Beleg
+  ~/games/.evidence/m10-spawn-burst-alloc/m10-spawn-burst-alloc-before.json).
+- K2 (#12090): src/systems/Spawner.ts — mixCache (kein Object.entries/filter
+  je Spawn), spawnOpts/eliteOpts Scratch, EMPTY_SPAWN_OPTIONS +
+  ALL_ENEMY_DEFS. mixPickCalls/Tick 16 -> 0.
+- K3 (#12091): Nachher 10.81/10.91 Scavenges/1000 Ticks = **36 % der Vorher**
+  (Ziel <= 50 % erreicht); gcMs/1000 1.04 -> 0.40; Tabelle in
+  docs/lanes/m10-spawn-burst-alloc.md.
+- K4 (#12092): tests/spawn-burst-alloc.test.ts friert die Hebel ein
+  (0 Object.entries/values je Burst-Tick, Options-Identitaet, golden
+  Seed-Checksum 3879981957 fuer Seed 1 / 200 Ticks).
+
+Bitgleichkeit: Spawn-Sequenz-Checksums (Seeds 1/2/3) identisch vor/nach
+(1048818830 / 4047071672 / 1745884332) — Spawn-Phasen und Tier-Verteilung
+unveraendert. tsc, build und 2282 Tests gruen.
+
+Commits: 735a4061 (K1), a8b94a69 (K2), 2ecb86d4 (K3), <K4> (K4).
+Belege: ~/games/.evidence/m10-spawn-burst-alloc/ (before/after JSONs).
+Offene Reste (fremde Claims): advanceSpawnBudget/splitSpawnBurst-Ergebnis-
+objekte je Tick (logic/waves.ts), Options-Literale in Run.ts spawnAt-Aufrufen
+(Splitter/Minions, nicht Burst-Pfad).
