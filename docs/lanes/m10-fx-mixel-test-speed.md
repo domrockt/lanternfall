@@ -32,4 +32,24 @@ der Default (5000 ms) muss reichen, sonst ist der Fix schlecht.
 
 ## K2 — 5× unter Parallel-Last
 
-(folgt)
+Akzeptanzgrenze vor der Messung festgelegt: Testzeit < 1000 ms in 5/5 Läufen mit je 2
+`npm run build` im Hintergrund (Rig-Last-Simulation). Gemessen 09:40Z, Worktree nach Fix:
+
+| Lauf | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| Testzeit ms | 84 | 92 | 87 | 72 | 77 |
+
+**5/5 grün, max. 92 ms** — Faktor ~18 gegenüber Baseline (1462 ms), Akzeptanz < 1000 ms
+deutlich erfüllt. Damit reicht der vitest-Default-Timeout (5000 ms) wieder mit großem Puffer;
+`lf-apk-hourly.sh` ist entblockt.
+
+## Verifikation (vor dem Commit)
+
+- `npx tsc --noEmit` → rc 0
+- `npx vitest run tests/fx-mixel.test.ts` → **17/17 passed**, Datei-Duration 349 ms (vorher > 2 s)
+- `npm run build` → rc 0
+- Keine Änderungen an `src/**` (`git diff --stat` gegen f3f4abc0: nur tests/ + docs/ + .opencode/board.json)
+
+## Offene Punkte
+
+keine.

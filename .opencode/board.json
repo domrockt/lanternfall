@@ -13923,6 +13923,15 @@
       "notes": [],
       "created": "2026-11-28T09:42:27Z",
       "updated": "2026-11-28T09:42:27Z"
+    },
+    {
+      "id": 10585,
+      "title": "m10-fx-mixel-test-speed: fx-mixel Palette-Test unter Last < 1 s (APK-Entblocker)",
+      "description": "tests/fx-mixel.test.ts 'nur Palettenfarben oder transparent' laeuft unter Rig-Last in den 5s-Timeout und blockiert lf-apk-hourly.sh. K1: Test umbauen (< 1 s, gleiche Aussagekraft, kein Timeout-Hochsetzen). K2: 5x gruene Laeufe unter Parallel-Last (2 Builds im Hintergrund), Laufzeiten in docs/lanes/m10-fx-mixel-test-speed.md. Keine Aenderungen an src/**. Akzeptanz: 5/5 gruen je < 1 s.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T09:38:54Z",
+      "updated": "2026-11-28T09:38:54Z"
     }
   ]
 }
