@@ -97,6 +97,11 @@ sichtbar, `npx vitest run` 1936/1936, `npx tsc --noEmit` grün, 0 JS-Fehler.
 ✔ Karte 4 abgeschlossen.
 
 ## Offen / Hinweise
+- Reviewer (PASS, 2026-11-28): 3 Sollte-Punkte direkt nachgezogen (Commit
+  folgt) — belowMs-Überlauf auf low behoben (+Test), maxFxSprites als
+  „Budget-Daten, nicht verdrahtet“ gekennzeichnet, glowSlotCapForQuality als
+  Debug-/Test-Helfer dokumentiert. Nit: im Forced-Override-Modus (?rbscale=0/1)
+  friert QUALITY auf high (bewusst, Debug-Messmodus).
 - Budget-Werte `maxFxSprites`/`particlesPerHit`/`damageNumbersPerSec` sind als
   Daten in quality.ts geliefert, aber (noch) nicht verdrahtet — es existieren
   dort (noch) keine Caps; Bedarf für Folgekarten gemerkt.

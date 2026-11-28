@@ -22,7 +22,8 @@ export const QUALITY_ORDER: readonly QualityTier[] = ["low", "medium", "high"] a
 
 export interface QualityBudget {
   tier: QualityTier;
-  /** Max gleichzeitig aktive grosse Effekt-Sprites (FxSystem maxActive). */
+  /** Max gleichzeitig aktive grosse Effekt-Sprites. BUDGET-DATEN, noch NICHT
+   *  verdrahtet (FxSystem.maxActive bleibt LOD-getrieben) — Folgekarte. */
   maxFxSprites: number;
   /** Max ADD-Glow-Device-Pixel-Flaeche pro Sprite (Infinity = offen). */
   maxAddArea: number;
@@ -91,7 +92,9 @@ export function glowAreaCapForQuality(tier: QualityTier): number {
 /**
  * Glow-SLOT-Deckel fuer eine Stufe, kombiniert mit dem LOD-Cap am Aufrufort:
  * low = 0 (kein ADD-Slot -> alle Glows NORMAL-Blend = Glow aus), sonst
- * mind. so offen wie der LOD-Cap.
+ * mind. so offen wie der LOD-Cap. DEBUG-/TEST-HELFER: die Slot-Schaltung im
+ * FxSystem frage ueber glowEnabledFor (die Slot-Requests pruefen die Stufe
+ * direkt); dieser Deckel ist fuer eine spaere Feinstaffelung reserviert.
  */
 export function glowSlotCapForQuality(tier: QualityTier, lodCap: number): number {
   if (!qualityBudgetFor(tier).glow) return 0;
@@ -174,6 +177,11 @@ export function stepQuality(
       tier = QUALITY_ORDER[idx - 1];
       belowMs = 0;
       aboveMs = 0;
+    } else if (idx === 0) {
+      // Reviewer-Hinweis: auf der untersten Stufe gibt es nichts mehr
+      // herunterzunehmen — der Timer bleibt auf 0 (taeuscht sonst in
+      // __rbDbg.qualityState Aktivitaet vor, die nie wirkt).
+      belowMs = 0;
     }
   } else if (Number.isFinite(fpsEwma) && fpsEwma >= QUALITY_HIGH_FPS) {
     aboveMs += dt;

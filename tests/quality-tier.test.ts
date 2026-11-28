@@ -151,6 +151,13 @@ describe("M10-android-scale-floor-r2 (K3): Hysterese (nur Stufe, nie Aufloesung)
     expect(s.tier).toBe("high");
   });
 
+  it("auf der untersten Stufe laeuft belowMs nicht unbegrenzt an (Reviewer-Hinweis)", () => {
+    let s = S("low");
+    for (let i = 0; i < 400; i++) s = stepQuality(s, 40, 1000);
+    expect(s.tier).toBe("low");
+    expect(s.belowMs).toBe(0);
+  });
+
   it("Schwellen sind die dokumentierten Konstanten (45/57, 3 s/12 s)", () => {
     expect(QUALITY_LOW_FPS).toBe(45);
     expect(QUALITY_HIGH_FPS).toBe(57);
