@@ -27,7 +27,32 @@ dasselbe Parameter-Set** verglichen, und die Nachher-Messung wird erst nach K2+K
 
 ## K2 — Pool/EnemyPool Hot-Path
 
-(folgt)
+Befund vor dem Fix (Diagnose, `shots/m10-heap-pool-fix-pools.json`, volle Abnahme-Last):
+Die Pools selbst sind **bereits stabil** — EnemyPool `created` 520 konstant über 25 Sim-Minuten
+(Free-Liste 520 → 491, kein Wachstum), ProjectilePool `created` 0 (alles Recycling), fx 129–172,
+Particles 32–188 (fluktuierend, nicht monoton). Der Snapshot-Diff (Minute 2 vs. 28,
+`shots/m10-heap-pool-fix-snapdiff.json` + Roh-Snapshots) zeigt **kein messbares JS-Retention-Wachstum**
+(Top-Delta: Closure `s` +1325 Stück/+37 kB, Strings fx_orb_3/fx_thorn_2; Summe < 60 kB).
+Das Gate (performance.memory nach GC) wächst trotzdem 42,2 → 49,2 MB — die Wachstumsquelle ist
+**GC-/Heap-Slack durch Allokationsdruck**, nicht Retention. Hebel bleibt: Allokationsrate im Hot Path.
+
+Fix in `src/systems/EnemyPool.ts`:
+- `spawn(..., options = {})` allozierte pro Spawn ein leeres Options-Objekt (Default-Parameter
+  `= {}` wird pro Aufruf neu alloziert). Jetzt: ein geteiltes eingefrorenes
+  `EMPTY_SPAWN_OPTIONS` (nur-Lesen, Spawn schreibt nie in `options`).
+- Diagnose-Zähler ergänzt: `createdTotal`, `freeCount` (öffentlich, für das Messskript).
+
+Tests (`tests/enemy-pool-reuse.test.ts` erweitert, deterministische Wiederverwendungs-Zählung):
+- 200 Spawn/Compact-Zyklen: `createdTotal` konstant, der freigegebene Runtime-Slot wird sofort
+  wiederverwendet (Identitäts-Assertion), Free-Liste leer am Ende.
+- Spawn ohne Options wendet Def-Defaults an (radius/speed aus Def, hpScale 1).
+- Bestand: KI-State/RNG-Identität über Recycling bleibt (unverändert grün).
+
+**Nächster, belegter Hebel außerhalb meines Claims** (K4-Empfehlung): Die Allokations-Churn-Spitzen
+liegen an den Aufrufstellen — `CombatSystem.fireEmber/firePhoenix` baut pro Schuss
+`enemies.map((e) => ({ e, d }))`-Wrapper-Arrays (~100 k Projektil-Spawns/Lauf), `Run.ts:973` und
+`Spawner.spawnAt` bauen Options-/Spawn-Literale pro Spawn. Diese Dateien sind nicht in meinem
+Disponent-Bereich; ein Churn-Fix dort braucht eine Folgelane (siehe K4).
 
 ## K3 — ProjectilePool
 
