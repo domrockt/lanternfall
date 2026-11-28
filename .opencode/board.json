@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9735,
+  "next": 9901,
   "cards": [
     {
       "id": 1,
@@ -12263,6 +12263,66 @@
       ],
       "created": "2026-11-28T07:13:30Z",
       "updated": "2026-11-28T07:27:28Z"
+    },
+    {
+      "id": 9895,
+      "title": "m10-boss-portrait-w2-r2 K1: Vorher-Kontaktbögen + Befund-JSON",
+      "description": "Kontaktbögen (1x + 4x) der 4 genannten Bosse (coven, pale_shepherd, hollow_king, moor_queen) + Befund-JSON; Renderer-String mitschreiben. Belege nach ~/games/.evidence/m10-boss-portrait-w2-r2/. Abnahme: JSON mit offPal/dup/silKontrast/kanten je Boss vorhanden, Renderer-String dokumentiert.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:44:37Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-boss-portrait-w2-r2 (Re-Queue) gestartet; Before-Kontaktbögen über scripts/m10-boss-portrait.mjs."
+        }
+      ],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T07:44:37Z"
+    },
+    {
+      "id": 9896,
+      "title": "m10-boss-portrait-w2-r2 K2: coven — Klon-Posen + Props unterscheidbar",
+      "description": "Klon-Posen der 3 Hexen unterscheidbar machen (nicht 3x dieselbe Pose), Props klar lesen: Besenstiel-Nadel ersetzen/klären, Goldkugel lesbar oder streichen. Maßstab: art-director-Note der Runde 1. Nur scripts/art/gen_bosses.py + regeneriertes gen-bosses.ts; Idle-Kontrakt (m10-boss-idle-anim.mjs gen) erneut anwenden.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T07:44:35Z"
+    },
+    {
+      "id": 9897,
+      "title": "m10-boss-portrait-w2-r2 K3: pale_shepherd — Kopf/Gesicht enträtseln",
+      "description": "Kopf-/Gesichtsfläche matschig: klare Schädel-/Kapuzen-Lesart, 1-px-Stufen, keine Matschfläche. Abnahme: Augenhöhle/Kapuzenbogen einzeln lesbar, keine flächigen Verläufe.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T07:44:35Z"
+    },
+    {
+      "id": 9898,
+      "title": "m10-boss-portrait-w2-r2 K4: hollow_king — Brustpanzer organisch + Unterkante beruhigen",
+      "description": "Brustpanzer weg vom Tech-Panel-Look (organisch/knochenig), Unterkante beruhigen (silKontrast 70 → lesbar, Ziel >= Vorher-Wert). Krone bleibt (Kontaktband aus crisp-Lane erhalten).",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T07:44:35Z"
+    },
+    {
+      "id": 9899,
+      "title": "m10-boss-portrait-w2-r2 K5: Regressionstest boss-portrait-w2.test.ts",
+      "description": "Grid-Größen, Palette (0 offPal, binäres Alpha), Silhouetten-Kontrast >= Vorher je fixes Boss. npx vitest run tests/boss-portrait-w2.test.ts grün, boss-idle-anim.test.ts grün, npm test grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T07:44:35Z"
+    },
+    {
+      "id": 9900,
+      "title": "m10-boss-portrait-w2-r2 K6: Nachher-Kontaktbögen + art-director-Urteil + Doku",
+      "description": "Nachher-Kontaktbögen (1x+4x) + art-director-Urteil (streng, Maßstab 'kommerziell auslieferbar'), Ziel >= 4/5 je gefixtem Boss. Abnahme-Bilder nach shots/abnahme/. Doku docs/lanes/m10-boss-portrait-w2-r2.md + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:44:35Z",
+      "updated": "2026-11-28T07:44:35Z"
     }
   ]
 }
