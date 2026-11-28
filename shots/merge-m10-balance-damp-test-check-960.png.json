@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5644/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-m10-balance-damp-test-check-960.png",
+  "gif": null,
+  "jsErrors": []
+}
