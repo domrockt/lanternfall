@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11752,
+  "next": 11776,
   "cards": [
     {
       "id": 1,
@@ -16123,6 +16123,48 @@
       ],
       "created": "2026-11-28T11:44:07Z",
       "updated": "2026-11-28T11:48:50Z"
+    },
+    {
+      "id": 11772,
+      "title": "m10-props-always-visible K1: Repro — Gegnerzahl um 150/200 pendeln, Prop-Sichtbarkeit 10 s loggen",
+      "description": "scripts/m10-props-always-visible.mjs: spawn/kill-Schleife um die Schwellen 150/200, Sichtbarkeit der Props über 10 s protokollieren. Abnahme: before-JSON in ~/games/.evidence/m10-props-always-visible/ zeigt Wechsel der Prop-Sichtbarkeit (Flackern) belegt.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:59:35Z",
+          "by": "build",
+          "text": "todo → doing: Lane übernommen: K1 Repro starten"
+        }
+      ],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T11:59:35Z"
+    },
+    {
+      "id": 11773,
+      "title": "m10-props-always-visible K2: Dichte-LOD für Props entfernen (Tier immer 2)",
+      "description": "src/logic/lod.ts: propDensityMaxTier immer 2 (Prop-Dichte-LOD deaktiviert), Aufrufer (GroundRenderer) unverändert im Renderingpfad. tests/props-always-visible.test.ts als Guard. Abnahme: tsc+Tests grün, 0 Sichtbarkeitswechsel im Repro.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T11:59:34Z"
+    },
+    {
+      "id": 11774,
+      "title": "m10-props-always-visible K3: Sonstige Welt-Objekt-LODs prüfen (ambientBudgetFor, quality, Culling)",
+      "description": "Prüfen ob weitere Stellen Welt-Objekte bei Last hart an/aus schalten: ambientBudgetFor (nur Ambient-Partikel betreffen lassen), quality reduced/minimal, Chunk-Culling. Abnahme: Befund in docs/lanes/m10-props-always-visible.md; ggf. weiche Überblendung+Hysterese für Ambient-Partikel, nicht für Welt-Objekte.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T11:59:34Z"
+    },
+    {
+      "id": 11775,
+      "title": "m10-props-always-visible K4: Belege + Doku + .lane-done",
+      "description": "Repro nachher (0 Sichtbarkeitswechsel), Android-Proxy-Lauf, Lehre in Team/Lehren.md, docs/lanes/m10-props-always-visible.md, .lane-done. Abnahme: npm run build + npm test grün, 0 JS-Fehler, Gerät-Messung als Folgepunkt notiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T11:59:34Z"
     }
   ]
 }
