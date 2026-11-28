@@ -76,7 +76,7 @@ await page.addInitScript(() => {
         heapGrewBytes += heap - lastHeap;
       }
       lastHeap = heap;
-      frames.push({ cpuMs: Math.round(cpuMs * 1000) / 1000, ts: Math.round(ts) });
+      frames.push(cpuMs);
     });
   };
   window.__cpuStats = {
@@ -169,7 +169,7 @@ try {
   const frameData = await page.evaluate(({ from, to }) => {
     const frames = window.__cpuStats.frames.slice(from, to);
     return {
-      cpuMs: frames.map((f) => f.cpuMs),
+      cpuMs: frames,
       heapGrewFrames: window.__cpuStats.heapGrewFrames,
       heapGrewBytes: window.__cpuStats.heapGrewBytes,
     };

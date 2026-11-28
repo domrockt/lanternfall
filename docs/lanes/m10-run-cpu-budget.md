@@ -30,8 +30,28 @@ Gerätetelemetrie liegt außerhalb dieser Lane, siehe `Wissen/Android-Optimierun
 
 ## K2 — Attribution (Karte #11753)
 
-Top-Quellen aus demselben Lauf (`topCpu` + `topAllocSites` im Beleg-JSON); lesbarere Attribuierung
-über einen temporären unminifizierten Build (`npx vite build --minify false`, dist wird danach neu gebaut) —
-vite.config.ts ist nicht Teil dieses Claims.
+Methode: derselbe Chaos-Lauf, unminifizierter Build (`npx vite build --base ./ --minify false`, nur temporär in
+`dist`, danach normaler Build) → lesbarer Bundle-Code; Isolations-Probe `~/tmp/m10-run-cpu-budget/isolate-probe.mjs`
+(läuft OHNE rAF-CPU-Wrapper) beweist, dass der Top-Alloc-Site „(anonymous) @ :14“ (34–47 %) **Mess-Harness-Rauschen**
+ist (HeapNumber-Allokationen des Wrappers), nicht Spielcode.
+
+Belege: `~/games/.evidence/m10-run-cpu-budget/m10-run-cpu-attrib.json` (Attributions-Lauf) +
+`m10-run-cpu-no-raf-probe.json` (Isolationsprobe).
+
+### Top-3 im Run.ts update-Loop (Datei + Zeile + Hebel)
+
+| # | Quelle | Ort | Mechanismus | Hebel (K3) |
+|---|---|---|---|---|
+| A | **KI-Param-Objekt je Gegner je Schritt** | `src/scenes/Run.ts` updateEnemies, stepEnemyAi-Aufruf (~1012–1020) | Objekt-Literal `{archetype,tier,x,y,playerX,playerY,speed}` pro Gegner pro Sim-Schritt ≈ 30 000 Objekte/s bei 500 Gegnern (junger Gen, GC-Druck → p95/ms-Spitzen) | hoisted Feld, Felder je Aufruf mutiert (stepEnemyAi liest synchron, keine Retention → bitgleich) |
+| B | **Sim-Kontext + Closures je Schritt** | `src/scenes/Run.ts` simulate (~604–654) | `combat.update({...})`-Literal, `onHit`/`onHeal`-Closures, `enemyShots`-/`hazards`-/`pickups`-Closures, Pickup-View `{x0..y1}`, `resolvePlayerGap({ignore})` — je 1×/Schritt ≈ 400 Allokationen/s | hoisted Instanz-Arrow-Funktionen + wiederverwendete Kontextobjekte |
+| C | **`splits`-Array je Schritt** | `src/scenes/Run.ts` collectKills (~1136) | frisches `EnemyRuntime[]` pro Schritt | Scratch-Feld mit `length = 0` |
+
+### Benannt, aber außerhalb des Claims (nicht in Run.ts fixbar)
+
+- `source.onended @ phaser:147728` (~141 B/Frame): WebAudio-`createBufferSource`+Closure **je SFX** (Phaser Sound,
+  getriggert vom AudioSystem) — Claim AudioSystem/Lane fremd; größter verbleibender Alloc-Posten.
+- `tick @ gfx:375` (~B/Frame): FPS-Supervisor des renderBuffer-Monitors (Telemetrie, kein Gameplay).
+- `EnemyPool.spawn`/`stepEnemyAi`-Rückgabe/`resetAiState` (~27 B/Frame je): Pools/Logik `src/systems`/`src/logic` fremd.
+- `StableSort`/`batchSprite`/`render` (CPU): Phaser-Renderer + Tiefensortierung — engine-seitig, kein Run.ts-Hebel.
 
 ## K3/K4 — offen
