@@ -1,0 +1,16 @@
+Lane m10-view-pixel-snap abgeschlossen (K1 #11148, K2 #11149, K3 #11150).
+
+Bedarf (aus m10-view-4k K2): 2560x1080@1 -> Canvas 2559 Geraetepx zentriert bei
+CSS-x=0.5, linke Randspalte blurrt (barsPx.left=1). Fix NUR in der
+Positionierung: snapCanvasRect (additiv, src/logic/view.ts) + Konsum in
+src/main.ts applyView (Transform nach Layout-Messung, Restspalte nach rechts,
+harte Kante). View-Rechnung unangetastet.
+
+Messwerte (Belege /home/ai/games/.evidence/m10-view-pixel-snap/):
+- Before: 2560x1080@1 canvasRectCss x=0.5, rectIntegerDevice=false, barsPx.left=1;
+  Kontrolle 1280x720@1 sauber. 0 JS-Fehler, Renderer Mesa Intel RPL-S.
+- After: rectDevicePx=[0,0], rectIntegerDevice=true, barsPx.left=0 (rechts 1
+  Geraetepx harte Restspalte, mathematisch unvermeidbar 2560=3*853+1).
+- Stichprobe 3440x1440@1 + 1920x1080@1: 0 Balken, pixel-perfect, Transform none.
+- tests/view-pixel-snap.test.ts 13 Tests; npm test 187 Dateien/2045 gruen;
+  npm run build rc=0.

@@ -14652,27 +14652,38 @@
       "id": 11149,
       "title": "m10-view-pixel-snap K2: Fix — Canvas-Rect auf ganze Geraetepixel snappen",
       "description": "Snap im POSITIONIERUNGSPfad (src/main.ts bzw. index.html), nicht in der View-Rechnung: reine Helper-Funktion snapCanvasRect ADDITIV in src/logic/view.ts ergaenzen (bestehende Exporte unangetastet), main.ts konsumiert sie. Restspalte nach rechts (harte Kante). Abnahme: npx tsc --noEmit rc=0, bestehende Tests gruen, bestehende view.ts-Exporte unveraendert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T10:46:27Z",
           "by": "build",
           "text": "todo → doing: K2 Fix: snapCanvasRect additiv in src/logic/view.ts, Konsum in src/main.ts applyView (Transform nach Layout-Messung, Restspalte nach rechts)."
+        },
+        {
+          "at": "2026-11-28T10:48:25Z",
+          "by": "build",
+          "text": "doing → review: snapCanvasRect additiv in src/logic/view.ts (Exporte unangetastet), main.ts applyView: Transform nach Layout-Messung (Reset->messen->snappen, Rest nach rechts/unten). Belege: after.json rectDevicePx=[0,0], rectIntegerDevice=true, barsPx.left=0 (rechts 1 Geraetepx harte Restspalte), Kontrolle unveraendert, 0 JS-Fehler. tsc rc=0, 5 View-Testdateien 63 Tests gruen, build rc=0. Commit dd66b021. Nach-Shot gesichtet: Ränder hart, Spielfeld voll."
         }
       ],
       "created": "2026-11-28T10:42:57Z",
-      "updated": "2026-11-28T10:46:27Z"
+      "updated": "2026-11-28T10:48:25Z"
     },
     {
       "id": 11150,
       "title": "m10-view-pixel-snap K3: Guard-Test + After-Scan + Doku + Abschluss",
       "description": "tests/view-pixel-snap.test.ts (ganzzahlige Rect-Grenzen fuer unteilbare Breiten 2560/1080 u.a.), After-Scan barsPx.left=0 bei 2560x1080@1, Stichprobe 2 weitere Formate ohne Rueckschritt, Doku docs/lanes/m10-view-pixel-snap.md + Belege in /home/ai/games/.evidence/m10-view-pixel-snap/. Abnahme: npm test gruen, npm run build rc=0, .lane-done.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T10:48:25Z",
+          "by": "build",
+          "text": "todo → doing: K3: tests/view-pixel-snap.test.ts + Stichprobe 2 weitere Formate (3440x1440@1, 1920x1080@1) + Doku + .lane-done."
+        }
+      ],
       "created": "2026-11-28T10:42:57Z",
-      "updated": "2026-11-28T10:42:57Z"
+      "updated": "2026-11-28T10:48:25Z"
     }
   ]
 }

@@ -202,7 +202,8 @@ export interface CanvasSnap {
  * - Nach UNEN/LINKS abrunden (floor) -> die Restspalte landet HART am rechten/
  *   unteren Rand (Seitenhintergrund mit scharfer Kante) statt zu verblurren.
  * - Toleranz 1e-4 Geraetepixel frisst Browser-Rauschen in getBoundingClientRect.
- * - Faelschungs-sicher: NaN/Infinity/dpr<=0 liefern dx=dy=0.
+ * - Faelschungs-sicher: NaN/Infinity-Positionen liefern dx=dy=0; dpr<=0/NaN
+ *   gilt wie in computeView als 1 (finitePositive).
  * Reine Funktion ohne DOM, in Vitest testbar.
  */
 export function snapCanvasRect(leftCss: number, topCss: number, dpr: number): CanvasSnap {
