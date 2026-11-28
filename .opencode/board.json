@@ -10050,7 +10050,7 @@
       "id": 7880,
       "title": "m10-audio-music-dawn #K3: Guard-Tests music-dawn",
       "description": "tests/music-dawn.test.ts mit >= 6 Tests: Uebergangs-Matrix (Titel/Run/Boss/Dawn x Master-Mute x Reload), 0 Doppel-Voices (bei Wechsel nie 2 Musik-Sounds aktiv), Wiederhol-Start No-op, Mute bitgleich (sfxPlayed/voices/musicTrack wie A7). Abnahme: npx vitest run tests/music-dawn.test.ts gruen, audio-mix-chaos + audio-frost-gap Tests unveraendert gruen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T03:38:48Z",
@@ -10061,19 +10061,30 @@
           "at": "2026-11-28T03:40:59Z",
           "by": "build",
           "text": "K3 fertig, Commit folgt #7880: tests/music-dawn.test.ts in einem Zug geschrieben, 1x vitest run, 2 Fix-Iterationen (Index-/Reihenfolge-Bugs in eigenen Assertions), 7/7 gruen. Messskript unangetastet gelassen. -> review"
+        },
+        {
+          "at": "2026-11-28T03:41:10Z",
+          "by": "build",
+          "text": "doing → review: K3 done, Commit 5d18f0a: 7 Tests (>=6 gefordert), 0 Doppel-Voices, Mute bitgleich. Kontrolle: vitest gruen."
         }
       ],
       "created": "2026-11-28T03:30:16Z",
-      "updated": "2026-11-28T03:40:59Z"
+      "updated": "2026-11-28T03:41:10Z"
     },
     {
       "id": 7881,
       "title": "m10-audio-music-dawn #K4: Nachher-Beleg + Doku",
       "description": "Nachher-Beleg shots/m10-music-dawn-after.json via Messskript, docs/lanes/m10-audio-music-dawn.md mit Vorher/Nachher-Zahlen, Befunden und offenen Punkten. Abnahme: beide JSONs committed, Doku enthaelt Messwerte, npm run build + npm test einmal gruen, ein Commit pro Karte.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:41:10Z",
+          "by": "build",
+          "text": "todo → doing: K4 gestartet: Nachher-Beleg JSON + docs/lanes/m10-audio-music-dawn.md + Full-Check."
+        }
+      ],
       "created": "2026-11-28T03:30:16Z",
-      "updated": "2026-11-28T03:30:16Z"
+      "updated": "2026-11-28T03:41:10Z"
     }
   ]
 }
