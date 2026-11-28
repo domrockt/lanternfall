@@ -32,6 +32,7 @@ const argOf = (name, fallback) => {
 const TAG = argOf("tag", "before");
 const PREFIX = argOf("prefix", `shots/m10-boot-glow-${TAG}`);
 const TARGET = Number(argOf("target", "300"));
+const MODE = argOf("mode", "full"); // full = K1/K4-Chaoslauf | evidence = K4-Kontaktbogen-Belege
 const TMP = `${process.env.HOME}/tmp/m10-boot-glow-local`;
 
 const PROFILES = [
@@ -81,20 +82,25 @@ function renderLightSoft(rings) { // Vorher-Referenz: destination-in-Radialgradi
   ctx.fillStyle = g; ctx.fillRect(0, 0, size, size);
   return ctx.getImageData(0, 0, size, size).data;
 }
-function renderLightStepped(rings) { // Nachher-Referenz: LIGHT_EDGE_STEPS-Band-Loop
+function renderLightStepped(rings) { // Nachher-Referenz: pro-Pixel-Stufen-Multiplikation
   const size = 192, c = size / 2;
   const canvas = document.createElement("canvas");
   canvas.width = size; canvas.height = size;
   const ctx = canvas.getContext("2d");
   drawRings(ctx, c, rings);
-  ctx.globalCompositeOperation = "destination-in";
-  for (const [r0, r1, a] of LIGHT_EDGE_STEPS) {
-    ctx.globalAlpha = a;
-    ctx.beginPath(); ctx.arc(c, c, r1, 0, Math.PI * 2);
-    if (r0 > 0) ctx.arc(c, c, r0, 0, Math.PI * 2, true);
-    ctx.fill();
+  const img = ctx.getImageData(0, 0, size, size);
+  const pxs = img.data;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x + 0.5 - c, y + 0.5 - c);
+      let band = 0;
+      for (const [r0, r1, stepAlpha] of LIGHT_EDGE_STEPS) {
+        if (d > r0 && d <= r1) { band = stepAlpha; break; }
+      }
+      pxs[(y * size + x) * 4 + 3] = pxs[(y * size + x) * 4 + 3] * band;
+    }
   }
-  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+  ctx.putImageData(img, 0, 0);
   return ctx.getImageData(0, 0, size, size).data;
 }
 const RINGS_BOOT = globalThis.RINGS_BOOT = [ // createLightTextureLocal, Boot.ts (B2-Tuning)
@@ -185,6 +191,14 @@ function zoomCrop4x(file, out) {
     `crop=${cw}:${ch}:${x}:${y},scale=${cw * 4}:${ch * 4}:flags=neighbor`, out],
     { stdio: "ignore" });
 }
+/** Obere-linke Ecke als 4x-nearest-Crop (Vignette-Baender über ruhigem Terrain). */
+function cornerCrop4x(file, out) {
+  const { width, height } = pngSize(file);
+  const cw = Math.floor(width / 4), ch = Math.floor(height / 4);
+  execFileSync("ffmpeg", ["-y", "-i", file, "-vf",
+    `crop=${cw}:${ch}:0:0,scale=${cw * 4}:${ch * 4}:flags=neighbor`, out],
+    { stdio: "ignore" });
+}
 
 // ---------- Browser ----------
 
@@ -210,32 +224,114 @@ try {
     await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
     await startRun(page);
     await page.waitForTimeout(1200); // Warmup abwarten (laeuft hinter dem ersten Titel-Frame)
-    report.probe = await page.evaluate((src) => {
+    report.probe = await page.evaluate(({ src, mode }) => {
       // eslint-disable-next-line no-eval
       (0, eval)(src);
       const game = window.__game;
       const gameW = game.config.width, gameH = game.config.height;
       const out = { gameW, gameH, keys: {} };
+      const imgs = {};
       for (const key of ["light_radius", "vignette"]) {
         const tex = readTexture(game, key);
         if (!tex || tex.kind !== "canvas" || !tex.data) { out.keys[key] = { missing: true, info: tex }; continue; }
+        imgs[key] = tex.data;
         const expected = {
           stepped: key === "light_radius" ? renderLightStepped(RINGS_BOOT) : renderVignetteStepped(gameW, gameH),
           soft: key === "light_radius" ? renderLightSoft(RINGS_BOOT) : renderVignetteSoft(gameW, gameH),
         };
         out.keys[key] = {
           kind: tex.kind, w: tex.w, h: tex.h,
+          centerAlpha: imgs[key][(96 * tex.w + 96) * 4 + 3],
           vsStepped: diff(tex.data, expected.stepped),
           vsSoft: diff(tex.data, expected.soft),
         };
       }
+      // Kontaktbogen (MODE=evidence): der RUNTIME-Canvas, dessen Bytes eben gegen
+      // die gestufte Referenz diffed wurden, als 4x-nearest Render ueber Mooston.
+      // Bewusst HIER und aus dem validierten ImageData — spaeter im Run liest der
+      // Quell-Canvas bei getImageData Nullen zurueck (Befund, siehe Lane-Doku).
+      if (mode === "evidence" && imgs.light_radius) {
+        const old = document.getElementById("ev-canvas");
+        if (old) old.remove();
+        const off = document.createElement("canvas");
+        off.width = 192; off.height = 192;
+        off.getContext("2d").putImageData(new ImageData(imgs.light_radius.slice(), 192, 192), 0, 0);
+        const c = document.createElement("canvas");
+        c.id = "ev-canvas";
+        c.width = 768; c.height = 768;
+        c.style.cssText = "position:fixed;top:0;left:0;z-index:99999;background:#2f4a2a;";
+        const ctx = c.getContext("2d");
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(off, 0, 0, 768, 768);
+        document.body.appendChild(c);
+        // Diagnostik: ist 2d-Zeichnen auf dieser Seite ueberhaupt wirksam?
+        const probe2d = document.createElement("canvas");
+        probe2d.width = 8; probe2d.height = 8;
+        const pctx = probe2d.getContext("2d");
+        pctx.fillStyle = "#ff0000";
+        pctx.fillRect(0, 0, 8, 8);
+        out.contact = {
+          drawA: ctx.getImageData(384, 384, 1, 1).data[3],
+          offA: off.getContext("2d").getImageData(96, 96, 1, 1).data[3],
+          offDataLen: imgs.light_radius.length,
+          offDataCenterA: imgs.light_radius[(96 * 192 + 96) * 4 + 3],
+          redTest: Array.from(pctx.getImageData(0, 0, 1, 1).data),
+          runtimeRow: [4, 16, 40, 64, 90, 110, 130, 150, 170, 190].map((y) => imgs.light_radius[(y * 192 + 96) * 4 + 3]),
+        };
+      }
       return out;
-    }, VARIANTS_SOURCE);
+    }, { src: VARIANTS_SOURCE, mode: MODE });
+    if (MODE === "evidence") {
+      await page.waitForTimeout(200);
+      await page.locator("#ev-canvas").screenshot({ path: `${PREFIX}-evidence-light-radius-4x.png` });
+    }
+    await page.close();
+  }
+
+  // ---------- Teil 2e (MODE=evidence): K4-Belege nach art-director-Nachbesserung ----------
+  // Ruhige Minute 8 (kein Chaos-Burst, kein LOD-Dimming des Lichts), gezielt
+  // gespawnte lebende Gegner am Spielerlicht, dazu Kontaktbogen: direkter
+  // 4x-nearest Render des Runtime-Canvas von light_radius (Kontaktbogen-Prinzip).
+  if (MODE === "evidence") {
+    const page = await browser.newPage({
+      viewport: { width: 780, height: 360 },
+      deviceScaleFactor: 3,
+    });
+    page.on("pageerror", (e) => report.jsErrors.push(`evidence: ${e}`));
+    page.on("console", (m) => { if (m.type() === "error") report.jsErrors.push(`evidence: ${m.text()}`); });
+    await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=1`);
+    await startRun(page);
+    await page.evaluate(() => {
+      window.__lf.god(true);
+      window.__lf.setTimeScale(1);
+      window.__lf.skipTo(180); // Minute 3: ruhig (vor MOORKOENIGIN), Licht ohne minimal-LOD-Dimming
+    });
+    await page.waitForTimeout(400);
+    for (let i = 0; i < 40; i++) {
+      if (!(await page.evaluate(() => window.__lf?.stats().levelUpOpen))) break;
+      await page.evaluate(() => window.__lf.pickLevelUp(0));
+    }
+    // 8 lebende Gegner, die auf den Spieler zulaufen (Lichtkante mit Wirkung).
+    await page.evaluate(() => window.__lf.spawnEnemy("bog_rat", 8));
+    await page.waitForTimeout(900);
+    const stats = await page.evaluate(() => {
+      const s = window.__lf.stats();
+      return { enemies: s.enemies, time: s.time, level: s.level };
+    });
+    const png = `${PREFIX}-evidence-780-360-3-m8.png`;
+    await page.screenshot({ path: png });
+    const zoom = `${PREFIX}-evidence-780-360-3-m8-center-4x.png`;
+    zoomCrop4x(png, zoom);
+    const corner = `${PREFIX}-evidence-780-360-3-m8-corner-4x.png`;
+    cornerCrop4x(png, corner);
+    // Kontaktbogen (light_radius 4x) entsteht bereits im Probe-Schritt (Teil 1)
+    // aus dem dort gegen die Stufen-Referenz validierten Runtime-ImageData.
+    report.evidence = { stats, png, zoom, corner, contact: `${PREFIX}-evidence-light-radius-4x.png`, contactDraw: report.probe?.contact };
     await page.close();
   }
 
   // ---------- Teil 2: Vorher-Shots (Minute-25-Chaos, wie Glowpath-Audit) ----------
-  for (const prof of PROFILES) {
+  if (MODE !== "evidence") for (const prof of PROFILES) {
     const page = await browser.newPage({
       viewport: { width: prof.width, height: prof.height },
       deviceScaleFactor: prof.dpr,
@@ -294,16 +390,21 @@ for (const [key, r] of Object.entries(report.probe?.keys ?? {})) {
   r.winner = winner;
   console.log(`[probe] ${key}: ${texInfo(r)} vsStepped(max=${r.vsStepped.maxDiff}, mean=${r.vsStepped.meanDiff}) vsSoft(max=${r.vsSoft.maxDiff}, mean=${r.vsSoft.meanDiff}) -> GEWINNT: ${winner}`);
 }
-const steppedWin = Object.values(report.probe?.keys ?? {}).every((r) => r.vsStepped && r.vsStepped.maxDiff <= r.vsSoft.maxDiff);
+const steppedWin = Object.values(report.probe?.keys ?? {}).every(
+  (r) => r.vsStepped && r.vsStepped.maxDiff <= 2 && r.centerAlpha > 0 && r.vsStepped.maxDiff <= r.vsSoft.maxDiff,
+);
 report.steppedWins = steppedWin;
 console.log(`[boot-glow] ${TAG}: steppedWins=${steppedWin}`);
 function texInfo(r) {
   return `${r.kind} ${r.w}x${r.h}`;
 }
 writeFileSync(`${PREFIX}.json`, JSON.stringify(report, null, 2));
-console.log(`[boot-glow] ${TAG}: steppedWins=${steppedWin}`);
-for (const p of report.profiles) {
+console.log(`[boot-glow] ${TAG}: steppedWins=${steppedWin} mode=${MODE}`);
+for (const p of report.profiles ?? []) {
   console.log(`  ${p.profile.label}: ${p.png} a7=${p.pixels.nearWhiteA7Pct}% enemies=${p.stats.enemies}`);
+}
+if (report.evidence) {
+  console.log(`  evidence: enemies=${report.evidence.stats.enemies} time=${report.evidence.stats.time} -> ${report.evidence.png} (+ center/corner 4x, Kontaktbogen ${report.evidence.contact})`);
 }
 if (report.jsErrors.length > 0) {
   console.error("[boot-glow] JS-Fehler im Lauf — Belege ungueltig");

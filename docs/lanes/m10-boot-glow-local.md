@@ -90,7 +90,56 @@ Passives, skipTo 1490):
   eingehalten (Vorher-Baseline 0,4 %/0,27 %).
 - Shots: shots/m10-boot-glow-after-640-360-1-m25-1.png(+ -4x) und
   shots/m10-boot-glow-after-780-360-3-m25-1.png(+ -4x), lebende Gegner sichtbar.
-- art-director-Urteil: siehe Karten-Notiz #8621 (Ergebnis wird nachgetragen).
+- art-director: 1. Runde FAIL (Belege untauglich: Bänder im Chaos-Frame nicht
+  ablesbar, Telegraphen-Overlay, keine eindeutig lebenden Gegner) → Belege
+  neu erzeugt (siehe unten), Code dabei als korrekt befunden.
+- HINWEIS rev.2: Der Probe-Vergleich dieses Laufs war für light_radius VAKUUM
+  (leere Runtime-Textur matched jede leere Referenz mit maxDiff 0) — erst der
+  rev.2-Lauf (unten) erbringt den echten Beleg. Near-White-Zahlen bleiben als
+  Messwerte gültig; die Runde-1-Shots zeigen das Spielerlicht nicht (Textur
+  leer) und sind durch die Runde-2-Belege ersetzt.
+
+## K2 rev.2 — KRITISCHER BUGFIX (2026-11-28, Commit nach 00d658f)
+
+Die Beleg-Arbeit deckte einen echten Bug auf, den sowohl der erste Port ALS
+AUCH **eaf2ab6 selbst** enthält:
+
+- `destination-in`-Fills SCHNEIDEN ihre Masken: Band 2 (Ring 70–76, Alpha
+  0.66) löscht per Loch (src alpha 0) den Kern, den Band 1 erhalten hat.
+  Nach allen 5 Bändern bleibt eine **vollständig transparente Textur**.
+- A/B-Beweis im Browser (Probe-Diagnostik): destination-in + Einzeldisc
+  erhält Inhalt (discKeep ok), gestapelte Band-Ringe ergeben überall 0.
+- Folge: light_radius war seit K2 rev.1 (8e8dff4) zur Laufzeit UNSICHTBAR —
+  und derselbe Code liegt in eaf2ab6: `createLightTexture` in
+  m10-chaos-fix-raster-glow erzeugt eine leere Textur. Das ist dort nie
+  aufgefallen, weil zur Laufzeit die Boot-Local-Kopie schattet und die
+  lane-eigenen Tests nur Quelltext-Guards sind (`lightEdgeAlphaFor` ist rein
+  und korrekt — nur der Canvas-Pfad ist falsch).
+- **Warnung an die Merge-Owner** (requests.md): eaf2ab6 NICHT ungéprüft in
+  main mergen — light_radius würde (sobald Boot konsumiert) unsichtbar.
+
+Fix (rev.2): Stufen-Alpha wird PRO PIXEL auf den Ring-Stack multipliziert
+(`getImageData`/`putImageData`, 192×192, semantisch = Band-Tabelle × Stack).
+Tabelle unverändert; Vignette war korrekt (source-over-Bänder ohne
+Composite-Trick). Guards: `destination-in` im aktiven Code verboten
+(tests/boot-light-textures.test.ts). Suite 1447/1447, tsc/Build grün.
+
+## K4-Belege, Runde 2 (art-director-Nachbesserung)
+
+`node scripts/m10-boot-glow.mjs --mode evidence --tag after-evidence`:
+Minute-3-Frame (vor MOORKÖNIGIN, kein Burst, kein LOD-Dimming), 8 gezielt
+gespawnte bog_rat, DPR3:
+- `shots/m10-boot-glow-after-evidence-evidence-780-360-3-m8.png` (+ center/
+  corner-4x): Lichtpool mit Stufen um den Spieler, 14 lebende Gegner im/nahe
+  dem Licht, Vignette über ruhigem Terrain.
+- `shots/m10-boot-glow-after-evidence-evidence-light-radius-4x.png`:
+  Kontaktbogen — Runtime-Textur (probe-validiert, maxDiff 0) direkt als
+  4x-nearest Render über Mooston; die 5 Stufenbänder an r=70/76/82/88/96
+  ablesbar.
+- Nicht-vakuose Probe: `steppedWins` verlangt jetzt `centerAlpha > 0` UND
+  maxDiff <= 2 (nach dem rev.2-Fix: light centerA 143, vignette 99);
+  `shots/m10-boot-glow-after-evidence.json`.
+- art-director-Urteil Runde 2: siehe Karten-Notiz #8621.
 
 ## Offener Punkt (Folgekarte, nicht lane-fähig)
 
