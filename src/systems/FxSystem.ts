@@ -157,6 +157,76 @@ export function glowDepthFor(baseDepth: number, glow: boolean): number {
   return glow && baseDepth <= DEPTH.death ? FX_GLOW_DEPTH : baseDepth;
 }
 
+// ── m10-fx-alloc-trim (K2): alloc-arme Spawn-/Draw-Pfade ────────────────────
+/**
+ * Frame-Arrays sind deterministisch (fxFrames bzw. mixelFrameKey) und werden
+ * nur gelesen — je Basis+Stufe genau ein geteiltes Array statt einem je Spawn
+ * (Chaos: mehrere hundert Spawns/s). Identitaets-Schutz: nur Arrays, die aus
+ * diesem Cache stammen, werden auch fuer den Mixel-Cache benutzt; fremde
+ * Frame-Arrays (Caller) verhalten sich bitgleich wie bisher (frisches map()).
+ */
+const framesCache = new Map<string, string[]>();
+const mixelFramesCache = new Map<string, string[]>();
+
+function cachedFrames(base: string, count: number): string[] {
+  const key = `${base}|${count}`;
+  let arr = framesCache.get(key);
+  if (!arr) {
+    arr = fxFrames(base, count);
+    framesCache.set(key, arr);
+  }
+  return arr;
+}
+
+function mixelFramesFor(frames: string[], level: number): string[] {
+  const canonical = cachedFrames(frames[0], frames.length);
+  if (frames !== canonical) return frames.map((k) => mixelFrameKey(k, level));
+  const key = `${frames[0]}|${frames.length}|${level}`;
+  let arr = mixelFramesCache.get(key);
+  if (!arr) {
+    arr = frames.map((k) => mixelFrameKey(k, level));
+    mixelFramesCache.set(key, arr);
+  }
+  return arr;
+}
+
+/**
+ * Wiederverwendetes Options-Objekt fuer die Spawn-Helfer (burst/shards/beam/
+ * bolt/decal/spawnAnim/spawnEvolution). Vorher erzeugte jeder Helper je Aufruf
+ * ein Objekt-Literal-Spread im Young-Gen; spawn() liest die Felder
+ * ausschliesslich synchron, es gibt keine Retention -> Wiederverwendung
+ * verhaelt sich bitgleich.
+ */
+function resetOpts(o: FxOptions): FxOptions {
+  o.vx = undefined; o.vy = undefined; o.life = undefined;
+  o.scaleFrom = undefined; o.scaleTo = undefined; o.aspect = undefined;
+  o.alphaFrom = undefined; o.alphaTo = undefined; o.rotation = undefined;
+  o.spin = undefined; o.tint = undefined; o.additive = undefined;
+  o.depth = undefined; o.frames = undefined; o.frameRate = undefined;
+  o.alphaScaleExempt = undefined;
+  return o;
+}
+
+/** Alle Felder von src in den (bereits resetteten) Scratch uebernehmen. */
+function copyOptsInto(dst: FxOptions, src: Partial<FxOptions>): FxOptions {
+  dst.vx = src.vx; dst.vy = src.vy; dst.life = src.life;
+  dst.scaleFrom = src.scaleFrom; dst.scaleTo = src.scaleTo; dst.aspect = src.aspect;
+  dst.alphaFrom = src.alphaFrom; dst.alphaTo = src.alphaTo; dst.rotation = src.rotation;
+  dst.spin = src.spin; dst.tint = src.tint; dst.additive = src.additive;
+  dst.depth = src.depth; dst.frames = src.frames; dst.frameRate = src.frameRate;
+  dst.alphaScaleExempt = src.alphaScaleExempt;
+  return dst;
+}
+
+/** Spawn-Evolution-Cooldown-Key ohne String-Allokation je Aufruf. */
+const SIG_SLOT = new Map<string, number>(
+  Object.keys(EVOLUTION_SIGNATURES).map((k, i) => [k, i] as const),
+);
+function sigSlotFor(evolution: string, kind: "hit" | "death"): number {
+  const base = SIG_SLOT.get(evolution) ?? -1;
+  return base * 2 + (kind === "hit" ? 0 : 1);
+}
+
 /** Laufzeitdatensatz eines Effekt-Sprites (public fuer Tests). */
 export interface FxRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -191,6 +261,18 @@ export interface FxRuntime {
    * hoechstens 1 Spielpixel deckt (keine 6–8-px-Bloecke mehr).
    */
   mixelLevel: number;
+  /**
+   * m10-fx-alloc-trim (K2): zuletzt gezeichnete Werte. Phaser-Setter werden im
+   * Draw-Pfad nur aufgerufen, wenn sich der Wert geaendert hat — identischer
+   * Wert => identischer Sprite-Zustand (bitgleich), aber kein Setter-/Dirty-
+   * Churn fuer ruhende Werte (Rotation ohne Spin, eingeschwungene Scale).
+   */
+  cx: number;
+  cy: number;
+  csx: number;
+  csy: number;
+  ca: number;
+  cr: number;
 }
 
 export interface FxOptions {
@@ -257,7 +339,11 @@ export class FxSystem {
     for (const fx of this.active) {
       if (fx.alphaScaleExempt) continue;
       fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
-      fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
+      const a = Math.max(0, Math.min(1, fx.sprite.alpha * ratio));
+      // m10-fx-alloc-trim (K2, Reviewer-Sollte 1): ca-Invariante halten,
+      // sonst unterschlaegt das Alpha-Gate in update() den neuen Wert.
+      fx.ca = a;
+      fx.sprite.setAlpha(a);
       const blendAdd = fx.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion braucht einen echten Glow-Slot —
       // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
@@ -326,12 +412,16 @@ export class FxSystem {
     fx.alphaTo = opts.alphaTo ?? 0;
     fx.rotation = opts.rotation ?? 0;
     fx.spin = opts.spin ?? 0;
-    fx.frames = opts.frames ?? [opts.texture];
+    fx.frames = opts.frames ?? cachedFrames(opts.texture, 1);
     fx.frameRate = opts.frameRate ?? 18;
     fx.active = true;
     const sprite = fx.sprite;
     applyTexture(sprite, fx.frames[0]);
-    sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
+    // m10-fx-alloc-trim (K2): Draw-Caches initial mitsetzen (Spawn-Pfad
+    // bleibt unveraendert, nur die Felder werden mitgeschrieben).
+    fx.cx = Math.round(fx.x);
+    fx.cy = Math.round(fx.y);
+    sprite.setPosition(fx.cx, fx.cy);
     // M10-android-scale-floor-r2 (K3): ADD-Glows auf Screengroesse cappen —
     // Deckel aus der Qualitaetsstufe (medium = 9216, low = 2025; high offen).
     if (additive) {
@@ -351,12 +441,16 @@ export class FxSystem {
     // bleibt damit UNTER der Deckel-Obergrenze (Stufe L verkleinert um Faktor L).
     fx.mixelLevel = mixelLevelFor(fx.frames[0], Math.max(Math.abs(fx.scaleFrom), Math.abs(fx.scaleTo)));
     if (fx.mixelLevel > 1) {
-      fx.frames = fx.frames.map((k) => mixelFrameKey(k, fx.mixelLevel));
+      fx.frames = mixelFramesFor(fx.frames, fx.mixelLevel);
       applyTexture(sprite, fx.frames[0]);
     }
-    sprite.setScale((fx.scaleFrom * fx.aspect) / fx.mixelLevel, fx.scaleFrom / fx.mixelLevel);
-    sprite.setAlpha(fx.alphaFrom);
-    sprite.setRotation(fx.rotation);
+    fx.csx = (fx.scaleFrom * fx.aspect) / fx.mixelLevel;
+    fx.csy = fx.scaleFrom / fx.mixelLevel;
+    sprite.setScale(fx.csx, fx.csy);
+    fx.ca = fx.alphaFrom;
+    sprite.setAlpha(fx.ca);
+    fx.cr = fx.rotation;
+    sprite.setRotation(fx.cr);
     fx.depthBase = opts.depth ?? DEPTH.fxLow;
     fx.additive = additive;
     // Minimal-LOD: grosse additive Flächen auf NORMAL legen, sonst bleibt der
@@ -381,36 +475,34 @@ export class FxSystem {
   /** Frame-Animation per Basis-Key (Frame-Anzahl aus FX_FRAME_COUNTS). */
   spawnAnim(base: string, x: number, y: number, opts: Partial<FxOptions> = {}): FxRuntime | null {
     const count = FX_FRAME_COUNTS[base] ?? 1;
-    return this.spawn({
-      ...(opts as FxOptions),
-      texture: base,
-      x,
-      y,
-      frames: opts.frames ?? fxFrames(base, count),
-      frameRate: opts.frameRate ?? count / Math.max(0.05, opts.life ?? 0.35),
-    });
+    // m10-fx-alloc-trim (K2): Scratch statt Objekt-Spread je Aufruf.
+    const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+    o.texture = base;
+    o.x = x;
+    o.y = y;
+    o.frames = opts.frames ?? cachedFrames(base, count);
+    o.frameRate = opts.frameRate ?? count / Math.max(0.05, opts.life ?? 0.35);
+    return this.spawn(o);
   }
 
   /** Kurzer Partikel-Burst (Treffer/Tod), radial gestreut. */
   burst(texture: string, x: number, y: number, count: number, opts: Partial<FxOptions> = {}): void {
-    const base = opts as FxOptions;
     const life = opts.life ?? 0.22;
     for (let i = 0; i < count; i++) {
       const a = this.rand() * Math.PI * 2;
       const speed = 24 + this.rand() * 46;
-      this.spawn({
-        ...base,
-        texture,
-        x,
-        y,
-        vx: Math.cos(a) * speed,
-        vy: Math.sin(a) * speed,
-        life: life * (0.7 + this.rand() * 0.6),
-        scaleFrom: opts.scaleFrom ?? 1,
-        scaleTo: opts.scaleTo ?? 0.2,
-        alphaFrom: opts.alphaFrom ?? 0.9,
-        alphaTo: 0,
-      });
+      const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+      o.texture = texture;
+      o.x = x;
+      o.y = y;
+      o.vx = Math.cos(a) * speed;
+      o.vy = Math.sin(a) * speed;
+      o.life = life * (0.7 + this.rand() * 0.6);
+      o.scaleFrom = opts.scaleFrom ?? 1;
+      o.scaleTo = opts.scaleTo ?? 0.2;
+      o.alphaFrom = opts.alphaFrom ?? 0.9;
+      o.alphaTo = 0;
+      this.spawn(o);
     }
   }
 
@@ -430,12 +522,13 @@ export class FxSystem {
   ): FxRuntime | null {
     const sig = EVOLUTION_SIGNATURES[evolution];
     if (!sig) return null;
-    const key = `${evolution}:${kind}`;
+    // m10-fx-alloc-trim (K2): Cooldown-Slot ohne String-Key je Aufruf.
+    const slot = sigSlotFor(evolution, kind);
     const now = this.scene.time.now;
     const baseLife = kind === "hit" ? sig.hitLifetime : sig.deathLifetime;
-    const last = this.signatureLast.get(key) ?? -1e9;
+    const last = this.signatureLast.get(slot) ?? -1e9;
     if (now - last < baseLife * 450) return null;
-    this.signatureLast.set(key, now);
+    this.signatureLast.set(slot, now);
     const texture = signatureTextureKey(evolution, kind);
     // M10-evo-fx-phoenix / -soulpyre / -winter: Signaturen mit drawScale rendern
     // ihre Textur in Zielgrösse (Phönix 128x128, Seelenleuchtfeuer 96x96,
@@ -445,26 +538,26 @@ export class FxSystem {
     // Untergrenze effektiv 0,95).
     const drawScale = sig.drawScale;
     const spin = sig.shape === "splitter" ? (kind === "hit" ? 2.2 : 1.4) : sig.shape === "cloud" ? 0.7 : 0;
-    return this.spawn({
-      ...(opts as FxOptions),
-      texture,
-      frames: opts.frames ?? fxFrames(texture, SIGNATURE_FRAME_COUNT),
-      x,
-      y,
-      life: opts.life ?? baseLife,
-      scaleFrom: opts.scaleFrom ?? drawScale?.[0] ?? (kind === "hit" ? 3.2 : 4.0),
-      scaleTo: opts.scaleTo ?? drawScale?.[1] ?? (kind === "hit" ? 3.6 : 4.6),
-      alphaFrom: opts.alphaFrom ?? 0.95,
-      alphaTo: 0,
-      additive: false,
-      depth: DEPTH.enemyDeath,
-      spin: opts.spin ?? spin,
-      rotation: opts.rotation ?? (sig.palette[0] % 7) * 0.42,
-      alphaScaleExempt: true,
-    });
+    // m10-fx-alloc-trim (K2): Scratch statt Objekt-Spread je Aufruf.
+    const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+    o.texture = texture;
+    o.frames = opts.frames ?? cachedFrames(texture, SIGNATURE_FRAME_COUNT);
+    o.x = x;
+    o.y = y;
+    o.life = opts.life ?? baseLife;
+    o.scaleFrom = opts.scaleFrom ?? drawScale?.[0] ?? (kind === "hit" ? 3.2 : 4.0);
+    o.scaleTo = opts.scaleTo ?? drawScale?.[1] ?? (kind === "hit" ? 3.6 : 4.6);
+    o.alphaFrom = opts.alphaFrom ?? 0.95;
+    o.alphaTo = 0;
+    o.additive = false;
+    o.depth = DEPTH.enemyDeath;
+    o.spin = opts.spin ?? spin;
+    o.rotation = opts.rotation ?? (sig.palette[0] % 7) * 0.42;
+    o.alphaScaleExempt = true;
+    return this.spawn(o);
   }
 
-  private signatureLast = new Map<string, number>();
+  private signatureLast = new Map<number, number>();
 
   /** Deterministischer LCG statt Math.random (reproduzierbare VFX-Screenshots). */
   private seq = 0x9e3779b9;
@@ -480,20 +573,20 @@ export class FxSystem {
     const len = Math.hypot(dx, dy) || 1;
     // Nur in Y strecken: die Linie bleibt texW Pixel breit statt len/8-fach aufzublähen.
     const stretch = len / 8;
-    this.spawn({
-      ...(opts as FxOptions),
-      texture,
-      x: (x1 + x2) / 2,
-      y: (y1 + y2) / 2,
-      rotation: Math.atan2(dy, dx) + Math.PI / 2,
-      scaleFrom: stretch,
-      scaleTo: stretch,
-      aspect: opts.aspect ?? 1 / stretch,
-      life: opts.life ?? 0.18,
-      alphaFrom: opts.alphaFrom ?? 1,
-      alphaTo: 0,
-      additive: opts.additive ?? true,
-    });
+    // m10-fx-alloc-trim (K2): Scratch statt Objekt-Spread je Aufruf.
+    const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+    o.texture = texture;
+    o.x = (x1 + x2) / 2;
+    o.y = (y1 + y2) / 2;
+    o.rotation = Math.atan2(dy, dx) + Math.PI / 2;
+    o.scaleFrom = stretch;
+    o.scaleTo = stretch;
+    o.aspect = opts.aspect ?? 1 / stretch;
+    o.life = opts.life ?? 0.18;
+    o.alphaFrom = opts.alphaFrom ?? 1;
+    o.alphaTo = 0;
+    o.additive = opts.additive ?? true;
+    this.spawn(o);
   }
 
   /**
@@ -511,6 +604,9 @@ export class FxSystem {
     const seed = Math.abs(Math.floor(x1 * 13 + y1 * 7 + x2 * 3 + y2 * 11));
     const life = opts.life ?? 0.3;
     const tint = opts.tint;
+    // m10-fx-alloc-trim (K2): eigenes Scratch je Bolt (spawnAnim nutzt
+    // scratchOpts intern und kopiert daraus) — kein Segment-Spread mehr.
+    const bo = copyOptsInto(resetOpts(this.boltOpts), opts);
     const jitter = (i: number): number => (Math.sin(seed * 0.7 + i * 2.3) * 4.2 + Math.sin(seed + i * 5.1) * 1.8);
     for (let i = 0; i < segments; i++) {
       const t0 = i / segments;
@@ -522,14 +618,14 @@ export class FxSystem {
       const bx = x1 + dx * t1 + nx * o1;
       const by = y1 + dy * t1 + ny * o1;
       const segLen = Math.hypot(bx - ax, by - ay) || 1;
-      this.spawnAnim("fx_bolt", (ax + bx) / 2, (ay + by) / 2, {
-        ...(opts as FxOptions),
-        rotation: Math.atan2(by - ay, bx - ax) + Math.PI / 2,
-        scaleFrom: segLen / 16,
-        scaleTo: segLen / 16,
-        life, alphaFrom: opts.alphaFrom ?? 1, alphaTo: opts.alphaTo ?? 0,
-        tint,
-      });
+      bo.rotation = Math.atan2(by - ay, bx - ax) + Math.PI / 2;
+      bo.scaleFrom = segLen / 16;
+      bo.scaleTo = segLen / 16;
+      bo.life = life;
+      bo.alphaFrom = opts.alphaFrom ?? 1;
+      bo.alphaTo = opts.alphaTo ?? 0;
+      bo.tint = tint;
+      this.spawnAnim("fx_bolt", (ax + bx) / 2, (ay + by) / 2, bo);
     }
     // Zwei Seitenäste (verzweigt), nicht nur eine gerade Säule.
     for (let b = 0; b < 2; b++) {
@@ -539,26 +635,24 @@ export class FxSystem {
       const side = (b === 0 ? 1 : -1) * (0.55 + (seed % 3) * 0.12);
       const bx = ox + Math.cos(ang + side) * 20;
       const by = oy + Math.sin(ang + side) * 20;
-      this.spawnAnim("fx_bolt", (ox + bx) / 2, (oy + by) / 2, {
-        ...(opts as FxOptions),
-        rotation: Math.atan2(by - oy, bx - ox) + Math.PI / 2,
-        scaleFrom: 0.9, scaleTo: 0.9,
-        life: life * 0.75, alphaFrom: 0.85, alphaTo: 0, tint,
-      });
+      bo.rotation = Math.atan2(by - oy, bx - ox) + Math.PI / 2;
+      bo.scaleFrom = 0.9; bo.scaleTo = 0.9;
+      bo.life = life * 0.75; bo.alphaFrom = 0.85; bo.alphaTo = 0; bo.tint = tint;
+      this.spawnAnim("fx_bolt", (ox + bx) / 2, (oy + by) / 2, bo);
     }
   }
 
   /** Boden-Decal (unter Gegnern, Normal-Blend). */
   decal(texture: string, x: number, y: number, opts: Partial<FxOptions> = {}): FxRuntime | null {
-    return this.spawn({
-      ...(opts as FxOptions),
-      texture, x, y,
-      depth: DEPTH.decal,
-      additive: false,
-      alphaFrom: opts.alphaFrom ?? 0.9,
-      alphaTo: opts.alphaTo ?? 0,
-      life: opts.life ?? 1.2,
-    });
+    // m10-fx-alloc-trim (K2): Scratch statt Objekt-Spread je Aufruf.
+    const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+    o.texture = texture; o.x = x; o.y = y;
+    o.depth = DEPTH.decal;
+    o.additive = false;
+    o.alphaFrom = opts.alphaFrom ?? 0.9;
+    o.alphaTo = opts.alphaTo ?? 0;
+    o.life = opts.life ?? 1.2;
+    return this.spawn(o);
   }
 
   update(dt: number): void {
@@ -586,9 +680,21 @@ export class FxSystem {
       const scale = fx.scaleFrom + (fx.scaleTo - fx.scaleFrom) * t;
       const frame = fx.frames[Math.min(fx.frames.length - 1, Math.floor(t * fx.frames.length))];
       if (frame && currentFrame(fx.sprite) !== frame) applyTexture(fx.sprite, frame);
-      fx.sprite.setPosition(Math.round(fx.x), Math.round(fx.y));
+      // m10-fx-alloc-trim (K2): Setter nur bei geaendertem Wert (bitgleich —
+      // derselbe Wert wuerde denselben Sprite-Zustand erzeugen).
+      const px = Math.round(fx.x);
+      const py = Math.round(fx.y);
+      if (px !== fx.cx || py !== fx.cy) {
+        fx.cx = px; fx.cy = py;
+        fx.sprite.setPosition(px, py);
+      }
       // Mixel-Fix: Draw-Scale = Spielpixel-Größe / Bake-Stufe (<= 1).
-      fx.sprite.setScale((scale * fx.aspect) / fx.mixelLevel, scale / fx.mixelLevel);
+      const sx = (scale * fx.aspect) / fx.mixelLevel;
+      const sy = scale / fx.mixelLevel;
+      if (sx !== fx.csx || sy !== fx.csy) {
+        fx.csx = sx; fx.csy = sy;
+        fx.sprite.setScale(sx, sy);
+      }
       const alpha = Math.max(0, fx.alphaFrom + (fx.alphaTo - fx.alphaFrom) * t);
       // M10-A4: ausgebrannte ADD-Glows (alpha <= 4 %) kosten volle Fuellrate,
       // sind aber nicht mehr sichtbar -> frueh freigeben statt ausschleichen.
@@ -604,8 +710,14 @@ export class FxSystem {
         this.free.push(fx);
         continue;
       }
-      fx.sprite.setAlpha(alpha);
-      fx.sprite.setRotation(fx.rotation);
+      if (alpha !== fx.ca) {
+        fx.ca = alpha;
+        fx.sprite.setAlpha(alpha);
+      }
+      if (fx.rotation !== fx.cr) {
+        fx.cr = fx.rotation;
+        fx.sprite.setRotation(fx.rotation);
+      }
     }
   }
 
@@ -627,8 +739,17 @@ export class FxSystem {
       frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
       depthBase: DEPTH.fxLow,
       mixelLevel: 1,
+      cx: 0, cy: 0, csx: 1, csy: 1, ca: 1, cr: 0,
     };
   }
+
+  /**
+   * m10-fx-alloc-trim (K2): wiederverwendete Options-Objekte der Spawn-Helfer
+   * (burst/beam/decal/spawnAnim/spawnEvolution bzw. bolt). spawn() liest sie
+   * synchron, keine Retention — siehe resetOpts/copyOptsInto.
+   */
+  private readonly scratchOpts: FxOptions = {} as FxOptions;
+  private readonly boltOpts: FxOptions = {} as FxOptions;
 
   clear(): void {
     for (const fx of this.active) {
@@ -713,7 +834,10 @@ export class ParticleSystem {
       // rendern dauerhaft NORMAL, s. spawn()).
       if (isBossFxKey(p.frames[0])) continue;
       p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
-      p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
+      const a = Math.max(0, Math.min(1, p.sprite.alpha * ratio));
+      // m10-fx-alloc-trim (K2, Reviewer-Sollte 1): ca-Invariante halten.
+      p.ca = a;
+      p.sprite.setAlpha(a);
       const blendAdd = p.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
       if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request();
@@ -772,12 +896,15 @@ export class ParticleSystem {
     p.alphaTo = opts.alphaTo ?? 0;
     p.rotation = opts.rotation ?? 0;
     p.spin = opts.spin ?? 0;
-    p.frames = opts.frames ?? [opts.texture];
+    p.frames = opts.frames ?? cachedFrames(opts.texture, 1);
     p.frameRate = opts.frameRate ?? 18;
     p.active = true;
     const s = p.sprite;
     applyTexture(s, p.frames[0]);
-    s.setPosition(Math.round(p.x), Math.round(p.y));
+    // m10-fx-alloc-trim (K2): Draw-Caches initial mitsetzen.
+    p.cx = Math.round(p.x);
+    p.cy = Math.round(p.y);
+    s.setPosition(p.cx, p.cy);
     // M10-android-scale-floor-r2 (K3): Deckel aus der Qualitaetsstufe
     // (identisch zum FxSystem-Spawn oben).
     if (additive) {
@@ -796,12 +923,16 @@ export class ParticleSystem {
     // echte Device-Flaeche texW*Scale^2/L bleibt um Faktor L darunter.
     p.mixelLevel = mixelLevelFor(p.frames[0], Math.max(Math.abs(p.scaleFrom), Math.abs(p.scaleTo)));
     if (p.mixelLevel > 1) {
-      p.frames = p.frames.map((k) => mixelFrameKey(k, p.mixelLevel));
+      p.frames = mixelFramesFor(p.frames, p.mixelLevel);
       applyTexture(s, p.frames[0]);
     }
-    s.setScale((p.scaleFrom * p.aspect) / p.mixelLevel, p.scaleFrom / p.mixelLevel);
-    s.setAlpha(p.alphaFrom);
-    s.setRotation(p.rotation);
+    p.csx = (p.scaleFrom * p.aspect) / p.mixelLevel;
+    p.csy = p.scaleFrom / p.mixelLevel;
+    s.setScale(p.csx, p.csy);
+    p.ca = p.alphaFrom;
+    s.setAlpha(p.ca);
+    p.cr = p.rotation;
+    s.setRotation(p.cr);
     p.depthBase = opts.depth ?? DEPTH.fxLow;
     p.additive = additive;
     // M10: Deckel — geteilt mit FxSystem, nur echte ADD-Sprites belegen Slots.
@@ -825,13 +956,13 @@ export class ParticleSystem {
     for (let i = 0; i < count; i++) {
       const a = (i / Math.max(1, count)) * Math.PI * 2 + (opts.rotation ?? 0);
       const speed = (opts.vx ?? 33) + this.rand() * 42;
-      this.spawn({
-        ...(opts as FxOptions),
-        texture, x, y,
-        vx: Math.cos(a) * speed,
-        vy: Math.sin(a) * speed,
-        life: (opts.life ?? 0.32) * (0.75 + this.rand() * 0.5),
-      });
+      // m10-fx-alloc-trim (K2): Scratch statt Objekt-Spread je Partikel.
+      const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+      o.texture = texture; o.x = x; o.y = y;
+      o.vx = Math.cos(a) * speed;
+      o.vy = Math.sin(a) * speed;
+      o.life = (opts.life ?? 0.32) * (0.75 + this.rand() * 0.5);
+      this.spawn(o);
     }
   }
 
@@ -840,17 +971,17 @@ export class ParticleSystem {
     for (let i = 0; i < count; i++) {
       const a = (i / Math.max(1, count)) * Math.PI * 2 + this.rand() * 0.5;
       const speed = 20 + this.rand() * 55;
-      this.spawn({
-        ...(opts as FxOptions),
-        texture, x, y,
-        vx: Math.cos(a) * speed,
-        vy: Math.sin(a) * speed,
-        life: (opts.life ?? 0.4) * (0.7 + this.rand() * 0.6),
-        scaleFrom: opts.scaleFrom ?? 1,
-        scaleTo: 0.15,
-        alphaFrom: opts.alphaFrom ?? 1,
-        alphaTo: 0,
-      });
+      // m10-fx-alloc-trim (K2): Scratch statt Objekt-Spread je Splitter.
+      const o = copyOptsInto(resetOpts(this.scratchOpts), opts);
+      o.texture = texture; o.x = x; o.y = y;
+      o.vx = Math.cos(a) * speed;
+      o.vy = Math.sin(a) * speed;
+      o.life = (opts.life ?? 0.4) * (0.7 + this.rand() * 0.6);
+      o.scaleFrom = opts.scaleFrom ?? 1;
+      o.scaleTo = 0.15;
+      o.alphaFrom = opts.alphaFrom ?? 1;
+      o.alphaTo = 0;
+      this.spawn(o);
     }
   }
 
@@ -887,9 +1018,20 @@ export class ParticleSystem {
       const scale = p.scaleFrom + (p.scaleTo - p.scaleFrom) * t;
       const frame = p.frames[Math.min(p.frames.length - 1, Math.floor(t * p.frames.length))];
       if (frame && currentFrame(p.sprite) !== frame) applyTexture(p.sprite, frame);
-      p.sprite.setPosition(Math.round(p.x), Math.round(p.y));
+      // m10-fx-alloc-trim (K2): Setter nur bei geaendertem Wert (bitgleich).
+      const px = Math.round(p.x);
+      const py = Math.round(p.y);
+      if (px !== p.cx || py !== p.cy) {
+        p.cx = px; p.cy = py;
+        p.sprite.setPosition(px, py);
+      }
       // Mixel-Fix: Draw-Scale = Spielpixel-Größe / Bake-Stufe (<= 1).
-      p.sprite.setScale((scale * p.aspect) / p.mixelLevel, scale / p.mixelLevel);
+      const sx = (scale * p.aspect) / p.mixelLevel;
+      const sy = scale / p.mixelLevel;
+      if (sx !== p.csx || sy !== p.csy) {
+        p.csx = sx; p.csy = sy;
+        p.sprite.setScale(sx, sy);
+      }
       const alpha = Math.max(0, p.alphaFrom + (p.alphaTo - p.alphaFrom) * t);
       // M10-A4: ausgebrannte ADD-Glows frueh freigeben (Fuellrate ohne Sichtbarkeit).
       if (p.glow && alpha <= ADD_GLOW_ALPHA_FLOOR) {
@@ -902,8 +1044,14 @@ export class ParticleSystem {
         this.free.push(p);
         continue;
       }
-      p.sprite.setAlpha(alpha);
-      p.sprite.setRotation(p.rotation);
+      if (alpha !== p.ca) {
+        p.ca = alpha;
+        p.sprite.setAlpha(alpha);
+      }
+      if (p.rotation !== p.cr) {
+        p.cr = p.rotation;
+        p.sprite.setRotation(p.rotation);
+      }
     }
   }
 
@@ -924,8 +1072,12 @@ export class ParticleSystem {
       frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
       depthBase: DEPTH.fxLow,
       mixelLevel: 1,
+      cx: 0, cy: 0, csx: 1, csy: 1, ca: 1, cr: 0,
     };
   }
+
+  /** m10-fx-alloc-trim (K2): Scratch der Spawn-Helfer burst/shards. */
+  private readonly scratchOpts: FxOptions = {} as FxOptions;
 
   clear(): void {
     for (const p of this.active) {

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12878,
+  "next": 12882,
   "cards": [
     {
       "id": 1,
@@ -17900,6 +17900,74 @@
       "notes": [],
       "created": "2026-11-28T13:40:13Z",
       "updated": "2026-11-28T13:40:13Z"
+    },
+    {
+      "id": 12878,
+      "title": "m10-fx-alloc-trim K1: Baseline Mess-Skript + Vorher-Messung",
+      "description": "Skript scripts/m10-fx-alloc.mjs (Chaos-Lauf M25-artig, 500 Gegner, god/autoplay): rAF-CPU-ms p50/p95/p99/max, worstFrame-Spitzen (33-34ms-Klasse zaehlen), Allokationen/Frame (heap-alloc-profile-Muster) + FX-Attribution (Sites hinter FxSystem.ts). Vorher-JSON nach ~/games/.evidence/m10-fx-alloc-trim/. AK: JSON mit Zahlen + Renderer-String existiert, Skript committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:15:43Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-fx-alloc-trim gestartet: Mess-Skript + Vorher-Messung (Owner: lead)"
+        },
+        {
+          "at": "2026-11-28T14:21:46Z",
+          "by": "build",
+          "text": "doing → review: Skript + Baseline committed e4f55b14; 3 Vorher-Laeufe in ~/games/.evidence/m10-fx-alloc-trim/m10-fx-alloc-before.json (p95 5.2/9.2/10.6ms, max 16.5/23.3/25.3ms, alloc ~2100-2760B/Frame, FX-Sampling-Sites <1% - Befund ist Setter-Churn/CPU)"
+        },
+        {
+          "at": "2026-11-28T15:21:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12640, Merge branch m10-fx-alloc-trim"
+        }
+      ],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:21:46Z"
+    },
+    {
+      "id": 12879,
+      "title": "m10-fx-alloc-trim K2: FxSystem.ts Alloc-/Setter-Fix",
+      "description": "In src/systems/FxSystem.ts: Per-Frame-Objekt-Allokationen (Spread-Literale, frames.map) hoisten/poolen; Phaser-Setter-Churn senken (nur schreiben wenn geaendert); Hot-Loops allocations-frei. KEINE optische Aenderung: Alpha-/Palette-Semantik bitgleich, Caps unangetastet. AK: npx tsc --noEmit gruen, gezielte FX-Tests gruen, Diff nur in FxSystem.ts.",
+      "column": "blocked",
+      "notes": [
+        {
+          "at": "2026-11-28T14:21:46Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: Setter-Churn + Spawn-Allokationen in FxSystem.ts/ParticleSystem"
+        },
+        {
+          "at": "2026-11-28T14:30:55Z",
+          "by": "build",
+          "text": "[Supervisor 14:35Z bestätigt] WIP committed 178e0086. K2-Hebel (Setter-Gates + Scratch-Pooling) war vor dem Steer als eine Einheit umgesetzt, 9/9 fx-alloc-trim + FX/A7-Guards gruen. KEINE weiteren Edit-Iterationen — Auswertung der vorliegenden before/after-JSONs folgt in der Lane-Doku. Hinweis: Karte #12013 ist fremd (Merge-Fix m10-loading-screen, andere Lane) — laut Lane-Briefing/Argus-Regel 'Nur Karten des eigenen Briefings' nicht annehmbar; Disponent zieht sie zurück."
+        },
+        {
+          "at": "2026-11-28T14:43:27Z",
+          "by": "build",
+          "text": "doing → blocked: Gemäß Supervisor-Abbruchkriterium blocked: Hebel umgesetzt (Setter-Gates + Scratch-Pooling, Commits 178e0086/1c92e0ac, Reviewer PASS, 12/12 Guards, FX/A7-Suiten gruen), aber >=50% Frame-Alloc-Reduktion im Container-Protokoll nicht messbar — Metrik zu 75-80% Harness-Artefakt (queueEnemyWave Top-up), FX-Eigenanteil unter Sampling-Sichtbarkeit, p95 durch Load-Confounds (Gegner 66-283, Parallel-Lanes) nicht trennscharf. Vollstaendige Auswertung: docs/lanes/m10-fx-alloc-trim.md K3. Entscheidung uebernahme beim Lead/Disponent."
+        }
+      ],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:43:27Z"
+    },
+    {
+      "id": 12880,
+      "title": "m10-fx-alloc-trim K3: Nachher-Messung + Regressionstest + Doku",
+      "description": "Remessung wie K1 (gleiche Fenster/Seed), Regressionstest tests/fx-alloc-trim.test.ts gegen den Hebel (deterministisch, ohne Phaser-Laufzeit), Befund+Zahlen in docs/lanes/m10-fx-alloc-trim.md. AK: Abnahme erfuellt (Alloc >=50 % reduziert ODER worstFrame-Spitzen weg bei p95 <= Baseline) ODER ehrlich dokumentiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:15:39Z"
+    },
+    {
+      "id": 12881,
+      "title": "m10-fx-alloc-trim K4: Abschluss",
+      "description": "npm test + npm run build gruen, Palette-/A7-Guards gruen, git status --ignored sauber, .lane-done mit Zusammenfassung + Messwerten. AK: komplette Suite gruen, .lane-done committed.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T14:15:39Z",
+      "updated": "2026-11-28T14:15:39Z"
     }
   ]
 }
