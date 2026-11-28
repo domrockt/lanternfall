@@ -155,30 +155,35 @@ export class ProjectilePool {
   static readonly HIDE_MARGIN = 24;
 
   private viewCache: { x: number; y: number; width: number; height: number } | null = null;
+  /**
+   * m10-heap-pool-fix: wiederverwendetes Cache-Objekt — das Ergebnis von
+   * `view()` darf NICHT über den Frame hinaus gehalten werden (Identität
+   * bleibt dieselbe, Werte werden pro Frame in-place neu geschrieben).
+   */
   private readonly viewScratch: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 };
   private viewCacheFrame = -1;
 
   /** Sichtbarer Weltbereich; null, wenn keine Kamera vorhanden (Tests). */
   private view(): { x: number; y: number; width: number; height: number } | null {
     const frame = this.scene.game?.loop?.frame;
-    const compute = (): { x: number; y: number; width: number; height: number } | null => {
-      const v = this.scene.cameras?.main?.worldView;
-      // m10-heap-pool-fix: in-place in den Scratch schreiben statt ein neues
-      // Objekt pro Frame — compact() läuft einmal pro Frame, sonst nichts.
-      if (v && v.width > 0 && v.height > 0) {
-        this.viewScratch.x = v.x;
-        this.viewScratch.y = v.y;
-        this.viewScratch.width = v.width;
-        this.viewScratch.height = v.height;
-        return this.viewScratch;
-      }
-      return null;
-    };
-    if (frame === undefined) return compute(); // Testumgebung ohne Loop: frisch rechnen
-    if (frame === this.viewCacheFrame) return this.viewCache;
-    this.viewCache = compute();
+    // Frame-Cache VOR jeder Allokation prüfen (Review m10-heap-pool-fix:
+    // sonst wird pro Aufruf die compute-Closure alloziert).
+    if (frame !== undefined && frame === this.viewCacheFrame) return this.viewCache;
+    const v = this.scene.cameras?.main?.worldView;
+    let result: { x: number; y: number; width: number; height: number } | null;
+    if (v && v.width > 0 && v.height > 0) {
+      this.viewScratch.x = v.x;
+      this.viewScratch.y = v.y;
+      this.viewScratch.width = v.width;
+      this.viewScratch.height = v.height;
+      result = this.viewScratch;
+    } else {
+      result = null;
+    }
+    if (frame === undefined) return result; // Testumgebung ohne Loop: frisch rechnen
+    this.viewCache = result;
     this.viewCacheFrame = frame;
-    return this.viewCache;
+    return result;
   }
 
   /** Abnahme-Flag (registry "lf-proj-cull"); default an, 0 = Vorher-Verhalten. */

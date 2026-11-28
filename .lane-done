@@ -1,0 +1,30 @@
+Lane m10-heap-pool-fix — Heap-Wachstum 30-min-Lauf (Ziel <= 15 %), 2026-11-28
+
+Karten: K1 Vorher-Messung (#7528), K2 EnemyPool (#7529), K3 ProjectilePool (#7530), K4 Nachher (#7531).
+Commits: 5ebd4a9 (K1), 66e79bc (K2), e3a9503 (K3), K4 + dieser Datei (letzter Commit). Reviewer: PASS.
+
+Messwerte (fullrun-Gate, Seed 99, timeScale 30, AutoPlay/God, volle Evo-/Passiv-Last):
+- Vorher:  heapDeltaPct +32,7 % (37,9 -> 50,3 MB)  [shots/m10-heap-pool-fix-before-fullrun.json]
+- Nachher: heapDeltaPct +19,6 % (44,5 -> 53,2 MB)  [shots/m10-heap-pool-fix-after-fullrun.json]
+- Ziel <= 15 % NICHT erreicht; Rest-Luecke +4,6 pp, innerhalb der Lauf-Streuung
+  (Minute-1-Referenz 37,9 vs. 44,5 MB bei identischem Parameter-Set).
+
+Kernbefund (belegt): Kein JS-Retention-Leak. Pools sind retention-stabil (EnemyPool created
+520 konstant ueber 25 Sim-Minuten, ProjectilePool created 0, Free-Listen flach; Snapshot-Diff
+Minute 2 vs. 28: <60 kB Wachstum — shots/m10-heap-pool-fix-pools.json, -snapdiff.json).
+Das Gate performance.memory nach GC misst ueberwiegend V8-Heap-Slack/Allokationsdruck.
+
+Fixes dieser Lane: EnemyPool EMPTY_SPAWN_OPTIONS statt {} pro Spawn; ProjectilePool view()-Cache
+in-place + closure-frei (Frame-Check vor Allokation). Deterministische Reuse-Tests (7 neu/erweitert).
+
+Konkrete Hebel fuer eine Folgelane (Dateien NICHT in diesem Claim):
+1. CombatSystem.fireEmber/firePhoenix: pro Schuss enemies.map((e)=>({e,d})) — ~100 k Wrapper-
+   Arrays/Lauf; Hebel: Scratch-Array + in-place Top-K.
+2. Spawner.spawnAt ({speed,...options}) + Run.ts:973 enemyShots.spawn({...}): Spawn-Literale
+   pro Spawn; Hebel: wiederverwendete Options-Slots.
+3. CombatSystem Z.219: ctx.enemies.filter(...) pro Frame; Hebel: in-place Compact.
+4. Abnahme-Empfehlung: 15-%-Kriterium auf CDP-Snapshot-Retention stuetzen (deterministisch),
+   da performance.memory Slack-dominiert ist.
+
+Alle 1238 Tests gruen, tsc gruen, 0 JS-Fehler, Sieg/Dawn regulär, fpsMin 60,3.
+Details: docs/lanes/m10-heap-pool-fix.md

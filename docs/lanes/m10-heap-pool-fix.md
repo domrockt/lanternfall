@@ -74,4 +74,60 @@ Tests (`tests/heap-pool-fix.test.ts` neu, deterministische Wiederverwendungs-/Le
 
 ## K4 — Nachher-Messung + Befund
 
-(folgt)
+Gleiche Werkzeuge/Parameter wie Vorher (K1): `npm run fullrun` (Gate) und
+`node scripts/perf-heap.mjs --minutes=30 --runs=2` (Snapshot), Seed 99, timeScale 30,
+AutoPlay, God, volle Evolutions-/Passiv-Last.
+
+| Messung | Vorher (K1) | Nachher (K4) | Ziel |
+|---|---|---|---|
+| **Gate `heapDeltaPct` (fullrun, JS-Heap nach GC, Minute 1 vs. 29)** | **+32,7 %** (37,9 → 50,3 MB) | **+19,6 %** (44,5 → 53,2 MB) | ≤ 15 % → **nicht erreicht, Rest-Lücke +4,6 pp** |
+| CDP usedSize (fullrun) | 14,6 → 16,1 MB | 13,0 → 16,9 MB | – |
+| Snapshot-Delta (perf-heap, 2 Läufe, Median) | +2,5 % (−23,9/+2,5) | **−18,8 %** (−19,0/−18,8, Streuung 0,2 pp) | – |
+| Sieg/Dawn, JS-Fehler, fpsMin | ja / 0 / 60,4 | ja / 0 / 60,3 | – |
+
+Belege: `shots/m10-heap-pool-fix-before-fullrun.json`, `shots/m10-heap-pool-fix-after-fullrun.json`,
+`shots/m10-heap-pool-fix-before.json`, `shots/m10-heap-pool-fix-after.json`.
+
+### Interpretation (ehrlich)
+
+- Die Verbesserung am Gate (32,7 → 19,6 pp) ist **innerhalb der Lauf-zu-Lauf-Streuung**:
+  die Minute-1-Referenz schwankte bei identischem Seed/Parameter-Set zwischen 37,9 und 44,5 MB
+  (±9 pp Wirkung auf das Delta). Beide Fixes (K2/K3) sind Wiederverwendungs-Fixes mit kleinem
+  Volumen (~13 k Spawn-Options-Objekte/Lauf; 1 Cache-Objekt/Frame) — sie allein können einen
+  4,6-pp-Gate-Abstand nicht belastbar schließen.
+- Der Snapshot-Diff (Minute 2 vs. 28) belegt: **keine JS-Retention-Wachstum** (<60 kB über 28
+  Sim-Minuten), die Pools sind retention-stabil (Enemy created konstant 520, Projektile created 0).
+  Das Gate (performance.memory nach GC) misst daher überwiegend **V8-Heap-Slack/Allokationsdruck**,
+  nicht geleakte Objekte.
+
+### Belegte Rest-Lücke + konkrete Hebel (Empfehlung Folgelane)
+
+Der Allokationsdruck sitzt an den **Aufrufstellen der Pools** — Dateien außerhalb meines
+Disponent-Bereichs (CombatSystem.ts/Run.ts/Spawner.ts sind nicht geclaimed bzw. von
+m10-run-determinism bzw. m10-pause-freeze belegt):
+
+1. **`CombatSystem.fireEmber`/`firePhoenix` (größter Einzelposten):** pro Schuss
+   `enemies.map((e) => ({ e, d: … }))` — bei ~103 k Projektil-Spawns pro 30-min-Lauf entstehen
+   ~100 k Wrapper-Arrays + Wrapper-Objekte. Hebel: Scratch-Array auf dem System (wie
+   `CombatSystem.scratch`), in-place Befüllen + Top-K-Auswahl statt `.map`+`sort`.
+2. **Pro-Spawn-Options-Literale:** `Spawner.spawnAt` baut `{ speed: …, ...options }` pro Gegner
+   (~13 k/Lauf), `Run.ts:973` baut das `enemyShots.spawn({...})`-Literal pro Gegnerprojektil.
+   Hebel: wiederverwendete Options-Slots (Muster `EMPTY_SPAWN_OPTIONS` aus K2) bzw. parameterlose
+   Spawn-Argumente.
+3. **Pro-Frame-Filter:** `CombatSystem` Zeile 219 `ctx.enemies.filter((e) => e.alive && e.hp > 0)`
+   pro Frame → in-place Compact (Muster `EnemyPool.compact`).
+4. **Mess-Metrik (Abnahme-Entscheid):** Das Gate `performance.memory.usedJSHeapSize` nach GC ist
+   Slack-/Allocator-dominiert (Lauf-Streuung ±9 pp, Snapshot-Retention gleichzeitig flach).
+   Empfehlung: das 15-%-Kriterium zusätzlich/mit auf die **CDP-Snapshot-Retention** stützen
+   (deterministischer, Last-unabhängiger) — sonst misst das Gate hauptsächlich GC-Timing.
+
+Kein weiteres Tuning in dieser Lane: die Hebel 1–3 brauchen fremde Dateien (Claims), Hebel 4 ist
+ein Abnahme-Werkzeug-Entscheid.
+
+### Review-Nachzug (Reviewer-PASS, 2 Anmerkungen umgesetzt)
+
+- `view()`: Frame-Cache-Check **vor** jeder Allokation verschoben — jetzt wird pro Aufruf auch
+  keine `compute`-Closure mehr erzeugt (Anmerkung 1, „sollte“).
+- Alias-Hinweis am `viewScratch` ergänzt: das Ergebnis von `view()` darf nicht über den Frame
+  hinaus gehalten werden (Anmerkung 2).
+- Danach: tsc grün, 1238 Tests grün.
