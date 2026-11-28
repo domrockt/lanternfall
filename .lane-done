@@ -1,0 +1,34 @@
+# Lane m10-menu-quality-55 — fertig (2026-11-28)
+
+Ziel: A10-Restpunkt "Menü-/HUD-Qualität 4/5" — systematischer Scan aller 5
+Menü-Screens, dann belegte Mängel fixen (Maßstab: kommerziell auslieferbar).
+
+## Ergebnis
+- Scan-Werkzeug: scripts/m10-menu-quality.mjs (2 Profile, 5 Screens: scaleCalls,
+  Subpixel, WCAG-artiger Text-Kontrast >= 4.5 pixelbasiert, Overlap-Rects,
+  Renderer-String, JS-Fehlerzähler). 0 JS-Fehler, Renderer = Mesa Intel iGPU.
+- Before/After-Scans: Menü-Scopes identisch und sauber — 0 fraktionale Skalen,
+  0 Subpixel, 0 Overlaps in title/credits/charselect; Knopf-Texte (menu.ts) alle
+  >= 4.5:1; gen-title.ts/menu.ts (Lane-Claims) ohne belegten Mangel.
+- Regressionstest tests/menu-quality-55.test.ts (17 Tests) mit festen Baseline-
+  Assertions auf die Scan-Werte; Fremd-Scope-Fails dürfen nur sinken.
+- Suite: npm run build rc=0, npm test 171/171 Dateien, 1863/1863 Tests, tsc rc=0.
+
+## Belegte Mängel — alle mit Hebel in FREMD-Dateien (Anfragen in .dispatch/requests.md)
+Title-Hintzeilen Kontrast 2.07 (Title.ts), Options-Footer 2.72 + 1 Overlap
+(options-menu.ts × Title.ts), Credits-Zeilen 2.73 (Credits.ts), CharSelect
+2.48 (CharSelect.ts), Pause-Build 4.15 + 10x 4px Icon-Overlaps (UI.ts),
+Run-Welt-Rauschen 46/70 scaleCalls (Run.ts, in-game, themenfremd).
+Lane-Scope-Fixes: laut Briefing SKIP + dokumentiert (docs/lanes/m10-menu-quality-55.md,
+Befund-Katalog M1-M6).
+
+## Kontrolleure
+- reviewer: PASS (Scope, Metrik nachgerechnet, Baseline deckungsgleich, Nits umgesetzt).
+- art-director: FAIL 3,8/5 (Schwelle 4,5) — Blocking = M1-M5 (Fremd-Hebel),
+  positiv: Panels/Knöpfe/Portraits/Schärfe auf Steam-Niveau. 5 Mini-Fix-Anfragen
+  (+2 kleine Layout-Hebel) laufen; danach ist 5/5 realistisch.
+
+## Belege
+- ~/games/.evidence/m10-menu-quality-55/ (before/after JSON + 20 Shots)
+- shots/abnahme/m10-menu-quality-55-<screen>-2x.png + after-Shots (im Repo)
+- docs/lanes/m10-menu-quality-55.md (Karten-Commits #10291-#10294)

@@ -117,10 +117,13 @@ const SCAN_SRC = `
       if (!g || !g.texture) continue;
       const key = String(g.texture.key);
       const m = /^glyph_(\\d+)_/.exec(key);
+      // Nur erstes Glyph: gemischtfarbige PixelText existieren aktuell nicht
+      // (PixelText rendert alle Glyphen in einer Farbe, font.ts).
       if (m && colorIdx < 0) colorIdx = Number(m[1]);
       if (!/^glyph_/.test(key)) continue;
       const w = g.getWorldTransformMatrix();
       const p = w.transformPoint(0, 0);
+      // 5x7 = GLYPH_W/GLYPH_H aus src/gfx/font.ts (Glyph-Sprite-Masse).
       const gw = 5 * (g.scaleX ?? 1), gh = 7 * (g.scaleY ?? 1);
       x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y);
       x1 = Math.max(x1, p.x + gw); y1 = Math.max(y1, p.y + gh);

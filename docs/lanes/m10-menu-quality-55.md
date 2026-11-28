@@ -101,10 +101,37 @@ m10-powerup-sfx-wire) oder als Freigabe nach Lane-Ende.
 ## Abnahme-Stand dieser Lane
 
 - 0 fraktionale Skalierungen **in den Menü-/HUD-Scopes** der 5 Screens ✓
-  (pause/run 46 sind In-Game-Weltobjekte, dokumentiert M6).
+  (pause/run ist In-Game-Weltobjekt-Rauschen und profilabhängig — Before 46/After 70 im
+  960x540-Profil, Gegner-Schatten/Fog skaliert mit Spawn-Zustand; dokumentiert M6).
+  Menü-Scopes bleiben 0/0 in beiden Läufen.
 - 0 Überlappungen in title/credits/charselect ✓; options 1 + pause 10 belegt, Hebel
   fremd (M2/M5), SKIP dokumentiert.
 - Text-Kontrast: alle Texte **in Lane-Dateien** >= 4.5:1 ✓; die 40 dokumentierten Fails
   liegen mit Hebel in fremden Szenen-Dateien (M1–M5), vor dem Fix im JSON belegt
-  (vorher/nachher für die Lane-Scopes in K4).
-- npm test grün, tsc rc=0, 0 JS-Fehler ✓.
+  (vorher/nachher identisch in den Menü-Scopes).
+- npm run build rc=0, npm test 171 Dateien / 1863 Tests grün, tsc rc=0,
+  0 JS-Fehler in allen Scan-Probe-Läufen ✓.
+
+## Nachher-Scan und Kontrolleure (Karte #10294)
+
+- After-Scan: `~/games/.evidence/m10-menu-quality-55/m10-menu-quality-after-scan.json`
+  — Menü-Scopes identisch zur Before-Baseline (Reproduzierbarkeit belegt); einzige
+  Differenz: pause/Run-Welt-Rauschen (s. o.).
+- Abnahme-Bilder (im Repo): `shots/abnahme/m10-menu-quality-55-<screen>-2x.png`
+  (5 Screens, nearest 2x) plus unskaliert `shots/abnahme/m10-menu-quality-after-*.png`.
+- **reviewer: PASS** (Diff-Scope 3 Dateien, Metrik nachgerechnet, Baseline mit
+  Evidence-JSON deckungsgleich, 17/17 Tests, tsc rc=0). Nits umgesetzt
+  (Glyph-Maße-Kommentar, Farb- single-source-Kommentar) bzw. dokumentiert (46/70
+  Profilabhängigkeit M6).
+- **art-director: FAIL, 3,8/5** (Schwelle kommerziell: 4,5). Positiv: Panels/Knöpfe/
+  Rahmen-Chrome, Portraits, Schärfe, Palette auf Steam-Niveau; die Lane-Basis-Arbeit
+  (crisp/glow/dim-Lanes) wirkt. Blocking = exakt die dokumentierten M1–M5 (Title-Hints
+  2.07, Options-Footer-Doppeldruck, CharSelect 2.48, Credits 2.73, Pause 4.15 +
+  10 Icon-Klemmen) — Hebel alle in Fremd-Dateien; Anfragen 1–5 + Ergänzungen 6/7
+  (Title: Freiraum Bestwerte↔Knopfreihe; UI: Pause Zeile 6 Puffer) und Hinweis
+  Mira HP 250 vs. GAME.md HP 90 (balance) in `.dispatch/requests.md`.
+- **Fazit:** A10-Restpunkt „Menü-/HUD-Qualität“ erreicht 5/5 erst nach den fünf
+  angefragten Mini-Fixes in Title.ts / options-menu.ts / Credits.ts / CharSelect.ts /
+  UI.ts (je 1–3 Zeilen Farb-/Layout-Hebel). Diese Lane liefert Scan-Werkzeug,
+  Baseline, Regressionstest und den belegten Befund-Katalog dazu.
+
