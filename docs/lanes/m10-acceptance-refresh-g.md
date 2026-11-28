@@ -23,7 +23,24 @@ Briefing: `.briefs/m10-acceptance-refresh-g.md`, Karten #11949–#11952 (K1–K4
 | #11949 | K1 K-Basis: tsc/build/test/acceptance-count/verify:final | erledigt |
 | #11950 | K2 FPS-Kerne: Burst 640x360 + 780x360@3, Minute-25 780x360@3 | erledigt |
 | #11951 | K3 Heap-Tor: 2x 30-min-fullrun (retained < +15 %) | erledigt |
-| #11952 | K4 Doku + Gesamturteil + .lane-done | offen |
+| #11952 | K4 Doku + Gesamturteil + .lane-done | erledigt |
+
+## K4 (2026-11-28, ~13:5xZ)
+
+- `docs/qa/acceptance-refresh-g-2026-11-28.md`: K-Tabellen, Gesamturteil **PASS**,
+  3 markierte Abweichungen ≥ 5 % gegen F, Befundliste B1–B5 mit Hebel-Pointern
+  (ACCEPTANCE.md-Eintrag nachgeholt im nächsten Lauf — Datei durch
+  m10-v10-device-acceptance belegt; Befunde sonst an Dora).
+- Dora-Meldung (B1/B3/B5) in `/home/ai/games/.dispatch/requests.md` eingetragen.
+- `.lane-done` gesetzt.
+
+Urteil K4: **PASS**.
+
+## Lane-Ergebnis
+
+**Nachabnahme G: ABGENOMMEN (PASS, 4/4).** Heap-Tor geräumt (+8,9 %/+9,2 %
+< +15 %, 2 Läufe), FPS am 60-Cap, Tests/Inhalt/verify grün, Renderer-Belege
+gültig (Mesa Intel RPL-S). Kein src-/tests-Code geändert.
 
 ## K1 (2026-11-28, ~12:1x–12:2xZ, auf `b69ede5c`)
 
