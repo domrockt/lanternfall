@@ -1,0 +1,21 @@
+# Lane m10-v10-device-acceptance — fertig (2026-11-28)
+
+v1.0-Gerätetore (Doms Sichtabnahme 10:00Z) auf dem Redmi Pad Pro gemessen — main-APK aus
+committetem main-HEAD `5664a7fc` via device-bridge installiert. **Keine Spielcode-Änderungen.**
+
+Ergebnis 4/5 PASS, 1 FAIL mit Befundliste:
+- K1 PASS: 6 Evo-Fenster je ~120 FPS (Ziel 90), Stack +6 ebenfalls 120 FPS (blend 3/Frame, 0 nicht-null FB)
+- K2 PASS: Minute-25-Dichte (300 Gegner) 109,4 FPS, worst 33,4 ms, 0 JS-Fehler
+- K3 FAIL: gfxinfo janky 13,44 %/13,90 % (Tor <10 %) — Frame-Zeit-Schwanz (p95 21 ms, p99 31 ms)
+  bei quality „high“; Hebel A (Qualitätstier-Schwellen, FxSystem-GlowBudget) + B (Allokationen/
+  Uploads im Frame) in docs/qa/v10-device-acceptance-2026-11-28.md — Fix-Job vom Lead schneiden
+- K4 PASS: 10-min-Lauf, FPS-Abfall 1,5 % (110,5→108,8), Thermal Status durchgehend 0, Akku 35,0 °C
+- K5 PASS: 5 Panels (Titel/Charakterwahl/Level-Up/Truhe/Ergebnis) sichtgeprüft scharf,
+  RENDER_SCALE == 1 belegt (Canvas 640x360 bei 2560x1600-Gerät); Bilder shots/abnahme/m10-v10-device-*.png
+
+GPU-Renderer aller Belege: `Adreno (TM) 710` (kein SwiftShader). Roh-Belege:
+~/games/.evidence/m10-v10-device-acceptance/. Reviewer-PASS (ses_dddf7901): nur erlaubte Dateien,
+0 src/tests-Änderungen, Syntax OK, Zahlen gegen Roh-JSONs bestätigt, 0 Secrets.
+
+Commits: 3aed6185 (#11308), 27081685 (#11309), eaa79f02 (#11310), 5210d581 (#11311),
+e557d9b3 (#11312), 17ee9801 (Abschluss-Doku ACCEPTANCE.md + docs/qa/). Board #11308–#11312 done.
