@@ -1,0 +1,29 @@
+# Lane m10-boot-glow-local — FERTIG (Versuch 2, 2026-11-28)
+
+Ziel: weiche Radialgradient-Reste bei light_radius/vignette beseitigen (Boot.ts
+schattete textures.ts). Karten #8618–#8621 alle done, je ein Commit.
+
+Ergebnis:
+- K2: textures.ts exportiert die Creator nicht UND ist fremd geclaimed UND
+  eaf2ab6 nicht in main (frisch geprüft) — Original-Swap unmoeglich, Befund
+  gemeldet (Supervisor-Steer bestätigt). Stattdessen Port der harten
+  Alpha-Stufen (LIGHT_EDGE_STEPS/vignetteSteps aus eaf2ab6) in die
+  Boot-Local-Kopien; B2-Ringfarben (Kern 20/21) erhalten.
+- KRITISCHER BUGFIX (rev.2, 86af697): destination-in-Band-Stacking schneidet
+  Masken → komplett transparente Textur. Betraf AUCH eaf2ab6 selbst (wurde
+  nie zur Laufzeit sichtbar geprüft). Fix: pro-Pixel-Stufen-Multiplikation.
+  Warnung für Merge-Queue in ~/games/.dispatch/requests.md; Lehre in
+  coding-brain/Team/Stolperfallen.md.
+- K3: tests/boot-light-textures.test.ts (Quelltext-Guards auf aktiven Code,
+  destination-in verboten); Suite 1447/1447, tsc + Build grün.
+- K4-Belege: Runtime-Probe nicht-vakuos (steppedWins=true, centerAlpha>0:
+  light 143, vignette 99; maxDiff 0/1 gegen Stufen-Referenz, Soft verliert
+  klar). Near-White-A7 0,38 % (640) / 0,19 % (780@3) — Gate 4,16 %.
+  art-director: Runde 1 FAIL (Belege) → Runde 2 PASS 4/5 (Kontakt- bogen,
+  Minute-3-Frame mit 14 lebenden Gegnern, Vignette-Ecke). reviewer PASS.
+
+Offen (Folgekarte, beim Merge): Original-Swap „Boot konsumiert textures.ts"
+sobald (a) eaf2ab6 gemerged UND (b) Creator exportiert sind UND (c) Ring-Farb-
+Abgleich B2 entschieden ist — bis dahin läuft der korrekte Port in Boot.ts.
+Nice-to-have (art-director, nicht blockierend): additiven Laternen-Glow bei
+lanternWhite deckeln statt reinem Weiß-Clip.

@@ -10982,7 +10982,7 @@
       "id": 8618,
       "title": "m10-boot-glow-local K1: Befund/Repro — Boot-Local-Kopie gewinnt",
       "description": "Runtime-Probe (scripts/m10-boot-glow.mjs): textures.get('light_radius')/('vignette') belegt, dass die Boot-Kopie vor textures.ts gewinnt. Vorher-Shots 640x360 + 780x360@3 je 4x. Abnahme: Probe-JSON in shots/m10-boot-glow-*, Befund in docs/lanes/m10-boot-glow-local.md.",
-      "column": "review",
+      "column": "done",
       "assignee": "boot-glow-local",
       "notes": [
         {
@@ -10994,16 +10994,21 @@
           "at": "2026-11-28T05:20:53Z",
           "by": "build",
           "text": "doing → review: Probe + Vorher-Shots committet (Commit enthaelt #8618). Geprueft: runtime-Probe light_radius vs Boot-Local maxDiff 1/255 vs textures.ts maxDiff 78; tsc gruen; 0 JS-Fehler; 4x-Crops gesehen (weiche Boegen sichtbar). Befund + 3 Blocker in docs/lanes/m10-boot-glow-local.md"
+        },
+        {
+          "at": "2026-11-28T06:15:37Z",
+          "by": "general",
+          "text": "review → done: K1 Probe + Vorher-Shots, Commits 061c800/8cc7f09; Befund Blocker + rev.2 dokumentiert"
         }
       ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:20:53Z"
+      "updated": "2026-11-28T06:15:37Z"
     },
     {
       "id": 8619,
       "title": "m10-boot-glow-local K2: Boot-Local-Registrierungen entfernen, Import aus textures.ts",
       "description": "K2 rev. (Versuch 2): createLightTextureLocal/createVignetteTextureLocal in src/scenes/Boot.ts stellen harte Alpha-Stufen bereit (LIGHT_EDGE_STEPS-Band-Loop statt destination-in-Radialgradient; Vignette als vignetteSteps-Bänder statt Radialgradient). B2-Ring-Tuning (Farbe 21 im Kern) bleibt unangetastet (Guard tests/chaos-glow-runpath.test.ts). Abnahme: kein createRadialGradient mehr in Boot.ts, tsc+Tests grün, Runtime-Probe belegt Stufen statt Gradient.",
-      "column": "doing",
+      "column": "done",
       "assignee": "boot-glow-local",
       "notes": [
         {
@@ -11020,42 +11025,57 @@
           "at": "2026-11-28T05:51:26Z",
           "by": "general",
           "text": "Steer Supervisor (K2 = remove-local + import) geprüft 2026-11-28: Literal-NUMSETZUNG unmoeglich — textures.ts exportiert createLightTexture/createVignetteTexture nicht (Zeilen 647/690 module-privat, frisch nach git fetch origin geprüft) UND ist fremd geclaimed (m10-evo-fx-form-polish, claimcheck blockt) UND eaf2ab6 (Stufen) ist nicht in origin/main (rc=1). Alternative 'nur Registrierungen entfernen' = Rueckfall auf weiche Gradients + A7-Near-White-Regression + bricht fremden Guard tests/chaos-glow-runpath.test.ts (Suite rot). Gemäß Steer-Anweisung 'stopp und melde den Befund': Befund gemeldet (requests.md, Lane-Doku). Umgesetzt stattdessen: Port der Stufen in die Local-Kopie (Commit 8e8dff4, reviewer PASS), Runtime-Probe = STUFEN-Version gewinnt (maxDiff 0/1, shots/m10-boot-glow-after.json). Original-Swap bleibt Folgekarte nach Merge+Export. Kein weiteres Messen."
+        },
+        {
+          "at": "2026-11-28T06:15:37Z",
+          "by": "general",
+          "text": "doing → done: K2 rev.1 8e8dff4 + rev.2 86af697 (destination-in-Stacking-Bug gefixt, Spielerlicht wieder sichtbar); reviewer PASS; Supervisor-Steer bestätigt (Import unmoeglich — textures.ts fremd geclaimed ohne Exports, eaf2ab6 nicht in main; Port statt dessen, Befund gemeldet)"
         }
       ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:51:26Z"
+      "updated": "2026-11-28T06:15:37Z"
     },
     {
       "id": 8620,
       "title": "m10-boot-glow-local K3: Regressionstest tests/boot-light-textures.test.ts",
       "description": "Beide Keys existieren, Pixelmuster entspricht LIGHT_EDGE_STEPS/vignetteSteps, keine zweite Registrierung. npm test + tsc grün.",
-      "column": "blocked",
+      "column": "done",
       "assignee": "boot-glow-local",
       "notes": [
         {
           "at": "2026-11-28T05:20:53Z",
           "by": "build",
           "text": "todo → blocked: haengt an K2 (#8619): Stufen-Test braucht importierbare LIGHT_EDGE_STEPS/vignetteSteps aus eaf2ab6 (nicht in main) + abgeglichene Ring-Farben"
+        },
+        {
+          "at": "2026-11-28T06:15:37Z",
+          "by": "general",
+          "text": "blocked → done: K3 tests/boot-light-textures.test.ts, Commits 00d658f/8d6ca30 (destination-in verboten, pro-Pixel-Multiplikation gefordert); 19/19 gruen"
         }
       ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:20:53Z"
+      "updated": "2026-11-28T06:15:37Z"
     },
     {
       "id": 8621,
       "title": "m10-boot-glow-local K4: After-Belege + Abnahme",
       "description": "After-Shots 640x360 + 780x360@3 je 4x, Near-White <= 4,16 %, art-director-Urteil Lichtkanten >= 4/5, Befund in docs/lanes/m10-boot-glow-local.md.",
-      "column": "blocked",
+      "column": "done",
       "assignee": "boot-glow-local",
       "notes": [
         {
           "at": "2026-11-28T05:20:53Z",
           "by": "build",
           "text": "todo → blocked: haengt an K2 (#8619): After-Vergleich gegen harte Stufen nur nach Merge m10-chaos-fix-raster-glow + Export-Freigabe moeglich"
+        },
+        {
+          "at": "2026-11-28T06:15:37Z",
+          "by": "general",
+          "text": "blocked → done: K4 After-Belege Runde 2, Commit mit #8621; art-director Runde 1 FAIL → Runde 2 PASS 4/5 (Kontakt- bogen, Minute-3-Frame mit lebenden Gegnern, Vignette-Ecke); Probe steppedWins=true centerAlpha>0; near-white 0,38/0,19% < Gate 4,16"
         }
       ],
       "created": "2026-11-28T05:12:47Z",
-      "updated": "2026-11-28T05:20:53Z"
+      "updated": "2026-11-28T06:15:37Z"
     }
   ]
 }
