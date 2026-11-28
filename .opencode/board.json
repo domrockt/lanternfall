@@ -11998,25 +11998,36 @@
       "id": 9565,
       "title": "m10-gamepad-stick-feel K2: Deadzone + Richtungs-Snapping in Gamepad.ts fixen",
       "description": "Wirksame radiale Deadzone mit Hysterese + 8-Richtungs-Snapping + Einheitsvektor-Ausgabe in src/input/Gamepad.ts (read*-Pfad, snapshotFromPad bleibt roh). InputState.ts NICHT anfassen (belegt). AK: npx tsc --noEmit grün, gamepad-nav-Tests unverändert grün.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:17:37Z",
           "by": "build",
           "text": "todo → doing: K2 gestartet: Fix in src/input/Gamepad.ts (read*-Pfad; InputState.ts unberuehrt)."
+        },
+        {
+          "at": "2026-11-28T07:23:35Z",
+          "by": "build",
+          "text": "doing → done: K2 fertig: Commit a8f1f16. Fix in src/input/Gamepad.ts (Engage 0.28/Hysterese-Release 0.18, 8-Richtungssnap + Sektorhysterese, Einheitsvektor). Vorher/Nachher gemessen mit identischem Skript, before auf altem Code (git show HEAD): Stillstand 8,67 % -> 0 %, Kanten-Dither 68 Toggles -> 0, Doppel-Events 2 -> 0, Kreis-Jitter 9 -> 0. tsc gruen, gamepad-nav-Tests laufen in K3-Pruefung mit."
         }
       ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:17:37Z"
+      "updated": "2026-11-28T07:23:35Z"
     },
     {
       "id": 9566,
       "title": "m10-gamepad-stick-feel K3: tests/gamepad-stick-feel.test.ts",
       "description": "Unit-Tests: Deadzone wirksam (Rauschen im Stillstand → exakt 0), 8-Richtungs-Konsistenz (Stick- und D-Pad-Einheitsvektoren identisch), kein Doppel-Event am Sektorwechsel, Hysterese-Release. AK: npx vitest run tests/gamepad-stick-feel.test.ts grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T07:23:35Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: tests/gamepad-stick-feel.test.ts"
+        }
+      ],
       "created": "2026-11-28T07:13:30Z",
-      "updated": "2026-11-28T07:13:30Z"
+      "updated": "2026-11-28T07:23:35Z"
     },
     {
       "id": 9567,
