@@ -766,8 +766,14 @@ export class UI extends Phaser.Scene {
       b.setEnabled(false);
       this.pauseGroup.add(b.container);
     }
-    this.pauseGroup.add(new PixelText(this, cx, 222 + oy, "ESC = WEITER - O = OPTIONEN - Q = AUFGABE", C.mist, "center"));
-    this.pauseGroup.add(new PixelText(this, cx, 234 + oy, "PFEILE + ENTER ODER MAUS", C.fog, "center"));
+    // m10-pause-footer-contrast: beide Footer-Hints auf dem Pause-Panel (#101724)
+    // waren die letzten Kontrast-Fails des Menue-Scans (Vorher: idx 8 = 4.15,
+    // idx 7 = 2.72, Vorher-Scan m10-menu-art-resight). Gleiche Hebung wie die
+    // akzeptierten Menue-Footer-Fixes (m10-menu-contrast-fixes): Dunst -> paleMist
+    // (idx 9, ~6.6), Nebel -> bone (idx 10, ~10.0). Nur die 2 Farbkonstanten,
+    // kein Layout-/Texteingriff (Optik-Freeze Dom 2026-11-28 10:00Z).
+    this.pauseGroup.add(new PixelText(this, cx, 222 + oy, "ESC = WEITER - O = OPTIONEN - Q = AUFGABE", C.paleMist, "center"));
+    this.pauseGroup.add(new PixelText(this, cx, 234 + oy, "PFEILE + ENTER ODER MAUS", C.bone, "center"));
     this.pauseLines = [];
   }
 

@@ -55,6 +55,11 @@ const LINES: CLine[] = [
   { file: "src/scenes/CharSelect.ts", text: "PFEILE/MAUS = WAHL", old: 7, oldMedian: 2.77, neu: 10 },
   { file: "src/scenes/CharSelect.ts", text: "START: ", old: 7, oldMedian: 2.48, neu: 10 },
   { file: "src/scenes/CharSelect.ts", text: "bonusText(char)", old: 8, oldMedian: 3.78, neu: 9 },
+  // m10-pause-footer-contrast: die 2 Pause-Footer-Hints (UI.ts createPauseUI) —
+  // gemessen im Vorher-Scan m10-menu-art-resight (beide Profile identisch,
+  // Median = Worst-Case auf dem opaken Panel #101724):
+  { file: "src/scenes/UI.ts", text: "ESC = WEITER - O = OPTIONEN - Q = AUFGABE", old: 8, oldMedian: 4.15, neu: 9 },
+  { file: "src/scenes/UI.ts", text: "PFEILE + ENTER ODER MAUS", srcText: 'cx, 234 + oy, "PFEILE', old: 7, oldMedian: 2.72, neu: 10 },
 ];
 
 
