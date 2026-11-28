@@ -8342,27 +8342,38 @@
       "id": 7160,
       "title": "m10-chaos-fix-hazard-disc K3: Tests tests/hazard-disc.test.ts",
       "description": "Abnahme: tests/hazard-disc.test.ts prueft gebackene Texturen quantisiert (kein stufenloser Gradient), Sprite-Pixelgroesse, Warnlesbarkeit (Band-Kontrast), 0 JS-Fehler-Repro-Skript gruen; npx tsc --noEmit gruen.",
-      "column": "todo",
+      "column": "review",
       "assignee": "@build",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T01:11:14Z",
+          "by": "build",
+          "text": "todo → review: K3-Commit e9501b1 + K2b 74a7278 (Beam-Tests): 10+6 Tests, 1003 gesamt gruen"
+        }
+      ],
       "created": "2026-11-28T00:41:54Z",
-      "updated": "2026-11-28T00:41:54Z"
+      "updated": "2026-11-28T01:11:14Z"
     },
     {
       "id": 7161,
       "title": "m10-chaos-fix-hazard-disc K4: Nachher-Messung + Screenshots + Doku + lane-done",
       "description": "Abnahme: after-*.png/-after.json committed; milchiger Feld-Anteil um >=50 % gesenkt (Skript-Metrik vorher/nachher); Telegraph als gerasterter Ring lesbar (art-director streng >=4/5, Renderer-String mitgeliefert); docs/lanes/m10-chaos-fix-hazard-disc.md + .lane-done.",
-      "column": "doing",
+      "column": "review",
       "assignee": "@build",
       "notes": [
         {
           "at": "2026-11-28T01:00:31Z",
           "by": "build",
           "text": "todo → doing: Nachher-Messung + Screenshots + Doku"
+        },
+        {
+          "at": "2026-11-28T01:11:14Z",
+          "by": "build",
+          "text": "doing → review: K4-Commit 8743f6d: milkyShareDisc -74/-86/-72 % (Ziel >=50 % erreicht), 0 JS-Fehler, iGPU; art-director streng PASS 4/5 (Beleg: shots/m10-chaos-fix-disc-{before,after}-*-zoom4x.png, Renderer ANGLE Intel RPL-S); 2 optionale Nachbesserungen in docs/lanes notiert"
         }
       ],
       "created": "2026-11-28T00:41:54Z",
-      "updated": "2026-11-28T01:00:31Z"
+      "updated": "2026-11-28T01:11:14Z"
     }
   ]
 }
