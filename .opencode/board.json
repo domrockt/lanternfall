@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7490,
+  "next": 7494,
   "cards": [
     {
       "id": 1,
@@ -9094,6 +9094,42 @@
       "notes": [],
       "created": "2026-11-28T01:53:48Z",
       "updated": "2026-11-28T01:53:48Z"
+    },
+    {
+      "id": 7490,
+      "title": "m10-scale-osc-guard K1: Lastserie gegen stepRenderScale (before-JSON)",
+      "description": "Lane-Karte nach main übernommen (lane #7428, Merge be215a2). Abnahme: Deterministischer Sim scripts/m10-scale-osc.mjs, before-JSON shots/m10-scale-osc-before.json committed, Pumpen belegt: alternating_5s 49 Wechsel/240s (24 up/25 down), alternating_3s 2, spikes_4s 15; 2 Läufe byte-gleich deterministisch. Commit 474a41f.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:59:03Z",
+      "updated": "2026-11-28T01:59:03Z"
+    },
+    {
+      "id": 7491,
+      "title": "m10-scale-osc-guard K2: Hysterese-Deckel in scale.ts + tests/scale-osc.test.ts",
+      "description": "Lane-Karte nach main übernommen (lane #7429, Merge be215a2). Abnahme: Guard in src/logic/scale.ts (SCALE_MIN_STEP_MS=8000, SCALE_RECOVER_MS=12000, optionales sinceChangeMs — config.ts kompiliert unveraendert), after-JSON shots/m10-scale-osc-after.json: alternating_5s 49->2 Wechsel (0 nach Einschwingen), spikes_4s Recovery erhaelt; tests/scale-osc.test.ts 11 Faelle, Suite 1124/1124, tsc OK. Commit 2c9b1c1.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:59:03Z",
+      "updated": "2026-11-28T01:59:03Z"
+    },
+    {
+      "id": 7492,
+      "title": "m10-scale-osc-guard K3: Beleg unter flock — 640x360 + 780x360@3, Renderer-String",
+      "description": "Lane-Karte nach main übernommen (lane #7430, Merge be215a2). Abnahme: Messlaeufe unter flock, shots/m10-scale-osc-trace-780.json (rbscale=3: Buffer 260x120 stabil 3/3, 59.4-60 FPS) + trace-640.json (auto 780 dpr3 Teiler 1 stabil 3/3; 640 dpr1 divisor 1, 60 FPS passed). Renderer iGPU Mesa Intel RPL-S 6/6, kein SwiftShader, 0 JS-Fehler; rc=1 des 640-Laufs = stale 480er-Kriterium im Skript (#4658: CSS 640x360), Lauf passed. Commit 51fb4c5.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:59:03Z",
+      "updated": "2026-11-28T01:59:03Z"
+    },
+    {
+      "id": 7493,
+      "title": "m10-scale-osc-guard K4: docs/lanes + .lane-done",
+      "description": "Lane-Karte nach main übernommen (lane #7431, Merge be215a2). Abnahme: docs/lanes/m10-scale-osc-guard.md mit Befunden (before/nach Übergangszahlen, Messwerte, Renderer-String, offener Punkt: stale 480er-Kriterium im dpr-budget-Skript); .lane-done im Lane-Worktree, nicht nach main übernommen. Commit 2299043.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:59:03Z",
+      "updated": "2026-11-28T01:59:03Z"
     }
   ]
 }
