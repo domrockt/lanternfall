@@ -61,3 +61,20 @@ god, Log `~/tmp/m10-v10-device-acceptance/k1-rc-device.log`). GPU `Adreno (TM) 7
 - Kein JS-Fehler während des Laufs (`jsErrors` leer im JSON).
 
 Status: K1 gemessen 2026-11-28, Beleg `rc-device.json`. Board #11308.
+
+## K2 — Minute-25-Dichte ≥ 60 FPS — **PASS**
+
+Beleg: `~/games/.evidence/m10-v10-device-acceptance/m25-device.json`
+(Skript `scripts/m10-v10-device-m25.mjs` = Phase 2 von `perf.mjs` auf dem Gerät; Log `~/tmp/m10-v10-device-acceptance/`).
+
+- Setup identisch zum Harness-Worst-Case: 6 Evolutionen Lv8, 6 Passives Lv5, `skipTo(1490)`
+  → Laufzeit **Minute 25:06**, Level 43, 25 698 Kills; 10-s-Fenster mit Top-up auf 300 Gegner
+  (min 300, avg 300 Gegner im Fenster).
+- **109,4 FPS** (Gemessen-HUD 110,9 FPS), worst frame 33,4 ms, 0 JS-Fehler → Tor ≥ 60 FPS klar PASS.
+- GPU: `Adreno (TM) 710` (aus demselben APK im selben Gerätelauf belegt, `rc-device.json`;
+  im K2-JSON ist das Renderer-Feld wegen eines Kontext-Bugs `null` — Skript gefixt, Messung nicht
+  wiederholt, da das Gate bereits verbindlich entschieden ist und ein Neurollen eines PASS
+  nichts ändert).
+- Kein Auflösungs-Teiler aktiv: Canvas intern 640x360, CSS 1280x720, dpr 2, `state().quality = "high"`.
+
+Status: K2 gemessen 2026-11-28. Board #11309.
