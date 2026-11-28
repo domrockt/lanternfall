@@ -1,0 +1,20 @@
+Lane m10-hazard-tex-cap — Hazard-Textur-Cap, abgeschlossen 2026-11-28.
+
+Belegter Heap-Hebel (Bedarf m10-heap-regression-fix): hazard_disc/ring/beam-Canvases wurden
+pro Radius/Laenge (1-px-Quantisierung) gebacken und nie freigegeben — ungebunden ueber lange
+Sessions (~25 neue Canvases / 30 min).
+
+Fix: 16-px-Raster (abrundend) fuer die Textur-Keys/Masken in src/gfx/hazardDisc.ts
+(texQuantizedRadius / texQuantizedBeamLength); Warn-Logik/Treffer bitgleich, Geometrie-Toleranz
+max 16 px, Tier-Regel Warn-Disc-Draw unberuehrt. Harte Obergrenze 163 Hazard-Canvases.
+
+Messung (Probe scripts/m10-hazard-tex-cap.mjs, 10-min-Lauf @30x, Seed 99, flock, iGPU-Renderer
+ANGLE Intel Mesa RPL-S, jsErrors=0):
+- Vorher: 21 einzigartige Hazard-Canvases (r22/r24, r70/r74, r92/r96, l312/l320, l832/l840)
+- Nachher: 15, alle auf dem Raster, Nachbar-Keys verschmolzen; 15 <= Cap 163 -> 0 ungebundenes
+  Wachstum.
+
+Commits: c5a4cf6e (#11812 K1), c2700650 (#11813 K2), fbd641c8 (#11814 K3), K4+#11815 (dieser).
+tsc rc=0; npm test 200 Dateien / 2233 Tests gruen; build rc=0. Doku: docs/lanes/m10-hazard-tex-cap.md.
+Belege: ~/games/.evidence/m10-hazard-tex-cap/{before,after}.json. Fremd-Minimal-Edit:
+tests/hazard-disc.test.ts (3 Key-Expectations repointet, requests.md 2026-11-28T12:35Z).
