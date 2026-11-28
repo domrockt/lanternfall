@@ -7884,11 +7884,17 @@
     {
       "id": 6669,
       "title": "m10-shot-clarity #4: Nachher-Messung + art-director",
-      "column": "todo",
+      "column": "doing",
       "description": "After-Lauf scripts/m10-shot-clarity.mjs --tag=after, shots/m10-shot-clarity-after-{300,500}.png + -after.json; Near-White <= 4,16 % (A7), art-director >= 4/5. Abnahme: JSON committed, art-director-Urteil in Lane-Doku.",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:08:29.763Z",
+          "by": "lead",
+          "text": "After-Messung committed (worst scene 0,36 % Near-White A7 <= 4,16 % PASS; Texturen exakt 0 %). Full build rc=0, Suite 871/871 gruen. Lane-Doku docs/lanes/m10-shot-clarity.md geschrieben. art-director-Abnahme laeuft (Subagent)."
+        }
+      ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-27T23:52:56.879Z"
+      "updated": "2026-11-28T00:08:29.763Z"
     }
   ]
 }
