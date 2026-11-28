@@ -1,0 +1,23 @@
+Lane m10-pickup-sfx-distinct — abgeschlossen (2026-11-28, Karten #9584-#9587, 4 Commits).
+
+Ergebnis: XP-Gem, Powerup, Level-Up und Truhe-Öffnen sind hörbar unterscheidbar; im 500er-Chaos kein Spam/Clipping.
+
+Messwerte (Skript scripts/m10-pickup-sfx.mjs, 60s-Sim Seed 411, echte mixing.ts-Logik):
+- Paar-Distanzen (8-Band-Kosinus, Metrik wie tests/audio-mix.test.ts): min 0,310 (levelup/chest);
+  alle 6 Paare >= 0,310 >= 0,15 Ziel. Vorher: min 0,011 (xp/chest), powerup hatte GAR KEINEN Sound.
+- Voice-Last Burst (900 XP-Requests @15/s): 65 gespielt (7%) -> 477 (53%); Pickup-Starts avg 7,8/s
+  am eigenen Kontingent (8/s, Fair-Share xp/powerup); Massen-Dämpfung pickupDampGain 1 -> 0,45 ab 12/s.
+- 0 Clipping-Samples, Mix-Peak -16,9 dBFS, max 12 Voices.
+- npm test: 154 Dateien / 1669 Tests grün (inkl. music-dawn: Musik-Pfade unangetastet, MUSIC_KEYS/Track-Wechsel getestet).
+- Master-Mute bitgleich (A7): Pfad unverändert, Tests blocken jeden SFX, sfxPlayed konstant.
+- npm run build grün (407 ms).
+
+Commits: 8b820950 (#9584 K1 Vorher), 1c128868 (#9585 K2 4 WAVs sfx_pickup_*, Sweep 4096 Kombis),
+4d6491fc (#9586 K3 Mixer), f396c469 (#9587 K4 Tests+Doku). Details: docs/lanes/m10-pickup-sfx-distinct.md.
+Belege: ~/.evidence/m10-pickup-sfx-distinct/{m10-pickup-sfx-before,after,k2-sweep-result}.json.
+
+Offen (außerhalb der Lane): Verdrahtung play("powerup") im Powerup-Moment gehört Lane m10-powerup-sfx-wire
+(Claim src/systems/PickupSystem.ts, claimcheck-Block dokumentiert); Key/WAV/Config liegen bereit.
+GAME.md-Abschnitt „Sound" (24 WAVs, alte Namen) beim Merge aus der Lane-Doku aktualisieren.
+Hinweis: K1-Commit-Namen nennen Before-Distanzen aus einer kaputten FFT-Kopie; korrigierte Werte
+in der Lane-Doku (K2-Abschnitt).
