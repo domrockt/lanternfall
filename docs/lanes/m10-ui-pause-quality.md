@@ -73,6 +73,20 @@ Nachher:
   640x360@2 und 780x360@3, Ausgabe nach `~/games/.evidence/` (Belege bleiben außerhalb
   des Repos).
 
+## Kontrolleure (2026-11-28)
+
+- **Reviewer: PASS** (17→18 Tests nachgerechnet, Geometrie verifiziert, kein Scope-Bruch;
+  Nits 1/2/4 geschlossen in Commit „Review-Nits 1/2/4 geschlossen“ — Formel-Pinning
+  lvTextW=23 und Glyph-Vorschub /6 im Test, lvTextW-Kommentar in UI.ts).
+- **Art-director: PASS** — alle 4 Kriterien belegt (idx 12 @ 15.28 in beiden Profilen,
+  Pixel-Verifikation 0xF2EDD8; 0 Overlaps, Pitch 19; Zeile 6 zweizeilig mit 52 px Puffer,
+  8 px Luft zum FORTSETZEN-Frame; Pixel-Diff before/after: 3,27 % der Fläche, davon 77 %
+  im Build-Panel, außerhalb nur die 10 gemeldeten Icon-Verschiebungen; Renderer
+  Mesa Intel RPL-S, Belege gültig).
+- **Empfehlung art-director (Folgebedarf, nicht in dieser Lane):** Footer-Hints
+  „ESC = WEITER …“ (idx 8 @ 4.15) und „PFEILE + ENTER …“ (idx 7 @ 2.72) als eigene
+  Nachfolge-Karte melden (Hebel: `createPauseUI()`, 2 Farbkonstanten).
+
 ## Offene Punkte / Anmerkungen für GAME.md-Merge
 
 1. Hinweiszeilen (ESC idx 8 @ 4.15, PFEILE idx 7 @ 2.72) sind ein restlicher, vom
