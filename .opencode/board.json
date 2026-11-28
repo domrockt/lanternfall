@@ -8525,25 +8525,36 @@
       "id": 7298,
       "title": "m10-chaos-fix-glow-runpath K1: Repro-Skript + before-Belege",
       "description": "Akzeptanz: scripts/m10-chaos-fix-glowpath.mjs (Muster m10-vfx-restore.mjs, seed=1, M25-Chaos, 640x360@1 + 780x360@3, Renderer-String-Pflicht iGPU, SwiftShader=ungueltig) laeuft und committet before-JSON + before-PNGs (+4x-Crops) als shots/m10-chaos-fix-glowpath-before-*. Vorher-Messung VOR dem Fix. Ein Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T01:04:31Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Repro-Skript scripts/m10-chaos-fix-glowpath.mjs (Muster m10-vfx-restore.mjs), before-Messung vor dem Fix."
+        },
+        {
+          "at": "2026-11-28T01:07:33Z",
+          "by": "build",
+          "text": "doing → done: K1 fertig (Commit 1a3f0e4-Nachfolger, siehe git log): Skript + before-JSON/PNGs committet, iGPU-Renderer belegt, crop-A7 bis 23,86 % als Fix-Ziel."
         }
       ],
       "created": "2026-11-28T01:04:29Z",
-      "updated": "2026-11-28T01:04:31Z"
+      "updated": "2026-11-28T01:07:33Z"
     },
     {
       "id": 7299,
       "title": "m10-chaos-fix-glow-runpath K2: Run.ts Partikel-Scale/Streckung (B5)",
       "description": "Akzeptanz: Run.ts Run-seitige ADD-Sprites (pillar/ring/beam/rays) ohne nicht-uniformes Strecken, uniform Scale-Cap + ADD-Alpha-Boden/-Deckel als exportierte Helfer; tests/chaos-glow-runpath.test.ts prueft die Verdrahtung (Quelltext-Check, Muster evo-signature-calls). tsc + zielbezogene vitest gruen, npm run build rc=0, ein Commit inkl. Belege.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:07:33Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: Run.ts uniform Scale + ADD-Alpha-Deckel + Pillar-Bake (K2+K3 greifen in dieselben Stellen, gemeinsam pruefen)."
+        }
+      ],
       "created": "2026-11-28T01:04:29Z",
-      "updated": "2026-11-28T01:04:29Z"
+      "updated": "2026-11-28T01:07:33Z"
     },
     {
       "id": 7300,

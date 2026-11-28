@@ -51,6 +51,10 @@ import { getAudio } from "../audio/AudioSystem";
 import { escToggleAllowed, InputState, type Vec2 } from "../input/InputState";
 import { readSceneGamepad } from "../input/Gamepad";
 import { getTouchSnapshot, resetTouchSnapshot } from "../input/TouchState";
+import {
+  RUN_LIGHT_ALPHA_MAX,
+  runAddAlpha,
+} from "../logic/fx-caps";
 
 export interface RunData {
   character?: CharacterId;
@@ -276,7 +280,7 @@ export class Run extends Phaser.Scene {
       .setBlendMode(Phaser.BlendModes.ADD)
       .setDepth(20)
       .setScale(1.35)
-      .setAlpha(0.85);
+      .setAlpha(RUN_LIGHT_ALPHA_MAX);
     this.vignette = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "vignette")
       .setScrollFactor(0).setDepth(80).setAlpha(0.9);
     this.vignette.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
@@ -550,7 +554,7 @@ export class Run extends Phaser.Scene {
     const a = active ? Run.FX_RESTORE_ALPHA : this.fxDampingEnabled ? fxAlphaFor(this.lod.level) : 1;
     this.combat?.fx.setAlphaScale(a);
     this.combat?.particles.setAlphaScale(a);
-    this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? a : 1));
+    this.light?.setAlpha(RUN_LIGHT_ALPHA_MAX * (this.fxDampingEnabled ? a : 1));
   }
 
   setFxDamping(enabled: boolean): void {
@@ -569,7 +573,7 @@ export class Run extends Phaser.Scene {
       this.pickups?.setCap(lod.gemCap);
       // Auch die additive Laternen-Lichtfläche dämpfen: sie liegt über den
       // Gegnern und ist im Endgame ein Hauptteil der Überstrahlung.
-      this.light?.setAlpha(0.85 * (this.fxDampingEnabled ? fxAlphaFor(lod.level) : 1));
+      this.light?.setAlpha(RUN_LIGHT_ALPHA_MAX * (this.fxDampingEnabled ? fxAlphaFor(lod.level) : 1));
     }
     // M10-vfx-restore: Ruecknahme-Stufe nach dem LOD-Update sicherstellen
     // (idempotent; greift nur im minimal-LOD).
@@ -674,7 +678,7 @@ export class Run extends Phaser.Scene {
   private spawnSplash(x: number, y: number): void {
     for (let i = 0; i < 3; i++) {
       const drop = makeImage(this, Math.round(x + (i - 1) * 3), Math.round(y), "fx_spark")
-        .setDepth(6).setTint(PAL[C.fogBlue]).setScale(0.6).setAlpha(0.8);
+        .setDepth(6).setTint(PAL[C.fogBlue]).setScale(0.6).setAlpha(runAddAlpha(0.8));
       this.tweens.add({
         targets: drop, y: y - 8 - i * 2, alpha: 0, scale: 0.2,
         duration: 240 + i * 30, onComplete: () => drop.destroy(),
@@ -1071,17 +1075,19 @@ export class Run extends Phaser.Scene {
       this.tweens.add({ targets: band, fillAlpha: 0.09 - i * 0.02, duration: 2400 + i * 300, ease: "Sine.InOut" });
     });
     // Lichtstrahlen vom Horizont.
+    // M10-chaos-fix-glow-runpath: einheitliche Scale (kein Strecken, B5),
+    // Alpha ueber runAddAlpha gedeckelt (B2). Bake-Pfad folgt in K3.
     for (let i = 0; i < 7; i++) {
       const ray = makeImage(this, 60 + i * 60, GAME_HEIGHT, "fx_pillar")
         .setOrigin(0.5, 1).setScrollFactor(0).setDepth(76)
         .setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-        .setAlpha(0).setScale(2.4 + (i % 2) * 0.5, 3.2);
-      this.tweens.add({ targets: ray, alpha: 0.09 + (i % 3) * 0.03, duration: 900 + i * 120, yoyo: true, repeat: 2 });
+        .setAlpha(0).setScale(2.4 + (i % 2) * 0.4);
+      this.tweens.add({ targets: ray, alpha: runAddAlpha(0.09 + (i % 3) * 0.03), duration: 900 + i * 120, yoyo: true, repeat: 2 });
     }
     const sun = this.add.image(GAME_WIDTH / 2, 18, "light_radius")
       .setScrollFactor(0).setDepth(77).setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.lantern]).setScale(2.2).setAlpha(0);
-    this.tweens.add({ targets: sun, alpha: 0.6, scale: 2.8, duration: 2400, ease: "Sine.Out" });
+    this.tweens.add({ targets: sun, alpha: runAddAlpha(0.6), scale: 2.8, duration: 2400, ease: "Sine.Out" });
     getAudio().play("victory");
     getAudio().stopMusic();
     this.time.delayedCall(160, () => this.events.emit("dawn"));
@@ -1605,9 +1611,9 @@ export class Run extends Phaser.Scene {
     const y = this.visualY || Math.round(this.posY);
     const pillar = makeImage(this, x, y + 12, "fx_pillar")
       .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
-      .setTint(PAL[C.lantern]).setAlpha(0.95).setScale(1.4, 1.6);
+      .setTint(PAL[C.lantern]).setAlpha(runAddAlpha(0.95)).setScale(1.4);
     this.tweens.add({
-      targets: pillar, alpha: 0, scaleX: 2.4, scaleY: 2.2, y: y - 70,
+      targets: pillar, alpha: 0, scale: 2.4, y: y - 70,
       duration: 950, ease: "Cubic.Out", onComplete: () => pillar.destroy(),
     });
     this.combat?.fx.spawnAnim("fx_halo", x, y, {
@@ -1637,7 +1643,7 @@ export class Run extends Phaser.Scene {
     const y = this.visualY || Math.round(this.posY);
     const ring = makeImage(this, x, y, "fx_shock")
       .setDepth(11).setBlendMode(Phaser.BlendModes.ADD).setTint(PAL[C.lantern])
-      .setScale(0.4).setAlpha(1);
+      .setScale(0.4).setAlpha(runAddAlpha(1));
     this.tweens.add({ targets: ring, scale: 3.4, alpha: 0, duration: 900, ease: "Cubic.Out", onComplete: () => ring.destroy() });
     for (let k = 0; k < 3; k++) {
       this.time.delayedCall(k * 90, () => this.combat?.fx.spawnAnim("fx_shock", x, y, {
@@ -1666,8 +1672,8 @@ export class Run extends Phaser.Scene {
     if (this.suppressEventFx) return;
     const beam = makeImage(this, x, y - 4, "fx_pillar")
       .setOrigin(0.5, 1).setDepth(11).setBlendMode(Phaser.BlendModes.ADD)
-      .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9, 1.1);
-    this.tweens.add({ targets: beam, alpha: 0.85, scaleX: 1.5, duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
+      .setTint(PAL[C.lantern]).setAlpha(0).setScale(0.9);
+    this.tweens.add({ targets: beam, alpha: runAddAlpha(0.85), scale: 1.5, duration: 260, yoyo: true, hold: 260, onComplete: () => beam.destroy() });
     for (let i = 0; i < 14; i++) {
       const a = -Math.PI / 2 + (i / 14 - 0.5) * 2.4;
       this.combat?.particles.spawn({
