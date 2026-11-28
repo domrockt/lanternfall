@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7822,
+  "next": 7826,
   "cards": [
     {
       "id": 1,
@@ -9969,6 +9969,42 @@
       ],
       "created": "2026-11-28T03:22:36Z",
       "updated": "2026-11-28T03:23:02Z"
+    },
+    {
+      "id": 7822,
+      "title": "m10-level-target-balance K1: Ist-Messung Level-Kurve (3 Seeds)",
+      "description": "Owner: gameplay-dev. scripts/m10-level-target.mjs (timeScale 30, autoPlay, god, Seeds 101/202/404) schreibt Level/Zeit-Kurve nach shots/m10-level-target-before.json. Abnahme: JSON committed, Level bei Minute 30 je Seed erfasst. Hinweis: Fix 7629b2f (m10-balance-kael) ist bereits auf main — Messung verifiziert den Ist-Stand. [lane #7494, Merge 8349168]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T03:28:16Z",
+      "updated": "2026-11-28T03:28:16Z"
+    },
+    {
+      "id": 7823,
+      "title": "m10-level-target-balance K2: XP-Kurve anpassen (nur falls Ist außerhalb [25,40])",
+      "description": "Owner: gameplay-dev. Kurve in src/logic/xp.ts: Endgame-Aufschlag ab Level 28 (XP_ENDGAME_MULT=40), Level 1-27 bitgleich, Gegner-HP/Damage unberührt. Abnahme: Level@30min in [25,40] für alle Seeds, Kurve monoton, Gegner-HP/Damage byte-identisch. [lane #7495, Merge 8349168]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T03:28:16Z",
+      "updated": "2026-11-28T03:28:16Z"
+    },
+    {
+      "id": 7824,
+      "title": "m10-level-target-balance K3: tests/level-target.test.ts",
+      "description": "Owner: gameplay-dev. Schwellen-Tabelle xpToNext monoton, levelForXp als Umkehrung konsistent, Level-30-Erreichbarkeit im Band für 3 Referenz-XP-Profile (inkl. 29k-Potenzial < Level-40-Schwelle). Abnahme: npx vitest run tests/level-target.test.ts grün, bestehende levelup-Tests ohne Regression, tsc grün. [lane #7496, Merge 8349168]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T03:28:16Z",
+      "updated": "2026-11-28T03:28:16Z"
+    },
+    {
+      "id": 7825,
+      "title": "m10-level-target-balance K4: Nachher-Messung + Lane-Doku",
+      "description": "Owner: gameplay-dev. shots/m10-level-target-after.json (3 Seeds) + docs/lanes/m10-level-target-balance.md mit Vorher/Nachher-Tabelle und Verweis auf m10-balance-kael-Belege. Abnahme: Level@30min in [25,40] für >=3 Seeds, Doku committed. [lane #7497, Merge 8349168]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T03:28:16Z",
+      "updated": "2026-11-28T03:28:16Z"
     }
   ]
 }
