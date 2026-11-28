@@ -1,0 +1,379 @@
+{
+  "script": "scripts/m10-heap-budget.mjs",
+  "lane": "m10-heap-budget",
+  "gitSha": "8af5acb",
+  "startedAt": "2026-11-28T00:04:17.330Z",
+  "endedAt": "2026-11-28T00:34:50.612Z",
+  "minutes": 30,
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)"
+  },
+  "victory": false,
+  "resultReason": null,
+  "truncated": true,
+  "simSeconds": 1800.6,
+  "minute1MB": 33.7,
+  "timeline": [
+    {
+      "minute": 1,
+      "jsMB": 33.7
+    },
+    {
+      "minute": 2,
+      "jsMB": 31.5
+    },
+    {
+      "minute": 3,
+      "jsMB": 30.5
+    },
+    {
+      "minute": 4,
+      "jsMB": 32.4
+    },
+    {
+      "minute": 5,
+      "jsMB": 34.5
+    },
+    {
+      "minute": 6,
+      "jsMB": 32.4
+    },
+    {
+      "minute": 7,
+      "jsMB": 33.7
+    },
+    {
+      "minute": 8,
+      "jsMB": 34
+    },
+    {
+      "minute": 9,
+      "jsMB": 34.1
+    },
+    {
+      "minute": 10,
+      "jsMB": 33.4
+    },
+    {
+      "minute": 11,
+      "jsMB": 37.2
+    },
+    {
+      "minute": 12,
+      "jsMB": 35.7
+    },
+    {
+      "minute": 13,
+      "jsMB": 34
+    },
+    {
+      "minute": 14,
+      "jsMB": 34.1
+    },
+    {
+      "minute": 15,
+      "jsMB": 34.2
+    },
+    {
+      "minute": 16,
+      "jsMB": 33.5
+    },
+    {
+      "minute": 17,
+      "jsMB": 33.6
+    },
+    {
+      "minute": 18,
+      "jsMB": 33.8
+    },
+    {
+      "minute": 19,
+      "jsMB": 35.1
+    },
+    {
+      "minute": 20,
+      "jsMB": 35.2
+    },
+    {
+      "minute": 21,
+      "jsMB": 33.7
+    },
+    {
+      "minute": 22,
+      "jsMB": 35.3
+    },
+    {
+      "minute": 23,
+      "jsMB": 35.9
+    },
+    {
+      "minute": 24,
+      "jsMB": 36.1
+    },
+    {
+      "minute": 25,
+      "jsMB": 38
+    },
+    {
+      "minute": 26,
+      "jsMB": 36.2
+    },
+    {
+      "minute": 27,
+      "jsMB": 38.4
+    },
+    {
+      "minute": 28,
+      "jsMB": 38.5
+    },
+    {
+      "minute": 29,
+      "jsMB": 35.9
+    },
+    {
+      "minute": 30,
+      "jsMB": 37.5
+    }
+  ],
+  "minutePeaks": [
+    {
+      "minute": 0,
+      "peakMB": 48
+    },
+    {
+      "minute": 1,
+      "peakMB": 43.6
+    },
+    {
+      "minute": 2,
+      "peakMB": 43.8
+    },
+    {
+      "minute": 3,
+      "peakMB": 36
+    },
+    {
+      "minute": 4,
+      "peakMB": 40.8
+    },
+    {
+      "minute": 5,
+      "peakMB": 46
+    },
+    {
+      "minute": 6,
+      "peakMB": 45.2
+    },
+    {
+      "minute": 7,
+      "peakMB": 44.6
+    },
+    {
+      "minute": 8,
+      "peakMB": 43.9
+    },
+    {
+      "minute": 9,
+      "peakMB": 41.8
+    },
+    {
+      "minute": 10,
+      "peakMB": 46.8
+    },
+    {
+      "minute": 11,
+      "peakMB": 45.8
+    },
+    {
+      "minute": 12,
+      "peakMB": 45
+    },
+    {
+      "minute": 13,
+      "peakMB": 41.3
+    },
+    {
+      "minute": 14,
+      "peakMB": 43.7
+    },
+    {
+      "minute": 15,
+      "peakMB": 48
+    },
+    {
+      "minute": 16,
+      "peakMB": 42.8
+    },
+    {
+      "minute": 17,
+      "peakMB": 43.5
+    },
+    {
+      "minute": 18,
+      "peakMB": 42.3
+    },
+    {
+      "minute": 19,
+      "peakMB": 41.7
+    },
+    {
+      "minute": 20,
+      "peakMB": 44.4
+    },
+    {
+      "minute": 21,
+      "peakMB": 44.3
+    },
+    {
+      "minute": 22,
+      "peakMB": 48.9
+    },
+    {
+      "minute": 23,
+      "peakMB": 49.8
+    },
+    {
+      "minute": 24,
+      "peakMB": 47.2
+    },
+    {
+      "minute": 25,
+      "peakMB": 52.4
+    },
+    {
+      "minute": 26,
+      "peakMB": 53.6
+    },
+    {
+      "minute": 27,
+      "peakMB": 55.7
+    },
+    {
+      "minute": 28,
+      "peakMB": 51.9
+    },
+    {
+      "minute": 29,
+      "peakMB": 52.9
+    },
+    {
+      "minute": 30,
+      "peakMB": 53.2
+    }
+  ],
+  "windowPeaks": [
+    {
+      "window": 0,
+      "fromMin": 0,
+      "toMin": 5,
+      "peakMB": 48
+    },
+    {
+      "window": 1,
+      "fromMin": 5,
+      "toMin": 10,
+      "peakMB": 46
+    },
+    {
+      "window": 2,
+      "fromMin": 10,
+      "toMin": 15,
+      "peakMB": 46.8
+    },
+    {
+      "window": 3,
+      "fromMin": 15,
+      "toMin": 20,
+      "peakMB": 48
+    },
+    {
+      "window": 4,
+      "fromMin": 20,
+      "toMin": 25,
+      "peakMB": 49.8
+    },
+    {
+      "window": 5,
+      "fromMin": 25,
+      "toMin": 30,
+      "peakMB": 55.7
+    },
+    {
+      "window": 6,
+      "fromMin": 30,
+      "toMin": 35,
+      "peakMB": 53.2
+    }
+  ],
+  "fps": {
+    "min": 59.7,
+    "median": 60.5,
+    "samples": 3601
+  },
+  "errors": [],
+  "crashes": [],
+  "gate": {
+    "definition": "HARD: endMB(nach erzwungenem GC, Run-Ende) - Minute 1 <= +15 % | SOFT (Beobachtung): max Peak je 5-min-Fenster <= Minute 1 + 25 %",
+    "minute1MB": 33.7,
+    "endMB": 37.5,
+    "endDeltaMB": 3.8,
+    "endDeltaPct": 11.3,
+    "gatePct": 15,
+    "softPct": 25,
+    "windowPeaks": [
+      {
+        "window": 0,
+        "fromMin": 0,
+        "toMin": 5,
+        "peakMB": 48
+      },
+      {
+        "window": 1,
+        "fromMin": 5,
+        "toMin": 10,
+        "peakMB": 46
+      },
+      {
+        "window": 2,
+        "fromMin": 10,
+        "toMin": 15,
+        "peakMB": 46.8
+      },
+      {
+        "window": 3,
+        "fromMin": 15,
+        "toMin": 20,
+        "peakMB": 48
+      },
+      {
+        "window": 4,
+        "fromMin": 20,
+        "toMin": 25,
+        "peakMB": 49.8
+      },
+      {
+        "window": 5,
+        "fromMin": 25,
+        "toMin": 30,
+        "peakMB": 55.7
+      },
+      {
+        "window": 6,
+        "fromMin": 30,
+        "toMin": 35,
+        "peakMB": 53.2
+      }
+    ],
+    "maxWindowPeakMB": 55.7,
+    "maxWindowPeakPct": 65.3,
+    "hardPass": true,
+    "softPass": false,
+    "verdict": "PASS",
+    "softVerdict": "FAIL (Beobachtung)",
+    "fallA": true,
+    "fallB": false,
+    "fatal": null
+  },
+  "fatal": null
+}
