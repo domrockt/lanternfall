@@ -1,0 +1,22 @@
+Lane m10-heap-softprint — abgeschlossen 2026-11-28 (Versuch 2)
+
+Ziel: Konsolen-Print in scripts/m10-heap-budget.mjs zeigte das rohe softVerdict
+(Fehl-„FAIL +41,5 %") statt des robusten Urteils gate.softFloorVerdict.
+
+K1 (Commit 887388e): Print auf gate.softFloorVerdict + maxWindowFloor(%) +
+softReferenceMB umgestellt; Rohpeaks als Beobachtungsfeld belassen;
+m10-heap-budget-gate.mjs unangetastet (node --check OK).
+
+K2 (Commit 522fbc4):
+- Replay gegen shots/m10-reaccd-heap.json (Beleg shots/m10-softprint-replay.json):
+  HARD PASS +10,7 % (identisch zur Referenz), Print zeigt robust
+  „PASS (Beobachtung, robust)" +23,8 % (vorher Fehl-FAIL +41,5 %), Rohpeak +41,5 %
+  nur als Beobachtung.
+- Kontrolllauf live: shots/m10-softprint-control.json (--minutes 2, iGPU
+  Intel RPL-S, 0 JS-Fehler): gate=PASS 0,4 %, soft=PASS robust 9,3 %.
+- npx tsc --noEmit OK; npm test 143 Dateien / 1506 Tests grün.
+- Doku: docs/lanes/m10-heap-softprint.md.
+
+Offene Punkte: keine.
+Board: #8852 (K1), #8853 (K2). Hinweis: Karten #8598/#8600/#8606 fremder Lanes
+fanden sich in doing ohne lebenden Worktree — auf Supervisor-Steuer zurück auf todo.

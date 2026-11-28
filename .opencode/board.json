@@ -11414,7 +11414,7 @@
       "id": 8852,
       "title": "m10-heap-softprint K1: Konsolen-Print auf softFloorVerdict umstellen",
       "description": "scripts/m10-heap-budget.mjs Zeile ~224 druckt rohes softVerdict (FAIL +41,5 %) statt robustes gate.softFloorVerdict aus scripts/m10-heap-budget-gate.mjs. Fix: Print auf softFloorVerdict + maxWindowFloor; gate.mjs unverändert. Abnahme: Print zeigt robustes Urteil, kein Mess-Verhalten geändert.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T05:44:13Z",
@@ -11425,10 +11425,15 @@
           "at": "2026-11-28T05:44:22Z",
           "by": "build",
           "text": "[Supervisor] bestaetigt: nur K1+K2 in doing; Print-Fix + Commit #8852, danach K2 Kontrolllauf."
+        },
+        {
+          "at": "2026-11-28T05:44:47Z",
+          "by": "build",
+          "text": "doing → review: K1 committed 887388e: Print zeigt gate.softFloorVerdict + maxWindowFloor/softReferenceMB; gate.mjs unangetastet. Syntax-Check node --check OK. K2-Kontrolllauf folgt."
         }
       ],
       "created": "2026-11-28T05:42:50Z",
-      "updated": "2026-11-28T05:44:22Z"
+      "updated": "2026-11-28T05:44:47Z"
     },
     {
       "id": 8853,
