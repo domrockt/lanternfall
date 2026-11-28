@@ -1,0 +1,20 @@
+Lane m10-det-e2e-guard (#12793–#12795) — Determinismus-E2E-Guard für die worldView-Anker-Kette.
+
+Ziel: Die drei Sim-Anker-Teile (ProjectilePool/EnemyProjectiles → m10-worldview-anchor-pools,
+Spawner.outsideView → m10-spawn-view-anchor, Boss-Sim-View-Rezept aus m10-boss-dur-determinism K2)
+sind per E2E-Guard gegen stille Regression geschützt.
+
+Ergebnisse:
+- K1 (#12793, 27534d3c): Beide Anker-Merges in main belegt; E2E scripts/m10-boss-dur-det.mjs
+  exit 0 — 3 Seeds (101/202/404) × 2 Läufe, je 700 Marken bitgleich, Boss-Dauern bitgleich
+  (101: 31.10/40.10 s, 202: 25.20/29.50 s, 404: 29.75/45.45 s).
+- K2 (#12794, 9644ea50): scripts/m10-det-e2e.mjs (stärkere Marken, Event-Strom, Boss-Dauern,
+  exit 0/2) + Suite-Guard in tests/run-determinism.test.ts (11/11 grün, 139 ms).
+  Negativ-Check: 1 px-Divergenz lässt den Test anschlagen. Guard-JSONs committet
+  (shots/m10-det-e2e-*, .gitignore-Negation folgt Muster m10-run-det-*.json).
+- K3 (#12795): docs/lanes/m10-det-e2e-guard.md (Aufruf, Grenzen, Belegpfade).
+  npm test 2420/2420 grün, npm run build grün.
+
+Grenzen: E2E-Langläufe bewusst NICHT in der Suite (Skript mit dokumentiertem Aufruf);
+Beweis gilt für 3 Seeds × 2 Läufe und die markierten Sim-Größen.
+Belege: ~/games/.evidence/m10-det-e2e-guard/ · Logs: ~/tmp/m10-det-e2e-guard/
