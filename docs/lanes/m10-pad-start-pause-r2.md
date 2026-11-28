@@ -44,10 +44,21 @@ an stehen (ein Doppel-Toggle hätte sie sofort aufgehoben); zweiter Start setzt 
 **verify-input PASS 29/29**, 0 JS-Fehler, ESC-Fälle („ESC pausiert“, „ESC setzt fort“) grün.
 Beleg: `~/games/.evidence/m10-pad-start-pause-r2/m10-verify-input-padstart-after.json` + PNGs.
 
-## K4 — Regressionstest
+## K4 — Regressionstest (Ergebnis)
 
-(offen)
+`tests/pad-start-pause.test.ts` (12 Fälle, grün):
+- `padToggleEvent`-Form; Dedup: gleicher ms-Floor → nur der erste Toggle erlaubt, neuer ts → erlaubt;
+  ESC und Pad teilen den Dedup-Merker (ESC-Keydown mit Pad-ts wird abgelehnt → kein Doppel-Event im Mix);
+  keyup/Repeat → nie; ev=null (Portrait) → immer; fremde Keys → immer, Merker unberührt.
+- `InputState`: gehaltener Pad-Start feuert genau eine pause-Edge (10 Frames halten → 0 weitere),
+  Release ohne Edge, zweiter Press wieder genau eine Edge.
+- `MOVE_SOURCE_PRIORITY` unberührt: touch > gamepad > keyboard, Deadzone-Remap unverändert,
+  Pad-Start (Button 9) beeinflusst den Bewegungsvektor nicht.
 
 ## Abnahme
 
-- Vorher: verify-input 28/28 PASS, 0 JS-Fehler (Belege in ~/.evidence, siehe K1)
+- verify-input: **PASS 29/29** (28 Bestand + 1 neuer Pad-Start-Zyklus-Fall), 0 JS-Fehler;
+  ESC-Fälle („ESC pausiert“, „ESC setzt fort“) grün. Belege in ~/.evidence (vorher+nachher, siehe K1/K3)
+- `npm test`: 154 Dateien / 1667 Tests grün (inkl. esc-pause-Bestand + pad-start-pause 12)
+- `npx tsc --noEmit` grün, `npm run build` grün
+- src/ui/menu.ts / options-menu.ts nicht angerufen; außerhalb der Disponent-Dateien nur .opencode/board.json (Board-Buchung)
