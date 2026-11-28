@@ -1,0 +1,20 @@
+Lane m10-acceptance-sync-30min — Doc-Sync 30-min-Echtzeitlauf (28.11.), ABGESCHLOSSEN.
+
+Zwei Doku-Karten, zwei Commits, 0 Code-Änderungen, keine neuen Messungen, kein erneuter 30-min-Lauf:
+
+- #7198 (ad37aaa): ACCEPTANCE.md A4-Zeile „offen/blocked (Runner-Limits, Vera)“ -> PASS (iGPU)
+  mit Belegen shots/qa-reaccc-realtime-30min.json (FPS PASS min 60,1 / Median 60,5, 7307 Samples,
+  0 Crashes / 0 JS-Fehler; Inhalt PASS: Sieg dawn 30,3 Sim-Min, 6/6 Bosse ±0 s, 6 Truhen,
+  3 Evolutionen). Heap-Zeile ehrlich: im Lauf +21 % FAIL (GC-Saegezahn), entkraeftet durch
+  Remessung auf main 65a1b74 (+5,2 % <= +12 %), formaler Abschluss ueber m10-heap-budget
+  (HARD-Gate Fall A +11,0 %/+11,3 % <= +15 % PASS). Gesamturteil Nachabnahme B entwidersprochen.
+  Z68 (historische m6-Tabelle) unberuehrt.
+- #7199 (1222d56): docs/qa/reacceptance-2026-11-27.md — fa2-04 (A4) Nachtrag „iGPU-Lauf
+  erfolgreich, BLOCKED aufgeloest“ (gleiche Belege, gleiche ehrliche Heap-Darstellung) +
+  Nachtrags-Verweis am fa2-06-Endurteil.
+
+Abnahme: grep "30-min" ACCEPTANCE.md enthaelt keinen offen/blocked-Widerspruch mehr zu
+Z328/Z329 (nur noch historische Z68). git diff vs merge-base: nur ACCEPTANCE.md (+9/-4) und
+docs/qa/reacceptance-2026-11-27.md (+31). Build rc=0, Tests 1001/1001 (vor Commit 1).
+Hinweis Merge-Job: main ist parallel weitergelaufen (m10-fullrun-guard, 155b3cf); Lane basiert
+auf 7a67924, Doku-Aenderungen konfliktfrei.
