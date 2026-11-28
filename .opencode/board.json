@@ -13919,27 +13919,38 @@
       "id": 10626,
       "title": "m10-android-proxy-gate K2: android-proxy.mjs + Baseline",
       "description": "scripts/android-proxy.mjs: Lauf mit 2 Charakteren (mira/kael) je 6 Evolutionen bis Minute 10 im Zeitraffer, dann 60 s Echtzeit-Messung bei Minute-25-Dichte; schreibt fps p5/Median, frame p95, quality-Stufe (LOD), JS-Heap, Renderer-String → shots/m10-android-proxy-<tag>.json. Baseline messen (flock) und committen; 2 Läufe, Median-Abweichung < 10 %; 0 JS-Fehler.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T09:42:24Z",
           "by": "build",
           "text": "todo → doing: android-proxy.mjs bauen, Baseline auf main-Stand messen"
+        },
+        {
+          "at": "2026-11-28T10:11:42Z",
+          "by": "build",
+          "text": "doing → review: was: scripts/android-proxy.mjs (mira/kael, 6 Evolutionen, Zeitraffer bis Minute 10, 60s Echtzeit bei Minute-25-Dichte) + Baseline; geprüft: 2 flock-Läufe rc=0, fpsMedian je 59.9 (Abweichung 0% < 10%), passed=true, 0 JS-Fehler, Renderer Intel RPL-S (kein SwiftShader); JSONs shots/abnahme/m10-android-proxy-baseline{1,2}.json + ~/games/.evidence/m10-android-proxy-gate/; build+test grün; Commits d0311fe1 (Watchdog-Snapshot, identischer Stand) + 90500670"
         }
       ],
       "created": "2026-11-28T09:41:15Z",
-      "updated": "2026-11-28T09:42:24Z"
+      "updated": "2026-11-28T10:11:42Z"
     },
     {
       "id": 10627,
       "title": "m10-android-proxy-gate K3: Proxy-Doku für Perf-Lanes",
       "description": "docs/lanes/m10-android-proxy-gate.md: wie jede Perf-Lane den Proxy vorher/nachher nutzt; Grenzen ehrlich benennen (Geräte-Telemetrie = Wahrheit, kein GPU-/Thermik-Ersatz). Abnahme: Doku commitet, Baseline-Werte referenziert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T10:11:21Z",
+          "by": "build",
+          "text": "todo → doing: Proxy-Doku schreiben"
+        }
+      ],
       "created": "2026-11-28T09:41:15Z",
-      "updated": "2026-11-28T09:41:15Z"
+      "updated": "2026-11-28T10:11:21Z"
     }
   ]
 }
