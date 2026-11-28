@@ -387,7 +387,21 @@ export class PickupSystem {
       this.hasPassiveSnapshot = true;
       return;
     }
-    const acquired = diffPassiveAcquisitions(this.lastPassives, passives);
+    // Billiger Vorvergleich ohne Allokation (läuft pro Frame im 500er-Chaos):
+    // passives-Änderungen kommen addPassive-seitig (Append/Level-Set/Entfernung),
+    // Reihenfolge ist stabil — Länge + id/level genügen als Änderungssignal.
+    const prev = this.lastPassives;
+    let changed = prev.length !== passives.length;
+    if (!changed) {
+      for (let i = 0; i < passives.length; i++) {
+        if (prev[i].id !== passives[i].id || prev[i].level !== passives[i].level) {
+          changed = true;
+          break;
+        }
+      }
+    }
+    if (!changed) return;
+    const acquired = diffPassiveAcquisitions(prev, passives);
     this.lastPassives = passives.map((p) => ({ id: p.id, level: p.level }));
     for (const a of acquired) this.playPowerupMoment(a.id, playerX, playerY);
   }
