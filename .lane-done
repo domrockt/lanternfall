@@ -1,0 +1,47 @@
+# Lane m10-icon-redraw-debt — FERTIG (2026-11-28)
+
+Board-Karte #7149 (Icon-Design-Debt: heart/charm/boots neu zeichnen) umgesetzt, alle 4 Karten
+K1-K4 committet, art-director-Abnahme PASS.
+
+## Ergebnis
+- passive_heart, passive_charm, passive_boots neu gezeichnet als handgesetzte 16x16-ASCII-Raster
+  (ICON_REDRAW_ROWS in scripts/art/icons_src.py; gen_icons.special() stellt darauf um);
+  gen-icons.ts regeneriert (AUTO-GENERIERT, nie hand-editiert).
+  - Herz: zwei Ohren + mittige Kerbe + Spitze, Karmesin-Kern (26->25) mit dunkler
+    Kern-Schattenzone (25->23) + 1 Glanz-Pixel.
+  - Amulett: mehrgliedrig = V-Kette (5) + Oese + Goldmedaillon (20->19) mit Rubin-Kern (26->25).
+  - Stiefel: Pelzbesatz (11->9), weisse Schnuer-Balken (12), Rist-Kante boneLight->mist->fog,
+    amberne Mittelsohle (20->19) + dunkle Decksohle (5).
+- Drift-Fix passive_tome: das committed gen-icons.ts war fuer den Tome hand-editiert
+  (Vor-Lane icon-contrast, 00c500e) und von der Pipeline nicht reproduzierbar (Regen haette
+  icon-contrast-Test auf 2.16:1 fallen lassen). Freigegebenes Design jetzt als Raster in der
+  Quelle gepflegt; gen-icons.ts wieder voll generiert.
+
+## Messwerte (shots/m10-icon-redraw-before.json / -after.json, Methode = icon-contrast-Test)
+- Kontrast Koerper-Median vs HUD/Panel, before -> after:
+  heart 5.38/4.93 -> 3.30/3.02, charm 4.53/4.15 -> 4.40/4.03, boots 4.53/4.15 -> 4.53/4.15,
+  tome 10.93/10.01 -> 8.18/7.49; alle 12 Icons >= 3:1 (Test grenze), 0 Off-Palette.
+- Rueckgang bei heart/tome ist ehrlich dokumentiert: Vorher-Werte kamen aus Grau-/Weiss-Flecken
+  bzw. Hand-Edit; Form-Lesbarkeit (das eigentliche Muss) sprunghaft besser.
+- 8 unberuehrte Icons pixelidentisch (art-director, ImageChops: identical).
+
+## Qualitaetsschleusen
+- npx tsc --noEmit gruen, npm run build gruen, npm test 1331/1331 gruen.
+- tests/icon-redraw.test.ts NEU (9 Tests: Silhouette/Kontur, konkrete Kern-Form je Icon,
+  0 Off-Palette, binaeres Alpha); icon-contrast (19), palette-compliance (16),
+  chest-icon-crisp (14) unangetastet gruen.
+- art-director: Runde 1 heart 4,5 / charm 4,5 / boots 4 (FAIL: 4 Pixel entgegen Licht),
+  Fix committet, Runde 2 PASS boots 4,5. Endurteil 4,5/4,5/4,5, kein Icon schlechter.
+
+## Commits (eine Karte = ein Commit, Belege im Karten-Commit)
+- 5bb3cd4 K1 Befund (before-Shots + Metriken + Mess-Skript scripts/m10-icon-redraw.mjs)
+- ac70049 K2 Zeichnen (icons_src.py, gen_icons.py, gen-icons.ts)
+- cfda1b0 K3 Tests (tests/icon-redraw.test.ts + Glint-Fix)
+- 8c4e8e5 K4 after-Belege + Abnahme + Rist-Kanten-Fix
+
+## Offene Punkte
+- Charm-Kettenspitze (8,4) ist der Schatten des Ketten-Materials (Pipeline-Regelwerk zwingt
+  das bei direkter Medaillon-Nachbarschaft); art-director: nicht blockierend, Polish.
+- shots/m10-passive-math-*.json wurden waehrend der Lane von einem fremden Prozess nur mit
+  neuem generatedAt regeneriert (inhaltlich identisch) - bewusst NICHT committed, nicht meine
+  Area. .opencode/board.json (Board-Move) ebenfalls ausserhalb der Area gelassen.
