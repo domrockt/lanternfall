@@ -112,7 +112,9 @@ export function buildCause(fatalMsg, attemptsLog = []) {
   const tries = attemptsLog.length
     ? ` Versuche: ${attemptsLog.map((a) => `#${a.attempt}:${a.errorClass}`).join(" ")};`
     : "";
-  return `UNMESSBAR nach ${MEASUREMENT_ATTEMPTS} Gesamtversuchen — Fehlerklasse ${cls},${tries} Ursache: ${String(fatalMsg).slice(0, 200)}`;
+  // tatsaechliche Versuchszahl: Retry-Eintraege + der letzte, der hier ankommt
+  const used = attemptsLog.length + 1;
+  return `UNMESSBAR nach ${used} Versuch${used === 1 ? "" : "en"} — Fehlerklasse ${cls},${tries} Ursache: ${String(fatalMsg).slice(0, 200)}`;
 }
 
 // --- eigentliche Messung (ein Gesamtversuch) ---
@@ -266,6 +268,7 @@ async function measureOnce({ chromium, port, attempt }) {
       : { min: null, median: null, samples: 0 };
 
     return {
+      startedAt: new Date(started).toISOString(),
       renderer, victory, resultReason, truncated, simSeconds: round1(simSeconds),
       minute1, timeline, minutePeaks, fps, errors, crashes, fatal,
     };
@@ -320,23 +323,35 @@ async function main() {
     fatal = fatal ?? String(e);
   }
 
+  // K2: ein Lauf ist nur dann ein valider Tor-Beleg, wenn er vollstaendig
+  // durchgelaufen ist (kein fatal, nicht truncated, Sieg ODER Sim-Zeit
+  // erreicht das Budget). Ansonsten EINDEUTIG UNMESSBAR mit Ursachefeld —
+  // ein PASS/FAIL auf Teilbeleg wuerde den Tor-Vertrag verletzen (Review K2).
+  const runComplete = measure != null
+    && measure.fatal == null
+    && !measure.truncated
+    && (measure.victory || measure.simSeconds >= RUN_SECONDS);
+
   const gate = evaluateHeapGate({
-    minute1MB: measure?.minute1 ?? null,
-    endMB: measure?.endMB ?? null,
+    minute1MB: runComplete ? measure.minute1 : null,
+    endMB: runComplete ? measure.endMB : null,
     minutePeaks: measure?.minutePeaks ?? [],
   });
   gate.fatal = fatal;
-  // K2: bei UNMESSBAR (kein valider Messversuch) eindeutige Ursache statt
-  // Halbsatz im Log. Bei PASS/FAIL bleibt fatal nur als Zusatzfeld.
-  if (gate.verdict === "UNMESSBAR" && fatal != null) {
-    gate.cause = buildCause(fatal, attemptsLog);
+  if (!runComplete) {
+    // K2: eindeutige Ursache statt Halbsatz im Log. Die Tor-Definition in
+    // m10-heap-budget-gate.mjs bleibt unangetastet (verdict kommt aus der
+    // Gate-Funktion via minute1MB/endMB = null -> "UNMESSBAR").
+    gate.cause = fatal != null
+      ? buildCause(fatal, attemptsLog)
+      : `UNMESSBAR nach ${attemptsLog.length + 1} Versuch(en) — Lauf unvollstaendig (truncated=${measure?.truncated ?? false}, simSeconds=${measure?.simSeconds ?? 0} von ${RUN_SECONDS} s, victory=${measure?.victory ?? false}), kein valider Tor-Beleg`;
   }
 
   const out = {
     script: "scripts/m10-heap-budget.mjs",
-    lane: "m10-heap-gate-retry",
+    lane: "m10-heap-budget",
     gitSha,
-    startedAt: new Date().toISOString(),
+    startedAt: measure?.startedAt ?? new Date().toISOString(),
     endedAt: new Date().toISOString(),
     minutes: MINUTES,
     attempts: attemptsLog,
@@ -365,6 +380,11 @@ async function main() {
   // als Zusatzfeld sichtbar — die Gate-Logik in m10-heap-budget-gate.mjs ist
   // unveraendert.
   console.log(`${OUT}: gate=${gate.verdict} (endMB ${gate.endMB} MB vs Minute1 ${gate.minute1MB} MB = ${gate.endDeltaPct} %, Tor <= +${gate.gatePct} %), soft=${gate.softFloorVerdict} (maxWindowFloor ${gate.maxWindowFloorMB} MB = ${gate.maxWindowFloorPct} % vs Floor Fenster 0 ${gate.softReferenceMB} MB, Tor <= +${gate.softPct} %; Rohpeak-Beobachtung: maxWindowPeak ${gate.maxWindowPeakMB} MB = ${gate.maxWindowPeakPct} %), renderer=${out.renderer.renderer}, errors=${out.errors.length}, victory=${out.victory}`);
+  // Review K2 (kritisch): ohne explizites Ende haengt Node am lebenden
+  // http.server-Child (startServer liefert stop(), das vorher nie gerufen
+  // wurde) und haette flock /home/ai/games/.lf-perf.lock dauerhaft.
+  try { server.stop(); } catch { /* schon tot */ }
+  process.exit(0);
 }
 
 // Guard-Test-faehig (K2/K3): Import durch vitest fuehrt main() nicht aus.
