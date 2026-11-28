@@ -27,6 +27,7 @@ const SIZES = [
   { width: 960, height: 540, dpr: 1, label: "control-960-dpr1" },
   { width: 1280, height: 720, dpr: 1, label: "1280-dpr1" },
   { width: 1280, height: 720, dpr: 2, label: "1280-dpr2" },
+  { width: 1920, height: 1080, dpr: 1, label: "1920-dpr1" },
 ];
 const DIRECTIONS = [
   ["ArrowRight"], ["ArrowRight", "ArrowUp"], ["ArrowUp"], ["ArrowLeft", "ArrowUp"],

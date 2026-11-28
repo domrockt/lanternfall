@@ -116,6 +116,62 @@ if (typeof globalThis !== "undefined") {
   (globalThis as { __lfChunkGate?: typeof chunkGateOverride }).__lfChunkGate = chunkGateOverride;
 }
 
+// ---- m10-render-1280-gap (#12969): Start-/Bewegungs-Rueckstau ----
+/**
+ * Worker-Pool (m10-render-1280-gap, #12969): Ein einzelner Terrain-Worker
+ * malt sequenziell (~100 ms je Chunk, Wasser-Chunks mit allen Animations-
+ * stufen) — die 24-Chunks-Startfuellung dauerte im K1-Messlauf ~2,1 s, und
+ * zum Kontroll-Screenshot-Moment waren rechts/unten noch Chunks offen
+ * (#12969). 4 Worker teilen das Malen auf echte Threads; Dispatch ist
+ * naechstgelegen-zuerst, sichtbare Kanten fertig also nicht spaeter.
+ */
+export const CHUNK_WORKER_COUNT = 4;
+
+/**
+ * Ab so vielen fertigen, aber noch nicht installierten Chunks gilt ein
+ * Rueckstau: dann duerfen ueber das 1-Install-pro-Frame-Gate hinaus weitere
+ * Installs innerhalb des Backlog-Zeitbudgets erfolgen. Im Ruhebetrieb
+ * (frame-tail-batching, ready <= 2) bleibt das Glaetten unveraendert.
+ */
+export const CHUNK_BACKLOG_READY_MIN = 2;
+/**
+ * Echtes Zeit-Budget (performance.now) fuer Backlog-Zusatz-Installs je Frame.
+ * Ein 256px-Chunk kostet ~1-2 ms (Canvas + Tile-Bits + Props) — das Budget
+ * leert den Startstau in wenigen Frames, ohne das Frame-Budget-Gate aus
+ * #12436 zu sprengen.
+ */
+export const CHUNK_INSTALL_BACKLOG_BUDGET_MS = 10;
+
+/** Rein/testbar (#12969): duerfen Backlog-Zusatz-Installs laufen? Nur bei
+ *  echtem Rueckstau und solange das Frame-Budget nicht defert. */
+export function backlogInstallsAllowed(readyCount: number, installDefers: number): boolean {
+  return readyCount > CHUNK_BACKLOG_READY_MIN && installDefers === 0;
+}
+
+/**
+ * Rein/testbar (m10-render-1280-gap K3): Chunk-Koordinaten-Range, die einen
+ * sichtbaren Weltausschnitt (+ margin Chunks) LUECKENLOS abdeckt, geklemmt
+ * auf die Welt. update() leitet die Range aus cameraWorldView() ab (#4658-
+ * Muster) — bei Teiler s>1 ist camera.width = W/s; die alte Berechnung aus
+ * scrollX + camera.width fragte nur die linke/obere Teilhaelfte an.
+ * Bei Teiler 1 bitgleich zur alten Berechnung.
+ */
+export function chunkRangeForView(
+  viewLeft: number,
+  viewTop: number,
+  viewWidth: number,
+  viewHeight: number,
+  marginChunks = 1,
+): { minCx: number; maxCx: number; minCy: number; maxCy: number } {
+  const maxChunk = Math.ceil(WORLD_SIZE / CHUNK_SIZE) - 1;
+  return {
+    minCx: Math.max(0, Math.floor(viewLeft / CHUNK_SIZE) - marginChunks),
+    maxCx: Math.min(maxChunk, Math.floor((viewLeft + viewWidth) / CHUNK_SIZE) + marginChunks),
+    minCy: Math.max(0, Math.floor(viewTop / CHUNK_SIZE) - marginChunks),
+    maxCy: Math.min(maxChunk, Math.floor((viewTop + viewHeight) / CHUNK_SIZE) + marginChunks),
+  };
+}
+
 /** Rein/testbar: Install-Gate mit Frame-Budget und Stillstands-Schutz. */
 export function chunkInstallGate(
   readyCount: number,
@@ -346,8 +402,10 @@ export class GroundRenderer {
   private lastCx = Number.NaN;
   private lastCy = Number.NaN;
 
-  /** Asynchroner Chunk-Bau: Malen im Worker, Main-Thread fertigt nur an. */
-  private worker: Worker | null = null;
+  /** Asynchroner Chunk-Bau: Malen im Worker-Pool, Main-Thread fertigt nur an. */
+  private workers: Worker[] = [];
+  /** Offene Jobs je Worker-Index (je Worker max. 1 — malt sequenziell). */
+  private workerLoad: number[] = [];
   /** Keys, die angefragt/gemalt, aber noch nicht eingebaut sind. */
   private readonly requested = new Set<string>();
   /** Beim Worker in Arbeit (max. 2 parallel) mit Startzeit fuer Timeout. */
@@ -401,31 +459,40 @@ export class GroundRenderer {
     this.seed = seed;
     try {
       if (typeof Worker !== "undefined" && typeof OffscreenCanvas !== "undefined") {
-        const worker = new Worker(new URL("./terrainWorker.ts", import.meta.url), { type: "module" });
-        worker.onmessage = (event: MessageEvent<{ cx: number; cy: number; bitmaps: ImageBitmap[] | null }>) => {
-          const { cx, cy, bitmaps } = event.data;
-          const key = `${cx},${cy}`;
-          this.inflight.delete(key);
-          if (this.counters) this.counters.workerReceived++;
-          if (!bitmaps) {
-            this.useSyncFallback();
-            return;
-          }
-          this.ready.push({ cx, cy, key, bitmaps });
-        };
-        worker.onerror = () => this.useSyncFallback();
-        this.worker = worker;
+        for (let i = 0; i < CHUNK_WORKER_COUNT; i++) {
+          // Inline-Muster new Worker(new URL(...)) BEIBEHALTEN: der Bundler
+          // erkennt den Worker nur so und baut ein echtes Asset (K1-Befund:
+          // ausgezogene URL-Variable wird als data:-URL eingebettet, und
+          // data:-URL-Module-Worker schlagen fehl -> stiller Sync-Fallback).
+          const worker = new Worker(new URL("./terrainWorker.ts", import.meta.url), { type: "module" });
+          worker.onmessage = (event: MessageEvent<{ cx: number; cy: number; bitmaps: ImageBitmap[] | null }>) => {
+            const { cx, cy, bitmaps } = event.data;
+            this.workerLoad[i] = Math.max(0, (this.workerLoad[i] ?? 1) - 1);
+            const key = `${cx},${cy}`;
+            this.inflight.delete(key);
+            if (this.counters) this.counters.workerReceived++;
+            if (!bitmaps) {
+              this.useSyncFallback();
+              return;
+            }
+            this.ready.push({ cx, cy, key, bitmaps });
+          };
+          worker.onerror = () => this.useSyncFallback();
+          this.workers.push(worker);
+          this.workerLoad.push(0);
+        }
       }
     } catch {
-      this.worker = null;
+      this.useSyncFallback();
     }
     this.ensureAmbient();
   }
 
   /** Worker-Start/-Lauf fehlgeschlagen → wieder synchron auf dem Main-Thread. */
   private useSyncFallback(): void {
-    this.worker?.terminate();
-    this.worker = null;
+    for (const w of this.workers) w.terminate();
+    this.workers.length = 0;
+    this.workerLoad.length = 0;
     while (this.ready.length > 0) {
       for (const b of this.ready.pop()!.bitmaps) b.close();
     }
@@ -437,10 +504,17 @@ export class GroundRenderer {
   /** Vignette/Background bleibt dunkel, bis Chunks da sind. */
   update(camera: Phaser.Cameras.Scene2D.Camera, timeMs = 0): void {
     const marginChunks = 1;
-    const minCx = Math.max(0, Math.floor((camera.scrollX - marginChunks * CHUNK_SIZE) / CHUNK_SIZE));
-    const maxCx = Math.min(Math.ceil(WORLD_SIZE / CHUNK_SIZE) - 1, Math.floor((camera.scrollX + camera.width + marginChunks * CHUNK_SIZE) / CHUNK_SIZE));
-    const minCy = Math.max(0, Math.floor((camera.scrollY - marginChunks * CHUNK_SIZE) / CHUNK_SIZE));
-    const maxCy = Math.min(Math.ceil(WORLD_SIZE / CHUNK_SIZE) - 1, Math.floor((camera.scrollY + camera.height + marginChunks * CHUNK_SIZE) / CHUNK_SIZE));
+    // m10-render-1280-gap (K3/#12969): Anfrage-Range aus dem TATSAECHLICH
+    // sichtbaren Weltausschnitt (cameraWorldView, #4658-Muster) statt
+    // scrollX + camera.width — bei Teiler s>1 ist camera.width = W/s, die
+    // alte Range fragte nur die linke/obere Teilhaelfte an. Bei Teiler 1
+    // bitgleich zur alten Berechnung (chunkRangeForView).
+    const rangeView = cameraWorldView(
+      camera.width, camera.height, camera.scrollX, camera.scrollY, camera.zoom,
+    );
+    const { minCx, maxCx, minCy, maxCy } = chunkRangeForView(
+      rangeView.left, rangeView.top, rangeView.width, rangeView.height, marginChunks,
+    );
 
     const centerX = camera.scrollX + camera.width / 2;
     const centerY = camera.scrollY + camera.height / 2;
@@ -462,7 +536,7 @@ export class GroundRenderer {
     // Sync-Fallback: höchstens einen Chunk pro Frame, damit kein Totalausfall.
     // #12436: dasselbe Budget-Gate wie der Worker-Pfad (kein Stillstand: max.
     // 3 Defer-Frames, dann erzwingender Install).
-    if (!this.worker) {
+    if (this.workers.length === 0) {
       const gate = chunkInstallGate(
         this.queue.length, 0, frameDtMs, this.installDefers, 0,
       );
@@ -502,13 +576,9 @@ export class GroundRenderer {
 
     // Leichte Wellen-Animation: zwei Frames, 1-px-Drift, nur sichtbare Ripples.
     this.rippleTick = timeMs;
-    // #4658: Cull gegen den TATSAECHLICH sichtbaren Weltausschnitt (bei Teiler
-    // s ist camera.width = W/s; der Ausschnitt bleibt aber W breit und um den
-    // Viewport-Mittelpunkt zentriert). Alter Ausdruck scrollX + camera.width
-    // cullte bei Teiler 2 die rechte Bildschirmhaelfte (Popping am Rand).
-    const view = cameraWorldView(
-      camera.width, camera.height, camera.scrollX, camera.scrollY, camera.zoom,
-    );
+    // #4658: Cull gegen den TATSAECHLICH sichtbaren Weltausschnitt — dieselbe
+    // rangeView wie die Chunk-Anfrage oben (einmal berechnet, einmal genutzt).
+    const view = rangeView;
     for (const r of this.ripples) {
       const onScreen = r.x > view.left - 16 && r.x < view.left + view.width + 16 &&
         r.y > view.top - 16 && r.y < view.top + view.height + 16;
@@ -803,8 +873,9 @@ export class GroundRenderer {
     return terrainKindAt(worldX, worldY, this.seed, WORLD_SIZE);
   }
 
-  /** Schickt faellige Chunk-Jobs an den Worker, naechstgelegene zuerst. */  private dispatch(centerX: number, centerY: number): void {
-    if (!this.worker) return;
+  /** Schickt faellige Chunk-Jobs an den Worker-Pool, naechstgelegene zuerst. */
+  private dispatch(centerX: number, centerY: number): void {
+    if (this.workers.length === 0) return;
     // Robustheit: eine verlorene Worker-Antwort wuerde sonst beide Slots
     // dauerhaft blockieren. Nach 2 s ohne Antwort auf Sync-Fallback wechseln.
     const now = Date.now();
@@ -820,15 +891,19 @@ export class GroundRenderer {
       const db = (b.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (b.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
       return da - db;
     });
-    // Höchstens zwei parallele Aufträge: mehr Worker-Last bringt wenig und
-    // verzoegert die Fertigstellung der sichtbaren Kanten.
-    while (this.queue.length > 0 && this.inflight.size < 2) {
+    // Ein Job je Worker (Worker malt sequenziell) — der Pool (#12969) malt
+    // die Startfuellung auf 4 echten Threads parallel. Dispatch ist
+    // naechstgelegen-zuerst: sichtbare Kanten fertig zuerst.
+    while (this.queue.length > 0) {
+      const idx = this.workerLoad.findIndex((load) => load === 0);
+      if (idx < 0) break;
       const job = this.queue.shift()!;
       this.inflight.set(job.key, Date.now());
+      this.workerLoad[idx] = 1;
       if (this.counters) this.counters.workerPosted++;
       // Der Worker entscheidet selbst (areaHasWater dort kostenfrei), ob er
       // alle Animationsstufen malt — kein Main-Thread-Sampling im Dispatch.
-      this.worker.postMessage({ cx: job.cx, cy: job.cy, seed: this.seed });
+      this.workers[idx].postMessage({ cx: job.cx, cy: job.cy, seed: this.seed });
     }
   }
 
@@ -894,7 +969,23 @@ export class GroundRenderer {
       chunkGateOverride.intervalMs, chunkGateOverride.budgetMs, chunkGateOverride.maxDefers,
     );
     this.installDefers = gate.defers;
-    if (!gate.install) return;
+    if (gate.install) this.installOne(centerX, centerY, timeMs);
+    // m10-render-1280-gap (#12969): Start-/Bewegungs-Rueckstau. 1 Install/Frame
+    // allein war bei 1280x720 (35 Chunks inkl. Margin) zum Kontroll-Moment am
+    // Szenenstart nicht fertig — rechts/unten blieb die Chunk-Luecke sichtbar
+    // (K1-Beleg, 960er-Kontrolle war als 30-Chunks-Fall knapp rechtzeitig
+    // fertig). Zusatz-Installs nur bei echtem Rueckstau und innerhalb eines
+    // harten Echtzeit-Budgets; Ruhebetrieb bleibt unveraendert geglaettet.
+    if (backlogInstallsAllowed(this.ready.length, this.installDefers)) {
+      const deadline = performance.now() + CHUNK_INSTALL_BACKLOG_BUDGET_MS;
+      while (this.ready.length > 0 && performance.now() < deadline) {
+        this.installOne(centerX, centerY, timeMs);
+      }
+    }
+  }
+
+  /** Ein fertiges Worker-Ergebnis einbauen (ehemals Korpus von finalizeReady). */
+  private installOne(centerX: number, centerY: number, timeMs: number): void {
     this.ready.sort((a, b) => {
       const da = (a.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (a.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
       const db = (b.cx * CHUNK_SIZE + CHUNK_SIZE / 2 - centerX) ** 2 + (b.cy * CHUNK_SIZE + CHUNK_SIZE / 2 - centerY) ** 2;
@@ -1210,8 +1301,9 @@ export class GroundRenderer {
   }
 
   destroy(): void {
-    this.worker?.terminate();
-    this.worker = null;
+    for (const w of this.workers) w.terminate();
+    this.workers.length = 0;
+    this.workerLoad.length = 0;
     while (this.ready.length > 0) {
       for (const b of this.ready.pop()!.bitmaps) b.close();
     }
