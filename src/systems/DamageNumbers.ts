@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import { C } from "../palette";
-import { PixelText } from "../gfx/font";
+import { GLYPH_ADVANCE, GLYPH_H, PixelText } from "../gfx/font";
 import {
-  MAX_ENTRIES, MAX_VIEWS_AGGREGATE, ViewBudget, LabelMemo, addDamage, expireDamage, damageLabel,
+  MAX_ENTRIES, MAX_VIEWS_AGGREGATE, ViewBudget, LabelMemo, addDamage, expireDamage,
   aggregateKey, entryMatchesKey, groupZoneFor, resetAggregateEntry, shouldAggregateDamage,
   planLabels, applyLabelFold, MAX_VISIBLE_LABELS,
   type AggregateEntry, type EntrySink, type LabelCandidate,
@@ -20,11 +20,123 @@ interface DamageView {
   maxLife: number;
   big: boolean;
   active: boolean;
+  /** Grid-Slot, den dieser View beim Aktivieren belegt hat ("cx,cy"). */
+  gridKey: string | null;
   /** Farbe/Scale ebenfalls nur bei Änderung anwenden. */
   color: number;
   scale: number;
   colorApplied: number;
   scaleApplied: number;
+}
+
+/* ── M10-chaos-fix-dmg-overlap (Befund B4, m10-chaos-legibility-audit) ─────
+ * Reine Darstellungs-Helfer: Trefferverhalten und Damage-Berechnung bleiben
+ * bitgleich. Drei Hebel:
+ *  1. Grid-Offset bei Kollision — Label-Positionen werden auf einem Raster
+ *     vergeben; ist der natürliche Slot belegt, wandert das Label um ganze
+ *     Zellen weiter (deterministische Spirale), statt sich zu stapeln.
+ *  2. Kürzung — Werte >= 100.000 als "184,5k" (max. 6 Zeichen inkl. "!"),
+ *     damit 6-stellige Summen nicht den Bildraum dominieren.
+ *  3. Anker unterhalb des Gegners (statt über dem Sprite-Zentrum), damit
+ *     Sprites nicht verdeckt werden; das Label sinkt von dort nach unten weg.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/** Max. Zeichen eines Damage-Labels inklusive "!"-Kürzung. */
+export const DAMAGE_LABEL_MAX_CHARS = 6;
+/** Ab diesem Wert (gerundet) wird im k-Format gekürzt. */
+export const DAMAGE_K_THRESHOLD = 100000;
+
+/**
+ * Anzeige-Text mit Kürzung: < 100.000 unverändert gerundet (max. 6 Zeichen),
+ * darunter im k-Format mit einer Nachkommastelle ("184,5k", deutsches Komma).
+ * Krit-"!" zählt mit: passt die Nachkommastelle nicht mehr, wird auf ganze k
+ * gerundet ("185k!"). Rein darstellerisch — der Wert im Eintrag bleibt exakt.
+ */
+export function formatDamageLabel(damage: number, crit: boolean): string {
+  const raw = Number.isFinite(damage) ? Math.max(1, Math.round(damage)) : 1;
+  const suffix = crit ? "!" : "";
+  if (raw < DAMAGE_K_THRESHOLD) return `${raw}${suffix}`;
+  const k = raw / 1000;
+  let s = k.toFixed(1).replace(".", ",");
+  if (s.endsWith(",0")) s = s.slice(0, -2);
+  if (`${s}k${suffix}`.length > DAMAGE_LABEL_MAX_CHARS) {
+    s = String(Math.round(k));
+    // Extremfall >= 1e9 Schaden: notfalls Ziffern absehen (immer noch "…k").
+    if (`${s}k${suffix}`.length > DAMAGE_LABEL_MAX_CHARS) {
+      s = s.slice(0, DAMAGE_LABEL_MAX_CHARS - 1 - suffix.length);
+    }
+  }
+  return `${s}k${suffix}`;
+}
+
+/** Grid-Zellengröße in Spielpixeln: breit genug für 6-Zeichen-Krits (56 px). */
+export const DAMAGE_GRID_CELL_W = 64;
+/** Hoch genug, damit das Absinken (DAMAGE_SINK_PX) die Nachbarzeile nicht erreicht. */
+export const DAMAGE_GRID_CELL_H = 24;
+/** Max. Umlauf-Radius in Zellen (Spiralsuche). */
+export const DAMAGE_GRID_MAX_CELLS = 3;
+/** Anker-Abstand unterhalb des Gegner-Zentrums. */
+export const DAMAGE_ANCHOR_BELOW = 12;
+/** Wie weit ein Label über seine Lebenszeit nach unten sinkt. */
+export const DAMAGE_SINK_PX = 12;
+
+/** Grid-Zellen-Schlüssel einer Bildschirmposition (Test-Helper; `pickGridSlot`
+ *  baut die Zellen-Keys inline aus den Zellindizes). */
+export function gridCellKey(screenX: number, screenY: number): string {
+  return `${Math.round(screenX / DAMAGE_GRID_CELL_W)},${Math.round(screenY / DAMAGE_GRID_CELL_H)}`;
+}
+
+/**
+ * Freier Grid-Slot für ein Label an der natürlichen Bildschirmposition:
+ * unbelegt -> Position bleibt exakt am Gegner; belegt -> Umlauf um ganze
+ * Zellen in fester Spiralen-Reihenfolge (deterministisch, kein Flackern,
+ * gleiche Eingaben => gleicher Slot). Die Spirale nutzt nur dy >= 0 (seitlich
+ * oder nach unten): ein Versatz nach oben würde wieder über das
+ * Anker-Sprite-Zentrum rutschen (genau der B4-Defekt). Mit `placed` (Rects
+ * bereits sichtbarer Labels, inkl. Sink-Drift) wird zusätzlich je Kandidat
+ * geprüft, dass das neue Label-Rect kein bestehendes schneidet —
+ * Zellen-Belegung allein reicht nicht, weil natürliche Positionen innerhalb
+ * benachbarter Zellen dicht beieinander liegen können. Im Sättigungsfall
+ * (nichts frei im Radius) natürliche Position mit eigenem Schlüssel.
+ */
+export function pickGridSlot(
+  baseScreenX: number,
+  baseScreenY: number,
+  occupied: ReadonlySet<string>,
+  labelW = 0,
+  labelH = 0,
+  placed?: ReadonlyArray<{ x: number; y: number; w: number; h: number }>,
+): { x: number; y: number; key: string } {
+  const bx = Math.round(baseScreenX / DAMAGE_GRID_CELL_W);
+  const by = Math.round(baseScreenY / DAMAGE_GRID_CELL_H);
+  for (let r = 0; r <= DAMAGE_GRID_MAX_CELLS; r++) {
+    for (let dy = -r; dy <= r; dy++) {
+      if (dy < 0) continue; // nie nach oben versetzen (Anker-Sprite bleibt frei)
+      for (let dx = -r; dx <= r; dx++) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+        const k = `${bx + dx},${by + dy}`;
+        if (occupied.has(k)) continue;
+        const x = r === 0 ? baseScreenX : baseScreenX + dx * DAMAGE_GRID_CELL_W;
+        const y = r === 0 ? baseScreenY : baseScreenY + dy * DAMAGE_GRID_CELL_H;
+        if (placed && labelW > 0 && labelH > 0
+          && placed.some((p) => overlapsRect({ x, y, w: labelW, h: labelH }, p))) continue;
+        return { x, y, key: k };
+      }
+    }
+  }
+  return { x: baseScreenX, y: baseScreenY, key: `sat,${bx},${by},${occupied.size}` };
+}
+
+/** Überlappen zwei Rects (echte Flächenüberschneidung > 0)? */
+function overlapsRect(
+  a: { x: number; y: number; w: number; h: number },
+  b: { x: number; y: number; w: number; h: number },
+): boolean {
+  return (
+    a.w > 0 && a.h > 0 && b.w > 0 && b.h > 0
+    && Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x) > 0
+    && Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y) > 0
+  );
 }
 
 /**
@@ -73,7 +185,7 @@ export class DamageNumberSystem {
     for (let i = 0; i < this.maxViews; i++) {
       const text = new PixelText(scene, 0, 0, "", C.candleWhite, "center").setDepth(15).setVisible(false);
       this.views.push({
-        text, key: 0, x: 0, y: 0, life: 0, maxLife: 0.8, big: false, active: false,
+        text, key: 0, x: 0, y: 0, life: 0, maxLife: 0.8, big: false, active: false, gridKey: null,
         color: C.candleWhite, scale: 1, colorApplied: C.candleWhite, scaleApplied: 1,
       });
     }
@@ -133,6 +245,7 @@ export class DamageNumberSystem {
   /** Deaktiviert einen View sauber (Budget, Memo, Sichtbarkeit). */
   private deactivateView(v: DamageView): void {
     v.active = false;
+    v.gridKey = null;
     this.viewBudget.deactivate();
     this.labelMemo.forget(v.key);
     v.text.setVisible(false);
@@ -214,11 +327,39 @@ export class DamageNumberSystem {
         // Tween/Position nur beim (Erst-)Aufblitzen setzen — kein Neustart je Treffer.
         view.key = key;
         this.labelMemo.forget(key);
-        view.x = entry.x ?? 0;
-        view.y = (entry.y ?? 0) - 8;
+        // Groesse/Farbe vor der Platzierung ableiten (Krit bleibt gross +
+        // hervorgehoben, Normaltreffer klein).
+        view.big = entry.crit || (entry.hits > 3 && entry.damage > 20);
+        view.color = entry.crit ? C.amber : view.big ? C.lantern : C.candleWhite;
+        view.scale = view.big ? 1.6 : 1;
+        // Anker UNTERHALB des Gegners (B4: Labels verdeckten Sprite-Zentren);
+        // Grid-Slot verhindert Stapeln/Überlappen mit bereits sichtbaren Labels.
+        const baseSx = (entry.x ?? 0) - cam.scrollX;
+        const baseSy = (entry.y ?? 0) - cam.scrollY + DAMAGE_ANCHOR_BELOW;
+        const labelW = Math.ceil((formatDamageLabel(entry.damage, entry.crit).length * GLYPH_ADVANCE - 1) * view.scale);
+        const labelH = Math.ceil(GLYPH_H * view.scale) + DAMAGE_SINK_PX; // Sink-Drift als Reserve
+        const occupied = new Set<string>();
+        const placed: Array<{ x: number; y: number; w: number; h: number }> = [];
+        for (const other of this.views) {
+          if (other === view || !other.active || !other.gridKey) continue;
+          occupied.add(other.gridKey);
+          const oc = other.text.valueText.length;
+          if (oc > 0) {
+            placed.push({
+              x: other.x - cam.scrollX,
+              y: other.y - cam.scrollY,
+              w: Math.ceil(other.text.textWidth * other.scaleApplied),
+              h: Math.ceil(GLYPH_H * other.scaleApplied) + DAMAGE_SINK_PX,
+            });
+          }
+        }
+        const slot = pickGridSlot(baseSx, baseSy, occupied, labelW, labelH, placed);
+        view.gridKey = slot.key;
+        view.x = slot.x + cam.scrollX;
+        view.y = slot.y + cam.scrollY;
         view.life = displayTime;
         view.maxLife = displayTime;
-        view.text.setPosition(Math.round(entry.x ?? 0), Math.round(view.y));
+        view.text.setPosition(Math.round(view.x), Math.round(view.y));
         view.text.setAlpha(1).setVisible(true);
       }
       // Groesse/Farbe je Frame aus dem (ggf. gefalteten) Eintrag ableiten:
@@ -235,7 +376,7 @@ export class DamageNumberSystem {
       if (!v.active) continue;
       const entry = this.entries.find((e) => entryMatchesKey(e, v.key));
       if (!entry) continue;
-      const label = damageLabel(entry);
+      const label = formatDamageLabel(entry.damage, entry.crit);
       const labelChanged = this.labelMemo.needsUpdate(v.key, label);
       const colorChanged = v.color !== v.colorApplied;
       const scaleChanged = v.scale !== v.scaleApplied;
@@ -269,13 +410,16 @@ export class DamageNumberSystem {
       v.life -= dt;
       if (v.life <= 0) {
         v.active = false;
+        v.gridKey = null;
         this.viewBudget.deactivate();
         this.labelMemo.forget(v.key);
         v.text.setVisible(false);
         continue;
       }
       const p = 1 - v.life / v.maxLife;
-      const y = v.y - p * 18;
+      // Anker liegt unterhalb des Gegners: Label sinkt nach unten WEG vom
+      // Sprite (statt aufsteigend über das Sprite-Zentrum zu ziehen).
+      const y = v.y + p * DAMAGE_SINK_PX;
       v.text.setPosition(Math.round(v.x), Math.round(y));
       v.text.setAlpha(Math.max(0, 1 - p * p) * this.dim);
       if (camera) {
@@ -295,6 +439,7 @@ export class DamageNumberSystem {
     this.labelMemo.reset();
     for (const v of this.views) {
       v.active = false;
+      v.gridKey = null;
       v.text.setVisible(false);
     }
   }
