@@ -1,0 +1,229 @@
+{
+  "lane": "m10-hazard-disc-polish",
+  "tag": "after",
+  "generatedAt": "2026-11-28T01:49:22.628Z",
+  "swiftShader": false,
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)",
+    "webglVersion": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+  },
+  "errors": [],
+  "acceptance": {
+    "metric": "milkyShareDisc (hazard-attribuierte helle Nicht-Paletten-Pixel in Disc-Fenstern, shown-vs-hidden im selben Frame)",
+    "threshold": "500er-Stress: Mittel je Viewport um >= 50 % vs. before gesenkt; 0 JS-Fehler",
+    "milkyBrightMin": 110,
+    "diffMin": 10
+  },
+  "scenarios": [
+    {
+      "tag": "stress500-640",
+      "viewport": "640x360@1",
+      "target": 500,
+      "frames": [
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-stress500-640-f1.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-stress500-640-f1-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 14.21,
+          "stackedDiscs": 5,
+          "discKeys": [
+            "hazard_disc_r30",
+            "hazard_disc_r45",
+            "hazard_disc_r60",
+            "hazard_disc_r90",
+            "hazard_disc_r30",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 30.66,
+          "milkyShareFull": 4.93,
+          "time": 1498,
+          "enemies": 19,
+          "fps": 56.4,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-stress500-640-f2.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-stress500-640-f2-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 15.87,
+          "stackedDiscs": 10,
+          "discKeys": [
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 29.68,
+          "milkyShareFull": 5.4,
+          "time": 1503,
+          "enemies": 38,
+          "fps": 57.9,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-stress500-640-f3.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-stress500-640-f3-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 13.24,
+          "stackedDiscs": 10,
+          "discKeys": [
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 32.66,
+          "milkyShareFull": 4.53,
+          "time": 1508,
+          "enemies": 28,
+          "fps": 57.6,
+          "hazards": null
+        }
+      ],
+      "milkyShareDiscAvg": 14.44,
+      "milkyShareFullAvg": 4.95
+    },
+    {
+      "tag": "stress500-780",
+      "viewport": "780x360@3",
+      "target": 500,
+      "frames": [
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-stress500-780-f1.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-stress500-780-f1-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 13.39,
+          "stackedDiscs": 5,
+          "discKeys": [
+            "hazard_disc_r30",
+            "hazard_disc_r45",
+            "hazard_disc_r60",
+            "hazard_disc_r90",
+            "hazard_disc_r30",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 51.66,
+          "milkyShareFull": 3.63,
+          "time": 1499,
+          "enemies": 23,
+          "fps": 56,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-stress500-780-f2.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-stress500-780-f2-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 12.31,
+          "stackedDiscs": 10,
+          "discKeys": [
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 33.89,
+          "milkyShareFull": 3.4,
+          "time": 1504,
+          "enemies": 38,
+          "fps": 56.4,
+          "hazards": null
+        }
+      ],
+      "milkyShareDiscAvg": 12.85,
+      "milkyShareFullAvg": 3.51
+    },
+    {
+      "tag": "m25-640",
+      "viewport": "640x360@1",
+      "target": 300,
+      "frames": [
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-m25-640-f1.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-m25-640-f1-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 12.15,
+          "stackedDiscs": 5,
+          "discKeys": [
+            "hazard_disc_r30",
+            "hazard_disc_r45",
+            "hazard_disc_r60",
+            "hazard_disc_r90",
+            "hazard_disc_r30",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 44.82,
+          "milkyShareFull": 4.09,
+          "time": 1498,
+          "enemies": 24,
+          "fps": 56,
+          "hazards": null
+        },
+        {
+          "shot": "shots/m10-hazard-disc-polish-after-m25-640-f2.png",
+          "hiddenShot": "~/tmp/m10-chaos-fix-hazard-disc/m10-hazard-disc-polish-after-m25-640-f2-hidden.png",
+          "discs": 10,
+          "discWindows": 10,
+          "milkyShareDisc": 21.21,
+          "stackedDiscs": 10,
+          "discKeys": [
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r30_s1",
+            "hazard_disc_r45_s1",
+            "hazard_disc_r60_s1",
+            "hazard_disc_r90_s1",
+            "hazard_disc_r52_s1",
+            "hazard_disc_r68_s1"
+          ],
+          "hazardShareDisc": 30.88,
+          "milkyShareFull": 7.14,
+          "time": 1503,
+          "enemies": 39,
+          "fps": 54.8,
+          "hazards": null
+        }
+      ],
+      "milkyShareDiscAvg": 16.68,
+      "milkyShareFullAvg": 5.62
+    }
+  ]
+}
