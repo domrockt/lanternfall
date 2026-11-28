@@ -96,6 +96,55 @@ kein Gerät nötig**:
 Lauf: `npx vitest run tests/device10min-refresh.test.ts` → 14/14 grün;
 `npm test` (Gesamtsuite) → 238 Dateien / 2582 Tests, 0 fail.
 
-## K4 — Doku/JSON-Vertrag (#13749)
+## K4 — Doku: JSON-Vertrag + Feldbedeutung (#13749)
 
-(nachtragen)
+### JSON-Vertrag `scripts/m10-v10-device-10min.mjs` (Schema-Änderung ab dieser Lane)
+
+Neues **optional** Feld `refresh` im Output-JSON, im Telemetrie-Teil direkt
+nach `startStatus`/`endStatus`:
+
+```jsonc
+{
+  // ... renderer, rendererValid, startStatus, endStatus ...
+  "refresh": {
+    "refreshRate": 60,              // aktive Panel-Refresh-Rate in Hz (Zahl)
+    "panelMode": "modeId=1",        // dumpsys-Mode-Id; null bei rAF-Probe
+    "source": "dumpsys-display",    // "dumpsys-display" | "raf-max"
+    "t": 1764328800000,             // Erhebungszeitpunkt (epoch ms)
+    "rafFps": 59.9                  // nur bei source=raf-max: rAF-FPS der Probe
+  },
+  // ... fps, runEnd, samples, passed (unveraendert) ...
+}
+```
+
+**Feldbedeutung / Tor-Lesung (Dom-Freigabe 17:45Z):**
+
+| Wert | Bedeutung für den Tablet-Tor |
+|---|---|
+| `refreshRate: 60` + `panelMode` gesetzt | APK-Lock aktiv (A-Feld): Panel durch `preferredDisplayModeId` auf 60 Hz gezogen |
+| `refreshRate: 120` (bzw. Panel-Max) | hz=max aktiv (B-Feld): Panel frei, Spiel-Cap regelt selbst |
+| `panelMode: null` + `source: "raf-max"` | keine dumpsys-Quelle — Hz-Schätzung aus rAF-Median bei BILDRATE=MAX (device-bridge-Äquivalent) |
+| Feld **entfällt** | Parsing-/Verbindungsfehler (WARN im Log) — Beleg ohne Hz-Zahl ist nach 17:45Z nicht torfähig, `passed` sagt dazu NICHTS (bewusst: Messtechnik-Fehler ≠ Messergebnis) |
+
+- `renderer`/`rendererValid` (Guard 9bcc1e41) unangetastet; `passed` bytegleich
+  (`rendererValidFlag && dropPct <= 20 && errors.length === 0`) — das
+  refresh-Feld beeinflusst die passed-Logik nicht (Guard-Test
+  `tests/device10min-refresh.test.ts` pinnt beide passed-Ausdrücke).
+- Quelle 1 ist die Bridge-Shell-Weiterleitung (`/shell?cmd=dumpsys display`) —
+  steht sie (noch) nicht, greift automatisch Quelle 2 (rAF-MAX-Probe wie in
+  `m10-janky-remeasure.mjs`).
+
+**Grenze dieser Lane:** Kein neuer Messlauf nötig — Parsing/JSON-Vertrag only.
+`perf.mjs`/`fullrun.mjs` nicht angefasst (fullrun läuft als eigener Job).
+
+## Abnahme (Lane-Gesamt)
+
+| Kriterium | Beleg |
+|---|---|
+| `node --check` rc=0 | beide geänderten .mjs (`scripts/m10-v10-device-10min.mjs`, `scripts/m10-device-refresh.mjs`) — RC=0 im K2-Schritt |
+| `npm test` 0 fail | 238 Dateien / 2582 Tests grün (K3-Schritt) |
+| JSON-Schema-Änderung in Doku belegt | Abschnitt K4 (oben) |
+| Tor-Verhalten (passed-Logik) bytegleich | Quell-Guard-Test pinnt beide passed-Ausdrücke; only addition: `...(refresh ? { refresh } : {})` |
+| Kein Touch an perf.mjs/fullrun.mjs | `git log --oneline -- scripts/perf.mjs scripts/fullrun.mjs` leer in dieser Lane |
+
+Commits: #13746 `ec4e6a0f`, #13747 `470e8fd7`, #13748 `f2108bc7`, #13749 (dieser).
