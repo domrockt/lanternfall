@@ -19877,7 +19877,7 @@
       "id": 13915,
       "title": "m10-particles-hit-wiring: K2 Wiring particlesPerHitFor in hitEnemy",
       "description": "Partikel pro Treffer ueber particlesPerHitFor(QUALITY) statt konstanter Zahl. Abnahme: high bitgleich (crit 5 / normal 2), medium/low/thermal proportional zum Budget gesenkt; tsc rc=0; Commit #<Karte>.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T18:31:40Z",
@@ -19893,16 +19893,21 @@
           "at": "2026-11-28T18:33:58Z",
           "by": "build",
           "text": "done → review: Commit 4b6edb6a (Wiring, tsc rc=0). Reviewer-OK steht aus."
+        },
+        {
+          "at": "2026-11-28T18:35:08Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS (Commit 4b6edb6a): Rundung verifiziert (medium 3/1), QUALITY beim Aufruf gelesen (Tier-Wechsel greift sofort), kein Import-Zyklus, Claims sauber."
         }
       ],
       "created": "2026-11-28T18:31:21Z",
-      "updated": "2026-11-28T18:33:58Z"
+      "updated": "2026-11-28T18:35:08Z"
     },
     {
       "id": 13916,
       "title": "m10-particles-hit-wiring: K3 Probe vor/nachher je Tier",
       "description": "scripts/m10-particles-hit-wiring.mjs: Spawn-Anzahl pro Hit vor/nachher je Tier (high/medium). Abnahme: JSON in ~/games/.evidence/m10-particles-hit-wiring/, medium sinkt messbar, high identisch; Commit #<Karte>.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T18:32:17Z",
@@ -19918,16 +19923,21 @@
           "at": "2026-11-28T18:33:58Z",
           "by": "build",
           "text": "done → review: Commit aac67583 (Probe, JSON-Beleg). Reviewer-OK steht aus."
+        },
+        {
+          "at": "2026-11-28T18:35:08Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS (Commit aac67583): Probe laeuft, Budgets live aus quality.ts gelesen, verdicts alle true, JSON-Beleg ~/games/.evidence/m10-particles-hit-wiring/probe.json. Nit: Regex haengt an Quell-Reihenfolge (in Doku vermerkt)."
         }
       ],
       "created": "2026-11-28T18:31:21Z",
-      "updated": "2026-11-28T18:33:58Z"
+      "updated": "2026-11-28T18:35:08Z"
     },
     {
       "id": 13917,
       "title": "m10-particles-hit-wiring: K4 Regressionstest + Abnahme",
       "description": "tests/particles-hit-wiring.test.ts: Partikel pro Hit folgt particlesPerHitFor je Tier; Spawn-Reihenfolge/Positionen unverändert. Abnahme: Suite grün, npm test grün, npm run build rc=0; Commit #<Karte>.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T18:33:58Z",
@@ -19938,10 +19948,15 @@
           "at": "2026-11-28T18:34:21Z",
           "by": "build",
           "text": "test-auditor PASS: 6/6 grün, Formel-Test rechnet Erwartung unabhängig nach (keine Tautologie), Quell-Guards erzwingen Wiring + Reihenfolge, Suite 2601/2601, tsc rc=0."
+        },
+        {
+          "at": "2026-11-28T18:35:08Z",
+          "by": "build",
+          "text": "review → done: Reviewer PASS + test-auditor PASS (Commit 8a2bafd3): 6/6, Suite 2601/2601, Build rc=0, Guards nicht tautologisch."
         }
       ],
       "created": "2026-11-28T18:31:21Z",
-      "updated": "2026-11-28T18:34:21Z"
+      "updated": "2026-11-28T18:35:08Z"
     }
   ]
 }

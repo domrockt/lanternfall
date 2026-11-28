@@ -1,0 +1,25 @@
+Lane m10-particles-hit-wiring abgeschlossen — 4/4 Karten (#13914-#13917), alle done.
+
+Ziel: particlesPerHitFor() (src/logic/quality.ts, bisher reine Daten ohne Aufrufort)
+ist in den Hit-Partikelpfad verdrahtet (Rest-Hebel 1 aus docs/lanes/m10-fx-medium-cap).
+
+- K1 (#13914, 58df7f36): Befund — hitEnemy() in src/systems/CombatSystem.ts ist der
+  universelle Trefferpfad (9 Call-Sites, alle Damage-Wege), konstanter fx_star-Burst
+  crit?5:2. Waffenspezifische Zusatz-Bursts bewusst nicht angefasst (Begründung in der
+  Lane-Doku).
+- K2 (#13915, 4b6edb6a): Neue reine Funktion hitParticlesFor(crit, tier) — Skala
+  particlesPerHitFor(tier)/particlesPerHitFor("high"); hitEnemy() nutzt sie statt der
+  Konstante. High bitgleich (crit 5 / normal 2), medium 3/1, low 2/1, thermal 1/1.
+  Keine Balance-/Optik-Änderung, Spawn-Reihenfolge unverändert, tsc rc=0.
+- K3 (#13916, aac67583): Probe scripts/m10-particles-hit-wiring.mjs liest Budgets LIVE
+  aus quality.ts (wertunabhängig, 14 oder 10 je Merge-Stand ok). Verdicts true:
+  highUnchanged, mediumReduced (5/2 -> 3/1), monotonic. JSON:
+  ~/games/.evidence/m10-particles-hit-wiring/probe.json.
+- K4 (#13917, 8a2bafd3): tests/particles-hit-wiring.test.ts 6/6 (Tier-Tabelle, High
+  bitgleich, Monotonie, Quell-Guards); Suite 241 Files / 2601 Tests grün; npm run
+  build rc=0.
+
+Kontrolleure: reviewer PASS + test-auditor PASS (Urteile in docs/lanes/
+m10-particles-hit-wiring.md). Merge-Hinweis: der fxActive-Median <= 80 wird erst mit
+BEIDEM messbar — K2-Senkung (m10-fx-medium-cap) und diesem Wiring. Kein Merge-Konflikt
+(disjunkte Dateien: nur CombatSystem.ts + eigene Test/Probe/Doku).

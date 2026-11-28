@@ -84,3 +84,18 @@ in `hitEnemy()`.
   korrekt), high unverändert.
 - Merge-Hinweis: fxActive-Median <= 80 erst mit K2-Senkung **und** diesem Wiring
   messbar (siehe oben).
+
+## Kontrolleur-Urteile (2026-11-28)
+
+- **test-auditor: PASS** — 6/6 grün; Formel-Test rechnet die Erwartung unabhängig
+  aus `qualityBudgetFor` nach (keine Tautologie); Quell-Guards erzwingen Wiring +
+  Spawn-Reihenfolge; Suite 2601/2601, tsc rc=0.
+- **reviewer: PASS** — Rundung verifiziert (high bitgleich 5/2, medium 3/1, low
+  2/1, thermal 1/1); `QUALITY` wird in `hitEnemy()` beim Aufruf gelesen, Tier-
+  Wechsel greifen sofort; Claims sauber (genau die 4 Lane-Dateien im Diff);
+  kein Import-Zyklus; Probe/Test sinnvoll. Nits (kein Blocker): Magic Numbers
+  5/2 in `hitParticlesFor` (vom Test gepinnt); Probe-Regex hängt an der Quell-
+  Reihenfolge der `particlesPerHit:`-Felder in quality.ts (echte Änderungen
+  fallen über den K4-Formel-Test auf).
+
+Commits: 58df7f36 (K1) · 4b6edb6a (K2) · aac67583 (K3) · 8a2bafd3 (K4).
