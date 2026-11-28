@@ -1,0 +1,22 @@
+# Lane m10-props-always-visible — abgeschlossen 2026-11-28
+
+Dom-Befund "Umgebungssprites flackern bei vielen Gegnern" behoben: Der Prop-Dichte-LOD
+(propDensityMaxTier, >=150/200 Gegner) schaltete ohne Glättung — die Gegnerzahl pendelte
+um die Schwellen. Fix: Dichte-LOD für Props ENTFERNT (Tier immer 2, applyPropTier/
+propLodMaxTier/Filter raus); Props/Schatten/Glows sind immer sichtbar. Ambient-Partikel
+(Glühwürmchen/Nebel) als einzige lastabhängige Stelle jetzt mit Hysterese (Band 40) +
+weicher Alpha-Rampe statt hartem An/Aus. quality-Tiers/Chunk-Culling betreffen keine
+Welt-Objekte (geprüft).
+
+Messwerte: Repro before 8 Tier-Wechsel in 12 s (visProps 13..458) -> after 0 Wechsel.
+Android-Proxy (Tab S4, CPU 4x, Mesa Intel RPL-S): fpsMedian 57, fpsMin 49, 0 Wechsel.
+Belege: ~/games/.evidence/m10-props-always-visible/{before,after,after-proxy}.json,
+Abnahme-Shot shots/abnahme/m10-props-always-visible-after-proxy.png.
+
+Grün: tsc, 2225/2225 Tests, build, 0 JS-Fehler. Doku: docs/lanes/m10-props-always-visible.md.
+Lehre in Team/Lehren.md: "Welt-Objekte nie per LOD verstecken — Flackern ist schlimmer
+als ein paar FPS." Offen (nicht diese Lane): Gerätemessung Minute 25 nach Merge (>= 60 FPS
+Ziel); FxSystem.setEnemyLoad ist toter Code (Cleanup-Kandidat).
+
+Karten: #11772 K1 Repro, #11773 K2 Fix, #11774 K3 Prüfung, #11775 K4 Belege/Doku.
+Commits: 7b6aad7a (#11772), 363c6909 (#11773), 3754ea17 (#11774), dieser Commit (#11775).

@@ -6,7 +6,9 @@
 // nachher (K2: Tier immer 2) genau 0 Wechsel. Kein FPS-Ziel -> ohne flock.
 //   node scripts/m10-props-always-visible.mjs --tag before|after
 import { mkdirSync, writeFileSync } from "node:fs";
-import { ensureBuild, loadPlaywright, startServer, startRun } from "./harness.mjs";
+import {
+  androidProxyContext, ensureBuild, loadPlaywright, startServer, startRun,
+} from "./harness.mjs";
 
 const argv = process.argv.slice(2);
 const argOf = (name, fallback) => {
@@ -16,12 +18,30 @@ const argOf = (name, fallback) => {
 const TAG = String(argOf("tag", "before"));
 const OUT = String(argOf("out", `${process.env.HOME}/games/.evidence/m10-props-always-visible/${TAG}.json`));
 const DURATION_MS = Number(argOf("duration", 12000));
+const SHOT = argOf("shot", null); // optional: Pfad für Abnahme-Screenshot
+// --proxy: Android-Ersatzprofil (Galaxy Tab S4, CPU 4x gedrosselt). Misst FPS
+// -> nur mit flock /home/ai/games/.lf-perf.lock starten.
+const PROXY = argv.includes("--proxy");
+
+function median(xs) {
+  const s = [...xs].filter(Number.isFinite).sort((a, b) => a - b);
+  if (s.length === 0) return NaN;
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
 
 ensureBuild();
 const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 640, height: 360 }, deviceScaleFactor: 1 });
+let page;
+let proxyContext = null;
+if (PROXY) {
+  proxyContext = await androidProxyContext(browser);
+  page = proxyContext.page;
+} else {
+  page = await browser.newPage({ viewport: { width: 640, height: 360 }, deviceScaleFactor: 1 });
+}
 await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=7`);
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
@@ -83,6 +103,7 @@ await page.evaluate((durationMs) => {
         enemies: run.enemies?.count ?? 0,
         tier: g.propLodMaxTier,
         visProps, totProps, visShadows, visGlows,
+        fps: Math.round(window.__game.loop.actualFps),
       });
     },
   });
@@ -95,6 +116,19 @@ const data = await page.evaluate(() => {
   run.__lfOscTimer?.remove();
   return samples;
 });
+if (SHOT) {
+  mkdirSync(new URL(".", `file://${SHOT}`), { recursive: true });
+  await page.screenshot({ path: SHOT });
+}
+// Belegregel: jeder Perf-Beleg schreibt den WebGL-Renderer-String mit.
+const renderer = await page.evaluate(() => {
+  const gl = document.createElement("canvas").getContext("webgl")
+    ?? document.createElement("canvas").getContext("experimental-webgl");
+  if (!gl) return "no-webgl";
+  const ext = gl.getExtension("WEBGL_debug_renderer_info");
+  return ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER));
+});
+await proxyContext?.context?.close();
 await browser.close();
 server.stop();
 
@@ -109,10 +143,14 @@ for (let i = 1; i < data.length; i++) {
 const result = {
   tag: TAG,
   date: new Date().toISOString(),
+  proxy: PROXY,
+  renderer,
   durationMs: DURATION_MS,
   samples: data.length,
   enemiesMin: Math.min(...data.map((d) => d.enemies)),
   enemiesMax: Math.max(...data.map((d) => d.enemies)),
+  fpsMedian: median(data.map((d) => d.fps)),
+  fpsMin: Math.min(...data.map((d) => d.fps)),
   tierChanges,
   visChanges,
   visPropsMin: Math.min(...data.map((d) => d.visProps)),
@@ -123,6 +161,7 @@ const result = {
 };
 mkdirSync(new URL(".", `file://${OUT}`), { recursive: true });
 writeFileSync(OUT, JSON.stringify(result, null, 2));
-console.log(`[${TAG}] samples=${data.length} enemies=${result.enemiesMin}..${result.enemiesMax}`);
+console.log(`[${TAG}] samples=${data.length} enemies=${result.enemiesMin}..${result.enemiesMax} fpsMedian=${result.fpsMedian} fpsMin=${result.fpsMin}`);
+console.log(`[${TAG}] renderer=${renderer}`);
 console.log(`[${TAG}] tierChanges=${tierChanges.length} visChanges=${visChanges} visProps=${result.visPropsMin}..${result.visPropsMax}`);
 console.log(`[${TAG}] -> ${OUT}`);
