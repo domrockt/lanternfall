@@ -11,11 +11,20 @@
 //                                        Muster aus perf.mjs / m10-frame-tail-batching.mjs /
 //                                        m10-atlas-pack.mjs — kein neues Messverfahren)
 //
-// Tore (rein, unit-getestet in tests/v10-gate.test.ts):
+// Tore (rein, unit-getestet in tests/v10-gate.test.ts) — Urteilsreihenfolge seit
+// Lane m10-v10-gate-torprio (K1, #13519): PRIMÄR sind die Pacing-Metriken, weil
+// gfxinfo-janky als alleinige Tor-Metrik unbrauchbar ist (K4-Befund m10-janky-remeasure
+// 28.11. 17:10Z: 0 % janky bei FPS avg 50,1 < 60 und rAF-p95 33,4 ms — 0 % sagt nichts
+// über das Pacing). Offene Dom-Frage zur Tor-Definition: coding-brain/Lead/
+// "Fragen an Dom.md" (Tor-Definition an realer Last + Ergänzung 17:0xZ) — entscheidet
+// Dom anders, dreht --janky-as-gate die alte Lesart zurück (Flag, K1).
+//
 //   R1 renderer-pflicht  WebGL-Renderer-String vorhanden, KEIN SwiftShader/Software
 //                        (Regel 6, 2026-11-28: SwiftShader-Belege sind ungültig → Exit 2)
+//   T1 fps-avg           FPS avg >= 57 (aus Host-Harness-rAF-dt, Minute-25-Worst-Case;
+//                        Korridor 57–60 aus K4-Fixziel m10-fps-pacing-timestep)
+//   T2 frame-p95         rAF-Frame-Zeit p95 <= 16 ms (Minute-25-Worst-Case, 300er Top-up)
 //   G1 content-counts    Inhalte exakt 30/6/6/6/6/2
-//   G2 frame-p95         JS-Frame-Zeit p95 <= 16 ms (Minute-25-Worst-Case, 300er Top-up)
 //   G3 js-errors-0       0 JS-Fehler über Perf-Pass + Fullrun-Guard + verify:final
 //   G4 fullrun-inhalt    6/6 Bosse 300–1800 s (±2 s), 6 besiegt, 6 Truhen, Sieg dawn
 //                        (Tor-Definition aus scripts/m10-fullrun-guard.mjs)
@@ -24,6 +33,11 @@
 //                        Delta m1→end bleibt Beobachtung (kalte m1-Referenz, Sägezahn).
 //
 // Beobachtungen (Warnung, kein FAIL — keine selbst erfundenen Tore):
+//   gfxinfo-janky >= 10 % (wenn als perf.gfxinfoJankyPct eingespeist, z. B. aus einem
+//     Geräte-Lauf) — sekundär/beobachtend, KEIN FAIL mehr allein (K4-Befund). Das alte
+//     strenge janky-geführte Tor ist per Flag reproduzierbar:
+//     `node scripts/m10-v10-gate.mjs --janky-as-gate ...` → gfxinfo-janky wieder hartes
+//     Tor < 10 % (nicht messbar = FAIL, kein stillschweigendes Grün).
 //   Draw-Calls/Frame p95 <= 40, Texturanzahl <= 500.
 //
 // Aufruf (FPS/Echtzeit => Mess-Sperre):
@@ -38,9 +52,15 @@ import { pathToFileURL } from "node:url";
 
 // ---------- Tore (rein, kein Node-/Browser-I/O) ----------
 export const CONTENT_TARGET = { enemies: 30, weapons: 6, powerups: 6, evolutions: 6, bosses: 6, characters: 2 };
+// T1: unteres Ende des K4-Fixkorridors (fpsAvg 57–60, Hebel 1 m10-fps-pacing-timestep);
+// am Gerät werden 50,1 FPS gemessen -> hier rot, genau wie das Pacing-Fixziel es verlangt.
+export const FPS_AVG_TARGET = 57;
 export const FRAME_P95_TARGET_MS = 16;
 export const HEAP_TARGET_PCT = 15;
 export const DRAWS_P95_WARN = 40;
+// Beobachtungsschwelle für gfxinfo-janky (Geräte-Metrik, Sekundär since K4-Befund);
+// nur mit --janky-as-gate wieder hartes Tor.
+export const GFXINFO_JANKY_WARN_PCT = 10;
 // Baseline-Kalibrierung aus Gate-Lauf 28.11. (gemessen 2787 Texturen): Warngrenze
 // fängt grobe Regressionen, kein hartes Tor.
 export const TEXTURES_WARN = 3500;
@@ -69,16 +89,36 @@ export function frameP95(dts) {
   return list[Math.min(list.length - 1, Math.ceil(0.95 * list.length) - 1)];
 }
 
+/** FPS avg aus Frame-dt-Samples (ms); null, wenn keine Samples. */
+export function fpsAvg(dts) {
+  const list = (Array.isArray(dts) ? dts : []).filter((d) => Number.isFinite(d) && d >= 0);
+  if (list.length === 0) return null;
+  const mean = list.reduce((a, b) => a + b, 0) / list.length;
+  if (!(mean > 0)) return null;
+  return Math.round((1000 / mean) * 100) / 100;
+}
+
+/** gfxinfo-janky in Prozent einspeisen (Geräte-Lauf); ungültig/fehlend -> null. */
+export function gfxinfoJankyPct(perf) {
+  const v = perf?.gfxinfoJankyPct;
+  return typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : null;
+}
+
 /**
  * Prüft alle Host-Tore gegen die eingesammelten JSONs. Liefert
  * { verdict: "PASS"|"FAIL"|"INVALID", passed, gates, failures, warnings }.
  * INVALID = Renderer-Pflichttor verletzt (Exit 2): Messung ist dann kein gültiges Urteil.
+ * opts.jankyAsGate = true stellt die ALTE strenge Lesart wieder her (gfxinfo-janky
+ * als hartes Tor < 10 %, nicht messbar = FAIL); Default: nur Beobachtung (K1, #13519).
  */
-export function evaluateGates(input = {}) {
+export function evaluateGates(input = {}, opts = {}) {
   const { renderer, content, perf, guard, verify } = input;
+  const jankyAsGate = Boolean(opts.jankyAsGate);
   const rVerdict = rendererVerdict(renderer);
 
   const contentOk = Boolean(content?.ok) && Object.entries(CONTENT_TARGET).every(([k, v]) => Number(content?.counts?.[k]) === v);
+  const fps = fpsAvg(perf?.frameDtsMs);
+  const fpsOk = fps !== null && fps >= FPS_AVG_TARGET;
   const p95 = frameP95(perf?.frameDtsMs);
   const frameOk = p95 !== null && p95 <= FRAME_P95_TARGET_MS;
   const jsErrors = [
@@ -95,15 +135,24 @@ export function evaluateGates(input = {}) {
 
   const gates = [
     { gate: "renderer-pflicht", ok: rVerdict.ok, actual: rVerdict.renderer, target: "echter GPU-Renderer-String (kein SwiftShader)", detail: rVerdict.reason },
+    { gate: "fps-avg", ok: fpsOk, actual: fps, target: `>= ${FPS_AVG_TARGET} FPS (rAF-dt, Minute-25-Worst-Case)` },
+    { gate: "frame-p95", ok: frameOk, actual: p95, target: `rAF-Frame-Zeit p95 <= ${FRAME_P95_TARGET_MS} ms` },
     { gate: "content-counts", ok: contentOk, actual: content?.counts ?? null, target: CONTENT_TARGET },
-    { gate: "frame-p95", ok: frameOk, actual: p95, target: `<= ${FRAME_P95_TARGET_MS} ms` },
     { gate: "js-errors-0", ok: jsErrors.length === 0 && checksFailed.length === 0, actual: { jsErrors: jsErrors.length, verifyChecksFailed: checksFailed.length }, target: 0 },
     { gate: "fullrun-inhalt", ok: guardOk, actual: { completed: guard?.completed ?? null, failures: guard?.gates?.failures ?? null, resultReason: guard?.resultReason ?? null }, target: "6/6 Bosse ±2 s, 6 besiegt, 6 Truhen, dawn (m10-fullrun-guard)" },
     { gate: "heap-retained", ok: heapOk, actual: heapDelta, target: `< ${HEAP_TARGET_PCT} % (endMB vs startMB, retained)` },
   ];
-  const failures = gates.filter((g) => !g.ok).map((g) => g.gate);
 
   const warnings = [];
+  const jankyPct = gfxinfoJankyPct(perf);
+  if (jankyAsGate) {
+    // Alte strenge Lesart (Rückweg, K1): gfxinfo-janky wieder hartes Tor.
+    gates.push({ gate: "gfxinfo-janky", ok: jankyPct !== null && jankyPct < GFXINFO_JANKY_WARN_PCT, actual: jankyPct, target: `< ${GFXINFO_JANKY_WARN_PCT} % (--janky-as-gate: alte janky-geführte Lesart)` });
+  } else if (jankyPct !== null && jankyPct >= GFXINFO_JANKY_WARN_PCT) {
+    warnings.push(`gfxinfo-janky ${jankyPct} % >= ${GFXINFO_JANKY_WARN_PCT} % (Beobachtung, kein Tor — K4-Befund 28.11.: alleinige Tor-Metrik unbrauchbar, 0 % janky bei FPS avg 50,1 / rAF-p95 33,4 ms; hartes Tor nur per --janky-as-gate)`);
+  }
+  const failures = gates.filter((g) => !g.ok).map((g) => g.gate);
+
   const drawsP95 = perf?.drawsP95 ?? null;
   if (drawsP95 !== null && drawsP95 > DRAWS_P95_WARN) warnings.push(`Draw-Calls/Frame p95 ${drawsP95} > ${DRAWS_P95_WARN} (Beobachtung)`);
   const textures = perf?.textures ?? null;
@@ -119,6 +168,7 @@ export function evaluateGates(input = {}) {
     failures,
     warnings,
     observation: {
+      gfxinfoJanky: { pct: gfxinfoJankyPct(perf), source: perf?.gfxinfoJankySource ?? null, role: jankyAsGate ? "Tor (--janky-as-gate, alte Lesart)" : "Beobachtung, kein Tor (K4-Befund: fps-avg + rAF-p95 führen)" },
       drawsPerFrame: perf ? { median: perf.drawsMedian ?? null, p95: drawsP95, max: perf.drawsMax ?? null } : null,
       textures: textures,
       heapInRunObservation: guard?.heap
@@ -141,6 +191,9 @@ if (isMain) {
   const OUT = arg("out", "shots/m10-v10-gate.json");
   const SKIP_FULLRUN = argv.includes("--skip-fullrun"); // nur fuer schnelle Skript-Iterationen, kein Abnahme-Lauf
   const SKIP_VERIFY = argv.includes("--skip-verify");
+  // K1-Rückweg: alte strenge janky-geführte Lesart (gfxinfo-janky als hartes Tor)
+  // reproduzierbar halten, bis Dom die Tor-Definition entscheidet (Fragen an Dom.md).
+  const JANKY_AS_GATE = argv.includes("--janky-as-gate");
   const EVIDENCE = join(homedir(), "games", ".evidence", "m10-v10-gate-guard");
   mkdirSync(EVIDENCE, { recursive: true });
   mkdirSync("shots", { recursive: true });
@@ -304,6 +357,7 @@ if (isMain) {
       renderer,
       frames: sample.frames,
       frameDtsMs: sample.dts,
+      fpsAvg: fpsAvg(sample.dts),
       p50: pct(0.5), p90: pct(0.9), p95: pct(0.95), p99: pct(0.99),
       worstFrameMs: sorted[sorted.length - 1] ?? null,
       drawsMedian: dsorted[Math.floor(dsorted.length / 2)] ?? null,
@@ -314,7 +368,7 @@ if (isMain) {
       avgEnemies: sample.avgEnemies,
       jsErrors: perfErrors,
     };
-    console.log(`[gate] perf: renderer="${renderer}" p95=${perf.p95} ms drawsP95=${perf.drawsP95} textures=${textures} frames=${perf.frames}`);
+    console.log(`[gate] perf: renderer="${renderer}" fpsAvg=${perf.fpsAvg} p95=${perf.p95} ms drawsP95=${perf.drawsP95} textures=${textures} frames=${perf.frames}`);
   } catch (e) {
     perf = { renderer: null, frameDtsMs: [], p95: null, drawsP95: null, textures: null, jsErrors: [...perfErrors, String(e)] };
   } finally {
@@ -324,9 +378,10 @@ if (isMain) {
   }
 
   // Tor-JSON schreiben + Exit-Code.
-  const verdict = evaluateGates({ renderer: perf.renderer, content, perf, guard, verify });
+  const verdict = evaluateGates({ renderer: perf.renderer, content, perf, guard, verify }, { jankyAsGate: JANKY_AS_GATE });
   const report = {
     gate: "v1.0-Host-Gate (m10-v10-gate-guard)",
+    gateOrder: JANKY_AS_GATE ? "legacy-janky-gate (--janky-as-gate)" : "fps-avg+raf-p95-primary (K1, #13519)",
     at: new Date().toISOString(),
     outPath: OUT,
     renderer: perf.renderer,
