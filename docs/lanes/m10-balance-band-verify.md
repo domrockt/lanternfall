@@ -85,6 +85,27 @@ Sichtungsende via HUD-Poll). 33 Bosse erschienen und besiegt, 29/33 im Korridor
 - *Reihenfolge:* erst B1 fixen und neu messen — B1 ändert Level-/Waffenstand und damit die
   Boss-Dauern mit. B2 erst dann bewerten (Messskript zeichnet Boss-Dauern jetzt mit aus).
 
+## K4-Anhang — Ist-Zahlen für den Fix-Job (Hebel 1)
+
+Ankunftsrate (Spawnrate/s) um das Todesfenster, `src/data/waves.ts` (`WAVES`):
+
+| Minute | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 |
+|---|---|---|---|---|---|---|---|---|---|
+| Rate/s | 1,416 | 1,484 | 1,552 | 1,580 | 1,648 | 1,716 | 1,784 | 1,852 | 1,860 |
+
+- Die Rate wächst im Fenster 18–24 um **+25 %** (1,484 → 1,852), während der Spieler durch den
+  XP-Aufschlag ab Level 28 (erreicht ~Minute 18–20, mira/7 starb auf Level 30) langsamer im
+  Schaden wächst. Der Late-Deckel (300 @ 960x540 ab Minute 18) begrenzt nur die Gleichzeitigkeit,
+  nicht die Ankunftsrate — die Dichte am Spieler steigt trotzdem, solange die Kill-Rate sinkt.
+- Konkreter Hebelvorschlag (Dora): Faktor `SPAWN_DAMP_18_24` auf `spawnRate` der Wellen 18–24 in
+  `WAVES` (analog zum HP-Relief-Muster: Start Minute 18, Rampe 240 s, Minute 25+ unverändert —
+  dort greift `lateGameSpawnRate` und der Endboss-Korridor darf nicht kippen). Werte per
+  Suchskript mit festem Iterationslimit suchen, Kriterium = dieselben 6 Läufe
+  (`node scripts/m10-balance-endgame.mjs after`, Output `shots/m10-balance-band-after.json`):
+  6/6 in [25,40] min, Streuung ≤ 4 min, und Boss-Dauern im Korridor (Skript zeichnet sie mit aus).
+- Nebeneffekt-Check: weniger Kills im Fenster → weniger XP → Endlevel könnte unter 25 fallen;
+  deshalb Kriterium „Endlevel [25,40]" im selben Lauf mitprüfen (Korridor A5).
+
 ## Abnahme-Übersicht
 
 | Karte | Kriterium | Ergebnis |
