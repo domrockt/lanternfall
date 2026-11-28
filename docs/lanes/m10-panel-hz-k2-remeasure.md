@@ -53,6 +53,10 @@ Hebelliste (Datei / Hebel / erwarteter Gewinn) → Bedarfsmeldung requests.md:
 - Verwaiste doing-Karten #14011/#14013 (m10-passive-math-artifact-fix — Merge e234ea25 ist in main) blockieren das Board-Plugin-WIP-Limit 2: Lane konnte K1 nicht nach `doing` ziehen (board_move REFUSED 19:37Z). Karten nicht angetastet (Argus-Regel: verwaiste Karten räumt der Disponent/Hygiene-Job). Disponent: bitte #14011/#14013 zurücksetzen.
 - Alle Karten dieser Lane: #14110–#14113 (reservierter Block).
 
+## Gesamteurteil (K3)
+
+**Urteil: Blocker dokumentiert, Lane sauber abgeschlossen.** K1 = FAIL mit 4-fachem Beleg (dist-APK, Ancestry, Bundle-Grep mit Positivkontrolle, Telemetrie-Build-Kennzeichen); K2 = nicht angehangen (Briefing-Konform, Gerät unberührt); K3 = kein Delta messbar, Hebelliste → Bedarfsmeldung requests.md 19:4xZ; Commit-Grenzen: je Karte ein Commit (#14110 af1699b5, #14112, #14113).
+
 ## Lane-Abschluss
 
 Lane endet als **dokumentierter Blocker** (Abnahme-Alternative 2: „ein dokumentierter Blocker … als sauberer Lane-Abschluss“). Nach APK-Update ist K2a/K2b mit dem unveränderten lane-committeten Skript nachzuholen — Briefing/Bedarf dazu stehen in requests.md (Eintrag 19:3xZ, aktualisiert um K1-Befund).
