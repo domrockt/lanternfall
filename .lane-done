@@ -1,0 +1,23 @@
+# Lane m10-chest-arrow-texture-r2 — fertig (2026-11-28)
+
+Ziel: fehlende Textur "arrow_chest" (Truhen-Randpfeil, ChestSystem.ts Zeile 316) wiederhergestellt.
+Das Grid war im M6-robust-Refactor aus SPRITE_GRIDS verloren gegangen; der Pfeil renderte als
+Phaser-__MISSING-Fehlertextur.
+
+Ergebnis:
+- arrow_chest-Grid (16x16, Pfeil Spitze rechts, Lantern-Look: 0-Kontur / 22-glow / 21-lantern /
+  13-Highlight, binäres Alpha, 0 Off-Palette) in src/gfx/textures.ts SPRITE_GRIDS ergänzt.
+- ChestSystem.ts und atlas.ts nicht angefasst; Atlas-Präfix greift automatisch (after-Probe:
+  Pfeil-Textur = runtime_atlas / frame arrow_chest).
+
+Messwerte:
+- before (~/games/.evidence/m10-chest-arrow-texture-r2/before.json): exists('arrow_chest')=false,
+  arrowTextureKey=__MISSING in 640x360@2 und 780x360@3, 0 JS-Fehler.
+- after (…/after.json): exists=true, arrowTextureKey=runtime_atlas/arrow_chest, Pfeil sichtbar am
+  rechten Rand (rotation 0) in beiden Formaten, 0 JS-Fehler.
+- tests/chest-arrow-texture.test.ts neu (6 Tests); tsc grün; npm test 179 Dateien / 1952 Tests grün;
+  npm run build grün; tests/palette-compliance.test.ts weiter grün.
+- Art-Director: PASS (4 / 4 / 4,5, Grenze >= 4) — Belege shots/abnahme/m10-chest-arrow-texture-r2-*.
+
+Karten: #10833 (K1 Vorher-Probe, 80eb21fc), #10834 (K2 Grid+Tests, a0c04e23),
+#10835 (K3 Nachher+Doku+a0185cd8 WIP + finaler Commit). Doku: docs/lanes/m10-chest-arrow-texture-r2.md.

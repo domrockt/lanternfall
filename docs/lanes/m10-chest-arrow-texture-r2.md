@@ -46,7 +46,12 @@ Abnahme-Bilder (git): `shots/abnahme/m10-chest-arrow-texture-r2-after-640x360.pn
 
 ## Art-Director-Abnahme
 
-- Ergebnis: siehe Board-Karte #10835 / Commit-Kommentar (Grenze ≥ 4/5 für den Pfeil).
+- **PASS** (2026-11-28, Grenze ≥ 4/5): after-zoom-4x **4**, after-zoom-780-3x **4**,
+  after-640x360 (Vollbild) **4,5**. Befund: Pfeil auf dunklem Moor/Void sofort als Richtungs-
+  Marker lesbar, Spitze eindeutig rechts (rotation 0 korrekt), warmes Gold im 32er-Nacht-Look,
+  0 Off-Palette, binäres Alpha sauber, nearest 4×/3× scharf. Kein „muss neu", keine Blocker.
+- Optionale Politur (nicht abnahmewirksam): obere Diagonale könnte gleichmäßigere 1–2-px-Stufen
+  nutzen; Shaft-Knick an Spalte 0–3/row 9 ist bei ADD-Blend harmlos (Kontur ohnehin unsichtbar).
 
 ## Offene Punkte
 
