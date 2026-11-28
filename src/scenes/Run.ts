@@ -334,7 +334,9 @@ export class Run extends Phaser.Scene {
     this.recomputeStats();
     this.hp = this.maxHp;
 
-    this.enemies = new EnemyPool(this);
+    // m10-ai-rng-seed: Run-Seed an den Pool weitergeben, damit der Fallback-KI-RNG
+    // aus dem gesäten Quell gespeist wird (statt Math.random).
+    this.enemies = new EnemyPool(this, this.seed);
     this.hash = new SpatialHash<EnemyRuntime>(32);
     this.spawner = new Spawner(this, this.enemies, this.rng);
     this.combat = new CombatSystem(this);

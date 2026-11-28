@@ -3,6 +3,7 @@ import type { EnemyDef } from "../data/types";
 import { SPRITE_FRAMES } from "../gfx/textures";
 import { baseEnemyDef, eliteFrameId, ELITE_RIM_FRAMES, eliteRimDef } from "../gfx/enemySprites";
 import { newAiState, type AiRng, type AiState } from "../logic/enemy-ai";
+import { SeededRng } from "../logic/rng";
 import { ensureAiState } from "../logic/ai-state";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
@@ -121,8 +122,13 @@ export interface EnemyRuntime {
   aiRng: AiRng;
 }
 
-/** Ein einziger Default-RNG statt einer Closure pro Spawn. */
-const DEFAULT_AI_RNG: AiRng = { next: () => Math.random() };
+/**
+ * KI-RNG-Determinismus (m10-ai-rng-seed): Initial-KI-Zustände ziehen aus einem
+ * fest gesäten Modul-RNG statt aus Math.random — dieser Zustand wird beim
+ * Spawn via ensureAiState ohnehin neu gesetzt, aber auch der Weg dorthin ist
+ * damit reproduzierbar und Math.random ist im EnemyPool vollständig verboten.
+ */
+const INIT_AI_RNG: AiRng = new SeededRng(0);
 
 /**
  * Ein einziger geteilter Default-Spawn-Options-Satz statt eines leeren
@@ -138,6 +144,13 @@ export class EnemyPool {
   active: EnemyRuntime[] = [];
   private readonly free: EnemyRuntime[] = [];
   private readonly scene: Phaser.Scene;
+  /**
+   * m10-ai-rng-seed: Gesäter Fallback-KI-RNG (Muster Run-SeededRng). Er greift,
+   * wenn ein Spawn ohne explizite `rng` erfolgt (Tests, Pfade ohne Run-Zugriff);
+   * im Spiel übergeben Spawner/BossSystem die Run-SeededRng. Ein Stream pro Pool
+   * (nicht pro Spawn), damit Recycelte Gegner ihr RNG-Objekt behalten.
+   */
+  private readonly fallbackAiRng: AiRng;
   private nextUid = 1;
   /**
    * M10-heap-sawtooth: Cache fuer Elite-Rim-Defs (eliteRimDef spreadet sonst
@@ -151,8 +164,9 @@ export class EnemyPool {
    */
   private readonly markerSpecCache = new Map<number, EliteMarkerSpec>();
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, aiSeed = 0) {
     this.scene = scene;
+    this.fallbackAiRng = new SeededRng(aiSeed >>> 0);
   }
 
   spawn(
@@ -197,7 +211,7 @@ export class EnemyPool {
     enemy.hitFlash = 0;
     enemy.tint = "none";
     enemy.alpha = 1;
-    enemy.aiRng = rng ?? DEFAULT_AI_RNG;
+    enemy.aiRng = rng ?? this.fallbackAiRng;
     enemy.ai = ensureAiState(enemy.ai, enemy.aiRng);
     enemy.threat = enemy.boss ? 0.35 : def.archetype === "exploder" ? 1.8 : 1;
     enemy.sprite.setScale(enemy.boss ? 1 : enemy.elite ? 1.25 : enemy.splitDepth > 0 ? 0.72 : 1);
@@ -290,9 +304,9 @@ export class EnemyPool {
       sprite, aura, uid: 0, def: {} as EnemyDef, x: 0, y: 0, vx: 0, vy: 0, hp: 0, maxHp: 0,
       damage: 0, radius: 6, speed: 0, hpScale: 1, flash: 0, phase: 0, alive: false, bob: 0,
       slowFactor: 0, slowTimer: 0, freezeTimer: 0, boss: false, bossIndex: -1, elite: false,
-      splitDepth: 0, age: 0, recycled: false, ai: newAiState(DEFAULT_AI_RNG), threat: 1, telegraph: 0,
+      splitDepth: 0, age: 0, recycled: false, ai: newAiState(INIT_AI_RNG), threat: 1, telegraph: 0,
       attackCounter: 0, bossPhase: 1, contactCooldown: 0, hitFlash: 0, tint: "none", alpha: 1,
-      aiRng: DEFAULT_AI_RNG,
+      aiRng: INIT_AI_RNG,
     };
   }
 
