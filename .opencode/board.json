@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10904,
+  "next": 10947,
   "cards": [
     {
       "id": 1,
@@ -14052,6 +14052,36 @@
       "notes": [],
       "created": "2026-11-28T10:07:05Z",
       "updated": "2026-11-28T10:07:05Z"
+    },
+    {
+      "id": 10944,
+      "title": "m10-boss-name-legibility K1: Chaos-Repro + Befund klären (Layering vs. Kontrast) + Baseline",
+      "description": "AK: Ein M25-skipTo-Chaos-Repro (scripts/m10-boss-name.mjs) in 960x540 + 640x360 mit before-Shots + 6x-Zoom; mit EINEM Repro geklärt: Layering (Gegnerpixel über Name) vs. Kontrast. Befund: Kontrastproblem, kein Layering (Glyphen-Deckung 253/253 = 1.0). Baseline-JSON gesichert. [lane #10454-#10456, Merge cd76734e]",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T10:16:12Z",
+      "updated": "2026-11-28T10:16:12Z"
+    },
+    {
+      "id": 10945,
+      "title": "m10-boss-name-legibility K2: Fix Boss-Name-Lesbarkeit (UI.ts/depth.ts)",
+      "description": "AK: Fix je Befund aus K1 — dunkle Textband-Platte (ink, Alpha 0,95, gleiche Breite, bündig über der Leiste) als erstes Kind von bossGroup; reine Geometrie bossNamePlateRect + BOSS_NAME_PLATE_ALPHA in src/scenes/UI.ts. Regressionstest tests/boss-name-legibility.test.ts (17 Tests, 5 View-Breiten). tsc rc=0, Tests grün, build grün. [lane #10454-#10456, Merge cd76734e]",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T10:16:12Z",
+      "updated": "2026-11-28T10:16:12Z"
+    },
+    {
+      "id": 10946,
+      "title": "m10-boss-name-legibility K3: Nachher-Beleg + art-director-Urteil + .lane-done",
+      "description": "AK: Gleicher Repro nach Fix (after-Shots 640+960 + 6x-Zoom), Boss-Name im M25-Chaos vollständig lesbar, HP-Leiste weiter lesbar, kein neues Near-White/Overlap. art-director PASS 5/5 (Mikro-Hinweis 1 px Puffer als Follow-up), commit-gate PASS, .lane-done gesetzt. [lane #10454-#10456, Merge cd76734e]",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [],
+      "created": "2026-11-28T10:16:12Z",
+      "updated": "2026-11-28T10:16:12Z"
     }
   ]
 }
