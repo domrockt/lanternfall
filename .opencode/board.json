@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13455,
+  "next": 13459,
   "cards": [
     {
       "id": 1,
@@ -18943,6 +18943,82 @@
       ],
       "created": "2026-11-28T16:46:16Z",
       "updated": "2026-11-28T16:58:37Z"
+    },
+    {
+      "id": 13455,
+      "title": "m10-v10-gate-rerun K1: Werkzeuge prüfen + Worktree auf main",
+      "description": "Gate-Suite scripts/m10-v10-gate.mjs (Vorlage guard-Lauf 3, 15:57Z) auf dem aktuellen main verfügbar machen: Worktree m10-v10-gate-rerun fast-forward auf main (11f929c7), Skript/Werkzeuge vorhanden prüfen, Kopie scripts/m10-v10-gate-rerun.mjs (nur OUT/EVIDENCE-Lane-Name geändert, KEINE Methodikänderung), Renderer-String-Pflicht beachten (SwiftShader-Belege ungültig). Abnahme: Skript läuft, Doku-Grundlage steht.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T17:01:52Z",
+      "updated": "2026-11-28T17:01:52Z"
+    },
+    {
+      "id": 13456,
+      "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
+      "description": "Dieselbe Gate-Suite wie guard (gleiche Tore, gleicher Viewport 960x540) zweimal unter flock /home/ai/games/.lf-perf.lock auf main-HEAD laufen lassen. Ergebnisse: ~/games/.evidence/m10-v10-gate-rerun/gate-run{1,2}.json (+ shots/m10-v10-gate-rerun-run{1,2}.json Arbeitskopie). renderer-guard-Lane toucht scripts/perf.mjs: bei ungewohnten Abbrüchen Lauf wiederholen statt patchen; 0 JS-Fehler-Kriterium nur fürs Tor selbst. Abnahme: 2 vollständige Läufe mit Tor-JSONs + Renderer-String im Beleg.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:01:52Z",
+      "updated": "2026-11-28T17:01:52Z"
+    },
+    {
+      "id": 13457,
+      "title": "m10-v10-gate-rerun K3: Urteil je Tor + Delta gegen 15:57Z",
+      "description": "docs/lanes/m10-v10-gate-rerun.md: Urteil PASS/FAIL je Tor auf main-Stand, Delta gegen guard-Lauf 3 (shots/m10-v10-gate.json @15:57Z, .evidence/m10-v10-gate-guard/gate-final-run3.json). Besonderheiten: (a) frame-p95 wird NICHT als FAIL gewertet (Tor-Definition strukturell nicht erfüllbar, Frage bei Dom, Lead/Fragen an Dom.md 15:20Z) — nur p95/worst dokumentieren; (b) janky%/Gerätetore ausgespart (m10-janky-remeasure). Abnahme: Doku mit Tabelle je Tor, Belegpfaden, Renderer-String.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:01:52Z",
+      "updated": "2026-11-28T17:01:52Z"
+    },
+    {
+      "id": 13458,
+      "title": "m10-v10-gate-rerun K4: Hebelliste / Fix-Empfehlungen + .lane-done",
+      "description": "Bei FAIL auf einem anderen Tor als frame-p95: Fix-Empfehlungen (Datei + Hebel + erwarteter Gewinn) in Abschnitt 'Hebelliste' der Lane-Doku — daraus schneidet der Disponent Fix-Jobs. Sonst explizit 'keine Befunde'. Danach .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) im Worktree-Wurzel, committet. Abnahme: Hebelliste oder 'keine Befunde' + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:01:52Z",
+      "updated": "2026-11-28T17:01:52Z"
+    },
+    {
+      "id": 13491,
+      "title": "m10-v10-gate-rerun K1: Gate-Werkzeuge bereit",
+      "description": "scripts/m10-v10-gate-rerun.mjs als duenner Wrapper: ruft DIESELBE Gate-Suite scripts/m10-v10-gate.mjs (keine neue Methodik) 2x auf dem aktuellen main, --out nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json. Renderer-String-Pflicht beachtet (SwiftShader=ungueltig, Exit 2). Abnahme: Wrapper committed, Gate-Skript unveraendert.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T17:02:02Z",
+      "updated": "2026-11-28T17:02:02Z"
+    },
+    {
+      "id": 13492,
+      "title": "m10-v10-gate-rerun K2: Gate-Lauf 1+2 auf aktuellem main",
+      "description": "2 Gate-Laeufe (gleiche Tore + Viewport wie guard-Lauf 3, 15:57Z) unter flock /home/ai/games/.lf-perf.lock. JSONs nach ~/games/.evidence/m10-v10-gate-rerun/run{1,2}.json (Belegregel: shots/* gitignored). 0 JS-Fehler in beiden Laeufen, Renderer-String = echte iGPU in beiden Belegen. Bei ungewoehnlichen Abbruechen Lauf wiederholen statt patchen.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T17:02:02Z",
+      "updated": "2026-11-28T17:02:02Z"
+    },
+    {
+      "id": 13493,
+      "title": "m10-v10-gate-rerun K3: Urteil je Tor + Delta gegen 15:57Z",
+      "description": "docs/lanes/m10-v10-gate-rerun.md: je Tor PASS/FAIL + Delta gegen gate-final-run3.json (15:57:11Z). frame-p95 wie im Guard-Befund 1 NICHT als FAIL werten (Tor gegen 60-FPS-Cap strukturell unerfuellbar, Frage bei Dom) — nur p95/worst dokumentieren, kein Fix. janky%/Geraetetore ausgespart (remeasure-Lane). Belegpfade referenzieren.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T17:02:02Z",
+      "updated": "2026-11-28T17:02:02Z"
+    },
+    {
+      "id": 13494,
+      "title": "m10-v10-gate-rerun K4: Hebelliste oder 'keine Befunde' + .lane-done",
+      "description": "Bei FAIL auf Tor != frame-p95: Fix-Empfehlungen (Datei/Hebel/erwarteter Gewinn) im Abschnitt 'Hebelliste' der Lane-Doku; sonst explizit 'keine Befunde'. .lane-done (5-10 Zeilen Summary + Werte) committen.",
+      "column": "todo",
+      "assignee": "coder",
+      "notes": [],
+      "created": "2026-11-28T17:02:02Z",
+      "updated": "2026-11-28T17:02:02Z"
     }
   ]
 }
