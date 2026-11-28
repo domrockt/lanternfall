@@ -2,7 +2,9 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { DEPTH } from "../gfx/depth";
 import { makeImage } from "../gfx/atlas";
-import { hazardBeamRimTexture, hazardBeamTexture, hazardDiscTexture, hazardRingTexture, quantizedBeamLength, quantizedRadius } from "../gfx/hazardDisc";
+import { hazardBeamRimTexture, hazardBeamTexture, hazardDiscTexture, hazardRingTexture, quantizedBeamLength, quantizedRadius, drawQualityTier, rimPulsePhaseFractionForQuality, warnDiscDrawCapForQuality } from "../gfx/hazardDisc";
+import type { QualityTier } from "../logic/quality";
+import { QUALITY } from "../config";
 
 export interface HazardOptions {
   /** Vorwarnzeit (s), > 0 = Pflicht-Telegraph. */
@@ -64,6 +66,20 @@ export function warnDiscAlpha(elapsed: number): number {
   return 0.8 + Math.sin(elapsed * 22) * 0.15;
 }
 
+/**
+ * Rim-Puls mit gestutzter Puls-Phase (m10-hazard-quality-budget K2): bis
+ * `warnMax * phaseFraction` atmet der Puls bitgleich wie rimPulseAlpha, danach
+ * friert er auf der Lesbar-Alpha des Phasenendes ein (kein Sprung, Rim bleibt
+ * sichtbar). `phaseFraction` >= 1 (bzw. nicht finit) = bitgleich. Reine Funktion.
+ */
+export function rimPulseAlphaStaged(elapsed: number, warnMax: number, phaseFraction: number): number {
+  if (!Number.isFinite(warnMax) || warnMax <= 0) return rimPulseAlpha(elapsed);
+  if (!Number.isFinite(phaseFraction) || phaseFraction >= 1) return rimPulseAlpha(elapsed);
+  const phaseEnd = warnMax * Math.max(0, Math.min(1, phaseFraction));
+  if (elapsed <= phaseEnd) return rimPulseAlpha(elapsed);
+  return rimPulseAlpha(phaseEnd);
+}
+
 interface HazardRuntime {
   kind: "circle" | "beam";
   x: number;
@@ -88,6 +104,10 @@ interface HazardRuntime {
   activeSprite?: Phaser.GameObjects.Image;
   source: string;
   onTrigger?: () => void;
+  /** Draw-Budget (K2): Warn-Sprites aktuell vom Budget versteckt (NUR Optik). */
+  warnHidden?: boolean;
+  /** Draw-Budget (K2): in dieser Auswahl-Iteration bereits als "gezeichnet" markiert. */
+  warnDrawnMark?: boolean;
 }
 
 /**
@@ -97,6 +117,8 @@ interface HazardRuntime {
 export class HazardSystem {
   readonly active: HazardRuntime[] = [];
   private readonly scene: Phaser.Scene;
+  /** true, solange das Draw-Budget Warn-Sprites versteckt hat (Wiederherstellen beim Rueckauf). */
+  private discBudgetHidden = false;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -176,14 +198,21 @@ export class HazardSystem {
     playerY: number,
     onPlayerHit: (damage: number, hazard: HazardRuntime) => void,
   ): void {
+    // m10-hazard-quality-budget K2: Tier einmal pro Update aufloesen (Debug-Override
+    // vor Regler-Stand), Draw-Budget anwenden, Puls-Phasen-Anteil ableiten.
+    const tier = drawQualityTier(QUALITY);
+    this.applyDiscDrawBudget(tier, playerX, playerY);
+    const pulseFraction = rimPulsePhaseFractionForQuality(tier);
     for (let i = this.active.length - 1; i >= 0; i--) {
       const h = this.active[i];
       if (!h.active) continue;
       if (h.warn > 0) {
         h.warn -= dt;
-        h.warnSprite?.setAlpha(warnDiscAlpha(h.warnMax - h.warn));
-        // Rand-Puls-Skalierung: Warnung atmet sichtbar, bleibt aber unter Projektilen.
-        h.rimSprite?.setAlpha(rimPulseAlpha(h.warnMax - h.warn));
+        // Draw-Budget: versteckte Warn-Sprites brauchen keine Alpha-Updates.
+        if (h.warnSprite && !h.warnHidden) {
+          h.warnSprite.setAlpha(warnDiscAlpha(h.warnMax - h.warn));
+          h.rimSprite?.setAlpha(rimPulseAlphaStaged(h.warnMax - h.warn, h.warnMax, pulseFraction));
+        }
         if (h.warn > 0) continue;
         // Warnphase beendet → Treffer prüfen und Wirkphase starten.
         h.triggered = true;
@@ -209,6 +238,82 @@ export class HazardSystem {
         if (h.linger <= 0) {
           this.remove(i);
         }
+      }
+    }
+  }
+
+  /**
+   * Draw-Budget fuer Warn-Discs (K2, Tier-Regel): high/medium = offen -> Funktion
+   * kehrt sofort zurueck (bitgleich, nie setVisible). low = nur die
+   * `warnDiscDrawCapForQuality` spieler-naechsten warnenden Circle-Hazards bleiben
+   * gezeichnet (Disc + Rim), der Rest wird hidden. NUR Optik: Treffer, Trigger,
+   * Puls-Zustand und threats() bleiben unveraendert (Bot weicht weiter allen
+   * Warnflaechen aus). Auswahl ohne Sortier-Allokation: wiederholte Min-Suche
+   * (Cap 6), Gleichstand -> niedrigerer Index (spawn-Reihenfolge) gewinnt.
+   */
+  /** Warn-Sprites eines (warnenden) Circle-Hazards wieder einblenden. */
+  private showWarnSprites(h: HazardRuntime): void {
+    if (!h.warnHidden) return;
+    h.warnHidden = false;
+    h.warnSprite?.setVisible(true);
+    h.rimSprite?.setVisible(true);
+  }
+
+  /** Warn-Sprites eines (warnenden) Circle-Hazards ausblenden (NUR Optik). */
+  private hideWarnSprites(h: HazardRuntime): void {
+    if (h.warnHidden) return;
+    h.warnHidden = true;
+    this.discBudgetHidden = true;
+    h.warnSprite?.setVisible(false);
+    h.rimSprite?.setVisible(false);
+  }
+
+  private applyDiscDrawBudget(tier: QualityTier, playerX: number, playerY: number): void {
+    const cap = warnDiscDrawCapForQuality(tier);
+    if (cap === Number.POSITIVE_INFINITY) {
+      // high/medium: offen. Ohne eigenen Hidden-Zustand sofort zurueck (bitgleich,
+      // keine setVisible-Calls); nach einem LOW-Abstecher einmalig wiederherstellen.
+      if (!this.discBudgetHidden) return;
+      for (const h of this.active) {
+        if (h.kind !== "circle" || !h.active || h.triggered || h.warn <= 0) continue;
+        this.showWarnSprites(h);
+      }
+      this.discBudgetHidden = false;
+      return;
+    }
+    let warnCircles = 0;
+    for (const h of this.active) {
+      if (h.kind === "circle" && h.active && !h.triggered && h.warn > 0) warnCircles++;
+    }
+    if (warnCircles <= cap) {
+      // Unter dem Cap: Sichtbarkeit wiederherstellen (z. B. nach Tier-Rueckauf).
+      for (const h of this.active) {
+        if (h.kind !== "circle" || !h.active || h.triggered || h.warn <= 0) continue;
+        this.showWarnSprites(h);
+      }
+      this.discBudgetHidden = false;
+      return;
+    }
+    for (let j = 0; j < cap; j++) {
+      let best = -1;
+      let bestD = Number.POSITIVE_INFINITY;
+      for (let i = 0; i < this.active.length; i++) {
+        const h = this.active[i];
+        if (h.kind !== "circle" || !h.active || h.triggered || h.warn <= 0) continue;
+        if (h.warnDrawnMark) continue;
+        const d = (h.x - playerX) ** 2 + (h.y - playerY) ** 2;
+        if (d < bestD) { bestD = d; best = i; }
+      }
+      if (best < 0) break;
+      this.active[best].warnDrawnMark = true;
+    }
+    for (const h of this.active) {
+      const warnCircle = h.kind === "circle" && h.active && !h.triggered && h.warn > 0;
+      if (h.warnDrawnMark) {
+        h.warnDrawnMark = false;
+        if (warnCircle) this.showWarnSprites(h);
+      } else if (warnCircle) {
+        this.hideWarnSprites(h);
       }
     }
   }

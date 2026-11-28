@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11630,
+  "next": 11634,
   "cards": [
     {
       "id": 1,
@@ -15548,6 +15548,105 @@
       ],
       "created": "2026-11-28T11:22:29Z",
       "updated": "2026-11-28T11:27:38Z"
+    },
+    {
+      "id": 11630,
+      "title": "m10-hazard-quality-budget K1: Ist — Draw-Kosten der Warn-Discs bei M25-Dichte (Vorher-JSON)",
+      "description": "Probe scripts/m10-hazard-quality.mjs: bei M25-Dichte (500er-Schwarm) gleichzeitig warnende Disc-Hazards spawnen und Draw-Kosten strukturell messen (gezeichnete Warn-Sprites, ADD-Rim-Device-Fläche, Fill-Fläche). Vorher-JSON als Beleg. AK: Vorher-JSON existiert, Metriken fixiert, WebGL-Renderer-String enthalten, 0 JS-Fehler.",
+      "column": "done",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [
+        {
+          "at": "2026-11-28T11:08:15Z",
+          "by": "build",
+          "text": "todo → doing: K1 angenommen: Probe-Skript bauen, Vorher-Messung bei M25-Dichte (500er-Schwarm), Vorher-JSON nach ~/games/.evidence/m10-hazard-quality-budget/."
+        },
+        {
+          "at": "2026-11-28T11:18:03Z",
+          "by": "build",
+          "text": "doing → review: K1 erledigt, Commit b7270505 (Probe #11449). Vorher-JSON: ~/games/.evidence/m10-hazard-quality-budget/m10-hazard-quality-before.json — high: 22/22 Discs, ADD-Rim 234982 Device-px, renderer iGPU (RPL-S), 0 JS-Fehler. Befund: FPS-Regler erreicht 'low' auf Dev-Maschine nie (EWMA 47,3, Totzone) -> K2 ergänzt deterministischen Debug-Override __lfForceQuality, dann After-Messung damit."
+        },
+        {
+          "at": "2026-11-28T11:34:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11449, Merge branch m10-hazard-quality-budget"
+        }
+      ],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:18:03Z"
+    },
+    {
+      "id": 11631,
+      "title": "m10-hazard-quality-budget K2: Tier-Regel in hazardDisc.ts/Hazards.ts (reine Funktionen)",
+      "description": "Warn-Disc-Zeichnung je QualityTier dämpfen: LOW = Disc-Draw-Cap (weniger simultane gezeichnete Discs, nahe Spieler bevorzugt) + kürzere Rim-Puls-Phase; high/medium bitgleich. Raster-Contract aus tests/hazard-disc.test.ts unangetastet (Masken/Keys/Draw-Scale 1). AK: reine Funktionen unit-testbar, kein Dither-Flächen-Rückfall, MIN_WARN_S unverändert.",
+      "column": "done",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [
+        {
+          "at": "2026-11-28T11:19:32Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: Tier-Regel in hazardDisc.ts (reine Funktionen: Draw-Cap, Puls-Phasen-Anteil, Tier-Resolution inkl. __lfForceQuality-Debug-Override) + Verdrahtung in Hazards.ts (Draw-Budget, gestutzter Rim-Puls). high/medium bitgleich."
+        },
+        {
+          "at": "2026-11-28T11:20:56Z",
+          "by": "build",
+          "text": "doing → review: K2 erledigt, Commit bf4805a6. Reine Funktionen in hazardDisc.ts (Cap 6 low, Puls-Phase 0.5 low, __lfForceQuality-Override) + Verdrahtung in Hazards.ts (applyDiscDrawBudget, rimPulseAlphaStaged). tsc gruen, hazard-disc+hazard-warn 24/24."
+        },
+        {
+          "at": "2026-11-28T11:34:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11450, Merge branch m10-hazard-quality-budget"
+        }
+      ],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:20:56Z"
+    },
+    {
+      "id": 11632,
+      "title": "m10-hazard-quality-budget K3: Tests — Tier-Matrix + Raster-Guard bleibt grün",
+      "description": "tests/hazard-quality-budget.test.ts: Tier-Matrix (high/medium bitgleich, LOW gedeckelt, Puls-Phase) + Hazards-Verdrahtung. AK: neue Tests grün, npx vitest run tests/hazard-disc.test.ts bleibt unverändert grün (Raster-Guard).",
+      "column": "done",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [
+        {
+          "at": "2026-11-28T11:20:56Z",
+          "by": "build",
+          "text": "todo → doing: K3 angenommen: tests/hazard-quality-budget.test.ts — Tier-Matrix (Caps, Puls-Phasen, Override, bitgleich-Mathe), Hazards-Verdrahtung (Draw-Budget versteckt uerige Discs bei low, high bitgleich), Raster-Guard bleibt gruen."
+        },
+        {
+          "at": "2026-11-28T11:26:03Z",
+          "by": "build",
+          "text": "doing → review: K3 erledigt, Commit (Tier-Matrix 12 Tests). 36/36 gruen inkl. Raster-Guard. Fund gefixt: Hidden-Zustand intern (warnHidden), sonst bliebe Disc nach Rueckauf auf high unsichtbar."
+        },
+        {
+          "at": "2026-11-28T11:34:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11451, Merge branch m10-hazard-quality-budget"
+        }
+      ],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:26:03Z"
+    },
+    {
+      "id": 11633,
+      "title": "m10-hazard-quality-budget K4: Nachher-Beleg + Doku + .lane-done",
+      "description": "Nachher-JSON (gleiche Probe, tag=after): LOW entlastet messbar (Draw-Cap greift, ADD-Fläche sinkt), HIGH bitgleich. Doku docs/lanes/m10-hazard-quality-budget.md, Abnahme-Screenshot shots/abnahme/, .lane-done. AK: LOW-Kennzahlen deutlich unter Vorher, Lesbarkeit (MIN_WARN_S/Puls) unveraendert, Suite grün.",
+      "column": "done",
+      "assignee": "m10-hazard-quality-budget",
+      "notes": [
+        {
+          "at": "2026-11-28T11:26:03Z",
+          "by": "build",
+          "text": "todo → doing: K4 angenommen: Probe auf __lfForceQuality umstellen (deterministisch), Nachher-JSON (after) bei high+low, Abnahme-Screenshot shots/abnahme/, Doku docs/lanes/m10-hazard-quality-budget.md, .lane-done."
+        },
+        {
+          "at": "2026-11-28T11:34:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11633, Merge branch m10-hazard-quality-budget (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:08:13Z",
+      "updated": "2026-11-28T11:26:03Z"
     }
   ]
 }
