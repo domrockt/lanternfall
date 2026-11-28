@@ -112,8 +112,10 @@ describe("Loading-Szenen-Verdrahtung (Quelltext-Check)", () => {
   });
 
   it("main.ts registriert die Loading-Szene nach Boot", () => {
-    expect(MAIN_TS).toContain('import { Loading } from "./scenes/Loading"');
-    expect(MAIN_TS).toMatch(/scene:\s*\[Boot,\s*Loading,/);
+    // m10-phaser-lazy-import: Boot-Pfad laedt phaser + Szenen dynamisch;
+    // die Loading-Szene liegt im kritischen Pfad (Phase 1).
+    expect(MAIN_TS).toContain('import("./scenes/Loading")');
+    expect(MAIN_TS).toMatch(/scene:\s*\[bootMod\.Boot,\s*loadingMod\.Loading,/);
   });
 
   it("Loading fuehrt genau einen Task pro Frame aus und startet den Titel erst am Ende", () => {
