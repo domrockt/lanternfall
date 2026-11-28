@@ -1,0 +1,35 @@
+# Lane m10-release-check-tool — abgeschlossen (2026-11-28, Karten #13962–#13965)
+
+Ziel: Teiljob 1 der zerschnittenen m10-v10-release-prep — Release-Prüfwerkzeug gebaut und gegen
+den IST-Stand bewiesen. Kein push/Tag/Publish; Freigabe-Report/README/Tag im Nachfolger
+(m10-v10-release-prep, after merge-m10-v10-final-run + merge-m10-release-check-tool).
+
+## Ergebnis
+
+- `scripts/m10-v10-release-check.mjs` (K1, Commit dc6f87bc): 4-Teil-Report (JSON + Konsoletabelle),
+  Urteile dreistufig PASS/FAIL/OFFEN (fehlender Beleg = OFFEN):
+  (a) Gerätetore K1–K5 aus docs/qa/v10-device-acceptance-2026-11-28.md, K3 aus Messwerten der
+  janky-remeasure-Lane bewertet nach gate-torprio (FPS avg ≥ 57, rAF-p95 ≤ 16 ms, janky nur
+  Beobachtung), Renderer-String-Pflicht (SwiftShader/llvmpipe = ungültig markiert);
+  (b) Endabnahme-Beleg docs/qa/v10-final-2026-11-28.md, fehlt = OFFEN;
+  (c) latest-build-APK vs. HEAD (fa-04-Muster; Build-ID aus Asset- oder Release-Namen);
+  (d) git log <apkSha>..HEAD. Rein injizierbare Deps → kein Netz/Device/git-Zwang im Test.
+- `tests/v10-release-check.test.ts` (K2, Commit 0c72887c): 23 Tests gegen Fixtures — K3
+  50,1/33,4 ms → FAIL, 60,2/15,9 → PASS, unparsebar → OFFEN; fehlende Datei → OFFEN;
+  APK-Alter 44 min wie fa-04-Beleg; GitHub-Auswahl beider Asset-Muster. tsc rc=0.
+- Probe (K3, Commit c31f1608, 18:59Z, Belege ~/games/.evidence/m10-release-check-tool/probe.json
+  + probe-console.txt): (a) FAIL — K3-Tor FPS avg 50.1 < 57, rAF-p95 33.4 ms > 16 ms (janky 0 %
+  Beobachtung), Renderer Adreno (TM) 710 gültig; (b) OFFEN — v10-final-2026-11-28.md fehlt;
+  (c) FAIL — latest-build = Build 17:14Z, SHA 11f929c, 105 min alt; (d) FAIL — 136 Commits seit
+  APK. GESAMT FAIL. Befunde/Hebel (K3-Pacing, APK-Refresh, Endabnahme) in
+  docs/lanes/m10-release-check-tool.md.
+
+## Checks
+
+- npx vitest run tests/v10-release-check.test.ts: 23/23 grün; npm test: 244 Dateien/2641 Tests 0 fail;
+  npm run build rc=0; npx tsc --noEmit rc=0.
+- Kontrolleure: reviewer + test-auditor laufen vor dem Merge (Merge-Pipeline); Lane-intern
+  Zielkorridor erfüllt: vollständiger 4-Teil-Report mit begründeten Urteilen.
+- Worktree sauber (git status leer; Test-Sidecar-Änderungen an shots/m10-passive-math-*.json
+  revertiert — Timestamps meines Testlaufs).
+- „Muster A13“ nicht auffindbar → als fa-04-Muster interpretiert (Doku im Lane-Report).
