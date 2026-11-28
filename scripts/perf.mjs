@@ -3,6 +3,9 @@
 // Minute 25. Ziel jeweils >= 55 FPS, 0 JS-Fehler.
 import { writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
+// Renderer-Guard (Karte #13405): Doms Regel — jeder Perf-Beleg schreibt den
+// WebGL-Renderer mit; SwiftShader-Belege sind ungueltig (invalid:true).
+import { getRendererString, rendererValid } from "./lf-renderer.mjs";
 
 const EVOLUTIONS = ["phoenix", "wrath_pendulum", "eternal_winter", "thorn_storm", "thunder_seal", "soul_beacon"];
 const PASSIVES = ["heart", "boots", "tome", "charm", "whetstone", "hourglass"];
@@ -24,6 +27,8 @@ const { chromium } = await loadPlaywright();
 const server = await startServer();
 const browser = await chromium.launch({ args: ["--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding", "--enable-precise-memory-info", "--js-flags=--expose-gc", "--autoplay-policy=no-user-gesture-required"] });
 const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: DPR });
+const renderer = await getRendererString(page);
+const rendererValidFlag = rendererValid(renderer);
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
@@ -126,24 +131,31 @@ try {
     viewport: VIEWPORT,
     dpr: DPR,
     view,
+    renderer,
+    rendererValid: rendererValidFlag,
+    // SwiftShader-Belege: Kennzahlen bleiben lesbar, Urteil aber eindeutig ungueltig.
+    invalid: !rendererValidFlag,
     burst: {
       ...burst,
+      invalid: !rendererValidFlag,
       measuredFps: burstState.fps,
       level: burstState.level,
       kills: burstState.kills,
-      passed: burst.fps >= 55 && burst.minEnemies >= 500,
+      passed: rendererValidFlag && burst.fps >= 55 && burst.minEnemies >= 500,
     },
     minute25: {
       ...minute25,
+      invalid: !rendererValidFlag,
       measuredFps: minute25State.fps,
       time: minute25State.time,
       level: minute25State.level,
       kills: minute25State.kills,
       // Unter 200 Gegnern wäre die Messung nicht aussagekräftig.
-      passed: minute25.fps >= 55 && minute25.minEnemies >= 200,
+      passed: rendererValidFlag && minute25.fps >= 55 && minute25.minEnemies >= 200,
     },
     jsErrors: errors,
     passed:
+      rendererValidFlag &&
       burst.fps >= 55 && burst.minEnemies >= 500 &&
       minute25.fps >= 55 && minute25.minEnemies >= 200 &&
       errors.length === 0,

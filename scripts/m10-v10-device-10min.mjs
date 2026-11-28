@@ -7,6 +7,9 @@
 //   node scripts/m10-v10-device-10min.mjs --out <pfad.json> [--minutes 10] [--target 300]
 //
 // Nur Messung: keine Aenderungen an src/** oder tests/**.
+// Renderer-Guard (#13405): renderer + rendererValid im Output-JSON; SwiftShader
+// -> Kennzahl-Felder invalid:true, passed=false (Beleg bleibt lesbar).
+import { getRendererString, rendererValid } from "./lf-renderer.mjs";
 const BRIDGE = "http://172.17.0.1:5181";
 const CDP = "http://172.17.0.1:9333";
 
@@ -179,6 +182,8 @@ for (let w = 0; w < N; w++) {
 }
 const endStatus = await deviceStatus();
 const state = await page.evaluate(() => { try { return window.__lf.stats(); } catch { return { time: -1, level: -1, kills: -1, quality: "run-ended" }; } });
+const renderer = await getRendererString(page);
+const rendererValidFlag = rendererValid(renderer);
 
 const avg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
 const firstHalf = samples.slice(0, Math.floor(N / 2)).map((s) => s.fps);
@@ -190,13 +195,16 @@ const out = {
   durationMinutes: minutes,
   windowSecs: WINDOW_SECS,
   targetEnemies: target,
+  renderer,
+  rendererValid: rendererValidFlag,
+  invalid: !rendererValidFlag,
   startStatus,
   endStatus,
-  fps: { avgFirstHalf: Math.round(avg(firstHalf) * 10) / 10, avgSecondHalf: Math.round(avg(secondHalf) * 10) / 10, dropPct, minFps, passed: dropPct <= 20 },
+  fps: { avgFirstHalf: Math.round(avg(firstHalf) * 10) / 10, avgSecondHalf: Math.round(avg(secondHalf) * 10) / 10, dropPct, minFps, invalid: !rendererValidFlag, passed: rendererValidFlag && dropPct <= 20 },
   runEnd: { time: state.time, level: state.level, kills: state.kills, quality: state.quality },
   jsErrors: errors,
   samples,
-  passed: dropPct <= 20 && errors.length === 0,
+  passed: rendererValidFlag && dropPct <= 20 && errors.length === 0,
 };
 console.log(JSON.stringify(out.fps), "thermalEnd:", JSON.stringify(endStatus.thermal), "battEnd:", JSON.stringify(endStatus.battery));
 if (outPath) {

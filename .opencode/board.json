@@ -18784,27 +18784,38 @@
       "id": 13404,
       "title": "m10-renderer-guard K1: Helper scripts/lf-renderer.mjs",
       "description": "Owner: engine-dev. Export getRendererString(page) (WEBGL_debug_renderer_info / UNMASKED_RENDERER_WEBGL, Fallback gl.RENDERER), isSwiftShader(s), rendererValid(s). Wiederverwendbar, Logik der bestehenden Skripte (fullrun.mjs, m10-heap-budget.mjs) unangetastet. Abnahme: Unit-Tests in K3 grün, tsc rc=0.",
-      "column": "doing",
+      "column": "review",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T16:40:48Z",
           "by": "build",
           "text": "todo → doing: Lane m10-renderer-guard: K1 angenommen, Helper wird gebaut."
+        },
+        {
+          "at": "2026-11-28T16:41:15Z",
+          "by": "build",
+          "text": "doing → review: Helper gebaut, Commit af114498 (#13404). Kontrolle via commit-gate + Unit-Tests in K3."
         }
       ],
       "created": "2026-11-28T16:40:35Z",
-      "updated": "2026-11-28T16:40:48Z"
+      "updated": "2026-11-28T16:41:15Z"
     },
     {
       "id": 13405,
       "title": "m10-renderer-guard K2: Einbau in perf.mjs + m10-v10-device-10min.mjs",
       "description": "Owner: engine-dev. renderer + rendererValid in jedes Output-JSON; bei isSwiftShader: rendererValid=false, Kennzahl-Felder mit invalid:true markiert, passed=false. Abnahme: statischer Quell-Guard (K3) zeigt Import in beiden Skripten; bestehende Messlogik unverändert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T16:41:15Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: Einbau in perf.mjs + m10-v10-device-10min.mjs."
+        }
+      ],
       "created": "2026-11-28T16:40:35Z",
-      "updated": "2026-11-28T16:40:35Z"
+      "updated": "2026-11-28T16:41:15Z"
     },
     {
       "id": 13406,
