@@ -12283,10 +12283,16 @@
       "id": 9796,
       "title": "m10-ai-stream-cadence-r2 K2: Pro-Gegner-KI-RNG aus Seed+UID",
       "description": "EnemyPool.ts/ai-state.ts: KI-RNG pro Gegner aus (Seed, UID) ableiten; gemeinsame Draw-Reihenfolge aus dem KI-Zug eliminieren; DEFAULT_AI_RNG/aiRng-Pfad bleibt als Fallback ohne Seed. Abnahme: npx tsc --noEmit grün, bestehende AI-/Pool-Tests unangetastet grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T07:52:54Z",
+          "by": "build",
+          "text": "todo → review: K2 erledigt (Commit 579d9ec4): ai-state.ts enemyStreamSeed/EnemyAiRng/attachEnemyAiStream (Objekt-Identität beim Recycle bleibt, Pooling-Vertrag); EnemyPool-Fallback per (aiSeed, uid), explizite rng behält Vorrang; Run.attachAiRng 2 Zeilen (Fremdberührung begründet, requests.md). tsc grün, enemy-ai-rng/enemy-pool-reuse/enemy-ai/enemy-ai-budget 28/28 grün."
+        }
+      ],
       "created": "2026-11-28T07:37:10Z",
-      "updated": "2026-11-28T07:37:10Z"
+      "updated": "2026-11-28T07:52:54Z"
     },
     {
       "id": 9797,
