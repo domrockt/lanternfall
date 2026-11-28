@@ -29,8 +29,9 @@ const FORMATS = [
 const MINUTES = [60, 300, 600, 1200, 1800]; // Minute 1/5/10/20/30
 
 // ── K2-Katalog: bestehende Belege (Pfad + Stand) ─────────────────────────────
-// type "worktree" = Datei im main-Worktree (getrackt), "git-object" = nur auf
-// Lane-Branch, "evidence" = ~/games/.evidence/<dir>/<file>.
+// type "worktree" = Datei im main-Worktree (getrackt oder untracked), "git-object"
+// = nur auf Lane-Branch. (Ein "evidence"-Typ ist nicht nötig: Belege unter
+// ~/games/.evidence/ prüft verify direkt über das Manifest.)
 const QA_VFX = [
   "ember", "flail", "frost", "lantern", "storm", "thorn",
   "eternal_winter", "phoenix", "soul_beacon", "thorn_storm", "thunder_seal", "wrath_pendulum",
@@ -222,6 +223,7 @@ async function capture() {
   manifest.openPoints = [
     "Halo-Überstrahlung Ember (bekannter Restpunkt, Dom-Qualitätsliste)",
     "form-polish After-Belege liegen nur auf Lane-Branch m10-evo-fx-form-polish (Merge d73ab80 ohne Lane-Shots)",
+    "Im Fluss: 6 -r2-Code-Lanes warten auf den Vera-Guard (nicht gemergt; maßgebliche Liste ~/games/.dispatch/claims.json) — deren Belege sind nicht Teil dieses Pakets",
   ];
   writeFileSync(join(EVID_DIR, "dom-sight-manifest.json"), JSON.stringify(manifest, null, 2));
   console.log(`ok: ${manifest.shots.length} Shots in ${EVID_DIR}`);

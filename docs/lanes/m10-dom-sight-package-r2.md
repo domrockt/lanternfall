@@ -69,7 +69,7 @@ JS-Fehler im Capture).
 - **Halo-Überstrahlung Ember** — bekannter Restpunkt aus Doms Qualitätsliste
   (21:45Z), im QA-Dok als offener Punkt ausgewiesen.
 - **form-polish-After-Shots** liegen nur auf dem Lane-Branch (kein main-Commit);
-  nachMerge-Rückkehr der Shots in main sollte der Katalog aktualisiert werden.
+  nach der Merge-Rückkehr der Shots in main sollte der Katalog aktualisiert werden.
 - **Im Fluss (Stand ~08:00Z):** die 6 auf den Vera-Guard wartenden -r2-Code-Lanes
   (Lane-Branches unter `lf-lanes/`, nicht gemergt); deren Belege sind **nicht Teil
   dieses Pakets** und nach dem Guard ggf. neu zu belegen. Liste maßgeblich in
