@@ -698,3 +698,96 @@ ICON_RECTS: dict[str, list[tuple[int, int, int, int, int]]] = {
         (7, 11, 2, 1, 8),
     ],
 }
+
+
+# #7149 (m10-icon-redraw-debt): handgezeichnete Neufassungen der drei
+# art-director-Muss-Icons. Gilt vor den Primitiven in gen_icons.special().
+# Zeichen = Palettenindex ('.'=transparent); nur Rampen-Mitten setzen,
+# Licht/Schatten + 1-px-Aussenkontur ergaenzt die Pipeline (normalize()).
+#   Herz:    zwei Ohren mit mittiger Kerbe, glatte Kurvenkante, Spitze unten,
+#            Karmesin-Kern (26 -> Rampe 25) + dunkle Kern-Schattenzone (25 -> 23)
+#            + 2-px-Glanz.
+#   Amulett: mehrgliedrig = Kette (5) + Oese + Goldmedaillon (20) mit
+#            karmesinem Edelstein-Kern (26 -> 25) + 2-px-Glanz.
+#   Stiefel: Schaft mit Pelzbesatz (11 -> 9), weissen Schnuer-Balken (12),
+#            Fuss mit glatter Spitze, helle Mittelsohle (20) + dunkle Decksohle (5).
+ICON_REDRAW_ROWS: dict[str, list[str]] = {
+    "passive_heart": [
+        "................",
+        "................",
+        "..qqqq....qqqq..",
+        ".qqqqq....qqqqq.",
+        ".qqqqqqqqqqqqqq.",
+        ".qlqqqqqqqqqqqq.",
+        ".qqqqqqqqqqqqqq.",
+        "..qqqqqqqqpppp..",
+        "..qqqqqqqqpppp..",
+        "...qqqqqqpppp...",
+        "....qqqqpppp....",
+        ".....qqpppp.....",
+        ".......pp.......",
+        "................",
+        "................",
+        "................",
+    ],
+    "passive_charm": [
+        "................",
+        "....5......5....",
+        ".....5....5.....",
+        "......5..5......",
+        ".......55.......",
+        ".....kkkkkk.....",
+        "....kkkkkkkk....",
+        "...kkkqqqqkkk...",
+        "...kklqqqqqkk...",
+        "...kkqqqqqqkk...",
+        "...kkqqqqqqkk...",
+        "...kkqqqqqqkk...",
+        "...kkkqqqqkkk...",
+        "....kkkkkkkk....",
+        ".....kkkkkk.....",
+        "................",
+    ],
+    "passive_boots": [
+        "................",
+        "..bbbbbbb.......",
+        "..bbbbbbb.......",
+        "..aaaaa.........",
+        "..aacca.........",
+        "..aaaaa.........",
+        "..aacca.........",
+        "..aaaaa.........",
+        "..aaaaa7........",
+        "..aaaaaa7.......",
+        "..aaaaaaa7......",
+        "..aaaaaaaa7.....",
+        "..aaaaaaaaa7....",
+        ".kkkkkkkkkkkk...",
+        ".5555555555555..",
+        "................",
+    ],
+    # Kein #7149-Redraw, sondern Drift-Fix: das committed gen-icons.ts war fuer
+    # den Tome direkt hand-editiert (Vor-Lane icon-contrast, 00c500e) und von
+    # der Pipeline nicht reproduzierbar (Regeneration lieferte Kontrast 2.16:1
+    # -> icon-contrast-Test rot). Design hier 1:1 aus der freigegebenen Fassung
+    # uebernommen (Index-Versatz wegen Rampen-Normalize: 13->12, 21->20, 10->9,
+    # 17->16, gleiche Materialfamilien), damit gen-icons.ts wieder generiert ist.
+    "passive_tome": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "...iiiiiiiiii...",
+        "...idddkldddi...",
+        "...idbblkdbbi...",
+        "...ikkkkkkkki...",
+        "...iddbklddbi...",
+        "...ikkkklkkhi...",
+        "...iddbklddbi...",
+        "...iiiikkiiih...",
+        "...ihhhiihhhh...",
+        "................",
+        "................",
+        "................",
+    ],
+}
