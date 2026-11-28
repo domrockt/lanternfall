@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13192,
+  "next": 13195,
   "cards": [
     {
       "id": 1,
@@ -18550,6 +18550,54 @@
           "at": "2026-11-28T16:12:43.000Z",
           "by": "m10-chest-reveal-staging",
           "text": "todo → done: entfällt als Code-Karte (Befund #13065, Commit 4623df3b): Regression-Guards liegen auf main (46 Chest-Tests), Vorher/Nachher-Belege in docs/lanes/m10-chest-reveal-staging.md + shots/abnahme/."
+        }
+      ]
+    },
+    {
+      "id": 13192,
+      "title": "m10-g-heap-sync K1: Heap-Tor-Nachtrag im G-Abschnitt",
+      "description": "ACCEPTANCE.md G-Abschnitt: kompakten Nachtrag-Absatz (3-5 Zeilen) unterhalb der K3-Tabelle einfuegen: Heap-Tor auf HEAD nach hazard-tex-cap (heap-gate-recovery, 16:05Z): 2/2 Laeufe HARD -25,2 % (endMB 48,5 vs. Minute-1 64,8 MB), Renderer RPL-S, Belege ~/games/.evidence/m10-heap-gate-recovery/. Keine bestehenden Tabellenzeilen umschreiben, B-F unangetastet. Abnahme: git diff zeigt nur diese Ergaenzung; jede Zahl mit Belegpfad.",
+      "column": "done",
+      "assignee": "m10-g-heap-sync",
+      "notes": [
+        "K1 angenommen (doing), 2026-11-28",
+        "K1 erledigt: Commit c55e15d9, Nachtrag 5 Zeilen unter K3-Tabelle, alle Zahlen gegen k1-run1/k1-run2-retry geprueft",
+        {
+          "at": "2026-11-28T16:19:55+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13165, Merge branch m10-g-heap-sync"
+        }
+      ]
+    },
+    {
+      "id": 13193,
+      "title": "m10-g-heap-sync K2: verify-input-Zahl im G-Abschnitt abgleichen",
+      "description": "Pruefen, ob der G-Abschnitt einen verify-input-Wert fuehrt. Ist-Stand postwave-smoke-r2 K2: 29/29 (docs/lanes/m10-postwave-smoke-r2.md, Belege ~/games/.evidence/m10-postwave-smoke-r2/). Falls G-Abschnitt einen Wert fuehrt: auf 29/29 ergaenzen/korrigieren; 28/28 in aelteren Abschnitten bleibt historisch. Abnahme: fundiert dokumentiert in docs/lanes/m10-g-heap-sync.md.",
+      "column": "done",
+      "assignee": "m10-g-heap-sync",
+      "notes": [
+        "K2 angenommen (doing); Befund: G-Abschnitt fuehrt keinen verify-input-Wert -> dokumentierter No-op, Lane-Doku",
+        "K2 erledigt: Commit d17ddd98, No-op fundiert dokumentiert (G-Abschnitt fuehrt keinen verify-input-Wert)",
+        {
+          "at": "2026-11-28T16:19:55+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13166, Merge branch m10-g-heap-sync"
+        }
+      ]
+    },
+    {
+      "id": 13194,
+      "title": "m10-g-heap-sync K3: Selbstpruefung + Commit + lane-done",
+      "description": "git diff nur G-Abschnitt + Lane-Doku, npx tsc --noEmit rc=0, ein Commit pro Karte, .lane-done mit 5-10 Zeilen Zusammenfassung. Abnahme: keine anderen ACCEPTANCE-Abschnitte veraendert, kein Tag/Push.",
+      "column": "done",
+      "assignee": "m10-g-heap-sync",
+      "notes": [
+        "K3 angenommen (doing): diff + tsc rc=0 geprueft, lane-done folgt im Commit",
+        "K3 erledigt: Commit cec5eca8; diff 0ce7164a..HEAD nur G-Abschnitt+Doku+Board, tsc rc=0, .lane-done committed",
+        {
+          "at": "2026-11-28T16:19:55+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13167, Merge branch m10-g-heap-sync"
         }
       ]
     }
