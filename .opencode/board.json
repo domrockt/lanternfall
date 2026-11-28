@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 6786,
+  "next": 6961,
   "cards": [
     {
       "id": 1,
@@ -7998,6 +7998,71 @@
       ],
       "created": "2026-11-28T00:04:43Z",
       "updated": "2026-11-28T00:04:47Z"
+    },
+    {
+      "id": 6958,
+      "title": "m10-chaos-legibility-audit K1: Belege erzeugen",
+      "description": "NUR-MESS-Lane. iGPU-Chromium (Renderer-String Pflicht, SwiftShader ungültig). M25-Freeze-Frames bei 640x360 und 780x360@3 + 300/500-Gegner-Stress, je 2x/4x-Zoom nach shots/m10-chaos-leg-*. AK: Shots + JSON mit Renderer-String existieren, kein SwiftShader, Gegnerzahlen protokolliert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:12:49Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Capture-Skript in ~/tmp (kein Repo-Skript, NUR-MESS-Lane), iGPU-Renderer-String-Pflicht."
+        },
+        {
+          "at": "2026-11-28T00:18:17Z",
+          "by": "build",
+          "text": "doing → review: K1 erledigt: 19 Belege in shots/m10-chaos-leg-* (10 Native-Frames 300/500 Gegner + 8 Zooms 2x/4x + evidence.json), Renderer 'ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)', swiftShader=false. Commit 9541b88."
+        },
+        {
+          "at": "2026-11-28T00:23:40Z",
+          "by": "build",
+          "text": "review → done: lane #6958: 19 iGPU-Belege (Mesa Intel RPL-S, swiftShader=false), 300/500 Gegner protokolliert, Commits 9541b88 + 98fc186."
+        }
+      ],
+      "created": "2026-11-28T00:12:46Z",
+      "updated": "2026-11-28T00:23:40Z"
+    },
+    {
+      "id": 6959,
+      "title": "m10-chaos-legibility-audit K2: Vision-Sichtung",
+      "description": "Sicht der K1-Shots: Dither-Rester (Schachbrett-Muster), Mixel (Effekte in anderer Pixelgröße als Sprites), Überstrahlung/Near-White, Lesbarkeit Spieler/Gegner-Typen/Projektile/HUD/Schadenszahlen. AK: je Prüfpunkt ein Urteil mit Beleg-Shot-Referenz.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:22:05Z",
+          "by": "build",
+          "text": "todo → review: K2 Sichtung: 8 Shots visioniert. Kein Schachbrett-Dither; HUD/Banner/Spieler gut. B1 Mixel-Rester (Major), B2 Near-White (Major), B3 Gradient-Discs (Major), B4 Zahlen-Overlap (Minor), B5 Weiss-Partikel (Minor). Commit 4e8f970. art-director-Kontrolle läuft, Urteil wird nachgezogen."
+        },
+        {
+          "at": "2026-11-28T00:23:40Z",
+          "by": "build",
+          "text": "review → done: lane #6959: Sichtung committed 4e8f970; art-director bestätigt 3 FAIL Major / 2 PASS (3/5 streng). Kein Schachbrett-Dither, Lesbarkeit PASS."
+        }
+      ],
+      "created": "2026-11-28T00:12:46Z",
+      "updated": "2026-11-28T00:23:40Z"
+    },
+    {
+      "id": 6960,
+      "title": "m10-chaos-legibility-audit K3: Befundliste + Empfehlungen",
+      "description": "Befundliste mit Severity (Blocker/Major/Minor) in docs/lanes/m10-chaos-legibility.md, je Eintrag: Datei + Hebel + erwarteter Gewinn + Repro-Shot. AK: >=3 belegte Punkte ODER begründetes 'kein Major mehr'; daraus schneidbare Fix-Jobs.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:22:05Z",
+          "by": "build",
+          "text": "todo → review: K3 Befundliste steht: 5 Befunde (3 Major/2 Minor) je mit Repro-Shot + Datei-/Hebel-Pointer + 4 schneidbaren Fix-Job-Empfehlungen in docs/lanes/m10-chaos-legibility.md. Commit 4e8f970. Wartet auf art-director-Urteil vor done."
+        },
+        {
+          "at": "2026-11-28T00:23:40Z",
+          "by": "build",
+          "text": "review → done: lane #6960: Befundliste + art-director-Urteil + Fix-Priorität in docs/lanes/m10-chaos-legibility.md, Abschluss-Commit ccc62a9; .lane-done liegt an. 3 Major / 2 Minor, 4 Fix-Job-Empfehlungen für Dora."
+        }
+      ],
+      "created": "2026-11-28T00:12:46Z",
+      "updated": "2026-11-28T00:23:40Z"
     }
   ]
 }
