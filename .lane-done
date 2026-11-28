@@ -1,0 +1,17 @@
+Nachabnahme F auf main @ 1ebd4cab (2026-11-28, Nach der FX-/Menue-/Android-Merge-Welle).
+
+- K1 PASS: build rc=0 (947 ms), 1957/1957 Tests in 179 Dateien, acceptance-count 30/6/6/6/6/2.
+- K2 PASS: verify:final 7/7 PASS 0 JS-Fehler; verify:terrain 0 schwarze Flaeche (960/1280/1920).
+- K3 PASS: Burst/M25 780x360@3 = 60,0/60,1 FPS, 960x540 = 60,1/60,1 FPS; Renderer-String
+  RPL-S in jedem Beleg-JSON (swiftshader:false), Laeufe unter flock /home/ai/games/.lf-perf.lock.
+- K4 FAIL (nur Heap-Tor): fullrun 2 Laeufe je 6/6 Bosse exakt 300-1800 s, 6 Truhen, Sieg dawn,
+  fpsMin 60,3/60,4, 0 JS-Fehler — aber Heap-Tor +18,2 %/+20,8 % > +15 % (reproduziert);
+  formales Skript m10-heap-budget.mjs crashete mittendrin -> UNMESSBAR. Folge-Bedarf:
+  Heap-Regressions-Diagnose (Karte fuer Dora; kein Fix durch diese Lane).
+- Gesamtergebnis: NICHT ABGENOMMEN (einziger Blocker Heap-Tor; Regression gegen Nachabnahme E
+  +13,9 % PASS). Abweichungen >= 5 % in ACCEPTANCE.md markiert (Tests 1655->1957 = +18,2 %).
+- Audit: acceptance-auditor PASS (alle Zahlen gegen Belege gegengeprueft, md5-Vergleich,
+  kein src-/tests-Code geaendert); 3 Doc-Restmaengel eingearbeitet.
+- Doku: docs/qa/acceptance-refresh-f-2026-11-28.md, docs/lanes/m10-acceptance-refresh-f.md,
+  ACCEPTANCE.md (Abschnitt „Nachabnahme F“). Belege: ~/games/.evidence/m10-acceptance-refresh-f/.
+- Commits: b3efca87 (#10904), bb5c490e (#10905), c1c5dc1c (#10906), f2809b0b + 9b721410 (#10907).
