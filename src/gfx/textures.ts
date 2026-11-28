@@ -657,8 +657,59 @@ function createRingTexture(scene: Phaser.Scene, key: string, colors: number[]): 
   scene.textures.addCanvas(key, canvas);
 }
 
+/**
+ * Licht-Außenkante als diskrete Stufen (K2, Port von eaf2ab6 + rev.2-Fix aus
+ * Boot.ts, Lane m10-texture-glow-swap-r2): [r0, r1, alpha]-Bänder mit harten
+ * Kanten über den Licht-Radius 0..96 (Textur 192 px, Radius 96). Bänder
+ * >= 6 px breit, Alpha monoton fallend.
+ *
+ * Bewusst KEIN destination-in-Band-Stacking (so stand es in eaf2ab6):
+ * aufeinanderfolgende destination-in-Fills SCHNEIDEN ihre Masken — Band 2
+ * löscht den Kern von Band 1, am Ende bleibt eine vollständig transparente
+ * Textur. Fix: Stufen-Alpha wird pro Pixel auf den gestapelten Ring-Aufbau
+ * multipliziert (siehe createLightTexture).
+ */
+export const LIGHT_EDGE_STEPS: ReadonlyArray<readonly [number, number, number]> = [
+  [0, 70, 1],
+  [70, 76, 0.66],
+  [76, 82, 0.38],
+  [82, 88, 0.18],
+  [88, 96, 0.08],
+];
+
+/** Stufen-Alpha am Radius d: Band-Tabelle aus LIGHT_EDGE_STEPS, 0 außerhalb. */
+export function lightEdgeAlphaFor(d: number): number {
+  for (const [r0, r1, alpha] of LIGHT_EDGE_STEPS) {
+    if (d > r0 && d <= r1) return alpha;
+  }
+  return 0;
+}
+
+/**
+ * Vignette als diskrete Stufen (K2, Port von eaf2ab6, identisch zur rev.2-
+ * Referenz in Boot.ts): [r0, r1, alpha]-Bänder über den Radius 70..290 des
+ * Original-Gradients (Stopps 0 → 0.18 @ 0.7 → 0.72 @ 1), plus Klemm-Band für
+ * die Ecken (> 290). 11 Bänder à 20 px, Alpha je Band = Gradientwert am
+ * Bandende (auf 2 Stellen gerundet, hart gekantet).
+ */
+export function vignetteSteps(): Array<[number, number, number]> {
+  const steps: Array<[number, number, number]> = [];
+  const r0 = 70;
+  const r1 = 290;
+  const bands = 11;
+  const alphaAt = (t: number): number =>
+    t < 0.7 ? 0.18 * (t / 0.7) : 0.18 + 0.54 * ((t - 0.7) / 0.3);
+  for (let i = 0; i < bands; i++) {
+    const from = r0 + ((r1 - r0) * i) / bands;
+    const to = r0 + ((r1 - r0) * (i + 1)) / bands;
+    steps.push([from, to, Math.round(alphaAt((i + 1) / bands) * 100) / 100]);
+  }
+  steps.push([r1, r1 + 120, 0.72]); // Ecken-Klemme (Gradient ist ab r1 konstant)
+  return steps;
+}
+
 /** Warmes Licht als diskrete Palettenringe (additiv). */
-function createLightTexture(scene: Phaser.Scene): void {
+export function createLightTexture(scene: Phaser.Scene): void {
   const key = "light_radius";
   if (scene.textures.exists(key)) return;
   const size = 192;
@@ -674,11 +725,17 @@ function createLightTexture(scene: Phaser.Scene): void {
     { r: 64, color: 21, alpha: 0.06 },
     { r: 56, color: 21, alpha: 0.06 },
     { r: 48, color: 21, alpha: 0.07 },
-    { r: 40, color: 22, alpha: 0.07 },
-    { r: 32, color: 22, alpha: 0.08 },
-    { r: 24, color: 13, alpha: 0.09 },
-    { r: 16, color: 13, alpha: 0.10 },
-    { r: 8, color: 13, alpha: 0.10 },
+    // M10-chaos-fix-glow-runpath (B2, Audit docs/lanes/m10-chaos-legibility.md):
+    // Rampen-ENDE (Kern) Richtung Amber/Lantern statt lanternWhite — Addierung
+    // mit Weiß-Kern ist der Near-White-Fall im Chaos (A7: b >= 150 und r >= 235;
+    // Amber 0xffb84d / Lantern 0xffd77a fallen darunter, lanternWhite/candle
+    // nicht). Aeusserer Rand bleibt flame. Identisch zur rev.2-Referenz in
+    // Boot.ts (Lane m10-boot-glow-local, K2 rev.2).
+    { r: 40, color: 21, alpha: 0.07 },
+    { r: 32, color: 21, alpha: 0.08 },
+    { r: 24, color: 20, alpha: 0.08 },
+    { r: 16, color: 20, alpha: 0.09 },
+    { r: 8, color: 20, alpha: 0.09 },
   ];
   const c = size / 2;
   for (const ring of rings) {
@@ -689,31 +746,41 @@ function createLightTexture(scene: Phaser.Scene): void {
     ctx.fill();
   }
   ctx.globalAlpha = 1;
-  // weiche Kante: außen transparent
-  ctx.globalCompositeOperation = "destination-in";
-  const g = ctx.createRadialGradient(c, c, 10, c, c, 96);
-  g.addColorStop(0, "rgba(0,0,0,1)");
-  g.addColorStop(0.75, "rgba(0,0,0,0.6)");
-  g.addColorStop(1, "rgba(0,0,0,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, size, size);
-  ctx.globalCompositeOperation = "source-over";
+  // Hart quantisierte Außenkante (K2 rev.2-Fix, Port aus Boot.ts): Stufen-
+  // Alpha wird PRO PIXEL auf den gestapelten Ring-Aufbau multipliziert
+  // (getImageData/putImageData). KEIN destination-in (Masken-Schneiden-Bug).
+  const img = ctx.getImageData(0, 0, size, size);
+  const pxs = img.data;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot(x + 0.5 - c, y + 0.5 - c);
+      const band = lightEdgeAlphaFor(d);
+      pxs[(y * size + x) * 4 + 3] = pxs[(y * size + x) * 4 + 3] * band; // U8: clamped+gerundet
+    }
+  }
+  ctx.putImageData(img, 0, 0);
   scene.textures.addCanvas(key, canvas);
 }
 
-function createVignetteTexture(scene: Phaser.Scene): void {
+export function createVignetteTexture(scene: Phaser.Scene): void {
   const key = "vignette";
   if (scene.textures.exists(key)) return;
   const canvas = document.createElement("canvas");
   canvas.width = GAME_WIDTH;
   canvas.height = GAME_HEIGHT;
   const ctx = canvas.getContext("2d")!;
-  const c = ctx.createRadialGradient(GAME_WIDTH / 2, GAME_HEIGHT / 2, 70, GAME_WIDTH / 2, GAME_HEIGHT / 2, 290);
-  c.addColorStop(0, "rgba(6,7,12,0)");
-  c.addColorStop(0.7, "rgba(6,7,12,0.18)");
-  c.addColorStop(1, "rgba(6,7,12,0.72)");
-  ctx.fillStyle = c;
-  ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+  // Diskrete Stufen statt Radialgradient (K2, Port von eaf2ab6): gleiche
+  // Alpha-Treppe wie der Original-Gradient, aber als harte Bänder — gerastert
+  // statt milchig-weich (B3-Stilbruch „Luftbrause").
+  const cx = GAME_WIDTH / 2;
+  const cy = GAME_HEIGHT / 2;
+  for (const [r0, r1, a] of vignetteSteps()) {
+    ctx.fillStyle = `rgba(6,7,12,${a})`;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r1, 0, Math.PI * 2);
+    ctx.arc(cx, cy, r0, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
   scene.textures.addCanvas(key, canvas);
 }
 

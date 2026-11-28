@@ -21,6 +21,9 @@ import {
 } from "../src/logic/fx-caps";
 
 const RUN_TS = readFileSync(new URL("../src/scenes/Run.ts", import.meta.url), "utf8");
+// Seit dem Swap (m10-texture-glow-swap-r2) liegt der Ring-Aufbau (B2-Kern)
+// in src/gfx/textures.ts, nicht mehr in Boot.ts.
+const TEXTURES_TS = readFileSync(new URL("../src/gfx/textures.ts", import.meta.url), "utf8");
 
 describe("fx_pillar/fx_shock Bake-Pfad (B1-Teil, Mixel-Rest des fx-mixel-fix)", () => {
   it("waehlt kleinste Bake-Stufe >= |scale|, Draw-Scale bleibt <= 1 (bis Cap)", () => {
@@ -54,19 +57,20 @@ describe("fx_pillar/fx_shock Bake-Pfad (B1-Teil, Mixel-Rest des fx-mixel-fix)", 
   });
 });
 
-describe("Boot.ts Glow-Deckel (B2-Run-Anteil, Quelltext-Check)", () => {
-  const BOOT_TS = readFileSync(new URL("../src/scenes/Boot.ts", import.meta.url), "utf8");
+describe("light_radius Rampen-Ende (B2-Run-Anteil, Quelltext-Check, seit Swap: textures.ts)", () => {
+  const LIGHT_SRC = TEXTURES_TS;
 
   it("light_radius-Rampen-Ende ist Amber/Lantern, kein lanternWhite/candle-Kern", () => {
-    // createLightTextureLocal: Kern (kleine Radien) darf nicht mehr die
+    // createLightTexture: Kern (kleine Radien) darf nicht mehr die
     // near-white Palette 13/22 nutzen (A7: b >= 150 und r >= 235).
-    const block = BOOT_TS.slice(BOOT_TS.indexOf("const rings"), BOOT_TS.indexOf("const c = size / 2"));
+    const start = LIGHT_SRC.indexOf("const rings");
+    const block = LIGHT_SRC.slice(start, LIGHT_SRC.indexOf("const c = size / 2", start));
     expect(block).not.toMatch(/\{ r: (8|16|24|32|40), color: (13|22)/);
     expect(block).toMatch(/\{ r: 8, color: 20/);
   });
 
-  it("Deckel-Kommentar dokumentiert den Boot-seitigen Alpha/Blend-Deckel", () => {
-    expect(BOOT_TS).toContain("RUN_LIGHT_ALPHA_MAX");
+  it("Deckel-Kommentar dokumentiert den RUN-seitigen Alpha/Blend-Deckel", () => {
+    expect(RUN_TS).toContain("RUN_LIGHT_ALPHA_MAX");
   });
 });
 

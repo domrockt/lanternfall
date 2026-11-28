@@ -108,6 +108,13 @@ const RINGS_BOOT = globalThis.RINGS_BOOT = [ // createLightTextureLocal, Boot.ts
   [64, PAL21, 0.06], [56, PAL21, 0.06], [48, PAL21, 0.07], [40, PAL21, 0.07],
   [32, PAL21, 0.08], [24, PAL20, 0.08], [16, PAL20, 0.09], [8, PAL20, 0.09],
 ];
+// Ist-Stand textures.ts (main): identische Struktur, aber Kern lanternWhite/candle
+// (22/13 ab r<=40) statt B2 Amber/Lantern — dieselbe weiche destination-in-Kante.
+const RINGS_TEXTURES_MAIN = globalThis.RINGS_TEXTURES_MAIN = [
+  [96, PAL19, 0.05], [88, PAL19, 0.05], [80, PAL20, 0.05], [72, PAL20, 0.05],
+  [64, PAL21, 0.06], [56, PAL21, 0.06], [48, PAL21, 0.07], [40, PAL22, 0.07],
+  [32, PAL22, 0.08], [24, PAL13, 0.09], [16, PAL13, 0.10], [8, PAL13, 0.10],
+];
 function renderVignetteSoft(gameW, gameH) { // Vorher-Referenz: Radialgradient
   const canvas = document.createElement("canvas");
   canvas.width = gameW; canvas.height = gameH;
@@ -238,12 +245,16 @@ try {
         const expected = {
           stepped: key === "light_radius" ? renderLightStepped(RINGS_BOOT) : renderVignetteStepped(gameW, gameH),
           soft: key === "light_radius" ? renderLightSoft(RINGS_BOOT) : renderVignetteSoft(gameW, gameH),
+          // K1 Ist-Probe (m10-texture-glow-swap-r2): textures.ts-main-Version
+          // (RINGS_TEXTURES_MAIN + weiche destination-in-Kante) gegen Runtime.
+          texturesMain: key === "light_radius" ? renderLightSoft(RINGS_TEXTURES_MAIN) : null,
         };
         out.keys[key] = {
           kind: tex.kind, w: tex.w, h: tex.h,
           centerAlpha: imgs[key][(96 * tex.w + 96) * 4 + 3],
           vsStepped: diff(tex.data, expected.stepped),
           vsSoft: diff(tex.data, expected.soft),
+          vsTexturesMain: expected.texturesMain ? diff(tex.data, expected.texturesMain) : null,
         };
       }
       // Kontaktbogen (MODE=evidence): der RUNTIME-Canvas, dessen Bytes eben gegen
