@@ -7,6 +7,7 @@ import { iconKeyForOffer, iconTextureKey } from "../gfx/icons";
 import { PASSIVES } from "../data/passives";
 import type { Offer } from "../logic/levelup";
 import { slotNameLines } from "../logic/text";
+import { slotLabelLines, wrapHintLines } from "../gfx/text";
 import { evolutionReadyList } from "../logic/evolution";
 import type { EvolutionDef } from "../data/types";
 import { chooseBestOffer } from "../logic/autoplay";
@@ -107,6 +108,8 @@ export const CHEST_ICON_SCALE = 2.6;
 export const CHEST_ICON_TEX = 16;
 export const CHEST_HINT_Y = 122;
 export const CHEST_HINT_PITCH = 8;
+/** m10-chest-hint-wrap: max. Zeichen je Slot-Label-Zeile (Slot 96 px breit). */
+export const CHEST_SLOT_LABEL_CHARS = 13;
 export const CHEST_FRAME_W = 452;
 export const CHEST_FRAME_H = 244;
 export const CHEST_FRAME_CY = 140;
@@ -664,8 +667,9 @@ export class UI extends Phaser.Scene {
           delay: 95,
           repeat: 7,
           callback: () => {
-            // Rollnamen wie die ausgerollten Namen vollständig auf 2 Zeilen verteilen.
-            const lines = slotNameLines(pickRollName(result.rewards, tick++).toUpperCase(), 13);
+            // Rollnamen wie die ausgerollten Namen vollständig auf 2 Zeilen verteilen
+            // (m10-chest-hint-wrap: Umbruch an Wortgrenze bzw. mit Trennstrich).
+            const lines = slotLabelLines(pickRollName(result.rewards, tick++).toUpperCase(), CHEST_SLOT_LABEL_CHARS);
             slot.text.setText(lines[0] ?? "").setAlpha(1);
             slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
           },
@@ -677,7 +681,8 @@ export class UI extends Phaser.Scene {
       const reward = result.rewards[i];
       this.time.delayedCall(1450 + i * 220, () => {
         const slot = this.chestSlots[i];
-        const lines = slotNameLines(reward.name.toUpperCase(), 13);
+        // m10-chest-hint-wrap: kein mid-word Cut — Wortgrenze oder Trennstrich.
+        const lines = slotLabelLines(reward.name.toUpperCase(), CHEST_SLOT_LABEL_CHARS);
         slot.text.setText(lines[0] ?? "");
         slot.text2.setText(lines[1] ?? "").setVisible(Boolean(lines[1])).setAlpha(1);
         slot.level.setText(reward.kind === "evolution" ? "EVOLUTION" : `STUFE ${reward.level}`);
@@ -1110,7 +1115,9 @@ function levelUpEvolutionHint(ready: EvolutionDef[], maxChars: number): string[]
 /** M10: Ein Satz, was evolviert: Basis + Powerup werden zur Evolution. */
 function evolutionSentence(evo: EvolutionDef, maxChars: number): string[] {
   const sentence = `AUS ${evo.description.toUpperCase()} WIRD ${evo.name.toUpperCase()}.`;
-  return wrapText(sentence, maxChars).slice(0, 2);
+  // m10-chest-hint-wrap: verlustfrei an Wortgrenzen auf beide Hint-Zeilen
+  // verteilt (beide Zeilen sichtbar, kein Satz-Abbruch via slice).
+  return wrapHintLines(sentence, maxChars);
 }
 
 function wrapText(text: string, maxChars: number): string[] {
