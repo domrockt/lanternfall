@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7526,
+  "next": 7527,
   "cards": [
     {
       "id": 1,
@@ -9560,6 +9560,16 @@
       ],
       "created": "2026-11-28T02:39:28Z",
       "updated": "2026-11-28T03:01:24Z"
+    },
+    {
+      "id": 7526,
+      "title": "m10-elite-tier-refine (Folgekarte): T4-Stufenkollaps heben — horror (1 Innenstufe) und centipede/gargoyle/reaper_bat/abom/voidcaller (2) per Soft-Mix 0,55-0,6 auf >= 3 Stufen",
+      "description": "art-director (streng, Re-Abnahme 28.11., PASS 4,5/5, nicht blockierend): horror kollabiert auf 1 Innen-Schattierungsstufe (flache 31-Flaeche), uebrige T4-Typen auf 2 — obwohl 0,6 centipede/abom/voidcaller 3-4 Stufen geben wuerde (horror: 0,55 -> 5). Gegenprobe Pflicht: T4-Bucket gruen bleibt dominant (Ziel >= ~75 %, aktuelles Niveau 77,3 %), min Tier-Zentroid >= 30. Optional: skeleton bei 0,6 (2 -> 3 Stufen). Quelle: lane m10-elite-tier-refine #7525 (K3), art-director-Nachbesserung 1.",
+      "column": "backlog",
+      "assignee": "pixel-artist",
+      "notes": [],
+      "created": "2026-11-28T03:15:41Z",
+      "updated": "2026-11-28T03:15:41Z"
     }
   ]
 }
