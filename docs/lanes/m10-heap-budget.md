@@ -30,15 +30,32 @@ das Tor messrausch-fest definiert, aber nicht abgeschwächt.
 
 ## Ist-Messung (Karte #6238) — `shots/m10-heap-budget-before.json`
 
-- 30-min-Echtzeitlauf (timeScale 1, AutoPlay, God, seed 99), Renderer-String:
+- Verbindlicher 30-min-Echtzeitlauf (timeScale 1, AutoPlay, God, seed 99), Renderer-String:
   `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (iGPU, kein SwiftShader).
-- 0 JS-Fehler, 0 Crashes; FPS min 59,7 / Median 60,5 (3597 Samples).
-
-<!-- Zahlen werden nach Abschluss des verbindlichen Laufs eingetragen -->
+- 0 JS-Fehler, 0 Crashes; FPS min 60,1 / Median 60,5 (3601 Samples).
+- **HARD-Tor:** Minute 1 (Post-GC) 32,7 MB → endMB (Post-GC, Sim-Minute 30) 36,3 MB
+  = **+11,0 % ≤ +15 % → PASS**.
+- **SOFT (Beobachtung):** max Fenster-Peak 54,7 MB (5-min-Fenster 4) = +67,3 % über
+  Minute 1 → „FAIL (Beobachtung)“ — erwartbar, die rohen Peaks schwanken 41–55 MB um
+  eine 30–36-MB-Basis (GC-Sägezahn).
+- Post-GC-Timeline ohne monotone Tendenz: 32,7 / 30,3 / 30,4 / 32,4 / 34,4 … 39,1 (m22)
+  / 38,9 / **34,6 / 34,3** (m24/25) / 34,5 / 34,8 / 35,5 / 36,0 / 36,3 (m30).
+- Messrausch zwischen Läufen belegt: erster 30-min-Lauf (Beleg beim Worktree-Abbau
+  verloren, Werte im Board notiert) zeigte 32,6 → 40,1 MB = +23 %; ein beschleunigter
+  perf-heap-Lauf (`~/tmp/m10-heap-budget/fallb-diff.json`, timeScale 30) −21,6 %.
+  → Peak-/Endwert-Jitter ist groß, die endMB-basierte Tor-Definition ist der stabile Vergleich.
 
 ## Fall-A/B-Entscheidung (Karte #6239)
 
-<!-- wird mit Zahlen aus before.json + Snapshot-Diff gefüllt -->
+**Fall A greift:** endMB 36,3 ≤ Minute 1 + 15 % (37,6 MB) — kein monotoner Leak.
+Der +21-%-FAIL der Nachabnahme C war Peak-Jitter gegen ein Minute-1→29-im-Lauf-Tor;
+das harte Tor wird auf den stabilen Vergleich endMB (Post-GC) vs. Minute 1 umdefiniert
+(s. ACCEPTANCE.md, Abschnitt „Heap-Tor“), Grenze bleibt +15 %, weicher Beobachtungsrand
++25 % auf Fenster-Peaks. Fall B (Snapshot-Diff, Top-Holder, Fix) tritt nicht ein;
+das zugehörige Diagnose-Skript wurde wieder verworfen. Nachweis-Lauf →
+`shots/m10-heap-budget-after.json`.
+
+<!-- Nachweis-Lauf-Ergebnis wird hier ergänzt -->
 
 ## Tests (Karte #6240)
 

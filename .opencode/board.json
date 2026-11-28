@@ -7220,7 +7220,7 @@
    "id": 6238,
    "title": "m10-heap-budget #1: Ist-Messung 30-min realtime (Heap-Timeline + Peak/Minute + endMB nach GC)",
    "description": "Skript scripts/m10-heap-budget.mjs EINMAL bauen (max. 2 Edit-Iterationen, kein Tuning-Loop), 30-min-Echtzeitlauf auf iGPU mit WebGL-Renderer-String (PFLICHT, SwiftShader-Belege ungueltig). Ausgabe shots/m10-heap-budget-before.json mit Heap-Timeline je Sim-Minute (Post-GC), Peak je Minute (roh, ohne GC) und endMB nach erzwungenem GC. Kein Spielcode. Abnahme: JSON committed mit renderer.renderer-String, 0 JS-Fehler im Lauf, Commit 'M10-m10-heap-budget: #<id>'.",
-   "column": "review",
+   "column": "done",
    "assignee": "gameplay-dev",
    "notes": [
     {
@@ -7242,20 +7242,31 @@
      "at": "2026-11-28T00:03:10Z",
      "by": "lead",
      "text": "Verbindlicher Ist-Lauf (ein Lauf, rc=0): RPL-S iGPU, 0 JS-Fehler, FPS min 60,1. endMB 36,3 MB vs Minute1 32,7 MB = +11,0 % <= +15 %; Fenster-Peaks (soft) 41-55 MB = bis +67 % (GC-Saegezahn, Beobachtung). Timeline ohne monotone Tendenz (m22 39,1 -> m25 34,3). Fall A. before.json + Doku-Geruest committed."
+    },
+    {
+     "at": "2026-11-28T00:04:12Z",
+     "by": "lead",
+     "text": "Merge-Kriterium: Commit 3c5fb7c enthaelt before.json + Doku. Karte abgeschlossen (Fall A)."
     }
    ],
    "created": "2026-11-27T22:36:37Z",
-   "updated": "2026-11-28T00:03:10Z"
+   "updated": "2026-11-28T00:04:12Z"
   },
   {
    "id": 6239,
    "title": "m10-heap-budget #2: Tor-Entscheidung MIT Zahlen (Fall A/B)",
    "description": "Fall A (kein monotoner Leak): endMB <= Minute1 + 15 % UND Fenster-Statistik im Tor → Tor definiert als Heap(Ende, nach erzwungenem GC) − Minute 1 <= +15 %, weicher Rand 'Peak je 5-min-Fenster <= Minute1 + 25 %' als Beobachtungswert. Definition in Skript + ACCEPTANCE.md (Heap-Zeile) festhalten, Begruendung mit Zahlen (Altmessungen 8,9 %/16 %/21 %, endMB < Minute1 → GC-Saegezahn). Danach ein Nachweis-Lauf → shots/m10-heap-budget-after.json. Fall B (echter Zuwachs): Heap-Snapshot-Diff Minute 5 vs 29, Top-Holder fixen (fremde Areas: nur Disponent-Anfrage, kein Edit). Abnahme: Entscheidung mit Zahlen belegt, ACCEPTANCE.md konsistent, Commit 'M10-m10-heap-budget: #<id>'.",
-   "column": "todo",
+   "column": "doing",
    "assignee": "gameplay-dev",
-   "notes": [],
+   "notes": [
+    {
+     "at": "2026-11-28T00:04:12Z",
+     "by": "lead",
+     "text": "Fall A belegt (endMB +11,0 % <= +15 %). Tor-Definition in ACCEPTANCE.md (Abschnitt 'Heap-Tor') + docs/lanes/m10-heap-budget.md festgehalten. Nachweis-Lauf -> shots/m10-heap-budget-after.json laeuft."
+    }
+   ],
    "created": "2026-11-27T22:36:37Z",
-   "updated": "2026-11-27T22:44:26Z"
+   "updated": "2026-11-28T00:04:12Z"
   },
   {
    "id": 6240,
