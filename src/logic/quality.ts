@@ -12,7 +12,14 @@
  *  - ADD-Glow-Flaechen-Deckel im FxSystem (glowAreaCapForQuality)
  *  - Glow-Slot-Deckel im FxSystem (glowSlotCapForQuality, low = 0 -> NORMAL-Fallback)
  *  - Schadenszahlen-Sichtbar-Cap (damageLabelCapForQuality)
- * Reine Funktionen, ohne Uhr/Phaser (unit-getestet in tests/quality-tier.test.ts).
+ *
+ * M10-device-tier-schedule: Geraeteknoten-Klasse (Adreno 710, 120-Hz-Panel)
+ * im stepQuality selbst (Abschnitt unten) — Stufen-Cap medium + Zeitbudget-
+ * Soll 16,7 ms als Tier-Grenze statt der 60-Hz-FPS-Schwellen. Desktop bleibt
+ * bitgleich (Geraeteknoten dort nie erkannt).
+ *
+ * Reine Funktionen, ohne Uhr/Phaser (unit-getestet in tests/quality-tier.test.ts
+ * und tests/device-tier-schedule.test.ts).
  */
 
 export type QualityTier = "high" | "medium" | "low";
@@ -172,8 +179,14 @@ export function stepQuality(
   state: QualityState,
   fpsEwma: number,
   dtMs: number,
+  device?: QualityDeviceClass | null,
 ): QualityState {
   const dt = Number.isFinite(dtMs) && dtMs > 0 ? dtMs : 0;
+  // M10-device-tier-schedule: am Geraeteknoten uebernimmt der Zeitbudget-Pfad
+  // (Cap medium + Tier-Grenze 16,7 ms). Ohne Geraet (Desktop, Vitest/Node)
+  // exakt der bisherige Pfad — der optionale Parameter ist dort nie gesetzt
+  // und probeDeviceClass() liefert null.
+  if (device) return stepQualityDevice(state, fpsEwma, dt, device);
   const idx = tierIndex(state.tier);
   let { belowMs, aboveMs } = state;
   let tier = state.tier;
@@ -195,6 +208,145 @@ export function stepQuality(
     belowMs = 0;
     if (aboveMs >= QUALITY_HIGH_MS && idx < QUALITY_ORDER.length - 1) {
       tier = QUALITY_ORDER[idx + 1];
+      belowMs = 0;
+      aboveMs = 0;
+    }
+  }
+  // Totzone: beide Timer einfrieren (kein Zweig greift).
+  return { tier, belowMs, aboveMs };
+}
+
+// --- Geraeteknoten-Klasse (M10-device-tier-schedule) -------------------------
+//
+// Hebel A aus der v1.0-Geraeteabnahme (K3 FAIL janky 13,44 %/13,90 %): Am
+// 120-Hz-Geraet (Adreno 710, DPR 2, Panel-Deadline 8,33 ms) bleibt der
+// Regler bei 109–112 FPS dauerhaft auf "high", obwohl ~13 % der Frames die
+// janky-Kante ~16,6 ms reissen. Die FPS-Schwellen (45/57 = 22,2/17,5 ms
+// Frame-Zeit) liegen BEIDE ueber der janky-Kante — der Regler misst am
+// Geraet den falschen Sollwert. Der Budget-Deckel im config-Wrapper
+// (merge-m10-device-janky-node) allein hat janky nicht bewegt; der
+// verbleibende Hebel liegt HIER: Stufen-Cap + Zeitbudget-Soll im
+// stepQuality selbst.
+//
+// Die Klasse liest denselben Renderer-String-Pfad wie isDeviceNode
+// (src/config.ts: WebGL-UNMASKED_RENDERER_WEBGL + DPR) — bewusst DUPLIZIERT
+// statt importiert: quality.ts wird von config.ts importiert, ein Import in
+// die andere Richtung waere ein Zyklus (und config.ts ist fremdbelegt).
+
+/** Ergebnis der Geraeteklassen-Bestimmung (null = kein Geraeteknoten). */
+export interface QualityDeviceClass {
+  /** Knoten-Kennung (nur der Adreno-710/120-Hz-Knoten ist klassifiziert). */
+  node: "adreno710-120hz";
+  /** Panel-Deadline in ms (1000/120 ≈ 8,33) — NICHT die Tier-Grenze. */
+  panelDeadlineMs: number;
+  /**
+   * Zeitbudget-Soll als Tier-Grenze in ms: die janky-Kante ~16,7 ms
+   * (Chrome-Frame-Deadline-Histogramm), nicht die 8,33-ms-Panel-Deadline —
+   * sonst fuehre schon jede Panel-Runde zu einem Abstieg.
+   */
+  tierBudgetMs: number;
+  /** Erholung am Stueck erst ab dieser FPS (Frame <= 10 ms). */
+  recoverFps: number;
+  /** Stufen-Maximum am Knoten (medium-Budget, siehe QUALITY_BUDGETS). */
+  tierCap: QualityTier;
+}
+
+/** Zeitbudget-Soll am Geraeteknoten: 1000/60 ≈ 16,67 ms (janky-Kante). */
+export const DEVICE_TIER_BUDGET_MS = 1000 / 60;
+/** Erholungs-Schwelle am Geraeteknoten: 100 FPS = 10 ms Frame-Zeit. */
+export const DEVICE_TIER_RECOVER_FPS = 100;
+
+/**
+ * Reine Klassifizierung (unit-getestet): identisches String-Muster wie
+ * config.isDeviceNode (Adreno (TM) 710 + DPR >= 2), kein Verhalten bei
+ * Desktop-/iGPU-/SwiftShader-Profilen (null).
+ */
+export function classifyDeviceClass(
+  renderer: string | null | undefined,
+  dpr: number,
+): QualityDeviceClass | null {
+  if (typeof renderer !== "string") return null;
+  if (!renderer.includes("Adreno (TM) 710") || !(dpr >= 2)) return null;
+  return {
+    node: "adreno710-120hz",
+    panelDeadlineMs: 1000 / 120,
+    tierBudgetMs: DEVICE_TIER_BUDGET_MS,
+    recoverFps: DEVICE_TIER_RECOVER_FPS,
+    tierCap: "medium",
+  };
+}
+
+// Laufzeit-Erkennung ohne config-Edit: gleiches WebGL-Probe wie
+// config.probeDeviceNode, einmalig gecacht; in Vitest/Node (kein window)
+// passiv = null. stepQuality ohne 4. Argument liest sie selbst.
+let probedDeviceClass: QualityDeviceClass | null | undefined;
+
+export function probeDeviceClass(): QualityDeviceClass | null {
+  if (probedDeviceClass !== undefined) return probedDeviceClass;
+  probedDeviceClass = null;
+  if (typeof window === "undefined" || typeof document === "undefined") return null;
+  try {
+    const c = document.createElement("canvas");
+    const gl = (c.getContext("webgl2") ?? c.getContext("webgl")) as WebGLRenderingContext | null;
+    const dbg = gl?.getExtension("WEBGL_debug_renderer_info");
+    const renderer = gl && dbg
+      ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL))
+      : String((gl && gl.getParameter(gl.RENDERER)) ?? "");
+    probedDeviceClass = classifyDeviceClass(renderer, window.devicePixelRatio || 1);
+  } catch {
+    probedDeviceClass = null;
+  }
+  return probedDeviceClass;
+}
+
+/** Nur fuer Tests: Probe-Cache zuruecksetzen. */
+export function resetDeviceClassProbe(): void {
+  probedDeviceClass = undefined;
+}
+
+/**
+ * Zeitbudget-Pfad am Geraeteknoten (Hysterese wie Desktop, aber mit dem
+ * RICHTIGEN Sollwert):
+ *  - Stufen-Cap: die Stufe wird sofort auf medium geklemmt (auch der
+ *    Startzustand "high") — zurueck auf high kommt das Geraet nie, Abstieg
+ *    auf low/thermal bleibt moeglich. Damit kann bei 109–112 FPS KEIN
+ *    Flapping zwischen high/medium entstehen (K3): der Aufstieg ist
+ *    blockiert.
+ *  - Tier-Grenze = Zeitbudget-Soll 16,7 ms: Abstieg, wenn fpsEwma <
+ *    1000/16,7 ≈ 59,9 FPS (3 s kumulativ, wie Desktop).
+ *  - Erholung am Stueck erst ab recoverFps (100 FPS = 10 ms) — Totzone
+ *    60–100 FPS friert beide Timer ein, Last-Jitter um die Kante loest
+ *    keine Wechselkaskade aus (Muster wie die Desktop-Totzone 45–57).
+ * Aufloesung/RENDER_SCALE werden auch hier nie angefasst.
+ */
+function stepQualityDevice(
+  state: QualityState,
+  fpsEwma: number,
+  dt: number,
+  dev: QualityDeviceClass,
+): QualityState {
+  const capIdx = tierIndex(dev.tierCap);
+  let idx = Math.min(tierIndex(state.tier), capIdx);
+  let tier = QUALITY_ORDER[idx];
+  let { belowMs, aboveMs } = state;
+  const ok = Number.isFinite(fpsEwma) && fpsEwma > 0;
+  if (ok && fpsEwma < 1000 / dev.tierBudgetMs) {
+    belowMs += dt;
+    aboveMs = 0;
+    if (belowMs >= QUALITY_LOW_MS && idx > 0) {
+      idx -= 1;
+      tier = QUALITY_ORDER[idx];
+      belowMs = 0;
+      aboveMs = 0;
+    } else if (idx === 0) {
+      belowMs = 0;
+    }
+  } else if (ok && fpsEwma >= dev.recoverFps) {
+    aboveMs += dt;
+    belowMs = 0;
+    if (aboveMs >= QUALITY_HIGH_MS && idx < capIdx) {
+      idx += 1;
+      tier = QUALITY_ORDER[idx];
       belowMs = 0;
       aboveMs = 0;
     }
