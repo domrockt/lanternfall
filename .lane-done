@@ -1,0 +1,32 @@
+# Lane m10-ui-pause-quality — fertig (2026-11-28)
+
+UI.ts-Teil der Bedarfsmeldung m10-menu-quality-55: belegte Pause-Screen-Mängel gefixt,
+nur im gemeldeten Umfang (LevelUp-Panel, HUD-Anker, XP-Leiste unangetastet).
+
+## Karten + Commits (eine Karte = ein Commit)
+- #11078 K1 Vorher-Scan (640x360@2 + 780x360@3): 849abf37
+- #11079 K2 Pause-Build-Texte idx 8 -> 12: 02a582b8
+- #11080 K3 Icon-Pitch 15 -> 19 + Zeile-6-Spaltenpuffer: 950e3bb0
+- #11081 K4 Test + Nachher-Scan + Abnahme + Doku: a4973730 (+ Nits ee2817a9, Doku 8d847ec1)
+
+## Messwerte (Belege: ~/games/.evidence/m10-ui-pause-quality/, Abnahme: shots/abnahme/)
+- Kontrast Pause-Build (Powerup-Spalte): idx 8 @ 4.15 -> idx 12 (candleWhite) @ 15.28,
+  beide Viewports; Waffen-Spalte (bone, idx 10) unveraendert.
+- Icon-Frame-Overlaps: 10 -> 0 (Pitch 19 px, 3 px Luft); keine neuen Ueberlappungen.
+- Zeile 6 (SEELENLEUCHTFEUER): Name->LV-Puffer 4 px -> 52 px (= Zeilen-1-5-Minimum 22 px
+  uebertreffend, slotNameLines-Umbruch "SEELENLEU"/"CHTFEUER"), LV 8 frei von der
+  Sanduhr-Icon-Kante; Zeilen 1-5 pixelgleich (nur Pitch-Versatz).
+- Scan-Diff (scan-diff-summary.json): Rest des Screens pixelgleich bis auf die gemeldeten
+  Differenzen; art-director-Pixel-Diff: 3,27 % Flaeche, davon 77 % im Build-Panel.
+- tsc rc=0, build rc=0, 1992 Tests gruen (18 neu in tests/ui-pause-quality.test.ts),
+  0 JS-Fehler, Renderer Mesa Intel RPL-S (kein SwiftShader).
+
+## Kontrolleure
+- Reviewer: PASS (Geometrie nachgerechnet, Scope sauber; Nits 1/2/4 geschlossen).
+- Art-director: PASS (alle 4 Kriterien, Pixel-Verifikation 0xF2EDD8).
+- Commit-Gate: PASS (je Commit genau eine Karte, Claims, Secrets, Build/Tests, Baum).
+
+## Offener Folgebedarf (nicht Teil dieses Briefings)
+- Footer-Hints „ESC = WEITER …“ (idx 8 @ 4.15) und „PFEILE + ENTER …“ (idx 7 @ 2.72)
+  im Pause-Screen (und idx-7-Hints auf Title/Options) — Hebel: createPauseUI(), 2
+  Farbkonstanten; als Nachfolge-Karte melden (siehe docs/lanes/m10-ui-pause-quality.md).

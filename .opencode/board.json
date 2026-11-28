@@ -14087,7 +14087,7 @@
       "id": 11078,
       "title": "m10-ui-pause-quality K1: Vorher-Scan Pause (Kontrast + Icon-Overlaps, 640x360 + 780x360@3)",
       "description": "Akzeptanz: scripts/m10-ui-pause-quality.mjs laeuft (Pause-Screen, Profile 640x360@2 und 780x360@3), JSON nach ~/games/.evidence/m10-ui-pause-quality/ (before) mit Kontrast-Fails (Erwartung: 12x idx 8 @4.15), 10 Icon-Overlaps, Zeilen-1-6-Name/LV-Abstaenden. Belegt die Baseline VOR dem Fix. Owner: Lead; Kontrolleure: test-auditor.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T10:31:07Z",
@@ -14098,16 +14098,21 @@
           "at": "2026-11-28T10:33:01Z",
           "by": "build",
           "text": "doing → review: K1 fertig: scripts/m10-ui-pause-quality.mjs committed (849abf37). Baseline ~/games/.evidence/m10-ui-pause-quality/m10-ui-pause-quality-before-scan.json: beide Profile 14 Kontrast-Fails / 10 Overlaps / 0 JS-Fehler; Zeilen-1-5-Puffer min 22 px, Zeile 6 4 px. Selbst geprueft (Scan-Run + JSON-Auswertung); Kontrolleur test-auditor folgt in K4-Gesamtpruefung."
+        },
+        {
+          "at": "2026-11-28T10:46:21Z",
+          "by": "build",
+          "text": "review → done: Kontrolleur-Beleg: Scan laeuft reproduzierbar, Baseline-JSON ausgewertet (14 Fails/10 Overlaps/Zeile-6-Puffer 4 px). Reviewer-PASS gesamt (K1-K4), Commit 849abf37."
         }
       ],
       "created": "2026-11-28T10:31:04Z",
-      "updated": "2026-11-28T10:33:01Z"
+      "updated": "2026-11-28T10:46:21Z"
     },
     {
       "id": 11079,
       "title": "m10-ui-pause-quality K2: Pause-Build-Texte Farbe idx 8 -> 12 (Kontrast >= 4.5)",
       "description": "Akzeptanz: src/scenes/UI.ts refreshPause: Passive-Spalte (Namen + LV) von C.mist (8, Kontrast 4.15) auf C.candleWhite (12); Waffen-Spalte (C.bone, besteht) unangetastet; Hinweiszeilen (ESC/PFEILE, idx 8/7) laut Scope unveraendert. Scan nachher: keine idx-8-Fails mehr im Pause-Build. Owner: Lead; Kontrolleure: reviewer + test-auditor.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T10:33:06Z",
@@ -14118,16 +14123,21 @@
           "at": "2026-11-28T10:36:18Z",
           "by": "build",
           "text": "doing → review: K2 fertig, Commit 02a582b8 (#11079). Beleg Probe-Scan ~/games/.evidence/m10-ui-pause-quality/m10-ui-pause-quality-probe-scan.json: Powerup-Build-Texte idx 12, ratio 15.28 (640x360@2 + 780x360@3); Waffen-Spalte (idx 10) und Hinweiszeilen unveraendert; tsc+build+1974 Tests gruen."
+        },
+        {
+          "at": "2026-11-28T10:46:21Z",
+          "by": "build",
+          "text": "review → done: Reviewer-PASS + art-director-PASS (idx 12 @ 15.28, Pixel-Verifikation 0xF2EDD8, beide Profile), Commit 02a582b8."
         }
       ],
       "created": "2026-11-28T10:31:04Z",
-      "updated": "2026-11-28T10:36:18Z"
+      "updated": "2026-11-28T10:46:21Z"
     },
     {
       "id": 11080,
       "title": "m10-ui-pause-quality K3: Icon-Spacing +4 px (0 Frame-Overlaps) + Zeile-6-Spaltenpuffer",
       "description": "Akzeptanz: (a) Zeilen-Pitch 15 -> 19 in beiden Build-Spalten: 0 Icon-Frame-Overlaps (vorher 10), keine neuen Text/Icon-Overlaps; (b) art-director-Hebel (7): Zeile 6 (SEELENLEUCHTFEUER) bekommt denselben Spalten-Puffer wie Zeilen 1-5 (Name→LV >= 22 px, Minimum der Zeilen 1-5 im Vorher-Scan; LV sitzt heute 2 px an der Sanduhr-Icon-Kante) via slotNameLines-Umbruch, Zeilen 1-5 pixelgleich. Owner: Lead; Kontrolleure: art-director + reviewer.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T10:33:32Z",
@@ -14138,25 +14148,35 @@
           "at": "2026-11-28T10:36:18Z",
           "by": "build",
           "text": "doing → review: K3 fertig, Commit 950e3bb0 (#11080). Beleg Probe-Scan: Icon-Pitch 19 px (Frames 3 px Luft), 0 Overlaps (vorher 10), Zeile 6 'SEELENLEU'/'CHTFEUER' mit Name->LV-Puffer 52 px (>= Zeilen-1-5-Minimum 22 px), Zeilen 1-5 pixelgleich bis auf Pitch-Versatz; beide Viewports."
+        },
+        {
+          "at": "2026-11-28T10:46:21Z",
+          "by": "build",
+          "text": "review → done: Reviewer-PASS (Geometrie nachgerechnet) + art-director-PASS (0 Overlaps, Pitch 19, Zeile 6 52 px Puffer), Commits 950e3bb0 + Nits ee2817a9."
         }
       ],
       "created": "2026-11-28T10:31:04Z",
-      "updated": "2026-11-28T10:36:18Z"
+      "updated": "2026-11-28T10:46:21Z"
     },
     {
       "id": 11081,
       "title": "m10-ui-pause-quality K4: Regressionstest + Nachher-Scan + Abnahme-Shots + Lane-Doku",
       "description": "Akzeptanz: tests/ui-pause-quality.test.ts (Kontrast >= 4.5 Build-Texte, 0 Overlaps, Zeile-6-Puffer >= Zeilen-1-5-Puffer, beide Viewports per Scan-JSON belegt); Nachher-Scan + Diff (Rest pixelgleich bis auf gemeldete Differenzen) nach ~/games/.evidence/m10-ui-pause-quality/; Abnahme-Shots shots/abnahme/m10-ui-pause-quality-*.png; npx tsc --noEmit rc=0, npm run build rc=0, npm test gruen, 0 JS-Fehler; docs/lanes/m10-ui-pause-quality.md; .lane-done. Owner: Lead; Kontrolleure: playtester + acceptance-auditor.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T10:36:25Z",
           "by": "build",
           "text": "todo → doing: K4 angenommen: tests/ui-pause-quality.test.ts, Nachher-Scan + Diff, Abnahme-Shots shots/abnahme/, Lane-Doku, .lane-done."
+        },
+        {
+          "at": "2026-11-28T10:46:21Z",
+          "by": "build",
+          "text": "doing → done: Reviewer-PASS + art-director-PASS (Pixel-Diff: Rest unveraendert), Commit a4973730 + Nits ee2817a9 + Doku 8d847ec1; 1991 Tests gruen, tsc/build rc=0, 0 JS-Fehler."
         }
       ],
       "created": "2026-11-28T10:31:04Z",
-      "updated": "2026-11-28T10:36:25Z"
+      "updated": "2026-11-28T10:46:21Z"
     }
   ]
 }
