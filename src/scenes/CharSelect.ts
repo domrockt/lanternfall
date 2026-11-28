@@ -111,7 +111,7 @@ export class CharSelect extends Phaser.Scene {
     // Vignette pixelgenau (m10-menubg-crisp): ganzzahliger Scale + Kanten-Fuellung.
     addVignetteBg(this, W, H);
     new PixelText(this, cx, 16, "WÄHLE DEINEN CHARAKTER", C.lantern, "center").setScale(2).setDepth(4);
-    new PixelText(this, cx, 32, `SEED ${this.seed} · PFEILE/MAUS = WAHL`, C.fog, "center").setDepth(4);
+    new PixelText(this, cx, 32, `SEED ${this.seed} · PFEILE/MAUS = WAHL`, C.bone, "center").setDepth(4);
 
     CHARACTER_LIST.forEach((char, i) => {
       const x = cx + (i - 0.5) * 224;
@@ -135,7 +135,7 @@ export class CharSelect extends Phaser.Scene {
       new PixelText(this, x - 92, 174 + oy, `HP        ${char.hp}`, C.bone).setDepth(4);
       new PixelText(this, x - 92, 184 + oy, `TEMPO     ${char.speed}`, C.bone).setDepth(4);
       new PixelText(this, x - 92, 194 + oy, `RÜSTUNG   ${char.armor}`, C.bone).setDepth(4);
-      new PixelText(this, x, 204 + oy, bonusText(char), C.mist, "center").setDepth(4);
+      new PixelText(this, x, 204 + oy, bonusText(char), C.paleMist, "center").setDepth(4);
 
       // Startwaffe mit 16x16-Icon (links neben dem Text, keine Überlappung
       // mit der Bonuszeile darüber).
@@ -143,7 +143,7 @@ export class CharSelect extends Phaser.Scene {
       if (this.textures.exists(icon)) {
         this.add.image(x - 92, 210 + oy, icon).setOrigin(0, 0).setDepth(4);
       }
-      new PixelText(this, x - 72, 214 + oy, `START: ${weaponName(char)}`, C.fog).setDepth(4);
+      new PixelText(this, x - 72, 214 + oy, `START: ${weaponName(char)}`, C.bone).setDepth(4);
 
       const meta = readMeta();
       new PixelText(this, x, 228 + oy, metaLine(char.id === "mira" ? meta.mira : meta.kael), C.lantern, "center")

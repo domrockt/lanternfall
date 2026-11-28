@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11111,
+  "next": 11117,
   "cards": [
     {
       "id": 1,
@@ -14312,6 +14312,82 @@
       ],
       "created": "2026-11-28T09:41:15Z",
       "updated": "2026-11-28T10:12:44Z"
+    },
+    {
+      "id": 11111,
+      "title": "m10-menu-contrast-fixes K1: Vorher-Scan an Branch-Basis",
+      "description": "Scan-Skript scripts/m10-menu-contrast.mjs (Muster m10-menu-quality.mjs, nur Kontrast+Overlap+KAEL-Gap, Szenen title/options/credits/charselect) einmal an Branch-Basis laufen lassen, JSON+Shots nach ~/games/.evidence/m10-menu-contrast-fixes/. AK: Vorher-Zahlen je betroffener Zeile in docs/lanes/m10-menu-contrast-fixes.md, Belegpfad genannt.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T09:54:53Z",
+          "by": "build",
+          "text": "todo → doing: Lane übernommen: Vorher-Scan an Branch-Basis (Worktree m10-menu-contrast-fixes)."
+        },
+        {
+          "at": "2026-11-28T10:27:27+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11111, Merge branch m10-menu-contrast-fixes (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:53Z"
+    },
+    {
+      "id": 11112,
+      "title": "m10-menu-contrast-fixes K2: Title.ts Hint-/Subtitle-Kontrast",
+      "description": "3 Hint-Zeilen C.fog(7)->C.bone(10) (Ist 2.07), Subtitle C.mist(8)->C.paleMist(9) (Ist 4.34). AK: tsc rc=0, build+tests gruen, Commit nennt #Karte.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T10:02:36Z",
+          "by": "build",
+          "text": "todo → doing: K2 starten (K1 committed, review-Buchung durch fremde dirty shots-Dateien blockiert – siehe Lane-Doku)."
+        },
+        {
+          "at": "2026-11-28T10:27:27+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11112, Merge branch m10-menu-contrast-fixes (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T10:02:36Z"
+    },
+    {
+      "id": 11113,
+      "title": "m10-menu-contrast-fixes K3: options-menu.ts Footer Farbe+Position",
+      "description": "Footer C.mist->C.bone(>=10) und Footer so verschieben, dass Overlap mit Title-Hint (465 px^2) = 0 ist, ohne neue Overlaps. AK: Scan nachher zeigt 0 Overlap options, tsc+build+tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 11114,
+      "title": "m10-menu-contrast-fixes K4: Credits.ts + CharSelect.ts Label-Kontrast",
+      "description": "Credits Zeilen-Labels/ESC C.fog(7)->C.bone(10) (Ist 2.73/2.95), mist(8)->paleMist(9) (Ist 4.16); CharSelect SEED-/START-Zeilen fog->bone (Ist 2.77/2.48), Bonus-Zeilen mist->paleMist (Ist 3.78). AK: tsc rc=0, build+tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 11115,
+      "title": "m10-menu-contrast-fixes K5: Title.ts Freiraum KAEL-Zeile <-> Knopfreihe",
+      "description": "Bestwerte-Block (BESTWERTE/MIRA/KAEL) so verschieben, dass >=4-6 interne px zwischen KAEL-Zeile und oberem Knopf-Rahmen liegen (Ist 1 px), keine neuen Overlaps. AK: Scan misst Gap >= 4 px beide Profile.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 11116,
+      "title": "m10-menu-contrast-fixes K6: Nachher-Scan + Regressionstest + Doku + Abnahme",
+      "description": "After-Scan nach .evidence, tests/menu-contrast-fixes.test.ts (Kontrast-/Overlap-Assertions fuer genau die 4 Dateien), docs/lanes/m10-menu-contrast-fixes.md Vorher/Nachher, shots/abnahme/m10-menu-contrast-*.png, .lane-done. AK: alle 4 Dateien 0 Kontrast-Fails <4.5, 0 Overlap, tsc+build+test gruen, 0 JS-Fehler.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
     }
   ]
 }

@@ -61,14 +61,14 @@ export class Credits extends Phaser.Scene {
       .setStrokeStyle(2, PAL[C.lantern]).setDepth(0);
 
     new PixelText(this, cx, 30 + oy, "CREDITS", C.lantern, "center").setScale(2).setDepth(2);
-    new PixelText(this, cx, 50 + oy, "LANTERNFALL - DIE LETZTE LATERNE", C.mist, "center").setDepth(2);
+    new PixelText(this, cx, 50 + oy, "LANTERNFALL - DIE LETZTE LATERNE", C.paleMist, "center").setDepth(2);
 
     CREDIT_LINES.forEach(([role, name], i) => {
       const y = 70 + oy + i * 13;
-      new PixelText(this, cx - 148, y, role, C.fog).setDepth(2);
+      new PixelText(this, cx - 148, y, role, C.bone).setDepth(2);
       new PixelText(this, cx + 148, y, name, C.bone, "right").setDepth(2);
     });
-    new PixelText(this, cx, 192 + oy, "GRAFIK-PIPELINE: PROZEDURAL, 32 FARBEN", C.mist, "center").setDepth(2);
+    new PixelText(this, cx, 192 + oy, "GRAFIK-PIPELINE: PROZEDURAL, 32 FARBEN", C.paleMist, "center").setDepth(2);
     new PixelText(this, cx, 202 + oy, "DANKE FÜRS SPIELEN", C.lantern, "center").setDepth(2);
 
     this.backButton = createMenuButton(
@@ -77,7 +77,7 @@ export class Credits extends Phaser.Scene {
     // m10-gamepad-nav-scenes-r2 K4: Fokus via Kern-API; Creditsliste ist kurz
     // (9 Zeilen, statisch) — kein Scrollen nötig (docs/lanes).
     this.focus = new MenuFocus([this.backButton]);
-    new PixelText(this, cx, H - 9, "ESC / ENTER = ZURÜCK", C.fog, "center").setDepth(2);
+    new PixelText(this, cx, H - 9, "ESC / ENTER = ZURÜCK", C.bone, "center").setDepth(2);
 
     const kb = this.input.keyboard!;
     for (const event of ["keydown-ESC", "keydown-ENTER", "keydown-SPACE"]) kb.removeAllListeners(event);

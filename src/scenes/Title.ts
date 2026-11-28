@@ -226,13 +226,17 @@ export class Title extends Phaser.Scene {
     this.add.image(cx, 58 + oy, "title_logo").setScale(2).setDepth(2);
     new PixelText(this, cx, 116 + oy, "LANTERNFALL", C.lantern, "center").setScale(3).setDepth(4);
     new PixelText(this, cx, 142 + oy, "DIE LETZTE LATERNE", C.bone, "center").setDepth(4);
-    new PixelText(this, cx, 154 + oy, "30 MINUTEN BIS ZUR MORGENDAMMERUNG", C.mist, "center").setDepth(4);
+    new PixelText(this, cx, 154 + oy, "30 MINUTEN BIS ZUR MORGENDAMMERUNG", C.paleMist, "center").setDepth(4);
 
     // Meta-Bestwerte pro Charakter (localStorage, ohne Login/Shop).
     const meta = readMeta();
-    new PixelText(this, cx, 172 + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
-    new PixelText(this, cx, 184 + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
-    new PixelText(this, cx, 194 + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
+    // m10-menu-contrast-fixes K5: Block 5 px nach oben — vorher lag nur 2 px
+    // Luft zwischen KAEL-Zeile (y1 = y + 7) und dem oberen Rahmen der
+    // Knopfreihe (Rahmen-Top = Knopf-y - 12); jetzt 7 px
+    // (art-director-Hebel (6): >= 4-6 interne px Freiraum).
+    new PixelText(this, cx, 167 + oy, "BESTWERTE", C.lantern, "center").setDepth(4);
+    new PixelText(this, cx, 179 + oy, `MIRA   ${metaLine(meta.mira)}`, C.bone, "center").setDepth(4);
+    new PixelText(this, cx, 189 + oy, `KAEL   ${metaLine(meta.kael)}`, C.bone, "center").setDepth(4);
 
     this.buttons.push(createMenuButton(
       this, cx - 104, 214 + oy, 96, "START", () => this.startSelect(), { depth: 6 },
@@ -265,9 +269,9 @@ export class Title extends Phaser.Scene {
     });
 
     // Hinweise am unteren Rand (nicht auf festen 270er-Koordinaten).
-    new PixelText(this, cx, H - 38, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.fog, "center").setDepth(4);
-    new PixelText(this, cx, H - 28, "MAUS ODER PFEILE + ENTER WÄHLEN", C.fog, "center").setDepth(4);
-    new PixelText(this, cx, H - 18, "ESC = PAUSE - O = OPTIONEN", C.fog, "center").setDepth(4);
+    new PixelText(this, cx, H - 38, "WASD/PFEILE BEWEGEN - WAFFEN FEUERN AUTOMATISCH", C.bone, "center").setDepth(4);
+    new PixelText(this, cx, H - 28, "MAUS ODER PFEILE + ENTER WÄHLEN", C.bone, "center").setDepth(4);
+    new PixelText(this, cx, H - 18, "ESC = PAUSE - O = OPTIONEN", C.bone, "center").setDepth(4);
     if (isIos()) {
       // iOS: Web-App nur ueber den Home-Bildschirm im Vollbild spielbar.
       new PixelText(this, cx, H - 8, "IOS: TEILEN > ZUM HOME-BILDSCHIRM", C.amber, "center").setDepth(4);
