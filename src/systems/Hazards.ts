@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { DEPTH } from "../gfx/depth";
 import { makeImage } from "../gfx/atlas";
-import { hazardDiscTexture, hazardRingTexture, quantizedRadius } from "../gfx/hazardDisc";
+import { hazardBeamRimTexture, hazardBeamTexture, hazardDiscTexture, hazardRingTexture, quantizedBeamLength, quantizedRadius } from "../gfx/hazardDisc";
 
 export interface HazardOptions {
   /** Vorwarnzeit (s), > 0 = Pflicht-Telegraph. */
@@ -132,18 +132,21 @@ export class HazardSystem {
   ): HazardRuntime {
     const len = Math.hypot(x2 - x1, y2 - y1) || 1;
     const angle = Math.atan2(y2 - y1, x2 - x1);
-    const warnSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+    // B3-Fix: Strahl in Sprite-Pixelgroesse gebacken (Draw-Scale 1, nie >1x gestreckt).
+    const beamLen = quantizedBeamLength(len);
+    const warnSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, hazardBeamTexture(this.scene, beamLen))
       .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
       .setRotation(angle + Math.PI / 2)
-      .setScale(1, len / 16)
+      .setScale(1)
       .setAlpha(0.9);
-    const rimSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+    warnSprite.setTint(PAL[opts.color ?? C.crimson] ?? opts.color ?? PAL[C.crimson]);
+    const rimSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, hazardBeamRimTexture(this.scene, beamLen))
       .setDepth(DEPTH.hazard + 1)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.hotRed])
       .setRotation(angle + Math.PI / 2)
-      .setScale(1.25, len / 16)
+      .setScale(1)
       .setAlpha(rimPulseAlpha(0));
     const hazard: HazardRuntime = {
       kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,

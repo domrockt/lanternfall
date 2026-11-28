@@ -23,8 +23,8 @@ import { PAL } from "../palette";
  * Nicht-Telegraph-Nutzung von "ring_burst" (Impact-Ring, kurzlebig) ist bewusst unveraendert.
  */
 
-/** Fuellung: mittelheller Neutronton — mit Tint dunkler Ton der Gefahr-Farbe. */
-export const DISC_FILL_I = 10; // bone
+/** Fuellung: dunkler Warnton — mit Tint dunkler Ton der Gefahr-Farbe (hellt nie auf). */
+export const DISC_FILL_I = 15; // emberDark
 /** Kontur/Band: fast-weiß — mit Tint volle Gefahr-Farbe. */
 export const DISC_CONTOUR_I = 13; // lanternWhite
 /** Maskenwert fuer transparent. */
@@ -86,16 +86,18 @@ export function ringMask(r: number): Uint8Array {
   return mask;
 }
 
-/** Wendet eine Maske auf einen Pixel-Zeichner an; liefert die Zahl gezeichneter Pixel. */
+/** Wendet eine Maske (Breite `width`) auf einen Pixel-Zeichner an; liefert die Zahl gezeichneter Pixel. */
 export function applyMask(
   put: (x: number, y: number, paletteIndex: number) => void,
   mask: Uint8Array,
+  width?: number,
 ): number {
-  const side = Math.round(Math.sqrt(mask.length));
+  const w = width ?? Math.round(Math.sqrt(mask.length));
+  const h = Math.round(mask.length / w);
   let painted = 0;
-  for (let y = 0; y < side; y++) {
-    for (let x = 0; x < side; x++) {
-      const pi = mask[y * side + x];
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const pi = mask[y * w + x];
       if (pi === MASK_CLEAR) continue;
       put(x, y, pi);
       painted++;
@@ -104,21 +106,22 @@ export function applyMask(
   return painted;
 }
 
-function bakeFromMask(scene: Phaser.Scene, key: string, mask: Uint8Array): void {
+function bakeFromMask(scene: Phaser.Scene, key: string, mask: Uint8Array, width?: number): void {
   // Szenen ohne Texture-API (Unit-Test-Stubs) bekommen nur den Key; im Spiel ist
   // scene.textures immer vorhanden und der Bake laeuft genau einmal je Key.
   const textures = scene.textures as Phaser.Textures.TextureManager | undefined;
   if (!textures || typeof textures.addCanvas !== "function" || textures.exists(key)) return;
-  const side = Math.round(Math.sqrt(mask.length));
+  const w = width ?? Math.round(Math.sqrt(mask.length));
+  const h = Math.round(mask.length / w);
   const canvas = document.createElement("canvas");
-  canvas.width = side;
-  canvas.height = side;
+  canvas.width = w;
+  canvas.height = h;
   const ctx = canvas.getContext("2d")!;
-  ctx.clearRect(0, 0, side, side);
+  ctx.clearRect(0, 0, w, h);
   applyMask((x, y, pi) => {
     ctx.fillStyle = hexColor(PAL[pi]);
     ctx.fillRect(x, y, 1, 1);
-  }, mask);
+  }, mask, w);
   scene.textures.addCanvas(key, canvas);
 }
 
@@ -139,5 +142,58 @@ export function hazardRingTexture(scene: Phaser.Scene, radius: number): string {
   const r = quantizedRadius(radius);
   const key = `hazard_ring_r${r}`;
   bakeFromMask(scene, key, ringMask(r));
+  return key;
+}
+
+/** Breite des Warn-Strahl-Texturen (wie zuvor 8 px Kern in Sprite-Pixeln). */
+export const BEAM_W = 8;
+/** Breite des Strahl-Rand-Puls (wie zuvor 8 px × 1,25). */
+export const BEAM_RIM_W = 10;
+
+/**
+ * Strahl-Laenge in Spielpixeln: ganzzahlig, auf 8er-Schritte ABRUNDEND quantisiert (Textur
+ * ist nie laenger als der Treffer-Strahl, max. 7 px kuerzer) — begrenzte Cache-Menge.
+ */
+export function quantizedBeamLength(len: number): number {
+  if (!Number.isFinite(len)) return 8;
+  return Math.max(8, Math.min(1024, Math.floor(len / 8) * 8));
+}
+
+/** Reine Rasterung des Warn-Strahls: 2-px-Kern (Kontur) + 1-px dunkler Rand je Seite. */
+export function beamMask(len: number): Uint8Array {
+  const h = quantizedBeamLength(len);
+  const mask = new Uint8Array(BEAM_W * h).fill(MASK_CLEAR);
+  for (let y = 0; y < h; y++) {
+    mask[y * BEAM_W + 2] = DISC_FILL_I;
+    mask[y * BEAM_W + 3] = DISC_CONTOUR_I;
+    mask[y * BEAM_W + 4] = DISC_CONTOUR_I;
+    mask[y * BEAM_W + 5] = DISC_FILL_I;
+  }
+  return mask;
+}
+
+/** Reine Rasterung des Strahl-Rand-Pulses: 4-px-Band, sonst transparent. */
+export function beamRimMask(len: number): Uint8Array {
+  const h = quantizedBeamLength(len);
+  const mask = new Uint8Array(BEAM_RIM_W * h).fill(MASK_CLEAR);
+  for (let y = 0; y < h; y++) {
+    for (let x = 3; x <= 6; x++) mask[y * BEAM_RIM_W + x] = DISC_CONTOUR_I;
+  }
+  return mask;
+}
+
+/** Ensures + liefert den Key des Warn-Strahl-Texturen in Sprite-Pixelgroesse. */
+export function hazardBeamTexture(scene: Phaser.Scene, length: number): string {
+  const l = quantizedBeamLength(length);
+  const key = `hazard_beam_l${l}`;
+  bakeFromMask(scene, key, beamMask(l), BEAM_W);
+  return key;
+}
+
+/** Ensures + liefert den Key des Strahl-Rand-Puls in Sprite-Pixelgroesse. */
+export function hazardBeamRimTexture(scene: Phaser.Scene, length: number): string {
+  const l = quantizedBeamLength(length);
+  const key = `hazard_beam_rim_l${l}`;
+  bakeFromMask(scene, key, beamRimMask(l), BEAM_RIM_W);
   return key;
 }

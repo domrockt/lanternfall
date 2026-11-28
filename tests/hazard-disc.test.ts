@@ -41,8 +41,9 @@ vi.stubGlobal("document", {
 
 import { HazardSystem } from "../src/systems/Hazards";
 import {
-  DISC_CONTOUR_I, DISC_FILL_I, MASK_CLEAR,
-  applyMask, discMask, discSide, quantizedRadius, ringMask,
+  BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_I, MASK_CLEAR,
+  applyMask, beamMask, beamRimMask, discMask, discSide, quantizedBeamLength,
+  quantizedRadius, ringMask,
 } from "../src/gfx/hazardDisc";
 import { PAL, C } from "../src/palette";
 
@@ -142,6 +143,28 @@ describe("hazardDisc: gebackene Telegraph-Texturen sind gerastert, nicht milchig
     expect(n).toBe(painted.length);
     expect(n).toBe([...mask].filter((v) => v !== MASK_CLEAR).length);
   });
+
+  it("beamMask/beamRimMask: gerastert in Sprite-Pixelgroesse, Laenge quantisiert abrundend", () => {
+    for (const len of [16, 100, 420]) {
+      const mask = beamMask(len);
+      expect(mask.length).toBe(BEAM_W * quantizedBeamLength(len));
+      expect(colorsIn(mask)).toEqual(new Set([DISC_CONTOUR_I, DISC_FILL_I]));
+      // Kern = Kontur (2 Spalten), Rand = dunkle Fuellung (hellt nie auf).
+      expect(mask[0 * BEAM_W + 3]).toBe(DISC_CONTOUR_I);
+      expect(mask[0 * BEAM_W + 2]).toBe(DISC_FILL_I);
+      expect(lum(DISC_CONTOUR_I) - lum(DISC_FILL_I)).toBeGreaterThanOrEqual(20);
+      const rim = beamRimMask(len);
+      expect(rim.length).toBe(BEAM_RIM_W * quantizedBeamLength(len));
+      expect(colorsIn(rim)).toEqual(new Set([DISC_CONTOUR_I]));
+      expect(rim[0 * BEAM_RIM_W + 4]).toBe(DISC_CONTOUR_I);
+      expect(rim[0 * BEAM_RIM_W + 2]).toBe(MASK_CLEAR);
+    }
+    // Abrundende 8er-Quantiserung: nie laenger als der Treffer-Strahl, begrenzter Cache.
+    expect(quantizedBeamLength(421)).toBe(416);
+    expect(quantizedBeamLength(7.9)).toBe(8);
+    expect(quantizedBeamLength(Number.NaN)).toBe(8);
+    expect(quantizedBeamLength(99999)).toBe(1024);
+  });
 });
 
 describe("Hazards.ts nutzt den Bake mit Draw-Scale 1 (Draw-Pfad sonst bitgleich)", () => {
@@ -169,6 +192,24 @@ describe("Hazards.ts nutzt den Bake mit Draw-Scale 1 (Draw-Pfad sonst bitgleich)
     imageCalls.length = 0;
     hz.spawnCircle(40, 40, { warn: 1, damage: 1, radius: 30, color: 25 });
     expect(imageCalls[0].calls.find(([m]) => m === "setTint")?.[1]).toBe(PAL[25]);
+  });
+
+  it("spawnBeam backt Strahl + Rand in Laengengroesse, Scale 1 (nie >1x gestreckt)", () => {
+    imageCalls.length = 0;
+    const hz = new HazardSystem(fakeScene());
+    hz.spawnBeam(10, 10, 210, 110, { warn: 1, damage: 1, radius: 16 });
+    expect(imageCalls).toHaveLength(2);
+    expect(imageCalls[0].key).toBe(`hazard_beam_l${quantizedBeamLength(Math.hypot(200, 100))}`);
+    expect(imageCalls[1].key).toBe(`hazard_beam_rim_l${quantizedBeamLength(Math.hypot(200, 100))}`);
+    expect(imageCalls[0].calls.find(([m]) => m === "setScale")).toEqual(["setScale", 1]);
+    expect(imageCalls[1].calls.find(([m]) => m === "setScale")).toEqual(["setScale", 1]);
+    expect(imageCalls[0].calls.find(([m]) => m === "setAlpha")).toEqual(["setAlpha", 0.9]);
+    expect(imageCalls[0].calls.find(([m]) => m === "setTint")?.[1]).toBe(PAL[C.crimson]);
+    expect(imageCalls[1].calls.find(([m]) => m === "setTint")?.[1]).toBe(PAL[C.hotRed]);
+    // Expliciter color-Index am Strahl (fire_cross nutzt 26).
+    imageCalls.length = 0;
+    hz.spawnBeam(10, 10, 210, 110, { warn: 1, damage: 1, radius: 18, color: 26 });
+    expect(imageCalls[0].calls.find(([m]) => m === "setTint")?.[1]).toBe(PAL[26]);
   });
 });
 
