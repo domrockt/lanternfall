@@ -199,6 +199,16 @@ export const CHEST_ICON_TEX = 16;
  * 6 px ueber dem Hint-Band, innerhalb des Panel-Rahmens.
  */
 export const CHEST_ICON_DRAW_SCALE = 3;
+/**
+ * m10-chest-closed-crisp-ui (menu-art-crisp F2, UI-Teil): Die Reward-Slot-Icons
+ * im Truhen-Panel waren mit 2.4 fraktional skaliert (38.4 px Display — Geraetepixel
+ * je Texel 4.8 @640x360@2 bzw. 7.2 @780x360@3, Mixelklasse wie F2; Vorher-Scan
+ * scripts/m10-chest-closed-ui.mjs, ~/games/.evidence/m10-chest-closed-crisp-ui/).
+ * Fix: ganzzahlige Stufe 2 (32 px) — Stufe 3 (48 px) passt nicht in den 44-px-Slot
+ * und wuerde in die Slot-Texte (y 202+oy) ragen. Slot-Anker sind bereits ganzzahlig
+ * (Pitch 86, Zentren ganzzahlig); Overlap mit den Slot-Texten via Guard-Test.
+ */
+export const CHEST_SLOT_ICON_SCALE = 2;
 export const CHEST_HINT_Y = 122;
 export const CHEST_HINT_PITCH = 8;
 /** m10-chest-hint-wrap: max. Zeichen je Slot-Label-Zeile (Slot 96 px breit). */
@@ -835,7 +845,7 @@ export class UI extends Phaser.Scene {
         .setStrokeStyle(2, PAL[C.nightSlate]);
       const slotBg = this.add.rectangle(x, 176 + oy, 44, 44, PAL[C.nightDeep])
         .setStrokeStyle(2, PAL[C.ink]);
-      const icon = this.add.image(x, 176 + oy, "icon_weapon_ember").setScale(2.4).setVisible(false);
+      const icon = this.add.image(x, 176 + oy, "icon_weapon_ember").setScale(CHEST_SLOT_ICON_SCALE).setVisible(false);
       const text = new PixelText(this, x, 202 + oy, "", C.candleWhite, "center");
       const text2 = new PixelText(this, x, 213 + oy, "", C.candleWhite, "center");
       const level = new PixelText(this, x, 224 + oy, "", C.amber, "center");

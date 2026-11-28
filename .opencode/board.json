@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13235,
+  "next": 13259,
   "cards": [
     {
       "id": 1,
@@ -18631,6 +18631,96 @@
       ],
       "created": "2026-11-28T16:21:21Z",
       "updated": "2026-11-28T16:26:48Z"
+    },
+    {
+      "id": 13255,
+      "title": "m10-chest-closed-crisp-ui K1: Vorher-Scan Truhen-UI (Skalen, Anker, Overlaps)",
+      "description": "Mess-Skript scripts/m10-chest-closed-ui.mjs (Muster scripts/m10-chest-closed.mjs): Zeichnet Truhen-Panel via debugTriggerEvent('chest'), misst je Viewport 640x360@2 und 780x360@3 alle statischen Texturen des Panels (chestSprite, Slot-Icons, fx_coin) inkl. scale/displayW, Anker-Snapping und Overlap Icon<->Untertitel/Hint/Rahmen. Belege JSON+PNG nach ~/games/.evidence/m10-chest-closed-crisp-ui/. Abnahme: JSON committed (Skript im Repo), Befundliste in docs/lanes/m10-chest-closed-crisp-ui.md.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:16:48Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-chest-closed-crisp-ui startet: Vorher-Scan des Truhen-UI-Renderpfads (Skalen/Anker/Overlaps) in beiden Viewports."
+        },
+        {
+          "at": "2026-11-28T16:24:13Z",
+          "by": "build",
+          "text": "doing → review: Vorher-Scan committed (d3c59995): chestSprite ok (Scale 3, DevPx/Texel 6|9, 0 frakt. Runs, Gaps 5px, im Rahmen); Befund = Slot-Icons Scale 2.4 -> Mixel (1844/3104 frakt. Runs). Skript scripts/m10-chest-closed-ui.mjs + Doku im Commit, JSON/PNG in ~/games/.evidence/m10-chest-closed-crisp-ui/. Selbst geprueft (Lauf before, verdict im JSON)."
+        },
+        {
+          "at": "2026-11-28T16:29:38+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13125, Merge branch m10-chest-closed-crisp-ui"
+        }
+      ],
+      "created": "2026-11-28T16:16:43Z",
+      "updated": "2026-11-28T16:24:13Z"
+    },
+    {
+      "id": 13256,
+      "title": "m10-chest-closed-crisp-ui K2: Fix ganzzahlige Slot-Icon-Skala + Pixel-Snap",
+      "description": "src/scenes/UI.ts: Slot-Icon-Skala 2.4 -> ganzzahlige Konstante CHEST_SLOT_ICON_SCALE (2, 3 passt nicht in 44px-Slot), Anker ganzzahlig. chestSprite-Draw bleibt Stufe 3. Kein Layout-/Inszenierungs-Eingriff. Abnahme: npx tsc --noEmit gruenn, gezielte vitest-Datei gruen, Ein Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:24:13Z",
+          "by": "build",
+          "text": "todo → doing: Fix: CHEST_SLOT_ICON_SCALE = 2 in src/scenes/UI.ts (Slot 44px -> 48px wären Stufe 3 und ragen in die Slot-Texte)."
+        },
+        {
+          "at": "2026-11-28T16:24:29Z",
+          "by": "build",
+          "text": "doing → review: Committed (a6b6bad0): CHEST_SLOT_ICON_SCALE = 2 (Export + Konstruktion), tsc gruen, chest-icon-crisp/chest-panel-ui/chest-hint-wrap 44 Tests gruen. Nachweis der Wirkung folgt in K3 (after-Scan)."
+        },
+        {
+          "at": "2026-11-28T16:29:38+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13126, Merge branch m10-chest-closed-crisp-ui"
+        }
+      ],
+      "created": "2026-11-28T16:16:43Z",
+      "updated": "2026-11-28T16:24:29Z"
+    },
+    {
+      "id": 13257,
+      "title": "m10-chest-closed-crisp-ui K3: Guard-Test + Nachher-Beleg",
+      "description": "tests/chest-closed-ui-crisp.test.ts: ganzzahlige Skalen aller statischen Truhen-UI-Texturen (chestSprite-Stufe 3, Slot-Icon ganzzahlig), 0 Icon-Overlaps mit Untertitel/Hint/Rahmen via chestPanelBoxes-Mathematik je Viewport (640x360, 780x360, 1920x1080). Nachher-Lauf des Mess-Skripts (TAG=after): 0 fraktionale Skalen, 0 Overlaps, Belege nach ~/games/.evidence/. Abnahme: vitest gruen, JSON nachher committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:24:29Z",
+          "by": "build",
+          "text": "todo → doing: Guard-Test tests/chest-closed-ui-crisp.test.ts + after-Lauf des Mess-Skripts."
+        },
+        {
+          "at": "2026-11-28T16:29:38+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13257, Merge branch m10-chest-closed-crisp-ui (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T16:16:43Z",
+      "updated": "2026-11-28T16:24:29Z"
+    },
+    {
+      "id": 13258,
+      "title": "m10-chest-closed-crisp-ui K4: art-director-Kurzsicht + Doku + .lane-done",
+      "description": "art-director prueft Abnahme-Screenshots beider Viewports (Ziel >= 4/5), Doku docs/lanes/m10-chest-closed-crisp-ui.md komplett, npm run build + npm test + verify:final gruen, git status --ignored bereinigt, .lane-done committed.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T16:27:17Z",
+          "by": "build",
+          "text": "todo → doing: K4: art-director-Kurzsicht + verify:final + .lane-done."
+        },
+        {
+          "at": "2026-11-28T16:29:38+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13258, Merge branch m10-chest-closed-crisp-ui (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T16:16:43Z",
+      "updated": "2026-11-28T16:27:17Z"
     }
   ]
 }
