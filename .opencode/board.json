@@ -12268,37 +12268,61 @@
       "id": 9915,
       "title": "m10-tiles-float-snap K1: Vorher-Scan — fraktionale Mischzellen 0,539 % belegen (before-JSON)",
       "description": "lane #9755, Merge 80b04784. Skript scripts/m10-tiles-snap.mjs läuft den Kanten-Scan (Muster ~/games/.evidence/m10-terrain-edge-crisp/m10-terrain-edge-after.json). AK: before-JSON in ~/games/.evidence/m10-tiles-float-snap/ zeigt mischRate ~0,00539 (3 Seeds, Region 960/960/320/320), Zahlen in docs/lanes.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:47:33Z",
+          "by": "build",
+          "text": "review → done: lane #9755, Merge 80b04784"
+        }
+      ],
       "created": "2026-11-28T07:46:27Z",
-      "updated": "2026-11-28T07:46:27Z"
+      "updated": "2026-11-28T07:47:33Z"
     },
     {
       "id": 9916,
       "title": "m10-tiles-float-snap K2: Fix — terrainSampleAt()/terrainKindAt() snappen Float-Queries auf Tile (Math.floor)",
       "description": "lane #9756, Merge 80b04784. Snap am Eingang von terrainSampleAt (terrainKindAt delegiert). AK: paintTerrain/terrainMaskAt/Wasser-Pfad unangetastet, ganzzahlige Aufrufe bitgleich, tsc grün.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:47:33Z",
+          "by": "build",
+          "text": "review → done: lane #9756, Merge 80b04784"
+        }
+      ],
       "created": "2026-11-28T07:46:27Z",
-      "updated": "2026-11-28T07:46:27Z"
+      "updated": "2026-11-28T07:47:33Z"
     },
     {
       "id": 9917,
       "title": "m10-tiles-float-snap K3: Guard-Test tests/tiles-float-snap.test.ts",
       "description": "lane #9757, Merge 80b04784. AK: Float-Query == gesnappte Tile-Mitte (Stichproben über biome-Grenzen, Subpixel-Offsets wie im Scan), ganzzahlige Werte unverändert; npx vitest run tests/tiles-float-snap.test.ts grün.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:47:33Z",
+          "by": "build",
+          "text": "review → done: lane #9757, Merge 80b04784"
+        }
+      ],
       "created": "2026-11-28T07:46:27Z",
-      "updated": "2026-11-28T07:46:27Z"
+      "updated": "2026-11-28T07:47:33Z"
     },
     {
       "id": 9918,
       "title": "m10-tiles-float-snap K4: Nachher-Scan + Lane-Doku + .lane-done",
       "description": "lane #9758, Merge 80b04784. AK: after-Scan mischRate 0,00000 (vorher 0,00539), Zahlen vorher/nachher in docs/lanes/m10-tiles-float-snap.md + Belege in ~/games/.evidence/m10-tiles-float-snap/, .lane-done committed.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T07:47:33Z",
+          "by": "build",
+          "text": "review → done: lane #9758, Merge 80b04784"
+        }
+      ],
       "created": "2026-11-28T07:46:27Z",
-      "updated": "2026-11-28T07:46:27Z"
+      "updated": "2026-11-28T07:47:33Z"
     }
   ]
 }
