@@ -1,0 +1,23 @@
+m10-janky-remeasure — Lane abgeschlossen (K1-K4, Versuch 2), 2026-11-28T17:2xZ
+
+Ziel: verbindliche Nachmessung des K3-Tors (gfxinfo janky < 10 % @ FPS >= 60, p95 <= 16 ms)
+auf dem Redmi Pad Pro, Build 0ce7164a (enthaelt stackfix aa8739f0 + fps-cap-Verdrahtung
+6720313e — merge-base geprueft), Panel per APK auf 60 Hz gezwungen (Probe: rAF-Median 16,7 ms).
+
+Ergebnisse (je 10 min, 6 Evos Lv8, Minute-25-Rezept, natural/topup interleaved, 0 JS-Fehler,
+0 Recoveries, Thermal Status 0, 35,0-36,0 C, keine DOM_SPIELT-Kollision):
+- K2 Cap 60:  gfxinfo janky 0 % (natural; Lauf 1 0/29 338, Beleg-JSON = Lauf 2 0/29 058 — beide konsistent), fpsAvg 50,1 (min 42,3-43,4), rAF-p95 33,4 ms, worst 83,3 ms (3-Vsync-Outlier, einzelnt)
+- K3 MAX:     gfxinfo janky 0 % (0/32 114 natural), fpsAvg 50,0 (min 44,0), rAF-p95 33,4 ms
+- K2 und K3 identisch -> BILDRATE-Cap bei 60-Hz-Panel wirkungslos; Engpass = Frame-Arbeit/
+  Present: ~1/3 der Frames > 16,7 ms faellt aufs 2-Vsync-Raster (bimodal p50 16,7 / p95 33,4),
+  auch bei niedriger Last (Leerlauf-Telemetrie p95 33,33). stackfix wirkt: 0 Loop-Toetungen.
+
+Urteil (K4): FAIL nach strengem Tor — janky-Kriterium gruen (0 %), aber FPS 50 < 60 und
+p95 33,4 ms > 16 ms. Endabnahme NICHT freigeben; Hebelliste (TimeStep/rAF-Skip in src/main.ts
+bzw. src/logic/fps-cap.ts priorisiert, danach ADD-/Partikel-Flaechen-Cap medium-Tier) als
+-> Job-Zeile an m10-fps-pacing-timestep in ~/.dispatch/requests.md uebergeben.
+
+Vorfall: zweite parallele Session an der Lane (Commit 2bf7b4ae 17:03:34Z, Beleg-Overrides
+17:01/17:14Z) — Zahlen konsistent, in der Lane-Doku dokumentiert. Belege:
+~/games/.evidence/m10-janky-remeasure/{smoke-k1,k2-cap60-device,k3-max-device}.json
+Doku: docs/lanes/m10-janky-remeasure.md
