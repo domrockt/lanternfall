@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9986,
+  "next": 9990,
   "cards": [
     {
       "id": 1,
@@ -12068,11 +12068,17 @@
       "id": 9725,
       "title": "m10-chest-closed-crisp K4: After-Shots + Verify-Skript + Lane-Doku + .lane-done",
       "description": "Belegte Befundklasse menu-art-crisp F2 (chest_closed) auf Textur-Ebene abschliessen: Skript scripts/m10-chest-closed.mjs erzeugt After-Shots shots/m10-chest-closed-* (640x360@2, 780x360@3), Textur-Scan (0 Off-Palette, 0 nicht-binaeres Alpha), Draw-Metriken (ganzzahliger Scale), art-director-Urteil >= 4/5, docs/lanes/m10-chest-closed-crisp.md, .lane-done. UI.ts bleibt ausgespart.",
-      "column": "doing",
+      "column": "done",
       "assignee": "coder",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T08:02:36Z",
+          "by": "build",
+          "text": "doing → done: Board-Hygiene durch lane m10-bundle-chunk-fix: Karte war stale in doing; Lane chest-closed-crisp ist gemerged (Commit 19b67ba6 in main, git log). done ohne Aenderung an der Arbeit."
+        }
+      ],
       "created": "2026-11-28T07:17:47Z",
-      "updated": "2026-11-28T07:17:47Z"
+      "updated": "2026-11-28T08:02:36Z"
     },
     {
       "id": 9726,
@@ -12403,16 +12409,21 @@
       "id": 9922,
       "title": "m10-powerup-sfx-wire K4: Nachher-Probe + Lane-Doku + .lane-done",
       "description": "Probe erneut: 1 Play-Call je Moment (0 -> 1), after-JSON als Beleg; docs/lanes/m10-powerup-sfx-wire.md mit Vorher/Nachher + Claim-Grenzen; .lane-done. Abnahme: npx tsc + npx vitest run tests/powerup* grün, git status sauber.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T07:40:51Z",
           "by": "build",
           "text": "backlog → doing: K4: Nachher-Probe + Lane-Doku + .lane-done; danach Reviewer ueber die ganze Lane."
+        },
+        {
+          "at": "2026-11-28T08:02:36Z",
+          "by": "build",
+          "text": "doing → done: Board-Hygiene durch lane m10-bundle-chunk-fix: Karte war stale in doing; Lane powerup-sfx-wire ist gemerged (Commit 5d3c4644 in main, git log). done ohne Aenderung an der Arbeit."
         }
       ],
       "created": "2026-11-28T07:37:38Z",
-      "updated": "2026-11-28T07:40:51Z"
+      "updated": "2026-11-28T08:02:36Z"
     },
     {
       "id": 9983,
@@ -12440,6 +12451,48 @@
       "notes": [],
       "created": "2026-11-28T07:55:24Z",
       "updated": "2026-11-28T07:55:24Z"
+    },
+    {
+      "id": 9986,
+      "title": "m10-bundle-chunk-fix K1: Vorher-Messung Build-Warnung",
+      "description": "Abnahme: `npm run build` einmal laufen lassen, Warnung + Chunk-Größen + Build-Zeit als JSON nach ~/games/.evidence/m10-bundle-chunk/before.json schreiben und in docs/lanes/m10-bundle-chunk-fix.md referenzieren. Commit mit Beleg.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T08:02:36Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-bundle-chunk-fix: Baseline-Build-Messung E-3 (Chunk-Warnung)"
+        }
+      ],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:02:36Z"
+    },
+    {
+      "id": 9987,
+      "title": "m10-bundle-chunk-fix K2: vite.config.ts Code-Split",
+      "description": "Abnahme: vite.config.ts neu (minimal: advancedChunks-Group für Phaser-Vendor vs. Spielcode), `npm run build` rc=0 ohne Chunk-Größenwarnung, Build-Zeit <= 2 s. Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:01:52Z"
+    },
+    {
+      "id": 9988,
+      "title": "m10-bundle-chunk-fix K3: Guard-Test + Preview-Smoke",
+      "description": "Abnahme: tests/bundle-chunks.test.ts (0 Chunk-Warnungen, Spielcode-Chunks < 500 kB) + Preview-/index-Load-Smoke (Spiel lädt, keine JS-Fehler). npm test grün, tsc rc=0. Commit.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:01:52Z"
+    },
+    {
+      "id": 9989,
+      "title": "m10-bundle-chunk-fix K4: Android-Beleg + Lane-Doku + lane-done",
+      "description": "Abnahme: Vor/Nach-Tabelle der Chunk-Größen in docs/lanes/m10-bundle-chunk-fix.md, Kaltstart-Hinweis Android; sonst dokumentierter Rollback mit Befund. .lane-done committet.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T08:01:52Z",
+      "updated": "2026-11-28T08:01:52Z"
     }
   ]
 }
