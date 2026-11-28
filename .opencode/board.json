@@ -14145,17 +14145,22 @@
       "id": 10967,
       "title": "m10-data-ssot-guard K4: Doku + Nachher-Zahlen + .lane-done",
       "description": "docs/lanes/m10-data-ssot-guard.md mit Vorher/Nachher-Zahlen und Befunden, Nachher-JSON, .lane-done. Abnahme: Doku committed, Nachher-Zahlen belegen acceptance-count 30/6/6/6/6/2.",
-      "column": "doing",
+      "column": "done",
       "assignee": "m10-data-ssot-guard",
       "notes": [
         {
           "at": "2026-11-28T10:22:11Z",
           "by": "build",
           "text": "todo → doing: Nachher-Lauf + acceptance-count + Doku-Abschluss + .lane-done."
+        },
+        {
+          "at": "2026-11-28T10:22:44Z",
+          "by": "build",
+          "text": "doing → done: Nachher: scripts/m10-data-ssot.mjs rc=0 (0 Befunde), acceptance-count ok:true 30/6/6/6/6/2 bitgleich. Doku + Nebenbefund (passive-math touched shots) in docs/lanes/m10-data-ssot-guard.md, .lane-done committed (3989e8da)."
         }
       ],
       "created": "2026-11-28T10:17:45Z",
-      "updated": "2026-11-28T10:22:11Z"
+      "updated": "2026-11-28T10:22:44Z"
     }
   ]
 }
