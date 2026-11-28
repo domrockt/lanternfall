@@ -1,0 +1,28 @@
+# m10-tablet-fx-rootcause — Lane done (2026-11-28)
+
+Root Cause des GPU-Hotspots (Redmi Pad Pro, Adreno 710, Dornensturm-Kombi 43 FPS):
+**Die Blend-Explosion kommt vollständig von ADD-Blend-Sprites (FxSystem-Glows + Lichtkreis), die in der
+depth-sortierten Render-Walk-Reihenfolge zwischen NORMAL-Draws liegen.** Jede ADD↔NORMAL-Grenze kostet
+bei Phaser 3.90 einen vollen Batch-Flush (WebGLRenderer.js:1815–1839 → flush + blendFunc + Vertex-Upload).
+
+Belege:
+- K1-Matrix (21 Fenster, 640x360, 200 wisp): `~/games/.evidence/m10-tablet-fx-rootcause/rc-local.json`
+  (Renderer-String drin). Blend 4,5 (base) → 29–35/Frame bei vollem Evo-Stapel, in beiden Stapel-Reihenfolgen;
+  draws ≈ blend+1; bufferSubData folgt 1:1 (5,2→35,3). Schwelle, kein spezifischer Evo.
+- K2-Kausalbeweis (A/B): `~/games/.evidence/m10-tablet-fx-rootcause/ab-blend.json` — alle ADD→NORMAL erzwungen:
+  blend 37→3/Frame, draws 38→4/Frame. Verantwortliche Stellen: FxSystem.ts:323/226/667/754 (ADD/NORMAL je
+  Glow-Budget, Update-Loop re-promotet pro Frame), depth.ts:6–14 (ADD mitten zwischen NORMAL-Bändern),
+  CombatSystem.ts:1092–1106 (thorn_trail ~240 FX/s Nachschub). Wichtig: `setSuppressFx` wirkt nur auf
+  Ereignis-FX (Run.ts:1923) — der frühere Device-Probe war inkonklusiv.
+- K3-Empfehlung für m10-tablet-fx-hotspot: V1 alle ADD-Glows in ein zusammenhängendes Depth-Band
+  (bevorzugt, Look bleibt) oder V2 im Device-LOD kein ADD. Gemessen (V2): blend 3, draws 4. Zielkorridor:
+  blend < 8/Frame, draws ≤ 14 lokal, Gerät ≥ 90 FPS im Kombi-Fenster; Lokalcheck
+  `node scripts/m10-tablet-fx-rc.mjs --mode local`, Fenster stackA:+6.
+
+Offen: Gerät war die ganze Lane offline (Bridge antwortet, adb `device '10.10.40.27:35099' not found`,
+letzte Device-Belege 09:35Z). Der Gerätelauf ist vorbereitet (ein Befehl, fängt auch nicht-null-FB-Stacks):
+`node scripts/m10-tablet-fx-rc.mjs --mode device --out ~/games/.evidence/m10-tablet-fx-rootcause/rc-device.json`.
+Der am Gerät gesehene „+1 bindFramebuffer/Frame, +1 Shaderprogramm“ ist lokal nicht reproduzierbar
+(0 nicht-null FB-Binds in allen 21 Fenstern inkl. vollem Stapel; Spielcode nutzt keine RT/Pipeline/PostFX) —
+Quelle daher per Device-Stack belegen. 0 Änderungen an src/**, tests/**.
+Karten: #10688 (K1, lokal + Skript), #10689 (K2), #10690 (K3). Build grün, 1927 Tests grün.
