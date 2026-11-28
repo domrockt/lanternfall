@@ -18089,17 +18089,22 @@
       "id": 12969,
       "title": "m10-render: 1280er Viewport – Ground-Chunks rechts/unten vom Spieler teils ungerendert (dunkles Quadrat)",
       "description": "BEFUND Merge-Job m10-charstats-spec-followup 2026-11-28: Bei Viewport 1280x720 bleibt die Region rechts/unten vom Spieler dunkel (Ground-Chunks fehlen, radiale Licht-gradient sichtbar, NICHT reines Schwarz). NICHT lane-bedingt: belegt an Merge-Parent 21d3289a (shots/merge-m10-charstats-spec-followup-check-1280.png vs /home/ai/games/zz/m10cs-check/premerge-check-1280.png, beide identisch dunkel). Abnahme: 1280er Kontroll-Screenshot voll gerendert wie 960er, keine schwarzen Chunk-Lücken.",
-      "column": "backlog",
+      "column": "done",
       "assignee": "engine-dev",
       "notes": [
         {
           "at": "2026-11-28T18:20:32Z",
           "by": "build",
           "text": "backlog → backlog"
+        },
+        {
+          "at": "2026-11-28T18:44:16Z",
+          "by": "build",
+          "text": "backlog → done: Abgeschlossen durch Lane m10-render-1280-gap (Karten #13894-#13897, .lane-done, Commits 1afda8f3/ce4ebb6a/80a488c0/5cbf658d; ce4ebb6a nennt #12969). Befund reproduziert + gefixt: Start-Chunk-Fuellung via Worker-Pool 2.1s -> 0.95s, Start-Shots voll gerendert in 960/1280@1/1280@2/1920, Belege ~/games/.evidence/m10-render-1280-gap/ + shots/abnahme/m10-render-1280-*."
         }
       ],
       "created": "2026-11-28T15:51:23Z",
-      "updated": "2026-11-28T18:20:32Z"
+      "updated": "2026-11-28T18:44:16Z"
     },
     {
       "id": 13025,
@@ -19863,7 +19868,7 @@
       "id": 13894,
       "title": "m10-render-1280-gap K1: Repro-Scan 1280er Viewport auf main (dpr 1+2, Start + 60 s Laufen)",
       "description": "Skript scripts/m10-render-1280.mjs (NEU): rendert 1280x720 bei dpr 1 und dpr 2, Start-Shot + 60 Spiel-Sekunden Laufen in 8 Richtungen (timeScale 8, Muster verify-terrain.mjs), Scan auf reine Schwarz-Flaechen im Spielfeld-Rect (checkScreenshot aus scripts/terrain-coverage.mjs). Kontrolle 960x540@1. Belege nach ~/games/.evidence/m10-render-1280-gap/. AK: JSON + Shots je Format vorhanden, 0 JS-Fehler, Renderer-String belegt (kein SwiftShader); Befund reproduzierbar ja/nein ist dokumentiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T18:20:32Z",
@@ -19874,16 +19879,21 @@
           "at": "2026-11-28T18:25:27Z",
           "by": "build",
           "text": "doing → review: K1 erledigt, Commit 1afda8f3: scripts/m10-render-1280.mjs + Lane-Doku. Befund reproduziert (Start-Shots 960/1280@1/1280@2, Evidence ~/games/.evidence/m10-render-1280-gap/2026-11-28T18-21-12-663Z-*). Ursache: finalizeReady 1 Install/Frame + dispatch max. 2 in-flight -> Start-Rueckstau 35 Chunks bei 1280x720."
+        },
+        {
+          "at": "2026-11-28T18:44:06Z",
+          "by": "build",
+          "text": "review → done: K1 abgenommen, Commit 1afda8f3 (Repro belegt, Ursache analysiert)."
         }
       ],
       "created": "2026-11-28T18:20:31Z",
-      "updated": "2026-11-28T18:25:27Z"
+      "updated": "2026-11-28T18:44:06Z"
     },
     {
       "id": 13895,
       "title": "m10-render-1280-gap K2: Fix oder belegter Nicht-Repro-Abschluss (#12969)",
       "description": "Zweig aus K1. Repro: kleinste Aenderung im Chunk-Streaming/Culling in src/gfx/GroundRenderer.ts (Terrain-Generierung bitgleich), danach 0 Schwarz-Flaechen in 960/1280/1920 (Pflicht-Shots Start + 60 s je Format). Kein Repro: Befund 'erledigt durch chunk-budget/chunk-tex-dup' mit Belegen in docs/lanes/m10-render-1280-gap.md, Doku-only Abschluss, kein Fix-Commit. AK: je Zweig belegt (Shots/JSON bzw. Lane-Doku mit Beweispfaden).",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T18:25:27Z",
@@ -19899,16 +19909,21 @@
           "at": "2026-11-28T18:40:34Z",
           "by": "build",
           "text": "doing → review: K2 erledigt, Commit ce4ebb6a (inkl. Mess-Skript-1920-Erweiterung): Worker-Pool (4 Threads) + Backlog-Installs + cameraWorldView-Range. Nachher-Belege: ~/games/.evidence/m10-render-1280-gap/2026-11-28T18-37-57-415Z-* (0 Schwarz-Regionen, Start-Shots voll in 960/1280@1/1280@2/1920), Fill 2.1s -> 0.95s. passive-math-Sidecars (Timestamp-only, durch eigene Suite-Ausfuehrung regeneriert) verworfen, nicht committet."
+        },
+        {
+          "at": "2026-11-28T18:44:06Z",
+          "by": "build",
+          "text": "review → done: K2 abgenommen, Commit ce4ebb6a. Kontrolleure: reviewer PASS (Nits in #13897-Commit adressiert), test-auditor PASS. Nachher-Belege 2026-11-28T18-37-57-415Z: 0 Schwarz-Regionen, Start-Shots voll in 960/1280@1/1280@2/1920."
         }
       ],
       "created": "2026-11-28T18:20:31Z",
-      "updated": "2026-11-28T18:40:34Z"
+      "updated": "2026-11-28T18:44:06Z"
     },
     {
       "id": 13896,
       "title": "m10-render-1280-gap K3: Guard-Test render-1280-gap.test.ts (Chunk-Abdeckung 1280x720 lueckenlos)",
       "description": "tests/render-1280-gap.test.ts (NEU): reine Funktion/Scan (kein DOM-Phaser), prueft Chunk-Abdeckung fuer 1280x720 Viewport lueckenlos (Muster terrain-coverage). AK: Suite gruen (npx vitest run tests/render-1280-gap.test.ts), npx tsc --noEmit rc=0, npm run build rc=0.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T18:39:59Z",
@@ -19919,19 +19934,30 @@
           "at": "2026-11-28T18:40:34Z",
           "by": "build",
           "text": "doing → review: K3 erledigt, Commit 80a488c0: 8 Guard-Tests gruen, Suite 241 Dateien/2603 Tests gruen, tsc rc=0, build rc=0."
+        },
+        {
+          "at": "2026-11-28T18:44:06Z",
+          "by": "build",
+          "text": "review → done: K3 abgenommen, Commit 80a488c0. test-auditor PASS mit Mutationstest (4/8 Tests schlagen bei Regression)."
         }
       ],
       "created": "2026-11-28T18:20:31Z",
-      "updated": "2026-11-28T18:40:34Z"
+      "updated": "2026-11-28T18:44:06Z"
     },
     {
       "id": 13897,
       "title": "m10-render-1280-gap K4: Lane-Doku + .lane-done",
       "description": "docs/lanes/m10-render-1280-gap.md mit Belegen/Pfaden (Evidence unter ~/games/.evidence/m10-render-1280-gap/), git status --ignored sauber, .lane-done im Worktree-Root mit 5-10 Zeilen Zusammenfassung + Messwerten, committet. AK: Doku vollstaendig, keine Temp-Reste im Worktree, .lane-done committed.",
-      "column": "backlog",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T18:44:06Z",
+          "by": "build",
+          "text": "backlog → done: K4 erledigt, Commit 5cbf658d: Lane-Doku + .lane-done + Abnahme-Bilder. Lane abgeschlossen."
+        }
+      ],
       "created": "2026-11-28T18:20:31Z",
-      "updated": "2026-11-28T18:20:31Z"
+      "updated": "2026-11-28T18:44:06Z"
     }
   ]
 }
