@@ -189,6 +189,80 @@ export const CHEST_SUBTITLE_MIN_GAP_PX = 4;
 export const CHEST_TITLE_TEXT = "TRUHE GEÖFFNET";
 export const CHEST_SUBTITLE_TEXT = "BELOHNUNGEN ROLLEN ...";
 
+/** m10-levelup-panel-crisp: Level-Up-Panel-Konstanten (createLevelUpUI). */
+export const LEVELUP_PANEL_BAND_H = 270;
+export const LEVELUP_TITLE_Y = 36;
+export const LEVELUP_TITLE_SCALE = 2;
+export const LEVELUP_TITLE_TEXT = "LEVEL UP";
+export const LEVELUP_HINT_Y = 66;
+export const LEVELUP_HINT_PITCH = 8;
+export const LEVELUP_CARD_GAP = 18;
+export const LEVELUP_CARD_CY = 158;
+export const LEVELUP_CARD_H = 150;
+export const LEVELUP_SLOT_CY = 112;
+export const LEVELUP_SLOT_SIZE = 60;
+export const LEVELUP_ICON_TEX = 16;
+export const LEVELUP_ICON_SCALE = 3;
+export const LEVELUP_DIVIDER_Y = 148;
+export const LEVELUP_NUMBER_Y = 88;
+export const LEVELUP_NAME_Y = 154;
+export const LEVELUP_LEVEL_Y = 166;
+export const LEVELUP_DESC_Y = 180;
+export const LEVELUP_DESC_PITCH = 12;
+export const LEVELUP_FOOT_TEXT = "1-3, PFEILE + ENTER ODER MAUS";
+/** K3: Fokus-Kontrast gewähltes Angebot vs Karten-Hintergrund (WCAG). */
+export const LEVELUP_FOCUS_CONTRAST_MIN = 3;
+
+/**
+ * m10-levelup-panel-crisp K4: reine Panel-Box-Mathematik des Level-Up-Panels
+ * (keine Phaser-Abhaengigkeit), Spiegel von createLevelUpUI. tests/
+ * levelup-panel-crisp.test.ts prueft ganzzahlige Skalen, 0 Ueberlappungen
+ * (Karten/Titel/Untertitel/Trennlinien) und Panel-Grenzen je View-Profil;
+ * die gemessenen Ist-Werte der Szene liegen in
+ * ~/games/.evidence/m10-levelup-panel-crisp/ (Probe scripts/m10-levelup-panel.mjs).
+ */
+export function levelUpPanelBoxes(width: number, height: number): Record<string, AnchorBox> {
+  const oy = Math.round((height - LEVELUP_PANEL_BAND_H) / 2);
+  const cx = width / 2;
+  const gap = LEVELUP_CARD_GAP;
+  const cardW = Math.max(120, Math.min(160, Math.floor((width - 32 - 2 * gap) / 3)));
+  const frameW = Math.min(width - 24, cardW * 3 + gap * 2 + 28);
+  const glyphW = (chars: number, scale = 1) => (chars * GLYPH_ADVANCE - 1) * scale;
+  const box = (x: number, y: number, w: number, h: number): AnchorBox =>
+    ({ x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) });
+  const titleW = glyphW(LEVELUP_TITLE_TEXT.length, LEVELUP_TITLE_SCALE);
+  const subChars = "STUFE 99 - WÄHLE EINE BELOHNUNG".length;
+  const hintChars = Math.max(20, Math.floor((frameW - 20) / 6));
+  const wrapChars = Math.max(16, Math.floor((cardW - 10) / 6));
+  const out: Record<string, AnchorBox> = {
+    frame: box(cx - frameW / 2, 134 + oy - 110, frameW, 220),
+    title: box(cx - Math.floor(glyphW(LEVELUP_TITLE_TEXT.length) / 2) * LEVELUP_TITLE_SCALE,
+      LEVELUP_TITLE_Y + oy, titleW, GLYPH_H * LEVELUP_TITLE_SCALE),
+    subtitle: box(cx - Math.floor(glyphW(subChars) / 2), 56 + oy, glyphW(subChars), GLYPH_H),
+    "hint-0": box(cx - Math.floor(glyphW(hintChars) / 2), LEVELUP_HINT_Y + oy, glyphW(hintChars), GLYPH_H),
+    "hint-1": box(cx - Math.floor(glyphW(hintChars) / 2), LEVELUP_HINT_Y + LEVELUP_HINT_PITCH + oy, glyphW(hintChars), GLYPH_H),
+    foot: box(cx - Math.floor(glyphW(LEVELUP_FOOT_TEXT.length) / 2), height - 14, glyphW(LEVELUP_FOOT_TEXT.length), GLYPH_H),
+  };
+  for (let i = 0; i < 3; i++) {
+    const cardX = Math.round(cx + (i - 1) * (cardW + gap));
+    const textX = cardX - Math.floor(cardW / 2) + 4;
+    out[`card-${i}`] = box(cardX - cardW / 2, LEVELUP_CARD_CY + oy - LEVELUP_CARD_H / 2, cardW, LEVELUP_CARD_H);
+    out[`slot-${i}`] = box(cardX - LEVELUP_SLOT_SIZE / 2, LEVELUP_SLOT_CY + oy - LEVELUP_SLOT_SIZE / 2, LEVELUP_SLOT_SIZE, LEVELUP_SLOT_SIZE);
+    const iconHalf = (LEVELUP_ICON_TEX * LEVELUP_ICON_SCALE) / 2;
+    out[`icon-${i}`] = box(cardX - iconHalf, LEVELUP_SLOT_CY + oy - iconHalf, iconHalf * 2, iconHalf * 2);
+    // K2-Fix: Trennlinie links an textX geankert (setOrigin 0/0.5), inset 4 px
+    // beidseitig in der eigenen Karte — vorher kreuzte sie Kartenrand/Panelrahmen.
+    out[`divider-${i}`] = box(textX, LEVELUP_DIVIDER_Y + oy, cardW - 8, 1);
+    out[`number-${i}`] = box(textX + 2, LEVELUP_NUMBER_Y + oy, glyphW(1), GLYPH_H);
+    out[`name-${i}`] = box(textX, LEVELUP_NAME_Y + oy, glyphW(wrapChars), GLYPH_H);
+    out[`level-${i}`] = box(textX, LEVELUP_LEVEL_Y + oy, glyphW("STUFE 10".length), GLYPH_H);
+    for (let li = 0; li < 3; li++) {
+      out[`desc-${i}-${li}`] = box(textX, LEVELUP_DESC_Y + li * LEVELUP_DESC_PITCH + oy, glyphW(wrapChars), GLYPH_H);
+    }
+  }
+  return out;
+}
+
 /**
  * m10-chest-panel-ui: reine Panel-Box-Mathematik des offenen Truhen-Panels
  * (keine Phaser-Abhaengigkeit, in tests/chest-panel-ui.test.ts gegen
