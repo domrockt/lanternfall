@@ -1,0 +1,21 @@
+Lane m10-ai-stream-cadence-r2 abgeschlossen (K1–K4, Commits 452a4902 / 579d9ec4 / baf1d069 / K4-Commit).
+
+Ziel: KI-Entscheidungen hängen nicht mehr von der Frame-Kadenz ab (Teil 4 des Determinismus-
+Schnitts, offen aus m10-ai-rng-seed). Fix: pro Gegner eigener KI-RNG-Stream aus (Seed, UID)
+statt eines gemeinsamen Streams — Ziehungswert-Folge eines Gegners ist reine Funktion von
+(Seed, UID, Ziehangsindex); das RNG-Objekt bleibt pro EnemyRuntime bestehen (Pooling-Vertrag).
+
+Messwerte:
+- Vorher-Probe (shared stream, Kadenz 1/60 vs 1/30, 120 Gegner, Seed 20261128): 40/120 UIDs
+  mit divergierender Entscheidungskette. Nachher-Probe (per-uid): 0/120. Belege:
+  ~/games/.evidence/m10-ai-stream-cadence-r2/m10-ai-cadence-{before,after}.json
+- Spielniveau: timeScale 30 vs 5 bitgleiche Marken (feste Substeps; run-det-Probe, gleiches Repo).
+- Balance-Korridor: 4/6 passedAll, Survival/Level/Evo alle im Korridor, Drift nur Boss-Dauern
+  (gleicher Drift-Typ wie Baseline m10-ai-rng-seed A/B) — kein neuer Balance-Drift.
+- npm test 157 Dateien / 1697 Tests grün; npm run build grün; tsc --noEmit grün.
+- Tests neu: tests/ai-cadence.test.ts 7 Tests (Kadenz-Unabhängigkeit, Shared-Stream-Kontrolle,
+  Rekey/Recycle, Pool-Fallback je UID).
+
+Fremdberührung: 2 Zeilen in src/scenes/Run.ts (attachAiRng + Import), begründet in
+docs/lanes/m10-ai-stream-cadence-r2.md und /home/ai/games/.dispatch/requests.md.
+Reviewer: PASS (Kontrolleur, 2026-11-28).

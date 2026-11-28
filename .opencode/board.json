@@ -12298,10 +12298,16 @@
       "id": 9797,
       "title": "m10-ai-stream-cadence-r2 K3: tests/ai-cadence.test.ts",
       "description": "Gleiche Seed+UID-Reihenfolge -> identische Entscheidungskette unabhängig von Frame-Grenzen; resetAiState setzt Stream-Position korrekt zurück. Abnahme: npx vitest run tests/ai-cadence.test.ts grün.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T07:55:27Z",
+          "by": "build",
+          "text": "todo → review: K3 erledigt (Commit baf1d069): 7/7 Tests grün — peruid-Kadenzen 0 divergente UIDs, shared-Kontrolle divergiert (Defekt gepinnt), Rekey setzt Stream-Position auf 0, Objekt-Identität beim Recycle, Pool-Fallback je UID bitgleich."
+        }
+      ],
       "created": "2026-11-28T07:37:10Z",
-      "updated": "2026-11-28T07:37:10Z"
+      "updated": "2026-11-28T07:55:27Z"
     },
     {
       "id": 9798,
