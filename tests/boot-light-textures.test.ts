@@ -39,7 +39,9 @@ describe("Boot.ts konsumiert die exportierten Creator (Swap, m10-texture-glow-sw
   });
 
   it("Boot.ts importiert die Creator aus src/gfx/textures.ts und ruft sie auf", () => {
-    expect(BOOT_TS).toContain('import { addGridTexture, createAllTextures, createLightTexture, createVignetteTexture } from "../gfx/textures";');
+    // m10-loading-screen: Boot erzeugt nur Titel-Texturen; createAllTextures
+    // entfaellt (alles Weitere uebernimmt die Loading-Szene/GPU-Warmup).
+    expect(BOOT_TS).toContain('import { addGridTexture, createLightTexture, createVignetteTexture } from "../gfx/textures";');
     expect(BOOT_TS).toMatch(/  createLightTexture\(scene\);\n  createVignetteTexture\(scene\);/);
   });
 
