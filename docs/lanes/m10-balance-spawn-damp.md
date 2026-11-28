@@ -107,6 +107,12 @@ kommen mit 4.052–6.870 Kills und Level 33–35 durch (Baseline auf main: 30–
 **Offene Punkte:** B2 (Boss-Dauern unter Korridor in DPS-starken Läufen, Hebel
 `src/data/bosses.ts`) — bewusst nicht in dieser Lane angefasst (Briefing).
 
+**Merge-Hinweis (Reviewer-Finding, nicht blockierend):** `scripts/m10-balance-endgame.mjs`
+schreibt für `after` dauerhaft mit Tag-Default `damp` (`shots/m10-balance-band-damp-after.json`),
+damit der Suchlauf die Vorher-Baseline `shots/m10-balance-band-after.json` nie überschreibt.
+Nach dem Merge auf main ist das der neue Output-Name; `docs/lanes/m10-balance-band-verify.md`
+beschreibt noch den alten Namen. Wer das alte Verhalten will: `node scripts/m10-balance-endgame.mjs after ""`.
+
 
 
 
