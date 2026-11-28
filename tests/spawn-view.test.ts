@@ -31,10 +31,10 @@ describe("M8 Spawn/Recycling relativ zur sichtbaren Fläche", () => {
 
   it("Gegner-Deckel skaliert mit der Fläche und bleibt <= 500", () => {
     expect(maxActiveEnemies(0, 640, 360)).toBe(100);
-    expect(maxActiveEnemies(20 * 60)).toBe(360);
-    expect(maxActiveEnemies(30 * 60, 780, 360)).toBe(439);
+    expect(maxActiveEnemies(20 * 60)).toBe(200); // M10-Endgame: Late-Deckel 200 ab Minute 18
+    expect(maxActiveEnemies(30 * 60, 780, 360)).toBe(244);
     expect(maxActiveEnemies(0, 480, 360)).toBe(75);
-    expect(maxActiveEnemies(30 * 60, 1920, 1080)).toBe(500);
+    expect(maxActiveEnemies(30 * 60, 1920, 1080)).toBe(300);
   });
 
   it("Recycle-Abstand liegt in jedem Winkel außerhalb der View", () => {

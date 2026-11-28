@@ -23,9 +23,9 @@ describe("M10 Frame-Budget-Regler (pure, deterministisch)", () => {
     expect(after.overSeconds).toBe(0);
     expect(after.underSeconds).toBe(0);
 
-    // Der bestehende Deckel bleibt ebenfalls unveraendert.
-    expect(maxActiveEnemies(1490, 780, 360)).toBe(439);
-    expect(maxActiveEnemies(1490, 640, 360)).toBe(360);
+    // Der bestehende Deckel bleibt ebenfalls unveraendert (M10: Late-Deckel 200 ab Minute 18).
+    expect(maxActiveEnemies(1490, 780, 360)).toBe(244);
+    expect(maxActiveEnemies(1490, 640, 360)).toBe(200);
   });
 
   it("disabled ist ein No-Op, auch bei Dauer-Ueberlast", () => {
