@@ -1,0 +1,171 @@
+{
+  "lane": "m10-fullrun-guard",
+  "kind": "guard-run",
+  "seed": 99,
+  "timeScale": 30,
+  "viewport": {
+    "width": 960,
+    "height": 540,
+    "dpr": 1
+  },
+  "simMinutes": 30.2,
+  "elapsedRealSeconds": 72,
+  "completed": true,
+  "fatal": null,
+  "bossesSpawned": [
+    {
+      "index": 0,
+      "at": 300
+    },
+    {
+      "index": 1,
+      "at": 600
+    },
+    {
+      "index": 2,
+      "at": 900
+    },
+    {
+      "index": 3,
+      "at": 1200
+    },
+    {
+      "index": 4,
+      "at": 1500
+    },
+    {
+      "index": 5,
+      "at": 1800
+    }
+  ],
+  "bossesDefeated": 6,
+  "bossFlags": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "chestsDropped": 6,
+  "elitesSpawned": 160,
+  "kills": 4967,
+  "level": 38,
+  "resultReason": "dawn",
+  "heap": {
+    "startMB": 29,
+    "minute1MB": 39.1,
+    "minute29MB": 41,
+    "endMB": 30.9,
+    "cdpUsedMB": {
+      "start": 11.6,
+      "minute1": 13.3,
+      "minute29": 15.6,
+      "end": 12.7
+    }
+  },
+  "jsErrors": [],
+  "gates": {
+    "passed": true,
+    "gates": [
+      {
+        "gate": "bosses-6-timing",
+        "ok": true,
+        "actual": [
+          300,
+          600,
+          900,
+          1200,
+          1500,
+          1800
+        ],
+        "target": [
+          300,
+          600,
+          900,
+          1200,
+          1500,
+          1800
+        ],
+        "detail": "6/6 Wellen bei 300/600/900/1200/1500/1800 s ±2 s"
+      },
+      {
+        "gate": "bosses-defeated",
+        "ok": true,
+        "actual": 6,
+        "target": ">= 6"
+      },
+      {
+        "gate": "chests-6",
+        "ok": true,
+        "actual": 6,
+        "target": ">= 6"
+      },
+      {
+        "gate": "victory-dawn",
+        "ok": true,
+        "actual": "dawn",
+        "target": "dawn"
+      },
+      {
+        "gate": "js-errors-0",
+        "ok": true,
+        "actual": 0,
+        "target": 0
+      },
+      {
+        "gate": "heap-growth",
+        "ok": true,
+        "actual": -21,
+        "target": "<= +15 %"
+      }
+    ],
+    "failures": [],
+    "bossReport": [
+      {
+        "index": 0,
+        "name": "Moorkönigin",
+        "expectedSecond": 300,
+        "actualSecond": 300,
+        "ok": true
+      },
+      {
+        "index": 1,
+        "name": "Knochenfürst",
+        "expectedSecond": 600,
+        "actualSecond": 600,
+        "ok": true
+      },
+      {
+        "index": 2,
+        "name": "Der Fahle Hirte",
+        "expectedSecond": 900,
+        "actualSecond": 900,
+        "ok": true
+      },
+      {
+        "index": 3,
+        "name": "Glockenturm-Golem",
+        "expectedSecond": 1200,
+        "actualSecond": 1200,
+        "ok": true
+      },
+      {
+        "index": 4,
+        "name": "Hexenzirkel",
+        "expectedSecond": 1500,
+        "actualSecond": 1500,
+        "ok": true
+      },
+      {
+        "index": 5,
+        "name": "Der Hohle König",
+        "expectedSecond": 1800,
+        "actualSecond": 1800,
+        "ok": true
+      }
+    ],
+    "heapDeltaPct": -21
+  },
+  "passed": true
+}
