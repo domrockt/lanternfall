@@ -15,7 +15,7 @@ w2 ist danach trotzdem gestartet — der K1-Auftrag verschiebt sich dadurch von 
 „Fix verifizieren + dauerhaft absichern“. Beide Seiten (Bedarfsmeldung 00:4xZ und Erledigungs-
 meldung 01:0xZ) stehen so in `.dispatch/requests.md`.
 
-## K1 — Tint-/Alpha-Invariante (Commit „#K1 Aura-Siegel-Tint-Invariante“)
+## K1 — Tint-/Alpha-Invariante (Commit 174b97a, #8158)
 
 - **Verifikation per Probe** (`scripts/m10-evo-fx-winter-w2.mjs`, Winter-Szene nachgestellt:
   eternal_winter Lv 8, mudling/bog_rat, seed 7, kollisionsfreier Server Port 0):
@@ -31,7 +31,7 @@ meldung 01:0xZ) stehen so in `.dispatch/requests.md`.
 - Aura-Alpha bewusst **nicht** weiter gesenkt: die 0,55/0,2-Stufe ist genau der Stand, den
   art-director Runde 4 mit 4,5 PASS bewertet hat („optional“ im Briefing).
 
-## K2 — geparkte Winter-Reste (Commit „#8159“, nur CombatSystem.ts)
+## K2 — geparkte Winter-Reste (Commit bd072e1, #8159, nur CombatSystem.ts)
 
 Aus `docs/lanes/m10-evo-fx-winter.md`, Offene Punkt 2 (bewusst in Versuch 3 nicht angefasst):
 
