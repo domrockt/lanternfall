@@ -281,3 +281,27 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   Kontrolleure beide PASS (art-director r2 4,5/5, reviewer bitgleich 18/18).
 - Bedarf UNVERÄNDERT: gem-Rows-Freigabe oder fx-Merge; danach macht v3 den
   Endcommit + Board-Moves + `.lane-done` automatisch.
+
+## Run-Fortsetzung (28.11. 10:00–10:06Z, Versuch 3 / Run 11)
+
+- **Wendepunkt:** `m10-fx-bakes-evo-r2` ist **lane-done** (Commit 49b3879a,
+  10:02:08Z). Der Disponent hat `src/gfx/textures.ts` sofort an den nächsten
+  in der textures.ts-Queue rotiert: **`m10-chest-arrow-texture-r2`** (Worktree
+  frisch auf main 20395582, noch keine eigenen Commits). Damit ist der Claim
+  NICHT frei — die Warteschlange läuft weiter.
+- **Recheck v4 (session-unabhängig):** beide Session-Automations (v3 +
+  Backup, Zeiger auf tote Session ses_dde6c8fdef…) gelöscht. Neu:
+  Shell-Automation (`~/tmp/m10-gem-value-reading/recheck-v4.sh`, alle 15 min
+  bis 14:00Z) — prüft Claim über Substring, und falls frei: Staged-Guard
+  (exakt die 3 Dateien), tsc + Guard-Test + Build, Endcommit mit
+  Pfad-Parametern, Board-Moves #10177–#10180 → done, `.lane-done` + Commit.
+  Log: `~/tmp/m10-gem-value-reading/recheck-v4.log`. Erster Lauf 10:03:38Z:
+  WAIT (Claim bei m10-chest-arrow-texture-r2) — korrektes Verhalten.
+- Ready frisch verifiziert (10:02Z): tsc clean, Guard 10/10, r3-Patch
+  gestaget — unverändert zu Run 6–10.
+- **Antrag an den Disponenten (requests.md 10:05Z):** da diese Lane
+  abnahme-reif ist (Kontrolleure PASS, Patch gestaget) und der gem-Rows-
+  Schnitt ohnehin IHRE r3-Rows sind: textures.ts-Slot bitte direkt nach
+  `m10-chest-arrow-texture-r2` dieser Lane geben (dann committet die v4-
+  Automation binnen 15 min) statt einen eigenen Mini-Job zu starten.
+- Kein Commit-Retry (4 dokumentierte Fehlversuche); keine sleeps.
