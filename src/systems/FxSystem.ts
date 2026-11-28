@@ -127,6 +127,36 @@ function glowBudgetFor(scene: Phaser.Scene): GlowBudget {
   return budget;
 }
 
+/**
+ * M10-tablet-fx-hotspot (K2, 2026-11-28): alle ADD-Glow-Sprites rendern in einem
+ * zusammenhaengenden Depth-Band. Root Cause (docs/lanes/m10-tablet-fx-rootcause.md,
+ * Beleg ~/games/.evidence/m10-tablet-fx-rootcause/): Phaser flushed den Batch bei
+ * jeder ADD↔NORMAL-Grenze im depth-sortierten Walk (WebGLRenderer.setBlendMode,
+ * flush + blendFunc + Vertex-Upload). ADD-Glows lagen bisher auf DEPTH.fxLow (7)
+ * MITTEN zwischen NORMAL-Draws -> 29-35 Blend-Wechsel/Frame bei vollem Evo-Stapel
+ * (gemessen 32/Frame). Liegen alle ADD-Glows in einem Band, bleiben genau 2
+ * Grenzen (Eintritt/Austritt) — gemessen stackA:+6: 32 -> 2 FX-Grenzen.
+ * Das Band liegt zwischen fxLow (7, NORMAL-FX-Formen) und death (8): Glows
+ * ueberlagern weiter ihre Form und bleiben unter Gegnern (9) — Zeichenreihenfolge
+ * aus GAME.md unveraendert, nur additives Licht zeichnet leicht spaeter.
+ */
+export const FX_GLOW_DEPTH = DEPTH.fxLow + 0.5;
+
+/**
+ * Pure Helfer (unit-getestet in tests/tablet-fx-budget.test.ts): Tiefe eines
+ * FX-Sprites aus Basis-Tiefe und Glow-Zustand. glow=true zwingt das Sprite in
+ * das ADD-Band, glow=false laesst die gewuenschte Basis-Tiefe unverändert.
+ * Nur Sprites, deren Basis UNTERHALB der Gegner liegt (<= death), ruecken ins
+ * Band (Review m10-tablet-fx-hotspot): additive Treffer-/Tod-FX auf
+ * enemyDeath (11) MUSSSEN ueber den Gegnern bleiben (im 300er-Gedraenge sonst
+ * unsichtbar, s. CombatSystem shard-/dust-/sputter-Bursts) — sie rendern
+ * weiter auf ihrer Basis-Tiefe (bewusste Rest-Insel, dokumentiert in der
+ * Lane-Doku).
+ */
+export function glowDepthFor(baseDepth: number, glow: boolean): number {
+  return glow && baseDepth <= DEPTH.death ? FX_GLOW_DEPTH : baseDepth;
+}
+
 /** Laufzeitdatensatz eines Effekt-Sprites (public fuer Tests). */
 export interface FxRuntime {
   sprite: Phaser.GameObjects.Image;
@@ -152,6 +182,8 @@ export interface FxRuntime {
   alphaScaleExempt: boolean;
   /** M10: Sprite belegt gerade einen Glow-Slot (ADD-Blend) des Overdraw-Deckels. */
   glow: boolean;
+  /** M10-tablet-fx-hotspot: gewuenschte Basis-Tiefe (ohne ADD-Band-Verschiebung). */
+  depthBase: number;
   /**
    * Mixel-Fix (Dom 21:15Z): aktive Bake-Stufe der Effekt-Textur (1 = Level-1-
    * Key). scaleFrom/scaleTo bleiben die gewuenschte Groesse in Spielpixeln;
@@ -229,13 +261,15 @@ export class FxSystem {
       // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
       // weil frueher per NORMAL-Fallback abgewiesene Sprites ohne Slot-Request
       // wieder auf ADD gestellt wuerden. Ohne freien Slot bleibt NORMAL.
-      if (blendAdd && !fx.glow && glowEnabledFor(QUALITY)) fx.glow = budget.request();
-      fx.sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      if (blendAdd && !fx.glow && glowEnabledFor(QUALITY)) fx.glow = budget.request(); (M10-m10-tablet-fx-hotspot: #10924 K2 – Blend-Gruppierung: alle ADD-Glows UNTERHALB der Gegner rendern im zusammenhaengenden Band FX_GLOW_DEPTH (fxLow+0.5) — FxSystem/ParticleSystem (Tiefe an Glow-Zustand gekoppelt, spawn+setAlphaScale), ADD-Inseln zugerollt (Wrath/Soul-Halos CombatSystem, Eis-Volley-Projektile ProjectilePool, unclaimed 2 Zeilen). Review-Fix: glowDepthFor begrenzt auf Basis <= death (enemyDeath-Bursts bleiben ueber Gegnern, kein Popping). Gemessen (Mesa Intel RPL-S): stackA:+6 blend 32->5, draws 33->6, fbNonNull 0; Geraet (Redmi Pad Pro): 119,4 FPS, blend 7, draws 21. Optik je Evo unveraendert (shots/abnahme/side-*.png). tests/tablet-fx-budget.test.ts pinnt Gruppierung + Band-Grenze. tsc + 1966 Tests + Build gruen)
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && fx.glow) {
         budget.release();
         fx.glow = false;
       }
+      fx.sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      // M10-tablet-fx-hotspot: Glow-Zustand aendert auch das Band (ADD-Band vs. Basis).
+      fx.sprite.setDepth(glowDepthFor(fx.depthBase, fx.glow));
     }
   }
 
@@ -318,7 +352,7 @@ export class FxSystem {
     sprite.setScale((fx.scaleFrom * fx.aspect) / fx.mixelLevel, fx.scaleFrom / fx.mixelLevel);
     sprite.setAlpha(fx.alphaFrom);
     sprite.setRotation(fx.rotation);
-    sprite.setDepth(opts.depth ?? DEPTH.fxLow);
+    fx.depthBase = opts.depth ?? DEPTH.fxLow;
     fx.additive = additive;
     // Minimal-LOD: grosse additive Flächen auf NORMAL legen, sonst bleibt der
     // Kern trotz Alpha-Dämpfung weiß (additive Sprites stacken auf 255).
@@ -330,6 +364,8 @@ export class FxSystem {
     // (Glow-Budget glow=false -> NORMAL-Blend, wie beim Slot-Fallback).
     fx.glow = blendAdd && glowEnabledFor(QUALITY) ? budget.request() : false;
     sprite.setBlendMode(fx.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+    // M10-tablet-fx-hotspot: echte ADD-Glows rendern im zusammenhaengenden Band.
+    sprite.setDepth(glowDepthFor(fx.depthBase, fx.glow));
     if (opts.tint !== undefined) sprite.setTint(opts.tint);
     else sprite.clearTint();
     sprite.setVisible(true).setActive(true);
@@ -584,6 +620,7 @@ export class FxSystem {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
       frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
+      depthBase: DEPTH.fxLow,
       mixelLevel: 1,
     };
   }
@@ -672,13 +709,15 @@ export class ParticleSystem {
       p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
       const blendAdd = p.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
-      if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request();
-      p.sprite.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request(); (M10-m10-tablet-fx-hotspot: #10924 K2 – Blend-Gruppierung: alle ADD-Glows UNTERHALB der Gegner rendern im zusammenhaengenden Band FX_GLOW_DEPTH (fxLow+0.5) — FxSystem/ParticleSystem (Tiefe an Glow-Zustand gekoppelt, spawn+setAlphaScale), ADD-Inseln zugerollt (Wrath/Soul-Halos CombatSystem, Eis-Volley-Projektile ProjectilePool, unclaimed 2 Zeilen). Review-Fix: glowDepthFor begrenzt auf Basis <= death (enemyDeath-Bursts bleiben ueber Gegnern, kein Popping). Gemessen (Mesa Intel RPL-S): stackA:+6 blend 32->5, draws 33->6, fbNonNull 0; Geraet (Redmi Pad Pro): 119,4 FPS, blend 7, draws 21. Optik je Evo unveraendert (shots/abnahme/side-*.png). tests/tablet-fx-budget.test.ts pinnt Gruppierung + Band-Grenze. tsc + 1966 Tests + Build gruen)
       // M10: faellt ein Glow unter den ADD-Schwellwert, gibt er seinen Slot frei.
       if (!blendAdd && p.glow) {
         budget.release();
         p.glow = false;
       }
+      p.sprite.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+      // M10-tablet-fx-hotspot: Glow-Zustand aendert auch das Band (ADD-Band vs. Basis).
+      p.sprite.setDepth(glowDepthFor(p.depthBase, p.glow));
     }
   }
 
@@ -753,7 +792,7 @@ export class ParticleSystem {
     s.setScale((p.scaleFrom * p.aspect) / p.mixelLevel, p.scaleFrom / p.mixelLevel);
     s.setAlpha(p.alphaFrom);
     s.setRotation(p.rotation);
-    s.setDepth(opts.depth ?? DEPTH.fxLow);
+    p.depthBase = opts.depth ?? DEPTH.fxLow;
     p.additive = additive;
     // M10: Deckel — geteilt mit FxSystem, nur echte ADD-Sprites belegen Slots.
     // Boss-Partikel sind ab oben non-additiv und belegen deshalb nie einen Slot.
@@ -762,6 +801,8 @@ export class ParticleSystem {
     // K3: Deckel wie im FxSystem-Spawn (Glow an/aus aus der Qualitaetsstufe).
     p.glow = blendAdd && glowEnabledFor(QUALITY) ? budget.request() : false;
     s.setBlendMode(p.glow ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+    // M10-tablet-fx-hotspot: echte ADD-Glows rendern im zusammenhaengenden Band.
+    s.setDepth(glowDepthFor(p.depthBase, p.glow));
     if (opts.tint !== undefined) s.setTint(opts.tint);
     else s.clearTint();
     s.setVisible(true).setActive(true);
@@ -871,6 +912,7 @@ export class ParticleSystem {
       sprite, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 1,
       scaleFrom: 1, scaleTo: 1, aspect: 1, alphaFrom: 1, alphaTo: 0, rotation: 0, spin: 0,
       frames: ["fx_spark"], frameRate: 18, active: false, additive: true, alphaScaleExempt: false, glow: false,
+      depthBase: DEPTH.fxLow,
       mixelLevel: 1,
     };
   }

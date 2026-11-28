@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import type { EnemyRuntime } from "./EnemyPool";
 import { DEPTH } from "../gfx/depth";
+import { FX_GLOW_DEPTH } from "./FxSystem";
 import { applyTexture, makeImage } from "../gfx/atlas";
 
 export interface ProjectileRuntime {
@@ -119,7 +120,9 @@ export class ProjectilePool {
     p.hit.clear();
     applyTexture(p.sprite, opts.texture ?? "projectile_ember");
     p.sprite.setBlendMode(p.blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
-    p.sprite.setVisible(true).setActive(true).setDepth(DEPTH.death);
+    // M10-tablet-fx-hotspot (K2): ADD-Projektile (Eis-Volley) rendern im gemeinsamen
+    // ADD-Band statt als Insel auf DEPTH.death — bleibt unter Gegnern (9).
+    p.sprite.setVisible(true).setActive(true).setDepth(p.blendAdd ? FX_GLOW_DEPTH : DEPTH.death);
     p.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
     p.sprite.setRotation(Math.atan2(opts.vy, opts.vx));
     p.sprite.setScale(opts.scale ?? 1);
