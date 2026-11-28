@@ -625,6 +625,11 @@ export const PROP_SHADOW_COLOR = 0;
 export const PROP_SHADOW_ALPHA_CORE = 0.35;
 /** Rand-Stufe fuer die elliptische Silhouette. */
 export const PROP_SHADOW_ALPHA_RIM = 0.18;
+/** Platzierung relativ zum Fusspunkt (wx, wy): leicht versetzt (+1) und
+ *  Zentrum 1 px UNTER der Basis, damit die untere Ellipsen-Haelfte unter der
+ *  opaken Prop-Basis sichtbar bleibt (art-director-Befund Runde 1: bei wy-1
+ *  verdeckt die Basis den Schatten). Wird in addProp() verwendet. */
+export const PROP_SHADOW_OFFSET = { x: 1, y: 1 } as const;
 
 const PROP_SHADOWS = new Map<string, PropShadow>();
 
@@ -636,10 +641,15 @@ export function propShadowClassFor(key: string): string {
 }
 
 /** Fussbreite einer Prop-Klasse: breiteste Zeile des unteren Sprite-Viertels
- *  (deterministisch aus dem generierten Sprite, inkl. gemalter Boden-Saum). */
+ *  (deterministisch aus dem generierten Sprite). Bewusst OHNE ink-Kontur
+ *  ('0'): die ist Umriss/Schattenrand und liest sich am Boden bereits als
+ *  Schatten — der Kontakt zaehlt farbige Basis-Pixel inkl. gemaltem
+ *  Boden-Saum (s/t). */
+const PROP_FOOT_FALLBACK_WIDTH = 10;
+
 function propFootWidth(key: string): number {
   const def = GEN_PROPS[key];
-  if (!def) return 10;
+  if (!def) return PROP_FOOT_FALLBACK_WIDTH;
   const frame = def.frames[0];
   const rows = Math.max(1, Math.floor(def.h / 4));
   let w = 0;

@@ -5,7 +5,10 @@ import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, 
 import { applyTexture } from "./atlas";
 import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
 import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
-import { propVariantKeyFor, propShadowClassFor, propShadowFor, PROP_SHADOW_COLOR } from "./gen-props";
+import {
+  propVariantKeyFor, propShadowClassFor, propShadowFor,
+  PROP_SHADOW_COLOR, PROP_SHADOW_OFFSET,
+} from "./gen-props";
 import { PAL } from "../palette";
 
 /**
@@ -203,7 +206,9 @@ export class GroundRenderer {
   private propLodMaxTier: 0 | 1 | 2 = 2;
   /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
   private readonly propLayers = new Map<string, PropLayers>();
-  /** Kontakt-Schatten-Atlas-Textur (lazy, null = Fallback "shadow"). */
+  /** Kontakt-Schatten-Atlas-Textur (lazy, null = Fallback "shadow"). Bewusst
+   *  nicht in destroy() entfernt: deterministisch und seed-unabhaengig, wird
+   *  ueber textures.exists() wiederverwendet. */
   private propShadowTexture: string | null | undefined;
   private shadowLayer?: Phaser.GameObjects.Container;
   private rippleLayer?: Phaser.GameObjects.Container;
@@ -775,11 +780,10 @@ export class GroundRenderer {
     const shadowTex = this.propShadowTexture ? this.scene.textures.get(this.propShadowTexture) : null;
     const shadowFrame = shadowTex && shadowTex.has(`ps_${shadowCls}`) ? `ps_${shadowCls}` : null;
     if (shadowFrame && this.propShadowTexture) {
-      // Zentrum 1 px UNTER dem Fusspunkt: die untere Ellipsenhaelfte bleibt
-      // unter der opaken Basis sichtbar (wy-1 wuerde die Basis den Schatten
-      // verdecken lassen — art-director-Befund Runde 1).
-      shadow = this.scene.add.image(wx + 1, wy + 1, this.propShadowTexture, shadowFrame)
-        .setOrigin(0.5, 0.5);
+      shadow = this.scene.add.image(
+        wx + PROP_SHADOW_OFFSET.x, wy + PROP_SHADOW_OFFSET.y,
+        this.propShadowTexture, shadowFrame,
+      ).setOrigin(0.5, 0.5);
     } else if (this.scene.textures.exists("shadow")) {
       // Fallback (Atlas ohne Shadow-Frame): alter weicher Bodenschatten.
       const sw = Math.max(0.7, Math.min(4, img.width / 16));

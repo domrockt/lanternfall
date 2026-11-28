@@ -1,13 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   GEN_PROPS, PROP_SHADOW_ALPHA_CORE, PROP_SHADOW_ALPHA_RIM, PROP_SHADOW_COLOR,
-  propShadowClassFor, propShadowFor,
+  PROP_SHADOW_OFFSET, propShadowClassFor, propShadowFor,
 } from "../src/gfx/gen-props";
 import { PROP_KEYS } from "../src/gfx/propLayers";
 import { PAL } from "../src/palette";
 
 /** Alle bekannten Prop-Klassen (Basis-Keys aus PROP_KEYS). */
 const CLASSES = [...PROP_KEYS];
+/** Alle generierten Prop-Sprites inkl. Varianten (ohne Wasser-Deko). */
+const PROP_SPRITE_KEYS = Object.keys(GEN_PROPS).filter((k) => k.startsWith("prop_"));
 
 describe("m10-prop-contact-shadow: Kontakt-Schatten je Prop-Klasse", () => {
   it("Palette 0 (ink) ist die Schattenfarbe; Kern-/Rand-Alpha sind halbtransparent", () => {
@@ -65,13 +67,17 @@ describe("m10-prop-contact-shadow: Kontakt-Schatten je Prop-Klasse", () => {
     expect(propShadowClassFor("prop_bones_b")).toBe("prop_bones");
     expect(propShadowClassFor("prop_tree_a")).toBe("prop_tree_a"); // Basis bleibt Basis
     expect(propShadowClassFor("prop_unknown")).toBe("prop_unknown");
-    for (const key of CLASSES) {
-      expect(propShadowFor(key)).toBe(propShadowFor(key)); // identisches Objekt = deterministisch
-    }
-    for (const variant of Object.keys(GEN_PROPS)) {
+    for (const variant of PROP_SPRITE_KEYS) {
       const base = propShadowClassFor(variant);
-      expect(propShadowFor(variant)).toBe(propShadowFor(base));
+      expect(propShadowFor(variant)).toBe(propShadowFor(base)); // identisches Objekt = deterministisch
     }
+  });
+
+  it("Platzierung: Schatten sitzt unterhalb (+1) und leicht versetzt (+1) — art-director R1", () => {
+    // Wy-1 wuerde den Schatten hinter der opaken Prop-Basis verdecken
+    // (Okklusion) — der Offset ist die Invariante aus der Re-Abnahme.
+    expect(PROP_SHADOW_OFFSET.x).toBe(1);
+    expect(PROP_SHADOW_OFFSET.y).toBe(1);
   });
 
   it("Atlas-Packung bleibt klein (Schatten teilen sich eine Textur = 1 Batch)", () => {

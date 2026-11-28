@@ -88,9 +88,20 @@ JSON-Belege: `~/games/.evidence/m10-prop-contact-shadow/m10-prop-shadow-drawcall
 
 ## Qualitätstore (Build/Tests)
 
-- npm run build rc=0, npm test 1793/1793 grün (ground-props-batch /
+- npm run build rc=0, npm test 1794/1794 grün (ground-props-batch /
   prop-density-lod / props-wiring unverändert grün), 0 JS-Fehler in allen
   Probe-Läufen.
+
+## Reviewer (PASS, Findings eingearbeitet)
+
+- Sollte 1 (Kommentar propFootWidth): Kommentar präzisiert — ink-Kontur '0'
+  zählt bewusst nicht zur Fußbreite (liest sich bereits als Schattenrand).
+- Sollte 2 (Regressionsschutz Wy+1): neuer `PROP_SHADOW_OFFSET` (x=1, y=1) in
+  gen-props.ts, von addProp() genutzt und im Guard-Test gepinnt.
+- Nit 3 (Textur-Lifecycle): Feld-Kommentar dokumentiert die bewusste
+  Nicht-Zerstörung (deterministisch, Wiederverwendung über textures.exists).
+- Nit 5/6: benannte Konstante `PROP_FOOT_FALLBACK_WIDTH`, triviale
+  Determinismus-Assertion entfernt, Test-Iteration auf `prop_*`-Keys begrenzt.
 
 ## Offene Punkte
 
