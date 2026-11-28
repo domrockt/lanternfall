@@ -76,4 +76,11 @@ separate Karte/Lane; hier nur dokumentiert, da das K3-Ziel ≥ 30/33 bereits err
 und ein zweiter Hebel laut Briefing verboten ist. K2/K3-Konflikt lag nicht vor (K2 hat
 bei Konflikt Vorrang gehabt).
 
+## K4 — Endlevel je Lauf in [25,40] (Nebeneffekt-Check, Korridor A5): **PASS**
+
+Endlevel 33–35 (Tabelle oben), alle 6 Läufe in [25,40]. Der befürchtete Nebeneffekt
+„weniger Kills im Fenster → weniger XP → Endlevel < 25“ tritt nicht ein: die Läufe
+kommen mit 4.052–6.870 Kills und Level 33–35 durch (Baseline auf main: 30–35).
+
+
 
