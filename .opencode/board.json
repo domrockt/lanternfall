@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7532,
+  "next": 7621,
   "cards": [
     {
       "id": 1,
@@ -9568,6 +9568,39 @@
       "notes": [],
       "created": "2026-11-28T02:42:01Z",
       "updated": "2026-11-28T02:42:01Z"
+    },
+    {
+      "id": 7618,
+      "title": "m10-atlas-gutter K1: Audit-Skript + Vorher-Messung",
+      "description": "scripts/art/atlas-audit.mjs: per-Prefix-Coverage (erfasst/abgelehnt je ATLAS_PREFIXES-Key), Gutter >= ATLAS_GUTTER, Pixel-Bleed im Rand. Akzeptanz vorher festgelegt: 0 Bleed-Faelle, alle heissen Klassen erfasst. Vorher-JSON shots/m10-atlas-gutter-before.json committet. AK: Audit laeuft, JSON committed, Auswertung in docs/lanes/m10-atlas-gutter.md.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:48:40Z",
+          "by": "build",
+          "text": "todo → doing: K1 startet: Audit-Skript um Prefix-Coverage + Ring-Klassifikation (replica vs foreign) + 4x-Zoom-Shot erweitern, dann Vorher-Lauf."
+        }
+      ],
+      "created": "2026-11-28T02:46:44Z",
+      "updated": "2026-11-28T02:48:40Z"
+    },
+    {
+      "id": 7619,
+      "title": "m10-atlas-gutter K2: Fix in atlas.ts + Bleed-Invariante-Tests",
+      "description": "Befund aus Vorher-Audit in atlas.ts beheben (Gutter/Padding/shouldAtlasKey-Abdeckung); tests/atlas.test.ts um Bleed-Invariante zwischen benachbarten Frames erweitern. AK: tsc gruen, gezielte Tests gruen, ein Commit mit Belegen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:46:44Z",
+      "updated": "2026-11-28T02:46:44Z"
+    },
+    {
+      "id": 7620,
+      "title": "m10-atlas-gutter K3: Nachher-Audit + Zoom-Beleg",
+      "description": "Nachher-Audit -> shots/m10-atlas-gutter-after.json (0 Bleed, Coverage 100%), 4x-Zoom-Screenshot eines kritischen Frames, Befund in docs/lanes/m10-atlas-gutter.md, Commit + .lane-done.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T02:46:44Z",
+      "updated": "2026-11-28T02:46:44Z"
     }
   ]
 }
