@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13686,
+  "next": 13770,
   "cards": [
     {
       "id": 1,
@@ -18784,11 +18784,17 @@
       "id": 13283,
       "title": "m10-ground-chunk-tex-dup: GroundRenderer-Doppel-Add chunk_* verhindern",
       "description": "Regression seit m10-ground-chunk-budget (Merge 39d1efe8): createCanvas auf belegtem Key chunk_<x>_<y> loggt 'Texture key already in use' und vergiftet Mess-JSONs (accepted:false). K1 Vorher-Messung (docs/lanes), K2 exists()-Guard an Z.807+Z.859, K3 Guard-Test tests/ground-chunk-tex-dup.test.ts, K4 Nachher-Messung 0 Spam + accepted:true. Abnahme: build rc=0, tsc rc=0, Suite gruen, Vorher/Nachher-Tabelle.",
-      "column": "doing",
+      "column": "todo",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:52:25Z",
+          "by": "build",
+          "text": "doing → todo: Supervisor 17:5xZ: gehört nicht in diese Lane (m10-panel-hz-pref) – von fremder Lane zurück nach todo; von m10-panel-hz-pref nie angefasst."
+        }
+      ],
       "created": "2026-11-28T16:31:59Z",
-      "updated": "2026-11-28T16:31:59Z"
+      "updated": "2026-11-28T17:52:25Z"
     },
     {
       "id": 13444,
@@ -19591,6 +19597,81 @@
       ],
       "created": "2026-11-28T16:41:27Z",
       "updated": "2026-11-28T17:38:52Z"
+    },
+    {
+      "id": 13766,
+      "title": "m10-panel-hz-pref K1: src/logic/panel-hz.ts (Präferenz schreiben/löschen)",
+      "description": "Neue reine Datei src/logic/panel-hz.ts: localStorage-Schlüssel lfhz_panel, API setPanelHzPref(mode: 'locked60'|'max'), injizierbarer Storage, kein Import aus fps-cap.ts (Lane m10-fps-pacing-fix belegt die Datei). Abnahme: tsc rc=0, keine Abhängigkeit zu fps-cap.ts.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T17:48:30Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-panel-hz-pref übernommen: Panel-Hz-Präferenz für APK-Bridge (Dom-Folgepunkt 17:45Z)."
+        },
+        {
+          "at": "2026-11-28T17:48:53Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig, Commit 7192e2b9. Reine Datei ohne fps-cap-Import, tsc rc=0."
+        }
+      ],
+      "created": "2026-11-28T17:48:27Z",
+      "updated": "2026-11-28T17:48:53Z"
+    },
+    {
+      "id": 13767,
+      "title": "m10-panel-hz-pref K2: Hook in src/audio/options.ts setOption",
+      "description": "setOption(key==='fps'): fps=0 (MAX) → setPanelHzPref('max'), sonst 'locked60'. Semantik/BILDRATE-Anzeige bitgleich, Options-Persistenz unverändert. Abnahme: tsc rc=0, meta-persist-Tests grün, kein Touch an fps-cap.ts/main.ts/UI.ts.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T17:48:53Z",
+          "by": "build",
+          "text": "todo → doing: K2 Hook in options.ts setOption starten."
+        },
+        {
+          "at": "2026-11-28T17:49:09Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig, Commit 47355683. tsc rc=0, meta-persist+options-focus 31 Tests grün."
+        }
+      ],
+      "created": "2026-11-28T17:48:27Z",
+      "updated": "2026-11-28T17:49:09Z"
+    },
+    {
+      "id": 13768,
+      "title": "m10-panel-hz-pref K3: tests/panel-hz.test.ts",
+      "description": "Tests: setOption(fps=0) schreibt max-Präferenz; 60/AUTO löscht/auf locked60; kein NaN; Persistenz-Expecteds unangetastet (tests/meta-persist.test.ts bleibt grün). Abnahme: npx vitest run tests/panel-hz.test.ts + tests/meta-persist.test.ts 0 fail.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T17:49:09Z",
+          "by": "build",
+          "text": "todo → doing: K3 Tests starten."
+        },
+        {
+          "at": "2026-11-28T17:50:41Z",
+          "by": "build",
+          "text": "doing → review: K3 fertig, Commit 003f165e. 7 neue Tests + meta-persist/options-focus/mobile-fps-cap 55 Tests grün, tsc rc=0."
+        }
+      ],
+      "created": "2026-11-28T17:48:27Z",
+      "updated": "2026-11-28T17:50:41Z"
+    },
+    {
+      "id": 13769,
+      "title": "m10-panel-hz-pref K4: Doku docs/lanes/m10-panel-hz-pref.md",
+      "description": "Lane-Doku mit Verweis auf A/B-Tabelle 17:45Z (60 Hz: 60 FPS/0 % janky; 120 Hz: 118,5 FPS) und Hinweis, dass die APK-Seite (MainActivity liest lfhz beim Start) bei Vera liegt. Abnahme: Doku vorhanden, .lane-done angelegt.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T17:50:41Z",
+          "by": "build",
+          "text": "todo → doing: K4 Doku + .lane-done."
+        }
+      ],
+      "created": "2026-11-28T17:48:27Z",
+      "updated": "2026-11-28T17:50:41Z"
     }
   ]
 }
