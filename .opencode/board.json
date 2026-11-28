@@ -17575,10 +17575,15 @@
           "at": "2026-11-28T14:21:46Z",
           "by": "build",
           "text": "todo → doing: K2 Fix: Setter-Churn + Spawn-Allokationen in FxSystem.ts/ParticleSystem"
+        },
+        {
+          "at": "2026-11-28T14:30:55Z",
+          "by": "build",
+          "text": "[Supervisor 14:35Z bestätigt] WIP committed 178e0086. K2-Hebel (Setter-Gates + Scratch-Pooling) war vor dem Steer als eine Einheit umgesetzt, 9/9 fx-alloc-trim + FX/A7-Guards gruen. KEINE weiteren Edit-Iterationen — Auswertung der vorliegenden before/after-JSONs folgt in der Lane-Doku. Hinweis: Karte #12013 ist fremd (Merge-Fix m10-loading-screen, andere Lane) — laut Lane-Briefing/Argus-Regel 'Nur Karten des eigenen Briefings' nicht annehmbar; Disponent zieht sie zurück."
         }
       ],
       "created": "2026-11-28T14:15:39Z",
-      "updated": "2026-11-28T14:21:46Z"
+      "updated": "2026-11-28T14:30:55Z"
     },
     {
       "id": 12642,

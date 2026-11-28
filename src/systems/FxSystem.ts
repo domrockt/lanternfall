@@ -339,7 +339,11 @@ export class FxSystem {
     for (const fx of this.active) {
       if (fx.alphaScaleExempt) continue;
       fx.alphaFrom = Math.max(0, Math.min(1, fx.alphaFrom * ratio));
-      fx.sprite.setAlpha(Math.max(0, Math.min(1, fx.sprite.alpha * ratio)));
+      const a = Math.max(0, Math.min(1, fx.sprite.alpha * ratio));
+      // m10-fx-alloc-trim (K2, Reviewer-Sollte 1): ca-Invariante halten,
+      // sonst unterschlaegt das Alpha-Gate in update() den neuen Wert.
+      fx.ca = a;
+      fx.sprite.setAlpha(a);
       const blendAdd = fx.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion braucht einen echten Glow-Slot —
       // sonst hebelt ein LOD-Rueckwechsel (minimal -> full) den Deckel aus,
@@ -830,7 +834,10 @@ export class ParticleSystem {
       // rendern dauerhaft NORMAL, s. spawn()).
       if (isBossFxKey(p.frames[0])) continue;
       p.alphaFrom = Math.max(0, Math.min(1, p.alphaFrom * ratio));
-      p.sprite.setAlpha(Math.max(0, Math.min(1, p.sprite.alpha * ratio)));
+      const a = Math.max(0, Math.min(1, p.sprite.alpha * ratio));
+      // m10-fx-alloc-trim (K2, Reviewer-Sollte 1): ca-Invariante halten.
+      p.ca = a;
+      p.sprite.setAlpha(a);
       const blendAdd = p.additive && next >= 0.7;
       // M10 (Review K2/K1): Re-Promotion wie im FxSystem nur mit Glow-Slot.
       if (blendAdd && !p.glow && glowEnabledFor(QUALITY)) p.glow = budget.request();

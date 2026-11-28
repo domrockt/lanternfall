@@ -201,4 +201,38 @@ describe("m10-fx-alloc-trim: Scratch-Options und Frame-Caches (Spawn-Pfad)", () 
     expect(a.frames).toBe(b.frames);
     expect(a.frames).not.toBe(b.frames.slice()); // Inhalts-Sanity
   });
+
+  it("fremdes opts.frames-Array bleibt unberuehrt (Identitaets-Fallback mappt frisch)", () => {
+    const sprite = countingSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    const fremd = ["fx_fire", "fx_fire_2", "fx_fire_3", "fx_fire_4", "fx_fire_5", "fx_fire_6"];
+    const a = fx.spawn({ texture: "fx_fire", x: 0, y: 0, life: 1, scaleFrom: 4, scaleTo: 4, frames: fremd }) as FxRuntime;
+    expect(a.frames).not.toBe(fremd);   // neues gemapptes Array
+    expect(fremd[0]).toBe("fx_fire");   // Caller-Array nicht mutiert
+    const b = fx.spawn({ texture: "fx_fire", x: 9, y: 9, life: 1, scaleFrom: 4, scaleTo: 4, frames: fremd }) as FxRuntime;
+    // zwei frische Maps je Aufruf (Altverhalten) — nie ein geteiltes Array
+    expect(b.frames).not.toBe(a.frames);
+  });
+
+  it("setAlphaScale haelt die ca-Invariante (Reviewer-Sollte 1)", () => {
+    const sprite = countingSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    const fxr = fx.spawn({ texture: "fx_spark", x: 0, y: 0, life: 5, alphaFrom: 1, alphaTo: 1 }) as FxRuntime;
+    fx.setAlphaScale(0.5); // LOD-Daempfung: sprite.alpha *= 0.5
+    expect(sprite.last.a).toBeCloseTo(0.5, 10);
+    fx.update(1 / 60);
+    // update() hat nach setAlphaScale ein neues Alpha (Lifetime-Lerp) berechnet
+    // und geschrieben — Gate haelt die Invariante ca == zuletzt geschriebener Wert.
+    expect(fxr.ca).toBeCloseTo(sprite.last.a, 10);
+    expect(sprite.last.a).toBeCloseTo(0.5016666, 4); // 0.5 + Lerp t=1/300 zur alphaTo=1
+  });
+
+  it("bolt → spawnAnim → spawn: boltOpts/scratchOpts isoliert (kein Feld-Druck durch Verschachtelung)", () => {
+    const sprite = countingSprite();
+    const fx = new FxSystem(fakeScene(sprite));
+    fx.bolt(0, 0, 100, 0, { additive: false, depth: 3, tint: 0xff0000 });
+    expect(fx.count).toBeGreaterThanOrEqual(5); // >=3 Segmente + 2 Seitenäste
+    expect(sprite.blend).toBe(Phaser.BlendModes.NORMAL); // additive:false an alle Segmente
+    expect(sprite.depth).toBe(3);
+  });
 });
