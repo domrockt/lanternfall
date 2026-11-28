@@ -3,8 +3,8 @@ import { CHUNK_SIZE, CHUNK_TILES, TILE, WORLD_SIZE } from "../config";
 import { ownsPropBlock } from "../logic/autotile";
 import { WATER_ANIM_STEPS, areaHasWater, paintTerrain, terrainKindAt, tileHash, type TileKind } from "./tiles";
 import { applyTexture } from "./atlas";
-import { ambientBudgetFor, propDensityMaxTier } from "../logic/lod";
-import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor, propTierFor } from "./propLayers";
+import { ambientBudgetFor } from "../logic/lod";
+import { PROP_KEYS, PROP_LAYER_DEPTHS, batchLayerCount, propSideFor } from "./propLayers";
 import {
   propVariantKeyFor, propShadowClassFor, propShadowFor,
   PROP_SHADOW_COLOR, PROP_SHADOW_OFFSET,
@@ -118,9 +118,10 @@ interface FogBank {
 
 /**
  * Kleine Dekor-Props kosteten im dichten Endgame viele eigene Draw-Calls.
- * Seit m10-prop-density-lod steuert das gestufte Dichte-LOD
- * (propTierFor/propDensityMaxTier, Schwellwerte N1=250/N2=300 in logic/lod.ts)
- * ueber Prop-Tiers (0 Landmarke, 1 gross, 2 Deko); dieses Set ist ersetzt.
+ * m10-prop-density-lod blendete sie gestuft per Dichte-LOD aus — entfernt in
+ * m10-props-always-visible: das momentbasierte An/Aus flackerte im Sekundentakt
+ * (Dom 2026-11-28). Props/Schatten/Glows sind statisch gebatcht und bleiben
+ * IMMER sichtbar; Last wird nur über FX/Partikel-Qualitätsstufen gesenkt.
  */
 
 /** Moor-Requisiten: Bild-Sprites statt 16-px-Kacheln (dürfen über Kacheln wachsen). */
@@ -202,8 +203,6 @@ export class GroundRenderer {
   private glowLayer?: Phaser.GameObjects.Container;
   private fogLayer?: Phaser.GameObjects.Container;
   private ambientLastTick = Number.NEGATIVE_INFINITY;
-  /** Aktuell hoechster sichtbarer Prop-Tier (Dichte-LOD, 2 = alles sichtbar). */
-  private propLodMaxTier: 0 | 1 | 2 = 2;
   /** Feste Batch-Layer je Prop-Textur (hinter/vor Spieler), lazy in ensureBatchLayers(). */
   private readonly propLayers = new Map<string, PropLayers>();
   /** Kontakt-Schatten-Atlas-Textur (lazy, null = Fallback "shadow"). Bewusst
@@ -545,13 +544,9 @@ export class GroundRenderer {
     if (timeMs - this.ambientLastTick < stepMs) return;
     this.ambientLastTick = timeMs;
 
-    // Dichte-LOD für Props: gestufte Tiers (N1 = Deko aus, N2 = nur Laternen).
-    // Nur bei Stufenwechsel anwenden; neue Chunks filtern sich in addProp() selbst.
-    const maxTier = propDensityMaxTier(enemies);
-    if (maxTier !== this.propLodMaxTier) {
-      this.applyPropTier(maxTier);
-      this.propLodMaxTier = maxTier;
-    }
+    // m10-props-always-visible: kein Prop-Dichte-LOD mehr — Props/Schatten/
+    // Glows bleiben immer sichtbar (statisch gebatcht, billig; Flackern war
+    // schlimmer als die Submit-Kosten).
 
     const t = timeMs * 0.001;
     // #4658: Gluehwuermchen sind weltverankert (scrollFactor 1) und sollen die
@@ -596,22 +591,6 @@ export class GroundRenderer {
   /** Terrain an einer Weltposition (für Wasser-Slow und Spritzer). */
   kindAt(worldX: number, worldY: number): TileKind {
     return terrainKindAt(worldX, worldY, this.seed, WORLD_SIZE);
-  }
-
-  /** Dichte-LOD: Sichtbarkeit aller Props/Schatten/Glows nach Prop-Tier setzen
-   *  (nur bei Stufenwechsel aufgerufen). Glows haengen an Laternen (Tier 0)
-   *  und bleiben sichtbar; Schatten folgen ihrem Prop. Klassifikation ueber
-   *  ownerKey (= Prop-Klasse) — Varianten-Texturen sind nicht in PROP_TIERS
-   *  und wuerden sonst von ihrem Schatten abweichen (Review-Befund K4). */
-  private applyPropTier(maxTier: 0 | 1 | 2): void {
-    for (const entry of this.chunks.values()) {
-      for (const p of entry.props) {
-        const tier = p.getData("glow")
-          ? 0
-          : propTierFor((p.getData("ownerKey") as string | undefined) ?? p.texture?.key);
-        p.setVisible(tier <= maxTier);
-      }
-    }
   }
 
   /** Schickt faellige Chunk-Jobs an den Worker, naechstgelegene zuerst. */  private dispatch(centerX: number, centerY: number): void {
@@ -804,12 +783,6 @@ export class GroundRenderer {
     this.propLayerFor(texKey).behind.add(img);
     img.setData("batchSide", "behind");
     props.push(img);
-    // Dichte-LOD: neu gebaute Chunks erben sofort den aktuellen Tier-Zustand
-    // (Sonst waeren waehrend dichter Phase kurzzeitig alle Props sichtbar).
-    if (propTierFor(key) > this.propLodMaxTier) {
-      img.setVisible(false);
-      shadow?.setVisible(false);
-    }
     // Laternenpfahl ist Lichtquelle: kleiner additiver warmer Warmschein (Overlay).
     if (texKey === "prop_post" && this.scene.textures.exists("light_radius")) {
       const glow = this.scene.add.image(wx, wy - 20, "light_radius")

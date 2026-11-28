@@ -54,30 +54,17 @@ export function ambientBatchCount(budget: AmbientBudget): number {
 }
 
 /**
- * M10-Prop-Dichte-LOD: gestufte Ausblendung von Prop-Quads bei Gegnerdichte
- * (Lane m10-prop-density-lod). Der Ground-Renderpfad ist submit-limitiert
- * (~900 sichtbare Prop-Quads bei M25), nicht draw-call-limitiert — weniger
- * Quads ist der einzige Hebel, der die Submit-Kosten wirklich senkt.
- * Schwellwerte an der realen Endgame-Dichte: Messbedingung "300 Gegner"
- * (Top-up auf 300, seed 7, M25) hält nur ~175-236 lebende Gegner durch
- * (Waffen töten schneller als der Top-up nachlegt) — das alte DENSE_HIDE_PROPS
- * ab 250 griff darum kaum. N1 = kleine Deko aus, N2 = nur Landmarken bleiben.
- *
- * Bekannter Rest (Befund, siehe docs/lanes/m10-prop-density-lod.md): Die
- * Gegnerzahl oszilliert im Endgame stark (16..300); momentbasierte Schwellen
- * flackern dadurch im Sekundentakt. Eine Hysterese mit sofortiger Entspannung
- * hebt das LOD praktisch ganz auf (Hebel 3, gemessen); der korrekte Fix wäre
- * eine geglättete Dichte (EMA) als Entscheidungsgrundlage — nächster Hebel
- * für den Lead, hier nicht mehr getan (Abbruchkriterium: 3 Hebel).
+ * M10-props-always-visible (Dom 2026-11-28): Der Dichte-LOD für Props wurde
+ * ENTFERNT. Vorher: >=150 Gegner -> Deko aus, >=200 -> nur Laternen; die
+ * Gegnerzahl pendelt im Endgame um die Schwellen -> Props flackerten im
+ * Sekundentakt (Beleg ~/games/.evidence/m10-props-always-visible/before.json,
+ * 8 Tier-Wechsel in 12 s). Lehre: Welt-Objekte nie per LOD verstecken —
+ * Flackern ist schlimmer als ein paar FPS. Die Funktion bleibt als
+ * Single-Source "alles sichtbar" (Tier 2) erhalten, damit kein Aufrufer
+ * versehentlich wieder einen Tier-Layer einführt.
  */
-export const PROP_DENSITY_N1 = 150;
-export const PROP_DENSITY_N2 = 200;
-
-/** Hoechster sichtbarer Prop-Tier bei dieser Gegnerzahl (2 = alles sichtbar). */
-export function propDensityMaxTier(enemies: number): 0 | 1 | 2 {
-  const n = Math.max(0, Math.floor(enemies));
-  if (n >= PROP_DENSITY_N2) return 0;
-  if (n >= PROP_DENSITY_N1) return 1;
+/** Hoechster sichtbarer Prop-Tier: IMMER 2 = alle Props/Schatten/Glows sichtbar. */
+export function propDensityMaxTier(_enemies: number): 0 | 1 | 2 {
   return 2;
 }
 

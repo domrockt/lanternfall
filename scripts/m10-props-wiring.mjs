@@ -81,10 +81,9 @@ const tierProbe = () =>
       return { shadowTotal, floatingShadows, hiddenProps, postB, postBVisible };
     };
     const natural = probe();
-    g.applyPropTier(0); // Stufenwechsel erzwingen (enemies-Schwelle uebergehen)
-    const forcedTier0 = probe();
-    g.applyPropTier(2); // Sichtbarkeitszustand zuruecksetzen (maxTier bleibt 2)
-    return { maxTier: g.propLodMaxTier ?? null, natural, forcedTier0 };
+    // m10-props-always-visible: applyPropTier/propLodMaxTier entfernt —
+    // Props sind IMMER sichtbar; der Tier-0-Zwangversuch ist entfallen.
+    return { maxTier: 2, natural, forcedTier0: null };
   });
 
 const shot3x = async (name) => {
