@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8281,
+  "next": 8285,
   "cards": [
     {
       "id": 1,
@@ -10339,6 +10339,70 @@
       ],
       "created": "2026-11-28T04:20:46Z",
       "updated": "2026-11-28T04:20:49Z"
+    },
+    {
+      "id": 8281,
+      "title": "m10-verify-reacceptance-d K1: Renderer-String-Pflicht vor jedem Lauf",
+      "description": "Abnahmekriterium: shots/m10-reaccd-renderer.json enthaelt WEBGL_debug_renderer_info-String, kein SwiftShader/llvmpipe/Software; Renderer-String wird in alle m10-reaccd-* Beleg-JSONs uebernommen. PASS: ANGLE Intel RPL-S iGPU (Commit 7e2cb07/2885f10).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T04:27:32Z",
+          "by": "build",
+          "text": "lane #7998, Merge 59b4a35"
+        }
+      ],
+      "created": "2026-11-28T04:27:10Z",
+      "updated": "2026-11-28T04:27:32Z"
+    },
+    {
+      "id": 8282,
+      "title": "m10-verify-reacceptance-d K2: verify-input 28/28 inkl. ESC-Pfad",
+      "description": "Abnahmekriterium: node scripts/verify-input.mjs --tag reaccd -> Beleg shots/m10-reaccd-verify-input.json mit 28/28 Checks PASS, 0 JS-Fehler, ESC-Pause/Resume ausdruecklich OK. PASS (Commit 46d0f95).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T04:27:50Z",
+          "by": "build",
+          "text": "review → done: lane #7999, Merge 59b4a35"
+        }
+      ],
+      "created": "2026-11-28T04:27:10Z",
+      "updated": "2026-11-28T04:27:50Z"
+    },
+    {
+      "id": 8283,
+      "title": "m10-verify-reacceptance-d K3: Heap-Tor im 30-min-Echtzeitlauf",
+      "description": "Abnahmekriterium: m10-heap-budget.mjs --minutes 30 -> shots/m10-reaccd-heap.json; HARD endMB(Minute30, post-GC) - Minute1 <= +15 % PASS, SOFT-Fenster-Peaks nur beobachten, Renderer-String im Beleg. PASS (HARD) +10,7 % (Commit fe6cb7c), SOFT-Beobachtung FAIL als F1/F2 dokumentiert.",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T04:27:50Z",
+          "by": "build",
+          "text": "review → done: lane #8000, Merge 59b4a35"
+        }
+      ],
+      "created": "2026-11-28T04:27:10Z",
+      "updated": "2026-11-28T04:27:50Z"
+    },
+    {
+      "id": 8284,
+      "title": "m10-verify-reacceptance-d K4: FPS-Tore M25 780x360@3 >=50 + Burst 640x360 >=55",
+      "description": "Abnahmekriterium: perf.mjs unter flock fuer 780x360@3 und 640x360 -> shots/m10-reaccd-perf-*.json; Minute25 >=50, Burst >=55, Vergleich gegen Nachabnahme C. PASS: 60,0/60,1 bzw. 60,0 (Commit 6e41743).",
+      "column": "done",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T04:27:50Z",
+          "by": "build",
+          "text": "review → done: lane #8001, Merge 59b4a35"
+        }
+      ],
+      "created": "2026-11-28T04:27:10Z",
+      "updated": "2026-11-28T04:27:50Z"
     }
   ]
 }
