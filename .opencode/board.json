@@ -9693,26 +9693,42 @@
       "id": 7642,
       "title": "m10-evo-fx-winter Merge-Fix: fremde Test-Assertionen folgen drawScale + Palette-Fixture regenerieren",
       "description": "Nach Merge 1f6bcd7 (m10-evo-fx-winter × phoenix/soulpyre): 1) tests/evo-fx-phoenix.test.ts + tests/evo-fx-soulpyre.test.ts erwarten eternal_winter.drawScale noch als undefined — Assertion folgt dem neuen Zielgroessen-Pfad (drawScale [1,1], 128x128-Bake), Muster aus Commit 0b3b563 („Test-Assertion folgt drawScale, minimal“). 2) tests/fixtures/palette-fx-guard.json veraltet (neue FX-Sets ring_frost/winter-Signatur): scripts/m10-palette-fx-guard.mjs neu laufen lassen, Fixture committen. Abnahme: npx vitest run tests/evo-fx-phoenix.test.ts tests/evo-fx-soulpyre.test.ts tests/palette-compliance.test.ts grün, danach Suite grün.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:05:40Z",
+          "by": "build",
+          "text": "doing → review: doing → review: Arbeit liegt in Commit e1b5642 (#7642) — fremde Assertionen in evo-fx-phoenix/evo-fx-soulpyre folgen drawScale, Palette-FX-Guard-Fixture regeneriert, Suite 1267/1267 grün"
+        },
+        {
+          "at": "2026-11-28T03:05:43Z",
+          "by": "build",
+          "text": "review → done: review → done: PASS — Commit e1b5642 (#7642), Suite 1267/1267 grün, Merge 1f6bcd7; Buchung nachgeholt (ccca7aa behauptete done, Board zeigte doing)"
+        }
+      ],
       "created": "2026-11-28T02:57:37Z",
-      "updated": "2026-11-28T02:57:37Z"
+      "updated": "2026-11-28T03:05:43Z"
     },
     {
       "id": 7678,
       "title": "Merge-Fix m10-evo-fx-zornpendel: evo-fx-zornpendel-Test folgt drawScale (eternal_winter jetzt Zielgroesse 128)",
       "description": "Abnahmekriterium: npm test gruen — Signatures-Assertion in tests/evo-fx-zornpendel.test.ts angepasst (eternal_winter ist seit Merge 1f6bcd7 gebacken, drawScale [1,1]), Alt-Pfad nur noch fuer thorn_storm/thunder_seal.",
-      "column": "doing",
+      "column": "done",
       "assignee": "merge-job",
       "notes": [
         {
           "at": "2026-11-28T03:05:00Z",
           "by": "merge-job",
           "text": "Merge 2e2a33e brachte 1 Test-Fehlschlag: Lane-Assertion von vor der Winter-Lane"
+        },
+        {
+          "at": "2026-11-28T03:05:32Z",
+          "by": "build",
+          "text": "doing → done: doing → done: PASS — Commit 98aaccf (#7678), npm test 117/117 Dateien / 1279/1279 Tests grün, npm run build rc=0; Merge-Fix nach Merge 2e2a33e. (Supervisor-Hinweis: doing_min:-1 war Buchungsartefakt)"
         }
       ],
       "created": "2026-11-28T03:02:00Z",
-      "updated": "2026-11-28T03:05:00Z"
+      "updated": "2026-11-28T03:05:32Z"
     },
     {
       "id": 7679,
