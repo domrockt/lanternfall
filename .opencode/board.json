@@ -16801,16 +16801,21 @@
       "id": 12204,
       "title": "m10-warmup-chunk-fine: K1 Vorher-Messung Warmup-Chunks",
       "description": "scripts/m10-warmup-chunk.mjs misst Warmup-Chunks (Anzahl, je-Chunk-Dauer, Zeit bis interaktiv) der BASIS (createAllTextures als derived-Chunk). JSON nach shots/m10-warmup-chunk-before.json (Kopie nach ~/games/.evidence/m10-warmup-chunk-fine/). Abnahme: JSON committed, Baseline-Zahlen in Lane-Doku.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T13:08:25Z",
           "by": "build",
           "text": "todo → doing: Lane gestartet: Vorher-Messung des Warmup-Chunkings (Baseline vor Fix)."
+        },
+        {
+          "at": "2026-11-28T13:10:54Z",
+          "by": "build",
+          "text": "doing → done: Vorher-Messung committed (f39142ff): 48 Chunks, maxChunk 1672,5 ms, sumChunk 3625,8 ms. Befund: runtime-atlas (1740 ms) ist Top-Stall, aber fremde Datei — Lane-Ziel derived-atlas ~292 ms."
         }
       ],
       "created": "2026-11-28T13:08:23Z",
-      "updated": "2026-11-28T13:08:25Z"
+      "updated": "2026-11-28T13:10:54Z"
     },
     {
       "id": 12205,
