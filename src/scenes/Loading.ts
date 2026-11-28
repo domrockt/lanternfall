@@ -41,6 +41,49 @@ function timings(): BootTimings {
 const BAR_W = 120;
 const BAR_H = 5;
 
+/**
+ * m10-loadscreen-continuity (#12013): gemeinsame Layout-Basis von Boot-Vor-Phase
+ * und Ladescreen. Boot zeichnet in preload Laterne + Balken-Rahmen (0%) an
+ * EXAKT diese Ankerpunkte, damit der Phasenwechsel boot -> loading ohne
+ * Positions-/Stil-Sprung bleibt (Dom-Wunsch 2026-11-28T13:25Z, Punkt 1).
+ */
+export interface LoadingChrome {
+  barFill: Phaser.GameObjects.Graphics;
+  pctText: PixelText;
+  barX: number;
+  barY: number;
+}
+
+/**
+ * Zeichnet den Ladescreen-Chrome (Hintergrund nightDeep, Laterne, Balken-Rahmen,
+ * Prozent-Text, optionaler Label-Zeile ueber dem Balken) in die Szene.
+ * Idempotent bzgl. der Laterne (addGridTexture-Guard). Ohne Label (Boot-Vor-Phase)
+ * bleibt die Label-Zeile frei — Boot setzt dort seinen eigenen Vor-Text.
+ */
+export function drawLoadingChrome(scene: Phaser.Scene, label = ""): LoadingChrome {
+  const cx = Math.round(GAME_WIDTH / 2);
+  const cy = Math.round(GAME_HEIGHT / 2);
+  scene.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
+
+  // Laterne (eigene 9x14-Pixel-Textur, nur Palettenfarben), Anker wie im Ladescreen.
+  addGridTexture(scene, "loading_lantern", LOADING_LANTERN.rows, LOADING_LANTERN.w, LOADING_LANTERN.h);
+  scene.add.image(cx, cy - 28, "loading_lantern").setScale(2).setOrigin(0.5, 0.5);
+
+  // Fortschrittsbalken: Rahmen bone, Flaeche night, Fuellung amber (1-px-Raster).
+  const barX = cx - Math.round(BAR_W / 2);
+  const barY = GAME_HEIGHT - 44;
+  const frame = scene.add.graphics();
+  frame.fillStyle(PAL[C.bone], 1);
+  frame.fillRect(barX - 1, barY - 1, BAR_W + 2, BAR_H + 2);
+  frame.fillStyle(PAL[C.night], 1);
+  frame.fillRect(barX, barY, BAR_W, BAR_H);
+  const barFill = scene.add.graphics();
+
+  if (label !== "") new PixelText(scene, cx, barY - 16, label, C.mist, "center");
+  const pctText = new PixelText(scene, cx, barY + 12, "0%", C.mist, "center");
+  return { barFill, pctText, barX, barY };
+}
+
 export class Loading extends Phaser.Scene {
   private tasks: WarmupTask[] = [];
   private idx = 0;
@@ -67,26 +110,13 @@ export class Loading extends Phaser.Scene {
     this.debug = data.debug ?? false;
     timings().loadingStart = performance.now();
 
-    const cx = Math.round(GAME_WIDTH / 2);
-    const cy = Math.round(GAME_HEIGHT / 2);
-    this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-
-    // Laterne (eigene 9x14-Pixel-Textur, nur Palettenfarben) + sanftes Pulslicht.
-    addGridTexture(this, "loading_lantern", LOADING_LANTERN.rows, LOADING_LANTERN.w, LOADING_LANTERN.h);
-    this.add.image(cx, cy - 28, "loading_lantern").setScale(2).setOrigin(0.5, 0.5);
-
-    // Fortschrittsbalken: Rahmen bone, Flaeche night, Füllung amber (1-px-Raster).
-    this.barX = cx - Math.round(BAR_W / 2);
-    this.barY = GAME_HEIGHT - 44;
-    const frame = this.add.graphics();
-    frame.fillStyle(PAL[C.bone], 1);
-    frame.fillRect(this.barX - 1, this.barY - 1, BAR_W + 2, BAR_H + 2);
-    frame.fillStyle(PAL[C.night], 1);
-    frame.fillRect(this.barX, this.barY, BAR_W, BAR_H);
-    this.barFill = this.add.graphics();
-
-    new PixelText(this, cx, this.barY - 16, "LADEN ...", C.mist, "center");
-    this.pctText = new PixelText(this, cx, this.barY + 12, "0%", C.mist, "center");
+    // m10-loadscreen-continuity (#12013): Chrome (BG/Laterne/Balken/Texte) aus der
+    // gemeinsamen Layout-Basis — identische Anker wie in der Boot-Vor-Phase.
+    const chrome = drawLoadingChrome(this, "LADEN ...");
+    this.barFill = chrome.barFill;
+    this.pctText = chrome.pctText;
+    this.barX = chrome.barX;
+    this.barY = chrome.barY;
 
     // Warmup-Haeppchen: genau EIN Task pro Frame (Timer feuert pro rAF), UI bleibt fluessig.
     this.tasks = buildWarmupTasks(this);

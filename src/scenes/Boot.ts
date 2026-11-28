@@ -9,6 +9,8 @@ import { GEN_TITLE } from "../gfx/gen-title";
 import { GEN_UI } from "../gfx/gen-ui";
 import { seedFromUrl, hasFlag } from "../logic/rng";
 import { AudioSystem, initAudio } from "../audio/AudioSystem";
+// m10-loadscreen-continuity (#12013): gemeinsame Layout-Basis mit der Loading-Szene.
+import { drawLoadingChrome } from "./Loading";
 
 /**
  * Titel-kritische Texturen: alles, was die Titel-Szene im create() zeichnet
@@ -67,7 +69,12 @@ export class Boot extends Phaser.Scene {
     // Prozedural erzeugte WAVs (scripts/gen_sfx.py) aus public/sfx laden.
     const t = timings();
     t.preloadStart = performance.now();
-    this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
+    // m10-loadscreen-continuity (#12013): Boot-Vor-Phase im Ladescreen-Stil —
+    // Laterne + Balken-Rahmen (0%) + Prozent-Text aus der gemeinsamen
+    // Layout-Basis (drawLoadingChrome in Loading.ts), Hintergrundton nightDeep
+    // wie im Laternen-Screen. Der Phasenwechsel boot -> loading bleibt so ohne
+    // Positions-/Stil-Sprung (Dom-Wunsch 2026-11-28T13:25Z, Punkt 1).
+    drawLoadingChrome(this);
     // m10-loadscreen-pretext: X an die View-Breite gekoppelt (GAME_WIDTH ist
     // dynamisch, logische Hoehe 360) — vorher fixer X=240 (= Zentrum einer
     // 480er-Annahme) und damit links der Mitte, belegt auf Redmi Pad und Desktop.
