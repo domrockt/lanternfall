@@ -9234,7 +9234,7 @@
       "id": 7505,
       "title": "m10-pickup-moment K1 Ist-Beleg: Powerup-Pickup im 300er-Chaos (before-JSON + 4x-Shot)",
       "description": "scripts/m10-pickup-moment.mjs: 300-Gegner-Horde, echter Level-up-Pick (passives Angebot), Frame im Aufnahme-Moment aufnehmen (Peak + Post), Near-White-/Mixel-Score + Differenz Post-vs-Peak im Spieler-Crop. Belege: shots/m10-pickup-moment-before.json, -before.png, -before-4x.png. Abnahme: JSON existiert, momentCount=0 belegt lautlosen Stat-Austausch, 0 JS-Fehler.",
-      "column": "review",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -9246,16 +9246,21 @@
           "at": "2026-11-28T02:34:58Z",
           "by": "build",
           "text": "doing → review: K1 fertig (Commit 077bf81): scripts/m10-pickup-moment.mjs + before-JSON/-post/-4x. Beleg: picked=tome (Level 1), momentTriggered=0, diffPeakPost 81.43 % (Chaos-Drift+generisches Levelup-FX, kein Moment), offPalette 93.4 % im Spieler-Crop (additiver Lichtkreis), xpLoss=0, 0 JS-Fehler. 4x-Shot zeigt Spieler im Chaos OHNE erkennbaren Aufnahme-Moment."
+        },
+        {
+          "at": "2026-11-28T03:11:26Z",
+          "by": "build",
+          "text": "review → done: lane #7505, Commit 077bf81 — K1 Ist-Beleg: momentTriggered=0, before-4x ohne Moment, xpLoss 0, 0 JS-Fehler. Lane-Reviewer PASS."
         }
       ],
       "created": "2026-11-28T02:24:05Z",
-      "updated": "2026-11-28T02:34:58Z"
+      "updated": "2026-11-28T03:11:26Z"
     },
     {
       "id": 7506,
       "title": "m10-pickup-moment K2 Fix: Aufnahme-Moment in PickupSystem.ts",
       "description": "PickupSystem erkennt Powerup-Erwerb (neu/Upgrade ueber LevelUpSystem.passives-Diff) und spielt eigenen Aufnahme-Moment: icon_passive_<id> 16x16 @ Scale 1 (Zielgroesse, kein Mixel), 1-px-Rim in Paletten-Akzentfarbe, Aufblitz lanternWhite, 1-px-Ring in Ganzzahlschritten, Dauer 0,4 s, max 3 parallel, eigene Phaser-Objekte (kein FxSystem-Zwang, Import erlaubt). Gem-/XP-Pfad unberuehrt (bitgleich). Abnahme: npx tsc --noEmit gruen, pickup-gems-Tests gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -9267,16 +9272,21 @@
           "at": "2026-11-28T02:41:14Z",
           "by": "build",
           "text": "doing → review: K2 fertig (Commit daed82f, inkl. after-Belege): Aufnahme-Moment in PickupSystem.ts. Erkennung: levelSys.passives-Diff (deckt Level-up UND Truhen-Rewards ab, kein Eingriff in Run.ts/UI.ts). Darstellung: icon_passive_<id> 16x16 @ Scale 1 (Zielgroesse), 1-px-Rim + 1-px-Ring (Radius 8->16 Ganzzahlschritte) in Powerup-Akzentfarbe, Aufblitz in Akzent (Weiss ging in der Levelup-Saeule unter — shots/m10-pickup-moment-after-4x.png belegt den Fix), 0,4 s, max 3 parallel, eigene Uhr in update(). momentTriggered=1, xpLoss=0. tsc gruen, 1187 Tests gruen."
+        },
+        {
+          "at": "2026-11-28T03:11:26Z",
+          "by": "build",
+          "text": "review → done: lane #7506, Commit daed82f — K2 Aufnahme-Moment (Icon Scale 1, 1-px-Rim/Ring/Edge, 0,4 s, max 3). Lane-Reviewer PASS: kein Leak, Gem-Pfad unverändert, Palette/Grid sauber."
         }
       ],
       "created": "2026-11-28T02:24:05Z",
-      "updated": "2026-11-28T02:41:14Z"
+      "updated": "2026-11-28T03:11:26Z"
     },
     {
       "id": 7507,
       "title": "m10-pickup-moment K3 tests/pickup-moment.test.ts + after-JSON",
       "description": "Tests: Moment existiert je Powerup (6/6, korrekter Icon-Key), Dauer <= 0,5 s, Palette binär (Akzent = Palettenindex, Scale = 1, Ganzzahlschritte), Gem-Invarianten unberuehrt. Messlauf --tag=after: shots/m10-pickup-moment-after.json + -after.png + -after-4x.png, momentCount >= 1, XP-Verlust 0 (xpLoss=0), Draw-Cap aktiv. Abnahme: npx vitest run tests/pickup-moment.test.ts gruen, tsc gruen.",
-      "column": "review",
+      "column": "done",
       "assignee": "vfx-artist",
       "notes": [
         {
@@ -9288,20 +9298,31 @@
           "at": "2026-11-28T02:43:25Z",
           "by": "build",
           "text": "doing → review: K3 fertig (Commit 408d2a4): tests/pickup-moment.test.ts, 14 Tests gruen (111 Dateien / 1201 Tests gesamt). Abgedeckt: Moment existiert je Powerup 6/6 mit korrektem icon_passive-Key, Dauer = MOMENT_DURATION 0,4 s (<= 0,5), Palette binaer (Accent/Flash gueltige Indizes, 6 distincte Akzente, Scale 1, ganzzahlige Positionen, 1-px-Linien), Gem-/XP-Pfad unberuehrt (xpLoss=0, collected/granted unveraendert), Erwerb-Erkennung new/upgrade/removal, MAX_MOMENTS=3, clearMoments. after-JSON/-PNGs im K2-Commit daed82f (momentTriggered=1, xpLoss=0)."
+        },
+        {
+          "at": "2026-11-28T03:11:26Z",
+          "by": "build",
+          "text": "review → done: lane #7507, Commit 408d2a4 — K3 14 Tests, nicht tautologisch (Lane-Reviewer PASS): echte update-Ticks, echte drop/update-Läufe, XP-Bilanz."
         }
       ],
       "created": "2026-11-28T02:24:05Z",
-      "updated": "2026-11-28T02:43:25Z"
+      "updated": "2026-11-28T03:11:26Z"
     },
     {
       "id": 7508,
       "title": "m10-pickup-moment K4 art-director-Sichtung + Lane-Doku + .lane-done",
       "description": "art-director prueft after-Shots (>= 4/5, Massstab kommerziell auslieferbar): Moment im 500er-Chaos unterscheidbar, palettentreu, 1-px-Stufen, kein Mixel. docs/lanes/m10-pickup-moment.md mit Messwerten/Belegen, .lane-done am Ende. XP-/Gem-Invarianten (xpLoss 0, Draw-Cap) im after-JSON nachgewiesen.",
-      "column": "todo",
+      "column": "done",
       "assignee": "art-director",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T03:11:26Z",
+          "by": "build",
+          "text": "todo → done: lane #7508, Commits b723846 + 765548e + 28106cf (.lane-done) — art-director Runde 1 FAIL 3,5/5 -> Korrekturen -> Runde 2 PASS 4,5/5; commit-gate PASS; Lane-Reviewer PASS (Should umgesetzt: detectPowerupMoments ohne Per-Frame-Allokation). Belege: sheet + 6 GIFs + shots.json (triggered 6/6, xpLoss 0)."
+        }
+      ],
       "created": "2026-11-28T02:24:05Z",
-      "updated": "2026-11-28T02:24:05Z"
+      "updated": "2026-11-28T03:11:26Z"
     }
   ]
 }
