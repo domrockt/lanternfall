@@ -28,6 +28,9 @@ import { PAL } from "../palette";
  *     keine harte Checker-Kante am Innenrand.
  *   - K2b: Kontur via round(d)-Band (round(d) ∈ {r-1, r}) — radial konstant 2 px, kein
  *     1/2-px-Wechselschlag an Bogen-Flachstellen.
+ *   - K3: ab 5 gleichzeitig warnenden Disc-Hazards Fuellstufe 1 (25-%-Raster statt 50-%-Checker,
+ *     Key-Suffix "_s1") — stapelweise Discs wirken ruhiger. Stage 0 (Einzeldisc) bleibt
+ *     bitgleich: gleicher Key, gleiche Rasterung wie ohne Stapelregel.
  */
 
 /** Fuellung: dunkler Warnton — mit Tint dunkler Ton der Gefahr-Farbe (hellt nie auf). */
@@ -36,6 +39,20 @@ export const DISC_FILL_I = 15; // emberDark
 export const DISC_CONTOUR_I = 13; // lanternWhite
 /** Maskenwert fuer transparent. */
 export const MASK_CLEAR = 255;
+
+/** Fuellstufe der Disc: 0 = Basis (50-%-Checker), 1 = Stapel ab Schwelle (25-%-Raster). */
+export type DiscFillStage = 0 | 1;
+/** Ab so vielen gleichzeitig warnenden Disc-Hazards greift Fuellstufe 1 (deterministisch). */
+export const DISC_STACK_THRESHOLD = 5;
+
+/**
+ * Deterministische Stapel-Regel: ab `DISC_STACK_THRESHOLD` gleichzeitig warnenden Disc-Hazards
+ * Fuellstufe 1, darunter (und bei fehlender/ungueltiger Angabe) Stufe 0. Reine Funktion.
+ */
+export function fillStageForStacks(stacks: number): DiscFillStage {
+  if (!Number.isFinite(stacks) || stacks < DISC_STACK_THRESHOLD) return 0;
+  return 1;
+}
 
 /**
  * Sprite-Radius in Spielpixeln: ganzzahlig, geklemmt auf 8..160 (gruender Teleport-Marker
@@ -56,10 +73,10 @@ export function discSide(r: number): number {
  * - round(d) ∈ {r-1, r}: 2-px-Konturband (DISC_CONTOUR_I) — radial konstant 2 px (K2b),
  * - round(d) ∈ {r-3, r-2}: Uebergangsband, 25-%-Fringe (x und y gerade) statt harter
  *   Checker-Kante am Innenrand (K2a),
- * - sonst Fuellung: 50-%-Schachbrett (x+y) gerade.
+ * - sonst Fuellung: Stufe 0 = 50-%-Schachbrett (x+y) gerade, Stufe 1 = 25-%-Raster (K3).
  * Kein Alpha-Verlauf, keine Zwischentoene, nur 2 Palettenindizes. Für Vitest ohne Phaser testbar.
  */
-export function discMask(r: number): Uint8Array {
+export function discMask(r: number, stage: DiscFillStage = 0): Uint8Array {
   const side = discSide(r);
   const c = (side - 1) / 2;
   const mask = new Uint8Array(side * side).fill(MASK_CLEAR);
@@ -72,7 +89,7 @@ export function discMask(r: number): Uint8Array {
         mask[i] = DISC_CONTOUR_I;
       } else if (di >= r - 3) {
         if (x % 2 === 0 && y % 2 === 0) mask[i] = DISC_FILL_I;
-      } else if ((x + y) % 2 === 0) {
+      } else if (stage === 0 ? (x + y) % 2 === 0 : x % 2 === 0 && y % 2 === 0) {
         mask[i] = DISC_FILL_I;
       }
     }
@@ -96,6 +113,25 @@ export function ringMask(r: number): Uint8Array {
     }
   }
   return mask;
+}
+
+/**
+ * Zahl der aktuell warnenden Disc-Hazards in der Szene (Stapel-Mass fuer K3). Liest nur den
+ * von Run.ts gesetzten Run-Zustand (`scene.hazards.active`) — Hazards.ts wird nicht angefasst,
+ * der Draw-Pfad bleibt bitgleich. Ohne erreichbaren Zustand (Unit-Test-Stubs) 0.
+ */
+export function warnDiscStacks(scene: Phaser.Scene): number {
+  const active = (
+    scene as unknown as {
+      hazards?: { active?: ReadonlyArray<{ kind?: string; triggered?: boolean; active?: boolean }> };
+    }
+  ).hazards?.active;
+  if (!Array.isArray(active)) return 0;
+  let n = 0;
+  for (const h of active) {
+    if (h?.kind === "circle" && h.active !== false && !h.triggered) n++;
+  }
+  return n;
 }
 
 /** Wendet eine Maske (Breite `width`) auf einen Pixel-Zeichner an; liefert die Zahl gezeichneter Pixel. */
@@ -141,11 +177,14 @@ function hexColor(rgb: number): string {
   return `#${rgb.toString(16).padStart(6, "0")}`;
 }
 
-/** Ensures + liefert den Key der Warn-Disc-Textur in Sprite-Pixelgroesse fuer `radius`. */
+/** Ensures + liefert den Key der Warn-Disc-Textur in Sprite-Pixelgroesse fuer `radius`.
+ *  Ab `DISC_STACK_THRESHOLD` gleichzeitig warnenden Disc-Hazards mit Fuellstufe 1 gebacken
+ *  (Key-Suffix "_s1"); darunter Key und Rasterung bitgleich zum Basis-Key. */
 export function hazardDiscTexture(scene: Phaser.Scene, radius: number): string {
   const r = quantizedRadius(radius);
-  const key = `hazard_disc_r${r}`;
-  bakeFromMask(scene, key, discMask(r));
+  const stage = fillStageForStacks(warnDiscStacks(scene));
+  const key = stage === 0 ? `hazard_disc_r${r}` : `hazard_disc_r${r}_s1`;
+  bakeFromMask(scene, key, discMask(r, stage));
   return key;
 }
 

@@ -41,9 +41,10 @@ vi.stubGlobal("document", {
 
 import { HazardSystem } from "../src/systems/Hazards";
 import {
-  BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_I, MASK_CLEAR,
-  applyMask, beamMask, beamRimMask, discMask, discSide,
-  quantizedBeamLength, quantizedRadius, ringMask,
+  BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_I, DISC_STACK_THRESHOLD, MASK_CLEAR,
+  applyMask, beamMask, beamRimMask, discMask, discSide, fillStageForStacks,
+  hazardDiscTexture, hazardRingTexture,
+  quantizedBeamLength, quantizedRadius, ringMask, warnDiscStacks,
 } from "../src/gfx/hazardDisc";
 import { PAL, C } from "../src/palette";
 
@@ -275,6 +276,76 @@ describe("K2: Uebergangsband quantisiert + Ringkontur radial konstant 2 px", () 
         }
       }
     }
+  });
+});
+
+describe("K3: Stapel-Fuellstufe ab 5 Warn-Discs (deterministisch)", () => {
+  it("fillStageForStacks: Stufe 1 genau ab DISC_STACK_THRESHOLD, sonst 0 (inkl. NaN/negativ)", () => {
+    for (const n of [0, 1, 4, DISC_STACK_THRESHOLD - 1]) expect(fillStageForStacks(n)).toBe(0);
+    for (const n of [DISC_STACK_THRESHOLD, DISC_STACK_THRESHOLD + 1, 9, 40]) {
+      expect(fillStageForStacks(n)).toBe(1);
+    }
+    expect(fillStageForStacks(Number.NaN)).toBe(0);
+    expect(fillStageForStacks(-3)).toBe(0);
+  });
+
+  it("Einzeldisc bitgleich: discMask(r) === discMask(r, 0) — Stapelregel ohne Stapel ist ein No-op", () => {
+    for (const r of [30, 60, 90]) {
+      expect(Array.from(discMask(r))).toEqual(Array.from(discMask(r, 0)));
+    }
+  });
+
+  it("Stufe 1: geringere Dither-Frequenz (25-%-Raster im Interieur), Kontur bitgleich zu Stufe 0", () => {
+    const r = 60;
+    const side = discSide(r);
+    const c = (side - 1) / 2;
+    const m0 = discMask(r, 0);
+    const m1 = discMask(r, 1);
+    expect([...new Set([...m1].filter((v) => v !== MASK_CLEAR))].sort()).toEqual(
+      [DISC_CONTOUR_I, DISC_FILL_I].sort(),
+    );
+    let n = 0, fill0 = 0, fill1 = 0;
+    for (let y = 0; y < side; y++) {
+      for (let x = 0; x < side; x++) {
+        const i = y * side + x;
+        expect((m1[i] === DISC_CONTOUR_I) === (m0[i] === DISC_CONTOUR_I), `Kontur ${x},${y}`).toBe(true);
+        if (Math.hypot(x - c, y - c) <= r - 4) {
+          n++;
+          if (m0[i] === DISC_FILL_I) fill0++;
+          if (m1[i] === DISC_FILL_I) fill1++;
+          if (m1[i] === DISC_FILL_I) {
+            expect(x % 2 === 0 && y % 2 === 0, `Stufe 1 off-grid ${x},${y}`).toBe(true);
+          }
+        }
+      }
+    }
+    expect(fill0 / n).toBeGreaterThan(0.45);
+    expect(fill1 / n).toBeGreaterThan(0.2);
+    expect(fill1 / n).toBeLessThan(0.3);
+  });
+
+  it("warnDiscStacks zaehlt nur warnende Circle-Hazards; Key: <5 Stapel Basis-Key, >=5 '_s1'", () => {
+    const warnDisc = { kind: "circle", triggered: false, active: true };
+    const mkScene = (active: unknown[]) =>
+      ({
+        tweens: { add: vi.fn() },
+        hazards: { active },
+        textures: { exists: () => false, addCanvas: () => {} },
+      }) as unknown as import("phaser").Scene;
+
+    expect(warnDiscStacks(mkScene([]))).toBe(0);
+    expect(
+      warnDiscStacks(mkScene([warnDisc, { kind: "beam", triggered: false, active: true }, { kind: "circle", triggered: true, active: true }])),
+    ).toBe(1);
+
+    const sceneFew = mkScene(Array.from({ length: DISC_STACK_THRESHOLD - 1 }, () => warnDisc));
+    expect(hazardDiscTexture(sceneFew, 60)).toBe("hazard_disc_r60");
+    expect(hazardRingTexture(sceneFew, 60)).toBe("hazard_ring_r60");
+
+    const sceneMany = mkScene(Array.from({ length: DISC_STACK_THRESHOLD }, () => warnDisc));
+    expect(hazardDiscTexture(sceneMany, 60)).toBe("hazard_disc_r60_s1");
+    // Ring hat keine Fuellung — kein Stufen-Key.
+    expect(hazardRingTexture(sceneMany, 60)).toBe("hazard_ring_r60");
   });
 });
 
