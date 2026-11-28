@@ -9718,37 +9718,61 @@
       "id": 7679,
       "title": "m10-evo-fx-zornpendel #1: Ist-Beleg Zornpendel (Skript + before.png/json)",
       "description": "Lane m10-evo-fx-zornpendel, nach main gemerged. Abnahmekriterium: Build + Tests gruen auf main, Merge-Commit vorhanden.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:04:27Z",
+          "by": "build",
+          "text": "review → done: lane #7437, Merge 2e2a33e — Belege shots/m10-evo-fx-zornpendel-before*, Skript scripts/m10-evo-fx-zornpendel.mjs"
+        }
+      ],
       "created": "2026-11-28T03:03:18Z",
-      "updated": "2026-11-28T03:03:18Z"
+      "updated": "2026-11-28T03:04:27Z"
     },
     {
       "id": 7680,
       "title": "m10-evo-fx-zornpendel #2: Fix Zornpendel-Textur in Zielgroesse (gen-fx.ts/CombatSystem)",
       "description": "Lane m10-evo-fx-zornpendel, nach main gemerged. Abnahmekriterium: Build + Tests gruen auf main, Merge-Commit vorhanden.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:04:27Z",
+          "by": "build",
+          "text": "review → done: lane #7438, Merge 2e2a33e — Zornpendel in Zielgroesse (Ring 208 @ Draw-Scale 1, Zorn-Farbtreppe)"
+        }
+      ],
       "created": "2026-11-28T03:03:18Z",
-      "updated": "2026-11-28T03:03:18Z"
+      "updated": "2026-11-28T03:04:27Z"
     },
     {
       "id": 7681,
       "title": "m10-evo-fx-zornpendel #3: Tests tests/evo-fx-zornpendel.test.ts (12 Guards)",
       "description": "Lane m10-evo-fx-zornpendel, nach main gemerged. Abnahmekriterium: Build + Tests gruen auf main, Merge-Commit vorhanden.",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:04:27Z",
+          "by": "build",
+          "text": "review → done: lane #7439, Merge 2e2a33e — tests/evo-fx-zornpendel.test.ts, 12 Guards; Suite auf main 1279/1279 grün"
+        }
+      ],
       "created": "2026-11-28T03:03:18Z",
-      "updated": "2026-11-28T03:03:18Z"
+      "updated": "2026-11-28T03:04:27Z"
     },
     {
       "id": 7682,
       "title": "m10-evo-fx-zornpendel #4: Nachher-Beleg + art-director + Lane-Doku",
       "description": "Lane m10-evo-fx-zornpendel, nach main gemerged. Abnahmekriterium: Build + Tests gruen auf main, Merge-Commit vorhanden.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:04:27Z",
+          "by": "build",
+          "text": "doing → done: lane #7440, Merge 2e2a33e — Lane abgeschlossen (.lane-done Lane-only entfernt, art-director PASS), docs/lanes/m10-evo-fx-zornpendel.md"
+        }
+      ],
       "created": "2026-11-28T03:03:18Z",
-      "updated": "2026-11-28T03:03:18Z"
+      "updated": "2026-11-28T03:04:27Z"
     }
   ]
 }
