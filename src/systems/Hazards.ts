@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { C, PAL } from "../palette";
 import { DEPTH } from "../gfx/depth";
 import { makeImage } from "../gfx/atlas";
+import { hazardBeamRimTexture, hazardBeamTexture, hazardDiscTexture, hazardRingTexture, quantizedBeamLength, quantizedRadius } from "../gfx/hazardDisc";
 
 export interface HazardOptions {
   /** Vorwarnzeit (s), > 0 = Pflicht-Telegraph. */
@@ -93,17 +94,20 @@ export class HazardSystem {
   spawnCircle(x: number, y: number, opts: HazardOptions): HazardRuntime {
     const warn = effectiveWarn(opts.warn, 0.7);
     const linger = opts.linger ?? 0;
-    const warnSprite = makeImage(this.scene, Math.round(x), Math.round(y), "telegraph_disc")
+    // B3-Fix: Disc/Ring in Sprite-Pixelgroesse gebacken (Draw-Scale 1, gerastert,
+    // kein Weich-Gradient). Optik-Aenderung — Warnlogik/Treffer bitgleich.
+    const discRadius = quantizedRadius(opts.radius);
+    const warnSprite = makeImage(this.scene, Math.round(x), Math.round(y), hazardDiscTexture(this.scene, discRadius))
       .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
-      .setScale(Math.max(0.25, opts.radius / 30))
+      .setScale(1)
       .setAlpha(0.9);
-    if (opts.color !== undefined) warnSprite.setTint(PAL[opts.color] ?? opts.color);
-    const rimSprite = makeImage(this.scene, Math.round(x), Math.round(y), "ring_burst")
+    warnSprite.setTint(PAL[opts.color ?? C.crimson] ?? opts.color ?? PAL[C.crimson]);
+    const rimSprite = makeImage(this.scene, Math.round(x), Math.round(y), hazardRingTexture(this.scene, discRadius))
       .setDepth(DEPTH.hazard + 1)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.hotRed])
-      .setScale(Math.max(0.2, opts.radius / 30))
+      .setScale(1)
       .setAlpha(rimPulseAlpha(0));
     const hazard: HazardRuntime = {
       kind: "circle", x, y, x2: x, y2: y, width: 0, radius: opts.radius,
@@ -128,18 +132,21 @@ export class HazardSystem {
   ): HazardRuntime {
     const len = Math.hypot(x2 - x1, y2 - y1) || 1;
     const angle = Math.atan2(y2 - y1, x2 - x1);
-    const warnSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+    // B3-Fix: Strahl in Sprite-Pixelgroesse gebacken (Draw-Scale 1, nie >1x gestreckt).
+    const beamLen = quantizedBeamLength(len);
+    const warnSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, hazardBeamTexture(this.scene, beamLen))
       .setDepth(DEPTH.hazard)
       .setBlendMode(Phaser.BlendModes.NORMAL)
       .setRotation(angle + Math.PI / 2)
-      .setScale(1, len / 16)
+      .setScale(1)
       .setAlpha(0.9);
-    const rimSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, "telegraph_beam")
+    warnSprite.setTint(PAL[opts.color ?? C.crimson] ?? opts.color ?? PAL[C.crimson]);
+    const rimSprite = makeImage(this.scene, (x1 + x2) / 2, (y1 + y2) / 2, hazardBeamRimTexture(this.scene, beamLen))
       .setDepth(DEPTH.hazard + 1)
       .setBlendMode(Phaser.BlendModes.ADD)
       .setTint(PAL[C.hotRed])
       .setRotation(angle + Math.PI / 2)
-      .setScale(1.25, len / 16)
+      .setScale(1)
       .setAlpha(rimPulseAlpha(0));
     const hazard: HazardRuntime = {
       kind: "beam", x: x1, y: y1, x2, y2, width: opts.radius,
