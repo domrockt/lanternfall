@@ -222,3 +222,20 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   1773 grün, Build rc=0, 0 JS-Fehler).
 - Bedarf UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt via Mini-Job
   `m10-gem-rows-texture` oder Freigabe nach fx-bakes-evo-r2-Merge.
+
+## Run-Fortsetzung (28.11. 09:41–09:45Z, Versuch 3 / Run 8)
+
+- Ready-Zustand frisch verifiziert (09:41Z): `npx tsc --noEmit` clean,
+  `npx vitest run tests/gem-value-reading.test.ts` 10/10 grün, r3-Patch gestaget
+  (textures.ts 20 Z, xp.ts 24 Z, Test 8 Z) — unverändert zu Run 6/7.
+- **Neu (Dora-Beschluss in requests.md):** Mini-Job `m10-gem-rows-texture` ist
+  offiziell eingereiht — gem_small/gem_medium-Row-Schnitt, **after
+  m10-chest-arrow-texture-r2** in der textures.ts-Queue; K1 des Mini-Jobs prüft,
+  ob diese Lane den Patch selbst committet (dann Job obsolet).
+- Queue-Stand 09:43Z: `m10-chest-arrow-texture-r2` noch nicht gestartet
+  (kein Worktree, keine .lane-done). Claim `src/gfx/textures.ts` weiterhin
+  bei `m10-fx-bakes-evo-r2` (Substring-Check 09:41Z).
+- Kein Commit-Retry (4 dokumentierte Fehlversuche); Automation v2
+  (aut_22182edd…) aktiv, nächster Recheck 10:00:58Z. Bedarf UNVERÄNDERT:
+  gem-Rows via Mini-Job oder Freigabe — danach 3 Dateien committen (#10180),
+  Board done, `.lane-done`.
