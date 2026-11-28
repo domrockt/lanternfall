@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import type { EnemyRuntime } from "./EnemyPool";
 import { DEPTH } from "../gfx/depth";
 import { FX_GLOW_DEPTH } from "./FxSystem";
-import { applyTexture, makeImage } from "../gfx/atlas";
+import { ATLAS_KEY, applyTexture, makeImage } from "../gfx/atlas";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 
 /**
@@ -49,6 +49,27 @@ export function simAnchorView(
   r.width = GAME_WIDTH;
   r.height = GAME_HEIGHT;
   return r;
+}
+
+/**
+ * m10-gc-sawtooth-trim (K2): zeigt das Sprite bereits DIESE Textur? Atlas-Keys
+ * liegen als Frame `key` in der Runtime-Atlas-Textur, Nicht-Atlas-Keys als
+ * eigene Textur mit __BASE-Frame. Nur bei echtem Gleichstand überspringt der
+ * Pool den applyTexture-Aufruf (Reuse-Pfad ohne SetTexture-/Batch-Churn).
+ */
+function sameTexture(
+  sprite: Phaser.GameObjects.Image,
+  key: string,
+): boolean {
+  // Test-Stubs ohne texture-Feld (alte Pool-Mocks) landen bewusst im
+  // Fehlschlag-Richtung "erneut anwenden" — niemals crashen, nie überspringen.
+  const tex = sprite.texture as Phaser.Textures.Texture | undefined;
+  if (!tex) return false;
+  if (tex.key === ATLAS_KEY) {
+    return (sprite.frame?.name ?? null) === key;
+  }
+  // Nicht-Atlas-Key: Texture-Key muss exakt passen (Frame ist __BASE).
+  return tex.key === key;
 }
 
 
@@ -166,11 +187,22 @@ export class ProjectilePool {
     p.explodeRadius = opts.explodeRadius ?? 0;
     p.active = true;
     p.hit.clear();
-    applyTexture(p.sprite, opts.texture ?? "projectile_ember");
-    p.sprite.setBlendMode(p.blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL);
+    // m10-gc-sawtooth-trim (K2): „nur bei Änderung setzen“ — Reuse-Treffer mit
+    // gleicher Textur/Tiefe/Blend setzen NICHT erneut. Grund: setDepth queued
+    // (Phaser Depth-Komponente) bei JEDER Neusetzung einen Scene-weiten
+    // StableSort, setBlendMode/setTexture brechen Batches bzw. dirty'en den
+    // Draw-Pfad — im Minute-25-Burst mit hunderten Spawns/s GC-/CPU-Churn.
+    // Sim-Werte werden NICHT angerührt (Determinismus-Anker unverändert).
+    if (!sameTexture(p.sprite, opts.texture ?? "projectile_ember")) {
+      applyTexture(p.sprite, opts.texture ?? "projectile_ember");
+    }
+    const blend = p.blendAdd ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL;
+    if (p.sprite.blendMode !== blend) p.sprite.setBlendMode(blend);
     // M10-tablet-fx-hotspot (K2): ADD-Projektile (Eis-Volley) rendern im gemeinsamen
     // ADD-Band statt als Insel auf DEPTH.death — bleibt unter Gegnern (9).
-    p.sprite.setVisible(true).setActive(true).setDepth(p.blendAdd ? FX_GLOW_DEPTH : DEPTH.death);
+    const depth = p.blendAdd ? FX_GLOW_DEPTH : DEPTH.death;
+    if (p.sprite.depth !== depth) p.sprite.setDepth(depth);
+    p.sprite.setVisible(true).setActive(true);
     p.sprite.setPosition(Math.round(opts.x), Math.round(opts.y));
     p.sprite.setRotation(Math.atan2(opts.vy, opts.vx));
     p.sprite.setScale(opts.scale ?? 1);
