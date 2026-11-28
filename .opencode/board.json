@@ -10010,34 +10010,61 @@
       "id": 7878,
       "title": "m10-audio-music-dawn #K1: Ist-Analyse Musik-Pfade + Messskript",
       "description": "Ist-Analyse der Musik-Umschaltung in src/audio/AudioSystem.ts (MUSIC_KEYS, setMusic, stopMusic, applyVolumes/setMuted-Interaktion). Messskript scripts/m10-music-dawn.mjs (reine Zustandslogik, kein Phaser) misst Uebergangs-Matrix Titel/Run/Boss/Dawn x Master-Mute: Doppel-Voice-Starts, Stop-ohne-Start-Reihenfolge. Vorher-Beleg shots/m10-music-dawn-before.json committen. Abnahme: JSON vorhanden + Befund benennt Knackser-Quellen.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T03:30:18Z",
           "by": "build",
           "text": "todo → doing: K1 gestartet: Ist-Analyse AudioSystem-Musikpfade, Messskript scripts/m10-music-dawn.mjs"
+        },
+        {
+          "at": "2026-11-28T03:38:18Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig, Commit 3f0-Nachfolger (M10-...#7878): Messskript + Vorher-Beleg committed. Befund: kein Dopplerton/Start-vor-Stop, Budget ok; FAIL reload_muted (musicTrack luegt nach Mute+setMusic, Musik nach Unmute weg). Kontrolle: JSON + Befund im Commit."
         }
       ],
       "created": "2026-11-28T03:30:16Z",
-      "updated": "2026-11-28T03:30:18Z"
+      "updated": "2026-11-28T03:38:18Z"
     },
     {
       "id": 7879,
       "title": "m10-audio-music-dawn #K2: Uebergangs-Regeln ohne Dopplerton",
       "description": "Track-Wechsel in AudioSystem: alter Voice ist gestoppt/destroyed BEVOR der neue startet (aktuell: stopMusic() stoppt erst, dann add — Reihenfolge pruefen), Wiederhol-Start derselben Stufe = No-op ohne Sound-Neuanlage, Mute/Reload-Pfade bitgleich zu A7. mixing.ts nur falls noetig, WEAPON/HIT-Band-Grenzen unangetastet. Abnahme: npx tsc --noEmit rc=0, gezielte Tests gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T03:38:29Z",
+          "by": "build",
+          "text": "todo → doing: K2 gestartet: setMusic ehrlicher State bei Mute/Load-Fail; Wechsel-Reihenfolge (stop vor add) ist bereits korrekt und bleibt bitgleich."
+        },
+        {
+          "at": "2026-11-28T03:38:48Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig, Commit 6de8361: setMusic ehrlicher State (Mute/Load-Fail), Wechsel-Reihenfolge bitgleich. Beleg: Messskript PASS=true, audio-Tests 23/23."
+        }
+      ],
       "created": "2026-11-28T03:30:16Z",
-      "updated": "2026-11-28T03:30:16Z"
+      "updated": "2026-11-28T03:38:48Z"
     },
     {
       "id": 7880,
       "title": "m10-audio-music-dawn #K3: Guard-Tests music-dawn",
       "description": "tests/music-dawn.test.ts mit >= 6 Tests: Uebergangs-Matrix (Titel/Run/Boss/Dawn x Master-Mute x Reload), 0 Doppel-Voices (bei Wechsel nie 2 Musik-Sounds aktiv), Wiederhol-Start No-op, Mute bitgleich (sfxPlayed/voices/musicTrack wie A7). Abnahme: npx vitest run tests/music-dawn.test.ts gruen, audio-mix-chaos + audio-frost-gap Tests unveraendert gruen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T03:38:48Z",
+          "by": "build",
+          "text": "todo → doing: K3 gestartet: tests/music-dawn.test.ts (>=6 Tests, Uebergangs-Matrix, 0 Doppel-Voices, Mute bitgleich)."
+        },
+        {
+          "at": "2026-11-28T03:40:59Z",
+          "by": "build",
+          "text": "K3 fertig, Commit folgt #7880: tests/music-dawn.test.ts in einem Zug geschrieben, 1x vitest run, 2 Fix-Iterationen (Index-/Reihenfolge-Bugs in eigenen Assertions), 7/7 gruen. Messskript unangetastet gelassen. -> review"
+        }
+      ],
       "created": "2026-11-28T03:30:16Z",
-      "updated": "2026-11-28T03:30:16Z"
+      "updated": "2026-11-28T03:40:59Z"
     },
     {
       "id": 7881,
