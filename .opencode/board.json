@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7238,
+  "next": 7303,
   "cards": [
     {
       "id": 1,
@@ -8520,6 +8520,57 @@
       "notes": [],
       "created": "2026-11-28T00:58:08Z",
       "updated": "2026-11-28T00:58:08Z"
+    },
+    {
+      "id": 7298,
+      "title": "m10-chaos-fix-glow-runpath K1: Repro-Skript + before-Belege",
+      "description": "Akzeptanz: scripts/m10-chaos-fix-glowpath.mjs (Muster m10-vfx-restore.mjs, seed=1, M25-Chaos, 640x360@1 + 780x360@3, Renderer-String-Pflicht iGPU, SwiftShader=ungueltig) laeuft und committet before-JSON + before-PNGs (+4x-Crops) als shots/m10-chaos-fix-glowpath-before-*. Vorher-Messung VOR dem Fix. Ein Commit.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T01:04:31Z",
+          "by": "build",
+          "text": "todo → doing: K1 gestartet: Repro-Skript scripts/m10-chaos-fix-glowpath.mjs (Muster m10-vfx-restore.mjs), before-Messung vor dem Fix."
+        }
+      ],
+      "created": "2026-11-28T01:04:29Z",
+      "updated": "2026-11-28T01:04:31Z"
+    },
+    {
+      "id": 7299,
+      "title": "m10-chaos-fix-glow-runpath K2: Run.ts Partikel-Scale/Streckung (B5)",
+      "description": "Akzeptanz: Run.ts Run-seitige ADD-Sprites (pillar/ring/beam/rays) ohne nicht-uniformes Strecken, uniform Scale-Cap + ADD-Alpha-Boden/-Deckel als exportierte Helfer; tests/chaos-glow-runpath.test.ts prueft die Verdrahtung (Quelltext-Check, Muster evo-signature-calls). tsc + zielbezogene vitest gruen, npm run build rc=0, ein Commit inkl. Belege.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:04:29Z",
+      "updated": "2026-11-28T01:04:29Z"
+    },
+    {
+      "id": 7300,
+      "title": "m10-chaos-fix-glow-runpath K3: fx_pillar/fx_shock auf Bake-Pfad (B1-Teil)",
+      "description": "Akzeptanz: fx_shock-Ring (playEvolutionFx) ueber spawnAnim (Mixel-Bake); fx_pillar-Ziel-Pixelgroesse wird Run-seitig gebacken (nearest, Stufen 2-4), Draw-Scale <= 1 an allen 4 makeImage-Stellen (dawn rays, levelup, chest, shock); Test: 4x-Zoom zeigt 1-px-Stufen (Pixel-Metrik im after-JSON), Quelltext-Check. Ein Commit inkl. Belege.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:04:29Z",
+      "updated": "2026-11-28T01:04:29Z"
+    },
+    {
+      "id": 7301,
+      "title": "m10-chaos-fix-glow-runpath K4: Boot.ts Glow-Deckel (B2-Run-Anteil)",
+      "description": "Akzeptanz: light_radius-Rampen-Ende Richtung Amber/Lantern statt lanternWhite + Alpha-Deckel (Boot-seitig dokumentiert), Run.ts Licht-Alpha-Deckel; Near-White A7 im Chaos-Frame <= 4,16 % im after-JSON (beide Profile), FPS within noise, Renderer-String im Beleg. tsc/vitest/build gruen, ein Commit inkl. Belege.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:04:29Z",
+      "updated": "2026-11-28T01:04:29Z"
+    },
+    {
+      "id": 7302,
+      "title": "m10-chaos-fix-glow-runpath K5: after-Belege + Doku + .lane-done",
+      "description": "Akzeptanz: after-Screenshots derselben Szenario-Frames wie before (gleiche Seeds/Profile), Zusammenfassung in docs/lanes/m10-chaos-fix-glow-runpath.md (Messwerte, offene Punkte zu gen-fx/textures-Claims), .lane-done mit 5-10 Zeilen Summary committet. git status --ignored ohne eigene Reste.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:04:29Z",
+      "updated": "2026-11-28T01:04:29Z"
     }
   ]
 }
