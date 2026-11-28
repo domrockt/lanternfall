@@ -15767,10 +15767,16 @@
       "id": 11659,
       "title": "m10-bundle-split K2: Fix — Migration advancedChunks → codeSplitting in vite.config.ts",
       "description": "E-3-Hebel laut Abnahme-Doku. Nur Dateien der Lane (vite.config.ts), kein src/**, kein index.html. AK: npx vite build ohne DEP-Warnung und ohne Chunk-Großenwarnung, gleiche Chunk-Aufteilung (phaser/gfx/sprites), tsc grün, Commit.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:37:48Z",
+          "by": "build",
+          "text": "todo → review: K2 fertig, Commit f7772232. advancedChunks -> codeSplitting in vite.config.ts (nur meine Lane-Datei). Build rc=0 ohne DEP-Warn und ohne Groessenwarnung, Chunk-Hashes bis auf index identisch. Kein src/**/index.html-Kontakt."
+        }
+      ],
       "created": "2026-11-28T11:36:41Z",
-      "updated": "2026-11-28T11:36:41Z"
+      "updated": "2026-11-28T11:37:48Z"
     },
     {
       "id": 11660,
