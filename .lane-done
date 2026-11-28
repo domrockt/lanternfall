@@ -1,0 +1,21 @@
+# m10-burst-cloud-calm — Lane abgeschlossen (2026-11-28)
+
+burst-Tod-Klasse ("grüne Dither-Wolken", fx_death_blob) global entschärft,
+nur VFX-Parameter in BASE.burst in src/logic/death.ts:
+
+- count 16 → 9, dustCount 8 → 4, scaleFrom 2.4 → 1.0, scaleTo 1.0 → 0.5,
+  dustScale 1.2 → 0.8, additive true → false (Alpha-Boden, Normal-Blend).
+- Unverändert/bitgleich: Texturen (eine Textur, kein Mixel), spread, life,
+  Tints (Palettenindizes), Klassen-Mapping, Boss-Spec, Todeslogik/Loot/XP.
+- Messwerte Vorher → Nachher (640x360@1 / 780x360@3): max. Sprite-Scale
+  2,61 → 1,09 bzw. 2,62 → 1,10 (Fläche ~17 % von Vorher); Shards 16 → 9;
+  Near-White A7 im Tod-Crop 0,95 % → 0,91 % bzw. 0,64 % → 0,66 % (Gate
+  ≤ 4,16 % eingehalten); jsErrors 0.
+- art-director: PASS, Wolken-Lesbarkeit 4,5/5 (Vorher 2/5 — flächiger
+  Schachbrett-Dither-Deckel); palettetreu, kein Mixel.
+- Tests: tests/burst-cloud-calm.test.ts (5 Tests) + npm test 142 Dateien /
+  1499 Tests grün, npx tsc --noEmit rc=0.
+- Belege: shots/m10-burst-cloud-{before,after}-* (je 640x360@1 + 780x360@3,
+  4x-Lupe + JSON); Befund: docs/lanes/m10-burst-cloud-calm.md.
+- CombatSystem.ts (lokale Zornpendel-Dämpfung der Form-polish-Lane) wurde
+  nicht angefasst.
