@@ -485,6 +485,30 @@ der Lead aus dem Befund; in dieser Lane wurde bewusst NICHT gefixt.
 Abnahme-Bilder: `shots/abnahme/m10-v10-device-*.png` (im Repo). GPU-Renderer jedes Belegs:
 `Adreno (TM) 710` (kein SwiftShader → Belege gültig).
 
+## Nachtrag v1.0-Gerätetore (2026-11-28, 17:45Z ff.) — nur Ergänzungen, historische Werte oben unangetastet
+
+### 120-Hz-A/B am Gerät (17:45Z) — Tablet-Tor BESTANDEN (Dom-Freigabe)
+
+Claude-A/B auf dem Redmi Pad Pro über device-bridge, gleiche Szene (Minute-25-Dichte,
+262–344 Gegner per Nachschub, 6 Evolutionen). Quelle: „Wünsche von Dom.md",
+Abschnitt „2026-11-28 17:45Z — TABLET-TOR BESTANDEN" (`~/games/coding-brain/Lead/Wünsche von Dom.md`):
+
+| Panel | FPS | rAF p95 | rAF max | gfxinfo janky |
+|---|---|---|---|---|
+| 60 Hz (APK-Lock, Standard) | 60,0 | 16,8 ms | 16,8 ms | 0 % |
+| 120 Hz (`hz=max`) | 118,5 | 8,4 ms | 33,3 ms | 11,8 % |
+
+→ Gerät-Tor für v1.0 **bestanden** (Dom: „Macht noch den 120-Hz-Test, dann gilt es für
+mich als bestanden"). Standard bleibt **60-Hz-Panel + 60-FPS-Cap** (perfekt gleichmäßig,
+kühler, Akku). Einordnung zum K3-FAIL der Erstmessung oben (13,44 %/13,90 %): bei
+120 Hz zählt gfxinfo einen Frame als janky, wenn er die **8,3-ms-Deadline** verpasst —
+das Spiel rendert ~110–118 FPS, ein Teil der Frames reißt die 120-Hz-Deadline
+zwangsläufig, obwohl das Bild flüssig wirkt; bei 60 Hz (Standard) liegt janky bei 0 %.
+Folgepunkt (klein, nicht v1.0-blockierend): Menü-Option „Bildrate: max" soll den
+60-Hz-Panel-Wunsch der App aufheben (JS→Android-Bridge oder lfhz-Pref beim nächsten
+Start), sonst bringt „max" am Gerät nichts; Bridge kann `/launch?...&hz=max`.
+Nächster Schritt laut Dom: **m10-v10-final-run und m10-v10-release-prep freigeben.**
+
 ## Nachabnahme G (2026-11-28) — Nachabnahme nach Heap-Regressions-Fix
 
 **Basis:** main @ `b69ede5c` (nach `9153181d` Merge `m10-heap-regression-fix`).

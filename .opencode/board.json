@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13686,
+  "next": 13730,
   "cards": [
     {
       "id": 1,
@@ -18784,11 +18784,17 @@
       "id": 13283,
       "title": "m10-ground-chunk-tex-dup: GroundRenderer-Doppel-Add chunk_* verhindern",
       "description": "Regression seit m10-ground-chunk-budget (Merge 39d1efe8): createCanvas auf belegtem Key chunk_<x>_<y> loggt 'Texture key already in use' und vergiftet Mess-JSONs (accepted:false). K1 Vorher-Messung (docs/lanes), K2 exists()-Guard an Z.807+Z.859, K3 Guard-Test tests/ground-chunk-tex-dup.test.ts, K4 Nachher-Messung 0 Spam + accepted:true. Abnahme: build rc=0, tsc rc=0, Suite gruen, Vorher/Nachher-Tabelle.",
-      "column": "doing",
+      "column": "todo",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:50:36Z",
+          "by": "build",
+          "text": "doing → todo: wrong lane / zurück in Ready (Supervisor 28.11.): GroundRenderer chunk_* gehört nicht zur Doku-Lane m10-acceptance-tor-sync"
+        }
+      ],
       "created": "2026-11-28T16:31:59Z",
-      "updated": "2026-11-28T16:31:59Z"
+      "updated": "2026-11-28T17:50:36Z"
     },
     {
       "id": 13444,
@@ -19591,6 +19597,64 @@
       ],
       "created": "2026-11-28T16:41:27Z",
       "updated": "2026-11-28T17:38:52Z"
+    },
+    {
+      "id": 13726,
+      "title": "m10-acceptance-tor-sync K1: Bestand aufnehmen (Gerätetore-Abschnitt, Nachträge je Abschnitt prüfen)",
+      "description": "ACCEPTANCE.md v1.0-Gerätetore-Abschnitt (main @ 5664a7fc) lesen; spätere Einträge (heap-gate-recovery G-Zahlen, v10-gate-rerun-Urteil, torprio-Umstellung) je Abschnitt prüfen. Historische Abschnitte unangetastet, nur Ergänzungen. AK: Befundliste in docs/lanes/m10-acceptance-tor-sync.md mit Zahlenbeleg.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T17:48:45Z",
+          "by": "build",
+          "text": "todo → doing: Lane gestartet: Bestand aufnehmen"
+        },
+        {
+          "at": "2026-11-28T17:50:36Z",
+          "by": "build",
+          "text": "K1 fertig: Bestand aufgenommen, Befundtabelle in docs/lanes/m10-acceptance-tor-sync.md (K1). 17:45Z-Tabelle gelesen (Pfad bestätigt), K2 nicht blockiert."
+        },
+        {
+          "at": "2026-11-28T17:51:10Z",
+          "by": "build",
+          "text": "doing → review: K1 committed dcd0390f: Befundtabelle K1 in docs/lanes/m10-acceptance-tor-sync.md, Belegpfade geprueft"
+        }
+      ],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:51:10Z"
+    },
+    {
+      "id": 13727,
+      "title": "m10-acceptance-tor-sync K2: 120-Hz-A/B-Nachtrag (Wünsche 17:45Z) in ACCEPTANCE.md",
+      "description": "Tabelle 60 Hz vs. 120 Hz aus Wünsche von Dom.md 17:45Z (60 Hz: 60,0 FPS / rAF p95 16,8 ms / janky 0 %; 120 Hz: 118,5 FPS / 8,4 ms / 11,8 %; Quelle device-bridge Claude-A/B, Minute-25-Dichte) + Dom-Freigabe 'Tablet-Tor bestanden' + Standard 60-Hz-Panel + 60-FPS-Cap ergänzen. AK: Nachtrag im v1.0-/G-Kontext, keine historischen Werte überschrieben.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T17:51:10Z",
+          "by": "build",
+          "text": "todo → doing: 120-Hz-Nachtrag in ACCEPTANCE.md wird eingefuegt"
+        }
+      ],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:51:10Z"
+    },
+    {
+      "id": 13728,
+      "title": "m10-acceptance-tor-sync K3: Blocker-Status korrigieren (fps-pacing-Tor-Lesart)",
+      "description": "FPS avg + rAF-p95 als Tor-Metriken nach merge-m10-v10-gate-torprio dokumentieren; gfxinfo-janky nur Beobachtung; Verweis auf docs/lanes/m10-janky-remeasure.md und m10-v10-gate-torprio.md. AK: K3-janky-FAIL im Gerätetore-Abschnitt mit aktueller Tor-Lesart kontextualisiert.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:48:43Z"
+    },
+    {
+      "id": 13729,
+      "title": "m10-acceptance-tor-sync K4: Abgleich + Querverweise auf Belege, Lane-Doku, npm test, Commit",
+      "description": "Querverweise auf Belege (~/games/.evidence/m10-janky-remeasure/, m10-v10-gate-rerun/) ergänzen; Zahlen nur aus Belegen. AK: npm test 0 fail, diff nur Ergänzungen im v1.0-/G-Kontext, Befunde mit Zahlenbeleg in docs/lanes/m10-acceptance-tor-sync.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T17:48:43Z",
+      "updated": "2026-11-28T17:48:43Z"
     }
   ]
 }
