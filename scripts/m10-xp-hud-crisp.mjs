@@ -121,6 +121,8 @@ async function scanProfile(page, profile) {
   // Voller Renderbuffer (Teiler 1), damit Buffer-Pixel == n-fach Geraetepixel.
   await page.evaluate(() => { window.__rbOverride = 1; });
   await startRun(page);
+  // Level-up-Overlays (0.86-Dim) wuerden das HUD verdunkeln -> unterdruecken.
+  await page.evaluate(() => { window.__lf.setSuppressLevelUps(true); });
 
   // Build sichtbar machen: alle 12 Icon-Klassen + Evo-Hinweis (ember 8 + tome).
   await page.evaluate(() => {
@@ -168,6 +170,16 @@ async function scanProfile(page, profile) {
     await page.evaluate(() => window.__lf.giveXp(1));
     await page.waitForTimeout(100);
   }
+  // Nach dem Fix ist die Display-Breite IMMER ganzzahlig; fuer den after-Beleg
+  // die Fuellung auf ~40 % auftanken (suppressLevelUps aktivierte Level-Ups
+  // abfangen, kein Overlay-Risiko).
+  await page.evaluate(() => {
+    const s = window.__lf.state();
+    const need = s.xpNeed ?? 9;
+    const delta = Math.floor(need * 0.4037) - s.xp;
+    if (delta > 0) window.__lf.giveXp(delta);
+  });
+  await page.waitForTimeout(150);
   // HP-Fuellung ebenfalls auf OFF-GRID pruefen (Info-Feld im JSON).
   await page.waitForTimeout(200);
   // Gefrorener Frame: Run-Scene pausiert (Phaser rendert PAUSED-Szenen weiter),

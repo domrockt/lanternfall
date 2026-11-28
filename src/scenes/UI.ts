@@ -62,6 +62,52 @@ export const HUD_MAX_ICONS = 12;
 /** 13 px hinter dem Ende der vollen Icon-Reihe (Referenz: x=330). */
 export const HUD_EVO_HINT_X = HUD_ICONS_X + (HUD_MAX_ICONS - 1) * HUD_ICON_PITCH + 8 + 13; // 330
 
+/**
+ * m10-xp-hud-crisp (menu-art-crisp Befundklasse F1, Beleg
+ * shots/m10-xp-hud-before.json): Fuell-Rechtecke (XP-/HP-/Boss-Leiste) wurden
+ * mit fraktionalem Scale gefuert — Display-Breite 235.5/81.648/221.374 px,
+ * Kante damit zwischen Spielpixeln (fraktionale Kante, 1-px-Schimmer bei
+ * jeder Aenderung). Fix: Fuellbreite als GANZZAHLIGE Spielpixel; der Draw-
+ * Pfad nutzt 1-px-Basis + ganzzahligen Scale, keine fraktionale Kante mehr.
+ */
+export function crispFillWidth(baseW: number, ratio: number): number {
+  const r = Math.max(0, Math.min(1, ratio));
+  return Math.max(0, Math.round(r * baseW));
+}
+
+/** Feste HP-Fuellbreite (Spielpixel) der HUD-Leiste. */
+export const HUD_HP_FILL_W = 82;
+
+export interface BossBarGeom {
+  barW: number;
+  left: number;
+  fillX: number;
+  fillW: number;
+  segXs: number[];
+  capXs: number[];
+}
+
+/**
+ * m10-xp-hud-crisp: reine Boss-Leisten-Geometrie (ganzzahlige Spielpixel).
+ * Vorher: Segment-x = left + 4 + i*(barW-8)/9 mit (236-8)/9 = 25.333 — alle
+ * 8 Trenner saessen auf fraktionalen x-Positionen (before-JSON, left
+ * 231.333/256.667/...). Fix: je Segment gerundet; barW/fill/caps ganzzahlig.
+ */
+export function bossBarGeometry(viewWidth: number): BossBarGeom {
+  const barW = Math.round(Math.min(236, Math.max(1, viewWidth - 48)));
+  const left = Math.round(viewWidth / 2 - barW / 2);
+  const segXs: number[] = [];
+  for (let i = 1; i < 9; i++) segXs.push(Math.round(left + 4 + (i * (barW - 8)) / 9));
+  return {
+    barW,
+    left,
+    fillX: left + 4,
+    fillW: barW - 8,
+    segXs,
+    capXs: [Math.round(left - 5), Math.round(left + barW - 5)],
+  };
+}
+
 export interface AnchorBox { x: number; y: number; w: number; h: number }
 
 export interface HudAnchorInput {
@@ -182,6 +228,9 @@ export class UI extends Phaser.Scene {
   private hpFill!: Phaser.GameObjects.Rectangle;
   private hpBg!: Phaser.GameObjects.Rectangle;
   private hpLabel!: PixelText;
+  /** m10-xp-hud-crisp: Basis-Breiten (Spielpixel) fuer crispFillWidth. */
+  private xpBaseW = 0;
+  private bossFillBaseW = 0;
 
   private levelGroup!: Phaser.GameObjects.Container;
   private levelTitle!: PixelText;
@@ -311,12 +360,17 @@ export class UI extends Phaser.Scene {
     this.killsText = new PixelText(this, GAME_WIDTH - m.right, m.top, "KILL 0", C.bone, "right").setDepth(13).setName("hud-kills");
     this.xpBg = this.add.rectangle(m.left, 8 + topOff, GAME_WIDTH - m.left - m.right, 4, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11).setName("hud-xp-bg");
-    this.xpFill = this.add.rectangle(m.left + 1, 9 + topOff, GAME_WIDTH - m.left - m.right - 2, 2, PAL[C.amber]).setOrigin(0, 0).setDepth(12).setName("hud-xp-fill");
-    // Spieler-HP oben links, fester Rahmen + 4-px-Fuellung.
+    // m10-xp-hud-crisp: Fuellung mit 1-px-Basis + ganzzahligem Scale
+    // (crispFillWidth in refreshHud) — keine fraktionale Display-Breite mehr.
+    this.xpBaseW = GAME_WIDTH - m.left - m.right - 2;
+    this.xpFill = this.add.rectangle(m.left + 1, 9 + topOff, 1, 2, PAL[C.amber]).setOrigin(0, 0)
+      .setScale(1, 1).setDepth(12).setName("hud-xp-fill");
+    // Spieler-HP oben links, fester Rahmen + 4-px-Fuellung (ebenso 1-px-Basis).
     this.hpBg = this.add.rectangle(m.left, 15 + topOff, HUD_HP_W, 9, PAL[C.ink]).setOrigin(0, 0)
       .setStrokeStyle(1, PAL[C.nightSlate]).setDepth(11).setName("hud-hp-bg");
     this.hpLabel = new PixelText(this, 9 + (m.left - HUD_MARGIN_X), 16 + topOff, "HP", C.bone).setDepth(12).setName("hud-hp-label");
-    this.hpFill = this.add.rectangle(25 + (m.left - HUD_MARGIN_X), 17 + topOff, 82, 4, PAL[C.crimson]).setOrigin(0, 0).setDepth(12).setName("hud-hp-fill");
+    this.hpFill = this.add.rectangle(25 + (m.left - HUD_MARGIN_X), 17 + topOff, 1, 4, PAL[C.crimson]).setOrigin(0, 0)
+      .setScale(HUD_HP_FILL_W, 1).setDepth(12).setName("hud-hp-fill");
     this.createHudIcons();
     this.createHudEvoHint();
 
@@ -397,29 +451,35 @@ export class UI extends Phaser.Scene {
   }
 
   private createBossUI(): void {
+    // m10-xp-hud-crisp: Geometry aus der reinen, ganzzahligen Ankerfunktion
+    // (bossBarGeometry) — Segmente/Caps saessen vorher auf fraktionalen x.
+    const g = bossBarGeometry(GAME_WIDTH);
     const cx = GAME_WIDTH / 2;
-    const barW = Math.min(236, GAME_WIDTH - 48);
-    const left = cx - barW / 2;
+    const left = g.left;
     this.bossGroup = this.add.container(0, 0).setDepth(90).setVisible(false);
-    this.bossBarBg = this.add.rectangle(left, 46, barW, 12, PAL[C.ink], 0.95)
+    this.bossBarBg = this.add.rectangle(left, 46, g.barW, 12, PAL[C.ink], 0.95)
       .setOrigin(0, 0.5).setStrokeStyle(1, PAL[C.amber]);
-    this.bossBarFill = this.add.rectangle(left + 4, 46, barW - 8, 6, PAL[24])
+    this.bossFillBaseW = g.fillW;
+    this.bossBarFill = this.add.rectangle(g.fillX, 46, 1, 6, PAL[24])
+      .setOrigin(0, 0.5).setScale(g.fillW, 1);
+    this.bossBarShadow = this.add.rectangle(g.fillX, 48, g.fillW, 2, PAL[23])
       .setOrigin(0, 0.5);
-    this.bossBarShadow = this.add.rectangle(left + 4, 48, barW - 8, 2, PAL[23])
-      .setOrigin(0, 0.5);
-    // Segmente + Endkappen mit 2x2-Amberpunkten.
+    // Segmente + Endkappen mit 2x2-Amberpunkten (ganzzahlige x-Positionen).
     const segs: Phaser.GameObjects.Rectangle[] = [];
-    for (let i = 1; i < 9; i++) {
-      segs.push(this.add.rectangle(left + 4 + i * (barW - 8) / 9, 46, 2, 6, PAL[C.ink])
+    for (let i = 0; i < g.segXs.length; i++) {
+      segs.push(this.add.rectangle(g.segXs[i], 46, 2, 6, PAL[C.ink])
         .setOrigin(0, 0.5));
     }
-    for (const sx of [left - 5, cx + barW / 2 - 5]) {
-      segs.push(this.add.rectangle(sx, 46, 5, 14, PAL[C.nightSlate]).setStrokeStyle(1, PAL[C.ink]));
+    for (const sx of g.capXs) {
+      // m10-xp-hud-crisp: 5 px breite Kappe mit Origin (0,0.5) am Anker sx-3 —
+      // vorher Origin 0.5 -> Kanten bei sx-2.5 (fraktionale Kante, before-JSON).
+      segs.push(this.add.rectangle(sx - 3, 46, 5, 14, PAL[C.nightSlate])
+        .setOrigin(0, 0.5).setStrokeStyle(1, PAL[C.ink]));
       segs.push(this.add.rectangle(sx + 1, 41, 2, 2, PAL[C.amber]));
       segs.push(this.add.rectangle(sx + 1, 49, 2, 2, PAL[C.amber]));
     }
     this.bossName = new PixelText(this, cx, 33, "", C.amber, "center");
-    this.bossPhaseText = new PixelText(this, cx + barW / 2 - 6, 33, "", C.candleWhite, "right");
+    this.bossPhaseText = new PixelText(this, g.left + g.barW - 6, 33, "", C.candleWhite, "right");
     this.bossGroup.add([this.bossBarBg, this.bossBarShadow, this.bossBarFill, ...segs,
       this.bossName, this.bossPhaseText]);
 
@@ -902,7 +962,8 @@ export class UI extends Phaser.Scene {
     }
     const ratio = Math.max(0.001, boss.ratio);
     if (ratio !== this.bossCache.ratio) {
-      this.bossBarFill.setScale(ratio, 1);
+      // m10-xp-hud-crisp: ganzzahlige Fuellbreite (1-px-Basis + Scale).
+      this.bossBarFill.setScale(crispFillWidth(this.bossFillBaseW, ratio), 1);
       this.bossCache.ratio = ratio;
     }
     const color = boss.color;
@@ -931,13 +992,15 @@ export class UI extends Phaser.Scene {
     }
     const xpRatio = Math.max(0.001, s.xpRatio);
     if (xpRatio !== this.hudCache.xpRatio) {
-      this.xpFill.setScale(xpRatio, 1);
+      // m10-xp-hud-crisp: ganzzahlige Fuellbreite statt fraktionaler Scale
+      // (before: displayW 235.5/341.333/209.333 -> fraktionale Kante).
+      this.xpFill.setScale(crispFillWidth(this.xpBaseW, xpRatio), 1);
       this.hudCache.xpRatio = xpRatio;
     }
     const hpRatio = Math.max(0, Math.min(1, s.hp / Math.max(1, s.maxHp)));
     const hpColor = hpRatio < 0.3 ? C.hotRed : hpRatio < 0.6 ? C.amber : C.crimson;
     if (hpRatio !== this.hudCache.hpRatio) {
-      this.hpFill.setScale(Math.max(0.001, hpRatio), 1);
+      this.hpFill.setScale(crispFillWidth(HUD_HP_FILL_W, hpRatio), 1);
       this.hudCache.hpRatio = hpRatio;
     }
     if (hpColor !== this.hudCache.hpColor) {
