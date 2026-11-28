@@ -18784,27 +18784,43 @@
       "id": 13384,
       "title": "m10-evo-element-guard K1: Probe Standbild-Frames je Evo (640x360 + 960x540)",
       "description": "scripts/m10-evo-element-guard.mjs: je Evo (phoenix, eternal_winter, soul_beacon, thunder_seal, wrath_pendulum, thorn_storm) ein eingefrorener Standbild-Frame (scene.pause, Muster m10-boss-fx-contrast.mjs) in 640x360 und 960x540. Belege shots/m10-evo-element-<evo>-*.png + shots/m10-evo-element-guard.json. iGPU-Pflicht: Renderer-String via window.__lf.rendererInfo() (kein lf-renderer.mjs gemergt -> eigene Erfassung), SwiftShader/llvmpipe = FAIL. 0 JS-Fehler. AK: Skript laeuft einmal durch, 12 PNGs + JSON existieren, Renderer-String ist Mesa Intel (kein SwiftShader), Belege auch nach ~/games/.evidence/m10-evo-element-guard/ kopiert.",
-      "column": "doing",
+      "column": "review",
       "assignee": "m10-evo-element-guard",
       "notes": [
         {
           "at": "2026-11-28T16:42:02Z",
           "by": "build",
           "text": "todo → doing: K1 angenommen (Lane m10-evo-element-guard): Probe-Skript wird gebaut."
+        },
+        {
+          "at": "2026-11-28T17:00:35Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: scripts/m10-evo-element-guard.mjs, 12 Standbild-PNGs + shots/m10-evo-element-guard.json, Renderer ANGLE Mesa Intel RPL-S (iGPU, kein SwiftShader), 0 JS-Fehler. Belege auch in ~/games/.evidence/m10-evo-element-guard/. Commit 5b870f96 #13384."
         }
       ],
       "created": "2026-11-28T16:42:00Z",
-      "updated": "2026-11-28T16:42:02Z"
+      "updated": "2026-11-28T17:00:35Z"
     },
     {
       "id": 13385,
       "title": "m10-evo-element-guard K2: Farb-Signatur-Assertions je Evo",
       "description": "Im selben Probe-Skript Farb-Signaturen je Evo aus den Standbild-Crops: Paletten-Histogramm (nearest-PAL-Mapping via decodePng), Zielbaender: Phoenix=Feuer-Orange (PAL 14-22, Kern 17-21), Winter=Eisblau (6-11), Soulpyre=tuerkis/weiß (7-13), Gewittersiegel=Blitz-Weiß-Peaks (12-13), Zornpendel=Glut/Rot (14-17+23-27), Dornensturm=Gruen (28-31) + kein flaechnaiges Raster (Zeilengleichmaessigkeit). Schwellen werden aus den aktuellen abgenommenen Standbildern (K1-Belege) kalibriert, NICHT aus alten SwiftShader-Belegen. FAIL einer Signatur -> kein Fix im Spielcode (FX-Dateien fremd), Befund + Hebel in Lane-Doku. AK: Kalibrierte Schwellen in shots/m10-evo-element-guard.json, 6/6 Signaturen GREEN oder FAIL dokumentiert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "m10-evo-element-guard",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T17:00:35Z",
+          "by": "build",
+          "text": "todo → doing: K2 angenommen: Baseline-Differenz-Signaturen (waffenloser Referenz-Frame je Aufloesung) + Kalibrierung."
+        },
+        {
+          "at": "2026-11-28T17:17:27Z",
+          "by": "build",
+          "text": "Supervisor-Steer bestätigt und bereits befolgt: Kalibrierung lief als CALIB-Einmallauf (CALIB=1 gab Ist-Anteile + Vorschlag in einem Durchlauf aus), Schwellen = min-über-2-Läufe × 0.4 als fester Sicherheitsabstand, GENAU EIN Edit am Guard-Skript, danach ein Verifikationslauf: 6/6 Evo-Signaturen GREEN (phoenix/winter/soulpyre/gewittersiegel/zornpendel/dornensturm). Kein weiteres Hand-Tuning. Befund Baseline-vs-Waffenlicht (FX-Budget) kommt in die Lane-Doku. Commit folgt als #13385."
+        }
+      ],
       "created": "2026-11-28T16:42:00Z",
-      "updated": "2026-11-28T16:42:00Z"
+      "updated": "2026-11-28T17:17:27Z"
     },
     {
       "id": 13386,

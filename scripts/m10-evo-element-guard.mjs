@@ -4,13 +4,28 @@
 // in 640x360 und 960x540, mit Paletten-Farb-Signatur (nearest-PAL-Histogramm im
 // Spieler-Crop) statt FPS. Keine FPS-Messung -> kein flock.
 //
+// Signatur = ABSOLUTER Ziel-Farbband-Anteil im Spieler-Crop an fester Stelle
+// (Seed 7, Teleport 2048/2048) — der Ort ist deterministisch, also ist der
+// Terrain-Anteil laufstabil und eine Verschiebung zeigt FX-/Licht-Regressionen.
+// (Eine waffenlose Baseline als Differenz wurde probiert und verworfen: das
+// FX-Budget dimmt das Lantern-Licht, sobald eine Waffe feuert — die Baseline ist
+// systematisch heller und kippt alle Deltas. Befund in docs/lanes/m10-evo-element-guard.md.)
+//
 // Element-Zuordnung (Dom, 02:00Z, Optik abgenommen 10:00Z):
 //   phoenix        = Feuer (orange Glut-Kern)
 //   eternal_winter = Frost (eisblau)
-//   soul_beacon    = kalt-tuerkis Leuchtfeuer (hell, weissliche Kalte-Töne)
+//   soul_beacon    = kalt-tuerkis Leuchtfeuer (hell, weissliche Kalte-Toene, kein Feuer)
 //   thunder_seal   = Blitz (weiss-Peaks)
 //   wrath_pendulum = Glut/Rot
-//   thorn_storm    = gruene Dornen (kein flaechnaiges Raster)
+//   thorn_storm    = gruene Dornen (kein flaechnaiges Raster -> CV-Metrik)
+//
+// Schwellen (K2-Kalibrierung, Mesa-iGPU, 2 Ist-Laeufe 28.11.): min = Ist-min × 0.4
+// (4 Dezimalstellen) — absorbiert das beobachtete Freeze-Phasen-Rauschen (phoenix.fire
+// schwankte laufabhaengig ~2x durch Sprite-Phase). soulpyre.noFire ist max:
+// Umgebungsglut (Lantern/Terrain) liegt konstant bei ~4.5% (gewittersiegel-Referenz
+// 4.52%), Soulpyre-FX traegt sichtbar kein Feuer; max=0.06 faellt, wenn kuenftig
+// Flammen-Farben in die Soulpyre-Signatur mischen. dornensturm.green istTerrain-dominiert
+// (Moor-Boden, deterministisch) und sitzt deshalb mit 0.118 bei 40% des schlechtesten Ist.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { ensureBuild, startServer, loadPlaywright, startRun } from "./harness.mjs";
 import { decodePng } from "./terrain-coverage.mjs";
@@ -41,16 +56,22 @@ const PAL = [
 ];
 const PAL_RGB = PAL.map((v) => [(v >> 16) & 255, (v >> 8) & 255, v & 255]);
 
-// Ziel-Farbbänder je Element (Palette-Indizes). Kalibriert aus den abgenommenen
-// Standbildern (K1-Belege, Mesa-iGPU) — NICHT aus alten SwiftShader-Aufnahmen.
-export const BANDS = {
-  phoenix: { fire: { idx: [14, 15, 16, 17, 18, 19, 20, 21, 22], minShare: 0.02 }, fireCore: { idx: [17, 18, 19, 20, 21], minShare: 0.004 } },
-  winter: { cold: { idx: [5, 6, 7, 8, 9, 10], minShare: 0.02 }, coldBright: { idx: [8, 9, 10], minShare: 0.004 } },
-  soulpyre: { cold: { idx: [5, 6, 7, 8, 9, 10], minShare: 0.02 }, coldBright: { idx: [8, 9, 10, 12, 13], minShare: 0.004 }, noFire: { idx: [14, 15, 16, 17, 18, 19], maxShare: 0.004 } },
-  gewittersiegel: { whitePeak: { idx: [12, 13], minShare: 0.004 } },
-  zornpendel: { emberRed: { idx: [14, 15, 16, 17, 23, 24, 25, 26], minShare: 0.02 } },
-  dornensturm: { green: { idx: [28, 29, 30, 31], minShare: 0.01 } },
+// Ziel-Farbbänder je Element (Palette-Indizes aus src/palette.ts) + kalibrierte
+// Schwellen (siehe Kopf-Kommentar).
+const BANDS = {
+  phoenix: { fire: { idx: [14, 15, 16, 17, 18, 19, 20, 21, 22], min: 0.0086 }, fireCore: { idx: [17, 18, 19, 20, 21], min: 0.0014 } },
+  winter: { cold: { idx: [5, 6, 7, 8, 9, 10], min: 0.0444 }, coldBright: { idx: [8, 9, 10], min: 0.0165 } },
+  soulpyre: { cold: { idx: [5, 6, 7, 8, 9, 10], min: 0.0297 }, coldBright: { idx: [8, 9, 10, 12, 13], min: 0.006 }, noFire: { idx: [14, 15, 16, 17, 18, 19], max: 0.06 } },
+  gewittersiegel: { whitePeak: { idx: [12, 13], min: 0.0003 } },
+  zornpendel: { emberRed: { idx: [14, 15, 16, 17, 23, 24, 25, 26], min: 0.0206 } },
+  dornensturm: { green: { idx: [28, 29, 30, 31], min: 0.1183 } },
 };
+// Dornensturm-Raster: gruenen-Pixel je Reihe variiert bei echten Dornen (CV ~0.23);
+// ein flaechnaiges Raster-Overlay haette nahezu konstante Reihen (CV ~0). GREEN ab 0.1.
+const GRID_CV_MIN = 0.1;
+
+// Kalibrierlauf: Schwellen aus dem Ist-Lauf ablegen statt zu pruefen.
+const CALIB = process.env.CALIB === "1";
 
 function nearestPalIdx(r, g, b) {
   let best = 0, bestD = Infinity;
@@ -72,7 +93,7 @@ function cropSignature(buf, opts = {}) {
   const x0 = Math.max(0, cx - halfW), x1 = Math.min(w, cx + halfW);
   const y0 = Math.max(0, cy - halfH), y1 = Math.min(h, cy + halfH);
   const hist = new Array(32).fill(0);
-  const rowGreen = new Array(h).fill(0);
+  const rowGreen = new Array(y1 - y0).fill(0);
   let total = 0;
   for (let y = y0; y < y1; y++) {
     for (let x = x0; x < x1; x++) {
@@ -80,23 +101,19 @@ function cropSignature(buf, opts = {}) {
       total++;
       const idx = nearestPalIdx(data[i], data[i + 1], data[i + 2]);
       hist[idx]++;
-      if (idx >= 28) rowGreen[y]++;
+      if (idx >= 28) rowGreen[y - y0]++;
     }
   }
-  // Raster-Metrik: Anteil der Crop-Reihen mit Dornen-Gruen + Gleichmaessigkeit
-  // der Gruen-Anzahl je Reihe (flaechnaiges Raster = hohe Gleichfaelligkeit).
-  const rowsWithGreen = rowGreen.slice(y0, y1).filter((v) => v > 0).length;
-  const greenRows = rowGreen.slice(y0, y1).filter((v) => v >= 2);
+  // Raster-Metrik: Variationskoeffizient der Gruen-Anzahl je Reihe.
+  const greenRows = rowGreen.filter((v) => v >= 2);
   const mean = greenRows.reduce((a, v) => a + v, 0) / Math.max(1, greenRows.length);
   const variance = greenRows.reduce((a, v) => a + (v - mean) * (v - mean), 0) / Math.max(1, greenRows.length);
   const cv = mean > 0 ? Math.sqrt(variance) / mean : 0;
-  return { crop: { x0, y0, x1, y1, w, h }, total, hist, grid: { rowsWithGreenShare: +(rowsWithGreen / Math.max(1, y1 - y0)).toFixed(4), greenPerRowCv: +cv.toFixed(4) } };
+  return { crop: { x0, y0, x1, y1, w, h }, total, hist, grid: { greenPerRowCv: +cv.toFixed(4) } };
 }
 
-function bandShare(sig, band) {
-  const n = sig.hist.filter((_, i) => band.idx.includes(i)).reduce((a, v) => a + v, 0);
-  return n / Math.max(1, sig.total);
-}
+const share = (sig, band) =>
+  sig.hist.filter((_, i) => band.idx.includes(i)).reduce((a, v) => a + v, 0) / Math.max(1, sig.total);
 
 const { chromium } = await loadPlaywright();
 const server = await startServer();
@@ -106,24 +123,34 @@ const browser = await chromium.launch({
 
 const results = {};
 const allErrors = [];
+const freeze = async (page, ms) => {
+  if (ms > 0) await page.waitForTimeout(ms);
+  await page.evaluate(() => window.__game.scene.pause("run"));
+  const shot = await page.screenshot();
+  await page.evaluate(() => window.__game.scene.resume("run"));
+  return shot;
+};
+const setup = (page, weapon) =>
+  page.evaluate((w) => {
+    window.__lf.god(true);
+    window.__lf.autoPlay(false);
+    window.__lf.setSuppressLevelUps(true);
+    window.__lf.teleport(2048, 2048);
+    if (w) window.__lf.addWeapon(w, 8);
+    window.__lf.spawnEnemy("mudling", 12);
+    window.__lf.spawnEnemy("bog_rat", 8);
+  }, weapon);
+
 try {
-  for (const evo of EVOS) {
-    results[evo.id] = {};
-    for (const cfg of CONFIGS) {
+  for (const cfg of CONFIGS) {
+    for (const evo of EVOS) {
+      results[evo.id] ??= {};
       const page = await browser.newPage({ viewport: cfg.viewport, deviceScaleFactor: cfg.deviceScaleFactor });
       page.on("pageerror", (e) => allErrors.push(`[${evo.id}/${cfg.tag}] ` + String(e)));
       page.on("console", (m) => { if (m.type() === "error") allErrors.push(`[${evo.id}/${cfg.tag}] ` + m.text()); });
       await page.goto(`http://127.0.0.1:${server.port}/?debug=1&seed=7`);
       await startRun(page);
-      await page.evaluate((weapon) => {
-        window.__lf.god(true);
-        window.__lf.autoPlay(false);
-        window.__lf.setSuppressLevelUps(true);
-        window.__lf.teleport(2048, 2048);
-        window.__lf.addWeapon(weapon, 8);
-        window.__lf.spawnEnemy("mudling", 12);
-        window.__lf.spawnEnemy("bog_rat", 8);
-      }, evo.weapon);
+      await setup(page, evo.weapon);
       // Auf die Evo-Signatur warten (FX-Keys + Live-Sprites gelesen — kein Blind-Shot;
       // Muster m10-evo-fx-soulpyre.mjs: orb_soul/Projektile sind keine FX-Keys).
       await page.waitForFunction((rx) => {
@@ -142,31 +169,28 @@ try {
         const run = window.__game.scene.getScene("run");
         return { fxKeys: run.combat.fx.keys, renderer: window.__lf.rendererInfo(), enemies: window.__lf.state().enemies };
       });
-
-      // Standbild: Szene einfrieren (FX-Update + Kamera stehen), screenshot, weiter.
-      await page.evaluate(() => window.__game.scene.pause("run"));
-      const shot = await page.screenshot();
-      const shotPath = `shots/m10-evo-element-${evo.id}-${cfg.tag}.png`;
-      writeFileSync(shotPath, shot);
-      await page.evaluate(() => window.__game.scene.resume("run"));
+      const shot = await freeze(page, 0);
+      writeFileSync(`shots/m10-evo-element-${evo.id}-${cfg.tag}.png`, shot);
+      await page.close();
 
       const sig = cropSignature(shot);
       const bands = {};
       for (const [name, band] of Object.entries(BANDS[evo.id])) {
-        const share = +bandShare(sig, band).toFixed(5);
-        bands[name] = { share, threshold: band.minShare ?? band.maxShare, direction: band.minShare !== undefined ? "min" : "max" };
+        const s = +share(sig, band).toFixed(5);
+        const threshold = band.min ?? band.max;
+        const ok = band.min !== undefined ? s >= threshold : s <= threshold;
+        bands[name] = { share: s, threshold, direction: band.min !== undefined ? "min" : "max", ok };
       }
+      bands.grid = { greenPerRowCv: sig.grid.greenPerRowCv, threshold: GRID_CV_MIN, ok: sig.grid.greenPerRowCv >= GRID_CV_MIN };
       results[evo.id][cfg.tag] = {
-        shot: shotPath,
+        shot: `shots/m10-evo-element-${evo.id}-${cfg.tag}.png`,
         renderer: info.renderer?.renderer ?? "UNKNOWN",
         fxKeys: info.fxKeys,
         aliveEnemies: info.enemies,
         crop: sig.crop,
         paletteHist: sig.hist,
-        grid: sig.grid,
         bands,
       };
-      await page.close();
     }
   }
 } finally {
@@ -175,13 +199,28 @@ try {
 }
 
 const renderer = results.phoenix?.["640"]?.renderer ?? "UNKNOWN";
+const verdicts = {};
+for (const [evo, tags] of Object.entries(results)) {
+  verdicts[evo] = Object.values(tags).every((r) => Object.values(r.bands).every((b) => b.ok !== false)) ? "GREEN" : "FAIL";
+}
 const summary = {
   generatedAt: new Date().toISOString(),
   renderer,
   valid: !/swiftshader|llvmpipe|software/i.test(renderer),
   errors: allErrors,
+  verdicts,
   evos: results,
 };
 writeFileSync("shots/m10-evo-element-guard.json", JSON.stringify(summary, null, 2));
-console.log(JSON.stringify(summary, null, 2));
+if (CALIB) {
+  // Kalibriertabelle: Ist-Anteile + vorgeschlagene Schwellen (min: x0.4, max: x1.34).
+  for (const [evo, tags] of Object.entries(results)) {
+    for (const [band, b] of Object.entries(tags["640"].bands)) {
+      if (band === "grid") continue;
+      const sug = b.direction === "min" ? Math.floor(b.share * 0.4 * 1e4) / 1e4 : Math.ceil(b.share * 1.34 * 1e4) / 1e4;
+      console.log(`CALIB ${evo}.${band} share=${b.share} -> suggested ${b.direction}=${sug}`);
+    }
+  }
+}
+console.log(JSON.stringify({ renderer, valid: summary.valid, errors: allErrors, verdicts }, null, 2));
 if (allErrors.length > 0 || !summary.valid) process.exit(1);
