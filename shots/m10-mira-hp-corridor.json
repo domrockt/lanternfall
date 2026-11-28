@@ -1,0 +1,362 @@
+{
+  "lane": "m10-mira-hp-balance-check",
+  "purpose": "K4-Guard-Fixture (#12908): pinnt den Dom-Balance-Korridor auf dem Mira-HP-90-Stand (m10-charstats-ssot) nach dem K3-Hebel (MID_GAME_MIX, abom/voidcaller Gewicht 0,5 in Minute 20-24). Muster tests/balance-corridor.test.ts — die Suite fuehrt KEINE Messlaeufe aus. Bei Abweichung: NICHT stillschweigend rebaseln, Ursache in docs/lanes/m10-mira-hp-balance-check.md dokumentieren und Fixture per scripts/m10-mira-hp-check.mjs neu erzeugen.",
+  "generatedAt": "2026-11-28T16:12:00.987Z",
+  "evidenceSource": "games/.evidence/m10-mira-hp-balance-check/m10-mira-hp-2026-11-28T16-12-00-987Z.json (ausserhalb des Repos)",
+  "miraHpStand": 90,
+  "miraHpSource": "src/data/characters.ts (m10-charstats-ssot af72458d)",
+  "fixNote": "MID_GAME_FIX: Minute 20-24 mit halbiertem Vervielfacher-Gewicht (src/data/waves.ts, Commit 43d2769f)",
+  "parameters": {
+    "scale": 30,
+    "seedsMira": [
+      101,
+      202,
+      404
+    ],
+    "seedKael": 101,
+    "mode": "full",
+    "viewport": [
+      960,
+      540
+    ],
+    "dpr": 1,
+    "autoPlay": true,
+    "god": false
+  },
+  "corridor": {
+    "endLevel": [
+      25,
+      40
+    ],
+    "bossDurationSec": [
+      20,
+      60
+    ],
+    "noDeathBeforeMinute": 15,
+    "kaelTolerancePct": 10
+  },
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "rendererOk": true,
+  "runCount": 4,
+  "completedCount": 4,
+  "runs": [
+    {
+      "character": "mira",
+      "seed": 101,
+      "outcome": "death",
+      "endSecond": 1231.1,
+      "endMinute": 20.52,
+      "endLevel": 33,
+      "wallSeconds": 63.9,
+      "pageErrorsCount": 13
+    },
+    {
+      "character": "mira",
+      "seed": 202,
+      "outcome": "dawn",
+      "endSecond": 1833.1,
+      "endMinute": 30.55,
+      "endLevel": 34,
+      "wallSeconds": 89.2,
+      "pageErrorsCount": 114
+    },
+    {
+      "character": "mira",
+      "seed": 404,
+      "outcome": "dawn",
+      "endSecond": 1837.2,
+      "endMinute": 30.62,
+      "endLevel": 34,
+      "wallSeconds": 89.9,
+      "pageErrorsCount": 40
+    },
+    {
+      "character": "kael",
+      "seed": 101,
+      "outcome": "dawn",
+      "endSecond": 1835,
+      "endMinute": 30.58,
+      "endLevel": 34,
+      "wallSeconds": 92.3,
+      "pageErrorsCount": 11
+    }
+  ],
+  "bossRuns": [
+    {
+      "character": "mira",
+      "seed": 101,
+      "bosses": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "durationSec": 31.1,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "durationSec": 40.1,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "durationSec": 27.5,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "spawnSecond": 1200,
+          "durationSec": 30.1,
+          "defeated": false,
+          "aliveAtEnd": true,
+          "inCorridor": true
+        }
+      ]
+    },
+    {
+      "character": "mira",
+      "seed": 202,
+      "bosses": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "durationSec": 25.2,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "durationSec": 29.5,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "durationSec": 31,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "spawnSecond": 1200,
+          "durationSec": 29.7,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "spawnSecond": 1500,
+          "durationSec": 29.8,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 5,
+          "name": "Der Hohle König",
+          "spawnSecond": 1800,
+          "durationSec": 29.8,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        }
+      ]
+    },
+    {
+      "character": "mira",
+      "seed": 404,
+      "bosses": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "durationSec": 29.8,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "durationSec": 45.4,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "durationSec": 36.4,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "spawnSecond": 1200,
+          "durationSec": 38.7,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "spawnSecond": 1500,
+          "durationSec": 42.2,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 5,
+          "name": "Der Hohle König",
+          "spawnSecond": 1800,
+          "durationSec": 34,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        }
+      ]
+    },
+    {
+      "character": "kael",
+      "seed": 101,
+      "bosses": [
+        {
+          "index": 0,
+          "name": "Moorkönigin",
+          "spawnSecond": 300,
+          "durationSec": 28.3,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 1,
+          "name": "Knochenfürst",
+          "spawnSecond": 600,
+          "durationSec": 43.6,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 2,
+          "name": "Der Fahle Hirte",
+          "spawnSecond": 900,
+          "durationSec": 42.5,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 3,
+          "name": "Glockenturm-Golem",
+          "spawnSecond": 1200,
+          "durationSec": 38.7,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 4,
+          "name": "Hexenzirkel",
+          "spawnSecond": 1500,
+          "durationSec": 29.3,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        },
+        {
+          "index": 5,
+          "name": "Der Hohle König",
+          "spawnSecond": 1800,
+          "durationSec": 31.8,
+          "defeated": true,
+          "aliveAtEnd": false,
+          "inCorridor": true
+        }
+      ]
+    }
+  ],
+  "kaelChecks": [
+    {
+      "bossIndex": 0,
+      "name": "Moorkönigin",
+      "newSec": 28.3,
+      "refSec": 28.3,
+      "deltaPct": 0,
+      "inTolerance": true
+    },
+    {
+      "bossIndex": 1,
+      "name": "Knochenfürst",
+      "newSec": 43.6,
+      "refSec": 39.1,
+      "deltaPct": 11.5,
+      "inTolerance": false
+    },
+    {
+      "bossIndex": 2,
+      "name": "Der Fahle Hirte",
+      "newSec": 42.5,
+      "refSec": 36.1,
+      "deltaPct": 17.7,
+      "inTolerance": false
+    },
+    {
+      "bossIndex": 3,
+      "name": "Glockenturm-Golem",
+      "newSec": 38.7,
+      "refSec": 36.4,
+      "deltaPct": 6.3,
+      "inTolerance": true
+    },
+    {
+      "bossIndex": 4,
+      "name": "Hexenzirkel",
+      "newSec": 29.3,
+      "refSec": 35.7,
+      "deltaPct": 17.9,
+      "inTolerance": false
+    },
+    {
+      "bossIndex": 5,
+      "name": "Der Hohle König",
+      "newSec": 31.8,
+      "refSec": 32.1,
+      "deltaPct": 0.9,
+      "inTolerance": true
+    }
+  ],
+  "kaelNote": "kael-Referenz = committete HP-250-Referenz (shots/m10-balance-corridor-full.json, 13:52Z, AELTERER Code-Stand). Deltas >10 % bestehen seit K1 OHNE Fix (Perf-Merges-Drift); kael-Code ist bitidentisch, kael dawned unverändert. Bosse 0-2 sind gegen den K1-Ist-Stand bitgleich.",
+  "miraViolations": [],
+  "jsErrorsCount": 178,
+  "jsErrorsNote": "ausschliesslich bekanntes GroundRenderer-Chunk-Spam (\"Texture key already in use\", fremde Datei, seit Chunk-Budget-Merge) — nicht korridorrelevant"
+}

@@ -60,6 +60,8 @@ scripts/art/__pycache__/
 !shots/m10-viewrefit-before.json
 !shots/m10-xp-hud-before.json
 !shots/qa-reaccc-chest-arrow.json
+# m10-mira-hp-balance-check K4: Fixture fuer tests/mira-hp-corridor.test.ts (Korridor-Marken HP-90-Stand)
+!shots/m10-mira-hp-corridor.json
 # vfx-restore-Tests pruefen existsSync auf die Beleg-PNGs der Baseline-/Stage1-Reports (Vera 2026-11-28)
 !shots/m10-vfx-restore-*.png
 # m10-vfx-restore-st2-r2: Fixtures fuer tests/vfx-restore-st2.test.ts (Reports + Freeze-PNGs)
